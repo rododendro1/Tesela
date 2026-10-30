@@ -7,6 +7,23 @@
 - El paquete pide Swift 6.0 o posterior (`swift-tools-version:6.0`) y compila en el modo de lenguaje 6: la
   concurrencia se comprueba al compilar, no solo en el CI. Antes pedía Swift 5.9.
 
+### Importar MIDI y MusicXML
+
+- `PiezaImportada(leyendo:)` lee un fichero MIDI estándar (formatos 0, 1 y 2) o una partitura MusicXML por partes sin
+  comprimir, según su contenido: `PiezaImportada(midi:)` y `PiezaImportada(musicXML:)` para uno en concreto. Da las
+  notas (`NotaDeLaPieza`: altura, comienzo y duración en redondas, parte) y el título, la armadura, el compás y el
+  tempo del fichero. En MIDI, la ortografía sale de la armadura o, si no la hay, de `tonalidadEstimada`; en MusicXML se
+  conserva, con acordes, voces (`<backup>`, `<forward>`), ligaduras e instrumentos transpositores. No cuentan la
+  percusión, las notas de adorno ni las notas guía.
+- `acordes(ventana:)` (y `acordesConInicio(ventana:)`) reduce las notas a los acordes que suenan, por ventanas de un
+  pulso: cada clase de altura pesa lo que suena, se descartan las notas breves si sin ellas sale una lectura más
+  probable y las ventanas seguidas con el mismo acorde se funden. `analisis(en:ventana:)` las analiza.
+- `ErrorDeImportacion` dice por qué no se puede leer un fichero (formato desconocido, MusicXML comprimido, MIDI dañado
+  o con tiempo SMPTE, XML mal formado, sin notas), en los catorce idiomas.
+- En la línea de comandos, `armonia analizar --archivo coral.mid [--ventana 2] [--en Do mayor]` (o
+  `analyze --file chorale.musicxml --window 2`) analiza los acordes de un fichero como si se hubieran escrito.
+- Todavía no se leen el MusicXML comprimido (.mxl), las repeticiones ni los saltos.
+
 ### Arpegios
 
 - `Arpegio`: un acorde recorrido nota a nota, con `Patron` (`.ascendente`, `.descendente`, `.idaYVuelta`, `.alberti`),

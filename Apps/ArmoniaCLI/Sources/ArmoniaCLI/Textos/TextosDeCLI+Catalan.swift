@@ -7,6 +7,8 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <acords> [--en <tonalitat>]",
         descripcionAnalizar: "xifrat romà, funcions, cadències i\nmodulacions (amb l'acord pivot;\nsense --en)",
+        sintaxisAnalizarArchivo: "analizar --archivo <fitxer> [--ventana <durada>]",
+        descripcionAnalizarArchivo: "el mateix, amb els acords d'un fitxer\nMIDI o MusicXML (un per pols;\n--ventana 2: un per blanca)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalitat>] [--propuestas 3]",
         descripcionArmonizar: "acords per a una melodia, de millor\na pitjor; amb octaves (Mi4), també\nel coral a quatre veus",
         sintaxisRealizar: "realizar <acords> [--en <tonalitat>]",
@@ -114,6 +116,9 @@ extension TextosDeCLI {
         faltaTonalidad: "falta la tonalitat: armonia tonalidad La menor",
         faltaTonalidadTrasEn: "falta la tonalitat després de --en",
         faltanAcordesDelAnalisis: { ejemplo in "falten els acords: " + ejemplo },
+        archivoIlegible: { nombre in "no es pot llegir el fitxer «\(nombre)»" },
+        archivoConAcordes: "amb --archivo no s'escriuen acords",
+        archivoSinAcordes: "el fitxer no té cap acord",
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "el marge és un nombre de 0 a 6: --margen 2",

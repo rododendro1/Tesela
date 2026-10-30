@@ -24,6 +24,15 @@ extension TextosDePartitura {
         pistaDeAcordes: "συγχορδίες",
         pistaDelBajo: "μπάσο",
 
+        // Importacion.swift
+        formatoDesconocido: "Το αρχείο δεν είναι ούτε MIDI ούτε MusicXML.",
+        musicXMLComprimido: "Είναι συμπιεσμένο MusicXML (.mxl), που δεν διαβάζεται ακόμη: εξαγάγετέ το χωρίς συμπίεση (.musicxml).",
+        midiDanado: "Το αρχείο MIDI είναι κατεστραμμένο ή κομμένο.",
+        midiConTiempoSMPTE: "Το αρχείο MIDI μετρά τον χρόνο σε καρέ SMPTE, όχι σε παλμούς ανά τέταρτο.",
+        xmlDanado: { linea in "Το αρχείο MusicXML είναι κατεστραμμένο (γραμμή \(linea))." },
+        noEsMusicXMLPorPartes: "Το XML δεν είναι παρτιτούρα MusicXML ανά μέρη (score-partwise).",
+        sinNotas: "Το αρχείο δεν έχει καμία νότα.",
+
         // Duracion+Idiomas.swift
         cuadrada: "διπλό ολόκληρο",
         redonda: "ολόκληρο",

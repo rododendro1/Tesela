@@ -146,6 +146,8 @@ public enum LineaDeComandos {
             }
         } catch let error as ErrorDeLectura {
             return ResultadoDeOrden(salida: "", error: error.descripcion(en: notacion) + "\n", codigo: 1)
+        } catch let error as ErrorDeImportacion {
+            return ResultadoDeOrden(salida: "", error: error.descripcion(en: notacion) + "\n", codigo: 1)
         } catch {
             return ResultadoDeOrden(salida: "", error: "\(error)\n", codigo: 1)
         }

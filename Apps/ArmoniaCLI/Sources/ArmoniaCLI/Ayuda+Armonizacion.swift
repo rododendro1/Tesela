@@ -10,6 +10,12 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traducidos.map(\.descripcionAnalizar),
             ejemplo: ejemplo("armonia analizar Do Fa Sol7 Do Lam Re7 Sol",
                              "armonia analyze C F G7 C Am D7 G")),
+        // analizar --archivo <fichero> [--ventana <duración>]
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisAnalizarArchivo),
+            descripcion: TextosDeCLI.traducidos.map(\.descripcionAnalizarArchivo),
+            ejemplo: ejemplo("armonia analizar --archivo coral.mid",
+                             "armonia analyze --file chorale.musicxml")),
         // armonizar <melodía> [--en <tonalidad>] [--propuestas 3]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traducidos.map(\.sintaxisArmonizar),

@@ -24,6 +24,15 @@ extension TextosDePartitura {
         pistaDeAcordes: "аккорды",
         pistaDelBajo: "бас",
 
+        // Importacion.swift
+        formatoDesconocido: "Файл не является ни MIDI, ни MusicXML.",
+        musicXMLComprimido: "Это сжатый MusicXML (.mxl), который пока не читается: экспортируйте его без сжатия (.musicxml).",
+        midiDanado: "Файл MIDI повреждён или обрезан.",
+        midiConTiempoSMPTE: "Файл MIDI считает время в кадрах SMPTE, а не в тиках на четверть.",
+        xmlDanado: { linea in "Файл MusicXML повреждён (строка \(linea))." },
+        noEsMusicXMLPorPartes: "XML не является партитурой MusicXML по партиям (score-partwise).",
+        sinNotas: "В файле нет ни одной ноты.",
+
         // Duracion+Idiomas.swift
         cuadrada: "бревис",
         redonda: "целая",

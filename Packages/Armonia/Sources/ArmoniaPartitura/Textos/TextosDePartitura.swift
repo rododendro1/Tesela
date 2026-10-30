@@ -28,6 +28,15 @@ struct TextosDePartitura: Sendable {
     let pistaDeAcordes: String
     let pistaDelBajo: String
 
+    // MARK: Importacion.swift
+    let formatoDesconocido: String
+    let musicXMLComprimido: String
+    let midiDanado: String
+    let midiConTiempoSMPTE: String
+    let xmlDanado: @Sendable (Int) -> String
+    let noEsMusicXMLPorPartes: String
+    let sinNotas: String
+
     // MARK: Duracion+Idiomas.swift
     let cuadrada: String
     let redonda: String

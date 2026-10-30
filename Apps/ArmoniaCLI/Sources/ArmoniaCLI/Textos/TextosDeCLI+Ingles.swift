@@ -7,6 +7,8 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <chords> [--in <key>]",
         descripcionAnalizar: "roman numerals, functions, cadences\nand modulations (with their pivot\nchord; without --in)",
+        sintaxisAnalizarArchivo: "analyze --file <file> [--window <duration>]",
+        descripcionAnalizarArchivo: "the same, with the chords of a MIDI\nor MusicXML file (one per beat;\n--window 2: one per half note)",
         sintaxisArmonizar: "harmonize <melody> [--in <key>] [--proposals 3]",
         descripcionArmonizar: "chords for a melody, best first; with\noctaves (E4), also the four-part\nchorale",
         sintaxisRealizar: "realize <chords> [--in <key>]",
@@ -115,6 +117,9 @@ extension TextosDeCLI {
         faltaTonalidad: "missing the key: armonia key A minor",
         faltaTonalidadTrasEn: "missing the key after --in",
         faltanAcordesDelAnalisis: { ejemplo in "missing the chords: armonia analyze C F G7 C" },
+        archivoIlegible: { nombre in "cannot read the file \"\(nombre)\"" },
+        archivoConAcordes: "with --file, do not write chords",
+        archivoSinAcordes: "the file has no chords",
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "the margin is a number from 0 to 6: --margen 2",

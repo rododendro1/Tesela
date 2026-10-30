@@ -24,6 +24,15 @@ extension TextosDePartitura {
         pistaDeAcordes: "Akkorde",
         pistaDelBajo: "Bass",
 
+        // Importacion.swift
+        formatoDesconocido: "Die Datei ist weder MIDI noch MusicXML.",
+        musicXMLComprimido: "Es ist komprimiertes MusicXML (.mxl), das noch nicht gelesen wird: unkomprimiert exportieren (.musicxml).",
+        midiDanado: "Die MIDI-Datei ist beschädigt oder abgeschnitten.",
+        midiConTiempoSMPTE: "Die MIDI-Datei zählt die Zeit in SMPTE-Frames, nicht in Ticks pro Viertelnote.",
+        xmlDanado: { linea in "Die MusicXML-Datei ist beschädigt (Zeile \(linea))." },
+        noEsMusicXMLPorPartes: "Das XML ist keine stimmenweise MusicXML-Partitur (score-partwise).",
+        sinNotas: "Die Datei enthält keine Noten.",
+
         // Duracion+Idiomas.swift
         cuadrada: "Doppelganze",
         redonda: "Ganze",

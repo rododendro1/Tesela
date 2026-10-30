@@ -89,7 +89,8 @@ PLR, 3 pasos
 ```
 
 `analizar` señala las cadencias (auténtica, plagal, rota y semicadencia) y, sin `--en`, parte la progresión en
-tramos por tonalidad, con el acorde pivote de cada modulación. `armonizar` propone acordes para una melodía, de
+tramos por tonalidad, con el acorde pivote de cada modulación. Con `--archivo coral.mid` (o `.musicxml`) analiza los
+acordes de un fichero MIDI o MusicXML, uno por pulso (`--ventana 2`, uno por blanca). `armonizar` propone acordes para una melodía, de
 mejor a peor, y si las notas llevan octava la escribe a cuatro voces con la melodía en el soprano; `realizar`
 escribe unos acordes a cuatro voces. Las dos dan corales sin faltas de conducción, que se pueden pasar a
 `revisar` o a `musicxml coral`.

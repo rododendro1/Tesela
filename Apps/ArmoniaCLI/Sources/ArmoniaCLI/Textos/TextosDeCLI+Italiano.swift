@@ -7,6 +7,8 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <accordi> [--en <tonalità>]",
         descripcionAnalizar: "numeri romani, funzioni, cadenze e\nmodulazioni (con l'accordo perno;\nsenza --en)",
+        sintaxisAnalizarArchivo: "analizar --archivo <file> [--ventana <durata>]",
+        descripcionAnalizarArchivo: "lo stesso, con gli accordi di un file\nMIDI o MusicXML (uno per pulsazione;\n--ventana 2: uno per minima)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalità>] [--propuestas 3]",
         descripcionArmonizar: "accordi per una melodia, dal\nmigliore al peggiore; con le ottave\n(Mi4), anche il corale a quattro\nvoci",
         sintaxisRealizar: "realizar <accordi> [--en <tonalità>]",
@@ -114,6 +116,9 @@ extension TextosDeCLI {
         faltaTonalidad: "manca la tonalità: armonia tonalidad La menor",
         faltaTonalidadTrasEn: "manca la tonalità dopo --en",
         faltanAcordesDelAnalisis: { ejemplo in "mancano gli accordi: " + ejemplo },
+        archivoIlegible: { nombre in "impossibile leggere il file «\(nombre)»" },
+        archivoConAcordes: "con --archivo non si scrivono accordi",
+        archivoSinAcordes: "il file non contiene accordi",
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "il margine è un numero da 0 a 6: --margen 2",

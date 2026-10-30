@@ -29,6 +29,12 @@ enum ErrorDeUso {
     case dosAcordesDeConduccion
     case faltaTonalidadTrasEn
     case faltanAcordesDelAnalisis
+    /// `analizar --archivo` con un fichero que no existe o no se puede abrir.
+    case archivoIlegible(String)
+    /// `analizar --archivo` y además acordes escritos.
+    case archivoConAcordes
+    /// `analizar --archivo` con un fichero que tiene notas pero ningún acorde (una sola voz, por ejemplo).
+    case archivoSinAcordes
     case faltanNotasDeLaArmonizacion
     case propuestasFueraDeRango
     case faltanAcordesDeLaRealizacion
@@ -112,6 +118,9 @@ enum ErrorDeUso {
         case .dosAcordesDeConduccion: return TextosDeArmonizacion.dosAcordesDeConduccion()
         case .faltaTonalidadTrasEn: return TextosDeConsultas.faltaTonalidadTrasEn()
         case .faltanAcordesDelAnalisis: return TextosDeConsultas.faltanAcordesDelAnalisis()
+        case .archivoIlegible(let nombre): return TextosDeConsultas.archivoIlegible(nombre)
+        case .archivoConAcordes: return TextosDeConsultas.archivoConAcordes()
+        case .archivoSinAcordes: return TextosDeConsultas.archivoSinAcordes()
         case .faltanNotasDeLaArmonizacion: return TextosDeArmonizacion.faltanNotasDeLaArmonizacion()
         case .propuestasFueraDeRango: return TextosDeArmonizacion.propuestasFueraDeRango()
         case .faltanVocesDelContrapunto: return TextosDeArmonizacion.faltanVocesDelContrapunto()

@@ -7,6 +7,8 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <acordes> [--en <tonalidade>]",
         descripcionAnalizar: "cifrado romano, funcións, cadencias\ne modulacións (co seu acorde pivote;\nsen --en)",
+        sintaxisAnalizarArchivo: "analizar --archivo <ficheiro> [--ventana <duración>]",
+        descripcionAnalizarArchivo: "o mesmo, cos acordes dun ficheiro\nMIDI ou MusicXML (un por pulso;\n--ventana 2: un por branca)",
         sintaxisArmonizar: "armonizar <melodía> [--en <tonalidade>] [--propuestas 3]",
         descripcionArmonizar: "acordes para unha melodía, de mellor\na peor; con oitavas (Mi4), tamén o\ncoral a catro voces",
         sintaxisRealizar: "realizar <acordes> [--en <tonalidade>]",
@@ -114,6 +116,9 @@ extension TextosDeCLI {
         faltaTonalidad: "falta a tonalidade: armonia tonalidad La menor",
         faltaTonalidadTrasEn: "falta a tonalidade despois de --en",
         faltanAcordesDelAnalisis: { ejemplo in "faltan os acordes: " + ejemplo },
+        archivoIlegible: { nombre in "non se pode ler o ficheiro «\(nombre)»" },
+        archivoConAcordes: "con --archivo non se escriben acordes",
+        archivoSinAcordes: "o ficheiro non ten ningún acorde",
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "a marxe é un número de 0 a 6: --margen 2",

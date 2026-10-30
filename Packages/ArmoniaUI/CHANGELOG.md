@@ -5,6 +5,9 @@
 - El paquete pide Swift 6.0 o posterior y compila en el modo de lenguaje 6, como las apps (`SWIFT_VERSION` 6.0 en
   `project.yml`). Antes pedía Swift 5.9.
 
+- `PresentacionDeAnalisis.analizar(_:en:notacion:)` acepta también los acordes ya leídos (`[Acorde]`), como los de un
+  fichero MIDI o MusicXML importado; devuelve `nil` si no hay ninguno.
+
 - Teclado MIDI: `EntradaMIDI` (CoreMIDI) escucha todas las fuentes MIDI del sistema y publica las teclas pulsadas;
   `CambioMIDI`, en `ArmoniaPresentacion` y sin CoreMIDI, lee los mensajes UMP de MIDI 1.0, lleva la cuenta de lo
   pulsado y retiene el último acorde al soltarlo. En ArmoniaApp, lo tocado en el teclado se identifica en la

@@ -10,6 +10,8 @@ struct TextosDeCLI: Sendable {
     // MARK: Ayuda+Armonizacion.swift
     let sintaxisAnalizar: String
     let descripcionAnalizar: String
+    let sintaxisAnalizarArchivo: String
+    let descripcionAnalizarArchivo: String
     let sintaxisArmonizar: String
     let descripcionArmonizar: String
     let sintaxisRealizar: String
@@ -104,6 +106,9 @@ struct TextosDeCLI: Sendable {
     let faltaTonalidad: String
     let faltaTonalidadTrasEn: String
     let faltanAcordesDelAnalisis: @Sendable (String) -> String
+    let archivoIlegible: @Sendable (String) -> String
+    let archivoConAcordes: String
+    let archivoSinAcordes: String
 
     // MARK: ErrorDeUso+Dibujos.swift
     let margenFueraDeRango: String
