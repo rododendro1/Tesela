@@ -19,6 +19,8 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <sigla>…",
         descripcionAcorde: "note, tipo e ruolo di ogni nota",
+        sintaxisArpegio: "arpegio <sigla> [--patron <schema>]",
+        descripcionArpegio: "note dell'arpeggio e scale\ndell'accordo (--patron ascendente,\ndescendente, ida-y-vuelta, alberti)",
         sintaxisIdentificar: "identificar <note>",
         descripcionIdentificar: "accordi che formano alcune note",
         sintaxisIntervalo: "intervalo <nota> <nota>",
@@ -104,6 +106,8 @@ extension TextosDeCLI {
 
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "manca la sigla: armonia acorde Sol7",
+        faltaCifradoDelArpegio: "manca la sigla: armonia arpegio Do7",
+        patronDesconocido: { patron in "schema sconosciuto: «\(patron)» (ascendente, descendente, ida-y-vuelta o alberti)" },
         faltanNotas: "mancano le note: armonia identificar Do Mi Sol",
         dosNotas: "servono due note: armonia intervalo Do Mi",
         faltaEscala: "manca la scala: armonia escala Re dórico",
@@ -169,6 +173,7 @@ extension TextosDeCLI {
         // Mensaje.swift
         mensajeNotas: "note",
         mensajeAcordes: "accordi",
+        mensajeEscalas: "scale",
         mensajeArmadura: "armatura",
         mensajeRelativa: "relativa",
         mensajeHomonima: "omonima",

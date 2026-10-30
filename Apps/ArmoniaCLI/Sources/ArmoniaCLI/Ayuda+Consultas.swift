@@ -15,6 +15,12 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traducidos.map(\.descripcionIdentificar),
             ejemplo: ejemplo("armonia identificar Do Mi Sol Sib",
                              "armonia identify C E G Bb")),
+        // arpegio <cifrado> [--patron <patrón>]
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisArpegio),
+            descripcion: TextosDeCLI.traducidos.map(\.descripcionArpegio),
+            ejemplo: ejemplo("armonia arpegio Do7 --patron alberti",
+                             "armonia arpeggio C7 --pattern alberti")),
         // intervalo <nota> <nota>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traducidos.map(\.sintaxisIntervalo),

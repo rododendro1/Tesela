@@ -15,6 +15,10 @@
 - `Escala.arpegio(grado:cuatriada:…)`, `Escala.arpegio(grados:…)`, `Escala.arpegios(cuatriadas:)`, `Acorde.arpegio(…)`
   y `Acorde.escalasCompatibles(entre:)` (la relación acorde-escala: Do7 → Do mixolidio…).
 - `Arpegio.svgPentagrama(octava:opciones:)`: las notas en el orden del patrón, una por columna.
+- En la línea de comandos, `armonia arpegio Do7 [--patron alberti]` (o `arpeggio C7 --pattern up-down`): las notas
+  del arpegio desde la octava 4 y las escalas que encajan con el acorde. El patrón se escribe como en el código, con
+  guiones (`ida-y-vuelta`), en inglés o con su nombre en cualquiera de los catorce idiomas. La ayuda, los errores y la
+  etiqueta nueva («escalas»), en los catorce.
 
 ### Teclados isomórficos
 

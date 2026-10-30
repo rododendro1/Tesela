@@ -11,7 +11,8 @@ final class TextoDeLasAppsTests: XCTestCase {
     static let todos: [TextoDeLasApps] = [
         .acordes, .escalas, .analisis, .coral, .acorde, .campoDeCifrado, .informacion, .nombre, .cifrado, .notas,
         .digitaciones, .instrumentoYAfinacion, .sinDigitaciones, .calculando, .dedos(1, cejilla: nil),
-        .dedos(4, cejilla: 3), .escala, .tonica, .tipo, .habituales, .otrasTradiciones, .acordesDeLaEscala,
+        .dedos(4, cejilla: 3), .arpegio, .patron, .escalasCompatibles, .identificar, .tocaElMastil, .tocaNotas,
+        .borrar, .sinAcordeConocido, .escala, .tonica, .tipo, .habituales, .otrasTradiciones, .acordesDeLaEscala,
         .mastilDeGuitarra, .pentagrama, .progresion, .campoDeProgresion, .resultado, .acordeAAcorde, .cadencias, .tarea,
         .campoDeTonalidad, .tonalidad, .armonizaciones, .aCuatroVoces, .conduccionDeLasVoces, .avisos,
         .recorridoPLR, .modo, .red, .formatoUIL, .giro, .espejo, .noSeDibuja, .campoDeTriadaInicial, .reiniciar, .deshacer, .campoDeAcorde,

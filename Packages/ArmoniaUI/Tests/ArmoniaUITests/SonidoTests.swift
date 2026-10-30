@@ -15,6 +15,17 @@ final class SonidoTests: XCTestCase {
         XCTAssertEqual(Set(sonido.notas.map { ($0.inicio + $0.duracion).rounded(toPlaces: 6) }).count, 1)
     }
 
+    func testUnArpegioSuenaNotaANotaEnElOrdenDelPatron() throws {
+        let alberti = Sonido.arpegio(Arpegio(try Acorde(leyendo: "Do"), patron: .alberti))
+        XCTAssertEqual(alberti.notas.map(\.midi), [48, 55, 52, 55])
+        XCTAssertEqual(alberti.tonica, .do)
+        // Una detrás de otra, sin solaparse.
+        for (nota, siguiente) in zip(alberti.notas, alberti.notas.dropFirst()) {
+            XCTAssertLessThanOrEqual(nota.inicio + nota.duracion, siguiente.inicio)
+        }
+        XCTAssertEqual(Sonido.arpegio(Arpegio(try Acorde(leyendo: "Do7"))).notas.map(\.midi), [48, 52, 55, 58, 60])
+    }
+
     func testUnaEscalaSubeHastaLaOctava() throws {
         let sonido = Sonido.escala(try Escala(leyendo: "Re dórico"))
         XCTAssertEqual(sonido.notas.map(\.midi), [62, 64, 65, 67, 69, 71, 72, 74])

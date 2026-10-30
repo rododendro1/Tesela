@@ -19,6 +19,8 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <σύμβολο>…",
         descripcionAcorde: "νότες, είδος και ρόλος κάθε νότας",
+        sintaxisArpegio: "arpeggio <σύμβολο> [--pattern <μοτίβο>]",
+        descripcionArpegio: "νότες του αρπέζ και κλίμακες της\nσυγχορδίας (--pattern ascending,\ndescending, up-down, alberti)",
         sintaxisIdentificar: "identify <νότες>",
         descripcionIdentificar: "συγχορδίες που σχηματίζουν οι νότες",
         sintaxisIntervalo: "interval <νότα> <νότα>",
@@ -104,6 +106,8 @@ extension TextosDeCLI {
 
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "λείπει το σύμβολο της συγχορδίας: armonia chord G7",
+        faltaCifradoDelArpegio: "λείπει το σύμβολο της συγχορδίας: armonia arpeggio C7",
+        patronDesconocido: { patron in "άγνωστο μοτίβο: «\(patron)» (ascending, descending, up-down ή alberti)" },
         faltanNotas: "λείπουν οι νότες: armonia identify C E G",
         dosNotas: "χρειάζονται δύο νότες: armonia interval C E",
         faltaEscala: "λείπει η κλίμακα: armonia scale D dorian",
@@ -169,6 +173,7 @@ extension TextosDeCLI {
         // Mensaje.swift
         mensajeNotas: "νότες",
         mensajeAcordes: "συγχορδίες",
+        mensajeEscalas: "κλίμακες",
         mensajeArmadura: "οπλισμός",
         mensajeRelativa: "σχετική",
         mensajeHomonima: "ομώνυμη",

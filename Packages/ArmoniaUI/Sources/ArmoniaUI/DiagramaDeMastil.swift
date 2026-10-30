@@ -76,14 +76,34 @@ public struct DiagramaDeMastil: View {
         .accessibilityValue(Text(PresentacionDeMastil.descripcion(marcas: marcas, apagadas: apagadas, en: notacion)))
     }
 
+    /// Avisa de la posición (cuerda y traste) que se toca en el dibujo. Un toque entre dos cuerdas va a la más
+    /// cercana; uno en los márgenes o en el canal de las cuerdas al aire no avisa.
+    ///
+    ///     DiagramaDeMastil(mastil: mastil, marcas: elegidas).alTocar { posicion in … }
+    public func alTocar(_ accion: @escaping (PosicionEnElMastil) -> Void) -> some View {
+        let (cuerdas, trastes, canal) = (mastil.encordado.numeroDeCuerdas, self.rango, hayCanal)
+        return overlay(GeometryReader { geometria in
+            Color.clear
+                .contentShape(Rectangle())
+                .onTapGesture { toque in
+                    if let posicion = PresentacionDeMastil.posicion(
+                        enX: Double(toque.x), y: Double(toque.y),
+                        ancho: Double(geometria.size.width), alto: Double(geometria.size.height),
+                        cuerdas: cuerdas, rango: trastes, conCanal: canal) {
+                        accion(posicion)
+                    }
+                }
+        })
+    }
+
     private func dibujar(en contexto: inout GraphicsContext, tamano: CGSize) {
         let cuerdas = mastil.encordado.numeroDeCuerdas
         guard cuerdas > 0 else { return }
         let alAire = self.alAire
         let canal = hayCanal
-        let margenX: CGFloat = 8
-        let margenSuperior: CGFloat = 8
-        let margenInferior: CGFloat = 22   // para los números de traste
+        let margenX = CGFloat(PresentacionDeMastil.margenX)
+        let margenSuperior = CGFloat(PresentacionDeMastil.margenSuperior)
+        let margenInferior = CGFloat(PresentacionDeMastil.margenInferior)
         let columnas = rango.count + (canal ? 1 : 0)
         let anchoCasilla = (tamano.width - 2 * margenX) / CGFloat(columnas)
         let inicioX = margenX + (canal ? anchoCasilla : 0)

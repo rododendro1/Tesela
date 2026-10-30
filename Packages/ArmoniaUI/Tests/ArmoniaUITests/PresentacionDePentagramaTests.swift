@@ -32,6 +32,13 @@ final class PresentacionDePentagramaTests: XCTestCase {
         let medida = PresentacionDePentagrama(Escala("Do mayor")).relacionDeAspecto
         XCTAssertGreaterThan(medida, 1)
     }
+
+    func testElArpegioVaNotaANota() {
+        let pentagrama = PresentacionDePentagrama(Arpegio(Acorde("Do"), patron: .alberti))
+        XCTAssertTrue(pentagrama.descripcion.hasSuffix(": Do4, Sol4, Mi4, Sol4"), pentagrama.descripcion)
+        XCTAssertTrue(pentagrama.fichero.nombreDeFichero.hasPrefix("Pentagrama Arpegio de Do"))
+        XCTAssertTrue(pentagrama.svg.hasPrefix("<svg"))
+    }
 }
 
 final class PresentacionDePentagramaMasTests: XCTestCase {

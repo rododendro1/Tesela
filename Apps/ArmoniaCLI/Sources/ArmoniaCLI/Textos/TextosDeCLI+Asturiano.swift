@@ -19,6 +19,8 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <cifráu>…",
         descripcionAcorde: "notes, tipu y papel de cada nota",
+        sintaxisArpegio: "arpegio <cifráu> [--patron <patrón>]",
+        descripcionArpegio: "notes del arpexu y escales del\nacorde (--patron ascendente,\ndescendente, ida-y-vuelta, alberti)",
         sintaxisIdentificar: "identificar <notes>",
         descripcionIdentificar: "acordes que formen unes notes",
         sintaxisIntervalo: "intervalo <nota> <nota>",
@@ -104,6 +106,8 @@ extension TextosDeCLI {
 
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "falta\'l cifráu: armonia acorde Sol7",
+        faltaCifradoDelArpegio: "falta\'l cifráu: armonia arpegio Do7",
+        patronDesconocido: { patron in "patrón desconocíu: «\(patron)» (ascendente, descendente, ida-y-vuelta o alberti)" },
         faltanNotas: "falten les notes: armonia identificar Do Mi Sol",
         dosNotas: "faen falta dos notes: armonia intervalo Do Mi",
         faltaEscala: "falta la escala: armonia escala Re dórico",
@@ -169,6 +173,7 @@ extension TextosDeCLI {
         // Mensaje.swift
         mensajeNotas: "notes",
         mensajeAcordes: "acordes",
+        mensajeEscalas: "escales",
         mensajeArmadura: "armadura",
         mensajeRelativa: "relativa",
         mensajeHomonima: "homónima",

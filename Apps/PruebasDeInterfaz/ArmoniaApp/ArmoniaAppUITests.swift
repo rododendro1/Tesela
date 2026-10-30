@@ -1,6 +1,6 @@
 import XCTest
 
-/// Recorre las cuatro pestañas de Armonía con los textos de ejemplo de cada una y comprueba que se ve el resultado.
+/// Recorre las cinco pestañas de Armonía con los textos de ejemplo de cada una y comprueba que se ve el resultado.
 @MainActor
 final class ArmoniaAppUITests: XCTestCase {
     func testAcordes() {
@@ -52,6 +52,12 @@ final class ArmoniaAppUITests: XCTestCase {
         // Do Fa Sol7 Do a cuatro voces, con sus grados.
         app.opcion("Realizar").tap()
         esperar(app.texto("V7"), "el grado de Sol7", segundos: 30)
+    }
+
+    func testIdentificar() {
+        let app = XCUIApplication.enEspanol()
+        app.opcion("Identificar").tap()
+        esperar(app.texto("Toca el mástil"), "la indicación del mástil")
     }
 
     /// El selector de la barra cambia la notación de toda la app y la guarda.

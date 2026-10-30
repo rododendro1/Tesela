@@ -92,4 +92,27 @@ final class PresentacionDeMastilTests: XCTestCase {
     func testSinMarcas() {
         XCTAssertEqual(PresentacionDeMastil.descripcion(marcas: [], apagadas: []), "Sin marcas")
     }
+
+    // MARK: Tocar el mástil
+
+    func testElToqueVaAlTrasteYALaCuerdaMasCercana() {
+        // Trece columnas de 20 puntos (0…12) y seis cuerdas separadas 20: la grave a 108 del borde de arriba.
+        func posicion(_ x: Double, _ y: Double) -> PosicionEnElMastil? {
+            PresentacionDeMastil.posicion(enX: x, y: y, ancho: 276, alto: 130, cuerdas: 6, rango: 0...12, conCanal: false)
+        }
+        XCTAssertEqual(posicion(78, 88), PosicionEnElMastil(cuerda: 1, traste: 3))
+        XCTAssertEqual(posicion(10, 100), PosicionEnElMastil(cuerda: 0, traste: 0))
+        XCTAssertEqual(posicion(266, 8), PosicionEnElMastil(cuerda: 5, traste: 12))
+        XCTAssertNil(posicion(5, 88))     // en el margen
+        XCTAssertNil(posicion(78, 125))   // debajo de la cuerda grave, donde van los números de traste
+    }
+
+    func testElCanalDeLasCuerdasAlAireNoSeToca() {
+        // Del 5 al 8 con canal: cinco columnas de 52 puntos, la primera para el canal.
+        func posicion(_ x: Double) -> PosicionEnElMastil? {
+            PresentacionDeMastil.posicion(enX: x, y: 108, ancho: 276, alto: 130, cuerdas: 6, rango: 5...8, conCanal: true)
+        }
+        XCTAssertNil(posicion(40))
+        XCTAssertEqual(posicion(113), PosicionEnElMastil(cuerda: 0, traste: 6))
+    }
 }

@@ -40,6 +40,63 @@ extension LineaDeComandos {
         }.joined(separator: "\n")
     }
 
+    /// `arpegio Do7 --patron alberti`: las notas del arpegio desde la octava 4 y las escalas que encajan con el
+    /// acorde (Do7 → Do mixolidio…).
+    static func arpegio(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        var argumentos = Argumentos(textos)
+        var patron = Arpegio.Patron.ascendente
+        switch argumentos.quitarOpcion("--patron", "--patrón", "--pattern") {
+        case .ausente:
+            break
+        case .sinValor(let nombre):
+            return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            guard let elegido = patronDeArpegio(texto) else { return uso(.patronDesconocido(texto), notacion) }
+            patron = elegido
+        }
+        if let desconocida = argumentos.opcionDesconocida {
+            return uso(.opcionDesconocida(desconocida), notacion)
+        }
+        guard !argumentos.restantes.isEmpty else { return uso(.faltaCifradoDelArpegio, notacion) }
+        let bloques = try argumentos.restantes.map { texto in
+            describir(arpegio: Arpegio(try Acorde(leyendo: texto), patron: patron), notacion)
+        }
+        return bien(bloques.joined(separator: "\n\n"))
+    }
+
+    static func describir(arpegio: Arpegio, _ notacion: Notacion) -> String {
+        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        let notas = arpegio.alturas(octava: 4).map { $0.nombre(en: notacion) }.joined(separator: " ")
+        var lineas = ["\(arpegio.nombre(en: notacion)) (\(arpegio.patron.nombre(en: notacion)))",
+                      "  \(t(.notas)): \(notas)"]
+        // Las escalas del acorde, de las de menos notas a las de más; con ocho basta para orientarse.
+        let escalas = arpegio.acorde.escalasCompatibles()
+        if !escalas.isEmpty {
+            let nombres = escalas.prefix(8).map { $0.nombre(en: notacion) }.joined(separator: ", ")
+            lineas.append("  \(t(.escalas)): \(nombres)" + (escalas.count > 8 ? "…" : ""))
+        }
+        return lineas.joined(separator: "\n")
+    }
+
+    /// El patrón de `--patron`: su nombre en el código (`alberti`, `idaYVuelta`), con guiones (`ida-y-vuelta`),
+    /// en inglés (`ascending`, `up-down`) o como lo escribe cualquiera de los catorce idiomas («bajo de Alberti»).
+    static func patronDeArpegio(_ texto: String) -> Arpegio.Patron? {
+        func plano(_ s: String) -> String {
+            s.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: nil)
+                .replacingOccurrences(of: "-", with: " ")
+                .replacingOccurrences(of: "_", with: " ")
+        }
+        let buscado = plano(texto)
+        let abreviados: [String: Arpegio.Patron] = [
+            "ida y vuelta": .idaYVuelta, "up": .ascendente, "down": .descendente, "up down": .idaYVuelta,
+        ]
+        if let patron = abreviados[buscado] { return patron }
+        return Arpegio.Patron.allCases.first { patron in
+            plano(patron.rawValue) == buscado
+                || Idioma.allCases.contains { plano(patron.nombre(en: .delIdioma($0))) == buscado }
+        }
+    }
+
     static func intervalo(_ a: String, _ b: String, _ notacion: Notacion) throws -> String {
         let intervalo: Intervalo
         if let grave = try? Altura(leyendo: a), let aguda = try? Altura(leyendo: b) {

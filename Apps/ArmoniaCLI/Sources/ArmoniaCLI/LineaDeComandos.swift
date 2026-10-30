@@ -2,6 +2,7 @@
 //
 //     armonia acorde Sol7/Si
 //     armonia identificar Do Mi Sol Sib
+//     armonia arpegio Do7 --patron alberti
 //     armonia analizar Do Lam Re7 Sol7 Do
 //
 // Toda la lógica está aquí, separada del ejecutable, para poder probarla.
@@ -94,6 +95,8 @@ public enum LineaDeComandos {
             case "acorde", "chord":
                 guard !resto.isEmpty else { return uso(.faltaCifrado, notacion) }
                 return bien(try resto.map { try describir(acorde: Acorde(leyendo: $0), notacion) }.joined(separator: "\n\n"))
+            case "arpegio", "arpeggio":
+                return try arpegio(resto, notacion)
             case "identificar", "identify":
                 guard !resto.isEmpty else { return uso(.faltanNotas, notacion) }
                 return bien(try identificar(resto, notacion))

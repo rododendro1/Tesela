@@ -19,6 +19,8 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <обозначение>…",
         descripcionAcorde: "ноты, тип и роль каждой ноты",
+        sintaxisArpegio: "arpeggio <обозначение> [--pattern <рисунок>]",
+        descripcionArpegio: "ноты арпеджио и подходящие гаммы\n(--pattern ascending, descending,\nup-down, alberti)",
         sintaxisIdentificar: "identify <ноты>",
         descripcionIdentificar: "аккорды, которые образуют ноты",
         sintaxisIntervalo: "interval <нота> <нота>",
@@ -104,6 +106,8 @@ extension TextosDeCLI {
 
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "не указано обозначение аккорда: armonia chord G7",
+        faltaCifradoDelArpegio: "не указано обозначение аккорда: armonia arpeggio C7",
+        patronDesconocido: { patron in "неизвестный рисунок: «\(patron)» (ascending, descending, up-down или alberti)" },
         faltanNotas: "не указаны ноты: armonia identify C E G",
         dosNotas: "нужны две ноты: armonia interval C E",
         faltaEscala: "не указана гамма: armonia scale D dorian",
@@ -169,6 +173,7 @@ extension TextosDeCLI {
         // Mensaje.swift
         mensajeNotas: "ноты",
         mensajeAcordes: "аккорды",
+        mensajeEscalas: "гаммы",
         mensajeArmadura: "ключевые знаки",
         mensajeRelativa: "параллельная",
         mensajeHomonima: "одноимённая",

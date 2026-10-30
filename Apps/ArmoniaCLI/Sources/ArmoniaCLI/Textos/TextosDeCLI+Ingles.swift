@@ -19,6 +19,8 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <symbol>…",
         descripcionAcorde: "notes, type and role of each note",
+        sintaxisArpegio: "arpeggio <symbol> [--pattern <pattern>]",
+        descripcionArpegio: "arpeggio notes and the scales that\nfit the chord (--pattern ascending,\ndescending, up-down, alberti)",
         sintaxisIdentificar: "identify <notes>",
         descripcionIdentificar: "chords formed by some notes",
         sintaxisIntervalo: "interval <note> <note>",
@@ -105,6 +107,8 @@ extension TextosDeCLI {
 
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "missing the chord symbol: armonia chord G7",
+        faltaCifradoDelArpegio: "missing the chord symbol: armonia arpeggio C7",
+        patronDesconocido: { patron in "unknown pattern: \"\(patron)\" (ascending, descending, up-down or alberti)" },
         faltanNotas: "missing the notes: armonia identify C E G",
         dosNotas: "two notes are needed: armonia interval C E",
         faltaEscala: "missing the scale: armonia scale D dorian",
@@ -170,6 +174,7 @@ extension TextosDeCLI {
         // Mensaje.swift
         mensajeNotas: "notes",
         mensajeAcordes: "chords",
+        mensajeEscalas: "scales",
         mensajeArmadura: "key signature",
         mensajeRelativa: "relative",
         mensajeHomonima: "parallel",

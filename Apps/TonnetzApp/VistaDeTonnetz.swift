@@ -4,12 +4,14 @@ import ArmoniaUI
 
 /// Un acorde, una escala o un recorrido de tríadas con las transformaciones P, L y R, en el Tonnetz, en la
 /// tabla armónica o en un teclado isomórfico (Wicki-Hayden, Jankó o acordeón cromático), y su dibujo para exportar. Al tocar una
-/// nota del dibujo, suena.
+/// nota del dibujo, suena. En el modo «Identificar», además, la nota tocada se marca (o se desmarca) y se dice
+/// qué acorde forman las marcadas.
 struct VistaDeTonnetz: View {
     enum Contenido: CaseIterable, Identifiable {
         case recorrido
         case acorde
         case escala
+        case identificar
         var id: Self { self }
 
         var texto: TextoDeLasApps {
@@ -17,6 +19,7 @@ struct VistaDeTonnetz: View {
             case .recorrido: return .recorridoPLR
             case .acorde: return .acorde
             case .escala: return .escala
+            case .identificar: return .identificar
             }
         }
     }
@@ -30,6 +33,8 @@ struct VistaDeTonnetz: View {
     @State private var textoEscala = "Re dórico"
     @State private var recorrido: [Acorde] = []
     @State private var transformaciones: [TransformacionNeorriemanniana] = []
+    /// Las clases de altura tocadas en el modo «Identificar», en el orden en que se tocaron: la primera es el bajo.
+    @State private var clasesTocadas: [Int] = []
 
     var body: some View {
         VStack(spacing: 12) {
@@ -53,6 +58,9 @@ struct VistaDeTonnetz: View {
                     .alTocarElSVG(svg) { punto in
                         if let midi = PresentacionDeRedes.midi(en: punto, de: dibujado, enLaRed: red, uil: uil) {
                             Reproductor.compartido.tocar(.nota(midi))
+                            if contenido == .identificar {
+                                clasesTocadas = PresentacionDeRedes.alternar(midi, en: clasesTocadas)
+                            }
                         }
                     }
                     .clipShape(RoundedRectangle(cornerRadius: TemaDeLasApps.radioDeEsquina))
@@ -131,7 +139,29 @@ struct VistaDeTonnetz: View {
             TextField(notacion.texto(.campoDeEscala), text: $textoEscala)
                 .textFieldStyle(.roundedBorder)
                 .comoCampoDeCifrado()
+        case .identificar:
+            HStack {
+                Text(identificado)
+                    .font(.system(.callout, design: .monospaced))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Button(notacion.texto(.borrar)) { clasesTocadas = [] }
+                    .disabled(clasesTocadas.isEmpty)
+            }
         }
+    }
+
+    /// Lo que forman las notas tocadas: el acorde más probable con su nombre y, detrás, otras lecturas. Sin notas,
+    /// la indicación; con notas que no forman acorde, sus nombres y el aviso.
+    private var identificado: String {
+        guard !clasesTocadas.isEmpty else { return notacion.texto(.tocaNotas) }
+        let acordes = PresentacionDeRedes.acordes(de: clasesTocadas)
+        guard let primero = acordes.first else {
+            let notas = ContenidoDeRed.clases(clasesTocadas).notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
+            return clasesTocadas.count < 2 ? notas : notas + " · " + notacion.texto(.sinAcordeConocido)
+        }
+        let otros = acordes.dropFirst().prefix(3).map { $0.cifrado(en: notacion) }
+        return primero.cifrado(en: notacion) + " · " + primero.nombre(en: notacion)
+            + (otros.isEmpty ? "" : "\n" + otros.joined(separator: ", "))
     }
 
     // MARK: El dibujo
@@ -145,6 +175,8 @@ struct VistaDeTonnetz: View {
             return (try? Acorde(leyendo: textoAcorde)).map { .acorde($0) }
         case .escala:
             return (try? Escala(leyendo: textoEscala)).map { .escala($0) }
+        case .identificar:
+            return .clases(clasesTocadas)
         }
     }
 
@@ -154,6 +186,9 @@ struct VistaDeTonnetz: View {
         case .acorde(let acorde): return .acorde(acorde)
         case .escala(let escala): return .escala(escala)
         case .recorrido(let acordes): return .acordes(acordes)
+        case .clases(let clases):
+            if let acorde = PresentacionDeRedes.acordes(de: clases).first { return .acorde(acorde) }
+            return clases.isEmpty ? .silencio : .coral([clases.map { Altura(midi: 60 + $0) }])
         default: return .silencio
         }
     }

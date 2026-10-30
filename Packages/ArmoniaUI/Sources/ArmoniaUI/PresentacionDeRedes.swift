@@ -107,11 +107,13 @@ public struct AjusteUIL: Hashable, Sendable {
     }
 }
 
-/// Lo que se dibuja: un acorde, una escala o un recorrido de tríadas.
+/// Lo que se dibuja: un acorde, una escala, un recorrido de tríadas o unas clases de altura sueltas (las que se
+/// tocan para identificar un acorde, de 0 = Do a 11 = Si, en el orden en que se tocaron).
 public enum ContenidoDeRed: Hashable, Sendable {
     case acorde(Acorde)
     case escala(Escala)
     case recorrido([Acorde])
+    case clases([Int])
 
     /// Las notas, sin repetir, en el orden en que aparecen.
     public var notas: [Nota] {
@@ -120,6 +122,7 @@ public enum ContenidoDeRed: Hashable, Sendable {
         case .acorde(let acorde): todas = acorde.notas
         case .escala(let escala): todas = escala.notas
         case .recorrido(let acordes): todas = acordes.flatMap(\.notas)
+        case .clases(let clases): todas = clases.map { Altura(midi: 60 + $0).nota }
         }
         var vistas = Set<Nota>()
         return todas.filter { vistas.insert($0).inserted }
@@ -191,7 +194,29 @@ public enum PresentacionDeRedes {
             guard let primero = acordes.first else { return nil }
             return (acordes.count >= 2 ? Tonnetz(recorrido: acordes) : nil)?.svg(notacion: notacion, paso: paso)
                 ?? Tonnetz(primero).svg(notacion: notacion, paso: paso)
+        // Para identificar: con margen de sobra para tocar más notas, aunque aún no haya ninguna, y sin título.
+        case (.tablaArmonica, .clases(let clases)):
+            return TablaArmonica(ConjuntoDeClases(clases)).svg(notacion: notacion, margen: 3, paso: paso, titulo: "")
+        case (_, .clases(let clases)):
+            return Tonnetz(ConjuntoDeClases(clases)).svg(notacion: notacion, margen: 3, paso: paso, titulo: "")
         }
+    }
+
+    /// Pone una clase de altura entre las elegidas para identificar un acorde, al final, o la quita si ya estaba,
+    /// sin cambiar el orden de las demás (la primera es el bajo).
+    ///
+    ///     PresentacionDeRedes.alternar(64, en: [0, 7])   // [0, 7, 4]
+    ///     PresentacionDeRedes.alternar(60, en: [0, 7])   // [7]
+    public static func alternar(_ midi: Int, en clases: [Int]) -> [Int] {
+        let clase = ((midi % 12) + 12) % 12
+        return clases.contains(clase) ? clases.filter { $0 != clase } : clases + [clase]
+    }
+
+    /// Los acordes que forman unas clases de altura, la primera como bajo, del más al menos probable.
+    ///
+    ///     PresentacionDeRedes.acordes(de: [4, 7, 0]).first   // Do/Mi
+    public static func acordes(de clases: [Int]) -> [Acorde] {
+        Acorde.candidatos(clasesDeAltura: clases).map(\.valor)
     }
 
     /// La nota que se toca en el dibujo de `svg(_:en:notacion:)`, como número MIDI, o `nil` si el toque no
@@ -229,6 +254,9 @@ public enum PresentacionDeRedes {
         case .acorde(let acorde): que = acorde.cifrado(en: notacion)
         case .escala(let escala): que = escala.nombre(en: notacion)
         case .recorrido(let acordes): que = acordes.map { $0.cifrado(en: notacion) }.joined(separator: " ")
+        case .clases(let clases):
+            que = acordes(de: clases).first?.cifrado(en: notacion)
+                ?? ContenidoDeRed.clases(clases).notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
         }
         let donde = red == .uil ? "UIL " + (uil.resultado ?? "") : red.nombre(en: notacion)
         return donde + " · " + que
