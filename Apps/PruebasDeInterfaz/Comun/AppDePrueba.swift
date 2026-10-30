@@ -73,6 +73,49 @@ extension XCUIApplication {
             .firstMatch
     }
 
+    /// Elige `titulo` en un selector desplegable (`Picker`) que ahora muestra `actual`: en macOS es un botón
+    /// emergente; en iOS, un botón con la opción elegida que abre un menú.
+    func elegirEnSelector(_ titulo: String, actual: String) {
+        #if os(macOS)
+        let selector = popUpButtons.matching(NSPredicate(format: "value == %@ OR title == %@", actual, actual)).firstMatch
+        esperar(selector, "el selector que muestra «\(actual)»")
+        selector.click()
+        #else
+        let selector = buttons.matching(NSPredicate(format: "label CONTAINS %@ OR value == %@", actual, actual)).firstMatch
+        esperar(selector, "el selector que muestra «\(actual)»")
+        selector.tap()
+        #endif
+        elegirEnMenu(titulo)
+    }
+
+    /// Activa el interruptor (`Toggle`) con ese título: una casilla en macOS, un interruptor en iOS.
+    func activar(_ titulo: String) {
+        #if os(macOS)
+        let casilla = checkBoxes[titulo]
+        esperar(casilla, "la casilla «\(titulo)»")
+        casilla.click()
+        #else
+        let interruptor = switches[titulo]
+        esperar(interruptor, "el interruptor «\(titulo)»")
+        // Desde iOS 17 el toque en el centro de la fila no siempre llega al interruptor: se toca el de dentro.
+        let dentro = interruptor.switches.firstMatch
+        (dentro.exists ? dentro : interruptor).tap()
+        #endif
+    }
+
+    /// El elemento, tras desplazar la vista hacia abajo si aún no existe: en iOS las listas solo crean las filas
+    /// que se ven.
+    func buscandoHaciaAbajo(_ elemento: XCUIElement, intentos: Int = 6) -> XCUIElement {
+        #if os(iOS)
+        var intento = 0
+        while !elemento.waitForExistence(timeout: 2) && intento < intentos {
+            swipeUp()
+            intento += 1
+        }
+        #endif
+        return elemento
+    }
+
     /// Borra lo escrito en `campo` y escribe `texto`.
     func reemplazar(en campo: XCUIElement, por texto: String) {
         #if os(macOS)

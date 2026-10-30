@@ -23,4 +23,15 @@ final class TonnetzAppUITests: XCTestCase {
         esperar(app.textFields.firstMatch, "el campo de la escala")
         XCTAssertEqual(app.textFields.firstMatch.value as? String, "Re dórico")
     }
+
+    /// El teclado UIL: se elige en el selector de la red, empieza en el Wicki-Hayden y el espejo le quita la M.
+    func testTecladoUIL() {
+        let app = XCUIApplication.enEspanol()
+        app.elegirEnSelector("UIL", actual: "Tonnetz")
+        esperar(app.texto("2,7,5;R30M"), "el formato del Wicki-Hayden")
+        esperar(app.etiqueta("UIL 2,7,5;R30M"), "el dibujo del teclado")
+        app.activar("Espejo")
+        esperar(app.texto("2,7,5;R330"), "el teclado reflejado")
+        esperar(app.etiqueta("UIL 2,7,5;R330"), "el dibujo del teclado reflejado")
+    }
 }
