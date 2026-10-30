@@ -22,6 +22,8 @@ struct TextosDeCLI: Sendable {
     // MARK: Ayuda+Consultas.swift
     let sintaxisAcorde: String
     let descripcionAcorde: String
+    let sintaxisArpegio: String
+    let descripcionArpegio: String
     let sintaxisIdentificar: String
     let descripcionIdentificar: String
     let sintaxisIntervalo: String
@@ -94,6 +96,8 @@ struct TextosDeCLI: Sendable {
 
     // MARK: ErrorDeUso+Consultas.swift
     let faltaCifrado: String
+    let faltaCifradoDelArpegio: String
+    let patronDesconocido: @Sendable (String) -> String
     let faltanNotas: String
     let dosNotas: String
     let faltaEscala: String
@@ -159,6 +163,7 @@ struct TextosDeCLI: Sendable {
     // MARK: Mensaje.swift
     let mensajeNotas: String
     let mensajeAcordes: String
+    let mensajeEscalas: String
     let mensajeArmadura: String
     let mensajeRelativa: String
     let mensajeHomonima: String

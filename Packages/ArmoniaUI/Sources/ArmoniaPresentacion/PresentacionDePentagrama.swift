@@ -37,6 +37,16 @@ public struct PresentacionDePentagrama: Hashable, Sendable {
         self.init(svg: dibujo, descripcion: cifrado + ": " + notas, nombre: "Pentagrama " + cifrado)
     }
 
+    /// Las notas del arpegio en el orden del patrón, una por columna.
+    public init(_ arpegio: Arpegio, octava: Int = 4, notacion: Notacion = .espanolUnicode,
+                nombresDeLasNotas: Bool = true) {
+        let opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)
+        let dibujo = arpegio.svgPentagrama(octava: octava, opciones: opciones)
+        let nombre = arpegio.nombre(en: notacion)
+        let notas = arpegio.alturas(octava: octava).map { $0.nombre(en: notacion) }.joined(separator: ", ")
+        self.init(svg: dibujo, descripcion: nombre + ": " + notas, nombre: "Pentagrama " + nombre)
+    }
+
     private init(svg: String, descripcion: String, nombre: String) {
         self.svg = svg
         self.descripcion = descripcion

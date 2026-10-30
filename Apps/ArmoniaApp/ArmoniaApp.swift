@@ -12,7 +12,7 @@ struct ArmoniaApp: App {
     }
 }
 
-/// Las cuatro vistas de la app. Cada una tiene en su barra el selector de notación; la elegida está en el
+/// Las cinco vistas de la app. Cada una tiene en su barra el selector de notación; la elegida está en el
 /// entorno (`notacionGuardada()`) y decide también el idioma de la interfaz.
 struct VistaRaiz: View {
     @Environment(\.notacion) private var notacion
@@ -27,6 +27,8 @@ struct VistaRaiz: View {
                 .tabItem { Label(notacion.texto(.analisis), systemImage: "waveform.path.ecg") }
             NavigationStack { VistaDeCoral() }
                 .tabItem { Label(notacion.texto(.coral), systemImage: "music.quarternote.3") }
+            NavigationStack { VistaDeIdentificar() }
+                .tabItem { Label(notacion.texto(.identificar), systemImage: "hand.tap") }
         }
     }
 }

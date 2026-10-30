@@ -21,6 +21,32 @@ enum PresentacionDeMastil {
         return desde...hasta
     }
 
+    /// Los márgenes del dibujo, en puntos: a los lados, encima de la cuerda más aguda y debajo de la más
+    /// grave (donde van los números de traste). Los usan el dibujo y `posicion(enX:y:…)`.
+    static let margenX = 8.0
+    static let margenSuperior = 8.0
+    static let margenInferior = 22.0
+
+    /// La posición que se toca en un dibujo de `ancho` por `alto`: el traste es la columna del toque, y la cuerda,
+    /// la más cercana (la 0, la grave, abajo). `nil` en los márgenes, en el canal de las cuerdas al aire
+    /// (`conCanal`) o lejos de cualquier cuerda.
+    static func posicion(enX x: Double, y: Double, ancho: Double, alto: Double, cuerdas: Int,
+                         rango: ClosedRange<Int>, conCanal: Bool) -> PosicionEnElMastil? {
+        guard cuerdas > 0 else { return nil }
+        let anchoCasilla = (ancho - 2 * margenX) / Double(rango.count + (conCanal ? 1 : 0))
+        let inicioX = margenX + (conCanal ? anchoCasilla : 0)
+        guard anchoCasilla > 0, x >= inicioX, x < ancho - margenX else { return nil }
+        let traste = rango.lowerBound + Int((x - inicioX) / anchoCasilla)
+        guard rango.contains(traste) else { return nil }
+        let yMaximo = alto - margenInferior
+        let separacion = cuerdas > 1 ? (alto - margenSuperior - margenInferior) / Double(cuerdas - 1) : 0
+        let cuerda = separacion > 0 ? Int(((yMaximo - y) / separacion).rounded()) : 0
+        guard (0..<cuerdas).contains(cuerda) else { return nil }
+        // Con una sola cuerda, hasta 12 puntos por encima o por debajo.
+        guard abs(yMaximo - Double(cuerda) * separacion - y) <= max(separacion / 2, 12) else { return nil }
+        return PosicionEnElMastil(cuerda: cuerda, traste: traste)
+    }
+
     /// Las cuerdas (índices desde 0) que no suenan en la digitación.
     static func apagadas(de digitacion: Digitacion) -> Set<Int> {
         Set(digitacion.trastes.indices.filter { digitacion.trastes[$0] == nil })

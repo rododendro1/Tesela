@@ -19,6 +19,8 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <zifratua>…",
         descripcionAcorde: "notak, mota eta nota bakoitzaren\npapera",
+        sintaxisArpegio: "arpegio <zifratua> [--patron <eredua>]",
+        descripcionArpegio: "arpegioaren notak eta akordeari\ndagozkion eskalak (--patron\nascendente, descendente,\nida-y-vuelta, alberti)",
         sintaxisIdentificar: "identificar <notak>",
         descripcionIdentificar: "nota batzuek osatzen dituzten\nakordeak",
         sintaxisIntervalo: "intervalo <nota> <nota>",
@@ -104,6 +106,8 @@ extension TextosDeCLI {
 
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "zifratua falta da: armonia acorde Sol7",
+        faltaCifradoDelArpegio: "zifratua falta da: armonia arpegio Do7",
+        patronDesconocido: { patron in "eredu ezezaguna: «\(patron)» (ascendente, descendente, ida-y-vuelta edo alberti)" },
         faltanNotas: "notak falta dira: armonia identificar Do Mi Sol",
         dosNotas: "bi nota behar dira: armonia intervalo Do Mi",
         faltaEscala: "eskala falta da: armonia escala Re dórico",
@@ -169,6 +173,7 @@ extension TextosDeCLI {
         // Mensaje.swift
         mensajeNotas: "notak",
         mensajeAcordes: "akordeak",
+        mensajeEscalas: "eskalak",
         mensajeArmadura: "armadura",
         mensajeRelativa: "erlatiboa",
         mensajeHomonima: "homonimoa",

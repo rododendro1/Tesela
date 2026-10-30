@@ -18,6 +18,7 @@ import ArmoniaPresentacion
 enum Mensaje {
     case notas
     case acordes
+    case escalas
     case armadura
     case relativa
     case homonima
@@ -46,6 +47,7 @@ enum Mensaje {
         switch self {
         case .notas: return TextosDeCLI.traducidos.map(\.mensajeNotas)
         case .acordes: return TextosDeCLI.traducidos.map(\.mensajeAcordes)
+        case .escalas: return TextosDeCLI.traducidos.map(\.mensajeEscalas)
         case .armadura: return TextosDeCLI.traducidos.map(\.mensajeArmadura)
         case .relativa: return TextosDeCLI.traducidos.map(\.mensajeRelativa)
         case .homonima: return TextosDeCLI.traducidos.map(\.mensajeHomonima)

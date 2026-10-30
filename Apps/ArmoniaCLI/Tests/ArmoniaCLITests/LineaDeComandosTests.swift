@@ -69,6 +69,23 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertTrue(salida("identificar Do Mi Sib").contains("Do7  séptima de dominante  (sin Sol)"))
     }
 
+    func testArpegio() {
+        let do7 = salida("arpegio Do7")
+        XCTAssertTrue(do7.hasPrefix("Arpegio de "), do7)
+        XCTAssertTrue(do7.contains("(ascendente)\n  notas: Do4 Mi4 Sol4 Si♭4 Do5\n"), do7)
+        // Las escalas que encajan con el acorde: Do7 → Do mixolidio.
+        XCTAssertTrue(do7.contains("  escalas: ") && do7.contains("mixolidio"), do7)
+        XCTAssertTrue(salida("arpegio Do --patron alberti").contains("notas: Do4 Sol4 Mi4 Sol4\n"))
+        XCTAssertTrue(salida("arpegio Do --patron ida-y-vuelta").contains("(de ida y vuelta)\n  notas: Do4 Mi4 Sol4 Do5 Sol4 Mi4 Do4\n"))
+        XCTAssertTrue(salida("arpeggio C7 --pattern descending --ingles").contains("notes: C5 Bb4 G4 E4 C4"))
+        XCTAssertEqual(salida("arpegio Do Fa").components(separatedBy: "\n\n").count, 2)
+        XCTAssertEqual(LineaDeComandos.patronDeArpegio("bajo de Alberti"), .alberti)
+        XCTAssertEqual(LineaDeComandos.patronDeArpegio("up-down"), .idaYVuelta)
+        XCTAssertEqual(LineaDeComandos.patronDeArpegio("Ascending"), .ascendente)
+        XCTAssertEqual(LineaDeComandos.patronDeArpegio("aufwärts"), .ascendente)
+        XCTAssertNil(LineaDeComandos.patronDeArpegio("zigzag"))
+    }
+
     func testIntervaloEscalaYTonalidad() {
         XCTAssertEqual(salida("intervalo Do4 Mi5"), "10ª mayor (10M, 16 semitonos)\n")
         XCTAssertEqual(salida("intervalo Fa Si"), "4ª aumentada (4A, 6 semitonos)\n")
@@ -199,6 +216,7 @@ final class LineaDeComandosTests: XCTestCase {
         "musicxml melodia C4:4 --foo 1", "midi acordes C --cifrados", "tonnetz", "tonnetz --clases 13",
         "tonnetz --camino C", "tabla --ciclo C", "tabla --margen 9 C", "contrapunto", "contrapunto D4 A4",
         "contrapunto D4 / A4 --especie 6", "contrapunto D4 / ", "acorde Do --escritura foo",
+        "arpegio", "arpegio Do --patron zigzag", "arpegio Do --patron", "arpegio Do --octavas 2",
     ]
 
     /// Con --ingles no se cuela nada en español: ni en la salida, ni en los errores, ni en la ayuda.
@@ -216,7 +234,8 @@ final class LineaDeComandosTests: XCTestCase {
                       "realizar C7(9,13)",
                       "revisar C3 E4 G4 C5, G2 D4 G4 B4", "plr C PLR", "plr C C", "plr C hexatonico",
                       "conduccion-parsimoniosa G7 Dm7", "vecinos G7", "digitaciones F --diagrama", "digitaciones C --instrumento ukelele",
-                      "digitaciones C --instrumento bajo --dedos 1 --traste 0", "counterpoint C4 D4 E4 C4 / G4 A4 G4 C5"] {
+                      "digitaciones C --instrumento bajo --dedos 1 --traste 0", "counterpoint C4 D4 E4 C4 / G4 A4 G4 C5",
+                      "arpeggio C7", "arpeggio C --pattern alberti"] {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
             XCTAssertEqual(resultado.codigo, 0, "\(orden): \(resultado.error)")
             comprobar(resultado.salida, orden)

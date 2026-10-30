@@ -6,9 +6,11 @@ SwiftUI para iOS y macOS.
 
 ```
 Apps/
-├── ArmoniaApp/       Acordes (con digitaciones), escalas (con el mástil), análisis armónico (con modulaciones y
-│                     cadencias) y corales: armonizar, realizar a cuatro voces y revisar; exporta MusicXML, MEI y MIDI
-├── TonnetzApp/       Un acorde, una escala o un recorrido con P, L y R en el Tonnetz, la tabla armónica o un
+├── ArmoniaApp/       Acordes (con su arpegio, las escalas que encajan y las digitaciones), escalas (con el mástil),
+│                     análisis armónico (con modulaciones y cadencias), corales (armonizar, realizar a cuatro voces
+│                     y revisar) e identificar un acorde tocándolo en el mástil; exporta MusicXML, MEI y MIDI
+├── TonnetzApp/       Un acorde, una escala, un recorrido con P, L y R, o las notas que se toquen (y qué acorde
+│                     forman), en el Tonnetz, la tabla armónica o un
 │                     teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático, o uno en formato UIL con giros de 30°); exporta el dibujo en SVG
 ├── ArmoniaCLI/       La herramienta `armonia`, con sus pruebas (SwiftPM)
 └── PruebasDeInterfaz/  Las pruebas de interfaz de las dos apps (XCUITest), con los ejemplos de cada vista

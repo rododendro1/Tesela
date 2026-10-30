@@ -120,6 +120,16 @@ public struct Sonido: Hashable, Sendable {
         }, tonica: escala.tonica)
     }
 
+    /// Un arpegio nota a nota, en el orden de su patrón, desde el bajo del acorde en la octava 3. Su tónica es la
+    /// fundamental.
+    ///
+    ///     Sonido.arpegio(Arpegio(Acorde("Do"), patron: .alberti)).notas.map(\.midi)   // [48, 55, 52, 55]
+    public static func arpegio(_ arpegio: Arpegio, paso: Double = 0.25) -> Sonido {
+        Sonido(notas: arpegio.alturas(octava: 3).enumerated().map { i, altura in
+            NotaMIDI(altura: altura, inicio: paso * Double(i), duracion: paso * 0.95)
+        }, tonica: arpegio.acorde.fundamental)
+    }
+
     /// Una progresión, un acorde detrás de otro, cada uno desde su bajo a partir de Do3.
     public static func acordes(_ acordes: [Acorde], duracion: Double = 1) -> Sonido {
         grupos(acordes.map { cerrada($0.notasDesdeElBajo, desde: 48) }, duracion: duracion)

@@ -10,6 +10,14 @@ extension ErrorDeUso {
             return TextosDeCLI.traducidos.map(\.faltaCifrado)
         }
 
+        static func faltaCifradoDelArpegio() -> Traduccion {
+            return TextosDeCLI.traducidos.map(\.faltaCifradoDelArpegio)
+        }
+
+        static func patronDesconocido(_ patron: String) -> Traduccion {
+            return TextosDeCLI.traducidos.map { $0.patronDesconocido(patron) }
+        }
+
         static func faltanNotas() -> Traduccion {
             return TextosDeCLI.traducidos.map(\.faltanNotas)
         }

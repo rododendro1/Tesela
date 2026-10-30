@@ -19,6 +19,8 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <chiffrage>…",
         descripcionAcorde: "notes, type et rôle de chaque note",
+        sintaxisArpegio: "arpegio <chiffrage> [--patron <motif>]",
+        descripcionArpegio: "notes de l'arpège et gammes de\nl'accord (--patron ascendente,\ndescendente, ida-y-vuelta, alberti)",
         sintaxisIdentificar: "identificar <notes>",
         descripcionIdentificar: "accords que forment des notes",
         sintaxisIntervalo: "intervalo <note> <note>",
@@ -104,6 +106,8 @@ extension TextosDeCLI {
 
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "il manque le chiffrage : armonia acorde Sol7",
+        faltaCifradoDelArpegio: "il manque le chiffrage : armonia arpegio Do7",
+        patronDesconocido: { patron in "motif inconnu : « \(patron) » (ascendente, descendente, ida-y-vuelta ou alberti)" },
         faltanNotas: "il manque les notes : armonia identificar Do Mi Sol",
         dosNotas: "il faut deux notes : armonia intervalo Do Mi",
         faltaEscala: "il manque la gamme : armonia escala Re dórico",
@@ -169,6 +173,7 @@ extension TextosDeCLI {
         // Mensaje.swift
         mensajeNotas: "notes",
         mensajeAcordes: "accords",
+        mensajeEscalas: "gammes",
         mensajeArmadura: "armure",
         mensajeRelativa: "relative",
         mensajeHomonima: "homonyme",

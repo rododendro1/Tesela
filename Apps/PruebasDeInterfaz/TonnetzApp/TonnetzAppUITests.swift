@@ -1,6 +1,6 @@
 import XCTest
 
-/// El recorrido con P, L y R desde Do, deshacer, y el cambio a un acorde y a una escala.
+/// El recorrido con P, L y R desde Do, deshacer, el cambio a un acorde y a una escala, y el modo de identificar.
 @MainActor
 final class TonnetzAppUITests: XCTestCase {
     func testRecorrido() {
@@ -22,5 +22,12 @@ final class TonnetzAppUITests: XCTestCase {
         app.opcion("Escala").tap()
         esperar(app.textFields.firstMatch, "el campo de la escala")
         XCTAssertEqual(app.textFields.firstMatch.value as? String, "Re dórico")
+    }
+
+    func testIdentificar() {
+        let app = XCUIApplication.enEspanol()
+        app.opcion("Identificar").tap()
+        esperar(app.texto("Toca notas para saber"), "la indicación")
+        esperar(app.buttons["Borrar"], "el botón de borrar")
     }
 }

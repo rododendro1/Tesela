@@ -29,6 +29,16 @@ public enum TextoDeLasApps: Hashable, Sendable {
     case calculando
     /// «3 dedos», o «4 dedos, cejilla en el traste 1».
     case dedos(Int, cejilla: Int?)
+    case arpegio
+    case patron
+    case escalasCompatibles
+
+    // Identificar un acorde tocando sus notas
+    case identificar
+    case tocaElMastil
+    case tocaNotas
+    case borrar
+    case sinAcordeConocido
 
     // Escalas
     case escala
@@ -158,6 +168,70 @@ public enum TextoDeLasApps: Hashable, Sendable {
                               an: "Digitacions", eu: "Hatz-jarrerak", pt: "Dedilhações",
                               fr: "Doigtés", oc: "Digitacions", it: "Diteggiature", de: "Griffe",
                               el: "Δακτυλοθεσίες", ru: "Аппликатуры")
+        case .arpegio:
+            return Traduccion("Arpegio", "Arpeggio", ca: "Arpegi", gl: "Arpexo", ast: "Arpexu",
+                              an: "Arpechio", eu: "Arpegioa", pt: "Arpejo",
+                              fr: "Arpège", oc: "Arpegi", it: "Arpeggio", de: "Akkordbrechung",
+                              el: "Αρπέζ", ru: "Арпеджио")
+        case .patron:
+            return Traduccion("Patrón", "Pattern", ca: "Patró", gl: "Padrón", ast: "Patrón",
+                              an: "Patrón", eu: "Eredua", pt: "Padrão",
+                              fr: "Motif", oc: "Motiu", it: "Schema", de: "Muster",
+                              el: "Μοτίβο", ru: "Рисунок")
+        case .escalasCompatibles:
+            return Traduccion("Escalas compatibles", "Compatible scales", ca: "Escales compatibles",
+                              gl: "Escalas compatibles", ast: "Escales compatibles", an: "Escalas compatibles",
+                              eu: "Eskala bateragarriak", pt: "Escalas compatíveis",
+                              fr: "Gammes compatibles", oc: "Gamas compatiblas", it: "Scale compatibili",
+                              de: "Passende Skalen", el: "Συμβατές κλίμακες", ru: "Подходящие гаммы")
+        case .identificar:
+            return Traduccion("Identificar", "Identify", ca: "Identifica", gl: "Identificar", ast: "Identificar",
+                              an: "Identificar", eu: "Identifikatu", pt: "Identificar",
+                              fr: "Identifier", oc: "Identificar", it: "Riconosci", de: "Erkennen",
+                              el: "Αναγνώριση", ru: "Распознать")
+        case .tocaElMastil:
+            return Traduccion("Toca el mástil para saber qué acorde forman las notas.",
+                              "Tap the fretboard to find out which chord the notes make.",
+                              ca: "Toca el mànec per saber quin acord formen les notes.",
+                              gl: "Toca o mástil para saber que acorde forman as notas.",
+                              ast: "Toca\'l mástil pa saber qué acorde formen les notes.",
+                              an: "Toca o mástil ta saber qué acorde forman as notas.",
+                              eu: "Ukitu mastila notek zer akorde osatzen duten jakiteko.",
+                              pt: "Toca no braço para saber que acorde formam as notas.",
+                              fr: "Touchez le manche pour savoir quel accord forment les notes.",
+                              oc: "Tòca lo margue per saber quin acòrd fan las nòtas.",
+                              it: "Tocca il manico per sapere quale accordo formano le note.",
+                              de: "Tippe auf das Griffbrett, um zu sehen, welchen Akkord die Töne bilden.",
+                              el: "Άγγιξε την ταστιέρα για να δεις ποια συγχορδία σχηματίζουν οι νότες.",
+                              ru: "Нажимай на гриф, чтобы узнать, какой аккорд образуют ноты.")
+        case .tocaNotas:
+            return Traduccion("Toca notas para saber qué acorde forman; la primera es el bajo.",
+                              "Tap notes to find out which chord they make; the first one is the bass.",
+                              ca: "Toca notes per saber quin acord formen; la primera és el baix.",
+                              gl: "Toca notas para saber que acorde forman; a primeira é o baixo.",
+                              ast: "Toca notes pa saber qué acorde formen; la primera ye\'l baxu.",
+                              an: "Toca notas ta saber qué acorde forman; a primera ye o baixo.",
+                              eu: "Ukitu notak zer akorde osatzen duten jakiteko; lehena da baxua.",
+                              pt: "Toca notas para saber que acorde formam; a primeira é o baixo.",
+                              fr: "Touchez des notes pour savoir quel accord elles forment ; la première est la basse.",
+                              oc: "Tòca de nòtas per saber quin acòrd fan; la primièra es la bassa.",
+                              it: "Tocca delle note per sapere quale accordo formano; la prima è il basso.",
+                              de: "Tippe auf Töne, um zu sehen, welchen Akkord sie bilden; der erste ist der Bass.",
+                              el: "Άγγιξε νότες για να δεις ποια συγχορδία σχηματίζουν· η πρώτη είναι το μπάσο.",
+                              ru: "Нажимай на ноты, чтобы узнать, какой аккорд они образуют; первая — бас.")
+        case .borrar:
+            return Traduccion("Borrar", "Clear", ca: "Esborra", gl: "Borrar", ast: "Borrar",
+                              an: "Borrar", eu: "Garbitu", pt: "Limpar",
+                              fr: "Effacer", oc: "Escafar", it: "Cancella", de: "Löschen",
+                              el: "Καθαρισμός", ru: "Очистить")
+        case .sinAcordeConocido:
+            return Traduccion("No forman ningún acorde conocido.", "No chord found.",
+                              ca: "No formen cap acord conegut.", gl: "Non forman ningún acorde coñecido.",
+                              ast: "Nun formen nengún acorde conocíu.", an: "No forman garra acorde conoixiu.",
+                              eu: "Ez dute akorde ezagunik osatzen.", pt: "Não formam nenhum acorde conhecido.",
+                              fr: "Aucun accord connu.", oc: "Fan pas cap d'acòrd conegut.",
+                              it: "Non formano nessun accordo conosciuto.", de: "Kein bekannter Akkord.",
+                              el: "Δεν σχηματίζουν καμία γνωστή συγχορδία.", ru: "Известный аккорд не найден.")
         case .instrumentoYAfinacion:
             return Traduccion("Instrumento y afinación", "Instrument and tuning", ca: "Instrument i afinació",
                               gl: "Instrumento e afinación", ast: "Instrumentu y afinación",

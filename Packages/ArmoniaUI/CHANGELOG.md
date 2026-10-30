@@ -2,6 +2,19 @@
 
 ## Sin publicar
 
+- Arpegios en ArmoniaApp: la pestaña de acordes muestra el arpegio en el patrón que se elija (ascendente,
+  descendente, de ida y vuelta o bajo de Alberti), con su pentagrama, que también se exporta, y «Escuchar», y las
+  escalas compatibles con el acorde (Sol7 → Sol mixolidio…). `Sonido.arpegio(_:paso:)` toca un arpegio nota a nota
+  desde la octava 3, y `PresentacionDePentagrama(_ arpegio:)` da su pentagrama.
+- Identificar un acorde tocando sus notas. ArmoniaApp tiene una pestaña nueva, «Identificar», con el mástil del
+  instrumento elegido: se toca una nota por cuerda (otra vez para quitarla), el bajo es la más grave y se ven las
+  lecturas más probables. En la app Tonnetz, el modo «Identificar» hace lo mismo en el Tonnetz, la tabla armónica
+  y los teclados isomórficos, con la primera nota tocada como bajo. `DiagramaDeMastil.alTocar(_:)` avisa de la
+  posición tocada; `ContenidoDeRed.clases(_:)`, `PresentacionDeRedes.alternar(_:en:)` y
+  `PresentacionDeRedes.acordes(de:)` son lo que usa la app Tonnetz.
+- Textos nuevos de las apps, en los catorce idiomas: `.arpegio`, `.patron`, `.escalasCompatibles`, `.identificar`,
+  `.tocaElMastil`, `.tocaNotas`, `.borrar` y `.sinAcordeConocido`.
+
 - `RedDeNotas.uil` y `AjusteUIL`: un teclado isomórfico descrito en el formato UIL (`2,7,5;R30M`), con giro de 30° en
   30° (`giros`) y espejo; `PresentacionDeRedes.svg`, `midi` y `nombre` toman un `uil:`. La app Tonnetz ofrece el campo
   de texto, un menú con los teclados del artículo, el giro y el espejo. Textos nuevos: `.formatoUIL`, `.giro` y

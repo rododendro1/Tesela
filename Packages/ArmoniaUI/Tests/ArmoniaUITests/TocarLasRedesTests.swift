@@ -104,4 +104,30 @@ final class TocarLasRedesTests: XCTestCase {
         let svg = try XCTUnwrap(PresentacionDeRedes.svg(.recorrido(acordes), en: .tonnetz, notacion: .espanolUnicode))
         XCTAssertTrue(svg.contains(#"r="22.9""#), "el círculo de una nota con paso 88")
     }
+
+    func testParaIdentificarSeMarcanYSeQuitanLasNotasTocadas() throws {
+        XCTAssertEqual(PresentacionDeRedes.alternar(64, en: [0, 7]), [0, 7, 4])
+        XCTAssertEqual(PresentacionDeRedes.alternar(60, en: [0, 7]), [7])
+        XCTAssertEqual(PresentacionDeRedes.alternar(72, en: [0]), [])   // la misma clase, en otra octava
+        // La primera tocada es el bajo.
+        XCTAssertEqual(PresentacionDeRedes.acordes(de: [0, 4, 7]).first?.cifrado(en: .espanolUnicode), "Do")
+        XCTAssertEqual(PresentacionDeRedes.acordes(de: [4, 7, 0]).first?.cifrado(en: .espanolUnicode), "Do/Mi")
+        XCTAssertEqual(PresentacionDeRedes.acordes(de: [7, 11, 2, 5]).first?.cifrado(en: .espanolUnicode), "Sol7")
+        XCTAssertTrue(PresentacionDeRedes.acordes(de: [0]).isEmpty)
+    }
+
+    func testLasNotasTocadasSeDibujanEnTodasLasRedes() throws {
+        for red in RedDeNotas.allCases where red != .uil {
+            for clases in [[], [0, 4, 7]] {
+                XCTAssertNotNil(PresentacionDeRedes.svg(.clases(clases), en: red, notacion: .espanolUnicode), "\(red) \(clases)")
+            }
+        }
+        // Y se tocan como las de un acorde.
+        let tocadas = ContenidoDeRed.clases([0, 4, 7])
+        XCTAssertEqual(tocadas.notas, [.do, .mi, .sol])
+        let trazado = Tonnetz.trazado(paso: PresentacionDeRedes.paso(tocadas, en: .tonnetz))
+        XCTAssertEqual(PresentacionDeRedes.midi(en: trazado.centro(de: CoordenadaAxial(q: 1, r: 0)), de: tocadas,
+                                                enLaRed: .tonnetz), 67)
+        XCTAssertEqual(PresentacionDeRedes.nombre(tocadas, en: .tonnetz, notacion: .espanolUnicode), "Tonnetz · Do")
+    }
 }

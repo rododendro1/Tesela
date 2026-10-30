@@ -2,13 +2,15 @@ import SwiftUI
 import Armonia
 import ArmoniaUI
 
-/// Escribe un cifrado (Sol7/Si, Dom, Fa#m7b5…) y muestra el acorde con sus digitaciones.
+/// Escribe un cifrado (Sol7/Si, Dom, Fa#m7b5…) y muestra el acorde, su arpegio, las escalas que encajan con él y
+/// sus digitaciones.
 struct VistaDeAcordes: View {
     @Environment(\.notacion) private var notacion
     @State private var texto = "Sol7/Si"
     /// El acorde leído de `texto`. Se lee una vez por cambio del texto, no en cada redibujado.
     @State private var lectura = VistaDeAcordes.leer("Sol7/Si")
     @State private var encordado = Encordado.guitarra
+    @State private var patron = Arpegio.Patron.ascendente
     /// Las digitaciones y para qué texto e instrumento se calcularon. Mientras no coincidan con lo que hay
     /// escrito, se muestra «Calculando…» y no las de otro acorde.
     @State private var digitaciones: Calculado<[Digitacion]>?
@@ -27,6 +29,8 @@ struct VistaDeAcordes: View {
                 Section(notacion.texto(.pentagrama)) {
                     DiagramaDePentagrama(PresentacionDePentagrama(acorde, notacion: notacion))
                 }
+                arpegio(de: acorde)
+                escalas(de: acorde)
                 digitaciones(de: acorde)
             case .failure(let error):
                 Section {
@@ -50,10 +54,38 @@ struct VistaDeAcordes: View {
         }
     }
 
-    /// El pentagrama del acorde leído como SVG, o nada si el texto no se lee.
+    /// Los pentagramas del acorde leído y de su arpegio como SVG, o nada si el texto no se lee.
     private var ficherosDelPentagrama: [FicheroParaExportar] {
         guard case .success(let acorde) = lectura else { return [] }
-        return [PresentacionDePentagrama(acorde, notacion: notacion).fichero]
+        return [PresentacionDePentagrama(acorde, notacion: notacion).fichero,
+                PresentacionDePentagrama(Arpegio(acorde, patron: patron), notacion: notacion).fichero]
+    }
+
+    /// El arpegio en el patrón elegido: su pentagrama, nota a nota, y cómo suena.
+    @ViewBuilder
+    private func arpegio(de acorde: Acorde) -> some View {
+        let arpegio = Arpegio(acorde, patron: patron)
+        Section(notacion.texto(.arpegio)) {
+            Picker(notacion.texto(.patron), selection: $patron) {
+                ForEach(Arpegio.Patron.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
+            }
+            DiagramaDePentagrama(PresentacionDePentagrama(arpegio, notacion: notacion))
+            BotonDeEscuchar(.arpegio(arpegio))
+        }
+    }
+
+    /// Las escalas sobre la fundamental que contienen el acorde (Sol7 → Sol mixolidio…), de las de menos notas
+    /// a las de más.
+    @ViewBuilder
+    private func escalas(de acorde: Acorde) -> some View {
+        let escalas = acorde.escalasCompatibles()
+        if !escalas.isEmpty {
+            Section(notacion.texto(.escalasCompatibles)) {
+                ForEach(Array(escalas.prefix(10).enumerated()), id: \.offset) { _, escala in
+                    Text(escala.nombre(en: notacion))
+                }
+            }
+        }
     }
 
     @ViewBuilder

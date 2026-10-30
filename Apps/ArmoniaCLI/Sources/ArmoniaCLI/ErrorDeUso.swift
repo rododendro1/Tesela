@@ -19,6 +19,8 @@ enum ErrorDeUso {
 
     // Consultas y armonización
     case faltaCifrado
+    case faltaCifradoDelArpegio
+    case patronDesconocido(String)
     case faltanNotas
     case dosNotas
     case faltaEscala
@@ -100,6 +102,8 @@ enum ErrorDeUso {
         case .escrituraNoValida(let escritura):
             return TextosDeCLI.traducidos.map { $0.escrituraNoValida(escritura) }
         case .faltaCifrado: return TextosDeConsultas.faltaCifrado()
+        case .faltaCifradoDelArpegio: return TextosDeConsultas.faltaCifradoDelArpegio()
+        case .patronDesconocido(let patron): return TextosDeConsultas.patronDesconocido(patron)
         case .faltanNotas: return TextosDeConsultas.faltanNotas()
         case .dosNotas: return TextosDeConsultas.dosNotas()
         case .faltaEscala: return TextosDeConsultas.faltaEscala()
