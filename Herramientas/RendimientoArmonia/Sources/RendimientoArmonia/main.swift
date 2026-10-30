@@ -80,7 +80,8 @@ for caso in casos {
         }
     }
     print(fila)
-    fflush(stdout)
+    // `fflush(nil)` vacía todas las salidas: `stdout` es una variable global de C, y Swift 6 no deja tocarla.
+    fflush(nil)
 }
 
 if let rutaJSON {
