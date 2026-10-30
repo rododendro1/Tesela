@@ -32,6 +32,9 @@ public enum TextoDeLasApps: Hashable, Sendable {
     case arpegio
     case patron
     case escalasCompatibles
+    case arpegioEnElMastil
+    /// «Trastes 5–8»: la franja de una posición del mástil.
+    case trastes(desde: Int, hasta: Int)
 
     // Identificar un acorde tocando sus notas
     case identificar
@@ -63,6 +66,8 @@ public enum TextoDeLasApps: Hashable, Sendable {
     case resultado
     case acordeAAcorde
     case cadencias
+    /// La progresión arpegiada.
+    case arpegiar
 
     // Coral
     case tarea
@@ -187,6 +192,21 @@ public enum TextoDeLasApps: Hashable, Sendable {
                               an: "Patrón", eu: "Eredua", pt: "Padrão",
                               fr: "Motif", oc: "Motiu", it: "Schema", de: "Muster",
                               el: "Μοτίβο", ru: "Рисунок")
+        case .arpegioEnElMastil:
+            return Traduccion("Arpegio en el mástil", "Arpeggio on the fretboard", ca: "Arpegi al mànec",
+                              gl: "Arpexo no mástil", ast: "Arpexu nel mástil", an: "Arpechio en o mástil",
+                              eu: "Arpegioa mastilean", pt: "Arpejo no braço",
+                              fr: "Arpège sur le manche", oc: "Arpegi sul margue", it: "Arpeggio sul manico",
+                              de: "Akkordbrechung auf dem Griffbrett",
+                              el: "Αρπέζ στην ταστιέρα", ru: "Арпеджио на грифе")
+        case .trastes(let desde, let hasta):
+            return Traduccion("Trastes \(desde)–\(hasta)", "Frets \(desde)–\(hasta)", ca: "Trasts \(desde)–\(hasta)",
+                              gl: "Trastes \(desde)–\(hasta)", ast: "Trastes \(desde)–\(hasta)",
+                              an: "Trastes \(desde)–\(hasta)", eu: "\(desde)–\(hasta) trasteak",
+                              pt: "Trastes \(desde)–\(hasta)", fr: "Cases \(desde)–\(hasta)",
+                              oc: "Trasts \(desde)–\(hasta)", it: "Tasti \(desde)–\(hasta)",
+                              de: "Bünde \(desde)–\(hasta)", el: "Τάστα \(desde)–\(hasta)",
+                              ru: "Лады \(desde)–\(hasta)")
         case .escalasCompatibles:
             return Traduccion("Escalas compatibles", "Compatible scales", ca: "Escales compatibles",
                               gl: "Escalas compatibles", ast: "Escales compatibles", an: "Escalas compatibles",
@@ -394,6 +414,11 @@ public enum TextoDeLasApps: Hashable, Sendable {
                               fr: "Accord par accord", oc: "Acòrd per acòrd", it: "Accordo per accordo",
                               de: "Akkord für Akkord",
                               el: "Συγχορδία προς συγχορδία", ru: "Аккорд за аккордом")
+        case .arpegiar:
+            return Traduccion("Arpegiar", "Arpeggiate", ca: "Arpegiar", gl: "Arpexar", ast: "Arpexar",
+                              an: "Arpechar", eu: "Arpegiatu", pt: "Arpejar",
+                              fr: "Arpéger", oc: "Arpejar", it: "Arpeggiare", de: "Arpeggieren",
+                              el: "Σε αρπέζ", ru: "Арпеджировать")
         case .cadencias:
             return Traduccion("Cadencias", "Cadences", ca: "Cadències", gl: "Cadencias", ast: "Cadencies",
                               an: "Cadencias", eu: "Kadentziak", pt: "Cadências",

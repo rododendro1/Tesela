@@ -69,9 +69,12 @@ extension TextosDeCLI {
         sintaxisMusicxmlAcordes: "musicxml acordes <chifratges> [opcions]",
         descripcionMusicxmlAcordes: "progression amb chifratges e analisi",
         notasMusicxmlAcordes: "opcions: --compas 6/8, --anacrusa 8, --tonalidad Sòl major,\n--clave fa, --tempo 90 (o --tempo 60 4.), --titulo Mon coral,\n--duracion 2 (çò que dura cada acòrd; negra dins lo coral e\nblanca dins los acòrds se que non), --cifrados e --analisis\n(dins lo coral: chifratge american dessús, roman e foncion\ndejós)",
-        sintaxisMeiMelodia: "mei melodia|coral|acordes <…> [opcions]",
+        sintaxisMusicxmlArpegios: "musicxml arpegios <chifratges> [opcions]",
+        descripcionMusicxmlArpegios: "los acòrds arpejats, nòta a nòta",
+        notasMusicxmlArpegios: "opcions: --patron alberti (o ascendente, descendente, ida y\nvuelta), --figura 16 (çò que dura cada nòta; cròcha se que\nnon), --duracion 1 (çò que dura cada acòrd: lo motiu se repetís\nfins a l'emplenar) e las autras d'«acordes»",
+        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [opcions]",
         descripcionMeiMelodia: "lo meteis en MEI 5, lo format de las\nedicions criticas (amb las meteissas\nopcions)",
-        sintaxisMidiMelodia: "midi melodia|coral|acordes <…> [opcions]",
+        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [opcions]",
         descripcionMidiMelodia: "lo meteis coma fichièr MIDI, per\nl'ausir (sens --clave ni --cifrados;\namb --programa 0…127, General MIDI)",
 
         // Ayuda+Trastes.swift
@@ -153,9 +156,10 @@ extension TextosDeCLI {
         claveDesconocida: { clave, claves in "clau desconeguda: «\(clave)» " + claves },
         faltanAcordesDelCoral: { ejemplo, orden in "mancan los acòrds: " + ejemplo },
         soloParaMelodia: { opcion in "--\(opcion) es sonque per «melodia»" },
+        soloParaArpegios: { opcion in "--\(opcion) es sonque per «arpegios»" },
         faltanAcordesDeLaProgresion: { ejemplo, orden in "mancan los acòrds: " + ejemplo },
         acordesConCifradosYAnalisis: "los acòrds pòrtan totjorn chifratges e analisi",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: s'exporta una «melodia», un «coral» o d'«acordes»" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: s'exporta una «melodia», un «coral», d'«acordes» o lors «arpegios»" },
 
         // ErrorDeUso+Trastes.swift
         faltaInstrumento: { d, digitaciones in "manca l'instrument: \(d)" },

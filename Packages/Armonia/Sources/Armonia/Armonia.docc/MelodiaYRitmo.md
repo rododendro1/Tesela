@@ -163,6 +163,28 @@ datos.prefix(4) == Data("MThd".utf8)   // true
   `armonia midi acordes Do Lam Re7 Sol7 Do > progresion.mid`, con las mismas opciones que
   `musicxml` salvo `--clave` y los cifrados, y con `--instrumento 0…127`.
 
+## Arpegios con ritmo
+
+Un ``Arpegio`` da las notas de un acorde en un orden; `Voz(_:figura:octava:compas:)` les pone ritmo, y
+`Voz(arpegiando:patron:octavas:conOctava:figura:porAcorde:octava:compas:)` arpegia una progresión entera,
+un acorde detrás de otro con el mismo patrón. Con `porAcorde`, cada acorde dura eso: el patrón se repite (o
+se corta) hasta llenarlo, y si no cabe un número entero de notas, la última se alarga. El bajo de cada acorde
+va a la octava que lo deja más cerca del primero, para que la mano no salte. Como son una ``Voz``, se dibujan,
+suenan y se exportan a MusicXML, MEI y MIDI como cualquier melodía.
+
+```swift
+let arpegio = Voz(Arpegio(Acorde("Do7"), patron: .idaYVuelta), figura: .semicorchea)
+arpegio.eventos.count   // 9
+let acordes = [Acorde("Do"), Acorde("Lam"), Acorde("Fa"), Acorde("Sol7")]
+let alberti = Voz(arpegiando: acordes, patron: .alberti, porAcorde: .blanca)
+alberti.eventos.count   // 16
+alberti.eventos.prefix(4).flatMap(\.alturas).map(\.midi) == [48, 55, 52, 55]   // true
+let datos = alberti.midi(titulo: "Bajo de Alberti")
+```
+
+- Desde la terminal: `armonia musicxml arpegios Do Lam Fa Sol7 --patron alberti --duracion 2`, y lo mismo
+  con `mei` y `midi`. `--figura 16` cambia lo que dura cada nota (corchea si no).
+
 ## Importar MIDI y MusicXML
 
 `PiezaImportada(leyendo:)` lee un fichero MIDI estándar o una partitura MusicXML sin comprimir

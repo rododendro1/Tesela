@@ -69,9 +69,12 @@ extension TextosDeCLI {
         sintaxisMusicxmlAcordes: "musicxml acordes <xifrats> [opcions]",
         descripcionMusicxmlAcordes: "progressió amb xifrats i anàlisi",
         notasMusicxmlAcordes: "opcions: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (o --tempo 60 4.), --titulo El meu coral,\n--duracion 2 (el que dura cada acord; negra al coral i blanca\nals acords si no), --cifrados i --analisis (al coral: xifrat\namericà a dalt, romà i funció a baix)",
-        sintaxisMeiMelodia: "mei melodia|coral|acordes <…> [opcions]",
+        sintaxisMusicxmlArpegios: "musicxml arpegios <xifrats> [opcions]",
+        descripcionMusicxmlArpegios: "els acords arpegiats, nota a nota",
+        notasMusicxmlArpegios: "opcions: --patron alberti (o ascendente, descendente, ida y\nvuelta), --figura 16 (el que dura cada nota; corxera si no),\n--duracion 1 (el que dura cada acord: el patró es repeteix fins\na omplir-lo) i les altres d'«acordes»",
+        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [opcions]",
         descripcionMeiMelodia: "el mateix en MEI 5, el format de les\nedicions crítiques (amb les mateixes\nopcions)",
-        sintaxisMidiMelodia: "midi melodia|coral|acordes <…> [opcions]",
+        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [opcions]",
         descripcionMidiMelodia: "el mateix com a fitxer MIDI, per\nescoltar-lo (sense --clave ni\n--cifrados; amb --programa 0…127,\nGeneral MIDI)",
 
         // Ayuda+Trastes.swift
@@ -153,9 +156,10 @@ extension TextosDeCLI {
         claveDesconocida: { clave, claves in "clau desconeguda: «\(clave)» " + claves },
         faltanAcordesDelCoral: { ejemplo, orden in "falten els acords: " + ejemplo },
         soloParaMelodia: { opcion in "--\(opcion) només és per a «melodia»" },
+        soloParaArpegios: { opcion in "--\(opcion) només és per a «arpegios»" },
         faltanAcordesDeLaProgresion: { ejemplo, orden in "falten els acords: " + ejemplo },
         acordesConCifradosYAnalisis: "els acords porten sempre xifrats i anàlisi",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: s'exporta una «melodia», un «coral» o uns «acordes»" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: s'exporta una «melodia», un «coral», uns «acordes» o els seus «arpegios»" },
 
         // ErrorDeUso+Trastes.swift
         faltaInstrumento: { d, digitaciones in "falta l'instrument: \(d)" },

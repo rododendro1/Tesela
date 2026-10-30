@@ -69,9 +69,12 @@ extension TextosDeCLI {
         sintaxisMusicxmlAcordes: "musicxml acordes <cifrados> [opciones]",
         descripcionMusicxmlAcordes: "progresión con cifrados y análisis",
         notasMusicxmlAcordes: "opciones: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (o --tempo 60 4.), --titulo Mi coral,\n--duracion 2 (lo que dura cada acorde; negra en el coral y\nblanca en los acordes si no), --cifrados y --analisis (en el\ncoral: cifrado americano encima, romano y función debajo)",
-        sintaxisMeiMelodia: "mei melodia|coral|acordes <…> [opciones]",
+        sintaxisMusicxmlArpegios: "musicxml arpegios <cifrados> [opciones]",
+        descripcionMusicxmlArpegios: "los acordes arpegiados, nota a nota",
+        notasMusicxmlArpegios: "opciones: --patron alberti (o ascendente, descendente, ida y\nvuelta), --figura 16 (lo que dura cada nota; corchea si no),\n--duracion 1 (lo que dura cada acorde: el patrón se repite\nhasta llenarlo) y las demás de «acordes»",
+        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [opciones]",
         descripcionMeiMelodia: "lo mismo en MEI 5, el formato de las\nediciones críticas (con las mismas\nopciones)",
-        sintaxisMidiMelodia: "midi melodia|coral|acordes <…> [opciones]",
+        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [opciones]",
         descripcionMidiMelodia: "lo mismo como fichero MIDI, para oírlo\n(sin --clave ni --cifrados; con\n--programa 0…127, General MIDI)",
 
         // Ayuda+Trastes.swift
@@ -154,9 +157,10 @@ extension TextosDeCLI {
         claveDesconocida: { clave, claves in "clave desconocida: «\(clave)» " + claves },
         faltanAcordesDelCoral: { ejemplo, orden in "faltan los acordes: " + ejemplo },
         soloParaMelodia: { opcion in "--\(opcion) es solo para «melodia»" },
+        soloParaArpegios: { opcion in "--\(opcion) es solo para «arpegios»" },
         faltanAcordesDeLaProgresion: { ejemplo, orden in "faltan los acordes: " + ejemplo },
         acordesConCifradosYAnalisis: "los acordes llevan siempre cifrados y análisis",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: se exporta una «melodia», un «coral» o unos «acordes»" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: se exporta una «melodia», un «coral», unos «acordes» o sus «arpegios»" },
 
         // ErrorDeUso+Trastes.swift
         faltaInstrumento: { d, digitaciones in "falta el instrumento: \(d)" },

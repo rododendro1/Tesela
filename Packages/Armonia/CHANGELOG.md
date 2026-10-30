@@ -36,6 +36,17 @@
   del arpegio desde la octava 4 y las escalas que encajan con el acorde. El patrón se escribe como en el código, con
   guiones (`ida-y-vuelta`), en inglés o con su nombre en cualquiera de los catorce idiomas. La ayuda, los errores y la
   etiqueta nueva («escalas»), en los catorce.
+- `Voz(_:figura:octava:compas:)`: un arpegio con ritmo, que se dibuja, suena y se exporta como cualquier voz.
+  `Voz(arpegiando:patron:octavas:conOctava:figura:porAcorde:octava:compas:)` arpegia una progresión: cada acorde con el
+  mismo patrón, el patrón repetido hasta llenar `porAcorde` (la última nota se alarga si no cabe un número entero) y el
+  bajo de cada acorde en la octava más cercana al del primero.
+- En la línea de comandos, `armonia musicxml|mei|midi arpegios Do Lam Fa Sol7 [--patron alberti] [--figura 16]
+  [--duracion 2]` (o `arpeggios … --pattern up-down`) exporta la progresión arpegiada, con la armadura de la tonalidad
+  que mejor la explica (o la de `--tonalidad`). `--patron` y `--figura` solo valen para los arpegios. La ayuda y los
+  errores, en los catorce idiomas.
+- `Mastil.posiciones(de:trastes:)` da las posiciones de las notas de un acorde, y `Mastil.arpegios(de:ancho:)` el
+  arpegio por posiciones (`ArpegioEnElMastil`): franjas de cuatro trastes que empiezan un traste por debajo de la
+  fundamental en una de las dos cuerdas más graves, con las notas de grave a agudo y sin unísonos repetidos.
 
 ### Teclados isomórficos
 

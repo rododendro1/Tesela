@@ -396,3 +396,35 @@ final class NombresTraducidosTests: XCTestCase {
         XCTAssertEqual(TransformacionNeorriemanniana.r.nombre(en: .aleman), "Parallele")
     }
 }
+
+final class ArpegioEnElMastilTests: XCTestCase {
+    func testLasPosicionesDeUnAcorde() {
+        let mastil = Mastil(.guitarra, trastes: 12)
+        let todas = mastil.posiciones(de: Acorde("Do"))
+        XCTAssertFalse(todas.isEmpty)
+        XCTAssertTrue(todas.allSatisfy { [0, 4, 7].contains(Mastil.clase(mastil.midi(en: $0))) })
+        let primeras = mastil.posiciones(de: Acorde("Do"), trastes: 0...3)
+        XCTAssertTrue(primeras.allSatisfy { (0...3).contains($0.traste) })
+        XCTAssertEqual(primeras.count, todas.filter { $0.traste <= 3 }.count)
+    }
+
+    func testElArpegioPorPosiciones() {
+        let mastil = Mastil(.guitarra, trastes: 12)
+        let lam = mastil.arpegios(de: Acorde("Lam"))
+        // Desde La al aire (5.ª cuerda), desde el La del traste 5 de la 6.ª y desde el del 12 de la 5.ª, que
+        // se queda dentro del mástil.
+        XCTAssertEqual(lam.map(\.trastes), [0...3, 4...7, 9...12])
+        XCTAssertEqual(lam[0].alturas.map(\.midi), [40, 45, 48, 52, 57, 60, 64])
+        XCTAssertEqual(lam[1].alturas.map(\.midi), [45, 52, 57, 60, 64, 69])
+        XCTAssertEqual(lam[0].posiciones.first, PosicionEnElMastil(cuerda: 0, traste: 0))
+        for arpegio in lam {
+            // De grave a agudo, sin unísonos y dentro de la franja.
+            XCTAssertEqual(arpegio.alturas.map(\.midi), arpegio.alturas.map(\.midi).sorted())
+            XCTAssertEqual(Set(arpegio.alturas.map(\.midi)).count, arpegio.alturas.count)
+            XCTAssertTrue(arpegio.posiciones.allSatisfy { arpegio.trastes.contains($0.traste) })
+        }
+        XCTAssertEqual(mastil.arpegios(de: Acorde("Do")).map(\.trastes), [2...5, 7...10])
+        // En un solo traste no caben las tres notas.
+        XCTAssertTrue(mastil.arpegios(de: Acorde("Do"), ancho: 1).isEmpty)
+    }
+}

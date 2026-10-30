@@ -69,9 +69,12 @@ extension TextosDeCLI {
         sintaxisMusicxmlAcordes: "musicxml chords <Symbole> [Optionen]",
         descripcionMusicxmlAcordes: "Akkordfolge mit Symbolen und Analyse",
         notasMusicxmlAcordes: "Optionen: --compas 6/8 (Taktart), --anacrusa 8 (Auftakt),\n--tonalidad G major (Tonart), --clave fa (Schlüssel), --tempo 90\n(oder --tempo 60 4.), --titulo Mein Choral (Titel), --duracion 2\n(Dauer jedes Akkords; standardmäßig eine Viertel im Choral und\neine Halbe bei den Akkorden), --cifrados und --analisis (im\nChoral: Akkordsymbole oben, Stufen und Funktion unten)",
-        sintaxisMeiMelodia: "mei melody|chorale|chords <…> [Optionen]",
+        sintaxisMusicxmlArpegios: "musicxml arpeggios <Symbole> [Optionen]",
+        descripcionMusicxmlArpegios: "die Akkorde arpeggiert, Ton für Ton",
+        notasMusicxmlArpegios: "Optionen: --patron alberti (oder up, down, up-down), --figura 16\n(Dauer jedes Tons; standardmäßig eine Achtel), --duracion 1\n(Dauer jedes Akkords: das Muster wiederholt sich, bis er voll\nist) und die übrigen von „chords“",
+        sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios <…> [Optionen]",
         descripcionMeiMelodia: "dasselbe in MEI 5, dem Format\nkritischer Ausgaben (mit denselben\nOptionen)",
-        sintaxisMidiMelodia: "midi melody|chorale|chords <…> [Optionen]",
+        sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios <…> [Optionen]",
         descripcionMidiMelodia: "dasselbe als MIDI-Datei zum Anhören\n(ohne --clave oder --cifrados; mit\n--program 0…127, General MIDI)",
 
         // Ayuda+Trastes.swift
@@ -153,9 +156,10 @@ extension TextosDeCLI {
         claveDesconocida: { clave, claves in "unbekannter Schlüssel: „\(clave)“ (treble, bass, alto, tenor, sol, fa, do1, do2, do3, do4, sol8b, sol8a, fa3)" },
         faltanAcordesDelCoral: { ejemplo, orden in "die Akkorde fehlen: armonia \(orden) chorale C3 E4 G4 C5, G2 D4 G4 B4" },
         soloParaMelodia: { opcion in "--\(opcion) ist nur für „melody“" },
+        soloParaArpegios: { opcion in "--\(opcion) ist nur für „arpeggios“" },
         faltanAcordesDeLaProgresion: { ejemplo, orden in "die Akkorde fehlen: armonia \(orden) chords C Am D7 G7 C" },
         acordesConCifradosYAnalisis: "Akkorde kommen immer mit Akkordsymbolen und Analyse",
-        tipoDePartituraDesconocido: { tipo in "„\(tipo)“: exportiert wird eine „melody“, ein „chorale“ oder „chords“" },
+        tipoDePartituraDesconocido: { tipo in "„\(tipo)“: exportiert wird eine „melody“, ein „chorale“, „chords“ oder ihre „arpeggios“" },
 
         // ErrorDeUso+Trastes.swift
         faltaInstrumento: { d, digitaciones in "das Instrument fehlt: \(digitaciones.1)" },

@@ -69,9 +69,12 @@ extension TextosDeCLI {
         sintaxisMusicxmlAcordes: "musicxml chords <обозначения> [параметры]",
         descripcionMusicxmlAcordes: "последовательность с обозначениями и\nанализом",
         notasMusicxmlAcordes: "параметры: --compas 6/8 (размер), --anacrusa 8 (затакт),\n--tonalidad G major (тональность), --clave fa (ключ), --tempo 90\n(или --tempo 60 4.), --titulo Мой хорал (название), --duracion 2\n(длительность каждого аккорда; по умолчанию четверть в хорале и\nполовинная в аккордах), --cifrados и --analisis (в хорале:\nобозначения сверху, ступени и функции снизу)",
-        sintaxisMeiMelodia: "mei melody|chorale|chords <…> [параметры]",
+        sintaxisMusicxmlArpegios: "musicxml arpeggios <обозначения> [параметры]",
+        descripcionMusicxmlArpegios: "аккорды арпеджио, нота за нотой",
+        notasMusicxmlArpegios: "параметры: --patron alberti (или up, down, up-down), --figura 16\n(длительность каждой ноты; по умолчанию восьмая), --duracion 1\n(длительность каждого аккорда: рисунок повторяется, пока не\nзаполнит его) и остальные параметры «chords»",
+        sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios <…> [параметры]",
         descripcionMeiMelodia: "то же самое в MEI 5, формате\nкритических изданий (с теми же\nпараметрами)",
-        sintaxisMidiMelodia: "midi melody|chorale|chords <…> [параметры]",
+        sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios <…> [параметры]",
         descripcionMidiMelodia: "то же самое в виде файла MIDI, чтобы\nпослушать (без --clave и --cifrados; с\n--program 0…127, General MIDI)",
 
         // Ayuda+Trastes.swift
@@ -153,9 +156,10 @@ extension TextosDeCLI {
         claveDesconocida: { clave, claves in "неизвестный ключ: «\(clave)» (treble, bass, alto, tenor, sol, fa, do1, do2, do3, do4, sol8b, sol8a, fa3)" },
         faltanAcordesDelCoral: { ejemplo, orden in "не указаны аккорды: armonia \(orden) chorale C3 E4 G4 C5, G2 D4 G4 B4" },
         soloParaMelodia: { opcion in "--\(opcion) — только для «melody»" },
+        soloParaArpegios: { opcion in "--\(opcion) — только для «arpeggios»" },
         faltanAcordesDeLaProgresion: { ejemplo, orden in "не указаны аккорды: armonia \(orden) chords C Am D7 G7 C" },
         acordesConCifradosYAnalisis: "аккорды всегда выводятся с обозначениями и анализом",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: экспортируется «melody», «chorale» или «chords»" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: экспортируется «melody», «chorale», «chords» или их «arpeggios»" },
 
         // ErrorDeUso+Trastes.swift
         faltaInstrumento: { d, digitaciones in "не указан инструмент: \(digitaciones.1)" },

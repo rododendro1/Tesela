@@ -69,9 +69,12 @@ extension TextosDeCLI {
         sintaxisMusicxmlAcordes: "musicxml acordes <cifraos> [opciones]",
         descripcionMusicxmlAcordes: "progresión con cifraos y análisis",
         notasMusicxmlAcordes: "opciones: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (o --tempo 60 4.), --titulo El mio coral,\n--duracion 2 (lo que dura cada acorde; negra nel coral y\nblanca nos acordes si non), --cifrados y --analisis (nel\ncoral: cifráu americanu enriba, romanu y función embaxo)",
-        sintaxisMeiMelodia: "mei melodia|coral|acordes <…> [opciones]",
+        sintaxisMusicxmlArpegios: "musicxml arpegios <cifraos> [opciones]",
+        descripcionMusicxmlArpegios: "los acordes arpexaos, nota a nota",
+        notasMusicxmlArpegios: "opciones: --patron alberti (o ascendente, descendente, ida y\nvuelta), --figura 16 (lo que dura cada nota; corchea si non),\n--duracion 1 (lo que dura cada acorde: el patrón repítese\nhasta enllenalu) y les demás de «acordes»",
+        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [opciones]",
         descripcionMeiMelodia: "lo mesmo en MEI 5, el formatu de les\nediciones crítiques (coles mesmes\nopciones)",
-        sintaxisMidiMelodia: "midi melodia|coral|acordes <…> [opciones]",
+        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [opciones]",
         descripcionMidiMelodia: "lo mesmo como ficheru MIDI, pa oyilo\n(ensin --clave nin --cifrados; con\n--programa 0…127, General MIDI)",
 
         // Ayuda+Trastes.swift
@@ -153,9 +156,10 @@ extension TextosDeCLI {
         claveDesconocida: { clave, claves in "clave desconocida: «\(clave)» " + claves },
         faltanAcordesDelCoral: { ejemplo, orden in "falten los acordes: " + ejemplo },
         soloParaMelodia: { opcion in "--\(opcion) ye namás pa «melodia»" },
+        soloParaArpegios: { opcion in "--\(opcion) ye namás pa «arpegios»" },
         faltanAcordesDeLaProgresion: { ejemplo, orden in "falten los acordes: " + ejemplo },
         acordesConCifradosYAnalisis: "los acordes lleven siempre cifraos y análisis",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: espórtase una «melodia», un «coral» o unos «acordes»" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: espórtase una «melodia», un «coral», unos «acordes» o los sos «arpegios»" },
 
         // ErrorDeUso+Trastes.swift
         faltaInstrumento: { d, digitaciones in "falta l\'instrumentu: \(d)" },

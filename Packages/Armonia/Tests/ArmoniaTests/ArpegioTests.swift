@@ -92,4 +92,47 @@ final class ArpegioTests: XCTestCase {
         XCTAssertEqual(alberti.components(separatedBy: "<g><title>").count - 1, 8)
         XCTAssertEqual(svg, Arpegio(Acorde("Do7")).svgPentagrama())
     }
+
+    // MARK: Arpegios como voces
+
+    func testUnArpegioComoVoz() {
+        let voz = Voz(Arpegio(Acorde("Do7"), patron: .idaYVuelta), figura: .semicorchea)
+        XCTAssertEqual(voz.eventos.flatMap(\.alturas).map(\.midi), [60, 64, 67, 70, 72, 70, 67, 64, 60])
+        XCTAssertTrue(voz.eventos.allSatisfy { $0.duracion == .semicorchea })
+        XCTAssertEqual(Voz(Arpegio(Acorde("Do")), octava: 3).eventos.first?.alturas.first?.midi, 48)
+    }
+
+    func testUnaProgresionArpegiada() {
+        // Sin duración por acorde, cada uno suena su patrón entero; el Sol7 baja a Sol2, más cerca de Do3.
+        let voz = Voz(arpegiando: [Acorde("Do"), Acorde("Sol7")])
+        XCTAssertEqual(voz.eventos.flatMap(\.alturas).map(\.midi), [48, 52, 55, 60, 43, 47, 50, 53, 55])
+        XCTAssertTrue(voz.eventos.allSatisfy { $0.duracion == .corchea })
+
+        // Con una blanca por acorde, cuatro corcheas cada uno.
+        let alberti = Voz(arpegiando: [Acorde("Do"), Acorde("Lam"), Acorde("Fa"), Acorde("Sol7")],
+                          patron: .alberti, porAcorde: .blanca)
+        XCTAssertEqual(alberti.eventos.count, 16)
+        XCTAssertEqual(alberti.eventos.prefix(12).flatMap(\.alturas).map(\.midi),
+                       [48, 55, 52, 55, 45, 52, 48, 52, 53, 60, 57, 60])
+        XCTAssertEqual(alberti.eventos.map(\.duracion).reduce(.cero, +), .redonda * 2)
+
+        // Si no cabe un número entero de notas, la última se alarga; si cabe menos de una, suena una.
+        let cinco = Voz(arpegiando: [Acorde("Do")], figura: .negra, porAcorde: Duracion(5, 8))
+        XCTAssertEqual(cinco.eventos.map(\.duracion), [.negra, Duracion(3, 8)])
+        let corta = Voz(arpegiando: [Acorde("Do")], figura: .blanca, porAcorde: .negra)
+        XCTAssertEqual(corta.eventos.map(\.duracion), [.negra])
+        // El patrón se repite hasta llenar el acorde.
+        let larga = Voz(arpegiando: [Acorde("Do")], porAcorde: .redonda)
+        XCTAssertEqual(larga.eventos.flatMap(\.alturas).map(\.midi), [48, 52, 55, 60, 48, 52, 55, 60])
+        XCTAssertTrue(Voz(arpegiando: []).eventos.isEmpty)
+    }
+
+    func testUnaProgresionArpegiadaSeExporta() throws {
+        let voz = Voz(arpegiando: [Acorde("Do"), Acorde("Sol7")], patron: .descendente, porAcorde: .blanca)
+        let xml = voz.musicXML(titulo: "Arpegios")
+        XCTAssertEqual(xml.components(separatedBy: "<pitch>").count - 1, 8)
+        XCTAssertTrue(voz.mei().contains("<mei"))
+        let pieza = try PiezaImportada(midi: voz.midi())
+        XCTAssertEqual(pieza.notas.map(\.altura.midi), voz.eventos.flatMap(\.alturas).map(\.midi))
+    }
 }

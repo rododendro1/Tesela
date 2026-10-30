@@ -44,6 +44,23 @@ El orden es el de un coste de comodidad: un punto por traste de posición, por d
 abertura, dos por cada cuerda apagada y uno si falta la quinta. Por eso `x32010` es la primera forma de
 Do.
 
+## Arpegios en el mástil
+
+`Mastil/posiciones(de:trastes:)` da todas las posiciones de las notas de un acorde, y
+`Mastil/arpegios(de:ancho:)` el arpegio por posiciones: franjas de cuatro trastes (las que abarca la mano
+sin moverse) que empiezan un traste por debajo de la fundamental en una de las dos cuerdas más graves. Cada
+``ArpegioEnElMastil`` trae sus notas de la más grave a la más aguda, el orden en que se tocan al subir, con
+los unísonos una sola vez; solo salen las franjas en las que están todas las notas del acorde.
+
+```swift
+let mastil = Mastil(.guitarra, trastes: 12)
+let posiciones = mastil.arpegios(de: Acorde("Lam"))
+posiciones.count   // 3
+posiciones[0].trastes == 0...3                                      // true
+posiciones[0].alturas.map(\.midi) == [40, 45, 48, 52, 57, 60, 64]   // true
+let todas = mastil.posiciones(de: Acorde("Lam"), trastes: 0...5)
+```
+
 ## Datos que vienen de fuera
 
 Un traste o una posición que escribe una persona puede no existir. Los inicializadores y los
@@ -70,3 +87,4 @@ let sonido = mastil.midiSiExiste(en: PosicionEnElMastil(cuerda: 9, traste: 0))  
 ### Acordes en el mástil
 
 - ``Digitacion``
+- ``ArpegioEnElMastil``

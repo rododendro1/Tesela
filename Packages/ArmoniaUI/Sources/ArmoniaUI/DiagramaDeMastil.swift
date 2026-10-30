@@ -42,6 +42,22 @@ public struct DiagramaDeMastil: View {
                   notacion: notacion)
     }
 
+    /// Las notas de un acorde por todo el mástil, escritas con su ortografía.
+    public init(mastil: Mastil, acorde: Acorde, rango: ClosedRange<Int> = 0...12, etiquetas: Bool = true,
+                notacion: Notacion = .espanolUnicode) {
+        self.init(mastil: mastil, marcas: mastil.posiciones(de: acorde, trastes: rango), rango: rango,
+                  etiquetas: etiquetas, ortografia: PresentacionDeMastil.ortografia(de: acorde.notas),
+                  notacion: notacion)
+    }
+
+    /// Un arpegio en una posición: sus notas en la franja de trastes que abarca la mano. Si se da el
+    /// acorde, las notas se escriben con su ortografía.
+    public init(arpegio: ArpegioEnElMastil, acorde: Acorde? = nil, etiquetas: Bool = true,
+                notacion: Notacion = .espanolUnicode) {
+        self.init(mastil: arpegio.mastil, marcas: arpegio.posiciones, rango: arpegio.trastes, etiquetas: etiquetas,
+                  ortografia: PresentacionDeMastil.ortografia(de: acorde?.notas ?? []), notacion: notacion)
+    }
+
     /// Muestra una digitación, con un rango de trastes que la deja a la vista. Si se da el acorde, las
     /// notas se escriben con su ortografía.
     public init(digitacion: Digitacion, acorde: Acorde? = nil, etiquetas: Bool = true,

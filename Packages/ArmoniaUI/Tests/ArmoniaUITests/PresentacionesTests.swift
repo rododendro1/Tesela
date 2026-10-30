@@ -56,6 +56,29 @@ final class PresentacionDeAnalisisTests: XCTestCase {
         XCTAssertEqual(analisis.tramos.flatMap(\.filas).count, 7)
     }
 
+    func testLaProgresionArpegiada() throws {
+        let analisis = try PresentacionDeAnalisis.analizar("Do Lam Re7 Sol7 Do", notacion: .espanolUnicode)
+        XCTAssertEqual(analisis.acordes, [Acorde("Do"), Acorde("Lam"), Acorde("Re7"), Acorde("Sol7"), Acorde("Do")])
+        XCTAssertEqual(analisis.tonalidad, Tonalidad(.do))
+        let arpegiada = try XCTUnwrap(analisis.arpegiada(.alberti, notacion: .espanolUnicode))
+        // Una blanca por acorde, en corcheas.
+        XCTAssertEqual(arpegiada.voz.eventos.count, 20)
+        XCTAssertEqual(arpegiada.ficheros.map(\.formato), [.musicXML, .mei, .midi])
+        XCTAssertEqual(arpegiada.ficheros[0].nombre, "Progresión arpegiada (bajo de Alberti)")
+        XCTAssertEqual(arpegiada.sonido.notas.count, 20)
+        // Los ficheros de la progresión y los de la arpegiada no se pisan.
+        let nombres = (analisis.ficheros + arpegiada.ficheros).map(\.nombreDeFichero)
+        XCTAssertEqual(Set(nombres).count, nombres.count)
+        XCTAssertNil(PresentacionDeArpegios.progresion([], patron: .ascendente, tonalidad: nil, notacion: .espanolUnicode))
+    }
+
+    func testUnArpegioSeExporta() {
+        let arpegio = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Sol7"), patron: .idaYVuelta), notacion: .espanolUnicode)
+        XCTAssertEqual(arpegio.voz.eventos.count, 9)
+        XCTAssertEqual(arpegio.ficheros.map(\.formato), [.musicXML, .mei, .midi])
+        XCTAssertEqual(arpegio.sonido.notas.first?.altura.midi, 67)
+    }
+
     func testConLosAcordesYaLeidosSaleLoMismo() throws {
         let texto = "Do Fa Sol7 Do Lam Re7 Sol"
         let acordes = try texto.split(separator: " ").map { try Acorde(leyendo: String($0)) }

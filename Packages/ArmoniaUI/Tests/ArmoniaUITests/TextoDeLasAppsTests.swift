@@ -11,10 +11,11 @@ final class TextoDeLasAppsTests: XCTestCase {
     static let todos: [TextoDeLasApps] = [
         .acordes, .escalas, .analisis, .coral, .acorde, .campoDeCifrado, .informacion, .nombre, .cifrado, .notas,
         .digitaciones, .instrumentoYAfinacion, .sinDigitaciones, .calculando, .dedos(1, cejilla: nil),
-        .dedos(4, cejilla: 3), .arpegio, .patron, .escalasCompatibles, .identificar, .tocaElMastil, .tocaNotas,
+        .dedos(4, cejilla: 3), .arpegio, .patron, .escalasCompatibles,
+        .arpegioEnElMastil, .trastes(desde: 5, hasta: 8), .identificar, .tocaElMastil, .tocaNotas,
         .borrar, .sinAcordeConocido, .verEnAcordes, .tecladoMIDI, .dispositivosMIDI, .teoriaPostonal, .formaPrima,
         .numeroDeForte, .vectorIntervalico, .escala, .tonica, .tipo, .habituales, .otrasTradiciones, .acordesDeLaEscala,
-        .mastilDeGuitarra, .pentagrama, .progresion, .campoDeProgresion, .resultado, .acordeAAcorde, .cadencias, .tarea,
+        .mastilDeGuitarra, .pentagrama, .progresion, .campoDeProgresion, .resultado, .acordeAAcorde, .cadencias, .arpegiar, .tarea,
         .campoDeTonalidad, .tonalidad, .armonizaciones, .aCuatroVoces, .conduccionDeLasVoces, .avisos,
         .recorridoPLR, .modo, .red, .formatoUIL, .giro, .espejo, .noSeDibuja, .campoDeTriadaInicial, .reiniciar, .deshacer, .campoDeAcorde,
         .campoDeEscala, .textos, .comoLasNotas, .exportar, .abrir, .escuchar, .afinacionAlEscuchar, .rejillaHexagonal, .casillas(1), .casillas(19),

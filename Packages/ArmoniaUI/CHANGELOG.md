@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+- Arpegios en ArmoniaApp. En la pestaña Acordes, «Exportar» da también el arpegio en MusicXML, MEI y MIDI, y la
+  sección nueva «Arpegio en el mástil» lo enseña en el instrumento elegido para las digitaciones: las notas del
+  acorde por todo el mástil y, debajo, cada posición (una franja de cuatro trastes) con su diagrama y «Escuchar». En
+  la pestaña Análisis, «Arpegiar» toca la progresión arpegiada con el patrón elegido (una blanca por acorde, en
+  corcheas), y «Exportar» la añade en MusicXML, MEI y MIDI.
+- `PresentacionDeArpegios` (en `ArmoniaPresentacion`) da un arpegio o una progresión arpegiada como
+  `ArpegioPresentado`: la voz, el sonido y los ficheros. `AnalisisPresentado` guarda sus `acordes` y su `tonalidad`, y
+  `arpegiada(_:notacion:)` la arpegia. `DiagramaDeMastil(mastil:acorde:…)` dibuja las notas de un acorde por todo el
+  mástil y `DiagramaDeMastil(arpegio:acorde:…)`, un `ArpegioEnElMastil`. Textos nuevos en los catorce idiomas:
+  `.arpegioEnElMastil`, `.trastes(desde:hasta:)` y `.arpegiar`.
+
 - El paquete pide Swift 6.0 o posterior y compila en el modo de lenguaje 6, como las apps (`SWIFT_VERSION` 6.0 en
   `project.yml`). Antes pedía Swift 5.9.
 

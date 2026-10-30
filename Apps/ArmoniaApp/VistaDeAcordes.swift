@@ -2,8 +2,8 @@ import SwiftUI
 import Armonia
 import ArmoniaUI
 
-/// Escribe un cifrado (Sol7/Si, Dom, Fa#m7b5…) y muestra el acorde, su arpegio, las escalas que encajan con él y
-/// sus digitaciones.
+/// Escribe un cifrado (Sol7/Si, Dom, Fa#m7b5…) y muestra el acorde, su arpegio, las escalas que encajan con él,
+/// sus digitaciones y el arpegio en el mástil.
 struct VistaDeAcordes: View {
     @Environment(\.notacion) private var notacion
     @EnvironmentObject private var navegacion: Navegacion
@@ -33,6 +33,7 @@ struct VistaDeAcordes: View {
                 arpegio(de: acorde)
                 escalas(de: acorde)
                 digitaciones(de: acorde)
+                arpegioEnElMastil(de: acorde)
             case .failure(let error):
                 Section {
                     Text(notacion.mensaje(de: error)).foregroundColor(.red)
@@ -43,7 +44,7 @@ struct VistaDeAcordes: View {
         .selectorDeNotacionEnLaBarra()
         .toolbar {
             ToolbarItem {
-                BotonDeExportar(ficherosDelPentagrama)
+                BotonDeExportar(ficheros)
             }
         }
         .onChange(of: texto) { lectura = Self.leer($0) }
@@ -58,11 +59,14 @@ struct VistaDeAcordes: View {
         }
     }
 
-    /// Los pentagramas del acorde leído y de su arpegio como SVG, o nada si el texto no se lee.
-    private var ficherosDelPentagrama: [FicheroParaExportar] {
+    /// Los pentagramas del acorde leído y de su arpegio como SVG, y el arpegio en MusicXML, MEI y MIDI, o nada
+    /// si el texto no se lee.
+    private var ficheros: [FicheroParaExportar] {
         guard case .success(let acorde) = lectura else { return [] }
+        let arpegio = Arpegio(acorde, patron: patron)
         return [PresentacionDePentagrama(acorde, notacion: notacion).fichero,
-                PresentacionDePentagrama(Arpegio(acorde, patron: patron), notacion: notacion).fichero]
+                PresentacionDePentagrama(arpegio, notacion: notacion).fichero]
+            + PresentacionDeArpegios.arpegio(arpegio, notacion: notacion).ficheros
     }
 
     /// El arpegio en el patrón elegido: su pentagrama, nota a nota, y cómo suena.
@@ -128,6 +132,32 @@ struct VistaDeAcordes: View {
                 }
             } else {
                 FilaCalculando()
+            }
+        }
+    }
+
+    /// El arpegio en el mástil del instrumento elegido en las digitaciones: las notas del acorde por todo el
+    /// mástil y, debajo, cada posición en que la mano lo toca sin moverse, de la más baja a la más alta.
+    @ViewBuilder
+    private func arpegioEnElMastil(de acorde: Acorde) -> some View {
+        let mastil = Mastil(encordado, trastes: 12)
+        Section(notacion.texto(.arpegioEnElMastil)) {
+            Text(encordado.titulo(en: notacion))
+                .foregroundColor(.secondary)
+            DiagramaDeMastil(mastil: mastil, acorde: acorde, notacion: notacion)
+            ForEach(mastil.arpegios(de: acorde), id: \.trastes) { posicion in
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        Text(notacion.texto(.trastes(desde: posicion.trastes.lowerBound,
+                                                     hasta: posicion.trastes.upperBound)))
+                        Spacer()
+                        // De grave a agudo, en corcheas, como se toca al subir.
+                        BotonDeEscuchar(Sonido.voz(Voz(posicion.alturas.map { Evento($0, .corchea) }))
+                            .conTonica(acorde.fundamental))
+                    }
+                    DiagramaDeMastil(arpegio: posicion, acorde: acorde, notacion: notacion)
+                        .frame(maxHeight: 120)
+                }
             }
         }
     }
