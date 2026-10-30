@@ -1,4 +1,5 @@
 import XCTest
+import Armonia
 @testable import ArmoniaCLI
 
 final class LineaDeComandosTests: XCTestCase {
