@@ -1,0 +1,28 @@
+# Casos de `TipoDeEscala.normalizar`: entrada, tabulador, resultado esperado.
+# Los leen el test de Swift (NormalizarVectoresTests) y Scripts/normalizar_escalas.py: si cambias la función en un
+# sitio, cambia el otro y añade aquí el caso. Sin espacios al principio ni al final de la entrada (la separación por
+# espacios los descartaría, y un tabulador los haría ambiguos). Sin «ß» ni sigma final («ς»): depende de cómo pliegue
+# Foundation las mayúsculas.
+dórico	dorico
+DÓRICO	dorico
+Kāfī	kafi
+Hanumattoḍī	hanumattodi
+Ḥijāz	hijaz
+Hitzáz	hitzaz
+dórico ♭2	dorico b2
+lidio ♯5	lidio #5
+locrio ♮6	locrio 6
+jónico sin 4ª	jonico sin 4
+cromática −5…6	cromatica 5..6
+cromatica -5..6	cromatica 5..6
+doble  armónica	doble armonica
+Lidio-Dominante	lidio dominante
+whole-tone	whole tone
+Hirajōshi	hirajoshi
+Ančihoye	ancihoye
+भैरव	भैरव
+भैरवी	भैरवी
+मायामालवगौळ	मायामालवगौळ
+Χιτζάζ	χιτζαζ
+φρυγική	φρυγικη
+дорийский	дориискии

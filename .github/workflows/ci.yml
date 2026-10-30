@@ -1,0 +1,324 @@
+name: CI
+
+# `push` solo en la rama principal: en una rama con pull request ya corre el de `pull_request`, y con los
+# dos se ejecutaba todo dos veces. Si tu rama principal no se llama main ni master, cámbialo aquí.
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Un push nuevo cancela la ejecución anterior de la misma rama.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Xcode de los jobs de macOS: `latest-stable`, o una versión concreta («16.4») para fijarla.
+  XCODE: latest-stable
+
+# No se guarda `.build` en caché a propósito: el repositorio no tiene dependencias externas, así que la
+# caché solo guardaría el código propio, que se recompila igual en cada commit.
+
+jobs:
+  comprobaciones:
+    name: Comprobaciones del repositorio
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Higiene (invisibles, tabuladores, permisos, scripts que compilan)
+        run: python3 Scripts/comprobar_higiene.py
+      - name: Dependencias entre paquetes y apps
+        run: python3 Scripts/comprobar_dependencias.py
+      - name: Rutas sin colisiones de mayúsculas
+        run: |
+          duplicadas=$(git ls-files | tr 'A-Z' 'a-z' | sort | uniq -d)
+          if [ -n "$duplicadas" ]; then echo "Rutas que solo difieren en mayúsculas:"; echo "$duplicadas"; exit 1; fi
+          carpetas=$(git ls-files | xargs -n1 dirname | sort -u | tr 'A-Z' 'a-z' | sort | uniq -d)
+          if [ -n "$carpetas" ]; then echo "Carpetas que solo difieren en mayúsculas:"; echo "$carpetas"; exit 1; fi
+      - name: Módulos del motor
+        run: python3 Scripts/comprobar_modulos.py
+      - name: Catálogo de escalas
+        run: python3 Scripts/comprobar_catalogo.py
+      - name: Enlaces de la documentación (DocC)
+        run: python3 Scripts/comprobar_enlaces_docc.py
+      - name: Traducciones
+        run: python3 Scripts/comprobar_traducciones.py
+      - name: Ejemplos de la documentación al día
+        run: python3 Scripts/generar_pruebas_de_documentacion.py --comprobar
+
+  motor:
+    name: Armonia · Linux · Swift ${{ matrix.swift }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container: swift:${{ matrix.swift }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # La más antigua que admite el paquete y la más reciente: las intermedias no han dado nada distinto.
+        swift: ["5.9", "6.2"]
+    defaults:
+      run:
+        working-directory: Packages/Armonia
+    steps:
+      - uses: actions/checkout@v5
+      - name: Compilar
+        run: swift build
+      - name: Pruebas rápidas
+        run: swift test --parallel --filter "^ArmoniaTests\\."
+      - name: Pruebas exhaustivas
+        run: swift test --parallel --filter "^ArmoniaExhaustivasTests\\."
+      - name: Ejemplos de la documentación
+        run: swift test --parallel --filter "^ArmoniaDocumentacionTests\\."
+      - name: Concurrencia estricta (módulos)
+        if: startsWith(matrix.swift, '6')
+        run: |
+          for objetivo in ArmoniaNucleo ArmoniaTeoria ArmoniaRepresentaciones ArmoniaPartitura ArmoniaTrastes Armonia; do
+            swift build --target "$objetivo" -Xswiftc -strict-concurrency=complete -Xswiftc -warnings-as-errors
+          done
+
+  herramientas:
+    name: ${{ matrix.paquete.nombre }} · Linux · Swift ${{ matrix.swift }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container: swift:${{ matrix.swift }}
+    strategy:
+      fail-fast: false
+      matrix:
+        swift: ["5.9", "6.2"]
+        paquete:
+          - { nombre: ArmoniaCLI, ruta: Apps/ArmoniaCLI }
+          - { nombre: EjemploArmonia, ruta: Ejemplos/EjemploArmonia }
+          - { nombre: EjemploHexagonos, ruta: Ejemplos/EjemploHexagonos }
+          - { nombre: RendimientoArmonia, ruta: Herramientas/RendimientoArmonia }
+    defaults:
+      run:
+        working-directory: ${{ matrix.paquete.ruta }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Compilar
+        run: swift build
+      - name: Pruebas de la línea de comandos
+        if: matrix.paquete.nombre == 'ArmoniaCLI'
+        run: swift test --parallel
+      - name: Ejemplo
+        if: startsWith(matrix.paquete.nombre, 'Ejemplo')
+        run: swift run ${{ matrix.paquete.nombre }}
+      - name: Concurrencia estricta
+        if: matrix.paquete.nombre == 'ArmoniaCLI' && startsWith(matrix.swift, '6')
+        run: swift build --target ArmoniaCLI -Xswiftc -strict-concurrency=complete -Xswiftc -warnings-as-errors
+
+  # Los tiempos del motor, compilado con optimización, en el resumen de la ejecución y como artefacto
+  # (`rendimiento.json`), para compararlos con `--comparar`. No falla por lentitud: las máquinas del CI
+  # varían demasiado para fijar límites; sirve para ver el orden de magnitud y cómo crece cada caso.
+  rendimiento:
+    name: Rendimiento del motor · Linux
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container: swift:6.2
+    defaults:
+      run:
+        working-directory: Herramientas/RendimientoArmonia
+        shell: bash
+    steps:
+      - uses: actions/checkout@v5
+      - name: Compilar con optimización
+        run: swift build -c release
+      - name: Medir
+        run: |
+          set -o pipefail
+          echo "## Rendimiento del motor" >> "$GITHUB_STEP_SUMMARY"
+          swift run -c release RendimientoArmonia --json "$GITHUB_WORKSPACE/rendimiento.json" | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rendimiento
+          path: rendimiento.json
+
+  paquetes:
+    name: ${{ matrix.paquete }} · Linux · Swift ${{ matrix.swift }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container: swift:${{ matrix.swift }}
+    strategy:
+      fail-fast: false
+      matrix:
+        swift: ["5.9", "6.2"]
+        paquete: [ArmoniaUI, Hexagonos]
+    defaults:
+      run:
+        working-directory: Packages/${{ matrix.paquete }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Compilar
+        run: swift build
+      - name: Pruebas
+        run: swift test --parallel
+      - name: Concurrencia estricta
+        if: matrix.paquete == 'Hexagonos' && startsWith(matrix.swift, '6')
+        run: swift build --target Hexagonos -Xswiftc -strict-concurrency=complete -Xswiftc -warnings-as-errors
+
+  # El Package.swift de la raíz, el que usa quien añade el repositorio por URL: debe compilar igual.
+  raiz:
+    name: Paquete de la raíz · Linux · Swift ${{ matrix.swift }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container: swift:${{ matrix.swift }}
+    strategy:
+      fail-fast: false
+      matrix:
+        swift: ["5.9", "6.2"]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Compilar
+        run: swift build
+
+  macos:
+    name: macOS · paquetes y apps
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE }}
+      - name: Versión de Swift y de Xcode
+        run: swift --version && xcodebuild -version
+      - name: Armonia
+        run: swift build && swift test --parallel --filter "^ArmoniaTests\\."
+        working-directory: Packages/Armonia
+      - name: ArmoniaUI
+        run: swift test --parallel
+        working-directory: Packages/ArmoniaUI
+      - name: Hexagonos
+        run: swift test --parallel
+        working-directory: Packages/Hexagonos
+      - name: Línea de comandos y ejemplos
+        run: |
+          (cd Apps/ArmoniaCLI && swift test --parallel)
+          (cd Ejemplos/EjemploArmonia && swift run EjemploArmonia > /dev/null)
+          (cd Ejemplos/EjemploHexagonos && swift run EjemploHexagonos > /dev/null)
+      - name: Instalar XcodeGen
+        run: brew install xcodegen
+      - name: Generar el proyecto
+        run: ./Scripts/generar_proyecto.sh
+      - name: Armonía (macOS)
+        run: >
+          xcodebuild build -project Hexaphonos.xcodeproj -scheme ArmoniaApp
+          -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
+      - name: Tonnetz (macOS)
+        run: >
+          xcodebuild build -project Hexaphonos.xcodeproj -scheme TonnetzApp
+          -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
+      # La App Store rechaza una app sin su manifiesto de privacidad.
+      - name: Manifiesto de privacidad en las apps
+        run: |
+          for app in ArmoniaApp TonnetzApp; do
+            manifiesto=$(find ~/Library/Developer/Xcode/DerivedData -path "*/Build/Products/Debug/$app.app/Contents/Resources/PrivacyInfo.xcprivacy" | head -1)
+            test -n "$manifiesto" || { echo "::error::$app no lleva PrivacyInfo.xcprivacy"; exit 1; }
+            plutil -lint "$manifiesto"
+          done
+      - name: Armonía (iOS, simulador)
+        run: >
+          xcodebuild build -project Hexaphonos.xcodeproj -scheme ArmoniaApp
+          -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO
+      - name: Tonnetz (iOS, simulador)
+        run: >
+          xcodebuild build -project Hexaphonos.xcodeproj -scheme TonnetzApp
+          -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO
+      # Los catorce idiomas, en el Info.plist y como carpetas .lproj, en cada app de iOS.
+      - name: Idiomas de las apps
+        run: |
+          for app in ArmoniaApp TonnetzApp; do
+            paquete=$(find ~/Library/Developer/Xcode/DerivedData -type d -path "*/Build/Products/Debug-iphonesimulator/$app.app" | head -1)
+            test -n "$paquete" || { echo "::error::No encuentro $app.app"; exit 1; }
+            idiomas=$(plutil -extract CFBundleLocalizations json -o - "$paquete/Info.plist" | python3 -c 'import json, sys; print(len(json.load(sys.stdin)))')
+            carpetas=$(ls -d "$paquete"/*.lproj | wc -l | tr -d ' ')
+            echo "$app: $idiomas idiomas en el Info.plist, $carpetas carpetas .lproj"
+            test "$idiomas" -eq 14 && test "$carpetas" -ge 14 || { echo "::error::$app no declara los catorce idiomas"; exit 1; }
+          done
+
+  interfaz:
+    name: Pruebas de interfaz · ${{ matrix.plataforma }}
+    runs-on: macos-15
+    timeout-minutes: 45
+    # macOS e iOS en paralelo: una tras otra tardaban unos 21 minutos.
+    strategy:
+      fail-fast: false
+      matrix:
+        plataforma: [macOS, iOS]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE }}
+      - name: Instalar XcodeGen
+        run: brew install xcodegen
+      - name: Generar el proyecto
+        run: ./Scripts/generar_proyecto.sh
+      - name: Permitir que las pruebas manejen las apps
+        if: matrix.plataforma == 'macOS'
+        run: sudo automationmodetool enable-automationmode-without-authentication
+      # El primer iPhone del simulador que tenga el Xcode instalado, para no fijar un modelo que desaparezca.
+      - name: Elegir el simulador
+        if: matrix.plataforma == 'iOS'
+        run: |
+          iphone=$(xcrun simctl list devices available | grep -m1 -oE 'iPhone [^(]*[^ (]')
+          echo "Simulador: $iphone"
+          echo "SIMULADOR=platform=iOS Simulator,name=$iphone" >> "$GITHUB_ENV"
+          # Arrancado de antemano: si no, la primera prueba puede agotar el minuto que se da para abrir la app.
+          xcrun simctl boot "$iphone"
+          xcrun simctl bootstatus "$iphone" -b
+      # En macOS el ejecutor de las pruebas tiene que estar firmado: se firma sin equipo («-»).
+      # En iOS una prueba que falla se repite una vez: el simulador del CI a veces no deja abrir la app
+      # («Timed out while acquiring background assertion»), y un fallo de verdad falla también la segunda.
+      - name: Armonía
+        run: |
+          if [ "${{ matrix.plataforma }}" = macOS ]; then
+            xcodebuild test -project Hexaphonos.xcodeproj -scheme ArmoniaApp -destination 'platform=macOS' \
+              CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=
+          else
+            xcodebuild test -project Hexaphonos.xcodeproj -scheme ArmoniaApp -destination "$SIMULADOR" \
+              CODE_SIGNING_ALLOWED=NO -retry-tests-on-failure -test-iterations 2
+          fi
+      - name: Tonnetz
+        run: |
+          if [ "${{ matrix.plataforma }}" = macOS ]; then
+            xcodebuild test -project Hexaphonos.xcodeproj -scheme TonnetzApp -destination 'platform=macOS' \
+              CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=
+          else
+            xcodebuild test -project Hexaphonos.xcodeproj -scheme TonnetzApp -destination "$SIMULADOR" \
+              CODE_SIGNING_ALLOWED=NO -retry-tests-on-failure -test-iterations 2
+          fi
+
+  documentacion:
+    name: DocC · macOS
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE }}
+      - name: Construir la documentación
+        working-directory: Packages/Armonia
+        run: |
+          set -o pipefail
+          xcodebuild docbuild -scheme Armonia-Package -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/docc" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild.log"
+      - name: Construir la documentación de Hexagonos
+        working-directory: Packages/Hexagonos
+        run: |
+          set -o pipefail
+          # Con un solo producto, el esquema se llama como él (sin «-Package»).
+          xcodebuild docbuild -scheme Hexagonos -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/docc-hexagonos" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-hexagonos.log"
+      - name: Enlaces sin resolver
+        run: |
+          if grep -E "warning: .*(doesn.t exist|couldn.t be resolved|unresolved|not found)" "$RUNNER_TEMP"/docbuild*.log; then
+            echo "::warning::Hay enlaces de DocC sin resolver (¿símbolos reexportados por el módulo Armonia?)"
+            exit 1
+          fi

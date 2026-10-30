@@ -1,0 +1,52 @@
+// Los textos de ArmoniaPartitura en italiano. Los campos y lo que significa cada uno están en
+// `TextosDePartitura.swift`.
+
+extension TextosDePartitura {
+    static let italiano = TextosDePartitura(
+        // Contrapunto+Idiomas.swift
+        enElCompas: { n in "(battuta \(n))" },
+        enLosCompases: { pasos in "(battute \(pasos))" },
+        ritmoDeLaEspecie: "Ritmo estraneo alla specie",
+        comienzoImperfecto: "Inizio senza consonanza perfetta",
+        finalImperfecto: "Finale senza unisono né ottava",
+        finalSinGradoConjunto: "Finale non raggiunto per grado congiunto",
+        disonanciaEnParteFuerte: "Dissonanza in battere",
+        disonanciaMalTratada: "Dissonanza mal trattata",
+        retardoMalResuelto: "Ritardo mal risolto",
+        unisono: "Unisono a metà esercizio",
+        saltoSinCompensar: "Salto non compensato",
+        notaRepetida: "Nota ripetuta",
+        especieConElContrapuntoEncima: { n in "Specie \(n), con il contrappunto sopra il cantus firmus" },
+        especieConElContrapuntoDebajo: { n in "Specie \(n), con il contrappunto sotto il cantus firmus" },
+        sinFaltas: "Nessun errore.",
+
+        // ArchivoMIDI.swift
+        pistaDeAcordes: "accordi",
+        pistaDelBajo: "basso",
+
+        // Duracion+Idiomas.swift
+        cuadrada: "breve",
+        redonda: "semibreve",
+        blanca: "minima",
+        negra: "semiminima",
+        corchea: "croma",
+        semicorchea: "semicroma",
+        fusa: "biscroma",
+        semifusa: "semibiscroma",
+        garrapatea: "fusa",
+        cero: "zero",
+        fraccionDeRedonda: { fraccion in "\(fraccion) di semibreve" },
+        conPuntillos: ["_ puntata", "_ doppiamente puntata", "_ triplamente puntata", "_ quadruplamente puntata"],
+
+        // Pentagrama+Idiomas.swift
+        claveDeSol: "chiave di violino",
+        claveDeSolOctavaBaja: "chiave di violino ottava bassa",
+        claveDeSolOctavaAlta: "chiave di violino ottava alta",
+        claveDeFa: "chiave di basso",
+        claveDeFaEnTercera: "chiave di baritono",
+        claveDeDoEnPrimera: "chiave di soprano",
+        claveDeDoEnSegunda: "chiave di mezzosoprano",
+        claveDeDoEnTercera: "chiave di contralto",
+        claveDeDoEnCuarta: "chiave di tenore"
+    )
+}

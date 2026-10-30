@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Los catorce idiomas de las apps, en el orden de siempre. Xcode lo une al Info.plist que genera (project.yml lo
+  da como INFOPLIST_FILE): así el sistema sabe que la app está en el idioma del usuario y pone en él sus propios
+  textos (Compartir, Cancelar…). Las carpetas <idioma>.lproj de cada app hacen lo mismo para la App Store.
+-->
+<plist version="1.0">
+<dict>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>es</string>
+		<string>en</string>
+		<string>ca</string>
+		<string>gl</string>
+		<string>ast</string>
+		<string>an</string>
+		<string>eu</string>
+		<string>pt</string>
+		<string>fr</string>
+		<string>oc</string>
+		<string>it</string>
+		<string>de</string>
+		<string>el</string>
+		<string>ru</string>
+	</array>
+</dict>
+</plist>
