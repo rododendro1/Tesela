@@ -174,14 +174,15 @@ Sources/
 ├── ArmoniaTeoria/
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
 │   │                      PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde
-│   ├── Escalas/           TipoDeEscala (el tipo; +Basicas, +Catalogo con la búsqueda por nombre; `nombre(en:)`
-│   │   │                  en el propio fichero), Escala (con NombreDeGrado), Escala+Busqueda, Escala+Ortografia
+│   ├── Escalas/           TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
+│   │   │                  `nombre(en:)`), Escala (con NombreDeGrado, la búsqueda por notas y la ortografía)
 │   │   ├── Nombres/       NombresDeEscalas y un fichero por idioma (`NombresDeEscalas+Catalan.swift`…): el nombre de cada
 │   │   │                  tipo, sus alias, las escalas de otras tradiciones y el nombre de cada clase
-│   │   ├── Occidentales/  TipoDeEscala+Modos, +Exoticas, +Hexatonicas, +Messiaen, +ModosExoticos, +Jazz, ModoGregoriano
-│   │   └── Tradiciones/   TipoDeEscala+India, +Grecia, +China, +Japon, +Corea, +Etiopia, +MundoArabe (maqamat),
-│   │                      +Persia (dastgah), +Indonesia, +Klezmer, +Andes, +Tradiciones (la lista `tradicionales`) y
-│   │                      ClaseDeEscala (con `Tradicion`: raga, melakarta, dromos…)
+│   │   ├── Occidentales/  TipoDeEscala+Modos (con los modos exóticos), +Exoticas (con hexatónicas, jazz y
+│   │   │                  Messiaen), ModoGregoriano
+│   │   └── Tradiciones/   TipoDeEscala+India, +Tradiciones (la lista `tradicionales` y, cada una tras su marca,
+│   │                      Andes, China, Corea, Etiopia, Grecia, Indonesia, Japon, Klezmer, MundoArabe (maqamat) y
+│   │                      Persia (dastgah)) y ClaseDeEscala (con `Tradicion`: raga, melakarta, dromos…)
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
 │   │                      FuncionTonal y AcordeAnalizado)
 │   └── Coral/             Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion

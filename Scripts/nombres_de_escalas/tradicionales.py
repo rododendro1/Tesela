@@ -31,10 +31,22 @@ for base in ("Təzəta", "Bati"):
         T[f"{base} {modo}"] = [f"{base} {x}" for x in tr] + [f"{base} {modo}", f"{base} {modo}"]
 
 
+def texto_de(tradicion):
+    """El código de una tradición: la India tiene su fichero; las demás están en `TipoDeEscala+Tradiciones.swift`,
+    cada una desde su `// MARK: - Nombre` hasta la marca siguiente."""
+    if tradicion == "India":
+        return (ESC / "Tradiciones" / "TipoDeEscala+India.swift").read_text(encoding="utf-8")
+    texto = (ESC / "Tradiciones" / "TipoDeEscala+Tradiciones.swift").read_text(encoding="utf-8")
+    m = re.search(rf"^// MARK: - {tradicion}$(.*?)(?=^// MARK: - |\Z)", texto, re.M | re.S)
+    if m is None:
+        sys.exit(f"No encuentro `// MARK: - {tradicion}` en TipoDeEscala+Tradiciones.swift")
+    return m.group(1)
+
+
 def nombres():
     grupos = []
     for titulo, fichero in TRAD:
-        texto = (ESC / "Tradiciones" / f"TipoDeEscala+{fichero}.swift").read_text(encoding="utf-8")
+        texto = texto_de(fichero)
         ns = re.findall(r'static let (`?\w+`?) = TipoDeEscala\(\s*nombre: "((?:[^"\\]|\\.)*)"', texto)
         if fichero == "India":    # los 72 melakarta no llevan fila: conservan su nombre original
             titulo = "India: ragas janya, thaat y ragas indostánicos"
