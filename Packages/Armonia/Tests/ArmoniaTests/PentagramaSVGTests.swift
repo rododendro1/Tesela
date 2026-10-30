@@ -187,7 +187,7 @@ final class PentagramaSVGTests: XCTestCase {
     }
 
     private func pentagrama(_ notas: [(String, Int)]) -> String {
-        PentagramaSVG(columnas: [notas.map { Altura(Nota($0.0), octava: $0.1) }], armadura: [], cifrado: nil, titulo: "",
+        PentagramaSVG(columnas: [notas.map { Altura(try! Nota(leyendo: $0.0), octava: $0.1) }], armadura: [], cifrado: nil, titulo: "",
                       opciones: OpcionesDePentagrama()).svg()
     }
 
