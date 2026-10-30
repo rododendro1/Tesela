@@ -134,12 +134,14 @@ final class NombresDeEscalasPorIdiomaTests: XCTestCase {
     }
 
     /// Āsāvarī es la escala menor natural por sus intervalos (`TipoDeEscala` se compara por ellos): por eso las
-    /// tradicionales se buscan por su nombre y no por el tipo.
+    /// tradicionales se buscan por su nombre y no por el tipo. En ruso y griego va transcrito (Асавари, Ασαβαρί).
     func testUnaEscalaTradicionalIgualAUnaOccidentalConservaSuNombre() {
         XCTAssertEqual(TipoDeEscala.asavari, TipoDeEscala.menorNatural)
         for idioma in Idioma.allCases {
             let nombres = NombresDeEscalas.de(idioma)
-            XCTAssertEqual(nombres.nombre(de: .asavari), TipoDeEscala.asavari.nombre, "\(idioma)")
+            if idioma != .ruso && idioma != .griego {
+                XCTAssertEqual(nombres.nombre(de: .asavari), TipoDeEscala.asavari.nombre, "\(idioma)")
+            }
             XCTAssertNotEqual(nombres.nombre(de: .asavari), nombres.nombre(de: .menorNatural), "\(idioma)")
         }
     }
