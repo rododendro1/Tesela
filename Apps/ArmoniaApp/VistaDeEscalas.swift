@@ -6,6 +6,7 @@ import ArmoniaUI
 /// sus acordes y dónde caen en el mástil.
 struct VistaDeEscalas: View {
     @Environment(\.notacion) private var notacion
+    @EnvironmentObject private var navegacion: Navegacion
     @State private var tonica = 0          // índice en `tonicas`
     @State private var tipo = 0            // índice en `catalogo`
 
@@ -63,10 +64,28 @@ struct VistaDeEscalas: View {
         }
         .navigationTitle(notacion.texto(.escalas))
         .selectorDeNotacionEnLaBarra()
+        // Una escala pedida desde otra pestaña (las compatibles con un acorde), ahora o si se pidió antes de abrir esta.
+        .onChange(of: navegacion.escalaPedida) { _ in tomarLaEscalaPedida() }
+        .onAppear(perform: tomarLaEscalaPedida)
         .toolbar {
             ToolbarItem {
                 BotonDeExportar([pentagrama.fichero])
             }
+        }
+    }
+
+    /// Elige la tónica y el tipo de la escala pedida: el tipo con el mismo nombre o, si no, el primero con las
+    /// mismas notas.
+    private func tomarLaEscalaPedida() {
+        guard let pedida = navegacion.escalaPedida else { return }
+        navegacion.escalaPedida = nil
+        if let indice = VistaDeEscalas.tonicas.firstIndex(where: { $0.claseDeAltura == pedida.tonica.claseDeAltura }) {
+            tonica = indice
+        }
+        let nombre = pedida.tipo.nombre(en: .espanolUnicode)
+        if let indice = VistaDeEscalas.catalogo.firstIndex(where: { $0.nombre(en: .espanolUnicode) == nombre })
+            ?? VistaDeEscalas.catalogo.firstIndex(of: pedida.tipo) {
+            tipo = indice
         }
     }
 

@@ -5,7 +5,8 @@ import ArmoniaUI
 /// Un acorde, una escala o un recorrido de tríadas con las transformaciones P, L y R, en el Tonnetz, en la
 /// tabla armónica o en un teclado isomórfico (Wicki-Hayden, Jankó o acordeón cromático), y su dibujo para exportar. Al tocar una
 /// nota del dibujo, suena. En el modo «Identificar», además, la nota tocada se marca (o se desmarca) y se dice
-/// qué acorde forman las marcadas.
+/// qué acorde forman las marcadas y su número de Forte; un acorde tocado en un teclado MIDI conectado también se
+/// marca, con la nota más grave como bajo.
 struct VistaDeTonnetz: View {
     enum Contenido: CaseIterable, Identifiable {
         case recorrido
@@ -35,6 +36,10 @@ struct VistaDeTonnetz: View {
     @State private var transformaciones: [TransformacionNeorriemanniana] = []
     /// Las clases de altura tocadas en el modo «Identificar», en el orden en que se tocaron: la primera es el bajo.
     @State private var clasesTocadas: [Int] = []
+    @ObservedObject private var entradaMIDI = EntradaMIDI.compartida
+    /// El último acorde tocado en el teclado MIDI y las teclas pulsadas la última vez que cambiaron.
+    @State private var notasMIDI: [Int] = []
+    @State private var pulsadasAntes: [Int] = []
 
     var body: some View {
         VStack(spacing: 12) {
@@ -79,7 +84,18 @@ struct VistaDeTonnetz: View {
                 BotonDeExportar(ficheros)
             }
         }
-        .onAppear { if recorrido.isEmpty { reiniciar() } }
+        .onAppear {
+            if recorrido.isEmpty { reiniciar() }
+            entradaMIDI.empezar()
+        }
+        // En el modo «Identificar», lo que se toca en el teclado MIDI se marca en el dibujo.
+        .onChange(of: entradaMIDI.pulsadas) { ahora in
+            let retenidas = CambioMIDI.retener(notasMIDI, antes: pulsadasAntes, ahora: ahora)
+            pulsadasAntes = ahora
+            guard retenidas != notasMIDI else { return }
+            notasMIDI = retenidas
+            if contenido == .identificar { clasesTocadas = CambioMIDI.clases(de: retenidas) }
+        }
     }
 
     // MARK: Controles
@@ -160,8 +176,11 @@ struct VistaDeTonnetz: View {
             return clasesTocadas.count < 2 ? notas : notas + " · " + notacion.texto(.sinAcordeConocido)
         }
         let otros = acordes.dropFirst().prefix(3).map { $0.cifrado(en: notacion) }
+        let forte = PresentacionPostonal(clases: clasesTocadas).numeroDeForte.map {
+            "\n" + notacion.texto(.numeroDeForte) + ": " + $0
+        } ?? ""
         return primero.cifrado(en: notacion) + " · " + primero.nombre(en: notacion)
-            + (otros.isEmpty ? "" : "\n" + otros.joined(separator: ", "))
+            + (otros.isEmpty ? "" : "\n" + otros.joined(separator: ", ")) + forte
     }
 
     // MARK: El dibujo
