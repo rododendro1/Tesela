@@ -146,9 +146,9 @@ final class NombresDeEscalasPorIdiomaTests: XCTestCase {
         }
     }
 
-    /// Un nombre traducido de una tradicional se lee en su idioma.
+    /// Un nombre traducido de una tradicional se lee en su idioma (el alemán, con la tónica en alemán).
     func testLosNombresTraducidosDeLasTradicionalesSeLeen() {
-        XCTAssertEqual(Escala("Do andine Pentatonik").tipo.nombre, "pentatónica andina")
+        XCTAssertEqual(Escala("Fis andine Pentatonik").tipo.nombre, "pentatónica andina")
         XCTAssertEqual(Escala("do tetracord cromàtic").tipo.nombre, "tetracordo cromático")
     }
 
