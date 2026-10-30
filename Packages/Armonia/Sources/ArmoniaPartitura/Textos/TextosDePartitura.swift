@@ -36,6 +36,7 @@ struct TextosDePartitura: Sendable {
     let xmlDanado: @Sendable (Int) -> String
     let noEsMusicXMLPorPartes: String
     let sinNotas: String
+    let sinAcordes: String
 
     // MARK: Duracion+Idiomas.swift
     let cuadrada: String

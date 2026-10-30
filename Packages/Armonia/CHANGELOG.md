@@ -19,7 +19,7 @@
   pulso: cada clase de altura pesa lo que suena, se descartan las notas breves si sin ellas sale una lectura más
   probable y las ventanas seguidas con el mismo acorde se funden. `analisis(en:ventana:)` las analiza.
 - `ErrorDeImportacion` dice por qué no se puede leer un fichero (formato desconocido, MusicXML comprimido, MIDI dañado
-  o con tiempo SMPTE, XML mal formado, sin notas), en los catorce idiomas.
+  o con tiempo SMPTE, XML mal formado, sin notas o sin acordes), en los catorce idiomas.
 - En la línea de comandos, `armonia analizar --archivo coral.mid [--ventana 2] [--en Do mayor]` (o
   `analyze --file chorale.musicxml --window 2`) analiza los acordes de un fichero como si se hubieran escrito.
 - Todavía no se leen el MusicXML comprimido (.mxl), las repeticiones ni los saltos.

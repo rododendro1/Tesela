@@ -92,6 +92,8 @@ public enum TextoDeLasApps: Hashable, Sendable {
     case textos
     case comoLasNotas
     case exportar
+    /// Abrir un fichero MIDI o MusicXML (en la pestaña de análisis).
+    case abrir
     case escuchar
     /// El temperamento con que suena «Escuchar».
     case afinacionAlEscuchar
@@ -538,6 +540,11 @@ public enum TextoDeLasApps: Hashable, Sendable {
                               an: "Exportar", eu: "Esportatu", pt: "Exportar",
                               fr: "Exporter", oc: "Exportar", it: "Esporta", de: "Exportieren",
                               el: "Εξαγωγή", ru: "Экспорт")
+        case .abrir:
+            return Traduccion("Abrir", "Open", ca: "Obre", gl: "Abrir", ast: "Abrir",
+                              an: "Ubrir", eu: "Ireki", pt: "Abrir",
+                              fr: "Ouvrir", oc: "Dobrir", it: "Apri", de: "Öffnen",
+                              el: "Άνοιγμα", ru: "Открыть")
         case .rejillaHexagonal:
             return Traduccion("Rejilla hexagonal", "Hexagonal grid", ca: "Graella hexagonal", gl: "Grade hexagonal",
                               ast: "Rexáu hexagonal", an: "Reixa hexagonal", eu: "Sare hexagonala",

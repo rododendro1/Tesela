@@ -32,6 +32,7 @@ extension TextosDePartitura {
         xmlDanado: { linea in "El fitxer MusicXML està malmès (línia \(linea))." },
         noEsMusicXMLPorPartes: "L'XML no és una partitura MusicXML per parts (score-partwise).",
         sinNotas: "El fitxer no té cap nota.",
+        sinAcordes: "Al fitxer no sona cap acord.",
 
         // Duracion+Idiomas.swift
         cuadrada: "quadrada",

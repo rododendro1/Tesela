@@ -32,6 +32,7 @@ extension TextosDePartitura {
         xmlDanado: { linea in "Lo fichièr MusicXML es damatjat (linha \(linea))." },
         noEsMusicXMLPorPartes: "Lo XML es pas una particion MusicXML per partidas (score-partwise).",
         sinNotas: "Lo fichièr a pas cap de nòta.",
+        sinAcordes: "Dins lo fichièr sona pas cap d'acòrd.",
 
         // Duracion+Idiomas.swift
         cuadrada: "quadrada",

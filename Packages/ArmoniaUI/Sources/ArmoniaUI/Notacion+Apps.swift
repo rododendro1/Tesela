@@ -49,7 +49,9 @@ extension Notacion {
 
     /// Mensaje legible de un error del motor, en el idioma de esta notación.
     public func mensaje(de error: Error) -> String {
-        (error as? ErrorDeLectura)?.descripcion(en: self) ?? error.localizedDescription
+        (error as? ErrorDeLectura)?.descripcion(en: self)
+            ?? (error as? ErrorDeImportacion)?.descripcion(en: self)
+            ?? error.localizedDescription
     }
 }
 

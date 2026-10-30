@@ -5,6 +5,11 @@
 - El paquete pide Swift 6.0 o posterior y compila en el modo de lenguaje 6, como las apps (`SWIFT_VERSION` 6.0 en
   `project.yml`). Antes pedía Swift 5.9.
 
+- «Abrir» en la pestaña Análisis de ArmoniaApp: elige un fichero MIDI o MusicXML y sus acordes, uno por pulso, pasan
+  al campo de la progresión, que se analiza (y se puede retocar) como si se hubiera escrito.
+  `ImportacionDeProgresion.progresion(de:)`, en `ArmoniaPresentacion`, hace la lectura; los errores se muestran con
+  `Notacion.mensaje(de:)`, que ya explica también los de `ErrorDeImportacion`. En macOS, la app pide permiso de
+  lectura de los ficheros que se eligen (`ENABLE_USER_SELECTED_FILES`).
 - `PresentacionDeAnalisis.analizar(_:en:notacion:)` acepta también los acordes ya leídos (`[Acorde]`), como los de un
   fichero MIDI o MusicXML importado; devuelve `nil` si no hay ninguno.
 
