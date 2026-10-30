@@ -207,11 +207,11 @@ jobs:
         run: ./Scripts/generar_proyecto.sh
       - name: Armonía (macOS)
         run: >
-          xcodebuild build -project Hexaphonos.xcodeproj -scheme ArmoniaApp
+          xcodebuild build -project Tesela.xcodeproj -scheme ArmoniaApp
           -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
       - name: Tonnetz (macOS)
         run: >
-          xcodebuild build -project Hexaphonos.xcodeproj -scheme TonnetzApp
+          xcodebuild build -project Tesela.xcodeproj -scheme TonnetzApp
           -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
       # La App Store rechaza una app sin su manifiesto de privacidad.
       - name: Manifiesto de privacidad en las apps
@@ -223,11 +223,11 @@ jobs:
           done
       - name: Armonía (iOS, simulador)
         run: >
-          xcodebuild build -project Hexaphonos.xcodeproj -scheme ArmoniaApp
+          xcodebuild build -project Tesela.xcodeproj -scheme ArmoniaApp
           -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO
       - name: Tonnetz (iOS, simulador)
         run: >
-          xcodebuild build -project Hexaphonos.xcodeproj -scheme TonnetzApp
+          xcodebuild build -project Tesela.xcodeproj -scheme TonnetzApp
           -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO
       # Los catorce idiomas, en el Info.plist y como carpetas .lproj, en cada app de iOS.
       - name: Idiomas de las apps
@@ -278,19 +278,19 @@ jobs:
       - name: Armonía
         run: |
           if [ "${{ matrix.plataforma }}" = macOS ]; then
-            xcodebuild test -project Hexaphonos.xcodeproj -scheme ArmoniaApp -destination 'platform=macOS' \
+            xcodebuild test -project Tesela.xcodeproj -scheme ArmoniaApp -destination 'platform=macOS' \
               CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=
           else
-            xcodebuild test -project Hexaphonos.xcodeproj -scheme ArmoniaApp -destination "$SIMULADOR" \
+            xcodebuild test -project Tesela.xcodeproj -scheme ArmoniaApp -destination "$SIMULADOR" \
               CODE_SIGNING_ALLOWED=NO -retry-tests-on-failure -test-iterations 2
           fi
       - name: Tonnetz
         run: |
           if [ "${{ matrix.plataforma }}" = macOS ]; then
-            xcodebuild test -project Hexaphonos.xcodeproj -scheme TonnetzApp -destination 'platform=macOS' \
+            xcodebuild test -project Tesela.xcodeproj -scheme TonnetzApp -destination 'platform=macOS' \
               CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=
           else
-            xcodebuild test -project Hexaphonos.xcodeproj -scheme TonnetzApp -destination "$SIMULADOR" \
+            xcodebuild test -project Tesela.xcodeproj -scheme TonnetzApp -destination "$SIMULADOR" \
               CODE_SIGNING_ALLOWED=NO -retry-tests-on-failure -test-iterations 2
           fi
 
