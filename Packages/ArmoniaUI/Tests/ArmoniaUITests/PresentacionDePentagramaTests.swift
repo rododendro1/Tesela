@@ -40,3 +40,39 @@ final class PresentacionDePentagramaTests: XCTestCase {
         XCTAssertTrue(pentagrama.svg.hasPrefix("<svg"))
     }
 }
+
+final class PresentacionDePentagramaMasTests: XCTestCase {
+    func testElAcordeConBajoEmpiezaPorElBajoYElFicheroNoLlevaBarras() {
+        let pentagrama = PresentacionDePentagrama(Acorde("Sol7/Si"))
+        XCTAssertEqual(pentagrama.descripcion, "Sol7/Si: Si, Re, Fa, Sol")
+        XCTAssertEqual(pentagrama.fichero.nombreDeFichero, "Pentagrama Sol7-Si.svg")
+    }
+
+    func testLaOctavaCambiaLasAlturas() {
+        XCTAssertTrue(PresentacionDePentagrama(Escala("Re dórico"), octava: 3).descripcion.hasPrefix("Re dórico: Re3, Mi3"))
+        XCTAssertNotEqual(PresentacionDePentagrama(Escala("Re dórico"), octava: 3).svg,
+                          PresentacionDePentagrama(Escala("Re dórico")).svg)
+    }
+
+    func testElSentidoCambiaElDibujo() {
+        let subida = PresentacionDePentagrama(Escala("Do mayor"), sentido: .ascendente)
+        let bajada = PresentacionDePentagrama(Escala("Do mayor"), sentido: .descendente)
+        XCTAssertNotEqual(subida.svg, bajada.svg)
+        // La descripción dice las notas de la escala, no el orden del dibujo.
+        XCTAssertEqual(subida.descripcion, bajada.descripcion)
+    }
+
+    func testLaNotacionSeSigueTambienEnElAcorde() {
+        let pentagrama = PresentacionDePentagrama(Acorde("Sol7"), notacion: .inglesASCII)
+        XCTAssertEqual(pentagrama.descripcion, "G7: G, B, D, F")
+        XCTAssertTrue(pentagrama.svg.contains(">G7</text>"))
+        XCTAssertEqual(pentagrama.fichero.nombreDeFichero, "Pentagrama G7.svg")
+    }
+
+    func testLaProporcionEsLaDeSuDibujo() {
+        for pentagrama in [PresentacionDePentagrama(Escala("La menor melódica")), PresentacionDePentagrama(Acorde("Do"))] {
+            XCTAssertEqual(pentagrama.relacionDeAspecto, PresentacionDePentagrama.relacionDeAspecto(deSVG: pentagrama.svg))
+            XCTAssertNotEqual(pentagrama.relacionDeAspecto, 4, "el SVG del motor lleva viewBox")
+        }
+    }
+}
