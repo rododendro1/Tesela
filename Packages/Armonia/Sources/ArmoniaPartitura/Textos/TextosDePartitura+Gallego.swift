@@ -24,6 +24,15 @@ extension TextosDePartitura {
         pistaDeAcordes: "acordes",
         pistaDelBajo: "baixo",
 
+        // Importacion.swift
+        formatoDesconocido: "O ficheiro non é MIDI nin MusicXML.",
+        musicXMLComprimido: "É MusicXML comprimido (.mxl), que aínda non se le: expórtao sen comprimir (.musicxml).",
+        midiDanado: "O ficheiro MIDI está danado ou cortado.",
+        midiConTiempoSMPTE: "O ficheiro MIDI conta o tempo en fotogramas SMPTE, non en pulsos por negra.",
+        xmlDanado: { linea in "O ficheiro MusicXML está danado (liña \(linea))." },
+        noEsMusicXMLPorPartes: "O XML non é unha partitura MusicXML por partes (score-partwise).",
+        sinNotas: "O ficheiro non ten ningunha nota.",
+
         // Duracion+Idiomas.swift
         cuadrada: "cadrada",
         redonda: "redonda",

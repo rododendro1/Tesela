@@ -7,6 +7,8 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <akordeak> [--en <tonalitatea>]",
         descripcionAnalizar: "zifratu erromatarra, funtzioak,\nkadentziak eta modulazioak (pibota\nbarne; --en gabe)",
+        sintaxisAnalizarArchivo: "analizar --archivo <fitxategia> [--ventana <iraupena>]",
+        descripcionAnalizarArchivo: "gauza bera, MIDI edo MusicXML\nfitxategi baten akordeekin (bat\npultsuko; --ventana 2: bat zuriko)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalitatea>] [--propuestas 3]",
         descripcionArmonizar: "melodia baterako akordeak, onenetik\ntxarrenera; zortzidunekin (Mi4), lau\nahotseko korala ere bai",
         sintaxisRealizar: "realizar <akordeak> [--en <tonalitatea>]",
@@ -114,6 +116,9 @@ extension TextosDeCLI {
         faltaTonalidad: "tonalitatea falta da: armonia tonalidad La menor",
         faltaTonalidadTrasEn: "tonalitatea falta da --en ondoren",
         faltanAcordesDelAnalisis: { ejemplo in "akordeak falta dira: " + ejemplo },
+        archivoIlegible: { nombre in "ezin da «\(nombre)» fitxategia irakurri" },
+        archivoConAcordes: "--archivo erabiltzean ez idatzi akorderik",
+        archivoSinAcordes: "fitxategiak ez du akorderik",
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "marjina 0tik 6ra bitarteko zenbaki bat da: --margen 2",

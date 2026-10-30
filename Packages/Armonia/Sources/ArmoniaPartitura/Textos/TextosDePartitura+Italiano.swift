@@ -24,6 +24,15 @@ extension TextosDePartitura {
         pistaDeAcordes: "accordi",
         pistaDelBajo: "basso",
 
+        // Importacion.swift
+        formatoDesconocido: "Il file non è né MIDI né MusicXML.",
+        musicXMLComprimido: "È MusicXML compresso (.mxl), che non si legge ancora: esportalo non compresso (.musicxml).",
+        midiDanado: "Il file MIDI è danneggiato o troncato.",
+        midiConTiempoSMPTE: "Il file MIDI conta il tempo in fotogrammi SMPTE, non in tick per semiminima.",
+        xmlDanado: { linea in "Il file MusicXML è danneggiato (riga \(linea))." },
+        noEsMusicXMLPorPartes: "L'XML non è una partitura MusicXML per parti (score-partwise).",
+        sinNotas: "Il file non contiene note.",
+
         // Duracion+Idiomas.swift
         cuadrada: "breve",
         redonda: "semibreve",

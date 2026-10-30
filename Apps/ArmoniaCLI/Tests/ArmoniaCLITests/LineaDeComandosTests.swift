@@ -1,3 +1,4 @@
+import Foundation
 import XCTest
 import Armonia
 @testable import ArmoniaCLI
@@ -113,6 +114,44 @@ final class LineaDeComandosTests: XCTestCase {
             """)
         XCTAssertTrue(salida("analizar Lam Rem Mi7 La --en La menor").hasPrefix("i–iv–V7–I en La menor\n"))
         XCTAssertTrue(salida("analizar Do Lam Fa Sol").hasSuffix("Semicadencia IV–V (acordes 3 → 4)\n"))
+    }
+
+    /// Un fichero temporal con esos datos, que se borra al terminar la prueba.
+    private func fichero(_ datos: Data, extension sufijo: String) throws -> String {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("armonia-\(UUID().uuidString).\(sufijo)")
+        try datos.write(to: url)
+        addTeardownBlock { try? FileManager.default.removeItem(at: url) }
+        return url.path
+    }
+
+    func testAnalizarUnArchivo() throws {
+        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
+        let esperado = salida("analizar Do Lam Re7 Sol7 Do")
+        let midi = try fichero(analisis.midi(), extension: "mid")
+        XCTAssertEqual(salida("analizar --archivo " + midi), esperado)
+        let xml = try fichero(Data(analisis.musicXML().utf8), extension: "musicxml")
+        XCTAssertEqual(salida("analyze --file " + xml), esperado)
+        // Cada acorde dura una blanca: con una ventana de una blanca, sale lo mismo.
+        XCTAssertEqual(salida("analizar --archivo \(xml) --ventana 2"), esperado)
+        XCTAssertTrue(salida("analizar --archivo \(midi) --en Do mayor").hasPrefix("I–vi–V7/V–V7–I en Do mayor\n"))
+    }
+
+    func testAnalizarUnArchivoConErrores() throws {
+        func resultado(_ orden: String) -> ResultadoDeOrden {
+            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+        }
+        XCTAssertEqual(resultado("analizar --archivo").codigo, 2)
+        let inexistente = resultado("analizar --archivo /no/existe.mid")
+        XCTAssertEqual(inexistente.codigo, 2)
+        XCTAssertTrue(inexistente.error.hasPrefix("armonia: no se puede leer el fichero «/no/existe.mid»\n"))
+        let texto = try fichero(Data("hola".utf8), extension: "mid")
+        XCTAssertEqual(resultado("analizar --archivo " + texto).codigo, 1)
+        XCTAssertEqual(resultado("analizar --archivo " + texto).error, "El fichero no es MIDI ni MusicXML.\n")
+        XCTAssertEqual(resultado("analizar --archivo \(texto) --ingles").error, "The file is neither MIDI nor MusicXML.\n")
+        XCTAssertEqual(resultado("analizar Do Sol --archivo " + texto).codigo, 2)
+        XCTAssertEqual(resultado("analizar --archivo \(texto) --ventana 3").codigo, 1)
+        let melodia = try fichero(Voz(leyendo: "Do4:4 Re4:4 Mi4:4").midi(), extension: "mid")
+        XCTAssertTrue(resultado("analizar --archivo " + melodia).error.hasPrefix("armonia: el fichero no tiene ningún acorde\n"))
     }
 
     func testAnalizarModulaciones() {

@@ -56,6 +56,16 @@ final class PresentacionDeAnalisisTests: XCTestCase {
         XCTAssertEqual(analisis.tramos.flatMap(\.filas).count, 7)
     }
 
+    func testConLosAcordesYaLeidosSaleLoMismo() throws {
+        let texto = "Do Fa Sol7 Do Lam Re7 Sol"
+        let acordes = try texto.split(separator: " ").map { try Acorde(leyendo: String($0)) }
+        let leido = try PresentacionDeAnalisis.analizar(texto, notacion: .espanolUnicode)
+        XCTAssertEqual(PresentacionDeAnalisis.analizar(acordes, notacion: .espanolUnicode), leido)
+        let enDo = try PresentacionDeAnalisis.analizar(texto, en: Tonalidad(.do), notacion: .espanolUnicode)
+        XCTAssertEqual(PresentacionDeAnalisis.analizar(acordes, en: Tonalidad(.do), notacion: .espanolUnicode), enDo)
+        XCTAssertNil(PresentacionDeAnalisis.analizar([], notacion: .espanolUnicode))
+    }
+
     func testExportaPartiturasYMIDI() throws {
         let analisis = try PresentacionDeAnalisis.analizar("Do Fa Sol7 Do", notacion: .espanolUnicode)
         XCTAssertEqual(analisis.ficheros.map(\.formato), [.musicXML, .mei, .midi])

@@ -162,3 +162,33 @@ datos.prefix(4) == Data("MThd".utf8)   // true
 - Desde la terminal: `armonia midi melodia …`, `armonia midi coral …` y
   `armonia midi acordes Do Lam Re7 Sol7 Do > progresion.mid`, con las mismas opciones que
   `musicxml` salvo `--clave` y los cifrados, y con `--instrumento 0…127`.
+
+## Importar MIDI y MusicXML
+
+`PiezaImportada(leyendo:)` lee un fichero MIDI estándar o una partitura MusicXML sin comprimir
+(lo distingue por el contenido, no por la extensión) y da sus notas, cada una con su altura, su
+comienzo y su duración en redondas, junto con el título, la armadura, el compás y el tempo del
+fichero. `acordes(ventana:)` reduce las notas a los acordes que suenan y `analisis(en:ventana:)`
+los analiza.
+
+```swift
+let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
+let pieza = try PiezaImportada(leyendo: coral.midi(duracion: .blanca, tonalidad: Tonalidad(.do)))
+pieza.tonalidad                  // Do mayor
+pieza.notas.count                // 12
+pieza.acordes().map(\.cifrado)   // ["Do", "Sol", "Do"]
+pieza.analisis()?.cifrados       // ["I", "V", "I"]
+```
+
+- MIDI solo da números de nota: la ortografía sale de la armadura del fichero o, si no la
+  tiene, de la tonalidad que mejor explica las notas. MusicXML conserva la suya.
+- La reducción corta la pieza en ventanas de un pulso del compás. En cada una, cada nota pesa
+  lo que suena dentro; si quitando una o dos de las que menos pesan sale una lectura mucho más
+  probable, se quitan (son de paso, bordaduras, apoyaturas). Las ventanas seguidas con el mismo
+  acorde se funden. Con `ventana:` se elige otro tamaño: una blanca para un ritmo armónico lento.
+- De MusicXML se leen acordes, voces (`<backup>`, `<forward>`), ligaduras e instrumentos
+  transpositores (se lee lo que suena). No cuentan las notas de adorno, las notas guía ni la
+  percusión, y tampoco el canal 10 de MIDI.
+- Todavía no se leen el MusicXML comprimido (.mxl), las repeticiones ni los saltos. Los errores
+  son `ErrorDeImportacion`, con su explicación en los catorce idiomas.
+- Desde la terminal: `armonia analizar --archivo coral.mid` (o `.musicxml`).

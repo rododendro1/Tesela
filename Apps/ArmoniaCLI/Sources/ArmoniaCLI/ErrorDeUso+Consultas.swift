@@ -42,5 +42,17 @@ extension ErrorDeUso {
             let ejemplo = "armonia analizar Do Fa Sol7 Do"
             return TextosDeCLI.traducidos.map { $0.faltanAcordesDelAnalisis(ejemplo) }
         }
+
+        static func archivoIlegible(_ nombre: String) -> Traduccion {
+            return TextosDeCLI.traducidos.map { $0.archivoIlegible(nombre) }
+        }
+
+        static func archivoConAcordes() -> Traduccion {
+            return TextosDeCLI.traducidos.map(\.archivoConAcordes)
+        }
+
+        static func archivoSinAcordes() -> Traduccion {
+            return TextosDeCLI.traducidos.map(\.archivoSinAcordes)
+        }
     }
 }

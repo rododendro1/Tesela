@@ -7,6 +7,8 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <аккорды> [--in <тональность>]",
         descripcionAnalizar: "римские цифры, функции, кадансы и\nмодуляции (с общим аккордом; без --in)",
+        sintaxisAnalizarArchivo: "analyze --file <файл> [--window <длительность>]",
+        descripcionAnalizarArchivo: "то же самое с аккордами файла MIDI\nили MusicXML (по одному на долю;\n--window 2: по одному на половинную)",
         sintaxisArmonizar: "harmonize <мелодия> [--in <тональность>] [--proposals 3]",
         descripcionArmonizar: "аккорды для мелодии, лучшие первыми; с\nоктавами (E4) — ещё и четырёхголосный\nхорал",
         sintaxisRealizar: "realize <аккорды> [--in <тональность>]",
@@ -114,6 +116,9 @@ extension TextosDeCLI {
         faltaTonalidad: "не указана тональность: armonia key A minor",
         faltaTonalidadTrasEn: "не указана тональность после --in",
         faltanAcordesDelAnalisis: { ejemplo in "не указаны аккорды: armonia analyze C F G7 C" },
+        archivoIlegible: { nombre in "не удаётся прочитать файл «\(nombre)»" },
+        archivoConAcordes: "с --file аккорды не указываются",
+        archivoSinAcordes: "в файле нет аккордов",
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "поле — число от 0 до 6: --margen 2",

@@ -145,9 +145,36 @@ extension LineaDeComandos {
     static func analizar(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var acordes = Argumentos(argumentos)
         guard let tonalidad = try acordes.quitarTonalidad() else { return uso(.faltaTonalidadTrasEn, notacion) }
-        guard !acordes.restantes.isEmpty else { return uso(.faltanAcordesDelAnalisis, notacion) }
-        // Con la tonalidad dada, sin modulaciones; si no, en tramos.
-        let analisis = try PresentacionDeAnalisis.analizar(acordes.unidos, en: tonalidad, notacion: notacion)
+        let archivo: String?
+        switch acordes.quitarOpcion("--archivo", "--file") {
+        case .ausente: archivo = nil
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let ruta): archivo = ruta
+        }
+        let ventana: Duracion?
+        switch acordes.quitarOpcion("--ventana", "--window") {
+        case .ausente: ventana = nil
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto): ventana = try Duracion(leyendo: texto)
+        }
+        if let opcion = acordes.opcionDesconocida { return uso(.opcionDesconocida(opcion), notacion) }
+        let analisis: AnalisisPresentado
+        if let archivo {
+            guard acordes.restantes.isEmpty else { return uso(.archivoConAcordes, notacion) }
+            guard let datos = FileManager.default.contents(atPath: archivo) else {
+                return uso(.archivoIlegible(archivo), notacion)
+            }
+            let pieza = try PiezaImportada(leyendo: datos)
+            guard let leido = PresentacionDeAnalisis.analizar(pieza.acordes(ventana: ventana), en: tonalidad,
+                                                              notacion: notacion) else {
+                return uso(.archivoSinAcordes, notacion)
+            }
+            analisis = leido
+        } else {
+            guard !acordes.restantes.isEmpty else { return uso(.faltanAcordesDelAnalisis, notacion) }
+            // Con la tonalidad dada, sin modulaciones; si no, en tramos.
+            analisis = try PresentacionDeAnalisis.analizar(acordes.unidos, en: tonalidad, notacion: notacion)
+        }
         var lineas = [analisis.titulo]
         let todas = analisis.tramos.flatMap(\.filas)
         // Columnas de al menos 10 caracteres, más anchas si un cifrado no cabe.

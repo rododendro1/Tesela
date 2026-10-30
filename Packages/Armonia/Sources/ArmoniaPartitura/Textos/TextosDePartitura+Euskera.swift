@@ -24,6 +24,15 @@ extension TextosDePartitura {
         pistaDeAcordes: "akordeak",
         pistaDelBajo: "baxua",
 
+        // Importacion.swift
+        formatoDesconocido: "Fitxategia ez da MIDI ez MusicXML.",
+        musicXMLComprimido: "MusicXML konprimitua da (.mxl), eta oraindik ezin da irakurri: esportatu konprimitu gabe (.musicxml).",
+        midiDanado: "MIDI fitxategia hondatuta edo moztuta dago.",
+        midiConTiempoSMPTE: "MIDI fitxategiak SMPTE fotogrametan neurtzen du denbora, ez beltz bakoitzeko pultsutan.",
+        xmlDanado: { linea in "MusicXML fitxategia hondatuta dago (\(linea). lerroa)." },
+        noEsMusicXMLPorPartes: "XMLa ez da zatikako MusicXML partitura bat (score-partwise).",
+        sinNotas: "Fitxategiak ez du notarik.",
+
         // Duracion+Idiomas.swift
         cuadrada: "karratua",
         redonda: "biribila",

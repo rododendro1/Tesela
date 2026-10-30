@@ -7,6 +7,8 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <συγχορδίες> [--in <τονικότητα>]",
         descripcionAnalizar: "ρωμαϊκή αρίθμηση, λειτουργίες, πτώσεις\nκαι μετατροπίες (με την κοινή τους\nσυγχορδία· χωρίς --in)",
+        sintaxisAnalizarArchivo: "analyze --file <αρχείο> [--window <διάρκεια>]",
+        descripcionAnalizarArchivo: "το ίδιο, με τις συγχορδίες ενός αρχείου\nMIDI ή MusicXML (μία ανά χρόνο;\n--window 2: μία ανά μισό)",
         sintaxisArmonizar: "harmonize <μελωδία> [--in <τονικότητα>] [--proposals 3]",
         descripcionArmonizar: "συγχορδίες για μια μελωδία, οι\nκαλύτερες πρώτα· με οκτάβες (E4), και\nτο τετράφωνο χορικό",
         sintaxisRealizar: "realize <συγχορδίες> [--in <τονικότητα>]",
@@ -114,6 +116,9 @@ extension TextosDeCLI {
         faltaTonalidad: "λείπει η τονικότητα: armonia key A minor",
         faltaTonalidadTrasEn: "λείπει η τονικότητα μετά το --in",
         faltanAcordesDelAnalisis: { ejemplo in "λείπουν οι συγχορδίες: armonia analyze C F G7 C" },
+        archivoIlegible: { nombre in "δεν είναι δυνατή η ανάγνωση του αρχείου «\(nombre)»" },
+        archivoConAcordes: "με το --file δεν γράφονται συγχορδίες",
+        archivoSinAcordes: "το αρχείο δεν έχει συγχορδίες",
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "το περιθώριο είναι αριθμός από 0 έως 6: --margen 2",

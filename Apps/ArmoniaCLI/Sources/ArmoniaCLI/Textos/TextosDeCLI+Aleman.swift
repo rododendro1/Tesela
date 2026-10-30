@@ -7,6 +7,8 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <Akkorde> [--in <Tonart>]",
         descripcionAnalizar: "Stufenbezeichnung, Funktionen,\nKadenzen und Modulationen (mit ihrem\nDrehakkord; ohne --in)",
+        sintaxisAnalizarArchivo: "analyze --file <Datei> [--window <Dauer>]",
+        descripcionAnalizarArchivo: "dasselbe mit den Akkorden einer MIDI-\noder MusicXML-Datei (einer pro\nSchlag; --window 2: einer pro Halbe)",
         sintaxisArmonizar: "harmonize <Melodie> [--in <Tonart>] [--proposals 3]",
         descripcionArmonizar: "Akkorde für eine Melodie, die besten\nzuerst; mit Oktaven (E4) auch der\nvierstimmige Satz",
         sintaxisRealizar: "realize <Akkorde> [--in <Tonart>]",
@@ -114,6 +116,9 @@ extension TextosDeCLI {
         faltaTonalidad: "die Tonart fehlt: armonia key A minor",
         faltaTonalidadTrasEn: "die Tonart nach --in fehlt",
         faltanAcordesDelAnalisis: { ejemplo in "die Akkorde fehlen: armonia analyze C F G7 C" },
+        archivoIlegible: { nombre in "die Datei „\(nombre)“ kann nicht gelesen werden" },
+        archivoConAcordes: "mit --file keine Akkorde angeben",
+        archivoSinAcordes: "die Datei enthält keine Akkorde",
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "der Rand ist eine Zahl von 0 bis 6: --margen 2",
