@@ -18,6 +18,10 @@
 
 ### Teclados isomórficos
 
+- `TecladoIsomorfico.acordeonC` y `.acordeonB`: el acordeón cromático de botones (sistemas C y B), con hexágonos planos:
+  arriba una tercera menor y, a los lados, un semitono y un tono (el B es el espejo del C).
+- `TecladoIsomorfico.wickiHaydenPlano` (hexágonos planos, con la quinta en vertical) y `.wickiHaydenEspejo` (la
+  quinta arriba a la izquierda y la cuarta arriba a la derecha; el tono, hacia la izquierda).
 - `FormatoUIL`: el formato UIL (Unified Isomorphic Layout, Park y Gerhard 2013) para describir cualquier teclado
   hexagonal isomórfico, `L,G,D;R<grados>[M][;T<tonos>]`. `FormatoUIL(leyendo:)` (también con intervalos como `M2,P5,P4`,
   `II,V,IV` o `9:8,3:2,4:3`), `descripcion`, `esCompleto` (L y D coprimos), `caso` (cero e igualdad), `orientacion`,
@@ -29,11 +33,6 @@
   Jankó `1,2,1;R90`) salvo los acordeones: `.acordeonC` es `1,3,2;R0M` y `.acordeonB` `1,3,2;R0`, y el artículo da
   `R270M` y `R270` (los mismos, girados 90°).
 - Corregido: `TecladoIsomorfico.midi(en:)` había perdido su cabecera y no compilaba.
-
-- `TecladoIsomorfico.acordeonC` y `.acordeonB`: el acordeón cromático de botones (sistemas C y B), con hexágonos planos:
-  arriba una tercera menor y, a los lados, un semitono y un tono (el B es el espejo del C).
-- `TecladoIsomorfico.wickiHaydenPlano` (hexágonos planos, con la quinta en vertical) y `.wickiHaydenEspejo` (la
-  quinta arriba a la izquierda y la cuarta arriba a la derecha; el tono, hacia la izquierda).
 
 ### Pentagramas en SVG
 
@@ -566,7 +565,7 @@ Los nombres anteriores estuvieron marcados como obsoletos y ya se han quitado.
 
 ### Plataformas y entradas inválidas
 
-- `Armonia` declara `platforms: [.macOS(.v13), .iOS(.v16)]`, como las apps y `SepirizUI`. `ArmoniaCLI` y `ArmoniaEjemplo`
+- `Armonia` declara `platforms: [.macOS(.v13), .iOS(.v16)]`, como las apps y `ArmoniaUI`. `ArmoniaCLI` y `ArmoniaEjemplo`
   declaran macOS 13: SwiftPM rechaza que un paquete con un mínimo más bajo dependa de uno con un mínimo más alto.
 - Nuevos inicializadores que devuelven `nil` en vez de detener el programa: `Duracion(comprobando:_:)` y
   `Duracion(comprobando:puntillos:)` (denominador 0; puntillos fuera de 0…30), `Compas(comprobando:_:agrupacion:)` y
