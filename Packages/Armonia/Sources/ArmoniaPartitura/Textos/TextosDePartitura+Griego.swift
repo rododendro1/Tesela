@@ -32,6 +32,7 @@ extension TextosDePartitura {
         xmlDanado: { linea in "Το αρχείο MusicXML είναι κατεστραμμένο (γραμμή \(linea))." },
         noEsMusicXMLPorPartes: "Το XML δεν είναι παρτιτούρα MusicXML ανά μέρη (score-partwise).",
         sinNotas: "Το αρχείο δεν έχει καμία νότα.",
+        sinAcordes: "Στο αρχείο δεν ακούγεται καμία συγχορδία.",
 
         // Duracion+Idiomas.swift
         cuadrada: "διπλό ολόκληρο",

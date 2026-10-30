@@ -17,7 +17,7 @@ final class TextoDeLasAppsTests: XCTestCase {
         .mastilDeGuitarra, .pentagrama, .progresion, .campoDeProgresion, .resultado, .acordeAAcorde, .cadencias, .tarea,
         .campoDeTonalidad, .tonalidad, .armonizaciones, .aCuatroVoces, .conduccionDeLasVoces, .avisos,
         .recorridoPLR, .modo, .red, .formatoUIL, .giro, .espejo, .noSeDibuja, .campoDeTriadaInicial, .reiniciar, .deshacer, .campoDeAcorde,
-        .campoDeEscala, .textos, .comoLasNotas, .exportar, .escuchar, .afinacionAlEscuchar, .rejillaHexagonal, .casillas(1), .casillas(19),
+        .campoDeEscala, .textos, .comoLasNotas, .exportar, .abrir, .escuchar, .afinacionAlEscuchar, .rejillaHexagonal, .casillas(1), .casillas(19),
         .casillaElegida(q: 2, r: -1), .mastilDe("guitarra", desde: 0, hasta: 5), .posicion(cuerda: 1, traste: 3),
         .marcas(13), .cuerdasApagadas("1, 6"), .sinMarcas,
     ]

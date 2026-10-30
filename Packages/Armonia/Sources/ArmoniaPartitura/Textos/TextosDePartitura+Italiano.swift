@@ -32,6 +32,7 @@ extension TextosDePartitura {
         xmlDanado: { linea in "Il file MusicXML è danneggiato (riga \(linea))." },
         noEsMusicXMLPorPartes: "L'XML non è una partitura MusicXML per parti (score-partwise).",
         sinNotas: "Il file non contiene note.",
+        sinAcordes: "Nel file non suona nessun accordo.",
 
         // Duracion+Idiomas.swift
         cuadrada: "breve",

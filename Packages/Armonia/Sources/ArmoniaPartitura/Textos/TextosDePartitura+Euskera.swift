@@ -32,6 +32,7 @@ extension TextosDePartitura {
         xmlDanado: { linea in "MusicXML fitxategia hondatuta dago (\(linea). lerroa)." },
         noEsMusicXMLPorPartes: "XMLa ez da zatikako MusicXML partitura bat (score-partwise).",
         sinNotas: "Fitxategiak ez du notarik.",
+        sinAcordes: "Fitxategian ez da akorderik entzuten.",
 
         // Duracion+Idiomas.swift
         cuadrada: "karratua",

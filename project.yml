@@ -67,6 +67,9 @@ targets:
         # Se une al Info.plist generado: los catorce idiomas (CFBundleLocalizations).
         INFOPLIST_FILE: Config/Idiomas.plist
         PRODUCT_BUNDLE_IDENTIFIER: $(BUNDLE_ID_PREFIX).armonia
+        # «Abrir» en Análisis lee un fichero MIDI o MusicXML que elige quien usa la app: con sandbox, macOS
+        # solo lo deja leer con este permiso.
+        "ENABLE_USER_SELECTED_FILES[sdk=macosx*]": readonly
         INFOPLIST_KEY_CFBundleDisplayName: Armonía
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES

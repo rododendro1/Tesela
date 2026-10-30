@@ -32,6 +32,7 @@ extension TextosDePartitura {
         xmlDanado: { linea in "Файл MusicXML повреждён (строка \(linea))." },
         noEsMusicXMLPorPartes: "XML не является партитурой MusicXML по партиям (score-partwise).",
         sinNotas: "В файле нет ни одной ноты.",
+        sinAcordes: "В файле не звучит ни одного аккорда.",
 
         // Duracion+Idiomas.swift
         cuadrada: "бревис",

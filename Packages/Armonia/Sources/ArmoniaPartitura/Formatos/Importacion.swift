@@ -187,6 +187,8 @@ public enum ErrorDeImportacion: Error, Hashable, Sendable, CustomStringConvertib
     case noEsMusicXMLPorPartes
     /// El fichero se lee, pero no tiene ninguna nota.
     case sinNotas
+    /// Tiene notas, pero no suena ningún acorde (una melodía sola, por ejemplo).
+    case sinAcordes
 
     public var description: String { descripcion(en: .espanolUnicode) }
 
@@ -201,6 +203,7 @@ public enum ErrorDeImportacion: Error, Hashable, Sendable, CustomStringConvertib
         case .xmlDanado(let linea): return textos.map { $0.xmlDanado(linea) }.en(notacion)
         case .noEsMusicXMLPorPartes: return textos.map(\.noEsMusicXMLPorPartes).en(notacion)
         case .sinNotas: return textos.map(\.sinNotas).en(notacion)
+        case .sinAcordes: return textos.map(\.sinAcordes).en(notacion)
         }
     }
 }
