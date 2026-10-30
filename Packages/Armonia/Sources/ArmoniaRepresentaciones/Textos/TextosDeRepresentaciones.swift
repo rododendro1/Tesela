@@ -7,7 +7,7 @@ import ArmoniaNucleo
 
 /// Los textos de ArmoniaRepresentaciones en un idioma.
 struct TextosDeRepresentaciones: Sendable {
-    // MARK: Temperamento+Idiomas.swift
+    // MARK: Temperamento.swift
     let temperamentoIgual: String
     let pitagorico: String
     let mesotonico: String
@@ -17,7 +17,7 @@ struct TextosDeRepresentaciones: Sendable {
     let young: String
     let afinacionJusta: String
 
-    // MARK: CorrespondenciaDeColores+Idiomas.swift
+    // MARK: CorrespondenciaDeColores.swift
     let circuloDeQuintas: String
 
     // MARK: DibujoSVG.swift
@@ -43,7 +43,7 @@ struct TextosDeRepresentaciones: Sendable {
     // MARK: ConduccionParsimoniosa.swift
     let semitonos: @Sendable (Int) -> String
 
-    // MARK: TransformacionNeorriemanniana+Idiomas.swift
+    // MARK: TransformacionNeorriemanniana.swift
     let homonima: String
     let cambioDeSensible: String
     let relativa: String

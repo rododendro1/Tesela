@@ -9,7 +9,7 @@ extension TextosDeTeoria {
                                   "четвёртое обращение", "пятое обращение", "шестое обращение"],
         inversionConNumero: "_-е обращение",
 
-        // EstructuraDeAcorde+Idiomas.swift
+        // EstructuraDeAcorde.swift
         papelFundamental: "основной тон",
         papelTercera: "терция",
         papelSuspension: "задержание",
@@ -82,7 +82,7 @@ extension TextosDeTeoria {
         vozSoprano: "сопрано",
         vozNumero: { numero in "голос \(numero)" },
 
-        // Escala+Idiomas.swift
+        // Escala.swift
         gradoTonica: "тоника",
         gradoSupertonica: "супертоника",
         gradoMediante: "медианта",

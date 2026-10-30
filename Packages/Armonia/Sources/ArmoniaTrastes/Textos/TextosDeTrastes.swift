@@ -7,7 +7,7 @@ import ArmoniaNucleo
 
 /// Los textos de ArmoniaTrastes en un idioma.
 struct TextosDeTrastes: Sendable {
-    // MARK: Encordado+Idiomas.swift
+    // MARK: Encordado.swift
     let guitarra: String
     let guitarraEnReGrave: String
     let guitarraDeSieteCuerdas: String

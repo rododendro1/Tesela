@@ -10,7 +10,7 @@ extension TextosDeTeoria {
                                   "laugarren inbertsioa", "bosgarren inbertsioa", "seigarren inbertsioa"],
         inversionConNumero: "_. inbertsioa",
 
-        // EstructuraDeAcorde+Idiomas.swift
+        // EstructuraDeAcorde.swift
         papelFundamental: "oinarria",
         papelTercera: "hirugarrena",
         papelSuspension: "esekidura",
@@ -83,7 +83,7 @@ extension TextosDeTeoria {
         vozSoprano: "sopranoa",
         vozNumero: { numero in "\(numero). ahotsa" },
 
-        // Escala+Idiomas.swift
+        // Escala.swift
         gradoTonica: "tonika",
         gradoSupertonica: "supertonika",
         gradoMediante: "mediantea",

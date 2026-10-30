@@ -3,7 +3,7 @@
 
 extension TextosDeRepresentaciones {
     static let euskera = TextosDeRepresentaciones(
-        // Temperamento+Idiomas.swift
+        // Temperamento.swift
         temperamentoIgual: "tenperamentu berdina",
         pitagorico: "afinazio pitagorikoa",
         mesotonico: "¼ komako mesotonikoa",
@@ -13,7 +13,7 @@ extension TextosDeRepresentaciones {
         young: "Young",
         afinacionJusta: "afinazio justua",
 
-        // CorrespondenciaDeColores+Idiomas.swift
+        // CorrespondenciaDeColores.swift
         circuloDeQuintas: "bosgarrenen zirkulua",
 
         // DibujoSVG.swift
@@ -39,7 +39,7 @@ extension TextosDeRepresentaciones {
         // ConduccionParsimoniosa.swift
         semitonos: { n in "\(n) tonuerdi" },
 
-        // TransformacionNeorriemanniana+Idiomas.swift
+        // TransformacionNeorriemanniana.swift
         homonima: "homonimoa",
         cambioDeSensible: "sentsiblearen aldaketa",
         relativa: "erlatiboa"

@@ -3,7 +3,7 @@
 
 extension TextosDeNucleo {
     static let catalan = TextosDeNucleo(
-        // Intervalo+Idiomas.swift
+        // Intervalo.swift
         calidadJusta: "justa",
         calidadMayor: "major",
         calidadMenor: "menor",
@@ -18,7 +18,7 @@ extension TextosDeNucleo {
         consonanciaImperfecta: "consonància imperfecta",
         disonancia: "dissonància",
 
-        // Nota+Idiomas.swift
+        // Nota.swift
         palabraNatural: "becaire",
         palabraSostenido: "sostingut",
         palabraBemol: "bemoll",
@@ -26,7 +26,7 @@ extension TextosDeNucleo {
         palabraSostenidos: "sostinguts",
         palabraBemoles: "bemolls",
 
-        // ErrorDeLectura+Acordes.swift
+        // ErrorDeLectura.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» no forma part de cap xifrat conegut" },
         tensionNoValida: { tension in "«\(tension)» no és una tensió vàlida (s'admeten ♭/♯ amb 5, 9, 11 i 13, i add amb 2, 4, 6, 9, 11 i 13)" },
         numeroDeAcordeNoValido: { numero in "«\(numero)» no és un número d'acord (5, 6, 7, 9, 11 o 13)" },
@@ -44,19 +44,19 @@ extension TextosDeNucleo {
         bajoNoValido: { bajo in "«\(bajo)» no és un nom de nota per al baix" },
         idiomasMezclados: { nombre in "«\(nombre)» està escrit en un altre idioma que la fonamental: s'escriu tot amb síl·labes (Sol7/Si) o tot amb lletres (G7/B)" },
 
-        // ErrorDeLectura+Escalas.swift
+        // ErrorDeLectura.swift (escalas)
         modoNoReconocido: { nombre in "«\(nombre)» no és el mode d'una tonalitat: una tonalitat és major o menor (per als altres modes, fes servir Escala)" },
         faltaElTipoDeEscala: "falta el tipus d'escala (mayor, dórico, menor armónica…)",
         tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» no és un tipus d'escala conegut" },
 
-        // ErrorDeLectura+Idiomas.swift
+        // ErrorDeLectura.swift (generales)
         valorNoValido: "Valor no vàlid",
         noSePuedeLeer: { texto in "No es pot llegir «\(texto)»" },
         caracter: { p in " (caràcter \(p + 1))" },
         textoVacio: "el text és buit",
         caracteresSobrantes: { resto in "sobra «\(resto)»" },
 
-        // ErrorDeLectura+Notas.swift
+        // ErrorDeLectura.swift (notas)
         notaNoReconocida: "s'esperava un nom de nota (Do, Re, Mi… o C, D, E…)",
         faltaLaOctava: "falta l'octava (per exemple, Do4)",
         octavaNoValida: { resto in "«\(resto)» no és una octava vàlida" },
@@ -70,7 +70,7 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "no existeix la \(numero)a \(calidad.nombre(en: .catalan)): \(regla.catalan)" },
         alteracionNoReconocida: { signo in "«\(signo)» no és una alteració (s'esperava ♯, ♭, 𝄪, 𝄫, #, b, x o ♮)" },
 
-        // ErrorDeLectura+Partitura.swift
+        // ErrorDeLectura.swift (partitura)
         duracionNoValida: { texto in "«\(texto)» no és una durada: s'esperava una figura (1, 2, 4, 8, 16…, amb punts: 4.) o una fracció de rodona (3/8, 1/12)" },
         compasNoValido: { texto in "«\(texto)» no és un compàs: s'esperava numerador/denominador amb el denominador potència de 2 (4/4, 6/8, 7/8), C o ¢" },
         vocesDistintas: "tots els acords han de tenir el mateix nombre de veus, i almenys dues",

@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+### Organización
+
+- Los ficheros `X+Idiomas.swift` se funden en el fichero de su tipo (`Nota+Idiomas.swift` en `Nota.swift`, etc.),
+  al final, tras `// MARK: - Idiomas`. `ErrorDeLectura+Idiomas`, `+Notas`, `+Acordes`, `+Escalas` y `+Partitura` pasan a
+  `ErrorDeLectura.swift`. No cambia ninguna API.
+
 ### Swift 6
 
 - El paquete pide Swift 6.0 o posterior (`swift-tools-version:6.0`) y compila en el modo de lenguaje 6: la

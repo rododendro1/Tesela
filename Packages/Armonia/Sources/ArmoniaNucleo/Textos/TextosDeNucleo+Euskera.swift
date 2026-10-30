@@ -3,7 +3,7 @@
 
 extension TextosDeNucleo {
     static let euskera = TextosDeNucleo(
-        // Intervalo+Idiomas.swift
+        // Intervalo.swift
         calidadJusta: "justua",
         calidadMayor: "handia",
         calidadMenor: "txikia",
@@ -18,7 +18,7 @@ extension TextosDeNucleo {
         consonanciaImperfecta: "kontsonantzia inperfektua",
         disonancia: "disonantzia",
 
-        // Nota+Idiomas.swift
+        // Nota.swift
         palabraNatural: "bekadro",
         palabraSostenido: "diesa",
         palabraBemol: "bemol",
@@ -26,7 +26,7 @@ extension TextosDeNucleo {
         palabraSostenidos: "diesa",
         palabraBemoles: "bemol",
 
-        // ErrorDeLectura+Acordes.swift
+        // ErrorDeLectura.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» ez dago zifratu ezagunetan" },
         tensionNoValida: { tension in "«\(tension)» ez da tentsio baliozkoa (♭/♯ 5, 9, 11 eta 13rekin onartzen dira, eta add 2, 4, 6, 9, 11 eta 13rekin)" },
         numeroDeAcordeNoValido: { numero in "«\(numero)» ez da akorde-zenbaki bat (5, 6, 7, 9, 11 edo 13)" },
@@ -44,19 +44,19 @@ extension TextosDeNucleo {
         bajoNoValido: { bajo in "«\(bajo)» ez da baxurako nota-izen bat" },
         idiomasMezclados: { nombre in "«\(nombre)» oinarria ez bezalako hizkuntzan idatzita dago: idatzi dena silabekin (Sol7/Si) edo dena letrekin (G7/B)" },
 
-        // ErrorDeLectura+Escalas.swift
+        // ErrorDeLectura.swift (escalas)
         modoNoReconocido: { nombre in "«\(nombre)» ez da tonalitate baten modua: tonalitatea maiorra edo minorra da (beste moduetarako, erabili Escala)" },
         faltaElTipoDeEscala: "eskala-mota falta da (mayor, dórico, menor armónica…)",
         tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» ez da eskala-mota ezagun bat" },
 
-        // ErrorDeLectura+Idiomas.swift
+        // ErrorDeLectura.swift (generales)
         valorNoValido: "Balio baliogabea",
         noSePuedeLeer: { texto in "Ezin da «\(texto)» irakurri" },
         caracter: { p in " (\(p + 1). karakterea)" },
         textoVacio: "testua hutsik dago",
         caracteresSobrantes: { resto in "«\(resto)» soberan dago" },
 
-        // ErrorDeLectura+Notas.swift
+        // ErrorDeLectura.swift (notas)
         notaNoReconocida: "nota-izen bat espero zen (Do, Re, Mi… edo C, D, E…)",
         faltaLaOctava: "zortziduna falta da (adibidez, Do4)",
         octavaNoValida: { resto in "«\(resto)» ez da zortzidun baliozkoa" },
@@ -70,7 +70,7 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "\(numero). \(calidad.nombre(en: .euskera)) ez da existitzen: \(regla.euskera)" },
         alteracionNoReconocida: { signo in "«\(signo)» ez da alterazio bat (♯, ♭, 𝄪, 𝄫, #, b, x edo ♮ espero zen)" },
 
-        // ErrorDeLectura+Partitura.swift
+        // ErrorDeLectura.swift (partitura)
         duracionNoValida: { texto in "«\(texto)» ez da iraupen bat: figura bat espero zen (1, 2, 4, 8, 16…, puntuekin: 4.) edo biribilaren zatiki bat (3/8, 1/12)" },
         compasNoValido: { texto in "«\(texto)» ez da konpas bat: zenbakitzailea/izendatzailea espero zen, izendatzailea 2ren berretura izanik (4/4, 6/8, 7/8), C edo ¢" },
         vocesDistintas: "akorde guztiek ahots kopuru bera izan behar dute, eta gutxienez bi",

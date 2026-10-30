@@ -151,3 +151,23 @@ extension Escala {
     /// Colores de las notas de la escala, desde la tónica.
     public func colores(segun correspondencia: CorrespondenciaDeColores) -> [ColorRGB] { notas.map(correspondencia.color(de:)) }
 }
+
+// MARK: - Idiomas
+//
+// Nombres de las correspondencias de colores en los catorce idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
+
+// MARK: - CorrespondenciaDeColores
+
+extension CorrespondenciaDeColores {
+    public var nombre: String { nombre(en: .espanolUnicode) }
+
+    public func nombre(en notacion: Notacion) -> String {
+        switch self {
+        case .newton: return "Newton (1704)"
+        case .castel: return "Castel (1734)"
+        case .scriabin: return "Scriabin (1911)"
+        case .circuloDeQuintas:
+            return TextosDeRepresentaciones.traducidos.map(\.circuloDeQuintas).en(notacion)
+        }
+    }
+}

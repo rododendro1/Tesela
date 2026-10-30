@@ -3,7 +3,7 @@
 
 extension TextosDeTrastes {
     static let occitano = TextosDeTrastes(
-        // Encordado+Idiomas.swift
+        // Encordado.swift
         guitarra: "guitarra",
         guitarraEnReGrave: "guitarra en re grèu",
         guitarraDeSieteCuerdas: "guitarra de sèt còrdas",

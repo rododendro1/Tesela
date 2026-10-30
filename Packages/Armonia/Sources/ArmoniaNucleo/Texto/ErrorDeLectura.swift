@@ -79,3 +79,210 @@ public struct ErrorDeLectura: Error, Hashable, Sendable, CustomStringConvertible
 extension ErrorDeLectura: LocalizedError {
     public var errorDescription: String? { description }
 }
+
+// MARK: - Idiomas
+//
+// Los mensajes de `ErrorDeLectura` en los catorce idiomas de los textos (`Traduccion`). Aquí están los
+// generales (texto vacío, caracteres que sobran); los demás, según lo que se leía, más abajo en
+// TextosDeNotas, TextosDeAcordes, TextosDeEscalas y TextosDePartitura, una función por motivo, para que un motivo nuevo no
+// compile hasta que tiene su texto.
+
+extension ErrorDeLectura {
+    /// Explicación del motivo, en español.
+    public var explicacion: String { explicacion(en: .espanolUnicode) }
+
+    /// Explicación del motivo en el idioma de los textos de la notación (`notacion.textos`).
+    public func explicacion(en notacion: Notacion) -> String {
+        explicacionTraducida(notacion).en(notacion)
+    }
+
+    /// Mensaje completo, en español: «No se puede leer «Do7(b3)» (carácter 5): …».
+    public var description: String { descripcion(en: .espanolUnicode) }
+
+    /// Mensaje completo en el idioma de los textos de la notación.
+    public func descripcion(en notacion: Notacion) -> String {
+        var inicio = texto.isEmpty
+            ? TextosDeNucleo.traducidos.map(\.valorNoValido).en(notacion)
+            : TextosDeNucleo.traducidos.map { $0.noSePuedeLeer(texto) }.en(notacion)
+        if let p = posicion {
+            inicio += TextosDeNucleo.traducidos.map { $0.caracter(p) }.en(notacion)
+        }
+        // En francés, los dos puntos llevan espacio delante.
+        return inicio + (notacion.textos == .frances ? " : " : ": ") + explicacion(en: notacion)
+    }
+
+    /// La explicación en los catorce idiomas de los textos. La notación solo hace falta para los
+    /// nombres de calidades e intervalos en inglés, que siguen su vocabulario.
+    private func explicacionTraducida(_ notacion: Notacion) -> Traduccion {
+        switch motivo {
+        case .textoVacio:
+            return TextosDeNucleo.traducidos.map(\.textoVacio)
+        case .notaNoReconocida: return TextosDeNotas.notaNoReconocida()
+        case .caracteresSobrantes(let resto):
+            return TextosDeNucleo.traducidos.map { $0.caracteresSobrantes(resto) }
+        case .octavaNoValida(let resto): return TextosDeNotas.octavaNoValida(resto)
+        case .numeroDeIntervaloNoValido(let resto): return TextosDeNotas.numeroDeIntervaloNoValido(resto)
+        case .calidadNoValida(let resto): return TextosDeNotas.calidadNoValida(resto)
+        case .intervaloInexistente(let numero, let calidad): return TextosDeNotas.intervaloInexistente(numero: numero, calidad: calidad, en: notacion)
+        case .simboloNoReconocido(let simbolo): return TextosDeAcordes.simboloNoReconocido(simbolo)
+        case .tensionNoValida(let tension): return TextosDeAcordes.tensionNoValida(tension)
+        case .numeroDeAcordeNoValido(let numero): return TextosDeAcordes.numeroDeAcordeNoValido(numero)
+        case .numeroRepetido(let numero): return TextosDeAcordes.numeroRepetido(numero)
+        case .calidadesIncompatibles(let valor): return TextosDeAcordes.calidadesIncompatibles(valor)
+        case .gradoNoOmitible(let grado): return TextosDeAcordes.gradoNoOmitible(grado)
+        case .acordeNoInterpretable(let rechazo): return TextosDeAcordes.acordeNoInterpretable(rechazo, en: notacion)
+        case .bajoNoValido(let bajo): return TextosDeAcordes.bajoNoValido(bajo)
+        case .idiomasMezclados(let nombre): return TextosDeAcordes.idiomasMezclados(nombre)
+        case .duracionNoValida(let texto): return TextosDePartitura.duracionNoValida(texto)
+        case .compasNoValido(let texto): return TextosDePartitura.compasNoValido(texto)
+        case .vocesDistintas: return TextosDePartitura.vocesDistintas()
+        case .contrapuntoDeOtraDuracion(let redondas): return TextosDePartitura.contrapuntoDeOtraDuracion(redondas: redondas)
+        case .alteracionNoReconocida(let signo): return TextosDeNotas.alteracionNoReconocida(signo)
+        case .modoNoReconocido(let nombre): return TextosDeEscalas.modoNoReconocido(nombre)
+        case .tipoDeEscalaNoReconocido(let nombre): return TextosDeEscalas.tipoDeEscalaNoReconocido(nombre)
+        }
+    }
+}
+
+// Los mensajes de `ErrorDeLectura` al leer las notas, las alteraciones, las octavas y los intervalos, en los catorce idiomas de los textos.
+
+extension ErrorDeLectura {
+    enum TextosDeNotas {
+        static func notaNoReconocida() -> Traduccion {
+            return TextosDeNucleo.traducidos.map(\.notaNoReconocida)
+        }
+
+        static func octavaNoValida(_ resto: String) -> Traduccion {
+            return resto.isEmpty
+                ? TextosDeNucleo.traducidos.map(\.faltaLaOctava)
+                : TextosDeNucleo.traducidos.map { $0.octavaNoValida(resto) }
+        }
+
+        static func numeroDeIntervaloNoValido(_ resto: String) -> Traduccion {
+            return resto.isEmpty
+                ? TextosDeNucleo.traducidos.map(\.faltaElNumeroDeIntervalo)
+                : TextosDeNucleo.traducidos.map { $0.numeroDeIntervaloNoValido(resto) }
+        }
+
+        static func calidadNoValida(_ resto: String) -> Traduccion {
+            return resto.isEmpty
+                ? TextosDeNucleo.traducidos.map(\.faltaLaCalidad)
+                : TextosDeNucleo.traducidos.map { $0.calidadNoValida(resto) }
+        }
+
+        static func intervaloInexistente(numero: Int, calidad: CalidadDeIntervalo, en notacion: Notacion) -> Traduccion {
+            if numero == 1, case .disminuida = calidad {
+                return TextosDeNucleo.traducidos.map(\.unisonoDisminuido)
+            }
+            let clase = (numero - 1) % 7
+            let regla = [0, 3, 4].contains(clase)
+                ? TextosDeNucleo.traducidos.map(\.reglaDeLasJustas)
+                : TextosDeNucleo.traducidos.map(\.reglaDeLasMayores)
+            return TextosDeNucleo.traducidos.map { $0.intervaloInexistente(numero, calidad, notacion, regla) }
+        }
+
+        static func alteracionNoReconocida(_ signo: String) -> Traduccion {
+            return TextosDeNucleo.traducidos.map { $0.alteracionNoReconocida(signo) }
+        }
+    }
+}
+
+// Los mensajes de `ErrorDeLectura` al leer los cifrados de los acordes, en los catorce idiomas de los textos.
+
+extension ErrorDeLectura {
+    enum TextosDeAcordes {
+        static func simboloNoReconocido(_ simbolo: String) -> Traduccion {
+            return TextosDeNucleo.traducidos.map { $0.simboloNoReconocido(simbolo) }
+        }
+
+        static func tensionNoValida(_ tension: String) -> Traduccion {
+            return TextosDeNucleo.traducidos.map { $0.tensionNoValida(tension) }
+        }
+
+        static func numeroDeAcordeNoValido(_ numero: Int) -> Traduccion {
+            return TextosDeNucleo.traducidos.map { $0.numeroDeAcordeNoValido(numero) }
+        }
+
+        static func numeroRepetido(_ numero: Int) -> Traduccion {
+            return TextosDeNucleo.traducidos.map { $0.numeroRepetido(numero) }
+        }
+
+        static func calidadesIncompatibles(_ valor: CalidadesIncompatibles) -> Traduccion {
+            switch valor {
+            case .disminuidoYSemidisminuido:
+                return TextosDeNucleo.traducidos.map(\.disminuidoYSemidisminuido)
+            case .quintaConCalidad:
+                return TextosDeNucleo.traducidos.map(\.quintaConCalidad)
+            }
+        }
+
+        static func gradoNoOmitible(_ grado: Int) -> Traduccion {
+            return grado == 1
+                ? TextosDeNucleo.traducidos.map(\.fundamentalNoOmitible)
+                : TextosDeNucleo.traducidos.map { $0.gradoNoOmitible(grado) }
+        }
+
+        static func acordeNoInterpretable(_ rechazo: RechazoDeAcorde, en notacion: Notacion) -> Traduccion {
+            switch rechazo {
+            case .faltaLaFundamental:
+                return TextosDeNucleo.traducidos.map(\.faltaLaFundamental)
+            case .intervaloSinPapel(let intervalo):
+                return TextosDeNucleo.traducidos.map { $0.intervaloSinPapel(intervalo, notacion) }
+            case .terceraMayorYMenor:
+                return TextosDeNucleo.traducidos.map(\.terceraMayorYMenor)
+            case .variasSeptimas:
+                return TextosDeNucleo.traducidos.map(\.variasSeptimas)
+            case .septimaDisminuidaFueraDelDisminuido:
+                return TextosDeNucleo.traducidos.map(\.septimaDisminuidaFueraDelDisminuido)
+            case .noEsPorTerceras:
+                return TextosDeNucleo.traducidos.map(\.noEsPorTerceras)
+            }
+        }
+
+        static func bajoNoValido(_ bajo: String) -> Traduccion {
+            return TextosDeNucleo.traducidos.map { $0.bajoNoValido(bajo) }
+        }
+
+        static func idiomasMezclados(_ nombre: String) -> Traduccion {
+            return TextosDeNucleo.traducidos.map { $0.idiomasMezclados(nombre) }
+        }
+    }
+}
+
+// Los mensajes de `ErrorDeLectura` al leer las escalas y los modos, en los catorce idiomas de los textos.
+
+extension ErrorDeLectura {
+    enum TextosDeEscalas {
+        static func modoNoReconocido(_ nombre: String) -> Traduccion {
+            return TextosDeNucleo.traducidos.map { $0.modoNoReconocido(nombre) }
+        }
+
+        static func tipoDeEscalaNoReconocido(_ nombre: String) -> Traduccion {
+            return nombre.isEmpty
+                ? TextosDeNucleo.traducidos.map(\.faltaElTipoDeEscala)
+                : TextosDeNucleo.traducidos.map { $0.tipoDeEscalaNoReconocido(nombre) }
+        }
+    }
+}
+
+// Los mensajes de `ErrorDeLectura` al leer las duraciones, los compases, las voces y el contrapunto, en los catorce idiomas de los textos.
+
+extension ErrorDeLectura {
+    enum TextosDePartitura {
+        static func duracionNoValida(_ texto: String) -> Traduccion {
+            return TextosDeNucleo.traducidos.map { $0.duracionNoValida(texto) }
+        }
+
+        static func compasNoValido(_ texto: String) -> Traduccion {
+            return TextosDeNucleo.traducidos.map { $0.compasNoValido(texto) }
+        }
+
+        static func vocesDistintas() -> Traduccion {
+            return TextosDeNucleo.traducidos.map(\.vocesDistintas)
+        }
+
+        static func contrapuntoDeOtraDuracion(redondas: Int) -> Traduccion {
+            return TextosDeNucleo.traducidos.map { $0.contrapuntoDeOtraDuracion(redondas) }
+        }
+    }
+}

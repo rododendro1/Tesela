@@ -4,7 +4,7 @@ import ArmoniaNucleo
 
 extension TextosDeRepresentaciones {
     static let ruso = TextosDeRepresentaciones(
-        // Temperamento+Idiomas.swift
+        // Temperamento.swift
         temperamentoIgual: "равномерная темперация",
         pitagorico: "пифагоров строй",
         mesotonico: "среднетоновый строй в ¼ коммы",
@@ -14,7 +14,7 @@ extension TextosDeRepresentaciones {
         young: "Юнг",
         afinacionJusta: "чистый строй",
 
-        // CorrespondenciaDeColores+Idiomas.swift
+        // CorrespondenciaDeColores.swift
         circuloDeQuintas: "квинтовый круг",
 
         // DibujoSVG.swift
@@ -40,7 +40,7 @@ extension TextosDeRepresentaciones {
         // ConduccionParsimoniosa.swift
         semitonos: { n in Traduccion.pluralRuso(n, "полутон", "полутона", "полутонов") },
 
-        // TransformacionNeorriemanniana+Idiomas.swift
+        // TransformacionNeorriemanniana.swift
         homonima: "одноимённая",
         cambioDeSensible: "смена вводного тона",
         relativa: "параллельная"

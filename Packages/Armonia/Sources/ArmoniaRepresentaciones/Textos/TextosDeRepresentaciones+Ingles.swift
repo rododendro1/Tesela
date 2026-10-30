@@ -3,7 +3,7 @@
 
 extension TextosDeRepresentaciones {
     static let ingles = TextosDeRepresentaciones(
-        // Temperamento+Idiomas.swift
+        // Temperamento.swift
         temperamentoIgual: "equal temperament",
         pitagorico: "Pythagorean tuning",
         mesotonico: "quarter-comma meantone",
@@ -13,7 +13,7 @@ extension TextosDeRepresentaciones {
         young: "Young",
         afinacionJusta: "just intonation",
 
-        // CorrespondenciaDeColores+Idiomas.swift
+        // CorrespondenciaDeColores.swift
         circuloDeQuintas: "circle of fifths",
 
         // DibujoSVG.swift
@@ -39,7 +39,7 @@ extension TextosDeRepresentaciones {
         // ConduccionParsimoniosa.swift
         semitonos: { n in n == 1 ? "1 semitone" : "\(n) semitones" },
 
-        // TransformacionNeorriemanniana+Idiomas.swift
+        // TransformacionNeorriemanniana.swift
         homonima: "parallel",
         cambioDeSensible: "leading-tone exchange",
         relativa: "relative"

@@ -9,7 +9,7 @@ extension TextosDeTeoria {
                                   "quarta inversió", "cinquena inversió", "sisena inversió"],
         inversionConNumero: "inversió _",
 
-        // EstructuraDeAcorde+Idiomas.swift
+        // EstructuraDeAcorde.swift
         papelFundamental: "fonamental",
         papelTercera: "tercera",
         papelSuspension: "suspensió",
@@ -82,7 +82,7 @@ extension TextosDeTeoria {
         vozSoprano: "soprano",
         vozNumero: { numero in "veu \(numero)" },
 
-        // Escala+Idiomas.swift
+        // Escala.swift
         gradoTonica: "tònica",
         gradoSupertonica: "supertònica",
         gradoMediante: "mediant",

@@ -3,7 +3,7 @@
 
 extension TextosDeRepresentaciones {
     static let griego = TextosDeRepresentaciones(
-        // Temperamento+Idiomas.swift
+        // Temperamento.swift
         temperamentoIgual: "ίσος συγκερασμός",
         pitagorico: "πυθαγόρειο κούρδισμα",
         mesotonico: "μεσοτονικό ¼ κόμματος",
@@ -13,7 +13,7 @@ extension TextosDeRepresentaciones {
         young: "Γιανγκ",
         afinacionJusta: "φυσικό κούρδισμα",
 
-        // CorrespondenciaDeColores+Idiomas.swift
+        // CorrespondenciaDeColores.swift
         circuloDeQuintas: "κύκλος των πεμπτών",
 
         // DibujoSVG.swift
@@ -39,7 +39,7 @@ extension TextosDeRepresentaciones {
         // ConduccionParsimoniosa.swift
         semitonos: { n in n == 1 ? "1 ημιτόνιο" : "\(n) ημιτόνια" },
 
-        // TransformacionNeorriemanniana+Idiomas.swift
+        // TransformacionNeorriemanniana.swift
         homonima: "ομώνυμη",
         cambioDeSensible: "αλλαγή προσαγωγέα",
         relativa: "σχετική"

@@ -3,7 +3,7 @@
 
 extension TextosDePartitura {
     static let griego = TextosDePartitura(
-        // Contrapunto+Idiomas.swift
+        // Contrapunto.swift
         enElCompas: { n in "(μέτρο \(n))" },
         enLosCompases: { pasos in "(μέτρα \(pasos))" },
         ritmoDeLaEspecie: "Ρυθμός ξένος προς το είδος",
@@ -34,7 +34,7 @@ extension TextosDePartitura {
         sinNotas: "Το αρχείο δεν έχει καμία νότα.",
         sinAcordes: "Στο αρχείο δεν ακούγεται καμία συγχορδία.",
 
-        // Duracion+Idiomas.swift
+        // Duracion.swift
         cuadrada: "διπλό ολόκληρο",
         redonda: "ολόκληρο",
         blanca: "μισό",
@@ -48,7 +48,7 @@ extension TextosDePartitura {
         fraccionDeRedonda: { fraccion in "\(fraccion) του ολόκληρου" },
         conPuntillos: ["_ με τελεία", "_ με διπλή τελεία", "_ με τριπλή τελεία", "_ με τετραπλή τελεία"],
 
-        // Pentagrama+Idiomas.swift
+        // Pentagrama.swift
         claveDeSol: "κλειδί του σολ",
         claveDeSolOctavaBaja: "κλειδί του σολ μία οκτάβα χαμηλότερα",
         claveDeSolOctavaAlta: "κλειδί του σολ μία οκτάβα ψηλότερα",

@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+import Foundation
 // Las transformaciones neorriemannianas: P, L y R cambian una tríada mayor o menor por la que
 // comparte con ella dos notas, moviendo la tercera solo un semitono o un tono. En el Tonnetz
 // son giros del triángulo sobre uno de sus lados:
@@ -11,7 +12,6 @@ import ArmoniaTeoria
 // Las tres son involuciones (aplicadas dos veces, devuelven la tríada) y conservan la
 // ortografía: R de Mi♭ es Do menor, no Si♯ menor. N, S y H son las compuestas habituales.
 
-import Foundation
 
 /// P, L o R: el paso de una tríada mayor o menor a una vecina en el Tonnetz.
 ///
@@ -198,5 +198,25 @@ extension Tonnetz.Triada {
         let xs = vertices.map { Double($0.quintas) + Double($0.terceras) / 2 }
         let ys = vertices.map { -Double($0.terceras) * 0.8660254037844386 }
         return (xs.reduce(0, +) / 3, ys.reduce(0, +) / 3)
+    }
+}
+
+// MARK: - Idiomas
+//
+// Los nombres de las transformaciones neorriemannianas en los catorce idiomas de los textos (`Traduccion`).
+
+extension TransformacionNeorriemanniana: Nombrable {
+    /// El nombre de la transformación en el idioma de los textos: «relativa», «relative».
+    public func nombre(en notacion: Notacion) -> String {
+        let traduccion: Traduccion
+        switch self {
+        case .p:
+            traduccion = TextosDeRepresentaciones.traducidos.map(\.homonima)
+        case .l:
+            traduccion = TextosDeRepresentaciones.traducidos.map(\.cambioDeSensible)
+        case .r:
+            traduccion = TextosDeRepresentaciones.traducidos.map(\.relativa)
+        }
+        return traduccion.en(notacion)
     }
 }

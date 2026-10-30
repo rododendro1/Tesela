@@ -3,7 +3,7 @@
 
 extension TextosDeNucleo {
     static let gallego = TextosDeNucleo(
-        // Intervalo+Idiomas.swift
+        // Intervalo.swift
         calidadJusta: "xusta",
         calidadMayor: "maior",
         calidadMenor: "menor",
@@ -18,7 +18,7 @@ extension TextosDeNucleo {
         consonanciaImperfecta: "consonancia imperfecta",
         disonancia: "disonancia",
 
-        // Nota+Idiomas.swift
+        // Nota.swift
         palabraNatural: "becadro",
         palabraSostenido: "sostido",
         palabraBemol: "bemol",
@@ -26,7 +26,7 @@ extension TextosDeNucleo {
         palabraSostenidos: "sostidos",
         palabraBemoles: "bemois",
 
-        // ErrorDeLectura+Acordes.swift
+        // ErrorDeLectura.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» non forma parte de ningún cifrado coñecido" },
         tensionNoValida: { tension in "«\(tension)» non é unha tensión válida (admítense ♭/♯ con 5, 9, 11 e 13, e add con 2, 4, 6, 9, 11 e 13)" },
         numeroDeAcordeNoValido: { numero in "«\(numero)» non é un número de acorde (5, 6, 7, 9, 11 ou 13)" },
@@ -44,19 +44,19 @@ extension TextosDeNucleo {
         bajoNoValido: { bajo in "«\(bajo)» non é un nome de nota para o baixo" },
         idiomasMezclados: { nombre in "«\(nombre)» está escrito noutro idioma que a fundamental: escríbese todo con sílabas (Sol7/Si) ou todo con letras (G7/B)" },
 
-        // ErrorDeLectura+Escalas.swift
+        // ErrorDeLectura.swift (escalas)
         modoNoReconocido: { nombre in "«\(nombre)» non é o modo dunha tonalidade: unha tonalidade é maior ou menor (para os demais modos, usa Escala)" },
         faltaElTipoDeEscala: "falta o tipo de escala (mayor, dórico, menor armónica…)",
         tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» non é un tipo de escala coñecido" },
 
-        // ErrorDeLectura+Idiomas.swift
+        // ErrorDeLectura.swift (generales)
         valorNoValido: "Valor non válido",
         noSePuedeLeer: { texto in "Non se pode ler «\(texto)»" },
         caracter: { p in " (carácter \(p + 1))" },
         textoVacio: "o texto está baleiro",
         caracteresSobrantes: { resto in "sobra «\(resto)»" },
 
-        // ErrorDeLectura+Notas.swift
+        // ErrorDeLectura.swift (notas)
         notaNoReconocida: "agardábase un nome de nota (Do, Re, Mi… ou C, D, E…)",
         faltaLaOctava: "falta a oitava (por exemplo, Do4)",
         octavaNoValida: { resto in "«\(resto)» non é unha oitava válida" },
@@ -70,7 +70,7 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "non existe a \(numero)ª \(calidad.nombre(en: .gallego)): \(regla.gallego)" },
         alteracionNoReconocida: { signo in "«\(signo)» non é unha alteración (agardábase ♯, ♭, 𝄪, 𝄫, #, b, x ou ♮)" },
 
-        // ErrorDeLectura+Partitura.swift
+        // ErrorDeLectura.swift (partitura)
         duracionNoValida: { texto in "«\(texto)» non é unha duración: agardábase unha figura (1, 2, 4, 8, 16…, con puntiños: 4.) ou unha fracción de redonda (3/8, 1/12)" },
         compasNoValido: { texto in "«\(texto)» non é un compás: agardábase numerador/denominador co denominador potencia de 2 (4/4, 6/8, 7/8), C ou ¢" },
         vocesDistintas: "todos os acordes teñen que ter o mesmo número de voces, e polo menos dúas",

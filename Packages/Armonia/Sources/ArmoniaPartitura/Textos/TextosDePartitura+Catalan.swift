@@ -3,7 +3,7 @@
 
 extension TextosDePartitura {
     static let catalan = TextosDePartitura(
-        // Contrapunto+Idiomas.swift
+        // Contrapunto.swift
         enElCompas: { n in "(compàs \(n))" },
         enLosCompases: { pasos in "(compassos \(pasos))" },
         ritmoDeLaEspecie: "Ritme aliè a l'espècie",
@@ -34,7 +34,7 @@ extension TextosDePartitura {
         sinNotas: "El fitxer no té cap nota.",
         sinAcordes: "Al fitxer no sona cap acord.",
 
-        // Duracion+Idiomas.swift
+        // Duracion.swift
         cuadrada: "quadrada",
         redonda: "rodona",
         blanca: "blanca",
@@ -48,7 +48,7 @@ extension TextosDePartitura {
         fraccionDeRedonda: { fraccion in "\(fraccion) de rodona" },
         conPuntillos: ["_ amb punt", "_ amb doble punt", "_ amb triple punt", "_ amb quàdruple punt"],
 
-        // Pentagrama+Idiomas.swift
+        // Pentagrama.swift
         claveDeSol: "clau de sol",
         claveDeSolOctavaBaja: "clau de sol octava baixa",
         claveDeSolOctavaAlta: "clau de sol octava alta",

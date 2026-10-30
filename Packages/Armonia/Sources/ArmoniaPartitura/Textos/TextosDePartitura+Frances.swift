@@ -3,7 +3,7 @@
 
 extension TextosDePartitura {
     static let frances = TextosDePartitura(
-        // Contrapunto+Idiomas.swift
+        // Contrapunto.swift
         enElCompas: { n in "(mesure \(n))" },
         enLosCompases: { pasos in "(mesures \(pasos))" },
         ritmoDeLaEspecie: "Rythme étranger à l'espèce",
@@ -34,7 +34,7 @@ extension TextosDePartitura {
         sinNotas: "Le fichier ne contient aucune note.",
         sinAcordes: "Aucun accord ne sonne dans le fichier.",
 
-        // Duracion+Idiomas.swift
+        // Duracion.swift
         cuadrada: "carrée",
         redonda: "ronde",
         blanca: "blanche",
@@ -48,7 +48,7 @@ extension TextosDePartitura {
         fraccionDeRedonda: { fraccion in "\(fraccion) de ronde" },
         conPuntillos: ["_ pointée", "_ doublement pointée", "_ triplement pointée", "_ quadruplement pointée"],
 
-        // Pentagrama+Idiomas.swift
+        // Pentagrama.swift
         claveDeSol: "clé de sol",
         claveDeSolOctavaBaja: "clé de sol octave basse",
         claveDeSolOctavaAlta: "clé de sol octave haute",

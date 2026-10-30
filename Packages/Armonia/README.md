@@ -167,15 +167,15 @@ Sources/
 ├── ArmoniaNucleo/
 │   ├── Fundamentos/       Nota (con NotaNatural y Alteracion), Altura, Intervalo (con SentidoDelIntervalo,
 │   │                      CalidadDeIntervalo, Consonancia), Candidato, Protocolos, Aritmetica, y los
-│   │                      nombres de notas e intervalos en cada idioma (Nota+Idiomas, Intervalo+Idiomas)
+│   │                      nombres de notas e intervalos en cada idioma (al final de Nota e Intervalo)
 │   ├── Texto/             Notacion (con EscrituraDeNotas e Idioma), EstiloDeCifrado, Traduccion, Lector,
 │   │                      ErrorDeLectura
 │   └── Postonal/          ConjuntoDeClases, TablaForte
 ├── ArmoniaTeoria/
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
 │   │                      PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde
-│   ├── Escalas/           TipoDeEscala (el tipo; +Basicas, +Catalogo con la búsqueda por nombre, +Idiomas con
-│   │   │                  `nombre(en:)`), Escala (con NombreDeGrado), Escala+Busqueda, Escala+Ortografia
+│   ├── Escalas/           TipoDeEscala (el tipo; +Basicas, +Catalogo con la búsqueda por nombre; `nombre(en:)`
+│   │   │                  en el propio fichero), Escala (con NombreDeGrado), Escala+Busqueda, Escala+Ortografia
 │   │   ├── Nombres/       NombresDeEscalas y un fichero por idioma (`NombresDeEscalas+Catalan.swift`…): el nombre de cada
 │   │   │                  tipo, sus alias, las escalas de otras tradiciones y el nombre de cada clase
 │   │   ├── Occidentales/  TipoDeEscala+Modos, +Exoticas, +Hexatonicas, +Messiaen, +ModosExoticos, +Jazz, ModoGregoriano
@@ -208,11 +208,11 @@ Sources/
     └── Armonia.docc/  portada y un artículo por tema
 ```
 
-Los nombres que dependen del idioma están junto a cada tipo, en un fichero `X+Idiomas.swift`
-(`find Sources -name '*+Idiomas.swift'` los lista): en el núcleo, `Nota+Idiomas.swift` (letras, alteraciones
-y nombres de nota en las catorce lenguas de las notaciones), `Intervalo+Idiomas.swift` (calidades de
-intervalo, intervalos y consonancias) y `ErrorDeLectura+Idiomas.swift` (los mensajes de error, con los de cada
-lectura en `ErrorDeLectura+Notas`, `+Acordes`, `+Escalas` y `+Partitura`); en las demás
+Los nombres que dependen del idioma están en el fichero de cada tipo, al final, tras `// MARK: - Idiomas`
+(`grep -rl 'MARK: - Idiomas' Sources` los lista): en el núcleo, `Nota.swift` (letras, alteraciones
+y nombres de nota en las catorce lenguas de las notaciones), `Intervalo.swift` (calidades de
+intervalo, intervalos y consonancias) y `ErrorDeLectura.swift` (los mensajes de error: los generales y los de
+cada lectura, en `TextosDeNotas`, `TextosDeAcordes`, `TextosDeEscalas` y `TextosDePartitura`); en las demás
 capas, los modos y las tonalidades, los papeles en el acorde, las calidades de tríada, los grados, las claves,
 las figuras, las duraciones y los colores. Los textos usan `Traduccion`, que pide los catorce idiomas:
 español, inglés, catalán, gallego, asturiano, aragonés, euskera, portugués, francés, occitano, italiano, alemán,

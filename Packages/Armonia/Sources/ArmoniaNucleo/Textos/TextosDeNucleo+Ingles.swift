@@ -3,7 +3,7 @@
 
 extension TextosDeNucleo {
     static let ingles = TextosDeNucleo(
-        // Intervalo+Idiomas.swift
+        // Intervalo.swift
         calidadJusta: "perfect",
         calidadMayor: "major",
         calidadMenor: "minor",
@@ -18,7 +18,7 @@ extension TextosDeNucleo {
         consonanciaImperfecta: "imperfect consonance",
         disonancia: "dissonance",
 
-        // Nota+Idiomas.swift
+        // Nota.swift
         palabraNatural: "natural",
         palabraSostenido: "sharp",
         palabraBemol: "flat",
@@ -26,7 +26,7 @@ extension TextosDeNucleo {
         palabraSostenidos: "sharps",
         palabraBemoles: "flats",
 
-        // ErrorDeLectura+Acordes.swift
+        // ErrorDeLectura.swift (acordes)
         simboloNoReconocido: { simbolo in "\"\(simbolo)\" is not part of any known chord symbol" },
         tensionNoValida: { tension in "\"\(tension)\" is not a valid tension (♭/♯ go with 5, 9, 11 and 13, and add with 2, 4, 6, 9, 11 and 13)" },
         numeroDeAcordeNoValido: { numero in "\"\(numero)\" is not a chord number (5, 6, 7, 9, 11 or 13)" },
@@ -44,19 +44,19 @@ extension TextosDeNucleo {
         bajoNoValido: { bajo in "\"\(bajo)\" is not a note name for the bass" },
         idiomasMezclados: { nombre in "\"\(nombre)\" is written in a different language from the root: write everything with letters (G7/B) or everything in Spanish (Sol7/Si)" },
 
-        // ErrorDeLectura+Escalas.swift
+        // ErrorDeLectura.swift (escalas)
         modoNoReconocido: { nombre in "\"\(nombre)\" is not the mode of a key: a key is major or minor (for other modes, use Escala)" },
         faltaElTipoDeEscala: "the scale type is missing (major, dorian, harmonic minor…)",
         tipoDeEscalaNoReconocido: { nombre in "\"\(nombre)\" is not a known scale type" },
 
-        // ErrorDeLectura+Idiomas.swift
+        // ErrorDeLectura.swift (generales)
         valorNoValido: "Invalid value",
         noSePuedeLeer: { texto in "Cannot read \"\(texto)\"" },
         caracter: { p in " (character \(p + 1))" },
         textoVacio: "the text is empty",
         caracteresSobrantes: { resto in "unexpected \"\(resto)\"" },
 
-        // ErrorDeLectura+Notas.swift
+        // ErrorDeLectura.swift (notas)
         notaNoReconocida: "expected a note name (C, D, E… or Do, Re, Mi…)",
         faltaLaOctava: "the octave is missing (for example, C4)",
         octavaNoValida: { resto in "\"\(resto)\" is not a valid octave" },
@@ -70,7 +70,7 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "there is no \(calidad.nombre(en: notacion)) \(Intervalo.ordinalEnCifras(numero, en: .ingles)): \(regla.ingles)" },
         alteracionNoReconocida: { signo in "\"\(signo)\" is not an accidental (expected ♯, ♭, 𝄪, 𝄫, #, b, x or ♮)" },
 
-        // ErrorDeLectura+Partitura.swift
+        // ErrorDeLectura.swift (partitura)
         duracionNoValida: { texto in "\"\(texto)\" is not a duration: expected a note value (1, 2, 4, 8, 16…, dotted: 4.) or a fraction of a whole note (3/8, 1/12)" },
         compasNoValido: { texto in "\"\(texto)\" is not a time signature: expected numerator/denominator with a power-of-2 denominator (4/4, 6/8, 7/8), C or ¢" },
         vocesDistintas: "every chord must have the same number of voices, and at least two",

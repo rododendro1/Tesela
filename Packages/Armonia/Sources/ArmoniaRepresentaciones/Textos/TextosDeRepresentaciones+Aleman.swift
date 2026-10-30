@@ -3,7 +3,7 @@
 
 extension TextosDeRepresentaciones {
     static let aleman = TextosDeRepresentaciones(
-        // Temperamento+Idiomas.swift
+        // Temperamento.swift
         temperamentoIgual: "gleichstufige Stimmung",
         pitagorico: "pythagoreische Stimmung",
         mesotonico: "Viertelkomma-Mitteltönigkeit",
@@ -13,7 +13,7 @@ extension TextosDeRepresentaciones {
         young: "Young",
         afinacionJusta: "reine Stimmung",
 
-        // CorrespondenciaDeColores+Idiomas.swift
+        // CorrespondenciaDeColores.swift
         circuloDeQuintas: "Quintenzirkel",
 
         // DibujoSVG.swift
@@ -39,7 +39,7 @@ extension TextosDeRepresentaciones {
         // ConduccionParsimoniosa.swift
         semitonos: { n in n == 1 ? "1 Halbton" : "\(n) Halbtöne" },
 
-        // TransformacionNeorriemanniana+Idiomas.swift
+        // TransformacionNeorriemanniana.swift
         homonima: "Variante",
         cambioDeSensible: "Leittonwechsel",
         relativa: "Parallele"

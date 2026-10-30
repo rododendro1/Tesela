@@ -3,7 +3,7 @@
 
 extension TextosDeRepresentaciones {
     static let asturiano = TextosDeRepresentaciones(
-        // Temperamento+Idiomas.swift
+        // Temperamento.swift
         temperamentoIgual: "temperamentu igual",
         pitagorico: "afinación pitagórica",
         mesotonico: "mesotónicu de ¼ de coma",
@@ -13,7 +13,7 @@ extension TextosDeRepresentaciones {
         young: "Young",
         afinacionJusta: "afinación xusta",
 
-        // CorrespondenciaDeColores+Idiomas.swift
+        // CorrespondenciaDeColores.swift
         circuloDeQuintas: "círculu de quintes",
 
         // DibujoSVG.swift
@@ -39,7 +39,7 @@ extension TextosDeRepresentaciones {
         // ConduccionParsimoniosa.swift
         semitonos: { n in n == 1 ? "1 semitonu" : "\(n) semitonos" },
 
-        // TransformacionNeorriemanniana+Idiomas.swift
+        // TransformacionNeorriemanniana.swift
         homonima: "homónima",
         cambioDeSensible: "cambéu de sensible",
         relativa: "relativa"

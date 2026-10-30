@@ -7,7 +7,7 @@ import ArmoniaNucleo
 
 /// Los textos de ArmoniaPartitura en un idioma.
 struct TextosDePartitura: Sendable {
-    // MARK: Contrapunto+Idiomas.swift
+    // MARK: Contrapunto.swift
     let enElCompas: @Sendable (Int) -> String
     let enLosCompases: @Sendable (String) -> String
     let ritmoDeLaEspecie: String
@@ -38,7 +38,7 @@ struct TextosDePartitura: Sendable {
     let sinNotas: String
     let sinAcordes: String
 
-    // MARK: Duracion+Idiomas.swift
+    // MARK: Duracion.swift
     let cuadrada: String
     let redonda: String
     let blanca: String
@@ -52,7 +52,7 @@ struct TextosDePartitura: Sendable {
     let fraccionDeRedonda: @Sendable (String) -> String
     let conPuntillos: [String]
 
-    // MARK: Pentagrama+Idiomas.swift
+    // MARK: Pentagrama.swift
     let claveDeSol: String
     let claveDeSolOctavaBaja: String
     let claveDeSolOctavaAlta: String
