@@ -3,7 +3,7 @@
 
 extension TextosDeRepresentaciones {
     static let occitano = TextosDeRepresentaciones(
-        // Temperamento+Idiomas.swift
+        // Temperamento.swift
         temperamentoIgual: "temperament egal",
         pitagorico: "acordatge pitagoric",
         mesotonico: "mesotonic d'¼ de coma",
@@ -13,7 +13,7 @@ extension TextosDeRepresentaciones {
         young: "Young",
         afinacionJusta: "acordatge just",
 
-        // CorrespondenciaDeColores+Idiomas.swift
+        // CorrespondenciaDeColores.swift
         circuloDeQuintas: "cercle de quintas",
 
         // DibujoSVG.swift
@@ -39,7 +39,7 @@ extension TextosDeRepresentaciones {
         // ConduccionParsimoniosa.swift
         semitonos: { n in n == 1 ? "1 semiton" : "\(n) semitons" },
 
-        // TransformacionNeorriemanniana+Idiomas.swift
+        // TransformacionNeorriemanniana.swift
         homonima: "omonima",
         cambioDeSensible: "cambi de sensibla",
         relativa: "relativa"

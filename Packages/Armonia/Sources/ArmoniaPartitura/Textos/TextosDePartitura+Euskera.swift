@@ -3,7 +3,7 @@
 
 extension TextosDePartitura {
     static let euskera = TextosDePartitura(
-        // Contrapunto+Idiomas.swift
+        // Contrapunto.swift
         enElCompas: { n in "(\(n). konpasa)" },
         enLosCompases: { pasos in "(\(pasos) konpasak)" },
         ritmoDeLaEspecie: "Espeziez kanpoko erritmoa",
@@ -34,7 +34,7 @@ extension TextosDePartitura {
         sinNotas: "Fitxategiak ez du notarik.",
         sinAcordes: "Fitxategian ez da akorderik entzuten.",
 
-        // Duracion+Idiomas.swift
+        // Duracion.swift
         cuadrada: "karratua",
         redonda: "biribila",
         blanca: "zuria",
@@ -48,7 +48,7 @@ extension TextosDePartitura {
         fraccionDeRedonda: { fraccion in "biribilaren \(fraccion)" },
         conPuntillos: ["_ puntuduna", "_ puntu bikoitzarekin", "_ puntu hirukoitzarekin", "_ puntu laukoitzarekin"],
 
-        // Pentagrama+Idiomas.swift
+        // Pentagrama.swift
         claveDeSol: "sol giltza",
         claveDeSolOctavaBaja: "sol giltza zortzidun bat beherago",
         claveDeSolOctavaAlta: "sol giltza zortzidun bat gorago",

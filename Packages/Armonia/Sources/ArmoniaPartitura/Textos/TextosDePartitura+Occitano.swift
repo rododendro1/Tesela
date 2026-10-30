@@ -3,7 +3,7 @@
 
 extension TextosDePartitura {
     static let occitano = TextosDePartitura(
-        // Contrapunto+Idiomas.swift
+        // Contrapunto.swift
         enElCompas: { n in "(mesura \(n))" },
         enLosCompases: { pasos in "(mesuras \(pasos))" },
         ritmoDeLaEspecie: "Ritme estrangièr a l'espècia",
@@ -34,7 +34,7 @@ extension TextosDePartitura {
         sinNotas: "Lo fichièr a pas cap de nòta.",
         sinAcordes: "Dins lo fichièr sona pas cap d'acòrd.",
 
-        // Duracion+Idiomas.swift
+        // Duracion.swift
         cuadrada: "quadrada",
         redonda: "redonda",
         blanca: "blanca",
@@ -48,7 +48,7 @@ extension TextosDePartitura {
         fraccionDeRedonda: { fraccion in "\(fraccion) de redonda" },
         conPuntillos: ["_ puntada", "_ doblament puntada", "_ triplament puntada", "_ quadruplament puntada"],
 
-        // Pentagrama+Idiomas.swift
+        // Pentagrama.swift
         claveDeSol: "clau de sòl",
         claveDeSolOctavaBaja: "clau de sòl octava bassa",
         claveDeSolOctavaAlta: "clau de sòl octava nauta",

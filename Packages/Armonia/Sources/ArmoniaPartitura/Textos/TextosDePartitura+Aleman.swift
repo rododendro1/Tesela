@@ -3,7 +3,7 @@
 
 extension TextosDePartitura {
     static let aleman = TextosDePartitura(
-        // Contrapunto+Idiomas.swift
+        // Contrapunto.swift
         enElCompas: { n in "(Takt \(n))" },
         enLosCompases: { pasos in "(Takte \(pasos))" },
         ritmoDeLaEspecie: "Rhythmus passt nicht zur Gattung",
@@ -34,7 +34,7 @@ extension TextosDePartitura {
         sinNotas: "Die Datei enthält keine Noten.",
         sinAcordes: "In der Datei erklingt kein Akkord.",
 
-        // Duracion+Idiomas.swift
+        // Duracion.swift
         cuadrada: "Doppelganze",
         redonda: "Ganze",
         blanca: "Halbe",
@@ -48,7 +48,7 @@ extension TextosDePartitura {
         fraccionDeRedonda: { fraccion in "\(fraccion) einer Ganzen" },
         conPuntillos: ["punktierte _", "doppelt punktierte _", "dreifach punktierte _", "vierfach punktierte _"],
 
-        // Pentagrama+Idiomas.swift
+        // Pentagrama.swift
         claveDeSol: "Violinschlüssel",
         claveDeSolOctavaBaja: "Violinschlüssel eine Oktave tiefer",
         claveDeSolOctavaAlta: "Violinschlüssel eine Oktave höher",

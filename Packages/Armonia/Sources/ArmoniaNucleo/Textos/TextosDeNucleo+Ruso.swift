@@ -3,7 +3,7 @@
 
 extension TextosDeNucleo {
     static let ruso = TextosDeNucleo(
-        // Intervalo+Idiomas.swift
+        // Intervalo.swift
         calidadJusta: "чистая",
         calidadMayor: "большая",
         calidadMenor: "малая",
@@ -18,7 +18,7 @@ extension TextosDeNucleo {
         consonanciaImperfecta: "несовершенный консонанс",
         disonancia: "диссонанс",
 
-        // Nota+Idiomas.swift
+        // Nota.swift
         palabraNatural: "бекар",
         palabraSostenido: "диез",
         palabraBemol: "бемоль",
@@ -26,7 +26,7 @@ extension TextosDeNucleo {
         palabraSostenidos: "диезов",
         palabraBemoles: "бемолей",
 
-        // ErrorDeLectura+Acordes.swift
+        // ErrorDeLectura.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» не входит ни в одно известное буквенное обозначение" },
         tensionNoValida: { tension in "«\(tension)» — недопустимая альтерация или добавленный тон (♭/♯ — с 5, 9, 11 и 13, add — с 2, 4, 6, 9, 11 и 13)" },
         numeroDeAcordeNoValido: { numero in "«\(numero)» — не число аккорда (5, 6, 7, 9, 11 или 13)" },
@@ -44,19 +44,19 @@ extension TextosDeNucleo {
         bajoNoValido: { bajo in "«\(bajo)» — не название ноты для баса" },
         idiomasMezclados: { nombre in "«\(nombre)» записано не на том языке, что основной тон: пиши всё слогами (Sol7/Si) или всё буквами (G7/B)" },
 
-        // ErrorDeLectura+Escalas.swift
+        // ErrorDeLectura.swift (escalas)
         modoNoReconocido: { nombre in "«\(nombre)» — не лад тональности: тональность бывает мажорной или минорной (для других ладов используй Escala)" },
         faltaElTipoDeEscala: "не указан тип гаммы (мажор, дорийский, гармонический минор…)",
         tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» — неизвестный тип гаммы" },
 
-        // ErrorDeLectura+Idiomas.swift
+        // ErrorDeLectura.swift (generales)
         valorNoValido: "Недопустимое значение",
         noSePuedeLeer: { texto in "Не удаётся прочитать «\(texto)»" },
         caracter: { p in " (символ \(p + 1))" },
         textoVacio: "текст пуст",
         caracteresSobrantes: { resto in "лишнее «\(resto)»" },
 
-        // ErrorDeLectura+Notas.swift
+        // ErrorDeLectura.swift (notas)
         notaNoReconocida: "ожидалось название ноты (до, ре, ми… или C, D, E…)",
         faltaLaOctava: "не указана октава (например, до4)",
         octavaNoValida: { resto in "«\(resto)» — недопустимая октава" },
@@ -70,7 +70,7 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "«\(calidad.nombre(en: .ruso)) \(Intervalo.ordinal(numero, en: .ruso))» не существует: \(regla.ruso)" },
         alteracionNoReconocida: { signo in "«\(signo)» — не знак альтерации (ожидалось ♯, ♭, 𝄪, 𝄫, #, b, x или ♮)" },
 
-        // ErrorDeLectura+Partitura.swift
+        // ErrorDeLectura.swift (partitura)
         duracionNoValida: { texto in "«\(texto)» — не длительность: ожидалась нота (1, 2, 4, 8, 16…, с точкой: 4.) или доля целой (3/8, 1/12)" },
         compasNoValido: { texto in "«\(texto)» — не размер: ожидалось числитель/знаменатель, где знаменатель — степень двойки (4/4, 6/8, 7/8), C или ¢" },
         vocesDistintas: "во всех аккордах должно быть одинаковое число голосов, не меньше двух",

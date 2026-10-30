@@ -3,7 +3,7 @@
 
 extension TextosDeNucleo {
     static let asturiano = TextosDeNucleo(
-        // Intervalo+Idiomas.swift
+        // Intervalo.swift
         calidadJusta: "xusta",
         calidadMayor: "mayor",
         calidadMenor: "menor",
@@ -18,7 +18,7 @@ extension TextosDeNucleo {
         consonanciaImperfecta: "consonancia imperfeuta",
         disonancia: "disonancia",
 
-        // Nota+Idiomas.swift
+        // Nota.swift
         palabraNatural: "becuadru",
         palabraSostenido: "sosteníu",
         palabraBemol: "bemol",
@@ -26,7 +26,7 @@ extension TextosDeNucleo {
         palabraSostenidos: "sosteníos",
         palabraBemoles: "bemoles",
 
-        // ErrorDeLectura+Acordes.swift
+        // ErrorDeLectura.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» nun fai parte de nengún cifráu conocíu" },
         tensionNoValida: { tension in "«\(tension)» nun ye una tensión válida (almítense ♭/♯ con 5, 9, 11 y 13, y add con 2, 4, 6, 9, 11 y 13)" },
         numeroDeAcordeNoValido: { numero in "«\(numero)» nun ye un númberu d\'acorde (5, 6, 7, 9, 11 o 13)" },
@@ -44,19 +44,19 @@ extension TextosDeNucleo {
         bajoNoValido: { bajo in "«\(bajo)» nun ye un nome de nota pal baxu" },
         idiomasMezclados: { nombre in "«\(nombre)» ta escritu n\'otra llingua que la fundamental: escríbese too en castellán (Sol7/Si) o too con lletres (G7/B)" },
 
-        // ErrorDeLectura+Escalas.swift
+        // ErrorDeLectura.swift (escalas)
         modoNoReconocido: { nombre in "«\(nombre)» nun ye\'l mou d\'una tonalidá: una tonalidá ye mayor o menor (pa los demás moos, usa Escala)" },
         faltaElTipoDeEscala: "falta\'l tipu d\'escala (mayor, dóricu, menor armónica…)",
         tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» nun ye un tipu d\'escala conocíu" },
 
-        // ErrorDeLectura+Idiomas.swift
+        // ErrorDeLectura.swift (generales)
         valorNoValido: "Valor non válidu",
         noSePuedeLeer: { texto in "Nun se pue lleer «\(texto)»" },
         caracter: { p in " (caráuter \(p + 1))" },
         textoVacio: "el testu ta baleru",
         caracteresSobrantes: { resto in "sobra «\(resto)»" },
 
-        // ErrorDeLectura+Notas.swift
+        // ErrorDeLectura.swift (notas)
         notaNoReconocida: "esperábase un nome de nota (Do, Re, Mi… o C, D, E…)",
         faltaLaOctava: "falta la octava (por exemplu, Do4)",
         octavaNoValida: { resto in "«\(resto)» nun ye una octava válida" },
@@ -70,7 +70,7 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "nun esiste la \(numero)ª \(calidad.nombre(en: .asturiano)): \(regla.asturiano)" },
         alteracionNoReconocida: { signo in "«\(signo)» nun ye una alteración (esperábase ♯, ♭, 𝄪, 𝄫, #, b, x o ♮)" },
 
-        // ErrorDeLectura+Partitura.swift
+        // ErrorDeLectura.swift (partitura)
         duracionNoValida: { texto in "«\(texto)» nun ye una duración: esperábase una figura (1, 2, 4, 8, 16…, con puntiellos: 4.) o una fraición de redonda (3/8, 1/12)" },
         compasNoValido: { texto in "«\(texto)» nun ye un compás: esperábase numerador/denominador col denominador potencia de 2 (4/4, 6/8, 7/8), C o ¢" },
         vocesDistintas: "tolos acordes tienen que tener el mesmu númberu de voces, y polo menos dos",

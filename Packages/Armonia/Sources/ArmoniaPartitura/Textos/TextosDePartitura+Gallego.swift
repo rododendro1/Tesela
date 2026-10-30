@@ -3,7 +3,7 @@
 
 extension TextosDePartitura {
     static let gallego = TextosDePartitura(
-        // Contrapunto+Idiomas.swift
+        // Contrapunto.swift
         enElCompas: { n in "(compás \(n))" },
         enLosCompases: { pasos in "(compases \(pasos))" },
         ritmoDeLaEspecie: "Ritmo alleo á especie",
@@ -34,7 +34,7 @@ extension TextosDePartitura {
         sinNotas: "O ficheiro non ten ningunha nota.",
         sinAcordes: "No ficheiro non soa ningún acorde.",
 
-        // Duracion+Idiomas.swift
+        // Duracion.swift
         cuadrada: "cadrada",
         redonda: "redonda",
         blanca: "branca",
@@ -48,7 +48,7 @@ extension TextosDePartitura {
         fraccionDeRedonda: { fraccion in "\(fraccion) de redonda" },
         conPuntillos: ["_ con puntiño", "_ con dobre puntiño", "_ con triplo puntiño", "_ con cuádruplo puntiño"],
 
-        // Pentagrama+Idiomas.swift
+        // Pentagrama.swift
         claveDeSol: "clave de sol",
         claveDeSolOctavaBaja: "clave de sol oitava baixa",
         claveDeSolOctavaAlta: "clave de sol oitava alta",

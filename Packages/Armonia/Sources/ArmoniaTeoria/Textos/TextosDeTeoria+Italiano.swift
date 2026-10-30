@@ -9,7 +9,7 @@ extension TextosDeTeoria {
                                   "quarto rivolto", "quinto rivolto", "sesto rivolto"],
         inversionConNumero: "rivolto _",
 
-        // EstructuraDeAcorde+Idiomas.swift
+        // EstructuraDeAcorde.swift
         papelFundamental: "fondamentale",
         papelTercera: "terza",
         papelSuspension: "sospensione",
@@ -82,7 +82,7 @@ extension TextosDeTeoria {
         vozSoprano: "soprano",
         vozNumero: { numero in "voce \(numero)" },
 
-        // Escala+Idiomas.swift
+        // Escala.swift
         gradoTonica: "tonica",
         gradoSupertonica: "sopratonica",
         gradoMediante: "mediante",

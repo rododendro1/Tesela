@@ -12,7 +12,7 @@ struct TextosDeTeoria: Sendable {
     let nombresDeLasInversiones: [String]
     let inversionConNumero: String
 
-    // MARK: EstructuraDeAcorde+Idiomas.swift
+    // MARK: EstructuraDeAcorde.swift
     let papelFundamental: String
     let papelTercera: String
     let papelSuspension: String
@@ -85,7 +85,7 @@ struct TextosDeTeoria: Sendable {
     let vozSoprano: String
     let vozNumero: @Sendable (Int) -> String
 
-    // MARK: Escala+Idiomas.swift
+    // MARK: Escala.swift
     let gradoTonica: String
     let gradoSupertonica: String
     let gradoMediante: String

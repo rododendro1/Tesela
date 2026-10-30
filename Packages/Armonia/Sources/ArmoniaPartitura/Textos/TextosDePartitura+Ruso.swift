@@ -3,7 +3,7 @@
 
 extension TextosDePartitura {
     static let ruso = TextosDePartitura(
-        // Contrapunto+Idiomas.swift
+        // Contrapunto.swift
         enElCompas: { n in "(такт \(n))" },
         enLosCompases: { pasos in "(такты \(pasos))" },
         ritmoDeLaEspecie: "Ритм не соответствует виду",
@@ -34,7 +34,7 @@ extension TextosDePartitura {
         sinNotas: "В файле нет ни одной ноты.",
         sinAcordes: "В файле не звучит ни одного аккорда.",
 
-        // Duracion+Idiomas.swift
+        // Duracion.swift
         cuadrada: "бревис",
         redonda: "целая",
         blanca: "половинная",
@@ -48,7 +48,7 @@ extension TextosDePartitura {
         fraccionDeRedonda: { fraccion in "\(fraccion) целой" },
         conPuntillos: ["_ с точкой", "_ с двумя точками", "_ с тремя точками", "_ с четырьмя точками"],
 
-        // Pentagrama+Idiomas.swift
+        // Pentagrama.swift
         claveDeSol: "скрипичный ключ",
         claveDeSolOctavaBaja: "скрипичный ключ октавой ниже",
         claveDeSolOctavaAlta: "скрипичный ключ октавой выше",

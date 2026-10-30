@@ -3,7 +3,7 @@
 
 extension TextosDeNucleo {
     static let frances = TextosDeNucleo(
-        // Intervalo+Idiomas.swift
+        // Intervalo.swift
         calidadJusta: "juste",
         calidadMayor: "majeure",
         calidadMenor: "mineure",
@@ -18,7 +18,7 @@ extension TextosDeNucleo {
         consonanciaImperfecta: "consonance imparfaite",
         disonancia: "dissonance",
 
-        // Nota+Idiomas.swift
+        // Nota.swift
         palabraNatural: "bécarre",
         palabraSostenido: "dièse",
         palabraBemol: "bémol",
@@ -26,7 +26,7 @@ extension TextosDeNucleo {
         palabraSostenidos: "dièses",
         palabraBemoles: "bémols",
 
-        // ErrorDeLectura+Acordes.swift
+        // ErrorDeLectura.swift (acordes)
         simboloNoReconocido: { simbolo in "« \(simbolo) » ne fait partie d'aucun chiffrage connu" },
         tensionNoValida: { tension in "« \(tension) » n'est pas une tension valide (♭/♯ s'emploient avec 5, 9, 11 et 13, et add avec 2, 4, 6, 9, 11 et 13)" },
         numeroDeAcordeNoValido: { numero in "« \(numero) » n'est pas un numéro d'accord (5, 6, 7, 9, 11 ou 13)" },
@@ -44,19 +44,19 @@ extension TextosDeNucleo {
         bajoNoValido: { bajo in "« \(bajo) » n'est pas un nom de note pour la basse" },
         idiomasMezclados: { nombre in "« \(nombre) » est écrit dans une autre langue que la fondamentale : on écrit tout en syllabes (Sol7/Si) ou tout en lettres (G7/B)" },
 
-        // ErrorDeLectura+Escalas.swift
+        // ErrorDeLectura.swift (escalas)
         modoNoReconocido: { nombre in "« \(nombre) » n'est pas le mode d'une tonalité : une tonalité est majeure ou mineure (pour les autres modes, utilisez Escala)" },
         faltaElTipoDeEscala: "il manque le type de gamme (majeur, dorien, mineur harmonique…)",
         tipoDeEscalaNoReconocido: { nombre in "« \(nombre) » n'est pas un type de gamme connu" },
 
-        // ErrorDeLectura+Idiomas.swift
+        // ErrorDeLectura.swift (generales)
         valorNoValido: "Valeur non valide",
         noSePuedeLeer: { texto in "Impossible de lire « \(texto) »" },
         caracter: { p in " (caractère \(p + 1))" },
         textoVacio: "le texte est vide",
         caracteresSobrantes: { resto in "« \(resto) » est en trop" },
 
-        // ErrorDeLectura+Notas.swift
+        // ErrorDeLectura.swift (notas)
         notaNoReconocida: "un nom de note était attendu (Do, Ré, Mi… ou C, D, E…)",
         faltaLaOctava: "il manque l'octave (par exemple, Do4)",
         octavaNoValida: { resto in "« \(resto) » n'est pas une octave valide" },
@@ -70,7 +70,7 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "il n'existe pas de \(numero)e \(calidad.nombre(en: .frances)) : \(regla.frances)" },
         alteracionNoReconocida: { signo in "« \(signo) » n'est pas une altération (♯, ♭, 𝄪, 𝄫, #, b, x ou ♮ attendu)" },
 
-        // ErrorDeLectura+Partitura.swift
+        // ErrorDeLectura.swift (partitura)
         duracionNoValida: { texto in "« \(texto) » n'est pas une durée : une figure était attendue (1, 2, 4, 8, 16…, pointée : 4.) ou une fraction de ronde (3/8, 1/12)" },
         compasNoValido: { texto in "« \(texto) » n'est pas une mesure : numérateur/dénominateur attendu, avec un dénominateur puissance de 2 (4/4, 6/8, 7/8), C ou ¢" },
         vocesDistintas: "tous les accords doivent avoir le même nombre de voix, et au moins deux",

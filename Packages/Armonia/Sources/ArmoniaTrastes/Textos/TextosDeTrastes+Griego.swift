@@ -3,7 +3,7 @@
 
 extension TextosDeTrastes {
     static let griego = TextosDeTrastes(
-        // Encordado+Idiomas.swift
+        // Encordado.swift
         guitarra: "κιθάρα",
         guitarraEnReGrave: "κιθάρα σε drop D",
         guitarraDeSieteCuerdas: "επτάχορδη κιθάρα",

@@ -3,7 +3,7 @@
 
 extension TextosDeNucleo {
     static let aragones = TextosDeNucleo(
-        // Intervalo+Idiomas.swift
+        // Intervalo.swift
         calidadJusta: "chusta",
         calidadMayor: "mayor",
         calidadMenor: "menor",
@@ -18,7 +18,7 @@ extension TextosDeNucleo {
         consonanciaImperfecta: "consonancia imperfecta",
         disonancia: "disonancia",
 
-        // Nota+Idiomas.swift
+        // Nota.swift
         palabraNatural: "becuadro",
         palabraSostenido: "sosteniu",
         palabraBemol: "bemol",
@@ -26,7 +26,7 @@ extension TextosDeNucleo {
         palabraSostenidos: "sostenius",
         palabraBemoles: "bemols",
 
-        // ErrorDeLectura+Acordes.swift
+        // ErrorDeLectura.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» no fa parte de garra cifrau conoixiu" },
         tensionNoValida: { tension in "«\(tension)» no ye una tensión válida (s\'admiten ♭/♯ con 5, 9, 11 y 13, y add con 2, 4, 6, 9, 11 y 13)" },
         numeroDeAcordeNoValido: { numero in "«\(numero)» no ye un número d\'acorde (5, 6, 7, 9, 11 u 13)" },
@@ -44,19 +44,19 @@ extension TextosDeNucleo {
         bajoNoValido: { bajo in "«\(bajo)» no ye un nombre de nota ta o baixo" },
         idiomasMezclados: { nombre in "«\(nombre)» ye escrito en atro idioma que a fundamental: s\'escribe tot en castellano (Sol7/Si) u tot con letras (G7/B)" },
 
-        // ErrorDeLectura+Escalas.swift
+        // ErrorDeLectura.swift (escalas)
         modoNoReconocido: { nombre in "«\(nombre)» no ye o modo d\'una tonalidat: una tonalidat ye mayor u menor (ta os atros modos, fe servir Escala)" },
         faltaElTipoDeEscala: "falta o tipo d\'escala (mayor, dórico, menor armónica…)",
         tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» no ye un tipo d\'escala conoixiu" },
 
-        // ErrorDeLectura+Idiomas.swift
+        // ErrorDeLectura.swift (generales)
         valorNoValido: "Valor no válido",
         noSePuedeLeer: { texto in "No se puede leyer «\(texto)»" },
         caracter: { p in " (carácter \(p + 1))" },
         textoVacio: "o texto ye vuedo",
         caracteresSobrantes: { resto in "sobra «\(resto)»" },
 
-        // ErrorDeLectura+Notas.swift
+        // ErrorDeLectura.swift (notas)
         notaNoReconocida: "s\'asperaba un nombre de nota (Do, Re, Mi… u C, D, E…)",
         faltaLaOctava: "falta a octava (per eixemplo, Do4)",
         octavaNoValida: { resto in "«\(resto)» no ye una octava válida" },
@@ -70,7 +70,7 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "no existe a \(numero)ª \(calidad.nombre(en: .aragones)): \(regla.aragones)" },
         alteracionNoReconocida: { signo in "«\(signo)» no ye una alteración (s\'asperaba ♯, ♭, 𝄪, 𝄫, #, b, x u ♮)" },
 
-        // ErrorDeLectura+Partitura.swift
+        // ErrorDeLectura.swift (partitura)
         duracionNoValida: { texto in "«\(texto)» no ye una duración: s\'asperaba una figura (1, 2, 4, 8, 16…, con puntillos: 4.) u una fracción de redonda (3/8, 1/12)" },
         compasNoValido: { texto in "«\(texto)» no ye un compás: s\'asperaba numerador/denominador con o denominador potencia de 2 (4/4, 6/8, 7/8), C u ¢" },
         vocesDistintas: "toz os acordes han de tener o mesmo número de voces, y a lo menos dos",

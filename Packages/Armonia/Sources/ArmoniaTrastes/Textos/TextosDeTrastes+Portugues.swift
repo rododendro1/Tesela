@@ -3,7 +3,7 @@
 
 extension TextosDeTrastes {
     static let portugues = TextosDeTrastes(
-        // Encordado+Idiomas.swift
+        // Encordado.swift
         guitarra: "guitarra",
         guitarraEnReGrave: "guitarra em ré grave",
         guitarraDeSieteCuerdas: "guitarra de sete cordas",

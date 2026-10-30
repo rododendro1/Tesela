@@ -3,7 +3,7 @@
 
 extension TextosDeRepresentaciones {
     static let frances = TextosDeRepresentaciones(
-        // Temperamento+Idiomas.swift
+        // Temperamento.swift
         temperamentoIgual: "tempérament égal",
         pitagorico: "accord pythagoricien",
         mesotonico: "mésotonique au quart de comma",
@@ -13,7 +13,7 @@ extension TextosDeRepresentaciones {
         young: "Young",
         afinacionJusta: "intonation juste",
 
-        // CorrespondenciaDeColores+Idiomas.swift
+        // CorrespondenciaDeColores.swift
         circuloDeQuintas: "cycle des quintes",
 
         // DibujoSVG.swift
@@ -39,7 +39,7 @@ extension TextosDeRepresentaciones {
         // ConduccionParsimoniosa.swift
         semitonos: { n in n == 1 ? "1 demi-ton" : "\(n) demi-tons" },
 
-        // TransformacionNeorriemanniana+Idiomas.swift
+        // TransformacionNeorriemanniana.swift
         homonima: "homonyme",
         cambioDeSensible: "échange de sensible",
         relativa: "relative"

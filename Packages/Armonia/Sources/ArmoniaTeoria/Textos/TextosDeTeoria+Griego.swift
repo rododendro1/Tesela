@@ -9,7 +9,7 @@ extension TextosDeTeoria {
                                   "τέταρτη αναστροφή", "πέμπτη αναστροφή", "έκτη αναστροφή"],
         inversionConNumero: "αναστροφή _",
 
-        // EstructuraDeAcorde+Idiomas.swift
+        // EstructuraDeAcorde.swift
         papelFundamental: "θεμέλια",
         papelTercera: "τρίτη",
         papelSuspension: "καθυστέρηση",
@@ -82,7 +82,7 @@ extension TextosDeTeoria {
         vozSoprano: "σοπράνο",
         vozNumero: { numero in "φωνή \(numero)" },
 
-        // Escala+Idiomas.swift
+        // Escala.swift
         gradoTonica: "τονική",
         gradoSupertonica: "υπερτονική",
         gradoMediante: "μέση",

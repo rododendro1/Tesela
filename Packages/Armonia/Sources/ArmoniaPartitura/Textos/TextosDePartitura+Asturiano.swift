@@ -3,7 +3,7 @@
 
 extension TextosDePartitura {
     static let asturiano = TextosDePartitura(
-        // Contrapunto+Idiomas.swift
+        // Contrapunto.swift
         enElCompas: { n in "(compás \(n))" },
         enLosCompases: { pasos in "(compases \(pasos))" },
         ritmoDeLaEspecie: "Ritmu ayenu a la especie",
@@ -34,7 +34,7 @@ extension TextosDePartitura {
         sinNotas: "El ficheru nun tien nenguna nota.",
         sinAcordes: "Nel ficheru nun suena nengún acorde.",
 
-        // Duracion+Idiomas.swift
+        // Duracion.swift
         cuadrada: "cuadrada",
         redonda: "redonda",
         blanca: "blanca",
@@ -48,7 +48,7 @@ extension TextosDePartitura {
         fraccionDeRedonda: { fraccion in "\(fraccion) de redonda" },
         conPuntillos: ["_ con puntiellu", "_ con doble puntiellu", "_ con triple puntiellu", "_ con cuádruple puntiellu"],
 
-        // Pentagrama+Idiomas.swift
+        // Pentagrama.swift
         claveDeSol: "clave de sol",
         claveDeSolOctavaBaja: "clave de sol octava baxa",
         claveDeSolOctavaAlta: "clave de sol octava alta",

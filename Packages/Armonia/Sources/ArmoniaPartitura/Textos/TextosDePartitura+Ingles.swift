@@ -3,7 +3,7 @@
 
 extension TextosDePartitura {
     static let ingles = TextosDePartitura(
-        // Contrapunto+Idiomas.swift
+        // Contrapunto.swift
         enElCompas: { n in "(bar \(n))" },
         enLosCompases: { pasos in "(bars \(pasos))" },
         ritmoDeLaEspecie: "Rhythm outside the species",
@@ -34,7 +34,7 @@ extension TextosDePartitura {
         sinNotas: "The file has no notes.",
         sinAcordes: "No chords sound in the file.",
 
-        // Duracion+Idiomas.swift
+        // Duracion.swift
         cuadrada: "double whole note",
         redonda: "whole note",
         blanca: "half note",
@@ -48,7 +48,7 @@ extension TextosDePartitura {
         fraccionDeRedonda: { fraccion in "\(fraccion) of a whole note" },
         conPuntillos: ["dotted _", "double-dotted _", "triple-dotted _", "quadruple-dotted _"],
 
-        // Pentagrama+Idiomas.swift
+        // Pentagrama.swift
         claveDeSol: "treble clef",
         claveDeSolOctavaBaja: "treble clef 8vb",
         claveDeSolOctavaAlta: "treble clef 8va",

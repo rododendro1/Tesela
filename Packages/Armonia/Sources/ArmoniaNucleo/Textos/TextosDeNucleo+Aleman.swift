@@ -3,7 +3,7 @@
 
 extension TextosDeNucleo {
     static let aleman = TextosDeNucleo(
-        // Intervalo+Idiomas.swift
+        // Intervalo.swift
         calidadJusta: "reine",
         calidadMayor: "große",
         calidadMenor: "kleine",
@@ -18,7 +18,7 @@ extension TextosDeNucleo {
         consonanciaImperfecta: "unvollkommene Konsonanz",
         disonancia: "Dissonanz",
 
-        // Nota+Idiomas.swift
+        // Nota.swift
         palabraNatural: "Auflösungszeichen",
         palabraSostenido: "Kreuz",
         palabraBemol: "Be",
@@ -26,7 +26,7 @@ extension TextosDeNucleo {
         palabraSostenidos: "Kreuze",
         palabraBemoles: "Be",
 
-        // ErrorDeLectura+Acordes.swift
+        // ErrorDeLectura.swift (acordes)
         simboloNoReconocido: { simbolo in "„\(simbolo)“ gehört zu keinem bekannten Akkordsymbol" },
         tensionNoValida: { tension in "„\(tension)“ ist keine gültige Tension (♭/♯ gehen mit 5, 9, 11 und 13, add mit 2, 4, 6, 9, 11 und 13)" },
         numeroDeAcordeNoValido: { numero in "„\(numero)“ ist keine Akkordzahl (5, 6, 7, 9, 11 oder 13)" },
@@ -44,19 +44,19 @@ extension TextosDeNucleo {
         bajoNoValido: { bajo in "„\(bajo)“ ist kein Notenname für den Bass" },
         idiomasMezclados: { nombre in "„\(nombre)“ ist in einer anderen Sprache geschrieben als der Grundton: entweder alles mit Silben (Sol7/Si) oder alles mit Buchstaben (G7/B)" },
 
-        // ErrorDeLectura+Escalas.swift
+        // ErrorDeLectura.swift (escalas)
         modoNoReconocido: { nombre in "„\(nombre)“ ist kein Tongeschlecht: eine Tonart ist Dur oder Moll (für die anderen Modi nimm Escala)" },
         faltaElTipoDeEscala: "die Skalenart fehlt (Dur, dorisch, harmonisch Moll…)",
         tipoDeEscalaNoReconocido: { nombre in "„\(nombre)“ ist keine bekannte Skalenart" },
 
-        // ErrorDeLectura+Idiomas.swift
+        // ErrorDeLectura.swift (generales)
         valorNoValido: "Ungültiger Wert",
         noSePuedeLeer: { texto in "„\(texto)“ kann nicht gelesen werden" },
         caracter: { p in " (Zeichen \(p + 1))" },
         textoVacio: "der Text ist leer",
         caracteresSobrantes: { resto in "„\(resto)“ ist zu viel" },
 
-        // ErrorDeLectura+Notas.swift
+        // ErrorDeLectura.swift (notas)
         notaNoReconocida: "Notenname erwartet (C, D, E… oder Do, Re, Mi…)",
         faltaLaOctava: "die Oktave fehlt (zum Beispiel C4)",
         octavaNoValida: { resto in "„\(resto)“ ist keine gültige Oktave" },
@@ -70,7 +70,7 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "es gibt keine \(calidad.nombre(en: .aleman)) \(Intervalo.ordinal(numero, en: .aleman)): \(regla.aleman)" },
         alteracionNoReconocida: { signo in "„\(signo)“ ist kein Vorzeichen (erwartet ♯, ♭, 𝄪, 𝄫, #, b, x oder ♮)" },
 
-        // ErrorDeLectura+Partitura.swift
+        // ErrorDeLectura.swift (partitura)
         duracionNoValida: { texto in "„\(texto)“ ist keine Dauer: erwartet wurde ein Notenwert (1, 2, 4, 8, 16…, punktiert: 4.) oder ein Bruchteil der Ganzen (3/8, 1/12)" },
         compasNoValido: { texto in "„\(texto)“ ist keine Taktart: erwartet wurde Zähler/Nenner mit einer Zweierpotenz als Nenner (4/4, 6/8, 7/8), C oder ¢" },
         vocesDistintas: "alle Akkorde müssen gleich viele Stimmen haben, mindestens zwei",

@@ -3,7 +3,7 @@
 
 extension TextosDeTrastes {
     static let euskera = TextosDeTrastes(
-        // Encordado+Idiomas.swift
+        // Encordado.swift
         guitarra: "gitarra",
         guitarraEnReGrave: "gitarra re baxuan",
         guitarraDeSieteCuerdas: "zazpi sokako gitarra",

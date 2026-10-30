@@ -9,7 +9,7 @@ extension TextosDeTeoria {
                                   "vierte Umkehrung", "fünfte Umkehrung", "sechste Umkehrung"],
         inversionConNumero: "_. Umkehrung",
 
-        // EstructuraDeAcorde+Idiomas.swift
+        // EstructuraDeAcorde.swift
         papelFundamental: "Grundton",
         papelTercera: "Terz",
         papelSuspension: "Vorhalt",
@@ -82,7 +82,7 @@ extension TextosDeTeoria {
         vozSoprano: "Sopran",
         vozNumero: { numero in "Stimme \(numero)" },
 
-        // Escala+Idiomas.swift
+        // Escala.swift
         gradoTonica: "Tonika",
         gradoSupertonica: "Supertonika",
         gradoMediante: "Mediante",

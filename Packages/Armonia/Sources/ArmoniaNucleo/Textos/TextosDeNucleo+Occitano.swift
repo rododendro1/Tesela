@@ -3,7 +3,7 @@
 
 extension TextosDeNucleo {
     static let occitano = TextosDeNucleo(
-        // Intervalo+Idiomas.swift
+        // Intervalo.swift
         calidadJusta: "justa",
         calidadMayor: "majora",
         calidadMenor: "menora",
@@ -18,7 +18,7 @@ extension TextosDeNucleo {
         consonanciaImperfecta: "consonància imperfiècha",
         disonancia: "dissonància",
 
-        // Nota+Idiomas.swift
+        // Nota.swift
         palabraNatural: "becarre",
         palabraSostenido: "dièsi",
         palabraBemol: "bemòl",
@@ -26,7 +26,7 @@ extension TextosDeNucleo {
         palabraSostenidos: "dièsis",
         palabraBemoles: "bemòls",
 
-        // ErrorDeLectura+Acordes.swift
+        // ErrorDeLectura.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» fa pas part de cap de chifratge conegut" },
         tensionNoValida: { tension in "«\(tension)» es pas una tension valida (♭/♯ van amb 5, 9, 11 e 13, e add amb 2, 4, 6, 9, 11 e 13)" },
         numeroDeAcordeNoValido: { numero in "«\(numero)» es pas un nombre d'acòrd (5, 6, 7, 9, 11 o 13)" },
@@ -44,19 +44,19 @@ extension TextosDeNucleo {
         bajoNoValido: { bajo in "«\(bajo)» es pas un nom de nòta per la bassa" },
         idiomasMezclados: { nombre in "«\(nombre)» es escrich dins una autra lenga que la fondamentala: s'escriu tot amb sillabas (Sol7/Si) o tot amb letras (G7/B)" },
 
-        // ErrorDeLectura+Escalas.swift
+        // ErrorDeLectura.swift (escalas)
         modoNoReconocido: { nombre in "«\(nombre)» es pas lo mòde d'una tonalitat: una tonalitat es majora o menora (pels autres mòdes, utiliza Escala)" },
         faltaElTipoDeEscala: "manca lo tipe de gama (major, dorian, menor armonica…)",
         tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» es pas un tipe de gama conegut" },
 
-        // ErrorDeLectura+Idiomas.swift
+        // ErrorDeLectura.swift (generales)
         valorNoValido: "Valor invalida",
         noSePuedeLeer: { texto in "Se pòt pas legir «\(texto)»" },
         caracter: { p in " (caractèr \(p + 1))" },
         textoVacio: "lo tèxte es void",
         caracteresSobrantes: { resto in "i a de tròp «\(resto)»" },
 
-        // ErrorDeLectura+Notas.swift
+        // ErrorDeLectura.swift (notas)
         notaNoReconocida: "s'esperava un nom de nòta (Do, Re, Mi… o C, D, E…)",
         faltaLaOctava: "manca l'octava (per exemple, Do4)",
         octavaNoValida: { resto in "«\(resto)» es pas una octava valida" },
@@ -70,7 +70,7 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "i a pas de \(Intervalo.ordinal(numero, en: .occitano)) \(calidad.nombre(en: .occitano)): \(regla.occitano)" },
         alteracionNoReconocida: { signo in "«\(signo)» es pas una alteracion (s'esperava ♯, ♭, 𝄪, 𝄫, #, b, x o ♮)" },
 
-        // ErrorDeLectura+Partitura.swift
+        // ErrorDeLectura.swift (partitura)
         duracionNoValida: { texto in "«\(texto)» es pas una durada: s'esperava una figura (1, 2, 4, 8, 16…, puntada: 4.) o una fraccion de redonda (3/8, 1/12)" },
         compasNoValido: { texto in "«\(texto)» es pas una mesura: s'esperava numerator/denominator amb lo denominator poténcia de 2 (4/4, 6/8, 7/8), C o ¢" },
         vocesDistintas: "totes los acòrds devon aver lo meteis nombre de voses, e almens doas",

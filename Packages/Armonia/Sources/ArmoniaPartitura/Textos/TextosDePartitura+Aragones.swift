@@ -3,7 +3,7 @@
 
 extension TextosDePartitura {
     static let aragones = TextosDePartitura(
-        // Contrapunto+Idiomas.swift
+        // Contrapunto.swift
         enElCompas: { n in "(compás \(n))" },
         enLosCompases: { pasos in "(compases \(pasos))" },
         ritmoDeLaEspecie: "Ritmo difuera d\'a especie",
@@ -34,7 +34,7 @@ extension TextosDePartitura {
         sinNotas: "O fichero no tiene garra nota.",
         sinAcordes: "En o fichero no suena garra acorde.",
 
-        // Duracion+Idiomas.swift
+        // Duracion.swift
         cuadrada: "cuadrada",
         redonda: "redonda",
         blanca: "blanca",
@@ -48,7 +48,7 @@ extension TextosDePartitura {
         fraccionDeRedonda: { fraccion in "\(fraccion) de redonda" },
         conPuntillos: ["_ con puntet", "_ con doble puntet", "_ con triple puntet", "_ con cuadruple puntet"],
 
-        // Pentagrama+Idiomas.swift
+        // Pentagrama.swift
         claveDeSol: "clau de sol",
         claveDeSolOctavaBaja: "clau de sol octava baixa",
         claveDeSolOctavaAlta: "clau de sol octava alta",

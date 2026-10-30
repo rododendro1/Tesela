@@ -3,7 +3,7 @@
 
 extension TextosDeRepresentaciones {
     static let catalan = TextosDeRepresentaciones(
-        // Temperamento+Idiomas.swift
+        // Temperamento.swift
         temperamentoIgual: "temperament igual",
         pitagorico: "afinació pitagòrica",
         mesotonico: "mesotònic d'¼ de coma",
@@ -13,7 +13,7 @@ extension TextosDeRepresentaciones {
         young: "Young",
         afinacionJusta: "afinació justa",
 
-        // CorrespondenciaDeColores+Idiomas.swift
+        // CorrespondenciaDeColores.swift
         circuloDeQuintas: "cercle de quintes",
 
         // DibujoSVG.swift
@@ -39,7 +39,7 @@ extension TextosDeRepresentaciones {
         // ConduccionParsimoniosa.swift
         semitonos: { n in n == 1 ? "1 semitò" : "\(n) semitons" },
 
-        // TransformacionNeorriemanniana+Idiomas.swift
+        // TransformacionNeorriemanniana.swift
         homonima: "homònima",
         cambioDeSensible: "canvi de sensible",
         relativa: "relativa"

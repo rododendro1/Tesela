@@ -6,7 +6,7 @@
 
 /// Los textos de ArmoniaNucleo en un idioma.
 struct TextosDeNucleo: Sendable {
-    // MARK: Intervalo+Idiomas.swift
+    // MARK: Intervalo.swift
     let calidadJusta: String
     let calidadMayor: String
     let calidadMenor: String
@@ -21,7 +21,7 @@ struct TextosDeNucleo: Sendable {
     let consonanciaImperfecta: String
     let disonancia: String
 
-    // MARK: Nota+Idiomas.swift
+    // MARK: Nota.swift
     let palabraNatural: String
     let palabraSostenido: String
     let palabraBemol: String
@@ -29,7 +29,7 @@ struct TextosDeNucleo: Sendable {
     let palabraSostenidos: String
     let palabraBemoles: String
 
-    // MARK: ErrorDeLectura+Acordes.swift
+    // MARK: ErrorDeLectura.swift (acordes)
     let simboloNoReconocido: @Sendable (String) -> String
     let tensionNoValida: @Sendable (String) -> String
     let numeroDeAcordeNoValido: @Sendable (Int) -> String
@@ -47,19 +47,19 @@ struct TextosDeNucleo: Sendable {
     let bajoNoValido: @Sendable (String) -> String
     let idiomasMezclados: @Sendable (String) -> String
 
-    // MARK: ErrorDeLectura+Escalas.swift
+    // MARK: ErrorDeLectura.swift (escalas)
     let modoNoReconocido: @Sendable (String) -> String
     let faltaElTipoDeEscala: String
     let tipoDeEscalaNoReconocido: @Sendable (String) -> String
 
-    // MARK: ErrorDeLectura+Idiomas.swift
+    // MARK: ErrorDeLectura.swift (generales)
     let valorNoValido: String
     let noSePuedeLeer: @Sendable (String) -> String
     let caracter: @Sendable (Int) -> String
     let textoVacio: String
     let caracteresSobrantes: @Sendable (String) -> String
 
-    // MARK: ErrorDeLectura+Notas.swift
+    // MARK: ErrorDeLectura.swift (notas)
     let notaNoReconocida: String
     let faltaLaOctava: String
     let octavaNoValida: @Sendable (String) -> String
@@ -73,7 +73,7 @@ struct TextosDeNucleo: Sendable {
     let intervaloInexistente: @Sendable (Int, CalidadDeIntervalo, Notacion, Traduccion) -> String
     let alteracionNoReconocida: @Sendable (String) -> String
 
-    // MARK: ErrorDeLectura+Partitura.swift
+    // MARK: ErrorDeLectura.swift (partitura)
     let duracionNoValida: @Sendable (String) -> String
     let compasNoValido: @Sendable (String) -> String
     let vocesDistintas: String
