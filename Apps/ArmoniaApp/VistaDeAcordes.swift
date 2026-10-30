@@ -6,6 +6,7 @@ import ArmoniaUI
 /// sus digitaciones.
 struct VistaDeAcordes: View {
     @Environment(\.notacion) private var notacion
+    @EnvironmentObject private var navegacion: Navegacion
     @State private var texto = "Sol7/Si"
     /// El acorde leído de `texto`. Se lee una vez por cambio del texto, no en cada redibujado.
     @State private var lectura = VistaDeAcordes.leer("Sol7/Si")
@@ -46,6 +47,9 @@ struct VistaDeAcordes: View {
             }
         }
         .onChange(of: texto) { lectura = Self.leer($0) }
+        // Un acorde pedido desde otra pestaña («Ver en Acordes»), ahora o si se pidió antes de abrir esta.
+        .onChange(of: navegacion.acordePedido) { _ in tomarElAcordePedido() }
+        .onAppear(perform: tomarElAcordePedido)
         // La búsqueda de digitaciones puede tardar: se hace fuera del hilo principal cuando se deja de escribir.
         .calcularEnSegundoPlano(para: claveActual, en: $digitaciones) { [texto = self.texto, encordado = self.encordado] in
             guard let acorde = try? Acorde(leyendo: texto) else { return [] }
@@ -81,8 +85,9 @@ struct VistaDeAcordes: View {
         let escalas = acorde.escalasCompatibles()
         if !escalas.isEmpty {
             Section(notacion.texto(.escalasCompatibles)) {
+                // Cada una se abre en la pestaña de escalas.
                 ForEach(Array(escalas.prefix(10).enumerated()), id: \.offset) { _, escala in
-                    Text(escala.nombre(en: notacion))
+                    Button(escala.nombre(en: notacion)) { navegacion.ver(escala) }
                 }
             }
         }
@@ -125,6 +130,12 @@ struct VistaDeAcordes: View {
                 FilaCalculando()
             }
         }
+    }
+
+    private func tomarElAcordePedido() {
+        guard let acorde = navegacion.acordePedido else { return }
+        navegacion.acordePedido = nil
+        texto = acorde.cifrado(en: notacion)
     }
 
     private static func leer(_ texto: String) -> Result<Acorde, Error> {

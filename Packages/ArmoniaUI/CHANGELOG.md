@@ -5,6 +5,16 @@
 - El paquete pide Swift 6.0 o posterior y compila en el modo de lenguaje 6, como las apps (`SWIFT_VERSION` 6.0 en
   `project.yml`). Antes pedía Swift 5.9.
 
+- Teclado MIDI: `EntradaMIDI` (CoreMIDI) escucha todas las fuentes MIDI del sistema y publica las teclas pulsadas;
+  `CambioMIDI`, en `ArmoniaPresentacion` y sin CoreMIDI, lee los mensajes UMP de MIDI 1.0, lleva la cuenta de lo
+  pulsado y retiene el último acorde al soltarlo. En ArmoniaApp, lo tocado en el teclado se identifica en la
+  pestaña «Identificar» (con el número de fuentes conectadas); en la app Tonnetz, se marca en el modo «Identificar».
+- Teoría postonal: `PresentacionPostonal` da la forma prima, el número de Forte y el vector interválico de unas
+  notas. «Identificar» los muestra en ArmoniaApp, y el número de Forte, en la app Tonnetz.
+- Las pestañas de ArmoniaApp se enlazan (`Navegacion`, en la app): «Ver en Acordes» lleva el acorde identificado a
+  la pestaña de acordes, y cada escala compatible de un acorde se abre en la de escalas.
+- Textos nuevos de las apps, en los catorce idiomas: `.verEnAcordes`, `.tecladoMIDI`, `.dispositivosMIDI`,
+  `.teoriaPostonal`, `.formaPrima`, `.numeroDeForte` y `.vectorIntervalico`.
 - Arpegios en ArmoniaApp: la pestaña de acordes muestra el arpegio en el patrón que se elija (ascendente,
   descendente, de ida y vuelta o bajo de Alberti), con su pentagrama, que también se exporta, y «Escuchar», y las
   escalas compatibles con el acorde (Sol7 → Sol mixolidio…). `Sonido.arpegio(_:paso:)` toca un arpegio nota a nota

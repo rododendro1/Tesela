@@ -39,6 +39,13 @@ public enum TextoDeLasApps: Hashable, Sendable {
     case tocaNotas
     case borrar
     case sinAcordeConocido
+    case verEnAcordes
+    case tecladoMIDI
+    case dispositivosMIDI
+    case teoriaPostonal
+    case formaPrima
+    case numeroDeForte
+    case vectorIntervalico
 
     // Escalas
     case escala
@@ -232,6 +239,45 @@ public enum TextoDeLasApps: Hashable, Sendable {
                               fr: "Aucun accord connu.", oc: "Fan pas cap d'acòrd conegut.",
                               it: "Non formano nessun accordo conosciuto.", de: "Kein bekannter Akkord.",
                               el: "Δεν σχηματίζουν καμία γνωστή συγχορδία.", ru: "Известный аккорд не найден.")
+        case .verEnAcordes:
+            return Traduccion("Ver en Acordes", "Show in Chords", ca: "Mostra a Acords", gl: "Ver en Acordes",
+                              ast: "Ver n\'Acordes", an: "Veyer en Acordes", eu: "Ikusi Akordeetan",
+                              pt: "Ver em Acordes", fr: "Voir dans Accords", oc: "Veire dins Acòrds",
+                              it: "Mostra in Accordi", de: "In Akkorden zeigen",
+                              el: "Προβολή στις Συγχορδίες", ru: "Показать в аккордах")
+        case .tecladoMIDI:
+            return Traduccion("Teclado MIDI", "MIDI keyboard", ca: "Teclat MIDI", gl: "Teclado MIDI",
+                              ast: "Tecláu MIDI", an: "Teclau MIDI", eu: "MIDI teklatua", pt: "Teclado MIDI",
+                              fr: "Clavier MIDI", oc: "Clavièr MIDI", it: "Tastiera MIDI", de: "MIDI-Keyboard",
+                              el: "Πληκτρολόγιο MIDI", ru: "MIDI-клавиатура")
+        case .dispositivosMIDI:
+            return Traduccion("Dispositivos conectados", "Connected devices", ca: "Dispositius connectats",
+                              gl: "Dispositivos conectados", ast: "Preseos coneutaos", an: "Dispositivos connectaus",
+                              eu: "Konektatutako gailuak", pt: "Dispositivos ligados",
+                              fr: "Appareils connectés", oc: "Aparelhs connectats", it: "Dispositivi collegati",
+                              de: "Verbundene Geräte", el: "Συνδεδεμένες συσκευές", ru: "Подключённые устройства")
+        case .teoriaPostonal:
+            return Traduccion("Teoría postonal", "Post-tonal theory", ca: "Teoria postonal", gl: "Teoría postonal",
+                              ast: "Teoría postonal", an: "Teoría postonal", eu: "Teoria postonala",
+                              pt: "Teoria pós-tonal", fr: "Théorie post-tonale", oc: "Teoria postonala",
+                              it: "Teoria post-tonale", de: "Posttonale Theorie",
+                              el: "Μετατονική θεωρία", ru: "Посттональная теория")
+        case .formaPrima:
+            return Traduccion("Forma prima", "Prime form", ca: "Forma primera", gl: "Forma prima",
+                              ast: "Forma prima", an: "Forma prima", eu: "Lehen forma", pt: "Forma prima",
+                              fr: "Forme primaire", oc: "Fòrma primièra", it: "Forma primaria",
+                              de: "Primform", el: "Πρωταρχική μορφή", ru: "Первичная форма")
+        case .numeroDeForte:
+            return Traduccion("Número de Forte", "Forte number", ca: "Nombre de Forte", gl: "Número de Forte",
+                              ast: "Númberu de Forte", an: "Numero de Forte", eu: "Forteren zenbakia",
+                              pt: "Número de Forte", fr: "Numéro de Forte", oc: "Numèro de Forte",
+                              it: "Numero di Forte", de: "Forte-Nummer", el: "Αριθμός Forte", ru: "Номер по Форту")
+        case .vectorIntervalico:
+            return Traduccion("Vector interválico", "Interval vector", ca: "Vector interval·lic",
+                              gl: "Vector interválico", ast: "Vector interválicu", an: "Vector interválico",
+                              eu: "Tarte-bektorea", pt: "Vetor intervalar", fr: "Vecteur d\'intervalles",
+                              oc: "Vector d\'intervals", it: "Vettore intervallare", de: "Intervallvektor",
+                              el: "Διάνυσμα διαστημάτων", ru: "Интервальный вектор")
         case .instrumentoYAfinacion:
             return Traduccion("Instrumento y afinación", "Instrument and tuning", ca: "Instrument i afinació",
                               gl: "Instrumento e afinación", ast: "Instrumentu y afinación",
