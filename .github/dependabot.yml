@@ -1,0 +1,11 @@
+# Mantiene al día las acciones de GitHub del CI (`actions/checkout`, `setup-xcode`…). Los paquetes no tienen
+# dependencias externas, así que no hay nada más que vigilar.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      acciones:
+        patterns: ["*"]

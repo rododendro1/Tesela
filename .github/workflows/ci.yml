@@ -60,7 +60,7 @@ jobs:
       fail-fast: false
       matrix:
         # La más antigua que admite el paquete y la más reciente: las intermedias no han dado nada distinto.
-        swift: ["5.9", "6.2"]
+        swift: ["6.0", "6.2"]
     defaults:
       run:
         working-directory: Packages/Armonia
@@ -74,11 +74,12 @@ jobs:
         run: swift test --parallel --filter "^ArmoniaExhaustivasTests\\."
       - name: Ejemplos de la documentación
         run: swift test --parallel --filter "^ArmoniaDocumentacionTests\\."
-      - name: Concurrencia estricta (módulos)
-        if: startsWith(matrix.swift, '6')
+      # El modo de lenguaje 6 ya hace errores los fallos de concurrencia; esto, además, cualquier aviso.
+      - name: Sin avisos (módulos)
+        if: matrix.swift == '6.2'
         run: |
           for objetivo in ArmoniaNucleo ArmoniaTeoria ArmoniaRepresentaciones ArmoniaPartitura ArmoniaTrastes Armonia; do
-            swift build --target "$objetivo" -Xswiftc -strict-concurrency=complete -Xswiftc -warnings-as-errors
+            swift build --target "$objetivo" -Xswiftc -warnings-as-errors
           done
 
   herramientas:
@@ -89,7 +90,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swift: ["5.9", "6.2"]
+        swift: ["6.0", "6.2"]
         paquete:
           - { nombre: ArmoniaCLI, ruta: Apps/ArmoniaCLI }
           - { nombre: EjemploArmonia, ruta: Ejemplos/EjemploArmonia }
@@ -108,9 +109,9 @@ jobs:
       - name: Ejemplo
         if: startsWith(matrix.paquete.nombre, 'Ejemplo')
         run: swift run ${{ matrix.paquete.nombre }}
-      - name: Concurrencia estricta
-        if: matrix.paquete.nombre == 'ArmoniaCLI' && startsWith(matrix.swift, '6')
-        run: swift build --target ArmoniaCLI -Xswiftc -strict-concurrency=complete -Xswiftc -warnings-as-errors
+      - name: Sin avisos
+        if: matrix.paquete.nombre == 'ArmoniaCLI' && matrix.swift == '6.2'
+        run: swift build --target ArmoniaCLI -Xswiftc -warnings-as-errors
 
   # Los tiempos del motor, compilado con optimización, en el resumen de la ejecución y como artefacto
   # (`rendimiento.json`), para compararlos con `--comparar`. No falla por lentitud: las máquinas del CI
@@ -146,7 +147,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swift: ["5.9", "6.2"]
+        swift: ["6.0", "6.2"]
         paquete: [ArmoniaUI, Hexagonos]
     defaults:
       run:
@@ -157,9 +158,9 @@ jobs:
         run: swift build
       - name: Pruebas
         run: swift test --parallel
-      - name: Concurrencia estricta
-        if: matrix.paquete == 'Hexagonos' && startsWith(matrix.swift, '6')
-        run: swift build --target Hexagonos -Xswiftc -strict-concurrency=complete -Xswiftc -warnings-as-errors
+      - name: Sin avisos
+        if: matrix.paquete == 'Hexagonos' && matrix.swift == '6.2'
+        run: swift build --target Hexagonos -Xswiftc -warnings-as-errors
 
   # El Package.swift de la raíz, el que usa quien añade el repositorio por URL: debe compilar igual.
   raiz:
@@ -170,7 +171,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swift: ["5.9", "6.2"]
+        swift: ["6.0", "6.2"]
     steps:
       - uses: actions/checkout@v5
       - name: Compilar
@@ -241,8 +242,12 @@ jobs:
             test "$idiomas" -eq 14 && test "$carpetas" -ge 14 || { echo "::error::$app no declara los catorce idiomas"; exit 1; }
           done
 
+  # Las pruebas de interfaz y DocC son los jobs de macOS más largos: corren en la rama principal y a mano
+  # (workflow_dispatch), no en cada pull request. Un pull request que toque las vistas o la documentación
+  # puede lanzarlos desde la pestaña Actions antes de fusionarse.
   interfaz:
     name: Pruebas de interfaz · ${{ matrix.plataforma }}
+    if: github.event_name != 'pull_request'
     runs-on: macos-15
     timeout-minutes: 45
     # macOS e iOS en paralelo: una tras otra tardaban unos 21 minutos.
@@ -296,6 +301,7 @@ jobs:
 
   documentacion:
     name: DocC · macOS
+    if: github.event_name != 'pull_request'
     runs-on: macos-15
     timeout-minutes: 45
     steps:

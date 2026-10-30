@@ -125,9 +125,11 @@ El CI la ejecuta en cada cambio y deja la tabla en el resumen de la ejecución y
 
 ## Estado
 
-Todo compila y pasa las pruebas en el CI: el motor en Linux (Swift 5.9 y 6.2) y en macOS, `ArmoniaUI`, `Hexagonos`, la línea de
+Todo está en Swift 6 (el modo de lenguaje 6, con la concurrencia comprobada al compilar) y pide Swift 6.0 o posterior.
+Todo compila y pasa las pruebas en el CI: el motor en Linux (Swift 6.0 y 6.2) y en macOS, `ArmoniaUI`, `Hexagonos`, la línea de
 comandos, el ejemplo, las dos apps en macOS y en el simulador de iOS (compiladas y con sus pruebas de interfaz), y la documentación de DocC, sin enlaces sin
-resolver. `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
+resolver. Las pruebas de interfaz y DocC, los jobs de macOS más largos, corren en la rama principal y a mano desde la pestaña
+Actions, no en cada pull request. Dependabot mantiene al día las acciones del CI (`.github/dependabot.yml`). `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
 
 El código se publica con licencia MIT (`LICENSE`). Las dos apps llevan un icono provisional en
 `Apps/<App>/Assets.xcassets/AppIcon.appiconset`, que conviene sustituir por uno definitivo antes de publicarlas.

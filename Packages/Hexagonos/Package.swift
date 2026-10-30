@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.0
 import PackageDescription
 
 // Rejillas hexagonales: coordenadas (axiales, cúbicas, desplazadas y dobladas), vecinos, distancias,

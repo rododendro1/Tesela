@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- El paquete pide Swift 6.0 o posterior y compila en el modo de lenguaje 6. Antes pedía Swift 5.9.
+
 - `longitud` pasa a ser `distanciaAlOrigen` en `CoordenadaAxial` y `CoordenadaCubica`: son los pasos hasta el origen.
   Sin alias.
 

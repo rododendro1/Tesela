@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.0
 import PackageDescription
 
 // Un recorrido por la API del motor, para leerlo y ejecutarlo:
