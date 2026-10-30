@@ -1,4 +1,4 @@
-# Hexaphonos
+# Tesela
 
 Ecosistema de apps y paquetes de música en Swift. El motor de armonía (`Armonia`) es la base;
 encima hay paquetes para el mástil de los instrumentos de cuerda y para la interfaz, y dos apps de
@@ -59,11 +59,11 @@ Cada módulo del motor es también un producto (`ArmoniaNucleo`, `ArmoniaTeoria`
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/rododendro1/Hexaphonos.git", branch: "main"),
+    .package(url: "https://github.com/rododendro1/Tesela.git", branch: "main"),
 ],
 targets: [
     .target(name: "MiApp", dependencies: [
-        .product(name: "Armonia", package: "Hexaphonos"),     // o ArmoniaTeoria, Hexagonos, ArmoniaUI…
+        .product(name: "Armonia", package: "Tesela"),     // o ArmoniaTeoria, Hexagonos, ArmoniaUI…
     ]),
 ]
 ```
@@ -87,8 +87,8 @@ swift run -c release --package-path Herramientas/RendimientoArmonia RendimientoA
 # Las apps (macOS, con XcodeGen)
 brew install xcodegen
 cp Config/Local.xcconfig.ejemplo Config/Local.xcconfig   # tu equipo de firma y el prefijo de identificadores
-./Scripts/generar_proyecto.sh        # crea Hexaphonos.xcodeproj
-open Hexaphonos.xcodeproj     # elige el esquema ArmoniaApp o TonnetzApp
+./Scripts/generar_proyecto.sh        # crea Tesela.xcodeproj
+open Tesela.xcodeproj     # elige el esquema ArmoniaApp o TonnetzApp
 ```
 
 `ArmoniaUI` usa SwiftUI para dibujar, pero su lógica (notación, qué trastes y qué notas enseña el mástil,

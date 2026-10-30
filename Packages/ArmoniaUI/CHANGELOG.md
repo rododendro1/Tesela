@@ -26,7 +26,7 @@
   «inglesASCII», «inglesUnicode»), así que lo guardado antes como «espanol» (Fa♯) o «ingles» (F#) pasa a
   leerse con palabras; basta con volver a elegirla en el selector.
 
-- Los identificadores de las apps empiezan por `es.solfa.hexaphonos`, el dominio del proyecto (hexaphonos.solfa.es)
+- Los identificadores de las apps empiezan por `es.solfa.tesela`, el dominio del proyecto (tesela.solfa.es)
   al revés, en lugar de `com.sepiriz.hexaphonos`.
 
 - Las apps declaran sus catorce idiomas (`Config/Idiomas.plist`, unido al Info.plist, y una carpeta
@@ -78,7 +78,7 @@
 
 - El paquete pasa a llamarse `ArmoniaUI` (`Packages/ArmoniaUI`), y sus módulos `ArmoniaUI` y
   `ArmoniaPresentacion` (antes `HexaphonosUI` y `HexaphonosPresentacion`). En el código es `import ArmoniaUI`, y
-  en un `Package.swift`, `.product(name: "ArmoniaUI", package: "ArmoniaUI")` (o `package: "Hexaphonos"` desde la
+  en un `Package.swift`, `.product(name: "ArmoniaUI", package: "ArmoniaUI")` (o `package: "Tesela"` desde la
   raíz). `TemaHexaphonos` y `AjustesHexaphonos` no cambian, y los ajustes guardados se conservan.
 
 - Nombres más claros, sin alias porque son recientes: `Sonido.Evento` pasa a ser `Sonido.NotaMIDI` (ya no
@@ -92,7 +92,7 @@
 - Usa los nombres nuevos del motor: `Notacion` (antes `Nomenclatura`), `Coral` (antes `ConduccionDeVoces`) y
   `texto(en:)`. `Nomenclatura+Apps.swift` pasa a ser `Notacion+Apps.swift`; la API no cambia.
 
-Componentes de SwiftUI para las apps de Hexaphonos, sobre `Armonia` y `Hexagonos`:
+Componentes de SwiftUI para las apps de Tesela, sobre `Armonia` y `Hexagonos`:
 
 - `DiagramaDeMastil`: el mástil con una escala o una digitación, y `PresentacionDeMastil`, la parte que no es
   dibujo (qué trastes y cuerdas se enseñan).

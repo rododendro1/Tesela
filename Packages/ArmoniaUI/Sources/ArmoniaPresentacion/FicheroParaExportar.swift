@@ -94,6 +94,6 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
         let prohibidos = CharacterSet(charactersIn: "/\\:?*\"<>|").union(.newlines).union(.controlCharacters)
         let limpio = nombre.components(separatedBy: prohibidos).joined(separator: "-")
             .trimmingCharacters(in: .whitespaces)
-        return limpio.isEmpty ? "Hexaphonos" : String(limpio.prefix(80))
+        return limpio.isEmpty ? "Tesela" : String(limpio.prefix(80))
     }
 }

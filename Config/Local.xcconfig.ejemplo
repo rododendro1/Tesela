@@ -4,4 +4,4 @@
 DEVELOPMENT_TEAM = ABCDE12345
 
 // El prefijo de los identificadores de las apps, si no quieres el de por defecto.
-// BUNDLE_ID_PREFIX = com.tuempresa.hexaphonos
+// BUNDLE_ID_PREFIX = com.tuempresa.tesela

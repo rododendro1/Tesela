@@ -3,7 +3,7 @@ import PackageDescription
 
 // Los paquetes de `Packages/`, para usarlos desde otro proyecto por URL:
 //
-//     .package(url: "https://github.com/rododendro1/Hexaphonos.git", branch: "main")
+//     .package(url: "https://github.com/rododendro1/Tesela.git", branch: "main")
 //
 // SwiftPM solo lee el `Package.swift` de la raíz de un repositorio, así que este reúne los tres con los
 // mismos módulos y dependencias que cada uno declara en su carpeta. Dentro del repositorio se sigue
@@ -11,7 +11,7 @@ import PackageDescription
 // `Scripts/comprobar_dependencias.py` vigila que los dos lados coincidan.
 
 let package = Package(
-    name: "Hexaphonos",
+    name: "Tesela",
     platforms: [.macOS(.v13), .iOS(.v16)],
     products: [
         // Packages/Hexagonos
