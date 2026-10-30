@@ -139,7 +139,7 @@ python3 ../../Scripts/generar_pruebas_de_documentacion.py # regenera esas prueba
 La herramienta `armonia` y el ejemplo (`swift run EjemploArmonia`) son paquetes aparte, en
 `Apps/ArmoniaCLI` y `Ejemplos/EjemploArmonia`, y se construyen y prueban desde allí.
 
-Requiere Swift 5.9 o posterior (macOS 13 / iOS 16 en las plataformas de Apple); sin dependencias (solo Foundation
+Requiere Swift 6.0 o posterior (y compila en el modo de lenguaje 6) (macOS 13 / iOS 16 en las plataformas de Apple); sin dependencias (solo Foundation
 para `pow`).
 
 Los cambios de cada versión, con la guía para actualizar, están en [CHANGELOG.md](CHANGELOG.md).
@@ -242,9 +242,9 @@ Scripts/comprobar_modulos.py`, que ejecuta el CI, comprueba que las dependencias
 
 ### Integración continua
 
-`.github/workflows/ci.yml` comprueba las rutas y las capas, compila, prueba y ejecuta el ejemplo en Linux (Swift 5.9, la
-mínima, y 6.2) y en macOS en cada push o pull request. Con Swift 6 también compila la
-biblioteca con concurrencia estricta y los avisos tratados como errores. Primero ejecuta las
+`.github/workflows/ci.yml` comprueba las rutas y las capas, compila, prueba y ejecuta el ejemplo en Linux (Swift 6.0, la
+mínima, y 6.2) y en macOS en cada push o pull request. Con Swift 6.2 también compila la
+biblioteca con los avisos tratados como errores. Primero ejecuta las
 pruebas rápidas y después las exhaustivas, así un fallo corriente se ve antes.
 
 ### Pruebas exhaustivas

@@ -1,4 +1,4 @@
-# Hexaphonos
+# Tesela
 
 Ecosistema de apps y paquetes de música en Swift. El motor de armonía (`Armonia`) es la base;
 encima hay paquetes para el mástil de los instrumentos de cuerda y para la interfaz, y dos apps de
@@ -61,11 +61,11 @@ Cada módulo del motor es también un producto (`ArmoniaNucleo`, `ArmoniaTeoria`
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/rododendro1/Hexaphonos.git", branch: "main"),
+    .package(url: "https://github.com/rododendro1/Tesela.git", branch: "main"),
 ],
 targets: [
     .target(name: "MiApp", dependencies: [
-        .product(name: "Armonia", package: "Hexaphonos"),     // o ArmoniaTeoria, Hexagonos, ArmoniaUI…
+        .product(name: "Armonia", package: "Tesela"),     // o ArmoniaTeoria, Hexagonos, ArmoniaUI…
     ]),
 ]
 ```
@@ -89,8 +89,8 @@ swift run -c release --package-path Herramientas/RendimientoArmonia RendimientoA
 # Las apps (macOS, con XcodeGen)
 brew install xcodegen
 cp Config/Local.xcconfig.ejemplo Config/Local.xcconfig   # tu equipo de firma y el prefijo de identificadores
-./Scripts/generar_proyecto.sh        # crea Hexaphonos.xcodeproj
-open Hexaphonos.xcodeproj     # elige el esquema ArmoniaApp o TonnetzApp
+./Scripts/generar_proyecto.sh        # crea Tesela.xcodeproj
+open Tesela.xcodeproj     # elige el esquema ArmoniaApp o TonnetzApp
 ```
 
 `ArmoniaUI` usa SwiftUI para dibujar, pero su lógica (notación, qué trastes y qué notas enseña el mástil,
@@ -127,9 +127,11 @@ El CI la ejecuta en cada cambio y deja la tabla en el resumen de la ejecución y
 
 ## Estado
 
-Todo compila y pasa las pruebas en el CI: el motor en Linux (Swift 5.9 y 6.2) y en macOS, `ArmoniaUI`, `Hexagonos`, la línea de
+Todo está en Swift 6 (el modo de lenguaje 6, con la concurrencia comprobada al compilar) y pide Swift 6.0 o posterior.
+Todo compila y pasa las pruebas en el CI: el motor en Linux (Swift 6.0 y 6.2) y en macOS, `ArmoniaUI`, `Hexagonos`, la línea de
 comandos, el ejemplo, las dos apps en macOS y en el simulador de iOS (compiladas y con sus pruebas de interfaz), y la documentación de DocC, sin enlaces sin
-resolver. `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
+resolver. Las pruebas de interfaz y DocC, los jobs de macOS más largos, corren en la rama principal y a mano desde la pestaña
+Actions, no en cada pull request. Dependabot mantiene al día las acciones del CI (`.github/dependabot.yml`). `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
 
 El código se publica con licencia MIT (`LICENSE`). Las dos apps llevan un icono provisional en
 `Apps/<App>/Assets.xcassets/AppIcon.appiconset`, que conviene sustituir por uno definitivo antes de publicarlas.

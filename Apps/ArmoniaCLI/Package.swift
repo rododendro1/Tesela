@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.0
 import PackageDescription
 
 // La herramienta de línea de comandos `armonia`: la lógica en una biblioteca, para poder probarla,

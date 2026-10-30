@@ -13,7 +13,7 @@ final class FicheroParaExportarTests: XCTestCase {
         XCTAssertEqual(FicheroParaExportar.midi(Data(), nombre: "Sol7/Si").nombreDeFichero, "Sol7-Si.mid")
         XCTAssertEqual(FicheroParaExportar.musicXML("", nombre: "Coral").nombreDeFichero, "Coral.musicxml")
         XCTAssertEqual(FicheroParaExportar.mei("", nombre: "Coral").nombreDeFichero, "Coral.mei")
-        XCTAssertEqual(FicheroParaExportar.svg("", nombre: "  ").nombreDeFichero, "Hexaphonos.svg")
+        XCTAssertEqual(FicheroParaExportar.svg("", nombre: "  ").nombreDeFichero, "Tesela.svg")
         XCTAssertEqual(FicheroParaExportar.svg("", nombre: String(repeating: "a", count: 200)).nombreDeFichero.count,
                        80 + ".svg".count)
     }

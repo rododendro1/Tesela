@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- El paquete pide Swift 6.0 o posterior y compila en el modo de lenguaje 6, como las apps (`SWIFT_VERSION` 6.0 en
+  `project.yml`). Antes pedía Swift 5.9.
+
 - Arpegios en ArmoniaApp: la pestaña de acordes muestra el arpegio en el patrón que se elija (ascendente,
   descendente, de ida y vuelta o bajo de Alberti), con su pentagrama, que también se exporta, y «Escuchar», y las
   escalas compatibles con el acorde (Sol7 → Sol mixolidio…). `Sonido.arpegio(_:paso:)` toca un arpegio nota a nota
@@ -39,8 +42,8 @@
   «inglesASCII», «inglesUnicode»), así que lo guardado antes como «espanol» (Fa♯) o «ingles» (F#) pasa a
   leerse con palabras; basta con volver a elegirla en el selector.
 
-- Los identificadores de las apps empiezan por `es.solfa.hexaphonos`, el dominio del proyecto (hexaphonos.solfa.es)
-  al revés, en lugar de `com.sepiriz.hexaphonos`.
+- Los identificadores de las apps empiezan por `es.solfa.tesela`, el dominio del proyecto (tesela.solfa.es)
+  al revés.
 
 - Las apps declaran sus catorce idiomas (`Config/Idiomas.plist`, unido al Info.plist, y una carpeta
   `<idioma>.lproj` por idioma en `Apps/<App>/Idiomas`), con el español como idioma de desarrollo: el sistema pone
@@ -80,7 +83,7 @@
 - Los textos de las apps (`TextoDeLasApps`, tareas, formatos, instrumentos, transformaciones y redes) están
   también en alemán, occitano, ruso y griego, que antes salían en inglés.
 
-- Más nombres claros, sin alias: `TemaHexaphonos` y `AjustesHexaphonos` pasan a llamarse `TemaDeLasApps` y
+- Más nombres claros, sin alias: el tema y los ajustes pasan a llamarse `TemaDeLasApps` y
   `AjustesDeLasApps` (los ajustes guardados se conservan), `DiagramaHexagonal` y `PresentacionHexagonal`,
   `DiagramaDeRejilla` y `PresentacionDeRejilla`, y `Sonido.eventos` y `Sonido(eventos:)`, `Sonido.notas` y
   `Sonido(notas:)`.
@@ -90,9 +93,9 @@
   `campoDeCifrado()` (es `comoCampoDeCifrado()`).
 
 - El paquete pasa a llamarse `ArmoniaUI` (`Packages/ArmoniaUI`), y sus módulos `ArmoniaUI` y
-  `ArmoniaPresentacion` (antes `HexaphonosUI` y `HexaphonosPresentacion`). En el código es `import ArmoniaUI`, y
-  en un `Package.swift`, `.product(name: "ArmoniaUI", package: "ArmoniaUI")` (o `package: "Hexaphonos"` desde la
-  raíz). `TemaHexaphonos` y `AjustesHexaphonos` no cambian, y los ajustes guardados se conservan.
+  `ArmoniaPresentacion`. En el código es `import ArmoniaUI`, y
+  en un `Package.swift`, `.product(name: "ArmoniaUI", package: "ArmoniaUI")` (o `package: "Tesela"` desde la
+  raíz). Los ajustes guardados se conservan.
 
 - Nombres más claros, sin alias porque son recientes: `Sonido.Evento` pasa a ser `Sonido.NotaMIDI` (ya no
   tapa el `Evento` del ritmo), `Sonido.alturas(_:)` y `alturas(_:conElRitmoDe:)` pasan a ser `Sonido.coral(_:)` y
@@ -105,16 +108,16 @@
 - Usa los nombres nuevos del motor: `Notacion` (antes `Nomenclatura`), `Coral` (antes `ConduccionDeVoces`) y
   `texto(en:)`. `Nomenclatura+Apps.swift` pasa a ser `Notacion+Apps.swift`; la API no cambia.
 
-Componentes de SwiftUI para las apps de Hexaphonos, sobre `Armonia` y `Hexagonos`:
+Componentes de SwiftUI para las apps de Tesela, sobre `Armonia` y `Hexagonos`:
 
 - `DiagramaDeMastil`: el mástil con una escala o una digitación, y `PresentacionDeMastil`, la parte que no es
   dibujo (qué trastes y cuerdas se enseñan).
 - `DiagramaDeTonnetz` y `VistaSVG`: los dibujos SVG del motor en una vista.
 - `DiagramaHexagonal` y `PresentacionHexagonal`: rejillas hexagonales interactivas.
-- `SelectorDeNotacion` y `AjustesHexaphonos`: la notación (española o inglesa) que comparten las apps, con
+- `SelectorDeNotacion` y `AjustesDeLasApps`: la notación (española o inglesa) que comparten las apps, con
   `selectorDeNotacionEnLaBarra(clave:)` para ponerla en la barra de herramientas.
 - `comoCampoDeCifrado()`: ajusta un campo de texto para escribir cifrados.
-- `TemaHexaphonos`: colores y medidas comunes.
+- `TemaDeLasApps`: colores y medidas comunes.
 - `PresentacionDeAnalisis`, `PresentacionDeCoral` y `PresentacionDeRedes`: lo que enseñan las vistas de análisis
   (con modulaciones y cadencias), de corales (armonizar, realizar y revisar) y de redes (Tonnetz, tabla armónica y
   teclados isomórficos), en texto y SVG, sin SwiftUI.
@@ -124,7 +127,7 @@ En Linux solo compila la lógica que no usa SwiftUI.
 
 ### Sonido
 
-- `Sonido` (en `HexaphonosPresentacion`): qué notas MIDI suenan y cuándo, para un acorde (arpegiado y luego
+- `Sonido` (en `ArmoniaPresentacion`): qué notas MIDI suenan y cuándo, para un acorde (arpegiado y luego
   junto, desde su bajo), una escala, una progresión o un coral. `AnalisisPresentado` y `CoralPresentado` traen
   el suyo.
 - `Reproductor` y `BotonDeEscuchar`: lo tocan con el sintetizador del sistema (`AVAudioUnitSampler`; en macOS
@@ -147,7 +150,7 @@ En Linux solo compila la lógica que no usa SwiftUI.
 
 ### Apps traducidas y ayudantes comunes
 
-- `TextoDeLasApps` (en `HexaphonosPresentacion`): los textos de la interfaz de las dos apps en los ocho idiomas
+- `TextoDeLasApps` (en `ArmoniaPresentacion`): los textos de la interfaz de las dos apps en los ocho idiomas
   de los textos del motor, con los ejemplos de las indicaciones escritos en la notación elegida. Siguen el
   idioma de los textos de la notación, así que el selector cambia la app entera. También se traducen las
   tareas del coral (`Tarea.titulo(en:)`, `indicacion(en:)`), los formatos para exportar
@@ -160,8 +163,8 @@ En Linux solo compila la lógica que no usa SwiftUI.
 
 ### Presentación compartida con la línea de comandos
 
-- `PresentacionDeAnalisis`, `PresentacionDeCoral` y `FicheroParaExportar` pasan al módulo `HexaphonosPresentacion`
-  (producto del mismo nombre), que no usa SwiftUI. `HexaphonosUI` lo reexporta, así que las apps no cambian, y
+- `PresentacionDeAnalisis`, `PresentacionDeCoral` y `FicheroParaExportar` pasan al módulo `ArmoniaPresentacion`
+  (producto del mismo nombre), que no usa SwiftUI. `ArmoniaUI` lo reexporta, así que las apps no cambian, y
   `armonia analizar`, `armonizar`, `realizar` y `revisar` lo usan en lugar de montar el resultado por su cuenta.
 - `PresentacionDeAnalisis.analizar(_:en:notacion:)` acepta una tonalidad dada, y entonces no busca modulaciones.
 - `CoralPresentado.avisos` son ahora `CoralPresentado.Aviso` en lugar de textos fijos en español:

@@ -105,9 +105,9 @@ elif ! command -v xcodegen >/dev/null 2>&1; then
 elif [ "$MOTOR_COMPILA" = 1 ]; then
     paso "Apps: generar el proyecto" . ./Scripts/generar_proyecto.sh &&
         for esquema in ArmoniaApp TonnetzApp; do
-            paso "$esquema (macOS)" . xcodebuild build -project Hexaphonos.xcodeproj -scheme "$esquema" \
+            paso "$esquema (macOS)" . xcodebuild build -project Tesela.xcodeproj -scheme "$esquema" \
                 -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
-            paso "$esquema (iOS, simulador)" . xcodebuild build -project Hexaphonos.xcodeproj -scheme "$esquema" \
+            paso "$esquema (iOS, simulador)" . xcodebuild build -project Tesela.xcodeproj -scheme "$esquema" \
                 -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO
         done
 else

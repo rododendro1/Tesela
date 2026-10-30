@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- El paquete pide Swift 6.0 o posterior y compila en el modo de lenguaje 6. Antes pedía Swift 5.9.
+
 - `longitud` pasa a ser `distanciaAlOrigen` en `CoordenadaAxial` y `CoordenadaCubica`: son los pasos hasta el origen.
   Sin alias.
 
@@ -33,5 +35,5 @@ Los nombres anteriores estuvieron marcados como obsoletos y ya se han quitado.
   `rotado(sextos:alrededorDe:)`, como `CoordenadaAxial.rotada(sextos:alrededorDe:)`.
 - `CoordenadaAxial.ve(_:tapada:)` pasa a `esVisible(_:tapada:)`.
 
-Se usa desde otro proyecto con `.package(url: "https://github.com/rododendro1/Hexaphonos.git", branch: "main")` y el
+Se usa desde otro proyecto con `.package(url: "https://github.com/rododendro1/Tesela.git", branch: "main")` y el
 producto `Hexagonos`.
