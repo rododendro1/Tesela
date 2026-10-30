@@ -174,12 +174,13 @@ final class FormatoUILTests: XCTestCase {
         // Sin el semitono (L = 2): solo suenan seis notas de una escala de tonos enteros.
         let tonos = try FormatoUIL(leyendo: "2,6,4")
         XCTAssertFalse(tonos.esCompleto)
+        // Con radio 12 hay casillas por debajo de MIDI 0: `%` daría restos negativos.
         let deTonos = try tonos.teclado()
-        XCTAssertEqual(Set(FormasDeMapa.hexagono(radio: 12).map { deTonos.midi(en: $0) % 12 }), [0, 2, 4, 6, 8, 10])
+        XCTAssertEqual(Set(FormasDeMapa.hexagono(radio: 12).map { ((deTonos.midi(en: $0) % 12) + 12) % 12 }), [0, 2, 4, 6, 8, 10])
         XCTAssertFalse(try FormatoUIL(leyendo: "3,9,6").esCompleto)
         // Los completos suenan las doce notas.
         let wh = try FormatoUIL(leyendo: "2,7,5;R30M").teclado()
-        XCTAssertEqual(Set(FormasDeMapa.hexagono(radio: 12).map { wh.midi(en: $0) % 12 }).count, 12)
+        XCTAssertEqual(Set(FormasDeMapa.hexagono(radio: 12).map { ((wh.midi(en: $0) % 12) + 12) % 12 }).count, 12)
     }
 
     func testLosCasosEspeciales() throws {
