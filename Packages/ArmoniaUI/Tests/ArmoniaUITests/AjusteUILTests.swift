@@ -28,11 +28,14 @@ final class AjusteUILTests: XCTestCase {
         }
     }
 
-    func testElEspejoPoneOQuitaLaM() throws {
+    func testElEspejoDaOtraColocacionDeLosMismosIntervalos() throws {
+        // Cambia el giro o la M, pero no los intervalos (`L,G,D`). En los teclados simétricos, como el Jankó, el
+        // espejo es un giro de 180°: `1,2,1;R90` pasa a `1,2,1;R270`.
         for conocido in AjusteUIL.conocidos {
             let antes = try XCTUnwrap(AjusteUIL(texto: conocido.texto).resultado)
             let despues = try XCTUnwrap(AjusteUIL(texto: conocido.texto, espejo: true).resultado)
-            XCTAssertNotEqual(antes.hasSuffix("M"), despues.hasSuffix("M"), "\(conocido.nombre): \(antes) → \(despues)")
+            XCTAssertNotEqual(antes, despues, conocido.nombre)
+            XCTAssertEqual(antes.split(separator: ";").first, despues.split(separator: ";").first, conocido.nombre)
         }
     }
 
