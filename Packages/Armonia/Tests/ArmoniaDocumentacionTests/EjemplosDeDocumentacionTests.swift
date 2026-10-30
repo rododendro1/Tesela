@@ -492,13 +492,25 @@ final class EjemplosDeDocumentacionTests: XCTestCase {
     }
 
     func testMelodiaYRitmo9() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 175
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 176
+        let arpegio = Voz(Arpegio(Acorde("Do7"), patron: .idaYVuelta), figura: .semicorchea)
+        comprobar(arpegio.eventos.count, #"9"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 177)
+        let acordes = [Acorde("Do"), Acorde("Lam"), Acorde("Fa"), Acorde("Sol7")]
+        let alberti = Voz(arpegiando: acordes, patron: .alberti, porAcorde: .blanca)
+        comprobar(alberti.eventos.count, #"16"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 180)
+        comprobar(alberti.eventos.prefix(4).flatMap(\.alturas).map(\.midi) == [48, 55, 52, 55], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 181)
+        let datos = alberti.midi(titulo: "Bajo de Alberti")
+        _ = datos
+    }
+
+    func testMelodiaYRitmo10() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 197
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
         let pieza = try PiezaImportada(leyendo: coral.midi(duracion: .blanca, tonalidad: Tonalidad(.do)))
-        comprobar(pieza.tonalidad, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 177)
-        comprobar(pieza.notas.count, #"12"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 178)
-        comprobar(pieza.acordes().map(\.cifrado), #"["Do", "Sol", "Do"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 179)
-        comprobar(pieza.analisis()?.cifrados, #"["I", "V", "I"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 180)
+        comprobar(pieza.tonalidad, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 199)
+        comprobar(pieza.notas.count, #"12"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 200)
+        comprobar(pieza.acordes().map(\.cifrado), #"["Do", "Sol", "Do"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 201)
+        comprobar(pieza.analisis()?.cifrados, #"["I", "V", "I"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 202)
     }
 
     func testNotacionYPartitura1() throws {
@@ -824,7 +836,18 @@ final class EjemplosDeDocumentacionTests: XCTestCase {
     }
 
     func testTrastes2() throws {
-        // Sources/Armonia/Armonia.docc/Trastes.md, línea 54
+        // Sources/Armonia/Armonia.docc/Trastes.md, línea 56
+        let mastil = Mastil(.guitarra, trastes: 12)
+        let posiciones = mastil.arpegios(de: Acorde("Lam"))
+        comprobar(posiciones.count, #"3"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 58)
+        comprobar(posiciones[0].trastes == 0...3, #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 59)
+        comprobar(posiciones[0].alturas.map(\.midi) == [40, 45, 48, 52, 57, 60, 64], #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 60)
+        let todas = mastil.posiciones(de: Acorde("Lam"), trastes: 0...5)
+        _ = todas
+    }
+
+    func testTrastes3() throws {
+        // Sources/Armonia/Armonia.docc/Trastes.md, línea 71
         let mastil = Mastil(.guitarra)
         let leida = Digitacion(leyendo: "x32010", en: mastil)
         let comprobada = Digitacion(comprobando: [nil, 3, 2, 0, 1, 0], en: mastil)

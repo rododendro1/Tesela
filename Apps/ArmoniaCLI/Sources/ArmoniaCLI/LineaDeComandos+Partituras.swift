@@ -35,9 +35,13 @@ extension LineaDeComandos {
         }
         // `--program` es `--programa` en inglés.
         if formato == .midi, let valor = opciones.removeValue(forKey: "program") { opciones["programa"] = valor }
+        // `--patrón` y `--pattern` son `--patron`.
+        for otro in ["patrón", "pattern"] {
+            if let valor = opciones.removeValue(forKey: otro) { opciones["patron"] = valor }
+        }
         let conocidas: Set = formato == .midi
-            ? ["compas", "anacrusa", "tonalidad", "tempo", "titulo", "duracion", "programa"]
-            : ["compas", "anacrusa", "tonalidad", "clave", "tempo", "titulo", "duracion"]
+            ? ["compas", "anacrusa", "tonalidad", "tempo", "titulo", "duracion", "programa", "patron", "figura"]
+            : ["compas", "anacrusa", "tonalidad", "clave", "tempo", "titulo", "duracion", "patron", "figura"]
         if let desconocida = opciones.keys.sorted().first(where: { !conocidas.contains($0) }) {
             return uso(.opcionDesconocida("--" + desconocida), notacion)
         }
@@ -63,6 +67,10 @@ extension LineaDeComandos {
             tempo = Tempo(bpm, unidad: try partes.dropFirst().first.map { try Duracion(leyendo: $0) } ?? .negra)
         }
         let titulo = opciones["titulo"]
+        let arpegios: Set = ["arpegios", "arpegio", "arpeggios", "arpeggio"]
+        if !arpegios.contains(tipo), let opcion = ["figura", "patron"].first(where: { opciones[$0] != nil }) {
+            return uso(.soloParaArpegios(opcion), notacion)
+        }
 
         switch tipo {
         case "melodia", "melodía", "melody":
@@ -128,6 +136,36 @@ extension LineaDeComandos {
             }
             return bien(analisis.musicXML(duracion: duracion, compas: compas, tempo: tempo, titulo: titulo,
                                           notacion: notacion).trimmingCharacters(in: "\n"))
+        case _ where arpegios.contains(tipo):
+            guard !musica.isEmpty else { return uso(.faltanAcordesDeLaProgresion(orden: orden), notacion) }
+            for opcion in ["clave", "anacrusa"] where opciones[opcion] != nil {
+                return uso(.soloParaMelodia(opcion), notacion)
+            }
+            if !marcas.isEmpty { return uso(.acordesConCifradosYAnalisis, notacion) }
+            var patron = Arpegio.Patron.ascendente
+            if let texto = opciones["patron"] {
+                guard let elegido = patronDeArpegio(texto) else { return uso(.patronDesconocido(texto), notacion) }
+                patron = elegido
+            }
+            let figura = try opciones["figura"].map { try Duracion(leyendo: $0) } ?? .corchea
+            if figura <= .cero, let texto = opciones["figura"] {   // "0/4"
+                throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .duracionNoValida(texto))
+            }
+            let porAcorde = try opciones["duracion"].map { try Duracion(leyendo: $0) }
+            // La tonalidad, la dada o la que mejor explica los acordes, pone la armadura.
+            let analisis = try AnalisisArmonico.analizar(leyendo: musica.joined(separator: " "), en: tonalidad)
+            let voz = Voz(arpegiando: analisis.acordes.map(\.acorde), patron: patron, figura: figura,
+                          porAcorde: porAcorde, compas: compas)
+            if formato == .midi {
+                return binario(voz.midi(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo,
+                                        instrumento: instrumento ?? 0))
+            }
+            if formato == .mei {
+                return bien(voz.mei(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo)
+                    .trimmingCharacters(in: "\n"))
+            }
+            return bien(voz.musicXML(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo)
+                .trimmingCharacters(in: "\n"))
         default:
             return uso(.tipoDePartituraDesconocido(tipo), notacion)
         }

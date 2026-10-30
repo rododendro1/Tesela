@@ -69,9 +69,12 @@ extension TextosDeCLI {
         sintaxisMusicxmlAcordes: "musicxml acordes <cifras> [opções]",
         descripcionMusicxmlAcordes: "progressão com cifras e análise",
         notasMusicxmlAcordes: "opções: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (ou --tempo 60 4.), --titulo O meu coral,\n--duracion 2 (o que dura cada acorde; semínima no coral e mínima\nnos acordes, se não), --cifrados e --analisis (no coral: cifra\namericana em cima, romana e função em baixo)",
-        sintaxisMeiMelodia: "mei melodia|coral|acordes <…> [opções]",
+        sintaxisMusicxmlArpegios: "musicxml arpegios <cifras> [opções]",
+        descripcionMusicxmlArpegios: "os acordes arpejados, nota a nota",
+        notasMusicxmlArpegios: "opções: --patron alberti (ou ascendente, descendente, ida y\nvuelta), --figura 16 (o que dura cada nota; colcheia se não),\n--duracion 1 (o que dura cada acorde: o padrão repete-se até o\npreencher) e as outras de «acordes»",
+        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [opções]",
         descripcionMeiMelodia: "o mesmo em MEI 5, o formato das\nedições críticas (com as mesmas\nopções)",
-        sintaxisMidiMelodia: "midi melodia|coral|acordes <…> [opções]",
+        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [opções]",
         descripcionMidiMelodia: "o mesmo como ficheiro MIDI, para\nouvir (sem --clave nem --cifrados;\ncom --programa 0…127, General MIDI)",
 
         // Ayuda+Trastes.swift
@@ -153,9 +156,10 @@ extension TextosDeCLI {
         claveDesconocida: { clave, claves in "clave desconhecida: «\(clave)» " + claves },
         faltanAcordesDelCoral: { ejemplo, orden in "faltam os acordes: " + ejemplo },
         soloParaMelodia: { opcion in "--\(opcion) é só para «melodia»" },
+        soloParaArpegios: { opcion in "--\(opcion) é só para «arpegios»" },
         faltanAcordesDeLaProgresion: { ejemplo, orden in "faltam os acordes: " + ejemplo },
         acordesConCifradosYAnalisis: "os acordes levam sempre cifrados e análise",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: exporta-se uma «melodia», um «coral» ou uns «acordes»" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: exporta-se uma «melodia», um «coral», uns «acordes» ou os seus «arpegios»" },
 
         // ErrorDeUso+Trastes.swift
         faltaInstrumento: { d, digitaciones in "falta o instrumento: \(d)" },

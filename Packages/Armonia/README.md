@@ -76,6 +76,7 @@ $ swift run armonia musicxml melodia Re4:8 Sol4:4 La4:8 Si4:4. --compas 6/8 --an
 $ swift run armonia musicxml coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4, Do3 Mi4 Sol4 Do5 --duracion 2 > coral.musicxml
 $ swift run armonia musicxml acordes Do Lam Re7 Sol7 Do > progresion.musicxml
 $ swift run armonia midi acordes Do Lam Re7 Sol7 Do --tempo 80 > progresion.mid
+$ swift run armonia midi arpegios Do Lam Fa Sol7 --patron alberti --duracion 2 > alberti.mid
 
 $ swift run armonia tonnetz --escala "Re dórico" > dorico.svg
 $ swift run armonia tonnetz --recorrido Do Lam Fa Rem > recorrido.svg

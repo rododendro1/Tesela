@@ -19,6 +19,14 @@ public struct AnalisisPresentado: Hashable, Sendable {
     public let ficheros: [FicheroParaExportar]
     /// Los acordes uno detrás de otro, para «Escuchar».
     public internal(set) var sonido: Sonido = .silencio
+    /// Los acordes analizados y la tonalidad de la partitura, para arpegiarlos.
+    public internal(set) var acordes: [Acorde] = []
+    public internal(set) var tonalidad: Tonalidad?
+
+    /// La progresión arpegiada con un patrón, en la tonalidad de la partitura.
+    public func arpegiada(_ patron: Arpegio.Patron, notacion: Notacion) -> ArpegioPresentado? {
+        PresentacionDeArpegios.progresion(acordes, patron: patron, tonalidad: tonalidad, notacion: notacion)
+    }
 }
 
 /// Un tramo del análisis en una tonalidad: la modulación que lo abre y sus acordes.
@@ -83,7 +91,9 @@ public enum PresentacionDeAnalisis {
                 .mei(analisis.mei(titulo: nombre, notacion: notacion), nombre: nombre),
                 .midi(analisis.midi(titulo: nombre, notacion: notacion), nombre: nombre),
             ],
-            sonido: Sonido.acordes(analisis.acordes.map(\.acorde)).conTonica(analisis.tonalidad.tonica))
+            sonido: Sonido.acordes(analisis.acordes.map(\.acorde)).conTonica(analisis.tonalidad.tonica),
+            acordes: analisis.acordes.map(\.acorde),
+            tonalidad: analisis.tonalidad)
     }
 
     static func fila(_ analizado: AcordeAnalizado, _ notacion: Notacion) -> AnalisisPresentado.Fila {

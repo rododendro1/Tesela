@@ -72,6 +72,9 @@ struct TextosDeCLI: Sendable {
     let sintaxisMusicxmlAcordes: String
     let descripcionMusicxmlAcordes: String
     let notasMusicxmlAcordes: String
+    let sintaxisMusicxmlArpegios: String
+    let descripcionMusicxmlArpegios: String
+    let notasMusicxmlArpegios: String
     let sintaxisMeiMelodia: String
     let descripcionMeiMelodia: String
     let sintaxisMidiMelodia: String
@@ -143,6 +146,7 @@ struct TextosDeCLI: Sendable {
     let claveDesconocida: @Sendable (String, String) -> String
     let faltanAcordesDelCoral: @Sendable (String, String) -> String
     let soloParaMelodia: @Sendable (String) -> String
+    let soloParaArpegios: @Sendable (String) -> String
     let faltanAcordesDeLaProgresion: @Sendable (String, String) -> String
     let acordesConCifradosYAnalisis: String
     let tipoDePartituraDesconocido: @Sendable (String) -> String

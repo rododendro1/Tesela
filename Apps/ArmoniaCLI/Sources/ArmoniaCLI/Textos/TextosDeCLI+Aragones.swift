@@ -69,9 +69,12 @@ extension TextosDeCLI {
         sintaxisMusicxmlAcordes: "musicxml acordes <cifraus> [opcions]",
         descripcionMusicxmlAcordes: "progresión con cifraus y análisi",
         notasMusicxmlAcordes: "opcions: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (u --tempo 60 4.), --titulo O mio coral,\n--duracion 2 (o que dura cada acorde; negra en o coral y\nblanca en os acordes si no), --cifrados y --analisis (en o\ncoral: cifrau americano encima, romano y función debaixo)",
-        sintaxisMeiMelodia: "mei melodia|coral|acordes <…> [opcions]",
+        sintaxisMusicxmlArpegios: "musicxml arpegios <cifraus> [opcions]",
+        descripcionMusicxmlArpegios: "os acordes arpechaus, nota a nota",
+        notasMusicxmlArpegios: "opcions: --patron alberti (u ascendente, descendente, ida y\nvuelta), --figura 16 (o que dura cada nota; corchea si no),\n--duracion 1 (o que dura cada acorde: o patrón se repite\ndica plenar-lo) y as atras de «acordes»",
+        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [opcions]",
         descripcionMeiMelodia: "o mesmo en MEI 5, o formato d\'as\nedicions críticas (con as mesmas\nopcions)",
-        sintaxisMidiMelodia: "midi melodia|coral|acordes <…> [opcions]",
+        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [opcions]",
         descripcionMidiMelodia: "o mesmo como fichero MIDI, ta sentir-lo\n(sin --clave ni --cifrados; con\n--programa 0…127, General MIDI)",
 
         // Ayuda+Trastes.swift
@@ -153,9 +156,10 @@ extension TextosDeCLI {
         claveDesconocida: { clave, claves in "clau desconoixida: «\(clave)» " + claves },
         faltanAcordesDelCoral: { ejemplo, orden in "faltan os acordes: " + ejemplo },
         soloParaMelodia: { opcion in "--\(opcion) ye nomás ta «melodia»" },
+        soloParaArpegios: { opcion in "--\(opcion) ye nomás ta «arpegios»" },
         faltanAcordesDeLaProgresion: { ejemplo, orden in "faltan os acordes: " + ejemplo },
         acordesConCifradosYAnalisis: "os acordes leban siempre cifraus y análisi",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: s\'exporta una «melodia», un «coral» u bels «acordes»" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: s\'exporta una «melodia», un «coral», bels «acordes» u os suyos «arpegios»" },
 
         // ErrorDeUso+Trastes.swift
         faltaInstrumento: { d, digitaciones in "falta o instrumento: \(d)" },

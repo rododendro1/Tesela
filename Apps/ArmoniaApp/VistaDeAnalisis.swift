@@ -5,7 +5,7 @@ import ArmoniaUI
 
 /// Escribe una progresión (Do Fa Sol7 Do Lam Re7 Sol), o la saca de un fichero MIDI o MusicXML con «Abrir», y
 /// muestra sus tonalidades, los grados, las funciones, las modulaciones y las cadencias, y la exporta como
-/// partitura o MIDI.
+/// partitura o MIDI, también arpegiada.
 struct VistaDeAnalisis: View {
     @Environment(\.notacion) private var notacion
     @State private var texto = "Do Fa Sol7 Do Lam Re7 Sol"
@@ -14,6 +14,7 @@ struct VistaDeAnalisis: View {
     @State private var abriendo = false
     /// Por qué no se pudo abrir el último fichero; se borra al abrir otro o al cambiar el texto.
     @State private var errorAlAbrir: Error?
+    @State private var patron = Arpegio.Patron.ascendente
 
     /// MIDI y MusicXML sin comprimir (.musicxml y .xml).
     private static let tipos: [UTType] = [.midi, .xml]
@@ -53,6 +54,7 @@ struct VistaDeAnalisis: View {
                         ForEach(analisis.cadencias, id: \.self) { Text($0) }
                     }
                 }
+                arpegiar(analisis)
             case .some(.failure(let error)):
                 Section {
                     Text(notacion.mensaje(de: error)).foregroundColor(.red)
@@ -68,7 +70,7 @@ struct VistaDeAnalisis: View {
                 Button { abriendo = true } label: { Label(notacion.texto(.abrir), systemImage: "folder") }
             }
             ToolbarItem {
-                BotonDeExportar((try? resultado?.get())?.ficheros ?? [])
+                BotonDeExportar(ficheros)
             }
         }
         .fileImporter(isPresented: $abriendo, allowedContentTypes: Self.tipos) { elegido in
@@ -77,6 +79,25 @@ struct VistaDeAnalisis: View {
         .onChange(of: texto) { _ in errorAlAbrir = nil }
         .task(id: "\(texto)|\(notacion.clave)") {
             resultado = Result { try PresentacionDeAnalisis.analizar(texto, notacion: notacion) }
+        }
+    }
+
+    /// Las partituras y el MIDI de la progresión y de la progresión arpegiada con el patrón elegido.
+    private var ficheros: [FicheroParaExportar] {
+        guard let analisis = try? resultado?.get() else { return [] }
+        return analisis.ficheros + (analisis.arpegiada(patron, notacion: notacion)?.ficheros ?? [])
+    }
+
+    /// La progresión arpegiada: cada acorde una blanca en corcheas, con el patrón elegido.
+    @ViewBuilder
+    private func arpegiar(_ analisis: AnalisisPresentado) -> some View {
+        if let arpegiada = analisis.arpegiada(patron, notacion: notacion) {
+            Section(notacion.texto(.arpegiar)) {
+                Picker(notacion.texto(.patron), selection: $patron) {
+                    ForEach(Arpegio.Patron.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
+                }
+                BotonDeEscuchar(arpegiada.sonido)
+            }
         }
     }
 

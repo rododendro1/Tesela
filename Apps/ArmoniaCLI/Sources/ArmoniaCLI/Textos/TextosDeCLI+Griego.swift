@@ -69,9 +69,12 @@ extension TextosDeCLI {
         sintaxisMusicxmlAcordes: "musicxml chords <σύμβολα> [επιλογές]",
         descripcionMusicxmlAcordes: "αλληλουχία με σύμβολα και ανάλυση",
         notasMusicxmlAcordes: "επιλογές: --compas 6/8 (μέτρο), --anacrusa 8 (άρση), --tonalidad\nG major (τονικότητα), --clave fa (κλειδί), --tempo 90 (ή --tempo\n60 4.), --titulo Το χορικό μου (τίτλος), --duracion 2 (πόσο\nδιαρκεί κάθε συγχορδία· από προεπιλογή τέταρτο στο χορικό και\nμισό στις συγχορδίες), --cifrados και --analisis (στο χορικό:\nσύμβολα από πάνω, βαθμίδες και λειτουργία από κάτω)",
-        sintaxisMeiMelodia: "mei melody|chorale|chords <…> [επιλογές]",
+        sintaxisMusicxmlArpegios: "musicxml arpeggios <σύμβολα> [επιλογές]",
+        descripcionMusicxmlArpegios: "οι συγχορδίες σε αρπίσματα, νότα νότα",
+        notasMusicxmlArpegios: "επιλογές: --patron alberti (ή up, down, up-down), --figura 16\n(πόσο διαρκεί κάθε νότα· από προεπιλογή όγδοο), --duracion 1\n(πόσο διαρκεί κάθε συγχορδία: το σχήμα επαναλαμβάνεται ώσπου\nνα τη γεμίσει) και οι υπόλοιπες των «chords»",
+        sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios <…> [επιλογές]",
         descripcionMeiMelodia: "το ίδιο σε MEI 5, τη μορφή των\nκριτικών εκδόσεων (με τις ίδιες\nεπιλογές)",
-        sintaxisMidiMelodia: "midi melody|chorale|chords <…> [επιλογές]",
+        sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios <…> [επιλογές]",
         descripcionMidiMelodia: "το ίδιο ως αρχείο MIDI, για να το\nακούσεις (χωρίς --clave ή --cifrados·\nμε --program 0…127, General MIDI)",
 
         // Ayuda+Trastes.swift
@@ -153,9 +156,10 @@ extension TextosDeCLI {
         claveDesconocida: { clave, claves in "άγνωστο κλειδί: «\(clave)» (treble, bass, alto, tenor, sol, fa, do1, do2, do3, do4, sol8b, sol8a, fa3)" },
         faltanAcordesDelCoral: { ejemplo, orden in "λείπουν οι συγχορδίες: armonia \(orden) chorale C3 E4 G4 C5, G2 D4 G4 B4" },
         soloParaMelodia: { opcion in "το --\(opcion) είναι μόνο για «melody»" },
+        soloParaArpegios: { opcion in "το --\(opcion) είναι μόνο για «arpeggios»" },
         faltanAcordesDeLaProgresion: { ejemplo, orden in "λείπουν οι συγχορδίες: armonia \(orden) chords C Am D7 G7 C" },
         acordesConCifradosYAnalisis: "οι συγχορδίες έχουν πάντα σύμβολα και ανάλυση",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: εξάγεται «melody», «chorale» ή «chords»" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: εξάγεται «melody», «chorale», «chords» ή τα «arpeggios» τους" },
 
         // ErrorDeUso+Trastes.swift
         faltaInstrumento: { d, digitaciones in "λείπει το όργανο: \(digitaciones.1)" },

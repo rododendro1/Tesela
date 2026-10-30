@@ -69,9 +69,12 @@ extension TextosDeCLI {
         sintaxisMusicxmlAcordes: "musicxml acordes <zifratuak> [aukerak]",
         descripcionMusicxmlAcordes: "progresioa zifratu eta analisiarekin",
         notasMusicxmlAcordes: "aukerak: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (edo --tempo 60 4.), --titulo Nire\nkorala, --duracion 2 (akorde bakoitzaren iraupena; bestela\nbeltza koralean eta zuria akordeetan), --cifrados eta --analisis\n(koralean: zifratu amerikarra goian, erromatarra eta funtzioa\nbehean)",
-        sintaxisMeiMelodia: "mei melodia|coral|acordes <…> [aukerak]",
+        sintaxisMusicxmlArpegios: "musicxml arpegios <zifratuak> [aukerak]",
+        descripcionMusicxmlArpegios: "akordeak arpegiatuta, notaz nota",
+        notasMusicxmlArpegios: "aukerak: --patron alberti (edo ascendente, descendente, ida y\nvuelta), --figura 16 (nota bakoitzaren iraupena; bestela\nkortxea), --duracion 1 (akorde bakoitzaren iraupena: eredua\nerrepikatzen da bete arte) eta «acordes»en gainerakoak",
+        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [aukerak]",
         descripcionMeiMelodia: "gauza bera MEI 5en, edizio kritikoen\nformatuan (aukera berberekin)",
-        sintaxisMidiMelodia: "midi melodia|coral|acordes <…> [aukerak]",
+        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [aukerak]",
         descripcionMidiMelodia: "gauza bera MIDI fitxategi gisa,\nentzuteko (--clave eta --cifrados\ngabe; --programa 0…127, General\nMIDI)",
 
         // Ayuda+Trastes.swift
@@ -153,9 +156,10 @@ extension TextosDeCLI {
         claveDesconocida: { clave, claves in "giltza ezezaguna: «\(clave)» " + claves },
         faltanAcordesDelCoral: { ejemplo, orden in "akordeak falta dira: " + ejemplo },
         soloParaMelodia: { opcion in "--\(opcion) «melodia»rako bakarrik da" },
+        soloParaArpegios: { opcion in "--\(opcion) «arpegios»etarako bakarrik da" },
         faltanAcordesDeLaProgresion: { ejemplo, orden in "akordeak falta dira: " + ejemplo },
         acordesConCifradosYAnalisis: "akordeek beti daramatzate zifratuak eta analisia",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: «melodia», «coral» edo «acordes» bat esportatzen da" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: «melodia», «coral», «acordes» edo haien «arpegios» esportatzen da" },
 
         // ErrorDeUso+Trastes.swift
         faltaInstrumento: { d, digitaciones in "instrumentua falta da: \(d)" },

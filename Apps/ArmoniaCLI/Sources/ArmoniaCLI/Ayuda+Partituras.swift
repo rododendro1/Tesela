@@ -22,13 +22,20 @@ extension LineaDeComandos {
             ejemplo: ejemplo("armonia musicxml acordes Do Lam Re7 Sol7 Do > progresion.musicxml",
                              "armonia musicxml chords C Am D7 G7 C > progression.musicxml"),
             notas: TextosDeCLI.traducidos.map(\.notasMusicxmlAcordes)),
-        // mei melodia|coral|acordes <…> [opciones]
+        // musicxml arpegios <cifrados> [opciones]
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisMusicxmlArpegios),
+            descripcion: TextosDeCLI.traducidos.map(\.descripcionMusicxmlArpegios),
+            ejemplo: ejemplo("armonia musicxml arpegios Do Lam Fa Sol7 --patron alberti --duracion 2 > arpegios.musicxml",
+                             "armonia musicxml arpeggios C Am F G7 --patron alberti --duracion 2 > arpeggios.musicxml"),
+            notas: TextosDeCLI.traducidos.map(\.notasMusicxmlArpegios)),
+        // mei melodia|coral|acordes|arpegios <…> [opciones]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traducidos.map(\.sintaxisMeiMelodia),
             descripcion: TextosDeCLI.traducidos.map(\.descripcionMeiMelodia),
             ejemplo: ejemplo("armonia mei coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 --cifrados > coral.mei",
                              "armonia mei chorale C3 E4 G4 C5, G2 D4 G4 B4 --cifrados > chorale.mei")),
-        // midi melodia|coral|acordes <…> [opciones]
+        // midi melodia|coral|acordes|arpegios <…> [opciones]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traducidos.map(\.sintaxisMidiMelodia),
             descripcion: TextosDeCLI.traducidos.map(\.descripcionMidiMelodia),

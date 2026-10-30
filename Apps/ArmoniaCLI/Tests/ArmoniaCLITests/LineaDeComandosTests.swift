@@ -511,6 +511,37 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertTrue(LineaDeComandos.ejecutar(["midi", "coral", "Do3", "Do5", "--cifrados"]).error.contains("MusicXML y MEI"))
     }
 
+    func testArpegiosComoPartitura() throws {
+        func notas(_ xml: String) -> Int { xml.components(separatedBy: "<pitch>").count - 1 }
+        // Do: Do Mi Sol Do; Sol7: Sol Si Re Fa Sol.
+        let sencillo = salida("musicxml arpegios Do Sol7")
+        XCTAssertEqual(notas(sencillo), 9)
+        XCTAssertTrue(sencillo.contains("<type>eighth</type>"))
+        // Cuatro acordes de blanca en corcheas: cuatro notas cada uno.
+        let alberti = salida("musicxml arpegios Do Lam Fa Sol7 --patron alberti --duracion 2 --titulo Alberti")
+        XCTAssertEqual(notas(alberti), 16)
+        XCTAssertTrue(alberti.contains("<work-title>Alberti</work-title>"))
+        XCTAssertTrue(salida("musicxml arpegios Do --figura 16").contains("<type>16th</type>"))
+        XCTAssertEqual(salida("musicxml arpegios Do Sol7 --patron ida y vuelta"),
+                       salida("musicxml arpeggios Do Sol7 --pattern up-down"))
+        XCTAssertTrue(salida("mei arpegios Do Sol7 --patron descendente").hasSuffix("</mei>\n"))
+        let midi = LineaDeComandos.ejecutar(["midi", "arpegios", "Do", "Sol7", "--programa", "24"])
+        XCTAssertEqual(midi.codigo, 0, midi.error)
+        XCTAssertEqual(Array(try XCTUnwrap(midi.datos).prefix(4)), Array("MThd".utf8))
+
+        for orden in ["musicxml arpegios", "musicxml arpegios Do --patron zigzag", "musicxml arpegios Do --cifrados",
+                      "musicxml arpegios Do --clave fa", "musicxml melodia Do4:4 --patron alberti",
+                      "musicxml acordes Do Sol --figura 8", "midi coral Do3 Do5 --patron alberti"] {
+            let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+            XCTAssertEqual(resultado.codigo, 2, orden)
+            XCTAssertEqual(resultado.salida, "", orden)
+        }
+        XCTAssertTrue(LineaDeComandos.ejecutar(["musicxml", "acordes", "Do", "--figura", "8"]).error.contains("«arpegios»"))
+        for orden in ["musicxml arpegios Do --figura 0/4", "musicxml arpegios Do Hm", "midi arpegios Do --figura 3"] {
+            XCTAssertEqual(LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo, 1, orden)
+        }
+    }
+
     func testTonnetz() {
         for orden in ["tonnetz Do Mi Sol", "tonnetz --acorde Sol7", "tonnetz --escala Re dórico", "tonnetz --clases 0 4 7",
                       "tonnetz --clases 0,3,6,9 --margen 2", "tonnetz C E G --ingles"] {

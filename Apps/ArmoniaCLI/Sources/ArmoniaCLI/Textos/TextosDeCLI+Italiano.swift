@@ -69,9 +69,12 @@ extension TextosDeCLI {
         sintaxisMusicxmlAcordes: "musicxml acordes <sigle> [opzioni]",
         descripcionMusicxmlAcordes: "progressione con sigle e analisi",
         notasMusicxmlAcordes: "opzioni: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (o --tempo 60 4.), --titulo Il mio\ncorale, --duracion 2 (quanto dura ogni accordo; semiminima nel\ncorale e minima negli accordi, altrimenti), --cifrados e\n--analisis (nel corale: sigla americana sopra, numero romano e\nfunzione sotto)",
-        sintaxisMeiMelodia: "mei melodia|coral|acordes <…> [opzioni]",
+        sintaxisMusicxmlArpegios: "musicxml arpegios <sigle> [opzioni]",
+        descripcionMusicxmlArpegios: "gli accordi arpeggiati, nota per nota",
+        notasMusicxmlArpegios: "opzioni: --patron alberti (o ascendente, descendente, ida y\nvuelta), --figura 16 (quanto dura ogni nota; croma,\naltrimenti), --duracion 1 (quanto dura ogni accordo: lo schema\nsi ripete fino a riempirlo) e le altre di «acordes»",
+        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [opzioni]",
         descripcionMeiMelodia: "lo stesso in MEI 5, il formato delle\nedizioni critiche (con le stesse\nopzioni)",
-        sintaxisMidiMelodia: "midi melodia|coral|acordes <…> [opzioni]",
+        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [opzioni]",
         descripcionMidiMelodia: "lo stesso come file MIDI, per\nascoltarlo (senza --clave né\n--cifrados; con --programa 0…127,\nGeneral MIDI)",
 
         // Ayuda+Trastes.swift
@@ -153,9 +156,10 @@ extension TextosDeCLI {
         claveDesconocida: { clave, claves in "chiave sconosciuta: «\(clave)» " + claves },
         faltanAcordesDelCoral: { ejemplo, orden in "mancano gli accordi: " + ejemplo },
         soloParaMelodia: { opcion in "--\(opcion) è solo per «melodia»" },
+        soloParaArpegios: { opcion in "--\(opcion) è solo per «arpegios»" },
         faltanAcordesDeLaProgresion: { ejemplo, orden in "mancano gli accordi: " + ejemplo },
         acordesConCifradosYAnalisis: "gli accordi hanno sempre sigle e analisi",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: si esporta una «melodia», un «coral» o degli «acordes»" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: si esporta una «melodia», un «coral», degli «acordes» o i loro «arpegios»" },
 
         // ErrorDeUso+Trastes.swift
         faltaInstrumento: { d, digitaciones in "manca lo strumento: \(d)" },

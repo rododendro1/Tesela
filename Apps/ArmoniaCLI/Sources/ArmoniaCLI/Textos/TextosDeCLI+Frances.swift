@@ -69,9 +69,12 @@ extension TextosDeCLI {
         sintaxisMusicxmlAcordes: "musicxml acordes <chiffrages> [options]",
         descripcionMusicxmlAcordes: "progression avec chiffrages et\nanalyse",
         notasMusicxmlAcordes: "options : --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (ou --tempo 60 4.), --titulo Mon choral,\n--duracion 2 (la durée de chaque accord ; noire dans le choral\net blanche dans les accords sinon), --cifrados et --analisis\n(dans le choral : chiffrage américain au-dessus, romain et\nfonction au-dessous)",
-        sintaxisMeiMelodia: "mei melodia|coral|acordes <…> [options]",
+        sintaxisMusicxmlArpegios: "musicxml arpegios <chiffrages> [options]",
+        descripcionMusicxmlArpegios: "les accords arpégés, note par note",
+        notasMusicxmlArpegios: "options : --patron alberti (ou ascendente, descendente, ida y\nvuelta), --figura 16 (la durée de chaque note ; croche sinon),\n--duracion 1 (la durée de chaque accord : le motif se répète\njusqu'à le remplir) et les autres de « acordes »",
+        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [options]",
         descripcionMeiMelodia: "la même chose en MEI 5, le format des\néditions critiques (avec les mêmes\noptions)",
-        sintaxisMidiMelodia: "midi melodia|coral|acordes <…> [options]",
+        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [options]",
         descripcionMidiMelodia: "la même chose en fichier MIDI, pour\nl'écouter (sans --clave ni\n--cifrados ; avec --programa 0…127,\nGeneral MIDI)",
 
         // Ayuda+Trastes.swift
@@ -153,9 +156,10 @@ extension TextosDeCLI {
         claveDesconocida: { clave, claves in "clé inconnue : « \(clave) » " + claves },
         faltanAcordesDelCoral: { ejemplo, orden in "il manque les accords : " + ejemplo },
         soloParaMelodia: { opcion in "--\(opcion) n'est que pour « melodia »" },
+        soloParaArpegios: { opcion in "--\(opcion) n'est que pour « arpegios »" },
         faltanAcordesDeLaProgresion: { ejemplo, orden in "il manque les accords : " + ejemplo },
         acordesConCifradosYAnalisis: "les accords ont toujours chiffrages et analyse",
-        tipoDePartituraDesconocido: { tipo in "« \(tipo) » : on exporte une « melodia », un « coral » ou des « acordes »" },
+        tipoDePartituraDesconocido: { tipo in "« \(tipo) » : on exporte une « melodia », un « coral », des « acordes » ou leurs « arpegios »" },
 
         // ErrorDeUso+Trastes.swift
         faltaInstrumento: { d, digitaciones in "il manque l'instrument : \(d)" },
