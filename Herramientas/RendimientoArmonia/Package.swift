@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.0
 import PackageDescription
 
 // Cuánto tarda el motor en lo que hacen las apps y la línea de comandos. Se mide compilado con optimización:

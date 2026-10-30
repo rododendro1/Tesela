@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- El paquete pide Swift 6.0 o posterior y compila en el modo de lenguaje 6, como las apps (`SWIFT_VERSION` 6.0 en
+  `project.yml`). Antes pedía Swift 5.9.
+
 - `RedDeNotas.uil` y `AjusteUIL`: un teclado isomórfico descrito en el formato UIL (`2,7,5;R30M`), con giro de 30° en
   30° (`giros`) y espejo; `PresentacionDeRedes.svg`, `midi` y `nombre` toman un `uil:`. La app Tonnetz ofrece el campo
   de texto, un menú con los teclados del artículo, el giro y el espejo. Textos nuevos: `.formatoUIL`, `.giro` y

@@ -2,6 +2,11 @@
 
 ## Sin publicar
 
+### Swift 6
+
+- El paquete pide Swift 6.0 o posterior (`swift-tools-version:6.0`) y compila en el modo de lenguaje 6: la
+  concurrencia se comprueba al compilar, no solo en el CI. Antes pedía Swift 5.9.
+
 ### Arpegios
 
 - `Arpegio`: un acorde recorrido nota a nota, con `Patron` (`.ascendente`, `.descendente`, `.idaYVuelta`, `.alberti`),
