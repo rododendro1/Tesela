@@ -467,7 +467,7 @@ Los nombres antiguos estuvieron marcados como obsoletos con `renamed:` y ya se h
 
 - El repositorio tiene un `Package.swift` en la raíz, para usar el motor desde otro proyecto:
   `.package(url: "https://github.com/rododendro1/Tesela.git", branch: "main")`, con los productos `Armonia`
-  (y uno por capa), `Hexagonos` y `HexaphonosUI`.
+  (y uno por capa), `Hexagonos` y `ArmoniaUI`.
 - `import Armonia` ya no reexporta `Hexagonos`: quien nombre sus tipos (`CoordenadaAxial`, `FormasDeMapa`,
   `DireccionHexagonal`…) escribe también `import Hexagonos`. Lo que devuelve el motor no cambia.
 
@@ -487,11 +487,10 @@ El motor depende ahora del paquete `Hexagonos` (rejillas hexagonales).
 
 ### Tesela
 
-- El ecosistema pasa a llamarse Tesela (antes Hexaphonos): el repositorio es `rododendro1/Tesela`, el proyecto de
+- El ecosistema se llama Tesela: el repositorio es `rododendro1/Tesela`, el proyecto de
   Xcode, `Tesela.xcodeproj`, el paquete de la raíz, `Tesela`, y los identificadores de las apps empiezan por
   `es.solfa.tesela`. El motor no cambia.
-- Antes, como Hexaphonos, el paquete de la interfaz, `SepirizUI`, había pasado a `HexaphonosUI` (con
-  `AjustesHexaphonos` y `TemaHexaphonos`); hoy es `ArmoniaUI`.
+- El paquete de la interfaz es `ArmoniaUI`.
 
 ### Nombres de tipos
 

@@ -8,3 +8,7 @@ Package.resolved
 # Ajustes de tu equipo (copia de Config/Local.xcconfig.ejemplo)
 Config/Local.xcconfig
 .logs-compilacion/
+
+# Python
+__pycache__/
+*.pyc
