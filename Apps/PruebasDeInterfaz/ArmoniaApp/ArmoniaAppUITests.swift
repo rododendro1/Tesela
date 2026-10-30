@@ -11,12 +11,29 @@ final class ArmoniaAppUITests: XCTestCase {
         esperar(app.texto("Do Mi Sol Si♭"), "las notas de Do7")
     }
 
+    /// El pentagrama del acorde se lee con sus notas desde el bajo.
+    func testPentagramaDelAcorde() {
+        let app = XCUIApplication.enEspanol()
+        esperar(app.texto("Si Re Fa Sol"), "las notas de Sol7/Si")
+        esperar(app.buscandoHaciaAbajo(app.etiqueta("Sol7/Si: Si, Re, Fa, Sol")), "el pentagrama de Sol7/Si")
+        app.reemplazar(en: app.textFields.firstMatch, por: "Do7")
+        esperar(app.buscandoHaciaAbajo(app.etiqueta("Do7: Do, Mi, Sol, Si♭")), "el pentagrama de Do7")
+    }
+
     func testEscalas() {
         let app = XCUIApplication.enEspanol()
         app.opcion("Escalas").tap()
         // La primera tónica y la primera escala del catálogo: Do mayor.
         esperar(app.texto("Do  Re  Mi  Fa  Sol  La  Si"), "las notas de Do mayor")
         esperar(app.texto("Rem"), "los acordes de la escala")
+    }
+
+    /// El pentagrama de la escala dice sus notas con la octava.
+    func testPentagramaDeLaEscala() {
+        let app = XCUIApplication.enEspanol()
+        app.opcion("Escalas").tap()
+        esperar(app.texto("Do  Re  Mi  Fa  Sol  La  Si"), "las notas de Do mayor")
+        esperar(app.buscandoHaciaAbajo(app.etiqueta("Do mayor: Do4, Re4")), "el pentagrama de Do mayor")
     }
 
     func testAnalisis() {
