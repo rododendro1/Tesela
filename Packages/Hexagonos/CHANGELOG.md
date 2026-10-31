@@ -1,6 +1,8 @@
 # Cambios
 
-## Sin publicar
+## 0.1.0 (2026-10-31)
+
+Primera versión con etiqueta del repositorio: `0.1.0`.
 
 - El paquete pide Swift 6.0 o posterior y compila en el modo de lenguaje 6. Antes pedía Swift 5.9.
 
