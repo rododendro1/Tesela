@@ -306,7 +306,10 @@ Gerhard y Park, y admite cualquier otro con los semitonos de cada eje. Los tres 
 teclado: 7, 4 y 3 (tabla armónica), 2, 5 y 7 (Wicki-Hayden), 3, 2 y 1 (acordeón cromático), 2, 1 y 1 (Jankó), 4, 3 y 1
 (Gerhard, con la escala cromática en cada columna) o 5, 3 y 2 (Park, con la cuarta en horizontal). Bosanquet-Wilson,
 en 12 notas, es el mismo teclado que Jankó: el tono en horizontal y los dos semitonos, que aquí valen lo mismo, en las
-diagonales.
+diagonales. Los tres presets de 12 notas del Lumatone son de aquí: el 1 («Classic Mode», Bosanquet-Wilson) es
+``TecladoIsomorfico/janko``, el 2 («Melodic Mode») es ``TecladoIsomorfico/wickiHaydenPlano`` y el 3 («Harmonic Mode»)
+es ``TecladoIsomorfico/tablaArmonica``. Cambia la forma del instrumento, con las teclas inclinadas y varios manuales
+repetidos por canales MIDI, pero no los intervalos.
 
 ```swift
 import Hexagonos
