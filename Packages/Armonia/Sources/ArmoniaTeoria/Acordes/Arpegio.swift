@@ -170,16 +170,35 @@ extension Arpegio: Nombrable {
             "arpegio", "arpeggio", "arpegi", "arpexo", "arpexu", "arpechio", "arpegioa", "arpejo", "arpege",
             "αρπεζ", "арпеджио", "de", "di", "of", "d'",
         ]
-        func sinAcentos(_ s: String) -> String {
-            s.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: nil)
-        }
-        let resto = texto.split(separator: " ").filter { !palabras.contains(sinAcentos(String($0))) }
+        let resto = texto.split(separator: " ").filter { !palabras.contains(String($0).claveDeBusqueda) }
             .joined(separator: " ")
         self.init(try Acorde(leyendo: resto.isEmpty ? texto : resto))
     }
 }
 
 // MARK: - Patron
+
+extension Arpegio.Patron {
+    /// Lee un patrón por su nombre en el código (`alberti`, `idaYVuelta`), con guiones o guiones bajos
+    /// (`ida-y-vuelta`), en inglés abreviado (`up`, `down`, `up-down`, `down-up`, `broken`) o como lo escribe
+    /// cualquiera de los catorce idiomas («bajo de Alberti», «aller-retour»), sin mirar mayúsculas ni tildes.
+    public init?(leyendo texto: String) {
+        func clave(_ texto: String) -> String { texto.replacingOccurrences(of: "_", with: " ").claveDeBusqueda }
+        let buscado = clave(texto)
+        let abreviados: [String: Arpegio.Patron] = [
+            "ida y vuelta": .idaYVuelta, "up": .ascendente, "down": .descendente, "up down": .idaYVuelta,
+            "baja y sube": .bajaYSube, "down up": .bajaYSube, "broken": .quebrado,
+        ]
+        let patron =
+            abreviados[buscado]
+            ?? Self.allCases.first { patron in
+                clave(patron.rawValue) == buscado
+                    || Idioma.allCases.contains { clave(patron.nombre(en: .delIdioma($0))) == buscado }
+            }
+        guard let patron else { return nil }
+        self = patron
+    }
+}
 
 extension Arpegio.Patron: Nombrable {
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }

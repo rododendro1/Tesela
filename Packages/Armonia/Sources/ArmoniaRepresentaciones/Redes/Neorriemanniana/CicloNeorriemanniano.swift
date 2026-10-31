@@ -80,7 +80,7 @@ public enum CicloNeorriemanniano: String, CaseIterable, Hashable, Sendable, Cust
     /// Lee "hexatónico", "hexatonico", "hexatonic", "octatónico", "octatonic", "LR"… o el ciclo
     /// por sus transformaciones ("PL", "PR", "LR").
     public init?(leyendo texto: String) {
-        let limpio = texto.lowercased().folding(options: .diacriticInsensitive, locale: nil)
+        let limpio = texto.claveDeBusqueda
             .replacingOccurrences(of: "ciclo ", with: "").replacingOccurrences(of: " cycle", with: "")
             .trimmingCharacters(in: .whitespaces)
         switch limpio {

@@ -174,17 +174,18 @@ extension StringProtocol {
 }
 
 extension String {
-    /// Forma para comparar nombres escritos a mano: minúsculas, sin tildes ni diéresis (tampoco las
-    /// griegas, ni la diéresis de la ё rusa),
-    /// con guiones como espacios y un solo espacio entre palabras ("Sub-mediante" → "sub mediante").
+    /// Forma para comparar nombres escritos a mano: minúsculas, sin tildes, circunflejos, diéresis ni cedillas
+    /// (tampoco las griegas, ni la diéresis de la ё rusa), con guiones como espacios y un solo espacio entre
+    /// palabras ("Sub-mediante" → "sub mediante", "aufwärts" → "aufwarts"). La ñ se queda.
     package var claveDeBusqueda: String {
         let sinTildes = lowercased().map { (c: Character) -> Character in
             switch c {
-            case "á", "à": return "a"
-            case "é", "è": return "e"
-            case "í", "ì": return "i"
-            case "ó", "ò": return "o"
-            case "ú", "ù", "ü": return "u"
+            case "á", "à", "â", "ä", "ã": return "a"
+            case "é", "è", "ê", "ë": return "e"
+            case "í", "ì", "î", "ï": return "i"
+            case "ó", "ò", "ô", "ö", "õ": return "o"
+            case "ú", "ù", "û", "ü": return "u"
+            case "ç": return "c"
             case "ё": return "е"
             case "ά": return "α"
             case "έ": return "ε"

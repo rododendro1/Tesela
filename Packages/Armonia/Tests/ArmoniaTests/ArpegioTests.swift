@@ -78,6 +78,22 @@ final class ArpegioTests: XCTestCase {
         XCTAssertEqual(Set(Arpegio.Patron.allCases.map(\.nombre)).count, Arpegio.Patron.allCases.count)
     }
 
+    func testLeerUnPatron() {
+        XCTAssertEqual(Arpegio.Patron(leyendo: "idaYVuelta"), .idaYVuelta)
+        XCTAssertEqual(Arpegio.Patron(leyendo: "ida_y_vuelta"), .idaYVuelta)
+        XCTAssertEqual(Arpegio.Patron(leyendo: "down-up"), .bajaYSube)
+        XCTAssertEqual(Arpegio.Patron(leyendo: "Aller-retour"), .idaYVuelta)
+        XCTAssertEqual(Arpegio.Patron(leyendo: "aufwarts"), .ascendente)
+        XCTAssertEqual(Arpegio.Patron(leyendo: "ВОСХОДЯЩИЙ"), .ascendente)
+        XCTAssertNil(Arpegio.Patron(leyendo: "zigzag"))
+        for idioma in Idioma.traducidos {
+            for patron in Arpegio.Patron.allCases {
+                let nombre = patron.nombre(en: Notacion.espanolUnicode.conTextos(en: idioma))
+                XCTAssertEqual(Arpegio.Patron(leyendo: nombre), patron, "\(nombre) (\(idioma))")
+            }
+        }
+    }
+
     func testLaRelacionAcordeEscala() {
         let escalas = Acorde("Do7").escalasCompatibles()
         XCTAssertTrue(escalas.contains(Escala(.do, .mixolidio)))
