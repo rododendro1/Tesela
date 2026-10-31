@@ -143,140 +143,140 @@ public enum TextoDeLasApps: Hashable, Sendable {
     func traduccion(_ notacion: Notacion) -> Traduccion {
         switch self {
         case .acordes:
-            return TextosDeApps.traducidos.map(\.acordes)
+            return TextosDeApps.traduccion(\.acordes)
         case .escalas:
-            return TextosDeApps.traducidos.map(\.escalas)
+            return TextosDeApps.traduccion(\.escalas)
         case .analisis:
-            return TextosDeApps.traducidos.map(\.analisis)
+            return TextosDeApps.traduccion(\.analisis)
         case .coral:
-            return TextosDeApps.traducidos.map(\.coral)
+            return TextosDeApps.traduccion(\.coral)
         case .acorde:
-            return TextosDeApps.traducidos.map(\.acorde)
+            return TextosDeApps.traduccion(\.acorde)
         case .campoDeCifrado:
             let ejemplo = Self.cifrado("Sol7/Si", notacion)
-            return TextosDeApps.traducidos.map { $0.campoDeCifrado(ejemplo) }
+            return TextosDeApps.traduccion { $0.campoDeCifrado(ejemplo) }
         case .informacion:
-            return TextosDeApps.traducidos.map(\.informacion)
+            return TextosDeApps.traduccion(\.informacion)
         case .nombre:
-            return TextosDeApps.traducidos.map(\.nombre)
+            return TextosDeApps.traduccion(\.nombre)
         case .cifrado:
-            return TextosDeApps.traducidos.map(\.cifrado)
+            return TextosDeApps.traduccion(\.cifrado)
         case .notas:
-            return TextosDeApps.traducidos.map(\.notas)
+            return TextosDeApps.traduccion(\.notas)
         case .digitaciones:
-            return TextosDeApps.traducidos.map(\.digitaciones)
+            return TextosDeApps.traduccion(\.digitaciones)
         case .arpegio:
-            return TextosDeApps.traducidos.map(\.arpegio)
+            return TextosDeApps.traduccion(\.arpegio)
         case .patron:
-            return TextosDeApps.traducidos.map(\.patron)
+            return TextosDeApps.traduccion(\.patron)
         case .arpegioEnElMastil:
-            return TextosDeApps.traducidos.map(\.arpegioEnElMastil)
+            return TextosDeApps.traduccion(\.arpegioEnElMastil)
         case .trastes(let desde, let hasta):
-            return TextosDeApps.traducidos.map { $0.trastes(desde, hasta) }
+            return TextosDeApps.traduccion { $0.trastes(desde, hasta) }
         case .escalasCompatibles:
-            return TextosDeApps.traducidos.map(\.escalasCompatibles)
+            return TextosDeApps.traduccion(\.escalasCompatibles)
         case .identificar:
-            return TextosDeApps.traducidos.map(\.identificar)
+            return TextosDeApps.traduccion(\.identificar)
         case .tocaElMastil:
-            return TextosDeApps.traducidos.map(\.tocaElMastil)
+            return TextosDeApps.traduccion(\.tocaElMastil)
         case .tocaNotas:
-            return TextosDeApps.traducidos.map(\.tocaNotas)
+            return TextosDeApps.traduccion(\.tocaNotas)
         case .borrar:
-            return TextosDeApps.traducidos.map(\.borrar)
+            return TextosDeApps.traduccion(\.borrar)
         case .sinAcordeConocido:
-            return TextosDeApps.traducidos.map(\.sinAcordeConocido)
+            return TextosDeApps.traduccion(\.sinAcordeConocido)
         case .verEnAcordes:
-            return TextosDeApps.traducidos.map(\.verEnAcordes)
+            return TextosDeApps.traduccion(\.verEnAcordes)
         case .tecladoMIDI:
-            return TextosDeApps.traducidos.map(\.tecladoMIDI)
+            return TextosDeApps.traduccion(\.tecladoMIDI)
         case .dispositivosMIDI:
-            return TextosDeApps.traducidos.map(\.dispositivosMIDI)
+            return TextosDeApps.traduccion(\.dispositivosMIDI)
         case .teoriaPostonal:
-            return TextosDeApps.traducidos.map(\.teoriaPostonal)
+            return TextosDeApps.traduccion(\.teoriaPostonal)
         case .formaPrima:
-            return TextosDeApps.traducidos.map(\.formaPrima)
+            return TextosDeApps.traduccion(\.formaPrima)
         case .numeroDeForte:
-            return TextosDeApps.traducidos.map(\.numeroDeForte)
+            return TextosDeApps.traduccion(\.numeroDeForte)
         case .vectorIntervalico:
-            return TextosDeApps.traducidos.map(\.vectorIntervalico)
+            return TextosDeApps.traduccion(\.vectorIntervalico)
         case .instrumentoYAfinacion:
-            return TextosDeApps.traducidos.map(\.instrumentoYAfinacion)
+            return TextosDeApps.traduccion(\.instrumentoYAfinacion)
         case .sinDigitaciones:
-            return TextosDeApps.traducidos.map(\.sinDigitaciones)
+            return TextosDeApps.traduccion(\.sinDigitaciones)
         case .calculando:
-            return TextosDeApps.traducidos.map(\.calculando)
+            return TextosDeApps.traduccion(\.calculando)
         case .dedos(let n, let cejilla):
-            guard let t = cejilla else { return TextosDeApps.traducidos.map { $0.dedos(n) } }
-            return TextosDeApps.traducidos.map { "\($0.dedos(n)), \($0.cejilla(t))" }
+            guard let t = cejilla else { return TextosDeApps.traduccion { $0.dedos(n) } }
+            return TextosDeApps.traduccion { "\($0.dedos(n)), \($0.cejilla(t))" }
         case .escala:
-            return TextosDeApps.traducidos.map(\.escala)
+            return TextosDeApps.traduccion(\.escala)
         case .tonica:
-            return TextosDeApps.traducidos.map(\.tonica)
+            return TextosDeApps.traduccion(\.tonica)
         case .tipo:
-            return TextosDeApps.traducidos.map(\.tipo)
+            return TextosDeApps.traduccion(\.tipo)
         case .habituales:
-            return TextosDeApps.traducidos.map(\.habituales)
+            return TextosDeApps.traduccion(\.habituales)
         case .otrasTradiciones:
-            return TextosDeApps.traducidos.map(\.otrasTradiciones)
+            return TextosDeApps.traduccion(\.otrasTradiciones)
         case .acordesDeLaEscala:
-            return TextosDeApps.traducidos.map(\.acordesDeLaEscala)
+            return TextosDeApps.traduccion(\.acordesDeLaEscala)
         case .posicionesEnElMastil:
-            return TextosDeApps.traducidos.map(\.posicionesEnElMastil)
+            return TextosDeApps.traduccion(\.posicionesEnElMastil)
         case .notasPorCuerda(let n):
-            return TextosDeApps.traducidos.map { $0.notasPorCuerda(n) }
+            return TextosDeApps.traduccion { $0.notasPorCuerda(n) }
         case .forma(let forma):
-            return TextosDeApps.traducidos.map { $0.forma(forma) }
+            return TextosDeApps.traduccion { $0.forma(forma) }
         case .mastilDeGuitarra:
-            return TextosDeApps.traducidos.map(\.mastilDeGuitarra)
+            return TextosDeApps.traduccion(\.mastilDeGuitarra)
         case .pentagrama:
-            return TextosDeApps.traducidos.map(\.pentagrama)
+            return TextosDeApps.traduccion(\.pentagrama)
         case .progresion:
-            return TextosDeApps.traducidos.map(\.progresion)
+            return TextosDeApps.traduccion(\.progresion)
         case .campoDeProgresion:
-            return TextosDeApps.traducidos.map(\.campoDeProgresion)
+            return TextosDeApps.traduccion(\.campoDeProgresion)
         case .resultado:
-            return TextosDeApps.traducidos.map(\.resultado)
+            return TextosDeApps.traduccion(\.resultado)
         case .acordeAAcorde:
-            return TextosDeApps.traducidos.map(\.acordeAAcorde)
+            return TextosDeApps.traduccion(\.acordeAAcorde)
         case .arpegiar:
-            return TextosDeApps.traducidos.map(\.arpegiar)
+            return TextosDeApps.traduccion(\.arpegiar)
         case .cadencias:
-            return TextosDeApps.traducidos.map(\.cadencias)
+            return TextosDeApps.traduccion(\.cadencias)
         case .tarea:
-            return TextosDeApps.traducidos.map(\.tarea)
+            return TextosDeApps.traduccion(\.tarea)
         case .campoDeTonalidad:
-            return TextosDeApps.traducidos.map(\.campoDeTonalidad)
+            return TextosDeApps.traduccion(\.campoDeTonalidad)
         case .tonalidad:
-            return TextosDeApps.traducidos.map(\.tonalidad)
+            return TextosDeApps.traduccion(\.tonalidad)
         case .armonizaciones:
-            return TextosDeApps.traducidos.map(\.armonizaciones)
+            return TextosDeApps.traduccion(\.armonizaciones)
         case .aCuatroVoces:
-            return TextosDeApps.traducidos.map(\.aCuatroVoces)
+            return TextosDeApps.traduccion(\.aCuatroVoces)
         case .conduccionDeLasVoces:
-            return TextosDeApps.traducidos.map(\.conduccionDeLasVoces)
+            return TextosDeApps.traduccion(\.conduccionDeLasVoces)
         case .avisos:
-            return TextosDeApps.traducidos.map(\.avisos)
+            return TextosDeApps.traduccion(\.avisos)
         case .recorridoPLR:
-            return TextosDeApps.traducidos.map(\.recorridoPLR)
+            return TextosDeApps.traduccion(\.recorridoPLR)
         case .modo:
-            return TextosDeApps.traducidos.map(\.modo)
+            return TextosDeApps.traduccion(\.modo)
         case .red:
-            return TextosDeApps.traducidos.map(\.red)
+            return TextosDeApps.traduccion(\.red)
         case .formatoUIL:
-            return TextosDeApps.traducidos.map(\.formatoUIL)
+            return TextosDeApps.traduccion(\.formatoUIL)
         case .giro:
-            return TextosDeApps.traducidos.map(\.giro)
+            return TextosDeApps.traduccion(\.giro)
         case .espejo:
-            return TextosDeApps.traducidos.map(\.espejo)
+            return TextosDeApps.traduccion(\.espejo)
         case .noSeDibuja:
-            return TextosDeApps.traducidos.map(\.noSeDibuja)
+            return TextosDeApps.traduccion(\.noSeDibuja)
         case .campoDeTriadaInicial:
             let ejemplo = Self.cifrado("Do", notacion) + ", " + Self.cifrado("Lam", notacion) + "…"
-            return TextosDeApps.traducidos.map { $0.campoDeTriadaInicial(ejemplo) }
+            return TextosDeApps.traduccion { $0.campoDeTriadaInicial(ejemplo) }
         case .reiniciar:
-            return TextosDeApps.traducidos.map(\.reiniciar)
+            return TextosDeApps.traduccion(\.reiniciar)
         case .deshacer:
-            return TextosDeApps.traducidos.map(\.deshacer)
+            return TextosDeApps.traduccion(\.deshacer)
         case .campoDeAcorde:
             let ejemplo = Self.cifrado("Dom7", notacion) + ", " + Self.cifrado("Fa#m7b5", notacion) + "…"
             return TextoDeLasApps.cifrado.traduccion(notacion).aplicando { "\($0) (\(ejemplo))" }
@@ -285,51 +285,51 @@ public enum TextoDeLasApps: Hashable, Sendable {
             let ejemplo = ejemplos.joined(separator: ", ") + "…"
             return TextoDeLasApps.escala.traduccion(notacion).aplicando { "\($0) (\(ejemplo))" }
         case .textos:
-            return TextosDeApps.traducidos.map(\.textos)
+            return TextosDeApps.traduccion(\.textos)
         case .comoLasNotas:
-            return TextosDeApps.traducidos.map(\.comoLasNotas)
+            return TextosDeApps.traduccion(\.comoLasNotas)
         case .octavas:
-            return TextosDeApps.traducidos.map(\.octavas)
+            return TextosDeApps.traduccion(\.octavas)
         case .conLaOctavaFinal:
-            return TextosDeApps.traducidos.map(\.conLaOctavaFinal)
+            return TextosDeApps.traduccion(\.conLaOctavaFinal)
         case .figura:
-            return TextosDeApps.traducidos.map(\.figura)
+            return TextosDeApps.traduccion(\.figura)
         case .capo(let n) where n <= 0:
-            return TextosDeApps.traducidos.map(\.sinCapo)
+            return TextosDeApps.traduccion(\.sinCapo)
         case .capo(let n):
-            return TextosDeApps.traducidos.map { $0.capo(n) }
+            return TextosDeApps.traduccion { $0.capo(n) }
         case .rearmonizar:
-            return TextosDeApps.traducidos.map(\.rearmonizar)
+            return TextosDeApps.traduccion(\.rearmonizar)
         case .aplicar:
-            return TextosDeApps.traducidos.map(\.aplicar)
+            return TextosDeApps.traduccion(\.aplicar)
         case .detener:
-            return TextosDeApps.traducidos.map(\.detener)
+            return TextosDeApps.traduccion(\.detener)
         case .transponer:
-            return TextosDeApps.traducidos.map(\.transponer)
+            return TextosDeApps.traduccion(\.transponer)
         case .escuchar:
-            return TextosDeApps.traducidos.map(\.escuchar)
+            return TextosDeApps.traduccion(\.escuchar)
         case .afinacionAlEscuchar:
-            return TextosDeApps.traducidos.map(\.afinacionAlEscuchar)
+            return TextosDeApps.traduccion(\.afinacionAlEscuchar)
         case .exportar:
-            return TextosDeApps.traducidos.map(\.exportar)
+            return TextosDeApps.traduccion(\.exportar)
         case .abrir:
-            return TextosDeApps.traducidos.map(\.abrir)
+            return TextosDeApps.traduccion(\.abrir)
         case .rejillaHexagonal:
-            return TextosDeApps.traducidos.map(\.rejillaHexagonal)
+            return TextosDeApps.traduccion(\.rejillaHexagonal)
         case .casillas(let n):
-            return TextosDeApps.traducidos.map { $0.casillas(n) }
+            return TextosDeApps.traduccion { $0.casillas(n) }
         case .casillaElegida(let q, let r):
-            return TextosDeApps.traducidos.map { "\($0.elegida) q \(q), r \(r)" }
+            return TextosDeApps.traduccion { "\($0.elegida) q \(q), r \(r)" }
         case .mastilDe(let instrumento, let desde, let hasta):
-            return TextosDeApps.traducidos.map { $0.mastilDe(instrumento, desde, hasta) }
+            return TextosDeApps.traduccion { $0.mastilDe(instrumento, desde, hasta) }
         case .posicion(let cuerda, let traste):
-            return TextosDeApps.traducidos.map { $0.posicion(cuerda, traste) }
+            return TextosDeApps.traduccion { $0.posicion(cuerda, traste) }
         case .marcas(let n):
-            return TextosDeApps.traducidos.map { $0.marcas(n) }
+            return TextosDeApps.traduccion { $0.marcas(n) }
         case .cuerdasApagadas(let lista):
-            return TextosDeApps.traducidos.map { $0.cuerdasApagadas(lista) }
+            return TextosDeApps.traduccion { $0.cuerdasApagadas(lista) }
         case .sinMarcas:
-            return TextosDeApps.traducidos.map(\.sinMarcas)
+            return TextosDeApps.traduccion(\.sinMarcas)
         }
     }
 
@@ -345,6 +345,21 @@ public enum TextoDeLasApps: Hashable, Sendable {
             let limpia = coma ? String(palabra.dropLast()) : String(palabra)
             return ((try? Altura(leyendo: limpia))?.nombre(en: notacion) ?? limpia) + (coma ? "," : "")
         }.joined(separator: " ")
+    }
+}
+
+extension TextosDeApps {
+    /// Un texto de las apps en los catorce idiomas: `TextosDeApps.traduccion(\.acordes)`, o con valores,
+    /// `TextosDeApps.traduccion { $0.capo(n) }`.
+    ///
+    /// Los `switch` de los textos lo usan en vez de `traducidos.map(…)`. Sin optimizar (Debug, `swift test`),
+    /// cada `TextosDeApps.traducidos.map` copia en la pila los catorce `TextosDeApps` (unos 25 KB) y cada caso
+    /// del `switch` guarda su copia aparte: con noventa casos, `TextoDeLasApps.traduccion` pedía varios MB de
+    /// pila y, con un caso que se llama a sí mismo (`campoDeAcorde`), desbordaba la del hilo principal en macOS
+    /// (señal 11). Aquí la copia es una sola, en un marco de pila que se suelta al volver.
+    @inline(never)
+    static func traduccion(_ campo: (TextosDeApps) -> String) -> Traduccion {
+        traducidos.map(campo)
     }
 }
 
