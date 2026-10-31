@@ -12,4 +12,4 @@
 - [ ] Pasan las comprobaciones de `Scripts/` (las de [CONTRIBUTING.md](https://github.com/rododendro1/Tesela/blob/main/CONTRIBUTING.md#comprobaciones)).
 - [ ] Textos nuevos en los catorce idiomas, si los hay.
 - [ ] Documentación al día (comentarios, artículos de DocC, README).
-- [ ] Entrada en el `CHANGELOG.md` de cada paquete que cambia.
+- [ ] Entrada en `## Sin publicar` del `CHANGELOG.md` de cada paquete que cambia.

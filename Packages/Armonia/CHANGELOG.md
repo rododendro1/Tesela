@@ -1,5 +1,18 @@
 # Cambios
 
+## Sin publicar
+
+- Un MusicXML con un byte que no es UTF-8 válido en el nombre de un elemento o de un atributo detenía el programa en
+  Linux (dentro de `XMLParser`). Ahora es `ErrorDeImportacion.xmlDanado(linea:)`, con la línea del byte. Los ficheros
+  que declaran una codificación de un byte por carácter (ISO-8859-1, Windows-1252…) se siguen leyendo.
+- `PiezaImportada.acordes(ventana:)` podía desbordar las fracciones (y detener el programa) con una pieza de más de
+  100 000 ventanas y una división rara, como un MIDI de 32 749 pulsos por negra con una nota larguísima. Para no pasar
+  de 100 000, la ventana se alarga ahora a un múltiplo entero de la de partida.
+- `FormatoUIL` rechaza intervalos y números de notas por octava de más de un millón (`intervalosIncoherentes`,
+  `formatoNoValido`): con valores cerca del máximo de `Int`, comprobar `G = L + D` desbordaba.
+- Pruebas nuevas (`ImportacionAlAzarTests`): ficheros MIDI y MusicXML estropeados al azar, números desmesurados,
+  elementos anidados sin fin, entidades que se expanden y textos UIL al azar. Todos acaban con una pieza o un error.
+
 ## 0.1.0 (2026-10-31)
 
 Primera versión con etiqueta del repositorio: `0.1.0`.

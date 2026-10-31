@@ -26,7 +26,10 @@ cd Packages/ArmoniaUI && swift test      # la interfaz (en Linux, solo la parte 
 ## Qué debe llevar un cambio
 
 - **Pruebas.** Todo cambio de comportamiento lleva su prueba en el paquete que cambia. El CI mide la cobertura en
-  Linux y la deja en el resumen de cada ejecución; procura que no baje.
+  Linux y la deja en el resumen de cada ejecución, y falla si el porcentaje de funciones o de líneas probadas de un
+  paquete baja de su mínimo (en el job `cobertura` de `.github/workflows/ci.yml`). Si tu cambio lo sube, sube también
+  el mínimo. Lo que lee ficheros de fuera tiene además pruebas con ficheros estropeados al azar
+  (`ImportacionAlAzarTests`): si tocas esa lectura, añade ahí los casos nuevos.
 - **Dependencias en orden.** Un paquete solo depende de los que tiene debajo, nunca de una app. Si añades un
   módulo o un paquete, sigue el apartado «Añadir un paquete o una app» del README:
   `Scripts/comprobar_dependencias.py` comprueba que el `Package.swift` de la raíz coincide con los de `Packages/`.
@@ -35,8 +38,9 @@ cd Packages/ArmoniaUI && swift test      # la interfaz (en Linux, solo la parte 
 - **Documentación.** La API pública lleva comentario de documentación. Los enlaces de DocC (``Tipo/miembro`` y
   `<doc:Articulo>`) tienen que apuntar a algo que exista, y los ejemplos de código de los artículos se prueban:
   si cambias uno, regenera sus pruebas con `python3 Scripts/generar_pruebas_de_documentacion.py`.
-- **CHANGELOG.** Anota el cambio en el `CHANGELOG.md` de cada paquete que cambie, en la sección de la versión que
-  está en marcha. Esas secciones son las notas de la release.
+- **CHANGELOG.** Anota el cambio en el `CHANGELOG.md` de cada paquete que cambie, en la sección `## Sin publicar`
+  (la primera; créala si no está). Al publicar una versión, esa sección pasa a ser la de la versión y sus notas son
+  las de la release.
 
 ## Comprobaciones
 
@@ -50,7 +54,7 @@ python3 Scripts/comprobar_catalogo.py
 python3 Scripts/comprobar_enlaces_docc.py
 python3 Scripts/comprobar_traducciones.py
 python3 Scripts/generar_pruebas_de_documentacion.py --comprobar
-python3 Scripts/notas_de_version.py --actual > /dev/null
+python3 Scripts/notas_de_version.py --comprobar
 ```
 
 En cada pull request corren estas comprobaciones y las pruebas en Linux (Swift 6.0 y 6.2). Los jobs de macOS
@@ -66,6 +70,13 @@ las apps o la documentación, pide en el pull request que se lancen.
 ## Versiones
 
 Las versiones siguen [SemVer](https://semver.org/lang/es/); mientras sean 0.x, una nueva puede quitar lo que una
-anterior marcó como obsoleto. Para publicar una, se sube `MARKETING_VERSION` en `project.yml`, se cierra la
-sección de esa versión en los CHANGELOG y se etiqueta el commit de `main` (`git tag 0.2.0 && git push origin 0.2.0`):
-`.github/workflows/version.yml` crea la release con esas notas y `documentacion.yml` publica la documentación.
+anterior marcó como obsoleto. Para publicar una:
+
+```sh
+python3 Scripts/notas_de_version.py --publicar 0.2.0   # «Sin publicar» pasa a «0.2.0 (fecha)» y sube MARKETING_VERSION
+# … pull request con ese cambio, y fusionarlo …
+git tag 0.2.0 && git push origin 0.2.0                 # en el commit de main
+```
+
+Con la etiqueta, `.github/workflows/version.yml` crea la release con las notas de esa versión y `documentacion.yml`
+publica la documentación.

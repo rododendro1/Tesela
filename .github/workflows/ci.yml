@@ -53,8 +53,8 @@ jobs:
         run: python3 Scripts/comprobar_traducciones.py
       - name: Ejemplos de la documentación al día
         run: python3 Scripts/generar_pruebas_de_documentacion.py --comprobar
-      - name: Notas de la versión actual en los CHANGELOG
-        run: python3 Scripts/notas_de_version.py --actual > /dev/null
+      - name: CHANGELOG (secciones y notas de la versión actual)
+        run: python3 Scripts/notas_de_version.py --comprobar
 
   motor:
     name: Armonia · Linux · Swift ${{ matrix.swift }}
@@ -169,7 +169,8 @@ jobs:
 
   # La cobertura de las pruebas de cada paquete en Linux: el total y los ficheros con menos líneas probadas, en
   # el resumen de la ejecución, y el informe entero por fichero como artefacto (`cobertura-<paquete>.txt`).
-  # No falla por una cobertura baja: sirve para ver qué falta por probar.
+  # Falla si el porcentaje de funciones o de líneas probadas baja del mínimo del paquete (`funciones` y `lineas`,
+  # un poco por debajo de lo que se tiene, para que un cambio sin pruebas no lo haga bajar). Si sube, sube el mínimo.
   cobertura:
     name: Cobertura · ${{ matrix.paquete.nombre }} · Linux
     runs-on: ubuntu-latest
@@ -180,9 +181,9 @@ jobs:
       matrix:
         paquete:
           # Las exhaustivas tardan y no prueban código distinto del de las rápidas.
-          - { nombre: Armonia, filtro: "^(ArmoniaTests|ArmoniaDocumentacionTests)\\." }
-          - { nombre: ArmoniaUI, filtro: "" }
-          - { nombre: Hexagonos, filtro: "" }
+          - { nombre: Armonia, filtro: "^(ArmoniaTests|ArmoniaDocumentacionTests)\\.", funciones: 95.5, lineas: 98.0 }
+          - { nombre: ArmoniaUI, filtro: "", funciones: 97.0, lineas: 99.0 }
+          - { nombre: Hexagonos, filtro: "", funciones: 93.5, lineas: 97.5 }
     defaults:
       run:
         working-directory: Packages/${{ matrix.paquete.nombre }}
@@ -214,7 +215,23 @@ jobs:
             echo
             echo "Arriba, el total y los 15 ficheros con menos líneas probadas. El informe entero está en el artefacto."
           } | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Mínimos
+        env:
+          PAQUETE: ${{ matrix.paquete.nombre }}
+          FUNCIONES: ${{ matrix.paquete.funciones }}
+          LINEAS: ${{ matrix.paquete.lineas }}
+        run: |
+          set -euo pipefail
+          awk -v f="$FUNCIONES" -v l="$LINEAS" -v p="$PAQUETE" '$1 == "TOTAL" {
+            sub("%", "", $7); sub("%", "", $10)
+            mal = 0
+            if ($7 + 0 < f + 0) { printf "::error::%s: %s%% de funciones probadas, por debajo del mínimo (%s%%)\n", p, $7, f; mal = 1 }
+            if ($10 + 0 < l + 0) { printf "::error::%s: %s%% de líneas probadas, por debajo del mínimo (%s%%)\n", p, $10, l; mal = 1 }
+            if (!mal) printf "%s: %s%% de funciones (mínimo %s%%) y %s%% de líneas (mínimo %s%%)\n", p, $7, f, $10, l
+            exit mal
+          }' "$GITHUB_WORKSPACE/cobertura-$PAQUETE.txt"
       - uses: actions/upload-artifact@v7
+        if: always()
         with:
           name: cobertura-${{ matrix.paquete.nombre }}
           path: cobertura-${{ matrix.paquete.nombre }}.txt
