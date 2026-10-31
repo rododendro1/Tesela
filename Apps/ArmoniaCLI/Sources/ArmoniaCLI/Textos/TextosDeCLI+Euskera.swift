@@ -19,6 +19,10 @@ extension TextosDeCLI {
         descripcionRevisar: "ahots-eramate akatsak (bosgarren\nparaleloak…); akordeak baxutik\naltura, komaz bereizita",
         sintaxisContrapunto: "contrapunto <cantus> / <kontrapuntua> [--especie 1]",
         descripcionContrapunto: "espezie-kontrapuntu baten akatsak\n(1etik 5era) biribiletako cantus\nfirmus baten gainean; iraupenik\ngabeko notek espeziearena dute",
+        sintaxisTransponer: "transponer <tartea|tonika> <akordeak edo notak>",
+        descripcionTransponer: "akorde batzuk, melodia bat edo koral\nbat beste tonu batera: tarte bat (2M,\n-3m) edo tonika berria (Re)",
+        sintaxisRearmonizar: "rearmonizar <akordeak> [--en <tonalitatea>]",
+        descripcionRearmonizar: "beste armonia batzuk akorde\nbakoitzerako: tritono-ordezkapena,\nbigarren mailako dominanteak,\nmailegu modala eta ordezko\ndiatonikoak",
 
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <zifratua>…",
@@ -83,7 +87,7 @@ extension TextosDeCLI {
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "digitaciones <zifratua>… [aukerak]",
-        descripcionDigitaciones: "akorde bat jotzeko moduak,\nerosoenetik gutxien erosora,\ntrasteak dituen hari-instrumentu\nbatean\naukerak: --instrumento guitarra|bajo|ukelele|mandolina|… (baita\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D» ere),\n--limite 5, --traste 12 (erabiltzen den altuena), --dedos 4\n(erabil daitezkeenak), --completo (nota guztiekin: berez\nbosgarrena falta daiteke), --diagrama (lerro bat hari\nbakoitzeko)",
+        descripcionDigitaciones: "akorde bat jotzeko moduak,\nerosoenetik gutxien erosora,\ntrasteak dituen hari-instrumentu\nbatean\naukerak: --instrumento guitarra|bajo|ukelele|mandolina|… (baita\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D» ere),\n--limite 5, --traste 12 (erabiltzen den altuena), --dedos 4\n(erabil daitezkeenak), --completo (nota guztiekin: berez\nbosgarrena falta daiteke), --diagrama (lerro bat hari\nbakoitzeko),\n--capo 2 (trasteak capotik zenbatuta), --musicxml (akorde bakoitzaren\nlehen forma, MusicXML tablatura gisa)",
         sintaxisPosiciones: "posiciones <eskala> [--caged]",
         descripcionPosiciones: "eskala gitarran posizioka: hiru nota\nsoka bakoitzeko (bi pentatonikoetan)\nedo CAGED",
 
@@ -118,7 +122,7 @@ extension TextosDeCLI {
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "zifratua falta da: armonia acorde Sol7",
         faltaCifradoDelArpegio: "zifratua falta da: armonia arpegio Do7",
-        patronDesconocido: { patron in "eredu ezezaguna: «\(patron)» (ascendente, descendente, ida-y-vuelta edo alberti)" },
+        patronDesconocido: { patron in "eredu ezezaguna: «\(patron)» (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado edo alberti)" },
         faltanNotas: "notak falta dira: armonia identificar Do Mi Sol",
         dosNotas: "bi nota behar dira: armonia intervalo Do Mi",
         faltaEscala: "eskala falta da: armonia escala Re dórico",
@@ -128,6 +132,8 @@ extension TextosDeCLI {
         archivoIlegible: { nombre in "ezin da «\(nombre)» fitxategia irakurri" },
         archivoConAcordes: "--archivo erabiltzean ez idatzi akorderik",
         archivoSinAcordes: "fitxategiak ez du akorderik",
+        faltaTransporte: { ejemplo in "tartea (edo tonika berria) eta transposatzen dena falta dira: " + ejemplo },
+        faltanAcordesDeLaRearmonizacion: { ejemplo in "akordeak falta dira: " + ejemplo },
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "marjina 0tik 6ra bitarteko zenbaki bat da: --margen 2",
@@ -180,6 +186,7 @@ extension TextosDeCLI {
         trasteFueraDeRango: "traste altuena 0tik 24ra bitarteko zenbaki bat da: --traste 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "zifratua falta da: \(d)" },
         faltaEscalaDePosiciones: "eskala falta da: armonia posiciones Sol mayor",
+        capoFueraDeRango: "capoa 0 eta 12 arteko zenbakia da: --capo 2",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Probatu «armonia ayuda».",

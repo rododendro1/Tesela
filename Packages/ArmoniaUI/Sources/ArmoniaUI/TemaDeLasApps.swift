@@ -5,6 +5,8 @@
     public enum TemaDeLasApps {
         /// El color de énfasis: el mismo azul con que los dibujos SVG del Tonnetz marcan las notas (#1f4e9c).
         public static let acento = Color(red: 31 / 255, green: 78 / 255, blue: 156 / 255)
+        /// La nota o el acorde que está sonando: el mismo naranja que el resaltado del pentagrama (#e8590c).
+        public static let resaltado = Color(red: 232 / 255, green: 89 / 255, blue: 12 / 255)
         /// Madera clara del mástil.
         public static let madera = Color(red: 0.86, green: 0.74, blue: 0.56)
         /// Madera oscura de la cejilla y de los trastes pisados.

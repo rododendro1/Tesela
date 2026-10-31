@@ -31,6 +31,12 @@ public enum TextoDeLasApps: Hashable, Sendable {
     case dedos(Int, cejilla: Int?)
     case arpegio
     case patron
+    case octavas
+    case conLaOctavaFinal
+    /// La figura de cada nota de un arpegio (corchea, semicorchea…).
+    case figura
+    /// «Capo en el traste 2», o «Sin capo» con 0.
+    case capo(Int)
     case escalasCompatibles
     case arpegioEnElMastil
     /// «Trastes 5–8»: la franja de una posición del mástil.
@@ -73,6 +79,8 @@ public enum TextoDeLasApps: Hashable, Sendable {
     case cadencias
     /// La progresión arpegiada.
     case arpegiar
+    case rearmonizar
+    case aplicar
 
     // Coral
     case tarea
@@ -105,6 +113,10 @@ public enum TextoDeLasApps: Hashable, Sendable {
     /// Abrir un fichero MIDI o MusicXML (en la pestaña de análisis).
     case abrir
     case escuchar
+    /// Cortar lo que está sonando.
+    case detener
+    /// Llevar lo escrito a otra tonalidad, o subirlo o bajarlo un intervalo.
+    case transponer
     /// El temperamento con que suena «Escuchar».
     case afinacionAlEscuchar
 
@@ -644,6 +656,62 @@ public enum TextoDeLasApps: Hashable, Sendable {
                 ast: "Como les notes", an: "Como as notas", eu: "Notak bezala", pt: "Como as notas",
                 fr: "Comme les notes", oc: "Coma las nòtas", it: "Come le note", de: "Wie die Noten",
                 el: "Όπως οι νότες", ru: "Как ноты")
+        case .octavas:
+            return Traduccion(
+                "Octavas", "Octaves", ca: "Octaves", gl: "Oitavas", ast: "Octaves",
+                an: "Octavas", eu: "Zortzidunak", pt: "Oitavas",
+                fr: "Octaves", oc: "Octavas", it: "Ottave", de: "Oktaven",
+                el: "Οκτάβες", ru: "Октавы")
+        case .conLaOctavaFinal:
+            return Traduccion(
+                "Con la octava final", "Ending on the octave", ca: "Amb l'octava final", gl: "Coa oitava final",
+                ast: "Cola octava final", an: "Con a octava final", eu: "Azken zortzidunarekin",
+                pt: "Com a oitava final", fr: "Avec l'octave finale", oc: "Amb l'octava finala",
+                it: "Con l'ottava finale", de: "Mit der Schlussoktave",
+                el: "Με την τελική οκτάβα", ru: "С завершающей октавой")
+        case .figura:
+            return Traduccion(
+                "Figura", "Note value", ca: "Figura", gl: "Figura", ast: "Figura",
+                an: "Figura", eu: "Irudia", pt: "Figura",
+                fr: "Figure de note", oc: "Figura", it: "Figura", de: "Notenwert",
+                el: "Ρυθμική αξία", ru: "Длительность")
+        case .capo(let n) where n <= 0:
+            return Traduccion(
+                "Sin capo", "No capo", ca: "Sense capo", gl: "Sen capo", ast: "Ensin capo",
+                an: "Sin capo", eu: "Capo gabe", pt: "Sem capo",
+                fr: "Sans capodastre", oc: "Sens capodastre", it: "Senza capotasto", de: "Ohne Kapodaster",
+                el: "Χωρίς καποτάστο", ru: "Без каподастра")
+        case .capo(let n):
+            return Traduccion(
+                "Capo en el traste \(n)", "Capo on fret \(n)", ca: "Capo al trast \(n)", gl: "Capo no traste \(n)",
+                ast: "Capo nel traste \(n)", an: "Capo en o traste \(n)", eu: "Capoa \(n). trastean",
+                pt: "Capo na casa \(n)", fr: "Capodastre en case \(n)", oc: "Capodastre al trast \(n)",
+                it: "Capotasto al tasto \(n)", de: "Kapodaster im \(n). Bund",
+                el: "Καποτάστο στο τάστο \(n)", ru: "Каподастр на \(n)-м ладу")
+        case .rearmonizar:
+            return Traduccion(
+                "Rearmonizar", "Reharmonize", ca: "Rearmonitzar", gl: "Reharmonizar", ast: "Rearmonizar",
+                an: "Rearmonizar", eu: "Berrarmonizatu", pt: "Rearmonizar",
+                fr: "Réharmoniser", oc: "Rearmonizar", it: "Riarmonizzare", de: "Reharmonisieren",
+                el: "Επανεναρμόνιση", ru: "Реармонизация")
+        case .aplicar:
+            return Traduccion(
+                "Aplicar", "Apply", ca: "Aplica", gl: "Aplicar", ast: "Aplicar",
+                an: "Aplicar", eu: "Aplikatu", pt: "Aplicar",
+                fr: "Appliquer", oc: "Aplicar", it: "Applica", de: "Übernehmen",
+                el: "Εφαρμογή", ru: "Применить")
+        case .detener:
+            return Traduccion(
+                "Detener", "Stop", ca: "Atura", gl: "Deter", ast: "Parar",
+                an: "Aturar", eu: "Gelditu", pt: "Parar",
+                fr: "Arrêter", oc: "Arrestar", it: "Ferma", de: "Stopp",
+                el: "Διακοπή", ru: "Остановить")
+        case .transponer:
+            return Traduccion(
+                "Transponer", "Transpose", ca: "Transposa", gl: "Transpoñer", ast: "Tresponer",
+                an: "Transposar", eu: "Transposatu", pt: "Transpor",
+                fr: "Transposer", oc: "Transpausar", it: "Trasponi", de: "Transponieren",
+                el: "Μεταφορά", ru: "Транспонировать")
         case .escuchar:
             return Traduccion(
                 "Escuchar", "Listen", ca: "Escolta", gl: "Escoitar", ast: "Escuchar",

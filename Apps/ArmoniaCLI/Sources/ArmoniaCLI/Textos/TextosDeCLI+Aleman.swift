@@ -19,6 +19,10 @@ extension TextosDeCLI {
         descripcionRevisar: "Stimmführungsfehler\n(Quintparallelen…); Akkorde von tief\nnach hoch, durch Kommas getrennt",
         sintaxisContrapunto: "counterpoint <Cantus> / <Kontrapunkt> [--species 1]",
         descripcionContrapunto: "Fehler im Gattungskontrapunkt (1 bis\n5) über einem Cantus firmus in\nganzen Noten; Noten ohne Dauer\nerhalten die der Gattung",
+        sintaxisTransponer: "transpose <Intervall|Grundton> <Akkorde oder Töne>",
+        descripcionTransponer: "versetzt Akkorde, eine Melodie oder\neinen Choral in eine andere Tonart:\nein Intervall (M2, -m3) oder der neue\nGrundton (D)",
+        sintaxisRearmonizar: "reharmonize <Akkorde> [--in <Tonart>]",
+        descripcionRearmonizar: "andere Harmonien für jeden Akkord:\nTritonussubstitution,\nZwischendominanten, modale Entlehnung\nund diatonische Substitutionen",
 
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <Akkordsymbol>…",
@@ -83,7 +87,7 @@ extension TextosDeCLI {
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "fingerings <Akkordsymbol>… [Optionen]",
-        descripcionDigitaciones: "Griffe für einen Akkord, vom bequemsten zum unbequemsten, auf\neinem Saiteninstrument mit Bünden (Saiten von tief nach hoch)\nOptionen: --instrument guitar|bass|ukulele|mandolin|… (auch\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (der höchste verwendete Bund), --fingers 4 (wie viele\nbenutzt werden dürfen), --complete (mit allen Noten:\nstandardmäßig darf die Quinte fehlen), --diagram (eine Zeile pro\nSaite)",
+        descripcionDigitaciones: "Griffe für einen Akkord, vom bequemsten zum unbequemsten, auf\neinem Saiteninstrument mit Bünden (Saiten von tief nach hoch)\nOptionen: --instrument guitar|bass|ukulele|mandolin|… (auch\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (der höchste verwendete Bund), --fingers 4 (wie viele\nbenutzt werden dürfen), --complete (mit allen Noten:\nstandardmäßig darf die Quinte fehlen), --diagram (eine Zeile pro\nSaite),\n--capo 2 (Bünde ab dem Kapodaster), --musicxml (die erste Griffform\njedes Akkords als MusicXML-Tabulatur)",
         sintaxisPosiciones: "positions <Skala> [--caged]",
         descripcionPosiciones: "die Skala in Lagen auf der Gitarre:\ndrei Töne pro Saite (zwei bei\nPentatonik) oder CAGED",
 
@@ -118,7 +122,7 @@ extension TextosDeCLI {
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "das Akkordsymbol fehlt: armonia chord G7",
         faltaCifradoDelArpegio: "das Akkordsymbol fehlt: armonia arpeggio C7",
-        patronDesconocido: { patron in "unbekanntes Muster: „\(patron)“ (ascending, descending, up-down oder alberti)" },
+        patronDesconocido: { patron in "unbekanntes Muster: „\(patron)“ (ascending, descending, up-down, down-up, broken oder alberti)" },
         faltanNotas: "die Noten fehlen: armonia identify C E G",
         dosNotas: "zwei Noten sind nötig: armonia interval C E",
         faltaEscala: "die Skala fehlt: armonia scale D dorian",
@@ -128,6 +132,8 @@ extension TextosDeCLI {
         archivoIlegible: { nombre in "die Datei „\(nombre)“ kann nicht gelesen werden" },
         archivoConAcordes: "mit --file keine Akkorde angeben",
         archivoSinAcordes: "die Datei enthält keine Akkorde",
+        faltaTransporte: { ejemplo in "Intervall (oder neuer Grundton) und das zu Versetzende fehlen: armonia transpose M2 C Am F G7" },
+        faltanAcordesDeLaRearmonizacion: { ejemplo in "die Akkorde fehlen: armonia reharmonize C Am Dm7 G7" },
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "der Rand ist eine Zahl von 0 bis 6: --margen 2",
@@ -180,6 +186,7 @@ extension TextosDeCLI {
         trasteFueraDeRango: "der höchste Bund ist eine Zahl von 0 bis 24: --fret 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "das Akkordsymbol fehlt: \(digitaciones.1)" },
         faltaEscalaDePosiciones: "die Skala fehlt: armonia positions G major",
+        capoFueraDeRango: "der Kapodaster ist eine Zahl von 0 bis 12: --capo 2",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Versuche „armonia help“.",

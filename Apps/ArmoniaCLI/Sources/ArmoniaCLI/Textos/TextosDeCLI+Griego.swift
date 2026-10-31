@@ -19,6 +19,10 @@ extension TextosDeCLI {
         descripcionRevisar: "λάθη φωνητικής οδήγησης (παράλληλες\nπέμπτες…)· συγχορδίες από χαμηλά προς\nψηλά, χωρισμένες με κόμματα",
         sintaxisContrapunto: "counterpoint <cantus> / <αντίστιξη> [--species 1]",
         descripcionContrapunto: "λάθη σε αντίστιξη ειδών (1 έως 5)\nπάνω σε cantus firmus σε ολόκληρα·\nνότες χωρίς διάρκεια παίρνουν του\nείδους",
+        sintaxisTransponer: "transpose <διάστημα|τονική> <συγχορδίες ή νότες>",
+        descripcionTransponer: "μεταφέρει συγχορδίες, μελωδία ή\nχορικό σε άλλη τονικότητα: ένα\nδιάστημα (M2, -m3) ή η νέα τονική (D)",
+        sintaxisRearmonizar: "reharmonize <συγχορδίες> [--in <τονικότητα>]",
+        descripcionRearmonizar: "άλλες αρμονίες για κάθε συγχορδία:\nτριτονική υποκατάσταση, δευτερεύουσες\nδεσπόζουσες, τροπικός δανεισμός και\nδιατονικές υποκαταστάσεις",
 
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <σύμβολο>…",
@@ -83,7 +87,7 @@ extension TextosDeCLI {
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "fingerings <σύμβολο>… [επιλογές]",
-        descripcionDigitaciones: "τρόποι να παίξεις μια συγχορδία, από τον πιο άνετο στον\nλιγότερο, σε έγχορδο όργανο με τάστα (χορδές από χαμηλά προς\nψηλά)\nεπιλογές: --instrument guitar|bass|ukulele|mandolin|… (και\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (το ψηλότερο τάστο που χρησιμοποιείται), --fingers 4\n(πόσα δάχτυλα μπορούν να χρησιμοποιηθούν), --complete (με όλες\nτις νότες: από προεπιλογή μπορεί να λείπει η πέμπτη), --diagram\n(μία γραμμή ανά χορδή)",
+        descripcionDigitaciones: "τρόποι να παίξεις μια συγχορδία, από τον πιο άνετο στον\nλιγότερο, σε έγχορδο όργανο με τάστα (χορδές από χαμηλά προς\nψηλά)\nεπιλογές: --instrument guitar|bass|ukulele|mandolin|… (και\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (το ψηλότερο τάστο που χρησιμοποιείται), --fingers 4\n(πόσα δάχτυλα μπορούν να χρησιμοποιηθούν), --complete (με όλες\nτις νότες: από προεπιλογή μπορεί να λείπει η πέμπτη), --diagram\n(μία γραμμή ανά χορδή),\n--capo 2 (τάστα από το καποτάστο), --musicxml (η πρώτη μορφή κάθε\nσυγχορδίας ως ταμπλατούρα MusicXML)",
         sintaxisPosiciones: "positions <κλίμακα> [--caged]",
         descripcionPosiciones: "η κλίμακα σε θέσεις στην κιθάρα:\nτρεις νότες ανά χορδή (δύο στις\nπεντατονικές) ή CAGED",
 
@@ -118,7 +122,7 @@ extension TextosDeCLI {
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "λείπει το σύμβολο της συγχορδίας: armonia chord G7",
         faltaCifradoDelArpegio: "λείπει το σύμβολο της συγχορδίας: armonia arpeggio C7",
-        patronDesconocido: { patron in "άγνωστο μοτίβο: «\(patron)» (ascending, descending, up-down ή alberti)" },
+        patronDesconocido: { patron in "άγνωστο μοτίβο: «\(patron)» (ascending, descending, up-down, down-up, broken ή alberti)" },
         faltanNotas: "λείπουν οι νότες: armonia identify C E G",
         dosNotas: "χρειάζονται δύο νότες: armonia interval C E",
         faltaEscala: "λείπει η κλίμακα: armonia scale D dorian",
@@ -128,6 +132,8 @@ extension TextosDeCLI {
         archivoIlegible: { nombre in "δεν είναι δυνατή η ανάγνωση του αρχείου «\(nombre)»" },
         archivoConAcordes: "με το --file δεν γράφονται συγχορδίες",
         archivoSinAcordes: "το αρχείο δεν έχει συγχορδίες",
+        faltaTransporte: { ejemplo in "λείπουν το διάστημα (ή η νέα τονική) και ό,τι μεταφέρεται: armonia transpose M2 C Am F G7" },
+        faltanAcordesDeLaRearmonizacion: { ejemplo in "λείπουν οι συγχορδίες: armonia reharmonize C Am Dm7 G7" },
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "το περιθώριο είναι αριθμός από 0 έως 6: --margen 2",
@@ -180,6 +186,7 @@ extension TextosDeCLI {
         trasteFueraDeRango: "το ψηλότερο τάστο είναι αριθμός από 0 έως 24: --fret 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "λείπει το σύμβολο της συγχορδίας: \(digitaciones.1)" },
         faltaEscalaDePosiciones: "λείπει η κλίμακα: armonia positions G major",
+        capoFueraDeRango: "το καποτάστο είναι αριθμός από 0 έως 12: --capo 2",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Δοκίμασε «armonia help».",

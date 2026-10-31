@@ -54,5 +54,9 @@ extension ErrorDeUso {
         static func faltaEscalaDePosiciones() -> Traduccion {
             return TextosDeCLI.traducidos.map(\.faltaEscalaDePosiciones)
         }
+
+        static func capoFueraDeRango() -> Traduccion {
+            return TextosDeCLI.traducidos.map(\.capoFueraDeRango)
+        }
     }
 }

@@ -10,33 +10,36 @@ public struct ArpegioPresentado: Hashable, Sendable {
 
 /// La parte de los arpegios de las apps que no es dibujo. No usa SwiftUI, así que se prueba en Linux.
 public enum PresentacionDeArpegios {
-    /// Un arpegio en corcheas desde la octava 4, como en el pentagrama de la pestaña de acordes.
+    /// Un arpegio desde la octava 4, en corcheas o en la figura que se diga, como en el pentagrama de la pestaña
+    /// de acordes.
     ///
     ///     let arpegio = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Do"), patron: .alberti),
     ///                                                 notacion: .espanolUnicode)
     ///     arpegio.ficheros.map(\.formato)   // [.musicXML, .mei, .midi]
-    public static func arpegio(_ arpegio: Arpegio, notacion: Notacion) -> ArpegioPresentado {
-        let voz = Voz(arpegio, figura: .corchea, octava: 4)
+    public static func arpegio(
+        _ arpegio: Arpegio, figura: Duracion = .corchea, notacion: Notacion
+    ) -> ArpegioPresentado {
+        let voz = Voz(arpegio, figura: figura, octava: 4)
         return presentar(
             voz, nombre: arpegio.nombre(en: notacion), tonalidad: nil, tempo: nil,
             tonica: arpegio.acorde.fundamental)
     }
 
-    /// Una progresión arpegiada en corcheas: cada acorde dura una blanca o, si se da su ritmo armónico (el de una
-    /// pieza importada), lo que dice; el patrón se repite hasta llenarlo. La tonalidad, si se da, pone la armadura
-    /// de las partituras.
+    /// Una progresión arpegiada en corcheas (o en la figura que se diga): cada acorde dura una blanca o, si se da
+    /// su ritmo armónico (el de una pieza importada), lo que dice; el patrón se repite hasta llenarlo. La
+    /// tonalidad, si se da, pone la armadura de las partituras.
     public static func progresion(
         _ acordes: [Acorde], patron: Arpegio.Patron, tonalidad: Tonalidad?,
-        ritmo: RitmoArmonico? = nil, notacion: Notacion
+        ritmo: RitmoArmonico? = nil, figura: Duracion = .corchea, notacion: Notacion
     ) -> ArpegioPresentado? {
         guard !acordes.isEmpty else { return nil }
         let voz: Voz
         if let ritmo, ritmo.duraciones.count == acordes.count {
             voz = Voz(
-                arpegiando: acordes, duraciones: ritmo.duraciones, patron: patron, figura: .corchea,
+                arpegiando: acordes, duraciones: ritmo.duraciones, patron: patron, figura: figura,
                 compas: ritmo.compas)
         } else {
-            voz = Voz(arpegiando: acordes, patron: patron, figura: .corchea, porAcorde: .blanca)
+            voz = Voz(arpegiando: acordes, patron: patron, figura: figura, porAcorde: .blanca)
         }
         let nombre = "Progresión arpegiada (\(patron.nombre(en: notacion)))"
         return presentar(voz, nombre: nombre, tonalidad: tonalidad, tempo: ritmo?.tempo, tonica: tonalidad?.tonica)

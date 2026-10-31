@@ -24,7 +24,8 @@ final class TextoDeLasAppsTests: XCTestCase {
         .campoDeEscala, .textos, .comoLasNotas, .exportar, .abrir, .escuchar, .afinacionAlEscuchar, .rejillaHexagonal,
         .casillas(1), .casillas(19),
         .casillaElegida(q: 2, r: -1), .mastilDe("guitarra", desde: 0, hasta: 5), .posicion(cuerda: 1, traste: 3),
-        .marcas(13), .cuerdasApagadas("1, 6"), .sinMarcas,
+        .marcas(13), .cuerdasApagadas("1, 6"), .sinMarcas, .octavas, .conLaOctavaFinal, .figura, .capo(0), .capo(2),
+        .rearmonizar, .aplicar, .detener, .transponer,
     ]
 
     func testCadaTextoEstaEnCadaIdioma() {
@@ -54,6 +55,12 @@ final class TextoDeLasAppsTests: XCTestCase {
             PresentacionDeCoral.Tarea.revisar.indicacion(en: .espanolUnicode),
             "Voces de grave a agudo (Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4)")
         XCTAssertEqual(PresentacionDeCoral.Tarea.realizar.indicacion(en: .inglesASCII), "Chords (C F G7 C)")
+    }
+
+    func testElCapo() {
+        XCTAssertEqual(Notacion.espanolUnicode.texto(.capo(0)), "Sin capo")
+        XCTAssertEqual(Notacion.espanolUnicode.texto(.capo(2)), "Capo en el traste 2")
+        XCTAssertEqual(Notacion.inglesASCII.texto(.capo(3)), "Capo on fret 3")
     }
 
     func testLosDedosYLaCejilla() {

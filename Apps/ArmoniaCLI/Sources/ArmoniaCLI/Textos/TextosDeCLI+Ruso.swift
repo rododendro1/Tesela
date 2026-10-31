@@ -19,6 +19,10 @@ extension TextosDeCLI {
         descripcionRevisar: "ошибки голосоведения (параллельные\nквинты…); аккорды снизу вверх, через\nзапятую",
         sintaxisContrapunto: "counterpoint <cantus> / <контрапункт> [--species 1]",
         descripcionContrapunto: "ошибки в строгом контрапункте (виды\n1–5) над cantus firmus целыми; ноты\nбез длительности получают\nдлительность вида",
+        sintaxisTransponer: "transpose <интервал|тоника> <аккорды или ноты>",
+        descripcionTransponer: "переносит аккорды, мелодию или хорал\nв другую тональность: интервал (M2,\n-m3) или новая тоника (D)",
+        sintaxisRearmonizar: "reharmonize <аккорды> [--in <тональность>]",
+        descripcionRearmonizar: "другие гармонии для каждого аккорда:\nтритоновая замена, побочные\nдоминанты, модальное заимствование и\nдиатонические замены",
 
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <обозначение>…",
@@ -83,7 +87,7 @@ extension TextosDeCLI {
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "fingerings <обозначение>… [параметры]",
-        descripcionDigitaciones: "способы сыграть аккорд, от самого удобного к наименее удобному,\nна струнном инструменте с ладами (струны снизу вверх)\nпараметры: --instrument guitar|bass|ukulele|mandolin|… (также\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (самый высокий используемый лад), --fingers 4 (сколько\nпальцев можно использовать), --complete (со всеми нотами: по\nумолчанию квинта может отсутствовать), --diagram (одна строка на\nструну)",
+        descripcionDigitaciones: "способы сыграть аккорд, от самого удобного к наименее удобному,\nна струнном инструменте с ладами (струны снизу вверх)\nпараметры: --instrument guitar|bass|ukulele|mandolin|… (также\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (самый высокий используемый лад), --fingers 4 (сколько\nпальцев можно использовать), --complete (со всеми нотами: по\nумолчанию квинта может отсутствовать), --diagram (одна строка на\nструну),\n--capo 2 (лады от каподастра), --musicxml (первая аппликатура\nкаждого аккорда как табулатура MusicXML)",
         sintaxisPosiciones: "positions <гамма> [--caged]",
         descripcionPosiciones: "гамма по позициям на гитаре: три\nноты на струну (две в пентатонике)\nили CAGED",
 
@@ -118,7 +122,7 @@ extension TextosDeCLI {
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "не указано обозначение аккорда: armonia chord G7",
         faltaCifradoDelArpegio: "не указано обозначение аккорда: armonia arpeggio C7",
-        patronDesconocido: { patron in "неизвестный рисунок: «\(patron)» (ascending, descending, up-down или alberti)" },
+        patronDesconocido: { patron in "неизвестный рисунок: «\(patron)» (ascending, descending, up-down, down-up, broken или alberti)" },
         faltanNotas: "не указаны ноты: armonia identify C E G",
         dosNotas: "нужны две ноты: armonia interval C E",
         faltaEscala: "не указана гамма: armonia scale D dorian",
@@ -128,6 +132,8 @@ extension TextosDeCLI {
         archivoIlegible: { nombre in "не удаётся прочитать файл «\(nombre)»" },
         archivoConAcordes: "с --file аккорды не указываются",
         archivoSinAcordes: "в файле нет аккордов",
+        faltaTransporte: { ejemplo in "не указаны интервал (или новая тоника) и что транспонировать: armonia transpose M2 C Am F G7" },
+        faltanAcordesDeLaRearmonizacion: { ejemplo in "не указаны аккорды: armonia reharmonize C Am Dm7 G7" },
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "поле — число от 0 до 6: --margen 2",
@@ -180,6 +186,7 @@ extension TextosDeCLI {
         trasteFueraDeRango: "самый высокий лад — число от 0 до 24: --fret 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "не указано обозначение аккорда: \(digitaciones.1)" },
         faltaEscalaDePosiciones: "не указана гамма: armonia positions G major",
+        capoFueraDeRango: "каподастр — число от 0 до 12: --capo 2",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Попробуй «armonia help».",

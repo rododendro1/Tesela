@@ -91,7 +91,41 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertEqual(LineaDeComandos.patronDeArpegio("up-down"), .idaYVuelta)
         XCTAssertEqual(LineaDeComandos.patronDeArpegio("Ascending"), .ascendente)
         XCTAssertEqual(LineaDeComandos.patronDeArpegio("aufwärts"), .ascendente)
+        XCTAssertEqual(LineaDeComandos.patronDeArpegio("baja-y-sube"), .bajaYSube)
+        XCTAssertEqual(LineaDeComandos.patronDeArpegio("brisé"), .quebrado)
         XCTAssertNil(LineaDeComandos.patronDeArpegio("zigzag"))
+    }
+
+    func testTransponer() {
+        XCTAssertEqual(salida("transponer 2M Do Lam Re7 Sol7"), "Re Sim Mi7 La7\n")
+        // A una tónica, por el camino más corto: de Do a Re, una segunda arriba.
+        XCTAssertEqual(salida("transponer Re Do Lam Fa Sol7"), "Re Sim Sol La7\n")
+        XCTAssertEqual(salida("transpose -m3 C Am F G7 --ingles"), "A F#m D E7\n")
+        // Lo que no son acordes se transporta como notas: un coral.
+        XCTAssertEqual(
+            salida("transponer 2M Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4"), "Re3 Fa♯4 La4 Re5 | La2 Mi4 La4 Do♯5\n")
+        XCTAssertEqual(LineaDeComandos.ejecutar(["transponer", "2M"]).codigo, 2)
+    }
+
+    func testRearmonizar() {
+        let propuestas = salida("rearmonizar Do Lam Rem7 Sol7 Do")
+        XCTAssertTrue(propuestas.hasPrefix("Do mayor\n"), propuestas)
+        XCTAssertTrue(propuestas.contains("  4. Sol7 → Re♭7 (sustituto tritonal)\n"), propuestas)
+        XCTAssertTrue(propuestas.contains("  2. Lam → Mi7 Lam (dominante secundaria)\n"), propuestas)
+        let enIngles = salida("reharmonize C Am Dm7 G7 C --ingles")
+        XCTAssertTrue(enIngles.contains("G7 → Db7 (tritone substitution)"), enIngles)
+        XCTAssertTrue(salida("rearmonizar Lam Rem Mi7 Lam --en La menor").hasPrefix("La menor\n"))
+    }
+
+    func testElCapoYLaTablatura() {
+        let conCapo = salida("digitaciones Re --capo 2 --limite 1")
+        XCTAssertTrue(conCapo.contains("Capo en el traste 2"), conCapo)
+        XCTAssertTrue(conCapo.contains("x32010"), conCapo)
+        let tablatura = salida("digitaciones Re La --capo 2 --musicxml")
+        XCTAssertTrue(tablatura.hasPrefix("<?xml"), tablatura)
+        XCTAssertTrue(tablatura.contains("<capo>2</capo>"))
+        XCTAssertTrue(tablatura.contains("<sign>TAB</sign>"))
+        XCTAssertEqual(LineaDeComandos.ejecutar(["digitaciones", "Re", "--capo", "13"]).codigo, 2)
     }
 
     func testIntervaloEscalaYTonalidad() {
@@ -294,7 +328,8 @@ final class LineaDeComandosTests: XCTestCase {
         "contrapunto D4 / A4 --especie 6", "contrapunto D4 / ", "acorde Do --escritura foo",
         "arpegio", "arpegio Do --patron zigzag", "arpegio Do --patron", "arpegio Do --octavas 2",
         "posiciones", "posiciones Do mayor --foo", "musicxml acordes C --ventana 1",
-        "musicxml melodia C4:4 --archivo coral.mid",
+        "musicxml melodia C4:4 --archivo coral.mid", "transponer", "transponer 2M", "rearmonizar",
+        "digitaciones C --capo 13",
     ]
 
     /// Con --ingles no se cuela nada en español: ni en la salida, ni en los errores, ni en la ayuda.
@@ -317,7 +352,8 @@ final class LineaDeComandosTests: XCTestCase {
             "conduccion-parsimoniosa G7 Dm7", "vecinos G7", "digitaciones F --diagrama",
             "digitaciones C --instrumento ukelele",
             "digitaciones C --instrumento bajo --dedos 1 --traste 0", "counterpoint C4 D4 E4 C4 / G4 A4 G4 C5",
-            "arpeggio C7", "arpeggio C --pattern alberti",
+            "arpeggio C7", "arpeggio C --pattern alberti", "transpose M2 C Am F G7", "reharmonize C Am Dm7 G7 C",
+            "digitaciones C --capo 2",
         ] {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
             XCTAssertEqual(resultado.codigo, 0, "\(orden): \(resultado.error)")

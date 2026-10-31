@@ -275,3 +275,18 @@ public struct Coral: Hashable, Sendable {
         return TextosDeTeoria.traducidos.map { $0.vozNumero(numero) }.en(notacion)
     }
 }
+
+// MARK: - Transportar
+
+extension Coral: Transponible {
+    /// El mismo coral, con todas las voces movidas el mismo intervalo.
+    public func transponer(_ intervalo: Intervalo) -> Coral {
+        // Las voces siguen siendo las mismas, así que el coral sigue siendo válido.
+        Coral(acordes.map { $0.map { $0.transponer(intervalo) } }) ?? self
+    }
+
+    /// Los acordes como se leen con `init(leyendo:)`: las alturas de grave a agudo, separados por barras.
+    public func texto(en notacion: Notacion) -> String {
+        acordes.map { $0.map { $0.nombre(en: notacion) }.joined(separator: " ") }.joined(separator: " | ")
+    }
+}

@@ -497,3 +497,30 @@ final class EscalaEnElMastilTests: XCTestCase {
         XCTAssertFalse(Mastil(.bajo).posicionesPorCuerda(de: Escala(.do, .mayor)).isEmpty)
     }
 }
+
+/// El capo: las cuerdas suben y los trastes se cuentan desde él.
+final class CapoTests: XCTestCase {
+    func testElCapoSubeLasCuerdas() {
+        let conCapo = Encordado.guitarra.conCapo(2)
+        XCTAssertEqual(conCapo.capo, 2)
+        XCTAssertEqual(conCapo.cuerdas.map(\.midi), [42, 47, 52, 57, 61, 66])
+        XCTAssertEqual(conCapo.sinCapo, .guitarra)
+        XCTAssertEqual(conCapo.conCapo(3).cuerdas.map(\.midi), [43, 48, 53, 58, 62, 67])
+        XCTAssertEqual(Encordado.guitarra.conCapo(0), .guitarra)
+        XCTAssertEqual(Encordado.guitarra.conCapo(-1), .guitarra)
+        // El nombre sigue siendo el del instrumento.
+        XCTAssertEqual(conCapo.nombre(en: .inglesASCII), Encordado.guitarra.nombre(en: .inglesASCII))
+    }
+
+    func testLasFormasConCapo() throws {
+        // Con el capo en el 2, la forma de Do suena Re.
+        let mastil = Mastil(Encordado.guitarra.conCapo(2), trastes: 13)
+        let re = mastil.digitaciones(de: Acorde("Re"))
+        XCTAssertEqual(re.first?.tablatura, "x32010")
+        XCTAssertEqual(try XCTUnwrap(re.first).alturas.map(\.midi), [50, 54, 57, 62, 66])
+        let arpegios = mastil.arpegios(de: Acorde("Re"))
+        XCTAssertFalse(arpegios.isEmpty)
+        let clases = Set(arpegios.flatMap(\.alturas).map { $0.midi % 12 })
+        XCTAssertEqual(clases, [2, 6, 9])
+    }
+}

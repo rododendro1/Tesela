@@ -19,6 +19,10 @@ extension TextosDeCLI {
         descripcionRevisar: "faltas de conducción (quintas\nparalelas…); acordes de grave a\nagudo, separados por comas",
         sintaxisContrapunto: "contrapunto <cantus> / <contrapunto> [--especie 1]",
         descripcionContrapunto: "faltas de un contrapunto de especies\n(1 a 5) sobre un cantus firmus en\nredondas; notas sin duración: la de\nla especie",
+        sintaxisTransponer: "transponer <intervalo|tónica> <acordes o notas>",
+        descripcionTransponer: "lleva unos acordes, una melodía o un\ncoral a otro tono: un intervalo (2M,\n-3m) o la nueva tónica (Re)",
+        sintaxisRearmonizar: "rearmonizar <acordes> [--en <tonalidad>]",
+        descripcionRearmonizar: "otras armonías para cada acorde:\nsustituto tritonal, dominantes\nsecundarias, préstamo modal y\nsustitutos diatónicos",
 
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <cifrado>…",
@@ -83,7 +87,7 @@ extension TextosDeCLI {
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "digitaciones <cifrado>… [opciones]",
-        descripcionDigitaciones: "formas de tocar un acorde, de la más cómoda a la menos, en un\ninstrumento de cuerda con trastes (cuerdas de grave a agudo)\nopciones: --instrumento guitarra|bajo|ukelele|mandolina|…\n(también «guitarra de siete cuerdas», «bajo de 5 cuerdas»,\n«drop D»), --limite 5, --traste 12 (el más alto que se usa),\n--dedos 4 (los que se pueden usar), --completo (con todas las notas:\npor defecto la quinta puede faltar), --diagrama (una línea por cuerda)",
+        descripcionDigitaciones: "formas de tocar un acorde, de la más cómoda a la menos, en un\ninstrumento de cuerda con trastes (cuerdas de grave a agudo)\nopciones: --instrumento guitarra|bajo|ukelele|mandolina|…\n(también «guitarra de siete cuerdas», «bajo de 5 cuerdas»,\n«drop D»), --limite 5, --traste 12 (el más alto que se usa),\n--dedos 4 (los que se pueden usar), --completo (con todas las notas:\npor defecto la quinta puede faltar), --diagrama (una línea por cuerda),\n--capo 2 (los trastes, desde el capo), --musicxml (la primera forma\nde cada acorde, como tablatura MusicXML)",
         sintaxisPosiciones: "posiciones <escala> [--caged]",
         descripcionPosiciones: "la escala por posiciones en la\nguitarra: tres notas por cuerda (dos\nen las pentatónicas) o CAGED",
 
@@ -119,7 +123,7 @@ extension TextosDeCLI {
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "falta el cifrado: armonia acorde Sol7",
         faltaCifradoDelArpegio: "falta el cifrado: armonia arpegio Do7",
-        patronDesconocido: { patron in "patrón desconocido: «\(patron)» (ascendente, descendente, ida-y-vuelta o alberti)" },
+        patronDesconocido: { patron in "patrón desconocido: «\(patron)» (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado o alberti)" },
         faltanNotas: "faltan las notas: armonia identificar Do Mi Sol",
         dosNotas: "hacen falta dos notas: armonia intervalo Do Mi",
         faltaEscala: "falta la escala: armonia escala Re dórico",
@@ -129,6 +133,8 @@ extension TextosDeCLI {
         archivoIlegible: { nombre in "no se puede leer el fichero «\(nombre)»" },
         archivoConAcordes: "con --archivo no se escriben acordes",
         archivoSinAcordes: "el fichero no tiene ningún acorde",
+        faltaTransporte: { ejemplo in "faltan el intervalo (o la nueva tónica) y lo que se transporta: " + ejemplo },
+        faltanAcordesDeLaRearmonizacion: { ejemplo in "faltan los acordes: " + ejemplo },
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "el margen es un número de 0 a 6: --margen 2",
@@ -181,6 +187,7 @@ extension TextosDeCLI {
         trasteFueraDeRango: "el traste más alto es un número de 0 a 24: --traste 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "falta el cifrado: \(d)" },
         faltaEscalaDePosiciones: "falta la escala: armonia posiciones Sol mayor",
+        capoFueraDeRango: "el capo es un número de 0 a 12: --capo 2",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Prueba «armonia ayuda».",

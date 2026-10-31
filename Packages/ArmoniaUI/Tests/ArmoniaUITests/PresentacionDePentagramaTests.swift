@@ -41,6 +41,17 @@ final class PresentacionDePentagramaTests: XCTestCase {
         XCTAssertTrue(pentagrama.svg.hasPrefix("<svg"))
     }
 
+    func testLaNotaQueSuenaSeResalta() {
+        let arpegio = Arpegio(Acorde("Do"))
+        let normal = PresentacionDePentagrama(arpegio)
+        XCTAssertFalse(normal.svg.contains("#E8590C"))
+        let resaltada = PresentacionDePentagrama(arpegio, resaltada: 2)
+        // Solo la tercera nota (Sol4) cambia de color.
+        XCTAssertEqual(resaltada.svg.components(separatedBy: "<g fill=\"#E8590C\"><title>").count - 1, 1)
+        XCTAssertTrue(resaltada.svg.contains("<g fill=\"#E8590C\"><title>Sol4</title>"))
+        XCTAssertEqual(PresentacionDePentagrama(Escala("Do mayor"), resaltada: 0).svg.contains("<title>Do4"), true)
+    }
+
     func testUnViewBoxSinCerrar() {
         XCTAssertEqual(PresentacionDePentagrama.relacionDeAspecto(deSVG: #"<svg viewBox="0 -3 20 10"#), 4)
     }

@@ -25,10 +25,13 @@ public struct AnalisisPresentado: Hashable, Sendable {
     /// Lo que dura cada acorde, si viene de una pieza importada; si no, `nil` (una blanca cada uno).
     public internal(set) var ritmo: RitmoArmonico?
 
-    /// La progresión arpegiada con un patrón, en la tonalidad de la partitura y con su ritmo armónico.
-    public func arpegiada(_ patron: Arpegio.Patron, notacion: Notacion) -> ArpegioPresentado? {
+    /// La progresión arpegiada con un patrón, en la tonalidad de la partitura y con su ritmo armónico; las notas,
+    /// en corcheas o en la figura que se diga.
+    public func arpegiada(
+        _ patron: Arpegio.Patron, figura: Duracion = .corchea, notacion: Notacion
+    ) -> ArpegioPresentado? {
         PresentacionDeArpegios.progresion(
-            acordes, patron: patron, tonalidad: tonalidad, ritmo: ritmo, notacion: notacion)
+            acordes, patron: patron, tonalidad: tonalidad, ritmo: ritmo, figura: figura, notacion: notacion)
     }
 }
 

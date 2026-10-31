@@ -53,6 +53,9 @@ struct VistaDeCoral: View {
         .selectorDeNotacionEnLaBarra()
         .toolbar {
             ToolbarItem {
+                menuDeTransponer
+            }
+            ToolbarItem {
                 BotonDeExportar(ficheros)
             }
         }
@@ -60,6 +63,33 @@ struct VistaDeCoral: View {
         .calcularEnSegundoPlano(para: claveActual, esperando: 0.3, en: $resultado) {
             [tarea = self.tarea, texto = self.texto, tonalidad = self.tonalidad, notacion = self.notacion] in
             Result { try PresentacionDeCoral.presentar(tarea, texto, tonalidad: tonalidad, notacion: notacion) }
+        }
+    }
+
+    /// «Transponer»: sube o baja lo escrito (y la tonalidad, si se ha dado) un intervalo.
+    private var menuDeTransponer: some View {
+        Menu {
+            ForEach(PresentacionDeTransposicion.intervalos, id: \.self) { intervalo in
+                Button("↑ " + intervalo.nombre(en: notacion)) { transponer(intervalo) }
+                Button("↓ " + intervalo.nombre(en: notacion)) { transponer(-intervalo) }
+            }
+        } label: {
+            Label(notacion.texto(.transponer), systemImage: "arrow.up.arrow.down")
+        }
+    }
+
+    /// Transporta el texto de la tarea: acordes al realizar, notas al armonizar y al revisar. Si algo no se lee,
+    /// lo deja como está.
+    private func transponer(_ intervalo: Intervalo) {
+        let contenido: PresentacionDeTransposicion.Contenido = tarea == .realizar ? .acordes : .notas
+        guard
+            let nuevo = try? PresentacionDeTransposicion.transponer(
+                texto, intervalo, contenido: contenido, notacion: notacion)
+        else { return }
+        textos[tarea] = nuevo
+        let dada = tonalidad.trimmingCharacters(in: .whitespaces)
+        if tarea.usaTonalidad, !dada.isEmpty, let leida = try? Tonalidad(leyendo: dada) {
+            tonalidad = leida.transponer(intervalo).nombre(en: notacion)
         }
     }
 

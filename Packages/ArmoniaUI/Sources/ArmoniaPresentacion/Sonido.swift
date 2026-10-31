@@ -77,6 +77,21 @@ public struct Sonido: Hashable, Sendable {
     /// Cuánto dura todo, en segundos.
     public var duracion: Double { notas.map { $0.inicio + $0.duracion }.max() ?? 0 }
 
+    /// Los momentos en que empieza algo, sin repetir y en orden: uno por nota en un arpegio, uno por acorde en
+    /// una progresión. El paso `i` es lo que empieza en `inicios[i]`.
+    public var inicios: [Double] {
+        Array(Set(notas.map(\.inicio))).sorted()
+    }
+
+    /// Lo que está sonando en un momento: el índice del último paso de `inicios` que ha empezado, o `nil` antes
+    /// de empezar y después de acabar. En un arpegio es la nota; en una progresión, el acorde.
+    ///
+    ///     Sonido.arpegio(Arpegio(Acorde("Do"))).paso(en: 0.3)   // 1: suena Mi
+    public func paso(en tiempo: Double) -> Int? {
+        guard tiempo >= 0, tiempo < duracion else { return nil }
+        return inicios.lastIndex { $0 <= tiempo }
+    }
+
     /// Los comienzos y finales de las notas, por orden de tiempo. A un mismo tiempo, los finales van antes,
     /// para que una nota repetida vuelva a sonar.
     public var cambios: [Cambio] {

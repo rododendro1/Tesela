@@ -74,6 +74,45 @@ extension LineaDeComandos {
         return bien(ejercicio.informe(en: notacion))
     }
 
+    /// `transponer 2M Do Lam Fa Sol7` o `transponer Re Do Lam Fa Sol7`: lo escrito subido o bajado un intervalo, o
+    /// llevado a otra tónica por el camino más corto. Lo que no se lee como acordes se transporta como notas (un
+    /// coral, una melodía).
+    static func transponer(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        let argumentos = Argumentos(argumentos)
+        if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
+        guard argumentos.restantes.count >= 2 else { return uso(.faltaTransporte, notacion) }
+        let texto = argumentos.restantes.dropFirst().joined(separator: " ")
+        let comoAcordes = try? PresentacionDeTransposicion.transponer(texto, .unisono, notacion: notacion)
+        let contenido: PresentacionDeTransposicion.Contenido = comoAcordes == nil ? .notas : .acordes
+        let primero = argumentos.restantes[0]
+        let intervalo: Intervalo
+        if let leido = try? Intervalo(leyendo: primero) {
+            intervalo = leido
+        } else {
+            let destino = try Nota(leyendo: primero)
+            let origen = PresentacionDeTransposicion.tonalidad(de: texto, contenido: contenido)?.tonica ?? destino
+            intervalo = origen.intervaloMasCorto(hasta: destino)
+        }
+        let transportado = try PresentacionDeTransposicion.transponer(
+            texto, intervalo, contenido: contenido, notacion: notacion)
+        return bien(transportado)
+    }
+
+    /// `rearmonizar Do Lam Rem7 Sol7 Do [--en Do mayor]`: la tonalidad y, una por línea, las otras armonías de cada
+    /// acorde, con su número en la progresión.
+    static func rearmonizar(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        var acordes = Argumentos(argumentos)
+        guard let tonalidad = try acordes.quitarTonalidad() else { return uso(.faltaTonalidadTrasEn, notacion) }
+        if let desconocida = acordes.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
+        guard !acordes.restantes.isEmpty else { return uso(.faltanAcordesDeLaRearmonizacion, notacion) }
+        let leidos = try acordes.restantes.map { try Acorde(leyendo: $0) }
+        guard let resultado = PresentacionDeRearmonizacion.proponer(leidos, en: tonalidad, notacion: notacion) else {
+            return uso(.faltanAcordesDeLaRearmonizacion, notacion)
+        }
+        let lineas = resultado.propuestas.map { "  \($0.rearmonizacion.posicion + 1). \($0.descripcion)" }
+        return bien(([resultado.tonalidad.nombre(en: notacion)] + lineas).joined(separator: "\n"))
+    }
+
     /// Una línea por acorde: el cifrado, el grado y las alturas de grave a agudo
     /// («Do        I         Do3 Mi4 Sol4 Do5»), que se pueden copiar en `revisar` o `musicxml coral`.
     static func describir(_ filas: [CoralPresentado.Fila]) -> [String] {

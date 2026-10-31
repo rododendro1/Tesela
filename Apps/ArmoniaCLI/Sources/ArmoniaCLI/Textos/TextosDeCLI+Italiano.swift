@@ -19,6 +19,10 @@ extension TextosDeCLI {
         descripcionRevisar: "errori di condotta delle parti\n(quinte parallele…); accordi dal\ngrave all'acuto, separati da virgole",
         sintaxisContrapunto: "contrapunto <cantus> / <contrappunto> [--especie 1]",
         descripcionContrapunto: "errori di un contrappunto di specie\n(da 1 a 5) su un cantus firmus in\nsemibrevi; note senza durata: quella\ndella specie",
+        sintaxisTransponer: "transponer <intervallo|tonica> <accordi o note>",
+        descripcionTransponer: "porta accordi, una melodia o un\ncorale in un altro tono: un intervallo\n(2M, -3m) o la nuova tonica (Re)",
+        sintaxisRearmonizar: "rearmonizar <accordi> [--en <tonalità>]",
+        descripcionRearmonizar: "altre armonie per ogni accordo:\nsostituzione di tritono, dominanti\nsecondarie, prestito modale e\nsostituzioni diatoniche",
 
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <sigla>…",
@@ -83,7 +87,7 @@ extension TextosDeCLI {
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "digitaciones <sigla>… [opzioni]",
-        descripcionDigitaciones: "modi di suonare un accordo, dal più\ncomodo al meno comodo, su uno\nstrumento a corde con tasti\nopzioni: --instrumento guitarra|bajo|ukelele|mandolina|… (anche\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D»),\n--limite 5, --traste 12 (il tasto più alto usato), --dedos 4\n(quelle che si possono usare), --completo (con tutte le note: di\nsolito la quinta può mancare), --diagrama (una riga per corda)",
+        descripcionDigitaciones: "modi di suonare un accordo, dal più\ncomodo al meno comodo, su uno\nstrumento a corde con tasti\nopzioni: --instrumento guitarra|bajo|ukelele|mandolina|… (anche\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D»),\n--limite 5, --traste 12 (il tasto più alto usato), --dedos 4\n(quelle che si possono usare), --completo (con tutte le note: di\nsolito la quinta può mancare), --diagrama (una riga per corda),\n--capo 2 (i tasti, contati dal capotasto), --musicxml (la prima\nforma di ogni accordo, come intavolatura MusicXML)",
         sintaxisPosiciones: "posiciones <scala> [--caged]",
         descripcionPosiciones: "la scala per posizioni sulla chitarra:\ntre note per corda (due nelle\npentatoniche) o CAGED",
 
@@ -118,7 +122,7 @@ extension TextosDeCLI {
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "manca la sigla: armonia acorde Sol7",
         faltaCifradoDelArpegio: "manca la sigla: armonia arpegio Do7",
-        patronDesconocido: { patron in "schema sconosciuto: «\(patron)» (ascendente, descendente, ida-y-vuelta o alberti)" },
+        patronDesconocido: { patron in "schema sconosciuto: «\(patron)» (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado o alberti)" },
         faltanNotas: "mancano le note: armonia identificar Do Mi Sol",
         dosNotas: "servono due note: armonia intervalo Do Mi",
         faltaEscala: "manca la scala: armonia escala Re dórico",
@@ -128,6 +132,8 @@ extension TextosDeCLI {
         archivoIlegible: { nombre in "impossibile leggere il file «\(nombre)»" },
         archivoConAcordes: "con --archivo non si scrivono accordi",
         archivoSinAcordes: "il file non contiene accordi",
+        faltaTransporte: { ejemplo in "mancano l'intervallo (o la nuova tonica) e ciò che si traspone: " + ejemplo },
+        faltanAcordesDeLaRearmonizacion: { ejemplo in "mancano gli accordi: " + ejemplo },
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "il margine è un numero da 0 a 6: --margen 2",
@@ -180,6 +186,7 @@ extension TextosDeCLI {
         trasteFueraDeRango: "il tasto più alto è un numero da 0 a 24: --traste 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "manca la sigla: \(d)" },
         faltaEscalaDePosiciones: "manca la scala: armonia posiciones Sol mayor",
+        capoFueraDeRango: "il capotasto è un numero da 0 a 12: --capo 2",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Prova «armonia ayuda».",

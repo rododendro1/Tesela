@@ -83,7 +83,8 @@ extension LineaDeComandos {
     }
 
     /// El patrón de `--patron`: su nombre en el código (`alberti`, `idaYVuelta`), con guiones (`ida-y-vuelta`),
-    /// en inglés (`ascending`, `up-down`) o como lo escribe cualquiera de los catorce idiomas («bajo de Alberti»).
+    /// en inglés (`ascending`, `up-down`, `down-up`, `broken`) o como lo escribe cualquiera de los catorce idiomas
+    /// («bajo de Alberti»).
     static func patronDeArpegio(_ texto: String) -> Arpegio.Patron? {
         func plano(_ s: String) -> String {
             s.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: nil)
@@ -93,6 +94,7 @@ extension LineaDeComandos {
         let buscado = plano(texto)
         let abreviados: [String: Arpegio.Patron] = [
             "ida y vuelta": .idaYVuelta, "up": .ascendente, "down": .descendente, "up down": .idaYVuelta,
+            "baja y sube": .bajaYSube, "down up": .bajaYSube, "broken": .quebrado,
         ]
         if let patron = abreviados[buscado] { return patron }
         return Arpegio.Patron.allCases.first { patron in

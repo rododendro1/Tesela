@@ -27,6 +27,20 @@ final class SonidoTests: XCTestCase {
         XCTAssertEqual(Sonido.arpegio(Arpegio(try Acorde(leyendo: "Do7"))).notas.map(\.midi), [48, 52, 55, 58, 60])
     }
 
+    func testLoQueSuenaEnCadaMomento() throws {
+        let arpegio = Sonido.arpegio(Arpegio(try Acorde(leyendo: "Do")))
+        XCTAssertEqual(arpegio.inicios, [0, 0.25, 0.5, 0.75])
+        XCTAssertNil(arpegio.paso(en: -0.1))
+        XCTAssertEqual(arpegio.paso(en: 0), 0)
+        XCTAssertEqual(arpegio.paso(en: 0.3), 1)
+        XCTAssertEqual(arpegio.paso(en: 0.8), 3)
+        XCTAssertNil(arpegio.paso(en: 5))
+        // En una progresión, cada acorde es un paso aunque tenga varias notas.
+        let progresion = Sonido.acordes([try Acorde(leyendo: "Do"), try Acorde(leyendo: "Sol7")])
+        XCTAssertEqual(progresion.inicios, [0, 1])
+        XCTAssertEqual(progresion.paso(en: 1.2), 1)
+    }
+
     func testUnaEscalaSubeHastaLaOctava() throws {
         let sonido = Sonido.escala(try Escala(leyendo: "Re dórico"))
         XCTAssertEqual(sonido.notas.map(\.midi), [62, 64, 65, 67, 69, 71, 72, 74])

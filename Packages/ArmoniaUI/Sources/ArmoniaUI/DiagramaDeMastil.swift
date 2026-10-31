@@ -22,6 +22,8 @@
         /// Cómo se escribe cada clase de altura (0…11). Las que no estén se escriben como `Altura(midi:)`.
         public let ortografia: [Int: Nota]
         public let notacion: Notacion
+        /// La marca que está sonando, que se pinta de otro color (ver `resaltando(_:)`).
+        public private(set) var resaltada: PosicionEnElMastil?
 
         public init(
             mastil: Mastil, marcas: [PosicionEnElMastil] = [], rango: ClosedRange<Int> = 0...12, etiquetas: Bool = true,
@@ -91,6 +93,13 @@
                 rango: PresentacionDeMastil.rango(de: digitacion), etiquetas: etiquetas,
                 apagadas: PresentacionDeMastil.apagadas(de: digitacion),
                 ortografia: PresentacionDeMastil.ortografia(de: acorde?.notas ?? []), notacion: notacion)
+        }
+
+        /// El mismo dibujo con una marca resaltada, la que está sonando; con `nil`, ninguna.
+        public func resaltando(_ posicion: PosicionEnElMastil?) -> DiagramaDeMastil {
+            var copia = self
+            copia.resaltada = posicion
+            return copia
         }
 
         /// Los trastes con puntos de referencia en un mástil de guitarra.
@@ -225,7 +234,8 @@
             for posicion in marcas where mastil.contiene(posicion) && rango.contains(posicion.traste) {
                 let centro = CGPoint(x: x(centroDe: posicion.traste), y: y(de: posicion.cuerda))
                 let circulo = CGRect(x: centro.x - radio, y: centro.y - radio, width: 2 * radio, height: 2 * radio)
-                contexto.fill(Path(ellipseIn: circulo), with: .color(TemaDeLasApps.acento))
+                let color = posicion == resaltada ? TemaDeLasApps.resaltado : TemaDeLasApps.acento
+                contexto.fill(Path(ellipseIn: circulo), with: .color(color))
                 if etiquetas {
                     let altura = mastil.altura(en: posicion)
                     let nota = ortografia[altura.nota.claseDeAltura] ?? altura.nota
