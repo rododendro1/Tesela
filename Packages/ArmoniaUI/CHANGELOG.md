@@ -1,8 +1,6 @@
 # Cambios
 
-## 0.1.0 (2026-10-31)
-
-Primera versión con etiqueta del repositorio: `0.1.0`.
+## Sin publicar
 
 - Ritmo armónico al importar. En la pestaña Análisis, «Abrir» acepta también el MusicXML comprimido (.mxl) y guarda
   lo que dura cada acorde de la pieza, con su compás y su tempo: mientras no se retoque la progresión, lo siguen la
@@ -14,6 +12,11 @@ Primera versión con etiqueta del repositorio: `0.1.0`.
   en la guitarra en las cinco formas CAGED o con tres notas por cuerda (dos en las pentatónicas), cada posición con sus
   trastes, su diagrama y «Escuchar». `DiagramaDeMastil(posicion:escala:…)` la dibuja; textos nuevos
   `.posicionesEnElMastil`, `.notasPorCuerda(_:)` y `.forma(_:)` en los catorce idiomas.
+
+## 0.1.0 (2026-10-31)
+
+Primera versión con etiqueta del repositorio: `0.1.0`.
+
 - Arpegios en ArmoniaApp. En la pestaña Acordes, «Exportar» da también el arpegio en MusicXML, MEI y MIDI, y la
   sección nueva «Arpegio en el mástil» lo enseña en el instrumento elegido para las digitaciones: las notas del
   acorde por todo el mástil y, debajo, cada posición (una franja de cuatro trastes) con su diagrama y «Escuchar». En

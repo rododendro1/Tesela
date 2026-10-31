@@ -12,13 +12,6 @@
   `formatoNoValido`): con valores cerca del máximo de `Int`, comprobar `G = L + D` desbordaba.
 - Pruebas nuevas (`ImportacionAlAzarTests`): ficheros MIDI y MusicXML estropeados al azar, números desmesurados,
   elementos anidados sin fin, entidades que se expanden y textos UIL al azar. Todos acaban con una pieza o un error.
-
-## 0.1.0 (2026-10-31)
-
-Primera versión con etiqueta del repositorio: `0.1.0`.
-
-### Ritmo armónico, MusicXML comprimido y escalas por posiciones
-
 - `PiezaImportada.acordesConDuracion(ventana:)`: los acordes con lo que dura cada uno, hasta que empieza el siguiente
   y, el último, hasta el final de la pieza.
 - `AnalisisArmonico.musicXML(duraciones:…)`, `mei(duraciones:…)` y `midi(duraciones:…)`: la progresión con una
@@ -30,6 +23,10 @@ Primera versión con etiqueta del repositorio: `0.1.0`.
   el .mxl dañado o que no se puede leer (cifrado, ZIP64, otro método de compresión).
 - `Mastil.posicionesPorCuerda(de:notasPorCuerda:)` y `Mastil.posicionesCAGED(de:ancho:)`: una escala por posiciones,
   con tres (o dos) notas por cuerda o en las cinco formas CAGED (`FormaCAGED`), como `EscalaEnElMastil`.
+
+## 0.1.0 (2026-10-31)
+
+Primera versión con etiqueta del repositorio: `0.1.0`.
 
 ### Organización
 
