@@ -2,10 +2,13 @@ name: Documentación
 
 # Publica la documentación de DocC en GitHub Pages: en cada versión (una etiqueta como «0.2.0») y a mano
 # (workflow_dispatch). Queda en https://<usuario>.github.io/<repositorio>/, con una página por módulo.
-# Hace falta elegir una vez «GitHub Actions» como fuente en Settings → Pages.
+# Hace falta elegir una vez «GitHub Actions» como fuente en Settings → Pages. Un pull request que cambie este
+# fichero solo construye el sitio, para probarlo, sin publicarlo.
 on:
   push:
     tags: ["[0-9]+.[0-9]+.[0-9]+", "v[0-9]+.[0-9]+.[0-9]+"]
+  pull_request:
+    paths: [".github/workflows/documentacion.yml"]
   workflow_dispatch:
 
 permissions:
@@ -13,7 +16,7 @@ permissions:
 
 # Una sola publicación a la vez; la que está en marcha se termina.
 concurrency:
-  group: pages
+  group: pages-${{ github.event_name == 'pull_request' && github.ref || 'publicar' }}
   cancel-in-progress: false
 
 env:
@@ -77,6 +80,7 @@ jobs:
   publicar:
     name: Publicar en GitHub Pages
     needs: construir
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       pages: write
