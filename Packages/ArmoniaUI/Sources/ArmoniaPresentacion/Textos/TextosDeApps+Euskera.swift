@@ -75,6 +75,7 @@ extension TextosDeApps {
         deshacer: "Desegin",
         textos: "Testuak",
         comoLasNotas: "Notak bezala",
+        octavaEnSubindice: "Zortziduna azpiindizean (La₄)",
         octavas: "Zortzidunak",
         conLaOctavaFinal: "Azken zortzidunarekin",
         figura: "Irudia",

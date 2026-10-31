@@ -80,6 +80,7 @@ struct TextosDeApps: Sendable {
     let deshacer: String
     let textos: String
     let comoLasNotas: String
+    let octavaEnSubindice: String
     let octavas: String
     let conLaOctavaFinal: String
     let figura: String

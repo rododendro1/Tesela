@@ -75,6 +75,7 @@ extension TextosDeApps {
         deshacer: "Rückgängig",
         textos: "Texte",
         comoLasNotas: "Wie die Noten",
+        octavaEnSubindice: "Oktave als Index (A₄)",
         octavas: "Oktaven",
         conLaOctavaFinal: "Mit der Schlussoktave",
         figura: "Notenwert",

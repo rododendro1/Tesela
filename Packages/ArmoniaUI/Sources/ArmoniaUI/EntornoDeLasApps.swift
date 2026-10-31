@@ -19,13 +19,15 @@
         }
     }
 
-    /// Lee la notación guardada en los ajustes (o, si no se ha elegido ninguna, la del idioma del sistema) y la
-    /// pone en el entorno. El selector de la barra escribe en el mismo ajuste.
+    /// Lee la notación guardada en los ajustes (o, si no se ha elegido ninguna, la del idioma del sistema), con la
+    /// octava en subíndice si así se ha elegido, y la pone en el entorno. El selector de la barra escribe en los
+    /// mismos ajustes.
     struct NotacionGuardada: ViewModifier {
         @AppStorage(AjustesDeLasApps.claveDeNotacion) private var clave = Notacion.delSistema().clave
+        @AppStorage(AjustesDeLasApps.claveDeOctavasEnSubindice) private var octavasEnSubindice = false
 
         func body(content: Content) -> some View {
-            content.environment(\.notacion, .desde(clave: clave))
+            content.environment(\.notacion, .desde(clave: clave, octavasEnSubindice: octavasEnSubindice))
         }
     }
 
