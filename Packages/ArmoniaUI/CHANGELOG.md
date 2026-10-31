@@ -15,6 +15,8 @@
 
 - El paquete pide Swift 6.0 o posterior y compila en el modo de lenguaje 6, como las apps (`SWIFT_VERSION` 6.0 en
   `project.yml`). Antes pedía Swift 5.9.
+  `VistaSVG` crea y carga su `WKWebView` en el actor principal (`@MainActor`), como pide WebKit: así no da
+  avisos de concurrencia con Swift 6.
 
 - «Abrir» en la pestaña Análisis de ArmoniaApp: elige un fichero MIDI o MusicXML y sus acordes, uno por pulso, pasan
   al campo de la progresión, que se analiza (y se puede retocar) como si se hubiera escrito.
