@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- La documentación de `TecladoIsomorfico.janko`, `.wickiHaydenPlano` y `.tablaArmonica` dice a qué preset de 12 notas
+  del Lumatone corresponde cada uno (1, «Classic Mode», Bosanquet-Wilson; 2, «Melodic Mode», y 3, «Harmonic Mode»).
 - Dos patrones de arpegio más: `Arpegio.Patron.quebrado` (por terceras quebradas: Do Sol Mi Do) y `.bajaYSube` (baja
   desde la nota de arriba y vuelve a subir), con su nombre en los catorce idiomas.
 - `Rearmonizacion` y `Tonalidad.rearmonizaciones(de:)`: otras armonías para cada acorde de una progresión (sustituto

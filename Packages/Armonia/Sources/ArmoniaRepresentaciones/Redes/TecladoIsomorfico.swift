@@ -48,7 +48,7 @@ public struct TecladoIsomorfico: Hashable, Sendable {
 
     /// La tabla armónica (C-Thru AXiS), en las casillas de `TablaArmonica.coordenada(de:)`: hexágonos
     /// planos con la quinta justa hacia arriba, la tercera mayor arriba a la derecha y la tercera menor
-    /// arriba a la izquierda.
+    /// arriba a la izquierda. Es el preset 3 del Lumatone («Harmonic Mode»).
     public static let tablaArmonica = TecladoIsomorfico(
         nombre: "Tabla armónica", orientacion: .plana,
         semitonosEnQ: -3, semitonosEnR: -7)
@@ -60,7 +60,8 @@ public struct TecladoIsomorfico: Hashable, Sendable {
         semitonosEnQ: 2, semitonosEnR: -5)
 
     /// Jankó: hexágonos puntiagudos con un tono hacia la derecha y un semitono en las dos diagonales de
-    /// la derecha; cada fila es una escala de tonos enteros.
+    /// la derecha; cada fila es una escala de tonos enteros. En 12 notas es también Bosanquet-Wilson, el preset 1 del
+    /// Lumatone («Classic Mode», y el 4, «Multi-Instrumental Mode», con colores por canal).
     public static let janko = TecladoIsomorfico(
         nombre: "Jankó", orientacion: .puntiaguda,
         semitonosEnQ: 2, semitonosEnR: 1)
@@ -73,7 +74,8 @@ public struct TecladoIsomorfico: Hashable, Sendable {
         semitonosEnQ: -2, semitonosEnR: -7)
 
     /// Wicki-Hayden con hexágonos planos: la quinta justa hacia arriba, un tono arriba a la derecha y una cuarta
-    /// justa arriba a la izquierda. Es el mismo teclado girado, con las columnas de quintas en vertical.
+    /// justa arriba a la izquierda. Es el mismo teclado girado, con las columnas de quintas en vertical, y el preset 2
+    /// del Lumatone («Melodic Mode»).
     public static let wickiHaydenPlano = TecladoIsomorfico(
         nombre: "Wicki-Hayden (plano)", orientacion: .plana,
         semitonosEnQ: -5, semitonosEnR: -7)
