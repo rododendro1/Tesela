@@ -24,7 +24,8 @@ extension PiezaImportada {
         let parser = XMLParser(data: datos)
         parser.shouldResolveExternalEntities = false
         parser.delegate = lector
-        guard parser.parse() else { throw ErrorDeImportacion.xmlDanado(linea: parser.lineNumber) }
+        // En Linux, `parse()` da por bueno un documento que se corta con elementos abiertos.
+        guard parser.parse(), lector.cerrado else { throw ErrorDeImportacion.xmlDanado(linea: parser.lineNumber) }
         guard lector.raiz == "score-partwise" else { throw ErrorDeImportacion.noEsMusicXMLPorPartes }
         guard !lector.notas.isEmpty else { throw ErrorDeImportacion.sinNotas }
         self.init(titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas,
@@ -184,6 +185,9 @@ final class LectorMusicXML: NSObject, XMLParserDelegate {
 
     /// El elemento que contiene al actual.
     private var padre: String? { pila.last }
+
+    /// Si se ha llegado al final con todos los elementos cerrados.
+    var cerrado: Bool { raiz != nil && pila.isEmpty }
 
     private func avanzar(_ pulsos: Int) {
         posicion = max(.cero, posicion + Duracion(pulsos, 4 * divisiones))
