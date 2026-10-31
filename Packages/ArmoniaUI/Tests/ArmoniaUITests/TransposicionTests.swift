@@ -33,7 +33,8 @@ final class TransposicionTests: XCTestCase {
         XCTAssertEqual(coral, "Re3 Fa♯4 La4 Re5, La2 Mi4 La4 Do♯5")
         // Sol7 es aquí la nota Sol de la octava 7, no el acorde.
         func comoNotas(_ texto: String) throws -> String {
-            try PresentacionDeTransposicion.transponer(texto, .segundaMayor, contenido: .notas, notacion: .espanolUnicode)
+            try PresentacionDeTransposicion.transponer(
+                texto, .segundaMayor, contenido: .notas, notacion: .espanolUnicode)
         }
         XCTAssertEqual(try comoNotas("Sol7"), "La7")
         XCTAssertEqual(try comoNotas("Si7"), "Do♯8")
