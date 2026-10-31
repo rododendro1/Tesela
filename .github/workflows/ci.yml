@@ -218,7 +218,13 @@ jobs:
           pruebas=$(ls -d "$binarios"/*PackageTests.xctest | head -n 1)
           llvm-cov show "$pruebas" -instr-profile="$binarios/codecov/default.profdata" "$PWD/Sources" \
             -show-line-counts-or-regions -show-instantiations=false -use-color=false \
-            | awk '/^\/.*\.swift:$/ { fichero = $0; next } /\|      0\|/ || /\^0/ { if (fichero != visto) { print fichero; visto = fichero } print }'
+            | awk '/^\/.*\.swift:$/ { fichero = $0; next }
+                   /\|      0\|/ || /^ *\^.*\^0|^ *\^0/ {
+                     if (fichero != visto) { print fichero; visto = fichero }
+                     if ($0 ~ /^ *\^/ && anterior != impresa) print anterior
+                     print; if ($0 !~ /^ *\^/) impresa = $0
+                   }
+                   $0 !~ /^ *\^/ { anterior = $0 }'
       - uses: actions/upload-artifact@v7
         with:
           name: cobertura-${{ matrix.paquete.nombre }}
