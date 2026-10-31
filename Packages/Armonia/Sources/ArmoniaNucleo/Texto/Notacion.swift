@@ -33,17 +33,22 @@
 /// textos (`textos`). Las notaciones con nombre (`.espanolUnicode`, `.ruso`…) llevan los textos en el idioma de sus
 /// notas, y `conTextos(en:)` los cambia: `Notacion.ruso.conTextos(en: .espanol)` escribe
 /// «соль séptima de dominante, primera inversión».
+///
+/// La octava de las alturas se escribe con cifras (La4) o, con `conOctavas(.subindices)`, como subíndice (La₄).
 public struct Notacion: Hashable, Sendable, CaseIterable {
     /// Cómo se escriben los nombres de nota.
     public let escritura: EscrituraDeNotas
     /// El idioma de los textos (intervalos, acordes, mensajes…).
     public let textos: Idioma
+    /// Cómo se escribe la octava de las alturas: con cifras (La4, por defecto) o como subíndice (La₄).
+    public let octavas: EscrituraDeLaOctava
 
     /// Las notas escritas como `escritura`, con los textos en `textos` o, si no se da, en el idioma de las
-    /// notas.
-    public init(escritura: EscrituraDeNotas, textos: Idioma? = nil) {
+    /// notas, y la octava escrita como `octavas`.
+    public init(escritura: EscrituraDeNotas, textos: Idioma? = nil, octavas: EscrituraDeLaOctava = .cifras) {
         self.escritura = escritura
         self.textos = textos ?? escritura.idioma
+        self.octavas = octavas
     }
 
     /// Español con las alteraciones en palabras: Do, Fa sostenido, Si bemol; en los cifrados, Fa♯7, Si♭m.
@@ -97,11 +102,17 @@ public struct Notacion: Hashable, Sendable, CaseIterable {
     /// La misma notación de las notas con los textos en otro idioma: `Notacion.ruso.conTextos(en:
     /// .espanol)`.
     public func conTextos(en idioma: Idioma) -> Notacion {
-        Notacion(escritura: escritura, textos: idioma)
+        Notacion(escritura: escritura, textos: idioma, octavas: octavas)
     }
 
-    /// La notación de las notas con los textos en su propio idioma: `.ruso.conTextos(en: .espanol).notas`
-    /// es `.ruso`.
+    /// La misma notación con la octava escrita de otra forma: `Notacion.espanolUnicode.conOctavas(.subindices)`
+    /// escribe La₄ y Fa♯₃.
+    public func conOctavas(_ octavas: EscrituraDeLaOctava) -> Notacion {
+        Notacion(escritura: escritura, textos: textos, octavas: octavas)
+    }
+
+    /// La notación de las notas con los textos en su propio idioma y la octava en cifras:
+    /// `.ruso.conTextos(en: .espanol).notas` es `.ruso`.
     public var notas: Notacion { Notacion(escritura: escritura) }
 
     /// ¿Lleva los textos en un idioma distinto del de sus notas?
@@ -127,6 +138,37 @@ public struct Notacion: Hashable, Sendable, CaseIterable {
 
     /// Alteraciones como # y b en lugar de ♯ y ♭: `tipografia == .ascii`.
     public var usaASCII: Bool { escritura.usaASCII }
+}
+
+// MARK: - Escritura de la octava
+
+/// Cómo se escribe la octava de una altura (científica: Do4 es el Do central) en una `Notacion`.
+public enum EscrituraDeLaOctava: Hashable, Sendable, CaseIterable {
+    /// Con cifras: La4, Fa♯3, Si♭-1.
+    case cifras
+    /// Como subíndice: La₄, Fa♯₃, Si♭₋₁.
+    case subindices
+
+    /// La octava escrita así: `EscrituraDeLaOctava.subindices.escribir(-1)` es «₋₁».
+    public func escribir(_ octava: Int) -> String {
+        switch self {
+        case .cifras: return String(octava)
+        case .subindices: return String(String(octava).map { Self.subindices[$0] ?? $0 })
+        }
+    }
+
+    private static let subindices: [Character: Character] = [
+        "0": "₀", "1": "₁", "2": "₂", "3": "₃", "4": "₄", "5": "₅", "6": "₆", "7": "₇", "8": "₈", "9": "₉", "-": "₋",
+    ]
+
+    /// El texto con los subíndices (₀…₉ y ₋) cambiados por cifras y por «-»: «La₄» → «La4». Así se leen
+    /// las alturas escritas de las dos formas.
+    package static func conCifras(_ texto: some StringProtocol) -> String {
+        String(texto.map { cifras[$0] ?? $0 })
+    }
+
+    private static let cifras: [Character: Character] = Dictionary(
+        uniqueKeysWithValues: subindices.map { ($0.value, $0.key) })
 }
 
 // MARK: - Escritura de las notas

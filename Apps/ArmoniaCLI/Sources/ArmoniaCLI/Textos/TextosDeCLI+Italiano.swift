@@ -106,6 +106,7 @@ extension TextosDeCLI {
         Con --textos, i testi sono in un'altra lingua rispetto alle note: --idioma en --textos it.
         In spagnolo e inglese, --escritura palabras|ascii|unicode scrive le note come Fa sostenido,
         Fa# o Fa♯ (in inglese, F sharp, F# o F♯).
+        Con --subindices, l'ottava va in pedice: La₄, Fa♯₃ (si leggono entrambe le forme, La4 e La₄).
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "questo aiuto",

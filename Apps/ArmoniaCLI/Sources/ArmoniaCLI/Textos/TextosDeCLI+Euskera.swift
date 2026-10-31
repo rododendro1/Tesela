@@ -106,6 +106,7 @@ extension TextosDeCLI {
         --textos erabiliz, testuak notak ez bezalako hizkuntzan daude: --idioma en --textos eu.
         Gaztelaniaz eta ingelesez, --escritura palabras|ascii|unicode erabiliz, notak Fa sostenido,
         Fa# edo Fa♯ idazten dira (ingelesez, F sharp, F# edo F♯).
+        --subindices erabiliz, zortziduna azpiindize gisa idazten da: La₄, Fa♯₃ (biak irakurtzen dira, La4 eta La₄).
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "laguntza hau",

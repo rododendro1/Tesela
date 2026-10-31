@@ -131,6 +131,18 @@ Escala(.re, .dorico).nombre(en: Notacion.inglesASCII.conTextos(en: .euskera))   
 Notacion(escritura: .ruso, textos: .espanol) == notacion   // true
 ```
 
+### La octava en subíndice
+
+La octava de una ``Altura`` se escribe con cifras (La4) salvo que la notación pida subíndices con
+`conOctavas(.subindices)`. Al leer se aceptan siempre las dos formas, también en las melodías y los corales.
+La línea de comandos lo ofrece con `--subindices`.
+
+```swift
+let conSubindices = Notacion.espanolUnicode.conOctavas(.subindices)
+Altura(Nota.fa.sostenido, octava: 3).nombre(en: conSubindices)   // "Fa♯₃"
+try Altura(leyendo: "Si♭₋₁") == Altura(Nota.si.bemol, octava: -1) // true
+```
+
 ### Escalas en otras lenguas
 
 Una escala se lee también con la tónica y el tipo en francés o italiano, y en ruso o griego con los

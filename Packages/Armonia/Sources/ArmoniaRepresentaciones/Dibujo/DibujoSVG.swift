@@ -25,7 +25,7 @@ package enum OrigenDelDibujo: Hashable, Sendable {
             return TextosDeRepresentaciones.traducidos.map(\.conjunto).en(notacion)
                 + conjunto.description
         case .alturas(let alturas):
-            return alturas.map { $0.nota.nombreCompacto(en: notacion) + "\($0.octava)" }.joined(separator: " · ")
+            return alturas.map { $0.nombreCompacto(en: notacion) }.joined(separator: " · ")
         case .ciclo(let ciclo, let acorde):
             let nombre = ciclo.nombre(en: notacion)
             let cifrado = acorde.cifrado(en: notacion)
