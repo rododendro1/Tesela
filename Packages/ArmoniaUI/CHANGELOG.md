@@ -1,5 +1,9 @@
 # Cambios
 
+## Sin publicar
+
+- `TextosDeApps` adopta `TextosTraducidos` del motor; `TextosDeApps.traduccion(_:)` sigue igual.
+
 ## 0.2.0 (2026-10-31)
 
 - Arreglado: en macOS, sin optimizar, los textos de las apps desbordaban la pila (señal 11). Pasaba en las pruebas

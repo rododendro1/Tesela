@@ -1,5 +1,16 @@
 # Cambios
 
+## Sin publicar
+
+- `TextosTraducidos`: los textos de cada módulo se leen con `TextosDeX.en(notacion, \.campo)` (el texto en un
+  idioma) o `TextosDeX.traduccion(\.campo)` (su `Traduccion`), en vez de `traducidos.map(…)`, que copiaba en la pila
+  los catorce idiomas en cada llamada. Es el arreglo de la pila de 0.2.0, ahora en el motor y la CLI.
+- Los nombres de los instrumentos de partitura pasan a `TextosDePartitura` (un fichero por idioma) y
+  `comprobar_traducciones` los revisa; `InstrumentoDePartitura.traducciones` sustituye a los cuatro diccionarios.
+- `Arpegio.Patron(leyendo:)`: el patrón por su nombre en el código, en inglés abreviado o en cualquiera de los
+  catorce idiomas. `claveDeBusqueda` quita también circunflejos, diéresis, ã/õ y la cedilla.
+- `ElMejor`, para quedarse con el candidato de menor coste en las búsquedas, sustituye a seis bucles con `!`.
+
 ## 0.2.0 (2026-10-31)
 
 - Revisión de la terminología de la API. Los nombres viejos siguen compilando, marcados como obsoletos (con el
