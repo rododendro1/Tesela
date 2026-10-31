@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+import Foundation
 // MARK: - Escala
 
 /// Escala concreta: tónica + tipo.
@@ -342,5 +343,168 @@ extension NombreDeGrado {
         case .sensible: return TextosDeTeoria.traducidos.map(\.gradoSensible)
         case .subtonica: return TextosDeTeoria.traducidos.map(\.gradoSubtonica)
         }
+    }
+}
+
+// MARK: - Escalas que contienen unas notas
+
+extension Escala {
+    /// Escalas que contienen todas las notas dadas, con su ortografía exacta, de más a menos probable.
+    /// El coste es el número de notas de la escala que sobran más una décima por cada alteración;
+    /// en caso de empate, el orden de `tipos` y la armadura más sencilla.
+    ///
+    ///     Escala.candidatos([.do, .mi, .sol, .si, "Fa#"]).first?.valor   // Do pentatónica lidia
+    public static func candidatos(_ notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.todos) -> [Candidato<Escala>] {
+        ordenar(contenedoras(notas, tipos: tipos)) { escala in
+            escala.notasEnAmbasDirecciones.filter { !notas.contains($0) }.count
+        }
+    }
+
+    /// Escalas que contienen las notas dadas, de más a menos probable (sin el coste).
+    public static func identificar(_ notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.todos) -> [Escala] {
+        candidatos(notas, tipos: tipos).map(\.valor)
+    }
+
+    /// Escalas que contienen todas las clases de altura dadas (sin importar la ortografía), de más
+    /// a menos probable; cada escala se escribe con la tónica que da menos alteraciones.
+    ///
+    ///     Escala.candidatos(clasesDeAltura: [0, 4, 7, 11, 6]).first?.valor   // Do pentatónica lidia
+    public static func candidatos(clasesDeAltura alturas: [Int],
+                                  tipos: [TipoDeEscala] = TipoDeEscala.todos) -> [Candidato<Escala>] {
+        let buscadas = Set(alturas.map { modulo($0, 12) })
+        return ordenar(contenedoras(clasesDeAltura: alturas, tipos: tipos)) { escala in
+            Set(escala.notasEnAmbasDirecciones.map(\.claseDeAltura)).subtracting(buscadas).count
+        }
+    }
+
+    /// Escalas que contienen las clases de altura dadas, de más a menos probable (sin el coste).
+    public static func identificar(clasesDeAltura alturas: [Int],
+                                   tipos: [TipoDeEscala] = TipoDeEscala.todos) -> [Escala] {
+        candidatos(clasesDeAltura: alturas, tipos: tipos).map(\.valor)
+    }
+
+    /// Ordena por coste (notas que sobran + 0,1 por alteración) conservando el orden previo en
+    /// los empates.
+    private static func ordenar(_ escalas: [Escala], sobrantes: (Escala) -> Int) -> [Candidato<Escala>] {
+        escalas.enumerated()
+            .map { (indice: $0.offset, candidato: Candidato($0.element,
+                                                             coste: Double(sobrantes($0.element)) + 0.1 * Double($0.element.costeDeEscritura))) }
+            .sorted { ($0.candidato.coste, $0.indice) < ($1.candidato.coste, $1.indice) }
+            .map(\.candidato)
+    }
+
+    /// Escalas que contienen todos los nombres dados, por tipo y armadura más sencilla.
+    private static func contenedoras(_ notas: [Nota], tipos: [TipoDeEscala]) -> [Escala] {
+        guard let primera = notas.first else { return [] }
+        var resultado: [Escala] = []
+        for tipo in tipos {
+            // La primera nota tiene que ser algún grado de la escala: eso fija las tónicas posibles.
+            let tonicas = tipo.intervalosEnAmbasDirecciones.map { primera - $0 }
+            var delTipo: [Escala] = []
+            for tonica in tonicas {
+                let escala = Escala(tonica, tipo)
+                if !delTipo.contains(escala) && notas.allSatisfy({ escala.contiene($0) }) { delTipo.append(escala) }
+            }
+            resultado += delTipo.sorted { $0.costeDeEscritura < $1.costeDeEscritura }
+        }
+        return resultado
+    }
+
+    /// Escalas que contienen todas las clases de altura dadas, por tipo y armadura más sencilla.
+    private static func contenedoras(clasesDeAltura alturas: [Int], tipos: [TipoDeEscala]) -> [Escala] {
+        let buscadas = Set(alturas.map { modulo($0, 12) })
+        guard !buscadas.isEmpty else { return [] }
+        var resultado: [Escala] = []
+        for tipo in tipos {
+            var delTipo: [Escala] = []
+            for tonica in 0..<12 {
+                let opciones = Nota.pasosDeQuintaPosibles(deClase: tonica).map { Escala(Nota(pasosDeQuinta: $0), tipo) }
+                guard let escala = opciones.min(by: { $0.costeDeEscritura < $1.costeDeEscritura }) else { continue }
+                if buscadas.isSubset(of: Set(escala.notasEnAmbasDirecciones.map(\.claseDeAltura)))
+                    && !delTipo.contains(escala) {
+                    delTipo.append(escala)
+                }
+            }
+            resultado += delTipo.sorted { $0.costeDeEscritura < $1.costeDeEscritura }
+        }
+        return resultado
+    }
+
+    /// Total de alteraciones de las notas (para elegir escrituras sencillas).
+    package var costeDeEscritura: Int { notas.reduce(0) { $0 + $1.alteracion.numeroDeSignos } }
+}
+
+// MARK: - Ortografía según la tonalidad
+
+extension Escala {
+    /// Posición media de la escala en la línea de quintas (su "centro de gravedad").
+    package var centroDeQuintas: Double {
+        let posiciones = notas.map { Double($0.pasosDeQuinta) }
+        return posiciones.reduce(0, +) / Double(posiciones.count)
+    }
+
+    /// Nombre de una clase de altura (0 = Do … 11 = Si) dentro de esta tonalidad.
+    ///
+    /// - Si la altura pertenece a la escala, al subir o al bajar, se usa su nombre (Si♭ en Fa
+    ///   mayor, Sol♯ en La menor armónica, Mi♯ en Fa♯ mayor; Sol y Sol♯ en La menor melódica).
+    /// - Si es cromática, se elige entre las dos escrituras más cercanas a la escala en la
+    ///   línea de quintas. Si se conoce la nota siguiente, sube con sostenido y baja con bemol
+    ///   (Do–Do♯–Re, Re–Re♭–Do); si no, gana la más cercana (en Do mayor: Do♯, Mi♭, Fa♯, La♭, Si♭).
+    ///
+    /// `siguiente` es la clase de altura o el número MIDI de la nota siguiente; para comparar
+    /// direcciones se usa `alturaActual`, que debe estar en la misma unidad.
+    public func nombre(claseDeAltura clase: Int, alturaActual: Int? = nil,
+                       siguiente: Int? = nil) -> Nota {
+        let escrituras = Nota.pasosDeQuintaPosibles(deClase: clase)
+        let quintasBase = escrituras[1]
+        let propias = Set(notasEnAmbasDirecciones.map(\.pasosDeQuinta))
+        if let propia = escrituras.first(where: { propias.contains($0) }) {
+            return Nota(pasosDeQuinta: propia)
+        }
+        let centro = centroDeQuintas
+        let cercanas = escrituras.sorted { abs(Double($0) - centro) < abs(Double($1) - centro) }.prefix(2)
+        let masSostenida = cercanas.max() ?? quintasBase
+        let masBemol = cercanas.min() ?? quintasBase
+        let actual = alturaActual ?? clase
+        func coste(_ quintas: Int) -> [Double] {
+            var distancia = abs(Double(quintas) - centro)
+            if let siguiente, siguiente != actual {
+                if siguiente > actual && quintas == masSostenida { distancia -= 5 }
+                if siguiente < actual && quintas == masBemol { distancia -= 5 }
+            }
+            // En caso de empate, la escritura más cercana a la dominante de la tónica
+            // (La♭ en Do mayor, pero Sol♯ en La menor), y después la más sostenida.
+            return [distancia, Double(abs(quintas - (tonica.pasosDeQuinta + 1))), Double(-quintas)]
+        }
+        let elegida = cercanas.min { coste($0).lexicographicallyPrecedes(coste($1)) } ?? quintasBase
+        return Nota(pasosDeQuinta: elegida)
+    }
+
+    /// Escribe una secuencia de notas MIDI en esta tonalidad. Las notas cromáticas se
+    /// escriben según la dirección de la melodía (sostenido al subir, bemol al bajar).
+    ///
+    ///     Escala(.do).ortografiar(midi: [60, 61, 62, 63, 64])   // Do4 Do♯4 Re4 Re♯4 Mi4
+    ///     Escala(.do).ortografiar(midi: [64, 63, 62, 61, 60])   // Mi4 Mi♭4 Re4 Re♭4 Do4
+    public func ortografiar(midi: [Int]) -> [Altura] {
+        midi.indices.map { i in
+            let altura = midi[i]
+            let siguiente = midi[(i + 1)...].first { $0 != altura }
+            let nombre = self.nombre(claseDeAltura: altura, alturaActual: altura, siguiente: siguiente)
+            return Altura(nombre, midi: altura) ?? Altura(midi: altura)
+        }
+    }
+}
+
+extension Altura {
+    /// Altura MIDI escrita según una escala: `Altura(midi: 70, escala: Escala(.fa))` → Si♭4.
+    public init(midi: Int, escala: Escala) {
+        let nombre = escala.nombre(claseDeAltura: midi)
+        self = Altura(nombre, midi: midi) ?? Altura(midi: midi)
+    }
+
+    /// Altura MIDI escrita según una tonalidad (en menor, con la sensible):
+    /// `Altura(midi: 68, tonalidad: "La menor")` → Sol♯4.
+    public init(midi: Int, tonalidad: Tonalidad) {
+        self.init(midi: midi, escala: tonalidad.escalaDeReferencia)
     }
 }

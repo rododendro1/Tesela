@@ -7,6 +7,10 @@
 - Los ficheros `X+Idiomas.swift` se funden en el fichero de su tipo (`Nota+Idiomas.swift` en `Nota.swift`, etc.),
   al final, tras `// MARK: - Idiomas`. `ErrorDeLectura+Idiomas`, `+Notas`, `+Acordes`, `+Escalas` y `+Partitura` pasan a
   `ErrorDeLectura.swift`. No cambia ninguna API.
+- Escalas en menos ficheros: `Escala+Busqueda` y `+Ortografia` pasan a `Escala.swift`; `TipoDeEscala+Basicas` y
+  `+Catalogo`, a `TipoDeEscala.swift`; `+ModosExoticos`, a `Occidentales/TipoDeEscala+Modos.swift`; `+Hexatonicas`, `+Jazz`
+  y `+Messiaen`, a `Occidentales/TipoDeEscala+Exoticas.swift`; y las tradiciones (salvo la India, que sigue aparte),
+  a `Tradiciones/TipoDeEscala+Tradiciones.swift`, cada una tras su `// MARK: - Nombre`. No cambia ninguna API.
 
 ### Swift 6
 

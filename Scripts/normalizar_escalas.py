@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """`TipoDeEscala.normalizar` en Python, para los scripts que comparan nombres de escalas.
 
-Es una copia de la función de Swift (`ArmoniaTeoria/Escalas/TipoDeEscala+Catalogo.swift`): minúsculas, sin diacríticos
+Es una copia de la función de Swift (`ArmoniaTeoria/Escalas/TipoDeEscala.swift`): minúsculas, sin diacríticos
 (salvo en devanagari), ♯/♭ como #/b, sin ♮ ni ordinales (4ª), «−» como «-», «…» como «..» y un solo espacio entre
 palabras. Para que las dos no se separen, las dos leen los mismos casos de `Scripts/vectores/normalizar.tsv`: el test de
 Swift (`NormalizarVectoresTests`) y este script.
