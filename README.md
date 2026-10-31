@@ -64,7 +64,7 @@ Cada módulo del motor es también un producto (`ArmoniaNucleo`, `ArmoniaTeoria`
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/rododendro1/Tesela.git", branch: "main"),
+    .package(url: "https://github.com/rododendro1/Tesela.git", from: "0.1.0"),
 ],
 targets: [
     .target(name: "MiApp", dependencies: [
@@ -73,9 +73,9 @@ targets: [
 ]
 ```
 
-Todavía no hay versiones con etiqueta, así que se sigue la rama `main`. Los cambios de cada paquete están en su
-`CHANGELOG.md`; mientras no haya versiones, un cambio puede quitar lo que uno anterior marcó
-como obsoleto.
+Las versiones llevan etiqueta (la primera es `0.1.0`); para seguir lo último sin esperar a una versión, usa
+`branch: "main"`. Los cambios de cada paquete están en su `CHANGELOG.md`. Mientras la versión sea 0.x, una versión
+nueva puede quitar lo que una anterior marcó como obsoleto.
 
 ## Empezar
 

@@ -1,6 +1,8 @@
 # Cambios
 
-## Sin publicar
+## 0.1.0 (2026-10-31)
+
+Primera versión con etiqueta del repositorio: `0.1.0`.
 
 - Arpegios en ArmoniaApp. En la pestaña Acordes, «Exportar» da también el arpegio en MusicXML, MEI y MIDI, y la
   sección nueva «Arpegio en el mástil» lo enseña en el instrumento elegido para las digitaciones: las notas del

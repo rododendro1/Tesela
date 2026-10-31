@@ -1,6 +1,8 @@
 # Cambios
 
-## Sin publicar
+## 0.1.0 (2026-10-31)
+
+Primera versión con etiqueta del repositorio: `0.1.0`.
 
 ### Organización
 
