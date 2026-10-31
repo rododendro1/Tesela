@@ -153,22 +153,22 @@ public enum EscrituraDeLaOctava: Hashable, Sendable, CaseIterable {
     public func escribir(_ octava: Int) -> String {
         switch self {
         case .cifras: return String(octava)
-        case .subindices: return String(String(octava).map { Self.subindices[$0] ?? $0 })
+        case .subindices: return String(String(octava).map { Self.tablaDeSubindices[$0] ?? $0 })
         }
     }
 
-    private static let subindices: [Character: Character] = [
+    private static let tablaDeSubindices: [Character: Character] = [
         "0": "₀", "1": "₁", "2": "₂", "3": "₃", "4": "₄", "5": "₅", "6": "₆", "7": "₇", "8": "₈", "9": "₉", "-": "₋",
     ]
 
     /// El texto con los subíndices (₀…₉ y ₋) cambiados por cifras y por «-»: «La₄» → «La4». Así se leen
     /// las alturas escritas de las dos formas.
     package static func conCifras(_ texto: some StringProtocol) -> String {
-        String(texto.map { cifras[$0] ?? $0 })
+        String(texto.map { tablaDeCifras[$0] ?? $0 })
     }
 
-    private static let cifras: [Character: Character] = Dictionary(
-        uniqueKeysWithValues: subindices.map { ($0.value, $0.key) })
+    private static let tablaDeCifras: [Character: Character] = Dictionary(
+        uniqueKeysWithValues: tablaDeSubindices.map { ($0.value, $0.key) })
 }
 
 // MARK: - Escritura de las notas
