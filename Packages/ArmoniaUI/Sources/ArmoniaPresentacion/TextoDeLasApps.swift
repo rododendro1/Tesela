@@ -319,8 +319,7 @@ public enum TextoDeLasApps: Hashable, Sendable {
         case .casillas(let n):
             return TextosDeApps.traducidos.map { $0.casillas(n) }
         case .casillaElegida(let q, let r):
-            return TextosDeApps.traducidos.map(\.elegida)
-            .aplicando { "\($0) q \(q), r \(r)" }
+            return TextosDeApps.traducidos.map { "\($0.elegida) q \(q), r \(r)" }
         case .mastilDe(let instrumento, let desde, let hasta):
             return TextosDeApps.traducidos.map { $0.mastilDe(instrumento, desde, hasta) }
         case .posicion(let cuerda, let traste):
