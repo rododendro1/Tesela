@@ -2,7 +2,8 @@ import Armonia
 import Hexagonos
 
 /// Las redes en que la app Tonnetz dibuja unas notas: el Tonnetz, la tabla armónica y varios teclados
-/// isomórficos (Wicki-Hayden, Jankó y el acordeón cromático), más uno que el usuario describe en el formato UIL.
+/// isomórficos (Wicki-Hayden, Jankó, el acordeón cromático, Gerhard y Park), más uno que el usuario describe en el
+/// formato UIL.
 /// No usa SwiftUI, así que se prueba en Linux.
 public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
     case tonnetz = "Tonnetz"
@@ -13,6 +14,8 @@ public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
     case wickiHaydenPlano = "Wicki-Hayden (plano)"
     case acordeonC = "Acordeón C"
     case acordeonB = "Acordeón B"
+    case gerhard = "Gerhard"
+    case park = "Park"
     /// Un teclado descrito en el formato UIL (`2,7,5;R30M`), que se puede girar de 30° en 30° y reflejar: ver ``AjusteUIL``.
     case uil = "UIL"
 
@@ -21,7 +24,7 @@ public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
     /// El nombre de la red en el idioma de los textos: «Tabla armónica», «Harmonic table»…
     public func nombre(en notacion: Notacion) -> String {
         switch self {
-        case .tonnetz, .wickiHayden, .janko, .uil: return rawValue
+        case .tonnetz, .wickiHayden, .janko, .gerhard, .park, .uil: return rawValue
         case .wickiHaydenEspejo:
             return Traduccion(
                 "Wicki-Hayden (espejo)", "Wicki-Hayden (mirrored)", ca: "Wicki-Hayden (mirall)",
@@ -78,6 +81,8 @@ public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
         case .wickiHaydenPlano: return .wickiHaydenPlano
         case .acordeonC: return .acordeonC
         case .acordeonB: return .acordeonB
+        case .gerhard: return .gerhard
+        case .park: return .park
         }
     }
 }

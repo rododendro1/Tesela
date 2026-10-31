@@ -104,6 +104,11 @@ final class FormatoUILTests: XCTestCase {
         XCTAssertEqual(TecladoIsomorfico.janko.uil?.descripcion, "1,2,1;R90")
         XCTAssertEqual(TecladoIsomorfico.wickiHaydenPlano.uil?.descripcion, "2,7,5;R0M")
         XCTAssertEqual(TecladoIsomorfico.wickiHaydenEspejo.uil?.descripcion, "2,7,5;R330")
+        // Gerhard y Park, tal cual los da el artículo.
+        misma(try TecladoIsomorfico.conUIL("1,4,3;R60"), .gerhard)
+        misma(try TecladoIsomorfico.conUIL("2,5,3;R90M"), .park)
+        XCTAssertEqual(TecladoIsomorfico.gerhard.uil?.descripcion, "1,4,3;R60")
+        XCTAssertEqual(TecladoIsomorfico.park.uil?.descripcion, "2,5,3;R90M")
         // Los acordeones de la app son los del artículo girados 90°.
         XCTAssertEqual(TecladoIsomorfico.acordeonC.uil?.descripcion, "1,3,2;R0M")
         XCTAssertEqual(TecladoIsomorfico.acordeonB.uil?.descripcion, "1,3,2;R0")

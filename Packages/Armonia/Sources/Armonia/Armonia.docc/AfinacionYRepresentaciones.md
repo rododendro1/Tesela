@@ -301,9 +301,12 @@ TablaArmonica.coordenada(de: mi) == CoordenadaAxial(q: 1, r: -1)        // true
 
 ``TecladoIsomorfico`` generaliza la tabla armónica: cada paso por la rejilla sube siempre los mismos
 semitonos, así que un acorde tiene la misma forma en todas las tonalidades. Trae la tabla armónica,
-Wicki-Hayden (también en espejo y con hexágonos planos), Jankó y el acordeón cromático de botones (sistemas C y B),
-y admite cualquier otro con los semitonos de cada eje. Los tres vecinos de un hexágono suben, según el teclado: 7, 4 y 3
-(tabla armónica), 2, 5 y 7 (Wicki-Hayden), 3, 2 y 1 (acordeón cromático) o 2, 1 y 1 (Jankó).
+Wicki-Hayden (también en espejo y con hexágonos planos), Jankó, el acordeón cromático de botones (sistemas C y B),
+Gerhard y Park, y admite cualquier otro con los semitonos de cada eje. Los tres vecinos de un hexágono suben, según el
+teclado: 7, 4 y 3 (tabla armónica), 2, 5 y 7 (Wicki-Hayden), 3, 2 y 1 (acordeón cromático), 2, 1 y 1 (Jankó), 4, 3 y 1
+(Gerhard, con la escala cromática en cada columna) o 5, 3 y 2 (Park, con la cuarta en horizontal). Bosanquet-Wilson,
+en 12 notas, es el mismo teclado que Jankó: el tono en horizontal y los dos semitonos, que aquí valen lo mismo, en las
+diagonales.
 
 ```swift
 import Hexagonos
@@ -315,6 +318,8 @@ TecladoIsomorfico.tablaArmonica.semitonos(hacia: .sMasRMenos) == 7         // tr
 TecladoIsomorfico.acordeonC.semitonos(hacia: DireccionHexagonal(.norte, .plana)!) == 3     // true
 TecladoIsomorfico.acordeonB.semitonos(hacia: DireccionHexagonal(.noreste, .plana)!) == 2   // true
 TecladoIsomorfico.wickiHaydenPlano.semitonos(hacia: DireccionHexagonal(.norte, .plana)!) == 7   // true
+TecladoIsomorfico.gerhard.semitonos(hacia: DireccionHexagonal(.norte, .plana)!) == 1   // true
+TecladoIsomorfico.park.semitonos(hacia: DireccionHexagonal(.este, .puntiaguda)!) == 5   // true
 let mapa = FormasDeMapa.rectangulo(columnas: 12, filas: 4, .filasImpares)
 let dibujo = TecladoIsomorfico.janko.svg(mapa, marcadas: [60, 64, 67])
 ```
