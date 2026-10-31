@@ -22,9 +22,9 @@ analisis.ficheros.map(\.formato)                  // [.musicXML, .mei, .midi]
 Cada presentación da tres cosas a la vez:
 
 - **Lo que se lee**, ya escrito en la notación elegida: ``AnalisisPresentado``, ``CoralPresentado``,
-  ``PresentacionPostonal``…
-- **Lo que suena**, un ``Sonido``: notas MIDI con su inicio y su duración, que el reproductor de ArmoniaUI toca y que
-  ``Sonido/afinado(en:)`` lleva a otro temperamento.
+  ``AnalisisPostonalPresentado``…
+- **Lo que suena**, una ``Escucha``: notas MIDI con su inicio y su duración, que el reproductor de ArmoniaUI toca y que
+  ``Escucha/afinado(en:)`` lleva a otro temperamento.
 - **Lo que se exporta**, una lista de ``FicheroParaExportar`` (MusicXML, MEI, MIDI o SVG), con su nombre de fichero.
 
 Los textos de la interfaz (pestañas, etiquetas, indicaciones) están en ``TextoDeLasApps``, en los mismos catorce
@@ -59,16 +59,16 @@ idiomas que los textos del motor: siguen la notación elegida, así que el selec
 
 - ``PresentacionDeArpegios``
 - ``ArpegioPresentado``
-- ``PresentacionDePentagrama``
+- ``PentagramaPresentado``
 - ``PresentacionDeTablatura``
 
 ### Conjuntos de clases
 
-- ``PresentacionPostonal``
+- ``AnalisisPostonalPresentado``
 
 ### Sonido y teclados MIDI
 
-- ``Sonido``
+- ``Escucha``
 - ``CambioMIDI``
 
 ### Exportar

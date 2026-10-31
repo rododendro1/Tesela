@@ -29,7 +29,8 @@ final class AfinacionTests: XCTestCase {
         XCTAssertEqual(TemperamentoRegular.igual(divisiones: 31).quinta, 1200 * 18 / 31, accuracy: 1e-9)
         XCTAssertEqual(TemperamentoRegular.igual(divisiones: 53).quinta, 1200 * 31 / 53, accuracy: 1e-9)
         XCTAssertEqual(TemperamentoRegular.igual(divisiones: 19).quinta, 1200 * 11 / 19, accuracy: 1e-9)
-        XCTAssertEqual(TemperamentoRegular.igual.afinar(la4: 415).frecuencia(de: "La4"), 415, accuracy: 1e-9)
+        XCTAssertEqual(
+            TemperamentoRegular.igual.afinar(frecuenciaDelLa4: 415).frecuencia(de: "La4"), 415, accuracy: 1e-9)
     }
 
     func testTemperamentosCirculares() {
@@ -56,7 +57,7 @@ final class AfinacionTests: XCTestCase {
         XCTAssertEqual(werckmeister.frecuencia(de: "Si#3"), werckmeister.frecuencia(de: "Do4"), accuracy: 1e-9)
         XCTAssertEqual(werckmeister.frecuencia(de: "Re5") / werckmeister.frecuencia(de: "Re4"), 2, accuracy: 1e-12)
         XCTAssertEqual(werckmeister.frecuencia(de: "La4"), 440, accuracy: 1e-9)
-        XCTAssertEqual(werckmeister.afinar(la4: 415).frecuencia(de: "La4"), 415, accuracy: 1e-9)
+        XCTAssertEqual(werckmeister.afinar(frecuenciaDelLa4: 415).frecuencia(de: "La4"), 415, accuracy: 1e-9)
         XCTAssertEqual(werckmeister.cents(de: "Sol4"), 696.09, accuracy: 0.01)
         // Si las quintas no cierran el círculo, no es un temperamento circular.
         XCTAssertNil(TemperamentoCircular(nombre: "pitagórico", quintas: Array(repeating: 1200 * log2(1.5), count: 12)))
@@ -65,29 +66,29 @@ final class AfinacionTests: XCTestCase {
     }
 
     func testCatalogoDeTemperamentos() {
-        XCTAssertEqual(Temperamento.allCases.count, 8)
-        for temperamento in Temperamento.allCases {
+        XCTAssertEqual(AfinacionHistorica.allCases.count, 8)
+        for temperamento in AfinacionHistorica.allCases {
             // Todos con el La4 de referencia en su sitio y la octava pura.
             let afinacion = temperamento.afinacion(tonica: .la)
             XCTAssertEqual(afinacion.frecuencia(de: "La4"), 440, accuracy: 1e-9, "\(temperamento)")
             XCTAssertEqual(afinacion.frecuencia(de: "Mi5") / afinacion.frecuencia(de: "Mi4"), 2, accuracy: 1e-12)
             let distingue = abs(afinacion.frecuencia(de: "Sol#4") - afinacion.frecuencia(de: "Lab4")) > 1e-6
             XCTAssertEqual(distingue, temperamento.distingueEnarmonicas, "\(temperamento)")
-            XCTAssertEqual(Temperamento(rawValue: temperamento.rawValue), temperamento)
+            XCTAssertEqual(AfinacionHistorica(rawValue: temperamento.rawValue), temperamento)
         }
-        XCTAssertEqual(Temperamento.igual.afinacion().desviacion(de: "Fa#3"), 0, accuracy: 1e-9)
-        XCTAssertEqual(Temperamento.justa.afinacion(tonica: .re).desviacion(de: "Fa#4"), -13.69, accuracy: 0.01)
+        XCTAssertEqual(AfinacionHistorica.igual.afinacion().desviacion(de: "Fa#3"), 0, accuracy: 1e-9)
+        XCTAssertEqual(AfinacionHistorica.justa.afinacion(tonica: .re).desviacion(de: "Fa#4"), -13.69, accuracy: 0.01)
         XCTAssertEqual(
-            Temperamento.mesotonico.afinacion().cents(desde: "Do4", hasta: "Mi4"), RazonDeFrecuencias(5, 4).cents,
+            AfinacionHistorica.mesotonico.afinacion().cents(desde: "Do4", hasta: "Mi4"), RazonDeFrecuencias(5, 4).cents,
             accuracy: 1e-9)
         for idioma in Idioma.traducidos {
-            let nombres = Temperamento.allCases.map {
+            let nombres = AfinacionHistorica.allCases.map {
                 $0.nombre(en: Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false)))
             }
             XCTAssertEqual(Set(nombres).count, nombres.count, "\(idioma)")
         }
-        XCTAssertEqual(Temperamento.justa.nombre(en: .inglesASCII), "just intonation")
-        XCTAssertEqual(Temperamento.kirnbergerIII.description, "Kirnberger III")
+        XCTAssertEqual(AfinacionHistorica.justa.nombre(en: .inglesASCII), "just intonation")
+        XCTAssertEqual(AfinacionHistorica.kirnbergerIII.description, "Kirnberger III")
     }
 
     func testRazonesJustas() {
@@ -106,8 +107,8 @@ final class AfinacionTests: XCTestCase {
         XCTAssertEqual(RazonDeFrecuencias.comaPitagorica.cents, 23.460, accuracy: 1e-3)
     }
 
-    func testEntonacionJusta() {
-        let justa = EntonacionJusta(tonica: .do)
+    func testAfinacionJusta() {
+        let justa = AfinacionJusta(tonica: .do)
         let do4 = Altura("Do4").frecuencia()
         XCTAssertEqual(justa.frecuencia(de: "Do4"), do4, accuracy: 1e-9)
         XCTAssertEqual(justa.frecuencia(de: "Mi4"), do4 * 5 / 4, accuracy: 1e-9)

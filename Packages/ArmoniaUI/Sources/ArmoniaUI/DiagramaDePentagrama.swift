@@ -7,13 +7,13 @@
     ///     DiagramaDePentagrama(Escala("Re dórico"))
     ///     DiagramaDePentagrama(Acorde("Sol7"), notacion: .inglesASCII)
     ///
-    /// Para ofrecerlo como fichero SVG: `BotonDeExportar([pentagrama.fichero])`, con la `PresentacionDePentagrama`.
+    /// Para ofrecerlo como fichero SVG: `BotonDeExportar([pentagrama.fichero])`, con la `PentagramaPresentado`.
     public struct DiagramaDePentagrama: View {
-        public let presentacion: PresentacionDePentagrama
+        public let presentacion: PentagramaPresentado
         /// Lo más alto que llega el dibujo, en puntos; el pentagrama doble y las escalas largas piden más que los demás.
         public let alturaMaxima: CGFloat
 
-        public init(_ presentacion: PresentacionDePentagrama, alturaMaxima: CGFloat = 260) {
+        public init(_ presentacion: PentagramaPresentado, alturaMaxima: CGFloat = 260) {
             self.presentacion = presentacion
             self.alturaMaxima = alturaMaxima
         }
@@ -23,7 +23,7 @@
             notacion: Notacion = .espanolUnicode, nombresDeLasNotas: Bool = true, alturaMaxima: CGFloat = 260
         ) {
             self.init(
-                PresentacionDePentagrama(
+                PentagramaPresentado(
                     escala, octava: octava, sentido: sentido, notacion: notacion,
                     nombresDeLasNotas: nombresDeLasNotas), alturaMaxima: alturaMaxima)
         }
@@ -33,7 +33,7 @@
             nombresDeLasNotas: Bool = false, alturaMaxima: CGFloat = 260
         ) {
             self.init(
-                PresentacionDePentagrama(
+                PentagramaPresentado(
                     acorde, octava: octava, notacion: notacion,
                     nombresDeLasNotas: nombresDeLasNotas), alturaMaxima: alturaMaxima)
         }

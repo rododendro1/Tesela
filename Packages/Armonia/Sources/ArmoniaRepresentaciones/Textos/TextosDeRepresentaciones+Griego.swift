@@ -5,7 +5,7 @@
 
 extension TextosDeRepresentaciones {
     static let griego = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "ίσος συγκερασμός",
         pitagorico: "πυθαγόρειο κούρδισμα",
         mesotonico: "μεσοτονικό ¼ κόμματος",

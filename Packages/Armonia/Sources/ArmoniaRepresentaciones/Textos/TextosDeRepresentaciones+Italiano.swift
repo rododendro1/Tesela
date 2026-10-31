@@ -5,7 +5,7 @@
 
 extension TextosDeRepresentaciones {
     static let italiano = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "temperamento equabile",
         pitagorico: "accordatura pitagorica",
         mesotonico: "mesotonico a ¼ di comma",

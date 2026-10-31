@@ -5,9 +5,9 @@ import Foundation
 /// los lectores de pantalla y el fichero que se comparte. No usa SwiftUI, así que se prueba en Linux;
 /// `DiagramaDePentagrama` lo muestra.
 ///
-///     let pentagrama = PresentacionDePentagrama(Escala("Re dórico"))
+///     let pentagrama = PentagramaPresentado(Escala("Re dórico"))
 ///     pentagrama.fichero.nombreDeFichero   // "Pentagrama Re dórico.svg"
-public struct PresentacionDePentagrama: Hashable, Sendable {
+public struct PentagramaPresentado: Hashable, Sendable {
     public let svg: String
     /// Para los lectores de pantalla: el nombre y las notas, con su octava.
     public let descripcion: String
@@ -60,7 +60,7 @@ public struct PresentacionDePentagrama: Hashable, Sendable {
     private init(svg: String, descripcion: String, nombre: String) {
         self.svg = svg
         self.descripcion = descripcion
-        self.relacionDeAspecto = PresentacionDePentagrama.relacionDeAspecto(deSVG: svg)
+        self.relacionDeAspecto = PentagramaPresentado.relacionDeAspecto(deSVG: svg)
         self.fichero = .svg(svg, nombre: nombre)
     }
 

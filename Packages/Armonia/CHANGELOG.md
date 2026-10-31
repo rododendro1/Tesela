@@ -2,6 +2,24 @@
 
 ## Sin publicar
 
+- Revisión de la terminología de la API. Los nombres viejos siguen compilando, marcados como obsoletos (con el
+  nombre nuevo en el aviso), y se quitarán en la próxima versión:
+  - `Altura.la440` pasa a `Altura.la4` (es una altura, no una frecuencia), y los parámetros y propiedades `la4:` que
+    son frecuencias pasan a `frecuenciaDelLa4:` (`frecuencia(frecuenciaDelLa4:)`, `afinar(frecuenciaDelLa4:)`,
+    `TemperamentoRegular.igual(divisiones:frecuenciaDelLa4:)`…).
+  - `Temperamento` pasa a `AfinacionHistorica`: incluye la afinación justa, que no es un temperamento.
+  - `EntonacionJusta` pasa a `AfinacionJusta` («entonación justa» es un calco del inglés), y `frecuenciaTonica`, a
+    `frecuenciaDeLaTonica`.
+  - `Encordado.bajo` pasa a `Encordado.bajoElectrico`, como en `InstrumentoDePartitura`; `bajo` es la nota más
+    grave de un acorde. «bajo eléctrico» también se lee con `Encordado(nombre:)`.
+  - `ClaseDeEscala` pasa a `CategoriaTradicional`, `TipoDeEscala.clase` a `categoria` y `tradicionales(clase:)` a
+    `tradicionales(categoria:)`: «clase» es la clase de altura.
+  - `TecladoIsomorfico.rotado(pasos:)` pasa a `rotado(doceavos:)`: cada paso es un doceavo de vuelta (30°), y en
+    Hexagonos `rotada(sextos:)` gira 60°.
+  - `Tempo.pulsacionesPorMinuto` pasa a `pulsosPorMinuto`, como `pulso` y `pulsos` en el resto de la API.
+- Las cuerdas: `Encordado.numeroTradicional(deCuerda:)` da el número con que se nombra una cuerda (la 1.ª es la de
+  abajo, el Mi agudo de la guitarra), y la documentación de `Encordado.cuerdas` y `PosicionEnElMastil.cuerda` dice
+  que el índice 0 es la de arriba. `PosicionEnElMastil.description` dice «cuerda 1 desde arriba, traste 3».
 - La octava de las alturas en subíndice: `Notacion.conOctavas(.subindices)` escribe La₄, Fa♯₃ y Si♭₋₁
   (`EscrituraDeLaOctava`, con `.cifras` por defecto), y `Altura(leyendo:)` lee las dos formas, también en las
   melodías y los corales. `Altura.nombreCompacto(en:)` y `octavaEscrita(en:)` dan las etiquetas de los teclados, la

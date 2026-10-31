@@ -172,7 +172,7 @@ final class APIPocoUsadaDeLasRepresentacionesTests: XCTestCase {
     }
 
     func testAfinacionDesdeLaFrecuenciaDeLaTonica() {
-        let afinacion = EntonacionJusta(tonica: Nota("La"), frecuenciaTonica: 432)
+        let afinacion = AfinacionJusta(tonica: Nota("La"), frecuenciaDeLaTonica: 432)
         XCTAssertEqual(afinacion.frecuencia(de: Altura("La4")), 432, accuracy: 1e-9)
     }
 }
@@ -240,7 +240,9 @@ final class APIPocoUsadaDeLaPartituraTests: XCTestCase {
 
 final class APIPocoUsadaDeLosTrastesTests: XCTestCase {
     func testDescripciones() throws {
-        XCTAssertEqual("\(PosicionEnElMastil(cuerda: 0, traste: 3))", "cuerda 1, traste 3")
+        XCTAssertEqual("\(PosicionEnElMastil(cuerda: 0, traste: 3))", "cuerda 1 desde arriba, traste 3")
+        XCTAssertEqual(Encordado.guitarra.numeroTradicional(deCuerda: 0), 6)
+        XCTAssertEqual(Encordado.ukelele.numeroTradicional(deCuerda: 0), 4)
         let digitacion = try XCTUnwrap(Mastil(.guitarra).digitaciones(de: Acorde("Do")).first)
         XCTAssertEqual("\(digitacion)", digitacion.tablatura)
     }

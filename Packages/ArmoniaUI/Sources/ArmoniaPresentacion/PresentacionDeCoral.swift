@@ -23,7 +23,7 @@ public struct CoralPresentado: Hashable, Sendable {
     public let avisos: [Aviso]
     public let ficheros: [FicheroParaExportar]
     /// El coral a cuatro voces, para «Escuchar»; en silencio si no hay coral.
-    public internal(set) var sonido: Sonido = .silencio
+    public internal(set) var sonido: Escucha = .silencio
 
     /// Por qué no hay coral, o cómo ha ido la revisión. `texto(en:)` lo escribe en el idioma de la notación.
     public enum Aviso: Hashable, Sendable {
@@ -126,7 +126,7 @@ public enum PresentacionDeCoral {
         let voz = try partes.contains { $0.contains(":") } ? Voz(leyendo: partes.joined(separator: " ")) : nil
         let alturas =
             voz.map { voz in
-                Sonido.notas(de: voz, tempo: Sonido.tempo).compactMap { $0.alturas.max { $0.midi < $1.midi } }
+                Escucha.notas(de: voz, tempo: Escucha.tempo).compactMap { $0.alturas.max { $0.midi < $1.midi } }
             } ?? partes.compactMap { Altura(texto: $0) }
         guard !alturas.isEmpty || voz == nil else {
             throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio)
@@ -142,15 +142,15 @@ public enum PresentacionDeCoral {
 
         var filas: [CoralPresentado.Fila] = []
         var ficheros: [FicheroParaExportar] = []
-        var sonido = Sonido.silencio
+        var sonido = Escucha.silencio
         if !conOctavas {
             avisos.append(.faltanOctavas)
         } else if let armonizada = tonalidad.armonizarACuatroVoces(alturas) {
             filas = self.filas(armonizada.armonizacion.analisis, armonizada.coral, notacion)
             ficheros = self.ficheros(armonizada.coral, tonalidad, notacion, nombre: "Armonización")
             sonido =
-                (voz.map { Sonido.coral(armonizada.coral.acordes, conElRitmoDe: $0) }
-                ?? Sonido.coral(armonizada.coral.acordes))
+                (voz.map { Escucha.coral(armonizada.coral.acordes, conElRitmoDe: $0) }
+                ?? Escucha.coral(armonizada.coral.acordes))
                 .conTonica(tonalidad.tonica)
         } else {
             avisos.append(.sinCoralParaLaMelodia)
@@ -175,7 +175,7 @@ public enum PresentacionDeCoral {
         return CoralPresentado(
             titulo: titulo, propuestas: [], filas: filas(analisis, voces, notacion), avisos: [],
             ficheros: ficheros(voces, analisis.tonalidad, notacion, nombre: "Coral"),
-            sonido: Sonido.coral(voces.acordes).conTonica(analisis.tonalidad.tonica))
+            sonido: Escucha.coral(voces.acordes).conTonica(analisis.tonalidad.tonica))
     }
 
     /// Las faltas de conducción (quintas y octavas paralelas, cruzamientos…) de unas voces escritas a mano.

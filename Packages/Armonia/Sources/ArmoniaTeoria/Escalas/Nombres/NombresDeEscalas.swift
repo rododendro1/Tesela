@@ -23,15 +23,15 @@ package struct NombresDeEscalas: Sendable {
         let tipo: TipoDeEscala?
         /// El nombre original de una escala tradicional (el de su tipo); `nil` en las occidentales.
         let clave: String?
-        /// La clase de escala (raga, dromos…) a la que da nombre una fila `.clase`; `nil` en las demás.
-        let clase: ClaseDeEscala?
+        /// La categoría (raga, dromos…) a la que da nombre una fila `.categoria`; `nil` en las demás.
+        let categoria: CategoriaTradicional?
         let nombre: String
         let alias: [String]
 
         /// Un tipo occidental del catálogo.
         init(_ tipo: TipoDeEscala, _ nombre: String, alias: [String] = []) {
             self.tipo = tipo
-            self.clase = nil
+            self.categoria = nil
             self.clave = nil
             self.nombre = nombre
             self.alias = alias
@@ -39,23 +39,23 @@ package struct NombresDeEscalas: Sendable {
 
         private init(tradicional tipo: TipoDeEscala, nombre: String, alias: [String]) {
             self.tipo = tipo
-            self.clase = nil
+            self.categoria = nil
             self.clave = tipo.nombre
             self.nombre = nombre
             self.alias = alias
         }
 
-        private init(clase: ClaseDeEscala, nombre: String) {
+        private init(categoria: CategoriaTradicional, nombre: String) {
             self.tipo = nil
-            self.clase = clase
+            self.categoria = categoria
             self.clave = nil
             self.nombre = nombre
             self.alias = []
         }
 
-        /// El nombre de una clase de escala (`ClaseDeEscala`) en este idioma.
-        static func clase(_ clase: ClaseDeEscala, _ nombre: String) -> Fila {
-            Fila(clase: clase, nombre: nombre)
+        /// El nombre de una categoría de escala (`CategoriaTradicional`) en este idioma.
+        static func categoria(_ categoria: CategoriaTradicional, _ nombre: String) -> Fila {
+            Fila(categoria: categoria, nombre: nombre)
         }
 
         /// Una escala de otra tradición; sin segundo nombre se escribe como el original.
@@ -77,7 +77,7 @@ package struct NombresDeEscalas: Sendable {
     package let tradicionales: [String: Entrada]
 
     /// Clase de escala → su nombre en este idioma.
-    package let clases: [ClaseDeEscala: String]
+    package let categorias: [CategoriaTradicional: String]
 
     /// Nombres y alias normalizados → tipo, para leerlos en este idioma. Un nombre gana a un alias; entre
     /// nombres o entre alias, gana el primero.
@@ -92,9 +92,9 @@ package struct NombresDeEscalas: Sendable {
             .map { Fila.tradicional($0) }
         var porTipo: [TipoDeEscala: Entrada] = [:]
         var tradicionales: [String: Entrada] = [:]
-        var clases: [ClaseDeEscala: String] = [:]
+        var categorias: [CategoriaTradicional: String] = [:]
         for fila in filas {
-            if let clase = fila.clase, clases[clase] == nil { clases[clase] = fila.nombre }
+            if let categoria = fila.categoria, categorias[categoria] == nil { categorias[categoria] = fila.nombre }
             let entrada = Entrada(nombre: fila.nombre, alias: fila.alias)
             if let clave = fila.clave {
                 if tradicionales[clave] == nil { tradicionales[clave] = entrada }
@@ -115,12 +115,12 @@ package struct NombresDeEscalas: Sendable {
         }
         self.porTipo = porTipo
         self.tradicionales = tradicionales
-        self.clases = clases
+        self.categorias = categorias
         self.indice = indice
     }
 
-    /// El nombre de una clase de escala en este idioma, o `nil` si el fichero no lo da.
-    package func nombre(de clase: ClaseDeEscala) -> String? { clases[clase] }
+    /// El nombre de una categoría de escala en este idioma, o `nil` si el fichero no lo da.
+    package func nombre(de categoria: CategoriaTradicional) -> String? { categorias[categoria] }
 
     /// El nombre de un tipo en este idioma, o `nil` si no lo tiene (un modo de una escala propia, por ejemplo).
     package func nombre(de tipo: TipoDeEscala) -> String? {
@@ -140,7 +140,7 @@ package struct NombresDeEscalas: Sendable {
     static let espanol = NombresDeEscalas(
         TipoDeEscala.todos.map { Fila($0, $0.nombre, alias: $0.alias) }
             + TipoDeEscala.tradicionales.map { Fila.tradicional($0, alias: $0.alias) }
-            + ClaseDeEscala.allCases.map { Fila.clase($0, $0.nombre) })
+            + CategoriaTradicional.allCases.map { Fila.categoria($0, $0.nombre) })
 }
 
 // MARK: - Leer un tipo de escala junto a una tónica

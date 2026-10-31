@@ -93,11 +93,11 @@ final class EjemplosDeDocumentacionTests: XCTestCase {
         _ = TemperamentoRegular.pitagorico
         _ = TemperamentoRegular.mesotonicoCuartoDeComa
         _ = TemperamentoRegular.igual(divisiones: 31)
-        _ = EntonacionJusta(tonica: .do)
+        _ = AfinacionJusta(tonica: .do)
         _ = Altura("Sol#4").frecuencia(en: TemperamentoRegular.mesotonicoCuartoDeComa)
         comprobar(Intervalo.terceraMayor.razonJusta, #"5/4"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 14)
         comprobar(TemperamentoRegular.igual.cents(de: .terceraMayor), #"400"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 15)
-        comprobar(EntonacionJusta(tonica: .do).desviacion(de: "Mi4"), #"−13,69 cents"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 16)
+        comprobar(AfinacionJusta(tonica: .do).desviacion(de: "Mi4"), #"−13,69 cents"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 16)
     }
 
     func testAfinacionYRepresentaciones2() throws {
@@ -106,16 +106,16 @@ final class EjemplosDeDocumentacionTests: XCTestCase {
         comprobar(werckmeister.desviaciones[4], #"−9,78"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 32)
         comprobar(werckmeister.frecuencia(de: "Sol#4") == werckmeister.frecuencia(de: "Lab4"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 33)
         comprobar(TemperamentoCircular.kirnbergerIII.cents(desde: "Do4", hasta: "Mi4"), #"386,31"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 34)
-        comprobar(TemperamentoCircular.vallotti.afinar(la4: 415).frecuencia(de: "La4"), #"415"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 35)
+        comprobar(TemperamentoCircular.vallotti.afinar(frecuenciaDelLa4: 415).frecuencia(de: "La4"), #"415"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 35)
         comprobar(TemperamentoCircular(nombre: "mío", quintas: Array(repeating: 701, count: 12)), #"nil"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 36)
     }
 
     func testAfinacionYRepresentaciones3() throws {
         // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 44
-        comprobar(Temperamento.allCases.count, #"8"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 44)
-        comprobar(Temperamento.justa.afinacion(tonica: .re).desviacion(de: "Fa#4"), #"−13,69"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 45)
-        comprobar(Temperamento.mesotonico.distingueEnarmonicas, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 46)
-        comprobar(Temperamento.vallotti.nombre(en: .ruso), #""Валлотти""#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 47)
+        comprobar(AfinacionHistorica.allCases.count, #"8"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 44)
+        comprobar(AfinacionHistorica.justa.afinacion(tonica: .re).desviacion(de: "Fa#4"), #"−13,69"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 45)
+        comprobar(AfinacionHistorica.mesotonico.distingueEnarmonicas, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 46)
+        comprobar(AfinacionHistorica.vallotti.nombre(en: .ruso), #""Валлотти""#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 47)
     }
 
     func testAfinacionYRepresentaciones4() throws {
@@ -360,15 +360,15 @@ final class EjemplosDeDocumentacionTests: XCTestCase {
 
     func testEscalas4() throws {
         // Sources/Armonia/Armonia.docc/Escalas.md, línea 186
-        comprobarIgual(TipoDeEscala.kafi.clase, .thaat, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 186)
-        comprobarIgual(TipoDeEscala.melakarta(15)?.clase, .melakarta, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 187)
+        comprobarIgual(TipoDeEscala.kafi.categoria, .thaat, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 186)
+        comprobarIgual(TipoDeEscala.melakarta(15)?.categoria, .melakarta, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 187)
         comprobarIgual(TipoDeEscala.hitzaz.tradicion, .grecia, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 188)
         comprobar(TipoDeEscala.mohanam.esRaga, #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 189)
         comprobar(TipoDeEscala.kafi.esRaga, #"false"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 190)
         comprobar(TipoDeEscala.mohanam.padre?.numeroDeMelakarta, #"28"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 191)
-        comprobar(TipoDeEscala.menorNatural.clase, #"nil"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 192)
-        comprobar(TipoDeEscala.tradicionales(clase: .melakarta).count, #"72"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 193)
-        comprobar(ClaseDeEscala.escala.nombre(en: Notacion.espanolUnicode.conTextos(en: .frances)), #""gamme""#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 194)
+        comprobar(TipoDeEscala.menorNatural.categoria, #"nil"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 192)
+        comprobar(TipoDeEscala.tradicionales(categoria: .melakarta).count, #"72"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 193)
+        comprobar(CategoriaTradicional.escala.nombre(en: Notacion.espanolUnicode.conTextos(en: .frances)), #""gamme""#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 194)
     }
 
     func testEscalas5() throws {

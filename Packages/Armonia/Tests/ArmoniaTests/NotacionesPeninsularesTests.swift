@@ -210,7 +210,7 @@ final class NotacionesPeninsularesTests: XCTestCase {
         XCTAssertEqual(Escala(texto: "re dóricu"), Escala(.re, .dorico))
         XCTAssertEqual(Tonalidad(.do).lugar(en: .asturiano), "en do mayor")
         XCTAssertEqual(InstrumentoDePartitura.violonchelo.nombre(en: .asturiano), "violonchelu")
-        XCTAssertEqual(Encordado(nombre: "baxu"), .bajo)
+        XCTAssertEqual(Encordado(nombre: "baxu"), .bajoElectrico)
         XCTAssertEqual(
             ErrorDeLectura(texto: "", posicion: 0, motivo: .textoVacio).explicacion(en: .asturiano),
             "el testu ta baleru")

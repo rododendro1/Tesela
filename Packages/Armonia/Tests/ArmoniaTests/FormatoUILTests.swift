@@ -133,7 +133,7 @@ final class FormatoUILTests: XCTestCase {
                         menor: menor, mayor: mayor, diferencia: diferencia, rotacion: giro, espejo: espejo)
                     let teclado = try formato.teclado()
                     let siguiente = try formato.rotado(grados: 30).teclado()
-                    misma(teclado.rotado(pasos: 1), siguiente, formato.descripcion)
+                    misma(teclado.rotado(doceavos: 1), siguiente, formato.descripcion)
                     misma(teclado.rotado(grados: 90)!, try formato.rotado(grados: 90).teclado(), formato.descripcion)
                     // El espejo cambia M y niega el giro (salvo cuando L = D, donde es indiferente).
                     if let reflejado = formato.reflejado, formato.caso != .igualdad {
@@ -148,15 +148,16 @@ final class FormatoUILTests: XCTestCase {
 
     func testDoceGirosDanLaVueltaYElEspejoSeDeshace() {
         for teclado in [TecladoIsomorfico.wickiHayden, .tablaArmonica, .janko, .acordeonC, .wickiHaydenEspejo] {
-            misma(teclado.rotado(pasos: 12), teclado, teclado.nombre)
-            misma(teclado.rotado(pasos: -3).rotado(pasos: 3), teclado, teclado.nombre)
+            misma(teclado.rotado(doceavos: 12), teclado, teclado.nombre)
+            misma(teclado.rotado(doceavos: -3).rotado(doceavos: 3), teclado, teclado.nombre)
             misma(teclado.reflejado.reflejado, teclado, teclado.nombre)
-            XCTAssertEqual(teclado.rotado(pasos: 1).orientacion, teclado.orientacion == .plana ? .puntiaguda : .plana)
-            XCTAssertEqual(teclado.rotado(pasos: 2).orientacion, teclado.orientacion)
-            XCTAssertEqual(teclado.rotado(pasos: 1).midi(en: .origen), teclado.midi(en: .origen))
+            XCTAssertEqual(
+                teclado.rotado(doceavos: 1).orientacion, teclado.orientacion == .plana ? .puntiaguda : .plana)
+            XCTAssertEqual(teclado.rotado(doceavos: 2).orientacion, teclado.orientacion)
+            XCTAssertEqual(teclado.rotado(doceavos: 1).midi(en: .origen), teclado.midi(en: .origen))
             // Un teclado girado sigue siendo consistente: lo contrario en la dirección opuesta.
             for d in DireccionHexagonal.allCases {
-                let girado = teclado.rotado(pasos: 5)
+                let girado = teclado.rotado(doceavos: 5)
                 XCTAssertEqual(girado.semitonos(hacia: d), -girado.semitonos(hacia: d.opuesta))
             }
         }

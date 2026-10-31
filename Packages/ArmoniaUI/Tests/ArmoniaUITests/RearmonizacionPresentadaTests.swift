@@ -26,14 +26,14 @@ final class RearmonizacionPresentadaTests: XCTestCase {
 
     func testDesdeElAnalisisYEnIngles() throws {
         let analisis = try PresentacionDeAnalisis.analizar("C Am F G7 C", notacion: .inglesASCII)
-        let propuestas = analisis.rearmonizaciones(notacion: .inglesASCII)
+        let propuestas = analisis.rearmonizaciones(en: .inglesASCII)
         XCTAssertTrue(propuestas.contains { $0.descripcion == "G7 → Db7 (tritone substitution)" })
         XCTAssertTrue(propuestas.contains { $0.texto == "C Am F Db7 C" })
         // Sin acordes ni tonalidad, ninguna propuesta.
         var vacio = analisis
         vacio.acordes = []
         vacio.tonalidad = nil
-        XCTAssertEqual(vacio.rearmonizaciones(notacion: .inglesASCII), [])
+        XCTAssertEqual(vacio.rearmonizaciones(en: .inglesASCII), [])
     }
 
     func testEnUnaTonalidadDada() throws {

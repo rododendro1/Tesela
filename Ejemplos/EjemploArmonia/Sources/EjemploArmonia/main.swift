@@ -171,7 +171,7 @@ let afinaciones: [(String, any Afinacion)] = [
     ("igual", TemperamentoRegular.igual), ("pitagórico", TemperamentoRegular.pitagorico),
     ("mesotónico ¼", TemperamentoRegular.mesotonicoCuartoDeComa),
     ("31 divisiones", TemperamentoRegular.igual(divisiones: 31)),
-    ("justa en Do", EntonacionJusta(tonica: .do)),
+    ("justa en Do", AfinacionJusta(tonica: .do)),
 ]
 for (nombre, afinacion) in afinaciones {
     let notas: [Altura] = ["Do4", "Mi4", "Sol4", "La4", "Sol#4", "Lab4"]

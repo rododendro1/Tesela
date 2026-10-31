@@ -15,7 +15,7 @@ import ArmoniaNucleo
 // No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales,
 // pero `buscar(nombre:)` y `Escala("Re hitzaz")` las encuentran.
 //
-// `clase` y `tradicion` (en `ClaseDeEscala.swift`) dicen de cada una si es un raga, un melakarta, un dromos, un
+// `categoria` y `tradicion` (en `CategoriaTradicional.swift`) dicen de cada una si es un raga, un melakarta, un dromos, un
 // maqam…; salen de estas listas. Sus nombres en cada idioma están en `Escalas/Nombres/`.
 //
 // La India, que es la más larga, está en `TipoDeEscala+India.swift`; las demás, más abajo, cada una tras su

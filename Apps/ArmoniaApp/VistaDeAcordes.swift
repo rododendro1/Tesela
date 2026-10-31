@@ -47,7 +47,7 @@ struct VistaDeAcordes: View {
             case .success(let acorde):
                 informacion(de: acorde)
                 Section(notacion.texto(.pentagrama)) {
-                    DiagramaDePentagrama(PresentacionDePentagrama(acorde, notacion: notacion))
+                    DiagramaDePentagrama(PentagramaPresentado(acorde, notacion: notacion))
                 }
                 seccionDelArpegio(de: acorde)
                 escalas(de: acorde)
@@ -85,8 +85,8 @@ struct VistaDeAcordes: View {
         guard case .success(let acorde) = lectura else { return [] }
         let arpegio = self.arpegio(de: acorde)
         var ficheros = [
-            PresentacionDePentagrama(acorde, notacion: notacion).fichero,
-            PresentacionDePentagrama(arpegio, notacion: notacion).fichero,
+            PentagramaPresentado(acorde, notacion: notacion).fichero,
+            PentagramaPresentado(arpegio, notacion: notacion).fichero,
         ]
         ficheros += PresentacionDeArpegios.arpegio(arpegio, figura: figura.duracion, notacion: notacion).ficheros
         let cifrado = acorde.cifrado(en: notacion)
@@ -121,7 +121,7 @@ struct VistaDeAcordes: View {
                 ForEach(Self.figuras, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
             }
             DiagramaDePentagrama(
-                PresentacionDePentagrama(arpegio, notacion: notacion, resaltada: reproductor.paso(de: sonido)))
+                PentagramaPresentado(arpegio, notacion: notacion, resaltada: reproductor.paso(de: sonido)))
             BotonDeEscuchar(sonido)
         }
     }
@@ -196,7 +196,7 @@ struct VistaDeAcordes: View {
             ForEach(mastil.arpegios(de: acorde), id: \.trastes) { posicion in
                 // De grave a agudo, en corcheas, como se toca al subir; mientras suena, se resalta la nota.
                 let voz = Voz(posicion.alturas.map { Evento($0, .corchea) })
-                let sonido = Sonido.voz(voz).conTonica(acorde.fundamental)
+                let sonido = Escucha.voz(voz).conTonica(acorde.fundamental)
                 let paso = reproductor.paso(de: sonido)
                 let sonando = paso.flatMap { posicion.posiciones.indices.contains($0) ? posicion.posiciones[$0] : nil }
                 VStack(alignment: .leading, spacing: 4) {

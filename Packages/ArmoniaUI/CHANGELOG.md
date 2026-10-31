@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+- Revisión de la terminología de la API. Los nombres viejos siguen compilando, marcados como obsoletos, y se quitarán
+  en la próxima versión:
+  - `PresentacionDePentagrama` pasa a `PentagramaPresentado` y `PresentacionPostonal`, a `AnalisisPostonalPresentado`,
+    como los demás resultados (`AnalisisPresentado`, `CoralPresentado`…); las `PresentacionDe…` son las que preparan.
+  - `AnalisisPresentado.rearmonizaciones(notacion:)` pasa a `rearmonizaciones(en:)`, como las demás funciones que
+    reciben una `Notacion`.
+  - `Sonido` pasa a `Escucha`: es lo que suena al pulsar «Escuchar», y «sonido» es también otro nombre de la altura.
+  - `Reproductor`, `SelectorDeNotacion` y `Escucha.afinado(en:)` usan `AfinacionHistorica`, el nombre nuevo de
+    `Temperamento`.
+- VoiceOver numera las cuerdas del mástil como quien toca: en la guitarra, el Mi grave es la cuerda 6 (antes, la 1).
 - Documentación de DocC para `ArmoniaUI` y `ArmoniaPresentacion`: una página de entrada por módulo, con un ejemplo y
   los tipos agrupados por tarea, publicada en GitHub Pages junto a la de Armonia y Hexagonos.
 - `RedDeNotas` toma el teclado y el nombre de cada red de `TecladoIsomorfico.todos` y `nombre(en:)` del motor.

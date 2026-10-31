@@ -5,7 +5,7 @@
 
 extension TextosDeRepresentaciones {
     static let ingles = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "equal temperament",
         pitagorico: "Pythagorean tuning",
         mesotonico: "quarter-comma meantone",

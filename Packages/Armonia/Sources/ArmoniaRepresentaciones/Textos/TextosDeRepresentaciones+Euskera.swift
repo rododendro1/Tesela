@@ -5,7 +5,7 @@
 
 extension TextosDeRepresentaciones {
     static let euskera = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "tenperamentu berdina",
         pitagorico: "afinazio pitagorikoa",
         mesotonico: "¼ komako mesotonikoa",

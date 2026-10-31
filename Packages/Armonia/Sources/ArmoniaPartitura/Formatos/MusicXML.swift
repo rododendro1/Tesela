@@ -306,7 +306,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
 
     private var metronomo: String {
         guard let tempo else { return "" }
-        let porMinuto = Exportacion.formatear(tempo.pulsacionesPorMinuto)
+        let porMinuto = Exportacion.formatear(tempo.pulsosPorMinuto)
         var unidad = ""
         if let (figura, puntillos) = tempo.unidad.figuraYPuntillos {
             unidad =

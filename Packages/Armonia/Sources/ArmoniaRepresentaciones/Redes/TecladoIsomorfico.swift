@@ -142,15 +142,16 @@ public struct TecladoIsomorfico: Hashable, Sendable {
         return DireccionHexagonal.allCases.first { $0.rumbo(orientacion) == rumbo }.map { semitonos(hacia: $0) }
     }
 
-    /// El teclado girado `pasos` veces 30° en sentido horario (en antihorario si son negativos).
+    /// El teclado girado `doceavos` veces 30° (un doceavo de vuelta) en sentido horario, en antihorario si son
+    /// negativos.
     ///
     /// Es el mismo teclado con otra colocación, como el `R` del UIL: cada giro de 60° reparte los mismos
     /// intervalos una dirección más allá, y uno de 30° además cambia la orientación de los hexágonos
     /// (de planos a puntiagudos o al revés). Doce giros dan la vuelta entera.
-    public func rotado(pasos: Int, nombre: String? = nil) -> TecladoIsomorfico {
-        let grados = modulo(pasos * 30, 360)
+    public func rotado(doceavos: Int, nombre: String? = nil) -> TecladoIsomorfico {
+        let grados = modulo(doceavos * 30, 360)
         if grados == 0 && nombre == nil { return self }
-        let nueva = pasos % 2 == 0 ? orientacion : orientacion.alternada
+        let nueva = doceavos % 2 == 0 ? orientacion : orientacion.alternada
         return derivado(nombre: nombre ?? "\(self.nombre) ↻\(grados)°", orientacion: nueva) { rumbo in
             self.semitonos(rumbo: rumbo - grados) ?? 0
         }
@@ -158,7 +159,7 @@ public struct TecladoIsomorfico: Hashable, Sendable {
 
     /// El teclado girado esos grados en sentido horario, o `nil` si no son un múltiplo de 30.
     public func rotado(grados: Int, nombre: String? = nil) -> TecladoIsomorfico? {
-        grados % 30 == 0 ? rotado(pasos: grados / 30, nombre: nombre) : nil
+        grados % 30 == 0 ? rotado(doceavos: grados / 30, nombre: nombre) : nil
     }
 
     /// El teclado reflejado como en un espejo vertical: lo que subía a la derecha sube a la izquierda.

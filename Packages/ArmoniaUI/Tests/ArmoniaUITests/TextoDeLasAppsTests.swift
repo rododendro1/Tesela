@@ -103,9 +103,10 @@ final class TextoDeLasAppsTests: XCTestCase {
     func testLoQueLeeVoiceOverVaEnElIdiomaDeLosTextos() {
         let marcas = [PosicionEnElMastil(cuerda: 1, traste: 3), PosicionEnElMastil(cuerda: 0, traste: 0)]
         XCTAssertEqual(
-            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [5], en: .inglesASCII),
-            "string 1, fret 0; string 2, fret 3; muted strings: 6")
-        XCTAssertEqual(PresentacionDeMastil.descripcion(marcas: [], apagadas: [], en: .frances), "Aucune marque")
+            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [5], cuerdas: 6, en: .inglesASCII),
+            "string 6, fret 0; string 5, fret 3; muted strings: 1")
+        XCTAssertEqual(
+            PresentacionDeMastil.descripcion(marcas: [], apagadas: [], cuerdas: 6, en: .frances), "Aucune marque")
         XCTAssertEqual(
             PresentacionDeMastil.etiqueta(de: Mastil(.ukelele), rango: 0...5, en: .inglesASCII),
             "Ukulele neck, frets 0 to 5")
