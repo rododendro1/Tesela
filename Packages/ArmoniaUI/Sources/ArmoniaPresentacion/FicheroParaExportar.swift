@@ -109,13 +109,13 @@ extension FicheroParaExportar.Formato {
         let traduccion: Traduccion
         switch self {
         case .musicXML:
-            traduccion = TextosDeApps.traducidos.map(\.partituraMusicXML)
+            traduccion = TextosDeApps.traduccion(\.partituraMusicXML)
         case .mei:
-            traduccion = TextosDeApps.traducidos.map(\.partituraMEI)
+            traduccion = TextosDeApps.traduccion(\.partituraMEI)
         case .midi:
             return "MIDI"
         case .svg:
-            traduccion = TextosDeApps.traducidos.map(\.dibujoSVG)
+            traduccion = TextosDeApps.traduccion(\.dibujoSVG)
         }
         return traduccion.en(notacion)
     }

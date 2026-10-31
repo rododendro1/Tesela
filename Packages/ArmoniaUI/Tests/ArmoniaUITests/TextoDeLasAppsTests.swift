@@ -1,4 +1,5 @@
 import Armonia
+import Foundation
 import Hexagonos
 import XCTest
 
@@ -42,6 +43,26 @@ final class TextoDeLasAppsTests: XCTestCase {
         XCTAssertEqual(Notacion.ruso.texto(.dedos(3, cejilla: 5)), "3 пальца, барре на 5-м ладу")
         XCTAssertEqual(Notacion.ruso.texto(.marcas(11)), "11 отметок")
         XCTAssertEqual(Notacion.griego.texto(.acordes), "Συγχορδίες")
+    }
+
+    /// Todos los textos caben en la pila de un hilo secundario de macOS (512 KB), también sin optimizar. Con un
+    /// `TextosDeApps.traducidos.map` en cada caso del `switch`, cada caso guardaba en la pila su copia de los
+    /// catorce idiomas y `campoDeAcorde` desbordaba hasta la pila del hilo principal (señal 11 en macOS).
+    func testLosTextosCabenEnLaPilaDeUnHiloSecundario() {
+        let todos = Self.todos
+        let hecho = DispatchSemaphore(value: 0)
+        let hilo = Thread {
+            for idioma in Idioma.traducidos {
+                let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
+                for texto in todos {
+                    XCTAssertFalse(notacion.texto(texto).isEmpty, "\(texto) en \(idioma)")
+                }
+            }
+            hecho.signal()
+        }
+        hilo.stackSize = 512 * 1024
+        hilo.start()
+        XCTAssertEqual(hecho.wait(timeout: .now() + 60), .success)
     }
 
     func testLosEjemplosVanEnLaNotacion() {

@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- Arreglado: en macOS, sin optimizar, los textos de las apps desbordaban la pila (señal 11). Pasaba en las pruebas
+  de ArmoniaUI y en Tonnetz al elegir «Acorde». Cada caso de `TextoDeLasApps` copiaba en la pila los catorce
+  `TextosDeApps`; ahora la copia es una, en `TextosDeApps.traduccion(_:)`.
 - Revisión de la terminología de la API. Los nombres viejos siguen compilando, marcados como obsoletos, y se quitarán
   en la próxima versión:
   - `PresentacionDePentagrama` pasa a `PentagramaPresentado` y `PresentacionPostonal`, a `AnalisisPostonalPresentado`,
