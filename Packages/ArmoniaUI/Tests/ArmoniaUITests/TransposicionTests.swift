@@ -54,4 +54,31 @@ final class TransposicionTests: XCTestCase {
         XCTAssertEqual(enRe.ritmo, abierta.ritmo)
         XCTAssertEqual(enRe.titulo, "Pieza")
     }
+
+    func testLaTonalidadDeLoEscrito() throws {
+        XCTAssertEqual(PresentacionDeTransposicion.tonalidad(de: "Do Fa | Sol7 Do"), Tonalidad(.do))
+        let enRe = PresentacionDeTransposicion.tonalidad(de: "Re4:4 Mi4 Fa# Sol La4+Si4:2 Do#5", contenido: .notas)
+        let tonica = try XCTUnwrap(enRe).tonica
+        XCTAssertTrue([Nota.re, Nota.si].contains(tonica), "\(tonica)")
+        XCTAssertNil(PresentacionDeTransposicion.tonalidad(de: "", contenido: .notas))
+        XCTAssertNil(PresentacionDeTransposicion.tonalidad(de: "zzz", contenido: .notas))
+        XCTAssertNil(PresentacionDeTransposicion.tonalidad(de: ""))
+    }
+
+    func testLosSilenciosYLasNotacionesQueNoSeLeen() throws {
+        // Un guion o una tilde sueltos se dejan como están.
+        let conSilencios = try PresentacionDeTransposicion.transponer(
+            "Mi - ~ Fa", .segundaMayor, contenido: .notas, notacion: .espanolUnicode)
+        XCTAssertEqual(conSilencios, "Fa♯ - ~ Sol")
+        // En cualquier notación, lo transportado se vuelve a leer como lo que es.
+        for notacion in Notacion.allCases {
+            let acorde = try PresentacionDeTransposicion.transponer("Sol7", .segundaMenor, notacion: notacion)
+            XCTAssertEqual(try Acorde(leyendo: acorde), Acorde("Lab7"), "\(notacion)")
+            let altura = try PresentacionDeTransposicion.transponer(
+                "Do4", .segundaMenor, contenido: .notas, notacion: notacion)
+            XCTAssertEqual(try Altura(leyendo: altura), Altura(Nota.re.bemol, octava: 4), "\(notacion)")
+        }
+        XCTAssertEqual(PresentacionDeTransposicion.texto(de: [], notacion: .espanolUnicode), "")
+        XCTAssertEqual(PresentacionDeTransposicion.intervalos.count, 6)
+    }
 }

@@ -30,4 +30,15 @@ final class RearmonizacionPresentadaTests: XCTestCase {
         XCTAssertTrue(propuestas.contains { $0.descripcion == "G7 → Db7 (tritone substitution)" })
         XCTAssertTrue(propuestas.contains { $0.texto == "C Am F Db7 C" })
     }
+
+    func testEnUnaTonalidadDada() throws {
+        let acordes = [Acorde("Do"), Acorde("Sol7"), Acorde("Do")]
+        let enDo = try XCTUnwrap(
+            PresentacionDeRearmonizacion.proponer(acordes, en: Tonalidad(.do), notacion: .espanolUnicode))
+        XCTAssertEqual(enDo.tonalidad, Tonalidad(.do))
+        // Las propuestas son distintas entre sí y se pueden comparar.
+        XCTAssertEqual(Set(enDo.propuestas).count, enDo.propuestas.count)
+        let analizada = PresentacionDeRearmonizacion.proponer(acordes, notacion: .espanolUnicode)
+        XCTAssertEqual(enDo.propuestas, analizada?.propuestas)
+    }
 }
