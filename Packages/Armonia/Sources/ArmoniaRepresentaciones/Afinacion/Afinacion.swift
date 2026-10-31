@@ -45,12 +45,12 @@ public struct TemperamentoRegular: Afinacion, Hashable {
     /// Tamaño de la quinta en cents.
     public let quinta: Double
     /// Frecuencia del La4 de referencia.
-    public let la4: Double
+    public let frecuenciaDelLa4: Double
 
-    public init(nombre: String, quinta: Double, la4: Double = 440) {
+    public init(nombre: String, quinta: Double, frecuenciaDelLa4: Double = 440) {
         self.nombre = nombre
         self.quinta = quinta
-        self.la4 = la4
+        self.frecuenciaDelLa4 = frecuenciaDelLa4
     }
 
     /// Cents desde Do4.
@@ -65,31 +65,33 @@ public struct TemperamentoRegular: Afinacion, Hashable {
 
     public func frecuencia(de nota: Altura) -> Double {
         // La4 está en (3, −1).
-        la4 * pow(2, (cents(de: nota) - cents(de: .la440)) / 1200)
+        frecuenciaDelLa4 * pow(2, (cents(de: nota) - cents(de: .la4)) / 1200)
     }
 
-    /// El mismo temperamento con otra frecuencia de referencia: `.igual.afinar(la4: 415)`.
-    public func afinar(la4 frecuencia: Double) -> TemperamentoRegular {
-        TemperamentoRegular(nombre: nombre, quinta: quinta, la4: frecuencia)
+    /// El mismo temperamento con otra frecuencia de referencia: `.igual.afinar(frecuenciaDelLa4: 415)`.
+    public func afinar(frecuenciaDelLa4 frecuencia: Double) -> TemperamentoRegular {
+        TemperamentoRegular(nombre: nombre, quinta: quinta, frecuenciaDelLa4: frecuencia)
     }
 
     /// Temperamento igual de `divisiones` partes por octava, con la quinta en el paso más cercano
     /// a la quinta pura: `.igual(divisiones: 12)` es `.igual`; 19, 31 (casi mesotónico),
     /// 53 (casi pitagórico).
-    public static func igual(divisiones: Int, la4: Double = 440) -> TemperamentoRegular {
+    public static func igual(divisiones: Int, frecuenciaDelLa4: Double = 440) -> TemperamentoRegular {
         let pasos = (Double(divisiones) * log2(1.5)).rounded()
         return TemperamentoRegular(
             nombre: "\(divisiones) divisiones iguales",
-            quinta: 1200 * pasos / Double(divisiones), la4: la4)
+            quinta: 1200 * pasos / Double(divisiones), frecuenciaDelLa4: frecuenciaDelLa4)
     }
 
     /// Mesotónico de 1/`fraccion` de coma sintónica: cada quinta se estrecha esa parte de la coma.
-    public static func mesotonico(fraccionDeComa fraccion: Double, la4: Double = 440) -> TemperamentoRegular {
+    public static func mesotonico(
+        fraccionDeComa fraccion: Double, frecuenciaDelLa4: Double = 440
+    ) -> TemperamentoRegular {
         let pura = 1200 * log2(1.5)
         let coma = 1200 * log2(81.0 / 80.0)
         return TemperamentoRegular(
             nombre: "mesotónico de 1/\(Int(fraccion)) de coma",
-            quinta: pura - coma / fraccion, la4: la4)
+            quinta: pura - coma / fraccion, frecuenciaDelLa4: frecuenciaDelLa4)
     }
 
     public static let igual = TemperamentoRegular(nombre: "temperamento igual", quinta: 700)
@@ -119,17 +121,17 @@ public struct TemperamentoCircular: Afinacion, Hashable {
     /// Mi–Si, Si–Fa♯, Fa♯–Do♯, Do♯–Sol♯, Sol♯–Mi♭, Mi♭–Si♭, Si♭–Fa y Fa–Do. Suman siete octavas.
     public let quintas: [Double]
     /// Frecuencia del La4 de referencia.
-    public let la4: Double
+    public let frecuenciaDelLa4: Double
     /// Cents de cada nota desde Do, por clase de altura (Do = 0, Do♯ = 1… Si = 11).
     public let clases: [Double]
 
     /// `nil` si no son doce quintas o si no suman siete octavas (8400 cents, con una centésima de
     /// cent de margen): entonces el círculo no se cierra.
-    public init?(nombre: String, quintas: [Double], la4: Double = 440) {
+    public init?(nombre: String, quintas: [Double], frecuenciaDelLa4: Double = 440) {
         guard quintas.count == 12, abs(quintas.reduce(0, +) - 8400) < 0.01 else { return nil }
         self.nombre = nombre
         self.quintas = quintas
-        self.la4 = la4
+        self.frecuenciaDelLa4 = frecuenciaDelLa4
         var clases = Array(repeating: 0.0, count: 12)
         var cents = 0.0
         for k in 0..<12 {
@@ -149,12 +151,12 @@ public struct TemperamentoCircular: Afinacion, Hashable {
     }
 
     public func frecuencia(de nota: Altura) -> Double {
-        la4 * pow(2, (cents(de: nota) - cents(de: .la440)) / 1200)
+        frecuenciaDelLa4 * pow(2, (cents(de: nota) - cents(de: .la4)) / 1200)
     }
 
     /// El mismo temperamento con otra frecuencia de referencia.
-    public func afinar(la4 frecuencia: Double) -> TemperamentoCircular {
-        TemperamentoCircular(nombre: nombre, quintas: quintas, la4: frecuencia)!
+    public func afinar(frecuenciaDelLa4 frecuencia: Double) -> TemperamentoCircular {
+        TemperamentoCircular(nombre: nombre, quintas: quintas, frecuenciaDelLa4: frecuencia)!
     }
 
     /// Doce quintas puras, de las que se estrecha cada una lo que diga `estrechamientos` (en cents).
@@ -202,25 +204,25 @@ public struct TemperamentoCircular: Afinacion, Hashable {
 /// Do). Aquí, cada nota a `q` quintas de la tónica sustituye ⌊(q + 1) / 4⌋ grupos de cuatro
 /// quintas por terceras puras, que es la afinación de Ptolomeo de la escala mayor:
 /// 1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8.
-public struct EntonacionJusta: Afinacion, Hashable {
+public struct AfinacionJusta: Afinacion, Hashable {
     public let tonica: Nota
     /// Frecuencia de la tónica en la octava 4.
-    public let frecuenciaTonica: Double
+    public let frecuenciaDeLaTonica: Double
 
     /// La tónica en la octava 4 toma su frecuencia en temperamento igual con el La4 dado.
-    public init(tonica: Nota, la4: Double = 440) {
+    public init(tonica: Nota, frecuenciaDelLa4: Double = 440) {
         self.tonica = tonica
-        self.frecuenciaTonica = Altura(tonica, octava: 4).frecuencia(la4: la4)
+        self.frecuenciaDeLaTonica = Altura(tonica, octava: 4).frecuencia(frecuenciaDelLa4: frecuenciaDelLa4)
     }
 
-    public init(tonica: Nota, frecuenciaTonica: Double) {
+    public init(tonica: Nota, frecuenciaDeLaTonica: Double) {
         self.tonica = tonica
-        self.frecuenciaTonica = frecuenciaTonica
+        self.frecuenciaDeLaTonica = frecuenciaDeLaTonica
     }
 
     public func frecuencia(de nota: Altura) -> Double {
         let referencia = Altura(tonica, octava: 4)
-        return frecuenciaTonica
+        return frecuenciaDeLaTonica
             * Intervalo(
                 pasosDeQuinta: nota.pasosDeQuinta - referencia.pasosDeQuinta,
                 pasosDeOctava: nota.pasosDeOctava - referencia.pasosDeOctava
@@ -255,7 +257,7 @@ public struct RazonDeFrecuencias: Hashable, Sendable, CustomStringConvertible {
 }
 
 extension Intervalo {
-    /// Razón justa de 5 límites del intervalo, con el mismo criterio que `EntonacionJusta`
+    /// Razón justa de 5 límites del intervalo, con el mismo criterio que `AfinacionJusta`
     /// (como si la nota grave fuera la tónica): 3ª mayor → 5/4, 3ª menor → 6/5,
     /// 7ª mayor → 15/8, 4ª aumentada → 45/32. Si el intervalo desciende, la razón es menor que 1.
     public var razonJusta: RazonDeFrecuencias {

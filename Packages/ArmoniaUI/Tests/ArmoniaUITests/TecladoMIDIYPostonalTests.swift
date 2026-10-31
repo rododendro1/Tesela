@@ -45,12 +45,12 @@ final class TecladoMIDIYPostonalTests: XCTestCase {
     }
 
     func testLaTeoriaPostonalDeUnaTriada() {
-        let mayor = PresentacionPostonal(clases: [60, 64, 67, 72])
+        let mayor = AnalisisPostonalPresentado(clases: [60, 64, 67, 72])
         XCTAssertEqual(mayor.formaPrima, "(0, 3, 7)")
         XCTAssertEqual(mayor.numeroDeForte, "3-11")
         XCTAssertEqual(mayor.vectorIntervalico, "⟨0, 0, 1, 1, 1, 0⟩")
         // La menor es la misma clase de conjuntos.
-        XCTAssertEqual(PresentacionPostonal(clases: [9, 0, 4]), mayor)
-        XCTAssertEqual(PresentacionPostonal(clases: [0, 4, 7, 10]).numeroDeForte, "4-27")
+        XCTAssertEqual(AnalisisPostonalPresentado(clases: [9, 0, 4]), mayor)
+        XCTAssertEqual(AnalisisPostonalPresentado(clases: [0, 4, 7, 10]).numeroDeForte, "4-27")
     }
 }

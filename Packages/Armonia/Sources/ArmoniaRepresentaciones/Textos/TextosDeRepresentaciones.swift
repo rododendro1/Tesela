@@ -9,7 +9,7 @@ import ArmoniaNucleo
 
 /// Los textos de ArmoniaRepresentaciones en un idioma.
 struct TextosDeRepresentaciones: Sendable {
-    // MARK: Temperamento.swift
+    // MARK: AfinacionHistorica.swift
     let temperamentoIgual: String
     let pitagorico: String
     let mesotonico: String

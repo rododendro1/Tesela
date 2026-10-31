@@ -462,7 +462,7 @@ package struct EscritorMEI: EscritorDePartitura {
 
     /// `<tempo>` con la figura y las pulsaciones, y su velocidad en negras para MIDI.
     private static func indicacion(_ tempo: Tempo, pentagrama: Int, id: String) -> String {
-        let porMinuto = Exportacion.formatear(tempo.pulsacionesPorMinuto)
+        let porMinuto = Exportacion.formatear(tempo.pulsosPorMinuto)
         var atributos = "staff=\"\(pentagrama)\" place=\"above\" startid=\"#\(id)\""
         var texto = "♩ = " + Exportacion.formatear(tempo.negrasPorMinuto)
         if let (figura, puntillos) = tempo.unidad.figuraYPuntillos {

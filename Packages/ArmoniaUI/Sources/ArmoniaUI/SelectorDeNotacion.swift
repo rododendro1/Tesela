@@ -5,7 +5,7 @@
 
     /// El menú para elegir la notación de las notas y, aparte, el idioma de los textos. Guarda la `clave`
     /// de la `Notacion` (combinada si los textos van en otro idioma). Con `temperamento`, también elige con qué
-    /// afinación suena «Escuchar» (el `rawValue` de un `Temperamento`). Lo habitual es ponerlo en la barra
+    /// afinación suena «Escuchar» (el `rawValue` de una `AfinacionHistorica`). Lo habitual es ponerlo en la barra
     /// con `selectorDeNotacionEnLaBarra()`, que lo guarda todo en los ajustes que leen `notacionGuardada()` y el
     /// `Reproductor`.
     public struct SelectorDeNotacion: View {
@@ -32,7 +32,7 @@
                 }
                 if let temperamento {
                     Picker(notacion.texto(.afinacionAlEscuchar), selection: temperamento) {
-                        ForEach(Temperamento.allCases, id: \.self) { opcion in
+                        ForEach(AfinacionHistorica.allCases, id: \.self) { opcion in
                             Text(opcion.nombre(en: notacion)).tag(opcion.rawValue)
                         }
                     }
@@ -67,7 +67,7 @@
     /// El selector, guardando la notación y el temperamento en los ajustes de las apps.
     struct SelectorDeNotacionGuardada: View {
         @AppStorage(AjustesDeLasApps.claveDeNotacion) private var clave = Notacion.delSistema().clave
-        @AppStorage(AjustesDeLasApps.claveDeTemperamento) private var temperamento = Temperamento.igual.rawValue
+        @AppStorage(AjustesDeLasApps.claveDeTemperamento) private var temperamento = AfinacionHistorica.igual.rawValue
 
         var body: some View {
             SelectorDeNotacion(clave: $clave, temperamento: $temperamento)

@@ -5,7 +5,7 @@
 
 extension TextosDeRepresentaciones {
     static let occitano = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "temperament egal",
         pitagorico: "acordatge pitagoric",
         mesotonico: "mesotonic d'¼ de coma",

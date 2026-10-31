@@ -13,7 +13,7 @@ Comprueba:
   3. cada fichero de idioma de `Nombres/` da todas las escalas de `todos` (con `.init`) y todas las de otras
      tradiciones (con `.tradicional(.miembro)`; los 72 melakarta no se listan), sin repetir ni nombrar escalas
      que no existen;
-  4. cada fichero de idioma da el nombre de todas las clases de `ClaseDeEscala` (con `.clase`);
+  4. cada fichero de idioma da el nombre de todas las categorías de `CategoriaTradicional` (con `.categoria`);
   5. en un idioma, ningún alias se escribe igual que el nombre o el alias de otra escala (el primero taparía
      al segundo al leer).
 
@@ -109,10 +109,10 @@ if not comprobar_normalizacion():
 tradicionales_esperadas = tradicionales_declaradas()
 clases_esperadas = []
 for f, texto in TEXTO.items():
-    if f.name == "ClaseDeEscala.swift":
+    if f.name == "CategoriaTradicional.swift":
         clases_esperadas = re.findall(r'^    case (\w+)$', texto, re.M)
 if not clases_esperadas:
-    sys.exit("No encuentro los casos de `ClaseDeEscala`: ¿cambió el estilo?")
+    sys.exit("No encuentro los casos de `CategoriaTradicional`: ¿cambió el estilo?")
 for idioma in IDIOMAS_DE_NOMBRES:
     ruta = NOMBRES / f"NombresDeEscalas+{idioma}.swift"
     if not ruta.exists():
@@ -138,12 +138,12 @@ for idioma in IDIOMAS_DE_NOMBRES:
             errores.append(f"{ruta.name}: falta la escala tradicional .{n}")
     for n in sorted(set(trad) - set(tradicionales_esperadas)):
         errores.append(f"{ruta.name}: nombra la escala tradicional .{n}, que no existe")
-    clases = re.findall(r'^\s*\.clase\(\.(\w+), ', texto, re.M)
+    clases = re.findall(r'^\s*\.categoria\(\.(\w+), ', texto, re.M)
     for c in clases_esperadas:
         if c not in clases:
-            errores.append(f"{ruta.name}: falta el nombre de la clase .{c}")
+            errores.append(f"{ruta.name}: falta el nombre de la categoría .{c}")
     for c in sorted(set(clases) - set(clases_esperadas)):
-        errores.append(f"{ruta.name}: nombra la clase .{c}, que no existe")
+        errores.append(f"{ruta.name}: nombra la categoría .{c}, que no existe")
     for t, nombre, alias in filas:
         for a in alias_redundantes(nombre, re.findall(CADENA, alias or "")):
             errores.append(f"{ruta.name}: el alias «{a}» de {t} es solo una forma normalizada: se deduce solo")

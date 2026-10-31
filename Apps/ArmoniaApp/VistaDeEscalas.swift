@@ -30,8 +30,8 @@ struct VistaDeEscalas: View {
 
     var body: some View {
         let escala = self.escala
-        let pentagrama = PresentacionDePentagrama(escala, notacion: notacion)
-        let sonido = Sonido.escala(escala)
+        let pentagrama = PentagramaPresentado(escala, notacion: notacion)
+        let sonido = Escucha.escala(escala)
         Form {
             Section(notacion.texto(.escala)) {
                 Picker(notacion.texto(.tonica), selection: $tonica) {
@@ -65,7 +65,7 @@ struct VistaDeEscalas: View {
             Section(notacion.texto(.pentagrama)) {
                 // Mientras suena, la nota que se oye, de otro color.
                 if let paso = reproductor.paso(de: sonido) {
-                    DiagramaDePentagrama(PresentacionDePentagrama(escala, notacion: notacion, resaltada: paso))
+                    DiagramaDePentagrama(PentagramaPresentado(escala, notacion: notacion, resaltada: paso))
                 } else {
                     DiagramaDePentagrama(pentagrama)
                 }
@@ -143,8 +143,8 @@ struct VistaDeEscalas: View {
     }
 
     /// Una posición nota a nota, cuerda a cuerda, como se estudia.
-    private func sonido(de posicion: EscalaEnElMastil, en escala: Escala) -> Sonido {
-        Sonido.voz(Voz(posicion.alturas.map { Evento($0, .corchea) })).conTonica(escala.tonica)
+    private func sonido(de posicion: EscalaEnElMastil, en escala: Escala) -> Escucha {
+        Escucha.voz(Voz(posicion.alturas.map { Evento($0, .corchea) })).conTonica(escala.tonica)
     }
 
     private func nombre(_ indice: Int) -> String {

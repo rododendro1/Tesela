@@ -64,7 +64,7 @@ public struct AjusteUIL: Hashable, Sendable {
     /// El teclado resultante; `nil` si el texto no es un UIL válido de 12 notas.
     public var teclado: TecladoIsomorfico? {
         guard let base = try? FormatoUIL(leyendo: texto).teclado(nombre: "UIL") else { return nil }
-        let girado = base.rotado(pasos: giros, nombre: base.nombre)
+        let girado = base.rotado(doceavos: giros, nombre: base.nombre)
         return espejo ? girado.reflejado : girado
     }
 

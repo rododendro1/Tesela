@@ -4,11 +4,11 @@ import Armonia
 /// se decide qué suena, cuándo y con qué afinación; el reproductor de ArmoniaUI lo toca con el sintetizador del
 /// sistema.
 ///
-///     Sonido.acorde(Acorde("Sol7/Si")).notas.map(\.midi)   // [59, 62, 65, 67]: Si3 Re4 Fa4 Sol4
+///     Escucha.acorde(Acorde("Sol7/Si")).notas.map(\.midi)   // [59, 62, 65, 67]: Si3 Re4 Fa4 Sol4
 ///
 /// Cada nota guarda su altura escrita, así que `afinado(en:)` puede afinar Sol♯ y La♭ de forma distinta en un
 /// temperamento que los distinga.
-public struct Sonido: Hashable, Sendable {
+public struct Escucha: Hashable, Sendable {
     /// Una nota que suena: su altura (y su número MIDI), cuándo empieza, cuánto dura y cuánto se aparta, en
     /// cents, del temperamento igual.
     public struct NotaMIDI: Hashable, Sendable {
@@ -54,16 +54,16 @@ public struct Sonido: Hashable, Sendable {
     }
 
     /// Lo mismo, con otra tónica.
-    public func conTonica(_ tonica: Nota?) -> Sonido {
-        Sonido(notas: notas, tonica: tonica)
+    public func conTonica(_ tonica: Nota?) -> Escucha {
+        Escucha(notas: notas, tonica: tonica)
     }
 
     /// Lo mismo, con cada nota afinada en `temperamento` (la justa, sobre la tónica, o sobre Do si no se conoce).
     ///
-    ///     Sonido.acorde(Acorde("Do")).afinado(en: .justa).notas.map { Int($0.desviacion.rounded()) }   // [0, -14, 2]
-    public func afinado(en temperamento: Temperamento) -> Sonido {
+    ///     Escucha.acorde(Acorde("Do")).afinado(en: .justa).notas.map { Int($0.desviacion.rounded()) }   // [0, -14, 2]
+    public func afinado(en temperamento: AfinacionHistorica) -> Escucha {
         let afinacion = temperamento.afinacion(tonica: tonica ?? .do)
-        return Sonido(
+        return Escucha(
             notas: notas.map { nota in
                 var afinada = nota
                 afinada.desviacion = afinacion.desviacion(de: nota.altura)
@@ -72,7 +72,7 @@ public struct Sonido: Hashable, Sendable {
     }
 
     /// Nada que tocar.
-    public static let silencio = Sonido(notas: [])
+    public static let silencio = Escucha(notas: [])
 
     /// Cuánto dura todo, en segundos.
     public var duracion: Double { notas.map { $0.inicio + $0.duracion }.max() ?? 0 }
@@ -86,7 +86,7 @@ public struct Sonido: Hashable, Sendable {
     /// Lo que está sonando en un momento: el índice del último paso de `inicios` que ha empezado, o `nil` antes
     /// de empezar y después de acabar. En un arpegio es la nota; en una progresión, el acorde.
     ///
-    ///     Sonido.arpegio(Arpegio(Acorde("Do"))).paso(en: 0.3)   // 1: suena Mi
+    ///     Escucha.arpegio(Arpegio(Acorde("Do"))).paso(en: 0.3)   // 1: suena Mi
     public func paso(en tiempo: Double) -> Int? {
         guard tiempo >= 0, tiempo < duracion else { return nil }
         return inicios.lastIndex { $0 <= tiempo }
@@ -109,34 +109,34 @@ public struct Sonido: Hashable, Sendable {
     // MARK: Lo que tocan las apps
 
     /// Una nota sola: la que se toca en un dibujo.
-    public static func nota(_ midi: Int, duracion: Double = 0.8) -> Sonido {
-        Sonido(notas: [NotaMIDI(midi: midi, inicio: 0, duracion: duracion)])
+    public static func nota(_ midi: Int, duracion: Double = 0.8) -> Escucha {
+        Escucha(notas: [NotaMIDI(midi: midi, inicio: 0, duracion: duracion)])
     }
 
     /// Una nota escrita sola.
-    public static func nota(_ altura: Altura, duracion: Double = 0.8) -> Sonido {
-        Sonido(notas: [NotaMIDI(altura: altura, inicio: 0, duracion: duracion)])
+    public static func nota(_ altura: Altura, duracion: Double = 0.8) -> Escucha {
+        Escucha(notas: [NotaMIDI(altura: altura, inicio: 0, duracion: duracion)])
     }
 
     /// Un acorde desde su bajo, en posición cerrada a partir de Do3: primero arpegiado y luego junto. Su tónica
     /// es la fundamental.
-    public static func acorde(_ acorde: Acorde) -> Sonido {
+    public static func acorde(_ acorde: Acorde) -> Escucha {
         let alturas = cerrada(acorde.notasDesdeElBajo, desde: 48)
         let paso = 0.12
         let final = paso * Double(alturas.count)
-        return Sonido(
+        return Escucha(
             notas: alturas.enumerated().map { i, altura in
                 NotaMIDI(altura: altura, inicio: paso * Double(i), duracion: final - paso * Double(i) + 1.2)
             }, tonica: acorde.fundamental)
     }
 
     /// Una escala de la tónica a su octava, desde la tónica en la octava 4, y vuelta a la tónica.
-    public static func escala(_ escala: Escala) -> Sonido {
+    public static func escala(_ escala: Escala) -> Escucha {
         let subida = cerrada(escala.notas, desde: 60)
         guard let tonica = subida.first else { return .silencio }
         let alturas = subida + [tonica + .octava]
         let paso = 0.3
-        return Sonido(
+        return Escucha(
             notas: alturas.enumerated().map { i, altura in
                 NotaMIDI(altura: altura, inicio: paso * Double(i), duracion: paso * 0.9)
             }, tonica: escala.tonica)
@@ -145,24 +145,24 @@ public struct Sonido: Hashable, Sendable {
     /// Un arpegio nota a nota, en el orden de su patrón, desde el bajo del acorde en la octava 3. Su tónica es la
     /// fundamental.
     ///
-    ///     Sonido.arpegio(Arpegio(Acorde("Do"), patron: .alberti)).notas.map(\.midi)   // [48, 55, 52, 55]
-    public static func arpegio(_ arpegio: Arpegio, paso: Double = 0.25) -> Sonido {
-        Sonido(
+    ///     Escucha.arpegio(Arpegio(Acorde("Do"), patron: .alberti)).notas.map(\.midi)   // [48, 55, 52, 55]
+    public static func arpegio(_ arpegio: Arpegio, paso: Double = 0.25) -> Escucha {
+        Escucha(
             notas: arpegio.alturas(octava: 3).enumerated().map { i, altura in
                 NotaMIDI(altura: altura, inicio: paso * Double(i), duracion: paso * 0.95)
             }, tonica: arpegio.acorde.fundamental)
     }
 
     /// Una progresión, un acorde detrás de otro, cada uno desde su bajo a partir de Do3.
-    public static func acordes(_ acordes: [Acorde], duracion: Double = 1) -> Sonido {
+    public static func acordes(_ acordes: [Acorde], duracion: Double = 1) -> Escucha {
         grupos(acordes.map { cerrada($0.notasDesdeElBajo, desde: 48) }, duracion: duracion)
     }
 
     /// Una progresión con su ritmo armónico: cada acorde dura lo que dice `duraciones`, al tempo dado.
     ///
-    ///     let sonido = Sonido.acordes([Acorde("Do"), Acorde("Sol")], duraciones: [.blanca, .negra], tempo: Tempo(60))
+    ///     let sonido = Escucha.acordes([Acorde("Do"), Acorde("Sol")], duraciones: [.blanca, .negra], tempo: Tempo(60))
     ///     sonido.notas.last?.inicio   // 2
-    public static func acordes(_ acordes: [Acorde], duraciones: [Duracion], tempo: Tempo = Sonido.tempo) -> Sonido {
+    public static func acordes(_ acordes: [Acorde], duraciones: [Duracion], tempo: Tempo = Escucha.tempo) -> Escucha {
         var inicio = 0.0
         var notas: [NotaMIDI] = []
         for (acorde, duracion) in zip(acordes, duraciones) {
@@ -172,11 +172,11 @@ public struct Sonido: Hashable, Sendable {
             }
             inicio += segundos
         }
-        return Sonido(notas: notas)
+        return Escucha(notas: notas)
     }
 
     /// Acordes con sus alturas escritas (un coral a cuatro voces), uno detrás de otro.
-    public static func coral(_ acordes: [[Altura]], duracion: Double = 1) -> Sonido {
+    public static func coral(_ acordes: [[Altura]], duracion: Double = 1) -> Escucha {
         grupos(acordes, duracion: duracion)
     }
 
@@ -185,9 +185,9 @@ public struct Sonido: Hashable, Sendable {
 
     /// Una voz con su ritmo: los silencios callan y las notas ligadas suenan como una sola.
     ///
-    ///     Sonido.voz(try Voz(leyendo: "Do4:4 Re4:8 -:8 Mi4:2")).notas.map(\.inicio)   // [0, 0.83, 1.67]
-    public static func voz(_ voz: Voz, tempo: Tempo = Sonido.tempo) -> Sonido {
-        Sonido(
+    ///     Escucha.voz(try Voz(leyendo: "Do4:4 Re4:8 -:8 Mi4:2")).notas.map(\.inicio)   // [0, 0.83, 1.67]
+    public static func voz(_ voz: Voz, tempo: Tempo = Escucha.tempo) -> Escucha {
+        Escucha(
             notas: notas(de: voz, tempo: tempo).flatMap { nota in
                 nota.alturas.map { NotaMIDI(altura: $0, inicio: nota.inicio, duracion: nota.duracion * 0.95) }
             })
@@ -195,8 +195,8 @@ public struct Sonido: Hashable, Sendable {
 
     /// Acordes con sus alturas escritas que empiezan y duran lo que las notas de una voz: el coral de una
     /// melodía con ritmo. Si hay más acordes que notas, los que sobran no suenan.
-    public static func coral(_ acordes: [[Altura]], conElRitmoDe voz: Voz, tempo: Tempo = Sonido.tempo) -> Sonido {
-        Sonido(
+    public static func coral(_ acordes: [[Altura]], conElRitmoDe voz: Voz, tempo: Tempo = Escucha.tempo) -> Escucha {
+        Escucha(
             notas: zip(acordes, notas(de: voz, tempo: tempo)).flatMap { acorde, nota in
                 acorde.map { NotaMIDI(altura: $0, inicio: nota.inicio, duracion: nota.duracion * 0.95) }
             })
@@ -221,8 +221,8 @@ public struct Sonido: Hashable, Sendable {
         return notas
     }
 
-    static func grupos(_ grupos: [[Altura]], duracion: Double) -> Sonido {
-        Sonido(
+    static func grupos(_ grupos: [[Altura]], duracion: Double) -> Escucha {
+        Escucha(
             notas: grupos.enumerated().flatMap { i, alturas in
                 alturas.map { NotaMIDI(altura: $0, inicio: duracion * Double(i), duracion: duracion * 0.92) }
             })

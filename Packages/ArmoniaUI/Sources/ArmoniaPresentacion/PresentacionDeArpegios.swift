@@ -4,7 +4,7 @@ import Armonia
 /// ficheros para exportar (MusicXML, MEI y MIDI).
 public struct ArpegioPresentado: Hashable, Sendable {
     public let voz: Voz
-    public let sonido: Sonido
+    public let sonido: Escucha
     public let ficheros: [FicheroParaExportar]
 }
 
@@ -50,7 +50,7 @@ public enum PresentacionDeArpegios {
     ) -> ArpegioPresentado {
         ArpegioPresentado(
             voz: voz,
-            sonido: Sonido.voz(voz, tempo: tempo ?? Sonido.tempo).conTonica(tonica),
+            sonido: Escucha.voz(voz, tempo: tempo ?? Escucha.tempo).conTonica(tonica),
             ficheros: [
                 .musicXML(voz.musicXML(tonalidad: tonalidad, tempo: tempo, titulo: nombre), nombre: nombre),
                 .mei(voz.mei(tonalidad: tonalidad, tempo: tempo, titulo: nombre), nombre: nombre),

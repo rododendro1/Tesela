@@ -9,7 +9,7 @@ public struct PropuestaDeRearmonizacion: Hashable, Sendable {
     /// La progresión entera con el cambio, como se escribe en el campo de la progresión.
     public let texto: String
     /// El pasaje que cambia, con el acorde de antes y el de después, para compararlo con el original.
-    public let sonido: Sonido
+    public let sonido: Escucha
 }
 
 /// La parte de «Rearmonizar» que no es dibujo. No usa SwiftUI, así que se prueba en Linux.
@@ -33,7 +33,7 @@ public enum PresentacionDeRearmonizacion {
                 rearmonizacion: rearmonizacion,
                 descripcion: rearmonizacion.descripcion(en: notacion),
                 texto: PresentacionDeTransposicion.texto(de: nuevos, notacion: notacion),
-                sonido: Sonido.acordes(Array(nuevos[desde..<hasta])).conTonica(tonalidad.tonica))
+                sonido: Escucha.acordes(Array(nuevos[desde..<hasta])).conTonica(tonalidad.tonica))
         }
         return (tonalidad, propuestas)
     }
@@ -41,7 +41,7 @@ public enum PresentacionDeRearmonizacion {
 
 extension AnalisisPresentado {
     /// Las rearmonizaciones de los acordes analizados, en la tonalidad de la partitura.
-    public func rearmonizaciones(notacion: Notacion) -> [PropuestaDeRearmonizacion] {
+    public func rearmonizaciones(en notacion: Notacion) -> [PropuestaDeRearmonizacion] {
         PresentacionDeRearmonizacion.proponer(acordes, en: tonalidad, notacion: notacion)?.propuestas ?? []
     }
 }

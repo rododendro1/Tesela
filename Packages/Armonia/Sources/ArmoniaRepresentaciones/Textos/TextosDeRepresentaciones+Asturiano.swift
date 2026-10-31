@@ -5,7 +5,7 @@
 
 extension TextosDeRepresentaciones {
     static let asturiano = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "temperamentu igual",
         pitagorico: "afinación pitagórica",
         mesotonico: "mesotónicu de ¼ de coma",

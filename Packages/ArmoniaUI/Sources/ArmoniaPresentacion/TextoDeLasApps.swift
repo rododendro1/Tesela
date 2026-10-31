@@ -128,7 +128,7 @@ public enum TextoDeLasApps: Hashable, Sendable {
     case casillaElegida(q: Int, r: Int)
     /// «Mástil de guitarra, trastes 0 a 5», con el nombre del instrumento de `Encordado.nombre(en:)`.
     case mastilDe(String, desde: Int, hasta: Int)
-    /// «cuerda 1, traste 0», con las cuerdas contadas desde 1.
+    /// «cuerda 6, traste 0», con el número tradicional de la cuerda (la 1.ª es la de abajo).
     case posicion(cuerda: Int, traste: Int)
     /// «13 marcas».
     case marcas(Int)

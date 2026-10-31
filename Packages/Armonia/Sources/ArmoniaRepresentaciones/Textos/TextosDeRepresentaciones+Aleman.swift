@@ -5,7 +5,7 @@
 
 extension TextosDeRepresentaciones {
     static let aleman = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "gleichstufige Stimmung",
         pitagorico: "pythagoreische Stimmung",
         mesotonico: "Viertelkomma-Mitteltönigkeit",

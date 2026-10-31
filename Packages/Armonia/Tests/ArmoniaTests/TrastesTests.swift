@@ -72,7 +72,7 @@ final class MastilTests: XCTestCase {
     }
 
     func testOtrosEncordados() {
-        XCTAssertEqual(Encordado.bajo.numeroDeCuerdas, 4)
+        XCTAssertEqual(Encordado.bajoElectrico.numeroDeCuerdas, 4)
         XCTAssertEqual(Encordado.guitarraDeSieteCuerdas.numeroDeCuerdas, 7)
         XCTAssertEqual(Encordado.guitarraEnReGrave.cuerdas.first, Altura(.re, octava: 2))
         // El ukelele es reentrante: la primera cuerda (Sol4) está más aguda que la segunda (Do4).
@@ -493,8 +493,8 @@ final class EscalaEnElMastilTests: XCTestCase {
 
     func testFueraDeLaGuitarraNoHayPosiciones() {
         XCTAssertTrue(Mastil(.ukelele).posicionesPorCuerda(de: Escala(.do, .mayor)).isEmpty)
-        XCTAssertTrue(Mastil(.bajo).posicionesCAGED(de: Escala(.do, .mayor)).isEmpty)
-        XCTAssertFalse(Mastil(.bajo).posicionesPorCuerda(de: Escala(.do, .mayor)).isEmpty)
+        XCTAssertTrue(Mastil(.bajoElectrico).posicionesCAGED(de: Escala(.do, .mayor)).isEmpty)
+        XCTAssertFalse(Mastil(.bajoElectrico).posicionesPorCuerda(de: Escala(.do, .mayor)).isEmpty)
     }
 }
 

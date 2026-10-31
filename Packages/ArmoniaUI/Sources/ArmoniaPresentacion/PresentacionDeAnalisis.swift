@@ -18,7 +18,7 @@ public struct AnalisisPresentado: Hashable, Sendable {
     public let cadencias: [String]
     public let ficheros: [FicheroParaExportar]
     /// Los acordes uno detrás de otro, para «Escuchar».
-    public internal(set) var sonido: Sonido = .silencio
+    public internal(set) var sonido: Escucha = .silencio
     /// Los acordes analizados y la tonalidad de la partitura, para arpegiarlos.
     public internal(set) var acordes: [Acorde] = []
     public internal(set) var tonalidad: Tonalidad?
@@ -127,7 +127,7 @@ public enum PresentacionDeAnalisis {
         // El análisis da un acorde por cada uno leído; si no, no se puede seguir el ritmo.
         let ritmo = ritmo.flatMap { $0.duraciones.count == acordes.count ? $0 : nil }
         let ficheros: [FicheroParaExportar]
-        let sonido: Sonido
+        let sonido: Escucha
         if let ritmo {
             let d = ritmo.duraciones
             let compas = ritmo.compas
@@ -144,14 +144,14 @@ public enum PresentacionDeAnalisis {
                     analisis.midi(duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion),
                     nombre: nombre),
             ]
-            sonido = Sonido.acordes(acordes, duraciones: d, tempo: tempo ?? Sonido.tempo)
+            sonido = Escucha.acordes(acordes, duraciones: d, tempo: tempo ?? Escucha.tempo)
         } else {
             ficheros = [
                 .musicXML(analisis.musicXML(titulo: nombre, notacion: notacion), nombre: nombre),
                 .mei(analisis.mei(titulo: nombre, notacion: notacion), nombre: nombre),
                 .midi(analisis.midi(titulo: nombre, notacion: notacion), nombre: nombre),
             ]
-            sonido = Sonido.acordes(acordes)
+            sonido = Escucha.acordes(acordes)
         }
         return AnalisisPresentado(
             titulo: titulo,

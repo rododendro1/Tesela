@@ -6,7 +6,7 @@ import ArmoniaNucleo
 
 extension TextosDeRepresentaciones {
     static let ruso = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "равномерная темперация",
         pitagorico: "пифагоров строй",
         mesotonico: "среднетоновый строй в ¼ коммы",

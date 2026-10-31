@@ -180,7 +180,7 @@ struct VistaDeTonnetz: View {
         }
         let otros = acordes.dropFirst().prefix(3).map { $0.cifrado(en: notacion) }
         let forte =
-            PresentacionPostonal(clases: clasesTocadas).numeroDeForte.map {
+            AnalisisPostonalPresentado(clases: clasesTocadas).numeroDeForte.map {
                 "\n" + notacion.texto(.numeroDeForte) + ": " + $0
             } ?? ""
         return primero.cifrado(en: notacion) + " · " + primero.nombre(en: notacion)
@@ -204,7 +204,7 @@ struct VistaDeTonnetz: View {
     }
 
     /// Lo que suena al pulsar «Escuchar»: el acorde, la escala o el recorrido.
-    private var sonido: Sonido {
+    private var sonido: Escucha {
         switch dibujado {
         case .acorde(let acorde): return .acorde(acorde)
         case .escala(let escala): return .escala(escala)

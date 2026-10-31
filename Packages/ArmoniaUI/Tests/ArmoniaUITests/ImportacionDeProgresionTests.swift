@@ -88,7 +88,7 @@ final class RitmoArmonicoTests: XCTestCase {
     }
 
     func testSonidoConDuraciones() {
-        let sonido = Sonido.acordes([Acorde("Do"), Acorde("Sol")], duraciones: [.blanca, .negra], tempo: Tempo(60))
+        let sonido = Escucha.acordes([Acorde("Do"), Acorde("Sol")], duraciones: [.blanca, .negra], tempo: Tempo(60))
         XCTAssertEqual(Set(sonido.notas.map(\.inicio)), [0, 2])
         XCTAssertEqual(sonido.notas.last?.duracion, 0.92)
     }

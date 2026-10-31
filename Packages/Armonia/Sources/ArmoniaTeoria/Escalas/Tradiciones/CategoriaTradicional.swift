@@ -1,6 +1,6 @@
 import ArmoniaNucleo
 
-// MARK: - Tradición y clase de una escala
+// MARK: - Tradición y categoría de una escala
 
 /// La tradición musical de que viene una escala de `TipoDeEscala.tradicionales`.
 public enum Tradicion: String, Sendable, Codable, CaseIterable {
@@ -11,7 +11,7 @@ public enum Tradicion: String, Sendable, Codable, CaseIterable {
 ///
 /// Un melakarta es también un raga (`esRaga`): son los 72 ragas madre de la música carnática. Un thaat, en cambio, es
 /// una escala madre de la música indostánica de la que se derivan ragas, pero no es un raga.
-public enum ClaseDeEscala: String, Sendable, Codable, CaseIterable {
+public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     /// Raga indostánico.
     case raga
     /// «Mela»: uno de los 72 ragas madre carnáticos.
@@ -40,13 +40,13 @@ public enum ClaseDeEscala: String, Sendable, Codable, CaseIterable {
     case tetracordo
     /// Harmoniai de la Grecia antigua.
     case harmonia
-    /// Escala sin un nombre propio para su clase (las japonesas y las andinas).
+    /// Escala sin un nombre propio para su categoría (las japonesas y las andinas).
     case escala
 
     /// ¿Es un raga? Lo son los ragas indostánicos, los melakarta y los janya; el thaat no.
     public var esRaga: Bool { self == .raga || self == .melakarta || self == .janya }
 
-    /// El nombre de la clase en español.
+    /// El nombre de la categoría en español.
     public var nombre: String {
         switch self {
         case .raga: "raga"
@@ -67,8 +67,8 @@ public enum ClaseDeEscala: String, Sendable, Codable, CaseIterable {
         }
     }
 
-    /// El nombre de la clase en el idioma de la notación («escala» → gamme, Tonleiter, гамма…), de los ficheros de
-    /// `Escalas/Nombres/` (las filas `.clase`). Casi todas son préstamos: solo se traducen «tetracordo», «harmonía» y
+    /// El nombre de la categoría en el idioma de la notación («escala» → gamme, Tonleiter, гамма…), de los ficheros de
+    /// `Escalas/Nombres/` (las filas `.categoria`). Casi todas son préstamos: solo se traducen «tetracordo», «harmonía» y
     /// «escala», y en ruso y griego se transcriben las demás.
     public func nombre(en notacion: Notacion) -> String {
         if notacion.textos == .espanol { return nombre }
@@ -77,33 +77,34 @@ public enum ClaseDeEscala: String, Sendable, Codable, CaseIterable {
 }
 
 extension TipoDeEscala {
-    /// La clase de la escala (raga, melakarta, dromos, maqam…); `nil` en las occidentales y en las propias. Se busca
-    /// por el nombre, no por los intervalos: Āsāvarī (un thaat) tiene los de la escala menor natural.
-    public var clase: ClaseDeEscala? { clasificada?.clase }
+    /// La categoría de la escala en su tradición (raga, melakarta, dromos, maqam…); `nil` en las occidentales y en
+    /// las propias. Se busca por el nombre, no por los intervalos: Āsāvarī (un thaat) tiene los de la escala menor
+    /// natural.
+    public var categoria: CategoriaTradicional? { clasificada?.categoria }
 
     /// La tradición de la escala; `nil` en las occidentales y en las propias.
     public var tradicion: Tradicion? { clasificada?.tradicion }
 
     /// La entrada de la tabla si el nombre es el de una escala tradicional *y* los intervalos coinciden: una escala
     /// propia que se llame «Kafi» pero suene distinto no es el thaat.
-    private var clasificada: (tradicion: Tradicion, clase: ClaseDeEscala)? {
+    private var clasificada: (tradicion: Tradicion, categoria: CategoriaTradicional)? {
         guard let entrada = TipoDeEscala.clasificacion[nombre], entrada.tipo == self else { return nil }
-        return (entrada.tradicion, entrada.clase)
+        return (entrada.tradicion, entrada.categoria)
     }
 
     /// El melakarta del que deriva un raga janya, por la tradición («Mohanam» → Harikāmbhojī); `nil` en las demás
     /// escalas y en los janya sin un padre claro (Revati). Siempre es uno de los `melakartasCompatibles`.
     public var padre: TipoDeEscala? {
-        guard clase == .janya, let numero = TipoDeEscala.padresDeLosJanya[nombre] else { return nil }
+        guard categoria == .janya, let numero = TipoDeEscala.padresDeLosJanya[nombre] else { return nil }
         return TipoDeEscala.melakarta(numero)
     }
 
     /// ¿Es un raga (indostánico, melakarta o janya)?
-    public var esRaga: Bool { clase?.esRaga ?? false }
+    public var esRaga: Bool { categoria?.esRaga ?? false }
 
-    /// Las escalas de otras tradiciones de una clase: `tradicionales(clase: .melakarta)` da los 72 melakarta.
-    public static func tradicionales(clase: ClaseDeEscala) -> [TipoDeEscala] {
-        tradicionales.filter { $0.clase == clase }
+    /// Las escalas de otras tradiciones de una categoría: `tradicionales(categoria: .melakarta)` da los 72 melakarta.
+    public static func tradicionales(categoria: CategoriaTradicional) -> [TipoDeEscala] {
+        tradicionales.filter { $0.categoria == categoria }
     }
 
     /// Las escalas de una tradición.
@@ -111,9 +112,11 @@ extension TipoDeEscala {
         tradicionales.filter { $0.tradicion == tradicion }
     }
 
-    /// Nombre → tradición y clase, de las listas de cada tradición. Si un nombre estuviera en dos, vale la primera.
-    private static let clasificacion: [String: (tipo: TipoDeEscala, tradicion: Tradicion, clase: ClaseDeEscala)] = {
-        let grupos: [(Tradicion, ClaseDeEscala, [TipoDeEscala])] = [
+    private typealias Clasificada = (tipo: TipoDeEscala, tradicion: Tradicion, categoria: CategoriaTradicional)
+
+    /// Nombre → tradición y categoría, de las listas de cada tradición. Si un nombre estuviera en dos, vale la primera.
+    private static let clasificacion: [String: Clasificada] = {
+        let grupos: [(Tradicion, CategoriaTradicional, [TipoDeEscala])] = [
             (.india, .thaat, thaats), (.grecia, .dromos, dromoi), (.india, .melakarta, melakartas),
             (.india, .janya, janyas), (.china, .diao, chinas), (.japon, .escala, japonesas),
             (.etiopia, .qenet, etiopes), (.mundoArabe, .maqam, maqamat), (.indonesia, .laras, indonesias),
@@ -122,9 +125,9 @@ extension TipoDeEscala {
             (.greciaAntigua, .tetracordo, [.tetracordoDiatonico, .tetracordoCromatico]),
             (.greciaAntigua, .harmonia, [.harmoniaDoria, .harmoniaDoriaCromatica, .harmoniaFrigia, .harmoniaLidia]),
         ]
-        var tabla: [String: (tipo: TipoDeEscala, tradicion: Tradicion, clase: ClaseDeEscala)] = [:]
-        for (tradicion, clase, tipos) in grupos {
-            for tipo in tipos where tabla[tipo.nombre] == nil { tabla[tipo.nombre] = (tipo, tradicion, clase) }
+        var tabla: [String: Clasificada] = [:]
+        for (tradicion, categoria, tipos) in grupos {
+            for tipo in tipos where tabla[tipo.nombre] == nil { tabla[tipo.nombre] = (tipo, tradicion, categoria) }
         }
         return tabla
     }()

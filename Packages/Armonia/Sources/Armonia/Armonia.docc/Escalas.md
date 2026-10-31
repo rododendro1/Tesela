@@ -175,23 +175,23 @@ traducen los descriptivos (las andinas, los tetracordos y las harmoniai griegas,
 las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 melakarta,
 que siguen en IAST; la forma latina se sigue leyendo.
 
-### Raga, melakarta, dromos: la clase de una escala
+### Raga, melakarta, dromos: la categoría de una escala
 
-`clase` y `tradicion` dicen qué es una escala de otra tradición. Salen de las listas de arriba y
+`categoria` y `tradicion` dicen qué es una escala de otra tradición. Salen de las listas de arriba y
 valen `nil` en las occidentales y en las escalas propias (también en una propia que se llame «Kāfī» pero
 suene distinta). Un melakarta es también un raga (`esRaga`); un thaat, que es una escala madre de la que se
 derivan ragas, no. Un raga janya tiene `padre`, el melakarta del que deriva por la tradición.
 
 ```swift
-TipoDeEscala.kafi.clase                         // .thaat
-TipoDeEscala.melakarta(15)?.clase               // .melakarta
+TipoDeEscala.kafi.categoria                     // .thaat
+TipoDeEscala.melakarta(15)?.categoria           // .melakarta
 TipoDeEscala.hitzaz.tradicion                   // .grecia
 TipoDeEscala.mohanam.esRaga                     // true
 TipoDeEscala.kafi.esRaga                        // false
 TipoDeEscala.mohanam.padre?.numeroDeMelakarta   // 28
-TipoDeEscala.menorNatural.clase                 // nil: las occidentales no tienen clase
-TipoDeEscala.tradicionales(clase: .melakarta).count   // 72
-ClaseDeEscala.escala.nombre(en: Notacion.espanolUnicode.conTextos(en: .frances))   // "gamme"
+TipoDeEscala.menorNatural.categoria             // nil: las occidentales no tienen categoría
+TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72
+CategoriaTradicional.escala.nombre(en: Notacion.espanolUnicode.conTextos(en: .frances))   // "gamme"
 ```
 
 ## Nombres en cada idioma y alias
@@ -201,7 +201,7 @@ fichero por idioma: `Escalas/Nombres/NombresDeEscalas+Catalan.swift`, `+Gallego`
 del propio catálogo). `TipoDeEscala.nombre(en:)` usa el fichero del idioma de la notación, y
 `buscar(nombre:)` y `Escala("Re dòric")` leen los de todos. Cada fichero da todos los tipos de
 `TipoDeEscala.todos`, las escalas de otras tradiciones (`.tradicional(.kafi)`, que apunta al miembro de
-`TipoDeEscala` y no compila si deja de existir) y el nombre de cada `ClaseDeEscala` (`.clase`);
+`TipoDeEscala` y no compila si deja de existir) y el nombre de cada `CategoriaTradicional` (`.categoria`);
 `Scripts/comprobar_catalogo.py` vigila que no falte ninguno. Un idioma nuevo es un fichero más.
 
 `TipoDeEscala.alias` guarda solo las grafías correctas («dórico ♭2», «húngara»). Las simplificadas («dorico b2»,

@@ -61,20 +61,21 @@ enum PresentacionDeMastil {
         Dictionary(notas.map { ($0.claseDeAltura, $0) }, uniquingKeysWith: { primera, _ in primera })
     }
 
-    /// Una descripción corta para VoiceOver, en el idioma de los textos.
-    static func descripcion(marcas: [PosicionEnElMastil], apagadas: Set<Int>, en notacion: Notacion = .espanolUnicode)
-        -> String
-    {
+    /// Una descripción corta para VoiceOver, en el idioma de los textos, con las cuerdas numeradas como las numera
+    /// quien toca (la 1.ª es la de abajo) en un instrumento de `cuerdas` cuerdas.
+    static func descripcion(
+        marcas: [PosicionEnElMastil], apagadas: Set<Int>, cuerdas: Int, en notacion: Notacion = .espanolUnicode
+    ) -> String {
         var partes: [String] = []
         if marcas.count > 12 {
             partes.append(notacion.texto(.marcas(marcas.count)))
         } else {
             partes += marcas.sorted { ($0.cuerda, $0.traste) < ($1.cuerda, $1.traste) }
-                .map { notacion.texto(.posicion(cuerda: $0.cuerda + 1, traste: $0.traste)) }
+                .map { notacion.texto(.posicion(cuerda: cuerdas - $0.cuerda, traste: $0.traste)) }
         }
         if !apagadas.isEmpty {
-            partes.append(
-                notacion.texto(.cuerdasApagadas(apagadas.sorted().map { String($0 + 1) }.joined(separator: ", "))))
+            let numeros = apagadas.sorted().map { String(cuerdas - $0) }
+            partes.append(notacion.texto(.cuerdasApagadas(numeros.joined(separator: ", "))))
         }
         return partes.isEmpty ? notacion.texto(.sinMarcas) : partes.joined(separator: "; ")
     }

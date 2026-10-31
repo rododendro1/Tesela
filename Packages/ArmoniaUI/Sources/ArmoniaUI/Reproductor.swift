@@ -4,7 +4,7 @@
     import Armonia
     import ArmoniaPresentacion
 
-    /// Toca un `Sonido` con el sintetizador del sistema (`AVAudioUnitSampler`). En macOS usa el piano del banco
+    /// Toca una `Escucha` con el sintetizador del sistema (`AVAudioUnitSampler`). En macOS usa el piano del banco
     /// General MIDI del sistema; en iOS, que no lo trae, el sonido básico del sampler. Tocar algo corta lo que
     /// estuviera sonando.
     ///
@@ -12,7 +12,7 @@
     /// propio sampler, afinado con `globalTuning`, para que las notas de un acorde se afinen cada una por su lado; si
     /// suenan más notas a la vez que samplers hay, la que lleva más tiempo sonando deja el suyo a la nueva.
     ///
-    /// Publica lo que está sonando y el paso por el que va (`Sonido.paso(en:)`), para que las vistas resalten la
+    /// Publica lo que está sonando y el paso por el que va (`Escucha.paso(en:)`), para que las vistas resalten la
     /// nota o el acorde mientras se escucha.
     @MainActor
     public final class Reproductor: ObservableObject {
@@ -27,28 +27,28 @@
         private var tarea: Task<Void, Never>?
 
         /// Lo que está sonando (tal como se pidió, sin afinar), o `nil` si nada.
-        @Published public private(set) var sonando: Sonido?
+        @Published public private(set) var sonando: Escucha?
         /// El paso de `sonando` por el que va: la nota de un arpegio o el acorde de una progresión.
         @Published public private(set) var paso: Int?
 
         /// El paso por el que va `sonido`, si es lo que está sonando; si no, `nil`.
-        public func paso(de sonido: Sonido) -> Int? {
+        public func paso(de sonido: Escucha) -> Int? {
             sonando == sonido ? paso : nil
         }
 
         private init() {}
 
         /// El temperamento guardado en los ajustes, o el igual si no hay ninguno.
-        public static var temperamentoGuardado: Temperamento {
-            UserDefaults.standard.string(forKey: AjustesDeLasApps.claveDeTemperamento).flatMap(Temperamento.init)
+        public static var temperamentoGuardado: AfinacionHistorica {
+            UserDefaults.standard.string(forKey: AjustesDeLasApps.claveDeTemperamento).flatMap(AfinacionHistorica.init)
                 ?? .igual
         }
 
-        public func tocar(_ sonido: Sonido) {
+        public func tocar(_ sonido: Escucha) {
             tocar(sonido, en: Reproductor.temperamentoGuardado)
         }
 
-        public func tocar(_ sonido: Sonido, en temperamento: Temperamento) {
+        public func tocar(_ sonido: Escucha, en temperamento: AfinacionHistorica) {
             detener()
             guard !sonido.notas.isEmpty, preparar() else { return }
             let cambios = sonido.afinado(en: temperamento).cambios
@@ -138,11 +138,11 @@
     /// Un botón «Escuchar» que toca `sonido`, y que mientras suena lo detiene. Se desactiva si no hay nada que
     /// tocar.
     public struct BotonDeEscuchar: View {
-        public let sonido: Sonido
+        public let sonido: Escucha
         @Environment(\.notacion) private var notacion
         @ObservedObject private var reproductor = Reproductor.compartido
 
-        public init(_ sonido: Sonido) {
+        public init(_ sonido: Escucha) {
             self.sonido = sonido
         }
 

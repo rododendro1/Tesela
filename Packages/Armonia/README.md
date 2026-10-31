@@ -182,12 +182,12 @@ Sources/
 │   │   │                  Messiaen), ModoGregoriano
 │   │   └── Tradiciones/   TipoDeEscala+India, +Tradiciones (la lista `tradicionales` y, cada una tras su marca,
 │   │                      Andes, China, Corea, Etiopia, Grecia, Indonesia, Japon, Klezmer, MundoArabe (maqamat) y
-│   │                      Persia (dastgah)) y ClaseDeEscala (con `Tradicion`: raga, melakarta, dromos…)
+│   │                      Persia (dastgah)) y CategoriaTradicional (con `Tradicion`: raga, melakarta, dromos…)
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
 │   │                      FuncionTonal y AcordeAnalizado)
 │   └── Coral/             Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion
 ├── ArmoniaRepresentaciones/
-│   ├── Afinacion/     Afinacion (frecuencias: temperamentos regulares y circulares, justa), Temperamento (el catálogo),
+│   ├── Afinacion/     Afinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica (el catálogo),
 │   │                  BaseDeHewlett (números)
 │   ├── Color/         CorrespondenciaDeColores (colores)
 │   ├── Redes/         Tonnetz (la red de quintas y terceras, en SVG),

@@ -96,7 +96,7 @@ struct VistaDeIdentificar: View {
     /// La forma prima, el número de Forte y el vector interválico de lo que suena.
     @ViewBuilder
     private func postonal(_ alturas: [Altura]) -> some View {
-        let postonal = PresentacionPostonal(clases: alturas.map(\.midi))
+        let postonal = AnalisisPostonalPresentado(clases: alturas.map(\.midi))
         Section(notacion.texto(.teoriaPostonal)) {
             LabeledContent(notacion.texto(.formaPrima), value: postonal.formaPrima)
             if let forte = postonal.numeroDeForte {

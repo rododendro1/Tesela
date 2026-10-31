@@ -2,6 +2,6 @@
 public enum AjustesDeLasApps {
     /// La notación elegida (la `clave` de una `Notacion`), para `@AppStorage`.
     public static let claveDeNotacion = "notacionElegida"
-    /// El temperamento con que suena «Escuchar» (el `rawValue` de un `Temperamento`), para `@AppStorage`.
+    /// El temperamento con que suena «Escuchar» (el `rawValue` de una `AfinacionHistorica`), para `@AppStorage`.
     public static let claveDeTemperamento = "temperamentoElegido"
 }

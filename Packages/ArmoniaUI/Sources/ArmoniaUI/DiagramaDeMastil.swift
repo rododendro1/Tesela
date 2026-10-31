@@ -115,6 +115,12 @@
             !rango.contains(0) && (!alAire.isEmpty || !apagadas.isEmpty)
         }
 
+        /// Lo que lee VoiceOver: las marcas y las cuerdas apagadas, con el número tradicional de cada cuerda.
+        private var descripcionParaVoiceOver: String {
+            PresentacionDeMastil.descripcion(
+                marcas: marcas, apagadas: apagadas, cuerdas: mastil.encordado.numeroDeCuerdas, en: notacion)
+        }
+
         public var body: some View {
             Canvas { contexto, tamano in
                 dibujar(en: &contexto, tamano: tamano)
@@ -125,8 +131,7 @@
             )
             .accessibilityElement()
             .accessibilityLabel(Text(PresentacionDeMastil.etiqueta(de: mastil, rango: rango, en: notacion)))
-            .accessibilityValue(
-                Text(PresentacionDeMastil.descripcion(marcas: marcas, apagadas: apagadas, en: notacion)))
+            .accessibilityValue(Text(descripcionParaVoiceOver))
         }
 
         /// Avisa de la posición (cuerda y traste) que se toca en el dibujo. Un toque entre dos cuerdas va a la más

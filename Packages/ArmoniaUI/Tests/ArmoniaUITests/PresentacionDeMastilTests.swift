@@ -80,20 +80,20 @@ final class PresentacionDeMastilTests: XCTestCase {
     func testLaDescripcionVaDeGraveAAgudo() {
         let marcas = [PosicionEnElMastil(cuerda: 1, traste: 3), PosicionEnElMastil(cuerda: 0, traste: 0)]
         XCTAssertEqual(
-            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: []),
-            "cuerda 1, traste 0; cuerda 2, traste 3")
+            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [], cuerdas: 6),
+            "cuerda 6, traste 0; cuerda 5, traste 3")
         XCTAssertEqual(
-            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [5]),
-            "cuerda 1, traste 0; cuerda 2, traste 3; cuerdas apagadas: 6")
+            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [5], cuerdas: 6),
+            "cuerda 6, traste 0; cuerda 5, traste 3; cuerdas apagadas: 1")
     }
 
     func testLaDescripcionSeAcortaSiHayMuchasMarcas() {
         let muchas = (0...12).map { PosicionEnElMastil(cuerda: 0, traste: $0) }
-        XCTAssertEqual(PresentacionDeMastil.descripcion(marcas: muchas, apagadas: []), "13 marcas")
+        XCTAssertEqual(PresentacionDeMastil.descripcion(marcas: muchas, apagadas: [], cuerdas: 6), "13 marcas")
     }
 
     func testSinMarcas() {
-        XCTAssertEqual(PresentacionDeMastil.descripcion(marcas: [], apagadas: []), "Sin marcas")
+        XCTAssertEqual(PresentacionDeMastil.descripcion(marcas: [], apagadas: [], cuerdas: 6), "Sin marcas")
     }
 
     // MARK: Tocar el mástil

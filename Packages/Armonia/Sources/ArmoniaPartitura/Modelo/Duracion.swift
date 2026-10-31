@@ -205,30 +205,30 @@ extension Sequence where Element == Duracion {
 ///     Tempo(60, unidad: Duracion(.negra, puntillos: 1)).negrasPorMinuto   // 90
 ///     Tempo(100).indicacion                // "Andante"
 public struct Tempo: Hashable, Sendable, CustomStringConvertible {
-    public let pulsacionesPorMinuto: Double
+    public let pulsosPorMinuto: Double
     public let unidad: Duracion
 
     /// Como `init(_:unidad:)`, pero devuelve `nil` si la velocidad o la unidad no son positivas.
-    public init?(comprobando pulsacionesPorMinuto: Double, unidad: Duracion = .negra) {
-        guard pulsacionesPorMinuto > 0, unidad > .cero else { return nil }
-        self.init(pulsacionesPorMinuto, unidad: unidad)
+    public init?(comprobando pulsosPorMinuto: Double, unidad: Duracion = .negra) {
+        guard pulsosPorMinuto > 0, unidad > .cero else { return nil }
+        self.init(pulsosPorMinuto, unidad: unidad)
     }
 
     /// Detiene el programa si la velocidad o la unidad no son positivas: con datos de fuera,
     /// `init?(comprobando:unidad:)`.
-    public init(_ pulsacionesPorMinuto: Double, unidad: Duracion = .negra) {
-        precondition(pulsacionesPorMinuto > 0 && unidad > .cero, "el tempo tiene que ser positivo")
-        self.pulsacionesPorMinuto = pulsacionesPorMinuto
+    public init(_ pulsosPorMinuto: Double, unidad: Duracion = .negra) {
+        precondition(pulsosPorMinuto > 0 && unidad > .cero, "el tempo tiene que ser positivo")
+        self.pulsosPorMinuto = pulsosPorMinuto
         self.unidad = unidad
     }
 
     /// Lo que dura una duración, en segundos.
     public func segundos(de duracion: Duracion) -> Double {
-        (duracion / unidad).enRedondas * 60 / pulsacionesPorMinuto
+        (duracion / unidad).enRedondas * 60 / pulsosPorMinuto
     }
 
     /// El mismo tempo expresado en negras por minuto.
-    public var negrasPorMinuto: Double { pulsacionesPorMinuto * (unidad / .negra).enRedondas }
+    public var negrasPorMinuto: Double { pulsosPorMinuto * (unidad / .negra).enRedondas }
 
     /// Indicación italiana aproximada según las negras por minuto (los márgenes varían según
     /// la época y el metrónomo): Grave < 40 ≤ Largo < 60 ≤ Larghetto < 66 ≤ Adagio < 76 ≤
@@ -244,8 +244,8 @@ public struct Tempo: Hashable, Sendable, CustomStringConvertible {
     /// "♩ = 120" o, con otra unidad, "negra con puntillo = 60".
     public var description: String {
         let cifra =
-            pulsacionesPorMinuto.rounded() == pulsacionesPorMinuto
-            ? String(Int(pulsacionesPorMinuto)) : String(pulsacionesPorMinuto)
+            pulsosPorMinuto.rounded() == pulsosPorMinuto
+            ? String(Int(pulsosPorMinuto)) : String(pulsosPorMinuto)
         return (unidad == .negra ? "♩" : unidad.nombre) + " = " + cifra
     }
 }

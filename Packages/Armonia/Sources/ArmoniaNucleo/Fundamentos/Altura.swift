@@ -103,9 +103,9 @@ public struct Altura: Hashable, Sendable {
 
     public var midi: Int { 60 + 7 * pasosDeQuinta + 12 * pasosDeOctava }
 
-    /// Frecuencia en temperamento igual.
-    public func frecuencia(la4: Double = 440) -> Double {
-        la4 * pow(2, Double(midi - 69) / 12)
+    /// Frecuencia en temperamento igual, con el La4 a `frecuenciaDelLa4` hercios.
+    public func frecuencia(frecuenciaDelLa4: Double = 440) -> Double {
+        frecuenciaDelLa4 * pow(2, Double(midi - 69) / 12)
     }
 
     /// "Fa♯4".
@@ -137,7 +137,8 @@ public struct Altura: Hashable, Sendable {
     public static func - (b: Altura, a: Altura) -> Intervalo { a.intervalo(hasta: b) }
 
     public static let doCentral = Altura(pasosDeQuinta: 0, pasosDeOctava: 0)
-    public static let la440 = Altura(pasosDeQuinta: 3, pasosDeOctava: -1)
+    /// El La4, el de la frecuencia de referencia (440 Hz, salvo que se elija otra).
+    public static let la4 = Altura(pasosDeQuinta: 3, pasosDeOctava: -1)
 }
 
 extension Altura: Comparable {

@@ -56,7 +56,8 @@ final class TerminologiaTests: XCTestCase {
         XCTAssertEqual(Acorde("Do").cambiarBajo(.re).cifrado, "Do/Re")
         XCTAssertEqual(TipoDeAcorde.dominanteSeptima.anadir(.novenaMenor)?.cifrado, "7(♭9)")
         XCTAssertEqual(TipoDeAcorde.dominanteNovena.quitar(.quintaJusta)?.cifrado, "9(omit5)")
-        XCTAssertEqual(TemperamentoRegular.igual.afinar(la4: 415).frecuencia(de: "La4"), 415, accuracy: 1e-9)
+        XCTAssertEqual(
+            TemperamentoRegular.igual.afinar(frecuenciaDelLa4: 415).frecuencia(de: "La4"), 415, accuracy: 1e-9)
         XCTAssertEqual(ConjuntoDeClases([0, 4]).unir(con: [7]), [0, 4, 7])
         XCTAssertEqual(ConjuntoDeClases([0, 4, 7]).intersecar(con: [4, 5]), [4])
         // Valores derivados con nombre propio: sustantivo o adjetivo.
@@ -76,7 +77,8 @@ final class TerminologiaTests: XCTestCase {
         // Temperamentos iguales con cualquier número de divisiones; 12 es `.igual`.
         XCTAssertEqual(
             TemperamentoRegular.igual(divisiones: 12).quinta, TemperamentoRegular.igual.quinta, accuracy: 1e-9)
-        XCTAssertEqual(TemperamentoRegular.igual(divisiones: 19, la4: 415).frecuencia(de: "La4"), 415, accuracy: 1e-9)
+        XCTAssertEqual(
+            TemperamentoRegular.igual(divisiones: 19, frecuenciaDelLa4: 415).frecuencia(de: "La4"), 415, accuracy: 1e-9)
         // Posición cerrada.
         XCTAssertEqual(Acorde("Sol7/Si").posicionCerrada(octava: 3).map(\.description), ["Si3", "Re4", "Fa4", "Sol4"])
         // Escalas que contienen unas notas.

@@ -148,7 +148,7 @@ struct VistaDeAnalisis: View {
     /// Otras armonías para cada acorde: cómo suena el pasaje con el cambio y el botón que lo pone en la progresión.
     @ViewBuilder
     private func rearmonizar(_ analisis: AnalisisPresentado) -> some View {
-        let propuestas = analisis.rearmonizaciones(notacion: notacion)
+        let propuestas = analisis.rearmonizaciones(en: notacion)
         if !propuestas.isEmpty {
             Section(notacion.texto(.rearmonizar)) {
                 ForEach(propuestas, id: \.self) { propuesta in
