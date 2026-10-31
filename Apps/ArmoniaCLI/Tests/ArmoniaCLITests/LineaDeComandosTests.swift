@@ -315,6 +315,17 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertTrue(salida("tonalidad D major --ingles").contains("key signature: F# C# (2 sharps)"))
     }
 
+    func testLaTablaDeOrdenes() {
+        // Cada nombre lleva a una sola orden, en minúsculas, y cada orden tiene su ayuda.
+        let nombres = LineaDeComandos.ordenes.flatMap(\.nombres)
+        XCTAssertEqual(Set(nombres).count, nombres.count)
+        for nombre in nombres { XCTAssertEqual(nombre, nombre.lowercased(), nombre) }
+        for orden in LineaDeComandos.ordenes { XCTAssertFalse(orden.ayuda.isEmpty, orden.nombres[0]) }
+        XCTAssertEqual(LineaDeComandos.ordenesDeLaAyuda.count, 36)
+        // Los nombres no distinguen mayúsculas.
+        XCTAssertEqual(salida("ACORDE Do"), salida("acorde Do"))
+    }
+
     /// Órdenes que terminan en un error de uso.
     private static let ordenesMalEscritas = [
         "foo", "acorde", "identificar", "intervalo C", "escala", "tonalidad", "analizar", "analizar C --en",

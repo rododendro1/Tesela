@@ -88,71 +88,12 @@ public enum LineaDeComandos {
         }
         let argumentos = opciones.restantes
 
-        guard let orden = argumentos.first?.lowercased() else { return bien(ayuda(en: notacion)) }
-        let resto = Array(argumentos.dropFirst())
+        guard let nombre = argumentos.first?.lowercased() else { return bien(ayuda(en: notacion)) }
+        guard let orden = ordenes.first(where: { $0.nombres.contains(nombre) }) else {
+            return uso(.ordenDesconocida(nombre), notacion)
+        }
         do {
-            switch orden {
-            case "ayuda", "help", "-h", "--help", "--ayuda":
-                return bien(ayuda(en: notacion))
-            case "acorde", "chord":
-                guard !resto.isEmpty else { return uso(.faltaCifrado, notacion) }
-                return bien(
-                    try resto.map { try describir(acorde: Acorde(leyendo: $0), notacion) }.joined(separator: "\n\n"))
-            case "arpegio", "arpeggio":
-                return try arpegio(resto, notacion)
-            case "identificar", "identify":
-                guard !resto.isEmpty else { return uso(.faltanNotas, notacion) }
-                return bien(try identificar(resto, notacion))
-            case "intervalo", "interval":
-                guard resto.count == 2 else { return uso(.dosNotas, notacion) }
-                return bien(try intervalo(resto[0], resto[1], notacion))
-            case "escala", "scale":
-                guard !resto.isEmpty else { return uso(.faltaEscala, notacion) }
-                return bien(describir(escala: try Escala(leyendo: resto.joined(separator: " ")), notacion))
-            case "tonalidad", "key":
-                guard !resto.isEmpty else { return uso(.faltaTonalidad, notacion) }
-                return bien(describir(tonalidad: try Tonalidad(leyendo: resto.joined(separator: " ")), notacion))
-            case "analizar", "analyze", "analyse":
-                return try analizar(resto, notacion)
-            case "armonizar", "harmonize", "harmonise":
-                return try armonizar(resto, notacion)
-            case "realizar", "realize", "realise":
-                return try realizar(resto, notacion)
-            case "revisar", "check":
-                return try revisar(resto, notacion)
-            case "contrapunto", "counterpoint":
-                return try contrapunto(resto, notacion)
-            case "transponer", "transportar", "transpose":
-                return try transponer(resto, notacion)
-            case "rearmonizar", "reharmonize", "reharmonise":
-                return try rearmonizar(resto, notacion)
-            case "tonnetz":
-                return try tonnetz(resto, notacion)
-            case "tabla", "harmonic-table":
-                return try tablaArmonica(resto, notacion)
-            case "vecinos", "neighbors":
-                return try vecinos(resto, notacion)
-            case "conduccion-parsimoniosa", "conducción-parsimoniosa", "smooth-path":
-                return try caminoParsimonioso(resto, notacion)
-            case "conduccion-minima", "conducción-mínima", "minimal-voice-leading":
-                guard resto.count == 2 else { return uso(.dosAcordesDeConduccion, notacion) }
-                let conduccion = try Acorde(leyendo: resto[0]).conduccionMinima(hasta: try Acorde(leyendo: resto[1]))
-                return bien(conduccion.texto(en: notacion))
-            case "digitaciones", "digitacion", "digitación", "fingerings":
-                return try digitaciones(resto, notacion)
-            case "posiciones", "positions":
-                return try posiciones(resto, notacion)
-            case "plr", "neoriemannian":
-                return try plr(resto, notacion)
-            case "musicxml":
-                return try partitura(resto, notacion, formato: .musicXML)
-            case "mei":
-                return try partitura(resto, notacion, formato: .mei)
-            case "midi":
-                return try partitura(resto, notacion, formato: .midi)
-            default:
-                return uso(.ordenDesconocida(orden), notacion)
-            }
+            return try orden.ejecutar(Array(argumentos.dropFirst()), notacion)
         } catch let error as ErrorDeLectura {
             return ResultadoDeOrden(salida: "", error: error.descripcion(en: notacion) + "\n", codigo: 1)
         } catch let error as ErrorDeImportacion {
@@ -161,6 +102,22 @@ public enum LineaDeComandos {
             return ResultadoDeOrden(salida: "", error: "\(error)\n", codigo: 1)
         }
     }
+
+    // MARK: Órdenes
+
+    /// Una orden de `armonia`: los nombres con que se escribe (en minúsculas), sus entradas de la ayuda y lo que
+    /// hace con el resto de los argumentos. Una orden nueva es una entrada más en uno de los `ordenesDe…`, y de
+    /// ahí salen a la vez su ejecución y su ayuda.
+    struct Orden: Sendable {
+        let nombres: [String]
+        let ayuda: [EntradaDeAyuda]
+        let ejecutar: @Sendable (_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden
+    }
+
+    /// Todas las órdenes, en el orden en que salen en la ayuda.
+    static let ordenes: [Orden] =
+        ordenesDeConsultas + ordenesDeArmonizacion + ordenesDePartituras
+        + ordenesDeDibujos + ordenesDeNeorriemann + ordenesDeTrastes + ordenesDeAyuda
 
     // MARK: Auxiliares
 

@@ -30,13 +30,9 @@ extension Voz {
         tonalidad: Tonalidad? = nil, clave: Clave? = nil, tempo: Tempo? = nil,
         titulo: String? = nil, parte: String = "Voz"
     ) -> String {
-        let tonalidad = tonalidad ?? Exportacion.tonalidad(de: self)
-        let clave = clave ?? Clave.masAdecuada(para: eventos.flatMap(\.alturas)) ?? .sol
-        var escritor = EscritorMEI(
-            compas: compas, anacrusa: anacrusa, tonalidad: tonalidad,
-            tempo: tempo, titulo: titulo, parte: parte, claves: [clave])
-        escritor.anadir(self, pentagrama: 1, plicaArriba: nil)
-        return escritor.documento
+        Exportacion.documento(
+            EscritorMEI.self, de: self, tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo,
+            parte: parte)
     }
 }
 
@@ -61,23 +57,9 @@ extension Coral {
         cifrados: Bool = false, analisis: Bool = false,
         notacion: Notacion = .espanolUnicode
     ) -> String {
-        let anotaciones = Exportacion.anotaciones(
-            de: self, duracion: duracion, tonalidad: tonalidad,
-            cifrados: cifrados, analisis: analisis)
-        var escritor = EscritorMEI(
-            compas: compas, anacrusa: .cero, tonalidad: anotaciones.tonalidad,
-            tempo: tempo, titulo: titulo, parte: parte, claves: [.sol, .fa])
-        if let rotulo = anotaciones.tonalidadDelAnalisis { escritor.rotulo = (rotulo.nombre(en: notacion) + ":", 2) }
-        let n = numeroDeVoces
-        for linea in Exportacion.voces(de: self, duracion: duracion, compas: compas) {
-            // Los cifrados, con la voz más aguda; el análisis, con la más grave.
-            escritor.anadir(
-                linea.voz, pentagrama: linea.pentagrama, plicaArriba: linea.plicaArriba,
-                cifrados: linea.indice == n - 1 ? anotaciones.cifrados.mapValues { $0.cifrado(en: notacion) } : [:],
-                letras: linea.indice == 0 && linea.indice != n - 1
-                    ? anotaciones.analisis.mapValues(Exportacion.letras) : [:])
-        }
-        return escritor.documento
+        Exportacion.documento(
+            EscritorMEI.self, de: self, duracion: duracion, compas: compas, tonalidad: tonalidad, tempo: tempo,
+            titulo: titulo, parte: parte, cifrados: cifrados, analisis: analisis, notacion: notacion)
     }
 }
 
@@ -112,29 +94,16 @@ extension AnalisisArmonico {
         titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
         analisis: Bool = true, notacion: Notacion = .espanolUnicode
     ) -> String {
-        Exportacion.comprobar(duraciones, acordes: acordes.count)
-        let (superior, grave) = Exportacion.progresion(
-            acordes.map(\.acorde), duraciones: Exportacion.hastaLaBarra(duraciones, compas))
-        let anotaciones = Exportacion.anotaciones(
-            de: self, duraciones: duraciones, cifrados: cifrados, analisis: analisis)
-        var escritor = EscritorMEI(
-            compas: compas, anacrusa: .cero, tonalidad: tonalidad, tempo: tempo,
-            titulo: titulo, parte: parte, claves: [.sol, .fa])
-        if let rotulo = anotaciones.tonalidadDelAnalisis { escritor.rotulo = (rotulo.nombre(en: notacion) + ":", 2) }
-        escritor.anadir(
-            Voz(superior, compas: compas), pentagrama: 1, plicaArriba: nil,
-            cifrados: anotaciones.cifrados.mapValues { $0.cifrado(en: notacion) })
-        escritor.anadir(
-            Voz(grave, compas: compas), pentagrama: 2, plicaArriba: nil,
-            letras: anotaciones.analisis.mapValues(Exportacion.letras))
-        return escritor.documento
+        Exportacion.documento(
+            EscritorMEI.self, de: self, duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo,
+            parte: parte, cifrados: cifrados, analisis: analisis, notacion: notacion)
     }
 }
 
 // MARK: - Escritor MEI
 
 /// Reúne varias voces, cada una en un pentagrama (con una capa por voz), y escribe el documento.
-package struct EscritorMEI {
+package struct EscritorMEI: EscritorDePartitura {
     package struct Linea {
         package let voz: Voz
         package let pentagrama: Int
@@ -178,6 +147,16 @@ package struct EscritorMEI {
             Linea(
                 voz: voz, pentagrama: pentagrama, plicaArriba: plicaArriba,
                 cifrados: cifrados, letras: letras))
+    }
+
+    /// La voz con los cifrados como `<harm>` encima y el análisis como letra debajo.
+    package mutating func anadir(
+        _ voz: Voz, pentagrama: Int, plicaArriba: Bool?,
+        cifrados: [Duracion: Acorde], analisis: [Duracion: AcordeAnalizado], notacion: Notacion
+    ) {
+        anadir(
+            voz, pentagrama: pentagrama, plicaArriba: plicaArriba,
+            cifrados: cifrados.mapValues { $0.cifrado(en: notacion) }, letras: analisis.mapValues(Exportacion.letras))
     }
 
     package var documento: String {
