@@ -108,6 +108,22 @@ final class CaminosConCosteTests: XCTestCase {
         })
     }
 
+    /// Con un coste mínimo, lo estimado ya pasa del presupuesto antes de dar ningún paso.
+    func testPresupuestoConCosteMinimo() {
+        let destino = CoordenadaAxial(q: 4, r: 0)
+        XCTAssertNil(CoordenadaAxial.origen.caminoMasBarato(hasta: destino, costeMinimo: 1, presupuesto: 3) { _, _ in 1 })
+        XCTAssertEqual(CoordenadaAxial.origen.caminoMasBarato(hasta: destino, costeMinimo: 1, presupuesto: 4) { _, _ in 1 }?.coste, 4)
+    }
+
+    /// Una casilla a la que primero se llega caro y luego barato se cuenta una vez, con lo barato.
+    func testAlcanzablesConUnAtajo() {
+        let cara = CoordenadaAxial(q: 1, r: 0)
+        let costes = CoordenadaAxial.origen.alcanzables(presupuesto: 6) { desde, hacia in
+            desde == .origen && hacia == cara ? 5 : 1
+        }
+        XCTAssertEqual(costes[cara], 2)
+    }
+
     func testAlcanzablesConCoste() {
         // Con todos los pasos a 1, son los de la búsqueda en anchura.
         let muro: Set = [CoordenadaAxial(q: 1, r: -1), CoordenadaAxial(q: 1, r: 0), CoordenadaAxial(q: 0, r: 1)]

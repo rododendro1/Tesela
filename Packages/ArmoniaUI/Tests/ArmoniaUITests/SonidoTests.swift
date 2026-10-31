@@ -103,6 +103,18 @@ final class SonidoTests: XCTestCase {
                                                          notacion: .espanolUnicode)
         XCTAssertEqual(Set(sinRitmo.sonido.notas.map(\.inicio)), [0, 1, 2])
     }
+
+    func testUnaNotaSola() {
+        XCTAssertEqual(Sonido.nota(60).notas.map(\.midi), [60])
+        XCTAssertEqual(Sonido.nota(60, duracion: 2).duracion, 2)
+        XCTAssertEqual(Sonido.nota(Altura(midi: 69)).notas.map(\.midi), [69])
+        XCTAssertEqual(Sonido.silencio.duracion, 0)
+        // Sin tónica se afina sobre Do: el Do queda igual y el Mi baja en la justa.
+        let afinado = Sonido(notas: [.init(midi: 60, inicio: 0, duracion: 1), .init(midi: 64, inicio: 0, duracion: 1)])
+            .afinado(en: .justa)
+        XCTAssertEqual(afinado.notas[0].desviacion, 0, accuracy: 1e-9)
+        XCTAssertEqual(afinado.notas[1].desviacion, -13.7, accuracy: 0.1)
+    }
 }
 
 private extension Double {

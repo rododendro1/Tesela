@@ -39,6 +39,10 @@ final class PresentacionDePentagramaTests: XCTestCase {
         XCTAssertTrue(pentagrama.fichero.nombreDeFichero.hasPrefix("Pentagrama Arpegio de Do"))
         XCTAssertTrue(pentagrama.svg.hasPrefix("<svg"))
     }
+
+    func testUnViewBoxSinCerrar() {
+        XCTAssertEqual(PresentacionDePentagrama.relacionDeAspecto(deSVG: #"<svg viewBox="0 -3 20 10"#), 4)
+    }
 }
 
 final class PresentacionDePentagramaMasTests: XCTestCase {

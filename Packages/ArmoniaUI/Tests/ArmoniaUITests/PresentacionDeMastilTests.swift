@@ -115,4 +115,15 @@ final class PresentacionDeMastilTests: XCTestCase {
         XCTAssertNil(posicion(40))
         XCTAssertEqual(posicion(113), PosicionEnElMastil(cuerda: 0, traste: 6))
     }
+
+    func testUnaSolaCuerdaONinguna() {
+        func posicion(_ y: Double, cuerdas: Int) -> PosicionEnElMastil? {
+            PresentacionDeMastil.posicion(enX: 100, y: y, ancho: 276, alto: 130, cuerdas: cuerdas, rango: 0...12, conCanal: false)
+        }
+        XCTAssertNil(posicion(100, cuerdas: 0))
+        // Con una cuerda, abajo del todo, y hasta 12 puntos por encima o por debajo.
+        XCTAssertEqual(posicion(108, cuerdas: 1)?.cuerda, 0)
+        XCTAssertEqual(posicion(97, cuerdas: 1)?.cuerda, 0)
+        XCTAssertNil(posicion(60, cuerdas: 1))
+    }
 }

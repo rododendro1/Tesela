@@ -110,4 +110,17 @@ final class TextoDeLasAppsTests: XCTestCase {
         XCTAssertEqual(Notacion.delSistema(idiomas: ["ja-JP"]), .espanolUnicode)
         XCTAssertEqual(Notacion.delSistema(idiomas: []), .espanolUnicode)
     }
+
+    func testUnaMarca() {
+        XCTAssertEqual(Notacion.espanolUnicode.texto(.marcas(1)), "1 marca")
+        XCTAssertEqual(Notacion.euskera.texto(.marcas(1)), "marka 1")
+        for notacion in Idioma.allCases.map(Notacion.delIdioma) {
+            XCTAssertNotEqual(notacion.texto(.marcas(1)), notacion.texto(.marcas(2)), notacion.clave)
+        }
+    }
+
+    func testLosEjemplosQueNoSeLeenSeDejanComoVan() {
+        XCTAssertEqual(TextoDeLasApps.cifrado("Xyz", .inglesASCII), "Xyz")
+        XCTAssertEqual(TextoDeLasApps.alturas("Mi4 Xyz, Do4", .inglesASCII), "E4 Xyz, C4")
+    }
 }

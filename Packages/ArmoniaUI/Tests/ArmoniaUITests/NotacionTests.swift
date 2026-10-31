@@ -41,6 +41,7 @@ final class NotacionTests: XCTestCase {
         XCTAssertNil(Notacion.ruso.idiomaElegidoParaLosTextos)
         // Cambiar las notas conserva los textos, y quitar los textos deja las notas.
         XCTAssertEqual(rusoEnEspanol.conNotas(.griego), Notacion.griego.conTextos(en: .espanol))
+        XCTAssertEqual(Notacion.ruso.conNotas(.griego), .griego)
         XCTAssertEqual(rusoEnEspanol.conTextosElegidos(nil), .ruso)
         XCTAssertEqual(Notacion.inglesASCII.conTextosElegidos(.catalan).clave, "inglesASCII+catalan")
         // Una parte desconocida no rompe nada.
