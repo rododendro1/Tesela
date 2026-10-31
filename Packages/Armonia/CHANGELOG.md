@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- `TecladoIsomorfico.gerhard` (`1,4,3;R60`: un semitono hacia arriba y las terceras mayor y menor en las diagonales
+  de la derecha) y `TecladoIsomorfico.park` (`2,5,3;R90M`: una cuarta hacia la derecha, una tercera menor arriba a la
+  derecha y un tono abajo a la derecha), los dos de la Tabla 1 de Park y Gerhard.
 - Un MusicXML con un byte que no es UTF-8 válido en el nombre de un elemento o de un atributo detenía el programa en
   Linux (dentro de `XMLParser`). Ahora es `ErrorDeImportacion.xmlDanado(linea:)`, con la línea del byte. Los ficheros
   que declaran una codificación de un byte por carácter (ISO-8859-1, Windows-1252…) se siguen leyendo.

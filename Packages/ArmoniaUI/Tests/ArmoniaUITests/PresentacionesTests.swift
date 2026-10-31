@@ -310,6 +310,10 @@ final class PresentacionDeRedesTests: XCTestCase {
         XCTAssertEqual(Set(PresentacionDeRedes.casillasDelTecladoPlano).count, 12 * 7)
         XCTAssertEqual(PresentacionDeRedes.casillasDelTeclado(.acordeonC), PresentacionDeRedes.casillasDelTecladoPlano)
         XCTAssertEqual(PresentacionDeRedes.casillasDelTeclado(.janko), PresentacionDeRedes.casillasDelTeclado)
+        XCTAssertEqual(PresentacionDeRedes.casillasDelTeclado(.gerhard), PresentacionDeRedes.casillasDelTecladoPlano)
+        XCTAssertEqual(PresentacionDeRedes.casillasDelTeclado(.park), PresentacionDeRedes.casillasDelTeclado)
+        XCTAssertEqual(RedDeNotas.gerhard.teclado, .gerhard)
+        XCTAssertEqual(RedDeNotas.park.teclado, .park)
     }
 
     func testLasNotasNoSeRepiten() throws {

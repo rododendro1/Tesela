@@ -4,11 +4,13 @@ import Hexagonos
 
 // Los teclados isomórficos: botones hexagonales en los que cada dirección sube siempre el mismo
 // intervalo, así que un acorde o una escala tiene la misma forma en todas las tonalidades. La tabla
-// armónica es uno de ellos; Wicki-Hayden (concertinas, apps como Musix), Jankó y el acordeón cromático, otros.
+// armónica es uno de ellos; Wicki-Hayden (concertinas, apps como Musix), Jankó, el acordeón cromático, Gerhard y
+// Park, otros.
 //
 // Cada teclado es una pareja de generadores: los tres vecinos de un hexágono suben `a`, `b` y `a − b` semitonos
 // (o `a + b`, según la orientación), y las otras tres direcciones, lo contrario. Tabla armónica: 7, 4 y 3;
-// Wicki-Hayden: 2, 5 y 7; acordeón cromático: 3, 2 y 1; Jankó: 2, 1 y 1.
+// Wicki-Hayden: 2, 5 y 7; acordeón cromático: 3, 2 y 1; Jankó: 2, 1 y 1; Gerhard: 4, 3 y 1; Park: 5, 3 y 2.
+// Bosanquet-Wilson, en 12 notas, da los mismos intervalos que Jankó (el tono y los dos semitonos coinciden).
 //
 // Cualquier teclado se puede escribir y leer en el formato UIL (Unified Isomorphic Layout, Park y Gerhard, 2013),
 // y girar de 30° en 30° o reflejar: ver `FormatoUIL`.
@@ -88,6 +90,20 @@ public struct TecladoIsomorfico: Hashable, Sendable {
     public static let acordeonB = TecladoIsomorfico(
         nombre: "Acordeón B", orientacion: .plana,
         semitonosEnQ: -1, semitonosEnR: -3)
+
+    /// Gerhard (Park y Gerhard, 2013): hexágonos planos con un semitono hacia arriba, una tercera mayor arriba a la
+    /// derecha y una tercera menor abajo a la derecha. Usa los intervalos de la tabla armónica, salvo la quinta, que
+    /// cambia por el semitono: cada columna es la escala cromática. En UIL, `1,4,3;R60`.
+    public static let gerhard = TecladoIsomorfico(
+        nombre: "Gerhard", orientacion: .plana,
+        semitonosEnQ: 3, semitonosEnR: -1)
+
+    /// Park (Park y Gerhard, 2013): hexágonos puntiagudos con una cuarta justa hacia la derecha, una tercera menor
+    /// arriba a la derecha y un tono abajo a la derecha. Las melodías por grados conjuntos piden poco desplazamiento.
+    /// En UIL, `2,5,3;R90M`.
+    public static let park = TecladoIsomorfico(
+        nombre: "Park", orientacion: .puntiaguda,
+        semitonosEnQ: 5, semitonosEnR: 2)
 
     /// El número MIDI de una casilla.
     public func midi(en casilla: CoordenadaAxial) -> Int {
