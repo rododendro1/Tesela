@@ -106,6 +106,7 @@ extension TextosDeCLI {
         С --textos тексты выводятся на другом языке, чем ноты: --idioma en --textos ru.
         По-испански и по-английски --escritura palabras|ascii|unicode пишет ноты как Fa sostenido,
         Fa# или Fa♯ (по-английски F sharp, F# или F♯).
+        С --subindices октава пишется нижним индексом: La₄, Fa♯₃ (читаются обе формы, La4 и La₄).
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "эта справка",

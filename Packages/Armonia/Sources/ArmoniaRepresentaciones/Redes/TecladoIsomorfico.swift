@@ -211,7 +211,7 @@ public struct TecladoIsomorfico: Hashable, Sendable {
             },
             rotulo: { casilla in
                 let altura = self.altura(en: casilla, preferirBemoles: preferirBemoles)
-                return altura.nota.nombreCompacto(en: notacion) + "\(altura.octava)"
+                return altura.nombreCompacto(en: notacion)
             })
     }
 }

@@ -86,6 +86,7 @@ public enum LineaDeComandos {
             }
             notacion = Notacion(escritura: escritura, textos: notacion.textos)
         }
+        if opciones.quitarMarca("--subindices", "--subscripts") { notacion = notacion.conOctavas(.subindices) }
         let argumentos = opciones.restantes
 
         guard let nombre = argumentos.first?.lowercased() else { return bien(ayuda(en: notacion)) }

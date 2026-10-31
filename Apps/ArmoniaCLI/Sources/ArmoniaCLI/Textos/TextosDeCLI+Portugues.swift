@@ -106,6 +106,7 @@ extension TextosDeCLI {
         Com --textos, os textos saem noutra língua que as notas: --idioma en --textos pt.
         Em espanhol e inglês, --escritura palabras|ascii|unicode escreve as notas como Fa sostenido,
         Fa# ou Fa♯ (em inglês, F sharp, F# ou F♯).
+        Com --subindices, a oitava vai em índice: La₄, Fa♯₃ (leem-se as duas formas, La4 e La₄).
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "esta ajuda",

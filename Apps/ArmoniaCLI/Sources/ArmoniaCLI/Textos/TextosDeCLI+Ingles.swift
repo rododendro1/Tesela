@@ -107,6 +107,7 @@ extension TextosDeCLI {
         With --texts, the texts use another language than the notes: --language es --texts en.
         In Spanish and English, --writing words|ascii|unicode writes notes as F sharp, F# or F♯
         (in Spanish, Fa sostenido, Fa# or Fa♯).
+        With --subscripts, the octave is a subscript: A₄, F♯₃ (both A4 and A₄ are read).
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "this help",
