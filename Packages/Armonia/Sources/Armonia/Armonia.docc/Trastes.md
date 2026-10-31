@@ -61,6 +61,31 @@ posiciones[0].alturas.map(\.midi) == [40, 45, 48, 52, 57, 60, 64]   // true
 let todas = mastil.posiciones(de: Acorde("Lam"), trastes: 0...5)
 ```
 
+## Escalas por posiciones
+
+`Mastil/posicionesPorCuerda(de:notasPorCuerda:)` da una escala por posiciones con el mismo número de notas
+en cada cuerda: tres en las de seis o más notas, dos en las pentatónicas. Hay una posición por grado,
+empezando por cada nota de la escala en la cuerda más grave. `Mastil/posicionesCAGED(de:ancho:)` da las
+cinco formas del sistema CAGED, franjas de cinco trastes alrededor de la tónica tal como cae en los acordes
+abiertos de Do, La, Sol, Mi y Re (``FormaCAGED``). Cada ``EscalaEnElMastil`` trae sus trastes, sus notas
+cuerda a cuerda y, en CAGED, su forma. Las dos van de la posición más baja a la más alta y dan solo las que
+caben en el mástil.
+
+```swift
+let mastil = Mastil(.guitarra, trastes: 15)
+let porCuerda = mastil.posicionesPorCuerda(de: Escala(.sol, .mayor))
+porCuerda.count                     // 7
+porCuerda[0].trastes == 0...5       // true
+porCuerda[0].posiciones.count       // 18
+let caged = mastil.posicionesCAGED(de: Escala(.do, .mayor))
+caged.map(\.forma) == [.c, .a, .g, .e, .d]                          // true
+caged.map(\.trastes) == [0...4, 2...6, 5...9, 7...11, 9...13]       // true
+```
+
+Las de tres notas por cuerda necesitan cuerdas que vayan de grave a aguda (en un ukelele con el Sol agudo no
+salen), y CAGED, la guitarra afinada como siempre. Desde la terminal: `armonia posiciones Sol mayor`, o con
+`--caged`.
+
 ## Datos que vienen de fuera
 
 Un traste o una posición que escribe una persona puede no existir. Los inicializadores y los
@@ -88,3 +113,8 @@ let sonido = mastil.midiSiExiste(en: PosicionEnElMastil(cuerda: 9, traste: 0))  
 
 - ``Digitacion``
 - ``ArpegioEnElMastil``
+
+### Escalas en el mástil
+
+- ``EscalaEnElMastil``
+- ``FormaCAGED``

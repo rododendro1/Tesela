@@ -72,6 +72,8 @@ extension TextosDeCLI {
         sintaxisMusicxmlArpegios: "musicxml arpeggios <σύμβολα> [επιλογές]",
         descripcionMusicxmlArpegios: "οι συγχορδίες σε αρπίσματα, νότα νότα",
         notasMusicxmlArpegios: "επιλογές: --patron alberti (ή up, down, up-down), --figura 16\n(πόσο διαρκεί κάθε νότα· από προεπιλογή όγδοο), --duracion 1\n(πόσο διαρκεί κάθε συγχορδία: το σχήμα επαναλαμβάνεται ώσπου\nνα τη γεμίσει) και οι υπόλοιπες των «chords»",
+        sintaxisMusicxmlArchivo: "musicxml chords --file <αρχείο>",
+        descripcionMusicxmlArchivo: "η αλληλουχία ενός αρχείου MIDI ή\nMusicXML, με τη διάρκεια κάθε\nσυγχορδίας (και arpeggios, mei, midi)",
         sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios <…> [επιλογές]",
         descripcionMeiMelodia: "το ίδιο σε MEI 5, τη μορφή των\nκριτικών εκδόσεων (με τις ίδιες\nεπιλογές)",
         sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios <…> [επιλογές]",
@@ -80,6 +82,8 @@ extension TextosDeCLI {
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "fingerings <σύμβολο>… [επιλογές]",
         descripcionDigitaciones: "τρόποι να παίξεις μια συγχορδία, από τον πιο άνετο στον\nλιγότερο, σε έγχορδο όργανο με τάστα (χορδές από χαμηλά προς\nψηλά)\nεπιλογές: --instrument guitar|bass|ukulele|mandolin|… (και\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (το ψηλότερο τάστο που χρησιμοποιείται), --fingers 4\n(πόσα δάχτυλα μπορούν να χρησιμοποιηθούν), --complete (με όλες\nτις νότες: από προεπιλογή μπορεί να λείπει η πέμπτη), --diagram\n(μία γραμμή ανά χορδή)",
+        sintaxisPosiciones: "positions <κλίμακα> [--caged]",
+        descripcionPosiciones: "η κλίμακα σε θέσεις στην κιθάρα:\nτρεις νότες ανά χορδή (δύο στις\nπεντατονικές) ή CAGED",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -157,6 +161,8 @@ extension TextosDeCLI {
         faltanAcordesDelCoral: { ejemplo, orden in "λείπουν οι συγχορδίες: armonia \(orden) chorale C3 E4 G4 C5, G2 D4 G4 B4" },
         soloParaMelodia: { opcion in "το --\(opcion) είναι μόνο για «melody»" },
         soloParaArpegios: { opcion in "το --\(opcion) είναι μόνο για «arpeggios»" },
+        archivoSoloParaAcordes: "το --file είναι μόνο για «chords» και «arpeggios»",
+        ventanaSinArchivo: "το --window πάει με το --file",
         faltanAcordesDeLaProgresion: { ejemplo, orden in "λείπουν οι συγχορδίες: armonia \(orden) chords C Am D7 G7 C" },
         acordesConCifradosYAnalisis: "οι συγχορδίες έχουν πάντα σύμβολα και ανάλυση",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: εξάγεται «melody», «chorale», «chords» ή τα «arpeggios» τους" },
@@ -171,6 +177,7 @@ extension TextosDeCLI {
         faltaTraste: "λείπει το ψηλότερο τάστο: --fret 12",
         trasteFueraDeRango: "το ψηλότερο τάστο είναι αριθμός από 0 έως 24: --fret 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "λείπει το σύμβολο της συγχορδίας: \(digitaciones.1)" },
+        faltaEscalaDePosiciones: "λείπει η κλίμακα: armonia positions G major",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Δοκίμασε «armonia help».",

@@ -257,6 +257,8 @@ final class LineaDeComandosTests: XCTestCase {
         "tonnetz --camino C", "tabla --ciclo C", "tabla --margen 9 C", "contrapunto", "contrapunto D4 A4",
         "contrapunto D4 / A4 --especie 6", "contrapunto D4 / ", "acorde Do --escritura foo",
         "arpegio", "arpegio Do --patron zigzag", "arpegio Do --patron", "arpegio Do --octavas 2",
+        "posiciones", "posiciones Do mayor --foo", "musicxml acordes C --ventana 1",
+        "musicxml melodia C4:4 --archivo coral.mid",
     ]
 
     /// Con --ingles no se cuela nada en español: ni en la salida, ni en los errores, ni en la ayuda.
@@ -540,6 +542,72 @@ final class LineaDeComandosTests: XCTestCase {
         for orden in ["musicxml arpegios Do --figura 0/4", "musicxml arpegios Do Hm", "midi arpegios Do --figura 3"] {
             XCTAssertEqual(LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo, 1, orden)
         }
+    }
+
+    /// `--archivo`: los acordes de un fichero, con lo que dura cada uno.
+    func testPartituraDeUnArchivo() throws {
+        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
+        let duraciones: [Duracion] = [.blanca, .negra, .negra, .redonda]
+        let midi = try fichero(analisis.midi(duraciones: duraciones, titulo: "Coral"), extension: "mid")
+        let xml = try fichero(Data(analisis.musicXML(duraciones: duraciones).utf8), extension: "musicxml")
+        // El ritmo armónico del fichero pasa a la partitura, y su título y su tempo (el MIDI lo lleva siempre) también.
+        let esperado = analisis.musicXML(duraciones: duraciones, tempo: Tempo(120), titulo: "Coral")
+        XCTAssertEqual(salida("musicxml acordes --archivo " + midi), esperado.trimmingCharacters(in: .newlines))
+        XCTAssertEqual(salida("musicxml chords --file " + midi), esperado.trimmingCharacters(in: .newlines))
+        let sinTempo = analisis.musicXML(duraciones: duraciones, titulo: "Coral")
+        XCTAssertEqual(salida("musicxml acordes --archivo \(xml) --titulo Coral"), sinTempo.trimmingCharacters(in: .newlines))
+        // `--duracion` manda sobre el ritmo del fichero.
+        XCTAssertEqual(salida("musicxml acordes --archivo \(xml) --duracion 2 --titulo T"),
+                       salida("musicxml acordes Do Fa Sol7 Do --duracion 2 --titulo T"))
+        XCTAssertTrue(salida("mei acordes --archivo " + xml).hasSuffix("</mei>\n"))
+        let datos = LineaDeComandos.ejecutar(["midi", "acordes", "--archivo", xml])
+        XCTAssertEqual(datos.codigo, 0, datos.error)
+        XCTAssertEqual(datos.datos, analisis.midi(duraciones: duraciones))
+        // Arpegiados: Do (blanca, 4 corcheas), Fa y Sol7 (negra, 2 cada uno) y Do (redonda, 8).
+        let arpegios = salida("musicxml arpegios --archivo " + midi)
+        XCTAssertEqual(arpegios.components(separatedBy: "<pitch>").count - 1, 16)
+        XCTAssertEqual(salida("musicxml arpegios --archivo \(midi) --ventana 1"), arpegios)
+
+        func resultado(_ orden: String) -> ResultadoDeOrden {
+            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+        }
+        XCTAssertEqual(resultado("musicxml acordes Do --archivo " + midi).codigo, 2)
+        XCTAssertEqual(resultado("musicxml acordes --archivo /no/existe.mid").codigo, 2)
+        XCTAssertEqual(resultado("musicxml coral --archivo " + midi).error,
+                       "armonia: --archivo es solo para «acordes» y «arpegios»\nPrueba «armonia ayuda».\n")
+        XCTAssertEqual(resultado("musicxml acordes Do --ventana 1").error,
+                       "armonia: --ventana va con --archivo\nPrueba «armonia ayuda».\n")
+        let melodia = try fichero(Voz(leyendo: "Do4:4 Re4:4 Mi4:4").midi(), extension: "mid")
+        XCTAssertEqual(resultado("musicxml acordes --archivo " + melodia).codigo, 2)
+        let texto = try fichero(Data("hola".utf8), extension: "mid")
+        XCTAssertEqual(resultado("musicxml acordes --archivo " + texto).codigo, 1)
+    }
+
+    func testPosiciones() {
+        let texto = salida("posiciones Sol mayor")
+        XCTAssertTrue(texto.hasPrefix("Sol mayor · 3 notas por cuerda\n\n  Trastes 0–5\n"), texto)
+        XCTAssertTrue(texto.contains("""
+              Trastes 0–5
+                Mi  |--2--3--5-
+                Si  |--1--3--5-
+                Sol |--0--2--4-
+                Re  |--0--2--4-
+                La  |--0--2--3-
+                Mi  |--0--2--3-
+            """), texto)
+        // Siete posiciones, una por grado: cada una, su cabecera y seis cuerdas.
+        XCTAssertEqual(texto.components(separatedBy: "Trastes").count - 1, 7)
+        let caged = salida("posiciones Do mayor --caged")
+        XCTAssertTrue(caged.hasPrefix("Do mayor · CAGED\n\n  Forma C · Trastes 0–4\n"), caged)
+        for forma in ["Forma A · Trastes 2–6", "Forma G · Trastes 5–9", "Forma E · Trastes 7–11", "Forma D · Trastes 9–13"] {
+            XCTAssertTrue(caged.contains(forma), forma)
+        }
+        XCTAssertTrue(salida("posiciones La pentatónica menor").contains(" · 2 notas por cuerda\n"))
+        XCTAssertTrue(salida("positions G major --caged --ingles").contains(" · CAGED\n\n  G shape · Frets 0–4\n"))
+        XCTAssertTrue(salida("ayuda").contains("posiciones <escala> [--caged]"))
+        XCTAssertEqual(resultado("posiciones").error,
+                       "armonia: falta la escala: armonia posiciones Sol mayor\nPrueba «armonia ayuda».\n")
+        XCTAssertEqual(resultado("posiciones", "Sol", "chungo").codigo, 1)
     }
 
     func testTonnetz() {

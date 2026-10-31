@@ -3,7 +3,8 @@ import UniformTypeIdentifiers
 import Armonia
 import ArmoniaUI
 
-/// Escribe una progresión (Do Fa Sol7 Do Lam Re7 Sol), o la saca de un fichero MIDI o MusicXML con «Abrir», y
+/// Escribe una progresión (Do Fa Sol7 Do Lam Re7 Sol), o la saca de un fichero MIDI o MusicXML con «Abrir» (con su
+/// ritmo armónico, que siguen la partitura, el MIDI y «Escuchar» mientras no se retoque), y
 /// muestra sus tonalidades, los grados, las funciones, las modulaciones y las cadencias, y la exporta como
 /// partitura o MIDI, también arpegiada.
 struct VistaDeAnalisis: View {
@@ -14,6 +15,8 @@ struct VistaDeAnalisis: View {
     @State private var abriendo = false
     /// Por qué no se pudo abrir el último fichero; se borra al abrir otro o al cambiar el texto.
     @State private var errorAlAbrir: Error?
+    /// La progresión del último fichero abierto, con su ritmo armónico: se usa mientras el campo diga lo mismo.
+    @State private var importada: ProgresionImportada?
     @State private var patron = Arpegio.Patron.ascendente
 
     /// MIDI y MusicXML sin comprimir (.musicxml y .xml).
@@ -77,8 +80,14 @@ struct VistaDeAnalisis: View {
             abrir(elegido)
         }
         .onChange(of: texto) { _ in errorAlAbrir = nil }
-        .task(id: "\(texto)|\(notacion.clave)") {
-            resultado = Result { try PresentacionDeAnalisis.analizar(texto, notacion: notacion) }
+        .task(id: "\(texto)|\(notacion.clave)|\(importada?.hashValue ?? 0)") {
+            // Lo abierto, con el ritmo de la pieza, mientras no se retoque; si no, lo escrito.
+            if let importada, importada.texto == texto,
+               let analisis = PresentacionDeAnalisis.analizar(importada, notacion: notacion) {
+                resultado = .success(analisis)
+            } else {
+                resultado = Result { try PresentacionDeAnalisis.analizar(texto, notacion: notacion) }
+            }
         }
     }
 
@@ -109,8 +118,9 @@ struct VistaDeAnalisis: View {
             // Los ficheros de fuera de la app (Archivos, iCloud) solo se leen con permiso.
             let conPermiso = url.startAccessingSecurityScopedResource()
             defer { if conPermiso { url.stopAccessingSecurityScopedResource() } }
-            let progresion = try ImportacionDeProgresion.progresion(de: Data(contentsOf: url))
-            texto = progresion
+            let leida = try ImportacionDeProgresion.leer(Data(contentsOf: url))
+            importada = leida
+            texto = leida.texto
             errorAlAbrir = nil
         } catch {
             errorAlAbrir = error

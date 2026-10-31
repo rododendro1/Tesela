@@ -3,12 +3,14 @@ import Armonia
 import ArmoniaUI
 
 /// Elige una tónica y una escala del catálogo (occidentales y de otras tradiciones) y muestra sus notas,
-/// sus acordes y dónde caen en el mástil.
+/// sus acordes, dónde caen en el mástil y cómo se tocan por posiciones (CAGED o tres notas por cuerda).
 struct VistaDeEscalas: View {
     @Environment(\.notacion) private var notacion
     @EnvironmentObject private var navegacion: Navegacion
     @State private var tonica = 0          // índice en `tonicas`
     @State private var tipo = 0            // índice en `catalogo`
+    /// Las posiciones en el mástil: las del sistema CAGED o las de tres (o dos) notas por cuerda.
+    @State private var caged = true
 
     /// Las escalas habituales y, después, las de otras tradiciones. Se elige por índice porque dos
     /// escalas con las mismas notas son iguales (`==`) aunque se llamen distinto.
@@ -61,6 +63,7 @@ struct VistaDeEscalas: View {
             Section(notacion.texto(.mastilDeGuitarra)) {
                 DiagramaDeMastil(mastil: Mastil(.guitarra, trastes: 12), escala: escala, notacion: notacion)
             }
+            posiciones(de: escala)
         }
         .navigationTitle(notacion.texto(.escalas))
         .selectorDeNotacionEnLaBarra()
@@ -86,6 +89,39 @@ struct VistaDeEscalas: View {
         if let indice = VistaDeEscalas.catalogo.firstIndex(where: { $0.nombre(en: .espanolUnicode) == nombre })
             ?? VistaDeEscalas.catalogo.firstIndex(of: pedida.tipo) {
             tipo = indice
+        }
+    }
+
+    /// La escala por posiciones en la guitarra, con el diagrama de cada una y «Escuchar», de la más baja a la
+    /// más alta.
+    @ViewBuilder
+    private func posiciones(de escala: Escala) -> some View {
+        let mastil = Mastil(.guitarra, trastes: 15)
+        let porCuerda = escala.notas.count >= 6 ? 3 : 2
+        let posiciones = caged ? mastil.posicionesCAGED(de: escala) : mastil.posicionesPorCuerda(de: escala)
+        Section(notacion.texto(.posicionesEnElMastil)) {
+            Picker(notacion.texto(.posicionesEnElMastil), selection: $caged) {
+                Text("CAGED").tag(true)
+                Text(notacion.texto(.notasPorCuerda(porCuerda))).tag(false)
+            }
+            .pickerStyle(.segmented)
+            ForEach(posiciones, id: \.self) { posicion in
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        if let forma = posicion.forma {
+                            Text(notacion.texto(.forma(forma.rawValue))).bold()
+                        }
+                        Text(notacion.texto(.trastes(desde: posicion.trastes.lowerBound, hasta: posicion.trastes.upperBound)))
+                            .foregroundColor(.secondary)
+                        Spacer()
+                        // Nota a nota, cuerda a cuerda, como se estudia.
+                        BotonDeEscuchar(Sonido.voz(Voz(posicion.alturas.map { Evento($0, .corchea) }))
+                            .conTonica(escala.tonica))
+                    }
+                    DiagramaDeMastil(posicion: posicion, escala: escala, notacion: notacion)
+                        .frame(maxHeight: 120)
+                }
+            }
         }
     }
 

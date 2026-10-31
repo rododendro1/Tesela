@@ -58,6 +58,11 @@ public enum TextoDeLasApps: Hashable, Sendable {
     case otrasTradiciones
     case acordesDeLaEscala
     case mastilDeGuitarra
+    case posicionesEnElMastil
+    /// «3 notas por cuerda».
+    case notasPorCuerda(Int)
+    /// «Forma E», de las del sistema CAGED.
+    case forma(String)
     case pentagrama
 
     // Análisis
@@ -376,6 +381,27 @@ public enum TextoDeLasApps: Hashable, Sendable {
                               fr: "Accords de la gamme", oc: "Acòrds de la gama", it: "Accordi della scala",
                               de: "Akkorde der Skala",
                               el: "Συγχορδίες της κλίμακας", ru: "Аккорды гаммы")
+        case .posicionesEnElMastil:
+            return Traduccion("Posiciones en el mástil", "Positions on the fretboard", ca: "Posicions al mànec",
+                              gl: "Posicións no mástil", ast: "Posiciones nel mástil", an: "Posicions en o mástil",
+                              eu: "Posizioak mastilean", pt: "Posições no braço", fr: "Positions sur le manche",
+                              oc: "Posicions sul margue", it: "Posizioni sul manico", de: "Lagen auf dem Griffbrett",
+                              el: "Θέσεις στην ταστιέρα", ru: "Позиции на грифе")
+        case .notasPorCuerda(let n):
+            let una = n == 1
+            return Traduccion("\(n) \(una ? "nota" : "notas") por cuerda", "\(n) \(una ? "note" : "notes") per string",
+                              ca: "\(n) \(una ? "nota" : "notes") per corda", gl: "\(n) \(una ? "nota" : "notas") por corda",
+                              ast: "\(n) \(una ? "nota" : "notes") per cuerda", an: "\(n) \(una ? "nota" : "notas") por corda",
+                              eu: "\(n) nota soka bakoitzeko", pt: "\(n) \(una ? "nota" : "notas") por corda",
+                              fr: "\(n) \(una ? "note" : "notes") par corde", oc: "\(n) \(una ? "nòta" : "nòtas") per còrda",
+                              it: "\(n) \(una ? "nota" : "note") per corda", de: "\(n) \(una ? "Ton" : "Töne") pro Saite",
+                              el: "\(n) \(una ? "νότα" : "νότες") ανά χορδή",
+                              ru: "\(n) \(una ? "нота" : n < 5 ? "ноты" : "нот") на струну")
+        case .forma(let forma):
+            return Traduccion("Forma \(forma)", "\(forma) shape", ca: "Forma \(forma)", gl: "Forma \(forma)",
+                              ast: "Forma \(forma)", an: "Forma \(forma)", eu: "\(forma) forma", pt: "Forma \(forma)",
+                              fr: "Forme \(forma)", oc: "Forma \(forma)", it: "Forma \(forma)", de: "\(forma)-Form",
+                              el: "Σχήμα \(forma)", ru: "Форма \(forma)")
         case .mastilDeGuitarra:
             return Traduccion("Mástil de guitarra", "Guitar fretboard", ca: "Mànec de guitarra", gl: "Mástil de guitarra",
                               ast: "Mástil de guitarra", an: "Mástil de guitarra", eu: "Gitarraren mastila",

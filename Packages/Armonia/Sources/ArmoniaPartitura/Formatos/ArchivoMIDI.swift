@@ -71,8 +71,18 @@ extension AnalisisArmonico {
     ///   - notacion: la de los cifrados americanos de los marcadores.
     public func midi(duracion: Duracion = .blanca, compas: Compas = .compasillo, tempo: Tempo? = nil,
                      titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolUnicode) -> Data {
+        midi(duraciones: Array(repeating: duracion, count: acordes.count), compas: compas, tempo: tempo,
+             titulo: titulo, instrumento: instrumento, notacion: notacion)
+    }
+
+    /// Lo mismo, con lo que dura cada acorde (el ritmo armónico de una pieza importada, por ejemplo).
+    ///
+    /// Detiene el programa si no hay una duración positiva por acorde.
+    public func midi(duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil,
+                     titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolUnicode) -> Data {
+        Exportacion.comprobar(duraciones, acordes: acordes.count)
         var archivo = ArchivoMIDI(compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo)
-        let (superior, grave) = Exportacion.progresion(acordes.map(\.acorde), duracion: duracion, final: duracion)
+        let (superior, grave) = Exportacion.progresion(acordes.map(\.acorde), duraciones: duraciones)
         let marcas = acordes.map { $0.acorde.cifrado(en: notacion) + " · " + $0.cifrado }
         let pistaDeAcordes = TextosDePartitura.traducidos.map(\.pistaDeAcordes).en(notacion)
         let pistaDelBajo = TextosDePartitura.traducidos.map(\.pistaDelBajo).en(notacion)

@@ -36,12 +36,15 @@ extension LineaDeComandos {
         // `--program` es `--programa` en inglés.
         if formato == .midi, let valor = opciones.removeValue(forKey: "program") { opciones["programa"] = valor }
         // `--patrón` y `--pattern` son `--patron`.
-        for otro in ["patrón", "pattern"] {
-            if let valor = opciones.removeValue(forKey: otro) { opciones["patron"] = valor }
+        // Y `--file` y `--window`, `--archivo` y `--ventana`.
+        for (otro, nombre) in [("patrón", "patron"), ("pattern", "patron"), ("file", "archivo"), ("window", "ventana")] {
+            if let valor = opciones.removeValue(forKey: otro) { opciones[nombre] = valor }
         }
         let conocidas: Set = formato == .midi
-            ? ["compas", "anacrusa", "tonalidad", "tempo", "titulo", "duracion", "programa", "patron", "figura"]
-            : ["compas", "anacrusa", "tonalidad", "clave", "tempo", "titulo", "duracion", "patron", "figura"]
+            ? ["compas", "anacrusa", "tonalidad", "tempo", "titulo", "duracion", "programa", "patron", "figura",
+               "archivo", "ventana"]
+            : ["compas", "anacrusa", "tonalidad", "clave", "tempo", "titulo", "duracion", "patron", "figura",
+               "archivo", "ventana"]
         if let desconocida = opciones.keys.sorted().first(where: { !conocidas.contains($0) }) {
             return uso(.opcionDesconocida("--" + desconocida), notacion)
         }
@@ -56,7 +59,7 @@ extension LineaDeComandos {
         if let vacia = opciones.keys.sorted().first(where: { opciones[$0]!.isEmpty }) {
             return uso(.faltaValor(vacia), notacion)
         }
-        let compas = try opciones["compas"].map { try Compas(leyendo: $0) } ?? .compasillo
+        var compas = try opciones["compas"].map { try Compas(leyendo: $0) } ?? .compasillo
         let tonalidad = try opciones["tonalidad"].map { try Tonalidad(leyendo: $0) }
         var tempo: Tempo?
         if let texto = opciones["tempo"] {
@@ -66,10 +69,45 @@ extension LineaDeComandos {
             }
             tempo = Tempo(bpm, unidad: try partes.dropFirst().first.map { try Duracion(leyendo: $0) } ?? .negra)
         }
-        let titulo = opciones["titulo"]
+        var titulo = opciones["titulo"]
         let arpegios: Set = ["arpegios", "arpegio", "arpeggios", "arpeggio"]
+        let acordes: Set = ["acordes", "progresion", "progresión", "chords"]
         if !arpegios.contains(tipo), let opcion = ["figura", "patron"].first(where: { opciones[$0] != nil }) {
             return uso(.soloParaArpegios(opcion), notacion)
+        }
+        // `--archivo`: los acordes de un fichero MIDI o MusicXML, con su ritmo armónico (lo que dura cada uno), y su
+        // compás, su tempo y su título si no se dan otros.
+        var leidos: (acordes: [Acorde], duraciones: [Duracion])?
+        if let archivo = opciones["archivo"] {
+            guard acordes.contains(tipo) || arpegios.contains(tipo) else {
+                return uso(.archivoSoloParaAcordes, notacion)
+            }
+            guard musica.isEmpty else { return uso(.archivoConAcordes, notacion) }
+            guard let datos = FileManager.default.contents(atPath: archivo) else {
+                return uso(.archivoIlegible(archivo), notacion)
+            }
+            let pieza = try PiezaImportada(leyendo: datos)
+            let ventana = try opciones["ventana"].map { try Duracion(leyendo: $0) }
+            let conDuracion = pieza.acordesConDuracion(ventana: ventana)
+            guard !conDuracion.isEmpty else { return uso(.archivoSinAcordes, notacion) }
+            leidos = (conDuracion.map(\.acorde), conDuracion.map(\.duracion))
+            if opciones["compas"] == nil, let suyo = pieza.compas { compas = suyo }
+            tempo = tempo ?? pieza.tempo
+            titulo = titulo ?? pieza.titulo
+        } else if opciones["ventana"] != nil {
+            return uso(.ventanaSinArchivo, notacion)
+        }
+        // Los acordes analizados, del fichero o escritos, y lo que dura cada uno (`nil`: lo de `--duracion`).
+        func progresion() throws -> (analisis: AnalisisArmonico, duraciones: [Duracion]?)? {
+            if let leidos {
+                let enSuTonalidad = tonalidad.map { $0.analizar(leidos.acordes) }
+                guard let analisis = enSuTonalidad ?? AnalisisArmonico.analizar(leidos.acordes) else { return nil }
+                // `--duracion` manda sobre el ritmo del fichero.
+                let duraciones: [Duracion]? = opciones["duracion"] == nil ? leidos.duraciones : nil
+                return (analisis, duraciones)
+            }
+            guard !musica.isEmpty else { return nil }
+            return (try AnalisisArmonico.analizar(leyendo: musica.joined(separator: " "), en: tonalidad), nil)
         }
 
         switch tipo {
@@ -118,26 +156,28 @@ extension LineaDeComandos {
                                        titulo: titulo, cifrados: marcas.contains("cifrados"),
                                        analisis: marcas.contains("analisis"), notacion: notacion)
                 .trimmingCharacters(in: "\n"))
-        case "acordes", "progresion", "progresión", "chords":
-            guard !musica.isEmpty else { return uso(.faltanAcordesDeLaProgresion(orden: orden), notacion) }
+        case _ where acordes.contains(tipo):
             for opcion in ["clave", "anacrusa"] where opciones[opcion] != nil {
                 return uso(.soloParaMelodia(opcion), notacion)
             }
             if !marcas.isEmpty { return uso(.acordesConCifradosYAnalisis, notacion) }
             let duracion = try opciones["duracion"].map { try Duracion(leyendo: $0) } ?? .blanca
-            let analisis = try AnalisisArmonico.analizar(leyendo: musica.joined(separator: " "), en: tonalidad)
+            guard let leida = try progresion() else {
+                return uso(.faltanAcordesDeLaProgresion(orden: orden), notacion)
+            }
+            let (analisis, ritmo) = leida
+            let duraciones = ritmo ?? Array(repeating: duracion, count: analisis.acordes.count)
             if formato == .midi {
-                return binario(analisis.midi(duracion: duracion, compas: compas, tempo: tempo, titulo: titulo,
+                return binario(analisis.midi(duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo,
                                              instrumento: instrumento ?? 0, notacion: notacion))
             }
             if formato == .mei {
-                return bien(analisis.mei(duracion: duracion, compas: compas, tempo: tempo, titulo: titulo,
+                return bien(analisis.mei(duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo,
                                          notacion: notacion).trimmingCharacters(in: "\n"))
             }
-            return bien(analisis.musicXML(duracion: duracion, compas: compas, tempo: tempo, titulo: titulo,
+            return bien(analisis.musicXML(duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo,
                                           notacion: notacion).trimmingCharacters(in: "\n"))
         case _ where arpegios.contains(tipo):
-            guard !musica.isEmpty else { return uso(.faltanAcordesDeLaProgresion(orden: orden), notacion) }
             for opcion in ["clave", "anacrusa"] where opciones[opcion] != nil {
                 return uso(.soloParaMelodia(opcion), notacion)
             }
@@ -153,9 +193,15 @@ extension LineaDeComandos {
             }
             let porAcorde = try opciones["duracion"].map { try Duracion(leyendo: $0) }
             // La tonalidad, la dada o la que mejor explica los acordes, pone la armadura.
-            let analisis = try AnalisisArmonico.analizar(leyendo: musica.joined(separator: " "), en: tonalidad)
-            let voz = Voz(arpegiando: analisis.acordes.map(\.acorde), patron: patron, figura: figura,
-                          porAcorde: porAcorde, compas: compas)
+            guard let leida = try progresion() else {
+                return uso(.faltanAcordesDeLaProgresion(orden: orden), notacion)
+            }
+            let (analisis, ritmo) = leida
+            let voz = ritmo.map {
+                Voz(arpegiando: analisis.acordes.map(\.acorde), duraciones: $0, patron: patron, figura: figura,
+                    compas: compas)
+            } ?? Voz(arpegiando: analisis.acordes.map(\.acorde), patron: patron, figura: figura,
+                     porAcorde: porAcorde, compas: compas)
             if formato == .midi {
                 return binario(voz.midi(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo,
                                         instrumento: instrumento ?? 0))

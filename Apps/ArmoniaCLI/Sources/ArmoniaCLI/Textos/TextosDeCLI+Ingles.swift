@@ -72,6 +72,8 @@ extension TextosDeCLI {
         sintaxisMusicxmlArpegios: "musicxml arpeggios <symbols> [options]",
         descripcionMusicxmlArpegios: "the chords arpeggiated, note by note",
         notasMusicxmlArpegios: "options: --patron alberti (or up, down, up-down), --figura 16\n(how long each note lasts; an eighth note by default),\n--duracion 1 (how long each chord lasts: the pattern repeats\nto fill it) and the other options of \"chords\"",
+        sintaxisMusicxmlArchivo: "musicxml chords --file <file>",
+        descripcionMusicxmlArchivo: "the progression of a MIDI or MusicXML\nfile, with how long each chord lasts\n(also arpeggios, mei and midi)",
         sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios <…> [options]",
         descripcionMeiMelodia: "the same in MEI 5, the format of\ncritical editions (with the same\noptions)",
         sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios <…> [options]",
@@ -80,6 +82,8 @@ extension TextosDeCLI {
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "fingerings <symbol>… [options]",
         descripcionDigitaciones: "ways to play a chord, from the most comfortable to the least, on a\nfretted string instrument (strings from low to high)\noptions: --instrument guitar|bass|ukulele|mandolin|…\n(also \"seven-string guitar\", \"five-string bass\",\n\"drop D\"), --limit 5, --fret 12 (the highest one used),\n--fingers 4 (how many can be used), --complete (with every note:\nby default the fifth may be left out), --diagram (one line per string)",
+        sintaxisPosiciones: "positions <scale> [--caged]",
+        descripcionPosiciones: "the scale by positions on the guitar:\nthree notes per string (two in the\npentatonics) or CAGED",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -158,6 +162,8 @@ extension TextosDeCLI {
         faltanAcordesDelCoral: { ejemplo, orden in "missing the chords: armonia \(orden) chorale C3 E4 G4 C5, G2 D4 G4 B4" },
         soloParaMelodia: { opcion in "--\(opcion) is only for \"melody\"" },
         soloParaArpegios: { opcion in "--\(opcion) is only for \"arpeggios\"" },
+        archivoSoloParaAcordes: "--file is only for \"chords\" and \"arpeggios\"",
+        ventanaSinArchivo: "--window goes with --file",
         faltanAcordesDeLaProgresion: { ejemplo, orden in "missing the chords: armonia \(orden) chords C Am D7 G7 C" },
         acordesConCifradosYAnalisis: "chords always come with chord symbols and analysis",
         tipoDePartituraDesconocido: { tipo in "\"\(tipo)\": the export is a \"melody\", a \"chorale\", \"chords\" or their \"arpeggios\"" },
@@ -172,6 +178,7 @@ extension TextosDeCLI {
         faltaTraste: "missing the highest fret: --fret 12",
         trasteFueraDeRango: "the highest fret is a number from 0 to 24: --fret 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "missing the chord symbol: \(digitaciones.1)" },
+        faltaEscalaDePosiciones: "missing the scale: armonia positions G major",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Try \"armonia help\".",

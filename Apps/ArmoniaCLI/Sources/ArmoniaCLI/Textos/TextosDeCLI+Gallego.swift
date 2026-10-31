@@ -72,6 +72,8 @@ extension TextosDeCLI {
         sintaxisMusicxmlArpegios: "musicxml arpegios <cifrados> [opcións]",
         descripcionMusicxmlArpegios: "os acordes arpexados, nota a nota",
         notasMusicxmlArpegios: "opcións: --patron alberti (ou ascendente, descendente, ida y\nvuelta), --figura 16 (o que dura cada nota; corchea se non),\n--duracion 1 (o que dura cada acorde: o patrón repítese ata\nenchelo) e as demais de «acordes»",
+        sintaxisMusicxmlArchivo: "musicxml acordes --archivo <ficheiro>",
+        descripcionMusicxmlArchivo: "a progresión dun ficheiro MIDI ou\nMusicXML, co que dura cada acorde\n(tamén arpegios, mei e midi)",
         sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [opcións]",
         descripcionMeiMelodia: "o mesmo en MEI 5, o formato das\nedicións críticas (coas mesmas\nopcións)",
         sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [opcións]",
@@ -80,6 +82,8 @@ extension TextosDeCLI {
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "digitaciones <cifrado>… [opcións]",
         descripcionDigitaciones: "formas de tocar un acorde, da máis\ncómoda á menos, nun instrumento de\ncorda con trastes\nopcións: --instrumento guitarra|bajo|ukelele|mandolina|… (tamén\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D»),\n--limite 5, --traste 12 (o máis alto que se usa), --dedos 4 (os\nque se poden usar), --completo (con todas as notas: por defecto\na quinta pode faltar), --diagrama (unha liña por corda)",
+        sintaxisPosiciones: "posiciones <escala> [--caged]",
+        descripcionPosiciones: "a escala por posicións na guitarra:\ntres notas por corda (dúas nas\npentatónicas) ou CAGED",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -157,6 +161,8 @@ extension TextosDeCLI {
         faltanAcordesDelCoral: { ejemplo, orden in "faltan os acordes: " + ejemplo },
         soloParaMelodia: { opcion in "--\(opcion) só é para «melodia»" },
         soloParaArpegios: { opcion in "--\(opcion) só é para «arpegios»" },
+        archivoSoloParaAcordes: "--archivo só é para «acordes» e «arpegios»",
+        ventanaSinArchivo: "--ventana vai con --archivo",
         faltanAcordesDeLaProgresion: { ejemplo, orden in "faltan os acordes: " + ejemplo },
         acordesConCifradosYAnalisis: "os acordes levan sempre cifrados e análise",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: expórtase unha «melodia», un «coral», uns «acordes» ou os seus «arpegios»" },
@@ -171,6 +177,7 @@ extension TextosDeCLI {
         faltaTraste: "falta o traste máis alto: --traste 12",
         trasteFueraDeRango: "o traste máis alto é un número de 0 a 24: --traste 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "falta o cifrado: \(d)" },
+        faltaEscalaDePosiciones: "falta a escala: armonia posiciones Sol mayor",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Proba «armonia ayuda».",

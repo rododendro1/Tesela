@@ -26,7 +26,7 @@ extension TextosDePartitura {
 
         // Importacion.swift
         formatoDesconocido: "Fitxategia ez da MIDI ez MusicXML.",
-        musicXMLComprimido: "MusicXML konprimitua da (.mxl), eta oraindik ezin da irakurri: esportatu konprimitu gabe (.musicxml).",
+        musicXMLComprimido: "MusicXML konprimitua (.mxl) hondatuta dago edo ezin da irakurri: esportatu konprimitu gabe (.musicxml).",
         midiDanado: "MIDI fitxategia hondatuta edo moztuta dago.",
         midiConTiempoSMPTE: "MIDI fitxategiak SMPTE fotogrametan neurtzen du denbora, ez beltz bakoitzeko pultsutan.",
         xmlDanado: { linea in "MusicXML fitxategia hondatuta dago (\(linea). lerroa)." },

@@ -96,9 +96,21 @@ extension AnalisisArmonico {
     public func musicXML(duracion: Duracion = .blanca, compas: Compas = .compasillo, tempo: Tempo? = nil,
                          titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
                          analisis: Bool = true, notacion: Notacion = .espanolUnicode) -> String {
-        let (superior, grave) = Exportacion.progresion(acordes.map(\.acorde), duracion: duracion,
-                                                       final: Exportacion.hastaLaBarra(duracion, acordes.count, compas))
-        let anotaciones = Exportacion.anotaciones(de: self, duracion: duracion, cifrados: cifrados, analisis: analisis)
+        musicXML(duraciones: Array(repeating: duracion, count: acordes.count), compas: compas, tempo: tempo,
+                 titulo: titulo, parte: parte, cifrados: cifrados, analisis: analisis, notacion: notacion)
+    }
+
+    /// Lo mismo, con lo que dura cada acorde (el ritmo armónico de una pieza importada, por ejemplo); el
+    /// último se alarga hasta la barra.
+    ///
+    /// Detiene el programa si no hay una duración positiva por acorde.
+    public func musicXML(duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil,
+                         titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
+                         analisis: Bool = true, notacion: Notacion = .espanolUnicode) -> String {
+        Exportacion.comprobar(duraciones, acordes: acordes.count)
+        let (superior, grave) = Exportacion.progresion(acordes.map(\.acorde),
+                                                       duraciones: Exportacion.hastaLaBarra(duraciones, compas))
+        let anotaciones = Exportacion.anotaciones(de: self, duraciones: duraciones, cifrados: cifrados, analisis: analisis)
         let arriba = anotaciones.cifrados.mapValues {
             EscritorMusicXML.Anotacion(armonia: EscritorMusicXML.armonia($0, notacion, pentagrama: 1))
         }

@@ -72,6 +72,8 @@ extension TextosDeCLI {
         sintaxisMusicxmlArpegios: "musicxml arpegios <zifratuak> [aukerak]",
         descripcionMusicxmlArpegios: "akordeak arpegiatuta, notaz nota",
         notasMusicxmlArpegios: "aukerak: --patron alberti (edo ascendente, descendente, ida y\nvuelta), --figura 16 (nota bakoitzaren iraupena; bestela\nkortxea), --duracion 1 (akorde bakoitzaren iraupena: eredua\nerrepikatzen da bete arte) eta «acordes»en gainerakoak",
+        sintaxisMusicxmlArchivo: "musicxml acordes --archivo <fitxategia>",
+        descripcionMusicxmlArchivo: "MIDI edo MusicXML fitxategi baten\nprogresioa, akorde bakoitzaren\niraupenarekin (baita arpegios, mei, midi)",
         sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [aukerak]",
         descripcionMeiMelodia: "gauza bera MEI 5en, edizio kritikoen\nformatuan (aukera berberekin)",
         sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [aukerak]",
@@ -80,6 +82,8 @@ extension TextosDeCLI {
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "digitaciones <zifratua>… [aukerak]",
         descripcionDigitaciones: "akorde bat jotzeko moduak,\nerosoenetik gutxien erosora,\ntrasteak dituen hari-instrumentu\nbatean\naukerak: --instrumento guitarra|bajo|ukelele|mandolina|… (baita\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D» ere),\n--limite 5, --traste 12 (erabiltzen den altuena), --dedos 4\n(erabil daitezkeenak), --completo (nota guztiekin: berez\nbosgarrena falta daiteke), --diagrama (lerro bat hari\nbakoitzeko)",
+        sintaxisPosiciones: "posiciones <eskala> [--caged]",
+        descripcionPosiciones: "eskala gitarran posizioka: hiru nota\nsoka bakoitzeko (bi pentatonikoetan)\nedo CAGED",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -156,7 +160,9 @@ extension TextosDeCLI {
         claveDesconocida: { clave, claves in "giltza ezezaguna: «\(clave)» " + claves },
         faltanAcordesDelCoral: { ejemplo, orden in "akordeak falta dira: " + ejemplo },
         soloParaMelodia: { opcion in "--\(opcion) «melodia»rako bakarrik da" },
-        soloParaArpegios: { opcion in "--\(opcion) «arpegios»etarako bakarrik da" },
+        soloParaArpegios: { opcion in "--\(opcion) «arpegios»-etarako bakarrik da" },
+        archivoSoloParaAcordes: "--archivo «acordes» eta «arpegios»-etarako bakarrik da",
+        ventanaSinArchivo: "--ventana --archivo-rekin doa",
         faltanAcordesDeLaProgresion: { ejemplo, orden in "akordeak falta dira: " + ejemplo },
         acordesConCifradosYAnalisis: "akordeek beti daramatzate zifratuak eta analisia",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: «melodia», «coral», «acordes» edo haien «arpegios» esportatzen da" },
@@ -171,6 +177,7 @@ extension TextosDeCLI {
         faltaTraste: "traste altuena falta da: --traste 12",
         trasteFueraDeRango: "traste altuena 0tik 24ra bitarteko zenbaki bat da: --traste 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "zifratua falta da: \(d)" },
+        faltaEscalaDePosiciones: "eskala falta da: armonia posiciones Sol mayor",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Probatu «armonia ayuda».",

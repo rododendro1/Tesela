@@ -4,6 +4,20 @@
 
 Primera versión con etiqueta del repositorio: `0.1.0`.
 
+### Ritmo armónico, MusicXML comprimido y escalas por posiciones
+
+- `PiezaImportada.acordesConDuracion(ventana:)`: los acordes con lo que dura cada uno, hasta que empieza el siguiente
+  y, el último, hasta el final de la pieza.
+- `AnalisisArmonico.musicXML(duraciones:…)`, `mei(duraciones:…)` y `midi(duraciones:…)`: la progresión con una
+  duración por acorde (en MusicXML y MEI, el último se alarga hasta la barra). Las de `duracion:` las usan por dentro y
+  dan lo mismo que antes.
+- `Voz(arpegiando:duraciones:patron:…)`: la progresión arpegiada con su ritmo armónico.
+- `PiezaImportada(leyendo:)` lee también el MusicXML comprimido (.mxl): el zip se abre y se descomprime (DEFLATE) sin
+  dependencias, y se lee la partitura que señala `META-INF/container.xml`. `ErrorDeImportacion.comprimido` queda para
+  el .mxl dañado o que no se puede leer (cifrado, ZIP64, otro método de compresión).
+- `Mastil.posicionesPorCuerda(de:notasPorCuerda:)` y `Mastil.posicionesCAGED(de:ancho:)`: una escala por posiciones,
+  con tres (o dos) notas por cuerda o en las cinco formas CAGED (`FormaCAGED`), como `EscalaEnElMastil`.
+
 ### Organización
 
 - Los ficheros `X+Idiomas.swift` se funden en el fichero de su tipo (`Nota+Idiomas.swift` en `Nota.swift`, etc.),

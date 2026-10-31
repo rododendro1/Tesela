@@ -58,6 +58,14 @@ public struct DiagramaDeMastil: View {
                   ortografia: PresentacionDeMastil.ortografia(de: acorde?.notas ?? []), notacion: notacion)
     }
 
+    /// Una escala en una posición (de tres notas por cuerda o CAGED): sus notas en la franja que abarca la mano.
+    /// Si se da la escala, las notas se escriben con su ortografía.
+    public init(posicion: EscalaEnElMastil, escala: Escala? = nil, etiquetas: Bool = true,
+                notacion: Notacion = .espanolUnicode) {
+        self.init(mastil: posicion.mastil, marcas: posicion.posiciones, rango: posicion.trastes, etiquetas: etiquetas,
+                  ortografia: PresentacionDeMastil.ortografia(de: escala?.notas ?? []), notacion: notacion)
+    }
+
     /// Muestra una digitación, con un rango de trastes que la deja a la vista. Si se da el acorde, las
     /// notas se escriben con su ortografía.
     public init(digitacion: Digitacion, acorde: Acorde? = nil, etiquetas: Bool = true,

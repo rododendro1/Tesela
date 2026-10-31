@@ -187,8 +187,8 @@ let datos = alberti.midi(titulo: "Bajo de Alberti")
 
 ## Importar MIDI y MusicXML
 
-`PiezaImportada(leyendo:)` lee un fichero MIDI estándar o una partitura MusicXML sin comprimir
-(lo distingue por el contenido, no por la extensión) y da sus notas, cada una con su altura, su
+`PiezaImportada(leyendo:)` lee un fichero MIDI estándar o una partitura MusicXML, sin comprimir o
+comprimida (.mxl) (lo distingue por el contenido, no por la extensión) y da sus notas, cada una con su altura, su
 comienzo y su duración en redondas, junto con el título, la armadura, el compás y el tempo del
 fichero. `acordes(ventana:)` reduce las notas a los acordes que suenan y `analisis(en:ventana:)`
 los analiza.
@@ -200,6 +200,7 @@ pieza.tonalidad                  // Do mayor
 pieza.notas.count                // 12
 pieza.acordes().map(\.cifrado)   // ["Do", "Sol", "Do"]
 pieza.analisis()?.cifrados       // ["I", "V", "I"]
+pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca]   // true
 ```
 
 - MIDI solo da números de nota: la ortografía sale de la armadura del fichero o, si no la
@@ -211,6 +212,13 @@ pieza.analisis()?.cifrados       // ["I", "V", "I"]
 - De MusicXML se leen acordes, voces (`<backup>`, `<forward>`), ligaduras e instrumentos
   transpositores (se lee lo que suena). No cuentan las notas de adorno, las notas guía ni la
   percusión, y tampoco el canal 10 de MIDI.
-- Todavía no se leen el MusicXML comprimido (.mxl), las repeticiones ni los saltos. Los errores
-  son `ErrorDeImportacion`, con su explicación en los catorce idiomas.
-- Desde la terminal: `armonia analizar --archivo coral.mid` (o `.musicxml`).
+- `acordesConDuracion(ventana:)` da además lo que dura cada acorde, el ritmo armónico de la pieza:
+  hasta que empieza el siguiente y, el último, hasta el final. Las exportaciones de una progresión
+  analizada lo aceptan con `duraciones:` (`musicXML(duraciones:)`, `mei(duraciones:)` y
+  `midi(duraciones:)`), y `Voz(arpegiando:duraciones:)` la arpegia con ese ritmo.
+- Todavía no se leen las repeticiones ni los saltos. Del .mxl se lee la partitura que señala
+  `META-INF/container.xml`. Los errores son `ErrorDeImportacion`, con su explicación en los catorce
+  idiomas.
+- Desde la terminal: `armonia analizar --archivo coral.mid` (o `.musicxml`, o `.mxl`), y
+  `armonia musicxml acordes --archivo coral.mid` para la progresión con su ritmo armónico (también
+  `arpegios`, `mei` y `midi`).

@@ -58,6 +58,14 @@ extension ErrorDeUso {
             return TextosDeCLI.traducidos.map { $0.soloParaArpegios(opcion) }
         }
 
+        static func archivoSoloParaAcordes() -> Traduccion {
+            return TextosDeCLI.traducidos.map(\.archivoSoloParaAcordes)
+        }
+
+        static func ventanaSinArchivo() -> Traduccion {
+            return TextosDeCLI.traducidos.map(\.ventanaSinArchivo)
+        }
+
         static func faltanAcordesDeLaProgresion(orden: String) -> Traduccion {
             let ejemplo = "armonia \(orden) acordes Do Lam Re7 Sol7 Do"
             return TextosDeCLI.traducidos.map { $0.faltanAcordesDeLaProgresion(ejemplo, orden) }

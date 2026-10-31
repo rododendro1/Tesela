@@ -51,6 +51,7 @@ enum ErrorDeUso {
     case faltaTraste
     case trasteFueraDeRango
     case faltaCifradoDeDigitaciones
+    case faltaEscalaDePosiciones
 
     // Neorriemanniano
     case vocesFueraDeRango
@@ -74,6 +75,10 @@ enum ErrorDeUso {
     case faltanAcordesDelCoral(orden: String)
     case soloParaMelodia(String)
     case soloParaArpegios(String)
+    /// `--archivo` en una melodía o un coral.
+    case archivoSoloParaAcordes
+    /// `--ventana` sin `--archivo`.
+    case ventanaSinArchivo
     case faltanAcordesDeLaProgresion(orden: String)
     case acordesConCifradosYAnalisis
     case tipoDePartituraDesconocido(String)
@@ -136,6 +141,7 @@ enum ErrorDeUso {
         case .faltaTraste: return TextosDeTrastes.faltaTraste()
         case .trasteFueraDeRango: return TextosDeTrastes.trasteFueraDeRango()
         case .faltaCifradoDeDigitaciones: return TextosDeTrastes.faltaCifradoDeDigitaciones()
+        case .faltaEscalaDePosiciones: return TextosDeTrastes.faltaEscalaDePosiciones()
         case .vocesFueraDeRango: return TextosDeNeorriemann.vocesFueraDeRango()
         case .unAcordeDeVecinos: return TextosDeNeorriemann.unAcordeDeVecinos()
         case .vecinosSinFamilia: return TextosDeNeorriemann.vecinosSinFamilia()
@@ -155,6 +161,8 @@ enum ErrorDeUso {
         case .faltanAcordesDelCoral(let orden): return TextosDePartituras.faltanAcordesDelCoral(orden: orden)
         case .soloParaMelodia(let opcion): return TextosDePartituras.soloParaMelodia(opcion)
         case .soloParaArpegios(let opcion): return TextosDePartituras.soloParaArpegios(opcion)
+        case .archivoSoloParaAcordes: return TextosDePartituras.archivoSoloParaAcordes()
+        case .ventanaSinArchivo: return TextosDePartituras.ventanaSinArchivo()
         case .faltanAcordesDeLaProgresion(let orden): return TextosDePartituras.faltanAcordesDeLaProgresion(orden: orden)
         case .acordesConCifradosYAnalisis: return TextosDePartituras.acordesConCifradosYAnalisis()
         case .tipoDePartituraDesconocido(let tipo): return TextosDePartituras.tipoDePartituraDesconocido(tipo)

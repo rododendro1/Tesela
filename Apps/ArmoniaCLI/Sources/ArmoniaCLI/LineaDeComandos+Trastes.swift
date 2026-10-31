@@ -1,4 +1,5 @@
 import Armonia
+import ArmoniaPresentacion
 import Foundation
 
 // MARK: - Digitaciones: cómo tocar un acorde en un instrumento de cuerda con trastes
@@ -109,5 +110,38 @@ extension LineaDeComandos {
             let relleno = String(repeating: " ", count: max(0, 2 - traste.count))
             return "      " + nombres[i].padding(hasta: ancho + 1) + "|-" + relleno + traste + "-"
         }
+    }
+
+    /// `posiciones Sol mayor [--caged]`: la escala por posiciones en la guitarra, de tres (o dos) notas por cuerda o
+    /// en las cinco formas CAGED, con los trastes de cada cuerda, la más aguda arriba como en una tablatura.
+    static func posiciones(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        var argumentos = Argumentos(argumentos)
+        let caged = argumentos.quitarMarca("--caged")
+        if let desconocida = argumentos.opcionDesconocida {
+            return uso(.opcionDesconocida(desconocida), notacion)
+        }
+        guard !argumentos.restantes.isEmpty else { return uso(.faltaEscalaDePosiciones, notacion) }
+        let escala = try Escala(leyendo: argumentos.unidos)
+        let mastil = Mastil(.guitarra, trastes: 15)
+        let porCuerda = escala.notas.count >= 6 ? 3 : 2
+        let sistema = caged ? "CAGED" : notacion.texto(.notasPorCuerda(porCuerda))
+        var lineas = [escala.nombre(en: notacion) + " · " + sistema]
+        let posiciones = caged ? mastil.posicionesCAGED(de: escala) : mastil.posicionesPorCuerda(de: escala)
+        let cuerdas = mastil.encordado.cuerdas
+        let nombres = cuerdas.map { $0.nota.nombre(en: notacion) }
+        let ancho = nombres.map(\.count).max() ?? 0
+        for posicion in posiciones {
+            let trastes = notacion.texto(.trastes(desde: posicion.trastes.lowerBound, hasta: posicion.trastes.upperBound))
+            lineas.append("")
+            lineas.append("  " + (posicion.forma.map { notacion.texto(.forma($0.rawValue)) + " · " } ?? "") + trastes)
+            for cuerda in cuerdas.indices.reversed() {
+                let usados = posicion.posiciones.filter { $0.cuerda == cuerda }.map(\.traste)
+                let celdas = usados.map { traste -> String in
+                    String(repeating: "-", count: max(0, 2 - String(traste).count)) + String(traste)
+                }
+                lineas.append("    " + nombres[cuerda].padding(hasta: ancho + 1) + "|-" + celdas.joined(separator: "-") + "-")
+            }
+        }
+        return bien(lineas.joined(separator: "\n"))
     }
 }
