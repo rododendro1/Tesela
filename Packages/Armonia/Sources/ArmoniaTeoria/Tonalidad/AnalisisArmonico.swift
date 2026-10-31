@@ -113,13 +113,13 @@ public struct AnalisisArmonico: Hashable, Sendable, CustomStringConvertible {
         // La fundamental pesa el doble: es lo que más define la tonalidad de un acorde.
         let notas = acordes.flatMap { $0.notas + [$0.fundamental] }
         let posibles = Tonalidad.candidatos(notas: notas).prefix(6)
-        var mejor: (analisis: AnalisisArmonico, coste: Double)?
+        var mejor = ElMejor<AnalisisArmonico, Double>()
         for (puesto, candidato) in posibles.enumerated() {
             let analisis = candidato.valor.analizar(acordes)
             let coste = analisis.coste + 0.01 * Double(puesto)
-            if mejor == nil || coste < mejor!.coste { mejor = (analisis, coste) }
+            mejor.proponer(analisis, coste: coste)
         }
-        return mejor?.analisis
+        return mejor.valor
     }
 
     /// Lee una progresión escrita como cifrados separados por espacios, comas o barras

@@ -326,17 +326,18 @@ public struct Tonnetz: Hashable, Sendable {
         while !pendientes.isEmpty {
             let filas = colocados.values.map(\.terceras)
             let cerca = (filas.min()! - 3)...(filas.max()! + 3)
-            var mejor: (indice: Int, punto: PuntoDeLaRed, coste: (Int, Int, Int))?
+            var mejor = ElMejor<(indice: Int, punto: PuntoDeLaRed), (Int, Int, Int)>(por: <)
             for (i, elemento) in pendientes.enumerated() {
                 for punto in candidatos(elemento, cerca) {
                     let distancias = colocados.values.map { $0.distancia(hasta: punto) }
                     // Lo más cerca del vecino más próximo, después del conjunto y, a igualdad, del origen.
                     let coste = (distancias.min()!, distancias.reduce(0, +), punto.distancia(hasta: origen))
-                    if mejor == nil || coste < mejor!.coste { mejor = (i, punto, coste) }
+                    mejor.proponer((i, punto), coste: coste)
                 }
             }
-            colocados[pendientes[mejor!.indice]] = mejor!.punto
-            pendientes.remove(at: mejor!.indice)
+            guard let elegido = mejor.valor else { break }
+            colocados[pendientes[elegido.indice]] = elegido.punto
+            pendientes.remove(at: elegido.indice)
         }
         return elementos.map { colocados[$0]! }
     }
