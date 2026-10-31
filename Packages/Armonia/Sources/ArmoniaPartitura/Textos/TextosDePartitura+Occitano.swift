@@ -28,7 +28,7 @@ extension TextosDePartitura {
 
         // Importacion.swift
         formatoDesconocido: "Lo fichièr es pas ni MIDI ni MusicXML.",
-        musicXMLComprimido: "Es de MusicXML compressat (.mxl), que se legís pas encara : exportatz-lo sens compression (.musicxml).",
+        musicXMLComprimido: "Lo MusicXML compressat (.mxl) es damatjat o se pòt pas legir : exportatz-lo sens compression (.musicxml).",
         midiDanado: "Lo fichièr MIDI es damatjat o copat.",
         midiConTiempoSMPTE: "Lo fichièr MIDI compta lo temps en imatges SMPTE, e non en tics per negra.",
         xmlDanado: { linea in "Lo fichièr MusicXML es damatjat (linha \(linea))." },

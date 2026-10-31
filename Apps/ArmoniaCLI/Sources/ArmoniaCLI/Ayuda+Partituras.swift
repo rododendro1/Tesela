@@ -33,6 +33,13 @@ extension LineaDeComandos {
                 "armonia musicxml arpegios Do Lam Fa Sol7 --patron alberti --duracion 2 > arpegios.musicxml",
                 "armonia musicxml arpeggios C Am F G7 --patron alberti --duracion 2 > arpeggios.musicxml"),
             notas: TextosDeCLI.traducidos.map(\.notasMusicxmlArpegios)),
+        // musicxml acordes --archivo <fichero>
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisMusicxmlArchivo),
+            descripcion: TextosDeCLI.traducidos.map(\.descripcionMusicxmlArchivo),
+            ejemplo: ejemplo(
+                "armonia midi arpegios --archivo coral.mid --patron alberti > arpegios.mid",
+                "armonia midi arpeggios --file chorale.mid --pattern alberti > arpeggios.mid")),
         // mei melodia|coral|acordes|arpegios <…> [opciones]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traducidos.map(\.sintaxisMeiMelodia),

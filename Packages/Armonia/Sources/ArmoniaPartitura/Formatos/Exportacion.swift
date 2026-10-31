@@ -27,10 +27,16 @@ package enum Exportacion {
 
     /// Lo que dura el último de `cuantos` acordes de `duracion` para que acabe en la barra.
     package static func hastaLaBarra(_ duracion: Duracion, _ cuantos: Int, _ compas: Compas) -> Duracion {
-        let total = duracion * cuantos
+        hastaLaBarra(Array(repeating: duracion, count: max(0, cuantos)), compas).last ?? duracion
+    }
+
+    /// Las duraciones, con la última alargada para que acaben en la barra.
+    package static func hastaLaBarra(_ duraciones: [Duracion], _ compas: Compas) -> [Duracion] {
+        guard let ultima = duraciones.last else { return duraciones }
+        let total = duraciones.reduce(Duracion.cero, +)
         let enCompases = total / compas.duracion
         let resto = total - compas.duracion * (enCompases.numerador / enCompases.denominador)
-        return resto.esCero ? duracion : duracion + compas.duracion - resto
+        return resto.esCero ? duraciones : Array(duraciones.dropLast()) + [ultima + compas.duracion - resto]
     }
 
     /// Las notas apiladas en posición cerrada: la primera, en la primera octava en que su MIDI
@@ -56,14 +62,35 @@ package enum Exportacion {
     package static func progresion(_ acordes: [Acorde], duracion: Duracion, final: Duracion) -> (
         acordes: [Evento], bajo: [Evento]
     ) {
+        progresion(acordes, duraciones: acordes.indices.map { $0 == acordes.count - 1 ? final : duracion })
+    }
+
+    /// Lo mismo, con lo que dura cada acorde.
+    package static func progresion(_ acordes: [Acorde], duraciones: [Duracion]) -> (
+        acordes: [Evento], bajo: [Evento]
+    ) {
         var superior: [Evento] = []
         var grave: [Evento] = []
-        for (i, acorde) in acordes.enumerated() {
-            let figura = i == acordes.count - 1 ? final : duracion
+        for (acorde, figura) in zip(acordes, duraciones) {
             superior.append(Evento(alturas: posicionCerrada(acorde.notas, desde: 57), duracion: figura))
             grave.append(Evento(posicionCerrada([acorde.bajo], desde: 41)[0], figura))
         }
         return (superior, grave)
+    }
+
+    /// Dónde empieza cada acorde de una progresión, contado desde el principio.
+    package static func inicios(_ duraciones: [Duracion]) -> [Duracion] {
+        var inicio = Duracion.cero
+        return duraciones.map { duracion in
+            defer { inicio = inicio + duracion }
+            return inicio
+        }
+    }
+
+    /// Comprueba que hay una duración positiva por acorde.
+    package static func comprobar(_ duraciones: [Duracion], acordes: Int) {
+        precondition(duraciones.count == acordes, "hace falta una duración por acorde")
+        precondition(duraciones.allSatisfy { $0 > .cero }, "cada acorde tiene que durar algo")
     }
 
     /// La figura con que se escribe una duración y, si es de un grupo irregular, la proporción:
@@ -155,15 +182,15 @@ package enum Exportacion {
 
     /// Las anotaciones de una progresión ya analizada.
     package static func anotaciones(
-        de progresion: AnalisisArmonico, duracion: Duracion,
+        de progresion: AnalisisArmonico, duraciones: [Duracion],
         cifrados: Bool, analisis: Bool
     ) -> Anotaciones {
         var resultado = Anotaciones()
         resultado.tonalidad = progresion.tonalidad
         if analisis { resultado.tonalidadDelAnalisis = progresion.tonalidad }
-        for (i, analizado) in progresion.acordes.enumerated() {
-            if cifrados { resultado.cifrados[duracion * i] = analizado.acorde }
-            if analisis { resultado.analisis[duracion * i] = analizado }
+        for (inicio, analizado) in zip(inicios(duraciones), progresion.acordes) {
+            if cifrados { resultado.cifrados[inicio] = analizado.acorde }
+            if analisis { resultado.analisis[inicio] = analizado }
         }
         return resultado
     }

@@ -1,5 +1,18 @@
 # Cambios
 
+## Sin publicar
+
+- Ritmo armónico al importar. En la pestaña Análisis, «Abrir» acepta también el MusicXML comprimido (.mxl) y guarda
+  lo que dura cada acorde de la pieza, con su compás y su tempo: mientras no se retoque la progresión, lo siguen la
+  partitura, el MIDI, «Escuchar» y «Arpegiar». `ImportacionDeProgresion.leer(_:ventana:)` da la
+  `ProgresionImportada` (acordes, `RitmoArmonico` y título); `PresentacionDeAnalisis.analizar(_:ritmo:en:notacion:)`
+  y `analizar(_ importada:…)` la analizan; `PresentacionDeArpegios.progresion(…ritmo:…)` la arpegia, y
+  `Sonido.acordes(_:duraciones:tempo:)` la toca.
+- Escalas por posiciones en ArmoniaApp. En la pestaña Escalas, la sección nueva «Posiciones en el mástil» da la escala
+  en la guitarra en las cinco formas CAGED o con tres notas por cuerda (dos en las pentatónicas), cada posición con sus
+  trastes, su diagrama y «Escuchar». `DiagramaDeMastil(posicion:escala:…)` la dibuja; textos nuevos
+  `.posicionesEnElMastil`, `.notasPorCuerda(_:)` y `.forma(_:)` en los catorce idiomas.
+
 ## 0.1.0 (2026-10-31)
 
 Primera versión con etiqueta del repositorio: `0.1.0`.

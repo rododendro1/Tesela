@@ -136,6 +136,8 @@ public enum LineaDeComandos {
                 return bien(conduccion.texto(en: notacion))
             case "digitaciones", "digitacion", "digitación", "fingerings":
                 return try digitaciones(resto, notacion)
+            case "posiciones", "positions":
+                return try posiciones(resto, notacion)
             case "plr", "neoriemannian":
                 return try plr(resto, notacion)
             case "musicxml":

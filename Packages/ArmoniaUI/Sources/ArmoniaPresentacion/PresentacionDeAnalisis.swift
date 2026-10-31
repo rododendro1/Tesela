@@ -22,10 +22,27 @@ public struct AnalisisPresentado: Hashable, Sendable {
     /// Los acordes analizados y la tonalidad de la partitura, para arpegiarlos.
     public internal(set) var acordes: [Acorde] = []
     public internal(set) var tonalidad: Tonalidad?
+    /// Lo que dura cada acorde, si viene de una pieza importada; si no, `nil` (una blanca cada uno).
+    public internal(set) var ritmo: RitmoArmonico?
 
-    /// La progresión arpegiada con un patrón, en la tonalidad de la partitura.
+    /// La progresión arpegiada con un patrón, en la tonalidad de la partitura y con su ritmo armónico.
     public func arpegiada(_ patron: Arpegio.Patron, notacion: Notacion) -> ArpegioPresentado? {
-        PresentacionDeArpegios.progresion(acordes, patron: patron, tonalidad: tonalidad, notacion: notacion)
+        PresentacionDeArpegios.progresion(
+            acordes, patron: patron, tonalidad: tonalidad, ritmo: ritmo, notacion: notacion)
+    }
+}
+
+/// El ritmo armónico de una progresión: lo que dura cada acorde, en el compás y el tempo de la pieza de la que
+/// sale (un fichero MIDI o MusicXML).
+public struct RitmoArmonico: Hashable, Sendable {
+    public let duraciones: [Duracion]
+    public let compas: Compas
+    public let tempo: Tempo?
+
+    public init(duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil) {
+        self.duraciones = duraciones
+        self.compas = compas
+        self.tempo = tempo
     }
 }
 
@@ -56,23 +73,36 @@ public enum PresentacionDeAnalisis {
     }
 
     /// Igual, con los acordes ya leídos (los de un fichero MIDI o MusicXML, por ejemplo). `nil` si no hay ninguno.
+    /// Con su ritmo armónico (una duración por acorde), la partitura, el MIDI, «Escuchar» y la progresión
+    /// arpegiada lo siguen; si no, cada acorde dura una blanca.
     public static func analizar(
-        _ acordes: [Acorde], en tonalidad: Tonalidad? = nil,
+        _ acordes: [Acorde], ritmo: RitmoArmonico? = nil, en tonalidad: Tonalidad? = nil,
         notacion: Notacion
     ) -> AnalisisPresentado? {
         guard !acordes.isEmpty else { return nil }
-        if let tonalidad { return presentar(tonalidad.analizar(acordes), recorrido: nil, notacion) }
+        let ritmo = ritmo.flatMap { r in
+            r.duraciones.count == acordes.count && r.duraciones.allSatisfy { $0 > .cero } ? r : nil
+        }
+        if let tonalidad { return presentar(tonalidad.analizar(acordes), recorrido: nil, ritmo: ritmo, notacion) }
         guard let analisis = AnalisisArmonico.analizar(acordes), let recorrido = RecorridoTonal(acordes) else {
             return nil
         }
-        return presentar(analisis, recorrido: recorrido, notacion)
+        return presentar(analisis, recorrido: recorrido, ritmo: ritmo, notacion)
+    }
+
+    /// Una progresión importada, con su ritmo armónico y su título.
+    public static func analizar(
+        _ importada: ProgresionImportada, en tonalidad: Tonalidad? = nil,
+        notacion: Notacion
+    ) -> AnalisisPresentado? {
+        analizar(importada.acordes, ritmo: importada.ritmo, en: tonalidad, notacion: notacion)
     }
 
     /// El análisis en una sola tonalidad (`analisis`, para la partitura y el MIDI) y, si se da, el
     /// recorrido con sus modulaciones, que es entonces lo que se muestra.
     private static func presentar(
         _ analisis: AnalisisArmonico, recorrido: RecorridoTonal?,
-        _ notacion: Notacion
+        ritmo: RitmoArmonico? = nil, _ notacion: Notacion
     ) -> AnalisisPresentado {
         let titulo: String
         let tramos: [TramoPresentado]
@@ -90,18 +120,45 @@ public enum PresentacionDeAnalisis {
             cadencias = analisis.cadencias
         }
         let nombre = "Progresión"
+        let acordes = analisis.acordes.map(\.acorde)
+        // El análisis da un acorde por cada uno leído; si no, no se puede seguir el ritmo.
+        let ritmo = ritmo.flatMap { $0.duraciones.count == acordes.count ? $0 : nil }
+        let ficheros: [FicheroParaExportar]
+        let sonido: Sonido
+        if let ritmo {
+            let d = ritmo.duraciones
+            let compas = ritmo.compas
+            let tempo = ritmo.tempo
+            ficheros = [
+                .musicXML(
+                    analisis.musicXML(
+                        duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion),
+                    nombre: nombre),
+                .mei(
+                    analisis.mei(duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion),
+                    nombre: nombre),
+                .midi(
+                    analisis.midi(duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion),
+                    nombre: nombre),
+            ]
+            sonido = Sonido.acordes(acordes, duraciones: d, tempo: tempo ?? Sonido.tempo)
+        } else {
+            ficheros = [
+                .musicXML(analisis.musicXML(titulo: nombre, notacion: notacion), nombre: nombre),
+                .mei(analisis.mei(titulo: nombre, notacion: notacion), nombre: nombre),
+                .midi(analisis.midi(titulo: nombre, notacion: notacion), nombre: nombre),
+            ]
+            sonido = Sonido.acordes(acordes)
+        }
         return AnalisisPresentado(
             titulo: titulo,
             tramos: tramos,
             cadencias: cadencias.map { $0.descripcion(en: notacion) },
-            ficheros: [
-                .musicXML(analisis.musicXML(titulo: nombre, notacion: notacion), nombre: nombre),
-                .mei(analisis.mei(titulo: nombre, notacion: notacion), nombre: nombre),
-                .midi(analisis.midi(titulo: nombre, notacion: notacion), nombre: nombre),
-            ],
-            sonido: Sonido.acordes(analisis.acordes.map(\.acorde)).conTonica(analisis.tonalidad.tonica),
-            acordes: analisis.acordes.map(\.acorde),
-            tonalidad: analisis.tonalidad)
+            ficheros: ficheros,
+            sonido: sonido.conTonica(analisis.tonalidad.tonica),
+            acordes: acordes,
+            tonalidad: analisis.tonalidad,
+            ritmo: ritmo)
     }
 
     static func fila(_ analizado: AcordeAnalizado, _ notacion: Notacion) -> AnalisisPresentado.Fila {

@@ -143,6 +143,23 @@ public struct Sonido: Hashable, Sendable {
         grupos(acordes.map { cerrada($0.notasDesdeElBajo, desde: 48) }, duracion: duracion)
     }
 
+    /// Una progresión con su ritmo armónico: cada acorde dura lo que dice `duraciones`, al tempo dado.
+    ///
+    ///     let sonido = Sonido.acordes([Acorde("Do"), Acorde("Sol")], duraciones: [.blanca, .negra], tempo: Tempo(60))
+    ///     sonido.notas.last?.inicio   // 2
+    public static func acordes(_ acordes: [Acorde], duraciones: [Duracion], tempo: Tempo = Sonido.tempo) -> Sonido {
+        var inicio = 0.0
+        var notas: [NotaMIDI] = []
+        for (acorde, duracion) in zip(acordes, duraciones) {
+            let segundos = tempo.segundos(de: duracion)
+            notas += cerrada(acorde.notasDesdeElBajo, desde: 48).map {
+                NotaMIDI(altura: $0, inicio: inicio, duracion: segundos * 0.92)
+            }
+            inicio += segundos
+        }
+        return Sonido(notas: notas)
+    }
+
     /// Acordes con sus alturas escritas (un coral a cuatro voces), uno detrás de otro.
     public static func coral(_ acordes: [[Altura]], duracion: Double = 1) -> Sonido {
         grupos(acordes, duracion: duracion)

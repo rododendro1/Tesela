@@ -440,3 +440,60 @@ final class ArpegioEnElMastilTests: XCTestCase {
         XCTAssertTrue(mastil.arpegios(de: Acorde("Do"), ancho: 1).isEmpty)
     }
 }
+
+final class EscalaEnElMastilTests: XCTestCase {
+    func testTresNotasPorCuerda() {
+        let mastil = Mastil(.guitarra, trastes: 15)
+        let posiciones = mastil.posicionesPorCuerda(de: Escala(.sol, .mayor))
+        XCTAssertEqual(posiciones.count, 7)
+        let primera = posiciones[0]
+        XCTAssertEqual(primera.trastes, 0...5)
+        XCTAssertNil(primera.forma)
+        XCTAssertEqual(primera.posiciones.count, 18)
+        XCTAssertEqual(primera.posiciones.filter { $0.cuerda == 0 }.map(\.traste), [0, 2, 3])
+        XCTAssertEqual(primera.posiciones.filter { $0.cuerda == 4 }.map(\.traste), [1, 3, 5])
+        // Las alturas suben de nota en nota de la escala: Mi2 Fa♯2 Sol2 La2…
+        let alturas = primera.alturas
+        XCTAssertEqual(alturas.first, Altura(.mi, octava: 2))
+        XCTAssertTrue(zip(alturas, alturas.dropFirst()).allSatisfy { $0.midi < $1.midi })
+        let clases = Set(Escala(.sol, .mayor).notas.map(\.claseDeAltura))
+        for posicion in posiciones {
+            XCTAssertTrue(posicion.alturas.allSatisfy { clases.contains($0.nota.claseDeAltura) })
+            XCTAssertTrue(posicion.trastes.upperBound <= 15)
+        }
+        // Las posiciones van de la más baja a la más alta.
+        XCTAssertEqual(posiciones.map(\.trastes.lowerBound), posiciones.map(\.trastes.lowerBound).sorted())
+    }
+
+    func testDosNotasPorCuerdaEnLasPentatonicas() {
+        let posiciones = Mastil(.guitarra, trastes: 15).posicionesPorCuerda(de: Escala(.la, .pentatonicaMenor))
+        XCTAssertEqual(posiciones.count, 5)
+        XCTAssertTrue(posiciones.allSatisfy { $0.posiciones.count == 12 })
+        let dosPorCuerda = Mastil(.guitarra, trastes: 15).posicionesPorCuerda(
+            de: Escala(.sol, .mayor), notasPorCuerda: 2)
+        XCTAssertEqual(dosPorCuerda.first?.posiciones.count, 12)
+    }
+
+    func testCAGED() {
+        let mastil = Mastil(.guitarra, trastes: 15)
+        let enDo = mastil.posicionesCAGED(de: Escala(.do, .mayor))
+        XCTAssertEqual(enDo.map(\.forma), [.c, .a, .g, .e, .d])
+        XCTAssertEqual(enDo.map(\.trastes), [0...4, 2...6, 5...9, 7...11, 9...13])
+        let enSol = mastil.posicionesCAGED(de: Escala(.sol, .mayor))
+        XCTAssertEqual(enSol.map(\.forma), [.g, .e, .d, .c, .a])
+        XCTAssertEqual(enSol.map(\.trastes), [0...4, 2...6, 4...8, 7...11, 9...13])
+        // Cada forma lleva las notas de la escala de su franja, y la tónica.
+        for posicion in enDo {
+            XCTAssertTrue(posicion.posiciones.allSatisfy { posicion.trastes.contains($0.traste) })
+            XCTAssertTrue(posicion.alturas.contains { $0.nota.claseDeAltura == Nota.do.claseDeAltura })
+        }
+        // En un mástil corto no caben todas.
+        XCTAssertEqual(Mastil(.guitarra, trastes: 9).posicionesCAGED(de: Escala(.do, .mayor)).count, 3)
+    }
+
+    func testFueraDeLaGuitarraNoHayPosiciones() {
+        XCTAssertTrue(Mastil(.ukelele).posicionesPorCuerda(de: Escala(.do, .mayor)).isEmpty)
+        XCTAssertTrue(Mastil(.bajo).posicionesCAGED(de: Escala(.do, .mayor)).isEmpty)
+        XCTAssertFalse(Mastil(.bajo).posicionesPorCuerda(de: Escala(.do, .mayor)).isEmpty)
+    }
+}

@@ -28,7 +28,7 @@ extension TextosDePartitura {
 
         // Importacion.swift
         formatoDesconocido: "El fichero no es MIDI ni MusicXML.",
-        musicXMLComprimido: "Es MusicXML comprimido (.mxl), que todavía no se lee: expórtalo sin comprimir (.musicxml).",
+        musicXMLComprimido: "El MusicXML comprimido (.mxl) está dañado o no se puede leer: expórtalo sin comprimir (.musicxml).",
         midiDanado: "El fichero MIDI está dañado o cortado.",
         midiConTiempoSMPTE: "El fichero MIDI cuenta el tiempo en fotogramas SMPTE, no en pulsos por negra.",
         xmlDanado: { linea in "El fichero MusicXML está dañado (línea \(linea))." },

@@ -12,6 +12,17 @@
   `formatoNoValido`): con valores cerca del máximo de `Int`, comprobar `G = L + D` desbordaba.
 - Pruebas nuevas (`ImportacionAlAzarTests`): ficheros MIDI y MusicXML estropeados al azar, números desmesurados,
   elementos anidados sin fin, entidades que se expanden y textos UIL al azar. Todos acaban con una pieza o un error.
+- `PiezaImportada.acordesConDuracion(ventana:)`: los acordes con lo que dura cada uno, hasta que empieza el siguiente
+  y, el último, hasta el final de la pieza.
+- `AnalisisArmonico.musicXML(duraciones:…)`, `mei(duraciones:…)` y `midi(duraciones:…)`: la progresión con una
+  duración por acorde (en MusicXML y MEI, el último se alarga hasta la barra). Las de `duracion:` las usan por dentro y
+  dan lo mismo que antes.
+- `Voz(arpegiando:duraciones:patron:…)`: la progresión arpegiada con su ritmo armónico.
+- `PiezaImportada(leyendo:)` lee también el MusicXML comprimido (.mxl): el zip se abre y se descomprime (DEFLATE) sin
+  dependencias, y se lee la partitura que señala `META-INF/container.xml`. `ErrorDeImportacion.comprimido` queda para
+  el .mxl dañado o que no se puede leer (cifrado, ZIP64, otro método de compresión).
+- `Mastil.posicionesPorCuerda(de:notasPorCuerda:)` y `Mastil.posicionesCAGED(de:ancho:)`: una escala por posiciones,
+  con tres (o dos) notas por cuerda o en las cinco formas CAGED (`FormaCAGED`), como `EscalaEnElMastil`.
 
 ## 0.1.0 (2026-10-31)
 

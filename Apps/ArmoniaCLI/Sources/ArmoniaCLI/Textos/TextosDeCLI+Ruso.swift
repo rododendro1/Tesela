@@ -74,6 +74,8 @@ extension TextosDeCLI {
         sintaxisMusicxmlArpegios: "musicxml arpeggios <обозначения> [параметры]",
         descripcionMusicxmlArpegios: "аккорды арпеджио, нота за нотой",
         notasMusicxmlArpegios: "параметры: --patron alberti (или up, down, up-down), --figura 16\n(длительность каждой ноты; по умолчанию восьмая), --duracion 1\n(длительность каждого аккорда: рисунок повторяется, пока не\nзаполнит его) и остальные параметры «chords»",
+        sintaxisMusicxmlArchivo: "musicxml chords --file <файл>",
+        descripcionMusicxmlArchivo: "последовательность из файла MIDI или\nMusicXML с длительностью каждого\nаккорда (также arpeggios, mei, midi)",
         sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios <…> [параметры]",
         descripcionMeiMelodia: "то же самое в MEI 5, формате\nкритических изданий (с теми же\nпараметрами)",
         sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios <…> [параметры]",
@@ -82,6 +84,8 @@ extension TextosDeCLI {
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "fingerings <обозначение>… [параметры]",
         descripcionDigitaciones: "способы сыграть аккорд, от самого удобного к наименее удобному,\nна струнном инструменте с ладами (струны снизу вверх)\nпараметры: --instrument guitar|bass|ukulele|mandolin|… (также\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (самый высокий используемый лад), --fingers 4 (сколько\nпальцев можно использовать), --complete (со всеми нотами: по\nумолчанию квинта может отсутствовать), --diagram (одна строка на\nструну)",
+        sintaxisPosiciones: "positions <гамма> [--caged]",
+        descripcionPosiciones: "гамма по позициям на гитаре: три\nноты на струну (две в пентатонике)\nили CAGED",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -159,6 +163,8 @@ extension TextosDeCLI {
         faltanAcordesDelCoral: { ejemplo, orden in "не указаны аккорды: armonia \(orden) chorale C3 E4 G4 C5, G2 D4 G4 B4" },
         soloParaMelodia: { opcion in "--\(opcion) — только для «melody»" },
         soloParaArpegios: { opcion in "--\(opcion) — только для «arpeggios»" },
+        archivoSoloParaAcordes: "--file — только для «chords» и «arpeggios»",
+        ventanaSinArchivo: "--window используется с --file",
         faltanAcordesDeLaProgresion: { ejemplo, orden in "не указаны аккорды: armonia \(orden) chords C Am D7 G7 C" },
         acordesConCifradosYAnalisis: "аккорды всегда выводятся с обозначениями и анализом",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: экспортируется «melody», «chorale», «chords» или их «arpeggios»" },
@@ -173,6 +179,7 @@ extension TextosDeCLI {
         faltaTraste: "не указан самый высокий лад: --fret 12",
         trasteFueraDeRango: "самый высокий лад — число от 0 до 24: --fret 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "не указано обозначение аккорда: \(digitaciones.1)" },
+        faltaEscalaDePosiciones: "не указана гамма: armonia positions G major",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Попробуй «armonia help».",

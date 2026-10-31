@@ -77,6 +77,8 @@ struct TextosDeCLI: Sendable {
     let sintaxisMusicxmlArpegios: String
     let descripcionMusicxmlArpegios: String
     let notasMusicxmlArpegios: String
+    let sintaxisMusicxmlArchivo: String
+    let descripcionMusicxmlArchivo: String
     let sintaxisMeiMelodia: String
     let descripcionMeiMelodia: String
     let sintaxisMidiMelodia: String
@@ -85,6 +87,8 @@ struct TextosDeCLI: Sendable {
     // MARK: Ayuda+Trastes.swift
     let sintaxisDigitaciones: String
     let descripcionDigitaciones: String
+    let sintaxisPosiciones: String
+    let descripcionPosiciones: String
 
     // MARK: Ayuda.swift
     let cabeceraDeLaAyuda: String
@@ -149,6 +153,8 @@ struct TextosDeCLI: Sendable {
     let faltanAcordesDelCoral: @Sendable (String, String) -> String
     let soloParaMelodia: @Sendable (String) -> String
     let soloParaArpegios: @Sendable (String) -> String
+    let archivoSoloParaAcordes: String
+    let ventanaSinArchivo: String
     let faltanAcordesDeLaProgresion: @Sendable (String, String) -> String
     let acordesConCifradosYAnalisis: String
     let tipoDePartituraDesconocido: @Sendable (String) -> String
@@ -163,6 +169,7 @@ struct TextosDeCLI: Sendable {
     let faltaTraste: String
     let trasteFueraDeRango: String
     let faltaCifradoDeDigitaciones: @Sendable (String, (String, String)) -> String
+    let faltaEscalaDePosiciones: String
 
     // MARK: ErrorDeUso.swift
     let pruebaLaAyuda: String

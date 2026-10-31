@@ -2,8 +2,9 @@ import ArmoniaNucleo
 import ArmoniaTeoria
 import Foundation
 
-// Importación de partituras: ficheros MIDI estándar (LecturaMIDI.swift) y MusicXML sin comprimir
-// (LecturaMusicXML.swift), leídos como una lista de notas con su comienzo y su duración.
+// Importación de partituras: ficheros MIDI estándar (LecturaMIDI.swift) y MusicXML, sin comprimir
+// (LecturaMusicXML.swift) o comprimido (.mxl, LecturaMXL.swift), leídos como una lista de notas con su
+// comienzo y su duración.
 //
 // De ahí salen los acordes que suenan (`acordes(ventana:)`) y su análisis armónico. La reducción
 // a acordes es una estimación: la pieza se corta en ventanas de un pulso, en cada una se pesan las
@@ -11,7 +12,7 @@ import Foundation
 // dejando fuera, si hace falta, las notas breves (de paso, bordaduras, apoyaturas). Las ventanas
 // seguidas con el mismo acorde se funden en uno.
 //
-// Se queda fuera, por ahora: MusicXML comprimido (.mxl), la percusión, las repeticiones y los
+// Se queda fuera, por ahora: la percusión, las repeticiones y los
 // saltos (da capo, coda), y los instrumentos transpositores de MIDI (que ya suenan en su altura).
 
 /// Una nota de una pieza importada: su altura, cuándo empieza y cuánto dura, contado en redondas
@@ -60,14 +61,14 @@ public struct PiezaImportada: Hashable, Sendable {
         self.notas = notas.sorted { ($0.inicio, $0.altura.midi, $0.parte) < ($1.inicio, $1.altura.midi, $1.parte) }
     }
 
-    /// Lee un fichero MIDI estándar o MusicXML, según lo que contenga (no según su extensión).
+    /// Lee un fichero MIDI estándar o MusicXML, comprimido o no, según lo que contenga (no según su extensión).
     /// Lanza `ErrorDeImportacion` si no es ninguno de los dos, está dañado o no tiene notas.
     public init(leyendo datos: Data) throws {
         let inicio = [UInt8](datos.prefix(4))
         if inicio == Array("MThd".utf8) {
             try self.init(midi: datos)
         } else if inicio == [0x50, 0x4B, 0x03, 0x04] {
-            throw ErrorDeImportacion.comprimido // un zip: MusicXML comprimido (.mxl)
+            try self.init(mxl: datos) // un zip: MusicXML comprimido (.mxl)
         } else if String(decoding: datos.prefix(1024), as: UTF8.self).contains("<") {
             try self.init(musicXML: datos)
         } else {
@@ -136,6 +137,21 @@ public struct PiezaImportada: Hashable, Sendable {
         return resultado
     }
 
+    /// Los acordes con lo que dura cada uno, su ritmo armónico: hasta que empieza el siguiente y, el
+    /// último, hasta que acaba la pieza. Lo que suena antes del primer acorde no cuenta.
+    ///
+    ///     let pieza = try PiezaImportada(leyendo: datos)
+    ///     let leidos = pieza.acordesConDuracion()
+    ///     let xml = AnalisisArmonico.analizar(leidos.map(\.acorde))?.musicXML(duraciones: leidos.map(\.duracion))
+    public func acordesConDuracion(ventana: Duracion? = nil) -> [(acorde: Acorde, duracion: Duracion)] {
+        let leidos = acordesConInicio(ventana: ventana)
+        let fin = duracion
+        return leidos.indices.map { i in
+            let hasta = i + 1 < leidos.count ? leidos[i + 1].inicio : fin
+            return (leidos[i].acorde, hasta - leidos[i].inicio)
+        }
+    }
+
     /// El acorde de una ventana, o `nil` si no hay ninguna lectura.
     static func acorde(
         de notas: [NotaDeLaPieza], desde: Duracion, hasta: Duracion,
@@ -186,7 +202,8 @@ public struct PiezaImportada: Hashable, Sendable {
 public enum ErrorDeImportacion: Error, Hashable, Sendable, CustomStringConvertible {
     /// No es MIDI ni MusicXML.
     case formatoDesconocido
-    /// Es MusicXML comprimido (.mxl), que todavía no se lee: hay que exportarlo sin comprimir.
+    /// Es un zip, como el MusicXML comprimido (.mxl), pero está dañado, no tiene partitura o usa una compresión
+    /// que no se lee (solo DEFLATE, sin cifrar y sin ZIP64).
     case comprimido
     /// El fichero MIDI está cortado o tiene datos que no siguen el formato.
     case midiDanado

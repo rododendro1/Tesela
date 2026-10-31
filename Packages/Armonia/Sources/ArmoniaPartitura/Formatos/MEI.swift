@@ -99,10 +99,24 @@ extension AnalisisArmonico {
         titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
         analisis: Bool = true, notacion: Notacion = .espanolUnicode
     ) -> String {
+        mei(
+            duraciones: Array(repeating: duracion, count: acordes.count), compas: compas, tempo: tempo,
+            titulo: titulo, parte: parte, cifrados: cifrados, analisis: analisis, notacion: notacion)
+    }
+
+    /// Lo mismo, con lo que dura cada acorde; el último se alarga hasta la barra.
+    ///
+    /// Detiene el programa si no hay una duración positiva por acorde.
+    public func mei(
+        duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil,
+        titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
+        analisis: Bool = true, notacion: Notacion = .espanolUnicode
+    ) -> String {
+        Exportacion.comprobar(duraciones, acordes: acordes.count)
         let (superior, grave) = Exportacion.progresion(
-            acordes.map(\.acorde), duracion: duracion,
-            final: Exportacion.hastaLaBarra(duracion, acordes.count, compas))
-        let anotaciones = Exportacion.anotaciones(de: self, duracion: duracion, cifrados: cifrados, analisis: analisis)
+            acordes.map(\.acorde), duraciones: Exportacion.hastaLaBarra(duraciones, compas))
+        let anotaciones = Exportacion.anotaciones(
+            de: self, duraciones: duraciones, cifrados: cifrados, analisis: analisis)
         var escritor = EscritorMEI(
             compas: compas, anacrusa: .cero, tonalidad: tonalidad, tempo: tempo,
             titulo: titulo, parte: parte, claves: [.sol, .fa])

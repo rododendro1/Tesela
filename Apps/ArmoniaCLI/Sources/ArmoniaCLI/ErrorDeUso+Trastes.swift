@@ -50,5 +50,9 @@ extension ErrorDeUso {
         static func faltaCifradoDeDigitaciones() -> Traduccion {
             return TextosDeCLI.traducidos.map { $0.faltaCifradoDeDigitaciones(d, digitaciones) }
         }
+
+        static func faltaEscalaDePosiciones() -> Traduccion {
+            return TextosDeCLI.traducidos.map(\.faltaEscalaDePosiciones)
+        }
     }
 }

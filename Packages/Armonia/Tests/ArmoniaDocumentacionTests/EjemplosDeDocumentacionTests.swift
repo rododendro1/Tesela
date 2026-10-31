@@ -512,6 +512,7 @@ final class EjemplosDeDocumentacionTests: XCTestCase {
         comprobar(pieza.notas.count, #"12"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 200)
         comprobar(pieza.acordes().map(\.cifrado), #"["Do", "Sol", "Do"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 201)
         comprobar(pieza.analisis()?.cifrados, #"["I", "V", "I"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 202)
+        comprobar(pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 203)
     }
 
     func testNotacionYPartitura1() throws {
@@ -848,7 +849,19 @@ final class EjemplosDeDocumentacionTests: XCTestCase {
     }
 
     func testTrastes3() throws {
-        // Sources/Armonia/Armonia.docc/Trastes.md, línea 71
+        // Sources/Armonia/Armonia.docc/Trastes.md, línea 75
+        let mastil = Mastil(.guitarra, trastes: 15)
+        let porCuerda = mastil.posicionesPorCuerda(de: Escala(.sol, .mayor))
+        comprobar(porCuerda.count, #"7"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 77)
+        comprobar(porCuerda[0].trastes == 0...5, #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 78)
+        comprobar(porCuerda[0].posiciones.count, #"18"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 79)
+        let caged = mastil.posicionesCAGED(de: Escala(.do, .mayor))
+        comprobar(caged.map(\.forma) == [.c, .a, .g, .e, .d], #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 81)
+        comprobar(caged.map(\.trastes) == [0...4, 2...6, 5...9, 7...11, 9...13], #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 82)
+    }
+
+    func testTrastes4() throws {
+        // Sources/Armonia/Armonia.docc/Trastes.md, línea 96
         let mastil = Mastil(.guitarra)
         let leida = Digitacion(leyendo: "x32010", en: mastil)
         let comprobada = Digitacion(comprobando: [nil, 3, 2, 0, 1, 0], en: mastil)

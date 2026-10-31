@@ -28,7 +28,7 @@ extension TextosDePartitura {
 
         // Importacion.swift
         formatoDesconocido: "El fitxer no és MIDI ni MusicXML.",
-        musicXMLComprimido: "És MusicXML comprimit (.mxl), que encara no es llegeix: exporta'l sense comprimir (.musicxml).",
+        musicXMLComprimido: "El MusicXML comprimit (.mxl) està malmès o no es pot llegir: exporta'l sense comprimir (.musicxml).",
         midiDanado: "El fitxer MIDI està malmès o tallat.",
         midiConTiempoSMPTE: "El fitxer MIDI compta el temps en fotogrames SMPTE, no en polsos per negra.",
         xmlDanado: { linea in "El fitxer MusicXML està malmès (línia \(linea))." },
