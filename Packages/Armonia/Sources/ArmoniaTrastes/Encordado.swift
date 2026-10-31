@@ -163,19 +163,19 @@ extension Encordado: Nombrable {
     package var traduccion: Traduccion? {
         switch self {
         case .guitarra:
-            return TextosDeTrastes.traducidos.map(\.guitarra)
+            return TextosDeTrastes.traduccion(\.guitarra)
         case .guitarraEnReGrave:
-            return TextosDeTrastes.traducidos.map(\.guitarraEnReGrave)
+            return TextosDeTrastes.traduccion(\.guitarraEnReGrave)
         case .guitarraDeSieteCuerdas:
-            return TextosDeTrastes.traducidos.map(\.guitarraDeSieteCuerdas)
+            return TextosDeTrastes.traduccion(\.guitarraDeSieteCuerdas)
         case .bajoElectrico:
-            return TextosDeTrastes.traducidos.map(\.bajo)
+            return TextosDeTrastes.traduccion(\.bajo)
         case .bajoDeCincoCuerdas:
-            return TextosDeTrastes.traducidos.map(\.bajoDeCincoCuerdas)
+            return TextosDeTrastes.traduccion(\.bajoDeCincoCuerdas)
         case .ukelele:
-            return TextosDeTrastes.traducidos.map(\.ukelele)
+            return TextosDeTrastes.traduccion(\.ukelele)
         case .mandolina:
-            return TextosDeTrastes.traducidos.map(\.mandolina)
+            return TextosDeTrastes.traduccion(\.mandolina)
         default:
             return nil
         }

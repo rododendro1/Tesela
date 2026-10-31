@@ -9,7 +9,7 @@ import Armonia
 
 /// Los textos de la interfaz de las apps en un idioma: los de `TextoDeLasApps`, los avisos y las tareas de
 /// `PresentacionDeCoral` y los nombres de `FicheroParaExportar`.
-struct TextosDeApps: Sendable {
+struct TextosDeApps: TextosTraducidos {
     // MARK: TextoDeLasApps.swift
     let acordes: String
     let escalas: String
@@ -120,7 +120,8 @@ struct TextosDeApps: Sendable {
     let partituraMEI: String
     let dibujoSVG: String
 
-    /// Los textos en los catorce idiomas: `traducidos.map(\.campo)` es la `Traduccion` de un campo.
+    /// Los textos en los catorce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// `Traduccion`.
     static let traducidos = Traducido<TextosDeApps>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
         fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso)

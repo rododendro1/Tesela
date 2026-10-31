@@ -239,15 +239,15 @@ extension TecladoIsomorfico: Nombrable {
     package var traduccion: Traduccion? {
         switch self {
         case .tablaArmonica:
-            return TextosDeRepresentaciones.traducidos.map(\.tablaArmonica)
+            return TextosDeRepresentaciones.traduccion(\.tablaArmonica)
         case .wickiHaydenEspejo:
-            return TextosDeRepresentaciones.traducidos.map(\.wickiHaydenEspejo)
+            return TextosDeRepresentaciones.traduccion(\.wickiHaydenEspejo)
         case .wickiHaydenPlano:
-            return TextosDeRepresentaciones.traducidos.map(\.wickiHaydenPlano)
+            return TextosDeRepresentaciones.traduccion(\.wickiHaydenPlano)
         case .acordeonC:
-            return TextosDeRepresentaciones.traducidos.map(\.acordeonC)
+            return TextosDeRepresentaciones.traduccion(\.acordeonC)
         case .acordeonB:
-            return TextosDeRepresentaciones.traducidos.map(\.acordeonB)
+            return TextosDeRepresentaciones.traduccion(\.acordeonB)
         default:
             return nil
         }

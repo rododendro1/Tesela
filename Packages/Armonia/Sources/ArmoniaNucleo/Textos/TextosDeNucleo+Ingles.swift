@@ -76,6 +76,12 @@ extension TextosDeNucleo {
         duracionNoValida: { texto in "\"\(texto)\" is not a duration: expected a note value (1, 2, 4, 8, 16…, dotted: 4.) or a fraction of a whole note (3/8, 1/12)" },
         compasNoValido: { texto in "\"\(texto)\" is not a time signature: expected numerator/denominator with a power-of-2 denominator (4/4, 6/8, 7/8), C or ¢" },
         vocesDistintas: "every chord must have the same number of voices, and at least two",
-        contrapuntoDeOtraDuracion: { redondas in "the counterpoint must last as long as the cantus firmus: \(redondas) whole notes, one per note" }
+        contrapuntoDeOtraDuracion: { redondas in "the counterpoint must last as long as the cantus firmus: \(redondas) whole notes, one per note" },
+        // Gramática (Intervalo.swift, ErrorDeLectura.swift)
+        nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },
+        unisonoEnMasculino: { calidad in calidad },
+        ordinales: ["unison", "second", "third", "fourth", "fifth", "sixth", "seventh", "octave", "ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "double octave"],
+        ordinalEnCifras: { n in Intervalo.ordinalInglesEnCifras(n) },
+        dosPuntos: ": "
     )
 }

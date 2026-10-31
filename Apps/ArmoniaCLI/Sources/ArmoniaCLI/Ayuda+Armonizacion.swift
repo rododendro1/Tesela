@@ -18,15 +18,15 @@ extension LineaDeComandos {
     static let ayudaDeAnalizar: [EntradaDeAyuda] = [
         // analizar <acordes> [--en <tonalidad>]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisAnalizar),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionAnalizar),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisAnalizar),
+            descripcion: TextosDeCLI.traduccion(\.descripcionAnalizar),
             ejemplo: ejemplo(
                 "armonia analizar Do Fa Sol7 Do Lam Re7 Sol",
                 "armonia analyze C F G7 C Am D7 G")),
         // analizar --archivo <fichero> [--ventana <duración>]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisAnalizarArchivo),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionAnalizarArchivo),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisAnalizarArchivo),
+            descripcion: TextosDeCLI.traduccion(\.descripcionAnalizarArchivo),
             ejemplo: ejemplo(
                 "armonia analizar --archivo coral.mid",
                 "armonia analyze --file chorale.musicxml")),
@@ -35,8 +35,8 @@ extension LineaDeComandos {
     static let ayudaDeArmonizar: [EntradaDeAyuda] = [
         // armonizar <melodía> [--en <tonalidad>] [--propuestas 3]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisArmonizar),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionArmonizar),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisArmonizar),
+            descripcion: TextosDeCLI.traduccion(\.descripcionArmonizar),
             ejemplo: ejemplo(
                 "armonia armonizar Mi4 Fa4 Re4 Do4",
                 "armonia harmonize E4 F4 D4 C4"))
@@ -45,8 +45,8 @@ extension LineaDeComandos {
     static let ayudaDeRealizar: [EntradaDeAyuda] = [
         // realizar <acordes> [--en <tonalidad>]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisRealizar),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionRealizar),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisRealizar),
+            descripcion: TextosDeCLI.traduccion(\.descripcionRealizar),
             ejemplo: ejemplo(
                 "armonia realizar Do Fa Sol7 Do",
                 "armonia realize C F G7 C"))
@@ -55,8 +55,8 @@ extension LineaDeComandos {
     static let ayudaDeRevisar: [EntradaDeAyuda] = [
         // revisar <acordes>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisRevisar),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionRevisar),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisRevisar),
+            descripcion: TextosDeCLI.traduccion(\.descripcionRevisar),
             ejemplo: ejemplo(
                 "armonia revisar Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4",
                 "armonia check C3 E4 G4 C5, G2 D4 G4 B4"))
@@ -65,8 +65,8 @@ extension LineaDeComandos {
     static let ayudaDeContrapunto: [EntradaDeAyuda] = [
         // contrapunto <cantus> / <contrapunto> [--especie 1]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisContrapunto),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionContrapunto),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisContrapunto),
+            descripcion: TextosDeCLI.traduccion(\.descripcionContrapunto),
             ejemplo: ejemplo(
                 "armonia contrapunto Re4 Fa4 Mi4 Re4 / -:2 La4 Re5 La4 Si4 Do#5 Re5:1 --especie 2",
                 "armonia counterpoint D4 F4 E4 D4 / -:2 A4 D5 A4 B4 C#5 D5:1 --species 2"))
@@ -75,8 +75,8 @@ extension LineaDeComandos {
     static let ayudaDeTransponer: [EntradaDeAyuda] = [
         // transponer <intervalo|tónica> <acordes o notas>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisTransponer),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionTransponer),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisTransponer),
+            descripcion: TextosDeCLI.traduccion(\.descripcionTransponer),
             ejemplo: ejemplo(
                 "armonia transponer Re Do Lam Fa Sol7",
                 "armonia transpose -m3 C Am F G7"))
@@ -85,8 +85,8 @@ extension LineaDeComandos {
     static let ayudaDeRearmonizar: [EntradaDeAyuda] = [
         // rearmonizar <acordes> [--en <tonalidad>]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisRearmonizar),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionRearmonizar),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisRearmonizar),
+            descripcion: TextosDeCLI.traduccion(\.descripcionRearmonizar),
             ejemplo: ejemplo(
                 "armonia rearmonizar Do Lam Rem7 Sol7 Do",
                 "armonia reharmonize C Am Dm7 G7 C"))

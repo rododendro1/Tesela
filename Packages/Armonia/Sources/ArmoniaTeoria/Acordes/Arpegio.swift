@@ -159,7 +159,7 @@ extension Arpegio: Nombrable {
     /// «Arpegio de Do mayor», «C major arpeggio», «Arpège de Do majeur», «C-Dur-Arpeggio», «Арпеджио до мажор».
     public func nombre(en notacion: Notacion) -> String {
         let acorde = self.acorde.nombre(en: notacion)
-        return TextosDeTeoria.traducidos.map { $0.arpegioDe(acorde) }.en(notacion)
+        return TextosDeTeoria.en(notacion) { $0.arpegioDe(acorde) }
     }
 
     /// Lee «arpegio Dom7», «Dom7 arpeggio», «Arpège de Do» o solo el cifrado: se quitan las palabras «arpegio»
@@ -170,10 +170,7 @@ extension Arpegio: Nombrable {
             "arpegio", "arpeggio", "arpegi", "arpexo", "arpexu", "arpechio", "arpegioa", "arpejo", "arpege",
             "αρπεζ", "арпеджио", "de", "di", "of", "d'",
         ]
-        func sinAcentos(_ s: String) -> String {
-            s.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: nil)
-        }
-        let resto = texto.split(separator: " ").filter { !palabras.contains(sinAcentos(String($0))) }
+        let resto = texto.split(separator: " ").filter { !palabras.contains(String($0).claveDeBusqueda) }
             .joined(separator: " ")
         self.init(try Acorde(leyendo: resto.isEmpty ? texto : resto))
     }
@@ -181,23 +178,43 @@ extension Arpegio: Nombrable {
 
 // MARK: - Patron
 
+extension Arpegio.Patron {
+    /// Lee un patrón por su nombre en el código (`alberti`, `idaYVuelta`), con guiones o guiones bajos
+    /// (`ida-y-vuelta`), en inglés abreviado (`up`, `down`, `up-down`, `down-up`, `broken`) o como lo escribe
+    /// cualquiera de los catorce idiomas («bajo de Alberti», «aller-retour»), sin mirar mayúsculas ni tildes.
+    public init?(leyendo texto: String) {
+        func clave(_ texto: String) -> String { texto.replacingOccurrences(of: "_", with: " ").claveDeBusqueda }
+        let buscado = clave(texto)
+        let abreviados: [String: Arpegio.Patron] = [
+            "ida y vuelta": .idaYVuelta, "up": .ascendente, "down": .descendente, "up down": .idaYVuelta,
+            "baja y sube": .bajaYSube, "down up": .bajaYSube, "broken": .quebrado,
+        ]
+        func esElBuscado(_ patron: Arpegio.Patron) -> Bool {
+            clave(patron.rawValue) == buscado
+                || Idioma.allCases.contains { clave(patron.nombre(en: .delIdioma($0))) == buscado }
+        }
+        guard let leido = abreviados[buscado] ?? Self.allCases.first(where: esElBuscado) else { return nil }
+        self = leido
+    }
+}
+
 extension Arpegio.Patron: Nombrable {
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
 
     private var traduccion: Traduccion {
         switch self {
         case .ascendente:
-            return TextosDeTeoria.traducidos.map(\.patronAscendente)
+            return TextosDeTeoria.traduccion(\.patronAscendente)
         case .descendente:
-            return TextosDeTeoria.traducidos.map(\.patronDescendente)
+            return TextosDeTeoria.traduccion(\.patronDescendente)
         case .idaYVuelta:
-            return TextosDeTeoria.traducidos.map(\.patronIdaYVuelta)
+            return TextosDeTeoria.traduccion(\.patronIdaYVuelta)
         case .alberti:
-            return TextosDeTeoria.traducidos.map(\.patronAlberti)
+            return TextosDeTeoria.traduccion(\.patronAlberti)
         case .quebrado:
-            return TextosDeTeoria.traducidos.map(\.patronQuebrado)
+            return TextosDeTeoria.traduccion(\.patronQuebrado)
         case .bajaYSube:
-            return TextosDeTeoria.traducidos.map(\.patronBajaYSube)
+            return TextosDeTeoria.traduccion(\.patronBajaYSube)
         }
     }
 }

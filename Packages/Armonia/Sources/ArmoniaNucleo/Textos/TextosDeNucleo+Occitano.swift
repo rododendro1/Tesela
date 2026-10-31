@@ -76,6 +76,12 @@ extension TextosDeNucleo {
         duracionNoValida: { texto in "«\(texto)» es pas una durada: s'esperava una figura (1, 2, 4, 8, 16…, puntada: 4.) o una fraccion de redonda (3/8, 1/12)" },
         compasNoValido: { texto in "«\(texto)» es pas una mesura: s'esperava numerator/denominator amb lo denominator poténcia de 2 (4/4, 6/8, 7/8), C o ¢" },
         vocesDistintas: "totes los acòrds devon aver lo meteis nombre de voses, e almens doas",
-        contrapuntoDeOtraDuracion: { redondas in "lo contrapunt deu durar autant coma lo cantus firmus: \(redondas) redondas, una per nòta" }
+        contrapuntoDeOtraDuracion: { redondas in "lo contrapunt deu durar autant coma lo cantus firmus: \(redondas) redondas, una per nòta" },
+        // Gramática (Intervalo.swift, ErrorDeLectura.swift)
+        nombreDeIntervalo: { calidad, ordinal in "\(ordinal) \(calidad)" },
+        unisonoEnMasculino: { calidad in calidad.hasSuffix("ada") ? String(calidad.dropLast(3)) + "at" : calidad.hasSuffix("ida") ? String(calidad.dropLast(3)) + "it" : calidad.hasSuffix("a") ? String(calidad.dropLast()) : calidad },
+        ordinales: ["unisson", "segonda", "tèrça", "quarta", "quinta", "sexta", "setena", "octava", "novena", "desena", "onzena", "dotzena", "tretzena", "catorzena", "doble octava"],
+        ordinalEnCifras: { n in "\(n)a" },
+        dosPuntos: ": "
     )
 }

@@ -6,7 +6,7 @@
 extension TextosDeTeoria {
     static let asturiano = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "con baxu en \(bajo)" },
+        conBajoEn: { acorde, bajo in "\(acorde), con baxu en \(bajo)" },
         nombresDeLasInversiones: ["estáu fundamental", "primer inversión", "segunda inversión", "tercer inversión",
                                   "cuarta inversión", "quinta inversión", "sexta inversión"],
         inversionConNumero: "inversión _",
@@ -122,6 +122,9 @@ extension TextosDeTeoria {
         sustitutoTritonal: "sustitutu tritonal",
         dominanteSecundaria: "dominante secundaria",
         prestamoModal: "emprestu modal",
-        sustitutoDiatonico: "sustitutu diatónicu"
+        sustitutoDiatonico: "sustitutu diatónicu",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        enLaTonalidad: { tonalidad in "en " + tonalidad }
     )
 }

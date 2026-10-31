@@ -6,7 +6,7 @@
 extension TextosDeTeoria {
     static let aragones = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "con baixo en \(bajo)" },
+        conBajoEn: { acorde, bajo in "\(acorde), con baixo en \(bajo)" },
         nombresDeLasInversiones: ["estau fundamental", "primera inversión", "segunda inversión", "tercera inversión",
                                   "cuarta inversión", "quinta inversión", "sexta inversión"],
         inversionConNumero: "inversión _",
@@ -122,6 +122,9 @@ extension TextosDeTeoria {
         sustitutoTritonal: "sustituto tritonal",
         dominanteSecundaria: "dominant secundaria",
         prestamoModal: "emprestamiento modal",
-        sustitutoDiatonico: "sustituto diatonico"
+        sustitutoDiatonico: "sustituto diatonico",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        enLaTonalidad: { tonalidad in "en " + tonalidad }
     )
 }

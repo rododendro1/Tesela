@@ -345,16 +345,16 @@ extension NombreDeGrado {
 
     private var traduccion: Traduccion {
         switch self {
-        case .tonica: return TextosDeTeoria.traducidos.map(\.gradoTonica)
-        case .supertonica: return TextosDeTeoria.traducidos.map(\.gradoSupertonica)
-        case .mediante: return TextosDeTeoria.traducidos.map(\.gradoMediante)
+        case .tonica: return TextosDeTeoria.traduccion(\.gradoTonica)
+        case .supertonica: return TextosDeTeoria.traduccion(\.gradoSupertonica)
+        case .mediante: return TextosDeTeoria.traduccion(\.gradoMediante)
         case .subdominante:
-            return TextosDeTeoria.traducidos.map(\.gradoSubdominante)
-        case .dominante: return TextosDeTeoria.traducidos.map(\.gradoDominante)
+            return TextosDeTeoria.traduccion(\.gradoSubdominante)
+        case .dominante: return TextosDeTeoria.traduccion(\.gradoDominante)
         case .superdominante:
-            return TextosDeTeoria.traducidos.map(\.gradoSuperdominante)
-        case .sensible: return TextosDeTeoria.traducidos.map(\.gradoSensible)
-        case .subtonica: return TextosDeTeoria.traducidos.map(\.gradoSubtonica)
+            return TextosDeTeoria.traduccion(\.gradoSuperdominante)
+        case .sensible: return TextosDeTeoria.traduccion(\.gradoSensible)
+        case .subtonica: return TextosDeTeoria.traduccion(\.gradoSubtonica)
         }
     }
 }

@@ -6,7 +6,7 @@
 extension TextosDeTeoria {
     static let occitano = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "amb la bassa en \(bajo)" },
+        conBajoEn: { acorde, bajo in "\(acorde), amb la bassa en \(bajo)" },
         nombresDeLasInversiones: ["estat fondamental", "primièra inversion", "segonda inversion", "tresena inversion",
                                   "quatrena inversion", "cinquena inversion", "sisena inversion"],
         inversionConNumero: "inversion _",
@@ -122,6 +122,9 @@ extension TextosDeTeoria {
         sustitutoTritonal: "substitut de triton",
         dominanteSecundaria: "dominanta segondària",
         prestamoModal: "manlèu modal",
-        sustitutoDiatonico: "substitut diatonic"
+        sustitutoDiatonico: "substitut diatonic",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        enLaTonalidad: { tonalidad in "en " + tonalidad }
     )
 }

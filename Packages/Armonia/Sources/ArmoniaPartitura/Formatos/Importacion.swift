@@ -169,7 +169,7 @@ public struct PiezaImportada: Hashable, Sendable {
         // Las demás clases, de más a menos peso (a igual peso, de grave a agudo, para que no dependa del orden).
         let resto = pesos.keys.filter { $0 != bajo }.sorted { (-pesos[$0]!, $0) < (-pesos[$1]!, $1) }
 
-        var mejor: (acorde: Acorde, coste: Double)?
+        var mejor = ElMejor<Acorde, Double>()
         for quitadas in 0...min(2, resto.count) {
             let quedan = Array(resto.dropLast(quitadas))
             guard quedan.count >= min(2, resto.count) else { break }
@@ -180,9 +180,9 @@ public struct PiezaImportada: Hashable, Sendable {
                 continue
             }
             let coste = candidato.coste + penalizacion
-            if mejor == nil || coste < mejor!.coste { mejor = (candidato.valor, coste) }
+            mejor.proponer(candidato.valor, coste: coste)
         }
-        return mejor?.acorde
+        return mejor.valor
     }
 
     // MARK: Análisis

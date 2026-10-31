@@ -82,26 +82,9 @@ extension LineaDeComandos {
         return lineas.joined(separator: "\n")
     }
 
-    /// El patrón de `--patron`: su nombre en el código (`alberti`, `idaYVuelta`), con guiones (`ida-y-vuelta`),
-    /// en inglés (`ascending`, `up-down`, `down-up`, `broken`) o como lo escribe cualquiera de los catorce idiomas
-    /// («bajo de Alberti»).
-    static func patronDeArpegio(_ texto: String) -> Arpegio.Patron? {
-        func plano(_ s: String) -> String {
-            s.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: nil)
-                .replacingOccurrences(of: "-", with: " ")
-                .replacingOccurrences(of: "_", with: " ")
-        }
-        let buscado = plano(texto)
-        let abreviados: [String: Arpegio.Patron] = [
-            "ida y vuelta": .idaYVuelta, "up": .ascendente, "down": .descendente, "up down": .idaYVuelta,
-            "baja y sube": .bajaYSube, "down up": .bajaYSube, "broken": .quebrado,
-        ]
-        if let patron = abreviados[buscado] { return patron }
-        return Arpegio.Patron.allCases.first { patron in
-            plano(patron.rawValue) == buscado
-                || Idioma.allCases.contains { plano(patron.nombre(en: .delIdioma($0))) == buscado }
-        }
-    }
+    /// El patrón de `--patron`, como lo lee `Arpegio.Patron(leyendo:)`: `alberti`, `ida-y-vuelta`, `up-down` o su
+    /// nombre en cualquiera de los catorce idiomas («bajo de Alberti»).
+    static func patronDeArpegio(_ texto: String) -> Arpegio.Patron? { Arpegio.Patron(leyendo: texto) }
 
     static func intervalo(_ a: String, _ b: String, _ notacion: Notacion) throws -> String {
         let intervalo: Intervalo

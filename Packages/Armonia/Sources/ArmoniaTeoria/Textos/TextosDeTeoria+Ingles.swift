@@ -7,7 +7,7 @@ import ArmoniaNucleo
 extension TextosDeTeoria {
     static let ingles = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "over \(bajo)" },
+        conBajoEn: { acorde, bajo in "\(acorde) over \(bajo)" },
         nombresDeLasInversiones: ["root position", "first inversion", "second inversion", "third inversion",
                                   "fourth inversion", "fifth inversion", "sixth inversion"],
         inversionConNumero: "inversion _",
@@ -123,6 +123,9 @@ extension TextosDeTeoria {
         sustitutoTritonal: "tritone substitution",
         dominanteSecundaria: "secondary dominant",
         prestamoModal: "modal borrowing",
-        sustitutoDiatonico: "diatonic substitution"
+        sustitutoDiatonico: "diatonic substitution",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        enLaTonalidad: { tonalidad in "in " + tonalidad }
     )
 }

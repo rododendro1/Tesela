@@ -8,7 +8,7 @@ import ArmoniaNucleo
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de ArmoniaPartitura en un idioma.
-struct TextosDePartitura: Sendable {
+struct TextosDePartitura: TextosTraducidos {
     // MARK: Contrapunto.swift
     let enElCompas: @Sendable (Int) -> String
     let enLosCompases: @Sendable (String) -> String
@@ -65,7 +65,40 @@ struct TextosDePartitura: Sendable {
     let claveDeDoEnTercera: String
     let claveDeDoEnCuarta: String
 
-    /// Los textos en los catorce idiomas: `traducidos.map(\.campo)` es la `Traduccion` de un campo.
+    // MARK: Pentagrama.swift (InstrumentoDePartitura)
+    let instrumentoPiano: String
+    let instrumentoFlauta: String
+    let instrumentoFlautin: String
+    let instrumentoFlautaEnSol: String
+    let instrumentoOboe: String
+    let instrumentoCornoIngles: String
+    let instrumentoClarineteEnSib: String
+    let instrumentoClarineteEnLa: String
+    let instrumentoClarineteEnMib: String
+    let instrumentoClarineteBajo: String
+    let instrumentoFagot: String
+    let instrumentoSaxofonSoprano: String
+    let instrumentoSaxofonAlto: String
+    let instrumentoSaxofonTenor: String
+    let instrumentoSaxofonBaritono: String
+    let instrumentoTrompetaEnSib: String
+    let instrumentoTrompetaEnDo: String
+    let instrumentoFliscorno: String
+    let instrumentoTrompaEnFa: String
+    let instrumentoTrombon: String
+    let instrumentoTuba: String
+    let instrumentoViolin: String
+    let instrumentoViola: String
+    let instrumentoViolonchelo: String
+    let instrumentoContrabajo: String
+    let instrumentoGuitarra: String
+    let instrumentoBajoElectrico: String
+    let instrumentoXilofono: String
+    let instrumentoGlockenspiel: String
+    let instrumentoCelesta: String
+
+    /// Los textos en los catorce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// `Traduccion`.
     static let traducidos = Traducido<TextosDePartitura>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
         fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso)

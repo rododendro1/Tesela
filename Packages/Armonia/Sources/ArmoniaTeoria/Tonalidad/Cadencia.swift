@@ -44,7 +44,7 @@ public struct Cadencia: Hashable, Sendable, CustomStringConvertible {
 
     public func descripcion(en notacion: Notacion) -> String {
         let pasos = "\(acorde + 1) → \(acorde + 2)"
-        let lugar = TextosDeTeoria.traducidos.map { $0.cadenciaEnLosAcordes(pasos) }.en(notacion)
+        let lugar = TextosDeTeoria.en(notacion) { $0.cadenciaEnLosAcordes(pasos) }
         let nombre = tipo.nombre(en: notacion)
         return nombre.conMayusculaInicial
             + " " + acordes.map(\.cifrado).joined(separator: "–") + " (\(lugar))"
@@ -114,13 +114,13 @@ extension Cadencia.Tipo: Nombrable, CustomStringConvertible {
     public func nombre(en notacion: Notacion) -> String {
         switch self {
         case .autentica:
-            return TextosDeTeoria.traducidos.map(\.cadenciaAutentica).en(notacion)
+            return TextosDeTeoria.en(notacion, \.cadenciaAutentica)
         case .plagal:
-            return TextosDeTeoria.traducidos.map(\.cadenciaPlagal).en(notacion)
+            return TextosDeTeoria.en(notacion, \.cadenciaPlagal)
         case .rota:
-            return TextosDeTeoria.traducidos.map(\.cadenciaRota).en(notacion)
+            return TextosDeTeoria.en(notacion, \.cadenciaRota)
         case .semicadencia:
-            return TextosDeTeoria.traducidos.map(\.semicadencia).en(notacion)
+            return TextosDeTeoria.en(notacion, \.semicadencia)
         }
     }
 

@@ -43,4 +43,15 @@ final class ArgumentosTests: XCTestCase {
         var alFinal = Argumentos(["Do", "--in"])
         XCTAssertNil(try alFinal.quitarTonalidad())
     }
+
+    func testLasOpcionesConTextoTomanHastaLaSiguiente() {
+        var argumentos = Argumentos([
+            "Do", "Re", "--Titulo", "Mi", "canción", "--análisis", "Fa", "--pattern", "alberti", "--tempo",
+        ])
+        let (opciones, marcas) = argumentos.quitarOpcionesConTexto(
+            marcas: ["analisis": "analisis", "análisis": "analisis"], alias: [("pattern", "patron")])
+        XCTAssertEqual(opciones, ["titulo": "Mi canción", "patron": "alberti", "tempo": ""])
+        XCTAssertEqual(marcas, ["analisis"])
+        XCTAssertEqual(argumentos.restantes, ["Do", "Re", "Fa"])
+    }
 }

@@ -108,6 +108,10 @@ final class TraducidoTests: XCTestCase {
         XCTAssertEqual(Intervalo.ordinal(3, en: .espanol), "3ª")
         XCTAssertEqual(Intervalo.ordinal(3, en: .catalan), "3a")
         XCTAssertEqual(Intervalo.ordinal(3, en: .euskera), "3.")
+        // Cada idioma nombra los quince intervalos con palabras, o ninguno.
+        for idioma in Idioma.traducidos {
+            XCTAssertTrue([0, 15].contains(TextosDeNucleo.en(idioma: idioma, \.ordinales).count), "\(idioma)")
+        }
         XCTAssertEqual(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .frances), "unisson augmenté")
         XCTAssertEqual(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .italiano), "unisono aumentato")
         XCTAssertEqual(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .occitano), "unisson aumentat")

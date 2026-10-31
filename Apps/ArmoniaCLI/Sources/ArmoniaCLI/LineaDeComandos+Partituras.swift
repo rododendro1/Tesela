@@ -14,35 +14,15 @@ extension LineaDeComandos {
             return uso(.faltaTipoDePartitura(orden: orden), notacion)
         }
         // Los argumentos hasta la primera opción son la música; cada opción toma lo que la sigue.
-        var musica: [String] = []
-        var opciones: [String: String] = [:]
-        var opcion: String?
-        var marcas: Set<String> = []
-        let sinValor: Set = ["cifrados", "analisis", "análisis"]
-        for argumento in argumentos.dropFirst() {
-            if argumento.hasPrefix("--") {
-                let nombre = String(argumento.dropFirst(2)).lowercased()
-                if sinValor.contains(nombre) {
-                    marcas.insert(nombre == "análisis" ? "analisis" : nombre)
-                    opcion = nil
-                    continue
-                }
-                opcion = nombre
-                opciones[nombre] = ""
-            } else if let actual = opcion {
-                opciones[actual] = opciones[actual]!.isEmpty ? argumento : opciones[actual]! + " " + argumento
-            } else {
-                musica.append(argumento)
-            }
-        }
-        // `--program` es `--programa` en inglés.
-        if formato == .midi, let valor = opciones.removeValue(forKey: "program") { opciones["programa"] = valor }
-        // `--patrón` y `--pattern` son `--patron`.
-        // Y `--file` y `--window`, `--archivo` y `--ventana`.
-        let alias = [("patrón", "patron"), ("pattern", "patron"), ("file", "archivo"), ("window", "ventana")]
-        for (otro, nombre) in alias {
-            if let valor = opciones.removeValue(forKey: otro) { opciones[nombre] = valor }
-        }
+        // `--program` es `--programa` en inglés (solo en MIDI); `--patrón` y `--pattern` son `--patron`, y `--file`
+        // y `--window`, `--archivo` y `--ventana`.
+        var entrada = Argumentos(Array(argumentos.dropFirst()))
+        let alias: [(String, String)] =
+            (formato == .midi ? [("program", "programa")] : [])
+            + [("patrón", "patron"), ("pattern", "patron"), ("file", "archivo"), ("window", "ventana")]
+        let (opciones, marcas) = entrada.quitarOpcionesConTexto(
+            marcas: ["cifrados": "cifrados", "analisis": "analisis", "análisis": "analisis"], alias: alias)
+        let musica = entrada.restantes
         let conocidas: Set =
             formato == .midi
             ? [
@@ -64,7 +44,7 @@ extension LineaDeComandos {
             instrumento = n
         }
         if formato == .midi && !marcas.isEmpty { return uso(.marcasSoloMusicXML, notacion) }
-        if let vacia = opciones.keys.sorted().first(where: { opciones[$0]!.isEmpty }) {
+        if let vacia = opciones.sorted(by: { $0.key < $1.key }).first(where: { $0.value.isEmpty })?.key {
             return uso(.faltaValor(vacia), notacion)
         }
         var compas = try opciones["compas"].map { try Compas(leyendo: $0) } ?? .compasillo

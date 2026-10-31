@@ -30,8 +30,8 @@ extension LineaDeComandos {
     static let ayudaDeAcorde: [EntradaDeAyuda] = [
         // acorde <cifrado>…
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisAcorde),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionAcorde),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisAcorde),
+            descripcion: TextosDeCLI.traduccion(\.descripcionAcorde),
             ejemplo: ejemplo(
                 "armonia acorde Sol7/Si",
                 "armonia chord G7/B"))
@@ -40,8 +40,8 @@ extension LineaDeComandos {
     static let ayudaDeIdentificar: [EntradaDeAyuda] = [
         // identificar <notas>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisIdentificar),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionIdentificar),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisIdentificar),
+            descripcion: TextosDeCLI.traduccion(\.descripcionIdentificar),
             ejemplo: ejemplo(
                 "armonia identificar Do Mi Sol Sib",
                 "armonia identify C E G Bb"))
@@ -50,8 +50,8 @@ extension LineaDeComandos {
     static let ayudaDeArpegio: [EntradaDeAyuda] = [
         // arpegio <cifrado> [--patron <patrón>]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisArpegio),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionArpegio),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisArpegio),
+            descripcion: TextosDeCLI.traduccion(\.descripcionArpegio),
             ejemplo: ejemplo(
                 "armonia arpegio Do7 --patron alberti",
                 "armonia arpeggio C7 --pattern alberti"))
@@ -60,8 +60,8 @@ extension LineaDeComandos {
     static let ayudaDeIntervalo: [EntradaDeAyuda] = [
         // intervalo <nota> <nota>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisIntervalo),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionIntervalo),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisIntervalo),
+            descripcion: TextosDeCLI.traduccion(\.descripcionIntervalo),
             ejemplo: ejemplo(
                 "armonia intervalo Do4 Mi5",
                 "armonia interval C4 E5"))
@@ -70,8 +70,8 @@ extension LineaDeComandos {
     static let ayudaDeEscala: [EntradaDeAyuda] = [
         // escala <escala>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisEscala),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionEscala),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisEscala),
+            descripcion: TextosDeCLI.traduccion(\.descripcionEscala),
             ejemplo: ejemplo(
                 "armonia escala Re dórico",
                 "armonia scale D dorian"))
@@ -80,8 +80,8 @@ extension LineaDeComandos {
     static let ayudaDeTonalidad: [EntradaDeAyuda] = [
         // tonalidad <tonalidad>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisTonalidad),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionTonalidad),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisTonalidad),
+            descripcion: TextosDeCLI.traduccion(\.descripcionTonalidad),
             ejemplo: ejemplo(
                 "armonia tonalidad La menor",
                 "armonia key A minor"))

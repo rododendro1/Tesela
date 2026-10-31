@@ -8,8 +8,8 @@
 // Los textos se escriben un idioma por fichero: cada módulo tiene su `TextosDeX` (`TextosDeNucleo`,
 // `TextosDeTrastes`…) con un campo por texto, y un fichero por idioma en su carpeta `Textos/`
 // (`TextosDeNucleo+Espanol.swift`, `…+Ingles.swift`…). Los campos no tienen valores por omisión, así que un
-// texto nuevo no compila hasta que está en los catorce ficheros. `TextosDeX.traducidos.map(\.campo)` da
-// el `Traduccion` de un campo, y `traducidos.map { $0.campo(valor) }` el de un texto que lleva valores.
+// texto nuevo no compila hasta que está en los catorce ficheros. `TextosDeX.en(notacion, \.campo)` da el texto
+// de un campo en un idioma, y `TextosDeX.traduccion(\.campo)` su `Traduccion` (ver `TextosTraducidos`).
 //
 // Los nombres de los catálogos (tipos de acorde y de escala, instrumentos) también están en los catorce idiomas, salvo los nombres tradicionales de escala
 // (raga, maqam, pentatónicas japonesas…), que se escriben igual en todos.
@@ -98,6 +98,42 @@ public struct Traducido<Valor> {
             pt: try cambio(portugues), fr: try cambio(frances), oc: try cambio(occitano),
             it: try cambio(italiano), de: try cambio(aleman),
             el: try cambio(griego), ru: try cambio(ruso))
+    }
+}
+
+/// Los textos de un módulo en los catorce idiomas: los `TextosDeX` (`TextosDeNucleo`, `TextosDeTeoria`…), con un
+/// campo por texto y un fichero por idioma.
+///
+///     TextosDeTeoria.en(notacion, \.pivote)              // el texto en el idioma de la notación
+///     TextosDeTeoria.en(notacion) { $0.conBajoEn(bajo) } // un texto con valores
+///     TextosDeTeoria.traduccion(\.pivote)                // la `Traduccion`, para guardarla o elegir después
+///
+/// Se usan en vez de `traducidos.map(…)`: sin optimizar (Debug, `swift test`), cada `traducidos.map` copia en la
+/// pila del que llama los catorce `TextosDeX` (decenas de KB), y un `switch` con un caso por texto guarda una
+/// copia por caso. Con noventa casos, el marco pedía varios MB y desbordaba la pila en macOS. Aquí la copia es
+/// una sola, en un marco que se suelta al volver.
+public protocol TextosTraducidos: Sendable {
+    /// Los textos en los catorce idiomas.
+    static var traducidos: Traducido<Self> { get }
+}
+
+extension TextosTraducidos {
+    /// Un valor de los textos en los catorce idiomas: `traduccion(\.campo)`, o `traduccion { $0.campo(n) }`.
+    @inline(never)
+    public static func traduccion<Valor>(_ campo: (Self) throws -> Valor) rethrows -> Traducido<Valor> {
+        try traducidos.map(campo)
+    }
+
+    /// Un valor de los textos en el idioma de los textos de la notación: `en(notacion, \.campo)`.
+    @inline(never)
+    public static func en<Valor>(_ notacion: Notacion, _ campo: (Self) throws -> Valor) rethrows -> Valor {
+        try campo(traducidos.en(notacion))
+    }
+
+    /// Un valor de los textos en un idioma: `en(idioma: .frances, \.campo)`.
+    @inline(never)
+    public static func en<Valor>(idioma: Idioma, _ campo: (Self) throws -> Valor) rethrows -> Valor {
+        try campo(traducidos.texto(en: idioma))
     }
 }
 

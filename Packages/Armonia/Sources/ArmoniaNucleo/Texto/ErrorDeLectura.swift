@@ -103,13 +103,13 @@ extension ErrorDeLectura {
     public func descripcion(en notacion: Notacion) -> String {
         var inicio =
             texto.isEmpty
-            ? TextosDeNucleo.traducidos.map(\.valorNoValido).en(notacion)
-            : TextosDeNucleo.traducidos.map { $0.noSePuedeLeer(texto) }.en(notacion)
+            ? TextosDeNucleo.en(notacion, \.valorNoValido)
+            : TextosDeNucleo.en(notacion) { $0.noSePuedeLeer(texto) }
         if let p = posicion {
-            inicio += TextosDeNucleo.traducidos.map { $0.caracter(p) }.en(notacion)
+            inicio += TextosDeNucleo.en(notacion) { $0.caracter(p) }
         }
         // En francés, los dos puntos llevan espacio delante.
-        return inicio + (notacion.textos == .frances ? " : " : ": ") + explicacion(en: notacion)
+        return inicio + TextosDeNucleo.en(notacion, \.dosPuntos) + explicacion(en: notacion)
     }
 
     /// La explicación en los catorce idiomas de los textos. La notación solo hace falta para los
@@ -117,10 +117,10 @@ extension ErrorDeLectura {
     private func explicacionTraducida(_ notacion: Notacion) -> Traduccion {
         switch motivo {
         case .textoVacio:
-            return TextosDeNucleo.traducidos.map(\.textoVacio)
+            return TextosDeNucleo.traduccion(\.textoVacio)
         case .notaNoReconocida: return TextosDeNotas.notaNoReconocida()
         case .caracteresSobrantes(let resto):
-            return TextosDeNucleo.traducidos.map { $0.caracteresSobrantes(resto) }
+            return TextosDeNucleo.traduccion { $0.caracteresSobrantes(resto) }
         case .octavaNoValida(let resto): return TextosDeNotas.octavaNoValida(resto)
         case .numeroDeIntervaloNoValido(let resto): return TextosDeNotas.numeroDeIntervaloNoValido(resto)
         case .calidadNoValida(let resto): return TextosDeNotas.calidadNoValida(resto)
@@ -152,42 +152,42 @@ extension ErrorDeLectura {
 extension ErrorDeLectura {
     enum TextosDeNotas {
         static func notaNoReconocida() -> Traduccion {
-            return TextosDeNucleo.traducidos.map(\.notaNoReconocida)
+            return TextosDeNucleo.traduccion(\.notaNoReconocida)
         }
 
         static func octavaNoValida(_ resto: String) -> Traduccion {
             return resto.isEmpty
-                ? TextosDeNucleo.traducidos.map(\.faltaLaOctava)
-                : TextosDeNucleo.traducidos.map { $0.octavaNoValida(resto) }
+                ? TextosDeNucleo.traduccion(\.faltaLaOctava)
+                : TextosDeNucleo.traduccion { $0.octavaNoValida(resto) }
         }
 
         static func numeroDeIntervaloNoValido(_ resto: String) -> Traduccion {
             return resto.isEmpty
-                ? TextosDeNucleo.traducidos.map(\.faltaElNumeroDeIntervalo)
-                : TextosDeNucleo.traducidos.map { $0.numeroDeIntervaloNoValido(resto) }
+                ? TextosDeNucleo.traduccion(\.faltaElNumeroDeIntervalo)
+                : TextosDeNucleo.traduccion { $0.numeroDeIntervaloNoValido(resto) }
         }
 
         static func calidadNoValida(_ resto: String) -> Traduccion {
             return resto.isEmpty
-                ? TextosDeNucleo.traducidos.map(\.faltaLaCalidad)
-                : TextosDeNucleo.traducidos.map { $0.calidadNoValida(resto) }
+                ? TextosDeNucleo.traduccion(\.faltaLaCalidad)
+                : TextosDeNucleo.traduccion { $0.calidadNoValida(resto) }
         }
 
         static func intervaloInexistente(numero: Int, calidad: CalidadDeIntervalo, en notacion: Notacion) -> Traduccion
         {
             if numero == 1, case .disminuida = calidad {
-                return TextosDeNucleo.traducidos.map(\.unisonoDisminuido)
+                return TextosDeNucleo.traduccion(\.unisonoDisminuido)
             }
             let clase = (numero - 1) % 7
             let regla =
                 [0, 3, 4].contains(clase)
-                ? TextosDeNucleo.traducidos.map(\.reglaDeLasJustas)
-                : TextosDeNucleo.traducidos.map(\.reglaDeLasMayores)
-            return TextosDeNucleo.traducidos.map { $0.intervaloInexistente(numero, calidad, notacion, regla) }
+                ? TextosDeNucleo.traduccion(\.reglaDeLasJustas)
+                : TextosDeNucleo.traduccion(\.reglaDeLasMayores)
+            return TextosDeNucleo.traduccion { $0.intervaloInexistente(numero, calidad, notacion, regla) }
         }
 
         static func alteracionNoReconocida(_ signo: String) -> Traduccion {
-            return TextosDeNucleo.traducidos.map { $0.alteracionNoReconocida(signo) }
+            return TextosDeNucleo.traduccion { $0.alteracionNoReconocida(signo) }
         }
     }
 }
@@ -197,59 +197,59 @@ extension ErrorDeLectura {
 extension ErrorDeLectura {
     enum TextosDeAcordes {
         static func simboloNoReconocido(_ simbolo: String) -> Traduccion {
-            return TextosDeNucleo.traducidos.map { $0.simboloNoReconocido(simbolo) }
+            return TextosDeNucleo.traduccion { $0.simboloNoReconocido(simbolo) }
         }
 
         static func tensionNoValida(_ tension: String) -> Traduccion {
-            return TextosDeNucleo.traducidos.map { $0.tensionNoValida(tension) }
+            return TextosDeNucleo.traduccion { $0.tensionNoValida(tension) }
         }
 
         static func numeroDeAcordeNoValido(_ numero: Int) -> Traduccion {
-            return TextosDeNucleo.traducidos.map { $0.numeroDeAcordeNoValido(numero) }
+            return TextosDeNucleo.traduccion { $0.numeroDeAcordeNoValido(numero) }
         }
 
         static func numeroRepetido(_ numero: Int) -> Traduccion {
-            return TextosDeNucleo.traducidos.map { $0.numeroRepetido(numero) }
+            return TextosDeNucleo.traduccion { $0.numeroRepetido(numero) }
         }
 
         static func calidadesIncompatibles(_ valor: CalidadesIncompatibles) -> Traduccion {
             switch valor {
             case .disminuidoYSemidisminuido:
-                return TextosDeNucleo.traducidos.map(\.disminuidoYSemidisminuido)
+                return TextosDeNucleo.traduccion(\.disminuidoYSemidisminuido)
             case .quintaConCalidad:
-                return TextosDeNucleo.traducidos.map(\.quintaConCalidad)
+                return TextosDeNucleo.traduccion(\.quintaConCalidad)
             }
         }
 
         static func gradoNoOmitible(_ grado: Int) -> Traduccion {
             return grado == 1
-                ? TextosDeNucleo.traducidos.map(\.fundamentalNoOmitible)
-                : TextosDeNucleo.traducidos.map { $0.gradoNoOmitible(grado) }
+                ? TextosDeNucleo.traduccion(\.fundamentalNoOmitible)
+                : TextosDeNucleo.traduccion { $0.gradoNoOmitible(grado) }
         }
 
         static func acordeNoInterpretable(_ rechazo: RechazoDeAcorde, en notacion: Notacion) -> Traduccion {
             switch rechazo {
             case .faltaLaFundamental:
-                return TextosDeNucleo.traducidos.map(\.faltaLaFundamental)
+                return TextosDeNucleo.traduccion(\.faltaLaFundamental)
             case .intervaloSinPapel(let intervalo):
-                return TextosDeNucleo.traducidos.map { $0.intervaloSinPapel(intervalo, notacion) }
+                return TextosDeNucleo.traduccion { $0.intervaloSinPapel(intervalo, notacion) }
             case .terceraMayorYMenor:
-                return TextosDeNucleo.traducidos.map(\.terceraMayorYMenor)
+                return TextosDeNucleo.traduccion(\.terceraMayorYMenor)
             case .variasSeptimas:
-                return TextosDeNucleo.traducidos.map(\.variasSeptimas)
+                return TextosDeNucleo.traduccion(\.variasSeptimas)
             case .septimaDisminuidaFueraDelDisminuido:
-                return TextosDeNucleo.traducidos.map(\.septimaDisminuidaFueraDelDisminuido)
+                return TextosDeNucleo.traduccion(\.septimaDisminuidaFueraDelDisminuido)
             case .noEsPorTerceras:
-                return TextosDeNucleo.traducidos.map(\.noEsPorTerceras)
+                return TextosDeNucleo.traduccion(\.noEsPorTerceras)
             }
         }
 
         static func bajoNoValido(_ bajo: String) -> Traduccion {
-            return TextosDeNucleo.traducidos.map { $0.bajoNoValido(bajo) }
+            return TextosDeNucleo.traduccion { $0.bajoNoValido(bajo) }
         }
 
         static func idiomasMezclados(_ nombre: String) -> Traduccion {
-            return TextosDeNucleo.traducidos.map { $0.idiomasMezclados(nombre) }
+            return TextosDeNucleo.traduccion { $0.idiomasMezclados(nombre) }
         }
     }
 }
@@ -259,13 +259,13 @@ extension ErrorDeLectura {
 extension ErrorDeLectura {
     enum TextosDeEscalas {
         static func modoNoReconocido(_ nombre: String) -> Traduccion {
-            return TextosDeNucleo.traducidos.map { $0.modoNoReconocido(nombre) }
+            return TextosDeNucleo.traduccion { $0.modoNoReconocido(nombre) }
         }
 
         static func tipoDeEscalaNoReconocido(_ nombre: String) -> Traduccion {
             return nombre.isEmpty
-                ? TextosDeNucleo.traducidos.map(\.faltaElTipoDeEscala)
-                : TextosDeNucleo.traducidos.map { $0.tipoDeEscalaNoReconocido(nombre) }
+                ? TextosDeNucleo.traduccion(\.faltaElTipoDeEscala)
+                : TextosDeNucleo.traduccion { $0.tipoDeEscalaNoReconocido(nombre) }
         }
     }
 }
@@ -275,19 +275,19 @@ extension ErrorDeLectura {
 extension ErrorDeLectura {
     enum TextosDePartitura {
         static func duracionNoValida(_ texto: String) -> Traduccion {
-            return TextosDeNucleo.traducidos.map { $0.duracionNoValida(texto) }
+            return TextosDeNucleo.traduccion { $0.duracionNoValida(texto) }
         }
 
         static func compasNoValido(_ texto: String) -> Traduccion {
-            return TextosDeNucleo.traducidos.map { $0.compasNoValido(texto) }
+            return TextosDeNucleo.traduccion { $0.compasNoValido(texto) }
         }
 
         static func vocesDistintas() -> Traduccion {
-            return TextosDeNucleo.traducidos.map(\.vocesDistintas)
+            return TextosDeNucleo.traduccion(\.vocesDistintas)
         }
 
         static func contrapuntoDeOtraDuracion(redondas: Int) -> Traduccion {
-            return TextosDeNucleo.traducidos.map { $0.contrapuntoDeOtraDuracion(redondas) }
+            return TextosDeNucleo.traduccion { $0.contrapuntoDeOtraDuracion(redondas) }
         }
     }
 }

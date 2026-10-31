@@ -7,7 +7,7 @@
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de ArmoniaNucleo en un idioma.
-struct TextosDeNucleo: Sendable {
+struct TextosDeNucleo: TextosTraducidos {
     // MARK: Intervalo.swift
     let calidadJusta: String
     let calidadMayor: String
@@ -81,7 +81,20 @@ struct TextosDeNucleo: Sendable {
     let vocesDistintas: String
     let contrapuntoDeOtraDuracion: @Sendable (Int) -> String
 
-    /// Los textos en los catorce idiomas: `traducidos.map(\.campo)` es la `Traduccion` de un campo.
+    // MARK: Gramática (Intervalo.swift, ErrorDeLectura.swift)
+    /// El nombre de un intervalo con su calidad y su número: «3ª mayor», «major third».
+    let nombreDeIntervalo: @Sendable (_ calidad: String, _ ordinal: String) -> String
+    /// La calidad del unísono, que en francés, occitano e italiano es masculino: «unisson augmenté».
+    let unisonoEnMasculino: @Sendable (String) -> String
+    /// Los nombres de los intervalos del unísono a la doble octava; vacío si se escriben con número.
+    let ordinales: [String]
+    /// El número de un intervalo en cifras: «3ª», «3a», «3.», «16e», «21st», «16-я».
+    let ordinalEnCifras: @Sendable (Int) -> String
+    /// Los dos puntos de un mensaje: «: », y « : » en francés.
+    let dosPuntos: String
+
+    /// Los textos en los catorce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// `Traduccion`.
     static let traducidos = Traducido<TextosDeNucleo>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
         fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso)

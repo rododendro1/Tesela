@@ -170,7 +170,7 @@ extension CorrespondenciaDeColores {
         case .castel: return "Castel (1734)"
         case .scriabin: return "Scriabin (1911)"
         case .circuloDeQuintas:
-            return TextosDeRepresentaciones.traducidos.map(\.circuloDeQuintas).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.circuloDeQuintas)
         }
     }
 }

@@ -94,8 +94,8 @@ extension AnalisisArmonico {
         var archivo = ArchivoMIDI(compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo)
         let (superior, grave) = Exportacion.progresion(acordes.map(\.acorde), duraciones: duraciones)
         let marcas = acordes.map { $0.acorde.cifrado(en: notacion) + " · " + $0.cifrado }
-        let pistaDeAcordes = TextosDePartitura.traducidos.map(\.pistaDeAcordes).en(notacion)
-        let pistaDelBajo = TextosDePartitura.traducidos.map(\.pistaDelBajo).en(notacion)
+        let pistaDeAcordes = TextosDePartitura.en(notacion, \.pistaDeAcordes)
+        let pistaDelBajo = TextosDePartitura.en(notacion, \.pistaDelBajo)
         archivo.anadir(superior, nombre: pistaDeAcordes, instrumento: instrumento, marcadores: marcas)
         archivo.anadir(grave, nombre: pistaDelBajo, instrumento: instrumento)
         return archivo.datos

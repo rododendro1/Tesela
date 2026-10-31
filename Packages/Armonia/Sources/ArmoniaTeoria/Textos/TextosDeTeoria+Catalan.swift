@@ -6,7 +6,7 @@
 extension TextosDeTeoria {
     static let catalan = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "amb el baix en \(bajo)" },
+        conBajoEn: { acorde, bajo in "\(acorde), amb el baix en \(bajo)" },
         nombresDeLasInversiones: ["estat fonamental", "primera inversió", "segona inversió", "tercera inversió",
                                   "quarta inversió", "cinquena inversió", "sisena inversió"],
         inversionConNumero: "inversió _",
@@ -122,6 +122,9 @@ extension TextosDeTeoria {
         sustitutoTritonal: "substitut de trítò",
         dominanteSecundaria: "dominant secundària",
         prestamoModal: "manlleu modal",
-        sustitutoDiatonico: "substitut diatònic"
+        sustitutoDiatonico: "substitut diatònic",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        enLaTonalidad: { tonalidad in "en " + tonalidad }
     )
 }

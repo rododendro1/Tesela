@@ -270,17 +270,8 @@ extension Tonalidad {
     /// "do maiorrean".
     package func lugar(en notacion: Notacion) -> String {
         let completo = self.nombre(en: notacion)
-        switch notacion.textos {
-        case .espanol, .catalan, .gallego, .asturiano, .aragones, .frances, .occitano: return "en " + completo
-        case .portugues: return "em " + completo
-        case .ingles, .italiano, .aleman: return "in " + completo
-        case .griego: return "σε " + completo
-        case .ruso:
-            // En preposicional: "в до мажоре", "в ля миноре".
-            let declinado = completo.hasSuffix("мажор") || completo.hasSuffix("минор") ? completo + "е" : completo
-            return "в " + declinado
-        case .euskera: return Tonalidad.declinar(completo, "ean")
-        }
+        // En ruso, en preposicional ("в ля миноре"); en euskera, con el inesivo ("do maiorrean").
+        return TextosDeTeoria.en(notacion) { $0.enLaTonalidad(completo) }
     }
 
     /// En euskera los nombres acaban en "maiorra" o "minorra": el caso sustituye a la "a" del artículo

@@ -76,6 +76,12 @@ extension TextosDeNucleo {
         duracionNoValida: { texto in "«\(texto)» ez da iraupen bat: figura bat espero zen (1, 2, 4, 8, 16…, puntuekin: 4.) edo biribilaren zatiki bat (3/8, 1/12)" },
         compasNoValido: { texto in "«\(texto)» ez da konpas bat: zenbakitzailea/izendatzailea espero zen, izendatzailea 2ren berretura izanik (4/4, 6/8, 7/8), C edo ¢" },
         vocesDistintas: "akorde guztiek ahots kopuru bera izan behar dute, eta gutxienez bi",
-        contrapuntoDeOtraDuracion: { redondas in "kontrapuntuak cantus firmusak beste iraun behar du: \(redondas) biribil, nota bakoitzeko bat" }
+        contrapuntoDeOtraDuracion: { redondas in "kontrapuntuak cantus firmusak beste iraun behar du: \(redondas) biribil, nota bakoitzeko bat" },
+        // Gramática (Intervalo.swift, ErrorDeLectura.swift)
+        nombreDeIntervalo: { calidad, ordinal in "\(ordinal) \(calidad)" },
+        unisonoEnMasculino: { calidad in calidad },
+        ordinales: [],
+        ordinalEnCifras: { n in "\(n)." },
+        dosPuntos: ": "
     )
 }

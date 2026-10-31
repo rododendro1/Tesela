@@ -124,8 +124,13 @@ final class NotacionesEuropeasTests: XCTestCase {
         XCTAssertEqual(InstrumentoDePartitura.violin.nombre(en: .portugues), "violino")
         XCTAssertEqual(InstrumentoDePartitura.saxofonAlto.nombre(en: .italiano), "sassofono contralto")
         for instrumento in InstrumentoDePartitura.todos {
-            XCTAssertNotNil(InstrumentoDePartitura.nombresRomanicos[instrumento.nombre], instrumento.nombre)
+            XCTAssertNotNil(InstrumentoDePartitura.traducciones[instrumento.nombre], instrumento.nombre)
         }
+        XCTAssertEqual(InstrumentoDePartitura.traducciones.count, InstrumentoDePartitura.todos.count)
+        // Un instrumento propio usa su nombre español o, en alemán, su nombre inglés.
+        let propio = InstrumentoDePartitura(nombre: "laúd", nombreEnIngles: "lute")
+        XCTAssertEqual(propio.nombre(en: .frances), "laúd")
+        XCTAssertEqual(propio.nombre(en: .aleman), "lute")
         XCTAssertEqual(CicloNeorriemanniano.hexatonico.nombre(en: .italiano), "ciclo esatonico")
     }
 

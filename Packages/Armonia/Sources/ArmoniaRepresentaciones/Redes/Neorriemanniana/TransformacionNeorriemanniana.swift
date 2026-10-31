@@ -219,11 +219,11 @@ extension TransformacionNeorriemanniana: Nombrable {
         let traduccion: Traduccion
         switch self {
         case .p:
-            traduccion = TextosDeRepresentaciones.traducidos.map(\.homonima)
+            traduccion = TextosDeRepresentaciones.traduccion(\.homonima)
         case .l:
-            traduccion = TextosDeRepresentaciones.traducidos.map(\.cambioDeSensible)
+            traduccion = TextosDeRepresentaciones.traduccion(\.cambioDeSensible)
         case .r:
-            traduccion = TextosDeRepresentaciones.traducidos.map(\.relativa)
+            traduccion = TextosDeRepresentaciones.traduccion(\.relativa)
         }
         return traduccion.en(notacion)
     }

@@ -22,14 +22,14 @@ package enum OrigenDelDibujo: Hashable, Sendable {
         case .acorde(let acorde): return acorde.cifrado(en: notacion)
         case .escala(let escala): return escala.nombre(en: notacion)
         case .conjunto(let conjunto):
-            return TextosDeRepresentaciones.traducidos.map(\.conjunto).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.conjunto)
                 + conjunto.description
         case .alturas(let alturas):
             return alturas.map { $0.nombreCompacto(en: notacion) }.joined(separator: " · ")
         case .ciclo(let ciclo, let acorde):
             let nombre = ciclo.nombre(en: notacion)
             let cifrado = acorde.cifrado(en: notacion)
-            let titulo = TextosDeRepresentaciones.traducidos.map { $0.cicloDesde(nombre, cifrado) }.en(notacion)
+            let titulo = TextosDeRepresentaciones.en(notacion) { $0.cicloDesde(nombre, cifrado) }
             return titulo.conMayusculaInicial
         }
     }
@@ -40,9 +40,9 @@ package enum OrigenDelDibujo: Hashable, Sendable {
         case .escala: return NombreDeGrado.tonica.nombre(en: notacion)
         case .acorde: return PapelEnAcorde.fundamental.nombre(en: notacion)
         case .conjunto:
-            return TextosDeRepresentaciones.traducidos.map(\.primeraClase).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.primeraClase)
         default:
-            return TextosDeRepresentaciones.traducidos.map(\.primeraNota).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.primeraNota)
         }
     }
 }
@@ -83,23 +83,23 @@ package enum DibujoSVG {
 
         private var traduccion: Traduccion {
             switch self {
-            case .nota: return TextosDeRepresentaciones.traducidos.map(\.leyendaNota)
+            case .nota: return TextosDeRepresentaciones.traduccion(\.leyendaNota)
             case .claseDeAltura:
-                return TextosDeRepresentaciones.traducidos.map(\.leyendaClaseDeAltura)
+                return TextosDeRepresentaciones.traduccion(\.leyendaClaseDeAltura)
             case .altura:
-                return TextosDeRepresentaciones.traducidos.map(\.leyendaAltura)
+                return TextosDeRepresentaciones.traduccion(\.leyendaAltura)
             case .intervalos:
-                return TextosDeRepresentaciones.traducidos.map(\.leyendaIntervalos)
+                return TextosDeRepresentaciones.traduccion(\.leyendaIntervalos)
             case .contorno:
-                return TextosDeRepresentaciones.traducidos.map(\.leyendaContorno)
+                return TextosDeRepresentaciones.traduccion(\.leyendaContorno)
             case .triadaMayor:
-                return TextosDeRepresentaciones.traducidos.map(\.leyendaTriadaMayor)
+                return TextosDeRepresentaciones.traduccion(\.leyendaTriadaMayor)
             case .triadaMenor:
-                return TextosDeRepresentaciones.traducidos.map(\.leyendaTriadaMenor)
+                return TextosDeRepresentaciones.traduccion(\.leyendaTriadaMenor)
             case .pasoDelRecorrido:
-                return TextosDeRepresentaciones.traducidos.map(\.leyendaPasoDelRecorrido)
+                return TextosDeRepresentaciones.traduccion(\.leyendaPasoDelRecorrido)
             case .fundamentalDelPrimerAcorde:
-                return TextosDeRepresentaciones.traducidos.map(\.leyendaFundamentalDelPrimerAcorde)
+                return TextosDeRepresentaciones.traduccion(\.leyendaFundamentalDelPrimerAcorde)
             }
         }
     }

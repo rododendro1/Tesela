@@ -8,7 +8,7 @@ import ArmoniaNucleo
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de ArmoniaTrastes en un idioma.
-struct TextosDeTrastes: Sendable {
+struct TextosDeTrastes: TextosTraducidos {
     // MARK: Encordado.swift
     let guitarra: String
     let guitarraEnReGrave: String
@@ -18,7 +18,8 @@ struct TextosDeTrastes: Sendable {
     let ukelele: String
     let mandolina: String
 
-    /// Los textos en los catorce idiomas: `traducidos.map(\.campo)` es la `Traduccion` de un campo.
+    /// Los textos en los catorce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// `Traduccion`.
     static let traducidos = Traducido<TextosDeTrastes>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
         fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso)
