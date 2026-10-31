@@ -189,14 +189,12 @@ extension Arpegio.Patron {
             "ida y vuelta": .idaYVuelta, "up": .ascendente, "down": .descendente, "up down": .idaYVuelta,
             "baja y sube": .bajaYSube, "down up": .bajaYSube, "broken": .quebrado,
         ]
-        let patron =
-            abreviados[buscado]
-            ?? Self.allCases.first { patron in
-                clave(patron.rawValue) == buscado
-                    || Idioma.allCases.contains { clave(patron.nombre(en: .delIdioma($0))) == buscado }
-            }
-        guard let patron else { return nil }
-        self = patron
+        func esElBuscado(_ patron: Arpegio.Patron) -> Bool {
+            clave(patron.rawValue) == buscado
+                || Idioma.allCases.contains { clave(patron.nombre(en: .delIdioma($0))) == buscado }
+        }
+        guard let leido = abreviados[buscado] ?? Self.allCases.first(where: esElBuscado) else { return nil }
+        self = leido
     }
 }
 
