@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- Documentación de DocC para `ArmoniaUI` y `ArmoniaPresentacion`: una página de entrada por módulo, con un ejemplo y
+  los tipos agrupados por tarea, publicada en GitHub Pages junto a la de Armonia y Hexagonos.
 - `RedDeNotas` toma el teclado y el nombre de cada red de `TecladoIsomorfico.todos` y `nombre(en:)` del motor.
 - Los textos de las apps (`TextoDeLasApps`, los avisos y las tareas del coral y los nombres de los formatos de
   exportación) pasan a `TextosDeApps`, un fichero por idioma en `ArmoniaPresentacion/Textos/`, como los del motor.

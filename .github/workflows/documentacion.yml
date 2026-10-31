@@ -45,6 +45,12 @@ jobs:
           # Con un solo producto, el esquema se llama como él (sin «-Package»).
           xcodebuild docbuild -scheme Hexagonos -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-hexagonos" CODE_SIGNING_ALLOWED=NO | tail -n 20
+      - name: ArmoniaUI y ArmoniaPresentacion
+        working-directory: Packages/ArmoniaUI
+        run: |
+          set -o pipefail
+          xcodebuild docbuild -scheme ArmoniaUI-Package -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/docc-armoniaui" CODE_SIGNING_ALLOWED=NO | tail -n 20
       - name: Preparar el sitio
         env:
           REPOSITORIO: ${{ github.event.repository.name }}
@@ -54,8 +60,9 @@ jobs:
           sitio="$RUNNER_TEMP/sitio"
           mkdir -p "$sitio"
           enlaces=""
-          # Un archivo por módulo (Armonia, ArmoniaNucleo, ArmoniaTeoria…, Hexagonos), cada uno en su carpeta.
-          for archivo in $(find "$RUNNER_TEMP/docc" "$RUNNER_TEMP/docc-hexagonos" -name "*.doccarchive" -type d -prune | sort); do
+          # Un archivo por módulo (Armonia, ArmoniaNucleo…, Hexagonos, ArmoniaUI…), cada uno en su carpeta; los que
+          # salen repetidos (ArmoniaUI construye también los de sus dependencias) se toman una vez.
+          for archivo in $(find "$RUNNER_TEMP/docc" "$RUNNER_TEMP/docc-hexagonos" "$RUNNER_TEMP/docc-armoniaui" -name "*.doccarchive" -type d -prune | sort); do
             modulo=$(basename "$archivo" .doccarchive)
             carpeta=$(echo "$modulo" | tr '[:upper:]' '[:lower:]')
             [ -d "$sitio/$carpeta" ] && continue

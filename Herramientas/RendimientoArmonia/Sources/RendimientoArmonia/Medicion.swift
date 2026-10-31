@@ -57,6 +57,19 @@ enum Medicion {
         }
     }
 
+    /// Si `ahora` es más lento que `antes` en más de `umbral` por ciento, en la mediana y también en el mínimo: una
+    /// vuelta interrumpida mueve uno de los dos, pero rara vez los dos a la vez.
+    static func esMasLento(_ ahora: Resultado, que antes: Resultado, umbral: Double) -> Bool {
+        let factor = 1 + umbral / 100
+        return antes.mediana > 0 && antes.minimo > 0
+            && ahora.mediana > antes.mediana * factor && ahora.minimo > antes.minimo * factor
+    }
+
+    /// «25 %».
+    static func porcentaje(_ valor: Double) -> String {
+        String(format: valor == valor.rounded() ? "%.0f %%" : "%.1f %%", valor)
+    }
+
     /// El cambio de la mediana frente a una medición anterior: «+35 %», «−20 %».
     static func cambio(_ ahora: Double, antes: Double) -> String {
         guard antes > 0 else { return "–" }

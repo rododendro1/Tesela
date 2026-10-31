@@ -115,11 +115,14 @@ cd Herramientas/RendimientoArmonia
 swift run -c release RendimientoArmonia --json antes.json        # guarda los tiempos
 # … un cambio en el motor …
 swift run -c release RendimientoArmonia --comparar antes.json    # y los compara
+swift run -c release RendimientoArmonia --comparar antes.json --avisar 25   # y avisa de lo que va un 25 % más lento
 swift run -c release RendimientoArmonia --filtro armonizar       # solo unos casos
 ```
 
 El CI la ejecuta en cada cambio y deja la tabla en el resumen de la ejecución y los tiempos en el artefacto
-`rendimiento`; no falla por lentitud, porque sus máquinas varían demasiado para fijar límites.
+`rendimiento`. En un pull request mide antes la rama de destino en la misma máquina y la compara: avisa de los
+casos que van más de un 25 % más lentos que en main, en la mediana y en el mínimo (`--avisar 25`). No falla por
+lentitud, porque sus máquinas varían demasiado para fijar límites absolutos.
 
 ## Añadir un paquete o una app
 
@@ -136,7 +139,7 @@ Todo está en Swift 6 (el modo de lenguaje 6, con la concurrencia comprobada al 
 Todo compila y pasa las pruebas en el CI: el motor en Linux (Swift 6.0 y 6.2) y en macOS, `ArmoniaUI`, `Hexagonos`, la línea de
 comandos, el ejemplo, las dos apps en macOS y en el simulador de iOS (compiladas y con sus pruebas de interfaz), y la documentación de DocC, sin enlaces sin
 resolver. Los jobs de macOS (paquetes y apps, pruebas de interfaz y DocC) corren a mano desde la pestaña Actions y una vez por
-semana, los lunes; en cada push y en cada pull request solo corre Linux. La documentación de DocC se publica en
+semana, los lunes; en cada push y en cada pull request solo corre Linux. La documentación de DocC (Armonia, Hexagonos, ArmoniaUI y ArmoniaPresentacion) se publica en
 [GitHub Pages](https://rododendro1.github.io/Tesela/) con cada versión (`.github/workflows/documentacion.yml`), y también se
 puede publicar a mano desde la pestaña Actions. Dependabot mantiene al día las acciones del CI (`.github/dependabot.yml`). El formato del código Swift se comprueba con swift-format (`.swift-format`; los comandos, en `CONTRIBUTING.md`). `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
 
