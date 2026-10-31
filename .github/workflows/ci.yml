@@ -26,6 +26,8 @@ env:
 # Los jobs de Linux recuperan el `.build` de la última ejecución en main (`.github/acciones/cache-de-swift`), con las
 # fechas de los ficheros arregladas para que Swift recompile solo lo que ha cambiado desde entonces. Solo se guarda
 # fuera de los pull requests (en main, a mano y los lunes), para que haya una caché por job y no una por rama.
+# Las compilaciones «Sin avisos» van en `.build/sin-avisos`: con otras opciones en la misma carpeta, la siguiente
+# compilación normal tendría que rehacerlo todo.
 
 jobs:
   comprobaciones:
@@ -104,7 +106,7 @@ jobs:
         if: matrix.swift == '6.2'
         run: |
           for objetivo in ArmoniaNucleo ArmoniaTeoria ArmoniaRepresentaciones ArmoniaPartitura ArmoniaTrastes Armonia; do
-            swift build --target "$objetivo" -Xswiftc -warnings-as-errors
+            swift build --scratch-path .build/sin-avisos --target "$objetivo" -Xswiftc -warnings-as-errors
           done
       - uses: actions/cache/save@v6
         if: github.event_name != 'pull_request'
@@ -148,7 +150,7 @@ jobs:
         run: swift run ${{ matrix.paquete.nombre }}
       - name: Sin avisos
         if: matrix.paquete.nombre == 'ArmoniaCLI' && matrix.swift == '6.2'
-        run: swift build --target ArmoniaCLI -Xswiftc -warnings-as-errors
+        run: swift build --scratch-path .build/sin-avisos --target ArmoniaCLI -Xswiftc -warnings-as-errors
       - uses: actions/cache/save@v6
         if: github.event_name != 'pull_request'
         with:
@@ -242,7 +244,7 @@ jobs:
         run: swift test --parallel
       - name: Sin avisos
         if: matrix.paquete == 'Hexagonos' && matrix.swift == '6.2'
-        run: swift build --target Hexagonos -Xswiftc -warnings-as-errors
+        run: swift build --scratch-path .build/sin-avisos --target Hexagonos -Xswiftc -warnings-as-errors
       - uses: actions/cache/save@v6
         if: github.event_name != 'pull_request'
         with:
