@@ -119,6 +119,10 @@ final class CoordenadaFraccionariaTests: XCTestCase {
         XCTAssertEqual(CoordenadaFraccionaria.interpolar(a, b, 0.501).redondeada(), b.redondeada())
     }
 
+    func testTexto() {
+        XCTAssertEqual(CoordenadaFraccionaria(q: 0.5, r: -1).description, "(q: 0.5, r: -1.0)")
+    }
+
     func testRedondeoEntreTresCasillas() {
         func mezcla(_ pa: Double, _ pb: Double, _ pc: Double) -> CoordenadaFraccionaria {
             CoordenadaFraccionaria(q: a.q * pa + b.q * pb + c.q * pc, r: a.r * pa + b.r * pb + c.r * pc)
@@ -205,6 +209,10 @@ final class CoordenadaDobladaTests: XCTestCase {
         XCTAssertTrue(CoordenadaDoblada(columna: -3, fila: 1).esValida)
         XCTAssertFalse(CoordenadaDoblada(columna: 3, fila: 2).esValida)
         XCTAssertFalse(CoordenadaDoblada(columna: -3, fila: 0).esValida)
+    }
+
+    func testTexto() {
+        XCTAssertEqual(CoordenadaDoblada(columna: 3, fila: 1).description, "(columna: 3, fila: 1)")
     }
 
     func testIdaYVueltaYDistancia() {

@@ -37,6 +37,11 @@ final class FicheroParaExportarTests: XCTestCase {
         XCTAssertEqual(Set(formatos.map(\.titulo)).count, formatos.count)
         XCTAssertEqual(Set(formatos.map(\.icono)).count, formatos.count)
     }
+
+    func testElIdentificadorEsElNombreDelFichero() {
+        let fichero = FicheroParaExportar.musicXML("", nombre: "Coral")
+        XCTAssertEqual(fichero.id, fichero.nombreDeFichero)
+    }
 }
 
 final class PresentacionDeAnalisisTests: XCTestCase {
@@ -144,6 +149,12 @@ final class PresentacionDeAnalisisTests: XCTestCase {
         XCTAssertEqual(analisis.tramos[0].filas.count, 7)
         XCTAssertEqual(analisis.ficheros.count, 3)
     }
+
+    func testUnAcordeSinFuncionLaDejaEnBlanco() throws {
+        let acordes = try ["Do", "Fa#+", "Sol7"].map { try Acorde(leyendo: $0) }
+        let analisis = try XCTUnwrap(PresentacionDeAnalisis.analizar(acordes, notacion: .espanolUnicode))
+        XCTAssertEqual(analisis.tramos.flatMap(\.filas).map(\.funcion), ["tónica", "", "dominante"])
+    }
 }
 
 final class PresentacionDeCoralTests: XCTestCase {
@@ -211,6 +222,38 @@ final class PresentacionDeCoralTests: XCTestCase {
             XCTAssertNoThrow(try PresentacionDeCoral.presentar(tarea, tarea.ejemplo, notacion: .espanolUnicode), "\(tarea)")
         }
     }
+
+    func testLasTareas() {
+        XCTAssertEqual(PresentacionDeCoral.Tarea.allCases.map(\.id), PresentacionDeCoral.Tarea.allCases)
+        XCTAssertEqual(PresentacionDeCoral.Tarea.allCases.map(\.usaTonalidad), [true, true, false])
+        for tarea in PresentacionDeCoral.Tarea.allCases {
+            // La indicación lleva el ejemplo, o al menos su primera palabra.
+            XCTAssertTrue(tarea.indicacion.contains(tarea.ejemplo.split(separator: " ")[0]), "\(tarea)")
+        }
+    }
+
+    func testLosAvisosDeLoQueNoSeArmonizaNiSeRealiza() throws {
+        // Notas que no son de Do mayor: no hay armonización ni coral.
+        let fuera = try PresentacionDeCoral.armonizar("Do#4 Re#4 Fa4 Sol#4", en: Tonalidad(.do, .mayor), notacion: .espanolUnicode)
+        XCTAssertEqual(fuera.avisos, [.sinArmonizacion, .sinCoralParaLaMelodia])
+        XCTAssertEqual(fuera.propuestas, [])
+        XCTAssertEqual(fuera.sonido, .silencio)
+        // Una melodía que no cabe en las voces se armoniza, pero sin coral.
+        XCTAssertEqual(try PresentacionDeCoral.armonizar("Do1 Do8", en: nil, notacion: .espanolUnicode).avisos,
+                       [.sinCoralParaLaMelodia])
+        let sinRealizacion = try PresentacionDeCoral.realizar("Do7(b9,#9,#11,b13)", en: nil, notacion: .espanolUnicode)
+        XCTAssertEqual(sinRealizacion.avisos, [.sinRealizacion])
+        XCTAssertEqual(sinRealizacion.filas, [])
+        XCTAssertEqual(sinRealizacion.sonido, .silencio)
+    }
+
+    func testUnaMelodiaConRitmo() throws {
+        // En un acorde se armoniza la nota más aguda; una voz con solo silencios es un texto vacío.
+        let coral = try PresentacionDeCoral.armonizar("Do4+Mi4:4 Re4:4 Do4:2", en: nil, notacion: .espanolUnicode)
+        XCTAssertEqual(coral.avisos, [])
+        XCTAssertFalse(coral.propuestas.isEmpty)
+        XCTAssertThrowsError(try PresentacionDeCoral.armonizar("-:4 -:4", en: nil, notacion: .espanolUnicode))
+    }
 }
 
 final class PresentacionDeRedesTests: XCTestCase {
@@ -257,5 +300,20 @@ final class PresentacionDeRedesTests: XCTestCase {
         let acorde = try Acorde(leyendo: "Dom7")
         XCTAssertEqual(PresentacionDeRedes.nombre(.acorde(acorde), en: .tablaArmonica, notacion: .espanolUnicode),
                        "Tabla armónica · " + acorde.cifrado(en: .espanolUnicode))
+    }
+
+    func testElNombreDelFicheroDeCadaContenido() throws {
+        XCTAssertEqual(RedDeNotas.allCases.map(\.id), RedDeNotas.allCases)
+        let n = Notacion.espanolUnicode
+        XCTAssertEqual(PresentacionDeRedes.nombre(.escala(try Escala(leyendo: "Re dórico")), en: .tonnetz, notacion: n),
+                       "Tonnetz · Re dórico")
+        XCTAssertEqual(PresentacionDeRedes.nombre(.recorrido([try Acorde(leyendo: "Do"), try Acorde(leyendo: "Lam")]),
+                                                  en: .tonnetz, notacion: n), "Tonnetz · Do Lam")
+        XCTAssertEqual(PresentacionDeRedes.nombre(.clases([0, 4, 7]), en: .tonnetz, notacion: n), "Tonnetz · Do")
+        // Sin acorde para las clases, sus notas; sin teclado UIL, solo «UIL».
+        XCTAssertEqual(PresentacionDeRedes.nombre(.clases([]), en: .tonnetz, notacion: n), "Tonnetz · ")
+        XCTAssertEqual(PresentacionDeRedes.nombre(.clases([0, 4, 7]), en: .uil, notacion: n, uil: AjusteUIL(texto: "")),
+                       "UIL  · Do")
+        XCTAssertNil(PresentacionDeRedes.svg(.recorrido([]), en: .tablaArmonica, notacion: n))
     }
 }

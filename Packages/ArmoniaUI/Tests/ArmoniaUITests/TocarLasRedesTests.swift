@@ -24,6 +24,7 @@ final class TocarLasRedesTests: XCTestCase {
         XCTAssertEqual(punto?.y, 25)
         // En la franja vacía de arriba, nada.
         XCTAssertNil(PresentacionSVG.punto(en: Punto(x: 100, y: 10), de: svg, ancho: 200, alto: 200))
+        XCTAssertNil(PresentacionSVG.punto(en: Punto(x: 0, y: 0), de: svg, ancho: 0, alto: 200))
     }
 
     func testEnElTonnetzSuenaLaNotaTocada() throws {

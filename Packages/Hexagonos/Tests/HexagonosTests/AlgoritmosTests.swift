@@ -110,6 +110,18 @@ final class RegionesTests: XCTestCase {
         XCTAssertEqual(CoordenadaAxial.interseccion(de: [a, lejos]), [])
     }
 
+    /// Contra el filtro a lo bruto, también con alcances que solo se tocan en algunas columnas.
+    func testInterseccionComoElFiltro() {
+        let centros = FormasDeMapa.hexagono(radio: 3)
+        for a in centros where a.q >= 0 {
+            for radio in 0...2 {
+                let alcances = [(centro: CoordenadaAxial.origen, radio: 2), (centro: a, radio: radio)]
+                let esperada = CoordenadaAxial.origen.alcance(radio: 2).filter { $0.distancia(hasta: a) <= radio }
+                XCTAssertEqual(Set(CoordenadaAxial.interseccion(de: alcances)), Set(esperada), "\(a) \(radio)")
+            }
+        }
+    }
+
     func testAnillo() {
         let centro = CoordenadaAxial(q: -1, r: 2)
         XCTAssertEqual(centro.anillo(radio: 0), [centro])

@@ -111,4 +111,17 @@ final class TrazadoTests: XCTestCase {
         let d = Trazado(orientacion: .plana, tamano: Punto(x: 3, y: 4), origen: Punto(x: 1, y: 2))
         XCTAssertEqual(try JSONDecoder().decode(Trazado.self, from: JSONEncoder().encode(d)), d)
     }
+
+    func testPuntos() {
+        XCTAssertEqual(Punto(x: 3, y: 5) - Punto(x: 1, y: 7), Punto(x: 2, y: -2))
+        XCTAssertEqual(Punto(x: 1, y: 2) + Punto(x: 1, y: 2) - Punto(x: 1, y: 2), Punto(x: 1, y: 2))
+        XCTAssertEqual(Punto(x: 1.5, y: -2).description, "(x: 1.5, y: -2.0)")
+    }
+
+    func testLasComillasSeEscapan() {
+        let d = Trazado(orientacion: .plana, tamano: 10)
+        let svg = d.svg([.origen], relleno: { _ in #"a"b"# }, rotulo: { _ in #"«"»"# })
+        XCTAssertTrue(svg.contains(#"fill="a&quot;b""#))
+        XCTAssertTrue(svg.contains(">«&quot;»</text>"))
+    }
 }

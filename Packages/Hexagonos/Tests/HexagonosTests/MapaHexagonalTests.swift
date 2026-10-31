@@ -46,6 +46,11 @@ final class MapaHexagonalTests: XCTestCase {
         }
         XCTAssertEqual(vistas, 7)
         XCTAssertEqual("\(mapa)", "MapaHexagonal (7 casillas)")
+        XCTAssertEqual("\(MapaHexagonal(repitiendo: 0, en: [.origen]))", "MapaHexagonal (1 casilla)")
+        // En un literal con la casilla repetida, vale la última.
+        let casilla = CoordenadaAxial.origen
+        let repetido: MapaHexagonal = [casilla: 1, casilla: 2]
+        XCTAssertEqual(repetido[casilla], 2)
     }
 
     func testVecinas() {
@@ -98,6 +103,9 @@ final class MapaHexagonalTests: XCTestCase {
         XCTAssertNil(alcanzables[CoordenadaAxial(q: 1, r: 0)])
         XCTAssertEqual(alcanzables[CoordenadaAxial(q: 2, r: -1)], 2)
         XCTAssertTrue(alcanzables.keys.allSatisfy { terreno.contiene($0) })
+        // Las casillas que faltan en el mapa no tapan.
+        let conHueco = MapaHexagonal(repitiendo: false, en: [CoordenadaAxial.origen, CoordenadaAxial(q: 2, r: 0)])
+        XCTAssertEqual(Set(conHueco.visibles(desde: .origen) { $0 }), [CoordenadaAxial.origen, CoordenadaAxial(q: 2, r: 0)])
 
         let visibles = terreno.visibles(desde: .origen) { $0 > 5 }
         XCTAssertFalse(visibles.contains(CoordenadaAxial(q: 2, r: 0)))
