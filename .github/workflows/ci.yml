@@ -132,26 +132,47 @@ jobs:
         run: swift build --target ArmoniaCLI -Xswiftc -warnings-as-errors
 
   # Los tiempos del motor, compilado con optimización, en el resumen de la ejecución y como artefacto
-  # (`rendimiento.json`), para compararlos con `--comparar`. No falla por lentitud: las máquinas del CI
-  # varían demasiado para fijar límites; sirve para ver el orden de magnitud y cómo crece cada caso.
+  # (`rendimiento.json`). En un pull request mide también la rama de destino (main) en la misma máquina, una
+  # detrás de otra, y avisa (sin fallar) de los casos que van más de un 25 % más lentos que en main, en la
+  # mediana y en el mínimo: las máquinas del CI varían demasiado para fijar límites absolutos, pero dos medidas
+  # seguidas en la misma sí se pueden comparar.
   rendimiento:
     name: Rendimiento del motor · Linux
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     container: swift:6.2
     defaults:
       run:
-        working-directory: Herramientas/RendimientoArmonia
         shell: bash
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
+        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.base_ref }}
+          path: base
+      - name: Medir la rama de destino
+        if: github.event_name == 'pull_request'
+        working-directory: base/Herramientas/RendimientoArmonia
+        run: swift run -c release RendimientoArmonia --json "$RUNNER_TEMP/base.json" > /dev/null
       - name: Compilar con optimización
+        working-directory: Herramientas/RendimientoArmonia
         run: swift build -c release
       - name: Medir
+        working-directory: Herramientas/RendimientoArmonia
+        env:
+          BASE: ${{ github.base_ref }}
         run: |
           set -o pipefail
-          echo "## Rendimiento del motor" >> "$GITHUB_STEP_SUMMARY"
-          swift run -c release RendimientoArmonia --json "$GITHUB_WORKSPACE/rendimiento.json" | tee -a "$GITHUB_STEP_SUMMARY"
+          comparar=()
+          if [ -f "$RUNNER_TEMP/base.json" ]; then
+            comparar=(--comparar "$RUNNER_TEMP/base.json" --avisar 25)
+            echo "## Rendimiento del motor (comparado con $BASE)" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## Rendimiento del motor" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          swift run -c release RendimientoArmonia --json "$GITHUB_WORKSPACE/rendimiento.json" "${comparar[@]}" \
+            | tee -a "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v7
         with:
           name: rendimiento
@@ -410,6 +431,12 @@ jobs:
           # Con un solo producto, el esquema se llama como él (sin «-Package»).
           xcodebuild docbuild -scheme Hexagonos -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-hexagonos" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-hexagonos.log"
+      - name: Construir la documentación de ArmoniaUI
+        working-directory: Packages/ArmoniaUI
+        run: |
+          set -o pipefail
+          xcodebuild docbuild -scheme ArmoniaUI-Package -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/docc-armoniaui" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-armoniaui.log"
       - name: Enlaces sin resolver
         run: |
           if grep -E "warning: .*(doesn.t exist|couldn.t be resolved|unresolved|not found)" "$RUNNER_TEMP"/docbuild*.log; then

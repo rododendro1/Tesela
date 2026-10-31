@@ -10,6 +10,8 @@ let ayuda = """
         --tiempo <segundos>   cuánto se repite cada caso (0.5 por defecto)
         --json <fichero>      guarda los tiempos, para compararlos después
         --comparar <fichero>  añade los tiempos guardados y el cambio de la mediana
+        --avisar <porcentaje> con --comparar, avisa de los casos más lentos que antes en más de ese porcentaje
+                              (en la mediana y en el mínimo, para no avisar por una vuelta interrumpida)
 
     Escribe una tabla en Markdown.
     """
@@ -23,6 +25,7 @@ var presupuesto = 0.5
 var filtro: String?
 var rutaJSON: String?
 var rutaAnterior: String?
+var umbral: Double?
 
 var restantes = Array(CommandLine.arguments.dropFirst())
 while !restantes.isEmpty {
@@ -31,7 +34,7 @@ while !restantes.isEmpty {
         print(ayuda)
         exit(0)
     }
-    guard ["--filtro", "--tiempo", "--json", "--comparar"].contains(opcion) else {
+    guard ["--filtro", "--tiempo", "--json", "--comparar", "--avisar"].contains(opcion) else {
         fallar("Opción desconocida: \(opcion)")
     }
     guard !restantes.isEmpty else { fallar("Falta el valor de \(opcion)") }
@@ -42,9 +45,14 @@ while !restantes.isEmpty {
         guard let segundos = Double(valor), segundos > 0 else { fallar("--tiempo necesita un número de segundos") }
         presupuesto = segundos
     case "--json": rutaJSON = valor
+    case "--avisar":
+        guard let porcentaje = Double(valor), porcentaje > 0 else { fallar("--avisar necesita un porcentaje positivo") }
+        umbral = porcentaje
     default: rutaAnterior = valor
     }
 }
+
+if umbral != nil && rutaAnterior == nil { fallar("--avisar necesita --comparar") }
 
 var anteriores: [String: Resultado] = [:]
 if let rutaAnterior {
@@ -85,6 +93,30 @@ for caso in casos {
     print(fila)
     // `fflush(nil)` vacía todas las salidas: `stdout` es una variable global de C, y Swift 6 no deja tocarla.
     fflush(nil)
+}
+
+if let umbral {
+    let lentos = resultados.compactMap { r -> (Resultado, Resultado)? in
+        guard let antes = anteriores[r.caso] else { return nil }
+        return Medicion.esMasLento(r, que: antes, umbral: umbral) ? (r, antes) : nil
+    }
+    print()
+    if lentos.isEmpty {
+        print("Ningún caso va más de un \(Medicion.porcentaje(umbral)) más lento que antes.")
+    } else {
+        print("**Más lentos que antes** (más de un \(Medicion.porcentaje(umbral)) en la mediana y en el mínimo):\n")
+        for (r, antes) in lentos {
+            let detalle =
+                "\(Medicion.texto(antes.mediana)) → \(Medicion.texto(r.mediana)) "
+                + "(\(Medicion.cambio(r.mediana, antes: antes.mediana)))"
+            print("- \(r.caso): \(detalle)")
+            // Un aviso en la ejecución y en el pull request (GitHub lee estas líneas también de la salida de error).
+            if ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] == "true" {
+                let aviso = "::warning title=Más lento que antes::\(r.caso): \(detalle)\n"
+                FileHandle.standardError.write(Data(aviso.utf8))
+            }
+        }
+    }
 }
 
 if let rutaJSON {

@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- Documentación de DocC para `ArmoniaUI` y `ArmoniaPresentacion`: una página de entrada por módulo, con un ejemplo y
+  los tipos agrupados por tarea, publicada en GitHub Pages junto a la de Armonia y Hexagonos.
 - Más opciones de arpegio en ArmoniaApp. En la pestaña Acordes, el arpegio elige también cuántas octavas abarca, si
   acaba en la octava y la figura de sus notas (negra, corchea o semicorchea); en Análisis, la figura de la progresión
   arpegiada. `PresentacionDeArpegios.arpegio(_:figura:notacion:)`, `progresion(…figura:…)` y
