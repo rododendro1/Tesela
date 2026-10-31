@@ -165,6 +165,58 @@ jobs:
         if: matrix.paquete == 'Hexagonos' && matrix.swift == '6.2'
         run: swift build --target Hexagonos -Xswiftc -warnings-as-errors
 
+  # La cobertura de las pruebas de cada paquete en Linux: el total y los ficheros con menos líneas probadas, en
+  # el resumen de la ejecución, y el informe entero por fichero como artefacto (`cobertura-<paquete>.txt`).
+  # No falla por una cobertura baja: sirve para ver qué falta por probar.
+  cobertura:
+    name: Cobertura · ${{ matrix.paquete.nombre }} · Linux
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    container: swift:6.2
+    strategy:
+      fail-fast: false
+      matrix:
+        paquete:
+          # Las exhaustivas tardan y no prueban código distinto del de las rápidas.
+          - { nombre: Armonia, filtro: "^(ArmoniaTests|ArmoniaDocumentacionTests)\\." }
+          - { nombre: ArmoniaUI, filtro: "" }
+          - { nombre: Hexagonos, filtro: "" }
+    defaults:
+      run:
+        working-directory: Packages/${{ matrix.paquete.nombre }}
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+      - name: Pruebas con cobertura
+        env:
+          FILTRO: ${{ matrix.paquete.filtro }}
+        run: swift test --parallel --enable-code-coverage ${FILTRO:+--filter "$FILTRO"}
+      - name: Informe
+        env:
+          PAQUETE: ${{ matrix.paquete.nombre }}
+        run: |
+          set -euo pipefail
+          binarios=$(swift build --show-bin-path)
+          pruebas=$(ls -d "$binarios"/*PackageTests.xctest | head -n 1)
+          informe="$GITHUB_WORKSPACE/cobertura-$PAQUETE.txt"
+          # Solo el código del paquete (Sources), no el de las pruebas ni el de los paquetes de los que depende.
+          llvm-cov report "$pruebas" -instr-profile="$binarios/codecov/default.profdata" "$PWD/Sources" > "$informe"
+          {
+            echo "## Cobertura de $PAQUETE"
+            echo
+            echo "| | Funciones | Líneas |"
+            echo "|---|---:|---:|"
+            awk '$1 == "TOTAL" { print "| **Total** | " $7 " | " $10 " |" }' "$informe"
+            awk '$1 != "TOTAL" && $1 != "Filename" && $1 !~ /^-+$/ && NF >= 10 { sub("%", "", $10); print $10 " " $1 " " $7 }' "$informe" \
+              | sort -n | head -n 15 | awk '{ print "| `" $2 "` | " $3 " | " $1 "% |" }'
+            echo
+            echo "Arriba, el total y los 15 ficheros con menos líneas probadas. El informe entero está en el artefacto."
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: cobertura-${{ matrix.paquete.nombre }}
+          path: cobertura-${{ matrix.paquete.nombre }}.txt
+
   # El Package.swift de la raíz, el que usa quien añade el repositorio por URL: debe compilar igual.
   raiz:
     name: Paquete de la raíz · Linux · Swift ${{ matrix.swift }}
