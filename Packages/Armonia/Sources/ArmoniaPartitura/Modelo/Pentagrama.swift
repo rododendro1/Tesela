@@ -164,21 +164,11 @@ public struct InstrumentoDePartitura: Hashable, Sendable, CustomStringConvertibl
     /// "clarinete en si♭", "B♭ clarinet", "clarinet en si♭", "clarinete en si♭", "si♭ klarinetea",
     /// "clarinete em si♭", "clarinette en si♭", "clarinetto in si♭", "Klarinette in B", "кларнет in B"…
     public func nombre(en notacion: Notacion) -> String {
+        if let traduccion = InstrumentoDePartitura.traducciones[nombre] { return traduccion.en(notacion) }
         switch notacion.textos {
-        case .espanol: return nombre
-        case .ingles: return nombreEnIngles
-        case .catalan: return InstrumentoDePartitura.nombresPeninsulares[nombre]?.catalan ?? nombre
-        case .gallego: return InstrumentoDePartitura.nombresPeninsulares[nombre]?.gallego ?? nombre
-        case .asturiano: return InstrumentoDePartitura.nombresAragonesesYAsturianos[nombre]?.asturiano ?? nombre
-        case .aragones: return InstrumentoDePartitura.nombresAragonesesYAsturianos[nombre]?.aragones ?? nombre
-        case .euskera: return InstrumentoDePartitura.nombresPeninsulares[nombre]?.euskera ?? nombre
-        case .portugues: return InstrumentoDePartitura.nombresRomanicos[nombre]?.portugues ?? nombre
-        case .frances: return InstrumentoDePartitura.nombresRomanicos[nombre]?.frances ?? nombre
-        case .occitano: return InstrumentoDePartitura.nombresDeOtrasLenguas[nombre]?.occitano ?? nombreEnIngles
-        case .italiano: return InstrumentoDePartitura.nombresRomanicos[nombre]?.italiano ?? nombre
-        case .aleman: return InstrumentoDePartitura.nombresDeOtrasLenguas[nombre]?.aleman ?? nombreEnIngles
-        case .griego: return InstrumentoDePartitura.nombresDeOtrasLenguas[nombre]?.griego ?? nombreEnIngles
-        case .ruso: return InstrumentoDePartitura.nombresDeOtrasLenguas[nombre]?.ruso ?? nombreEnIngles
+        case .ingles, .occitano, .aleman, .griego, .ruso: return nombreEnIngles
+        case .espanol, .catalan, .gallego, .asturiano, .aragones, .euskera, .portugues, .frances, .italiano:
+            return nombre
         }
     }
 
@@ -339,145 +329,39 @@ extension Clave {
 // MARK: - InstrumentoDePartitura
 
 extension InstrumentoDePartitura {
-    /// Catalán, gallego y euskera de los instrumentos predefinidos, por su nombre en español. Un
-    /// instrumento que no está aquí usa su nombre español.
-    package static let nombresPeninsulares: [String: (catalan: String, gallego: String, euskera: String)] = [
-        "piano": ("piano", "piano", "pianoa"),
-        "flauta": ("flauta", "frauta", "flauta"),
-        "flautín": ("flautí", "frautín", "pikoloa"),
-        "flauta en sol": ("flauta en sol", "frauta en sol", "sol flauta"),
-        "oboe": ("oboè", "óboe", "oboea"),
-        "corno inglés": ("corn anglès", "corno inglés", "korno ingelesa"),
-        "clarinete en si♭": ("clarinet en si♭", "clarinete en si♭", "si♭ klarinetea"),
-        "clarinete en la": ("clarinet en la", "clarinete en la", "la klarinetea"),
-        "clarinete en mi♭": ("clarinet en mi♭", "clarinete en mi♭", "mi♭ klarinetea"),
-        "clarinete bajo": ("clarinet baix", "clarinete baixo", "klarinete baxua"),
-        "fagot": ("fagot", "fagot", "fagota"),
-        "saxofón soprano": ("saxòfon soprano", "saxofón soprano", "saxofoi sopranoa"),
-        "saxofón alto": ("saxòfon alt", "saxofón alto", "saxofoi altua"),
-        "saxofón tenor": ("saxòfon tenor", "saxofón tenor", "saxofoi tenorra"),
-        "saxofón barítono": ("saxòfon baríton", "saxofón barítono", "saxofoi baritonoa"),
-        "trompeta en si♭": ("trompeta en si♭", "trompeta en si♭", "si♭ tronpeta"),
-        "trompeta en do": ("trompeta en do", "trompeta en do", "do tronpeta"),
-        "fliscorno": ("fiscorn", "fliscorno", "fliscornoa"),
-        "trompa en fa": ("trompa en fa", "trompa en fa", "fa tronpa"),
-        "trombón": ("trombó", "trombón", "tronboia"),
-        "tuba": ("tuba", "tuba", "tuba"),
-        "violín": ("violí", "violín", "biolina"),
-        "viola": ("viola", "viola", "biola"),
-        "violonchelo": ("violoncel", "violonchelo", "biolontxeloa"),
-        "contrabajo": ("contrabaix", "contrabaixo", "kontrabaxua"),
-        "guitarra": ("guitarra", "guitarra", "gitarra"),
-        "bajo eléctrico": ("baix elèctric", "baixo eléctrico", "baxu elektrikoa"),
-        "xilófono": ("xilòfon", "xilófono", "xilofonoa"),
-        "glockenspiel": ("glockenspiel", "glockenspiel", "glockenspiela"),
-        "celesta": ("celesta", "celesta", "zelesta"),
+    /// Los nombres de los instrumentos predefinidos en los catorce idiomas, por su nombre en español. Un
+    /// instrumento que no está aquí usa su nombre español o, en occitano, alemán, griego y ruso, el inglés.
+    /// En alemán y en ruso, la afinación va con letras alemanas: «Klarinette in B» es el clarinete en si♭.
+    package static let traducciones: [String: Traduccion] = [
+        "piano": TextosDePartitura.traduccion(\.instrumentoPiano),
+        "flauta": TextosDePartitura.traduccion(\.instrumentoFlauta),
+        "flautín": TextosDePartitura.traduccion(\.instrumentoFlautin),
+        "flauta en sol": TextosDePartitura.traduccion(\.instrumentoFlautaEnSol),
+        "oboe": TextosDePartitura.traduccion(\.instrumentoOboe),
+        "corno inglés": TextosDePartitura.traduccion(\.instrumentoCornoIngles),
+        "clarinete en si♭": TextosDePartitura.traduccion(\.instrumentoClarineteEnSib),
+        "clarinete en la": TextosDePartitura.traduccion(\.instrumentoClarineteEnLa),
+        "clarinete en mi♭": TextosDePartitura.traduccion(\.instrumentoClarineteEnMib),
+        "clarinete bajo": TextosDePartitura.traduccion(\.instrumentoClarineteBajo),
+        "fagot": TextosDePartitura.traduccion(\.instrumentoFagot),
+        "saxofón soprano": TextosDePartitura.traduccion(\.instrumentoSaxofonSoprano),
+        "saxofón alto": TextosDePartitura.traduccion(\.instrumentoSaxofonAlto),
+        "saxofón tenor": TextosDePartitura.traduccion(\.instrumentoSaxofonTenor),
+        "saxofón barítono": TextosDePartitura.traduccion(\.instrumentoSaxofonBaritono),
+        "trompeta en si♭": TextosDePartitura.traduccion(\.instrumentoTrompetaEnSib),
+        "trompeta en do": TextosDePartitura.traduccion(\.instrumentoTrompetaEnDo),
+        "fliscorno": TextosDePartitura.traduccion(\.instrumentoFliscorno),
+        "trompa en fa": TextosDePartitura.traduccion(\.instrumentoTrompaEnFa),
+        "trombón": TextosDePartitura.traduccion(\.instrumentoTrombon),
+        "tuba": TextosDePartitura.traduccion(\.instrumentoTuba),
+        "violín": TextosDePartitura.traduccion(\.instrumentoViolin),
+        "viola": TextosDePartitura.traduccion(\.instrumentoViola),
+        "violonchelo": TextosDePartitura.traduccion(\.instrumentoViolonchelo),
+        "contrabajo": TextosDePartitura.traduccion(\.instrumentoContrabajo),
+        "guitarra": TextosDePartitura.traduccion(\.instrumentoGuitarra),
+        "bajo eléctrico": TextosDePartitura.traduccion(\.instrumentoBajoElectrico),
+        "xilófono": TextosDePartitura.traduccion(\.instrumentoXilofono),
+        "glockenspiel": TextosDePartitura.traduccion(\.instrumentoGlockenspiel),
+        "celesta": TextosDePartitura.traduccion(\.instrumentoCelesta),
     ]
-
-    /// Aragonés y asturiano de los instrumentos predefinidos, por su nombre en español. Un instrumento que no
-    /// está aquí usa su nombre español.
-    package static let nombresAragonesesYAsturianos: [String: (aragones: String, asturiano: String)] = [
-        "piano": ("piano", "pianu"),
-        "flauta": ("flauta", "flauta"),
-        "flautín": ("flautín", "flautín"),
-        "flauta en sol": ("flauta en sol", "flauta en sol"),
-        "oboe": ("oboe", "oboe"),
-        "corno inglés": ("corno anglés", "cornu inglés"),
-        "clarinete en si♭": ("clarinet en si♭", "clarinete en si♭"),
-        "clarinete en la": ("clarinet en la", "clarinete en la"),
-        "clarinete en mi♭": ("clarinet en mi♭", "clarinete en mi♭"),
-        "clarinete bajo": ("clarinet baixo", "clarinete baxu"),
-        "fagot": ("fagot", "fagot"),
-        "saxofón soprano": ("saxofón soprano", "saxofón soprano"),
-        "saxofón alto": ("saxofón alto", "saxofón altu"),
-        "saxofón tenor": ("saxofón tenor", "saxofón tenor"),
-        "saxofón barítono": ("saxofón barítono", "saxofón barítonu"),
-        "trompeta en si♭": ("trompeta en si♭", "trompeta en si♭"),
-        "trompeta en do": ("trompeta en do", "trompeta en do"),
-        "fliscorno": ("fliscorno", "fliscornu"),
-        "trompa en fa": ("trompa en fa", "trompa en fa"),
-        "trombón": ("trombón", "trombón"),
-        "tuba": ("tuba", "tuba"),
-        "violín": ("violín", "violín"),
-        "viola": ("viola", "viola"),
-        "violonchelo": ("violonchelo", "violonchelu"),
-        "contrabajo": ("contrabaixo", "contrabaxu"),
-        "guitarra": ("guitarra", "guitarra"),
-        "bajo eléctrico": ("baixo electrico", "baxu llétricu"),
-        "xilófono": ("xilófono", "xilófonu"),
-        "glockenspiel": ("glockenspiel", "glockenspiel"),
-        "celesta": ("celesta", "celesta"),
-    ]
-
-    /// Portugués, francés e italiano de los instrumentos predefinidos, por su nombre en español. Un
-    /// instrumento que no está aquí usa su nombre español.
-    package static let nombresRomanicos: [String: (portugues: String, frances: String, italiano: String)] = [
-        "piano": ("piano", "piano", "pianoforte"),
-        "flauta": ("flauta", "flûte", "flauto"),
-        "flautín": ("flautim", "piccolo", "ottavino"),
-        "flauta en sol": ("flauta em sol", "flûte en sol", "flauto contralto"),
-        "oboe": ("oboé", "hautbois", "oboe"),
-        "corno inglés": ("corne-inglês", "cor anglais", "corno inglese"),
-        "clarinete en si♭": ("clarinete em si♭", "clarinette en si♭", "clarinetto in si♭"),
-        "clarinete en la": ("clarinete em lá", "clarinette en la", "clarinetto in la"),
-        "clarinete en mi♭": ("clarinete em mi♭", "clarinette en mi♭", "clarinetto in mi♭"),
-        "clarinete bajo": ("clarinete baixo", "clarinette basse", "clarinetto basso"),
-        "fagot": ("fagote", "basson", "fagotto"),
-        "saxofón soprano": ("saxofone soprano", "saxophone soprano", "sassofono soprano"),
-        "saxofón alto": ("saxofone alto", "saxophone alto", "sassofono contralto"),
-        "saxofón tenor": ("saxofone tenor", "saxophone ténor", "sassofono tenore"),
-        "saxofón barítono": ("saxofone barítono", "saxophone baryton", "sassofono baritono"),
-        "trompeta en si♭": ("trompete em si♭", "trompette en si♭", "tromba in si♭"),
-        "trompeta en do": ("trompete em dó", "trompette en ut", "tromba in do"),
-        "fliscorno": ("fliscórnio", "bugle", "flicorno"),
-        "trompa en fa": ("trompa em fá", "cor en fa", "corno in fa"),
-        "trombón": ("trombone", "trombone", "trombone"),
-        "tuba": ("tuba", "tuba", "tuba"),
-        "violín": ("violino", "violon", "violino"),
-        "viola": ("viola", "alto", "viola"),
-        "violonchelo": ("violoncelo", "violoncelle", "violoncello"),
-        "contrabajo": ("contrabaixo", "contrebasse", "contrabbasso"),
-        "guitarra": ("guitarra", "guitare", "chitarra"),
-        "bajo eléctrico": ("baixo elétrico", "basse électrique", "basso elettrico"),
-        "xilófono": ("xilofone", "xylophone", "xilofono"),
-        "glockenspiel": ("glockenspiel", "glockenspiel", "glockenspiel"),
-        "celesta": ("celesta", "célesta", "celesta"),
-    ]
-
-    /// Alemán, occitano, griego y ruso de los instrumentos predefinidos, por su nombre en español. Un
-    /// instrumento que no está aquí usa su nombre inglés. En alemán y en ruso, la afinación va con letras
-    /// alemanas: «Klarinette in B» es el clarinete en si♭.
-    package static let nombresDeOtrasLenguas:
-        [String: (aleman: String, occitano: String, ruso: String, griego: String)] = [
-            "piano": ("Klavier", "piano", "фортепиано", "πιάνο"),
-            "flauta": ("Flöte", "flaüta", "флейта", "φλάουτο"),
-            "flautín": ("Piccoloflöte", "flautin", "флейта-пикколо", "πίκολο"),
-            "flauta en sol": ("Altflöte in G", "flaüta en sòl", "альтовая флейта", "φλάουτο άλτο σε σολ"),
-            "oboe": ("Oboe", "oboè", "гобой", "όμποε"),
-            "corno inglés": ("Englischhorn", "còrn anglés", "английский рожок", "αγγλικό κόρνο"),
-            "clarinete en si♭": ("Klarinette in B", "clarinet en si♭", "кларнет in B", "κλαρινέτο σε σι♭"),
-            "clarinete en la": ("Klarinette in A", "clarinet en la", "кларнет in A", "κλαρινέτο σε λα"),
-            "clarinete en mi♭": ("Klarinette in Es", "clarinet en mi♭", "кларнет in Es", "κλαρινέτο σε μι♭"),
-            "clarinete bajo": ("Bassklarinette", "clarinet bas", "бас-кларнет", "μπάσο κλαρινέτο"),
-            "fagot": ("Fagott", "fagòt", "фагот", "φαγκότο"),
-            "saxofón soprano": ("Sopransaxophon", "saxofòn soprano", "саксофон-сопрано", "σαξόφωνο σοπράνο"),
-            "saxofón alto": ("Altsaxophon", "saxofòn alt", "саксофон-альт", "σαξόφωνο άλτο"),
-            "saxofón tenor": ("Tenorsaxophon", "saxofòn tenor", "саксофон-тенор", "σαξόφωνο τενόρο"),
-            "saxofón barítono": ("Baritonsaxophon", "saxofòn bariton", "саксофон-баритон", "σαξόφωνο βαρύτονο"),
-            "trompeta en si♭": ("Trompete in B", "trompeta en si♭", "труба in B", "τρομπέτα σε σι♭"),
-            "trompeta en do": ("Trompete in C", "trompeta en do", "труба in C", "τρομπέτα σε ντο"),
-            "fliscorno": ("Flügelhorn", "flicòrn", "флюгельгорн", "φλικόρνο"),
-            "trompa en fa": ("Horn in F", "còrn en fa", "валторна in F", "κόρνο σε φα"),
-            "trombón": ("Posaune", "trombòn", "тромбон", "τρομπόνι"),
-            "tuba": ("Tuba", "tuba", "туба", "τούμπα"),
-            "violín": ("Violine", "violon", "скрипка", "βιολί"),
-            "viola": ("Viola", "viòla", "альт", "βιόλα"),
-            "violonchelo": ("Violoncello", "violoncèl", "виолончель", "βιολοντσέλο"),
-            "contrabajo": ("Kontrabass", "contrabassa", "контрабас", "κοντραμπάσο"),
-            "guitarra": ("Gitarre", "guitarra", "гитара", "κιθάρα"),
-            "bajo eléctrico": ("E-Bass", "bassa electrica", "бас-гитара", "ηλεκτρικό μπάσο"),
-            "xilófono": ("Xylophon", "xilofòn", "ксилофон", "ξυλόφωνο"),
-            "glockenspiel": ("Glockenspiel", "glockenspiel", "колокольчики", "γκλόκενσπιλ"),
-            "celesta": ("Celesta", "celèsta", "челеста", "τσελέστα"),
-        ]
 }

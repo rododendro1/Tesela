@@ -65,6 +65,38 @@ struct TextosDePartitura: TextosTraducidos {
     let claveDeDoEnTercera: String
     let claveDeDoEnCuarta: String
 
+    // MARK: Pentagrama.swift (InstrumentoDePartitura)
+    let instrumentoPiano: String
+    let instrumentoFlauta: String
+    let instrumentoFlautin: String
+    let instrumentoFlautaEnSol: String
+    let instrumentoOboe: String
+    let instrumentoCornoIngles: String
+    let instrumentoClarineteEnSib: String
+    let instrumentoClarineteEnLa: String
+    let instrumentoClarineteEnMib: String
+    let instrumentoClarineteBajo: String
+    let instrumentoFagot: String
+    let instrumentoSaxofonSoprano: String
+    let instrumentoSaxofonAlto: String
+    let instrumentoSaxofonTenor: String
+    let instrumentoSaxofonBaritono: String
+    let instrumentoTrompetaEnSib: String
+    let instrumentoTrompetaEnDo: String
+    let instrumentoFliscorno: String
+    let instrumentoTrompaEnFa: String
+    let instrumentoTrombon: String
+    let instrumentoTuba: String
+    let instrumentoViolin: String
+    let instrumentoViola: String
+    let instrumentoViolonchelo: String
+    let instrumentoContrabajo: String
+    let instrumentoGuitarra: String
+    let instrumentoBajoElectrico: String
+    let instrumentoXilofono: String
+    let instrumentoGlockenspiel: String
+    let instrumentoCelesta: String
+
     /// Los textos en los catorce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDePartitura>(

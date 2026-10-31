@@ -150,7 +150,7 @@ final class NotacionesPeninsularesTests: XCTestCase {
         XCTAssertEqual(InstrumentoDePartitura.violin.nombre(en: .euskera), "biolina")
         XCTAssertEqual(InstrumentoDePartitura.saxofonAlto.nombre(en: .gallego), "saxofón alto")
         for instrumento in InstrumentoDePartitura.todos {
-            XCTAssertNotNil(InstrumentoDePartitura.nombresPeninsulares[instrumento.nombre], instrumento.nombre)
+            XCTAssertNotNil(InstrumentoDePartitura.traducciones[instrumento.nombre], instrumento.nombre)
         }
 
         XCTAssertEqual(CicloNeorriemanniano.hexatonico.nombre(en: .catalan), "cicle hexatònic")
