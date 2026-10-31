@@ -1,6 +1,7 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
 import Foundation
+
 // Las transformaciones neorriemannianas: P, L y R cambian una tríada mayor o menor por la que
 // comparte con ella dos notas, moviendo la tercera solo un semitono o un tono. En el Tonnetz
 // son giros del triángulo sobre uno de sus lados:
@@ -11,7 +12,6 @@ import Foundation
 //
 // Las tres son involuciones (aplicadas dos veces, devuelven la tríada) y conservan la
 // ortografía: R de Mi♭ es Do menor, no Si♯ menor. N, S y H son las compuestas habituales.
-
 
 /// P, L o R: el paso de una tríada mayor o menor a una vecina en el Tonnetz.
 ///
@@ -76,21 +76,23 @@ extension Tonnetz.Triada {
     /// (pasos de quinta, 0)); `nil` para otros acordes. Se ignora la inversión.
     public init?(_ acorde: Acorde) {
         guard acorde.tipo == .mayor || acorde.tipo == .menor else { return nil }
-        self.init(fundamental: PuntoDeLaRed(quintas: acorde.fundamental.pasosDeQuinta, terceras: 0),
-                  mayor: acorde.tipo == .mayor)
+        self.init(
+            fundamental: PuntoDeLaRed(quintas: acorde.fundamental.pasosDeQuinta, terceras: 0),
+            mayor: acorde.tipo == .mayor)
     }
 
     /// El triángulo vecino por uno de sus lados.
     public func transformar(_ transformacion: TransformacionNeorriemanniana) -> Tonnetz.Triada {
-        let quintas = fundamental.quintas, terceras = fundamental.terceras
+        let quintas = fundamental.quintas
+        let terceras = fundamental.terceras
         func triada(_ quintas: Int, _ terceras: Int, _ mayor: Bool) -> Tonnetz.Triada {
             Tonnetz.Triada(fundamental: PuntoDeLaRed(quintas: quintas, terceras: terceras), mayor: mayor)
         }
         switch (transformacion, mayor) {
-        case (.p, _): return triada(quintas, terceras, !mayor)            // el lado de la quinta
-        case (.l, true): return triada(quintas, terceras + 1, false)      // el de la tercera menor (Mi–Sol)
+        case (.p, _): return triada(quintas, terceras, !mayor) // el lado de la quinta
+        case (.l, true): return triada(quintas, terceras + 1, false) // el de la tercera menor (Mi–Sol)
         case (.l, false): return triada(quintas, terceras - 1, true)
-        case (.r, true): return triada(quintas - 1, terceras + 1, false)  // el de la tercera mayor (Do–Mi)
+        case (.r, true): return triada(quintas - 1, terceras + 1, false) // el de la tercera mayor (Do–Mi)
         case (.r, false): return triada(quintas + 1, terceras - 1, true)
         }
     }
@@ -135,18 +137,22 @@ extension Tonnetz {
     /// A igual longitud, se prefiere P, luego L y luego R al principio del camino.
     ///
     ///     Tonnetz.camino(desde: "Do", hasta: "Lab")    // [.p, .l]: Do → Dom → La♭
-    public static func camino(desde origen: Acorde, hasta destino: Acorde,
-                              enarmonico: Bool = false) -> [TransformacionNeorriemanniana]? {
+    public static func camino(
+        desde origen: Acorde, hasta destino: Acorde,
+        enarmonico: Bool = false
+    ) -> [TransformacionNeorriemanniana]? {
         guard let inicio = Triada(origen), let meta = Triada(destino) else { return nil }
         func llega(_ triada: Triada) -> Bool {
             guard triada.mayor == meta.mayor else { return false }
-            return enarmonico ? triada.fundamental.claseDeAltura == meta.fundamental.claseDeAltura
-                              : triada.fundamental.pasosDeQuinta == meta.fundamental.pasosDeQuinta
+            return enarmonico
+                ? triada.fundamental.claseDeAltura == meta.fundamental.claseDeAltura
+                : triada.fundamental.pasosDeQuinta == meta.fundamental.pasosDeQuinta
         }
         // Por la red de triángulos, que es infinita y conexa: siempre llega.
-        return caminoMasCorto(desde: inicio, clave: { $0 },
-                              vecinos: { triada in TransformacionNeorriemanniana.allCases.map { ($0, triada.transformar($0)) } },
-                              llega: llega)
+        return caminoMasCorto(
+            desde: inicio, clave: { $0 },
+            vecinos: { triada in TransformacionNeorriemanniana.allCases.map { ($0, triada.transformar($0)) } },
+            llega: llega)
     }
 
     /// Un recorrido de tríadas mayores y menores por el Tonnetz: cada una, en el triángulo más
@@ -167,8 +173,9 @@ extension Tonnetz {
             // Las copias del triángulo, desplazadas por (4, −1), que da la misma nota.
             let tercerasDeLaAnterior = anterior.fundamental.terceras
             let copias = ((tercerasDeLaAnterior - 3)...(tercerasDeLaAnterior + 3)).map { terceras in
-                Triada(fundamental: PuntoDeLaRed(quintas: triada.fundamental.quintas - 4 * terceras, terceras: terceras),
-                       mayor: triada.mayor)
+                Triada(
+                    fundamental: PuntoDeLaRed(quintas: triada.fundamental.quintas - 4 * terceras, terceras: terceras),
+                    mayor: triada.mayor)
             }
             triadas.append(copias.min { Tonnetz.separacion(anterior, $0) < Tonnetz.separacion(anterior, $1) }!)
         }
@@ -187,7 +194,8 @@ extension Tonnetz {
 
     /// Distancia al cuadrado entre los centros de dos triángulos, en el dibujo.
     package static func separacion(_ uno: Triada, _ otro: Triada) -> Double {
-        let (x1, y1) = uno.centro, (x2, y2) = otro.centro
+        let (x1, y1) = uno.centro
+        let (x2, y2) = otro.centro
         return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)
     }
 }

@@ -1,10 +1,10 @@
 import ArmoniaNucleo
+import Foundation
 import Hexagonos
+
 // El formato UIL (Unified Isomorphic Layout) de Brett Park y David Gerhard, «Discrete Isomorphic Completeness
 // and a Unified Isomorphic Layout Format» (Sound and Music Computing, 2013), que parte de la notación LGD de
 // Brian Hayden. Describe cualquier teclado hexagonal isomórfico con tres intervalos, un giro y un espejo.
-
-import Foundation
 
 /// Un teclado hexagonal isomórfico descrito en el formato UIL: `L,G,D;R<grados>[M][;T<tonos>]`.
 ///
@@ -45,7 +45,9 @@ public struct FormatoUIL: Hashable, Sendable {
         case general, cero, igualdad
     }
 
-    public init(menor: Int, mayor: Int, diferencia: Int, rotacion: Int = 0, espejo: Bool = false, tonos: Int = 12) throws {
+    public init(menor: Int, mayor: Int, diferencia: Int, rotacion: Int = 0, espejo: Bool = false, tonos: Int = 12)
+        throws
+    {
         let esCero = menor == 0 && mayor == 1 && diferencia == 1
         // Un intervalo de más de un millón de pasos no es un teclado (y sumarlo podría desbordar).
         let razonables = [menor, mayor, diferencia].allSatisfy { (-Self.maximo...Self.maximo).contains($0) }
@@ -73,11 +75,13 @@ public struct FormatoUIL: Hashable, Sendable {
         let primerGiro = teclado.orientacion == .plana ? 0 : 30
         for espejo in [false, true] {
             for giro in stride(from: primerGiro, to: 360, by: 60) {
-                guard let candidato = try? FormatoUIL(menor: menor, mayor: mayor, diferencia: mayor - menor,
-                                                      rotacion: giro, espejo: espejo),
-                      let posible = try? candidato.teclado(),
-                      posible.orientacion == teclado.orientacion,
-                      posible.semitonosEnQ == a, posible.semitonosEnR == b
+                guard
+                    let candidato = try? FormatoUIL(
+                        menor: menor, mayor: mayor, diferencia: mayor - menor,
+                        rotacion: giro, espejo: espejo),
+                    let posible = try? candidato.teclado(),
+                    posible.orientacion == teclado.orientacion,
+                    posible.semitonosEnQ == a, posible.semitonosEnR == b
                 else { continue }
                 self = candidato
                 return
@@ -128,8 +132,9 @@ public struct FormatoUIL: Hashable, Sendable {
             .map { $0.trimmingCharacters(in: .whitespaces) }
         let valores = fichas.compactMap { Self.semitonos(de: $0, tonos: tonos) }
         guard fichas.count == 3, valores.count == 3 else { throw ErrorDeUIL.formatoNoValido(texto) }
-        try self.init(menor: valores[0], mayor: valores[1], diferencia: valores[2], rotacion: rotacion,
-                      espejo: espejo, tonos: tonos)
+        try self.init(
+            menor: valores[0], mayor: valores[1], diferencia: valores[2], rotacion: rotacion,
+            espejo: espejo, tonos: tonos)
     }
 
     /// El caso especial del formato, o `.general`.
@@ -165,7 +170,8 @@ public struct FormatoUIL: Hashable, Sendable {
     public func semitonos(rumbo: Int) -> Int? {
         let relativo = rumbo - rotacion
         guard relativo % 60 == 0 else { return nil }
-        let base = espejo
+        let base =
+            espejo
             ? [mayor, menor, -diferencia, -mayor, -menor, diferencia]
             : [mayor, diferencia, -menor, -mayor, -diferencia, menor]
         return base[modulo(relativo / 60, 6)]
@@ -173,14 +179,16 @@ public struct FormatoUIL: Hashable, Sendable {
 
     /// El mismo formato con otro giro, sumado al actual: `rotado(grados: 30)`.
     public func rotado(grados: Int) throws -> FormatoUIL {
-        try FormatoUIL(menor: menor, mayor: mayor, diferencia: diferencia, rotacion: rotacion + grados,
-                       espejo: espejo, tonos: tonos)
+        try FormatoUIL(
+            menor: menor, mayor: mayor, diferencia: diferencia, rotacion: rotacion + grados,
+            espejo: espejo, tonos: tonos)
     }
 
     /// El formato reflejado como en un espejo vertical: cambia el espejo y el giro se invierte (`R30M` ↔ `R330`).
     public var reflejado: FormatoUIL? {
-        try? FormatoUIL(menor: menor, mayor: mayor, diferencia: diferencia, rotacion: -rotacion,
-                        espejo: !espejo, tonos: tonos)
+        try? FormatoUIL(
+            menor: menor, mayor: mayor, diferencia: diferencia, rotacion: -rotacion,
+            espejo: !espejo, tonos: tonos)
     }
 
     /// El teclado de 12 notas con este formato, con la casilla `(0, 0)` en `midiDelOrigen`.
@@ -189,10 +197,11 @@ public struct FormatoUIL: Hashable, Sendable {
         guard tonos == 12 else { throw ErrorDeUIL.afinacionNoSoportada(tonos: tonos) }
         let orientacion = self.orientacion
         guard let enQ = semitonos(rumbo: DireccionHexagonal.qMasSMenos.rumbo(orientacion)),
-              let enR = semitonos(rumbo: DireccionHexagonal.rMasSMenos.rumbo(orientacion))
+            let enR = semitonos(rumbo: DireccionHexagonal.rMasSMenos.rumbo(orientacion))
         else { throw ErrorDeUIL.formatoNoValido(descripcion) }
-        return TecladoIsomorfico(nombre: nombre ?? descripcion, orientacion: orientacion,
-                                 semitonosEnQ: enQ, semitonosEnR: enR, midiDelOrigen: midiDelOrigen)
+        return TecladoIsomorfico(
+            nombre: nombre ?? descripcion, orientacion: orientacion,
+            semitonosEnQ: enQ, semitonosEnR: enR, midiDelOrigen: midiDelOrigen)
     }
 
     // MARK: Lectura de intervalos
@@ -220,8 +229,13 @@ public struct FormatoUIL: Hashable, Sendable {
         }
         var romano = Substring(ficha)
         var alteracion = 0
-        if let primero = romano.first, "♭b".contains(primero) { alteracion = -1; romano = romano.dropFirst() }
-        else if let primero = romano.first, "♯#".contains(primero) { alteracion = 1; romano = romano.dropFirst() }
+        if let primero = romano.first, "♭b".contains(primero) {
+            alteracion = -1
+            romano = romano.dropFirst()
+        } else if let primero = romano.first, "♯#".contains(primero) {
+            alteracion = 1
+            romano = romano.dropFirst()
+        }
         return romanas[String(romano)].map { $0 + alteracion }
     }
 

@@ -37,8 +37,9 @@ enum Medicion {
         } while tiempos.count < 3
             || (segundos(inicio.duration(to: reloj.now)) < presupuesto && tiempos.count < 100_000)
         tiempos.sort()
-        return Resultado(caso: caso.titulo, primera: primera, mediana: tiempos[tiempos.count / 2],
-                         minimo: tiempos[0], repeticiones: tiempos.count)
+        return Resultado(
+            caso: caso.titulo, primera: primera, mediana: tiempos[tiempos.count / 2],
+            minimo: tiempos[0], repeticiones: tiempos.count)
     }
 
     static func segundos(_ duracion: Duration) -> Double {

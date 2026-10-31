@@ -39,7 +39,9 @@ public struct TipoDeEscala: Sendable, Codable {
     /// Los intervalos se reducen a la octava, se pasan a ascendentes y se ordenan,
     /// de modo que el mismo contenido da siempre el mismo tipo. `intervalosDescendentes` solo se guarda si
     /// es distinto de `intervalos`.
-    public init(nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = []) {
+    public init(
+        nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = []
+    ) {
         self.nombre = nombre
         let subida = TipoDeEscala.ordenar(intervalos)
         let bajada = intervalosDescendentes.map(TipoDeEscala.ordenar)
@@ -161,58 +163,80 @@ extension TipoDeEscala {
 
     public static let mayor = TipoDeEscala(
         nombre: "mayor",
-        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
-                     .quintaJusta, .sextaMayor, .septimaMayor],
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
         alias: ["jónico", "jónica"])
     public static let dorico = TipoDeEscala(
         nombre: "dórico",
-        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-                     .quintaJusta, .sextaMayor, .septimaMenor],
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
         alias: ["dórica"])
     public static let frigio = TipoDeEscala(
         nombre: "frigio",
-        intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
-                     .quintaJusta, .sextaMenor, .septimaMenor],
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
         alias: ["frigia"])
     public static let lidio = TipoDeEscala(
         nombre: "lidio",
-        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
-                     .quintaJusta, .sextaMayor, .septimaMayor],
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
         alias: ["lidia"])
     public static let mixolidio = TipoDeEscala(
         nombre: "mixolidio",
-        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
-                     .quintaJusta, .sextaMayor, .septimaMenor],
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
         alias: ["mixolidia"])
     public static let menorNatural = TipoDeEscala(
         nombre: "menor natural",
-        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-                     .quintaJusta, .sextaMenor, .septimaMenor],
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
         alias: ["menor", "eólico", "eólica"])
     public static let locrio = TipoDeEscala(
         nombre: "locrio",
-        intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
-                     .quintaDisminuida, .sextaMenor, .septimaMenor],
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .sextaMenor, .septimaMenor,
+        ],
         alias: ["locria"])
     public static let menorArmonica = TipoDeEscala(
         nombre: "menor armónica",
-        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-                     .quintaJusta, .sextaMenor, .septimaMayor])
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ])
     /// Sube con la 6ª y la 7ª mayores y baja como la menor natural.
     public static let menorMelodica = TipoDeEscala(
         nombre: "menor melódica",
-        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-                     .quintaJusta, .sextaMayor, .septimaMayor],
-        intervalosDescendentes: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-                   .quintaJusta, .sextaMenor, .septimaMenor],
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
         alias: ["menor melódica clásica"])
     /// La menor melódica tal como se usa en el jazz: con la 6ª y la 7ª mayores también al bajar.
     /// Es el mismo contenido que el melakarta 23 (Gaurīmanoharī), y la escala madre de los modos
     /// de la menor melódica (dórico ♭2, lidio aumentado, lidio dominante, alterada…).
     public static let menorMelodicaJazz = TipoDeEscala(
         nombre: "menor melódica de jazz",
-        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-                     .quintaJusta, .sextaMayor, .septimaMayor],
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
         alias: ["menor de jazz", "menor melódica ascendente"])
     public static let pentatonicaMayor = TipoDeEscala(
         nombre: "pentatónica mayor",
@@ -223,17 +247,23 @@ extension TipoDeEscala {
         intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor])
     public static let blues = TipoDeEscala(
         nombre: "blues",
-        intervalos: [.unisono, .terceraMenor, .cuartaJusta, .cuartaAumentada,
-                     .quintaJusta, .septimaMenor])
+        intervalos: [
+            .unisono, .terceraMenor, .cuartaJusta, .cuartaAumentada,
+            .quintaJusta, .septimaMenor,
+        ])
     public static let tonosEnteros = TipoDeEscala(
         nombre: "tonos enteros",
-        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
-                     .quintaAumentada, .sextaAumentada],
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
+            .quintaAumentada, .sextaAumentada,
+        ],
         alias: ["hexatónica", "modo 1 de Messiaen", "aumentada auxiliar", "de Debussy", "Debussy"])
     public static let disminuida = TipoDeEscala(
         nombre: "disminuida tono-semitono",
-        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-                     .quintaDisminuida, .sextaMenor, .sextaMayor, .septimaMayor],
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .sextaMenor, .sextaMayor, .septimaMayor,
+        ],
         alias: ["disminuida", "octatónica", "modo 2 de Messiaen inverso", "disminuida auxiliar"])
 }
 
@@ -259,8 +289,10 @@ extension TipoDeEscala {
         .cromaticaConCincoSostenidos,
         .bebopMenorMelodica, .bebopMenorArmonica, .flamenca, .petrushka,
         .messiaen3, .messiaen4, .messiaen5, .messiaen6, .messiaen7,
-        .lidioSegundaSextaAumentadas, .ultrafrigio, .oriental, .jonicoSegundaQuintaAumentadas, .locrioTerceraSeptimaDisminuidas,
-        .lidioAumentadoSextaAumentada, .lidioDominanteAumentado, .locrioSegundaNaturalCuartaDisminuida, .superlocrioTerceraDisminuida,
+        .lidioSegundaSextaAumentadas, .ultrafrigio, .oriental, .jonicoSegundaQuintaAumentadas,
+        .locrioTerceraSeptimaDisminuidas,
+        .lidioAumentadoSextaAumentada, .lidioDominanteAumentado, .locrioSegundaNaturalCuartaDisminuida,
+        .superlocrioTerceraDisminuida,
         .lidioSextaAumentada, .mixolidioAumentado, .eolicoCuartaAumentada, .locrioDominante, .jonicoSegundaAumentada,
         .ultralocrioTerceraDisminuida,
         .pentatonicaDominante, .pentatonicaMenorSexta, .pentatonicaMayorSextaMenor, .pentatonicaMenorQuintaDisminuida,

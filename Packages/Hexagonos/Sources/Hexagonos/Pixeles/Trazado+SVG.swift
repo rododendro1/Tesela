@@ -6,9 +6,11 @@ extension Trazado {
     /// Cada hexágono es un `<polygon>` con la clase `casilla`; `relleno` elige su color (cualquier
     /// color de CSS, o `nil` para el gris por defecto) y `rotulo`, el texto que se escribe en el centro
     /// (o `nil` para ninguno). Para ver las coordenadas: `rotulo: { "\($0.q),\($0.r)" }`.
-    public func svg(_ casillas: [CoordenadaAxial], margen: Double = 4,
-                    relleno: (CoordenadaAxial) -> String? = { _ in nil },
-                    rotulo: (CoordenadaAxial) -> String? = { _ in nil }) -> String {
+    public func svg(
+        _ casillas: [CoordenadaAxial], margen: Double = 4,
+        relleno: (CoordenadaAxial) -> String? = { _ in nil },
+        rotulo: (CoordenadaAxial) -> String? = { _ in nil }
+    ) -> String {
         guard let rectangulo = limites(de: casillas) else {
             return #"<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0"></svg>"#
         }
@@ -37,7 +39,7 @@ extension Trazado {
 /// Un número con dos decimales como mucho y sin ceros de sobra: 12, 12.5, −3.46.
 private func numero(_ valor: Double) -> String {
     let redondeado = (valor * 100).rounded() / 100
-    if redondeado == 0 { return "0" }   // ni «-0»
+    if redondeado == 0 { return "0" } // ni «-0»
     if redondeado == redondeado.rounded() { return String(Int(redondeado)) }
     return String(redondeado)
 }

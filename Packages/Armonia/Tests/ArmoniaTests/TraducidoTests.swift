@@ -1,16 +1,18 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class TraducidoTests: XCTestCase {
     func testUnValorPorIdioma() {
-        let numeros = Traducido<[String]>(["uno", "dos"], ["one", "two"], ca: ["un", "dos"], gl: ["un", "dous"],
-                                          ast: ["un", "dos"], an: ["un", "dos"], eu: ["bat", "bi"],
-                                          pt: ["um", "dois"], fr: ["un", "deux"], oc: ["un", "dos"],
-                                          it: ["uno", "due"], de: ["eins", "zwei"], el: ["ένα", "δύο"], ru: ["один", "два"])
+        let numeros = Traducido<[String]>(
+            ["uno", "dos"], ["one", "two"], ca: ["un", "dos"], gl: ["un", "dous"],
+            ast: ["un", "dos"], an: ["un", "dos"], eu: ["bat", "bi"],
+            pt: ["um", "dois"], fr: ["un", "deux"], oc: ["un", "dos"],
+            it: ["uno", "due"], de: ["eins", "zwei"], el: ["ένα", "δύο"], ru: ["один", "два"])
         XCTAssertEqual(numeros.en(.aleman)[1], "zwei")
         XCTAssertEqual(numeros.texto(en: .griego), ["ένα", "δύο"])
         XCTAssertEqual(numeros.map(\.count).en(.ruso), 2)

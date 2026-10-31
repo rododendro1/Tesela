@@ -1,5 +1,7 @@
 import ArmoniaNucleo
+import Foundation
 import Hexagonos
+
 // Los teclados isomórficos: botones hexagonales en los que cada dirección sube siempre el mismo
 // intervalo, así que un acorde o una escala tiene la misma forma en todas las tonalidades. La tabla
 // armónica es uno de ellos; Wicki-Hayden (concertinas, apps como Musix), Jankó y el acordeón cromático, otros.
@@ -10,8 +12,6 @@ import Hexagonos
 //
 // Cualquier teclado se puede escribir y leer en el formato UIL (Unified Isomorphic Layout, Park y Gerhard, 2013),
 // y girar de 30° en 30° o reflejar: ver `FormatoUIL`.
-
-import Foundation
 
 /// Un teclado isomórfico sobre una rejilla hexagonal: la casilla `(q, r)` suena
 /// `midiDelOrigen + semitonosEnQ · q + semitonosEnR · r`.
@@ -33,8 +33,10 @@ public struct TecladoIsomorfico: Hashable, Sendable {
     /// El número MIDI de la casilla `(0, 0)`.
     public let midiDelOrigen: Int
 
-    public init(nombre: String, orientacion: Orientacion, semitonosEnQ: Int, semitonosEnR: Int,
-                midiDelOrigen: Int = 60) {
+    public init(
+        nombre: String, orientacion: Orientacion, semitonosEnQ: Int, semitonosEnR: Int,
+        midiDelOrigen: Int = 60
+    ) {
         self.nombre = nombre
         self.orientacion = orientacion
         self.semitonosEnQ = semitonosEnQ
@@ -45,40 +47,47 @@ public struct TecladoIsomorfico: Hashable, Sendable {
     /// La tabla armónica (C-Thru AXiS), en las casillas de `TablaArmonica.coordenada(de:)`: hexágonos
     /// planos con la quinta justa hacia arriba, la tercera mayor arriba a la derecha y la tercera menor
     /// arriba a la izquierda.
-    public static let tablaArmonica = TecladoIsomorfico(nombre: "Tabla armónica", orientacion: .plana,
-                                                        semitonosEnQ: -3, semitonosEnR: -7)
+    public static let tablaArmonica = TecladoIsomorfico(
+        nombre: "Tabla armónica", orientacion: .plana,
+        semitonosEnQ: -3, semitonosEnR: -7)
 
     /// Wicki-Hayden: hexágonos puntiagudos con un tono hacia la derecha, una quinta justa arriba a la
     /// derecha y una cuarta justa arriba a la izquierda.
-    public static let wickiHayden = TecladoIsomorfico(nombre: "Wicki-Hayden", orientacion: .puntiaguda,
-                                                      semitonosEnQ: 2, semitonosEnR: -5)
+    public static let wickiHayden = TecladoIsomorfico(
+        nombre: "Wicki-Hayden", orientacion: .puntiaguda,
+        semitonosEnQ: 2, semitonosEnR: -5)
 
     /// Jankó: hexágonos puntiagudos con un tono hacia la derecha y un semitono en las dos diagonales de
     /// la derecha; cada fila es una escala de tonos enteros.
-    public static let janko = TecladoIsomorfico(nombre: "Jankó", orientacion: .puntiaguda,
-                                                semitonosEnQ: 2, semitonosEnR: 1)
+    public static let janko = TecladoIsomorfico(
+        nombre: "Jankó", orientacion: .puntiaguda,
+        semitonosEnQ: 2, semitonosEnR: 1)
 
     /// Wicki-Hayden en espejo (para zurdos o para quien lo ha aprendido al revés): la quinta justa sube a la
     /// izquierda y la cuarta justa a la derecha. Como un teclado consistente no puede subir a la vez la cuarta a la
     /// derecha y el tono a la derecha, el tono queda hacia la izquierda.
-    public static let wickiHaydenEspejo = TecladoIsomorfico(nombre: "Wicki-Hayden (espejo)", orientacion: .puntiaguda,
-                                                            semitonosEnQ: -2, semitonosEnR: -7)
+    public static let wickiHaydenEspejo = TecladoIsomorfico(
+        nombre: "Wicki-Hayden (espejo)", orientacion: .puntiaguda,
+        semitonosEnQ: -2, semitonosEnR: -7)
 
     /// Wicki-Hayden con hexágonos planos: la quinta justa hacia arriba, un tono arriba a la derecha y una cuarta
     /// justa arriba a la izquierda. Es el mismo teclado girado, con las columnas de quintas en vertical.
-    public static let wickiHaydenPlano = TecladoIsomorfico(nombre: "Wicki-Hayden (plano)", orientacion: .plana,
-                                                           semitonosEnQ: -5, semitonosEnR: -7)
+    public static let wickiHaydenPlano = TecladoIsomorfico(
+        nombre: "Wicki-Hayden (plano)", orientacion: .plana,
+        semitonosEnQ: -5, semitonosEnR: -7)
 
     /// El acordeón cromático de botones, sistema C (C-griff): hexágonos planos; cada columna sube de tercera menor
     /// en tercera menor (un acorde de séptima disminuida), y los botones de al lado suben un semitono (arriba a la
     /// derecha) o un tono (arriba a la izquierda).
-    public static let acordeonC = TecladoIsomorfico(nombre: "Acordeón C", orientacion: .plana,
-                                                    semitonosEnQ: -2, semitonosEnR: -3)
+    public static let acordeonC = TecladoIsomorfico(
+        nombre: "Acordeón C", orientacion: .plana,
+        semitonosEnQ: -2, semitonosEnR: -3)
 
     /// El acordeón cromático de botones, sistema B (B-griff): el espejo del sistema C, con el tono arriba a la
     /// derecha y el semitono arriba a la izquierda.
-    public static let acordeonB = TecladoIsomorfico(nombre: "Acordeón B", orientacion: .plana,
-                                                    semitonosEnQ: -1, semitonosEnR: -3)
+    public static let acordeonB = TecladoIsomorfico(
+        nombre: "Acordeón B", orientacion: .plana,
+        semitonosEnQ: -1, semitonosEnR: -3)
 
     /// El número MIDI de una casilla.
     public func midi(en casilla: CoordenadaAxial) -> Int {
@@ -93,7 +102,9 @@ public struct TecladoIsomorfico: Hashable, Sendable {
 
     /// El teclado que describe un texto UIL (`2,7,5;R30M`), con la casilla `(0, 0)` en `midiDelOrigen`.
     /// El nombre es el texto normalizado salvo que se dé otro.
-    public static func conUIL(_ texto: String, nombre: String? = nil, midiDelOrigen: Int = 60) throws -> TecladoIsomorfico {
+    public static func conUIL(_ texto: String, nombre: String? = nil, midiDelOrigen: Int = 60) throws
+        -> TecladoIsomorfico
+    {
         try FormatoUIL(leyendo: texto).teclado(nombre: nombre, midiDelOrigen: midiDelOrigen)
     }
 
@@ -131,10 +142,11 @@ public struct TecladoIsomorfico: Hashable, Sendable {
 
     /// Un teclado con la misma casilla de origen y los intervalos que da `intervalo` para cada rumbo.
     private func derivado(nombre: String, orientacion: Orientacion, intervalo: (Int) -> Int) -> TecladoIsomorfico {
-        TecladoIsomorfico(nombre: nombre, orientacion: orientacion,
-                          semitonosEnQ: intervalo(DireccionHexagonal.qMasSMenos.rumbo(orientacion)),
-                          semitonosEnR: intervalo(DireccionHexagonal.rMasSMenos.rumbo(orientacion)),
-                          midiDelOrigen: midiDelOrigen)
+        TecladoIsomorfico(
+            nombre: nombre, orientacion: orientacion,
+            semitonosEnQ: intervalo(DireccionHexagonal.qMasSMenos.rumbo(orientacion)),
+            semitonosEnR: intervalo(DireccionHexagonal.rMasSMenos.rumbo(orientacion)),
+            midiDelOrigen: midiDelOrigen)
     }
 
     /// La altura de una casilla (en afinación igual, sin ortografía: con sostenidos o con bemoles).
@@ -159,17 +171,22 @@ public struct TecladoIsomorfico: Hashable, Sendable {
 
     /// El teclado dibujado en SVG: un hexágono por casilla con el nombre de su nota y su octava, las teclas
     /// negras del piano en gris y, si se dan, las `marcadas` en el azul de las notas del Tonnetz.
-    public func svg(_ casillas: [CoordenadaAxial], marcadas: Set<Int> = [], tamano: Double = 24,
-                    notacion: Notacion = .espanolUnicode, preferirBemoles: Bool = false) -> String {
+    public func svg(
+        _ casillas: [CoordenadaAxial], marcadas: Set<Int> = [], tamano: Double = 24,
+        notacion: Notacion = .espanolUnicode, preferirBemoles: Bool = false
+    ) -> String {
         let negras: Set<Int> = [1, 3, 6, 8, 10]
-        return Trazado(orientacion: orientacion, tamano: tamano).svg(casillas, relleno: { casilla in
-            let midi = self.midi(en: casilla)
-            if marcadas.contains(midi) { return DibujoSVG.Color.nota }
-            return negras.contains(modulo(midi, 12)) ? "#bbbbbb" : "#f4f4f4"
-        }, rotulo: { casilla in
-            let altura = self.altura(en: casilla, preferirBemoles: preferirBemoles)
-            return altura.nota.nombreCompacto(en: notacion) + "\(altura.octava)"
-        })
+        return Trazado(orientacion: orientacion, tamano: tamano).svg(
+            casillas,
+            relleno: { casilla in
+                let midi = self.midi(en: casilla)
+                if marcadas.contains(midi) { return DibujoSVG.Color.nota }
+                return negras.contains(modulo(midi, 12)) ? "#bbbbbb" : "#f4f4f4"
+            },
+            rotulo: { casilla in
+                let altura = self.altura(en: casilla, preferirBemoles: preferirBemoles)
+                return altura.nota.nombreCompacto(en: notacion) + "\(altura.octava)"
+            })
     }
 }
 

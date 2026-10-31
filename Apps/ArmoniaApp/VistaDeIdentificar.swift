@@ -1,6 +1,6 @@
-import SwiftUI
 import Armonia
 import ArmoniaUI
+import SwiftUI
 
 /// Toca notas en el mástil, una por cuerda como al tocar, o en un teclado MIDI conectado, y muestra qué acorde
 /// forman (el bajo es la más grave) y cómo es el conjunto en teoría postonal. En el mástil, tocar otra vez una nota
@@ -25,7 +25,8 @@ struct VistaDeIdentificar: View {
 
     /// Lo que suena, de la más grave a la más aguda: lo del teclado MIDI o, si no hay, lo del mástil.
     private var alturas: [Altura] {
-        notasMIDI.isEmpty ? posiciones.map { mastil.altura(en: $0) }.sorted() : notasMIDI.sorted().map { Altura(midi: $0) }
+        notasMIDI.isEmpty
+            ? posiciones.map { mastil.altura(en: $0) }.sorted() : notasMIDI.sorted().map { Altura(midi: $0) }
     }
 
     var body: some View {
@@ -39,10 +40,12 @@ struct VistaDeIdentificar: View {
                 }
                 Text(notacion.texto(.tocaElMastil))
                     .foregroundColor(.secondary)
-                DiagramaDeMastil(mastil: mastil, marcas: posiciones, rango: 0...12,
-                                 apagadas: Set(0..<encordado.numeroDeCuerdas).subtracting(trastes.keys),
-                                 ortografia: ortografia(de: acordes.first), notacion: notacion)
-                    .alTocar(tocar)
+                DiagramaDeMastil(
+                    mastil: mastil, marcas: posiciones, rango: 0...12,
+                    apagadas: Set(0..<encordado.numeroDeCuerdas).subtracting(trastes.keys),
+                    ortografia: ortografia(de: acordes.first), notacion: notacion
+                )
+                .alTocar(tocar)
                 Button(notacion.texto(.borrar)) { borrar() }
                     .disabled(trastes.isEmpty && notasMIDI.isEmpty)
             }
@@ -60,8 +63,9 @@ struct VistaDeIdentificar: View {
                             Text(acorde.nombre(en: notacion)).foregroundColor(.secondary)
                         }
                     }
-                    LabeledContent(notacion.texto(.notas),
-                                   value: alturas.map { $0.nombre(en: notacion) }.joined(separator: " "))
+                    LabeledContent(
+                        notacion.texto(.notas),
+                        value: alturas.map { $0.nombre(en: notacion) }.joined(separator: " "))
                     BotonDeEscuchar(.coral([alturas], duracion: 1.5))
                     if let primero = acordes.first {
                         // Sus digitaciones, su arpegio y sus escalas.

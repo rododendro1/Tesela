@@ -1,14 +1,14 @@
-import SwiftUI
 import Armonia
 import ArmoniaUI
+import SwiftUI
 
 /// Elige una tónica y una escala del catálogo (occidentales y de otras tradiciones) y muestra sus notas,
 /// sus acordes y dónde caen en el mástil.
 struct VistaDeEscalas: View {
     @Environment(\.notacion) private var notacion
     @EnvironmentObject private var navegacion: Navegacion
-    @State private var tonica = 0          // índice en `tonicas`
-    @State private var tipo = 0            // índice en `catalogo`
+    @State private var tonica = 0 // índice en `tonicas`
+    @State private var tipo = 0 // índice en `catalogo`
 
     /// Las escalas habituales y, después, las de otras tradiciones. Se elige por índice porque dos
     /// escalas con las mismas notas son iguales (`==`) aunque se llamen distinto.
@@ -30,7 +30,9 @@ struct VistaDeEscalas: View {
         Form {
             Section(notacion.texto(.escala)) {
                 Picker(notacion.texto(.tonica), selection: $tonica) {
-                    ForEach(VistaDeEscalas.tonicas.indices, id: \.self) { Text(VistaDeEscalas.tonicas[$0].nombre(en: notacion)).tag($0) }
+                    ForEach(VistaDeEscalas.tonicas.indices, id: \.self) {
+                        Text(VistaDeEscalas.tonicas[$0].nombre(en: notacion)).tag($0)
+                    }
                 }
                 Picker(notacion.texto(.tipo), selection: $tipo) {
                     Section(notacion.texto(.habituales)) {
@@ -84,7 +86,8 @@ struct VistaDeEscalas: View {
         }
         let nombre = pedida.tipo.nombre(en: .espanolUnicode)
         if let indice = VistaDeEscalas.catalogo.firstIndex(where: { $0.nombre(en: .espanolUnicode) == nombre })
-            ?? VistaDeEscalas.catalogo.firstIndex(of: pedida.tipo) {
+            ?? VistaDeEscalas.catalogo.firstIndex(of: pedida.tipo)
+        {
             tipo = indice
         }
     }

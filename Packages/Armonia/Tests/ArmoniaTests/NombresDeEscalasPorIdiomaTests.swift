@@ -1,6 +1,7 @@
 import XCTest
-@testable import ArmoniaTeoria
+
 @testable import ArmoniaNucleo
+@testable import ArmoniaTeoria
 
 /// Los ficheros por idioma de `Escalas/Nombres/`.
 final class NombresDeEscalasPorIdiomaTests: XCTestCase {
@@ -30,7 +31,9 @@ final class NombresDeEscalasPorIdiomaTests: XCTestCase {
         for idioma in Idioma.allCases where idioma != .espanol {
             let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
             for tipo in TipoDeEscala.todos {
-                XCTAssertEqual(tipo.nombre(en: notacion), NombresDeEscalas.de(idioma).porTipo[tipo]?.nombre, "\(idioma): \(tipo.nombre)")
+                XCTAssertEqual(
+                    tipo.nombre(en: notacion), NombresDeEscalas.de(idioma).porTipo[tipo]?.nombre,
+                    "\(idioma): \(tipo.nombre)")
             }
         }
         // Un tipo propio, con los intervalos de uno del catálogo, conserva su nombre en español.
@@ -45,7 +48,8 @@ final class NombresDeEscalasPorIdiomaTests: XCTestCase {
             let nombres = NombresDeEscalas.de(idioma)
             for (tipo, entrada) in nombres.porTipo {
                 for alias in entrada.alias {
-                    XCTAssertEqual(nombres.indice[TipoDeEscala.normalizar(alias)], tipo, "\(idioma): \(alias) (\(entrada.nombre))")
+                    XCTAssertEqual(
+                        nombres.indice[TipoDeEscala.normalizar(alias)], tipo, "\(idioma): \(alias) (\(entrada.nombre))")
                 }
             }
         }
@@ -64,12 +68,15 @@ final class NombresDeEscalasPorIdiomaTests: XCTestCase {
     /// Un tipo con alias en español (que no sean solo el mismo nombre sin tildes) los tiene en los idiomas
     /// románicos. Euskera, alemán, ruso y griego tienen menos: algunos alias no se traducen bien a su gramática.
     func testLosTiposConAliasEnEspanolLosTienenEnLosIdiomasRomanicos() {
-        let romanicos: [Idioma] = [.catalan, .gallego, .asturiano, .aragones, .portugues, .frances, .occitano, .italiano]
+        let romanicos: [Idioma] = [
+            .catalan, .gallego, .asturiano, .aragones, .portugues, .frances, .occitano, .italiano,
+        ]
         for tipo in TipoDeEscala.todos {
             let nombre = TipoDeEscala.normalizar(tipo.nombre)
             guard tipo.alias.contains(where: { TipoDeEscala.normalizar($0) != nombre }) else { continue }
             for idioma in romanicos {
-                XCTAssertFalse(NombresDeEscalas.de(idioma).porTipo[tipo]?.alias.isEmpty ?? true, "\(idioma): \(tipo.nombre)")
+                XCTAssertFalse(
+                    NombresDeEscalas.de(idioma).porTipo[tipo]?.alias.isEmpty ?? true, "\(idioma): \(tipo.nombre)")
             }
         }
     }
@@ -111,15 +118,18 @@ final class NombresDeEscalasPorIdiomaTests: XCTestCase {
         let catalan = Notacion.espanolUnicode.conTextos(en: .catalan)
         XCTAssertEqual(TipoDeEscala.andina.nombre(en: catalan), "pentatònica andina")
         XCTAssertEqual(TipoDeEscala.tetracordoCromatico.nombre(en: catalan), "tetracord cromàtic")
-        XCTAssertEqual(TipoDeEscala.tezetaMenor.nombre(en: Notacion.espanolUnicode.conTextos(en: .frances)), "Təzəta mineur")
+        XCTAssertEqual(
+            TipoDeEscala.tezetaMenor.nombre(en: Notacion.espanolUnicode.conTextos(en: .frances)), "Təzəta mineur")
         XCTAssertEqual(TipoDeEscala.andina.nombre(en: .espanolUnicode), "pentatónica andina")
     }
 
     /// En ruso y griego los nombres propios van en su alfabeto (salvo los 72 melakarta, que siguen en IAST) y
     /// se leen de vuelta; el nombre original, en latino, sigue valiendo.
     func testRusoYGriegoTranscribenLosNombresPropiosDeLasTradicionales() {
-        for (idioma, ejemplo, original) in [(Idioma.ruso, "Хиджаз", "Ḥijāz"), (.ruso, "Бхайрав", "Bhairav"),
-                                           (.griego, "Ραστ", "Rast"), (.griego, "Μπιλαβάλ", "Bilāval")] {
+        for (idioma, ejemplo, original) in [
+            (Idioma.ruso, "Хиджаз", "Ḥijāz"), (.ruso, "Бхайрав", "Bhairav"),
+            (.griego, "Ραστ", "Rast"), (.griego, "Μπιλαβάλ", "Bilāval"),
+        ] {
             let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
             let tipo = TipoDeEscala.buscar(nombre: original)
             XCTAssertEqual(tipo?.nombre(en: notacion), ejemplo, "\(idioma)")
@@ -172,7 +182,8 @@ final class NombresDeEscalasPorIdiomaTests: XCTestCase {
     func testLasFormasNormalizadasLeenElMismoTipo() {
         for tipo in TipoDeEscala.todos {
             for clave in tipo.aliasNormalizados {
-                XCTAssertEqual(TipoDeEscala.buscar(nombre: clave, aceptarIngles: false)?.intervalos, tipo.intervalos, clave)
+                XCTAssertEqual(
+                    TipoDeEscala.buscar(nombre: clave, aceptarIngles: false)?.intervalos, tipo.intervalos, clave)
             }
         }
         XCTAssertEqual(TipoDeEscala.buscar(nombre: "dorico b2"), TipoDeEscala.buscar(nombre: "dórico ♭2"))
@@ -182,7 +193,8 @@ final class NombresDeEscalasPorIdiomaTests: XCTestCase {
     }
 
     func testAliasNormalizadosNoTienenRepetidos() {
-        let t = TipoDeEscala(nombre: "Dórico", intervalos: [.unisono, .terceraMenor], alias: ["dórico", "Dorico", "Jónico"])
+        let t = TipoDeEscala(
+            nombre: "Dórico", intervalos: [.unisono, .terceraMenor], alias: ["dórico", "Dorico", "Jónico"])
         XCTAssertEqual(t.aliasNormalizados, ["dorico", "jonico"])
     }
 
@@ -198,7 +210,8 @@ final class NombresDeEscalasPorIdiomaTests: XCTestCase {
             let nombres = NombresDeEscalas.de(idioma)
             for tipo in TipoDeEscala.melakartas {
                 XCTAssertEqual(nombres.nombre(de: tipo), tipo.nombre, "\(idioma)")
-                XCTAssertEqual(nombres.indice[TipoDeEscala.normalizar(tipo.nombre)]?.intervalos, tipo.intervalos, "\(idioma)")
+                XCTAssertEqual(
+                    nombres.indice[TipoDeEscala.normalizar(tipo.nombre)]?.intervalos, tipo.intervalos, "\(idioma)")
             }
         }
         XCTAssertEqual(NombresDeEscalas.de(.ruso).nombre(de: .`in`), "Ин")

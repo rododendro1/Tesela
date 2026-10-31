@@ -30,8 +30,10 @@ public struct Encordado: Hashable, Sendable {
     /// Guitarra estándar: Mi2 La2 Re3 Sol3 Si3 Mi4.
     public static let guitarra = Encordado(
         nombre: "guitarra",
-        cuerdas: [Altura(.mi, octava: 2), Altura(.la, octava: 2), Altura(.re, octava: 3),
-                  Altura(.sol, octava: 3), Altura(.si, octava: 3), Altura(.mi, octava: 4)])
+        cuerdas: [
+            Altura(.mi, octava: 2), Altura(.la, octava: 2), Altura(.re, octava: 3),
+            Altura(.sol, octava: 3), Altura(.si, octava: 3), Altura(.mi, octava: 4),
+        ])
 
     /// Guitarra de siete cuerdas, con el Si1 grave.
     public static let guitarraDeSieteCuerdas = Encordado(
@@ -74,10 +76,12 @@ extension Encordado {
     /// «seven-string guitar», «guitare», «bandolim», «гитара». `nil` si no se conoce.
     public init?(nombre texto: String) {
         let clave = texto.claveDeBusqueda
-        guard let encontrado = Encordado.alias[clave]
+        guard
+            let encontrado = Encordado.alias[clave]
                 ?? Encordado.todos.first(where: { encordado in
                     ([encordado.nombre] + (encordado.traduccion?.todos ?? [])).contains { $0.claveDeBusqueda == clave }
-                }) else { return nil }
+                })
+        else { return nil }
         self = encontrado
     }
 

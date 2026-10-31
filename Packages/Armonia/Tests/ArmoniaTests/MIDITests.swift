@@ -1,10 +1,11 @@
 import Foundation
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class MIDITests: XCTestCase {
     /// Lo que se lee de un fichero MIDI: divisiones, pistas y, por pista, notas y metaeventos.
@@ -16,7 +17,11 @@ final class MIDITests: XCTestCase {
             var notas: [(clave: Int, desde: Int, hasta: Int, canal: Int)] = []
             var metas: [(tiempo: Int, tipo: UInt8, datos: [UInt8])] = []
             var programa: Int?
-            var texto: (UInt8) -> [String] { { tipo in self.metas.filter { $0.tipo == tipo }.map { String($0.datos.map { Character(Unicode.Scalar($0)) }) } } }
+            var texto: (UInt8) -> [String] {
+                { tipo in
+                    self.metas.filter { $0.tipo == tipo }.map { String($0.datos.map { Character(Unicode.Scalar($0)) }) }
+                }
+            }
         }
     }
 
@@ -24,19 +29,29 @@ final class MIDITests: XCTestCase {
     func leer(_ datos: Data, file: StaticString = #filePath, line: UInt = #line) throws -> Leido {
         let b = [UInt8](datos)
         var i = 0
-        func entero(_ n: Int) -> Int { defer { i += n }; return b[i..<i + n].reduce(0) { $0 << 8 | Int($1) } }
+        func entero(_ n: Int) -> Int {
+            defer { i += n }
+            return b[i..<i + n].reduce(0) { $0 << 8 | Int($1) }
+        }
         func variable() -> Int {
             var valor = 0
-            while true { let x = b[i]; i += 1; valor = valor << 7 | Int(x & 0x7F); if x & 0x80 == 0 { return valor } }
+            while true {
+                let x = b[i]
+                i += 1
+                valor = valor << 7 | Int(x & 0x7F)
+                if x & 0x80 == 0 { return valor }
+            }
         }
         var leido = Leido()
-        XCTAssertEqual(Array(b[0..<4]), Array("MThd".utf8), file: file, line: line); i = 4
+        XCTAssertEqual(Array(b[0..<4]), Array("MThd".utf8), file: file, line: line)
+        i = 4
         XCTAssertEqual(entero(4), 6)
         leido.formato = entero(2)
         let n = entero(2)
         leido.divisiones = entero(2)
         for _ in 0..<n {
-            XCTAssertEqual(Array(b[i..<i + 4]), Array("MTrk".utf8), file: file, line: line); i += 4
+            XCTAssertEqual(Array(b[i..<i + 4]), Array("MTrk".utf8), file: file, line: line)
+            i += 4
             let fin = entero(4) + i
             var pista = Leido.Pista()
             var ahora = 0
@@ -44,22 +59,29 @@ final class MIDITests: XCTestCase {
             var terminada = false
             while i < fin {
                 ahora += variable()
-                let estado = b[i]; i += 1
+                let estado = b[i]
+                i += 1
                 if estado == 0xFF {
-                    let tipo = b[i]; i += 1
+                    let tipo = b[i]
+                    i += 1
                     let largo = variable()
-                    pista.metas.append((ahora, tipo, Array(b[i..<i + largo]))); i += largo
+                    pista.metas.append((ahora, tipo, Array(b[i..<i + largo])))
+                    i += largo
                     if tipo == 0x2F { terminada = true }
                 } else if estado & 0xF0 == 0xC0 {
-                    pista.programa = Int(b[i]); i += 1
+                    pista.programa = Int(b[i])
+                    i += 1
                 } else if estado & 0xF0 == 0x90 {
-                    abiertas[Int(b[i])] = ahora; i += 2
+                    abiertas[Int(b[i])] = ahora
+                    i += 2
                 } else if estado & 0xF0 == 0x80 {
-                    let clave = Int(b[i]); i += 2
+                    let clave = Int(b[i])
+                    i += 2
                     let desde = try XCTUnwrap(abiertas.removeValue(forKey: clave), file: file, line: line)
                     pista.notas.append((clave, desde, ahora, Int(estado & 0x0F)))
                 } else {
-                    XCTFail("mensaje inesperado \(estado)", file: file, line: line); break
+                    XCTFail("mensaje inesperado \(estado)", file: file, line: line)
+                    break
                 }
             }
             XCTAssertTrue(terminada && i == fin && abiertas.isEmpty, file: file, line: line)
@@ -80,7 +102,7 @@ final class MIDITests: XCTestCase {
         // 90 negras por minuto: 666 667 µs por negra.
         XCTAssertEqual(control.metas.first { $0.tipo == 0x51 }?.datos, [0x0A, 0x2C, 0x2B])
         XCTAssertEqual(control.metas.first { $0.tipo == 0x58 }?.datos, [3, 2, 24, 8])
-        XCTAssertEqual(control.metas.first { $0.tipo == 0x59 }?.datos, [0, 0])   // Do mayor
+        XCTAssertEqual(control.metas.first { $0.tipo == 0x59 }?.datos, [0, 0]) // Do mayor
         let notas = leido.pistas[1].notas.sorted { ($0.desde, $0.clave) < ($1.desde, $1.clave) }
         // La ligadura suena como una nota; el silencio deja un hueco; el acorde, dos notas a la vez.
         XCTAssertEqual(notas.map(\.clave), [60, 62, 64, 67, 71])
@@ -104,7 +126,7 @@ final class MIDITests: XCTestCase {
         let seis = try leer(Voz(leyendo: "Do4:4. Re4:4.", compas: "6/8").midi(tonalidad: Tonalidad(.mi, .menor)))
         XCTAssertEqual(seis.pistas[0].metas.first { $0.tipo == 0x51 }?.datos, [0x07, 0xA1, 0x20])
         XCTAssertEqual(seis.pistas[0].metas.first { $0.tipo == 0x58 }?.datos, [6, 3, 36, 8])
-        XCTAssertEqual(seis.pistas[0].metas.first { $0.tipo == 0x59 }?.datos, [1, 1])   // un sostenido, menor
+        XCTAssertEqual(seis.pistas[0].metas.first { $0.tipo == 0x59 }?.datos, [1, 1]) // un sostenido, menor
         // Fuera del rango MIDI, se omite.
         let grave = try leer(Voz(leyendo: "La9:4 Do4:4").midi())
         XCTAssertEqual(grave.pistas[1].notas.map(\.clave), [60])
@@ -114,7 +136,8 @@ final class MIDITests: XCTestCase {
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
         let leido = try leer(coral.midi(duracion: .blanca, tempo: Tempo(60), titulo: "Cadencia"))
         XCTAssertEqual(leido.pistas.count, 5)
-        XCTAssertEqual(leido.pistas.dropFirst().map { $0.texto(0x03).first }, ["soprano", "contralto", "tenor", "bajo"])
+        XCTAssertEqual(
+            leido.pistas.dropFirst().map { $0.texto(0x03).first }, ["soprano", "contralto", "tenor", "bajo"])
         XCTAssertEqual(leido.pistas[1].notas.map(\.clave), [72, 71, 72])
         // Sol4 se repite en el contralto: tres notas, no una ligada.
         XCTAssertEqual(leido.pistas[2].notas.count, 3)
@@ -141,7 +164,8 @@ final class MIDITests: XCTestCase {
         // En Latin-1, con las alteraciones en ASCII.
         let prestado = try leer(AnalisisArmonico.analizar(leyendo: "Do Lab Sib Do").midi(titulo: "Préstamo"))
         XCTAssertEqual(prestado.pistas[1].texto(0x06), ["Do · I", "Lab · bVI", "Sib · bVII", "Do · I"])
-        XCTAssertEqual(prestado.pistas[0].metas.first { $0.tipo == 0x03 }?.datos, [0x50, 0x72, 0xE9, 0x73, 0x74, 0x61, 0x6D, 0x6F])
+        XCTAssertEqual(
+            prestado.pistas[0].metas.first { $0.tipo == 0x03 }?.datos, [0x50, 0x72, 0xE9, 0x73, 0x74, 0x61, 0x6D, 0x6F])
         XCTAssertEqual(ArchivoMIDI.texto("Fa♯m · 𝄫 → ☃"), Array("Fa#m ".utf8) + [0xB7] + Array(" bb -> ?".utf8))
     }
 

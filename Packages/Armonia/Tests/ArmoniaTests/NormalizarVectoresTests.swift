@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import ArmoniaTeoria
 
 /// `TipoDeEscala.normalizar` contra los casos de `Scripts/vectores/normalizar.tsv`, que también lee
@@ -16,7 +17,10 @@ final class NormalizarVectoresTests: XCTestCase {
         for (n, linea) in texto.split(separator: "\n", omittingEmptySubsequences: false).enumerated() {
             if linea.isEmpty || linea.hasPrefix("#") { continue }
             let columnas = linea.split(separator: "\t", omittingEmptySubsequences: false).map(String.init)
-            guard columnas.count == 2 else { XCTFail("línea \(n + 1): se esperaban dos columnas"); continue }
+            guard columnas.count == 2 else {
+                XCTFail("línea \(n + 1): se esperaban dos columnas")
+                continue
+            }
             XCTAssertEqual(TipoDeEscala.normalizar(columnas[0]), columnas[1], "línea \(n + 1): «\(columnas[0])»")
             casos += 1
         }

@@ -137,7 +137,7 @@ comandos, el ejemplo, las dos apps en macOS y en el simulador de iOS (compiladas
 resolver. Los jobs de macOS (paquetes y apps, pruebas de interfaz y DocC) corren a mano desde la pestaña Actions y una vez por
 semana, los lunes; en cada push y en cada pull request solo corre Linux. La documentación de DocC se publica en
 [GitHub Pages](https://rododendro1.github.io/Tesela/) con cada versión (`.github/workflows/documentacion.yml`), y también se
-puede publicar a mano desde la pestaña Actions. Dependabot mantiene al día las acciones del CI (`.github/dependabot.yml`). `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
+puede publicar a mano desde la pestaña Actions. Dependabot mantiene al día las acciones del CI (`.github/dependabot.yml`). El formato del código Swift se comprueba con swift-format (`.swift-format`; los comandos, en `CONTRIBUTING.md`). `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
 
 Cómo contribuir está en `CONTRIBUTING.md`, y cómo avisar de un fallo de seguridad, en `SECURITY.md`.
 `.spi.yml` le dice a [Swift Package Index](https://swiftpackageindex.com) qué módulos documentar.

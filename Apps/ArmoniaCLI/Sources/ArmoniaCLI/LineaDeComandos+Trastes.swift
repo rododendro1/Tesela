@@ -21,7 +21,9 @@ extension LineaDeComandos {
         case .sinValor:
             return uso(.faltaInstrumento, notacion)
         case .valor(let nombre):
-            guard let encontrado = Encordado(nombre: nombre) else { return uso(.instrumentoDesconocido(nombre), notacion) }
+            guard let encontrado = Encordado(nombre: nombre) else {
+                return uso(.instrumentoDesconocido(nombre), notacion)
+            }
             encordado = encontrado
         }
 
@@ -73,16 +75,18 @@ extension LineaDeComandos {
         let bloques = try argumentos.restantes.map { texto -> String in
             let acorde = try Acorde(leyendo: texto)
             var lineas = ["\(acorde.cifrado(en: notacion)) · \(Mensaje.instrumento(encordado).texto(en: notacion))"]
-            let formas = mastil.digitaciones(de: acorde, maximoDeDedos: maximoDeDedos, maximoTraste: maximoTraste,
-                                             exigirQuinta: completo, limite: limite)
+            let formas = mastil.digitaciones(
+                de: acorde, maximoDeDedos: maximoDeDedos, maximoTraste: maximoTraste,
+                exigirQuinta: completo, limite: limite)
             guard !formas.isEmpty else {
                 lineas.append("  " + Mensaje.sinDigitaciones.texto(en: notacion))
                 return lineas.joined(separator: "\n")
             }
             for forma in formas {
                 let notas = forma.notas(para: acorde).map { $0.nombre(en: notacion) }.joined(separator: " ")
-                lineas.append("  " + forma.tablatura.padding(hasta: 17) + notas.padding(hasta: 18)
-                              + descripcion(de: forma, notacion))
+                lineas.append(
+                    "  " + forma.tablatura.padding(hasta: 17) + notas.padding(hasta: 18)
+                        + descripcion(de: forma, notacion))
                 if conDiagrama { lineas += diagrama(de: forma, notacion) }
             }
             return lineas.joined(separator: "\n")

@@ -1,9 +1,10 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class MelodiaTests: XCTestCase {
     let arpegio: Melodia = ["Do4", "Mi4", "Sol4"]
@@ -34,8 +35,9 @@ final class MelodiaTests: XCTestCase {
         XCTAssertEqual(arpegio.transponer(grados: 1, en: doMayor)?.description, "Re4 Fa4 La4")
         XCTAssertEqual(arpegio.transponer(grados: -1, en: doMayor)?.description, "Si3 Re4 Fa4")
         XCTAssertEqual(arpegio.transponer(grados: 7, en: doMayor)?.description, "Do5 Mi5 Sol5")
-        XCTAssertEqual(Melodia(["Do4", "Do#4", "Re4"]).transponer(grados: 2, en: doMayor)?.description,
-                       "Mi4 Mi♯4 Fa4")
+        XCTAssertEqual(
+            Melodia(["Do4", "Do#4", "Re4"]).transponer(grados: 2, en: doMayor)?.description,
+            "Mi4 Mi♯4 Fa4")
         let armonica = Escala(.la, .menorArmonica)
         XCTAssertEqual(Melodia(["La4", "Do5", "Mi5"]).transponer(grados: 1, en: armonica)?.description, "Si4 Re5 Fa5")
         XCTAssertEqual(Melodia(["Mi5", "Fa5", "Mi5"]).transponer(grados: -1, en: armonica)?.description, "Re5 Mi5 Re5")
@@ -99,9 +101,11 @@ final class RitmoTests: XCTestCase {
     }
 
     func testLecturaDeDuraciones() {
-        let casos: [(String, Duracion)] = [("1", .redonda), ("4", .negra), ("16", .semicorchea), ("8.", Duracion(3, 16)),
-                                           ("2..", Duracion(7, 8)), ("1/12", Duracion(1, 12)), ("5/8", Duracion(5, 8)),
-                                           ("2/1", .cuadrada), ("128", .garrapatea)]
+        let casos: [(String, Duracion)] = [
+            ("1", .redonda), ("4", .negra), ("16", .semicorchea), ("8.", Duracion(3, 16)),
+            ("2..", Duracion(7, 8)), ("1/12", Duracion(1, 12)), ("5/8", Duracion(5, 8)),
+            ("2/1", .cuadrada), ("128", .garrapatea),
+        ]
         for (texto, duracion) in casos {
             XCTAssertEqual(Duracion(texto: texto), duracion, texto)
             XCTAssertEqual(duracion.texto, texto, texto)
@@ -123,7 +127,7 @@ final class RitmoTests: XCTestCase {
         XCTAssertEqual(Compas("3/4").tipo, .simple)
         XCTAssertEqual(Compas("3/4").duracion, Duracion(.blanca, puntillos: 1))
         XCTAssertEqual(Compas("7/8").tipo, .amalgama)
-        XCTAssertEqual(Compas("7/8").pulsos, 3)   // 2+2+3
+        XCTAssertEqual(Compas("7/8").pulsos, 3) // 2+2+3
         XCTAssertEqual(Compas("C"), .compasillo)
         XCTAssertEqual(Compas("¢"), .partido)
         XCTAssertEqual(Compas.compasillo.duracion, .redonda)
@@ -170,7 +174,8 @@ final class RitmoTests: XCTestCase {
         XCTAssertEqual(voz.segundos(tempo: Tempo(90)), 4, accuracy: 1e-12)
         XCTAssertTrue(voz.terminaEnBarra)
         let compases = voz.compases
-        XCTAssertEqual(compases.map { $0.map(\.texto) }, [["Do4:4", "Re4:8", "Mi4:8", "Fa4:4~"], ["Fa4:2", "Sol4:4"]])
+        XCTAssertEqual(
+            compases.map { $0.map(\.texto) }, [["Do4:4", "Re4:8", "Mi4:8", "Fa4:4~"], ["Fa4:2", "Sol4:4"]])
         // Repartir en compases no cambia la melodía: la nota ligada cuenta una vez.
         XCTAssertEqual(Voz(compases.flatMap { $0 }, compas: voz.compas).melodia, voz.melodia)
         XCTAssertEqual(voz.description, "3/4 Do4:4 Re4:8 Mi4:8 Fa4:2. Sol4:4")
@@ -372,8 +377,10 @@ final class PentagramaTests: XCTestCase {
             for lugar in -12...20 {
                 for alteracion in -2...2 {
                     let nota = clave.altura(lugar: lugar, alteracion: Alteracion(alteracion))
-                    XCTAssertEqual(clave.posicion(de: nota), PosicionEnPentagrama(lugar: lugar, alteracion: Alteracion(alteracion)),
-                                   "\(clave) \(lugar)")
+                    XCTAssertEqual(
+                        clave.posicion(de: nota),
+                        PosicionEnPentagrama(lugar: lugar, alteracion: Alteracion(alteracion)),
+                        "\(clave) \(lugar)")
                 }
             }
         }
@@ -410,8 +417,9 @@ final class InstrumentosTests: XCTestCase {
         XCTAssertEqual(InstrumentoDePartitura.clarineteEnSib.escritura(de: Escala("Mib mayor")), Escala(.fa))
         XCTAssertEqual(InstrumentoDePartitura.saxofonAlto.escritura(de: Acorde("Do7")).cifrado, "La7")
         XCTAssertEqual(InstrumentoDePartitura.saxofonAlto.escritura(de: Escala("Si mayor")).nombre, "La♭ mayor")
-        XCTAssertEqual(InstrumentoDePartitura.saxofonAlto.escritura(de: Escala("Si mayor"), simplificar: false).nombre,
-                       "Sol♯ mayor")
+        XCTAssertEqual(
+            InstrumentoDePartitura.saxofonAlto.escritura(de: Escala("Si mayor"), simplificar: false).nombre,
+            "Sol♯ mayor")
         XCTAssertEqual(InstrumentoDePartitura.trompaEnFa.escritura(de: Nota.fa), .do)
 
         let melodia: Melodia = ["Do4", "Mi4", "Sol4"]

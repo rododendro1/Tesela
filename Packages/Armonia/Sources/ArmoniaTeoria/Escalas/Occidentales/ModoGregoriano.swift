@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 /// Uno de los ocho modos del canto gregoriano: además de sus notas, la nota final (*finalis*),
 /// la nota de recitación (tenor o dominante) y el ámbito de la melodía.
 ///
@@ -39,9 +40,13 @@ public struct ModoGregoriano: Hashable, Sendable, CustomStringConvertible {
     /// Lee "modo 2", "protus plagal", "hipodórico" o "hipodorico".
     public init?(nombre: String) {
         let texto = TipoDeEscala.normalizar(nombre)
-        guard let modo = ModoGregoriano.todos.first(where: { modo in
-            [modo.nombre, modo.nombreGriego, "modo \(modo.numero)"].contains { TipoDeEscala.normalizar($0) == texto }
-        }) else { return nil }
+        guard
+            let modo = ModoGregoriano.todos.first(where: { modo in
+                [modo.nombre, modo.nombreGriego, "modo \(modo.numero)"].contains {
+                    TipoDeEscala.normalizar($0) == texto
+                }
+            })
+        else { return nil }
         self = modo
     }
 

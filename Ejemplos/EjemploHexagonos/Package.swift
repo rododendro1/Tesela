@@ -9,14 +9,14 @@ let package = Package(
     // Como `Hexagonos`: SwiftPM rechaza que un paquete con un mínimo más bajo dependa de otro con uno más alto.
     platforms: [.macOS(.v13)],
     products: [
-        .executable(name: "EjemploHexagonos", targets: ["EjemploHexagonos"]),
+        .executable(name: "EjemploHexagonos", targets: ["EjemploHexagonos"])
     ],
     dependencies: [
-        .package(path: "../../Packages/Hexagonos"),
+        .package(path: "../../Packages/Hexagonos")
     ],
     targets: [
         .executableTarget(
             name: "EjemploHexagonos",
-            dependencies: [.product(name: "Hexagonos", package: "Hexagonos")]),
+            dependencies: [.product(name: "Hexagonos", package: "Hexagonos")])
     ]
 )

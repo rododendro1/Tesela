@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import Hexagonos
 
 final class CaminosConCosteTests: XCTestCase {
@@ -92,7 +93,8 @@ final class CaminosConCosteTests: XCTestCase {
     func testSiempreElMismoCamino() {
         let destino = CoordenadaAxial(q: 4, r: -2)
         let caminos = (0..<5).map { _ in
-            CoordenadaAxial.origen.caminoMasBarato(hasta: destino) { _, hacia in hacia.distanciaAlOrigen <= 6 ? 1 : nil }
+            CoordenadaAxial.origen.caminoMasBarato(hasta: destino) { _, hacia in hacia.distanciaAlOrigen <= 6 ? 1 : nil
+            }
         }
         XCTAssertTrue(caminos.allSatisfy { $0 == caminos[0] })
     }
@@ -103,16 +105,20 @@ final class CaminosConCosteTests: XCTestCase {
         XCTAssertEqual(CoordenadaAxial.origen.caminoMasBarato(hasta: destino, presupuesto: 8, coste: barato)?.coste, 8)
         XCTAssertNil(CoordenadaAxial.origen.caminoMasBarato(hasta: destino, presupuesto: 7.9, coste: barato))
         // Sin región finita, el presupuesto hace que termine aunque no se pueda llegar.
-        XCTAssertNil(CoordenadaAxial.origen.caminoMasBarato(hasta: destino, presupuesto: 20) { _, hacia in
-            hacia == destino ? nil : 1
-        })
+        XCTAssertNil(
+            CoordenadaAxial.origen.caminoMasBarato(hasta: destino, presupuesto: 20) { _, hacia in
+                hacia == destino ? nil : 1
+            })
     }
 
     /// Con un coste mínimo, lo estimado ya pasa del presupuesto antes de dar ningún paso.
     func testPresupuestoConCosteMinimo() {
         let destino = CoordenadaAxial(q: 4, r: 0)
-        XCTAssertNil(CoordenadaAxial.origen.caminoMasBarato(hasta: destino, costeMinimo: 1, presupuesto: 3) { _, _ in 1 })
-        XCTAssertEqual(CoordenadaAxial.origen.caminoMasBarato(hasta: destino, costeMinimo: 1, presupuesto: 4) { _, _ in 1 }?.coste, 4)
+        XCTAssertNil(
+            CoordenadaAxial.origen.caminoMasBarato(hasta: destino, costeMinimo: 1, presupuesto: 3) { _, _ in 1 })
+        XCTAssertEqual(
+            CoordenadaAxial.origen.caminoMasBarato(hasta: destino, costeMinimo: 1, presupuesto: 4) { _, _ in 1 }?.coste,
+            4)
     }
 
     /// Una casilla a la que primero se llega caro y luego barato se cuenta una vez, con lo barato.

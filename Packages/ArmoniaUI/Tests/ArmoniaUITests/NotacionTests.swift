@@ -1,5 +1,6 @@
-import XCTest
 import Armonia
+import XCTest
+
 @testable import ArmoniaUI
 
 final class NotacionTests: XCTestCase {

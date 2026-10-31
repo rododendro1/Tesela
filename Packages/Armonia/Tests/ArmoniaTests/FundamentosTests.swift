@@ -1,9 +1,10 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class NotaTests: XCTestCase {
     func testLineaDeQuintas() {
@@ -34,7 +35,8 @@ final class NotaTests: XCTestCase {
     }
 
     func testEnarmonia() {
-        let faSostenido = Nota("Fa#"), solBemol = Nota("Solb")
+        let faSostenido = Nota("Fa#")
+        let solBemol = Nota("Solb")
         XCTAssertNotEqual(faSostenido, solBemol)
         XCTAssertTrue(faSostenido.esEnarmonica(de: solBemol))
         XCTAssertEqual(faSostenido.claseDeAltura, 6)
@@ -88,9 +90,11 @@ final class AlteracionTests: XCTestCase {
     }
 
     func testLectura() {
-        let casos: [(String, Int)] = [("#", 1), ("♯", 1), ("x", 2), ("𝄪", 2), ("##", 2), ("#x", 3), ("b", -1),
-                                      ("bb", -2), ("𝄫", -2), ("♭♭♭", -3), ("", 0), ("♮", 0), ("n", 0),
-                                      ("sostenido", 1), ("doble bemol", -2), ("Triple Sharp", 3), ("natural", 0)]
+        let casos: [(String, Int)] = [
+            ("#", 1), ("♯", 1), ("x", 2), ("𝄪", 2), ("##", 2), ("#x", 3), ("b", -1),
+            ("bb", -2), ("𝄫", -2), ("♭♭♭", -3), ("", 0), ("♮", 0), ("n", 0),
+            ("sostenido", 1), ("doble bemol", -2), ("Triple Sharp", 3), ("natural", 0),
+        ]
         for (texto, semitonos) in casos {
             XCTAssertEqual(Alteracion(texto: texto)?.semitonos, semitonos, texto)
         }
@@ -164,7 +168,7 @@ final class AlturaTests: XCTestCase {
     func testOctavaCientificaYNombreDeNota() {
         let la4: Altura = "La4"
         XCTAssertEqual(la4.octava, 4)
-        XCTAssertEqual(la4.pasosDeOctava, -1)           // la coordenada, que no es la octava científica
+        XCTAssertEqual(la4.pasosDeOctava, -1) // la coordenada, que no es la octava científica
         XCTAssertEqual(la4.nota, .la)
         XCTAssertEqual(Altura("Si#3").octava, 3)
         XCTAssertEqual(Altura(.do, octava: 5).octava, 5)
@@ -237,8 +241,9 @@ final class IntervaloTests: XCTestCase {
     }
 
     func testIntervalosComparables() {
-        XCTAssertEqual([Intervalo.quintaJusta, .terceraMayor, .quintaDisminuida, .cuartaAumentada].sorted(),
-                       [.terceraMayor, .cuartaAumentada, .quintaDisminuida, .quintaJusta])
+        XCTAssertEqual(
+            [Intervalo.quintaJusta, .terceraMayor, .quintaDisminuida, .cuartaAumentada].sorted(),
+            [.terceraMayor, .cuartaAumentada, .quintaDisminuida, .quintaJusta])
         XCTAssertLessThan(-Intervalo.segundaMayor, .unisono)
         XCTAssertLessThan(Intervalo.septimaMayor, .octava)
     }

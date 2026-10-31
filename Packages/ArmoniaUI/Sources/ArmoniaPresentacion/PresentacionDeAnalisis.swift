@@ -44,8 +44,10 @@ public enum PresentacionDeAnalisis {
     ///
     /// La partitura y el MIDI se escriben en una sola tonalidad, la que mejor explica toda la
     /// progresión, porque los dos formatos solo anotan una.
-    public static func analizar(_ texto: String, en tonalidad: Tonalidad? = nil,
-                                notacion: Notacion) throws -> AnalisisPresentado {
+    public static func analizar(
+        _ texto: String, en tonalidad: Tonalidad? = nil,
+        notacion: Notacion
+    ) throws -> AnalisisPresentado {
         if let tonalidad {
             return presentar(try AnalisisArmonico.analizar(leyendo: texto, en: tonalidad), recorrido: nil, notacion)
         }
@@ -54,18 +56,24 @@ public enum PresentacionDeAnalisis {
     }
 
     /// Igual, con los acordes ya leídos (los de un fichero MIDI o MusicXML, por ejemplo). `nil` si no hay ninguno.
-    public static func analizar(_ acordes: [Acorde], en tonalidad: Tonalidad? = nil,
-                                notacion: Notacion) -> AnalisisPresentado? {
+    public static func analizar(
+        _ acordes: [Acorde], en tonalidad: Tonalidad? = nil,
+        notacion: Notacion
+    ) -> AnalisisPresentado? {
         guard !acordes.isEmpty else { return nil }
         if let tonalidad { return presentar(tonalidad.analizar(acordes), recorrido: nil, notacion) }
-        guard let analisis = AnalisisArmonico.analizar(acordes), let recorrido = RecorridoTonal(acordes) else { return nil }
+        guard let analisis = AnalisisArmonico.analizar(acordes), let recorrido = RecorridoTonal(acordes) else {
+            return nil
+        }
         return presentar(analisis, recorrido: recorrido, notacion)
     }
 
     /// El análisis en una sola tonalidad (`analisis`, para la partitura y el MIDI) y, si se da, el
     /// recorrido con sus modulaciones, que es entonces lo que se muestra.
-    private static func presentar(_ analisis: AnalisisArmonico, recorrido: RecorridoTonal?,
-                                  _ notacion: Notacion) -> AnalisisPresentado {
+    private static func presentar(
+        _ analisis: AnalisisArmonico, recorrido: RecorridoTonal?,
+        _ notacion: Notacion
+    ) -> AnalisisPresentado {
         let titulo: String
         let tramos: [TramoPresentado]
         let cadencias: [Cadencia]
@@ -97,7 +105,8 @@ public enum PresentacionDeAnalisis {
     }
 
     static func fila(_ analizado: AcordeAnalizado, _ notacion: Notacion) -> AnalisisPresentado.Fila {
-        AnalisisPresentado.Fila(cifrado: analizado.acorde.cifrado(en: notacion), grado: analizado.cifrado,
-                                funcion: analizado.funcion?.nombre(en: notacion) ?? "")
+        AnalisisPresentado.Fila(
+            cifrado: analizado.acorde.cifrado(en: notacion), grado: analizado.cifrado,
+            funcion: analizado.funcion?.nombre(en: notacion) ?? "")
     }
 }

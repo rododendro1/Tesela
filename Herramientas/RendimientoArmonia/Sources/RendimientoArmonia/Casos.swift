@@ -3,13 +3,19 @@ import Armonia
 /// Lo que se mide: lo que hacen las apps y la línea de comandos, y, en lo que recorre una sucesión
 /// (análisis, armonización, realización), con varias longitudes, para ver cómo crece el tiempo.
 enum Casos {
-    static let cifrados = ["Do", "Rem7", "Sol7/Si", "Fa#m7b5", "Sibmaj7", "Mi°7",
-                           "G7(b9,#11)", "Dm11", "Sol13sus4", "Do6/9", "Fa7alt", "Mibmaj7#11"]
-    static let acordesDesdeMIDI = [[60, 64, 68], [61, 65, 68], [60, 63, 66, 69], [55, 59, 62, 65, 68],
-                                   [64, 67, 72], [62, 72, 76, 79]]
+    static let cifrados = [
+        "Do", "Rem7", "Sol7/Si", "Fa#m7b5", "Sibmaj7", "Mi°7",
+        "G7(b9,#11)", "Dm11", "Sol13sus4", "Do6/9", "Fa7alt", "Mibmaj7#11",
+    ]
+    static let acordesDesdeMIDI = [
+        [60, 64, 68], [61, 65, 68], [60, 63, 66, 69], [55, 59, 62, 65, 68],
+        [64, 67, 72], [62, 72, 76, 79],
+    ]
     static let progresion = ["Do", "Lam", "Rem7", "Sol7", "Do", "Mi7", "Lam", "Re7", "Sol", "Do"]
-    static let melodia: [Altura] = ["Mi4", "Re4", "Do4", "Re4", "Mi4", "Mi4", "Mi4", "Re4",
-                                    "Re4", "Re4", "Mi4", "Sol4", "Sol4", "Mi4", "Re4", "Do4"]
+    static let melodia: [Altura] = [
+        "Mi4", "Re4", "Do4", "Re4", "Mi4", "Mi4", "Mi4", "Re4",
+        "Re4", "Re4", "Mi4", "Sol4", "Sol4", "Mi4", "Re4", "Do4",
+    ]
     static let coral = "Do3 Mi4 Sol4 Do5 | Fa3 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5"
 
     static let longitudes = [4, 8, 16, 32]
@@ -25,7 +31,8 @@ enum Casos {
         let sol7: Acorde = "Sol7/Si"
         let guitarra = Mastil(.guitarra)
         let ukelele = Mastil(.ukelele)
-        let analisisLargo = try? AnalisisArmonico.analizar(leyendo: repetir(progresion, hasta: 64).joined(separator: " "))
+        let analisisLargo = try? AnalisisArmonico.analizar(
+            leyendo: repetir(progresion, hasta: 64).joined(separator: " "))
 
         var casos: [Caso] = [
             Caso(grupo: "Acordes", nombre: "Leer \(cifrados.count) cifrados") {
@@ -58,27 +65,31 @@ enum Casos {
 
         for n in [4, 16, 64] {
             let texto = repetir(progresion, hasta: n).joined(separator: " ")
-            casos.append(Caso(grupo: "Análisis", nombre: "\(n) acordes") {
-                (try? AnalisisArmonico.analizar(leyendo: texto))?.acordes.count ?? 0
-            })
+            casos.append(
+                Caso(grupo: "Análisis", nombre: "\(n) acordes") {
+                    (try? AnalisisArmonico.analizar(leyendo: texto))?.acordes.count ?? 0
+                })
         }
         for n in longitudes {
             let notas = repetir(melodia, hasta: n).map(\.nota)
-            casos.append(Caso(grupo: "Armonizar", nombre: "\(n) notas, 3 propuestas") {
-                doMayor.armonizar(melodia: notas, propuestas: 3).count
-            })
+            casos.append(
+                Caso(grupo: "Armonizar", nombre: "\(n) notas, 3 propuestas") {
+                    doMayor.armonizar(melodia: notas, propuestas: 3).count
+                })
         }
         for n in longitudes {
             let alturas = repetir(melodia, hasta: n)
-            casos.append(Caso(grupo: "Armonizar a cuatro voces", nombre: "\(n) notas") {
-                doMayor.armonizarACuatroVoces(alturas)?.coral.acordes.count ?? 0
-            })
+            casos.append(
+                Caso(grupo: "Armonizar a cuatro voces", nombre: "\(n) notas") {
+                    doMayor.armonizarACuatroVoces(alturas)?.coral.acordes.count ?? 0
+                })
         }
         for n in longitudes {
             let sucesion = repetir(progresion, hasta: n).compactMap { Acorde(texto: $0) }
-            casos.append(Caso(grupo: "Realizar a cuatro voces", nombre: "\(n) acordes") {
-                Coral.realizar(sucesion, en: doMayor)?.acordes.count ?? 0
-            })
+            casos.append(
+                Caso(grupo: "Realizar a cuatro voces", nombre: "\(n) acordes") {
+                    Coral.realizar(sucesion, en: doMayor)?.acordes.count ?? 0
+                })
         }
 
         casos += [

@@ -1,5 +1,5 @@
-import Hexagonos
 import Foundation
+import Hexagonos
 
 func titulo(_ texto: String) { print("\n== \(texto) ==") }
 
@@ -8,7 +8,8 @@ func titulo(_ texto: String) { print("\n== \(texto) ==") }
 func dibujar(_ casillas: [CoordenadaAxial], _ caracter: (CoordenadaAxial) -> Character) {
     let dobladas = casillas.map { (casilla: $0, doblada: $0.doblada(.anchoDoble)) }
     guard let izquierda = dobladas.map(\.doblada.columna).min(), let derecha = dobladas.map(\.doblada.columna).max(),
-          let arriba = dobladas.map(\.doblada.fila).min(), let abajo = dobladas.map(\.doblada.fila).max() else { return }
+        let arriba = dobladas.map(\.doblada.fila).min(), let abajo = dobladas.map(\.doblada.fila).max()
+    else { return }
     for fila in arriba...abajo {
         var linea = [Character](repeating: " ", count: derecha - izquierda + 1)
         for (casilla, doblada) in dobladas where doblada.fila == fila {
@@ -38,8 +39,9 @@ print("Diagonales:", a.vecinosDiagonales.map(\.description).joined(separator: " 
 let b = CoordenadaAxial(q: 4, r: -1)
 print("De \(a) a \(b): \(a.distancia(hasta: b)) pasos")
 for direccion in DireccionHexagonal.allCases {
-    print("  dirección \(direccion.numero): paso \(direccion.paso), \(direccion.puntoCardinal(.puntiaguda))",
-          "con hexágonos puntiagudos, \(direccion.puntoCardinal(.plana)) con planos")
+    print(
+        "  dirección \(direccion.numero): paso \(direccion.paso), \(direccion.puntoCardinal(.puntiaguda))",
+        "con hexágonos puntiagudos, \(direccion.puntoCardinal(.plana)) con planos")
 }
 
 titulo("Líneas")
@@ -51,14 +53,17 @@ let conRecta = Set(recta)
 dibujar(FormasDeMapa.hexagono(radio: 3)) { conRecta.contains($0) ? "*" : "·" }
 
 titulo("Regiones")
-print("Alcance de radio 2: \(CoordenadaAxial.origen.alcance(radio: 2).count) casillas;",
-      "anillo de radio 2: \(CoordenadaAxial.origen.anillo(radio: 2).count)")
+print(
+    "Alcance de radio 2: \(CoordenadaAxial.origen.alcance(radio: 2).count) casillas;",
+    "anillo de radio 2: \(CoordenadaAxial.origen.anillo(radio: 2).count)")
 print("Espiral de radio 1:", CoordenadaAxial.origen.espiral(radio: 1).map(\.description).joined(separator: " "))
 let anillo = Set(CoordenadaAxial.origen.anillo(radio: 2))
 dibujar(FormasDeMapa.hexagono(radio: 3)) { $0 == .origen ? "o" : (anillo.contains($0) ? "#" : "·") }
-for (nombre, forma) in [("Paralelogramo 3 × 2", FormasDeMapa.paralelogramo(columnas: 0...2, filas: 0...1)),
-                        ("Triángulo de lado 3", FormasDeMapa.triangulo(lado: 3)),
-                        ("Rectángulo 5 × 3", FormasDeMapa.rectangulo(columnas: 5, filas: 3, .filasImpares))] {
+for (nombre, forma) in [
+    ("Paralelogramo 3 × 2", FormasDeMapa.paralelogramo(columnas: 0...2, filas: 0...1)),
+    ("Triángulo de lado 3", FormasDeMapa.triangulo(lado: 3)),
+    ("Rectángulo 5 × 3", FormasDeMapa.rectangulo(columnas: 5, filas: 3, .filasImpares)),
+] {
     print("  \(nombre): \(forma.count) casillas")
     dibujar(forma) { _ in "#" }
 }
@@ -113,8 +118,9 @@ print("Alrededor del centro:", alrededor.joined(separator: ", "))
 titulo("Guardar el mapa")
 let datos = try! JSONEncoder().encode(terreno)
 let leido = try! JSONDecoder().decode(MapaHexagonal<Terreno>.self, from: datos)
-print("\(terreno) en \(datos.count) bytes de JSON; leído de vuelta: \(leido),",
-      "igual:", leido.casillas.allSatisfy { leido[$0] == terreno[$0] })
+print(
+    "\(terreno) en \(datos.count) bytes de JSON; leído de vuelta: \(leido),",
+    "igual:", leido.casillas.allSatisfy { leido[$0] == terreno[$0] })
 
 titulo("De casillas a píxeles")
 let trazado = Trazado(orientacion: .puntiaguda, tamano: 20, origen: Punto(x: 100, y: 100))
@@ -122,9 +128,12 @@ print("Hexágonos puntiagudos de tamaño 20: \(trazado.anchura) × \(trazado.alt
 print("Centro de \(a): \(trazado.centro(de: a))")
 let toque = Punto(x: 131, y: 92)
 print("Un toque en \(toque) cae en la casilla \(trazado.casilla(en: toque))")
-print("Vértices del origen:", trazado.vertices(de: .origen).map { "(\(Int($0.x.rounded())), \(Int($0.y.rounded())))" }
+print(
+    "Vértices del origen:",
+    trazado.vertices(de: .origen).map { "(\(Int($0.x.rounded())), \(Int($0.y.rounded())))" }
         .joined(separator: " "))
-let svg = Trazado(orientacion: .puntiaguda, tamano: 20).svg(FormasDeMapa.hexagono(radio: 2),
-                                                             relleno: { $0 == .origen ? "#f39c12" : nil },
-                                                             rotulo: { "\($0.q),\($0.r)" })
+let svg = Trazado(orientacion: .puntiaguda, tamano: 20).svg(
+    FormasDeMapa.hexagono(radio: 2),
+    relleno: { $0 == .origen ? "#f39c12" : nil },
+    rotulo: { "\($0.q),\($0.r)" })
 print("SVG del hexágono de radio 2: \(svg.count) caracteres; empieza por", svg.prefix(60) + "…")

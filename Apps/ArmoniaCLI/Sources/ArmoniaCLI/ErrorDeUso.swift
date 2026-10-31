@@ -155,7 +155,8 @@ enum ErrorDeUso {
         case .faltanAcordesDelCoral(let orden): return TextosDePartituras.faltanAcordesDelCoral(orden: orden)
         case .soloParaMelodia(let opcion): return TextosDePartituras.soloParaMelodia(opcion)
         case .soloParaArpegios(let opcion): return TextosDePartituras.soloParaArpegios(opcion)
-        case .faltanAcordesDeLaProgresion(let orden): return TextosDePartituras.faltanAcordesDeLaProgresion(orden: orden)
+        case .faltanAcordesDeLaProgresion(let orden):
+            return TextosDePartituras.faltanAcordesDeLaProgresion(orden: orden)
         case .acordesConCifradosYAnalisis: return TextosDePartituras.acordesConCifradosYAnalisis()
         case .tipoDePartituraDesconocido(let tipo): return TextosDePartituras.tipoDePartituraDesconocido(tipo)
         case .margenFueraDeRango: return TextosDeDibujos.margenFueraDeRango()

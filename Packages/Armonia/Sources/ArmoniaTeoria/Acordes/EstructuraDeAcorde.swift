@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 // MARK: - Estructura
 
 /// Análisis de un tipo de acorde: qué intervalo cumple cada papel.
@@ -39,7 +40,8 @@ public struct EstructuraDeAcorde: Hashable, Sendable {
             if clasificacion.sus2 || clasificacion.sus4 {
                 calidadDeTriada = .suspendida
             } else if clasificacion.quintasDelAcorde == [1] && clasificacion.septima == nil
-                        && clasificacion.tensiones.isEmpty && !clasificacion.sexta {
+                && clasificacion.tensiones.isEmpty && !clasificacion.sexta
+            {
                 calidadDeTriada = .potencia
             } else {
                 calidadDeTriada = .sinTercera
@@ -107,11 +109,15 @@ public enum PapelEnAcorde: Hashable, Sendable, CustomStringConvertible {
             self = papel
             return
         }
-        let todos: [PapelEnAcorde] = [.fundamental, .tercera, .suspension, .quinta, .sexta, .septima,
-                                      .tension(9), .tension(11), .tension(13)]
-        guard let papel = todos.first(where: { p in
-            p.nombre.claveDeBusqueda == clave || p.nombre(en: .inglesASCII).claveDeBusqueda == clave
-        }) else { return nil }
+        let todos: [PapelEnAcorde] = [
+            .fundamental, .tercera, .suspension, .quinta, .sexta, .septima,
+            .tension(9), .tension(11), .tension(13),
+        ]
+        guard
+            let papel = todos.first(where: { p in
+                p.nombre.claveDeBusqueda == clave || p.nombre(en: .inglesASCII).claveDeBusqueda == clave
+            })
+        else { return nil }
         self = papel
     }
 }

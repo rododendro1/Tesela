@@ -1,13 +1,13 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+import Foundation
+
 // Lectura de ficheros MIDI estándar (SMF, formatos 0, 1 y 2): las notas de todas las pistas, menos
 // las del canal 10 (percusión), y de la primera pista, el título, el tempo, el compás y la armadura.
 //
 // MIDI solo da números de nota: la ortografía (Fa♯ o Sol♭) sale de la armadura del fichero o, si no
 // la tiene, de la tonalidad que mejor explica las notas. Una nota que empieza mientras la misma
 // tecla ya suena en el mismo canal cierra la anterior; las que no se cierran, terminan con su pista.
-
-import Foundation
 
 extension PiezaImportada {
     /// Lee un fichero MIDI estándar.
@@ -20,20 +20,25 @@ extension PiezaImportada {
         try lector.leer()
         guard !lector.notas.isEmpty else { throw ErrorDeImportacion.sinNotas }
         let redonda = 4 * lector.divisiones
-        let tonalidad = lector.tonalidad
-            ?? Tonalidad.identificar(midi: lector.notas.map(\.clave),
-                                     duraciones: lector.notas.map { Double($0.hasta - $0.desde) }).first
+        let tonalidad =
+            lector.tonalidad
+            ?? Tonalidad.identificar(
+                midi: lector.notas.map(\.clave),
+                duraciones: lector.notas.map { Double($0.hasta - $0.desde) }
+            ).first
         // Las partes, en el orden en que aparecen.
         var partes: [Int: Int] = [:]
         let notas = lector.notas.map { nota in
             let parte = partes[nota.parte] ?? partes.count
             partes[nota.parte] = parte
             let altura = tonalidad.map { Altura(midi: nota.clave, tonalidad: $0) } ?? Altura(midi: nota.clave)
-            return NotaDeLaPieza(altura: altura, inicio: Duracion(nota.desde, redonda),
-                                 duracion: Duracion(nota.hasta - nota.desde, redonda), parte: parte)
+            return NotaDeLaPieza(
+                altura: altura, inicio: Duracion(nota.desde, redonda),
+                duracion: Duracion(nota.hasta - nota.desde, redonda), parte: parte)
         }
-        self.init(titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas,
-                  tempo: lector.tempo, notas: notas)
+        self.init(
+            titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas,
+            tempo: lector.tempo, notas: notas)
     }
 }
 
@@ -56,7 +61,7 @@ struct LectorMIDI {
         guard try etiqueta() == "MThd" else { throw ErrorDeImportacion.midiDanado }
         let largo = try entero(4)
         guard largo >= 6 else { throw ErrorDeImportacion.midiDanado }
-        _ = try entero(2)   // formato: 0, 1 o 2 se leen igual
+        _ = try entero(2) // formato: 0, 1 o 2 se leen igual
         let pistas = try entero(2)
         let division = try entero(2)
         guard division & 0x8000 == 0 else { throw ErrorDeImportacion.midiConTiempoSMPTE }
@@ -73,15 +78,15 @@ struct LectorMIDI {
                 try leerPista(hasta: posicion + largo, numero: pista)
                 pista += 1
             } else {
-                posicion += largo   // los bloques desconocidos se saltan
+                posicion += largo // los bloques desconocidos se saltan
             }
         }
     }
 
     private mutating func leerPista(hasta fin: Int, numero: Int) throws {
         var ahora = 0
-        var estado: UInt8 = 0   // el estado en curso (running status)
-        var sonando: [Int: [Int]] = [:]   // canal * 128 + tecla → cuándo empezó cada nota abierta
+        var estado: UInt8 = 0 // el estado en curso (running status)
+        var sonando: [Int: [Int]] = [:] // canal * 128 + tecla → cuándo empezó cada nota abierta
         var leidas: [(clave: Int, desde: Int, hasta: Int, parte: Int)] = []
         func cerrar(_ clave: Int, canal: Int, en tiempo: Int) {
             let indice = canal * 128 + clave
@@ -92,7 +97,7 @@ struct LectorMIDI {
         }
         while posicion < fin {
             ahora += try cantidadVariable()
-            guard ahora < 1 << 36 else { throw ErrorDeImportacion.midiDanado }   // años de música: está dañado
+            guard ahora < 1 << 36 else { throw ErrorDeImportacion.midiDanado } // años de música: está dañado
             var primero = try byte()
             if primero & 0x80 != 0 {
                 estado = primero
@@ -108,7 +113,7 @@ struct LectorMIDI {
                 estado = 0
                 if tipo == 0x2F { posicion = fin }
             case 0xF0, 0xF7:
-                _ = try trozo(try cantidadVariable())   // sistema exclusivo: no interesa
+                _ = try trozo(try cantidadVariable()) // sistema exclusivo: no interesa
                 estado = 0
             default:
                 let canal = Int(estado & 0x0F)
@@ -116,7 +121,7 @@ struct LectorMIDI {
                 case 0x90, 0x80:
                     let clave = Int(primero & 0x7F)
                     let velocidad = try byte()
-                    guard canal != 9 else { break }   // percusión
+                    guard canal != 9 else { break } // percusión
                     cerrar(clave, canal: canal, en: ahora)
                     if estado & 0xF0 == 0x90 && velocidad > 0 {
                         sonando[canal * 128 + clave, default: []].append(ahora)
@@ -124,7 +129,7 @@ struct LectorMIDI {
                 case 0xA0, 0xB0, 0xE0:
                     _ = try byte()
                 case 0xC0, 0xD0:
-                    break   // un solo byte de datos, ya leído
+                    break // un solo byte de datos, ya leído
                 default:
                     throw ErrorDeImportacion.midiDanado
                 }
@@ -146,7 +151,8 @@ struct LectorMIDI {
         switch tipo {
         case 0x03 where pista == 0 && titulo == nil:
             // Latin-1, como lo escribe `ArchivoMIDI`; si es UTF-8 válido, se lee como UTF-8.
-            titulo = String(bytes: datos, encoding: .utf8)
+            titulo =
+                String(bytes: datos, encoding: .utf8)
                 ?? String(datos.map { Character(Unicode.Scalar($0)) })
         case 0x51 where tempo == nil && datos.count == 3:
             let microsegundos = datos.reduce(0) { $0 << 8 | Int($1) }

@@ -1,18 +1,22 @@
 import XCTest
+
 @testable import Hexagonos
 
 final class LineasTests: XCTestCase {
     func testLineaConocida() {
         let linea = CoordenadaAxial.origen.linea(hasta: CoordenadaAxial(q: 1, r: -5))
-        XCTAssertEqual(linea, [
-            CoordenadaAxial(q: 0, r: 0), CoordenadaAxial(q: 0, r: -1), CoordenadaAxial(q: 0, r: -2),
-            CoordenadaAxial(q: 1, r: -3), CoordenadaAxial(q: 1, r: -4), CoordenadaAxial(q: 1, r: -5),
-        ])
+        XCTAssertEqual(
+            linea,
+            [
+                CoordenadaAxial(q: 0, r: 0), CoordenadaAxial(q: 0, r: -1), CoordenadaAxial(q: 0, r: -2),
+                CoordenadaAxial(q: 1, r: -3), CoordenadaAxial(q: 1, r: -4), CoordenadaAxial(q: 1, r: -5),
+            ])
     }
 
     func testLineaRecta() {
-        XCTAssertEqual(CoordenadaAxial.origen.linea(hasta: CoordenadaAxial(q: 3, r: 0)),
-                       (0...3).map { CoordenadaAxial(q: $0, r: 0) })
+        XCTAssertEqual(
+            CoordenadaAxial.origen.linea(hasta: CoordenadaAxial(q: 3, r: 0)),
+            (0...3).map { CoordenadaAxial(q: $0, r: 0) })
         let a = CoordenadaAxial(q: 2, r: -1)
         XCTAssertEqual(a.linea(hasta: a), [a])
     }
@@ -69,7 +73,9 @@ final class LineasTests: XCTestCase {
         var simetrias: [(CoordenadaAxial) -> CoordenadaAxial] = []
         for sextos in 0..<6 {
             simetrias.append { $0.rotada(sextos: sextos, alrededorDe: centro) }
-            simetrias.append { $0.reflejada(sobre: .q, alrededorDe: centro).rotada(sextos: sextos, alrededorDe: centro) }
+            simetrias.append {
+                $0.reflejada(sobre: .q, alrededorDe: centro).rotada(sextos: sextos, alrededorDe: centro)
+            }
         }
         for a in [CoordenadaAxial.origen, CoordenadaAxial(q: -2, r: 3)] {
             for b in region {
@@ -145,7 +151,8 @@ final class RegionesTests: XCTestCase {
         XCTAssertEqual(Set(espiral), Set(centro.alcance(radio: 3)))
         XCTAssertEqual(espiral.count, 37)
         XCTAssertEqual(espiral.first, centro)
-        XCTAssertEqual(espiral.map { $0.distancia(hasta: centro) }, espiral.map { $0.distancia(hasta: centro) }.sorted())
+        XCTAssertEqual(
+            espiral.map { $0.distancia(hasta: centro) }, espiral.map { $0.distancia(hasta: centro) }.sorted())
         XCTAssertEqual(centro.espiral(radio: 0), [centro])
     }
 
@@ -224,7 +231,8 @@ final class SimetriasTests: XCTestCase {
         XCTAssertEqual(a.rotada(sextos: 3, alrededorDe: centro), centro - (a - centro))
         XCTAssertEqual(centro.rotada(sextos: 1, alrededorDe: centro), centro)
         for k in 0..<6 {
-            XCTAssertEqual(a.rotada(sextos: k, alrededorDe: centro).distancia(hasta: centro), a.distancia(hasta: centro))
+            XCTAssertEqual(
+                a.rotada(sextos: k, alrededorDe: centro).distancia(hasta: centro), a.distancia(hasta: centro))
         }
         XCTAssertEqual(a.rotadaEnSentidoHorario(alrededorDe: centro).rotadaEnSentidoAntihorario(alrededorDe: centro), a)
     }

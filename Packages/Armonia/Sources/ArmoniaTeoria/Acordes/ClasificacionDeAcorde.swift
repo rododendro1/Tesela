@@ -40,7 +40,7 @@ package struct ClasificacionDeAcorde: Hashable, Sendable {
             case -2, 5, -9: septima = intervalo
             case -5, 2, 9: segundas.append(intervalo)
             case -1, 6: cuartas.append(intervalo)
-            default: sextas.append(intervalo)   // −4, 3, 10
+            default: sextas.append(intervalo) // −4, 3, 10
             }
         }
     }
@@ -54,7 +54,8 @@ package struct ClasificacionDeAcorde: Hashable, Sendable {
         if conjunto.isSuperset(of: [-3, 4]) { return .terceraMayorYMenor }
         if conjunto.intersection([-2, 5, -9]).count > 1 { return .variasSeptimas }
         if conjunto.contains(-9),
-           !(conjunto.contains(-3) && conjunto.intersection([1, -6, 8]) == [-6]) {
+            !(conjunto.contains(-3) && conjunto.intersection([1, -6, 8]) == [-6])
+        {
             return .septimaDisminuidaFueraDelDisminuido
         }
         return nil
@@ -132,8 +133,14 @@ extension ClasificacionDeAcorde {
     package static func conjunto(desde lector: Lector) throws -> Set<Int> {
         let original = lector.texto
         var resto = lector.resto
-        var menor = false, disminuido = false, semidisminuido = false, aumentado = false, septimaMayor = false
-        var deltaImplicaSeptima = false, seisNueve = false, alterado = false
+        var menor = false
+        var disminuido = false
+        var semidisminuido = false
+        var aumentado = false
+        var septimaMayor = false
+        var deltaImplicaSeptima = false
+        var seisNueve = false
+        var alterado = false
         var numero: Int?
         var posicionDelNumero: Int?
         var sus: Int?
@@ -194,25 +201,47 @@ extension ClasificacionDeAcorde {
             let inicio = resto
             let previoMaj = despuesDeMaj
             despuesDeMaj = false
-            if consumir(" ") || consumir(",") { despuesDeMaj = previoMaj; continue }
+            if consumir(" ") || consumir(",") {
+                despuesDeMaj = previoMaj
+                continue
+            }
             if consumir("(") {
                 // Sin paréntesis anidados: "Do7((9)" no es un cifrado.
                 if enParentesis { throw fallo(.simboloNoReconocido("("), en: inicio) }
-                enParentesis = true; parentesisAbierto = inicio; despuesDeMaj = previoMaj; continue
+                enParentesis = true
+                parentesisAbierto = inicio
+                despuesDeMaj = previoMaj
+                continue
             }
             if consumir(")") {
                 guard enParentesis else { throw fallo(.simboloNoReconocido(")"), en: inicio) }
-                enParentesis = false; continue
+                enParentesis = false
+                continue
             }
-            if consumir("6/9") || consumir("69") { seisNueve = true; continue }
+            if consumir("6/9") || consumir("69") {
+                seisNueve = true
+                continue
+            }
             if consumir("maj") || consumir("Maj") || consumir("MA") {
-                septimaMayor = true; despuesDeMaj = true; continue
+                septimaMayor = true
+                despuesDeMaj = true
+                continue
             }
             if consumir("Δ") || consumir("∆") {
-                septimaMayor = true; deltaImplicaSeptima = true; despuesDeMaj = true; continue
+                septimaMayor = true
+                deltaImplicaSeptima = true
+                despuesDeMaj = true
+                continue
             }
-            if consumir("min") { menor = true; continue }
-            if consumir("M") { septimaMayor = true; despuesDeMaj = true; continue }
+            if consumir("min") {
+                menor = true
+                continue
+            }
+            if consumir("M") {
+                septimaMayor = true
+                despuesDeMaj = true
+                continue
+            }
             if consumir("omit") || consumir("no") {
                 guard let numeroLeido = leerNumero() else {
                     throw fallo(.simboloNoReconocido(inicio.fragmentoParaError), en: inicio)
@@ -223,21 +252,44 @@ extension ClasificacionDeAcorde {
                 omitidos.append(numeroLeido)
                 continue
             }
-            if consumir("dim") || consumir("°") || consumir("º") || consumir("o") { disminuido = true; continue }
-            if consumir("ø") || consumir("Ø") { semidisminuido = true; continue }
+            if consumir("dim") || consumir("°") || consumir("º") || consumir("o") {
+                disminuido = true
+                continue
+            }
+            if consumir("ø") || consumir("Ø") {
+                semidisminuido = true
+                continue
+            }
             if consumir("add") {
                 let tension = try leerTension(desde: resto)
                 anadidas.append(tension)
                 continue
             }
-            if consumir("alt") { alterado = true; continue }
-            if consumir("sus") {
-                if consumir("2") { sus = 2 } else { _ = consumir("4"); sus = -1 }
+            if consumir("alt") {
+                alterado = true
                 continue
             }
-            if let alterada = try leerAlterada() { explicitas.append(alterada); continue }
-            if consumir("aug") || consumir("+") { aumentado = true; continue }
-            if consumir("m") || consumir("-") { menor = true; continue }
+            if consumir("sus") {
+                if consumir("2") {
+                    sus = 2
+                } else {
+                    _ = consumir("4")
+                    sus = -1
+                }
+                continue
+            }
+            if let alterada = try leerAlterada() {
+                explicitas.append(alterada)
+                continue
+            }
+            if consumir("aug") || consumir("+") {
+                aumentado = true
+                continue
+            }
+            if consumir("m") || consumir("-") {
+                menor = true
+                continue
+            }
             if let numeroLeido = leerNumero() {
                 if enParentesis && !previoMaj && numeroLeido != 6 && numeroLeido != 7 {
                     guard let base = gradoNatural[numeroLeido] else {
@@ -291,8 +343,9 @@ extension ClasificacionDeAcorde {
                 if tercera == -3 { tensiones.insert(-1) }
             }
         case let otro?:
-            throw ErrorDeLectura(texto: original, posicion: posicionDelNumero,
-                                  motivo: .numeroDeAcordeNoValido(otro))
+            throw ErrorDeLectura(
+                texto: original, posicion: posicionDelNumero,
+                motivo: .numeroDeAcordeNoValido(otro))
         }
         if seisNueve {
             sexta = true
@@ -333,7 +386,9 @@ extension ClasificacionDeAcorde {
             case 7: septima = nil
             case 2, 9: tensiones.subtract([-5, 2, 9])
             case 4, 11: tensiones.subtract([-1, 6])
-            default: tensiones.subtract([-4, 3, 10]); sexta = false   // 6, 13
+            default:
+                tensiones.subtract([-4, 3, 10])
+                sexta = false // 6, 13
             }
         }
 
@@ -441,7 +496,8 @@ extension ClasificacionDeAcorde {
             }
         }
         grupo += omisiones
-        var resultado = prefijo + numero + sufijoSus
+        var resultado =
+            prefijo + numero + sufijoSus
             + (grupo.isEmpty ? "" : "(" + grupo.joined(separator: ",") + ")")
         if estilo.tensionesEnASCII {
             resultado = resultado.replacingOccurrences(of: "♭", with: "b")

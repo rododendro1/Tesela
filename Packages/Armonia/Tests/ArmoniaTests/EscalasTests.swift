@@ -1,9 +1,10 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class EscalaTests: XCTestCase {
     func testNotas() {
@@ -33,26 +34,31 @@ final class EscalaTests: XCTestCase {
         let e = Escala(.do)
         XCTAssertEqual(e.armonizar().map { $0?.cifrado }, ["Do", "Rem", "Mim", "Fa", "Sol", "Lam", "Si°"])
         XCTAssertEqual(e.cifradosRomanos(), ["I", "ii", "iii", "IV", "V", "vi", "vii°"])
-        XCTAssertEqual(e.cifradosRomanos(cuatriadas: true),
-                       ["Imaj7", "ii7", "iii7", "IVmaj7", "V7", "vi7", "viiø7"])
+        XCTAssertEqual(
+            e.cifradosRomanos(cuatriadas: true),
+            ["Imaj7", "ii7", "iii7", "IVmaj7", "V7", "vi7", "viiø7"])
     }
 
     func testArmonizacionMenor() {
         let armonica = Escala(.la, .menorArmonica)
-        XCTAssertEqual(armonica.cifradosRomanos(),
-                       ["i", "ii°", "♭III+", "iv", "V", "♭VI", "vii°"])
-        XCTAssertEqual(armonica.cifradosRomanos(cuatriadas: true),
-                       ["i(maj7)", "iiø7", "♭III+maj7", "iv7", "V7", "♭VImaj7", "vii°7"])
+        XCTAssertEqual(
+            armonica.cifradosRomanos(),
+            ["i", "ii°", "♭III+", "iv", "V", "♭VI", "vii°"])
+        XCTAssertEqual(
+            armonica.cifradosRomanos(cuatriadas: true),
+            ["i(maj7)", "iiø7", "♭III+maj7", "iv7", "V7", "♭VImaj7", "vii°7"])
         XCTAssertEqual(armonica.acorde(grado: 5, cuatriada: true)?.cifrado, "Mi7")
 
         let melodica = Escala(.la, .menorMelodica)
-        XCTAssertEqual(melodica.cifradosRomanos(cuatriadas: true),
-                       ["i(maj7)", "ii7", "♭III+maj7", "IV7", "V7", "viø7", "viiø7"])
+        XCTAssertEqual(
+            melodica.cifradosRomanos(cuatriadas: true),
+            ["i(maj7)", "ii7", "♭III+maj7", "IV7", "V7", "viø7", "viiø7"])
     }
 
     func testNotasConOctava() {
-        XCTAssertEqual(Escala("Sol mayor").alturas(octava: 3).map(\.description),
-                       ["Sol3", "La3", "Si3", "Do4", "Re4", "Mi4", "Fa♯4", "Sol4"])
+        XCTAssertEqual(
+            Escala("Sol mayor").alturas(octava: 3).map(\.description),
+            ["Sol3", "La3", "Si3", "Do4", "Re4", "Mi4", "Fa♯4", "Sol4"])
     }
 
     func testIgualdadDeTiposDeEscala() {
@@ -65,15 +71,17 @@ final class EscalaTests: XCTestCase {
 
     func testMenorMelodicaDescendente() {
         XCTAssertEqual(TipoDeEscala.menorMelodica.formaDescendente, .menorNatural)
-        XCTAssertEqual(Escala("La menor melódica").alturas(octava: 4, sentido: .descendente).map(\.description),
-                       ["La5", "Sol5", "Fa5", "Mi5", "Re5", "Do5", "Si4", "La4"])
+        XCTAssertEqual(
+            Escala("La menor melódica").alturas(octava: 4, sentido: .descendente).map(\.description),
+            ["La5", "Sol5", "Fa5", "Mi5", "Re5", "Do5", "Si4", "La4"])
         XCTAssertEqual(Escala("La menor melódica").alturas(octava: 4)[5].description, "Fa♯5")
     }
 
     func testCifradoRomanoConReferencia() {
         let armonica = Escala(.la, .menorArmonica)
-        XCTAssertEqual(armonica.cifradosRomanos(referencia: .menorNatural),
-                       ["i", "ii°", "III+", "iv", "V", "VI", "♯vii°"])
+        XCTAssertEqual(
+            armonica.cifradosRomanos(referencia: .menorNatural),
+            ["i", "ii°", "III+", "iv", "V", "VI", "♯vii°"])
     }
 }
 
@@ -103,11 +111,13 @@ final class EscalasAdicionalesTests: XCTestCase {
         XCTAssertEqual(Escala("Do jonico #5").tipo, .jonicoAumentado)
         XCTAssertEqual(Escala("G altered").tipo, .alterada)
         XCTAssertEqual(Escala("Sol superlocrio").tipo, .alterada)
-        XCTAssertEqual(Escala("Do mayor armónica").notas.map(\.nombre),
-                       ["Do", "Re", "Mi", "Fa", "Sol", "La♭", "Si"])
+        XCTAssertEqual(
+            Escala("Do mayor armónica").notas.map(\.nombre),
+            ["Do", "Re", "Mi", "Fa", "Sol", "La♭", "Si"])
         XCTAssertEqual(Escala("C bebop").notas.count, 8)
-        XCTAssertEqual(Escala("Re bebop dórico").notas.map(\.nombre),
-                       ["Re", "Mi", "Fa", "Fa♯", "Sol", "La", "Si", "Do"])
+        XCTAssertEqual(
+            Escala("Re bebop dórico").notas.map(\.nombre),
+            ["Re", "Mi", "Fa", "Fa♯", "Sol", "La", "Si", "Do"])
     }
 
     func testFuncionesDeGrado() {
@@ -153,8 +163,9 @@ final class EscalasAdicionalesTests: XCTestCase {
         XCTAssertEqual(Escala("Solb mayor").enarmonicaMasSimple.nombre, "Sol♭ mayor")
         XCTAssertEqual(Escala("La# menor").enarmonicaMasSimple.nombre, "Si♭ menor natural")
 
-        XCTAssertEqual(Set(Tonalidad(.do).vecinas),
-                       [Tonalidad(.sol), Tonalidad(.fa), Tonalidad(.la, .menor), Tonalidad(.mi, .menor), Tonalidad(.re, .menor)])
+        XCTAssertEqual(
+            Set(Tonalidad(.do).vecinas),
+            [Tonalidad(.sol), Tonalidad(.fa), Tonalidad(.la, .menor), Tonalidad(.mi, .menor), Tonalidad(.re, .menor)])
     }
 
     func testEscalasContenedoras() {
@@ -165,7 +176,8 @@ final class EscalasAdicionalesTests: XCTestCase {
         XCTAssertTrue(porNombre.contains(Escala(.mi, .menorNatural)))
         XCTAssertTrue(porNombre.contains(Escala(.re, .mixolidio)))
         XCTAssertFalse(porNombre.contains(Escala(.do)))
-        XCTAssertTrue(porNombre.allSatisfy { escala in [Nota.do, .mi, .sol, .si, "Fa#"].allSatisfy { escala.contiene($0) } })
+        XCTAssertTrue(
+            porNombre.allSatisfy { escala in [Nota.do, .mi, .sol, .si, "Fa#"].allSatisfy { escala.contiene($0) } })
 
         // Con Sol♭ en lugar de Fa♯, la ortografía descarta Sol mayor.
         XCTAssertFalse(Escala.identificar([.do, .mi, .sol, .si, "Solb"]).contains(Escala(.sol)))
@@ -186,13 +198,17 @@ final class EscalasDireccionalesTests: XCTestCase {
         XCTAssertEqual(melodica.formaAscendente.intervalos, melodica.intervalos)
         XCTAssertFalse(melodica.formaAscendente.esDireccional)
         XCTAssertEqual(melodica.intervalosEnAmbasDirecciones.count, 9)
-        XCTAssertEqual(Escala(.la, .menorMelodica).alturas(octava: 4, sentido: .descendente).map(\.description),
-                       ["La5", "Sol5", "Fa5", "Mi5", "Re5", "Do5", "Si4", "La4"])
+        XCTAssertEqual(
+            Escala(.la, .menorMelodica).alturas(octava: 4, sentido: .descendente).map(\.description),
+            ["La5", "Sol5", "Fa5", "Mi5", "Re5", "Do5", "Si4", "La4"])
         XCTAssertFalse(TipoDeEscala.mayor.esDireccional)
         XCTAssertEqual(TipoDeEscala.mayor.formaDescendente, .mayor)
         // Un descenso igual a la subida no se guarda.
-        XCTAssertNil(TipoDeEscala(nombre: "x", intervalos: TipoDeEscala.mayor.intervalos,
-                                  intervalosDescendentes: TipoDeEscala.mayor.intervalos).intervalosDescendentes)
+        XCTAssertNil(
+            TipoDeEscala(
+                nombre: "x", intervalos: TipoDeEscala.mayor.intervalos,
+                intervalosDescendentes: TipoDeEscala.mayor.intervalos
+            ).intervalosDescendentes)
     }
 
     func testMenorMelodicaDeJazz() {
@@ -205,8 +221,9 @@ final class EscalasDireccionalesTests: XCTestCase {
         XCTAssertEqual(TipoDeEscala.menorMelodica.nombre(en: .inglesASCII), "melodic minor")
         XCTAssertEqual(Escala("La menor melódica ascendente").tipo, jazz)
         XCTAssertEqual(Escala("A jazz minor").tipo, jazz)
-        XCTAssertEqual(Escala(.la, jazz).alturas(octava: 4, sentido: .descendente).map(\.description),
-                       ["La5", "Sol♯5", "Fa♯5", "Mi5", "Re5", "Do5", "Si4", "La4"])
+        XCTAssertEqual(
+            Escala(.la, jazz).alturas(octava: 4, sentido: .descendente).map(\.description),
+            ["La5", "Sol♯5", "Fa♯5", "Mi5", "Re5", "Do5", "Si4", "La4"])
         // Sus modos vuelven a ella.
         XCTAssertEqual(TipoDeEscala.alterada.rotacion(2), jazz)
         XCTAssertEqual(jazz.rotacion(7), .alterada)
@@ -222,10 +239,12 @@ final class EscalasDireccionalesTests: XCTestCase {
         XCTAssertTrue(melodica.contiene(.sol, sentido: .descendente))
         XCTAssertFalse(melodica.contiene("Sol#", sentido: .descendente))
         XCTAssertTrue(melodica.contieneEnarmonico("Lab", sentido: .ascendente))
-        XCTAssertEqual(melodica.notasEnAmbasDirecciones.map(\.nombre),
-                       ["La", "Si", "Do", "Re", "Mi", "Fa", "Fa♯", "Sol", "Sol♯"])
-        XCTAssertEqual(melodica.notas(sentido: .descendente).map(\.nombre),
-                       ["La", "Si", "Do", "Re", "Mi", "Fa", "Sol"])
+        XCTAssertEqual(
+            melodica.notasEnAmbasDirecciones.map(\.nombre),
+            ["La", "Si", "Do", "Re", "Mi", "Fa", "Fa♯", "Sol", "Sol♯"])
+        XCTAssertEqual(
+            melodica.notas(sentido: .descendente).map(\.nombre),
+            ["La", "Si", "Do", "Re", "Mi", "Fa", "Sol"])
         XCTAssertEqual(melodica.notas(sentido: .ascendente), melodica.notas)
         // Lo que depende de los grados sigue usando la forma ascendente.
         XCTAssertEqual(melodica.grado(de: "Sol#"), 7)
@@ -233,9 +252,12 @@ final class EscalasDireccionalesTests: XCTestCase {
         XCTAssertEqual(melodica.conjuntoDeClases.numeroDeForte, "7-34")
         // La búsqueda de escalas tiene en cuenta las dos direcciones…
         XCTAssertTrue(Escala.identificar([.la, .sol, "Sol#"], tipos: [.menorMelodica]).contains(melodica))
-        XCTAssertTrue(Escala.identificar(clasesDeAltura: [9, 7, 8], tipos: [.menorMelodica])
-            .contains { $0.notasEnAmbasDirecciones.map(\.claseDeAltura).contains(7) })
-        XCTAssertFalse(Escala.identificar([.la, .sol, "Sol#"], tipos: [.menorMelodicaJazz]).contains(Escala(.la, .menorMelodicaJazz)))
+        XCTAssertTrue(
+            Escala.identificar(clasesDeAltura: [9, 7, 8], tipos: [.menorMelodica])
+                .contains { $0.notasEnAmbasDirecciones.map(\.claseDeAltura).contains(7) })
+        XCTAssertFalse(
+            Escala.identificar([.la, .sol, "Sol#"], tipos: [.menorMelodicaJazz]).contains(
+                Escala(.la, .menorMelodicaJazz)))
         // …y la ortografía también: en La menor melódica, el 7 MIDI (Sol) no es cromático.
         XCTAssertEqual(melodica.nombre(claseDeAltura: 7), .sol)
         XCTAssertEqual(melodica.nombre(claseDeAltura: 8), Nota("Sol#"))
@@ -243,8 +265,9 @@ final class EscalasDireccionalesTests: XCTestCase {
 
     func testDromoiDireccionales() {
         XCTAssertEqual(Escala(.re, .rast).notas.map(\.nombre), ["Re", "Mi", "Fa♯", "Sol", "La", "Si", "Do♯"])
-        XCTAssertEqual(Escala(.re, TipoDeEscala.rast.formaDescendente).notas.map(\.nombre),
-                       ["Re", "Mi", "Fa♯", "Sol", "La", "Si", "Do"])
+        XCTAssertEqual(
+            Escala(.re, TipoDeEscala.rast.formaDescendente).notas.map(\.nombre),
+            ["Re", "Mi", "Fa♯", "Sol", "La", "Si", "Do"])
         XCTAssertNotEqual(TipoDeEscala.rast, .mayor)
         XCTAssertEqual(TipoDeEscala.rast.formaAscendente, .mayor)
         XCTAssertEqual(TipoDeEscala.kiourdi.formaAscendente, .kartzigar)
@@ -256,8 +279,9 @@ final class EscalasDireccionalesTests: XCTestCase {
 
     func testJanyas() {
         XCTAssertEqual(Escala(.do, .mohanam).notas.map(\.nombre), ["Do", "Re", "Mi", "Sol", "La"])
-        XCTAssertEqual(Escala(.do, .bilahari).alturas(octava: 4, sentido: .descendente).map(\.description),
-                       ["Do5", "Si4", "La4", "Sol4", "Fa4", "Mi4", "Re4", "Do4"])
+        XCTAssertEqual(
+            Escala(.do, .bilahari).alturas(octava: 4, sentido: .descendente).map(\.description),
+            ["Do5", "Si4", "La4", "Sol4", "Fa4", "Mi4", "Re4", "Do4"])
         XCTAssertEqual(TipoDeEscala.bilahari.melakartasCompatibles, [29])
         XCTAssertEqual(TipoDeEscala.kambhoji.melakartasCompatibles, [28])
         XCTAssertEqual(TipoDeEscala.mohanam.melakartasCompatibles, [28, 29, 64, 65])
@@ -271,8 +295,14 @@ final class EscalasDireccionalesTests: XCTestCase {
         XCTAssertEqual(TipoDeEscala.kafi, .dorico)
         XCTAssertFalse(TipoDeEscala.kafi.esIdentico(a: .dorico))
         XCTAssertTrue(TipoDeEscala.kafi.esIdentico(a: .kafi))
-        XCTAssertTrue(Set(TipoDeEscala.mayor.equivalentes.map(\.nombre)).isSuperset(of: ["Bilāval", "Dhīraśaṅkarābharaṇam", "Qīngyuè", "ʿAjam", "Māhur"]))
-        XCTAssertTrue(Set(TipoDeEscala.hitzazkiar.equivalentes.map(\.nombre)).isSuperset(of: ["Bhairav", "Māyāmālavagauḷa", "doble armónica", "Ḥijāzkār"]))
+        XCTAssertTrue(
+            Set(TipoDeEscala.mayor.equivalentes.map(\.nombre)).isSuperset(of: [
+                "Bilāval", "Dhīraśaṅkarābharaṇam", "Qīngyuè", "ʿAjam", "Māhur",
+            ]))
+        XCTAssertTrue(
+            Set(TipoDeEscala.hitzazkiar.equivalentes.map(\.nombre)).isSuperset(of: [
+                "Bhairav", "Māyāmālavagauḷa", "doble armónica", "Ḥijāzkār",
+            ]))
         XCTAssertTrue(TipoDeEscala.menorMelodica.equivalentes.isEmpty)
         // La búsqueda por índice da lo mismo que antes: los nombres habituales primero.
         XCTAssertEqual(TipoDeEscala.buscar(nombre: "Dorian")?.nombre, "dórico")
@@ -303,15 +333,17 @@ final class EscalasTradicionalesTests: XCTestCase {
         XCTAssertEqual(TipoDeEscala.melakarta(15), .bhairav)
         XCTAssertEqual(TipoDeEscala.melakarta(15), .hitzazkiar)
         // Ri3 y Ga1, Dha3 y Ni1 con su escritura tradicional.
-        XCTAssertEqual(Escala(.do, TipoDeEscala.melakarta(1)!).notas.map(\.nombre),
-                       ["Do", "Re♭", "Mi♭♭", "Fa", "Sol", "La♭", "Si♭♭"])
-        XCTAssertEqual(Escala(.do, TipoDeEscala.melakarta(36)!).notas.map(\.nombre),
-                       ["Do", "Re♯", "Mi", "Fa", "Sol", "La♯", "Si"])
+        XCTAssertEqual(
+            Escala(.do, TipoDeEscala.melakarta(1)!).notas.map(\.nombre),
+            ["Do", "Re♭", "Mi♭♭", "Fa", "Sol", "La♭", "Si♭♭"])
+        XCTAssertEqual(
+            Escala(.do, TipoDeEscala.melakarta(36)!).notas.map(\.nombre),
+            ["Do", "Re♯", "Mi", "Fa", "Sol", "La♯", "Si"])
         XCTAssertEqual(TipoDeEscala.mayor.numeroDeMelakarta, 29)
         XCTAssertEqual(TipoDeEscala.menorArmonica.numeroDeMelakarta, 21)
         XCTAssertEqual(TipoDeEscala.niavent.numeroDeMelakarta, 57)
         XCTAssertNil(TipoDeEscala.pentatonicaMayor.numeroDeMelakarta)
-        XCTAssertEqual(TipoDeEscala.mayorArmonica.numeroDeMelakarta, 27)   // Sarasangi
+        XCTAssertEqual(TipoDeEscala.mayorArmonica.numeroDeMelakarta, 27) // Sarasangi
         for n in 1...72 {
             XCTAssertEqual(TipoDeEscala.melakarta(n)?.numeroDeMelakarta, n)
         }
@@ -386,14 +418,17 @@ final class EscalasTradicionalesTests: XCTestCase {
         XCTAssertEqual(Set(Escala(.do, .cromatica).notas.map(\.claseDeAltura)).count, 12)
 
         // Los modos de la mayor armónica son sus rotaciones.
-        let modos: [TipoDeEscala] = [.mayorArmonica, .doricoQuintaDisminuida, .frigioCuartaDisminuida, .lidioTerceraMenor,
-                                     .mixolidioSegundaMenor, .lidioAumentadoSegundaAumentada, .locrioSeptimaDisminuida]
+        let modos: [TipoDeEscala] = [
+            .mayorArmonica, .doricoQuintaDisminuida, .frigioCuartaDisminuida, .lidioTerceraMenor,
+            .mixolidioSegundaMenor, .lidioAumentadoSegundaAumentada, .locrioSeptimaDisminuida,
+        ]
         for (i, modo) in modos.enumerated() {
             XCTAssertTrue(TipoDeEscala.mayorArmonica.rotacion(i + 1).esIdentico(a: modo), modo.nombre)
         }
         // Las disminuidas suenan como rotaciones la una de la otra (la ortografía cambia).
-        XCTAssertEqual(TipoDeEscala.disminuida.rotacion(2).intervalos.map(\.semitonos),
-                       TipoDeEscala.disminuidaSemitonoTono.intervalos.map(\.semitonos))
+        XCTAssertEqual(
+            TipoDeEscala.disminuida.rotacion(2).intervalos.map(\.semitonos),
+            TipoDeEscala.disminuidaSemitonoTono.intervalos.map(\.semitonos))
 
         // Nombres en inglés y alias.
         XCTAssertEqual(Escala("E hungarian minor").tipo, .menorHungara)
@@ -410,8 +445,9 @@ final class EscalasTradicionalesTests: XCTestCase {
         XCTAssertEqual(TipoDeEscala.dobleArmonica, .bhairav)
         XCTAssertEqual(TipoDeEscala.menorHungara, .niavent)
         XCTAssertEqual(TipoDeEscala.egipcia, .shang)
-        XCTAssertEqual(TipoDeEscala.todos.count, Set(TipoDeEscala.todos).count)   // sin repetidos en el catálogo
-        XCTAssertTrue(Escala.identificar(["Do", "Re♭", "Mi", "Fa", "Sol", "La♭", "Si"]).contains(Escala(.do, .dobleArmonica)))
+        XCTAssertEqual(TipoDeEscala.todos.count, Set(TipoDeEscala.todos).count) // sin repetidos en el catálogo
+        XCTAssertTrue(
+            Escala.identificar(["Do", "Re♭", "Mi", "Fa", "Sol", "La♭", "Si"]).contains(Escala(.do, .dobleArmonica)))
     }
 
     func testCromaticasPorVentanaDeQuintas() {
@@ -419,8 +455,12 @@ final class EscalasTradicionalesTests: XCTestCase {
             Escala(tonica, tipo).notas.map(\.description).joined(separator: " ")
         }
         let seis = TipoDeEscala.cromaticasPorQuintas
-        XCTAssertEqual(seis, [.cromaticaConCincoBemoles, .cromaticaConCuatroBemoles, .cromaticaConTresBemoles,
-                              .cromaticaConDosBemoles, .cromaticaConUnBemol, .cromaticaConCincoSostenidos])
+        XCTAssertEqual(
+            seis,
+            [
+                .cromaticaConCincoBemoles, .cromaticaConCuatroBemoles, .cromaticaConTresBemoles,
+                .cromaticaConDosBemoles, .cromaticaConUnBemol, .cromaticaConCincoSostenidos,
+            ])
         XCTAssertEqual(TipoDeEscala.cromatica(desdeLaQuinta: -5), .cromatica)
         XCTAssertEqual(TipoDeEscala.cromaticaConCuatroBemoles.nombre, "cromática")
         XCTAssertEqual(notas(.cromaticaConCincoBemoles), "Do Re♭ Re Mi♭ Mi Fa Sol♭ Sol La♭ La Si♭ Si")
@@ -441,9 +481,12 @@ final class EscalasTradicionalesTests: XCTestCase {
             XCTAssertEqual(quintas, Array(quintas[0]..<(quintas[0] + 12)), tipo.nombre)
         }
         // Dos vecinas difieren en una sola nota, que pasa de bemol a sostenido: Sol♭, Re♭, La♭, Mi♭ y Si♭.
-        let cambian: [(Nota, Nota)] = [("Solb", "Fa#"), ("Reb", "Do#"), ("Lab", "Sol#"), ("Mib", "Re#"), ("Sib", "La#")]
+        let cambian: [(Nota, Nota)] = [
+            ("Solb", "Fa#"), ("Reb", "Do#"), ("Lab", "Sol#"), ("Mib", "Re#"), ("Sib", "La#"),
+        ]
         for (k, (bemol, sostenido)) in cambian.enumerated() {
-            let antes = Set(Escala(.do, seis[k]).notas), despues = Set(Escala(.do, seis[k + 1]).notas)
+            let antes = Set(Escala(.do, seis[k]).notas)
+            let despues = Set(Escala(.do, seis[k + 1]).notas)
             XCTAssertEqual(antes.subtracting(despues), [bemol], "\(k)")
             XCTAssertEqual(despues.subtracting(antes), [sostenido], "\(k)")
         }
@@ -459,12 +502,15 @@ final class EscalasTradicionalesTests: XCTestCase {
             for idioma in Idioma.traducidos {
                 let notacion = Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false))
                 let escala = Escala(Nota("Fa#"), tipo)
-                XCTAssertEqual(Escala(texto: escala.nombre(en: notacion)), escala, "\(idioma): \(escala.nombre(en: notacion))")
+                XCTAssertEqual(
+                    Escala(texto: escala.nombre(en: notacion)), escala, "\(idioma): \(escala.nombre(en: notacion))")
             }
         }
         // Las seis tienen nombres distintos en cada idioma.
         for idioma in Idioma.traducidos {
-            let nombres = seis.map { $0.nombre(en: Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false))) }
+            let nombres = seis.map {
+                $0.nombre(en: Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false)))
+            }
             XCTAssertEqual(Set(nombres).count, 6, "\(idioma)")
         }
         // Con una de ellas, cada clase de altura se escribe como dice su ventana.
@@ -489,11 +535,13 @@ final class EscalasTradicionalesTests: XCTestCase {
             let clases = tipo.intervalos.map { modulo($0.semitonos, 12) }
             return Set((0..<12).map { t in Set(clases.map { modulo($0 + t, 12) }) }).count
         }
-        XCTAssertEqual([TipoDeEscala.tonosEnteros, .disminuida, .messiaen3, .messiaen4, .messiaen5, .messiaen6, .messiaen7]
-            .map(transposiciones), [2, 3, 4, 6, 6, 6, 6])
+        XCTAssertEqual(
+            [TipoDeEscala.tonosEnteros, .disminuida, .messiaen3, .messiaen4, .messiaen5, .messiaen6, .messiaen7]
+                .map(transposiciones), [2, 3, 4, 6, 6, 6, 6])
         // Petrushka: los acordes mayores de Do y de Fa♯ (con Re♭ por Do♯ y Si♭ por La♯).
-        XCTAssertEqual(Set(Escala(.do, .petrushka).notas.map(\.claseDeAltura)),
-                       Set((Acorde("Do").notas + Acorde("Fa#").notas).map(\.claseDeAltura)))
+        XCTAssertEqual(
+            Set(Escala(.do, .petrushka).notas.map(\.claseDeAltura)),
+            Set((Acorde("Do").notas + Acorde("Fa#").notas).map(\.claseDeAltura)))
 
         // Nombres y alias.
         XCTAssertEqual(Escala("Do modo 3 de Messiaen").tipo, .messiaen3)
@@ -506,7 +554,7 @@ final class EscalasTradicionalesTests: XCTestCase {
         XCTAssertEqual(Escala("Re menor rumana").tipo, .doricoCuartaAumentada)
         XCTAssertEqual(Escala("D Romanian minor").tipo, .doricoCuartaAumentada)
         XCTAssertEqual(Escala("Mi Freygish").tipo.nombre, "Freygish")
-        XCTAssertEqual(Escala("Mi Ahavah Rabbah").tipo, .frigioDominante)   // mismo contenido
+        XCTAssertEqual(Escala("Mi Ahavah Rabbah").tipo, .frigioDominante) // mismo contenido
         XCTAssertEqual(Escala("Do de Bartók").tipo, .lidioDominante)
         XCTAssertEqual(Escala("C overtone").tipo, .lidioDominante)
         XCTAssertEqual(Escala("Do disminuida auxiliar blues").tipo, .disminuidaSemitonoTono)
@@ -517,18 +565,33 @@ final class EscalasTradicionalesTests: XCTestCase {
     }
 
     func testModosDeLaDobleArmonicaYDeLasNapolitanas() {
-        func modos(_ base: TipoDeEscala, _ esperados: [TipoDeEscala], file: StaticString = #filePath, line: UInt = #line) {
+        func modos(
+            _ base: TipoDeEscala, _ esperados: [TipoDeEscala], file: StaticString = #filePath, line: UInt = #line
+        ) {
             for (i, modo) in esperados.enumerated() {
-                XCTAssertTrue(base.rotacion(i + 1).esIdentico(a: modo), "\(base.nombre) \(i + 1): \(base.rotacion(i + 1).nombre)",
-                              file: file, line: line)
+                XCTAssertTrue(
+                    base.rotacion(i + 1).esIdentico(a: modo), "\(base.nombre) \(i + 1): \(base.rotacion(i + 1).nombre)",
+                    file: file, line: line)
             }
         }
-        modos(.dobleArmonica, [.dobleArmonica, .lidioSegundaSextaAumentadas, .ultrafrigio, .menorHungara, .oriental,
-                               .jonicoSegundaQuintaAumentadas, .locrioTerceraSeptimaDisminuidas])
-        modos(.napolitanaMayor, [.napolitanaMayor, .lidioAumentadoSextaAumentada, .lidioDominanteAumentado, .lidioMenor,
-                                 .mayorLocria, .locrioSegundaNaturalCuartaDisminuida, .superlocrioTerceraDisminuida])
-        modos(.napolitanaMenor, [.napolitanaMenor, .lidioSextaAumentada, .mixolidioAumentado, .eolicoCuartaAumentada,
-                                 .locrioDominante, .jonicoSegundaAumentada, .ultralocrioTerceraDisminuida])
+        modos(
+            .dobleArmonica,
+            [
+                .dobleArmonica, .lidioSegundaSextaAumentadas, .ultrafrigio, .menorHungara, .oriental,
+                .jonicoSegundaQuintaAumentadas, .locrioTerceraSeptimaDisminuidas,
+            ])
+        modos(
+            .napolitanaMayor,
+            [
+                .napolitanaMayor, .lidioAumentadoSextaAumentada, .lidioDominanteAumentado, .lidioMenor,
+                .mayorLocria, .locrioSegundaNaturalCuartaDisminuida, .superlocrioTerceraDisminuida,
+            ])
+        modos(
+            .napolitanaMenor,
+            [
+                .napolitanaMenor, .lidioSextaAumentada, .mixolidioAumentado, .eolicoCuartaAumentada,
+                .locrioDominante, .jonicoSegundaAumentada, .ultralocrioTerceraDisminuida,
+            ])
         func notas(_ escala: Escala) -> String { escala.notas.map(\.description).joined(separator: " ") }
         XCTAssertEqual(notas(Escala(.do, .oriental)), "Do Re♭ Mi Fa Sol♭ La Si♭")
         XCTAssertEqual(notas(Escala(.do, .ultrafrigio)), "Do Re♭ Mi♭ Fa♭ Sol La♭ Si♭♭")
@@ -606,7 +669,9 @@ final class EscalasTradicionalesTests: XCTestCase {
         XCTAssertEqual(notas(.durga), "Do Re Fa Sol La")
         XCTAssertEqual(notas(.yaman), "Do Re Mi Fa♯ Sol La Si")
         XCTAssertEqual(notas(.bagesri), "Do Mi♭ Fa La Si♭")
-        XCTAssertEqual(Escala(.do, .bagesri.formaDescendente).notas.map(\.description).joined(separator: " "), "Do Re Mi♭ Fa La Si♭")
+        XCTAssertEqual(
+            Escala(.do, .bagesri.formaDescendente).notas.map(\.description).joined(separator: " "),
+            "Do Re Mi♭ Fa La Si♭")
         XCTAssertEqual(notas(.des), "Do Re Fa Sol Si")
         XCTAssertTrue(TipoDeEscala.des.esDireccional)
         XCTAssertEqual(TipoDeEscala.malkauns, .hindolam)
@@ -619,8 +684,11 @@ final class EscalasTradicionalesTests: XCTestCase {
         XCTAssertEqual(notas(.kyemyonjo), "Do Mi♭ Fa Sol Si♭")
         XCTAssertEqual(notas(.tritonicaAndina), "Do Mi♭ Sol")
         XCTAssertEqual(TipoDeEscala.andina, .pentatonicaMenor)
-        XCTAssertEqual(Escala(.mi, .tetracordoCromatico).notas.map(\.description).joined(separator: " "), "Mi Fa Sol♭ La")
-        XCTAssertEqual(Escala(.mi, .harmoniaDoriaCromatica).notas.map(\.description).joined(separator: " "), "Mi Fa Sol♭ La Si Do Re♭")
+        XCTAssertEqual(
+            Escala(.mi, .tetracordoCromatico).notas.map(\.description).joined(separator: " "), "Mi Fa Sol♭ La")
+        XCTAssertEqual(
+            Escala(.mi, .harmoniaDoriaCromatica).notas.map(\.description).joined(separator: " "),
+            "Mi Fa Sol♭ La Si Do Re♭")
         XCTAssertEqual(TipoDeEscala.harmoniaDoria, .frigio)
         XCTAssertEqual(TipoDeEscala.harmoniaFrigia, .dorico)
         XCTAssertEqual(TipoDeEscala.harmoniaLidia, .mayor)
@@ -632,11 +700,13 @@ final class EscalasTradicionalesTests: XCTestCase {
         XCTAssertEqual(Set(Escala(.do, .hexatonicaDeDosTriadas).notas), Set(Acorde("Do").notas + Acorde("Re").notas))
         XCTAssertEqual(TipoDeEscala.todos.count, Set(TipoDeEscala.todos).count)
         // Nombres.
-        for (texto, nombre) in [("Do Bhupali", "Bhūpālī"), ("Do malkauns", "Mālkauns"), ("Do Bageshri", "Bāgeśrī"),
-                                ("Do Desh", "Deś"), ("Do Chahargah", "Čahārgāh"), ("Do Homayoun", "Homāyun"),
-                                ("Do Pyeongjo", "P'yŏngjo"), ("Do 계면조", "Kyemyŏnjo"), ("La andina", "pentatónica andina"),
-                                ("Mi harmonia doria cromatica", "harmonía doria cromática"), ("Do jónico sin 4ª", "jónico sin 4ª"),
-                                ("C triad pair", "hexatónica de dos tríadas")] {
+        for (texto, nombre) in [
+            ("Do Bhupali", "Bhūpālī"), ("Do malkauns", "Mālkauns"), ("Do Bageshri", "Bāgeśrī"),
+            ("Do Desh", "Deś"), ("Do Chahargah", "Čahārgāh"), ("Do Homayoun", "Homāyun"),
+            ("Do Pyeongjo", "P'yŏngjo"), ("Do 계면조", "Kyemyŏnjo"), ("La andina", "pentatónica andina"),
+            ("Mi harmonia doria cromatica", "harmonía doria cromática"), ("Do jónico sin 4ª", "jónico sin 4ª"),
+            ("C triad pair", "hexatónica de dos tríadas"),
+        ] {
             XCTAssertEqual(Escala(texto: texto)?.tipo.nombre, nombre, texto)
         }
     }
@@ -667,26 +737,30 @@ final class EscalasTradicionalesTests: XCTestCase {
         XCTAssertTrue(TipoDeEscala.egipcia.equivalentes.contains { $0.nombre == "Megh" })
         // Otras.
         XCTAssertEqual(notas(Escala(.do, .mayorRumana)), "Do Re♭ Mi Fa♯ Sol La Si♭")
-        XCTAssertEqual(Set(Escala(.re, .hexatonicaMenorDeDosTriadas).notas), Set(Acorde("Rem").notas + Acorde("Mim").notas))
+        XCTAssertEqual(
+            Set(Escala(.re, .hexatonicaMenorDeDosTriadas).notas), Set(Acorde("Rem").notas + Acorde("Mim").notas))
         XCTAssertEqual(notas(Escala(.do, .sivaranjani)), "Do Re Mi♭ Sol La")
         XCTAssertEqual(notas(Escala(.do, .kalavati)), "Do Mi Sol La Si♭")
         XCTAssertEqual(notas(Escala(.do, .revati)), "Do Re♭ Fa Sol Si♭")
         XCTAssertEqual(notas(Escala(.do, .candrakauns)), "Do Mi♭ Fa La♭ Si")
         XCTAssertEqual(TipoDeEscala.todos.count, Set(TipoDeEscala.todos).count)
         // Nombres de compositor y otros alias.
-        for (texto, nombre) in [("La de Liszt", "menor húngara"), ("Do Rimski-Kórsakov", "disminuida semitono-tono"),
-                                ("Do de Debussy", "tonos enteros"), ("Do Weitzmann", "aumentada"),
-                                ("Do nordestina", "lidio dominante"), ("Do hindú", "mixolidio ♭6"),
-                                ("Do escocesa", "pentatónica escocesa"), ("Do superlocrio ♮6", "superlocrio ♮6"),
-                                ("C Romanian major", "mayor rumana"), ("Do Shivaranjani", "Śivarañjanī"),
-                                ("Do Chandrakauns", "Candrakauns"), ("Do Amritavarshini", "Amṛtavarṣiṇī")] {
+        for (texto, nombre) in [
+            ("La de Liszt", "menor húngara"), ("Do Rimski-Kórsakov", "disminuida semitono-tono"),
+            ("Do de Debussy", "tonos enteros"), ("Do Weitzmann", "aumentada"),
+            ("Do nordestina", "lidio dominante"), ("Do hindú", "mixolidio ♭6"),
+            ("Do escocesa", "pentatónica escocesa"), ("Do superlocrio ♮6", "superlocrio ♮6"),
+            ("C Romanian major", "mayor rumana"), ("Do Shivaranjani", "Śivarañjanī"),
+            ("Do Chandrakauns", "Candrakauns"), ("Do Amritavarshini", "Amṛtavarṣiṇī"),
+        ] {
             XCTAssertEqual(Escala(texto: texto)?.tipo.nombre, nombre, texto)
         }
     }
 
     func testModosGregorianos() {
-        XCTAssertEqual(ModoGregoriano.todos.map(\.nombreGriego),
-                       ["dórico", "hipodórico", "frigio", "hipofrigio", "lidio", "hipolidio", "mixolidio", "hipomixolidio"])
+        XCTAssertEqual(
+            ModoGregoriano.todos.map(\.nombreGriego),
+            ["dórico", "hipodórico", "frigio", "hipofrigio", "lidio", "hipolidio", "mixolidio", "hipomixolidio"])
         XCTAssertEqual(ModoGregoriano.todos.map(\.finalis), [.re, .re, .mi, .mi, .fa, .fa, .sol, .sol])
         XCTAssertEqual(ModoGregoriano.todos.map(\.tenor), [.la, .fa, .do, .la, .do, .la, .re, .do])
         XCTAssertNil(ModoGregoriano(0))
@@ -703,7 +777,9 @@ final class EscalasTradicionalesTests: XCTestCase {
         XCTAssertFalse(segundo.esAutentico)
         XCTAssertEqual(segundo.escala, primero.escala)
         XCTAssertEqual(segundo.ambito.map(\.description), ["La3", "Si3", "Do4", "Re4", "Mi4", "Fa4", "Sol4", "La4"])
-        XCTAssertEqual(ModoGregoriano(8)!.description, "modo 8 (tetrardus plagal, hipomixolidio): final Sol, tenor Do, ámbito Re4–Re5")
+        XCTAssertEqual(
+            ModoGregoriano(8)!.description,
+            "modo 8 (tetrardus plagal, hipomixolidio): final Sol, tenor Do, ámbito Re4–Re5")
         for modo in ModoGregoriano.todos {
             XCTAssertEqual(modo.ambito.count, 8)
             XCTAssertTrue(modo.ambito.contains(Altura(modo.finalis, octava: 4)))
@@ -717,7 +793,8 @@ final class EscalasTradicionalesTests: XCTestCase {
     }
 
     func testEscalasChinas() {
-        XCTAssertEqual(TipoDeEscala.chinas.map(\.nombre), ["Gōng", "Shāng", "Jué", "Zhǐ", "Yǔ", "Qīngyuè", "Yǎyuè", "Yànyuè"])
+        XCTAssertEqual(
+            TipoDeEscala.chinas.map(\.nombre), ["Gōng", "Shāng", "Jué", "Zhǐ", "Yǔ", "Qīngyuè", "Yǎyuè", "Yànyuè"])
         // Los cinco modos son las rotaciones de la pentatónica: gōng, shāng, jué, zhǐ y yǔ
         // empiezan en Do, Re, Mi, Sol y La.
         let pentatonica = Escala(.do, .gong)
@@ -742,10 +819,16 @@ final class EscalasTradicionalesTests: XCTestCase {
     }
 
     func testEscalasJaponesas() {
-        XCTAssertEqual(TipoDeEscala.japonesas.map(\.nombre),
-                       ["Ritsu", "Ryo", "Yō", "Min'yō", "Miyakobushi", "In", "Insen", "Iwato", "Hirajōshi", "Kumoijōshi", "Ryūkyū",
-                        "Akebono", "Kokin-jōshi"])
-        func notas(_ tonica: Nota, _ tipo: TipoDeEscala) -> String { Escala(tonica, tipo).notas.map(\.description).joined(separator: " ") }
+        XCTAssertEqual(
+            TipoDeEscala.japonesas.map(\.nombre),
+            [
+                "Ritsu", "Ryo", "Yō", "Min'yō", "Miyakobushi", "In", "Insen", "Iwato", "Hirajōshi", "Kumoijōshi",
+                "Ryūkyū",
+                "Akebono", "Kokin-jōshi",
+            ])
+        func notas(_ tonica: Nota, _ tipo: TipoDeEscala) -> String {
+            Escala(tonica, tipo).notas.map(\.description).joined(separator: " ")
+        }
         XCTAssertEqual(notas(.do, .hirajoshi), "Do Re Mi♭ Sol La♭")
         XCTAssertEqual(notas(.do, .kumoijoshi), "Do Re Mi♭ Sol La")
         XCTAssertEqual(notas(.do, .iwato), "Do Re♭ Fa Sol♭ Si♭")
@@ -763,10 +846,12 @@ final class EscalasTradicionalesTests: XCTestCase {
         XCTAssertEqual(TipoDeEscala.ryo, .pentatonicaMayor)
         XCTAssertEqual(Set(TipoDeEscala.in.equivalentes.map(\.nombre)), ["Miyakobushi", "Ambassäl"])
         // Con macrones, sin ellos y en japonés.
-        for (texto, nombre) in [("Do Hirajōshi", "Hirajōshi"), ("Do hirajoshi", "Hirajōshi"), ("Do 平調子", "Hirajōshi"),
-                                ("Do Ryūkyū", "Ryūkyū"), ("Do ryukyu", "Ryūkyū"), ("Do okinawa", "Ryūkyū"),
-                                ("Re min'yō", "Min'yō"), ("Re minyo", "Min'yō"), ("Re yo", "Yō"), ("Mi in", "In"),
-                                ("Mi miyako-bushi", "Miyakobushi"), ("Do kumoi", "Kumoijōshi"), ("Do 岩戸", "Iwato")] {
+        for (texto, nombre) in [
+            ("Do Hirajōshi", "Hirajōshi"), ("Do hirajoshi", "Hirajōshi"), ("Do 平調子", "Hirajōshi"),
+            ("Do Ryūkyū", "Ryūkyū"), ("Do ryukyu", "Ryūkyū"), ("Do okinawa", "Ryūkyū"),
+            ("Re min'yō", "Min'yō"), ("Re minyo", "Min'yō"), ("Re yo", "Yō"), ("Mi in", "In"),
+            ("Mi miyako-bushi", "Miyakobushi"), ("Do kumoi", "Kumoijōshi"), ("Do 岩戸", "Iwato"),
+        ] {
             XCTAssertEqual(Escala(texto: texto)?.tipo.nombre, nombre, texto)
         }
         XCTAssertEqual(Escala(.do, .hirajoshi).nombre(en: .inglesASCII), "C Hirajōshi")
@@ -793,8 +878,10 @@ final class EscalasTradicionalesTests: XCTestCase {
 
     func testAliasEnGriegoYEnDevanagari() {
         // Los dromoi, por su nombre en griego, con tilde o sin ella.
-        for (texto, nombre) in [("Χιτζάζ", "Hitzáz"), ("χιτζαζ", "Hitzáz"), ("Χιτζαζκιάρ", "Hitzazkiár"),
-                                ("Ουσάκ", "Ousák"), ("Ραστ", "Rast")] {
+        for (texto, nombre) in [
+            ("Χιτζάζ", "Hitzáz"), ("χιτζαζ", "Hitzáz"), ("Χιτζαζκιάρ", "Hitzazkiár"),
+            ("Ουσάκ", "Ousák"), ("Ραστ", "Rast"),
+        ] {
             XCTAssertEqual(TipoDeEscala.buscar(nombre: texto)?.nombre, nombre, texto)
         }
         // Las escalas indias, en devanagari. Ahí las marcas cuentan: भैरव y भैरवी son dos ragas.

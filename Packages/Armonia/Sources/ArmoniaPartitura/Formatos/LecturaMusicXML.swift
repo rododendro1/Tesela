@@ -1,5 +1,7 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+import Foundation
+
 // Lectura de MusicXML por partes (`score-partwise`, lo que exportan MuseScore, Finale, Sibelius,
 // Dorico y `musicXML()`), sin comprimir.
 //
@@ -9,9 +11,8 @@ import ArmoniaTeoria
 // Las notas de adorno y las notas guía (`<grace>`, `<cue>`) no cuentan, ni la percusión (`<unpitched>`).
 // Del primer compás que los tenga: la armadura, el compás y el tempo (`<sound tempo>`).
 
-import Foundation
 #if canImport(FoundationXML)
-import FoundationXML
+    import FoundationXML
 #endif
 
 extension PiezaImportada {
@@ -29,8 +30,9 @@ extension PiezaImportada {
         guard parser.parse(), lector.cerrado else { throw ErrorDeImportacion.xmlDanado(linea: parser.lineNumber) }
         guard lector.raiz == "score-partwise" else { throw ErrorDeImportacion.noEsMusicXMLPorPartes }
         guard !lector.notas.isEmpty else { throw ErrorDeImportacion.sinNotas }
-        self.init(titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas,
-                  tempo: lector.tempo, notas: lector.notas)
+        self.init(
+            titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas,
+            tempo: lector.tempo, notas: lector.notas)
     }
 
     /// La línea del primer byte que no es UTF-8 válido, o `nil` si todo es válido o el documento está en UTF-16 (con
@@ -110,8 +112,8 @@ final class LectorMusicXML: NSObject, XMLParserDelegate {
 
     private struct NotaLeida {
         var esDeAcorde = false
-        var sinTiempo = false   // de adorno
-        var muda = false        // silencio, nota guía o percusión
+        var sinTiempo = false // de adorno
+        var muda = false // silencio, nota guía o percusión
         var paso: NotaNatural?
         var alteracion = 0
         var octava: Int?
@@ -120,8 +122,10 @@ final class LectorMusicXML: NSObject, XMLParserDelegate {
         var ligaduraQueAcaba = false
     }
 
-    func parser(_ parser: XMLParser, didStartElement nombre: String, namespaceURI: String?,
-                qualifiedName: String?, attributes atributos: [String: String] = [:]) {
+    func parser(
+        _ parser: XMLParser, didStartElement nombre: String, namespaceURI: String?,
+        qualifiedName: String?, attributes atributos: [String: String] = [:]
+    ) {
         if raiz == nil { raiz = nombre }
         defer { pila.append(nombre) }
         texto = ""
@@ -254,8 +258,9 @@ final class LectorMusicXML: NSObject, XMLParserDelegate {
         let clave = parte * 1024 + altura.midi + 512
         if nota.ligaduraQueAcaba, let i = ligadas[clave], notas[i].fin == inicio {
             let anterior = notas[i]
-            notas[i] = NotaDeLaPieza(altura: anterior.altura, inicio: anterior.inicio,
-                                     duracion: anterior.duracion + duracion, parte: parte)
+            notas[i] = NotaDeLaPieza(
+                altura: anterior.altura, inicio: anterior.inicio,
+                duracion: anterior.duracion + duracion, parte: parte)
             if !nota.ligaduraQueEmpieza { ligadas[clave] = nil }
         } else {
             notas.append(NotaDeLaPieza(altura: altura, inicio: inicio, duracion: duracion, parte: parte))

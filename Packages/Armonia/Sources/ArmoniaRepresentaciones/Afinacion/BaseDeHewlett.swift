@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+
 // MARK: - Representación en base 40 (y sus generalizaciones)
 //
 // Walter B. Hewlett (1992) numera las alturas de forma que la ortografía se conserva y los

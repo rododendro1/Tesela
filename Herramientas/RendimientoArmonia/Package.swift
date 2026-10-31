@@ -11,14 +11,14 @@ let package = Package(
     // Como `Armonia`: SwiftPM rechaza que un paquete con un mínimo más bajo dependa de otro con uno más alto.
     platforms: [.macOS(.v13)],
     products: [
-        .executable(name: "RendimientoArmonia", targets: ["RendimientoArmonia"]),
+        .executable(name: "RendimientoArmonia", targets: ["RendimientoArmonia"])
     ],
     dependencies: [
-        .package(path: "../../Packages/Armonia"),
+        .package(path: "../../Packages/Armonia")
     ],
     targets: [
         .executableTarget(
             name: "RendimientoArmonia",
-            dependencies: [.product(name: "Armonia", package: "Armonia")]),
+            dependencies: [.product(name: "Armonia", package: "Armonia")])
     ]
 )

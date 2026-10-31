@@ -38,9 +38,11 @@ public struct Traducido<Valor> {
     public let griego: Valor
     public let ruso: Valor
 
-    public init(_ espanol: Valor, _ ingles: Valor, ca catalan: Valor, gl gallego: Valor, ast asturiano: Valor,
-                an aragones: Valor, eu euskera: Valor, pt portugues: Valor, fr frances: Valor, oc occitano: Valor,
-                it italiano: Valor, de aleman: Valor, el griego: Valor, ru ruso: Valor) {
+    public init(
+        _ espanol: Valor, _ ingles: Valor, ca catalan: Valor, gl gallego: Valor, ast asturiano: Valor,
+        an aragones: Valor, eu euskera: Valor, pt portugues: Valor, fr frances: Valor, oc occitano: Valor,
+        it italiano: Valor, de aleman: Valor, el griego: Valor, ru ruso: Valor
+    ) {
         self.espanol = espanol
         self.ingles = ingles
         self.catalan = catalan
@@ -59,8 +61,10 @@ public struct Traducido<Valor> {
 
     /// Los catorce valores, en el orden del inicializador.
     package var todos: [Valor] {
-        [espanol, ingles, catalan, gallego, asturiano, aragones, euskera, portugues, frances, occitano, italiano,
-         aleman, griego, ruso]
+        [
+            espanol, ingles, catalan, gallego, asturiano, aragones, euskera, portugues, frances, occitano, italiano,
+            aleman, griego, ruso,
+        ]
     }
 
     /// El valor en el idioma de los textos de la notación (`Notacion.textos`).
@@ -88,11 +92,12 @@ public struct Traducido<Valor> {
 
     /// El mismo cambio en los catorce idiomas.
     public func map<Otro>(_ cambio: (Valor) throws -> Otro) rethrows -> Traducido<Otro> {
-        Traducido<Otro>(try cambio(espanol), try cambio(ingles), ca: try cambio(catalan), gl: try cambio(gallego),
-                        ast: try cambio(asturiano), an: try cambio(aragones), eu: try cambio(euskera),
-                        pt: try cambio(portugues), fr: try cambio(frances), oc: try cambio(occitano),
-                        it: try cambio(italiano), de: try cambio(aleman),
-                        el: try cambio(griego), ru: try cambio(ruso))
+        Traducido<Otro>(
+            try cambio(espanol), try cambio(ingles), ca: try cambio(catalan), gl: try cambio(gallego),
+            ast: try cambio(asturiano), an: try cambio(aragones), eu: try cambio(euskera),
+            pt: try cambio(portugues), fr: try cambio(frances), oc: try cambio(occitano),
+            it: try cambio(italiano), de: try cambio(aleman),
+            el: try cambio(griego), ru: try cambio(ruso))
     }
 }
 
@@ -134,7 +139,9 @@ extension Traduccion {
 
 extension Idioma {
     /// Idiomas en los que el motor escribe sus textos: todos, en el orden del selector de las apps.
-    public static let traducidos: [Idioma] = [.espanol, .ingles, .catalan, .gallego, .asturiano, .aragones,
-                                              .euskera, .portugues, .frances, .occitano, .italiano, .aleman,
-                                              .griego, .ruso]
+    public static let traducidos: [Idioma] = [
+        .espanol, .ingles, .catalan, .gallego, .asturiano, .aragones,
+        .euskera, .portugues, .frances, .occitano, .italiano, .aleman,
+        .griego, .ruso,
+    ]
 }

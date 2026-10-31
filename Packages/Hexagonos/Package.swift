@@ -9,7 +9,7 @@ let package = Package(
     // Las mismas que `Armonia` y las apps, para que cualquiera de ellas pueda depender de este paquete.
     platforms: [.macOS(.v13), .iOS(.v16)],
     products: [
-        .library(name: "Hexagonos", targets: ["Hexagonos"]),
+        .library(name: "Hexagonos", targets: ["Hexagonos"])
     ],
     targets: [
         .target(name: "Hexagonos"),

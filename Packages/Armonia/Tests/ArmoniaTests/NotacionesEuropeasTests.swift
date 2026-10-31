@@ -1,16 +1,19 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 /// Las notaciones y los textos en alemán, francés, italiano, occitano, griego y ruso.
 final class NotacionesEuropeasTests: XCTestCase {
     func testAleman() {
-        let casos: [(String, String)] = [("Do", "C"), ("Fa#", "Fis"), ("Dob", "Ces"), ("Mib", "Es"), ("Mibb", "Eses"),
-                                         ("Lab", "As"), ("Labb", "Asas"), ("Sib", "B"), ("Sibb", "Heses"), ("Si", "H"),
-                                         ("Si#", "His"), ("Rex", "Disis"), ("Solb", "Ges")]
+        let casos: [(String, String)] = [
+            ("Do", "C"), ("Fa#", "Fis"), ("Dob", "Ces"), ("Mib", "Es"), ("Mibb", "Eses"),
+            ("Lab", "As"), ("Labb", "Asas"), ("Sib", "B"), ("Sibb", "Heses"), ("Si", "H"),
+            ("Si#", "His"), ("Rex", "Disis"), ("Solb", "Ges"),
+        ]
         for (espanol, aleman) in casos {
             let nombre = Nota(texto: espanol)!
             XCTAssertEqual(nombre.nombre(en: .aleman), aleman, espanol)
@@ -86,9 +89,11 @@ final class NotacionesEuropeasTests: XCTestCase {
         XCTAssertEqual(Duracion(.corchea, puntillos: 2).nombre(en: .italiano), "croma doppiamente puntata")
         XCTAssertEqual(Figura.blanca.nombre(en: .portugues), "mínima")
         XCTAssertEqual(Cadencia.Tipo.rota.nombre(en: .frances), "cadence rompue")
-        XCTAssertEqual(Tonalidad(.do).analizar(["Do", "Fa", "Sol7", "Do"]).nombre(en: .portugues), "I–IV–V7–I em dó maior")
-        XCTAssertEqual(Tonalidad(.la, .menor).analizar(["Lam", "Mi7", "Lam"]).nombre(en: .italiano),
-                       "i–V7–i in la minore")
+        XCTAssertEqual(
+            Tonalidad(.do).analizar(["Do", "Fa", "Sol7", "Do"]).nombre(en: .portugues), "I–IV–V7–I em dó maior")
+        XCTAssertEqual(
+            Tonalidad(.la, .menor).analizar(["Lam", "Mi7", "Lam"]).nombre(en: .italiano),
+            "i–V7–i in la minore")
 
         XCTAssertEqual(TipoDeAcorde.dominanteSeptima.nombre(en: .frances), "septième de dominante")
         XCTAssertEqual(TipoDeAcorde.dominanteSeptima.nombre(en: .italiano), "settima di dominante")
@@ -97,7 +102,8 @@ final class NotacionesEuropeasTests: XCTestCase {
         XCTAssertEqual(Acorde("Sol7/Si").nombre(en: .italiano), "sol settima di dominante, primo rivolto")
         XCTAssertEqual(Acorde("Do/Re").nombre(en: .italiano), "do maggiore, con il basso in re")
         for (_, nombre) in TipoDeAcorde.nombresConocidos {
-            XCTAssertFalse(nombre.portugues.isEmpty || nombre.frances.isEmpty || nombre.italiano.isEmpty, nombre.espanol)
+            XCTAssertFalse(
+                nombre.portugues.isEmpty || nombre.frances.isEmpty || nombre.italiano.isEmpty, nombre.espanol)
         }
 
         XCTAssertEqual(Escala(.re, .dorico).nombre(en: .frances), "ré dorien")

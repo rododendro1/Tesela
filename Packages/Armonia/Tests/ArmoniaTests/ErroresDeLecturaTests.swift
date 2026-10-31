@@ -1,15 +1,18 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 /// Los errores al leer y sus mensajes en cada idioma.
 final class ErroresDeLecturaTests: XCTestCase {
     /// Comprueba que leer `texto` lanza el motivo indicado en la posición indicada.
-    private func comprobar<T>(_ leer: @autoclosure () throws -> T, _ motivo: ErrorDeLectura.Motivo,
-                              posicion: Int?, file: StaticString = #filePath, line: UInt = #line) {
+    private func comprobar<T>(
+        _ leer: @autoclosure () throws -> T, _ motivo: ErrorDeLectura.Motivo,
+        posicion: Int?, file: StaticString = #filePath, line: UInt = #line
+    ) {
         XCTAssertThrowsError(try leer(), file: file, line: line) { error in
             guard let error = error as? ErrorDeLectura else {
                 return XCTFail("Error inesperado: \(error)", file: file, line: line)
@@ -69,8 +72,9 @@ final class ErroresDeLecturaTests: XCTestCase {
             _ = try Acorde(leyendo: "Do7(b3)")
             XCTFail("Debería fallar")
         } catch {
-            XCTAssertTrue("\(error)".hasPrefix("No se puede leer «Do7(b3)» (carácter 5): «b3» no es una tensión válida"),
-                          "\(error)")
+            XCTAssertTrue(
+                "\(error)".hasPrefix("No se puede leer «Do7(b3)» (carácter 5): «b3» no es una tensión válida"),
+                "\(error)")
         }
         let error = ErrorDeLectura(texto: "5M", posicion: 0, motivo: .intervaloInexistente(numero: 5, calidad: .mayor))
         XCTAssertTrue(error.explicacion.contains("justas, aumentadas o disminuidas"))
@@ -86,61 +90,73 @@ final class ErroresDeLecturaTests: XCTestCase {
     func testMensajesEnIngles() throws {
         XCTAssertThrowsError(try Acorde(leyendo: "Do7(b3)")) { error in
             let error = error as! ErrorDeLectura
-            XCTAssertEqual(error.descripcion(en: .inglesASCII),
-                           "Cannot read \"Do7(b3)\" (character 5): \"b3\" is not a valid tension "
-                           + "(♭/♯ go with 5, 9, 11 and 13, and add with 2, 4, 6, 9, 11 and 13)")
+            XCTAssertEqual(
+                error.descripcion(en: .inglesASCII),
+                "Cannot read \"Do7(b3)\" (character 5): \"b3\" is not a valid tension "
+                    + "(♭/♯ go with 5, 9, 11 and 13, and add with 2, 4, 6, 9, 11 and 13)")
             XCTAssertEqual(error.descripcion(en: .espanolUnicode), error.description)
             // El idioma lo da la notación.
-            XCTAssertEqual(error.descripcion(en: .aleman),
-                           "„Do7(b3)“ kann nicht gelesen werden (Zeichen 5): „b3“ ist keine gültige Tension "
-                           + "(♭/♯ gehen mit 5, 9, 11 und 13, add mit 2, 4, 6, 9, 11 und 13)")
-            XCTAssertEqual(error.descripcion(en: .portugues),
-                           "Não é possível ler «Do7(b3)» (caractere 5): «b3» não é uma tensão válida "
-                           + "(admitem-se ♭/♯ com 5, 9, 11 e 13, e add com 2, 4, 6, 9, 11 e 13)")
-            XCTAssertEqual(error.descripcion(en: .frances),
-                           "Impossible de lire « Do7(b3) » (caractère 5) : « b3 » n'est pas une tension valide "
-                           + "(♭/♯ s'emploient avec 5, 9, 11 et 13, et add avec 2, 4, 6, 9, 11 et 13)")
-            XCTAssertEqual(error.descripcion(en: .italiano),
-                           "Impossibile leggere «Do7(b3)» (carattere 5): «b3» non è una tensione valida "
-                           + "(si ammettono ♭/♯ con 5, 9, 11 e 13, e add con 2, 4, 6, 9, 11 e 13)")
-            XCTAssertEqual(error.descripcion(en: .catalan),
-                           "No es pot llegir «Do7(b3)» (caràcter 5): «b3» no és una tensió vàlida "
-                           + "(s'admeten ♭/♯ amb 5, 9, 11 i 13, i add amb 2, 4, 6, 9, 11 i 13)")
-            XCTAssertEqual(error.descripcion(en: .gallego),
-                           "Non se pode ler «Do7(b3)» (carácter 5): «b3» non é unha tensión válida "
-                           + "(admítense ♭/♯ con 5, 9, 11 e 13, e add con 2, 4, 6, 9, 11 e 13)")
-            XCTAssertEqual(error.descripcion(en: .euskera),
-                           "Ezin da «Do7(b3)» irakurri (5. karakterea): «b3» ez da tentsio baliozkoa "
-                           + "(♭/♯ 5, 9, 11 eta 13rekin onartzen dira, eta add 2, 4, 6, 9, 11 eta 13rekin)")
+            XCTAssertEqual(
+                error.descripcion(en: .aleman),
+                "„Do7(b3)“ kann nicht gelesen werden (Zeichen 5): „b3“ ist keine gültige Tension "
+                    + "(♭/♯ gehen mit 5, 9, 11 und 13, add mit 2, 4, 6, 9, 11 und 13)")
+            XCTAssertEqual(
+                error.descripcion(en: .portugues),
+                "Não é possível ler «Do7(b3)» (caractere 5): «b3» não é uma tensão válida "
+                    + "(admitem-se ♭/♯ com 5, 9, 11 e 13, e add com 2, 4, 6, 9, 11 e 13)")
+            XCTAssertEqual(
+                error.descripcion(en: .frances),
+                "Impossible de lire « Do7(b3) » (caractère 5) : « b3 » n'est pas une tension valide "
+                    + "(♭/♯ s'emploient avec 5, 9, 11 et 13, et add avec 2, 4, 6, 9, 11 et 13)")
+            XCTAssertEqual(
+                error.descripcion(en: .italiano),
+                "Impossibile leggere «Do7(b3)» (carattere 5): «b3» non è una tensione valida "
+                    + "(si ammettono ♭/♯ con 5, 9, 11 e 13, e add con 2, 4, 6, 9, 11 e 13)")
+            XCTAssertEqual(
+                error.descripcion(en: .catalan),
+                "No es pot llegir «Do7(b3)» (caràcter 5): «b3» no és una tensió vàlida "
+                    + "(s'admeten ♭/♯ amb 5, 9, 11 i 13, i add amb 2, 4, 6, 9, 11 i 13)")
+            XCTAssertEqual(
+                error.descripcion(en: .gallego),
+                "Non se pode ler «Do7(b3)» (carácter 5): «b3» non é unha tensión válida "
+                    + "(admítense ♭/♯ con 5, 9, 11 e 13, e add con 2, 4, 6, 9, 11 e 13)")
+            XCTAssertEqual(
+                error.descripcion(en: .euskera),
+                "Ezin da «Do7(b3)» irakurri (5. karakterea): «b3» ez da tentsio baliozkoa "
+                    + "(♭/♯ 5, 9, 11 eta 13rekin onartzen dira, eta add 2, 4, 6, 9, 11 eta 13rekin)")
         }
         XCTAssertThrowsError(try Intervalo(leyendo: "5M")) { error in
-            XCTAssertEqual((error as! ErrorDeLectura).explicacion(en: .inglesASCII),
-                           "there is no major 5th: unisons, 4ths, 5ths and octaves are perfect, augmented or diminished")
+            XCTAssertEqual(
+                (error as! ErrorDeLectura).explicacion(en: .inglesASCII),
+                "there is no major 5th: unisons, 4ths, 5ths and octaves are perfect, augmented or diminished")
         }
         XCTAssertThrowsError(try TipoDeAcorde(comprobandoPasosDeQuinta: [0, 7])) { error in
-            XCTAssertEqual((error as! ErrorDeLectura).explicacion(en: .inglesASCII),
-                           "the augmented unison has no role in a tertian chord")
+            XCTAssertEqual(
+                (error as! ErrorDeLectura).explicacion(en: .inglesASCII),
+                "the augmented unison has no role in a tertian chord")
         }
-        XCTAssertEqual(ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio).descripcion(en: .inglesASCII),
-                       "Invalid value: the text is empty")
-        XCTAssertEqual([1, 2, 3, 4, 11, 12, 13, 21, 22].map { Intervalo.ordinalEnCifras($0, en: .ingles) },
-                       ["1st", "2nd", "3rd", "4th", "11th", "12th", "13th", "21st", "22nd"])
+        XCTAssertEqual(
+            ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio).descripcion(en: .inglesASCII),
+            "Invalid value: the text is empty")
+        XCTAssertEqual(
+            [1, 2, 3, 4, 11, 12, 13, 21, 22].map { Intervalo.ordinalEnCifras($0, en: .ingles) },
+            ["1st", "2nd", "3rd", "4th", "11th", "12th", "13th", "21st", "22nd"])
     }
 
     private static let motivos: [ErrorDeLectura.Motivo] = [
-            .textoVacio, .notaNoReconocida, .caracteresSobrantes("x"), .octavaNoValida(""), .octavaNoValida("x"),
-            .numeroDeIntervaloNoValido(""), .numeroDeIntervaloNoValido("x"), .calidadNoValida(""),
-            .calidadNoValida("X"), .intervaloInexistente(numero: 1, calidad: .disminuida(1)),
-            .intervaloInexistente(numero: 3, calidad: .justa), .simboloNoReconocido("x"), .tensionNoValida("b3"),
-            .numeroDeAcordeNoValido(8), .numeroRepetido(9), .calidadesIncompatibles(.disminuidoYSemidisminuido),
-            .calidadesIncompatibles(.quintaConCalidad), .gradoNoOmitible(1), .gradoNoOmitible(2),
-            .acordeNoInterpretable(.faltaLaFundamental), .acordeNoInterpretable(.intervaloSinPapel(.unisonoAumentado)),
-            .acordeNoInterpretable(.terceraMayorYMenor), .acordeNoInterpretable(.variasSeptimas),
-            .acordeNoInterpretable(.septimaDisminuidaFueraDelDisminuido), .acordeNoInterpretable(.noEsPorTerceras),
-            .bajoNoValido("x"), .idiomasMezclados("B"), .tipoDeEscalaNoReconocido(""),
-            .tipoDeEscalaNoReconocido("x"), .modoNoReconocido("dórico"), .alteracionNoReconocida("?"),
-            .duracionNoValida("x"), .compasNoValido("x"), .vocesDistintas, .contrapuntoDeOtraDuracion(redondas: 8),
-        ]
+        .textoVacio, .notaNoReconocida, .caracteresSobrantes("x"), .octavaNoValida(""), .octavaNoValida("x"),
+        .numeroDeIntervaloNoValido(""), .numeroDeIntervaloNoValido("x"), .calidadNoValida(""),
+        .calidadNoValida("X"), .intervaloInexistente(numero: 1, calidad: .disminuida(1)),
+        .intervaloInexistente(numero: 3, calidad: .justa), .simboloNoReconocido("x"), .tensionNoValida("b3"),
+        .numeroDeAcordeNoValido(8), .numeroRepetido(9), .calidadesIncompatibles(.disminuidoYSemidisminuido),
+        .calidadesIncompatibles(.quintaConCalidad), .gradoNoOmitible(1), .gradoNoOmitible(2),
+        .acordeNoInterpretable(.faltaLaFundamental), .acordeNoInterpretable(.intervaloSinPapel(.unisonoAumentado)),
+        .acordeNoInterpretable(.terceraMayorYMenor), .acordeNoInterpretable(.variasSeptimas),
+        .acordeNoInterpretable(.septimaDisminuidaFueraDelDisminuido), .acordeNoInterpretable(.noEsPorTerceras),
+        .bajoNoValido("x"), .idiomasMezclados("B"), .tipoDeEscalaNoReconocido(""),
+        .tipoDeEscalaNoReconocido("x"), .modoNoReconocido("dórico"), .alteracionNoReconocida("?"),
+        .duracionNoValida("x"), .compasNoValido("x"), .vocesDistintas, .contrapuntoDeOtraDuracion(redondas: 8),
+    ]
 
     /// Todos los motivos tienen explicación en inglés, y la inglesa no lleva texto en español.
     func testTodosLosMotivosEnLosDosIdiomas() {
@@ -180,11 +196,13 @@ final class ErroresDeLecturaTests: XCTestCase {
                 XCTAssertNotEqual(error.explicacion(en: notacion), espanol, "\(motivo) \(notacion)")
             }
         }
-        XCTAssertEqual(ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio).descripcion(en: .gallego),
-                       "Valor non válido: o texto está baleiro")
-        XCTAssertEqual(ErrorDeLectura(texto: "x", posicion: nil, motivo: .intervaloInexistente(numero: 5, calidad: .mayor))
-                        .explicacion(en: .euskera),
-                       "5. handia ez da existitzen: unisonoa, 4.a, 5.a eta 8.a justuak, gehituak edo gutxituak dira")
+        XCTAssertEqual(
+            ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio).descripcion(en: .gallego),
+            "Valor non válido: o texto está baleiro")
+        XCTAssertEqual(
+            ErrorDeLectura(texto: "x", posicion: nil, motivo: .intervaloInexistente(numero: 5, calidad: .mayor))
+                .explicacion(en: .euskera),
+            "5. handia ez da existitzen: unisonoa, 4.a, 5.a eta 8.a justuak, gehituak edo gutxituak dira")
     }
 
     func testLosFallablesSiguenDevolviendoNil() {

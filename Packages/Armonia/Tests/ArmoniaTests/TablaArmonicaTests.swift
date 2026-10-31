@@ -1,9 +1,10 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class TablaArmonicaTests: XCTestCase {
     private func punto(_ a: Int, _ b: Int) -> PuntoDeLaRed { PuntoDeLaRed(quintas: a, terceras: b) }
@@ -18,18 +19,22 @@ final class TablaArmonicaTests: XCTestCase {
         XCTAssertEqual(TablaArmonica(ConjuntoDeClases([0, 3, 7])).colocacion, .clasesDeAltura)
         // La forma es la misma en todas las tonalidades: transportar es desplazar los hexágonos.
         let forma = { (tabla: TablaArmonica) -> [PuntoDeLaRed] in
-            tabla.puntos.map { self.punto($0.quintas - tabla.puntos[0].quintas, $0.terceras - tabla.puntos[0].terceras) }
+            tabla.puntos.map {
+                self.punto($0.quintas - tabla.puntos[0].quintas, $0.terceras - tabla.puntos[0].terceras)
+            }
         }
         for tonica in [Nota.re, Nota(.mi, .bemol), Nota(.fa, .sostenido), .si] {
-            XCTAssertEqual(forma(TablaArmonica(Acorde(tonica, Acorde("Domaj7").tipo))), forma(TablaArmonica(Acorde("Domaj7"))), "\(tonica)")
+            XCTAssertEqual(
+                forma(TablaArmonica(Acorde(tonica, Acorde("Domaj7").tipo))), forma(TablaArmonica(Acorde("Domaj7"))),
+                "\(tonica)")
         }
     }
 
     func testAlturas() {
         XCTAssertEqual(TablaArmonica.midi(de: punto(0, 0)), 60)
-        XCTAssertEqual(TablaArmonica.midi(de: punto(1, 0)), 67)    // una quinta arriba
-        XCTAssertEqual(TablaArmonica.midi(de: punto(0, 1)), 64)    // una tercera mayor arriba
-        XCTAssertEqual(TablaArmonica.midi(de: punto(1, -1)), 63)   // una tercera menor arriba
+        XCTAssertEqual(TablaArmonica.midi(de: punto(1, 0)), 67) // una quinta arriba
+        XCTAssertEqual(TablaArmonica.midi(de: punto(0, 1)), 64) // una tercera mayor arriba
+        XCTAssertEqual(TablaArmonica.midi(de: punto(1, -1)), 63) // una tercera menor arriba
         let abierta = TablaArmonica([Altura("Do3"), Altura("Sol3"), Altura("Mi4"), Altura("Si4")])
         XCTAssertEqual(abierta.colocacion, .alturas)
         XCTAssertEqual(abierta.puntos.map(TablaArmonica.midi), [48, 55, 64, 71])
@@ -46,8 +51,10 @@ final class TablaArmonicaTests: XCTestCase {
     }
 
     func testSVG() throws {
-        for tabla in [TablaArmonica(Escala(.re, .dorico)), TablaArmonica(ConjuntoDeClases([0, 4, 7])),
-                      TablaArmonica([Altura("Do3"), Altura("Sol3"), Altura("Mi4")]), TablaArmonica([Nota]())] {
+        for tabla in [
+            TablaArmonica(Escala(.re, .dorico)), TablaArmonica(ConjuntoDeClases([0, 4, 7])),
+            TablaArmonica([Altura("Do3"), Altura("Sol3"), Altura("Mi4")]), TablaArmonica([Nota]()),
+        ] {
             let raiz = try XCTUnwrap(ElementoXML.leer(tabla.svg()))
             XCTAssertEqual(raiz.nombre, "svg")
             XCTAssertFalse(raiz.todos("polygon").isEmpty)
@@ -72,11 +79,13 @@ final class TablaArmonicaTests: XCTestCase {
         }
         let acorde = try XCTUnwrap(ElementoXML.leer(TablaArmonica(Acorde("Domaj7")).svg()))
         XCTAssertEqual(acorde.todos("title").first?.texto, "Domaj7")
-        XCTAssertEqual(leyenda(acorde), ["nota", "fundamental", "contorno de la forma", "tríada mayor", "tríada menor"])
+        XCTAssertEqual(
+            leyenda(acorde), ["nota", "fundamental", "contorno de la forma", "tríada mayor", "tríada menor"])
         let escala = try XCTUnwrap(ElementoXML.leer(TablaArmonica(Escala(.re, .dorico)).svg()))
         XCTAssertEqual(escala.todos("title").first?.texto, "Re dórico")
         XCTAssertEqual(leyenda(escala)[1], "tónica")
-        let alturas = try XCTUnwrap(ElementoXML.leer(TablaArmonica([Altura("Do3"), Altura("Sol3")]).svg(notacion: .inglesASCII)))
+        let alturas = try XCTUnwrap(
+            ElementoXML.leer(TablaArmonica([Altura("Do3"), Altura("Sol3")]).svg(notacion: .inglesASCII)))
         XCTAssertEqual(alturas.todos("title").first?.texto, "C3 · G3")
         XCTAssertEqual(leyenda(alturas), ["pitch (every key)", "first note", "outline of the shape"])
         XCTAssertTrue(leyenda(try XCTUnwrap(ElementoXML.leer(TablaArmonica(Acorde("Do")).svg(leyenda: false)))).isEmpty)
@@ -86,7 +95,8 @@ final class TablaArmonicaTests: XCTestCase {
         XCTAssertEqual(leyenda(euskera)[1], "tonika")
         let catalan = try XCTUnwrap(ElementoXML.leer(TablaArmonica(Acorde("Domaj7")).svg(notacion: .catalan)))
         XCTAssertEqual(leyenda(catalan), ["nota", "fonamental", "contorn de la forma", "tríada major", "tríada menor"])
-        let ciclo = try XCTUnwrap(ElementoXML.leer(XCTUnwrap(TablaArmonica(ciclo: .hexatonico, desde: "Do")).svg(notacion: .gallego)))
+        let ciclo = try XCTUnwrap(
+            ElementoXML.leer(XCTUnwrap(TablaArmonica(ciclo: .hexatonico, desde: "Do")).svg(notacion: .gallego)))
         XCTAssertTrue(leyenda(ciclo).contains("fundamental do primeiro acorde"))
     }
 
@@ -102,22 +112,29 @@ final class TablaArmonicaTests: XCTestCase {
         let raiz = try XCTUnwrap(ElementoXML.leer(tabla.svg()))
         XCTAssertEqual(raiz.todos("line").filter { $0.atributos["marker-end"] != nil }.count, 2)
         XCTAssertEqual(raiz.todos("title").first?.texto, "Do –R→ Lam –L→ Fa")
-        let leyenda = raiz.todos("g").filter { $0.atributos["class"] == "leyenda" }.flatMap { $0.todos("text").map(\.texto) }
+        let leyenda = raiz.todos("g").filter { $0.atributos["class"] == "leyenda" }.flatMap {
+            $0.todos("text").map(\.texto)
+        }
         XCTAssertEqual(leyenda.last, "paso del recorrido (P, L, R)")
         XCTAssertTrue(leyenda.contains("fundamental del primer acorde"))
         // Las flechas empiezan en el vértice común de los tres hexágonos de la tríada: a la
         // distancia del radio de cada uno de sus centros.
         let primera = try XCTUnwrap(raiz.todos("line").first { $0.atributos["marker-end"] != nil })
-        let paso = 72.0, coseno = 0.8660254037844386
+        let paso = 72.0
+        let coseno = 0.8660254037844386
         let vertices = Tonnetz.Triada(Acorde("Do"))!.vertices
         let cx = vertices.map { Double($0.terceras) * coseno * paso }.reduce(0, +) / 3
         let cy = vertices.map { -(Double($0.quintas) + Double($0.terceras) / 2) * paso }.reduce(0, +) / 3
         for v in vertices {
-            let d = ((Double(v.terceras) * coseno * paso - cx) * (Double(v.terceras) * coseno * paso - cx)
-                     + (-(Double(v.quintas) + Double(v.terceras) / 2) * paso - cy) * (-(Double(v.quintas) + Double(v.terceras) / 2) * paso - cy)).squareRoot()
+            let d =
+                ((Double(v.terceras) * coseno * paso - cx) * (Double(v.terceras) * coseno * paso - cx)
+                + (-(Double(v.quintas) + Double(v.terceras) / 2) * paso - cy)
+                    * (-(Double(v.quintas) + Double(v.terceras) / 2) * paso - cy))
+                .squareRoot()
             XCTAssertEqual(d, paso / (2 * coseno), accuracy: 0.001)
         }
-        let x1 = try XCTUnwrap(Double(primera.atributos["x1"] ?? "")), y1 = try XCTUnwrap(Double(primera.atributos["y1"] ?? ""))
+        let x1 = try XCTUnwrap(Double(primera.atributos["x1"] ?? ""))
+        let y1 = try XCTUnwrap(Double(primera.atributos["y1"] ?? ""))
         XCTAssertLessThan(((x1 - cx) * (x1 - cx) + (y1 - cy) * (y1 - cy)).squareRoot(), paso * 0.15)
     }
     func testCiclo() throws {

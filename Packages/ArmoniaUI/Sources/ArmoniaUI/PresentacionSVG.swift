@@ -6,7 +6,8 @@ enum PresentacionSVG {
     /// El `viewBox` del SVG: x, y, ancho y alto. `nil` si no lo tiene o está mal escrito.
     static func caja(de svg: String) -> (x: Double, y: Double, ancho: Double, alto: Double)? {
         guard let inicio = svg.range(of: "viewBox=\""),
-              let fin = svg[inicio.upperBound...].firstIndex(of: "\"") else { return nil }
+            let fin = svg[inicio.upperBound...].firstIndex(of: "\"")
+        else { return nil }
         let numeros = svg[inicio.upperBound..<fin]
             .split(whereSeparator: { $0 == " " || $0 == "," })
             .compactMap { Double($0) }
@@ -21,7 +22,9 @@ enum PresentacionSVG {
         let escala = min(ancho / caja.ancho, alto / caja.alto)
         let x = caja.x + (toque.x - (ancho - caja.ancho * escala) / 2) / escala
         let y = caja.y + (toque.y - (alto - caja.alto * escala) / 2) / escala
-        guard (caja.x...(caja.x + caja.ancho)).contains(x), (caja.y...(caja.y + caja.alto)).contains(y) else { return nil }
+        guard (caja.x...(caja.x + caja.ancho)).contains(x), (caja.y...(caja.y + caja.alto)).contains(y) else {
+            return nil
+        }
         return Punto(x: x, y: y)
     }
 }

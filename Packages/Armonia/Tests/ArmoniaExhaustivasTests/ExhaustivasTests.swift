@@ -1,9 +1,10 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 /// Pruebas exhaustivas: todo lo que el motor escribe debe volver a leerse igual.
 /// Recorren el espacio completo de valores en lugar de ejemplos sueltos, así que
@@ -39,17 +40,19 @@ final class IdaYVueltaTests: XCTestCase {
             XCTAssertEqual(intervalos.count, conjunto.count, "«\(simbolo)»")
             XCTAssertEqual(Set(intervalos.map(\.pasosDeQuinta)), conjunto, "«\(simbolo)»")
             XCTAssertEqual(intervalos.first, .unisono, "«\(simbolo)»")
-            XCTAssertTrue(zip(intervalos, intervalos.dropFirst()).allSatisfy {
-                ($0.pasos, $0.semitonos) <= ($1.pasos, $1.semitonos)
-            }, "«\(simbolo)»: intervalos desordenados")
+            XCTAssertTrue(
+                zip(intervalos, intervalos.dropFirst()).allSatisfy {
+                    ($0.pasos, $0.semitonos) <= ($1.pasos, $1.semitonos)
+                }, "«\(simbolo)»: intervalos desordenados")
         }
         XCTAssertEqual(interpretables, 9344)
     }
 
     static let estilos: [EstiloDeCifrado] = [
         .predeterminado, .espanolASCII, .inglesASCII, .inglesUnicode, .jazz, .calidadesConPalabras,
-        EstiloDeCifrado(notacion: .inglesASCII, tensionesEnASCII: false, menor: .min, disminuido: .dim, aumentado: .aug,
-                      septimaMayor: .mayuscula, semidisminuido: .barrado),
+        EstiloDeCifrado(
+            notacion: .inglesASCII, tensionesEnASCII: false, menor: .min, disminuido: .dim, aumentado: .aug,
+            septimaMayor: .mayuscula, semidisminuido: .barrado),
     ]
 
     /// Lo mismo que la prueba anterior, en cada estilo de cifrado.
@@ -93,7 +96,8 @@ final class IdaYVueltaTests: XCTestCase {
     /// Acordes completos: fundamental + tipo + cada inversión posible + un bajo ajeno.
     func testCifradosCompletosConFundamentalYBajo() {
         let fundamentales: [Nota] = ["Do", "Fa#", "Sib", "Mi", "Sol#", "Dobb", "Si#"]
-        let tipos: [TipoDeAcorde] = TipoDeAcorde.todos
+        let tipos: [TipoDeAcorde] =
+            TipoDeAcorde.todos
             + ["7(b9,#11)", "13sus4", "m6/9", "7alt", "7(omit5)", "maj7#11", "13(b9)", "+9"]
         for tipo in tipos {
             for raiz in fundamentales {
@@ -136,8 +140,9 @@ final class IdaYVueltaTests: XCTestCase {
                 for sentido in [SentidoDelIntervalo.ascendente, .descendente] {
                     let intervalo = Intervalo(pasosDeQuinta: q, pasosDeOctava: o, sentido: sentido)
                     XCTAssertEqual(Intervalo(texto: intervalo.abreviatura), intervalo, intervalo.abreviatura)
-                    XCTAssertEqual(Intervalo(texto: intervalo.abreviatura(en: .inglesASCII)), intervalo,
-                                   intervalo.abreviatura(en: .inglesASCII))
+                    XCTAssertEqual(
+                        Intervalo(texto: intervalo.abreviatura(en: .inglesASCII)), intervalo,
+                        intervalo.abreviatura(en: .inglesASCII))
                     XCTAssertGreaterThanOrEqual(intervalo.pasos, 0)
                 }
             }

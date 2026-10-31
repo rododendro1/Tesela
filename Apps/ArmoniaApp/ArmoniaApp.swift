@@ -1,6 +1,6 @@
-import SwiftUI
 import Armonia
 import ArmoniaUI
+import SwiftUI
 
 @main
 struct ArmoniaApp: App {

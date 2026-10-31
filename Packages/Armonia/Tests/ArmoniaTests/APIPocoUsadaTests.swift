@@ -1,10 +1,11 @@
-import XCTest
 import Foundation
+import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 @testable import ArmoniaTrastes
 
 // La parte de la API que no usan las apps ni el resto del motor: las descripciones, los atajos y los
@@ -18,7 +19,9 @@ final class APIPocoUsadaDelNucleoTests: XCTestCase {
         XCTAssertEqual("\(Consonancia.perfecta)", "consonancia perfecta")
         XCTAssertEqual(Consonancia.disonancia.nombre, "disonancia")
         XCTAssertEqual(Consonancia.disonancia.nombre(en: .inglesASCII), "dissonance")
-        XCTAssertEqual(ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio).errorDescription, "Valor no válido: el texto está vacío")
+        XCTAssertEqual(
+            ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio).errorDescription,
+            "Valor no válido: el texto está vacío")
     }
 
     func testAlteracionesYNotas() {
@@ -46,11 +49,13 @@ final class APIPocoUsadaDelNucleoTests: XCTestCase {
         // Las multiplicidades de más de tres, y el unísono en masculino en occitano.
         for idioma in Idioma.allCases {
             let notacion = Notacion.delIdioma(idioma)
-            XCTAssertNotEqual(Intervalo(numero: 4, calidad: .aumentada(4))?.nombre(en: notacion),
-                              Intervalo(numero: 4, calidad: .aumentada(3))?.nombre(en: notacion), idioma.codigo)
+            XCTAssertNotEqual(
+                Intervalo(numero: 4, calidad: .aumentada(4))?.nombre(en: notacion),
+                Intervalo(numero: 4, calidad: .aumentada(3))?.nombre(en: notacion), idioma.codigo)
         }
         XCTAssertEqual(Intervalo(numero: 1, calidad: .aumentada(1))?.nombre(en: .occitano), "unisson aumentat")
-        XCTAssertEqual(Intervalo(numero: 1, calidad: .aumentada(2))?.nombre(en: .occitano), "unisson doblament aumentat")
+        XCTAssertEqual(
+            Intervalo(numero: 1, calidad: .aumentada(2))?.nombre(en: .occitano), "unisson doblament aumentat")
         XCTAssertNil(Intervalo(numero: 1, calidad: .disminuida(1)))
         XCTAssertEqual(Intervalo.ordinalEnCifras(5, en: .griego), "5η")
         XCTAssertEqual(Intervalo.ordinalEnCifras(5, en: .ruso), "5-я")
@@ -72,8 +77,9 @@ final class APIPocoUsadaDelNucleoTests: XCTestCase {
     }
 
     func testUnCaminoQueNoLlega() {
-        let camino: [Int]? = caminoMasCorto(desde: 0, clave: { $0 }, vecinos: { n in n < 3 ? [(n + 1, n + 1)] : [] },
-                                            llega: { $0 == 10 })
+        let camino: [Int]? = caminoMasCorto(
+            desde: 0, clave: { $0 }, vecinos: { n in n < 3 ? [(n + 1, n + 1)] : [] },
+            llega: { $0 == 10 })
         XCTAssertNil(camino)
     }
 }
@@ -104,7 +110,8 @@ final class APIPocoUsadaDeLaTeoriaTests: XCTestCase {
         XCTAssertFalse(TipoDeAcorde("m").tieneSeptima)
         XCTAssertTrue(Acorde("Do7").estructura.tieneSeptima)
         XCTAssertEqual(Acorde("Do7").estructura.intervalos(conPapel: .tercera), [.terceraMayor])
-        XCTAssertEqual(Acorde.identificar(clasesDeAltura: [2, 5, 9], escala: Escala(.do, .mayor)).first?.cifrado, "Rem")
+        XCTAssertEqual(
+            Acorde.identificar(clasesDeAltura: [2, 5, 9], escala: Escala(.do, .mayor)).first?.cifrado, "Rem")
         XCTAssertEqual(Arpegio(Acorde("Do")).notas, [Nota("Do"), Nota("Mi"), Nota("Sol"), Nota("Do")])
     }
 
@@ -120,7 +127,8 @@ final class APIPocoUsadaDeLaTeoriaTests: XCTestCase {
     }
 
     func testUnRecorridoQueModulaSinPivote() throws {
-        let recorrido = try XCTUnwrap(RecorridoTonal(["Do", "Fa", "Sol7", "Do", "Fa#", "Si", "Do#7", "Fa#"].map { Acorde(texto: $0)! }))
+        let recorrido = try XCTUnwrap(
+            RecorridoTonal(["Do", "Fa", "Sol7", "Do", "Fa#", "Si", "Do#7", "Fa#"].map { Acorde(texto: $0)! }))
         XCTAssertEqual(recorrido.tonalidadDePartida, Tonalidad(.do, .mayor))
         XCTAssertEqual(recorrido.tonalidadDeLlegada, try Tonalidad(leyendo: "Fa# mayor"))
         XCTAssertEqual(recorrido.modulaciones.map(\.description), ["De Do mayor a Fa♯ mayor en el acorde 5 (directa)"])
@@ -129,7 +137,8 @@ final class APIPocoUsadaDeLaTeoriaTests: XCTestCase {
 
     func testCorales() throws {
         XCTAssertEqual(Coral.nombreDeVoz(4, de: 5, en: .espanolUnicode), "voz 5")
-        let armonizacion = try XCTUnwrap(Tonalidad(.do, .mayor).armonizar(melodia: [Nota("Mi"), Nota("Re"), Nota("Do")]).first?.valor)
+        let armonizacion = try XCTUnwrap(
+            Tonalidad(.do, .mayor).armonizar(melodia: [Nota("Mi"), Nota("Re"), Nota("Do")]).first?.valor)
         XCTAssertNotNil(armonizacion.realizar(soprano: [Altura("Mi5"), Altura("Re5"), Altura("Do5")]))
         XCTAssertNil(armonizacion.realizar(soprano: [Altura("Mi5"), Altura("Mi5"), Altura("Do5")]))
         // Una melodía de una sola nota.
@@ -140,7 +149,8 @@ final class APIPocoUsadaDeLaTeoriaTests: XCTestCase {
 final class APIPocoUsadaDeLasRepresentacionesTests: XCTestCase {
     func testDescripciones() throws {
         XCTAssertEqual("\(MovimientoDeVoz(desde: Nota("Fa"), hasta: Nota("Mi")))", "Fa→Mi")
-        XCTAssertEqual(CicloNeorriemanniano.allCases.map { $0.nombre }, ["ciclo hexatónico", "ciclo octatónico", "ciclo LR"])
+        XCTAssertEqual(
+            CicloNeorriemanniano.allCases.map { $0.nombre }, ["ciclo hexatónico", "ciclo octatónico", "ciclo LR"])
         XCTAssertEqual(CicloNeorriemanniano.lr.description, "ciclo LR")
         XCTAssertEqual("\(TransformacionNeorriemanniana.p)", "P")
         XCTAssertEqual("\(Tonnetz.Triada(Acorde("Lam"))!)", "Lam")
@@ -150,9 +160,12 @@ final class APIPocoUsadaDeLasRepresentacionesTests: XCTestCase {
     }
 
     func testErroresDeUIL() {
-        XCTAssertEqual("\(ErrorDeUIL.intervalosIncoherentes(menor: 1, mayor: 2, diferencia: 3))", "Intervalos incoherentes: 1,2,3. Deben cumplir 0 < L ≤ D y G = L + D.")
+        XCTAssertEqual(
+            "\(ErrorDeUIL.intervalosIncoherentes(menor: 1, mayor: 2, diferencia: 3))",
+            "Intervalos incoherentes: 1,2,3. Deben cumplir 0 < L ≤ D y G = L + D.")
         XCTAssertEqual("\(ErrorDeUIL.rotacionNoValida(45))", "El giro de 45° no es múltiplo de 30°.")
-        XCTAssertEqual("\(ErrorDeUIL.afinacionNoSoportada(tonos: 19))", "Solo se dibujan teclados de 12 notas, no de 19.")
+        XCTAssertEqual(
+            "\(ErrorDeUIL.afinacionNoSoportada(tonos: 19))", "Solo se dibujan teclados de 12 notas, no de 19.")
         XCTAssertEqual("\(ErrorDeUIL.cizallaNoSoportada(2))", "La cizalla S2 no está soportada.")
         XCTAssertThrowsError(try FormatoUIL(leyendo: "2,7,5;R0Tx"))
         XCTAssertEqual(try FormatoUIL(leyendo: "2,7,5;R30;M").descripcion, "2,7,5;R30M")
@@ -168,7 +181,13 @@ final class APIPocoUsadaDeLaPartituraTests: XCTestCase {
     func testDescripciones() {
         XCTAssertEqual("\(Figura.negra)", "negra")
         XCTAssertEqual("\(Clave.fa)", "clave de fa")
-        XCTAssertEqual(Clave.allCases.map(\.nombre), ["clave de sol", "clave de sol octava baja", "clave de sol octava alta", "clave de fa", "clave de fa en tercera", "clave de do en primera", "clave de do en segunda", "clave de do en tercera", "clave de do en cuarta"])
+        XCTAssertEqual(
+            Clave.allCases.map(\.nombre),
+            [
+                "clave de sol", "clave de sol octava baja", "clave de sol octava alta", "clave de fa",
+                "clave de fa en tercera", "clave de do en primera", "clave de do en segunda", "clave de do en tercera",
+                "clave de do en cuarta",
+            ])
         XCTAssertEqual("\(InstrumentoDePartitura.flauta)", "flauta")
         XCTAssertEqual("\(FaltaDeContrapunto.Tipo.allCases[0])", "Ritmo ajeno a la especie")
         XCTAssertEqual(FaltaDeContrapunto.Tipo.allCases[0].nombre, "Ritmo ajeno a la especie")
@@ -192,18 +211,18 @@ final class APIPocoUsadaDeLaPartituraTests: XCTestCase {
 
     func testUnTransporteConCambioDeOctava() throws {
         let xml = """
-        <score-partwise version="4.0">
-          <part id="P1">
-            <measure number="1">
-              <attributes>
-                <divisions>1</divisions>
-                <transpose><diatonic>0</diatonic><chromatic>0</chromatic><octave-change>-1</octave-change></transpose>
-              </attributes>
-              <note><pitch><step>C</step><octave>4</octave></pitch><duration>4</duration></note>
-            </measure>
-          </part>
-        </score-partwise>
-        """
+            <score-partwise version="4.0">
+              <part id="P1">
+                <measure number="1">
+                  <attributes>
+                    <divisions>1</divisions>
+                    <transpose><diatonic>0</diatonic><chromatic>0</chromatic><octave-change>-1</octave-change></transpose>
+                  </attributes>
+                  <note><pitch><step>C</step><octave>4</octave></pitch><duration>4</duration></note>
+                </measure>
+              </part>
+            </score-partwise>
+            """
         let pieza = try PiezaImportada(leyendo: Data(xml.utf8))
         XCTAssertEqual(pieza.notas.map(\.altura), [Altura("Do3")])
     }

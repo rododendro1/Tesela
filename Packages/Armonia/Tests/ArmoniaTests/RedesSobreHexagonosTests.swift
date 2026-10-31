@@ -1,10 +1,11 @@
+import Hexagonos
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
-import Hexagonos
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 /// El Tonnetz, la tabla armónica y los teclados isomórficos sobre la rejilla de `Hexagonos`.
 final class RedesSobreHexagonosTests: XCTestCase {
@@ -29,7 +30,8 @@ final class RedesSobreHexagonosTests: XCTestCase {
     func testLaDistanciaEsLaDeLaRejilla() {
         // La fórmula de antes, para comprobar que no cambia.
         func distanciaAnterior(_ p: PuntoDeLaRed, _ o: PuntoDeLaRed) -> Int {
-            let x = o.quintas - p.quintas, y = o.terceras - p.terceras
+            let x = o.quintas - p.quintas
+            let y = o.terceras - p.terceras
             return (x >= 0) == (y >= 0) ? abs(x) + abs(y) : max(abs(x), abs(y))
         }
         let centro = punto(1, -2)
@@ -50,7 +52,8 @@ final class RedesSobreHexagonosTests: XCTestCase {
                 XCTAssertEqual(centro.y, -Double(p.terceras) * paso * 0.8660254037844386, accuracy: 1e-9)
                 XCTAssertEqual(Tonnetz.punto(en: centro, paso: paso), p)
                 // Cerca de la nota (a menos de medio paso) sigue siendo la misma.
-                XCTAssertEqual(Tonnetz.punto(en: Punto(x: centro.x + paso * 0.3, y: centro.y - paso * 0.2), paso: paso), p)
+                XCTAssertEqual(
+                    Tonnetz.punto(en: Punto(x: centro.x + paso * 0.3, y: centro.y - paso * 0.2), paso: paso), p)
             }
         }
         // La quinta, a la derecha; la tercera mayor, arriba a la derecha (y hacia abajo en SVG).
@@ -62,8 +65,8 @@ final class RedesSobreHexagonosTests: XCTestCase {
     // MARK: Tabla armónica
 
     func testLaTablaEsElTonnetzGirado() {
-        XCTAssertEqual(TablaArmonica.coordenada(de: punto(1, 0)), CoordenadaAxial(q: 0, r: -1))   // la quinta, arriba
-        XCTAssertEqual(TablaArmonica.coordenada(de: punto(0, 1)), CoordenadaAxial(q: 1, r: -1))   // la tercera mayor
+        XCTAssertEqual(TablaArmonica.coordenada(de: punto(1, 0)), CoordenadaAxial(q: 0, r: -1)) // la quinta, arriba
+        XCTAssertEqual(TablaArmonica.coordenada(de: punto(0, 1)), CoordenadaAxial(q: 1, r: -1)) // la tercera mayor
         for casilla in region {
             let p = PuntoDeLaRed(casilla)
             XCTAssertEqual(TablaArmonica.punto(de: TablaArmonica.coordenada(de: p)), p)
@@ -93,7 +96,8 @@ final class RedesSobreHexagonosTests: XCTestCase {
         let svg = TablaArmonica(Acorde("Do")).svg(leyenda: false)
         let raiz = try XCTUnwrap(ElementoXML.leer(svg))
         XCTAssertFalse(raiz.todos("polygon").isEmpty)
-        let paso = 56.0, radio = paso / (2 * 0.8660254037844386)
+        let paso = 56.0
+        let radio = paso / (2 * 0.8660254037844386)
         let esperados = stride(from: 0.0, to: 360, by: 60).map { angulo in
             "\(DibujoSVG.f(radio * cos(angulo * .pi / 180))),\(DibujoSVG.f(radio * sin(angulo * .pi / 180)))"
         }.joined(separator: " ")
@@ -132,7 +136,8 @@ final class RedesSobreHexagonosTests: XCTestCase {
     }
 
     func testElAcordeonYLasVariantesDeWickiHayden() {
-        func vecinos(_ teclado: TecladoIsomorfico, _ a: PuntoCardinal, _ b: PuntoCardinal, _ c: PuntoCardinal) -> [Int] {
+        func vecinos(_ teclado: TecladoIsomorfico, _ a: PuntoCardinal, _ b: PuntoCardinal, _ c: PuntoCardinal) -> [Int]
+        {
             [a, b, c].map { teclado.semitonos(hacia: DireccionHexagonal($0, teclado.orientacion)!) }
         }
         // Acordeón C: arriba una tercera menor, arriba a la derecha un semitono y arriba a la izquierda un tono.
@@ -157,7 +162,7 @@ final class RedesSobreHexagonosTests: XCTestCase {
     func testIsomorfico() {
         // La misma forma suena al mismo acorde transportado: una tríada mayor desde cualquier casilla.
         let teclado = TecladoIsomorfico.wickiHayden
-        let forma = [CoordenadaAxial.origen, CoordenadaAxial(q: 2, r: 0), CoordenadaAxial(q: 1, r: -1)]   // Do, Mi, Sol
+        let forma = [CoordenadaAxial.origen, CoordenadaAxial(q: 2, r: 0), CoordenadaAxial(q: 1, r: -1)] // Do, Mi, Sol
         XCTAssertEqual(forma.map { teclado.midi(en: $0) }, [60, 64, 67])
         for desplazamiento in region {
             let midis = forma.map { teclado.midi(en: $0 + desplazamiento) }
@@ -169,12 +174,18 @@ final class RedesSobreHexagonosTests: XCTestCase {
         let teclado = TecladoIsomorfico.wickiHayden
         XCTAssertEqual(teclado.midi(en: .origen), 60)
         XCTAssertEqual(teclado.casillas(de: 67, en: FormasDeMapa.hexagono(radio: 3)), [CoordenadaAxial(q: 1, r: -1)])
-        XCTAssertEqual(teclado.casillas(de: Altura("Sol4"), en: FormasDeMapa.hexagono(radio: 3)), [CoordenadaAxial(q: 1, r: -1)])
+        XCTAssertEqual(
+            teclado.casillas(de: Altura("Sol4"), en: FormasDeMapa.hexagono(radio: 3)), [CoordenadaAxial(q: 1, r: -1)])
         XCTAssertEqual(teclado.altura(en: CoordenadaAxial(q: 0, r: -1)).midi, 65)
-        XCTAssertEqual(teclado.altura(en: CoordenadaAxial(q: 1, r: 0), preferirBemoles: true).nota.nombre(en: .espanolUnicode), "Re")
-        XCTAssertEqual(teclado.altura(en: CoordenadaAxial(q: 0, r: 1), preferirBemoles: true).nota.nombre(en: .espanolUnicode), "Sol")
+        XCTAssertEqual(
+            teclado.altura(en: CoordenadaAxial(q: 1, r: 0), preferirBemoles: true).nota.nombre(en: .espanolUnicode),
+            "Re")
+        XCTAssertEqual(
+            teclado.altura(en: CoordenadaAxial(q: 0, r: 1), preferirBemoles: true).nota.nombre(en: .espanolUnicode),
+            "Sol")
         XCTAssertEqual("\(teclado)", "Wicki-Hayden: q +2, r -5")
-        let otro = TecladoIsomorfico(nombre: "Prueba", orientacion: .plana, semitonosEnQ: 1, semitonosEnR: 3, midiDelOrigen: 48)
+        let otro = TecladoIsomorfico(
+            nombre: "Prueba", orientacion: .plana, semitonosEnQ: 1, semitonosEnR: 3, midiDelOrigen: 48)
         XCTAssertEqual(otro.midi(en: CoordenadaAxial(q: 2, r: 1)), 53)
     }
 

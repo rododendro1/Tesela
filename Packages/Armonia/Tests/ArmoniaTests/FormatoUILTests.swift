@@ -1,14 +1,17 @@
+import Hexagonos
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
 @testable import ArmoniaRepresentaciones
-import Hexagonos
+@testable import ArmoniaTeoria
 
 /// El formato UIL (Park y Gerhard, 2013): lectura, escritura, giros de 30° y espejo.
 final class FormatoUILTests: XCTestCase {
-    private func misma(_ a: TecladoIsomorfico, _ b: TecladoIsomorfico, _ mensaje: String = "",
-                       file: StaticString = #filePath, line: UInt = #line) {
+    private func misma(
+        _ a: TecladoIsomorfico, _ b: TecladoIsomorfico, _ mensaje: String = "",
+        file: StaticString = #filePath, line: UInt = #line
+    ) {
         XCTAssertEqual(a.orientacion, b.orientacion, mensaje, file: file, line: line)
         XCTAssertEqual(a.semitonosEnQ, b.semitonosEnQ, mensaje, file: file, line: line)
         XCTAssertEqual(a.semitonosEnR, b.semitonosEnR, mensaje, file: file, line: line)
@@ -22,7 +25,7 @@ final class FormatoUILTests: XCTestCase {
         XCTAssertTrue(wh.espejo)
         XCTAssertEqual(wh.descripcion, "2,7,5;R30M")
         XCTAssertEqual(try FormatoUIL(leyendo: " 2, 7 , 5 ; r30 m ").descripcion, "2,7,5;R30M")
-        XCTAssertEqual(try FormatoUIL(leyendo: "3,7,4").descripcion, "3,7,4;R0")        // el giro se puede omitir
+        XCTAssertEqual(try FormatoUIL(leyendo: "3,7,4").descripcion, "3,7,4;R0") // el giro se puede omitir
         XCTAssertEqual(try FormatoUIL(leyendo: "1,3,2;R-90").rotacion, 270)
         XCTAssertEqual(try FormatoUIL(leyendo: "1,3,2;R450").rotacion, 90)
         XCTAssertEqual(try FormatoUIL(leyendo: "1,4,3;R30M;T7").descripcion, "1,4,3;R30M;T7")
@@ -41,7 +44,10 @@ final class FormatoUILTests: XCTestCase {
 
     func testRechazaLoQueNoEsUIL() {
         func fallo(_ texto: String) -> ErrorDeUIL? {
-            do { _ = try FormatoUIL(leyendo: texto); return nil } catch { return error as? ErrorDeUIL }
+            do {
+                _ = try FormatoUIL(leyendo: texto)
+                return nil
+            } catch { return error as? ErrorDeUIL }
         }
         XCTAssertEqual(fallo(""), .formatoNoValido(""))
         XCTAssertEqual(fallo("2,7"), .formatoNoValido("2,7"))
@@ -118,7 +124,8 @@ final class FormatoUILTests: XCTestCase {
         for (menor, mayor, diferencia) in [(2, 7, 5), (1, 3, 2), (1, 4, 3), (2, 5, 3), (3, 7, 4), (1, 2, 1)] {
             for giro in stride(from: 0, to: 360, by: 30) {
                 for espejo in [false, true] {
-                    let formato = try FormatoUIL(menor: menor, mayor: mayor, diferencia: diferencia, rotacion: giro, espejo: espejo)
+                    let formato = try FormatoUIL(
+                        menor: menor, mayor: mayor, diferencia: diferencia, rotacion: giro, espejo: espejo)
                     let teclado = try formato.teclado()
                     let siguiente = try formato.rotado(grados: 30).teclado()
                     misma(teclado.rotado(pasos: 1), siguiente, formato.descripcion)
@@ -176,7 +183,8 @@ final class FormatoUILTests: XCTestCase {
         XCTAssertFalse(tonos.esCompleto)
         // Con radio 12 hay casillas por debajo de MIDI 0: `%` daría restos negativos.
         let deTonos = try tonos.teclado()
-        XCTAssertEqual(Set(FormasDeMapa.hexagono(radio: 12).map { ((deTonos.midi(en: $0) % 12) + 12) % 12 }), [0, 2, 4, 6, 8, 10])
+        XCTAssertEqual(
+            Set(FormasDeMapa.hexagono(radio: 12).map { ((deTonos.midi(en: $0) % 12) + 12) % 12 }), [0, 2, 4, 6, 8, 10])
         XCTAssertFalse(try FormatoUIL(leyendo: "3,9,6").esCompleto)
         // Los completos suenan las doce notas.
         let wh = try FormatoUIL(leyendo: "2,7,5;R30M").teclado()
@@ -196,7 +204,8 @@ final class FormatoUILTests: XCTestCase {
 
     func testElEjeDeAlturaDeLaTabla1() throws {
         // Sin giro ni espejo el eje está entre 0° y 30°, y en el caso cero vale 30°; con espejo, entre R − 30° y R.
-        XCTAssertEqual(try FormatoUIL(leyendo: "1,2,1;R90").anguloDelEjeDeAltura, 90, accuracy: 1e-9)      // Jankó: sube a la derecha
+        // Jankó: sube a la derecha.
+        XCTAssertEqual(try FormatoUIL(leyendo: "1,2,1;R90").anguloDelEjeDeAltura, 90, accuracy: 1e-9)
         XCTAssertEqual(try FormatoUIL(leyendo: "0,1,1;R0").anguloDelEjeDeAltura, 30, accuracy: 1e-9)
         XCTAssertEqual(try FormatoUIL(leyendo: "2,7,5;R30M").anguloDelEjeDeAltura, 16.1, accuracy: 0.05)
         XCTAssertEqual(try FormatoUIL(leyendo: "3,7,4;R0").anguloDelEjeDeAltura, 4.72, accuracy: 0.05)

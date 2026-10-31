@@ -1,5 +1,6 @@
-import XCTest
 import Foundation
+import XCTest
+
 @testable import Hexagonos
 
 final class MapaHexagonalTests: XCTestCase {
@@ -57,10 +58,11 @@ final class MapaHexagonalTests: XCTestCase {
         let mapa = MapaHexagonal(FormasDeMapa.hexagono(radio: 1)) { $0.q }
         XCTAssertEqual(mapa.vecinas(de: .origen).map { $0.casilla }, CoordenadaAxial.origen.vecinos)
         let borde = CoordenadaAxial(q: 1, r: 0)
-        XCTAssertEqual(mapa.vecinas(de: borde).map { $0.casilla },
-                       borde.vecinos.filter { $0.distanciaAlOrigen <= 1 })
+        XCTAssertEqual(
+            mapa.vecinas(de: borde).map { $0.casilla },
+            borde.vecinos.filter { $0.distanciaAlOrigen <= 1 })
         XCTAssertEqual(mapa.vecinas(de: borde).map { $0.valor }, mapa.vecinas(de: borde).map { $0.casilla.q })
-        XCTAssertEqual(mapa.vecinas(de: CoordenadaAxial(q: 2, r: -1)).count, 2)   // fuera del mapa
+        XCTAssertEqual(mapa.vecinas(de: CoordenadaAxial(q: 2, r: -1)).count, 2) // fuera del mapa
     }
 
     func testTransformarYFiltrar() {
@@ -105,7 +107,8 @@ final class MapaHexagonalTests: XCTestCase {
         XCTAssertTrue(alcanzables.keys.allSatisfy { terreno.contiene($0) })
         // Las casillas que faltan en el mapa no tapan.
         let conHueco = MapaHexagonal(repitiendo: false, en: [CoordenadaAxial.origen, CoordenadaAxial(q: 2, r: 0)])
-        XCTAssertEqual(Set(conHueco.visibles(desde: .origen) { $0 }), [CoordenadaAxial.origen, CoordenadaAxial(q: 2, r: 0)])
+        XCTAssertEqual(
+            Set(conHueco.visibles(desde: .origen) { $0 }), [CoordenadaAxial.origen, CoordenadaAxial(q: 2, r: 0)])
 
         let visibles = terreno.visibles(desde: .origen) { $0 > 5 }
         XCTAssertFalse(visibles.contains(CoordenadaAxial(q: 2, r: 0)))
@@ -118,8 +121,9 @@ final class MapaHexagonalTests: XCTestCase {
         let codificador = JSONEncoder()
         codificador.outputFormatting = .sortedKeys
         let datos = try codificador.encode(mapa)
-        XCTAssertEqual(String(decoding: datos, as: UTF8.self),
-                       #"[{"q":0,"r":0,"valor":"hierba"},{"q":1,"r":0,"valor":"agua"}]"#)
+        XCTAssertEqual(
+            String(decoding: datos, as: UTF8.self),
+            #"[{"q":0,"r":0,"valor":"hierba"},{"q":1,"r":0,"valor":"agua"}]"#)
         XCTAssertEqual(try JSONDecoder().decode(MapaHexagonal<String>.self, from: datos), mapa)
         let repetida = Data(#"[{"q":0,"r":0,"valor":"a"},{"q":0,"r":0,"valor":"b"}]"#.utf8)
         XCTAssertThrowsError(try JSONDecoder().decode(MapaHexagonal<String>.self, from: repetida))

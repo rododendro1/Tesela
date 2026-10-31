@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
 @testable import ArmoniaTeoria
@@ -47,7 +48,8 @@ final class ArmonizacionTests: XCTestCase {
     func testTerminaEnCadencia() {
         // Termina en el I precedido de la dominante, o en la dominante si la nota no es del I.
         for melodia in ["Sol La Si Do", "Mi Fa Sol La Sol Fa Mi Re Do", "Do Mi Re Si Do"] {
-            let analisis = Tonalidad(.do).armonizar(melodia: melodia.split(separator: " ").map { Nota(texto: String($0))! })[0].valor.analisis
+            let analisis = Tonalidad(.do).armonizar(
+                melodia: melodia.split(separator: " ").map { Nota(texto: String($0))! })[0].valor.analisis
             XCTAssertEqual(analisis.cadencias.last?.tipo, .autentica, melodia)
         }
         let semicadencia = cifrados(Tonalidad(.do), "Do Mi Fa Re")
@@ -75,8 +77,10 @@ final class ArmonizacionTests: XCTestCase {
 
     // MARK: Realizar a cuatro voces
 
-    private func comprobarRealizacion(_ texto: String, en tonalidad: Tonalidad? = nil,
-                                      file: StaticString = #filePath, line: UInt = #line) {
+    private func comprobarRealizacion(
+        _ texto: String, en tonalidad: Tonalidad? = nil,
+        file: StaticString = #filePath, line: UInt = #line
+    ) {
         let acordes = texto.split(separator: " ").map { Acorde(texto: String($0))! }
         guard let coral = Coral.realizar(acordes, en: tonalidad) else {
             return XCTFail("«\(texto)» no se realiza", file: file, line: line)
@@ -86,12 +90,15 @@ final class ArmonizacionTests: XCTestCase {
         for (acorde, voces) in zip(acordes, coral.acordes) {
             let notas = voces.map(\.nota)
             XCTAssertEqual(notas[0], acorde.bajo, "bajo de \(acorde)", file: file, line: line)
-            XCTAssertTrue(notas.allSatisfy { acorde.notas.contains($0) || $0 == acorde.bajo }, "\(acorde): \(voces)", file: file, line: line)
+            XCTAssertTrue(
+                notas.allSatisfy { acorde.notas.contains($0) || $0 == acorde.bajo }, "\(acorde): \(voces)", file: file,
+                line: line)
             for nota in acorde.notas where nota != acorde.quinta {
                 XCTAssertTrue(notas.contains(nota), "falta \(nota) en \(acorde): \(voces)", file: file, line: line)
             }
             if let septima = acorde.septima {
-                XCTAssertLessThanOrEqual(notas.filter { $0 == septima }.count, 1, "\(acorde): \(voces)", file: file, line: line)
+                XCTAssertLessThanOrEqual(
+                    notas.filter { $0 == septima }.count, 1, "\(acorde): \(voces)", file: file, line: line)
             }
         }
     }
@@ -165,9 +172,12 @@ final class ArmonizacionTests: XCTestCase {
         var generador = GeneradorConSemilla(semilla: 8)
         let tonalidad = Tonalidad(.re)
         let alturas = (0..<8).map { Altura(tonalidad.escala.grado($0 + 1), octava: $0 >= 6 ? 5 : 4) }
-        var probadas = 0, realizadas = 0
+        var probadas = 0
+        var realizadas = 0
         while probadas < 20 {
-            let melodia = (0..<Int.random(in: 3...7, using: &generador)).map { _ in alturas.randomElement(using: &generador)! }
+            let melodia = (0..<Int.random(in: 3...7, using: &generador)).map { _ in
+                alturas.randomElement(using: &generador)!
+            }
             let saltos = zip(melodia, melodia.dropFirst()).map { $1 - $0 }
             func alterado(_ salto: Intervalo) -> Bool {
                 switch salto.calidad {

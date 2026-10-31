@@ -1,3 +1,5 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
 import Armonia
 // Los textos de ArmoniaCLI en portugués. Los campos y lo que significa cada uno están en
 // `TextosDeCLI.swift`.

@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+
 // Claves y posición de las notas en el pentagrama.
 //
 // La posición se cuenta en pasos diatónicos desde la primera línea (la inferior):
@@ -150,8 +151,10 @@ public struct InstrumentoDePartitura: Hashable, Sendable, CustomStringConvertibl
     /// Clave en la que se escribe habitualmente.
     public let clave: Clave
 
-    public init(nombre: String, nombreEnIngles: String, transposicion: Intervalo = .unisono,
-                clave: Clave = .sol) {
+    public init(
+        nombre: String, nombreEnIngles: String, transposicion: Intervalo = .unisono,
+        clave: Clave = .sol
+    ) {
         self.nombre = nombre
         self.nombreEnIngles = nombreEnIngles
         self.transposicion = transposicion
@@ -219,54 +222,74 @@ public struct InstrumentoDePartitura: Hashable, Sendable, CustomStringConvertibl
 
     public static let piano = InstrumentoDePartitura(nombre: "piano", nombreEnIngles: "piano")
     public static let flauta = InstrumentoDePartitura(nombre: "flauta", nombreEnIngles: "flute")
-    public static let flautin = InstrumentoDePartitura(nombre: "flautín", nombreEnIngles: "piccolo",
-                                            transposicion: .octava)
-    public static let flautaEnSol = InstrumentoDePartitura(nombre: "flauta en sol", nombreEnIngles: "alto flute",
-                                                transposicion: abajo(.cuartaJusta))
+    public static let flautin = InstrumentoDePartitura(
+        nombre: "flautín", nombreEnIngles: "piccolo",
+        transposicion: .octava)
+    public static let flautaEnSol = InstrumentoDePartitura(
+        nombre: "flauta en sol", nombreEnIngles: "alto flute",
+        transposicion: abajo(.cuartaJusta))
     public static let oboe = InstrumentoDePartitura(nombre: "oboe", nombreEnIngles: "oboe")
-    public static let cornoIngles = InstrumentoDePartitura(nombre: "corno inglés", nombreEnIngles: "English horn",
-                                                transposicion: abajo(.quintaJusta))
-    public static let clarineteEnSib = InstrumentoDePartitura(nombre: "clarinete en si♭", nombreEnIngles: "B♭ clarinet",
-                                                   transposicion: abajo(.segundaMayor))
-    public static let clarineteEnLa = InstrumentoDePartitura(nombre: "clarinete en la", nombreEnIngles: "A clarinet",
-                                                  transposicion: abajo(.terceraMenor))
-    public static let clarineteEnMib = InstrumentoDePartitura(nombre: "clarinete en mi♭", nombreEnIngles: "E♭ clarinet",
-                                                   transposicion: .terceraMenor)
-    public static let clarineteBajo = InstrumentoDePartitura(nombre: "clarinete bajo", nombreEnIngles: "bass clarinet",
-                                                  transposicion: abajo(.novenaMayor))
+    public static let cornoIngles = InstrumentoDePartitura(
+        nombre: "corno inglés", nombreEnIngles: "English horn",
+        transposicion: abajo(.quintaJusta))
+    public static let clarineteEnSib = InstrumentoDePartitura(
+        nombre: "clarinete en si♭", nombreEnIngles: "B♭ clarinet",
+        transposicion: abajo(.segundaMayor))
+    public static let clarineteEnLa = InstrumentoDePartitura(
+        nombre: "clarinete en la", nombreEnIngles: "A clarinet",
+        transposicion: abajo(.terceraMenor))
+    public static let clarineteEnMib = InstrumentoDePartitura(
+        nombre: "clarinete en mi♭", nombreEnIngles: "E♭ clarinet",
+        transposicion: .terceraMenor)
+    public static let clarineteBajo = InstrumentoDePartitura(
+        nombre: "clarinete bajo", nombreEnIngles: "bass clarinet",
+        transposicion: abajo(.novenaMayor))
     public static let fagot = InstrumentoDePartitura(nombre: "fagot", nombreEnIngles: "bassoon", clave: .fa)
-    public static let saxofonSoprano = InstrumentoDePartitura(nombre: "saxofón soprano", nombreEnIngles: "soprano saxophone",
-                                                   transposicion: abajo(.segundaMayor))
-    public static let saxofonAlto = InstrumentoDePartitura(nombre: "saxofón alto", nombreEnIngles: "alto saxophone",
-                                                transposicion: abajo(.sextaMayor))
-    public static let saxofonTenor = InstrumentoDePartitura(nombre: "saxofón tenor", nombreEnIngles: "tenor saxophone",
-                                                 transposicion: abajo(.novenaMayor))
-    public static let saxofonBaritono = InstrumentoDePartitura(nombre: "saxofón barítono", nombreEnIngles: "baritone saxophone",
-                                                    transposicion: abajo(.decimoterceraMayor))
-    public static let trompetaEnSib = InstrumentoDePartitura(nombre: "trompeta en si♭", nombreEnIngles: "B♭ trumpet",
-                                                  transposicion: abajo(.segundaMayor))
+    public static let saxofonSoprano = InstrumentoDePartitura(
+        nombre: "saxofón soprano", nombreEnIngles: "soprano saxophone",
+        transposicion: abajo(.segundaMayor))
+    public static let saxofonAlto = InstrumentoDePartitura(
+        nombre: "saxofón alto", nombreEnIngles: "alto saxophone",
+        transposicion: abajo(.sextaMayor))
+    public static let saxofonTenor = InstrumentoDePartitura(
+        nombre: "saxofón tenor", nombreEnIngles: "tenor saxophone",
+        transposicion: abajo(.novenaMayor))
+    public static let saxofonBaritono = InstrumentoDePartitura(
+        nombre: "saxofón barítono", nombreEnIngles: "baritone saxophone",
+        transposicion: abajo(.decimoterceraMayor))
+    public static let trompetaEnSib = InstrumentoDePartitura(
+        nombre: "trompeta en si♭", nombreEnIngles: "B♭ trumpet",
+        transposicion: abajo(.segundaMayor))
     public static let trompetaEnDo = InstrumentoDePartitura(nombre: "trompeta en do", nombreEnIngles: "C trumpet")
-    public static let fliscorno = InstrumentoDePartitura(nombre: "fliscorno", nombreEnIngles: "flugelhorn",
-                                              transposicion: abajo(.segundaMayor))
-    public static let trompaEnFa = InstrumentoDePartitura(nombre: "trompa en fa", nombreEnIngles: "horn in F",
-                                               transposicion: abajo(.quintaJusta))
+    public static let fliscorno = InstrumentoDePartitura(
+        nombre: "fliscorno", nombreEnIngles: "flugelhorn",
+        transposicion: abajo(.segundaMayor))
+    public static let trompaEnFa = InstrumentoDePartitura(
+        nombre: "trompa en fa", nombreEnIngles: "horn in F",
+        transposicion: abajo(.quintaJusta))
     public static let trombon = InstrumentoDePartitura(nombre: "trombón", nombreEnIngles: "trombone", clave: .fa)
     public static let tuba = InstrumentoDePartitura(nombre: "tuba", nombreEnIngles: "tuba", clave: .fa)
     public static let violin = InstrumentoDePartitura(nombre: "violín", nombreEnIngles: "violin")
     public static let viola = InstrumentoDePartitura(nombre: "viola", nombreEnIngles: "viola", clave: .doEnTercera)
     public static let violonchelo = InstrumentoDePartitura(nombre: "violonchelo", nombreEnIngles: "cello", clave: .fa)
-    public static let contrabajo = InstrumentoDePartitura(nombre: "contrabajo", nombreEnIngles: "double bass",
-                                               transposicion: abajo(.octava), clave: .fa)
-    public static let guitarra = InstrumentoDePartitura(nombre: "guitarra", nombreEnIngles: "guitar",
-                                             transposicion: abajo(.octava), clave: .solOctavaBaja)
-    public static let bajoElectrico = InstrumentoDePartitura(nombre: "bajo eléctrico", nombreEnIngles: "electric bass",
-                                                  transposicion: abajo(.octava), clave: .fa)
-    public static let xilofono = InstrumentoDePartitura(nombre: "xilófono", nombreEnIngles: "xylophone",
-                                             transposicion: .octava)
-    public static let glockenspiel = InstrumentoDePartitura(nombre: "glockenspiel", nombreEnIngles: "glockenspiel",
-                                                 transposicion: 2 * Intervalo.octava)
-    public static let celesta = InstrumentoDePartitura(nombre: "celesta", nombreEnIngles: "celesta",
-                                            transposicion: .octava)
+    public static let contrabajo = InstrumentoDePartitura(
+        nombre: "contrabajo", nombreEnIngles: "double bass",
+        transposicion: abajo(.octava), clave: .fa)
+    public static let guitarra = InstrumentoDePartitura(
+        nombre: "guitarra", nombreEnIngles: "guitar",
+        transposicion: abajo(.octava), clave: .solOctavaBaja)
+    public static let bajoElectrico = InstrumentoDePartitura(
+        nombre: "bajo eléctrico", nombreEnIngles: "electric bass",
+        transposicion: abajo(.octava), clave: .fa)
+    public static let xilofono = InstrumentoDePartitura(
+        nombre: "xilófono", nombreEnIngles: "xylophone",
+        transposicion: .octava)
+    public static let glockenspiel = InstrumentoDePartitura(
+        nombre: "glockenspiel", nombreEnIngles: "glockenspiel",
+        transposicion: 2 * Intervalo.octava)
+    public static let celesta = InstrumentoDePartitura(
+        nombre: "celesta", nombreEnIngles: "celesta",
+        transposicion: .octava)
 
     public static let todos: [InstrumentoDePartitura] = [
         .piano, .flauta, .flautin, .flautaEnSol, .oboe, .cornoIngles,
@@ -426,36 +449,37 @@ extension InstrumentoDePartitura {
     /// Alemán, occitano, griego y ruso de los instrumentos predefinidos, por su nombre en español. Un
     /// instrumento que no está aquí usa su nombre inglés. En alemán y en ruso, la afinación va con letras
     /// alemanas: «Klarinette in B» es el clarinete en si♭.
-    package static let nombresDeOtrasLenguas: [String: (aleman: String, occitano: String, ruso: String, griego: String)] = [
-        "piano": ("Klavier", "piano", "фортепиано", "πιάνο"),
-        "flauta": ("Flöte", "flaüta", "флейта", "φλάουτο"),
-        "flautín": ("Piccoloflöte", "flautin", "флейта-пикколо", "πίκολο"),
-        "flauta en sol": ("Altflöte in G", "flaüta en sòl", "альтовая флейта", "φλάουτο άλτο σε σολ"),
-        "oboe": ("Oboe", "oboè", "гобой", "όμποε"),
-        "corno inglés": ("Englischhorn", "còrn anglés", "английский рожок", "αγγλικό κόρνο"),
-        "clarinete en si♭": ("Klarinette in B", "clarinet en si♭", "кларнет in B", "κλαρινέτο σε σι♭"),
-        "clarinete en la": ("Klarinette in A", "clarinet en la", "кларнет in A", "κλαρινέτο σε λα"),
-        "clarinete en mi♭": ("Klarinette in Es", "clarinet en mi♭", "кларнет in Es", "κλαρινέτο σε μι♭"),
-        "clarinete bajo": ("Bassklarinette", "clarinet bas", "бас-кларнет", "μπάσο κλαρινέτο"),
-        "fagot": ("Fagott", "fagòt", "фагот", "φαγκότο"),
-        "saxofón soprano": ("Sopransaxophon", "saxofòn soprano", "саксофон-сопрано", "σαξόφωνο σοπράνο"),
-        "saxofón alto": ("Altsaxophon", "saxofòn alt", "саксофон-альт", "σαξόφωνο άλτο"),
-        "saxofón tenor": ("Tenorsaxophon", "saxofòn tenor", "саксофон-тенор", "σαξόφωνο τενόρο"),
-        "saxofón barítono": ("Baritonsaxophon", "saxofòn bariton", "саксофон-баритон", "σαξόφωνο βαρύτονο"),
-        "trompeta en si♭": ("Trompete in B", "trompeta en si♭", "труба in B", "τρομπέτα σε σι♭"),
-        "trompeta en do": ("Trompete in C", "trompeta en do", "труба in C", "τρομπέτα σε ντο"),
-        "fliscorno": ("Flügelhorn", "flicòrn", "флюгельгорн", "φλικόρνο"),
-        "trompa en fa": ("Horn in F", "còrn en fa", "валторна in F", "κόρνο σε φα"),
-        "trombón": ("Posaune", "trombòn", "тромбон", "τρομπόνι"),
-        "tuba": ("Tuba", "tuba", "туба", "τούμπα"),
-        "violín": ("Violine", "violon", "скрипка", "βιολί"),
-        "viola": ("Viola", "viòla", "альт", "βιόλα"),
-        "violonchelo": ("Violoncello", "violoncèl", "виолончель", "βιολοντσέλο"),
-        "contrabajo": ("Kontrabass", "contrabassa", "контрабас", "κοντραμπάσο"),
-        "guitarra": ("Gitarre", "guitarra", "гитара", "κιθάρα"),
-        "bajo eléctrico": ("E-Bass", "bassa electrica", "бас-гитара", "ηλεκτρικό μπάσο"),
-        "xilófono": ("Xylophon", "xilofòn", "ксилофон", "ξυλόφωνο"),
-        "glockenspiel": ("Glockenspiel", "glockenspiel", "колокольчики", "γκλόκενσπιλ"),
-        "celesta": ("Celesta", "celèsta", "челеста", "τσελέστα"),
-    ]
+    package static let nombresDeOtrasLenguas:
+        [String: (aleman: String, occitano: String, ruso: String, griego: String)] = [
+            "piano": ("Klavier", "piano", "фортепиано", "πιάνο"),
+            "flauta": ("Flöte", "flaüta", "флейта", "φλάουτο"),
+            "flautín": ("Piccoloflöte", "flautin", "флейта-пикколо", "πίκολο"),
+            "flauta en sol": ("Altflöte in G", "flaüta en sòl", "альтовая флейта", "φλάουτο άλτο σε σολ"),
+            "oboe": ("Oboe", "oboè", "гобой", "όμποε"),
+            "corno inglés": ("Englischhorn", "còrn anglés", "английский рожок", "αγγλικό κόρνο"),
+            "clarinete en si♭": ("Klarinette in B", "clarinet en si♭", "кларнет in B", "κλαρινέτο σε σι♭"),
+            "clarinete en la": ("Klarinette in A", "clarinet en la", "кларнет in A", "κλαρινέτο σε λα"),
+            "clarinete en mi♭": ("Klarinette in Es", "clarinet en mi♭", "кларнет in Es", "κλαρινέτο σε μι♭"),
+            "clarinete bajo": ("Bassklarinette", "clarinet bas", "бас-кларнет", "μπάσο κλαρινέτο"),
+            "fagot": ("Fagott", "fagòt", "фагот", "φαγκότο"),
+            "saxofón soprano": ("Sopransaxophon", "saxofòn soprano", "саксофон-сопрано", "σαξόφωνο σοπράνο"),
+            "saxofón alto": ("Altsaxophon", "saxofòn alt", "саксофон-альт", "σαξόφωνο άλτο"),
+            "saxofón tenor": ("Tenorsaxophon", "saxofòn tenor", "саксофон-тенор", "σαξόφωνο τενόρο"),
+            "saxofón barítono": ("Baritonsaxophon", "saxofòn bariton", "саксофон-баритон", "σαξόφωνο βαρύτονο"),
+            "trompeta en si♭": ("Trompete in B", "trompeta en si♭", "труба in B", "τρομπέτα σε σι♭"),
+            "trompeta en do": ("Trompete in C", "trompeta en do", "труба in C", "τρομπέτα σε ντο"),
+            "fliscorno": ("Flügelhorn", "flicòrn", "флюгельгорн", "φλικόρνο"),
+            "trompa en fa": ("Horn in F", "còrn en fa", "валторна in F", "κόρνο σε φα"),
+            "trombón": ("Posaune", "trombòn", "тромбон", "τρομπόνι"),
+            "tuba": ("Tuba", "tuba", "туба", "τούμπα"),
+            "violín": ("Violine", "violon", "скрипка", "βιολί"),
+            "viola": ("Viola", "viòla", "альт", "βιόλα"),
+            "violonchelo": ("Violoncello", "violoncèl", "виолончель", "βιολοντσέλο"),
+            "contrabajo": ("Kontrabass", "contrabassa", "контрабас", "κοντραμπάσο"),
+            "guitarra": ("Gitarre", "guitarra", "гитара", "κιθάρα"),
+            "bajo eléctrico": ("E-Bass", "bassa electrica", "бас-гитара", "ηλεκτρικό μπάσο"),
+            "xilófono": ("Xylophon", "xilofòn", "ксилофон", "ξυλόφωνο"),
+            "glockenspiel": ("Glockenspiel", "glockenspiel", "колокольчики", "γκλόκενσπιλ"),
+            "celesta": ("Celesta", "celèsta", "челеста", "τσελέστα"),
+        ]
 }

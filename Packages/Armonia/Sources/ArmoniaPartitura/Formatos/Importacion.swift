@@ -1,5 +1,7 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+import Foundation
+
 // Importación de partituras: ficheros MIDI estándar (LecturaMIDI.swift) y MusicXML sin comprimir
 // (LecturaMusicXML.swift), leídos como una lista de notas con su comienzo y su duración.
 //
@@ -11,8 +13,6 @@ import ArmoniaTeoria
 //
 // Se queda fuera, por ahora: MusicXML comprimido (.mxl), la percusión, las repeticiones y los
 // saltos (da capo, coda), y los instrumentos transpositores de MIDI (que ya suenan en su altura).
-
-import Foundation
 
 /// Una nota de una pieza importada: su altura, cuándo empieza y cuánto dura, contado en redondas
 /// desde el principio de la pieza, y la parte (pista o pentagrama) de la que viene.
@@ -49,8 +49,10 @@ public struct PiezaImportada: Hashable, Sendable {
     /// Las notas, ordenadas por su comienzo y, a igual comienzo, de grave a agudo.
     public let notas: [NotaDeLaPieza]
 
-    public init(titulo: String? = nil, tonalidad: Tonalidad? = nil, compas: Compas? = nil, tempo: Tempo? = nil,
-                notas: [NotaDeLaPieza]) {
+    public init(
+        titulo: String? = nil, tonalidad: Tonalidad? = nil, compas: Compas? = nil, tempo: Tempo? = nil,
+        notas: [NotaDeLaPieza]
+    ) {
         self.titulo = titulo
         self.tonalidad = tonalidad
         self.compas = compas
@@ -65,7 +67,7 @@ public struct PiezaImportada: Hashable, Sendable {
         if inicio == Array("MThd".utf8) {
             try self.init(midi: datos)
         } else if inicio == [0x50, 0x4B, 0x03, 0x04] {
-            throw ErrorDeImportacion.comprimido   // un zip: MusicXML comprimido (.mxl)
+            throw ErrorDeImportacion.comprimido // un zip: MusicXML comprimido (.mxl)
         } else if String(decoding: datos.prefix(1024), as: UTF8.self).contains("<") {
             try self.init(musicXML: datos)
         } else {
@@ -79,8 +81,11 @@ public struct PiezaImportada: Hashable, Sendable {
     /// La tonalidad de la armadura o, si el fichero no la da, la que mejor explica las notas
     /// (pesadas por lo que duran).
     public var tonalidadEstimada: Tonalidad? {
-        tonalidad ?? Tonalidad.identificar(midi: notas.map(\.altura.midi),
-                                           duraciones: notas.map(\.duracion.enRedondas)).first
+        tonalidad
+            ?? Tonalidad.identificar(
+                midi: notas.map(\.altura.midi),
+                duraciones: notas.map(\.duracion.enRedondas)
+            ).first
     }
 
     // MARK: Acordes
@@ -122,7 +127,8 @@ public struct PiezaImportada: Hashable, Sendable {
             while primera < notas.count, finales[primera] <= desde { primera += 1 }
             let suenan = notas[primera...].prefix { $0.inicio < hasta }.filter { $0.fin > desde }
             if let acorde = PiezaImportada.acorde(de: suenan, desde: desde, hasta: hasta, tonalidad: tonalidad),
-               resultado.last?.acorde != acorde {
+                resultado.last?.acorde != acorde
+            {
                 resultado.append((acorde, desde))
             }
             desde = hasta
@@ -131,8 +137,10 @@ public struct PiezaImportada: Hashable, Sendable {
     }
 
     /// El acorde de una ventana, o `nil` si no hay ninguna lectura.
-    static func acorde(de notas: [NotaDeLaPieza], desde: Duracion, hasta: Duracion,
-                       tonalidad: Tonalidad?) -> Acorde? {
+    static func acorde(
+        de notas: [NotaDeLaPieza], desde: Duracion, hasta: Duracion,
+        tonalidad: Tonalidad?
+    ) -> Acorde? {
         guard !notas.isEmpty else { return nil }
         let largo = (hasta - desde).enRedondas
         var pesos: [Int: Double] = [:]

@@ -1,5 +1,5 @@
-import XCTest
 import Hexagonos
+import XCTest
 
 /// Los resultados que la documentación (DocC y comentarios) promete en sus ejemplos.
 final class EjemplosDeDocumentacionTests: XCTestCase {
@@ -30,9 +30,12 @@ final class EjemplosDeDocumentacionTests: XCTestCase {
         XCTAssertEqual(CoordenadaAxial.origen.distancia(hasta: CoordenadaAxial(q: 3, r: -7)), 7)
         XCTAssertEqual(CoordenadaAxial.origen.alcance(radio: 2).count, 19)
         XCTAssertEqual(CoordenadaAxial.origen.anillo(radio: 2).count, 12)
-        XCTAssertEqual(CoordenadaAxial.origen.linea(hasta: CoordenadaAxial(q: 3, r: 0)),
-                       [CoordenadaAxial(q: 0, r: 0), CoordenadaAxial(q: 1, r: 0),
-                        CoordenadaAxial(q: 2, r: 0), CoordenadaAxial(q: 3, r: 0)])
+        XCTAssertEqual(
+            CoordenadaAxial.origen.linea(hasta: CoordenadaAxial(q: 3, r: 0)),
+            [
+                CoordenadaAxial(q: 0, r: 0), CoordenadaAxial(q: 1, r: 0),
+                CoordenadaAxial(q: 2, r: 0), CoordenadaAxial(q: 3, r: 0),
+            ])
     }
 
     func testPixeles() {

@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 extension Acorde {
     // MARK: Identificación
 
@@ -18,8 +19,11 @@ extension Acorde {
 
         func considerar(_ raiz: Nota, _ grupo: [Nota], penalizacionExtra: Double) {
             let conjunto = Set(grupo.map { $0.pasosDeQuinta - raiz.pasosDeQuinta })
-            guard let candidato = evaluar(raiz: raiz, conjunto: conjunto, bajo: bajo,
-                                          penalizacionExtra: penalizacionExtra) else { return }
+            guard
+                let candidato = evaluar(
+                    raiz: raiz, conjunto: conjunto, bajo: bajo,
+                    penalizacionExtra: penalizacionExtra)
+            else { return }
             let acorde = candidato.valor
             if let previo = mejores[acorde] {
                 if candidato.coste < previo.coste { mejores[acorde] = candidato }
@@ -44,19 +48,24 @@ extension Acorde {
     /// Puntúa una lectura: fundamental, desplazamientos en quintas de las notas presentes y bajo.
     /// Supone la quinta justa si falta (y la anota en `omitidas`); penaliza las inversiones,
     /// más aún si el bajo es una tensión, y lo que `ClasificacionDeAcorde.penalizacion` considere raro.
-    package static func evaluar(raiz: Nota, conjunto presentes: Set<Int>, bajo: Nota,
-                        penalizacionExtra: Double) -> Candidato<Acorde>? {
+    package static func evaluar(
+        raiz: Nota, conjunto presentes: Set<Int>, bajo: Nota,
+        penalizacionExtra: Double
+    ) -> Candidato<Acorde>? {
         var conjunto = presentes
         guard let clasificacion = ClasificacionDeAcorde(conjunto) else { return nil }
         // Sin tercera, suspensión ni quinta no hay acorde (Do–Re♭ no es Re♭maj7 sin 3ª ni 5ª).
-        guard clasificacion.tercera != nil || clasificacion.sus2 || clasificacion.sus4
-                || !clasificacion.quintasDelAcorde.isEmpty else { return nil }
+        guard
+            clasificacion.tercera != nil || clasificacion.sus2 || clasificacion.sus4
+                || !clasificacion.quintasDelAcorde.isEmpty
+        else { return nil }
         var omitidas: [Nota] = []
         var penalizacion = penalizacionExtra
         let tieneTerceraOSus = clasificacion.tercera != nil || clasificacion.sus2 || clasificacion.sus4
         // Las sextas aumentadas italiana y francesa no llevan quinta: no se les supone.
         if clasificacion.quintasDelAcorde.isEmpty, tieneTerceraOSus, TipoDeAcorde.nombresConocidos[conjunto] == nil,
-           ClasificacionDeAcorde(conjunto.union([1])) != nil {
+            ClasificacionDeAcorde(conjunto.union([1])) != nil
+        {
             conjunto.insert(1)
             omitidas.append(raiz + .quintaJusta)
             penalizacion += 1
@@ -177,15 +186,18 @@ extension Acorde {
                 if let deAcorde = notas.first(where: { $0.claseDeAltura == bajo }) {
                     nombreBajo = deAcorde
                 } else {
-                    let q = Nota.pasosDeQuintaPosibles(deClase: bajo).min { a, b in
-                        [fueraDeEscala(a), alteraciones(a), abs(a - quintasRaiz)]
-                            .lexicographicallyPrecedes([fueraDeEscala(b), alteraciones(b), abs(b - quintasRaiz)])
-                    } ?? bajo
+                    let q =
+                        Nota.pasosDeQuintaPosibles(deClase: bajo).min { a, b in
+                            [fueraDeEscala(a), alteraciones(a), abs(a - quintasRaiz)]
+                                .lexicographicallyPrecedes([fueraDeEscala(b), alteraciones(b), abs(b - quintasRaiz)])
+                        } ?? bajo
                     nombreBajo = Nota(pasosDeQuinta: q)
                 }
 
-                guard let candidato = evaluar(raiz: fundamental, conjunto: conjunto, bajo: nombreBajo,
-                                              penalizacionExtra: penalizacionExtra + 0.25 * Double(coste[0]))
+                guard
+                    let candidato = evaluar(
+                        raiz: fundamental, conjunto: conjunto, bajo: nombreBajo,
+                        penalizacionExtra: penalizacionExtra + 0.25 * Double(coste[0]))
                 else { continue }
                 let clave = [candidato.coste, Double(coste[1]), Double(coste[2])]
                 if let previo = mejores[candidato.valor] {

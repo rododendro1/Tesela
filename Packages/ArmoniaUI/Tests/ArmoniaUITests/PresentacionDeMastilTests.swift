@@ -1,5 +1,6 @@
-import XCTest
 import Armonia
+import XCTest
+
 @testable import ArmoniaUI
 
 final class PresentacionDeMastilTests: XCTestCase {
@@ -12,8 +13,8 @@ final class PresentacionDeMastilTests: XCTestCase {
     // MARK: Rango
 
     func testCercaDeLaCejillaSeVeDesdeElCero() {
-        XCTAssertEqual(PresentacionDeMastil.rango(de: digitacion([nil, 3, 2, 0, 1, 0])), 0...5)   // Do
-        XCTAssertEqual(PresentacionDeMastil.rango(de: digitacion([1, 3, 3, 2, 1, 1])), 0...5)     // Fa con cejilla
+        XCTAssertEqual(PresentacionDeMastil.rango(de: digitacion([nil, 3, 2, 0, 1, 0])), 0...5) // Do
+        XCTAssertEqual(PresentacionDeMastil.rango(de: digitacion([1, 3, 3, 2, 1, 1])), 0...5) // Fa con cejilla
     }
 
     func testSinTrastesPisadosSeVeDesdeElCero() {
@@ -56,7 +57,7 @@ final class PresentacionDeMastilTests: XCTestCase {
         let ortografia = PresentacionDeMastil.ortografia(de: Escala(.fa, .mayor).notas)
         XCTAssertEqual(ortografia[10]?.nombre(en: .espanolUnicode), "Si♭")
         XCTAssertEqual(ortografia[5]?.nombre(en: .espanolUnicode), "Fa")
-        XCTAssertNil(ortografia[1])   // Do♯ no está en Fa mayor
+        XCTAssertNil(ortografia[1]) // Do♯ no está en Fa mayor
     }
 
     func testLaOrtografiaDelAcordeConBemoles() throws {
@@ -66,7 +67,7 @@ final class PresentacionDeMastilTests: XCTestCase {
     }
 
     func testSiDosNotasComparteClaveGanaLaPrimera() {
-        let notas = [Nota(pasosDeQuinta: 6), Nota(pasosDeQuinta: -6)]   // Fa♯ y Sol♭
+        let notas = [Nota(pasosDeQuinta: 6), Nota(pasosDeQuinta: -6)] // Fa♯ y Sol♭
         XCTAssertEqual(PresentacionDeMastil.ortografia(de: notas)[6]?.nombre(en: .espanolUnicode), "Fa♯")
     }
 
@@ -78,10 +79,12 @@ final class PresentacionDeMastilTests: XCTestCase {
 
     func testLaDescripcionVaDeGraveAAgudo() {
         let marcas = [PosicionEnElMastil(cuerda: 1, traste: 3), PosicionEnElMastil(cuerda: 0, traste: 0)]
-        XCTAssertEqual(PresentacionDeMastil.descripcion(marcas: marcas, apagadas: []),
-                       "cuerda 1, traste 0; cuerda 2, traste 3")
-        XCTAssertEqual(PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [5]),
-                       "cuerda 1, traste 0; cuerda 2, traste 3; cuerdas apagadas: 6")
+        XCTAssertEqual(
+            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: []),
+            "cuerda 1, traste 0; cuerda 2, traste 3")
+        XCTAssertEqual(
+            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [5]),
+            "cuerda 1, traste 0; cuerda 2, traste 3; cuerdas apagadas: 6")
     }
 
     func testLaDescripcionSeAcortaSiHayMuchasMarcas() {
@@ -98,19 +101,21 @@ final class PresentacionDeMastilTests: XCTestCase {
     func testElToqueVaAlTrasteYALaCuerdaMasCercana() {
         // Trece columnas de 20 puntos (0…12) y seis cuerdas separadas 20: la grave a 108 del borde de arriba.
         func posicion(_ x: Double, _ y: Double) -> PosicionEnElMastil? {
-            PresentacionDeMastil.posicion(enX: x, y: y, ancho: 276, alto: 130, cuerdas: 6, rango: 0...12, conCanal: false)
+            PresentacionDeMastil.posicion(
+                enX: x, y: y, ancho: 276, alto: 130, cuerdas: 6, rango: 0...12, conCanal: false)
         }
         XCTAssertEqual(posicion(78, 88), PosicionEnElMastil(cuerda: 1, traste: 3))
         XCTAssertEqual(posicion(10, 100), PosicionEnElMastil(cuerda: 0, traste: 0))
         XCTAssertEqual(posicion(266, 8), PosicionEnElMastil(cuerda: 5, traste: 12))
-        XCTAssertNil(posicion(5, 88))     // en el margen
-        XCTAssertNil(posicion(78, 125))   // debajo de la cuerda grave, donde van los números de traste
+        XCTAssertNil(posicion(5, 88)) // en el margen
+        XCTAssertNil(posicion(78, 125)) // debajo de la cuerda grave, donde van los números de traste
     }
 
     func testElCanalDeLasCuerdasAlAireNoSeToca() {
         // Del 5 al 8 con canal: cinco columnas de 52 puntos, la primera para el canal.
         func posicion(_ x: Double) -> PosicionEnElMastil? {
-            PresentacionDeMastil.posicion(enX: x, y: 108, ancho: 276, alto: 130, cuerdas: 6, rango: 5...8, conCanal: true)
+            PresentacionDeMastil.posicion(
+                enX: x, y: 108, ancho: 276, alto: 130, cuerdas: 6, rango: 5...8, conCanal: true)
         }
         XCTAssertNil(posicion(40))
         XCTAssertEqual(posicion(113), PosicionEnElMastil(cuerda: 0, traste: 6))
@@ -118,7 +123,8 @@ final class PresentacionDeMastilTests: XCTestCase {
 
     func testUnaSolaCuerdaONinguna() {
         func posicion(_ y: Double, cuerdas: Int) -> PosicionEnElMastil? {
-            PresentacionDeMastil.posicion(enX: 100, y: y, ancho: 276, alto: 130, cuerdas: cuerdas, rango: 0...12, conCanal: false)
+            PresentacionDeMastil.posicion(
+                enX: 100, y: y, ancho: 276, alto: 130, cuerdas: cuerdas, rango: 0...12, conCanal: false)
         }
         XCTAssertNil(posicion(100, cuerdas: 0))
         // Con una cuerda, abajo del todo, y hasta 12 puntos por encima o por debajo.

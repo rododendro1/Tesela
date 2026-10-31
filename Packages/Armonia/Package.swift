@@ -41,7 +41,7 @@ let package = Package(
         .library(name: "ArmoniaTrastes", targets: ["ArmoniaTrastes"]),
     ],
     dependencies: [
-        .package(path: "../Hexagonos"),
+        .package(path: "../Hexagonos")
     ],
     targets: [
         .target(name: "ArmoniaNucleo"),
@@ -54,7 +54,9 @@ let package = Package(
         // El módulo paraguas: reexporta los cinco y guarda la documentación (DocC).
         .target(
             name: "Armonia",
-            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaTrastes"]),
+            dependencies: [
+                "ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaTrastes",
+            ]),
         // Las pruebas ven lo `internal` de cada módulo con `@testable import`, y por eso dependen de todos.
         .testTarget(name: "ArmoniaTests", dependencies: modulos),
         .testTarget(name: "ArmoniaExhaustivasTests", dependencies: modulos),

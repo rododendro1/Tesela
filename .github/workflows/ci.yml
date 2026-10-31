@@ -56,6 +56,19 @@ jobs:
       - name: CHANGELOG (secciones y notas de la versión actual)
         run: python3 Scripts/notas_de_version.py --comprobar
 
+  # El formato del código Swift, con swift-format (viene con Swift 6) y la configuración de `.swift-format`. Para
+  # arreglarlo: `swift format -i -r --parallel Packages Apps Ejemplos Herramientas Package.swift`. Los ficheros que
+  # empiezan con `// swift-format-ignore-file` (las tablas de datos y las pruebas generadas) no se tocan.
+  formato:
+    name: Formato (swift-format)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container: swift:6.2
+    steps:
+      - uses: actions/checkout@v7
+      - name: swift format lint
+        run: swift format lint --strict -r --parallel Packages Apps Ejemplos Herramientas Package.swift
+
   motor:
     name: Armonia · Linux · Swift ${{ matrix.swift }}
     runs-on: ubuntu-latest

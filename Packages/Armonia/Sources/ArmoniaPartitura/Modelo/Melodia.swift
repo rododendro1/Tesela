@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+
 // Melodías: secuencias de notas con sus transformaciones clásicas, y voces: melodías con
 // ritmo en un compás (los eventos están en Evento.swift y las duraciones en Duracion.swift).
 //
@@ -91,9 +92,12 @@ public struct Melodia: Hashable, Sendable, CustomStringConvertible {
     /// (por defecto, la primera nota). Do4–Mi4–Sol4 → Do4–La♭3–Fa3.
     public func invertir(alrededorDe eje: Altura? = nil) -> Melodia {
         guard let centro = eje ?? alturas.first else { return self }
-        return Melodia(alturas.map {
-            Altura(pasosDeQuinta: 2 * centro.pasosDeQuinta - $0.pasosDeQuinta, pasosDeOctava: 2 * centro.pasosDeOctava - $0.pasosDeOctava)
-        })
+        return Melodia(
+            alturas.map {
+                Altura(
+                    pasosDeQuinta: 2 * centro.pasosDeQuinta - $0.pasosDeQuinta,
+                    pasosDeOctava: 2 * centro.pasosDeOctava - $0.pasosDeOctava)
+            })
     }
 
     /// Retrogradación: la melodía al revés.
@@ -155,8 +159,10 @@ public struct Voz: Hashable, Sendable, Codable {
     }
 
     /// Une una melodía y un ritmo nota a nota. `nil` si no tienen el mismo número de elementos.
-    public init?(melodia: Melodia, ritmo: [Duracion], compas: Compas = .compasillo,
-                 anacrusa: Duracion = .cero) {
+    public init?(
+        melodia: Melodia, ritmo: [Duracion], compas: Compas = .compasillo,
+        anacrusa: Duracion = .cero
+    ) {
         guard melodia.alturas.count == ritmo.count else { return nil }
         self.init(zip(melodia.alturas, ritmo).map { Evento($0, $1) }, compas: compas, anacrusa: anacrusa)
     }
@@ -210,8 +216,9 @@ public struct Voz: Hashable, Sendable, Codable {
                 actual.append(Evento(alturas: pendiente.alturas, duracion: restante, ligada: true))
                 resultado.append(actual)
                 actual = []
-                pendiente = Evento(alturas: pendiente.alturas, duracion: pendiente.duracion - restante,
-                                   ligada: pendiente.ligada)
+                pendiente = Evento(
+                    alturas: pendiente.alturas, duracion: pendiente.duracion - restante,
+                    ligada: pendiente.ligada)
                 restante = compas.duracion
             }
             actual.append(pendiente)
@@ -257,13 +264,16 @@ public struct Voz: Hashable, Sendable, Codable {
             var escritos: [Evento] = []
             for evento in compasActual {
                 // El silencio de todo un compás no se divide: es un silencio de compás.
-                let partes = evento.esSilencio && posicion.esCero && evento.duracion == compas.duracion
+                let partes =
+                    evento.esSilencio && posicion.esCero && evento.duracion == compas.duracion
                     ? [evento.duracion]
                     : Voz.partir(desde: posicion, duracion: evento.duracion, compas: compas)
                 for (k, parte) in partes.enumerated() {
                     let ultima = k == partes.count - 1
-                    escritos.append(Evento(alturas: evento.alturas, duracion: parte,
-                                           ligada: ultima ? evento.ligada : true))
+                    escritos.append(
+                        Evento(
+                            alturas: evento.alturas, duracion: parte,
+                            ligada: ultima ? evento.ligada : true))
                 }
                 posicion = posicion + evento.duracion
             }
@@ -293,7 +303,8 @@ public struct Voz: Hashable, Sendable, Codable {
         // aunque acabe entre pulsos (la negra con puntillo del 1.er o del 3.er tiempo de 4/4),
         // si no oculta la mitad. En los compuestos, el pulso con puntillo ya es la figura.
         if compas.tipo == .simple, enPulso(inicio), duracion > compas.pulso,
-           let escritura = duracion.figuraYPuntillos, escritura.puntillos > 0, !cruzaLaMitad(inicio, fin) {
+            let escritura = duracion.figuraYPuntillos, escritura.puntillos > 0, !cruzaLaMitad(inicio, fin)
+        {
             return [duracion]
         }
         // Si cruza comienzos de pulso, se corta en el más lejano que deje entera la primera parte
@@ -362,13 +373,15 @@ public struct Voz: Hashable, Sendable, Codable {
 
     /// Aumentación: todas las duraciones multiplicadas por `factor` (2 = el doble de largo).
     public func aumentar(_ factor: Int) -> Voz {
-        Voz(eventos.map { Evento(alturas: $0.alturas, duracion: $0.duracion * factor, ligada: $0.ligada) },
+        Voz(
+            eventos.map { Evento(alturas: $0.alturas, duracion: $0.duracion * factor, ligada: $0.ligada) },
             compas: compas, anacrusa: anacrusa * factor)
     }
 
     /// Disminución: todas las duraciones divididas por `factor` (2 = la mitad de largo).
     public func disminuir(_ factor: Int) -> Voz {
-        Voz(eventos.map { Evento(alturas: $0.alturas, duracion: $0.duracion / factor, ligada: $0.ligada) },
+        Voz(
+            eventos.map { Evento(alturas: $0.alturas, duracion: $0.duracion / factor, ligada: $0.ligada) },
             compas: compas, anacrusa: anacrusa / factor)
     }
 

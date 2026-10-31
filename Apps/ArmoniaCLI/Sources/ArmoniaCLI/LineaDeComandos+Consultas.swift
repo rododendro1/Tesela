@@ -16,8 +16,10 @@ extension LineaDeComandos {
         } else {
             lineas.append("  \(t(.notas)): \(notas)")
         }
-        lineas.append("  " + acorde.componentes.map { "\($0.nota.nombre(en: notacion)) \($0.papel.nombre(en: notacion))" }
-            .joined(separator: " · "))
+        lineas.append(
+            "  "
+                + acorde.componentes.map { "\($0.nota.nombre(en: notacion)) \($0.papel.nombre(en: notacion))" }
+                .joined(separator: " · "))
         return lineas.joined(separator: "\n")
     }
 
@@ -67,8 +69,10 @@ extension LineaDeComandos {
     static func describir(arpegio: Arpegio, _ notacion: Notacion) -> String {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let notas = arpegio.alturas(octava: 4).map { $0.nombre(en: notacion) }.joined(separator: " ")
-        var lineas = ["\(arpegio.nombre(en: notacion)) (\(arpegio.patron.nombre(en: notacion)))",
-                      "  \(t(.notas)): \(notas)"]
+        var lineas = [
+            "\(arpegio.nombre(en: notacion)) (\(arpegio.patron.nombre(en: notacion)))",
+            "  \(t(.notas)): \(notas)",
+        ]
         // Las escalas del acorde, de las de menos notas a las de más; con ocho basta para orientarse.
         let escalas = arpegio.acorde.escalasCompatibles()
         if !escalas.isEmpty {
@@ -110,8 +114,10 @@ extension LineaDeComandos {
 
     static func describir(escala: Escala, _ notacion: Notacion) -> String {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
-        var lineas = [escala.nombre(en: notacion),
-                      "  \(t(.notas)): " + escala.notas.map { $0.nombre(en: notacion) }.joined(separator: " ")]
+        var lineas = [
+            escala.nombre(en: notacion),
+            "  \(t(.notas)): " + escala.notas.map { $0.nombre(en: notacion) }.joined(separator: " "),
+        ]
         // Los acordes de cada grado, si la escala es heptatónica y todos forman un acorde conocido.
         let acordes = escala.armonizar(cuatriadas: true).compactMap { $0 }
         let romanos = escala.cifradosRomanos(cuatriadas: true).compactMap { $0 }
@@ -165,8 +171,11 @@ extension LineaDeComandos {
                 return uso(.archivoIlegible(archivo), notacion)
             }
             let pieza = try PiezaImportada(leyendo: datos)
-            guard let leido = PresentacionDeAnalisis.analizar(pieza.acordes(ventana: ventana), en: tonalidad,
-                                                              notacion: notacion) else {
+            guard
+                let leido = PresentacionDeAnalisis.analizar(
+                    pieza.acordes(ventana: ventana), en: tonalidad,
+                    notacion: notacion)
+            else {
                 return uso(.archivoSinAcordes, notacion)
             }
             analisis = leido
@@ -184,7 +193,9 @@ extension LineaDeComandos {
             if let cabecera = tramo.cabecera { lineas.append(cabecera) }
             for fila in tramo.filas {
                 let funcion = fila.funcion.isEmpty ? "–" : fila.funcion
-                lineas.append("  " + fila.cifrado.padding(hasta: anchoDelCifrado) + fila.grado.padding(hasta: anchoDelGrado) + funcion)
+                lineas.append(
+                    "  " + fila.cifrado.padding(hasta: anchoDelCifrado) + fila.grado.padding(hasta: anchoDelGrado)
+                        + funcion)
             }
         }
         lineas += analisis.cadencias

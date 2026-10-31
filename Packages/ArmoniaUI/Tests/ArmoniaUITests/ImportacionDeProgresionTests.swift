@@ -1,6 +1,7 @@
-import XCTest
-import Foundation
 import Armonia
+import Foundation
+import XCTest
+
 @testable import ArmoniaPresentacion
 
 // «Abrir» en la vista de análisis: de un fichero MIDI o MusicXML a una progresión que se analiza como si se
@@ -16,8 +17,9 @@ final class ImportacionDeProgresionTests: XCTestCase {
         let texto = "Do Fa Sol7 Do Lam Re7 Sol"
         let progresion = try ImportacionDeProgresion.progresion(de: AnalisisArmonico.analizar(leyendo: texto).midi())
         XCTAssertEqual(progresion, texto)
-        XCTAssertEqual(try PresentacionDeAnalisis.analizar(progresion, notacion: .espanolUnicode),
-                       try PresentacionDeAnalisis.analizar(texto, notacion: .espanolUnicode))
+        XCTAssertEqual(
+            try PresentacionDeAnalisis.analizar(progresion, notacion: .espanolUnicode),
+            try PresentacionDeAnalisis.analizar(texto, notacion: .espanolUnicode))
     }
 
     func testUnaMelodiaSolaNoTieneAcordes() throws {

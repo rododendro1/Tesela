@@ -41,10 +41,13 @@ extension CoordenadaAxial {
     ///
     /// Si se busca sin presupuesto, `coste` tiene que dar `nil` fuera de una región finita: si no, y
     /// `destino` no se puede alcanzar, la búsqueda no termina.
-    public func caminoMasBarato(hasta destino: CoordenadaAxial, costeMinimo: Double = 0,
-                                presupuesto: Double = .infinity,
-                                coste: (_ desde: CoordenadaAxial, _ hacia: CoordenadaAxial) -> Double?)
-        -> CaminoHexagonal? {
+    public func caminoMasBarato(
+        hasta destino: CoordenadaAxial, costeMinimo: Double = 0,
+        presupuesto: Double = .infinity,
+        coste: (_ desde: CoordenadaAxial, _ hacia: CoordenadaAxial) -> Double?
+    )
+        -> CaminoHexagonal?
+    {
         precondition(costeMinimo >= 0, "El coste mínimo no puede ser negativo (\(costeMinimo))")
         func estimado(_ casilla: CoordenadaAxial) -> Double { costeMinimo * Double(casilla.distancia(hasta: destino)) }
 
@@ -93,9 +96,12 @@ extension CoordenadaAxial {
     /// costes[CoordenadaAxial(q: -2, r: 0)]   // 2.0
     /// costes[CoordenadaAxial(q: 2, r: 0)]    // nil
     /// ```
-    public func alcanzables(presupuesto: Double,
-                            coste: (_ desde: CoordenadaAxial, _ hacia: CoordenadaAxial) -> Double?)
-        -> [CoordenadaAxial: Double] {
+    public func alcanzables(
+        presupuesto: Double,
+        coste: (_ desde: CoordenadaAxial, _ hacia: CoordenadaAxial) -> Double?
+    )
+        -> [CoordenadaAxial: Double]
+    {
         precondition(presupuesto >= 0, "El presupuesto no puede ser negativo (\(presupuesto))")
         var gastado: [CoordenadaAxial: Double] = [self: 0]
         var cerradas: Set<CoordenadaAxial> = []
@@ -150,7 +156,8 @@ struct MonticuloDeMinimos<Elemento> {
         let primero = nodos.removeLast()
         var padre = 0
         while true {
-            let izquierdo = 2 * padre + 1, derecho = izquierdo + 1
+            let izquierdo = 2 * padre + 1
+            let derecho = izquierdo + 1
             var menor = padre
             if izquierdo < nodos.count && antes(izquierdo, menor) { menor = izquierdo }
             if derecho < nodos.count && antes(derecho, menor) { menor = derecho }

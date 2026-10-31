@@ -1,9 +1,10 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class AfinacionTests: XCTestCase {
     func testTemperamentosRegulares() {
@@ -13,10 +14,12 @@ final class AfinacionTests: XCTestCase {
         XCTAssertEqual(igual.cents(de: Intervalo.terceraMayor), 400, accuracy: 1e-9)
 
         XCTAssertEqual(TemperamentoRegular.pitagorico.frecuencia(de: "Mi5"), 660, accuracy: 1e-6)
-        XCTAssertEqual(TemperamentoRegular.mesotonicoCuartoDeComa.cents(de: .terceraMayor),
-                       1200 * log2(5.0 / 4.0), accuracy: 1e-9)
-        XCTAssertEqual(TemperamentoRegular.mesotonicoTercioDeComa.cents(de: .terceraMenor),
-                       1200 * log2(6.0 / 5.0), accuracy: 1e-9)
+        XCTAssertEqual(
+            TemperamentoRegular.mesotonicoCuartoDeComa.cents(de: .terceraMayor),
+            1200 * log2(5.0 / 4.0), accuracy: 1e-9)
+        XCTAssertEqual(
+            TemperamentoRegular.mesotonicoTercioDeComa.cents(de: .terceraMenor),
+            1200 * log2(6.0 / 5.0), accuracy: 1e-9)
         XCTAssertEqual(TemperamentoRegular.mesotonicoCuartoDeComa.frecuencia(de: "La4"), 440, accuracy: 1e-9)
         // En el mesotónico, Sol♯ y La♭ no coinciden.
         let meso = TemperamentoRegular.mesotonicoCuartoDeComa
@@ -32,14 +35,18 @@ final class AfinacionTests: XCTestCase {
     func testTemperamentosCirculares() {
         func redondear(_ valores: [Double]) -> [Double] { valores.map { ($0 * 100).rounded() / 100 } }
         // Las desviaciones de cada clase de altura respecto al temperamento igual, con Do como referencia.
-        XCTAssertEqual(redondear(TemperamentoCircular.werckmeisterIII.desviaciones),
-                       [0, -9.78, -7.82, -5.87, -9.78, -1.96, -11.73, -3.91, -7.82, -11.73, -3.91, -7.82])
-        XCTAssertEqual(redondear(TemperamentoCircular.kirnbergerIII.desviaciones),
-                       [0, -9.78, -6.84, -5.87, -13.69, -1.96, -9.78, -3.42, -7.82, -10.26, -3.91, -11.73])
-        XCTAssertEqual(redondear(TemperamentoCircular.vallotti.desviaciones),
-                       [0, -5.87, -3.91, -1.96, -7.82, 1.96, -7.82, -1.96, -3.91, -5.87, 0, -9.78])
-        XCTAssertEqual(redondear(TemperamentoCircular.young.desviaciones),
-                       [0, -9.78, -3.91, -5.87, -7.82, -1.96, -11.73, -1.96, -7.82, -5.87, -3.91, -9.78])
+        XCTAssertEqual(
+            redondear(TemperamentoCircular.werckmeisterIII.desviaciones),
+            [0, -9.78, -7.82, -5.87, -9.78, -1.96, -11.73, -3.91, -7.82, -11.73, -3.91, -7.82])
+        XCTAssertEqual(
+            redondear(TemperamentoCircular.kirnbergerIII.desviaciones),
+            [0, -9.78, -6.84, -5.87, -13.69, -1.96, -9.78, -3.42, -7.82, -10.26, -3.91, -11.73])
+        XCTAssertEqual(
+            redondear(TemperamentoCircular.vallotti.desviaciones),
+            [0, -5.87, -3.91, -1.96, -7.82, 1.96, -7.82, -1.96, -3.91, -5.87, 0, -9.78])
+        XCTAssertEqual(
+            redondear(TemperamentoCircular.young.desviaciones),
+            [0, -9.78, -3.91, -5.87, -7.82, -1.96, -11.73, -1.96, -7.82, -5.87, -3.91, -9.78])
         // En Kirnberger III la tercera Do–Mi es pura.
         let kirnberger = TemperamentoCircular.kirnbergerIII
         XCTAssertEqual(kirnberger.cents(desde: "Do4", hasta: "Mi4"), RazonDeFrecuencias(5, 4).cents, accuracy: 1e-9)
@@ -70,10 +77,13 @@ final class AfinacionTests: XCTestCase {
         }
         XCTAssertEqual(Temperamento.igual.afinacion().desviacion(de: "Fa#3"), 0, accuracy: 1e-9)
         XCTAssertEqual(Temperamento.justa.afinacion(tonica: .re).desviacion(de: "Fa#4"), -13.69, accuracy: 0.01)
-        XCTAssertEqual(Temperamento.mesotonico.afinacion().cents(desde: "Do4", hasta: "Mi4"), RazonDeFrecuencias(5, 4).cents,
-                       accuracy: 1e-9)
+        XCTAssertEqual(
+            Temperamento.mesotonico.afinacion().cents(desde: "Do4", hasta: "Mi4"), RazonDeFrecuencias(5, 4).cents,
+            accuracy: 1e-9)
         for idioma in Idioma.traducidos {
-            let nombres = Temperamento.allCases.map { $0.nombre(en: Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false))) }
+            let nombres = Temperamento.allCases.map {
+                $0.nombre(en: Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false)))
+            }
             XCTAssertEqual(Set(nombres).count, nombres.count, "\(idioma)")
         }
         XCTAssertEqual(Temperamento.justa.nombre(en: .inglesASCII), "just intonation")
@@ -131,14 +141,16 @@ final class BaseDeHewlettTests: XCTestCase {
 
     func testBase40() {
         // Valores de Hewlett y Humdrum: Do4 = 162, quinta justa = 23.
-        let casos: [(Altura, Int)] = [("Do4", 162), ("Sol4", 185), ("Fa#4", 180), ("Solb4", 184),
-                                    ("Do5", 202), ("Dobb4", 160), ("Six4", 199), ("Dob4", 161), ("Si#3", 158)]
+        let casos: [(Altura, Int)] = [
+            ("Do4", 162), ("Sol4", 185), ("Fa#4", 180), ("Solb4", 184),
+            ("Do5", 202), ("Dobb4", 160), ("Six4", 199), ("Dob4", 161), ("Si#3", 158),
+        ]
         for (nota, numero) in casos {
             XCTAssertEqual(nota.numero(en: .base40), numero, nota.description)
             XCTAssertEqual(Altura(numero: numero, en: .base40), nota, nota.description)
         }
         XCTAssertNil(Altura(Nota(.fa, 3), octava: 4).numero(en: .base40))
-        XCTAssertNil(Altura(numero: 162 + 20, en: .base40))   // hueco entre Fa𝄪 y Sol𝄫
+        XCTAssertNil(Altura(numero: 162 + 20, en: .base40)) // hueco entre Fa𝄪 y Sol𝄫
         XCTAssertEqual(Nota.do.numero(en: .base40), 2)
         XCTAssertEqual(Nota("Si#").numero(en: .base40), 38)
         XCTAssertEqual(Nota("Dob").numero(en: .base40), 1)
@@ -157,9 +169,10 @@ final class BaseDeHewlettTests: XCTestCase {
             XCTAssertEqual(intervalo.numero(en: .base40), numero, intervalo.description)
             XCTAssertEqual(Intervalo(numero: numero, en: .base40), intervalo, intervalo.description)
         }
-        XCTAssertNil(Intervalo(numero: 20, en: .base40))   // entre la 4ª doble aumentada y la 5ª doble disminuida
+        XCTAssertNil(Intervalo(numero: 20, en: .base40)) // entre la 4ª doble aumentada y la 5ª doble disminuida
         // Los intervalos son diferencias de números.
-        let re: Altura = "Re4", sib: Altura = "Sib3"
+        let re: Altura = "Re4"
+        let sib: Altura = "Sib3"
         XCTAssertEqual(re.numero(en: .base40)! - sib.numero(en: .base40)!, (re - sib).numero(en: .base40))
     }
 
@@ -211,8 +224,9 @@ final class CorrespondenciaDeColoresTests: XCTestCase {
         XCTAssertEqual(CorrespondenciaDeColores.scriabin.nombreDelColor(de: .fa), "rojo oscuro")
         XCTAssertEqual(Nota("Do#").color(segun: .scriabin), Nota("Reb").color(segun: .scriabin))
         // Círculo de quintas: 30° por quinta.
-        XCTAssertEqual(Acorde("Do").colores(segun: .circuloDeQuintas).map(\.hexadecimal),
-                       ["#FF0000", "#00FF00", "#FF8000"])
+        XCTAssertEqual(
+            Acorde("Do").colores(segun: .circuloDeQuintas).map(\.hexadecimal),
+            ["#FF0000", "#00FF00", "#FF8000"])
         XCTAssertNil(CorrespondenciaDeColores.circuloDeQuintas.nombreDelColor(de: .do))
         XCTAssertEqual(Escala(.do).colores(segun: .scriabin).count, 7)
         XCTAssertEqual(Altura("Re5").color(segun: .scriabin), Nota.re.color(segun: .scriabin))

@@ -1,7 +1,7 @@
-import SwiftUI
-import UniformTypeIdentifiers
 import Armonia
 import ArmoniaUI
+import SwiftUI
+import UniformTypeIdentifiers
 
 /// Escribe una progresión (Do Fa Sol7 Do Lam Re7 Sol), o la saca de un fichero MIDI o MusicXML con «Abrir», y
 /// muestra sus tonalidades, los grados, las funciones, las modulaciones y las cadencias, y la exporta como
@@ -17,7 +17,8 @@ struct VistaDeAnalisis: View {
     @State private var patron = Arpegio.Patron.ascendente
 
     /// MIDI y MusicXML sin comprimir (.musicxml y .xml).
-    private static let tipos: [UTType] = [.midi, .xml]
+    private static let tipos: [UTType] =
+        [.midi, .xml]
         + ImportacionDeProgresion.extensiones.compactMap { UTType(filenameExtension: $0) }
 
     var body: some View {
@@ -67,7 +68,11 @@ struct VistaDeAnalisis: View {
         .selectorDeNotacionEnLaBarra()
         .toolbar {
             ToolbarItem {
-                Button { abriendo = true } label: { Label(notacion.texto(.abrir), systemImage: "folder") }
+                Button {
+                    abriendo = true
+                } label: {
+                    Label(notacion.texto(.abrir), systemImage: "folder")
+                }
             }
             ToolbarItem {
                 BotonDeExportar(ficheros)

@@ -1,10 +1,11 @@
 import Foundation
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 /// Generador pseudoaleatorio con semilla fija (SplitMix64): las pruebas al azar fallan siempre
 /// igual y se pueden repetir.
@@ -49,7 +50,9 @@ final class IdaYVueltaAlAzarTests: XCTestCase {
 
     func testIntervalos() {
         comprobar { azar in
-            Intervalo(pasosDeQuinta: Int.random(in: -12...12, using: &azar), pasosDeOctava: Int.random(in: -3...3, using: &azar))
+            Intervalo(
+                pasosDeQuinta: Int.random(in: -12...12, using: &azar),
+                pasosDeOctava: Int.random(in: -3...3, using: &azar))
         }
     }
 
@@ -66,12 +69,14 @@ final class IdaYVueltaAlAzarTests: XCTestCase {
 
     func testEscalasYTonalidades() {
         comprobar { azar in
-            Escala(Nota(pasosDeQuinta: Int.random(in: -7...7, using: &azar)),
-                   (TipoDeEscala.todos + TipoDeEscala.tradicionales).randomElement(using: &azar)!)
+            Escala(
+                Nota(pasosDeQuinta: Int.random(in: -7...7, using: &azar)),
+                (TipoDeEscala.todos + TipoDeEscala.tradicionales).randomElement(using: &azar)!)
         }
         comprobar { azar in
-            Tonalidad(Nota(pasosDeQuinta: Int.random(in: -7...7, using: &azar)),
-                      Tonalidad.Modo.allCases.randomElement(using: &azar)!)
+            Tonalidad(
+                Nota(pasosDeQuinta: Int.random(in: -7...7, using: &azar)),
+                Tonalidad.Modo.allCases.randomElement(using: &azar)!)
         }
     }
 
@@ -79,7 +84,9 @@ final class IdaYVueltaAlAzarTests: XCTestCase {
     func testCodable() throws {
         var azar = GeneradorConSemilla(semilla: 7)
         let acordes = (0..<200).map { _ in
-            Acorde(Nota(pasosDeQuinta: Int.random(in: -7...7, using: &azar)), TipoDeAcorde.todos.randomElement(using: &azar)!)
+            Acorde(
+                Nota(pasosDeQuinta: Int.random(in: -7...7, using: &azar)),
+                TipoDeAcorde.todos.randomElement(using: &azar)!)
         }
         let datos = try JSONEncoder().encode(acordes)
         XCTAssertEqual(try JSONDecoder().decode([Acorde].self, from: datos), acordes)
@@ -117,12 +124,12 @@ final class CasosNegativosTests: XCTestCase {
         XCTAssertEqual(Escala(texto: "F# lydian"), Escala(Nota(.fa, .sostenido), .lidio))
 
         // Las tonalidades se leen a través de las escalas: la misma regla.
-        rechaza(Tonalidad.self, ["Re minor", "Sib minor", "La harmonic minor"])  // «Do major» sí vale: es catalán
+        rechaza(Tonalidad.self, ["Re minor", "Sib minor", "La harmonic minor"]) // «Do major» sí vale: es catalán
         XCTAssertEqual(Tonalidad(texto: "D minor"), Tonalidad(.re, .menor))
         XCTAssertEqual(Tonalidad(texto: "Re menor"), Tonalidad(.re, .menor))
 
         // El bajo de un acorde se escribe como su fundamental.
-        rechaza(Acorde.self, ["Sol7/B", "G7/Si", "Re/E", "C/Mi", "Sib7(b9)/D"])  // «Do/E» sí vale: D°/E
+        rechaza(Acorde.self, ["Sol7/B", "G7/Si", "Re/E", "C/Mi", "Sib7(b9)/D"]) // «Do/E» sí vale: D°/E
         XCTAssertEqual(Acorde(texto: "G7/B"), Acorde(texto: "Sol7/Si"))
         XCTAssertEqual(Acorde(texto: "Faug/A"), Acorde(.fa, .aumentado, inversion: 1))
         XCTAssertThrowsError(try Acorde(leyendo: "Sol7/B")) { error in

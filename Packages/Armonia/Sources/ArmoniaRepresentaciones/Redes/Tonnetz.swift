@@ -1,6 +1,8 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+import Foundation
 import Hexagonos
+
 // El Tonnetz: la red de notas unidas por quintas justas y terceras mayores y menores, en la
 // que cada triángulo es una tríada (hacia arriba, mayor; hacia abajo, menor).
 //
@@ -16,8 +18,6 @@ import Hexagonos
 //
 // La red es una rejilla hexagonal (cada nota, el centro de un hexágono): las distancias y las
 // posiciones del dibujo salen del paquete `Hexagonos` (Tonnetz+Hexagonos.swift).
-
-import Foundation
 
 // MARK: - PuntoDeLaRed
 
@@ -83,8 +83,10 @@ public struct Tonnetz: Hashable, Sendable {
         /// Fundamental, quinta y tercera.
         public var vertices: [PuntoDeLaRed] {
             let quinta = PuntoDeLaRed(quintas: fundamental.quintas + 1, terceras: fundamental.terceras)
-            let tercera = mayor ? PuntoDeLaRed(quintas: fundamental.quintas, terceras: fundamental.terceras + 1)
-                                : PuntoDeLaRed(quintas: fundamental.quintas + 1, terceras: fundamental.terceras - 1)
+            let tercera =
+                mayor
+                ? PuntoDeLaRed(quintas: fundamental.quintas, terceras: fundamental.terceras + 1)
+                : PuntoDeLaRed(quintas: fundamental.quintas + 1, terceras: fundamental.terceras - 1)
             return [fundamental, tercera, quinta]
         }
 
@@ -140,7 +142,8 @@ public struct Tonnetz: Hashable, Sendable {
             // las quintas de 12 en 12 cerca de 0.
             cerca.flatMap { terceras -> [PuntoDeLaRed] in
                 (-12...12).compactMap { quintas in
-                    modulo(7 * quintas + 4 * terceras, 12) == clase ? PuntoDeLaRed(quintas: quintas, terceras: terceras) : nil
+                    modulo(7 * quintas + 4 * terceras, 12) == clase
+                        ? PuntoDeLaRed(quintas: quintas, terceras: terceras) : nil
                 }
             }
         }
@@ -148,8 +151,14 @@ public struct Tonnetz: Hashable, Sendable {
         origen = .conjunto(conjunto)
     }
 
-    public init(_ acorde: Acorde) { self.init(acorde.notas); origen = .acorde(acorde) }
-    public init(_ escala: Escala) { self.init(escala.notas); origen = .escala(escala) }
+    public init(_ acorde: Acorde) {
+        self.init(acorde.notas)
+        origen = .acorde(acorde)
+    }
+    public init(_ escala: Escala) {
+        self.init(escala.notas)
+        origen = .escala(escala)
+    }
 
     /// Las notas de los puntos (con ortografía) o, para clases de altura, su nombre con sostenidos.
     public var notas: [Nota] { puntos.map(nombre(de:)) }
@@ -178,8 +187,10 @@ public struct Tonnetz: Hashable, Sendable {
                 if triada.vertices.allSatisfy(conjunto.contains) { triadas.append(triada) }
             }
         }
-        return triadas.sorted { ($0.fundamental.quintas, $0.fundamental.terceras, $0.mayor ? 0 : 1)
-            < ($1.fundamental.quintas, $1.fundamental.terceras, $1.mayor ? 0 : 1) }
+        return triadas.sorted {
+            ($0.fundamental.quintas, $0.fundamental.terceras, $0.mayor ? 0 : 1)
+                < ($1.fundamental.quintas, $1.fundamental.terceras, $1.mayor ? 0 : 1)
+        }
     }
 
     /// Los pares de notas vecinas en la red: los intervalos de quinta y de tercera que hay.
@@ -205,7 +216,9 @@ public struct Tonnetz: Hashable, Sendable {
     /// Se buscan todas las disposiciones con ramificación y poda, partiendo de la colocación
     /// voraz como cota; si un conjunto grande agota el presupuesto de búsqueda, se queda la mejor
     /// encontrada. `candidatos` da, para un elemento y unas filas `b`, los puntos posibles en ellas.
-    package static func colocar(_ elementos: [Int], candidatos: (Int, ClosedRange<Int>) -> [PuntoDeLaRed]) -> [PuntoDeLaRed] {
+    package static func colocar(_ elementos: [Int], candidatos: (Int, ClosedRange<Int>) -> [PuntoDeLaRed])
+        -> [PuntoDeLaRed]
+    {
         let voraz = colocarVoraz(elementos, candidatos: candidatos)
         guard elementos.count > 2 else { return voraz }
         let primero = voraz[0]
@@ -216,13 +229,18 @@ public struct Tonnetz: Hashable, Sendable {
             let puntos = candidatos(elemento, filas)
             let minimo = puntos.map { $0.distancia(hasta: primero) }.min() ?? 0
             return puntos.filter { $0.distancia(hasta: primero) <= minimo + 2 }
-                .sorted { ($0.distancia(hasta: primero), $0.terceras, $0.quintas) < ($1.distancia(hasta: primero), $1.terceras, $1.quintas) }
+                .sorted {
+                    ($0.distancia(hasta: primero), $0.terceras, $0.quintas) < (
+                        $1.distancia(hasta: primero), $1.terceras, $1.quintas
+                    )
+                }
         }
         // Se recorren primero los elementos con menos opciones, para podar antes.
         let orden = opciones.indices.sorted { (opciones[$0].count, $0) < (opciones[$1].count, $1) }
 
         func coste(_ puntos: [PuntoDeLaRed]) -> (Int, Int, Int) {
-            var suma = 0, diametro = 0
+            var suma = 0
+            var diametro = 0
             for i in puntos.indices {
                 for j in puntos.indices where j > i {
                     let distancia = puntos[i].distancia(hasta: puntos[j])
@@ -244,14 +262,19 @@ public struct Tonnetz: Hashable, Sendable {
             if colocados == orden.count {
                 let puntos = [primero] + asignacion.map { $0! }
                 let costeDeEstos = coste(puntos)
-                if costeDeEstos < mejorCoste { mejor = puntos; mejorCoste = costeDeEstos }
+                if costeDeEstos < mejorCoste {
+                    mejor = puntos
+                    mejorCoste = costeDeEstos
+                }
                 return
             }
             // Cota: lo que suman ya los colocados y, para cada uno de los que faltan, lo mínimo
             // que puede sumar con ellos. Los grupos sueltos no se pueden acotar (pueden unirse).
             var cota = parcial
             for resto in orden[colocados...] {
-                cota += opciones[resto].map { candidato in elegidos.reduce(0) { $0 + $1.distancia(hasta: candidato) } }.min() ?? 0
+                cota +=
+                    opciones[resto].map { candidato in elegidos.reduce(0) { $0 + $1.distancia(hasta: candidato) } }
+                    .min() ?? 0
             }
             if mejorCoste.0 == 1 && cota > mejorCoste.1 { return }
             let indice = orden[colocados]
@@ -289,11 +312,14 @@ public struct Tonnetz: Hashable, Sendable {
 
     /// La colocación voraz: en cada vuelta, el elemento que puede quedar más cerca de los ya
     /// colocados, en el punto que menos se aleja de todos.
-    package static func colocarVoraz(_ elementos: [Int], candidatos: (Int, ClosedRange<Int>) -> [PuntoDeLaRed]) -> [PuntoDeLaRed] {
+    package static func colocarVoraz(_ elementos: [Int], candidatos: (Int, ClosedRange<Int>) -> [PuntoDeLaRed])
+        -> [PuntoDeLaRed]
+    {
         guard let primero = elementos.first else { return [] }
         let origen = PuntoDeLaRed(quintas: 0, terceras: 0)
         // El primero, en la fila 0 (con ortografía) o lo más cerca posible del origen.
-        let inicial = candidatos(primero, 0...0).min { $0.distancia(hasta: origen) < $1.distancia(hasta: origen) }
+        let inicial =
+            candidatos(primero, 0...0).min { $0.distancia(hasta: origen) < $1.distancia(hasta: origen) }
             ?? candidatos(primero, -2...2).min { $0.distancia(hasta: origen) < $1.distancia(hasta: origen) }!
         var colocados: [Int: PuntoDeLaRed] = [primero: inicial]
         var pendientes = Array(elementos.dropFirst())
@@ -333,11 +359,13 @@ public struct Tonnetz: Hashable, Sendable {
     ///     recorrido, para que quepan las flechas.
     ///   - titulo: el título; si es `nil`, el que corresponda, y si es "", ninguno.
     ///   - leyenda: si se dibuja la leyenda.
-    public func svg(notacion: Notacion = .espanolUnicode, margen: Int? = nil, paso: Double? = nil,
-                    titulo: String? = nil, leyenda: Bool = true) -> String {
+    public func svg(
+        notacion: Notacion = .espanolUnicode, margen: Int? = nil, paso: Double? = nil,
+        titulo: String? = nil, leyenda: Bool = true
+    ) -> String {
         let paso = paso ?? (recorrido.isEmpty ? 64 : 88)
         let margen = margen ?? (tieneOrtografia ? 1 : 2)
-        let altura = paso * 0.8660254037844386   // √3/2, entre dos filas
+        let altura = paso * 0.8660254037844386 // √3/2, entre dos filas
         let trazado = Tonnetz.trazado(paso: paso)
         func x(_ p: PuntoDeLaRed) -> Double { trazado.centro(de: p.coordenada).x }
         func y(_ p: PuntoDeLaRed) -> Double { trazado.centro(de: p.coordenada).y }
@@ -354,7 +382,9 @@ public struct Tonnetz: Hashable, Sendable {
         for terceras in filas {
             let desde = Int((minX / paso - Double(terceras) / 2).rounded(.up))
             let hasta = Int((maxX / paso - Double(terceras) / 2).rounded(.down))
-            if desde <= hasta { for quintas in desde...hasta { red.append(PuntoDeLaRed(quintas: quintas, terceras: terceras)) } }
+            if desde <= hasta {
+                for quintas in desde...hasta { red.append(PuntoDeLaRed(quintas: quintas, terceras: terceras)) }
+            }
         }
         let enRed = Set(red)
         // Los puntos marcados: los de las notas o, sin ortografía, todos los de sus clases.
@@ -375,7 +405,8 @@ public struct Tonnetz: Hashable, Sendable {
         let triadasDibujadas = DibujoSVG.triadas(en: red, marcados: marcados)
         for triada in triadasDibujadas {
             let puntosTexto = triada.vertices.map { "\(f(x($0))),\(f(y($0)))" }.joined(separator: " ")
-            svg += "  <polygon points=\"\(puntosTexto)\" fill=\"\(triada.mayor ? DibujoSVG.Color.mayor : DibujoSVG.Color.menor)\" fill-opacity=\"0.55\"/>\n"
+            svg +=
+                "  <polygon points=\"\(puntosTexto)\" fill=\"\(triada.mayor ? DibujoSVG.Color.mayor : DibujoSVG.Color.menor)\" fill-opacity=\"0.55\"/>\n"
         }
         // Aristas: grises, y resaltadas entre notas marcadas.
         for punto in red {
@@ -385,7 +416,9 @@ public struct Tonnetz: Hashable, Sendable {
                 let resaltada = marcados.contains(punto) && marcados.contains(otro)
                 if resaltada { hayLados = true }
                 svg += "  <line x1=\"\(f(x(punto)))\" y1=\"\(f(y(punto)))\" x2=\"\(f(x(otro)))\" y2=\"\(f(y(otro)))\" "
-                svg += resaltada ? "stroke=\"#333333\" stroke-width=\"3\"/>\n" : "stroke=\"#cccccc\" stroke-width=\"1\"/>\n"
+                svg +=
+                    resaltada
+                    ? "stroke=\"#333333\" stroke-width=\"3\"/>\n" : "stroke=\"#cccccc\" stroke-width=\"1\"/>\n"
             }
         }
         // Recorrido: flechas de triángulo a triángulo.
@@ -393,11 +426,17 @@ public struct Tonnetz: Hashable, Sendable {
         // Notas.
         for punto in red {
             let marcado = marcados.contains(punto)
-            let nombre = tieneOrtografia ? self.nombre(de: punto).nombreCompacto(en: notacion) : String(punto.claseDeAltura)
+            let nombre =
+                tieneOrtografia ? self.nombre(de: punto).nombreCompacto(en: notacion) : String(punto.claseDeAltura)
             svg += "  <circle cx=\"\(f(x(punto)))\" cy=\"\(f(y(punto)))\" r=\"\(f(radio))\" "
-            svg += marcado ? "fill=\"\(DibujoSVG.Color.nota)\" stroke=\"\(DibujoSVG.Color.nota)\"/>\n" : "fill=\"#ffffff\" stroke=\"#bbbbbb\"/>\n"
-            svg += "  <text x=\"\(f(x(punto)))\" y=\"\(f(y(punto)))\" text-anchor=\"middle\" dominant-baseline=\"central\" "
-            svg += "font-size=\"\(f(paso * (nombre.count > 3 ? 0.17 : 0.22)))\" fill=\"\(marcado ? "#ffffff" : "#777777")\""
+            svg +=
+                marcado
+                ? "fill=\"\(DibujoSVG.Color.nota)\" stroke=\"\(DibujoSVG.Color.nota)\"/>\n"
+                : "fill=\"#ffffff\" stroke=\"#bbbbbb\"/>\n"
+            svg +=
+                "  <text x=\"\(f(x(punto)))\" y=\"\(f(y(punto)))\" text-anchor=\"middle\" dominant-baseline=\"central\" "
+            svg +=
+                "font-size=\"\(f(paso * (nombre.count > 3 ? 0.17 : 0.22)))\" fill=\"\(marcado ? "#ffffff" : "#777777")\""
             svg += marcado ? " font-weight=\"bold\">" : ">"
             svg += DibujoSVG.escapar(nombre) + "</text>\n"
         }
@@ -408,15 +447,20 @@ public struct Tonnetz: Hashable, Sendable {
             func entrada(_ muestra: EntradaDeLeyenda.Muestra, _ texto: DibujoSVG.Texto) {
                 entradas.append(EntradaDeLeyenda(muestra: muestra, texto: texto.en(notacion)))
             }
-            entrada(.circulo(relleno: DibujoSVG.Color.nota, borde: DibujoSVG.Color.nota), tieneOrtografia ? .nota : .claseDeAltura)
+            entrada(
+                .circulo(relleno: DibujoSVG.Color.nota, borde: DibujoSVG.Color.nota),
+                tieneOrtografia ? .nota : .claseDeAltura)
             if hayLados { entrada(.linea("#333333", grosor: 3), .intervalos) }
             if triadasDibujadas.contains(where: \.mayor) { entrada(.triangulo(DibujoSVG.Color.mayor), .triadaMayor) }
-            if triadasDibujadas.contains(where: { !$0.mayor }) { entrada(.triangulo(DibujoSVG.Color.menor), .triadaMenor) }
+            if triadasDibujadas.contains(where: { !$0.mayor }) {
+                entrada(.triangulo(DibujoSVG.Color.menor), .triadaMenor)
+            }
             if !recorrido.isEmpty { entrada(.flecha, .pasoDelRecorrido) }
         }
         let titulo = titulo ?? (pie.isEmpty ? (origen?.titulo(notacion) ?? "") : pie)
-        return DibujoSVG.componer(caja: (origenX, arriba, ancho, alto), cuerpo: svg, titulo: titulo,
-                                  leyenda: entradas, paso: paso)
+        return DibujoSVG.componer(
+            caja: (origenX, arriba, ancho, alto), cuerpo: svg, titulo: titulo,
+            leyenda: entradas, paso: paso)
     }
 }
 
