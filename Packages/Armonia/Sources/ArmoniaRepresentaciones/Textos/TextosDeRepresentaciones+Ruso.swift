@@ -45,6 +45,13 @@ extension TextosDeRepresentaciones {
         // TransformacionNeorriemanniana.swift
         homonima: "одноимённая",
         cambioDeSensible: "смена вводного тона",
-        relativa: "параллельная"
+        relativa: "параллельная",
+
+        // TecladoIsomorfico.swift
+        tablaArmonica: "Гармоническая таблица",
+        wickiHaydenEspejo: "Уикки-Хейден (зеркальный)",
+        wickiHaydenPlano: "Уикки-Хейден (плоский)",
+        acordeonC: "Аккордеон системы C",
+        acordeonB: "Аккордеон системы B"
     )
 }

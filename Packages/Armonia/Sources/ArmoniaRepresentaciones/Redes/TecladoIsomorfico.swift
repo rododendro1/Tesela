@@ -107,6 +107,14 @@ public struct TecladoIsomorfico: Hashable, Sendable {
         nombre: "Park", orientacion: .puntiaguda,
         semitonosEnQ: 5, semitonosEnR: 2)
 
+    /// Los teclados con nombre, en el orden en que los ofrecen las apps: la tabla armónica, Wicki-Hayden, Jankó,
+    /// Wicki-Hayden en espejo y plano, los dos acordeones, Gerhard y Park. Un teclado nuevo va aquí y, si su nombre
+    /// se traduce, en `traduccion`.
+    public static let todos: [TecladoIsomorfico] = [
+        .tablaArmonica, .wickiHayden, .janko, .wickiHaydenEspejo, .wickiHaydenPlano, .acordeonC, .acordeonB, .gerhard,
+        .park,
+    ]
+
     /// El número MIDI de una casilla.
     public func midi(en casilla: CoordenadaAxial) -> Int {
         midiDelOrigen + semitonosEnQ * casilla.q + semitonosEnR * casilla.r
@@ -211,5 +219,36 @@ public struct TecladoIsomorfico: Hashable, Sendable {
 extension TecladoIsomorfico: CustomStringConvertible {
     public var description: String {
         "\(nombre): q \(semitonosEnQ >= 0 ? "+" : "")\(semitonosEnQ), r \(semitonosEnR >= 0 ? "+" : "")\(semitonosEnR)"
+    }
+}
+
+// MARK: - Idiomas
+//
+// Los nombres de los teclados en los catorce idiomas de los textos. Los textos están en
+// `Textos/TextosDeRepresentaciones+Espanol.swift`, `…+Ingles.swift`…, un fichero por idioma.
+
+extension TecladoIsomorfico: Nombrable {
+    /// El nombre del teclado en el idioma de los textos: «Tabla armónica», «Harmonic table». Los nombres propios
+    /// (Wicki-Hayden, Jankó, Gerhard, Park) y los de un teclado que no es de los de `todos` no cambian.
+    public func nombre(en notacion: Notacion) -> String {
+        traduccion?.en(notacion) ?? nombre
+    }
+
+    /// El nombre en los catorce idiomas; `nil` si es un nombre propio o el teclado no es de los de `todos`.
+    package var traduccion: Traduccion? {
+        switch self {
+        case .tablaArmonica:
+            return TextosDeRepresentaciones.traducidos.map(\.tablaArmonica)
+        case .wickiHaydenEspejo:
+            return TextosDeRepresentaciones.traducidos.map(\.wickiHaydenEspejo)
+        case .wickiHaydenPlano:
+            return TextosDeRepresentaciones.traducidos.map(\.wickiHaydenPlano)
+        case .acordeonC:
+            return TextosDeRepresentaciones.traducidos.map(\.acordeonC)
+        case .acordeonB:
+            return TextosDeRepresentaciones.traducidos.map(\.acordeonB)
+        default:
+            return nil
+        }
     }
 }

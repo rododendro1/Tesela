@@ -26,7 +26,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 
-IDIOMAS = ["es", "en", "ca", "gl", "ast", "an", "eu", "pt", "fr", "oc", "it", "de", "el", "ru"]
+from idiomas import CODIGOS as IDIOMAS, CODIGO_DEL_FICHERO, comprobar as comprobar_idiomas
 
 # Textos que se escriben igual que en inglés a propósito.
 EXCEPCIONES = {
@@ -52,9 +52,7 @@ def sin_codigo(texto: str) -> str:
 
 
 # Los ficheros por idioma: `TextosDeTrastes+Euskera.swift` tiene los textos en euskera.
-FICHEROS_DE_IDIOMA = {"Espanol": "es", "Ingles": "en", "Catalan": "ca", "Gallego": "gl", "Asturiano": "ast",
-                      "Aragones": "an", "Euskera": "eu", "Portugues": "pt", "Frances": "fr", "Occitano": "oc",
-                      "Italiano": "it", "Aleman": "de", "Griego": "el", "Ruso": "ru"}
+FICHEROS_DE_IDIOMA = CODIGO_DEL_FICHERO
 _FICHERO_DE_IDIOMA = re.compile(r"/Textos/(TextosDe\w+)\+(\w+)\.swift$")
 # Un campo de una línea: `nombre: "texto",` o, si lleva valores, `nombre: { a, b in "texto" },`.
 _CAMPO = re.compile(r"^ {8}(\w+): (?:\{ [\w, ]+ in )?" + _TEXTO + r"(?: \})?,?$", re.M)
@@ -120,6 +118,8 @@ def main() -> int:
     if cuantas == 0:
         # Si `Traduccion` cambia de forma (otro idioma, otras etiquetas), la expresión deja de encontrarlas.
         errores.append("no se ha encontrado ninguna Traduccion literal: ¿ha cambiado IDIOMAS?")
+    if not comprobar_idiomas():
+        errores.append("Scripts/idiomas.py no tiene los códigos de `Idioma.codigo`, en su orden")
     if errores:
         print(f"\n{len(errores)} problema(s):")
         for e in errores:

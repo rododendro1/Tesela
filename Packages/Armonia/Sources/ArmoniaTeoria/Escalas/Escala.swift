@@ -341,8 +341,6 @@ extension Escala {
 // MARK: - NombreDeGrado
 
 extension NombreDeGrado {
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
 
     private var traduccion: Traduccion {

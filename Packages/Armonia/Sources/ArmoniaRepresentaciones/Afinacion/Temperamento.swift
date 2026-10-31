@@ -50,8 +50,6 @@ public enum Temperamento: String, Hashable, Sendable, CaseIterable, CustomString
 // Nombres de los temperamentos en los catorce idiomas de los textos (`Traduccion`).
 
 extension Temperamento {
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String {
         switch self {
         case .igual:

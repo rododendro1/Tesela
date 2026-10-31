@@ -129,11 +129,9 @@ extension Tonalidad {
 
 // MARK: - Idiomas
 
-extension Rearmonizacion.Recurso {
+extension Rearmonizacion.Recurso: Nombrable {
     /// «sustituto tritonal», «tritone substitution», «Zwischendominante»…
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
-
-    public var nombre: String { nombre(en: .espanolUnicode) }
 
     private var traduccion: Traduccion {
         switch self {

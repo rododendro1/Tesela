@@ -3,8 +3,8 @@ import Hexagonos
 
 /// Las redes en que la app Tonnetz dibuja unas notas: el Tonnetz, la tabla armónica y varios teclados
 /// isomórficos (Wicki-Hayden, Jankó, el acordeón cromático, Gerhard y Park), más uno que el usuario describe en el
-/// formato UIL.
-/// No usa SwiftUI, así que se prueba en Linux.
+/// formato UIL. Cada teclado es una fila más con el nombre del de `TecladoIsomorfico.todos`: su dibujo y su nombre en
+/// cada idioma los da el motor. No usa SwiftUI, así que se prueba en Linux.
 public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
     case tonnetz = "Tonnetz"
     case tablaArmonica = "Tabla armónica"
@@ -21,68 +21,23 @@ public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
 
     public var id: Self { self }
 
-    /// El nombre de la red en el idioma de los textos: «Tabla armónica», «Harmonic table»…
+    /// El nombre de la red en el idioma de los textos: «Tabla armónica», «Harmonic table»… El de un teclado es el
+    /// que le da el motor (`TecladoIsomorfico.nombre(en:)`).
     public func nombre(en notacion: Notacion) -> String {
         switch self {
-        case .tonnetz, .wickiHayden, .janko, .gerhard, .park, .uil: return rawValue
-        case .wickiHaydenEspejo:
-            return Traduccion(
-                "Wicki-Hayden (espejo)", "Wicki-Hayden (mirrored)", ca: "Wicki-Hayden (mirall)",
-                gl: "Wicki-Hayden (espello)", ast: "Wicki-Hayden (espeyu)", an: "Wicki-Hayden (espello)",
-                eu: "Wicki-Hayden (ispilua)", pt: "Wicki-Hayden (espelho)", fr: "Wicki-Hayden (miroir)",
-                oc: "Wicki-Hayden (miralh)", it: "Wicki-Hayden (specchio)",
-                de: "Wicki-Hayden (gespiegelt)",
-                el: "Wicki-Hayden (καθρέφτης)", ru: "Уикки-Хейден (зеркальный)"
-            ).en(notacion)
-        case .wickiHaydenPlano:
-            return Traduccion(
-                "Wicki-Hayden (plano)", "Wicki-Hayden (flat-top)", ca: "Wicki-Hayden (pla)",
-                gl: "Wicki-Hayden (plano)", ast: "Wicki-Hayden (planu)", an: "Wicki-Hayden (plano)",
-                eu: "Wicki-Hayden (laua)", pt: "Wicki-Hayden (plano)", fr: "Wicki-Hayden (plat)",
-                oc: "Wicki-Hayden (plan)", it: "Wicki-Hayden (piatto)",
-                de: "Wicki-Hayden (flach)",
-                el: "Wicki-Hayden (επίπεδο)", ru: "Уикки-Хейден (плоский)"
-            ).en(notacion)
-        case .acordeonC:
-            return Traduccion(
-                "Acordeón C", "C-system accordion", ca: "Acordió sistema C", gl: "Acordeón sistema C",
-                ast: "Acordeón sistema C", an: "Acordeón sistema C", eu: "C sistemako akordeoia",
-                pt: "Acordeão sistema C", fr: "Accordéon système C", oc: "Acordeon sistèma C",
-                it: "Fisarmonica sistema C", de: "Akkordeon C-Griff",
-                el: "Ακορντεόν συστήματος C", ru: "Аккордеон системы C"
-            ).en(notacion)
-        case .acordeonB:
-            return Traduccion(
-                "Acordeón B", "B-system accordion", ca: "Acordió sistema B", gl: "Acordeón sistema B",
-                ast: "Acordeón sistema B", an: "Acordeón sistema B", eu: "B sistemako akordeoia",
-                pt: "Acordeão sistema B", fr: "Accordéon système B", oc: "Acordeon sistèma B",
-                it: "Fisarmonica sistema B", de: "Akkordeon B-Griff",
-                el: "Ακορντεόν συστήματος B", ru: "Аккордеон системы B"
-            ).en(notacion)
-        case .tablaArmonica:
-            return Traduccion(
-                "Tabla armónica", "Harmonic table", ca: "Taula harmònica", gl: "Táboa harmónica",
-                ast: "Tabla armónica", an: "Tabla armónica", eu: "Taula harmonikoa",
-                pt: "Tabela harmónica", fr: "Table harmonique", oc: "Taula armonica",
-                it: "Tavola armonica", de: "Harmonische Tabelle",
-                el: "Αρμονικός πίνακας", ru: "Гармоническая таблица"
-            ).en(notacion)
+        case .tonnetz, .uil: return rawValue
+        case .tablaArmonica: return TecladoIsomorfico.tablaArmonica.nombre(en: notacion)
+        default: return teclado?.nombre(en: notacion) ?? rawValue
         }
     }
 
-    /// El teclado isomórfico de la red; `nil` en el Tonnetz y la tabla, que tienen su propio dibujo, y en `.uil`,
-    /// cuyo teclado depende del ``AjusteUIL`` (ver ``PresentacionDeRedes/teclado(de:uil:)``).
+    /// El teclado isomórfico de la red, el de `TecladoIsomorfico.todos` que se llama como ella; `nil` en el Tonnetz y
+    /// la tabla, que tienen su propio dibujo, y en `.uil`, cuyo teclado depende del ``AjusteUIL`` (ver
+    /// ``PresentacionDeRedes/teclado(de:uil:)``).
     public var teclado: TecladoIsomorfico? {
         switch self {
         case .tonnetz, .tablaArmonica, .uil: return nil
-        case .wickiHayden: return .wickiHayden
-        case .janko: return .janko
-        case .wickiHaydenEspejo: return .wickiHaydenEspejo
-        case .wickiHaydenPlano: return .wickiHaydenPlano
-        case .acordeonC: return .acordeonC
-        case .acordeonB: return .acordeonB
-        case .gerhard: return .gerhard
-        case .park: return .park
+        default: return TecladoIsomorfico.todos.first { $0.nombre == rawValue }
         }
     }
 }

@@ -71,9 +71,6 @@ public struct TipoDeAcorde: Sendable {
     /// Cifrado en el estilo básico de una notación: `.inglesASCII` → "7(b9,#11)".
     public func cifrado(en notacion: Notacion) -> String { cifrado(estilo: EstiloDeCifrado(notacion: notacion)) }
 
-    /// Nombre en español si es un tipo conocido; si no, "acorde 7(♭9,♯11)".
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     /// "séptima de dominante", "dominant seventh", "sèptima de dominant", "dominanteko zazpigarrena"
     /// si es un tipo conocido; si no, "acorde 7(♭9,♯11)", "7(b9,#11) chord", "7(♭9,♯11) akordea"…
     public func nombre(en notacion: Notacion) -> String {

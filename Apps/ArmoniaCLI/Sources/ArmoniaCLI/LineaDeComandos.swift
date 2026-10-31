@@ -200,23 +200,6 @@ public enum LineaDeComandos {
 
     /// La notación de `--idioma`: es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el o ru, o el nombre del idioma.
     static func notacionDelIdioma(_ texto: String) -> Notacion? {
-        if let idioma = Idioma(codigo: texto) { return .delIdioma(idioma) }
-        switch texto.lowercased() {
-        case "espanol", "español", "castellano": return .espanolUnicode
-        case "ingles", "inglés", "english": return .inglesASCII
-        case "catalan", "catalán", "català": return .catalan
-        case "gallego", "galego": return .gallego
-        case "euskera", "euskara": return .euskera
-        case "portugues", "portugués", "português": return .portugues
-        case "frances", "francés", "français", "francais": return .frances
-        case "italiano": return .italiano
-        case "aleman", "alemán", "deutsch": return .aleman
-        case "occitano", "occitan": return .occitano
-        case "ruso", "русский": return .ruso
-        case "griego", "ελληνικά": return .griego
-        case "aragones", "aragonés": return .aragones
-        case "asturiano", "asturianu": return .asturiano
-        default: return nil
-        }
+        Idioma(nombre: texto).map(Notacion.delIdioma)
     }
 }

@@ -111,8 +111,6 @@ public struct Cadencia: Hashable, Sendable, CustomStringConvertible {
 
 extension Cadencia.Tipo: Nombrable, CustomStringConvertible {
     /// "cadencia auténtica", "semicadencia".
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String {
         switch self {
         case .autentica:

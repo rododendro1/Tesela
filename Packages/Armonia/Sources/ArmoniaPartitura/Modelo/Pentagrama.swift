@@ -310,8 +310,6 @@ extension InstrumentoDePartitura: Nombrable {}
 // MARK: - Clave
 
 extension Clave {
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
 
     private var traduccion: Traduccion {

@@ -155,7 +155,7 @@ extension Acorde {
 
 // MARK: - Arpegio
 
-extension Arpegio {
+extension Arpegio: Nombrable {
     /// «Arpegio de Do mayor», «C major arpeggio», «Arpège de Do majeur», «C-Dur-Arpeggio», «Арпеджио до мажор».
     public func nombre(en notacion: Notacion) -> String {
         let acorde = self.acorde.nombre(en: notacion)
@@ -168,8 +168,6 @@ extension Arpegio {
         ).en(notacion)
         return plantilla.replacingOccurrences(of: "{}", with: acorde)
     }
-
-    public var nombre: String { nombre(en: .espanolUnicode) }
 
     /// Lee «arpegio Dom7», «Dom7 arpeggio», «Arpège de Do» o solo el cifrado: se quitan las palabras «arpegio»
     /// (en cualquier idioma) y las preposiciones que las acompañan, y el resto es un cifrado de acorde.
@@ -190,10 +188,8 @@ extension Arpegio {
 
 // MARK: - Patron
 
-extension Arpegio.Patron {
+extension Arpegio.Patron: Nombrable {
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
-
-    public var nombre: String { nombre(en: .espanolUnicode) }
 
     private var traduccion: Traduccion {
         switch self {

@@ -223,4 +223,21 @@ final class RedesSobreHexagonosTests: XCTestCase {
         XCTAssertTrue(svg.contains("#bbbbbb"))
         XCTAssertTrue(teclado.svg(casillas, notacion: .inglesASCII).contains(">C4<"))
     }
+
+    func testElCatalogoDeTecladosYSusNombres() {
+        XCTAssertEqual(TecladoIsomorfico.todos.count, 9)
+        XCTAssertEqual(Set(TecladoIsomorfico.todos.map(\.nombre)).count, 9)
+        XCTAssertEqual(TecladoIsomorfico.tablaArmonica.nombre(en: .inglesASCII), "Harmonic table")
+        XCTAssertEqual(TecladoIsomorfico.acordeonB.nombre(en: .aleman), "Akkordeon B-Griff")
+        XCTAssertEqual(TecladoIsomorfico.wickiHaydenEspejo.nombre(en: .espanolUnicode), "Wicki-Hayden (espejo)")
+        // Los nombres propios no se traducen, ni el de un teclado que no es del catálogo.
+        XCTAssertEqual(TecladoIsomorfico.janko.nombre(en: .ruso), "Jankó")
+        XCTAssertNil(TecladoIsomorfico.gerhard.traduccion)
+        let propio = TecladoIsomorfico(nombre: "Mío", orientacion: .plana, semitonosEnQ: 1, semitonosEnR: 2)
+        XCTAssertEqual(propio.nombre(en: .inglesASCII), "Mío")
+        // En español, el nombre traducido es el del propio teclado.
+        for teclado in TecladoIsomorfico.todos {
+            XCTAssertEqual(teclado.nombre(en: .espanolUnicode), teclado.nombre)
+        }
+    }
 }
