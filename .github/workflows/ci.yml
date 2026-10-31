@@ -23,8 +23,9 @@ env:
   # Xcode de los jobs de macOS: `latest-stable`, o una versión concreta («16.4») para fijarla.
   XCODE: latest-stable
 
-# No se guarda `.build` en caché a propósito: el repositorio no tiene dependencias externas, así que la
-# caché solo guardaría el código propio, que se recompila igual en cada commit.
+# Los jobs de Linux recuperan el `.build` de la última ejecución en main (`.github/acciones/cache-de-swift`), con las
+# fechas de los ficheros arregladas para que Swift recompile solo lo que ha cambiado desde entonces. Solo se guarda
+# fuera de los pull requests (en main, a mano y los lunes), para que haya una caché por job y no una por rama.
 
 jobs:
   comprobaciones:
@@ -84,6 +85,12 @@ jobs:
         working-directory: Packages/Armonia
     steps:
       - uses: actions/checkout@v7
+      - id: cache
+        uses: ./.github/acciones/cache-de-swift
+        with:
+          nombre: motor-${{ matrix.swift }}
+          rutas: |
+            Packages/Armonia/.build
       - name: Compilar
         run: swift build
       - name: Pruebas rápidas
@@ -99,6 +106,12 @@ jobs:
           for objetivo in ArmoniaNucleo ArmoniaTeoria ArmoniaRepresentaciones ArmoniaPartitura ArmoniaTrastes Armonia; do
             swift build --target "$objetivo" -Xswiftc -warnings-as-errors
           done
+      - uses: actions/cache/save@v6
+        if: github.event_name != 'pull_request'
+        with:
+          path: |
+            Packages/Armonia/.build
+          key: ${{ steps.cache.outputs.clave }}
 
   herramientas:
     name: ${{ matrix.paquete.nombre }} · Linux · Swift ${{ matrix.swift }}
@@ -119,6 +132,12 @@ jobs:
         working-directory: ${{ matrix.paquete.ruta }}
     steps:
       - uses: actions/checkout@v7
+      - id: cache
+        uses: ./.github/acciones/cache-de-swift
+        with:
+          nombre: ${{ matrix.paquete.nombre }}-${{ matrix.swift }}
+          rutas: |
+            ${{ matrix.paquete.ruta }}/.build
       - name: Compilar
         run: swift build
       - name: Pruebas de la línea de comandos
@@ -130,6 +149,12 @@ jobs:
       - name: Sin avisos
         if: matrix.paquete.nombre == 'ArmoniaCLI' && matrix.swift == '6.2'
         run: swift build --target ArmoniaCLI -Xswiftc -warnings-as-errors
+      - uses: actions/cache/save@v6
+        if: github.event_name != 'pull_request'
+        with:
+          path: |
+            ${{ matrix.paquete.ruta }}/.build
+          key: ${{ steps.cache.outputs.clave }}
 
   # Los tiempos del motor, compilado con optimización, en el resumen de la ejecución y como artefacto
   # (`rendimiento.json`). En un pull request mide también la rama de destino (main) en la misma máquina, una
@@ -146,6 +171,12 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v7
+      - id: cache
+        uses: ./.github/acciones/cache-de-swift
+        with:
+          nombre: rendimiento
+          rutas: |
+            Herramientas/RendimientoArmonia/.build
       - uses: actions/checkout@v7
         if: github.event_name == 'pull_request'
         with:
@@ -177,6 +208,12 @@ jobs:
         with:
           name: rendimiento
           path: rendimiento.json
+      - uses: actions/cache/save@v6
+        if: github.event_name != 'pull_request'
+        with:
+          path: |
+            Herramientas/RendimientoArmonia/.build
+          key: ${{ steps.cache.outputs.clave }}
 
   paquetes:
     name: ${{ matrix.paquete }} · Linux · Swift ${{ matrix.swift }}
@@ -193,6 +230,12 @@ jobs:
         working-directory: Packages/${{ matrix.paquete }}
     steps:
       - uses: actions/checkout@v7
+      - id: cache
+        uses: ./.github/acciones/cache-de-swift
+        with:
+          nombre: ${{ matrix.paquete }}-${{ matrix.swift }}
+          rutas: |
+            Packages/${{ matrix.paquete }}/.build
       - name: Compilar
         run: swift build
       - name: Pruebas
@@ -200,6 +243,12 @@ jobs:
       - name: Sin avisos
         if: matrix.paquete == 'Hexagonos' && matrix.swift == '6.2'
         run: swift build --target Hexagonos -Xswiftc -warnings-as-errors
+      - uses: actions/cache/save@v6
+        if: github.event_name != 'pull_request'
+        with:
+          path: |
+            Packages/${{ matrix.paquete }}/.build
+          key: ${{ steps.cache.outputs.clave }}
 
   # La cobertura de las pruebas de cada paquete en Linux: el total y los ficheros con menos líneas probadas, en
   # el resumen de la ejecución, y el informe entero por fichero como artefacto (`cobertura-<paquete>.txt`).
@@ -224,10 +273,19 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v7
+      - id: cache
+        uses: ./.github/acciones/cache-de-swift
+        with:
+          nombre: cobertura-${{ matrix.paquete.nombre }}
+          rutas: |
+            Packages/${{ matrix.paquete.nombre }}/.build
       - name: Pruebas con cobertura
         env:
           FILTRO: ${{ matrix.paquete.filtro }}
-        run: swift test --parallel --enable-code-coverage ${FILTRO:+--filter "$FILTRO"}
+        # Sin los datos de cobertura que trae la caché, que se sumarían a los de ahora.
+        run: |
+          rm -rf .build/*/debug/codecov
+          swift test --parallel --enable-code-coverage ${FILTRO:+--filter "$FILTRO"}
       - name: Informe
         env:
           PAQUETE: ${{ matrix.paquete.nombre }}
@@ -269,6 +327,12 @@ jobs:
         with:
           name: cobertura-${{ matrix.paquete.nombre }}
           path: cobertura-${{ matrix.paquete.nombre }}.txt
+      - uses: actions/cache/save@v6
+        if: github.event_name != 'pull_request'
+        with:
+          path: |
+            Packages/${{ matrix.paquete.nombre }}/.build
+          key: ${{ steps.cache.outputs.clave }}
 
   # El Package.swift de la raíz, el que usa quien añade el repositorio por URL: debe compilar igual.
   raiz:
@@ -282,8 +346,20 @@ jobs:
         swift: ["6.0", "6.2"]
     steps:
       - uses: actions/checkout@v7
+      - id: cache
+        uses: ./.github/acciones/cache-de-swift
+        with:
+          nombre: raiz-${{ matrix.swift }}
+          rutas: |
+            .build
       - name: Compilar
         run: swift build
+      - uses: actions/cache/save@v6
+        if: github.event_name != 'pull_request'
+        with:
+          path: |
+            .build
+          key: ${{ steps.cache.outputs.clave }}
 
   # Los jobs de macOS (este, las pruebas de interfaz y DocC) son los que más tardan: corren a mano desde la
   # pestaña Actions y los lunes, no en cada push ni en cada pull request. Un pull request que toque las apps,
