@@ -170,8 +170,8 @@ public enum PresentacionDeTablatura {
             nota != altura.nota
         else { return altura }
         // La octava de la nota escrita es la que deja su número MIDI igual: Si♯3 suena como Do4.
-        let candidatas = [altura.octava - 1, altura.octava, altura.octava + 1].map { Altura(nota, octava: $0) }
-        return candidatas.first { $0.midi == altura.midi } ?? altura
+        let enLaMismaOctava = Altura(nota, octava: altura.octava)
+        return Altura(nota, octava: altura.octava + (altura.midi - enLaMismaOctava.midi) / 12)
     }
 
     static func ticks(_ figura: Figura) -> Int {
