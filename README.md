@@ -138,7 +138,8 @@ semana, los lunes; en cada push y en cada pull request solo corre Linux. La docu
 [GitHub Pages](https://rododendro1.github.io/Tesela/) con cada versión (`.github/workflows/documentacion.yml`), y también se
 puede publicar a mano desde la pestaña Actions. Dependabot mantiene al día las acciones del CI (`.github/dependabot.yml`). `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
 
-El código se publica con licencia MIT (`LICENSE`). Las dos apps llevan un icono provisional en
-`Apps/<App>/Assets.xcassets/AppIcon.appiconset`, que conviene sustituir por uno definitivo antes de publicarlas.
+El código se publica con licencia MIT (`LICENSE`). Los iconos de las apps, en
+`Apps/<App>/Assets.xcassets/AppIcon.appiconset`, muestran a Kokopelli: en negro sobre ámbar en Armonía y sobre un
+mosaico hexagonal en Tonnetz.
 El equipo de firma y el prefijo de los identificadores no se guardan en el repositorio: cada cual los pone en
 su `Config/Local.xcconfig`.
