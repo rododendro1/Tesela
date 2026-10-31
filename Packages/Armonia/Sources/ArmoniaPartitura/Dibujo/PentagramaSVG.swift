@@ -65,6 +65,10 @@ public struct OpcionesDePentagrama {
     public var anchoDeLosCaracteres: Double
     /// Cómo se apilan las notas de un acorde.
     public var disposicionDelAcorde: Disposicion
+    /// La columna (contada desde 0) que se pinta en `colorResaltado`: la nota o el acorde que está sonando.
+    public var resaltada: Int?
+    /// El color de la columna resaltada (cualquier color CSS).
+    public var colorResaltado = "#E8590C"
 
     public init(
         clave: Clave? = nil, armadura: Armadura = .automatica, pentagramas: Pentagramas = .automatico,
@@ -246,6 +250,7 @@ struct PentagramaSVG {
     func svg() -> String {
         let claves = clavesDelPentagrama()
         let color = PentagramaSVG.escapar(opciones.color)
+        let resaltado = " fill=\"\(PentagramaSVG.escapar(opciones.colorResaltado))\""
         let doble = claves.count == 2
 
         // Una octava más cerca del pentagrama, con la marca 8va u 8vb, si con la clave elegida harían falta demasiadas
@@ -321,7 +326,7 @@ struct PentagramaSVG {
         var abajoDeLasNotas = [Double](repeating: -.infinity, count: claves.count)
         var ultimaEtiqueta: (centro: Double, mitad: Double)?
         var lineasAdicionales: [(pentagrama: Int, lugar: Int, desde: Double, hasta: Double)] = []
-        for alturas in columnas {
+        for (columna, alturas) in columnas.enumerated() {
             var grupos: [[NotaColocada]] = []
             for k in claves.indices {
                 let delPentagrama = alturas.filter { !doble || ($0.midi >= doCentral) == (k == 0) }
@@ -422,7 +427,9 @@ struct PentagramaSVG {
                     abajoDeLasNotas[k] = max(abajoDeLasNotas[k], PentagramaSVG.y(deLugar: nota.lugar, pentagrama: k))
                     partes.append(PentagramaSVG.glifo(GlifosSMuFL.redonda, x: xn, lugar: nota.lugar, pentagrama: k))
                     let nombre = nota.altura.nombre(en: opciones.notacion)
-                    notasSVG.append("<g><title>\(PentagramaSVG.escapar(nombre))</title>\(partes.joined())</g>")
+                    let relleno = opciones.resaltada == columna ? resaltado : ""
+                    notasSVG.append(
+                        "<g\(relleno)><title>\(PentagramaSVG.escapar(nombre))</title>\(partes.joined())</g>")
                     for lugar in PentagramaSVG.lugaresDeLasLineasAdicionales(de: nota.lugar) {
                         lineasAdicionales.append((k, lugar, xn - 0.4, xn + PentagramaSVG.anchoDeLaRedonda + 0.4))
                     }

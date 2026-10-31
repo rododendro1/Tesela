@@ -19,6 +19,10 @@ final class ArpegioTests: XCTestCase {
         XCTAssertEqual(
             midis(Arpegio(Acorde("Do"), patron: .alberti, octavas: 2), octava: 3),
             [48, 55, 52, 55, 60, 67, 64, 67])
+        // Quebrado: Do Mi Sol Do → Do Sol, Mi Do.
+        XCTAssertEqual(midis(Arpegio(Acorde("Do"), patron: .quebrado)), [60, 67, 64, 72])
+        XCTAssertEqual(midis(Arpegio(Acorde("Do"), patron: .bajaYSube)), [72, 67, 64, 60, 64, 67, 72])
+        XCTAssertEqual(midis(Arpegio(Acorde("Do"), patron: .bajaYSube, conOctava: false)), [67, 64, 60, 64, 67])
     }
 
     func testVariasOctavasYElBajoDelAcorde() {
@@ -71,7 +75,7 @@ final class ArpegioTests: XCTestCase {
                 XCTAssertFalse(patron.nombre(en: notacion).isEmpty, "\(patron) en \(idioma)")
             }
         }
-        XCTAssertEqual(Set(Arpegio.Patron.allCases.map(\.nombre)).count, 4)
+        XCTAssertEqual(Set(Arpegio.Patron.allCases.map(\.nombre)).count, Arpegio.Patron.allCases.count)
     }
 
     func testLaRelacionAcordeEscala() {

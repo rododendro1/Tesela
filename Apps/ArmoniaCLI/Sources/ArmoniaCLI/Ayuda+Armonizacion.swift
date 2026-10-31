@@ -46,5 +46,19 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia contrapunto Re4 Fa4 Mi4 Re4 / -:2 La4 Re5 La4 Si4 Do#5 Re5:1 --especie 2",
                 "armonia counterpoint D4 F4 E4 D4 / -:2 A4 D5 A4 B4 C#5 D5:1 --species 2")),
+        // transponer <intervalo|tónica> <acordes o notas>
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisTransponer),
+            descripcion: TextosDeCLI.traducidos.map(\.descripcionTransponer),
+            ejemplo: ejemplo(
+                "armonia transponer Re Do Lam Fa Sol7",
+                "armonia transpose -m3 C Am F G7")),
+        // rearmonizar <acordes> [--en <tonalidad>]
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisRearmonizar),
+            descripcion: TextosDeCLI.traducidos.map(\.descripcionRearmonizar),
+            ejemplo: ejemplo(
+                "armonia rearmonizar Do Lam Rem7 Sol7 Do",
+                "armonia reharmonize C Am Dm7 G7 C")),
     ]
 }

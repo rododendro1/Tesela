@@ -8,12 +8,42 @@ import ArmoniaTeoria
 /// no el de las alturas.
 public struct Encordado: Hashable, Sendable {
     public let nombre: String
-    /// Altura al aire de cada cuerda, de la primera (la más grave en el mástil) a la última.
+    /// Altura al aire de cada cuerda, de la primera (la más grave en el mástil) a la última. Con capo, la que
+    /// suena con el capo puesto: el traste 0 es el del capo.
     public let cuerdas: [Altura]
+    /// El traste en que va el capo (la cejilla móvil que se pinza en el mástil), o 0 si no lleva.
+    public let capo: Int
 
     public init(nombre: String, cuerdas: [Altura]) {
+        self.init(nombre: nombre, cuerdas: cuerdas, capo: 0)
+    }
+
+    private init(nombre: String, cuerdas: [Altura], capo: Int) {
         self.nombre = nombre
         self.cuerdas = cuerdas
+        self.capo = capo
+    }
+
+    /// El mismo instrumento con el capo en un traste: cada cuerda suena `traste` semitonos más aguda y los
+    /// trastes se cuentan desde el capo, como los cuenta quien toca. `Encordado.guitarra.conCapo(2)` toca la
+    /// forma de Do (`x32010`) y suena Re. Con 0, o un número negativo, sin capo.
+    ///
+    ///     Encordado.guitarra.conCapo(2).cuerdas.first?.midi   // 42: Fa♯2
+    public func conCapo(_ traste: Int) -> Encordado {
+        let base = sinCapo
+        let traste = max(0, traste)
+        let cuerdas = base.cuerdas.map { Altura(midi: $0.midi + traste) }
+        return Encordado(nombre: base.nombre, cuerdas: cuerdas, capo: traste)
+    }
+
+    /// El instrumento sin capo, con sus cuerdas al aire.
+    public var sinCapo: Encordado {
+        guard capo > 0 else { return self }
+        // Las cuerdas de un instrumento conocido, con su ortografía; las demás, a partir de su número MIDI.
+        let alAire =
+            Encordado.todos.first { $0.nombre == nombre && $0.numeroDeCuerdas == numeroDeCuerdas }?.cuerdas
+            ?? cuerdas.map { Altura(midi: $0.midi - capo) }
+        return Encordado(nombre: nombre, cuerdas: alAire, capo: 0)
     }
 
     public var numeroDeCuerdas: Int { cuerdas.count }
@@ -111,7 +141,7 @@ extension Encordado: Nombrable {
     /// «guitarra de siete cuerdas», «seven-string guitar». Un encordado que no es de los de `todos` conserva
     /// su nombre.
     public func nombre(en notacion: Notacion) -> String {
-        traduccion?.en(notacion) ?? nombre
+        sinCapo.traduccion?.en(notacion) ?? nombre
     }
 
     /// El nombre para un menú, con mayúscula: «Guitarra de siete cuerdas».

@@ -122,6 +122,10 @@ public enum LineaDeComandos {
                 return try revisar(resto, notacion)
             case "contrapunto", "counterpoint":
                 return try contrapunto(resto, notacion)
+            case "transponer", "transportar", "transpose":
+                return try transponer(resto, notacion)
+            case "rearmonizar", "reharmonize", "reharmonise":
+                return try rearmonizar(resto, notacion)
             case "tonnetz":
                 return try tonnetz(resto, notacion)
             case "tabla", "harmonic-table":

@@ -23,6 +23,11 @@ public struct Arpegio: Hashable, Sendable {
         /// El bajo de Alberti: grave, aguda, media, aguda (en una tríada, 1-5-3-5). Va por octavas completas y
         /// no añade la nota de la octava.
         case alberti
+        /// Por terceras quebradas: cada nota salta a la que va dos más arriba y vuelve a la siguiente
+        /// (Do–Sol–Mi–Do en una tríada con su octava).
+        case quebrado
+        /// Baja desde la nota de arriba y vuelve a subir, sin repetir la de abajo.
+        case bajaYSube
     }
 
     public let acorde: Acorde
@@ -68,6 +73,13 @@ public struct Arpegio: Hashable, Sendable {
                 alberti += [subida(primera, o), subida(ultima, o), subida(base[1], o), subida(ultima, o)]
             }
             return alberti
+        case .quebrado:
+            guard sube.count >= 3 else { return sube }
+            var quebrado: [Altura] = []
+            for i in 0..<(sube.count - 2) { quebrado += [sube[i], sube[i + 2]] }
+            return quebrado
+        case .bajaYSube:
+            return sube.reversed() + sube.dropFirst()
         }
     }
 
@@ -207,6 +219,17 @@ extension Arpegio.Patron {
                 ast: "baxu d'Alberti", an: "baixo d'Alberti", eu: "Albertiren baxua",
                 pt: "baixo de Alberti", fr: "basse d'Alberti", oc: "bassa d'Alberti",
                 it: "basso albertino", de: "Albertibass", el: "μπάσο Alberti", ru: "альбертиев бас")
+        case .quebrado:
+            return Traduccion(
+                "quebrado", "broken", ca: "trencat", gl: "quebrado", ast: "quebráu", an: "trencau",
+                eu: "hautsia", pt: "quebrado", fr: "brisé", oc: "trencat", it: "spezzato",
+                de: "gebrochen", el: "σπαστό", ru: "ломаный")
+        case .bajaYSube:
+            return Traduccion(
+                "de bajada y subida", "down and up", ca: "de baixada i pujada", gl: "de baixada e subida",
+                ast: "de baxada y subida", an: "de baixada y puyada", eu: "jaitsi-igoa",
+                pt: "de descida e subida", fr: "descente-montée", oc: "de davalada e de montada",
+                it: "discesa e salita", de: "ab und auf", el: "κάτω-πάνω", ru: "вниз и вверх")
         }
     }
 }

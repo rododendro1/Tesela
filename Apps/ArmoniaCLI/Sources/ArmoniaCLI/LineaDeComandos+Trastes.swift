@@ -14,6 +14,8 @@ extension LineaDeComandos {
         // Por defecto la quinta puede faltar en los acordes de cuatro notas o más (el Do7 `x32310`): es lo normal en
         // una guitarra. Con --completo se exigen todas las notas.
         let completo = argumentos.quitarMarca("--completo", "--complete")
+        // La primera forma de cada acorde como tablatura MusicXML, en lugar del texto.
+        let comoMusicXML = argumentos.quitarMarca("--musicxml")
 
         var encordado = Encordado.guitarra
         switch argumentos.quitarOpcion("--instrumento", "--instrument") {
@@ -67,15 +69,49 @@ extension LineaDeComandos {
             maximoTraste = n
         }
 
+        // Con capo, los trastes se cuentan desde él.
+        var capo = 0
+        switch argumentos.quitarOpcion("--capo") {
+        case .ausente:
+            break
+        case .sinValor:
+            return uso(.capoFueraDeRango, notacion)
+        case .valor(let texto):
+            guard let n = Int(texto), (0...12).contains(n) else { return uso(.capoFueraDeRango, notacion) }
+            capo = n
+        }
+
         if let desconocida = argumentos.opcionDesconocida {
             return uso(.opcionDesconocida(desconocida), notacion)
         }
         guard !argumentos.restantes.isEmpty else { return uso(.faltaCifradoDeDigitaciones, notacion) }
 
-        let mastil = Mastil(encordado)
+        let mastil = Mastil(encordado.conCapo(capo), trastes: 24 - capo)
+        if comoMusicXML {
+            let acordes = try argumentos.restantes.map { try Acorde(leyendo: $0) }
+            var formas: [Digitacion] = []
+            var conForma: [Acorde] = []
+            for acorde in acordes {
+                guard
+                    let forma = mastil.digitaciones(
+                        de: acorde, maximoDeDedos: maximoDeDedos, maximoTraste: maximoTraste,
+                        exigirQuinta: completo, limite: 1
+                    ).first
+                else { continue }
+                formas.append(forma)
+                conForma.append(acorde)
+            }
+            let titulo = conForma.map { $0.cifrado(en: notacion) }.joined(separator: " ")
+            let xml = PresentacionDeTablatura.musicXML(
+                digitaciones: formas, acordes: conForma, titulo: titulo, notacion: notacion)
+            return bien(xml.trimmingCharacters(in: "\n"))
+        }
+        // «Do · guitarra», y con capo, «Do · guitarra · Capo en el traste 2».
+        var instrumento = Mensaje.instrumento(encordado).texto(en: notacion)
+        if capo > 0 { instrumento += " · " + notacion.texto(.capo(capo)) }
         let bloques = try argumentos.restantes.map { texto -> String in
             let acorde = try Acorde(leyendo: texto)
-            var lineas = ["\(acorde.cifrado(en: notacion)) · \(Mensaje.instrumento(encordado).texto(en: notacion))"]
+            var lineas = ["\(acorde.cifrado(en: notacion)) · \(instrumento)"]
             let formas = mastil.digitaciones(
                 de: acorde, maximoDeDedos: maximoDeDedos, maximoTraste: maximoTraste,
                 exigirQuinta: completo, limite: limite)

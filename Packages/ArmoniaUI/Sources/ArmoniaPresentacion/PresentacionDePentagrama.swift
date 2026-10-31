@@ -19,11 +19,13 @@ public struct PresentacionDePentagrama: Hashable, Sendable {
     /// - Parameters:
     ///   - sentido: si es `nil`, la subida y, en las escalas que bajan con otras notas, la bajada.
     ///   - nombresDeLasNotas: si se escribe el nombre de cada nota debajo.
+    ///   - resaltada: la nota (contada desde 0) que se pinta de otro color, la que está sonando.
     public init(
         _ escala: Escala, octava: Int = 4, sentido: SentidoDelIntervalo? = nil,
-        notacion: Notacion = .espanolUnicode, nombresDeLasNotas: Bool = true
+        notacion: Notacion = .espanolUnicode, nombresDeLasNotas: Bool = true, resaltada: Int? = nil
     ) {
-        let opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)
+        var opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)
+        opciones.resaltada = resaltada
         let dibujo = escala.svgPentagrama(octava: octava, sentido: sentido, opciones: opciones)
         let nombre = escala.nombre(en: notacion)
         let notas = escala.alturas(octava: octava).map { $0.nombre(en: notacion) }.joined(separator: ", ")
@@ -41,12 +43,14 @@ public struct PresentacionDePentagrama: Hashable, Sendable {
         self.init(svg: dibujo, descripcion: cifrado + ": " + notas, nombre: "Pentagrama " + cifrado)
     }
 
-    /// Las notas del arpegio en el orden del patrón, una por columna.
+    /// Las notas del arpegio en el orden del patrón, una por columna; la `resaltada` (contada desde 0), de otro
+    /// color.
     public init(
         _ arpegio: Arpegio, octava: Int = 4, notacion: Notacion = .espanolUnicode,
-        nombresDeLasNotas: Bool = true
+        nombresDeLasNotas: Bool = true, resaltada: Int? = nil
     ) {
-        let opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)
+        var opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)
+        opciones.resaltada = resaltada
         let dibujo = arpegio.svgPentagrama(octava: octava, opciones: opciones)
         let nombre = arpegio.nombre(en: notacion)
         let notas = arpegio.alturas(octava: octava).map { $0.nombre(en: notacion) }.joined(separator: ", ")

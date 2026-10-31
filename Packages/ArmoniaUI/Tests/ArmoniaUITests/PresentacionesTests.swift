@@ -89,6 +89,20 @@ final class PresentacionDeAnalisisTests: XCTestCase {
         XCTAssertEqual(arpegio.sonido.notas.first?.altura.midi, 67)
     }
 
+    func testOtrasFigurasYOctavas() throws {
+        let semicorcheas = PresentacionDeArpegios.arpegio(
+            Arpegio(Acorde("Do"), patron: .quebrado, octavas: 2, conOctava: false), figura: .semicorchea,
+            notacion: .espanolUnicode)
+        XCTAssertTrue(semicorcheas.voz.eventos.allSatisfy { $0.duracion == .semicorchea })
+        // Dos octavas sin la final: seis notas, quebradas de dos en dos (cuatro parejas).
+        XCTAssertEqual(semicorcheas.voz.eventos.count, 8)
+        let analisis = try PresentacionDeAnalisis.analizar("Do Sol7 Do", notacion: .espanolUnicode)
+        let negras = try XCTUnwrap(analisis.arpegiada(.ascendente, figura: .negra, notacion: .espanolUnicode))
+        // Una blanca por acorde: dos negras cada uno.
+        XCTAssertEqual(negras.voz.eventos.count, 6)
+        XCTAssertTrue(negras.voz.eventos.allSatisfy { $0.duracion == .negra })
+    }
+
     func testLosFicherosDelArpegioSeLeenConLasMismasNotas() throws {
         let arpegio = PresentacionDeArpegios.arpegio(
             Arpegio(Acorde("Fa#m7"), patron: .alberti), notacion: .espanolUnicode)

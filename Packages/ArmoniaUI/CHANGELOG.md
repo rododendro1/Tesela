@@ -2,6 +2,23 @@
 
 ## Sin publicar
 
+- Más opciones de arpegio en ArmoniaApp. En la pestaña Acordes, el arpegio elige también cuántas octavas abarca, si
+  acaba en la octava y la figura de sus notas (negra, corchea o semicorchea); en Análisis, la figura de la progresión
+  arpegiada. `PresentacionDeArpegios.arpegio(_:figura:notacion:)`, `progresion(…figura:…)` y
+  `AnalisisPresentado.arpegiada(_:figura:notacion:)`.
+- Seguir lo que suena. El `Reproductor` publica lo que suena y el paso por el que va (`paso(de:)`), y «Escuchar» pasa
+  a «Detener» mientras suena. Se resalta el acorde que se oye en Análisis y la nota en los pentagramas del arpegio y
+  de la escala y en los mástiles de las posiciones. `Sonido.inicios` y `paso(en:)`,
+  `PresentacionDePentagrama(…resaltada:)` y `DiagramaDeMastil.resaltando(_:)`.
+- Transponer. Análisis lleva la progresión a otra tonalidad del mismo modo (la abierta de un fichero, con su ritmo) y
+  Coral sube o baja lo escrito un intervalo. `PresentacionDeTransposicion`.
+- Capo y tablaturas. Las digitaciones y el arpegio en el mástil de la pestaña Acordes se calculan con capo, y se
+  exportan como tablaturas MusicXML (cuerda, traste, afinación y capo) para MuseScore o Guitar Pro.
+  `PresentacionDeTablatura`.
+- Rearmonizar. En Análisis, cada acorde con sus otras armonías: cómo suena el pasaje con el cambio y «Aplicar», que lo
+  pone en la progresión. `PresentacionDeRearmonizacion` y `AnalisisPresentado.rearmonizaciones(notacion:)`.
+- En la línea de comandos: `transponer` (un intervalo o la nueva tónica; acordes, melodías o corales), `rearmonizar`,
+  `digitaciones --capo 2` y `digitaciones --musicxml` (la tablatura), y los patrones `quebrado` y `baja-y-sube`.
 - Ritmo armónico al importar. En la pestaña Análisis, «Abrir» acepta también el MusicXML comprimido (.mxl) y guarda
   lo que dura cada acorde de la pieza, con su compás y su tempo: mientras no se retoque la progresión, lo siguen la
   partitura, el MIDI, «Escuchar» y «Arpegiar». `ImportacionDeProgresion.leer(_:ventana:)` da la

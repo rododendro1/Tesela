@@ -19,6 +19,10 @@ extension TextosDeCLI {
         descripcionRevisar: "fautes de conduite des voix (quintes\nparallèles…) ; accords du grave à\nl'aigu, séparés par des virgules",
         sintaxisContrapunto: "contrapunto <cantus> / <contrepoint> [--especie 1]",
         descripcionContrapunto: "fautes d'un contrepoint d'espèces\n(1 à 5) sur un cantus firmus en\nrondes ; notes sans durée : celle de\nl'espèce",
+        sintaxisTransponer: "transponer <intervalle|tonique> <accords ou notes>",
+        descripcionTransponer: "transpose des accords, une mélodie ou\nun choral dans un autre ton : un\nintervalle (2M, -3m) ou la nouvelle\ntonique (Ré)",
+        sintaxisRearmonizar: "rearmonizar <accords> [--en <tonalité>]",
+        descripcionRearmonizar: "d'autres harmonies pour chaque\naccord : substitution tritonique,\ndominantes secondaires, emprunt\nmodal et substitutions diatoniques",
 
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <chiffrage>…",
@@ -83,7 +87,7 @@ extension TextosDeCLI {
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "digitaciones <chiffrage>… [options]",
-        descripcionDigitaciones: "façons de jouer un accord, de la\nplus commode à la moins commode, sur\nun instrument à cordes et à frettes\noptions : --instrumento guitarra|bajo|ukelele|mandolina|… (aussi\n« guitarra de siete cuerdas », « bajo de 5 cuerdas », « drop D\n»), --limite 5, --traste 12 (la case la plus haute utilisée),\n--dedos 4 (ceux qu'on peut utiliser), --completo (avec toutes\nles notes : par défaut la quinte peut manquer), --diagrama (une\nligne par corde)",
+        descripcionDigitaciones: "façons de jouer un accord, de la\nplus commode à la moins commode, sur\nun instrument à cordes et à frettes\noptions : --instrumento guitarra|bajo|ukelele|mandolina|… (aussi\n« guitarra de siete cuerdas », « bajo de 5 cuerdas », « drop D\n»), --limite 5, --traste 12 (la case la plus haute utilisée),\n--dedos 4 (ceux qu'on peut utiliser), --completo (avec toutes\nles notes : par défaut la quinte peut manquer), --diagrama (une\nligne par corde),\n--capo 2 (cases comptées depuis le capodastre), --musicxml (la\npremière forme de chaque accord, en tablature MusicXML)",
         sintaxisPosiciones: "posiciones <gamme> [--caged]",
         descripcionPosiciones: "la gamme par positions à la guitare :\ntrois notes par corde (deux dans les\npentatoniques) ou CAGED",
 
@@ -118,7 +122,7 @@ extension TextosDeCLI {
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "il manque le chiffrage : armonia acorde Sol7",
         faltaCifradoDelArpegio: "il manque le chiffrage : armonia arpegio Do7",
-        patronDesconocido: { patron in "motif inconnu : « \(patron) » (ascendente, descendente, ida-y-vuelta ou alberti)" },
+        patronDesconocido: { patron in "motif inconnu : « \(patron) » (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado ou alberti)" },
         faltanNotas: "il manque les notes : armonia identificar Do Mi Sol",
         dosNotas: "il faut deux notes : armonia intervalo Do Mi",
         faltaEscala: "il manque la gamme : armonia escala Re dórico",
@@ -128,6 +132,8 @@ extension TextosDeCLI {
         archivoIlegible: { nombre in "impossible de lire le fichier « \(nombre) »" },
         archivoConAcordes: "avec --archivo, n'écrivez pas d'accords",
         archivoSinAcordes: "le fichier ne contient aucun accord",
+        faltaTransporte: { ejemplo in "il manque l'intervalle (ou la nouvelle tonique) et ce qu'on transpose : " + ejemplo },
+        faltanAcordesDeLaRearmonizacion: { ejemplo in "il manque les accords : " + ejemplo },
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "la marge est un nombre de 0 à 6 : --margen 2",
@@ -180,6 +186,7 @@ extension TextosDeCLI {
         trasteFueraDeRango: "la case la plus haute est un nombre de 0 à 24 : --traste 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "il manque le chiffrage : \(d)" },
         faltaEscalaDePosiciones: "il manque la gamme : armonia posiciones Sol mayor",
+        capoFueraDeRango: "le capodastre est un nombre de 0 à 12 : --capo 2",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Essayez « armonia ayuda ».",

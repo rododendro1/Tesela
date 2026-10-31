@@ -22,6 +22,10 @@ struct TextosDeCLI: Sendable {
     let descripcionRevisar: String
     let sintaxisContrapunto: String
     let descripcionContrapunto: String
+    let sintaxisTransponer: String
+    let descripcionTransponer: String
+    let sintaxisRearmonizar: String
+    let descripcionRearmonizar: String
 
     // MARK: Ayuda+Consultas.swift
     let sintaxisAcorde: String
@@ -118,6 +122,8 @@ struct TextosDeCLI: Sendable {
     let archivoIlegible: @Sendable (String) -> String
     let archivoConAcordes: String
     let archivoSinAcordes: String
+    let faltaTransporte: @Sendable (String) -> String
+    let faltanAcordesDeLaRearmonizacion: @Sendable (String) -> String
 
     // MARK: ErrorDeUso+Dibujos.swift
     let margenFueraDeRango: String
@@ -170,6 +176,7 @@ struct TextosDeCLI: Sendable {
     let trasteFueraDeRango: String
     let faltaCifradoDeDigitaciones: @Sendable (String, (String, String)) -> String
     let faltaEscalaDePosiciones: String
+    let capoFueraDeRango: String
 
     // MARK: ErrorDeUso.swift
     let pruebaLaAyuda: String

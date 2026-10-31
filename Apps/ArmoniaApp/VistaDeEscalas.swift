@@ -11,6 +11,8 @@ struct VistaDeEscalas: View {
     @State private var tipo = 0 // índice en `catalogo`
     /// Las posiciones en el mástil: las del sistema CAGED o las de tres (o dos) notas por cuerda.
     @State private var caged = true
+    /// Lo que está sonando, para resaltar la nota en el pentagrama y en el mástil.
+    @ObservedObject private var reproductor = Reproductor.compartido
 
     /// Las escalas habituales y, después, las de otras tradiciones. Se elige por índice porque dos
     /// escalas con las mismas notas son iguales (`==`) aunque se llamen distinto.
@@ -29,6 +31,7 @@ struct VistaDeEscalas: View {
     var body: some View {
         let escala = self.escala
         let pentagrama = PresentacionDePentagrama(escala, notacion: notacion)
+        let sonido = Sonido.escala(escala)
         Form {
             Section(notacion.texto(.escala)) {
                 Picker(notacion.texto(.tonica), selection: $tonica) {
@@ -51,7 +54,7 @@ struct VistaDeEscalas: View {
                 Text(escala.nombre(en: notacion)).font(.headline)
                 Text(escala.notas.map { $0.nombre(en: notacion) }.joined(separator: "  "))
                     .font(.system(.body, design: .monospaced))
-                BotonDeEscuchar(.escala(escala))
+                BotonDeEscuchar(sonido)
             }
             let acordes = escala.armonizar().compactMap { $0 }
             if !acordes.isEmpty {
@@ -60,7 +63,12 @@ struct VistaDeEscalas: View {
                 }
             }
             Section(notacion.texto(.pentagrama)) {
-                DiagramaDePentagrama(pentagrama)
+                // Mientras suena, la nota que se oye, de otro color.
+                if let paso = reproductor.paso(de: sonido) {
+                    DiagramaDePentagrama(PresentacionDePentagrama(escala, notacion: notacion, resaltada: paso))
+                } else {
+                    DiagramaDePentagrama(pentagrama)
+                }
             }
             Section(notacion.texto(.mastilDeGuitarra)) {
                 DiagramaDeMastil(mastil: Mastil(.guitarra, trastes: 12), escala: escala, notacion: notacion)
@@ -109,6 +117,9 @@ struct VistaDeEscalas: View {
             }
             .pickerStyle(.segmented)
             ForEach(posiciones, id: \.self) { posicion in
+                let sonido = self.sonido(de: posicion, en: escala)
+                let paso = reproductor.paso(de: sonido)
+                let sonando = paso.flatMap { posicion.posiciones.indices.contains($0) ? posicion.posiciones[$0] : nil }
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
                         if let forma = posicion.forma {
@@ -116,9 +127,10 @@ struct VistaDeEscalas: View {
                         }
                         Text(rotulo(de: posicion)).foregroundColor(.secondary)
                         Spacer()
-                        BotonDeEscuchar(sonido(de: posicion, en: escala))
+                        BotonDeEscuchar(sonido)
                     }
                     DiagramaDeMastil(posicion: posicion, escala: escala, notacion: notacion)
+                        .resaltando(sonando)
                         .frame(maxHeight: 120)
                 }
             }

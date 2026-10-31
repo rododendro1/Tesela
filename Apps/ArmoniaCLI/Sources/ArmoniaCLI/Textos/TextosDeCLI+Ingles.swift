@@ -19,6 +19,10 @@ extension TextosDeCLI {
         descripcionRevisar: "voice-leading errors (parallel\nfifths…); chords from low to high,\nseparated by commas",
         sintaxisContrapunto: "counterpoint <cantus> / <counterpoint> [--species 1]",
         descripcionContrapunto: "errors in species counterpoint (1 to\n5) over a cantus firmus in whole\nnotes; notes without a duration take\nthe species' one",
+        sintaxisTransponer: "transpose <interval|tonic> <chords or notes>",
+        descripcionTransponer: "moves chords, a melody or a chorale\nto another key: an interval (M2, -m3)\nor the new tonic (D)",
+        sintaxisRearmonizar: "reharmonize <chords> [--in <key>]",
+        descripcionRearmonizar: "other harmonies for each chord:\ntritone substitution, secondary\ndominants, modal borrowing and\ndiatonic substitutions",
 
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <symbol>…",
@@ -83,7 +87,7 @@ extension TextosDeCLI {
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "fingerings <symbol>… [options]",
-        descripcionDigitaciones: "ways to play a chord, from the most comfortable to the least, on a\nfretted string instrument (strings from low to high)\noptions: --instrument guitar|bass|ukulele|mandolin|…\n(also \"seven-string guitar\", \"five-string bass\",\n\"drop D\"), --limit 5, --fret 12 (the highest one used),\n--fingers 4 (how many can be used), --complete (with every note:\nby default the fifth may be left out), --diagram (one line per string)",
+        descripcionDigitaciones: "ways to play a chord, from the most comfortable to the least, on a\nfretted string instrument (strings from low to high)\noptions: --instrument guitar|bass|ukulele|mandolin|…\n(also \"seven-string guitar\", \"five-string bass\",\n\"drop D\"), --limit 5, --fret 12 (the highest one used),\n--fingers 4 (how many can be used), --complete (with every note:\nby default the fifth may be left out), --diagram (one line per string),\n--capo 2 (frets counted from the capo), --musicxml (the first shape\nof each chord as a MusicXML tablature)",
         sintaxisPosiciones: "positions <scale> [--caged]",
         descripcionPosiciones: "the scale by positions on the guitar:\nthree notes per string (two in the\npentatonics) or CAGED",
 
@@ -119,7 +123,7 @@ extension TextosDeCLI {
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "missing the chord symbol: armonia chord G7",
         faltaCifradoDelArpegio: "missing the chord symbol: armonia arpeggio C7",
-        patronDesconocido: { patron in "unknown pattern: \"\(patron)\" (ascending, descending, up-down or alberti)" },
+        patronDesconocido: { patron in "unknown pattern: \"\(patron)\" (ascending, descending, up-down, down-up, broken or alberti)" },
         faltanNotas: "missing the notes: armonia identify C E G",
         dosNotas: "two notes are needed: armonia interval C E",
         faltaEscala: "missing the scale: armonia scale D dorian",
@@ -129,6 +133,8 @@ extension TextosDeCLI {
         archivoIlegible: { nombre in "cannot read the file \"\(nombre)\"" },
         archivoConAcordes: "with --file, do not write chords",
         archivoSinAcordes: "the file has no chords",
+        faltaTransporte: { ejemplo in "missing the interval (or the new tonic) and what to transpose: armonia transpose M2 C Am F G7" },
+        faltanAcordesDeLaRearmonizacion: { ejemplo in "missing the chords: armonia reharmonize C Am Dm7 G7" },
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "the margin is a number from 0 to 6: --margen 2",
@@ -181,6 +187,7 @@ extension TextosDeCLI {
         trasteFueraDeRango: "the highest fret is a number from 0 to 24: --fret 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "missing the chord symbol: \(digitaciones.1)" },
         faltaEscalaDePosiciones: "missing the scale: armonia positions G major",
+        capoFueraDeRango: "the capo is a number from 0 to 12: --capo 2",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Try \"armonia help\".",

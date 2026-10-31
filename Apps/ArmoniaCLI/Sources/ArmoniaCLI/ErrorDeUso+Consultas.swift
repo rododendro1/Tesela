@@ -54,5 +54,15 @@ extension ErrorDeUso {
         static func archivoSinAcordes() -> Traduccion {
             return TextosDeCLI.traducidos.map(\.archivoSinAcordes)
         }
+
+        static func faltaTransporte() -> Traduccion {
+            let ejemplo = "armonia transponer 2M Do Lam Fa Sol7"
+            return TextosDeCLI.traducidos.map { $0.faltaTransporte(ejemplo) }
+        }
+
+        static func faltanAcordesDeLaRearmonizacion() -> Traduccion {
+            let ejemplo = "armonia rearmonizar Do Lam Rem7 Sol7"
+            return TextosDeCLI.traducidos.map { $0.faltanAcordesDeLaRearmonizacion(ejemplo) }
+        }
     }
 }

@@ -19,6 +19,10 @@ extension TextosDeCLI {
         descripcionRevisar: "fautas de conducha (quintas\nparallèlas…); acòrds del grèu a\nl'agut, separats per de virgulas",
         sintaxisContrapunto: "contrapunto <cantus> / <contrapunt> [--especie 1]",
         descripcionContrapunto: "fautas d'un contrapunt d'espècias\n(1 a 5) sus un cantus firmus en\nredondas; nòtas sens durada: la de\nl'espècia",
+        sintaxisTransponer: "transponer <interval|tonica> <acòrds o nòtas>",
+        descripcionTransponer: "mena d'acòrds, una melodia o un coral\na un autre ton: un interval (2M, -3m)\no la tonica novèla (Re)",
+        sintaxisRearmonizar: "rearmonizar <acòrds> [--en <tonalitat>]",
+        descripcionRearmonizar: "autras armonias per cada acòrd:\nsubstitut de triton, dominantas\nsegondàrias, manlèu modal e\nsubstituts diatonics",
 
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <chifratge>…",
@@ -83,7 +87,7 @@ extension TextosDeCLI {
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "digitaciones <chifratge>… [opcions]",
-        descripcionDigitaciones: "biaisses de jogar un acòrd, del mai comòde al mens, sus un\ninstrument de còrdas amb trasts (còrdas del grèu a l'agut)\nopcions: --instrumento guitarra|bajo|ukelele|mandolina|… (tanben\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D»),\n--limite 5, --traste 12 (lo mai naut que s'utiliza), --dedos 4\n(los que se pòdon utilizar), --completo (amb totas las nòtas:\nper defaut la quinta pòt mancar), --diagrama (una linha per\ncòrda)",
+        descripcionDigitaciones: "biaisses de jogar un acòrd, del mai comòde al mens, sus un\ninstrument de còrdas amb trasts (còrdas del grèu a l'agut)\nopcions: --instrumento guitarra|bajo|ukelele|mandolina|… (tanben\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D»),\n--limite 5, --traste 12 (lo mai naut que s'utiliza), --dedos 4\n(los que se pòdon utilizar), --completo (amb totas las nòtas:\nper defaut la quinta pòt mancar), --diagrama (una linha per\ncòrda),\n--capo 2 (los trasts, dempuèi lo capodastre), --musicxml (la\nprimièra forma de cada acòrd, coma tablatura MusicXML)",
         sintaxisPosiciones: "posiciones <gama> [--caged]",
         descripcionPosiciones: "la gama per posicions a la guitarra:\ntres nòtas per còrda (doas dins las\npentatonicas) o CAGED",
 
@@ -118,7 +122,7 @@ extension TextosDeCLI {
         // ErrorDeUso+Consultas.swift
         faltaCifrado: "manca lo chifratge: armonia acorde Sol7",
         faltaCifradoDelArpegio: "manca lo chifratge: armonia arpegio Do7",
-        patronDesconocido: { patron in "motiu desconegut: «\(patron)» (ascendente, descendente, ida-y-vuelta o alberti)" },
+        patronDesconocido: { patron in "motiu desconegut: «\(patron)» (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado o alberti)" },
         faltanNotas: "mancan las nòtas: armonia identificar Do Mi Sol",
         dosNotas: "calon doas nòtas: armonia intervalo Do Mi",
         faltaEscala: "manca la gama: armonia escala Re dórico",
@@ -128,6 +132,8 @@ extension TextosDeCLI {
         archivoIlegible: { nombre in "se pòt pas legir lo fichièr « \(nombre) »" },
         archivoConAcordes: "amb --archivo, escrivètz pas d'acòrds",
         archivoSinAcordes: "lo fichièr a pas cap d'acòrd",
+        faltaTransporte: { ejemplo in "mancan l'interval (o la tonica novèla) e çò que se transpausa: " + ejemplo },
+        faltanAcordesDeLaRearmonizacion: { ejemplo in "mancan los acòrds: " + ejemplo },
 
         // ErrorDeUso+Dibujos.swift
         margenFueraDeRango: "lo marge es un nombre de 0 a 6: --margen 2",
@@ -180,6 +186,7 @@ extension TextosDeCLI {
         trasteFueraDeRango: "lo trast mai naut es un nombre de 0 a 24: --traste 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "manca lo chifratge: \(d)" },
         faltaEscalaDePosiciones: "manca la gama: armonia posiciones Sol mayor",
+        capoFueraDeRango: "lo capodastre es un nombre de 0 a 12: --capo 2",
 
         // ErrorDeUso.swift
         pruebaLaAyuda: "Ensaja «armonia ayuda».",

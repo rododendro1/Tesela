@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+- Dos patrones de arpegio más: `Arpegio.Patron.quebrado` (por terceras quebradas: Do Sol Mi Do) y `.bajaYSube` (baja
+  desde la nota de arriba y vuelve a subir), con su nombre en los catorce idiomas.
+- `Rearmonizacion` y `Tonalidad.rearmonizaciones(de:)`: otras armonías para cada acorde de una progresión (sustituto
+  tritonal, dominante secundaria, préstamo modal del homónimo y sustituto diatónico), con `aplicar(a:)` y
+  `descripcion(en:)` («Sol7 → Re♭7 (sustituto tritonal)»).
+- El capo: `Encordado.conCapo(_:)` sube las cuerdas y cuenta los trastes desde el capo (`capo`, `sinCapo`), así que
+  las digitaciones, los arpegios y las escalas en el mástil salen como se tocan con él.
+- `Coral` es `Transponible` y tiene `texto(en:)`; `Nota.intervaloMasCorto(hasta:)` da el intervalo para transportar
+  sin alejarse (de Do a La, una tercera menor abajo).
+- `OpcionesDePentagrama.resaltada` y `colorResaltado`: una columna del pentagrama de otro color, la que está sonando.
 - Un MusicXML con un byte que no es UTF-8 válido en el nombre de un elemento o de un atributo detenía el programa en
   Linux (dentro de `XMLParser`). Ahora es `ErrorDeImportacion.xmlDanado(linea:)`, con la línea del byte. Los ficheros
   que declaran una codificación de un byte por carácter (ISO-8859-1, Windows-1252…) se siguen leyendo.

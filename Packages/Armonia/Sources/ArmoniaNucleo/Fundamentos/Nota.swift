@@ -296,6 +296,13 @@ public struct Nota: Hashable, Sendable {
         Intervalo.simpleAscendente(pasosDeQuinta: otra.pasosDeQuinta - pasosDeQuinta)
     }
 
+    /// El intervalo más corto hasta `otra`, subiendo o bajando: el que se usa para transportar sin que la música
+    /// se aleje (Do → Re sube una 2ª mayor; Do → La baja una 3ª menor). El tritono sube.
+    public func intervaloMasCorto(hasta otra: Nota) -> Intervalo {
+        let subiendo = intervalo(hasta: otra)
+        return subiendo.semitonos > 6 ? -subiendo.inversion : subiendo
+    }
+
     // MARK: Constantes
 
     public static let `do` = Nota(.do)

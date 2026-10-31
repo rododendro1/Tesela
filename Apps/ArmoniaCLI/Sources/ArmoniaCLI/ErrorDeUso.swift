@@ -35,6 +35,9 @@ enum ErrorDeUso {
     case archivoConAcordes
     /// `analizar --archivo` con un fichero que tiene notas pero ningún acorde (una sola voz, por ejemplo).
     case archivoSinAcordes
+    /// `transponer` sin el intervalo o sin lo que se transporta.
+    case faltaTransporte
+    case faltanAcordesDeLaRearmonizacion
     case faltanNotasDeLaArmonizacion
     case propuestasFueraDeRango
     case faltanAcordesDeLaRealizacion
@@ -52,6 +55,8 @@ enum ErrorDeUso {
     case trasteFueraDeRango
     case faltaCifradoDeDigitaciones
     case faltaEscalaDePosiciones
+    /// `--capo` sin valor o fuera de 0…12.
+    case capoFueraDeRango
 
     // Neorriemanniano
     case vocesFueraDeRango
@@ -127,6 +132,8 @@ enum ErrorDeUso {
         case .archivoIlegible(let nombre): return TextosDeConsultas.archivoIlegible(nombre)
         case .archivoConAcordes: return TextosDeConsultas.archivoConAcordes()
         case .archivoSinAcordes: return TextosDeConsultas.archivoSinAcordes()
+        case .faltaTransporte: return TextosDeConsultas.faltaTransporte()
+        case .faltanAcordesDeLaRearmonizacion: return TextosDeConsultas.faltanAcordesDeLaRearmonizacion()
         case .faltanNotasDeLaArmonizacion: return TextosDeArmonizacion.faltanNotasDeLaArmonizacion()
         case .propuestasFueraDeRango: return TextosDeArmonizacion.propuestasFueraDeRango()
         case .faltanVocesDelContrapunto: return TextosDeArmonizacion.faltanVocesDelContrapunto()
@@ -142,6 +149,7 @@ enum ErrorDeUso {
         case .trasteFueraDeRango: return TextosDeTrastes.trasteFueraDeRango()
         case .faltaCifradoDeDigitaciones: return TextosDeTrastes.faltaCifradoDeDigitaciones()
         case .faltaEscalaDePosiciones: return TextosDeTrastes.faltaEscalaDePosiciones()
+        case .capoFueraDeRango: return TextosDeTrastes.capoFueraDeRango()
         case .vocesFueraDeRango: return TextosDeNeorriemann.vocesFueraDeRango()
         case .unAcordeDeVecinos: return TextosDeNeorriemann.unAcordeDeVecinos()
         case .vecinosSinFamilia: return TextosDeNeorriemann.vecinosSinFamilia()
