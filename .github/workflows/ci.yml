@@ -211,7 +211,7 @@ jobs:
               | sort -n | head -n 15 | awk '{ print "| `" $2 "` | " $3 " | " $1 "% |" }'
             echo
             echo "Arriba, el total y los 15 ficheros con menos líneas probadas. El informe entero está en el artefacto."
-          } >> "$GITHUB_STEP_SUMMARY"
+          } | tee -a "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v7
         with:
           name: cobertura-${{ matrix.paquete.nombre }}
