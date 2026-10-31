@@ -58,6 +58,45 @@ struct Argumentos {
         return n
     }
 
+    /// Quita las opciones al estilo de las partituras, que toman todas las palabras que las siguen hasta la
+    /// siguiente opción (`--titulo Mi canción`), y las marcas de `marcas`, que no toman nada. Da cada opción por
+    /// su nombre en minúsculas y sin guiones, con los `alias` cambiados a su nombre en el orden dado, y cada marca
+    /// por su nombre en `marcas`. Lo que no sigue a ninguna opción (lo de delante, o lo que va tras una marca) se
+    /// queda en `restantes`. Una opción sin palabras detrás tiene `""`.
+    ///
+    ///     var argumentos = Argumentos(["Do", "Re", "--titulo", "Mi", "canción", "--cifrados"])
+    ///     argumentos.quitarOpcionesConTexto(marcas: ["cifrados": "cifrados"], alias: [])
+    ///     // (["titulo": "Mi canción"], ["cifrados"]); restantes: ["Do", "Re"]
+    mutating func quitarOpcionesConTexto(marcas: [String: String], alias: [(String, String)])
+        -> (opciones: [String: String], marcas: Set<String>)
+    {
+        var opciones: [String: String] = [:]
+        var leidas: Set<String> = []
+        var quedan: [String] = []
+        var actual: String?
+        for argumento in restantes {
+            if argumento.hasPrefix("--") {
+                let nombre = String(argumento.dropFirst(2)).lowercased()
+                if let marca = marcas[nombre] {
+                    leidas.insert(marca)
+                    actual = nil
+                } else {
+                    actual = nombre
+                    opciones[nombre] = ""
+                }
+            } else if let nombre = actual, let anterior = opciones[nombre] {
+                opciones[nombre] = anterior.isEmpty ? argumento : anterior + " " + argumento
+            } else {
+                quedan.append(argumento)
+            }
+        }
+        restantes = quedan
+        for (otro, nombre) in alias {
+            if let valor = opciones.removeValue(forKey: otro) { opciones[nombre] = valor }
+        }
+        return (opciones, leidas)
+    }
+
     /// Quita `--en <tonalidad>` (o `--in`), que va al final y se lleva todo lo que lo sigue: `--en La menor`.
     /// `nil` dentro si no está, y `nil` si no lo sigue nada. Lanza un error de lectura si la tonalidad no se
     /// puede leer.
