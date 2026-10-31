@@ -109,6 +109,8 @@ public enum TextoDeLasApps: Hashable, Sendable {
     // Comunes
     case textos
     case comoLasNotas
+    /// Escribir la octava de las alturas como subíndice (La₄) en lugar de con cifras (La4).
+    case octavaEnSubindice
     case exportar
     /// Abrir un fichero MIDI o MusicXML (en la pestaña de análisis).
     case abrir
@@ -288,6 +290,8 @@ public enum TextoDeLasApps: Hashable, Sendable {
             return TextosDeApps.traduccion(\.textos)
         case .comoLasNotas:
             return TextosDeApps.traduccion(\.comoLasNotas)
+        case .octavaEnSubindice:
+            return TextosDeApps.traduccion(\.octavaEnSubindice)
         case .octavas:
             return TextosDeApps.traduccion(\.octavas)
         case .conLaOctavaFinal:

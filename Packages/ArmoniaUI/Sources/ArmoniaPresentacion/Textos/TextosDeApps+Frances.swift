@@ -75,6 +75,7 @@ extension TextosDeApps {
         deshacer: "Annuler",
         textos: "Textes",
         comoLasNotas: "Comme les notes",
+        octavaEnSubindice: "Octave en indice (La₄)",
         octavas: "Octaves",
         conLaOctavaFinal: "Avec l'octave finale",
         figura: "Figure de note",

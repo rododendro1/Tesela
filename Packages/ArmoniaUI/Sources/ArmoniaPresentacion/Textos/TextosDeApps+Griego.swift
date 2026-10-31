@@ -75,6 +75,7 @@ extension TextosDeApps {
         deshacer: "Αναίρεση",
         textos: "Κείμενα",
         comoLasNotas: "Όπως οι νότες",
+        octavaEnSubindice: "Οκτάβα ως δείκτης (Λα₄)",
         octavas: "Οκτάβες",
         conLaOctavaFinal: "Με την τελική οκτάβα",
         figura: "Ρυθμική αξία",

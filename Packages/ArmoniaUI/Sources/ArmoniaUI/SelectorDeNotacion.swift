@@ -5,16 +5,21 @@
 
     /// El menú para elegir la notación de las notas y, aparte, el idioma de los textos. Guarda la `clave`
     /// de la `Notacion` (combinada si los textos van en otro idioma). Con `temperamento`, también elige con qué
-    /// afinación suena «Escuchar» (el `rawValue` de una `AfinacionHistorica`). Lo habitual es ponerlo en la barra
+    /// afinación suena «Escuchar» (el `rawValue` de una `AfinacionHistorica`), y con `octavasEnSubindice`, si la
+    /// octava se escribe como subíndice (La₄). Lo habitual es ponerlo en la barra
     /// con `selectorDeNotacionEnLaBarra()`, que lo guarda todo en los ajustes que leen `notacionGuardada()` y el
     /// `Reproductor`.
     public struct SelectorDeNotacion: View {
         @Binding var clave: String
         private let temperamento: Binding<String>?
+        private let octavasEnSubindice: Binding<Bool>?
 
-        public init(clave: Binding<String>, temperamento: Binding<String>? = nil) {
+        public init(
+            clave: Binding<String>, temperamento: Binding<String>? = nil, octavasEnSubindice: Binding<Bool>? = nil
+        ) {
             self._clave = clave
             self.temperamento = temperamento
+            self.octavasEnSubindice = octavasEnSubindice
         }
 
         public var body: some View {
@@ -29,6 +34,9 @@
                     ForEach(Idioma.traducidos, id: \.self) { idioma in
                         Text(idioma.titulo).tag(idioma.clave)
                     }
+                }
+                if let octavasEnSubindice {
+                    Toggle(notacion.texto(.octavaEnSubindice), isOn: octavasEnSubindice)
                 }
                 if let temperamento {
                     Picker(notacion.texto(.afinacionAlEscuchar), selection: temperamento) {
@@ -64,13 +72,14 @@
         }
     }
 
-    /// El selector, guardando la notación y el temperamento en los ajustes de las apps.
+    /// El selector, guardando la notación, la octava en subíndice y el temperamento en los ajustes de las apps.
     struct SelectorDeNotacionGuardada: View {
         @AppStorage(AjustesDeLasApps.claveDeNotacion) private var clave = Notacion.delSistema().clave
+        @AppStorage(AjustesDeLasApps.claveDeOctavasEnSubindice) private var octavasEnSubindice = false
         @AppStorage(AjustesDeLasApps.claveDeTemperamento) private var temperamento = AfinacionHistorica.igual.rawValue
 
         var body: some View {
-            SelectorDeNotacion(clave: $clave, temperamento: $temperamento)
+            SelectorDeNotacion(clave: $clave, temperamento: $temperamento, octavasEnSubindice: $octavasEnSubindice)
         }
     }
 
