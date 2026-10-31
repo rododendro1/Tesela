@@ -109,6 +109,19 @@ extension TextosDeTeoria {
         // RecorridoTonal.swift
         deUnaTonalidadAOtra: { de, a, n in "De \(de) a \(a) a l'acòrd \(n)" },
         pivote: "pivòt",
-        directa: " (dirècta)"
+        directa: " (dirècta)",
+        // Arpegio.swift
+        arpegioDe: { acorde in "Arpegi de \(acorde)" },
+        patronAscendente: "ascendent",
+        patronDescendente: "descendent",
+        patronIdaYVuelta: "d'anada e de tornada",
+        patronAlberti: "bassa d'Alberti",
+        patronQuebrado: "trencat",
+        patronBajaYSube: "de davalada e de montada",
+        // Rearmonizacion.swift
+        sustitutoTritonal: "substitut de triton",
+        dominanteSecundaria: "dominanta segondària",
+        prestamoModal: "manlèu modal",
+        sustitutoDiatonico: "substitut diatonic"
     )
 }

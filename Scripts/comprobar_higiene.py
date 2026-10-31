@@ -8,6 +8,8 @@
   - Los scripts con shebang son ejecutables y los .py compilan.
   - En Swift, un `guard let x` no redeclara un `let x` / `var x` del mismo ámbito (el compilador lo rechaza:
     un `guard let` declara en el ámbito que lo contiene). Es un error que se cuela fácil al escribir sin compilar.
+  - En el código de Swift (no en las pruebas), los textos traducidos no se escriben en línea con
+    `Traduccion("…", "…", ca: …)`: van en los `TextosDeX` de cada módulo, un fichero por idioma en `Textos/`.
 
 No sustituye a un formateador: es lo que se puede comprobar sin instalar nada.
 Uso: python3 Scripts/comprobar_higiene.py
@@ -25,6 +27,7 @@ INVISIBLES = {0x00AD: "guion blando", 0x200B: "espacio de ancho cero", 0x200C: "
               0x200D: "unión de ancho cero", 0x2060: "unión de palabras", 0xFEFF: "BOM / espacio sin ancho"}
 CODIGO = {".swift", ".py", ".sh", ".yml", ".yaml", ".xcconfig"}
 TEXTO = CODIGO | {".md", ".txt", ".json"}
+TRADUCCION_EN_LINEA = re.compile(r'\bTraduccion\(\s*"')
 SALTAR = {".git", ".build", ".swiftpm", "DerivedData", "build", "node_modules"}
 
 
@@ -78,6 +81,10 @@ for ruta in ficheros():
     if ruta.suffix == ".swift":
         for n, nombre, declarada in guard_que_redeclara(texto.split("\n")):
             problemas.append(f"{rel}:{n}: `guard let {nombre}` redeclara la variable de la línea {declarada} (mismo ámbito)")
+        if "/Tests/" not in f"/{rel}" and rel.name != "Traduccion.swift":
+            for m in TRADUCCION_EN_LINEA.finditer(texto):
+                n = texto.count("\n", 0, m.start()) + 1
+                problemas.append(f"{rel}:{n}: `Traduccion` en línea: el texto va en los `TextosDeX` del módulo")
     if texto and (not texto.endswith("\n") or texto.endswith("\n\n")):
         problemas.append(f"{rel}: tiene que acabar en un único salto de línea")
     if texto.startswith("#!") and not os.access(ruta, os.X_OK):

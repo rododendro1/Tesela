@@ -151,7 +151,7 @@ extension Acorde {
 
 // MARK: - Idiomas
 //
-// Nombres de los arpegios y de sus patrones en los catorce idiomas de los textos (`Traduccion`).
+// Nombres de los arpegios y de sus patrones en los catorce idiomas, en `TextosDeTeoria`.
 
 // MARK: - Arpegio
 
@@ -159,14 +159,7 @@ extension Arpegio: Nombrable {
     /// «Arpegio de Do mayor», «C major arpeggio», «Arpège de Do majeur», «C-Dur-Arpeggio», «Арпеджио до мажор».
     public func nombre(en notacion: Notacion) -> String {
         let acorde = self.acorde.nombre(en: notacion)
-        let plantilla = Traduccion(
-            "Arpegio de {}", "{} arpeggio", ca: "Arpegi de {}", gl: "Arpexo de {}",
-            ast: "Arpexu de {}", an: "Arpechio de {}", eu: "{} arpegioa",
-            pt: "Arpejo de {}", fr: "Arpège de {}", oc: "Arpegi de {}",
-            it: "Arpeggio di {}", de: "Arpeggio: {}",
-            el: "Αρπέζ {}", ru: "Арпеджио {}"
-        ).en(notacion)
-        return plantilla.replacingOccurrences(of: "{}", with: acorde)
+        return TextosDeTeoria.traducidos.map { $0.arpegioDe(acorde) }.en(notacion)
     }
 
     /// Lee «arpegio Dom7», «Dom7 arpeggio», «Arpège de Do» o solo el cifrado: se quitan las palabras «arpegio»
@@ -194,38 +187,17 @@ extension Arpegio.Patron: Nombrable {
     private var traduccion: Traduccion {
         switch self {
         case .ascendente:
-            return Traduccion(
-                "ascendente", "ascending", ca: "ascendent", gl: "ascendente", ast: "ascendente",
-                an: "ascendent", eu: "igoera", pt: "ascendente", fr: "ascendant", oc: "ascendent",
-                it: "ascendente", de: "aufwärts", el: "ανιούσα", ru: "восходящий")
+            return TextosDeTeoria.traducidos.map(\.patronAscendente)
         case .descendente:
-            return Traduccion(
-                "descendente", "descending", ca: "descendent", gl: "descendente", ast: "descendente",
-                an: "descendent", eu: "jaitsiera", pt: "descendente", fr: "descendant", oc: "descendent",
-                it: "discendente", de: "abwärts", el: "κατιούσα", ru: "нисходящий")
+            return TextosDeTeoria.traducidos.map(\.patronDescendente)
         case .idaYVuelta:
-            return Traduccion(
-                "de ida y vuelta", "up and down", ca: "d'anada i tornada", gl: "de ida e volta",
-                ast: "d'ida y vuelta", an: "d'ida y tornada", eu: "joan-etorria", pt: "de ida e volta",
-                fr: "aller-retour", oc: "d'anada e de tornada", it: "andata e ritorno",
-                de: "auf und ab", el: "πάνω-κάτω", ru: "вверх и вниз")
+            return TextosDeTeoria.traducidos.map(\.patronIdaYVuelta)
         case .alberti:
-            return Traduccion(
-                "bajo de Alberti", "Alberti bass", ca: "baix d'Alberti", gl: "baixo de Alberti",
-                ast: "baxu d'Alberti", an: "baixo d'Alberti", eu: "Albertiren baxua",
-                pt: "baixo de Alberti", fr: "basse d'Alberti", oc: "bassa d'Alberti",
-                it: "basso albertino", de: "Albertibass", el: "μπάσο Alberti", ru: "альбертиев бас")
+            return TextosDeTeoria.traducidos.map(\.patronAlberti)
         case .quebrado:
-            return Traduccion(
-                "quebrado", "broken", ca: "trencat", gl: "quebrado", ast: "quebráu", an: "trencau",
-                eu: "hautsia", pt: "quebrado", fr: "brisé", oc: "trencat", it: "spezzato",
-                de: "gebrochen", el: "σπαστό", ru: "ломаный")
+            return TextosDeTeoria.traducidos.map(\.patronQuebrado)
         case .bajaYSube:
-            return Traduccion(
-                "de bajada y subida", "down and up", ca: "de baixada i pujada", gl: "de baixada e subida",
-                ast: "de baxada y subida", an: "de baixada y puyada", eu: "jaitsi-igoa",
-                pt: "de descida e subida", fr: "descente-montée", oc: "de davalada e de montada",
-                it: "discesa e salita", de: "ab und auf", el: "κάτω-πάνω", ru: "вниз и вверх")
+            return TextosDeTeoria.traducidos.map(\.patronBajaYSube)
         }
     }
 }

@@ -9,6 +9,8 @@
 - `Idioma.nombres` e `Idioma(nombre:)`: el idioma por su código o por su nombre («euskara», «Deutsch»).
 - Las exportaciones a MusicXML y MEI de una voz, un coral y una progresión se preparan en un solo sitio
   (`Exportacion.documento` con un `EscritorDePartitura`); las funciones públicas no cambian.
+- Los nombres de los arpegios, de sus patrones y de los recursos de rearmonización pasan a `TextosDeTeoria`. Ya no
+  queda ningún `Traduccion("…", …)` en línea en el código: `Scripts/comprobar_higiene.py` avisa si vuelve uno.
 - La documentación de `TecladoIsomorfico.janko`, `.wickiHaydenPlano` y `.tablaArmonica` dice a qué preset de 12 notas
   del Lumatone corresponde cada uno (1, «Classic Mode», Bosanquet-Wilson; 2, «Melodic Mode», y 3, «Harmonic Mode»).
 - Dos patrones de arpegio más: `Arpegio.Patron.quebrado` (por terceras quebradas: Do Sol Mi Do) y `.bajaYSube` (baja

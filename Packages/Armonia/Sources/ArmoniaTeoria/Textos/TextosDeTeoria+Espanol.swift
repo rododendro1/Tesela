@@ -109,6 +109,19 @@ extension TextosDeTeoria {
         // RecorridoTonal.swift
         deUnaTonalidadAOtra: { de, a, n in "De \(de) a \(a) en el acorde \(n)" },
         pivote: "pivote",
-        directa: " (directa)"
+        directa: " (directa)",
+        // Arpegio.swift
+        arpegioDe: { acorde in "Arpegio de \(acorde)" },
+        patronAscendente: "ascendente",
+        patronDescendente: "descendente",
+        patronIdaYVuelta: "de ida y vuelta",
+        patronAlberti: "bajo de Alberti",
+        patronQuebrado: "quebrado",
+        patronBajaYSube: "de bajada y subida",
+        // Rearmonizacion.swift
+        sustitutoTritonal: "sustituto tritonal",
+        dominanteSecundaria: "dominante secundaria",
+        prestamoModal: "préstamo modal",
+        sustitutoDiatonico: "sustituto diatónico"
     )
 }

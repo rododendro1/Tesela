@@ -114,6 +114,21 @@ struct TextosDeTeoria: Sendable {
     let pivote: String
     let directa: String
 
+    // MARK: Arpegio.swift
+    let arpegioDe: @Sendable (String) -> String
+    let patronAscendente: String
+    let patronDescendente: String
+    let patronIdaYVuelta: String
+    let patronAlberti: String
+    let patronQuebrado: String
+    let patronBajaYSube: String
+
+    // MARK: Rearmonizacion.swift
+    let sustitutoTritonal: String
+    let dominanteSecundaria: String
+    let prestamoModal: String
+    let sustitutoDiatonico: String
+
     /// Los textos en los catorce idiomas: `traducidos.map(\.campo)` es la `Traduccion` de un campo.
     static let traducidos = Traducido<TextosDeTeoria>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,

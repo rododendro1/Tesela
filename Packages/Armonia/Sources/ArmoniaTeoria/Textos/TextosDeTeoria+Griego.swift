@@ -109,6 +109,19 @@ extension TextosDeTeoria {
         // RecorridoTonal.swift
         deUnaTonalidadAOtra: { de, a, n in "Από \(de) σε \(a) στη συγχορδία \(n)" },
         pivote: "κοινή συγχορδία",
-        directa: " (άμεση)"
+        directa: " (άμεση)",
+        // Arpegio.swift
+        arpegioDe: { acorde in "Αρπέζ \(acorde)" },
+        patronAscendente: "ανιούσα",
+        patronDescendente: "κατιούσα",
+        patronIdaYVuelta: "πάνω-κάτω",
+        patronAlberti: "μπάσο Alberti",
+        patronQuebrado: "σπαστό",
+        patronBajaYSube: "κάτω-πάνω",
+        // Rearmonizacion.swift
+        sustitutoTritonal: "τριτονική υποκατάσταση",
+        dominanteSecundaria: "δευτερεύουσα δεσπόζουσα",
+        prestamoModal: "τροπικός δανεισμός",
+        sustitutoDiatonico: "διατονική υποκατάσταση"
     )
 }
