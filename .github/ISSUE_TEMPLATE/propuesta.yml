@@ -1,0 +1,21 @@
+name: Propuesta
+description: Una idea nueva o un cambio en la API.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problema
+    attributes:
+      label: Qué hace falta
+      description: El problema o el caso de uso, con un ejemplo musical si lo hay.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Cómo lo resolverías
+      description: Qué cambiaría en la API, en la línea de comandos o en las apps.
+  - type: textarea
+    id: alternativas
+    attributes:
+      label: Alternativas
+      description: Otras formas de hacerlo, o cómo lo resuelves ahora.

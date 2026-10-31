@@ -1,0 +1,16 @@
+# Swift Package Index (https://swiftpackageindex.com): qué módulos tienen documentación de DocC alojada allí.
+# Los catálogos están en Packages/Armonia/Sources/Armonia/Armonia.docc y Packages/Hexagonos/Sources/Hexagonos/Hexagonos.docc;
+# los demás módulos se documentan con sus comentarios.
+version: 1
+builder:
+  configs:
+    - documentation_targets:
+        - Armonia
+        - ArmoniaNucleo
+        - ArmoniaTeoria
+        - ArmoniaRepresentaciones
+        - ArmoniaPartitura
+        - ArmoniaTrastes
+        - Hexagonos
+        - ArmoniaPresentacion
+        - ArmoniaUI
