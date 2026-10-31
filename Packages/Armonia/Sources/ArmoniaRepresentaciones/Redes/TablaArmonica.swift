@@ -206,7 +206,7 @@ public struct TablaArmonica: Hashable, Sendable {
         let (marcados, principales) = DibujoSVG.marcar(puntos, en: red, clave: clave)
         // Los nombres de las alturas dadas, por número MIDI.
         let nombres = Dictionary(
-            alturas.map { ($0.midi, $0.nota.nombreCompacto(en: notacion) + "\($0.octava)") },
+            alturas.map { ($0.midi, $0.nombreCompacto(en: notacion)) },
             uniquingKeysWith: { uno, _ in uno })
         // Con bemoles en las alturas dadas, los demás hexágonos también los usan.
         let bemoles = alturas.contains { $0.nota.alteracion.simbolo.contains("♭") }
@@ -219,7 +219,7 @@ public struct TablaArmonica: Hashable, Sendable {
                 let midi = TablaArmonica.midi(de: p)
                 if let nombre = nombres[midi] { return nombre }
                 let altura = Altura(midi: midi, preferirBemoles: bemoles)
-                return altura.nota.nombreCompacto(en: notacion) + "\(altura.octava)"
+                return altura.nombreCompacto(en: notacion)
             }
         }
 

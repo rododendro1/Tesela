@@ -106,6 +106,7 @@ extension TextosDeCLI {
         Με --textos, τα κείμενα βγαίνουν σε άλλη γλώσσα από τις νότες: --idioma en --textos el.
         Στα ισπανικά και στα αγγλικά, το --escritura palabras|ascii|unicode γράφει τις νότες
         Fa sostenido, Fa# ή Fa♯ (στα αγγλικά, F sharp, F# ή F♯).
+        Με --subindices, η οκτάβα γράφεται ως δείκτης: La₄, Fa♯₃ (διαβάζονται και τα δύο, La4 και La₄).
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "αυτή η βοήθεια",

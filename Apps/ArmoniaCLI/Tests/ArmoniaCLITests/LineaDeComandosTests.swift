@@ -107,6 +107,18 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertEqual(LineaDeComandos.ejecutar(["transponer", "2M"]).codigo, 2)
     }
 
+    func testOctavasEnSubindice() {
+        // Con --subindices, la octava sale en subíndice; se lee igual con subíndices que con cifras.
+        XCTAssertEqual(
+            salida("transponer 2M Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 --subindices"),
+            "Re₃ Fa♯₄ La₄ Re₅ | La₂ Mi₄ La₄ Do♯₅\n")
+        XCTAssertEqual(
+            salida("transponer 2M Do₃ Mi₄ Sol₄ Do₅ | Sol₂ Re₄ Sol₄ Si₄"), "Re3 Fa♯4 La4 Re5 | La2 Mi4 La4 Do♯5\n")
+        XCTAssertEqual(salida("intervalo Do₄ Mi₅"), salida("intervalo Do4 Mi5"))
+        XCTAssertTrue(salida("ayuda").contains("--subindices"))
+        XCTAssertTrue(salida("help --english").contains("--subscripts"))
+    }
+
     func testRearmonizar() {
         let propuestas = salida("rearmonizar Do Lam Rem7 Sol7 Do")
         XCTAssertTrue(propuestas.hasPrefix("Do mayor\n"), propuestas)

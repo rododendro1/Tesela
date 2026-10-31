@@ -20,6 +20,10 @@
 - Las cuerdas: `Encordado.numeroTradicional(deCuerda:)` da el número con que se nombra una cuerda (la 1.ª es la de
   abajo, el Mi agudo de la guitarra), y la documentación de `Encordado.cuerdas` y `PosicionEnElMastil.cuerda` dice
   que el índice 0 es la de arriba. `PosicionEnElMastil.description` dice «cuerda 1 desde arriba, traste 3».
+- La octava de las alturas en subíndice: `Notacion.conOctavas(.subindices)` escribe La₄, Fa♯₃ y Si♭₋₁
+  (`EscrituraDeLaOctava`, con `.cifras` por defecto), y `Altura(leyendo:)` lee las dos formas, también en las
+  melodías y los corales. `Altura.nombreCompacto(en:)` y `octavaEscrita(en:)` dan las etiquetas de los teclados, la
+  tabla armónica y los dibujos con la octava de la notación. En la línea de comandos, `--subindices` (`--subscripts`).
 - `TecladoIsomorfico.todos` (los nueve teclados con nombre) y `TecladoIsomorfico.nombre(en:)`, con los nombres en los
   catorce idiomas en `TextosDeRepresentaciones`.
 - `Nombrable` da `nombre` (el nombre en español) a todo tipo que lo adopta; desaparecen las 21 copias. `Arpegio`,

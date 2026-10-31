@@ -106,6 +106,7 @@ extension TextosDeCLI {
         Amb --textos, los tèxtes son dins una autra lenga que las nòtas: --idioma en --textos oc.
         En castelhan e anglés, --escritura palabras|ascii|unicode escriu las nòtas coma Fa sostenido,
         Fa# o Fa♯ (en anglés, F sharp, F# o F♯).
+        Amb --subindices, l'octava va en subindici: La₄, Fa♯₃ (se legís de las doas formas, La4 e La₄).
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "aquesta ajuda",

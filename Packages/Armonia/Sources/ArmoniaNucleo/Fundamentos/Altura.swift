@@ -30,7 +30,8 @@ public struct Altura: Hashable, Sendable {
         self.init(pasosDeQuinta: nombre.pasosDeQuinta, pasosDeOctava: (pasos - 4 * nombre.pasosDeQuinta) / 7)
     }
 
-    /// Lee textos como "Do4", "Fa#3", "Sib-1", "C#5", "Fa sostenido 3", "B flat 4".
+    /// Lee textos como "Do4", "Fa#3", "Sib-1", "C#5", "Fa sostenido 3", "B flat 4", y también con la octava en
+    /// subíndice: "La₄", "Do♯₃", "Si♭₋₁".
     /// Si no se puede leer, el error indica dónde y por qué.
     /// También acepta los nombres en catalán, gallego, asturiano, aragonés, euskera, portugués, occitano, griego y
     /// ruso:
@@ -43,7 +44,9 @@ public struct Altura: Hashable, Sendable {
             guard let nombre = lector.leerNombreNota() else { throw lector.error(.notaNoReconocida) }
             lector.saltarEspacios()
             let textoOctava = lector.restoSinEspacios
-            guard let octava = Int(textoOctava) else { throw lector.error(.octavaNoValida(textoOctava)) }
+            guard let octava = Int(EscrituraDeLaOctava.conCifras(textoOctava)) else {
+                throw lector.error(.octavaNoValida(textoOctava))
+            }
             leida = Altura(nombre, octava: octava)
         } catch {
             let otras = Notacion.deLecturaGenerica + Notacion.conPalabras
@@ -55,17 +58,18 @@ public struct Altura: Hashable, Sendable {
     }
 
     /// Lee una nota escrita en una notación concreta: `Altura(leyendo: "Fis4", en: .aleman)`,
-    /// `Altura(leyendo: "ré bémol 3", en: .frances)`. La octava es la científica (Do4 = do central).
+    /// `Altura(leyendo: "ré bémol 3", en: .frances)`. La octava es la científica (Do4 = do central), con cifras o
+    /// en subíndice ("ré bémol ₃").
     public init(leyendo texto: String, en notacion: Notacion) throws {
         let notacion = notacion.notas
         switch notacion.escritura.escrituraDeLaAlteracion {
         // En español e inglés con palabras, «Fa sostenido 4», y también «Fa#4» (lo lee `Nota(leyendo:en:)`).
         case .palabras, .alemana:
             let limpio = texto.trimmingEspacios()
-            let cifras = limpio.reversed().prefix(while: { $0.isNumber || $0 == "-" })
+            let cifras = limpio.reversed().prefix(while: { $0.isNumber || $0 == "-" || $0 == "₋" })
             let textoOctava = String(cifras.reversed())
             let parteNombre = String(limpio.dropLast(cifras.count)).trimmingEspacios()
-            guard let octava = Int(textoOctava) else {
+            guard let octava = Int(EscrituraDeLaOctava.conCifras(textoOctava)) else {
                 throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .octavaNoValida(textoOctava))
             }
             do {
@@ -112,10 +116,22 @@ public struct Altura: Hashable, Sendable {
     public var nombreCompleto: String { nombre(en: .espanolUnicode) }
 
     /// Nombre con octava (científica en todas las notaciones): "Fa♯4", "F#4", "Fis4",
-    /// "fa dièse 4" (con espacio cuando el nombre tiene varias palabras).
+    /// "fa dièse 4" (con espacio cuando el nombre tiene varias palabras). Con
+    /// `notacion.conOctavas(.subindices)`, la octava va en subíndice: "Fa♯₄".
     public func nombre(en notacion: Notacion) -> String {
         let nombre = nota.nombre(en: notacion)
-        return nombre + (nombre.contains(" ") ? " " : "") + "\(octava)"
+        return nombre + (nombre.contains(" ") ? " " : "") + octavaEscrita(en: notacion)
+    }
+
+    /// Nombre compacto con octava, para las etiquetas de los teclados y las tablas: como
+    /// `nota.nombreCompacto(en:)` (Fa♯ también en las notaciones con palabras) y la octava pegada: "Fa♯4", "Fa♯₄".
+    public func nombreCompacto(en notacion: Notacion) -> String {
+        nota.nombreCompacto(en: notacion) + octavaEscrita(en: notacion)
+    }
+
+    /// La octava escrita como pide la notación: "4" o, con `conOctavas(.subindices)`, "₄".
+    public func octavaEscrita(en notacion: Notacion) -> String {
+        notacion.octavas.escribir(octava)
     }
 
     // MARK: Operaciones
