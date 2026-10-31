@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.2.0 (2026-10-31)
 
 - Arreglado: en macOS, sin optimizar, los textos de las apps desbordaban la pila (señal 11). Pasaba en las pruebas
   de ArmoniaUI y en Tonnetz al elegir «Acorde». Cada caso de `TextoDeLasApps` copiaba en la pila los catorce
