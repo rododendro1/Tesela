@@ -140,8 +140,9 @@ public struct Intervalo: Hashable, Sendable {
             guard let numero = numeroLeido, numero >= 1, lector.haTerminado else {
                 throw antesDelNumero.error(.numeroDeIntervaloNoValido(antesDelNumero.fragmento))
             }
-            self = try Intervalo.construir(numero: numero, letras: letrasDelante, sentido: sentido,
-                                           texto: texto, posicionLetras: posicionLetras)
+            self = try Intervalo.construir(
+                numero: numero, letras: letrasDelante, sentido: sentido,
+                texto: texto, posicionLetras: posicionLetras)
             return
         }
 
@@ -149,13 +150,16 @@ public struct Intervalo: Hashable, Sendable {
         guard let numero = lector.leerEntero(), numero >= 1 else {
             throw antesDelNumero.error(.numeroDeIntervaloNoValido(antesDelNumero.fragmento))
         }
-        self = try Intervalo.construir(numero: numero, letras: lector.restoSinEspacios, sentido: sentido,
-                                       texto: texto, posicionLetras: lector.posicion)
+        self = try Intervalo.construir(
+            numero: numero, letras: lector.restoSinEspacios, sentido: sentido,
+            texto: texto, posicionLetras: lector.posicion)
     }
 
     /// Intervalo a partir de su número y las letras de su calidad (J/P, M, m, A…, d…).
-    private static func construir(numero: Int, letras: String, sentido: SentidoDelIntervalo,
-                                  texto: String, posicionLetras: Int) throws -> Intervalo {
+    private static func construir(
+        numero: Int, letras: String, sentido: SentidoDelIntervalo,
+        texto: String, posicionLetras: Int
+    ) throws -> Intervalo {
         let calidad: CalidadDeIntervalo
         if letras == "J" || letras == "P" {
             calidad = .justa
@@ -168,13 +172,15 @@ public struct Intervalo: Hashable, Sendable {
         } else if !letras.isEmpty && letras.allSatisfy({ $0 == "d" }) {
             calidad = .disminuida(letras.count)
         } else {
-            throw ErrorDeLectura(texto: texto, posicion: posicionLetras,
-                                  motivo: .calidadNoValida(letras))
+            throw ErrorDeLectura(
+                texto: texto, posicion: posicionLetras,
+                motivo: .calidadNoValida(letras))
         }
         guard let intervalo = Intervalo(numero: numero, calidad: calidad, sentido: sentido) else {
             let inicio = texto.drop(while: { $0 == " " || $0 == "-" })
-            throw ErrorDeLectura(texto: texto, posicion: inicio.posicionEnOrigen,
-                                  motivo: .intervaloInexistente(numero: numero, calidad: calidad))
+            throw ErrorDeLectura(
+                texto: texto, posicion: inicio.posicionEnOrigen,
+                motivo: .intervaloInexistente(numero: numero, calidad: calidad))
         }
         return intervalo
     }
@@ -207,12 +213,12 @@ public struct Intervalo: Hashable, Sendable {
     /// Las octavas no alteran la calidad: basta con mirar la coordenada de quintas.
     public var calidad: CalidadDeIntervalo {
         let alteraciones = divisionEntera(pasosDeQuinta + 1, 7)
-        let base = pasosDeQuinta - 7 * alteraciones   // −1…5
-        if base <= 1 {                                // 4ª, unísono, 5ª
+        let base = pasosDeQuinta - 7 * alteraciones // −1…5
+        if base <= 1 { // 4ª, unísono, 5ª
             if alteraciones == 0 { return .justa }
             return alteraciones > 0 ? .aumentada(alteraciones) : .disminuida(-alteraciones)
         }
-        switch alteraciones {                         // 2ª, 6ª, 3ª, 7ª
+        switch alteraciones { // 2ª, 6ª, 3ª, 7ª
         case 0: return .mayor
         case -1: return .menor
         default: return alteraciones > 0 ? .aumentada(alteraciones) : .disminuida(-alteraciones - 1)
@@ -264,18 +270,22 @@ public struct Intervalo: Hashable, Sendable {
 
     /// Reducción a intervalo simple: 9ª mayor → 2ª mayor; conserva la dirección.
     public var simple: Intervalo {
-        return Intervalo(pasosDeQuinta: pasosDeQuinta, pasosDeOctava: (pasosSimples - 4 * pasosDeQuinta) / 7, sentido: sentido)
+        return Intervalo(
+            pasosDeQuinta: pasosDeQuinta, pasosDeOctava: (pasosSimples - 4 * pasosDeQuinta) / 7, sentido: sentido)
     }
 
     /// Inversión dentro de la octava: 3ª mayor ↔ 6ª menor, 4ª aumentada ↔ 5ª disminuida.
     /// Es la diferencia entre la octava (0, 1) y el intervalo simple.
     public var inversion: Intervalo {
         let reducido = simple
-        return Intervalo(pasosDeQuinta: -reducido.pasosDeQuinta, pasosDeOctava: 1 - reducido.pasosDeOctava, sentido: sentido)
+        return Intervalo(
+            pasosDeQuinta: -reducido.pasosDeQuinta, pasosDeOctava: 1 - reducido.pasosDeOctava, sentido: sentido)
     }
 
     public var ascendente: Intervalo { Intervalo(pasosDeQuinta: pasosDeQuinta, pasosDeOctava: pasosDeOctava) }
-    public var descendente: Intervalo { Intervalo(pasosDeQuinta: pasosDeQuinta, pasosDeOctava: pasosDeOctava, sentido: .descendente) }
+    public var descendente: Intervalo {
+        Intervalo(pasosDeQuinta: pasosDeQuinta, pasosDeOctava: pasosDeOctava, sentido: .descendente)
+    }
 
     /// ¿Mismo tamaño en semitonos? (4ª aumentada y 5ª disminuida → `true`).
     public func esEnarmonico(de otro: Intervalo) -> Bool {
@@ -285,13 +295,15 @@ public struct Intervalo: Hashable, Sendable {
     // MARK: Aritmética vectorial
 
     public static prefix func - (i: Intervalo) -> Intervalo {
-        Intervalo(pasosDeQuinta: i.pasosDeQuinta, pasosDeOctava: i.pasosDeOctava,
-                  sentido: i.sentido == .ascendente ? .descendente : .ascendente)
+        Intervalo(
+            pasosDeQuinta: i.pasosDeQuinta, pasosDeOctava: i.pasosDeOctava,
+            sentido: i.sentido == .ascendente ? .descendente : .ascendente)
     }
 
     public static func + (a: Intervalo, b: Intervalo) -> Intervalo {
-        Intervalo(pasosDeQuinta: a.pasosDeQuintaConSigno + b.pasosDeQuintaConSigno,
-                  pasosDeOctava: a.pasosDeOctavaConSigno + b.pasosDeOctavaConSigno)
+        Intervalo(
+            pasosDeQuinta: a.pasosDeQuintaConSigno + b.pasosDeQuintaConSigno,
+            pasosDeOctava: a.pasosDeOctavaConSigno + b.pasosDeOctavaConSigno)
     }
 
     public static func - (a: Intervalo, b: Intervalo) -> Intervalo { a + (-b) }
@@ -427,7 +439,7 @@ extension Intervalo {
         case .ingles, .aleman, .griego, .ruso:
             nombre = "\(calidad) \(ordinal)"
         case .espanol, .catalan, .gallego, .asturiano, .aragones, .euskera, .portugues, .frances, .occitano,
-             .italiano:
+            .italiano:
             nombre = "\(ordinal) \(calidad)"
         }
         return sentido == .descendente ? Intervalo.plantillaDescendente.en(notacion).rellenada(con: nombre) : nombre
@@ -450,7 +462,7 @@ extension Intervalo {
             if calidad.hasSuffix("a") { return String(calidad.dropLast()) }
             return calidad
         case .espanol, .ingles, .catalan, .gallego, .asturiano, .aragones, .euskera, .portugues, .aleman, .griego,
-             .ruso:
+            .ruso:
             return calidad
         }
     }
@@ -487,20 +499,34 @@ extension Intervalo {
     /// Los nombres de los intervalos del unísono a la doble octava, en los idiomas que los nombran con palabras.
     /// Todos son femeninos, como sus calidades, salvo el unísono en francés, occitano y italiano.
     private static let ordinales: [Idioma: [String]] = [
-        .ingles: ["unison", "second", "third", "fourth", "fifth", "sixth", "seventh", "octave", "ninth", "tenth",
-                  "eleventh", "twelfth", "thirteenth", "fourteenth", "double octave"],
-        .frances: ["unisson", "seconde", "tierce", "quarte", "quinte", "sixte", "septième", "octave", "neuvième",
-                   "dixième", "onzième", "douzième", "treizième", "quatorzième", "double octave"],
-        .italiano: ["unisono", "seconda", "terza", "quarta", "quinta", "sesta", "settima", "ottava", "nona",
-                    "decima", "undicesima", "dodicesima", "tredicesima", "quattordicesima", "doppia ottava"],
-        .aleman: ["Prime", "Sekunde", "Terz", "Quarte", "Quinte", "Sexte", "Septime", "Oktave", "None", "Dezime",
-                  "Undezime", "Duodezime", "Tredezime", "Quartdezime", "Doppeloktave"],
-        .occitano: ["unisson", "segonda", "tèrça", "quarta", "quinta", "sexta", "setena", "octava", "novena",
-                    "desena", "onzena", "dotzena", "tretzena", "catorzena", "doble octava"],
-        .ruso: ["прима", "секунда", "терция", "кварта", "квинта", "секста", "септима", "октава", "нона", "децима",
-                "ундецима", "дуодецима", "терцдецима", "квартдецима", "двойная октава"],
-        .griego: ["πρώτη", "δεύτερη", "τρίτη", "τέταρτη", "πέμπτη", "έκτη", "έβδομη", "όγδοη", "ένατη", "δέκατη",
-                  "ενδέκατη", "δωδέκατη", "δέκατη τρίτη", "δέκατη τέταρτη", "διπλή όγδοη"],
+        .ingles: [
+            "unison", "second", "third", "fourth", "fifth", "sixth", "seventh", "octave", "ninth", "tenth",
+            "eleventh", "twelfth", "thirteenth", "fourteenth", "double octave",
+        ],
+        .frances: [
+            "unisson", "seconde", "tierce", "quarte", "quinte", "sixte", "septième", "octave", "neuvième",
+            "dixième", "onzième", "douzième", "treizième", "quatorzième", "double octave",
+        ],
+        .italiano: [
+            "unisono", "seconda", "terza", "quarta", "quinta", "sesta", "settima", "ottava", "nona",
+            "decima", "undicesima", "dodicesima", "tredicesima", "quattordicesima", "doppia ottava",
+        ],
+        .aleman: [
+            "Prime", "Sekunde", "Terz", "Quarte", "Quinte", "Sexte", "Septime", "Oktave", "None", "Dezime",
+            "Undezime", "Duodezime", "Tredezime", "Quartdezime", "Doppeloktave",
+        ],
+        .occitano: [
+            "unisson", "segonda", "tèrça", "quarta", "quinta", "sexta", "setena", "octava", "novena",
+            "desena", "onzena", "dotzena", "tretzena", "catorzena", "doble octava",
+        ],
+        .ruso: [
+            "прима", "секунда", "терция", "кварта", "квинта", "секста", "септима", "октава", "нона", "децима",
+            "ундецима", "дуодецима", "терцдецима", "квартдецима", "двойная октава",
+        ],
+        .griego: [
+            "πρώτη", "δεύτερη", "τρίτη", "τέταρτη", "πέμπτη", "έκτη", "έβδομη", "όγδοη", "ένατη", "δέκατη",
+            "ενδέκατη", "δωδέκατη", "δέκατη τρίτη", "δέκατη τέταρτη", "διπλή όγδοη",
+        ],
     ]
 }
 

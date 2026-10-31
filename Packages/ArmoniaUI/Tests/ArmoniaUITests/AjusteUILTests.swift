@@ -1,7 +1,8 @@
-import XCTest
 import Armonia
-@testable import ArmoniaUI
+import XCTest
+
 @testable import ArmoniaPresentacion
+@testable import ArmoniaUI
 
 // El teclado UIL de la app Tonnetz con cada teclado del artículo, y los avisos del coral en todos los idiomas.
 // No usa SwiftUI: se ejecuta también en Linux.
@@ -14,7 +15,8 @@ final class AjusteUILTests: XCTestCase {
             let ajuste = AjusteUIL(texto: conocido.texto)
             XCTAssertNotNil(ajuste.teclado, conocido.nombre)
             XCTAssertNotNil(ajuste.resultado, conocido.nombre)
-            XCTAssertNotNil(PresentacionDeRedes.svg(doMayor, en: .uil, notacion: .espanolUnicode, uil: ajuste), conocido.nombre)
+            XCTAssertNotNil(
+                PresentacionDeRedes.svg(doMayor, en: .uil, notacion: .espanolUnicode, uil: ajuste), conocido.nombre)
         }
     }
 
@@ -22,8 +24,9 @@ final class AjusteUILTests: XCTestCase {
         for conocido in AjusteUIL.conocidos {
             let ajuste = AjusteUIL(texto: conocido.texto)
             XCTAssertEqual(AjusteUIL(texto: conocido.texto, giros: 12).resultado, ajuste.resultado, conocido.nombre)
-            XCTAssertEqual(AjusteUIL(texto: conocido.texto, giros: -1).resultado,
-                           AjusteUIL(texto: conocido.texto, giros: 11).resultado, conocido.nombre)
+            XCTAssertEqual(
+                AjusteUIL(texto: conocido.texto, giros: -1).resultado,
+                AjusteUIL(texto: conocido.texto, giros: 11).resultado, conocido.nombre)
             XCTAssertNotEqual(AjusteUIL(texto: conocido.texto, giros: 1).resultado, ajuste.resultado, conocido.nombre)
         }
     }
@@ -59,8 +62,10 @@ final class AjusteUILTests: XCTestCase {
 
 final class AvisosDelCoralTests: XCTestCase {
     func testLosAvisosTienenTextoEnCadaNotacion() {
-        let avisos: [CoralPresentado.Aviso] = [.sinArmonizacion, .faltanOctavas, .sinCoralParaLaMelodia, .sinRealizacion,
-                                              .sinFaltasDeConduccion]
+        let avisos: [CoralPresentado.Aviso] = [
+            .sinArmonizacion, .faltanOctavas, .sinCoralParaLaMelodia, .sinRealizacion,
+            .sinFaltasDeConduccion,
+        ]
         for notacion in Notacion.allCases {
             for aviso in avisos {
                 XCTAssertFalse(aviso.texto(en: notacion).isEmpty, "\(aviso) en \(notacion)")
@@ -68,7 +73,8 @@ final class AvisosDelCoralTests: XCTestCase {
         }
         // Y cada uno dice algo distinto.
         XCTAssertEqual(Set(avisos.map { $0.texto(en: .espanolUnicode) }).count, avisos.count)
-        XCTAssertNotEqual(CoralPresentado.Aviso.sinRealizacion.texto(en: .espanolUnicode),
-                          CoralPresentado.Aviso.sinRealizacion.texto(en: .inglesASCII))
+        XCTAssertNotEqual(
+            CoralPresentado.Aviso.sinRealizacion.texto(en: .espanolUnicode),
+            CoralPresentado.Aviso.sinRealizacion.texto(en: .inglesASCII))
     }
 }

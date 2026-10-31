@@ -1,6 +1,6 @@
-import SwiftUI
 import Armonia
 import ArmoniaUI
+import SwiftUI
 
 /// Un acorde, una escala o un recorrido de tríadas con las transformaciones P, L y R, en el Tonnetz, en la
 /// tabla armónica o en un teclado isomórfico (Wicki-Hayden, Jankó o acordeón cromático), y su dibujo para exportar. Al tocar una
@@ -69,7 +69,8 @@ struct VistaDeTonnetz: View {
                         }
                     }
                     .clipShape(RoundedRectangle(cornerRadius: TemaDeLasApps.radioDeEsquina))
-                    .accessibilityLabel(Text(PresentacionDeRedes.nombre(dibujado, en: red, notacion: notacion, uil: uil)))
+                    .accessibilityLabel(
+                        Text(PresentacionDeRedes.nombre(dibujado, en: red, notacion: notacion, uil: uil)))
             } else {
                 Spacer()
                 Text(notacion.texto(.noSeDibuja)).foregroundColor(.secondary)
@@ -172,13 +173,15 @@ struct VistaDeTonnetz: View {
         guard !clasesTocadas.isEmpty else { return notacion.texto(.tocaNotas) }
         let acordes = PresentacionDeRedes.acordes(de: clasesTocadas)
         guard let primero = acordes.first else {
-            let notas = ContenidoDeRed.clases(clasesTocadas).notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
+            let notas = ContenidoDeRed.clases(clasesTocadas).notas.map { $0.nombre(en: notacion) }.joined(
+                separator: " ")
             return clasesTocadas.count < 2 ? notas : notas + " · " + notacion.texto(.sinAcordeConocido)
         }
         let otros = acordes.dropFirst().prefix(3).map { $0.cifrado(en: notacion) }
-        let forte = PresentacionPostonal(clases: clasesTocadas).numeroDeForte.map {
-            "\n" + notacion.texto(.numeroDeForte) + ": " + $0
-        } ?? ""
+        let forte =
+            PresentacionPostonal(clases: clasesTocadas).numeroDeForte.map {
+                "\n" + notacion.texto(.numeroDeForte) + ": " + $0
+            } ?? ""
         return primero.cifrado(en: notacion) + " · " + primero.nombre(en: notacion)
             + (otros.isEmpty ? "" : "\n" + otros.joined(separator: ", ")) + forte
     }
@@ -213,7 +216,9 @@ struct VistaDeTonnetz: View {
     }
 
     private var ficheros: [FicheroParaExportar] {
-        guard let dibujado, let svg = PresentacionDeRedes.svg(dibujado, en: red, notacion: notacion, uil: uil) else { return [] }
+        guard let dibujado, let svg = PresentacionDeRedes.svg(dibujado, en: red, notacion: notacion, uil: uil) else {
+            return []
+        }
         return [.svg(svg, nombre: PresentacionDeRedes.nombre(dibujado, en: red, notacion: notacion, uil: uil))]
     }
 

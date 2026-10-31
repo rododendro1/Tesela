@@ -1,9 +1,10 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class TonalidadTests: XCTestCase {
     private func escrito(_ escala: Escala, _ midi: [Int]) -> [String] {
@@ -44,15 +45,18 @@ final class TonalidadTests: XCTestCase {
         let laMenor = Tonalidad.candidatos(midi: [69, 71, 72, 74, 76, 77, 80, 81, 69, 76, 69])
         XCTAssertEqual(laMenor.first?.valor, Tonalidad(.la, .menor))
 
-        XCTAssertEqual(Tonalidad.candidatos(midi: [61, 63, 65, 66, 68, 70, 72, 73]).first?.valor.nombre,
-                       "Re♭ mayor")
-        XCTAssertEqual(Tonalidad.candidatos(midi: [66, 68, 70, 71, 73, 75, 77, 78]).first?.valor.nombre,
-                       "Fa♯ mayor")
+        XCTAssertEqual(
+            Tonalidad.candidatos(midi: [61, 63, 65, 66, 68, 70, 72, 73]).first?.valor.nombre,
+            "Re♭ mayor")
+        XCTAssertEqual(
+            Tonalidad.candidatos(midi: [66, 68, 70, 71, 73, 75, 77, 78]).first?.valor.nombre,
+            "Fa♯ mayor")
         let solBemol: [Nota] = ["Solb", "Lab", "Sib", "Dob", "Reb", "Mib", "Fa"]
         XCTAssertEqual(Tonalidad.candidatos(notas: solBemol).first?.valor.nombre, "Sol♭ mayor")
 
-        let ponderada = Tonalidad.candidatos(midi: [60, 64, 67, 72, 67, 64, 60],
-                                                duraciones: [2, 1, 1, 2, 1, 1, 2])
+        let ponderada = Tonalidad.candidatos(
+            midi: [60, 64, 67, 72, 67, 64, 60],
+            duraciones: [2, 1, 1, 2, 1, 1, 2])
         XCTAssertEqual(ponderada.first?.valor, Tonalidad(.do))
         XCTAssertTrue(Tonalidad.candidatos(midi: []).isEmpty)
     }
@@ -79,8 +83,9 @@ final class TonalidadTipoTests: XCTestCase {
         XCTAssertEqual(laMenor.homonima, Tonalidad(.la))
         XCTAssertEqual(Tonalidad(.do).distancia(hasta: Tonalidad(.mi)), 4)
         XCTAssertEqual(Tonalidad("Do# mayor").enarmonicaMasSimple, Tonalidad("Reb mayor"))
-        XCTAssertEqual(Set(laMenor.vecinas),
-                       [Tonalidad(.do), Tonalidad(.mi, .menor), Tonalidad(.sol), Tonalidad(.re, .menor), Tonalidad(.fa)])
+        XCTAssertEqual(
+            Set(laMenor.vecinas),
+            [Tonalidad(.do), Tonalidad(.mi, .menor), Tonalidad(.sol), Tonalidad(.re, .menor), Tonalidad(.fa)])
     }
 
     func testFuncionesYArmonia() {
@@ -92,18 +97,21 @@ final class TonalidadTipoTests: XCTestCase {
         XCTAssertEqual(Tonalidad(.do).nombreDeGrado(de: .si), .sensible)
 
         XCTAssertEqual(laMenor.armonizar().map(\.cifrado), ["Lam", "Si°", "Do", "Rem", "Mi", "Fa", "Sol♯°"])
-        XCTAssertEqual(laMenor.armonizar(cuatriadas: true).map(\.cifrado),
-                       ["Lam7", "Sim7(♭5)", "Domaj7", "Rem7", "Mi7", "Famaj7", "Sol♯°7"])
+        XCTAssertEqual(
+            laMenor.armonizar(cuatriadas: true).map(\.cifrado),
+            ["Lam7", "Sim7(♭5)", "Domaj7", "Rem7", "Mi7", "Famaj7", "Sol♯°7"])
         XCTAssertEqual(laMenor.cifradosRomanos(), ["i", "ii°", "III", "iv", "V", "VI", "vii°"])
-        XCTAssertEqual(laMenor.cifradosRomanos(cuatriadas: true),
-                       ["i7", "iiø7", "IIImaj7", "iv7", "V7", "VImaj7", "vii°7"])
+        XCTAssertEqual(
+            laMenor.cifradosRomanos(cuatriadas: true),
+            ["i7", "iiø7", "IIImaj7", "iv7", "V7", "VImaj7", "vii°7"])
         XCTAssertEqual(Tonalidad(.do).cifradosRomanos(), ["I", "ii", "iii", "IV", "V", "vi", "vii°"])
     }
 
     func testOrtografiaEIdentificacion() {
         XCTAssertEqual(laMenor.ortografiar(midi: [69, 68, 69]).map(\.description), ["La4", "Sol♯4", "La4"])
-        XCTAssertEqual(laMenor.ortografiar(midi: [76, 77, 78, 80, 81]).map(\.description),
-                       ["Mi5", "Fa5", "Fa♯5", "Sol♯5", "La5"])
+        XCTAssertEqual(
+            laMenor.ortografiar(midi: [76, 77, 78, 80, 81]).map(\.description),
+            ["Mi5", "Fa5", "Fa♯5", "Sol♯5", "La5"])
         XCTAssertEqual(Altura(midi: 68, tonalidad: laMenor).description, "Sol♯4")
         XCTAssertEqual(Acorde.identificar(midi: [60, 64, 68], tonalidad: laMenor).first?.cifrado, "Do+")
         XCTAssertEqual(Acorde.identificar(midi: [66, 70, 73], escala: Escala("Solb mayor")).first?.cifrado, "Sol♭")
@@ -122,7 +130,8 @@ final class TonalidadTipoTests: XCTestCase {
         }
         for tonalidad in Tonalidad.circuloDeQuintas() + Tonalidad.circuloDeQuintas(.menor) {
             for notacion in Notacion.allCases {
-                XCTAssertEqual(Tonalidad(texto: tonalidad.texto(en: notacion)), tonalidad, tonalidad.texto(en: notacion))
+                XCTAssertEqual(
+                    Tonalidad(texto: tonalidad.texto(en: notacion)), tonalidad, tonalidad.texto(en: notacion))
             }
         }
         let datos = try JSONEncoder().encode([laMenor])

@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+
 // Ritmo: figuras, duraciones exactas y tempo. Los compases están en Compas.swift, los eventos
 // (notas con duración) en Evento.swift y las voces, que encadenan eventos en un compás, en
 // Melodia.swift.
@@ -12,7 +13,8 @@ import ArmoniaTeoria
 
 /// Figuras musicales, de la cuadrada (dos redondas) a la garrapatea (1/128).
 public enum Figura: Int, CaseIterable, Hashable, Sendable, CustomStringConvertible {
-    case cuadrada = -1, redonda, blanca, negra, corchea, semicorchea, fusa, semifusa, garrapatea
+    case cuadrada = -1
+    case redonda, blanca, negra, corchea, semicorchea, fusa, semifusa, garrapatea
 
     /// Duración en redondas: blanca → 1/2, negra → 1/4, cuadrada → 2.
     public var duracion: Duracion {
@@ -75,14 +77,16 @@ public struct Duracion: Hashable, Sendable, Comparable {
         let error = ErrorDeLectura(texto: texto, posicion: nil, motivo: .duracionNoValida(limpio))
         if let barra = limpio.firstIndex(of: "/") {
             guard let numerador = Int(limpio[..<barra]), let denominador = Int(limpio[limpio.index(after: barra)...]),
-                  numerador >= 0, denominador > 0 else { throw error }
+                numerador >= 0, denominador > 0
+            else { throw error }
             self.init(numerador, denominador)
             return
         }
         let cifras = limpio.cifrasIniciales
         let puntos = limpio.dropFirst(cifras.count)
         guard let divisor = Int(cifras), divisor > 0, divisor & (divisor - 1) == 0, divisor <= 128,
-              puntos.allSatisfy({ $0 == "." }) else { throw error }
+            puntos.allSatisfy({ $0 == "." })
+        else { throw error }
         let figura = Figura(rawValue: divisor.trailingZeroBitCount)!
         self.init(figura, puntillos: puntos.count)
     }
@@ -230,14 +234,17 @@ public struct Tempo: Hashable, Sendable, CustomStringConvertible {
     /// la época y el metrónomo): Grave < 40 ≤ Largo < 60 ≤ Larghetto < 66 ≤ Adagio < 76 ≤
     /// Andante < 108 ≤ Moderato < 120 ≤ Allegro < 168 ≤ Presto < 200 ≤ Prestissimo.
     public var indicacion: String {
-        let tabla: [(Double, String)] = [(40, "Grave"), (60, "Largo"), (66, "Larghetto"), (76, "Adagio"),
-                                         (108, "Andante"), (120, "Moderato"), (168, "Allegro"), (200, "Presto")]
+        let tabla: [(Double, String)] = [
+            (40, "Grave"), (60, "Largo"), (66, "Larghetto"), (76, "Adagio"),
+            (108, "Andante"), (120, "Moderato"), (168, "Allegro"), (200, "Presto"),
+        ]
         return tabla.first { negrasPorMinuto < $0.0 }?.1 ?? "Prestissimo"
     }
 
     /// "♩ = 120" o, con otra unidad, "negra con puntillo = 60".
     public var description: String {
-        let cifra = pulsacionesPorMinuto.rounded() == pulsacionesPorMinuto
+        let cifra =
+            pulsacionesPorMinuto.rounded() == pulsacionesPorMinuto
             ? String(Int(pulsacionesPorMinuto)) : String(pulsacionesPorMinuto)
         return (unidad == .negra ? "♩" : unidad.nombre) + " = " + cifra
     }

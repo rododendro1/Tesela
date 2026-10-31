@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+
 // Contrapunto de especies a dos voces, como lo enseña Fux en el Gradus ad Parnassum (1725): un
 // cantus firmus en redondas y, encima o debajo, un contrapunto de la especie que se practica.
 // Las reglas son las del contrapunto estricto; `FaltaDeContrapunto.Tipo` explica cada una.
@@ -85,7 +86,8 @@ public struct FaltaDeContrapunto: Hashable, Sendable, CustomStringConvertible {
 /// puede serlo).
 public struct Contrapunto: Hashable, Sendable {
     public enum Especie: Int, Hashable, Sendable, CaseIterable {
-        case primera = 1, segunda, tercera, cuarta, quinta
+        case primera = 1
+        case segunda, tercera, cuarta, quinta
 
         /// La figura de las notas que se escriben sin duración: redonda, blanca, negra, blanca y negra.
         public var figura: Duracion {
@@ -106,7 +108,8 @@ public struct Contrapunto: Hashable, Sendable {
     /// `nil` si el cantus está vacío o si el contrapunto no dura una redonda por cada nota del cantus.
     public init?(cantusFirmus: [Altura], contrapunto: [Evento], especie: Especie) {
         guard !cantusFirmus.isEmpty,
-              contrapunto.map(\.duracion).sumar() == Duracion(cantusFirmus.count) else { return nil }
+            contrapunto.map(\.duracion).sumar() == Duracion(cantusFirmus.count)
+        else { return nil }
         self.cantusFirmus = cantusFirmus
         self.contrapunto = Voz(contrapunto, compas: Compas(4, 4))
         self.especie = especie
@@ -127,10 +130,13 @@ public struct Contrapunto: Hashable, Sendable {
         }
         guard !cantus.isEmpty else { throw ErrorDeLectura(texto: cantusFirmus, posicion: nil, motivo: .textoVacio) }
         let figura = especie.figura == .redonda ? "1" : (especie.figura == .blanca ? "2" : "4")
-        let eventos = contrapunto.split(separator: " ").map { $0.contains(":") ? String($0) : String($0) + ":" + figura }
+        let eventos = contrapunto.split(separator: " ").map {
+            $0.contains(":") ? String($0) : String($0) + ":" + figura
+        }
         let voz = try Voz(leyendo: eventos.joined(separator: " "))
         guard let leido = Contrapunto(cantusFirmus: cantus, contrapunto: voz.eventos, especie: especie) else {
-            throw ErrorDeLectura(texto: contrapunto, posicion: nil, motivo: .contrapuntoDeOtraDuracion(redondas: cantus.count))
+            throw ErrorDeLectura(
+                texto: contrapunto, posicion: nil, motivo: .contrapuntoDeOtraDuracion(redondas: cantus.count))
         }
         self = leido
     }
@@ -178,7 +184,8 @@ public struct Contrapunto: Hashable, Sendable {
                 }
                 guard let nota = evento.alturas.first else { continue }
                 let ligada = anterior.map { $0.ligada && $0.alturas == evento.alturas } ?? false
-                resultado.append(Sonoridad(compas: c, inicio: inicio, nota: nota, cantus: cantusFirmus[c], ataque: !ligada))
+                resultado.append(
+                    Sonoridad(compas: c, inicio: inicio, nota: nota, cantus: cantusFirmus[c], ataque: !ligada))
             }
         }
         return resultado
@@ -209,7 +216,9 @@ public struct Contrapunto: Hashable, Sendable {
             if perfecta == nil || (!arriba && perfecta == 5) { anotar(.comienzoImperfecto, primera.compas) }
         }
         if let ultima = ataques.last {
-            if Contrapunto.perfecta(ultima.intervalo) != 8 || ultima.compas != ultimo { anotar(.finalImperfecto, ultima.compas) }
+            if Contrapunto.perfecta(ultima.intervalo) != 8 || ultima.compas != ultimo {
+                anotar(.finalImperfecto, ultima.compas)
+            }
             if ataques.count > 1, !Contrapunto.esGrado(ataques[ataques.count - 2].nota, ultima.nota) {
                 anotar(.finalSinGradoConjunto, ataques[ataques.count - 2].compas, ultima.compas)
             }
@@ -220,7 +229,8 @@ public struct Contrapunto: Hashable, Sendable {
             if arriba ? s.nota.midi < s.cantus.midi : s.nota.midi > s.cantus.midi { anotar(.cruceDeVoces, s.compas) }
             let disonante = Contrapunto.esDisonancia(s.intervalo)
             if s.enParteFuerte && s.ataque && s.compas != 0 && s.compas != ultimo
-                && s.intervalo.numero == 1 && s.intervalo.calidad == .justa {
+                && s.intervalo.numero == 1 && s.intervalo.calidad == .justa
+            {
                 anotar(.unisono, s.compas)
             }
             guard disonante else { continue }
@@ -237,7 +247,8 @@ public struct Contrapunto: Hashable, Sendable {
 
         // De una nota a la siguiente.
         for i in ataques.indices.dropLast() {
-            let a = ataques[i], b = ataques[i + 1]
+            let a = ataques[i]
+            let b = ataques[i + 1]
             let salto = a.nota.intervalo(hasta: b.nota)
             let subeElContrapunto = b.nota.midi - a.nota.midi
             if Contrapunto.esSaltoNoMelodico(salto, ascendente: subeElContrapunto > 0) {
@@ -246,7 +257,9 @@ public struct Contrapunto: Hashable, Sendable {
             if a.nota == b.nota && especie != .primera { anotar(.notaRepetida, a.compas, b.compas) }
             if salto.numero >= 5 && subeElContrapunto != 0, i + 2 < ataques.count {
                 let vuelta = ataques[i + 2].nota.midi - b.nota.midi
-                if vuelta == 0 || (vuelta > 0) == (subeElContrapunto > 0) { anotar(.saltoSinCompensar, a.compas, b.compas) }
+                if vuelta == 0 || (vuelta > 0) == (subeElContrapunto > 0) {
+                    anotar(.saltoSinCompensar, a.compas, b.compas)
+                }
             }
             // Paralelas y directas: solo cuando se mueven las dos voces.
             let subeElCantus = b.cantus.midi - a.cantus.midi
@@ -263,13 +276,16 @@ public struct Contrapunto: Hashable, Sendable {
         // En la segunda especie, también de parte fuerte a parte fuerte.
         if especie == .segunda {
             let fuertes = ataques.filter(\.enParteFuerte)
-            for (a, b) in zip(fuertes, fuertes.dropFirst()) where b.compas == a.compas + 1 && a.cantus != b.cantus && a.nota != b.nota {
+            for (a, b) in zip(fuertes, fuertes.dropFirst())
+            where b.compas == a.compas + 1 && a.cantus != b.cantus && a.nota != b.nota {
                 if let antes = Contrapunto.perfecta(a.intervalo), antes == Contrapunto.perfecta(b.intervalo) {
                     anotar(antes == 5 ? .quintasParalelas : .octavasParalelas, a.compas, b.compas)
                 }
             }
         }
-        return faltas.sorted { ($0.compases.lowerBound, $0.compases.upperBound) < ($1.compases.lowerBound, $1.compases.upperBound) }
+        return faltas.sorted {
+            ($0.compases.lowerBound, $0.compases.upperBound) < ($1.compases.lowerBound, $1.compases.upperBound)
+        }
     }
 
     /// Si un compás tiene el ritmo de la especie.
@@ -278,7 +294,9 @@ public struct Contrapunto: Hashable, Sendable {
         let silencios = eventos.map(\.esSilencio)
         let silencioInicial = c == 0 && silencios.first == true
         // Ningún silencio, salvo el primero del primer compás.
-        guard !silencios.enumerated().contains(where: { $0.element && !($0.offset == 0 && silencioInicial) }) else { return false }
+        guard !silencios.enumerated().contains(where: { $0.element && !($0.offset == 0 && silencioInicial) }) else {
+            return false
+        }
         if c == ultimo { return duraciones == [.redonda] }
         switch especie {
         case .primera:
@@ -300,7 +318,8 @@ public struct Contrapunto: Hashable, Sendable {
         let retardo = todas[k]
         // La preparación: la nota atacada de la que viene ligada.
         guard let preparacion = todas[..<k].last(where: \.ataque), !Contrapunto.esDisonancia(preparacion.intervalo),
-              k + 1 < todas.count else { return false }
+            k + 1 < todas.count
+        else { return false }
         let resolucion = todas[k + 1]
         return resolucion.ataque && resolucion.compas == retardo.compas
             && resolucion.nota.midi < retardo.nota.midi && Contrapunto.esGrado(retardo.nota, resolucion.nota)
@@ -311,8 +330,10 @@ public struct Contrapunto: Hashable, Sendable {
     /// o, desde la tercera especie, también volviendo (bordadura). En la cuarta especie no se admite.
     private func disonanciaDebilBienTratada(_ s: Sonoridad, _ ataques: [Sonoridad]) -> Bool {
         guard especie != .cuarta, especie != .primera,
-              let i = ataques.firstIndex(of: s), i > 0, i + 1 < ataques.count else { return false }
-        let antes = ataques[i - 1].nota, despues = ataques[i + 1].nota
+            let i = ataques.firstIndex(of: s), i > 0, i + 1 < ataques.count
+        else { return false }
+        let antes = ataques[i - 1].nota
+        let despues = ataques[i + 1].nota
         guard Contrapunto.esGrado(antes, s.nota), Contrapunto.esGrado(s.nota, despues) else { return false }
         let mismoSentido = (s.nota.midi - antes.midi > 0) == (despues.midi - s.nota.midi > 0)
         return mismoSentido || especie != .segunda
@@ -335,7 +356,8 @@ public struct Contrapunto: Hashable, Sendable {
     /// y menores (simples o compuestas); a dos voces, la cuarta justa es disonancia.
     package static func esDisonancia(_ intervalo: Intervalo) -> Bool {
         if perfecta(intervalo) != nil { return false }
-        let imperfecta = [3, 6].contains(intervalo.numeroSimple) && (intervalo.calidad == .mayor || intervalo.calidad == .menor)
+        let imperfecta =
+            [3, 6].contains(intervalo.numeroSimple) && (intervalo.calidad == .mayor || intervalo.calidad == .menor)
         return !imperfecta
     }
 
@@ -421,11 +443,14 @@ extension Contrapunto {
     ///     Quintas paralelas (compases 1 → 2)
     public func informe(en notacion: Notacion = .espanolUnicode) -> String {
         let n = especie.rawValue
-        let cabecera = contrapuntoArriba
+        let cabecera =
+            contrapuntoArriba
             ? TextosDePartitura.traducidos.map { $0.especieConElContrapuntoEncima(n) }
             : TextosDePartitura.traducidos.map { $0.especieConElContrapuntoDebajo(n) }
         let faltas = self.faltas
-        let lineas = faltas.isEmpty ? [TextosDePartitura.traducidos.map(\.sinFaltas).en(notacion)] : faltas.map { $0.descripcion(en: notacion) }
+        let lineas =
+            faltas.isEmpty
+            ? [TextosDePartitura.traducidos.map(\.sinFaltas).en(notacion)] : faltas.map { $0.descripcion(en: notacion) }
         return ([cabecera.en(notacion)] + lineas).joined(separator: "\n")
     }
 }

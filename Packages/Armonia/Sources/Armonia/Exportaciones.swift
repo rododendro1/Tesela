@@ -3,7 +3,7 @@
 // (`import ArmoniaTeoria` trae el Núcleo, de que depende, pero no la Partitura ni las Representaciones).
 
 @_exported import ArmoniaNucleo
-@_exported import ArmoniaTeoria
-@_exported import ArmoniaRepresentaciones
 @_exported import ArmoniaPartitura
+@_exported import ArmoniaRepresentaciones
+@_exported import ArmoniaTeoria
 @_exported import ArmoniaTrastes

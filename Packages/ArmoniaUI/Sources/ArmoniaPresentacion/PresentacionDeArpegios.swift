@@ -17,21 +17,25 @@ public enum PresentacionDeArpegios {
     ///     arpegio.ficheros.map(\.formato)   // [.musicXML, .mei, .midi]
     public static func arpegio(_ arpegio: Arpegio, notacion: Notacion) -> ArpegioPresentado {
         let voz = Voz(arpegio, figura: .corchea, octava: 4)
-        return presentar(voz, nombre: arpegio.nombre(en: notacion), tonalidad: nil,
-                         tonica: arpegio.acorde.fundamental)
+        return presentar(
+            voz, nombre: arpegio.nombre(en: notacion), tonalidad: nil,
+            tonica: arpegio.acorde.fundamental)
     }
 
     /// Una progresión arpegiada: cada acorde dura una blanca, en corcheas, y el patrón se repite hasta
     /// llenarla. La tonalidad, si se da, pone la armadura de las partituras.
-    public static func progresion(_ acordes: [Acorde], patron: Arpegio.Patron, tonalidad: Tonalidad?,
-                                  notacion: Notacion) -> ArpegioPresentado? {
+    public static func progresion(
+        _ acordes: [Acorde], patron: Arpegio.Patron, tonalidad: Tonalidad?,
+        notacion: Notacion
+    ) -> ArpegioPresentado? {
         guard !acordes.isEmpty else { return nil }
         let voz = Voz(arpegiando: acordes, patron: patron, figura: .corchea, porAcorde: .blanca)
         let nombre = "Progresión arpegiada (\(patron.nombre(en: notacion)))"
         return presentar(voz, nombre: nombre, tonalidad: tonalidad, tonica: tonalidad?.tonica)
     }
 
-    private static func presentar(_ voz: Voz, nombre: String, tonalidad: Tonalidad?, tonica: Nota?) -> ArpegioPresentado {
+    private static func presentar(_ voz: Voz, nombre: String, tonalidad: Tonalidad?, tonica: Nota?) -> ArpegioPresentado
+    {
         ArpegioPresentado(
             voz: voz,
             sonido: Sonido.voz(voz).conTonica(tonica),

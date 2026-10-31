@@ -1,13 +1,15 @@
-import XCTest
-#if canImport(FoundationXML)
-import FoundationXML
-#endif
 import Foundation
+import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
+
+#if canImport(FoundationXML)
+    import FoundationXML
+#endif
 
 /// Un elemento XML leído con `XMLParser`, para comprobar lo que se exporta.
 final class ElementoXML {
@@ -33,14 +35,18 @@ final class ElementoXML {
     static func leer(_ texto: String) -> ElementoXML? {
         final class Lector: NSObject, XMLParserDelegate {
             var pila: [ElementoXML] = [ElementoXML(nombre: "#documento", atributos: [:])]
-            func parser(_ parser: XMLParser, didStartElement nombre: String, namespaceURI: String?,
-                        qualifiedName: String?, attributes: [String: String] = [:]) {
+            func parser(
+                _ parser: XMLParser, didStartElement nombre: String, namespaceURI: String?,
+                qualifiedName: String?, attributes: [String: String] = [:]
+            ) {
                 let elemento = ElementoXML(nombre: nombre, atributos: attributes)
                 pila.last!.hijos.append(elemento)
                 pila.append(elemento)
             }
-            func parser(_ parser: XMLParser, didEndElement nombre: String, namespaceURI: String?,
-                        qualifiedName: String?) {
+            func parser(
+                _ parser: XMLParser, didEndElement nombre: String, namespaceURI: String?,
+                qualifiedName: String?
+            ) {
                 pila.removeLast()
             }
             func parser(_ parser: XMLParser, foundCharacters texto: String) { pila.last!.texto += texto }
@@ -67,7 +73,8 @@ final class MusicXMLTests: XCTestCase {
     /// La altura escrita en un `<note>`, o `nil` si es un silencio.
     private func altura(_ nota: ElementoXML) -> Altura? {
         guard let pitch = nota["pitch"], let paso = pitch["step"]?.texto, let octava = pitch["octave"]?.entero,
-              let indice = ["C", "D", "E", "F", "G", "A", "B"].firstIndex(of: paso) else { return nil }
+            let indice = ["C", "D", "E", "F", "G", "A", "B"].firstIndex(of: paso)
+        else { return nil }
         let alteracion = pitch["alter"]?.entero ?? 0
         return Altura(Nota(NotaNatural(rawValue: indice)!, Alteracion(alteracion)), octava: octava)
     }
@@ -96,7 +103,8 @@ final class MusicXMLTests: XCTestCase {
         XCTAssertEqual(duraciones(raiz), [6, 6, 6])
         let notas = raiz.buscar("note")
         XCTAssertEqual(notas.compactMap(altura), ["Do4", "Re4", "Mi4", "Fa4", "Fa4", "Sol4"])
-        XCTAssertEqual(notas.map { $0["type"]?.texto }, ["quarter", "eighth", "eighth", "quarter", "half", "quarter", nil])
+        XCTAssertEqual(
+            notas.map { $0["type"]?.texto }, ["quarter", "eighth", "eighth", "quarter", "half", "quarter", nil])
         // El silencio que llena el compás es un silencio de compás.
         XCTAssertEqual(notas.last?["rest"]?.atributos["measure"], "yes")
         XCTAssertEqual(compases.last?["barline"]?["bar-style"]?.texto, "light-heavy")
@@ -107,7 +115,8 @@ final class MusicXMLTests: XCTestCase {
         let raiz = leer(try Voz(leyendo: "Do4:4 Re4:2 Mi4:8 Fa4:8").musicXML())
         let notas = raiz.buscar("note")
         XCTAssertEqual(notas.map { $0.todos("tie").map { $0.atributos["type"]! } }, [[], ["start"], ["stop"], [], []])
-        XCTAssertEqual(notas.map { $0.buscar("tied").map { $0.atributos["type"]! } }, [[], ["start"], ["stop"], [], []])
+        XCTAssertEqual(
+            notas.map { $0.buscar("tied").map { $0.atributos["type"]! } }, [[], ["start"], ["stop"], [], []])
         XCTAssertEqual(notas.map { $0["beam"]?.texto }, [nil, nil, nil, "begin", "end"])
         // Una nota que cruza la barra se liga entre compases.
         let cruzada = leer(try Voz(leyendo: "Do4:2 Re4:2 Mi4:2", compas: "3/4").musicXML())
@@ -135,22 +144,28 @@ final class MusicXMLTests: XCTestCase {
     }
 
     func testPuntillosYTresillos() throws {
-        let raiz = leer(try Voz(leyendo: "Do4:8. Re4:16 Mi4:1/12 Fa4:1/12 Sol4:1/12 La4:1/6 Si4:1/12", compas: "3/4")
-            .musicXML())
+        let raiz = leer(
+            try Voz(leyendo: "Do4:8. Re4:16 Mi4:1/12 Fa4:1/12 Sol4:1/12 La4:1/6 Si4:1/12", compas: "3/4")
+                .musicXML())
         XCTAssertEqual(raiz.buscar("divisions").first?.entero, 12)
         let notas = raiz.buscar("note")
         XCTAssertEqual(notas.map { $0.todos("dot").count }, [1, 0, 0, 0, 0, 0, 0])
-        XCTAssertEqual(notas.map { $0["type"]?.texto },
-                       ["eighth", "16th", "eighth", "eighth", "eighth", "quarter", "eighth"])
+        XCTAssertEqual(
+            notas.map { $0["type"]?.texto },
+            ["eighth", "16th", "eighth", "eighth", "eighth", "quarter", "eighth"])
         XCTAssertEqual(notas.map { $0["time-modification"]?["actual-notes"]?.entero }, [nil, nil, 3, 3, 3, 3, 3])
         XCTAssertEqual(notas.map { $0["time-modification"]?["normal-notes"]?.entero }, [nil, nil, 2, 2, 2, 2, 2])
         // Dos grupos: tres corcheas, y negra–corchea.
-        XCTAssertEqual(notas.map { $0.buscar("tuplet").map { $0.atributos["type"]! } },
-                       [[], [], ["start"], [], ["stop"], ["start"], ["stop"]])
+        XCTAssertEqual(
+            notas.map { $0.buscar("tuplet").map { $0.atributos["type"]! } },
+            [[], [], ["start"], [], ["stop"], ["start"], ["stop"]])
         XCTAssertEqual(duraciones(raiz), [36])
         // Quintillo de semicorcheas.
-        let quintillo = leer(Voz(Array(repeating: Evento("Do4", Duracion.semicorchea.grupoIrregular(5, en: 4)), count: 5),
-                                 compas: Compas(1, 4)).musicXML())
+        let quintillo = leer(
+            Voz(
+                Array(repeating: Evento("Do4", Duracion.semicorchea.grupoIrregular(5, en: 4)), count: 5),
+                compas: Compas(1, 4)
+            ).musicXML())
         XCTAssertEqual(quintillo.buscar("type").first?.texto, "16th")
         XCTAssertEqual(quintillo.buscar("actual-notes").first?.entero, 5)
         XCTAssertEqual(quintillo.buscar("normal-notes").first?.entero, 4)
@@ -167,7 +182,7 @@ final class MusicXMLTests: XCTestCase {
     func testArmaduraYClave() throws {
         let voz = try Voz(leyendo: "Re4:4 Mi4:4 Fa#4:4 Sol4:4 La4:4 Si4:4 Do#5:4 Re5:4")
         let raiz = leer(voz.musicXML())
-        XCTAssertEqual(raiz.buscar("fifths").first?.entero, 2)   // estimada: Re mayor
+        XCTAssertEqual(raiz.buscar("fifths").first?.entero, 2) // estimada: Re mayor
         XCTAssertEqual(leer(voz.musicXML(tonalidad: Tonalidad(.si, .menor))).buscar("mode").first?.texto, "minor")
         XCTAssertEqual(leer(voz.musicXML(tonalidad: Tonalidad(Nota(.mi, .bemol)))).buscar("fifths").first?.entero, -3)
 
@@ -197,9 +212,11 @@ final class MusicXMLTests: XCTestCase {
         XCTAssertEqual(raiz.buscar("per-minute").first?.texto, "60")
         XCTAssertEqual(raiz.buscar("sound").first?.atributos["tempo"], "90")
         XCTAssertEqual(leer(try Voz(leyendo: "Do4:1").musicXML()).buscar("time").first?.atributos["symbol"], "common")
-        XCTAssertEqual(leer(try Voz(leyendo: "Do4:1", compas: "2/2").musicXML()).buscar("time").first?.atributos["symbol"], "cut")
-        XCTAssertEqual(leer(try Voz(leyendo: "Do4:8 Re4:8 Mi4:8 Fa4:8 Sol4:4.", compas: "3+2+2/8").musicXML())
-            .buscar("beats").first?.texto, "3+2+2")
+        XCTAssertEqual(
+            leer(try Voz(leyendo: "Do4:1", compas: "2/2").musicXML()).buscar("time").first?.atributos["symbol"], "cut")
+        XCTAssertEqual(
+            leer(try Voz(leyendo: "Do4:8 Re4:8 Mi4:8 Fa4:8 Sol4:4.", compas: "3+2+2/8").musicXML())
+                .buscar("beats").first?.texto, "3+2+2")
     }
 
     func testTextoEscapado() throws {
@@ -218,8 +235,10 @@ final class MusicXMLTests: XCTestCase {
         XCTAssertEqual(raiz.buscar("measure").count, 2)
         // Soprano y contralto arriba; tenor y bajo abajo; las plicas, según la voz.
         let notas = raiz.buscar("note")
-        for (voz, indice, pentagrama, plica) in [("1", 3, "1", "up"), ("2", 2, "1", "down"),
-                                                  ("3", 1, "2", "up"), ("4", 0, "2", "down")] {
+        for (voz, indice, pentagrama, plica) in [
+            ("1", 3, "1", "up"), ("2", 2, "1", "down"),
+            ("3", 1, "2", "up"), ("4", 0, "2", "down"),
+        ] {
             let deLaVoz = notas.filter { $0["voice"]?.texto == voz }
             XCTAssertEqual(deLaVoz.compactMap(altura), coral.voz(indice), "voz \(voz)")
             XCTAssertEqual(Set(deLaVoz.map { $0["staff"]?.texto }), [pentagrama], "voz \(voz)")
@@ -232,17 +251,22 @@ final class MusicXMLTests: XCTestCase {
 
     func testCoralAcabaEnLaBarra() throws {
         // Cinco negras en 4/4: el último acorde, solo en el segundo compás, se alarga a redonda.
-        let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5, La2 Mi4 La4 Do5, Re3 Fa4 La4 Re5, Sol2 Re4 Sol4 Si4, Do3 Mi4 Sol4 Do5")
+        let coral = try Coral(
+            leyendo: "Do3 Mi4 Sol4 Do5, La2 Mi4 La4 Do5, Re3 Fa4 La4 Re5, Sol2 Re4 Sol4 Si4, Do3 Mi4 Sol4 Do5")
         let raiz = leer(coral.musicXML())
         XCTAssertEqual(duraciones(raiz, voz: "1"), [4, 4])
-        XCTAssertEqual(raiz.buscar("measure").last?.todos("note").map { $0["type"]?.texto }, Array(repeating: "whole", count: 4))
-        let seis = leer(try Coral(leyendo: "Do3 Do5, Sol2 Si4, Do3 Do5, Do3 Do5, Sol2 Si4, Do3 Do5")
-            .musicXML(compas: "4/4"))
-        XCTAssertEqual(seis.buscar("measure").last?.todos("note").map { $0["type"]?.texto },
-                       ["quarter", "quarter", "half", "quarter", "quarter", "half"])
+        XCTAssertEqual(
+            raiz.buscar("measure").last?.todos("note").map { $0["type"]?.texto }, Array(repeating: "whole", count: 4))
+        let seis = leer(
+            try Coral(leyendo: "Do3 Do5, Sol2 Si4, Do3 Do5, Do3 Do5, Sol2 Si4, Do3 Do5")
+                .musicXML(compas: "4/4"))
+        XCTAssertEqual(
+            seis.buscar("measure").last?.todos("note").map { $0["type"]?.texto },
+            ["quarter", "quarter", "half", "quarter", "quarter", "half"])
         // En 6/8, de corchea en corchea: el último se completa con figuras ligadas si hace falta.
-        let seisPorOcho = leer(try Coral(leyendo: "Do3 Do5, Sol2 Si4, Do3 Do5, Do3 Do5")
-            .musicXML(duracion: .corchea, compas: "6/8"))
+        let seisPorOcho = leer(
+            try Coral(leyendo: "Do3 Do5, Sol2 Si4, Do3 Do5, Do3 Do5")
+                .musicXML(duracion: .corchea, compas: "6/8"))
         XCTAssertEqual(duraciones(seisPorOcho, voz: "1"), [6])
         XCTAssertEqual(leer(coral.musicXML(compas: "5/4")).buscar("measure").count, 1)
     }
@@ -252,15 +276,17 @@ final class MusicXMLTests: XCTestCase {
         let notas = raiz.buscar("note")
         XCTAssertEqual(notas.filter { $0["staff"]?.texto == "1" }.compactMap(altura), ["Do5", "Re5", "Mi5"])
         XCTAssertEqual(notas.filter { $0["staff"]?.texto == "2" }.compactMap(altura), ["Do3", "Si2", "Do3"])
-        XCTAssertTrue(raiz.buscar("stem").isEmpty)   // una voz por pentagrama: plicas libres
+        XCTAssertTrue(raiz.buscar("stem").isEmpty) // una voz por pentagrama: plicas libres
     }
 
     /// Voces al azar (con semilla fija): cada compás completo dura lo que el compás, las alturas
     /// vuelven intactas y las ligaduras se abren y se cierran por parejas.
     func testVocesAlAzar() throws {
         var azar = GeneradorConSemilla(semilla: 2026)
-        let figuras: [Duracion] = [.redonda, .blanca, .negra, .corchea, .semicorchea, Duracion(3, 8), Duracion(3, 16),
-                                      Duracion(5, 8), Duracion(1, 12), Duracion(1, 6), Duracion(1, 20)]
+        let figuras: [Duracion] = [
+            .redonda, .blanca, .negra, .corchea, .semicorchea, Duracion(3, 8), Duracion(3, 16),
+            Duracion(5, 8), Duracion(1, 12), Duracion(1, 6), Duracion(1, 20),
+        ]
         let compases: [Compas] = ["4/4", "3/4", "2/4", "6/8", "9/8", "5/8", "7/8", "2/2", "3/8", "12/8"]
         for _ in 0..<200 {
             let compas = compases.randomElement(using: &azar)!
@@ -270,7 +296,9 @@ final class MusicXMLTests: XCTestCase {
                 let cuantas = Int.random(in: 0...3, using: &azar)
                 let alturas = (0..<cuantas).map { _ in
                     // MusicXML admite las octavas de 0 a 9.
-                    Altura(Nota(pasosDeQuinta: Int.random(in: -12...12, using: &azar)), octava: Int.random(in: 0...9, using: &azar))
+                    Altura(
+                        Nota(pasosDeQuinta: Int.random(in: -12...12, using: &azar)),
+                        octava: Int.random(in: 0...9, using: &azar))
                 }
                 eventos.append(Evento(alturas: alturas, duracion: duracion, ligada: Bool.random(using: &azar)))
             }
@@ -282,7 +310,8 @@ final class MusicXMLTests: XCTestCase {
             let porCompas = (compas.duracion * 4 * divisiones).numerador
             let medidas = duraciones(raiz)
             for (i, medida) in medidas.enumerated().dropLast() {
-                XCTAssertEqual(medida, i == 0 && anacrusa > .cero ? (anacrusa * 4 * divisiones).numerador : porCompas, contexto)
+                XCTAssertEqual(
+                    medida, i == 0 && anacrusa > .cero ? (anacrusa * 4 * divisiones).numerador : porCompas, contexto)
             }
             XCTAssertEqual(medidas.reduce(0, +), (voz.duracion * 4 * divisiones).numerador, contexto)
             XCTAssertEqual(raiz.buscar("pitch").count, voz.grafia.joined().map(\.alturas.count).reduce(0, +), contexto)
@@ -309,9 +338,10 @@ final class MusicXMLTests: XCTestCase {
         XCTAssertEqual(arriba.prefix(3).compactMap(altura), ["Do4", "Mi4", "Sol4"])
         let bajo = notas.filter { $0["staff"]?.texto == "2" }
         XCTAssertEqual(bajo.compactMap(altura), ["Do3", "La2", "Re3", "Si2", "Do3"])
-        XCTAssertEqual(bajo.map { $0.todos("lyric").map { $0["text"]!.texto } },
-                       [["I", "T"], ["vi", "T"], ["V7/V", "D"], ["V65", "D"], ["I", "T"]])
-        XCTAssertEqual(duraciones(raiz, voz: "1"), [4, 4, 4])   // el último, redonda
+        XCTAssertEqual(
+            bajo.map { $0.todos("lyric").map { $0["text"]!.texto } },
+            [["I", "T"], ["vi", "T"], ["V7/V", "D"], ["V65", "D"], ["I", "T"]])
+        XCTAssertEqual(duraciones(raiz, voz: "1"), [4, 4, 4]) // el último, redonda
         // Sin cifrados ni análisis, en inglés.
         let simple = leer(analisis.musicXML(cifrados: false, analisis: false))
         XCTAssertTrue(simple.buscar("harmony").isEmpty)
@@ -330,36 +360,46 @@ final class MusicXMLTests: XCTestCase {
         let mayor = [0, 2, 4, 5, 7, 9, 11]
         for tipo in TipoDeAcorde.todos {
             let acorde = Acorde(.do, tipo)
-            let armonia = try XCTUnwrap(ElementoXML.leer(EscritorMusicXML.armonia(acorde, .espanolUnicode, pentagrama: nil)))
+            let armonia = try XCTUnwrap(
+                ElementoXML.leer(EscritorMusicXML.armonia(acorde, .espanolUnicode, pentagrama: nil)))
             let especie = try XCTUnwrap(armonia["kind"]?.texto)
             XCTAssertNotEqual(especie, "other", "\(tipo)")
-            var intervalos = Set(try XCTUnwrap(EscritorMusicXML.especies.first { $0.nombre == especie }).intervalos.map { "\($0.0),\($0.1)" })
+            var intervalos = Set(
+                try XCTUnwrap(EscritorMusicXML.especies.first { $0.nombre == especie }).intervalos.map {
+                    "\($0.0),\($0.1)"
+                })
             for grado in armonia.todos("degree") {
                 let numero = try XCTUnwrap(grado["degree-value"]?.entero)
                 let semitonos = mayor[(numero - 1) % 7] + (grado["degree-alter"]?.entero ?? 0)
                 let clave = "\((numero - 1) % 7 + 1),\(semitonos)"
                 if grado["degree-type"]?.texto == "add" { intervalos.insert(clave) } else { intervalos.remove(clave) }
             }
-            let esperados = Set(tipo.intervalos.filter { $0.numero != 1 }.map { "\($0.numeroSimple),\(modulo($0.semitonos, 12))" })
+            let esperados = Set(
+                tipo.intervalos.filter { $0.numero != 1 }.map { "\($0.numeroSimple),\(modulo($0.semitonos, 12))" })
             XCTAssertEqual(intervalos, esperados, "\(tipo)")
             XCTAssertEqual(armonia["kind"]?.atributos["text"], tipo.cifrado, "\(tipo)")
         }
-        let novenaMenor = try XCTUnwrap(ElementoXML.leer(EscritorMusicXML.armonia("Sol7(b9)", .inglesASCII, pentagrama: nil)))
+        let novenaMenor = try XCTUnwrap(
+            ElementoXML.leer(EscritorMusicXML.armonia("Sol7(b9)", .inglesASCII, pentagrama: nil)))
         XCTAssertEqual(novenaMenor["kind"]?.texto, "dominant")
         XCTAssertEqual(novenaMenor["degree"]?["degree-value"]?.entero, 9)
         XCTAssertEqual(novenaMenor["degree"]?["degree-alter"]?.entero, -1)
         XCTAssertEqual(novenaMenor["degree"]?["degree-type"]?.texto, "add")
         XCTAssertEqual(novenaMenor["kind"]?.atributos["text"], "7(b9)")
         // Las sextas aumentadas tienen especie propia, sin grados.
-        for (cifrado, especie) in [("Lab(#6,omit5)", "Italian"), ("Lab(#6,#11,omit5)", "French"), ("Lab(#6)", "German")] {
-            let armonia = try XCTUnwrap(ElementoXML.leer(EscritorMusicXML.armonia(Acorde(texto: cifrado)!, .espanolUnicode, pentagrama: nil)))
+        for (cifrado, especie) in [
+            ("Lab(#6,omit5)", "Italian"), ("Lab(#6,#11,omit5)", "French"), ("Lab(#6)", "German"),
+        ] {
+            let armonia = try XCTUnwrap(
+                ElementoXML.leer(EscritorMusicXML.armonia(Acorde(texto: cifrado)!, .espanolUnicode, pentagrama: nil)))
             XCTAssertEqual(armonia["kind"]?.texto, especie)
             XCTAssertTrue(armonia.todos("degree").isEmpty, cifrado)
         }
     }
 
     func testCoralConAnalisis() throws {
-        let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa3 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Reb4 Re4 Mib4 | Do3 Mi4 Sol4 Do5")
+        let coral = try Coral(
+            leyendo: "Do3 Mi4 Sol4 Do5 | Fa3 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Reb4 Re4 Mib4 | Do3 Mi4 Sol4 Do5")
         XCTAssertTrue(leer(coral.musicXML()).buscar("harmony").isEmpty)
         let raiz = leer(coral.musicXML(cifrados: true, analisis: true))
         // Do Re♭ Re Mi♭ no es un acorde conocido: se queda sin cifrar.
@@ -374,8 +414,11 @@ final class MusicXMLTests: XCTestCase {
         // Los cifrados van antes de la nota del soprano de cada acorde (el 4.º, sin cifrar).
         let primerCompas = try XCTUnwrap(raiz.buscar("measure").first)
         let orden = primerCompas.hijos.map(\.nombre).filter { $0 == "harmony" || $0 == "note" || $0 == "backup" }
-        XCTAssertEqual(Array(orden.prefix(8)), ["harmony", "note", "harmony", "note", "harmony", "note", "note", "backup"])
-        XCTAssertEqual(leer(coral.musicXML(tonalidad: Tonalidad(.sol), analisis: true)).buscar("lyric").first?["text"]?.texto, "IV")
+        XCTAssertEqual(
+            Array(orden.prefix(8)), ["harmony", "note", "harmony", "note", "harmony", "note", "note", "backup"])
+        XCTAssertEqual(
+            leer(coral.musicXML(tonalidad: Tonalidad(.sol), analisis: true)).buscar("lyric").first?["text"]?.texto, "IV"
+        )
     }
 
     func testDivisiones() {

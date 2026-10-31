@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 // Armonización de melodías: qué acordes pueden acompañar cada nota y qué sucesión de acordes
 // suena mejor en la tonalidad, según la armonía funcional.
 
@@ -49,10 +50,13 @@ extension Tonalidad {
     public func acordes(para nota: Nota) -> [Candidato<Acorde>] {
         var candidatos = inventarioDeArmonizacion.filter { $0.acorde.notas.contains(nota) }
         if candidatos.isEmpty {
-            candidatos = homonima.inventarioDeArmonizacion.filter { $0.acorde.notas.contains(nota) && $0.destino == nil }
-                .map { (acorde: $0.acorde, coste: $0.coste + 1, destino: nil as Int?) }
+            candidatos = homonima.inventarioDeArmonizacion.filter {
+                $0.acorde.notas.contains(nota) && $0.destino == nil
+            }
+            .map { (acorde: $0.acorde, coste: $0.coste + 1, destino: nil as Int?) }
         }
-        return candidatos
+        return
+            candidatos
             .map { Candidato($0.acorde, coste: $0.coste + Tonalidad.costeDePapel(nota, en: $0.acorde)) }
             .sorted { $0.coste < $1.coste }
     }
@@ -76,7 +80,8 @@ extension Tonalidad {
         let opciones = melodia.map { acordes(para: $0) }
         guard opciones.allSatisfy({ !$0.isEmpty }) else { return [] }
         let lecturas = opciones.map { $0.map { analizar($0.valor) } }
-        let destinos = Dictionary(inventarioDeArmonizacion.map { ($0.acorde, $0.destino) }, uniquingKeysWith: { a, _ in a })
+        let destinos = Dictionary(
+            inventarioDeArmonizacion.map { ($0.acorde, $0.destino) }, uniquingKeysWith: { a, _ in a })
         let n = melodia.count
 
         // Para cada nota y cada acorde posible, las mejores sucesiones que terminan en él.
@@ -89,9 +94,10 @@ extension Tonalidad {
             for (j, opcion) in opciones[i].enumerated() {
                 var llegadas: [Camino] = []
                 for (k, anteriores) in caminos.enumerated() {
-                    let paso = costeDePaso(lecturas[i - 1][k], lecturas[i][j],
-                                           destino: destinos[opciones[i - 1][k].valor] ?? nil,
-                                           melodia: (melodia[i - 1], melodia[i]))
+                    let paso = costeDePaso(
+                        lecturas[i - 1][k], lecturas[i][j],
+                        destino: destinos[opciones[i - 1][k].valor] ?? nil,
+                        melodia: (melodia[i - 1], melodia[i]))
                     for camino in anteriores {
                         llegadas.append((camino.coste + paso + opcion.coste, camino.indices + [j]))
                     }
@@ -105,8 +111,10 @@ extension Tonalidad {
         for (j, terminados) in caminos.enumerated() {
             for camino in terminados {
                 let penultimo = n > 1 ? lecturas[n - 2][camino.indices[n - 2]] : nil
-                let fin = costeDeFinal(lecturas[n - 1][j], penultimo: penultimo, destino: n > 1
-                    ? (destinos[opciones[n - 2][camino.indices[n - 2]].valor] ?? nil) : nil, melodia: melodia)
+                let fin = costeDeFinal(
+                    lecturas[n - 1][j], penultimo: penultimo,
+                    destino: n > 1
+                        ? (destinos[opciones[n - 2][camino.indices[n - 2]].valor] ?? nil) : nil, melodia: melodia)
                 finales.append((camino.coste + fin, camino.indices))
             }
         }
@@ -115,8 +123,10 @@ extension Tonalidad {
         for camino in finales.sorted(by: { $0.coste < $1.coste }) {
             let acordes = camino.indices.enumerated().map { opciones[$0.offset][$0.element].valor }
             guard vistas.insert(acordes).inserted else { continue }
-            resultado.append(Candidato(Armonizacion(tonalidad: self, melodia: melodia, acordes: acordes),
-                                       coste: (camino.coste * 100).rounded() / 100))
+            resultado.append(
+                Candidato(
+                    Armonizacion(tonalidad: self, melodia: melodia, acordes: acordes),
+                    coste: (camino.coste * 100).rounded() / 100))
             if resultado.count == propuestas { break }
         }
         return resultado
@@ -140,7 +150,8 @@ extension Tonalidad {
         let notas = melodia.map(\.nota)
         let opciones = notas.map { acordes(para: $0) }
         let lecturas = opciones.map { $0.map { analizar($0.valor) } }
-        let destinos = Dictionary(inventarioDeArmonizacion.map { ($0.acorde, $0.destino) }, uniquingKeysWith: { a, _ in a })
+        let destinos = Dictionary(
+            inventarioDeArmonizacion.map { ($0.acorde, $0.destino) }, uniquingKeysWith: { a, _ in a })
         let sensible = escalaDeReferencia.grado(7)
         let n = melodia.count
         // Lo que pesan las voces frente a la armonía: un semitono de movimiento vale poco.
@@ -157,7 +168,9 @@ extension Tonalidad {
 
         var costes = estados[0].map { $0.coste + costeDeInicio(lecturas[0][$0.acorde]) }
         if n == 1 {
-            costes = zip(costes, estados[0]).map { $0 + costeDeFinal(lecturas[0][$1.acorde], penultimo: nil, destino: nil, melodia: notas) }
+            costes = zip(costes, estados[0]).map {
+                $0 + costeDeFinal(lecturas[0][$1.acorde], penultimo: nil, destino: nil, melodia: notas)
+            }
         }
         var previos: [[Int]] = [estados[0].map { _ in -1 }]
         for i in 1..<max(1, n) {
@@ -168,12 +181,17 @@ extension Tonalidad {
                 for (a, actual) in estados[i - 1].enumerated() where costes[a] < .infinity {
                     let anterior = lecturas[i - 1][actual.acorde]
                     let destino = destinos[opciones[i - 1][actual.acorde].valor] ?? nil
-                    guard let voces = Coral.costeDePaso(
-                        de: actual.alturas, a: siguiente.alturas, septima: anterior.acorde.septima,
-                        sensible: Cadencia.esDominante(anterior) ? sensible : nil, tonica: tonica) else { continue }
-                    var total = costes[a] + siguiente.coste + pesoDeLasVoces * voces
+                    guard
+                        let voces = Coral.costeDePaso(
+                            de: actual.alturas, a: siguiente.alturas, septima: anterior.acorde.septima,
+                            sensible: Cadencia.esDominante(anterior) ? sensible : nil, tonica: tonica)
+                    else { continue }
+                    var total =
+                        costes[a] + siguiente.coste + pesoDeLasVoces * voces
                         + costeDePaso(anterior, lectura, destino: destino, melodia: (notas[i - 1], notas[i]))
-                    if i == n - 1 { total += costeDeFinal(lectura, penultimo: anterior, destino: destino, melodia: notas) }
+                    if i == n - 1 {
+                        total += costeDeFinal(lectura, penultimo: anterior, destino: destino, melodia: notas)
+                    }
                     if total < nuevos[b] {
                         nuevos[b] = total
                         desde[b] = a
@@ -183,7 +201,9 @@ extension Tonalidad {
             costes = nuevos
             previos.append(desde)
         }
-        guard var indice = costes.indices.min(by: { costes[$0] < costes[$1] }), costes[indice] < .infinity else { return nil }
+        guard var indice = costes.indices.min(by: { costes[$0] < costes[$1] }), costes[indice] < .infinity else {
+            return nil
+        }
         var elegidos: [Acorde] = []
         var voces: [[Altura]] = []
         for i in stride(from: n - 1, through: 0, by: -1) {
@@ -240,8 +260,10 @@ extension Tonalidad {
     }
 
     /// Lo que cuesta ir de un acorde al siguiente, según sus funciones.
-    private func costeDePaso(_ a: AcordeAnalizado, _ b: AcordeAnalizado, destino: Int?,
-                             melodia: (Nota, Nota)) -> Double {
+    private func costeDePaso(
+        _ a: AcordeAnalizado, _ b: AcordeAnalizado, destino: Int?,
+        melodia: (Nota, Nota)
+    ) -> Double {
         var coste = 0.0
         // Una séptima en la melodía baja por grado conjunto.
         if a.acorde.papel(de: melodia.0) == .septima {
@@ -275,8 +297,10 @@ extension Tonalidad {
 
     /// Lo que cuesta terminar así: lo mejor, una cadencia auténtica; si la última nota no es del
     /// I, una semicadencia.
-    private func costeDeFinal(_ ultimo: AcordeAnalizado, penultimo: AcordeAnalizado?, destino: Int?,
-                              melodia: [Nota]) -> Double {
+    private func costeDeFinal(
+        _ ultimo: AcordeAnalizado, penultimo: AcordeAnalizado?, destino: Int?,
+        melodia: [Nota]
+    ) -> Double {
         if destino != nil { return 5 }
         if Cadencia.esTonica(ultimo) && ultimo.acorde.inversion == 0 {
             guard let penultimo else { return 0 }

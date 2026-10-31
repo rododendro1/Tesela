@@ -79,8 +79,10 @@ extension CoordenadaAxial {
     /// casilla `bloqueada`, con los pasos que cuesta llegar a cada una (esta, con 0).
     ///
     /// Es una búsqueda en anchura: a diferencia de ``alcance(radio:)``, rodea los obstáculos.
-    public func alcanzables(movimientos: Int,
-                            bloqueada: (CoordenadaAxial) -> Bool) -> [CoordenadaAxial: Int] {
+    public func alcanzables(
+        movimientos: Int,
+        bloqueada: (CoordenadaAxial) -> Bool
+    ) -> [CoordenadaAxial: Int] {
         precondition(movimientos >= 0, "Los movimientos no pueden ser negativos (\(movimientos))")
         var pasos: [CoordenadaAxial: Int] = [self: 0]
         var frontera = [self]
@@ -103,8 +105,10 @@ extension CoordenadaAxial {
     ///
     /// Esta casilla no tiene por qué ser transitable (es donde se está). Entre caminos igual de
     /// cortos, prefiere el que toma antes las direcciones más bajas de ``direcciones``.
-    public func camino(hasta destino: CoordenadaAxial,
-                       por transitables: Set<CoordenadaAxial>) -> [CoordenadaAxial]? {
+    public func camino(
+        hasta destino: CoordenadaAxial,
+        por transitables: Set<CoordenadaAxial>
+    ) -> [CoordenadaAxial]? {
         if destino == self { return [self] }
         guard transitables.contains(destino) else { return nil }
         var previa: [CoordenadaAxial: CoordenadaAxial] = [:]

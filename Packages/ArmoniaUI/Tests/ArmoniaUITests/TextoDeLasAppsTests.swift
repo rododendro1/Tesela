@@ -1,8 +1,9 @@
-import XCTest
 import Armonia
 import Hexagonos
-@testable import ArmoniaUI
+import XCTest
+
 @testable import ArmoniaPresentacion
+@testable import ArmoniaUI
 
 // Los textos de la interfaz de las apps y la notación inicial. No usan SwiftUI: se ejecutan también en Linux.
 
@@ -15,10 +16,13 @@ final class TextoDeLasAppsTests: XCTestCase {
         .arpegioEnElMastil, .trastes(desde: 5, hasta: 8), .identificar, .tocaElMastil, .tocaNotas,
         .borrar, .sinAcordeConocido, .verEnAcordes, .tecladoMIDI, .dispositivosMIDI, .teoriaPostonal, .formaPrima,
         .numeroDeForte, .vectorIntervalico, .escala, .tonica, .tipo, .habituales, .otrasTradiciones, .acordesDeLaEscala,
-        .mastilDeGuitarra, .pentagrama, .progresion, .campoDeProgresion, .resultado, .acordeAAcorde, .cadencias, .arpegiar, .tarea,
+        .mastilDeGuitarra, .pentagrama, .progresion, .campoDeProgresion, .resultado, .acordeAAcorde, .cadencias,
+        .arpegiar, .tarea,
         .campoDeTonalidad, .tonalidad, .armonizaciones, .aCuatroVoces, .conduccionDeLasVoces, .avisos,
-        .recorridoPLR, .modo, .red, .formatoUIL, .giro, .espejo, .noSeDibuja, .campoDeTriadaInicial, .reiniciar, .deshacer, .campoDeAcorde,
-        .campoDeEscala, .textos, .comoLasNotas, .exportar, .abrir, .escuchar, .afinacionAlEscuchar, .rejillaHexagonal, .casillas(1), .casillas(19),
+        .recorridoPLR, .modo, .red, .formatoUIL, .giro, .espejo, .noSeDibuja, .campoDeTriadaInicial, .reiniciar,
+        .deshacer, .campoDeAcorde,
+        .campoDeEscala, .textos, .comoLasNotas, .exportar, .abrir, .escuchar, .afinacionAlEscuchar, .rejillaHexagonal,
+        .casillas(1), .casillas(19),
         .casillaElegida(q: 2, r: -1), .mastilDe("guitarra", desde: 0, hasta: 5), .posicion(cuerda: 1, traste: 3),
         .marcas(13), .cuerdasApagadas("1, 6"), .sinMarcas,
     ]
@@ -43,10 +47,12 @@ final class TextoDeLasAppsTests: XCTestCase {
         XCTAssertEqual(Notacion.espanolUnicode.texto(.campoDeCifrado), "Cifrado, por ejemplo Sol7/Si")
         XCTAssertEqual(Notacion.inglesASCII.texto(.campoDeCifrado), "Chord symbol, for example G7/B")
         XCTAssertEqual(Notacion.inglesASCII.texto(.campoDeTriadaInicial), "Starting triad (C, Am…)")
-        XCTAssertEqual(PresentacionDeCoral.Tarea.armonizar.indicacion(en: .inglesASCII),
-                       "Melody (E4 F4 D4 C4, without octaves or with rhythm: E4:4 D4:8)")
-        XCTAssertEqual(PresentacionDeCoral.Tarea.revisar.indicacion(en: .espanolUnicode),
-                       "Voces de grave a agudo (Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4)")
+        XCTAssertEqual(
+            PresentacionDeCoral.Tarea.armonizar.indicacion(en: .inglesASCII),
+            "Melody (E4 F4 D4 C4, without octaves or with rhythm: E4:4 D4:8)")
+        XCTAssertEqual(
+            PresentacionDeCoral.Tarea.revisar.indicacion(en: .espanolUnicode),
+            "Voces de grave a agudo (Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4)")
         XCTAssertEqual(PresentacionDeCoral.Tarea.realizar.indicacion(en: .inglesASCII), "Chords (C F G7 C)")
     }
 
@@ -89,13 +95,16 @@ final class TextoDeLasAppsTests: XCTestCase {
 
     func testLoQueLeeVoiceOverVaEnElIdiomaDeLosTextos() {
         let marcas = [PosicionEnElMastil(cuerda: 1, traste: 3), PosicionEnElMastil(cuerda: 0, traste: 0)]
-        XCTAssertEqual(PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [5], en: .inglesASCII),
-                       "string 1, fret 0; string 2, fret 3; muted strings: 6")
+        XCTAssertEqual(
+            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [5], en: .inglesASCII),
+            "string 1, fret 0; string 2, fret 3; muted strings: 6")
         XCTAssertEqual(PresentacionDeMastil.descripcion(marcas: [], apagadas: [], en: .frances), "Aucune marque")
-        XCTAssertEqual(PresentacionDeMastil.etiqueta(de: Mastil(.ukelele), rango: 0...5, en: .inglesASCII),
-                       "Ukulele neck, frets 0 to 5")
-        XCTAssertEqual(PresentacionDeMastil.etiqueta(de: Mastil(.guitarra), rango: 3...7, en: .espanolUnicode),
-                       "Mástil de guitarra, trastes 3 a 7")
+        XCTAssertEqual(
+            PresentacionDeMastil.etiqueta(de: Mastil(.ukelele), rango: 0...5, en: .inglesASCII),
+            "Ukulele neck, frets 0 to 5")
+        XCTAssertEqual(
+            PresentacionDeMastil.etiqueta(de: Mastil(.guitarra), rango: 3...7, en: .espanolUnicode),
+            "Mástil de guitarra, trastes 3 a 7")
         XCTAssertEqual(PresentacionDeRejilla.descripcion(casillas: 1, seleccionada: nil, en: .inglesASCII), "1 cell")
         XCTAssertEqual(Notacion.euskera.texto(.casillas(19)), "19 gelaxka")
     }

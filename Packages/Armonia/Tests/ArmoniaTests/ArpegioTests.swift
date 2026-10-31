@@ -1,8 +1,9 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
 @testable import ArmoniaPartitura
+@testable import ArmoniaTeoria
 
 /// Los arpegios: recorridos de un acorde, desde escalas, con nombre en cada idioma y en pentagrama.
 final class ArpegioTests: XCTestCase {
@@ -15,8 +16,9 @@ final class ArpegioTests: XCTestCase {
         XCTAssertEqual(midis(Arpegio(Acorde("Do"), patron: .descendente)), [72, 67, 64, 60])
         XCTAssertEqual(midis(Arpegio(Acorde("Do"), patron: .idaYVuelta)), [60, 64, 67, 72, 67, 64, 60])
         XCTAssertEqual(midis(Arpegio(Acorde("Do"), patron: .alberti), octava: 3), [48, 55, 52, 55])
-        XCTAssertEqual(midis(Arpegio(Acorde("Do"), patron: .alberti, octavas: 2), octava: 3),
-                       [48, 55, 52, 55, 60, 67, 64, 67])
+        XCTAssertEqual(
+            midis(Arpegio(Acorde("Do"), patron: .alberti, octavas: 2), octava: 3),
+            [48, 55, 52, 55, 60, 67, 64, 67])
     }
 
     func testVariasOctavasYElBajoDelAcorde() {
@@ -75,7 +77,7 @@ final class ArpegioTests: XCTestCase {
     func testLaRelacionAcordeEscala() {
         let escalas = Acorde("Do7").escalasCompatibles()
         XCTAssertTrue(escalas.contains(Escala(.do, .mixolidio)))
-        XCTAssertFalse(escalas.contains(Escala(.do, .mayor)))      // le falta el Si♭
+        XCTAssertFalse(escalas.contains(Escala(.do, .mayor))) // le falta el Si♭
         let tamanos = escalas.map { $0.tipo.intervalos.count }
         XCTAssertEqual(tamanos, tamanos.sorted())
         XCTAssertEqual(Acorde("Do").escalasCompatibles(entre: [.mayor, .menorNatural]), [Escala(.do, .mayor)])
@@ -109,11 +111,13 @@ final class ArpegioTests: XCTestCase {
         XCTAssertTrue(voz.eventos.allSatisfy { $0.duracion == .corchea })
 
         // Con una blanca por acorde, cuatro corcheas cada uno.
-        let alberti = Voz(arpegiando: [Acorde("Do"), Acorde("Lam"), Acorde("Fa"), Acorde("Sol7")],
-                          patron: .alberti, porAcorde: .blanca)
+        let alberti = Voz(
+            arpegiando: [Acorde("Do"), Acorde("Lam"), Acorde("Fa"), Acorde("Sol7")],
+            patron: .alberti, porAcorde: .blanca)
         XCTAssertEqual(alberti.eventos.count, 16)
-        XCTAssertEqual(alberti.eventos.prefix(12).flatMap(\.alturas).map(\.midi),
-                       [48, 55, 52, 55, 45, 52, 48, 52, 53, 60, 57, 60])
+        XCTAssertEqual(
+            alberti.eventos.prefix(12).flatMap(\.alturas).map(\.midi),
+            [48, 55, 52, 55, 45, 52, 48, 52, 53, 60, 57, 60])
         XCTAssertEqual(alberti.eventos.map(\.duracion).reduce(.cero, +), .redonda * 2)
 
         // Si no cabe un número entero de notas, la última se alarga; si cabe menos de una, suena una.

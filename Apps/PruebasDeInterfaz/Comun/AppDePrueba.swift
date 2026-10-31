@@ -22,10 +22,10 @@ extension XCUIApplication {
     /// Una pestaña o una opción de un selector segmentado: un botón en iOS, un botón de opción en macOS.
     func opcion(_ titulo: String) -> XCUIElement {
         #if os(macOS)
-        let opcion = radioButtons[titulo]
-        return opcion.waitForExistence(timeout: 5) ? opcion : buttons[titulo]
+            let opcion = radioButtons[titulo]
+            return opcion.waitForExistence(timeout: 5) ? opcion : buttons[titulo]
         #else
-        return buttons[titulo]
+            return buttons[titulo]
         #endif
     }
 
@@ -48,42 +48,52 @@ extension XCUIApplication {
     /// (su nombre depende del idioma en que esté la app).
     func elegirEnMenu(_ titulo: String, submenus: [String] = []) {
         #if os(macOS)
-        let opcion = menuItems[titulo]
-        if !opcion.waitForExistence(timeout: 3), let submenu = submenus.map({ menuItems[$0] }).first(where: { $0.exists }) {
-            submenu.hover()
-        }
-        esperar(opcion, "la opción «\(titulo)»")
-        opcion.click()
+            let opcion = menuItems[titulo]
+            if !opcion.waitForExistence(timeout: 3),
+                let submenu = submenus.map({ menuItems[$0] }).first(where: { $0.exists })
+            {
+                submenu.hover()
+            }
+            esperar(opcion, "la opción «\(titulo)»")
+            opcion.click()
         #else
-        // El botón del selector lleva por título la notación elegida: no confundirlo con la opción del menú.
-        let opcion = buttons.matching(NSPredicate(format: "label == %@ AND identifier != %@", titulo, "selectorDeNotacion"))
+            // El botón del selector lleva por título la notación elegida: no confundirlo con la opción del menú.
+            let opcion = buttons.matching(
+                NSPredicate(format: "label == %@ AND identifier != %@", titulo, "selectorDeNotacion")
+            )
             .firstMatch
-        if !opcion.waitForExistence(timeout: 3), let submenu = submenus.map({ buttons[$0] }).first(where: { $0.exists }) {
-            submenu.tap()
-        }
-        esperar(opcion, "la opción «\(titulo)»")
-        opcion.tap()
+            if !opcion.waitForExistence(timeout: 3),
+                let submenu = submenus.map({ buttons[$0] }).first(where: { $0.exists })
+            {
+                submenu.tap()
+            }
+            esperar(opcion, "la opción «\(titulo)»")
+            opcion.tap()
         #endif
     }
 
     /// Hay algún elemento cuya etiqueta contiene `texto` (botones y opciones de menú incluidos). En macOS las
     /// opciones de menú lo llevan en el título.
     func etiqueta(_ texto: String) -> XCUIElement {
-        descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@ OR title CONTAINS %@", texto, texto))
-            .firstMatch
+        descendants(matching: .any).matching(
+            NSPredicate(format: "label CONTAINS %@ OR title CONTAINS %@", texto, texto)
+        )
+        .firstMatch
     }
 
     /// Elige `titulo` en un selector desplegable (`Picker`) que ahora muestra `actual`: en macOS es un botón
     /// emergente; en iOS, un botón con la opción elegida que abre un menú.
     func elegirEnSelector(_ titulo: String, actual: String) {
         #if os(macOS)
-        let selector = popUpButtons.matching(NSPredicate(format: "value == %@ OR title == %@", actual, actual)).firstMatch
-        esperar(selector, "el selector que muestra «\(actual)»")
-        selector.click()
+            let selector = popUpButtons.matching(NSPredicate(format: "value == %@ OR title == %@", actual, actual))
+                .firstMatch
+            esperar(selector, "el selector que muestra «\(actual)»")
+            selector.click()
         #else
-        let selector = buttons.matching(NSPredicate(format: "label CONTAINS %@ OR value == %@", actual, actual)).firstMatch
-        esperar(selector, "el selector que muestra «\(actual)»")
-        selector.tap()
+            let selector = buttons.matching(NSPredicate(format: "label CONTAINS %@ OR value == %@", actual, actual))
+                .firstMatch
+            esperar(selector, "el selector que muestra «\(actual)»")
+            selector.tap()
         #endif
         elegirEnMenu(titulo)
     }
@@ -91,15 +101,15 @@ extension XCUIApplication {
     /// Activa el interruptor (`Toggle`) con ese título: una casilla en macOS, un interruptor en iOS.
     func activar(_ titulo: String) {
         #if os(macOS)
-        let casilla = checkBoxes[titulo]
-        esperar(casilla, "la casilla «\(titulo)»")
-        casilla.click()
+            let casilla = checkBoxes[titulo]
+            esperar(casilla, "la casilla «\(titulo)»")
+            casilla.click()
         #else
-        let interruptor = switches[titulo]
-        esperar(interruptor, "el interruptor «\(titulo)»")
-        // Desde iOS 17 el toque en el centro de la fila no siempre llega al interruptor: se toca el de dentro.
-        let dentro = interruptor.switches.firstMatch
-        (dentro.exists ? dentro : interruptor).tap()
+            let interruptor = switches[titulo]
+            esperar(interruptor, "el interruptor «\(titulo)»")
+            // Desde iOS 17 el toque en el centro de la fila no siempre llega al interruptor: se toca el de dentro.
+            let dentro = interruptor.switches.firstMatch
+            (dentro.exists ? dentro : interruptor).tap()
         #endif
     }
 
@@ -107,11 +117,11 @@ extension XCUIApplication {
     /// que se ven.
     func buscandoHaciaAbajo(_ elemento: XCUIElement, intentos: Int = 6) -> XCUIElement {
         #if os(iOS)
-        var intento = 0
-        while !elemento.waitForExistence(timeout: 2) && intento < intentos {
-            swipeUp()
-            intento += 1
-        }
+            var intento = 0
+            while !elemento.waitForExistence(timeout: 2) && intento < intentos {
+                swipeUp()
+                intento += 1
+            }
         #endif
         return elemento
     }
@@ -119,14 +129,14 @@ extension XCUIApplication {
     /// Borra lo escrito en `campo` y escribe `texto`.
     func reemplazar(en campo: XCUIElement, por texto: String) {
         #if os(macOS)
-        campo.click()
-        campo.typeKey("a", modifierFlags: .command)
-        campo.typeText(XCUIKeyboardKey.delete.rawValue)
+            campo.click()
+            campo.typeKey("a", modifierFlags: .command)
+            campo.typeText(XCUIKeyboardKey.delete.rawValue)
         #else
-        // Tocando a la derecha el cursor queda al final del texto.
-        campo.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
-        let escrito = campo.value as? String ?? ""
-        campo.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: escrito.count))
+            // Tocando a la derecha el cursor queda al final del texto.
+            campo.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+            let escrito = campo.value as? String ?? ""
+            campo.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: escrito.count))
         #endif
         campo.typeText(texto)
     }
@@ -134,8 +144,10 @@ extension XCUIApplication {
 
 /// Falla si `elemento` no aparece en `segundos` (los cálculos en segundo plano tardan un poco).
 @MainActor
-func esperar(_ elemento: XCUIElement, _ descripcion: String, segundos: Double = 15,
-             file: StaticString = #filePath, line: UInt = #line) {
+func esperar(
+    _ elemento: XCUIElement, _ descripcion: String, segundos: Double = 15,
+    file: StaticString = #filePath, line: UInt = #line
+) {
     guard elemento.waitForExistence(timeout: segundos) else {
         // Lo que hay en pantalla, para ver en el registro del CI qué se buscaba mal.
         print(XCUIApplication().debugDescription)

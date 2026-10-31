@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+
 // MARK: - Color
 
 /// Un color en RGB, de 0 a 255 por componente.
@@ -144,12 +145,16 @@ extension Altura {
 
 extension Acorde {
     /// Colores de las notas del acorde, en orden de disposición (desde la fundamental).
-    public func colores(segun correspondencia: CorrespondenciaDeColores) -> [ColorRGB] { notas.map(correspondencia.color(de:)) }
+    public func colores(segun correspondencia: CorrespondenciaDeColores) -> [ColorRGB] {
+        notas.map(correspondencia.color(de:))
+    }
 }
 
 extension Escala {
     /// Colores de las notas de la escala, desde la tónica.
-    public func colores(segun correspondencia: CorrespondenciaDeColores) -> [ColorRGB] { notas.map(correspondencia.color(de:)) }
+    public func colores(segun correspondencia: CorrespondenciaDeColores) -> [ColorRGB] {
+        notas.map(correspondencia.color(de:))
+    }
 }
 
 // MARK: - Idiomas

@@ -82,7 +82,7 @@ public struct Altura: Hashable, Sendable {
     /// con sostenidos de Fa a La♯, o con bemoles de Sol♭ a Si.
     public init(midi: Int, preferirBemoles: Bool = false) {
         let clase = modulo(midi, 12)
-        let quintasBase = modulo(clase * 7, 12)   // 7 es su propio inverso módulo 12
+        let quintasBase = modulo(clase * 7, 12) // 7 es su propio inverso módulo 12
         let inicio = preferirBemoles ? -6 : -1
         let quintas = inicio + modulo(quintasBase - inicio, 12)
         self.init(pasosDeQuinta: quintas, pasosDeOctava: (midi - 60 - 7 * quintas) / 12)
@@ -125,8 +125,9 @@ public struct Altura: Hashable, Sendable {
     // MARK: Operaciones
 
     public func transponer(_ intervalo: Intervalo) -> Altura {
-        Altura(pasosDeQuinta: pasosDeQuinta + intervalo.pasosDeQuintaConSigno,
-             pasosDeOctava: pasosDeOctava + intervalo.pasosDeOctavaConSigno)
+        Altura(
+            pasosDeQuinta: pasosDeQuinta + intervalo.pasosDeQuintaConSigno,
+            pasosDeOctava: pasosDeOctava + intervalo.pasosDeOctavaConSigno)
     }
 
     /// Intervalo (con dirección) desde esta nota hasta `otra`.

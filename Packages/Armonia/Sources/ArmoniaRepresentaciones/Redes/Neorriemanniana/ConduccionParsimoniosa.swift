@@ -1,5 +1,7 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+import Foundation
+
 // Conducción parsimoniosa: pasar de un acorde a otro moviendo las voces lo menos posible.
 //
 // P, L y R (TransformacionNeorriemanniana.swift) son el caso de las tríadas mayores y menores.
@@ -13,12 +15,12 @@ import ArmoniaTeoria
 // Entre acordes de distinto tamaño (Sol7 → Do), `conduccionMinima(hasta:)` da la conducción con menos
 // semitonos en total, duplicando las notas que haga falta.
 
-import Foundation
-
 extension TipoDeAcorde {
     /// Séptimas de dominante, menor, semidisminuida y disminuida: las «Power Towers» de Douthett y
     /// Steinbach, en las que cada una pasa a otra moviendo una voz un semitono.
-    public static let familiaDeSeptimas: [TipoDeAcorde] = [.dominanteSeptima, .menorSeptima, .semidisminuido, .disminuidoSeptima]
+    public static let familiaDeSeptimas: [TipoDeAcorde] = [
+        .dominanteSeptima, .menorSeptima, .semidisminuido, .disminuidoSeptima,
+    ]
     /// Tríadas mayores, menores y aumentadas: el «Cube Dance» de Douthett y Steinbach.
     public static let familiaDeTriadas: [TipoDeAcorde] = [.mayor, .menor, .aumentado]
     /// Las «Power Towers» con la séptima mayor (maj7): Domaj7 pasa a Do7 (Si→Si♭) y a Do♯ø7
@@ -64,7 +66,9 @@ public struct PasoParsimonioso: Hashable, Sendable, CustomStringConvertible {
 
 extension Acorde {
     /// Las familias conocidas, en el orden en que se eligen.
-    package static let familiasParsimoniosas: [[TipoDeAcorde]] = [TipoDeAcorde.familiaDeSeptimas, TipoDeAcorde.familiaDeTriadas, TipoDeAcorde.familiaDeSeptimasAmpliada]
+    package static let familiasParsimoniosas: [[TipoDeAcorde]] = [
+        TipoDeAcorde.familiaDeSeptimas, TipoDeAcorde.familiaDeTriadas, TipoDeAcorde.familiaDeSeptimasAmpliada,
+    ]
 
     /// La familia a la que pertenece el acorde, si es una de las conocidas (la de las séptimas
     /// ampliada, solo para los maj7).
@@ -88,7 +92,9 @@ extension Acorde {
         guard let tipos = tipos ?? familiaParsimoniosa, (1...2).contains(voces) else { return [] }
         let notas = self.notas
         // Las combinaciones de voces que se mueven.
-        let grupos: [[Int]] = voces == 1 ? notas.indices.map { [$0] }
+        let grupos: [[Int]] =
+            voces == 1
+            ? notas.indices.map { [$0] }
             : notas.indices.flatMap { i in notas.indices.filter { $0 > i }.map { [i, $0] } }
         var vistos: Set<[Int]> = []
         var pasos: [PasoParsimonioso] = []
@@ -98,7 +104,8 @@ extension Acorde {
             for _ in grupo { direcciones = direcciones.flatMap { d in [d + [-1], d + [1]] } }
             for direccion in direcciones {
                 guard let paso = Acorde.mover(notas, grupo, direccion, tipos: tipos) else { continue }
-                let clave = [paso.acorde.tipo.intervalos.count] + paso.acorde.notas.map(\.claseDeAltura).sorted()
+                let clave =
+                    [paso.acorde.tipo.intervalos.count] + paso.acorde.notas.map(\.claseDeAltura).sorted()
                     + [TipoDeAcorde.todos.firstIndex(of: paso.acorde.tipo) ?? -1]
                 if vistos.insert(clave).inserted { pasos.append(paso) }
             }
@@ -111,12 +118,20 @@ extension Acorde {
     /// y la fundamental, con cualquier nombre de su clase; se elige la escritura con
     /// menos alteraciones, contando doble cada nota que no se mueve pero cambia de nombre (así
     /// Re♭7 pasa a Re♭m7 y no a Do♯m7, y Si°7 a Mi7 y no a Fa♭7).
-    package static func mover(_ notas: [Nota], _ grupo: [Int], _ direccion: [Int], tipos: [TipoDeAcorde]) -> PasoParsimonioso? {
+    package static func mover(_ notas: [Nota], _ grupo: [Int], _ direccion: [Int], tipos: [TipoDeAcorde])
+        -> PasoParsimonioso?
+    {
         var variantes: [[Nota]] = [notas]
         for (indice, d) in zip(grupo, direccion) {
             let base = notas[indice].pasosDeQuinta
             let opciones = [Nota(pasosDeQuinta: base + 7 * d), Nota(pasosDeQuinta: base - 5 * d)]
-            variantes = variantes.flatMap { v in opciones.map { o -> [Nota] in var w = v; w[indice] = o; return w } }
+            variantes = variantes.flatMap { v in
+                opciones.map { o -> [Nota] in
+                    var w = v
+                    w[indice] = o
+                    return w
+                }
+            }
         }
         let quietas = Set(notas.indices).subtracting(grupo)
         // Las clases de altura como máscara de bits, para comparar deprisa.
@@ -130,7 +145,8 @@ extension Acorde {
             let objetivo = mascara(clases)
             // Las fundamentales posibles: cada clase, escrita con a lo sumo un sostenido o bemol
             // doble (de Fa𝄫 a Si𝄪), además de como está.
-            let fundamentales = nuevas + (-9...9).map(Nota.init(pasosDeQuinta:)).filter { clases.contains($0.claseDeAltura) }
+            let fundamentales =
+                nuevas + (-9...9).map(Nota.init(pasosDeQuinta:)).filter { clases.contains($0.claseDeAltura) }
             for fundamental in fundamentales {
                 for (tipo, mascaraDelTipo) in zip(tipos, mascarasDeTipos) {
                     // Primero, sin construir el acorde: ¿suenan las mismas clases?
@@ -157,7 +173,8 @@ extension Acorde {
     ///
     ///     Acorde("Sol7").conduccionMinima(hasta: "Do").semitonosMovidos     // 4: Si→Do, Re→Do, Fa→Mi
     public func conduccionMinima(hasta otro: Acorde) -> ConduccionMinima {
-        var origen: [Nota] = [], destino: [Nota] = []
+        var origen: [Nota] = []
+        var destino: [Nota] = []
         for n in notas where !origen.contains(n) { origen.append(n) }
         for n in otro.notas where !destino.contains(n) { destino.append(n) }
         // Se asigna a cada nota del acorde mayor una del menor, sin dejar ninguna sin usar.
@@ -168,19 +185,28 @@ extension Acorde {
         func probar(_ i: Int) {
             if i == grande.count {
                 guard Set(eleccion).count == pequeno.count else { return }
-                let pares = grande.indices.map { invertir ? (pequeno[eleccion[$0]], grande[$0]) : (grande[$0], pequeno[eleccion[$0]]) }
+                let pares = grande.indices.map {
+                    invertir ? (pequeno[eleccion[$0]], grande[$0]) : (grande[$0], pequeno[eleccion[$0]])
+                }
                 let movimientos = pares.map { MovimientoDeVoz(desde: $0.0, hasta: $0.1) }
-                let coste = (movimientos.reduce(0) { $0 + abs($1.semitonos) }, movimientos.filter { $0.semitonos != 0 }.count)
+                let coste = (
+                    movimientos.reduce(0) { $0 + abs($1.semitonos) }, movimientos.filter { $0.semitonos != 0 }.count
+                )
                 if mejor == nil || coste < mejor!.coste { mejor = (coste, pares) }
                 return
             }
-            for j in pequeno.indices { eleccion[i] = j; probar(i + 1) }
+            for j in pequeno.indices {
+                eleccion[i] = j
+                probar(i + 1)
+            }
         }
         if !grande.isEmpty && !pequeno.isEmpty { probar(0) }
         let movimientos = (mejor?.pares ?? []).map { MovimientoDeVoz(desde: $0.0, hasta: $0.1) }
         // En el orden de las notas del primer acorde.
         let ordenados = movimientos.enumerated().sorted {
-            ((origen.firstIndex(of: $0.element.desde) ?? 0), $0.offset) < ((origen.firstIndex(of: $1.element.desde) ?? 0), $1.offset)
+            ((origen.firstIndex(of: $0.element.desde) ?? 0), $0.offset) < (
+                (origen.firstIndex(of: $1.element.desde) ?? 0), $1.offset
+            )
         }.map(\.element)
         return ConduccionMinima(movimientos: ordenados)
     }
@@ -201,7 +227,9 @@ public struct ConduccionMinima: Hashable, Sendable, CustomStringConvertible {
 
     public func texto(en notacion: Notacion) -> String {
         let voces = movimientos.map { m -> String in
-            m.semitonos == 0 ? m.texto(en: notacion) : m.texto(en: notacion) + " (" + (m.semitonos > 0 ? "+" : "−") + "\(abs(m.semitonos)))"
+            m.semitonos == 0
+                ? m.texto(en: notacion)
+                : m.texto(en: notacion) + " (" + (m.semitonos > 0 ? "+" : "−") + "\(abs(m.semitonos)))"
         }
         let n = semitonosMovidos
         let semitonos = TextosDeRepresentaciones.traducidos.map { $0.semitonos(n) }.en(notacion)
@@ -217,25 +245,32 @@ extension Tonnetz {
     /// Domaj7 va por la ampliada). `nil` si los acordes no son de la misma familia.
     ///
     ///     Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Rem7")   // Sol7 → Rem7 en dos pasos
-    public static func caminoParsimonioso(desde origen: Acorde, hasta destino: Acorde, voces: Int = 1,
-                                          tipos: [TipoDeAcorde]? = nil) -> [PasoParsimonioso]? {
+    public static func caminoParsimonioso(
+        desde origen: Acorde, hasta destino: Acorde, voces: Int = 1,
+        tipos: [TipoDeAcorde]? = nil
+    ) -> [PasoParsimonioso]? {
         let comun = Acorde.familiasParsimoniosas.first { $0.contains(origen.tipo) && $0.contains(destino.tipo) }
         guard let familia = tipos ?? comun, familia.contains(origen.tipo),
-              familia.contains(destino.tipo), (1...2).contains(voces) else { return nil }
+            familia.contains(destino.tipo), (1...2).contains(voces)
+        else { return nil }
         func clave(_ a: Acorde) -> [Int] {
             a.notas.map(\.claseDeAltura).sorted() + [familia.firstIndex(of: a.tipo)!]
         }
         let meta = clave(destino)
         // Con dos voces, hay familias que no están conectadas: puede no haber camino.
-        guard var camino = caminoMasCorto(
-            desde: Acorde(origen.fundamental, origen.tipo), clave: clave,
-            vecinos: { acorde in acorde.vecinosParsimoniosos(voces: voces, tipos: familia).map { ($0, $0.acorde) } },
-            llega: { clave($0) == meta }) else { return nil }
+        guard
+            var camino = caminoMasCorto(
+                desde: Acorde(origen.fundamental, origen.tipo), clave: clave,
+                vecinos: { acorde in acorde.vecinosParsimoniosos(voces: voces, tipos: familia).map { ($0, $0.acorde) }
+                },
+                llega: { clave($0) == meta })
+        else { return nil }
         // El último, con la ortografía del destino.
         if let ultimo = camino.last {
             let final = Acorde(destino.fundamental, destino.tipo)
             let escritas = ultimo.movimientos.map { m in
-                MovimientoDeVoz(desde: m.desde, hasta: final.notas.first { $0.claseDeAltura == m.hasta.claseDeAltura } ?? m.hasta)
+                MovimientoDeVoz(
+                    desde: m.desde, hasta: final.notas.first { $0.claseDeAltura == m.hasta.claseDeAltura } ?? m.hasta)
             }
             camino[camino.count - 1] = PasoParsimonioso(acorde: final, movimientos: escritas)
         }

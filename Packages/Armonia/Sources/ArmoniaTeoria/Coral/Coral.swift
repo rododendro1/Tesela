@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 // Conducción de voces: las reglas de la armonía a cuatro voces sobre una sucesión de acordes.
 
 // MARK: - FaltaDeConduccion
@@ -106,7 +107,8 @@ public struct Coral: Hashable, Sendable {
     /// `nil` si no hay acordes, si hay menos de dos voces o si no todos tienen las mismas.
     public init?(_ acordes: [[Altura]]) {
         guard let voces = acordes.first?.count, voces >= 2,
-              acordes.allSatisfy({ $0.count == voces }) else { return nil }
+            acordes.allSatisfy({ $0.count == voces })
+        else { return nil }
         self.acordes = acordes
     }
 
@@ -130,8 +132,9 @@ public struct Coral: Hashable, Sendable {
                 acordes[acordes.count - 1].append(try Altura(leyendo: actual))
             } catch let error as ErrorDeLectura {
                 let inicio = posicion - actual.count
-                throw ErrorDeLectura(texto: texto, posicion: error.posicion.map { inicio + $0 } ?? inicio,
-                                     motivo: error.motivo)
+                throw ErrorDeLectura(
+                    texto: texto, posicion: error.posicion.map { inicio + $0 } ?? inicio,
+                    motivo: error.motivo)
             }
         }
         for caracter in texto {
@@ -191,7 +194,9 @@ public struct Coral: Hashable, Sendable {
     }
 
     /// Las faltas al pasar de un acorde al siguiente: saltos, superposiciones, paralelas y directas.
-    package static func faltas(de acorde: [Altura], a siguiente: [Altura], _ anotar: (FaltaDeConduccion.Tipo, [Int]) -> Void) {
+    package static func faltas(
+        de acorde: [Altura], a siguiente: [Altura], _ anotar: (FaltaDeConduccion.Tipo, [Int]) -> Void
+    ) {
         let numeroDeVoces = acorde.count
         let soprano = numeroDeVoces - 1
 
@@ -228,10 +233,11 @@ public struct Coral: Hashable, Sendable {
         let movimientoBajo = siguiente[0].midi - acorde[0].midi
         let movimientoSoprano = siguiente[soprano].midi - acorde[soprano].midi
         if let despues = consonanciaPerfecta(siguiente[0], siguiente[soprano]),
-           consonanciaPerfecta(acorde[0], acorde[soprano]) != despues,
-           movimientoBajo != 0, movimientoSoprano != 0,
-           (movimientoBajo > 0) == (movimientoSoprano > 0),
-           abs(movimientoSoprano) > 2 {
+            consonanciaPerfecta(acorde[0], acorde[soprano]) != despues,
+            movimientoBajo != 0, movimientoSoprano != 0,
+            (movimientoBajo > 0) == (movimientoSoprano > 0),
+            abs(movimientoSoprano) > 2
+        {
             anotar(despues == 5 ? .quintasDirectas : .octavasDirectas, [0, soprano])
         }
     }
@@ -258,10 +264,12 @@ public struct Coral: Hashable, Sendable {
 
     package static func nombreDeVoz(_ voz: Int, de total: Int, en notacion: Notacion) -> String {
         if total == 4 {
-            return [TextosDeTeoria.traducidos.map(\.vozBajo),
-                    TextosDeTeoria.traducidos.map(\.vozTenor),
-                    TextosDeTeoria.traducidos.map(\.vozContralto),
-                    TextosDeTeoria.traducidos.map(\.vozSoprano)][voz].en(notacion)
+            return [
+                TextosDeTeoria.traducidos.map(\.vozBajo),
+                TextosDeTeoria.traducidos.map(\.vozTenor),
+                TextosDeTeoria.traducidos.map(\.vozContralto),
+                TextosDeTeoria.traducidos.map(\.vozSoprano),
+            ][voz].en(notacion)
         }
         let numero = voz + 1
         return TextosDeTeoria.traducidos.map { $0.vozNumero(numero) }.en(notacion)

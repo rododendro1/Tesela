@@ -1,13 +1,15 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class CoralTests: XCTestCase {
     private func problemas(_ texto: String, file: StaticString = #filePath, line: UInt = #line)
-        -> [FaltaDeConduccion.Tipo] {
+        -> [FaltaDeConduccion.Tipo]
+    {
         do {
             return try Coral(leyendo: texto).faltas.map(\.tipo)
         } catch {
@@ -29,15 +31,22 @@ final class CoralTests: XCTestCase {
         XCTAssertEqual(c.faltas.map(\.tipo), [.quintasParalelas, .octavasParalelas])
         XCTAssertEqual(c.faltas.map(\.voces), [[0, 1], [0, 3]])
         XCTAssertEqual(c.faltas.map(\.acorde), [0, 0])
-        XCTAssertEqual(c.faltas.map(\.description), ["Quintas paralelas entre bajo y tenor (acordes 1 → 2)",
-                                                         "Octavas paralelas entre bajo y soprano (acordes 1 → 2)"])
-        XCTAssertEqual(c.faltas[0].descripcion(en: .inglesASCII), "Parallel fifths between bass and tenor (chords 1 → 2)")
+        XCTAssertEqual(
+            c.faltas.map(\.description),
+            [
+                "Quintas paralelas entre bajo y tenor (acordes 1 → 2)",
+                "Octavas paralelas entre bajo y soprano (acordes 1 → 2)",
+            ])
+        XCTAssertEqual(
+            c.faltas[0].descripcion(en: .inglesASCII), "Parallel fifths between bass and tenor (chords 1 → 2)")
         XCTAssertEqual(c.faltas[0].descripcion(en: .gallego), "Quintas paralelas entre baixo e tenor (acordes 1 → 2)")
         XCTAssertEqual(c.faltas[1].descripcion(en: .catalan), "Octaves paral·leles entre baix i soprano (acords 1 → 2)")
         XCTAssertEqual(c.faltas[0].descripcion(en: .euskera), "Bosgarren paraleloak baxua eta tenorra (1 → 2 akordeak)")
         // Por movimiento contrario también cuentan; el unísono es una octava.
         XCTAssertEqual(problemas("Do3 Sol3 Mi4 Do5 | Sol2 Re4 Sol4 Si4"), [.quintasParalelas])
-        XCTAssertEqual(problemas("Do4 Do4 Sol4 | Re4 Re4 La4"), [.superposicion, .octavasParalelas, .quintasParalelas, .quintasParalelas])
+        XCTAssertEqual(
+            problemas("Do4 Do4 Sol4 | Re4 Re4 La4"),
+            [.superposicion, .octavasParalelas, .quintasParalelas, .quintasParalelas])
         // Una quinta que se queda quieta no es paralela; una quinta disminuida tampoco cuenta.
         XCTAssertEqual(problemas("Do3 Sol3 Mi4 Do5 | Do3 Sol3 Fa4 La4"), [])
         XCTAssertEqual(problemas("Do4 Sol4 | Si3 Fa4"), [])

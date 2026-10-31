@@ -1,24 +1,26 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class TonnetzTests: XCTestCase {
     private func punto(_ a: Int, _ b: Int) -> PuntoDeLaRed { PuntoDeLaRed(quintas: a, terceras: b) }
 
     func testPuntos() {
         XCTAssertEqual(punto(0, 1).nota, .mi)
-        XCTAssertEqual(punto(4, 0).nota, .mi)            // el mismo nombre, otro punto
+        XCTAssertEqual(punto(4, 0).nota, .mi) // el mismo nombre, otro punto
         XCTAssertEqual(punto(2, 1).nota, Nota(.fa, .sostenido))
         XCTAssertEqual(punto(1, -1).nota, Nota(.mi, .bemol))
         XCTAssertEqual(punto(0, 1).claseDeAltura, 4)
         XCTAssertEqual(punto(3, 0).claseDeAltura, 9)
-        XCTAssertEqual(punto(4, -1).claseDeAltura, 0)     // un ciclo del toro de doce notas
-        XCTAssertEqual(Set(punto(0, 0).vecinos.map(\.nota)),
-                       [.sol, .fa, .mi, Nota(.la, .bemol), Nota(.mi, .bemol), .la])
-        XCTAssertEqual(punto(0, 0).distancia(hasta: punto(1, -1)), 1)   // tercera menor
+        XCTAssertEqual(punto(4, -1).claseDeAltura, 0) // un ciclo del toro de doce notas
+        XCTAssertEqual(
+            Set(punto(0, 0).vecinos.map(\.nota)),
+            [.sol, .fa, .mi, Nota(.la, .bemol), Nota(.mi, .bemol), .la])
+        XCTAssertEqual(punto(0, 0).distancia(hasta: punto(1, -1)), 1) // tercera menor
         XCTAssertEqual(punto(0, 0).distancia(hasta: punto(1, 1)), 2)
         XCTAssertEqual(punto(0, 0).distancia(hasta: punto(3, -2)), 3)
         XCTAssertEqual(punto(0, 0).distancia(hasta: punto(-2, -1)), 3)
@@ -29,8 +31,9 @@ final class TonnetzTests: XCTestCase {
         XCTAssertEqual(mayor.puntos, [punto(0, 0), punto(0, 1), punto(1, 0)])
         XCTAssertEqual(mayor.triadas.map(\.acorde), [Acorde("Do")])
         XCTAssertTrue(mayor.triadas[0].mayor)
-        XCTAssertEqual(mayor.aristas.map(\.eje).sorted { "\($0)" < "\($1)" },
-                       [.quintaJusta, .terceraMayor, .terceraMenor])
+        XCTAssertEqual(
+            mayor.aristas.map(\.eje).sorted { "\($0)" < "\($1)" },
+            [.quintaJusta, .terceraMayor, .terceraMenor])
         let menor = Tonnetz(Acorde("Lam"))
         XCTAssertEqual(menor.triadas.map(\.acorde), [Acorde("Lam")])
         XCTAssertFalse(menor.triadas[0].mayor)
@@ -66,7 +69,9 @@ final class TonnetzTests: XCTestCase {
     /// La colocación es la más compacta: nunca peor que la voraz, y mejor en muchas escalas.
     func testColocacionOptima() {
         func suma(_ p: [PuntoDeLaRed]) -> Int {
-            p.indices.reduce(0) { s, i in s + p.indices.filter { $0 > i }.reduce(0) { $0 + p[i].distancia(hasta: p[$1]) } }
+            p.indices.reduce(0) { s, i in
+                s + p.indices.filter { $0 > i }.reduce(0) { $0 + p[i].distancia(hasta: p[$1]) }
+            }
         }
         let candidatos: (Int, ClosedRange<Int>) -> [PuntoDeLaRed] = { pasos, filas in
             filas.map { PuntoDeLaRed(quintas: pasos - 4 * $0, terceras: $0) }
@@ -79,7 +84,8 @@ final class TonnetzTests: XCTestCase {
             XCTAssertLessThanOrEqual(optima.0, Tonnetz.grupos(voraz), tipo.nombre)
             if optima.0 == Tonnetz.grupos(voraz) { XCTAssertLessThanOrEqual(optima.1, suma(voraz), tipo.nombre) }
             if optima < (Tonnetz.grupos(voraz), suma(voraz)) { mejoras += 1 }
-            XCTAssertEqual(tonnetz.notas, Escala(.do, tipo).notas.reduce(into: [Nota]()) { if !$0.contains($1) { $0.append($1) } })
+            XCTAssertEqual(
+                tonnetz.notas, Escala(.do, tipo).notas.reduce(into: [Nota]()) { if !$0.contains($1) { $0.append($1) } })
         }
         XCTAssertGreaterThanOrEqual(mejoras, 20)
         // La egipcia (Do Re Fa Sol Si♭) es una franja de quintas con dos terceras: suma 15, no 17.
@@ -168,7 +174,9 @@ final class TonnetzTests: XCTestCase {
         // Son involuciones, y cada una comparte un lado con la tríada: dos notas en común.
         var azar = GeneradorConSemilla(semilla: 7)
         for _ in 0..<100 {
-            let acorde = Acorde(Nota(pasosDeQuinta: Int.random(in: -12...12, using: &azar)), Bool.random(using: &azar) ? .mayor : .menor)
+            let acorde = Acorde(
+                Nota(pasosDeQuinta: Int.random(in: -12...12, using: &azar)), Bool.random(using: &azar) ? .mayor : .menor
+            )
             for t in TransformacionNeorriemanniana.allCases {
                 let otro = acorde.transformar(t)!
                 XCTAssertEqual(otro.transformar(t), acorde, "\(acorde) \(t)")
@@ -229,8 +237,15 @@ final class TonnetzTests: XCTestCase {
         XCTAssertEqual(raiz.todos("line").filter { $0.atributos["marker-end"] != nil }.count, 2)
         XCTAssertTrue(raiz.todos("text").contains { $0.texto == "Do –R→ Lam –L→ Fa" })
         let ingles = try XCTUnwrap(ElementoXML.leer(camino.svg(notacion: .inglesASCII)))
-        XCTAssertTrue(ingles.todos("text").contains { $0.texto == "C –P→ Cm –R→ " + Acorde("Mib").cifrado(en: .inglesASCII) + " –P→ " + Acorde("Mibm").cifrado(en: .inglesASCII) })
-        XCTAssertNil(try XCTUnwrap(ElementoXML.leer(Tonnetz(Acorde("Do")).svg())).todos("line").first { $0.atributos["marker-end"] != nil })
+        XCTAssertTrue(
+            ingles.todos("text").contains {
+                $0.texto == "C –P→ Cm –R→ " + Acorde("Mib").cifrado(en: .inglesASCII) + " –P→ "
+                    + Acorde("Mibm").cifrado(en: .inglesASCII)
+            })
+        XCTAssertNil(
+            try XCTUnwrap(ElementoXML.leer(Tonnetz(Acorde("Do")).svg())).todos("line").first {
+                $0.atributos["marker-end"] != nil
+            })
         // Ida y vuelta entre los mismos triángulos: flechas curvas que no se montan.
         let vaiven = try XCTUnwrap(ElementoXML.leer(Tonnetz(recorrido: ["Do", "Dom", "Do", "Dom"])!.svg()))
         let curvas = vaiven.todos("path").filter { $0.atributos["marker-end"] != nil }
@@ -250,26 +265,39 @@ final class TonnetzTests: XCTestCase {
             raiz.todos("g").filter { $0.atributos["class"] == "leyenda" }.flatMap { $0.todos("text").map(\.texto) }
         }
         // El título: el acorde, la escala, las notas, el conjunto o el recorrido.
-        for (tonnetz, titulo) in [(Tonnetz(Acorde("Domaj7")), "Domaj7"), (Tonnetz(Escala(.re, .dorico)), "Re dórico"),
-                                  (Tonnetz([.do, .mi, .sol]), "Do · Mi · Sol"), (Tonnetz(ConjuntoDeClases([0, 4, 7])), "Conjunto [0, 4, 7]"),
-                                  (Tonnetz(recorrido: ["Do", "Lam"])!, "Do –R→ Lam")] {
+        for (tonnetz, titulo) in [
+            (Tonnetz(Acorde("Domaj7")), "Domaj7"), (Tonnetz(Escala(.re, .dorico)), "Re dórico"),
+            (Tonnetz([.do, .mi, .sol]), "Do · Mi · Sol"), (Tonnetz(ConjuntoDeClases([0, 4, 7])), "Conjunto [0, 4, 7]"),
+            (Tonnetz(recorrido: ["Do", "Lam"])!, "Do –R→ Lam"),
+        ] {
             let raiz = try XCTUnwrap(ElementoXML.leer(tonnetz.svg()))
             XCTAssertEqual(raiz.todos("title").first?.texto, titulo)
-            XCTAssertTrue(raiz.todos("text").contains { $0.texto == titulo && $0.atributos["font-weight"] == "600" }, titulo)
+            XCTAssertTrue(
+                raiz.todos("text").contains { $0.texto == titulo && $0.atributos["font-weight"] == "600" }, titulo)
         }
-        XCTAssertEqual(try XCTUnwrap(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(notacion: .inglesASCII))).todos("title").first?.texto, "C")
-        XCTAssertEqual(try XCTUnwrap(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(titulo: "Tónica"))).todos("title").first?.texto, "Tónica")
+        XCTAssertEqual(
+            try XCTUnwrap(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(notacion: .inglesASCII))).todos("title").first?
+                .texto, "C")
+        XCTAssertEqual(
+            try XCTUnwrap(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(titulo: "Tónica"))).todos("title").first?.texto,
+            "Tónica")
         XCTAssertTrue(try XCTUnwrap(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(titulo: ""))).todos("title").isEmpty)
         // La leyenda, solo con lo que aparece.
-        XCTAssertEqual(leyenda(try XCTUnwrap(ElementoXML.leer(Tonnetz(Acorde("Domaj7")).svg()))),
-                       ["nota", "quinta o tercera entre notas", "tríada mayor", "tríada menor"])
-        XCTAssertEqual(leyenda(try XCTUnwrap(ElementoXML.leer(Tonnetz(Escala(.do, .tonosEnteros)).svg()))),
-                       ["nota", "quinta o tercera entre notas"])
-        XCTAssertEqual(leyenda(try XCTUnwrap(ElementoXML.leer(Tonnetz(recorrido: ["Do", "Lam"])!.svg()))).last,
-                       "paso del recorrido (P, L, R)")
-        XCTAssertEqual(leyenda(try XCTUnwrap(ElementoXML.leer(Tonnetz(ConjuntoDeClases([0])).svg()))), ["clase de altura (todas sus copias)"])
-        XCTAssertEqual(leyenda(try XCTUnwrap(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(notacion: .inglesASCII)))),
-                       ["note", "fifth or third between notes", "major triad"])
+        XCTAssertEqual(
+            leyenda(try XCTUnwrap(ElementoXML.leer(Tonnetz(Acorde("Domaj7")).svg()))),
+            ["nota", "quinta o tercera entre notas", "tríada mayor", "tríada menor"])
+        XCTAssertEqual(
+            leyenda(try XCTUnwrap(ElementoXML.leer(Tonnetz(Escala(.do, .tonosEnteros)).svg()))),
+            ["nota", "quinta o tercera entre notas"])
+        XCTAssertEqual(
+            leyenda(try XCTUnwrap(ElementoXML.leer(Tonnetz(recorrido: ["Do", "Lam"])!.svg()))).last,
+            "paso del recorrido (P, L, R)")
+        XCTAssertEqual(
+            leyenda(try XCTUnwrap(ElementoXML.leer(Tonnetz(ConjuntoDeClases([0])).svg()))),
+            ["clase de altura (todas sus copias)"])
+        XCTAssertEqual(
+            leyenda(try XCTUnwrap(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(notacion: .inglesASCII)))),
+            ["note", "fifth or third between notes", "major triad"])
         XCTAssertTrue(leyenda(try XCTUnwrap(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(leyenda: false)))).isEmpty)
         XCTAssertTrue(leyenda(try XCTUnwrap(ElementoXML.leer(Tonnetz([]).svg()))).isEmpty)
     }
@@ -295,11 +323,13 @@ final class TonnetzTests: XCTestCase {
                     let acordes = inicio.ciclo(ciclo)!
                     XCTAssertEqual(acordes.count, ciclo.longitud + 1)
                     XCTAssertEqual(acordes.last, inicio)
-                    let distintas = Set(acordes.dropLast().map { [$0.fundamental.claseDeAltura, $0.tipo == .mayor ? 1 : 0] })
+                    let distintas = Set(
+                        acordes.dropLast().map { [$0.fundamental.claseDeAltura, $0.tipo == .mayor ? 1 : 0] })
                     XCTAssertEqual(distintas.count, ciclo.longitud)
                     for (i, (uno, otro)) in zip(acordes, acordes.dropFirst()).enumerated() {
                         let transformado = uno.transformar(ciclo.transformaciones[i % 2])!
-                        XCTAssertEqual(Set(transformado.notas.map(\.claseDeAltura)), Set(otro.notas.map(\.claseDeAltura)))
+                        XCTAssertEqual(
+                            Set(transformado.notas.map(\.claseDeAltura)), Set(otro.notas.map(\.claseDeAltura)))
                         // Sin dobles alteraciones (salvo en la de partida, que se respeta: Sol♭m).
                         if otro != inicio {
                             XCTAssertTrue(otro.notas.allSatisfy { abs($0.alteracion.semitonos) <= 1 }, "\(otro)")

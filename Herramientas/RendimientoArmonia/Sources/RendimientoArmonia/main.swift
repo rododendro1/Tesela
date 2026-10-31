@@ -31,7 +31,9 @@ while !restantes.isEmpty {
         print(ayuda)
         exit(0)
     }
-    guard ["--filtro", "--tiempo", "--json", "--comparar"].contains(opcion) else { fallar("Opción desconocida: \(opcion)") }
+    guard ["--filtro", "--tiempo", "--json", "--comparar"].contains(opcion) else {
+        fallar("Opción desconocida: \(opcion)")
+    }
     guard !restantes.isEmpty else { fallar("Falta el valor de \(opcion)") }
     let valor = restantes.removeFirst()
     switch opcion {
@@ -59,7 +61,7 @@ let casos = Casos.todos().filter { caso in filtro.map { caso.titulo.lowercased()
 guard !casos.isEmpty else { fallar("Ningún caso contiene «\(filtro ?? "")»") }
 
 #if DEBUG
-print("> **Aviso:** compilado sin optimización (`-c debug`); los tiempos no se parecen a los de las apps.\n")
+    print("> **Aviso:** compilado sin optimización (`-c debug`); los tiempos no se parecen a los de las apps.\n")
 #endif
 
 let comparando = !anteriores.isEmpty
@@ -71,7 +73,8 @@ var resultados: [Resultado] = []
 for caso in casos {
     let r = Medicion.medir(caso, presupuesto: presupuesto, comprobacion: &comprobacion)
     resultados.append(r)
-    var fila = "| \(r.caso) | \(Medicion.texto(r.primera)) | \(Medicion.texto(r.mediana)) | \(Medicion.texto(r.minimo)) | \(r.repeticiones) |"
+    var fila =
+        "| \(r.caso) | \(Medicion.texto(r.primera)) | \(Medicion.texto(r.mediana)) | \(Medicion.texto(r.minimo)) | \(r.repeticiones) |"
     if comparando {
         if let antes = anteriores[r.caso] {
             fila += " \(Medicion.texto(antes.mediana)) | \(Medicion.cambio(r.mediana, antes: antes.mediana)) |"

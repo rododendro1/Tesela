@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 // MARK: - Detección de tonalidad
 
 extension Tonalidad {
@@ -78,7 +79,9 @@ extension Tonalidad {
         let n = Double(a.count)
         let ma = a.reduce(0, +) / n
         let mb = b.reduce(0, +) / n
-        var numerador = 0.0, sa = 0.0, sb = 0.0
+        var numerador = 0.0
+        var sa = 0.0
+        var sb = 0.0
         for (x, y) in zip(a, b) {
             numerador += (x - ma) * (y - mb)
             sa += (x - ma) * (x - ma)

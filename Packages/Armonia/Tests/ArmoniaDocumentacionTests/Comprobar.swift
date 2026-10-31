@@ -8,17 +8,22 @@ import XCTest
 /// los opcionales, sin `Optional(…)`; las listas, con o sin corchetes y separadas por comas o por
 /// espacios. Un número se compara con los decimales que tenga el comentario (`−13,69`), y `…`
 /// en el comentario vale por cualquier tramo (`La4 … Sol♯5 La5`).
-func comprobar<T>(_ valor: T, _ esperado: String, _ fichero: String, _ linea: Int,
-                  file: StaticString = #filePath, line: UInt = #line) {
+func comprobar<T>(
+    _ valor: T, _ esperado: String, _ fichero: String, _ linea: Int,
+    file: StaticString = #filePath, line: UInt = #line
+) {
     let candidatos = descripciones(de: valor)
     if candidatos.contains(where: { coincide($0, con: esperado) }) { return }
-    XCTFail("\(fichero):\(linea): el ejemplo da «\(candidatos[0])» y el comentario dice «\(esperado)»",
-            file: file, line: line)
+    XCTFail(
+        "\(fichero):\(linea): el ejemplo da «\(candidatos[0])» y el comentario dice «\(esperado)»",
+        file: file, line: line)
 }
 
 /// Comprueba un valor contra otro escrito en Swift en el comentario (`// .mayor`).
-func comprobarIgual<T: Equatable>(_ valor: T, _ esperado: T, _ fichero: String, _ linea: Int,
-                                  file: StaticString = #filePath, line: UInt = #line) {
+func comprobarIgual<T: Equatable>(
+    _ valor: T, _ esperado: T, _ fichero: String, _ linea: Int,
+    file: StaticString = #filePath, line: UInt = #line
+) {
     XCTAssertEqual(valor, esperado, "\(fichero):\(linea)", file: file, line: line)
 }
 
@@ -53,10 +58,12 @@ private func normalizar(_ texto: String) -> String {
 }
 
 private func coincide(_ obtenido: String, con esperado: String) -> Bool {
-    let a = normalizar(obtenido), b = normalizar(esperado)
+    let a = normalizar(obtenido)
+    let b = normalizar(esperado)
     if a == b { return true }
     // Números: con los decimales que muestre el comentario, y con coma o punto decimal.
-    let numero = esperado.replacingOccurrences(of: "−", with: "-").replacingOccurrences(of: ",", with: ".")
+    let numero =
+        esperado.replacingOccurrences(of: "−", with: "-").replacingOccurrences(of: ",", with: ".")
         .split(separator: " ").first.map(String.init) ?? ""
     if let x = Double(obtenido), let y = Double(numero) {
         let decimales = numero.split(separator: ".").dropFirst().first?.count ?? 0

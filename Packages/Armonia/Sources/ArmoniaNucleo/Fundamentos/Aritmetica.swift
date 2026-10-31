@@ -27,9 +27,11 @@ package func maximoComunDivisor(_ a: Int, _ b: Int) -> Int {
 /// su orden, que decide entre caminos igual de cortos), hasta el primer estado que `llega`. Los
 /// estados con la misma `clave` cuentan como uno. Devuelve los pasos (vacío si `inicio` ya
 /// llega) o `nil` si no hay camino. La usan los caminos por P, L y R y por voces que se mueven.
-package func caminoMasCorto<Estado, Clave: Hashable, Paso>(desde inicio: Estado, clave: (Estado) -> Clave,
-                                                  vecinos: (Estado) -> [(Paso, Estado)],
-                                                  llega: (Estado) -> Bool) -> [Paso]? {
+package func caminoMasCorto<Estado, Clave: Hashable, Paso>(
+    desde inicio: Estado, clave: (Estado) -> Clave,
+    vecinos: (Estado) -> [(Paso, Estado)],
+    llega: (Estado) -> Bool
+) -> [Paso]? {
     if llega(inicio) { return [] }
     var previo: [Clave: (Clave, Paso)] = [:]
     var vistos: Set<Clave> = [clave(inicio)]
@@ -45,7 +47,10 @@ package func caminoMasCorto<Estado, Clave: Hashable, Paso>(desde inicio: Estado,
                 if llega(vecino) {
                     var camino: [Paso] = []
                     var actual = k
-                    while let (anterior, paso) = previo[actual] { camino.insert(paso, at: 0); actual = anterior }
+                    while let (anterior, paso) = previo[actual] {
+                        camino.insert(paso, at: 0)
+                        actual = anterior
+                    }
                     return camino
                 }
                 siguiente.append(vecino)

@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 // MARK: - Escalas de la India, dromoi griegos, maqamat, dastgāh, escalas chinas, japonesas, coreanas,
 // etíopes, de Indonesia, andinas, klezmer y de la Grecia antigua
 //
@@ -25,7 +26,8 @@ extension TipoDeEscala {
     /// Escalas de otras tradiciones: thaat, dromoi, melakarta, janya, chinas, japonesas, etíopes,
     /// maqamat, de Indonesia, klezmer, ragas indostánicos, dastgāh, coreanas, andinas y de la
     /// Grecia antigua.
-    public static let tradicionales: [TipoDeEscala] = thaats + dromoi + melakartas + janyas + chinas + japonesas
+    public static let tradicionales: [TipoDeEscala] =
+        thaats + dromoi + melakartas + janyas + chinas + japonesas
         + etiopes + maqamat + indonesias + klezmer + ragasIndostanicos + dastgah + coreanas + andinas
         + griegasAntiguas
 }
@@ -85,7 +87,9 @@ extension TipoDeEscala {
     /// 雅乐, la escala «elegante» de la música cortesana: gōng con 4.º aumentado y 7.º (el lidio).
     public static let yayue = TipoDeEscala(
         nombre: "Yǎyuè",
-        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor],
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
         alias: ["雅乐", "雅樂"])
     /// 燕乐, la escala de los banquetes: gōng con 4.º y 7.º menor (el mixolidio).
     public static let yanyue = TipoDeEscala(
@@ -152,7 +156,9 @@ extension TipoDeEscala {
         nombre: "Ančihoye", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaDisminuida, .sextaMayor],
         alias: ["Anchihoye", "Anchihoy", "Anchi hoye", "አንቺሆዬ"])
 
-    public static let etiopes: [TipoDeEscala] = [.tezetaMayor, .tezetaMenor, .batiMayor, .batiMenor, .ambassel, .anchihoye]
+    public static let etiopes: [TipoDeEscala] = [
+        .tezetaMayor, .tezetaMenor, .batiMayor, .batiMenor, .ambassel, .anchihoye,
+    ]
 }
 
 // MARK: - Grecia
@@ -161,42 +167,78 @@ extension TipoDeEscala {
     // MARK: Dromoi (música popular griega)
 
     public static let ousak = TipoDeEscala(
-        nombre: "Ousák", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
-                                       .quintaJusta, .sextaMenor, .septimaMenor], alias: ["Usak", "Oussak", "Ουσάκ"])
+        nombre: "Ousák",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ], alias: ["Usak", "Oussak", "Ουσάκ"])
     public static let hitzaz = TipoDeEscala(
-        nombre: "Hitzáz", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
-                                        .quintaJusta, .sextaMenor, .septimaMenor], alias: ["Hijaz", "Hicaz", "Χιτζάζ"])
+        nombre: "Hitzáz",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ], alias: ["Hijaz", "Hicaz", "Χιτζάζ"])
     public static let hitzazkiar = TipoDeEscala(
-        nombre: "Hitzazkiár", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
-                                            .quintaJusta, .sextaMenor, .septimaMayor], alias: ["Hijazkiar", "Hicazkar", "Χιτζαζκιάρ"])
+        nombre: "Hitzazkiár",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ], alias: ["Hijazkiar", "Hicazkar", "Χιτζαζκιάρ"])
     public static let pireotikos = TipoDeEscala(
-        nombre: "Pireótikos", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
-                                            .quintaJusta, .sextaMenor, .septimaMayor], alias: ["Piraiotikos", "Pireaiotikos", "Πειραιώτικος"])
+        nombre: "Pireótikos",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ], alias: ["Piraiotikos", "Pireaiotikos", "Πειραιώτικος"])
     public static let tabahaniotikos = TipoDeEscala(
-        nombre: "Tabahaniótikos", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
-                                                .quintaJusta, .sextaMenor, .septimaMayor],
+        nombre: "Tabahaniótikos",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
         alias: ["Ταμπαχανιώτικος"])
     public static let niavent = TipoDeEscala(
-        nombre: "Niavént", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
-                                         .quintaJusta, .sextaMenor, .septimaMayor], alias: ["Nihavent", "Νιαβέντ"])
+        nombre: "Niavént",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ], alias: ["Nihavent", "Νιαβέντ"])
     public static let nikriz = TipoDeEscala(
-        nombre: "Nikríz", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
-                                        .quintaJusta, .sextaMayor, .septimaMenor], alias: ["Souzinak", "Susinak", "Poimeniko", "Νικρίζ"])
+        nombre: "Nikríz",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ], alias: ["Souzinak", "Susinak", "Poimeniko", "Νικρίζ"])
     public static let kartzigar = TipoDeEscala(
-        nombre: "Kartzigár", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-                                           .quintaDisminuida, .sextaMayor, .septimaMenor], alias: ["Kartsigar", "Karcigar", "Καρτσιγάρ"])
+        nombre: "Kartzigár",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .sextaMayor, .septimaMenor,
+        ], alias: ["Kartsigar", "Karcigar", "Καρτσιγάρ"])
     public static let sabah = TipoDeEscala(
-        nombre: "Sabáh", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaDisminuida,
-                                       .quintaJusta, .sextaMenor, .septimaMenor], alias: ["Sabach", "Sampah", "Σαμπάχ"])
+        nombre: "Sabáh",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaDisminuida,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ], alias: ["Sabach", "Sampah", "Σαμπάχ"])
     public static let houzam = TipoDeEscala(
-        nombre: "Houzám", intervalos: [.unisono, .segundaAumentada, .terceraMayor, .cuartaJusta,
-                                        .quintaJusta, .sextaMayor, .septimaMayor], alias: ["Huzam", "Χουζάμ"])
+        nombre: "Houzám",
+        intervalos: [
+            .unisono, .segundaAumentada, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ], alias: ["Huzam", "Χουζάμ"])
     public static let sengah = TipoDeEscala(
-        nombre: "Sengáh", intervalos: [.unisono, .segundaAumentada, .terceraMayor, .cuartaJusta,
-                                        .quintaJusta, .sextaMenor, .septimaMayor], alias: ["Segah", "Sengiach", "Σεγκιάχ"])
+        nombre: "Sengáh",
+        intervalos: [
+            .unisono, .segundaAumentada, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ], alias: ["Segah", "Sengiach", "Σεγκιάχ"])
     public static let tsinganikos = TipoDeEscala(
-        nombre: "Tsingánikos", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
-                                             .quintaDisminuida, .sextaMayor, .septimaMenor],
+        nombre: "Tsingánikos",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaDisminuida, .sextaMayor, .septimaMenor,
+        ],
         alias: ["Τσιγγάνικος"])
 
     // Dromoi que suben y bajan distinto.
@@ -205,19 +247,27 @@ extension TipoDeEscala {
     public static let rast = TipoDeEscala(
         nombre: "Rast",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
-        intervalosDescendentes: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
         alias: ["Ραστ"])
     /// Sube como Kartzigár y baja como la menor natural.
     public static let kiourdi = TipoDeEscala(
         nombre: "Kiourdí",
-        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMayor, .septimaMenor],
-        intervalosDescendentes: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMayor, .septimaMenor,
+        ],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
         alias: ["Kurdi", "Kioúrdi", "Κιουρντί"])
     /// Sube como el mixolidio y baja como la menor natural.
     public static let houseini = TipoDeEscala(
         nombre: "Houseïní",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
-        intervalosDescendentes: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
         alias: ["Huseyni", "Houséïni", "Χουσεϊνί"])
 
     /// Los dromoi más habituales, en su versión temperada.
@@ -241,26 +291,39 @@ extension TipoDeEscala {
         nombre: "tetracordo cromático", intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta])
     /// De Mi a Mi: dos tetracordos diatónicos (el frigio moderno).
     public static let harmoniaDoria = TipoDeEscala(
-        nombre: "harmonía doria", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
-                                                .quintaJusta, .sextaMenor, .septimaMenor],
+        nombre: "harmonía doria",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
         alias: ["doria antigua"])
     /// De Mi a Mi en el género cromático (Mi Fa Sol♭ La Si Do Re♭).
     public static let harmoniaDoriaCromatica = TipoDeEscala(
-        nombre: "harmonía doria cromática", intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta,
-                                                          .quintaJusta, .sextaMenor, .septimaDisminuida])
+        nombre: "harmonía doria cromática",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaDisminuida,
+        ])
     /// De Re a Re (el dórico moderno).
     public static let harmoniaFrigia = TipoDeEscala(
-        nombre: "harmonía frigia", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-                                                 .quintaJusta, .sextaMayor, .septimaMenor],
+        nombre: "harmonía frigia",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
         alias: ["frigia antigua"])
     /// De Do a Do (la mayor).
     public static let harmoniaLidia = TipoDeEscala(
-        nombre: "harmonía lidia", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
-                                                .quintaJusta, .sextaMayor, .septimaMayor],
+        nombre: "harmonía lidia",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
         alias: ["lidia antigua"])
 
     public static let griegasAntiguas: [TipoDeEscala] = [
-        .tetracordoDiatonico, .tetracordoCromatico, .harmoniaDoria, .harmoniaDoriaCromatica, .harmoniaFrigia, .harmoniaLidia,
+        .tetracordoDiatonico, .tetracordoCromatico, .harmoniaDoria, .harmoniaDoriaCromatica, .harmoniaFrigia,
+        .harmoniaLidia,
     ]
 }
 
@@ -362,23 +425,35 @@ extension TipoDeEscala {
 
     /// פֿריגיש, el frigio dominante (Ahavah Rabbah en la sinagoga).
     public static let freygish = TipoDeEscala(
-        nombre: "Freygish", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
-                                          .quintaJusta, .sextaMenor, .septimaMenor],
+        nombre: "Freygish",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
         alias: ["Freigish", "Ahavah Rabbah", "Ahava Rabbah", "Ahava Raba"])
     /// Misheberakh, el dórico ♯4.
     public static let misheberakh = TipoDeEscala(
-        nombre: "Misheberakh", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
-                                             .quintaJusta, .sextaMayor, .septimaMenor],
+        nombre: "Misheberakh",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
         alias: ["Mi Sheberach", "Av Harachamim"])
     /// Adonai Malakh: un mixolidio con la 3ª menor de paso (Do Re Mi♭ Mi Fa Sol La Si♭).
     public static let adonaiMalakh = TipoDeEscala(
-        nombre: "Adonai Malakh", intervalos: [.unisono, .segundaMayor, .terceraMenor, .terceraMayor, .cuartaJusta,
-                                               .quintaJusta, .sextaMayor, .septimaMenor],
+        nombre: "Adonai Malakh",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
         alias: ["Adonoi Moloch", "Adoshem Malakh"])
     /// Magen Avot, la menor natural.
     public static let magenAvot = TipoDeEscala(
-        nombre: "Magen Avot", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-                                            .quintaJusta, .sextaMenor, .septimaMenor],
+        nombre: "Magen Avot",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
         alias: ["Mogen Ovos"])
 
     public static let klezmer: [TipoDeEscala] = [.freygish, .misheberakh, .adonaiMalakh, .magenAvot]
@@ -396,33 +471,51 @@ extension TipoDeEscala {
 
     /// حجاز (Re Mi♭ Fa♯ Sol La Si♭ Do).
     public static let hiyaz = TipoDeEscala(
-        nombre: "Ḥijāz", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
-                                       .quintaJusta, .sextaMenor, .septimaMenor],
+        nombre: "Ḥijāz",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
         alias: ["Ḥiŷāz", "Hejaz", "maqam Hijaz", "حجاز"])
     /// نهاوند, la menor armónica.
     public static let nahawand = TipoDeEscala(
-        nombre: "Nahāwand", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-                                          .quintaJusta, .sextaMenor, .septimaMayor],
+        nombre: "Nahāwand",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
         alias: ["Nihavend", "Nihavent", "نهاوند"])
     /// كرد, el frigio.
     public static let kurd = TipoDeEscala(
-        nombre: "Kurd", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
-                                      .quintaJusta, .sextaMenor, .septimaMenor],
+        nombre: "Kurd",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
         alias: ["maqam Kurd", "كرد"])
     /// عجم, la mayor.
     public static let ajam = TipoDeEscala(
-        nombre: "ʿAjam", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
-                                      .quintaJusta, .sextaMayor, .septimaMayor],
+        nombre: "ʿAjam",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
         alias: ["Ajam", "Acem", "عجم"])
     /// حجازكار, la doble armónica.
     public static let hiyazkar = TipoDeEscala(
-        nombre: "Ḥijāzkār", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
-                                          .quintaJusta, .sextaMenor, .septimaMayor],
+        nombre: "Ḥijāzkār",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
         alias: ["Ḥiŷāzkār", "حجازكار"])
     /// نوى أثر, la menor húngara.
     public static let nawaAthar = TipoDeEscala(
-        nombre: "Nawā Athar", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
-                                            .quintaJusta, .sextaMenor, .septimaMayor],
+        nombre: "Nawā Athar",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
         alias: ["Nawathar", "Neveser", "نوى أثر"])
 
     public static let maqamat: [TipoDeEscala] = [.hiyaz, .nahawand, .kurd, .ajam, .hiyazkar, .nawaAthar]
@@ -439,18 +532,27 @@ extension TipoDeEscala {
 
     /// ماهور: la mayor.
     public static let mahur = TipoDeEscala(
-        nombre: "Māhur", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
-                                       .quintaJusta, .sextaMayor, .septimaMayor],
+        nombre: "Māhur",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
         alias: ["Mahoor", "ماهور"])
     /// همایون, aproximado: como el frigio dominante.
     public static let homayun = TipoDeEscala(
-        nombre: "Homāyun", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
-                                         .quintaJusta, .sextaMenor, .septimaMenor],
+        nombre: "Homāyun",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
         alias: ["Homayoun", "همایون"])
     /// چهارگاه, aproximado: como la doble armónica.
     public static let cahargah = TipoDeEscala(
-        nombre: "Čahārgāh", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
-                                          .quintaJusta, .sextaMenor, .septimaMayor],
+        nombre: "Čahārgāh",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
         alias: ["Chahārgāh", "چهارگاه"])
 
     public static let dastgah: [TipoDeEscala] = [.mahur, .homayun, .cahargah]

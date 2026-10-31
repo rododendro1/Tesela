@@ -20,7 +20,7 @@ let package = Package(
         .target(
             name: "ArmoniaPresentacion",
             dependencies: [
-                .product(name: "Armonia", package: "Armonia"),
+                .product(name: "Armonia", package: "Armonia")
             ]),
         .target(
             name: "ArmoniaUI",

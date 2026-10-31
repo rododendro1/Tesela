@@ -8,10 +8,23 @@
 ///     a.cifrado(estilo: .inglesASCII)           // "Bb7(b9)"
 ///     Acorde("Sim7b5").cifrado(estilo: .jazz)   // "Bø7"
 public struct EstiloDeCifrado: Hashable, Sendable {
-    public enum Menor: String, Hashable, Sendable { case m = "m", min = "min" }
-    public enum Disminuido: String, Hashable, Sendable { case circulo = "°", dim = "dim" }
-    public enum Aumentado: String, Hashable, Sendable { case mas = "+", aug = "aug" }
-    public enum SeptimaMayor: String, Hashable, Sendable { case maj = "maj", mayuscula = "M", delta = "Δ" }
+    public enum Menor: String, Hashable, Sendable {
+        case m = "m"
+        case min = "min"
+    }
+    public enum Disminuido: String, Hashable, Sendable {
+        case circulo = "°"
+        case dim = "dim"
+    }
+    public enum Aumentado: String, Hashable, Sendable {
+        case mas = "+"
+        case aug = "aug"
+    }
+    public enum SeptimaMayor: String, Hashable, Sendable {
+        case maj = "maj"
+        case mayuscula = "M"
+        case delta = "Δ"
+    }
     public enum Semidisminuido: Hashable, Sendable {
         /// m7(♭5)
         case menorSeptimaQuintaBemol
@@ -30,13 +43,15 @@ public struct EstiloDeCifrado: Hashable, Sendable {
 
     /// Sin `tensionesEnASCII`, las tensiones llevan b y # si las notas las llevan (`Notacion.usaASCII`): el
     /// estilo básico de cada notación es `EstiloDeCifrado(notacion:)`, y `.inglesASCII` escribe Bb7(b9).
-    public init(notacion: Notacion = .espanolUnicode,
-                tensionesEnASCII: Bool? = nil,
-                menor: Menor = .m,
-                disminuido: Disminuido = .circulo,
-                aumentado: Aumentado = .mas,
-                septimaMayor: SeptimaMayor = .maj,
-                semidisminuido: Semidisminuido = .menorSeptimaQuintaBemol) {
+    public init(
+        notacion: Notacion = .espanolUnicode,
+        tensionesEnASCII: Bool? = nil,
+        menor: Menor = .m,
+        disminuido: Disminuido = .circulo,
+        aumentado: Aumentado = .mas,
+        septimaMayor: SeptimaMayor = .maj,
+        semidisminuido: Semidisminuido = .menorSeptimaQuintaBemol
+    ) {
         self.notacion = notacion
         self.tensionesEnASCII = tensionesEnASCII ?? notacion.usaASCII
         self.menor = menor

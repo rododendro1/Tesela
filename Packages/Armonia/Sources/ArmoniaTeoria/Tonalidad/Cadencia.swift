@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 // Cadencias: las parejas de acordes que cierran (o dejan en suspenso) una frase tonal.
 
 // MARK: - Cadencia
@@ -56,29 +57,35 @@ public struct Cadencia: Hashable, Sendable, CustomStringConvertible {
     package static func tipo(_ primero: AcordeAnalizado, _ segundo: AcordeAnalizado, final: Bool) -> Tipo? {
         if esDominante(primero) && esTonica(segundo) { return .autentica }
         if primero.grado == 4, propio(primero), primero.acorde.tipo.esMayor || primero.acorde.tipo.esMenor,
-           esTonica(segundo) {
+            esTonica(segundo)
+        {
             return .plagal
         }
         if esDominante(primero), primero.grado == 5, segundo.grado == 6, propio(segundo),
-           segundo.acorde.tipo.esMayor || segundo.acorde.tipo.esMenor {
+            segundo.acorde.tipo.esMayor || segundo.acorde.tipo.esMenor
+        {
             return .rota
         }
         if final, segundo.grado == 5, segundo.categoria == .diatonico,
-           segundo.acorde.tipo.estructura.calidadDeTriada == .mayor,
-           segundo.acorde.inversion == 0, !(primero.grado == 5 && primero.categoria == .diatonico) {
+            segundo.acorde.tipo.estructura.calidadDeTriada == .mayor,
+            segundo.acorde.inversion == 0, !(primero.grado == 5 && primero.categoria == .diatonico)
+        {
             return .semicadencia
         }
         return nil
     }
 
     /// Las cadencias de una sucesión de acordes leídos en una tonalidad.
-    package static func buscar(en acordes: [AcordeAnalizado], tonalidad: Tonalidad, desde inicio: Int = 0,
-                               esFinal: Bool = true) -> [Cadencia] {
+    package static func buscar(
+        en acordes: [AcordeAnalizado], tonalidad: Tonalidad, desde inicio: Int = 0,
+        esFinal: Bool = true
+    ) -> [Cadencia] {
         guard acordes.count >= 2 else { return [] }
         return (0..<(acordes.count - 1)).compactMap { i in
             let final = esFinal && i + 2 == acordes.count
             guard let tipo = tipo(acordes[i], acordes[i + 1], final: final) else { return nil }
-            return Cadencia(tipo: tipo, acorde: inicio + i, tonalidad: tonalidad, acordes: [acordes[i], acordes[i + 1]])
+            return Cadencia(
+                tipo: tipo, acorde: inicio + i, tonalidad: tonalidad, acordes: [acordes[i], acordes[i + 1]])
         }
     }
 

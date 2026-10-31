@@ -42,8 +42,10 @@ public struct CoordenadaFraccionaria: Hashable, Sendable, Codable {
     }
 
     /// El punto a la fracción `t` del camino de `a` a `b` (`t = 0` es `a`, `t = 1` es `b`).
-    public static func interpolar(_ a: CoordenadaFraccionaria, _ b: CoordenadaFraccionaria,
-                                  _ t: Double) -> CoordenadaFraccionaria {
+    public static func interpolar(
+        _ a: CoordenadaFraccionaria, _ b: CoordenadaFraccionaria,
+        _ t: Double
+    ) -> CoordenadaFraccionaria {
         CoordenadaFraccionaria(q: a.q + (b.q - a.q) * t, r: a.r + (b.r - a.r) * t)
     }
 }

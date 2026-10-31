@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+
 // Arpegios como voces: un arpegio, o una progresión arpegiada, con su ritmo. Como son una `Voz`, se dibujan,
 // suenan y se exportan (MusicXML, MEI, MIDI) igual que cualquier melodía.
 
@@ -31,15 +32,18 @@ extension Voz {
     ///     lo deja más cerca del primero, para que la mano no salte de un extremo a otro.
     ///
     /// Detiene el programa si `figura` no es positiva.
-    public init(arpegiando acordes: [Acorde], patron: Arpegio.Patron = .ascendente, octavas: Int = 1,
-                conOctava: Bool = true, figura: Duracion = .corchea, porAcorde: Duracion? = nil,
-                octava: Int = 3, compas: Compas = .compasillo) {
+    public init(
+        arpegiando acordes: [Acorde], patron: Arpegio.Patron = .ascendente, octavas: Int = 1,
+        conOctava: Bool = true, figura: Duracion = .corchea, porAcorde: Duracion? = nil,
+        octava: Int = 3, compas: Compas = .compasillo
+    ) {
         precondition(figura > .cero, "la figura de un arpegio tiene que durar algo")
         var eventos: [Evento] = []
         let referencia = acordes.first.map { Altura($0.bajo, octava: octava).midi } ?? 0
         for acorde in acordes {
             let suya = ((octava - 1)...(octava + 1)).min {
-                abs(Altura(acorde.bajo, octava: $0).midi - referencia) < abs(Altura(acorde.bajo, octava: $1).midi - referencia)
+                abs(Altura(acorde.bajo, octava: $0).midi - referencia)
+                    < abs(Altura(acorde.bajo, octava: $1).midi - referencia)
             }!
             let alturas = Arpegio(acorde, patron: patron, octavas: octavas, conOctava: conOctava).alturas(octava: suya)
             guard !alturas.isEmpty else { continue }

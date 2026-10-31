@@ -52,8 +52,9 @@ public struct CoordenadaCubica: Hashable, Sendable, Codable {
         let r = try contenedor.decode(Int.self, forKey: .r)
         let s = try contenedor.decode(Int.self, forKey: .s)
         guard q + r + s == 0 else {
-            throw DecodingError.dataCorruptedError(forKey: .s, in: contenedor,
-                                                   debugDescription: "q + r + s tiene que ser 0")
+            throw DecodingError.dataCorruptedError(
+                forKey: .s, in: contenedor,
+                debugDescription: "q + r + s tiene que ser 0")
         }
         self.init(q: q, r: r, s: s)
     }

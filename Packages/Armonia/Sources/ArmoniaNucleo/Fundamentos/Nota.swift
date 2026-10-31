@@ -2,7 +2,8 @@
 
 /// Las siete notas naturales (sin alteración), en orden diatónico: do, re, mi, fa, sol, la, si.
 public enum NotaNatural: Int, CaseIterable, Hashable, Sendable, CustomStringConvertible {
-    case `do` = 0, re, mi, fa, sol, la, si
+    case `do` = 0
+    case re, mi, fa, sol, la, si
 
     /// Posición diatónica dentro de la octava (Do = 0 … Si = 6).
     public var indiceDiatonico: Int { rawValue }
@@ -90,8 +91,9 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
         case .compacta:
             if semitonos == 0 { return "♮" }
             let (pares, suelto) = (numeroDeSignos / 2, numeroDeSignos % 2)
-            return esSostenido ? String(repeating: "𝄪", count: pares) + (suelto == 1 ? "♯" : "")
-                               : String(repeating: "𝄫", count: pares) + (suelto == 1 ? "♭" : "")
+            return esSostenido
+                ? String(repeating: "𝄪", count: pares) + (suelto == 1 ? "♯" : "")
+                : String(repeating: "𝄫", count: pares) + (suelto == 1 ? "♭" : "")
         }
     }
 
@@ -110,8 +112,10 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
         var tabla: [String: Alteracion] = ["": 0, "becuadro": 0, "natural": 0]
         for n in -4...4 where n != 0 {
             let a = Alteracion(n)
-            for notacion in [Notacion.espanolUnicode, .inglesASCII, .aleman, .frances, .italiano, .catalan, .gallego,
-                              .euskera, .portugues, .occitano, .ruso, .griego, .aragones, .asturiano] {
+            for notacion in [
+                Notacion.espanolUnicode, .inglesASCII, .aleman, .frances, .italiano, .catalan, .gallego,
+                .euskera, .portugues, .occitano, .ruso, .griego, .aragones, .asturiano,
+            ] {
                 tabla[a.nombre(en: notacion).claveDeBusqueda] = a
             }
         }
@@ -189,12 +193,18 @@ public struct Nota: Hashable, Sendable {
         try lector.exigirContenido()
         let enOtraLengua = Nota.leerEnLenguasPeninsulares(texto)
         guard let nombre = lector.leerNombreNota() else {
-            if let enOtraLengua { self = enOtraLengua; return }
+            if let enOtraLengua {
+                self = enOtraLengua
+                return
+            }
             throw lector.error(.notaNoReconocida)
         }
         lector.saltarEspacios()
         guard lector.haTerminado else {
-            if let enOtraLengua { self = enOtraLengua; return }
+            if let enOtraLengua {
+                self = enOtraLengua
+                return
+            }
             throw lector.error(.caracteresSobrantes(lector.restoSinEspacios))
         }
         self = nombre
@@ -222,7 +232,7 @@ public struct Nota: Hashable, Sendable {
     /// Las tres escrituras razonables de una clase de altura en la línea de quintas, de la más
     /// bemol a la más sostenida: para la clase 1, Re♭, Do♯ y Si𝄪.
     package static func pasosDeQuintaPosibles(deClase clase: Int) -> [Int] {
-        let base = modulo(clase * 7, 12)   // 7 es su propio inverso módulo 12
+        let base = modulo(clase * 7, 12) // 7 es su propio inverso módulo 12
         return [base - 12, base, base + 12]
     }
 
@@ -308,8 +318,10 @@ extension Nota: RepresentableComoTexto, Nombrable, Transponible {
 extension Notacion {
     /// Notaciones que también leen `Nota(leyendo:)` y `Altura(leyendo:)` sin indicar el idioma,
     /// porque sus nombres no se confunden con los españoles ni con los ingleses.
-    package static let deLecturaGenerica: [Notacion] = [.catalan, .gallego, .euskera, .portugues,
-                                                           .occitano, .ruso, .griego, .aragones, .asturiano]
+    package static let deLecturaGenerica: [Notacion] = [
+        .catalan, .gallego, .euskera, .portugues,
+        .occitano, .ruso, .griego, .aragones, .asturiano,
+    ]
 
     /// El español y el inglés con las alteraciones en palabras («Fa sostenido», «B flat»), que también se leen
     /// sin indicar la notación. Van aparte de `deLecturaGenerica` porque se prueban los últimos: «B» sola

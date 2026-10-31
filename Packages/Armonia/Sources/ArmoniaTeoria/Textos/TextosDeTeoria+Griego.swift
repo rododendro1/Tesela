@@ -1,3 +1,5 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
 // Los textos de ArmoniaTeoria en griego. Los campos y lo que significa cada uno están en
 // `TextosDeTeoria.swift`.
 

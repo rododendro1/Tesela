@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
 @testable import ArmoniaTeoria
@@ -61,15 +62,19 @@ final class CadenciasYModulacionesTests: XCTestCase {
         XCTAssertEqual(pivote.indice, 4)
         XCTAssertEqual(pivote.description, "Lam = vi en Do mayor = ii en Sol mayor")
         XCTAssertEqual(pivote.descripcion(en: .inglesASCII), "Am = vi in C major = ii in G major")
-        XCTAssertEqual(modulacion.description,
-                       "De Do mayor a Sol mayor en el acorde 5 (pivote: Lam = vi en Do mayor = ii en Sol mayor)")
+        XCTAssertEqual(
+            modulacion.description,
+            "De Do mayor a Sol mayor en el acorde 5 (pivote: Lam = vi en Do mayor = ii en Sol mayor)")
         XCTAssertEqual(recorrido.description, "I–IV–V7–I en Do mayor → ii–V7–I en Sol mayor")
-        XCTAssertEqual(modulacion.descripcion(en: .catalan),
-                       "De do major a sol major a l'acord 5 (pivot: Lam = vi en do major = ii en sol major)")
-        XCTAssertEqual(modulacion.descripcion(en: .gallego),
-                       "De do maior a sol maior no acorde 5 (pivote: Lam = vi en do maior = ii en sol maior)")
-        XCTAssertEqual(modulacion.descripcion(en: .euskera),
-                       "Do maiorretik sol maiorrera, 5. akordean (pibota: Lam = vi do maiorrean = ii sol maiorrean)")
+        XCTAssertEqual(
+            modulacion.descripcion(en: .catalan),
+            "De do major a sol major a l'acord 5 (pivot: Lam = vi en do major = ii en sol major)")
+        XCTAssertEqual(
+            modulacion.descripcion(en: .gallego),
+            "De do maior a sol maior no acorde 5 (pivote: Lam = vi en do maior = ii en sol maior)")
+        XCTAssertEqual(
+            modulacion.descripcion(en: .euskera),
+            "Do maiorretik sol maiorrera, 5. akordean (pibota: Lam = vi do maiorrean = ii sol maiorrean)")
         XCTAssertEqual(recorrido.cadencias.map(\.tipo), [.autentica, .autentica])
         XCTAssertEqual(recorrido.cadencias.map(\.tonalidad), [Tonalidad(.do), Tonalidad(.sol)])
         XCTAssertEqual(recorrido.cadencias.map(\.acorde), [2, 5])

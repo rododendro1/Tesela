@@ -1,6 +1,7 @@
 import XCTest
-@testable import ArmoniaTeoria
+
 @testable import ArmoniaNucleo
+@testable import ArmoniaTeoria
 
 final class ClaseDeEscalaTests: XCTestCase {
     /// Toda escala de otra tradición tiene tradición y clase.
@@ -29,8 +30,9 @@ final class ClaseDeEscalaTests: XCTestCase {
         XCTAssertEqual(TipoDeEscala.tradicionales(clase: .maqam).count, TipoDeEscala.maqamat.count)
         XCTAssertEqual(TipoDeEscala.tradicionales(clase: .janya).count, TipoDeEscala.janyas.count)
         XCTAssertEqual(TipoDeEscala.tradicionales(clase: .raga).count, TipoDeEscala.ragasIndostanicos.count)
-        XCTAssertEqual(TipoDeEscala.tradicionales(clase: .tetracordo).count + TipoDeEscala.tradicionales(clase: .harmonia).count,
-                       TipoDeEscala.griegasAntiguas.count)
+        XCTAssertEqual(
+            TipoDeEscala.tradicionales(clase: .tetracordo).count + TipoDeEscala.tradicionales(clase: .harmonia).count,
+            TipoDeEscala.griegasAntiguas.count)
         // Todas las escalas de la India son de una de las cuatro clases indias.
         let indias = TipoDeEscala.tradicionales(tradicion: .india)
         XCTAssertTrue(indias.allSatisfy { [.thaat, .melakarta, .janya, .raga].contains($0.clase) })
@@ -73,7 +75,8 @@ final class ClaseDeEscalaTests: XCTestCase {
         for clase in ClaseDeEscala.allCases {
             for idioma in Idioma.allCases {
                 XCTAssertNotNil(NombresDeEscalas.de(idioma).nombre(de: clase), "\(clase) \(idioma)")
-                XCTAssertFalse(clase.nombre(en: Notacion.espanolUnicode.conTextos(en: idioma)).isEmpty, "\(clase) \(idioma)")
+                XCTAssertFalse(
+                    clase.nombre(en: Notacion.espanolUnicode.conTextos(en: idioma)).isEmpty, "\(clase) \(idioma)")
             }
         }
     }

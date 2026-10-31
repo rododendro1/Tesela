@@ -1,3 +1,5 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
 // Los nombres de los tipos de escala en ruso, con las otras formas con que se lee. Qué es cada campo, en `NombresDeEscalas.swift`.
 
 extension NombresDeEscalas {
