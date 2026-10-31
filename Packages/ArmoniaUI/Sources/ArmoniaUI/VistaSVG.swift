@@ -28,7 +28,9 @@ public struct VistaSVG {
         """
     }
 
-    /// El `WKWebView` de las dos plataformas: sin JavaScript, porque el SVG es solo un dibujo.
+    /// El `WKWebView` de las dos plataformas: sin JavaScript, porque el SVG es solo un dibujo. WebKit solo se
+    /// usa desde el hilo principal, como las vistas de SwiftUI que lo crean.
+    @MainActor
     static func crearVista() -> WKWebView {
         let preferencias = WKWebpagePreferences()
         preferencias.allowsContentJavaScript = false
@@ -38,12 +40,15 @@ public struct VistaSVG {
     }
 
     /// Recuerda el último SVG cargado para no recargar la página si no ha cambiado.
+    @MainActor
     public final class Coordinador {
         var ultimo: String?
     }
 
+    @MainActor
     public func makeCoordinator() -> Coordinador { Coordinador() }
 
+    @MainActor
     func cargar(en vista: WKWebView, _ coordinador: Coordinador) {
         guard coordinador.ultimo != svg else { return }
         coordinador.ultimo = svg

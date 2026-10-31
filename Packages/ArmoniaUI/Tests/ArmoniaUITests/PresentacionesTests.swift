@@ -79,6 +79,36 @@ final class PresentacionDeAnalisisTests: XCTestCase {
         XCTAssertEqual(arpegio.sonido.notas.first?.altura.midi, 67)
     }
 
+    func testLosFicherosDelArpegioSeLeenConLasMismasNotas() throws {
+        let arpegio = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Fa#m7"), patron: .alberti), notacion: .espanolUnicode)
+        let sonido = arpegio.sonido.notas
+        for fichero in arpegio.ficheros where fichero.formato != .mei {
+            let pieza = try PiezaImportada(leyendo: fichero.datos)
+            XCTAssertEqual(pieza.notas.map(\.altura.midi), sonido.map(\.midi), "\(fichero.formato)")
+            XCTAssertEqual(Set(pieza.notas.map(\.duracion)), [.corchea], "\(fichero.formato)")
+        }
+        // MusicXML guarda el título y la ortografía: Fa♯ y Do♯, no Sol♭ y Re♭.
+        let xml = try PiezaImportada(musicXML: arpegio.ficheros[0].datos)
+        XCTAssertEqual(xml.titulo, arpegio.ficheros[0].nombre)
+        XCTAssertEqual(xml.notas.map(\.altura.nombre), sonido.map(\.altura.nombre))
+    }
+
+    func testLaProgresionArpegiadaLlevaLaArmaduraYSusAcordes() throws {
+        let acordes = [Acorde("Re"), Acorde("Sol"), Acorde("La7"), Acorde("Re")]
+        let arpegiada = try XCTUnwrap(PresentacionDeArpegios.progresion(acordes, patron: .ascendente,
+                                                                        tonalidad: Tonalidad(.re),
+                                                                        notacion: .inglesASCII))
+        let patron = Arpegio.Patron.ascendente.nombre(en: .inglesASCII)
+        XCTAssertEqual(arpegiada.ficheros[0].nombre, "Progresión arpegiada (\(patron))")
+        for fichero in arpegiada.ficheros where fichero.formato != .mei {
+            let pieza = try PiezaImportada(leyendo: fichero.datos)
+            XCTAssertEqual(pieza.tonalidad, Tonalidad(.re), "\(fichero.formato)")
+            // Cada acorde dura una blanca: leída de blanca en blanca, la pieza da la progresión.
+            XCTAssertEqual(pieza.duracion, Duracion(2), "\(fichero.formato)")
+            XCTAssertEqual(pieza.acordes(ventana: .blanca).map(\.cifrado), acordes.map(\.cifrado), "\(fichero.formato)")
+        }
+    }
+
     func testConLosAcordesYaLeidosSaleLoMismo() throws {
         let texto = "Do Fa Sol7 Do Lam Re7 Sol"
         let acordes = try texto.split(separator: " ").map { try Acorde(leyendo: String($0)) }
