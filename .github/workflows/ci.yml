@@ -2,11 +2,14 @@ name: CI
 
 # `push` solo en la rama principal: en una rama con pull request ya corre el de `pull_request`, y con los
 # dos se ejecutaba todo dos veces. Si tu rama principal no se llama main ni master, cámbialo aquí.
+# Los jobs de macOS solo corren a mano (workflow_dispatch) y una vez por semana (`schedule`).
 on:
   push:
     branches: [main, master]
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * 1"   # los lunes a las 4:00 (UTC)
 
 permissions:
   contents: read
@@ -177,8 +180,12 @@ jobs:
       - name: Compilar
         run: swift build
 
+  # Los jobs de macOS (este, las pruebas de interfaz y DocC) son los que más tardan: corren a mano desde la
+  # pestaña Actions y los lunes, no en cada push ni en cada pull request. Un pull request que toque las apps,
+  # las vistas o la documentación puede lanzarlos a mano en su rama antes de fusionarse.
   macos:
     name: macOS · paquetes y apps
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     runs-on: macos-15
     timeout-minutes: 60
     steps:
@@ -242,12 +249,9 @@ jobs:
             test "$idiomas" -eq 14 && test "$carpetas" -ge 14 || { echo "::error::$app no declara los catorce idiomas"; exit 1; }
           done
 
-  # Las pruebas de interfaz y DocC son los jobs de macOS más largos: corren en la rama principal y a mano
-  # (workflow_dispatch), no en cada pull request. Un pull request que toque las vistas o la documentación
-  # puede lanzarlos desde la pestaña Actions antes de fusionarse.
   interfaz:
     name: Pruebas de interfaz · ${{ matrix.plataforma }}
-    if: github.event_name != 'pull_request'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     runs-on: macos-15
     timeout-minutes: 45
     # macOS e iOS en paralelo: una tras otra tardaban unos 21 minutos.
@@ -301,7 +305,7 @@ jobs:
 
   documentacion:
     name: DocC · macOS
-    if: github.event_name != 'pull_request'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     runs-on: macos-15
     timeout-minutes: 45
     steps:
