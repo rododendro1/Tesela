@@ -6,7 +6,7 @@
 extension TextosDeTeoria {
     static let aleman = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "mit \(bajo) im Bass" },
+        conBajoEn: { acorde, bajo in "\(acorde), mit \(bajo) im Bass" },
         nombresDeLasInversiones: ["Grundstellung", "erste Umkehrung", "zweite Umkehrung", "dritte Umkehrung",
                                   "vierte Umkehrung", "fünfte Umkehrung", "sechste Umkehrung"],
         inversionConNumero: "_. Umkehrung",
@@ -122,6 +122,9 @@ extension TextosDeTeoria {
         sustitutoTritonal: "Tritonussubstitution",
         dominanteSecundaria: "Zwischendominante",
         prestamoModal: "modale Entlehnung",
-        sustitutoDiatonico: "diatonische Substitution"
+        sustitutoDiatonico: "diatonische Substitution",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(tipo) auf \(raiz)" },
+        enLaTonalidad: { tonalidad in "in " + tonalidad }
     )
 }

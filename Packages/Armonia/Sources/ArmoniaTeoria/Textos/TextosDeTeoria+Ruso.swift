@@ -6,7 +6,7 @@
 extension TextosDeTeoria {
     static let ruso = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "с басом \(bajo)" },
+        conBajoEn: { acorde, bajo in "\(acorde), с басом \(bajo)" },
         nombresDeLasInversiones: ["основной вид", "первое обращение", "второе обращение", "третье обращение",
                                   "четвёртое обращение", "пятое обращение", "шестое обращение"],
         inversionConNumero: "_-е обращение",
@@ -122,6 +122,9 @@ extension TextosDeTeoria {
         sustitutoTritonal: "тритоновая замена",
         dominanteSecundaria: "побочная доминанта",
         prestamoModal: "модальное заимствование",
-        sustitutoDiatonico: "диатоническая замена"
+        sustitutoDiatonico: "диатоническая замена",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(tipo) от \(raiz)" },
+        enLaTonalidad: { tonalidad in "в " + (tonalidad.hasSuffix("мажор") || tonalidad.hasSuffix("минор") ? tonalidad + "е" : tonalidad) }
     )
 }

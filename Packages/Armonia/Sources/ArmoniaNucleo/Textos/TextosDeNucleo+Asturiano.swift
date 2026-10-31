@@ -76,6 +76,12 @@ extension TextosDeNucleo {
         duracionNoValida: { texto in "«\(texto)» nun ye una duración: esperábase una figura (1, 2, 4, 8, 16…, con puntiellos: 4.) o una fraición de redonda (3/8, 1/12)" },
         compasNoValido: { texto in "«\(texto)» nun ye un compás: esperábase numerador/denominador col denominador potencia de 2 (4/4, 6/8, 7/8), C o ¢" },
         vocesDistintas: "tolos acordes tienen que tener el mesmu númberu de voces, y polo menos dos",
-        contrapuntoDeOtraDuracion: { redondas in "el contrapuntu tien que durar lo mesmo que\'l cantus firmus: \(redondas) redondes, una por nota" }
+        contrapuntoDeOtraDuracion: { redondas in "el contrapuntu tien que durar lo mesmo que\'l cantus firmus: \(redondas) redondes, una por nota" },
+        // Gramática (Intervalo.swift, ErrorDeLectura.swift)
+        nombreDeIntervalo: { calidad, ordinal in "\(ordinal) \(calidad)" },
+        unisonoEnMasculino: { calidad in calidad },
+        ordinales: [],
+        ordinalEnCifras: { n in "\(n)ª" },
+        dosPuntos: ": "
     )
 }

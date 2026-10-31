@@ -6,7 +6,7 @@
 extension TextosDeTeoria {
     static let italiano = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "con il basso in \(bajo)" },
+        conBajoEn: { acorde, bajo in "\(acorde), con il basso in \(bajo)" },
         nombresDeLasInversiones: ["stato fondamentale", "primo rivolto", "secondo rivolto", "terzo rivolto",
                                   "quarto rivolto", "quinto rivolto", "sesto rivolto"],
         inversionConNumero: "rivolto _",
@@ -122,6 +122,9 @@ extension TextosDeTeoria {
         sustitutoTritonal: "sostituzione di tritono",
         dominanteSecundaria: "dominante secondaria",
         prestamoModal: "prestito modale",
-        sustitutoDiatonico: "sostituzione diatonica"
+        sustitutoDiatonico: "sostituzione diatonica",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        enLaTonalidad: { tonalidad in "in " + tonalidad }
     )
 }

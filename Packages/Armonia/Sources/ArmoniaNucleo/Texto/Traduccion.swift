@@ -129,6 +129,12 @@ extension TextosTraducidos {
     public static func en<Valor>(_ notacion: Notacion, _ campo: (Self) throws -> Valor) rethrows -> Valor {
         try campo(traducidos.en(notacion))
     }
+
+    /// Un valor de los textos en un idioma: `en(idioma: .frances, \.campo)`.
+    @inline(never)
+    public static func en<Valor>(idioma: Idioma, _ campo: (Self) throws -> Valor) rethrows -> Valor {
+        try campo(traducidos.texto(en: idioma))
+    }
 }
 
 extension Traducido: Equatable where Valor: Equatable {}

@@ -76,6 +76,12 @@ extension TextosDeNucleo {
         duracionNoValida: { texto in "«\(texto)» — не длительность: ожидалась нота (1, 2, 4, 8, 16…, с точкой: 4.) или доля целой (3/8, 1/12)" },
         compasNoValido: { texto in "«\(texto)» — не размер: ожидалось числитель/знаменатель, где знаменатель — степень двойки (4/4, 6/8, 7/8), C или ¢" },
         vocesDistintas: "во всех аккордах должно быть одинаковое число голосов, не меньше двух",
-        contrapuntoDeOtraDuracion: { redondas in "контрапункт должен длиться столько же, сколько cantus firmus: \(redondas) целых, по одной на ноту" }
+        contrapuntoDeOtraDuracion: { redondas in "контрапункт должен длиться столько же, сколько cantus firmus: \(redondas) целых, по одной на ноту" },
+        // Gramática (Intervalo.swift, ErrorDeLectura.swift)
+        nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },
+        unisonoEnMasculino: { calidad in calidad },
+        ordinales: ["прима", "секунда", "терция", "кварта", "квинта", "секста", "септима", "октава", "нона", "децима", "ундецима", "дуодецима", "терцдецима", "квартдецима", "двойная октава"],
+        ordinalEnCifras: { n in "\(n)-я" },
+        dosPuntos: ": "
     )
 }

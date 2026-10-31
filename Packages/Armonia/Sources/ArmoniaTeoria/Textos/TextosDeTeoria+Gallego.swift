@@ -6,7 +6,7 @@
 extension TextosDeTeoria {
     static let gallego = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "co baixo en \(bajo)" },
+        conBajoEn: { acorde, bajo in "\(acorde), co baixo en \(bajo)" },
         nombresDeLasInversiones: ["estado fundamental", "primeira inversión", "segunda inversión", "terceira inversión",
                                   "cuarta inversión", "quinta inversión", "sexta inversión"],
         inversionConNumero: "inversión _",
@@ -122,6 +122,9 @@ extension TextosDeTeoria {
         sustitutoTritonal: "substituto de trítono",
         dominanteSecundaria: "dominante secundaria",
         prestamoModal: "préstamo modal",
-        sustitutoDiatonico: "substituto diatónico"
+        sustitutoDiatonico: "substituto diatónico",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        enLaTonalidad: { tonalidad in "en " + tonalidad }
     )
 }

@@ -109,7 +109,7 @@ extension ErrorDeLectura {
             inicio += TextosDeNucleo.en(notacion) { $0.caracter(p) }
         }
         // En francés, los dos puntos llevan espacio delante.
-        return inicio + (notacion.textos == .frances ? " : " : ": ") + explicacion(en: notacion)
+        return inicio + TextosDeNucleo.en(notacion, \.dosPuntos) + explicacion(en: notacion)
     }
 
     /// La explicación en los catorce idiomas de los textos. La notación solo hace falta para los

@@ -76,6 +76,12 @@ extension TextosDeNucleo {
         duracionNoValida: { texto in "το «\(texto)» δεν είναι διάρκεια: αναμενόταν αξία νότας (1, 2, 4, 8, 16…, με τελεία: 4.) ή κλάσμα ολόκληρου (3/8, 1/12)" },
         compasNoValido: { texto in "το «\(texto)» δεν είναι μέτρο: αναμενόταν αριθμητής/παρονομαστής με παρονομαστή δύναμη του 2 (4/4, 6/8, 7/8), C ή ¢" },
         vocesDistintas: "όλες οι συγχορδίες πρέπει να έχουν τον ίδιο αριθμό φωνών, και τουλάχιστον δύο",
-        contrapuntoDeOtraDuracion: { redondas in "η αντίστιξη πρέπει να διαρκεί όσο το cantus firmus: \(redondas) ολόκληρα, ένα ανά νότα" }
+        contrapuntoDeOtraDuracion: { redondas in "η αντίστιξη πρέπει να διαρκεί όσο το cantus firmus: \(redondas) ολόκληρα, ένα ανά νότα" },
+        // Gramática (Intervalo.swift, ErrorDeLectura.swift)
+        nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },
+        unisonoEnMasculino: { calidad in calidad },
+        ordinales: ["πρώτη", "δεύτερη", "τρίτη", "τέταρτη", "πέμπτη", "έκτη", "έβδομη", "όγδοη", "ένατη", "δέκατη", "ενδέκατη", "δωδέκατη", "δέκατη τρίτη", "δέκατη τέταρτη", "διπλή όγδοη"],
+        ordinalEnCifras: { n in "\(n)η" },
+        dosPuntos: ": "
     )
 }

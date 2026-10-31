@@ -10,6 +10,11 @@
 - `Arpegio.Patron(leyendo:)`: el patrón por su nombre en el código, en inglés abreviado o en cualquiera de los
   catorce idiomas. `claveDeBusqueda` quita también circunflejos, diéresis, ã/õ y la cedilla.
 - `ElMejor`, para quedarse con el candidato de menor coste en las búsquedas, sustituye a seis bucles con `!`.
+- La gramática de cada idioma pasa a su fichero de textos: el orden de calidad y número en los intervalos («3ª
+  mayor», «große Terz»), el unísono en masculino, los ordinales con palabras o en cifras, el tipo delante de la
+  fundamental en los acordes («Dominantseptakkord auf G»), «en Do mayor» con su declinación en ruso y euskera, y los
+  dos puntos del francés. Desaparecen los `switch` sobre el idioma de `Intervalo`, `Acorde`, `Tonalidad` y
+  `ErrorDeLectura`. `TextosTraducidos.en(idioma:_:)` lee un texto por su idioma.
 
 ## 0.2.0 (2026-10-31)
 

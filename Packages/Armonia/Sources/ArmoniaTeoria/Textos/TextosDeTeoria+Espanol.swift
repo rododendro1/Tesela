@@ -6,7 +6,7 @@
 extension TextosDeTeoria {
     static let espanol = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "con bajo en \(bajo)" },
+        conBajoEn: { acorde, bajo in "\(acorde), con bajo en \(bajo)" },
         nombresDeLasInversiones: ["estado fundamental", "primera inversión", "segunda inversión", "tercera inversión",
                                   "cuarta inversión", "quinta inversión", "sexta inversión"],
         inversionConNumero: "inversión _",
@@ -122,6 +122,9 @@ extension TextosDeTeoria {
         sustitutoTritonal: "sustituto tritonal",
         dominanteSecundaria: "dominante secundaria",
         prestamoModal: "préstamo modal",
-        sustitutoDiatonico: "sustituto diatónico"
+        sustitutoDiatonico: "sustituto diatónico",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        enLaTonalidad: { tonalidad in "en " + tonalidad }
     )
 }

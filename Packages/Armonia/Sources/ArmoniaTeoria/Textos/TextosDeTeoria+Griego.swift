@@ -6,7 +6,7 @@
 extension TextosDeTeoria {
     static let griego = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "με μπάσο το \(bajo)" },
+        conBajoEn: { acorde, bajo in "\(acorde), με μπάσο το \(bajo)" },
         nombresDeLasInversiones: ["θεμελιώδης κατάσταση", "πρώτη αναστροφή", "δεύτερη αναστροφή", "τρίτη αναστροφή",
                                   "τέταρτη αναστροφή", "πέμπτη αναστροφή", "έκτη αναστροφή"],
         inversionConNumero: "αναστροφή _",
@@ -122,6 +122,9 @@ extension TextosDeTeoria {
         sustitutoTritonal: "τριτονική υποκατάσταση",
         dominanteSecundaria: "δευτερεύουσα δεσπόζουσα",
         prestamoModal: "τροπικός δανεισμός",
-        sustitutoDiatonico: "διατονική υποκατάσταση"
+        sustitutoDiatonico: "διατονική υποκατάσταση",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(tipo) στο \(raiz)" },
+        enLaTonalidad: { tonalidad in "σε " + tonalidad }
     )
 }

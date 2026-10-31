@@ -7,7 +7,7 @@ import ArmoniaNucleo
 extension TextosDeTeoria {
     static let euskera = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "baxua \(bajo) dela" },
+        conBajoEn: { acorde, bajo in "\(acorde), baxua \(bajo) dela" },
         nombresDeLasInversiones: ["oinarrizko egoera", "lehen inbertsioa", "bigarren inbertsioa", "hirugarren inbertsioa",
                                   "laugarren inbertsioa", "bosgarren inbertsioa", "seigarren inbertsioa"],
         inversionConNumero: "_. inbertsioa",
@@ -126,6 +126,9 @@ extension TextosDeTeoria {
         sustitutoTritonal: "tritono-ordezkapena",
         dominanteSecundaria: "bigarren mailako dominantea",
         prestamoModal: "mailegu modala",
-        sustitutoDiatonico: "ordezko diatonikoa"
+        sustitutoDiatonico: "ordezko diatonikoa",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        enLaTonalidad: { tonalidad in Tonalidad.declinar(tonalidad, "ean") }
     )
 }

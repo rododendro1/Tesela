@@ -113,19 +113,8 @@ public struct Acorde: Hashable, Sendable {
         let bajo = self.bajo.nombre(en: notacion)
         let tipo = self.tipo.nombre(en: notacion)
         // En alemán, griego y ruso el tipo va delante: "Dominantseptakkord auf G".
-        let cabeza: String
-        switch notacion.textos {
-        case .aleman: cabeza = "\(tipo) auf \(raiz)"
-        case .griego: cabeza = "\(tipo) στο \(raiz)"
-        case .ruso: cabeza = "\(tipo) от \(raiz)"
-        case .espanol, .ingles, .catalan, .gallego, .asturiano, .aragones, .euskera, .portugues, .frances,
-            .occitano, .italiano:
-            cabeza = "\(raiz) \(tipo)"
-        }
-        guard let i = inversion else {
-            if notacion.textos == .ingles { return "\(raiz) \(tipo) over \(bajo)" }
-            return "\(cabeza), " + TextosDeTeoria.en(notacion) { $0.conBajoEn(bajo) }
-        }
+        let cabeza = TextosDeTeoria.en(notacion) { $0.acordeSobre(tipo, raiz) }
+        guard let i = inversion else { return TextosDeTeoria.en(notacion) { $0.conBajoEn(cabeza, bajo) } }
         return "\(cabeza), " + Acorde.nombreDeLaInversion(i, en: notacion)
     }
 

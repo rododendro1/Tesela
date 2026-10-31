@@ -76,6 +76,12 @@ extension TextosDeNucleo {
         duracionNoValida: { texto in "„\(texto)“ ist keine Dauer: erwartet wurde ein Notenwert (1, 2, 4, 8, 16…, punktiert: 4.) oder ein Bruchteil der Ganzen (3/8, 1/12)" },
         compasNoValido: { texto in "„\(texto)“ ist keine Taktart: erwartet wurde Zähler/Nenner mit einer Zweierpotenz als Nenner (4/4, 6/8, 7/8), C oder ¢" },
         vocesDistintas: "alle Akkorde müssen gleich viele Stimmen haben, mindestens zwei",
-        contrapuntoDeOtraDuracion: { redondas in "der Kontrapunkt muss so lange dauern wie der Cantus firmus: \(redondas) ganze Noten, eine pro Note" }
+        contrapuntoDeOtraDuracion: { redondas in "der Kontrapunkt muss so lange dauern wie der Cantus firmus: \(redondas) ganze Noten, eine pro Note" },
+        // Gramática (Intervalo.swift, ErrorDeLectura.swift)
+        nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },
+        unisonoEnMasculino: { calidad in calidad },
+        ordinales: ["Prime", "Sekunde", "Terz", "Quarte", "Quinte", "Sexte", "Septime", "Oktave", "None", "Dezime", "Undezime", "Duodezime", "Tredezime", "Quartdezime", "Doppeloktave"],
+        ordinalEnCifras: { n in "\(n)." },
+        dosPuntos: ": "
     )
 }

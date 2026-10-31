@@ -81,6 +81,18 @@ struct TextosDeNucleo: TextosTraducidos {
     let vocesDistintas: String
     let contrapuntoDeOtraDuracion: @Sendable (Int) -> String
 
+    // MARK: Gramática (Intervalo.swift, ErrorDeLectura.swift)
+    /// El nombre de un intervalo con su calidad y su número: «3ª mayor», «major third».
+    let nombreDeIntervalo: @Sendable (_ calidad: String, _ ordinal: String) -> String
+    /// La calidad del unísono, que en francés, occitano e italiano es masculino: «unisson augmenté».
+    let unisonoEnMasculino: @Sendable (String) -> String
+    /// Los nombres de los intervalos del unísono a la doble octava; vacío si se escriben con número.
+    let ordinales: [String]
+    /// El número de un intervalo en cifras: «3ª», «3a», «3.», «16e», «21st», «16-я».
+    let ordinalEnCifras: @Sendable (Int) -> String
+    /// Los dos puntos de un mensaje: «: », y « : » en francés.
+    let dosPuntos: String
+
     /// Los textos en los catorce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeNucleo>(
