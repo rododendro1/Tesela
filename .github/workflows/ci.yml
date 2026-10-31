@@ -212,19 +212,6 @@ jobs:
             echo
             echo "Arriba, el total y los 15 ficheros con menos líneas probadas. El informe entero está en el artefacto."
           } | tee -a "$GITHUB_STEP_SUMMARY"
-      - name: Líneas sin probar (temporal)
-        run: |
-          binarios=$(swift build --show-bin-path)
-          pruebas=$(ls -d "$binarios"/*PackageTests.xctest | head -n 1)
-          llvm-cov show "$pruebas" -instr-profile="$binarios/codecov/default.profdata" "$PWD/Sources" \
-            -show-line-counts-or-regions -show-instantiations=false -use-color=false \
-            | awk '/^\/.*\.swift:$/ { fichero = $0; next }
-                   /\|      0\|/ || /^ *\^.*\^0|^ *\^0/ {
-                     if (fichero != visto) { print fichero; visto = fichero }
-                     if ($0 ~ /^ *\^/ && anterior != impresa) print anterior
-                     print; if ($0 !~ /^ *\^/) impresa = $0
-                   }
-                   $0 !~ /^ *\^/ { anterior = $0 }'
       - uses: actions/upload-artifact@v7
         with:
           name: cobertura-${{ matrix.paquete.nombre }}

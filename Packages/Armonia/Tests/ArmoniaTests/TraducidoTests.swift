@@ -99,4 +99,27 @@ final class TraducidoTests: XCTestCase {
         XCTAssertEqual((-Intervalo.terceraMayor).nombre(en: .euskera), "beheranzko 3. handia")
         XCTAssertEqual(Intervalo(numero: 4, calidad: .aumentada(3))!.nombre(en: .gallego), "4ª tripla aumentada")
     }
+
+    /// Los textos que llevan un número o un nombre dentro, en cada idioma, también con los casos que
+    /// las apps casi no usan (una tensión, el número de una voz, un acorde sin nombre…).
+    func testLosTextosConHuecosEnCadaIdioma() {
+        for textos in TextosDeNucleo.traducidos.todos {
+            XCTAssertTrue(textos.multiplicidad(5).contains("5"))
+        }
+        for textos in TextosDeTeoria.traducidos.todos {
+            XCTAssertNotEqual(textos.papelTension(9), textos.papelTension(11))
+            XCTAssertTrue(textos.vozNumero(3).contains("3"))
+            XCTAssertFalse(textos.acordeDesconocido(true, "X", "X").isEmpty)
+            XCTAssertFalse(textos.acordeDesconocido(false, "X", "X").isEmpty)
+            XCTAssertTrue(textos.enLaVoz("X").contains("X"))
+        }
+        XCTAssertEqual(TextosDeTeoria.traducidos.en(.aleman).enLaVoz("Stimme 2"), "in Stimme 2")
+        for textos in TextosDePartitura.traducidos.todos {
+            XCTAssertTrue(textos.especieConElContrapuntoDebajo(3).contains("3"))
+        }
+        for textos in TextosDeRepresentaciones.traducidos.todos {
+            XCTAssertTrue(textos.cicloDesde("Z", "Y").contains("Z"))
+            XCTAssertNotEqual(textos.semitonos(1), textos.semitonos(2))
+        }
+    }
 }
