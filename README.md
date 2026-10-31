@@ -134,7 +134,9 @@ Todo está en Swift 6 (el modo de lenguaje 6, con la concurrencia comprobada al 
 Todo compila y pasa las pruebas en el CI: el motor en Linux (Swift 6.0 y 6.2) y en macOS, `ArmoniaUI`, `Hexagonos`, la línea de
 comandos, el ejemplo, las dos apps en macOS y en el simulador de iOS (compiladas y con sus pruebas de interfaz), y la documentación de DocC, sin enlaces sin
 resolver. Los jobs de macOS (paquetes y apps, pruebas de interfaz y DocC) corren a mano desde la pestaña Actions y una vez por
-semana, los lunes; en cada push y en cada pull request solo corre Linux. Dependabot mantiene al día las acciones del CI (`.github/dependabot.yml`). `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
+semana, los lunes; en cada push y en cada pull request solo corre Linux. La documentación de DocC se publica en
+[GitHub Pages](https://rododendro1.github.io/Tesela/) con cada versión (`.github/workflows/documentacion.yml`), y también se
+puede publicar a mano desde la pestaña Actions. Dependabot mantiene al día las acciones del CI (`.github/dependabot.yml`). `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
 
 El código se publica con licencia MIT (`LICENSE`). Las dos apps llevan un icono provisional en
 `Apps/<App>/Assets.xcassets/AppIcon.appiconset`, que conviene sustituir por uno definitivo antes de publicarlas.

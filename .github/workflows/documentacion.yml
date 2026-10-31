@@ -1,0 +1,89 @@
+name: Documentación
+
+# Publica la documentación de DocC en GitHub Pages: en cada versión (una etiqueta como «0.2.0») y a mano
+# (workflow_dispatch). Queda en https://<usuario>.github.io/<repositorio>/, con una página por módulo.
+# Hace falta elegir una vez «GitHub Actions» como fuente en Settings → Pages.
+on:
+  push:
+    tags: ["[0-9]+.[0-9]+.[0-9]+", "v[0-9]+.[0-9]+.[0-9]+"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Una sola publicación a la vez; la que está en marcha se termina.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  XCODE: latest-stable
+
+jobs:
+  construir:
+    name: Construir la documentación
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE }}
+      - name: Armonia
+        working-directory: Packages/Armonia
+        run: |
+          set -o pipefail
+          xcodebuild docbuild -scheme Armonia-Package -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/docc" CODE_SIGNING_ALLOWED=NO | tail -n 20
+      - name: Hexagonos
+        working-directory: Packages/Hexagonos
+        run: |
+          set -o pipefail
+          # Con un solo producto, el esquema se llama como él (sin «-Package»).
+          xcodebuild docbuild -scheme Hexagonos -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/docc-hexagonos" CODE_SIGNING_ALLOWED=NO | tail -n 20
+      - name: Preparar el sitio
+        env:
+          REPOSITORIO: ${{ github.event.repository.name }}
+          VERSION: ${{ github.ref_type == 'tag' && github.ref_name || github.sha }}
+        run: |
+          set -euo pipefail
+          sitio="$RUNNER_TEMP/sitio"
+          mkdir -p "$sitio"
+          enlaces=""
+          # Un archivo por módulo (Armonia, ArmoniaNucleo, ArmoniaTeoria…, Hexagonos), cada uno en su carpeta.
+          for archivo in $(find "$RUNNER_TEMP/docc" "$RUNNER_TEMP/docc-hexagonos" -name "*.doccarchive" -type d -prune | sort); do
+            modulo=$(basename "$archivo" .doccarchive)
+            carpeta=$(echo "$modulo" | tr '[:upper:]' '[:lower:]')
+            [ -d "$sitio/$carpeta" ] && continue
+            xcrun docc process-archive transform-for-static-hosting "$archivo" \
+              --output-path "$sitio/$carpeta" --hosting-base-path "$REPOSITORIO/$carpeta"
+            enlaces="$enlaces<li><a href=\"$carpeta/documentation/$carpeta/\">$modulo</a></li>"
+          done
+          [ -n "$enlaces" ] || { echo "::error::No se ha generado ningún archivo de DocC"; exit 1; }
+          cat > "$sitio/index.html" <<EOF
+          <!doctype html>
+          <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>Tesela · documentación</title>
+          <style>body{font:16px/1.5 -apple-system,system-ui,sans-serif;max-width:40rem;margin:3rem auto;padding:0 1rem}
+          @media (prefers-color-scheme:dark){body{background:#111;color:#eee}a{color:#6cf}}</style></head>
+          <body><h1>Tesela</h1><p>Documentación de los módulos (versión $VERSION).</p><ul>$enlaces</ul></body></html>
+          EOF
+          ls "$sitio"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/sitio
+
+  publicar:
+    name: Publicar en GitHub Pages
+    needs: construir
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacion.outputs.page_url }}
+    steps:
+      - id: publicacion
+        uses: actions/deploy-pages@v4
