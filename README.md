@@ -74,7 +74,8 @@ targets: [
 ```
 
 Las versiones llevan etiqueta (la primera es `0.1.0`); para seguir lo último sin esperar a una versión, usa
-`branch: "main"`. Los cambios de cada paquete están en su `CHANGELOG.md`. Mientras la versión sea 0.x, una versión
+`branch: "main"`. Los cambios de cada paquete están en su `CHANGELOG.md`, y cada etiqueta crea su release en GitHub
+con esas notas (`.github/workflows/version.yml`; los pasos para publicar una están en `CONTRIBUTING.md`). Mientras la versión sea 0.x, una versión
 nueva puede quitar lo que una anterior marcó como obsoleto.
 
 ## Empezar
@@ -137,6 +138,9 @@ resolver. Los jobs de macOS (paquetes y apps, pruebas de interfaz y DocC) corren
 semana, los lunes; en cada push y en cada pull request solo corre Linux. La documentación de DocC se publica en
 [GitHub Pages](https://rododendro1.github.io/Tesela/) con cada versión (`.github/workflows/documentacion.yml`), y también se
 puede publicar a mano desde la pestaña Actions. Dependabot mantiene al día las acciones del CI (`.github/dependabot.yml`). `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
+
+Cómo contribuir está en `CONTRIBUTING.md`, y cómo avisar de un fallo de seguridad, en `SECURITY.md`.
+`.spi.yml` le dice a [Swift Package Index](https://swiftpackageindex.com) qué módulos documentar.
 
 El código se publica con licencia MIT (`LICENSE`). Los iconos de las apps, en
 `Apps/<App>/Assets.xcassets/AppIcon.appiconset`, muestran a Kokopelli: en negro sobre ámbar en Armonía y sobre un

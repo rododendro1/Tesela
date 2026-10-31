@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Fallo de seguridad
+    url: https://github.com/rododendro1/Tesela/security/advisories/new
+    about: Avisa en privado, no en un issue público (mira SECURITY.md).
+  - name: Documentación
+    url: https://rododendro1.github.io/Tesela/
+    about: La documentación de DocC de los paquetes.

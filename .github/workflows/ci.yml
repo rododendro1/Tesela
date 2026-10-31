@@ -53,6 +53,8 @@ jobs:
         run: python3 Scripts/comprobar_traducciones.py
       - name: Ejemplos de la documentación al día
         run: python3 Scripts/generar_pruebas_de_documentacion.py --comprobar
+      - name: Notas de la versión actual en los CHANGELOG
+        run: python3 Scripts/notas_de_version.py --actual > /dev/null
 
   motor:
     name: Armonia · Linux · Swift ${{ matrix.swift }}
