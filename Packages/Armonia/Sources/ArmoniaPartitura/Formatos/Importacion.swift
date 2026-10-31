@@ -103,9 +103,12 @@ public struct PiezaImportada: Hashable, Sendable {
     public func acordesConInicio(ventana: Duracion? = nil) -> [(acorde: Acorde, inicio: Duracion)] {
         var paso = ventana ?? compas?.pulso ?? .negra
         guard paso > .cero, !notas.isEmpty else { return [] }
-        // Como mucho 100 000 ventanas, aunque una nota dure horas (un fichero dañado, por ejemplo).
+        // Como mucho 100 000 ventanas, aunque una nota dure horas (un fichero dañado, por ejemplo). La ventana se
+        // alarga a un múltiplo entero de la de partida: así su denominador no crece y sumarla una y otra vez no
+        // desborda las fracciones.
         let maximo = 100_000
-        if duracion / paso > Duracion(maximo) { paso = duracion / maximo }
+        let ventanas = (duracion.enRedondas / paso.enRedondas).rounded(.up)
+        if ventanas > Double(maximo) { paso = paso * Int((ventanas / Double(maximo)).rounded(.up)) }
         let tonalidad = tonalidadEstimada
         var resultado: [(acorde: Acorde, inicio: Duracion)] = []
         // Hasta dónde llega lo que ha empezado: las notas anteriores a `primera` ya no suenan.

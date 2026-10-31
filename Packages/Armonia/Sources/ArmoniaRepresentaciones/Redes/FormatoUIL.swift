@@ -47,11 +47,13 @@ public struct FormatoUIL: Hashable, Sendable {
 
     public init(menor: Int, mayor: Int, diferencia: Int, rotacion: Int = 0, espejo: Bool = false, tonos: Int = 12) throws {
         let esCero = menor == 0 && mayor == 1 && diferencia == 1
-        guard esCero || (menor >= 1 && menor <= diferencia && mayor == menor + diferencia) else {
+        // Un intervalo de más de un millón de pasos no es un teclado (y sumarlo podría desbordar).
+        let razonables = [menor, mayor, diferencia].allSatisfy { (-Self.maximo...Self.maximo).contains($0) }
+        guard esCero || (razonables && menor >= 1 && menor <= diferencia && mayor == menor + diferencia) else {
             throw ErrorDeUIL.intervalosIncoherentes(menor: menor, mayor: mayor, diferencia: diferencia)
         }
         guard rotacion % 30 == 0 else { throw ErrorDeUIL.rotacionNoValida(rotacion) }
-        guard tonos >= 1 else { throw ErrorDeUIL.formatoNoValido("T\(tonos)") }
+        guard tonos >= 1, tonos <= Self.maximo else { throw ErrorDeUIL.formatoNoValido("T\(tonos)") }
         self.menor = menor
         self.mayor = mayor
         self.diferencia = diferencia
@@ -222,6 +224,9 @@ public struct FormatoUIL: Hashable, Sendable {
         else if let primero = romano.first, "♯#".contains(primero) { alteracion = 1; romano = romano.dropFirst() }
         return romanas[String(romano)].map { $0 + alteracion }
     }
+
+    /// El mayor intervalo y el mayor número de notas por octava que se admiten.
+    static let maximo = 1_000_000
 
     private static func mcd(_ a: Int, _ b: Int) -> Int {
         b == 0 ? abs(a) : mcd(b, a % b)

@@ -20,6 +20,7 @@ extension PiezaImportada {
     ///     let xml = coral.musicXML(duracion: .blanca)
     ///     let pieza = try PiezaImportada(musicXML: Data(xml.utf8))
     public init(musicXML datos: Data) throws {
+        if let linea = Self.lineaConUTF8NoValido(datos) { throw ErrorDeImportacion.xmlDanado(linea: linea) }
         let lector = LectorMusicXML()
         let parser = XMLParser(data: datos)
         parser.shouldResolveExternalEntities = false
@@ -30,6 +31,49 @@ extension PiezaImportada {
         guard !lector.notas.isEmpty else { throw ErrorDeImportacion.sinNotas }
         self.init(titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas,
                   tempo: lector.tempo, notas: lector.notas)
+    }
+
+    /// La línea del primer byte que no es UTF-8 válido, o `nil` si todo es válido o el documento está en UTF-16 (con
+    /// su marca) o declara una codificación de un byte por carácter (ISO-8859, Windows-125x).
+    ///
+    /// En Linux, `XMLParser` detiene el programa si el nombre de un elemento o de un atributo no es UTF-8 válido
+    /// (un fichero dañado), en vez de dar un error: por eso se mira antes de leer.
+    static func lineaConUTF8NoValido(_ datos: Data) -> Int? {
+        let bytes = [UInt8](datos)
+        if bytes.starts(with: [0xFE, 0xFF]) || bytes.starts(with: [0xFF, 0xFE]) { return nil }
+        let cabecera = String(decoding: bytes.prefix(200), as: UTF8.self)
+        if cabecera.hasPrefix("<?xml"), let fin = cabecera.range(of: "?>") {
+            let declaracion = cabecera[..<fin.lowerBound].lowercased()
+            // Las codificaciones de un byte por carácter: XMLParser las convierte a UTF-8 antes de dar los nombres.
+            let deUnByte = #"encoding\s*=\s*["'](iso-8859-[0-9]+|latin-?[0-9]|windows-125[0-8]|cp125[0-8])["']"#
+            if declaracion.range(of: deUnByte, options: .regularExpression) != nil { return nil }
+        }
+        var posicion = 0
+        var linea = 1
+        while posicion < bytes.count {
+            let primero = bytes[posicion]
+            let largo: Int
+            switch primero {
+            case 0x00...0x7F: largo = 1
+            case 0xC2...0xDF: largo = 2
+            case 0xE0...0xEF: largo = 3
+            case 0xF0...0xF4: largo = 4
+            default: return linea
+            }
+            guard posicion + largo <= bytes.count else { return linea }
+            let siguientes = bytes[(posicion + 1)..<(posicion + largo)]
+            guard siguientes.allSatisfy({ $0 & 0xC0 == 0x80 }) else { return linea }
+            // Formas demasiado largas, sustitutos de UTF-16 y valores por encima de U+10FFFF.
+            if largo == 3, let segundo = siguientes.first {
+                if primero == 0xE0 && segundo < 0xA0 || primero == 0xED && segundo >= 0xA0 { return linea }
+            }
+            if largo == 4, let segundo = siguientes.first {
+                if primero == 0xF0 && segundo < 0x90 || primero == 0xF4 && segundo >= 0x90 { return linea }
+            }
+            if primero == 0x0A { linea += 1 }
+            posicion += largo
+        }
+        return nil
     }
 }
 
