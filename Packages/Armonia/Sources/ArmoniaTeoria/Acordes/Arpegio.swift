@@ -159,7 +159,7 @@ extension Arpegio: Nombrable {
     /// «Arpegio de Do mayor», «C major arpeggio», «Arpège de Do majeur», «C-Dur-Arpeggio», «Арпеджио до мажор».
     public func nombre(en notacion: Notacion) -> String {
         let acorde = self.acorde.nombre(en: notacion)
-        return TextosDeTeoria.traducidos.map { $0.arpegioDe(acorde) }.en(notacion)
+        return TextosDeTeoria.en(notacion) { $0.arpegioDe(acorde) }
     }
 
     /// Lee «arpegio Dom7», «Dom7 arpeggio», «Arpège de Do» o solo el cifrado: se quitan las palabras «arpegio»
@@ -187,17 +187,17 @@ extension Arpegio.Patron: Nombrable {
     private var traduccion: Traduccion {
         switch self {
         case .ascendente:
-            return TextosDeTeoria.traducidos.map(\.patronAscendente)
+            return TextosDeTeoria.traduccion(\.patronAscendente)
         case .descendente:
-            return TextosDeTeoria.traducidos.map(\.patronDescendente)
+            return TextosDeTeoria.traduccion(\.patronDescendente)
         case .idaYVuelta:
-            return TextosDeTeoria.traducidos.map(\.patronIdaYVuelta)
+            return TextosDeTeoria.traduccion(\.patronIdaYVuelta)
         case .alberti:
-            return TextosDeTeoria.traducidos.map(\.patronAlberti)
+            return TextosDeTeoria.traduccion(\.patronAlberti)
         case .quebrado:
-            return TextosDeTeoria.traducidos.map(\.patronQuebrado)
+            return TextosDeTeoria.traduccion(\.patronQuebrado)
         case .bajaYSube:
-            return TextosDeTeoria.traducidos.map(\.patronBajaYSube)
+            return TextosDeTeoria.traduccion(\.patronBajaYSube)
         }
     }
 }

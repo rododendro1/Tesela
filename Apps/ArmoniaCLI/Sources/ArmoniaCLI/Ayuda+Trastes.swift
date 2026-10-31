@@ -13,8 +13,8 @@ extension LineaDeComandos {
     static let ayudaDeDigitaciones: [EntradaDeAyuda] = [
         // digitaciones <cifrado>… [opciones]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisDigitaciones),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionDigitaciones),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisDigitaciones),
+            descripcion: TextosDeCLI.traduccion(\.descripcionDigitaciones),
             ejemplo: ejemplo(
                 "armonia digitaciones Sol7/Si --instrumento ukelele",
                 "armonia fingerings G7/B --instrument ukulele"))
@@ -23,8 +23,8 @@ extension LineaDeComandos {
     static let ayudaDePosiciones: [EntradaDeAyuda] = [
         // posiciones <escala> [--caged]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisPosiciones),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionPosiciones),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisPosiciones),
+            descripcion: TextosDeCLI.traduccion(\.descripcionPosiciones),
             ejemplo: ejemplo("armonia posiciones Sol mayor --caged", "armonia positions G major --caged"))
     ]
 }

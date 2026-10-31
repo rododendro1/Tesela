@@ -8,7 +8,7 @@ import ArmoniaNucleo
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de ArmoniaTeoria en un idioma.
-struct TextosDeTeoria: Sendable {
+struct TextosDeTeoria: TextosTraducidos {
     // MARK: Acorde.swift
     let conBajoEn: @Sendable (String) -> String
     let nombresDeLasInversiones: [String]
@@ -129,7 +129,8 @@ struct TextosDeTeoria: Sendable {
     let prestamoModal: String
     let sustitutoDiatonico: String
 
-    /// Los textos en los catorce idiomas: `traducidos.map(\.campo)` es la `Traduccion` de un campo.
+    /// Los textos en los catorce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// `Traduccion`.
     static let traducidos = Traducido<TextosDeTeoria>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
         fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso)

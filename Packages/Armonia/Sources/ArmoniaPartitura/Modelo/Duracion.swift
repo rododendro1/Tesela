@@ -261,15 +261,15 @@ extension Figura {
     public func nombre(en notacion: Notacion) -> String { Figura.nombres[rawValue + 1].en(notacion) }
 
     private static let nombres: [Traduccion] = [
-        TextosDePartitura.traducidos.map(\.cuadrada),
-        TextosDePartitura.traducidos.map(\.redonda),
-        TextosDePartitura.traducidos.map(\.blanca),
-        TextosDePartitura.traducidos.map(\.negra),
-        TextosDePartitura.traducidos.map(\.corchea),
-        TextosDePartitura.traducidos.map(\.semicorchea),
-        TextosDePartitura.traducidos.map(\.fusa),
-        TextosDePartitura.traducidos.map(\.semifusa),
-        TextosDePartitura.traducidos.map(\.garrapatea),
+        TextosDePartitura.traduccion(\.cuadrada),
+        TextosDePartitura.traduccion(\.redonda),
+        TextosDePartitura.traduccion(\.blanca),
+        TextosDePartitura.traduccion(\.negra),
+        TextosDePartitura.traduccion(\.corchea),
+        TextosDePartitura.traduccion(\.semicorchea),
+        TextosDePartitura.traduccion(\.fusa),
+        TextosDePartitura.traduccion(\.semifusa),
+        TextosDePartitura.traduccion(\.garrapatea),
     ]
 }
 
@@ -279,10 +279,10 @@ extension Duracion {
     /// "negra", "corchea con puntillo", "blanca con doble puntillo"; si no es una figura,
     /// la fracción: "5/8 de redonda". La duración nula es "cero".
     public func nombre(en notacion: Notacion) -> String {
-        if esCero { return TextosDePartitura.traducidos.map(\.cero).en(notacion) }
+        if esCero { return TextosDePartitura.en(notacion, \.cero) }
         guard let escritura = figuraYPuntillos else {
             let fraccion = "\(numerador)/\(denominador)"
-            return TextosDePartitura.traducidos.map { $0.fraccionDeRedonda(fraccion) }.en(notacion)
+            return TextosDePartitura.en(notacion) { $0.fraccionDeRedonda(fraccion) }
         }
         let figura = escritura.figura.nombre(en: notacion)
         let puntillos = escritura.puntillos
@@ -293,5 +293,5 @@ extension Duracion {
 
 extension Duracion {
     /// La figura con uno, dos, tres o cuatro puntillos, en el sitio de `_`.
-    private static let conPuntillos = TextosDePartitura.traducidos.map(\.conPuntillos)
+    private static let conPuntillos = TextosDePartitura.traduccion(\.conPuntillos)
 }

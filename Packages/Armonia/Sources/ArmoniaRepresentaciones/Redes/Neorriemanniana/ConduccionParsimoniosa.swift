@@ -232,7 +232,7 @@ public struct ConduccionMinima: Hashable, Sendable, CustomStringConvertible {
                 : m.texto(en: notacion) + " (" + (m.semitonos > 0 ? "+" : "−") + "\(abs(m.semitonos)))"
         }
         let n = semitonosMovidos
-        let semitonos = TextosDeRepresentaciones.traducidos.map { $0.semitonos(n) }.en(notacion)
+        let semitonos = TextosDeRepresentaciones.en(notacion) { $0.semitonos(n) }
         return voces.joined(separator: ", ") + ": " + semitonos
     }
 }

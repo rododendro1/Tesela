@@ -348,21 +348,6 @@ public enum TextoDeLasApps: Hashable, Sendable {
     }
 }
 
-extension TextosDeApps {
-    /// Un texto de las apps en los catorce idiomas: `TextosDeApps.traduccion(\.acordes)`, o con valores,
-    /// `TextosDeApps.traduccion { $0.capo(n) }`.
-    ///
-    /// Los `switch` de los textos lo usan en vez de `traducidos.map(…)`. Sin optimizar (Debug, `swift test`),
-    /// cada `TextosDeApps.traducidos.map` copia en la pila los catorce `TextosDeApps` (unos 25 KB) y cada caso
-    /// del `switch` guarda su copia aparte: con noventa casos, `TextoDeLasApps.traduccion` pedía varios MB de
-    /// pila y, con un caso que se llama a sí mismo (`campoDeAcorde`), desbordaba la del hilo principal en macOS
-    /// (señal 11). Aquí la copia es una sola, en un marco de pila que se suelta al volver.
-    @inline(never)
-    static func traduccion(_ campo: (TextosDeApps) -> String) -> Traduccion {
-        traducidos.map(campo)
-    }
-}
-
 extension Traduccion {
     /// La misma frase en los catorce idiomas, cambiada igual en todos.
     func aplicando(_ cambio: (String) -> String) -> Traduccion {

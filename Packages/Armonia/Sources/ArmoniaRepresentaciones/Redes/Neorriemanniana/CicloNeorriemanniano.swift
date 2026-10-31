@@ -67,11 +67,11 @@ public enum CicloNeorriemanniano: String, CaseIterable, Hashable, Sendable, Cust
     public func nombre(en notacion: Notacion) -> String {
         switch self {
         case .hexatonico:
-            return TextosDeRepresentaciones.traducidos.map(\.cicloHexatonico).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.cicloHexatonico)
         case .octatonico:
-            return TextosDeRepresentaciones.traducidos.map(\.cicloOctatonico).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.cicloOctatonico)
         case .lr:
-            return TextosDeRepresentaciones.traducidos.map(\.cicloLR).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.cicloLR)
         }
     }
 

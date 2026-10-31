@@ -22,8 +22,8 @@ extension LineaDeComandos {
     static let ayudaDeVecinos: [EntradaDeAyuda] = [
         // vecinos <acorde> [--voces 2]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisVecinos),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionVecinos),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisVecinos),
+            descripcion: TextosDeCLI.traduccion(\.descripcionVecinos),
             ejemplo: ejemplo(
                 "armonia vecinos Sol7",
                 "armonia neighbors G7"))
@@ -32,8 +32,8 @@ extension LineaDeComandos {
     static let ayudaDeConduccionParsimoniosa: [EntradaDeAyuda] = [
         // conduccion-parsimoniosa <acorde> <acorde> [--voces 2] [--ampliada]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisConduccionParsimoniosa),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionConduccionParsimoniosa),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisConduccionParsimoniosa),
+            descripcion: TextosDeCLI.traduccion(\.descripcionConduccionParsimoniosa),
             ejemplo: ejemplo(
                 "armonia conduccion-parsimoniosa Sol7 Rem7",
                 "armonia smooth-path G7 Dm7"))
@@ -42,8 +42,8 @@ extension LineaDeComandos {
     static let ayudaDeConduccionMinima: [EntradaDeAyuda] = [
         // conduccion-minima <acorde> <acorde>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisConduccionMinima),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionConduccionMinima),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisConduccionMinima),
+            descripcion: TextosDeCLI.traduccion(\.descripcionConduccionMinima),
             ejemplo: ejemplo(
                 "armonia conduccion-minima Sol7 Do",
                 "armonia minimal-voice-leading G7 C"))
@@ -52,22 +52,22 @@ extension LineaDeComandos {
     static let ayudaDePlr: [EntradaDeAyuda] = [
         // plr <tríada> <P, L, R…>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisPlr),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionPlr),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisPlr),
+            descripcion: TextosDeCLI.traduccion(\.descripcionPlr),
             ejemplo: ejemplo(
                 "armonia plr Do PLR",
                 "armonia plr C PLR")),
         // plr <tríada> <tríada>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisPlrCamino),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionPlrCamino),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisPlrCamino),
+            descripcion: TextosDeCLI.traduccion(\.descripcionPlrCamino),
             ejemplo: ejemplo(
                 "armonia plr Do Mibm",
                 "armonia plr C Ebm")),
         // plr <tríada> <ciclo>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisPlrCiclo),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionPlrCiclo),
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisPlrCiclo),
+            descripcion: TextosDeCLI.traduccion(\.descripcionPlrCiclo),
             ejemplo: ejemplo(
                 "armonia plr Do hexatonico",
                 "armonia plr C hexatonic")),

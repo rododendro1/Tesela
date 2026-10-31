@@ -315,23 +315,23 @@ extension Clave {
     private var traduccion: Traduccion {
         switch self {
         case .sol:
-            return TextosDePartitura.traducidos.map(\.claveDeSol)
+            return TextosDePartitura.traduccion(\.claveDeSol)
         case .solOctavaBaja:
-            return TextosDePartitura.traducidos.map(\.claveDeSolOctavaBaja)
+            return TextosDePartitura.traduccion(\.claveDeSolOctavaBaja)
         case .solOctavaAlta:
-            return TextosDePartitura.traducidos.map(\.claveDeSolOctavaAlta)
+            return TextosDePartitura.traduccion(\.claveDeSolOctavaAlta)
         case .fa:
-            return TextosDePartitura.traducidos.map(\.claveDeFa)
+            return TextosDePartitura.traduccion(\.claveDeFa)
         case .faEnTercera:
-            return TextosDePartitura.traducidos.map(\.claveDeFaEnTercera)
+            return TextosDePartitura.traduccion(\.claveDeFaEnTercera)
         case .doEnPrimera:
-            return TextosDePartitura.traducidos.map(\.claveDeDoEnPrimera)
+            return TextosDePartitura.traduccion(\.claveDeDoEnPrimera)
         case .doEnSegunda:
-            return TextosDePartitura.traducidos.map(\.claveDeDoEnSegunda)
+            return TextosDePartitura.traduccion(\.claveDeDoEnSegunda)
         case .doEnTercera:
-            return TextosDePartitura.traducidos.map(\.claveDeDoEnTercera)
+            return TextosDePartitura.traduccion(\.claveDeDoEnTercera)
         case .doEnCuarta:
-            return TextosDePartitura.traducidos.map(\.claveDeDoEnCuarta)
+            return TextosDePartitura.traduccion(\.claveDeDoEnCuarta)
         }
     }
 }

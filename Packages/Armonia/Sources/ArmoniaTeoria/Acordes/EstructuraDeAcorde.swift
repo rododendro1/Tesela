@@ -156,20 +156,20 @@ extension PapelEnAcorde {
 
     private var traduccion: Traduccion {
         switch self {
-        case .fundamental: return TextosDeTeoria.traducidos.map(\.papelFundamental)
-        case .tercera: return TextosDeTeoria.traducidos.map(\.papelTercera)
-        case .suspension: return TextosDeTeoria.traducidos.map(\.papelSuspension)
-        case .quinta: return TextosDeTeoria.traducidos.map(\.papelQuinta)
-        case .sexta: return TextosDeTeoria.traducidos.map(\.papelSexta)
-        case .septima: return TextosDeTeoria.traducidos.map(\.papelSeptima)
+        case .fundamental: return TextosDeTeoria.traduccion(\.papelFundamental)
+        case .tercera: return TextosDeTeoria.traduccion(\.papelTercera)
+        case .suspension: return TextosDeTeoria.traduccion(\.papelSuspension)
+        case .quinta: return TextosDeTeoria.traduccion(\.papelQuinta)
+        case .sexta: return TextosDeTeoria.traduccion(\.papelSexta)
+        case .septima: return TextosDeTeoria.traduccion(\.papelSeptima)
         case .tension(9):
-            return TextosDeTeoria.traducidos.map(\.papelNovena)
+            return TextosDeTeoria.traduccion(\.papelNovena)
         case .tension(11):
-            return TextosDeTeoria.traducidos.map(\.papelUndecima)
+            return TextosDeTeoria.traduccion(\.papelUndecima)
         case .tension(13):
-            return TextosDeTeoria.traducidos.map(\.papelDecimotercera)
+            return TextosDeTeoria.traduccion(\.papelDecimotercera)
         case .tension(let n):
-            return TextosDeTeoria.traducidos.map { $0.papelTension(n) }
+            return TextosDeTeoria.traduccion { $0.papelTension(n) }
         }
     }
 }
@@ -181,14 +181,14 @@ extension CalidadDeTriada {
 
     private var traduccion: Traduccion {
         switch self {
-        case .mayor: return TextosDeTeoria.traducidos.map(\.triadaMayor)
-        case .menor: return TextosDeTeoria.traducidos.map(\.triadaMenor)
-        case .disminuida: return TextosDeTeoria.traducidos.map(\.triadaDisminuida)
-        case .aumentada: return TextosDeTeoria.traducidos.map(\.triadaAumentada)
-        case .suspendida: return TextosDeTeoria.traducidos.map(\.triadaSuspendida)
-        case .potencia: return TextosDeTeoria.traducidos.map(\.triadaDeQuinta)
+        case .mayor: return TextosDeTeoria.traduccion(\.triadaMayor)
+        case .menor: return TextosDeTeoria.traduccion(\.triadaMenor)
+        case .disminuida: return TextosDeTeoria.traduccion(\.triadaDisminuida)
+        case .aumentada: return TextosDeTeoria.traduccion(\.triadaAumentada)
+        case .suspendida: return TextosDeTeoria.traduccion(\.triadaSuspendida)
+        case .potencia: return TextosDeTeoria.traduccion(\.triadaDeQuinta)
         case .sinTercera:
-            return TextosDeTeoria.traducidos.map(\.triadaSinTercera)
+            return TextosDeTeoria.traduccion(\.triadaSinTercera)
         }
     }
 }

@@ -29,11 +29,11 @@ public enum FuncionTonal: Hashable, Sendable, CaseIterable, CustomStringConverti
 
     public func nombre(en notacion: Notacion) -> String {
         switch self {
-        case .tonica: return TextosDeTeoria.traducidos.map(\.funcionTonica).en(notacion)
+        case .tonica: return TextosDeTeoria.en(notacion, \.funcionTonica)
         case .subdominante:
-            return TextosDeTeoria.traducidos.map(\.funcionSubdominante).en(notacion)
+            return TextosDeTeoria.en(notacion, \.funcionSubdominante)
         case .dominante:
-            return TextosDeTeoria.traducidos.map(\.funcionDominante).en(notacion)
+            return TextosDeTeoria.en(notacion, \.funcionDominante)
         }
     }
 

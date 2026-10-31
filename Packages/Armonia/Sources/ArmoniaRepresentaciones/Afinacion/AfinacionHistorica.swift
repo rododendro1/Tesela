@@ -53,21 +53,21 @@ extension AfinacionHistorica {
     public func nombre(en notacion: Notacion) -> String {
         switch self {
         case .igual:
-            return TextosDeRepresentaciones.traducidos.map(\.temperamentoIgual).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.temperamentoIgual)
         case .pitagorico:
-            return TextosDeRepresentaciones.traducidos.map(\.pitagorico).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.pitagorico)
         case .mesotonico:
-            return TextosDeRepresentaciones.traducidos.map(\.mesotonico).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.mesotonico)
         case .werckmeisterIII:
-            return TextosDeRepresentaciones.traducidos.map(\.werckmeisterIII).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.werckmeisterIII)
         case .kirnbergerIII:
-            return TextosDeRepresentaciones.traducidos.map(\.kirnbergerIII).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.kirnbergerIII)
         case .vallotti:
-            return TextosDeRepresentaciones.traducidos.map(\.vallotti).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.vallotti)
         case .young:
-            return TextosDeRepresentaciones.traducidos.map(\.young).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.young)
         case .justa:
-            return TextosDeRepresentaciones.traducidos.map(\.afinacionJusta).en(notacion)
+            return TextosDeRepresentaciones.en(notacion, \.afinacionJusta)
         }
     }
 }

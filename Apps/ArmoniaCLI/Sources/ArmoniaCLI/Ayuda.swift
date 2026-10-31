@@ -75,10 +75,10 @@ extension LineaDeComandos {
     }
 
     /// Lo que va antes de las órdenes: qué es, cómo se usa y el título de la lista.
-    static let cabeceraDeLaAyuda = TextosDeCLI.traducidos.map(\.cabeceraDeLaAyuda)
+    static let cabeceraDeLaAyuda = TextosDeCLI.traduccion(\.cabeceraDeLaAyuda)
 
     /// Lo que sigue a las órdenes, tras una línea en blanco.
-    static let pieDeLaAyuda = TextosDeCLI.traducidos.map(\.pieDeLaAyuda)
+    static let pieDeLaAyuda = TextosDeCLI.traduccion(\.pieDeLaAyuda)
 
     /// Las entradas de todas las órdenes, en el orden de `ordenes`.
     static let ordenesDeLaAyuda: [EntradaDeAyuda] = ordenes.flatMap(\.ayuda)
@@ -93,7 +93,7 @@ extension LineaDeComandos {
     static let ayudaDeLaAyuda: [EntradaDeAyuda] = [
         // ayuda
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisAyuda),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionAyuda))
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisAyuda),
+            descripcion: TextosDeCLI.traduccion(\.descripcionAyuda))
     ]
 }

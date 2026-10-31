@@ -13,50 +13,50 @@ extension ErrorDeUso {
         private static var d: String { digitaciones.0 }
 
         static func faltaInstrumento() -> Traduccion {
-            return TextosDeCLI.traducidos.map { $0.faltaInstrumento(d, digitaciones) }
+            return TextosDeCLI.traduccion { $0.faltaInstrumento(d, digitaciones) }
         }
 
         static func instrumentoDesconocido(_ nombre: String) -> Traduccion {
             // Los nombres conocidos, en el idioma del mensaje (se aceptan en cualquiera de los catorce).
             let conocidos = Encordado.todos.map { Mensaje.instrumento($0).traduccion }
             let lista = { (idioma: Notacion) in conocidos.map { $0.en(idioma) }.joined(separator: ", ") }
-            return TextosDeCLI.traducidos.map { $0.instrumentoDesconocido(nombre, lista) }
+            return TextosDeCLI.traduccion { $0.instrumentoDesconocido(nombre, lista) }
         }
 
         static func faltaLimite() -> Traduccion {
-            return TextosDeCLI.traducidos.map(\.faltaLimite)
+            return TextosDeCLI.traduccion(\.faltaLimite)
         }
 
         static func limiteFueraDeRango() -> Traduccion {
-            return TextosDeCLI.traducidos.map(\.limiteFueraDeRango)
+            return TextosDeCLI.traduccion(\.limiteFueraDeRango)
         }
 
         static func faltanDedos() -> Traduccion {
-            return TextosDeCLI.traducidos.map(\.faltanDedos)
+            return TextosDeCLI.traduccion(\.faltanDedos)
         }
 
         static func dedosFueraDeRango() -> Traduccion {
-            return TextosDeCLI.traducidos.map(\.dedosFueraDeRango)
+            return TextosDeCLI.traduccion(\.dedosFueraDeRango)
         }
 
         static func faltaTraste() -> Traduccion {
-            return TextosDeCLI.traducidos.map(\.faltaTraste)
+            return TextosDeCLI.traduccion(\.faltaTraste)
         }
 
         static func trasteFueraDeRango() -> Traduccion {
-            return TextosDeCLI.traducidos.map(\.trasteFueraDeRango)
+            return TextosDeCLI.traduccion(\.trasteFueraDeRango)
         }
 
         static func faltaCifradoDeDigitaciones() -> Traduccion {
-            return TextosDeCLI.traducidos.map { $0.faltaCifradoDeDigitaciones(d, digitaciones) }
+            return TextosDeCLI.traduccion { $0.faltaCifradoDeDigitaciones(d, digitaciones) }
         }
 
         static func faltaEscalaDePosiciones() -> Traduccion {
-            return TextosDeCLI.traducidos.map(\.faltaEscalaDePosiciones)
+            return TextosDeCLI.traduccion(\.faltaEscalaDePosiciones)
         }
 
         static func capoFueraDeRango() -> Traduccion {
-            return TextosDeCLI.traducidos.map(\.capoFueraDeRango)
+            return TextosDeCLI.traduccion(\.capoFueraDeRango)
         }
     }
 }

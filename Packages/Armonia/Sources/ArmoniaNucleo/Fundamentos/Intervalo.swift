@@ -396,24 +396,24 @@ extension CalidadDeIntervalo {
     /// alemán; "чистая", "большая" en ruso. Van en femenino, como los intervalos.
     public func nombre(en notacion: Notacion) -> String {
         switch self {
-        case .justa: return TextosDeNucleo.traducidos.map(\.calidadJusta).en(notacion)
-        case .mayor: return TextosDeNucleo.traducidos.map(\.calidadMayor).en(notacion)
-        case .menor: return TextosDeNucleo.traducidos.map(\.calidadMenor).en(notacion)
+        case .justa: return TextosDeNucleo.en(notacion, \.calidadJusta)
+        case .mayor: return TextosDeNucleo.en(notacion, \.calidadMayor)
+        case .menor: return TextosDeNucleo.en(notacion, \.calidadMenor)
         case .aumentada(let n):
             return CalidadDeIntervalo.multiplicidad(n).en(notacion)
-                + TextosDeNucleo.traducidos.map(\.calidadAumentada).en(notacion)
+                + TextosDeNucleo.en(notacion, \.calidadAumentada)
         case .disminuida(let n):
             return CalidadDeIntervalo.multiplicidad(n).en(notacion)
-                + TextosDeNucleo.traducidos.map(\.calidadDisminuida).en(notacion)
+                + TextosDeNucleo.en(notacion, \.calidadDisminuida)
         }
     }
 
     private static func multiplicidad(_ n: Int) -> Traduccion {
         switch n {
-        case 1: return TextosDeNucleo.traducidos.map(\.multiplicidadSimple)
-        case 2: return TextosDeNucleo.traducidos.map(\.multiplicidadDoble)
-        case 3: return TextosDeNucleo.traducidos.map(\.multiplicidadTriple)
-        default: return TextosDeNucleo.traducidos.map { $0.multiplicidad(n) }
+        case 1: return TextosDeNucleo.traduccion(\.multiplicidadSimple)
+        case 2: return TextosDeNucleo.traduccion(\.multiplicidadDoble)
+        case 3: return TextosDeNucleo.traduccion(\.multiplicidadTriple)
+        default: return TextosDeNucleo.traduccion { $0.multiplicidad(n) }
         }
     }
 }
@@ -441,7 +441,7 @@ extension Intervalo {
     }
 
     /// Dónde va «descendente» en cada idioma: delante o detrás del nombre (`_`).
-    private static let plantillaDescendente = TextosDeNucleo.traducidos.map(\.plantillaDescendente)
+    private static let plantillaDescendente = TextosDeNucleo.traduccion(\.plantillaDescendente)
 
     /// La calidad en masculino, para el unísono, en los idiomas que lo nombran con una palabra masculina:
     /// "unisson augmenté", "unisono aumentato", "unisson aumentat". En los demás, igual.
@@ -531,11 +531,11 @@ extension Consonancia {
     public func nombre(en notacion: Notacion) -> String {
         switch self {
         case .perfecta:
-            return TextosDeNucleo.traducidos.map(\.consonanciaPerfecta).en(notacion)
+            return TextosDeNucleo.en(notacion, \.consonanciaPerfecta)
         case .imperfecta:
-            return TextosDeNucleo.traducidos.map(\.consonanciaImperfecta).en(notacion)
+            return TextosDeNucleo.en(notacion, \.consonanciaImperfecta)
         case .disonancia:
-            return TextosDeNucleo.traducidos.map(\.disonancia).en(notacion)
+            return TextosDeNucleo.en(notacion, \.disonancia)
         }
     }
 }

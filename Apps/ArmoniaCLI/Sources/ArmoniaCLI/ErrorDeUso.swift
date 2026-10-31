@@ -103,7 +103,7 @@ enum ErrorDeUso {
     /// El mensaje completo, con la línea que remite a la ayuda.
     func texto(en notacion: Notacion) -> String {
         "armonia: " + traduccion.en(notacion) + "\n"
-            + TextosDeCLI.traducidos.map(\.pruebaLaAyuda).en(notacion) + "\n"
+            + TextosDeCLI.en(notacion, \.pruebaLaAyuda) + "\n"
     }
 
     /// El texto de cada error. Los de los grupos de órdenes están en su fichero, uno por caso, para que un caso
@@ -111,13 +111,13 @@ enum ErrorDeUso {
     private var traduccion: Traduccion {
         switch self {
         case .ordenDesconocida(let orden):
-            return TextosDeCLI.traducidos.map { $0.ordenDesconocida(orden) }
+            return TextosDeCLI.traduccion { $0.ordenDesconocida(orden) }
         case .opcionDesconocida(let opcion):
-            return TextosDeCLI.traducidos.map { $0.opcionDesconocida(opcion) }
+            return TextosDeCLI.traduccion { $0.opcionDesconocida(opcion) }
         case .idiomaDesconocido(let idioma):
-            return TextosDeCLI.traducidos.map { $0.idiomaDesconocido(idioma) }
+            return TextosDeCLI.traduccion { $0.idiomaDesconocido(idioma) }
         case .escrituraNoValida(let escritura):
-            return TextosDeCLI.traducidos.map { $0.escrituraNoValida(escritura) }
+            return TextosDeCLI.traduccion { $0.escrituraNoValida(escritura) }
         case .faltaCifrado: return TextosDeConsultas.faltaCifrado()
         case .faltaCifradoDelArpegio: return TextosDeConsultas.faltaCifradoDelArpegio()
         case .patronDesconocido(let patron): return TextosDeConsultas.patronDesconocido(patron)

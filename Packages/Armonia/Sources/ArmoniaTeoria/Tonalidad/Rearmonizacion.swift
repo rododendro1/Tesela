@@ -136,13 +136,13 @@ extension Rearmonizacion.Recurso: Nombrable {
     private var traduccion: Traduccion {
         switch self {
         case .sustitutoTritonal:
-            return TextosDeTeoria.traducidos.map(\.sustitutoTritonal)
+            return TextosDeTeoria.traduccion(\.sustitutoTritonal)
         case .dominanteSecundaria:
-            return TextosDeTeoria.traducidos.map(\.dominanteSecundaria)
+            return TextosDeTeoria.traduccion(\.dominanteSecundaria)
         case .prestamoModal:
-            return TextosDeTeoria.traducidos.map(\.prestamoModal)
+            return TextosDeTeoria.traduccion(\.prestamoModal)
         case .sustitutoDiatonico:
-            return TextosDeTeoria.traducidos.map(\.sustitutoDiatonico)
+            return TextosDeTeoria.traduccion(\.sustitutoDiatonico)
         }
     }
 }

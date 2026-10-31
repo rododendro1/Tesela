@@ -45,48 +45,48 @@ enum Mensaje {
 
     var traduccion: Traduccion {
         switch self {
-        case .notas: return TextosDeCLI.traducidos.map(\.mensajeNotas)
-        case .acordes: return TextosDeCLI.traducidos.map(\.mensajeAcordes)
-        case .escalas: return TextosDeCLI.traducidos.map(\.mensajeEscalas)
-        case .armadura: return TextosDeCLI.traducidos.map(\.mensajeArmadura)
-        case .relativa: return TextosDeCLI.traducidos.map(\.mensajeRelativa)
-        case .homonima: return TextosDeCLI.traducidos.map(\.mensajeHomonima)
+        case .notas: return TextosDeCLI.traduccion(\.mensajeNotas)
+        case .acordes: return TextosDeCLI.traduccion(\.mensajeAcordes)
+        case .escalas: return TextosDeCLI.traduccion(\.mensajeEscalas)
+        case .armadura: return TextosDeCLI.traduccion(\.mensajeArmadura)
+        case .relativa: return TextosDeCLI.traduccion(\.mensajeRelativa)
+        case .homonima: return TextosDeCLI.traduccion(\.mensajeHomonima)
         case .bajo(let nota):
-            return TextosDeCLI.traducidos.map { $0.mensajeBajo(nota) }
+            return TextosDeCLI.traduccion { $0.mensajeBajo(nota) }
         case .inversion(let n):
             // Los nombres de las inversiones son los de la biblioteca (`Acorde.nombreDeLaInversion`).
             return Mensaje.traduccion { Acorde.nombreDeLaInversion(n, en: $0) }
         case .bajoAjeno:
-            return TextosDeCLI.traducidos.map(\.mensajeBajoAjeno)
+            return TextosDeCLI.traduccion(\.mensajeBajoAjeno)
         case .sinAcordes:
-            return TextosDeCLI.traducidos.map(\.mensajeSinAcordes)
+            return TextosDeCLI.traduccion(\.mensajeSinAcordes)
         case .sin(let notas):
-            return TextosDeCLI.traducidos.map { $0.mensajeSin(notas) }
+            return TextosDeCLI.traduccion { $0.mensajeSin(notas) }
         case .semitonos(let n):
-            return TextosDeCLI.traducidos.map { $0.mensajeSemitonos(n) }
+            return TextosDeCLI.traduccion { $0.mensajeSemitonos(n) }
         case .sinAlteraciones:
-            return TextosDeCLI.traducidos.map(\.mensajeSinAlteraciones)
+            return TextosDeCLI.traduccion(\.mensajeSinAlteraciones)
         case .alteraciones(let n, let sostenidos):
             if sostenidos {
-                return TextosDeCLI.traducidos.map { $0.mensajeSostenidos(n) }
+                return TextosDeCLI.traduccion { $0.mensajeSostenidos(n) }
             }
-            return TextosDeCLI.traducidos.map { $0.mensajeBemoles(n) }
+            return TextosDeCLI.traduccion { $0.mensajeBemoles(n) }
         case .aCuatroVoces:
-            return TextosDeCLI.traducidos.map(\.mensajeACuatroVoces)
+            return TextosDeCLI.traduccion(\.mensajeACuatroVoces)
         case .sinDigitaciones:
-            return TextosDeCLI.traducidos.map(\.mensajeSinDigitaciones)
+            return TextosDeCLI.traduccion(\.mensajeSinDigitaciones)
         case .dedos(let n):
-            return TextosDeCLI.traducidos.map { $0.mensajeDedos(n) }
+            return TextosDeCLI.traduccion { $0.mensajeDedos(n) }
         case .cejilla(let traste):
-            return TextosDeCLI.traducidos.map { $0.mensajeCejilla(traste) }
+            return TextosDeCLI.traduccion { $0.mensajeCejilla(traste) }
         case .pasos(let n):
             switch n {
-            case 0: return TextosDeCLI.traducidos.map(\.mensajeNingunPaso)
-            case 1: return TextosDeCLI.traducidos.map(\.mensajeUnPaso)
-            default: return TextosDeCLI.traducidos.map { $0.mensajePasos(n) }
+            case 0: return TextosDeCLI.traduccion(\.mensajeNingunPaso)
+            case 1: return TextosDeCLI.traduccion(\.mensajeUnPaso)
+            default: return TextosDeCLI.traduccion { $0.mensajePasos(n) }
             }
         case .triadas(let n):
-            return TextosDeCLI.traducidos.map { $0.mensajeTriadas(n) }
+            return TextosDeCLI.traduccion { $0.mensajeTriadas(n) }
         case .ciclo(let ciclo):
             return Traduccion(
                 ciclo.nombre(en: .espanolUnicode), ciclo.nombre(en: .inglesASCII), ca: ciclo.nombre(en: .catalan),

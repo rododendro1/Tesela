@@ -65,13 +65,13 @@ public struct Modulacion: Hashable, Sendable, CustomStringConvertible {
         let de = self.desde.nombre(en: notacion)
         let a = self.hasta.nombre(en: notacion)
         let n = acorde + 1
-        var texto = TextosDeTeoria.traducidos.map { $0.deUnaTonalidadAOtra(de, a, n) }.en(notacion)
+        var texto = TextosDeTeoria.en(notacion) { $0.deUnaTonalidadAOtra(de, a, n) }
         if let pivote {
             texto +=
-                " (" + TextosDeTeoria.traducidos.map(\.pivote).en(notacion)
+                " (" + TextosDeTeoria.en(notacion, \.pivote)
                 + ": " + pivote.descripcion(en: notacion) + ")"
         } else {
-            texto += TextosDeTeoria.traducidos.map(\.directa).en(notacion)
+            texto += TextosDeTeoria.en(notacion, \.directa)
         }
         return texto
     }

@@ -124,7 +124,7 @@ public struct Acorde: Hashable, Sendable {
         }
         guard let i = inversion else {
             if notacion.textos == .ingles { return "\(raiz) \(tipo) over \(bajo)" }
-            return "\(cabeza), " + TextosDeTeoria.traducidos.map { $0.conBajoEn(bajo) }.en(notacion)
+            return "\(cabeza), " + TextosDeTeoria.en(notacion) { $0.conBajoEn(bajo) }
         }
         return "\(cabeza), " + Acorde.nombreDeLaInversion(i, en: notacion)
     }
@@ -139,10 +139,10 @@ public struct Acorde: Hashable, Sendable {
     }
 
     /// Del estado fundamental a la sexta inversión.
-    private static let nombresDeLasInversiones = TextosDeTeoria.traducidos.map(\.nombresDeLasInversiones)
+    private static let nombresDeLasInversiones = TextosDeTeoria.traduccion(\.nombresDeLasInversiones)
 
     /// A partir de la séptima inversión, con el número en el sitio de `_`.
-    private static let inversionConNumero = TextosDeTeoria.traducidos.map(\.inversionConNumero)
+    private static let inversionConNumero = TextosDeTeoria.traduccion(\.inversionConNumero)
 
     /// "Do séptima de dominante, primera inversión".
     public var nombre: String {
