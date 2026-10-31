@@ -2,6 +2,7 @@
 
 ## Sin publicar
 
+- `RedDeNotas` toma el teclado y el nombre de cada red de `TecladoIsomorfico.todos` y `nombre(en:)` del motor.
 - Más opciones de arpegio en ArmoniaApp. En la pestaña Acordes, el arpegio elige también cuántas octavas abarca, si
   acaba en la octava y la figura de sus notas (negra, corchea o semicorchea); en Análisis, la figura de la progresión
   arpegiada. `PresentacionDeArpegios.arpegio(_:figura:notacion:)`, `progresion(…figura:…)` y
