@@ -78,8 +78,8 @@ struct ArchivoZip {
                 !nombre.hasPrefix("META-INF/") && (nombre.hasSuffix(".musicxml") || nombre.hasSuffix(".xml"))
             }
         }
-        guard let ruta else { return nil }
-        return try contenido(de: ruta)
+        guard let elegida = ruta else { return nil }
+        return try contenido(de: elegida)
     }
 
     /// Lo que contiene un fichero del zip, descomprimido; `nil` si no está.
