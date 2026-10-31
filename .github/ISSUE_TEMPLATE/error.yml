@@ -37,7 +37,7 @@ body:
     attributes:
       label: Versión
       description: La versión de Tesela (o el commit de main) y la de Swift o Xcode.
-      placeholder: 0.1.0, Swift 6.2
+      placeholder: 0.2.0, Swift 6.2
     validations:
       required: true
   - type: input

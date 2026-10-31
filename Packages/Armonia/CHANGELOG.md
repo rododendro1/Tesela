@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.2.0 (2026-10-31)
 
 - Revisión de la terminología de la API. Los nombres viejos siguen compilando, marcados como obsoletos (con el
   nombre nuevo en el aviso), y se quitarán en la próxima versión:
