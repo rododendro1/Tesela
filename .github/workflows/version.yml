@@ -5,9 +5,10 @@ name: Versión
 # ningún CHANGELOG la tiene o si no coincide con MARKETING_VERSION de project.yml. Si la release ya existe, no la
 # toca. A mano (workflow_dispatch) crea la de una etiqueta que ya está subida.
 #
-# Para publicar una versión: sube MARKETING_VERSION en project.yml, pon la sección «## 0.2.0 (fecha)» en los
-# CHANGELOG de los paquetes que cambian, fusiona en main y etiqueta ese commit:
+# Para publicar una versión, pasa lo que está en «## Sin publicar» de los CHANGELOG a la versión y sube
+# MARKETING_VERSION en project.yml (el script hace las dos cosas), fusiona en main y etiqueta ese commit:
 #
+#     python3 Scripts/notas_de_version.py --publicar 0.2.0
 #     git tag 0.2.0 && git push origin 0.2.0
 #
 # La misma etiqueta publica también la documentación (documentacion.yml).
