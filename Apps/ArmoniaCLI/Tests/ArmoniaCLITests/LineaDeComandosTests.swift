@@ -645,8 +645,8 @@ final class LineaDeComandosTests: XCTestCase {
         let xml = try fichero(Data(analisis.musicXML(duraciones: duraciones).utf8), extension: "musicxml")
         // El ritmo armónico del fichero pasa a la partitura, y su título y su tempo (el MIDI lo lleva siempre)
         // también.
-        let esperado = analisis.musicXML(duraciones: duraciones, tempo: Tempo(120), titulo: "Coral")
-            .trimmingCharacters(in: .newlines) + "\n"
+        let conTempo = analisis.musicXML(duraciones: duraciones, tempo: Tempo(120), titulo: "Coral")
+        let esperado = conTempo.trimmingCharacters(in: .newlines) + "\n"
         XCTAssertEqual(salida("musicxml acordes --archivo " + midi), esperado)
         XCTAssertEqual(salida("musicxml chords --file " + midi), esperado)
         let sinTempo = analisis.musicXML(duraciones: duraciones, titulo: "Coral").trimmingCharacters(in: .newlines)
@@ -685,7 +685,7 @@ final class LineaDeComandosTests: XCTestCase {
     func testPosiciones() {
         let texto = salida("posiciones Sol mayor")
         XCTAssertTrue(texto.hasPrefix("Sol mayor · 3 notas por cuerda\n\n  Trastes 0–5\n"), texto)
-        XCTAssertTrue(texto.contains("""
+        let primera = """
               Trastes 0–5
                 Mi  |--2--3--5-
                 Si  |--1--3--5-
@@ -693,7 +693,8 @@ final class LineaDeComandosTests: XCTestCase {
                 Re  |--0--2--4-
                 La  |--0--2--3-
                 Mi  |--0--2--3-
-            """), texto)
+            """
+        XCTAssertTrue(texto.contains(primera), texto)
         // Siete posiciones, una por grado: cada una, su cabecera y seis cuerdas.
         XCTAssertEqual(texto.components(separatedBy: "Trastes").count - 1, 7)
         let caged = salida("posiciones Do mayor --caged")

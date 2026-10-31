@@ -92,7 +92,8 @@ struct ArchivoZip {
             entrada.cabecera + 30 <= bytes.count,
             ArchivoZip.entero(bytes, entrada.cabecera, 4) == 0x0403_4B50
         else { throw ErrorDeImportacion.comprimido }
-        let inicio = entrada.cabecera + 30 + ArchivoZip.entero(bytes, entrada.cabecera + 26, 2)
+        let inicio =
+            entrada.cabecera + 30 + ArchivoZip.entero(bytes, entrada.cabecera + 26, 2)
             + ArchivoZip.entero(bytes, entrada.cabecera + 28, 2)
         guard inicio + entrada.comprimido <= bytes.count else { throw ErrorDeImportacion.comprimido }
         let datos = Array(bytes[inicio..<(inicio + entrada.comprimido)])

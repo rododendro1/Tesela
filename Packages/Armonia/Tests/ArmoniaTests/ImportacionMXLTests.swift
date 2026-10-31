@@ -2,27 +2,28 @@ import Foundation
 import XCTest
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
 @testable import ArmoniaPartitura
+@testable import ArmoniaTeoria
 
 /// MusicXML comprimido (.mxl) y el ritmo armónico de lo que se importa.
 final class ImportacionMXLTests: XCTestCase {
     /// Un .mxl como los de MuseScore, hecho con el `zipfile` de Python: `mimetype` sin comprimir,
     /// `META-INF/container.xml` y la partitura en `partitura/coral.musicxml`, comprimidos con DEFLATE. La
     /// partitura, «Comprimido», son tres redondas: Do, Sol y Do.
-    static let mxl = Data(base64Encoded:
-        "UEsDBBQAAAAAAAAAIQAuQhWCIgAAACIAAAAIAAAAbWltZXR5cGVhcHBsaWNhdGlvbi92bmQucmVjb3JkYXJlLm11c2ljeG1sUEsD" +
-        "BBQAAAAIAMVEX119HtJcigAAALoAAAAWAAAATUVUQS1JTkYvY29udGFpbmVyLnhtbE2OMQ7CMAxF954i8orawMaQtBsnKAewEhcs" +
-        "pUnkuhXcnrJQtj+8r/fc8JqT2UgWLtnDpTuDoRxK5PzwcB9v7RWGvnGhZEXOJL2TUnTiRMsxzbSm1FbUp4eKoqyroA1FMHXzunDY" +
-        "JWBmioytvit5wFoTB9TdarccO6Gdjij040/fj+2d/fPZI6P5AFBLAwQUAAAACADFRF9d+B0u7EABAACBBQAAGAAAAHBhcnRpdHVy" +
-        "YS9jb3JhbC5tdXNpY3htbO1UTU/DMAy971dUuZdsMCQOXiYxPq47wA/IWkOttUmVuBv796RNoRuMA9LYiUtqv8Tv+TlVYP5WlckG" +
-        "nSdrZmJyMRYJmszmZF5n4vnpIb0RczUCn1mHaa0db8njUDANBQq21q3jmjJxiWphq9pRRbkFuQfHREHLk5bkWe0RJ5TPxHIi+m2j" +
-        "K1RL0iZQDADIoUD1G5HokKJC7RuHiWmqFbpgLGCa2dGqYfQKctpQ68CrCcghgTXuFLzQCxdejUH2EcgOZ2o7WKFmr6YgY9DlKe9q" +
-        "/MBiAjIel/uyxnKAauKsCNYZa7UIjtov2Iz1puPoo+Aunssbpzm01+59xtCJbAtbYlCKgpE9rllhXS4Pte7PqPV4ci3Z3+n3y70U" +
-        "xyZ7+g5+dnt7Rq27L1rXfzjZq6OT/f9nfz9Z2b9Yhw+pGr0DUEsBAhQDFAAAAAAAAAAhAC5CFYIiAAAAIgAAAAgAAAAAAAAAAAAA" +
-        "AIABAAAAAG1pbWV0eXBlUEsBAhQDFAAAAAgAxURfXX0e0lyKAAAAugAAABYAAAAAAAAAAAAAAIABSAAAAE1FVEEtSU5GL2NvbnRh" +
-        "aW5lci54bWxQSwECFAMUAAAACADFRF9d+B0u7EABAACBBQAAGAAAAAAAAAAAAAAAgAEGAQAAcGFydGl0dXJhL2NvcmFsLm11c2lj" +
-        "eG1sUEsFBgAAAAADAAMAwAAAAHwCAAAAAA==")!
+    static let mxl = Data(
+        base64Encoded:
+            "UEsDBBQAAAAAAAAAIQAuQhWCIgAAACIAAAAIAAAAbWltZXR5cGVhcHBsaWNhdGlvbi92bmQucmVjb3JkYXJlLm11c2ljeG1sUEsD"
+            + "BBQAAAAIAMVEX119HtJcigAAALoAAAAWAAAATUVUQS1JTkYvY29udGFpbmVyLnhtbE2OMQ7CMAxF954i8orawMaQtBsnKAewEhcs"
+            + "pUnkuhXcnrJQtj+8r/fc8JqT2UgWLtnDpTuDoRxK5PzwcB9v7RWGvnGhZEXOJL2TUnTiRMsxzbSm1FbUp4eKoqyroA1FMHXzunDY"
+            + "JWBmioytvit5wFoTB9TdarccO6Gdjij040/fj+2d/fPZI6P5AFBLAwQUAAAACADFRF9d+B0u7EABAACBBQAAGAAAAHBhcnRpdHVy"
+            + "YS9jb3JhbC5tdXNpY3htbO1UTU/DMAy971dUuZdsMCQOXiYxPq47wA/IWkOttUmVuBv796RNoRuMA9LYiUtqv8Tv+TlVYP5WlckG"
+            + "nSdrZmJyMRYJmszmZF5n4vnpIb0RczUCn1mHaa0db8njUDANBQq21q3jmjJxiWphq9pRRbkFuQfHREHLk5bkWe0RJ5TPxHIi+m2j"
+            + "K1RL0iZQDADIoUD1G5HokKJC7RuHiWmqFbpgLGCa2dGqYfQKctpQ68CrCcghgTXuFLzQCxdejUH2EcgOZ2o7WKFmr6YgY9DlKe9q"
+            + "/MBiAjIel/uyxnKAauKsCNYZa7UIjtov2Iz1puPoo+Aunssbpzm01+59xtCJbAtbYlCKgpE9rllhXS4Pte7PqPV4ci3Z3+n3y70U"
+            + "xyZ7+g5+dnt7Rq27L1rXfzjZq6OT/f9nfz9Z2b9Yhw+pGr0DUEsBAhQDFAAAAAAAAAAhAC5CFYIiAAAAIgAAAAgAAAAAAAAAAAAA"
+            + "AIABAAAAAG1pbWV0eXBlUEsBAhQDFAAAAAgAxURfXX0e0lyKAAAAugAAABYAAAAAAAAAAAAAAIABSAAAAE1FVEEtSU5GL2NvbnRh"
+            + "aW5lci54bWxQSwECFAMUAAAACADFRF9d+B0u7EABAACBBQAAGAAAAAAAAAAAAAAAgAEGAQAAcGFydGl0dXJhL2NvcmFsLm11c2lj"
+            + "eG1sUEsFBgAAAAADAAMAwAAAAHwCAAAAAA==")!
 
     /// Un zip con los ficheros guardados tal cual (método 0), sin CRC (no se comprueba).
     static func zip(_ ficheros: [(nombre: String, datos: [UInt8])], metodo: UInt16 = 0) -> Data {
@@ -32,13 +33,16 @@ final class ImportacionMXLTests: XCTestCase {
         for (nombre, datos) in ficheros {
             let n = [UInt8](nombre.utf8)
             let desplazamiento = locales.count
-            locales += le(0x0403_4B50, 4) + le(20, 2) + le(0, 2) + le(Int(metodo), 2) + le(0, 4) + le(0, 4)
+            locales +=
+                le(0x0403_4B50, 4) + le(20, 2) + le(0, 2) + le(Int(metodo), 2) + le(0, 4) + le(0, 4)
                 + le(datos.count, 4) + le(datos.count, 4) + le(n.count, 2) + le(0, 2) + n + datos
-            central += le(0x0201_4B50, 4) + le(20, 2) + le(20, 2) + le(0, 2) + le(Int(metodo), 2) + le(0, 4)
+            central +=
+                le(0x0201_4B50, 4) + le(20, 2) + le(20, 2) + le(0, 2) + le(Int(metodo), 2) + le(0, 4)
                 + le(0, 4) + le(datos.count, 4) + le(datos.count, 4) + le(n.count, 2) + le(0, 2) + le(0, 2)
                 + le(0, 2) + le(0, 2) + le(0, 4) + le(desplazamiento, 4) + n
         }
-        let fin = le(0x0605_4B50, 4) + le(0, 2) + le(0, 2) + le(ficheros.count, 2) + le(ficheros.count, 2)
+        let fin =
+            le(0x0605_4B50, 4) + le(0, 2) + le(0, 2) + le(ficheros.count, 2) + le(ficheros.count, 2)
             + le(central.count, 4) + le(locales.count, 4) + le(0, 2)
         return Data(locales + central + fin)
     }

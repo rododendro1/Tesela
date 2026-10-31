@@ -469,8 +469,9 @@ final class EscalaEnElMastilTests: XCTestCase {
         let posiciones = Mastil(.guitarra, trastes: 15).posicionesPorCuerda(de: Escala(.la, .pentatonicaMenor))
         XCTAssertEqual(posiciones.count, 5)
         XCTAssertTrue(posiciones.allSatisfy { $0.posiciones.count == 12 })
-        XCTAssertEqual(Mastil(.guitarra, trastes: 15).posicionesPorCuerda(de: Escala(.sol, .mayor), notasPorCuerda: 2)
-                        .first?.posiciones.count, 12)
+        let dosPorCuerda = Mastil(.guitarra, trastes: 15).posicionesPorCuerda(
+            de: Escala(.sol, .mayor), notasPorCuerda: 2)
+        XCTAssertEqual(dosPorCuerda.first?.posiciones.count, 12)
     }
 
     func testCAGED() {

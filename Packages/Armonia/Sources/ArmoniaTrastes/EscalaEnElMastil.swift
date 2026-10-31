@@ -6,7 +6,11 @@ import ArmoniaTeoria
 /// Las cinco formas del sistema CAGED, por los acordes abiertos de la guitarra cuya forma toma la mano: Do, La,
 /// Sol, Mi y Re (C, A, G, E y D en cifrado americano, que es como se llaman en todos los idiomas).
 public enum FormaCAGED: String, CaseIterable, Hashable, Sendable {
-    case c = "C", a = "A", g = "G", e = "E", d = "D"
+    case c = "C"
+    case a = "A"
+    case g = "G"
+    case e = "E"
+    case d = "D"
 
     /// La cuerda (desde 0, la sexta de la guitarra) en la que la forma tiene la tónica, y dónde empieza la
     /// franja respecto a ella: un traste por debajo, o tres si la tónica cae bajo el meñique (C y G).

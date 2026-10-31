@@ -37,8 +37,9 @@ extension LineaDeComandos {
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traducidos.map(\.sintaxisMusicxmlArchivo),
             descripcion: TextosDeCLI.traducidos.map(\.descripcionMusicxmlArchivo),
-            ejemplo: ejemplo("armonia midi arpegios --archivo coral.mid --patron alberti > arpegios.mid",
-                             "armonia midi arpeggios --file chorale.mid --pattern alberti > arpeggios.mid")),
+            ejemplo: ejemplo(
+                "armonia midi arpegios --archivo coral.mid --patron alberti > arpegios.mid",
+                "armonia midi arpeggios --file chorale.mid --pattern alberti > arpeggios.mid")),
         // mei melodia|coral|acordes|arpegios <…> [opciones]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traducidos.map(\.sintaxisMeiMelodia),
