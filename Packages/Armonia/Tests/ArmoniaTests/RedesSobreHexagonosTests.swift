@@ -159,6 +159,29 @@ final class RedesSobreHexagonosTests: XCTestCase {
         XCTAssertEqual(cromatico, [1, 2, 3])
     }
 
+    func testGerhardYPark() {
+        func vecinos(_ teclado: TecladoIsomorfico, _ a: PuntoCardinal, _ b: PuntoCardinal, _ c: PuntoCardinal) -> [Int]
+        {
+            [a, b, c].map { teclado.semitonos(hacia: DireccionHexagonal($0, teclado.orientacion)!) }
+        }
+        // Gerhard: arriba un semitono, arriba a la derecha una tercera mayor y abajo a la derecha una menor.
+        XCTAssertEqual(vecinos(.gerhard, .norte, .noreste, .sureste), [1, 4, 3])
+        // Park: a la derecha una cuarta, arriba a la derecha una tercera menor y abajo a la derecha un tono.
+        XCTAssertEqual(vecinos(.park, .este, .noreste, .sureste), [5, 3, 2])
+        for teclado in [TecladoIsomorfico.gerhard, .park] {
+            for d in DireccionHexagonal.allCases {
+                XCTAssertEqual(teclado.semitonos(hacia: d), -teclado.semitonos(hacia: d.opuesta), teclado.nombre)
+            }
+            XCTAssertEqual(teclado.midi(en: .origen), 60)
+            // Son completos: en un hexágono de radio 3 alrededor del Do4 suenan las doce notas.
+            let clases = Set(FormasDeMapa.hexagono(radio: 3).map { (teclado.midi(en: $0) % 12 + 12) % 12 })
+            XCTAssertEqual(clases.count, 12, teclado.nombre)
+        }
+        // La escala cromática sube por cada columna de Gerhard.
+        let columna = (0...12).map { TecladoIsomorfico.gerhard.midi(en: CoordenadaAxial(q: 0, r: -$0)) }
+        XCTAssertEqual(columna, Array(60...72))
+    }
+
     func testIsomorfico() {
         // La misma forma suena al mismo acorde transportado: una tríada mayor desde cualquier casilla.
         let teclado = TecladoIsomorfico.wickiHayden

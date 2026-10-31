@@ -19,6 +19,8 @@
   pone en la progresión. `PresentacionDeRearmonizacion` y `AnalisisPresentado.rearmonizaciones(notacion:)`.
 - En la línea de comandos: `transponer` (un intervalo o la nueva tónica; acordes, melodías o corales), `rearmonizar`,
   `digitaciones --capo 2` y `digitaciones --musicxml` (la tablatura), y los patrones `quebrado` y `baja-y-sube`.
+- Los teclados Gerhard y Park en la app Tonnetz: `RedDeNotas.gerhard` y `RedDeNotas.park`, en el selector de la red,
+  con su dibujo y sus notas para tocar. Bosanquet-Wilson no se añade aparte porque, en 12 notas, es el Jankó.
 - Ritmo armónico al importar. En la pestaña Análisis, «Abrir» acepta también el MusicXML comprimido (.mxl) y guarda
   lo que dura cada acorde de la pieza, con su compás y su tempo: mientras no se retoque la progresión, lo siguen la
   partitura, el MIDI, «Escuchar» y «Arpegiar». `ImportacionDeProgresion.leer(_:ventana:)` da la

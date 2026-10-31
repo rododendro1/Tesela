@@ -3,8 +3,9 @@ import ArmoniaUI
 import SwiftUI
 
 /// Un acorde, una escala o un recorrido de tríadas con las transformaciones P, L y R, en el Tonnetz, en la
-/// tabla armónica o en un teclado isomórfico (Wicki-Hayden, Jankó o acordeón cromático), y su dibujo para exportar. Al tocar una
-/// nota del dibujo, suena. En el modo «Identificar», además, la nota tocada se marca (o se desmarca) y se dice
+/// tabla armónica o en un teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático, Gerhard o Park), y su dibujo
+/// para exportar. Al tocar una nota del dibujo, suena. En el modo «Identificar», además, la nota tocada se marca (o se
+/// desmarca) y se dice
 /// qué acorde forman las marcadas y su número de Forte; un acorde tocado en un teclado MIDI conectado también se
 /// marca, con la nota más grave como bajo.
 struct VistaDeTonnetz: View {

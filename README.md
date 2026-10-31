@@ -15,7 +15,7 @@ Apps/
 │                     interválico); exporta MusicXML, MEI y MIDI
 ├── TonnetzApp/       Un acorde, una escala, un recorrido con P, L y R, o las notas que se toquen (y qué acorde
 │                     forman), en el Tonnetz, la tabla armónica o un
-│                     teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático, o uno en formato UIL con giros de 30°); exporta el dibujo en SVG
+│                     teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático, Gerhard, Park, o uno en formato UIL con giros de 30°); exporta el dibujo en SVG
 ├── ArmoniaCLI/       La herramienta `armonia`, con sus pruebas (SwiftPM)
 └── PruebasDeInterfaz/  Las pruebas de interfaz de las dos apps (XCUITest), con los ejemplos de cada vista
 Ejemplos/
