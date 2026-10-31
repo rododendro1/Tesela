@@ -552,10 +552,10 @@ final class LineaDeComandosTests: XCTestCase {
         let xml = try fichero(Data(analisis.musicXML(duraciones: duraciones).utf8), extension: "musicxml")
         // El ritmo armónico del fichero pasa a la partitura, y su título y su tempo (el MIDI lo lleva siempre) también.
         let esperado = analisis.musicXML(duraciones: duraciones, tempo: Tempo(120), titulo: "Coral")
-        XCTAssertEqual(salida("musicxml acordes --archivo " + midi), esperado.trimmingCharacters(in: .newlines))
-        XCTAssertEqual(salida("musicxml chords --file " + midi), esperado.trimmingCharacters(in: .newlines))
+        XCTAssertEqual(salida("musicxml acordes --archivo " + midi), esperado.trimmingCharacters(in: .newlines) + "\n")
+        XCTAssertEqual(salida("musicxml chords --file " + midi), esperado.trimmingCharacters(in: .newlines) + "\n")
         let sinTempo = analisis.musicXML(duraciones: duraciones, titulo: "Coral")
-        XCTAssertEqual(salida("musicxml acordes --archivo \(xml) --titulo Coral"), sinTempo.trimmingCharacters(in: .newlines))
+        XCTAssertEqual(salida("musicxml acordes --archivo \(xml) --titulo Coral"), sinTempo.trimmingCharacters(in: .newlines) + "\n")
         // `--duracion` manda sobre el ritmo del fichero.
         XCTAssertEqual(salida("musicxml acordes --archivo \(xml) --duracion 2 --titulo T"),
                        salida("musicxml acordes Do Fa Sol7 Do --duracion 2 --titulo T"))
@@ -566,7 +566,8 @@ final class LineaDeComandosTests: XCTestCase {
         // Arpegiados: Do (blanca, 4 corcheas), Fa y Sol7 (negra, 2 cada uno) y Do (redonda, 8).
         let arpegios = salida("musicxml arpegios --archivo " + midi)
         XCTAssertEqual(arpegios.components(separatedBy: "<pitch>").count - 1, 16)
-        XCTAssertEqual(salida("musicxml arpegios --archivo \(midi) --ventana 1"), arpegios)
+        // La ventana de una negra (4) es la de omisión en 4/4.
+        XCTAssertEqual(salida("musicxml arpegios --archivo \(midi) --ventana 4"), arpegios)
 
         func resultado(_ orden: String) -> ResultadoDeOrden {
             LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
