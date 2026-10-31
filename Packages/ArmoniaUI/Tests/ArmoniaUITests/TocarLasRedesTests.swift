@@ -1,6 +1,7 @@
-import XCTest
 import Armonia
 import Hexagonos
+import XCTest
+
 @testable import ArmoniaUI
 
 // Qué nota suena al tocar el dibujo de una red en la app Tonnetz. No usa SwiftUI: se ejecuta también en Linux.
@@ -31,15 +32,18 @@ final class TocarLasRedesTests: XCTestCase {
         let doMayor = ContenidoDeRed.acorde(try Acorde(leyendo: "Do"))
         let trazado = Tonnetz.trazado(paso: PresentacionDeRedes.paso(doMayor, en: .tonnetz))
         func midi(_ quintas: Int, _ terceras: Int) -> Int? {
-            PresentacionDeRedes.midi(en: trazado.centro(de: CoordenadaAxial(q: quintas, r: terceras)), de: doMayor,
-                                     enLaRed: .tonnetz)
+            PresentacionDeRedes.midi(
+                en: trazado.centro(de: CoordenadaAxial(q: quintas, r: terceras)), de: doMayor,
+                enLaRed: .tonnetz)
         }
-        XCTAssertEqual(midi(0, 0), 60)    // Do
-        XCTAssertEqual(midi(1, 0), 67)    // Sol
-        XCTAssertEqual(midi(0, 1), 64)    // Mi
-        XCTAssertEqual(midi(-1, 0), 65)   // Fa
+        XCTAssertEqual(midi(0, 0), 60) // Do
+        XCTAssertEqual(midi(1, 0), 67) // Sol
+        XCTAssertEqual(midi(0, 1), 64) // Mi
+        XCTAssertEqual(midi(-1, 0), 65) // Fa
         // Entre Do y Sol no hay nota.
-        let entre = trazado.centro(de: CoordenadaAxial(q: 0, r: 0)).x / 2 + trazado.centro(de: CoordenadaAxial(q: 1, r: 0)).x / 2
+        let entre =
+            trazado.centro(de: CoordenadaAxial(q: 0, r: 0)).x / 2 + trazado.centro(de: CoordenadaAxial(q: 1, r: 0)).x
+            / 2
         XCTAssertNil(PresentacionDeRedes.midi(en: Punto(x: entre, y: 0), de: doMayor, enLaRed: .tonnetz))
     }
 
@@ -53,8 +57,9 @@ final class TocarLasRedesTests: XCTestCase {
             let teclado = try XCTUnwrap(red.teclado)
             let trazado = Trazado(orientacion: teclado.orientacion, tamano: PresentacionDeRedes.tamanoDelTeclado)
             for casilla in PresentacionDeRedes.casillasDelTeclado(teclado).prefix(20) {
-                XCTAssertEqual(PresentacionDeRedes.midi(en: trazado.centro(de: casilla), de: doMayor, enLaRed: red),
-                               teclado.midi(en: casilla), "\(red) \(casilla)")
+                XCTAssertEqual(
+                    PresentacionDeRedes.midi(en: trazado.centro(de: casilla), de: doMayor, enLaRed: red),
+                    teclado.midi(en: casilla), "\(red) \(casilla)")
             }
             // Fuera del teclado, nada.
             XCTAssertNil(PresentacionDeRedes.midi(en: Punto(x: 10_000, y: 0), de: doMayor, enLaRed: red))
@@ -82,10 +87,13 @@ final class TocarLasRedesTests: XCTestCase {
         XCTAssertTrue(svg.contains(">Do4<"))
         let trazado = Trazado(orientacion: teclado.orientacion, tamano: PresentacionDeRedes.tamanoDelTeclado)
         for casilla in PresentacionDeRedes.casillasDelTeclado(teclado).prefix(20) {
-            XCTAssertEqual(PresentacionDeRedes.midi(en: trazado.centro(de: casilla), de: doMayor, enLaRed: .uil, uil: ajuste),
-                           teclado.midi(en: casilla))
+            XCTAssertEqual(
+                PresentacionDeRedes.midi(en: trazado.centro(de: casilla), de: doMayor, enLaRed: .uil, uil: ajuste),
+                teclado.midi(en: casilla))
         }
-        XCTAssertEqual(PresentacionDeRedes.nombre(doMayor, en: .uil, notacion: .espanolUnicode, uil: ajuste), "UIL 2,7,5;R330 · Do")
+        XCTAssertEqual(
+            PresentacionDeRedes.nombre(doMayor, en: .uil, notacion: .espanolUnicode, uil: ajuste), "UIL 2,7,5;R330 · Do"
+        )
 
         // Un texto que no es UIL no se dibuja ni suena.
         ajuste.texto = "7,5,2"
@@ -109,7 +117,7 @@ final class TocarLasRedesTests: XCTestCase {
     func testParaIdentificarSeMarcanYSeQuitanLasNotasTocadas() throws {
         XCTAssertEqual(PresentacionDeRedes.alternar(64, en: [0, 7]), [0, 7, 4])
         XCTAssertEqual(PresentacionDeRedes.alternar(60, en: [0, 7]), [7])
-        XCTAssertEqual(PresentacionDeRedes.alternar(72, en: [0]), [])   // la misma clase, en otra octava
+        XCTAssertEqual(PresentacionDeRedes.alternar(72, en: [0]), []) // la misma clase, en otra octava
         // La primera tocada es el bajo.
         XCTAssertEqual(PresentacionDeRedes.acordes(de: [0, 4, 7]).first?.cifrado(en: .espanolUnicode), "Do")
         XCTAssertEqual(PresentacionDeRedes.acordes(de: [4, 7, 0]).first?.cifrado(en: .espanolUnicode), "Do/Mi")
@@ -120,15 +128,18 @@ final class TocarLasRedesTests: XCTestCase {
     func testLasNotasTocadasSeDibujanEnTodasLasRedes() throws {
         for red in RedDeNotas.allCases where red != .uil {
             for clases in [[], [0, 4, 7]] {
-                XCTAssertNotNil(PresentacionDeRedes.svg(.clases(clases), en: red, notacion: .espanolUnicode), "\(red) \(clases)")
+                XCTAssertNotNil(
+                    PresentacionDeRedes.svg(.clases(clases), en: red, notacion: .espanolUnicode), "\(red) \(clases)")
             }
         }
         // Y se tocan como las de un acorde.
         let tocadas = ContenidoDeRed.clases([0, 4, 7])
         XCTAssertEqual(tocadas.notas, [.do, .mi, .sol])
         let trazado = Tonnetz.trazado(paso: PresentacionDeRedes.paso(tocadas, en: .tonnetz))
-        XCTAssertEqual(PresentacionDeRedes.midi(en: trazado.centro(de: CoordenadaAxial(q: 1, r: 0)), de: tocadas,
-                                                enLaRed: .tonnetz), 67)
+        XCTAssertEqual(
+            PresentacionDeRedes.midi(
+                en: trazado.centro(de: CoordenadaAxial(q: 1, r: 0)), de: tocadas,
+                enLaRed: .tonnetz), 67)
         XCTAssertEqual(PresentacionDeRedes.nombre(tocadas, en: .tonnetz, notacion: .espanolUnicode), "Tonnetz · Do")
     }
 }

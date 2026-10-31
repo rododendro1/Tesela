@@ -14,9 +14,12 @@ extension LineaDeComandos {
         }
         guard let dada = try argumentos.quitarTonalidad() else { return uso(.faltaTonalidadTrasEn, notacion) }
         guard !argumentos.restantes.isEmpty else { return uso(.faltanNotasDeLaArmonizacion, notacion) }
-        let coral = try PresentacionDeCoral.armonizar(argumentos.unidos, en: dada,
-                                                      propuestas: propuestas, notacion: notacion)
-        guard !coral.avisos.contains(.sinArmonizacion) else { return bien(CoralPresentado.Aviso.sinArmonizacion.texto(en: notacion)) }
+        let coral = try PresentacionDeCoral.armonizar(
+            argumentos.unidos, en: dada,
+            propuestas: propuestas, notacion: notacion)
+        guard !coral.avisos.contains(.sinArmonizacion) else {
+            return bien(CoralPresentado.Aviso.sinArmonizacion.texto(en: notacion))
+        }
         var lineas = [coral.titulo]
         for (n, propuesta) in coral.propuestas.enumerated() {
             lineas.append("  \(n + 1). " + propuesta)
@@ -39,7 +42,9 @@ extension LineaDeComandos {
         guard let tonalidad = try argumentos.quitarTonalidad() else { return uso(.faltaTonalidadTrasEn, notacion) }
         guard !argumentos.restantes.isEmpty else { return uso(.faltanAcordesDeLaRealizacion, notacion) }
         let coral = try PresentacionDeCoral.realizar(argumentos.unidos, en: tonalidad, notacion: notacion)
-        guard !coral.avisos.contains(.sinRealizacion) else { return bien(CoralPresentado.Aviso.sinRealizacion.texto(en: notacion)) }
+        guard !coral.avisos.contains(.sinRealizacion) else {
+            return bien(CoralPresentado.Aviso.sinRealizacion.texto(en: notacion))
+        }
         return bien(([coral.titulo] + describir(coral.filas)).joined(separator: "\n"))
     }
 
@@ -55,7 +60,8 @@ extension LineaDeComandos {
     static func contrapunto(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
         guard let numero = argumentos.quitarNumero("--especie", "--species", en: 1...5, porDefecto: 1),
-              let especie = Contrapunto.Especie(rawValue: numero) else {
+            let especie = Contrapunto.Especie(rawValue: numero)
+        else {
             return uso(.especieFueraDeRango, notacion)
         }
         if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
@@ -73,6 +79,8 @@ extension LineaDeComandos {
     static func describir(_ filas: [CoralPresentado.Fila]) -> [String] {
         let anchoDelCifrado = max(10, (filas.map(\.cifrado.count).max() ?? 0) + 2)
         let anchoDelGrado = max(10, (filas.map(\.grado.count).max() ?? 0) + 2)
-        return filas.map { "  " + $0.cifrado.padding(hasta: anchoDelCifrado) + $0.grado.padding(hasta: anchoDelGrado) + $0.voces }
+        return filas.map {
+            "  " + $0.cifrado.padding(hasta: anchoDelCifrado) + $0.grado.padding(hasta: anchoDelGrado) + $0.voces
+        }
     }
 }

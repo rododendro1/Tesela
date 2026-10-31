@@ -1,6 +1,6 @@
-import SwiftUI
 import Armonia
 import ArmoniaUI
+import SwiftUI
 
 /// Escribe un cifrado (Sol7/Si, Dom, Fa#m7b5…) y muestra el acorde, su arpegio, las escalas que encajan con él,
 /// sus digitaciones y el arpegio en el mástil.
@@ -52,7 +52,8 @@ struct VistaDeAcordes: View {
         .onChange(of: navegacion.acordePedido) { _ in tomarElAcordePedido() }
         .onAppear(perform: tomarElAcordePedido)
         // La búsqueda de digitaciones puede tardar: se hace fuera del hilo principal cuando se deja de escribir.
-        .calcularEnSegundoPlano(para: claveActual, en: $digitaciones) { [texto = self.texto, encordado = self.encordado] in
+        .calcularEnSegundoPlano(para: claveActual, en: $digitaciones) {
+            [texto = self.texto, encordado = self.encordado] in
             guard let acorde = try? Acorde(leyendo: texto) else { return [] }
             // La quinta puede faltar en los acordes de cuatro notas o más (el Do7 `x32310`), como se toca.
             return Mastil(encordado, trastes: 15).digitaciones(de: acorde, exigirQuinta: false, limite: 6)
@@ -64,8 +65,10 @@ struct VistaDeAcordes: View {
     private var ficheros: [FicheroParaExportar] {
         guard case .success(let acorde) = lectura else { return [] }
         let arpegio = Arpegio(acorde, patron: patron)
-        return [PresentacionDePentagrama(acorde, notacion: notacion).fichero,
-                PresentacionDePentagrama(arpegio, notacion: notacion).fichero]
+        return [
+            PresentacionDePentagrama(acorde, notacion: notacion).fichero,
+            PresentacionDePentagrama(arpegio, notacion: notacion).fichero,
+        ]
             + PresentacionDeArpegios.arpegio(arpegio, notacion: notacion).ficheros
     }
 
@@ -102,8 +105,9 @@ struct VistaDeAcordes: View {
         Section(notacion.texto(.informacion)) {
             LabeledContent(notacion.texto(.nombre), value: acorde.nombre(en: notacion))
             LabeledContent(notacion.texto(.cifrado), value: acorde.cifrado(en: notacion))
-            LabeledContent(notacion.texto(.notas),
-                           value: acorde.notasDesdeElBajo.map { $0.nombre(en: notacion) }.joined(separator: " "))
+            LabeledContent(
+                notacion.texto(.notas),
+                value: acorde.notasDesdeElBajo.map { $0.nombre(en: notacion) }.joined(separator: " "))
             BotonDeEscuchar(.acorde(acorde))
         }
     }
@@ -148,12 +152,16 @@ struct VistaDeAcordes: View {
             ForEach(mastil.arpegios(de: acorde), id: \.trastes) { posicion in
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
-                        Text(notacion.texto(.trastes(desde: posicion.trastes.lowerBound,
-                                                     hasta: posicion.trastes.upperBound)))
+                        Text(
+                            notacion.texto(
+                                .trastes(
+                                    desde: posicion.trastes.lowerBound,
+                                    hasta: posicion.trastes.upperBound)))
                         Spacer()
                         // De grave a agudo, en corcheas, como se toca al subir.
-                        BotonDeEscuchar(Sonido.voz(Voz(posicion.alturas.map { Evento($0, .corchea) }))
-                            .conTonica(acorde.fundamental))
+                        BotonDeEscuchar(
+                            Sonido.voz(Voz(posicion.alturas.map { Evento($0, .corchea) }))
+                                .conTonica(acorde.fundamental))
                     }
                     DiagramaDeMastil(arpegio: posicion, acorde: acorde, notacion: notacion)
                         .frame(maxHeight: 120)

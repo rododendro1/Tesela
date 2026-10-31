@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 // Tonalidad: una tónica y un modo (mayor o menor), con lo que eso implica en la práctica
 // común: armadura, relativa y homónima, tonos vecinos, funciones de los grados y armonía.
 //
@@ -113,7 +114,8 @@ public struct Tonalidad: Hashable, Sendable {
     /// `nil` si la nota no es propia de la tonalidad.
     public func nombreDeGrado(de nota: Nota) -> NombreDeGrado? {
         guard let indice = escala.notas.firstIndex(where: { $0.natural == nota.natural }),
-              notasPropias.contains(nota) else { return nil }
+            notasPropias.contains(nota)
+        else { return nil }
         if indice == 6 {
             return modo == .menor && nota == escala.notas[6] ? .subtonica : .sensible
         }
@@ -253,7 +255,9 @@ extension Tonalidad {
     /// si es menor), "la mineur" en francés, "la minore" en italiano, "ля минор" en ruso, "λα ελάσσονα"
     /// en griego.
     public func nombre(en notacion: Notacion) -> String {
-        guard notacion.idiomaDeLasNotas == .aleman else { return "\(tonica.nombre(en: notacion)) \(modo.nombre(en: notacion))" }
+        guard notacion.idiomaDeLasNotas == .aleman else {
+            return "\(tonica.nombre(en: notacion)) \(modo.nombre(en: notacion))"
+        }
         let nombreTonica = tonica.nombre(en: .aleman)
         return (modo == .menor ? nombreTonica.lowercased() : nombreTonica) + "-" + modo.nombre(en: .aleman)
     }

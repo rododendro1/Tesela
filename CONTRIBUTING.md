@@ -42,6 +42,20 @@ cd Packages/ArmoniaUI && swift test      # la interfaz (en Linux, solo la parte 
   (la primera; créala si no está). Al publicar una versión, esa sección pasa a ser la de la versión y sus notas son
   las de la release.
 
+## Formato
+
+El código Swift sigue el formato de [swift-format](https://github.com/swiftlang/swift-format), que viene con
+Swift 6, con la configuración de `.swift-format` (4 espacios, 120 columnas). Antes de abrir el pull request:
+
+```sh
+swift format -i -r --parallel Packages Apps Ejemplos Herramientas Package.swift   # lo arregla
+swift format lint --strict -r --parallel Packages Apps Ejemplos Herramientas Package.swift   # lo comprueba, como el CI
+```
+
+Las tablas de datos (los nombres de escalas y los textos traducidos) y las pruebas generadas empiezan con
+`// swift-format-ignore-file`: tienen una fila por línea, que es como las leen los scripts de `Scripts/`, y no se
+formatean. Si añades otra tabla así, ponle esa marca.
+
 ## Comprobaciones
 
 Son las del primer job del CI y no necesitan Swift. Pásalas antes de abrir el pull request:
@@ -57,7 +71,7 @@ python3 Scripts/generar_pruebas_de_documentacion.py --comprobar
 python3 Scripts/notas_de_version.py --comprobar
 ```
 
-En cada pull request corren estas comprobaciones y las pruebas en Linux (Swift 6.0 y 6.2). Los jobs de macOS
+En cada pull request corren estas comprobaciones, la del formato y las pruebas en Linux (Swift 6.0 y 6.2). Los jobs de macOS
 (las apps, sus pruebas de interfaz y DocC) corren los lunes y a mano desde la pestaña Actions; si tu cambio toca
 las apps o la documentación, pide en el pull request que se lancen.
 

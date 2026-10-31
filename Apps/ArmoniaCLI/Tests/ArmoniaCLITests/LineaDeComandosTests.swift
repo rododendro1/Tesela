@@ -1,6 +1,7 @@
+import Armonia
 import Foundation
 import XCTest
-import Armonia
+
 @testable import ArmoniaCLI
 
 final class LineaDeComandosTests: XCTestCase {
@@ -19,7 +20,9 @@ final class LineaDeComandosTests: XCTestCase {
     }
 
     func testAcorde() {
-        XCTAssertEqual(salida("acorde Sol7/Si"), """
+        XCTAssertEqual(
+            salida("acorde Sol7/Si"),
+            """
             Sol7/Si: séptima de dominante
               notas: Sol Si Re Fa  (bajo Si, primera inversión)
               Sol fundamental · Si tercera · Re quinta · Fa séptima
@@ -52,7 +55,8 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertEqual(LineaDeComandos.ejecutar(["musicxml", "melodia", "Do4:4", "--programa", "40"]).codigo, 2)
         XCTAssertEqual(LineaDeComandos.ejecutar(["midi", "melodia", "Do4:4", "--programa", "200"]).codigo, 2)
 
-        let ayuda = salida("ayuda"), help = salida("help --ingles")
+        let ayuda = salida("ayuda")
+        let help = salida("help --ingles")
         for nombre in ["revisar <acordes>", "conduccion-parsimoniosa <acorde>", "--programa 0…127"] {
             XCTAssertTrue(ayuda.contains(nombre), nombre)
         }
@@ -78,7 +82,9 @@ final class LineaDeComandosTests: XCTestCase {
         // Las escalas que encajan con el acorde: Do7 → Do mixolidio.
         XCTAssertTrue(do7.contains("  escalas: ") && do7.contains("mixolidio"), do7)
         XCTAssertTrue(salida("arpegio Do --patron alberti").contains("notas: Do4 Sol4 Mi4 Sol4\n"))
-        XCTAssertTrue(salida("arpegio Do --patron ida-y-vuelta").contains("(de ida y vuelta)\n  notas: Do4 Mi4 Sol4 Do5 Sol4 Mi4 Do4\n"))
+        XCTAssertTrue(
+            salida("arpegio Do --patron ida-y-vuelta").contains(
+                "(de ida y vuelta)\n  notas: Do4 Mi4 Sol4 Do5 Sol4 Mi4 Do4\n"))
         XCTAssertTrue(salida("arpeggio C7 --pattern descending --ingles").contains("notes: C5 Bb4 G4 E4 C4"))
         XCTAssertEqual(salida("arpegio Do Fa").components(separatedBy: "\n\n").count, 2)
         XCTAssertEqual(LineaDeComandos.patronDeArpegio("bajo de Alberti"), .alberti)
@@ -102,7 +108,9 @@ final class LineaDeComandosTests: XCTestCase {
     }
 
     func testAnalizar() {
-        XCTAssertEqual(salida("analizar Do Lam Re7 Sol7 Do"), """
+        XCTAssertEqual(
+            salida("analizar Do Lam Re7 Sol7 Do"),
+            """
             I–vi–V7/V–V7–I en Do mayor
               Do        I         tónica
               Lam       vi        tónica
@@ -118,7 +126,8 @@ final class LineaDeComandosTests: XCTestCase {
 
     /// Un fichero temporal con esos datos, que se borra al terminar la prueba.
     private func fichero(_ datos: Data, extension sufijo: String) throws -> String {
-        let url = FileManager.default.temporaryDirectory.appendingPathComponent("armonia-\(UUID().uuidString).\(sufijo)")
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "armonia-\(UUID().uuidString).\(sufijo)")
         try datos.write(to: url)
         addTeardownBlock { try? FileManager.default.removeItem(at: url) }
         return url.path
@@ -147,15 +156,19 @@ final class LineaDeComandosTests: XCTestCase {
         let texto = try fichero(Data("hola".utf8), extension: "mid")
         XCTAssertEqual(resultado("analizar --archivo " + texto).codigo, 1)
         XCTAssertEqual(resultado("analizar --archivo " + texto).error, "El fichero no es MIDI ni MusicXML.\n")
-        XCTAssertEqual(resultado("analizar --archivo \(texto) --ingles").error, "The file is neither MIDI nor MusicXML.\n")
+        XCTAssertEqual(
+            resultado("analizar --archivo \(texto) --ingles").error, "The file is neither MIDI nor MusicXML.\n")
         XCTAssertEqual(resultado("analizar Do Sol --archivo " + texto).codigo, 2)
         XCTAssertEqual(resultado("analizar --archivo \(texto) --ventana 3").codigo, 1)
         let melodia = try fichero(Voz(leyendo: "Do4:4 Re4:4 Mi4:4").midi(), extension: "mid")
-        XCTAssertTrue(resultado("analizar --archivo " + melodia).error.hasPrefix("armonia: el fichero no tiene ningún acorde\n"))
+        XCTAssertTrue(
+            resultado("analizar --archivo " + melodia).error.hasPrefix("armonia: el fichero no tiene ningún acorde\n"))
     }
 
     func testAnalizarModulaciones() {
-        XCTAssertEqual(salida("analizar Do Fa Sol7 Do Lam Re7 Sol"), """
+        XCTAssertEqual(
+            salida("analizar Do Fa Sol7 Do Lam Re7 Sol"),
+            """
             I–IV–V7–I en Do mayor → ii–V7–I en Sol mayor
               Do        I         tónica
               Fa        IV        subdominante
@@ -169,14 +182,17 @@ final class LineaDeComandosTests: XCTestCase {
             Cadencia auténtica V7–I (acordes 6 → 7)
 
             """)
-        XCTAssertTrue(salida("analyze C G C F Dm E7 Am --ingles")
-            .contains("From C major to A minor at chord 5 (pivot: Dm = ii in C major = iv in A minor)"))
+        XCTAssertTrue(
+            salida("analyze C G C F Dm E7 Am --ingles")
+                .contains("From C major to A minor at chord 5 (pivot: Dm = ii in C major = iv in A minor)"))
         // Con la tonalidad dada no se buscan modulaciones.
         XCTAssertFalse(salida("analizar Do Fa Sol7 Do Lam Re7 Sol --en Do mayor").contains("De Do mayor a"))
     }
 
     func testArmonizar() {
-        XCTAssertEqual(salida("armonizar Mi4 Fa4 Re4 Do4"), """
+        XCTAssertEqual(
+            salida("armonizar Mi4 Fa4 Re4 Do4"),
+            """
             Do mayor
               1. Do Fa Sol Do (I–IV–V–I)
               2. Do Fa Sol7 Do (I–IV–V7–I)
@@ -190,21 +206,27 @@ final class LineaDeComandosTests: XCTestCase {
             """)
         // Sin octavas, solo los acordes; con --propuestas, cuántos.
         XCTAssertEqual(salida("armonizar Mi Re Do --propuestas 1"), "Do mayor\n  1. Do Sol Do (I–V–I)\n")
-        XCTAssertTrue(salida("armonizar Do Si La Sol# La --en La menor").hasPrefix("La menor\n  1. Lam Mi Lam Mi Lam (i–V–i–V–i)"))
+        XCTAssertTrue(
+            salida("armonizar Do Si La Sol# La --en La menor").hasPrefix("La menor\n  1. Lam Mi Lam Mi Lam (i–V–i–V–i)")
+        )
         XCTAssertTrue(salida("harmonize E D C --ingles").hasPrefix("C major\n  1. C G C (I–V–I)"))
         // El coral lleva la melodía en el soprano y pasa la revisión.
         let lineas = salida("armonizar Do5 Si4 La4 Sol4 Fa4 Mi4 Re4 Do4").split(separator: "\n")
         let voces = lineas.drop { !$0.hasPrefix("A cuatro voces") }.dropFirst()
             .map { $0.split(separator: " ").suffix(4).joined(separator: " ") }
         XCTAssertEqual(voces.count, 8)
-        XCTAssertEqual(voces.map { $0.split(separator: " ").last! }, ["Do5", "Si4", "La4", "Sol4", "Fa4", "Mi4", "Re4", "Do4"])
+        XCTAssertEqual(
+            voces.map { $0.split(separator: " ").last! }, ["Do5", "Si4", "La4", "Sol4", "Fa4", "Mi4", "Re4", "Do4"])
         XCTAssertEqual(salida("revisar " + voces.joined(separator: ", ")), "Sin faltas de conducción.\n")
         // Fuera de la tesitura del soprano no hay coral.
-        XCTAssertTrue(salida("armonizar Do6 Si5 Do6").hasSuffix("No hay ninguna realización sin faltas de conducción.\n"))
+        XCTAssertTrue(
+            salida("armonizar Do6 Si5 Do6").hasSuffix("No hay ninguna realización sin faltas de conducción.\n"))
     }
 
     func testRealizar() {
-        XCTAssertEqual(salida("realizar Do Fa Sol7 Do"), """
+        XCTAssertEqual(
+            salida("realizar Do Fa Sol7 Do"),
+            """
             Do mayor
               Do        I         Do3 Mi4 Sol4 Do5
               Fa        IV        Fa3 Fa4 La4 Do5
@@ -218,7 +240,9 @@ final class LineaDeComandosTests: XCTestCase {
     }
 
     func testVoces() {
-        XCTAssertEqual(salida("revisar Do3 Sol3 Mi4 Do5, Re3 La3 Fa4 Re5"), """
+        XCTAssertEqual(
+            salida("revisar Do3 Sol3 Mi4 Do5, Re3 La3 Fa4 Re5"),
+            """
             Quintas paralelas entre bajo y tenor (acordes 1 → 2)
             Octavas paralelas entre bajo y soprano (acordes 1 → 2)
 
@@ -228,20 +252,31 @@ final class LineaDeComandosTests: XCTestCase {
 
     func testContrapunto() {
         let fux = "Re4 Fa4 Mi4 Re4 Sol4 Fa4 La4 Sol4 Fa4 Mi4 Re4 / La4 La4 Sol4 La4 Si4 Do5 Do5 Si4 Re5 Do#5 Re5"
-        XCTAssertEqual(salida("contrapunto " + fux), "Especie 1, con el contrapunto encima del cantus firmus\nSin faltas.\n")
-        XCTAssertEqual(salida("counterpoint " + fux + " --ingles"), "Species 1, counterpoint above the cantus firmus\nNo faults.\n")
-        XCTAssertEqual(salida("contrapunto Re4 Fa4 Mi4 Re4 / -:2 La4 Re5 La4 Si4 Do#5 Re5:1 --especie 2"),
-                       salida("contrapunto Re4 Fa4 Mi4 Re4 / -:2 La4 Re5 La4 Si4 Do#5 Re5:1 --species 2"))
-        XCTAssertTrue(salida("contrapunto Re4 Fa4 Mi4 Re4 / -:2 La4 Re5 La4 Si4 Do#5 Re5:1 --especie 2").hasSuffix("Sin faltas.\n"))
-        XCTAssertTrue(salida("contrapunto Do4 Re4 Mi4 Do4 / Sol4 La4 Sol4 Do5").contains("Quintas paralelas (compases 1 → 2)"))
+        XCTAssertEqual(
+            salida("contrapunto " + fux), "Especie 1, con el contrapunto encima del cantus firmus\nSin faltas.\n")
+        XCTAssertEqual(
+            salida("counterpoint " + fux + " --ingles"), "Species 1, counterpoint above the cantus firmus\nNo faults.\n"
+        )
+        XCTAssertEqual(
+            salida("contrapunto Re4 Fa4 Mi4 Re4 / -:2 La4 Re5 La4 Si4 Do#5 Re5:1 --especie 2"),
+            salida("contrapunto Re4 Fa4 Mi4 Re4 / -:2 La4 Re5 La4 Si4 Do#5 Re5:1 --species 2"))
+        XCTAssertTrue(
+            salida("contrapunto Re4 Fa4 Mi4 Re4 / -:2 La4 Re5 La4 Si4 Do#5 Re5:1 --especie 2").hasSuffix(
+                "Sin faltas.\n"))
+        XCTAssertTrue(
+            salida("contrapunto Do4 Re4 Mi4 Do4 / Sol4 La4 Sol4 Do5").contains("Quintas paralelas (compases 1 → 2)"))
         // Lo que no dura lo mismo que el cantus es un error de lectura, no de uso.
         XCTAssertEqual(LineaDeComandos.ejecutar(["contrapunto", "Re4", "Fa4", "/", "La4"]).codigo, 1)
         XCTAssertTrue(salida("ayuda").contains("contrapunto <cantus> / <contrapunto> [--especie 1]"))
     }
 
     func testIngles() {
-        XCTAssertTrue(salida("acorde G7/B --ingles").hasPrefix("G7/B: dominant seventh\n  notes: G B D F  (bass B, first inversion)"))
-        XCTAssertTrue(salida("analizar C Am D7 G7 C --ingles").hasPrefix("I–vi–V7/V–V7–I in C major\n  C         I         tonic"))
+        XCTAssertTrue(
+            salida("acorde G7/B --ingles").hasPrefix(
+                "G7/B: dominant seventh\n  notes: G B D F  (bass B, first inversion)"))
+        XCTAssertTrue(
+            salida("analizar C Am D7 G7 C --ingles").hasPrefix("I–vi–V7/V–V7–I in C major\n  C         I         tonic")
+        )
         XCTAssertEqual(salida("revisar C3 E4 G4 C5, G2 D4 G4 B4 --ingles"), "No voice-leading errors.\n")
         XCTAssertTrue(salida("tonalidad D major --ingles").contains("key signature: F# C# (2 sharps)"))
     }
@@ -250,7 +285,8 @@ final class LineaDeComandosTests: XCTestCase {
     private static let ordenesMalEscritas = [
         "foo", "acorde", "identificar", "intervalo C", "escala", "tonalidad", "analizar", "analizar C --en",
         "armonizar", "armonizar C --en", "armonizar C --propuestas 0", "realizar", "realizar C --en",
-        "revisar", "conduccion-minima G7", "digitaciones", "digitaciones C --instrumento arpa", "digitaciones C --limite 0",
+        "revisar", "conduccion-minima G7", "digitaciones", "digitaciones C --instrumento arpa",
+        "digitaciones C --limite 0",
         "digitaciones C --dedos 9", "digitaciones C --traste 99", "digitaciones C --capo", "vecinos",
         "vecinos C7 --voces 3", "conduccion-parsimoniosa G7", "plr", "plr G7 P", "musicxml", "musicxml coral",
         "musicxml melodia C4:4 --foo 1", "midi acordes C --cifrados", "tonnetz", "tonnetz --clases 13",
@@ -263,21 +299,26 @@ final class LineaDeComandosTests: XCTestCase {
 
     /// Con --ingles no se cuela nada en español: ni en la salida, ni en los errores, ni en la ayuda.
     func testConInglesNadaEnEspanol() {
-        let enEspanol = ["«", "»", "á", "é", "í", "ó", "ú", "ñ", "notas", "acordes", "paso", "dedo", "cejilla",
-                         "guitarra", "tríada", "Prueba", "falta"]
+        let enEspanol = [
+            "«", "»", "á", "é", "í", "ó", "ú", "ñ", "notas", "acordes", "paso", "dedo", "cejilla",
+            "guitarra", "tríada", "Prueba", "falta",
+        ]
         func comprobar(_ texto: String, _ orden: String, file: StaticString = #filePath, line: UInt = #line) {
             for palabra in enEspanol where texto.contains(palabra) {
                 XCTFail("«\(palabra)» en la salida de «\(orden)»:\n\(texto)", file: file, line: line)
             }
         }
-        for orden in ["help", "acorde C/E", "acorde G7/B", "identificar C E Bb", "intervalo C4 E5", "escala Re dórico",
-                      "tonalidad Re mayor", "tonalidad Mib mayor", "tonalidad Do mayor", "analizar C Am D7 G7 C",
-                      "analizar C F G7 C Am D7 G", "armonizar E4 F4 D4 C4", "armonizar C6 B5 C6", "realizar C F G7 C",
-                      "realizar C7(9,13)",
-                      "revisar C3 E4 G4 C5, G2 D4 G4 B4", "plr C PLR", "plr C C", "plr C hexatonico",
-                      "conduccion-parsimoniosa G7 Dm7", "vecinos G7", "digitaciones F --diagrama", "digitaciones C --instrumento ukelele",
-                      "digitaciones C --instrumento bajo --dedos 1 --traste 0", "counterpoint C4 D4 E4 C4 / G4 A4 G4 C5",
-                      "arpeggio C7", "arpeggio C --pattern alberti"] {
+        for orden in [
+            "help", "acorde C/E", "acorde G7/B", "identificar C E Bb", "intervalo C4 E5", "escala Re dórico",
+            "tonalidad Re mayor", "tonalidad Mib mayor", "tonalidad Do mayor", "analizar C Am D7 G7 C",
+            "analizar C F G7 C Am D7 G", "armonizar E4 F4 D4 C4", "armonizar C6 B5 C6", "realizar C F G7 C",
+            "realizar C7(9,13)",
+            "revisar C3 E4 G4 C5, G2 D4 G4 B4", "plr C PLR", "plr C C", "plr C hexatonico",
+            "conduccion-parsimoniosa G7 Dm7", "vecinos G7", "digitaciones F --diagrama",
+            "digitaciones C --instrumento ukelele",
+            "digitaciones C --instrumento bajo --dedos 1 --traste 0", "counterpoint C4 D4 E4 C4 / G4 A4 G4 C5",
+            "arpeggio C7", "arpeggio C --pattern alberti",
+        ] {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
             XCTAssertEqual(resultado.codigo, 0, "\(orden): \(resultado.error)")
             comprobar(resultado.salida, orden)
@@ -299,7 +340,9 @@ final class LineaDeComandosTests: XCTestCase {
     }
 
     func testIdiomas() {
-        XCTAssertEqual(salida("acorde Sol7/Si --idioma eu"), """
+        XCTAssertEqual(
+            salida("acorde Sol7/Si --idioma eu"),
+            """
             Sol7/Si: dominanteko zazpigarrena
               notak: sol si re fa  (baxua si, lehen inbertsioa)
               sol oinarria · si hirugarrena · re bosgarrena · fa zazpigarrena
@@ -329,8 +372,10 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertTrue(LineaDeComandos.spravka.contains("armonia chord G7/B"))
         XCTAssertTrue(LineaDeComandos.ajudaEnOccitan.contains("armonia acorde Sol7/Si"))
         typealias L = LineaDeComandos
-        let ayudas: [String] = [L.ayuda, L.help, L.ajuda, L.axuda, L.laguntza, L.ajudaEmPortugues, L.aide, L.aiuto,
-                                L.hilfe, L.ajudaEnOccitan, L.spravka, L.voitheia, L.aduya, L.ayudaEnAsturianu]
+        let ayudas: [String] = [
+            L.ayuda, L.help, L.ajuda, L.axuda, L.laguntza, L.ajudaEmPortugues, L.aide, L.aiuto,
+            L.hilfe, L.ajudaEnOccitan, L.spravka, L.voitheia, L.aduya, L.ayudaEnAsturianu,
+        ]
         // Una por idioma, y las constantes con nombre son las del mapa.
         XCTAssertEqual(Set(ayudas).count, LineaDeComandos.ayudas.count)
         XCTAssertEqual(Set(ayudas), Set(LineaDeComandos.ayudas.values))
@@ -343,19 +388,23 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertTrue(salida("escala Re dórico --idioma eu").hasPrefix("re doriarra"))
         // Los errores de lectura los traduce el motor.
         XCTAssertTrue(resultado("acorde", "Do7(b3)", "--idioma", "eu").error.hasPrefix("Ezin da «Do7(b3)» irakurri"))
-        XCTAssertEqual(resultado("digitaciones", "C", "--limite", "0", "--idioma", "eu").error,
-                       "armonia: muga 1etik 200era bitarteko zenbaki bat da: --limite 5\nProbatu «armonia ayuda».\n")
+        XCTAssertEqual(
+            resultado("digitaciones", "C", "--limite", "0", "--idioma", "eu").error,
+            "armonia: muga 1etik 200era bitarteko zenbaki bat da: --limite 5\nProbatu «armonia ayuda».\n")
         XCTAssertEqual(resultado("acorde", "Do", "--idioma", "xx").codigo, 2)
-        XCTAssertTrue(resultado("acorde", "Do", "--idioma", "xx").error
-                        .hasPrefix("armonia: idioma desconocido: «xx» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el o ru)"))
+        XCTAssertTrue(
+            resultado("acorde", "Do", "--idioma", "xx").error
+                .hasPrefix(
+                    "armonia: idioma desconocido: «xx» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el o ru)"))
         XCTAssertTrue(salida("acorde Sol7/Si --idioma de").hasPrefix("G7/H: Dominantseptakkord\n"))
         XCTAssertTrue(salida("acorde Sol7/Si --idioma ru").hasPrefix("Соль7/Си: доминантсептаккорд\n"))
         XCTAssertTrue(salida("escala Re dórico --idioma el").hasPrefix("ρε δώριος"))
         XCTAssertTrue(salida("escala Re dórico --idioma ast").hasPrefix("re dóricu"))
         XCTAssertTrue(salida("acorde Sol7/Si --idioma an").contains("(baixo si, primera inversión)"))
         XCTAssertTrue(salida("digitaciones C --instrumento baxu --idioma ast").contains("baxu"))
-        XCTAssertEqual(resultado("acorde", "Do", "--idioma").error,
-                       "armonia: falta el valor de --idioma\nPrueba «armonia ayuda».\n")
+        XCTAssertEqual(
+            resultado("acorde", "Do", "--idioma").error,
+            "armonia: falta el valor de --idioma\nPrueba «armonia ayuda».\n")
         // Notas y textos por separado.
         XCTAssertTrue(salida("acorde Sol7/Si --idioma en --textos es").hasPrefix("G7/B: séptima de dominante\n"))
         XCTAssertTrue(salida("acorde Sol7/Si --textos fr").hasPrefix("Sol7/Si: septième de dominante\n"))
@@ -367,16 +416,23 @@ final class LineaDeComandosTests: XCTestCase {
     /// --escritura elige, en español e inglés, entre palabras, # y b o ♯ y ♭.
     func testEscritura() {
         XCTAssertTrue(salida("acorde Sib7").hasPrefix("Si♭7: séptima de dominante\n  notas: Si♭ Re Fa La♭"))
-        XCTAssertTrue(salida("acorde Sib7 --escritura palabras")
-                        .hasPrefix("Si♭7: séptima de dominante\n  notas: Si bemol Re Fa La bemol"))
-        XCTAssertTrue(salida("acorde Sib7 --escritura ascii").hasPrefix("Sib7: séptima de dominante\n  notas: Sib Re Fa Lab"))
-        XCTAssertTrue(salida("acorde Bb7 --ingles --writing words").hasPrefix("B♭7: dominant seventh\n  notes: B flat D F A flat"))
-        XCTAssertTrue(salida("acorde Bb7 --ingles --escritura unicode").hasPrefix("B♭7: dominant seventh\n  notes: B♭ D F A♭"))
+        XCTAssertTrue(
+            salida("acorde Sib7 --escritura palabras")
+                .hasPrefix("Si♭7: séptima de dominante\n  notas: Si bemol Re Fa La bemol"))
+        XCTAssertTrue(
+            salida("acorde Sib7 --escritura ascii").hasPrefix("Sib7: séptima de dominante\n  notas: Sib Re Fa Lab"))
+        XCTAssertTrue(
+            salida("acorde Bb7 --ingles --writing words").hasPrefix("B♭7: dominant seventh\n  notes: B flat D F A flat")
+        )
+        XCTAssertTrue(
+            salida("acorde Bb7 --ingles --escritura unicode").hasPrefix("B♭7: dominant seventh\n  notes: B♭ D F A♭"))
         XCTAssertEqual(salida("acorde Bb7 --ingles --escritura ASCII"), salida("acorde Bb7 --ingles"))
-        XCTAssertTrue(salida("acorde Sib7 --idioma en --escritura palabras --textos es")
-                        .hasPrefix("B♭7: séptima de dominante\n  notas: B flat D F A flat"))
-        XCTAssertTrue(resultado("acorde", "Do", "--escritura", "foo").error
-                        .hasPrefix("armonia: escritura no válida: «foo» (palabras, ascii o unicode; solo con es y en)"))
+        XCTAssertTrue(
+            salida("acorde Sib7 --idioma en --escritura palabras --textos es")
+                .hasPrefix("B♭7: séptima de dominante\n  notas: B flat D F A flat"))
+        XCTAssertTrue(
+            resultado("acorde", "Do", "--escritura", "foo").error
+                .hasPrefix("armonia: escritura no válida: «foo» (palabras, ascii o unicode; solo con es y en)"))
         XCTAssertEqual(resultado("acorde", "Do", "--idioma", "ca", "--escritura", "palabras").codigo, 2)
         XCTAssertEqual(resultado("acorde", "Do", "--escritura").codigo, 2)
         XCTAssertTrue(salida("ayuda").contains("--escritura"))
@@ -387,13 +443,16 @@ final class LineaDeComandosTests: XCTestCase {
     /// occitano no entra: también dice «las» y «los»).
     func testErroresEnCatalanGallegoEuskera() {
         let enEspanol = ["Prueba", "hace falta", "hacen falta", "desconocid", " es un", " sin ", " las ", " los "]
-        for (idioma, ayuda) in [("ca", "Prova «armonia ayuda».\n"), ("gl", "Proba «armonia ayuda».\n"),
-                                ("eu", "Probatu «armonia ayuda».\n"), ("pt", "Experimente «armonia ayuda».\n"),
-                                ("fr", "Essayez « armonia ayuda ».\n"), ("it", "Prova «armonia ayuda».\n"),
-                                ("de", "Versuche „armonia help“.\n"), ("ru", "Попробуй «armonia help».\n"),
-                                ("el", "Δοκίμασε «armonia help».\n")] {
+        for (idioma, ayuda) in [
+            ("ca", "Prova «armonia ayuda».\n"), ("gl", "Proba «armonia ayuda».\n"),
+            ("eu", "Probatu «armonia ayuda».\n"), ("pt", "Experimente «armonia ayuda».\n"),
+            ("fr", "Essayez « armonia ayuda ».\n"), ("it", "Prova «armonia ayuda».\n"),
+            ("de", "Versuche „armonia help“.\n"), ("ru", "Попробуй «armonia help».\n"),
+            ("el", "Δοκίμασε «armonia help».\n"),
+        ] {
             for orden in Self.ordenesMalEscritas {
-                let resultado = LineaDeComandos.ejecutar((orden + " --idioma " + idioma).split(separator: " ").map(String.init))
+                let resultado = LineaDeComandos.ejecutar(
+                    (orden + " --idioma " + idioma).split(separator: " ").map(String.init))
                 XCTAssertEqual(resultado.codigo, 2, "\(orden) \(idioma)")
                 XCTAssertTrue(resultado.error.hasSuffix(ayuda), "\(orden) \(idioma): \(resultado.error)")
                 for palabra in enEspanol where resultado.error.contains(palabra) {
@@ -406,8 +465,9 @@ final class LineaDeComandosTests: XCTestCase {
     func testErroresEnIngles() {
         let error = resultado("digitaciones", "C", "--limite", "0", "--ingles").error
         XCTAssertEqual(error, "armonia: the limit is a number from 1 to 200: --limit 5\nTry \"armonia help\".\n")
-        XCTAssertEqual(resultado("digitaciones", "C", "--limite", "0").error,
-                       "armonia: el límite es un número de 1 a 200: --limite 5\nPrueba «armonia ayuda».\n")
+        XCTAssertEqual(
+            resultado("digitaciones", "C", "--limite", "0").error,
+            "armonia: el límite es un número de 1 a 200: --limite 5\nPrueba «armonia ayuda».\n")
         XCTAssertTrue(salida("digitaciones C --limite 1 --ingles").hasPrefix("C · guitar\n"))
         XCTAssertTrue(salida("tonalidad F major --ingles").contains("(1 flat)"))
         XCTAssertTrue(salida("tonalidad Fa mayor").contains("(1 bemol)"))
@@ -421,18 +481,23 @@ final class LineaDeComandosTests: XCTestCase {
             XCTAssertEqual(resultado.salida, "")
             return [UInt8](try XCTUnwrap(resultado.datos, orden))
         }
-        let melodia = try datos("midi melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4 --tempo 90 --titulo Escala --programa 40")
+        let melodia = try datos(
+            "midi melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4 --tempo 90 --titulo Escala --programa 40")
         XCTAssertEqual(Array(melodia.prefix(4)), Array("MThd".utf8))
         XCTAssertTrue(melodia.count > 60)
         // El instrumento: cambio de programa 40 (violín) en la pista de la voz.
         XCTAssertNotNil(zip(melodia, melodia.dropFirst()).first { $0 == (0xC0, 40) })
-        XCTAssertEqual(try datos("midi coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 --duracion 2").filter { $0 == 0x4D }.count, 6)   // MThd + 5 MTrk
+        // Seis «M»: la cabecera MThd y cinco pistas MTrk.
+        XCTAssertEqual(
+            try datos("midi coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 --duracion 2").filter { $0 == 0x4D }.count, 6)
         XCTAssertFalse(try datos("midi acordes Do Lam Re7 Sol7 Do --tempo 80").isEmpty)
         XCTAssertNil(LineaDeComandos.ejecutar(["musicxml", "melodia", "Do4:4"]).datos)
-        for orden in ["midi", "midi melodia", "midi melodia Do4:4 --clave fa", "midi coral Do3 Do5 --cifrados",
-                      "midi melodia Do4:4 --programa 200", "midi melodia Do4:4 --programa piano",
-                      "midi melodia Do4:4 --instrumento 40",
-                      "musicxml melodia Do4:4 --instrumento 3"] {
+        for orden in [
+            "midi", "midi melodia", "midi melodia Do4:4 --clave fa", "midi coral Do3 Do5 --cifrados",
+            "midi melodia Do4:4 --programa 200", "midi melodia Do4:4 --programa piano",
+            "midi melodia Do4:4 --instrumento 40",
+            "musicxml melodia Do4:4 --instrumento 3",
+        ] {
             let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
             XCTAssertEqual(resultado.codigo, 2, orden)
             XCTAssertNil(resultado.datos, orden)
@@ -440,22 +505,31 @@ final class LineaDeComandosTests: XCTestCase {
     }
 
     func testMusicXML() {
-        let melodia = salida("musicxml melodia Sol4:4 Do5:2 Re5:4 Mi5:2 --compas 3/4 --anacrusa 4 --tonalidad Sol mayor --tempo 60 4. --titulo Mi canción --clave sol8b")
+        let melodia = salida(
+            "musicxml melodia Sol4:4 Do5:2 Re5:4 Mi5:2 --compas 3/4 --anacrusa 4 --tonalidad Sol mayor --tempo 60 4. --titulo Mi canción --clave sol8b"
+        )
         XCTAssertTrue(melodia.hasPrefix("<?xml"))
         XCTAssertTrue(melodia.hasSuffix("</score-partwise>\n"))
-        for fragmento in ["<work-title>Mi canción</work-title>", "<fifths>1</fifths>", "<beats>3</beats>",
-                          "<measure number=\"0\" implicit=\"yes\">", "<beat-unit-dot/>", "<per-minute>60</per-minute>",
-                          "<clef-octave-change>-1</clef-octave-change>"] {
+        for fragmento in [
+            "<work-title>Mi canción</work-title>", "<fifths>1</fifths>", "<beats>3</beats>",
+            "<measure number=\"0\" implicit=\"yes\">", "<beat-unit-dot/>", "<per-minute>60</per-minute>",
+            "<clef-octave-change>-1</clef-octave-change>",
+        ] {
             XCTAssertTrue(melodia.contains(fragmento), fragmento)
         }
-        let coral = salida("musicxml coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4, Do3 Mi4 Sol4 Do5 --duracion 2 --compas 3/2")
-        for fragmento in ["<staves>2</staves>", "<type>half</type>", "<beats>3</beats>", "<beat-type>2</beat-type>",
-                          "<voice>4</voice>", "<staff>2</staff>"] {
+        let coral = salida(
+            "musicxml coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4, Do3 Mi4 Sol4 Do5 --duracion 2 --compas 3/2")
+        for fragmento in [
+            "<staves>2</staves>", "<type>half</type>", "<beats>3</beats>", "<beat-type>2</beat-type>",
+            "<voice>4</voice>", "<staff>2</staff>",
+        ] {
             XCTAssertTrue(coral.contains(fragmento), fragmento)
         }
         let acordes = salida("musicxml acordes Do Lam Re7 Sol7 Do --duracion 4 --titulo Progresión")
-        for fragmento in ["<harmony print-frame=\"no\">", "<kind text=\"7\">dominant</kind>", "<text>V7/V</text>",
-                          "<words>Do mayor:</words>", "<type>quarter</type>"] {
+        for fragmento in [
+            "<harmony print-frame=\"no\">", "<kind text=\"7\">dominant</kind>", "<text>V7/V</text>",
+            "<words>Do mayor:</words>", "<type>quarter</type>",
+        ] {
             XCTAssertTrue(acordes.contains(fragmento), fragmento)
         }
         XCTAssertTrue(salida("musicxml acordes Am Dm E7 Am --ingles").contains("<words>A minor:</words>"))
@@ -470,47 +544,62 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertEqual(LineaDeComandos.leerClave("baritone clef"), .faEnTercera)
         XCTAssertNil(LineaDeComandos.leerClave("re"))
 
-        for orden in ["musicxml", "musicxml partitura Do4:4", "musicxml melodia", "musicxml coral",
-                      "musicxml melodia Do4:4 --color rojo", "musicxml melodia Do4:4 --compas",
-                      "musicxml melodia Do4:4 --tempo rápido", "musicxml melodia Do4:4 --clave re",
-                      "musicxml melodia Do4:4 --duracion 2", "musicxml coral Do3 Do5 --clave fa",
-                      "musicxml melodia Do4:4 --cifrados", "musicxml acordes", "musicxml acordes Do Sol --analisis",
-                      "musicxml acordes Do Sol --clave fa"] {
+        for orden in [
+            "musicxml", "musicxml partitura Do4:4", "musicxml melodia", "musicxml coral",
+            "musicxml melodia Do4:4 --color rojo", "musicxml melodia Do4:4 --compas",
+            "musicxml melodia Do4:4 --tempo rápido", "musicxml melodia Do4:4 --clave re",
+            "musicxml melodia Do4:4 --duracion 2", "musicxml coral Do3 Do5 --clave fa",
+            "musicxml melodia Do4:4 --cifrados", "musicxml acordes", "musicxml acordes Do Sol --analisis",
+            "musicxml acordes Do Sol --clave fa",
+        ] {
             let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
             XCTAssertEqual(resultado.codigo, 2, orden)
             XCTAssertEqual(resultado.salida, "", orden)
         }
-        for orden in ["musicxml melodia Do4:3", "musicxml melodia Do4:4 --compas 3/5", "musicxml coral Do3 Mi4, Sol2",
-                      "musicxml acordes Do Hm"] {
+        for orden in [
+            "musicxml melodia Do4:3", "musicxml melodia Do4:4 --compas 3/5", "musicxml coral Do3 Mi4, Sol2",
+            "musicxml acordes Do Hm",
+        ] {
             XCTAssertEqual(LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo, 1, orden)
         }
     }
 
     func testMEI() {
-        let melodia = salida("mei melodia Sol4:4 Do5:2 Re5:4 Mi5:2 --compas 3/4 --anacrusa 4 --tonalidad Sol mayor --tempo 60 4. --titulo Mi canción --clave sol8b")
+        let melodia = salida(
+            "mei melodia Sol4:4 Do5:2 Re5:4 Mi5:2 --compas 3/4 --anacrusa 4 --tonalidad Sol mayor --tempo 60 4. --titulo Mi canción --clave sol8b"
+        )
         XCTAssertTrue(melodia.hasPrefix("<?xml"))
         XCTAssertTrue(melodia.hasSuffix("</mei>\n"))
-        for fragmento in ["<title>Mi canción</title>", "keysig=\"1s\"", "meter.count=\"3\"",
-                          "<measure n=\"0\" metcon=\"false\">", "mm.dots=\"1\"", "mm=\"60\"",
-                          "clef.dis=\"8\" clef.dis.place=\"below\""] {
+        for fragmento in [
+            "<title>Mi canción</title>", "keysig=\"1s\"", "meter.count=\"3\"",
+            "<measure n=\"0\" metcon=\"false\">", "mm.dots=\"1\"", "mm=\"60\"",
+            "clef.dis=\"8\" clef.dis.place=\"below\"",
+        ] {
             XCTAssertTrue(melodia.contains(fragmento), fragmento)
         }
-        let coral = salida("mei coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4, Do3 Mi4 Sol4 Do5 --duracion 2 --compas 3/2 --cifrados --analisis")
-        for fragmento in ["<staffGrp symbol=\"brace\" bar.thru=\"true\">", "meter.unit=\"2\"", "<layer n=\"2\">",
-                          "<staff n=\"2\">", "stem.dir=\"down\"", ">Sol</harm>", "<syl>V</syl>", ">Do mayor:</dir>"] {
+        let coral = salida(
+            "mei coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4, Do3 Mi4 Sol4 Do5 --duracion 2 --compas 3/2 --cifrados --analisis"
+        )
+        for fragmento in [
+            "<staffGrp symbol=\"brace\" bar.thru=\"true\">", "meter.unit=\"2\"", "<layer n=\"2\">",
+            "<staff n=\"2\">", "stem.dir=\"down\"", ">Sol</harm>", "<syl>V</syl>", ">Do mayor:</dir>",
+        ] {
             XCTAssertTrue(coral.contains(fragmento), fragmento)
         }
         let acordes = salida("mei acordes Am Dm E7 Am --ingles --duracion 4")
         for fragmento in [">E7</harm>", ">A minor:</dir>", "<chord ", "dur=\"4\""] {
             XCTAssertTrue(acordes.contains(fragmento), fragmento)
         }
-        for orden in ["mei", "mei partitura Do4:4", "mei melodia", "mei melodia Do4:4 --programa 3",
-                      "mei melodia Do4:4 --cifrados", "mei acordes Do Sol --analisis", "mei coral Do3 Do5 --clave fa"] {
+        for orden in [
+            "mei", "mei partitura Do4:4", "mei melodia", "mei melodia Do4:4 --programa 3",
+            "mei melodia Do4:4 --cifrados", "mei acordes Do Sol --analisis", "mei coral Do3 Do5 --clave fa",
+        ] {
             let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
             XCTAssertEqual(resultado.codigo, 2, orden)
             XCTAssertEqual(resultado.salida, "", orden)
         }
-        XCTAssertTrue(LineaDeComandos.ejecutar(["midi", "coral", "Do3", "Do5", "--cifrados"]).error.contains("MusicXML y MEI"))
+        XCTAssertTrue(
+            LineaDeComandos.ejecutar(["midi", "coral", "Do3", "Do5", "--cifrados"]).error.contains("MusicXML y MEI"))
     }
 
     func testArpegiosComoPartitura() throws {
@@ -524,21 +613,25 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertEqual(notas(alberti), 16)
         XCTAssertTrue(alberti.contains("<work-title>Alberti</work-title>"))
         XCTAssertTrue(salida("musicxml arpegios Do --figura 16").contains("<type>16th</type>"))
-        XCTAssertEqual(salida("musicxml arpegios Do Sol7 --patron ida y vuelta"),
-                       salida("musicxml arpeggios Do Sol7 --pattern up-down"))
+        XCTAssertEqual(
+            salida("musicxml arpegios Do Sol7 --patron ida y vuelta"),
+            salida("musicxml arpeggios Do Sol7 --pattern up-down"))
         XCTAssertTrue(salida("mei arpegios Do Sol7 --patron descendente").hasSuffix("</mei>\n"))
         let midi = LineaDeComandos.ejecutar(["midi", "arpegios", "Do", "Sol7", "--programa", "24"])
         XCTAssertEqual(midi.codigo, 0, midi.error)
         XCTAssertEqual(Array(try XCTUnwrap(midi.datos).prefix(4)), Array("MThd".utf8))
 
-        for orden in ["musicxml arpegios", "musicxml arpegios Do --patron zigzag", "musicxml arpegios Do --cifrados",
-                      "musicxml arpegios Do --clave fa", "musicxml melodia Do4:4 --patron alberti",
-                      "musicxml acordes Do Sol --figura 8", "midi coral Do3 Do5 --patron alberti"] {
+        for orden in [
+            "musicxml arpegios", "musicxml arpegios Do --patron zigzag", "musicxml arpegios Do --cifrados",
+            "musicxml arpegios Do --clave fa", "musicxml melodia Do4:4 --patron alberti",
+            "musicxml acordes Do Sol --figura 8", "midi coral Do3 Do5 --patron alberti",
+        ] {
             let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
             XCTAssertEqual(resultado.codigo, 2, orden)
             XCTAssertEqual(resultado.salida, "", orden)
         }
-        XCTAssertTrue(LineaDeComandos.ejecutar(["musicxml", "acordes", "Do", "--figura", "8"]).error.contains("«arpegios»"))
+        XCTAssertTrue(
+            LineaDeComandos.ejecutar(["musicxml", "acordes", "Do", "--figura", "8"]).error.contains("«arpegios»"))
         for orden in ["musicxml arpegios Do --figura 0/4", "musicxml arpegios Do Hm", "midi arpegios Do --figura 3"] {
             XCTAssertEqual(LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo, 1, orden)
         }
@@ -550,15 +643,18 @@ final class LineaDeComandosTests: XCTestCase {
         let duraciones: [Duracion] = [.blanca, .negra, .negra, .redonda]
         let midi = try fichero(analisis.midi(duraciones: duraciones, titulo: "Coral"), extension: "mid")
         let xml = try fichero(Data(analisis.musicXML(duraciones: duraciones).utf8), extension: "musicxml")
-        // El ritmo armónico del fichero pasa a la partitura, y su título y su tempo (el MIDI lo lleva siempre) también.
+        // El ritmo armónico del fichero pasa a la partitura, y su título y su tempo (el MIDI lo lleva siempre)
+        // también.
         let esperado = analisis.musicXML(duraciones: duraciones, tempo: Tempo(120), titulo: "Coral")
-        XCTAssertEqual(salida("musicxml acordes --archivo " + midi), esperado.trimmingCharacters(in: .newlines) + "\n")
-        XCTAssertEqual(salida("musicxml chords --file " + midi), esperado.trimmingCharacters(in: .newlines) + "\n")
-        let sinTempo = analisis.musicXML(duraciones: duraciones, titulo: "Coral")
-        XCTAssertEqual(salida("musicxml acordes --archivo \(xml) --titulo Coral"), sinTempo.trimmingCharacters(in: .newlines) + "\n")
+            .trimmingCharacters(in: .newlines) + "\n"
+        XCTAssertEqual(salida("musicxml acordes --archivo " + midi), esperado)
+        XCTAssertEqual(salida("musicxml chords --file " + midi), esperado)
+        let sinTempo = analisis.musicXML(duraciones: duraciones, titulo: "Coral").trimmingCharacters(in: .newlines)
+        XCTAssertEqual(salida("musicxml acordes --archivo \(xml) --titulo Coral"), sinTempo + "\n")
         // `--duracion` manda sobre el ritmo del fichero.
-        XCTAssertEqual(salida("musicxml acordes --archivo \(xml) --duracion 2 --titulo T"),
-                       salida("musicxml acordes Do Fa Sol7 Do --duracion 2 --titulo T"))
+        XCTAssertEqual(
+            salida("musicxml acordes --archivo \(xml) --duracion 2 --titulo T"),
+            salida("musicxml acordes Do Fa Sol7 Do --duracion 2 --titulo T"))
         XCTAssertTrue(salida("mei acordes --archivo " + xml).hasSuffix("</mei>\n"))
         let datos = LineaDeComandos.ejecutar(["midi", "acordes", "--archivo", xml])
         XCTAssertEqual(datos.codigo, 0, datos.error)
@@ -574,10 +670,12 @@ final class LineaDeComandosTests: XCTestCase {
         }
         XCTAssertEqual(resultado("musicxml acordes Do --archivo " + midi).codigo, 2)
         XCTAssertEqual(resultado("musicxml acordes --archivo /no/existe.mid").codigo, 2)
-        XCTAssertEqual(resultado("musicxml coral --archivo " + midi).error,
-                       "armonia: --archivo es solo para «acordes» y «arpegios»\nPrueba «armonia ayuda».\n")
-        XCTAssertEqual(resultado("musicxml acordes Do --ventana 1").error,
-                       "armonia: --ventana va con --archivo\nPrueba «armonia ayuda».\n")
+        XCTAssertEqual(
+            resultado("musicxml coral --archivo " + midi).error,
+            "armonia: --archivo es solo para «acordes» y «arpegios»\nPrueba «armonia ayuda».\n")
+        XCTAssertEqual(
+            resultado("musicxml acordes Do --ventana 1").error,
+            "armonia: --ventana va con --archivo\nPrueba «armonia ayuda».\n")
         let melodia = try fichero(Voz(leyendo: "Do4:4 Re4:4 Mi4:4").midi(), extension: "mid")
         XCTAssertEqual(resultado("musicxml acordes --archivo " + melodia).codigo, 2)
         let texto = try fichero(Data("hola".utf8), extension: "mid")
@@ -600,40 +698,52 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertEqual(texto.components(separatedBy: "Trastes").count - 1, 7)
         let caged = salida("posiciones Do mayor --caged")
         XCTAssertTrue(caged.hasPrefix("Do mayor · CAGED\n\n  Forma C · Trastes 0–4\n"), caged)
-        for forma in ["Forma A · Trastes 2–6", "Forma G · Trastes 5–9", "Forma E · Trastes 7–11", "Forma D · Trastes 9–13"] {
+        let formas = [
+            "Forma A · Trastes 2–6", "Forma G · Trastes 5–9", "Forma E · Trastes 7–11", "Forma D · Trastes 9–13",
+        ]
+        for forma in formas {
             XCTAssertTrue(caged.contains(forma), forma)
         }
         XCTAssertTrue(salida("posiciones La pentatónica menor").contains(" · 2 notas por cuerda\n"))
         XCTAssertTrue(salida("positions G major --caged --ingles").contains(" · CAGED\n\n  G shape · Frets 0–4\n"))
         XCTAssertTrue(salida("ayuda").contains("posiciones <escala> [--caged]"))
-        XCTAssertEqual(resultado("posiciones").error,
-                       "armonia: falta la escala: armonia posiciones Sol mayor\nPrueba «armonia ayuda».\n")
+        XCTAssertEqual(
+            resultado("posiciones").error,
+            "armonia: falta la escala: armonia posiciones Sol mayor\nPrueba «armonia ayuda».\n")
         XCTAssertEqual(resultado("posiciones", "Sol", "chungo").codigo, 1)
     }
 
     func testTonnetz() {
-        for orden in ["tonnetz Do Mi Sol", "tonnetz --acorde Sol7", "tonnetz --escala Re dórico", "tonnetz --clases 0 4 7",
-                      "tonnetz --clases 0,3,6,9 --margen 2", "tonnetz C E G --ingles"] {
+        for orden in [
+            "tonnetz Do Mi Sol", "tonnetz --acorde Sol7", "tonnetz --escala Re dórico", "tonnetz --clases 0 4 7",
+            "tonnetz --clases 0,3,6,9 --margen 2", "tonnetz C E G --ingles",
+        ] {
             let svg = salida(orden)
             XCTAssertTrue(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"), orden)
         }
         XCTAssertTrue(salida("tonnetz --acorde Do").contains(">Mi</text>"))
         XCTAssertTrue(salida("tonnetz C E G --ingles").contains(">E</text>"))
-        for orden in ["tonnetz", "tonnetz --clases 0 12", "tonnetz --clases", "tonnetz --acorde", "tonnetz --escala",
-                      "tonnetz --color Do", "tonnetz Do --margen 9"] {
+        for orden in [
+            "tonnetz", "tonnetz --clases 0 12", "tonnetz --clases", "tonnetz --acorde", "tonnetz --escala",
+            "tonnetz --color Do", "tonnetz Do --margen 9",
+        ] {
             XCTAssertEqual(LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo, 2, orden)
         }
         XCTAssertEqual(LineaDeComandos.ejecutar(["tonnetz", "Do", "Hm"]).codigo, 1)
         XCTAssertTrue(salida("tonnetz --recorrido Do Lam Fa Rem").contains("Do –R→ Lam –L→ Fa –R→ Rem"))
         XCTAssertTrue(salida("tonnetz --camino Do Mibm").contains("Do –P→ Dom –R→ Mi♭ –P→ Mi♭m"))
-        for orden in ["tonnetz --recorrido", "tonnetz --recorrido Do Sol7", "tonnetz --camino Do", "tonnetz --camino Do Sol7"] {
+        for orden in [
+            "tonnetz --recorrido", "tonnetz --recorrido Do Sol7", "tonnetz --camino Do", "tonnetz --camino Do Sol7",
+        ] {
             XCTAssertEqual(LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo, 2, orden)
         }
     }
 
     func testTablaArmonica() {
-        for orden in ["tabla Do Mi Sol", "tabla Do3 Sol3 Mi4", "tabla --acorde Domaj7", "tabla --escala Re dórico",
-                      "tabla --clases 0,4,7 --margen 3", "tabla C E G --ingles"] {
+        for orden in [
+            "tabla Do Mi Sol", "tabla Do3 Sol3 Mi4", "tabla --acorde Domaj7", "tabla --escala Re dórico",
+            "tabla --clases 0,4,7 --margen 3", "tabla C E G --ingles",
+        ] {
             let svg = salida(orden)
             XCTAssertTrue(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"), orden)
         }
@@ -653,13 +763,19 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertEqual(salida("vecinos Sol7"), "Sol♯°7 (Sol→Sol♯)\nSolm7 (Si→Si♭)\nMim7 (Fa→Mi)\n")
         XCTAssertTrue(salida("vecinos Sol7 --voces 2").contains("Re♭7 (Sol→La♭, Re→Re♭)"))
         XCTAssertEqual(salida("vecinos G7 --ingles"), "G#°7 (G→G#)\nGm7 (B→Bb)\nEm7 (F→E)\n")
-        XCTAssertEqual(salida("conduccion-parsimoniosa Sol7 Rem7"), "Sol7 –Sol→Sol♯→ Sol♯°7 –Sol♯→La→ Sim7(♭5) –Si→Do→ Rem7\n3 pasos\n")
+        XCTAssertEqual(
+            salida("conduccion-parsimoniosa Sol7 Rem7"),
+            "Sol7 –Sol→Sol♯→ Sol♯°7 –Sol♯→La→ Sim7(♭5) –Si→Do→ Rem7\n3 pasos\n")
         XCTAssertEqual(salida("conduccion-parsimoniosa Sol7 Reb7 --voces 2"), "Sol7 –Sol→La♭, Re→Re♭→ Re♭7\n1 paso\n")
-        XCTAssertEqual(salida("conduccion-minima Sol7 Do"), "Sol→Sol, Si→Do (+1), Re→Do (−2), Fa→Mi (−1): 4 semitonos\n")
+        XCTAssertEqual(
+            salida("conduccion-minima Sol7 Do"), "Sol→Sol, Si→Do (+1), Re→Do (−2), Fa→Mi (−1): 4 semitonos\n")
         XCTAssertEqual(salida("vecinos Domaj7"), "Do♯m7(♭5) (Do→Do♯)\nDo7 (Si→Si♭)\n")
         XCTAssertTrue(salida("vecinos Sol7 --ampliada").contains("Solmaj7 (Fa→Fa♯)"))
         XCTAssertEqual(salida("conduccion-parsimoniosa Do7 Domaj7"), "Do7 –Si♭→Si→ Domaj7\n1 paso\n")
-        for orden in ["vecinos", "vecinos Do6", "vecinos Do --ampliada", "vecinos Sol7 --voces 3", "conduccion-parsimoniosa Sol7", "conduccion-parsimoniosa Do Sol7", "conduccion-minima Sol7"] {
+        for orden in [
+            "vecinos", "vecinos Do6", "vecinos Do --ampliada", "vecinos Sol7 --voces 3", "conduccion-parsimoniosa Sol7",
+            "conduccion-parsimoniosa Do Sol7", "conduccion-minima Sol7",
+        ] {
             XCTAssertEqual(LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo, 2, orden)
         }
     }
@@ -672,7 +788,9 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertEqual(salida("plr Do Lam"), "Do –R→ Lam\nR, 1 paso\n")
         XCTAssertEqual(salida("plr Do Do"), "Do\nningún paso\n")
         XCTAssertEqual(salida("plr C Am --ingles"), "C –R→ Am\nR, 1 step\n")
-        XCTAssertEqual(salida("plr Do hexatonico"), "Do –P→ Dom –L→ La♭ –P→ La♭m –L→ Mi –P→ Mim –L→ Do\nciclo hexatónico, 6 tríadas\n")
+        XCTAssertEqual(
+            salida("plr Do hexatonico"),
+            "Do –P→ Dom –L→ La♭ –P→ La♭m –L→ Mi –P→ Mim –L→ Do\nciclo hexatónico, 6 tríadas\n")
         XCTAssertTrue(salida("plr Do ciclo LR").hasSuffix("–R→ Do\nciclo LR, 24 tríadas\n"))
         XCTAssertTrue(salida("plr C octatonic --ingles").hasSuffix("octatonic cycle, 8 triads\n"))
         XCTAssertTrue(salida("tonnetz --ciclo hexatonico Do").contains("La♭m –L→ Mi"))
@@ -693,7 +811,9 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertTrue(lectura.error.hasPrefix("No se puede leer «Hm»"))
         XCTAssertTrue(LineaDeComandos.ejecutar(["acorde", "Hm", "--ingles"]).error.hasPrefix("Cannot read"))
 
-        for orden in [["foo"], ["intervalo", "Do"], ["acorde"], ["analizar"], ["analizar", "Do", "--en"], ["revisar"]] {
+        for orden in [
+            ["foo"], ["intervalo", "Do"], ["acorde"], ["analizar"], ["analizar", "Do", "--en"], ["revisar"],
+        ] {
             let resultado = LineaDeComandos.ejecutar(orden)
             XCTAssertEqual(resultado.codigo, 2, "\(orden)")
             XCTAssertTrue(resultado.error.hasSuffix("Prueba «armonia ayuda».\n"), "\(orden)")
@@ -718,7 +838,7 @@ final class LineaDeComandosTests: XCTestCase {
     func testDigitacionesRespetanElLimite() {
         // Un encabezado y una línea por forma.
         XCTAssertEqual(salida("digitaciones Do --limite 3").split(separator: "\n").count, 4)
-        XCTAssertEqual(salida("digitaciones Do").split(separator: "\n").count, 6)   // cinco por defecto
+        XCTAssertEqual(salida("digitaciones Do").split(separator: "\n").count, 6) // cinco por defecto
     }
 
     func testDigitacionesEnElUkelele() {
@@ -766,12 +886,12 @@ final class LineaDeComandosTests: XCTestCase {
         XCTAssertTrue(desconocido.error.contains("instrumento desconocido: «arpa»"), desconocido.error)
         XCTAssertTrue(desconocido.error.contains("guitarra"), desconocido.error)
 
-        XCTAssertEqual(resultado("digitaciones").codigo, 2)                                  // falta el acorde
-        XCTAssertEqual(resultado("digitaciones", "Do", "--instrumento").codigo, 2)           // falta el valor
+        XCTAssertEqual(resultado("digitaciones").codigo, 2) // falta el acorde
+        XCTAssertEqual(resultado("digitaciones", "Do", "--instrumento").codigo, 2) // falta el valor
         XCTAssertEqual(resultado("digitaciones", "Do", "--limite", "0").codigo, 2)
         XCTAssertEqual(resultado("digitaciones", "Do", "--limite", "muchas").codigo, 2)
         XCTAssertEqual(resultado("digitaciones", "Do", "--traste", "30").codigo, 2)
-        XCTAssertEqual(resultado("digitaciones", "Do", "--cejilla").codigo, 2)               // opción desconocida
+        XCTAssertEqual(resultado("digitaciones", "Do", "--cejilla").codigo, 2) // opción desconocida
         XCTAssertEqual(resultado("digitaciones", "Do").codigo, 0)
 
         // Un cifrado que no se lee es un error de lectura (código 1), como en `acorde`.

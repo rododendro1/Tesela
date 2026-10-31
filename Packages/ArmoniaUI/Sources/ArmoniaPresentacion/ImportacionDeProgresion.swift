@@ -22,10 +22,9 @@ public enum ImportacionDeProgresion {
         let pieza = try PiezaImportada(leyendo: datos)
         let leidos = pieza.acordesConDuracion(ventana: ventana)
         guard !leidos.isEmpty else { throw ErrorDeImportacion.sinAcordes }
-        return ProgresionImportada(acordes: leidos.map(\.acorde),
-                                   ritmo: RitmoArmonico(duraciones: leidos.map(\.duracion),
-                                                        compas: pieza.compas ?? .compasillo, tempo: pieza.tempo),
-                                   titulo: pieza.titulo)
+        let ritmo = RitmoArmonico(
+            duraciones: leidos.map(\.duracion), compas: pieza.compas ?? .compasillo, tempo: pieza.tempo)
+        return ProgresionImportada(acordes: leidos.map(\.acorde), ritmo: ritmo, titulo: pieza.titulo)
     }
 }
 

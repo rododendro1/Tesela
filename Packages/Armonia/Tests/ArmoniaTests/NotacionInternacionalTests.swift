@@ -1,9 +1,10 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class NotacionInternacionalTests: XCTestCase {
     func testNotas() {
@@ -33,7 +34,8 @@ final class NotacionInternacionalTests: XCTestCase {
         XCTAssertEqual(Intervalo.unisonoAumentado.nombre(en: .inglesASCII), "augmented unison")
         XCTAssertEqual(Intervalo.novenaMenor.nombre(en: .inglesASCII), "minor ninth")
         XCTAssertEqual((-Intervalo.sextaMenor).nombre(en: .inglesASCII), "descending minor sixth")
-        XCTAssertEqual(Intervalo(numero: 4, calidad: .aumentada(2))!.nombre(en: .inglesASCII), "doubly augmented fourth")
+        XCTAssertEqual(
+            Intervalo(numero: 4, calidad: .aumentada(2))!.nombre(en: .inglesASCII), "doubly augmented fourth")
         XCTAssertEqual(Intervalo.ordinal(21, en: .ingles), "21st")
         XCTAssertEqual(Intervalo.ordinal(22, en: .ingles), "22nd")
         XCTAssertEqual(Intervalo.ordinal(23, en: .ingles), "23rd")
@@ -48,8 +50,9 @@ final class NotacionInternacionalTests: XCTestCase {
         XCTAssertEqual(Escala("C Major Pentatonic").tipo, .pentatonicaMayor)
         XCTAssertEqual(Escala(.re, .dorico).nombre(en: .inglesASCII), "D dorian")
         XCTAssertEqual(Escala("Mib menor armónica").nombre(en: .inglesUnicode), "E♭ harmonic minor")
-        XCTAssertEqual(Escala(.do, TipoDeEscala.pentatonicaMayor.rotacion(3)).nombre(en: .inglesASCII),
-                       "C pentatónica mayor, modo 3")
+        XCTAssertEqual(
+            Escala(.do, TipoDeEscala.pentatonicaMayor.rotacion(3)).nombre(en: .inglesASCII),
+            "C pentatónica mayor, modo 3")
         XCTAssertEqual(Escala(.do, TipoDeEscala.pentatonicaMayor.rotacion(2)).nombre(en: .inglesASCII), "C Egyptian")
         for tipo in TipoDeEscala.todos {
             let escala = Escala("F#", tipo)
@@ -118,8 +121,9 @@ final class NotacionInternacionalTests: XCTestCase {
         let inglesEnEuskera = Notacion.inglesASCII.conTextos(en: .euskera)
         XCTAssertEqual(Acorde("Sol7").nombre(en: inglesEnEuskera), "G dominanteko zazpigarrena, oinarrizko egoera")
         XCTAssertEqual(Escala(.re, .dorico).nombre(en: inglesEnEuskera), "D doriarra")
-        XCTAssertEqual(Acorde("Sol7").nombre(en: Notacion.espanolUnicode.conTextos(en: .ingles)),
-                       "Sol dominant seventh, root position")
+        XCTAssertEqual(
+            Acorde("Sol7").nombre(en: Notacion.espanolUnicode.conTextos(en: .ingles)),
+            "Sol dominant seventh, root position")
         XCTAssertEqual(Tonalidad("Fa# mayor").nombre(en: Notacion.aleman.conTextos(en: .frances)), "Fis-Dur")
         XCTAssertEqual(Acorde("Sib7").cifrado(en: Notacion.aleman.conTextos(en: .frances)), "B7")
         // Si el idioma ya es el de los textos, la notación queda simple; no se anidan.
@@ -193,13 +197,15 @@ final class NotacionInternacionalTests: XCTestCase {
         for notacion in [Notacion.aleman, .frances, .italiano, .catalan, .gallego, .euskera, .portugues] {
             for quintas in -29...33 {
                 let nombre = Nota(pasosDeQuinta: quintas)
-                XCTAssertEqual(try Nota(leyendo: nombre.nombre(en: notacion), en: notacion), nombre,
-                               "\(nombre) \(notacion)")
+                XCTAssertEqual(
+                    try Nota(leyendo: nombre.nombre(en: notacion), en: notacion), nombre,
+                    "\(nombre) \(notacion)")
                 let nota = Altura(nombre, octava: 2)
                 XCTAssertEqual(try Altura(leyendo: nota.nombre(en: notacion), en: notacion), nota)
             }
             for tonalidad in Tonalidad.circuloDeQuintas() + Tonalidad.circuloDeQuintas(.menor) {
-                XCTAssertEqual(Tonalidad(texto: tonalidad.nombre(en: notacion)), tonalidad, tonalidad.nombre(en: notacion))
+                XCTAssertEqual(
+                    Tonalidad(texto: tonalidad.nombre(en: notacion)), tonalidad, tonalidad.nombre(en: notacion))
             }
         }
     }

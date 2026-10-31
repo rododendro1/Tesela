@@ -1,7 +1,7 @@
-import SwiftUI
-import UniformTypeIdentifiers
 import Armonia
 import ArmoniaUI
+import SwiftUI
+import UniformTypeIdentifiers
 
 /// Escribe una progresión (Do Fa Sol7 Do Lam Re7 Sol), o la saca de un fichero MIDI o MusicXML con «Abrir» (con su
 /// ritmo armónico, que siguen la partitura, el MIDI y «Escuchar» mientras no se retoque), y
@@ -20,7 +20,8 @@ struct VistaDeAnalisis: View {
     @State private var patron = Arpegio.Patron.ascendente
 
     /// MIDI y MusicXML sin comprimir (.musicxml y .xml).
-    private static let tipos: [UTType] = [.midi, .xml]
+    private static let tipos: [UTType] =
+        [.midi, .xml]
         + ImportacionDeProgresion.extensiones.compactMap { UTType(filenameExtension: $0) }
 
     var body: some View {
@@ -70,7 +71,11 @@ struct VistaDeAnalisis: View {
         .selectorDeNotacionEnLaBarra()
         .toolbar {
             ToolbarItem {
-                Button { abriendo = true } label: { Label(notacion.texto(.abrir), systemImage: "folder") }
+                Button {
+                    abriendo = true
+                } label: {
+                    Label(notacion.texto(.abrir), systemImage: "folder")
+                }
             }
             ToolbarItem {
                 BotonDeExportar(ficheros)
@@ -82,8 +87,8 @@ struct VistaDeAnalisis: View {
         .onChange(of: texto) { _ in errorAlAbrir = nil }
         .task(id: "\(texto)|\(notacion.clave)|\(importada?.hashValue ?? 0)") {
             // Lo abierto, con el ritmo de la pieza, mientras no se retoque; si no, lo escrito.
-            if let importada, importada.texto == texto,
-               let analisis = PresentacionDeAnalisis.analizar(importada, notacion: notacion) {
+            let abierta = importada?.texto == texto ? importada : nil
+            if let abierta, let analisis = PresentacionDeAnalisis.analizar(abierta, notacion: notacion) {
                 resultado = .success(analisis)
             } else {
                 resultado = Result { try PresentacionDeAnalisis.analizar(texto, notacion: notacion) }

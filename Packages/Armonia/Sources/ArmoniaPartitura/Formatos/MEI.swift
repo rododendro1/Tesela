@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+
 // Exportación a MEI 5 (Music Encoding Initiative), el formato de las ediciones críticas y de la
 // musicología: lo abren Verovio, mei-friend o MuseScore 4, y se puede validar con el esquema
 // mei-CMN de music-encoding.org.
@@ -25,12 +26,15 @@ extension Voz {
     ///   - tempo: si se da, se escribe la indicación metronómica.
     ///   - titulo: el título de la obra.
     ///   - parte: el nombre del pentagrama.
-    public func mei(tonalidad: Tonalidad? = nil, clave: Clave? = nil, tempo: Tempo? = nil,
-                    titulo: String? = nil, parte: String = "Voz") -> String {
+    public func mei(
+        tonalidad: Tonalidad? = nil, clave: Clave? = nil, tempo: Tempo? = nil,
+        titulo: String? = nil, parte: String = "Voz"
+    ) -> String {
         let tonalidad = tonalidad ?? Exportacion.tonalidad(de: self)
         let clave = clave ?? Clave.masAdecuada(para: eventos.flatMap(\.alturas)) ?? .sol
-        var escritor = EscritorMEI(compas: compas, anacrusa: anacrusa, tonalidad: tonalidad,
-                                   tempo: tempo, titulo: titulo, parte: parte, claves: [clave])
+        var escritor = EscritorMEI(
+            compas: compas, anacrusa: anacrusa, tonalidad: tonalidad,
+            tempo: tempo, titulo: titulo, parte: parte, claves: [clave])
         escritor.anadir(self, pentagrama: 1, plicaArriba: nil)
         return escritor.documento
     }
@@ -50,22 +54,28 @@ extension Coral {
     ///   - cifrados: si se escribe el cifrado americano de cada acorde encima del soprano.
     ///   - analisis: si se escriben el cifrado romano y la función debajo del bajo.
     ///   - notacion: la de los cifrados y la tonalidad.
-    public func mei(duracion: Duracion = .negra, compas: Compas = .compasillo,
-                    tonalidad: Tonalidad? = nil, tempo: Tempo? = nil,
-                    titulo: String? = nil, parte: String = "Coro",
-                    cifrados: Bool = false, analisis: Bool = false,
-                    notacion: Notacion = .espanolUnicode) -> String {
-        let anotaciones = Exportacion.anotaciones(de: self, duracion: duracion, tonalidad: tonalidad,
-                                                  cifrados: cifrados, analisis: analisis)
-        var escritor = EscritorMEI(compas: compas, anacrusa: .cero, tonalidad: anotaciones.tonalidad,
-                                   tempo: tempo, titulo: titulo, parte: parte, claves: [.sol, .fa])
+    public func mei(
+        duracion: Duracion = .negra, compas: Compas = .compasillo,
+        tonalidad: Tonalidad? = nil, tempo: Tempo? = nil,
+        titulo: String? = nil, parte: String = "Coro",
+        cifrados: Bool = false, analisis: Bool = false,
+        notacion: Notacion = .espanolUnicode
+    ) -> String {
+        let anotaciones = Exportacion.anotaciones(
+            de: self, duracion: duracion, tonalidad: tonalidad,
+            cifrados: cifrados, analisis: analisis)
+        var escritor = EscritorMEI(
+            compas: compas, anacrusa: .cero, tonalidad: anotaciones.tonalidad,
+            tempo: tempo, titulo: titulo, parte: parte, claves: [.sol, .fa])
         if let rotulo = anotaciones.tonalidadDelAnalisis { escritor.rotulo = (rotulo.nombre(en: notacion) + ":", 2) }
         let n = numeroDeVoces
         for linea in Exportacion.voces(de: self, duracion: duracion, compas: compas) {
             // Los cifrados, con la voz más aguda; el análisis, con la más grave.
-            escritor.anadir(linea.voz, pentagrama: linea.pentagrama, plicaArriba: linea.plicaArriba,
-                            cifrados: linea.indice == n - 1 ? anotaciones.cifrados.mapValues { $0.cifrado(en: notacion) } : [:],
-                            letras: linea.indice == 0 && linea.indice != n - 1 ? anotaciones.analisis.mapValues(Exportacion.letras) : [:])
+            escritor.anadir(
+                linea.voz, pentagrama: linea.pentagrama, plicaArriba: linea.plicaArriba,
+                cifrados: linea.indice == n - 1 ? anotaciones.cifrados.mapValues { $0.cifrado(en: notacion) } : [:],
+                letras: linea.indice == 0 && linea.indice != n - 1
+                    ? anotaciones.analisis.mapValues(Exportacion.letras) : [:])
         }
         return escritor.documento
     }
@@ -84,30 +94,39 @@ extension AnalisisArmonico {
     ///   - cifrados: si se escriben los cifrados americanos.
     ///   - analisis: si se escriben los cifrados romanos y las funciones.
     ///   - notacion: la de los cifrados americanos y la tonalidad.
-    public func mei(duracion: Duracion = .blanca, compas: Compas = .compasillo, tempo: Tempo? = nil,
-                    titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
-                    analisis: Bool = true, notacion: Notacion = .espanolUnicode) -> String {
-        mei(duraciones: Array(repeating: duracion, count: acordes.count), compas: compas, tempo: tempo,
+    public func mei(
+        duracion: Duracion = .blanca, compas: Compas = .compasillo, tempo: Tempo? = nil,
+        titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
+        analisis: Bool = true, notacion: Notacion = .espanolUnicode
+    ) -> String {
+        mei(
+            duraciones: Array(repeating: duracion, count: acordes.count), compas: compas, tempo: tempo,
             titulo: titulo, parte: parte, cifrados: cifrados, analisis: analisis, notacion: notacion)
     }
 
     /// Lo mismo, con lo que dura cada acorde; el último se alarga hasta la barra.
     ///
     /// Detiene el programa si no hay una duración positiva por acorde.
-    public func mei(duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil,
-                    titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
-                    analisis: Bool = true, notacion: Notacion = .espanolUnicode) -> String {
+    public func mei(
+        duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil,
+        titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
+        analisis: Bool = true, notacion: Notacion = .espanolUnicode
+    ) -> String {
         Exportacion.comprobar(duraciones, acordes: acordes.count)
-        let (superior, grave) = Exportacion.progresion(acordes.map(\.acorde),
-                                                       duraciones: Exportacion.hastaLaBarra(duraciones, compas))
-        let anotaciones = Exportacion.anotaciones(de: self, duraciones: duraciones, cifrados: cifrados, analisis: analisis)
-        var escritor = EscritorMEI(compas: compas, anacrusa: .cero, tonalidad: tonalidad, tempo: tempo,
-                                   titulo: titulo, parte: parte, claves: [.sol, .fa])
+        let (superior, grave) = Exportacion.progresion(
+            acordes.map(\.acorde), duraciones: Exportacion.hastaLaBarra(duraciones, compas))
+        let anotaciones = Exportacion.anotaciones(
+            de: self, duraciones: duraciones, cifrados: cifrados, analisis: analisis)
+        var escritor = EscritorMEI(
+            compas: compas, anacrusa: .cero, tonalidad: tonalidad, tempo: tempo,
+            titulo: titulo, parte: parte, claves: [.sol, .fa])
         if let rotulo = anotaciones.tonalidadDelAnalisis { escritor.rotulo = (rotulo.nombre(en: notacion) + ":", 2) }
-        escritor.anadir(Voz(superior, compas: compas), pentagrama: 1, plicaArriba: nil,
-                        cifrados: anotaciones.cifrados.mapValues { $0.cifrado(en: notacion) })
-        escritor.anadir(Voz(grave, compas: compas), pentagrama: 2, plicaArriba: nil,
-                        letras: anotaciones.analisis.mapValues(Exportacion.letras))
+        escritor.anadir(
+            Voz(superior, compas: compas), pentagrama: 1, plicaArriba: nil,
+            cifrados: anotaciones.cifrados.mapValues { $0.cifrado(en: notacion) })
+        escritor.anadir(
+            Voz(grave, compas: compas), pentagrama: 2, plicaArriba: nil,
+            letras: anotaciones.analisis.mapValues(Exportacion.letras))
         return escritor.documento
     }
 }
@@ -138,8 +157,10 @@ package struct EscritorMEI {
     /// Un texto debajo de un pentagrama, al principio (la tonalidad del análisis).
     package var rotulo: (texto: String, pentagrama: Int)?
 
-    package init(compas: Compas, anacrusa: Duracion, tonalidad: Tonalidad?, tempo: Tempo?,
-                 titulo: String?, parte: String, claves: [Clave]) {
+    package init(
+        compas: Compas, anacrusa: Duracion, tonalidad: Tonalidad?, tempo: Tempo?,
+        titulo: String?, parte: String, claves: [Clave]
+    ) {
         self.compas = compas
         self.anacrusa = anacrusa
         self.tonalidad = tonalidad
@@ -149,10 +170,14 @@ package struct EscritorMEI {
         self.claves = claves
     }
 
-    package mutating func anadir(_ voz: Voz, pentagrama: Int, plicaArriba: Bool?,
-                                 cifrados: [Duracion: String] = [:], letras: [Duracion: [String]] = [:]) {
-        lineas.append(Linea(voz: voz, pentagrama: pentagrama, plicaArriba: plicaArriba,
-                            cifrados: cifrados, letras: letras))
+    package mutating func anadir(
+        _ voz: Voz, pentagrama: Int, plicaArriba: Bool?,
+        cifrados: [Duracion: String] = [:], letras: [Duracion: [String]] = [:]
+    ) {
+        lineas.append(
+            Linea(
+                voz: voz, pentagrama: pentagrama, plicaArriba: plicaArriba,
+                cifrados: cifrados, letras: letras))
     }
 
     package var documento: String {
@@ -160,35 +185,36 @@ package struct EscritorMEI {
         let barras = lineas.map(\.voz.barrasDeAgrupacion)
         let numeroDeCompases = grafias.map(\.count).max() ?? 0
         let ppq = Exportacion.divisiones(grafias.flatMap { $0.flatMap { $0.map(\.duracion) } })
-        let armadura = Dictionary((tonalidad?.notasDeLaArmadura ?? []).map { ($0.natural, $0.alteracion.semitonos) },
-                                  uniquingKeysWith: { primera, _ in primera })
+        let armadura = Dictionary(
+            (tonalidad?.notasDeLaArmadura ?? []).map { ($0.natural, $0.alteracion.semitonos) },
+            uniquingKeysWith: { primera, _ in primera })
 
         var xml = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <?xml-model href="https://music-encoding.org/schema/5.0/mei-CMN.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
-        <mei xmlns="http://www.music-encoding.org/ns/mei" meiversion="5.0">
-          <meiHead>
-            <fileDesc>
-              <titleStmt>
-                <title>\(Exportacion.escapar(titulo ?? ""))</title>
-              </titleStmt>
-              <pubStmt/>
-            </fileDesc>
-            <encodingDesc>
-              <appInfo>
-                <application>
-                  <name>Armonia</name>
-                </application>
-              </appInfo>
-            </encodingDesc>
-          </meiHead>
-          <music>
-            <body>
-              <mdiv>
-                <score>
-        \(definicion(ppq))          <section>
+            <?xml version="1.0" encoding="UTF-8"?>
+            <?xml-model href="https://music-encoding.org/schema/5.0/mei-CMN.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+            <mei xmlns="http://www.music-encoding.org/ns/mei" meiversion="5.0">
+              <meiHead>
+                <fileDesc>
+                  <titleStmt>
+                    <title>\(Exportacion.escapar(titulo ?? ""))</title>
+                  </titleStmt>
+                  <pubStmt/>
+                </fileDesc>
+                <encodingDesc>
+                  <appInfo>
+                    <application>
+                      <name>Armonia</name>
+                    </application>
+                  </appInfo>
+                </encodingDesc>
+              </meiHead>
+              <music>
+                <body>
+                  <mdiv>
+                    <score>
+            \(definicion(ppq))          <section>
 
-        """
+            """
         // Lo que viene ligado del compás anterior, por línea.
         var ligadaDesde: [[Altura]] = Array(repeating: [], count: lineas.count)
         // Dónde va cada línea, desde su comienzo, para colocar las anotaciones.
@@ -219,12 +245,15 @@ package struct EscritorMEI {
             for pentagrama in 1...max(claves.count, 1) {
                 xml += "              <staff n=\"\(pentagrama)\">\n"
                 let suyas = lineas.indices.filter { lineas[$0].pentagrama == pentagrama && c < grafias[$0].count }
-                if suyas.isEmpty { xml += "                <layer n=\"1\">\n                  <mSpace/>\n                </layer>\n" }
+                if suyas.isEmpty {
+                    xml += "                <layer n=\"1\">\n                  <mSpace/>\n                </layer>\n"
+                }
                 for (capa, l) in suyas.enumerated() {
                     let linea = lineas[l]
                     let eventos = grafias[l][c]
                     xml += "                <layer n=\"\(capa + 1)\">\n"
-                    let compasEntero = eventos.count == 1 && eventos[0].esSilencio && !esAnacrusa
+                    let compasEntero =
+                        eventos.count == 1 && eventos[0].esSilencio && !esAnacrusa
                         && eventos[0].duracion == compas.duracion
                     let grupos = EscritorMEI.grupos(eventos, barras[l][c])
                     var nivel = 0
@@ -239,17 +268,24 @@ package struct EscritorMEI {
                         let esNueva = continuaciones[l][i].isEmpty || evento.alturas != continuaciones[l][i]
                         let letras = esNueva ? linea.letras[posiciones[l]] ?? [] : []
                         if esNueva, let cifrado = linea.cifrados[posiciones[l]] {
-                            control.append("<harm staff=\"\(pentagrama)\" place=\"above\" startid=\"#\(id)\">\(Exportacion.escapar(cifrado))</harm>")
+                            control.append(
+                                "<harm staff=\"\(pentagrama)\" place=\"above\" startid=\"#\(id)\">\(Exportacion.escapar(cifrado))</harm>"
+                            )
                         }
                         if c == 0 && i == 0 {
-                            if let tempo, l == 0 { control.append(EscritorMEI.indicacion(tempo, pentagrama: pentagrama, id: id)) }
+                            if let tempo, l == 0 {
+                                control.append(EscritorMEI.indicacion(tempo, pentagrama: pentagrama, id: id))
+                            }
                             if let rotulo, rotulo.pentagrama == pentagrama, capa == 0 {
-                                control.append("<dir staff=\"\(pentagrama)\" place=\"below\" startid=\"#\(id)\">\(Exportacion.escapar(rotulo.texto))</dir>")
+                                control.append(
+                                    "<dir staff=\"\(pentagrama)\" place=\"below\" startid=\"#\(id)\">\(Exportacion.escapar(rotulo.texto))</dir>"
+                                )
                             }
                         }
-                        xml += EscritorMEI.evento(evento, id: id, plicaArriba: linea.plicaArriba,
-                                                  compasEntero: compasEntero, ligadaDesde: continuaciones[l][i],
-                                                  alteraciones: alteraciones[l][i], letras: letras, ppq: ppq, nivel: nivel)
+                        xml += EscritorMEI.evento(
+                            evento, id: id, plicaArriba: linea.plicaArriba,
+                            compasEntero: compasEntero, ligadaDesde: continuaciones[l][i],
+                            alteraciones: alteraciones[l][i], letras: letras, ppq: ppq, nivel: nivel)
                         posiciones[l] = posiciones[l] + evento.duracion
                         for grupo in grupos.cierran[i, default: []] {
                             nivel -= 1
@@ -265,14 +301,14 @@ package struct EscritorMEI {
             xml += "            </measure>\n"
         }
         xml += """
-                  </section>
-                </score>
-              </mdiv>
-            </body>
-          </music>
-        </mei>
+                      </section>
+                    </score>
+                  </mdiv>
+                </body>
+              </music>
+            </mei>
 
-        """
+            """
         return xml
     }
 
@@ -285,7 +321,9 @@ package struct EscritorMEI {
         let fifths = tonalidad?.armadura ?? 0
         atributos += " keysig=\"\(fifths == 0 ? "0" : "\(abs(fifths))\(fifths > 0 ? "s" : "f")")\""
         var xml = "          <scoreDef \(atributos)>\n"
-        xml += claves.count > 1 ? "            <staffGrp symbol=\"brace\" bar.thru=\"true\">\n" : "            <staffGrp>\n"
+        xml +=
+            claves.count > 1
+            ? "            <staffGrp symbol=\"brace\" bar.thru=\"true\">\n" : "            <staffGrp>\n"
         xml += "              <label>\(Exportacion.escapar(parte))</label>\n"
         for (i, clave) in claves.enumerated() {
             let (forma, linea, cambio) = EscritorMusicXML.signo(de: clave)
@@ -299,9 +337,11 @@ package struct EscritorMEI {
     // MARK: Eventos
 
     /// Una nota, un acorde o un silencio.
-    private static func evento(_ evento: Evento, id: String, plicaArriba: Bool?, compasEntero: Bool,
-                               ligadaDesde: [Altura], alteraciones: [AlteracionEscrita], letras: [String],
-                               ppq: Int, nivel: Int) -> String {
+    private static func evento(
+        _ evento: Evento, id: String, plicaArriba: Bool?, compasEntero: Bool,
+        ligadaDesde: [Altura], alteraciones: [AlteracionEscrita], letras: [String],
+        ppq: Int, nivel: Int
+    ) -> String {
         // La figura, si la hay; la duración exacta va siempre en `dur.ppq`, porque algunos trozos
         // de un grupo irregular partido por la barra no tienen figura propia.
         let figura = Exportacion.figura(de: evento.duracion)
@@ -311,7 +351,8 @@ package struct EscritorMEI {
         let plica = plicaArriba.map { " stem.dir=\"\($0 ? "up" : "down")\"" } ?? ""
         let fuera = sangria(nivel)
         guard !evento.esSilencio else {
-            return compasEntero ? fuera + "<mRest xml:id=\"\(id)\"/>\n" : fuera + "<rest xml:id=\"\(id)\"\(duracion)/>\n"
+            return compasEntero
+                ? fuera + "<mRest xml:id=\"\(id)\"/>\n" : fuera + "<rest xml:id=\"\(id)\"\(duracion)/>\n"
         }
         func nota(_ k: Int, _ atributos: String) -> String {
             let altura = evento.alturas[k]
@@ -346,10 +387,14 @@ package struct EscritorMEI {
     /// Las alteraciones de cada altura de cada evento del compás `c`, por línea. Se recorren las
     /// notas de cada pentagrama por orden de tiempo, porque una alteración vale para todas sus
     /// voces hasta la barra; las notas que vienen ligadas no la escriben ni la cambian.
-    private func escritas(_ c: Int, _ grafias: [[[Evento]]], _ continuaciones: [[[Altura]]],
-                          _ armadura: [NotaNatural: Int]) -> [[[AlteracionEscrita]]] {
+    private func escritas(
+        _ c: Int, _ grafias: [[[Evento]]], _ continuaciones: [[[Altura]]],
+        _ armadura: [NotaNatural: Int]
+    ) -> [[[AlteracionEscrita]]] {
         var resultado: [[[AlteracionEscrita]]] = lineas.indices.map { l in
-            (c < grafias[l].count ? grafias[l][c] : []).map { Array(repeating: AlteracionEscrita(), count: $0.alturas.count) }
+            (c < grafias[l].count ? grafias[l][c] : []).map {
+                Array(repeating: AlteracionEscrita(), count: $0.alturas.count)
+            }
         }
         for pentagrama in Set(lineas.map(\.pentagrama)) {
             var notas: [(inicio: Duracion, linea: Int, evento: Int)] = []
@@ -361,7 +406,7 @@ package struct EscritorMEI {
                 }
             }
             notas.sort { ($0.inicio, $0.linea, $0.evento) < ($1.inicio, $1.linea, $1.evento) }
-            var vigentes: [Int: Int] = [:]   // por línea o espacio del pentagrama: nota natural y octava
+            var vigentes: [Int: Int] = [:] // por línea o espacio del pentagrama: nota natural y octava
             for (_, l, i) in notas {
                 for (k, altura) in grafias[l][c][i].alturas.enumerated() {
                     let semitonos = altura.nota.alteracion.semitonos
@@ -383,13 +428,16 @@ package struct EscritorMEI {
     /// Los grupos irregulares (`<tuplet>`) y las barras (`<beam>`) del compás, como elementos que
     /// se abren antes de un evento y se cierran después de otro. Un grupo que se cruza con otro
     /// ya aceptado se queda fuera, para que el XML quede bien anidado; los irregulares van primero.
-    private static func grupos(_ eventos: [Evento], _ barras: [[Int]]) -> (abren: [Int: [String]], cierran: [Int: [String]]) {
+    private static func grupos(_ eventos: [Evento], _ barras: [[Int]]) -> (
+        abren: [Int: [String]], cierran: [Int: [String]]
+    ) {
         var rangos: [(rango: ClosedRange<Int>, abre: String, cierra: String)] = []
         // El grupo abierto: dónde empieza, su proporción y lo que lleva.
         var abierto: (desde: Int, reales: Int, normales: Int, acumulado: Duracion)?
         func cerrar(en i: Int) {
             if let grupo = abierto {
-                rangos.append((grupo.desde...i, "<tuplet num=\"\(grupo.reales)\" numbase=\"\(grupo.normales)\">", "</tuplet>"))
+                rangos.append(
+                    (grupo.desde...i, "<tuplet num=\"\(grupo.reales)\" numbase=\"\(grupo.normales)\">", "</tuplet>"))
             }
             abierto = nil
         }
@@ -411,8 +459,10 @@ package struct EscritorMEI {
         for candidato in rangos {
             let encaja = aceptados.allSatisfy { otro in
                 !candidato.rango.overlaps(otro.rango)
-                    || (candidato.rango.lowerBound >= otro.rango.lowerBound && candidato.rango.upperBound <= otro.rango.upperBound)
-                    || (otro.rango.lowerBound >= candidato.rango.lowerBound && otro.rango.upperBound <= candidato.rango.upperBound)
+                    || (candidato.rango.lowerBound >= otro.rango.lowerBound
+                        && candidato.rango.upperBound <= otro.rango.upperBound)
+                    || (otro.rango.lowerBound >= candidato.rango.lowerBound
+                        && otro.rango.upperBound <= candidato.rango.upperBound)
             }
             if encaja { aceptados.append(candidato) }
         }
@@ -439,13 +489,17 @@ package struct EscritorMEI {
         if let (figura, puntillos) = tempo.unidad.figuraYPuntillos {
             atributos += " mm=\"\(porMinuto)\" mm.unit=\"\(dur(figura))\""
             if puntillos > 0 { atributos += " mm.dots=\"\(puntillos)\"" }
-            if let simbolo = simbolos[figura] { texto = simbolo + String(repeating: ".", count: puntillos) + " = " + porMinuto }
+            if let simbolo = simbolos[figura] {
+                texto = simbolo + String(repeating: ".", count: puntillos) + " = " + porMinuto
+            }
         }
         atributos += " midi.bpm=\"\(Exportacion.formatear(tempo.negrasPorMinuto))\""
         return "<tempo \(atributos)>\(texto)</tempo>"
     }
 
-    private static let simbolos: [Figura: String] = [.redonda: "𝅝", .blanca: "𝅗𝅥", .negra: "♩", .corchea: "♪", .semicorchea: "𝅘𝅥𝅯"]
+    private static let simbolos: [Figura: String] = [
+        .redonda: "𝅝", .blanca: "𝅗𝅥", .negra: "♩", .corchea: "♪", .semicorchea: "𝅘𝅥𝅯",
+    ]
 
     // MARK: Auxiliares
 

@@ -29,8 +29,10 @@ public enum FormasDeMapa {
 
     /// Un rectángulo de `columnas × filas` casillas, de `(0, 0)` a `(columnas − 1, filas − 1)` en
     /// coordenadas desplazadas, por filas.
-    public static func rectangulo(columnas: Int, filas: Int,
-                                  _ desplazamiento: Desplazamiento) -> [CoordenadaAxial] {
+    public static func rectangulo(
+        columnas: Int, filas: Int,
+        _ desplazamiento: Desplazamiento
+    ) -> [CoordenadaAxial] {
         precondition(columnas >= 0 && filas >= 0, "Las medidas no pueden ser negativas")
         var casillas: [CoordenadaAxial] = []
         casillas.reserveCapacity(columnas * filas)

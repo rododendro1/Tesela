@@ -7,7 +7,9 @@ extension ErrorDeUso {
     /// Los textos de los errores de las digitaciones, en los catorce idiomas.
     enum TextosDeTrastes {
         /// La orden de ejemplo de los mensajes: en español y en inglés.
-        private static let digitaciones = ("armonia digitaciones Sol7/Si --instrumento ukelele", "armonia fingerings G7/B --instrument ukulele")
+        private static let digitaciones = (
+            "armonia digitaciones Sol7/Si --instrumento ukelele", "armonia fingerings G7/B --instrument ukulele"
+        )
         private static var d: String { digitaciones.0 }
 
         static func faltaInstrumento() -> Traduccion {

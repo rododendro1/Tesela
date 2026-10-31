@@ -1,9 +1,10 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 /// Las notaciones y los textos en catalán, gallego, euskera, portugués, aragonés y asturiano.
 final class NotacionesPeninsularesTests: XCTestCase {
@@ -85,18 +86,25 @@ final class NotacionesPeninsularesTests: XCTestCase {
         XCTAssertEqual(CorrespondenciaDeColores.circuloDeQuintas.nombre(en: .euskera), "bosgarrenen zirkulua")
         XCTAssertEqual(Cadencia.Tipo.semicadencia.nombre(en: .euskera), "erdi-kadentzia")
         XCTAssertEqual(FaltaDeConduccion.Tipo.quintasParalelas.nombre(en: .catalan), "Quintes paral·leles")
-        XCTAssertEqual(Tonalidad(.do).analizar(["Do", "Fa", "Sol7", "Do"]).nombre(en: .euskera), "I–IV–V7–I do maiorrean")
-        XCTAssertEqual(Tonalidad(.la, .menor).analizar(["Lam", "Mi7", "Lam"]).nombre(en: .catalan),
-                       "i–V7–i en la menor")
+        XCTAssertEqual(
+            Tonalidad(.do).analizar(["Do", "Fa", "Sol7", "Do"]).nombre(en: .euskera), "I–IV–V7–I do maiorrean")
+        XCTAssertEqual(
+            Tonalidad(.la, .menor).analizar(["Lam", "Mi7", "Lam"]).nombre(en: .catalan),
+            "i–V7–i en la menor")
         // En alemán.
         XCTAssertEqual(Intervalo.terceraMayor.nombre(en: .aleman), "große Terz")
         // Los catálogos también.
         XCTAssertEqual(Acorde("Sol7").nombre(en: .euskera), "sol dominanteko zazpigarrena, oinarrizko egoera")
         // Todas las traducciones tienen los catorce textos, y cada notación toma el de su idioma.
-        let t = Traduccion("es", "en", ca: "ca", gl: "gl", ast: "ast", an: "an", eu: "eu", pt: "pt",
-                           fr: "fr", oc: "oc", it: "it", de: "de", el: "el", ru: "ru")
-        XCTAssertEqual(Notacion.allCases.map(t.en),
-                       ["es", "es", "es", "en", "en", "en", "ca", "gl", "ast", "an", "eu", "pt", "fr", "oc", "it", "de", "el", "ru"])
+        let t = Traduccion(
+            "es", "en", ca: "ca", gl: "gl", ast: "ast", an: "an", eu: "eu", pt: "pt",
+            fr: "fr", oc: "oc", it: "it", de: "de", el: "el", ru: "ru")
+        XCTAssertEqual(
+            Notacion.allCases.map(t.en),
+            [
+                "es", "es", "es", "en", "en", "en", "ca", "gl", "ast", "an", "eu", "pt", "fr", "oc", "it", "de", "el",
+                "ru",
+            ])
         XCTAssertEqual(Idioma.traducidos.count, Idioma.allCases.count)
     }
 
@@ -147,7 +155,8 @@ final class NotacionesPeninsularesTests: XCTestCase {
 
         XCTAssertEqual(CicloNeorriemanniano.hexatonico.nombre(en: .catalan), "cicle hexatònic")
         XCTAssertEqual(CicloNeorriemanniano.lr.nombre(en: .euskera), "LR zikloa")
-        XCTAssertEqual(CicloNeorriemanniano.octatonico.nombre(en: .inglesASCII), CicloNeorriemanniano.octatonico.nombreEnIngles)
+        XCTAssertEqual(
+            CicloNeorriemanniano.octatonico.nombre(en: .inglesASCII), CicloNeorriemanniano.octatonico.nombreEnIngles)
     }
 
     func testPortugues() {
@@ -202,8 +211,9 @@ final class NotacionesPeninsularesTests: XCTestCase {
         XCTAssertEqual(Tonalidad(.do).lugar(en: .asturiano), "en do mayor")
         XCTAssertEqual(InstrumentoDePartitura.violonchelo.nombre(en: .asturiano), "violonchelu")
         XCTAssertEqual(Encordado(nombre: "baxu"), .bajo)
-        XCTAssertEqual(ErrorDeLectura(texto: "", posicion: 0, motivo: .textoVacio).explicacion(en: .asturiano),
-                       "el testu ta baleru")
+        XCTAssertEqual(
+            ErrorDeLectura(texto: "", posicion: 0, motivo: .textoVacio).explicacion(en: .asturiano),
+            "el testu ta baleru")
         // Las escalas del catálogo se vuelven a leer con su nombre en los dos idiomas.
         for tipo in TipoDeEscala.todos where !TipoDeEscala.nombresTradicionales.contains(tipo.nombre) {
             let escala = Escala(.re, tipo)

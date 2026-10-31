@@ -66,10 +66,13 @@ public struct OpcionesDePentagrama {
     /// Cómo se apilan las notas de un acorde.
     public var disposicionDelAcorde: Disposicion
 
-    public init(clave: Clave? = nil, armadura: Armadura = .automatica, pentagramas: Pentagramas = .automatico, notacion: Notacion = .espanolUnicode,
-                nombresDeLasNotas: Bool = false, tamano: Double = 10, color: String = "currentColor",
-                marcaDeOctava: Bool = true, anchoDeLosCaracteres: Double = 1,
-                disposicionDelAcorde: Disposicion = .automatica) {
+    public init(
+        clave: Clave? = nil, armadura: Armadura = .automatica, pentagramas: Pentagramas = .automatico,
+        notacion: Notacion = .espanolUnicode,
+        nombresDeLasNotas: Bool = false, tamano: Double = 10, color: String = "currentColor",
+        marcaDeOctava: Bool = true, anchoDeLosCaracteres: Double = 1,
+        disposicionDelAcorde: Disposicion = .automatica
+    ) {
         self.clave = clave
         self.armadura = armadura
         self.pentagramas = pentagramas
@@ -91,20 +94,25 @@ extension Escala {
     ///   - sentido: si se da, solo la subida o la bajada; si es `nil`, la subida y, en las escalas que bajan con
     ///     otras notas (la menor melódica), también la bajada.
     ///   - opciones: clave, armadura, notación, tamaño y color.
-    public func svgPentagrama(octava: Int = 4, sentido: SentidoDelIntervalo? = nil,
-                              opciones: OpcionesDePentagrama = OpcionesDePentagrama()) -> String {
+    public func svgPentagrama(
+        octava: Int = 4, sentido: SentidoDelIntervalo? = nil,
+        opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+    ) -> String {
         let alturas: [Altura]
         switch sentido {
         case .ascendente?: alturas = self.alturas(octava: octava)
         case .descendente?: alturas = self.alturas(octava: octava, sentido: .descendente)
         case nil:
             let subida = self.alturas(octava: octava)
-            alturas = tipo.esDireccional ? subida + self.alturas(octava: octava, sentido: .descendente).dropFirst() : subida
+            alturas =
+                tipo.esDireccional ? subida + self.alturas(octava: octava, sentido: .descendente).dropFirst() : subida
         }
         var armadura: [Nota] = []
         if opciones.armadura == .automatica, let propia = notasDeLaArmadura, propia.count <= 7 { armadura = propia }
-        return PentagramaSVG(columnas: alturas.map { [$0] }, armadura: armadura, cifrado: nil,
-                             titulo: nombre(en: opciones.notacion), opciones: opciones).svg()
+        return PentagramaSVG(
+            columnas: alturas.map { [$0] }, armadura: armadura, cifrado: nil,
+            titulo: nombre(en: opciones.notacion), opciones: opciones
+        ).svg()
     }
 }
 
@@ -113,8 +121,10 @@ extension Acorde {
     /// en posición cerrada y a partir de `octava` (el bajo, en la primera octava en que su nota alcanza el Do de esa
     /// octava), con el cifrado encima. Los acordes muy extensos y `disposicionDelAcorde: .abierta` ponen el bajo una
     /// octava más grave y el resto encima, y con eso suelen pasar al pentagrama doble.
-    public func svgPentagrama(octava: Int = 4, cifrado conCifrado: Bool = true,
-                              opciones: OpcionesDePentagrama = OpcionesDePentagrama()) -> String {
+    public func svgPentagrama(
+        octava: Int = 4, cifrado conCifrado: Bool = true,
+        opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+    ) -> String {
         let cerrada = Exportacion.posicionCerrada(notasDesdeElBajo, desde: Altura(.do, octava: octava).midi)
         let abierta: Bool
         switch opciones.disposicionDelAcorde {
@@ -124,12 +134,16 @@ extension Acorde {
         }
         var alturas = cerrada
         if abierta, let bajo = notasDesdeElBajo.first, notasDesdeElBajo.count > 1 {
-            alturas = Exportacion.posicionCerrada([bajo], desde: Altura(.do, octava: octava - 1).midi)
-                + Exportacion.posicionCerrada(Array(notasDesdeElBajo.dropFirst()), desde: Altura(.do, octava: octava).midi)
+            alturas =
+                Exportacion.posicionCerrada([bajo], desde: Altura(.do, octava: octava - 1).midi)
+                + Exportacion.posicionCerrada(
+                    Array(notasDesdeElBajo.dropFirst()), desde: Altura(.do, octava: octava).midi)
         }
         let texto = cifrado(en: opciones.notacion)
-        return PentagramaSVG(columnas: [alturas], armadura: [], cifrado: conCifrado ? texto : nil,
-                             titulo: texto, opciones: opciones).svg()
+        return PentagramaSVG(
+            columnas: [alturas], armadura: [], cifrado: conCifrado ? texto : nil,
+            titulo: texto, opciones: opciones
+        ).svg()
     }
 }
 
@@ -138,8 +152,10 @@ extension Arpegio {
     /// a partir de `octava` (la del bajo), va en su columna, con las alteraciones que le hagan falta (no lleva
     /// armadura) y su nombre en un `<title>`; el título de la imagen es el nombre del arpegio.
     public func svgPentagrama(octava: Int = 4, opciones: OpcionesDePentagrama = OpcionesDePentagrama()) -> String {
-        PentagramaSVG(columnas: alturas(octava: octava).map { [$0] }, armadura: [], cifrado: nil,
-                      titulo: nombre(en: opciones.notacion), opciones: opciones).svg()
+        PentagramaSVG(
+            columnas: alturas(octava: octava).map { [$0] }, armadura: [], cifrado: nil,
+            titulo: nombre(en: opciones.notacion), opciones: opciones
+        ).svg()
     }
 }
 
@@ -219,8 +235,11 @@ struct PentagramaSVG {
             let todas = columnas.flatMap { $0 }
             let doCentral = Altura(.do, octava: 4).midi
             let enLosDosLados = todas.contains { $0.midi < doCentral } && todas.contains { $0.midi >= doCentral }
-            let lineas = todas.map { PentagramaSVG.lugaresDeLasLineasAdicionales(de: elegida.posicion(de: $0).lugar).count }.max() ?? 0
-            return enLosDosLados && lineas > PentagramaSVG.lineasAdicionalesParaElPentagramaDoble ? [.sol, .fa] : [elegida]
+            let lineas =
+                todas.map { PentagramaSVG.lugaresDeLasLineasAdicionales(de: elegida.posicion(de: $0).lugar).count }
+                .max() ?? 0
+            return enLosDosLados && lineas > PentagramaSVG.lineasAdicionalesParaElPentagramaDoble
+                ? [.sol, .fa] : [elegida]
         }
     }
 
@@ -238,7 +257,11 @@ struct PentagramaSVG {
             for k in claves.indices {
                 let suyas = columnas.flatMap { $0 }.filter { !doble || ($0.midi >= doCentral) == (k == 0) }
                 func lineas(_ octavas: Int) -> Int {
-                    suyas.map { PentagramaSVG.lugaresDeLasLineasAdicionales(de: claves[k].posicion(de: PentagramaSVG.escrita($0, octavas: octavas)).lugar).count }.max() ?? 0
+                    suyas.map {
+                        PentagramaSVG.lugaresDeLasLineasAdicionales(
+                            de: claves[k].posicion(de: PentagramaSVG.escrita($0, octavas: octavas)).lugar
+                        ).count
+                    }.max() ?? 0
                 }
                 let sinMarca = lineas(0)
                 guard sinMarca > PentagramaSVG.lineasAdicionalesParaElPentagramaDoble else { continue }
@@ -249,11 +272,12 @@ struct PentagramaSVG {
             }
         }
 
-        var cuerpo: [String] = []        // las claves y las armaduras
-        var notasSVG: [String] = []      // las notas: se desplazan si el texto de encima o de debajo es más ancho
+        var cuerpo: [String] = [] // las claves y las armaduras
+        var notasSVG: [String] = [] // las notas: se desplazan si el texto de encima o de debajo es más ancho
         var x = 0.6
         // Lo que sube y baja el dibujo, para el alto de la imagen.
-        var minimoY = 0.0, maximoY = doble ? 4.0 + PentagramaSVG.separacionDelPentagramaDoble : 4.0
+        var minimoY = 0.0
+        var maximoY = doble ? 4.0 + PentagramaSVG.separacionDelPentagramaDoble : 4.0
         func incluir(_ glifo: Glifo, lugar: Int, pentagrama: Int) {
             let y = PentagramaSVG.y(deLugar: lugar, pentagrama: pentagrama)
             minimoY = min(minimoY, y + glifo.arriba)
@@ -287,11 +311,12 @@ struct PentagramaSVG {
         x += armadura.isEmpty ? 0.8 : 0.9
 
         // Notas, columna a columna. En el pentagrama doble, del Do central para arriba van en el de sol.
-        var enVigor: [Int: Int] = [:]   // altura diatónica (letra y octava) → alteración vigente
+        var enVigor: [Int: Int] = [:] // altura diatónica (letra y octava) → alteración vigente
         var etiquetas: [(x: Double, texto: String)] = []
         var cifradoX: Double?
         // Por pentagrama: dónde empiezan y acaban sus notas y lo que suben y bajan, para la marca de octava.
-        var primeraX = [Double?](repeating: nil, count: claves.count), ultimaX = [Double](repeating: 0, count: claves.count)
+        var primeraX = [Double?](repeating: nil, count: claves.count)
+        var ultimaX = [Double](repeating: 0, count: claves.count)
         var arribaDeLasNotas = [Double](repeating: .infinity, count: claves.count)
         var abajoDeLasNotas = [Double](repeating: -.infinity, count: claves.count)
         var ultimaEtiqueta: (centro: Double, mitad: Double)?
@@ -300,23 +325,32 @@ struct PentagramaSVG {
             var grupos: [[NotaColocada]] = []
             for k in claves.indices {
                 let delPentagrama = alturas.filter { !doble || ($0.midi >= doCentral) == (k == 0) }
-                grupos.append(delPentagrama.map { NotaColocada(altura: $0, lugar: claves[k].posicion(de: PentagramaSVG.escrita($0, octavas: octavas[k])).lugar) }
+                grupos.append(
+                    delPentagrama.map {
+                        NotaColocada(
+                            altura: $0,
+                            lugar: claves[k].posicion(de: PentagramaSVG.escrita($0, octavas: octavas[k])).lugar)
+                    }
                     .sorted { ($0.lugar, $0.altura.midi) < ($1.lugar, $1.altura.midi) })
             }
-            var anchosDeLasColumnas: [Double] = []   // lo que mide de ancho cada columna de alteraciones (la más ancha de sus glifos)
+            // Lo que mide de ancho cada columna de alteraciones (la más ancha de sus glifos).
+            var anchosDeLasColumnas: [Double] = []
             for k in grupos.indices {
                 // Las segundas (y los unísonos con otra alteración) se desplazan a la derecha.
-                for i in grupos[k].indices.dropFirst() where !grupos[k][i - 1].desplazada && grupos[k][i].lugar - grupos[k][i - 1].lugar <= 1 {
+                for i in grupos[k].indices.dropFirst()
+                where !grupos[k][i - 1].desplazada && grupos[k][i].lugar - grupos[k][i - 1].lugar <= 1 {
                     grupos[k][i].desplazada = true
                 }
                 // Alteraciones: las que no da la armadura, en columnas a la izquierda sin pisarse.
-                var fondoDeLaColumna: [Double] = []   // hasta dónde baja el último glifo de cada columna
+                var fondoDeLaColumna: [Double] = [] // hasta dónde baja el último glifo de cada columna
                 for i in grupos[k].indices.reversed() {
                     let semitonos = grupos[k][i].altura.nota.alteracion.semitonos
                     // Lo que vale en esa línea o espacio: lo último que se escribió o, si nada, la armadura. Así la
                     // bajada de la menor melódica lleva los becuadros que anulan los ♯ de la subida.
                     let pasos = grupos[k][i].altura.pasos
-                    guard semitonos != (enVigor[pasos] ?? vigentes[grupos[k][i].altura.nota.natural] ?? 0) else { continue }
+                    guard semitonos != (enVigor[pasos] ?? vigentes[grupos[k][i].altura.nota.natural] ?? 0) else {
+                        continue
+                    }
                     enVigor[pasos] = semitonos
                     let glifo = PentagramaSVG.glifoDeAlteracion(semitonos)
                     grupos[k][i].alteracion = glifo
@@ -324,26 +358,45 @@ struct PentagramaSVG {
                     // sostenido, así que caben más juntos.
                     let y = PentagramaSVG.y(deLugar: grupos[k][i].lugar)
                     var columna = 0
-                    while columna < fondoDeLaColumna.count, fondoDeLaColumna[columna] + PentagramaSVG.huecoVerticalEntreAlteraciones > y + glifo.arriba { columna += 1 }
-                    if columna == fondoDeLaColumna.count { fondoDeLaColumna.append(y + glifo.abajo) } else { fondoDeLaColumna[columna] = y + glifo.abajo }
+                    while columna < fondoDeLaColumna.count,
+                        fondoDeLaColumna[columna] + PentagramaSVG.huecoVerticalEntreAlteraciones > y + glifo.arriba
+                    { columna += 1 }
+                    if columna == fondoDeLaColumna.count {
+                        fondoDeLaColumna.append(y + glifo.abajo)
+                    } else {
+                        fondoDeLaColumna[columna] = y + glifo.abajo
+                    }
                     grupos[k][i].columnaDeAlteracion = columna
                     let anchoDelGlifo = grupos[k][i].alteracion?.ancho ?? 0
-                    if columna == anchosDeLasColumnas.count { anchosDeLasColumnas.append(anchoDelGlifo) } else { anchosDeLasColumnas[columna] = max(anchosDeLasColumnas[columna], anchoDelGlifo) }
+                    if columna == anchosDeLasColumnas.count {
+                        anchosDeLasColumnas.append(anchoDelGlifo)
+                    } else {
+                        anchosDeLasColumnas[columna] = max(anchosDeLasColumnas[columna], anchoDelGlifo)
+                    }
                 }
             }
-            let izquierda = anchosDeLasColumnas.reduce(0, +) + PentagramaSVG.huecoEntreColumnasDeAlteraciones * Double(max(0, anchosDeLasColumnas.count - 1))
+            let izquierda =
+                anchosDeLasColumnas.reduce(0, +) + PentagramaSVG.huecoEntreColumnasDeAlteraciones
+                * Double(max(0, anchosDeLasColumnas.count - 1))
             var xDeLaNota = x + izquierda + (anchosDeLasColumnas.isEmpty ? 0 : 0.1)
             let hayDesplazadas = grupos.contains { $0.contains(where: \.desplazada) }
             let ancho = PentagramaSVG.anchoDeLaRedonda * (hayDesplazadas ? 2 : 1)
-            let etiqueta: String? = opciones.nombresDeLasNotas
-                ? (columnas.count == 1 ? alturas.map { $0.nombre(en: opciones.notacion) }.joined(separator: " ")
-                                       : alturas[0].nombre(en: opciones.notacion))
+            let etiqueta: String? =
+                opciones.nombresDeLasNotas
+                ? (columnas.count == 1
+                    ? alturas.map { $0.nombre(en: opciones.notacion) }.joined(separator: " ")
+                    : alturas[0].nombre(en: opciones.notacion))
                 : nil
             // Las etiquetas de las notas no se pisan: si la de esta columna cae demasiado cerca de la anterior, la
             // columna se corre a la derecha.
-            let mitadDeLaEtiqueta = (etiqueta.map { PentagramaSVG.anchoEstimado($0, cuerpoDeLetra: PentagramaSVG.letraDeLasEtiquetas, proporcion: opciones.anchoDeLosCaracteres) } ?? 0) / 2
+            let mitadDeLaEtiqueta =
+                (etiqueta.map {
+                    PentagramaSVG.anchoEstimado(
+                        $0, cuerpoDeLetra: PentagramaSVG.letraDeLasEtiquetas, proporcion: opciones.anchoDeLosCaracteres)
+                } ?? 0) / 2
             if columnas.count > 1, etiqueta != nil, let anterior = ultimaEtiqueta {
-                let centroMinimo = anterior.centro + anterior.mitad + mitadDeLaEtiqueta + PentagramaSVG.separacionEntreEtiquetas
+                let centroMinimo =
+                    anterior.centro + anterior.mitad + mitadDeLaEtiqueta + PentagramaSVG.separacionEntreEtiquetas
                 xDeLaNota += max(0, centroMinimo - (xDeLaNota + ancho / 2))
             }
 
@@ -357,7 +410,8 @@ struct PentagramaSVG {
                     var partes: [String] = []
                     if let alteracion = nota.alteracion {
                         // Cada columna, pegada a la anterior por su borde derecho; la primera, junto a la nota.
-                        let anchoDeLasMasCercanas = anchosDeLasColumnas.prefix(nota.columnaDeAlteracion).reduce(0, +)
+                        let anchoDeLasMasCercanas =
+                            anchosDeLasColumnas.prefix(nota.columnaDeAlteracion).reduce(0, +)
                             + PentagramaSVG.huecoEntreColumnasDeAlteraciones * Double(nota.columnaDeAlteracion)
                         let xa = xDeLaNota - 0.1 - anchoDeLasMasCercanas - alteracion.ancho
                         incluir(alteracion, lugar: nota.lugar, pentagrama: k)
@@ -389,16 +443,24 @@ struct PentagramaSVG {
         for k in claves.indices where octavas[k] != 0 {
             guard let inicio = primeraX[k] else { continue }
             let arriba = octavas[k] > 0
-            let y = arriba ? min(arribaDeLasNotas[k] - 1.5, PentagramaSVG.y(deLugar: 8, pentagrama: k) - 0.8)
-                           : max(abajoDeLasNotas[k] + 2.6, PentagramaSVG.y(deLugar: 0, pentagrama: k) + 2.0)
+            let y =
+                arriba
+                ? min(arribaDeLasNotas[k] - 1.5, PentagramaSVG.y(deLugar: 8, pentagrama: k) - 0.8)
+                : max(abajoDeLasNotas[k] + 2.6, PentagramaSVG.y(deLugar: 0, pentagrama: k) + 2.0)
             let rotulo = arriba ? "8va" : "8vb"
-            let finDelRotulo = inicio - 0.3 + PentagramaSVG.anchoEstimado(rotulo, cuerpoDeLetra: 1.4, proporcion: opciones.anchoDeLosCaracteres)
+            let finDelRotulo =
+                inicio - 0.3
+                + PentagramaSVG.anchoEstimado(rotulo, cuerpoDeLetra: 1.4, proporcion: opciones.anchoDeLosCaracteres)
             let yDeLaLinea = y - 0.45
             let gancho = arriba ? yDeLaLinea + 1.0 : yDeLaLinea - 1.0
-            marcaSVG.append("<text x=\"\(PentagramaSVG.n(inicio - 0.3))\" y=\"\(PentagramaSVG.n(y))\" font-size=\"1.4\" font-style=\"italic\" font-family=\"sans-serif\" fill=\"\(color)\" stroke=\"none\">\(rotulo)</text>")
+            marcaSVG.append(
+                "<text x=\"\(PentagramaSVG.n(inicio - 0.3))\" y=\"\(PentagramaSVG.n(y))\" font-size=\"1.4\" font-style=\"italic\" font-family=\"sans-serif\" fill=\"\(color)\" stroke=\"none\">\(rotulo)</text>"
+            )
             // Con una sola columna (un acorde) no hay línea de puntos: solo el rótulo.
             if ultimaX[k] - (finDelRotulo + 0.3) > 1.0 {
-                marcaSVG.append("<path d=\"M\(PentagramaSVG.n(finDelRotulo + 0.3)) \(PentagramaSVG.n(yDeLaLinea)) H\(PentagramaSVG.n(ultimaX[k])) V\(PentagramaSVG.n(gancho))\" stroke-dasharray=\"0.5 0.35\"/>")
+                marcaSVG.append(
+                    "<path d=\"M\(PentagramaSVG.n(finDelRotulo + 0.3)) \(PentagramaSVG.n(yDeLaLinea)) H\(PentagramaSVG.n(ultimaX[k])) V\(PentagramaSVG.n(gancho))\" stroke-dasharray=\"0.5 0.35\"/>"
+                )
             }
             if arriba { minimoY = min(minimoY, y - 1.2) } else { maximoY = max(maximoY, y + 0.3) }
         }
@@ -406,8 +468,15 @@ struct PentagramaSVG {
         // Un cifrado o los nombres de un acorde pueden ser más anchos que el acorde: el pentagrama se alarga a la derecha
         // y, si el texto sobresale por la izquierda, las notas se desplazan.
         let proporcion = opciones.anchoDeLosCaracteres
-        let anchoDelTexto = max(cifrado.map { PentagramaSVG.anchoEstimado($0, cuerpoDeLetra: PentagramaSVG.letraDelCifrado, proporcion: proporcion) } ?? 0,
-                                columnas.count == 1 ? etiquetas.first.map { PentagramaSVG.anchoEstimado($0.texto, cuerpoDeLetra: PentagramaSVG.letraDeLasEtiquetas, proporcion: proporcion) } ?? 0 : 0)
+        let anchoDelTexto = max(
+            cifrado.map {
+                PentagramaSVG.anchoEstimado($0, cuerpoDeLetra: PentagramaSVG.letraDelCifrado, proporcion: proporcion)
+            } ?? 0,
+            columnas.count == 1
+                ? etiquetas.first.map {
+                    PentagramaSVG.anchoEstimado(
+                        $0.texto, cuerpoDeLetra: PentagramaSVG.letraDeLasEtiquetas, proporcion: proporcion)
+                } ?? 0 : 0)
         let centroDelTexto = cifradoX ?? 0
         let desplazamiento = max(0, anchoDelTexto / 2 + 0.2 - centroDelTexto)
         final = max(final + desplazamiento, centroDelTexto + desplazamiento + anchoDelTexto / 2 + 0.6)
@@ -424,59 +493,70 @@ struct PentagramaSVG {
         for k in claves.indices {
             for i in 0..<5 {
                 let y = PentagramaSVG.n(PentagramaSVG.y(deLugar: 8 - 2 * i, pentagrama: k))
-                lineas.append("<line x1=\"0\" y1=\"\(y)\" x2=\"\(PentagramaSVG.n(final))\" y2=\"\(y)\" stroke-width=\"0.13\"/>")
+                lineas.append(
+                    "<line x1=\"0\" y1=\"\(y)\" x2=\"\(PentagramaSVG.n(final))\" y2=\"\(y)\" stroke-width=\"0.13\"/>")
             }
         }
         // Barra del principio (si hay dos pentagramas, una sola que los une) y barra final.
         let abajoDelSistema = PentagramaSVG.y(deLugar: 0, pentagrama: claves.count - 1)
-        lineas.append("<line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"\(PentagramaSVG.n(abajoDelSistema))\" stroke-width=\"0.16\"/>")
-        lineas.append("<line x1=\"\(PentagramaSVG.n(final))\" y1=\"0\" x2=\"\(PentagramaSVG.n(final))\" y2=\"\(PentagramaSVG.n(abajoDelSistema))\" stroke-width=\"0.16\"/>")
+        lineas.append(
+            "<line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"\(PentagramaSVG.n(abajoDelSistema))\" stroke-width=\"0.16\"/>")
+        lineas.append(
+            "<line x1=\"\(PentagramaSVG.n(final))\" y1=\"0\" x2=\"\(PentagramaSVG.n(final))\" y2=\"\(PentagramaSVG.n(abajoDelSistema))\" stroke-width=\"0.16\"/>"
+        )
         // La llave de Bravura, estirada de sus 4 espacios a lo que miden los dos pentagramas (14).
-        let llave = doble
+        let llave =
+            doble
             ? "<path transform=\"translate(\(PentagramaSVG.n(-PentagramaSVG.margenDeLaLlave + 0.3)) \(PentagramaSVG.n(abajoDelSistema))) scale(\(PentagramaSVG.n(abajoDelSistema / 4)))\" d=\"\(GlifosSMuFL.llave.trazado)\"/>"
             : ""
         var adicionalesSVG: [String] = []
         for linea in lineasAdicionales {
             let y = PentagramaSVG.n(PentagramaSVG.y(deLugar: linea.lugar, pentagrama: linea.pentagrama))
-            adicionalesSVG.append("<line x1=\"\(PentagramaSVG.n(linea.desde))\" y1=\"\(y)\" x2=\"\(PentagramaSVG.n(linea.hasta))\" y2=\"\(y)\" stroke-width=\"0.16\"/>")
+            adicionalesSVG.append(
+                "<line x1=\"\(PentagramaSVG.n(linea.desde))\" y1=\"\(y)\" x2=\"\(PentagramaSVG.n(linea.hasta))\" y2=\"\(y)\" stroke-width=\"0.16\"/>"
+            )
         }
 
         var textos: [String] = []
         if let cifrado, let cx = cifradoX {
-            textos.append("<text x=\"\(PentagramaSVG.n(cx))\" y=\"\(PentagramaSVG.n(minimoY - 0.6))\" text-anchor=\"middle\" font-size=\"\(PentagramaSVG.letraDelCifrado)\" lengthAdjust=\"spacingAndGlyphs\" textLength=\"\(PentagramaSVG.n(PentagramaSVG.anchoEstimado(cifrado, cuerpoDeLetra: PentagramaSVG.letraDelCifrado, proporcion: proporcion)))\" font-family=\"sans-serif\">\(PentagramaSVG.escapar(cifrado))</text>")
+            textos.append(
+                "<text x=\"\(PentagramaSVG.n(cx))\" y=\"\(PentagramaSVG.n(minimoY - 0.6))\" text-anchor=\"middle\" font-size=\"\(PentagramaSVG.letraDelCifrado)\" lengthAdjust=\"spacingAndGlyphs\" textLength=\"\(PentagramaSVG.n(PentagramaSVG.anchoEstimado(cifrado, cuerpoDeLetra: PentagramaSVG.letraDelCifrado, proporcion: proporcion)))\" font-family=\"sans-serif\">\(PentagramaSVG.escapar(cifrado))</text>"
+            )
         }
         for etiqueta in etiquetas {
-            textos.append("<text x=\"\(PentagramaSVG.n(etiqueta.x))\" y=\"\(PentagramaSVG.n(maximoY + 1.6))\" text-anchor=\"middle\" font-size=\"\(PentagramaSVG.letraDeLasEtiquetas)\" lengthAdjust=\"spacingAndGlyphs\" textLength=\"\(PentagramaSVG.n(PentagramaSVG.anchoEstimado(etiqueta.texto, cuerpoDeLetra: PentagramaSVG.letraDeLasEtiquetas, proporcion: proporcion)))\" font-family=\"sans-serif\">\(PentagramaSVG.escapar(etiqueta.texto))</text>")
+            textos.append(
+                "<text x=\"\(PentagramaSVG.n(etiqueta.x))\" y=\"\(PentagramaSVG.n(maximoY + 1.6))\" text-anchor=\"middle\" font-size=\"\(PentagramaSVG.letraDeLasEtiquetas)\" lengthAdjust=\"spacingAndGlyphs\" textLength=\"\(PentagramaSVG.n(PentagramaSVG.anchoEstimado(etiqueta.texto, cuerpoDeLetra: PentagramaSVG.letraDeLasEtiquetas, proporcion: proporcion)))\" font-family=\"sans-serif\">\(PentagramaSVG.escapar(etiqueta.texto))</text>"
+            )
         }
 
         let descripcion = columnas.flatMap { $0 }.map { $0.nombre(en: opciones.notacion) }.joined(separator: ", ")
         let pxAncho = PentagramaSVG.n(ancho * opciones.tamano)
         let pxAlto = PentagramaSVG.n(alto * opciones.tamano)
         return """
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="\(PentagramaSVG.n(-margen)) \(PentagramaSVG.n(cima)) \(PentagramaSVG.n(ancho)) \(PentagramaSVG.n(alto))" width="\(pxAncho)" height="\(pxAlto)" role="img" aria-labelledby="titulo descripcion">
-        <title id="titulo">\(PentagramaSVG.escapar(titulo))</title>
-        <desc id="descripcion">\(PentagramaSVG.escapar(descripcion))</desc>
-        <g stroke="\(color)" fill="none">
-        \(lineas.joined(separator: "\n"))
-        </g>
-        <g fill="\(color)" stroke="none">
-        \(llave)
-        \(cuerpo.joined(separator: "\n"))
-        </g>
-        <g transform="translate(\(PentagramaSVG.n(desplazamiento)) 0)">
-        <g stroke="\(color)" fill="none">
-        \(adicionalesSVG.joined(separator: "\n"))
-        </g>
-        <g stroke="\(color)" fill="none" stroke-width="0.12">
-        \(marcaSVG.joined(separator: "\n"))
-        </g>
-        <g fill="\(color)" stroke="none">
-        \(notasSVG.joined(separator: "\n"))
-        \(textos.joined(separator: "\n"))
-        </g>
-        </g>
-        </svg>
-        """
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="\(PentagramaSVG.n(-margen)) \(PentagramaSVG.n(cima)) \(PentagramaSVG.n(ancho)) \(PentagramaSVG.n(alto))" width="\(pxAncho)" height="\(pxAlto)" role="img" aria-labelledby="titulo descripcion">
+            <title id="titulo">\(PentagramaSVG.escapar(titulo))</title>
+            <desc id="descripcion">\(PentagramaSVG.escapar(descripcion))</desc>
+            <g stroke="\(color)" fill="none">
+            \(lineas.joined(separator: "\n"))
+            </g>
+            <g fill="\(color)" stroke="none">
+            \(llave)
+            \(cuerpo.joined(separator: "\n"))
+            </g>
+            <g transform="translate(\(PentagramaSVG.n(desplazamiento)) 0)">
+            <g stroke="\(color)" fill="none">
+            \(adicionalesSVG.joined(separator: "\n"))
+            </g>
+            <g stroke="\(color)" fill="none" stroke-width="0.12">
+            \(marcaSVG.joined(separator: "\n"))
+            </g>
+            <g fill="\(color)" stroke="none">
+            \(notasSVG.joined(separator: "\n"))
+            \(textos.joined(separator: "\n"))
+            </g>
+            </g>
+            </svg>
+            """
     }
 
     // MARK: Geometría

@@ -78,16 +78,18 @@ public struct TemperamentoRegular: Afinacion, Hashable {
     /// 53 (casi pitagórico).
     public static func igual(divisiones: Int, la4: Double = 440) -> TemperamentoRegular {
         let pasos = (Double(divisiones) * log2(1.5)).rounded()
-        return TemperamentoRegular(nombre: "\(divisiones) divisiones iguales",
-                                   quinta: 1200 * pasos / Double(divisiones), la4: la4)
+        return TemperamentoRegular(
+            nombre: "\(divisiones) divisiones iguales",
+            quinta: 1200 * pasos / Double(divisiones), la4: la4)
     }
 
     /// Mesotónico de 1/`fraccion` de coma sintónica: cada quinta se estrecha esa parte de la coma.
     public static func mesotonico(fraccionDeComa fraccion: Double, la4: Double = 440) -> TemperamentoRegular {
         let pura = 1200 * log2(1.5)
         let coma = 1200 * log2(81.0 / 80.0)
-        return TemperamentoRegular(nombre: "mesotónico de 1/\(Int(fraccion)) de coma",
-                                   quinta: pura - coma / fraccion, la4: la4)
+        return TemperamentoRegular(
+            nombre: "mesotónico de 1/\(Int(fraccion)) de coma",
+            quinta: pura - coma / fraccion, la4: la4)
     }
 
     public static let igual = TemperamentoRegular(nombre: "temperamento igual", quinta: 700)
@@ -158,8 +160,9 @@ public struct TemperamentoCircular: Afinacion, Hashable {
     /// Doce quintas puras, de las que se estrecha cada una lo que diga `estrechamientos` (en cents).
     private static func circulo(_ nombre: String, _ estrechamientos: [Int: Double]) -> TemperamentoCircular {
         let pura = 1200 * log2(1.5)
-        return TemperamentoCircular(nombre: nombre,
-                                    quintas: (0..<12).map { pura - (estrechamientos[$0] ?? 0) })!
+        return TemperamentoCircular(
+            nombre: nombre,
+            quintas: (0..<12).map { pura - (estrechamientos[$0] ?? 0) })!
     }
 
     private static let comaPitagorica = RazonDeFrecuencias.comaPitagorica.cents
@@ -167,17 +170,27 @@ public struct TemperamentoCircular: Afinacion, Hashable {
 
     /// Werckmeister III (1691): Do–Sol, Sol–Re, Re–La y Si–Fa♯, ¼ de coma pitagórica más
     /// estrechas; las demás, puras.
-    public static let werckmeisterIII = circulo("Werckmeister III", [0: comaPitagorica / 4, 1: comaPitagorica / 4,
-                                                                    2: comaPitagorica / 4, 5: comaPitagorica / 4])
+    public static let werckmeisterIII = circulo(
+        "Werckmeister III",
+        [
+            0: comaPitagorica / 4, 1: comaPitagorica / 4,
+            2: comaPitagorica / 4, 5: comaPitagorica / 4,
+        ])
     /// Kirnberger III (1779): de Do a Mi, cuatro quintas ¼ de coma sintónica más estrechas, con la
     /// tercera Do–Mi pura; Fa♯–Do♯, un esquisma más estrecha; las demás, puras.
-    public static let kirnbergerIII = circulo("Kirnberger III", [0: comaSintonica / 4, 1: comaSintonica / 4,
-                                                                2: comaSintonica / 4, 3: comaSintonica / 4,
-                                                                6: comaPitagorica - comaSintonica])
+    public static let kirnbergerIII = circulo(
+        "Kirnberger III",
+        [
+            0: comaSintonica / 4, 1: comaSintonica / 4,
+            2: comaSintonica / 4, 3: comaSintonica / 4,
+            6: comaPitagorica - comaSintonica,
+        ])
     /// Vallotti (h. 1750): de Fa a Si, seis quintas ⅙ de coma pitagórica más estrechas; las demás, puras.
-    public static let vallotti = circulo("Vallotti", Dictionary(uniqueKeysWithValues: [11, 0, 1, 2, 3, 4].map { ($0, comaPitagorica / 6) }))
+    public static let vallotti = circulo(
+        "Vallotti", Dictionary(uniqueKeysWithValues: [11, 0, 1, 2, 3, 4].map { ($0, comaPitagorica / 6) }))
     /// Young (1799): el de Vallotti, una quinta más arriba, de Do a Fa♯.
-    public static let young = circulo("Young", Dictionary(uniqueKeysWithValues: (0...5).map { ($0, comaPitagorica / 6) }))
+    public static let young = circulo(
+        "Young", Dictionary(uniqueKeysWithValues: (0...5).map { ($0, comaPitagorica / 6) }))
 }
 
 // MARK: - Afinación justa
@@ -207,8 +220,11 @@ public struct EntonacionJusta: Afinacion, Hashable {
 
     public func frecuencia(de nota: Altura) -> Double {
         let referencia = Altura(tonica, octava: 4)
-        return frecuenciaTonica * Intervalo(pasosDeQuinta: nota.pasosDeQuinta - referencia.pasosDeQuinta,
-                                            pasosDeOctava: nota.pasosDeOctava - referencia.pasosDeOctava).razonJusta.valor
+        return frecuenciaTonica
+            * Intervalo(
+                pasosDeQuinta: nota.pasosDeQuinta - referencia.pasosDeQuinta,
+                pasosDeOctava: nota.pasosDeOctava - referencia.pasosDeOctava
+            ).razonJusta.valor
     }
 }
 
@@ -247,10 +263,14 @@ extension Intervalo {
         let o = pasosDeOctavaConSigno
         let terceras = divisionEntera(q + 1, 4)
         let exponentes = [(3.0, q - 4 * terceras), (5.0, terceras), (2.0, o - q + 4 * terceras)]
-        var numerador = 1.0, denominador = 1.0
+        var numerador = 1.0
+        var denominador = 1.0
         for (base, exponente) in exponentes {
-            if exponente >= 0 { numerador *= pow(base, Double(exponente)) }
-            else { denominador *= pow(base, Double(-exponente)) }
+            if exponente >= 0 {
+                numerador *= pow(base, Double(exponente))
+            } else {
+                denominador *= pow(base, Double(-exponente))
+            }
         }
         return RazonDeFrecuencias(numerador, denominador)
     }

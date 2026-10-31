@@ -68,9 +68,10 @@ extension LineaDeComandos {
     /// asturiano, aragonés, euskera, portugués, francés, occitano y italiano, y con los ingleses en
     /// inglés, alemán, griego y ruso.
     static func ejemplo(_ espanol: String, _ ingles: String) -> Traduccion {
-        Traduccion(espanol, ingles, ca: espanol, gl: espanol, ast: espanol, an: espanol, eu: espanol, pt: espanol,
-                   fr: espanol, oc: espanol, it: espanol, de: ingles,
-                   el: ingles, ru: ingles)
+        Traduccion(
+            espanol, ingles, ca: espanol, gl: espanol, ast: espanol, an: espanol, eu: espanol, pt: espanol,
+            fr: espanol, oc: espanol, it: espanol, de: ingles,
+            el: ingles, ru: ingles)
     }
 
     /// Lo que va antes de las órdenes: qué es, cómo se usa y el título de la lista.
@@ -79,7 +80,8 @@ extension LineaDeComandos {
     /// Lo que sigue a las órdenes, tras una línea en blanco.
     static let pieDeLaAyuda = TextosDeCLI.traducidos.map(\.pieDeLaAyuda)
 
-    static let ordenesDeLaAyuda: [EntradaDeAyuda] = ayudaDeConsultas + ayudaDeArmonizacion + ayudaDePartituras
+    static let ordenesDeLaAyuda: [EntradaDeAyuda] =
+        ayudaDeConsultas + ayudaDeArmonizacion + ayudaDePartituras
         + ayudaDeDibujos + ayudaDeNeorriemann + ayudaDeTrastes + ayudaDeLaAyuda
 
     /// La ayuda de la propia ayuda; las demás órdenes están en los archivos Ayuda+*.swift.
@@ -87,6 +89,6 @@ extension LineaDeComandos {
         // ayuda
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traducidos.map(\.sintaxisAyuda),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionAyuda)),
+            descripcion: TextosDeCLI.traducidos.map(\.descripcionAyuda))
     ]
 }

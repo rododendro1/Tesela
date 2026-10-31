@@ -1,5 +1,6 @@
-import XCTest
 import Armonia
+import XCTest
+
 @testable import ArmoniaPresentacion
 
 // Lo que se lee de un teclado MIDI y lo que se muestra en teoría postonal. No usa CoreMIDI: se ejecuta también
@@ -18,8 +19,10 @@ final class TecladoMIDIYPostonalTests: XCTestCase {
     }
 
     func testLasPulsadasVanEnElOrdenEnQueSePulsaron() {
-        let cambios = [CambioMIDI(midi: 64, pulsada: true), CambioMIDI(midi: 60, pulsada: true),
-                       CambioMIDI(midi: 67, pulsada: true), CambioMIDI(midi: 64, pulsada: false)]
+        let cambios = [
+            CambioMIDI(midi: 64, pulsada: true), CambioMIDI(midi: 60, pulsada: true),
+            CambioMIDI(midi: 67, pulsada: true), CambioMIDI(midi: 64, pulsada: false),
+        ]
         XCTAssertEqual(CambioMIDI.aplicar(cambios, a: []), [60, 67])
         XCTAssertEqual(CambioMIDI.aplicar([CambioMIDI(midi: 60, pulsada: true)], a: [60]), [60])
     }

@@ -70,7 +70,10 @@ final class ImportacionMXLTests: XCTestCase {
     func testDEFLATEConBloquesFijosYGuardados() throws {
         let texto = [UInt8]("Do Mi Sol, Do Mi Sol, Do Mi Sol: arpegio".utf8)
         // zlib con Z_FIXED (códigos fijos) y con nivel 0 (un bloque guardado).
-        for base64 in ["c8lX8M1UCM7P0VFwwcK0UkgsKkhNz8wHAA==", "ASgA1/9EbyBNaSBTb2wsIERvIE1pIFNvbCwgRG8gTWkgU29sOiBhcnBlZ2lv"] {
+        let comprimidos = [
+            "c8lX8M1UCM7P0VFwwcK0UkgsKkhNz8wHAA==", "ASgA1/9EbyBNaSBTb2wsIERvIE1pIFNvbCwgRG8gTWkgU29sOiBhcnBlZ2lv",
+        ]
+        for base64 in comprimidos {
             var inflado = Inflado([UInt8](Data(base64Encoded: base64)!), maximo: 1000)
             try inflado.descomprimir()
             XCTAssertEqual(inflado.salida, texto, base64)
@@ -97,8 +100,8 @@ final class ImportacionMXLTests: XCTestCase {
         XCTAssertEqual(error(ImportacionMXLTests.zip([("a.xml", [UInt8]("<x/>".utf8))], metodo: 12)), .comprimido)
         XCTAssertEqual(error(ImportacionMXLTests.mxl.prefix(ImportacionMXLTests.mxl.count - 30)), .comprimido)
         // Una partitura que no es MusicXML por partes, dentro del zip: el error es el de MusicXML.
-        XCTAssertEqual(error(ImportacionMXLTests.zip([("a.xml", [UInt8]("<score-timewise/>".utf8))])),
-                       .noEsMusicXMLPorPartes)
+        let porTiempos = ImportacionMXLTests.zip([("a.xml", [UInt8]("<score-timewise/>".utf8))])
+        XCTAssertEqual(error(porTiempos), .noEsMusicXMLPorPartes)
     }
 
     // MARK: Ritmo armónico

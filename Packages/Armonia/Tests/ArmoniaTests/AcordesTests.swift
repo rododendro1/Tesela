@@ -1,9 +1,10 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class AcordeTests: XCTestCase {
     func testNotas() {
@@ -47,10 +48,12 @@ final class AcordeTests: XCTestCase {
     }
 
     func testDisposicion() {
-        XCTAssertEqual(Acorde("Do/Mi").posicionCerrada(octava: 4).map(\.description),
-                       ["Mi4", "Sol4", "Do5"])
-        XCTAssertEqual(Acorde("Do9").posicionCerrada(octava: 3).map(\.description),
-                       ["Do3", "Mi3", "Sol3", "Si♭3", "Re4"])
+        XCTAssertEqual(
+            Acorde("Do/Mi").posicionCerrada(octava: 4).map(\.description),
+            ["Mi4", "Sol4", "Do5"])
+        XCTAssertEqual(
+            Acorde("Do9").posicionCerrada(octava: 3).map(\.description),
+            ["Do3", "Mi3", "Sol3", "Si♭3", "Re4"])
     }
 
     func testIdentificacion() {
@@ -65,8 +68,9 @@ final class AcordeTests: XCTestCase {
 
         // La ortografía importa: Do–Mi–Sol♯ es Do aumentado; Do–Mi–La♭ es La♭ aumentado sobre Do.
         XCTAssertEqual(Acorde.identificar([.do, .mi, Nota("Sol#")]).first, Acorde(.do, .aumentado))
-        XCTAssertEqual(Acorde.identificar([.do, .mi, Nota("Lab")]).first,
-                       Acorde(Nota("Lab"), .aumentado, inversion: 1))
+        XCTAssertEqual(
+            Acorde.identificar([.do, .mi, Nota("Lab")]).first,
+            Acorde(Nota("Lab"), .aumentado, inversion: 1))
     }
 
     func testSextasAumentadas() throws {
@@ -76,10 +80,12 @@ final class AcordeTests: XCTestCase {
         XCTAssertEqual(italiana.tipo.estructura.papel(de: .sextaAumentada), .sexta)
         XCTAssertEqual(Acorde.identificar(["La♭", "Do", "Fa♯"] as [Nota]).first?.description, "La♭(♯6,omit5)")
         XCTAssertEqual(Acorde.identificar(["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.description, "La♭(♯6)")
-        XCTAssertEqual(Acorde.identificar(["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.tipo.nombre(en: .inglesASCII),
-                       "German augmented sixth")
+        XCTAssertEqual(
+            Acorde.identificar(["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.tipo.nombre(en: .inglesASCII),
+            "German augmented sixth")
         let francesa = Acorde.identificar(["La♭", "Do", "Re", "Fa♯"] as [Nota])
-        XCTAssertTrue(francesa.contains { $0.description == "La♭(♯6,♯11,omit5)" && $0.tipo.nombre == "sexta aumentada francesa" })
+        XCTAssertTrue(
+            francesa.contains { $0.description == "La♭(♯6,♯11,omit5)" && $0.tipo.nombre == "sexta aumentada francesa" })
     }
 
     func testIdentificacionTolerante() {
@@ -92,8 +98,9 @@ final class AcordeTests: XCTestCase {
         XCTAssertEqual(Acorde.identificar([.do, .mi, .sol, .do, .mi]).first?.cifrado, "Do")
 
         // Tensiones alteradas.
-        XCTAssertEqual(Acorde.identificar([.do, .mi, Nota("Sib"), Nota("Reb")]).first?.cifrado,
-                       "Do7(♭9)")
+        XCTAssertEqual(
+            Acorde.identificar([.do, .mi, Nota("Sib"), Nota("Reb")]).first?.cifrado,
+            "Do7(♭9)")
 
         // Bajo ajeno al acorde.
         let conBajo = Acorde.identificar([.re, .do, .mi, .sol]).map(\.cifrado)
@@ -157,16 +164,18 @@ final class TipoDeAcordeTests: XCTestCase {
 
     func testIgualdadPorContenido() {
         XCTAssertEqual(TipoDeAcorde("add2"), TipoDeAcorde("add9"))
-        XCTAssertEqual(TipoDeAcorde(intervalos: [.unisono, .terceraMayor, .quintaJusta, .segundaMayor]),
-                       .mayorNovenaAnadida)
+        XCTAssertEqual(
+            TipoDeAcorde(intervalos: [.unisono, .terceraMayor, .quintaJusta, .segundaMayor]),
+            .mayorNovenaAnadida)
         XCTAssertEqual(TipoDeAcorde("m7b5"), .semidisminuido)
         XCTAssertEqual(Set([TipoDeAcorde("Δ"), TipoDeAcorde("maj7"), TipoDeAcorde.mayorSeptimaMayor]).count, 1)
         XCTAssertNotEqual(TipoDeAcorde.mayorSexta, TipoDeAcorde.menorSeptima)
     }
 
     func testDisposicionYNombres() {
-        XCTAssertEqual(TipoDeAcorde("9").intervalos,
-                       [.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMayor])
+        XCTAssertEqual(
+            TipoDeAcorde("9").intervalos,
+            [.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMayor])
         XCTAssertEqual(TipoDeAcorde("7(b9,#11)").tensiones, [.novenaMenor, .undecimaAumentada])
         XCTAssertEqual(TipoDeAcorde("7(b9)").nombre, "séptima con novena menor")
         XCTAssertEqual(TipoDeAcorde("7(b9,#11)").nombre, "acorde 7(♭9,♯11)")
@@ -219,7 +228,8 @@ final class EstructuraTests: XCTestCase {
         XCTAssertEqual(TipoDeAcorde("7sus4").estructura.suspension, .cuartaJusta)
         XCTAssertEqual(TipoDeAcorde("m6").estructura.sexta, .sextaMayor)
         XCTAssertEqual(TipoDeAcorde("°7").estructura.septima, .septimaDisminuida)
-        XCTAssertEqual(TipoDeAcorde(pasosDeQuinta: [0, 4, 1, -6])!.estructura.quintasDelAcorde, [.quintaDisminuida, .quintaJusta])
+        XCTAssertEqual(
+            TipoDeAcorde(pasosDeQuinta: [0, 4, 1, -6])!.estructura.quintasDelAcorde, [.quintaDisminuida, .quintaJusta])
     }
 
     func testComponentesDeAcorde() {
@@ -330,8 +340,9 @@ final class IdentificacionPorAlturaTests: XCTestCase {
     func testOrtografiarMidi() {
         let acorde = Acorde.identificar(midi: [60, 64, 68]).first!
         XCTAssertEqual(acorde.ortografiar(midi: [60, 64, 68]).map(\.description), ["Do4", "Mi4", "Sol♯4"])
-        XCTAssertEqual(Acorde("Do°7").ortografiar(midi: [57, 60, 63, 66]).map(\.description),
-                       ["Si♭♭3", "Do4", "Mi♭4", "Sol♭4"])
+        XCTAssertEqual(
+            Acorde("Do°7").ortografiar(midi: [57, 60, 63, 66]).map(\.description),
+            ["Si♭♭3", "Do4", "Mi♭4", "Sol♭4"])
         XCTAssertEqual(Acorde("Do").ortografiar(midi: [61]).map(\.description), ["Do♯4"])
         XCTAssertEqual(Altura(Nota("Sol#"), midi: 68)?.description, "Sol♯4")
         XCTAssertNil(Altura(.la, midi: 68))
@@ -340,12 +351,15 @@ final class IdentificacionPorAlturaTests: XCTestCase {
     /// Lo que dice la versión con nombres no cambia al quitar la ortografía, cuando la
     /// ortografía de partida es la habitual.
     func testCoincideConLaIdentificacionPorNombres() {
-        let ejemplos: [[Nota]] = [["Do", "Mi", "Sol"], ["Sol", "Si", "Re", "Fa"], ["La", "Do", "Mi", "Sol"],
-                                         ["Do", "Mib", "Solb", "Sibb"], ["Re", "Fa", "La", "Do"]]
+        let ejemplos: [[Nota]] = [
+            ["Do", "Mi", "Sol"], ["Sol", "Si", "Re", "Fa"], ["La", "Do", "Mi", "Sol"],
+            ["Do", "Mib", "Solb", "Sibb"], ["Re", "Fa", "La", "Do"],
+        ]
         for nombres in ejemplos {
             let alturas = nombres.map(\.claseDeAltura)
-            XCTAssertEqual(Acorde.identificar(clasesDeAltura: alturas).first, Acorde.identificar(nombres).first,
-                           nombres.map(\.nombre).joined(separator: " "))
+            XCTAssertEqual(
+                Acorde.identificar(clasesDeAltura: alturas).first, Acorde.identificar(nombres).first,
+                nombres.map(\.nombre).joined(separator: " "))
         }
     }
 }

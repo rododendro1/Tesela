@@ -63,11 +63,12 @@ public struct Sonido: Hashable, Sendable {
     ///     Sonido.acorde(Acorde("Do")).afinado(en: .justa).notas.map { Int($0.desviacion.rounded()) }   // [0, -14, 2]
     public func afinado(en temperamento: Temperamento) -> Sonido {
         let afinacion = temperamento.afinacion(tonica: tonica ?? .do)
-        return Sonido(notas: notas.map { nota in
-            var afinada = nota
-            afinada.desviacion = afinacion.desviacion(de: nota.altura)
-            return afinada
-        }, tonica: tonica)
+        return Sonido(
+            notas: notas.map { nota in
+                var afinada = nota
+                afinada.desviacion = afinacion.desviacion(de: nota.altura)
+                return afinada
+            }, tonica: tonica)
     }
 
     /// Nada que tocar.
@@ -80,10 +81,14 @@ public struct Sonido: Hashable, Sendable {
     /// para que una nota repetida vuelva a sonar.
     public var cambios: [Cambio] {
         notas.enumerated().flatMap { i, nota in
-            [Cambio(tiempo: nota.inicio, midi: nota.midi, esInicio: true, nota: i, desviacion: nota.desviacion),
-             Cambio(tiempo: nota.inicio + nota.duracion, midi: nota.midi, esInicio: false, nota: i, desviacion: nota.desviacion)]
+            [
+                Cambio(tiempo: nota.inicio, midi: nota.midi, esInicio: true, nota: i, desviacion: nota.desviacion),
+                Cambio(
+                    tiempo: nota.inicio + nota.duracion, midi: nota.midi, esInicio: false, nota: i,
+                    desviacion: nota.desviacion),
+            ]
         }
-            .sorted { ($0.tiempo, $0.esInicio ? 1 : 0) < ($1.tiempo, $1.esInicio ? 1 : 0) }
+        .sorted { ($0.tiempo, $0.esInicio ? 1 : 0) < ($1.tiempo, $1.esInicio ? 1 : 0) }
     }
 
     // MARK: Lo que tocan las apps
@@ -104,9 +109,10 @@ public struct Sonido: Hashable, Sendable {
         let alturas = cerrada(acorde.notasDesdeElBajo, desde: 48)
         let paso = 0.12
         let final = paso * Double(alturas.count)
-        return Sonido(notas: alturas.enumerated().map { i, altura in
-            NotaMIDI(altura: altura, inicio: paso * Double(i), duracion: final - paso * Double(i) + 1.2)
-        }, tonica: acorde.fundamental)
+        return Sonido(
+            notas: alturas.enumerated().map { i, altura in
+                NotaMIDI(altura: altura, inicio: paso * Double(i), duracion: final - paso * Double(i) + 1.2)
+            }, tonica: acorde.fundamental)
     }
 
     /// Una escala de la tónica a su octava, desde la tónica en la octava 4, y vuelta a la tónica.
@@ -115,9 +121,10 @@ public struct Sonido: Hashable, Sendable {
         guard let tonica = subida.first else { return .silencio }
         let alturas = subida + [tonica + .octava]
         let paso = 0.3
-        return Sonido(notas: alturas.enumerated().map { i, altura in
-            NotaMIDI(altura: altura, inicio: paso * Double(i), duracion: paso * 0.9)
-        }, tonica: escala.tonica)
+        return Sonido(
+            notas: alturas.enumerated().map { i, altura in
+                NotaMIDI(altura: altura, inicio: paso * Double(i), duracion: paso * 0.9)
+            }, tonica: escala.tonica)
     }
 
     /// Un arpegio nota a nota, en el orden de su patrón, desde el bajo del acorde en la octava 3. Su tónica es la
@@ -125,9 +132,10 @@ public struct Sonido: Hashable, Sendable {
     ///
     ///     Sonido.arpegio(Arpegio(Acorde("Do"), patron: .alberti)).notas.map(\.midi)   // [48, 55, 52, 55]
     public static func arpegio(_ arpegio: Arpegio, paso: Double = 0.25) -> Sonido {
-        Sonido(notas: arpegio.alturas(octava: 3).enumerated().map { i, altura in
-            NotaMIDI(altura: altura, inicio: paso * Double(i), duracion: paso * 0.95)
-        }, tonica: arpegio.acorde.fundamental)
+        Sonido(
+            notas: arpegio.alturas(octava: 3).enumerated().map { i, altura in
+                NotaMIDI(altura: altura, inicio: paso * Double(i), duracion: paso * 0.95)
+            }, tonica: arpegio.acorde.fundamental)
     }
 
     /// Una progresión, un acorde detrás de otro, cada uno desde su bajo a partir de Do3.
@@ -164,17 +172,19 @@ public struct Sonido: Hashable, Sendable {
     ///
     ///     Sonido.voz(try Voz(leyendo: "Do4:4 Re4:8 -:8 Mi4:2")).notas.map(\.inicio)   // [0, 0.83, 1.67]
     public static func voz(_ voz: Voz, tempo: Tempo = Sonido.tempo) -> Sonido {
-        Sonido(notas: notas(de: voz, tempo: tempo).flatMap { nota in
-            nota.alturas.map { NotaMIDI(altura: $0, inicio: nota.inicio, duracion: nota.duracion * 0.95) }
-        })
+        Sonido(
+            notas: notas(de: voz, tempo: tempo).flatMap { nota in
+                nota.alturas.map { NotaMIDI(altura: $0, inicio: nota.inicio, duracion: nota.duracion * 0.95) }
+            })
     }
 
     /// Acordes con sus alturas escritas que empiezan y duran lo que las notas de una voz: el coral de una
     /// melodía con ritmo. Si hay más acordes que notas, los que sobran no suenan.
     public static func coral(_ acordes: [[Altura]], conElRitmoDe voz: Voz, tempo: Tempo = Sonido.tempo) -> Sonido {
-        Sonido(notas: zip(acordes, notas(de: voz, tempo: tempo)).flatMap { acorde, nota in
-            acorde.map { NotaMIDI(altura: $0, inicio: nota.inicio, duracion: nota.duracion * 0.95) }
-        })
+        Sonido(
+            notas: zip(acordes, notas(de: voz, tempo: tempo)).flatMap { acorde, nota in
+                acorde.map { NotaMIDI(altura: $0, inicio: nota.inicio, duracion: nota.duracion * 0.95) }
+            })
     }
 
     /// Las notas de una voz con su comienzo y su duración en segundos, sin los silencios; una nota ligada
@@ -197,9 +207,10 @@ public struct Sonido: Hashable, Sendable {
     }
 
     static func grupos(_ grupos: [[Altura]], duracion: Double) -> Sonido {
-        Sonido(notas: grupos.enumerated().flatMap { i, alturas in
-            alturas.map { NotaMIDI(altura: $0, inicio: duracion * Double(i), duracion: duracion * 0.92) }
-        })
+        Sonido(
+            notas: grupos.enumerated().flatMap { i, alturas in
+                alturas.map { NotaMIDI(altura: $0, inicio: duracion * Double(i), duracion: duracion * 0.92) }
+            })
     }
 
     /// Las notas en posición cerrada: la primera en la octava que empieza en `base` y cada una por encima de

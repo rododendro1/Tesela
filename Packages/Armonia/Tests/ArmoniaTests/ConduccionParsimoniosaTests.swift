@@ -1,9 +1,10 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class ConduccionParsimoniosaTests: XCTestCase {
     private func vecinos(_ cifrado: String, voces: Int = 1) -> [String] {
@@ -52,7 +53,8 @@ final class ConduccionParsimoniosaTests: XCTestCase {
         var cuentas: [TipoDeAcorde: Set<Int>] = [:]
         for n in -7...7 {
             for tipo in TipoDeAcorde.familiaDeSeptimasAmpliada {
-                let pasos = Acorde(Nota(pasosDeQuinta: n), tipo).vecinosParsimoniosos(tipos: TipoDeAcorde.familiaDeSeptimasAmpliada)
+                let pasos = Acorde(Nota(pasosDeQuinta: n), tipo).vecinosParsimoniosos(
+                    tipos: TipoDeAcorde.familiaDeSeptimasAmpliada)
                 cuentas[tipo, default: []].insert(pasos.count)
             }
         }
@@ -62,16 +64,19 @@ final class ConduccionParsimoniosaTests: XCTestCase {
         XCTAssertEqual(cuentas[.disminuidoSeptima], [8])
         XCTAssertEqual(cuentas[.mayorSeptimaMayor], [2])
         // El camino entre una séptima y un maj7 elige la familia que tiene a los dos.
-        XCTAssertEqual(Tonnetz.caminoParsimonioso(desde: "Do7", hasta: "Domaj7")?.map(\.description), ["Domaj7 (Si♭→Si)"])
-        XCTAssertEqual(Tonnetz.caminoParsimonioso(desde: "Domaj7", hasta: "Sol7")?.map(\.description),
-                       ["Do♯m7(♭5) (Do→Do♯)", "Mim7 (Do♯→Re)", "Sol7 (Mi→Fa)"])
+        XCTAssertEqual(
+            Tonnetz.caminoParsimonioso(desde: "Do7", hasta: "Domaj7")?.map(\.description), ["Domaj7 (Si♭→Si)"])
+        XCTAssertEqual(
+            Tonnetz.caminoParsimonioso(desde: "Domaj7", hasta: "Sol7")?.map(\.description),
+            ["Do♯m7(♭5) (Do→Do♯)", "Mim7 (Do♯→Re)", "Sol7 (Mi→Fa)"])
     }
 
     func testDosVoces() {
         // P₂,₀: Sol7 llega a Re♭7, a un tritono, moviendo dos voces (la sustitución tritonal).
         let pasos = Acorde("Sol7").vecinosParsimoniosos(voces: 2)
         XCTAssertTrue(pasos.contains { $0.acorde == Acorde("Reb7") })
-        XCTAssertTrue(pasos.allSatisfy { $0.movimientos.count == 2 && $0.movimientos.allSatisfy { abs($0.semitonos) == 1 } })
+        XCTAssertTrue(
+            pasos.allSatisfy { $0.movimientos.count == 2 && $0.movimientos.allSatisfy { abs($0.semitonos) == 1 } })
         // Childs: entre séptimas de dominante y semidisminuidas.
         let childs = Acorde("Sol7").vecinosParsimoniosos(voces: 2, tipos: [.dominanteSeptima, .semidisminuido])
         XCTAssertEqual(Set(childs.map(\.acorde.tipo)), [.dominanteSeptima, .semidisminuido])
@@ -80,18 +85,21 @@ final class ConduccionParsimoniosaTests: XCTestCase {
     func testTriadas() {
         // El «Cube Dance»: cada tríada mayor o menor, 3 vecinos; la aumentada, 6.
         XCTAssertEqual(vecinos("Do"), ["Mim (Do→Si)", "Dom (Mi→Mi♭)", "Do+ (Sol→Sol♯)"])
-        XCTAssertEqual(vecinos("Doaug"), ["Mi (Do→Si)", "Do♯m (Do→Do♯)", "La♭ (Mi→Mi♭)", "Fam (Mi→Fa)", "Do (Sol♯→Sol)", "Lam (Sol♯→La)"])
+        XCTAssertEqual(
+            vecinos("Doaug"),
+            ["Mi (Do→Si)", "Do♯m (Do→Do♯)", "La♭ (Mi→Mi♭)", "Fam (Mi→Fa)", "Do (Sol♯→Sol)", "Lam (Sol♯→La)"])
         // P y L son movimientos de una voz; R no (la quinta sube un tono).
-        let do_ = Acorde("Do").vecinosParsimoniosos().map(\.acorde)
-        XCTAssertTrue(do_.contains(Acorde("Do").transformar(.p)!))
-        XCTAssertTrue(do_.contains(Acorde("Do").transformar(.l)!))
-        XCTAssertFalse(do_.contains(Acorde("Do").transformar(.r)!))
+        let vecinosDeDo = Acorde("Do").vecinosParsimoniosos().map(\.acorde)
+        XCTAssertTrue(vecinosDeDo.contains(Acorde("Do").transformar(.p)!))
+        XCTAssertTrue(vecinosDeDo.contains(Acorde("Do").transformar(.l)!))
+        XCTAssertFalse(vecinosDeDo.contains(Acorde("Do").transformar(.r)!))
     }
 
     func testCamino() throws {
         let camino = try XCTUnwrap(Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Rem7"))
         XCTAssertEqual(camino.map(\.acorde.cifrado), ["Sol♯°7", "Sim7(♭5)", "Rem7"])
-        XCTAssertEqual(Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Reb7", voces: 2)?.map(\.acorde), [Acorde("Reb7")])
+        XCTAssertEqual(
+            Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Reb7", voces: 2)?.map(\.acorde), [Acorde("Reb7")])
         XCTAssertEqual(Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Sol7"), [])
         // Sin ortografía en la meta, y el último paso con la del destino.
         XCTAssertEqual(Tonnetz.caminoParsimonioso(desde: "Do", hasta: "Mibm")?.last?.acorde, Acorde("Mibm"))
@@ -103,8 +111,9 @@ final class ConduccionParsimoniosaTests: XCTestCase {
             for tipo in TipoDeAcorde.familiaDeSeptimas {
                 let destino = Acorde(Nota(pasosDeQuinta: n), tipo)
                 let camino = try XCTUnwrap(Tonnetz.caminoParsimonioso(desde: "Do7", hasta: destino), destino.cifrado)
-                XCTAssertEqual(Set(camino.last?.acorde.notas.map(\.claseDeAltura) ?? Acorde("Do7").notas.map(\.claseDeAltura)),
-                               Set(destino.notas.map(\.claseDeAltura)))
+                XCTAssertEqual(
+                    Set(camino.last?.acorde.notas.map(\.claseDeAltura) ?? Acorde("Do7").notas.map(\.claseDeAltura)),
+                    Set(destino.notas.map(\.claseDeAltura)))
                 XCTAssertLessThanOrEqual(camino.count, 6)
             }
         }
@@ -116,15 +125,18 @@ final class ConduccionParsimoniosaTests: XCTestCase {
         XCTAssertEqual("\(resolucion)", "Sol→Sol, Si→Do (+1), Re→Do (−2), Fa→Mi (−1): 4 semitonos")
         XCTAssertEqual(resolucion.vocesQueSeMueven.count, 3)
         XCTAssertEqual(Acorde("Rem7").conduccionMinima(hasta: "Sol7").semitonosMovidos, 3)
-        XCTAssertEqual(Acorde("Do").conduccionMinima(hasta: "Lam").semitonosMovidos, 2)       // R: Sol→La
+        XCTAssertEqual(Acorde("Do").conduccionMinima(hasta: "Lam").semitonosMovidos, 2) // R: Sol→La
         XCTAssertEqual(Acorde("Do").conduccionMinima(hasta: "Do").semitonosMovidos, 0)
         XCTAssertEqual(Acorde("Do").conduccionMinima(hasta: "Sol7").movimientos.count, 4)
         XCTAssertEqual(Acorde("Do").conduccionMinima(hasta: "Fa#").semitonosMovidos, 6)
-        XCTAssertEqual(Acorde("Sol7").conduccionMinima(hasta: "Do").texto(en: .inglesASCII), "G→G, B→C (+1), D→C (−2), F→E (−1): 4 semitones")
+        XCTAssertEqual(
+            Acorde("Sol7").conduccionMinima(hasta: "Do").texto(en: .inglesASCII),
+            "G→G, B→C (+1), D→C (−2), F→E (−1): 4 semitones")
         // Simétrica en el total.
         for (a, b) in [("Sol7", "Do"), ("Rem7", "Solmaj7"), ("Do", "Fa#m"), ("Sio7", "Do")] {
-            XCTAssertEqual(Acorde(texto: a)!.conduccionMinima(hasta: Acorde(texto: b)!).semitonosMovidos,
-                           Acorde(texto: b)!.conduccionMinima(hasta: Acorde(texto: a)!).semitonosMovidos, "\(a) \(b)")
+            XCTAssertEqual(
+                Acorde(texto: a)!.conduccionMinima(hasta: Acorde(texto: b)!).semitonosMovidos,
+                Acorde(texto: b)!.conduccionMinima(hasta: Acorde(texto: a)!).semitonosMovidos, "\(a) \(b)")
         }
         XCTAssertEqual(MovimientoDeVoz(desde: .do, hasta: Nota(.fa, .sostenido)).semitonos, 6)
         XCTAssertEqual(MovimientoDeVoz(desde: .do, hasta: .si).semitonos, -1)

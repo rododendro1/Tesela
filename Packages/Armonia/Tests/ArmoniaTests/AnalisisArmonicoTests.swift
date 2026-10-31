@@ -1,13 +1,16 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 final class AnalisisArmonicoTests: XCTestCase {
-    private func cifrados(_ texto: String, en tonalidad: Tonalidad? = nil,
-                          file: StaticString = #filePath, line: UInt = #line) -> [String] {
+    private func cifrados(
+        _ texto: String, en tonalidad: Tonalidad? = nil,
+        file: StaticString = #filePath, line: UInt = #line
+    ) -> [String] {
         do {
             return try AnalisisArmonico.analizar(leyendo: texto, en: tonalidad).cifrados
         } catch {
@@ -42,10 +45,12 @@ final class AnalisisArmonicoTests: XCTestCase {
         XCTAssertEqual(cifrados("Do/Sol Sol7/Re Do/Mi", en: Tonalidad(.do)), ["I64", "V43", "I6"])
         XCTAssertEqual(cifrados("Sol7/Fa Do/Mi", en: Tonalidad(.do)), ["V42", "I6"])
         // La sexta añadida no se confunde con la primera inversión.
-        XCTAssertEqual(cifrados("Mim6 Do6 Fa6/La Lam", en: Tonalidad(.do)), ["iii(add6)", "I(add6)", "IV(add6)643", "vi"])
+        XCTAssertEqual(
+            cifrados("Mim6 Do6 Fa6/La Lam", en: Tonalidad(.do)), ["iii(add6)", "I(add6)", "IV(add6)643", "vi"])
         XCTAssertEqual(cifrados("Mim Mim/Sol", en: Tonalidad(.do)), ["iii", "iii6"])
         // Invertidos, con todos los intervalos sobre el bajo.
-        XCTAssertEqual(cifrados("Fa6/La Fa6/Do Fa6/Re", en: Tonalidad(.do)), ["IV(add6)643", "IV(add6)642", "IV(add6)753"])
+        XCTAssertEqual(
+            cifrados("Fa6/La Fa6/Do Fa6/Re", en: Tonalidad(.do)), ["IV(add6)643", "IV(add6)642", "IV(add6)753"])
         XCTAssertEqual(cifrados("Dosus4/Fa Do(add9)/Mi", en: Tonalidad(.do)), ["Isus452", "I(add9)763"])
         XCTAssertEqual(cifrados("Sim7(b5)/Re Mi7 Lam", en: Tonalidad(.la, .menor)), ["iiø65", "V7", "i"])
     }
@@ -136,8 +141,9 @@ final class AnalisisArmonicoTests: XCTestCase {
         XCTAssertEqual("\(analisis)", "I–IV–V7–I en Do mayor")
         XCTAssertEqual(analisis.nombre(en: .inglesASCII), "I–IV–V7–I in C major")
         XCTAssertEqual(try AnalisisArmonico.analizar(leyendo: "Do–Fa–Sol7–Do").cifrados, ["I", "IV", "V7", "I"])
-        XCTAssertEqual(try AnalisisArmonico.analizar(leyendo: "Lam | Rem | Mi7 | Lam", en: "La menor").cifrados,
-                       ["i", "iv", "V7", "i"])
+        XCTAssertEqual(
+            try AnalisisArmonico.analizar(leyendo: "Lam | Rem | Mi7 | Lam", en: "La menor").cifrados,
+            ["i", "iv", "V7", "i"])
     }
 
     func testErrores() {

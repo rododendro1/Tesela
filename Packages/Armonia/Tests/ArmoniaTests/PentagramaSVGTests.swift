@@ -1,8 +1,9 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
 @testable import ArmoniaPartitura
+@testable import ArmoniaTeoria
 
 final class PentagramaSVGTests: XCTestCase {
     private func contar(_ trozo: String, en texto: String) -> Int {
@@ -49,7 +50,8 @@ final class PentagramaSVGTests: XCTestCase {
             let numeros = resto.components(separatedBy: "\"")[0].split(separator: " ")
             return Double(numeros[1])!
         }
-        XCTAssertGreaterThan(ancho(Acorde("Do7b9").svgPentagrama()), ancho(Acorde("Do7b9").svgPentagrama(cifrado: false)))
+        XCTAssertGreaterThan(
+            ancho(Acorde("Do7b9").svgPentagrama()), ancho(Acorde("Do7b9").svgPentagrama(cifrado: false)))
     }
 
     /// Fuera del pentagrama hay líneas adicionales; dentro, ninguna.
@@ -82,18 +84,26 @@ final class PentagramaSVGTests: XCTestCase {
         let svg = Escala(.do).svgPentagrama(octava: 3, opciones: OpcionesDePentagrama(pentagramas: .doble))
         XCTAssertEqual(pentagramasDibujados(svg), 2)
         XCTAssertEqual(contar("<g><title>", en: svg), 8)
-        XCTAssertEqual(pentagramasDibujados(Escala(.do).svgPentagrama(opciones: OpcionesDePentagrama(pentagramas: .simple))), 1)
+        XCTAssertEqual(
+            pentagramasDibujados(Escala(.do).svgPentagrama(opciones: OpcionesDePentagrama(pentagramas: .simple))), 1)
     }
 
     /// Un rango muy ancho, a los dos lados del Do central, pasa solo al pentagrama doble; con la clave fija, no.
     func testElRangoAnchoPasaAlPentagramaDoble() {
         let notas = [Altura(.do, octava: 2), Altura(.sol, octava: 5)]
-        let automatico = PentagramaSVG(columnas: [notas], armadura: [], cifrado: nil, titulo: "", opciones: OpcionesDePentagrama()).svg()
+        let automatico = PentagramaSVG(
+            columnas: [notas], armadura: [], cifrado: nil, titulo: "", opciones: OpcionesDePentagrama()
+        ).svg()
         XCTAssertEqual(pentagramasDibujados(automatico), 2)
-        let conClave = PentagramaSVG(columnas: [notas], armadura: [], cifrado: nil, titulo: "", opciones: OpcionesDePentagrama(clave: .sol)).svg()
+        let conClave = PentagramaSVG(
+            columnas: [notas], armadura: [], cifrado: nil, titulo: "", opciones: OpcionesDePentagrama(clave: .sol)
+        ).svg()
         XCTAssertEqual(pentagramasDibujados(conClave), 1)
-        let solo = PentagramaSVG(columnas: [[Altura(.sol, octava: 6), Altura(.do, octava: 7)]], armadura: [], cifrado: nil, titulo: "", opciones: OpcionesDePentagrama()).svg()
-        XCTAssertEqual(pentagramasDibujados(solo), 1)   // todo por encima del Do central: el de fa iría vacío
+        let solo = PentagramaSVG(
+            columnas: [[Altura(.sol, octava: 6), Altura(.do, octava: 7)]], armadura: [], cifrado: nil, titulo: "",
+            opciones: OpcionesDePentagrama()
+        ).svg()
+        XCTAssertEqual(pentagramasDibujados(solo), 1) // todo por encima del Do central: el de fa iría vacío
     }
 
     // MARK: Marca de octava y texto
@@ -105,21 +115,25 @@ final class PentagramaSVGTests: XCTestCase {
         XCTAssertTrue(Escala(.do).svgPentagrama(octava: 1).contains(">8vb<"))
         // Los nombres son los de las notas que suenan, no los de las escritas.
         XCTAssertTrue(Escala(.do).svgPentagrama(octava: 6).contains("<title>Do6</title>"))
-        XCTAssertFalse(Escala(.do).svgPentagrama(octava: 6, opciones: OpcionesDePentagrama(marcaDeOctava: false)).contains(">8v"))
-        XCTAssertFalse(Escala(.do).svgPentagrama(octava: 6, opciones: OpcionesDePentagrama(clave: .sol)).contains(">8v"))
+        XCTAssertFalse(
+            Escala(.do).svgPentagrama(octava: 6, opciones: OpcionesDePentagrama(marcaDeOctava: false)).contains(">8v"))
+        XCTAssertFalse(
+            Escala(.do).svgPentagrama(octava: 6, opciones: OpcionesDePentagrama(clave: .sol)).contains(">8v"))
     }
 
     private func etiquetas(_ svg: String) -> [(x: Double, texto: String)] {
         svg.components(separatedBy: "<text x=\"").dropFirst().compactMap { trozo in
             guard trozo.contains("font-size=\"1.2\""), let x = Double(trozo.prefix(while: { $0 != "\"" })),
-                  let inicio = trozo.firstIndex(of: ">"), let fin = trozo.range(of: "</text>") else { return nil }
+                let inicio = trozo.firstIndex(of: ">"), let fin = trozo.range(of: "</text>")
+            else { return nil }
             return (x, String(trozo[trozo.index(after: inicio)..<fin.lowerBound]))
         }
     }
 
     /// Los nombres de las notas no se pisan: entre dos centros cabe la mitad de cada nombre y un hueco.
     func testLasEtiquetasNoSePisan() {
-        let lista = etiquetas(Escala("Si♭ mayor").svgPentagrama(opciones: OpcionesDePentagrama(nombresDeLasNotas: true)))
+        let lista = etiquetas(
+            Escala("Si♭ mayor").svgPentagrama(opciones: OpcionesDePentagrama(nombresDeLasNotas: true)))
         XCTAssertEqual(lista.count, 8)
         for (a, b) in zip(lista, lista.dropFirst()) {
             let anchoA = PentagramaSVG.anchoEstimado(a.texto, cuerpoDeLetra: 1.2, proporcion: 1)
@@ -136,7 +150,7 @@ final class PentagramaSVGTests: XCTestCase {
         XCTAssertLessThan(ancho("iii"), ancho("mmm"))
         XCTAssertEqual(ancho("é"), ancho("e"))
         XCTAssertEqual(ancho("Do", 2), 2 * ancho("Do"), accuracy: 1e-9)
-        XCTAssertGreaterThan(ancho("Ми♭"), 0)        // cirílico: valor por defecto
+        XCTAssertGreaterThan(ancho("Ми♭"), 0) // cirílico: valor por defecto
         XCTAssertGreaterThan(ancho("Φα"), ancho("α"))
     }
 
@@ -172,9 +186,13 @@ final class PentagramaSVGTests: XCTestCase {
     /// Los acordes muy extensos (la trecena) ponen el bajo una octava más grave; los demás, en posición cerrada.
     func testLaPosicionAbierta() {
         XCTAssertFalse(Acorde("Sol7").svgPentagrama().contains("<title>Sol3</title>"))
-        XCTAssertTrue(Acorde("Sol7").svgPentagrama(opciones: OpcionesDePentagrama(disposicionDelAcorde: .abierta)).contains("<title>Sol3</title>"))
+        XCTAssertTrue(
+            Acorde("Sol7").svgPentagrama(opciones: OpcionesDePentagrama(disposicionDelAcorde: .abierta)).contains(
+                "<title>Sol3</title>"))
         XCTAssertTrue(Acorde("Do13").svgPentagrama().contains("<title>Do3</title>"))
-        XCTAssertFalse(Acorde("Do13").svgPentagrama(opciones: OpcionesDePentagrama(disposicionDelAcorde: .cerrada)).contains("<title>Do3</title>"))
+        XCTAssertFalse(
+            Acorde("Do13").svgPentagrama(opciones: OpcionesDePentagrama(disposicionDelAcorde: .cerrada)).contains(
+                "<title>Do3</title>"))
         // Con el bajo tan grave y lo demás tan agudo, pasa al pentagrama doble.
         XCTAssertEqual(pentagramasDibujados(Acorde("Do13").svgPentagrama()), 2)
     }
@@ -187,14 +205,19 @@ final class PentagramaSVGTests: XCTestCase {
     }
 
     private func pentagrama(_ notas: [(String, Int)]) -> String {
-        PentagramaSVG(columnas: [notas.map { Altura(try! Nota(leyendo: $0.0), octava: $0.1) }], armadura: [], cifrado: nil, titulo: "",
-                      opciones: OpcionesDePentagrama()).svg()
+        PentagramaSVG(
+            columnas: [notas.map { Altura(try! Nota(leyendo: $0.0), octava: $0.1) }], armadura: [], cifrado: nil,
+            titulo: "",
+            opciones: OpcionesDePentagrama()
+        ).svg()
     }
 
     /// Las alteraciones se reparten en pocas columnas, escalonadas: siete alteradas no piden siete columnas.
     func testLasAlteracionesCabenEnPocasColumnas() {
         let naturales = pentagrama([("Do", 4), ("Mi", 4), ("Sol", 4), ("Si", 4), ("Re", 5), ("Fa", 5), ("La", 5)])
-        let alteradas = pentagrama([("Do#", 4), ("Mib", 4), ("Sol#", 4), ("Sib", 4), ("Re#", 5), ("Fa#", 5), ("Lab", 5)])
+        let alteradas = pentagrama([
+            ("Do#", 4), ("Mib", 4), ("Sol#", 4), ("Sib", 4), ("Re#", 5), ("Fa#", 5), ("Lab", 5),
+        ])
         XCTAssertEqual(contar("<g><title>", en: alteradas), 7)
         XCTAssertLessThan(anchoDelDibujo(alteradas) - anchoDelDibujo(naturales), 5.5)
         XCTAssertGreaterThan(anchoDelDibujo(alteradas), anchoDelDibujo(naturales))

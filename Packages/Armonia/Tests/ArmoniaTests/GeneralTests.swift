@@ -1,9 +1,10 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 
 // Lo que atraviesa todo el motor: literales, Codable, convenciones de nombres y nombres
 // anteriores. Lo de cada área está en su archivo (FundamentosTests, AcordesTests…).
@@ -73,7 +74,8 @@ final class TerminologiaTests: XCTestCase {
         XCTAssertEqual(Acorde("Do°7").numeroDeForte, "4-28")
         XCTAssertEqual(ConjuntoDeClases([0, 1, 4, 6]).numeroDeForte, "4-Z15")
         // Temperamentos iguales con cualquier número de divisiones; 12 es `.igual`.
-        XCTAssertEqual(TemperamentoRegular.igual(divisiones: 12).quinta, TemperamentoRegular.igual.quinta, accuracy: 1e-9)
+        XCTAssertEqual(
+            TemperamentoRegular.igual(divisiones: 12).quinta, TemperamentoRegular.igual.quinta, accuracy: 1e-9)
         XCTAssertEqual(TemperamentoRegular.igual(divisiones: 19, la4: 415).frecuencia(de: "La4"), 415, accuracy: 1e-9)
         // Posición cerrada.
         XCTAssertEqual(Acorde("Sol7/Si").posicionCerrada(octava: 3).map(\.description), ["Si3", "Re4", "Fa4", "Sol4"])

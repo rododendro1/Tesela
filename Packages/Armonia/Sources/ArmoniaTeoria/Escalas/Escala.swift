@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import Foundation
+
 // MARK: - Escala
 
 /// Escala concreta: tónica + tipo.
@@ -124,7 +125,8 @@ public struct Escala: Hashable, Sendable {
     public var armadura: Int? {
         let posiciones = Set(notas.map(\.pasosDeQuinta))
         guard posiciones.count == 7, let minimo = posiciones.min(),
-              posiciones == Set(minimo..<(minimo + 7)) else { return nil }
+            posiciones == Set(minimo..<(minimo + 7))
+        else { return nil }
         return minimo + 1
     }
 
@@ -159,12 +161,16 @@ public struct Escala: Hashable, Sendable {
     /// La menor armónica → i, ii°, ♭III+, iv, V, ♭VI, vii°;
     /// con `referencia: .menorNatural` → i, ii°, III+, iv, V, VI, ♯vii°.
     /// Solo para escalas heptatónicas.
-    public func cifradoRomano(grado: Int, cuatriada: Bool = false,
-                              referencia: TipoDeEscala = .mayor) -> String? {
+    public func cifradoRomano(
+        grado: Int, cuatriada: Bool = false,
+        referencia: TipoDeEscala = .mayor
+    ) -> String? {
         guard tipo.intervalos.count == 7, referencia.intervalos.count == 7,
-              let acordeGrado = acorde(grado: grado, cuatriada: cuatriada) else { return nil }
+            let acordeGrado = acorde(grado: grado, cuatriada: cuatriada)
+        else { return nil }
         let i = modulo(grado - 1, 7)
-        let diferencia = acordeGrado.fundamental.pasosDeQuinta - tonica.pasosDeQuinta
+        let diferencia =
+            acordeGrado.fundamental.pasosDeQuinta - tonica.pasosDeQuinta
             - referencia.intervalos[i].pasosDeQuinta
         guard diferencia % 7 == 0 else { return nil }
         let romanos = ["I", "II", "III", "IV", "V", "VI", "VII"]
@@ -173,8 +179,10 @@ public struct Escala: Hashable, Sendable {
     }
 
     /// Cifrados romanos de todos los grados.
-    public func cifradosRomanos(cuatriadas: Bool = false,
-                                referencia: TipoDeEscala = .mayor) -> [String?] {
+    public func cifradosRomanos(
+        cuatriadas: Bool = false,
+        referencia: TipoDeEscala = .mayor
+    ) -> [String?] {
         (1...tipo.intervalos.count).map {
             cifradoRomano(grado: $0, cuatriada: cuatriadas, referencia: referencia)
         }
@@ -280,22 +288,27 @@ public enum NombreDeGrado: Hashable, Sendable, CustomStringConvertible {
 
     public var description: String { nombre }
 
-
     /// Lee el nombre de una función en español o en inglés, sin distinguir mayúsculas ni tildes:
     /// "Dominante", "superdominante", "submediante", "sensible", "leading tone"…
     public init?(_ texto: String) {
         let clave = texto.claveDeBusqueda
-        let alias: [String: NombreDeGrado] = ["submediante": .superdominante, "sub mediante": .superdominante,
-                                               "superdominant": .superdominante, "leading note": .sensible]
+        let alias: [String: NombreDeGrado] = [
+            "submediante": .superdominante, "sub mediante": .superdominante,
+            "superdominant": .superdominante, "leading note": .sensible,
+        ]
         if let funcion = alias[clave] {
             self = funcion
             return
         }
-        let todas: [NombreDeGrado] = [.tonica, .supertonica, .mediante, .subdominante, .dominante,
-                                       .superdominante, .sensible, .subtonica]
-        guard let funcion = todas.first(where: { f in
-            f.nombre.claveDeBusqueda == clave || f.nombre(en: .inglesASCII).claveDeBusqueda == clave
-        }) else { return nil }
+        let todas: [NombreDeGrado] = [
+            .tonica, .supertonica, .mediante, .subdominante, .dominante,
+            .superdominante, .sensible, .subtonica,
+        ]
+        guard
+            let funcion = todas.first(where: { f in
+                f.nombre.claveDeBusqueda == clave || f.nombre(en: .inglesASCII).claveDeBusqueda == clave
+            })
+        else { return nil }
         self = funcion
     }
 }
@@ -307,8 +320,10 @@ extension Escala {
     public func nombreDeGrado(_ grado: Int) -> NombreDeGrado? {
         guard tipo.intervalos.count == 7 else { return nil }
         let i = modulo(grado - 1, 7)
-        let funciones: [NombreDeGrado] = [.tonica, .supertonica, .mediante, .subdominante,
-                                           .dominante, .superdominante]
+        let funciones: [NombreDeGrado] = [
+            .tonica, .supertonica, .mediante, .subdominante,
+            .dominante, .superdominante,
+        ]
         if i < 6 { return funciones[i] }
         return tipo.intervalos[6].semitonos == 11 ? .sensible : .subtonica
     }
@@ -369,8 +384,10 @@ extension Escala {
     /// a menos probable; cada escala se escribe con la tónica que da menos alteraciones.
     ///
     ///     Escala.candidatos(clasesDeAltura: [0, 4, 7, 11, 6]).first?.valor   // Do pentatónica lidia
-    public static func candidatos(clasesDeAltura alturas: [Int],
-                                  tipos: [TipoDeEscala] = TipoDeEscala.todos) -> [Candidato<Escala>] {
+    public static func candidatos(
+        clasesDeAltura alturas: [Int],
+        tipos: [TipoDeEscala] = TipoDeEscala.todos
+    ) -> [Candidato<Escala>] {
         let buscadas = Set(alturas.map { modulo($0, 12) })
         return ordenar(contenedoras(clasesDeAltura: alturas, tipos: tipos)) { escala in
             Set(escala.notasEnAmbasDirecciones.map(\.claseDeAltura)).subtracting(buscadas).count
@@ -378,8 +395,10 @@ extension Escala {
     }
 
     /// Escalas que contienen las clases de altura dadas, de más a menos probable (sin el coste).
-    public static func identificar(clasesDeAltura alturas: [Int],
-                                   tipos: [TipoDeEscala] = TipoDeEscala.todos) -> [Escala] {
+    public static func identificar(
+        clasesDeAltura alturas: [Int],
+        tipos: [TipoDeEscala] = TipoDeEscala.todos
+    ) -> [Escala] {
         candidatos(clasesDeAltura: alturas, tipos: tipos).map(\.valor)
     }
 
@@ -387,8 +406,14 @@ extension Escala {
     /// los empates.
     private static func ordenar(_ escalas: [Escala], sobrantes: (Escala) -> Int) -> [Candidato<Escala>] {
         escalas.enumerated()
-            .map { (indice: $0.offset, candidato: Candidato($0.element,
-                                                             coste: Double(sobrantes($0.element)) + 0.1 * Double($0.element.costeDeEscritura))) }
+            .map {
+                (
+                    indice: $0.offset,
+                    candidato: Candidato(
+                        $0.element,
+                        coste: Double(sobrantes($0.element)) + 0.1 * Double($0.element.costeDeEscritura))
+                )
+            }
             .sorted { ($0.candidato.coste, $0.indice) < ($1.candidato.coste, $1.indice) }
             .map(\.candidato)
     }
@@ -421,7 +446,8 @@ extension Escala {
                 let opciones = Nota.pasosDeQuintaPosibles(deClase: tonica).map { Escala(Nota(pasosDeQuinta: $0), tipo) }
                 guard let escala = opciones.min(by: { $0.costeDeEscritura < $1.costeDeEscritura }) else { continue }
                 if buscadas.isSubset(of: Set(escala.notasEnAmbasDirecciones.map(\.claseDeAltura)))
-                    && !delTipo.contains(escala) {
+                    && !delTipo.contains(escala)
+                {
                     delTipo.append(escala)
                 }
             }
@@ -453,8 +479,10 @@ extension Escala {
     ///
     /// `siguiente` es la clase de altura o el número MIDI de la nota siguiente; para comparar
     /// direcciones se usa `alturaActual`, que debe estar en la misma unidad.
-    public func nombre(claseDeAltura clase: Int, alturaActual: Int? = nil,
-                       siguiente: Int? = nil) -> Nota {
+    public func nombre(
+        claseDeAltura clase: Int, alturaActual: Int? = nil,
+        siguiente: Int? = nil
+    ) -> Nota {
         let escrituras = Nota.pasosDeQuintaPosibles(deClase: clase)
         let quintasBase = escrituras[1]
         let propias = Set(notasEnAmbasDirecciones.map(\.pasosDeQuinta))

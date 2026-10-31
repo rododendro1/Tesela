@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
 @testable import ArmoniaTeoria
@@ -24,7 +25,9 @@ final class NotacionesConPalabrasTests: XCTestCase {
             // Las seis formas se leen, sin indicar la notación y en cualquiera de las seis.
             for escrito in [espanol, espanolASCII, espanolUnicode, ingles, inglesASCII, inglesUnicode] {
                 XCTAssertEqual(Nota(texto: escrito), nota, escrito)
-                for notacion in [Notacion.espanol, .espanolASCII, .espanolUnicode, .ingles, .inglesASCII, .inglesUnicode] {
+                for notacion in [
+                    Notacion.espanol, .espanolASCII, .espanolUnicode, .ingles, .inglesASCII, .inglesUnicode,
+                ] {
                     XCTAssertEqual(try? Nota(leyendo: escrito, en: notacion), nota, "\(escrito) \(notacion)")
                 }
             }
@@ -92,7 +95,8 @@ final class NotacionesConPalabrasTests: XCTestCase {
         XCTAssertEqual(Escala(texto: "B dorisch"), Escala("Sib dórico"))
         for tonalidad in [Tonalidad("Fa# mayor"), Tonalidad("Mib menor"), Tonalidad("Do mayor")] {
             for notacion in [Notacion.espanol, .ingles] {
-                XCTAssertEqual(Tonalidad(texto: tonalidad.texto(en: notacion)), tonalidad, tonalidad.texto(en: notacion))
+                XCTAssertEqual(
+                    Tonalidad(texto: tonalidad.texto(en: notacion)), tonalidad, tonalidad.texto(en: notacion))
             }
         }
     }

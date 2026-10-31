@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+
 // Lo que comparten las exportaciones a MusicXML (MusicXML.swift), a MEI (MEI.swift) y a MIDI
 // (ArchivoMIDI.swift).
 
@@ -58,12 +59,16 @@ package enum Exportacion {
 
     /// Las dos voces de una progresión: los acordes en posición cerrada desde La3 y el bajo
     /// desde Fa2, de `duracion` cada uno, y el último de `final`.
-    package static func progresion(_ acordes: [Acorde], duracion: Duracion, final: Duracion) -> (acordes: [Evento], bajo: [Evento]) {
+    package static func progresion(_ acordes: [Acorde], duracion: Duracion, final: Duracion) -> (
+        acordes: [Evento], bajo: [Evento]
+    ) {
         progresion(acordes, duraciones: acordes.indices.map { $0 == acordes.count - 1 ? final : duracion })
     }
 
     /// Lo mismo, con lo que dura cada acorde.
-    package static func progresion(_ acordes: [Acorde], duraciones: [Duracion]) -> (acordes: [Evento], bajo: [Evento]) {
+    package static func progresion(_ acordes: [Acorde], duraciones: [Duracion]) -> (
+        acordes: [Evento], bajo: [Evento]
+    ) {
         var superior: [Evento] = []
         var grave: [Evento] = []
         for (acorde, figura) in zip(acordes, duraciones) {
@@ -90,7 +95,9 @@ package enum Exportacion {
 
     /// La figura con que se escribe una duración y, si es de un grupo irregular, la proporción:
     /// 1/12 → corchea de tresillo (3 en el tiempo de 2). Sin figura si no se puede escribir así.
-    package static func figura(de duracion: Duracion) -> (figura: Figura?, puntillos: Int, irregular: (reales: Int, normales: Int)?) {
+    package static func figura(de duracion: Duracion) -> (
+        figura: Figura?, puntillos: Int, irregular: (reales: Int, normales: Int)?
+    ) {
         if let (figura, puntillos) = duracion.figuraYPuntillos { return (figura, puntillos, nil) }
         var impar = duracion.denominador
         while impar % 2 == 0 { impar /= 2 }
@@ -108,7 +115,8 @@ package enum Exportacion {
     /// pentagrama, la plica de la de arriba va hacia arriba y la de la de abajo, hacia abajo.
     /// `indice` es el de la voz en el coral (0, el bajo), y el último acorde se alarga hasta la barra.
     package static func voces(de coral: Coral, duracion: Duracion, compas: Compas)
-        -> [(voz: Voz, pentagrama: Int, plicaArriba: Bool?, indice: Int)] {
+        -> [(voz: Voz, pentagrama: Int, plicaArriba: Bool?, indice: Int)]
+    {
         let n = coral.numeroDeVoces
         let agudas = Array((n / 2..<n).reversed())
         let graves = Array((0..<n / 2).reversed())
@@ -140,23 +148,30 @@ package enum Exportacion {
     /// Las anotaciones de un coral. Los acordes se identifican por sus notas (con el bajo) entre
     /// los tipos de `TipoDeAcorde.todos`; los que no forman ninguno se quedan sin cifrar. Sin
     /// `tonalidad`, se estima: a partir de los acordes si se analiza, si no, de las notas.
-    package static func anotaciones(de coral: Coral, duracion: Duracion, tonalidad: Tonalidad?,
-                                    cifrados: Bool, analisis: Bool) -> Anotaciones {
+    package static func anotaciones(
+        de coral: Coral, duracion: Duracion, tonalidad: Tonalidad?,
+        cifrados: Bool, analisis: Bool
+    ) -> Anotaciones {
         // Los acordes que se pueden identificar, con su posición en el coral.
         var identificados: [(indice: Int, acorde: Acorde)] = []
         if cifrados || analisis {
             for (i, alturas) in coral.acordes.enumerated() {
                 // Solo los tipos del catálogo: un acorde con notas de paso no se cifra como «add♭9».
-                if let acorde = Acorde.candidatos(alturas).first(where: { TipoDeAcorde.todos.contains($0.valor.tipo) })?.valor {
+                if let acorde = Acorde.candidatos(alturas).first(where: { TipoDeAcorde.todos.contains($0.valor.tipo) })?
+                    .valor
+                {
                     identificados.append((i, acorde))
                 }
             }
         }
-        let analizado: AnalisisArmonico? = analisis
-            ? (tonalidad.map { $0.analizar(identificados.map(\.acorde)) } ?? AnalisisArmonico.analizar(identificados.map(\.acorde)))
+        let analizado: AnalisisArmonico? =
+            analisis
+            ? (tonalidad.map { $0.analizar(identificados.map(\.acorde)) }
+                ?? AnalisisArmonico.analizar(identificados.map(\.acorde)))
             : nil
         var resultado = Anotaciones()
-        resultado.tonalidad = tonalidad ?? analizado?.tonalidad ?? Tonalidad.identificar(alturas: coral.acordes.flatMap { $0 }).first
+        resultado.tonalidad =
+            tonalidad ?? analizado?.tonalidad ?? Tonalidad.identificar(alturas: coral.acordes.flatMap { $0 }).first
         resultado.tonalidadDelAnalisis = analizado?.tonalidad
         for (k, (i, acorde)) in identificados.enumerated() {
             if cifrados { resultado.cifrados[duracion * i] = acorde }
@@ -166,8 +181,10 @@ package enum Exportacion {
     }
 
     /// Las anotaciones de una progresión ya analizada.
-    package static func anotaciones(de progresion: AnalisisArmonico, duraciones: [Duracion],
-                                    cifrados: Bool, analisis: Bool) -> Anotaciones {
+    package static func anotaciones(
+        de progresion: AnalisisArmonico, duraciones: [Duracion],
+        cifrados: Bool, analisis: Bool
+    ) -> Anotaciones {
         var resultado = Anotaciones()
         resultado.tonalidad = progresion.tonalidad
         if analisis { resultado.tonalidadDelAnalisis = progresion.tonalidad }

@@ -46,7 +46,9 @@ let package = Package(
             path: "Packages/Armonia/Sources/ArmoniaTrastes"),
         .target(
             name: "Armonia",
-            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaTrastes"],
+            dependencies: [
+                "ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaTrastes",
+            ],
             path: "Packages/Armonia/Sources/Armonia"),
 
         .target(

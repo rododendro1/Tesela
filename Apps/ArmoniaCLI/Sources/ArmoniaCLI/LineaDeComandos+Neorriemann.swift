@@ -15,7 +15,8 @@ extension LineaDeComandos {
         let acordes = argumentos.restantes
         guard acordes.count == 1 else { return uso(.unAcordeDeVecinos, notacion) }
         let acorde = try Acorde(leyendo: acordes[0])
-        let pasos = tipos.map { $0.contains(acorde.tipo) ? acorde.vecinosParsimoniosos(voces: voces, tipos: $0) : [] }
+        let pasos =
+            tipos.map { $0.contains(acorde.tipo) ? acorde.vecinosParsimoniosos(voces: voces, tipos: $0) : [] }
             ?? acorde.vecinosParsimoniosos(voces: voces)
         guard !pasos.isEmpty else {
             return uso(.vecinosSinFamilia, notacion)
@@ -33,13 +34,16 @@ extension LineaDeComandos {
         let tipos = argumentos.quitarMarca("--ampliada", "--extended") ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
         let acordes = argumentos.restantes
         guard acordes.count == 2 else { return uso(.dosAcordesDeCamino, notacion) }
-        let origen = try Acorde(leyendo: acordes[0]), destino = try Acorde(leyendo: acordes[1])
+        let origen = try Acorde(leyendo: acordes[0])
+        let destino = try Acorde(leyendo: acordes[1])
         guard let camino = Tonnetz.caminoParsimonioso(desde: origen, hasta: destino, voces: voces, tipos: tipos) else {
             return uso(.caminoSinConexion, notacion)
         }
         var texto = Acorde(origen.fundamental, origen.tipo).cifrado(en: notacion)
         for paso in camino {
-            texto += " –" + paso.movimientos.map { $0.texto(en: notacion) }.joined(separator: ", ") + "→ " + paso.acorde.cifrado(en: notacion)
+            texto +=
+                " –" + paso.movimientos.map { $0.texto(en: notacion) }.joined(separator: ", ") + "→ "
+                + paso.acorde.cifrado(en: notacion)
         }
         return bien(texto + "\n" + Mensaje.pasos(camino.count).texto(en: notacion))
     }
@@ -60,8 +64,9 @@ extension LineaDeComandos {
             for (i, acorde) in acordes.dropFirst().enumerated() {
                 texto += " –\(ciclo.transformaciones[i % 2])→ " + acorde.cifrado(en: notacion)
             }
-            return bien(texto + "\n" + Mensaje.ciclo(ciclo).texto(en: notacion) + ", "
-                        + Mensaje.triadas(ciclo.longitud).texto(en: notacion))
+            return bien(
+                texto + "\n" + Mensaje.ciclo(ciclo).texto(en: notacion) + ", "
+                    + Mensaje.triadas(ciclo.longitud).texto(en: notacion))
         } else {
             let destino = try Acorde(leyendo: resto)
             guard let camino = Tonnetz.camino(desde: origen, hasta: destino) else {

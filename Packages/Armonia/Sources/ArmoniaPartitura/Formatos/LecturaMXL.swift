@@ -1,4 +1,6 @@
 import ArmoniaNucleo
+import Foundation
+
 // Lectura de MusicXML comprimido (.mxl, lo que exportan por omisión MuseScore y otros): un zip con la
 // partitura y un `META-INF/container.xml` que dice cuál de sus ficheros es. Se leen los zips de siempre
 // (sin cifrar, sin ZIP64) con sus ficheros guardados tal cual o comprimidos con DEFLATE (RFC 1951), que se
@@ -6,8 +8,6 @@ import ArmoniaNucleo
 //
 // Cualquier cosa que no encaje (un zip cortado, otro método de compresión, un zip sin partitura) es
 // `ErrorDeImportacion.comprimido`.
-
-import Foundation
 
 extension PiezaImportada {
     /// Lee una partitura MusicXML comprimida (.mxl).
@@ -57,10 +57,12 @@ struct ArchivoZip {
             let largoDelComentario = ArchivoZip.entero(bytes, posicion + 32, 2)
             guard posicion + 46 + largoDelNombre <= bytes.count else { throw ErrorDeImportacion.comprimido }
             let nombre = String(decoding: bytes[(posicion + 46)..<(posicion + 46 + largoDelNombre)], as: UTF8.self)
-            entradas.append(Entrada(nombre: nombre, metodo: ArchivoZip.entero(bytes, posicion + 10, 2),
-                                    comprimido: ArchivoZip.entero(bytes, posicion + 20, 4),
-                                    descomprimido: ArchivoZip.entero(bytes, posicion + 24, 4),
-                                    cabecera: ArchivoZip.entero(bytes, posicion + 42, 4)))
+            entradas.append(
+                Entrada(
+                    nombre: nombre, metodo: ArchivoZip.entero(bytes, posicion + 10, 2),
+                    comprimido: ArchivoZip.entero(bytes, posicion + 20, 4),
+                    descomprimido: ArchivoZip.entero(bytes, posicion + 24, 4),
+                    cabecera: ArchivoZip.entero(bytes, posicion + 42, 4)))
             posicion += 46 + largoDelNombre + largoExtra + largoDelComentario
         }
         self.entradas = entradas
@@ -87,8 +89,9 @@ struct ArchivoZip {
         guard let entrada = entradas.first(where: { $0.nombre == nombre }) else { return nil }
         // Los tamaños de 32 bits llenos son de ZIP64, que no se lee.
         guard entrada.comprimido != 0xFFFF_FFFF, entrada.descomprimido <= ArchivoZip.maximo,
-              entrada.cabecera + 30 <= bytes.count,
-              ArchivoZip.entero(bytes, entrada.cabecera, 4) == 0x0403_4B50 else { throw ErrorDeImportacion.comprimido }
+            entrada.cabecera + 30 <= bytes.count,
+            ArchivoZip.entero(bytes, entrada.cabecera, 4) == 0x0403_4B50
+        else { throw ErrorDeImportacion.comprimido }
         let inicio = entrada.cabecera + 30 + ArchivoZip.entero(bytes, entrada.cabecera + 26, 2)
             + ArchivoZip.entero(bytes, entrada.cabecera + 28, 2)
         guard inicio + entrada.comprimido <= bytes.count else { throw ErrorDeImportacion.comprimido }
@@ -163,18 +166,27 @@ struct Inflado {
         }
     }
 
-    private static let basesDeLongitud = [3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83,
-                                          99, 115, 131, 163, 195, 227, 258]
-    private static let extrasDeLongitud = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5,
-                                           5, 5, 0]
-    private static let basesDeDistancia = [1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513, 769,
-                                           1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577]
-    private static let extrasDeDistancia = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11,
-                                            11, 12, 12, 13, 13]
+    private static let basesDeLongitud = [
+        3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83,
+        99, 115, 131, 163, 195, 227, 258,
+    ]
+    private static let extrasDeLongitud = [
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5,
+        5, 5, 0,
+    ]
+    private static let basesDeDistancia = [
+        1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513, 769,
+        1025, 1537, 2049, 3073, 4097, 6145, 8193, 12_289, 16_385, 24_577,
+    ]
+    private static let extrasDeDistancia = [
+        0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11,
+        11, 12, 12, 13, 13,
+    ]
     /// El orden en que vienen las longitudes del código de las longitudes.
     private static let orden = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]
-    private static let literalesFijos = Huffman(longitudes: [Int](repeating: 8, count: 144) + [Int](repeating: 9, count: 112)
-                                                + [Int](repeating: 7, count: 24) + [Int](repeating: 8, count: 8))
+    private static let literalesFijos = Huffman(
+        longitudes: [Int](repeating: 8, count: 144) + [Int](repeating: 9, count: 112)
+            + [Int](repeating: 7, count: 24) + [Int](repeating: 8, count: 8))
     private static let distanciasFijas = Huffman(longitudes: [Int](repeating: 5, count: 30))
 
     mutating func descomprimir() throws {
@@ -204,7 +216,9 @@ struct Inflado {
     }
 
     private mutating func simbolo(_ codigo: Huffman) throws -> Int {
-        var valor = 0, primero = 0, indice = 0
+        var valor = 0
+        var primero = 0
+        var indice = 0
         for longitud in 1...15 {
             valor |= try leer(1)
             let cuenta = codigo.cuentas[longitud]
@@ -224,8 +238,8 @@ struct Inflado {
         let largo = Int(entrada[posicion]) | Int(entrada[posicion + 1]) << 8
         let complemento = Int(entrada[posicion + 2]) | Int(entrada[posicion + 3]) << 8
         posicion += 4
-        guard largo == ~complemento & 0xFFFF, posicion + largo <= entrada.count,
-              salida.count + largo <= maximo else { throw ErrorDeImportacion.comprimido }
+        guard largo == ~complemento & 0xFFFF, posicion + largo <= entrada.count, salida.count + largo <= maximo
+        else { throw ErrorDeImportacion.comprimido }
         salida += entrada[posicion..<(posicion + largo)]
         posicion += largo
     }

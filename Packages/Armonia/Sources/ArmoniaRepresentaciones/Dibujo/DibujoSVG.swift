@@ -1,10 +1,10 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+import Foundation
+
 // Lo común a los dibujos SVG del Tonnetz y de la tabla armónica: los colores, qué puntos se
 // marcan, las tríadas que se rellenan, los textos de la leyenda, el título encima, la leyenda
 // debajo, el fondo, el escapado del texto y el formato de los números.
-
-import Foundation
 
 /// Lo que se dibuja: de dónde salen las notas, para ponerle título al dibujo.
 package enum OrigenDelDibujo: Hashable, Sendable {
@@ -27,7 +27,8 @@ package enum OrigenDelDibujo: Hashable, Sendable {
         case .alturas(let alturas):
             return alturas.map { $0.nota.nombreCompacto(en: notacion) + "\($0.octava)" }.joined(separator: " · ")
         case .ciclo(let ciclo, let acorde):
-            let nombre = ciclo.nombre(en: notacion), cifrado = acorde.cifrado(en: notacion)
+            let nombre = ciclo.nombre(en: notacion)
+            let cifrado = acorde.cifrado(en: notacion)
             let titulo = TextosDeRepresentaciones.traducidos.map { $0.cicloDesde(nombre, cifrado) }.en(notacion)
             return titulo.conMayusculaInicial
         }
@@ -49,7 +50,7 @@ package enum OrigenDelDibujo: Hashable, Sendable {
 /// Una entrada de la leyenda: una muestra y su texto.
 package struct EntradaDeLeyenda {
     package enum Muestra {
-        case triangulo(String)               // relleno
+        case triangulo(String) // relleno
         case hexagono(relleno: String, borde: String)
         case circulo(relleno: String, borde: String)
         case linea(String, grosor: Double)
@@ -113,8 +114,10 @@ package enum DibujoSVG {
     /// Los puntos de la ventana que se marcan y, entre ellos, los de la primera nota. Sin `clave`,
     /// los puntos mismos; con ella (la clase de altura o el número MIDI), todos los de la ventana
     /// que suenan como alguno de ellos.
-    package static func marcar(_ puntos: [PuntoDeLaRed], en red: [PuntoDeLaRed],
-                       clave: ((PuntoDeLaRed) -> Int)?) -> (marcados: Set<PuntoDeLaRed>, primeros: Set<PuntoDeLaRed>) {
+    package static func marcar(
+        _ puntos: [PuntoDeLaRed], en red: [PuntoDeLaRed],
+        clave: ((PuntoDeLaRed) -> Int)?
+    ) -> (marcados: Set<PuntoDeLaRed>, primeros: Set<PuntoDeLaRed>) {
         guard let clave = clave else { return (Set(puntos), puntos.first.map { [$0] } ?? []) }
         let claves = Set(puntos.map(clave))
         let primera = puntos.first.map(clave)
@@ -135,17 +138,26 @@ package enum DibujoSVG {
 
     /// Envuelve el cuerpo de un dibujo, que ocupa la caja (x, y, ancho, alto), con el fondo, el
     /// título encima y la leyenda debajo (en varias filas si no cabe).
-    package static func componer(caja: (x: Double, y: Double, ancho: Double, alto: Double), cuerpo: String,
-                         titulo: String, leyenda: [EntradaDeLeyenda], paso: Double) -> String {
-        let tamanoDelTitulo = paso * 0.3, tamanoDeLeyenda = paso * 0.2
+    package static func componer(
+        caja: (x: Double, y: Double, ancho: Double, alto: Double), cuerpo: String,
+        titulo: String, leyenda: [EntradaDeLeyenda], paso: Double
+    ) -> String {
+        let tamanoDelTitulo = paso * 0.3
+        let tamanoDeLeyenda = paso * 0.2
         let margen = paso * 0.15
         let altoDelTitulo = titulo.isEmpty ? 0 : tamanoDelTitulo * 1.8
         // Anchura aproximada de un texto, para repartir la leyenda.
         func anchoDe(_ texto: String, _ tamano: Double) -> Double { Double(texto.count) * tamano * 0.56 }
         let muestra = tamanoDeLeyenda * 1.6
-        let entradas = leyenda.map { (entrada: $0, ancho: muestra + tamanoDeLeyenda * 0.5 + anchoDe($0.texto, tamanoDeLeyenda) + tamanoDeLeyenda * 1.4) }
-        let ancho = max(caja.ancho, anchoDe(titulo, tamanoDelTitulo) * 1.12 + 2 * margen,
-                        (entradas.map(\.ancho).max() ?? 0) + 2 * margen)
+        let entradas = leyenda.map {
+            (
+                entrada: $0,
+                ancho: muestra + tamanoDeLeyenda * 0.5 + anchoDe($0.texto, tamanoDeLeyenda) + tamanoDeLeyenda * 1.4
+            )
+        }
+        let ancho = max(
+            caja.ancho, anchoDe(titulo, tamanoDelTitulo) * 1.12 + 2 * margen,
+            (entradas.map(\.ancho).max() ?? 0) + 2 * margen)
         // Las filas de la leyenda.
         var filas: [[(entrada: EntradaDeLeyenda, ancho: Double)]] = []
         for entrada in entradas {
@@ -161,18 +173,22 @@ package enum DibujoSVG {
         let arriba = caja.y - altoDelTitulo
         let alto = caja.alto + altoDelTitulo + altoDeLeyenda
 
-        var svg = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"\(f(izquierda)) \(f(arriba)) \(f(ancho)) \(f(alto))\" "
+        var svg =
+            "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"\(f(izquierda)) \(f(arriba)) \(f(ancho)) \(f(alto))\" "
         svg += "width=\"\(f(ancho))\" height=\"\(f(alto))\" font-family=\"sans-serif\">\n"
         if !titulo.isEmpty { svg += "  <title>\(escapar(titulo))</title>\n" }
-        svg += "  <rect x=\"\(f(izquierda))\" y=\"\(f(arriba))\" width=\"\(f(ancho))\" height=\"\(f(alto))\" fill=\"#ffffff\"/>\n"
+        svg +=
+            "  <rect x=\"\(f(izquierda))\" y=\"\(f(arriba))\" width=\"\(f(ancho))\" height=\"\(f(alto))\" fill=\"#ffffff\"/>\n"
         if !titulo.isEmpty {
-            svg += "  <text x=\"\(f(izquierda + margen))\" y=\"\(f(arriba + altoDelTitulo / 2 + margen / 2))\" dominant-baseline=\"central\" "
-            svg += "font-size=\"\(f(tamanoDelTitulo))\" font-weight=\"600\" fill=\"#222222\">\(escapar(titulo))</text>\n"
+            svg +=
+                "  <text x=\"\(f(izquierda + margen))\" y=\"\(f(arriba + altoDelTitulo / 2 + margen / 2))\" dominant-baseline=\"central\" "
+            svg +=
+                "font-size=\"\(f(tamanoDelTitulo))\" font-weight=\"600\" fill=\"#222222\">\(escapar(titulo))</text>\n"
         }
         svg += cuerpo
         // La leyenda.
         var y = caja.y + caja.alto + margen / 2 + altoDeFila / 2
-        let medioLado = tamanoDeLeyenda * 0.75   // medio lado de la muestra
+        let medioLado = tamanoDeLeyenda * 0.75 // medio lado de la muestra
         for fila in filas {
             var x = izquierda + margen
             for (entrada, anchoDeEntrada) in fila {
@@ -180,22 +196,28 @@ package enum DibujoSVG {
                 svg += "  <g class=\"leyenda\">"
                 switch entrada.muestra {
                 case .triangulo(let color):
-                    svg += "<polygon points=\"\(f(cx - medioLado)),\(f(y + medioLado * 0.8)) \(f(cx + medioLado)),\(f(y + medioLado * 0.8)) \(f(cx)),\(f(y - medioLado * 0.9))\" "
+                    svg +=
+                        "<polygon points=\"\(f(cx - medioLado)),\(f(y + medioLado * 0.8)) \(f(cx + medioLado)),\(f(y + medioLado * 0.8)) \(f(cx)),\(f(y - medioLado * 0.9))\" "
                     svg += "fill=\"\(color)\" fill-opacity=\"0.8\" stroke=\"#333333\" stroke-width=\"1\"/>"
                 case .hexagono(let relleno, let borde):
                     let radio = medioLado * 1.05
                     let esquinas = stride(from: 0.0, to: 360, by: 60).map { grados in
                         "\(f(cx + radio * cos(grados * .pi / 180))),\(f(y + radio * sin(grados * .pi / 180)))"
                     }.joined(separator: " ")
-                    svg += "<polygon points=\"\(esquinas)\" fill=\"\(relleno)\" stroke=\"\(borde)\" stroke-width=\"2\"/>"
+                    svg +=
+                        "<polygon points=\"\(esquinas)\" fill=\"\(relleno)\" stroke=\"\(borde)\" stroke-width=\"2\"/>"
                 case .circulo(let relleno, let borde):
-                    svg += "<circle cx=\"\(f(cx))\" cy=\"\(f(y))\" r=\"\(f(medioLado * 0.8))\" fill=\"\(relleno)\" stroke=\"\(borde)\" stroke-width=\"1.5\"/>"
+                    svg +=
+                        "<circle cx=\"\(f(cx))\" cy=\"\(f(y))\" r=\"\(f(medioLado * 0.8))\" fill=\"\(relleno)\" stroke=\"\(borde)\" stroke-width=\"1.5\"/>"
                 case .linea(let color, let grosor):
-                    svg += "<line x1=\"\(f(cx - medioLado))\" y1=\"\(f(y))\" x2=\"\(f(cx + medioLado))\" y2=\"\(f(y))\" stroke=\"\(color)\" stroke-width=\"\(f(grosor))\"/>"
+                    svg +=
+                        "<line x1=\"\(f(cx - medioLado))\" y1=\"\(f(y))\" x2=\"\(f(cx + medioLado))\" y2=\"\(f(y))\" stroke=\"\(color)\" stroke-width=\"\(f(grosor))\"/>"
                 case .flecha:
-                    svg += "<line x1=\"\(f(cx - medioLado))\" y1=\"\(f(y))\" x2=\"\(f(cx + medioLado))\" y2=\"\(f(y))\" stroke=\"#c0392b\" stroke-width=\"2.5\" marker-end=\"url(#flecha)\"/>"
+                    svg +=
+                        "<line x1=\"\(f(cx - medioLado))\" y1=\"\(f(y))\" x2=\"\(f(cx + medioLado))\" y2=\"\(f(y))\" stroke=\"#c0392b\" stroke-width=\"2.5\" marker-end=\"url(#flecha)\"/>"
                 }
-                svg += "<text x=\"\(f(x + muestra + tamanoDeLeyenda * 0.5))\" y=\"\(f(y))\" dominant-baseline=\"central\" "
+                svg +=
+                    "<text x=\"\(f(x + muestra + tamanoDeLeyenda * 0.5))\" y=\"\(f(y))\" dominant-baseline=\"central\" "
                 svg += "font-size=\"\(f(tamanoDeLeyenda))\" fill=\"#444444\">\(escapar(entrada.texto))</text></g>\n"
                 x += anchoDeEntrada
             }
@@ -208,14 +230,17 @@ package enum DibujoSVG {
     /// entre tríadas que no son vecinas; vacío si no hay recorrido.
     /// Con `acordes`, los nombres de las tríadas son esos (los de un ciclo, que no siempre
     /// coinciden con la posición del triángulo).
-    package static func titulo(deRecorrido recorrido: [Tonnetz.Triada], _ notacion: Notacion,
-                       acordes: [Acorde] = []) -> String {
+    package static func titulo(
+        deRecorrido recorrido: [Tonnetz.Triada], _ notacion: Notacion,
+        acordes: [Acorde] = []
+    ) -> String {
         guard !recorrido.isEmpty else { return "" }
         let nombres = acordes.count == recorrido.count ? acordes : recorrido.map(\.acorde)
         var titulo = nombres[0].cifrado(en: notacion)
         for (i, (uno, otro)) in zip(recorrido, recorrido.dropFirst()).enumerated() {
             let pasos = Tonnetz.camino(desde: uno.acorde, hasta: otro.acorde) ?? []
-            titulo += (pasos.isEmpty ? " – " : " –\(pasos.map(\.rawValue).joined())→ ") + nombres[i + 1].cifrado(en: notacion)
+            titulo +=
+                (pasos.isEmpty ? " – " : " –\(pasos.map(\.rawValue).joined())→ ") + nombres[i + 1].cifrado(en: notacion)
         }
         return titulo
     }
@@ -223,13 +248,17 @@ package enum DibujoSVG {
     /// Las flechas de un recorrido, de tríada en tríada, con un punto en la primera. `centro` da
     /// dónde se dibuja cada tríada en unidades de `paso` (el centro del triángulo en el Tonnetz,
     /// el vértice común de los tres hexágonos en la tabla armónica).
-    package static func flechas(_ recorrido: [Tonnetz.Triada], centro: (Tonnetz.Triada) -> (Double, Double), paso: Double) -> String {
+    package static func flechas(
+        _ recorrido: [Tonnetz.Triada], centro: (Tonnetz.Triada) -> (Double, Double), paso: Double
+    ) -> String {
         var svg = ""
         if !recorrido.isEmpty {
             svg += "  <defs><marker id=\"flecha\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"5\" "
-            svg += "markerHeight=\"5\" orient=\"auto\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"\(DibujoSVG.Color.flecha)\"/></marker></defs>\n"
+            svg +=
+                "markerHeight=\"5\" orient=\"auto\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"\(DibujoSVG.Color.flecha)\"/></marker></defs>\n"
             let (xInicial, yInicial) = centro(recorrido[0])
-            svg += "  <circle cx=\"\(f(xInicial * paso))\" cy=\"\(f(yInicial * paso))\" r=\"\(f(paso * 0.07))\" fill=\"\(DibujoSVG.Color.flecha)\"/>\n"
+            svg +=
+                "  <circle cx=\"\(f(xInicial * paso))\" cy=\"\(f(yInicial * paso))\" r=\"\(f(paso * 0.07))\" fill=\"\(DibujoSVG.Color.flecha)\"/>\n"
         }
         // Las flechas entre los mismos dos triángulos (de ida o de vuelta) se separan: se curvan
         // hacia lados distintos de la línea entre sus centros, cada una un poco más que la anterior.
@@ -249,7 +278,8 @@ package enum DibujoSVG {
             dibujadas[clave] = yaDibujadas + 1
             // El desplazamiento, perpendicular al sentido del par (no al de la flecha), para que la
             // ida y la vuelta caigan en lados opuestos.
-            let (px1, py1) = centro(clave[0]), (px2, py2) = centro(clave[1])
+            let (px1, py1) = centro(clave[0])
+            let (px2, py2) = centro(clave[1])
             let largoDelPar = ((px2 - px1) * (px2 - px1) + (py2 - py1) * (py2 - py1)).squareRoot()
             let separacion = (Double(yaDibujadas) - Double(veces[clave]! - 1) / 2) * 0.12
             let (nx, ny) = (-(py2 - py1) / largoDelPar, (px2 - px1) / largoDelPar)
@@ -261,12 +291,15 @@ package enum DibujoSVG {
             let (ax, ay) = (x1 + (x2 - x1) * recorte, y1 + (y2 - y1) * recorte)
             let (bx, by) = (x2 - (x2 - x1) * recorte, y2 - (y2 - y1) * recorte)
             if separacion == 0 {
-                svg += "  <line x1=\"\(f(ax * paso))\" y1=\"\(f(ay * paso))\" x2=\"\(f(bx * paso))\" y2=\"\(f(by * paso))\" "
+                svg +=
+                    "  <line x1=\"\(f(ax * paso))\" y1=\"\(f(ay * paso))\" x2=\"\(f(bx * paso))\" y2=\"\(f(by * paso))\" "
             } else {
                 let (cx, cy) = ((ax + bx) / 2 + nx * separacion * 1.4, (ay + by) / 2 + ny * separacion * 1.4)
-                svg += "  <path d=\"M\(f(ax * paso)),\(f(ay * paso)) Q\(f(cx * paso)),\(f(cy * paso)) \(f(bx * paso)),\(f(by * paso))\" fill=\"none\" "
+                svg +=
+                    "  <path d=\"M\(f(ax * paso)),\(f(ay * paso)) Q\(f(cx * paso)),\(f(cy * paso)) \(f(bx * paso)),\(f(by * paso))\" fill=\"none\" "
             }
-            svg += "stroke=\"\(DibujoSVG.Color.flecha)\" stroke-width=\"\(veces[clave]! > 1 ? "2.2" : "3")\" marker-end=\"url(#flecha)\"/>\n"
+            svg +=
+                "stroke=\"\(DibujoSVG.Color.flecha)\" stroke-width=\"\(veces[clave]! > 1 ? "2.2" : "3")\" marker-end=\"url(#flecha)\"/>\n"
         }
         return svg
     }

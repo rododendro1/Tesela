@@ -1,11 +1,11 @@
+import Foundation
 import Hexagonos
+
 // El Tonnetz y la tabla armónica son la misma rejilla hexagonal vista de dos maneras: en el Tonnetz
 // cada nota es un vértice de la red triangular (el centro de un hexágono invisible); en la tabla
 // armónica, un hexágono. Aquí se traduce un punto del Tonnetz a las coordenadas del paquete
 // `Hexagonos`, y de ahí salen las posiciones de los dibujos y el camino de vuelta: de un punto del
 // dibujo (donde se ha tocado) a la nota.
-
-import Foundation
 
 extension PuntoDeLaRed {
     /// El punto como casilla de una rejilla hexagonal: `q` son las quintas y `r` las terceras mayores.

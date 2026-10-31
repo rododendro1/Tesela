@@ -62,7 +62,8 @@ extension LineaDeComandos {
             dibujo = .camino(acordes[0], acordes[1])
         case "--ciclo", "--cycle":
             let partes = Array(argumentos.dropFirst())
-            guard partes.count >= 2, let ciclo = CicloNeorriemanniano(leyendo: partes.dropLast().joined(separator: " ")) else {
+            guard partes.count >= 2, let ciclo = CicloNeorriemanniano(leyendo: partes.dropLast().joined(separator: " "))
+            else {
                 return .error(uso(.cicloMalEscrito(orden: orden), notacion))
             }
             dibujo = .ciclo(ciclo, try Acorde(leyendo: partes.last!))
@@ -102,7 +103,9 @@ extension LineaDeComandos {
             guard let recorrido = Tonnetz(recorrido: acordes) else { return errorDeRecorrido("tonnetz", notacion) }
             tonnetz = recorrido
         case .camino(let origen, let destino):
-            guard let camino = Tonnetz(caminoDesde: origen, hasta: destino) else { return errorDeCamino("tonnetz", notacion) }
+            guard let camino = Tonnetz(caminoDesde: origen, hasta: destino) else {
+                return errorDeCamino("tonnetz", notacion)
+            }
             tonnetz = camino
         case .ciclo(let ciclo, let acorde):
             guard let dibujo = Tonnetz(ciclo: ciclo, desde: acorde) else { return errorDeCiclo("tonnetz", notacion) }
@@ -135,10 +138,14 @@ extension LineaDeComandos {
             guard let recorrido = TablaArmonica(recorrido: acordes) else { return errorDeRecorrido("tabla", notacion) }
             tabla = recorrido
         case .camino(let origen, let destino):
-            guard let camino = TablaArmonica(caminoDesde: origen, hasta: destino) else { return errorDeCamino("tabla", notacion) }
+            guard let camino = TablaArmonica(caminoDesde: origen, hasta: destino) else {
+                return errorDeCamino("tabla", notacion)
+            }
             tabla = camino
         case .ciclo(let ciclo, let acorde):
-            guard let dibujo = TablaArmonica(ciclo: ciclo, desde: acorde) else { return errorDeCiclo("tabla", notacion) }
+            guard let dibujo = TablaArmonica(ciclo: ciclo, desde: acorde) else {
+                return errorDeCiclo("tabla", notacion)
+            }
             tabla = dibujo
         }
         return bien(tabla.svg(notacion: notacion, margen: margen).trimmingCharacters(in: "\n"))

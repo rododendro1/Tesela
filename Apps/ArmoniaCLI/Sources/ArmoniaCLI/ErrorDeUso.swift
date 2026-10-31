@@ -163,7 +163,8 @@ enum ErrorDeUso {
         case .soloParaArpegios(let opcion): return TextosDePartituras.soloParaArpegios(opcion)
         case .archivoSoloParaAcordes: return TextosDePartituras.archivoSoloParaAcordes()
         case .ventanaSinArchivo: return TextosDePartituras.ventanaSinArchivo()
-        case .faltanAcordesDeLaProgresion(let orden): return TextosDePartituras.faltanAcordesDeLaProgresion(orden: orden)
+        case .faltanAcordesDeLaProgresion(let orden):
+            return TextosDePartituras.faltanAcordesDeLaProgresion(orden: orden)
         case .acordesConCifradosYAnalisis: return TextosDePartituras.acordesConCifradosYAnalisis()
         case .tipoDePartituraDesconocido(let tipo): return TextosDePartituras.tipoDePartituraDesconocido(tipo)
         case .margenFueraDeRango: return TextosDeDibujos.margenFueraDeRango()

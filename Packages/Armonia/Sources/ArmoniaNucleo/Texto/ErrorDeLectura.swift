@@ -101,7 +101,8 @@ extension ErrorDeLectura {
 
     /// Mensaje completo en el idioma de los textos de la notación.
     public func descripcion(en notacion: Notacion) -> String {
-        var inicio = texto.isEmpty
+        var inicio =
+            texto.isEmpty
             ? TextosDeNucleo.traducidos.map(\.valorNoValido).en(notacion)
             : TextosDeNucleo.traducidos.map { $0.noSePuedeLeer(texto) }.en(notacion)
         if let p = posicion {
@@ -123,7 +124,8 @@ extension ErrorDeLectura {
         case .octavaNoValida(let resto): return TextosDeNotas.octavaNoValida(resto)
         case .numeroDeIntervaloNoValido(let resto): return TextosDeNotas.numeroDeIntervaloNoValido(resto)
         case .calidadNoValida(let resto): return TextosDeNotas.calidadNoValida(resto)
-        case .intervaloInexistente(let numero, let calidad): return TextosDeNotas.intervaloInexistente(numero: numero, calidad: calidad, en: notacion)
+        case .intervaloInexistente(let numero, let calidad):
+            return TextosDeNotas.intervaloInexistente(numero: numero, calidad: calidad, en: notacion)
         case .simboloNoReconocido(let simbolo): return TextosDeAcordes.simboloNoReconocido(simbolo)
         case .tensionNoValida(let tension): return TextosDeAcordes.tensionNoValida(tension)
         case .numeroDeAcordeNoValido(let numero): return TextosDeAcordes.numeroDeAcordeNoValido(numero)
@@ -136,7 +138,8 @@ extension ErrorDeLectura {
         case .duracionNoValida(let texto): return TextosDePartitura.duracionNoValida(texto)
         case .compasNoValido(let texto): return TextosDePartitura.compasNoValido(texto)
         case .vocesDistintas: return TextosDePartitura.vocesDistintas()
-        case .contrapuntoDeOtraDuracion(let redondas): return TextosDePartitura.contrapuntoDeOtraDuracion(redondas: redondas)
+        case .contrapuntoDeOtraDuracion(let redondas):
+            return TextosDePartitura.contrapuntoDeOtraDuracion(redondas: redondas)
         case .alteracionNoReconocida(let signo): return TextosDeNotas.alteracionNoReconocida(signo)
         case .modoNoReconocido(let nombre): return TextosDeEscalas.modoNoReconocido(nombre)
         case .tipoDeEscalaNoReconocido(let nombre): return TextosDeEscalas.tipoDeEscalaNoReconocido(nombre)
@@ -170,12 +173,14 @@ extension ErrorDeLectura {
                 : TextosDeNucleo.traducidos.map { $0.calidadNoValida(resto) }
         }
 
-        static func intervaloInexistente(numero: Int, calidad: CalidadDeIntervalo, en notacion: Notacion) -> Traduccion {
+        static func intervaloInexistente(numero: Int, calidad: CalidadDeIntervalo, en notacion: Notacion) -> Traduccion
+        {
             if numero == 1, case .disminuida = calidad {
                 return TextosDeNucleo.traducidos.map(\.unisonoDisminuido)
             }
             let clase = (numero - 1) % 7
-            let regla = [0, 3, 4].contains(clase)
+            let regla =
+                [0, 3, 4].contains(clase)
                 ? TextosDeNucleo.traducidos.map(\.reglaDeLasJustas)
                 : TextosDeNucleo.traducidos.map(\.reglaDeLasMayores)
             return TextosDeNucleo.traducidos.map { $0.intervaloInexistente(numero, calidad, notacion, regla) }

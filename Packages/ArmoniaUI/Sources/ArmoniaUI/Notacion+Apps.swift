@@ -1,5 +1,5 @@
-import Foundation
 import Armonia
+import Foundation
 
 /// Lo que comparten las apps al elegir y guardar la notación. No usa SwiftUI, así que se prueba en Linux.
 extension Notacion {
@@ -28,7 +28,9 @@ extension Notacion {
     public static func desde(clave: String) -> Notacion {
         let partes = clave.split(separator: "+", maxSplits: 1).map(String.init)
         let notas = allCases.first { $0.clave == partes.first } ?? .espanolUnicode
-        guard partes.count == 2, let textos = Idioma.allCases.first(where: { $0.clave == partes[1] }) else { return notas }
+        guard partes.count == 2, let textos = Idioma.allCases.first(where: { $0.clave == partes[1] }) else {
+            return notas
+        }
         return notas.conTextos(en: textos)
     }
 

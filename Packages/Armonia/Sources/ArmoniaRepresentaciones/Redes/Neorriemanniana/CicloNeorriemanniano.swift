@@ -1,5 +1,7 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+import Foundation
+
 // Los ciclos neorriemannianos: alternando dos de las transformaciones P, L y R se vuelve a la
 // tríada de partida, recorriendo en el Tonnetz una banda de triángulos.
 //
@@ -11,8 +13,6 @@ import ArmoniaTeoria
 // eso cada tríada se escribe con la ortografía más sencilla (Mi, no Fa♭; Fa♯m, no Sol♭m) y la
 // última es la de partida. En el dibujo, la banda sigue recta y los puntos llevan el nombre de
 // la primera tríada del ciclo que los toca.
-
-import Foundation
 
 /// Un ciclo de tríadas que se cierra alternando dos transformaciones neorriemannianas.
 ///
@@ -120,8 +120,10 @@ extension Tonnetz.Triada {
             triada.vertices.contains { abs($0.nota.alteracion.semitonos) > 1 }
         }
         let enarmonicas = [-12, 12].map { desplazamiento in
-            Tonnetz.Triada(fundamental: PuntoDeLaRed(quintas: fundamental.quintas + desplazamiento,
-                                                        terceras: fundamental.terceras), mayor: mayor)
+            Tonnetz.Triada(
+                fundamental: PuntoDeLaRed(
+                    quintas: fundamental.quintas + desplazamiento,
+                    terceras: fundamental.terceras), mayor: mayor)
         }
         let mejor = enarmonicas.min { alteraciones($0) < alteraciones($1) }!
         if conDobles(self) && !conDobles(mejor) || alteraciones(mejor) <= alteraciones(self) - 2 { return mejor }
@@ -169,7 +171,9 @@ extension Tonnetz {
             let dy = Double(otro.terceras - punto.terceras) * 0.8660254037844386
             return dx * dx + dy * dy
         }
-        let cercano = puntos.min { (distancia($0), $0.terceras, $0.quintas) < (distancia($1), $1.terceras, $1.quintas) }!
+        let cercano = puntos.min {
+            (distancia($0), $0.terceras, $0.quintas) < (distancia($1), $1.terceras, $1.quintas)
+        }!
         let cerca = nombres[cercano]!.pasosDeQuinta - cercano.pasosDeQuinta
         let opciones = (-3...3).map { Nota(pasosDeQuinta: punto.pasosDeQuinta + 12 * $0) }
         return opciones.min {

@@ -195,9 +195,11 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     /// y una en los demás.
     public static let allCases: [EscrituraDeNotas] = Idioma.allCases.flatMap { idioma in
         idioma.reglas.tieneVariantes
-            ? [EscrituraDeNotas(idioma, conPalabras: true, tipografia: .unicode),
-               EscrituraDeNotas(idioma, tipografia: .ascii),
-               EscrituraDeNotas(idioma, tipografia: .unicode)]
+            ? [
+                EscrituraDeNotas(idioma, conPalabras: true, tipografia: .unicode),
+                EscrituraDeNotas(idioma, tipografia: .ascii),
+                EscrituraDeNotas(idioma, tipografia: .unicode),
+            ]
             : [EscrituraDeNotas(idioma)]
     }
 
@@ -205,7 +207,10 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     /// alteraciones con palabras, la única que tienen. Para las palabras en español o inglés, `.espanol` e
     /// `.ingles`.
     public init(idioma: Idioma, ascii: Bool) {
-        guard idioma.reglas.tieneVariantes else { self = EscrituraDeNotas(idioma); return }
+        guard idioma.reglas.tieneVariantes else {
+            self = EscrituraDeNotas(idioma)
+            return
+        }
         self = EscrituraDeNotas(idioma, tipografia: ascii ? .ascii : .unicode)
     }
 

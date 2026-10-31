@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import Foundation
+
 // MARK: - Arpegio
 
 /// Un acorde tocado nota a nota: el acorde, el orden en que se recorre y cuántas octavas abarca.
@@ -84,8 +85,10 @@ public struct Arpegio: Hashable, Sendable {
 extension Escala {
     /// El arpegio del acorde por terceras superpuestas sobre un grado: tríada o cuatríada (`nil` si no forma
     /// un acorde conocido). `Escala("Do mayor").arpegio(grado: 5, cuatriada: true)` es el de Sol7.
-    public func arpegio(grado: Int = 1, cuatriada: Bool = false, patron: Arpegio.Patron = .ascendente,
-                        octavas: Int = 1, conOctava: Bool = true) -> Arpegio? {
+    public func arpegio(
+        grado: Int = 1, cuatriada: Bool = false, patron: Arpegio.Patron = .ascendente,
+        octavas: Int = 1, conOctava: Bool = true
+    ) -> Arpegio? {
         acorde(grado: grado, cuatriada: cuatriada).map {
             Arpegio($0, patron: patron, octavas: octavas, conOctava: conOctava)
         }
@@ -94,8 +97,10 @@ extension Escala {
     /// El arpegio con los grados que se indiquen, contados desde 1, y el primero como fundamental:
     /// `Escala("Do mayor").arpegio(grados: [1, 3, 5, 6])` es el de Do6. `nil` si hay menos de dos
     /// grados o las notas no forman un acorde conocido.
-    public func arpegio(grados: [Int], patron: Arpegio.Patron = .ascendente, octavas: Int = 1,
-                        conOctava: Bool = true) -> Arpegio? {
+    public func arpegio(
+        grados: [Int], patron: Arpegio.Patron = .ascendente, octavas: Int = 1,
+        conOctava: Bool = true
+    ) -> Arpegio? {
         guard grados.count >= 2 else { return nil }
         let nombres = grados.map { grado($0) }
         let raiz = nombres[0]
@@ -142,11 +147,13 @@ extension Arpegio {
     /// «Arpegio de Do mayor», «C major arpeggio», «Arpège de Do majeur», «C-Dur-Arpeggio», «Арпеджио до мажор».
     public func nombre(en notacion: Notacion) -> String {
         let acorde = self.acorde.nombre(en: notacion)
-        let plantilla = Traduccion("Arpegio de {}", "{} arpeggio", ca: "Arpegi de {}", gl: "Arpexo de {}",
-                                   ast: "Arpexu de {}", an: "Arpechio de {}", eu: "{} arpegioa",
-                                   pt: "Arpejo de {}", fr: "Arpège de {}", oc: "Arpegi de {}",
-                                   it: "Arpeggio di {}", de: "Arpeggio: {}",
-                                   el: "Αρπέζ {}", ru: "Арпеджио {}").en(notacion)
+        let plantilla = Traduccion(
+            "Arpegio de {}", "{} arpeggio", ca: "Arpegi de {}", gl: "Arpexo de {}",
+            ast: "Arpexu de {}", an: "Arpechio de {}", eu: "{} arpegioa",
+            pt: "Arpejo de {}", fr: "Arpège de {}", oc: "Arpegi de {}",
+            it: "Arpeggio di {}", de: "Arpeggio: {}",
+            el: "Αρπέζ {}", ru: "Арпеджио {}"
+        ).en(notacion)
         return plantilla.replacingOccurrences(of: "{}", with: acorde)
     }
 
@@ -179,23 +186,27 @@ extension Arpegio.Patron {
     private var traduccion: Traduccion {
         switch self {
         case .ascendente:
-            return Traduccion("ascendente", "ascending", ca: "ascendent", gl: "ascendente", ast: "ascendente",
-                              an: "ascendent", eu: "igoera", pt: "ascendente", fr: "ascendant", oc: "ascendent",
-                              it: "ascendente", de: "aufwärts", el: "ανιούσα", ru: "восходящий")
+            return Traduccion(
+                "ascendente", "ascending", ca: "ascendent", gl: "ascendente", ast: "ascendente",
+                an: "ascendent", eu: "igoera", pt: "ascendente", fr: "ascendant", oc: "ascendent",
+                it: "ascendente", de: "aufwärts", el: "ανιούσα", ru: "восходящий")
         case .descendente:
-            return Traduccion("descendente", "descending", ca: "descendent", gl: "descendente", ast: "descendente",
-                              an: "descendent", eu: "jaitsiera", pt: "descendente", fr: "descendant", oc: "descendent",
-                              it: "discendente", de: "abwärts", el: "κατιούσα", ru: "нисходящий")
+            return Traduccion(
+                "descendente", "descending", ca: "descendent", gl: "descendente", ast: "descendente",
+                an: "descendent", eu: "jaitsiera", pt: "descendente", fr: "descendant", oc: "descendent",
+                it: "discendente", de: "abwärts", el: "κατιούσα", ru: "нисходящий")
         case .idaYVuelta:
-            return Traduccion("de ida y vuelta", "up and down", ca: "d'anada i tornada", gl: "de ida e volta",
-                              ast: "d'ida y vuelta", an: "d'ida y tornada", eu: "joan-etorria", pt: "de ida e volta",
-                              fr: "aller-retour", oc: "d'anada e de tornada", it: "andata e ritorno",
-                              de: "auf und ab", el: "πάνω-κάτω", ru: "вверх и вниз")
+            return Traduccion(
+                "de ida y vuelta", "up and down", ca: "d'anada i tornada", gl: "de ida e volta",
+                ast: "d'ida y vuelta", an: "d'ida y tornada", eu: "joan-etorria", pt: "de ida e volta",
+                fr: "aller-retour", oc: "d'anada e de tornada", it: "andata e ritorno",
+                de: "auf und ab", el: "πάνω-κάτω", ru: "вверх и вниз")
         case .alberti:
-            return Traduccion("bajo de Alberti", "Alberti bass", ca: "baix d'Alberti", gl: "baixo de Alberti",
-                              ast: "baxu d'Alberti", an: "baixo d'Alberti", eu: "Albertiren baxua",
-                              pt: "baixo de Alberti", fr: "basse d'Alberti", oc: "bassa d'Alberti",
-                              it: "basso albertino", de: "Albertibass", el: "μπάσο Alberti", ru: "альбертиев бас")
+            return Traduccion(
+                "bajo de Alberti", "Alberti bass", ca: "baix d'Alberti", gl: "baixo de Alberti",
+                ast: "baxu d'Alberti", an: "baixo d'Alberti", eu: "Albertiren baxua",
+                pt: "baixo de Alberti", fr: "basse d'Alberti", oc: "bassa d'Alberti",
+                it: "basso albertino", de: "Albertibass", el: "μπάσο Alberti", ru: "альбертиев бас")
         }
     }
 }

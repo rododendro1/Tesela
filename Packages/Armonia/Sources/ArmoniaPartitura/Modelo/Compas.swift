@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+
 // Compases: el número de pulsos, su agrupación y sus acentos.
 
 // MARK: - Compás
@@ -52,8 +53,9 @@ public struct Compas: Hashable, Sendable, CustomStringConvertible {
     public init(_ numerador: Int, _ denominador: Int, agrupacion: [Int]? = nil) {
         precondition(Compas.esValido(numerador, denominador), "compás no válido: \(numerador)/\(denominador)")
         let grupos = agrupacion ?? Compas.agrupacionHabitual(numerador)
-        precondition(grupos.allSatisfy { $0 > 0 } && grupos.reduce(0, +) == numerador,
-                     "la agrupación \(grupos) no suma \(numerador)")
+        precondition(
+            grupos.allSatisfy { $0 > 0 } && grupos.reduce(0, +) == numerador,
+            "la agrupación \(grupos) no suma \(numerador)")
         self.numerador = numerador
         self.denominador = denominador
         self.agrupacion = grupos
@@ -74,8 +76,12 @@ public struct Compas: Hashable, Sendable, CustomStringConvertible {
     public init(leyendo texto: String) throws {
         let limpio = texto.trimmingEspacios()
         switch limpio {
-        case "C": self = .compasillo; return
-        case "¢", "C|": self = .partido; return
+        case "C":
+            self = .compasillo
+            return
+        case "¢", "C|":
+            self = .partido
+            return
         default: break
         }
         let error = ErrorDeLectura(texto: texto, posicion: nil, motivo: .compasNoValido(limpio))
@@ -119,7 +125,10 @@ public struct Compas: Hashable, Sendable, CustomStringConvertible {
     /// Dónde empieza cada pulso, desde el principio del compás: en 6/8, [0, 3/8].
     public var iniciosDePulso: [Duracion] {
         var inicio = Duracion.cero
-        return duracionesDePulso.map { duracion in defer { inicio = inicio + duracion }; return inicio }
+        return duracionesDePulso.map { duracion in
+            defer { inicio = inicio + duracion }
+            return inicio
+        }
     }
 
     /// Acento del pulso número `pulso` (desde 0): el primero es fuerte; en compases de 4 pulsos o más con

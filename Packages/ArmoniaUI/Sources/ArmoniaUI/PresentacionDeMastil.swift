@@ -30,8 +30,10 @@ enum PresentacionDeMastil {
     /// La posición que se toca en un dibujo de `ancho` por `alto`: el traste es la columna del toque, y la cuerda,
     /// la más cercana (la 0, la grave, abajo). `nil` en los márgenes, en el canal de las cuerdas al aire
     /// (`conCanal`) o lejos de cualquier cuerda.
-    static func posicion(enX x: Double, y: Double, ancho: Double, alto: Double, cuerdas: Int,
-                         rango: ClosedRange<Int>, conCanal: Bool) -> PosicionEnElMastil? {
+    static func posicion(
+        enX x: Double, y: Double, ancho: Double, alto: Double, cuerdas: Int,
+        rango: ClosedRange<Int>, conCanal: Bool
+    ) -> PosicionEnElMastil? {
         guard cuerdas > 0 else { return nil }
         let anchoCasilla = (ancho - 2 * margenX) / Double(rango.count + (conCanal ? 1 : 0))
         let inicioX = margenX + (conCanal ? anchoCasilla : 0)
@@ -60,7 +62,9 @@ enum PresentacionDeMastil {
     }
 
     /// Una descripción corta para VoiceOver, en el idioma de los textos.
-    static func descripcion(marcas: [PosicionEnElMastil], apagadas: Set<Int>, en notacion: Notacion = .espanolUnicode) -> String {
+    static func descripcion(marcas: [PosicionEnElMastil], apagadas: Set<Int>, en notacion: Notacion = .espanolUnicode)
+        -> String
+    {
         var partes: [String] = []
         if marcas.count > 12 {
             partes.append(notacion.texto(.marcas(marcas.count)))
@@ -69,13 +73,16 @@ enum PresentacionDeMastil {
                 .map { notacion.texto(.posicion(cuerda: $0.cuerda + 1, traste: $0.traste)) }
         }
         if !apagadas.isEmpty {
-            partes.append(notacion.texto(.cuerdasApagadas(apagadas.sorted().map { String($0 + 1) }.joined(separator: ", "))))
+            partes.append(
+                notacion.texto(.cuerdasApagadas(apagadas.sorted().map { String($0 + 1) }.joined(separator: ", "))))
         }
         return partes.isEmpty ? notacion.texto(.sinMarcas) : partes.joined(separator: "; ")
     }
 
     /// Lo que es el diagrama, para VoiceOver: «Mástil de guitarra, trastes 0 a 5».
-    static func etiqueta(de mastil: Mastil, rango: ClosedRange<Int>, en notacion: Notacion = .espanolUnicode) -> String {
-        notacion.texto(.mastilDe(mastil.encordado.nombre(en: notacion), desde: rango.lowerBound, hasta: rango.upperBound))
+    static func etiqueta(de mastil: Mastil, rango: ClosedRange<Int>, en notacion: Notacion = .espanolUnicode) -> String
+    {
+        notacion.texto(
+            .mastilDe(mastil.encordado.nombre(en: notacion), desde: rango.lowerBound, hasta: rango.upperBound))
     }
 }

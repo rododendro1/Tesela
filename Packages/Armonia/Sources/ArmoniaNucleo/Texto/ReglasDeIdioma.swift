@@ -29,8 +29,10 @@ public struct ReglasDeIdioma: Hashable, Sendable {
     /// escritura, porque tienen las dos.
     public let tipografia: Tipografia
 
-    public init(naturales: [String], separador: String = " ", multiplicador: Multiplicador = .delante,
-                alteraciones: EscrituraDeLaAlteracion = .palabras, tipografia: Tipografia = .unicode) {
+    public init(
+        naturales: [String], separador: String = " ", multiplicador: Multiplicador = .delante,
+        alteraciones: EscrituraDeLaAlteracion = .palabras, tipografia: Tipografia = .unicode
+    ) {
         self.naturales = naturales
         self.separador = separador
         self.multiplicador = multiplicador
@@ -60,8 +62,9 @@ extension Idioma {
         case .occitano: return ReglasDeIdioma(naturales: ["do", "re", "mi", "fa", "sòl", "la", "si"])
         // En alemán la alteración va dentro del nombre (Fis, Eses), así que el separador no se usa.
         case .aleman:
-            return ReglasDeIdioma(naturales: ["C", "D", "E", "F", "G", "A", "H"], multiplicador: .unido,
-                                  alteraciones: .alemana, tipografia: .ascii)
+            return ReglasDeIdioma(
+                naturales: ["C", "D", "E", "F", "G", "A", "H"], multiplicador: .unido,
+                alteraciones: .alemana, tipografia: .ascii)
         case .griego: return ReglasDeIdioma(naturales: ["ντο", "ρε", "μι", "φα", "σολ", "λα", "σι"])
         case .ruso:
             return ReglasDeIdioma(naturales: ["до", "ре", "ми", "фа", "соль", "ля", "си"], separador: "-")

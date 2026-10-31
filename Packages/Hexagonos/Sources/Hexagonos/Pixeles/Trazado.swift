@@ -108,8 +108,9 @@ public struct Trazado: Hashable, Sendable, Codable {
     /// El punto del plano que corresponde a unas coordenadas con decimales.
     public func centro(de coordenada: CoordenadaFraccionaria) -> Punto {
         let m = orientacion.directa
-        return Punto(x: (m.f0 * coordenada.q + m.f1 * coordenada.r) * tamano.x + origen.x,
-                     y: (m.f2 * coordenada.q + m.f3 * coordenada.r) * tamano.y + origen.y)
+        return Punto(
+            x: (m.f0 * coordenada.q + m.f1 * coordenada.r) * tamano.x + origen.x,
+            y: (m.f2 * coordenada.q + m.f3 * coordenada.r) * tamano.y + origen.y)
     }
 
     /// Las coordenadas (con decimales) de un punto del plano.

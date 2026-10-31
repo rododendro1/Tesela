@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+
 // Arpegios como voces: un arpegio, o una progresión arpegiada, con su ritmo. Como son una `Voz`, se dibujan,
 // suenan y se exportan (MusicXML, MEI, MIDI) igual que cualquier melodía.
 
@@ -31,11 +32,14 @@ extension Voz {
     ///     lo deja más cerca del primero, para que la mano no salte de un extremo a otro.
     ///
     /// Detiene el programa si `figura` no es positiva.
-    public init(arpegiando acordes: [Acorde], patron: Arpegio.Patron = .ascendente, octavas: Int = 1,
-                conOctava: Bool = true, figura: Duracion = .corchea, porAcorde: Duracion? = nil,
-                octava: Int = 3, compas: Compas = .compasillo) {
-        let eventos = Voz.arpegiar(acordes, duraciones: acordes.map { _ in porAcorde }, patron: patron, octavas: octavas,
-                                   conOctava: conOctava, figura: figura, octava: octava)
+    public init(
+        arpegiando acordes: [Acorde], patron: Arpegio.Patron = .ascendente, octavas: Int = 1,
+        conOctava: Bool = true, figura: Duracion = .corchea, porAcorde: Duracion? = nil,
+        octava: Int = 3, compas: Compas = .compasillo
+    ) {
+        let eventos = Voz.arpegiar(
+            acordes, duraciones: acordes.map { _ in porAcorde }, patron: patron, octavas: octavas,
+            conOctava: conOctava, figura: figura, octava: octava)
         self.init(eventos, compas: compas)
     }
 
@@ -43,24 +47,30 @@ extension Voz {
     /// repite hasta llenarlo.
     ///
     /// Detiene el programa si `figura` no es positiva o si no hay una duración por acorde.
-    public init(arpegiando acordes: [Acorde], duraciones: [Duracion], patron: Arpegio.Patron = .ascendente,
-                octavas: Int = 1, conOctava: Bool = true, figura: Duracion = .corchea, octava: Int = 3,
-                compas: Compas = .compasillo) {
+    public init(
+        arpegiando acordes: [Acorde], duraciones: [Duracion], patron: Arpegio.Patron = .ascendente,
+        octavas: Int = 1, conOctava: Bool = true, figura: Duracion = .corchea, octava: Int = 3,
+        compas: Compas = .compasillo
+    ) {
         precondition(duraciones.count == acordes.count, "hace falta una duración por acorde")
-        let eventos = Voz.arpegiar(acordes, duraciones: duraciones, patron: patron, octavas: octavas,
-                                   conOctava: conOctava, figura: figura, octava: octava)
+        let eventos = Voz.arpegiar(
+            acordes, duraciones: duraciones, patron: patron, octavas: octavas,
+            conOctava: conOctava, figura: figura, octava: octava)
         self.init(eventos, compas: compas)
     }
 
     /// Los eventos de una progresión arpegiada; una duración `nil` (o que no es positiva) es el patrón entero.
-    private static func arpegiar(_ acordes: [Acorde], duraciones: [Duracion?], patron: Arpegio.Patron, octavas: Int,
-                                 conOctava: Bool, figura: Duracion, octava: Int) -> [Evento] {
+    private static func arpegiar(
+        _ acordes: [Acorde], duraciones: [Duracion?], patron: Arpegio.Patron, octavas: Int,
+        conOctava: Bool, figura: Duracion, octava: Int
+    ) -> [Evento] {
         precondition(figura > .cero, "la figura de un arpegio tiene que durar algo")
         var eventos: [Evento] = []
         let referencia = acordes.first.map { Altura($0.bajo, octava: octava).midi } ?? 0
         for (acorde, porAcorde) in zip(acordes, duraciones) {
             let suya = ((octava - 1)...(octava + 1)).min {
-                abs(Altura(acorde.bajo, octava: $0).midi - referencia) < abs(Altura(acorde.bajo, octava: $1).midi - referencia)
+                abs(Altura(acorde.bajo, octava: $0).midi - referencia)
+                    < abs(Altura(acorde.bajo, octava: $1).midi - referencia)
             }!
             let alturas = Arpegio(acorde, patron: patron, octavas: octavas, conOctava: conOctava).alturas(octava: suya)
             guard !alturas.isEmpty else { continue }

@@ -70,7 +70,9 @@ public enum LineaDeComandos {
         case .sinValor(let nombre):
             return uso(.faltaValor(nombre), notacion)
         case .valor(let texto):
-            guard let textos = notacionDelIdioma(texto)?.idiomaDeLasNotas else { return uso(.idiomaDesconocido(texto), notacion) }
+            guard let textos = notacionDelIdioma(texto)?.idiomaDeLasNotas else {
+                return uso(.idiomaDesconocido(texto), notacion)
+            }
             notacion = notacion.conTextos(en: textos)
         }
         switch opciones.quitarOpcion("--escritura", "--writing") {
@@ -94,7 +96,8 @@ public enum LineaDeComandos {
                 return bien(ayuda(en: notacion))
             case "acorde", "chord":
                 guard !resto.isEmpty else { return uso(.faltaCifrado, notacion) }
-                return bien(try resto.map { try describir(acorde: Acorde(leyendo: $0), notacion) }.joined(separator: "\n\n"))
+                return bien(
+                    try resto.map { try describir(acorde: Acorde(leyendo: $0), notacion) }.joined(separator: "\n\n"))
             case "arpegio", "arpeggio":
                 return try arpegio(resto, notacion)
             case "identificar", "identify":

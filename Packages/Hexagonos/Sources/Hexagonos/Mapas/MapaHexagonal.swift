@@ -31,8 +31,10 @@ public struct MapaHexagonal<Valor> {
     }
 
     /// Un mapa con las `casillas` y el valor que da `valor` para cada una.
-    public init(_ casillas: some Sequence<CoordenadaAxial>,
-                valor: (CoordenadaAxial) throws -> Valor) rethrows {
+    public init(
+        _ casillas: some Sequence<CoordenadaAxial>,
+        valor: (CoordenadaAxial) throws -> Valor
+    ) rethrows {
         var valores: [CoordenadaAxial: Valor] = [:]
         for casilla in casillas {
             valores[casilla] = try valor(casilla)
@@ -137,9 +139,11 @@ extension MapaHexagonal {
     /// terreno[CoordenadaAxial(q: 1, r: 0)] = 10
     /// terreno.caminoMasBarato(desde: .origen, hasta: CoordenadaAxial(q: 2, r: 0)) { $0 }?.coste   // 3.0
     /// ```
-    public func caminoMasBarato(desde origen: CoordenadaAxial, hasta destino: CoordenadaAxial,
-                                costeMinimo: Double = 0, presupuesto: Double = .infinity,
-                                coste: (Valor) -> Double?) -> CaminoHexagonal? {
+    public func caminoMasBarato(
+        desde origen: CoordenadaAxial, hasta destino: CoordenadaAxial,
+        costeMinimo: Double = 0, presupuesto: Double = .infinity,
+        coste: (Valor) -> Double?
+    ) -> CaminoHexagonal? {
         origen.caminoMasBarato(hasta: destino, costeMinimo: costeMinimo, presupuesto: presupuesto) { _, hacia in
             valores[hacia].flatMap(coste)
         }
@@ -148,8 +152,10 @@ extension MapaHexagonal {
     /// Las casillas del mapa a las que se llega desde `origen` gastando `presupuesto` o menos, con lo
     /// que cuesta llegar a cada una (ver ``CoordenadaAxial/alcanzables(presupuesto:coste:)``).
     /// `coste` es lo que cuesta entrar en una casilla según su valor, o `nil` si no se puede.
-    public func alcanzables(desde origen: CoordenadaAxial, presupuesto: Double,
-                            coste: (Valor) -> Double?) -> [CoordenadaAxial: Double] {
+    public func alcanzables(
+        desde origen: CoordenadaAxial, presupuesto: Double,
+        coste: (Valor) -> Double?
+    ) -> [CoordenadaAxial: Double] {
         origen.alcanzables(presupuesto: presupuesto) { _, hacia in valores[hacia].flatMap(coste) }
     }
 
@@ -206,15 +212,18 @@ extension MapaHexagonal: Codable where Valor: Codable {
         for entrada in entradas {
             let casilla = CoordenadaAxial(q: entrada.q, r: entrada.r)
             guard valores.updateValue(entrada.valor, forKey: casilla) == nil else {
-                throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath,
-                                                        debugDescription: "La casilla \(casilla) está repetida"))
+                throw DecodingError.dataCorrupted(
+                    .init(
+                        codingPath: decoder.codingPath,
+                        debugDescription: "La casilla \(casilla) está repetida"))
             }
         }
         self.valores = valores
     }
 
     public func encode(to encoder: Encoder) throws {
-        let entradas = valores
+        let entradas =
+            valores
             .sorted { ($0.key.q, $0.key.r) < ($1.key.q, $1.key.r) }
             .map { EntradaDeMapa(q: $0.key.q, r: $0.key.r, valor: $0.value) }
         var contenedor = encoder.singleValueContainer()

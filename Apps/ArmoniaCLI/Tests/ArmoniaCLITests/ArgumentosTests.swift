@@ -1,5 +1,6 @@
-import XCTest
 import Armonia
+import XCTest
+
 @testable import ArmoniaCLI
 
 final class ArgumentosTests: XCTestCase {

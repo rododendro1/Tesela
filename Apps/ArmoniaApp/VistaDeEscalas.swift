@@ -1,14 +1,14 @@
-import SwiftUI
 import Armonia
 import ArmoniaUI
+import SwiftUI
 
 /// Elige una tónica y una escala del catálogo (occidentales y de otras tradiciones) y muestra sus notas,
 /// sus acordes, dónde caen en el mástil y cómo se tocan por posiciones (CAGED o tres notas por cuerda).
 struct VistaDeEscalas: View {
     @Environment(\.notacion) private var notacion
     @EnvironmentObject private var navegacion: Navegacion
-    @State private var tonica = 0          // índice en `tonicas`
-    @State private var tipo = 0            // índice en `catalogo`
+    @State private var tonica = 0 // índice en `tonicas`
+    @State private var tipo = 0 // índice en `catalogo`
     /// Las posiciones en el mástil: las del sistema CAGED o las de tres (o dos) notas por cuerda.
     @State private var caged = true
 
@@ -32,7 +32,9 @@ struct VistaDeEscalas: View {
         Form {
             Section(notacion.texto(.escala)) {
                 Picker(notacion.texto(.tonica), selection: $tonica) {
-                    ForEach(VistaDeEscalas.tonicas.indices, id: \.self) { Text(VistaDeEscalas.tonicas[$0].nombre(en: notacion)).tag($0) }
+                    ForEach(VistaDeEscalas.tonicas.indices, id: \.self) {
+                        Text(VistaDeEscalas.tonicas[$0].nombre(en: notacion)).tag($0)
+                    }
                 }
                 Picker(notacion.texto(.tipo), selection: $tipo) {
                     Section(notacion.texto(.habituales)) {
@@ -87,7 +89,8 @@ struct VistaDeEscalas: View {
         }
         let nombre = pedida.tipo.nombre(en: .espanolUnicode)
         if let indice = VistaDeEscalas.catalogo.firstIndex(where: { $0.nombre(en: .espanolUnicode) == nombre })
-            ?? VistaDeEscalas.catalogo.firstIndex(of: pedida.tipo) {
+            ?? VistaDeEscalas.catalogo.firstIndex(of: pedida.tipo)
+        {
             tipo = indice
         }
     }
@@ -111,18 +114,25 @@ struct VistaDeEscalas: View {
                         if let forma = posicion.forma {
                             Text(notacion.texto(.forma(forma.rawValue))).bold()
                         }
-                        Text(notacion.texto(.trastes(desde: posicion.trastes.lowerBound, hasta: posicion.trastes.upperBound)))
-                            .foregroundColor(.secondary)
+                        Text(rotulo(de: posicion)).foregroundColor(.secondary)
                         Spacer()
-                        // Nota a nota, cuerda a cuerda, como se estudia.
-                        BotonDeEscuchar(Sonido.voz(Voz(posicion.alturas.map { Evento($0, .corchea) }))
-                            .conTonica(escala.tonica))
+                        BotonDeEscuchar(sonido(de: posicion, en: escala))
                     }
                     DiagramaDeMastil(posicion: posicion, escala: escala, notacion: notacion)
                         .frame(maxHeight: 120)
                 }
             }
         }
+    }
+
+    /// Los trastes que abarca una posición: «Trastes 2–6».
+    private func rotulo(de posicion: EscalaEnElMastil) -> String {
+        notacion.texto(.trastes(desde: posicion.trastes.lowerBound, hasta: posicion.trastes.upperBound))
+    }
+
+    /// Una posición nota a nota, cuerda a cuerda, como se estudia.
+    private func sonido(de posicion: EscalaEnElMastil, en escala: Escala) -> Sonido {
+        Sonido.voz(Voz(posicion.alturas.map { Evento($0, .corchea) })).conTonica(escala.tonica)
     }
 
     private func nombre(_ indice: Int) -> String {

@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 extension TipoDeEscala {
     // MARK: Melakarta (música carnática)
 
@@ -71,11 +72,13 @@ extension TipoDeEscala {
                     let nombre = nombresDeMelakarta[numero - 1]
                     // Otra grafía solo si no es el nombre sin diacríticos (eso ya lo cubre `normalizar`).
                     let otraGrafia = nombresDeMelakartaSinDiacriticos[numero - 1]
-                    tipos.append(TipoDeEscala(nombre: nombre,
-                                              intervalos: [.unisono, ri, ga, ma, .quintaJusta, dha, ni],
-                                              alias: ["melakarta \(numero)"]
-                                                  + (normalizar(otraGrafia) == normalizar(nombre) ? [] : [otraGrafia])
-                                                  + [nombresDeMelakartaEnDevanagari[numero - 1]]))
+                    tipos.append(
+                        TipoDeEscala(
+                            nombre: nombre,
+                            intervalos: [.unisono, ri, ga, ma, .quintaJusta, dha, ni],
+                            alias: ["melakarta \(numero)"]
+                                + (normalizar(otraGrafia) == normalizar(nombre) ? [] : [otraGrafia])
+                                + [nombresDeMelakartaEnDevanagari[numero - 1]]))
                 }
             }
         }
@@ -139,22 +142,30 @@ extension TipoDeEscala {
     public static let bilahari = TipoDeEscala(
         nombre: "Bilahari",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
-        intervalosDescendentes: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
         alias: ["बिलहरि"])
     public static let kambhoji = TipoDeEscala(
         nombre: "Kāmbhoji",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
-        intervalosDescendentes: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
         alias: ["Kambodhi", "काम्भोजि"])
     public static let arabhi = TipoDeEscala(
         nombre: "Ārabhi",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
-        intervalosDescendentes: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
         alias: ["आरभि"])
     public static let kedaragaula = TipoDeEscala(
         nombre: "Kedāragauḷa",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        intervalosDescendentes: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
         alias: ["Kedaragowla", "केदारगौळ"])
 
     /// Ragas janya incluidos.
@@ -166,40 +177,70 @@ extension TipoDeEscala {
     // MARK: Thaat (música indostánica)
 
     public static let bilaval = TipoDeEscala(
-        nombre: "Bilāval", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
-                                         .quintaJusta, .sextaMayor, .septimaMayor], alias: ["Bilawal", "बिलावल"])
+        nombre: "Bilāval",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ], alias: ["Bilawal", "बिलावल"])
     public static let kalyan = TipoDeEscala(
-        nombre: "Kalyāṇ", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
-                                        .quintaJusta, .sextaMayor, .septimaMayor], alias: ["Yaman", "कल्याण"])
+        nombre: "Kalyāṇ",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ], alias: ["Yaman", "कल्याण"])
     public static let khamaj = TipoDeEscala(
-        nombre: "Khamāj", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
-                                        .quintaJusta, .sextaMayor, .septimaMenor],
+        nombre: "Khamāj",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
         alias: ["खमाज"])
     public static let kafi = TipoDeEscala(
-        nombre: "Kāfī", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-                                      .quintaJusta, .sextaMayor, .septimaMenor],
+        nombre: "Kāfī",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
         alias: ["काफ़ी"])
     public static let asavari = TipoDeEscala(
-        nombre: "Āsāvarī", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-                                         .quintaJusta, .sextaMenor, .septimaMenor],
+        nombre: "Āsāvarī",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
         alias: ["आसावरी"])
     public static let bhairavi = TipoDeEscala(
-        nombre: "Bhairavī", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
-                                          .quintaJusta, .sextaMenor, .septimaMenor],
+        nombre: "Bhairavī",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
         alias: ["भैरवी"])
     public static let bhairav = TipoDeEscala(
-        nombre: "Bhairav", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
-                                         .quintaJusta, .sextaMenor, .septimaMayor],
+        nombre: "Bhairav",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
         alias: ["भैरव"])
     public static let marva = TipoDeEscala(
-        nombre: "Mārvā", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
-                                       .quintaJusta, .sextaMayor, .septimaMayor], alias: ["Marwa", "मारवा"])
+        nombre: "Mārvā",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ], alias: ["Marwa", "मारवा"])
     public static let purvi = TipoDeEscala(
-        nombre: "Pūrvī", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
-                                       .quintaJusta, .sextaMenor, .septimaMayor], alias: ["Poorvi", "पूर्वी"])
+        nombre: "Pūrvī",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ], alias: ["Poorvi", "पूर्वी"])
     public static let todi = TipoDeEscala(
-        nombre: "Toḍī", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaAumentada,
-                                      .quintaJusta, .sextaMenor, .septimaMayor],
+        nombre: "Toḍī",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaAumentada,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
         alias: ["तोडी"])
 
     /// Los diez thaat de Bhatkhande.
@@ -227,8 +268,11 @@ extension TipoDeEscala {
         alias: ["दुर्गा"])
     /// Yaman: el thaat Kalyāṇ entero, con la 4ª aumentada.
     public static let yaman = TipoDeEscala(
-        nombre: "Yaman", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
-                                       .quintaJusta, .sextaMayor, .septimaMayor],
+        nombre: "Yaman",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
         alias: ["Yaman Kalyāṇ", "Iman", "यमन"])
     /// Bāgeśrī: sube sin Re ni Pa y baja sin Pa.
     public static let bagesri = TipoDeEscala(
@@ -256,7 +300,9 @@ extension TipoDeEscala {
     public static let des = TipoDeEscala(
         nombre: "Deś",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
-        intervalosDescendentes: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
         alias: ["Desh", "देश"])
 
     /// Ragas indostánicos incluidos.

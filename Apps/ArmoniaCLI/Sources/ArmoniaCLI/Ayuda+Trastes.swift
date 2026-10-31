@@ -7,8 +7,9 @@ extension LineaDeComandos {
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traducidos.map(\.sintaxisDigitaciones),
             descripcion: TextosDeCLI.traducidos.map(\.descripcionDigitaciones),
-            ejemplo: ejemplo("armonia digitaciones Sol7/Si --instrumento ukelele",
-                             "armonia fingerings G7/B --instrument ukulele")),
+            ejemplo: ejemplo(
+                "armonia digitaciones Sol7/Si --instrumento ukelele",
+                "armonia fingerings G7/B --instrument ukulele")),
         // posiciones <escala> [--caged]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traducidos.map(\.sintaxisPosiciones),

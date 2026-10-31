@@ -21,7 +21,7 @@ public struct Digitacion: Hashable, Sendable, CustomStringConvertible {
     /// Una digitación con esos trastes, o `nil` si no hay uno por cada cuerda o alguno no está en el mástil.
     public init?(comprobando trastes: [Int?], en mastil: Mastil) {
         guard trastes.count == mastil.encordado.numeroDeCuerdas,
-              trastes.allSatisfy({ $0.map { (0...mastil.trastes).contains($0) } ?? true })
+            trastes.allSatisfy({ $0.map { (0...mastil.trastes).contains($0) } ?? true })
         else { return nil }
         self.init(mastil: mastil, trastes: trastes)
     }
@@ -29,7 +29,8 @@ public struct Digitacion: Hashable, Sendable, CustomStringConvertible {
     /// Lee la tablatura que escribe `tablatura`: «x32010», o con guiones si algún traste pasa de 9 («x-10-12-12-11-10»).
     /// `nil` si no se entiende o no encaja en el mástil.
     public init?(leyendo tablatura: String, en mastil: Mastil) {
-        let partes = tablatura.contains("-")
+        let partes =
+            tablatura.contains("-")
             ? tablatura.split(separator: "-", omittingEmptySubsequences: false).map(String.init)
             : tablatura.map { String($0) }
         var trastes: [Int?] = []
@@ -157,9 +158,11 @@ extension Mastil {
     ///   - cuerdasMinimas: cuántas cuerdas deben sonar (4, o todas si el instrumento tiene menos).
     ///   - exigirQuinta: si es `false`, se aceptan formas sin la quinta (frecuente en acordes de siete o más notas).
     ///   - limite: cuántas formas se devuelven como máximo.
-    public func digitaciones(de acorde: Acorde, abertura: Int = 4, maximoDeDedos: Int = 4, maximoTraste: Int = 12,
-                             cuerdasMinimas: Int = 4, exigirQuinta: Bool = true,
-                             limite: Int = 12) -> [Digitacion] {
+    public func digitaciones(
+        de acorde: Acorde, abertura: Int = 4, maximoDeDedos: Int = 4, maximoTraste: Int = 12,
+        cuerdasMinimas: Int = 4, exigirQuinta: Bool = true,
+        limite: Int = 12
+    ) -> [Digitacion] {
         let cuerdas = encordado.cuerdas
         let ultimoTraste = min(maximoTraste, trastes)
         let notas = acorde.notas
@@ -186,7 +189,9 @@ extension Mastil {
                 guard sonando >= minimas, obligatorias.isSubset(of: clasesTocadas) else { return }
                 // La nota más grave (no la primera cuerda: en el ukelele no coinciden) es el bajo.
                 if exigirElBajoAbajo {
-                    let alturaMasGrave = zip(cuerdas, actual).compactMap { alAire, traste in traste.map { alAire.midi + $0 } }.min()
+                    let alturaMasGrave = zip(cuerdas, actual).compactMap { alAire, traste in
+                        traste.map { alAire.midi + $0 }
+                    }.min()
                     guard let midiMasGrave = alturaMasGrave, Mastil.clase(midiMasGrave) == claseDelBajo else { return }
                 }
                 guard Digitacion(mastil: self, trastes: actual).dedos <= maximoDeDedos else { return }
@@ -202,15 +207,17 @@ extension Mastil {
                 let midi = cuerdas[cuerda].midi + traste
                 let clase = Mastil.clase(midi)
                 guard clases.contains(clase) else { continue }
-                var nuevoMenor = menor, nuevoMayor = mayor
+                var nuevoMenor = menor
+                var nuevoMayor = mayor
                 if traste > 0 {
                     nuevoMenor = min(menor ?? traste, traste)
                     nuevoMayor = max(mayor ?? traste, traste)
                     if let a = nuevoMenor, let b = nuevoMayor, b - a + 1 > abertura { continue }
                 }
                 actual[cuerda] = traste
-                buscar(cuerda + 1, empezo: true, acabo: false, menor: nuevoMenor, mayor: nuevoMayor,
-                       clasesTocadas: clasesTocadas.union([clase]))
+                buscar(
+                    cuerda + 1, empezo: true, acabo: false, menor: nuevoMenor, mayor: nuevoMayor,
+                    clasesTocadas: clasesTocadas.union([clase]))
             }
             actual[cuerda] = nil
         }
@@ -220,9 +227,10 @@ extension Mastil {
         let claseDeLaQuinta = notas.count > 3 ? acorde.quinta?.claseDeAltura : nil
         let conClave = encontradas.map { trastes -> (forma: Digitacion, clave: [Int]) in
             let forma = Digitacion(mastil: self, trastes: trastes)
-            let sinQuinta = claseDeLaQuinta.map { quinta in
-                !forma.alturas.contains { Mastil.clase($0.midi) == quinta }
-            } ?? false
+            let sinQuinta =
+                claseDeLaQuinta.map { quinta in
+                    !forma.alturas.contains { Mastil.clase($0.midi) == quinta }
+                } ?? false
             return (forma, [forma.coste(sinQuinta: sinQuinta), -forma.cuerdasQueSuenan])
         }
         let ordenadas = conClave.sorted { a, b in

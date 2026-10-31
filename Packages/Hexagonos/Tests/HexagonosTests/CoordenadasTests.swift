@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+
 @testable import Hexagonos
 
 /// Varios de los valores esperados son los de las pruebas de la guía de Red Blob Games
@@ -55,8 +56,9 @@ final class CoordenadaAxialTests: XCTestCase {
         XCTAssertEqual(a.vecinoDiagonal(3), CoordenadaAxial(q: -1, r: -1))
         for i in 0..<6 {
             // Cada diagonal queda entre dos direcciones seguidas, a distancia 2.
-            XCTAssertEqual(CoordenadaAxial.diagonales[i],
-                           CoordenadaAxial.direcciones[i] + CoordenadaAxial.direcciones[(i + 1) % 6])
+            XCTAssertEqual(
+                CoordenadaAxial.diagonales[i],
+                CoordenadaAxial.direcciones[i] + CoordenadaAxial.direcciones[(i + 1) % 6])
             XCTAssertEqual(a.distancia(hasta: a.vecinoDiagonal(i)), 2)
         }
         XCTAssertEqual(Set(a.vecinosDiagonales).count, 6)
@@ -226,8 +228,9 @@ final class CoordenadaDobladaTests: XCTestCase {
             }
             let centro = CoordenadaAxial(q: 1, r: -2)
             for casilla in region {
-                XCTAssertEqual(casilla.doblada(doblado).distancia(hasta: centro.doblada(doblado), doblado),
-                               casilla.distancia(hasta: centro), "\(doblado) \(casilla)")
+                XCTAssertEqual(
+                    casilla.doblada(doblado).distancia(hasta: centro.doblada(doblado), doblado),
+                    casilla.distancia(hasta: centro), "\(doblado) \(casilla)")
             }
         }
     }

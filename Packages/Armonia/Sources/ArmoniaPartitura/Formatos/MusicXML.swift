@@ -1,5 +1,6 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+
 // Exportación a MusicXML 4.0 (score-partwise), para abrir melodías y corales en MuseScore,
 // Finale, Sibelius, Dorico o cualquier editor de partituras.
 //
@@ -25,12 +26,15 @@ extension Voz {
     ///   - tempo: si se da, se escribe la indicación metronómica.
     ///   - titulo: el título de la obra.
     ///   - parte: el nombre del pentagrama.
-    public func musicXML(tonalidad: Tonalidad? = nil, clave: Clave? = nil, tempo: Tempo? = nil,
-                         titulo: String? = nil, parte: String = "Voz") -> String {
+    public func musicXML(
+        tonalidad: Tonalidad? = nil, clave: Clave? = nil, tempo: Tempo? = nil,
+        titulo: String? = nil, parte: String = "Voz"
+    ) -> String {
         let tonalidad = tonalidad ?? Exportacion.tonalidad(de: self)
         let clave = clave ?? Clave.masAdecuada(para: eventos.flatMap(\.alturas)) ?? .sol
-        var escritor = EscritorMusicXML(compas: compas, anacrusa: anacrusa, tonalidad: tonalidad,
-                                        tempo: tempo, titulo: titulo, parte: parte, claves: [clave])
+        var escritor = EscritorMusicXML(
+            compas: compas, anacrusa: anacrusa, tonalidad: tonalidad,
+            tempo: tempo, titulo: titulo, parte: parte, claves: [clave])
         escritor.anadir(self, pentagrama: 1, numero: 1, plica: nil)
         return escritor.documento
     }
@@ -55,19 +59,23 @@ extension Coral {
     ///   - tonalidad: da la armadura y la tonalidad del análisis; si es `nil`, se estima (a partir
     ///     de los acordes si se analiza, si no, de las notas).
     ///   - notacion: la de los cifrados y la tonalidad.
-    public func musicXML(duracion: Duracion = .negra, compas: Compas = .compasillo,
-                         tonalidad: Tonalidad? = nil, tempo: Tempo? = nil,
-                         titulo: String? = nil, parte: String = "Coro",
-                         cifrados: Bool = false, analisis: Bool = false,
-                         notacion: Notacion = .espanolUnicode) -> String {
-        let anotaciones = Exportacion.anotaciones(de: self, duracion: duracion, tonalidad: tonalidad,
-                                                  cifrados: cifrados, analisis: analisis)
+    public func musicXML(
+        duracion: Duracion = .negra, compas: Compas = .compasillo,
+        tonalidad: Tonalidad? = nil, tempo: Tempo? = nil,
+        titulo: String? = nil, parte: String = "Coro",
+        cifrados: Bool = false, analisis: Bool = false,
+        notacion: Notacion = .espanolUnicode
+    ) -> String {
+        let anotaciones = Exportacion.anotaciones(
+            de: self, duracion: duracion, tonalidad: tonalidad,
+            cifrados: cifrados, analisis: analisis)
         let arriba = anotaciones.cifrados.mapValues {
             EscritorMusicXML.Anotacion(armonia: EscritorMusicXML.armonia($0, notacion, pentagrama: 1))
         }
         let abajo = anotaciones.analisis.mapValues { EscritorMusicXML.Anotacion(letras: Exportacion.letras($0)) }
-        var escritor = EscritorMusicXML(compas: compas, anacrusa: .cero, tonalidad: anotaciones.tonalidad,
-                                        tempo: tempo, titulo: titulo, parte: parte, claves: [.sol, .fa])
+        var escritor = EscritorMusicXML(
+            compas: compas, anacrusa: .cero, tonalidad: anotaciones.tonalidad,
+            tempo: tempo, titulo: titulo, parte: parte, claves: [.sol, .fa])
         if let rotulo = anotaciones.tonalidadDelAnalisis { escritor.rotulo = (rotulo.nombre(en: notacion) + ":", 2) }
         let n = numeroDeVoces
         for (k, linea) in Exportacion.voces(de: self, duracion: duracion, compas: compas).enumerated() {
@@ -93,30 +101,37 @@ extension AnalisisArmonico {
     ///   - cifrados: si se escriben los cifrados americanos.
     ///   - analisis: si se escriben los cifrados romanos y las funciones.
     ///   - notacion: la de los cifrados americanos y la tonalidad.
-    public func musicXML(duracion: Duracion = .blanca, compas: Compas = .compasillo, tempo: Tempo? = nil,
-                         titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
-                         analisis: Bool = true, notacion: Notacion = .espanolUnicode) -> String {
-        musicXML(duraciones: Array(repeating: duracion, count: acordes.count), compas: compas, tempo: tempo,
-                 titulo: titulo, parte: parte, cifrados: cifrados, analisis: analisis, notacion: notacion)
+    public func musicXML(
+        duracion: Duracion = .blanca, compas: Compas = .compasillo, tempo: Tempo? = nil,
+        titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
+        analisis: Bool = true, notacion: Notacion = .espanolUnicode
+    ) -> String {
+        musicXML(
+            duraciones: Array(repeating: duracion, count: acordes.count), compas: compas, tempo: tempo,
+            titulo: titulo, parte: parte, cifrados: cifrados, analisis: analisis, notacion: notacion)
     }
 
     /// Lo mismo, con lo que dura cada acorde (el ritmo armónico de una pieza importada, por ejemplo); el
     /// último se alarga hasta la barra.
     ///
     /// Detiene el programa si no hay una duración positiva por acorde.
-    public func musicXML(duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil,
-                         titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
-                         analisis: Bool = true, notacion: Notacion = .espanolUnicode) -> String {
+    public func musicXML(
+        duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil,
+        titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
+        analisis: Bool = true, notacion: Notacion = .espanolUnicode
+    ) -> String {
         Exportacion.comprobar(duraciones, acordes: acordes.count)
-        let (superior, grave) = Exportacion.progresion(acordes.map(\.acorde),
-                                                       duraciones: Exportacion.hastaLaBarra(duraciones, compas))
-        let anotaciones = Exportacion.anotaciones(de: self, duraciones: duraciones, cifrados: cifrados, analisis: analisis)
+        let (superior, grave) = Exportacion.progresion(
+            acordes.map(\.acorde), duraciones: Exportacion.hastaLaBarra(duraciones, compas))
+        let anotaciones = Exportacion.anotaciones(
+            de: self, duraciones: duraciones, cifrados: cifrados, analisis: analisis)
         let arriba = anotaciones.cifrados.mapValues {
             EscritorMusicXML.Anotacion(armonia: EscritorMusicXML.armonia($0, notacion, pentagrama: 1))
         }
         let abajo = anotaciones.analisis.mapValues { EscritorMusicXML.Anotacion(letras: Exportacion.letras($0)) }
-        var escritor = EscritorMusicXML(compas: compas, anacrusa: .cero, tonalidad: tonalidad, tempo: tempo,
-                                        titulo: titulo, parte: parte, claves: [.sol, .fa])
+        var escritor = EscritorMusicXML(
+            compas: compas, anacrusa: .cero, tonalidad: tonalidad, tempo: tempo,
+            titulo: titulo, parte: parte, claves: [.sol, .fa])
         if let rotulo = anotaciones.tonalidadDelAnalisis { escritor.rotulo = (rotulo.nombre(en: notacion) + ":", 2) }
         escritor.anadir(Voz(superior, compas: compas), pentagrama: 1, numero: 1, plica: nil, anotaciones: arriba)
         escritor.anadir(Voz(grave, compas: compas), pentagrama: 2, numero: 2, plica: nil, anotaciones: abajo)
@@ -154,8 +169,10 @@ package struct EscritorMusicXML {
     package let claves: [Clave]
     package var lineas: [Linea] = []
 
-    package init(compas: Compas, anacrusa: Duracion, tonalidad: Tonalidad?, tempo: Tempo?,
-         titulo: String?, parte: String, claves: [Clave]) {
+    package init(
+        compas: Compas, anacrusa: Duracion, tonalidad: Tonalidad?, tempo: Tempo?,
+        titulo: String?, parte: String, claves: [Clave]
+    ) {
         self.compas = compas
         self.anacrusa = anacrusa
         self.tonalidad = tonalidad
@@ -168,8 +185,10 @@ package struct EscritorMusicXML {
     /// Un texto debajo del primer pentagrama de la línea, al principio (la tonalidad del análisis).
     package var rotulo: (texto: String, pentagrama: Int)?
 
-    package mutating func anadir(_ voz: Voz, pentagrama: Int, numero: Int, plica: String?,
-                         anotaciones: [Duracion: Anotacion] = [:]) {
+    package mutating func anadir(
+        _ voz: Voz, pentagrama: Int, numero: Int, plica: String?,
+        anotaciones: [Duracion: Anotacion] = [:]
+    ) {
         lineas.append(Linea(voz: voz, pentagrama: pentagrama, numero: numero, plica: plica, anotaciones: anotaciones))
     }
 
@@ -180,28 +199,28 @@ package struct EscritorMusicXML {
         let numeroDeCompases = grafias.map(\.count).max() ?? 0
 
         var xml = """
-        <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-        <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 4.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
-        <score-partwise version="4.0">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+            <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 4.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+            <score-partwise version="4.0">
 
-        """
+            """
         if let titulo {
             xml += "  <work>\n    <work-title>\(Exportacion.escapar(titulo))</work-title>\n  </work>\n"
         }
         xml += """
-          <identification>
-            <encoding>
-              <software>Armonia</software>
-            </encoding>
-          </identification>
-          <part-list>
-            <score-part id="P1">
-              <part-name>\(Exportacion.escapar(parte))</part-name>
-            </score-part>
-          </part-list>
-          <part id="P1">
+              <identification>
+                <encoding>
+                  <software>Armonia</software>
+                </encoding>
+              </identification>
+              <part-list>
+                <score-part id="P1">
+                  <part-name>\(Exportacion.escapar(parte))</part-name>
+                </score-part>
+              </part-list>
+              <part id="P1">
 
-        """
+            """
         // Una ligadura que viene del compás anterior, por línea.
         var ligadaDesde: [[Altura]] = Array(repeating: [], count: lineas.count)
         // Dónde va cada línea, desde su comienzo, para colocar las anotaciones.
@@ -225,9 +244,10 @@ package struct EscritorMusicXML {
                         haciaBarra[i] = k == 0 ? "begin" : (k == grupo.count - 1 ? "end" : "continue")
                     }
                 }
-                let compasEntero = eventos.count == 1 && eventos[0].esSilencio && !esAnacrusa
+                let compasEntero =
+                    eventos.count == 1 && eventos[0].esSilencio && !esAnacrusa
                     && eventos[0].duracion == compas.duracion
-                var irregular = Duracion.cero   // lo acumulado del grupo irregular abierto
+                var irregular = Duracion.cero // lo acumulado del grupo irregular abierto
                 for (i, evento) in eventos.enumerated() {
                     let figura = EscritorMusicXML.figura(de: evento.duracion)
                     var grupo: [String] = []
@@ -235,14 +255,19 @@ package struct EscritorMusicXML {
                         if irregular.esCero { grupo.append("start") }
                         irregular = irregular + evento.duracion
                         let cierra = irregular.denominador & (irregular.denominador - 1) == 0 || i == eventos.count - 1
-                        if cierra { grupo.append("stop"); irregular = .cero }
+                        if cierra {
+                            grupo.append("stop")
+                            irregular = .cero
+                        }
                     }
-                    let nota = NotaEscrita(evento: evento, figura: figura, divisiones: divisiones, linea: linea,
-                                           variosPentagramas: claves.count > 1,
-                                    medidaCompleta: compasEntero, barra: haciaBarra[i], grupo: grupo,
-                                    ligadaDesde: ligadaDesde[l])
+                    let nota = NotaEscrita(
+                        evento: evento, figura: figura, divisiones: divisiones, linea: linea,
+                        variosPentagramas: claves.count > 1,
+                        medidaCompleta: compasEntero, barra: haciaBarra[i], grupo: grupo,
+                        ligadaDesde: ligadaDesde[l])
                     // Las anotaciones van con la primera nota escrita de cada evento, no con sus ligadas.
-                    let anotacion = ligadaDesde[l].isEmpty || evento.alturas != ligadaDesde[l]
+                    let anotacion =
+                        ligadaDesde[l].isEmpty || evento.alturas != ligadaDesde[l]
                         ? linea.anotaciones[posiciones[l]] : nil
                     if let armonia = anotacion?.armonia { xml += armonia }
                     xml += nota.xml(letras: anotacion?.letras ?? [])
@@ -251,7 +276,8 @@ package struct EscritorMusicXML {
                 }
             }
             if c == numeroDeCompases - 1 {
-                xml += "      <barline location=\"right\">\n        <bar-style>light-heavy</bar-style>\n      </barline>\n"
+                xml +=
+                    "      <barline location=\"right\">\n        <bar-style>light-heavy</bar-style>\n      </barline>\n"
             }
             xml += "    </measure>\n"
         }
@@ -266,9 +292,11 @@ package struct EscritorMusicXML {
         if let tonalidad { xml += "          <mode>\(tonalidad.modo == .mayor ? "major" : "minor")</mode>\n" }
         xml += "        </key>\n"
         let simbolo = compas == .compasillo ? " symbol=\"common\"" : (compas == .partido ? " symbol=\"cut\"" : "")
-        let beats = compas.agrupacion.count > 1 && Set(compas.agrupacion).count > 1 && compas.tipo != .compuesto
+        let beats =
+            compas.agrupacion.count > 1 && Set(compas.agrupacion).count > 1 && compas.tipo != .compuesto
             ? compas.agrupacion.map(String.init).joined(separator: "+") : "\(compas.numerador)"
-        xml += "        <time\(simbolo)>\n          <beats>\(beats)</beats>\n          <beat-type>\(compas.denominador)</beat-type>\n        </time>\n"
+        xml +=
+            "        <time\(simbolo)>\n          <beats>\(beats)</beats>\n          <beat-type>\(compas.denominador)</beat-type>\n        </time>\n"
         if claves.count > 1 { xml += "        <staves>\(claves.count)</staves>\n" }
         for (i, clave) in claves.enumerated() {
             let (signo, linea, cambio) = EscritorMusicXML.signo(de: clave)
@@ -283,14 +311,14 @@ package struct EscritorMusicXML {
     private var rotuloInicial: String {
         guard let rotulo else { return "" }
         return """
-              <direction placement="below">
-                <direction-type>
-                  <words>\(Exportacion.escapar(rotulo.texto))</words>
-                </direction-type>
-                <staff>\(rotulo.pentagrama)</staff>
-              </direction>
+                  <direction placement="below">
+                    <direction-type>
+                      <words>\(Exportacion.escapar(rotulo.texto))</words>
+                    </direction-type>
+                    <staff>\(rotulo.pentagrama)</staff>
+                  </direction>
 
-        """
+            """
     }
 
     private var metronomo: String {
@@ -298,23 +326,24 @@ package struct EscritorMusicXML {
         let porMinuto = Exportacion.formatear(tempo.pulsacionesPorMinuto)
         var unidad = ""
         if let (figura, puntillos) = tempo.unidad.figuraYPuntillos {
-            unidad = "            <beat-unit>\(EscritorMusicXML.tipo(figura))</beat-unit>\n"
+            unidad =
+                "            <beat-unit>\(EscritorMusicXML.tipo(figura))</beat-unit>\n"
                 + String(repeating: "            <beat-unit-dot/>\n", count: puntillos)
         }
         guard !unidad.isEmpty else {
             return "      <sound tempo=\"\(Exportacion.formatear(tempo.negrasPorMinuto))\"/>\n"
         }
         return """
-              <direction placement="above">
-                <direction-type>
-                  <metronome>
-        \(unidad)            <per-minute>\(porMinuto)</per-minute>
-                  </metronome>
-                </direction-type>
-                <sound tempo="\(Exportacion.formatear(tempo.negrasPorMinuto))"/>
-              </direction>
+                  <direction placement="above">
+                    <direction-type>
+                      <metronome>
+            \(unidad)            <per-minute>\(porMinuto)</per-minute>
+                      </metronome>
+                    </direction-type>
+                    <sound tempo="\(Exportacion.formatear(tempo.negrasPorMinuto))"/>
+                  </direction>
 
-        """
+            """
     }
 
     // MARK: Nota
@@ -359,7 +388,8 @@ package struct EscritorMusicXML {
                 if i == 0 {
                     for (k, letra) in letras.enumerated() where !letra.isEmpty {
                         xml += "        <lyric number=\"\(k + 1)\" placement=\"below\">\n"
-                        xml += "          <syllabic>single</syllabic>\n          <text>\(Exportacion.escapar(letra))</text>\n        </lyric>\n"
+                        xml +=
+                            "          <syllabic>single</syllabic>\n          <text>\(Exportacion.escapar(letra))</text>\n        </lyric>\n"
                     }
                 }
                 xml += "      </note>\n"
@@ -388,8 +418,10 @@ package struct EscritorMusicXML {
             var xml = "        <notations>\n"
             for tipo in ligadura { xml += "          <tied type=\"\(tipo)\"/>\n" }
             for tipo in grupo {
-                xml += tipo == "start" ? "          <tuplet type=\"start\" bracket=\"yes\"/>\n"
-                                       : "          <tuplet type=\"stop\"/>\n"
+                xml +=
+                    tipo == "start"
+                    ? "          <tuplet type=\"start\" bracket=\"yes\"/>\n"
+                    : "          <tuplet type=\"stop\"/>\n"
             }
             return xml + "        </notations>\n"
         }
@@ -443,7 +475,8 @@ package struct EscritorMusicXML {
             xml += "          <root-alter>\(acorde.fundamental.alteracion.semitonos)</root-alter>\n"
         }
         xml += "        </root>\n"
-        xml += "        <kind text=\"\(Exportacion.escapar(acorde.tipo.cifrado(en: notacion)))\">\(mejor.nombre)</kind>\n"
+        xml +=
+            "        <kind text=\"\(Exportacion.escapar(acorde.tipo.cifrado(en: notacion)))\">\(mejor.nombre)</kind>\n"
         if acorde.bajo != acorde.fundamental {
             xml += "        <bass>\n          <bass-step>\(paso(acorde.bajo.natural))</bass-step>\n"
             if acorde.bajo.alteracion.semitonos != 0 {
@@ -462,7 +495,8 @@ package struct EscritorMusicXML {
         for intervalo in intervalos where !mejor.intervalos.contains(where: { $0 == clave(intervalo) }) {
             xml += grado(intervalo.numero, modulo(intervalo.semitonos, 12), "add")
         }
-        for (numero, semitonos) in mejor.intervalos where !intervalos.contains(where: { clave($0) == (numero, semitonos) }) {
+        for (numero, semitonos) in mejor.intervalos
+        where !intervalos.contains(where: { clave($0) == (numero, semitonos) }) {
             xml += grado(numero, semitonos, "subtract")
         }
         if let pentagrama { xml += "        <staff>\(pentagrama)</staff>\n" }
@@ -473,7 +507,9 @@ package struct EscritorMusicXML {
 
     /// La figura con que se escribe una duración y, si es de un grupo irregular, la proporción:
     /// 1/12 → corchea de tresillo (3 en el tiempo de 2).
-    package static func figura(de duracion: Duracion) -> (tipo: String?, puntillos: Int, irregular: (reales: Int, normales: Int)?) {
+    package static func figura(de duracion: Duracion) -> (
+        tipo: String?, puntillos: Int, irregular: (reales: Int, normales: Int)?
+    ) {
         let figura = Exportacion.figura(de: duracion)
         return (figura.figura.map(tipo), figura.puntillos, figura.irregular)
     }

@@ -1,5 +1,7 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
+import Foundation
+
 // Exportación a MIDI: ficheros MIDI estándar (SMF, formato 1), que se oyen en cualquier
 // reproductor, secuenciador o editor de partituras.
 //
@@ -7,8 +9,6 @@ import ArmoniaTeoria
 // una voz con su nombre. Las notas ligadas suenan como una sola. Las alturas fuera del rango
 // MIDI (0…127) se omiten. Los textos van en Latin-1, que es lo que esperan casi todos los
 // programas, con las alteraciones en ASCII (Mib, F#).
-
-import Foundation
 
 extension Voz {
     /// La voz como fichero MIDI estándar.
@@ -23,8 +23,10 @@ extension Voz {
     ///   - titulo: el nombre de la secuencia.
     ///   - parte: el nombre de la pista.
     ///   - instrumento: el programa General MIDI (0 = piano de cola … 127).
-    public func midi(tonalidad: Tonalidad? = nil, tempo: Tempo? = nil, titulo: String? = nil,
-                     parte: String = "Voz", instrumento: Int = 0) -> Data {
+    public func midi(
+        tonalidad: Tonalidad? = nil, tempo: Tempo? = nil, titulo: String? = nil,
+        parte: String = "Voz", instrumento: Int = 0
+    ) -> Data {
         let tonalidad = tonalidad ?? Exportacion.tonalidad(de: self)
         var archivo = ArchivoMIDI(compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo)
         archivo.anadir(eventos, nombre: parte, instrumento: instrumento)
@@ -43,15 +45,18 @@ extension Coral {
     ///   - duracion: lo que dura cada acorde.
     ///   - tonalidad: la armadura que se escribe en el fichero; si es `nil`, se estima.
     ///   - instrumento: el programa General MIDI de todas las voces (52 = coro «aahs»).
-    public func midi(duracion: Duracion = .negra, compas: Compas = .compasillo, tonalidad: Tonalidad? = nil,
-                     tempo: Tempo? = nil, titulo: String? = nil, instrumento: Int = 52,
-                     notacion: Notacion = .espanolUnicode) -> Data {
+    public func midi(
+        duracion: Duracion = .negra, compas: Compas = .compasillo, tonalidad: Tonalidad? = nil,
+        tempo: Tempo? = nil, titulo: String? = nil, instrumento: Int = 52,
+        notacion: Notacion = .espanolUnicode
+    ) -> Data {
         let tonalidad = tonalidad ?? Tonalidad.identificar(alturas: acordes.flatMap { $0 }).first
         var archivo = ArchivoMIDI(compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo)
         for v in (0..<numeroDeVoces).reversed() {
             let eventos = Exportacion.eventos(de: voz(v), duracion: duracion, final: duracion)
-            archivo.anadir(eventos, nombre: Coral.nombreDeVoz(v, de: numeroDeVoces, en: notacion),
-                           instrumento: instrumento)
+            archivo.anadir(
+                eventos, nombre: Coral.nombreDeVoz(v, de: numeroDeVoces, en: notacion),
+                instrumento: instrumento)
         }
         return archivo.datos
     }
@@ -69,17 +74,22 @@ extension AnalisisArmonico {
     ///   - duracion: lo que dura cada acorde.
     ///   - instrumento: el programa General MIDI (0 = piano de cola).
     ///   - notacion: la de los cifrados americanos de los marcadores.
-    public func midi(duracion: Duracion = .blanca, compas: Compas = .compasillo, tempo: Tempo? = nil,
-                     titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolUnicode) -> Data {
-        midi(duraciones: Array(repeating: duracion, count: acordes.count), compas: compas, tempo: tempo,
-             titulo: titulo, instrumento: instrumento, notacion: notacion)
+    public func midi(
+        duracion: Duracion = .blanca, compas: Compas = .compasillo, tempo: Tempo? = nil,
+        titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolUnicode
+    ) -> Data {
+        midi(
+            duraciones: Array(repeating: duracion, count: acordes.count), compas: compas, tempo: tempo,
+            titulo: titulo, instrumento: instrumento, notacion: notacion)
     }
 
     /// Lo mismo, con lo que dura cada acorde (el ritmo armónico de una pieza importada, por ejemplo).
     ///
     /// Detiene el programa si no hay una duración positiva por acorde.
-    public func midi(duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil,
-                     titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolUnicode) -> Data {
+    public func midi(
+        duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil,
+        titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolUnicode
+    ) -> Data {
         Exportacion.comprobar(duraciones, acordes: acordes.count)
         var archivo = ArchivoMIDI(compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo)
         let (superior, grave) = Exportacion.progresion(acordes.map(\.acorde), duraciones: duraciones)
@@ -121,7 +131,7 @@ package struct ArchivoMIDI {
     package var divisiones: Int {
         let base = Exportacion.divisiones(pistas.flatMap { $0.eventos.map(\.duracion) })
         if let habitual = [480, 960].first(where: { $0 % base == 0 }) { return habitual }
-        guard base <= 32767 else { return 960 }   // grupos muy raros: se redondea
+        guard base <= 32767 else { return 960 } // grupos muy raros: se redondea
         let multiplo = base * ((480 + base - 1) / base)
         return multiplo <= 32767 ? multiplo : base
     }
@@ -144,22 +154,40 @@ package struct ArchivoMIDI {
         control.append((0, ArchivoMIDI.meta(0x51, ArchivoMIDI.entero(microsegundos, bytes: 3))))
         // Compás: numerador, denominador como potencia de 2, relojes por pulso y fusas por negra.
         let reloj = compas.tipo == .compuesto ? 36 * 8 / compas.denominador : 24 * 4 / compas.denominador
-        control.append((0, ArchivoMIDI.meta(0x58, [UInt8(compas.numerador),
-                                                   UInt8(compas.denominador.trailingZeroBitCount),
-                                                   UInt8(max(1, min(255, reloj))), 8])))
+        control.append(
+            (
+                0,
+                ArchivoMIDI.meta(
+                    0x58,
+                    [
+                        UInt8(compas.numerador),
+                        UInt8(compas.denominador.trailingZeroBitCount),
+                        UInt8(max(1, min(255, reloj))), 8,
+                    ])
+            ))
         if let tonalidad, abs(tonalidad.armadura) <= 7 {
-            control.append((0, ArchivoMIDI.meta(0x59, [UInt8(bitPattern: Int8(tonalidad.armadura)),
-                                                       tonalidad.modo == .menor ? 1 : 0])))
+            control.append(
+                (
+                    0,
+                    ArchivoMIDI.meta(
+                        0x59,
+                        [
+                            UInt8(bitPattern: Int8(tonalidad.armadura)),
+                            tonalidad.modo == .menor ? 1 : 0,
+                        ])
+                ))
         }
         bytes += ArchivoMIDI.pista(control)
 
         for (i, pista) in pistas.enumerated() {
             let canal = UInt8(i < 9 ? i : (i + 1) % 16)
-            var mensajes: [(Int, [UInt8])] = [(0, ArchivoMIDI.meta(0x03, ArchivoMIDI.texto(pista.nombre))),
-                                               (0, [0xC0 | canal, UInt8(pista.instrumento)])]
+            var mensajes: [(Int, [UInt8])] = [
+                (0, ArchivoMIDI.meta(0x03, ArchivoMIDI.texto(pista.nombre))),
+                (0, [0xC0 | canal, UInt8(pista.instrumento)]),
+            ]
             // Las notas: las ligadas siguen sonando mientras la siguiente nota las repita.
             var inicio = 0
-            var sonando: [Int: Int] = [:]   // altura MIDI → cuándo empezó
+            var sonando: [Int: Int] = [:] // altura MIDI → cuándo empezó
             var notas: [(clave: Int, desde: Int, hasta: Int)] = []
             var ligadas: Set<Int> = []
             for (k, evento) in pista.eventos.enumerated() {
@@ -193,7 +221,7 @@ package struct ArchivoMIDI {
             switch m[0] & 0xF0 {
             case 0x80: return 1
             case 0x90: return 2
-            default: return 0       // meta y cambio de programa, primero
+            default: return 0 // meta y cambio de programa, primero
             }
         }
         let ordenados = mensajes.enumerated().sorted {
@@ -212,7 +240,9 @@ package struct ArchivoMIDI {
     /// Un texto en Latin-1, con las alteraciones en ASCII ("Mi♭ · ♭VI" → "Mib · bVI") y "?" en
     /// lo que no se puede escribir.
     package static func texto(_ texto: String) -> [UInt8] {
-        let ascii: [Character: String] = ["♭": "b", "♯": "#", "𝄫": "bb", "𝄪": "x", "♮": "", "–": "-", "—": "-", "→": "->", "Δ": "maj"]
+        let ascii: [Character: String] = [
+            "♭": "b", "♯": "#", "𝄫": "bb", "𝄪": "x", "♮": "", "–": "-", "—": "-", "→": "->", "Δ": "maj",
+        ]
         let limpio = texto.map { ascii[$0] ?? String($0) }.joined()
         return limpio.unicodeScalars.map { $0.value <= 0xFF ? UInt8($0.value) : UInt8(ascii: "?") }
     }

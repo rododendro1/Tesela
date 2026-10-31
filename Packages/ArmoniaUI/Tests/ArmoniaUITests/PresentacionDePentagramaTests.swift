@@ -1,5 +1,6 @@
-import XCTest
 import Armonia
+import XCTest
+
 @testable import ArmoniaPresentacion
 
 final class PresentacionDePentagramaTests: XCTestCase {
@@ -53,9 +54,11 @@ final class PresentacionDePentagramaMasTests: XCTestCase {
     }
 
     func testLaOctavaCambiaLasAlturas() {
-        XCTAssertTrue(PresentacionDePentagrama(Escala("Re dórico"), octava: 3).descripcion.hasPrefix("Re dórico: Re3, Mi3"))
-        XCTAssertNotEqual(PresentacionDePentagrama(Escala("Re dórico"), octava: 3).svg,
-                          PresentacionDePentagrama(Escala("Re dórico")).svg)
+        XCTAssertTrue(
+            PresentacionDePentagrama(Escala("Re dórico"), octava: 3).descripcion.hasPrefix("Re dórico: Re3, Mi3"))
+        XCTAssertNotEqual(
+            PresentacionDePentagrama(Escala("Re dórico"), octava: 3).svg,
+            PresentacionDePentagrama(Escala("Re dórico")).svg)
     }
 
     func testElSentidoCambiaElDibujo() {
@@ -74,8 +77,11 @@ final class PresentacionDePentagramaMasTests: XCTestCase {
     }
 
     func testLaProporcionEsLaDeSuDibujo() {
-        for pentagrama in [PresentacionDePentagrama(Escala("La menor melódica")), PresentacionDePentagrama(Acorde("Do"))] {
-            XCTAssertEqual(pentagrama.relacionDeAspecto, PresentacionDePentagrama.relacionDeAspecto(deSVG: pentagrama.svg))
+        for pentagrama in [
+            PresentacionDePentagrama(Escala("La menor melódica")), PresentacionDePentagrama(Acorde("Do")),
+        ] {
+            XCTAssertEqual(
+                pentagrama.relacionDeAspecto, PresentacionDePentagrama.relacionDeAspecto(deSVG: pentagrama.svg))
             XCTAssertNotEqual(pentagrama.relacionDeAspecto, 4, "el SVG del motor lleva viewBox")
         }
     }

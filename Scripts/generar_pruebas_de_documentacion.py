@@ -180,7 +180,8 @@ def generar():
     return CABECERA + "\n\n".join(funciones) + "\n}\n"
 
 
-CABECERA = '''// Generado por Scripts/generar_pruebas_de_documentacion.py a partir de los bloques ```swift
+CABECERA = '''// swift-format-ignore-file
+// Generado por Scripts/generar_pruebas_de_documentacion.py a partir de los bloques ```swift
 // del README y del catálogo DocC. No lo edites a mano: cambia el ejemplo y vuelve a generarlo.
 
 import Foundation

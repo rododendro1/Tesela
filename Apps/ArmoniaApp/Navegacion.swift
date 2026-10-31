@@ -1,5 +1,5 @@
-import SwiftUI
 import Armonia
+import SwiftUI
 
 /// La pestaña elegida y lo que una pestaña le pide a otra: «Ver en Acordes» desde Identificar, o una escala
 /// compatible desde Acordes. Va en el entorno (`environmentObject`) de todas las vistas de la app.

@@ -1,9 +1,10 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 @testable import ArmoniaTrastes
 
 /// Lo que se hace con números que pueden venir de fuera: las variantes `init?(comprobando:)` devuelven `nil` en vez
@@ -37,8 +38,8 @@ final class EntradasInvalidasTests: XCTestCase {
         XCTAssertNil(Compas(comprobando: 0, 4))
         XCTAssertNil(Compas(comprobando: -3, 4))
         XCTAssertNil(Compas(comprobando: 3, 0))
-        XCTAssertNil(Compas(comprobando: 3, 3))      // el denominador no es una potencia de 2
-        XCTAssertNil(Compas(comprobando: 3, 128))    // más de 64
+        XCTAssertNil(Compas(comprobando: 3, 3)) // el denominador no es una potencia de 2
+        XCTAssertNil(Compas(comprobando: 3, 128)) // más de 64
     }
 
     func testUnCompasValidoEsElMismoQueElDelInicializadorNormal() {
@@ -66,8 +67,9 @@ final class EntradasInvalidasTests: XCTestCase {
 
     func testUnTempoValidoEsElMismoQueElDelInicializadorNormal() {
         XCTAssertEqual(Tempo(comprobando: 120), Tempo(120))
-        XCTAssertEqual(Tempo(comprobando: 60, unidad: Duracion(.negra, puntillos: 1)),
-                       Tempo(60, unidad: Duracion(.negra, puntillos: 1)))
+        XCTAssertEqual(
+            Tempo(comprobando: 60, unidad: Duracion(.negra, puntillos: 1)),
+            Tempo(60, unidad: Duracion(.negra, puntillos: 1)))
     }
 
     // MARK: Base de Hewlett

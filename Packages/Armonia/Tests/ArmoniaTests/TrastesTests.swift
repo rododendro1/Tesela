@@ -1,16 +1,17 @@
 import XCTest
+
 @testable import Armonia
 @testable import ArmoniaNucleo
-@testable import ArmoniaTeoria
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaPartitura
+@testable import ArmoniaRepresentaciones
+@testable import ArmoniaTeoria
 @testable import ArmoniaTrastes
 
 final class MastilTests: XCTestCase {
     func testAlturasAlAireDeLaGuitarra() {
         let mastil = Mastil(.guitarra)
         let midis = (0..<6).map { mastil.midi(en: PosicionEnElMastil(cuerda: $0, traste: 0)) }
-        XCTAssertEqual(midis, [40, 45, 50, 55, 59, 64])   // Mi2 La2 Re3 Sol3 Si3 Mi4
+        XCTAssertEqual(midis, [40, 45, 50, 55, 59, 64]) // Mi2 La2 Re3 Sol3 Si3 Mi4
     }
 
     func testAlturaEnUnTraste() {
@@ -23,7 +24,7 @@ final class MastilTests: XCTestCase {
 
     func testBemolesSiSePide() {
         let mastil = Mastil(.guitarra)
-        let posicion = PosicionEnElMastil(cuerda: 1, traste: 1)   // Si♭2 / La♯2
+        let posicion = PosicionEnElMastil(cuerda: 1, traste: 1) // Si♭2 / La♯2
         XCTAssertEqual(mastil.altura(en: posicion, preferirBemoles: true).nota.nombre, "Si♭")
         XCTAssertEqual(mastil.altura(en: posicion).nota.nombre, "La♯")
     }
@@ -33,9 +34,12 @@ final class MastilTests: XCTestCase {
         // El Mi4 suena al aire en la cuerda aguda, en el traste 5 de la Si y en el 9 de la Sol;
         // en las demás cuerdas está más allá del traste 12.
         let posiciones = mastil.posiciones(de: Altura(.mi, octava: 4))
-        XCTAssertEqual(posiciones, [
-            PosicionEnElMastil(cuerda: 5, traste: 0), PosicionEnElMastil(cuerda: 4, traste: 5), PosicionEnElMastil(cuerda: 3, traste: 9),
-        ])
+        XCTAssertEqual(
+            posiciones,
+            [
+                PosicionEnElMastil(cuerda: 5, traste: 0), PosicionEnElMastil(cuerda: 4, traste: 5),
+                PosicionEnElMastil(cuerda: 3, traste: 9),
+            ])
     }
 
     func testPosicionesDeUnaNotaEnCualquierOctava() {
@@ -162,9 +166,9 @@ extension DigitacionTests {
     func testComprobandoLosTrastes() {
         let guitarra = Mastil(.guitarra)
         XCTAssertNotNil(Digitacion(comprobando: [nil, 3, 2, 0, 1, 0], en: guitarra))
-        XCTAssertNil(Digitacion(comprobando: [nil, 3, 2, 0, 1], en: guitarra))          // falta una cuerda
-        XCTAssertNil(Digitacion(comprobando: [nil, 3, 2, 0, 1, -1], en: guitarra))      // traste negativo
-        XCTAssertNil(Digitacion(comprobando: [nil, 3, 2, 0, 1, 25], en: guitarra))      // más allá del último (24)
+        XCTAssertNil(Digitacion(comprobando: [nil, 3, 2, 0, 1], en: guitarra)) // falta una cuerda
+        XCTAssertNil(Digitacion(comprobando: [nil, 3, 2, 0, 1, -1], en: guitarra)) // traste negativo
+        XCTAssertNil(Digitacion(comprobando: [nil, 3, 2, 0, 1, 25], en: guitarra)) // más allá del último (24)
     }
 
     func testLeyendoLaCifra() {
@@ -172,9 +176,9 @@ extension DigitacionTests {
         XCTAssertEqual(Digitacion(leyendo: "x32010", en: guitarra)?.tablatura, "x32010")
         XCTAssertEqual(Digitacion(leyendo: "X32010", en: guitarra)?.tablatura, "x32010")
         XCTAssertEqual(Digitacion(leyendo: "x-10-12-12-11-10", en: guitarra)?.tablatura, "x-10-12-12-11-10")
-        XCTAssertNil(Digitacion(leyendo: "x3201", en: guitarra))                 // faltan cuerdas
-        XCTAssertNil(Digitacion(leyendo: "x32a10", en: guitarra))                // «a» no es un traste
-        XCTAssertNil(Digitacion(leyendo: "x-10--12-12-11-10", en: guitarra))     // hueco vacío
+        XCTAssertNil(Digitacion(leyendo: "x3201", en: guitarra)) // faltan cuerdas
+        XCTAssertNil(Digitacion(leyendo: "x32a10", en: guitarra)) // «a» no es un traste
+        XCTAssertNil(Digitacion(leyendo: "x-10--12-12-11-10", en: guitarra)) // hueco vacío
         XCTAssertNil(Digitacion(leyendo: "", en: guitarra))
     }
 
@@ -312,7 +316,9 @@ final class DedosYOrdenTests: XCTestCase {
         for (cifrado, esperadas) in manual {
             let primera = try XCTUnwrap(
                 guitarra.digitaciones(de: try Acorde(leyendo: cifrado), exigirQuinta: false, limite: 1).first, cifrado)
-            XCTAssertTrue(esperadas.contains(primera.tablatura), "\(cifrado): sale \(primera.tablatura), se esperaba \(esperadas)")
+            XCTAssertTrue(
+                esperadas.contains(primera.tablatura), "\(cifrado): sale \(primera.tablatura), se esperaba \(esperadas)"
+            )
         }
     }
 
@@ -323,7 +329,8 @@ final class DedosYOrdenTests: XCTestCase {
             ("Doadd9", "x32030"), ("Sim", "x24432"), ("Fa#m", "244222"), ("Solm", "355333"), ("Dom", "x35543"),
         ]
         for (cifrado, esperada) in manual {
-            let primeras = guitarra.digitaciones(de: try Acorde(leyendo: cifrado), exigirQuinta: false, limite: 6).map(\.tablatura)
+            let primeras = guitarra.digitaciones(de: try Acorde(leyendo: cifrado), exigirQuinta: false, limite: 6).map(
+                \.tablatura)
             XCTAssertTrue(primeras.contains(esperada), "\(cifrado): \(primeras), se esperaba \(esperada)")
         }
     }
@@ -338,7 +345,8 @@ final class DedosYOrdenTests: XCTestCase {
         let acorde = try Acorde(leyendo: "Do7")
         // El Do7 de manual no tiene la quinta (Sol).
         XCTAssertFalse(guitarra.digitaciones(de: acorde, limite: 300).map(\.tablatura).contains("x32310"))
-        XCTAssertTrue(guitarra.digitaciones(de: acorde, exigirQuinta: false, limite: 300).map(\.tablatura).contains("x32310"))
+        XCTAssertTrue(
+            guitarra.digitaciones(de: acorde, exigirQuinta: false, limite: 300).map(\.tablatura).contains("x32310"))
     }
 
     func testElMi7AbiertoEsLaPrimeraConLaQuintaOpcional() throws {
@@ -351,7 +359,9 @@ final class DedosYOrdenTests: XCTestCase {
 
     func testQueInstrumentosSonReentrantes() {
         XCTAssertTrue(Encordado.ukelele.esReentrante)
-        for encordado in [Encordado.guitarra, .guitarraDeSieteCuerdas, .guitarraEnReGrave, .bajo, .bajoDeCincoCuerdas, .mandolina] {
+        for encordado in [
+            Encordado.guitarra, .guitarraDeSieteCuerdas, .guitarraEnReGrave, .bajo, .bajoDeCincoCuerdas, .mandolina,
+        ] {
             XCTAssertFalse(encordado.esReentrante, encordado.nombre)
         }
     }
@@ -362,7 +372,8 @@ final class DedosYOrdenTests: XCTestCase {
             ("Re", "2220"), ("La", "2100"), ("Sol7", "0212"), ("Do7", "0001"),
         ]
         for (cifrado, esperada) in manual {
-            let primera = try XCTUnwrap(ukelele.digitaciones(de: try Acorde(leyendo: cifrado), exigirQuinta: false, limite: 1).first, cifrado)
+            let primera = try XCTUnwrap(
+                ukelele.digitaciones(de: try Acorde(leyendo: cifrado), exigirQuinta: false, limite: 1).first, cifrado)
             XCTAssertEqual(primera.tablatura, esperada, cifrado)
         }
         let mim = ukelele.digitaciones(de: try Acorde(leyendo: "Mim"), exigirQuinta: false, limite: 3).map(\.tablatura)
@@ -376,7 +387,7 @@ final class DedosYOrdenTests: XCTestCase {
             let grave = try XCTUnwrap(forma.alturas.map(\.midi).min())
             XCTAssertEqual(Mastil.clase(grave), Nota.mi.claseDeAltura, forma.tablatura)
         }
-        XCTAssertFalse(formas.map(\.tablatura).contains("0003"))   // ahí el Do es lo más grave
+        XCTAssertFalse(formas.map(\.tablatura).contains("0003")) // ahí el Do es lo más grave
     }
 }
 
@@ -390,8 +401,9 @@ final class NombresTraducidosTests: XCTestCase {
     }
 
     func testNombresDeLasTransformaciones() {
-        XCTAssertEqual(TransformacionNeorriemanniana.allCases.map { $0.nombre(en: .espanolUnicode) },
-                       TransformacionNeorriemanniana.allCases.map(\.nombre))
+        XCTAssertEqual(
+            TransformacionNeorriemanniana.allCases.map { $0.nombre(en: .espanolUnicode) },
+            TransformacionNeorriemanniana.allCases.map(\.nombre))
         XCTAssertEqual(TransformacionNeorriemanniana.l.nombre(en: .inglesASCII), "leading-tone exchange")
         XCTAssertEqual(TransformacionNeorriemanniana.r.nombre(en: .aleman), "Parallele")
     }

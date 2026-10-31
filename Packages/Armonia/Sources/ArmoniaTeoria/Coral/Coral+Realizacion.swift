@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 // Realización a cuatro voces: escribir una sucesión de acordes como coral (bajo, tenor, contralto y
 // soprano) sin faltas de conducción.
 
@@ -26,7 +27,8 @@ extension Coral {
     /// - Returns: `nil` si no hay acordes, si el soprano no encaja (otro número de notas, una nota
     ///   ajena al acorde o fuera de tesitura), si un acorde tiene más de cuatro notas obligatorias o si
     ///   no hay ninguna realización sin faltas.
-    public static func realizar(_ acordes: [Acorde], soprano: [Altura]? = nil, en tonalidad: Tonalidad? = nil) -> Coral? {
+    public static func realizar(_ acordes: [Acorde], soprano: [Altura]? = nil, en tonalidad: Tonalidad? = nil) -> Coral?
+    {
         guard !acordes.isEmpty, soprano == nil || soprano!.count == acordes.count else { return nil }
         let tonalidad = tonalidad ?? AnalisisArmonico.analizar(acordes)?.tonalidad
         let sensible = tonalidad?.escalaDeReferencia.grado(7)
@@ -46,8 +48,11 @@ extension Coral {
             var desde = [Int](repeating: -1, count: opciones[i].count)
             for (b, siguiente) in opciones[i].enumerated() {
                 for (a, actual) in opciones[i - 1].enumerated() where costes[a] < .infinity {
-                    guard let paso = costeDePaso(de: actual.alturas, a: siguiente.alturas, septima: acordes[i - 1].septima,
-                                                 sensible: dominantes[i - 1] ? sensible : nil, tonica: tonica) else { continue }
+                    guard
+                        let paso = costeDePaso(
+                            de: actual.alturas, a: siguiente.alturas, septima: acordes[i - 1].septima,
+                            sensible: dominantes[i - 1] ? sensible : nil, tonica: tonica)
+                    else { continue }
                     let total = costes[a] + paso + siguiente.coste
                     if total < nuevos[b] {
                         nuevos[b] = total
@@ -58,7 +63,9 @@ extension Coral {
             costes = nuevos
             previos.append(desde)
         }
-        guard var indice = costes.indices.min(by: { costes[$0] < costes[$1] }), costes[indice] < .infinity else { return nil }
+        guard var indice = costes.indices.min(by: { costes[$0] < costes[$1] }), costes[indice] < .infinity else {
+            return nil
+        }
         var resultado: [[Altura]] = []
         for i in stride(from: acordes.count - 1, through: 0, by: -1) {
             resultado.insert(opciones[i][indice].alturas, at: 0)
@@ -71,7 +78,9 @@ extension Coral {
 
     /// Las disposiciones a cuatro voces de un acorde que no tienen faltas por sí solas, con lo que
     /// cuesta cada una por sus duplicaciones, sus omisiones y la altura del soprano.
-    package static func disposiciones(de acorde: Acorde, soprano: Altura?, sensible: Nota?) -> [(alturas: [Altura], coste: Double)] {
+    package static func disposiciones(de acorde: Acorde, soprano: Altura?, sensible: Nota?) -> [(
+        alturas: [Altura], coste: Double
+    )] {
         var notas = acorde.notas
         if !notas.contains(acorde.bajo) { notas.append(acorde.bajo) }
         let quinta = acorde.quinta.flatMap { $0 == acorde.fundamental + .quintaJusta ? $0 : nil }
@@ -85,7 +94,8 @@ extension Coral {
                 .sorted { $0.midi < $1.midi }
         }
         let bajos = (1...4).map { Altura(acorde.bajo, octava: $0) }.filter { tesituras[0].contains($0.midi) }
-        let tenores = alturas(1), contraltos = alturas(2)
+        let tenores = alturas(1)
+        let contraltos = alturas(2)
         let sopranos = soprano.map { [$0] } ?? alturas(3)
         let disminuida = acorde.tipo.estructura.calidadDeTriada == .disminuida
 
@@ -133,7 +143,9 @@ extension Coral {
 
     /// Lo que cuesta pasar de una disposición a otra, o `nil` si el paso tiene alguna falta.
     /// `septima` es la del primer acorde, si la tiene; `sensible`, solo si el primero es de dominante.
-    package static func costeDePaso(de anterior: [Altura], a siguiente: [Altura], septima: Nota?, sensible: Nota?, tonica: Nota?) -> Double? {
+    package static func costeDePaso(
+        de anterior: [Altura], a siguiente: [Altura], septima: Nota?, sensible: Nota?, tonica: Nota?
+    ) -> Double? {
         var falta = false
         faltas(de: anterior, a: siguiente) { _, _ in falta = true }
         guard !falta else { return nil }
@@ -143,7 +155,8 @@ extension Coral {
             let movimiento = siguiente[v].midi - anterior[v].midi
             // La sensible sube a la tónica (si el acorde siguiente la tiene).
             if let sensible, let tonica, anterior[v].nota == sensible, siguiente.contains(where: { $0.nota == tonica }),
-               !(movimiento == 1 && siguiente[v].nota == tonica) {
+                !(movimiento == 1 && siguiente[v].nota == tonica)
+            {
                 coste += v == 3 ? 4 : 1.5
             }
             // La séptima baja por grado conjunto (o se queda).

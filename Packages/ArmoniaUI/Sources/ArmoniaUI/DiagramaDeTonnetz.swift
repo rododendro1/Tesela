@@ -1,27 +1,28 @@
 #if canImport(SwiftUI) && canImport(WebKit)
-import SwiftUI
-import Armonia
+    import SwiftUI
+    import Armonia
 
-/// El Tonnetz de unas notas, un acorde o una escala, dibujado por el motor.
-///
-///     DiagramaDeTonnetz(Tonnetz(try Acorde(leyendo: "Dom7")))
-///     DiagramaDeTonnetz(Tonnetz(Escala(.re, .dorico)), notacion: .inglesASCII)
-public struct DiagramaDeTonnetz: View {
-    public let tonnetz: Tonnetz
-    public let notacion: Notacion
-    public let leyenda: Bool
+    /// El Tonnetz de unas notas, un acorde o una escala, dibujado por el motor.
+    ///
+    ///     DiagramaDeTonnetz(Tonnetz(try Acorde(leyendo: "Dom7")))
+    ///     DiagramaDeTonnetz(Tonnetz(Escala(.re, .dorico)), notacion: .inglesASCII)
+    public struct DiagramaDeTonnetz: View {
+        public let tonnetz: Tonnetz
+        public let notacion: Notacion
+        public let leyenda: Bool
 
-    public init(_ tonnetz: Tonnetz, notacion: Notacion = .espanolUnicode, leyenda: Bool = true) {
-        self.tonnetz = tonnetz
-        self.notacion = notacion
-        self.leyenda = leyenda
+        public init(_ tonnetz: Tonnetz, notacion: Notacion = .espanolUnicode, leyenda: Bool = true) {
+            self.tonnetz = tonnetz
+            self.notacion = notacion
+            self.leyenda = leyenda
+        }
+
+        public var body: some View {
+            VistaSVG(svg: tonnetz.svg(notacion: notacion, leyenda: leyenda))
+                .clipShape(RoundedRectangle(cornerRadius: TemaDeLasApps.radioDeEsquina))
+                .accessibilityLabel(
+                    Text("Tonnetz: " + tonnetz.notas.map { $0.nombre(en: notacion) }.joined(separator: ", ")))
+        }
     }
-
-    public var body: some View {
-        VistaSVG(svg: tonnetz.svg(notacion: notacion, leyenda: leyenda))
-            .clipShape(RoundedRectangle(cornerRadius: TemaDeLasApps.radioDeEsquina))
-            .accessibilityLabel(Text("Tonnetz: " + tonnetz.notas.map { $0.nombre(en: notacion) }.joined(separator: ", ")))
-    }
-}
 
 #endif

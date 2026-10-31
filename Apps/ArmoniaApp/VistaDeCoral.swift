@@ -1,6 +1,6 @@
-import SwiftUI
 import Armonia
 import ArmoniaUI
+import SwiftUI
 
 /// Armoniza una melodía, escribe unos acordes a cuatro voces o revisa la conducción de unas voces, y
 /// exporta el coral como partitura o MIDI.
@@ -24,8 +24,11 @@ struct VistaDeCoral: View {
                     ForEach(PresentacionDeCoral.Tarea.allCases) { Text($0.titulo(en: notacion)).tag($0) }
                 }
                 .pickerStyle(.segmented)
-                TextField(tarea.indicacion(en: notacion), text: Binding(get: { texto }, set: { textos[tarea] = $0 }), axis: .vertical)
-                    .comoCampoDeCifrado()
+                TextField(
+                    tarea.indicacion(en: notacion), text: Binding(get: { texto }, set: { textos[tarea] = $0 }),
+                    axis: .vertical
+                )
+                .comoCampoDeCifrado()
                 if tarea.usaTonalidad {
                     TextField(notacion.texto(.campoDeTonalidad), text: $tonalidad)
                         .comoCampoDeCifrado()

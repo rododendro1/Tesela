@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 // MARK: - Acorde
 
 /// Acorde con ortografía: fundamental + tipo + bajo.
@@ -56,9 +57,11 @@ public struct Acorde: Hashable, Sendable {
             let tras = resto[resto.index(after: barra)...]
             var lectorDelBajo = Lector(texto: lector.texto, fragmento: tras)
             if let (nota, idiomaDelBajo) = lectorDelBajo.leerNombreNotaConIdioma(espanol: idioma == .espanol),
-               lectorDelBajo.restoSinEspacios.isEmpty {
+                lectorDelBajo.restoSinEspacios.isEmpty
+            {
                 guard idiomaDelBajo == idioma else {
-                    throw lector.error(.idiomasMezclados(String(tras).trimmingEspacios()), posicion: tras.posicionEnOrigen)
+                    throw lector.error(
+                        .idiomasMezclados(String(tras).trimmingEspacios()), posicion: tras.posicionEnOrigen)
                 }
                 bajo = nota
                 simbolo = resto[..<barra]
@@ -116,7 +119,7 @@ public struct Acorde: Hashable, Sendable {
         case .griego: cabeza = "\(tipo) στο \(raiz)"
         case .ruso: cabeza = "\(tipo) от \(raiz)"
         case .espanol, .ingles, .catalan, .gallego, .asturiano, .aragones, .euskera, .portugues, .frances,
-             .occitano, .italiano:
+            .occitano, .italiano:
             cabeza = "\(raiz) \(tipo)"
         }
         guard let i = inversion else {

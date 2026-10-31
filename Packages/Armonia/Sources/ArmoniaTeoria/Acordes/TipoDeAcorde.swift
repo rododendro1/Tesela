@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 // MARK: - TipoDeAcorde
 
 /// Estructura de un acorde: el conjunto de desplazamientos en quintas de sus notas
@@ -153,13 +154,21 @@ public struct TipoDeAcorde: Sendable {
 
     // Novenas, undécimas y decimoterceras
     public static let dominanteNovena = crear([.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMayor])
-    public static let mayorSeptimaMayorNovena = crear([.unisono, .terceraMayor, .quintaJusta, .septimaMayor, .novenaMayor])
+    public static let mayorSeptimaMayorNovena = crear([
+        .unisono, .terceraMayor, .quintaJusta, .septimaMayor, .novenaMayor,
+    ])
     public static let menorSeptimaNovena = crear([.unisono, .terceraMenor, .quintaJusta, .septimaMenor, .novenaMayor])
     public static let mayorNovenaAnadida = crear([.unisono, .terceraMayor, .quintaJusta, .novenaMayor])
-    public static let dominanteUndecima = crear([.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMayor, .undecima])
-    public static let menorSeptimaUndecima = crear([.unisono, .terceraMenor, .quintaJusta, .septimaMenor, .novenaMayor, .undecima])
-    public static let dominanteDecimotercera = crear([.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMayor,
-                                                      .decimoterceraMayor])
+    public static let dominanteUndecima = crear([
+        .unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMayor, .undecima,
+    ])
+    public static let menorSeptimaUndecima = crear([
+        .unisono, .terceraMenor, .quintaJusta, .septimaMenor, .novenaMayor, .undecima,
+    ])
+    public static let dominanteDecimotercera = crear([
+        .unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMayor,
+        .decimoterceraMayor,
+    ])
 
     public static let todos: [TipoDeAcorde] = [
         .mayor, .menor, .disminuido, .aumentado, .sus2, .sus4, .potencia,
@@ -185,27 +194,68 @@ public struct TipoDeAcorde: Sendable {
             ([.terceraMayor, .quintaJusta, .septimaMayor], TextosDeTeoria.traducidos.map(\.tipoSeptimaMayor)),
             ([.terceraMenor, .quintaJusta, .septimaMenor], TextosDeTeoria.traducidos.map(\.tipoMenorSeptima)),
             ([.terceraMenor, .quintaDisminuida, .septimaMenor], TextosDeTeoria.traducidos.map(\.tipoSemidisminuido)),
-            ([.terceraMenor, .quintaDisminuida, .septimaDisminuida], TextosDeTeoria.traducidos.map(\.tipoSeptimaDisminuida)),
+            (
+                [.terceraMenor, .quintaDisminuida, .septimaDisminuida],
+                TextosDeTeoria.traducidos.map(\.tipoSeptimaDisminuida)
+            ),
             ([.terceraMenor, .quintaJusta, .septimaMayor], TextosDeTeoria.traducidos.map(\.tipoMenorConSeptimaMayor)),
-            ([.terceraMayor, .quintaAumentada, .septimaMenor], TextosDeTeoria.traducidos.map(\.tipoAumentadoConSeptimaMenor)),
-            ([.terceraMayor, .quintaAumentada, .septimaMayor], TextosDeTeoria.traducidos.map(\.tipoAumentadoConSeptimaMayor)),
+            (
+                [.terceraMayor, .quintaAumentada, .septimaMenor],
+                TextosDeTeoria.traducidos.map(\.tipoAumentadoConSeptimaMenor)
+            ),
+            (
+                [.terceraMayor, .quintaAumentada, .septimaMayor],
+                TextosDeTeoria.traducidos.map(\.tipoAumentadoConSeptimaMayor)
+            ),
             ([.cuartaJusta, .quintaJusta, .septimaMenor], TextosDeTeoria.traducidos.map(\.tipoSeptimaSuspendida)),
             ([.terceraMayor, .quintaJusta, .sextaMayor], TextosDeTeoria.traducidos.map(\.tipoSexta)),
             ([.terceraMenor, .quintaJusta, .sextaMayor], TextosDeTeoria.traducidos.map(\.tipoMenorSexta)),
-            ([.terceraMayor, .quintaJusta, .sextaMayor, .segundaMayor], TextosDeTeoria.traducidos.map(\.tipoSextaYNovena)),
-            ([.terceraMayor, .quintaJusta, .septimaMenor, .segundaMayor], TextosDeTeoria.traducidos.map(\.tipoNovenaDeDominante)),
-            ([.terceraMayor, .quintaJusta, .septimaMayor, .segundaMayor], TextosDeTeoria.traducidos.map(\.tipoNovenaMayor)),
-            ([.terceraMenor, .quintaJusta, .septimaMenor, .segundaMayor], TextosDeTeoria.traducidos.map(\.tipoMenorNovena)),
+            (
+                [.terceraMayor, .quintaJusta, .sextaMayor, .segundaMayor],
+                TextosDeTeoria.traducidos.map(\.tipoSextaYNovena)
+            ),
+            (
+                [.terceraMayor, .quintaJusta, .septimaMenor, .segundaMayor],
+                TextosDeTeoria.traducidos.map(\.tipoNovenaDeDominante)
+            ),
+            (
+                [.terceraMayor, .quintaJusta, .septimaMayor, .segundaMayor],
+                TextosDeTeoria.traducidos.map(\.tipoNovenaMayor)
+            ),
+            (
+                [.terceraMenor, .quintaJusta, .septimaMenor, .segundaMayor],
+                TextosDeTeoria.traducidos.map(\.tipoMenorNovena)
+            ),
             ([.terceraMayor, .quintaJusta, .segundaMayor], TextosDeTeoria.traducidos.map(\.tipoNovenaAnadida)),
-            ([.terceraMayor, .quintaJusta, .septimaMenor, .segundaMayor, .cuartaJusta], TextosDeTeoria.traducidos.map(\.tipoUndecima)),
-            ([.terceraMenor, .quintaJusta, .septimaMenor, .segundaMayor, .cuartaJusta], TextosDeTeoria.traducidos.map(\.tipoMenorUndecima)),
-            ([.terceraMayor, .quintaJusta, .septimaMenor, .segundaMayor, .sextaMayor], TextosDeTeoria.traducidos.map(\.tipoDecimotercera)),
-            ([.terceraMenor, .quintaJusta, .septimaMenor, .segundaMayor, .cuartaJusta, .sextaMayor],
-             TextosDeTeoria.traducidos.map(\.tipoMenorDecimotercera)),
-            ([.terceraMayor, .quintaJusta, .septimaMenor, .segundaMenor], TextosDeTeoria.traducidos.map(\.tipoSeptimaConNovenaMenor)),
+            (
+                [.terceraMayor, .quintaJusta, .septimaMenor, .segundaMayor, .cuartaJusta],
+                TextosDeTeoria.traducidos.map(\.tipoUndecima)
+            ),
+            (
+                [.terceraMenor, .quintaJusta, .septimaMenor, .segundaMayor, .cuartaJusta],
+                TextosDeTeoria.traducidos.map(\.tipoMenorUndecima)
+            ),
+            (
+                [.terceraMayor, .quintaJusta, .septimaMenor, .segundaMayor, .sextaMayor],
+                TextosDeTeoria.traducidos.map(\.tipoDecimotercera)
+            ),
+            (
+                [.terceraMenor, .quintaJusta, .septimaMenor, .segundaMayor, .cuartaJusta, .sextaMayor],
+                TextosDeTeoria.traducidos.map(\.tipoMenorDecimotercera)
+            ),
+            (
+                [.terceraMayor, .quintaJusta, .septimaMenor, .segundaMenor],
+                TextosDeTeoria.traducidos.map(\.tipoSeptimaConNovenaMenor)
+            ),
             ([.terceraMayor, .sextaAumentada], TextosDeTeoria.traducidos.map(\.tipoSextaAumentadaItaliana)),
-            ([.terceraMayor, .cuartaAumentada, .sextaAumentada], TextosDeTeoria.traducidos.map(\.tipoSextaAumentadaFrancesa)),
-            ([.terceraMayor, .quintaJusta, .sextaAumentada], TextosDeTeoria.traducidos.map(\.tipoSextaAumentadaAlemana)),
+            (
+                [.terceraMayor, .cuartaAumentada, .sextaAumentada],
+                TextosDeTeoria.traducidos.map(\.tipoSextaAumentadaFrancesa)
+            ),
+            (
+                [.terceraMayor, .quintaJusta, .sextaAumentada],
+                TextosDeTeoria.traducidos.map(\.tipoSextaAumentadaAlemana)
+            ),
         ]
         var diccionario: [Set<Int>: Traduccion] = [:]
         for (intervalos, nombre) in tabla {

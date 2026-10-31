@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 // Modulaciones: una progresión partida en tramos, cada uno en su tonalidad, con el acorde pivote
 // que lleva de uno a otro.
 
@@ -61,10 +62,13 @@ public struct Modulacion: Hashable, Sendable, CustomStringConvertible {
     public var description: String { descripcion(en: .espanolUnicode) }
 
     public func descripcion(en notacion: Notacion) -> String {
-        let de = self.desde.nombre(en: notacion), a = self.hasta.nombre(en: notacion), n = acorde + 1
+        let de = self.desde.nombre(en: notacion)
+        let a = self.hasta.nombre(en: notacion)
+        let n = acorde + 1
         var texto = TextosDeTeoria.traducidos.map { $0.deUnaTonalidadAOtra(de, a, n) }.en(notacion)
         if let pivote {
-            texto += " (" + TextosDeTeoria.traducidos.map(\.pivote).en(notacion)
+            texto +=
+                " (" + TextosDeTeoria.traducidos.map(\.pivote).en(notacion)
                 + ": " + pivote.descripcion(en: notacion) + ")"
         } else {
             texto += TextosDeTeoria.traducidos.map(\.directa).en(notacion)
@@ -111,8 +115,9 @@ public struct RecorridoTonal: Hashable, Sendable, CustomStringConvertible {
                 leidos.insert(tramo.tonalidad.analizar(todos[inicio - 1].acorde, siguiente: siguiente), at: 0)
                 inicio -= 1
             }
-            resultado += Cadencia.buscar(en: leidos, tonalidad: tramo.tonalidad, desde: inicio,
-                                         esFinal: n == tramos.count - 1)
+            resultado += Cadencia.buscar(
+                en: leidos, tonalidad: tramo.tonalidad, desde: inicio,
+                esFinal: n == tramos.count - 1)
         }
         return resultado
     }
@@ -141,11 +146,15 @@ public struct RecorridoTonal: Hashable, Sendable, CustomStringConvertible {
         var fronteras: [(inicio: Int, tonalidad: Tonalidad)] = []
         var pivotes: [AcordePivote?] = []
         for (n, tramo) in particion.enumerated() {
-            guard n > 0 else { fronteras.append(tramo); continue }
+            guard n > 0 else {
+                fronteras.append(tramo)
+                continue
+            }
             let anterior = fronteras[n - 1]
             let fin = n + 1 < particion.count ? particion[n + 1].inicio : acordes.count
-            let ajuste = RecorridoTonal.pivote(acordes, desde: anterior.tonalidad, hasta: tramo.tonalidad,
-                                               frontera: tramo.inicio, minimo: anterior.inicio + 1, fin: fin)
+            let ajuste = RecorridoTonal.pivote(
+                acordes, desde: anterior.tonalidad, hasta: tramo.tonalidad,
+                frontera: tramo.inicio, minimo: anterior.inicio + 1, fin: fin)
             fronteras.append((ajuste.inicio, tramo.tonalidad))
             pivotes.append(ajuste.pivote)
         }
@@ -157,12 +166,15 @@ public struct RecorridoTonal: Hashable, Sendable, CustomStringConvertible {
             let analizados = trozo.indices.map { i in
                 frontera.tonalidad.analizar(trozo[i], siguiente: i + 1 < trozo.count ? trozo[i + 1] : siguiente)
             }
-            tramos.append(TramoTonal(inicio: frontera.inicio,
-                                     analisis: AnalisisArmonico(tonalidad: frontera.tonalidad, acordes: analizados)))
+            tramos.append(
+                TramoTonal(
+                    inicio: frontera.inicio,
+                    analisis: AnalisisArmonico(tonalidad: frontera.tonalidad, acordes: analizados)))
         }
         let modulaciones = (1..<tramos.count).map { n in
-            Modulacion(desde: tramos[n - 1].tonalidad, hasta: tramos[n].tonalidad, acorde: tramos[n].inicio,
-                       pivote: pivotes[n - 1])
+            Modulacion(
+                desde: tramos[n - 1].tonalidad, hasta: tramos[n].tonalidad, acorde: tramos[n].inicio,
+                pivote: pivotes[n - 1])
         }
         self.init(tramos: tramos, modulaciones: modulaciones)
     }
@@ -211,9 +223,11 @@ public struct RecorridoTonal: Hashable, Sendable, CustomStringConvertible {
             lecturas[indice] = leidos
             for posicion in 0..<numeroDeAcordes {
                 let siguiente = posicion + 1 < numeroDeAcordes ? leidos[posicion + 1] : nil
-                costes[indice][posicion + 1] = costes[indice][posicion]
+                costes[indice][posicion + 1] =
+                    costes[indice][posicion]
                     + AnalisisArmonico.coste(de: leidos[posicion], siguiente: siguiente)
-                let cierra = posicion > 0 && Cadencia.esDominante(leidos[posicion - 1])
+                let cierra =
+                    posicion > 0 && Cadencia.esDominante(leidos[posicion - 1])
                     && Cadencia.esTonica(leidos[posicion])
                 cadencias[indice][posicion + 1] = cadencias[indice][posicion] + (cierra ? 1 : 0)
             }
@@ -224,7 +238,8 @@ public struct RecorridoTonal: Hashable, Sendable, CustomStringConvertible {
             // Una cadencia cuyo primer acorde está dentro del tramo: termina en inicio + 2 … fin.
             let cadenciasDelTramo = cadencias[indice][fin] - cadencias[indice][inicio + 1]
             if inicio > 0 && cadenciasDelTramo == 0 { return nil }
-            var total = costes[indice][fin] - costes[indice][inicio] + 0.01 * Double(indice)
+            var total =
+                costes[indice][fin] - costes[indice][inicio] + 0.01 * Double(indice)
                 - bonificacionPorCadencia * Double(cadenciasDelTramo)
             if inicio == 0 {
                 total -= AnalisisArmonico.rebaja(lecturas[indice][0], 0.5)
@@ -245,7 +260,8 @@ public struct RecorridoTonal: Hashable, Sendable, CustomStringConvertible {
         for fin in 2...numeroDeAcordes {
             for indice in 0..<numeroDeTonalidades {
                 if let costeDelTramo = coste(tonalidad: indice, desde: 0, hasta: fin),
-                   costeDelTramo < mejor[fin][indice] {
+                    costeDelTramo < mejor[fin][indice]
+                {
                     mejor[fin][indice] = costeDelTramo
                 }
                 for inicio in stride(from: 2, through: fin - 2, by: 1) {
@@ -260,7 +276,8 @@ public struct RecorridoTonal: Hashable, Sendable, CustomStringConvertible {
         }
         let finales = mejor[numeroDeAcordes]
         guard let ultima = (0..<numeroDeTonalidades).min(by: { finales[$0] < finales[$1] }),
-              finales[ultima] < .infinity else {
+            finales[ultima] < .infinity
+        else {
             return []
         }
         var resultado: [(inicio: Int, tonalidad: Tonalidad)] = []
@@ -276,22 +293,31 @@ public struct RecorridoTonal: Hashable, Sendable, CustomStringConvertible {
     /// Ajusta la frontera entre dos tramos: el primer acorde que ya no es diatónico en la tonalidad
     /// de partida (o la dominante de la primera cadencia de la nueva, si llega antes) marca el
     /// cambio, y el acorde justo anterior, si es diatónico en las dos, es el pivote y abre el tramo nuevo.
-    private static func pivote(_ acordes: [Acorde], desde antigua: Tonalidad, hasta nueva: Tonalidad,
-                               frontera: Int, minimo: Int, fin: Int) -> (inicio: Int, pivote: AcordePivote?) {
+    private static func pivote(
+        _ acordes: [Acorde], desde antigua: Tonalidad, hasta nueva: Tonalidad,
+        frontera: Int, minimo: Int, fin: Int
+    ) -> (inicio: Int, pivote: AcordePivote?) {
         func leer(_ tonalidad: Tonalidad, _ i: Int) -> AcordeAnalizado {
             tonalidad.analizar(acordes[i], siguiente: i + 1 < acordes.count ? acordes[i + 1] : nil)
         }
         var cambio = frontera
         while cambio < fin, leer(antigua, cambio).categoria == .diatonico,
-              !(cambio + 1 < fin && Cadencia.esDominante(leer(nueva, cambio)) && Cadencia.esTonica(leer(nueva, cambio + 1))) {
+            !(cambio + 1 < fin && Cadencia.esDominante(leer(nueva, cambio))
+                && Cadencia.esTonica(leer(nueva, cambio + 1)))
+        {
             cambio += 1
         }
         if cambio == fin { cambio = frontera }
         let candidato = cambio - 1
         guard candidato >= minimo else { return (max(cambio, minimo), nil) }
-        let enLaDePartida = leer(antigua, candidato), enLaDeLlegada = leer(nueva, candidato)
+        let enLaDePartida = leer(antigua, candidato)
+        let enLaDeLlegada = leer(nueva, candidato)
         guard enLaDePartida.categoria == .diatonico, enLaDeLlegada.categoria == .diatonico else { return (cambio, nil) }
-        return (candidato, AcordePivote(indice: candidato, enLaDePartida: enLaDePartida, tonalidadDePartida: antigua,
-                                        enLaDeLlegada: enLaDeLlegada, tonalidadDeLlegada: nueva))
+        return (
+            candidato,
+            AcordePivote(
+                indice: candidato, enLaDePartida: enLaDePartida, tonalidadDePartida: antigua,
+                enLaDeLlegada: enLaDeLlegada, tonalidadDeLlegada: nueva)
+        )
     }
 }

@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+
 // Análisis armónico: grados, funciones y dominantes secundarias de una sucesión de acordes.
 
 // MARK: - FuncionTonal
@@ -146,8 +147,9 @@ public struct AnalisisArmonico: Hashable, Sendable, CustomStringConvertible {
                 acordes.append(try Acorde(leyendo: actual))
             } catch let error as ErrorDeLectura {
                 let inicio = posicion - actual.count
-                throw ErrorDeLectura(texto: texto, posicion: error.posicion.map { inicio + $0 } ?? inicio,
-                                     motivo: error.motivo)
+                throw ErrorDeLectura(
+                    texto: texto, posicion: error.posicion.map { inicio + $0 } ?? inicio,
+                    motivo: error.motivo)
             }
         }
         for caracter in texto {
@@ -220,7 +222,9 @@ extension Tonalidad {
         let tipo = acorde.tipo
         let propias = notasPropias
 
-        func analizado(_ cifrado: String, _ funcion: FuncionTonal?, _ categoria: AcordeAnalizado.Categoria) -> AcordeAnalizado {
+        func analizado(_ cifrado: String, _ funcion: FuncionTonal?, _ categoria: AcordeAnalizado.Categoria)
+            -> AcordeAnalizado
+        {
             AcordeAnalizado(acorde: acorde, grado: grado, cifrado: cifrado, funcion: funcion, categoria: categoria)
         }
 
@@ -288,7 +292,8 @@ extension Tonalidad {
             return String(sufijo.dropLast()) + ["65", "43", "42"][inversion - 1]
         default:
             let bajo = acorde.bajo.natural.indiceDiatonico
-            let cifras = Set(acorde.notas.filter { $0 != acorde.bajo }.map { modulo($0.natural.indiceDiatonico - bajo, 7) + 1 })
+            let cifras = Set(
+                acorde.notas.filter { $0 != acorde.bajo }.map { modulo($0.natural.indiceDiatonico - bajo, 7) + 1 })
             return sufijo + cifras.sorted(by: >).map(String.init).joined()
         }
     }
@@ -310,15 +315,19 @@ extension Tonalidad {
         }
         let dominante = tonica + .quintaJusta
         guard resto == [terceraMenor, tonica + .quintaDisminuida],
-              let siguiente, siguiente.fundamental == dominante || siguiente.bajo == dominante else { return nil }
+            let siguiente, siguiente.fundamental == dominante || siguiente.bajo == dominante
+        else { return nil }
         return "Ger+6"
     }
 
     /// Si el acorde es la dominante (V, V7) o el acorde de sensible (vii°, vii°7, viiø7) de un
     /// grado de la tonalidad que no sea la tónica, su cifrado ("V7/V"), su categoría y el grado.
-    private func secundariaDe(_ acorde: Acorde) -> (cifrado: String, categoria: AcordeAnalizado.Categoria, destino: Int)? {
+    private func secundariaDe(_ acorde: Acorde) -> (
+        cifrado: String, categoria: AcordeAnalizado.Categoria, destino: Int
+    )? {
         let estructura = acorde.tipo.estructura
-        let esDeDominante = estructura.calidadDeTriada == .mayor
+        let esDeDominante =
+            estructura.calidadDeTriada == .mayor
             && (estructura.septima == nil || estructura.septima == .septimaMenor)
         let esDeSensible = estructura.calidadDeTriada == .disminuida
         guard esDeDominante || esDeSensible else { return nil }
@@ -327,7 +336,8 @@ extension Tonalidad {
         guard grado != 1, notasPropias.contains(destino) else { return nil }
         let acordeDestino = self.acorde(grado: grado)
         guard acordeDestino.fundamental == destino,
-              acordeDestino.tipo.estructura.calidadDeTriada != .disminuida else { return nil }
+            acordeDestino.tipo.estructura.calidadDeTriada != .disminuida
+        else { return nil }
         let romanoDestino = cifradoRomano(grado: grado)
         if esDeDominante {
             return ("V" + sufijo(acorde) + "/" + romanoDestino, .dominanteSecundaria(de: grado), grado)

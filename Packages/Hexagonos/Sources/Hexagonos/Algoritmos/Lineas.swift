@@ -24,8 +24,10 @@ extension CoordenadaAxial {
         var desde = CoordenadaFraccionaria(self)
         var hasta = CoordenadaFraccionaria(destino)
         // El mismo empujón en los dos extremos, para que la línea de vuelta sea la de ida al revés.
-        desde.q += 1e-6 * empujon; desde.r += 2e-6 * empujon
-        hasta.q += 1e-6 * empujon; hasta.r += 2e-6 * empujon
+        desde.q += 1e-6 * empujon
+        desde.r += 2e-6 * empujon
+        hasta.q += 1e-6 * empujon
+        hasta.r += 2e-6 * empujon
         return (0...pasos).map { i in
             CoordenadaFraccionaria.interpolar(desde, hasta, Double(i) / Double(pasos)).redondeada()
         }
@@ -45,8 +47,10 @@ extension CoordenadaAxial {
     }
 
     /// Las casillas de `region` que se ven desde esta (las tapadas no se ven, pero tapan).
-    public func visibles(en region: some Sequence<CoordenadaAxial>,
-                         tapada: (CoordenadaAxial) -> Bool) -> [CoordenadaAxial] {
+    public func visibles(
+        en region: some Sequence<CoordenadaAxial>,
+        tapada: (CoordenadaAxial) -> Bool
+    ) -> [CoordenadaAxial] {
         region.filter { !tapada($0) && esVisible($0, tapada: tapada) }
     }
 }
