@@ -34,6 +34,11 @@ extension Notacion {
         return notas.conTextos(en: textos)
     }
 
+    /// La notación guardada con esa clave, con la octava como subíndice (La₄) si `octavasEnSubindice`.
+    public static func desde(clave: String, octavasEnSubindice: Bool) -> Notacion {
+        desde(clave: clave).conOctavas(octavasEnSubindice ? .subindices : .cifras)
+    }
+
     /// El idioma elegido para los textos, o `nil` si van en el de las notas.
     public var idiomaElegidoParaLosTextos: Idioma? {
         esCombinada ? textos : nil

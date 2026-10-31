@@ -1,5 +1,11 @@
 # Cambios
 
+## Sin publicar
+
+- El selector de notación de las apps tiene un interruptor «Octava en subíndice» (La₄), traducido a los catorce
+  idiomas. Se guarda aparte, en `AjustesDeLasApps.claveDeOctavasEnSubindice`, y `notacionGuardada()` lo aplica con
+  `Notacion.desde(clave:octavasEnSubindice:)`. `SelectorDeNotacion` acepta el binding `octavasEnSubindice:`.
+
 ## 0.2.0 (2026-10-31)
 
 - Arreglado: en macOS, sin optimizar, los textos de las apps desbordaban la pila (señal 11). Pasaba en las pruebas

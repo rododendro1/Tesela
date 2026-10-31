@@ -75,6 +75,7 @@ extension TextosDeApps {
         deshacer: "Отменить",
         textos: "Тексты",
         comoLasNotas: "Как ноты",
+        octavaEnSubindice: "Октава нижним индексом (Ля₄)",
         octavas: "Октавы",
         conLaOctavaFinal: "С завершающей октавой",
         figura: "Длительность",

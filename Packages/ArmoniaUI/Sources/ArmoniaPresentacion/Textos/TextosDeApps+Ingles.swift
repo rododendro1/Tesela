@@ -75,6 +75,7 @@ extension TextosDeApps {
         deshacer: "Undo",
         textos: "Texts",
         comoLasNotas: "Same as the notes",
+        octavaEnSubindice: "Octave as subscript (A₄)",
         octavas: "Octaves",
         conLaOctavaFinal: "Ending on the octave",
         figura: "Note value",

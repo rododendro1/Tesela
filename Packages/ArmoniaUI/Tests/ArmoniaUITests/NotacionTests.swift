@@ -33,6 +33,16 @@ final class NotacionTests: XCTestCase {
         }
     }
 
+    /// La octava en subíndice se guarda aparte: la clave de la notación no cambia.
+    func testOctavasEnSubindice() {
+        let conSubindices = Notacion.desde(clave: "ruso+espanol", octavasEnSubindice: true)
+        XCTAssertEqual(conSubindices, Notacion.ruso.conTextos(en: .espanol).conOctavas(.subindices))
+        XCTAssertEqual(conSubindices.clave, "ruso+espanol")
+        XCTAssertEqual(Notacion.desde(clave: "espanolUnicode", octavasEnSubindice: false), .espanolUnicode)
+        let la4 = Altura(Nota.la, octava: 4)
+        XCTAssertEqual(la4.nombre(en: .desde(clave: "espanolUnicode", octavasEnSubindice: true)), "La₄")
+    }
+
     func testNotasYTextosPorSeparado() {
         let rusoEnEspanol = Notacion.ruso.conTextos(en: .espanol)
         XCTAssertEqual(rusoEnEspanol.clave, "ruso+espanol")
