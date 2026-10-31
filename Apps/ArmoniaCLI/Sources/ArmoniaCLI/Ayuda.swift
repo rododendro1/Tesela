@@ -9,9 +9,9 @@ import Armonia
 // cabe en su columna deja la descripción en la línea siguiente, y un ejemplo que no cabe al final
 // de la descripción va en una línea propia.
 //
-// Las entradas de las órdenes están en Ayuda+Consultas.swift, Ayuda+Armonizacion.swift y los demás
-// Ayuda+*.swift, uno por cada LineaDeComandos+*.swift; aquí quedan la cabecera, el pie y la entrada
-// de la propia ayuda.
+// Cada orden (`Orden`, en LineaDeComandos.swift) lleva sus entradas de la ayuda. Las órdenes están en
+// Ayuda+Consultas.swift, Ayuda+Armonizacion.swift y los demás Ayuda+*.swift, uno por cada LineaDeComandos+*.swift,
+// con sus nombres, lo que hacen y su ayuda; aquí quedan la cabecera, el pie y la propia ayuda.
 
 extension LineaDeComandos {
     /// Una orden de la ayuda. Cada texto puede tener varias líneas (separadas por "\n"), cortadas
@@ -80,11 +80,16 @@ extension LineaDeComandos {
     /// Lo que sigue a las órdenes, tras una línea en blanco.
     static let pieDeLaAyuda = TextosDeCLI.traducidos.map(\.pieDeLaAyuda)
 
-    static let ordenesDeLaAyuda: [EntradaDeAyuda] =
-        ayudaDeConsultas + ayudaDeArmonizacion + ayudaDePartituras
-        + ayudaDeDibujos + ayudaDeNeorriemann + ayudaDeTrastes + ayudaDeLaAyuda
+    /// Las entradas de todas las órdenes, en el orden de `ordenes`.
+    static let ordenesDeLaAyuda: [EntradaDeAyuda] = ordenes.flatMap(\.ayuda)
 
-    /// La ayuda de la propia ayuda; las demás órdenes están en los archivos Ayuda+*.swift.
+    /// La propia ayuda; las demás órdenes están en los archivos Ayuda+*.swift.
+    static let ordenesDeAyuda: [Orden] = [
+        Orden(nombres: ["ayuda", "help", "-h", "--help", "--ayuda"], ayuda: ayudaDeLaAyuda) { _, notacion in
+            bien(ayuda(en: notacion))
+        }
+    ]
+
     static let ayudaDeLaAyuda: [EntradaDeAyuda] = [
         // ayuda
         EntradaDeAyuda(

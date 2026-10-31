@@ -257,8 +257,6 @@ public struct Tempo: Hashable, Sendable, CustomStringConvertible {
 // MARK: - Figura
 
 extension Figura {
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     /// En español, "negra"; en inglés, el nombre estadounidense ("quarter note").
     public func nombre(en notacion: Notacion) -> String { Figura.nombres[rawValue + 1].en(notacion) }
 
@@ -280,8 +278,6 @@ extension Figura {
 extension Duracion {
     /// "negra", "corchea con puntillo", "blanca con doble puntillo"; si no es una figura,
     /// la fracción: "5/8 de redonda". La duración nula es "cero".
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String {
         if esCero { return TextosDePartitura.traducidos.map(\.cero).en(notacion) }
         guard let escritura = figuraYPuntillos else {

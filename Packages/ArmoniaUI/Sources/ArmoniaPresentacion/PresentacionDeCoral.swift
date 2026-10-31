@@ -50,95 +50,19 @@ public struct CoralPresentado: Hashable, Sendable {
             let nombre = { (nota: Nota, octava: Int) in Altura(nota, octava: octava).nombre(en: notacion) }
             switch self {
             case .sinArmonizacion:
-                return Traduccion(
-                    "Alguna nota no está en ningún acorde de la tonalidad.",
-                    "Some note is not in any chord of the key.",
-                    ca: "Alguna nota no és a cap acord de la tonalitat.",
-                    gl: "Algunha nota non está en ningún acorde da tonalidade.",
-                    ast: "Dalguna nota nun ta en nengún acorde de la tonalidá.",
-                    an: "Bella nota no ye en garra acorde d\'a tonalidat.",
-                    eu: "Notaren bat ez dago tonalitateko inongo akordetan.",
-                    pt: "Alguma nota não está em nenhum acorde da tonalidade.",
-                    fr: "Une note n'appartient à aucun accord de la tonalité.",
-                    oc: "Una nòta es pas dins cap d'acòrd de la tonalitat.",
-                    it: "Qualche nota non è in nessun accordo della tonalità.",
-                    de: "Eine Note gehört zu keinem Akkord der Tonart.",
-                    el: "Κάποια νότα δεν ανήκει σε καμία συγχορδία της τονικότητας.",
-                    ru: "Одна из нот не входит ни в один аккорд тональности.")
+                return TextosDeApps.traducidos.map(\.sinArmonizacion)
             case .faltanOctavas:
                 let ejemplo = [nombre(.mi, 4), nombre(.re, 4), nombre(.do, 4)].joined(separator: " ")
-                return Traduccion(
-                    "Escribe las notas con su octava (\(ejemplo)) para verlas a cuatro voces.",
-                    "Write the notes with their octave (\(ejemplo)) to see them in four parts.",
-                    ca: "Escriu les notes amb la seva octava (\(ejemplo)) per veure-les a quatre veus.",
-                    gl: "Escribe as notas coa súa oitava (\(ejemplo)) para velas a catro voces.",
-                    ast: "Escribi les notes cola so octava (\(ejemplo)) pa velos a cuatro voces.",
-                    an: "Escribe as notas con a suya octava (\(ejemplo)) ta veyer-las a cuatro voces.",
-                    eu: "Idatzi notak beren zortzidunarekin (\(ejemplo)) lau ahotsetara ikusteko.",
-                    pt: "Escreve as notas com a sua oitava (\(ejemplo)) para as veres a quatro vozes.",
-                    fr: "Écris les notes avec leur octave (\(ejemplo)) pour les voir à quatre voix.",
-                    oc: "Escriu las nòtas amb lor octava (\(ejemplo)) per las veire a quatre voses.",
-                    it: "Scrivi le note con la loro ottava (\(ejemplo)) per vederle a quattro voci.",
-                    de: "Schreib die Noten mit ihrer Oktave (\(ejemplo)), um sie vierstimmig zu sehen.",
-                    el: "Γράψε τις νότες με την οκτάβα τους (\(ejemplo)) για να τις δεις σε τετραφωνία.",
-                    ru: "Пиши ноты с октавой (\(ejemplo)), чтобы увидеть их в четырёхголосии.")
+                return TextosDeApps.traducidos.map { $0.faltanOctavas(ejemplo) }
             case .sinCoralParaLaMelodia:
                 let (grave, agudo) = (nombre(.do, 4), nombre(.sol, 5))
-                return Traduccion(
-                    "No hay coral a cuatro voces sin faltas para esta melodía (el soprano va de \(grave) a \(agudo)).",
-                    "There is no four-part chorale without errors for this melody (the soprano goes from \(grave) to \(agudo)).",
-                    ca:
-                        "No hi ha cap coral a quatre veus sense errors per a aquesta melodia (la soprano va de \(grave) a \(agudo)).",
-                    gl:
-                        "Non hai coral a catro voces sen erros para esta melodía (a soprano vai de \(grave) a \(agudo)).",
-                    ast:
-                        "Nun hai coral a cuatro voces ensin falles pa esta melodía (el soprano va de \(grave) a \(agudo)).",
-                    an:
-                        "No bi ha coral a cuatro voces sin faltas ta esta melodía (o soprano va de \(grave) a \(agudo)).",
-                    eu:
-                        "Ez dago akatsik gabeko lau ahotseko koralik melodia honetarako (sopranoaren tartea: \(grave)–\(agudo)).",
-                    pt:
-                        "Não há coral a quatro vozes sem erros para esta melodia (o soprano vai de \(grave) a \(agudo)).",
-                    fr:
-                        "Il n'y a pas de choral à quatre voix sans faute pour cette mélodie (le soprano va de \(grave) à \(agudo)).",
-                    oc:
-                        "I a pas de coral a quatre voses sens fautas per aquesta melodia (lo soprano va de \(grave) a \(agudo)).",
-                    it:
-                        "Non c'è un corale a quattro voci senza errori per questa melodia (il soprano va da \(grave) a \(agudo)).",
-                    de:
-                        "Für diese Melodie gibt es keinen fehlerfreien vierstimmigen Satz (der Sopran reicht von \(grave) bis \(agudo)).",
-                    el:
-                        "Δεν υπάρχει τετράφωνο χορικό χωρίς λάθη για αυτή τη μελωδία (η σοπράνο κινείται από \(grave) έως \(agudo)).",
-                    ru:
-                        "Для этой мелодии нет четырёхголосного хорала без ошибок (сопрано звучит от \(grave) до \(agudo))."
-                )
+                return TextosDeApps.traducidos.map { $0.sinCoralParaLaMelodia(grave, agudo) }
             case .sinRealizacion:
-                return Traduccion(
-                    "No hay ninguna realización sin faltas de conducción.",
-                    "There is no realization without voice-leading errors.",
-                    ca: "No hi ha cap realització sense errors de conducció.",
-                    gl: "Non hai ningunha realización sen erros de condución.",
-                    ast: "Nun hai nenguna realización ensin falles de conducción.",
-                    an: "No bi ha garra realización sin faltas de conducción.",
-                    eu: "Ez dago ahots-eramate akatsik gabeko errealizaziorik.",
-                    pt: "Não há nenhuma realização sem erros de condução.",
-                    fr: "Il n'y a aucune réalisation sans faute de conduite des voix.",
-                    oc: "I a pas cap de realizacion sens fautas de conducha.",
-                    it: "Non c'è nessuna realizzazione senza errori di condotta delle parti.",
-                    de: "Es gibt keine Aussetzung ohne Stimmführungsfehler.",
-                    el: "Δεν υπάρχει καμία εναρμόνιση χωρίς λάθη φωνητικής οδήγησης.",
-                    ru: "Нет ни одной реализации без ошибок голосоведения.")
+                return TextosDeApps.traducidos.map(\.sinRealizacion)
             case .falta:
                 return nil
             case .sinFaltasDeConduccion:
-                return Traduccion(
-                    "Sin faltas de conducción.", "No voice-leading errors.", ca: "Sense errors de conducció.",
-                    gl: "Sen erros de condución.", ast: "Ensin falles de conducción.",
-                    an: "Sin faltas de conducción.", eu: "Ez dago ahots-eramate akatsik.",
-                    pt: "Sem erros de condução.",
-                    fr: "Aucune faute de conduite des voix.", oc: "Cap de fauta de conducha.",
-                    it: "Nessun errore di condotta delle parti.", de: "Keine Stimmführungsfehler.",
-                    el: "Κανένα λάθος φωνητικής οδήγησης.", ru: "Ошибок голосоведения нет.")
+                return TextosDeApps.traducidos.map(\.sinFaltasDeConduccion)
             }
         }
     }
@@ -305,8 +229,8 @@ public enum PresentacionDeCoral {
 
 // MARK: - Idiomas
 //
-// Los textos de las tareas del coral en los catorce idiomas de los textos (`Traduccion`). Los demás
-// textos de las apps están en TextoDeLasApps.swift.
+// Los textos de las tareas del coral, que están con los demás textos de las apps en `TextosDeApps`
+// (un fichero por idioma en `Textos/`).
 
 extension PresentacionDeCoral.Tarea {
     /// El nombre de la tarea en el selector: «Armonizar», «Harmonize»…
@@ -314,23 +238,11 @@ extension PresentacionDeCoral.Tarea {
         let traduccion: Traduccion
         switch self {
         case .armonizar:
-            traduccion = Traduccion(
-                "Armonizar", "Harmonize", ca: "Harmonitzar", gl: "Harmonizar", ast: "Armonizar",
-                an: "Armonizar", eu: "Harmonizatu", pt: "Harmonizar",
-                fr: "Harmoniser", oc: "Armonizar", it: "Armonizzare", de: "Harmonisieren",
-                el: "Εναρμόνιση", ru: "Гармонизовать")
+            traduccion = TextosDeApps.traducidos.map(\.armonizar)
         case .realizar:
-            traduccion = Traduccion(
-                "Realizar", "Realize", ca: "Realitzar", gl: "Realizar", ast: "Realizar",
-                an: "Realizar", eu: "Gauzatu", pt: "Realizar",
-                fr: "Réaliser", oc: "Realizar", it: "Realizzare", de: "Aussetzen",
-                el: "Υλοποίηση", ru: "Реализовать")
+            traduccion = TextosDeApps.traducidos.map(\.realizar)
         case .revisar:
-            traduccion = Traduccion(
-                "Revisar", "Check", ca: "Revisar", gl: "Revisar", ast: "Revisar",
-                an: "Revisar", eu: "Berrikusi", pt: "Rever",
-                fr: "Vérifier", oc: "Verificar", it: "Controllare", de: "Prüfen",
-                el: "Έλεγχος", ru: "Проверить")
+            traduccion = TextosDeApps.traducidos.map(\.revisar)
         }
         return traduccion.en(notacion)
     }
@@ -344,34 +256,13 @@ extension PresentacionDeCoral.Tarea {
             // Con ritmo: «Mi4:4 Re4:8», con las notas en la notación.
             let r = [("Mi4", 4), ("Re4", 8)].map { TextoDeLasApps.alturas($0.0, notacion) + ":\($0.1)" }
                 .joined(separator: " ")
-            traduccion = Traduccion(
-                "Melodía (\(e), sin octavas o con ritmo: \(r))",
-                "Melody (\(e), without octaves or with rhythm: \(r))",
-                ca: "Melodia (\(e), sense octaves o amb ritme: \(r))",
-                gl: "Melodía (\(e), sen oitavas ou con ritmo: \(r))",
-                ast: "Melodía (\(e), ensin octaves o con ritmu: \(r))",
-                an: "Melodía (\(e), sin octavas u con ritmo: \(r))",
-                eu: "Melodia (\(e), zortzidunik gabe edo erritmoarekin: \(r))",
-                pt: "Melodia (\(e), sem oitavas ou com ritmo: \(r))",
-                fr: "Mélodie (\(e), sans octaves ou avec rythme : \(r))",
-                oc: "Melodia (\(e), sens octavas o amb ritme: \(r))",
-                it: "Melodia (\(e), senza ottave o con ritmo: \(r))",
-                de: "Melodie (\(e), ohne Oktaven oder mit Rhythmus: \(r))",
-                el: "Μελωδία (\(e), χωρίς οκτάβες ή με ρυθμό: \(r))", ru: "Мелодия (\(e), без октав или с ритмом: \(r))"
-            )
+            traduccion = TextosDeApps.traducidos.map { $0.indicacionArmonizar(e, r) }
         case .realizar:
             let e = ["Do", "Fa", "Sol7", "Do"].map { TextoDeLasApps.cifrado($0, notacion) }.joined(separator: " ")
             traduccion = TextoDeLasApps.acordes.traduccion(notacion).aplicando { "\($0) (\(e))" }
         case .revisar:
             let e = TextoDeLasApps.alturas("Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4", notacion)
-            traduccion = Traduccion(
-                "Voces de grave a agudo (\(e))", "Voices from low to high (\(e))",
-                ca: "Veus de greu a agut (\(e))", gl: "Voces de grave a agudo (\(e))",
-                ast: "Voces de grave a agudu (\(e))", an: "Voces de grave a agudo (\(e))",
-                eu: "Ahotsak, baxuenetik altuenera (\(e))", pt: "Vozes do grave ao agudo (\(e))",
-                fr: "Voix du grave à l'aigu (\(e))", oc: "Voses del grèu a l'agut (\(e))",
-                it: "Voci dal grave all'acuto (\(e))", de: "Stimmen von tief nach hoch (\(e))",
-                el: "Φωνές από το βαθύ στο οξύ (\(e))", ru: "Голоса снизу вверх (\(e))")
+            traduccion = TextosDeApps.traducidos.map { $0.indicacionRevisar(e) }
         }
         return traduccion.en(notacion)
     }

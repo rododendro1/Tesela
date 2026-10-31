@@ -330,6 +330,17 @@ final class PresentacionDeRedesTests: XCTestCase {
         XCTAssertEqual(RedDeNotas.park.teclado, .park)
     }
 
+    func testLasRedesSonLosTecladosDelMotor() {
+        // Cada teclado del catálogo del motor tiene su red, y cada red de teclado encuentra el suyo.
+        let teclados = RedDeNotas.allCases.compactMap(\.teclado)
+        XCTAssertEqual([TecladoIsomorfico.tablaArmonica] + teclados, TecladoIsomorfico.todos)
+        for red in RedDeNotas.allCases where ![.tonnetz, .tablaArmonica, .uil].contains(red) {
+            XCTAssertEqual(red.teclado?.nombre, red.rawValue)
+            XCTAssertEqual(red.nombre(en: .inglesASCII), red.teclado?.nombre(en: .inglesASCII))
+        }
+        XCTAssertEqual(RedDeNotas.acordeonC.nombre(en: .inglesASCII), "C-system accordion")
+    }
+
     func testLasNotasNoSeRepiten() throws {
         let recorrido = ContenidoDeRed.recorrido([try Acorde(leyendo: "Do"), try Acorde(leyendo: "Lam")])
         XCTAssertEqual(recorrido.notas.count, 4)

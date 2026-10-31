@@ -44,6 +44,13 @@ extension TextosDeRepresentaciones {
         // TransformacionNeorriemanniana.swift
         homonima: "ομώνυμη",
         cambioDeSensible: "αλλαγή προσαγωγέα",
-        relativa: "σχετική"
+        relativa: "σχετική",
+
+        // TecladoIsomorfico.swift
+        tablaArmonica: "Αρμονικός πίνακας",
+        wickiHaydenEspejo: "Wicki-Hayden (καθρέφτης)",
+        wickiHaydenPlano: "Wicki-Hayden (επίπεδο)",
+        acordeonC: "Ακορντεόν συστήματος C",
+        acordeonB: "Ακορντεόν συστήματος B"
     )
 }

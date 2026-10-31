@@ -4,9 +4,9 @@ import Armonia
 /// los textos del motor.
 ///
 /// Siguen el idioma de los textos de la notación elegida, igual que los nombres de acordes, escalas y avisos,
-/// así que el selector de notación cambia la app entera. Cada caso da su `Traduccion`, que pide los catorce
-/// idiomas: uno nuevo no compila hasta que los tiene. Los ejemplos de las indicaciones («Cifrado, por ejemplo
-/// Sol7/Si») se escriben en la notación elegida («G7/B»).
+/// así que el selector de notación cambia la app entera. Los textos están en `TextosDeApps`, un fichero por
+/// idioma en `Textos/` (`TextosDeApps+Espanol.swift`…): uno nuevo no compila hasta que está en los catorce. Los
+/// ejemplos de las indicaciones («Cifrado, por ejemplo Sol7/Si») se escriben en la notación elegida («G7/B»).
 ///
 ///     Notacion.inglesASCII.texto(.digitaciones)    // "Fingerings"
 public enum TextoDeLasApps: Hashable, Sendable {
@@ -143,500 +143,140 @@ public enum TextoDeLasApps: Hashable, Sendable {
     func traduccion(_ notacion: Notacion) -> Traduccion {
         switch self {
         case .acordes:
-            return Traduccion(
-                "Acordes", "Chords", ca: "Acords", gl: "Acordes", ast: "Acordes",
-                an: "Acordes", eu: "Akordeak", pt: "Acordes",
-                fr: "Accords", oc: "Acòrds", it: "Accordi", de: "Akkorde",
-                el: "Συγχορδίες", ru: "Аккорды")
+            return TextosDeApps.traducidos.map(\.acordes)
         case .escalas:
-            return Traduccion(
-                "Escalas", "Scales", ca: "Escales", gl: "Escalas", ast: "Escales",
-                an: "Escalas", eu: "Eskalak", pt: "Escalas",
-                fr: "Gammes", oc: "Gamas", it: "Scale", de: "Skalen",
-                el: "Κλίμακες", ru: "Гаммы")
+            return TextosDeApps.traducidos.map(\.escalas)
         case .analisis:
-            return Traduccion(
-                "Análisis", "Analysis", ca: "Anàlisi", gl: "Análise", ast: "Análisis",
-                an: "Analisi", eu: "Analisia", pt: "Análise",
-                fr: "Analyse", oc: "Analisi", it: "Analisi", de: "Analyse",
-                el: "Ανάλυση", ru: "Анализ")
+            return TextosDeApps.traducidos.map(\.analisis)
         case .coral:
-            return Traduccion(
-                "Coral", "Chorale", ca: "Coral", gl: "Coral", ast: "Coral",
-                an: "Coral", eu: "Korala", pt: "Coral",
-                fr: "Choral", oc: "Coral", it: "Corale", de: "Choral",
-                el: "Χορικό", ru: "Хорал")
+            return TextosDeApps.traducidos.map(\.coral)
         case .acorde:
-            return Traduccion(
-                "Acorde", "Chord", ca: "Acord", gl: "Acorde", ast: "Acorde",
-                an: "Acorde", eu: "Akordea", pt: "Acorde",
-                fr: "Accord", oc: "Acòrd", it: "Accordo", de: "Akkord",
-                el: "Συγχορδία", ru: "Аккорд")
+            return TextosDeApps.traducidos.map(\.acorde)
         case .campoDeCifrado:
             let ejemplo = Self.cifrado("Sol7/Si", notacion)
-            return Traduccion(
-                "Cifrado, por ejemplo \(ejemplo)", "Chord symbol, for example \(ejemplo)",
-                ca: "Xifratge, per exemple \(ejemplo)", gl: "Cifrado, por exemplo \(ejemplo)",
-                ast: "Cifráu, por exemplu \(ejemplo)", an: "Cifrau, per eixemplo \(ejemplo)",
-                eu: "Zifratua, adibidez \(ejemplo)", pt: "Cifra, por exemplo \(ejemplo)",
-                fr: "Chiffrage, par exemple \(ejemplo)", oc: "Chifratge, per exemple \(ejemplo)",
-                it: "Sigla, per esempio \(ejemplo)", de: "Akkordsymbol, zum Beispiel \(ejemplo)",
-                el: "Σύμβολο, για παράδειγμα \(ejemplo)", ru: "Обозначение, например \(ejemplo)")
+            return TextosDeApps.traducidos.map { $0.campoDeCifrado(ejemplo) }
         case .informacion:
-            return Traduccion(
-                "Información", "Information", ca: "Informació", gl: "Información", ast: "Información",
-                an: "Información", eu: "Informazioa", pt: "Informação",
-                fr: "Informations", oc: "Informacion", it: "Informazioni", de: "Informationen",
-                el: "Πληροφορίες", ru: "Сведения")
+            return TextosDeApps.traducidos.map(\.informacion)
         case .nombre:
-            return Traduccion(
-                "Nombre", "Name", ca: "Nom", gl: "Nome", ast: "Nome",
-                an: "Nombre", eu: "Izena", pt: "Nome", fr: "Nom", oc: "Nom", it: "Nome", de: "Name",
-                el: "Όνομα", ru: "Название")
+            return TextosDeApps.traducidos.map(\.nombre)
         case .cifrado:
-            return Traduccion(
-                "Cifrado", "Symbol", ca: "Xifratge", gl: "Cifrado", ast: "Cifráu",
-                an: "Cifrau", eu: "Zifratua", pt: "Cifra",
-                fr: "Chiffrage", oc: "Chifratge", it: "Sigla", de: "Symbol",
-                el: "Σύμβολο", ru: "Обозначение")
+            return TextosDeApps.traducidos.map(\.cifrado)
         case .notas:
-            return Traduccion(
-                "Notas", "Notes", ca: "Notes", gl: "Notas", ast: "Notes",
-                an: "Notas", eu: "Notak", pt: "Notas", fr: "Notes", oc: "Nòtas", it: "Note", de: "Noten",
-                el: "Νότες", ru: "Ноты")
+            return TextosDeApps.traducidos.map(\.notas)
         case .digitaciones:
-            return Traduccion(
-                "Digitaciones", "Fingerings", ca: "Digitacions", gl: "Dixitacións", ast: "Digitaciones",
-                an: "Digitacions", eu: "Hatz-jarrerak", pt: "Dedilhações",
-                fr: "Doigtés", oc: "Digitacions", it: "Diteggiature", de: "Griffe",
-                el: "Δακτυλοθεσίες", ru: "Аппликатуры")
+            return TextosDeApps.traducidos.map(\.digitaciones)
         case .arpegio:
-            return Traduccion(
-                "Arpegio", "Arpeggio", ca: "Arpegi", gl: "Arpexo", ast: "Arpexu",
-                an: "Arpechio", eu: "Arpegioa", pt: "Arpejo",
-                fr: "Arpège", oc: "Arpegi", it: "Arpeggio", de: "Akkordbrechung",
-                el: "Αρπέζ", ru: "Арпеджио")
+            return TextosDeApps.traducidos.map(\.arpegio)
         case .patron:
-            return Traduccion(
-                "Patrón", "Pattern", ca: "Patró", gl: "Padrón", ast: "Patrón",
-                an: "Patrón", eu: "Eredua", pt: "Padrão",
-                fr: "Motif", oc: "Motiu", it: "Schema", de: "Muster",
-                el: "Μοτίβο", ru: "Рисунок")
+            return TextosDeApps.traducidos.map(\.patron)
         case .arpegioEnElMastil:
-            return Traduccion(
-                "Arpegio en el mástil", "Arpeggio on the fretboard", ca: "Arpegi al mànec",
-                gl: "Arpexo no mástil", ast: "Arpexu nel mástil", an: "Arpechio en o mástil",
-                eu: "Arpegioa mastilean", pt: "Arpejo no braço",
-                fr: "Arpège sur le manche", oc: "Arpegi sul margue", it: "Arpeggio sul manico",
-                de: "Akkordbrechung auf dem Griffbrett",
-                el: "Αρπέζ στην ταστιέρα", ru: "Арпеджио на грифе")
+            return TextosDeApps.traducidos.map(\.arpegioEnElMastil)
         case .trastes(let desde, let hasta):
-            return Traduccion(
-                "Trastes \(desde)–\(hasta)", "Frets \(desde)–\(hasta)", ca: "Trasts \(desde)–\(hasta)",
-                gl: "Trastes \(desde)–\(hasta)", ast: "Trastes \(desde)–\(hasta)",
-                an: "Trastes \(desde)–\(hasta)", eu: "\(desde)–\(hasta) trasteak",
-                pt: "Trastes \(desde)–\(hasta)", fr: "Cases \(desde)–\(hasta)",
-                oc: "Trasts \(desde)–\(hasta)", it: "Tasti \(desde)–\(hasta)",
-                de: "Bünde \(desde)–\(hasta)", el: "Τάστα \(desde)–\(hasta)",
-                ru: "Лады \(desde)–\(hasta)")
+            return TextosDeApps.traducidos.map { $0.trastes(desde, hasta) }
         case .escalasCompatibles:
-            return Traduccion(
-                "Escalas compatibles", "Compatible scales", ca: "Escales compatibles",
-                gl: "Escalas compatibles", ast: "Escales compatibles", an: "Escalas compatibles",
-                eu: "Eskala bateragarriak", pt: "Escalas compatíveis",
-                fr: "Gammes compatibles", oc: "Gamas compatiblas", it: "Scale compatibili",
-                de: "Passende Skalen", el: "Συμβατές κλίμακες", ru: "Подходящие гаммы")
+            return TextosDeApps.traducidos.map(\.escalasCompatibles)
         case .identificar:
-            return Traduccion(
-                "Identificar", "Identify", ca: "Identifica", gl: "Identificar", ast: "Identificar",
-                an: "Identificar", eu: "Identifikatu", pt: "Identificar",
-                fr: "Identifier", oc: "Identificar", it: "Riconosci", de: "Erkennen",
-                el: "Αναγνώριση", ru: "Распознать")
+            return TextosDeApps.traducidos.map(\.identificar)
         case .tocaElMastil:
-            return Traduccion(
-                "Toca el mástil para saber qué acorde forman las notas.",
-                "Tap the fretboard to find out which chord the notes make.",
-                ca: "Toca el mànec per saber quin acord formen les notes.",
-                gl: "Toca o mástil para saber que acorde forman as notas.",
-                ast: "Toca\'l mástil pa saber qué acorde formen les notes.",
-                an: "Toca o mástil ta saber qué acorde forman as notas.",
-                eu: "Ukitu mastila notek zer akorde osatzen duten jakiteko.",
-                pt: "Toca no braço para saber que acorde formam as notas.",
-                fr: "Touchez le manche pour savoir quel accord forment les notes.",
-                oc: "Tòca lo margue per saber quin acòrd fan las nòtas.",
-                it: "Tocca il manico per sapere quale accordo formano le note.",
-                de: "Tippe auf das Griffbrett, um zu sehen, welchen Akkord die Töne bilden.",
-                el: "Άγγιξε την ταστιέρα για να δεις ποια συγχορδία σχηματίζουν οι νότες.",
-                ru: "Нажимай на гриф, чтобы узнать, какой аккорд образуют ноты.")
+            return TextosDeApps.traducidos.map(\.tocaElMastil)
         case .tocaNotas:
-            return Traduccion(
-                "Toca notas para saber qué acorde forman; la primera es el bajo.",
-                "Tap notes to find out which chord they make; the first one is the bass.",
-                ca: "Toca notes per saber quin acord formen; la primera és el baix.",
-                gl: "Toca notas para saber que acorde forman; a primeira é o baixo.",
-                ast: "Toca notes pa saber qué acorde formen; la primera ye\'l baxu.",
-                an: "Toca notas ta saber qué acorde forman; a primera ye o baixo.",
-                eu: "Ukitu notak zer akorde osatzen duten jakiteko; lehena da baxua.",
-                pt: "Toca notas para saber que acorde formam; a primeira é o baixo.",
-                fr: "Touchez des notes pour savoir quel accord elles forment ; la première est la basse.",
-                oc: "Tòca de nòtas per saber quin acòrd fan; la primièra es la bassa.",
-                it: "Tocca delle note per sapere quale accordo formano; la prima è il basso.",
-                de: "Tippe auf Töne, um zu sehen, welchen Akkord sie bilden; der erste ist der Bass.",
-                el: "Άγγιξε νότες για να δεις ποια συγχορδία σχηματίζουν· η πρώτη είναι το μπάσο.",
-                ru: "Нажимай на ноты, чтобы узнать, какой аккорд они образуют; первая — бас.")
+            return TextosDeApps.traducidos.map(\.tocaNotas)
         case .borrar:
-            return Traduccion(
-                "Borrar", "Clear", ca: "Esborra", gl: "Borrar", ast: "Borrar",
-                an: "Borrar", eu: "Garbitu", pt: "Limpar",
-                fr: "Effacer", oc: "Escafar", it: "Cancella", de: "Löschen",
-                el: "Καθαρισμός", ru: "Очистить")
+            return TextosDeApps.traducidos.map(\.borrar)
         case .sinAcordeConocido:
-            return Traduccion(
-                "No forman ningún acorde conocido.", "No chord found.",
-                ca: "No formen cap acord conegut.", gl: "Non forman ningún acorde coñecido.",
-                ast: "Nun formen nengún acorde conocíu.", an: "No forman garra acorde conoixiu.",
-                eu: "Ez dute akorde ezagunik osatzen.", pt: "Não formam nenhum acorde conhecido.",
-                fr: "Aucun accord connu.", oc: "Fan pas cap d'acòrd conegut.",
-                it: "Non formano nessun accordo conosciuto.", de: "Kein bekannter Akkord.",
-                el: "Δεν σχηματίζουν καμία γνωστή συγχορδία.", ru: "Известный аккорд не найден.")
+            return TextosDeApps.traducidos.map(\.sinAcordeConocido)
         case .verEnAcordes:
-            return Traduccion(
-                "Ver en Acordes", "Show in Chords", ca: "Mostra a Acords", gl: "Ver en Acordes",
-                ast: "Ver n\'Acordes", an: "Veyer en Acordes", eu: "Ikusi Akordeetan",
-                pt: "Ver em Acordes", fr: "Voir dans Accords", oc: "Veire dins Acòrds",
-                it: "Mostra in Accordi", de: "In Akkorden zeigen",
-                el: "Προβολή στις Συγχορδίες", ru: "Показать в аккордах")
+            return TextosDeApps.traducidos.map(\.verEnAcordes)
         case .tecladoMIDI:
-            return Traduccion(
-                "Teclado MIDI", "MIDI keyboard", ca: "Teclat MIDI", gl: "Teclado MIDI",
-                ast: "Tecláu MIDI", an: "Teclau MIDI", eu: "MIDI teklatua", pt: "Teclado MIDI",
-                fr: "Clavier MIDI", oc: "Clavièr MIDI", it: "Tastiera MIDI", de: "MIDI-Keyboard",
-                el: "Πληκτρολόγιο MIDI", ru: "MIDI-клавиатура")
+            return TextosDeApps.traducidos.map(\.tecladoMIDI)
         case .dispositivosMIDI:
-            return Traduccion(
-                "Dispositivos conectados", "Connected devices", ca: "Dispositius connectats",
-                gl: "Dispositivos conectados", ast: "Preseos coneutaos", an: "Dispositivos connectaus",
-                eu: "Konektatutako gailuak", pt: "Dispositivos ligados",
-                fr: "Appareils connectés", oc: "Aparelhs connectats", it: "Dispositivi collegati",
-                de: "Verbundene Geräte", el: "Συνδεδεμένες συσκευές", ru: "Подключённые устройства")
+            return TextosDeApps.traducidos.map(\.dispositivosMIDI)
         case .teoriaPostonal:
-            return Traduccion(
-                "Teoría postonal", "Post-tonal theory", ca: "Teoria postonal", gl: "Teoría postonal",
-                ast: "Teoría postonal", an: "Teoría postonal", eu: "Teoria postonala",
-                pt: "Teoria pós-tonal", fr: "Théorie post-tonale", oc: "Teoria postonala",
-                it: "Teoria post-tonale", de: "Posttonale Theorie",
-                el: "Μετατονική θεωρία", ru: "Посттональная теория")
+            return TextosDeApps.traducidos.map(\.teoriaPostonal)
         case .formaPrima:
-            return Traduccion(
-                "Forma prima", "Prime form", ca: "Forma primera", gl: "Forma prima",
-                ast: "Forma prima", an: "Forma prima", eu: "Lehen forma", pt: "Forma prima",
-                fr: "Forme primaire", oc: "Fòrma primièra", it: "Forma primaria",
-                de: "Primform", el: "Πρωταρχική μορφή", ru: "Первичная форма")
+            return TextosDeApps.traducidos.map(\.formaPrima)
         case .numeroDeForte:
-            return Traduccion(
-                "Número de Forte", "Forte number", ca: "Nombre de Forte", gl: "Número de Forte",
-                ast: "Númberu de Forte", an: "Numero de Forte", eu: "Forteren zenbakia",
-                pt: "Número de Forte", fr: "Numéro de Forte", oc: "Numèro de Forte",
-                it: "Numero di Forte", de: "Forte-Nummer", el: "Αριθμός Forte", ru: "Номер по Форту")
+            return TextosDeApps.traducidos.map(\.numeroDeForte)
         case .vectorIntervalico:
-            return Traduccion(
-                "Vector interválico", "Interval vector", ca: "Vector interval·lic",
-                gl: "Vector interválico", ast: "Vector interválicu", an: "Vector interválico",
-                eu: "Tarte-bektorea", pt: "Vetor intervalar", fr: "Vecteur d\'intervalles",
-                oc: "Vector d\'intervals", it: "Vettore intervallare", de: "Intervallvektor",
-                el: "Διάνυσμα διαστημάτων", ru: "Интервальный вектор")
+            return TextosDeApps.traducidos.map(\.vectorIntervalico)
         case .instrumentoYAfinacion:
-            return Traduccion(
-                "Instrumento y afinación", "Instrument and tuning", ca: "Instrument i afinació",
-                gl: "Instrumento e afinación", ast: "Instrumentu y afinación",
-                an: "Instrumento y afinación", eu: "Instrumentua eta afinazioa", pt: "Instrumento e afinação",
-                fr: "Instrument et accord", oc: "Instrument e acordatge", it: "Strumento e accordatura",
-                de: "Instrument und Stimmung",
-                el: "Όργανο και κούρδισμα", ru: "Инструмент и строй")
+            return TextosDeApps.traducidos.map(\.instrumentoYAfinacion)
         case .sinDigitaciones:
-            return Traduccion(
-                "No hay digitaciones cómodas para este acorde en este instrumento.",
-                "There are no comfortable fingerings for this chord on this instrument.",
-                ca: "No hi ha digitacions còmodes per a aquest acord en aquest instrument.",
-                gl: "Non hai dixitacións cómodas para este acorde neste instrumento.",
-                ast: "Nun hai digitaciones cómodes pa esti acorde nesti instrumentu.",
-                an: "No bi ha digitacions cómodas ta este acorde en este instrumento.",
-                eu: "Ez dago akorde honetarako hatz-jarrera erosorik instrumentu honetan.",
-                pt: "Não há dedilhações confortáveis para este acorde neste instrumento.",
-                fr: "Aucun doigté confortable pour cet accord sur cet instrument.",
-                oc: "I a pas de digitacion comòda per aqueste acòrd sus aqueste instrument.",
-                it: "Nessuna diteggiatura comoda per questo accordo su questo strumento.",
-                de: "Für diesen Akkord gibt es auf diesem Instrument keine bequemen Griffe.",
-                el: "Δεν υπάρχουν άνετες δακτυλοθεσίες για αυτή τη συγχορδία σε αυτό το όργανο.",
-                ru: "Для этого аккорда на этом инструменте нет удобных аппликатур.")
+            return TextosDeApps.traducidos.map(\.sinDigitaciones)
         case .calculando:
-            return Traduccion(
-                "Calculando…", "Calculating…", ca: "Calculant…", gl: "Calculando…", ast: "Calculando…",
-                an: "Calculando…", eu: "Kalkulatzen…", pt: "A calcular…",
-                fr: "Calcul en cours…", oc: "Calcul en cors…", it: "Calcolo in corso…", de: "Wird berechnet…",
-                el: "Υπολογισμός…", ru: "Вычисление…")
+            return TextosDeApps.traducidos.map(\.calculando)
         case .dedos(let n, let cejilla):
-            let dedos = Traduccion(
-                n == 1 ? "1 dedo" : "\(n) dedos", n == 1 ? "1 finger" : "\(n) fingers",
-                ca: n == 1 ? "1 dit" : "\(n) dits", gl: n == 1 ? "1 dedo" : "\(n) dedos",
-                ast: n == 1 ? "1 deu" : "\(n) deos", an: n == 1 ? "1 dido" : "\(n) didos",
-                eu: "\(n) hatz", pt: n == 1 ? "1 dedo" : "\(n) dedos",
-                fr: n == 1 ? "1 doigt" : "\(n) doigts", oc: n == 1 ? "1 det" : "\(n) dets",
-                it: n == 1 ? "1 dito" : "\(n) dita",
-                de: n == 1 ? "1 Finger" : "\(n) Finger",
-                el: n == 1 ? "1 δάχτυλο" : "\(n) δάχτυλα", ru: Traduccion.pluralRuso(n, "палец", "пальца", "пальцев"))
-            guard let t = cejilla else { return dedos }
-            return Traduccion(
-                "\(dedos.espanol), cejilla en el traste \(t)", "\(dedos.ingles), barre at fret \(t)",
-                ca: "\(dedos.catalan), celleta al trast \(t)", gl: "\(dedos.gallego), pestana no traste \(t)",
-                ast: "\(dedos.asturiano), ceya nel traste \(t)", an: "\(dedos.aragones), ceja en o traste \(t)",
-                eu: "\(dedos.euskera), zeja \(t). trastean", pt: "\(dedos.portugues), pestana no traste \(t)",
-                fr: "\(dedos.frances), barré à la case \(t)", oc: "\(dedos.occitano), barrat al trast \(t)",
-                it: "\(dedos.italiano), barré al tasto \(t)", de: "\(dedos.aleman), Barré im \(t). Bund",
-                el: "\(dedos.griego), μπαρέ στο τάστο \(t)", ru: "\(dedos.ruso), барре на \(t)-м ладу")
+            guard let t = cejilla else { return TextosDeApps.traducidos.map { $0.dedos(n) } }
+            return TextosDeApps.traducidos.map { "\($0.dedos(n)), \($0.cejilla(t))" }
         case .escala:
-            return Traduccion(
-                "Escala", "Scale", ca: "Escala", gl: "Escala", ast: "Escala",
-                an: "Escala", eu: "Eskala", pt: "Escala",
-                fr: "Gamme", oc: "Gama", it: "Scala", de: "Skala",
-                el: "Κλίμακα", ru: "Гамма")
+            return TextosDeApps.traducidos.map(\.escala)
         case .tonica:
-            return Traduccion(
-                "Tónica", "Tonic", ca: "Tònica", gl: "Tónica", ast: "Tónica",
-                an: "Tónica", eu: "Tonika", pt: "Tónica",
-                fr: "Tonique", oc: "Tonica", it: "Tonica", de: "Grundton",
-                el: "Τονική", ru: "Тоника")
+            return TextosDeApps.traducidos.map(\.tonica)
         case .tipo:
-            return Traduccion(
-                "Tipo", "Type", ca: "Tipus", gl: "Tipo", ast: "Tipu",
-                an: "Tipo", eu: "Mota", pt: "Tipo", fr: "Type", oc: "Tipe", it: "Tipo", de: "Art",
-                el: "Είδος", ru: "Тип")
+            return TextosDeApps.traducidos.map(\.tipo)
         case .habituales:
-            return Traduccion(
-                "Habituales", "Common", ca: "Habituals", gl: "Habituais", ast: "Habituales",
-                an: "Habituals", eu: "Ohikoak", pt: "Habituais",
-                fr: "Courantes", oc: "Abitualas", it: "Comuni", de: "Gebräuchliche",
-                el: "Συνήθεις", ru: "Обычные")
+            return TextosDeApps.traducidos.map(\.habituales)
         case .otrasTradiciones:
-            return Traduccion(
-                "Otras tradiciones", "Other traditions", ca: "Altres tradicions", gl: "Outras tradicións",
-                ast: "Otres tradiciones", an: "Atras tradicions", eu: "Beste tradizio batzuk",
-                pt: "Outras tradições",
-                fr: "Autres traditions", oc: "Autras tradicions", it: "Altre tradizioni",
-                de: "Andere Traditionen",
-                el: "Άλλες παραδόσεις", ru: "Другие традиции")
+            return TextosDeApps.traducidos.map(\.otrasTradiciones)
         case .acordesDeLaEscala:
-            return Traduccion(
-                "Acordes de la escala", "Chords of the scale", ca: "Acords de l'escala",
-                gl: "Acordes da escala", ast: "Acordes de la escala", an: "Acordes d\'a escala",
-                eu: "Eskalaren akordeak", pt: "Acordes da escala",
-                fr: "Accords de la gamme", oc: "Acòrds de la gama", it: "Accordi della scala",
-                de: "Akkorde der Skala",
-                el: "Συγχορδίες της κλίμακας", ru: "Аккорды гаммы")
+            return TextosDeApps.traducidos.map(\.acordesDeLaEscala)
         case .posicionesEnElMastil:
-            return Traduccion(
-                "Posiciones en el mástil", "Positions on the fretboard", ca: "Posicions al mànec",
-                gl: "Posicións no mástil", ast: "Posiciones nel mástil", an: "Posicions en o mástil",
-                eu: "Posizioak mastilean", pt: "Posições no braço", fr: "Positions sur le manche",
-                oc: "Posicions sul margue", it: "Posizioni sul manico", de: "Lagen auf dem Griffbrett",
-                el: "Θέσεις στην ταστιέρα", ru: "Позиции на грифе")
+            return TextosDeApps.traducidos.map(\.posicionesEnElMastil)
         case .notasPorCuerda(let n):
-            let una = n == 1
-            return Traduccion(
-                "\(n) \(una ? "nota" : "notas") por cuerda", "\(n) \(una ? "note" : "notes") per string",
-                ca: "\(n) \(una ? "nota" : "notes") per corda", gl: "\(n) \(una ? "nota" : "notas") por corda",
-                ast: "\(n) \(una ? "nota" : "notes") per cuerda", an: "\(n) \(una ? "nota" : "notas") por corda",
-                eu: "\(n) nota soka bakoitzeko", pt: "\(n) \(una ? "nota" : "notas") por corda",
-                fr: "\(n) \(una ? "note" : "notes") par corde", oc: "\(n) \(una ? "nòta" : "nòtas") per còrda",
-                it: "\(n) \(una ? "nota" : "note") per corda", de: "\(n) \(una ? "Ton" : "Töne") pro Saite",
-                el: "\(n) \(una ? "νότα" : "νότες") ανά χορδή",
-                ru: "\(n) \(una ? "нота" : n < 5 ? "ноты" : "нот") на струну")
+            return TextosDeApps.traducidos.map { $0.notasPorCuerda(n) }
         case .forma(let forma):
-            return Traduccion(
-                "Forma \(forma)", "\(forma) shape", ca: "Forma \(forma)", gl: "Forma \(forma)",
-                ast: "Forma \(forma)", an: "Forma \(forma)", eu: "\(forma) forma", pt: "Forma \(forma)",
-                fr: "Forme \(forma)", oc: "Forma \(forma)", it: "Forma \(forma)", de: "\(forma)-Form",
-                el: "Σχήμα \(forma)", ru: "Форма \(forma)")
+            return TextosDeApps.traducidos.map { $0.forma(forma) }
         case .mastilDeGuitarra:
-            return Traduccion(
-                "Mástil de guitarra", "Guitar fretboard", ca: "Mànec de guitarra", gl: "Mástil de guitarra",
-                ast: "Mástil de guitarra", an: "Mástil de guitarra", eu: "Gitarraren mastila",
-                pt: "Braço da guitarra",
-                fr: "Manche de guitare", oc: "Margue de guitarra", it: "Manico della chitarra",
-                de: "Gitarrengriffbrett",
-                el: "Μπράτσο κιθάρας", ru: "Гриф гитары")
+            return TextosDeApps.traducidos.map(\.mastilDeGuitarra)
         case .pentagrama:
-            return Traduccion(
-                "Pentagrama", "Staff", ca: "Pentagrama", gl: "Pentagrama", ast: "Pentagrama",
-                an: "Pentagrama", eu: "Pentagrama", pt: "Pauta",
-                fr: "Portée", oc: "Pentagrama", it: "Pentagramma",
-                de: "Notensystem",
-                el: "Πεντάγραμμο", ru: "Нотный стан")
+            return TextosDeApps.traducidos.map(\.pentagrama)
         case .progresion:
-            return Traduccion(
-                "Progresión", "Progression", ca: "Progressió", gl: "Progresión", ast: "Progresión",
-                an: "Progresión", eu: "Progresioa", pt: "Progressão",
-                fr: "Progression", oc: "Progression", it: "Progressione", de: "Akkordfolge",
-                el: "Αλληλουχία", ru: "Последовательность")
+            return TextosDeApps.traducidos.map(\.progresion)
         case .campoDeProgresion:
-            return Traduccion(
-                "Acordes separados por espacios", "Chords separated by spaces",
-                ca: "Acords separats per espais", gl: "Acordes separados por espazos",
-                ast: "Acordes separtaos por espacios", an: "Acordes deseparaus per espacios",
-                eu: "Akordeak, zuriunez bereizita", pt: "Acordes separados por espaços",
-                fr: "Accords séparés par des espaces", oc: "Acòrds separats per d'espacis",
-                it: "Accordi separati da spazi", de: "Akkorde, durch Leerzeichen getrennt",
-                el: "Συγχορδίες χωρισμένες με κενά", ru: "Аккорды через пробел")
+            return TextosDeApps.traducidos.map(\.campoDeProgresion)
         case .resultado:
-            return Traduccion(
-                "Resultado", "Result", ca: "Resultat", gl: "Resultado", ast: "Resultáu",
-                an: "Resultau", eu: "Emaitza", pt: "Resultado",
-                fr: "Résultat", oc: "Resultat", it: "Risultato", de: "Ergebnis",
-                el: "Αποτέλεσμα", ru: "Результат")
+            return TextosDeApps.traducidos.map(\.resultado)
         case .acordeAAcorde:
-            return Traduccion(
-                "Acorde a acorde", "Chord by chord", ca: "Acord a acord", gl: "Acorde a acorde",
-                ast: "Acorde a acorde", an: "Acorde a acorde", eu: "Akordez akorde",
-                pt: "Acorde a acorde",
-                fr: "Accord par accord", oc: "Acòrd per acòrd", it: "Accordo per accordo",
-                de: "Akkord für Akkord",
-                el: "Συγχορδία προς συγχορδία", ru: "Аккорд за аккордом")
+            return TextosDeApps.traducidos.map(\.acordeAAcorde)
         case .arpegiar:
-            return Traduccion(
-                "Arpegiar", "Arpeggiate", ca: "Arpegiar", gl: "Arpexar", ast: "Arpexar",
-                an: "Arpechar", eu: "Arpegiatu", pt: "Arpejar",
-                fr: "Arpéger", oc: "Arpejar", it: "Arpeggiare", de: "Arpeggieren",
-                el: "Σε αρπέζ", ru: "Арпеджировать")
+            return TextosDeApps.traducidos.map(\.arpegiar)
         case .cadencias:
-            return Traduccion(
-                "Cadencias", "Cadences", ca: "Cadències", gl: "Cadencias", ast: "Cadencies",
-                an: "Cadencias", eu: "Kadentziak", pt: "Cadências",
-                fr: "Cadences", oc: "Cadéncias", it: "Cadenze", de: "Kadenzen",
-                el: "Πτώσεις", ru: "Каденции")
+            return TextosDeApps.traducidos.map(\.cadencias)
         case .tarea:
-            return Traduccion(
-                "Tarea", "Task", ca: "Tasca", gl: "Tarefa", ast: "Xera",
-                an: "Fayena", eu: "Zeregina", pt: "Tarefa",
-                fr: "Tâche", oc: "Tasca", it: "Attività", de: "Aufgabe",
-                el: "Εργασία", ru: "Задача")
+            return TextosDeApps.traducidos.map(\.tarea)
         case .campoDeTonalidad:
-            return Traduccion(
-                "Tonalidad (vacío: la que mejor encaje)", "Key (empty: the best fit)",
-                ca: "Tonalitat (buit: la que millor encaixi)", gl: "Tonalidade (baleiro: a que mellor encaixe)",
-                ast: "Tonalidá (baleru: la que meyor encaxe)",
-                an: "Tonalidat (vuedo: a que millor s\'achuste)", eu: "Tonalitatea (hutsik: hoberen egokitzen dena)",
-                pt: "Tonalidade (vazio: a que melhor encaixar)",
-                fr: "Tonalité (vide : la plus adaptée)", oc: "Tonalitat (voida: la que s'i acòrda melhor)",
-                it: "Tonalità (vuoto: quella più adatta)", de: "Tonart (leer: die passendste)",
-                el: "Τονικότητα (κενό: η καταλληλότερη)", ru: "Тональность (пусто: наиболее подходящая)")
+            return TextosDeApps.traducidos.map(\.campoDeTonalidad)
         case .tonalidad:
-            return Traduccion(
-                "Tonalidad", "Key", ca: "Tonalitat", gl: "Tonalidade", ast: "Tonalidá",
-                an: "Tonalidat", eu: "Tonalitatea", pt: "Tonalidade",
-                fr: "Tonalité", oc: "Tonalitat", it: "Tonalità", de: "Tonart",
-                el: "Τονικότητα", ru: "Тональность")
+            return TextosDeApps.traducidos.map(\.tonalidad)
         case .armonizaciones:
-            return Traduccion(
-                "Armonizaciones, de mejor a peor", "Harmonizations, best first",
-                ca: "Harmonitzacions, de millor a pitjor", gl: "Harmonizacións, de mellor a peor",
-                ast: "Armonizaciones, de meyor a peor", an: "Armonizacions, de millor a pior",
-                eu: "Harmonizazioak, onenetik txarrenera",
-                pt: "Harmonizações, da melhor para a pior",
-                fr: "Harmonisations, de la meilleure à la moins bonne",
-                oc: "Armonizacions, de la melhora a la pièger",
-                it: "Armonizzazioni, dalla migliore alla peggiore",
-                de: "Harmonisierungen, die besten zuerst",
-                el: "Εναρμονίσεις, από την καλύτερη στη χειρότερη", ru: "Гармонизации, от лучшей к худшей")
+            return TextosDeApps.traducidos.map(\.armonizaciones)
         case .aCuatroVoces:
-            return Traduccion(
-                "A cuatro voces, de grave a agudo", "In four parts, from low to high",
-                ca: "A quatre veus, de greu a agut", gl: "A catro voces, de grave a agudo",
-                ast: "A cuatro voces, de grave a agudu", an: "A cuatro voces, de grave a agudo",
-                eu: "Lau ahotsetara, baxuenetik altuenera", pt: "A quatro vozes, do grave ao agudo",
-                fr: "À quatre voix, du grave à l'aigu", oc: "A quatre voses, del grèu a l'agut",
-                it: "A quattro voci, dal grave all'acuto", de: "Vierstimmig, von tief nach hoch",
-                el: "Τετράφωνα, από το βαθύ στο οξύ", ru: "В четыре голоса, снизу вверх")
+            return TextosDeApps.traducidos.map(\.aCuatroVoces)
         case .conduccionDeLasVoces:
-            return Traduccion(
-                "Conducción de las voces", "Voice leading", ca: "Conducció de les veus",
-                gl: "Condución das voces", ast: "Conducción de les voces", an: "Conducción d\'as voces",
-                eu: "Ahots-eramatea", pt: "Condução das vozes",
-                fr: "Conduite des voix", oc: "Conduccion de las voses", it: "Condotta delle parti",
-                de: "Stimmführung",
-                el: "Οδήγηση φωνών", ru: "Голосоведение")
+            return TextosDeApps.traducidos.map(\.conduccionDeLasVoces)
         case .avisos:
-            return Traduccion(
-                "Avisos", "Warnings", ca: "Avisos", gl: "Avisos", ast: "Avisos",
-                an: "Avisos", eu: "Oharrak", pt: "Avisos",
-                fr: "Avertissements", oc: "Avertiments", it: "Avvisi", de: "Hinweise",
-                el: "Προειδοποιήσεις", ru: "Предупреждения")
+            return TextosDeApps.traducidos.map(\.avisos)
         case .recorridoPLR:
-            return Traduccion(
-                "Recorrido P·L·R", "P·L·R path", ca: "Recorregut P·L·R", gl: "Percorrido P·L·R",
-                ast: "Percorríu P·L·R", an: "Recorrido P·L·R", eu: "P·L·R ibilbidea", pt: "Percurso P·L·R",
-                fr: "Parcours P·L·R", oc: "Percors P·L·R", it: "Percorso P·L·R", de: "P·L·R-Weg",
-                el: "Διαδρομή P·L·R", ru: "Путь P·L·R")
+            return TextosDeApps.traducidos.map(\.recorridoPLR)
         case .modo:
-            return Traduccion(
-                "Modo", "Mode", ca: "Mode", gl: "Modo", ast: "Mou",
-                an: "Modo", eu: "Modua", pt: "Modo",
-                fr: "Mode", oc: "Mòde", it: "Modalità", de: "Modus",
-                el: "Λειτουργία", ru: "Режим")
+            return TextosDeApps.traducidos.map(\.modo)
         case .red:
-            return Traduccion(
-                "Red", "Grid", ca: "Xarxa", gl: "Rede", ast: "Rede",
-                an: "Ret", eu: "Sarea", pt: "Rede", fr: "Réseau", oc: "Ret", it: "Rete", de: "Netz",
-                el: "Πλέγμα", ru: "Сетка")
+            return TextosDeApps.traducidos.map(\.red)
         case .formatoUIL:
-            return Traduccion(
-                "Formato UIL", "UIL format", ca: "Format UIL", gl: "Formato UIL", ast: "Formatu UIL",
-                an: "Formato UIL", eu: "UIL formatua", pt: "Formato UIL", fr: "Format UIL",
-                oc: "Format UIL", it: "Formato UIL", de: "UIL-Format",
-                el: "Μορφή UIL", ru: "Формат UIL")
+            return TextosDeApps.traducidos.map(\.formatoUIL)
         case .giro:
-            return Traduccion(
-                "Giro", "Rotation", ca: "Gir", gl: "Xiro", ast: "Xiru",
-                an: "Chiro", eu: "Biraketa", pt: "Rotação", fr: "Rotation",
-                oc: "Rotacion", it: "Rotazione", de: "Drehung",
-                el: "Περιστροφή", ru: "Поворот")
+            return TextosDeApps.traducidos.map(\.giro)
         case .espejo:
-            return Traduccion(
-                "Espejo", "Mirror", ca: "Mirall", gl: "Espello", ast: "Espeyu",
-                an: "Espello", eu: "Ispilua", pt: "Espelho", fr: "Miroir",
-                oc: "Miralh", it: "Specchio", de: "Spiegeln",
-                el: "Καθρέφτης", ru: "Зеркало")
+            return TextosDeApps.traducidos.map(\.espejo)
         case .noSeDibuja:
-            return Traduccion(
-                "No se puede dibujar: revisa el texto.", "Can't draw it: check the text.",
-                ca: "No es pot dibuixar: revisa el text.", gl: "Non se pode debuxar: revisa o texto.",
-                ast: "Nun se pue dibuxar: revisa\'l testu.", an: "No se puede dibuixar: revisa o texto.",
-                eu: "Ezin da marraztu: berrikusi testua.", pt: "Não é possível desenhar: revê o texto.",
-                fr: "Impossible de dessiner : vérifie le texte.",
-                oc: "Se pòt pas dessenhar: verifica lo tèxte.",
-                it: "Impossibile disegnare: controlla il testo.", de: "Kann nicht gezeichnet werden: prüf den Text.",
-                el: "Δεν σχεδιάζεται: έλεγξε το κείμενο.", ru: "Не удаётся нарисовать: проверь текст.")
+            return TextosDeApps.traducidos.map(\.noSeDibuja)
         case .campoDeTriadaInicial:
             let ejemplo = Self.cifrado("Do", notacion) + ", " + Self.cifrado("Lam", notacion) + "…"
-            return Traduccion(
-                "Tríada inicial (\(ejemplo))", "Starting triad (\(ejemplo))",
-                ca: "Tríada inicial (\(ejemplo))", gl: "Tríade inicial (\(ejemplo))",
-                ast: "Tríada inicial (\(ejemplo))", an: "Tríada inicial (\(ejemplo))",
-                eu: "Hasierako hirukia (\(ejemplo))", pt: "Tríade inicial (\(ejemplo))",
-                fr: "Triade de départ (\(ejemplo))", oc: "Triada iniciala (\(ejemplo))",
-                it: "Triade iniziale (\(ejemplo))", de: "Anfangsdreiklang (\(ejemplo))",
-                el: "Αρχική τριφωνία (\(ejemplo))", ru: "Начальное трезвучие (\(ejemplo))")
+            return TextosDeApps.traducidos.map { $0.campoDeTriadaInicial(ejemplo) }
         case .reiniciar:
-            return Traduccion(
-                "Reiniciar", "Restart", ca: "Reinicia", gl: "Reiniciar", ast: "Reaniciar",
-                an: "Reiniciar", eu: "Berrabiarazi", pt: "Reiniciar",
-                fr: "Recommencer", oc: "Tornar començar", it: "Ricomincia", de: "Neu beginnen",
-                el: "Επανεκκίνηση", ru: "Начать заново")
+            return TextosDeApps.traducidos.map(\.reiniciar)
         case .deshacer:
-            return Traduccion(
-                "Deshacer", "Undo", ca: "Desfés", gl: "Desfacer", ast: "Desfacer",
-                an: "Desfer", eu: "Desegin", pt: "Desfazer",
-                fr: "Annuler", oc: "Desfar", it: "Annulla", de: "Rückgängig",
-                el: "Αναίρεση", ru: "Отменить")
+            return TextosDeApps.traducidos.map(\.deshacer)
         case .campoDeAcorde:
             let ejemplo = Self.cifrado("Dom7", notacion) + ", " + Self.cifrado("Fa#m7b5", notacion) + "…"
             return TextoDeLasApps.cifrado.traduccion(notacion).aplicando { "\($0) (\(ejemplo))" }
@@ -645,177 +285,51 @@ public enum TextoDeLasApps: Hashable, Sendable {
             let ejemplo = ejemplos.joined(separator: ", ") + "…"
             return TextoDeLasApps.escala.traduccion(notacion).aplicando { "\($0) (\(ejemplo))" }
         case .textos:
-            return Traduccion(
-                "Textos", "Texts", ca: "Textos", gl: "Textos", ast: "Testos",
-                an: "Textos", eu: "Testuak", pt: "Textos",
-                fr: "Textes", oc: "Tèxtes", it: "Testi", de: "Texte",
-                el: "Κείμενα", ru: "Тексты")
+            return TextosDeApps.traducidos.map(\.textos)
         case .comoLasNotas:
-            return Traduccion(
-                "Como las notas", "Same as the notes", ca: "Com les notes", gl: "Como as notas",
-                ast: "Como les notes", an: "Como as notas", eu: "Notak bezala", pt: "Como as notas",
-                fr: "Comme les notes", oc: "Coma las nòtas", it: "Come le note", de: "Wie die Noten",
-                el: "Όπως οι νότες", ru: "Как ноты")
+            return TextosDeApps.traducidos.map(\.comoLasNotas)
         case .octavas:
-            return Traduccion(
-                "Octavas", "Octaves", ca: "Octaves", gl: "Oitavas", ast: "Octaves",
-                an: "Octavas", eu: "Zortzidunak", pt: "Oitavas",
-                fr: "Octaves", oc: "Octavas", it: "Ottave", de: "Oktaven",
-                el: "Οκτάβες", ru: "Октавы")
+            return TextosDeApps.traducidos.map(\.octavas)
         case .conLaOctavaFinal:
-            return Traduccion(
-                "Con la octava final", "Ending on the octave", ca: "Amb l'octava final", gl: "Coa oitava final",
-                ast: "Cola octava final", an: "Con a octava final", eu: "Azken zortzidunarekin",
-                pt: "Com a oitava final", fr: "Avec l'octave finale", oc: "Amb l'octava finala",
-                it: "Con l'ottava finale", de: "Mit der Schlussoktave",
-                el: "Με την τελική οκτάβα", ru: "С завершающей октавой")
+            return TextosDeApps.traducidos.map(\.conLaOctavaFinal)
         case .figura:
-            return Traduccion(
-                "Figura", "Note value", ca: "Figura", gl: "Figura", ast: "Figura",
-                an: "Figura", eu: "Irudia", pt: "Figura",
-                fr: "Figure de note", oc: "Figura", it: "Figura", de: "Notenwert",
-                el: "Ρυθμική αξία", ru: "Длительность")
+            return TextosDeApps.traducidos.map(\.figura)
         case .capo(let n) where n <= 0:
-            return Traduccion(
-                "Sin capo", "No capo", ca: "Sense capo", gl: "Sen capo", ast: "Ensin capo",
-                an: "Sin capo", eu: "Capo gabe", pt: "Sem capo",
-                fr: "Sans capodastre", oc: "Sens capodastre", it: "Senza capotasto", de: "Ohne Kapodaster",
-                el: "Χωρίς καποτάστο", ru: "Без каподастра")
+            return TextosDeApps.traducidos.map(\.sinCapo)
         case .capo(let n):
-            return Traduccion(
-                "Capo en el traste \(n)", "Capo on fret \(n)", ca: "Capo al trast \(n)", gl: "Capo no traste \(n)",
-                ast: "Capo nel traste \(n)", an: "Capo en o traste \(n)", eu: "Capoa \(n). trastean",
-                pt: "Capo na casa \(n)", fr: "Capodastre en case \(n)", oc: "Capodastre al trast \(n)",
-                it: "Capotasto al tasto \(n)", de: "Kapodaster im \(n). Bund",
-                el: "Καποτάστο στο τάστο \(n)", ru: "Каподастр на \(n)-м ладу")
+            return TextosDeApps.traducidos.map { $0.capo(n) }
         case .rearmonizar:
-            return Traduccion(
-                "Rearmonizar", "Reharmonize", ca: "Rearmonitzar", gl: "Reharmonizar", ast: "Rearmonizar",
-                an: "Rearmonizar", eu: "Berrarmonizatu", pt: "Rearmonizar",
-                fr: "Réharmoniser", oc: "Rearmonizar", it: "Riarmonizzare", de: "Reharmonisieren",
-                el: "Επανεναρμόνιση", ru: "Реармонизация")
+            return TextosDeApps.traducidos.map(\.rearmonizar)
         case .aplicar:
-            return Traduccion(
-                "Aplicar", "Apply", ca: "Aplica", gl: "Aplicar", ast: "Aplicar",
-                an: "Aplicar", eu: "Aplikatu", pt: "Aplicar",
-                fr: "Appliquer", oc: "Aplicar", it: "Applica", de: "Übernehmen",
-                el: "Εφαρμογή", ru: "Применить")
+            return TextosDeApps.traducidos.map(\.aplicar)
         case .detener:
-            return Traduccion(
-                "Detener", "Stop", ca: "Atura", gl: "Deter", ast: "Parar",
-                an: "Aturar", eu: "Gelditu", pt: "Parar",
-                fr: "Arrêter", oc: "Arrestar", it: "Ferma", de: "Stopp",
-                el: "Διακοπή", ru: "Остановить")
+            return TextosDeApps.traducidos.map(\.detener)
         case .transponer:
-            return Traduccion(
-                "Transponer", "Transpose", ca: "Transposa", gl: "Transpoñer", ast: "Tresponer",
-                an: "Transposar", eu: "Transposatu", pt: "Transpor",
-                fr: "Transposer", oc: "Transpausar", it: "Trasponi", de: "Transponieren",
-                el: "Μεταφορά", ru: "Транспонировать")
+            return TextosDeApps.traducidos.map(\.transponer)
         case .escuchar:
-            return Traduccion(
-                "Escuchar", "Listen", ca: "Escolta", gl: "Escoitar", ast: "Escuchar",
-                an: "Escuitar", eu: "Entzun", pt: "Ouvir",
-                fr: "Écouter", oc: "Escotar", it: "Ascolta", de: "Anhören",
-                el: "Ακρόαση", ru: "Слушать")
+            return TextosDeApps.traducidos.map(\.escuchar)
         case .afinacionAlEscuchar:
-            return Traduccion(
-                "Afinación al escuchar", "Playback tuning", ca: "Afinació en escoltar",
-                gl: "Afinación ao escoitar", ast: "Afinación al escuchar",
-                an: "Afinación en escuitar", eu: "Entzuteko afinazioa", pt: "Afinação ao ouvir",
-                fr: "Tempérament à l'écoute", oc: "Acordatge en escotar", it: "Accordatura dell'ascolto",
-                de: "Stimmung beim Anhören",
-                el: "Κούρδισμα ακρόασης", ru: "Строй при прослушивании")
+            return TextosDeApps.traducidos.map(\.afinacionAlEscuchar)
         case .exportar:
-            return Traduccion(
-                "Exportar", "Export", ca: "Exporta", gl: "Exportar", ast: "Esportar",
-                an: "Exportar", eu: "Esportatu", pt: "Exportar",
-                fr: "Exporter", oc: "Exportar", it: "Esporta", de: "Exportieren",
-                el: "Εξαγωγή", ru: "Экспорт")
+            return TextosDeApps.traducidos.map(\.exportar)
         case .abrir:
-            return Traduccion(
-                "Abrir", "Open", ca: "Obre", gl: "Abrir", ast: "Abrir",
-                an: "Ubrir", eu: "Ireki", pt: "Abrir",
-                fr: "Ouvrir", oc: "Dobrir", it: "Apri", de: "Öffnen",
-                el: "Άνοιγμα", ru: "Открыть")
+            return TextosDeApps.traducidos.map(\.abrir)
         case .rejillaHexagonal:
-            return Traduccion(
-                "Rejilla hexagonal", "Hexagonal grid", ca: "Graella hexagonal", gl: "Grade hexagonal",
-                ast: "Rexáu hexagonal", an: "Reixa hexagonal", eu: "Sare hexagonala",
-                pt: "Grelha hexagonal",
-                fr: "Grille hexagonale", oc: "Grasilha exagonala", it: "Griglia esagonale",
-                de: "Sechseckgitter",
-                el: "Εξαγωνικό πλέγμα", ru: "Шестиугольная сетка")
+            return TextosDeApps.traducidos.map(\.rejillaHexagonal)
         case .casillas(let n):
-            let una = n == 1
-            return Traduccion(
-                "\(n) \(una ? "casilla" : "casillas")", "\(n) \(una ? "cell" : "cells")",
-                ca: "\(n) \(una ? "casella" : "caselles")", gl: "\(n) \(una ? "cela" : "celas")",
-                ast: "\(n) \(una ? "casiella" : "casielles")", an: "\(n) \(una ? "caseta" : "casetas")",
-                eu: una ? "gelaxka 1" : "\(n) gelaxka", pt: "\(n) \(una ? "casa" : "casas")",
-                fr: "\(n) \(una ? "case" : "cases")", oc: "\(n) \(una ? "casa" : "casas")",
-                it: "\(n) \(una ? "casella" : "caselle")",
-                de: "\(n) \(una ? "Feld" : "Felder")",
-                el: "\(n) \(una ? "κελί" : "κελιά")", ru: Traduccion.pluralRuso(n, "клетка", "клетки", "клеток"))
+            return TextosDeApps.traducidos.map { $0.casillas(n) }
         case .casillaElegida(let q, let r):
-            return Traduccion(
-                "elegida", "selected", ca: "escollida", gl: "escollida", ast: "escoyida",
-                an: "escollida", eu: "hautatua", pt: "escolhida",
-                fr: "choisie", oc: "causida", it: "scelta", de: "ausgewählt",
-                el: "επιλεγμένο", ru: "выбрана"
-            )
-            .aplicando { "\($0) q \(q), r \(r)" }
+            return TextosDeApps.traducidos.map { "\($0.elegida) q \(q), r \(r)" }
         case .mastilDe(let instrumento, let desde, let hasta):
-            return Traduccion(
-                "Mástil de \(instrumento), trastes \(desde) a \(hasta)",
-                "\(instrumento.capitalizandoLaPrimera) neck, frets \(desde) to \(hasta)",
-                ca: "Mànec de \(instrumento), trasts \(desde) a \(hasta)",
-                gl: "Mástil de \(instrumento), trastes \(desde) a \(hasta)",
-                ast: "Mástil de \(instrumento), trastes \(desde) a \(hasta)",
-                an: "Mástil de \(instrumento), trastes \(desde) a \(hasta)",
-                eu: "Mastila (\(instrumento)), trasteak \(desde)-\(hasta)",
-                pt: "Braço de \(instrumento), trastes \(desde) a \(hasta)",
-                fr: "Manche de \(instrumento), cases \(desde) à \(hasta)",
-                oc: "Margue de \(instrumento), trasts \(desde) a \(hasta)",
-                it: "Manico di \(instrumento), tasti da \(desde) a \(hasta)",
-                de: "Griffbrett (\(instrumento)), Bünde \(desde) bis \(hasta)",
-                el: "Μπράτσο (\(instrumento)), τάστα \(desde) έως \(hasta)",
-                ru: "Гриф (\(instrumento)), лады с \(desde) по \(hasta)")
+            return TextosDeApps.traducidos.map { $0.mastilDe(instrumento, desde, hasta) }
         case .posicion(let cuerda, let traste):
-            return Traduccion(
-                "cuerda \(cuerda), traste \(traste)", "string \(cuerda), fret \(traste)",
-                ca: "corda \(cuerda), trast \(traste)", gl: "corda \(cuerda), traste \(traste)",
-                ast: "cuerda \(cuerda), traste \(traste)", an: "cuerda \(cuerda), traste \(traste)",
-                eu: "soka \(cuerda), trastea \(traste)", pt: "corda \(cuerda), traste \(traste)",
-                fr: "corde \(cuerda), case \(traste)", oc: "còrda \(cuerda), trast \(traste)",
-                it: "corda \(cuerda), tasto \(traste)", de: "Saite \(cuerda), Bund \(traste)",
-                el: "χορδή \(cuerda), τάστο \(traste)", ru: "струна \(cuerda), лад \(traste)")
+            return TextosDeApps.traducidos.map { $0.posicion(cuerda, traste) }
         case .marcas(let n):
-            let una = n == 1
-            return Traduccion(
-                "\(n) \(una ? "marca" : "marcas")", "\(n) \(una ? "mark" : "marks")",
-                ca: "\(n) \(una ? "marca" : "marques")", gl: "\(n) \(una ? "marca" : "marcas")",
-                ast: "\(n) \(una ? "marca" : "marques")", an: "\(n) \(una ? "marca" : "marcas")",
-                eu: una ? "marka 1" : "\(n) marka", pt: "\(n) \(una ? "marca" : "marcas")",
-                fr: "\(n) \(una ? "marque" : "marques")", oc: "\(n) \(una ? "marca" : "marcas")",
-                it: "\(n) \(una ? "segno" : "segni")",
-                de: "\(n) \(una ? "Markierung" : "Markierungen")",
-                el: "\(n) \(una ? "σημάδι" : "σημάδια")", ru: Traduccion.pluralRuso(n, "отметка", "отметки", "отметок"))
+            return TextosDeApps.traducidos.map { $0.marcas(n) }
         case .cuerdasApagadas(let lista):
-            return Traduccion(
-                "cuerdas apagadas: \(lista)", "muted strings: \(lista)",
-                ca: "cordes apagades: \(lista)", gl: "cordas apagadas: \(lista)",
-                ast: "cuerdes apagaes: \(lista)", an: "cuerdas apagadas: \(lista)",
-                eu: "isilarazitako sokak: \(lista)", pt: "cordas abafadas: \(lista)",
-                fr: "cordes étouffées : \(lista)", oc: "còrdas amorsadas: \(lista)",
-                it: "corde smorzate: \(lista)", de: "gedämpfte Saiten: \(lista)",
-                el: "σβησμένες χορδές: \(lista)", ru: "заглушённые струны: \(lista)")
+            return TextosDeApps.traducidos.map { $0.cuerdasApagadas(lista) }
         case .sinMarcas:
-            return Traduccion(
-                "Sin marcas", "No marks", ca: "Sense marques", gl: "Sen marcas", ast: "Ensin marques",
-                an: "Sin marcas", eu: "Markarik ez", pt: "Sem marcas",
-                fr: "Aucune marque", oc: "Cap de marca", it: "Nessun segno", de: "Keine Markierungen",
-                el: "Χωρίς σημάδια", ru: "Нет отметок")
+            return TextosDeApps.traducidos.map(\.sinMarcas)
         }
     }
 

@@ -50,6 +50,13 @@ struct TextosDeRepresentaciones: Sendable {
     let cambioDeSensible: String
     let relativa: String
 
+    // MARK: TecladoIsomorfico.swift
+    let tablaArmonica: String
+    let wickiHaydenEspejo: String
+    let wickiHaydenPlano: String
+    let acordeonC: String
+    let acordeonB: String
+
     /// Los textos en los catorce idiomas: `traducidos.map(\.campo)` es la `Traduccion` de un campo.
     static let traducidos = Traducido<TextosDeRepresentaciones>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,

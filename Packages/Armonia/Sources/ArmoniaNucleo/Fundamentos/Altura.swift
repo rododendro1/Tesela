@@ -111,10 +111,6 @@ public struct Altura: Hashable, Sendable {
     /// "Fa♯4".
     public var nombreCompleto: String { nombre(en: .espanolUnicode) }
 
-    /// Nombre con octava en la notación indicada: "Fa♯4", "F#4", `.inglesUnicode` → "F♯4".
-    /// Nombre en español: "Fa♯4".
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     /// Nombre con octava (científica en todas las notaciones): "Fa♯4", "F#4", "Fis4",
     /// "fa dièse 4" (con espacio cuando el nombre tiene varias palabras).
     public func nombre(en notacion: Notacion) -> String {

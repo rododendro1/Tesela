@@ -68,6 +68,12 @@ public protocol Nombrable {
     func nombre(en notacion: Notacion) -> String
 }
 
+extension Nombrable {
+    /// El nombre en español: `nombre(en: .espanolUnicode)`. Un tipo que guarda su propio `nombre` (como
+    /// `TipoDeEscala` o `Encordado`) usa el suyo.
+    public var nombre: String { nombre(en: .espanolUnicode) }
+}
+
 // MARK: - Transponible
 
 /// Un valor que se puede transponer por un intervalo.

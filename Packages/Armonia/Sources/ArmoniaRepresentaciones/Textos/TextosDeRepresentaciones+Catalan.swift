@@ -44,6 +44,13 @@ extension TextosDeRepresentaciones {
         // TransformacionNeorriemanniana.swift
         homonima: "homònima",
         cambioDeSensible: "canvi de sensible",
-        relativa: "relativa"
+        relativa: "relativa",
+
+        // TecladoIsomorfico.swift
+        tablaArmonica: "Taula harmònica",
+        wickiHaydenEspejo: "Wicki-Hayden (mirall)",
+        wickiHaydenPlano: "Wicki-Hayden (pla)",
+        acordeonC: "Acordió sistema C",
+        acordeonB: "Acordió sistema B"
     )
 }

@@ -62,8 +62,6 @@ public struct FaltaDeConduccion: Hashable, Sendable, CustomStringConvertible {
 }
 
 extension FaltaDeConduccion.Tipo: Nombrable, CustomStringConvertible {
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String {
         switch self {
         case .quintasParalelas:

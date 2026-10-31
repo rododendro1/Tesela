@@ -152,8 +152,6 @@ extension CalidadDeTriada: Nombrable {}
 // MARK: - PapelEnAcorde
 
 extension PapelEnAcorde {
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
 
     private var traduccion: Traduccion {
@@ -179,8 +177,6 @@ extension PapelEnAcorde {
 // MARK: - CalidadDeTriada
 
 extension CalidadDeTriada {
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
 
     private var traduccion: Traduccion {

@@ -30,13 +30,9 @@ extension Voz {
         tonalidad: Tonalidad? = nil, clave: Clave? = nil, tempo: Tempo? = nil,
         titulo: String? = nil, parte: String = "Voz"
     ) -> String {
-        let tonalidad = tonalidad ?? Exportacion.tonalidad(de: self)
-        let clave = clave ?? Clave.masAdecuada(para: eventos.flatMap(\.alturas)) ?? .sol
-        var escritor = EscritorMusicXML(
-            compas: compas, anacrusa: anacrusa, tonalidad: tonalidad,
-            tempo: tempo, titulo: titulo, parte: parte, claves: [clave])
-        escritor.anadir(self, pentagrama: 1, numero: 1, plica: nil)
-        return escritor.documento
+        Exportacion.documento(
+            EscritorMusicXML.self, de: self, tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo,
+            parte: parte)
     }
 }
 
@@ -66,25 +62,9 @@ extension Coral {
         cifrados: Bool = false, analisis: Bool = false,
         notacion: Notacion = .espanolUnicode
     ) -> String {
-        let anotaciones = Exportacion.anotaciones(
-            de: self, duracion: duracion, tonalidad: tonalidad,
-            cifrados: cifrados, analisis: analisis)
-        let arriba = anotaciones.cifrados.mapValues {
-            EscritorMusicXML.Anotacion(armonia: EscritorMusicXML.armonia($0, notacion, pentagrama: 1))
-        }
-        let abajo = anotaciones.analisis.mapValues { EscritorMusicXML.Anotacion(letras: Exportacion.letras($0)) }
-        var escritor = EscritorMusicXML(
-            compas: compas, anacrusa: .cero, tonalidad: anotaciones.tonalidad,
-            tempo: tempo, titulo: titulo, parte: parte, claves: [.sol, .fa])
-        if let rotulo = anotaciones.tonalidadDelAnalisis { escritor.rotulo = (rotulo.nombre(en: notacion) + ":", 2) }
-        let n = numeroDeVoces
-        for (k, linea) in Exportacion.voces(de: self, duracion: duracion, compas: compas).enumerated() {
-            let plica = linea.plicaArriba.map { $0 ? "up" : "down" }
-            // Los cifrados, con la voz más aguda; el análisis, con la más grave.
-            let suyas = linea.indice == n - 1 ? arriba : (linea.indice == 0 ? abajo : [:])
-            escritor.anadir(linea.voz, pentagrama: linea.pentagrama, numero: k + 1, plica: plica, anotaciones: suyas)
-        }
-        return escritor.documento
+        Exportacion.documento(
+            EscritorMusicXML.self, de: self, duracion: duracion, compas: compas, tonalidad: tonalidad, tempo: tempo,
+            titulo: titulo, parte: parte, cifrados: cifrados, analisis: analisis, notacion: notacion)
     }
 }
 
@@ -120,29 +100,16 @@ extension AnalisisArmonico {
         titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
         analisis: Bool = true, notacion: Notacion = .espanolUnicode
     ) -> String {
-        Exportacion.comprobar(duraciones, acordes: acordes.count)
-        let (superior, grave) = Exportacion.progresion(
-            acordes.map(\.acorde), duraciones: Exportacion.hastaLaBarra(duraciones, compas))
-        let anotaciones = Exportacion.anotaciones(
-            de: self, duraciones: duraciones, cifrados: cifrados, analisis: analisis)
-        let arriba = anotaciones.cifrados.mapValues {
-            EscritorMusicXML.Anotacion(armonia: EscritorMusicXML.armonia($0, notacion, pentagrama: 1))
-        }
-        let abajo = anotaciones.analisis.mapValues { EscritorMusicXML.Anotacion(letras: Exportacion.letras($0)) }
-        var escritor = EscritorMusicXML(
-            compas: compas, anacrusa: .cero, tonalidad: tonalidad, tempo: tempo,
-            titulo: titulo, parte: parte, claves: [.sol, .fa])
-        if let rotulo = anotaciones.tonalidadDelAnalisis { escritor.rotulo = (rotulo.nombre(en: notacion) + ":", 2) }
-        escritor.anadir(Voz(superior, compas: compas), pentagrama: 1, numero: 1, plica: nil, anotaciones: arriba)
-        escritor.anadir(Voz(grave, compas: compas), pentagrama: 2, numero: 2, plica: nil, anotaciones: abajo)
-        return escritor.documento
+        Exportacion.documento(
+            EscritorMusicXML.self, de: self, duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo,
+            parte: parte, cifrados: cifrados, analisis: analisis, notacion: notacion)
     }
 }
 
 // MARK: - Escritor MusicXML
 
 /// Reúne varias voces en una parte (con uno o más pentagramas) y escribe el documento.
-package struct EscritorMusicXML {
+package struct EscritorMusicXML: EscritorDePartitura {
     package struct Linea {
         package let voz: Voz
         package let pentagrama: Int
@@ -190,6 +157,22 @@ package struct EscritorMusicXML {
         anotaciones: [Duracion: Anotacion] = [:]
     ) {
         lineas.append(Linea(voz: voz, pentagrama: pentagrama, numero: numero, plica: plica, anotaciones: anotaciones))
+    }
+
+    /// La voz con su número de orden, con los cifrados como `<harmony>` encima y el análisis como letra debajo.
+    package mutating func anadir(
+        _ voz: Voz, pentagrama: Int, plicaArriba: Bool?,
+        cifrados: [Duracion: Acorde], analisis: [Duracion: AcordeAnalizado], notacion: Notacion
+    ) {
+        var anotaciones = cifrados.mapValues {
+            Anotacion(armonia: EscritorMusicXML.armonia($0, notacion, pentagrama: 1))
+        }
+        for (punto, analizado) in analisis {
+            anotaciones[punto, default: Anotacion()].letras = Exportacion.letras(analizado)
+        }
+        anadir(
+            voz, pentagrama: pentagrama, numero: lineas.count + 1, plica: plicaArriba.map { $0 ? "up" : "down" },
+            anotaciones: anotaciones)
     }
 
     package var documento: String {

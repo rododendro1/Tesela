@@ -27,8 +27,6 @@ public enum FuncionTonal: Hashable, Sendable, CaseIterable, CustomStringConverti
         }
     }
 
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String {
         switch self {
         case .tonica: return TextosDeTeoria.traducidos.map(\.funcionTonica).en(notacion)

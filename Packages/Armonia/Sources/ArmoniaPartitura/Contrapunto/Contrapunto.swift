@@ -398,8 +398,6 @@ extension FaltaDeContrapunto {
 }
 
 extension FaltaDeContrapunto.Tipo: Nombrable, CustomStringConvertible {
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String {
         let traduccion: Traduccion
         switch self {

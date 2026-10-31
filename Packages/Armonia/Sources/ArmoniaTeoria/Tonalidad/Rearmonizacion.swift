@@ -129,41 +129,20 @@ extension Tonalidad {
 
 // MARK: - Idiomas
 
-extension Rearmonizacion.Recurso {
+extension Rearmonizacion.Recurso: Nombrable {
     /// «sustituto tritonal», «tritone substitution», «Zwischendominante»…
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
-
-    public var nombre: String { nombre(en: .espanolUnicode) }
 
     private var traduccion: Traduccion {
         switch self {
         case .sustitutoTritonal:
-            return Traduccion(
-                "sustituto tritonal", "tritone substitution", ca: "substitut de trítò", gl: "substituto de trítono",
-                ast: "sustitutu tritonal", an: "sustituto tritonal", eu: "tritono-ordezkapena",
-                pt: "substituto de trítono", fr: "substitution tritonique", oc: "substitut de triton",
-                it: "sostituzione di tritono", de: "Tritonussubstitution", el: "τριτονική υποκατάσταση",
-                ru: "тритоновая замена")
+            return TextosDeTeoria.traducidos.map(\.sustitutoTritonal)
         case .dominanteSecundaria:
-            return Traduccion(
-                "dominante secundaria", "secondary dominant", ca: "dominant secundària", gl: "dominante secundaria",
-                ast: "dominante secundaria", an: "dominant secundaria", eu: "bigarren mailako dominantea",
-                pt: "dominante secundária", fr: "dominante secondaire", oc: "dominanta segondària",
-                it: "dominante secondaria", de: "Zwischendominante", el: "δευτερεύουσα δεσπόζουσα",
-                ru: "побочная доминанта")
+            return TextosDeTeoria.traducidos.map(\.dominanteSecundaria)
         case .prestamoModal:
-            return Traduccion(
-                "préstamo modal", "modal borrowing", ca: "manlleu modal", gl: "préstamo modal",
-                ast: "emprestu modal", an: "emprestamiento modal", eu: "mailegu modala", pt: "empréstimo modal",
-                fr: "emprunt modal", oc: "manlèu modal", it: "prestito modale", de: "modale Entlehnung",
-                el: "τροπικός δανεισμός", ru: "модальное заимствование")
+            return TextosDeTeoria.traducidos.map(\.prestamoModal)
         case .sustitutoDiatonico:
-            return Traduccion(
-                "sustituto diatónico", "diatonic substitution", ca: "substitut diatònic", gl: "substituto diatónico",
-                ast: "sustitutu diatónicu", an: "sustituto diatonico", eu: "ordezko diatonikoa",
-                pt: "substituto diatónico", fr: "substitution diatonique", oc: "substitut diatonic",
-                it: "sostituzione diatonica", de: "diatonische Substitution", el: "διατονική υποκατάσταση",
-                ru: "диатоническая замена")
+            return TextosDeTeoria.traducidos.map(\.sustitutoDiatonico)
         }
     }
 }

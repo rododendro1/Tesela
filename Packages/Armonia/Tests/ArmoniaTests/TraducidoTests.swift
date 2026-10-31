@@ -61,6 +61,20 @@ final class TraducidoTests: XCTestCase {
         XCTAssertEqual(Idioma(codigo: "pt_BR"), .portugues)
         XCTAssertEqual(Idioma(codigo: "AST"), .asturiano)
         XCTAssertNil(Idioma(codigo: "ja"))
+    }
+
+    func testElIdiomaPorSuNombre() {
+        for idioma in Idioma.allCases {
+            XCTAssertEqual(Idioma(nombre: idioma.codigo), idioma, idioma.codigo)
+            for nombre in idioma.nombres {
+                XCTAssertEqual(Idioma(nombre: nombre), idioma, nombre)
+                XCTAssertEqual(nombre, nombre.lowercased(), nombre)
+            }
+        }
+        XCTAssertEqual(Idioma(nombre: "Euskara"), .euskera)
+        XCTAssertEqual(Idioma(nombre: "DEUTSCH"), .aleman)
+        XCTAssertEqual(Idioma(nombre: "pt-BR"), .portugues)
+        XCTAssertNil(Idioma(nombre: "japonés"))
         XCTAssertNil(Idioma(codigo: ""))
         // La notación habitual de cada idioma: # en inglés, ♯ en español.
         XCTAssertEqual(Notacion.delIdioma(.ingles), .inglesASCII)

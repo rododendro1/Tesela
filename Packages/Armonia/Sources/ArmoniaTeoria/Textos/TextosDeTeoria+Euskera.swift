@@ -113,6 +113,19 @@ extension TextosDeTeoria {
             Tonalidad.declinar(de, "etik").conMayusculaInicial + " " + Tonalidad.declinar(a, "era") + ", \(n). akordean"
         },
         pivote: "pibota",
-        directa: " (zuzena)"
+        directa: " (zuzena)",
+        // Arpegio.swift
+        arpegioDe: { acorde in "\(acorde) arpegioa" },
+        patronAscendente: "igoera",
+        patronDescendente: "jaitsiera",
+        patronIdaYVuelta: "joan-etorria",
+        patronAlberti: "Albertiren baxua",
+        patronQuebrado: "hautsia",
+        patronBajaYSube: "jaitsi-igoa",
+        // Rearmonizacion.swift
+        sustitutoTritonal: "tritono-ordezkapena",
+        dominanteSecundaria: "bigarren mailako dominantea",
+        prestamoModal: "mailegu modala",
+        sustitutoDiatonico: "ordezko diatonikoa"
     )
 }

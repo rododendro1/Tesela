@@ -77,8 +77,9 @@ for n, fichero in sorted(definidas.items()):
 from normalizar_escalas import normalizar, comprobar as comprobar_normalizacion
 
 NOMBRES = RAIZ / "Nombres"
-IDIOMAS_DE_NOMBRES = ["Catalan", "Gallego", "Asturiano", "Aragones", "Euskera", "Portugues", "Frances", "Occitano",
-                      "Italiano", "Aleman", "Ingles", "Ruso", "Griego"]    # el español sale del propio catálogo
+from idiomas import FICHEROS
+
+IDIOMAS_DE_NOMBRES = [f for f in FICHEROS if f != "Espanol"]    # el español sale del propio catálogo
 CADENA = r'"((?:[^"\\]|\\.)*)"'
 
 

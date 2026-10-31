@@ -392,8 +392,6 @@ extension Consonancia: Nombrable {}
 // MARK: - CalidadDeIntervalo
 
 extension CalidadDeIntervalo {
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     /// "justa", "mayor"… en español; "perfect", "major", "doubly diminished"… en inglés; "reine", "große" en
     /// alemán; "чистая", "большая" en ruso. Van en femenino, como los intervalos.
     public func nombre(en notacion: Notacion) -> String {
@@ -423,9 +421,6 @@ extension CalidadDeIntervalo {
 // MARK: - Intervalo
 
 extension Intervalo {
-    /// "3ª mayor", "5ª justa descendente".
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     /// "3ª mayor" en español; "major third", "descending minor sixth" en inglés; "3a major" en catalán;
     /// "beheranzko 6. txikia" en euskera; "tierce majeure" en francés; "große Terz" en alemán; "большая терция"
     /// en ruso.
@@ -533,8 +528,6 @@ extension Intervalo {
 // MARK: - Consonancia
 
 extension Consonancia {
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String {
         switch self {
         case .perfecta:

@@ -223,7 +223,7 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
 /// Un idioma del motor: el de los nombres de nota de una `EscrituraDeNotas` y el de los textos de una
 /// `Notacion`.
 ///
-/// Para añadir uno: un caso aquí (con su `codigo`), una fila en ``ReglasDeIdioma`` (las sílabas y cómo se le
+/// Para añadir uno: un caso aquí (con su `codigo` y sus `nombres`, y su fila en `Scripts/idiomas.py`), una fila en ``ReglasDeIdioma`` (las sílabas y cómo se le
 /// pega la alteración), un caso en `EscrituraDeNotas` (con su constante en `Notacion` y su
 /// `escrituraDeLaAlteracion`) y un campo en `Traducido`. Los nombres de nota no tienen más `switch` sobre
 /// `Idioma` que el de las reglas. Ningún `switch` sobre `Idioma` o `EscrituraDeNotas` tiene `default`, así que
@@ -272,6 +272,39 @@ extension Idioma {
     public init?(codigo: String) {
         let idioma = codigo.lowercased().split(whereSeparator: { $0 == "-" || $0 == "_" }).first.map(String.init)
         guard let encontrado = Idioma.allCases.first(where: { $0.codigo == idioma }) else { return nil }
+        self = encontrado
+    }
+
+    /// Cómo se escribe el nombre del idioma, en minúsculas: en español, con y sin tildes, y en el propio idioma
+    /// («euskera», «euskara»; «alemán», «aleman», «deutsch»).
+    public var nombres: [String] {
+        switch self {
+        case .espanol: return ["espanol", "español", "castellano"]
+        case .ingles: return ["ingles", "inglés", "english"]
+        case .catalan: return ["catalan", "catalán", "català"]
+        case .gallego: return ["gallego", "galego"]
+        case .asturiano: return ["asturiano", "asturianu"]
+        case .aragones: return ["aragones", "aragonés"]
+        case .euskera: return ["euskera", "euskara"]
+        case .portugues: return ["portugues", "portugués", "português"]
+        case .frances: return ["frances", "francés", "français", "francais"]
+        case .occitano: return ["occitano", "occitan"]
+        case .italiano: return ["italiano"]
+        case .aleman: return ["aleman", "alemán", "deutsch"]
+        case .griego: return ["griego", "ελληνικά"]
+        case .ruso: return ["ruso", "русский"]
+        }
+    }
+
+    /// El idioma de un código (como `init?(codigo:)`: «eu», «pt-BR») o de uno de sus `nombres` («euskara»,
+    /// «Deutsch»), sin importar las mayúsculas; `nil` si no es uno de los catorce.
+    public init?(nombre: String) {
+        if let idioma = Idioma(codigo: nombre) {
+            self = idioma
+            return
+        }
+        let texto = nombre.lowercased()
+        guard let encontrado = Idioma.allCases.first(where: { $0.nombres.contains(texto) }) else { return nil }
         self = encontrado
     }
 }

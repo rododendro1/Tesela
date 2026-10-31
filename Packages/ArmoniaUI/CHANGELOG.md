@@ -4,6 +4,10 @@
 
 - Documentación de DocC para `ArmoniaUI` y `ArmoniaPresentacion`: una página de entrada por módulo, con un ejemplo y
   los tipos agrupados por tarea, publicada en GitHub Pages junto a la de Armonia y Hexagonos.
+- `RedDeNotas` toma el teclado y el nombre de cada red de `TecladoIsomorfico.todos` y `nombre(en:)` del motor.
+- Los textos de las apps (`TextoDeLasApps`, los avisos y las tareas del coral y los nombres de los formatos de
+  exportación) pasan a `TextosDeApps`, un fichero por idioma en `ArmoniaPresentacion/Textos/`, como los del motor.
+  Los textos no cambian.
 - Más opciones de arpegio en ArmoniaApp. En la pestaña Acordes, el arpegio elige también cuántas octavas abarca, si
   acaba en la octava y la figura de sus notas (negra, corchea o semicorchea); en Análisis, la figura de la progresión
   arpegiada. `PresentacionDeArpegios.arpegio(_:figura:notacion:)`, `progresion(…figura:…)` y

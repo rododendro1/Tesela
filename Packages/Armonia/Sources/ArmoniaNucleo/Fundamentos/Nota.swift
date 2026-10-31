@@ -358,9 +358,6 @@ extension NotaNatural {
 // MARK: - Alteracion
 
 extension Alteracion {
-    /// "natural", "sostenido", "doble bemol", "triple sostenido", "5 bemoles"…
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     /// Nombre en cada idioma: "double sharp", "Doppelkreuz", "double dièse", "doppio diesis"…
     public func nombre(en notacion: Notacion) -> String {
         let idioma = notacion.idiomaDeLasNotas

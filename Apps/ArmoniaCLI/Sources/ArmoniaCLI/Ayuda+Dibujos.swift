@@ -1,8 +1,13 @@
 import Armonia
 
 extension LineaDeComandos {
-    /// La ayuda de los dibujos del Tonnetz y de la tabla armónica, en el orden en que sale.
-    static let ayudaDeDibujos: [EntradaDeAyuda] = [
+    /// Los dibujos del Tonnetz y de la tabla armónica, en el orden en que salen en la ayuda.
+    static let ordenesDeDibujos: [Orden] = [
+        Orden(nombres: ["tonnetz"], ayuda: ayudaDeTonnetz) { try tonnetz($0, $1) },
+        Orden(nombres: ["tabla", "harmonic-table"], ayuda: ayudaDeTabla) { try tablaArmonica($0, $1) },
+    ]
+
+    static let ayudaDeTonnetz: [EntradaDeAyuda] = [
         // tonnetz <notas>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traducidos.map(\.sintaxisTonnetz),
@@ -32,6 +37,9 @@ extension LineaDeComandos {
                 "armonia tonnetz --ciclo hexatonico Do > ciclo.svg",
                 "armonia tonnetz --cycle hexatonic C > cycle.svg"),
             notas: TextosDeCLI.traducidos.map(\.notasTonnetzCiclo)),
+    ]
+
+    static let ayudaDeTabla: [EntradaDeAyuda] = [
         // tabla <notas o alturas>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traducidos.map(\.sintaxisTabla),
