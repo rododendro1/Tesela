@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.0 (2026-11-01)
 
 - **Compactas en todos los idiomas**: cada idioma que escribe las alteraciones con palabras tiene ahora también su
   escritura compacta, con la sílaba en mayúscula, el signo y la octava en subíndice: `.catalanCompacto`,
