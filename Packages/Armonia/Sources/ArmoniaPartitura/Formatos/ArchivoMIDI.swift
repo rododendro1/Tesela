@@ -193,8 +193,9 @@ package struct ArchivoMIDI {
             for (k, evento) in pista.eventos.enumerated() {
                 let claves = Set(evento.alturas.map(\.midi).filter { (0...127).contains($0) })
                 // Las que venían ligadas y no siguen, terminan aquí.
-                for clave in sonando.keys.sorted() where !(ligadas.contains(clave) && claves.contains(clave)) {
-                    notas.append((clave, sonando[clave]!, inicio))
+                let terminan = sonando.filter { !(ligadas.contains($0.key) && claves.contains($0.key)) }
+                for (clave, desde) in terminan.sorted(by: { $0.key < $1.key }) {
+                    notas.append((clave, desde, inicio))
                     sonando[clave] = nil
                 }
                 for clave in claves where sonando[clave] == nil { sonando[clave] = inicio }
@@ -204,7 +205,7 @@ package struct ArchivoMIDI {
                 inicio += pulsos(evento.duracion)
                 ligadas = evento.ligada ? claves : []
             }
-            for clave in sonando.keys.sorted() { notas.append((clave, sonando[clave]!, inicio)) }
+            for (clave, desde) in sonando.sorted(by: { $0.key < $1.key }) { notas.append((clave, desde, inicio)) }
             for nota in notas {
                 mensajes.append((nota.desde, [0x90 | canal, UInt8(nota.clave), 80]))
                 mensajes.append((nota.hasta, [0x80 | canal, UInt8(nota.clave), 64]))

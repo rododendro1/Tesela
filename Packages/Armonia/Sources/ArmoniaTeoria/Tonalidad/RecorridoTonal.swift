@@ -131,7 +131,10 @@ public struct RecorridoTonal: Hashable, Sendable, CustomStringConvertible {
 
     /// Lee una progresión como ``AnalisisArmonico/analizar(leyendo:en:)`` y busca sus modulaciones.
     public init(leyendo texto: String) throws {
-        self = RecorridoTonal(try AnalisisArmonico.leerAcordes(texto))!
+        guard let recorrido = RecorridoTonal(try AnalisisArmonico.leerAcordes(texto)) else {
+            throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio)
+        }
+        self = recorrido
     }
 
     /// `nil` si no hay acordes.

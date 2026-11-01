@@ -200,21 +200,6 @@ package enum Exportacion {
         [analizado.cifrado, analizado.funcion?.abreviatura ?? ""]
     }
 
-    /// El texto con `&`, `<`, `>` y `"` escritos como entidades, para ponerlo en XML.
-    package static func escapar(_ texto: String) -> String {
-        var resultado = ""
-        for caracter in texto {
-            switch caracter {
-            case "&": resultado += "&amp;"
-            case "<": resultado += "&lt;"
-            case ">": resultado += "&gt;"
-            case "\"": resultado += "&quot;"
-            default: resultado.append(caracter)
-            }
-        }
-        return resultado
-    }
-
     /// Un número sin decimales si es entero: 90 → "90", 92.5 → "92.5".
     package static func formatear(_ valor: Double) -> String {
         valor == valor.rounded() ? String(Int(valor)) : String(valor)

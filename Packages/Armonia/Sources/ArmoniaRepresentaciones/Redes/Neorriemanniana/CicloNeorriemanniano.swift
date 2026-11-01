@@ -100,9 +100,11 @@ extension Acorde {
     public func ciclo(_ ciclo: CicloNeorriemanniano) -> [Acorde]? {
         guard let inicio = Tonnetz.Triada(self) else { return nil }
         var triadas = [inicio]
+        var actual = inicio
         while triadas.count <= ciclo.longitud {
-            let siguiente = triadas.last!.transformar(ciclo.transformaciones[(triadas.count - 1) % 2])
-            triadas.append(triadas.count == ciclo.longitud ? inicio : siguiente.sencilla)
+            let siguiente = actual.transformar(ciclo.transformaciones[(triadas.count - 1) % 2])
+            actual = triadas.count == ciclo.longitud ? inicio : siguiente.sencilla
+            triadas.append(actual)
         }
         return triadas.map(\.acorde)
     }
@@ -125,7 +127,8 @@ extension Tonnetz.Triada {
                     quintas: fundamental.quintas + desplazamiento,
                     terceras: fundamental.terceras), mayor: mayor)
         }
-        let mejor = enarmonicas.min { alteraciones($0) < alteraciones($1) }!
+        // La de menos alteraciones; a igualdad, la primera.
+        let mejor = alteraciones(enarmonicas[1]) < alteraciones(enarmonicas[0]) ? enarmonicas[1] : enarmonicas[0]
         if conDobles(self) && !conDobles(mejor) || alteraciones(mejor) <= alteraciones(self) - 2 { return mejor }
         return self
     }
@@ -141,8 +144,10 @@ extension Tonnetz {
         guard let acordes = acorde.ciclo(ciclo), let colocado = Tonnetz(recorrido: [acorde]) else { return nil }
         // La banda, recta: cada triángulo, el vecino del anterior.
         var triadas = colocado.recorrido
+        guard var actual = triadas.last else { return nil }
         for i in 0..<ciclo.longitud {
-            triadas.append(triadas.last!.transformar(ciclo.transformaciones[i % 2]))
+            actual = actual.transformar(ciclo.transformaciones[i % 2])
+            triadas.append(actual)
         }
         var puntos: [PuntoDeLaRed] = []
         var nombres: [PuntoDeLaRed: Nota] = [:]
@@ -171,14 +176,17 @@ extension Tonnetz {
             let dy = Double(otro.terceras - punto.terceras) * 0.8660254037844386
             return dx * dx + dy * dy
         }
-        let cercano = puntos.min {
-            (distancia($0), $0.terceras, $0.quintas) < (distancia($1), $1.terceras, $1.quintas)
-        }!
-        let cerca = nombres[cercano]!.pasosDeQuinta - cercano.pasosDeQuinta
+        guard
+            let cercano = puntos.min(by: {
+                (distancia($0), $0.terceras, $0.quintas) < (distancia($1), $1.terceras, $1.quintas)
+            }),
+            let notaCercana = nombres[cercano]
+        else { return punto.nota }
+        let cerca = notaCercana.pasosDeQuinta - cercano.pasosDeQuinta
         let opciones = (-3...3).map { Nota(pasosDeQuinta: punto.pasosDeQuinta + 12 * $0) }
         return opciones.min {
             (abs($0.alteracion.semitonos), abs($0.pasosDeQuinta - punto.pasosDeQuinta - cerca))
                 < (abs($1.alteracion.semitonos), abs($1.pasosDeQuinta - punto.pasosDeQuinta - cerca))
-        }!
+        } ?? punto.nota
     }
 }

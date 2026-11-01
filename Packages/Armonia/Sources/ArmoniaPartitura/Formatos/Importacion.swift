@@ -165,9 +165,12 @@ public struct PiezaImportada: Hashable, Sendable {
             pesos[modulo(nota.altura.midi, 12), default: 0] += min(1, solapado / largo)
         }
         let alComienzo = notas.filter { $0.inicio <= desde }
-        let bajo = modulo((alComienzo.isEmpty ? notas : alComienzo).map(\.altura.midi).min()!, 12)
+        guard let grave = (alComienzo.isEmpty ? notas : alComienzo).map(\.altura.midi).min() else { return nil }
+        let bajo = modulo(grave, 12)
         // Las demás clases, de más a menos peso (a igual peso, de grave a agudo, para que no dependa del orden).
-        let resto = pesos.keys.filter { $0 != bajo }.sorted { (-pesos[$0]!, $0) < (-pesos[$1]!, $1) }
+        let resto = pesos.keys.filter { $0 != bajo }.sorted {
+            (-pesos[$0, default: 0], $0) < (-pesos[$1, default: 0], $1)
+        }
 
         var mejor = ElMejor<Acorde, Double>()
         for quitadas in 0...min(2, resto.count) {
@@ -175,7 +178,7 @@ public struct PiezaImportada: Hashable, Sendable {
             guard quedan.count >= min(2, resto.count) else { break }
             // Quitar una nota que suena toda la ventana cuesta 0,8, más que una tensión (0,5): una corchea
             // de paso en una ventana de negra (0,4) se quita, una novena que dura todo el pulso se queda.
-            let penalizacion = resto.suffix(quitadas).map { 0.8 * min(1, pesos[$0]!) }.reduce(0, +)
+            let penalizacion = resto.suffix(quitadas).map { 0.8 * min(1, pesos[$0, default: 0]) }.reduce(0, +)
             guard let candidato = Acorde.candidatos(clasesDeAltura: [bajo] + quedan, tonalidad: tonalidad).first else {
                 continue
             }

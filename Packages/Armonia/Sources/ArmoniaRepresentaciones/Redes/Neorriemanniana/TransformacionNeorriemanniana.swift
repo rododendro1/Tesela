@@ -177,7 +177,7 @@ extension Tonnetz {
                     fundamental: PuntoDeLaRed(quintas: triada.fundamental.quintas - 4 * terceras, terceras: terceras),
                     mayor: triada.mayor)
             }
-            triadas.append(copias.min { Tonnetz.separacion(anterior, $0) < Tonnetz.separacion(anterior, $1) }!)
+            triadas.append(copias.min { Tonnetz.separacion(anterior, $0) < Tonnetz.separacion(anterior, $1) } ?? triada)
         }
         var puntos: [PuntoDeLaRed] = []
         for vertice in triadas.flatMap(\.vertices) where !puntos.contains(vertice) { puntos.append(vertice) }
@@ -186,9 +186,15 @@ extension Tonnetz {
 
     /// El recorrido por el camino más corto entre dos tríadas: `Tonnetz(caminoDesde: "Do", hasta: "Mibm")`.
     public init?(caminoDesde origen: Acorde, hasta destino: Acorde) {
-        guard let camino = Tonnetz.camino(desde: origen, hasta: destino) else { return nil }
-        let inicio = Triada(origen)!
-        let triadas = camino.reduce(into: [inicio]) { $0.append($0.last!.transformar($1)) }
+        guard let camino = Tonnetz.camino(desde: origen, hasta: destino), let inicio = Triada(origen) else {
+            return nil
+        }
+        var triadas = [inicio]
+        var actual = inicio
+        for paso in camino {
+            actual = actual.transformar(paso)
+            triadas.append(actual)
+        }
         self.init(recorrido: triadas.map(\.acorde))
     }
 

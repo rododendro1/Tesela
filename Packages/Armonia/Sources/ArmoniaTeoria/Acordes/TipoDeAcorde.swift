@@ -115,8 +115,12 @@ public struct TipoDeAcorde: Sendable {
 
     // MARK: Tipos predefinidos
 
+    /// Los tipos predefinidos, que son conjuntos válidos; si uno no lo fuera, el mensaje dice cuál.
     private static func crear(_ intervalos: [Intervalo]) -> TipoDeAcorde {
-        TipoDeAcorde(intervalos: intervalos)!
+        guard let tipo = TipoDeAcorde(intervalos: intervalos) else {
+            preconditionFailure("\(intervalos) no es un tipo de acorde")
+        }
+        return tipo
     }
 
     // Nombres: «tríada + lo añadido», de abajo arriba, con el calificativo detrás de lo que

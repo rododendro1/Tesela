@@ -85,9 +85,8 @@ public struct Duracion: Hashable, Sendable, Comparable {
         let cifras = limpio.cifrasIniciales
         let puntos = limpio.dropFirst(cifras.count)
         guard let divisor = Int(cifras), divisor > 0, divisor & (divisor - 1) == 0, divisor <= 128,
-            puntos.allSatisfy({ $0 == "." })
+            puntos.allSatisfy({ $0 == "." }), let figura = Figura(rawValue: divisor.trailingZeroBitCount)
         else { throw error }
-        let figura = Figura(rawValue: divisor.trailingZeroBitCount)!
         self.init(figura, puntillos: puntos.count)
     }
 

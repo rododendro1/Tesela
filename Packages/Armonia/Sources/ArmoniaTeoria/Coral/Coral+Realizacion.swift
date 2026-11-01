@@ -29,7 +29,7 @@ extension Coral {
     ///   no hay ninguna realización sin faltas.
     public static func realizar(_ acordes: [Acorde], soprano: [Altura]? = nil, en tonalidad: Tonalidad? = nil) -> Coral?
     {
-        guard !acordes.isEmpty, soprano == nil || soprano!.count == acordes.count else { return nil }
+        guard !acordes.isEmpty, soprano.map { $0.count == acordes.count } ?? true else { return nil }
         let tonalidad = tonalidad ?? AnalisisArmonico.analizar(acordes)?.tonalidad
         let sensible = tonalidad?.escalaDeReferencia.grado(7)
         let tonica = tonalidad?.tonica

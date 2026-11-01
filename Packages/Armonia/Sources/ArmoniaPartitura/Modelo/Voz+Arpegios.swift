@@ -71,7 +71,7 @@ extension Voz {
             let suya = ((octava - 1)...(octava + 1)).min {
                 abs(Altura(acorde.bajo, octava: $0).midi - referencia)
                     < abs(Altura(acorde.bajo, octava: $1).midi - referencia)
-            }!
+            } ?? octava
             let alturas = Arpegio(acorde, patron: patron, octavas: octavas, conOctava: conOctava).alturas(octava: suya)
             guard !alturas.isEmpty else { continue }
             guard let porAcorde, porAcorde > .cero else {

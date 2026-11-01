@@ -2,6 +2,7 @@
 
 ## Sin publicar
 
+- La tablatura en MusicXML escapa sus textos con `EscrituraXML.escapar`, la del motor.
 - Los textos con un número usan `Idioma.contar`, con el plural de cada idioma: en francés, «0 note par corde»
   en vez de «0 notes». El selector de idioma recorre `Idioma.allCases`.
 - Desaparece `TextoDeLasApps`: sus casos solo llevaban a un campo de `TextosDeApps`, que pasa a ser público. Un texto

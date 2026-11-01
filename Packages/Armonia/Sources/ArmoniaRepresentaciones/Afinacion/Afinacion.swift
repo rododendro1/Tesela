@@ -128,7 +128,17 @@ public struct TemperamentoCircular: Afinacion, Hashable {
     /// `nil` si no son doce quintas o si no suman siete octavas (8400 cents, con una centésima de
     /// cent de margen): entonces el círculo no se cierra.
     public init?(nombre: String, quintas: [Double], frecuenciaDelLa4: Double = 440) {
-        guard quintas.count == 12, abs(quintas.reduce(0, +) - 8400) < 0.01 else { return nil }
+        guard TemperamentoCircular.cierra(quintas) else { return nil }
+        self.init(nombre: nombre, quintasQueCierran: quintas, frecuenciaDelLa4: frecuenciaDelLa4)
+    }
+
+    /// Si son doce quintas que suman siete octavas, con una centésima de cent de margen.
+    private static func cierra(_ quintas: [Double]) -> Bool {
+        quintas.count == 12 && abs(quintas.reduce(0, +) - 8400) < 0.01
+    }
+
+    /// Con unas quintas que ya se sabe que cierran el círculo (`cierra`).
+    private init(nombre: String, quintasQueCierran quintas: [Double], frecuenciaDelLa4: Double) {
         self.nombre = nombre
         self.quintas = quintas
         self.frecuenciaDelLa4 = frecuenciaDelLa4
@@ -156,15 +166,15 @@ public struct TemperamentoCircular: Afinacion, Hashable {
 
     /// El mismo temperamento con otra frecuencia de referencia.
     public func afinar(frecuenciaDelLa4 frecuencia: Double) -> TemperamentoCircular {
-        TemperamentoCircular(nombre: nombre, quintas: quintas, frecuenciaDelLa4: frecuencia)!
+        TemperamentoCircular(nombre: nombre, quintasQueCierran: quintas, frecuenciaDelLa4: frecuencia)
     }
 
     /// Doce quintas puras, de las que se estrecha cada una lo que diga `estrechamientos` (en cents).
     private static func circulo(_ nombre: String, _ estrechamientos: [Int: Double]) -> TemperamentoCircular {
         let pura = 1200 * log2(1.5)
-        return TemperamentoCircular(
-            nombre: nombre,
-            quintas: (0..<12).map { pura - (estrechamientos[$0] ?? 0) })!
+        let quintas = (0..<12).map { pura - (estrechamientos[$0] ?? 0) }
+        guard cierra(quintas) else { preconditionFailure("Las quintas de \(nombre) no cierran el círculo") }
+        return TemperamentoCircular(nombre: nombre, quintasQueCierran: quintas, frecuenciaDelLa4: 440)
     }
 
     private static let comaPitagorica = RazonDeFrecuencias.comaPitagorica.cents

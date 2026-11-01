@@ -188,7 +188,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
 
             """
         if let titulo {
-            xml += "  <work>\n    <work-title>\(Exportacion.escapar(titulo))</work-title>\n  </work>\n"
+            xml += "  <work>\n    <work-title>\(EscrituraXML.escapar(titulo))</work-title>\n  </work>\n"
         }
         xml += """
               <identification>
@@ -198,7 +198,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
               </identification>
               <part-list>
                 <score-part id="P1">
-                  <part-name>\(Exportacion.escapar(parte))</part-name>
+                  <part-name>\(EscrituraXML.escapar(parte))</part-name>
                 </score-part>
               </part-list>
               <part id="P1">
@@ -296,7 +296,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
         return """
                   <direction placement="below">
                     <direction-type>
-                      <words>\(Exportacion.escapar(rotulo.texto))</words>
+                      <words>\(EscrituraXML.escapar(rotulo.texto))</words>
                     </direction-type>
                     <staff>\(rotulo.pentagrama)</staff>
                   </direction>
@@ -372,7 +372,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
                     for (k, letra) in letras.enumerated() where !letra.isEmpty {
                         xml += "        <lyric number=\"\(k + 1)\" placement=\"below\">\n"
                         xml +=
-                            "          <syllabic>single</syllabic>\n          <text>\(Exportacion.escapar(letra))</text>\n        </lyric>\n"
+                            "          <syllabic>single</syllabic>\n          <text>\(EscrituraXML.escapar(letra))</text>\n        </lyric>\n"
                     }
                 }
                 xml += "      </note>\n"
@@ -459,7 +459,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
         }
         xml += "        </root>\n"
         xml +=
-            "        <kind text=\"\(Exportacion.escapar(acorde.tipo.cifrado(en: notacion)))\">\(mejor.nombre)</kind>\n"
+            "        <kind text=\"\(EscrituraXML.escapar(acorde.tipo.cifrado(en: notacion)))\">\(mejor.nombre)</kind>\n"
         if acorde.bajo != acorde.fundamental {
             xml += "        <bass>\n          <bass-step>\(paso(acorde.bajo.natural))</bass-step>\n"
             if acorde.bajo.alteracion.semitonos != 0 {

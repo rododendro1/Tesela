@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+- `EscrituraXML.escapar`: una sola forma de escapar `&`, `<`, `>` y `"` para el SVG, el MusicXML y el MEI, en vez
+  de cuatro copias (la del Tonnetz y la tabla armónica no escapaba las comillas).
+- Sin `!` en el motor: los datos fijos (intervalos, tipos de acorde, temperamentos) dicen en un mensaje cuál no es
+  válido, los colores se guardan como números, y los mínimos, los máximos y las búsquedas tienen su alternativa.
+  `AnalisisArmonico.analizar(leyendo:)` y `RecorridoTonal(leyendo:)` lanzan un error en vez de fallar.
+- `PentagramaSVG.swift` se parte en cuatro ficheros: las opciones, las escalas, acordes y arpegios, el dibujo y la
+  geometría.
 - El plural de cada idioma está en sus reglas (`ReglasDeIdioma.plural`): singular con 1 en casi todos, con 0 y 1
   en francés («0 demi-ton»), una forma en euskera y tres en ruso. `Idioma.contar(n, formas…)` escribe el número con
   la forma que le toca («5 полутонов»); `Traduccion.pluralRuso` queda obsoleto en su favor.
