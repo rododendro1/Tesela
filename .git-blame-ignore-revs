@@ -1,0 +1,7 @@
+# Commits que `git blame` se salta: cambian la forma del código, no lo que hace.
+# GitHub los usa solo; en local, una vez:  git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# Formato del código con swift-format (#23)
+4a0762a2cd3b36cb8f0ca31dd8820d3aa05c1f0f
+# Reestructura carpetas: Notacion/ y Lectura/, ArmoniaTests por módulo, ArmoniaUI por tema y Scripts por tipo (#40)
+6090d5744b2d8ac686a4201748a4551668c5d23c

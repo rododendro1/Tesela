@@ -1,4 +1,5 @@
-import XCTest
+import Foundation
+import Testing
 
 @testable import Armonia
 @testable import ArmoniaNucleo
@@ -9,7 +10,7 @@ import XCTest
 /// Pruebas exhaustivas: todo lo que el motor escribe debe volver a leerse igual.
 /// Recorren el espacio completo de valores en lugar de ejemplos sueltos, así que
 /// cualquier cambio en el lector o el generador de texto que rompa un caso se detecta.
-final class IdaYVueltaTests: XCTestCase {
+@Suite struct IdaYVueltaTests {
 
     /// Todas las posiciones (en quintas desde la fundamental) que puede ocupar una nota
     /// de un acorde: terceras, quintas, séptimas y tensiones con sus alteraciones.
@@ -17,7 +18,7 @@ final class IdaYVueltaTests: XCTestCase {
 
     /// Recorre los 2¹⁵ subconjuntos posibles. Los que forman un acorde interpretable
     /// (9.344) deben generar un cifrado que se vuelva a leer como el mismo conjunto.
-    func testTodoCifradoGeneradoSeVuelveALeerIgual() {
+    @Test func todoCifradoGeneradoSeVuelveALeerIgual() {
         let posiciones = Self.posicionesDeAcorde
         var interpretables = 0
         for mascara in 0..<(1 << posiciones.count) {
@@ -30,22 +31,22 @@ final class IdaYVueltaTests: XCTestCase {
 
             let simbolo = tipo.cifrado
             guard let leido = TipoDeAcorde(texto: simbolo) else {
-                XCTFail("No se puede leer «\(simbolo)», generado desde \(conjunto.sorted())")
+                Issue.record("No se puede leer «\(simbolo)», generado desde \(conjunto.sorted())")
                 continue
             }
-            XCTAssertEqual(leido.pasosDeQuinta, conjunto, "«\(simbolo)»")
+            #expect(leido.pasosDeQuinta == conjunto, "«\(simbolo)»")
 
             // La disposición contiene exactamente las notas del conjunto, sin repetir.
             let intervalos = tipo.intervalos
-            XCTAssertEqual(intervalos.count, conjunto.count, "«\(simbolo)»")
-            XCTAssertEqual(Set(intervalos.map(\.pasosDeQuinta)), conjunto, "«\(simbolo)»")
-            XCTAssertEqual(intervalos.first, .unisono, "«\(simbolo)»")
-            XCTAssertTrue(
+            #expect(intervalos.count == conjunto.count, "«\(simbolo)»")
+            #expect(Set(intervalos.map(\.pasosDeQuinta)) == conjunto, "«\(simbolo)»")
+            #expect(intervalos.first == .unisono, "«\(simbolo)»")
+            #expect(
                 zip(intervalos, intervalos.dropFirst()).allSatisfy {
                     ($0.pasos, $0.semitonos) <= ($1.pasos, $1.semitonos)
                 }, "«\(simbolo)»: intervalos desordenados")
         }
-        XCTAssertEqual(interpretables, 9344)
+        #expect(interpretables == 9344)
     }
 
     static let estilos: [EstiloDeCifrado] = [
@@ -56,7 +57,7 @@ final class IdaYVueltaTests: XCTestCase {
     ]
 
     /// Lo mismo que la prueba anterior, en cada estilo de cifrado.
-    func testTodosLosEstilosSeVuelvenALeerIgual() {
+    @Test func todosLosEstilosSeVuelvenALeerIgual() {
         let posiciones = Self.posicionesDeAcorde
         for estilo in Self.estilos {
             var fallos = 0
@@ -69,16 +70,18 @@ final class IdaYVueltaTests: XCTestCase {
                 let simbolo = tipo.cifrado(estilo: estilo)
                 if TipoDeAcorde(texto: simbolo)?.pasosDeQuinta != conjunto {
                     fallos += 1
-                    if fallos <= 5 { XCTFail("«\(simbolo)» (\(estilo)) no se vuelve a leer como \(conjunto.sorted())") }
+                    if fallos <= 5 {
+                        Issue.record("«\(simbolo)» (\(estilo)) no se vuelve a leer como \(conjunto.sorted())")
+                    }
                 }
             }
-            XCTAssertEqual(fallos, 0, "\(estilo)")
+            #expect(fallos == 0, "\(estilo)")
         }
     }
 
     /// Acordes completos en cada estilo, con fundamentales que ponen a prueba la lectura
     /// (F/Fa, D/Do, dobles alteraciones) y todas las inversiones.
-    func testAcordesCompletosEnTodosLosEstilos() {
+    @Test func acordesCompletosEnTodosLosEstilos() {
         let fundamentales: [Nota] = ["Fa", "Re", "Do", "Fa#", "Sib", "Si", "Mibb", "Sol#"]
         for estilo in Self.estilos {
             for tipo in TipoDeAcorde.todos + ["7(b9,#11)", "m(add9)", "+9", "aug11", "7alt"] {
@@ -86,7 +89,7 @@ final class IdaYVueltaTests: XCTestCase {
                     for inversion in 0..<tipo.intervalos.count {
                         let acorde = Acorde(raiz, tipo, inversion: inversion)
                         let texto = acorde.cifrado(estilo: estilo)
-                        XCTAssertEqual(Acorde(texto: texto), acorde, "«\(texto)»")
+                        #expect(Acorde(texto: texto) == acorde, "«\(texto)»")
                     }
                 }
             }
@@ -94,7 +97,7 @@ final class IdaYVueltaTests: XCTestCase {
     }
 
     /// Acordes completos: fundamental + tipo + cada inversión posible + un bajo ajeno.
-    func testCifradosCompletosConFundamentalYBajo() {
+    @Test func cifradosCompletosConFundamentalYBajo() {
         let fundamentales: [Nota] = ["Do", "Fa#", "Sib", "Mi", "Sol#", "Dobb", "Si#"]
         let tipos: [TipoDeAcorde] =
             TipoDeAcorde.todos
@@ -103,101 +106,106 @@ final class IdaYVueltaTests: XCTestCase {
             for raiz in fundamentales {
                 for inversion in 0..<tipo.intervalos.count {
                     let acorde = Acorde(raiz, tipo, inversion: inversion)
-                    XCTAssertEqual(Acorde(texto: acorde.cifrado), acorde, acorde.cifrado)
+                    #expect(Acorde(texto: acorde.cifrado) == acorde, Comment(rawValue: acorde.cifrado))
                 }
                 let ajeno = Acorde(raiz, tipo, bajo: raiz + .segundaMenor)
-                XCTAssertEqual(Acorde(texto: ajeno.cifrado), ajeno, ajeno.cifrado)
+                #expect(Acorde(texto: ajeno.cifrado) == ajeno, Comment(rawValue: ajeno.cifrado))
             }
         }
     }
 
-    func testNombresDeNota() {
+    @Test func nombresDeNota() {
         for q in -35...35 {
             let nombre = Nota(pasosDeQuinta: q)
-            XCTAssertEqual(Nota(texto: nombre.nombre), nombre, nombre.nombre)
-            XCTAssertEqual(Nota(texto: nombre.nombreASCII), nombre, nombre.nombreASCII)
-            XCTAssertEqual(Nota(texto: nombre.nombre(en: .inglesASCII)), nombre, nombre.nombre(en: .inglesASCII))
+            #expect(Nota(texto: nombre.nombre) == nombre, Comment(rawValue: nombre.nombre))
+            #expect(Nota(texto: nombre.nombreASCII) == nombre, Comment(rawValue: nombre.nombreASCII))
+            #expect(
+                Nota(texto: nombre.nombre(en: .inglesASCII)) == nombre,
+                Comment(rawValue: nombre.nombre(en: .inglesASCII)))
             let unicode = nombre.nombre(en: .inglesUnicode)
-            XCTAssertEqual(Nota(texto: unicode), nombre, unicode)
+            #expect(Nota(texto: unicode) == nombre, Comment(rawValue: unicode))
         }
     }
 
-    func testNotas() {
+    @Test func notas() {
         for q in -21...21 {
             for o in -15...15 {
                 let nota = Altura(pasosDeQuinta: q, pasosDeOctava: o)
-                XCTAssertEqual(Altura(texto: nota.nombreCompleto), nota, nota.nombreCompleto)
-                XCTAssertEqual(Altura(texto: nota.nombre(en: .inglesASCII)), nota, nota.nombre(en: .inglesASCII))
-                XCTAssertEqual(Altura(texto: nota.nombre(en: .inglesUnicode)), nota)
-                XCTAssertEqual(Altura(nota.nota, octava: nota.octava), nota, nota.nombreCompleto)
+                #expect(Altura(texto: nota.nombreCompleto) == nota, Comment(rawValue: nota.nombreCompleto))
+                #expect(
+                    Altura(texto: nota.nombre(en: .inglesASCII)) == nota,
+                    Comment(rawValue: nota.nombre(en: .inglesASCII)))
+                #expect(Altura(texto: nota.nombre(en: .inglesUnicode)) == nota)
+                #expect(Altura(nota.nota, octava: nota.octava) == nota, Comment(rawValue: nota.nombreCompleto))
             }
         }
     }
 
-    func testIntervalos() {
+    @Test func intervalos() {
         for q in -21...21 {
             for o in -15...15 {
                 for sentido in [SentidoDelIntervalo.ascendente, .descendente] {
                     let intervalo = Intervalo(pasosDeQuinta: q, pasosDeOctava: o, sentido: sentido)
-                    XCTAssertEqual(Intervalo(texto: intervalo.abreviatura), intervalo, intervalo.abreviatura)
-                    XCTAssertEqual(
-                        Intervalo(texto: intervalo.abreviatura(en: .inglesASCII)), intervalo,
-                        intervalo.abreviatura(en: .inglesASCII))
-                    XCTAssertGreaterThanOrEqual(intervalo.pasos, 0)
+                    #expect(
+                        Intervalo(texto: intervalo.abreviatura) == intervalo, Comment(rawValue: intervalo.abreviatura))
+                    #expect(
+                        Intervalo(texto: intervalo.abreviatura(en: .inglesASCII)) == intervalo,
+                        Comment(rawValue: intervalo.abreviatura(en: .inglesASCII)))
+                    #expect(intervalo.pasos >= 0)
                 }
             }
         }
     }
 
-    func testCodableDeTodosLosTipos() throws {
+    @Test func codableDeTodosLosTipos() throws {
         let codificador = JSONEncoder()
         let decodificador = JSONDecoder()
         let acordes = TipoDeAcorde.todos.map { Acorde("Fa#", $0, inversion: 1) }
-        XCTAssertEqual(try decodificador.decode([Acorde].self, from: codificador.encode(acordes)), acordes)
+        #expect(try (decodificador.decode([Acorde].self, from: codificador.encode(acordes))) == acordes)
         let escalas = TipoDeEscala.todos.map { Escala("Mib", $0) }
-        XCTAssertEqual(try decodificador.decode([Escala].self, from: codificador.encode(escalas)), escalas)
+        #expect(try (decodificador.decode([Escala].self, from: codificador.encode(escalas))) == escalas)
     }
 }
 
-final class ConjuntoDeClasesExhaustivoTests: XCTestCase {
+@Suite struct ConjuntoDeClasesExhaustivoTests {
     /// Los 4096 subconjuntos de las doce clases caen en 224 clases (223 con nombre más el
     /// vacío), y transponer o invertir nunca cambia la clase ni el vector interválico.
-    func testTodosLosSubconjuntos() {
+    @Test func todosLosSubconjuntos() {
         var nombres = Set<String>()
         for mascara in 0..<(1 << 12) {
             let conjunto = ConjuntoDeClases((0..<12).filter { mascara & (1 << $0) != 0 })
             guard !conjunto.clases.isEmpty else { continue }
             guard let nombre = conjunto.numeroDeForte else {
-                XCTFail("Sin nombre de Forte: \(conjunto) → \(conjunto.formaPrima)")
+                Issue.record("Sin nombre de Forte: \(conjunto) → \(conjunto.formaPrima)")
                 continue
             }
             nombres.insert(nombre)
-            XCTAssertTrue(nombre.hasPrefix("\(conjunto.cardinalidad)-"), nombre)
+            #expect(nombre.hasPrefix("\(conjunto.cardinalidad)-"), Comment(rawValue: nombre))
             let otro = conjunto.transponer(mascara % 12).invertir(mascara % 7)
-            XCTAssertEqual(otro.formaPrima, conjunto.formaPrima)
-            XCTAssertEqual(otro.vectorIntervalico, conjunto.vectorIntervalico)
-            XCTAssertEqual(ConjuntoDeClases(conjunto.formaPrima).formaPrima, conjunto.formaPrima)
+            #expect(otro.formaPrima == conjunto.formaPrima)
+            #expect(otro.vectorIntervalico == conjunto.vectorIntervalico)
+            #expect(ConjuntoDeClases(conjunto.formaPrima).formaPrima == conjunto.formaPrima)
         }
-        XCTAssertEqual(nombres.count, 223)
-        XCTAssertEqual(nombres.filter { $0.contains("Z") }.count, 46)
+        #expect(nombres.count == 223)
+        #expect(nombres.filter { $0.contains("Z") }.count == 46)
     }
 }
 
-final class IdentificacionPorAlturaExhaustivaTests: XCTestCase {
+@Suite struct IdentificacionPorAlturaExhaustivaTests {
     /// Cada tipo predefinido, sobre las 12 fundamentales y en estado fundamental,
     /// debe identificarse primero desde MIDI (con cualquier ortografía enarmónica de la fundamental).
-    func testTodosLosTiposPredefinidosEnEstadoFundamental() {
+    @Test func todosLosTiposPredefinidosEnEstadoFundamental() {
         for tipo in TipoDeAcorde.todos {
             for raiz in 0..<12 {
                 let midi = tipo.intervalos.map { 48 + raiz + $0.semitonos }
                 guard let acorde = Acorde.identificar(midi: midi).first else {
-                    XCTFail("Nada para \(tipo.nombre) sobre \(raiz)")
+                    Issue.record("Nada para \(tipo.nombre) sobre \(raiz)")
                     continue
                 }
-                XCTAssertEqual(acorde.tipo, tipo, "\(tipo.nombre) sobre \(raiz): \(acorde.cifrado)")
-                XCTAssertEqual(acorde.fundamental.claseDeAltura, raiz, acorde.cifrado)
-                XCTAssertEqual(acorde.inversion, 0, acorde.cifrado)
-                XCTAssertLessThanOrEqual(acorde.fundamental.alteracion.numeroDeSignos, 1, acorde.cifrado)
+                #expect(acorde.tipo == tipo, "\(tipo.nombre) sobre \(raiz): \(acorde.cifrado)")
+                #expect(acorde.fundamental.claseDeAltura == raiz, Comment(rawValue: acorde.cifrado))
+                #expect(acorde.inversion == 0, Comment(rawValue: acorde.cifrado))
+                #expect(acorde.fundamental.alteracion.numeroDeSignos <= 1, Comment(rawValue: acorde.cifrado))
             }
         }
     }
@@ -205,8 +213,8 @@ final class IdentificacionPorAlturaExhaustivaTests: XCTestCase {
 
 /// Ida y vuelta en las numeraciones de Hewlett: toda nota y todo intervalo admitidos se
 /// convierten en un número y vuelven igual, y los números de los huecos no dan nada.
-final class BaseDeHewlettExhaustivaTests: XCTestCase {
-    func testIdaYVuelta() {
+@Suite struct BaseDeHewlettExhaustivaTests {
+    @Test func idaYVuelta() {
         for base in [BaseDeHewlett.base40, .base54, BaseDeHewlett(alteracionMaxima: 6)] {
             let m = base.alteracionMaxima
             var notas = 0
@@ -215,21 +223,21 @@ final class BaseDeHewlettExhaustivaTests: XCTestCase {
                     for octava in -1...9 {
                         let nota = Altura(Nota(letra, Alteracion(alteracion)), octava: octava)
                         guard let numero = nota.numero(en: base) else {
-                            XCTFail("\(nota) en \(base)")
+                            Issue.record("\(nota) en \(base)")
                             continue
                         }
-                        XCTAssertEqual(Altura(numero: numero, en: base), nota, "\(nota) en \(base)")
+                        #expect(Altura(numero: numero, en: base) == nota, "\(nota) en \(base)")
                         notas += 1
                     }
                 }
             }
             // Cada octava tiene 7·(2m + 1) notas y 5 huecos.
             let validos = (0..<base.base).filter { Altura(numero: 4 * base.base + $0, en: base) != nil }.count
-            XCTAssertEqual(validos, 7 * (2 * m + 1))
-            XCTAssertEqual(notas, 7 * (2 * m + 1) * 11)
+            #expect(validos == (7 * (2 * m + 1)))
+            #expect(notas == (7 * (2 * m + 1) * 11))
             for numero in -3 * base.base...3 * base.base {
                 if let intervalo = Intervalo(numero: numero, en: base) {
-                    XCTAssertEqual(intervalo.numero(en: base), numero, "\(intervalo) en \(base)")
+                    #expect(intervalo.numero(en: base) == numero, "\(intervalo) en \(base)")
                 }
             }
         }

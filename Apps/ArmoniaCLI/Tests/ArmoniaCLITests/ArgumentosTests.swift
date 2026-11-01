@@ -1,57 +1,60 @@
 import Armonia
-import XCTest
+import Foundation
+import Testing
 
 @testable import ArmoniaCLI
 
-final class ArgumentosTests: XCTestCase {
-    func testMarcas() {
+@Suite struct ArgumentosTests {
+    @Test func marcas() {
         var argumentos = Argumentos(["Sol7", "--diagrama", "Do", "--diagram"])
-        XCTAssertTrue(argumentos.quitarMarca("--diagrama", "--diagram"))
-        XCTAssertEqual(argumentos.restantes, ["Sol7", "Do"])
-        XCTAssertFalse(argumentos.quitarMarca("--completo"))
+        let quitada = argumentos.quitarMarca("--diagrama", "--diagram")
+        #expect(quitada)
+        #expect(argumentos.restantes == ["Sol7", "Do"])
+        let ausente = argumentos.quitarMarca("--completo")
+        #expect(!ausente)
     }
 
-    func testOpciones() {
+    @Test func opciones() {
         var argumentos = Argumentos(["Sol7", "--instrument", "ukelele", "--limite"])
-        XCTAssertEqual(argumentos.quitarOpcion("--instrumento", "--instrument"), .valor("ukelele"))
-        XCTAssertEqual(argumentos.quitarOpcion("--limite", "--limit"), .sinValor(nombre: "limite"))
-        XCTAssertEqual(argumentos.quitarOpcion("--dedos"), .ausente)
-        XCTAssertEqual(argumentos.restantes, ["Sol7"])
+        #expect(argumentos.quitarOpcion("--instrumento", "--instrument") == .valor("ukelele"))
+        #expect(argumentos.quitarOpcion("--limite", "--limit") == .sinValor(nombre: "limite"))
+        #expect(argumentos.quitarOpcion("--dedos") == .ausente)
+        #expect(argumentos.restantes == ["Sol7"])
         // Otra opción no es un valor.
         var seguidas = Argumentos(["--language", "--textos", "es"])
-        XCTAssertEqual(seguidas.quitarOpcion("--idioma", "--language"), .sinValor(nombre: "language"))
-        XCTAssertEqual(seguidas.opcionDesconocida, "--textos")
+        #expect(seguidas.quitarOpcion("--idioma", "--language") == .sinValor(nombre: "language"))
+        #expect(seguidas.opcionDesconocida == "--textos")
     }
 
-    func testNumeros() {
+    @Test func numeros() {
         var argumentos = Argumentos(["Sol7", "--voces", "2"])
-        XCTAssertEqual(argumentos.quitarNumero("--voces", "--voices", en: 1...2, porDefecto: 1), 2)
-        XCTAssertEqual(argumentos.quitarNumero("--voces", "--voices", en: 1...2, porDefecto: 1), 1)
-        XCTAssertEqual(argumentos.restantes, ["Sol7"])
+        #expect(argumentos.quitarNumero("--voces", "--voices", en: 1...2, porDefecto: 1) == 2)
+        #expect(argumentos.quitarNumero("--voces", "--voices", en: 1...2, porDefecto: 1) == 1)
+        #expect(argumentos.restantes == ["Sol7"])
         var fuera = Argumentos(["--voces", "3"])
-        XCTAssertNil(fuera.quitarNumero("--voces", en: 1...2, porDefecto: 1))
+        #expect(fuera.quitarNumero("--voces", en: 1...2, porDefecto: 1) == nil)
         var sinNumero = Argumentos(["--voces"])
-        XCTAssertNil(sinNumero.quitarNumero("--voces", en: 1...2, porDefecto: 1))
+        #expect(sinNumero.quitarNumero("--voces", en: 1...2, porDefecto: 1) == nil)
     }
 
-    func testLaTonalidadSeLlevaElResto() throws {
+    @Test func laTonalidadSeLlevaElResto() throws {
         var argumentos = Argumentos(["Do", "Fa", "Sol7", "--en", "La", "menor"])
-        XCTAssertEqual(try argumentos.quitarTonalidad(), .some(Tonalidad(.la, .menor)))
-        XCTAssertEqual(argumentos.unidos, "Do Fa Sol7")
+        #expect(try (argumentos.quitarTonalidad()) == .some(Tonalidad(.la, .menor)))
+        #expect(argumentos.unidos == "Do Fa Sol7")
         var sinTonalidad = Argumentos(["Do"])
-        XCTAssertEqual(try sinTonalidad.quitarTonalidad(), .some(nil))
+        #expect(try (sinTonalidad.quitarTonalidad()) == .some(nil))
         var alFinal = Argumentos(["Do", "--in"])
-        XCTAssertNil(try alFinal.quitarTonalidad())
+        #expect(try (alFinal.quitarTonalidad()) == nil)
     }
 
-    func testLasOpcionesConTextoTomanHastaLaSiguiente() {
+    @Test func lasOpcionesConTextoTomanHastaLaSiguiente() {
         var argumentos = Argumentos([
             "Do", "Re", "--Titulo", "Mi", "canción", "--análisis", "Fa", "--pattern", "alberti", "--tempo",
         ])
         let (opciones, marcas) = argumentos.quitarOpcionesConTexto(
             marcas: ["analisis": "analisis", "análisis": "analisis"], alias: [("pattern", "patron")])
-        XCTAssertEqual(opciones, ["titulo": "Mi canción", "patron": "alberti", "tempo": ""])
-        XCTAssertEqual(marcas, ["analisis"])
-        XCTAssertEqual(argumentos.restantes, ["Do", "Re", "Fa"])
+        #expect(opciones == ["titulo": "Mi canción", "patron": "alberti", "tempo": ""])
+        #expect(marcas == ["analisis"])
+        #expect(argumentos.restantes == ["Do", "Re", "Fa"])
     }
 }

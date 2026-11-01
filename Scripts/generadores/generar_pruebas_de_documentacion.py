@@ -175,8 +175,9 @@ def generar():
                         if usos(v, codigo_solo) == 1]
             if sin_usar:
                 cuerpo.append(f"        _ = {sin_usar[0]}" if len(sin_usar) == 1 else f"        _ = ({', '.join(sin_usar)})")
-            nombre = f"test{base}{indice}"
-            funciones.append(f"    func {nombre}() throws {{\n" + "\n".join(cuerpo) + "\n    }")
+            # «README» → «readme», «Acordes» → «acordes».
+            nombre = re.sub(r"^[A-Z]+?(?=[A-Z][a-z]|\d|$)|^[A-Z]", lambda m: m.group(0).lower(), base) + str(indice)
+            funciones.append(f"    @Test func {nombre}() throws {{\n" + "\n".join(cuerpo) + "\n    }")
     return CABECERA + "\n\n".join(funciones) + "\n}\n"
 
 
@@ -185,11 +186,11 @@ CABECERA = '''// swift-format-ignore-file
 // del README y del catálogo DocC. No lo edites a mano: cambia el ejemplo y vuelve a generarlo.
 
 import Foundation
-import XCTest
+import Testing
 @testable import Armonia
 import Hexagonos
 
-final class EjemplosDeDocumentacionTests: XCTestCase {
+@Suite struct EjemplosDeDocumentacionTests {
 '''
 
 

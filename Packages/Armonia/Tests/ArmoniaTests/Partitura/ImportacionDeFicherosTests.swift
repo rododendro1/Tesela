@@ -1,5 +1,5 @@
 import Foundation
-import XCTest
+import Testing
 
 @testable import Armonia
 @testable import ArmoniaNucleo
@@ -10,7 +10,7 @@ import XCTest
 // formato 1 con la pista de tempo aparte, uno de formato 0 con varios canales, y un MusicXML con la cabecera,
 // los pentagramas y las voces de MuseScore. Así la lectura no se prueba solo contra nuestra propia escritura.
 
-final class ImportacionDeFicherosTests: XCTestCase {
+@Suite struct ImportacionDeFicherosTests {
     private func nombres(_ pieza: PiezaImportada) -> [String] { pieza.notas.map(\.altura.nombre) }
 
     // MARK: MIDI
@@ -34,7 +34,7 @@ final class ImportacionDeFicherosTests: XCTestCase {
         return [0x00, 0xFF, tipo, UInt8(bytes.count)] + bytes
     }
 
-    func testUnMIDIDeFormato1ConLaPistaDeTempoAparte() throws {
+    @Test func unMIDIDeFormato1ConLaPistaDeTempoAparte() throws {
         // Lo que exportan los secuenciadores: la primera pista solo lleva el título, el tempo, el compás y la
         // armadura; cada instrumento va en su pista, con su nombre, y la percusión en el canal 10.
         let tempo = pista(
@@ -73,20 +73,20 @@ final class ImportacionDeFicherosTests: XCTestCase {
             + tempo + melodia + bajo + percusion
         let pieza = try PiezaImportada(leyendo: Data(datos))
 
-        XCTAssertEqual(pieza.titulo, "Minueto") // no "Piano": el nombre de una pista no es el título
-        XCTAssertEqual(pieza.tempo, Tempo(120))
-        XCTAssertEqual(pieza.compas, Compas(3, 4))
-        XCTAssertEqual(pieza.tonalidad, Tonalidad(.sol))
+        #expect(pieza.titulo == "Minueto") // no "Piano": el nombre de una pista no es el título
+        #expect(pieza.tempo == Tempo(120))
+        #expect(pieza.compas == Compas(3, 4))
+        #expect(pieza.tonalidad == Tonalidad(.sol))
         // La armadura da la ortografía: Fa♯, no Sol♭.
-        XCTAssertEqual(nombres(pieza), ["Sol2", "Sol4", "Fa♯4", "Sol4"])
-        XCTAssertEqual(pieza.notas.map(\.inicio), [.cero, .cero, .negra, .blanca])
-        XCTAssertEqual(pieza.notas.map(\.duracion), [Duracion(3, 4), .negra, .negra, .negra])
+        #expect(nombres(pieza) == ["Sol2", "Sol4", "Fa♯4", "Sol4"])
+        #expect(pieza.notas.map(\.inicio) == [.cero, .cero, .negra, .blanca])
+        #expect(pieza.notas.map(\.duracion) == [Duracion(3, 4), .negra, .negra, .negra])
         // La melodía sale antes en el fichero: es la parte 0.
-        XCTAssertEqual(pieza.notas.map(\.parte), [1, 0, 0, 0])
-        XCTAssertEqual(pieza.duracion, Duracion(3, 4))
+        #expect(pieza.notas.map(\.parte) == [1, 0, 0, 0])
+        #expect(pieza.duracion == Duracion(3, 4))
     }
 
-    func testUnMIDIDeFormato0ConVariosCanalesYSinArmadura() throws {
+    @Test func unMIDIDeFormato0ConVariosCanalesYSinArmadura() throws {
         // Una sola pista con dos canales mezclados: los acordes en el 1, el bajo en el 2. Sin armadura, la
         // ortografía sale de la tonalidad que mejor explica las notas.
         let eventos: [UInt8] = [
@@ -112,19 +112,19 @@ final class ImportacionDeFicherosTests: XCTestCase {
             0x00, 0x40, 0x00,
         ]
         let pieza = try PiezaImportada(midi: Data(cabecera(formato: 0, pistas: 1, divisiones: 120) + pista(eventos)))
-        XCTAssertNil(pieza.titulo)
-        XCTAssertNil(pieza.tonalidad)
-        XCTAssertNil(pieza.compas)
-        XCTAssertNil(pieza.tempo)
-        XCTAssertEqual(pieza.tonalidadEstimada, Tonalidad(.la, .menor))
-        XCTAssertEqual(nombres(pieza), ["La2", "Do4", "Mi4", "Mi2", "Re4", "Sol♯4", "Si4", "La2", "Do4", "Mi4"])
-        XCTAssertEqual(Set(pieza.notas.map(\.duracion)), [.negra])
+        #expect(pieza.titulo == nil)
+        #expect(pieza.tonalidad == nil)
+        #expect(pieza.compas == nil)
+        #expect(pieza.tempo == nil)
+        #expect(pieza.tonalidadEstimada == Tonalidad(.la, .menor))
+        #expect(nombres(pieza) == ["La2", "Do4", "Mi4", "Mi2", "Re4", "Sol♯4", "Si4", "La2", "Do4", "Mi4"])
+        #expect(Set(pieza.notas.map(\.duracion)) == [.negra])
         // Los dos canales de la misma pista son dos partes.
-        XCTAssertEqual(Set(pieza.notas.map(\.parte)), [0, 1])
-        XCTAssertEqual(pieza.acordes().map(\.cifrado), ["Lam", "Mi7", "Lam"])
+        #expect(Set(pieza.notas.map(\.parte)) == [0, 1])
+        #expect(pieza.acordes().map(\.cifrado) == ["Lam", "Mi7", "Lam"])
     }
 
-    func testLasNotasRepetidasYLasQueNoSeCierran() throws {
+    @Test func lasNotasRepetidasYLasQueNoSeCierran() throws {
         let eventos: [UInt8] = [
             0x00, 0xFF, 0x59, 0x02, 0x00, 0x00, // Do mayor
             0x00, 0x90, 0x3C, 0x64, // Do4
@@ -136,30 +136,34 @@ final class ImportacionDeFicherosTests: XCTestCase {
             0x81, 0x70, 0x90, 0x3C, 0x00,
         ]
         let pieza = try PiezaImportada(midi: Data(cabecera(formato: 0, pistas: 1, divisiones: 120) + pista(eventos)))
-        XCTAssertEqual(nombres(pieza), ["Do4", "Do4", "Mi4"])
-        XCTAssertEqual(pieza.notas.map(\.inicio), [.cero, .corchea, .negra])
-        XCTAssertEqual(pieza.notas.map(\.duracion), [.corchea, .corchea, .blanca])
+        #expect(nombres(pieza) == ["Do4", "Do4", "Mi4"])
+        #expect(pieza.notas.map(\.inicio) == [.cero, .corchea, .negra])
+        #expect(pieza.notas.map(\.duracion) == [.corchea, .corchea, .blanca])
     }
 
-    func testUnMIDIConMasPistasDeLasQueTieneNoSeCuelga() throws {
+    @Test func unMIDIConMasPistasDeLasQueTieneNoSeCuelga() throws {
         // La cabecera dice tres pistas, pero el fichero acaba tras la primera.
         let datos = cabecera(formato: 1, pistas: 3, divisiones: 96) + pista([0x00, 0x90, 0x3C, 0x64, 0x60, 0x3C, 0x00])
         let pieza = try PiezaImportada(midi: Data(datos))
-        XCTAssertEqual(nombres(pieza), ["Do4"])
+        #expect(nombres(pieza) == ["Do4"])
     }
 
-    func testUnaPistaCortadaEsUnMIDIDanado() {
+    @Test func unaPistaCortadaEsUnMIDIDanado() throws {
         // El largo de la pista dice más bytes de los que hay.
         var datos = cabecera(formato: 0, pistas: 1, divisiones: 96) + pista([0x00, 0x90, 0x3C, 0x64, 0x60, 0x3C, 0x00])
         datos.removeLast(3)
-        XCTAssertThrowsError(try PiezaImportada(midi: Data(datos))) { error in
-            XCTAssertEqual(error as? ErrorDeImportacion, .midiDanado)
+        do {
+            _ = try PiezaImportada(midi: Data(datos))
+            Issue.record("Se esperaba un error")
+        } catch {
+            #expect((error as? ErrorDeImportacion) == .midiDanado)
+
         }
     }
 
     // MARK: MusicXML
 
-    func testUnMusicXMLComoLoExportaMuseScore() throws {
+    @Test func unMusicXMLComoLoExportaMuseScore() throws {
         // Con la declaración de tipo de documento, la identificación y la maquetación, que no interesan; un piano
         // con dos pentagramas (la mano izquierda vuelve atrás con `<backup>` y avanza con `<forward>`), una
         // ligadura que cruza la barra, un cambio de armadura en el segundo compás (cuenta la primera), un
@@ -267,25 +271,23 @@ final class ImportacionDeFicherosTests: XCTestCase {
             </score-partwise>
             """
         let pieza = try PiezaImportada(leyendo: Data(xml.utf8))
-        XCTAssertEqual(pieza.titulo, "Sonatina")
-        XCTAssertEqual(pieza.tonalidad, Tonalidad(armadura: -1))
-        XCTAssertEqual(pieza.compas, .compasillo)
-        XCTAssertEqual(pieza.tempo, Tempo(96))
-        XCTAssertEqual(nombres(pieza), ["Fa2", "Do3", "Fa4", "La4", "La2", "Si♭4", "Do3", "Do5"])
-        XCTAssertEqual(
-            pieza.notas.map(\.inicio),
-            [
+        #expect(pieza.titulo == "Sonatina")
+        #expect(pieza.tonalidad == Tonalidad(armadura: -1))
+        #expect(pieza.compas == .compasillo)
+        #expect(pieza.tempo == Tempo(96))
+        #expect(nombres(pieza) == ["Fa2", "Do3", "Fa4", "La4", "La2", "Si♭4", "Do3", "Do5"])
+        #expect(
+            pieza.notas.map(\.inicio) == [
                 .cero, .cero, .cero, .blanca, .redonda, Duracion(5, 4),
                 Duracion(3, 2), Duracion(3, 2),
             ])
         // El La4 ligado dura una blanca y una negra.
-        XCTAssertEqual(
-            pieza.notas.map(\.duracion),
-            [
+        #expect(
+            pieza.notas.map(\.duracion) == [
                 .redonda, .redonda, .blanca, Duracion(3, 4), .redonda, .negra,
                 .blanca, .blanca,
             ])
-        XCTAssertEqual(pieza.notas.map(\.parte), [0, 0, 0, 0, 1, 0, 0, 0])
-        XCTAssertEqual(pieza.duracion, Duracion(2))
+        #expect(pieza.notas.map(\.parte) == [0, 0, 0, 0, 1, 0, 0, 0])
+        #expect(pieza.duracion == Duracion(2))
     }
 }

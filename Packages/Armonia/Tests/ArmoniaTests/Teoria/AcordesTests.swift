@@ -1,4 +1,5 @@
-import XCTest
+import Foundation
+import Testing
 
 @testable import Armonia
 @testable import ArmoniaNucleo
@@ -6,121 +7,113 @@ import XCTest
 @testable import ArmoniaRepresentaciones
 @testable import ArmoniaTeoria
 
-final class AcordeTests: XCTestCase {
-    func testNotas() {
-        XCTAssertEqual(Acorde(.do, .mayor).notas, [.do, .mi, .sol])
-        XCTAssertEqual(Acorde("Sol7").notas.map(\.nombre), ["Sol", "Si", "Re", "Fa"])
-        XCTAssertEqual(Acorde("Fa#m7b5").notas.map(\.nombre), ["Fa♯", "La", "Do", "Mi"])
-        XCTAssertEqual(Acorde("Mib°7").notas.map(\.nombre), ["Mi♭", "Sol♭", "Si♭♭", "Re♭♭"])
-        XCTAssertEqual(Acorde("Do6/9").notas.map(\.nombre), ["Do", "Mi", "Sol", "La", "Re"])
-        XCTAssertEqual(Acorde("Do6/9").bajo, .do)
-        XCTAssertEqual(Acorde("Rem11").notas.count, 6)
+@Suite struct AcordeTests {
+    @Test func notas() {
+        #expect(Acorde(.do, .mayor).notas == [.do, .mi, .sol])
+        #expect(Acorde("Sol7").notas.map(\.nombre) == ["Sol", "Si", "Re", "Fa"])
+        #expect(Acorde("Fa#m7b5").notas.map(\.nombre) == ["Fa♯", "La", "Do", "Mi"])
+        #expect(Acorde("Mib°7").notas.map(\.nombre) == ["Mi♭", "Sol♭", "Si♭♭", "Re♭♭"])
+        #expect(Acorde("Do6/9").notas.map(\.nombre) == ["Do", "Mi", "Sol", "La", "Re"])
+        #expect(Acorde("Do6/9").bajo == .do)
+        #expect(Acorde("Rem11").notas.count == 6)
     }
 
-    func testCifrado() {
-        XCTAssertEqual(Acorde("Rem7").cifrado, "Rem7")
-        XCTAssertEqual(Acorde("Dm7").cifrado, "Rem7")
-        XCTAssertEqual(Acorde("G7(b9,#11)").cifrado, "Sol7(♭9,♯11)")
-        XCTAssertEqual(Acorde("Sol7/Si").inversion, 1)
-        XCTAssertEqual(Acorde("Sol7/Si").bajo, .si)
-        XCTAssertEqual(Acorde("Sol7/Si").cifrado, "Sol7/Si")
-        XCTAssertEqual(Acorde("Do6/9/Mi").cifrado, "Do6/9/Mi")
-        XCTAssertNil(Acorde(texto: "Doxyz"))
+    @Test func cifrado() {
+        #expect(Acorde("Rem7").cifrado == "Rem7")
+        #expect(Acorde("Dm7").cifrado == "Rem7")
+        #expect(Acorde("G7(b9,#11)").cifrado == "Sol7(♭9,♯11)")
+        #expect(Acorde("Sol7/Si").inversion == 1)
+        #expect(Acorde("Sol7/Si").bajo == .si)
+        #expect(Acorde("Sol7/Si").cifrado == "Sol7/Si")
+        #expect(Acorde("Do6/9/Mi").cifrado == "Do6/9/Mi")
+        #expect(Acorde(texto: "Doxyz") == nil)
     }
 
-    func testNombreDeLaInversion() {
-        XCTAssertEqual(Acorde.nombreDeLaInversion(0, en: .espanolUnicode), "estado fundamental")
-        XCTAssertEqual(Acorde.nombreDeLaInversion(1, en: .inglesASCII), "first inversion")
-        XCTAssertEqual(Acorde.nombreDeLaInversion(6, en: .espanolUnicode), "sexta inversión")
-        XCTAssertEqual(Acorde.nombreDeLaInversion(2, en: .aleman), "zweite Umkehrung")
-        XCTAssertEqual(Acorde.nombreDeLaInversion(7, en: .espanolUnicode), "inversión 7")
-        XCTAssertEqual(Acorde.nombreDeLaInversion(7, en: .aleman), "7. Umkehrung")
-        XCTAssertTrue(Acorde("Sol7/Si").nombre(en: .frances).hasSuffix(", premier renversement"))
+    @Test func nombreDeLaInversion() {
+        #expect(Acorde.nombreDeLaInversion(0, en: .espanolUnicode) == "estado fundamental")
+        #expect(Acorde.nombreDeLaInversion(1, en: .inglesASCII) == "first inversion")
+        #expect(Acorde.nombreDeLaInversion(6, en: .espanolUnicode) == "sexta inversión")
+        #expect(Acorde.nombreDeLaInversion(2, en: .aleman) == "zweite Umkehrung")
+        #expect(Acorde.nombreDeLaInversion(7, en: .espanolUnicode) == "inversión 7")
+        #expect(Acorde.nombreDeLaInversion(7, en: .aleman) == "7. Umkehrung")
+        #expect(Acorde("Sol7/Si").nombre(en: .frances).hasSuffix(", premier renversement"))
     }
 
-    func testBajoAjeno() {
+    @Test func bajoAjeno() {
         let acorde = Acorde("Do/Re")
-        XCTAssertTrue(acorde.tieneBajoAjeno)
-        XCTAssertNil(acorde.inversion)
-        XCTAssertEqual(acorde.cifrado, "Do/Re")
-        XCTAssertEqual(acorde.posicionCerrada(octava: 3).map(\.description), ["Re3", "Do4", "Mi4", "Sol4"])
-        XCTAssertEqual(acorde.transponer(.segundaMayor).cifrado, "Re/Mi")
+        #expect(acorde.tieneBajoAjeno)
+        #expect(acorde.inversion == nil)
+        #expect(acorde.cifrado == "Do/Re")
+        #expect(acorde.posicionCerrada(octava: 3).map(\.description) == ["Re3", "Do4", "Mi4", "Sol4"])
+        #expect(acorde.transponer(.segundaMayor).cifrado == "Re/Mi")
     }
 
-    func testDisposicion() {
-        XCTAssertEqual(
-            Acorde("Do/Mi").posicionCerrada(octava: 4).map(\.description),
-            ["Mi4", "Sol4", "Do5"])
-        XCTAssertEqual(
-            Acorde("Do9").posicionCerrada(octava: 3).map(\.description),
-            ["Do3", "Mi3", "Sol3", "Si♭3", "Re4"])
+    @Test func disposicion() {
+        #expect(Acorde("Do/Mi").posicionCerrada(octava: 4).map(\.description) == ["Mi4", "Sol4", "Do5"])
+        #expect(Acorde("Do9").posicionCerrada(octava: 3).map(\.description) == ["Do3", "Mi3", "Sol3", "Si♭3", "Re4"])
     }
 
-    func testIdentificacion() {
-        XCTAssertEqual(Acorde.identificar([.mi, .sol, .do]).first, Acorde(.do, .mayor, inversion: 1))
+    @Test func identificacion() {
+        #expect(Acorde.identificar([.mi, .sol, .do]).first == Acorde(.do, .mayor, inversion: 1))
 
         let ambiguo = Acorde.identificar([Nota.la, .do, .mi, .sol]).map(\.cifrado)
-        XCTAssertEqual(ambiguo.first, "Lam7")
-        XCTAssertTrue(ambiguo.contains("Do6/La"))
+        #expect(ambiguo.first == "Lam7")
+        #expect(ambiguo.contains("Do6/La"))
 
         let porAltura = Acorde.identificar([Altura("Fa4"), Altura("Si3"), Altura("Re4"), Altura("Sol3")])
-        XCTAssertEqual(porAltura.first?.cifrado, "Sol7")
+        #expect(porAltura.first?.cifrado == "Sol7")
 
         // La ortografía importa: Do–Mi–Sol♯ es Do aumentado; Do–Mi–La♭ es La♭ aumentado sobre Do.
-        XCTAssertEqual(Acorde.identificar([.do, .mi, Nota("Sol#")]).first, Acorde(.do, .aumentado))
-        XCTAssertEqual(
-            Acorde.identificar([.do, .mi, Nota("Lab")]).first,
-            Acorde(Nota("Lab"), .aumentado, inversion: 1))
+        #expect(Acorde.identificar([.do, .mi, Nota("Sol#")]).first == Acorde(.do, .aumentado))
+        #expect(Acorde.identificar([.do, .mi, Nota("Lab")]).first == Acorde(Nota("Lab"), .aumentado, inversion: 1))
     }
 
-    func testSextasAumentadas() throws {
+    @Test func sextasAumentadas() throws {
         let italiana = try Acorde(leyendo: "Lab(#6,omit5)")
-        XCTAssertEqual(italiana.notas, ["La♭", "Do", "Fa♯"])
-        XCTAssertEqual(italiana.tipo.nombre, "sexta aumentada italiana")
-        XCTAssertEqual(italiana.tipo.estructura.papel(de: .sextaAumentada), .sexta)
-        XCTAssertEqual(Acorde.identificar(["La♭", "Do", "Fa♯"] as [Nota]).first?.description, "La♭(♯6,omit5)")
-        XCTAssertEqual(Acorde.identificar(["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.description, "La♭(♯6)")
-        XCTAssertEqual(
-            Acorde.identificar(["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.tipo.nombre(en: .inglesASCII),
-            "German augmented sixth")
+        #expect(italiana.notas == ["La♭", "Do", "Fa♯"])
+        #expect(italiana.tipo.nombre == "sexta aumentada italiana")
+        #expect(italiana.tipo.estructura.papel(de: .sextaAumentada) == .sexta)
+        #expect(Acorde.identificar(["La♭", "Do", "Fa♯"] as [Nota]).first?.description == "La♭(♯6,omit5)")
+        #expect(Acorde.identificar(["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.description == "La♭(♯6)")
+        #expect(
+            Acorde.identificar(["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.tipo.nombre(en: .inglesASCII)
+                == "German augmented sixth")
         let francesa = Acorde.identificar(["La♭", "Do", "Re", "Fa♯"] as [Nota])
-        XCTAssertTrue(
+        #expect(
             francesa.contains { $0.description == "La♭(♯6,♯11,omit5)" && $0.tipo.nombre == "sexta aumentada francesa" })
     }
 
-    func testIdentificacionTolerante() {
+    @Test func identificacionTolerante() {
         // Quinta omitida.
         let sinQuinta = Acorde.candidatos([.do, .mi, Nota("Sib")]).first
-        XCTAssertEqual(sinQuinta?.valor.cifrado, "Do7")
-        XCTAssertEqual(sinQuinta?.omitidas, [.sol])
+        #expect(sinQuinta?.valor.cifrado == "Do7")
+        #expect(sinQuinta?.omitidas == [.sol])
 
         // Notas duplicadas.
-        XCTAssertEqual(Acorde.identificar([.do, .mi, .sol, .do, .mi]).first?.cifrado, "Do")
+        #expect(Acorde.identificar([.do, .mi, .sol, .do, .mi]).first?.cifrado == "Do")
 
         // Tensiones alteradas.
-        XCTAssertEqual(
-            Acorde.identificar([.do, .mi, Nota("Sib"), Nota("Reb")]).first?.cifrado,
-            "Do7(♭9)")
+        #expect(Acorde.identificar([.do, .mi, Nota("Sib"), Nota("Reb")]).first?.cifrado == "Do7(♭9)")
 
         // Bajo ajeno al acorde.
         let conBajo = Acorde.identificar([.re, .do, .mi, .sol]).map(\.cifrado)
-        XCTAssertTrue(conBajo.contains("Do/Re"))
+        #expect(conBajo.contains("Do/Re"))
 
         // Los costes salen ordenados.
         let costes = Acorde.candidatos([.re, .do, .mi, .sol]).map(\.coste)
-        XCTAssertEqual(costes, costes.sorted())
+        #expect(costes == costes.sorted())
 
-        XCTAssertTrue(Acorde.identificar([.do, Nota("Do#")]).isEmpty)
+        #expect(Acorde.identificar([.do, Nota("Do#")]).isEmpty)
     }
 
-    func testTransposicion() {
-        XCTAssertEqual(Acorde("Sol7").transponer(.cuartaJusta).cifrado, "Do7")
-        XCTAssertEqual(Acorde("Rem").transponer(.segundaMenor).cifrado, "Mi♭m")
+    @Test func transposicion() {
+        #expect(Acorde("Sol7").transponer(.cuartaJusta).cifrado == "Do7")
+        #expect(Acorde("Rem").transponer(.segundaMenor).cifrado == "Mi♭m")
     }
 }
 
-final class TipoDeAcordeTests: XCTestCase {
-    func testCifradoGenerativo() {
+@Suite struct TipoDeAcordeTests {
+    @Test func cifradoGenerativo() {
         let casos: [(String, String)] = [
             ("", ""), ("M", ""), ("m", "m"), ("min", "m"), ("dim", "°"), ("aug", "+"),
             ("5", "5"), ("sus", "sus4"), ("sus2", "sus2"),
@@ -141,49 +134,46 @@ final class TipoDeAcordeTests: XCTestCase {
         ]
         for (entrada, esperado) in casos {
             guard let tipo = TipoDeAcorde(texto: entrada) else {
-                XCTFail("No se pudo leer «\(entrada)»")
+                Issue.record("No se pudo leer «\(entrada)»")
                 continue
             }
-            XCTAssertEqual(tipo.cifrado, esperado, "«\(entrada)»")
+            #expect(tipo.cifrado == esperado, "«\(entrada)»")
             // Lo que se genera se vuelve a leer igual.
-            XCTAssertEqual(TipoDeAcorde(texto: tipo.cifrado), tipo, "ida y vuelta de «\(entrada)»")
+            #expect(TipoDeAcorde(texto: tipo.cifrado) == tipo, "ida y vuelta de «\(entrada)»")
         }
     }
 
-    func testCifradosNoValidos() {
+    @Test func cifradosNoValidos() {
         for texto in ["xyz", "7(b3)", "dimø", "7 9", "add", "omit"] {
-            XCTAssertNil(TipoDeAcorde(texto: texto), texto)
+            #expect(TipoDeAcorde(texto: texto) == nil, Comment(rawValue: texto))
         }
     }
 
-    func testIdaYVueltaDeLosPredefinidos() {
+    @Test func idaYVueltaDeLosPredefinidos() {
         for tipo in TipoDeAcorde.todos {
-            XCTAssertEqual(TipoDeAcorde(texto: tipo.cifrado), tipo, tipo.nombre)
+            #expect(TipoDeAcorde(texto: tipo.cifrado) == tipo, Comment(rawValue: tipo.nombre))
         }
     }
 
-    func testIgualdadPorContenido() {
-        XCTAssertEqual(TipoDeAcorde("add2"), TipoDeAcorde("add9"))
-        XCTAssertEqual(
-            TipoDeAcorde(intervalos: [.unisono, .terceraMayor, .quintaJusta, .segundaMayor]),
-            .mayorNovenaAnadida)
-        XCTAssertEqual(TipoDeAcorde("m7b5"), .semidisminuido)
-        XCTAssertEqual(Set([TipoDeAcorde("Δ"), TipoDeAcorde("maj7"), TipoDeAcorde.mayorSeptimaMayor]).count, 1)
-        XCTAssertNotEqual(TipoDeAcorde.mayorSexta, TipoDeAcorde.menorSeptima)
+    @Test func igualdadPorContenido() {
+        #expect(TipoDeAcorde("add2") == TipoDeAcorde("add9"))
+        #expect(
+            TipoDeAcorde(intervalos: [.unisono, .terceraMayor, .quintaJusta, .segundaMayor]) == .mayorNovenaAnadida)
+        #expect(TipoDeAcorde("m7b5") == .semidisminuido)
+        #expect(Set([TipoDeAcorde("Δ"), TipoDeAcorde("maj7"), TipoDeAcorde.mayorSeptimaMayor]).count == 1)
+        #expect(TipoDeAcorde.mayorSexta != TipoDeAcorde.menorSeptima)
     }
 
-    func testDisposicionYNombres() {
-        XCTAssertEqual(
-            TipoDeAcorde("9").intervalos,
-            [.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMayor])
-        XCTAssertEqual(TipoDeAcorde("7(b9,#11)").tensiones, [.novenaMenor, .undecimaAumentada])
-        XCTAssertEqual(TipoDeAcorde("7(b9)").nombre, "séptima con novena menor")
-        XCTAssertEqual(TipoDeAcorde("7(b9,#11)").nombre, "acorde 7(♭9,♯11)")
-        XCTAssertEqual(TipoDeAcorde.dominanteSeptima.anadir(.novenaMayor), .dominanteNovena)
-        XCTAssertEqual(TipoDeAcorde.dominanteNovena.quitar(.quintaJusta)?.cifrado, "9(omit5)")
+    @Test func disposicionYNombres() {
+        #expect(TipoDeAcorde("9").intervalos == [.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMayor])
+        #expect(TipoDeAcorde("7(b9,#11)").tensiones == [.novenaMenor, .undecimaAumentada])
+        #expect(TipoDeAcorde("7(b9)").nombre == "séptima con novena menor")
+        #expect(TipoDeAcorde("7(b9,#11)").nombre == "acorde 7(♭9,♯11)")
+        #expect(TipoDeAcorde.dominanteSeptima.anadir(.novenaMayor) == .dominanteNovena)
+        #expect(TipoDeAcorde.dominanteNovena.quitar(.quintaJusta)?.cifrado == "9(omit5)")
     }
 
-    func testConstantesDeTipoDeAcorde() {
+    @Test func constantesDeTipoDeAcorde() {
         let cifrados: [(TipoDeAcorde, String)] = [
             (.dominanteSeptima, "7"), (.mayorSeptimaMayor, "maj7"), (.menorSeptima, "m7"),
             (.menorSeptimaMayor, "m(maj7)"), (.sus4Septima, "7sus4"), (.mayorSexta, "6"), (.menorSexta, "m6"),
@@ -192,174 +182,175 @@ final class TipoDeAcordeTests: XCTestCase {
             (.menorSeptimaUndecima, "m11"), (.dominanteDecimotercera, "13"),
         ]
         for (tipo, cifrado) in cifrados {
-            XCTAssertEqual(tipo, TipoDeAcorde(texto: cifrado), cifrado)
-            XCTAssertTrue(TipoDeAcorde.todos.contains(tipo), cifrado)
+            #expect(tipo == TipoDeAcorde(texto: cifrado), Comment(rawValue: cifrado))
+            #expect(TipoDeAcorde.todos.contains(tipo), Comment(rawValue: cifrado))
         }
-        XCTAssertEqual(TipoDeAcorde.todos.count, Set(TipoDeAcorde.todos).count)
+        #expect(TipoDeAcorde.todos.count == Set(TipoDeAcorde.todos).count)
     }
 }
 
-final class EstructuraTests: XCTestCase {
-    func testEstructuraDeTipo() {
+@Suite struct EstructuraTests {
+    @Test func estructuraDeTipo() {
         let e = TipoDeAcorde("13(b9)").estructura
-        XCTAssertEqual(e.tercera, .terceraMayor)
-        XCTAssertEqual(e.quintasDelAcorde, [.quintaJusta])
-        XCTAssertEqual(e.septima, .septimaMenor)
-        XCTAssertEqual(e.tensiones, [.novenaMenor, .decimoterceraMayor])
-        XCTAssertEqual(e.calidadDeTriada, .mayor)
-        XCTAssertNil(e.suspension)
-        XCTAssertNil(e.sexta)
-        XCTAssertEqual(e.papel(de: .novenaMenor), .tension(9))
-        XCTAssertEqual(e.papel(de: .segundaMenor), .tension(9))
-        XCTAssertNil(e.papel(de: .cuartaJusta))
+        #expect(e.tercera == .terceraMayor)
+        #expect(e.quintasDelAcorde == [.quintaJusta])
+        #expect(e.septima == .septimaMenor)
+        #expect(e.tensiones == [.novenaMenor, .decimoterceraMayor])
+        #expect(e.calidadDeTriada == .mayor)
+        #expect(e.suspension == nil)
+        #expect(e.sexta == nil)
+        #expect(e.papel(de: .novenaMenor) == .tension(9))
+        #expect(e.papel(de: .segundaMenor) == .tension(9))
+        #expect(e.papel(de: .cuartaJusta) == nil)
     }
 
-    func testCalidadesDeTriada() {
+    @Test func calidadesDeTriada() {
         let casos: [(TipoDeAcorde, CalidadDeTriada)] = [
             ("", .mayor), ("m7", .menor), ("°7", .disminuida), ("m7b5", .disminuida),
             ("+maj7", .aumentada), ("7sus4", .suspendida), ("sus2", .suspendida),
             ("5", .potencia), ("7(omit3)", .sinTercera), ("7(b5)", .mayor),
         ]
         for (tipo, calidad) in casos {
-            XCTAssertEqual(tipo.estructura.calidadDeTriada, calidad, tipo.cifrado)
+            #expect(tipo.estructura.calidadDeTriada == calidad, Comment(rawValue: tipo.cifrado))
         }
-        XCTAssertTrue(TipoDeAcorde("7(omit3)").estructura.omiteTercera)
-        XCTAssertTrue(TipoDeAcorde("7(omit5)").estructura.omiteQuinta)
-        XCTAssertEqual(TipoDeAcorde("7sus4").estructura.suspension, .cuartaJusta)
-        XCTAssertEqual(TipoDeAcorde("m6").estructura.sexta, .sextaMayor)
-        XCTAssertEqual(TipoDeAcorde("°7").estructura.septima, .septimaDisminuida)
-        XCTAssertEqual(
-            TipoDeAcorde(pasosDeQuinta: [0, 4, 1, -6])!.estructura.quintasDelAcorde, [.quintaDisminuida, .quintaJusta])
+        #expect(TipoDeAcorde("7(omit3)").estructura.omiteTercera)
+        #expect(TipoDeAcorde("7(omit5)").estructura.omiteQuinta)
+        #expect(TipoDeAcorde("7sus4").estructura.suspension == .cuartaJusta)
+        #expect(TipoDeAcorde("m6").estructura.sexta == .sextaMayor)
+        #expect(TipoDeAcorde("°7").estructura.septima == .septimaDisminuida)
+        #expect(
+            TipoDeAcorde(pasosDeQuinta: [0, 4, 1, -6])!.estructura.quintasDelAcorde == [
+                .quintaDisminuida, .quintaJusta,
+            ])
     }
 
-    func testComponentesDeAcorde() {
+    @Test func componentesDeAcorde() {
         let acorde: Acorde = "Sol7(b9)"
-        XCTAssertEqual(acorde.componentes.map(\.papel), [.fundamental, .tercera, .quinta, .septima, .tension(9)])
-        XCTAssertEqual(acorde.componentes.map(\.nota.nombre), ["Sol", "Si", "Re", "Fa", "La♭"])
-        XCTAssertEqual(acorde.tercera, .si)
-        XCTAssertEqual(acorde.quinta, .re)
-        XCTAssertEqual(acorde.septima, .fa)
-        XCTAssertEqual(acorde.tensiones, ["Lab"])
-        XCTAssertEqual(acorde.papel(de: "Lab"), .tension(9))
-        XCTAssertEqual(acorde.papel(de: .re), .quinta)
-        XCTAssertNil(acorde.papel(de: .do))
-        XCTAssertEqual(acorde.notas(conPapel: .septima), [.fa])
-        XCTAssertEqual(PapelEnAcorde.tension(11).nombre, "undécima")
-        XCTAssertEqual(PapelEnAcorde.tension(13).nombre, "decimotercera")
+        #expect(acorde.componentes.map(\.papel) == [.fundamental, .tercera, .quinta, .septima, .tension(9)])
+        #expect(acorde.componentes.map(\.nota.nombre) == ["Sol", "Si", "Re", "Fa", "La♭"])
+        #expect(acorde.tercera == .si)
+        #expect(acorde.quinta == .re)
+        #expect(acorde.septima == .fa)
+        #expect(acorde.tensiones == ["Lab"])
+        #expect(acorde.papel(de: "Lab") == .tension(9))
+        #expect(acorde.papel(de: .re) == .quinta)
+        #expect(acorde.papel(de: .do) == nil)
+        #expect(acorde.notas(conPapel: .septima) == [.fa])
+        #expect(PapelEnAcorde.tension(11).nombre == "undécima")
+        #expect(PapelEnAcorde.tension(13).nombre == "decimotercera")
 
         let alterado = Acorde(.do, TipoDeAcorde(pasosDeQuinta: [0, 4, 1, -6])!)
-        XCTAssertEqual(alterado.quinta, .sol)
-        XCTAssertNil(Acorde("Do5").tercera)
+        #expect(alterado.quinta == .sol)
+        #expect(Acorde("Do5").tercera == nil)
     }
 }
 
-final class EstilosTests: XCTestCase {
-    func testEstilosPredefinidos() {
+@Suite struct EstilosTests {
+    @Test func estilosPredefinidos() {
         let dominante: Acorde = "Sib7(b9)/Re"
-        XCTAssertEqual(dominante.cifrado, "Si♭7(♭9)/Re")
-        XCTAssertEqual(dominante.cifrado(estilo: .espanolASCII), "Sib7(b9)/Re")
-        XCTAssertEqual(dominante.cifrado(estilo: .inglesASCII), "Bb7(b9)/D")
+        #expect(dominante.cifrado == "Si♭7(♭9)/Re")
+        #expect(dominante.cifrado(estilo: .espanolASCII) == "Sib7(b9)/Re")
+        #expect(dominante.cifrado(estilo: .inglesASCII) == "Bb7(b9)/D")
 
-        XCTAssertEqual(Acorde("Dom7b5").cifrado(estilo: .jazz), "Cø7")
-        XCTAssertEqual(Acorde("Dom9b5").cifrado(estilo: .jazz), "Cø9")
-        XCTAssertEqual(Acorde("Domaj7").cifrado(estilo: .jazz), "CΔ7")
-        XCTAssertEqual(Acorde("Dom(maj7)").cifrado(estilo: .jazz), "Cm(Δ7)")
-        XCTAssertEqual(Acorde("Rem7").cifrado(estilo: .calidadesConPalabras), "Remin7")
-        XCTAssertEqual(Acorde("Si°").cifrado(estilo: .calidadesConPalabras), "Sidim")
-        XCTAssertEqual(Acorde("Fa+").cifrado(estilo: .calidadesConPalabras), "Faaug")
-        XCTAssertEqual(Acorde("Do#m(add9)").cifrado(estilo: .espanolASCII), "Do#m(add9)")
+        #expect(Acorde("Dom7b5").cifrado(estilo: .jazz) == "Cø7")
+        #expect(Acorde("Dom9b5").cifrado(estilo: .jazz) == "Cø9")
+        #expect(Acorde("Domaj7").cifrado(estilo: .jazz) == "CΔ7")
+        #expect(Acorde("Dom(maj7)").cifrado(estilo: .jazz) == "Cm(Δ7)")
+        #expect(Acorde("Rem7").cifrado(estilo: .calidadesConPalabras) == "Remin7")
+        #expect(Acorde("Si°").cifrado(estilo: .calidadesConPalabras) == "Sidim")
+        #expect(Acorde("Fa+").cifrado(estilo: .calidadesConPalabras) == "Faaug")
+        #expect(Acorde("Do#m(add9)").cifrado(estilo: .espanolASCII) == "Do#m(add9)")
     }
 
-    func testLaFundamentalFNoSeConfundeConFa() {
+    @Test func laFundamentalFNoSeConfundeConFa() {
         let estilo = EstiloDeCifrado(notacion: .inglesASCII, aumentado: .aug)
         let acorde = Acorde(.fa, .aumentado)
-        XCTAssertEqual(acorde.cifrado(estilo: estilo), "Faug")
-        XCTAssertEqual(Acorde("Faug"), acorde)
-        XCTAssertEqual(Acorde("Faaug"), acorde)
+        #expect(acorde.cifrado(estilo: estilo) == "Faug")
+        #expect(Acorde("Faug") == acorde)
+        #expect(Acorde("Faaug") == acorde)
     }
 
-    func testAdicionesEntreParentesis() {
-        XCTAssertEqual(TipoDeAcorde.mayorNovenaAnadida.cifrado, "(add9)")
-        XCTAssertEqual(Acorde("Do(add9)").cifrado, "Do(add9)")
-        XCTAssertEqual(Acorde("Doadd9").cifrado, "Do(add9)")
-        XCTAssertEqual(TipoDeAcorde(pasosDeQuinta: [0, -3, 1, -4])!.cifrado, "m(add♭13)")
+    @Test func adicionesEntreParentesis() {
+        #expect(TipoDeAcorde.mayorNovenaAnadida.cifrado == "(add9)")
+        #expect(Acorde("Do(add9)").cifrado == "Do(add9)")
+        #expect(Acorde("Doadd9").cifrado == "Do(add9)")
+        #expect(TipoDeAcorde(pasosDeQuinta: [0, -3, 1, -4])!.cifrado == "m(add♭13)")
     }
 
-    func testCifradoDelTipoDeAcorde() {
-        XCTAssertEqual(TipoDeAcorde.semidisminuido.cifrado, "m7(♭5)")
-        XCTAssertEqual(TipoDeAcorde.semidisminuido.cifrado(estilo: .jazz), "ø7")
-        XCTAssertEqual(TipoDeAcorde("7(b9,#11)").cifrado(en: .inglesASCII), "7(b9,#11)")
-        XCTAssertEqual(Acorde("Sib7(b9)/Re").cifrado(en: .inglesASCII), "Bb7(b9)/D")
+    @Test func cifradoDelTipoDeAcorde() {
+        #expect(TipoDeAcorde.semidisminuido.cifrado == "m7(♭5)")
+        #expect(TipoDeAcorde.semidisminuido.cifrado(estilo: .jazz) == "ø7")
+        #expect(TipoDeAcorde("7(b9,#11)").cifrado(en: .inglesASCII) == "7(b9,#11)")
+        #expect(Acorde("Sib7(b9)/Re").cifrado(en: .inglesASCII) == "Bb7(b9)/D")
     }
 }
 
-final class IdentificacionPorAlturaTests: XCTestCase {
+@Suite struct IdentificacionPorAlturaTests {
     private func primero(_ midi: [Int], tonalidad: Tonalidad? = nil) -> String? {
         Acorde.identificar(midi: midi, tonalidad: tonalidad).first?.cifrado
     }
 
-    func testOrtografiaSegunElAcorde() {
-        XCTAssertEqual(primero([60, 64, 67]), "Do")
-        XCTAssertEqual(primero([60, 64, 68]), "Do+")
-        XCTAssertEqual(primero([60, 63, 66, 69]), "Do°7")
-        XCTAssertEqual(primero([61, 65, 68]), "Re♭")
-        XCTAssertEqual(primero([66, 70, 73]), "Fa♯")
-        XCTAssertEqual(primero([64, 68, 71]), "Mi")
-        XCTAssertEqual(primero([59, 62, 65, 69]), "Sim7(♭5)")
-        XCTAssertEqual(primero([55, 59, 62, 65, 68]), "Sol7(♭9)")
-        XCTAssertEqual(primero([58, 62, 65, 68, 72]), "Si♭9")
-        XCTAssertEqual(primero([60, 64, 70, 73]), "Do7(♭9)")
-        XCTAssertEqual(primero([60, 65, 67]), "Dosus4")
-        XCTAssertEqual(primero([60, 67]), "Do5")
+    @Test func ortografiaSegunElAcorde() {
+        #expect(primero([60, 64, 67]) == "Do")
+        #expect(primero([60, 64, 68]) == "Do+")
+        #expect(primero([60, 63, 66, 69]) == "Do°7")
+        #expect(primero([61, 65, 68]) == "Re♭")
+        #expect(primero([66, 70, 73]) == "Fa♯")
+        #expect(primero([64, 68, 71]) == "Mi")
+        #expect(primero([59, 62, 65, 69]) == "Sim7(♭5)")
+        #expect(primero([55, 59, 62, 65, 68]) == "Sol7(♭9)")
+        #expect(primero([58, 62, 65, 68, 72]) == "Si♭9")
+        #expect(primero([60, 64, 70, 73]) == "Do7(♭9)")
+        #expect(primero([60, 65, 67]) == "Dosus4")
+        #expect(primero([60, 67]) == "Do5")
     }
 
-    func testBajoInversionesYDuplicados() {
-        XCTAssertEqual(primero([64, 67, 72]), "Do/Mi")
-        XCTAssertEqual(primero([48, 60, 64, 67, 72, 76]), "Do")
-        XCTAssertEqual(primero([57, 60, 64, 67]), "Lam7")
+    @Test func bajoInversionesYDuplicados() {
+        #expect(primero([64, 67, 72]) == "Do/Mi")
+        #expect(primero([48, 60, 64, 67, 72, 76]) == "Do")
+        #expect(primero([57, 60, 64, 67]) == "Lam7")
         let conBajoAjeno = Acorde.identificar(midi: [62, 72, 76, 79]).map(\.cifrado)
-        XCTAssertEqual(conBajoAjeno.first, "Re9sus4")
-        XCTAssertTrue(conBajoAjeno.contains("Do/Re"))
+        #expect(conBajoAjeno.first == "Re9sus4")
+        #expect(conBajoAjeno.contains("Do/Re"))
 
         let sinQuinta = Acorde.candidatos(midi: [60, 64, 70]).first
-        XCTAssertEqual(sinQuinta?.valor.cifrado, "Do7")
-        XCTAssertEqual(sinQuinta?.omitidas, [.sol])
+        #expect(sinQuinta?.valor.cifrado == "Do7")
+        #expect(sinQuinta?.omitidas == [.sol])
 
-        XCTAssertEqual(Acorde.identificar(clasesDeAltura: [4, 7, 0]).first?.cifrado, "Do/Mi")
-        XCTAssertTrue(Acorde.identificar(midi: [60, 61]).isEmpty)
-        XCTAssertTrue(Acorde.identificar(midi: [60]).isEmpty)
+        #expect(Acorde.identificar(clasesDeAltura: [4, 7, 0]).first?.cifrado == "Do/Mi")
+        #expect(Acorde.identificar(midi: [60, 61]).isEmpty)
+        #expect(Acorde.identificar(midi: [60]).isEmpty)
     }
 
-    func testTonalidad() {
-        XCTAssertEqual(primero([66, 70, 73], tonalidad: Tonalidad("Solb mayor")), "Sol♭")
-        XCTAssertEqual(primero([66, 70, 73], tonalidad: Tonalidad("Si mayor")), "Fa♯")
-        XCTAssertEqual(primero([60, 64, 68], tonalidad: Tonalidad("La menor")), "Do+")
-        XCTAssertEqual(primero([61, 65, 68], tonalidad: Tonalidad("Fa# menor")), "Do♯")
+    @Test func tonalidad() {
+        #expect(primero([66, 70, 73], tonalidad: Tonalidad("Solb mayor")) == "Sol♭")
+        #expect(primero([66, 70, 73], tonalidad: Tonalidad("Si mayor")) == "Fa♯")
+        #expect(primero([60, 64, 68], tonalidad: Tonalidad("La menor")) == "Do+")
+        #expect(primero([61, 65, 68], tonalidad: Tonalidad("Fa# menor")) == "Do♯")
     }
 
-    func testOrtografiarMidi() {
+    @Test func ortografiarMidi() {
         let acorde = Acorde.identificar(midi: [60, 64, 68]).first!
-        XCTAssertEqual(acorde.ortografiar(midi: [60, 64, 68]).map(\.description), ["Do4", "Mi4", "Sol♯4"])
-        XCTAssertEqual(
-            Acorde("Do°7").ortografiar(midi: [57, 60, 63, 66]).map(\.description),
-            ["Si♭♭3", "Do4", "Mi♭4", "Sol♭4"])
-        XCTAssertEqual(Acorde("Do").ortografiar(midi: [61]).map(\.description), ["Do♯4"])
-        XCTAssertEqual(Altura(Nota("Sol#"), midi: 68)?.description, "Sol♯4")
-        XCTAssertNil(Altura(.la, midi: 68))
+        #expect(acorde.ortografiar(midi: [60, 64, 68]).map(\.description) == ["Do4", "Mi4", "Sol♯4"])
+        #expect(
+            Acorde("Do°7").ortografiar(midi: [57, 60, 63, 66]).map(\.description) == ["Si♭♭3", "Do4", "Mi♭4", "Sol♭4"])
+        #expect(Acorde("Do").ortografiar(midi: [61]).map(\.description) == ["Do♯4"])
+        #expect(Altura(Nota("Sol#"), midi: 68)?.description == "Sol♯4")
+        #expect(Altura(.la, midi: 68) == nil)
     }
 
     /// Lo que dice la versión con nombres no cambia al quitar la ortografía, cuando la
     /// ortografía de partida es la habitual.
-    func testCoincideConLaIdentificacionPorNombres() {
+    @Test func coincideConLaIdentificacionPorNombres() {
         let ejemplos: [[Nota]] = [
             ["Do", "Mi", "Sol"], ["Sol", "Si", "Re", "Fa"], ["La", "Do", "Mi", "Sol"],
             ["Do", "Mib", "Solb", "Sibb"], ["Re", "Fa", "La", "Do"],
         ]
         for nombres in ejemplos {
             let alturas = nombres.map(\.claseDeAltura)
-            XCTAssertEqual(
-                Acorde.identificar(clasesDeAltura: alturas).first, Acorde.identificar(nombres).first,
-                nombres.map(\.nombre).joined(separator: " "))
+            #expect(
+                Acorde.identificar(clasesDeAltura: alturas).first == Acorde.identificar(nombres).first,
+                Comment(rawValue: nombres.map(\.nombre).joined(separator: " ")))
         }
     }
 }
