@@ -35,6 +35,11 @@ import Testing
         #expect(Notacion.desde(clave: "alemanCompacto") == .alemanCompacto)
         #expect(Notacion.espanolASCII.clave == "espanolASCII")
         #expect(Notacion.catalan.clave == "catalan")
+        #expect(Notacion.francesCompacto.clave == "francesCompacto")
+        #expect(Notacion.desde(clave: "rusoCompacto+espanol") == Notacion.rusoCompacto.conTextos(en: .espanol))
+        #expect(Notacion.frances.titulo == "Français (fa dièse)")
+        #expect(Notacion.francesCompacto.titulo == "Français (Fa♯)")
+        #expect(Notacion.rusoCompacto.titulo == "Русский (Фа♯)")
     }
 
     @Test func laClaveVuelveALaNotacion() {

@@ -145,23 +145,14 @@ public enum LineaDeComandos {
     static let ayudas: [Idioma: String] = Dictionary(
         uniqueKeysWithValues: Idioma.allCases.map { ($0, textoDeAyuda(en: $0)) })
 
-    /// La escritura de `--escritura` en español o inglés: palabras (o words), ascii o compacto (compact o
-    /// unicode); en alemán y en húngaro, palabras o compacto. `nil` en los demás idiomas, que tienen una sola.
+    /// La escritura de `--escritura`: palabras (o words) o compacto (compact o unicode) en todos los idiomas, y ascii
+    /// en español e inglés. `nil` si no es ninguna de esas.
     static func escritura(_ texto: String, en idioma: Idioma) -> EscrituraDeNotas? {
-        let compacto = ["compacto", "compact", "unicode"]
-        switch (idioma, texto.lowercased()) {
-        case (.espanol, "palabras"), (.espanol, "words"): return .espanol
-        case (.espanol, "ascii"): return .espanolASCII
-        case (.espanol, let t) where compacto.contains(t): return .espanolCompacto
-        case (.ingles, "palabras"), (.ingles, "words"): return .ingles
-        case (.ingles, "ascii"): return .inglesASCII
-        case (.ingles, let t) where compacto.contains(t): return .inglesCompacto
-        case (.aleman, "palabras"), (.aleman, "words"), (.aleman, "worte"): return .aleman
-        case (.aleman, let t) where compacto.contains(t) || t == "kompakt": return .alemanCompacto
-        case (.hungaro, "palabras"), (.hungaro, "words"), (.hungaro, "szavak"): return .hungaro
-        case (.hungaro, let t) where compacto.contains(t) || t == "tomor": return .hungaroCompacto
-        default: return nil
-        }
+        let t = texto.lowercased()
+        if ["palabras", "words", "worte", "szavak"].contains(t) { return .conPalabras(idioma) }
+        if ["compacto", "compact", "unicode", "kompakt", "tomor"].contains(t) { return .compacta(idioma) }
+        if t == "ascii" && idioma.reglas.tieneVariantes { return EscrituraDeNotas(idioma: idioma, ascii: true) }
+        return nil
     }
 
     /// La notación de `--idioma`: es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu, o el nombre del idioma.

@@ -110,6 +110,8 @@ extension TextosDeCLI {
         A --textos kapcsolóval a szövegek más nyelven vannak, mint a hangok: --idioma en --textos hu.
         Spanyolul és angolul a --escritura palabras|ascii|unicode így írja a hangokat:
         Fa sostenido, Fa# vagy Fa♯ (angolul F sharp, F# vagy F♯).
+        A többi nyelven a --escritura palabras|compacto a szavas vagy a tömör írásmódot választja:
+        fa dièse vagy Fa♯, F Kreuz vagy Fis.
         A --subindices kapcsolóval az oktáv alsó indexbe kerül: La₄, Fa♯₃ (mindkettőt olvassa, La4 és La₄).
         """,
         sintaxisAyuda: "help",
@@ -205,7 +207,7 @@ extension TextosDeCLI {
         opcionDesconocida: { opcion in "ismeretlen opció: „\(opcion)”" },
         idiomaDesconocido: { idioma in "ismeretlen nyelv: „\(idioma)” (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru vagy hu)" },
         terminalDesconocida: { t in "ismeretlen parancsértelmező: „\(t)” (bash, zsh vagy fish)" },
-        escrituraNoValida: { escritura in "érvénytelen írásmód: „\(escritura)” (palabras/words, ascii vagy unicode; csak es és en mellett)" },
+        escrituraNoValida: { escritura in "érvénytelen írásmód: „\(escritura)” (palabras/words vagy compacto/compact; ascii vagy unicode, csak es és en mellett)" },
 
         // Mensaje.swift
         mensajeNotas: "hangok",

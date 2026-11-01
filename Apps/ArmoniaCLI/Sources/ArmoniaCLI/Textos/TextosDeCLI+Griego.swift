@@ -110,6 +110,8 @@ extension TextosDeCLI {
         Με --textos, τα κείμενα βγαίνουν σε άλλη γλώσσα από τις νότες: --idioma en --textos el.
         Στα ισπανικά και στα αγγλικά, το --escritura palabras|ascii|unicode γράφει τις νότες
         Fa sostenido, Fa# ή Fa♯ (στα αγγλικά, F sharp, F# ή F♯).
+        Στις άλλες γλώσσες, το --escritura palabras|compacto επιλέγει λέξεις ή τη σύντομη μορφή:
+        fa dièse ή Fa♯, F Kreuz ή Fis.
         Με --subindices, η οκτάβα γράφεται ως δείκτης: La₄, Fa♯₃ (διαβάζονται και τα δύο, La4 και La₄).
         """,
         sintaxisAyuda: "help",
@@ -205,7 +207,7 @@ extension TextosDeCLI {
         opcionDesconocida: { opcion in "άγνωστη επιλογή: «\(opcion)»" },
         idiomaDesconocido: { idioma in "άγνωστη γλώσσα: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru ή hu)" },
         terminalDesconocida: { t in "άγνωστο κέλυφος: «\(t)» (bash, zsh ή fish)" },
-        escrituraNoValida: { escritura in "μη έγκυρη γραφή: «\(escritura)» (palabras/words, ascii ή unicode· μόνο με es και en)" },
+        escrituraNoValida: { escritura in "μη έγκυρη γραφή: «\(escritura)» (palabras/words ή compacto/compact· ascii ή unicode, μόνο με es και en)" },
 
         // Mensaje.swift
         mensajeNotas: "νότες",

@@ -80,9 +80,9 @@ extension EscrituraDeNotas {
     private static let ejemplo = Nota(.fa, .sostenido)
 
     /// El nombre con que se guarda en los ajustes: el del idioma y, en los que tienen variantes, la suya
-    /// («espanol», «espanolASCII», «espanolCompacto»; «aleman», «alemanCompacto»).
+    /// («espanol», «espanolASCII», «espanolCompacto»; «aleman», «alemanCompacto»; «frances», «francesCompacto»).
     public var clave: String {
-        guard idioma.reglas.alteraciones != .palabras, !conPalabras else { return idioma.clave }
+        if conPalabras { return idioma.clave }
         return idioma.clave + (usaASCII && idioma.reglas.tieneVariantes ? "ASCII" : "Compacto")
     }
 }

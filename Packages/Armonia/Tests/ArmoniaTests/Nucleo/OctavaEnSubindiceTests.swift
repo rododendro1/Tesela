@@ -30,7 +30,9 @@ import Testing
         }
         #expect(
             Notacion.allCases.filter { $0.octavas == .subindices } == [
-                .espanolCompacto, .inglesCompacto, .alemanCompacto, .hungaroCompacto,
+                .espanolCompacto, .inglesCompacto, .catalanCompacto, .gallegoCompacto, .asturianoCompacto,
+                .aragonesCompacto, .euskeraCompacto, .portuguesCompacto, .francesCompacto, .occitanoCompacto,
+                .italianoCompacto, .alemanCompacto, .griegoCompacto, .rusoCompacto, .hungaroCompacto,
             ])
         #expect(Notacion.delIdioma(.espanol).octavas == .subindices)
         #expect(Notacion.delIdioma(.ingles).octavas == .cifras)

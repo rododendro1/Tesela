@@ -112,6 +112,8 @@ extension TextosDeCLI {
         With --texts, the texts use another language than the notes: --language es --texts en.
         In Spanish and English, --writing words|ascii|unicode writes notes as F sharp, F# or F♯
         (in Spanish, Fa sostenido, Fa# or Fa♯).
+        In the other languages, --writing words|compact picks words or the compact form:
+        fa dièse or Fa♯, F Kreuz or Fis.
         With --subscripts, the octave is a subscript: A₄, F♯₃ (both A4 and A₄ are read).
         """,
         sintaxisAyuda: "help",
@@ -207,7 +209,7 @@ extension TextosDeCLI {
         opcionDesconocida: { opcion in "unknown option: \"\(opcion)\"" },
         idiomaDesconocido: { idioma in "unknown language: \"\(idioma)\" (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru or hu)" },
         terminalDesconocida: { t in "unknown shell: \"\(t)\" (bash, zsh or fish)" },
-        escrituraNoValida: { escritura in "invalid writing: \"\(escritura)\" (words, ascii or unicode; only with es and en)" },
+        escrituraNoValida: { escritura in "invalid writing: \"\(escritura)\" (words or compact; ascii or unicode, only with es and en)" },
 
         // Mensaje.swift
         mensajeNotas: "notes",
