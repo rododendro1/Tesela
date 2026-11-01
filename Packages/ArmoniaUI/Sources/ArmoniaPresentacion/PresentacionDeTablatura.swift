@@ -28,7 +28,7 @@ public enum PresentacionDeTablatura {
             var xml = ""
             if let acorde {
                 xml += "      <direction placement=\"above\"><direction-type><words>"
-                xml += escapar(acorde.cifrado(en: notacion)) + "</words></direction-type></direction>\n"
+                xml += EscrituraXML.escapar(acorde.cifrado(en: notacion)) + "</words></direction-type></direction>\n"
             }
             for (j, posicion) in digitacion.posiciones.enumerated() {
                 xml += nota(
@@ -95,7 +95,7 @@ public enum PresentacionDeTablatura {
             <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 4.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
             <score-partwise version="4.0">
               <work>
-                <work-title>\(escapar(titulo))</work-title>
+                <work-title>\(EscrituraXML.escapar(titulo))</work-title>
               </work>
               <identification>
                 <encoding>
@@ -104,7 +104,7 @@ public enum PresentacionDeTablatura {
               </identification>
               <part-list>
                 <score-part id="P1">
-                  <part-name>\(escapar(encordado.titulo(en: notacion)))</part-name>
+                  <part-name>\(EscrituraXML.escapar(encordado.titulo(en: notacion)))</part-name>
                 </score-part>
               </part-list>
               <part id="P1">
@@ -198,10 +198,5 @@ public enum PresentacionDeTablatura {
 
     private static func paso(_ natural: NotaNatural) -> String {
         ["C", "D", "E", "F", "G", "A", "B"][natural.rawValue]
-    }
-
-    private static func escapar(_ texto: String) -> String {
-        texto.replacingOccurrences(of: "&", with: "&amp;").replacingOccurrences(of: "<", with: "&lt;")
-            .replacingOccurrences(of: ">", with: "&gt;").replacingOccurrences(of: "\"", with: "&quot;")
     }
 }

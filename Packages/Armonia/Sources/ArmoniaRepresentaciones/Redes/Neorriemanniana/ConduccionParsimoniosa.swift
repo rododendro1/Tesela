@@ -153,7 +153,7 @@ extension Acorde {
                     guard rotar(mascaraDelTipo, fundamental.claseDeAltura) == objetivo else { continue }
                     let acorde = Acorde(fundamental, tipo)
                     // Cada nota, con el nombre que tiene en el acorde.
-                    let escritas = nuevas.map { n in acorde.notas.first { $0.claseDeAltura == n.claseDeAltura }! }
+                    let escritas = nuevas.map { n in acorde.notas.first { $0.claseDeAltura == n.claseDeAltura } ?? n }
                     let alteraciones = acorde.notas.reduce(0) { $0 + abs($1.alteracion.semitonos) }
                     let cambiadas = quietas.filter { escritas[$0] != notas[$0] }.count
                     let coste = alteraciones + 2 * cambiadas
@@ -254,7 +254,7 @@ extension Tonnetz {
             familia.contains(destino.tipo), (1...2).contains(voces)
         else { return nil }
         func clave(_ a: Acorde) -> [Int] {
-            a.notas.map(\.claseDeAltura).sorted() + [familia.firstIndex(of: a.tipo)!]
+            a.notas.map(\.claseDeAltura).sorted() + [familia.firstIndex(of: a.tipo) ?? -1]
         }
         let meta = clave(destino)
         // Con dos voces, hay familias que no están conectadas: puede no haber camino.

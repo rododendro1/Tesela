@@ -128,7 +128,11 @@ public struct AnalisisArmonico: Hashable, Sendable, CustomStringConvertible {
     /// mejor la explique.
     public static func analizar(leyendo texto: String, en tonalidad: Tonalidad? = nil) throws -> AnalisisArmonico {
         let acordes = try leerAcordes(texto)
-        return tonalidad.map { $0.analizar(acordes) } ?? analizar(acordes)!
+        // `leerAcordes` nunca devuelve una lista vacía, que es lo único que `analizar` no sabe analizar.
+        guard let analisis = tonalidad.map({ $0.analizar(acordes) }) ?? analizar(acordes) else {
+            throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio)
+        }
+        return analisis
     }
 
     /// Los acordes de una progresión escrita como cifrados separados por espacios, comas o barras.

@@ -260,7 +260,7 @@ public struct Tonnetz: Hashable, Sendable {
             presupuesto -= 1
             guard presupuesto > 0 else { return }
             if colocados == orden.count {
-                let puntos = [primero] + asignacion.map { $0! }
+                let puntos = [primero] + asignacion.compactMap { $0 }
                 let costeDeEstos = coste(puntos)
                 if costeDeEstos < mejorCoste {
                     mejor = puntos
@@ -320,18 +320,18 @@ public struct Tonnetz: Hashable, Sendable {
         // El primero, en la fila 0 (con ortografía) o lo más cerca posible del origen.
         let inicial =
             candidatos(primero, 0...0).min { $0.distancia(hasta: origen) < $1.distancia(hasta: origen) }
-            ?? candidatos(primero, -2...2).min { $0.distancia(hasta: origen) < $1.distancia(hasta: origen) }!
+            ?? candidatos(primero, -2...2).min { $0.distancia(hasta: origen) < $1.distancia(hasta: origen) } ?? origen
         var colocados: [Int: PuntoDeLaRed] = [primero: inicial]
         var pendientes = Array(elementos.dropFirst())
         while !pendientes.isEmpty {
-            let filas = colocados.values.map(\.terceras)
-            let cerca = (filas.min()! - 3)...(filas.max()! + 3)
+            let filas = colocados.values.map(\.terceras).extremosOSi(noHay: 0...0)
+            let cerca = (filas.lowerBound - 3)...(filas.upperBound + 3)
             var mejor = ElMejor<(indice: Int, punto: PuntoDeLaRed), (Int, Int, Int)>(por: <)
             for (i, elemento) in pendientes.enumerated() {
                 for punto in candidatos(elemento, cerca) {
                     let distancias = colocados.values.map { $0.distancia(hasta: punto) }
                     // Lo más cerca del vecino más próximo, después del conjunto y, a igualdad, del origen.
-                    let coste = (distancias.min()!, distancias.reduce(0, +), punto.distancia(hasta: origen))
+                    let coste = (distancias.min() ?? 0, distancias.reduce(0, +), punto.distancia(hasta: origen))
                     mejor.proponer((i, punto), coste: coste)
                 }
             }
@@ -339,7 +339,7 @@ public struct Tonnetz: Hashable, Sendable {
             colocados[pendientes[elegido.indice]] = elegido.punto
             pendientes.remove(at: elegido.indice)
         }
-        return elementos.map { colocados[$0]! }
+        return elementos.map { colocados[$0] ?? origen }
     }
 
     // MARK: Dibujo
@@ -373,12 +373,14 @@ public struct Tonnetz: Hashable, Sendable {
 
         // La ventana: un rectángulo alrededor de las notas.
         let base = puntos.isEmpty ? [PuntoDeLaRed(quintas: 0, terceras: 0)] : puntos
-        let filas = (base.map(\.terceras).min()! - margen)...(base.map(\.terceras).max()! + margen)
+        let tercerasDeLaBase = base.map(\.terceras).extremosOSi(noHay: 0...0)
+        let filas = (tercerasDeLaBase.lowerBound - margen)...(tercerasDeLaBase.upperBound + margen)
         // En unidades de `paso` y con la fórmula exacta (a + b/2), no con `x`: los bordes caen en
         // medios enteros y un error de redondeo cambiaría las columnas que se dibujan.
         func columna(_ p: PuntoDeLaRed) -> Double { Double(p.quintas) + Double(p.terceras) / 2 }
-        let minX = (base.map(columna).min()! - Double(margen) - 0.5) * paso
-        let maxX = (base.map(columna).max()! + Double(margen) + 0.5) * paso
+        let columnas = base.map(columna).extremosOSi(noHay: 0...0)
+        let minX = (columnas.lowerBound - Double(margen) - 0.5) * paso
+        let maxX = (columnas.upperBound + Double(margen) + 0.5) * paso
         var red: [PuntoDeLaRed] = []
         for terceras in filas {
             let desde = Int((minX / paso - Double(terceras) / 2).rounded(.up))
@@ -439,7 +441,7 @@ public struct Tonnetz: Hashable, Sendable {
             svg +=
                 "font-size=\"\(f(paso * (nombre.count > 3 ? 0.17 : 0.22)))\" fill=\"\(marcado ? "#ffffff" : "#777777")\""
             svg += marcado ? " font-weight=\"bold\">" : ">"
-            svg += DibujoSVG.escapar(nombre) + "</text>\n"
+            svg += EscrituraXML.escapar(nombre) + "</text>\n"
         }
 
         // La leyenda: solo lo que aparece.

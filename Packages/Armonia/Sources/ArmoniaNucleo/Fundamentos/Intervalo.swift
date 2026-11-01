@@ -314,8 +314,12 @@ public struct Intervalo: Hashable, Sendable {
 
     // MARK: Constantes
 
+    /// Las constantes, que son intervalos válidos; si una no lo fuera, el mensaje dice cuál.
     private static func crear(_ numero: Int, _ calidad: CalidadDeIntervalo) -> Intervalo {
-        Intervalo(numero: numero, calidad: calidad)!
+        guard let intervalo = Intervalo(numero: numero, calidad: calidad) else {
+            preconditionFailure("\(numero) con calidad \(calidad) no es un intervalo")
+        }
+        return intervalo
     }
 
     public static let unisono = crear(1, .justa)

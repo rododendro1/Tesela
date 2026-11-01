@@ -175,7 +175,7 @@ package struct EscritorMEI: EscritorDePartitura {
               <meiHead>
                 <fileDesc>
                   <titleStmt>
-                    <title>\(Exportacion.escapar(titulo ?? ""))</title>
+                    <title>\(EscrituraXML.escapar(titulo ?? ""))</title>
                   </titleStmt>
                   <pubStmt/>
                 </fileDesc>
@@ -248,7 +248,7 @@ package struct EscritorMEI: EscritorDePartitura {
                         let letras = esNueva ? linea.letras[posiciones[l]] ?? [] : []
                         if esNueva, let cifrado = linea.cifrados[posiciones[l]] {
                             control.append(
-                                "<harm staff=\"\(pentagrama)\" place=\"above\" startid=\"#\(id)\">\(Exportacion.escapar(cifrado))</harm>"
+                                "<harm staff=\"\(pentagrama)\" place=\"above\" startid=\"#\(id)\">\(EscrituraXML.escapar(cifrado))</harm>"
                             )
                         }
                         if c == 0 && i == 0 {
@@ -257,7 +257,7 @@ package struct EscritorMEI: EscritorDePartitura {
                             }
                             if let rotulo, rotulo.pentagrama == pentagrama, capa == 0 {
                                 control.append(
-                                    "<dir staff=\"\(pentagrama)\" place=\"below\" startid=\"#\(id)\">\(Exportacion.escapar(rotulo.texto))</dir>"
+                                    "<dir staff=\"\(pentagrama)\" place=\"below\" startid=\"#\(id)\">\(EscrituraXML.escapar(rotulo.texto))</dir>"
                                 )
                             }
                         }
@@ -303,7 +303,7 @@ package struct EscritorMEI: EscritorDePartitura {
         xml +=
             claves.count > 1
             ? "            <staffGrp symbol=\"brace\" bar.thru=\"true\">\n" : "            <staffGrp>\n"
-        xml += "              <label>\(Exportacion.escapar(parte))</label>\n"
+        xml += "              <label>\(EscrituraXML.escapar(parte))</label>\n"
         for (i, clave) in claves.enumerated() {
             let (forma, linea, cambio) = EscritorMusicXML.signo(de: clave)
             var definicion = "n=\"\(i + 1)\" lines=\"5\" ppq=\"\(ppq)\" clef.shape=\"\(forma)\" clef.line=\"\(linea)\""
@@ -344,7 +344,7 @@ package struct EscritorMEI: EscritorDePartitura {
             return xml
         }
         let versos = letras.enumerated().filter { !$0.element.isEmpty }.map { k, letra in
-            "<verse n=\"\(k + 1)\" place=\"below\"><syl>\(Exportacion.escapar(letra))</syl></verse>"
+            "<verse n=\"\(k + 1)\" place=\"below\"><syl>\(EscrituraXML.escapar(letra))</syl></verse>"
         }
         if evento.alturas.count == 1 {
             let abre = fuera + nota(0, " xml:id=\"\(id)\"" + duracion) + plica
@@ -432,7 +432,7 @@ package struct EscritorMEI: EscritorDePartitura {
             if acumulado.denominador & (acumulado.denominador - 1) == 0 || i == eventos.count - 1 { cerrar(en: i) }
         }
         for grupo in barras where grupo.count > 1 {
-            rangos.append((grupo.min()!...grupo.max()!, "<beam>", "</beam>"))
+            if let extremos = grupo.extremos { rangos.append((extremos, "<beam>", "</beam>")) }
         }
         var aceptados: [(rango: ClosedRange<Int>, abre: String, cierra: String)] = []
         for candidato in rangos {

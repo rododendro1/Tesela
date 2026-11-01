@@ -106,11 +106,6 @@ package enum DibujoSVG {
 
     package static func f(_ v: Double) -> String { String(format: "%.1f", v) }
 
-    package static func escapar(_ texto: String) -> String {
-        texto.replacingOccurrences(of: "&", with: "&amp;").replacingOccurrences(of: "<", with: "&lt;")
-            .replacingOccurrences(of: ">", with: "&gt;")
-    }
-
     /// Los puntos de la ventana que se marcan y, entre ellos, los de la primera nota. Sin `clave`,
     /// los puntos mismos; con ella (la clase de altura o el número MIDI), todos los de la ventana
     /// que suenan como alguno de ellos.
@@ -176,14 +171,14 @@ package enum DibujoSVG {
         var svg =
             "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"\(f(izquierda)) \(f(arriba)) \(f(ancho)) \(f(alto))\" "
         svg += "width=\"\(f(ancho))\" height=\"\(f(alto))\" font-family=\"sans-serif\">\n"
-        if !titulo.isEmpty { svg += "  <title>\(escapar(titulo))</title>\n" }
+        if !titulo.isEmpty { svg += "  <title>\(EscrituraXML.escapar(titulo))</title>\n" }
         svg +=
             "  <rect x=\"\(f(izquierda))\" y=\"\(f(arriba))\" width=\"\(f(ancho))\" height=\"\(f(alto))\" fill=\"#ffffff\"/>\n"
         if !titulo.isEmpty {
             svg +=
                 "  <text x=\"\(f(izquierda + margen))\" y=\"\(f(arriba + altoDelTitulo / 2 + margen / 2))\" dominant-baseline=\"central\" "
             svg +=
-                "font-size=\"\(f(tamanoDelTitulo))\" font-weight=\"600\" fill=\"#222222\">\(escapar(titulo))</text>\n"
+                "font-size=\"\(f(tamanoDelTitulo))\" font-weight=\"600\" fill=\"#222222\">\(EscrituraXML.escapar(titulo))</text>\n"
         }
         svg += cuerpo
         // La leyenda.
@@ -218,7 +213,8 @@ package enum DibujoSVG {
                 }
                 svg +=
                     "<text x=\"\(f(x + muestra + tamanoDeLeyenda * 0.5))\" y=\"\(f(y))\" dominant-baseline=\"central\" "
-                svg += "font-size=\"\(f(tamanoDeLeyenda))\" fill=\"#444444\">\(escapar(entrada.texto))</text></g>\n"
+                svg +=
+                    "font-size=\"\(f(tamanoDeLeyenda))\" fill=\"#444444\">\(EscrituraXML.escapar(entrada.texto))</text></g>\n"
                 x += anchoDeEntrada
             }
             y += altoDeFila
@@ -281,7 +277,7 @@ package enum DibujoSVG {
             let (px1, py1) = centro(clave[0])
             let (px2, py2) = centro(clave[1])
             let largoDelPar = ((px2 - px1) * (px2 - px1) + (py2 - py1) * (py2 - py1)).squareRoot()
-            let separacion = (Double(yaDibujadas) - Double(veces[clave]! - 1) / 2) * 0.12
+            let separacion = (Double(yaDibujadas) - Double(veces[clave, default: 1] - 1) / 2) * 0.12
             let (nx, ny) = (-(py2 - py1) / largoDelPar, (px2 - px1) / largoDelPar)
             // Los extremos, algo apartados de los centros y entre sí; el punto de control, más.
             let (x1, y1) = (centro(uno).0 + nx * separacion * 0.6, centro(uno).1 + ny * separacion * 0.6)

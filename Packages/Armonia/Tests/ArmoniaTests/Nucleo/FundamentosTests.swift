@@ -388,4 +388,14 @@ final class ProtocolosTests: XCTestCase {
         XCTAssertTrue(Escala(.do).esDeLaMismaClase(que: Escala(.la, .menorNatural)))
         XCTAssertTrue(ConjuntoDeClases([0, 4, 7]).esDeLaMismaClase(que: Acorde("Rem")))
     }
+
+    func testLosExtremosYElMenor() {
+        XCTAssertEqual([3, 1, 2].extremos, 1...3)
+        let ninguno: ClosedRange<Int>? = [Int]().extremos
+        XCTAssertNil(ninguno)
+        XCTAssertEqual([5].extremosOSi(noHay: 0...0), 5...5)
+        XCTAssertEqual([Int]().extremosOSi(noHay: 0...0), 0...0)
+        XCTAssertEqual([3, -4, 2].menor(siNoHay: 0) { abs($0) < abs($1) }, 2)
+        XCTAssertEqual([Int]().menor(siNoHay: 7) { $0 < $1 }, 7)
+    }
 }

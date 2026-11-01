@@ -182,10 +182,11 @@ public struct TablaArmonica: Hashable, Sendable {
 
         // La ventana: un rectángulo alrededor de las notas.
         let base = puntos.isEmpty ? [PuntoDeLaRed(quintas: 0, terceras: 0)] : puntos
-        let minX = base.map(x).min()! - Double(margen) * coseno * paso - paso * 0.1
-        let maxX = base.map(x).max()! + Double(margen) * coseno * paso + paso * 0.1
-        let minY = base.map(y).min()! - Double(margen) * paso - paso * 0.1
-        let maxY = base.map(y).max()! + Double(margen) * paso + paso * 0.1
+        let (xs, ys) = (base.map(x).extremosOSi(noHay: 0...0), base.map(y).extremosOSi(noHay: 0...0))
+        let minX = xs.lowerBound - Double(margen) * coseno * paso - paso * 0.1
+        let maxX = xs.upperBound + Double(margen) * coseno * paso + paso * 0.1
+        let minY = ys.lowerBound - Double(margen) * paso - paso * 0.1
+        let maxY = ys.upperBound + Double(margen) * paso + paso * 0.1
         var red: [PuntoDeLaRed] = []
         let columnas = Int((minX / (coseno * paso)).rounded(.up))...Int((maxX / (coseno * paso)).rounded(.down))
         for b in columnas {
@@ -278,7 +279,7 @@ public struct TablaArmonica: Hashable, Sendable {
                 "  <text x=\"\(f(x(punto)))\" y=\"\(f(y(punto)))\" text-anchor=\"middle\" dominant-baseline=\"central\" "
             svg += "font-size=\"\(f(tamano))\" fill=\"\(marcado ? "#ffffff" : "#888888")\""
             svg += marcado ? " font-weight=\"bold\">" : ">"
-            svg += DibujoSVG.escapar(texto) + "</text>\n"
+            svg += EscrituraXML.escapar(texto) + "</text>\n"
         }
         // Las tríadas: un punto en el vértice común de sus tres hexágonos.
         let triadas = DibujoSVG.triadas(en: red, marcados: marcados)

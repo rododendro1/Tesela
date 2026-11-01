@@ -64,7 +64,7 @@ final class PentagramaSVGTests: XCTestCase {
 
     /// Los nombres que se escriben se escapan.
     func testEscapar() {
-        XCTAssertEqual(PentagramaSVG.escapar("a<b&\"c"), "a&lt;b&amp;&quot;c")
+        XCTAssertEqual(EscrituraXML.escapar("a<b&\"c>"), "a&lt;b&amp;&quot;c&gt;")
     }
 
     // MARK: Pentagrama doble

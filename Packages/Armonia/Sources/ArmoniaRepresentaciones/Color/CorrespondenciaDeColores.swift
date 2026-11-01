@@ -5,8 +5,8 @@ import ArmoniaTeoria
 
 /// Un color en RGB, de 0 a 255 por componente.
 ///
-///     ColorRGB(hexadecimal: "#FF8000")!.verde   // 128
-///     ColorRGB(rojo: 255, verde: 0, azul: 0).hexadecimal   // "#FF0000"
+///     ColorRGB(hexadecimal: 0xFF8000)!.verde   // 128
+///     ColorRGB(rojo: 255, verde: 0, azul: 0).hexadecimal   // 0xFF0000
 ///     ColorRGB(tono: 120, saturacion: 1, brillo: 1)        // verde puro
 public struct ColorRGB: Hashable, Sendable, CustomStringConvertible {
     public let rojo: Int
@@ -25,6 +25,11 @@ public struct ColorRGB: Hashable, Sendable, CustomStringConvertible {
     public init?(hexadecimal texto: String) {
         let cifras = texto.hasPrefix("#") ? String(texto.dropFirst()) : texto
         guard cifras.count == 6, cifras.allSatisfy(\.isHexDigit), let valor = Int(cifras, radix: 16) else { return nil }
+        self.init(valor)
+    }
+
+    /// El color de un número 0xRRGGBB: `ColorRGB(0xFF7F00)` es el naranja.
+    package init(_ valor: Int) {
         self.init(rojo: (valor >> 16) & 0xFF, verde: (valor >> 8) & 0xFF, azul: valor & 0xFF)
     }
 
@@ -85,11 +90,11 @@ public enum CorrespondenciaDeColores: Hashable, Sendable, CaseIterable, CustomSt
     public func color(de nota: Nota) -> ColorRGB {
         switch self {
         case .newton:
-            return ColorRGB(hexadecimal: CorrespondenciaDeColores.tablaNewton[nota.natural.rawValue].hex)!
+            return ColorRGB(CorrespondenciaDeColores.tablaNewton[nota.natural.rawValue].rgb)
         case .castel:
-            return ColorRGB(hexadecimal: CorrespondenciaDeColores.tablaCastel[nota.claseDeAltura].hex)!
+            return ColorRGB(CorrespondenciaDeColores.tablaCastel[nota.claseDeAltura].rgb)
         case .scriabin:
-            return ColorRGB(hexadecimal: CorrespondenciaDeColores.tablaScriabin[nota.claseDeAltura].hex)!
+            return ColorRGB(CorrespondenciaDeColores.tablaScriabin[nota.claseDeAltura].rgb)
         case .circuloDeQuintas:
             return ColorRGB(tono: Double(modulo(nota.pasosDeQuinta, 12) * 30), saturacion: 1, brillo: 1)
         }
@@ -107,25 +112,25 @@ public enum CorrespondenciaDeColores: Hashable, Sendable, CaseIterable, CustomSt
     }
 
     /// Do, Re, Mi, Fa, Sol, La, Si.
-    package static let tablaNewton: [(nombre: String, hex: String)] = [
-        ("rojo", "#FF0000"), ("naranja", "#FF7F00"), ("amarillo", "#FFFF00"), ("verde", "#00FF00"),
-        ("azul", "#0000FF"), ("añil", "#4B0082"), ("violeta", "#8B00FF"),
+    package static let tablaNewton: [(nombre: String, rgb: Int)] = [
+        ("rojo", 0xFF0000), ("naranja", 0xFF7F00), ("amarillo", 0xFFFF00), ("verde", 0x00FF00),
+        ("azul", 0x0000FF), ("añil", 0x4B0082), ("violeta", 0x8B00FF),
     ]
 
     /// Clases de altura 0…11 (Do, Do♯, Re…).
-    package static let tablaCastel: [(nombre: String, hex: String)] = [
-        ("azul", "#0000FF"), ("azul verdoso", "#0D98BA"), ("verde", "#00A651"), ("verde oliva", "#808000"),
-        ("amarillo", "#FFFF00"), ("amarillo anaranjado", "#FFBF00"), ("naranja", "#FF7F00"), ("rojo", "#FF0000"),
-        ("carmesí", "#DC143C"), ("violeta", "#8F00FF"), ("ágata", "#A0785A"), ("añil", "#4B0082"),
+    package static let tablaCastel: [(nombre: String, rgb: Int)] = [
+        ("azul", 0x0000FF), ("azul verdoso", 0x0D98BA), ("verde", 0x00A651), ("verde oliva", 0x808000),
+        ("amarillo", 0xFFFF00), ("amarillo anaranjado", 0xFFBF00), ("naranja", 0xFF7F00), ("rojo", 0xFF0000),
+        ("carmesí", 0xDC143C), ("violeta", 0x8F00FF), ("ágata", 0xA0785A), ("añil", 0x4B0082),
     ]
 
     /// Clases de altura 0…11 (Do, Do♯, Re…).
-    package static let tablaScriabin: [(nombre: String, hex: String)] = [
-        ("rojo intenso", "#FF0000"), ("violeta o púrpura", "#8F00FF"), ("amarillo", "#FFFF00"),
-        ("carne (con brillo de acero)", "#D8B4A0"), ("azul cielo (luz de luna o escarcha)", "#87CEEB"),
-        ("rojo oscuro", "#8B0000"), ("azul brillante o violeta", "#0080FF"), ("naranja", "#FF8000"),
-        ("violeta o lila", "#C8A2C8"), ("verde", "#00C000"), ("rosa o acero", "#C08090"),
-        ("azul nacarado", "#8EB8E5"),
+    package static let tablaScriabin: [(nombre: String, rgb: Int)] = [
+        ("rojo intenso", 0xFF0000), ("violeta o púrpura", 0x8F00FF), ("amarillo", 0xFFFF00),
+        ("carne (con brillo de acero)", 0xD8B4A0), ("azul cielo (luz de luna o escarcha)", 0x87CEEB),
+        ("rojo oscuro", 0x8B0000), ("azul brillante o violeta", 0x0080FF), ("naranja", 0xFF8000),
+        ("violeta o lila", 0xC8A2C8), ("verde", 0x00C000), ("rosa o acero", 0xC08090),
+        ("azul nacarado", 0x8EB8E5),
     ]
 }
 
