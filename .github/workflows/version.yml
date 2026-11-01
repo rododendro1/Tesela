@@ -84,9 +84,19 @@ jobs:
           numero=${version#swift-}
           numero=${numero%-RELEASE}
           command -v curl > /dev/null || (apt-get update -q && apt-get install -yq curl)
-          curl -fsSL -o "$RUNNER_TEMP/sdk.tar.gz" \
-            "https://download.swift.org/swift-$numero-release/static-sdk/$version/${version}_static-linux-0.0.1.artifactbundle.tar.gz"
-          swift sdk install "$RUNNER_TEMP/sdk.tar.gz"
+          # El nombre del paquete lleva la versión del SDK, que cambia de una versión de Swift a otra.
+          base="https://download.swift.org/swift-$numero-release/static-sdk/$version"
+          for sdk in 0.1.0 0.0.1; do
+            url="$base/${version}_static-linux-$sdk.artifactbundle.tar.gz"
+            if curl -fsSL -o "$RUNNER_TEMP/sdk.tar.gz" "$url" && gzip -t "$RUNNER_TEMP/sdk.tar.gz" 2> /dev/null; then
+              echo "SDK: $url"
+              swift sdk install "$RUNNER_TEMP/sdk.tar.gz"
+              exit 0
+            fi
+            echo "No está: $url ($(head -c 200 "$RUNNER_TEMP/sdk.tar.gz" 2> /dev/null | tr -cd '[:print:]'))"
+          done
+          curl -fsSL https://www.swift.org/api/v1/install/releases.json | grep -o "\"$numero\"[^]]*" | head -c 3000
+          exit 1
       - name: Compilar
         working-directory: Apps/ArmoniaCLI
         run: |
