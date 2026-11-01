@@ -1,38 +1,38 @@
 import Foundation
-import XCTest
+import Testing
 
 @testable import Armonia
 @testable import ArmoniaNucleo
 @testable import ArmoniaPartitura
 @testable import ArmoniaTeoria
 
-final class ImportacionTests: XCTestCase {
+@Suite struct ImportacionTests {
     private let cadencia = "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5"
 
     private func nombres(_ pieza: PiezaImportada) -> [String] { pieza.notas.map(\.altura.nombre) }
 
     // MARK: Ida y vuelta
 
-    func testUnCoralEnMIDISeLeeIgual() throws {
+    @Test func unCoralEnMIDISeLeeIgual() throws {
         let coral = try Coral(leyendo: cadencia)
         let datos = coral.midi(
             duracion: .blanca, compas: Compas(3, 2), tonalidad: Tonalidad(.do), tempo: Tempo(72),
             titulo: "Cadencia")
         let pieza = try PiezaImportada(leyendo: datos)
-        XCTAssertEqual(pieza.titulo, "Cadencia")
-        XCTAssertEqual(pieza.tonalidad, Tonalidad(.do))
-        XCTAssertEqual(pieza.compas, Compas(3, 2))
-        XCTAssertEqual(pieza.tempo?.negrasPorMinuto ?? 0, 72, accuracy: 0.01)
-        XCTAssertEqual(pieza.notas.count, 12)
-        XCTAssertEqual(Array(nombres(pieza).prefix(4)), ["Do3", "Mi4", "Sol4", "Do5"])
-        XCTAssertEqual(Set(pieza.notas.map(\.duracion)), [.blanca])
-        XCTAssertEqual(pieza.notas.map(\.inicio).max(), Duracion(1))
-        XCTAssertEqual(Set(pieza.notas.map(\.parte)).count, 4)
-        XCTAssertEqual(pieza.acordes().map(\.cifrado), ["Do", "Sol", "Do"])
-        XCTAssertEqual(pieza.analisis()?.cifrados, ["I", "V", "I"])
+        #expect(pieza.titulo == "Cadencia")
+        #expect(pieza.tonalidad == Tonalidad(.do))
+        #expect(pieza.compas == Compas(3, 2))
+        #expect(abs((pieza.tempo?.negrasPorMinuto ?? 0) - (72)) <= 0.01)
+        #expect(pieza.notas.count == 12)
+        #expect(Array(nombres(pieza).prefix(4)) == ["Do3", "Mi4", "Sol4", "Do5"])
+        #expect(Set(pieza.notas.map(\.duracion)) == [.blanca])
+        #expect(pieza.notas.map(\.inicio).max() == Duracion(1))
+        #expect(Set(pieza.notas.map(\.parte)).count == 4)
+        #expect(pieza.acordes().map(\.cifrado) == ["Do", "Sol", "Do"])
+        #expect(pieza.analisis()?.cifrados == ["I", "V", "I"])
     }
 
-    func testUnCoralEnMusicXMLSeLeeIgualQueEnMIDI() throws {
+    @Test func unCoralEnMusicXMLSeLeeIgualQueEnMIDI() throws {
         let coral = try Coral(leyendo: cadencia)
         let midi = try PiezaImportada(leyendo: coral.midi(duracion: .blanca, tonalidad: Tonalidad(.do)))
         let xml = try PiezaImportada(
@@ -41,25 +41,25 @@ final class ImportacionTests: XCTestCase {
                     duracion: .blanca, compas: Compas(3, 2),
                     tonalidad: Tonalidad(.do), titulo: "Cadencia"
                 ).utf8))
-        XCTAssertEqual(xml.titulo, "Cadencia")
-        XCTAssertEqual(xml.tonalidad, Tonalidad(.do))
-        XCTAssertEqual(xml.compas, Compas(3, 2))
-        XCTAssertEqual(nombres(xml), nombres(midi))
-        XCTAssertEqual(xml.notas.map(\.inicio), midi.notas.map(\.inicio))
-        XCTAssertEqual(xml.acordes(), midi.acordes())
+        #expect(xml.titulo == "Cadencia")
+        #expect(xml.tonalidad == Tonalidad(.do))
+        #expect(xml.compas == Compas(3, 2))
+        #expect(nombres(xml) == nombres(midi))
+        #expect(xml.notas.map(\.inicio) == midi.notas.map(\.inicio))
+        #expect(xml.acordes() == midi.acordes())
     }
 
-    func testUnaProgresionExportadaDaSusAcordes() throws {
+    @Test func unaProgresionExportadaDaSusAcordes() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
         for datos in [analisis.midi(), Data(analisis.musicXML().utf8)] {
             let pieza = try PiezaImportada(leyendo: datos)
-            XCTAssertEqual(pieza.acordes().map(\.cifrado), ["Do", "Lam", "Re7", "Sol7", "Do"])
-            XCTAssertEqual(pieza.analisis()?.cifrados, ["I", "vi", "V7/V", "V7", "I"])
-            XCTAssertEqual(pieza.analisis(en: Tonalidad(.do))?.cifrados, ["I", "vi", "V7/V", "V7", "I"])
+            #expect(pieza.acordes().map(\.cifrado) == ["Do", "Lam", "Re7", "Sol7", "Do"])
+            #expect(pieza.analisis()?.cifrados == ["I", "vi", "V7/V", "V7", "I"])
+            #expect(pieza.analisis(en: Tonalidad(.do))?.cifrados == ["I", "vi", "V7/V", "V7", "I"])
         }
     }
 
-    func testLasLigadurasUnenLasNotas() throws {
+    @Test func lasLigadurasUnenLasNotas() throws {
         let voz = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8~ Mi4:4 Sol4+Si4:2", compas: "3/4")
         let esperadas = [
             NotaDeLaPieza(altura: try Altura(leyendo: "Do4"), inicio: .cero, duracion: .negra),
@@ -69,16 +69,16 @@ final class ImportacionTests: XCTestCase {
             NotaDeLaPieza(altura: try Altura(leyendo: "Si4"), inicio: Duracion(3, 4), duracion: .blanca),
         ]
         let xml = try PiezaImportada(musicXML: Data(voz.musicXML(tonalidad: Tonalidad(.do)).utf8))
-        XCTAssertEqual(xml.notas, esperadas)
+        #expect(xml.notas == esperadas)
         let midi = try PiezaImportada(midi: voz.midi(tonalidad: Tonalidad(.do)))
-        XCTAssertEqual(midi.notas.map(\.altura), esperadas.map(\.altura))
-        XCTAssertEqual(midi.notas.map(\.inicio), esperadas.map(\.inicio))
-        XCTAssertEqual(midi.notas.map(\.duracion), esperadas.map(\.duracion))
+        #expect(midi.notas.map(\.altura) == esperadas.map(\.altura))
+        #expect(midi.notas.map(\.inicio) == esperadas.map(\.inicio))
+        #expect(midi.notas.map(\.duracion) == esperadas.map(\.duracion))
     }
 
     // MARK: MusicXML
 
-    func testMusicXMLConVocesAcordesYTransposicion() throws {
+    @Test func musicXMLConVocesAcordesYTransposicion() throws {
         // Un clarinete en Si♭ (suena un tono por debajo) en Do menor, con una nota de adorno, un
         // acorde, un silencio y una segunda voz que vuelve al principio del compás.
         let xml = """
@@ -107,16 +107,16 @@ final class ImportacionTests: XCTestCase {
             </score-partwise>
             """
         let pieza = try PiezaImportada(leyendo: Data(xml.utf8))
-        XCTAssertEqual(pieza.titulo, "Prueba")
-        XCTAssertEqual(pieza.tonalidad, Tonalidad(.do, .menor))
-        XCTAssertEqual(pieza.compas, Compas(3, 4))
-        XCTAssertEqual(pieza.tempo, Tempo(72))
-        XCTAssertEqual(nombres(pieza), ["Fa3", "Do4", "Mi♭4", "Re♭4"])
-        XCTAssertEqual(pieza.notas.map(\.inicio), [.cero, .cero, .cero, .blanca])
-        XCTAssertEqual(pieza.notas.map(\.duracion), [Duracion(3, 4), .negra, .negra, .negra])
+        #expect(pieza.titulo == "Prueba")
+        #expect(pieza.tonalidad == Tonalidad(.do, .menor))
+        #expect(pieza.compas == Compas(3, 4))
+        #expect(pieza.tempo == Tempo(72))
+        #expect(nombres(pieza) == ["Fa3", "Do4", "Mi♭4", "Re♭4"])
+        #expect(pieza.notas.map(\.inicio) == [.cero, .cero, .cero, .blanca])
+        #expect(pieza.notas.map(\.duracion) == [Duracion(3, 4), .negra, .negra, .negra])
     }
 
-    func testLosCompasesSiguenDondeLlegaLaVozMasLarga() throws {
+    @Test func losCompasesSiguenDondeLlegaLaVozMasLarga() throws {
         let xml = """
             <score-partwise version="4.0">
               <part id="P1">
@@ -133,42 +133,42 @@ final class ImportacionTests: XCTestCase {
             </score-partwise>
             """
         let pieza = try PiezaImportada(musicXML: Data(xml.utf8))
-        XCTAssertEqual(nombres(pieza), ["Do4", "Mi4", "Sol4"])
-        XCTAssertEqual(pieza.notas.map(\.inicio), [.cero, .cero, .redonda])
+        #expect(nombres(pieza) == ["Do4", "Mi4", "Sol4"])
+        #expect(pieza.notas.map(\.inicio) == [.cero, .cero, .redonda])
     }
 
     // MARK: Reducción a acordes
 
-    func testLasNotasDePasoNoCambianElAcorde() {
+    @Test func lasNotasDePasoNoCambianElAcorde() {
         let alturas = ["Do3", "Mi4", "Sol4"].map { try! Altura(leyendo: $0) }
         var notas = alturas.map { NotaDeLaPieza(altura: $0, inicio: .cero, duracion: .negra) }
         notas.append(NotaDeLaPieza(altura: try! Altura(leyendo: "Do5"), inicio: .cero, duracion: .corchea))
         notas.append(NotaDeLaPieza(altura: try! Altura(leyendo: "Re5"), inicio: .corchea, duracion: .corchea))
         let pieza = PiezaImportada(tonalidad: Tonalidad(.do), notas: notas)
-        XCTAssertEqual(pieza.acordes().map(\.cifrado), ["Do"])
+        #expect(pieza.acordes().map(\.cifrado) == ["Do"])
     }
 
-    func testUnBajoAlbertiSeLeeComoUnAcorde() {
+    @Test func unBajoAlbertiSeLeeComoUnAcorde() {
         let figura = ["Do3", "Sol3", "Mi3", "Sol3", "Si2", "Sol3", "Re3", "Sol3"].map { try! Altura(leyendo: $0) }
         let notas = figura.enumerated().map {
             NotaDeLaPieza(altura: $1, inicio: Duracion($0, 16), duracion: .semicorchea)
         }
         let pieza = PiezaImportada(tonalidad: Tonalidad(.do), notas: notas)
-        XCTAssertEqual(pieza.acordes().map(\.cifrado), ["Do", "Sol/Si"])
-        XCTAssertEqual(pieza.acordesConInicio().map(\.inicio), [.cero, .negra])
+        #expect(pieza.acordes().map(\.cifrado) == ["Do", "Sol/Si"])
+        #expect(pieza.acordesConInicio().map(\.inicio) == [.cero, .negra])
     }
 
-    func testUnaVentanaMasLargaFundeLosAcordes() {
+    @Test func unaVentanaMasLargaFundeLosAcordes() {
         let figura = ["Do3", "Sol3", "Mi3", "Sol3", "Do3", "La3", "Fa3", "La3"].map { try! Altura(leyendo: $0) }
         let notas = figura.enumerated().map {
             NotaDeLaPieza(altura: $1, inicio: Duracion($0, 16), duracion: .semicorchea)
         }
         let pieza = PiezaImportada(tonalidad: Tonalidad(.do), notas: notas)
-        XCTAssertEqual(pieza.acordes().map(\.cifrado), ["Do", "Fa/Do"])
-        XCTAssertEqual(pieza.acordes(ventana: .blanca).count, 1)
+        #expect(pieza.acordes().map(\.cifrado) == ["Do", "Fa/Do"])
+        #expect(pieza.acordes(ventana: .blanca).count == 1)
     }
 
-    func testSinTonalidadSeEstimaPorLasNotas() {
+    @Test func sinTonalidadSeEstimaPorLasNotas() {
         let alturas = ["La2", "Do4", "Mi4", "Mi2", "Re4", "Sol#4", "Si4", "La2", "Do4", "Mi4"]
         let notas = alturas.enumerated().map { i, nombre in
             NotaDeLaPieza(
@@ -176,9 +176,9 @@ final class ImportacionTests: XCTestCase {
                 duracion: .negra)
         }
         let pieza = PiezaImportada(notas: notas)
-        XCTAssertNil(pieza.tonalidad)
-        XCTAssertEqual(pieza.tonalidadEstimada, Tonalidad(.la, .menor))
-        XCTAssertEqual(pieza.acordes().map(\.cifrado), ["Lam", "Mi7", "Lam"])
+        #expect(pieza.tonalidad == nil)
+        #expect(pieza.tonalidadEstimada == Tonalidad(.la, .menor))
+        #expect(pieza.acordes().map(\.cifrado) == ["Lam", "Mi7", "Lam"])
     }
 
     // MARK: Errores
@@ -192,38 +192,39 @@ final class ImportacionTests: XCTestCase {
         }
     }
 
-    func testLosErroresDicenPorQue() throws {
+    @Test func losErroresDicenPorQue() throws {
         let coral = try Coral(leyendo: cadencia).midi()
-        XCTAssertEqual(error(Data("hola".utf8)), .formatoDesconocido)
-        XCTAssertEqual(error(Data([0x50, 0x4B, 0x03, 0x04, 0, 0])), .comprimido)
-        XCTAssertEqual(error(coral.prefix(40)), .midiDanado)
+        #expect(error(Data("hola".utf8)) == .formatoDesconocido)
+        #expect(error(Data([0x50, 0x4B, 0x03, 0x04, 0, 0])) == .comprimido)
+        #expect(error(coral.prefix(40)) == .midiDanado)
         var smpte = [UInt8](coral)
         smpte[12] = 0xE7
         smpte[13] = 0x28
-        XCTAssertEqual(error(Data(smpte)), .midiConTiempoSMPTE)
+        #expect(error(Data(smpte)) == .midiConTiempoSMPTE)
         let vacio = ArchivoMIDI(compas: .compasillo, tonalidad: nil, tempo: nil, titulo: nil).datos
-        XCTAssertEqual(error(vacio), .sinNotas)
+        #expect(error(vacio) == .sinNotas)
         guard case .xmlDanado = error(Data("<score-partwise><part>".utf8)) else {
-            return XCTFail("un XML sin cerrar no está bien formado")
+            Issue.record("un XML sin cerrar no está bien formado")
+            return
         }
-        XCTAssertEqual(error(Data("<score-timewise version=\"4.0\"/>".utf8)), .noEsMusicXMLPorPartes)
-        XCTAssertEqual(error(Data("<score-partwise version=\"4.0\"/>".utf8)), .sinNotas)
+        #expect(error(Data("<score-timewise version=\"4.0\"/>".utf8)) == .noEsMusicXMLPorPartes)
+        #expect(error(Data("<score-partwise version=\"4.0\"/>".utf8)) == .sinNotas)
     }
 
-    func testLosErroresSeExplicanEnCadaIdioma() {
-        XCTAssertEqual(ErrorDeImportacion.sinNotas.descripcion(en: .inglesASCII), "The file has no notes.")
-        XCTAssertEqual(ErrorDeImportacion.sinNotas.description, "El fichero no tiene ninguna nota.")
-        XCTAssertEqual(
-            ErrorDeImportacion.xmlDanado(linea: 3).descripcion(en: .frances),
-            "Le fichier MusicXML est endommagé (ligne 3).")
+    @Test func losErroresSeExplicanEnCadaIdioma() {
+        #expect(ErrorDeImportacion.sinNotas.descripcion(en: .inglesASCII) == "The file has no notes.")
+        #expect(ErrorDeImportacion.sinNotas.description == "El fichero no tiene ninguna nota.")
+        #expect(
+            ErrorDeImportacion.xmlDanado(linea: 3).descripcion(en: .frances)
+                == "Le fichier MusicXML est endommagé (ligne 3).")
     }
 
     // MARK: Auxiliares
 
-    func testAlturaPorPasosYMIDI() {
-        XCTAssertEqual(Altura(pasos: 0, midi: 60), .doCentral)
-        XCTAssertEqual(Altura(pasos: 1, midi: 63).nombre, "Re♯4")
-        XCTAssertEqual(Altura(pasos: 2, midi: 63).nombre, "Mi♭4")
-        XCTAssertEqual(Altura(pasos: -1, midi: 58).nombre, "Si♭3")
+    @Test func alturaPorPasosYMIDI() {
+        #expect(Altura(pasos: 0, midi: 60) == .doCentral)
+        #expect(Altura(pasos: 1, midi: 63).nombre == "Re♯4")
+        #expect(Altura(pasos: 2, midi: 63).nombre == "Mi♭4")
+        #expect(Altura(pasos: -1, midi: 58).nombre == "Si♭3")
     }
 }

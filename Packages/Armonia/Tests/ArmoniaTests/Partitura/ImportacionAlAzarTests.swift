@@ -1,6 +1,6 @@
 import Foundation
 import Hexagonos
-import XCTest
+import Testing
 
 @testable import Armonia
 @testable import ArmoniaNucleo
@@ -14,7 +14,7 @@ import XCTest
 // colgarse, y lo que sale de una pieza leída (sus acordes y su análisis) también. Las semillas son fijas, así que
 // un fallo se repite siempre igual.
 
-final class ImportacionAlAzarTests: XCTestCase {
+@Suite struct ImportacionAlAzarTests {
     private static let casosPorSemilla = 300
 
     /// Ficheros buenos de los que se parte: los que escribe la biblioteca, en MIDI y en MusicXML.
@@ -76,22 +76,22 @@ final class ImportacionAlAzarTests: XCTestCase {
         return Data(bytes)
     }
 
-    func testLosFicherosEstropeadosNoDetienenLaLectura() throws {
+    @Test func losFicherosEstropeadosNoDetienenLaLectura() throws {
         var azar = GeneradorConSemilla(semilla: 1880)
         for semilla in try semillas() {
-            XCTAssertTrue(leer(semilla), "la semilla sin estropear se lee")
+            #expect(leer(semilla), "la semilla sin estropear se lee")
             for _ in 0..<Self.casosPorSemilla { leer(estropear(semilla, &azar)) }
         }
     }
 
-    func testBytesAlAzarNoDetienenLaLectura() {
+    @Test func bytesAlAzarNoDetienenLaLectura() {
         var azar = GeneradorConSemilla(semilla: 31)
         for _ in 0..<500 {
             let largo = Int.random(in: 0...256, using: &azar)
             var bytes = (0..<largo).map { _ in UInt8.random(in: 0...255, using: &azar) }
             // La mitad, con la cabecera de un MIDI para que se lea más allá de ella.
             if Bool.random(using: &azar) { bytes = Array("MThd".utf8) + [0, 0, 0, 6, 0, 1, 0, 2, 1, 0xE0] + bytes }
-            XCTAssertFalse(leer(Data(bytes)) && bytes.isEmpty)
+            #expect(!(leer(Data(bytes)) && bytes.isEmpty))
         }
     }
 
@@ -117,7 +117,7 @@ final class ImportacionAlAzarTests: XCTestCase {
         return bytes
     }
 
-    func testUnaNotaLarguisimaConUnaDivisionRara() throws {
+    @Test func unaNotaLarguisimaConUnaDivisionRara() throws {
         // 32 749 pulsos por negra (un primo) y una nota de 2^27 pulsos: más de 100 000 negras. Las ventanas de los
         // acordes se alargan para no pasar de 100 000, y su suma no puede desbordar las fracciones.
         let datos = midi(
@@ -125,11 +125,11 @@ final class ImportacionAlAzarTests: XCTestCase {
             [0x00, 0x90, 60, 100, 0x00, 0x90, 64, 100, 0x00, 0x90, 67, 100]
                 + variable((1 << 28) - 1) + [0x80, 60, 0, 0x00, 0x80, 64, 0, 0x00, 0x80, 67, 0])
         let pieza = try PiezaImportada(leyendo: datos)
-        XCTAssertEqual(pieza.notas.count, 3)
-        XCTAssertEqual(pieza.acordes().map(\.cifrado), ["Do"])
+        #expect(pieza.notas.count == 3)
+        #expect(pieza.acordes().map(\.cifrado) == ["Do"])
     }
 
-    func testMuchasNotasLargasSeguidas() throws {
+    @Test func muchasNotasLargasSeguidas() throws {
         // Cuarenta notas de 2^27 pulsos una detrás de otra: la pieza dura años, pero se lee en poco tiempo.
         var eventos: [UInt8] = []
         for i in 0..<40 {
@@ -137,12 +137,12 @@ final class ImportacionAlAzarTests: XCTestCase {
             eventos += [0x00, 0x90, clave, 100] + variable((1 << 27) + i) + [0x80, clave, 0]
         }
         let pieza = try PiezaImportada(leyendo: midi(divisiones: 32_749, eventos))
-        XCTAssertEqual(pieza.notas.count, 40)
+        #expect(pieza.notas.count == 40)
         _ = pieza.acordes()
         _ = pieza.analisis()
     }
 
-    func testMilesDeNotasAbiertasALaVez() throws {
+    @Test func milesDeNotasAbiertasALaVez() throws {
         // Todas las teclas de los 16 canales, sin soltar: las notas acaban con la pista.
         var eventos: [UInt8] = []
         for canal in 0..<16 where canal != 9 {
@@ -150,7 +150,7 @@ final class ImportacionAlAzarTests: XCTestCase {
         }
         eventos += [0x60, 0xB0, 0, 0]
         let pieza = try PiezaImportada(leyendo: midi(divisiones: 96, eventos))
-        XCTAssertEqual(pieza.notas.count, 15 * 128)
+        #expect(pieza.notas.count == (15 * 128))
         _ = pieza.acordes()
     }
 
@@ -176,7 +176,7 @@ final class ImportacionAlAzarTests: XCTestCase {
             + "<octave>\(octava)</octave></pitch><duration>\(duracion)</duration></note>"
     }
 
-    func testNumerosDesmesuradosEnMusicXML() {
+    @Test func numerosDesmesuradosEnMusicXML() {
         let raros = [
             "9999999", "-9999999", "1e300", "-1e300", "nan", "inf", "-0", "", "x", "9223372036854775807",
             "-9223372036854775808", "18446744073709551616",
@@ -209,7 +209,7 @@ final class ImportacionAlAzarTests: XCTestCase {
         }
     }
 
-    func testUnaPiezaLarguisimaConDivisionesPrimas() throws {
+    @Test func unaPiezaLarguisimaConDivisionesPrimas() throws {
         // Dos partes con divisiones primas distintas y miles de compases de la nota más larga que se admite: las
         // fracciones de los dos pentagramas se combinan sin desbordar.
         let compas = (0..<200).map { i in nota(["C", "E", "G"][i % 3], octava: "4", duracion: "9999999") }.joined()
@@ -219,21 +219,21 @@ final class ImportacionAlAzarTests: XCTestCase {
             + "<part id=\"P2\"><measure number=\"1\"><attributes><divisions>99989</divisions></attributes>"
             + nota("C", octava: "3", duracion: "9999999") + "</measure></part></score-partwise>"
         let pieza = try PiezaImportada(leyendo: Data(texto.utf8))
-        XCTAssertEqual(pieza.notas.count, 201)
+        #expect(pieza.notas.count == 201)
         _ = pieza.acordes()
         _ = pieza.analisis()
     }
 
-    func testUnAcordeDeMilNotas() throws {
+    @Test func unAcordeDeMilNotas() throws {
         let acorde = (0..<1000).map { i in
             nota(["C", "D", "E", "F", "G", "A", "B"][i % 7], octava: "\(i % 10)", duracion: "1", acorde: i > 0)
         }.joined()
         let pieza = try PiezaImportada(leyendo: musicXML(acorde))
-        XCTAssertEqual(pieza.notas.count, 1000)
+        #expect(pieza.notas.count == 1000)
         _ = pieza.acordes()
     }
 
-    func testUnNombreQueNoEsUTF8EsUnXMLDanado() {
+    @Test func unNombreQueNoEsUTF8EsUnXMLDanado() throws {
         // En Linux, XMLParser detenía el programa con un byte suelto en el nombre de un elemento o de un atributo.
         let error = { (bytes: [UInt8]) -> ErrorDeImportacion? in
             do {
@@ -241,42 +241,42 @@ final class ImportacionAlAzarTests: XCTestCase {
                 return nil
             } catch { return error as? ErrorDeImportacion }
         }
-        XCTAssertEqual(
-            error(Array("<score-partwise>\n<pa".utf8) + [0xCB] + Array("rt/></score-partwise>".utf8)),
-            .xmlDanado(linea: 2))
-        XCTAssertEqual(error(Array("<score-partwise x".utf8) + [0xFF] + Array("=\"1\"/>".utf8)), .xmlDanado(linea: 1))
-        XCTAssertEqual(
-            error(Array("<score-partwise>".utf8) + [0xE0, 0x80, 0x80] + Array("</score-partwise>".utf8)),
-            .xmlDanado(linea: 1))
-        XCTAssertEqual(
-            error(Array("<score-partwise>".utf8) + [0xED, 0xA0, 0x80] + Array("</score-partwise>".utf8)),
-            .xmlDanado(linea: 1))
-        XCTAssertNil(PiezaImportada.lineaConUTF8NoValido(Data("<a>Dó ♯ 𝄞</a>".utf8)))
+        #expect(
+            error(Array("<score-partwise>\n<pa".utf8) + [0xCB] + Array("rt/></score-partwise>".utf8))
+                == .xmlDanado(linea: 2))
+        #expect(error(Array("<score-partwise x".utf8) + [0xFF] + Array("=\"1\"/>".utf8)) == .xmlDanado(linea: 1))
+        #expect(
+            error(Array("<score-partwise>".utf8) + [0xE0, 0x80, 0x80] + Array("</score-partwise>".utf8))
+                == .xmlDanado(linea: 1))
+        #expect(
+            error(Array("<score-partwise>".utf8) + [0xED, 0xA0, 0x80] + Array("</score-partwise>".utf8))
+                == .xmlDanado(linea: 1))
+        #expect(PiezaImportada.lineaConUTF8NoValido(Data("<a>Dó ♯ 𝄞</a>".utf8)) == nil)
         // Una codificación declarada que no es de un byte por carácter no se salta la comprobación.
-        XCTAssertEqual(
+        #expect(
             error(
                 Array("<?xml version=\"1.0\" encoding=\"U}TF-8\"?>\n<score-partwise><".utf8) + [0xFF]
-                    + Array("a/></score-partwise>".utf8)), .xmlDanado(linea: 2))
+                    + Array("a/></score-partwise>".utf8)) == .xmlDanado(linea: 2))
         // Un fichero en Latin-1 que lo declara se sigue leyendo.
         let latin1 =
             Array("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><score-partwise><work><work-title>Canci".utf8)
             + [0xF3] + Array("n</work-title></work><part-list/><part id=\"P1\"><measure>".utf8)
             + Array(nota("C", octava: "4", duracion: "1").utf8) + Array("</measure></part></score-partwise>".utf8)
-        XCTAssertEqual(try PiezaImportada(leyendo: Data(latin1)).titulo, "Canción")
+        #expect(try (PiezaImportada(leyendo: Data(latin1)).titulo) == "Canción")
     }
 
-    func testElementosAnidadosSinFin() {
+    @Test func elementosAnidadosSinFin() {
         // Diez mil elementos abiertos uno dentro de otro, cerrados o no.
         let abiertos = String(repeating: "<a>", count: 10_000)
-        XCTAssertFalse(leer(Data(("<score-partwise>" + abiertos).utf8)))
-        XCTAssertFalse(
-            leer(
+        #expect(!leer(Data(("<score-partwise>" + abiertos).utf8)))
+        #expect(
+            !leer(
                 Data(
                     ("<score-partwise>" + abiertos + String(repeating: "</a>", count: 10_000)
                         + "</score-partwise>").utf8)))
     }
 
-    func testLasEntidadesNoSeMultiplican() {
+    @Test func lasEntidadesNoSeMultiplican() {
         // «Billion laughs»: entidades que se expanden unas en otras. No se pueden comer la memoria.
         var dtd = "<!DOCTYPE score-partwise [<!ENTITY a0 \"jajajajaja\">"
         for i in 1...9 { dtd += "<!ENTITY a\(i) \"" + String(repeating: "&a\(i - 1);", count: 10) + "\">" }
@@ -284,12 +284,12 @@ final class ImportacionAlAzarTests: XCTestCase {
         let texto =
             "<?xml version=\"1.0\"?>" + dtd
             + "<score-partwise><work><work-title>&a9;</work-title></work><part-list/></score-partwise>"
-        XCTAssertFalse(leer(Data(texto.utf8)))
+        #expect(!leer(Data(texto.utf8)))
     }
 
     // MARK: UIL
 
-    func testTextosUILAlAzar() {
+    @Test func textosUILAlAzar() throws {
         let buenos = ["2,7,5;R30M", "1,4,3;R30M;T7", "M2,P5,P4;R30M", "9:8,3:2,4:3", "1,3,2;R-90;S0", "♭II,♭III,II"]
         let piezas = [
             "0", "1", "-1", "9223372036854775807", "-9223372036854775808", "4611686018427387904",
@@ -323,9 +323,9 @@ final class ImportacionAlAzarTests: XCTestCase {
             probar(texto)
         }
         // Intervalos enormes: un error, no un desbordamiento al sumarlos.
-        XCTAssertThrowsError(try FormatoUIL(leyendo: "9223372036854775807,1,9223372036854775807"))
-        XCTAssertThrowsError(try FormatoUIL(leyendo: "-9223372036854775808,0,-9223372036854775808"))
-        XCTAssertThrowsError(try FormatoUIL(leyendo: "2,7,5;T9223372036854775807"))
+        #expect(throws: (any Error).self) { try FormatoUIL(leyendo: "9223372036854775807,1,9223372036854775807") }
+        #expect(throws: (any Error).self) { try FormatoUIL(leyendo: "-9223372036854775808,0,-9223372036854775808") }
+        #expect(throws: (any Error).self) { try FormatoUIL(leyendo: "2,7,5;T9223372036854775807") }
         for a in piezas.prefix(7) {
             for b in piezas.prefix(7) {
                 probar("\(a),\(b),\(a)")

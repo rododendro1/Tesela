@@ -1,24 +1,25 @@
-import XCTest
+import Foundation
+import Testing
 
 @testable import Armonia
 @testable import ArmoniaNucleo
 @testable import ArmoniaTeoria
 
-final class ArmonizacionTests: XCTestCase {
+@Suite struct ArmonizacionTests {
     // MARK: Acordes para una nota
 
-    func testAcordesParaUnaNota() {
+    @Test func acordesParaUnaNota() {
         let doMayor = Tonalidad(.do)
-        XCTAssertEqual(doMayor.acordes(para: .sol).prefix(3).map(\.valor), ["Sol", "Do", "Sol7"])
-        XCTAssertEqual(doMayor.acordes(para: .do).first?.valor, "Do")
+        #expect(doMayor.acordes(para: .sol).prefix(3).map(\.valor) == ["Sol", "Do", "Sol7"])
+        #expect(doMayor.acordes(para: .do).first?.valor == "Do")
         // Ordenados por coste.
         let costes = doMayor.acordes(para: .re).map(\.coste)
-        XCTAssertEqual(costes, costes.sorted())
+        #expect(costes == costes.sorted())
         // Una nota cromática: la dominante secundaria que la tiene.
-        XCTAssertTrue(doMayor.acordes(para: "Fa#").map(\.valor).contains("Re7"))
+        #expect(doMayor.acordes(para: "Fa#").map(\.valor).contains("Re7"))
         // Ninguno de la tonalidad tiene La♭: los del modo homónimo (iv y ♭VI).
-        XCTAssertEqual(doMayor.acordes(para: "Lab").prefix(2).map(\.valor), ["Fam", "Lab"])
-        XCTAssertEqual(doMayor.acordes(para: "Do#").map(\.valor), ["La", "La7"])
+        #expect(doMayor.acordes(para: "Lab").prefix(2).map(\.valor) == ["Fam", "Lab"])
+        #expect(doMayor.acordes(para: "Do#").map(\.valor) == ["La", "La7"])
     }
 
     // MARK: Armonizar
@@ -28,82 +29,83 @@ final class ArmonizacionTests: XCTestCase {
         return tonalidad.armonizar(melodia: notas).first?.valor.cifrados ?? []
     }
 
-    func testArmonizar() {
-        XCTAssertEqual(cifrados(Tonalidad(.do), "Mi Re Do"), ["I", "V", "I"])
-        XCTAssertEqual(cifrados(Tonalidad(.do), "Do Re Mi Fa Re Si Do"), ["I", "V", "I", "IV", "ii", "V", "I"])
-        XCTAssertEqual(cifrados(Tonalidad(.la, .menor), "Do Si La Sol# La"), ["i", "V", "i", "V", "i"])
-        XCTAssertEqual(cifrados(Tonalidad(.sol), "Si La Sol"), ["I", "V", "I"])
+    @Test func armonizar() {
+        #expect(cifrados(Tonalidad(.do), "Mi Re Do") == ["I", "V", "I"])
+        #expect(cifrados(Tonalidad(.do), "Do Re Mi Fa Re Si Do") == ["I", "V", "I", "IV", "ii", "V", "I"])
+        #expect(cifrados(Tonalidad(.la, .menor), "Do Si La Sol# La") == ["i", "V", "i", "V", "i"])
+        #expect(cifrados(Tonalidad(.sol), "Si La Sol") == ["I", "V", "I"])
     }
 
-    func testPropuestasOrdenadasYDistintas() {
+    @Test func propuestasOrdenadasYDistintas() {
         let propuestas = Tonalidad(.do).armonizar(melodia: ["Mi", "Re", "Do"], propuestas: 4)
-        XCTAssertEqual(propuestas.count, 4)
-        XCTAssertEqual(propuestas.map(\.coste), propuestas.map(\.coste).sorted())
-        XCTAssertEqual(Set(propuestas.map(\.valor.acordes)).count, 4)
-        XCTAssertEqual(propuestas[0].valor.description, "Do Sol Do (I–V–I)")
-        XCTAssertEqual(propuestas[0].valor.texto(en: .inglesASCII), "C G C (I–V–I)")
-        XCTAssertEqual(propuestas[0].valor.melodia, ["Mi", "Re", "Do"])
+        #expect(propuestas.count == 4)
+        #expect(propuestas.map(\.coste) == propuestas.map(\.coste).sorted())
+        #expect(Set(propuestas.map(\.valor.acordes)).count == 4)
+        #expect(propuestas[0].valor.description == "Do Sol Do (I–V–I)")
+        #expect(propuestas[0].valor.texto(en: .inglesASCII) == "C G C (I–V–I)")
+        #expect(propuestas[0].valor.melodia == ["Mi", "Re", "Do"])
     }
 
-    func testTerminaEnCadencia() {
+    @Test func terminaEnCadencia() {
         // Termina en el I precedido de la dominante, o en la dominante si la nota no es del I.
         for melodia in ["Sol La Si Do", "Mi Fa Sol La Sol Fa Mi Re Do", "Do Mi Re Si Do"] {
             let analisis = Tonalidad(.do).armonizar(
                 melodia: melodia.split(separator: " ").map { Nota(texto: String($0))! })[0].valor.analisis
-            XCTAssertEqual(analisis.cadencias.last?.tipo, .autentica, melodia)
+            #expect(analisis.cadencias.last?.tipo == .autentica, Comment(rawValue: melodia))
         }
         let semicadencia = cifrados(Tonalidad(.do), "Do Mi Fa Re")
-        XCTAssertEqual(semicadencia.last, "V")
+        #expect(semicadencia.last == "V")
     }
 
-    func testSecundariaVaASuDestino() {
+    @Test func secundariaVaASuDestino() {
         // Fa♯ pide Re (V/V), que tiene que ir a Sol.
         let propuesta = Tonalidad(.do).armonizar(melodia: ["Mi", "Fa#", "Sol", "Do"])[0].valor
-        XCTAssertEqual(propuesta.cifrados.prefix(3), ["I", "V/V", "V"])
+        #expect(propuesta.cifrados.prefix(3) == ["I", "V/V", "V"])
         for candidato in Tonalidad(.do).armonizar(melodia: ["Mi", "Fa#", "Sol", "Do"], propuestas: 10) {
             for (i, a) in candidato.valor.analisis.acordes.enumerated() {
                 if case .dominanteSecundaria(let destino) = a.categoria {
-                    XCTAssertEqual(candidato.valor.analisis.acordes[i + 1].grado, destino, "\(candidato.valor)")
+                    #expect(candidato.valor.analisis.acordes[i + 1].grado == destino, "\(candidato.valor)")
                 }
             }
         }
     }
 
-    func testArmonizarVacio() {
-        XCTAssertEqual(Tonalidad(.do).armonizar(melodia: []), [])
-        XCTAssertEqual(Tonalidad(.do).armonizar(melodia: ["Do"], propuestas: 0), [])
-        XCTAssertEqual(Tonalidad(.do).armonizar(melodia: ["Do"]).first?.valor.acordes, ["Do"])
+    @Test func armonizarVacio() {
+        #expect(Tonalidad(.do).armonizar(melodia: []) == [])
+        #expect(Tonalidad(.do).armonizar(melodia: ["Do"], propuestas: 0) == [])
+        #expect(Tonalidad(.do).armonizar(melodia: ["Do"]).first?.valor.acordes == ["Do"])
     }
 
     // MARK: Realizar a cuatro voces
 
     private func comprobarRealizacion(
         _ texto: String, en tonalidad: Tonalidad? = nil,
-        file: StaticString = #filePath, line: UInt = #line
+        sourceLocation: SourceLocation = #_sourceLocation
     ) {
         let acordes = texto.split(separator: " ").map { Acorde(texto: String($0))! }
         guard let coral = Coral.realizar(acordes, en: tonalidad) else {
-            return XCTFail("«\(texto)» no se realiza", file: file, line: line)
+            Issue.record("«\(texto)» no se realiza", sourceLocation: sourceLocation)
+            return
         }
-        XCTAssertEqual(coral.faltas, [], texto, file: file, line: line)
-        XCTAssertEqual(coral.acordes.count, acordes.count, file: file, line: line)
+        #expect(coral.faltas == [], Comment(rawValue: texto), sourceLocation: sourceLocation)
+        #expect(coral.acordes.count == acordes.count, sourceLocation: sourceLocation)
         for (acorde, voces) in zip(acordes, coral.acordes) {
             let notas = voces.map(\.nota)
-            XCTAssertEqual(notas[0], acorde.bajo, "bajo de \(acorde)", file: file, line: line)
-            XCTAssertTrue(
-                notas.allSatisfy { acorde.notas.contains($0) || $0 == acorde.bajo }, "\(acorde): \(voces)", file: file,
-                line: line)
+            #expect(notas[0] == acorde.bajo, "bajo de \(acorde)", sourceLocation: sourceLocation)
+            #expect(
+                notas.allSatisfy { acorde.notas.contains($0) || $0 == acorde.bajo }, "\(acorde): \(voces)",
+                sourceLocation: sourceLocation)
             for nota in acorde.notas where nota != acorde.quinta {
-                XCTAssertTrue(notas.contains(nota), "falta \(nota) en \(acorde): \(voces)", file: file, line: line)
+                #expect(notas.contains(nota), "falta \(nota) en \(acorde): \(voces)", sourceLocation: sourceLocation)
             }
             if let septima = acorde.septima {
-                XCTAssertLessThanOrEqual(
-                    notas.filter { $0 == septima }.count, 1, "\(acorde): \(voces)", file: file, line: line)
+                #expect(
+                    notas.filter { $0 == septima }.count <= 1, "\(acorde): \(voces)", sourceLocation: sourceLocation)
             }
         }
     }
 
-    func testRealizar() {
+    @Test func realizar() {
         comprobarRealizacion("Do Fa Sol7 Do")
         comprobarRealizacion("Do Lam Rem Sol7 Do")
         comprobarRealizacion("Do Fa/La Sol7/Si Do")
@@ -115,58 +117,58 @@ final class ArmonizacionTests: XCTestCase {
         comprobarRealizacion("Sol Do Re7 Sol Mim Do Re Sol")
     }
 
-    func testRealizarConSoprano() throws {
+    @Test func realizarConSoprano() throws {
         let soprano: [Altura] = ["Mi4", "Fa4", "Re4", "Do4"]
-        let coral = try XCTUnwrap(Coral.realizar(["Do", "Fa", "Sol", "Do"], soprano: soprano))
-        XCTAssertEqual(coral.voz(3), soprano)
-        XCTAssertTrue(coral.esCorrecta)
-        XCTAssertEqual(coral.voz(0).map(\.nota), ["Do", "Fa", "Sol", "Do"])
+        let coral = try #require(Coral.realizar(["Do", "Fa", "Sol", "Do"], soprano: soprano))
+        #expect(coral.voz(3) == soprano)
+        #expect(coral.esCorrecta)
+        #expect(coral.voz(0).map(\.nota) == ["Do", "Fa", "Sol", "Do"])
         // Do–Rem con el soprano Sol4–La4 obliga a quintas paralelas con el bajo: no hay realización.
-        XCTAssertNil(Coral.realizar(["Do", "Rem"], soprano: ["Sol4", "La4"]))
+        #expect(Coral.realizar(["Do", "Rem"], soprano: ["Sol4", "La4"]) == nil)
     }
 
-    func testLaSensibleSubeEnElSoprano() throws {
-        let coral = try XCTUnwrap(Coral.realizar(["Do", "Sol", "Do"], soprano: ["Mi4", "Si4", "Do5"]))
-        XCTAssertTrue(coral.esCorrecta)
+    @Test func laSensibleSubeEnElSoprano() throws {
+        let coral = try #require(Coral.realizar(["Do", "Sol", "Do"], soprano: ["Mi4", "Si4", "Do5"]))
+        #expect(coral.esCorrecta)
         // Y no se duplica.
         for voces in coral.acordes {
-            XCTAssertLessThanOrEqual(voces.filter { $0.nota == .si }.count, 1)
+            #expect(voces.filter { $0.nota == .si }.count <= 1)
         }
     }
 
-    func testRealizarImposible() {
-        XCTAssertNil(Coral.realizar([]))
+    @Test func realizarImposible() {
+        #expect(Coral.realizar([]) == nil)
         // El soprano no tiene tantas notas, o una no es del acorde, o está fuera de tesitura.
-        XCTAssertNil(Coral.realizar(["Do", "Sol"], soprano: ["Do5"]))
-        XCTAssertNil(Coral.realizar(["Do", "Sol"], soprano: ["Do5", "Do5"]))
-        XCTAssertNil(Coral.realizar(["Do", "Sol"], soprano: ["Do6", "Si5"]))
+        #expect(Coral.realizar(["Do", "Sol"], soprano: ["Do5"]) == nil)
+        #expect(Coral.realizar(["Do", "Sol"], soprano: ["Do5", "Do5"]) == nil)
+        #expect(Coral.realizar(["Do", "Sol"], soprano: ["Do6", "Si5"]) == nil)
         // Más de cuatro notas obligatorias.
-        XCTAssertNil(Coral.realizar(["Do7(9,13)"]))
+        #expect(Coral.realizar(["Do7(9,13)"]) == nil)
     }
 
-    func testDisposicionesSinFaltas() {
+    @Test func disposicionesSinFaltas() {
         let disposiciones = Coral.disposiciones(de: "Sol7", soprano: nil, sensible: .si)
-        XCTAssertFalse(disposiciones.isEmpty)
+        #expect(!disposiciones.isEmpty)
         for d in disposiciones {
-            XCTAssertTrue(Coral([d.alturas])!.esCorrecta)
-            XCTAssertEqual(d.alturas[0].nota, .sol)
-            XCTAssertLessThanOrEqual(d.alturas.filter { $0.nota == .si }.count, 1)
+            #expect(Coral([d.alturas])!.esCorrecta)
+            #expect(d.alturas[0].nota == .sol)
+            #expect(d.alturas.filter { $0.nota == .si }.count <= 1)
         }
     }
 
     // MARK: Armonizar a cuatro voces
 
-    func testArmonizarACuatroVoces() throws {
+    @Test func armonizarACuatroVoces() throws {
         let melodia: [Altura] = ["Do5", "Si4", "La4", "Sol4", "Fa4", "Mi4", "Re4", "Do4"]
-        let armonizada = try XCTUnwrap(Tonalidad(.do).armonizarACuatroVoces(melodia))
-        XCTAssertEqual(armonizada.coral.voz(3), melodia)
-        XCTAssertTrue(armonizada.coral.esCorrecta)
-        XCTAssertEqual(armonizada.armonizacion.melodia, melodia.map(\.nota))
-        XCTAssertEqual(armonizada.armonizacion.cifrados.last, "I")
-        XCTAssertNil(Tonalidad(.do).armonizarACuatroVoces(["Do6", "Si5", "Do6"]))
+        let armonizada = try #require(Tonalidad(.do).armonizarACuatroVoces(melodia))
+        #expect(armonizada.coral.voz(3) == melodia)
+        #expect(armonizada.coral.esCorrecta)
+        #expect(armonizada.armonizacion.melodia == melodia.map(\.nota))
+        #expect(armonizada.armonizacion.cifrados.last == "I")
+        #expect(Tonalidad(.do).armonizarACuatroVoces(["Do6", "Si5", "Do6"]) == nil)
     }
 
-    func testArmonizarMelodiasAlAzar() {
+    @Test func armonizarMelodiasAlAzar() {
         // Cualquier melodía de la escala en la tesitura del soprano y sin saltos aumentados ni de más
         // de una octava: si sale un coral, no tiene faltas y lleva la melodía arriba. Y casi siempre sale.
         var generador = GeneradorConSemilla(semilla: 8)
@@ -189,9 +191,9 @@ final class ArmonizacionTests: XCTestCase {
             probadas += 1
             guard let armonizada = tonalidad.armonizarACuatroVoces(melodia) else { continue }
             realizadas += 1
-            XCTAssertEqual(armonizada.coral.voz(3), melodia)
-            XCTAssertEqual(armonizada.coral.faltas, [], "\(melodia)")
+            #expect(armonizada.coral.voz(3) == melodia)
+            #expect(armonizada.coral.faltas == [], "\(melodia)")
         }
-        XCTAssertGreaterThanOrEqual(realizadas, 18)
+        #expect(realizadas >= 18)
     }
 }

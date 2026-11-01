@@ -1,5 +1,5 @@
 import Foundation
-import XCTest
+import Testing
 
 /// Comprueba que el valor de un ejemplo coincide con el texto de su comentario.
 ///
@@ -10,21 +10,21 @@ import XCTest
 /// en el comentario vale por cualquier tramo (`La4 … Sol♯5 La5`).
 func comprobar<T>(
     _ valor: T, _ esperado: String, _ fichero: String, _ linea: Int,
-    file: StaticString = #filePath, line: UInt = #line
+    sourceLocation: SourceLocation = #_sourceLocation
 ) {
     let candidatos = descripciones(de: valor)
     if candidatos.contains(where: { coincide($0, con: esperado) }) { return }
-    XCTFail(
+    Issue.record(
         "\(fichero):\(linea): el ejemplo da «\(candidatos[0])» y el comentario dice «\(esperado)»",
-        file: file, line: line)
+        sourceLocation: sourceLocation)
 }
 
 /// Comprueba un valor contra otro escrito en Swift en el comentario (`// .mayor`).
 func comprobarIgual<T: Equatable>(
     _ valor: T, _ esperado: T, _ fichero: String, _ linea: Int,
-    file: StaticString = #filePath, line: UInt = #line
+    sourceLocation: SourceLocation = #_sourceLocation
 ) {
-    XCTAssertEqual(valor, esperado, "\(fichero):\(linea)", file: file, line: line)
+    #expect(valor == esperado, "\(fichero):\(linea)", sourceLocation: sourceLocation)
 }
 
 private func descripcion(_ valor: Any) -> String {

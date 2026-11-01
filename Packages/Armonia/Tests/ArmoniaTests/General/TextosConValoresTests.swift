@@ -1,4 +1,5 @@
-import XCTest
+import Foundation
+import Testing
 
 @testable import ArmoniaNucleo
 @testable import ArmoniaPartitura
@@ -10,8 +11,8 @@ import XCTest
 ///
 /// `TextosDeX.en(notacion, …)` solo ejecuta el cierre del idioma de la notación, así que sin esta prueba los de
 /// los idiomas que no prueba nadie no se ejecutarían nunca.
-final class TextosConValoresTests: XCTestCase {
-    func testCadaTextoConValoresEnCadaIdioma() {
+@Suite struct TextosConValoresTests {
+    @Test func cadaTextoConValoresEnCadaIdioma() {
         for idioma in Idioma.allCases {
             let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
             let textos = TextosDeNucleo.traducidos.texto(en: idioma)
@@ -43,7 +44,7 @@ final class TextosConValoresTests: XCTestCase {
                 textos.ordinalEnCifras(3),
             ]
             for (i, texto) in resultados.enumerated() {
-                XCTAssertFalse(texto.isEmpty, "TextosDeNucleo, texto \(i) en \(idioma)")
+                #expect(!texto.isEmpty, "TextosDeNucleo, texto \(i) en \(idioma)")
             }
         }
         for idioma in Idioma.allCases {
@@ -64,7 +65,7 @@ final class TextosConValoresTests: XCTestCase {
                 textos.enLaTonalidad("x"),
             ]
             for (i, texto) in resultados.enumerated() {
-                XCTAssertFalse(texto.isEmpty, "TextosDeTeoria, texto \(i) en \(idioma)")
+                #expect(!texto.isEmpty, "TextosDeTeoria, texto \(i) en \(idioma)")
             }
         }
         for idioma in Idioma.allCases {
@@ -74,7 +75,7 @@ final class TextosConValoresTests: XCTestCase {
                 textos.semitonos(3),
             ]
             for (i, texto) in resultados.enumerated() {
-                XCTAssertFalse(texto.isEmpty, "TextosDeRepresentaciones, texto \(i) en \(idioma)")
+                #expect(!texto.isEmpty, "TextosDeRepresentaciones, texto \(i) en \(idioma)")
             }
         }
         for idioma in Idioma.allCases {
@@ -88,7 +89,7 @@ final class TextosConValoresTests: XCTestCase {
                 textos.fraccionDeRedonda("x"),
             ]
             for (i, texto) in resultados.enumerated() {
-                XCTAssertFalse(texto.isEmpty, "TextosDePartitura, texto \(i) en \(idioma)")
+                #expect(!texto.isEmpty, "TextosDePartitura, texto \(i) en \(idioma)")
             }
         }
     }

@@ -1,5 +1,5 @@
 import Foundation
-import XCTest
+import Testing
 
 @testable import Armonia
 @testable import ArmoniaNucleo
@@ -22,19 +22,19 @@ struct GeneradorConSemilla: RandomNumberGenerator {
 }
 
 /// Ida y vuelta al azar: cualquier valor se escribe en cualquier notación y se vuelve a leer igual.
-final class IdaYVueltaAlAzarTests: XCTestCase {
+@Suite struct IdaYVueltaAlAzarTests {
     private static let notaciones: [Notacion] = [.espanolUnicode, .espanolASCII, .inglesASCII, .inglesUnicode]
     private static let casos = 500
 
     private func comprobar<T: RepresentableComoTexto & Equatable>(
-        _ generar: (inout GeneradorConSemilla) -> T, file: StaticString = #filePath, line: UInt = #line
+        _ generar: (inout GeneradorConSemilla) -> T, sourceLocation: SourceLocation = #_sourceLocation
     ) {
         var azar = GeneradorConSemilla(semilla: 2026)
         for _ in 0..<Self.casos {
             let valor = generar(&azar)
             for notacion in Self.notaciones {
                 let texto = valor.texto(en: notacion)
-                XCTAssertEqual(T(texto: texto), valor, "«\(texto)» (\(notacion))", file: file, line: line)
+                #expect(T(texto: texto) == valor, "«\(texto)» (\(notacion))", sourceLocation: sourceLocation)
             }
         }
     }
@@ -43,12 +43,12 @@ final class IdaYVueltaAlAzarTests: XCTestCase {
         Nota(pasosDeQuinta: Int.random(in: -14...14, using: &azar))
     }
 
-    func testNotasYAlturas() {
+    @Test func notasYAlturas() {
         comprobar { Self.nota(&$0) }
         comprobar { Altura(Self.nota(&$0), octava: Int.random(in: -1...9, using: &$0)) }
     }
 
-    func testIntervalos() {
+    @Test func intervalos() {
         comprobar { azar in
             Intervalo(
                 pasosDeQuinta: Int.random(in: -12...12, using: &azar),
@@ -56,7 +56,7 @@ final class IdaYVueltaAlAzarTests: XCTestCase {
         }
     }
 
-    func testAcordes() {
+    @Test func acordes() {
         comprobar { azar in
             let tipo = TipoDeAcorde.todos.randomElement(using: &azar)!
             let raiz = Nota(pasosDeQuinta: Int.random(in: -7...7, using: &azar))
@@ -67,7 +67,7 @@ final class IdaYVueltaAlAzarTests: XCTestCase {
         }
     }
 
-    func testEscalasYTonalidades() {
+    @Test func escalasYTonalidades() {
         comprobar { azar in
             Escala(
                 Nota(pasosDeQuinta: Int.random(in: -7...7, using: &azar)),
@@ -81,7 +81,7 @@ final class IdaYVueltaAlAzarTests: XCTestCase {
     }
 
     /// Lo que se codifica con Codable se decodifica igual.
-    func testCodable() throws {
+    @Test func codable() throws {
         var azar = GeneradorConSemilla(semilla: 7)
         let acordes = (0..<200).map { _ in
             Acorde(
@@ -89,22 +89,23 @@ final class IdaYVueltaAlAzarTests: XCTestCase {
                 TipoDeAcorde.todos.randomElement(using: &azar)!)
         }
         let datos = try JSONEncoder().encode(acordes)
-        XCTAssertEqual(try JSONDecoder().decode([Acorde].self, from: datos), acordes)
+        #expect(try (JSONDecoder().decode([Acorde].self, from: datos)) == acordes)
     }
 }
 
 /// Lo que no se debe aceptar: textos mal escritos, mezclas de idiomas y conjuntos que no son acordes.
-final class CasosNegativosTests: XCTestCase {
+@Suite struct CasosNegativosTests {
     private func rechaza<T: RepresentableComoTexto>(
-        _ tipo: T.Type, _ textos: [String], file: StaticString = #filePath, line: UInt = #line
+        _ tipo: T.Type, _ textos: [String], sourceLocation: SourceLocation = #_sourceLocation
     ) {
         for texto in textos {
-            XCTAssertNil(T(texto: texto), "«\(texto)» no debería leerse como \(T.self)", file: file, line: line)
-            XCTAssertThrowsError(try T(leyendo: texto), "«\(texto)»", file: file, line: line)
+            #expect(
+                T(texto: texto) == nil, "«\(texto)» no debería leerse como \(T.self)", sourceLocation: sourceLocation)
+            #expect(throws: (any Error).self, "«\(texto)»", sourceLocation: sourceLocation) { try T(leyendo: texto) }
         }
     }
 
-    func testTextosMalEscritos() {
+    @Test func textosMalEscritos() {
         rechaza(Nota.self, ["", " ", "H", "Fa#4", "Doo", "Do!", "#", "Sol#?"])
         rechaza(Altura.self, ["", "Do", "La", "4", "Do4.5", "Do 4 4", "H4"])
         rechaza(Intervalo.self, ["", "3J", "5M", "4m", "1m", "3X", "X3", "M"])
@@ -115,60 +116,74 @@ final class CasosNegativosTests: XCTestCase {
     }
 
     /// La tónica en español va con el tipo en español; con letra se acepta el inglés.
-    func testNoSeMezclanIdiomas() {
+    @Test func noSeMezclanIdiomas() throws {
         rechaza(Escala.self, ["Re dorian", "La harmonic minor", "Fa# lydian"])
         // «Do major» sí vale, como en las tonalidades: es catalán.
-        XCTAssertEqual(Escala(texto: "Do major"), Escala(.do, .mayor))
-        XCTAssertEqual(Escala(texto: "D dorian"), Escala(.re, .dorico))
-        XCTAssertEqual(Escala(texto: "Re dórico"), Escala(.re, .dorico))
-        XCTAssertEqual(Escala(texto: "F# lydian"), Escala(Nota(.fa, .sostenido), .lidio))
+        #expect(Escala(texto: "Do major") == Escala(.do, .mayor))
+        #expect(Escala(texto: "D dorian") == Escala(.re, .dorico))
+        #expect(Escala(texto: "Re dórico") == Escala(.re, .dorico))
+        #expect(Escala(texto: "F# lydian") == Escala(Nota(.fa, .sostenido), .lidio))
 
         // Las tonalidades se leen a través de las escalas: la misma regla.
         rechaza(Tonalidad.self, ["Re minor", "Sib minor", "La harmonic minor"]) // «Do major» sí vale: es catalán
-        XCTAssertEqual(Tonalidad(texto: "D minor"), Tonalidad(.re, .menor))
-        XCTAssertEqual(Tonalidad(texto: "Re menor"), Tonalidad(.re, .menor))
+        #expect(Tonalidad(texto: "D minor") == Tonalidad(.re, .menor))
+        #expect(Tonalidad(texto: "Re menor") == Tonalidad(.re, .menor))
 
         // El bajo de un acorde se escribe como su fundamental.
         rechaza(Acorde.self, ["Sol7/B", "G7/Si", "Re/E", "C/Mi", "Sib7(b9)/D"]) // «Do/E» sí vale: D°/E
-        XCTAssertEqual(Acorde(texto: "G7/B"), Acorde(texto: "Sol7/Si"))
-        XCTAssertEqual(Acorde(texto: "Faug/A"), Acorde(.fa, .aumentado, inversion: 1))
-        XCTAssertThrowsError(try Acorde(leyendo: "Sol7/B")) { error in
-            guard case .idiomasMezclados("B")? = (error as? ErrorDeLectura)?.motivo else { return XCTFail("\(error)") }
-            XCTAssertEqual((error as? ErrorDeLectura)?.posicion, 5)
+        #expect(Acorde(texto: "G7/B") == Acorde(texto: "Sol7/Si"))
+        #expect(Acorde(texto: "Faug/A") == Acorde(.fa, .aumentado, inversion: 1))
+        do {
+            _ = try Acorde(leyendo: "Sol7/B")
+            Issue.record("Se esperaba un error")
+        } catch {
+            guard case .idiomasMezclados("B")? = (error as? ErrorDeLectura)?.motivo else {
+                Issue.record("\(error)")
+                return
+            }
+            #expect((error as? ErrorDeLectura)?.posicion == 5)
+
         }
     }
 
     /// El init opcional lleva etiqueta: con una variable devuelve `nil`, nunca se detiene.
-    func testTextoDelUsuarioNoDetieneLaEjecucion() {
+    @Test func textoDelUsuarioNoDetieneLaEjecucion() {
         let entradas = ["Sol7", "Sol77", "", "🎵", String(repeating: "#", count: 50)]
         let leidos = entradas.map { Acorde(texto: $0) }
-        XCTAssertEqual(leidos.compactMap { $0 }, [Acorde("Sol7")])
+        #expect(leidos.compactMap { $0 } == [Acorde("Sol7")])
     }
 
-    func testCodableRechazaTextoNoValido() {
+    @Test func codableRechazaTextoNoValido() throws {
         let json = Data(#"["Sol7", "Do7(b3)"]"#.utf8)
-        XCTAssertThrowsError(try JSONDecoder().decode([Acorde].self, from: json)) { error in
-            guard case DecodingError.dataCorrupted = error else { return XCTFail("\(error)") }
+        do {
+            _ = try JSONDecoder().decode([Acorde].self, from: json)
+            Issue.record("Se esperaba un error")
+        } catch {
+            guard case DecodingError.dataCorrupted = error else {
+                Issue.record("\(error)")
+                return
+            }
+
         }
     }
 
-    func testConjuntosQueNoSonAcordes() {
-        XCTAssertTrue(Acorde.identificar([Nota]()).isEmpty)
-        XCTAssertTrue(Acorde.identificar([Nota.do]).isEmpty)
-        XCTAssertTrue(Acorde.identificar([Nota.do, .do]).isEmpty)
-        XCTAssertTrue(Acorde.identificar([Nota.do, Nota(.re, .bemol)]).isEmpty)
-        XCTAssertTrue(Acorde.identificar(midi: []).isEmpty)
-        XCTAssertTrue(Acorde.identificar(midi: [60, 72, 84]).isEmpty)
-        XCTAssertTrue(Acorde.identificar(midi: [60, 61]).isEmpty)
-        XCTAssertTrue(Acorde.identificar(midi: [60, 71]).isEmpty)
+    @Test func conjuntosQueNoSonAcordes() {
+        #expect(Acorde.identificar([Nota]()).isEmpty)
+        #expect(Acorde.identificar([Nota.do]).isEmpty)
+        #expect(Acorde.identificar([Nota.do, .do]).isEmpty)
+        #expect(Acorde.identificar([Nota.do, Nota(.re, .bemol)]).isEmpty)
+        #expect(Acorde.identificar(midi: []).isEmpty)
+        #expect(Acorde.identificar(midi: [60, 72, 84]).isEmpty)
+        #expect(Acorde.identificar(midi: [60, 61]).isEmpty)
+        #expect(Acorde.identificar(midi: [60, 71]).isEmpty)
         // Dos notas sí forman acorde cuando son la quinta (acorde de potencia).
-        XCTAssertEqual(Acorde.identificar(midi: [60, 67]).first, Acorde(.do, .potencia))
+        #expect(Acorde.identificar(midi: [60, 67]).first == Acorde(.do, .potencia))
     }
 
-    func testEscalasQueNoEncajan() {
-        XCTAssertNil(TipoDeEscala.mohanam.numeroDeMelakarta)
-        XCTAssertFalse(TipoDeEscala.mohanam.melakartasCompatibles.contains(25))
-        XCTAssertFalse(Escala(.do).contiene(Nota(.fa, .sostenido)))
-        XCTAssertFalse(Escala(.do).contiene(Nota(.si, .sostenido)))
+    @Test func escalasQueNoEncajan() {
+        #expect(TipoDeEscala.mohanam.numeroDeMelakarta == nil)
+        #expect(!TipoDeEscala.mohanam.melakartasCompatibles.contains(25))
+        #expect(!(Escala(.do).contiene(Nota(.fa, .sostenido))))
+        #expect(!(Escala(.do).contiene(Nota(.si, .sostenido))))
     }
 }

@@ -1,10 +1,11 @@
-import XCTest
+import Foundation
+import Testing
 
 @testable import Armonia
 @testable import ArmoniaNucleo
 @testable import ArmoniaTeoria
 
-final class CadenciasYModulacionesTests: XCTestCase {
+@Suite struct CadenciasYModulacionesTests {
     private func cadencias(_ texto: String, en tonalidad: Tonalidad? = nil) throws -> [Cadencia.Tipo] {
         try AnalisisArmonico.analizar(leyendo: texto, en: tonalidad).cadencias.map(\.tipo)
     }
@@ -15,101 +16,101 @@ final class CadenciasYModulacionesTests: XCTestCase {
 
     // MARK: Cadencias
 
-    func testCadencias() throws {
-        XCTAssertEqual(try cadencias("Do Fa Sol7 Do"), [.autentica])
-        XCTAssertEqual(try cadencias("Do Fa Do"), [.plagal])
-        XCTAssertEqual(try cadencias("Do Fa Sol Lam", en: Tonalidad(.do)), [.rota])
-        XCTAssertEqual(try cadencias("Do Lam Fa Sol", en: Tonalidad(.do)), [.semicadencia])
-        XCTAssertEqual(try cadencias("Lam Rem Mi7 Lam"), [.autentica])
-        XCTAssertEqual(try cadencias("Lam Rem/Fa Mi", en: Tonalidad(.la, .menor)), [.semicadencia])
-        XCTAssertEqual(try cadencias("Lam Mi7 Fa", en: Tonalidad(.la, .menor)), [.rota])
+    @Test func testCadencias() throws {
+        #expect(try (cadencias("Do Fa Sol7 Do")) == [.autentica])
+        #expect(try (cadencias("Do Fa Do")) == [.plagal])
+        #expect(try (cadencias("Do Fa Sol Lam", en: Tonalidad(.do))) == [.rota])
+        #expect(try (cadencias("Do Lam Fa Sol", en: Tonalidad(.do))) == [.semicadencia])
+        #expect(try (cadencias("Lam Rem Mi7 Lam")) == [.autentica])
+        #expect(try (cadencias("Lam Rem/Fa Mi", en: Tonalidad(.la, .menor))) == [.semicadencia])
+        #expect(try (cadencias("Lam Mi7 Fa", en: Tonalidad(.la, .menor))) == [.rota])
         // Rota con el ♭VI prestado en mayor.
-        XCTAssertEqual(try cadencias("Do Sol7 Lab", en: Tonalidad(.do)), [.rota])
+        #expect(try (cadencias("Do Sol7 Lab", en: Tonalidad(.do))) == [.rota])
         // El I64 cadencial no cierra: la cadencia es la de después.
-        XCTAssertEqual(try cadencias("Do Fa Do/Sol Sol7 Do", en: Tonalidad(.do)), [.autentica])
+        #expect(try (cadencias("Do Fa Do/Sol Sol7 Do", en: Tonalidad(.do))) == [.autentica])
         // Una semicadencia solo al final.
-        XCTAssertEqual(try cadencias("Do Sol Lam Fa Sol Do", en: Tonalidad(.do)), [.rota, .autentica])
+        #expect(try (cadencias("Do Sol Lam Fa Sol Do", en: Tonalidad(.do))) == [.rota, .autentica])
         // Con la sensible.
-        XCTAssertEqual(try cadencias("Do Sim°/Re Do/Mi", en: Tonalidad(.do)), [.autentica])
-        XCTAssertEqual(try cadencias("Do Lam Rem Mim"), [])
+        #expect(try (cadencias("Do Sim°/Re Do/Mi", en: Tonalidad(.do))) == [.autentica])
+        #expect(try (cadencias("Do Lam Rem Mim")) == [])
     }
 
-    func testCadenciaPerfectaEImperfecta() throws {
+    @Test func cadenciaPerfectaEImperfecta() throws {
         let perfecta = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do").cadencias[0]
-        XCTAssertTrue(perfecta.esPerfecta)
-        XCTAssertEqual(perfecta.acorde, 2)
-        XCTAssertEqual(perfecta.acordes.map(\.cifrado), ["V7", "I"])
-        XCTAssertEqual(perfecta.description, "Cadencia auténtica V7–I (acordes 3 → 4)")
-        XCTAssertEqual(perfecta.descripcion(en: .inglesASCII), "Authentic cadence V7–I (chords 3 → 4)")
-        XCTAssertEqual(perfecta.descripcion(en: .catalan), "Cadència autèntica V7–I (acords 3 → 4)")
-        XCTAssertEqual(perfecta.descripcion(en: .euskera), "Kadentzia autentikoa V7–I (3 → 4 akordeak)")
+        #expect(perfecta.esPerfecta)
+        #expect(perfecta.acorde == 2)
+        #expect(perfecta.acordes.map(\.cifrado) == ["V7", "I"])
+        #expect(perfecta.description == "Cadencia auténtica V7–I (acordes 3 → 4)")
+        #expect(perfecta.descripcion(en: .inglesASCII) == "Authentic cadence V7–I (chords 3 → 4)")
+        #expect(perfecta.descripcion(en: .catalan) == "Cadència autèntica V7–I (acords 3 → 4)")
+        #expect(perfecta.descripcion(en: .euskera) == "Kadentzia autentikoa V7–I (3 → 4 akordeak)")
         let imperfecta = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7/Si Do", en: Tonalidad(.do)).cadencias[0]
-        XCTAssertFalse(imperfecta.esPerfecta)
-        XCTAssertEqual(Cadencia.Tipo.semicadencia.nombre(en: .inglesASCII), "half cadence")
-        XCTAssertEqual(Cadencia.Tipo.rota.nombre, "cadencia rota")
+        #expect(!imperfecta.esPerfecta)
+        #expect(Cadencia.Tipo.semicadencia.nombre(en: .inglesASCII) == "half cadence")
+        #expect(Cadencia.Tipo.rota.nombre == "cadencia rota")
     }
 
     // MARK: Modulaciones
 
-    func testModulacionALaDominante() throws {
+    @Test func modulacionALaDominante() throws {
         let recorrido = try RecorridoTonal(leyendo: "Do Fa Sol7 Do Lam Re7 Sol")
-        XCTAssertEqual(recorrido.tramos.map(\.tonalidad), [Tonalidad(.do), Tonalidad(.sol)])
-        XCTAssertEqual(recorrido.tramos.map(\.indices), [0..<4, 4..<7])
-        XCTAssertEqual(recorrido.cifrados, ["I", "IV", "V7", "I", "ii", "V7", "I"])
-        let modulacion = try XCTUnwrap(recorrido.modulaciones.first)
-        XCTAssertEqual(modulacion.acorde, 4)
-        let pivote = try XCTUnwrap(modulacion.pivote)
-        XCTAssertEqual(pivote.indice, 4)
-        XCTAssertEqual(pivote.description, "Lam = vi en Do mayor = ii en Sol mayor")
-        XCTAssertEqual(pivote.descripcion(en: .inglesASCII), "Am = vi in C major = ii in G major")
-        XCTAssertEqual(
-            modulacion.description,
-            "De Do mayor a Sol mayor en el acorde 5 (pivote: Lam = vi en Do mayor = ii en Sol mayor)")
-        XCTAssertEqual(recorrido.description, "I–IV–V7–I en Do mayor → ii–V7–I en Sol mayor")
-        XCTAssertEqual(
-            modulacion.descripcion(en: .catalan),
-            "De do major a sol major a l'acord 5 (pivot: Lam = vi en do major = ii en sol major)")
-        XCTAssertEqual(
-            modulacion.descripcion(en: .gallego),
-            "De do maior a sol maior no acorde 5 (pivote: Lam = vi en do maior = ii en sol maior)")
-        XCTAssertEqual(
-            modulacion.descripcion(en: .euskera),
-            "Do maiorretik sol maiorrera, 5. akordean (pibota: Lam = vi do maiorrean = ii sol maiorrean)")
-        XCTAssertEqual(recorrido.cadencias.map(\.tipo), [.autentica, .autentica])
-        XCTAssertEqual(recorrido.cadencias.map(\.tonalidad), [Tonalidad(.do), Tonalidad(.sol)])
-        XCTAssertEqual(recorrido.cadencias.map(\.acorde), [2, 5])
+        #expect(recorrido.tramos.map(\.tonalidad) == [Tonalidad(.do), Tonalidad(.sol)])
+        #expect(recorrido.tramos.map(\.indices) == [0..<4, 4..<7])
+        #expect(recorrido.cifrados == ["I", "IV", "V7", "I", "ii", "V7", "I"])
+        let modulacion = try #require(recorrido.modulaciones.first)
+        #expect(modulacion.acorde == 4)
+        let pivote = try #require(modulacion.pivote)
+        #expect(pivote.indice == 4)
+        #expect(pivote.description == "Lam = vi en Do mayor = ii en Sol mayor")
+        #expect(pivote.descripcion(en: .inglesASCII) == "Am = vi in C major = ii in G major")
+        #expect(
+            modulacion.description
+                == "De Do mayor a Sol mayor en el acorde 5 (pivote: Lam = vi en Do mayor = ii en Sol mayor)")
+        #expect(recorrido.description == "I–IV–V7–I en Do mayor → ii–V7–I en Sol mayor")
+        #expect(
+            modulacion.descripcion(en: .catalan)
+                == "De do major a sol major a l'acord 5 (pivot: Lam = vi en do major = ii en sol major)")
+        #expect(
+            modulacion.descripcion(en: .gallego)
+                == "De do maior a sol maior no acorde 5 (pivote: Lam = vi en do maior = ii en sol maior)")
+        #expect(
+            modulacion.descripcion(en: .euskera)
+                == "Do maiorretik sol maiorrera, 5. akordean (pibota: Lam = vi do maiorrean = ii sol maiorrean)")
+        #expect(recorrido.cadencias.map(\.tipo) == [.autentica, .autentica])
+        #expect(recorrido.cadencias.map(\.tonalidad) == [Tonalidad(.do), Tonalidad(.sol)])
+        #expect(recorrido.cadencias.map(\.acorde) == [2, 5])
     }
 
-    func testModulacionALaRelativa() throws {
+    @Test func modulacionALaRelativa() throws {
         let recorrido = try RecorridoTonal(leyendo: "Do Sol Do Fa Rem Mi7 Lam")
-        XCTAssertEqual(recorrido.tramos.map(\.tonalidad), [Tonalidad(.do), Tonalidad(.la, .menor)])
-        XCTAssertEqual(recorrido.modulaciones.first?.pivote?.description, "Rem = ii en Do mayor = iv en La menor")
-        XCTAssertEqual(recorrido.cifrados.suffix(3), ["iv", "V7", "i"])
+        #expect(recorrido.tramos.map(\.tonalidad) == [Tonalidad(.do), Tonalidad(.la, .menor)])
+        #expect(recorrido.modulaciones.first?.pivote?.description == "Rem = ii en Do mayor = iv en La menor")
+        #expect(recorrido.cifrados.suffix(3) == ["iv", "V7", "i"])
     }
 
-    func testDeMenorASuRelativa() throws {
-        XCTAssertEqual(try tonalidades("Lam Rem Mi7 Lam Do Fa Sol7 Do"), [Tonalidad(.la, .menor), Tonalidad(.do)])
+    @Test func deMenorASuRelativa() throws {
+        #expect(try (tonalidades("Lam Rem Mi7 Lam Do Fa Sol7 Do")) == [Tonalidad(.la, .menor), Tonalidad(.do)])
     }
 
-    func testIdaYVuelta() throws {
+    @Test func idaYVuelta() throws {
         let recorrido = try RecorridoTonal(leyendo: "Do Fa Sol7 Do Lam Re7 Sol Mim Sim Do Re7 Sol Sol7 Do Fa Sol7 Do")
-        XCTAssertEqual(recorrido.tramos.map(\.tonalidad), [Tonalidad(.do), Tonalidad(.sol), Tonalidad(.do)])
-        XCTAssertEqual(recorrido.modulaciones.count, 2)
+        #expect(recorrido.tramos.map(\.tonalidad) == [Tonalidad(.do), Tonalidad(.sol), Tonalidad(.do)])
+        #expect(recorrido.modulaciones.count == 2)
     }
 
-    func testTonicalizacionNoEsModulacion() throws {
+    @Test func tonicalizacionNoEsModulacion() throws {
         // Las dominantes secundarias que resuelven no cambian la tonalidad.
-        XCTAssertEqual(try tonalidades("Do Lam Re7 Sol7 Do"), [Tonalidad(.do)])
-        XCTAssertEqual(try tonalidades("Do La7 Rem Sol7 Do"), [Tonalidad(.do)])
-        XCTAssertEqual(try tonalidades("Do Mi7 Lam Re7 Sol7 Do"), [Tonalidad(.do)])
-        XCTAssertEqual(try tonalidades("Do Fa Sol Do"), [Tonalidad(.do)])
+        #expect(try (tonalidades("Do Lam Re7 Sol7 Do")) == [Tonalidad(.do)])
+        #expect(try (tonalidades("Do La7 Rem Sol7 Do")) == [Tonalidad(.do)])
+        #expect(try (tonalidades("Do Mi7 Lam Re7 Sol7 Do")) == [Tonalidad(.do)])
+        #expect(try (tonalidades("Do Fa Sol Do")) == [Tonalidad(.do)])
         let unico = try RecorridoTonal(leyendo: "Do Lam Re7 Sol7 Do")
-        XCTAssertEqual(unico.modulaciones, [])
-        XCTAssertEqual(unico.tramos[0].analisis, try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do"))
+        #expect(unico.modulaciones == [])
+        #expect(try unico.tramos[0].analisis == (AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")))
     }
 
-    func testRecorridoCorto() throws {
-        XCTAssertNil(RecorridoTonal([]))
-        XCTAssertEqual(try tonalidades("Sol7 Do"), [Tonalidad(.do)])
+    @Test func recorridoCorto() throws {
+        #expect(RecorridoTonal([]) == nil)
+        #expect(try (tonalidades("Sol7 Do")) == [Tonalidad(.do)])
     }
 }
