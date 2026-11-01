@@ -165,11 +165,7 @@ public struct InstrumentoDePartitura: Hashable, Sendable, CustomStringConvertibl
     /// "clarinete em si♭", "clarinette en si♭", "clarinetto in si♭", "Klarinette in B", "кларнет in B"…
     public func nombre(en notacion: Notacion) -> String {
         if let traduccion = InstrumentoDePartitura.traducciones[nombre] { return traduccion.en(notacion) }
-        switch notacion.textos {
-        case .ingles, .occitano, .aleman, .griego, .ruso: return nombreEnIngles
-        case .espanol, .catalan, .gallego, .asturiano, .aragones, .euskera, .portugues, .frances, .italiano:
-            return nombre
-        }
+        return TextosDePartitura.en(notacion, \.instrumentosPropiosEnIngles) ? nombreEnIngles : nombre
     }
 
     public var esTranspositor: Bool { transposicion != .unisono }

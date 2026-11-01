@@ -252,16 +252,16 @@ extension PresentacionDeCoral.Tarea {
         let traduccion: Traduccion
         switch self {
         case .armonizar:
-            let e = TextoDeLasApps.alturas("Mi4 Fa4 Re4 Do4", notacion)
+            let e = notacion.alturasDeEjemplo("Mi4 Fa4 Re4 Do4")
             // Con ritmo: «Mi4:4 Re4:8», con las notas en la notación.
-            let r = [("Mi4", 4), ("Re4", 8)].map { TextoDeLasApps.alturas($0.0, notacion) + ":\($0.1)" }
+            let r = [("Mi4", 4), ("Re4", 8)].map { notacion.alturasDeEjemplo($0.0) + ":\($0.1)" }
                 .joined(separator: " ")
             traduccion = TextosDeApps.traduccion { $0.indicacionArmonizar(e, r) }
         case .realizar:
-            let e = ["Do", "Fa", "Sol7", "Do"].map { TextoDeLasApps.cifrado($0, notacion) }.joined(separator: " ")
-            traduccion = TextoDeLasApps.acordes.traduccion(notacion).aplicando { "\($0) (\(e))" }
+            let e = ["Do", "Fa", "Sol7", "Do"].map { notacion.cifradoDeEjemplo($0) }.joined(separator: " ")
+            traduccion = TextosDeApps.traduccion { "\($0.acordes) (\(e))" }
         case .revisar:
-            let e = TextoDeLasApps.alturas("Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4", notacion)
+            let e = notacion.alturasDeEjemplo("Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4")
             traduccion = TextosDeApps.traduccion { $0.indicacionRevisar(e) }
         }
         return traduccion.en(notacion)

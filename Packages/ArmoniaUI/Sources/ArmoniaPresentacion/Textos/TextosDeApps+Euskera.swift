@@ -5,7 +5,7 @@ import Armonia
 
 extension TextosDeApps {
     static let euskera = TextosDeApps(
-        // TextoDeLasApps.swift
+        // Notacion+TextosDeApps.swift y las vistas
         acordes: "Akordeak",
         escalas: "Eskalak",
         analisis: "Analisia",

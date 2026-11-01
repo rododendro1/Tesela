@@ -108,7 +108,7 @@ extension LineaDeComandos {
         }
         // «Do · guitarra», y con capo, «Do · guitarra · Capo en el traste 2».
         var instrumento = Mensaje.instrumento(encordado).texto(en: notacion)
-        if capo > 0 { instrumento += " · " + notacion.texto(.capo(capo)) }
+        if capo > 0 { instrumento += " · " + notacion.texto { $0.capo(capo) } }
         let bloques = try argumentos.restantes.map { texto -> String in
             let acorde = try Acorde(leyendo: texto)
             var lineas = ["\(acorde.cifrado(en: notacion)) · \(instrumento)"]
@@ -164,7 +164,7 @@ extension LineaDeComandos {
         let escala = try Escala(leyendo: argumentos.unidos)
         let mastil = Mastil(.guitarra, trastes: 15)
         let porCuerda = escala.notas.count >= 6 ? 3 : 2
-        let sistema = caged ? "CAGED" : notacion.texto(.notasPorCuerda(porCuerda))
+        let sistema = caged ? "CAGED" : notacion.texto { $0.notasPorCuerda(porCuerda) }
         var lineas = [escala.nombre(en: notacion) + " · " + sistema]
         let posiciones = caged ? mastil.posicionesCAGED(de: escala) : mastil.posicionesPorCuerda(de: escala)
         let cuerdas = mastil.encordado.cuerdas
@@ -172,9 +172,11 @@ extension LineaDeComandos {
         let ancho = nombres.map(\.count).max() ?? 0
         for posicion in posiciones {
             let franja = posicion.trastes
-            let trastes = notacion.texto(.trastes(desde: franja.lowerBound, hasta: franja.upperBound))
+            let trastes = notacion.texto { $0.trastes(franja.lowerBound, franja.upperBound) }
             lineas.append("")
-            lineas.append("  " + (posicion.forma.map { notacion.texto(.forma($0.rawValue)) + " · " } ?? "") + trastes)
+            let nombreDeLaForma =
+                posicion.forma.map { forma in notacion.texto { $0.forma(forma.rawValue) } + " · " } ?? ""
+            lineas.append("  " + nombreDeLaForma + trastes)
             for cuerda in cuerdas.indices.reversed() {
                 let usados = posicion.posiciones.filter { $0.cuerda == cuerda }.map(\.traste)
                 let celdas = usados.map { traste -> String in

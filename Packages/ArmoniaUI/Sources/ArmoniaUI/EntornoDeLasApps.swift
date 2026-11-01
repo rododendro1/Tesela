@@ -81,7 +81,7 @@
         public var body: some View {
             HStack {
                 ProgressView()
-                Text(notacion.texto(.calculando)).foregroundColor(.secondary)
+                Text(notacion.texto(\.calculando)).foregroundColor(.secondary)
             }
         }
     }

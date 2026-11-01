@@ -5,7 +5,7 @@ import Armonia
 
 extension TextosDeApps {
     static let ruso = TextosDeApps(
-        // TextoDeLasApps.swift
+        // Notacion+TextosDeApps.swift y las vistas
         acordes: "Аккорды",
         escalas: "Гаммы",
         analisis: "Анализ",

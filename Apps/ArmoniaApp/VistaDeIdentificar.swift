@@ -34,11 +34,11 @@ struct VistaDeIdentificar: View {
         // Con alturas sin ortografía (las de un mástil o un teclado), la primera, la más grave, es el bajo.
         let acordes = Acorde.candidatos(clasesDeAltura: alturas.map(\.midi)).map(\.valor)
         Form {
-            Section(notacion.texto(.identificar)) {
-                Picker(notacion.texto(.instrumentoYAfinacion), selection: $encordado) {
+            Section(notacion.texto(\.identificar)) {
+                Picker(notacion.texto(\.instrumentoYAfinacion), selection: $encordado) {
                     ForEach(Encordado.todos, id: \.self) { Text($0.titulo(en: notacion)).tag($0) }
                 }
-                Text(notacion.texto(.tocaElMastil))
+                Text(notacion.texto(\.tocaElMastil))
                     .foregroundColor(.secondary)
                 DiagramaDeMastil(
                     mastil: mastil, marcas: posiciones, rango: 0...12,
@@ -46,13 +46,13 @@ struct VistaDeIdentificar: View {
                     ortografia: ortografia(de: acordes.first), notacion: notacion
                 )
                 .alTocar(tocar)
-                Button(notacion.texto(.borrar)) { borrar() }
+                Button(notacion.texto(\.borrar)) { borrar() }
                     .disabled(trastes.isEmpty && notasMIDI.isEmpty)
             }
             if !alturas.isEmpty {
-                Section(notacion.texto(.resultado)) {
+                Section(notacion.texto(\.resultado)) {
                     if alturas.count >= 2 && acordes.isEmpty {
-                        Text(notacion.texto(.sinAcordeConocido)).foregroundColor(.secondary)
+                        Text(notacion.texto(\.sinAcordeConocido)).foregroundColor(.secondary)
                     }
                     ForEach(Array(acordes.prefix(4).enumerated()), id: \.offset) { indice, acorde in
                         HStack {
@@ -64,21 +64,21 @@ struct VistaDeIdentificar: View {
                         }
                     }
                     LabeledContent(
-                        notacion.texto(.notas),
+                        notacion.texto(\.notas),
                         value: alturas.map { $0.nombre(en: notacion) }.joined(separator: " "))
                     BotonDeEscuchar(.coral([alturas], duracion: 1.5))
                     if let primero = acordes.first {
                         // Sus digitaciones, su arpegio y sus escalas.
-                        Button(notacion.texto(.verEnAcordes)) { navegacion.ver(primero) }
+                        Button(notacion.texto(\.verEnAcordes)) { navegacion.ver(primero) }
                     }
                 }
                 postonal(alturas)
             }
-            Section(notacion.texto(.tecladoMIDI)) {
-                LabeledContent(notacion.texto(.dispositivosMIDI), value: "\(entradaMIDI.dispositivos)")
+            Section(notacion.texto(\.tecladoMIDI)) {
+                LabeledContent(notacion.texto(\.dispositivosMIDI), value: "\(entradaMIDI.dispositivos)")
             }
         }
-        .navigationTitle(notacion.texto(.identificar))
+        .navigationTitle(notacion.texto(\.identificar))
         .selectorDeNotacionEnLaBarra()
         .onAppear { entradaMIDI.empezar() }
         // Otro instrumento tiene otras cuerdas: lo tocado deja de valer.
@@ -97,12 +97,12 @@ struct VistaDeIdentificar: View {
     @ViewBuilder
     private func postonal(_ alturas: [Altura]) -> some View {
         let postonal = AnalisisPostonalPresentado(clases: alturas.map(\.midi))
-        Section(notacion.texto(.teoriaPostonal)) {
-            LabeledContent(notacion.texto(.formaPrima), value: postonal.formaPrima)
+        Section(notacion.texto(\.teoriaPostonal)) {
+            LabeledContent(notacion.texto(\.formaPrima), value: postonal.formaPrima)
             if let forte = postonal.numeroDeForte {
-                LabeledContent(notacion.texto(.numeroDeForte), value: forte)
+                LabeledContent(notacion.texto(\.numeroDeForte), value: forte)
             }
-            LabeledContent(notacion.texto(.vectorIntervalico), value: postonal.vectorIntervalico)
+            LabeledContent(notacion.texto(\.vectorIntervalico), value: postonal.vectorIntervalico)
         }
     }
 

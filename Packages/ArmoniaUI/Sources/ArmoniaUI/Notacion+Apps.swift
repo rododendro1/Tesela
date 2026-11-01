@@ -81,43 +81,9 @@ extension EscrituraDeNotas {
 }
 
 extension Idioma {
-    /// Cómo se llama cada idioma en el selector de los textos.
-    public var titulo: String {
-        switch self {
-        case .espanol: return "Español"
-        case .ingles: return "English"
-        case .catalan: return "Català"
-        case .gallego: return "Galego"
-        case .asturiano: return "Asturianu"
-        case .aragones: return "Aragonés"
-        case .euskera: return "Euskara"
-        case .portugues: return "Português"
-        case .frances: return "Français"
-        case .occitano: return "Occitan"
-        case .italiano: return "Italiano"
-        case .aleman: return "Deutsch"
-        case .griego: return "Ελληνικά"
-        case .ruso: return "Русский"
-        }
-    }
+    /// Cómo se llama cada idioma en el selector de los textos: su `nombrePropio` («Euskara», «Deutsch»).
+    public var titulo: String { nombrePropio }
 
-    /// El nombre con que se guarda en los ajustes.
-    public var clave: String {
-        switch self {
-        case .espanol: return "espanol"
-        case .ingles: return "ingles"
-        case .catalan: return "catalan"
-        case .gallego: return "gallego"
-        case .asturiano: return "asturiano"
-        case .aragones: return "aragones"
-        case .euskera: return "euskera"
-        case .portugues: return "portugues"
-        case .frances: return "frances"
-        case .occitano: return "occitano"
-        case .italiano: return "italiano"
-        case .aleman: return "aleman"
-        case .griego: return "griego"
-        case .ruso: return "ruso"
-        }
-    }
+    /// El nombre con que se guarda en los ajustes: el del caso («euskera», «aleman»).
+    public var clave: String { rawValue }
 }

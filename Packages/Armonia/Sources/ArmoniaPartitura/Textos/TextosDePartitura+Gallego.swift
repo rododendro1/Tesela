@@ -61,6 +61,7 @@ extension TextosDePartitura {
         claveDeDoEnTercera: "clave de do en terceira",
         claveDeDoEnCuarta: "clave de do en cuarta",
         // Pentagrama.swift (InstrumentoDePartitura)
+        instrumentosPropiosEnIngles: false,
         instrumentoPiano: "piano",
         instrumentoFlauta: "frauta",
         instrumentoFlautin: "frautín",

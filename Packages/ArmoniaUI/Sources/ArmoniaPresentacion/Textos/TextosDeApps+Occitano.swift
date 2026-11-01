@@ -5,7 +5,7 @@ import Armonia
 
 extension TextosDeApps {
     static let occitano = TextosDeApps(
-        // TextoDeLasApps.swift
+        // Notacion+TextosDeApps.swift y las vistas
         acordes: "Acòrds",
         escalas: "Gamas",
         analisis: "Analisi",

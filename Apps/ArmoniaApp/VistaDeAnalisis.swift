@@ -33,8 +33,8 @@ struct VistaDeAnalisis: View {
 
     var body: some View {
         Form {
-            Section(notacion.texto(.progresion)) {
-                TextField(notacion.texto(.campoDeProgresion), text: $texto)
+            Section(notacion.texto(\.progresion)) {
+                TextField(notacion.texto(\.campoDeProgresion), text: $texto)
                     .comoCampoDeCifrado()
                 if let errorAlAbrir {
                     Text(notacion.mensaje(de: errorAlAbrir)).foregroundColor(.red)
@@ -42,7 +42,7 @@ struct VistaDeAnalisis: View {
             }
             switch resultado {
             case .some(.success(let analisis)):
-                Section(notacion.texto(.resultado)) {
+                Section(notacion.texto(\.resultado)) {
                     Text(analisis.titulo).font(.headline)
                     BotonDeEscuchar(analisis.sonido)
                 }
@@ -50,7 +50,7 @@ struct VistaDeAnalisis: View {
                 let sonando = reproductor.paso(de: analisis.sonido)
                 ForEach(Array(analisis.tramos.enumerated()), id: \.offset) { t, tramo in
                     let antes = analisis.tramos.prefix(t).map(\.filas.count).reduce(0, +)
-                    Section(tramo.cabecera ?? notacion.texto(.acordeAAcorde)) {
+                    Section(tramo.cabecera ?? notacion.texto(\.acordeAAcorde)) {
                         ForEach(Array(tramo.filas.enumerated()), id: \.offset) { i, fila in
                             HStack {
                                 Text(fila.cifrado)
@@ -65,7 +65,7 @@ struct VistaDeAnalisis: View {
                     }
                 }
                 if !analisis.cadencias.isEmpty {
-                    Section(notacion.texto(.cadencias)) {
+                    Section(notacion.texto(\.cadencias)) {
                         ForEach(analisis.cadencias, id: \.self) { Text($0) }
                     }
                 }
@@ -79,14 +79,14 @@ struct VistaDeAnalisis: View {
                 EmptyView()
             }
         }
-        .navigationTitle(notacion.texto(.analisis))
+        .navigationTitle(notacion.texto(\.analisis))
         .selectorDeNotacionEnLaBarra()
         .toolbar {
             ToolbarItem {
                 Button {
                     abriendo = true
                 } label: {
-                    Label(notacion.texto(.abrir), systemImage: "folder")
+                    Label(notacion.texto(\.abrir), systemImage: "folder")
                 }
             }
             ToolbarItem {
@@ -127,7 +127,7 @@ struct VistaDeAnalisis: View {
                     Button(destino.nombre(en: notacion)) { transponer(de: tonalidad, a: destino) }
                 }
             } label: {
-                Label(notacion.texto(.transponer), systemImage: "arrow.up.arrow.down")
+                Label(notacion.texto(\.transponer), systemImage: "arrow.up.arrow.down")
             }
         }
     }
@@ -150,14 +150,14 @@ struct VistaDeAnalisis: View {
     private func rearmonizar(_ analisis: AnalisisPresentado) -> some View {
         let propuestas = analisis.rearmonizaciones(en: notacion)
         if !propuestas.isEmpty {
-            Section(notacion.texto(.rearmonizar)) {
+            Section(notacion.texto(\.rearmonizar)) {
                 ForEach(propuestas, id: \.self) { propuesta in
                     HStack {
                         Text(propuesta.descripcion)
                         Spacer()
                         BotonDeEscuchar(propuesta.sonido)
                             .labelStyle(.iconOnly)
-                        Button(notacion.texto(.aplicar)) { texto = propuesta.texto }
+                        Button(notacion.texto(\.aplicar)) { texto = propuesta.texto }
                     }
                     // Cada botón por su lado, no la fila entera.
                     .buttonStyle(.borderless)
@@ -171,11 +171,11 @@ struct VistaDeAnalisis: View {
     @ViewBuilder
     private func arpegiar(_ analisis: AnalisisPresentado) -> some View {
         if let arpegiada = analisis.arpegiada(patron, figura: figura.duracion, notacion: notacion) {
-            Section(notacion.texto(.arpegiar)) {
-                Picker(notacion.texto(.patron), selection: $patron) {
+            Section(notacion.texto(\.arpegiar)) {
+                Picker(notacion.texto(\.patron), selection: $patron) {
                     ForEach(Arpegio.Patron.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
                 }
-                Picker(notacion.texto(.figura), selection: $figura) {
+                Picker(notacion.texto(\.figura), selection: $figura) {
                     ForEach(Self.figuras, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
                 }
                 BotonDeEscuchar(arpegiada.sonido)

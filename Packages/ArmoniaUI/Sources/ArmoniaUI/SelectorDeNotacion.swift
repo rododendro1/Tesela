@@ -24,22 +24,22 @@
 
         public var body: some View {
             Menu {
-                Picker(notacion.texto(.notas), selection: notas) {
+                Picker(notacion.texto(\.notas), selection: notas) {
                     ForEach(Notacion.allCases, id: \.self) { notacion in
                         Text(notacion.titulo).tag(notacion.clave)
                     }
                 }
-                Picker(notacion.texto(.textos), selection: textos) {
-                    Text(notacion.texto(.comoLasNotas)).tag("")
+                Picker(notacion.texto(\.textos), selection: textos) {
+                    Text(notacion.texto(\.comoLasNotas)).tag("")
                     ForEach(Idioma.traducidos, id: \.self) { idioma in
                         Text(idioma.titulo).tag(idioma.clave)
                     }
                 }
                 if let octavasEnSubindice {
-                    Toggle(notacion.texto(.octavaEnSubindice), isOn: octavasEnSubindice)
+                    Toggle(notacion.texto(\.octavaEnSubindice), isOn: octavasEnSubindice)
                 }
                 if let temperamento {
-                    Picker(notacion.texto(.afinacionAlEscuchar), selection: temperamento) {
+                    Picker(notacion.texto(\.afinacionAlEscuchar), selection: temperamento) {
                         ForEach(AfinacionHistorica.allCases, id: \.self) { opcion in
                             Text(opcion.nombre(en: notacion)).tag(opcion.rawValue)
                         }

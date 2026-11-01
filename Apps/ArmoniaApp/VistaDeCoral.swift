@@ -20,7 +20,7 @@ struct VistaDeCoral: View {
     var body: some View {
         Form {
             Section {
-                Picker(notacion.texto(.tarea), selection: $tarea) {
+                Picker(notacion.texto(\.tarea), selection: $tarea) {
                     ForEach(PresentacionDeCoral.Tarea.allCases) { Text($0.titulo(en: notacion)).tag($0) }
                 }
                 .pickerStyle(.segmented)
@@ -30,7 +30,7 @@ struct VistaDeCoral: View {
                 )
                 .comoCampoDeCifrado()
                 if tarea.usaTonalidad {
-                    TextField(notacion.texto(.campoDeTonalidad), text: $tonalidad)
+                    TextField(notacion.texto(\.campoDeTonalidad), text: $tonalidad)
                         .comoCampoDeCifrado()
                 }
             }
@@ -49,7 +49,7 @@ struct VistaDeCoral: View {
                 }
             }
         }
-        .navigationTitle(notacion.texto(.coral))
+        .navigationTitle(notacion.texto(\.coral))
         .selectorDeNotacionEnLaBarra()
         .toolbar {
             ToolbarItem {
@@ -74,7 +74,7 @@ struct VistaDeCoral: View {
                 Button("↓ " + intervalo.nombre(en: notacion)) { transponer(-intervalo) }
             }
         } label: {
-            Label(notacion.texto(.transponer), systemImage: "arrow.up.arrow.down")
+            Label(notacion.texto(\.transponer), systemImage: "arrow.up.arrow.down")
         }
     }
 
@@ -101,19 +101,19 @@ struct VistaDeCoral: View {
     @ViewBuilder
     private func contenido(_ coral: CoralPresentado) -> some View {
         if !coral.titulo.isEmpty {
-            Section(notacion.texto(.tonalidad)) {
+            Section(notacion.texto(\.tonalidad)) {
                 Text(coral.titulo).font(.headline)
             }
         }
         if !coral.propuestas.isEmpty {
-            Section(notacion.texto(.armonizaciones)) {
+            Section(notacion.texto(\.armonizaciones)) {
                 ForEach(Array(coral.propuestas.enumerated()), id: \.offset) { n, propuesta in
                     Text("\(n + 1). \(propuesta)")
                 }
             }
         }
         if !coral.filas.isEmpty {
-            Section(notacion.texto(.aCuatroVoces)) {
+            Section(notacion.texto(\.aCuatroVoces)) {
                 BotonDeEscuchar(coral.sonido)
                 ForEach(Array(coral.filas.enumerated()), id: \.offset) { _, fila in
                     HStack {

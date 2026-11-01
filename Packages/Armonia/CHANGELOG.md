@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+- Los datos de cada idioma, en una fila de `ReglasDeIdioma`: además de las sílabas y la alteración, su código
+  (`codigo`), cómo se llama (`nombrePropio`, nuevo, y `nombres`) y los modos de sus tonalidades (`mayor`, `menor`,
+  y el «a-Moll» alemán con `separadorDelModo` y `menorEnMinuscula`). `Idioma.codigo`, `nombres` y
+  `Tonalidad.Modo.nombre(en:)` los leen de ahí, sin un `switch` cada uno. `ReglasDeIdioma.init` pide los datos nuevos.
+- `Idioma` tiene `rawValue`: el nombre del caso («euskera», «aleman»).
+- Si un instrumento de partitura propio se llama por su nombre inglés o el español lo dice el campo
+  `instrumentosPropiosEnIngles` de los textos de cada idioma, en lugar de un `switch`.
 - `TextosTraducidos`: los textos de cada módulo se leen con `TextosDeX.en(notacion, \.campo)` (el texto en un
   idioma) o `TextosDeX.traduccion(\.campo)` (su `Traduccion`), en vez de `traducidos.map(…)`, que copiaba en la pila
   los catorce idiomas en cada llamada. Es el arreglo de la pila de 0.2.0, ahora en el motor y la CLI.

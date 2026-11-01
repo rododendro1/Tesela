@@ -39,8 +39,8 @@ enum PresentacionDeRejilla {
     static func descripcion(casillas: Int, seleccionada: CoordenadaAxial?, en notacion: Notacion = .espanolUnicode)
         -> String
     {
-        let cuantas = notacion.texto(.casillas(casillas))
+        let cuantas = notacion.texto { $0.casillas(casillas) }
         guard let seleccionada else { return cuantas }
-        return cuantas + "; " + notacion.texto(.casillaElegida(q: seleccionada.q, r: seleccionada.r))
+        return cuantas + "; " + notacion.texto { $0.casillaElegida(q: seleccionada.q, r: seleccionada.r) }
     }
 }
