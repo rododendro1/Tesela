@@ -83,7 +83,7 @@ enum PresentacionDeMastil {
     /// Lo que es el diagrama, para VoiceOver: «Mástil de guitarra, trastes 0 a 5».
     static func etiqueta(de mastil: Mastil, rango: ClosedRange<Int>, en notacion: Notacion = .espanolUnicode) -> String
     {
-        notacion.texto(
-            .mastilDe(mastil.encordado.nombre(en: notacion), desde: rango.lowerBound, hasta: rango.upperBound))
+        let instrumento = mastil.encordado.nombre(en: notacion)
+        return notacion.texto { $0.mastilDe(instrumento, rango.lowerBound, rango.upperBound) }
     }
 }

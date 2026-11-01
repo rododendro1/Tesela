@@ -201,11 +201,7 @@ struct VistaDeAcordes: View {
                 let sonando = paso.flatMap { posicion.posiciones.indices.contains($0) ? posicion.posiciones[$0] : nil }
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
-                        Text(
-                            notacion.texto(
-                                .trastes(
-                                    desde: posicion.trastes.lowerBound,
-                                    hasta: posicion.trastes.upperBound)))
+                        Text(notacion.texto { $0.trastes(posicion.trastes.lowerBound, posicion.trastes.upperBound) })
                         Spacer()
                         BotonDeEscuchar(sonido)
                     }
