@@ -111,7 +111,7 @@ extension TextosDeCLI {
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "cette aide",
 
-        // ErrorDeUso+Armonizacion.swift
+        // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "il manque les accords : " + ejemplo },
         dosAcordesDeConduccion: { ejemplo in "il faut deux accords : " + ejemplo },
         faltanNotasDeLaArmonizacion: { ejemplo in "il manque les notes de la mélodie : " + ejemplo },
@@ -120,7 +120,7 @@ extension TextosDeCLI {
         especieFueraDeRango: "--especie va de 1 à 5",
         faltanAcordesDeLaRealizacion: { ejemplo in "il manque les accords : " + ejemplo },
 
-        // ErrorDeUso+Consultas.swift
+        // ErrorDeUso.swift (consultas)
         faltaCifrado: "il manque le chiffrage : armonia acorde Sol7",
         faltaCifradoDelArpegio: "il manque le chiffrage : armonia arpegio Do7",
         patronDesconocido: { patron in "motif inconnu : « \(patron) » (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado ou alberti)" },
@@ -136,7 +136,7 @@ extension TextosDeCLI {
         faltaTransporte: { ejemplo in "il manque l'intervalle (ou la nouvelle tonique) et ce qu'on transpose : " + ejemplo },
         faltanAcordesDeLaRearmonizacion: { ejemplo in "il manque les accords : " + ejemplo },
 
-        // ErrorDeUso+Dibujos.swift
+        // ErrorDeUso.swift (dibujos)
         margenFueraDeRango: "la marge est un nombre de 0 à 6 : --margen 2",
         faltanNotasDelDibujo: { ejemplo, orden in "il manque les notes : " + ejemplo },
         faltaAcordeDelDibujo: { ejemplo, orden in "il manque l'accord : " + ejemplo },
@@ -148,7 +148,7 @@ extension TextosDeCLI {
         caminoSoloTriadas: { ejemplo, orden in "le chemin va d'une triade majeure ou mineure à une autre : " + ejemplo },
         cicloSoloTriadas: { ejemplo, orden in "le cycle commence sur une triade majeure ou mineure : " + ejemplo },
 
-        // ErrorDeUso+Neorriemann.swift
+        // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "les voix qui bougent sont 1 ou 2 : --voces 2",
         unAcordeDeVecinos: { ejemplo in "il faut un accord : " + ejemplo },
         vecinosSinFamilia: "les voisins se cherchent parmi les septièmes de dominante, mineures, semi-diminuées, diminuées et maj7, ou parmi les triades majeures, mineures et augmentées",
@@ -157,7 +157,7 @@ extension TextosDeCLI {
         faltanPasosDePLR: { ejemplo in "il faut une triade et des étapes ou une autre triade : " + ejemplo },
         plrSoloTriadas: { ejemplo, camino in "P, L et R s'appliquent aux triades majeures et mineures : " + ejemplo },
 
-        // ErrorDeUso+Partituras.swift
+        // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "il manque « melodia », « coral » ou « acordes » : " + ejemplo },
         instrumentoMIDI: "le programme est un nombre General MIDI de 0 à 127 : --programa 52",
         marcasSoloMusicXML: "--cifrados et --analisis sont pour MusicXML et MEI",
@@ -176,7 +176,7 @@ extension TextosDeCLI {
         acordesConCifradosYAnalisis: "les accords ont toujours chiffrages et analyse",
         tipoDePartituraDesconocido: { tipo in "« \(tipo) » : on exporte une « melodia », un « coral », des « acordes » ou leurs « arpegios »" },
 
-        // ErrorDeUso+Trastes.swift
+        // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "il manque l'instrument : \(d)" },
         instrumentoDesconocido: { nombre, lista in "instrument inconnu : « \(nombre) » (\(lista(.frances)))" },
         faltaLimite: "il manque le nombre de doigtés : --limite 5",
@@ -189,7 +189,7 @@ extension TextosDeCLI {
         faltaEscalaDePosiciones: "il manque la gamme : armonia posiciones Sol mayor",
         capoFueraDeRango: "le capodastre est un nombre de 0 à 12 : --capo 2",
 
-        // ErrorDeUso.swift
+        // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Essayez « armonia ayuda ».",
         ordenDesconocida: { orden in "commande inconnue : « \(orden) »" },
         opcionDesconocida: { opcion in "option inconnue : « \(opcion) »" },

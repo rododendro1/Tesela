@@ -111,7 +111,7 @@ extension TextosDeCLI {
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "esta aduya",
 
-        // ErrorDeUso+Armonizacion.swift
+        // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "faltan os acordes: " + ejemplo },
         dosAcordesDeConduccion: { ejemplo in "fan falta dos acordes: " + ejemplo },
         faltanNotasDeLaArmonizacion: { ejemplo in "faltan as notas d\'a melodía: " + ejemplo },
@@ -120,7 +120,7 @@ extension TextosDeCLI {
         especieFueraDeRango: "--especie va d\'1 a 5",
         faltanAcordesDeLaRealizacion: { ejemplo in "faltan os acordes: " + ejemplo },
 
-        // ErrorDeUso+Consultas.swift
+        // ErrorDeUso.swift (consultas)
         faltaCifrado: "falta o cifrau: armonia acorde Sol7",
         faltaCifradoDelArpegio: "falta o cifrau: armonia arpegio Do7",
         patronDesconocido: { patron in "patrón desconoixiu: «\(patron)» (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado u alberti)" },
@@ -136,7 +136,7 @@ extension TextosDeCLI {
         faltaTransporte: { ejemplo in "faltan l'intervalo (u a nueva tonica) y o que se transposa: " + ejemplo },
         faltanAcordesDeLaRearmonizacion: { ejemplo in "faltan os acordes: " + ejemplo },
 
-        // ErrorDeUso+Dibujos.swift
+        // ErrorDeUso.swift (dibujos)
         margenFueraDeRango: "o marguin ye un número de 0 a 6: --margen 2",
         faltanNotasDelDibujo: { ejemplo, orden in "faltan as notas: " + ejemplo },
         faltaAcordeDelDibujo: { ejemplo, orden in "falta l\'acorde: " + ejemplo },
@@ -148,7 +148,7 @@ extension TextosDeCLI {
         caminoSoloTriadas: { ejemplo, orden in "o camín va d\'una tríada mayor u menor a unatra: " + ejemplo },
         cicloSoloTriadas: { ejemplo, orden in "o ciclo empecipia en una tríada mayor u menor: " + ejemplo },
 
-        // ErrorDeUso+Neorriemann.swift
+        // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "as voces que se mueven son 1 u 2: --voces 2",
         unAcordeDeVecinos: { ejemplo in "fa falta un acorde: " + ejemplo },
         vecinosSinFamilia: "os vecinos se buscan entre séptimas de dominant, menors, semidisminuidas, disminuidas y maj7, u entre tríadas mayors, menors y aumentadas",
@@ -157,7 +157,7 @@ extension TextosDeCLI {
         faltanPasosDePLR: { ejemplo in "fan falta una tríada y bels pasos u atra tríada: " + ejemplo },
         plrSoloTriadas: { ejemplo, camino in "P, L y R s\'aplican a tríadas mayors y menors: " + ejemplo },
 
-        // ErrorDeUso+Partituras.swift
+        // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "falta «melodia», «coral» u «acordes»: " + ejemplo },
         instrumentoMIDI: "o programa ye un número General MIDI de 0 a 127: --programa 52",
         marcasSoloMusicXML: "--cifrados y --analisis son ta MusicXML y MEI",
@@ -176,7 +176,7 @@ extension TextosDeCLI {
         acordesConCifradosYAnalisis: "os acordes leban siempre cifraus y análisi",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: s\'exporta una «melodia», un «coral», bels «acordes» u os suyos «arpegios»" },
 
-        // ErrorDeUso+Trastes.swift
+        // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "falta o instrumento: \(d)" },
         instrumentoDesconocido: { nombre, lista in "instrumento desconoixiu: «\(nombre)» (\(lista(.aragones)))" },
         faltaLimite: "falta o número de digitacions: --limite 5",
@@ -189,7 +189,7 @@ extension TextosDeCLI {
         faltaEscalaDePosiciones: "falta a escala: armonia posiciones Sol mayor",
         capoFueraDeRango: "o capo ye un numero de 0 a 12: --capo 2",
 
-        // ErrorDeUso.swift
+        // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Preba «armonia ayuda».",
         ordenDesconocida: { orden in "orden desconoixida: «\(orden)»" },
         opcionDesconocida: { opcion in "opción desconoixida: «\(opcion)»" },

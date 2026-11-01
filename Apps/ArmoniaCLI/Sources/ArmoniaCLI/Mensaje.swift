@@ -55,7 +55,7 @@ enum Mensaje {
             return TextosDeCLI.traduccion { $0.mensajeBajo(nota) }
         case .inversion(let n):
             // Los nombres de las inversiones son los de la biblioteca (`Acorde.nombreDeLaInversion`).
-            return Mensaje.traduccion { Acorde.nombreDeLaInversion(n, en: $0) }
+            return Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(n, en: $0) })
         case .bajoAjeno:
             return TextosDeCLI.traduccion(\.mensajeBajoAjeno)
         case .sinAcordes:
@@ -88,28 +88,10 @@ enum Mensaje {
         case .triadas(let n):
             return TextosDeCLI.traduccion { $0.mensajeTriadas(n) }
         case .ciclo(let ciclo):
-            return Traduccion(
-                ciclo.nombre(en: .espanolUnicode), ciclo.nombre(en: .inglesASCII), ca: ciclo.nombre(en: .catalan),
-                gl: ciclo.nombre(en: .gallego), ast: ciclo.nombre(en: .asturiano),
-                an: ciclo.nombre(en: .aragones), eu: ciclo.nombre(en: .euskera), pt: ciclo.nombre(en: .portugues),
-                fr: ciclo.nombre(en: .frances), oc: ciclo.nombre(en: .occitano),
-                it: ciclo.nombre(en: .italiano), de: ciclo.nombre(en: .aleman),
-                el: ciclo.nombre(en: .griego), ru: ciclo.nombre(en: .ruso))
+            return Traduccion(cadaIdioma: { ciclo.nombre(en: $0) })
         case .instrumento(let encordado):
             // `--instrumento` acepta el nombre en cualquiera de los catorce idiomas.
-            return Mensaje.traduccion { encordado.nombre(en: $0) }
+            return Traduccion(cadaIdioma: { encordado.nombre(en: $0) })
         }
-    }
-}
-
-extension Mensaje {
-    /// Una `Traduccion` con el texto que da la biblioteca para cada idioma.
-    static func traduccion(_ texto: (Notacion) -> String) -> Traduccion {
-        Traduccion(
-            texto(.espanolUnicode), texto(.inglesASCII), ca: texto(.catalan), gl: texto(.gallego),
-            ast: texto(.asturiano),
-            an: texto(.aragones), eu: texto(.euskera), pt: texto(.portugues),
-            fr: texto(.frances), oc: texto(.occitano), it: texto(.italiano), de: texto(.aleman),
-            el: texto(.griego), ru: texto(.ruso))
     }
 }

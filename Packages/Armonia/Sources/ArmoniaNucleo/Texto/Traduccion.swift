@@ -59,6 +59,20 @@ public struct Traducido<Valor> {
         self.ruso = ruso
     }
 
+    /// El valor de cada idioma, calculado con su notación habitual (`Notacion.delIdioma`): para los textos que ya
+    /// sabe escribir el motor en cada idioma.
+    ///
+    ///     let inversion = Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) })
+    ///     inversion.en(.aleman)    // "1. Umkehrung"
+    public init(cadaIdioma valor: (Notacion) -> Valor) {
+        self.init(
+            valor(.delIdioma(.espanol)), valor(.delIdioma(.ingles)), ca: valor(.delIdioma(.catalan)),
+            gl: valor(.delIdioma(.gallego)), ast: valor(.delIdioma(.asturiano)), an: valor(.delIdioma(.aragones)),
+            eu: valor(.delIdioma(.euskera)), pt: valor(.delIdioma(.portugues)), fr: valor(.delIdioma(.frances)),
+            oc: valor(.delIdioma(.occitano)), it: valor(.delIdioma(.italiano)), de: valor(.delIdioma(.aleman)),
+            el: valor(.delIdioma(.griego)), ru: valor(.delIdioma(.ruso)))
+    }
+
     /// Los catorce valores, en el orden del inicializador.
     package var todos: [Valor] {
         [

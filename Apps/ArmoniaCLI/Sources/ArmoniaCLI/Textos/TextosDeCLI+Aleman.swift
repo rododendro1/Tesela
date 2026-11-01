@@ -111,7 +111,7 @@ extension TextosDeCLI {
         sintaxisAyuda: "help",
         descripcionAyuda: "diese Hilfe",
 
-        // ErrorDeUso+Armonizacion.swift
+        // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "die Akkorde fehlen: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },
         dosAcordesDeConduccion: { ejemplo in "zwei Akkorde sind nötig: armonia minimal-voice-leading G7 C" },
         faltanNotasDeLaArmonizacion: { ejemplo in "die Noten der Melodie fehlen: armonia harmonize E4 D4 C4" },
@@ -120,7 +120,7 @@ extension TextosDeCLI {
         especieFueraDeRango: "--species geht von 1 bis 5",
         faltanAcordesDeLaRealizacion: { ejemplo in "die Akkorde fehlen: armonia realize C F G7 C" },
 
-        // ErrorDeUso+Consultas.swift
+        // ErrorDeUso.swift (consultas)
         faltaCifrado: "das Akkordsymbol fehlt: armonia chord G7",
         faltaCifradoDelArpegio: "das Akkordsymbol fehlt: armonia arpeggio C7",
         patronDesconocido: { patron in "unbekanntes Muster: „\(patron)“ (ascending, descending, up-down, down-up, broken oder alberti)" },
@@ -136,7 +136,7 @@ extension TextosDeCLI {
         faltaTransporte: { ejemplo in "Intervall (oder neuer Grundton) und das zu Versetzende fehlen: armonia transpose M2 C Am F G7" },
         faltanAcordesDeLaRearmonizacion: { ejemplo in "die Akkorde fehlen: armonia reharmonize C Am Dm7 G7" },
 
-        // ErrorDeUso+Dibujos.swift
+        // ErrorDeUso.swift (dibujos)
         margenFueraDeRango: "der Rand ist eine Zahl von 0 bis 6: --margen 2",
         faltanNotasDelDibujo: { ejemplo, orden in "die Noten fehlen: armonia \(orden) C E G" },
         faltaAcordeDelDibujo: { ejemplo, orden in "der Akkord fehlt: armonia \(orden) --chord G7" },
@@ -148,7 +148,7 @@ extension TextosDeCLI {
         caminoSoloTriadas: { ejemplo, orden in "der kürzeste Weg führt von einem Dur- oder Molldreiklang zu einem anderen: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "der Zyklus beginnt mit einem Dur- oder Molldreiklang: armonia \(orden) --cycle hexatonic C" },
 
-        // ErrorDeUso+Neorriemann.swift
+        // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "es bewegen sich 1 oder 2 Stimmen: --voices 2",
         unAcordeDeVecinos: { ejemplo in "ein Akkord ist nötig: armonia neighbors G7" },
         vecinosSinFamilia: "Nachbarn werden unter Dominant-, Moll-, halbverminderten, verminderten und maj7-Septakkorden gesucht oder unter Dur-, Moll- und übermäßigen Dreiklängen",
@@ -157,7 +157,7 @@ extension TextosDeCLI {
         faltanPasosDePLR: { ejemplo in "ein Dreiklang und Schritte oder ein weiterer Dreiklang sind nötig: armonia plr C PLR" },
         plrSoloTriadas: { ejemplo, camino in "P, L und R gelten für Dur- und Molldreiklänge: armonia plr " + (camino ? "C Ebm" : "C PLR") },
 
-        // ErrorDeUso+Partituras.swift
+        // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "„melody“, „chorale“ oder „chords“ fehlt: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
         instrumentoMIDI: "das Programm ist eine General-MIDI-Nummer von 0 bis 127: --program 52",
         marcasSoloMusicXML: "--cifrados und --analisis sind für MusicXML und MEI",
@@ -176,7 +176,7 @@ extension TextosDeCLI {
         acordesConCifradosYAnalisis: "Akkorde kommen immer mit Akkordsymbolen und Analyse",
         tipoDePartituraDesconocido: { tipo in "„\(tipo)“: exportiert wird eine „melody“, ein „chorale“, „chords“ oder ihre „arpeggios“" },
 
-        // ErrorDeUso+Trastes.swift
+        // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "das Instrument fehlt: \(digitaciones.1)" },
         instrumentoDesconocido: { nombre, lista in "unbekanntes Instrument: „\(nombre)“ (\(lista(.aleman)))" },
         faltaLimite: "die Anzahl der Griffe fehlt: --limit 5",
@@ -189,7 +189,7 @@ extension TextosDeCLI {
         faltaEscalaDePosiciones: "die Skala fehlt: armonia positions G major",
         capoFueraDeRango: "der Kapodaster ist eine Zahl von 0 bis 12: --capo 2",
 
-        // ErrorDeUso.swift
+        // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Versuche „armonia help“.",
         ordenDesconocida: { orden in "unbekannter Befehl: „\(orden)“" },
         opcionDesconocida: { opcion in "unbekannte Option: „\(opcion)“" },
