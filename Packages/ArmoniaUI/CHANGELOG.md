@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.0 (2026-11-01)
 
 - El selector de notación ofrece también la escritura compacta de cada idioma con palabras: Français (Fa♯),
   Русский (Фа♯)… Se guardan como «francesCompacto», «rusoCompacto»; las claves de antes no cambian.
