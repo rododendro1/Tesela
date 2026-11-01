@@ -218,7 +218,7 @@ extension Tonnetz.Triada {
 
 // MARK: - Idiomas
 //
-// Los nombres de las transformaciones neorriemannianas en los catorce idiomas de los textos (`Traduccion`).
+// Los nombres de las transformaciones neorriemannianas en los quince idiomas de los textos (`Traduccion`).
 
 extension TransformacionNeorriemanniana: Nombrable {
     /// El nombre de la transformación en el idioma de los textos: «relativa», «relative».

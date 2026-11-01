@@ -81,6 +81,11 @@ public struct ReglasDeIdioma: Hashable, Sendable {
     /// (que por eso tienen tres escrituras), a la alemana en alemán (que tiene dos: con palabras y compacta) y con
     /// palabras en los demás.
     public let alteraciones: EscrituraDeLaAlteracion
+    /// En la escritura a la alemana, lo que se añade al nombre para el sostenido y para el bemol: «is» y «es» en
+    /// alemán (Fis, Des), «isz» y «esz» en húngaro (Fisz, Desz). Tras una vocal (Mi♭, La♭) el bemol pierde la «e»:
+    /// Es, As; Esz, Asz. En los demás idiomas no se usan.
+    public let sufijoDeSostenido: String
+    public let sufijoDeBemol: String
     /// Los signos de sus cifrados: # y b en alemán, ♯ y ♭ en los demás. En español e inglés lo elige la
     /// escritura, porque tienen las dos.
     public let tipografia: Tipografia
@@ -102,7 +107,8 @@ public struct ReglasDeIdioma: Hashable, Sendable {
     public init(
         codigo: String, nombrePropio: String, nombres: [String],
         naturales: [String], separador: String = " ", multiplicador: Multiplicador = .delante,
-        alteraciones: EscrituraDeLaAlteracion = .palabras, tipografia: Tipografia = .unicode,
+        alteraciones: EscrituraDeLaAlteracion = .palabras, sufijoDeSostenido: String = "is",
+        sufijoDeBemol: String = "es", tipografia: Tipografia = .unicode,
         mayor: String, menor: String, separadorDelModo: String = " ", menorEnMinuscula: Bool = false,
         abreviaturas: Idioma = .ingles, plural: Plural = .unoYLosDemas
     ) {
@@ -113,6 +119,8 @@ public struct ReglasDeIdioma: Hashable, Sendable {
         self.separador = separador
         self.multiplicador = multiplicador
         self.alteraciones = alteraciones
+        self.sufijoDeSostenido = sufijoDeSostenido
+        self.sufijoDeBemol = sufijoDeBemol
         self.tipografia = tipografia
         self.mayor = mayor
         self.menor = menor
@@ -207,6 +215,14 @@ extension Idioma {
                 codigo: "ru", nombrePropio: "Русский", nombres: ["ruso", "русский"],
                 naturales: ["до", "ре", "ми", "фа", "соль", "ля", "си"], separador: "-",
                 mayor: "мажор", menor: "минор", plural: .eslavo)
+        // Como el alemán, con «isz» y «esz» (Fisz, Esz, Heszesz), B para Si♭ y H para Si. Con un número, el nombre
+        // va en singular: «5 félhang».
+        case .hungaro:
+            return ReglasDeIdioma(
+                codigo: "hu", nombrePropio: "Magyar", nombres: ["húngaro", "magyar"],
+                naturales: ["C", "D", "E", "F", "G", "A", "H"], alteraciones: .alemana,
+                sufijoDeSostenido: "isz", sufijoDeBemol: "esz", tipografia: .ascii,
+                mayor: "dúr", menor: "moll", separadorDelModo: "-", menorEnMinuscula: true, plural: .invariable)
         }
     }
 }
@@ -219,7 +235,7 @@ public enum EscrituraDeLaAlteracion: Hashable, Sendable {
     case palabras
     /// Con signos tras la letra o la sílaba, según la ``Tipografia``: Fa♯, Fa#, F♯, F#.
     case signos
-    /// Dentro del nombre, a la alemana: Fis, Eses, B (Si♭) y H (Si).
+    /// Dentro del nombre, a la alemana: Fis, Eses, B (Si♭) y H (Si); en húngaro, Fisz, Eszesz.
     case alemana
 }
 

@@ -83,7 +83,7 @@ extension LineaDeComandos {
     }
 
     /// El patrón de `--patron`, como lo lee `Arpegio.Patron(leyendo:)`: `alberti`, `ida-y-vuelta`, `up-down` o su
-    /// nombre en cualquiera de los catorce idiomas («bajo de Alberti»).
+    /// nombre en cualquiera de los quince idiomas («bajo de Alberti»).
     static func patronDeArpegio(_ texto: String) -> Arpegio.Patron? { Arpegio.Patron(leyendo: texto) }
 
     static func intervalo(_ a: String, _ b: String, _ notacion: Notacion) throws -> String {

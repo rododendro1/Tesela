@@ -126,7 +126,7 @@ import Testing
 
     /// Todos los textos caben en la pila de un hilo secundario de macOS (512 KB), también sin optimizar. Con un
     /// `TextosDeApps.traducidos.map` en cada caso del `switch` del antiguo `TextoDeLasApps`, cada caso guardaba en
-    /// la pila su copia de los catorce idiomas y el campo de acorde desbordaba la del hilo principal (señal 11).
+    /// la pila su copia de los quince idiomas y el campo de acorde desbordaba la del hilo principal (señal 11).
     @Test func losTextosCabenEnLaPilaDeUnHiloSecundario() {
         let todos = Self.todos
         let hecho = DispatchSemaphore(value: 0)
@@ -221,12 +221,12 @@ import Testing
         #expect(
             Idioma.allCases.map(\.clave) == [
                 "espanol", "ingles", "catalan", "gallego", "asturiano", "aragones", "euskera", "portugues", "frances",
-                "occitano", "italiano", "aleman", "griego", "ruso",
+                "occitano", "italiano", "aleman", "griego", "ruso", "hungaro",
             ])
         #expect(
             Idioma.allCases.map(\.titulo) == [
                 "Español", "English", "Català", "Galego", "Asturianu", "Aragonés", "Euskara", "Português", "Français",
-                "Occitan", "Italiano", "Deutsch", "Ελληνικά", "Русский",
+                "Occitan", "Italiano", "Deutsch", "Ελληνικά", "Русский", "Magyar",
             ])
     }
 

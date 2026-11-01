@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Comprueba las traducciones de los textos del motor en los catorce idiomas.
+"""Comprueba las traducciones de los textos del motor en los quince idiomas.
 
-Los textos están de dos maneras: en un `Traduccion(…)` con los catorce juntos, o en los ficheros por
+Los textos están de dos maneras: en un `Traduccion(…)` con los quince juntos, o en los ficheros por
 idioma de cada módulo (`Textos/TextosDeX+Espanol.swift`, `…+Ingles.swift`…), donde cada campo de
-`TextosDeX` tiene su texto en cada fichero. El compilador ya obliga a dar los catorce, pero no impide
+`TextosDeX` tiene su texto en cada fichero. El compilador ya obliga a dar los quince, pero no impide
 copiar uno que no toca. Se miran los textos literales (los que se montan con código no se pueden leer
 aquí) y se avisa de tres cosas:
 

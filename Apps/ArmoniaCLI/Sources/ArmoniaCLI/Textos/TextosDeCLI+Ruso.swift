@@ -99,7 +99,7 @@ extension TextosDeCLI {
         cabeceraDeLaAyuda: """
         armonia: теория музыки в командной строке.
 
-        Использование: armonia <команда> <аргументы> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru]
+        Использование: armonia <команда> <аргументы> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
 
         Команды (команды и параметры пишутся по-испански или по-английски):
         """,
@@ -203,7 +203,7 @@ extension TextosDeCLI {
         pruebaLaAyuda: "Попробуй «armonia help».",
         ordenDesconocida: { orden in "неизвестная команда: «\(orden)»" },
         opcionDesconocida: { opcion in "неизвестный параметр: «\(opcion)»" },
-        idiomaDesconocido: { idioma in "неизвестный язык: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el или ru)" },
+        idiomaDesconocido: { idioma in "неизвестный язык: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru или hu)" },
         terminalDesconocida: { t in "неизвестная оболочка: «\(t)» (bash, zsh или fish)" },
         escrituraNoValida: { escritura in "недопустимое написание: «\(escritura)» (palabras/words, ascii или unicode; только с es и en)" },
 

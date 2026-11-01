@@ -118,7 +118,7 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
 
 // MARK: - Idiomas
 //
-// Los nombres de los formatos de exportación en los catorce idiomas, en `TextosDeApps`.
+// Los nombres de los formatos de exportación en los quince idiomas, en `TextosDeApps`.
 
 extension FicheroParaExportar.Formato {
     /// Cómo se llama el formato en el menú: «Partitura MusicXML», «MusicXML score»…

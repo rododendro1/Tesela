@@ -28,7 +28,7 @@ Packages/
 │                   y el paraguas `Armonia`: notas, acordes, escalas, tonalidad, Tonnetz, MusicXML, MEI, LilyPond, ABC, MIDI, pentagramas en SVG,
 │                   y los mástiles, afinaciones, digitaciones de acordes y escalas por posiciones (guitarra, bajo, ukelele…)
 ├── ArmoniaUI/      Componentes SwiftUI (DiagramaDeMastil, DiagramaDePentagrama, DiagramaDeTonnetz, DiagramaDeRejilla, VistaSVG, tema) y lo que comparten las apps:
-│                   el selector de notación y su ajuste (en el entorno), los textos de la interfaz en catorce
+│                   el selector de notación y su ajuste (en el entorno), los textos de la interfaz en quince
 │                   idiomas, lo que enseña cada vista, el cálculo en segundo plano y el menú para exportar.
 │                   El análisis y el coral están en el módulo `ArmoniaPresentacion`, sin SwiftUI, que
 │                   también usa la línea de comandos
@@ -41,7 +41,7 @@ Scripts/
 ├── datos/            Los casos que comparten las comprobaciones en Python y las pruebas en Swift (normalizar.tsv)
 └── compilar_todo.sh  Todo, por capas, como el CI
 Config/             Ajustes de compilación de las apps (Local.xcconfig, el de tu equipo, no se guarda en git), su
-                    manifiesto de privacidad (PrivacyInfo.xcprivacy) y sus catorce idiomas (Idiomas.plist; cada
+                    manifiesto de privacidad (PrivacyInfo.xcprivacy) y sus quince idiomas (Idiomas.plist; cada
                     app tiene además sus carpetas Idiomas/<idioma>.lproj)
 project.yml         Definición del proyecto de Xcode (XcodeGen)
 Package.swift       Los tres paquetes juntos, para usarlos desde otro proyecto por URL

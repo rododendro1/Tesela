@@ -4,7 +4,7 @@ import ArmoniaNucleo
 // MARK: - Textos de ArmoniaTrastes
 //
 // Un idioma por fichero: `TextosDeTrastes+Espanol.swift`, `TextosDeTrastes+Ingles.swift`… Cada uno da todos los
-// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los catorce y
+// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los quince y
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de ArmoniaTrastes en un idioma.
@@ -18,9 +18,9 @@ struct TextosDeTrastes: TextosTraducidos {
     let ukelele: String
     let mandolina: String
 
-    /// Los textos en los catorce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeTrastes>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
-        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso)
+        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
 }

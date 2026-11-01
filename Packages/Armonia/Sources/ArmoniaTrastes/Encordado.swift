@@ -111,7 +111,7 @@ public struct Encordado: Hashable, Sendable {
 
 extension Encordado {
     /// Busca un instrumento por su nombre, sin distinguir mayúsculas ni tildes: «guitarra», «bajo de cinco
-    /// cuerdas», «ukulele», «drop D»… En cualquiera de los catorce idiomas de los textos: «bass»,
+    /// cuerdas», «ukulele», «drop D»… En cualquiera de los quince idiomas de los textos: «bass»,
     /// «seven-string guitar», «guitare», «bandolim», «гитара». `nil` si no se conoce.
     public init?(nombre texto: String) {
         let clave = texto.claveDeBusqueda
@@ -142,7 +142,7 @@ extension Encordado {
 
 // MARK: - Idiomas
 //
-// Los nombres de los instrumentos en los catorce idiomas de los textos. Los textos están en
+// Los nombres de los instrumentos en los quince idiomas de los textos. Los textos están en
 // `Textos/TextosDeTrastes+Espanol.swift`, `…+Ingles.swift`…, un fichero por idioma.
 
 extension Encordado: Nombrable {
@@ -159,7 +159,7 @@ extension Encordado: Nombrable {
         return nombre.prefix(1).uppercased() + nombre.dropFirst()
     }
 
-    /// El nombre en los catorce idiomas; `nil` si el encordado no es de los de `todos`.
+    /// El nombre en los quince idiomas; `nil` si el encordado no es de los de `todos`.
     package var traduccion: Traduccion? {
         switch self {
         case .guitarra:

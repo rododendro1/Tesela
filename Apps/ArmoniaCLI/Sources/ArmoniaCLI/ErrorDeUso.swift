@@ -1,7 +1,7 @@
 import Armonia
 import ArmoniaPresentacion
 
-// Los errores de uso de la herramienta, en los catorce idiomas de los textos. Lo común a todos los
+// Los errores de uso de la herramienta, en los quince idiomas de los textos. Lo común a todos los
 // textos de la herramienta está explicado en Mensaje.swift.
 //
 // Aquí están los generales (orden, opción o idioma desconocidos); los de cada grupo de órdenes, en
@@ -168,7 +168,7 @@ enum ErrorDeUso {
         case .faltaInstrumento:
             return TextosDeCLI.traduccion { $0.faltaInstrumento(Self.digitaciones.0, Self.digitaciones) }
         case .instrumentoDesconocido(let nombre):
-            // Los nombres conocidos, en el idioma del mensaje (se aceptan en cualquiera de los catorce).
+            // Los nombres conocidos, en el idioma del mensaje (se aceptan en cualquiera de los quince).
             let conocidos = Encordado.todos.map { Mensaje.instrumento($0).traduccion }
             let lista = { (idioma: Notacion) in conocidos.map { $0.en(idioma) }.joined(separator: ", ") }
             return TextosDeCLI.traduccion { $0.instrumentoDesconocido(nombre, lista) }

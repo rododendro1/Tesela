@@ -114,7 +114,7 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
             let a = Alteracion(n)
             for notacion in [
                 Notacion.espanolCompacto, .inglesASCII, .aleman, .frances, .italiano, .catalan, .gallego,
-                .euskera, .portugues, .occitano, .ruso, .griego, .aragones, .asturiano,
+                .euskera, .portugues, .occitano, .ruso, .griego, .aragones, .asturiano, .hungaro,
             ] {
                 tabla[a.nombre(en: notacion).claveDeBusqueda] = a
             }
@@ -238,16 +238,22 @@ public struct Nota: Hashable, Sendable {
 
     /// Lee un nombre escrito en una notación concreta: `Nota(leyendo: "Fis", en: .alemanCompacto)`,
     /// `Nota(leyendo: "B", en: .alemanCompacto)` → Si♭, `Nota(leyendo: "ré bémol", en: .frances)`.
-    /// No distingue mayúsculas ni tildes. En español e inglés, igual que `init(leyendo:)`; en alemán se leen las
-    /// dos formas, «F Kreuz» y «Fis».
+    /// No distingue mayúsculas ni tildes. En español e inglés, igual que `init(leyendo:)`; en alemán y en húngaro se
+    /// leen las dos formas, «F Kreuz» y «Fis», «F kereszt» y «Fisz».
     public init(leyendo texto: String, en notacion: Notacion) throws {
         let notacion = notacion.notas
         switch notacion.escritura.escrituraDeLaAlteracion {
         case .signos:
             try self.init(leyendo: texto)
         case .palabras, .alemana:
-            // La tabla del alemán con palabras tiene también los nombres compactos (Fis), que salen en sus cifrados.
-            let tabla = notacion.idiomaDeLasNotas == .aleman ? Notacion.aleman : notacion
+            // La tabla del alemán (o del húngaro) con palabras tiene también los nombres compactos (Fis, Fisz), que
+            // salen en sus cifrados.
+            let tabla: Notacion
+            switch notacion.idiomaDeLasNotas {
+            case .aleman: tabla = .aleman
+            case .hungaro: tabla = .hungaro
+            default: tabla = notacion
+            }
             if let nombre = Nota.porNombre[tabla]?[texto.claveDeBusqueda] {
                 self = nombre
             } else if Notacion.conPalabras.contains(notacion) {
@@ -262,7 +268,9 @@ public struct Nota: Hashable, Sendable {
     /// Nombres de cada notación (hasta cuatro alteraciones) → nombre de nota.
     package static let porNombre: [Notacion: [String: Nota]] = {
         var tablas: [Notacion: [String: Nota]] = [:]
-        for notacion in [Notacion.aleman, .frances, .italiano] + Notacion.deLecturaGenerica + Notacion.conPalabras {
+        for notacion in [Notacion.aleman, .hungaro, .frances, .italiano] + Notacion.deLecturaGenerica
+            + Notacion.conPalabras
+        {
             var tabla: [String: Nota] = [:]
             for quintas in -29...33 {
                 let nombre = Nota(pasosDeQuinta: quintas)
@@ -341,7 +349,7 @@ extension Notacion {
 
 // MARK: - Idiomas
 //
-// Las letras, las alteraciones y los nombres de nota en las catorce lenguas de `Notacion`. Siguen el idioma
+// Las letras, las alteraciones y los nombres de nota en las quince lenguas de `Notacion`. Siguen el idioma
 // de las notas (`Notacion.idiomaDeLasNotas`), no el de los textos. Los intervalos, en `Intervalo.swift`.
 
 // MARK: - NotaNatural
@@ -413,7 +421,7 @@ extension Nota {
         let base = natural.nombre(en: notacion)
         switch notacion.escritura.escrituraDeLaAlteracion {
         case .alemana:
-            return nombreAleman
+            return nombreConSufijos(en: notacion.idiomaDeLasNotas)
         case .signos:
             return base + (notacion.usaASCII ? alteracion.simboloASCII : alteracion.simbolo)
         case .palabras:
@@ -425,15 +433,24 @@ extension Nota {
 
     /// Nombre alemán: sostenidos con -is (Fis, Cisis), bemoles con -es (Des, Ges), con Es y As
     /// para Mi♭ y La♭ (Eses, Asas), B para Si♭ y H para Si (His, Heses).
-    package var nombreAleman: String {
+    package var nombreAleman: String { nombreConSufijos(en: .aleman) }
+
+    /// Nombre a la alemana, con los sufijos del idioma (``ReglasDeIdioma/sufijoDeSostenido`` y
+    /// ``ReglasDeIdioma/sufijoDeBemol``): Fis, Eses, Asas, Heses en alemán; Fisz, Eszesz, Aszasz, Heszesz en húngaro.
+    package func nombreConSufijos(en idioma: Idioma) -> String {
+        let reglas = idioma.reglas
+        let letra = reglas.naturales[natural.rawValue]
         let n = alteracion.numeroDeSignos
-        if alteracion.esNatural { return natural.nombre(en: .aleman) }
-        if alteracion.esSostenido { return natural.nombre(en: .aleman) + String(repeating: "is", count: n) }
+        if alteracion.esNatural { return letra }
+        if alteracion.esSostenido { return letra + String(repeating: reglas.sufijoDeSostenido, count: n) }
+        let bemol = reglas.sufijoDeBemol
+        // Tras vocal, el bemol pierde la «e»: Es, As; Esz, Asz.
+        let trasVocal = String(bemol.dropFirst())
         switch natural {
-        case .si: return n == 1 ? "B" : "H" + String(repeating: "es", count: n)
-        case .mi: return "Es" + String(repeating: "es", count: n - 1)
-        case .la: return "As" + String(repeating: "as", count: n - 1)
-        default: return natural.nombre(en: .aleman) + String(repeating: "es", count: n)
+        case .si: return n == 1 ? "B" : letra + String(repeating: bemol, count: n)
+        case .mi: return "E" + trasVocal + String(repeating: bemol, count: n - 1)
+        case .la: return "A" + trasVocal + String(repeating: "a" + trasVocal, count: n - 1)
+        default: return letra + String(repeating: bemol, count: n)
         }
     }
 
@@ -444,7 +461,9 @@ extension Nota {
         let notacion = notacion.notas
         switch notacion.escritura.escrituraDeLaAlteracion {
         case .palabras:
-            if notacion.idiomaDeLasNotas.reglas.alteraciones == .alemana { return nombreAleman }
+            if notacion.idiomaDeLasNotas.reglas.alteraciones == .alemana {
+                return nombreConSufijos(en: notacion.idiomaDeLasNotas)
+            }
             return natural.nombre(en: notacion).conMayusculaInicial + alteracion.simbolo
         case .signos, .alemana:
             return nombre(en: notacion)

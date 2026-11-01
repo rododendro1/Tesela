@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- Los textos de las apps, en húngaro (`TextosDeApps.hungaro`); el selector de idioma lo ofrece solo, y las apps
+  lo declaran en `Config/Idiomas.plist` y en sus carpetas `hu.lproj`.
 - Las claves de las notaciones compactas son «espanolCompacto», «inglesCompacto» y «alemanCompacto», y
   `Notacion.desde(clave:)` lee también las de antes («espanolUnicode», «inglesUnicode»). «aleman» es ahora el
   alemán con palabras (Deutsch (F Kreuz)), y el selector ofrece también Deutsch (Fis). En las apps la octava sigue

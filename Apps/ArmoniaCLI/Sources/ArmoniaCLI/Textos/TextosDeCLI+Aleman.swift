@@ -99,7 +99,7 @@ extension TextosDeCLI {
         cabeceraDeLaAyuda: """
         armonia: Musiktheorie auf der Kommandozeile.
 
-        Aufruf: armonia <Befehl> <Argumente> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru]
+        Aufruf: armonia <Befehl> <Argumente> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
 
         Befehle (Befehle und Optionen werden auf Spanisch oder Englisch geschrieben):
         """,
@@ -203,7 +203,7 @@ extension TextosDeCLI {
         pruebaLaAyuda: "Versuche „armonia help“.",
         ordenDesconocida: { orden in "unbekannter Befehl: „\(orden)“" },
         opcionDesconocida: { opcion in "unbekannte Option: „\(opcion)“" },
-        idiomaDesconocido: { idioma in "unbekannte Sprache: „\(idioma)“ (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el oder ru)" },
+        idiomaDesconocido: { idioma in "unbekannte Sprache: „\(idioma)“ (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru oder hu)" },
         terminalDesconocida: { t in "unbekannte Shell: „\(t)“ (bash, zsh oder fish)" },
         escrituraNoValida: { escritura in "ungültige Schreibweise: „\(escritura)“ (palabras/words, ascii oder unicode; nur bei es oder en)" },
 

@@ -183,7 +183,7 @@ import Testing
         #expect(salida("tonalidad Mib mayor --idioma gl").contains("(3 bemois)"))
         #expect(salida("--idioma en acorde C/G") == salida("acorde C/G --ingles"))
         #expect(salida("acorde Do --language es") == salida("acorde Do"))
-        // La ayuda, en los catorce idiomas.
+        // La ayuda, en los quince idiomas.
         #expect(salida("ayuda --idioma ca").hasPrefix("armonia: "))
         #expect(salida("ayuda --idioma ca") == (LineaDeComandos.ajuda + "\n"))
         #expect(salida("ayuda --idioma gl") == (LineaDeComandos.axuda + "\n"))
@@ -194,6 +194,9 @@ import Testing
         #expect(salida("ayuda --idioma de") == (LineaDeComandos.hilfe + "\n"))
         #expect(salida("ayuda --idioma oc") == (LineaDeComandos.ajudaEnOccitan + "\n"))
         #expect(salida("ayuda --idioma ru") == (LineaDeComandos.spravka + "\n"))
+        #expect(salida("ayuda --idioma hu") == (LineaDeComandos.sugo + "\n"))
+        #expect(salida("ayuda --idioma magyar").hasPrefix("armonia: zeneelmélet a parancssorban."))
+        #expect(salida("tonalidad Mib mayor --idioma hu").contains("Esz-dúr"))
         #expect(salida("ayuda --idioma el") == (LineaDeComandos.voitheia + "\n"))
         #expect(salida("ayuda --idioma an") == (LineaDeComandos.aduya + "\n"))
         #expect(salida("ayuda --idioma asturianu") == (LineaDeComandos.ayudaEnAsturianu + "\n"))
@@ -204,7 +207,7 @@ import Testing
         typealias L = LineaDeComandos
         let ayudas: [String] = [
             L.ayuda, L.help, L.ajuda, L.axuda, L.laguntza, L.ajudaEmPortugues, L.aide, L.aiuto,
-            L.hilfe, L.ajudaEnOccitan, L.spravka, L.voitheia, L.aduya, L.ayudaEnAsturianu,
+            L.hilfe, L.ajudaEnOccitan, L.spravka, L.voitheia, L.aduya, L.ayudaEnAsturianu, L.sugo,
         ]
         // Una por idioma, y las constantes con nombre son las del mapa.
         #expect(Set(ayudas).count == LineaDeComandos.ayudas.count)
@@ -225,7 +228,7 @@ import Testing
         #expect(
             resultado("acorde", "Do", "--idioma", "xx").error
                 .hasPrefix(
-                    "armonia: idioma desconocido: «xx» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el o ru)"))
+                    "armonia: idioma desconocido: «xx» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu)"))
         #expect(salida("acorde Sol7/Si --idioma de").hasPrefix("G7/H: Dominantseptakkord\n"))
         #expect(salida("acorde Sol7/Si --idioma ru").hasPrefix("Соль7/Си: доминантсептаккорд\n"))
         #expect(salida("escala Re dórico --idioma el").hasPrefix("ρε δώριος"))

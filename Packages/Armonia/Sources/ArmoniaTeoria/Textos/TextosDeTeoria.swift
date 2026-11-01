@@ -4,7 +4,7 @@ import ArmoniaNucleo
 // MARK: - Textos de ArmoniaTeoria
 //
 // Un idioma por fichero: `TextosDeTeoria+Espanol.swift`, `TextosDeTeoria+Ingles.swift`… Cada uno da todos los
-// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los catorce y
+// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los quince y
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de ArmoniaTeoria en un idioma.
@@ -136,9 +136,9 @@ struct TextosDeTeoria: TextosTraducidos {
     /// «en Do mayor», «in C major», «в до мажоре», «do maiorrean».
     let enLaTonalidad: @Sendable (String) -> String
 
-    /// Los textos en los catorce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeTeoria>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
-        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso)
+        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
 }

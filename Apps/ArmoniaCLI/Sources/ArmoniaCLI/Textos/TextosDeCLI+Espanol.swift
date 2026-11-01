@@ -99,15 +99,15 @@ extension TextosDeCLI {
         cabeceraDeLaAyuda: """
         armonia: teoría musical desde la línea de comandos.
 
-        Uso: armonia <orden> <argumentos> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru]
+        Uso: armonia <orden> <argumentos> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
 
         Órdenes:
         """,
         pieDeLaAyuda: """
         Se aceptan nombres en español o en inglés (Do, C, Sib, Bb). Con --ingles, la respuesta
-        usa la notación inglesa. Con --idioma ca, gl, ast, an, eu, pt, fr, oc, it, de, el o ru, las
-        notas, los nombres, los mensajes y esta ayuda salen en catalán, gallego, asturiano, aragonés,
-        euskera, portugués, francés, occitano, italiano, alemán, griego o ruso.
+        usa la notación inglesa. Con --idioma ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu,
+        las notas, los nombres, los mensajes y esta ayuda salen en catalán, gallego, asturiano,
+        aragonés, euskera, portugués, francés, occitano, italiano, alemán, griego, ruso o húngaro.
         Con --textos, los textos van en otro idioma que las notas: --idioma en --textos es.
         En español e inglés, --escritura palabras|ascii|unicode escribe las notas como Fa sostenido,
         Fa# o Fa♯ (en inglés, F sharp, F# o F♯).
@@ -204,7 +204,7 @@ extension TextosDeCLI {
         pruebaLaAyuda: "Prueba «armonia ayuda».",
         ordenDesconocida: { orden in "orden desconocida: «\(orden)»" },
         opcionDesconocida: { opcion in "opción desconocida: «\(opcion)»" },
-        idiomaDesconocido: { idioma in "idioma desconocido: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el o ru)" },
+        idiomaDesconocido: { idioma in "idioma desconocido: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu)" },
         terminalDesconocida: { t in "terminal desconocida: «\(t)» (bash, zsh o fish)" },
         escrituraNoValida: { escritura in "escritura no válida: «\(escritura)» (palabras, ascii o unicode; solo con es y en)" },
 

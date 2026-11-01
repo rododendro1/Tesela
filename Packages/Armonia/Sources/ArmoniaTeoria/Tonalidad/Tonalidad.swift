@@ -188,11 +188,11 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
         self = tonalidad
     }
 
-    /// Lectura en alemán ("Fis-Dur", "a-Moll"), francés ("ré majeur"), italiano ("re maggiore") y las
-    /// demás lenguas de `Notacion` ("фа-диез мажор", "λα ελάσσονα").
+    /// Lectura en alemán ("Fis-Dur", "a-Moll"), húngaro ("Fisz-dúr"), francés ("ré majeur"), italiano ("re
+    /// maggiore") y las demás lenguas de `Notacion` ("фа-диез мажор", "λα ελάσσονα").
     package static func leerEnOtrasNotaciones(_ texto: String) -> Tonalidad? {
         let limpio = texto.trimmingEspacios()
-        for notacion in [Notacion.aleman, .frances, .italiano] + Notacion.deLecturaGenerica {
+        for notacion in [Notacion.aleman, .hungaro, .frances, .italiano] + Notacion.deLecturaGenerica {
             for modo in [Modo.mayor, .menor] {
                 let palabra = modo.nombre(en: notacion)
                 let separador = notacion.idiomaDeLasNotas.reglas.separadorDelModo

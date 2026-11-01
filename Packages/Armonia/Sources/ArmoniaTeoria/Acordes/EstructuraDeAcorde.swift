@@ -147,7 +147,7 @@ extension CalidadDeTriada: Nombrable {}
 
 // MARK: - Idiomas
 //
-// Nombres de los papeles en el acorde y de las calidades de tríada en los catorce idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
+// Nombres de los papeles en el acorde y de las calidades de tríada en los quince idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
 
 // MARK: - PapelEnAcorde
 

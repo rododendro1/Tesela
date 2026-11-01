@@ -151,7 +151,7 @@ extension Acorde {
 
 // MARK: - Idiomas
 //
-// Nombres de los arpegios y de sus patrones en los catorce idiomas, en `TextosDeTeoria`.
+// Nombres de los arpegios y de sus patrones en los quince idiomas, en `TextosDeTeoria`.
 
 // MARK: - Arpegio
 
@@ -181,7 +181,7 @@ extension Arpegio: Nombrable {
 extension Arpegio.Patron {
     /// Lee un patrón por su nombre en el código (`alberti`, `idaYVuelta`), con guiones o guiones bajos
     /// (`ida-y-vuelta`), en inglés abreviado (`up`, `down`, `up-down`, `down-up`, `broken`) o como lo escribe
-    /// cualquiera de los catorce idiomas («bajo de Alberti», «aller-retour»), sin mirar mayúsculas ni tildes.
+    /// cualquiera de los quince idiomas («bajo de Alberti», «aller-retour»), sin mirar mayúsculas ni tildes.
     public init?(leyendo texto: String) {
         func clave(_ texto: String) -> String { texto.replacingOccurrences(of: "_", with: " ").claveDeBusqueda }
         let buscado = clave(texto)

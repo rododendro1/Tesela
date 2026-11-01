@@ -47,7 +47,7 @@ public enum AfinacionHistorica: String, Hashable, Sendable, CaseIterable, Custom
 
 // MARK: - Idiomas
 //
-// Nombres de los temperamentos en los catorce idiomas de los textos (`Traduccion`).
+// Nombres de los temperamentos en los quince idiomas de los textos (`Traduccion`).
 
 extension AfinacionHistorica {
     public func nombre(en notacion: Notacion) -> String {

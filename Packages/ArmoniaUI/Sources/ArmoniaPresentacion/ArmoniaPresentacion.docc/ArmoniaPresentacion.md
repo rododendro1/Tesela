@@ -27,7 +27,7 @@ Cada presentación da tres cosas a la vez:
   ``Escucha/afinado(en:)`` lleva a otro temperamento.
 - **Lo que se exporta**, una lista de ``FicheroParaExportar`` (MusicXML, MEI, MIDI o SVG), con su nombre de fichero.
 
-Los textos de la interfaz (pestañas, etiquetas, indicaciones) son campos de ``TextosDeApps``, en los mismos catorce
+Los textos de la interfaz (pestañas, etiquetas, indicaciones) son campos de ``TextosDeApps``, en los mismos quince
 idiomas que los textos del motor, y se leen con `notacion.texto(\.digitaciones)`: siguen la notación elegida, así que
 el selector de notación cambia la app entera.
 

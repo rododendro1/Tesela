@@ -99,7 +99,7 @@ extension TextosDeCLI {
         cabeceraDeLaAyuda: """
         armonia: teoría musical dende la llinia de comandos.
 
-        Usu: armonia <orde> <argumentos> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru]
+        Usu: armonia <orde> <argumentos> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
 
         Ordes (les ordes y les opciones escríbense en castellán o n'inglés):
         """,
@@ -203,7 +203,7 @@ extension TextosDeCLI {
         pruebaLaAyuda: "Prueba «armonia ayuda».",
         ordenDesconocida: { orden in "orde desconocida: «\(orden)»" },
         opcionDesconocida: { opcion in "opción desconocida: «\(opcion)»" },
-        idiomaDesconocido: { idioma in "llingua desconocida: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el o ru)" },
+        idiomaDesconocido: { idioma in "llingua desconocida: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu)" },
         terminalDesconocida: { t in "terminal desconocida: «\(t)» (bash, zsh o fish)" },
         escrituraNoValida: { escritura in "escritura non válida: «\(escritura)» (palabras/words, ascii o unicode; namái con es y en)" },
 

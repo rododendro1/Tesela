@@ -2,6 +2,18 @@
 
 ## Sin publicar
 
+- El húngaro, el decimoquinto idioma: `Idioma.hungaro` («hu»). Como el alemán, tiene dos escrituras:
+  `.hungaroCompacto`, la habitual, con las notas a la alemana con «isz» y «esz» (Fisz, Esz, Asz, B para Si♭, H para
+  Si, Heszesz) y la octava en subíndice, y `.hungaro`, con las alteraciones en palabras (F kereszt, H bé). Las
+  tonalidades se escriben C-dúr y a-moll, y se leen las mismas formas («Fisz-dúr», «esz-moll», «Fisz dór»). Todos los
+  textos del motor y los nombres de las escalas están en húngaro. La escritura a la alemana toma sus sufijos de
+  `ReglasDeIdioma.sufijoDeSostenido` y `sufijoDeBemol`, así que otro idioma con letras puede reutilizarla.
+- Solfeo relativo (do móvil, como en el método Kodály): `SolfeoRelativo(tonalidad, menor:)` da la sílaba de cada
+  nota según la tónica («do re mi fa so la ti», con «di ri fi si li» y «ra me se le te» para las alteradas, y las
+  húngaras «dó ré mi fá szó lá ti» con `en: .hungaro`). En menor, la tónica es «la» (`.enLa`, Kodály) o «do»
+  (`.enDo`). `Escala.solfeoRelativo(menor:en:)` da las sílabas de una escala.
+- En la línea de comandos, `--idioma hu` (o `magyar`) escribe las notas, los mensajes y la ayuda en húngaro, y
+  `--escritura palabras|compacto` elige entre F kereszt y Fisz.
 - **Notaciones compactas**: `Notacion.espanolUnicode` e `.inglesUnicode` pasan a llamarse `.espanolCompacto` e
   `.inglesCompacto` (igual en `EscrituraDeNotas`, y `EstiloDeCifrado.inglesUnicode` pasa a `.inglesCompacto`). Los
   nombres de antes siguen, obsoletos, en `Obsoletos.swift`. Las compactas escriben la octava como subíndice: La₄,
