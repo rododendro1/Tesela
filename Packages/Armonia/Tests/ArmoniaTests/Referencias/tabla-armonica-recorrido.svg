@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-116.9 -267.8 358.5 536.4" width="358.5" height="536.4" font-family="sans-serif">
+  <title>Do –L→ Mim –P→ Mi</title>
+  <rect x="-116.9" y="-267.8" width="358.5" height="536.4" fill="#ffffff"/>
+  <text x="-106.1" y="-243.0" dominant-baseline="central" font-size="21.6" font-weight="600" fill="#222222">Do –L→ Mim –P→ Mi</text>
+  <polygon points="-20.8,36.0 -41.6,72.0 -83.1,72.0 -103.9,36.0 -83.1,0.0 -41.6,0.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="-20.8,-36.0 -41.6,0.0 -83.1,0.0 -103.9,-36.0 -83.1,-72.0 -41.6,-72.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="-20.8,-108.0 -41.6,-72.0 -83.1,-72.0 -103.9,-108.0 -83.1,-144.0 -41.6,-144.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="-20.8,-180.0 -41.6,-144.0 -83.1,-144.0 -103.9,-180.0 -83.1,-216.0 -41.6,-216.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="41.6,72.0 20.8,108.0 -20.8,108.0 -41.6,72.0 -20.8,36.0 20.8,36.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="41.6,0.0 20.8,36.0 -20.8,36.0 -41.6,0.0 -20.8,-36.0 20.8,-36.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.5"/>
+  <polygon points="41.6,-72.0 20.8,-36.0 -20.8,-36.0 -41.6,-72.0 -20.8,-108.0 20.8,-108.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.5"/>
+  <polygon points="41.6,-144.0 20.8,-108.0 -20.8,-108.0 -41.6,-144.0 -20.8,-180.0 20.8,-180.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="103.9,36.0 83.1,72.0 41.6,72.0 20.8,36.0 41.6,0.0 83.1,0.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="103.9,-36.0 83.1,0.0 41.6,0.0 20.8,-36.0 41.6,-72.0 83.1,-72.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.5"/>
+  <polygon points="103.9,-108.0 83.1,-72.0 41.6,-72.0 20.8,-108.0 41.6,-144.0 83.1,-144.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.5"/>
+  <polygon points="103.9,-180.0 83.1,-144.0 41.6,-144.0 20.8,-180.0 41.6,-216.0 83.1,-216.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="166.3,72.0 145.5,108.0 103.9,108.0 83.1,72.0 103.9,36.0 145.5,36.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="166.3,0.0 145.5,36.0 103.9,36.0 83.1,0.0 103.9,-36.0 145.5,-36.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="166.3,-72.0 145.5,-36.0 103.9,-36.0 83.1,-72.0 103.9,-108.0 145.5,-108.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.5"/>
+  <polygon points="166.3,-144.0 145.5,-108.0 103.9,-108.0 83.1,-144.0 103.9,-180.0 145.5,-180.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="228.6,36.0 207.8,72.0 166.3,72.0 145.5,36.0 166.3,0.0 207.8,0.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="228.6,-36.0 207.8,0.0 166.3,0.0 145.5,-36.0 166.3,-72.0 207.8,-72.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="228.6,-108.0 207.8,-72.0 166.3,-72.0 145.5,-108.0 166.3,-144.0 207.8,-144.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <polygon points="228.6,-180.0 207.8,-144.0 166.3,-144.0 145.5,-180.0 166.3,-216.0 207.8,-216.0" fill="#f4f4f4" stroke="#bbbbbb" stroke-width="1"/>
+  <line x1="41.6" y1="0.0" x2="20.8" y2="36.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="20.8" y1="36.0" x2="-20.8" y2="36.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="-20.8" y1="36.0" x2="-41.6" y2="0.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="-41.6" y1="0.0" x2="-20.8" y2="-36.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="-20.8" y1="-108.0" x2="20.8" y2="-108.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="-20.8" y1="-36.0" x2="-41.6" y2="-72.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="-41.6" y1="-72.0" x2="-20.8" y2="-108.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="103.9" y1="-36.0" x2="83.1" y2="0.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="83.1" y1="0.0" x2="41.6" y2="0.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="41.6" y1="-144.0" x2="83.1" y2="-144.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="83.1" y1="-144.0" x2="103.9" y2="-108.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="20.8" y1="-108.0" x2="41.6" y2="-144.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="103.9" y1="-108.0" x2="145.5" y2="-108.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="145.5" y1="-108.0" x2="166.3" y2="-72.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="166.3" y1="-72.0" x2="145.5" y2="-36.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <line x1="145.5" y1="-36.0" x2="103.9" y2="-36.0" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <polygon points="41.6,0.0 20.8,36.0 -20.8,36.0 -41.6,0.0 -20.8,-36.0 20.8,-36.0" fill="none" stroke="#f39c12" stroke-width="3.5" transform="translate(0.0 0.0) scale(0.86) translate(-0.0 -0.0)"/>
+  <text x="-62.4" y="36.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">La♭</text>
+  <text x="-62.4" y="-36.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">Mi♭</text>
+  <text x="-62.4" y="-108.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">Si♭</text>
+  <text x="-62.4" y="-180.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">Fa</text>
+  <text x="0.0" y="72.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">Fa</text>
+  <text x="0.0" y="0.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#ffffff" font-weight="bold">Do</text>
+  <text x="0.0" y="-72.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#ffffff" font-weight="bold">Sol</text>
+  <text x="0.0" y="-144.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">Re</text>
+  <text x="62.4" y="36.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">La</text>
+  <text x="62.4" y="-36.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#ffffff" font-weight="bold">Mi</text>
+  <text x="62.4" y="-108.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#ffffff" font-weight="bold">Si</text>
+  <text x="62.4" y="-180.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">Fa♯</text>
+  <text x="124.7" y="72.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">Fa♯</text>
+  <text x="124.7" y="0.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">Do♯</text>
+  <text x="124.7" y="-72.0" text-anchor="middle" dominant-baseline="central" font-size="16.6" fill="#ffffff" font-weight="bold">Sol♯</text>
+  <text x="124.7" y="-144.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">Re♯</text>
+  <text x="187.1" y="36.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">La♯</text>
+  <text x="187.1" y="-36.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">Mi♯</text>
+  <text x="187.1" y="-108.0" text-anchor="middle" dominant-baseline="central" font-size="19.4" fill="#888888">Si♯</text>
+  <text x="187.1" y="-180.0" text-anchor="middle" dominant-baseline="central" font-size="16.6" fill="#888888">Fa♯♯</text>
+  <circle cx="20.8" cy="-36.0" r="5.4" fill="#f6b26b" stroke="#111111" stroke-width="1.5"/>
+  <circle cx="83.1" cy="-72.0" r="5.4" fill="#f6b26b" stroke="#111111" stroke-width="1.5"/>
+  <circle cx="41.6" cy="-72.0" r="5.4" fill="#8fb8e8" stroke="#111111" stroke-width="1.5"/>
+  <defs><marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker></defs>
+  <circle cx="20.8" cy="-36.0" r="5.0" fill="#c0392b"/>
+  <line x1="24.4" y1="-42.2" x2="38.0" y2="-65.8" stroke="#c0392b" stroke-width="3" marker-end="url(#flecha)"/>
+  <line x1="48.8" y1="-72.0" x2="75.9" y2="-72.0" stroke="#c0392b" stroke-width="3" marker-end="url(#flecha)"/>
+  <g class="leyenda"><polygon points="-83.2,140.0 -88.9,149.9 -100.2,149.9 -105.9,140.0 -100.2,130.2 -88.9,130.2" fill="#1f4e9c" stroke="#1f4e9c" stroke-width="2"/><text x="-75.8" y="140.0" dominant-baseline="central" font-size="14.4" fill="#444444">nota</text></g>
+  <g class="leyenda"><polygon points="-83.2,167.4 -88.9,177.2 -100.2,177.2 -105.9,167.4 -100.2,157.6 -88.9,157.6" fill="#1f4e9c" stroke="#f39c12" stroke-width="2"/><text x="-75.8" y="167.4" dominant-baseline="central" font-size="14.4" fill="#444444">fundamental del primer acorde</text></g>
+  <g class="leyenda"><line x1="-105.4" y1="194.8" x2="-83.8" y2="194.8" stroke="#111111" stroke-width="3.0"/><text x="-75.8" y="194.8" dominant-baseline="central" font-size="14.4" fill="#444444">contorno de la forma</text></g>
+  <g class="leyenda"><circle cx="-94.6" cy="222.1" r="8.6" fill="#f6b26b" stroke="#111111" stroke-width="1.5"/><text x="-75.8" y="222.1" dominant-baseline="central" font-size="14.4" fill="#444444">tríada mayor</text></g>
+  <g class="leyenda"><circle cx="52.6" cy="222.1" r="8.6" fill="#8fb8e8" stroke="#111111" stroke-width="1.5"/><text x="71.3" y="222.1" dominant-baseline="central" font-size="14.4" fill="#444444">tríada menor</text></g>
+  <g class="leyenda"><line x1="-105.4" y1="249.5" x2="-83.8" y2="249.5" stroke="#c0392b" stroke-width="2.5" marker-end="url(#flecha)"/><text x="-75.8" y="249.5" dominant-baseline="central" font-size="14.4" fill="#444444">paso del recorrido (P, L, R)</text></g>
+</svg>

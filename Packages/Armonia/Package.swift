@@ -58,7 +58,8 @@ let package = Package(
                 "ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaTrastes",
             ]),
         // Las pruebas ven lo `internal` de cada módulo con `@testable import`, y por eso dependen de todos.
-        .testTarget(name: "ArmoniaTests", dependencies: modulos),
+        // `Referencias` son los dibujos guardados con que se comparan los de ahora (ReferenciasSVGTests).
+        .testTarget(name: "ArmoniaTests", dependencies: modulos, exclude: ["Referencias"]),
         .testTarget(name: "ArmoniaExhaustivasTests", dependencies: modulos),
         // Los ejemplos de la documentación usan también la rejilla (`CoordenadaAxial`, `FormasDeMapa`…).
         .testTarget(name: "ArmoniaDocumentacionTests", dependencies: ["Armonia", hexagonos]),
