@@ -81,7 +81,7 @@ final class AfinacionTests: XCTestCase {
         XCTAssertEqual(
             AfinacionHistorica.mesotonico.afinacion().cents(desde: "Do4", hasta: "Mi4"), RazonDeFrecuencias(5, 4).cents,
             accuracy: 1e-9)
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             let nombres = AfinacionHistorica.allCases.map {
                 $0.nombre(en: Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false)))
             }

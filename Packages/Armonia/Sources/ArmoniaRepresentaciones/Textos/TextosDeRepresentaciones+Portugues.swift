@@ -39,7 +39,7 @@ extension TextosDeRepresentaciones {
         cicloLR: "ciclo LR",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in n == 1 ? "1 meio-tom" : "\(n) meios-tons" },
+        semitonos: { n in Idioma.portugues.contar(n, "meio-tom", "meios-tons") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "homónima",

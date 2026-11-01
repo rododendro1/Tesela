@@ -12,7 +12,7 @@ import XCTest
 /// los idiomas que no prueba nadie no se ejecutarían nunca.
 final class TextosConValoresTests: XCTestCase {
     func testCadaTextoConValoresEnCadaIdioma() {
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
             let textos = TextosDeNucleo.traducidos.texto(en: idioma)
             let resultados = [
@@ -46,7 +46,7 @@ final class TextosConValoresTests: XCTestCase {
                 XCTAssertFalse(texto.isEmpty, "TextosDeNucleo, texto \(i) en \(idioma)")
             }
         }
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             let textos = TextosDeTeoria.traducidos.texto(en: idioma)
             let resultados = [
                 textos.conBajoEn("x", "x"),
@@ -67,7 +67,7 @@ final class TextosConValoresTests: XCTestCase {
                 XCTAssertFalse(texto.isEmpty, "TextosDeTeoria, texto \(i) en \(idioma)")
             }
         }
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             let textos = TextosDeRepresentaciones.traducidos.texto(en: idioma)
             let resultados = [
                 textos.cicloDesde("x", "x"),
@@ -77,7 +77,7 @@ final class TextosConValoresTests: XCTestCase {
                 XCTAssertFalse(texto.isEmpty, "TextosDeRepresentaciones, texto \(i) en \(idioma)")
             }
         }
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             let textos = TextosDePartitura.traducidos.texto(en: idioma)
             let resultados = [
                 textos.enElCompas(3),

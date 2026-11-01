@@ -64,7 +64,7 @@ final class RearmonizacionTests: XCTestCase {
             Tonalidad(.do).rearmonizaciones(de: progresion).first { $0.recurso == .dominanteSecundaria })
         XCTAssertEqual(secundaria.aplicar(a: progresion).count, progresion.count + 1)
         XCTAssertEqual(tritonal.aplicar(a: []), [])
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
             let nombres = Rearmonizacion.Recurso.allCases.map { $0.nombre(en: notacion) }
             XCTAssertEqual(Set(nombres).count, nombres.count, "\(idioma)")

@@ -117,7 +117,7 @@ final class ContrapuntoTests: XCTestCase {
     }
 
     func testTodasLasFaltasTienenNombreEnCadaIdioma() {
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             let notacion = Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false))
             let nombres = FaltaDeContrapunto.Tipo.allCases.map { $0.nombre(en: notacion) }
             XCTAssertEqual(Set(nombres).count, nombres.count, "\(idioma)")

@@ -209,15 +209,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "sen \(notas)" },
         mensajeSemitonos: { n in "\(n) semitons" },
         mensajeSinAlteraciones: "sen alteracións",
-        mensajeSostenidos: { n in n == 1 ? "1 sostido" : "\(n) sostidos" },
-        mensajeBemoles: { n in n == 1 ? "1 bemol" : "\(n) bemois" },
+        mensajeSostenidos: { n in Idioma.gallego.contar(n, "sostido", "sostidos") },
+        mensajeBemoles: { n in Idioma.gallego.contar(n, "bemol", "bemois") },
         mensajeACuatroVoces: "A catro voces (baixo, tenor, contralto, soprano):",
         mensajeSinDigitaciones: "non hai dixitacións cómodas",
-        mensajeDedos: { n in n == 1 ? "1 dedo" : "\(n) dedos" },
+        mensajeDedos: { n in Idioma.gallego.contar(n, "dedo", "dedos") },
         mensajeCejilla: { traste in "pestana no traste \(traste)" },
         mensajeNingunPaso: "ningún paso",
         mensajeUnPaso: "1 paso",
         mensajePasos: { n in "\(n) pasos" },
-        mensajeTriadas: { n in n == 1 ? "1 tríade" : "\(n) tríades" }
+        mensajeTriadas: { n in Idioma.gallego.contar(n, "tríade", "tríades") }
     )
 }

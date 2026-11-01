@@ -31,7 +31,7 @@
                 }
                 Picker(notacion.texto(\.textos), selection: textos) {
                     Text(notacion.texto(\.comoLasNotas)).tag("")
-                    ForEach(Idioma.traducidos, id: \.self) { idioma in
+                    ForEach(Idioma.allCases, id: \.self) { idioma in
                         Text(idioma.titulo).tag(idioma.clave)
                     }
                 }

@@ -95,6 +95,12 @@ final class TraducidoTests: XCTestCase {
         }
         XCTAssertEqual(Idioma(nombre: "Euskara"), .euskera)
         XCTAssertEqual(Idioma(nombre: "DEUTSCH"), .aleman)
+        // Sin tildes ni mayúsculas, aunque la lista solo tenga la forma con tilde.
+        XCTAssertEqual(Idioma(nombre: "aleman"), .aleman)
+        XCTAssertEqual(Idioma(nombre: "FRANCAIS"), .frances)
+        XCTAssertEqual(Idioma(nombre: "ελληνικα"), .griego)
+        XCTAssertEqual(Idioma(nombre: "Português"), .portugues)
+        XCTAssertEqual(Idioma(nombre: "espanol"), .espanol)
         XCTAssertEqual(Idioma(nombre: "pt-BR"), .portugues)
         XCTAssertNil(Idioma(nombre: "japonés"))
         XCTAssertNil(Idioma(codigo: ""))
@@ -104,6 +110,52 @@ final class TraducidoTests: XCTestCase {
         XCTAssertEqual(Notacion.delIdioma(.griego), .griego)
         for idioma in Idioma.allCases {
             XCTAssertEqual(Notacion.delIdioma(idioma).idiomaDeLasNotas, idioma)
+        }
+    }
+
+    /// Quitando las tildes, ningún nombre de idioma se confunde con el de otro, ni se repite en el suyo.
+    func testLosNombresDeIdiomaNoChocanSinTildes() {
+        let claves = Idioma.allCases.flatMap { idioma in idioma.nombres.map { ($0.claveDeBusqueda, idioma) } }
+        XCTAssertEqual(Set(claves.map(\.0)).count, claves.count, "\(claves)")
+    }
+
+    func testLasAbreviaturasDeCadaIdioma() {
+        XCTAssertEqual(Notacion.catalan.idiomaDeLasAbreviaturas, .espanol)
+        XCTAssertEqual(Notacion.occitano.idiomaDeLasAbreviaturas, .espanol)
+        XCTAssertEqual(Notacion.frances.idiomaDeLasAbreviaturas, .ingles)
+        XCTAssertEqual(Notacion.ruso.idiomaDeLasAbreviaturas, .ingles)
+        // Con los textos en otro idioma, mandan los textos.
+        XCTAssertEqual(Notacion.ruso.conTextos(en: .gallego).idiomaDeLasAbreviaturas, .espanol)
+        for idioma in Idioma.allCases {
+            XCTAssertTrue([.espanol, .ingles].contains(idioma.reglas.abreviaturas), idioma.codigo)
+        }
+    }
+
+    func testElPluralDeCadaIdioma() {
+        XCTAssertEqual(Idioma.espanol.contar(1, "dedo", "dedos"), "1 dedo")
+        XCTAssertEqual(Idioma.espanol.contar(0, "dedo", "dedos"), "0 dedos")
+        XCTAssertEqual(Idioma.espanol.contar(-1, "dedo", "dedos"), "-1 dedo")
+        XCTAssertEqual(Idioma.frances.contar(0, "doigt", "doigts"), "0 doigt")
+        XCTAssertEqual(Idioma.frances.contar(2, "doigt", "doigts"), "2 doigts")
+        XCTAssertEqual(Idioma.euskera.contar(5, "hatz"), "5 hatz")
+        XCTAssertEqual(Idioma.ruso.contar(1, "a", "b", "c"), "1 a")
+        XCTAssertEqual(Idioma.ruso.contar(3, "a", "b", "c"), "3 b")
+        XCTAssertEqual(Idioma.ruso.contar(12, "a", "b", "c"), "12 c")
+        XCTAssertEqual(Idioma.ruso.contar(21, "a", "b", "c"), "21 a")
+        XCTAssertEqual(Idioma.ruso.contar(24, "a", "b", "c"), "24 b")
+        XCTAssertEqual(Idioma.ruso.contar(25, "a", "b", "c"), "25 c")
+        // Con menos formas de las que pide la regla vale la última, y sin ninguna, el número solo.
+        XCTAssertEqual(Idioma.ruso.contar(5, "a", "b"), "5 b")
+        XCTAssertEqual(Idioma.ingles.contar(3), "3")
+        XCTAssertEqual(ReglasDeIdioma.Plural.invariable.forma(para: 7), 0)
+    }
+
+    func testLasReglasSonLasMismasEnCadaLlamada() {
+        let codigos = Traducido(porIdioma: { $0.codigo })
+        XCTAssertEqual(codigos.texto(en: .asturiano), "ast")
+        for idioma in Idioma.allCases {
+            XCTAssertEqual(idioma.reglas, idioma.reglas, idioma.codigo)
+            XCTAssertEqual(codigos.texto(en: idioma), idioma.codigo)
         }
     }
 
@@ -131,7 +183,7 @@ final class TraducidoTests: XCTestCase {
         XCTAssertEqual(Intervalo.ordinal(3, en: .catalan), "3a")
         XCTAssertEqual(Intervalo.ordinal(3, en: .euskera), "3.")
         // Cada idioma nombra los quince intervalos con palabras, o ninguno.
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             XCTAssertTrue([0, 15].contains(TextosDeNucleo.en(idioma: idioma, \.ordinales).count), "\(idioma)")
         }
         XCTAssertEqual(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .frances), "unisson augmenté")

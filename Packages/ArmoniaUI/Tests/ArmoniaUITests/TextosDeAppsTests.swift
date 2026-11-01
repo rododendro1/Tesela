@@ -109,7 +109,7 @@ final class TextosDeAppsTests: XCTestCase {
     ]
 
     func testCadaTextoEstaEnCadaIdioma() {
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
             for (i, texto) in Self.todos.enumerated() {
                 XCTAssertFalse(texto(notacion).isEmpty, "texto \(i) en \(idioma)")
@@ -131,7 +131,7 @@ final class TextosDeAppsTests: XCTestCase {
         let todos = Self.todos
         let hecho = DispatchSemaphore(value: 0)
         let hilo = Thread {
-            for idioma in Idioma.traducidos {
+            for idioma in Idioma.allCases {
                 let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
                 for (i, texto) in todos.enumerated() {
                     XCTAssertFalse(texto(notacion).isEmpty, "texto \(i) en \(idioma)")
@@ -170,7 +170,7 @@ final class TextosDeAppsTests: XCTestCase {
     }
 
     func testLasTareasLosFormatosYLasRedesTienenNombreEnCadaIdioma() {
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
             let tareas = PresentacionDeCoral.Tarea.allCases.map { $0.titulo(en: notacion) }
             XCTAssertEqual(Set(tareas).count, tareas.count, "\(idioma)")
@@ -183,7 +183,7 @@ final class TextosDeAppsTests: XCTestCase {
     }
 
     func testLosInstrumentosYLasTransformacionesTienenNombreEnCadaIdioma() {
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
             let instrumentos = Encordado.todos.map { $0.nombre(en: notacion) }
             XCTAssertEqual(Set(instrumentos).count, instrumentos.count, "\(idioma)")

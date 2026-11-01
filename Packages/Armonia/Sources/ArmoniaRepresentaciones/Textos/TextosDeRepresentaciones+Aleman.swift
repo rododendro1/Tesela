@@ -39,7 +39,7 @@ extension TextosDeRepresentaciones {
         cicloLR: "LR-Zyklus",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in n == 1 ? "1 Halbton" : "\(n) Halbtöne" },
+        semitonos: { n in Idioma.aleman.contar(n, "Halbton", "Halbtöne") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "Variante",

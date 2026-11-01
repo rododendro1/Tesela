@@ -39,7 +39,7 @@ extension TextosDeRepresentaciones {
         cicloLR: "ciclu LR",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in n == 1 ? "1 semitonu" : "\(n) semitonos" },
+        semitonos: { n in Idioma.asturiano.contar(n, "semitonu", "semitonos") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "homónima",

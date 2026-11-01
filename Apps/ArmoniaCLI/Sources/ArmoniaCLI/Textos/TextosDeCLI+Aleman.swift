@@ -209,15 +209,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "ohne \(notas)" },
         mensajeSemitonos: { n in "\(n) Halbtöne" },
         mensajeSinAlteraciones: "keine Vorzeichen",
-        mensajeSostenidos: { n in n == 1 ? "1 Kreuz" : "\(n) Kreuze" },
+        mensajeSostenidos: { n in Idioma.aleman.contar(n, "Kreuz", "Kreuze") },
         mensajeBemoles: { n in "\(n) Be" },
         mensajeACuatroVoces: "Vierstimmig (Bass, Tenor, Alt, Sopran):",
         mensajeSinDigitaciones: "keine bequemen Griffe gefunden",
-        mensajeDedos: { n in n == 1 ? "1 Finger" : "\(n) Finger" },
+        mensajeDedos: { n in Idioma.aleman.contar(n, "Finger", "Finger") },
         mensajeCejilla: { traste in "Barré im \(traste). Bund" },
         mensajeNingunPaso: "keine Schritte",
         mensajeUnPaso: "1 Schritt",
         mensajePasos: { n in "\(n) Schritte" },
-        mensajeTriadas: { n in n == 1 ? "1 Dreiklang" : "\(n) Dreiklänge" }
+        mensajeTriadas: { n in Idioma.aleman.contar(n, "Dreiklang", "Dreiklänge") }
     )
 }

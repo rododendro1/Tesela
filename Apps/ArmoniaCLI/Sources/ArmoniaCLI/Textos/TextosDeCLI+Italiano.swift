@@ -209,15 +209,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "senza \(notas)" },
         mensajeSemitonos: { n in "\(n) semitoni" },
         mensajeSinAlteraciones: "senza alterazioni",
-        mensajeSostenidos: { n in n == 1 ? "1 diesis" : "\(n) diesis" },
-        mensajeBemoles: { n in n == 1 ? "1 bemolle" : "\(n) bemolli" },
+        mensajeSostenidos: { n in Idioma.italiano.contar(n, "diesis", "diesis") },
+        mensajeBemoles: { n in Idioma.italiano.contar(n, "bemolle", "bemolli") },
         mensajeACuatroVoces: "A quattro voci (basso, tenore, contralto, soprano):",
         mensajeSinDigitaciones: "nessuna diteggiatura comoda",
-        mensajeDedos: { n in n == 1 ? "1 dito" : "\(n) dita" },
+        mensajeDedos: { n in Idioma.italiano.contar(n, "dito", "dita") },
         mensajeCejilla: { traste in "barré al tasto \(traste)" },
         mensajeNingunPaso: "nessun passo",
         mensajeUnPaso: "1 passo",
         mensajePasos: { n in "\(n) passi" },
-        mensajeTriadas: { n in n == 1 ? "1 triade" : "\(n) triadi" }
+        mensajeTriadas: { n in Idioma.italiano.contar(n, "triade", "triadi") }
     )
 }

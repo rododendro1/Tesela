@@ -39,7 +39,7 @@ extension TextosDeRepresentaciones {
         cicloLR: "κύκλος LR",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in n == 1 ? "1 ημιτόνιο" : "\(n) ημιτόνια" },
+        semitonos: { n in Idioma.griego.contar(n, "ημιτόνιο", "ημιτόνια") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "ομώνυμη",

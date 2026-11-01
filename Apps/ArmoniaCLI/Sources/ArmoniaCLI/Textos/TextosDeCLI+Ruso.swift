@@ -207,17 +207,17 @@ extension TextosDeCLI {
         mensajeBajoAjeno: "бас не из аккорда",
         mensajeSinAcordes: "Известный аккорд не найден.",
         mensajeSin: { notas in "без \(notas)" },
-        mensajeSemitonos: { n in Traduccion.pluralRuso(n, "полутон", "полутона", "полутонов") },
+        mensajeSemitonos: { n in Idioma.ruso.contar(n, "полутон", "полутона", "полутонов") },
         mensajeSinAlteraciones: "без знаков",
-        mensajeSostenidos: { n in Traduccion.pluralRuso(n, "диез", "диеза", "диезов") },
-        mensajeBemoles: { n in Traduccion.pluralRuso(n, "бемоль", "бемоля", "бемолей") },
+        mensajeSostenidos: { n in Idioma.ruso.contar(n, "диез", "диеза", "диезов") },
+        mensajeBemoles: { n in Idioma.ruso.contar(n, "бемоль", "бемоля", "бемолей") },
         mensajeACuatroVoces: "В четырёхголосии (бас, тенор, альт, сопрано):",
         mensajeSinDigitaciones: "удобных аппликатур нет",
-        mensajeDedos: { n in Traduccion.pluralRuso(n, "палец", "пальца", "пальцев") },
+        mensajeDedos: { n in Idioma.ruso.contar(n, "палец", "пальца", "пальцев") },
         mensajeCejilla: { traste in "баррэ на \(traste)-м ладу" },
         mensajeNingunPaso: "ни одного шага",
         mensajeUnPaso: "1 шаг",
-        mensajePasos: { n in Traduccion.pluralRuso(n, "шаг", "шага", "шагов") },
-        mensajeTriadas: { n in Traduccion.pluralRuso(n, "трезвучие", "трезвучия", "трезвучий") }
+        mensajePasos: { n in Idioma.ruso.contar(n, "шаг", "шага", "шагов") },
+        mensajeTriadas: { n in Idioma.ruso.contar(n, "трезвучие", "трезвучия", "трезвучий") }
     )
 }

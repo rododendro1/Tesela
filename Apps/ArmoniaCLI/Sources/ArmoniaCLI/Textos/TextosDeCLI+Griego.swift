@@ -209,15 +209,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "χωρίς \(notas)" },
         mensajeSemitonos: { n in "\(n) ημιτόνια" },
         mensajeSinAlteraciones: "χωρίς αλλοιώσεις",
-        mensajeSostenidos: { n in n == 1 ? "1 δίεση" : "\(n) διέσεις" },
-        mensajeBemoles: { n in n == 1 ? "1 ύφεση" : "\(n) υφέσεις" },
+        mensajeSostenidos: { n in Idioma.griego.contar(n, "δίεση", "διέσεις") },
+        mensajeBemoles: { n in Idioma.griego.contar(n, "ύφεση", "υφέσεις") },
         mensajeACuatroVoces: "Σε τετραφωνία (μπάσο, τενόρος, άλτο, σοπράνο):",
         mensajeSinDigitaciones: "δεν υπάρχουν άνετες δακτυλοθεσίες",
-        mensajeDedos: { n in n == 1 ? "1 δάχτυλο" : "\(n) δάχτυλα" },
+        mensajeDedos: { n in Idioma.griego.contar(n, "δάχτυλο", "δάχτυλα") },
         mensajeCejilla: { traste in "μπαρέ στο \(traste)ο τάστο" },
         mensajeNingunPaso: "κανένα βήμα",
         mensajeUnPaso: "1 βήμα",
         mensajePasos: { n in "\(n) βήματα" },
-        mensajeTriadas: { n in n == 1 ? "1 τρίφωνο" : "\(n) τρίφωνα" }
+        mensajeTriadas: { n in Idioma.griego.contar(n, "τρίφωνο", "τρίφωνα") }
     )
 }

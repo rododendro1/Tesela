@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+- El plural de cada idioma está en sus reglas (`ReglasDeIdioma.plural`): singular con 1 en casi todos, con 0 y 1
+  en francés («0 demi-ton»), una forma en euskera y tres en ruso. `Idioma.contar(n, formas…)` escribe el número con
+  la forma que le toca («5 полутонов»); `Traduccion.pluralRuso` queda obsoleto en su favor.
+- `ReglasDeIdioma.abreviaturas`: el idioma de las abreviaturas de intervalo (5J o P5) es un dato más de cada fila,
+  y `Notacion.idiomaDeLasAbreviaturas` lo lee de ahí en vez de un `switch`.
+- `Idioma.reglas` se calcula una sola vez por idioma, en una tabla, en lugar de en cada llamada.
+- `Idioma(nombre:)` no distingue tildes («aleman», «FRANCAIS», «ελληνικα»), así que `nombres` ya no repite cada
+  nombre sin ellas.
+- `Traducido(porIdioma:)`: los catorce valores a partir del idioma.
+- `Idioma.traducidos` queda obsoleto: es igual que `Idioma.allCases`.
 - `Traducido(cadaIdioma:)`: los catorce valores a partir de la notación habitual de cada idioma
   (`Traduccion(cadaIdioma: { acorde.nombre(en: $0) })`), para no escribir a mano los catorce argumentos.
 - Los datos de cada idioma, en una fila de `ReglasDeIdioma`: además de las sílabas y la alteración, su código
