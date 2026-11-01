@@ -110,6 +110,133 @@ package enum Exportacion {
         return (nil, 0, nil)
     }
 
+    /// Los grupos irregulares (tresillos…) de los eventos de un compás: los eventos seguidos con la misma proporción,
+    /// hasta que lo que suman se puede escribir sin ella (un tresillo de corcheas, al llegar a la negra).
+    package static func irregulares(_ eventos: [Evento]) -> [(rango: ClosedRange<Int>, reales: Int, normales: Int)] {
+        var grupos: [(rango: ClosedRange<Int>, reales: Int, normales: Int)] = []
+        // El grupo abierto: dónde empieza, su proporción y lo que lleva.
+        var abierto: (desde: Int, reales: Int, normales: Int, acumulado: Duracion)?
+        func cerrar(en i: Int) {
+            if let grupo = abierto { grupos.append((grupo.desde...i, grupo.reales, grupo.normales)) }
+            abierto = nil
+        }
+        for (i, evento) in eventos.enumerated() {
+            guard let (reales, normales) = figura(de: evento.duracion).irregular else {
+                cerrar(en: i - 1)
+                continue
+            }
+            // Todo lo que va dentro de un grupo tiene su proporción: otra abre otro grupo.
+            if let grupo = abierto, grupo.reales != reales || grupo.normales != normales { cerrar(en: i - 1) }
+            let acumulado = (abierto?.acumulado ?? .cero) + evento.duracion
+            abierto = (abierto?.desde ?? i, reales, normales, acumulado)
+            if acumulado.denominador & (acumulado.denominador - 1) == 0 || i == eventos.count - 1 { cerrar(en: i) }
+        }
+        return grupos
+    }
+
+    /// Los compases de la grafía de una voz (`Voz.grafia`) para los formatos de texto, con dónde empieza cada evento
+    /// desde el principio de la voz y si es nuevo: si no lo es, sigue ligado al anterior con las mismas notas, y no
+    /// lleva anotaciones.
+    ///
+    /// Lo que no se puede escribir con una figura se parte en figuras ligadas (5/16 → corchea con puntillo ligada a
+    /// corchea; 5/12 → negra ligada a corchea, de tresillo), y la ligadura de un evento solo se escribe si el
+    /// siguiente tiene alguna de sus notas.
+    package static func compases(de voz: Voz) -> [[(evento: Evento, inicio: Duracion, nuevo: Bool)]] {
+        let partidos = voz.grafia.map { $0.flatMap(escribibles) }
+        let todos = partidos.joined().map { $0 }
+        var k = 0
+        var inicio = Duracion.cero
+        var ligadas: [Altura] = []
+        return partidos.map { eventos in
+            eventos.map { original in
+                let siguiente = k + 1 < todos.count ? todos[k + 1].alturas : []
+                let evento = Evento(
+                    alturas: original.alturas, duracion: original.duracion,
+                    ligada: original.ligada && original.alturas.contains(where: siguiente.contains))
+                defer {
+                    k += 1
+                    inicio = inicio + evento.duracion
+                    ligadas = evento.ligada ? evento.alturas : []
+                }
+                return (evento, inicio, ligadas.isEmpty || evento.alturas != ligadas)
+            }
+        }
+    }
+
+    /// Un evento como figuras que se pueden escribir, ligadas entre sí: el mismo si ya tiene figura (con o sin
+    /// grupo irregular) y como mucho dos puntillos, que es lo que admiten todos los formatos.
+    private static func escribibles(_ evento: Evento) -> [Evento] {
+        let actual = figura(de: evento.duracion)
+        guard actual.figura == nil || actual.puntillos > 2 else { return [evento] }
+        // En un grupo irregular, las figuras de lo que dura escrito, y cada una devuelta a su proporción.
+        var impar = evento.duracion.denominador
+        while impar % 2 == 0 { impar /= 2 }
+        var normales = 1
+        while normales * 2 < impar { normales *= 2 }
+        let escrita = evento.duracion * Duracion(impar, normales)
+        // Figuras sin puntillo, de mayor a menor, como `Duracion.descomposicion`, también si ya tiene figura.
+        var resto = impar > 1 ? escrita : evento.duracion
+        var partes: [Duracion] = []
+        for figura in Figura.allCases {
+            while figura.duracion <= resto {
+                partes.append(figura.duracion)
+                resto = resto - figura.duracion
+            }
+        }
+        guard resto.esCero, partes.count > 1 else { return [evento] }
+        return partes.enumerated().map { i, parte in
+            let ultima = i == partes.count - 1
+            return Evento(
+                alturas: evento.alturas, duracion: impar > 1 ? parte * Duracion(normales, impar) : parte,
+                ligada: ultima ? evento.ligada : !evento.esSilencio)
+        }
+    }
+
+    /// Una altura escrita sin alteraciones triples, que no tienen todos los formatos: con la nota natural vecina
+    /// que suena igual (Fa♯♯♯4 → Sol♯4). La octava es la de la nota natural escrita.
+    package static func sinTriples(_ altura: Altura) -> (natural: NotaNatural, semitonos: Int, octava: Int) {
+        let escala = [0, 2, 4, 5, 7, 9, 11]
+        var natural = altura.nota.natural.rawValue
+        var octava = altura.octava
+        var semitonos = altura.nota.alteracion.semitonos
+        while semitonos > 2 {
+            let siguiente = (natural + 1) % 7
+            semitonos -= (escala[siguiente] - escala[natural] + 12) % 12
+            if siguiente == 0 { octava += 1 }
+            natural = siguiente
+        }
+        while semitonos < -2 {
+            let anterior = (natural + 6) % 7
+            semitonos += (escala[natural] - escala[anterior] + 12) % 12
+            if natural == 0 { octava -= 1 }
+            natural = anterior
+        }
+        return (NotaNatural(rawValue: natural)!, semitonos, octava)
+    }
+
+    /// Una voz con lo que se anota en ella, para los escritores de texto (LilyPond y ABC).
+    package struct LineaAnotada {
+        package let voz: Voz
+        package let pentagrama: Int
+        /// `nil` si la plica va donde toque; si no, hacia arriba o hacia abajo.
+        package let plicaArriba: Bool?
+        /// El cifrado que se escribe encima de la nota que empieza en cada punto de la voz.
+        package let cifrados: [Duracion: String]
+        /// Las líneas de texto que se escriben debajo de la nota que empieza en cada punto.
+        package let letras: [Duracion: [String]]
+
+        package init(
+            _ voz: Voz, pentagrama: Int, plicaArriba: Bool?,
+            cifrados: [Duracion: Acorde], analisis: [Duracion: AcordeAnalizado], notacion: Notacion
+        ) {
+            self.voz = voz
+            self.pentagrama = pentagrama
+            self.plicaArriba = plicaArriba
+            self.cifrados = cifrados.mapValues { $0.cifrado(en: notacion) }
+            self.letras = analisis.mapValues(Exportacion.letras)
+        }
+    }
+
     /// Las voces de un coral repartidas en dos pentagramas, como se escriben: las de la mitad
     /// aguda arriba y las de la grave abajo, de aguda a grave en cada uno. Si comparten
     /// pentagrama, la plica de la de arriba va hacia arriba y la de la de abajo, hacia abajo.

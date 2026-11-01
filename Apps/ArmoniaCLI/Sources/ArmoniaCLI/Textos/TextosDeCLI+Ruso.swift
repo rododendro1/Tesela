@@ -82,6 +82,10 @@ extension TextosDeCLI {
         descripcionMusicxmlArchivo: "последовательность из файла MIDI или\nMusicXML с длительностью каждого\nаккорда (также arpeggios, mei, midi)",
         sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios <…> [параметры]",
         descripcionMeiMelodia: "то же самое в MEI 5, формате\nкритических изданий (с теми же\nпараметрами)",
+        sintaxisLilypondMelodia: "lilypond melody|chorale|chords|arpeggios <…> [параметры]",
+        descripcionLilypondMelodia: "то же самое в LilyPond, чтобы набрать\nпартитуру в PDF",
+        sintaxisAbcMelodia: "abc melody|chorale|chords|arpeggios <…> [параметры]",
+        descripcionAbcMelodia: "то же самое в ABC, текстовой нотации\nнародной музыки",
         sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios <…> [параметры]",
         descripcionMidiMelodia: "то же самое в виде файла MIDI, чтобы\nпослушать (без --clave и --cifrados; с\n--program 0…127, General MIDI)",
 
@@ -110,6 +114,12 @@ extension TextosDeCLI {
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "эта справка",
+        sintaxisCompletado: "completion bash|zsh|fish",
+        descripcionCompletado: "автодополнение команд и параметров\nдля оболочки",
+        sintaxisManual: "manual",
+        descripcionManual: "эта справка в виде страницы man",
+        manualNombre: "ИМЯ",
+        manualNotas: "ПРИМЕЧАНИЯ",
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "не указаны аккорды: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },
@@ -160,7 +170,7 @@ extension TextosDeCLI {
         // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "не указано «melody», «chorale» или «chords»: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
         instrumentoMIDI: "программа — номер General MIDI от 0 до 127: --program 52",
-        marcasSoloMusicXML: "--cifrados и --analisis — только для MusicXML и MEI",
+        marcasSoloMusicXML: "--cifrados и --analisis — только для MusicXML, MEI, LilyPond и ABC",
         faltaValor: { opcion in "не указано значение --\(opcion)" },
         tempoMalEscrito: "темп пишется «--tempo 90» или «--tempo 60 4.»",
         faltanNotasDeLaMelodia: { ejemplo, orden in "не указаны ноты: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
@@ -194,6 +204,7 @@ extension TextosDeCLI {
         ordenDesconocida: { orden in "неизвестная команда: «\(orden)»" },
         opcionDesconocida: { opcion in "неизвестный параметр: «\(opcion)»" },
         idiomaDesconocido: { idioma in "неизвестный язык: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el или ru)" },
+        terminalDesconocida: { t in "неизвестная оболочка: «\(t)» (bash, zsh или fish)" },
         escrituraNoValida: { escritura in "недопустимое написание: «\(escritura)» (palabras/words, ascii или unicode; только с es и en)" },
 
         // Mensaje.swift

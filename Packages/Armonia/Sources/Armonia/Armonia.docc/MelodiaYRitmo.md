@@ -139,6 +139,33 @@ mei.contains("<tuplet num=\"3\" numbase=\"2\">") // true
   con los cifrados en `<harm>` y el análisis como letra debajo del bajo.
 - Desde la terminal: `armonia mei melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4 > escala.mei`.
 
+## Exportar a LilyPond y ABC
+
+`lilyPond(tonalidad:clave:tempo:titulo:parte:)` escribe la voz como fuente de LilyPond 2.24,
+para grabarla en PDF con calidad de imprenta (`lilypond escala.ly`), y
+`abc(tonalidad:clave:tempo:titulo:parte:)`, en notación ABC, el texto de las colecciones de
+música tradicional que leen abcm2ps, abcjs o EasyABC. Llevan lo mismo que el MusicXML: grafía,
+barras, grupos irregulares, ligaduras, anacrusa, tempo y doble barra final.
+
+```swift
+let tema = try Voz(leyendo: "Sol4:4 Do5:2 Re5:8 Mi5:8 Fa#5:4 Sol5:2", compas: "3/4", anacrusa: .negra)
+let ly = tema.lilyPond(tonalidad: Tonalidad(.sol), titulo: "Tema")
+ly.contains("\\key g \\major \\time 3/4 \\partial 4")   // true
+ly.contains("fis''4 g''2")                            // true
+let abc = tema.abc(tonalidad: Tonalidad(.sol), titulo: "Tema")
+abc.contains("K:G")                                   // true
+abc.contains("c2 d/2e/2 | f g2 |]")                   // true
+```
+
+- LilyPond escribe las alturas en absoluto (`c'` es Do4) y con los nombres holandeses
+  (`fis`, `bes`); una nota que no cabe en el compás se parte con `~`.
+- ABC, como MEI, escribe las alteraciones que se ven: la de la armadura no, y el becuadro
+  sí, hasta la barra. Las corcheas de un mismo pulso van juntas, con su viga.
+- `Coral` y `AnalisisArmonico` tienen las dos también: el coral en dos pentagramas, con los
+  cifrados encima y el análisis debajo del bajo.
+- Desde la terminal: `armonia lilypond melodia Do4:4 Re4:8 Mi4:8 Fa4:2 > escala.ly` y
+  `armonia abc melodia Do4:4 Re4:8 Mi4:8 Fa4:2 > escala.abc`.
+
 ## Exportar a MIDI
 
 `midi(tonalidad:tempo:titulo:parte:instrumento:)` da la voz como fichero MIDI estándar

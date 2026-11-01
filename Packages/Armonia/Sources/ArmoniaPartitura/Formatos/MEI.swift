@@ -410,26 +410,8 @@ package struct EscritorMEI: EscritorDePartitura {
     private static func grupos(_ eventos: [Evento], _ barras: [[Int]]) -> (
         abren: [Int: [String]], cierran: [Int: [String]]
     ) {
-        var rangos: [(rango: ClosedRange<Int>, abre: String, cierra: String)] = []
-        // El grupo abierto: dónde empieza, su proporción y lo que lleva.
-        var abierto: (desde: Int, reales: Int, normales: Int, acumulado: Duracion)?
-        func cerrar(en i: Int) {
-            if let grupo = abierto {
-                rangos.append(
-                    (grupo.desde...i, "<tuplet num=\"\(grupo.reales)\" numbase=\"\(grupo.normales)\">", "</tuplet>"))
-            }
-            abierto = nil
-        }
-        for (i, evento) in eventos.enumerated() {
-            guard let (reales, normales) = Exportacion.figura(de: evento.duracion).irregular else {
-                cerrar(en: i - 1)
-                continue
-            }
-            // Todo lo que va dentro de un `<tuplet>` tiene su proporción: otra abre otro grupo.
-            if let grupo = abierto, grupo.reales != reales || grupo.normales != normales { cerrar(en: i - 1) }
-            let acumulado = (abierto?.acumulado ?? .cero) + evento.duracion
-            abierto = (abierto?.desde ?? i, reales, normales, acumulado)
-            if acumulado.denominador & (acumulado.denominador - 1) == 0 || i == eventos.count - 1 { cerrar(en: i) }
+        var rangos: [(rango: ClosedRange<Int>, abre: String, cierra: String)] = Exportacion.irregulares(eventos).map {
+            ($0.rango, "<tuplet num=\"\($0.reales)\" numbase=\"\($0.normales)\">", "</tuplet>")
         }
         for grupo in barras where grupo.count > 1 {
             if let extremos = grupo.extremos { rangos.append((extremos, "<beam>", "</beam>")) }

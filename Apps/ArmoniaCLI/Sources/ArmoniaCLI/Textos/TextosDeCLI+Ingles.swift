@@ -82,6 +82,10 @@ extension TextosDeCLI {
         descripcionMusicxmlArchivo: "the progression of a MIDI or MusicXML\nfile, with how long each chord lasts\n(also arpeggios, mei and midi)",
         sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios <…> [options]",
         descripcionMeiMelodia: "the same in MEI 5, the format of\ncritical editions (with the same\noptions)",
+        sintaxisLilypondMelodia: "lilypond melody|chorale|chords|arpeggios <…> [options]",
+        descripcionLilypondMelodia: "the same in LilyPond, to engrave the\nscore as a PDF",
+        sintaxisAbcMelodia: "abc melody|chorale|chords|arpeggios <…> [options]",
+        descripcionAbcMelodia: "the same in ABC, the text notation of\ntraditional music",
         sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios <…> [options]",
         descripcionMidiMelodia: "the same as a MIDI file, to listen to\n(without --clave or --cifrados; with\n--program 0…127, General MIDI)",
 
@@ -111,6 +115,12 @@ extension TextosDeCLI {
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "this help",
+        sintaxisCompletado: "completion bash|zsh|fish",
+        descripcionCompletado: "completion of commands and options\nfor the shell",
+        sintaxisManual: "manual",
+        descripcionManual: "this help as a manual page",
+        manualNombre: "NAME",
+        manualNotas: "NOTES",
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "missing the chords: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },
@@ -161,7 +171,7 @@ extension TextosDeCLI {
         // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "missing \"melody\", \"chorale\" or \"chords\": armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
         instrumentoMIDI: "the program is a General MIDI number from 0 to 127: --program 52",
-        marcasSoloMusicXML: "--cifrados and --analisis are for MusicXML and MEI",
+        marcasSoloMusicXML: "--cifrados and --analisis are for MusicXML, MEI, LilyPond and ABC",
         faltaValor: { opcion in "missing the value of --\(opcion)" },
         tempoMalEscrito: "the tempo is written \"--tempo 90\" or \"--tempo 60 4.\"",
         faltanNotasDeLaMelodia: { ejemplo, orden in "missing the notes: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
@@ -195,6 +205,7 @@ extension TextosDeCLI {
         ordenDesconocida: { orden in "unknown command: \"\(orden)\"" },
         opcionDesconocida: { opcion in "unknown option: \"\(opcion)\"" },
         idiomaDesconocido: { idioma in "unknown language: \"\(idioma)\" (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el or ru)" },
+        terminalDesconocida: { t in "unknown shell: \"\(t)\" (bash, zsh or fish)" },
         escrituraNoValida: { escritura in "invalid writing: \"\(escritura)\" (words, ascii or unicode; only with es and en)" },
 
         // Mensaje.swift

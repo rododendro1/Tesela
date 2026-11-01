@@ -82,6 +82,10 @@ extension TextosDeCLI {
         descripcionMusicxmlArchivo: "η αλληλουχία ενός αρχείου MIDI ή\nMusicXML, με τη διάρκεια κάθε\nσυγχορδίας (και arpeggios, mei, midi)",
         sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios <…> [επιλογές]",
         descripcionMeiMelodia: "το ίδιο σε MEI 5, τη μορφή των\nκριτικών εκδόσεων (με τις ίδιες\nεπιλογές)",
+        sintaxisLilypondMelodia: "lilypond melody|chorale|chords|arpeggios <…> [επιλογές]",
+        descripcionLilypondMelodia: "το ίδιο σε LilyPond, για να χαραχθεί\nη παρτιτούρα σε PDF",
+        sintaxisAbcMelodia: "abc melody|chorale|chords|arpeggios <…> [επιλογές]",
+        descripcionAbcMelodia: "το ίδιο σε ABC, τη γραφή με κείμενο\nτης παραδοσιακής μουσικής",
         sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios <…> [επιλογές]",
         descripcionMidiMelodia: "το ίδιο ως αρχείο MIDI, για να το\nακούσεις (χωρίς --clave ή --cifrados·\nμε --program 0…127, General MIDI)",
 
@@ -110,6 +114,12 @@ extension TextosDeCLI {
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "αυτή η βοήθεια",
+        sintaxisCompletado: "completion bash|zsh|fish",
+        descripcionCompletado: "η αυτόματη συμπλήρωση εντολών και\nεπιλογών για το τερματικό",
+        sintaxisManual: "manual",
+        descripcionManual: "αυτή η βοήθεια ως σελίδα εγχειριδίου",
+        manualNombre: "ΟΝΟΜΑ",
+        manualNotas: "ΣΗΜΕΙΩΣΕΙΣ",
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "λείπουν οι συγχορδίες: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },
@@ -160,7 +170,7 @@ extension TextosDeCLI {
         // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "λείπει το «melody», «chorale» ή «chords»: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
         instrumentoMIDI: "το πρόγραμμα είναι αριθμός General MIDI από 0 έως 127: --program 52",
-        marcasSoloMusicXML: "τα --cifrados και --analisis είναι για MusicXML και MEI",
+        marcasSoloMusicXML: "τα --cifrados και --analisis είναι για MusicXML, MEI, LilyPond και ABC",
         faltaValor: { opcion in "λείπει η τιμή του --\(opcion)" },
         tempoMalEscrito: "το τέμπο γράφεται «--tempo 90» ή «--tempo 60 4.»",
         faltanNotasDeLaMelodia: { ejemplo, orden in "λείπουν οι νότες: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
@@ -194,6 +204,7 @@ extension TextosDeCLI {
         ordenDesconocida: { orden in "άγνωστη εντολή: «\(orden)»" },
         opcionDesconocida: { opcion in "άγνωστη επιλογή: «\(opcion)»" },
         idiomaDesconocido: { idioma in "άγνωστη γλώσσα: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el ή ru)" },
+        terminalDesconocida: { t in "άγνωστο κέλυφος: «\(t)» (bash, zsh ή fish)" },
         escrituraNoValida: { escritura in "μη έγκυρη γραφή: «\(escritura)» (palabras/words, ascii ή unicode· μόνο με es και en)" },
 
         // Mensaje.swift

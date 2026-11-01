@@ -82,6 +82,10 @@ extension TextosDeCLI {
         descripcionMusicxmlArchivo: "die Akkordfolge einer MIDI- oder\nMusicXML-Datei mit der Dauer jedes\nAkkords (auch arpeggios, mei, midi)",
         sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios <…> [Optionen]",
         descripcionMeiMelodia: "dasselbe in MEI 5, dem Format\nkritischer Ausgaben (mit denselben\nOptionen)",
+        sintaxisLilypondMelodia: "lilypond melody|chorale|chords|arpeggios <…> [Optionen]",
+        descripcionLilypondMelodia: "dasselbe in LilyPond, um die Partitur\nals PDF zu setzen",
+        sintaxisAbcMelodia: "abc melody|chorale|chords|arpeggios <…> [Optionen]",
+        descripcionAbcMelodia: "dasselbe in ABC, der Textnotation der\nVolksmusik",
         sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios <…> [Optionen]",
         descripcionMidiMelodia: "dasselbe als MIDI-Datei zum Anhören\n(ohne --clave oder --cifrados; mit\n--program 0…127, General MIDI)",
 
@@ -110,6 +114,12 @@ extension TextosDeCLI {
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "diese Hilfe",
+        sintaxisCompletado: "completion bash|zsh|fish",
+        descripcionCompletado: "die Vervollständigung der Befehle\nund Optionen für die Shell",
+        sintaxisManual: "manual",
+        descripcionManual: "diese Hilfe als Manpage",
+        manualNombre: "BEZEICHNUNG",
+        manualNotas: "HINWEISE",
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "die Akkorde fehlen: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },
@@ -160,7 +170,7 @@ extension TextosDeCLI {
         // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "„melody“, „chorale“ oder „chords“ fehlt: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
         instrumentoMIDI: "das Programm ist eine General-MIDI-Nummer von 0 bis 127: --program 52",
-        marcasSoloMusicXML: "--cifrados und --analisis sind für MusicXML und MEI",
+        marcasSoloMusicXML: "--cifrados und --analisis sind für MusicXML, MEI, LilyPond und ABC",
         faltaValor: { opcion in "der Wert von --\(opcion) fehlt" },
         tempoMalEscrito: "das Tempo wird „--tempo 90“ oder „--tempo 60 4.“ geschrieben",
         faltanNotasDeLaMelodia: { ejemplo, orden in "die Noten fehlen: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
@@ -194,6 +204,7 @@ extension TextosDeCLI {
         ordenDesconocida: { orden in "unbekannter Befehl: „\(orden)“" },
         opcionDesconocida: { opcion in "unbekannte Option: „\(opcion)“" },
         idiomaDesconocido: { idioma in "unbekannte Sprache: „\(idioma)“ (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el oder ru)" },
+        terminalDesconocida: { t in "unbekannte Shell: „\(t)“ (bash, zsh oder fish)" },
         escrituraNoValida: { escritura in "ungültige Schreibweise: „\(escritura)“ (palabras/words, ascii oder unicode; nur bei es oder en)" },
 
         // Mensaje.swift

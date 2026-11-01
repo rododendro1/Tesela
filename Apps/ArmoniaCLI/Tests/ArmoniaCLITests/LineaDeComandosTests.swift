@@ -105,7 +105,7 @@ import Testing
         #expect(Set(nombres).count == nombres.count)
         for nombre in nombres { #expect(nombre == nombre.lowercased(), Comment(rawValue: nombre)) }
         for orden in LineaDeComandos.ordenes { #expect(!orden.ayuda.isEmpty, Comment(rawValue: orden.nombres[0])) }
-        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 36)
+        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 40)
         // Los nombres no distinguen mayúsculas.
         #expect(salida("ACORDE Do") == salida("acorde Do"))
     }
@@ -124,7 +124,7 @@ import Testing
         "arpegio", "arpegio Do --patron zigzag", "arpegio Do --patron", "arpegio Do --octavas 2",
         "posiciones", "posiciones Do mayor --foo", "musicxml acordes C --ventana 1",
         "musicxml melodia C4:4 --archivo coral.mid", "transponer", "transponer 2M", "rearmonizar",
-        "digitaciones C --capo 13",
+        "digitaciones C --capo 13", "completado", "completado tcsh", "completado bash zsh", "manual extra",
     ]
 
     /// Con --ingles no se cuela nada en español: ni en la salida, ni en los errores, ni en la ayuda.

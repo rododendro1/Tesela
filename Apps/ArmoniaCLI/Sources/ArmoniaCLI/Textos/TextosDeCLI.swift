@@ -85,6 +85,10 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionMusicxmlArchivo: String
     let sintaxisMeiMelodia: String
     let descripcionMeiMelodia: String
+    let sintaxisLilypondMelodia: String
+    let descripcionLilypondMelodia: String
+    let sintaxisAbcMelodia: String
+    let descripcionAbcMelodia: String
     let sintaxisMidiMelodia: String
     let descripcionMidiMelodia: String
 
@@ -99,6 +103,14 @@ struct TextosDeCLI: TextosTraducidos {
     let pieDeLaAyuda: String
     let sintaxisAyuda: String
     let descripcionAyuda: String
+
+    // MARK: Terminal.swift
+    let sintaxisCompletado: String
+    let descripcionCompletado: String
+    let sintaxisManual: String
+    let descripcionManual: String
+    let manualNombre: String
+    let manualNotas: String
 
     // MARK: ErrorDeUso.swift (armonización)
     let faltanAcordesDeLasVoces: @Sendable (String) -> String
@@ -183,6 +195,7 @@ struct TextosDeCLI: TextosTraducidos {
     let ordenDesconocida: @Sendable (String) -> String
     let opcionDesconocida: @Sendable (String) -> String
     let idiomaDesconocido: @Sendable (String) -> String
+    let terminalDesconocida: @Sendable (String) -> String
     let escrituraNoValida: @Sendable (String) -> String
 
     // MARK: Mensaje.swift

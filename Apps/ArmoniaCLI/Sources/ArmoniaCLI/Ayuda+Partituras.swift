@@ -1,10 +1,12 @@
 import Armonia
 
 extension LineaDeComandos {
-    /// Las partituras en MusicXML, MEI y MIDI, en el orden en que salen en la ayuda.
+    /// Las partituras en MusicXML, MEI, LilyPond, ABC y MIDI, en el orden en que salen en la ayuda.
     static let ordenesDePartituras: [Orden] = [
         Orden(nombres: ["musicxml"], ayuda: ayudaDeMusicxml) { try partitura($0, $1, formato: .musicXML) },
         Orden(nombres: ["mei"], ayuda: ayudaDeMei) { try partitura($0, $1, formato: .mei) },
+        Orden(nombres: ["lilypond"], ayuda: ayudaDeLilypond) { try partitura($0, $1, formato: .lilyPond) },
+        Orden(nombres: ["abc"], ayuda: ayudaDeAbc) { try partitura($0, $1, formato: .abc) },
         Orden(nombres: ["midi"], ayuda: ayudaDeMidi) { try partitura($0, $1, formato: .midi) },
     ]
 
@@ -56,6 +58,26 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia mei coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 --cifrados > coral.mei",
                 "armonia mei chorale C3 E4 G4 C5, G2 D4 G4 B4 --cifrados > chorale.mei"))
+    ]
+
+    static let ayudaDeLilypond: [EntradaDeAyuda] = [
+        // lilypond melodia|coral|acordes|arpegios <…> [opciones]
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisLilypondMelodia),
+            descripcion: TextosDeCLI.traduccion(\.descripcionLilypondMelodia),
+            ejemplo: ejemplo(
+                "armonia lilypond acordes Do Lam Re7 Sol7 Do > progresion.ly",
+                "armonia lilypond chords C Am D7 G7 C > progression.ly"))
+    ]
+
+    static let ayudaDeAbc: [EntradaDeAyuda] = [
+        // abc melodia|coral|acordes|arpegios <…> [opciones]
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisAbcMelodia),
+            descripcion: TextosDeCLI.traduccion(\.descripcionAbcMelodia),
+            ejemplo: ejemplo(
+                "armonia abc melodia Sol4:4 Do5:2 Re5:8 Mi5:8 --compas 3/4 --anacrusa 4 > melodia.abc",
+                "armonia abc melody G4:4 C5:2 D5:8 E5:8 --compas 3/4 --anacrusa 4 > melody.abc"))
     ]
 
     static let ayudaDeMidi: [EntradaDeAyuda] = [
