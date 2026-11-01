@@ -18,7 +18,7 @@ public enum PresentacionDeTablatura {
     /// Un acorde por compás, en redondas: cada digitación con todas sus cuerdas a la vez. Si se dan los acordes
     /// (uno por digitación), las notas se escriben con su ortografía (Si♭, no La♯) y los cifrados encima.
     public static func musicXML(
-        digitaciones: [Digitacion], acordes: [Acorde] = [], titulo: String, notacion: Notacion = .espanolUnicode
+        digitaciones: [Digitacion], acordes: [Acorde] = [], titulo: String, notacion: Notacion = .espanolCompacto
     ) -> String {
         guard let mastil = digitaciones.first?.mastil else {
             return documento(mastil: Mastil(), compases: [], titulo: titulo, notacion: notacion)
@@ -44,7 +44,7 @@ public enum PresentacionDeTablatura {
     /// cuatro tiempos en cuatro tiempos; el último compás se completa con un silencio.
     public static func musicXML(
         arpegio: ArpegioEnElMastil, acorde: Acorde? = nil, figura: Figura = .corchea, titulo: String,
-        notacion: Notacion = .espanolUnicode
+        notacion: Notacion = .espanolCompacto
     ) -> String {
         musicXML(
             posiciones: arpegio.posiciones, en: arpegio.mastil, ortografia: acorde?.notas ?? [], figura: figura,
@@ -54,7 +54,7 @@ public enum PresentacionDeTablatura {
     /// Las notas de una escala en una posición, de grave a agudo, en corcheas (o en la figura que se diga).
     public static func musicXML(
         posicion: EscalaEnElMastil, escala: Escala? = nil, figura: Figura = .corchea, titulo: String,
-        notacion: Notacion = .espanolUnicode
+        notacion: Notacion = .espanolCompacto
     ) -> String {
         musicXML(
             posiciones: posicion.posiciones, en: posicion.mastil, ortografia: escala?.notas ?? [], figura: figura,

@@ -50,7 +50,7 @@ import Testing
     }
 
     static let estilos: [EstiloDeCifrado] = [
-        .predeterminado, .espanolASCII, .inglesASCII, .inglesUnicode, .jazz, .calidadesConPalabras,
+        .predeterminado, .espanolASCII, .inglesASCII, .inglesCompacto, .jazz, .calidadesConPalabras,
         EstiloDeCifrado(
             notacion: .inglesASCII, tensionesEnASCII: false, menor: .min, disminuido: .dim, aumentado: .aug,
             septimaMayor: .mayuscula, semidisminuido: .barrado),
@@ -122,7 +122,7 @@ import Testing
             #expect(
                 Nota(texto: nombre.nombre(en: .inglesASCII)) == nombre,
                 Comment(rawValue: nombre.nombre(en: .inglesASCII)))
-            let unicode = nombre.nombre(en: .inglesUnicode)
+            let unicode = nombre.nombre(en: .inglesCompacto)
             #expect(Nota(texto: unicode) == nombre, Comment(rawValue: unicode))
         }
     }
@@ -135,7 +135,7 @@ import Testing
                 #expect(
                     Altura(texto: nota.nombre(en: .inglesASCII)) == nota,
                     Comment(rawValue: nota.nombre(en: .inglesASCII)))
-                #expect(Altura(texto: nota.nombre(en: .inglesUnicode)) == nota)
+                #expect(Altura(texto: nota.nombre(en: .inglesCompacto)) == nota)
                 #expect(Altura(nota.nota, octava: nota.octava) == nota, Comment(rawValue: nota.nombreCompleto))
             }
         }

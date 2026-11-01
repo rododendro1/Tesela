@@ -24,7 +24,7 @@ import Testing
         #expect(c.faltas == [])
         #expect(c.esCorrecta)
         #expect(c.numeroDeVoces == 4)
-        #expect(c.voz(3).map(\.nombre) == ["Do5", "Do5", "Si4", "Do5"])
+        #expect(c.voz(3).map(\.nombre) == ["Do₅", "Do₅", "Si₄", "Do₅"])
     }
 
     @Test func paralelas() throws {

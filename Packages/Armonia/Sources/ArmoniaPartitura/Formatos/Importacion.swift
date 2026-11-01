@@ -221,7 +221,7 @@ public enum ErrorDeImportacion: Error, Hashable, Sendable, CustomStringConvertib
     /// Tiene notas, pero no suena ningún acorde (una melodía sola, por ejemplo).
     case sinAcordes
 
-    public var description: String { descripcion(en: .espanolUnicode) }
+    public var description: String { descripcion(en: .espanolCompacto) }
 
     /// La explicación en el idioma de los textos de la notación.
     public func descripcion(en notacion: Notacion) -> String {

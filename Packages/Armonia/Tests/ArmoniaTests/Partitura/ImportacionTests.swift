@@ -24,7 +24,7 @@ import Testing
         #expect(pieza.compas == Compas(3, 2))
         #expect(abs((pieza.tempo?.negrasPorMinuto ?? 0) - (72)) <= 0.01)
         #expect(pieza.notas.count == 12)
-        #expect(Array(nombres(pieza).prefix(4)) == ["Do3", "Mi4", "Sol4", "Do5"])
+        #expect(Array(nombres(pieza).prefix(4)) == ["Do₃", "Mi₄", "Sol₄", "Do₅"])
         #expect(Set(pieza.notas.map(\.duracion)) == [.blanca])
         #expect(pieza.notas.map(\.inicio).max() == Duracion(1))
         #expect(Set(pieza.notas.map(\.parte)).count == 4)
@@ -111,7 +111,7 @@ import Testing
         #expect(pieza.tonalidad == Tonalidad(.do, .menor))
         #expect(pieza.compas == Compas(3, 4))
         #expect(pieza.tempo == Tempo(72))
-        #expect(nombres(pieza) == ["Fa3", "Do4", "Mi♭4", "Re♭4"])
+        #expect(nombres(pieza) == ["Fa₃", "Do₄", "Mi♭₄", "Re♭₄"])
         #expect(pieza.notas.map(\.inicio) == [.cero, .cero, .cero, .blanca])
         #expect(pieza.notas.map(\.duracion) == [Duracion(3, 4), .negra, .negra, .negra])
     }
@@ -133,7 +133,7 @@ import Testing
             </score-partwise>
             """
         let pieza = try PiezaImportada(musicXML: Data(xml.utf8))
-        #expect(nombres(pieza) == ["Do4", "Mi4", "Sol4"])
+        #expect(nombres(pieza) == ["Do₄", "Mi₄", "Sol₄"])
         #expect(pieza.notas.map(\.inicio) == [.cero, .cero, .redonda])
     }
 
@@ -223,8 +223,8 @@ import Testing
 
     @Test func alturaPorPasosYMIDI() {
         #expect(Altura(pasos: 0, midi: 60) == .doCentral)
-        #expect(Altura(pasos: 1, midi: 63).nombre == "Re♯4")
-        #expect(Altura(pasos: 2, midi: 63).nombre == "Mi♭4")
-        #expect(Altura(pasos: -1, midi: 58).nombre == "Si♭3")
+        #expect(Altura(pasos: 1, midi: 63).nombre == "Re♯₄")
+        #expect(Altura(pasos: 2, midi: 63).nombre == "Mi♭₄")
+        #expect(Altura(pasos: -1, midi: 58).nombre == "Si♭₃")
     }
 }

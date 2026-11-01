@@ -69,7 +69,7 @@ import Testing
         #expect(raiz.todos("line").filter { $0.atributos["stroke-width"] == "3" }.count == 14)
         // Con alturas, los nombres llevan octava.
         let alturas = try #require(ElementoXML.leer(TablaArmonica([Altura("Do4"), Altura("Mib4")]).svg()))
-        #expect(alturas.todos("text").contains { $0.texto == "Mi♭4" && $0.atributos["font-weight"] == "bold" })
+        #expect(alturas.todos("text").contains { $0.texto == "Mi♭₄" && $0.atributos["font-weight"] == "bold" })
         let ingles = try #require(ElementoXML.leer(TablaArmonica(Acorde("Re")).svg(notacion: .inglesASCII)))
         #expect(ingles.todos("text").contains { $0.texto == "F#" })
     }

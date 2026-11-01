@@ -13,7 +13,7 @@ TonnetzApp y la herramienta `armonia`, y para que se pruebe en Linux.
 import Armonia
 import ArmoniaPresentacion
 
-let analisis = try PresentacionDeAnalisis.analizar("Do Lam Re7 Sol7 Do", notacion: .espanolUnicode)
+let analisis = try PresentacionDeAnalisis.analizar("Do Lam Re7 Sol7 Do", notacion: .espanolCompacto)
 analisis.titulo                                   // "I–vi–V7/V–V7–I en Do mayor"
 analisis.tramos.flatMap(\.filas).map(\.grado)     // ["I", "vi", "V7/V", "V7", "I"]
 analisis.ficheros.map(\.formato)                  // [.musicXML, .mei, .midi]

@@ -131,7 +131,7 @@ import Testing
                 error.descripcion(en: .inglesASCII)
                     == ("Cannot read \"Do7(b3)\" (character 5): \"b3\" is not a valid tension "
                         + "(♭/♯ go with 5, 9, 11 and 13, and add with 2, 4, 6, 9, 11 and 13)"))
-            #expect(error.descripcion(en: .espanolUnicode) == error.description)
+            #expect(error.descripcion(en: .espanolCompacto) == error.description)
             // El idioma lo da la notación.
             #expect(
                 error.descripcion(en: .aleman)

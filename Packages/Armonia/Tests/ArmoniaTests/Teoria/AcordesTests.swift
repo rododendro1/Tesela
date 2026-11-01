@@ -30,11 +30,11 @@ import Testing
     }
 
     @Test func nombreDeLaInversion() {
-        #expect(Acorde.nombreDeLaInversion(0, en: .espanolUnicode) == "estado fundamental")
+        #expect(Acorde.nombreDeLaInversion(0, en: .espanolCompacto) == "estado fundamental")
         #expect(Acorde.nombreDeLaInversion(1, en: .inglesASCII) == "first inversion")
-        #expect(Acorde.nombreDeLaInversion(6, en: .espanolUnicode) == "sexta inversión")
+        #expect(Acorde.nombreDeLaInversion(6, en: .espanolCompacto) == "sexta inversión")
         #expect(Acorde.nombreDeLaInversion(2, en: .aleman) == "zweite Umkehrung")
-        #expect(Acorde.nombreDeLaInversion(7, en: .espanolUnicode) == "inversión 7")
+        #expect(Acorde.nombreDeLaInversion(7, en: .espanolCompacto) == "inversión 7")
         #expect(Acorde.nombreDeLaInversion(7, en: .aleman) == "7. Umkehrung")
         #expect(Acorde("Sol7/Si").nombre(en: .frances).hasSuffix(", premier renversement"))
     }

@@ -200,7 +200,7 @@ public struct TecladoIsomorfico: Hashable, Sendable {
     /// negras del piano en gris y, si se dan, las `marcadas` en el azul de las notas del Tonnetz.
     public func svg(
         _ casillas: [CoordenadaAxial], marcadas: Set<Int> = [], tamano: Double = 24,
-        notacion: Notacion = .espanolUnicode, preferirBemoles: Bool = false
+        notacion: Notacion = .espanolCompacto, preferirBemoles: Bool = false
     ) -> String {
         let negras: Set<Int> = [1, 3, 6, 8, 10]
         return Trazado(orientacion: orientacion, tamano: tamano).svg(

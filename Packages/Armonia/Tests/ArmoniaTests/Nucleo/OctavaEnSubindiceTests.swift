@@ -6,10 +6,11 @@ import Testing
 @testable import ArmoniaPartitura
 @testable import ArmoniaTeoria
 
-/// La octava de las alturas escrita como subíndice (La₄): al escribir, con `Notacion.conOctavas(.subindices)`, y al
-/// leer, siempre.
+/// La octava de las alturas escrita como subíndice (La₄): al escribir, en las notaciones compactas o con
+/// `Notacion.conOctavas(.subindices)`, y al leer, siempre.
 @Suite struct OctavaEnSubindiceTests {
-    private let subindices = Notacion.espanolUnicode.conOctavas(.subindices)
+    private let subindices = Notacion.espanolCompacto
+    private let cifras = Notacion.espanolCompacto.conOctavas(.cifras)
 
     @Test func escribirLaOctava() {
         #expect(EscrituraDeLaOctava.cifras.escribir(4) == "4")
@@ -20,13 +21,26 @@ import Testing
     }
 
     @Test func laNotacionGuardaLaEleccion() {
-        #expect(Notacion.espanolUnicode.octavas == .cifras)
-        #expect(subindices.octavas == .subindices)
-        #expect(subindices.conTextos(en: .ingles).octavas == .subindices)
-        #expect(subindices.conTextos(en: .ingles).textos == .ingles)
-        #expect(subindices.notas == .espanolUnicode)
-        #expect(subindices != .espanolUnicode)
-        #expect(subindices.conOctavas(.cifras) == .espanolUnicode)
+        // Las compactas escriben la octava como subíndice y las demás, con cifras.
+        #expect(Notacion.espanolCompacto.octavas == .subindices)
+        #expect(Notacion.inglesCompacto.octavas == .subindices)
+        #expect(Notacion.alemanCompacto.octavas == .subindices)
+        for notacion in [Notacion.espanol, .espanolASCII, .ingles, .inglesASCII, .aleman, .frances, .ruso] {
+            #expect(notacion.octavas == .cifras, "\(notacion)")
+        }
+        #expect(
+            Notacion.allCases.filter { $0.octavas == .subindices } == [
+                .espanolCompacto, .inglesCompacto, .alemanCompacto,
+            ])
+        #expect(Notacion.delIdioma(.espanol).octavas == .subindices)
+        #expect(Notacion.delIdioma(.ingles).octavas == .cifras)
+        #expect(cifras.octavas == .cifras)
+        #expect(cifras.conTextos(en: .ingles).octavas == .cifras)
+        #expect(cifras.conTextos(en: .ingles).textos == .ingles)
+        #expect(cifras.notas == .espanolCompacto)
+        #expect(cifras != .espanolCompacto)
+        #expect(cifras.conOctavas(.subindices) == .espanolCompacto)
+        #expect(Notacion(escritura: .espanolCompacto, octavas: .cifras) == cifras)
     }
 
     @Test func nombresConSubindice() {
@@ -37,9 +51,15 @@ import Testing
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .frances.conOctavas(.subindices)) == "fa dièse ₄")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombreCompacto(en: subindices) == "Fa♯₄")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombreCompacto(en: .espanol) == "Fa♯4")
-        // Sin pedirlo, todo sigue con cifras.
-        #expect(Altura(.la, octava: 4).nombre(en: .espanolUnicode) == "La4")
+        #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .inglesCompacto) == "F♯₄")
+        #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .alemanCompacto) == "Fis₄")
+        #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: cifras) == "Fa♯4")
+        // En las que no son compactas, y en `description` y la codificación, con cifras.
+        #expect(Altura(.la, octava: 4).nombre(en: .espanolASCII) == "La4")
+        #expect(Altura(.la, octava: 4).nombre(en: .espanol) == "La4")
         #expect(Altura(.la, octava: 4).description == "La4")
+        #expect(Altura(.la, octava: 4).texto == "La4")
+        #expect(Altura(.la, octava: 4).nombreCompleto == "La4")
     }
 
     @Test func leerSubindices() throws {
@@ -67,6 +87,7 @@ import Testing
         let coral = try Coral(leyendo: "Do₃ Mi₄ | Re₃ Fa₄")
         #expect(try coral == (Coral(leyendo: "Do3 Mi4 | Re3 Fa4")))
         #expect(coral.texto(en: subindices) == "Do₃ Mi₄ | Re₃ Fa₄")
-        #expect(coral.texto(en: .espanolUnicode) == "Do3 Mi4 | Re3 Fa4")
+        #expect(coral.texto(en: cifras) == "Do3 Mi4 | Re3 Fa4")
+        #expect(coral.texto(en: .espanolASCII) == "Do3 Mi4 | Re3 Fa4")
     }
 }

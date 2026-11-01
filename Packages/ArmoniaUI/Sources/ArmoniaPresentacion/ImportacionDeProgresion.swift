@@ -41,5 +41,5 @@ public struct ProgresionImportada: Hashable, Sendable {
     }
 
     /// Los acordes como se escriben en el campo de la progresión: «Do Sol/Si Lam Mi7».
-    public var texto: String { acordes.map { $0.cifrado(en: .espanolUnicode) }.joined(separator: " ") }
+    public var texto: String { acordes.map { $0.cifrado(en: .espanolCompacto) }.joined(separator: " ") }
 }

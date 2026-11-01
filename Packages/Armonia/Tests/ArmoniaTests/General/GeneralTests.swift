@@ -120,6 +120,6 @@ import Testing
         #expect(TipoDeEscala.mayor.rotacion(6) == .menorNatural)
         #expect(Tonalidad("La menor").modo == .menor)
         // Todos los tipos con nombre lo tienen también como texto.
-        #expect(Altura("Fa#4").nombre == "Fa♯4")
+        #expect(Altura("Fa#4").nombre == "Fa♯₄")
     }
 }

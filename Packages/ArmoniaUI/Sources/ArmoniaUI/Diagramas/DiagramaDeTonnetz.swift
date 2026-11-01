@@ -11,7 +11,7 @@
         public let notacion: Notacion
         public let leyenda: Bool
 
-        public init(_ tonnetz: Tonnetz, notacion: Notacion = .espanolUnicode, leyenda: Bool = true) {
+        public init(_ tonnetz: Tonnetz, notacion: Notacion = .espanolCompacto, leyenda: Bool = true) {
             self.tonnetz = tonnetz
             self.notacion = notacion
             self.leyenda = leyenda

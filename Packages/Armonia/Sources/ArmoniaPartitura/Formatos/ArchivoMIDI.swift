@@ -48,7 +48,7 @@ extension Coral {
     public func midi(
         duracion: Duracion = .negra, compas: Compas = .compasillo, tonalidad: Tonalidad? = nil,
         tempo: Tempo? = nil, titulo: String? = nil, instrumento: Int = 52,
-        notacion: Notacion = .espanolUnicode
+        notacion: Notacion = .espanolCompacto
     ) -> Data {
         let tonalidad = tonalidad ?? Tonalidad.identificar(alturas: acordes.flatMap { $0 }).first
         var archivo = ArchivoMIDI(compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo)
@@ -76,7 +76,7 @@ extension AnalisisArmonico {
     ///   - notacion: la de los cifrados americanos de los marcadores.
     public func midi(
         duracion: Duracion = .blanca, compas: Compas = .compasillo, tempo: Tempo? = nil,
-        titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolUnicode
+        titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolCompacto
     ) -> Data {
         midi(
             duraciones: Array(repeating: duracion, count: acordes.count), compas: compas, tempo: tempo,
@@ -88,7 +88,7 @@ extension AnalisisArmonico {
     /// Detiene el programa si no hay una duración positiva por acorde.
     public func midi(
         duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil,
-        titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolUnicode
+        titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolCompacto
     ) -> Data {
         Exportacion.comprobar(duraciones, acordes: acordes.count)
         var archivo = ArchivoMIDI(compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo)

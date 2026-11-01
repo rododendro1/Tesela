@@ -165,7 +165,7 @@ public struct TablaArmonica: Hashable, Sendable {
     ///   - titulo: el título; si es `nil`, el que corresponda, y si es "", ninguno.
     ///   - leyenda: si se dibuja la leyenda.
     public func svg(
-        notacion: Notacion = .espanolUnicode, margen: Int? = nil, paso: Double? = nil,
+        notacion: Notacion = .espanolCompacto, margen: Int? = nil, paso: Double? = nil,
         titulo: String? = nil, leyenda: Bool = true
     ) -> String {
         let paso = paso ?? (recorrido.isEmpty ? 56 : 72)

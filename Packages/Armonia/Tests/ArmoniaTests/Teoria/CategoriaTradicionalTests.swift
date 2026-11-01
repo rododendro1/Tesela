@@ -65,22 +65,22 @@ import Testing
     }
 
     @Test func losNombresDeLasClasesSeTraducen() {
-        let ruso = Notacion.espanolUnicode.conTextos(en: .ruso)
-        let griego = Notacion.espanolUnicode.conTextos(en: .griego)
-        let frances = Notacion.espanolUnicode.conTextos(en: .frances)
+        let ruso = Notacion.espanolCompacto.conTextos(en: .ruso)
+        let griego = Notacion.espanolCompacto.conTextos(en: .griego)
+        let frances = Notacion.espanolCompacto.conTextos(en: .frances)
         #expect(CategoriaTradicional.raga.nombre == "raga")
         #expect(CategoriaTradicional.raga.nombre(en: ruso) == "рага")
         #expect(CategoriaTradicional.dromos.nombre(en: griego) == "δρόμος")
         #expect(CategoriaTradicional.escala.nombre(en: frances) == "gamme")
         #expect(CategoriaTradicional.tetracordo.nombre(en: frances) == "tétracorde")
         #expect(CategoriaTradicional.maqam.nombre(en: frances) == "maqam")
-        #expect(CategoriaTradicional.raga.nombre(en: Notacion.espanolUnicode.conTextos(en: .aleman)) == "Raga")
+        #expect(CategoriaTradicional.raga.nombre(en: Notacion.espanolCompacto.conTextos(en: .aleman)) == "Raga")
         // Cada fichero de idioma da el nombre de todas las categorías.
         for categoria in CategoriaTradicional.allCases {
             for idioma in Idioma.allCases {
                 #expect(NombresDeEscalas.de(idioma).nombre(de: categoria) != nil, "\(categoria) \(idioma)")
                 #expect(
-                    !(categoria.nombre(en: Notacion.espanolUnicode.conTextos(en: idioma)).isEmpty),
+                    !(categoria.nombre(en: Notacion.espanolCompacto.conTextos(en: idioma)).isEmpty),
                     "\(categoria) \(idioma)")
             }
         }

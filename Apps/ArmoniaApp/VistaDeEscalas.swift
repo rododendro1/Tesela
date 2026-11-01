@@ -95,8 +95,8 @@ struct VistaDeEscalas: View {
         if let indice = VistaDeEscalas.tonicas.firstIndex(where: { $0.claseDeAltura == pedida.tonica.claseDeAltura }) {
             tonica = indice
         }
-        let nombre = pedida.tipo.nombre(en: .espanolUnicode)
-        if let indice = VistaDeEscalas.catalogo.firstIndex(where: { $0.nombre(en: .espanolUnicode) == nombre })
+        let nombre = pedida.tipo.nombre(en: .espanolCompacto)
+        if let indice = VistaDeEscalas.catalogo.firstIndex(where: { $0.nombre(en: .espanolCompacto) == nombre })
             ?? VistaDeEscalas.catalogo.firstIndex(of: pedida.tipo)
         {
             tipo = indice

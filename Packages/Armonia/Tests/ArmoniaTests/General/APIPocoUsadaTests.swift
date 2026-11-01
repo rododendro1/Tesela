@@ -96,8 +96,8 @@ import Testing
         #expect("\(FaltaDeConduccion.Tipo.superposicion)" == "Superposición")
         #expect(FaltaDeConduccion.Tipo.separacionExcesiva.nombre == "Más de una octava")
         #expect(CalidadDeTriada.sinTercera.nombre == "sin tercera")
-        #expect(PapelEnAcorde.tension(9).nombre(en: .espanolUnicode) == "novena")
-        #expect(PapelEnAcorde.tension(4).nombre(en: .espanolUnicode) == "tensión 4ª")
+        #expect(PapelEnAcorde.tension(9).nombre(en: .espanolCompacto) == "novena")
+        #expect(PapelEnAcorde.tension(4).nombre(en: .espanolCompacto) == "tensión 4ª")
         #expect(Tonalidad(.do, .mayor).analizar([Acorde("Sol7")]).acordes[0].description == "V7")
     }
 
@@ -135,7 +135,7 @@ import Testing
     }
 
     @Test func corales() throws {
-        #expect(Coral.nombreDeVoz(4, de: 5, en: .espanolUnicode) == "voz 5")
+        #expect(Coral.nombreDeVoz(4, de: 5, en: .espanolCompacto) == "voz 5")
         let armonizacion = try #require(
             Tonalidad(.do, .mayor).armonizar(melodia: [Nota("Mi"), Nota("Re"), Nota("Do")]).first?.valor)
         #expect(armonizacion.realizar(soprano: [Altura("Mi5"), Altura("Re5"), Altura("Do5")]) != nil)

@@ -89,7 +89,7 @@ extension ErrorDeLectura: LocalizedError {
 
 extension ErrorDeLectura {
     /// Explicación del motivo, en español.
-    public var explicacion: String { explicacion(en: .espanolUnicode) }
+    public var explicacion: String { explicacion(en: .espanolCompacto) }
 
     /// Explicación del motivo en el idioma de los textos de la notación (`notacion.textos`).
     public func explicacion(en notacion: Notacion) -> String {
@@ -97,7 +97,7 @@ extension ErrorDeLectura {
     }
 
     /// Mensaje completo, en español: «No se puede leer «Do7(b3)» (carácter 5): …».
-    public var description: String { descripcion(en: .espanolUnicode) }
+    public var description: String { descripcion(en: .espanolCompacto) }
 
     /// Mensaje completo en el idioma de los textos de la notación.
     public func descripcion(en notacion: Notacion) -> String {

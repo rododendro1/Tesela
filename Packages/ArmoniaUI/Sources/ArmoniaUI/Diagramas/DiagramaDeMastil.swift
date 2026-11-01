@@ -27,7 +27,7 @@
 
         public init(
             mastil: Mastil, marcas: [PosicionEnElMastil] = [], rango: ClosedRange<Int> = 0...12, etiquetas: Bool = true,
-            apagadas: Set<Int> = [], ortografia: [Int: Nota] = [:], notacion: Notacion = .espanolUnicode
+            apagadas: Set<Int> = [], ortografia: [Int: Nota] = [:], notacion: Notacion = .espanolCompacto
         ) {
             self.mastil = mastil
             self.marcas = marcas
@@ -41,7 +41,7 @@
         /// Las notas de una escala en el mástil, escritas como las escribe la escala.
         public init(
             mastil: Mastil, escala: Escala, rango: ClosedRange<Int> = 0...12, etiquetas: Bool = true,
-            notacion: Notacion = .espanolUnicode
+            notacion: Notacion = .espanolCompacto
         ) {
             self.init(
                 mastil: mastil, marcas: mastil.posiciones(de: escala, trastes: rango), rango: rango,
@@ -52,7 +52,7 @@
         /// Las notas de un acorde por todo el mástil, escritas con su ortografía.
         public init(
             mastil: Mastil, acorde: Acorde, rango: ClosedRange<Int> = 0...12, etiquetas: Bool = true,
-            notacion: Notacion = .espanolUnicode
+            notacion: Notacion = .espanolCompacto
         ) {
             self.init(
                 mastil: mastil, marcas: mastil.posiciones(de: acorde, trastes: rango), rango: rango,
@@ -64,7 +64,7 @@
         /// acorde, las notas se escriben con su ortografía.
         public init(
             arpegio: ArpegioEnElMastil, acorde: Acorde? = nil, etiquetas: Bool = true,
-            notacion: Notacion = .espanolUnicode
+            notacion: Notacion = .espanolCompacto
         ) {
             self.init(
                 mastil: arpegio.mastil, marcas: arpegio.posiciones, rango: arpegio.trastes, etiquetas: etiquetas,
@@ -75,7 +75,7 @@
         /// mano. Si se da la escala, las notas se escriben con su ortografía.
         public init(
             posicion: EscalaEnElMastil, escala: Escala? = nil, etiquetas: Bool = true,
-            notacion: Notacion = .espanolUnicode
+            notacion: Notacion = .espanolCompacto
         ) {
             self.init(
                 mastil: posicion.mastil, marcas: posicion.posiciones, rango: posicion.trastes, etiquetas: etiquetas,
@@ -86,7 +86,7 @@
         /// notas se escriben con su ortografía.
         public init(
             digitacion: Digitacion, acorde: Acorde? = nil, etiquetas: Bool = true,
-            notacion: Notacion = .espanolUnicode
+            notacion: Notacion = .espanolCompacto
         ) {
             self.init(
                 mastil: digitacion.mastil, marcas: digitacion.posiciones,

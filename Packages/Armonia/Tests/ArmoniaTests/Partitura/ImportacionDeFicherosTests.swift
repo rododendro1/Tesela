@@ -78,7 +78,7 @@ import Testing
         #expect(pieza.compas == Compas(3, 4))
         #expect(pieza.tonalidad == Tonalidad(.sol))
         // La armadura da la ortografía: Fa♯, no Sol♭.
-        #expect(nombres(pieza) == ["Sol2", "Sol4", "Fa♯4", "Sol4"])
+        #expect(nombres(pieza) == ["Sol₂", "Sol₄", "Fa♯₄", "Sol₄"])
         #expect(pieza.notas.map(\.inicio) == [.cero, .cero, .negra, .blanca])
         #expect(pieza.notas.map(\.duracion) == [Duracion(3, 4), .negra, .negra, .negra])
         // La melodía sale antes en el fichero: es la parte 0.
@@ -117,7 +117,7 @@ import Testing
         #expect(pieza.compas == nil)
         #expect(pieza.tempo == nil)
         #expect(pieza.tonalidadEstimada == Tonalidad(.la, .menor))
-        #expect(nombres(pieza) == ["La2", "Do4", "Mi4", "Mi2", "Re4", "Sol♯4", "Si4", "La2", "Do4", "Mi4"])
+        #expect(nombres(pieza) == ["La₂", "Do₄", "Mi₄", "Mi₂", "Re₄", "Sol♯₄", "Si₄", "La₂", "Do₄", "Mi₄"])
         #expect(Set(pieza.notas.map(\.duracion)) == [.negra])
         // Los dos canales de la misma pista son dos partes.
         #expect(Set(pieza.notas.map(\.parte)) == [0, 1])
@@ -136,7 +136,7 @@ import Testing
             0x81, 0x70, 0x90, 0x3C, 0x00,
         ]
         let pieza = try PiezaImportada(midi: Data(cabecera(formato: 0, pistas: 1, divisiones: 120) + pista(eventos)))
-        #expect(nombres(pieza) == ["Do4", "Do4", "Mi4"])
+        #expect(nombres(pieza) == ["Do₄", "Do₄", "Mi₄"])
         #expect(pieza.notas.map(\.inicio) == [.cero, .corchea, .negra])
         #expect(pieza.notas.map(\.duracion) == [.corchea, .corchea, .blanca])
     }
@@ -145,7 +145,7 @@ import Testing
         // La cabecera dice tres pistas, pero el fichero acaba tras la primera.
         let datos = cabecera(formato: 1, pistas: 3, divisiones: 96) + pista([0x00, 0x90, 0x3C, 0x64, 0x60, 0x3C, 0x00])
         let pieza = try PiezaImportada(midi: Data(datos))
-        #expect(nombres(pieza) == ["Do4"])
+        #expect(nombres(pieza) == ["Do₄"])
     }
 
     @Test func unaPistaCortadaEsUnMIDIDanado() throws {
@@ -275,7 +275,7 @@ import Testing
         #expect(pieza.tonalidad == Tonalidad(armadura: -1))
         #expect(pieza.compas == .compasillo)
         #expect(pieza.tempo == Tempo(96))
-        #expect(nombres(pieza) == ["Fa2", "Do3", "Fa4", "La4", "La2", "Si♭4", "Do3", "Do5"])
+        #expect(nombres(pieza) == ["Fa₂", "Do₃", "Fa₄", "La₄", "La₂", "Si♭₄", "Do₃", "Do₅"])
         #expect(
             pieza.notas.map(\.inicio) == [
                 .cero, .cero, .cero, .blanca, .redonda, Duracion(5, 4),

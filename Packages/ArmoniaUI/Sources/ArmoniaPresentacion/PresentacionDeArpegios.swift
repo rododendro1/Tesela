@@ -14,7 +14,7 @@ public enum PresentacionDeArpegios {
     /// de acordes.
     ///
     ///     let arpegio = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Do"), patron: .alberti),
-    ///                                                 notacion: .espanolUnicode)
+    ///                                                 notacion: .espanolCompacto)
     ///     arpegio.ficheros.map(\.formato)   // [.musicXML, .mei, .lilyPond, .abc, .midi]
     public static func arpegio(
         _ arpegio: Arpegio, figura: Duracion = .corchea, notacion: Notacion

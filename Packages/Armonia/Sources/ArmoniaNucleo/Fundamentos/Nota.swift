@@ -113,7 +113,7 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
         for n in -4...4 where n != 0 {
             let a = Alteracion(n)
             for notacion in [
-                Notacion.espanolUnicode, .inglesASCII, .aleman, .frances, .italiano, .catalan, .gallego,
+                Notacion.espanolCompacto, .inglesASCII, .aleman, .frances, .italiano, .catalan, .gallego,
                 .euskera, .portugues, .occitano, .ruso, .griego, .aragones, .asturiano,
             ] {
                 tabla[a.nombre(en: notacion).claveDeBusqueda] = a
@@ -236,16 +236,19 @@ public struct Nota: Hashable, Sendable {
         return [base - 12, base, base + 12]
     }
 
-    /// Lee un nombre escrito en una notación concreta: `Nota(leyendo: "Fis", en: .aleman)`,
-    /// `Nota(leyendo: "B", en: .aleman)` → Si♭, `Nota(leyendo: "ré bémol", en: .frances)`.
-    /// No distingue mayúsculas ni tildes. En español e inglés, igual que `init(leyendo:)`.
+    /// Lee un nombre escrito en una notación concreta: `Nota(leyendo: "Fis", en: .alemanCompacto)`,
+    /// `Nota(leyendo: "B", en: .alemanCompacto)` → Si♭, `Nota(leyendo: "ré bémol", en: .frances)`.
+    /// No distingue mayúsculas ni tildes. En español e inglés, igual que `init(leyendo:)`; en alemán se leen las
+    /// dos formas, «F Kreuz» y «Fis».
     public init(leyendo texto: String, en notacion: Notacion) throws {
         let notacion = notacion.notas
         switch notacion.escritura.escrituraDeLaAlteracion {
         case .signos:
             try self.init(leyendo: texto)
         case .palabras, .alemana:
-            if let nombre = Nota.porNombre[notacion]?[texto.claveDeBusqueda] {
+            // La tabla del alemán con palabras tiene también los nombres compactos (Fis), que salen en sus cifrados.
+            let tabla = notacion.idiomaDeLasNotas == .aleman ? Notacion.aleman : notacion
+            if let nombre = Nota.porNombre[tabla]?[texto.claveDeBusqueda] {
                 self = nombre
             } else if Notacion.conPalabras.contains(notacion) {
                 // En español e inglés se leen las tres formas: «Fa sostenido», «Fa#» y «Fa♯».
@@ -403,8 +406,8 @@ extension Nota {
     public var nombreASCII: String { natural.nombre + alteracion.simboloASCII }
 
     /// Nombre en la notación indicada: `.espanol` → "Fa sostenido", `.espanolASCII` → "Fa#",
-    /// `.espanolUnicode` → "Fa♯", `.ingles` → "F sharp", `.inglesASCII` → "F#", `.inglesUnicode` → "F♯",
-    /// `.aleman` → "Fis", `.frances` → "fa dièse",
+    /// `.espanolCompacto` → "Fa♯", `.ingles` → "F sharp", `.inglesASCII` → "F#", `.inglesCompacto` → "F♯",
+    /// `.aleman` → "F Kreuz", `.alemanCompacto` → "Fis", `.frances` → "fa dièse",
     /// `.italiano` → "fa diesis", `.ruso` → "фа-диез", `.griego` → "φα δίεση".
     public func nombre(en notacion: Notacion) -> String {
         let base = natural.nombre(en: notacion)
@@ -435,11 +438,13 @@ extension Nota {
     }
 
     /// Nombre compacto para cifrados: igual que `nombre(en:)` salvo en las notaciones que escriben
-    /// las alteraciones con palabras, que usan la sílaba con mayúscula y el símbolo (Fa♯, F♯, Ré♭, Фа♯, Φα♯).
+    /// las alteraciones con palabras, que usan la sílaba con mayúscula y el símbolo (Fa♯, F♯, Ré♭, Фа♯, Φα♯) o,
+    /// en alemán, el nombre a la alemana (Fis).
     public func nombreCompacto(en notacion: Notacion) -> String {
         let notacion = notacion.notas
         switch notacion.escritura.escrituraDeLaAlteracion {
         case .palabras:
+            if notacion.idiomaDeLasNotas.reglas.alteraciones == .alemana { return nombreAleman }
             return natural.nombre(en: notacion).conMayusculaInicial + alteracion.simbolo
         case .signos, .alemana:
             return nombre(en: notacion)

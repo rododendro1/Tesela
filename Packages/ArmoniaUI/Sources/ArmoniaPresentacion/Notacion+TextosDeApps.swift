@@ -8,7 +8,7 @@ import Armonia
 /// por idioma en `Textos/` (`TextosDeApps+Espanol.swift`…): uno nuevo no compila hasta que está en los catorce.
 ///
 ///     Notacion.inglesASCII.texto(\.digitaciones)                // "Fingerings"
-///     Notacion.espanolUnicode.texto { $0.notasPorCuerda(3) }    // "3 notas por cuerda"
+///     Notacion.espanolCompacto.texto { $0.notasPorCuerda(3) }    // "3 notas por cuerda"
 extension Notacion {
     /// Un texto de la interfaz de las apps en el idioma de los textos de esta notación.
     public func texto(_ campo: (TextosDeApps) -> String) -> String {

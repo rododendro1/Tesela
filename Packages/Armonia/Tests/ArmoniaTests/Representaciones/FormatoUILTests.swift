@@ -252,6 +252,6 @@ import Testing
         let svg = teclado.svg(FormasDeMapa.hexagono(radio: 3), marcadas: [60, 64, 67])
         let raiz = try #require(ElementoXML.leer(svg))
         #expect(raiz.todos("polygon").count == 37)
-        #expect(svg.contains(">Do4<"))
+        #expect(svg.contains(">Do₄<"))
     }
 }

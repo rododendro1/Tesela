@@ -20,7 +20,7 @@
 
         public init(
             _ escala: Escala, octava: Int = 4, sentido: SentidoDelIntervalo? = nil,
-            notacion: Notacion = .espanolUnicode, nombresDeLasNotas: Bool = true, alturaMaxima: CGFloat = 260
+            notacion: Notacion = .espanolCompacto, nombresDeLasNotas: Bool = true, alturaMaxima: CGFloat = 260
         ) {
             self.init(
                 PentagramaPresentado(
@@ -29,7 +29,7 @@
         }
 
         public init(
-            _ acorde: Acorde, octava: Int = 4, notacion: Notacion = .espanolUnicode,
+            _ acorde: Acorde, octava: Int = 4, notacion: Notacion = .espanolCompacto,
             nombresDeLasNotas: Bool = false, alturaMaxima: CGFloat = 260
         ) {
             self.init(

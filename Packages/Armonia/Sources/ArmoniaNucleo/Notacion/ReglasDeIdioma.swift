@@ -78,7 +78,8 @@ public struct ReglasDeIdioma: Hashable, Sendable {
     /// («Doppelkreuz»).
     public let multiplicador: Multiplicador
     /// Cómo escribe las alteraciones cuando no se piden con palabras: con signos en español e inglés
-    /// (que por eso tienen tres escrituras), a la alemana en alemán y con palabras en los demás.
+    /// (que por eso tienen tres escrituras), a la alemana en alemán (que tiene dos: con palabras y compacta) y con
+    /// palabras en los demás.
     public let alteraciones: EscrituraDeLaAlteracion
     /// Los signos de sus cifrados: # y b en alemán, ♯ y ♭ en los demás. En español e inglés lo elige la
     /// escritura, porque tienen las dos.
@@ -121,7 +122,7 @@ public struct ReglasDeIdioma: Hashable, Sendable {
         self.plural = plural
     }
 
-    /// Si el idioma tiene las tres escrituras (palabras, ASCII y Unicode), como el español y el inglés.
+    /// Si el idioma tiene las tres escrituras (palabras, ASCII y compacta), como el español y el inglés.
     public var tieneVariantes: Bool { alteraciones == .signos }
 }
 

@@ -364,7 +364,7 @@ final class ElementoXML {
         for tipo in TipoDeAcorde.todos {
             let acorde = Acorde(.do, tipo)
             let armonia = try #require(
-                ElementoXML.leer(EscritorMusicXML.armonia(acorde, .espanolUnicode, pentagrama: nil)))
+                ElementoXML.leer(EscritorMusicXML.armonia(acorde, .espanolCompacto, pentagrama: nil)))
             let especie = try #require(armonia["kind"]?.texto)
             #expect(especie != "other", "\(tipo)")
             var intervalos = Set(
@@ -394,7 +394,7 @@ final class ElementoXML {
             ("Lab(#6,omit5)", "Italian"), ("Lab(#6,#11,omit5)", "French"), ("Lab(#6)", "German"),
         ] {
             let armonia = try #require(
-                ElementoXML.leer(EscritorMusicXML.armonia(Acorde(texto: cifrado)!, .espanolUnicode, pentagrama: nil)))
+                ElementoXML.leer(EscritorMusicXML.armonia(Acorde(texto: cifrado)!, .espanolCompacto, pentagrama: nil)))
             #expect(armonia["kind"]?.texto == especie)
             #expect(armonia.todos("degree").isEmpty, Comment(rawValue: cifrado))
         }
