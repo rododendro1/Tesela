@@ -110,6 +110,8 @@ extension TextosDeCLI {
         С --textos тексты выводятся на другом языке, чем ноты: --idioma en --textos ru.
         По-испански и по-английски --escritura palabras|ascii|unicode пишет ноты как Fa sostenido,
         Fa# или Fa♯ (по-английски F sharp, F# или F♯).
+        В остальных языках --escritura palabras|compacto выбирает слова или краткую форму:
+        fa dièse или Fa♯, F Kreuz или Fis.
         С --subindices октава пишется нижним индексом: La₄, Fa♯₃ (читаются обе формы, La4 и La₄).
         """,
         sintaxisAyuda: "help",
@@ -205,7 +207,7 @@ extension TextosDeCLI {
         opcionDesconocida: { opcion in "неизвестный параметр: «\(opcion)»" },
         idiomaDesconocido: { idioma in "неизвестный язык: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru или hu)" },
         terminalDesconocida: { t in "неизвестная оболочка: «\(t)» (bash, zsh или fish)" },
-        escrituraNoValida: { escritura in "недопустимое написание: «\(escritura)» (palabras/words, ascii или unicode; только с es и en)" },
+        escrituraNoValida: { escritura in "недопустимое написание: «\(escritura)» (palabras/words или compacto/compact; ascii или unicode, только с es и en)" },
 
         // Mensaje.swift
         mensajeNotas: "ноты",

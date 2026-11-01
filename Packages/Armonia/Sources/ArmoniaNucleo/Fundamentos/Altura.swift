@@ -62,9 +62,11 @@ public struct Altura: Hashable, Sendable {
     /// en subíndice ("ré bémol ₃").
     public init(leyendo texto: String, en notacion: Notacion) throws {
         let notacion = notacion.notas
-        switch notacion.escritura.escrituraDeLaAlteracion {
-        // En español e inglés con palabras, «Fa sostenido 4», y también «Fa#4» (lo lee `Nota(leyendo:en:)`).
-        case .palabras, .alemana:
+        // En español e inglés con signos, el lector de siempre («Fa#4»). En los demás casos, el nombre y la octava por
+        // separado: «Fa sostenido 4» (también «Fa#4», que lee `Nota(leyendo:en:)`), «Fis₄», «Ré♭₃».
+        let conSignos = notacion.escritura.escrituraDeLaAlteracion == .signos
+        switch conSignos && notacion.idiomaDeLasNotas.reglas.tieneVariantes {
+        case false:
             let limpio = texto.trimmingEspacios()
             let cifras = limpio.reversed().prefix(while: { $0.isNumber || $0 == "-" || $0 == "₋" })
             let textoOctava = String(cifras.reversed())
@@ -77,7 +79,7 @@ public struct Altura: Hashable, Sendable {
             } catch let error as ErrorDeLectura {
                 throw ErrorDeLectura(texto: texto, posicion: 0, motivo: error.motivo)
             }
-        case .signos:
+        case true:
             try self.init(leyendo: texto)
         }
     }

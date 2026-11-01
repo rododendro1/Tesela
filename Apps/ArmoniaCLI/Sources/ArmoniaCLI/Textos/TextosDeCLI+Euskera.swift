@@ -110,6 +110,8 @@ extension TextosDeCLI {
         --textos erabiliz, testuak notak ez bezalako hizkuntzan daude: --idioma en --textos eu.
         Gaztelaniaz eta ingelesez, --escritura palabras|ascii|unicode erabiliz, notak Fa sostenido,
         Fa# edo Fa♯ idazten dira (ingelesez, F sharp, F# edo F♯).
+        Gainerako hizkuntzetan, --escritura palabras|compacto erabiliz, hitzak edo forma laburra aukeratzen da:
+        fa dièse edo Fa♯, F Kreuz edo Fis.
         --subindices erabiliz, zortziduna azpiindize gisa idazten da: La₄, Fa♯₃ (biak irakurtzen dira, La4 eta La₄).
         """,
         sintaxisAyuda: "ayuda",
@@ -205,7 +207,7 @@ extension TextosDeCLI {
         opcionDesconocida: { opcion in "aukera ezezaguna: «\(opcion)»" },
         idiomaDesconocido: { idioma in "hizkuntza ezezaguna: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru edo hu)" },
         terminalDesconocida: { t in "terminal ezezaguna: «\(t)» (bash, zsh edo fish)" },
-        escrituraNoValida: { escritura in "idazkera baliogabea: «\(escritura)» (palabras/words, ascii edo unicode; es eta en-ekin bakarrik)" },
+        escrituraNoValida: { escritura in "idazkera baliogabea: «\(escritura)» (palabras/words edo compacto/compact; ascii edo unicode, es eta en-ekin bakarrik)" },
 
         // Mensaje.swift
         mensajeNotas: "notak",

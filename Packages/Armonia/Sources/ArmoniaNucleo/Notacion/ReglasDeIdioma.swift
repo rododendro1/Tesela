@@ -233,15 +233,18 @@ extension Idioma {
 public enum EscrituraDeLaAlteracion: Hashable, Sendable {
     /// Con palabras: «Fa sostenido», «fa dièse», «фа-диез». En los cifrados, la sílaba y el signo (Fa♯).
     case palabras
-    /// Con signos tras la letra o la sílaba, según la ``Tipografia``: Fa♯, Fa#, F♯, F#.
+    /// Con signos tras la letra o la sílaba, según la ``Tipografia``: Fa♯, Fa#, F♯, F#. En las compactas de los
+    /// idiomas que escriben las alteraciones con palabras, con la sílaba en mayúscula: Ré♭, Фа♯.
     case signos
     /// Dentro del nombre, a la alemana: Fis, Eses, B (Si♭) y H (Si); en húngaro, Fisz, Eszesz.
     case alemana
 }
 
 extension EscrituraDeNotas {
-    /// Cómo escribe las alteraciones: con palabras si se piden así, y si no, lo que diga el idioma.
+    /// Cómo escribe las alteraciones: con palabras si se piden así, y si no, lo que diga el idioma, o con signos en
+    /// los que solo las escriben con palabras (la compacta del francés: Ré♭).
     public var escrituraDeLaAlteracion: EscrituraDeLaAlteracion {
-        conPalabras ? .palabras : idioma.reglas.alteraciones
+        if conPalabras { return .palabras }
+        return idioma.reglas.alteraciones == .palabras ? .signos : idioma.reglas.alteraciones
     }
 }

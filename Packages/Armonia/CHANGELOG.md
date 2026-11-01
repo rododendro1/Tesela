@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+- **Compactas en todos los idiomas**: cada idioma que escribe las alteraciones con palabras tiene ahora también su
+  escritura compacta, con la sílaba en mayúscula, el signo y la octava en subíndice: `.catalanCompacto`,
+  `.gallegoCompacto`, `.asturianoCompacto`, `.aragonesCompacto`, `.euskeraCompacto`, `.portuguesCompacto`,
+  `.francesCompacto` (Ré♭₄), `.occitanoCompacto`, `.italianoCompacto`, `.griegoCompacto` (Φα♯) y `.rusoCompacto`
+  (Фа♯), en `Notacion` y en `EscrituraDeNotas`. Los textos siguen en el idioma, y se leen las dos formas («ré bémol»
+  y «Ré♭»). `EscrituraDeNotas.conPalabras(_:)` y `.compacta(_:)` dan las dos de cualquier idioma. La notación de
+  cada idioma (`Notacion.delIdioma(_:)`) no cambia. En la línea de comandos, `--escritura palabras|compacto` vale
+  con todos los idiomas.
 - El húngaro, el decimoquinto idioma: `Idioma.hungaro` («hu»). Como el alemán, tiene dos escrituras:
   `.hungaroCompacto`, la habitual, con las notas a la alemana con «isz» y «esz» (Fisz, Esz, Asz, B para Si♭, H para
   Si, Heszesz) y la octava en subíndice, y `.hungaro`, con las alteraciones en palabras (F kereszt, H bé). Las

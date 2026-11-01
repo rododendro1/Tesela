@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- El selector de notación ofrece también la escritura compacta de cada idioma con palabras: Français (Fa♯),
+  Русский (Фа♯)… Se guardan como «francesCompacto», «rusoCompacto»; las claves de antes no cambian.
 - Los textos de las apps, en húngaro (`TextosDeApps.hungaro`); el selector de idioma lo ofrece solo, y las apps
   lo declaran en `Config/Idiomas.plist` y en sus carpetas `hu.lproj`.
 - Las claves de las notaciones compactas son «espanolCompacto», «inglesCompacto» y «alemanCompacto», y

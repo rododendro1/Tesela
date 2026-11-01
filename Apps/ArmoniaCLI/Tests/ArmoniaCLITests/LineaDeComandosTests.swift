@@ -275,8 +275,14 @@ import Testing
                 .hasPrefix("B♭7: séptima de dominante\n  notas: B flat D F A flat"))
         #expect(
             resultado("acorde", "Do", "--escritura", "foo").error
-                .hasPrefix("armonia: escritura no válida: «foo» (palabras, ascii o unicode; solo con es y en)"))
-        #expect(resultado("acorde", "Do", "--idioma", "ca", "--escritura", "palabras").codigo == 2)
+                .hasPrefix(
+                    "armonia: escritura no válida: «foo» (palabras o compacto; ascii o unicode, solo con es y en)"))
+        // En los idiomas con palabras, la compacta escribe la sílaba en mayúscula con el signo.
+        #expect(salida("escala Re mayor --idioma fr --escritura compacto").hasPrefix("Ré majeur"))
+        #expect(salida("escala Re mayor --idioma fr --escritura compacto").contains("Fa♯"))
+        #expect(salida("transponer 2M Mi4 --idioma ca --escritura compacto --subindices") == "Fa♯₄\n")
+        #expect(salida("acorde Do --idioma ca --escritura palabras") == salida("acorde Do --idioma ca"))
+        #expect(resultado("acorde", "Do", "--idioma", "ca", "--escritura", "ascii").codigo == 2)
         #expect(resultado("acorde", "Do", "--escritura").codigo == 2)
         #expect(salida("ayuda").contains("--escritura"))
         #expect(salida("help --ingles").contains("--writing"))

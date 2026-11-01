@@ -80,6 +80,9 @@ Tonalidad("ля минор")                               // La menor
   en minúscula y con las alteraciones en palabras (en euskera, con el adjetivo detrás: diesa
   bikoitza; en ruso, unidas con guion: фа-диез); en los cifrados se usa la forma compacta
   (`nombreCompacto(en:)`: Fa♯, Ré♭, Фа♯, Σι♭).
+  Cada uno tiene también su escritura compacta (`.catalanCompacto`, `.francesCompacto`, `.rusoCompacto`…),
+  que escribe así todas las notas, con la octava en subíndice: `Altura("Reb4").nombre(en: .francesCompacto)`
+  es «Ré♭₄». La notación de cada idioma (`Notacion.delIdioma(_:)`) sigue siendo la de palabras.
 - Las octavas son siempre las científicas (Do4 = do central), también en francés, donde a menudo
   se numera de otra forma.
 - Las lecturas genéricas (`init(leyendo:)`) aceptan español, inglés, catalán, gallego, asturiano,
@@ -141,7 +144,7 @@ Notacion(escritura: .ruso, textos: .espanol) == notacion   // true
 ### La octava en subíndice
 
 La octava de una ``Altura`` se escribe como subíndice (La₄) en las notaciones compactas (`.espanolCompacto`,
-`.inglesCompacto`, `.alemanCompacto`) y con cifras (La4) en las demás; `conOctavas(_:)` elige otra. Al leer se
+`.inglesCompacto`, `.alemanCompacto`, `.francesCompacto`…) y con cifras (La4) en las demás; `conOctavas(_:)` elige otra. Al leer se
 aceptan siempre las dos formas, también en las melodías y los corales. `description` y la codificación las
 escriben siempre con cifras ("Fa♯3"). La línea de comandos escribe cifras salvo con `--subindices`.
 

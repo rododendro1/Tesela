@@ -111,6 +111,8 @@ extension TextosDeCLI {
         Con --textos, los textos van en otro idioma que las notas: --idioma en --textos es.
         En español e inglés, --escritura palabras|ascii|unicode escribe las notas como Fa sostenido,
         Fa# o Fa♯ (en inglés, F sharp, F# o F♯).
+        En los demás idiomas, --escritura palabras|compacto elige las palabras o la forma compacta:
+        fa dièse o Fa♯, F Kreuz o Fis.
         Con --subindices, la octava va en subíndice: La₄, Fa♯₃ (se lee de las dos formas, La4 y La₄).
         """,
         sintaxisAyuda: "ayuda",
@@ -206,7 +208,7 @@ extension TextosDeCLI {
         opcionDesconocida: { opcion in "opción desconocida: «\(opcion)»" },
         idiomaDesconocido: { idioma in "idioma desconocido: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu)" },
         terminalDesconocida: { t in "terminal desconocida: «\(t)» (bash, zsh o fish)" },
-        escrituraNoValida: { escritura in "escritura no válida: «\(escritura)» (palabras, ascii o unicode; solo con es y en)" },
+        escrituraNoValida: { escritura in "escritura no válida: «\(escritura)» (palabras o compacto; ascii o unicode, solo con es y en)" },
 
         // Mensaje.swift
         mensajeNotas: "notas",

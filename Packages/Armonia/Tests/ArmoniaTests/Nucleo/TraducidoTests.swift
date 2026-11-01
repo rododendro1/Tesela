@@ -180,7 +180,9 @@ import Testing
             ])
         #expect(
             EscrituraDeNotas.allCases.filter(\.esCompacta) == [
-                .espanolCompacto, .inglesCompacto, .alemanCompacto, .hungaroCompacto,
+                .espanolCompacto, .inglesCompacto, .catalanCompacto, .gallegoCompacto, .asturianoCompacto,
+                .aragonesCompacto, .euskeraCompacto, .portuguesCompacto, .francesCompacto, .occitanoCompacto,
+                .italianoCompacto, .alemanCompacto, .griegoCompacto, .rusoCompacto, .hungaroCompacto,
             ])
         for escritura in EscrituraDeNotas.allCases {
             #expect(escritura.usaASCII == (escritura.tipografia == .ascii))
