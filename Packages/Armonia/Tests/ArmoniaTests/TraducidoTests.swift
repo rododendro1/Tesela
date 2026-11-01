@@ -22,7 +22,7 @@ final class TraducidoTests: XCTestCase {
         XCTAssertEqual(fa.en(.espanolUnicode), "Fa♯")
         XCTAssertEqual(fa.en(.inglesASCII), "F#")
         XCTAssertEqual(fa.en(.aleman), "Fis")
-        XCTAssertEqual(Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) }).en(.aleman), "1. Umkehrung")
+        XCTAssertEqual(Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) }).en(.aleman), "erste Umkehrung")
     }
 
     /// Las sílabas y la forma de pegar la alteración son datos, no `switch` repartidos.

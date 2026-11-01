@@ -63,7 +63,7 @@ public struct Traducido<Valor> {
     /// sabe escribir el motor en cada idioma.
     ///
     ///     let inversion = Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) })
-    ///     inversion.en(.aleman)    // "1. Umkehrung"
+    ///     inversion.en(.aleman)    // "erste Umkehrung"
     public init(cadaIdioma valor: (Notacion) -> Valor) {
         self.init(
             valor(.delIdioma(.espanol)), valor(.delIdioma(.ingles)), ca: valor(.delIdioma(.catalan)),
