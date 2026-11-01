@@ -391,7 +391,8 @@ final class ProtocolosTests: XCTestCase {
 
     func testLosExtremosYElMenor() {
         XCTAssertEqual([3, 1, 2].extremos, 1...3)
-        XCTAssertNil([Int]().extremos)
+        let ninguno: ClosedRange<Int>? = [Int]().extremos
+        XCTAssertNil(ninguno)
         XCTAssertEqual([5].extremos(siNoHay: 0...0), 5...5)
         XCTAssertEqual([Int]().extremos(siNoHay: 0...0), 0...0)
         XCTAssertEqual([3, -4, 2].menor(siNoHay: 0) { abs($0) < abs($1) }, 2)
