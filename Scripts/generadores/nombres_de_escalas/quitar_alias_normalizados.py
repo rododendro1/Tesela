@@ -3,7 +3,7 @@
 Uso: python3 quitar_alias_normalizados.py <raíz del repo> [aplicar]   (sin `aplicar`, solo cuenta)"""
 import re,sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))   # Scripts/normalizar_escalas.py
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "comprobaciones"))   # Scripts/comprobaciones/normalizar_escalas.py
 from normalizar_escalas import normalizar as norm
 ROOT=Path(sys.argv[1]); APLICAR=len(sys.argv)>2 and sys.argv[2]=="aplicar"
 ESC=ROOT/"Packages/Armonia/Sources/ArmoniaTeoria/Escalas"

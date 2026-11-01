@@ -3,10 +3,10 @@
 
 Es una copia de la función de Swift (`ArmoniaTeoria/Escalas/TipoDeEscala.swift`): minúsculas, sin diacríticos
 (salvo en devanagari), ♯/♭ como #/b, sin ♮ ni ordinales (4ª), «−» como «-», «…» como «..» y un solo espacio entre
-palabras. Para que las dos no se separen, las dos leen los mismos casos de `Scripts/vectores/normalizar.tsv`: el test de
+palabras. Para que las dos no se separen, las dos leen los mismos casos de `Scripts/datos/normalizar.tsv`: el test de
 Swift (`NormalizarVectoresTests`) y este script.
 
-Uso:  python3 Scripts/normalizar_escalas.py --comprobar     (sale con 1 si algún caso no coincide)
+Uso:  python3 Scripts/comprobaciones/normalizar_escalas.py --comprobar     (sale con 1 si algún caso no coincide)
 Los otros scripts lo importan: `from normalizar_escalas import normalizar`.
 """
 import re
@@ -14,7 +14,7 @@ import sys
 import unicodedata
 from pathlib import Path
 
-VECTORES = Path(__file__).resolve().parent / "vectores" / "normalizar.tsv"
+VECTORES = Path(__file__).resolve().parents[1] / "datos" / "normalizar.tsv"
 _SUSTITUCIONES = (("♯", "#"), ("♭", "b"), ("♮", ""), ("ª", ""), ("−", "-"), ("…", ".."))
 
 

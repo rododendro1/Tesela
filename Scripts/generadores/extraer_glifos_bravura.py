@@ -5,7 +5,7 @@ trazados SVG en `Packages/Armonia/Sources/ArmoniaPartitura/Dibujo/GlifosSMuFL.sw
 Los trazados quedan en espacios de pentagrama (1 = la distancia entre dos líneas; en SMuFL son 250 unidades de 1000),
 con el eje y hacia abajo, para que el SVG no dependa de la fuente al ejecutar.
 
-Uso:  python3 Scripts/extraer_glifos_bravura.py ruta/a/Bravura.otf
+Uso:  python3 Scripts/generadores/extraer_glifos_bravura.py ruta/a/Bravura.otf
       (la fuente: https://github.com/steinbergmedia/bravura, carpeta redist/otf; necesita `pip install fonttools`)
 La licencia de la fuente está en `Licencias/Bravura-OFL.txt`.
 """
@@ -17,7 +17,7 @@ from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 from fontTools.ttLib import TTFont
 
-DESTINO = (Path(__file__).resolve().parent.parent
+DESTINO = (Path(__file__).resolve().parents[2]
            / "Packages/Armonia/Sources/ArmoniaPartitura/Dibujo/GlifosSMuFL.swift")
 UNIDADES_POR_ESPACIO = 250.0
 # nombre en Swift: (punto de código SMuFL, nombre SMuFL)
@@ -58,7 +58,7 @@ def main():
                       f"    static let {nombre} = Glifo(ancho: {numero(ancho)}, arriba: {numero(arriba)}, abajo: {numero(abajo)},\n"
                       f"                                trazado: \"{lapiz.getCommands()}\")")
     DESTINO.parent.mkdir(parents=True, exist_ok=True)
-    DESTINO.write_text(f"""// Generado por Scripts/extraer_glifos_bravura.py a partir de la fuente Bravura. No lo edites a mano.
+    DESTINO.write_text(f"""// Generado por Scripts/generadores/extraer_glifos_bravura.py a partir de la fuente Bravura. No lo edites a mano.
 //
 // Bravura © Steinberg Media Technologies GmbH, con licencia SIL Open Font License 1.1 (Licencias/Bravura-OFL.txt).
 // Los trazados están en espacios de pentagrama (1 = distancia entre dos líneas), con el origen en la línea base del

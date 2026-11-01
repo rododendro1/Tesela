@@ -1,14 +1,14 @@
 name: Versión
 
 # Al subir una etiqueta de versión («0.2.0» o «v0.2.0») crea su release en GitHub con las notas de la sección de
-# esa versión en el CHANGELOG.md de cada paquete (`Scripts/notas_de_version.py`). Falla, sin crear nada, si
+# esa versión en el CHANGELOG.md de cada paquete (`Scripts/comprobaciones/notas_de_version.py`). Falla, sin crear nada, si
 # ningún CHANGELOG la tiene o si no coincide con MARKETING_VERSION de project.yml. Si la release ya existe, no la
 # toca. A mano (workflow_dispatch) crea la de una etiqueta que ya está subida.
 #
 # Para publicar una versión, pasa lo que está en «## Sin publicar» de los CHANGELOG a la versión y sube
 # MARKETING_VERSION en project.yml (el script hace las dos cosas), fusiona en main y etiqueta ese commit:
 #
-#     python3 Scripts/notas_de_version.py --publicar 0.2.0
+#     python3 Scripts/comprobaciones/notas_de_version.py --publicar 0.2.0
 #     git tag 0.2.0 && git push origin 0.2.0
 #
 # La misma etiqueta publica también la documentación (documentacion.yml).
@@ -41,7 +41,7 @@ jobs:
         with:
           ref: refs/tags/${{ inputs.etiqueta || github.ref_name }}
       - name: Notas del CHANGELOG
-        run: python3 Scripts/notas_de_version.py "$ETIQUETA" > "$RUNNER_TEMP/notas.md"
+        run: python3 Scripts/comprobaciones/notas_de_version.py "$ETIQUETA" > "$RUNNER_TEMP/notas.md"
       - name: Crear la release
         run: |
           set -euo pipefail

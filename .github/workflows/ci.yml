@@ -38,9 +38,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Higiene (invisibles, tabuladores, permisos, scripts que compilan)
-        run: python3 Scripts/comprobar_higiene.py
+        run: python3 Scripts/comprobaciones/comprobar_higiene.py
       - name: Dependencias entre paquetes y apps
-        run: python3 Scripts/comprobar_dependencias.py
+        run: python3 Scripts/comprobaciones/comprobar_dependencias.py
       - name: Rutas sin colisiones de mayúsculas
         run: |
           duplicadas=$(git ls-files | tr 'A-Z' 'a-z' | sort | uniq -d)
@@ -48,17 +48,17 @@ jobs:
           carpetas=$(git ls-files | xargs -n1 dirname | sort -u | tr 'A-Z' 'a-z' | sort | uniq -d)
           if [ -n "$carpetas" ]; then echo "Carpetas que solo difieren en mayúsculas:"; echo "$carpetas"; exit 1; fi
       - name: Módulos del motor
-        run: python3 Scripts/comprobar_modulos.py
+        run: python3 Scripts/comprobaciones/comprobar_modulos.py
       - name: Catálogo de escalas
-        run: python3 Scripts/comprobar_catalogo.py
+        run: python3 Scripts/comprobaciones/comprobar_catalogo.py
       - name: Enlaces de la documentación (DocC)
-        run: python3 Scripts/comprobar_enlaces_docc.py
+        run: python3 Scripts/comprobaciones/comprobar_enlaces_docc.py
       - name: Traducciones
-        run: python3 Scripts/comprobar_traducciones.py
+        run: python3 Scripts/comprobaciones/comprobar_traducciones.py
       - name: Ejemplos de la documentación al día
-        run: python3 Scripts/generar_pruebas_de_documentacion.py --comprobar
+        run: python3 Scripts/generadores/generar_pruebas_de_documentacion.py --comprobar
       - name: CHANGELOG (secciones y notas de la versión actual)
-        run: python3 Scripts/notas_de_version.py --comprobar
+        run: python3 Scripts/comprobaciones/notas_de_version.py --comprobar
 
   # El formato del código Swift, con swift-format (viene con Swift 6) y la configuración de `.swift-format`. Para
   # arreglarlo: `swift format -i -r --parallel Packages Apps Ejemplos Herramientas Package.swift`. Los ficheros que
@@ -384,7 +384,7 @@ jobs:
         run: |
           cambiados=$(git diff --name-only "$BASE"...HEAD)
           echo "$cambiados"
-          if echo "$cambiados" | grep -qE '^(Apps/ArmoniaApp/|Apps/TonnetzApp/|Packages/ArmoniaUI/|project\.yml$|Scripts/generar_proyecto\.sh$)'; then
+          if echo "$cambiados" | grep -qE '^(Apps/ArmoniaApp/|Apps/TonnetzApp/|Packages/ArmoniaUI/|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
             echo "apps=true" >> "$GITHUB_OUTPUT"
           else
             echo "apps=false" >> "$GITHUB_OUTPUT"
@@ -404,7 +404,7 @@ jobs:
       - name: Instalar XcodeGen
         run: brew install xcodegen
       - name: Generar el proyecto
-        run: ./Scripts/generar_proyecto.sh
+        run: ./Scripts/generadores/generar_proyecto.sh
       - name: Armonía (macOS)
         run: >
           xcodebuild build -project Tesela.xcodeproj -scheme ArmoniaApp
@@ -446,7 +446,7 @@ jobs:
       - name: Instalar XcodeGen
         run: brew install xcodegen
       - name: Generar el proyecto
-        run: ./Scripts/generar_proyecto.sh
+        run: ./Scripts/generadores/generar_proyecto.sh
       - name: Armonía (macOS)
         run: >
           xcodebuild build -project Tesela.xcodeproj -scheme ArmoniaApp
@@ -501,7 +501,7 @@ jobs:
       - name: Instalar XcodeGen
         run: brew install xcodegen
       - name: Generar el proyecto
-        run: ./Scripts/generar_proyecto.sh
+        run: ./Scripts/generadores/generar_proyecto.sh
       - name: Permitir que las pruebas manejen las apps
         if: matrix.plataforma == 'macOS'
         run: sudo automationmodetool enable-automationmode-without-authentication

@@ -7,7 +7,7 @@ se ha descuadrado.
 import re
 from pathlib import Path
 
-RAIZ = Path(__file__).resolve().parent.parent
+RAIZ = Path(__file__).resolve().parents[2]
 NOTACION = RAIZ / "Packages/Armonia/Sources/ArmoniaNucleo/Notacion/Notacion.swift"
 REGLAS = RAIZ / "Packages/Armonia/Sources/ArmoniaNucleo/Notacion/ReglasDeIdioma.swift"
 

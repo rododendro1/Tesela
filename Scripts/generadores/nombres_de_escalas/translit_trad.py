@@ -2,7 +2,7 @@
 """Transcribe al ruso y al griego los nombres de las escalas tradicionales (menos los melakarta). Uso: translit_trad.py <raíz>"""
 import re, sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))   # Scripts/normalizar_escalas.py
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "comprobaciones"))   # Scripts/comprobaciones/normalizar_escalas.py
 from normalizar_escalas import normalizar as norm
 N = Path(sys.argv[1]) / "Packages/Armonia/Sources/ArmoniaTeoria/Escalas/Nombres"
 T = {  # original: (ruso, griego)

@@ -3,7 +3,7 @@
 Uso: python3 generar_rg.py <raíz del repo>"""
 import re, sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))   # Scripts/normalizar_escalas.py
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "comprobaciones"))   # Scripts/comprobaciones/normalizar_escalas.py
 RAIZ = Path(sys.argv[1]); N = RAIZ / "Packages/Armonia/Sources/ArmoniaTeoria/Escalas/Nombres"
 from normalizar_escalas import normalizar as norm
 

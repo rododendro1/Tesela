@@ -35,7 +35,11 @@ Packages/
 └── Hexagonos/      Rejillas hexagonales: coordenadas axiales, cúbicas, desplazadas y dobladas, vecinos, distancias,
                     líneas, regiones, rotaciones y el paso a píxeles; el motor la usa para el Tonnetz,
                     la tabla armónica y los teclados isomórficos
-Scripts/            Comprobaciones del repositorio (también las del motor) y generación del proyecto de Xcode
+Scripts/
+├── comprobaciones/   Las del repositorio y del motor, que pasa el CI (comprobar_*.py, notas_de_version.py)
+├── generadores/      El proyecto de Xcode, las pruebas de la documentación, los glifos de Bravura y los nombres de escalas
+├── datos/            Los casos que comparten las comprobaciones en Python y las pruebas en Swift (normalizar.tsv)
+└── compilar_todo.sh  Todo, por capas, como el CI
 Config/             Ajustes de compilación de las apps (Local.xcconfig, el de tu equipo, no se guarda en git), su
                     manifiesto de privacidad (PrivacyInfo.xcprivacy) y sus catorce idiomas (Idiomas.plist; cada
                     app tiene además sus carpetas Idiomas/<idioma>.lproj)
@@ -55,7 +59,7 @@ EjemploHexagonos ──► Hexagonos
 
 Un paquete solo depende de los que tiene debajo, y nunca de una app. La línea de comandos (`ArmoniaCLI`),
 los ejemplos (`EjemploArmonia` y `EjemploHexagonos`) y la medida del rendimiento (`RendimientoArmonia`) se construyen con SwiftPM; las apps de SwiftUI, con Xcode (`project.yml`).
-`Scripts/comprobar_dependencias.py` lo comprueba (también en el CI).
+`Scripts/comprobaciones/comprobar_dependencias.py` lo comprueba (también en el CI).
 
 El paquete, su producto principal y su módulo paraguas se llaman `Armonia`: en el código es
 `import Armonia`, y en un `Package.swift` es `.product(name: "Armonia", package: "Armonia")`.
@@ -94,7 +98,7 @@ swift run -c release --package-path Herramientas/RendimientoArmonia RendimientoA
 # Las apps (macOS, con XcodeGen)
 brew install xcodegen
 cp Config/Local.xcconfig.ejemplo Config/Local.xcconfig   # tu equipo de firma y el prefijo de identificadores
-./Scripts/generar_proyecto.sh        # crea Tesela.xcodeproj
+./Scripts/generadores/generar_proyecto.sh        # crea Tesela.xcodeproj
 open Tesela.xcodeproj     # elige el esquema ArmoniaApp o TonnetzApp
 ```
 
@@ -127,7 +131,7 @@ lentitud, porque sus máquinas varían demasiado para fijar límites absolutos.
 ## Añadir un paquete o una app
 
 1. Crea la carpeta en `Packages/` (con el mismo nombre que el paquete) o en `Apps/`.
-2. Un paquete se añade a `PERMITIDO` en `Scripts/comprobar_dependencias.py`, con los paquetes de los que puede depender,
+2. Un paquete se añade a `PERMITIDO` en `Scripts/comprobaciones/comprobar_dependencias.py`, con los paquetes de los que puede depender,
    y sus módulos y bibliotecas al `Package.swift` de la raíz (el script avisa si no coinciden).
 3. Una app de SwiftUI, además, en `project.yml` (un `target` y su `scheme`, y sus pruebas de interfaz en `Apps/PruebasDeInterfaz/<App>`); un paquete, en `packages:`. Una app de
    SwiftPM solo necesita su `Package.swift`, con dependencias por ruta a `Packages/`.

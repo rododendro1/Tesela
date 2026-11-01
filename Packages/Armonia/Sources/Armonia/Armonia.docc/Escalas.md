@@ -202,7 +202,7 @@ del propio catálogo). `TipoDeEscala.nombre(en:)` usa el fichero del idioma de l
 `buscar(nombre:)` y `Escala("Re dòric")` leen los de todos. Cada fichero da todos los tipos de
 `TipoDeEscala.todos`, las escalas de otras tradiciones (`.tradicional(.kafi)`, que apunta al miembro de
 `TipoDeEscala` y no compila si deja de existir) y el nombre de cada `CategoriaTradicional` (`.categoria`);
-`Scripts/comprobar_catalogo.py` vigila que no falte ninguno. Un idioma nuevo es un fichero más.
+`Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno. Un idioma nuevo es un fichero más.
 
 `TipoDeEscala.alias` guarda solo las grafías correctas («dórico ♭2», «húngara»). Las simplificadas («dorico b2»,
 «hungara») no se repiten: salen de `aliasNormalizados` y de `normalizar` (minúsculas, sin diacríticos, ♯/♭ como

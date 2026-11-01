@@ -11,13 +11,13 @@ frecuente sin necesidad de Swift:
 Revisa los catálogos de todos los paquetes de `Packages/`, cada uno con los símbolos de su paquete.
 
 No sustituye a DocC (no resuelve sobrecargas ni comprueba que el símbolo sea público): es un filtro barato.
-Uso: python3 Scripts/comprobar_enlaces_docc.py
+Uso: python3 Scripts/comprobaciones/comprobar_enlaces_docc.py
 """
 import re
 import sys
 from pathlib import Path
 
-PAQUETES = Path(__file__).resolve().parent.parent / "Packages"
+PAQUETES = Path(__file__).resolve().parents[2] / "Packages"
 
 DECLARACION_DE_TIPO = re.compile(r"\b(?:struct|enum|class|actor|protocol|typealias)\s+([A-Za-z_]\w*)")
 

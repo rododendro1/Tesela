@@ -22,13 +22,13 @@ declarado como dependencia si otra ruta lo compila antes, así que se comprueba 
   3. ningún fichero nombra un tipo declarado en un módulo que no puede usar (aproximación por nombre);
   4. `Armonia` reexporta los cinco módulos, y `Sources/Armonia` no tiene más código que eso.
 
-Uso:  python3 Scripts/comprobar_modulos.py     (sale con 1 si hay un problema)
+Uso:  python3 Scripts/comprobaciones/comprobar_modulos.py     (sale con 1 si hay un problema)
 """
 import re
 import sys
 from pathlib import Path
 
-RAIZ = Path(__file__).resolve().parent.parent / "Packages" / "Armonia"
+RAIZ = Path(__file__).resolve().parents[2] / "Packages" / "Armonia"
 FUENTES = RAIZ / "Sources"
 
 PERMITIDO = {

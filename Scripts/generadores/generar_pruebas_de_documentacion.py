@@ -15,14 +15,14 @@ Para que un comentario sea solo una explicación y no se compare, empieza por un
 que no sea un valor (`// baja con Sol♮ y Fa♮`) o con `…`.
 
 Uso:
-    python3 Scripts/generar_pruebas_de_documentacion.py              # regenera las pruebas
-    python3 Scripts/generar_pruebas_de_documentacion.py --comprobar  # falla si están desfasadas
+    python3 Scripts/generadores/generar_pruebas_de_documentacion.py              # regenera las pruebas
+    python3 Scripts/generadores/generar_pruebas_de_documentacion.py --comprobar  # falla si están desfasadas
 """
 import pathlib
 import re
 import sys
 
-RAIZ = pathlib.Path(__file__).resolve().parent.parent / "Packages" / "Armonia"
+RAIZ = pathlib.Path(__file__).resolve().parents[2] / "Packages" / "Armonia"
 FUENTES = [RAIZ / "README.md"] + sorted((RAIZ / "Sources/Armonia/Armonia.docc").glob("*.md"))
 DESTINO = RAIZ / "Tests/ArmoniaDocumentacionTests/EjemplosDeDocumentacionTests.swift"
 
@@ -181,7 +181,7 @@ def generar():
 
 
 CABECERA = '''// swift-format-ignore-file
-// Generado por Scripts/generar_pruebas_de_documentacion.py a partir de los bloques ```swift
+// Generado por Scripts/generadores/generar_pruebas_de_documentacion.py a partir de los bloques ```swift
 // del README y del catálogo DocC. No lo edites a mano: cambia el ejemplo y vuelve a generarlo.
 
 import Foundation
@@ -198,7 +198,7 @@ def main():
     if "--comprobar" in sys.argv:
         actual = DESTINO.read_text(encoding="utf-8") if DESTINO.exists() else ""
         if actual != contenido:
-            print(f"{DESTINO.relative_to(RAIZ)} está desfasado: ejecuta Scripts/generar_pruebas_de_documentacion.py")
+            print(f"{DESTINO.relative_to(RAIZ)} está desfasado: ejecuta Scripts/generadores/generar_pruebas_de_documentacion.py")
             sys.exit(1)
         return
     DESTINO.parent.mkdir(parents=True, exist_ok=True)

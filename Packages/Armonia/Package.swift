@@ -15,7 +15,7 @@ import PackageDescription
 // del paquete `Hexagonos`, que no depende de nada. `ArmoniaRepresentaciones` lo usa; `Armonia` no lo reexporta,
 // para no meter sus nombres en el código de quien importa el motor: quien use la rejilla, `import Hexagonos`.
 //
-// `Scripts/comprobar_modulos.py` vigila que las dependencias sean estas y no otras.
+// `Scripts/comprobaciones/comprobar_modulos.py` vigila que las dependencias sean estas y no otras.
 
 let hexagonos: Target.Dependency = .product(name: "Hexagonos", package: "Hexagonos")
 

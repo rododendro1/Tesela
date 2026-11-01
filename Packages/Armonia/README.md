@@ -135,7 +135,7 @@ swift test                                    # todas las pruebas
 swift test --filter "^ArmoniaTests\."          # solo las rápidas (segundos)
 swift test --filter "^ArmoniaExhaustivasTests\."  # solo las exhaustivas
 swift test --filter "^ArmoniaDocumentacionTests\."  # los ejemplos del README y de DocC
-python3 ../../Scripts/generar_pruebas_de_documentacion.py # regenera esas pruebas tras cambiar un ejemplo
+python3 ../../Scripts/generadores/generar_pruebas_de_documentacion.py # regenera esas pruebas tras cambiar un ejemplo
 ```
 
 La herramienta `armonia` y el ejemplo (`swift run EjemploArmonia`) son paquetes aparte, en
@@ -151,7 +151,7 @@ Los cambios de cada versión, con la guía para actualizar, están en [CHANGELOG
 La biblioteca son cinco módulos por capas, y `Armonia` los reexporta: `import Armonia` da toda la API, e
 `import ArmoniaTeoria` (con `ArmoniaNucleo`, de que depende) solo los acordes, las escalas y las tonalidades.
 Lo interno que se usa entre capas es `package`, no público. Un módulo solo usa los de su izquierda, y
-`Scripts/comprobar_modulos.py`, en la raíz del repositorio, lo vigila:
+`Scripts/comprobaciones/comprobar_modulos.py`, en la raíz del repositorio, lo vigila:
 
     ArmoniaNucleo ◄── ArmoniaTeoria ◄──┬── ArmoniaRepresentaciones
                                        ├── ArmoniaPartitura
@@ -221,10 +221,10 @@ español, inglés, catalán, gallego, asturiano, aragonés, euskera, portugués,
 griego y ruso. Los nombres que son datos de un catálogo (tipos de acorde y de escala, instrumentos)
 siguen junto a su catálogo, en los catorce idiomas (los de las escalas en los que no son español ni inglés,
 un fichero por idioma en `ArmoniaTeoria/Escalas/Nombres/`, `NombresDeEscalas+Catalan.swift`…, con los alias con que también se leen;
-`Scripts/comprobar_catalogo.py` vigila que no falte ninguno, y `Scripts/nombres_de_escalas/` tiene las herramientas con que se sembraron).
+`Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno, y `Scripts/generadores/nombres_de_escalas/` tiene las herramientas con que se sembraron).
 
 Para añadir un idioma: un caso en `Idioma`, su fila en `ReglasDeIdioma` (código, nombre, sílabas, alteraciones y
-modos) y en `Scripts/idiomas.py`, un caso en `EscrituraDeNotas` (con su constante en `Notacion`), un campo en
+modos) y en `Scripts/comprobaciones/idiomas.py`, un caso en `EscrituraDeNotas` (con su constante en `Notacion`), un campo en
 `Traducido`, un fichero en cada `Textos/`, y corregir lo que el compilador señale: ningún `switch` sobre el
 idioma o la escritura tiene `default`, y cada `Traduccion` sin el idioma nuevo deja de compilar.
 
@@ -243,7 +243,7 @@ tres hojas que usan las anteriores y no se usan entre sí: **ArmoniaRepresentaci
 color, dibujo y redes, con la teoría neorriemanniana), **ArmoniaPartitura** (modelo y formatos)
 y **ArmoniaTrastes** (instrumentos de cuerda con trastes). `Armonia` los reexporta
 todos; `Hexagonos`, que usan las Representaciones, se importa aparte. `python3
-Scripts/comprobar_modulos.py`, que ejecuta el CI, comprueba que las dependencias declaradas y los
+Scripts/comprobaciones/comprobar_modulos.py`, que ejecuta el CI, comprueba que las dependencias declaradas y los
 `import` respetan esas capas.
 
 ### Integración continua
