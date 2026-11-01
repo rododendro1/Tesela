@@ -6,6 +6,8 @@
   de las apps se lee con `notacion.texto(\.digitaciones)` o `notacion.texto { $0.notasPorCuerda(3) }`, y los campos
   con ejemplos en la notación con `notacion.campo(.cifrado)` (`CampoDeLasApps`). `TextosDeApps.dedosYCejilla(_:_:)`,
   `capoEnElTraste(_:)` y `casillaElegida(q:r:)` juntan los textos compuestos. Los textos no cambian.
+- `Idioma.titulo` es el `nombrePropio` del motor y `Idioma.clave`, su `rawValue`: las claves guardadas en los ajustes
+  no cambian.
 - `TextosDeApps` adopta `TextosTraducidos` del motor; `TextosDeApps.traduccion(_:)` sigue igual.
 - El selector de notación de las apps tiene un interruptor «Octava en subíndice» (La₄), traducido a los catorce
   idiomas. Se guarda aparte, en `AjustesDeLasApps.claveDeOctavasEnSubindice`, y `notacionGuardada()` lo aplica con

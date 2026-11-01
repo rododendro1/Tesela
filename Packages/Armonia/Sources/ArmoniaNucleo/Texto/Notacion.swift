@@ -265,12 +265,15 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
 /// Un idioma del motor: el de los nombres de nota de una `EscrituraDeNotas` y el de los textos de una
 /// `Notacion`.
 ///
-/// Para añadir uno: un caso aquí (con su `codigo` y sus `nombres`, y su fila en `Scripts/idiomas.py`), una fila en ``ReglasDeIdioma`` (las sílabas y cómo se le
-/// pega la alteración), un caso en `EscrituraDeNotas` (con su constante en `Notacion` y su
-/// `escrituraDeLaAlteracion`) y un campo en `Traducido`. Los nombres de nota no tienen más `switch` sobre
-/// `Idioma` que el de las reglas. Ningún `switch` sobre `Idioma` o `EscrituraDeNotas` tiene `default`, así que
-/// el compilador señala lo que falta, y cada `Traduccion` sin el idioma nuevo deja de compilar.
-public enum Idioma: Hashable, Sendable, CaseIterable {
+/// Su `rawValue` es el nombre del caso («euskera», «aleman»), que las apps guardan en los ajustes.
+///
+/// Para añadir uno: un caso aquí, su fila en ``ReglasDeIdioma`` (su código, cómo se llama, las sílabas, cómo
+/// se le pega la alteración y los modos) y en `Scripts/idiomas.py`, un caso en `EscrituraDeNotas` (con su
+/// constante en `Notacion` y su `escrituraDeLaAlteracion`) y un campo en `Traducido`. Los nombres de nota y
+/// los datos del idioma no tienen más `switch` sobre `Idioma` que el de las reglas. Ningún `switch` sobre
+/// `Idioma` o `EscrituraDeNotas` tiene `default`, así que el compilador señala lo que falta, y cada
+/// `Traduccion` sin el idioma nuevo deja de compilar.
+public enum Idioma: String, Hashable, Sendable, CaseIterable {
     case espanol
     case ingles
     case catalan
@@ -289,25 +292,8 @@ public enum Idioma: Hashable, Sendable, CaseIterable {
 
 extension Idioma {
     /// El código ISO 639 del idioma: «es», «en», «ca», «gl», «ast», «an», «eu», «pt», «fr», «oc», «it», «de»,
-    /// «el» y «ru».
-    public var codigo: String {
-        switch self {
-        case .espanol: return "es"
-        case .ingles: return "en"
-        case .catalan: return "ca"
-        case .gallego: return "gl"
-        case .asturiano: return "ast"
-        case .aragones: return "an"
-        case .euskera: return "eu"
-        case .portugues: return "pt"
-        case .frances: return "fr"
-        case .occitano: return "oc"
-        case .italiano: return "it"
-        case .aleman: return "de"
-        case .griego: return "el"
-        case .ruso: return "ru"
-        }
-    }
+    /// «el» y «ru». Está en sus ``ReglasDeIdioma``.
+    public var codigo: String { reglas.codigo }
 
     /// El idioma de un código ISO 639 («ast») o de una etiqueta de idioma con región («ca-ES», «pt_BR»), sin
     /// importar las mayúsculas; `nil` si no es uno de los catorce.
@@ -318,25 +304,11 @@ extension Idioma {
     }
 
     /// Cómo se escribe el nombre del idioma, en minúsculas: en español, con y sin tildes, y en el propio idioma
-    /// («euskera», «euskara»; «alemán», «aleman», «deutsch»).
-    public var nombres: [String] {
-        switch self {
-        case .espanol: return ["espanol", "español", "castellano"]
-        case .ingles: return ["ingles", "inglés", "english"]
-        case .catalan: return ["catalan", "catalán", "català"]
-        case .gallego: return ["gallego", "galego"]
-        case .asturiano: return ["asturiano", "asturianu"]
-        case .aragones: return ["aragones", "aragonés"]
-        case .euskera: return ["euskera", "euskara"]
-        case .portugues: return ["portugues", "portugués", "português"]
-        case .frances: return ["frances", "francés", "français", "francais"]
-        case .occitano: return ["occitano", "occitan"]
-        case .italiano: return ["italiano"]
-        case .aleman: return ["aleman", "alemán", "deutsch"]
-        case .griego: return ["griego", "ελληνικά"]
-        case .ruso: return ["ruso", "русский"]
-        }
-    }
+    /// («euskera», «euskara»; «alemán», «aleman», «deutsch»). Están en sus ``ReglasDeIdioma``.
+    public var nombres: [String] { reglas.nombres }
+
+    /// Cómo se llama el idioma en el propio idioma: «Español», «Euskara», «Deutsch», «Ελληνικά».
+    public var nombrePropio: String { reglas.nombrePropio }
 
     /// El idioma de un código (como `init?(codigo:)`: «eu», «pt-BR») o de uno de sus `nombres` («euskara»,
     /// «Deutsch»), sin importar las mayúsculas; `nil` si no es uno de los catorce.

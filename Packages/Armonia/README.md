@@ -222,8 +222,9 @@ siguen junto a su catálogo, en los catorce idiomas (los de las escalas en los q
 un fichero por idioma en `ArmoniaTeoria/Escalas/Nombres/`, `NombresDeEscalas+Catalan.swift`…, con los alias con que también se leen;
 `Scripts/comprobar_catalogo.py` vigila que no falte ninguno, y `Scripts/nombres_de_escalas/` tiene las herramientas con que se sembraron).
 
-Para añadir un idioma: un caso en `Idioma` (con su `codigo`) y en `EscrituraDeNotas` (con su constante en
-`Notacion`), un campo en `Traducido`, y corregir lo que el compilador señale: ningún `switch` sobre el
+Para añadir un idioma: un caso en `Idioma`, su fila en `ReglasDeIdioma` (código, nombre, sílabas, alteraciones y
+modos) y en `Scripts/idiomas.py`, un caso en `EscrituraDeNotas` (con su constante en `Notacion`), un campo en
+`Traducido`, un fichero en cada `Textos/`, y corregir lo que el compilador señale: ningún `switch` sobre el
 idioma o la escritura tiene `default`, y cada `Traduccion` sin el idioma nuevo deja de compilar.
 
 Las pruebas rápidas están en `Tests/ArmoniaTests/`, un fichero por carpeta de fuentes

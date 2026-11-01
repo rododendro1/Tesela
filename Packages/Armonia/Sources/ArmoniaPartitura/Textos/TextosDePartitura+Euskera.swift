@@ -61,6 +61,7 @@ extension TextosDePartitura {
         claveDeDoEnTercera: "do giltza hirugarren lerroan",
         claveDeDoEnCuarta: "do giltza laugarren lerroan",
         // Pentagrama.swift (InstrumentoDePartitura)
+        instrumentosPropiosEnIngles: false,
         instrumentoPiano: "pianoa",
         instrumentoFlauta: "flauta",
         instrumentoFlautin: "pikoloa",

@@ -66,6 +66,8 @@ struct TextosDePartitura: TextosTraducidos {
     let claveDeDoEnCuarta: String
 
     // MARK: Pentagrama.swift (InstrumentoDePartitura)
+    /// Si un instrumento propio se llama por su nombre inglés (`nombreEnIngles`) y no por el español.
+    let instrumentosPropiosEnIngles: Bool
     let instrumentoPiano: String
     let instrumentoFlauta: String
     let instrumentoFlautin: String

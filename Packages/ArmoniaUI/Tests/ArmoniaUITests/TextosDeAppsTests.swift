@@ -217,6 +217,22 @@ final class TextosDeAppsTests: XCTestCase {
         XCTAssertEqual(Notacion.euskera.texto { $0.casillas(19) }, "19 gelaxka")
     }
 
+    /// Las claves con que se guardan los idiomas en los ajustes no cambian: son los nombres de los casos.
+    func testLasClavesYLosNombresDeLosIdiomas() {
+        XCTAssertEqual(
+            Idioma.allCases.map(\.clave),
+            [
+                "espanol", "ingles", "catalan", "gallego", "asturiano", "aragones", "euskera", "portugues", "frances",
+                "occitano", "italiano", "aleman", "griego", "ruso",
+            ])
+        XCTAssertEqual(
+            Idioma.allCases.map(\.titulo),
+            [
+                "Español", "English", "Català", "Galego", "Asturianu", "Aragonés", "Euskara", "Português", "Français",
+                "Occitan", "Italiano", "Deutsch", "Ελληνικά", "Русский",
+            ])
+    }
+
     func testLaNotacionInicialEsLaDelSistema() {
         XCTAssertEqual(Notacion.delSistema(idiomas: ["ca-ES", "es-ES"]), .catalan)
         XCTAssertEqual(Notacion.delSistema(idiomas: ["en-GB"]), .inglesASCII)

@@ -63,6 +63,22 @@ final class TraducidoTests: XCTestCase {
         XCTAssertNil(Idioma(codigo: "ja"))
     }
 
+    /// El código, los nombres y los modos de cada idioma salen de sus `ReglasDeIdioma`.
+    func testLosDatosDeCadaIdioma() {
+        XCTAssertEqual(Idioma(rawValue: "euskera"), .euskera)
+        XCTAssertEqual(Idioma.aleman.rawValue, "aleman")
+        XCTAssertEqual(Idioma.griego.nombrePropio, "Ελληνικά")
+        XCTAssertEqual(Idioma.asturiano.codigo, "ast")
+        for idioma in Idioma.allCases {
+            XCTAssertTrue(idioma.nombres.contains(idioma.nombrePropio.lowercased()), idioma.codigo)
+            XCTAssertNotEqual(idioma.reglas.mayor, idioma.reglas.menor, idioma.codigo)
+        }
+        XCTAssertEqual(Tonalidad(.la, .menor).nombre(en: .aleman), "a-Moll")
+        XCTAssertEqual(Tonalidad(.do, .mayor).nombre(en: .aleman), "C-Dur")
+        XCTAssertEqual(Tonalidad(.la, .menor).nombre(en: .euskera), "la minorra")
+        XCTAssertEqual(Tonalidad.Modo.mayor.nombre(en: .asturiano), "mayor")
+    }
+
     func testElIdiomaPorSuNombre() {
         for idioma in Idioma.allCases {
             XCTAssertEqual(Idioma(nombre: idioma.codigo), idioma, idioma.codigo)

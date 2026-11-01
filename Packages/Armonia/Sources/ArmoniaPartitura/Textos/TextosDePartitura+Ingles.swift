@@ -61,6 +61,7 @@ extension TextosDePartitura {
         claveDeDoEnTercera: "alto clef",
         claveDeDoEnCuarta: "tenor clef",
         // Pentagrama.swift (InstrumentoDePartitura)
+        instrumentosPropiosEnIngles: true,
         instrumentoPiano: "piano",
         instrumentoFlauta: "flute",
         instrumentoFlautin: "piccolo",

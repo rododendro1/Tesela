@@ -61,6 +61,7 @@ extension TextosDePartitura {
         claveDeDoEnTercera: "κλειδί του ντο στην τρίτη γραμμή",
         claveDeDoEnCuarta: "κλειδί του ντο στην τέταρτη γραμμή",
         // Pentagrama.swift (InstrumentoDePartitura)
+        instrumentosPropiosEnIngles: true,
         instrumentoPiano: "πιάνο",
         instrumentoFlauta: "φλάουτο",
         instrumentoFlautin: "πίκολο",

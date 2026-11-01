@@ -229,22 +229,10 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
 extension Tonalidad.Modo {
     public var nombre: String { self == .mayor ? "mayor" : "menor" }
 
+    /// «mayor», «major», «Dur», «maiorra»…: el de las ``ReglasDeIdioma`` del idioma de las notas.
     public func nombre(en notacion: Notacion) -> String {
-        switch notacion.idiomaDeLasNotas {
-        case .espanol: return nombre
-        case .ingles: return self == .mayor ? "major" : "minor"
-        case .catalan: return self == .mayor ? "major" : "menor"
-        case .gallego: return self == .mayor ? "maior" : "menor"
-        case .euskera: return self == .mayor ? "maiorra" : "minorra"
-        case .portugues: return self == .mayor ? "maior" : "menor"
-        case .frances: return self == .mayor ? "majeur" : "mineur"
-        case .occitano: return self == .mayor ? "major" : "menor"
-        case .italiano: return self == .mayor ? "maggiore" : "minore"
-        case .aleman: return self == .mayor ? "Dur" : "Moll"
-        case .griego: return self == .mayor ? "μείζονα" : "ελάσσονα"
-        case .ruso: return self == .mayor ? "мажор" : "минор"
-        case .asturiano, .aragones: return nombre
-        }
+        let reglas = notacion.idiomaDeLasNotas.reglas
+        return self == .mayor ? reglas.mayor : reglas.menor
     }
 }
 
@@ -255,11 +243,11 @@ extension Tonalidad {
     /// si es menor), "la mineur" en francés, "la minore" en italiano, "ля минор" en ruso, "λα ελάσσονα"
     /// en griego.
     public func nombre(en notacion: Notacion) -> String {
-        guard notacion.idiomaDeLasNotas == .aleman else {
-            return "\(tonica.nombre(en: notacion)) \(modo.nombre(en: notacion))"
-        }
-        let nombreTonica = tonica.nombre(en: .aleman)
-        return (modo == .menor ? nombreTonica.lowercased() : nombreTonica) + "-" + modo.nombre(en: .aleman)
+        let reglas = notacion.idiomaDeLasNotas.reglas
+        let nombreTonica = tonica.nombre(en: notacion)
+        let enMinuscula = modo == .menor && reglas.menorEnMinuscula
+        return (enMinuscula ? nombreTonica.lowercased() : nombreTonica) + reglas.separadorDelModo
+            + modo.nombre(en: notacion)
     }
 }
 
