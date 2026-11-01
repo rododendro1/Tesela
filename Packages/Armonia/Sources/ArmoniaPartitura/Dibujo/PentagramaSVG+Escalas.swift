@@ -48,7 +48,7 @@ extension Acorde {
         case .cerrada: abierta = false
         case .abierta: abierta = true
         case .automatica:
-            let ambito = cerrada.map(\.midi).extremos(siNoHay: 0...0)
+            let ambito = cerrada.map(\.midi).extremosOSi(noHay: 0...0)
             abierta = ambito.upperBound - ambito.lowerBound >= 17
         }
         var alturas = cerrada

@@ -324,7 +324,7 @@ public struct Tonnetz: Hashable, Sendable {
         var colocados: [Int: PuntoDeLaRed] = [primero: inicial]
         var pendientes = Array(elementos.dropFirst())
         while !pendientes.isEmpty {
-            let filas = colocados.values.map(\.terceras).extremos(siNoHay: 0...0)
+            let filas = colocados.values.map(\.terceras).extremosOSi(noHay: 0...0)
             let cerca = (filas.lowerBound - 3)...(filas.upperBound + 3)
             var mejor = ElMejor<(indice: Int, punto: PuntoDeLaRed), (Int, Int, Int)>(por: <)
             for (i, elemento) in pendientes.enumerated() {
@@ -373,12 +373,12 @@ public struct Tonnetz: Hashable, Sendable {
 
         // La ventana: un rectángulo alrededor de las notas.
         let base = puntos.isEmpty ? [PuntoDeLaRed(quintas: 0, terceras: 0)] : puntos
-        let tercerasDeLaBase = base.map(\.terceras).extremos(siNoHay: 0...0)
+        let tercerasDeLaBase = base.map(\.terceras).extremosOSi(noHay: 0...0)
         let filas = (tercerasDeLaBase.lowerBound - margen)...(tercerasDeLaBase.upperBound + margen)
         // En unidades de `paso` y con la fórmula exacta (a + b/2), no con `x`: los bordes caen en
         // medios enteros y un error de redondeo cambiaría las columnas que se dibujan.
         func columna(_ p: PuntoDeLaRed) -> Double { Double(p.quintas) + Double(p.terceras) / 2 }
-        let columnas = base.map(columna).extremos(siNoHay: 0...0)
+        let columnas = base.map(columna).extremosOSi(noHay: 0...0)
         let minX = (columnas.lowerBound - Double(margen) - 0.5) * paso
         let maxX = (columnas.upperBound + Double(margen) + 0.5) * paso
         var red: [PuntoDeLaRed] = []

@@ -182,7 +182,7 @@ public struct TablaArmonica: Hashable, Sendable {
 
         // La ventana: un rectángulo alrededor de las notas.
         let base = puntos.isEmpty ? [PuntoDeLaRed(quintas: 0, terceras: 0)] : puntos
-        let (xs, ys) = (base.map(x).extremos(siNoHay: 0...0), base.map(y).extremos(siNoHay: 0...0))
+        let (xs, ys) = (base.map(x).extremosOSi(noHay: 0...0), base.map(y).extremosOSi(noHay: 0...0))
         let minX = xs.lowerBound - Double(margen) * coseno * paso - paso * 0.1
         let maxX = xs.upperBound + Double(margen) * coseno * paso + paso * 0.1
         let minY = ys.lowerBound - Double(margen) * paso - paso * 0.1

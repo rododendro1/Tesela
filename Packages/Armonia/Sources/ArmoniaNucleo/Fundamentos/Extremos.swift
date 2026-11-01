@@ -14,17 +14,17 @@ extension Sequence where Element: Comparable {
 
     /// Los extremos, o `vacio` si no hay ningún valor; sin `??`, para que la rama que no se da no cuente como una
     /// función sin probar.
-    package func extremos(siNoHay vacio: ClosedRange<Element>) -> ClosedRange<Element> {
-        guard let extremos else { return vacio }
-        return extremos
+    package func extremosOSi(noHay vacio: ClosedRange<Element>) -> ClosedRange<Element> {
+        guard let rango = self.extremos else { return vacio }
+        return rango
     }
 }
 
 extension Sequence {
     /// El menor elemento según `antes`, o `valor` si no hay ninguno: el `min(by:) ?? valor` de una colección que
     /// nunca está vacía.
-    package func menor(siNoHay valor: Element, por antes: (Element, Element) throws -> Bool) rethrows -> Element {
-        guard let menor = try self.min(by: antes) else { return valor }
-        return menor
+    package func menor(siNoHay valor: Element, por antes: (Element, Element) -> Bool) -> Element {
+        guard let elMenor = self.min(by: antes) else { return valor }
+        return elMenor
     }
 }
