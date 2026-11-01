@@ -73,6 +73,18 @@ public struct Traducido<Valor> {
             el: valor(.delIdioma(.griego)), ru: valor(.delIdioma(.ruso)))
     }
 
+    /// El valor de cada idioma, calculado a partir del idioma: para los datos que no dependen de cómo se escriben
+    /// las notas.
+    ///
+    ///     let codigos = Traducido(porIdioma: { $0.codigo })
+    ///     codigos.texto(en: .asturiano)    // "ast"
+    public init(porIdioma valor: (Idioma) -> Valor) {
+        self.init(
+            valor(.espanol), valor(.ingles), ca: valor(.catalan), gl: valor(.gallego), ast: valor(.asturiano),
+            an: valor(.aragones), eu: valor(.euskera), pt: valor(.portugues), fr: valor(.frances),
+            oc: valor(.occitano), it: valor(.italiano), de: valor(.aleman), el: valor(.griego), ru: valor(.ruso))
+    }
+
     /// Los catorce valores, en el orden del inicializador.
     package var todos: [Valor] {
         [
@@ -176,19 +188,15 @@ extension String {
 
 extension Traduccion {
     /// El plural ruso de un número: "1 полутон", "3 полутона", "5 полутонов", "21 полутон".
+    @available(*, deprecated, message: "Usa Idioma.ruso.contar(n, uno, pocos, muchos)")
     public static func pluralRuso(_ n: Int, _ uno: String, _ pocos: String, _ muchos: String) -> String {
-        let (decena, unidad) = (abs(n) % 100, abs(n) % 10)
-        if (11...14).contains(decena) { return "\(n) \(muchos)" }
-        switch unidad {
-        case 1: return "\(n) \(uno)"
-        case 2...4: return "\(n) \(pocos)"
-        default: return "\(n) \(muchos)"
-        }
+        ReglasDeIdioma.Plural.eslavo.contar(n, [uno, pocos, muchos])
     }
 }
 
 extension Idioma {
-    /// Idiomas en los que el motor escribe sus textos: todos, en el orden del selector de las apps.
+    /// Idiomas en los que el motor escribe sus textos: todos, en el orden de `allCases`.
+    @available(*, deprecated, renamed: "allCases", message: "Es igual que Idioma.allCases, en el mismo orden")
     public static let traducidos: [Idioma] = [
         .espanol, .ingles, .catalan, .gallego, .asturiano, .aragones,
         .euskera, .portugues, .frances, .occitano, .italiano, .aleman,

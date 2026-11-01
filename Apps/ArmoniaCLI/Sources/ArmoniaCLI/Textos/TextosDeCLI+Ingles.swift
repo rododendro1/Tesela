@@ -210,15 +210,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "omits \(notas)" },
         mensajeSemitonos: { n in "\(n) semitones" },
         mensajeSinAlteraciones: "no sharps or flats",
-        mensajeSostenidos: { n in n == 1 ? "1 sharp" : "\(n) sharps" },
-        mensajeBemoles: { n in n == 1 ? "1 flat" : "\(n) flats" },
+        mensajeSostenidos: { n in Idioma.ingles.contar(n, "sharp", "sharps") },
+        mensajeBemoles: { n in Idioma.ingles.contar(n, "flat", "flats") },
         mensajeACuatroVoces: "In four parts (bass, tenor, alto, soprano):",
         mensajeSinDigitaciones: "no comfortable fingerings found",
-        mensajeDedos: { n in n == 1 ? "1 finger" : "\(n) fingers" },
+        mensajeDedos: { n in Idioma.ingles.contar(n, "finger", "fingers") },
         mensajeCejilla: { traste in "barre at fret \(traste)" },
         mensajeNingunPaso: "no steps",
         mensajeUnPaso: "1 step",
         mensajePasos: { n in "\(n) steps" },
-        mensajeTriadas: { n in n == 1 ? "1 triad" : "\(n) triads" }
+        mensajeTriadas: { n in Idioma.ingles.contar(n, "triad", "triads") }
     )
 }

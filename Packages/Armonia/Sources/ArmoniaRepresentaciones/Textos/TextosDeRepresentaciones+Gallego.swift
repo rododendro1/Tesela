@@ -1,5 +1,6 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaRepresentaciones en gallego. Los campos y lo que significa cada uno están en
 // `TextosDeRepresentaciones.swift`.
 
@@ -39,7 +40,7 @@ extension TextosDeRepresentaciones {
         cicloLR: "ciclo LR",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in n == 1 ? "1 semiton" : "\(n) semitons" },
+        semitonos: { n in Idioma.gallego.contar(n, "semiton", "semitons") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "homónima",

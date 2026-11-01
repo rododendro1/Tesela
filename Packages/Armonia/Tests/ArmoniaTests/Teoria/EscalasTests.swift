@@ -499,7 +499,7 @@ final class EscalasTradicionalesTests: XCTestCase {
         XCTAssertEqual(Escala(texto: "C chromatic with one flat"), Escala(.do, .cromaticaConUnBemol))
         for tipo in seis {
             XCTAssertTrue(TipoDeEscala.todos.contains(tipo), tipo.nombre)
-            for idioma in Idioma.traducidos {
+            for idioma in Idioma.allCases {
                 let notacion = Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false))
                 let escala = Escala(Nota("Fa#"), tipo)
                 XCTAssertEqual(
@@ -507,7 +507,7 @@ final class EscalasTradicionalesTests: XCTestCase {
             }
         }
         // Las seis tienen nombres distintos en cada idioma.
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             let nombres = seis.map {
                 $0.nombre(en: Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false)))
             }

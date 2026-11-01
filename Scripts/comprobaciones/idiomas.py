@@ -25,7 +25,7 @@ def comprobar():
     """Las filas de `ReglasDeIdioma` siguen el orden de `Idioma`, cada una con su código, y los códigos y los
     ficheros son los de `IDIOMAS` (el fichero es el caso con mayúscula: `euskera` → `Euskera`)."""
     enumerado = re.search(r"public enum Idioma\b[^{]*\{(.*?)\n\}", NOTACION.read_text(encoding="utf-8"), re.S)
-    filas = re.search(r"public var reglas: ReglasDeIdioma \{(.*?)\n    \}", REGLAS.read_text(encoding="utf-8"), re.S)
+    filas = re.search(r"private var reglasCalculadas: ReglasDeIdioma \{(.*?)\n    \}", REGLAS.read_text(encoding="utf-8"), re.S)
     if enumerado is None or filas is None:
         return False
     casos = re.findall(r"^    case (\w+)$", enumerado.group(1), re.M)

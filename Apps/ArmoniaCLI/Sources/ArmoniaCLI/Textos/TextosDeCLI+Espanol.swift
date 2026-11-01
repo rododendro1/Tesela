@@ -210,15 +210,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "sin \(notas)" },
         mensajeSemitonos: { n in "\(n) semitonos" },
         mensajeSinAlteraciones: "sin alteraciones",
-        mensajeSostenidos: { n in n == 1 ? "1 sostenido" : "\(n) sostenidos" },
-        mensajeBemoles: { n in n == 1 ? "1 bemol" : "\(n) bemoles" },
+        mensajeSostenidos: { n in Idioma.espanol.contar(n, "sostenido", "sostenidos") },
+        mensajeBemoles: { n in Idioma.espanol.contar(n, "bemol", "bemoles") },
         mensajeACuatroVoces: "A cuatro voces (bajo, tenor, contralto, soprano):",
         mensajeSinDigitaciones: "no hay digitaciones cómodas",
-        mensajeDedos: { n in n == 1 ? "1 dedo" : "\(n) dedos" },
+        mensajeDedos: { n in Idioma.espanol.contar(n, "dedo", "dedos") },
         mensajeCejilla: { traste in "cejilla en el traste \(traste)" },
         mensajeNingunPaso: "ningún paso",
         mensajeUnPaso: "1 paso",
         mensajePasos: { n in "\(n) pasos" },
-        mensajeTriadas: { n in n == 1 ? "1 tríada" : "\(n) tríadas" }
+        mensajeTriadas: { n in Idioma.espanol.contar(n, "tríada", "tríadas") }
     )
 }

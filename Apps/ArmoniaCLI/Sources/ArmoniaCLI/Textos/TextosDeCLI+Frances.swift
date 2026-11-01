@@ -209,15 +209,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "sans \(notas)" },
         mensajeSemitonos: { n in "\(n) demi-tons" },
         mensajeSinAlteraciones: "sans altérations",
-        mensajeSostenidos: { n in n == 1 ? "1 dièse" : "\(n) dièses" },
-        mensajeBemoles: { n in n == 1 ? "1 bémol" : "\(n) bémols" },
+        mensajeSostenidos: { n in Idioma.frances.contar(n, "dièse", "dièses") },
+        mensajeBemoles: { n in Idioma.frances.contar(n, "bémol", "bémols") },
         mensajeACuatroVoces: "À quatre voix (basse, ténor, alto, soprano) :",
         mensajeSinDigitaciones: "aucun doigté confortable",
-        mensajeDedos: { n in n == 1 ? "1 doigt" : "\(n) doigts" },
+        mensajeDedos: { n in Idioma.frances.contar(n, "doigt", "doigts") },
         mensajeCejilla: { traste in "barré à la case \(traste)" },
         mensajeNingunPaso: "aucune étape",
         mensajeUnPaso: "1 étape",
         mensajePasos: { n in "\(n) étapes" },
-        mensajeTriadas: { n in n == 1 ? "1 triade" : "\(n) triades" }
+        mensajeTriadas: { n in Idioma.frances.contar(n, "triade", "triades") }
     )
 }

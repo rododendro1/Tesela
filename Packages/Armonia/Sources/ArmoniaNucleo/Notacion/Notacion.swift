@@ -123,13 +123,10 @@ public struct Notacion: Hashable, Sendable, CaseIterable {
 
     /// Idioma de las abreviaturas de los intervalos (5J, P5), que solo están en español e inglés:
     /// español en español, catalán, gallego, asturiano, aragonés, euskera, portugués y occitano; inglés en
-    /// las demás. Los demás textos siguen `textos`.
+    /// las demás (``ReglasDeIdioma/abreviaturas``). Los demás textos siguen `textos`.
     public var idiomaDeLasAbreviaturas: Idioma {
-        // Con los textos en otro idioma manda ese; si no, el de las notas (el occitano usa las españolas).
-        switch esCombinada ? textos : idiomaDeLasNotas {
-        case .espanol, .catalan, .gallego, .asturiano, .aragones, .euskera, .portugues, .occitano: return .espanol
-        case .ingles, .frances, .italiano, .aleman, .griego, .ruso: return .ingles
-        }
+        // Con los textos en otro idioma manda ese; si no, el de las notas.
+        (esCombinada ? textos : idiomaDeLasNotas).reglas.abreviaturas
     }
 
     /// Cómo se escriben los signos de las alteraciones. En las notaciones que escriben las alteraciones
@@ -267,12 +264,20 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
 ///
 /// Su `rawValue` es el nombre del caso («euskera», «aleman»), que las apps guardan en los ajustes.
 ///
-/// Para añadir uno: un caso aquí, su fila en ``ReglasDeIdioma`` (su código, cómo se llama, las sílabas, cómo se le pega
-/// la alteración y los modos) y en `Scripts/comprobaciones/idiomas.py`, un caso en `EscrituraDeNotas` (con su constante
-/// en `Notacion` y su `escrituraDeLaAlteracion`) y un campo en `Traducido`. Los nombres de nota y los datos del idioma
-/// no tienen más `switch` sobre `Idioma` que el de las reglas. Ningún `switch` sobre `Idioma` o `EscrituraDeNotas`
-/// tiene `default`, así que el compilador señala lo que falta, y cada `Traduccion` sin el idioma nuevo deja de
-/// compilar.
+/// Para añadir uno:
+///
+/// 1. Un caso aquí.
+/// 2. Su fila en ``ReglasDeIdioma``: su código, cómo se llama, las sílabas, cómo se le pega la alteración, los modos,
+///    las abreviaturas de los intervalos y el plural.
+/// 3. Su fila en `Scripts/comprobaciones/idiomas.py`.
+/// 4. Un campo en `Traducido`, con su argumento en los inicializadores y su caso en `texto(en:)`.
+/// 5. Las constantes `EscrituraDeNotas.<idioma>` y `Notacion.<idioma>`. Las escrituras de `allCases` salen solas de
+///    las reglas.
+/// 6. Un fichero de textos por módulo en cada carpeta `Textos/`, que `comprobar_traducciones` busca.
+///
+/// Los nombres de nota y los datos del idioma no tienen más `switch` sobre `Idioma` que el de las reglas y el de
+/// `Traducido`. Ninguno tiene `default`, así que el compilador señala lo que falta, y cada `TextosDeX` sin el idioma
+/// nuevo deja de compilar.
 public enum Idioma: String, Hashable, Sendable, CaseIterable {
     case espanol
     case ingles
@@ -311,14 +316,19 @@ extension Idioma {
     public var nombrePropio: String { reglas.nombrePropio }
 
     /// El idioma de un código (como `init?(codigo:)`: «eu», «pt-BR») o de uno de sus `nombres` («euskara»,
-    /// «Deutsch»), sin importar las mayúsculas; `nil` si no es uno de los catorce.
+    /// «Deutsch»), sin importar las mayúsculas ni las tildes («aleman», «FRANCAIS», «ελληνικα»); `nil` si no es uno
+    /// de los catorce.
     public init?(nombre: String) {
         if let idioma = Idioma(codigo: nombre) {
             self = idioma
             return
         }
-        let texto = nombre.lowercased()
-        guard let encontrado = Idioma.allCases.first(where: { $0.nombres.contains(texto) }) else { return nil }
+        guard let encontrado = Idioma.porNombre[nombre.claveDeBusqueda] else { return nil }
         self = encontrado
     }
+
+    /// Cada nombre de idioma, sin tildes (`claveDeBusqueda`), con su idioma.
+    private static let porNombre: [String: Idioma] = Dictionary(
+        Idioma.allCases.flatMap { idioma in idioma.nombres.map { ($0.claveDeBusqueda, idioma) } },
+        uniquingKeysWith: { primero, _ in primero })
 }

@@ -1,5 +1,6 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaRepresentaciones en asturiano. Los campos y lo que significa cada uno están en
 // `TextosDeRepresentaciones.swift`.
 
@@ -39,7 +40,7 @@ extension TextosDeRepresentaciones {
         cicloLR: "ciclu LR",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in n == 1 ? "1 semitonu" : "\(n) semitonos" },
+        semitonos: { n in Idioma.asturiano.contar(n, "semitonu", "semitonos") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "homónima",

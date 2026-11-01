@@ -67,7 +67,7 @@ final class ArpegioTests: XCTestCase {
         XCTAssertTrue(arpegio.nombre.hasPrefix("Arpegio de Do"), arpegio.nombre)
         XCTAssertTrue(arpegio.nombre(en: .inglesASCII).hasSuffix(" arpeggio"))
         XCTAssertTrue(arpegio.nombre(en: .aleman).hasPrefix("Arpeggio: "))
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
             XCTAssertFalse(arpegio.nombre(en: notacion).contains("{}"), "\(idioma)")
             XCTAssertTrue(arpegio.nombre(en: notacion).count > Acorde("Do").nombre(en: notacion).count, "\(idioma)")
@@ -86,7 +86,7 @@ final class ArpegioTests: XCTestCase {
         XCTAssertEqual(Arpegio.Patron(leyendo: "aufwarts"), .ascendente)
         XCTAssertEqual(Arpegio.Patron(leyendo: "ВОСХОДЯЩИЙ"), .ascendente)
         XCTAssertNil(Arpegio.Patron(leyendo: "zigzag"))
-        for idioma in Idioma.traducidos {
+        for idioma in Idioma.allCases {
             for patron in Arpegio.Patron.allCases {
                 let nombre = patron.nombre(en: Notacion.espanolUnicode.conTextos(en: idioma))
                 XCTAssertEqual(Arpegio.Patron(leyendo: nombre), patron, "\(nombre) (\(idioma))")

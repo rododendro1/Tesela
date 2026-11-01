@@ -209,15 +209,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "sin \(notas)" },
         mensajeSemitonos: { n in "\(n) semitonos" },
         mensajeSinAlteraciones: "sin alteracions",
-        mensajeSostenidos: { n in n == 1 ? "1 sosteniu" : "\(n) sostenius" },
-        mensajeBemoles: { n in n == 1 ? "1 bemol" : "\(n) bemols" },
+        mensajeSostenidos: { n in Idioma.aragones.contar(n, "sosteniu", "sostenius") },
+        mensajeBemoles: { n in Idioma.aragones.contar(n, "bemol", "bemols") },
         mensajeACuatroVoces: "A cuatro voces (baixo, tenor, contralto, soprano):",
         mensajeSinDigitaciones: "no bi ha digitacions cómodas",
-        mensajeDedos: { n in n == 1 ? "1 dido" : "\(n) didos" },
+        mensajeDedos: { n in Idioma.aragones.contar(n, "dido", "didos") },
         mensajeCejilla: { traste in "ceja en o traste \(traste)" },
         mensajeNingunPaso: "garra paso",
         mensajeUnPaso: "1 paso",
         mensajePasos: { n in "\(n) pasos" },
-        mensajeTriadas: { n in n == 1 ? "1 tríada" : "\(n) tríadas" }
+        mensajeTriadas: { n in Idioma.aragones.contar(n, "tríada", "tríadas") }
     )
 }

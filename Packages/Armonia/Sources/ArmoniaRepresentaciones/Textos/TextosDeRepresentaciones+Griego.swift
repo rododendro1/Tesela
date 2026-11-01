@@ -1,5 +1,6 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaRepresentaciones en griego. Los campos y lo que significa cada uno están en
 // `TextosDeRepresentaciones.swift`.
 
@@ -39,7 +40,7 @@ extension TextosDeRepresentaciones {
         cicloLR: "κύκλος LR",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in n == 1 ? "1 ημιτόνιο" : "\(n) ημιτόνια" },
+        semitonos: { n in Idioma.griego.contar(n, "ημιτόνιο", "ημιτόνια") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "ομώνυμη",

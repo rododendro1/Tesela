@@ -209,15 +209,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "sem \(notas)" },
         mensajeSemitonos: { n in "\(n) meios-tons" },
         mensajeSinAlteraciones: "sem alterações",
-        mensajeSostenidos: { n in n == 1 ? "1 sustenido" : "\(n) sustenidos" },
-        mensajeBemoles: { n in n == 1 ? "1 bemol" : "\(n) bemóis" },
+        mensajeSostenidos: { n in Idioma.portugues.contar(n, "sustenido", "sustenidos") },
+        mensajeBemoles: { n in Idioma.portugues.contar(n, "bemol", "bemóis") },
         mensajeACuatroVoces: "A quatro vozes (baixo, tenor, contralto, soprano):",
         mensajeSinDigitaciones: "não há dedilhações confortáveis",
-        mensajeDedos: { n in n == 1 ? "1 dedo" : "\(n) dedos" },
+        mensajeDedos: { n in Idioma.portugues.contar(n, "dedo", "dedos") },
         mensajeCejilla: { traste in "pestana no traste \(traste)" },
         mensajeNingunPaso: "nenhum passo",
         mensajeUnPaso: "1 passo",
         mensajePasos: { n in "\(n) passos" },
-        mensajeTriadas: { n in n == 1 ? "1 tríade" : "\(n) tríades" }
+        mensajeTriadas: { n in Idioma.portugues.contar(n, "tríade", "tríades") }
     )
 }

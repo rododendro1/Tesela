@@ -209,15 +209,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "ensin \(notas)" },
         mensajeSemitonos: { n in "\(n) semitonos" },
         mensajeSinAlteraciones: "ensin alteraciones",
-        mensajeSostenidos: { n in n == 1 ? "1 sosteníu" : "\(n) sosteníos" },
-        mensajeBemoles: { n in n == 1 ? "1 bemol" : "\(n) bemoles" },
+        mensajeSostenidos: { n in Idioma.asturiano.contar(n, "sosteníu", "sosteníos") },
+        mensajeBemoles: { n in Idioma.asturiano.contar(n, "bemol", "bemoles") },
         mensajeACuatroVoces: "A cuatro voces (baxu, tenor, contraltu, soprano):",
         mensajeSinDigitaciones: "nun hai digitaciones cómodes",
-        mensajeDedos: { n in n == 1 ? "1 deu" : "\(n) deos" },
+        mensajeDedos: { n in Idioma.asturiano.contar(n, "deu", "deos") },
         mensajeCejilla: { traste in "ceya nel traste \(traste)" },
         mensajeNingunPaso: "nengún pasu",
         mensajeUnPaso: "1 pasu",
         mensajePasos: { n in "\(n) pasos" },
-        mensajeTriadas: { n in n == 1 ? "1 tríada" : "\(n) tríades" }
+        mensajeTriadas: { n in Idioma.asturiano.contar(n, "tríada", "tríades") }
     )
 }

@@ -209,15 +209,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "sense \(notas)" },
         mensajeSemitonos: { n in "\(n) semitons" },
         mensajeSinAlteraciones: "sense alteracions",
-        mensajeSostenidos: { n in n == 1 ? "1 sostingut" : "\(n) sostinguts" },
-        mensajeBemoles: { n in n == 1 ? "1 bemoll" : "\(n) bemolls" },
+        mensajeSostenidos: { n in Idioma.catalan.contar(n, "sostingut", "sostinguts") },
+        mensajeBemoles: { n in Idioma.catalan.contar(n, "bemoll", "bemolls") },
         mensajeACuatroVoces: "A quatre veus (baix, tenor, contralt, soprano):",
         mensajeSinDigitaciones: "no hi ha digitacions còmodes",
-        mensajeDedos: { n in n == 1 ? "1 dit" : "\(n) dits" },
+        mensajeDedos: { n in Idioma.catalan.contar(n, "dit", "dits") },
         mensajeCejilla: { traste in "celleta al trast \(traste)" },
         mensajeNingunPaso: "cap pas",
         mensajeUnPaso: "1 pas",
         mensajePasos: { n in "\(n) passos" },
-        mensajeTriadas: { n in n == 1 ? "1 tríada" : "\(n) tríades" }
+        mensajeTriadas: { n in Idioma.catalan.contar(n, "tríada", "tríades") }
     )
 }

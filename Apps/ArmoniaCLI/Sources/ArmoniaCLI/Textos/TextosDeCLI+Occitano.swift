@@ -209,15 +209,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "sens \(notas)" },
         mensajeSemitonos: { n in "\(n) semitons" },
         mensajeSinAlteraciones: "sens alteracions",
-        mensajeSostenidos: { n in n == 1 ? "1 diesi" : "\(n) dièsis" },
-        mensajeBemoles: { n in n == 1 ? "1 bemòl" : "\(n) bemòls" },
+        mensajeSostenidos: { n in Idioma.occitano.contar(n, "diesi", "dièsis") },
+        mensajeBemoles: { n in Idioma.occitano.contar(n, "bemòl", "bemòls") },
         mensajeACuatroVoces: "A quatre voses (bassa, tenor, contralt, soprano):",
         mensajeSinDigitaciones: "i a pas de digitacions comòdas",
-        mensajeDedos: { n in n == 1 ? "1 det" : "\(n) dets" },
+        mensajeDedos: { n in Idioma.occitano.contar(n, "det", "dets") },
         mensajeCejilla: { traste in "barra al trast \(traste)" },
         mensajeNingunPaso: "cap de pas",
         mensajeUnPaso: "1 pas",
         mensajePasos: { n in "\(n) passes" },
-        mensajeTriadas: { n in n == 1 ? "1 triada" : "\(n) triadas" }
+        mensajeTriadas: { n in Idioma.occitano.contar(n, "triada", "triadas") }
     )
 }

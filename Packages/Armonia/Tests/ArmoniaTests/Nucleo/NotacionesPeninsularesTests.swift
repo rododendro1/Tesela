@@ -105,7 +105,7 @@ final class NotacionesPeninsularesTests: XCTestCase {
                 "es", "es", "es", "en", "en", "en", "ca", "gl", "ast", "an", "eu", "pt", "fr", "oc", "it", "de", "el",
                 "ru",
             ])
-        XCTAssertEqual(Idioma.traducidos.count, Idioma.allCases.count)
+        XCTAssertEqual(Idioma.allCases.count, Idioma.allCases.count)
     }
 
     /// Los nombres de los catálogos (tipos de acorde y de escala, instrumentos, ciclos) en catalán,

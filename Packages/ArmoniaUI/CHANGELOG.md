@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- Los textos con un número usan `Idioma.contar`, con el plural de cada idioma: en francés, «0 note par corde»
+  en vez de «0 notes». El selector de idioma recorre `Idioma.allCases`.
 - Desaparece `TextoDeLasApps`: sus casos solo llevaban a un campo de `TextosDeApps`, que pasa a ser público. Un texto
   de las apps se lee con `notacion.texto(\.digitaciones)` o `notacion.texto { $0.notasPorCuerda(3) }`, y los campos
   con ejemplos en la notación con `notacion.campo(.cifrado)` (`CampoDeLasApps`). `TextosDeApps.dedosYCejilla(_:_:)`,

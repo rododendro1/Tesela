@@ -1,5 +1,6 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaRepresentaciones en francés. Los campos y lo que significa cada uno están en
 // `TextosDeRepresentaciones.swift`.
 
@@ -39,7 +40,7 @@ extension TextosDeRepresentaciones {
         cicloLR: "cycle LR",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in n == 1 ? "1 demi-ton" : "\(n) demi-tons" },
+        semitonos: { n in Idioma.frances.contar(n, "demi-ton", "demi-tons") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "homonyme",

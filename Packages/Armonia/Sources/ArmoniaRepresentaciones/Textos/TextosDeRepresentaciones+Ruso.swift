@@ -40,7 +40,7 @@ extension TextosDeRepresentaciones {
         cicloLR: "LR-цикл",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in Traduccion.pluralRuso(n, "полутон", "полутона", "полутонов") },
+        semitonos: { n in Idioma.ruso.contar(n, "полутон", "полутона", "полутонов") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "одноимённая",
