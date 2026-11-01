@@ -168,8 +168,9 @@ Sources/
 │   ├── Fundamentos/       Nota (con NotaNatural y Alteracion), Altura, Intervalo (con SentidoDelIntervalo,
 │   │                      CalidadDeIntervalo, Consonancia), Candidato, Protocolos, Aritmetica, y los
 │   │                      nombres de notas e intervalos en cada idioma (al final de Nota e Intervalo)
-│   ├── Texto/             Notacion (con EscrituraDeNotas e Idioma), EstiloDeCifrado, Traduccion, Lector,
-│   │                      ErrorDeLectura
+│   ├── Notacion/          Notacion (con EscrituraDeNotas e Idioma), ReglasDeIdioma, EstiloDeCifrado, Traduccion
+│   ├── Lectura/           Lector, ErrorDeLectura
+│   ├── Textos/            TextosDeNucleo y un fichero por idioma
 │   └── Postonal/          ConjuntoDeClases, TablaForte
 ├── ArmoniaTeoria/
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
@@ -227,9 +228,10 @@ modos) y en `Scripts/idiomas.py`, un caso en `EscrituraDeNotas` (con su constant
 `Traducido`, un fichero en cada `Textos/`, y corregir lo que el compilador señale: ningún `switch` sobre el
 idioma o la escritura tiene `default`, y cada `Traduccion` sin el idioma nuevo deja de compilar.
 
-Las pruebas rápidas están en `Tests/ArmoniaTests/`, un fichero por carpeta de fuentes
-(`FundamentosTests.swift`, `TonalidadTests.swift`, `PartituraTests.swift`…) más `GeneralTests.swift`, solo con lo que atraviesa todo el motor
-(literales, Codable y convenciones de nombres). Las exhaustivas
+Las pruebas rápidas están en `Tests/ArmoniaTests/`, en una carpeta por módulo (`Nucleo/`, `Teoria/`, `Partitura/`,
+`Representaciones/`, `Trastes/`) y un fichero por carpeta de fuentes (`Nucleo/FundamentosTests.swift`,
+`Teoria/TonalidadTests.swift`…). En `General/` está lo que atraviesa todo el motor (literales, Codable, convenciones
+de nombres, entradas inválidas, robustez y los textos con valores). Las exhaustivas
 están en un objetivo aparte, `Tests/ArmoniaExhaustivasTests/ExhaustivasTests.swift`. Las de la
 línea de comandos están con ella, en `Apps/ArmoniaCLI/Tests/`.
 

@@ -6,9 +6,9 @@ import XCTest
 /// `Scripts/normalizar_escalas.py` (la copia en Python que usan los scripts del repositorio): así las dos no se separan.
 final class NormalizarVectoresTests: XCTestCase {
     func testNormalizarCumpleLosCasosCompartidos() throws {
-        // …/Packages/Armonia/Tests/ArmoniaTests/<este fichero> → la raíz del repositorio, cinco niveles más arriba.
+        // …/Packages/Armonia/Tests/ArmoniaTests/Teoria/<este fichero> → la raíz, seis niveles más arriba.
         var raiz = URL(fileURLWithPath: #filePath)
-        for _ in 0..<5 { raiz.deleteLastPathComponent() }
+        for _ in 0..<6 { raiz.deleteLastPathComponent() }
         let ruta = raiz.appendingPathComponent("Scripts/vectores/normalizar.tsv")
         guard let texto = try? String(contentsOf: ruta, encoding: .utf8) else {
             throw XCTSkip("No está \(ruta.path): el paquete se prueba fuera del repositorio")
