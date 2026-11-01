@@ -39,14 +39,14 @@ struct VistaDeAcordes: View {
 
     var body: some View {
         Form {
-            Section(notacion.texto(.acorde)) {
-                TextField(notacion.texto(.campoDeCifrado), text: $texto)
+            Section(notacion.texto(\.acorde)) {
+                TextField(notacion.campo(.cifrado), text: $texto)
                     .comoCampoDeCifrado()
             }
             switch lectura {
             case .success(let acorde):
                 informacion(de: acorde)
-                Section(notacion.texto(.pentagrama)) {
+                Section(notacion.texto(\.pentagrama)) {
                     DiagramaDePentagrama(PentagramaPresentado(acorde, notacion: notacion))
                 }
                 seccionDelArpegio(de: acorde)
@@ -59,7 +59,7 @@ struct VistaDeAcordes: View {
                 }
             }
         }
-        .navigationTitle(notacion.texto(.acordes))
+        .navigationTitle(notacion.texto(\.acordes))
         .selectorDeNotacionEnLaBarra()
         .toolbar {
             ToolbarItem {
@@ -111,13 +111,13 @@ struct VistaDeAcordes: View {
     private func seccionDelArpegio(de acorde: Acorde) -> some View {
         let arpegio = self.arpegio(de: acorde)
         let sonido = PresentacionDeArpegios.arpegio(arpegio, figura: figura.duracion, notacion: notacion).sonido
-        Section(notacion.texto(.arpegio)) {
-            Picker(notacion.texto(.patron), selection: $patron) {
+        Section(notacion.texto(\.arpegio)) {
+            Picker(notacion.texto(\.patron), selection: $patron) {
                 ForEach(Arpegio.Patron.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
             }
-            Stepper("\(notacion.texto(.octavas)): \(octavas)", value: $octavas, in: 1...3)
-            Toggle(notacion.texto(.conLaOctavaFinal), isOn: $conOctava)
-            Picker(notacion.texto(.figura), selection: $figura) {
+            Stepper("\(notacion.texto(\.octavas)): \(octavas)", value: $octavas, in: 1...3)
+            Toggle(notacion.texto(\.conLaOctavaFinal), isOn: $conOctava)
+            Picker(notacion.texto(\.figura), selection: $figura) {
                 ForEach(Self.figuras, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
             }
             DiagramaDePentagrama(
@@ -132,7 +132,7 @@ struct VistaDeAcordes: View {
     private func escalas(de acorde: Acorde) -> some View {
         let escalas = acorde.escalasCompatibles()
         if !escalas.isEmpty {
-            Section(notacion.texto(.escalasCompatibles)) {
+            Section(notacion.texto(\.escalasCompatibles)) {
                 // Cada una se abre en la pestaña de escalas.
                 ForEach(Array(escalas.prefix(10).enumerated()), id: \.offset) { _, escala in
                     Button(escala.nombre(en: notacion)) { navegacion.ver(escala) }
@@ -143,11 +143,11 @@ struct VistaDeAcordes: View {
 
     @ViewBuilder
     private func informacion(de acorde: Acorde) -> some View {
-        Section(notacion.texto(.informacion)) {
-            LabeledContent(notacion.texto(.nombre), value: acorde.nombre(en: notacion))
-            LabeledContent(notacion.texto(.cifrado), value: acorde.cifrado(en: notacion))
+        Section(notacion.texto(\.informacion)) {
+            LabeledContent(notacion.texto(\.nombre), value: acorde.nombre(en: notacion))
+            LabeledContent(notacion.texto(\.cifrado), value: acorde.cifrado(en: notacion))
             LabeledContent(
-                notacion.texto(.notas),
+                notacion.texto(\.notas),
                 value: acorde.notasDesdeElBajo.map { $0.nombre(en: notacion) }.joined(separator: " "))
             BotonDeEscuchar(.acorde(acorde))
         }
@@ -155,22 +155,22 @@ struct VistaDeAcordes: View {
 
     @ViewBuilder
     private func digitaciones(de acorde: Acorde) -> some View {
-        Section(notacion.texto(.digitaciones)) {
-            Picker(notacion.texto(.instrumentoYAfinacion), selection: $encordado) {
+        Section(notacion.texto(\.digitaciones)) {
+            Picker(notacion.texto(\.instrumentoYAfinacion), selection: $encordado) {
                 ForEach(Encordado.todos, id: \.self) { Text($0.titulo(en: notacion)).tag($0) }
             }
             // Los trastes se cuentan desde el capo, como los cuenta quien toca.
-            Stepper(notacion.texto(.capo(capo)), value: $capo, in: 0...9)
+            Stepper(notacion.texto { $0.capoEnElTraste(capo) }, value: $capo, in: 0...9)
             if let formas = digitaciones?.valor(para: claveActual) {
                 if formas.isEmpty {
-                    Text(notacion.texto(.sinDigitaciones))
+                    Text(notacion.texto(\.sinDigitaciones))
                         .foregroundColor(.secondary)
                 }
                 ForEach(formas, id: \.tablatura) { forma in
                     VStack(alignment: .leading, spacing: 4) {
                         HStack(alignment: .firstTextBaseline) {
                             Text(forma.tablatura).font(.system(.body, design: .monospaced))
-                            Text(notacion.texto(.dedos(forma.dedos, cejilla: forma.cejilla)))
+                            Text(notacion.texto { $0.dedosYCejilla(forma.dedos, forma.cejilla) })
                                 .font(.caption).foregroundColor(.secondary)
                         }
                         DiagramaDeMastil(digitacion: forma, acorde: acorde, notacion: notacion)
@@ -188,8 +188,8 @@ struct VistaDeAcordes: View {
     @ViewBuilder
     private func arpegioEnElMastil(de acorde: Acorde) -> some View {
         let mastil = self.mastil(trastes: 12)
-        let instrumento = encordado.titulo(en: notacion) + (capo > 0 ? " · " + notacion.texto(.capo(capo)) : "")
-        Section(notacion.texto(.arpegioEnElMastil)) {
+        let instrumento = encordado.titulo(en: notacion) + (capo > 0 ? " · " + notacion.texto { $0.capo(capo) } : "")
+        Section(notacion.texto(\.arpegioEnElMastil)) {
             Text(instrumento)
                 .foregroundColor(.secondary)
             DiagramaDeMastil(mastil: mastil, acorde: acorde, notacion: notacion)

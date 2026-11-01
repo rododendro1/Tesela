@@ -22,19 +22,19 @@ struct VistaRaiz: View {
     var body: some View {
         TabView(selection: $navegacion.pestana) {
             NavigationStack { VistaDeAcordes() }
-                .tabItem { Label(notacion.texto(.acordes), systemImage: "music.note.list") }
+                .tabItem { Label(notacion.texto(\.acordes), systemImage: "music.note.list") }
                 .tag(Navegacion.Pestana.acordes)
             NavigationStack { VistaDeEscalas() }
-                .tabItem { Label(notacion.texto(.escalas), systemImage: "chart.bar.xaxis") }
+                .tabItem { Label(notacion.texto(\.escalas), systemImage: "chart.bar.xaxis") }
                 .tag(Navegacion.Pestana.escalas)
             NavigationStack { VistaDeAnalisis() }
-                .tabItem { Label(notacion.texto(.analisis), systemImage: "waveform.path.ecg") }
+                .tabItem { Label(notacion.texto(\.analisis), systemImage: "waveform.path.ecg") }
                 .tag(Navegacion.Pestana.analisis)
             NavigationStack { VistaDeCoral() }
-                .tabItem { Label(notacion.texto(.coral), systemImage: "music.quarternote.3") }
+                .tabItem { Label(notacion.texto(\.coral), systemImage: "music.quarternote.3") }
                 .tag(Navegacion.Pestana.coral)
             NavigationStack { VistaDeIdentificar() }
-                .tabItem { Label(notacion.texto(.identificar), systemImage: "hand.tap") }
+                .tabItem { Label(notacion.texto(\.identificar), systemImage: "hand.tap") }
                 .tag(Navegacion.Pestana.identificar)
         }
         .environmentObject(navegacion)

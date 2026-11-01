@@ -16,12 +16,12 @@ struct VistaDeTonnetz: View {
         case identificar
         var id: Self { self }
 
-        var texto: TextoDeLasApps {
+        func titulo(en notacion: Notacion) -> String {
             switch self {
-            case .recorrido: return .recorridoPLR
-            case .acorde: return .acorde
-            case .escala: return .escala
-            case .identificar: return .identificar
+            case .recorrido: return notacion.texto(\.recorridoPLR)
+            case .acorde: return notacion.texto(\.acorde)
+            case .escala: return notacion.texto(\.escala)
+            case .identificar: return notacion.texto(\.identificar)
             }
         }
     }
@@ -44,12 +44,12 @@ struct VistaDeTonnetz: View {
 
     var body: some View {
         VStack(spacing: 12) {
-            Picker(notacion.texto(.modo), selection: $contenido) {
-                ForEach(Contenido.allCases) { Text(notacion.texto($0.texto)).tag($0) }
+            Picker(notacion.texto(\.modo), selection: $contenido) {
+                ForEach(Contenido.allCases) { Text($0.titulo(en: notacion)).tag($0) }
             }
             .pickerStyle(.segmented)
 
-            Picker(notacion.texto(.red), selection: $red) {
+            Picker(notacion.texto(\.red), selection: $red) {
                 ForEach(RedDeNotas.allCases) { Text($0.nombre(en: notacion)).tag($0) }
             }
 
@@ -74,7 +74,7 @@ struct VistaDeTonnetz: View {
                         Text(PresentacionDeRedes.nombre(dibujado, en: red, notacion: notacion, uil: uil)))
             } else {
                 Spacer()
-                Text(notacion.texto(.noSeDibuja)).foregroundColor(.secondary)
+                Text(notacion.texto(\.noSeDibuja)).foregroundColor(.secondary)
                 Spacer()
             }
         }
@@ -106,7 +106,7 @@ struct VistaDeTonnetz: View {
     @ViewBuilder
     private var controlesDeUIL: some View {
         HStack {
-            TextField(notacion.texto(.formatoUIL), text: $uil.texto)
+            TextField(notacion.texto(\.formatoUIL), text: $uil.texto)
                 .textFieldStyle(.roundedBorder)
                 .font(.system(.body, design: .monospaced))
                 .comoCampoDeCifrado()
@@ -117,10 +117,10 @@ struct VistaDeTonnetz: View {
             }
         }
         HStack {
-            Stepper("\(notacion.texto(.giro)): \(modulo360(uil.giros * 30))°", value: $uil.giros)
-            Toggle(notacion.texto(.espejo), isOn: $uil.espejo)
+            Stepper("\(notacion.texto(\.giro)): \(modulo360(uil.giros * 30))°", value: $uil.giros)
+            Toggle(notacion.texto(\.espejo), isOn: $uil.espejo)
         }
-        Text(uil.resultado ?? notacion.texto(.noSeDibuja))
+        Text(uil.resultado ?? notacion.texto(\.noSeDibuja))
             .font(.system(.callout, design: .monospaced))
             .foregroundColor(.secondary)
     }
@@ -132,11 +132,11 @@ struct VistaDeTonnetz: View {
         switch contenido {
         case .recorrido:
             HStack {
-                TextField(notacion.texto(.campoDeTriadaInicial), text: $textoInicial)
+                TextField(notacion.campo(.triadaInicial), text: $textoInicial)
                     .textFieldStyle(.roundedBorder)
                     .comoCampoDeCifrado()
                     .onSubmit(reiniciar)
-                Button(notacion.texto(.reiniciar), action: reiniciar)
+                Button(notacion.texto(\.reiniciar), action: reiniciar)
             }
             HStack {
                 ForEach(TransformacionNeorriemanniana.allCases, id: \.self) { transformacion in
@@ -144,17 +144,17 @@ struct VistaDeTonnetz: View {
                         .buttonStyle(.borderedProminent)
                         .help(transformacion.nombre(en: notacion))
                 }
-                Button(notacion.texto(.deshacer)) { deshacer() }
+                Button(notacion.texto(\.deshacer)) { deshacer() }
                     .disabled(recorrido.count < 2)
             }
             Text(recorrido.map { $0.cifrado(en: notacion) }.joined(separator: " → "))
                 .font(.system(.callout, design: .monospaced))
         case .acorde:
-            TextField(notacion.texto(.campoDeAcorde), text: $textoAcorde)
+            TextField(notacion.campo(.acorde), text: $textoAcorde)
                 .textFieldStyle(.roundedBorder)
                 .comoCampoDeCifrado()
         case .escala:
-            TextField(notacion.texto(.campoDeEscala), text: $textoEscala)
+            TextField(notacion.campo(.escala), text: $textoEscala)
                 .textFieldStyle(.roundedBorder)
                 .comoCampoDeCifrado()
         case .identificar:
@@ -162,7 +162,7 @@ struct VistaDeTonnetz: View {
                 Text(identificado)
                     .font(.system(.callout, design: .monospaced))
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Button(notacion.texto(.borrar)) { clasesTocadas = [] }
+                Button(notacion.texto(\.borrar)) { clasesTocadas = [] }
                     .disabled(clasesTocadas.isEmpty)
             }
         }
@@ -171,17 +171,17 @@ struct VistaDeTonnetz: View {
     /// Lo que forman las notas tocadas: el acorde más probable con su nombre y, detrás, otras lecturas. Sin notas,
     /// la indicación; con notas que no forman acorde, sus nombres y el aviso.
     private var identificado: String {
-        guard !clasesTocadas.isEmpty else { return notacion.texto(.tocaNotas) }
+        guard !clasesTocadas.isEmpty else { return notacion.texto(\.tocaNotas) }
         let acordes = PresentacionDeRedes.acordes(de: clasesTocadas)
         guard let primero = acordes.first else {
             let notas = ContenidoDeRed.clases(clasesTocadas).notas.map { $0.nombre(en: notacion) }.joined(
                 separator: " ")
-            return clasesTocadas.count < 2 ? notas : notas + " · " + notacion.texto(.sinAcordeConocido)
+            return clasesTocadas.count < 2 ? notas : notas + " · " + notacion.texto(\.sinAcordeConocido)
         }
         let otros = acordes.dropFirst().prefix(3).map { $0.cifrado(en: notacion) }
         let forte =
             AnalisisPostonalPresentado(clases: clasesTocadas).numeroDeForte.map {
-                "\n" + notacion.texto(.numeroDeForte) + ": " + $0
+                "\n" + notacion.texto(\.numeroDeForte) + ": " + $0
             } ?? ""
         return primero.cifrado(en: notacion) + " · " + primero.nombre(en: notacion)
             + (otros.isEmpty ? "" : "\n" + otros.joined(separator: ", ")) + forte

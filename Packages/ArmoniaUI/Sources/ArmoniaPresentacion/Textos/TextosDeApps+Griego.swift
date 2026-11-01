@@ -5,7 +5,7 @@ import Armonia
 
 extension TextosDeApps {
     static let griego = TextosDeApps(
-        // TextoDeLasApps.swift
+        // Notacion+TextosDeApps.swift y las vistas
         acordes: "Συγχορδίες",
         escalas: "Κλίμακες",
         analisis: "Ανάλυση",

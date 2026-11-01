@@ -68,16 +68,16 @@ enum PresentacionDeMastil {
     ) -> String {
         var partes: [String] = []
         if marcas.count > 12 {
-            partes.append(notacion.texto(.marcas(marcas.count)))
+            partes.append(notacion.texto { $0.marcas(marcas.count) })
         } else {
             partes += marcas.sorted { ($0.cuerda, $0.traste) < ($1.cuerda, $1.traste) }
-                .map { notacion.texto(.posicion(cuerda: cuerdas - $0.cuerda, traste: $0.traste)) }
+                .map { marca in notacion.texto { $0.posicion(cuerdas - marca.cuerda, marca.traste) } }
         }
         if !apagadas.isEmpty {
             let numeros = apagadas.sorted().map { String(cuerdas - $0) }
-            partes.append(notacion.texto(.cuerdasApagadas(numeros.joined(separator: ", "))))
+            partes.append(notacion.texto { $0.cuerdasApagadas(numeros.joined(separator: ", ")) })
         }
-        return partes.isEmpty ? notacion.texto(.sinMarcas) : partes.joined(separator: "; ")
+        return partes.isEmpty ? notacion.texto(\.sinMarcas) : partes.joined(separator: "; ")
     }
 
     /// Lo que es el diagrama, para VoiceOver: «Mástil de guitarra, trastes 0 a 5».

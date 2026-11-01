@@ -7,122 +7,124 @@ import Armonia
 // campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los catorce y
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
-/// Los textos de la interfaz de las apps en un idioma: los de `TextoDeLasApps`, los avisos y las tareas de
-/// `PresentacionDeCoral` y los nombres de `FicheroParaExportar`.
-struct TextosDeApps: TextosTraducidos {
-    // MARK: TextoDeLasApps.swift
-    let acordes: String
-    let escalas: String
-    let analisis: String
-    let coral: String
-    let acorde: String
-    let campoDeCifrado: @Sendable (String) -> String
-    let informacion: String
-    let nombre: String
-    let cifrado: String
-    let notas: String
-    let digitaciones: String
-    let arpegio: String
-    let patron: String
-    let arpegioEnElMastil: String
-    let trastes: @Sendable (Int, Int) -> String
-    let escalasCompatibles: String
-    let identificar: String
-    let tocaElMastil: String
-    let tocaNotas: String
-    let borrar: String
-    let sinAcordeConocido: String
-    let verEnAcordes: String
-    let tecladoMIDI: String
-    let dispositivosMIDI: String
-    let teoriaPostonal: String
-    let formaPrima: String
-    let numeroDeForte: String
-    let vectorIntervalico: String
-    let instrumentoYAfinacion: String
-    let sinDigitaciones: String
-    let calculando: String
-    let dedos: @Sendable (Int) -> String
-    let cejilla: @Sendable (Int) -> String
-    let escala: String
-    let tonica: String
-    let tipo: String
-    let habituales: String
-    let otrasTradiciones: String
-    let acordesDeLaEscala: String
-    let posicionesEnElMastil: String
-    let notasPorCuerda: @Sendable (Int) -> String
-    let forma: @Sendable (String) -> String
-    let mastilDeGuitarra: String
-    let pentagrama: String
-    let progresion: String
-    let campoDeProgresion: String
-    let resultado: String
-    let acordeAAcorde: String
-    let arpegiar: String
-    let cadencias: String
-    let tarea: String
-    let campoDeTonalidad: String
-    let tonalidad: String
-    let armonizaciones: String
-    let aCuatroVoces: String
-    let conduccionDeLasVoces: String
-    let avisos: String
-    let recorridoPLR: String
-    let modo: String
-    let red: String
-    let formatoUIL: String
-    let giro: String
-    let espejo: String
-    let noSeDibuja: String
-    let campoDeTriadaInicial: @Sendable (String) -> String
-    let reiniciar: String
-    let deshacer: String
-    let textos: String
-    let comoLasNotas: String
-    let octavaEnSubindice: String
-    let octavas: String
-    let conLaOctavaFinal: String
-    let figura: String
-    let sinCapo: String
-    let capo: @Sendable (Int) -> String
-    let rearmonizar: String
-    let aplicar: String
-    let detener: String
-    let transponer: String
-    let escuchar: String
-    let afinacionAlEscuchar: String
-    let exportar: String
-    let abrir: String
-    let rejillaHexagonal: String
-    let casillas: @Sendable (Int) -> String
-    let elegida: String
-    let mastilDe: @Sendable (String, Int, Int) -> String
-    let posicion: @Sendable (Int, Int) -> String
-    let marcas: @Sendable (Int) -> String
-    let cuerdasApagadas: @Sendable (String) -> String
-    let sinMarcas: String
+/// Los textos de la interfaz de las apps en un idioma: los de las pestañas, secciones y etiquetas, que se leen con
+/// `Notacion.texto(_:)`, los avisos y las tareas de `PresentacionDeCoral` y los nombres de `FicheroParaExportar`.
+///
+///     Notacion.inglesASCII.texto(\.digitaciones)    // "Fingerings"
+public struct TextosDeApps: TextosTraducidos {
+    // MARK: Notacion+TextosDeApps.swift y las vistas
+    public let acordes: String
+    public let escalas: String
+    public let analisis: String
+    public let coral: String
+    public let acorde: String
+    public let campoDeCifrado: @Sendable (String) -> String
+    public let informacion: String
+    public let nombre: String
+    public let cifrado: String
+    public let notas: String
+    public let digitaciones: String
+    public let arpegio: String
+    public let patron: String
+    public let arpegioEnElMastil: String
+    public let trastes: @Sendable (Int, Int) -> String
+    public let escalasCompatibles: String
+    public let identificar: String
+    public let tocaElMastil: String
+    public let tocaNotas: String
+    public let borrar: String
+    public let sinAcordeConocido: String
+    public let verEnAcordes: String
+    public let tecladoMIDI: String
+    public let dispositivosMIDI: String
+    public let teoriaPostonal: String
+    public let formaPrima: String
+    public let numeroDeForte: String
+    public let vectorIntervalico: String
+    public let instrumentoYAfinacion: String
+    public let sinDigitaciones: String
+    public let calculando: String
+    public let dedos: @Sendable (Int) -> String
+    public let cejilla: @Sendable (Int) -> String
+    public let escala: String
+    public let tonica: String
+    public let tipo: String
+    public let habituales: String
+    public let otrasTradiciones: String
+    public let acordesDeLaEscala: String
+    public let posicionesEnElMastil: String
+    public let notasPorCuerda: @Sendable (Int) -> String
+    public let forma: @Sendable (String) -> String
+    public let mastilDeGuitarra: String
+    public let pentagrama: String
+    public let progresion: String
+    public let campoDeProgresion: String
+    public let resultado: String
+    public let acordeAAcorde: String
+    public let arpegiar: String
+    public let cadencias: String
+    public let tarea: String
+    public let campoDeTonalidad: String
+    public let tonalidad: String
+    public let armonizaciones: String
+    public let aCuatroVoces: String
+    public let conduccionDeLasVoces: String
+    public let avisos: String
+    public let recorridoPLR: String
+    public let modo: String
+    public let red: String
+    public let formatoUIL: String
+    public let giro: String
+    public let espejo: String
+    public let noSeDibuja: String
+    public let campoDeTriadaInicial: @Sendable (String) -> String
+    public let reiniciar: String
+    public let deshacer: String
+    public let textos: String
+    public let comoLasNotas: String
+    public let octavaEnSubindice: String
+    public let octavas: String
+    public let conLaOctavaFinal: String
+    public let figura: String
+    public let sinCapo: String
+    public let capo: @Sendable (Int) -> String
+    public let rearmonizar: String
+    public let aplicar: String
+    public let detener: String
+    public let transponer: String
+    public let escuchar: String
+    public let afinacionAlEscuchar: String
+    public let exportar: String
+    public let abrir: String
+    public let rejillaHexagonal: String
+    public let casillas: @Sendable (Int) -> String
+    public let elegida: String
+    public let mastilDe: @Sendable (String, Int, Int) -> String
+    public let posicion: @Sendable (Int, Int) -> String
+    public let marcas: @Sendable (Int) -> String
+    public let cuerdasApagadas: @Sendable (String) -> String
+    public let sinMarcas: String
 
     // MARK: PresentacionDeCoral.swift
-    let sinArmonizacion: String
-    let faltanOctavas: @Sendable (String) -> String
-    let sinCoralParaLaMelodia: @Sendable (String, String) -> String
-    let sinRealizacion: String
-    let sinFaltasDeConduccion: String
-    let armonizar: String
-    let realizar: String
-    let revisar: String
-    let indicacionArmonizar: @Sendable (String, String) -> String
-    let indicacionRevisar: @Sendable (String) -> String
+    public let sinArmonizacion: String
+    public let faltanOctavas: @Sendable (String) -> String
+    public let sinCoralParaLaMelodia: @Sendable (String, String) -> String
+    public let sinRealizacion: String
+    public let sinFaltasDeConduccion: String
+    public let armonizar: String
+    public let realizar: String
+    public let revisar: String
+    public let indicacionArmonizar: @Sendable (String, String) -> String
+    public let indicacionRevisar: @Sendable (String) -> String
 
     // MARK: FicheroParaExportar.swift
-    let partituraMusicXML: String
-    let partituraMEI: String
-    let dibujoSVG: String
+    public let partituraMusicXML: String
+    public let partituraMEI: String
+    public let dibujoSVG: String
 
     /// Los textos en los catorce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
-    static let traducidos = Traducido<TextosDeApps>(
+    public static let traducidos = Traducido<TextosDeApps>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
         fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso)
 }

@@ -151,13 +151,13 @@
                 Button {
                     reproductor.detener()
                 } label: {
-                    Label(notacion.texto(.detener), systemImage: "stop.circle")
+                    Label(notacion.texto(\.detener), systemImage: "stop.circle")
                 }
             } else {
                 Button {
                     reproductor.tocar(sonido)
                 } label: {
-                    Label(notacion.texto(.escuchar), systemImage: "play.circle")
+                    Label(notacion.texto(\.escuchar), systemImage: "play.circle")
                 }
                 .disabled(sonido.notas.isEmpty)
             }

@@ -83,7 +83,7 @@
                 contentMode: .fit
             )
             .accessibilityElement()
-            .accessibilityLabel(Text(notacion.texto(.rejillaHexagonal)))
+            .accessibilityLabel(Text(notacion.texto(\.rejillaHexagonal)))
             .accessibilityValue(
                 Text(
                     PresentacionDeRejilla.descripcion(
