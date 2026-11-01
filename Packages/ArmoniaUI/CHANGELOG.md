@@ -2,6 +2,9 @@
 
 ## 0.3.0 (2026-11-01)
 
+- **Sin nombres obsoletos**: desaparecen los que la 0.2.0 marcó como obsoletos: `PresentacionDePentagrama`
+  (`PentagramaPresentado`), `PresentacionPostonal` (`AnalisisPostonalPresentado`), `Sonido` (`Escucha`) y
+  `AnalisisPresentado.rearmonizaciones(notacion:)` (`rearmonizaciones(en:)`).
 - El selector de notación ofrece también la escritura compacta de cada idioma con palabras: Français (Fa♯),
   Русский (Фа♯)… Se guardan como «francesCompacto», «rusoCompacto»; las claves de antes no cambian.
 - Los textos de las apps, en húngaro (`TextosDeApps.hungaro`); el selector de idioma lo ofrece solo, y las apps

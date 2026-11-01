@@ -62,11 +62,11 @@ import Testing
     }
 
     @Test func pluralesRusos() {
-        #expect(Traduccion.pluralRuso(1, "a", "b", "c") == "1 a")
-        #expect(Traduccion.pluralRuso(3, "a", "b", "c") == "3 b")
-        #expect(Traduccion.pluralRuso(12, "a", "b", "c") == "12 c")
-        #expect(Traduccion.pluralRuso(21, "a", "b", "c") == "21 a")
-        #expect(Traduccion.pluralRuso(25, "a", "b", "c") == "25 c")
+        #expect(Idioma.ruso.contar(1, "a", "b", "c") == "1 a")
+        #expect(Idioma.ruso.contar(3, "a", "b", "c") == "3 b")
+        #expect(Idioma.ruso.contar(12, "a", "b", "c") == "12 c")
+        #expect(Idioma.ruso.contar(21, "a", "b", "c") == "21 a")
+        #expect(Idioma.ruso.contar(25, "a", "b", "c") == "25 c")
     }
 
     @Test func conjuntosCodable() throws {

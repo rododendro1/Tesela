@@ -2,6 +2,14 @@
 
 ## 0.3.0 (2026-11-01)
 
+- **Sin nombres obsoletos**: desaparecen los que la 0.2.0 marcó como obsoletos al revisar la terminología (los
+  ficheros `Obsoletos.swift` de cada módulo). Con su nombre nuevo: `Altura.la440` (`la4`), `frecuencia(la4:)`
+  (`frecuencia(frecuenciaDelLa4:)`), `ClaseDeEscala` (`CategoriaTradicional`), `TipoDeEscala.clase` (`categoria`) y
+  `tradicionales(clase:)` (`tradicionales(categoria:)`), `Temperamento` (`AfinacionHistorica`), `EntonacionJusta`
+  (`AfinacionJusta`) y su `frecuenciaTonica` (`frecuenciaDeLaTonica`), las variantes con `la4:` de
+  `TemperamentoRegular`, `TemperamentoCircular`, `AfinacionJusta` y `AfinacionHistorica.afinacion` (con
+  `frecuenciaDelLa4:`), `TecladoIsomorfico.rotado(pasos:)` (`rotado(doceavos:)`), `Tempo.pulsacionesPorMinuto`
+  (`pulsosPorMinuto`) y `Encordado.bajo` (`bajoElectrico`).
 - **Compactas en todos los idiomas**: cada idioma que escribe las alteraciones con palabras tiene ahora también su
   escritura compacta, con la sílaba en mayúscula, el signo y la octava en subíndice: `.catalanCompacto`,
   `.gallegoCompacto`, `.asturianoCompacto`, `.aragonesCompacto`, `.euskeraCompacto`, `.portuguesCompacto`,
@@ -24,7 +32,7 @@
   `--escritura palabras|compacto` elige entre F kereszt y Fisz.
 - **Notaciones compactas**: `Notacion.espanolUnicode` e `.inglesUnicode` pasan a llamarse `.espanolCompacto` e
   `.inglesCompacto` (igual en `EscrituraDeNotas`, y `EstiloDeCifrado.inglesUnicode` pasa a `.inglesCompacto`). Los
-  nombres de antes siguen, obsoletos, en `Obsoletos.swift`. Las compactas escriben la octava como subíndice: La₄,
+  nombres de antes ya no existen. Las compactas escriben la octava como subíndice: La₄,
   F♯₃ (`EscrituraDeNotas.esCompacta` y `.octavas`); las demás siguen con cifras, y `conOctavas(_:)` elige otra.
   `description`, `texto` y la codificación de las alturas siguen con cifras ("Fa♯4"), para que lo guardado no
   cambie. Los SVG con nombres de nota (pentagramas y teclados) llevan ahora los subíndices.
@@ -56,14 +64,14 @@
   geometría.
 - El plural de cada idioma está en sus reglas (`ReglasDeIdioma.plural`): singular con 1 en casi todos, con 0 y 1
   en francés («0 demi-ton»), una forma en euskera y tres en ruso. `Idioma.contar(n, formas…)` escribe el número con
-  la forma que le toca («5 полутонов»); `Traduccion.pluralRuso` queda obsoleto en su favor.
+  la forma que le toca («5 полутонов»); `Traduccion.pluralRuso` desaparece en su favor.
 - `ReglasDeIdioma.abreviaturas`: el idioma de las abreviaturas de intervalo (5J o P5) es un dato más de cada fila,
   y `Notacion.idiomaDeLasAbreviaturas` lo lee de ahí en vez de un `switch`.
 - `Idioma.reglas` se calcula una sola vez por idioma, en una tabla, en lugar de en cada llamada.
 - `Idioma(nombre:)` no distingue tildes («aleman», «FRANCAIS», «ελληνικα»), así que `nombres` ya no repite cada
   nombre sin ellas.
 - `Traducido(porIdioma:)`: los catorce valores a partir del idioma.
-- `Idioma.traducidos` queda obsoleto: es igual que `Idioma.allCases`.
+- Desaparece `Idioma.traducidos`: era igual que `Idioma.allCases`.
 - `Traducido(cadaIdioma:)`: los catorce valores a partir de la notación habitual de cada idioma
   (`Traduccion(cadaIdioma: { acorde.nombre(en: $0) })`), para no escribir a mano los catorce argumentos.
 - Los datos de cada idioma, en una fila de `ReglasDeIdioma`: además de las sílabas y la alteración, su código
