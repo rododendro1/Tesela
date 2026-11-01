@@ -120,6 +120,8 @@ public struct TextosDeApps: TextosTraducidos {
     // MARK: FicheroParaExportar.swift
     public let partituraMusicXML: String
     public let partituraMEI: String
+    public let partituraLilyPond: String
+    public let partituraABC: String
     public let dibujoSVG: String
 
     /// Los textos en los catorce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su

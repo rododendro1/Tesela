@@ -12,7 +12,7 @@ Apps/
 │                     incluido, con su ritmo armónico, y la progresión arpegiada),
 │                     corales (armonizar, realizar a cuatro voces y revisar) e identificar un acorde tocándolo en
 │                     el mástil o en un teclado MIDI (con su forma prima, su número de Forte y su vector
-│                     interválico); exporta MusicXML, MEI y MIDI
+│                     interválico); exporta MusicXML, MEI, LilyPond, ABC y MIDI
 ├── TonnetzApp/       Un acorde, una escala, un recorrido con P, L y R, o las notas que se toquen (y qué acorde
 │                     forman), en el Tonnetz, la tabla armónica o un
 │                     teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático, Gerhard, Park, o uno en formato UIL con giros de 30°); exporta el dibujo en SVG
@@ -25,7 +25,7 @@ Herramientas/
 └── RendimientoArmonia/  Cuánto tarda el motor en lo que hacen las apps (SwiftPM; el CI lo mide en cada cambio)
 Packages/
 ├── Armonia/        El motor de armonía, en cinco módulos (Núcleo, Teoría, Representaciones, Partitura, Trastes)
-│                   y el paraguas `Armonia`: notas, acordes, escalas, tonalidad, Tonnetz, MusicXML, MEI, MIDI, pentagramas en SVG,
+│                   y el paraguas `Armonia`: notas, acordes, escalas, tonalidad, Tonnetz, MusicXML, MEI, LilyPond, ABC, MIDI, pentagramas en SVG,
 │                   y los mástiles, afinaciones, digitaciones de acordes y escalas por posiciones (guitarra, bajo, ukelele…)
 ├── ArmoniaUI/      Componentes SwiftUI (DiagramaDeMastil, DiagramaDePentagrama, DiagramaDeTonnetz, DiagramaDeRejilla, VistaSVG, tema) y lo que comparten las apps:
 │                   el selector de notación y su ajuste (en el entorno), los textos de la interfaz en catorce
@@ -91,6 +91,8 @@ cd Packages/Armonia && swift test
 cd Packages/Hexagonos && swift test      # las rejillas hexagonales
 swift run --package-path Apps/ArmoniaCLI armonia acorde Sol7/Si  # la herramienta de línea de comandos
 swift run --package-path Apps/ArmoniaCLI armonia digitaciones Sol7/Si --instrumento ukelele --diagrama
+swift run --package-path Apps/ArmoniaCLI armonia lilypond coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 > coral.ly
+swift run --package-path Apps/ArmoniaCLI armonia manual > armonia.1   # y `completado bash|zsh|fish`, el autocompletado
 swift run --package-path Ejemplos/EjemploArmonia EjemploArmonia       # el ejemplo del motor
 swift run --package-path Ejemplos/EjemploHexagonos EjemploHexagonos   # el de las rejillas hexagonales
 swift run -c release --package-path Herramientas/RendimientoArmonia RendimientoArmonia   # los tiempos del motor
@@ -101,6 +103,9 @@ cp Config/Local.xcconfig.ejemplo Config/Local.xcconfig   # tu equipo de firma y 
 ./Scripts/generadores/generar_proyecto.sh        # crea Tesela.xcodeproj
 open Tesela.xcodeproj     # elige el esquema ArmoniaApp o TonnetzApp
 ```
+
+Cada release trae también `armonia` ya compilada para Linux (x86_64 y arm64, sin dependencias) y macOS, con su
+página de manual y el completado para bash, zsh y fish.
 
 `ArmoniaUI` usa SwiftUI para dibujar, pero su lógica (notación, qué trastes y qué notas enseña el mástil,
 qué muestran el análisis, el coral y las redes, y los ficheros que se exportan) no: esa parte

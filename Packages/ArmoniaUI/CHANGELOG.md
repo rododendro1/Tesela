@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- El menú para exportar de las apps ofrece también LilyPond (`.ly`) y ABC (`.abc`) en el análisis, el coral y los
+  arpegios: `FicheroParaExportar.Formato.lilyPond` y `.abc`, con sus textos en los catorce idiomas.
 - La tablatura en MusicXML escapa sus textos con `EscrituraXML.escapar`, la del motor.
 - Los textos con un número usan `Idioma.contar`, con el plural de cada idioma: en francés, «0 note par corde»
   en vez de «0 notes». El selector de idioma recorre `Idioma.allCases`.

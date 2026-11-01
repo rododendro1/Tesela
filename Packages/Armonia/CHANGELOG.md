@@ -2,6 +2,18 @@
 
 ## Sin publicar
 
+- Exportación a LilyPond y ABC: `Voz.lilyPond(tonalidad:clave:tempo:titulo:parte:)` y `Voz.abc(…)`, y las mismas
+  en `Coral` y `AnalisisArmonico`, con los cifrados encima y el análisis debajo del bajo. LilyPond escribe las
+  alturas en absoluto con los nombres holandeses; ABC escribe las alteraciones que se ven, como el MEI. Las dos
+  parten las duraciones que no tienen figura (o que llevan más de dos puntillos) en notas ligadas, y una ligadura
+  solo se escribe si la nota siguiente es la misma. El MEI comparte con ellas los grupos irregulares
+  (`Exportacion.irregulares`).
+- En la línea de comandos, `armonia lilypond|abc melodia|coral|acordes|arpegios …`, con las opciones de `musicxml`.
+- En la línea de comandos, `armonia completado bash|zsh|fish` (o `completion`) escribe el autocompletado de las
+  órdenes, sus opciones y sus valores (`source <(armonia completado bash)`), y `armonia manual` (o `man`), la ayuda
+  como página de manual en roff, en el idioma de los textos (`armonia manual --ingles > armonia.1`).
+- Cada versión publica en su release la herramienta `armonia` ya compilada: Linux x86_64 y arm64, estáticos, y
+  macOS universal, con el manual y el completado (`Scripts/empaquetar_cli.sh`).
 - `EscrituraXML.escapar`: una sola forma de escapar `&`, `<`, `>` y `"` para el SVG, el MusicXML y el MEI, en vez
   de cuatro copias (la del Tonnetz y la tabla armónica no escapaba las comillas).
 - Sin `!` en el motor: los datos fijos (intervalos, tipos de acorde, temperamentos) dicen en un mensaje cuál no es

@@ -1,7 +1,8 @@
 import Armonia
 import Foundation
 
-/// Un fichero que las apps ofrecen para compartir: una partitura MusicXML o MEI, un MIDI o un dibujo SVG.
+/// Un fichero que las apps ofrecen para compartir: una partitura MusicXML, MEI, LilyPond o ABC, un MIDI o
+/// un dibujo SVG.
 /// No usa SwiftUI, así que se prueba en Linux; `BotonDeExportar` lo escribe y lo comparte.
 ///
 ///     let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
@@ -11,6 +12,8 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
     public enum Formato: String, Hashable, Sendable, CaseIterable {
         case musicXML
         case mei
+        case lilyPond
+        case abc
         case midi
         case svg
 
@@ -19,6 +22,8 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
             switch self {
             case .musicXML: return "musicxml"
             case .mei: return "mei"
+            case .lilyPond: return "ly"
+            case .abc: return "abc"
             case .midi: return "mid"
             case .svg: return "svg"
             }
@@ -29,6 +34,8 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
             switch self {
             case .musicXML: return "Partitura MusicXML"
             case .mei: return "Partitura MEI"
+            case .lilyPond: return "Partitura LilyPond"
+            case .abc: return "Partitura ABC"
             case .midi: return "MIDI"
             case .svg: return "Dibujo SVG"
             }
@@ -39,6 +46,8 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
             switch self {
             case .musicXML: return "music.note.list"
             case .mei: return "doc.richtext"
+            case .lilyPond: return "doc.text"
+            case .abc: return "text.alignleft"
             case .midi: return "pianokeys"
             case .svg: return "photo"
             }
@@ -62,6 +71,14 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
 
     public static func mei(_ mei: String, nombre: String) -> FicheroParaExportar {
         FicheroParaExportar(nombre: nombre, formato: .mei, datos: Data(mei.utf8))
+    }
+
+    public static func lilyPond(_ ly: String, nombre: String) -> FicheroParaExportar {
+        FicheroParaExportar(nombre: nombre, formato: .lilyPond, datos: Data(ly.utf8))
+    }
+
+    public static func abc(_ abc: String, nombre: String) -> FicheroParaExportar {
+        FicheroParaExportar(nombre: nombre, formato: .abc, datos: Data(abc.utf8))
     }
 
     public static func midi(_ datos: Data, nombre: String) -> FicheroParaExportar {
@@ -112,6 +129,10 @@ extension FicheroParaExportar.Formato {
             traduccion = TextosDeApps.traduccion(\.partituraMusicXML)
         case .mei:
             traduccion = TextosDeApps.traduccion(\.partituraMEI)
+        case .lilyPond:
+            traduccion = TextosDeApps.traduccion(\.partituraLilyPond)
+        case .abc:
+            traduccion = TextosDeApps.traduccion(\.partituraABC)
         case .midi:
             return "MIDI"
         case .svg:

@@ -111,6 +111,8 @@ extension TextosDeApps {
         // FicheroParaExportar.swift
         partituraMusicXML: "Particion MusicXML",
         partituraMEI: "Particion MEI",
+        partituraLilyPond: "Particion LilyPond",
+        partituraABC: "Particion ABC",
         dibujoSVG: "Dessenh SVG"
     )
 }

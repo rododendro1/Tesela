@@ -208,7 +208,7 @@ public enum PresentacionDeCoral {
         alturas.map { $0.nombre(en: notacion) }.joined(separator: " ")
     }
 
-    /// La partitura en MusicXML y en MEI, con los cifrados encima y el análisis debajo, y el MIDI.
+    /// La partitura en MusicXML, MEI, LilyPond y ABC, con los cifrados encima y el análisis debajo, y el MIDI.
     static func ficheros(
         _ coral: Coral, _ tonalidad: Tonalidad?, _ notacion: Notacion,
         nombre: String
@@ -220,6 +220,14 @@ public enum PresentacionDeCoral {
                     notacion: notacion), nombre: nombre),
             .mei(
                 coral.mei(
+                    tonalidad: tonalidad, titulo: nombre, cifrados: true, analisis: true,
+                    notacion: notacion), nombre: nombre),
+            .lilyPond(
+                coral.lilyPond(
+                    tonalidad: tonalidad, titulo: nombre, cifrados: true, analisis: true,
+                    notacion: notacion), nombre: nombre),
+            .abc(
+                coral.abc(
                     tonalidad: tonalidad, titulo: nombre, cifrados: true, analisis: true,
                     notacion: notacion), nombre: nombre),
             .midi(coral.midi(tonalidad: tonalidad, titulo: nombre, notacion: notacion), nombre: nombre),

@@ -140,6 +140,13 @@ public enum PresentacionDeAnalisis {
                 .mei(
                     analisis.mei(duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion),
                     nombre: nombre),
+                .lilyPond(
+                    analisis.lilyPond(
+                        duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion),
+                    nombre: nombre),
+                .abc(
+                    analisis.abc(duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion),
+                    nombre: nombre),
                 .midi(
                     analisis.midi(duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion),
                     nombre: nombre),
@@ -149,6 +156,8 @@ public enum PresentacionDeAnalisis {
             ficheros = [
                 .musicXML(analisis.musicXML(titulo: nombre, notacion: notacion), nombre: nombre),
                 .mei(analisis.mei(titulo: nombre, notacion: notacion), nombre: nombre),
+                .lilyPond(analisis.lilyPond(titulo: nombre, notacion: notacion), nombre: nombre),
+                .abc(analisis.abc(titulo: nombre, notacion: notacion), nombre: nombre),
                 .midi(analisis.midi(titulo: nombre, notacion: notacion), nombre: nombre),
             ]
             sonido = Escucha.acordes(acordes)

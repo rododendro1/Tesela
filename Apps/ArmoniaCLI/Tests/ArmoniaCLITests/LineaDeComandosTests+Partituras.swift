@@ -134,7 +134,36 @@ extension LineaDeComandosTests {
             #expect(resultado.salida == "", Comment(rawValue: orden))
         }
         #expect(
-            LineaDeComandos.ejecutar(["midi", "coral", "Do3", "Do5", "--cifrados"]).error.contains("MusicXML y MEI"))
+            LineaDeComandos.ejecutar(["midi", "coral", "Do3", "Do5", "--cifrados"]).error.contains(
+                "MusicXML, MEI, LilyPond y ABC"))
+    }
+
+    @Test func lilyPondYABC() {
+        let melodia = salida(
+            "lilypond melodia Sol4:4 Do5:2 Re5:4 Mi5:2 --compas 3/4 --anacrusa 4 --tonalidad Sol mayor --tempo 60 4. --titulo Mi canción --clave sol8b"
+        )
+        #expect(melodia.hasPrefix("\\version \"2.24.0\""))
+        for fragmento in [
+            "title = \"Mi canción\"", "\\clef \"treble_8\" \\key g \\major \\time 3/4 \\tempo 4. = 60 \\partial 4",
+            "c''2 d''4 |",
+        ] {
+            #expect(melodia.contains(fragmento), Comment(rawValue: fragmento))
+        }
+        let coral = salida(
+            "lilypond coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4, Do3 Mi4 Sol4 Do5 --duracion 2 --compas 3/2 --cifrados --analisis"
+        )
+        for fragmento in ["\\new PianoStaff", "\\voiceTwo", "^\\markup \"Sol\"", "\"Do mayor:\" \"I\" \"T\""] {
+            #expect(coral.contains(fragmento), Comment(rawValue: fragmento))
+        }
+        let abc = salida("abc acordes Am Dm E7 Am --ingles --duracion 4 --titulo Menor")
+        for fragmento in ["X:1\nT:Menor\n", "K:Am\n", "\"^E7\"[E^GBd]", "\"_A minor:\""] {
+            #expect(abc.contains(fragmento), Comment(rawValue: fragmento))
+        }
+        #expect(salida("abc arpegios Do Sol7 --patron alberti").contains("V:1 clef="))
+        for orden in ["lilypond", "abc partitura Do4:4", "abc melodia", "lilypond melodia Do4:4 --programa 3"] {
+            let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+            #expect(resultado.codigo == 2, Comment(rawValue: orden))
+        }
     }
 
     @Test func arpegiosComoPartitura() throws {

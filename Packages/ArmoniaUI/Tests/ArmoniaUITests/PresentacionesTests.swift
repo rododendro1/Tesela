@@ -14,6 +14,8 @@ import Testing
         #expect(FicheroParaExportar.midi(Data(), nombre: "Sol7/Si").nombreDeFichero == "Sol7-Si.mid")
         #expect(FicheroParaExportar.musicXML("", nombre: "Coral").nombreDeFichero == "Coral.musicxml")
         #expect(FicheroParaExportar.mei("", nombre: "Coral").nombreDeFichero == "Coral.mei")
+        #expect(FicheroParaExportar.lilyPond("", nombre: "Coral").nombreDeFichero == "Coral.ly")
+        #expect(FicheroParaExportar.abc("", nombre: "Coral").nombreDeFichero == "Coral.abc")
         #expect(FicheroParaExportar.svg("", nombre: "  ").nombreDeFichero == "Tesela.svg")
         #expect(
             FicheroParaExportar.svg("", nombre: String(repeating: "a", count: 200)).nombreDeFichero.count
@@ -71,7 +73,7 @@ import Testing
         let arpegiada = try #require(analisis.arpegiada(.alberti, notacion: .espanolUnicode))
         // Una blanca por acorde, en corcheas.
         #expect(arpegiada.voz.eventos.count == 20)
-        #expect(arpegiada.ficheros.map(\.formato) == [.musicXML, .mei, .midi])
+        #expect(arpegiada.ficheros.map(\.formato) == [.musicXML, .mei, .lilyPond, .abc, .midi])
         #expect(arpegiada.ficheros[0].nombre == "Progresión arpegiada (bajo de Alberti)")
         #expect(arpegiada.sonido.notas.count == 20)
         // Los ficheros de la progresión y los de la arpegiada no se pisan.
@@ -86,7 +88,7 @@ import Testing
         let arpegio = PresentacionDeArpegios.arpegio(
             Arpegio(Acorde("Sol7"), patron: .idaYVuelta), notacion: .espanolUnicode)
         #expect(arpegio.voz.eventos.count == 9)
-        #expect(arpegio.ficheros.map(\.formato) == [.musicXML, .mei, .midi])
+        #expect(arpegio.ficheros.map(\.formato) == [.musicXML, .mei, .lilyPond, .abc, .midi])
         #expect(arpegio.sonido.notas.first?.altura.midi == 67)
     }
 
@@ -108,7 +110,7 @@ import Testing
         let arpegio = PresentacionDeArpegios.arpegio(
             Arpegio(Acorde("Fa#m7"), patron: .alberti), notacion: .espanolUnicode)
         let sonido = arpegio.sonido.notas
-        for fichero in arpegio.ficheros where fichero.formato != .mei {
+        for fichero in arpegio.ficheros where [.musicXML, .midi].contains(fichero.formato) {
             let pieza = try PiezaImportada(leyendo: fichero.datos)
             #expect(pieza.notas.map(\.altura.midi) == sonido.map(\.midi), "\(fichero.formato)")
             #expect(Set(pieza.notas.map(\.duracion)) == [.corchea], "\(fichero.formato)")
@@ -128,7 +130,7 @@ import Testing
                 notacion: .inglesASCII))
         let patron = Arpegio.Patron.ascendente.nombre(en: .inglesASCII)
         #expect(arpegiada.ficheros[0].nombre == "Progresión arpegiada (\(patron))")
-        for fichero in arpegiada.ficheros where fichero.formato != .mei {
+        for fichero in arpegiada.ficheros where [.musicXML, .midi].contains(fichero.formato) {
             let pieza = try PiezaImportada(leyendo: fichero.datos)
             #expect(pieza.tonalidad == Tonalidad(.re), "\(fichero.formato)")
             // Cada acorde dura una blanca: leída de blanca en blanca, la pieza da la progresión.
@@ -149,10 +151,12 @@ import Testing
 
     @Test func exportaPartiturasYMIDI() throws {
         let analisis = try PresentacionDeAnalisis.analizar("Do Fa Sol7 Do", notacion: .espanolUnicode)
-        #expect(analisis.ficheros.map(\.formato) == [.musicXML, .mei, .midi])
+        #expect(analisis.ficheros.map(\.formato) == [.musicXML, .mei, .lilyPond, .abc, .midi])
         #expect(String(decoding: analisis.ficheros[0].datos, as: UTF8.self).contains("score-partwise"))
         #expect(String(decoding: analisis.ficheros[1].datos, as: UTF8.self).contains("<mei "))
-        #expect(analisis.ficheros[2].datos.prefix(4) == Data("MThd".utf8))
+        #expect(String(decoding: analisis.ficheros[2].datos, as: UTF8.self).hasPrefix("\\version"))
+        #expect(String(decoding: analisis.ficheros[3].datos, as: UTF8.self).hasPrefix("X:1"))
+        #expect(analisis.ficheros[4].datos.prefix(4) == Data("MThd".utf8))
     }
 
     @Test func laNotacionSeUsaEnLosCifrados() throws {
@@ -171,7 +175,7 @@ import Testing
         #expect(analisis.tramos.count == 1)
         #expect(analisis.titulo.hasSuffix("Do mayor"), Comment(rawValue: analisis.titulo))
         #expect(analisis.tramos[0].filas.count == 7)
-        #expect(analisis.ficheros.count == 3)
+        #expect(analisis.ficheros.count == 5)
     }
 
     @Test func unAcordeSinFuncionLaDejaEnBlanco() throws {
@@ -189,7 +193,7 @@ import Testing
         #expect(coral.filas.map(\.grado) == ["I", "IV", "V", "I"])
         #expect(coral.filas.first?.voces == "Do3 Sol3 Do4 Mi4")
         #expect(coral.avisos.isEmpty, "\(coral.avisos)")
-        #expect(coral.ficheros.map(\.formato) == [.musicXML, .mei, .midi])
+        #expect(coral.ficheros.map(\.formato) == [.musicXML, .mei, .lilyPond, .abc, .midi])
     }
 
     @Test func armonizarSinOctavasNoDaCoral() throws {
@@ -221,7 +225,7 @@ import Testing
         #expect(coral.filas.map(\.cifrado) == ["Do", "Fa", "Sol7", "Do"])
         #expect(coral.filas.allSatisfy { $0.voces.split(separator: " ").count == 4 })
         #expect(coral.avisos.isEmpty, "\(coral.avisos)")
-        #expect(coral.ficheros.count == 3)
+        #expect(coral.ficheros.count == 5)
     }
 
     @Test func revisarEncuentraLasParalelas() throws {

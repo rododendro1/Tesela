@@ -33,6 +33,8 @@ EXCEPCIONES = {
     "help",     # el nombre de la orden
     "Symbol",   # alemán: también es la palabra alemana
     "Name",     # alemán: también es la palabra alemana
+    "completion bash|zsh|fish",  # la sintaxis de la orden, con los nombres de las terminales
+    "manual",   # el nombre de la orden
 }
 
 _TEXTO = r'"((?:[^"\\]|\\.)*)"'

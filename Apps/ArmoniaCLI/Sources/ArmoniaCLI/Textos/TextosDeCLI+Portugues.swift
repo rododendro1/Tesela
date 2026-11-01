@@ -82,6 +82,10 @@ extension TextosDeCLI {
         descripcionMusicxmlArchivo: "a progressão de um ficheiro MIDI ou\nMusicXML, com o que dura cada acorde\n(também arpegios, mei e midi)",
         sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [opções]",
         descripcionMeiMelodia: "o mesmo em MEI 5, o formato das\nedições críticas (com as mesmas\nopções)",
+        sintaxisLilypondMelodia: "lilypond melodia|coral|acordes|arpegios <…> [opções]",
+        descripcionLilypondMelodia: "o mesmo em LilyPond, para gravar a\npartitura em PDF",
+        sintaxisAbcMelodia: "abc melodia|coral|acordes|arpegios <…> [opções]",
+        descripcionAbcMelodia: "o mesmo em ABC, a notação em texto da\nmúsica tradicional",
         sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [opções]",
         descripcionMidiMelodia: "o mesmo como ficheiro MIDI, para\nouvir (sem --clave nem --cifrados;\ncom --programa 0…127, General MIDI)",
 
@@ -110,6 +114,12 @@ extension TextosDeCLI {
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "esta ajuda",
+        sintaxisCompletado: "completado bash|zsh|fish",
+        descripcionCompletado: "o preenchimento automático dos\ncomandos e opções para o terminal",
+        sintaxisManual: "manual",
+        descripcionManual: "esta ajuda como página de manual",
+        manualNombre: "NOME",
+        manualNotas: "NOTAS",
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "faltam os acordes: " + ejemplo },
@@ -160,7 +170,7 @@ extension TextosDeCLI {
         // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "falta «melodia», «coral» ou «acordes»: " + ejemplo },
         instrumentoMIDI: "o programa é um número General MIDI de 0 a 127: --programa 52",
-        marcasSoloMusicXML: "--cifrados e --analisis são para MusicXML e MEI",
+        marcasSoloMusicXML: "--cifrados e --analisis são para MusicXML, MEI, LilyPond e ABC",
         faltaValor: { opcion in "falta o valor de --\(opcion)" },
         tempoMalEscrito: "o tempo escreve-se «--tempo 90» ou «--tempo 60 4.»",
         faltanNotasDeLaMelodia: { ejemplo, orden in "faltam as notas: " + ejemplo },
@@ -194,6 +204,7 @@ extension TextosDeCLI {
         ordenDesconocida: { orden in "comando desconhecido: «\(orden)»" },
         opcionDesconocida: { opcion in "opção desconhecida: «\(opcion)»" },
         idiomaDesconocido: { idioma in "idioma desconhecido: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el ou ru)" },
+        terminalDesconocida: { t in "terminal desconhecido: «\(t)» (bash, zsh ou fish)" },
         escrituraNoValida: { escritura in "escrita inválida: «\(escritura)» (palabras/words, ascii ou unicode; só com es e en)" },
 
         // Mensaje.swift

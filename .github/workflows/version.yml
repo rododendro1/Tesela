@@ -12,9 +12,16 @@ name: Versión
 #     git tag 0.2.0 && git push origin 0.2.0
 #
 # La misma etiqueta publica también la documentación (documentacion.yml).
+#
+# Además compila la herramienta `armonia` y sube a la release un paquete por plataforma
+# (`Scripts/empaquetar_cli.sh`): Linux x86_64 y arm64 (estáticos, con el SDK musl de Swift: no dependen de nada
+# instalado) y macOS universal (arm64 y x86_64). Cada uno lleva el manual y el completado. En un pull request que
+# cambia este fichero o el script solo compila y empaqueta, como prueba, sin publicar nada.
 on:
   push:
     tags: ["[0-9]+.[0-9]+.[0-9]+", "v[0-9]+.[0-9]+.[0-9]+"]
+  pull_request:
+    paths: [.github/workflows/version.yml, Scripts/empaquetar_cli.sh]
   workflow_dispatch:
     inputs:
       etiqueta:
@@ -23,6 +30,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: version-${{ inputs.etiqueta || github.ref_name }}
@@ -31,6 +39,7 @@ concurrency:
 jobs:
   release:
     name: Release
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -52,3 +61,109 @@ jobs:
           gh release create "$ETIQUETA" --repo "$GITHUB_REPOSITORY" --verify-tag \
             --title "Tesela ${ETIQUETA#v}" --notes-file "$RUNNER_TEMP/notas.md"
           echo "Release: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/$ETIQUETA" >> "$GITHUB_STEP_SUMMARY"
+
+  linux:
+    name: armonia · Linux
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    container: swift:6.2
+    defaults:
+      run:
+        shell: bash
+    env:
+      VERSION: ${{ github.event_name == 'pull_request' && 'prueba' || inputs.etiqueta || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.sha || format('refs/tags/{0}', inputs.etiqueta || github.ref_name) }}
+      - name: SDK estático de Linux
+        run: |
+          set -euo pipefail
+          # El SDK tiene que ser de la misma versión que el compilador de la imagen (6.2.4…).
+          version=$(swift --version 2>&1 | grep -oE 'swift-[0-9.]+-RELEASE' | head -n 1)
+          numero=${version#swift-}
+          numero=${numero%-RELEASE}
+          command -v curl > /dev/null || (apt-get update -q && apt-get install -yq curl)
+          # El nombre del paquete lleva la versión del SDK, que cambia de una versión de Swift a otra.
+          base="https://download.swift.org/swift-$numero-release/static-sdk/$version"
+          for sdk in 0.1.0 0.0.1; do
+            url="$base/${version}_static-linux-$sdk.artifactbundle.tar.gz"
+            if curl -fsSL -o "$RUNNER_TEMP/sdk.tar.gz" "$url" && gzip -t "$RUNNER_TEMP/sdk.tar.gz" 2> /dev/null; then
+              echo "SDK: $url"
+              swift sdk install "$RUNNER_TEMP/sdk.tar.gz"
+              exit 0
+            fi
+            echo "No está: $url ($(head -c 200 "$RUNNER_TEMP/sdk.tar.gz" 2> /dev/null | tr -cd '[:print:]'))"
+          done
+          curl -fsSL https://www.swift.org/api/v1/install/releases.json | grep -o "\"$numero\"[^]]*" | head -c 3000
+          exit 1
+      - name: Compilar
+        working-directory: Apps/ArmoniaCLI
+        run: |
+          set -euo pipefail
+          for arquitectura in x86_64 aarch64; do
+            swift build -c release --product armonia --swift-sdk "$arquitectura-swift-linux-musl"
+          done
+      - name: Empaquetar
+        run: |
+          set -euo pipefail
+          VERSION=${VERSION#v}
+          cd Apps/ArmoniaCLI
+          x86=$(swift build -c release --swift-sdk x86_64-swift-linux-musl --show-bin-path)/armonia
+          arm=$(swift build -c release --swift-sdk aarch64-swift-linux-musl --show-bin-path)/armonia
+          # Que de verdad sea estático y funcione.
+          ! ldd "$x86" 2> /dev/null | grep -q '=>'
+          "$x86" acorde Sol7 | grep -q 'séptima de dominante'
+          cd "$GITHUB_WORKSPACE"
+          mkdir paquetes && cd paquetes
+          ../Scripts/empaquetar_cli.sh "$x86" "armonia-$VERSION-linux-x86_64"
+          ../Scripts/empaquetar_cli.sh "$arm" "armonia-$VERSION-linux-arm64" "$x86"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: armonia-linux
+          path: paquetes/*
+
+  macos:
+    name: armonia · macOS
+    runs-on: macos-15
+    timeout-minutes: 45
+    env:
+      VERSION: ${{ github.event_name == 'pull_request' && 'prueba' || inputs.etiqueta || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.sha || format('refs/tags/{0}', inputs.etiqueta || github.ref_name) }}
+      - name: Compilar
+        working-directory: Apps/ArmoniaCLI
+        run: swift build -c release --product armonia --arch arm64 --arch x86_64
+      - name: Empaquetar
+        run: |
+          set -euo pipefail
+          VERSION=${VERSION#v}
+          binario=$(cd Apps/ArmoniaCLI && swift build -c release --arch arm64 --arch x86_64 --show-bin-path)/armonia
+          lipo "$binario" -verify_arch arm64 x86_64
+          "$binario" acorde Sol7 | grep -q 'séptima de dominante'
+          mkdir paquetes && cd paquetes
+          ../Scripts/empaquetar_cli.sh "$binario" "armonia-$VERSION-macos-universal"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: armonia-macos
+          path: paquetes/*
+
+  binarios:
+    name: Subir los binarios
+    if: github.event_name != 'pull_request'
+    needs: [release, linux, macos]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      ETIQUETA: ${{ inputs.etiqueta || github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Subir a la release
+        run: |
+          set -euo pipefail
+          gh run download "$GITHUB_RUN_ID" --repo "$GITHUB_REPOSITORY" --dir paquetes
+          # --clobber: al repetir a mano (workflow_dispatch) se sustituyen los de antes.
+          find paquetes -type f -print0 | xargs -0 gh release upload "$ETIQUETA" --repo "$GITHUB_REPOSITORY" --clobber
+          find paquetes -type f -exec basename {} \; >> "$GITHUB_STEP_SUMMARY"

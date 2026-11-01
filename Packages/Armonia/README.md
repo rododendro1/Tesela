@@ -200,7 +200,7 @@ Sources/
 ├── ArmoniaPartitura/
 │   ├── Modelo/        Duracion (con Figura y Tempo), Compas, Evento, Melodia (con Voz),
 │   │                  Pentagrama (Clave, PosicionEnPentagrama, InstrumentoDePartitura)
-│   ├── Formatos/      MusicXML y MEI (exportación de voces, corales y progresiones),
+│   ├── Formatos/      MusicXML, MEI, LilyPond y ABC (exportación de voces, corales y progresiones),
 │   │                  ArchivoMIDI (ficheros MIDI estándar de voces, corales y progresiones)
 │   └── Contrapunto/   Contrapunto (contrapunto de especies a dos voces, con sus faltas)
 ├── ArmoniaTrastes/    Encordado (afinaciones del instrumento), Mastil (con PosicionEnElMastil: dónde suena cada nota),

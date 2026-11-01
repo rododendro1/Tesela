@@ -82,6 +82,10 @@ extension TextosDeCLI {
         descripcionMusicxmlArchivo: "MIDI edo MusicXML fitxategi baten\nprogresioa, akorde bakoitzaren\niraupenarekin (baita arpegios, mei, midi)",
         sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [aukerak]",
         descripcionMeiMelodia: "gauza bera MEI 5en, edizio kritikoen\nformatuan (aukera berberekin)",
+        sintaxisLilypondMelodia: "lilypond melodia|coral|acordes|arpegios <…> [aukerak]",
+        descripcionLilypondMelodia: "gauza bera LilyPonden, partitura\nPDFan grabatzeko",
+        sintaxisAbcMelodia: "abc melodia|coral|acordes|arpegios <…> [aukerak]",
+        descripcionAbcMelodia: "gauza bera ABCn, musika\ntradizionalaren testu-notazioa",
         sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [aukerak]",
         descripcionMidiMelodia: "gauza bera MIDI fitxategi gisa,\nentzuteko (--clave eta --cifrados\ngabe; --programa 0…127, General\nMIDI)",
 
@@ -110,6 +114,12 @@ extension TextosDeCLI {
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "laguntza hau",
+        sintaxisCompletado: "completado bash|zsh|fish",
+        descripcionCompletado: "aginduen eta aukeren osatze\nautomatikoa terminalerako",
+        sintaxisManual: "manual",
+        descripcionManual: "laguntza hau eskuliburu-orri gisa",
+        manualNombre: "IZENA",
+        manualNotas: "OHARRAK",
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "akordeak falta dira: " + ejemplo },
@@ -160,7 +170,7 @@ extension TextosDeCLI {
         // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "«melodia», «coral» edo «acordes» falta da: " + ejemplo },
         instrumentoMIDI: "programa 0tik 127ra bitarteko General MIDI zenbaki bat da: --programa 52",
-        marcasSoloMusicXML: "--cifrados eta --analisis MusicXML eta MEIrako dira",
+        marcasSoloMusicXML: "--cifrados eta --analisis MusicXML, MEI, LilyPond eta ABCrako dira",
         faltaValor: { opcion in "--\(opcion) aukeraren balioa falta da" },
         tempoMalEscrito: "tempoa «--tempo 90» edo «--tempo 60 4.» idazten da",
         faltanNotasDeLaMelodia: { ejemplo, orden in "notak falta dira: " + ejemplo },
@@ -194,6 +204,7 @@ extension TextosDeCLI {
         ordenDesconocida: { orden in "agindu ezezaguna: «\(orden)»" },
         opcionDesconocida: { opcion in "aukera ezezaguna: «\(opcion)»" },
         idiomaDesconocido: { idioma in "hizkuntza ezezaguna: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el edo ru)" },
+        terminalDesconocida: { t in "terminal ezezaguna: «\(t)» (bash, zsh edo fish)" },
         escrituraNoValida: { escritura in "idazkera baliogabea: «\(escritura)» (palabras/words, ascii edo unicode; es eta en-ekin bakarrik)" },
 
         // Mensaje.swift

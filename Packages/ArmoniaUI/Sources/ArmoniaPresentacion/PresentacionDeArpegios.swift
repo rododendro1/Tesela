@@ -1,7 +1,7 @@
 import Armonia
 
 /// Un arpegio, o una progresión arpegiada, como lo ofrecen las apps: la voz con su ritmo, cómo suena y sus
-/// ficheros para exportar (MusicXML, MEI y MIDI).
+/// ficheros para exportar (MusicXML, MEI, LilyPond, ABC y MIDI).
 public struct ArpegioPresentado: Hashable, Sendable {
     public let voz: Voz
     public let sonido: Escucha
@@ -15,7 +15,7 @@ public enum PresentacionDeArpegios {
     ///
     ///     let arpegio = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Do"), patron: .alberti),
     ///                                                 notacion: .espanolUnicode)
-    ///     arpegio.ficheros.map(\.formato)   // [.musicXML, .mei, .midi]
+    ///     arpegio.ficheros.map(\.formato)   // [.musicXML, .mei, .lilyPond, .abc, .midi]
     public static func arpegio(
         _ arpegio: Arpegio, figura: Duracion = .corchea, notacion: Notacion
     ) -> ArpegioPresentado {
@@ -54,6 +54,8 @@ public enum PresentacionDeArpegios {
             ficheros: [
                 .musicXML(voz.musicXML(tonalidad: tonalidad, tempo: tempo, titulo: nombre), nombre: nombre),
                 .mei(voz.mei(tonalidad: tonalidad, tempo: tempo, titulo: nombre), nombre: nombre),
+                .lilyPond(voz.lilyPond(tonalidad: tonalidad, tempo: tempo, titulo: nombre), nombre: nombre),
+                .abc(voz.abc(tonalidad: tonalidad, tempo: tempo, titulo: nombre), nombre: nombre),
                 .midi(voz.midi(tonalidad: tonalidad, tempo: tempo, titulo: nombre), nombre: nombre),
             ])
     }

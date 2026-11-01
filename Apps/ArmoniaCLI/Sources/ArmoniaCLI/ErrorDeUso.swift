@@ -14,6 +14,8 @@ enum ErrorDeUso {
     case ordenDesconocida(String)
     case opcionDesconocida(String)
     case idiomaDesconocido(String)
+    /// `completado` sin bash, zsh ni fish.
+    case terminalDesconocida(String)
     /// `--escritura` con un valor que no es palabras, ascii ni unicode, o con un idioma que solo tiene una.
     case escrituraNoValida(String)
 
@@ -121,6 +123,8 @@ enum ErrorDeUso {
             return TextosDeCLI.traduccion { $0.opcionDesconocida(opcion) }
         case .idiomaDesconocido(let idioma):
             return TextosDeCLI.traduccion { $0.idiomaDesconocido(idioma) }
+        case .terminalDesconocida(let terminal):
+            return TextosDeCLI.traduccion { $0.terminalDesconocida(terminal) }
         case .escrituraNoValida(let escritura):
             return TextosDeCLI.traduccion { $0.escrituraNoValida(escritura) }
         case .faltaCifrado: return TextosDeCLI.traduccion(\.faltaCifrado)
