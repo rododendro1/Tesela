@@ -12,7 +12,7 @@ Cada `Packages/<Paquete>/CHANGELOG.md` tiene, de lo más nuevo a lo más viejo, 
   --publicar 0.2.0 Prepara una versión: las secciones «Sin publicar» pasan a «0.2.0 (fecha de hoy)» y
                    `MARKETING_VERSION` a 0.2.0. Falla si ningún paquete tiene nada sin publicar.
 
-Uso: python3 Scripts/notas_de_version.py 0.2.0 | --actual | --comprobar | --publicar 0.2.0
+Uso: python3 Scripts/comprobaciones/notas_de_version.py 0.2.0 | --actual | --comprobar | --publicar 0.2.0
      (--actual es la versión de project.yml)
 """
 import datetime
@@ -20,7 +20,7 @@ import re
 import sys
 from pathlib import Path
 
-RAIZ = Path(__file__).resolve().parent.parent
+RAIZ = Path(__file__).resolve().parents[2]
 PROYECTO = RAIZ / "project.yml"
 SIN_PUBLICAR = "Sin publicar"
 # GitHub no admite notas de más de 125 000 caracteres: por encima de este límite se cortan y se enlazan los CHANGELOG.
@@ -74,7 +74,7 @@ def escribir_notas(version):
     texto = notas(version)
     if not texto:
         print(f"Ningún Packages/*/CHANGELOG.md tiene una sección «## {version}». Para pasar lo que está en "
-              f"«## {SIN_PUBLICAR}» a esa versión: python3 Scripts/notas_de_version.py --publicar {version}",
+              f"«## {SIN_PUBLICAR}» a esa versión: python3 Scripts/comprobaciones/notas_de_version.py --publicar {version}",
               file=sys.stderr)
         return 1
     if len(texto) > LIMITE:

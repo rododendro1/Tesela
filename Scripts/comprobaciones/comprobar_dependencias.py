@@ -10,13 +10,13 @@ Reglas:
      (`Herramientas/*/Package.swift`) dependen solo de paquetes de `Packages/`.
   4. No hay ciclos (se deduce de 2: PERMITIDO es un orden).
 
-Uso:  python3 Scripts/comprobar_dependencias.py     (sale con 1 si hay un problema)
+Uso:  python3 Scripts/comprobaciones/comprobar_dependencias.py     (sale con 1 si hay un problema)
 """
 import re
 import sys
 from pathlib import Path
 
-RAIZ = Path(__file__).resolve().parent.parent
+RAIZ = Path(__file__).resolve().parents[2]
 PAQUETES = RAIZ / "Packages"
 
 # De más básico a más alto: cada paquete solo puede depender de los anteriores que se listan.

@@ -3,7 +3,7 @@
 Uso: python3 generar.py <raíz del repo>"""
 import re, sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))   # Scripts/normalizar_escalas.py
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "comprobaciones"))   # Scripts/comprobaciones/normalizar_escalas.py
 from lexico import LANGS, MODOS, PAL
 
 RAIZ = Path(sys.argv[1])

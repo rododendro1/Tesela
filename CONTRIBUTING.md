@@ -32,12 +32,12 @@ cd Packages/ArmoniaUI && swift test      # la interfaz (en Linux, solo la parte 
   (`ImportacionAlAzarTests`): si tocas esa lectura, añade ahí los casos nuevos.
 - **Dependencias en orden.** Un paquete solo depende de los que tiene debajo, nunca de una app. Si añades un
   módulo o un paquete, sigue el apartado «Añadir un paquete o una app» del README:
-  `Scripts/comprobar_dependencias.py` comprueba que el `Package.swift` de la raíz coincide con los de `Packages/`.
+  `Scripts/comprobaciones/comprobar_dependencias.py` comprueba que el `Package.swift` de la raíz coincide con los de `Packages/`.
 - **Textos traducidos.** Un texto nuevo de la interfaz o del motor va en los catorce idiomas.
-  `Scripts/comprobar_traducciones.py` avisa de los que faltan.
+  `Scripts/comprobaciones/comprobar_traducciones.py` avisa de los que faltan.
 - **Documentación.** La API pública lleva comentario de documentación. Los enlaces de DocC (``Tipo/miembro`` y
   `<doc:Articulo>`) tienen que apuntar a algo que exista, y los ejemplos de código de los artículos se prueban:
-  si cambias uno, regenera sus pruebas con `python3 Scripts/generar_pruebas_de_documentacion.py`.
+  si cambias uno, regenera sus pruebas con `python3 Scripts/generadores/generar_pruebas_de_documentacion.py`.
 - **CHANGELOG.** Anota el cambio en el `CHANGELOG.md` de cada paquete que cambie, en la sección `## Sin publicar`
   (la primera; créala si no está). Al publicar una versión, esa sección pasa a ser la de la versión y sus notas son
   las de la release.
@@ -61,14 +61,14 @@ formatean. Si añades otra tabla así, ponle esa marca.
 Son las del primer job del CI y no necesitan Swift. Pásalas antes de abrir el pull request:
 
 ```sh
-python3 Scripts/comprobar_higiene.py
-python3 Scripts/comprobar_dependencias.py
-python3 Scripts/comprobar_modulos.py
-python3 Scripts/comprobar_catalogo.py
-python3 Scripts/comprobar_enlaces_docc.py
-python3 Scripts/comprobar_traducciones.py
-python3 Scripts/generar_pruebas_de_documentacion.py --comprobar
-python3 Scripts/notas_de_version.py --comprobar
+python3 Scripts/comprobaciones/comprobar_higiene.py
+python3 Scripts/comprobaciones/comprobar_dependencias.py
+python3 Scripts/comprobaciones/comprobar_modulos.py
+python3 Scripts/comprobaciones/comprobar_catalogo.py
+python3 Scripts/comprobaciones/comprobar_enlaces_docc.py
+python3 Scripts/comprobaciones/comprobar_traducciones.py
+python3 Scripts/generadores/generar_pruebas_de_documentacion.py --comprobar
+python3 Scripts/comprobaciones/notas_de_version.py --comprobar
 ```
 
 En cada pull request corren estas comprobaciones, la del formato y las pruebas en Linux (Swift 6.0 y 6.2). Si el pull
@@ -88,7 +88,7 @@ Las versiones siguen [SemVer](https://semver.org/lang/es/); mientras sean 0.x, u
 anterior marcó como obsoleto. Para publicar una:
 
 ```sh
-python3 Scripts/notas_de_version.py --publicar 0.2.0   # «Sin publicar» pasa a «0.2.0 (fecha)» y sube MARKETING_VERSION
+python3 Scripts/comprobaciones/notas_de_version.py --publicar 0.2.0   # «Sin publicar» pasa a «0.2.0 (fecha)» y sube MARKETING_VERSION
 # … pull request con ese cambio, y fusionarlo …
 git tag 0.2.0 && git push origin 0.2.0                 # en el commit de main
 ```

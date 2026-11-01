@@ -129,7 +129,7 @@ struct VistaDeCoral: View {
             }
         }
         if !coral.avisos.isEmpty {
-            let titulo = notacion.texto(tarea == .revisar ? .conduccionDeLasVoces : .avisos)
+            let titulo = tarea == .revisar ? notacion.texto(\.conduccionDeLasVoces) : notacion.texto(\.avisos)
             Section(titulo) {
                 ForEach(coral.avisos, id: \.self) { Text($0.texto(en: notacion)) }
             }

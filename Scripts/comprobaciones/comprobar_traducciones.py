@@ -16,7 +16,7 @@ Las órdenes y las opciones de la línea de comandos (`armonia …`, `--…`) y 
 se escriben igual en todos los idiomas, así que no cuentan. Los textos que son iguales a propósito
 van en EXCEPCIONES.
 
-Uso:  python3 Scripts/comprobar_traducciones.py     (sale con 1 si hay un problema)
+Uso:  python3 Scripts/comprobaciones/comprobar_traducciones.py     (sale con 1 si hay un problema)
 """
 import re
 import subprocess
@@ -24,7 +24,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-RAIZ = Path(__file__).resolve().parent.parent
+RAIZ = Path(__file__).resolve().parents[2]
 
 from idiomas import CODIGOS as IDIOMAS, CODIGO_DEL_FICHERO, comprobar as comprobar_idiomas
 
@@ -119,7 +119,7 @@ def main() -> int:
         # Si `Traduccion` cambia de forma (otro idioma, otras etiquetas), la expresión deja de encontrarlas.
         errores.append("no se ha encontrado ninguna Traduccion literal: ¿ha cambiado IDIOMAS?")
     if not comprobar_idiomas():
-        errores.append("Scripts/idiomas.py no tiene los códigos de `Idioma.codigo`, en su orden")
+        errores.append("Scripts/comprobaciones/idiomas.py no tiene los códigos de `Idioma.codigo`, en su orden")
     if errores:
         print(f"\n{len(errores)} problema(s):")
         for e in errores:

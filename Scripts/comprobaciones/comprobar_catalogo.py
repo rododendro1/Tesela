@@ -17,7 +17,7 @@ Comprueba:
   5. en un idioma, ningún alias se escribe igual que el nombre o el alias de otra escala (el primero taparía
      al segundo al leer).
 
-Uso:  python3 Scripts/comprobar_catalogo.py      (sale con 1 si hay algún problema)
+Uso:  python3 Scripts/comprobaciones/comprobar_catalogo.py      (sale con 1 si hay algún problema)
 Es una lectura del texto, no del compilador: se limita al estilo con que está escrito el catálogo.
 """
 import collections
@@ -25,7 +25,7 @@ import re
 import sys
 from pathlib import Path
 
-RAIZ = Path(__file__).resolve().parent.parent / "Packages" / "Armonia" / "Sources" / "ArmoniaTeoria" / "Escalas"
+RAIZ = Path(__file__).resolve().parents[2] / "Packages" / "Armonia" / "Sources" / "ArmoniaTeoria" / "Escalas"
 FICHEROS = sorted(RAIZ.rglob("*.swift"))
 TEXTO = {f: re.sub(r"//.*", "", f.read_text(encoding="utf-8")) for f in FICHEROS}
 
@@ -105,7 +105,7 @@ def tradicionales_declaradas():
 
 
 if not comprobar_normalizacion():
-    errores.append("`normalizar` de Python no coincide con los casos de Scripts/vectores/normalizar.tsv")
+    errores.append("`normalizar` de Python no coincide con los casos de Scripts/datos/normalizar.tsv")
 tradicionales_esperadas = tradicionales_declaradas()
 clases_esperadas = []
 for f, texto in TEXTO.items():

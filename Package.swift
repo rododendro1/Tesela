@@ -8,7 +8,7 @@ import PackageDescription
 // SwiftPM solo lee el `Package.swift` de la raíz de un repositorio, así que este reúne los tres con los
 // mismos módulos y dependencias que cada uno declara en su carpeta. Dentro del repositorio se sigue
 // trabajando con aquellos (`cd Packages/Armonia && swift test`): aquí no hay pruebas.
-// `Scripts/comprobar_dependencias.py` vigila que los dos lados coincidan.
+// `Scripts/comprobaciones/comprobar_dependencias.py` vigila que los dos lados coincidan.
 
 let package = Package(
     name: "Tesela",

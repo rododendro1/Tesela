@@ -20,7 +20,7 @@ import ArmoniaNucleo
 //
 // La India, que es la más larga, está en `TipoDeEscala+India.swift`; las demás, más abajo, cada una tras su
 // `// MARK: - Nombre`: Andes, China, Corea, Etiopia, Grecia, Indonesia, Japon, Klezmer, MundoArabe (maqamat) y
-// Persia (dastgah). `Scripts/nombres_de_escalas/tradicionales.py` las busca por esas marcas.
+// Persia (dastgah). `Scripts/generadores/nombres_de_escalas/tradicionales.py` las busca por esas marcas.
 
 extension TipoDeEscala {
     /// Escalas de otras tradiciones: thaat, dromoi, melakarta, janya, chinas, japonesas, etíopes,

@@ -41,12 +41,12 @@ omitir() { printf '==> %s\n    omitido: %s\n' "$1" "$2"; }
 
 # 0. Comprobaciones de Python: no necesitan Swift.
 paso "Comprobaciones (higiene, dependencias, DocC)" . sh -c '
-    python3 Scripts/comprobar_higiene.py &&
-    python3 Scripts/comprobar_dependencias.py &&
-    python3 Scripts/comprobar_modulos.py &&
-    python3 Scripts/comprobar_catalogo.py &&
-    python3 Scripts/comprobar_enlaces_docc.py &&
-    python3 Scripts/generar_pruebas_de_documentacion.py --comprobar'
+    python3 Scripts/comprobaciones/comprobar_higiene.py &&
+    python3 Scripts/comprobaciones/comprobar_dependencias.py &&
+    python3 Scripts/comprobaciones/comprobar_modulos.py &&
+    python3 Scripts/comprobaciones/comprobar_catalogo.py &&
+    python3 Scripts/comprobaciones/comprobar_enlaces_docc.py &&
+    python3 Scripts/generadores/generar_pruebas_de_documentacion.py --comprobar'
 
 if ! command -v swift >/dev/null 2>&1; then
     printf '\nNo hay Swift en esta máquina: instala Xcode (macOS) o la cadena de herramientas de swift.org.\n'
@@ -103,7 +103,7 @@ elif [ "$(uname)" != "Darwin" ]; then
 elif ! command -v xcodegen >/dev/null 2>&1; then
     omitir "Apps de Xcode" "falta XcodeGen (brew install xcodegen)"
 elif [ "$MOTOR_COMPILA" = 1 ]; then
-    paso "Apps: generar el proyecto" . ./Scripts/generar_proyecto.sh &&
+    paso "Apps: generar el proyecto" . ./Scripts/generadores/generar_proyecto.sh &&
         for esquema in ArmoniaApp TonnetzApp; do
             paso "$esquema (macOS)" . xcodebuild build -project Tesela.xcodeproj -scheme "$esquema" \
                 -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO

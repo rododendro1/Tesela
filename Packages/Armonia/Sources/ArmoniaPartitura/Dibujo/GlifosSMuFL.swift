@@ -1,4 +1,4 @@
-// Generado por Scripts/extraer_glifos_bravura.py a partir de la fuente Bravura. No lo edites a mano.
+// Generado por Scripts/generadores/extraer_glifos_bravura.py a partir de la fuente Bravura. No lo edites a mano.
 //
 // Bravura © Steinberg Media Technologies GmbH, con licencia SIL Open Font License 1.1 (Licencias/Bravura-OFL.txt).
 // Los trazados están en espacios de pentagrama (1 = distancia entre dos líneas), con el origen en la línea base del

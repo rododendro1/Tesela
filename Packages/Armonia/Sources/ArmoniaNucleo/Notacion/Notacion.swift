@@ -267,12 +267,12 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
 ///
 /// Su `rawValue` es el nombre del caso («euskera», «aleman»), que las apps guardan en los ajustes.
 ///
-/// Para añadir uno: un caso aquí, su fila en ``ReglasDeIdioma`` (su código, cómo se llama, las sílabas, cómo
-/// se le pega la alteración y los modos) y en `Scripts/idiomas.py`, un caso en `EscrituraDeNotas` (con su
-/// constante en `Notacion` y su `escrituraDeLaAlteracion`) y un campo en `Traducido`. Los nombres de nota y
-/// los datos del idioma no tienen más `switch` sobre `Idioma` que el de las reglas. Ningún `switch` sobre
-/// `Idioma` o `EscrituraDeNotas` tiene `default`, así que el compilador señala lo que falta, y cada
-/// `Traduccion` sin el idioma nuevo deja de compilar.
+/// Para añadir uno: un caso aquí, su fila en ``ReglasDeIdioma`` (su código, cómo se llama, las sílabas, cómo se le pega
+/// la alteración y los modos) y en `Scripts/comprobaciones/idiomas.py`, un caso en `EscrituraDeNotas` (con su constante
+/// en `Notacion` y su `escrituraDeLaAlteracion`) y un campo en `Traducido`. Los nombres de nota y los datos del idioma
+/// no tienen más `switch` sobre `Idioma` que el de las reglas. Ningún `switch` sobre `Idioma` o `EscrituraDeNotas`
+/// tiene `default`, así que el compilador señala lo que falta, y cada `Traduccion` sin el idioma nuevo deja de
+/// compilar.
 public enum Idioma: String, Hashable, Sendable, CaseIterable {
     case espanol
     case ingles

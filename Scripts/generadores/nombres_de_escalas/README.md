@@ -13,9 +13,9 @@ regenerar una familia de alias. Todos reciben la raíz del repositorio y reescri
 | `translit_trad.py` | Transcribe al ruso y al griego los nombres de esas tradicionales (no los melakarta). |
 | `quitar_alias_normalizados.py` | Quita de `alias:` las grafías que `aliasNormalizados` ya deduce (`aplicar` para escribir). |
 
-Después de cualquiera: `python3 Scripts/comprobar_catalogo.py` (cobertura y choques de alias) y los tests de
+Después de cualquiera: `python3 Scripts/comprobaciones/comprobar_catalogo.py` (cobertura y choques de alias) y los tests de
 `NombresDeEscalasPorIdiomaTests`. Las traducciones no las ha revisado ningún hablante nativo.
 
-Todos comparan nombres con `Scripts/normalizar_escalas.py`, la copia en Python de `TipoDeEscala.normalizar`. Los casos
-de `Scripts/vectores/normalizar.tsv` los lee también `NormalizarVectoresTests` (Swift): para cambiar la normalización,
-cambia las dos funciones y añade el caso al fichero. `python3 Scripts/normalizar_escalas.py --comprobar` los pasa.
+Todos comparan nombres con `Scripts/comprobaciones/normalizar_escalas.py`, la copia en Python de `TipoDeEscala.normalizar`. Los casos
+de `Scripts/datos/normalizar.tsv` los lee también `NormalizarVectoresTests` (Swift): para cambiar la normalización,
+cambia las dos funciones y añade el caso al fichero. `python3 Scripts/comprobaciones/normalizar_escalas.py --comprobar` los pasa.

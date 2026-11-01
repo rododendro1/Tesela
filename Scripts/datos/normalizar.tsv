@@ -1,5 +1,5 @@
 # Casos de `TipoDeEscala.normalizar`: entrada, tabulador, resultado esperado.
-# Los leen el test de Swift (NormalizarVectoresTests) y Scripts/normalizar_escalas.py: si cambias la función en un
+# Los leen el test de Swift (NormalizarVectoresTests) y Scripts/comprobaciones/normalizar_escalas.py: si cambias la función en un
 # sitio, cambia el otro y añade aquí el caso. Sin espacios al principio ni al final de la entrada (la separación por
 # espacios los descartaría, y un tabulador los haría ambiguos). Sin «ß» ni sigma final («ς»): depende de cómo pliegue
 # Foundation las mayúsculas.

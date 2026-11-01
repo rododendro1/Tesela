@@ -1,7 +1,7 @@
 # Proyecto de Xcode de las apps del ecosistema, generado con XcodeGen:
 #
 #     brew install xcodegen
-#     ./Scripts/generar_proyecto.sh        # crea Tesela.xcodeproj
+#     ./Scripts/generadores/generar_proyecto.sh        # crea Tesela.xcodeproj
 #
 # El .xcodeproj no se guarda en git: este fichero es la fuente. Los paquetes locales se enlazan por
 # ruta, así que un cambio en `Packages/` se ve en las apps sin publicar nada.

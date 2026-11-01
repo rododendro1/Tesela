@@ -12,7 +12,7 @@
     `Traduccion("…", "…", ca: …)`: van en los `TextosDeX` de cada módulo, un fichero por idioma en `Textos/`.
 
 No sustituye a un formateador: es lo que se puede comprobar sin instalar nada.
-Uso: python3 Scripts/comprobar_higiene.py
+Uso: python3 Scripts/comprobaciones/comprobar_higiene.py
 """
 import os
 import py_compile
@@ -22,7 +22,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-RAIZ = Path(__file__).resolve().parent.parent
+RAIZ = Path(__file__).resolve().parents[2]
 INVISIBLES = {0x00AD: "guion blando", 0x200B: "espacio de ancho cero", 0x200C: "separador de ancho cero",
               0x200D: "unión de ancho cero", 0x2060: "unión de palabras", 0xFEFF: "BOM / espacio sin ancho"}
 CODIGO = {".swift", ".py", ".sh", ".yml", ".yaml", ".xcconfig"}
