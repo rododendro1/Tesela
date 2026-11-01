@@ -363,7 +363,8 @@ extension DigitacionTests {
     @Test func queInstrumentosSonReentrantes() {
         #expect(Encordado.ukelele.esReentrante)
         for encordado in [
-            Encordado.guitarra, .guitarraDeSieteCuerdas, .guitarraEnReGrave, .bajo, .bajoDeCincoCuerdas, .mandolina,
+            Encordado.guitarra, .guitarraDeSieteCuerdas, .guitarraEnReGrave, .bajoElectrico, .bajoDeCincoCuerdas,
+            .mandolina,
         ] {
             #expect(!encordado.esReentrante, Comment(rawValue: encordado.nombre))
         }

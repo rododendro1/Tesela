@@ -204,21 +204,3 @@ extension String {
         return (conVocal ? "az " : "a ") + self
     }
 }
-
-extension Traduccion {
-    /// El plural ruso de un número: "1 полутон", "3 полутона", "5 полутонов", "21 полутон".
-    @available(*, deprecated, message: "Usa Idioma.ruso.contar(n, uno, pocos, muchos)")
-    public static func pluralRuso(_ n: Int, _ uno: String, _ pocos: String, _ muchos: String) -> String {
-        ReglasDeIdioma.Plural.eslavo.contar(n, [uno, pocos, muchos])
-    }
-}
-
-extension Idioma {
-    /// Idiomas en los que el motor escribe sus textos: todos, en el orden de `allCases`.
-    @available(*, deprecated, renamed: "allCases", message: "Es igual que Idioma.allCases, en el mismo orden")
-    public static let traducidos: [Idioma] = [
-        .espanol, .ingles, .catalan, .gallego, .asturiano, .aragones,
-        .euskera, .portugues, .frances, .occitano, .italiano, .aleman,
-        .griego, .ruso, .hungaro,
-    ]
-}
