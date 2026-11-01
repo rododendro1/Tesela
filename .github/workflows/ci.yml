@@ -300,13 +300,15 @@ jobs:
           # Solo el código del paquete (Sources), no el de las pruebas ni el de los paquetes de los que depende.
           llvm-cov report "$pruebas" -instr-profile="$binarios/codecov/default.profdata" "$PWD/Sources" > "$informe"
           {
+            # Sin `head`: al cerrar la tubería antes de que `sort` acabe de escribir, `sort` muere con SIGPIPE y,
+            # con pipefail, el paso falla (código 141).
             echo "## Cobertura de $PAQUETE"
             echo
             echo "| | Funciones | Líneas |"
             echo "|---|---:|---:|"
             awk '$1 == "TOTAL" { print "| **Total** | " $7 " | " $10 " |" }' "$informe"
             awk '$1 != "TOTAL" && $1 != "Filename" && $1 !~ /^-+$/ && NF >= 10 { sub("%", "", $10); print $10 " " $1 " " $7 }' "$informe" \
-              | sort -n | head -n 15 | awk '{ print "| `" $2 "` | " $3 " | " $1 "% |" }'
+              | sort -n | awk 'NR <= 15 { print "| `" $2 "` | " $3 " | " $1 "% |" }'
             echo
             echo "Arriba, el total y los 15 ficheros con menos líneas probadas. El informe entero está en el artefacto."
           } | tee -a "$GITHUB_STEP_SUMMARY"
