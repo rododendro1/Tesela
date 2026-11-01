@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- `Traducido(cadaIdioma:)`: los catorce valores a partir de la notación habitual de cada idioma
+  (`Traduccion(cadaIdioma: { acorde.nombre(en: $0) })`), para no escribir a mano los catorce argumentos.
 - Los datos de cada idioma, en una fila de `ReglasDeIdioma`: además de las sílabas y la alteración, su código
   (`codigo`), cómo se llama (`nombrePropio`, nuevo, y `nombres`) y los modos de sus tonalidades (`mayor`, `menor`,
   y el «a-Moll» alemán con `separadorDelModo` y `menorEnMinuscula`). `Idioma.codigo`, `nombres` y

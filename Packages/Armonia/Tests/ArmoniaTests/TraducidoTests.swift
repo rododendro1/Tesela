@@ -17,6 +17,12 @@ final class TraducidoTests: XCTestCase {
         XCTAssertEqual(numeros.texto(en: .griego), ["ένα", "δύο"])
         XCTAssertEqual(numeros.map(\.count).en(.ruso), 2)
         XCTAssertEqual(numeros.todos.count, Idioma.allCases.count)
+        // Con la notación habitual de cada idioma: ♯ en español, # en inglés.
+        let fa = Traduccion(cadaIdioma: { Nota.fa.sostenido.nombre(en: $0) })
+        XCTAssertEqual(fa.en(.espanolUnicode), "Fa♯")
+        XCTAssertEqual(fa.en(.inglesASCII), "F#")
+        XCTAssertEqual(fa.en(.aleman), "Fis")
+        XCTAssertEqual(Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) }).en(.aleman), "erste Umkehrung")
     }
 
     /// Las sílabas y la forma de pegar la alteración son datos, no `switch` repartidos.

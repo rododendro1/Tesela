@@ -111,7 +111,7 @@ extension TextosDeCLI {
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "laguntza hau",
 
-        // ErrorDeUso+Armonizacion.swift
+        // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "akordeak falta dira: " + ejemplo },
         dosAcordesDeConduccion: { ejemplo in "bi akorde behar dira: " + ejemplo },
         faltanNotasDeLaArmonizacion: { ejemplo in "melodiaren notak falta dira: " + ejemplo },
@@ -120,7 +120,7 @@ extension TextosDeCLI {
         especieFueraDeRango: "--especie 1etik 5era doa",
         faltanAcordesDeLaRealizacion: { ejemplo in "akordeak falta dira: " + ejemplo },
 
-        // ErrorDeUso+Consultas.swift
+        // ErrorDeUso.swift (consultas)
         faltaCifrado: "zifratua falta da: armonia acorde Sol7",
         faltaCifradoDelArpegio: "zifratua falta da: armonia arpegio Do7",
         patronDesconocido: { patron in "eredu ezezaguna: «\(patron)» (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado edo alberti)" },
@@ -136,7 +136,7 @@ extension TextosDeCLI {
         faltaTransporte: { ejemplo in "tartea (edo tonika berria) eta transposatzen dena falta dira: " + ejemplo },
         faltanAcordesDeLaRearmonizacion: { ejemplo in "akordeak falta dira: " + ejemplo },
 
-        // ErrorDeUso+Dibujos.swift
+        // ErrorDeUso.swift (dibujos)
         margenFueraDeRango: "marjina 0tik 6ra bitarteko zenbaki bat da: --margen 2",
         faltanNotasDelDibujo: { ejemplo, orden in "notak falta dira: " + ejemplo },
         faltaAcordeDelDibujo: { ejemplo, orden in "akordea falta da: " + ejemplo },
@@ -148,7 +148,7 @@ extension TextosDeCLI {
         caminoSoloTriadas: { ejemplo, orden in "bidea triade handi edo txiki batetik beste batera doa: " + ejemplo },
         cicloSoloTriadas: { ejemplo, orden in "zikloa triade handi edo txiki batean hasten da: " + ejemplo },
 
-        // ErrorDeUso+Neorriemann.swift
+        // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "mugitzen diren ahotsak 1 edo 2 dira: --voces 2",
         unAcordeDeVecinos: { ejemplo in "akorde bat behar da: " + ejemplo },
         vecinosSinFamilia: "auzokideak dominanteko zazpigarrenen, txikien, erdi-gutxituen, gutxituen eta maj7en artean bilatzen dira, edo triade handi, txiki eta gehituen artean",
@@ -157,7 +157,7 @@ extension TextosDeCLI {
         faltanPasosDePLR: { ejemplo in "triade bat eta urrats batzuk edo beste triade bat behar dira: " + ejemplo },
         plrSoloTriadas: { ejemplo, camino in "P, L eta R triade handi eta txikiei aplikatzen zaizkie: " + ejemplo },
 
-        // ErrorDeUso+Partituras.swift
+        // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "«melodia», «coral» edo «acordes» falta da: " + ejemplo },
         instrumentoMIDI: "programa 0tik 127ra bitarteko General MIDI zenbaki bat da: --programa 52",
         marcasSoloMusicXML: "--cifrados eta --analisis MusicXML eta MEIrako dira",
@@ -176,7 +176,7 @@ extension TextosDeCLI {
         acordesConCifradosYAnalisis: "akordeek beti daramatzate zifratuak eta analisia",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: «melodia», «coral», «acordes» edo haien «arpegios» esportatzen da" },
 
-        // ErrorDeUso+Trastes.swift
+        // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "instrumentua falta da: \(d)" },
         instrumentoDesconocido: { nombre, lista in "instrumentu ezezaguna: «\(nombre)» (\(lista(.euskera)))" },
         faltaLimite: "hatz-jarrera kopurua falta da: --limite 5",
@@ -189,7 +189,7 @@ extension TextosDeCLI {
         faltaEscalaDePosiciones: "eskala falta da: armonia posiciones Sol mayor",
         capoFueraDeRango: "capoa 0 eta 12 arteko zenbakia da: --capo 2",
 
-        // ErrorDeUso.swift
+        // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Probatu «armonia ayuda».",
         ordenDesconocida: { orden in "agindu ezezaguna: «\(orden)»" },
         opcionDesconocida: { opcion in "aukera ezezaguna: «\(opcion)»" },

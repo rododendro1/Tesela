@@ -100,7 +100,7 @@ struct TextosDeCLI: TextosTraducidos {
     let sintaxisAyuda: String
     let descripcionAyuda: String
 
-    // MARK: ErrorDeUso+Armonizacion.swift
+    // MARK: ErrorDeUso.swift (armonización)
     let faltanAcordesDeLasVoces: @Sendable (String) -> String
     let dosAcordesDeConduccion: @Sendable (String) -> String
     let faltanNotasDeLaArmonizacion: @Sendable (String) -> String
@@ -109,7 +109,7 @@ struct TextosDeCLI: TextosTraducidos {
     let especieFueraDeRango: String
     let faltanAcordesDeLaRealizacion: @Sendable (String) -> String
 
-    // MARK: ErrorDeUso+Consultas.swift
+    // MARK: ErrorDeUso.swift (consultas)
     let faltaCifrado: String
     let faltaCifradoDelArpegio: String
     let patronDesconocido: @Sendable (String) -> String
@@ -125,7 +125,7 @@ struct TextosDeCLI: TextosTraducidos {
     let faltaTransporte: @Sendable (String) -> String
     let faltanAcordesDeLaRearmonizacion: @Sendable (String) -> String
 
-    // MARK: ErrorDeUso+Dibujos.swift
+    // MARK: ErrorDeUso.swift (dibujos)
     let margenFueraDeRango: String
     let faltanNotasDelDibujo: @Sendable (String, String) -> String
     let faltaAcordeDelDibujo: @Sendable (String, String) -> String
@@ -137,7 +137,7 @@ struct TextosDeCLI: TextosTraducidos {
     let caminoSoloTriadas: @Sendable (String, String) -> String
     let cicloSoloTriadas: @Sendable (String, String) -> String
 
-    // MARK: ErrorDeUso+Neorriemann.swift
+    // MARK: ErrorDeUso.swift (neorriemanniana)
     let vocesFueraDeRango: String
     let unAcordeDeVecinos: @Sendable (String) -> String
     let vecinosSinFamilia: String
@@ -146,7 +146,7 @@ struct TextosDeCLI: TextosTraducidos {
     let faltanPasosDePLR: @Sendable (String) -> String
     let plrSoloTriadas: @Sendable (String, Bool) -> String
 
-    // MARK: ErrorDeUso+Partituras.swift
+    // MARK: ErrorDeUso.swift (partituras)
     let faltaTipoDePartitura: @Sendable (String, String) -> String
     let instrumentoMIDI: String
     let marcasSoloMusicXML: String
@@ -165,7 +165,7 @@ struct TextosDeCLI: TextosTraducidos {
     let acordesConCifradosYAnalisis: String
     let tipoDePartituraDesconocido: @Sendable (String) -> String
 
-    // MARK: ErrorDeUso+Trastes.swift
+    // MARK: ErrorDeUso.swift (digitaciones)
     let faltaInstrumento: @Sendable (String, (String, String)) -> String
     let instrumentoDesconocido: @Sendable (String, (Notacion) -> String) -> String
     let faltaLimite: String
@@ -178,7 +178,7 @@ struct TextosDeCLI: TextosTraducidos {
     let faltaEscalaDePosiciones: String
     let capoFueraDeRango: String
 
-    // MARK: ErrorDeUso.swift
+    // MARK: ErrorDeUso.swift (comunes)
     let pruebaLaAyuda: String
     let ordenDesconocida: @Sendable (String) -> String
     let opcionDesconocida: @Sendable (String) -> String

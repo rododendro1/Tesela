@@ -111,7 +111,7 @@ extension TextosDeCLI {
         sintaxisAyuda: "help",
         descripcionAyuda: "αυτή η βοήθεια",
 
-        // ErrorDeUso+Armonizacion.swift
+        // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "λείπουν οι συγχορδίες: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },
         dosAcordesDeConduccion: { ejemplo in "χρειάζονται δύο συγχορδίες: armonia minimal-voice-leading G7 C" },
         faltanNotasDeLaArmonizacion: { ejemplo in "λείπουν οι νότες της μελωδίας: armonia harmonize E4 D4 C4" },
@@ -120,7 +120,7 @@ extension TextosDeCLI {
         especieFueraDeRango: "το --species πάει από 1 έως 5",
         faltanAcordesDeLaRealizacion: { ejemplo in "λείπουν οι συγχορδίες: armonia realize C F G7 C" },
 
-        // ErrorDeUso+Consultas.swift
+        // ErrorDeUso.swift (consultas)
         faltaCifrado: "λείπει το σύμβολο της συγχορδίας: armonia chord G7",
         faltaCifradoDelArpegio: "λείπει το σύμβολο της συγχορδίας: armonia arpeggio C7",
         patronDesconocido: { patron in "άγνωστο μοτίβο: «\(patron)» (ascending, descending, up-down, down-up, broken ή alberti)" },
@@ -136,7 +136,7 @@ extension TextosDeCLI {
         faltaTransporte: { ejemplo in "λείπουν το διάστημα (ή η νέα τονική) και ό,τι μεταφέρεται: armonia transpose M2 C Am F G7" },
         faltanAcordesDeLaRearmonizacion: { ejemplo in "λείπουν οι συγχορδίες: armonia reharmonize C Am Dm7 G7" },
 
-        // ErrorDeUso+Dibujos.swift
+        // ErrorDeUso.swift (dibujos)
         margenFueraDeRango: "το περιθώριο είναι αριθμός από 0 έως 6: --margen 2",
         faltanNotasDelDibujo: { ejemplo, orden in "λείπουν οι νότες: armonia \(orden) C E G" },
         faltaAcordeDelDibujo: { ejemplo, orden in "λείπει η συγχορδία: armonia \(orden) --chord G7" },
@@ -148,7 +148,7 @@ extension TextosDeCLI {
         caminoSoloTriadas: { ejemplo, orden in "η συντομότερη διαδρομή πάει από ένα μείζον ή ελάσσον τρίφωνο σε άλλο: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "ο κύκλος ξεκινά από ένα μείζον ή ελάσσον τρίφωνο: armonia \(orden) --cycle hexatonic C" },
 
-        // ErrorDeUso+Neorriemann.swift
+        // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "κινούνται 1 ή 2 φωνές: --voices 2",
         unAcordeDeVecinos: { ejemplo in "χρειάζεται μία συγχορδία: armonia neighbors G7" },
         vecinosSinFamilia: "οι γειτονικές αναζητούνται ανάμεσα σε συγχορδίες έβδομης δεσπόζουσας, ελάσσονες, ημιελαττωμένες, ελαττωμένες και maj7, ή ανάμεσα σε μείζονα, ελάσσονα και αυξημένα τρίφωνα",
@@ -157,7 +157,7 @@ extension TextosDeCLI {
         faltanPasosDePLR: { ejemplo in "χρειάζονται ένα τρίφωνο και κάποια βήματα ή άλλο τρίφωνο: armonia plr C PLR" },
         plrSoloTriadas: { ejemplo, camino in "τα P, L και R εφαρμόζονται σε μείζονα και ελάσσονα τρίφωνα: armonia plr " + (camino ? "C Ebm" : "C PLR") },
 
-        // ErrorDeUso+Partituras.swift
+        // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "λείπει το «melody», «chorale» ή «chords»: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
         instrumentoMIDI: "το πρόγραμμα είναι αριθμός General MIDI από 0 έως 127: --program 52",
         marcasSoloMusicXML: "τα --cifrados και --analisis είναι για MusicXML και MEI",
@@ -176,7 +176,7 @@ extension TextosDeCLI {
         acordesConCifradosYAnalisis: "οι συγχορδίες έχουν πάντα σύμβολα και ανάλυση",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: εξάγεται «melody», «chorale», «chords» ή τα «arpeggios» τους" },
 
-        // ErrorDeUso+Trastes.swift
+        // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "λείπει το όργανο: \(digitaciones.1)" },
         instrumentoDesconocido: { nombre, lista in "άγνωστο όργανο: «\(nombre)» (\(lista(.griego)))" },
         faltaLimite: "λείπει ο αριθμός δακτυλοθεσιών: --limit 5",
@@ -189,7 +189,7 @@ extension TextosDeCLI {
         faltaEscalaDePosiciones: "λείπει η κλίμακα: armonia positions G major",
         capoFueraDeRango: "το καποτάστο είναι αριθμός από 0 έως 12: --capo 2",
 
-        // ErrorDeUso.swift
+        // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Δοκίμασε «armonia help».",
         ordenDesconocida: { orden in "άγνωστη εντολή: «\(orden)»" },
         opcionDesconocida: { opcion in "άγνωστη επιλογή: «\(opcion)»" },

@@ -111,7 +111,7 @@ extension TextosDeCLI {
         sintaxisAyuda: "help",
         descripcionAyuda: "эта справка",
 
-        // ErrorDeUso+Armonizacion.swift
+        // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "не указаны аккорды: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },
         dosAcordesDeConduccion: { ejemplo in "нужны два аккорда: armonia minimal-voice-leading G7 C" },
         faltanNotasDeLaArmonizacion: { ejemplo in "не указаны ноты мелодии: armonia harmonize E4 D4 C4" },
@@ -120,7 +120,7 @@ extension TextosDeCLI {
         especieFueraDeRango: "--species — от 1 до 5",
         faltanAcordesDeLaRealizacion: { ejemplo in "не указаны аккорды: armonia realize C F G7 C" },
 
-        // ErrorDeUso+Consultas.swift
+        // ErrorDeUso.swift (consultas)
         faltaCifrado: "не указано обозначение аккорда: armonia chord G7",
         faltaCifradoDelArpegio: "не указано обозначение аккорда: armonia arpeggio C7",
         patronDesconocido: { patron in "неизвестный рисунок: «\(patron)» (ascending, descending, up-down, down-up, broken или alberti)" },
@@ -136,7 +136,7 @@ extension TextosDeCLI {
         faltaTransporte: { ejemplo in "не указаны интервал (или новая тоника) и что транспонировать: armonia transpose M2 C Am F G7" },
         faltanAcordesDeLaRearmonizacion: { ejemplo in "не указаны аккорды: armonia reharmonize C Am Dm7 G7" },
 
-        // ErrorDeUso+Dibujos.swift
+        // ErrorDeUso.swift (dibujos)
         margenFueraDeRango: "поле — число от 0 до 6: --margen 2",
         faltanNotasDelDibujo: { ejemplo, orden in "не указаны ноты: armonia \(orden) C E G" },
         faltaAcordeDelDibujo: { ejemplo, orden in "не указан аккорд: armonia \(orden) --chord G7" },
@@ -148,7 +148,7 @@ extension TextosDeCLI {
         caminoSoloTriadas: { ejemplo, orden in "кратчайший путь идёт от одного мажорного или минорного трезвучия к другому: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "цикл начинается с мажорного или минорного трезвучия: armonia \(orden) --cycle hexatonic C" },
 
-        // ErrorDeUso+Neorriemann.swift
+        // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "движутся 1 или 2 голоса: --voices 2",
         unAcordeDeVecinos: { ejemplo in "нужен один аккорд: armonia neighbors G7" },
         vecinosSinFamilia: "соседи ищутся среди доминантсептаккордов, малых минорных, малых и уменьшённых септаккордов и maj7 или среди мажорных, минорных и увеличенных трезвучий",
@@ -157,7 +157,7 @@ extension TextosDeCLI {
         faltanPasosDePLR: { ejemplo in "нужны трезвучие и шаги или другое трезвучие: armonia plr C PLR" },
         plrSoloTriadas: { ejemplo, camino in "P, L и R применяются к мажорным и минорным трезвучиям: armonia plr " + (camino ? "C Ebm" : "C PLR") },
 
-        // ErrorDeUso+Partituras.swift
+        // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "не указано «melody», «chorale» или «chords»: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
         instrumentoMIDI: "программа — номер General MIDI от 0 до 127: --program 52",
         marcasSoloMusicXML: "--cifrados и --analisis — только для MusicXML и MEI",
@@ -176,7 +176,7 @@ extension TextosDeCLI {
         acordesConCifradosYAnalisis: "аккорды всегда выводятся с обозначениями и анализом",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: экспортируется «melody», «chorale», «chords» или их «arpeggios»" },
 
-        // ErrorDeUso+Trastes.swift
+        // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "не указан инструмент: \(digitaciones.1)" },
         instrumentoDesconocido: { nombre, lista in "неизвестный инструмент: «\(nombre)» (\(lista(.ruso)))" },
         faltaLimite: "не указано число аппликатур: --limit 5",
@@ -189,7 +189,7 @@ extension TextosDeCLI {
         faltaEscalaDePosiciones: "не указана гамма: armonia positions G major",
         capoFueraDeRango: "каподастр — число от 0 до 12: --capo 2",
 
-        // ErrorDeUso.swift
+        // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Попробуй «armonia help».",
         ordenDesconocida: { orden in "неизвестная команда: «\(orden)»" },
         opcionDesconocida: { opcion in "неизвестный параметр: «\(opcion)»" },

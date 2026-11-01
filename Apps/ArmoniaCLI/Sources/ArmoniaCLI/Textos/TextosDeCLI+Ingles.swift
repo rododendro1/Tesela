@@ -112,7 +112,7 @@ extension TextosDeCLI {
         sintaxisAyuda: "help",
         descripcionAyuda: "this help",
 
-        // ErrorDeUso+Armonizacion.swift
+        // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "missing the chords: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },
         dosAcordesDeConduccion: { ejemplo in "two chords are needed: armonia minimal-voice-leading G7 C" },
         faltanNotasDeLaArmonizacion: { ejemplo in "missing the notes of the melody: armonia harmonize E4 D4 C4" },
@@ -121,7 +121,7 @@ extension TextosDeCLI {
         especieFueraDeRango: "--species goes from 1 to 5",
         faltanAcordesDeLaRealizacion: { ejemplo in "missing the chords: armonia realize C F G7 C" },
 
-        // ErrorDeUso+Consultas.swift
+        // ErrorDeUso.swift (consultas)
         faltaCifrado: "missing the chord symbol: armonia chord G7",
         faltaCifradoDelArpegio: "missing the chord symbol: armonia arpeggio C7",
         patronDesconocido: { patron in "unknown pattern: \"\(patron)\" (ascending, descending, up-down, down-up, broken or alberti)" },
@@ -137,7 +137,7 @@ extension TextosDeCLI {
         faltaTransporte: { ejemplo in "missing the interval (or the new tonic) and what to transpose: armonia transpose M2 C Am F G7" },
         faltanAcordesDeLaRearmonizacion: { ejemplo in "missing the chords: armonia reharmonize C Am Dm7 G7" },
 
-        // ErrorDeUso+Dibujos.swift
+        // ErrorDeUso.swift (dibujos)
         margenFueraDeRango: "the margin is a number from 0 to 6: --margen 2",
         faltanNotasDelDibujo: { ejemplo, orden in "missing the notes: armonia \(orden) C E G" },
         faltaAcordeDelDibujo: { ejemplo, orden in "missing the chord: armonia \(orden) --chord G7" },
@@ -149,7 +149,7 @@ extension TextosDeCLI {
         caminoSoloTriadas: { ejemplo, orden in "the shortest path goes from one major or minor triad to another: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "the cycle starts on a major or minor triad: armonia \(orden) --cycle hexatonic C" },
 
-        // ErrorDeUso+Neorriemann.swift
+        // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "the moving voices are 1 or 2: --voices 2",
         unAcordeDeVecinos: { ejemplo in "one chord is needed: armonia neighbors G7" },
         vecinosSinFamilia: "neighbors are searched among dominant, minor, half-diminished, diminished and maj7 sevenths, or among major, minor and augmented triads",
@@ -158,7 +158,7 @@ extension TextosDeCLI {
         faltanPasosDePLR: { ejemplo in "a triad and some steps or another triad are needed: armonia plr C PLR" },
         plrSoloTriadas: { ejemplo, camino in "P, L and R apply to major and minor triads: armonia plr " + (camino ? "C Ebm" : "C PLR") },
 
-        // ErrorDeUso+Partituras.swift
+        // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "missing \"melody\", \"chorale\" or \"chords\": armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
         instrumentoMIDI: "the program is a General MIDI number from 0 to 127: --program 52",
         marcasSoloMusicXML: "--cifrados and --analisis are for MusicXML and MEI",
@@ -177,7 +177,7 @@ extension TextosDeCLI {
         acordesConCifradosYAnalisis: "chords always come with chord symbols and analysis",
         tipoDePartituraDesconocido: { tipo in "\"\(tipo)\": the export is a \"melody\", a \"chorale\", \"chords\" or their \"arpeggios\"" },
 
-        // ErrorDeUso+Trastes.swift
+        // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "missing the instrument: \(digitaciones.1)" },
         instrumentoDesconocido: { nombre, lista in "unknown instrument: \"\(nombre)\" (\(lista(.inglesASCII)))" },
         faltaLimite: "missing the number of fingerings: --limit 5",
@@ -190,7 +190,7 @@ extension TextosDeCLI {
         faltaEscalaDePosiciones: "missing the scale: armonia positions G major",
         capoFueraDeRango: "the capo is a number from 0 to 12: --capo 2",
 
-        // ErrorDeUso.swift
+        // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Try \"armonia help\".",
         ordenDesconocida: { orden in "unknown command: \"\(orden)\"" },
         opcionDesconocida: { opcion in "unknown option: \"\(opcion)\"" },
