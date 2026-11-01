@@ -66,8 +66,9 @@ public struct ReglasDeIdioma: Hashable, Sendable {
     /// Cómo se llama el idioma en el propio idioma: «Euskara», «Deutsch», «Ελληνικά».
     public let nombrePropio: String
     /// Cómo se escribe el nombre del idioma, en minúsculas: en español y en el propio idioma («alemán»,
-    /// «deutsch»). `Idioma(nombre:)` los compara sin tildes, así que no hace falta repetirlos sin ellas; la ñ sí
-    /// cuenta, y por eso el español lleva también «espanol».
+    /// «deutsch»). `Idioma(nombre:)` los compara sin tildes, así que no hace falta repetirlos sin ellas, y si los dos
+    /// solo se distinguen por las tildes («portugués», «português») basta con uno. La ñ sí cuenta, y por eso el
+    /// español lleva también «espanol».
     public let nombres: [String]
     /// Los siete naturales, de Do a Si, como se escriben en el texto: «do», «C», «ντο», «соль».
     public let naturales: [String]
@@ -172,7 +173,7 @@ extension Idioma {
                 abreviaturas: .espanol, plural: .invariable)
         case .portugues:
             return ReglasDeIdioma(
-                codigo: "pt", nombrePropio: "Português", nombres: ["portugués", "português"],
+                codigo: "pt", nombrePropio: "Português", nombres: ["português"],
                 naturales: ["dó", "ré", "mi", "fá", "sol", "lá", "si"], mayor: "maior", menor: "menor",
                 abreviaturas: .espanol)
         case .frances:
