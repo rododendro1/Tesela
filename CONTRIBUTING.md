@@ -71,9 +71,10 @@ python3 Scripts/generar_pruebas_de_documentacion.py --comprobar
 python3 Scripts/notas_de_version.py --comprobar
 ```
 
-En cada pull request corren estas comprobaciones, la del formato y las pruebas en Linux (Swift 6.0 y 6.2). Los jobs de macOS
-(las apps, sus pruebas de interfaz y DocC) corren los lunes y a mano desde la pestaña Actions; si tu cambio toca
-las apps o la documentación, pide en el pull request que se lancen.
+En cada pull request corren estas comprobaciones, la del formato y las pruebas en Linux (Swift 6.0 y 6.2). Si el pull
+request cambia las apps, `ArmoniaUI` o el proyecto de Xcode, las dos apps se compilan además en macOS (el job `apps`). Los
+demás jobs de macOS (las pruebas de interfaz, el simulador de iOS y DocC) corren los lunes y a mano desde la pestaña
+Actions; si tu cambio toca las vistas o la documentación, pide en el pull request que se lancen.
 
 ## Pull requests
 
