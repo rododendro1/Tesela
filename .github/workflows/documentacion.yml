@@ -80,7 +80,7 @@ jobs:
           <body><h1>Tesela</h1><p>Documentación de los módulos (versión $VERSION).</p><ul>$enlaces</ul></body></html>
           EOF
           ls "$sitio"
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ${{ runner.temp }}/sitio
 
@@ -97,4 +97,4 @@ jobs:
       url: ${{ steps.publicacion.outputs.page_url }}
     steps:
       - id: publicacion
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
