@@ -1,17 +1,17 @@
 // MARK: - Notación
 
 /// Cómo se escribe todo lo que el motor convierte en texto: el idioma (nombres de nota,
-/// de intervalos, de acordes, de escalas…) y, en español e inglés, si las alteraciones se escriben con
-/// palabras, con #/b o con ♯/♭.
+/// de intervalos, de acordes, de escalas…) y, en español, inglés y alemán, si las alteraciones se escriben con
+/// palabras o de forma compacta (con #/b o con ♯/♭ en español e inglés; Fis, Es, B y H en alemán).
 ///
 /// | Notación | Nota | Intervalo | Acorde | Escala |
 /// |---|---|---|---|---|
 /// | `.espanol` | Fa sostenido | 3ª mayor | séptima de dominante | Re dórico |
 /// | `.espanolASCII` | Fa# | 3ª mayor | séptima de dominante | Re dórico |
-/// | `.espanolUnicode` | Fa♯ | 3ª mayor | séptima de dominante | Re dórico |
+/// | `.espanolCompacto` | Fa♯ | 3ª mayor | séptima de dominante | Re dórico |
 /// | `.ingles` | F sharp | major third | dominant seventh | D dorian |
 /// | `.inglesASCII` | F# | major third | dominant seventh | D dorian |
-/// | `.inglesUnicode` | F♯ | major third | dominant seventh | D dorian |
+/// | `.inglesCompacto` | F♯ | major third | dominant seventh | D dorian |
 /// | `.catalan` | fa sostingut | 3a major | sèptima de dominant | fa sostingut dòric |
 /// | `.gallego` | fa sostido | 3ª maior | sétima de dominante | fa sostido dórico |
 /// | `.asturiano` | fa sosteníu | 3ª mayor | séptima de dominante | fa sosteníu dóricu |
@@ -21,7 +21,8 @@
 /// | `.frances` | fa dièse | tierce majeure | septième de dominante | fa dièse dorien |
 /// | `.occitano` | fa dièsi | tèrça majora | setena de dominanta | fa dièsi dorian |
 /// | `.italiano` | fa diesis | terza maggiore | settima di dominante | fa diesis dorico |
-/// | `.aleman` | Fis | große Terz | Dominantseptakkord | Fis dorisch |
+/// | `.aleman` | F Kreuz | große Terz | Dominantseptakkord | F Kreuz dorisch |
+/// | `.alemanCompacto` | Fis | große Terz | Dominantseptakkord | Fis dorisch |
 /// | `.griego` | φα δίεση | μεγάλη τρίτη | συγχορδία έβδομης δεσπόζουσας | φα δίεση δώριος |
 /// | `.ruso` | фа-диез | большая терция | доминантсептаккорд | фа-диез дорийский |
 ///
@@ -30,39 +31,42 @@
 /// intervalos, cadencias…) y los nombres de los catálogos (acordes, escalas, instrumentos).
 ///
 /// Una notación son dos elecciones: cómo se escriben las notas (`escritura`) y en qué idioma salen los
-/// textos (`textos`). Las notaciones con nombre (`.espanolUnicode`, `.ruso`…) llevan los textos en el idioma de sus
+/// textos (`textos`). Las notaciones con nombre (`.espanolCompacto`, `.ruso`…) llevan los textos en el idioma de sus
 /// notas, y `conTextos(en:)` los cambia: `Notacion.ruso.conTextos(en: .espanol)` escribe
 /// «соль séptima de dominante, primera inversión».
 ///
-/// La octava de las alturas se escribe con cifras (La4) o, con `conOctavas(.subindices)`, como subíndice (La₄).
+/// La octava de las alturas se escribe con cifras (La4) o como subíndice (La₄). Las notaciones compactas
+/// (`.espanolCompacto`, `.inglesCompacto`, `.alemanCompacto`) la escriben como subíndice y las demás con cifras;
+/// `conOctavas(_:)` la cambia.
 public struct Notacion: Hashable, Sendable, CaseIterable {
     /// Cómo se escriben los nombres de nota.
     public let escritura: EscrituraDeNotas
     /// El idioma de los textos (intervalos, acordes, mensajes…).
     public let textos: Idioma
-    /// Cómo se escribe la octava de las alturas: con cifras (La4, por defecto) o como subíndice (La₄).
+    /// Cómo se escribe la octava de las alturas: con cifras (La4) o como subíndice (La₄). Si no se elige, la de
+    /// la escritura (``EscrituraDeNotas/octavas``): subíndice en las compactas y cifras en las demás.
     public let octavas: EscrituraDeLaOctava
 
     /// Las notas escritas como `escritura`, con los textos en `textos` o, si no se da, en el idioma de las
-    /// notas, y la octava escrita como `octavas`.
-    public init(escritura: EscrituraDeNotas, textos: Idioma? = nil, octavas: EscrituraDeLaOctava = .cifras) {
+    /// notas, y la octava escrita como `octavas` o, si no se da, como la escriba la escritura.
+    public init(escritura: EscrituraDeNotas, textos: Idioma? = nil, octavas: EscrituraDeLaOctava? = nil) {
         self.escritura = escritura
         self.textos = textos ?? escritura.idioma
-        self.octavas = octavas
+        self.octavas = octavas ?? escritura.octavas
     }
 
     /// Español con las alteraciones en palabras: Do, Fa sostenido, Si bemol; en los cifrados, Fa♯7, Si♭m.
     public static let espanol = Notacion(escritura: .espanol)
     /// Español con caracteres ASCII: Do, Fa#, Sib.
     public static let espanolASCII = Notacion(escritura: .espanolASCII)
-    /// Español con símbolos tipográficos: Do, Fa♯, Si♭.
-    public static let espanolUnicode = Notacion(escritura: .espanolUnicode)
+    /// Español compacto, con símbolos tipográficos y la octava en subíndice: Do, Fa♯, Si♭; La₄.
+    public static let espanolCompacto = Notacion(escritura: .espanolCompacto)
     /// Inglés con las alteraciones en palabras: C, F sharp, B flat; en los cifrados, F♯7, B♭m.
     public static let ingles = Notacion(escritura: .ingles)
     /// Inglés con caracteres ASCII: C, F#, Bb (la forma habitual de escribir en inglés).
     public static let inglesASCII = Notacion(escritura: .inglesASCII)
-    /// Inglés con símbolos tipográficos: C, F♯, B♭.
-    public static let inglesUnicode = Notacion(escritura: .inglesUnicode)
+    /// Inglés compacto, con símbolos tipográficos y la octava en subíndice: C, F♯, B♭; A₄.
+    public static let inglesCompacto = Notacion(escritura: .inglesCompacto)
     /// Catalán: do, re, fa sostingut, si bemoll; en los cifrados, Fa♯7, Si♭m.
     public static let catalan = Notacion(escritura: .catalan)
     /// Gallego: do, re, fa sostido, si bemol; en los cifrados, Fa♯7, Si♭m.
@@ -81,8 +85,12 @@ public struct Notacion: Hashable, Sendable, CaseIterable {
     public static let occitano = Notacion(escritura: .occitano)
     /// Italiano: do, re, fa diesis, si bemolle; en los cifrados, Fa♯7, Si♭m.
     public static let italiano = Notacion(escritura: .italiano)
-    /// Alemán: C, Fis, Es, B (= Si♭), H (= Si), Heses; los cifrados quedan Fis7, B7, Hm7.
+    /// Alemán con las alteraciones en palabras: C, F Kreuz, H Be, E Doppel-Be; en los cifrados y las tonalidades,
+    /// a la alemana (Fis7, B7, Fis-Dur).
     public static let aleman = Notacion(escritura: .aleman)
+    /// Alemán compacto, con la alteración dentro del nombre y la octava en subíndice: C, Fis, Es, B (= Si♭),
+    /// H (= Si), Heses; A₄. Los cifrados quedan Fis7, B7, Hm7.
+    public static let alemanCompacto = Notacion(escritura: .alemanCompacto)
     /// Griego: ντο, ρε, φα δίεση, σι ύφεση; en los cifrados, Φα♯7, Σι♭m.
     public static let griego = Notacion(escritura: .griego)
     /// Ruso: до, ре, фа-диез, си-бемоль; en los cifrados, Фа♯7, Си♭m.
@@ -92,9 +100,9 @@ public struct Notacion: Hashable, Sendable, CaseIterable {
     /// las combinadas (`conTextos(en:)`), que también son notaciones válidas.
     public static let allCases: [Notacion] = EscrituraDeNotas.allCases.map { Notacion(escritura: $0) }
 
-    /// La notación habitual de un idioma: con ♯ y ♭ en español (`.espanolUnicode`) y con # y b en inglés
-    /// (`.inglesASCII`), que es como se suelen escribir; en los demás, la única que hay.
-    /// `Notacion.delIdioma(.catalan)` es `.catalan`.
+    /// La notación habitual de un idioma: con ♯ y ♭ en español (`.espanolCompacto`), con # y b en inglés
+    /// (`.inglesASCII`) y con Fis y Es en alemán (`.alemanCompacto`), que es como se suelen escribir; en los
+    /// demás, la única que hay. `Notacion.delIdioma(.catalan)` es `.catalan`.
     public static func delIdioma(_ idioma: Idioma) -> Notacion {
         Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: idioma == .ingles))
     }
@@ -105,13 +113,13 @@ public struct Notacion: Hashable, Sendable, CaseIterable {
         Notacion(escritura: escritura, textos: idioma, octavas: octavas)
     }
 
-    /// La misma notación con la octava escrita de otra forma: `Notacion.espanolUnicode.conOctavas(.subindices)`
-    /// escribe La₄ y Fa♯₃.
+    /// La misma notación con la octava escrita de otra forma: `Notacion.espanolCompacto.conOctavas(.cifras)`
+    /// escribe La4 y Fa♯3, y `Notacion.espanolASCII.conOctavas(.subindices)`, La₄ y Fa#₃.
     public func conOctavas(_ octavas: EscrituraDeLaOctava) -> Notacion {
         Notacion(escritura: escritura, textos: textos, octavas: octavas)
     }
 
-    /// La notación de las notas con los textos en su propio idioma y la octava en cifras:
+    /// La notación de las notas con los textos en su propio idioma y la octava como la escriba la escritura:
     /// `.ruso.conTextos(en: .espanol).notas` es `.ruso`.
     public var notas: Notacion { Notacion(escritura: escritura) }
 
@@ -170,17 +178,17 @@ public enum EscrituraDeLaOctava: Hashable, Sendable, CaseIterable {
 
 // MARK: - Escritura de las notas
 
-/// Cómo se escriben los nombres de nota en una `Notacion`: el idioma y, en español e inglés, si las
-/// alteraciones van en palabras, con #/b o con ♯/♭.
+/// Cómo se escriben los nombres de nota en una `Notacion`: el idioma y, en español, inglés y alemán, si las
+/// alteraciones van en palabras o de forma compacta (con #/b o con ♯/♭ en español e inglés; Fis en alemán).
 ///
-/// No es una lista de casos, sino el idioma y su variante: las dieciocho escrituras con nombre
-/// (`.espanolUnicode`, `.ruso`…) salen de los catorce idiomas, con tres formas en español y en inglés y una
-/// en los demás. Añadir un idioma es añadir su caso a ``Idioma`` y su fila a ``ReglasDeIdioma``; aquí no
+/// No es una lista de casos, sino el idioma y su variante: las diecinueve escrituras con nombre
+/// (`.espanolCompacto`, `.ruso`…) salen de los catorce idiomas, con tres formas en español y en inglés
+/// (palabras, ASCII y compacta), dos en alemán (palabras y compacta) y una en los demás. Añadir un idioma es añadir su caso a ``Idioma`` y su fila a ``ReglasDeIdioma``; aquí no
 /// hay nada que tocar. `allCases` las recorre en el orden de `Idioma`.
 public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     /// El idioma de los nombres de nota.
     public let idioma: Idioma
-    /// Las alteraciones en palabras: «Fa sostenido», «F sharp». En los idiomas que solo las escriben así
+    /// Las alteraciones en palabras: «Fa sostenido», «F sharp», «F Kreuz». En los idiomas que solo las escriben así
     /// (catalán, ruso…) es `false`, porque no hay otra forma con la que compararla.
     public let conPalabras: Bool
     /// Cómo se escriben los signos de las alteraciones: con # y b (`.ascii`) en español e inglés ASCII y en
@@ -198,13 +206,13 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     /// Do, Fa#, Sib.
     public static let espanolASCII = EscrituraDeNotas(.espanol, tipografia: .ascii)
     /// Do, Fa♯, Si♭.
-    public static let espanolUnicode = EscrituraDeNotas(.espanol, tipografia: .unicode)
+    public static let espanolCompacto = EscrituraDeNotas(.espanol, tipografia: .unicode)
     /// C, F sharp, B flat.
     public static let ingles = EscrituraDeNotas(.ingles, conPalabras: true, tipografia: .unicode)
     /// C, F#, Bb.
     public static let inglesASCII = EscrituraDeNotas(.ingles, tipografia: .ascii)
     /// C, F♯, B♭.
-    public static let inglesUnicode = EscrituraDeNotas(.ingles, tipografia: .unicode)
+    public static let inglesCompacto = EscrituraDeNotas(.ingles, tipografia: .unicode)
     /// do, re, fa sostingut, si bemoll.
     public static let catalan = EscrituraDeNotas(.catalan)
     /// do, re, fa sostido, si bemol.
@@ -223,28 +231,35 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     public static let occitano = EscrituraDeNotas(.occitano)
     /// do, re, fa diesis, si bemolle.
     public static let italiano = EscrituraDeNotas(.italiano)
+    /// C, F Kreuz, E Be, H Be, H.
+    public static let aleman = EscrituraDeNotas(.aleman, conPalabras: true)
     /// C, Fis, Es, B, H.
-    public static let aleman = EscrituraDeNotas(.aleman)
+    public static let alemanCompacto = EscrituraDeNotas(.aleman)
     /// ντο, ρε, φα δίεση, σι ύφεση.
     public static let griego = EscrituraDeNotas(.griego)
     /// до, ре, фа-диез, си-бемоль.
     public static let ruso = EscrituraDeNotas(.ruso)
 
-    /// Las escrituras de los catorce idiomas: tres en los que tienen variantes (palabras, ASCII y Unicode)
-    /// y una en los demás.
+    /// Las escrituras de los catorce idiomas: tres en los que tienen variantes de signos (palabras, ASCII y
+    /// compacta), dos en alemán (palabras y compacta) y una en los demás.
     public static let allCases: [EscrituraDeNotas] = Idioma.allCases.flatMap { idioma in
-        idioma.reglas.tieneVariantes
-            ? [
+        switch idioma.reglas.alteraciones {
+        case .signos:
+            return [
                 EscrituraDeNotas(idioma, conPalabras: true, tipografia: .unicode),
                 EscrituraDeNotas(idioma, tipografia: .ascii),
                 EscrituraDeNotas(idioma, tipografia: .unicode),
             ]
-            : [EscrituraDeNotas(idioma)]
+        case .alemana:
+            return [EscrituraDeNotas(idioma, conPalabras: true), EscrituraDeNotas(idioma)]
+        case .palabras:
+            return [EscrituraDeNotas(idioma)]
+        }
     }
 
-    /// La escritura de un idioma con signos: # y b si `ascii`, ♯ y ♭ si no. En los idiomas que escriben las
-    /// alteraciones con palabras, la única que tienen. Para las palabras en español o inglés, `.espanol` e
-    /// `.ingles`.
+    /// La escritura de un idioma con signos: # y b si `ascii`, ♯ y ♭ si no. En alemán, la compacta (Fis); en
+    /// los idiomas que escriben las alteraciones con palabras, la única que tienen. Para las palabras en español,
+    /// inglés o alemán, `.espanol`, `.ingles` y `.aleman`.
     public init(idioma: Idioma, ascii: Bool) {
         guard idioma.reglas.tieneVariantes else {
             self = EscrituraDeNotas(idioma)
@@ -255,6 +270,20 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
 
     /// Alteraciones como # y b en lugar de ♯ y ♭: `tipografia == .ascii`.
     public var usaASCII: Bool { tipografia == .ascii }
+
+    /// ¿Es una de las compactas? `.espanolCompacto` (Fa♯), `.inglesCompacto` (F♯) y `.alemanCompacto` (Fis): sin
+    /// palabras y, en español e inglés, con ♯ y ♭ y no con # y b.
+    public var esCompacta: Bool {
+        switch escrituraDeLaAlteracion {
+        case .alemana: return true
+        case .signos: return tipografia == .unicode
+        case .palabras: return false
+        }
+    }
+
+    /// Cómo escribe la octava de las alturas si la ``Notacion`` no elige otra: como subíndice en las compactas
+    /// (La₄, Fis₄) y con cifras en las demás (La4, Fa#4, fa dièse 4).
+    public var octavas: EscrituraDeLaOctava { esCompacta ? .subindices : .cifras }
 }
 
 // MARK: - Idioma

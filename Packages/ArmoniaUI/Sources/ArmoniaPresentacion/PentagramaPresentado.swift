@@ -22,7 +22,7 @@ public struct PentagramaPresentado: Hashable, Sendable {
     ///   - resaltada: la nota (contada desde 0) que se pinta de otro color, la que está sonando.
     public init(
         _ escala: Escala, octava: Int = 4, sentido: SentidoDelIntervalo? = nil,
-        notacion: Notacion = .espanolUnicode, nombresDeLasNotas: Bool = true, resaltada: Int? = nil
+        notacion: Notacion = .espanolCompacto, nombresDeLasNotas: Bool = true, resaltada: Int? = nil
     ) {
         var opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)
         opciones.resaltada = resaltada
@@ -33,7 +33,7 @@ public struct PentagramaPresentado: Hashable, Sendable {
     }
 
     public init(
-        _ acorde: Acorde, octava: Int = 4, notacion: Notacion = .espanolUnicode,
+        _ acorde: Acorde, octava: Int = 4, notacion: Notacion = .espanolCompacto,
         nombresDeLasNotas: Bool = false
     ) {
         let opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)
@@ -46,7 +46,7 @@ public struct PentagramaPresentado: Hashable, Sendable {
     /// Las notas del arpegio en el orden del patrón, una por columna; la `resaltada` (contada desde 0), de otro
     /// color.
     public init(
-        _ arpegio: Arpegio, octava: Int = 4, notacion: Notacion = .espanolUnicode,
+        _ arpegio: Arpegio, octava: Int = 4, notacion: Notacion = .espanolCompacto,
         nombresDeLasNotas: Bool = true, resaltada: Int? = nil
     ) {
         var opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)

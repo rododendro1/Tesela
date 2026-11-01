@@ -185,7 +185,7 @@ extension TipoDeEscala {
         if notacion == .ruso || notacion == .griego {
             return NombresDeEscalas.indiceRusoGriego[normalizado] ?? buscar(nombre: nombre, aceptarIngles: true)
         }
-        if notacion == .aleman { return NombresDeEscalas.de(.aleman).indice[normalizado] }
+        if notacion.idiomaDeLasNotas == .aleman { return NombresDeEscalas.de(.aleman).indice[normalizado] }
         return NombresDeEscalas.indicePeninsular[normalizado] ?? buscar(nombre: nombre, aceptarIngles: false)
     }
 }

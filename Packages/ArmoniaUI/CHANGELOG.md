@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- Las claves de las notaciones compactas son «espanolCompacto», «inglesCompacto» y «alemanCompacto», y
+  `Notacion.desde(clave:)` lee también las de antes («espanolUnicode», «inglesUnicode»). «aleman» es ahora el
+  alemán con palabras (Deutsch (F Kreuz)), y el selector ofrece también Deutsch (Fis). En las apps la octava sigue
+  el ajuste de los subíndices, también en las notaciones compactas.
 - El menú para exportar de las apps ofrece también LilyPond (`.ly`) y ABC (`.abc`) en el análisis, el coral y los
   arpegios: `FicheroParaExportar.Formato.lilyPond` y `.abc`, con sus textos en los catorce idiomas.
 - La tablatura en MusicXML escapa sus textos con `EscrituraXML.escapar`, la del motor.

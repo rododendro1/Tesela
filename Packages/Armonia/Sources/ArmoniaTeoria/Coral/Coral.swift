@@ -37,7 +37,7 @@ public struct FaltaDeConduccion: Hashable, Sendable, CustomStringConvertible {
     package let numeroDeVoces: Int
 
     /// "Quintas paralelas entre bajo y soprano (acordes 1 → 2)". Los acordes se cuentan desde 1.
-    public var description: String { descripcion(en: .espanolUnicode) }
+    public var description: String { descripcion(en: .espanolCompacto) }
 
     public func descripcion(en notacion: Notacion) -> String {
         let nombres = voces.map { Coral.nombreDeVoz($0, de: numeroDeVoces, en: notacion) }

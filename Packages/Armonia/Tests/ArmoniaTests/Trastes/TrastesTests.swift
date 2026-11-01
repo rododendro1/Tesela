@@ -197,7 +197,7 @@ extension DigitacionTests {
     @Test func lasNotasSeEscribenComoElAcorde() throws {
         let acorde = try Acorde(leyendo: "Sib")
         let forma = try #require(Mastil(.guitarra).digitaciones(de: acorde, limite: 1).first)
-        let nombres = forma.notas(para: acorde).map { $0.nombre(en: .espanolUnicode) }
+        let nombres = forma.notas(para: acorde).map { $0.nombre(en: .espanolCompacto) }
         #expect(nombres.count == forma.cuerdasQueSuenan)
         #expect(nombres.contains("Si♭"), Comment(rawValue: nombres.joined(separator: " ")))
         #expect(!nombres.contains("La♯"), Comment(rawValue: nombres.joined(separator: " ")))
@@ -397,7 +397,7 @@ extension DigitacionTests {
 
 @Suite struct NombresTraducidosTests {
     @Test func nombresDeLosInstrumentos() {
-        #expect(Encordado.todos.map { $0.nombre(en: .espanolUnicode) } == Encordado.todos.map(\.nombre))
+        #expect(Encordado.todos.map { $0.nombre(en: .espanolCompacto) } == Encordado.todos.map(\.nombre))
         #expect(Encordado.guitarraDeSieteCuerdas.titulo(en: .inglesASCII) == "Seven-string guitar")
         #expect(Encordado.mandolina.nombre(en: .portugues) == "bandolim")
         let propio = Encordado(nombre: "laúd", cuerdas: Encordado.guitarra.cuerdas)
@@ -406,7 +406,7 @@ extension DigitacionTests {
 
     @Test func nombresDeLasTransformaciones() {
         #expect(
-            TransformacionNeorriemanniana.allCases.map { $0.nombre(en: .espanolUnicode) }
+            TransformacionNeorriemanniana.allCases.map { $0.nombre(en: .espanolCompacto) }
                 == TransformacionNeorriemanniana.allCases.map(\.nombre))
         #expect(TransformacionNeorriemanniana.l.nombre(en: .inglesASCII) == "leading-tone exchange")
         #expect(TransformacionNeorriemanniana.r.nombre(en: .aleman) == "Parallele")

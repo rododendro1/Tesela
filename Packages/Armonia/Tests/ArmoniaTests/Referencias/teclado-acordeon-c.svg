@@ -1,75 +1,75 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-28 -24.78 236 278.2" width="236" height="278.2">
 <style>.casilla { stroke: #444; stroke-width: 1; } text { font: 12px sans-serif; text-anchor: middle; dominant-baseline: central; }</style>
 <polygon class="casilla" points="24,0 12,20.78 -12,20.78 -24,0 -12,-20.78 12,-20.78" fill="#f4f4f4"/>
-<text x="0" y="0">Do4</text>
+<text x="0" y="0">Do₄</text>
 <polygon class="casilla" points="60,20.78 48,41.57 24,41.57 12,20.78 24,0 48,0" fill="#bbbbbb"/>
-<text x="36" y="20.78">Si♭3</text>
+<text x="36" y="20.78">Si♭₃</text>
 <polygon class="casilla" points="96,0 84,20.78 60,20.78 48,0 60,-20.78 84,-20.78" fill="#f4f4f4"/>
-<text x="72" y="0">Si3</text>
+<text x="72" y="0">Si₃</text>
 <polygon class="casilla" points="132,20.78 120,41.57 96,41.57 84,20.78 96,0 120,0" fill="#1f4e9c"/>
-<text x="108" y="20.78">La3</text>
+<text x="108" y="20.78">La₃</text>
 <polygon class="casilla" points="168,0 156,20.78 132,20.78 120,0 132,-20.78 156,-20.78" fill="#bbbbbb"/>
-<text x="144" y="0">Si♭3</text>
+<text x="144" y="0">Si♭₃</text>
 <polygon class="casilla" points="204,20.78 192,41.57 168,41.57 156,20.78 168,0 192,0" fill="#bbbbbb"/>
-<text x="180" y="20.78">La♭3</text>
+<text x="180" y="20.78">La♭₃</text>
 <polygon class="casilla" points="24,41.57 12,62.35 -12,62.35 -24,41.57 -12,20.78 12,20.78" fill="#1f4e9c"/>
-<text x="0" y="41.57">La3</text>
+<text x="0" y="41.57">La₃</text>
 <polygon class="casilla" points="60,62.35 48,83.14 24,83.14 12,62.35 24,41.57 48,41.57" fill="#f4f4f4"/>
-<text x="36" y="62.35">Sol3</text>
+<text x="36" y="62.35">Sol₃</text>
 <polygon class="casilla" points="96,41.57 84,62.35 60,62.35 48,41.57 60,20.78 84,20.78" fill="#bbbbbb"/>
-<text x="72" y="41.57">La♭3</text>
+<text x="72" y="41.57">La♭₃</text>
 <polygon class="casilla" points="132,62.35 120,83.14 96,83.14 84,62.35 96,41.57 120,41.57" fill="#bbbbbb"/>
-<text x="108" y="62.35">Sol♭3</text>
+<text x="108" y="62.35">Sol♭₃</text>
 <polygon class="casilla" points="168,41.57 156,62.35 132,62.35 120,41.57 132,20.78 156,20.78" fill="#f4f4f4"/>
-<text x="144" y="41.57">Sol3</text>
+<text x="144" y="41.57">Sol₃</text>
 <polygon class="casilla" points="204,62.35 192,83.14 168,83.14 156,62.35 168,41.57 192,41.57" fill="#1f4e9c"/>
-<text x="180" y="62.35">Fa3</text>
+<text x="180" y="62.35">Fa₃</text>
 <polygon class="casilla" points="24,83.14 12,103.92 -12,103.92 -24,83.14 -12,62.35 12,62.35" fill="#bbbbbb"/>
-<text x="0" y="83.14">Sol♭3</text>
+<text x="0" y="83.14">Sol♭₃</text>
 <polygon class="casilla" points="60,103.92 48,124.71 24,124.71 12,103.92 24,83.14 48,83.14" fill="#f4f4f4"/>
-<text x="36" y="103.92">Mi3</text>
+<text x="36" y="103.92">Mi₃</text>
 <polygon class="casilla" points="96,83.14 84,103.92 60,103.92 48,83.14 60,62.35 84,62.35" fill="#1f4e9c"/>
-<text x="72" y="83.14">Fa3</text>
+<text x="72" y="83.14">Fa₃</text>
 <polygon class="casilla" points="132,103.92 120,124.71 96,124.71 84,103.92 96,83.14 120,83.14" fill="#bbbbbb"/>
-<text x="108" y="103.92">Mi♭3</text>
+<text x="108" y="103.92">Mi♭₃</text>
 <polygon class="casilla" points="168,83.14 156,103.92 132,103.92 120,83.14 132,62.35 156,62.35" fill="#f4f4f4"/>
-<text x="144" y="83.14">Mi3</text>
+<text x="144" y="83.14">Mi₃</text>
 <polygon class="casilla" points="204,103.92 192,124.71 168,124.71 156,103.92 168,83.14 192,83.14" fill="#1f4e9c"/>
-<text x="180" y="103.92">Re3</text>
+<text x="180" y="103.92">Re₃</text>
 <polygon class="casilla" points="24,124.71 12,145.49 -12,145.49 -24,124.71 -12,103.92 12,103.92" fill="#bbbbbb"/>
-<text x="0" y="124.71">Mi♭3</text>
+<text x="0" y="124.71">Mi♭₃</text>
 <polygon class="casilla" points="60,145.49 48,166.28 24,166.28 12,145.49 24,124.71 48,124.71" fill="#bbbbbb"/>
-<text x="36" y="145.49">Re♭3</text>
+<text x="36" y="145.49">Re♭₃</text>
 <polygon class="casilla" points="96,124.71 84,145.49 60,145.49 48,124.71 60,103.92 84,103.92" fill="#1f4e9c"/>
-<text x="72" y="124.71">Re3</text>
+<text x="72" y="124.71">Re₃</text>
 <polygon class="casilla" points="132,145.49 120,166.28 96,166.28 84,145.49 96,124.71 120,124.71" fill="#f4f4f4"/>
-<text x="108" y="145.49">Do3</text>
+<text x="108" y="145.49">Do₃</text>
 <polygon class="casilla" points="168,124.71 156,145.49 132,145.49 120,124.71 132,103.92 156,103.92" fill="#bbbbbb"/>
-<text x="144" y="124.71">Re♭3</text>
+<text x="144" y="124.71">Re♭₃</text>
 <polygon class="casilla" points="204,145.49 192,166.28 168,166.28 156,145.49 168,124.71 192,124.71" fill="#f4f4f4"/>
-<text x="180" y="145.49">Si2</text>
+<text x="180" y="145.49">Si₂</text>
 <polygon class="casilla" points="24,166.28 12,187.06 -12,187.06 -24,166.28 -12,145.49 12,145.49" fill="#f4f4f4"/>
-<text x="0" y="166.28">Do3</text>
+<text x="0" y="166.28">Do₃</text>
 <polygon class="casilla" points="60,187.06 48,207.85 24,207.85 12,187.06 24,166.28 48,166.28" fill="#bbbbbb"/>
-<text x="36" y="187.06">Si♭2</text>
+<text x="36" y="187.06">Si♭₂</text>
 <polygon class="casilla" points="96,166.28 84,187.06 60,187.06 48,166.28 60,145.49 84,145.49" fill="#f4f4f4"/>
-<text x="72" y="166.28">Si2</text>
+<text x="72" y="166.28">Si₂</text>
 <polygon class="casilla" points="132,187.06 120,207.85 96,207.85 84,187.06 96,166.28 120,166.28" fill="#f4f4f4"/>
-<text x="108" y="187.06">La2</text>
+<text x="108" y="187.06">La₂</text>
 <polygon class="casilla" points="168,166.28 156,187.06 132,187.06 120,166.28 132,145.49 156,145.49" fill="#bbbbbb"/>
-<text x="144" y="166.28">Si♭2</text>
+<text x="144" y="166.28">Si♭₂</text>
 <polygon class="casilla" points="204,187.06 192,207.85 168,207.85 156,187.06 168,166.28 192,166.28" fill="#bbbbbb"/>
-<text x="180" y="187.06">La♭2</text>
+<text x="180" y="187.06">La♭₂</text>
 <polygon class="casilla" points="24,207.85 12,228.63 -12,228.63 -24,207.85 -12,187.06 12,187.06" fill="#f4f4f4"/>
-<text x="0" y="207.85">La2</text>
+<text x="0" y="207.85">La₂</text>
 <polygon class="casilla" points="60,228.63 48,249.42 24,249.42 12,228.63 24,207.85 48,207.85" fill="#f4f4f4"/>
-<text x="36" y="228.63">Sol2</text>
+<text x="36" y="228.63">Sol₂</text>
 <polygon class="casilla" points="96,207.85 84,228.63 60,228.63 48,207.85 60,187.06 84,187.06" fill="#bbbbbb"/>
-<text x="72" y="207.85">La♭2</text>
+<text x="72" y="207.85">La♭₂</text>
 <polygon class="casilla" points="132,228.63 120,249.42 96,249.42 84,228.63 96,207.85 120,207.85" fill="#bbbbbb"/>
-<text x="108" y="228.63">Sol♭2</text>
+<text x="108" y="228.63">Sol♭₂</text>
 <polygon class="casilla" points="168,207.85 156,228.63 132,228.63 120,207.85 132,187.06 156,187.06" fill="#f4f4f4"/>
-<text x="144" y="207.85">Sol2</text>
+<text x="144" y="207.85">Sol₂</text>
 <polygon class="casilla" points="204,228.63 192,249.42 168,249.42 156,228.63 168,207.85 192,207.85" fill="#f4f4f4"/>
-<text x="180" y="228.63">Fa2</text>
+<text x="180" y="228.63">Fa₂</text>
 </svg>

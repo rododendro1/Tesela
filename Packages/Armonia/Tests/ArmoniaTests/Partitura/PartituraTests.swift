@@ -204,7 +204,7 @@ import Testing
 
     @Test func transformacionesYMelodia() throws {
         let voz = try Voz(leyendo: "Do4:2~ Do4:4 Re4:4")
-        #expect(voz.retrogradar().texto() == "Re4:4 Do4:4~ Do4:2")
+        #expect(voz.retrogradar().texto() == "Re₄:4 Do₄:4~ Do₄:2")
         #expect(voz.aumentar(2).ritmo == [.redonda, .blanca, .blanca])
         #expect(voz.disminuir(2).ritmo == [.negra, .corchea, .corchea])
         #expect(voz.transponer(.segundaMayor).melodia.alturas.first == Altura("Re4"))

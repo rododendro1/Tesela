@@ -396,13 +396,13 @@ public struct Voz: Hashable, Sendable, Codable {
     }
 
     /// Los eventos como texto, separados por espacios: "Do4:4 Re4:8 Mi4:8".
-    public func texto(en notacion: Notacion = .espanolUnicode) -> String {
+    public func texto(en notacion: Notacion = .espanolCompacto) -> String {
         eventos.map { $0.texto(en: notacion) }.joined(separator: " ")
     }
 }
 
 extension Voz: CustomStringConvertible {
-    public var description: String { "\(compas) " + texto() }
+    public var description: String { "\(compas) " + texto(en: .deCodificacion) }
 }
 
 extension Voz: Transponible {}

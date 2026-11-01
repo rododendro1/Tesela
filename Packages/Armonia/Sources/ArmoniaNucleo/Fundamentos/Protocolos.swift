@@ -23,8 +23,8 @@ public protocol RepresentableComoTexto: Codable, ExpressibleByStringLiteral wher
 }
 
 extension RepresentableComoTexto {
-    /// Texto en la notación española (la que se usa al codificar).
-    public var texto: String { texto(en: .espanolUnicode) }
+    /// Texto en la notación española, con la octava en cifras (la que se usa al codificar): "Fa♯4".
+    public var texto: String { texto(en: .deCodificacion) }
 
     /// Como `init(leyendo:)`, devolviendo `nil` en lugar de un error: `Acorde(texto: entrada)`.
     ///
@@ -56,22 +56,28 @@ extension RepresentableComoTexto {
     /// Se codifica como su texto en notación española ("Fa♯4", "-5d", "Sol7(♭9)/Si").
     public func encode(to encoder: Encoder) throws {
         var contenedor = encoder.singleValueContainer()
-        try contenedor.encode(texto(en: .espanolUnicode))
+        try contenedor.encode(texto(en: .deCodificacion))
     }
+}
+
+extension Notacion {
+    /// La de `texto` y la codificación: `.espanolCompacto` con la octava en cifras ("Fa♯4"), para que lo guardado
+    /// no cambie con la escritura de la octava.
+    package static let deCodificacion = Notacion.espanolCompacto.conOctavas(.cifras)
 }
 
 // MARK: - Nombrable
 
 /// Un valor con nombre para personas, en la notación que se pida:
-/// `nombre(en: .espanolUnicode)` → "Re dórico", `nombre(en: .inglesASCII)` → "D dorian".
+/// `nombre(en: .espanolCompacto)` → "Re dórico", `nombre(en: .inglesASCII)` → "D dorian".
 public protocol Nombrable {
     func nombre(en notacion: Notacion) -> String
 }
 
 extension Nombrable {
-    /// El nombre en español: `nombre(en: .espanolUnicode)`. Un tipo que guarda su propio `nombre` (como
+    /// El nombre en español: `nombre(en: .espanolCompacto)`. Un tipo que guarda su propio `nombre` (como
     /// `TipoDeEscala` o `Encordado`) usa el suyo.
-    public var nombre: String { nombre(en: .espanolUnicode) }
+    public var nombre: String { nombre(en: .espanolCompacto) }
 }
 
 // MARK: - Transponible

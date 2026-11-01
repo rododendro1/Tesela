@@ -112,7 +112,7 @@ print(
 titulo("Notación internacional")
 let ejemploAcorde: Acorde = "Sib7(b9)/Re"
 print(
-    ejemploAcorde.cifrado(en: .inglesASCII), "·", ejemploAcorde.cifrado(estilo: .inglesUnicode), "·",
+    ejemploAcorde.cifrado(en: .inglesASCII), "·", ejemploAcorde.cifrado(estilo: .inglesCompacto), "·",
     ejemploAcorde.nombre(en: .inglesASCII))
 print(
     Intervalo.cuartaAumentada.abreviatura(en: .inglesASCII), "·", Intervalo.novenaMenor.nombre(en: .inglesASCII),
@@ -295,7 +295,7 @@ let nombrables: [any Nombrable] = [
     NombreDeGrado.sensible, Clave.doEnTercera, InstrumentoDePartitura.saxofonAlto,
 ]
 for valor in nombrables {
-    print("  \(valor.nombre(en: .espanolUnicode)) — \(valor.nombre(en: .inglesASCII))")
+    print("  \(valor.nombre(en: .espanolCompacto)) — \(valor.nombre(en: .inglesASCII))")
 }
 let textos: [any RepresentableComoTexto] = [Nota("Fa#"), Intervalo.septimaMenor, Acorde("Sib7(b9)/Re")]
 print("  En notación internacional:", textos.map { $0.texto(en: .inglesASCII) }.joined(separator: " · "))

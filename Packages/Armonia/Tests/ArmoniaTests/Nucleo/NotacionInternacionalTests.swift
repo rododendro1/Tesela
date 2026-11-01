@@ -10,12 +10,12 @@ import Testing
 @Suite struct NotacionInternacionalTests {
     @Test func notas() {
         #expect(Nota("Fa#").nombre(en: .inglesASCII) == "F#")
-        #expect(Nota("Fa#").nombre(en: .inglesUnicode) == "F♯")
-        #expect(Nota("Sibb").nombre(en: .inglesUnicode) == "B♭♭")
+        #expect(Nota("Fa#").nombre(en: .inglesCompacto) == "F♯")
+        #expect(Nota("Sibb").nombre(en: .inglesCompacto) == "B♭♭")
         #expect(Nota("B♭") == Nota("Sib"))
         #expect(Altura("C#4") == Altura("Do#4"))
         #expect(Altura("Sib3").nombre(en: .inglesASCII) == "Bb3")
-        #expect(Altura("Sib3").nombre(en: .inglesUnicode) == "B♭3")
+        #expect(Altura("Sib3").nombre(en: .inglesCompacto) == "B♭₃")
         #expect(Altura("B♭3") == Altura("Sib3"))
     }
 
@@ -49,7 +49,7 @@ import Testing
         #expect(Escala("F# whole-tone").tipo == .tonosEnteros)
         #expect(Escala("C Major Pentatonic").tipo == .pentatonicaMayor)
         #expect(Escala(.re, .dorico).nombre(en: .inglesASCII) == "D dorian")
-        #expect(Escala("Mib menor armónica").nombre(en: .inglesUnicode) == "E♭ harmonic minor")
+        #expect(Escala("Mib menor armónica").nombre(en: .inglesCompacto) == "E♭ harmonic minor")
         #expect(
             Escala(.do, TipoDeEscala.pentatonicaMayor.rotacion(3)).nombre(en: .inglesASCII)
                 == "C pentatónica mayor, modo 3")
@@ -59,7 +59,7 @@ import Testing
             #expect(
                 Escala(texto: escala.nombre(en: .inglesASCII)) == escala,
                 Comment(rawValue: escala.nombre(en: .inglesASCII)))
-            #expect(Escala(texto: escala.nombre(en: .inglesUnicode)) == escala)
+            #expect(Escala(texto: escala.nombre(en: .inglesCompacto)) == escala)
         }
     }
 
@@ -68,7 +68,7 @@ import Testing
         #expect(acorde.cifrado(en: .inglesASCII) == "G7/B")
         #expect(acorde.nombre(en: .inglesASCII) == "G dominant seventh, first inversion")
         #expect(Acorde("Do/Re").nombre(en: .inglesASCII) == "C major over D")
-        #expect(Acorde("Sib7(b9)/Re").cifrado(estilo: .inglesUnicode) == "B♭7(♭9)/D")
+        #expect(Acorde("Sib7(b9)/Re").cifrado(estilo: .inglesCompacto) == "B♭7(♭9)/D")
         #expect(Acorde("B♭7(♭9)/D") == Acorde("Sib7(b9)/Re"))
         #expect(TipoDeAcorde.semidisminuido.nombre(en: .inglesASCII) == "half-diminished seventh")
         #expect(TipoDeAcorde("7(b9,#11)").nombre(en: .inglesASCII) == "7(b9,#11) chord")
@@ -80,21 +80,21 @@ import Testing
 
     @Test func notacionUnica() {
         #expect(Notacion(escritura: EscrituraDeNotas(idioma: .espanol, ascii: true)) == .espanolASCII)
-        #expect(Notacion(escritura: EscrituraDeNotas(idioma: .ingles, ascii: false)) == .inglesUnicode)
+        #expect(Notacion(escritura: EscrituraDeNotas(idioma: .ingles, ascii: false)) == .inglesCompacto)
         #expect(Notacion.inglesASCII.idiomaDeLasNotas == .ingles)
         #expect(Notacion.inglesASCII.usaASCII)
-        #expect(!Notacion.espanolUnicode.usaASCII)
+        #expect(!Notacion.espanolCompacto.usaASCII)
 
         let escala: Escala = "Fa# dórico"
-        #expect(escala.nombre(en: .espanolUnicode) == "Fa♯ dórico")
+        #expect(escala.nombre(en: .espanolCompacto) == "Fa♯ dórico")
         #expect(escala.nombre(en: .espanolASCII) == "Fa# dórico")
         #expect(escala.nombre(en: .inglesASCII) == "F# dorian")
-        #expect(escala.nombre(en: .inglesUnicode) == "F♯ dorian")
-        #expect(Altura("Sib3").nombre(en: .inglesUnicode) == "B♭3")
-        #expect(Acorde("Sol7/Si").nombre(en: .inglesUnicode) == "G dominant seventh, first inversion")
-        #expect(Acorde("Fa#7").nombre(en: .inglesUnicode) == "F♯ dominant seventh, root position")
+        #expect(escala.nombre(en: .inglesCompacto) == "F♯ dorian")
+        #expect(Altura("Sib3").nombre(en: .inglesCompacto) == "B♭₃")
+        #expect(Acorde("Sol7/Si").nombre(en: .inglesCompacto) == "G dominant seventh, first inversion")
+        #expect(Acorde("Fa#7").nombre(en: .inglesCompacto) == "F♯ dominant seventh, root position")
         #expect(Intervalo.quintaJusta.abreviatura(en: .inglesASCII) == "P5")
-        #expect(Intervalo.quintaJusta.abreviatura(en: .espanolUnicode) == "5J")
+        #expect(Intervalo.quintaJusta.abreviatura(en: .espanolCompacto) == "5J")
     }
 
     /// Las notas en una notación y los textos en otro idioma.
@@ -124,7 +124,7 @@ import Testing
         #expect(Acorde("Sol7").nombre(en: inglesEnEuskera) == "G dominanteko zazpigarrena, oinarrizko egoera")
         #expect(Escala(.re, .dorico).nombre(en: inglesEnEuskera) == "D doriarra")
         #expect(
-            Acorde("Sol7").nombre(en: Notacion.espanolUnicode.conTextos(en: .ingles))
+            Acorde("Sol7").nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles))
                 == "Sol dominant seventh, root position")
         #expect(Tonalidad("Fa# mayor").nombre(en: Notacion.aleman.conTextos(en: .frances)) == "Fis-Dur")
         #expect(Acorde("Sib7").cifrado(en: Notacion.aleman.conTextos(en: .frances)) == "B7")

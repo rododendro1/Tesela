@@ -14,8 +14,8 @@ Notación española e inglesa, alteraciones, intervalos, pentagrama, instrumento
 
 `Notacion` reúne el idioma y cómo se escriben las alteraciones. En español y en inglés hay tres
 modalidades: con palabras, `.espanol` (Fa sostenido) e `.ingles` (F sharp); en ASCII, `.espanolASCII` (Fa#)
-e `.inglesASCII` (F#), y con los símbolos Unicode, `.espanolUnicode` (Fa♯) e `.inglesUnicode` (F♯). Con
-palabras, los cifrados llevan los símbolos Unicode: Fa♯7, F♯7. Se usa en `nombre(en:)`, `texto(en:)`,
+e `.inglesASCII` (F#), y compactas, con los símbolos Unicode y la octava en subíndice, `.espanolCompacto`
+(Fa♯, La₄) e `.inglesCompacto` (F♯, A₄). Con palabras, los cifrados llevan los símbolos Unicode: Fa♯7, F♯7. Se usa en `nombre(en:)`, `texto(en:)`,
 `abreviatura(en:)`, `cifrado(en:)` y `EstiloDeCifrado(notacion:)`.
 
 Todo se lee en ambas notaciones (`Intervalo("P5")`, `Escala("Bb harmonic minor")`,
@@ -25,12 +25,16 @@ cómo se escribe.
 
 ## Otras lenguas
 
-Además del español y el inglés, `Notacion` tiene `.aleman`, `.frances`, `.italiano`, `.catalan`,
-`.gallego`, `.euskera`, `.portugues`, `.occitano`, `.ruso` y `.griego`:
+Además del español y el inglés, `Notacion` tiene `.aleman` y `.alemanCompacto`, `.frances`, `.italiano`,
+`.catalan`, `.gallego`, `.euskera`, `.portugues`, `.occitano`, `.ruso` y `.griego`. El alemán, como el español
+y el inglés, escribe las alteraciones con palabras (`.aleman`: C Kreuz, E Be) o de forma compacta
+(`.alemanCompacto`: Cis, Es, con la octava en subíndice); en los cifrados y las tonalidades, las dos escriben
+a la alemana (Cis7, Fis-Dur), y se leen las dos formas:
 
 | | Do♯ | Mi♭ | Si♭ | Si | Fa♯ mayor | La menor |
 |---|---|---|---|---|---|---|
-| `.aleman` | Cis | Es | B | H | Fis-Dur | a-Moll |
+| `.aleman` | C Kreuz | E Be | H Be | H | Fis-Dur | a-Moll |
+| `.alemanCompacto` | Cis | Es | B | H | Fis-Dur | a-Moll |
 | `.frances` | do dièse | mi bémol | si bémol | si | fa dièse majeur | la mineur |
 | `.italiano` | do diesis | mi bemolle | si bemolle | si | fa diesis maggiore | la minore |
 | `.catalan` | do sostingut | mi bemoll | si bemoll | si | fa sostingut major | la menor |
@@ -44,12 +48,15 @@ Además del español y el inglés, `Notacion` tiene `.aleman`, `.frances`, `.ita
 | `.asturiano` | do sosteníu | mi bemol | si bemol | si | fa sosteníu mayor | la menor |
 
 ```swift
-Nota("Sib").nombre(en: .aleman)            // "B"
-Nota("Mibb").nombre(en: .aleman)           // "Eses"
+Nota("Sib").nombre(en: .alemanCompacto)    // "B"
+Nota("Mibb").nombre(en: .alemanCompacto)   // "Eses"
+Nota("Fa#").nombre(en: .aleman)            // "F Kreuz"
+Altura("Fa#3").nombre(en: .alemanCompacto)           // "Fis₃"
 Altura("Fa#3").nombre(en: .frances)                  // "fa dièse 3"
 Acorde("Sim7").cifrado(en: .aleman)                // "Hm7"
 Acorde("Rebmaj7").cifrado(en: .frances)            // "Ré♭maj7"
-try Nota(leyendo: "B", en: .aleman)         // Si♭
+try Nota(leyendo: "B", en: .alemanCompacto) // Si♭
+try Nota(leyendo: "F Kreuz", en: .alemanCompacto)   // Fa♯
 try Altura(leyendo: "re diesis 5", en: .italiano)     // Re♯5
 Tonalidad("Fis-Dur"), Tonalidad("ré bémol majeur"), Tonalidad("la minore")
 Alteracion(-2).nombre(en: .frances)                 // "double bémol"
@@ -133,13 +140,16 @@ Notacion(escritura: .ruso, textos: .espanol) == notacion   // true
 
 ### La octava en subíndice
 
-La octava de una ``Altura`` se escribe con cifras (La4) salvo que la notación pida subíndices con
-`conOctavas(.subindices)`. Al leer se aceptan siempre las dos formas, también en las melodías y los corales.
-La línea de comandos lo ofrece con `--subindices`.
+La octava de una ``Altura`` se escribe como subíndice (La₄) en las notaciones compactas (`.espanolCompacto`,
+`.inglesCompacto`, `.alemanCompacto`) y con cifras (La4) en las demás; `conOctavas(_:)` elige otra. Al leer se
+aceptan siempre las dos formas, también en las melodías y los corales. `description` y la codificación las
+escriben siempre con cifras ("Fa♯3"). La línea de comandos escribe cifras salvo con `--subindices`.
 
 ```swift
-let conSubindices = Notacion.espanolUnicode.conOctavas(.subindices)
-Altura(Nota.fa.sostenido, octava: 3).nombre(en: conSubindices)   // "Fa♯₃"
+Altura(Nota.fa.sostenido, octava: 3).nombre(en: .espanolCompacto)   // "Fa♯₃"
+Altura(Nota.fa.sostenido, octava: 3).nombre(en: .espanolASCII)      // "Fa#3"
+let conCifras = Notacion.espanolCompacto.conOctavas(.cifras)
+Altura(Nota.fa.sostenido, octava: 3).nombre(en: conCifras)          // "Fa♯3"
 try Altura(leyendo: "Si♭₋₁") == Altura(Nota.si.bemol, octava: -1) // true
 ```
 
@@ -208,8 +218,8 @@ notación elegida, para los lectores de pantalla.
 
 ```swift
 Escala("Re mayor").svgPentagrama().hasPrefix("<svg")              // true
-Escala("Re mayor").svgPentagrama().contains("<title>Re4</title>")  // true
-Escala("La menor melódica").svgPentagrama().contains("<title>Sol5</title>")   // true
+Escala("Re mayor").svgPentagrama().contains("<title>Re₄</title>")  // true
+Escala("La menor melódica").svgPentagrama().contains("<title>Sol₅</title>")   // true
 Acorde("Sol7").svgPentagrama().contains(">Sol7</text>")            // true
 Acorde("Sol7").svgPentagrama(cifrado: false).contains("<text")     // false
 Escala("Do mayor").svgPentagrama(opciones: OpcionesDePentagrama(notacion: .inglesASCII)).contains("<title>C4</title>")   // true
@@ -233,9 +243,9 @@ Escala("Do mayor").svgPentagrama(opciones: OpcionesDePentagrama(notacion: .ingle
 - Sin ritmo, vigas ni voces: para partituras completas, MusicXML o MEI y un motor como Verovio.
 
 ```swift
-Acorde("Do13").svgPentagrama().contains("<title>Do3</title>")      // true
+Acorde("Do13").svgPentagrama().contains("<title>Do₃</title>")      // true
 Escala("Do mayor").svgPentagrama(octava: 6).contains("8va")        // true
-Escala("Do mayor").svgPentagrama(octava: 3, opciones: OpcionesDePentagrama(pentagramas: .doble)).contains("<title>Do3</title>")   // true
+Escala("Do mayor").svgPentagrama(octava: 3, opciones: OpcionesDePentagrama(pentagramas: .doble)).contains("<title>Do₃</title>")   // true
 ```
 
 ## Errores

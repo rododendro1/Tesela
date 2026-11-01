@@ -65,7 +65,7 @@ public struct OpcionesDePentagrama {
 
     public init(
         clave: Clave? = nil, armadura: Armadura = .automatica, pentagramas: Pentagramas = .automatico,
-        notacion: Notacion = .espanolUnicode,
+        notacion: Notacion = .espanolCompacto,
         nombresDeLasNotas: Bool = false, tamano: Double = 10, color: String = "currentColor",
         marcaDeOctava: Bool = true, anchoDeLosCaracteres: Double = 1,
         disposicionDelAcorde: Disposicion = .automatica

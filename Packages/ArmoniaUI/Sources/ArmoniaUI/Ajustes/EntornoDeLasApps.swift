@@ -7,7 +7,7 @@
     // fuera del hilo principal mientras se escribe.
 
     private struct ClaveDeEntornoDeNotacion: EnvironmentKey {
-        static let defaultValue = Notacion.espanolUnicode
+        static let defaultValue = Notacion.espanolCompacto
     }
 
     extension EnvironmentValues {

@@ -191,7 +191,7 @@ TipoDeEscala.kafi.esRaga                        // false
 TipoDeEscala.mohanam.padre?.numeroDeMelakarta   // 28
 TipoDeEscala.menorNatural.categoria             // nil: las occidentales no tienen categoría
 TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72
-CategoriaTradicional.escala.nombre(en: Notacion.espanolUnicode.conTextos(en: .frances))   // "gamme"
+CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .frances))   // "gamme"
 ```
 
 ## Nombres en cada idioma y alias

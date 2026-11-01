@@ -59,14 +59,14 @@ import Testing
         let tritonal = try #require(
             Tonalidad(.do).rearmonizaciones(de: progresion).first { $0.recurso == .sustitutoTritonal })
         #expect(tritonal.aplicar(a: progresion).map(\.cifrado) == ["Do", "Lam", "Rem7", "Re♭7", "Do"])
-        #expect(tritonal.descripcion(en: .espanolUnicode) == "Sol7 → Re♭7 (sustituto tritonal)")
+        #expect(tritonal.descripcion(en: .espanolCompacto) == "Sol7 → Re♭7 (sustituto tritonal)")
         #expect(tritonal.descripcion(en: .inglesASCII) == "G7 → Db7 (tritone substitution)")
         let secundaria = try #require(
             Tonalidad(.do).rearmonizaciones(de: progresion).first { $0.recurso == .dominanteSecundaria })
         #expect(secundaria.aplicar(a: progresion).count == (progresion.count + 1))
         #expect(tritonal.aplicar(a: []) == [])
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
+            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             let nombres = Rearmonizacion.Recurso.allCases.map { $0.nombre(en: notacion) }
             #expect(Set(nombres).count == nombres.count, "\(idioma)")
         }
@@ -79,6 +79,6 @@ import Testing
         #expect((Nota.do + Nota.do.intervaloMasCorto(hasta: .la)) == .la)
         let coral = Coral([[Altura(.do, octava: 3), Altura(.mi, octava: 4)]])
         #expect(coral?.transponer(.segundaMayor).acordes.first?.map(\.midi) == [50, 66])
-        #expect(coral?.texto(en: .espanolUnicode) == "Do3 Mi4")
+        #expect(coral?.texto(en: .espanolCompacto) == "Do₃ Mi₄")
     }
 }

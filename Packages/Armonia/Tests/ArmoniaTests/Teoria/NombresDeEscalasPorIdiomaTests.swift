@@ -30,7 +30,7 @@ import Testing
 
     @Test func nombreEnUsaElFicheroDeCadaIdioma() {
         for idioma in Idioma.allCases where idioma != .espanol {
-            let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
+            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             for tipo in TipoDeEscala.todos {
                 #expect(
                     tipo.nombre(en: notacion) == NombresDeEscalas.de(idioma).porTipo[tipo]?.nombre,
@@ -39,7 +39,7 @@ import Testing
         }
         // Un tipo propio, con los intervalos de uno del catálogo, conserva su nombre en español.
         let propio = TipoDeEscala(nombre: "mi modo", intervalos: TipoDeEscala.dorico.intervalos)
-        #expect(propio.nombre(en: .espanolUnicode) == "mi modo")
+        #expect(propio.nombre(en: .espanolCompacto) == "mi modo")
     }
 
     /// Cada alias se lee como su tipo: ningún alias es el nombre de otro tipo ni el alias de otro de su idioma.
@@ -110,18 +110,19 @@ import Testing
             "Təzəta mayor", "Təzəta menor", "Bati mayor", "Bati menor",
         ]
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
+            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             // El ruso y el griego, que usan otro alfabeto, transcriben también los nombres propios.
             if idioma == .ruso || idioma == .griego { continue }
             for tipo in TipoDeEscala.tradicionales where !traducidos.contains(tipo.nombre) {
                 #expect(tipo.nombre(en: notacion) == tipo.nombre, "\(idioma): \(tipo.nombre)")
             }
         }
-        let catalan = Notacion.espanolUnicode.conTextos(en: .catalan)
+        let catalan = Notacion.espanolCompacto.conTextos(en: .catalan)
         #expect(TipoDeEscala.andina.nombre(en: catalan) == "pentatònica andina")
         #expect(TipoDeEscala.tetracordoCromatico.nombre(en: catalan) == "tetracord cromàtic")
-        #expect(TipoDeEscala.tezetaMenor.nombre(en: Notacion.espanolUnicode.conTextos(en: .frances)) == "Təzəta mineur")
-        #expect(TipoDeEscala.andina.nombre(en: .espanolUnicode) == "pentatónica andina")
+        #expect(
+            TipoDeEscala.tezetaMenor.nombre(en: Notacion.espanolCompacto.conTextos(en: .frances)) == "Təzəta mineur")
+        #expect(TipoDeEscala.andina.nombre(en: .espanolCompacto) == "pentatónica andina")
     }
 
     /// En ruso y griego los nombres propios van en su alfabeto (salvo los 72 melakarta, que siguen en IAST) y
@@ -131,16 +132,16 @@ import Testing
             (Idioma.ruso, "Хиджаз", "Ḥijāz"), (.ruso, "Бхайрав", "Bhairav"),
             (.griego, "Ραστ", "Rast"), (.griego, "Μπιλαβάλ", "Bilāval"),
         ] {
-            let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
+            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             let tipo = TipoDeEscala.buscar(nombre: original)
             #expect(tipo?.nombre(en: notacion) == ejemplo, "\(idioma)")
             #expect(NombresDeEscalas.de(idioma).indice[TipoDeEscala.normalizar(ejemplo)] == tipo, "\(idioma)")
         }
         for idioma in [Idioma.ruso, .griego] {
-            let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
+            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             for tipo in TipoDeEscala.melakartas { #expect(tipo.nombre(en: notacion) == tipo.nombre, "\(idioma)") }
         }
-        let notacion = Notacion.espanolUnicode.conTextos(en: .griego)
+        let notacion = Notacion.espanolCompacto.conTextos(en: .griego)
         #expect(TipoDeEscala.buscar(nombre: "Hitzáz")?.nombre(en: notacion) == "Χιτζάζ")
     }
 

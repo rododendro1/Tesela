@@ -17,12 +17,28 @@ import Testing
         ]
         for (espanol, aleman) in casos {
             let nombre = Nota(texto: espanol)!
-            #expect(nombre.nombre(en: .aleman) == aleman, Comment(rawValue: espanol))
+            #expect(nombre.nombre(en: .alemanCompacto) == aleman, Comment(rawValue: espanol))
+            #expect(nombre.nombreCompacto(en: .aleman) == aleman, Comment(rawValue: espanol))
+            #expect(try (Nota(leyendo: aleman, en: .alemanCompacto)) == nombre, Comment(rawValue: aleman))
             #expect(try (Nota(leyendo: aleman, en: .aleman)) == nombre, Comment(rawValue: aleman))
+            let conPalabras = nombre.nombre(en: .aleman)
+            #expect(try (Nota(leyendo: conPalabras, en: .aleman)) == nombre, Comment(rawValue: conPalabras))
+            #expect(try (Nota(leyendo: conPalabras, en: .alemanCompacto)) == nombre, Comment(rawValue: conPalabras))
         }
-        #expect(try (Nota(leyendo: "fis", en: .aleman)) == Nota("Fa#"))
-        #expect(Altura("Fa#4").nombre(en: .aleman) == "Fis4")
-        #expect(try (Altura(leyendo: "B3", en: .aleman)) == Altura("Sib3"))
+        #expect(try (Nota(leyendo: "fis", en: .alemanCompacto)) == Nota("Fa#"))
+        #expect(Altura("Fa#4").nombre(en: .alemanCompacto) == "Fis₄")
+        #expect(Altura("Fa#4").nombre(en: .alemanCompacto.conOctavas(.cifras)) == "Fis4")
+        #expect(try (Altura(leyendo: "B3", en: .alemanCompacto)) == Altura("Sib3"))
+        #expect(try (Altura(leyendo: "Fis₄", en: .alemanCompacto)) == Altura("Fa#4"))
+        // Con palabras: la letra y «Kreuz» o «Be», como «Fa sostenido».
+        #expect(Nota("Fa#").nombre(en: .aleman) == "F Kreuz")
+        #expect(Nota("Sib").nombre(en: .aleman) == "H Be")
+        #expect(Nota("Mibb").nombre(en: .aleman) == "E Doppel-Be")
+        #expect(Nota("Do").nombre(en: .aleman) == "C")
+        #expect(Altura("Fa#4").nombre(en: .aleman) == "F Kreuz 4")
+        #expect(try (Altura(leyendo: "F Kreuz 4", en: .aleman)) == Altura("Fa#4"))
+        #expect(Tonalidad("Fa# mayor").nombre(en: .alemanCompacto) == "Fis-Dur")
+        #expect(Escala("Fa# dórico").nombre(en: .alemanCompacto) == "Fis dorisch")
         #expect(Acorde("Sib7").cifrado(en: .aleman) == "B7")
         #expect(Acorde("Sim7").cifrado(en: .aleman) == "Hm7")
         #expect(Acorde("Fa#7(b9)").cifrado(en: .aleman) == "Fis7(b9)")

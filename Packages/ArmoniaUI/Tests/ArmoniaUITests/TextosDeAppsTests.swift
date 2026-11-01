@@ -110,7 +110,7 @@ import Testing
 
     @Test func cadaTextoEstaEnCadaIdioma() {
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
+            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             for (i, texto) in Self.todos.enumerated() {
                 #expect(!(texto(notacion).isEmpty), "texto \(i) en \(idioma)")
             }
@@ -132,7 +132,7 @@ import Testing
         let hecho = DispatchSemaphore(value: 0)
         let hilo = Thread {
             for idioma in Idioma.allCases {
-                let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
+                let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
                 for (i, texto) in todos.enumerated() {
                     #expect(!(texto(notacion).isEmpty), "texto \(i) en \(idioma)")
                 }
@@ -145,33 +145,33 @@ import Testing
     }
 
     @Test func losEjemplosVanEnLaNotacion() {
-        #expect(Notacion.espanolUnicode.campo(.cifrado) == "Cifrado, por ejemplo Sol7/Si")
+        #expect(Notacion.espanolCompacto.campo(.cifrado) == "Cifrado, por ejemplo Sol7/Si")
         #expect(Notacion.inglesASCII.campo(.cifrado) == "Chord symbol, for example G7/B")
         #expect(Notacion.inglesASCII.campo(.triadaInicial) == "Starting triad (C, Am…)")
         #expect(
             PresentacionDeCoral.Tarea.armonizar.indicacion(en: .inglesASCII)
                 == "Melody (E4 F4 D4 C4, without octaves or with rhythm: E4:4 D4:8)")
         #expect(
-            PresentacionDeCoral.Tarea.revisar.indicacion(en: .espanolUnicode)
-                == "Voces de grave a agudo (Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4)")
+            PresentacionDeCoral.Tarea.revisar.indicacion(en: .espanolCompacto)
+                == "Voces de grave a agudo (Do₃ Mi₄ Sol₄ Do₅, Sol₂ Re₄ Sol₄ Si₄)")
         #expect(PresentacionDeCoral.Tarea.realizar.indicacion(en: .inglesASCII) == "Chords (C F G7 C)")
     }
 
     @Test func elCapo() {
-        #expect(Notacion.espanolUnicode.texto { $0.capoEnElTraste(0) } == "Sin capo")
-        #expect(Notacion.espanolUnicode.texto { $0.capoEnElTraste(2) } == "Capo en el traste 2")
+        #expect(Notacion.espanolCompacto.texto { $0.capoEnElTraste(0) } == "Sin capo")
+        #expect(Notacion.espanolCompacto.texto { $0.capoEnElTraste(2) } == "Capo en el traste 2")
         #expect(Notacion.inglesASCII.texto { $0.capoEnElTraste(3) } == "Capo on fret 3")
     }
 
     @Test func losDedosYLaCejilla() {
-        #expect(Notacion.espanolUnicode.texto { $0.dedosYCejilla(1, nil) } == "1 dedo")
-        #expect(Notacion.espanolUnicode.texto { $0.dedosYCejilla(4, 1) } == "4 dedos, cejilla en el traste 1")
+        #expect(Notacion.espanolCompacto.texto { $0.dedosYCejilla(1, nil) } == "1 dedo")
+        #expect(Notacion.espanolCompacto.texto { $0.dedosYCejilla(4, 1) } == "4 dedos, cejilla en el traste 1")
         #expect(Notacion.inglesASCII.texto { $0.dedosYCejilla(3, 5) } == "3 fingers, barre at fret 5")
     }
 
     @Test func lasTareasLosFormatosYLasRedesTienenNombreEnCadaIdioma() {
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
+            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             let tareas = PresentacionDeCoral.Tarea.allCases.map { $0.titulo(en: notacion) }
             #expect(Set(tareas).count == tareas.count, "\(idioma)")
             let formatos = FicheroParaExportar.Formato.allCases.map { $0.titulo(en: notacion) }
@@ -184,14 +184,14 @@ import Testing
 
     @Test func losInstrumentosYLasTransformacionesTienenNombreEnCadaIdioma() {
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
+            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             let instrumentos = Encordado.todos.map { $0.nombre(en: notacion) }
             #expect(Set(instrumentos).count == instrumentos.count, "\(idioma)")
             let transformaciones = TransformacionNeorriemanniana.allCases.map { $0.nombre(en: notacion) }
             #expect(Set(transformaciones).count == transformaciones.count, "\(idioma)")
         }
         // En español, los del motor: es lo que se escribe en `--instrumento`.
-        #expect(Encordado.todos.map { $0.nombre(en: .espanolUnicode) } == Encordado.todos.map(\.nombre))
+        #expect(Encordado.todos.map { $0.nombre(en: .espanolCompacto) } == Encordado.todos.map(\.nombre))
         #expect(Encordado.guitarraDeSieteCuerdas.titulo(en: .inglesASCII) == "Seven-string guitar")
         #expect(Encordado.mandolina.nombre(en: .portugues) == "bandolim")
         #expect(TransformacionNeorriemanniana.l.nombre(en: .inglesASCII) == "leading-tone exchange")
@@ -210,7 +210,7 @@ import Testing
             PresentacionDeMastil.etiqueta(de: Mastil(.ukelele), rango: 0...5, en: .inglesASCII)
                 == "Ukulele neck, frets 0 to 5")
         #expect(
-            PresentacionDeMastil.etiqueta(de: Mastil(.guitarra), rango: 3...7, en: .espanolUnicode)
+            PresentacionDeMastil.etiqueta(de: Mastil(.guitarra), rango: 3...7, en: .espanolCompacto)
                 == "Mástil de guitarra, trastes 3 a 7")
         #expect(PresentacionDeRejilla.descripcion(casillas: 1, seleccionada: nil, en: .inglesASCII) == "1 cell")
         #expect(Notacion.euskera.texto { $0.casillas(19) } == "19 gelaxka")
@@ -237,12 +237,12 @@ import Testing
         #expect(Notacion.delSistema(idiomas: ["pt_BR"]) == .portugues)
         // Un idioma sin notación se salta; si no queda ninguno, el español.
         #expect(Notacion.delSistema(idiomas: ["ja-JP", "fr-CA"]) == .frances)
-        #expect(Notacion.delSistema(idiomas: ["ja-JP"]) == .espanolUnicode)
-        #expect(Notacion.delSistema(idiomas: []) == .espanolUnicode)
+        #expect(Notacion.delSistema(idiomas: ["ja-JP"]) == .espanolCompacto)
+        #expect(Notacion.delSistema(idiomas: []) == .espanolCompacto)
     }
 
     @Test func unaMarca() {
-        #expect(Notacion.espanolUnicode.texto { $0.marcas(1) } == "1 marca")
+        #expect(Notacion.espanolCompacto.texto { $0.marcas(1) } == "1 marca")
         #expect(Notacion.euskera.texto { $0.marcas(1) } == "marka 1")
         for notacion in Idioma.allCases.map(Notacion.delIdioma) {
             #expect(

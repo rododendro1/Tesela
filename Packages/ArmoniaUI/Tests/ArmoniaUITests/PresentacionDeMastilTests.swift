@@ -56,20 +56,20 @@ import Testing
     @Test func laOrtografiaEsLaDeLaEscala() {
         // Con `Altura(midi:)` el Si♭ saldría como La♯.
         let ortografia = PresentacionDeMastil.ortografia(de: Escala(.fa, .mayor).notas)
-        #expect(ortografia[10]?.nombre(en: .espanolUnicode) == "Si♭")
-        #expect(ortografia[5]?.nombre(en: .espanolUnicode) == "Fa")
+        #expect(ortografia[10]?.nombre(en: .espanolCompacto) == "Si♭")
+        #expect(ortografia[5]?.nombre(en: .espanolCompacto) == "Fa")
         #expect(ortografia[1] == nil) // Do♯ no está en Fa mayor
     }
 
     @Test func laOrtografiaDelAcordeConBemoles() throws {
         let ortografia = PresentacionDeMastil.ortografia(de: try Acorde(leyendo: "Mib").notas)
-        #expect(ortografia[3]?.nombre(en: .espanolUnicode) == "Mi♭")
-        #expect(ortografia[10]?.nombre(en: .espanolUnicode) == "Si♭")
+        #expect(ortografia[3]?.nombre(en: .espanolCompacto) == "Mi♭")
+        #expect(ortografia[10]?.nombre(en: .espanolCompacto) == "Si♭")
     }
 
     @Test func siDosNotasComparteClaveGanaLaPrimera() {
         let notas = [Nota(pasosDeQuinta: 6), Nota(pasosDeQuinta: -6)] // Fa♯ y Sol♭
-        #expect(PresentacionDeMastil.ortografia(de: notas)[6]?.nombre(en: .espanolUnicode) == "Fa♯")
+        #expect(PresentacionDeMastil.ortografia(de: notas)[6]?.nombre(en: .espanolCompacto) == "Fa♯")
     }
 
     @Test func sinNotasNoHayOrtografia() {

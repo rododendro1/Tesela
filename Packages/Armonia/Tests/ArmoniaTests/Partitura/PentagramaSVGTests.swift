@@ -17,8 +17,8 @@ import Testing
         #expect(svg.hasPrefix("<svg"))
         #expect(svg.hasSuffix("</svg>"))
         #expect(contar("<g><title>", en: svg) == 8)
-        #expect(svg.contains("<title>Do4</title>"))
-        #expect(svg.contains("<title>Do5</title>"))
+        #expect(svg.contains("<title>Do₄</title>"))
+        #expect(svg.contains("<title>Do₅</title>"))
         #expect(svg == Escala(.do).svgPentagrama())
     }
 
@@ -114,7 +114,7 @@ import Testing
         #expect(Escala(.do).svgPentagrama(octava: 6).contains(">8va<"))
         #expect(Escala(.do).svgPentagrama(octava: 1).contains(">8vb<"))
         // Los nombres son los de las notas que suenan, no los de las escritas.
-        #expect(Escala(.do).svgPentagrama(octava: 6).contains("<title>Do6</title>"))
+        #expect(Escala(.do).svgPentagrama(octava: 6).contains("<title>Do₆</title>"))
         #expect(
             !(Escala(.do).svgPentagrama(octava: 6, opciones: OpcionesDePentagrama(marcaDeOctava: false)).contains(">8v"))
         )
@@ -185,14 +185,14 @@ import Testing
 
     /// Los acordes muy extensos (la trecena) ponen el bajo una octava más grave; los demás, en posición cerrada.
     @Test func laPosicionAbierta() {
-        #expect(!(Acorde("Sol7").svgPentagrama().contains("<title>Sol3</title>")))
+        #expect(!(Acorde("Sol7").svgPentagrama().contains("<title>Sol₃</title>")))
         #expect(
             Acorde("Sol7").svgPentagrama(opciones: OpcionesDePentagrama(disposicionDelAcorde: .abierta)).contains(
-                "<title>Sol3</title>"))
-        #expect(Acorde("Do13").svgPentagrama().contains("<title>Do3</title>"))
+                "<title>Sol₃</title>"))
+        #expect(Acorde("Do13").svgPentagrama().contains("<title>Do₃</title>"))
         #expect(
             !(Acorde("Do13").svgPentagrama(opciones: OpcionesDePentagrama(disposicionDelAcorde: .cerrada)).contains(
-                "<title>Do3</title>")))
+                "<title>Do₃</title>")))
         // Con el bajo tan grave y lo demás tan agudo, pasa al pentagrama doble.
         #expect(pentagramasDibujados(Acorde("Do13").svgPentagrama()) == 2)
     }

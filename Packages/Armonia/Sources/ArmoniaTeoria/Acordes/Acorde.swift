@@ -137,7 +137,7 @@ public struct Acorde: Hashable, Sendable {
     public var nombre: String {
         let detalle: String
         if let i = inversion {
-            detalle = Acorde.nombreDeLaInversion(i, en: .espanolUnicode)
+            detalle = Acorde.nombreDeLaInversion(i, en: .espanolCompacto)
         } else {
             detalle = "con bajo en \(bajo.nombre)"
         }

@@ -54,7 +54,7 @@ public enum LineaDeComandos {
     /// Ejecuta una orden con sus argumentos (sin el nombre del programa).
     public static func ejecutar(_ argumentos: [String]) -> ResultadoDeOrden {
         var opciones = Argumentos(argumentos)
-        var notacion: Notacion = opciones.quitarMarca("--ingles", "--english") ? .inglesASCII : .espanolUnicode
+        var notacion: Notacion = opciones.quitarMarca("--ingles", "--english") ? .inglesASCII : .espanolCompacto
         switch opciones.quitarOpcion("--idioma", "--language") {
         case .ausente:
             break
@@ -86,7 +86,8 @@ public enum LineaDeComandos {
             }
             notacion = Notacion(escritura: escritura, textos: notacion.textos)
         }
-        if opciones.quitarMarca("--subindices", "--subscripts") { notacion = notacion.conOctavas(.subindices) }
+        // En la terminal, la octava va con cifras salvo con --subindices, también en las notaciones compactas.
+        notacion = notacion.conOctavas(opciones.quitarMarca("--subindices", "--subscripts") ? .subindices : .cifras)
         let argumentos = opciones.restantes
 
         guard let nombre = argumentos.first?.lowercased() else { return bien(ayuda(en: notacion)) }
@@ -142,16 +143,19 @@ public enum LineaDeComandos {
     static let ayudas: [Idioma: String] = Dictionary(
         uniqueKeysWithValues: Idioma.allCases.map { ($0, textoDeAyuda(en: $0)) })
 
-    /// La escritura de `--escritura` en español o inglés: palabras (o words), ascii o unicode. `nil` en los
-    /// demás idiomas, que tienen una sola.
+    /// La escritura de `--escritura` en español o inglés: palabras (o words), ascii o compacto (compact o
+    /// unicode); en alemán, palabras o compacto. `nil` en los demás idiomas, que tienen una sola.
     static func escritura(_ texto: String, en idioma: Idioma) -> EscrituraDeNotas? {
+        let compacto = ["compacto", "compact", "unicode"]
         switch (idioma, texto.lowercased()) {
         case (.espanol, "palabras"), (.espanol, "words"): return .espanol
         case (.espanol, "ascii"): return .espanolASCII
-        case (.espanol, "unicode"): return .espanolUnicode
+        case (.espanol, let t) where compacto.contains(t): return .espanolCompacto
         case (.ingles, "palabras"), (.ingles, "words"): return .ingles
         case (.ingles, "ascii"): return .inglesASCII
-        case (.ingles, "unicode"): return .inglesUnicode
+        case (.ingles, let t) where compacto.contains(t): return .inglesCompacto
+        case (.aleman, "palabras"), (.aleman, "words"), (.aleman, "worte"): return .aleman
+        case (.aleman, let t) where compacto.contains(t) || t == "kompakt": return .alemanCompacto
         default: return nil
         }
     }

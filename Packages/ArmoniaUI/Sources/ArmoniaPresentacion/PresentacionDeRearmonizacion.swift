@@ -18,7 +18,7 @@ public enum PresentacionDeRearmonizacion {
     /// de la progresión; `nil` si no hay acordes.
     ///
     ///     let propuestas = PresentacionDeRearmonizacion.proponer(
-    ///         [Acorde("Do"), Acorde("Sol7"), Acorde("Do")], notacion: .espanolUnicode)
+    ///         [Acorde("Do"), Acorde("Sol7"), Acorde("Do")], notacion: .espanolCompacto)
     ///     propuestas?.propuestas.first?.descripcion   // "Do → Dom (préstamo modal)"
     public static func proponer(
         _ acordes: [Acorde], en tonalidad: Tonalidad? = nil, notacion: Notacion

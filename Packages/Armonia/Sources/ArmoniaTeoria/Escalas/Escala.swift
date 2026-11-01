@@ -191,7 +191,7 @@ public struct Escala: Hashable, Sendable {
     /// "Re dórico".
     public var nombre: String { "\(tonica.nombre) \(tipo.nombre)" }
 
-    /// Nombre en la notación indicada: "Re dórico", "D dorian", `.inglesUnicode` → "B♭ harmonic minor".
+    /// Nombre en la notación indicada: "Re dórico", "D dorian", `.inglesCompacto` → "B♭ harmonic minor".
     public func nombre(en notacion: Notacion) -> String {
         "\(tonica.nombre(en: notacion)) \(tipo.nombre(en: notacion))"
     }

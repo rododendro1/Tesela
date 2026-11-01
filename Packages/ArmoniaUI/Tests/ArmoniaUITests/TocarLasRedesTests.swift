@@ -84,8 +84,8 @@ import Testing
 
         // Se dibuja y se toca igual que los otros teclados.
         let teclado = try #require(ajuste.teclado)
-        let svg = try #require(PresentacionDeRedes.svg(doMayor, en: .uil, notacion: .espanolUnicode, uil: ajuste))
-        #expect(svg.contains(">Do4<"))
+        let svg = try #require(PresentacionDeRedes.svg(doMayor, en: .uil, notacion: .espanolCompacto, uil: ajuste))
+        #expect(svg.contains(">Do₄<"))
         let trazado = Trazado(orientacion: teclado.orientacion, tamano: PresentacionDeRedes.tamanoDelTeclado)
         for casilla in PresentacionDeRedes.casillasDelTeclado(teclado).prefix(20) {
             #expect(
@@ -93,14 +93,14 @@ import Testing
                     == teclado.midi(en: casilla))
         }
         #expect(
-            PresentacionDeRedes.nombre(doMayor, en: .uil, notacion: .espanolUnicode, uil: ajuste)
+            PresentacionDeRedes.nombre(doMayor, en: .uil, notacion: .espanolCompacto, uil: ajuste)
                 == "UIL 2,7,5;R330 · Do")
 
         // Un texto que no es UIL no se dibuja ni suena.
         ajuste.texto = "7,5,2"
         #expect(ajuste.teclado == nil)
         #expect(ajuste.resultado == nil)
-        #expect(PresentacionDeRedes.svg(doMayor, en: .uil, notacion: .espanolUnicode, uil: ajuste) == nil)
+        #expect(PresentacionDeRedes.svg(doMayor, en: .uil, notacion: .espanolCompacto, uil: ajuste) == nil)
         #expect(PresentacionDeRedes.midi(en: Punto(x: 0, y: 0), de: doMayor, enLaRed: .uil, uil: ajuste) == nil)
         #expect(AjusteUIL.conocidos.count == 8)
     }
@@ -111,7 +111,7 @@ import Testing
         #expect(PresentacionDeRedes.paso(.recorrido(Array(acordes.prefix(1))), en: .tonnetz) == 64)
         #expect(PresentacionDeRedes.paso(.recorrido(acordes), en: .tablaArmonica) == 72)
         // Y el dibujo usa ese paso: el radio de las notas es 0,26 · paso.
-        let svg = try #require(PresentacionDeRedes.svg(.recorrido(acordes), en: .tonnetz, notacion: .espanolUnicode))
+        let svg = try #require(PresentacionDeRedes.svg(.recorrido(acordes), en: .tonnetz, notacion: .espanolCompacto))
         #expect(svg.contains(#"r="22.9""#), "el círculo de una nota con paso 88")
     }
 
@@ -120,9 +120,9 @@ import Testing
         #expect(PresentacionDeRedes.alternar(60, en: [0, 7]) == [7])
         #expect(PresentacionDeRedes.alternar(72, en: [0]) == []) // la misma clase, en otra octava
         // La primera tocada es el bajo.
-        #expect(PresentacionDeRedes.acordes(de: [0, 4, 7]).first?.cifrado(en: .espanolUnicode) == "Do")
-        #expect(PresentacionDeRedes.acordes(de: [4, 7, 0]).first?.cifrado(en: .espanolUnicode) == "Do/Mi")
-        #expect(PresentacionDeRedes.acordes(de: [7, 11, 2, 5]).first?.cifrado(en: .espanolUnicode) == "Sol7")
+        #expect(PresentacionDeRedes.acordes(de: [0, 4, 7]).first?.cifrado(en: .espanolCompacto) == "Do")
+        #expect(PresentacionDeRedes.acordes(de: [4, 7, 0]).first?.cifrado(en: .espanolCompacto) == "Do/Mi")
+        #expect(PresentacionDeRedes.acordes(de: [7, 11, 2, 5]).first?.cifrado(en: .espanolCompacto) == "Sol7")
         #expect(PresentacionDeRedes.acordes(de: [0]).isEmpty)
     }
 
@@ -130,7 +130,7 @@ import Testing
         for red in RedDeNotas.allCases where red != .uil {
             for clases in [[], [0, 4, 7]] {
                 #expect(
-                    PresentacionDeRedes.svg(.clases(clases), en: red, notacion: .espanolUnicode) != nil,
+                    PresentacionDeRedes.svg(.clases(clases), en: red, notacion: .espanolCompacto) != nil,
                     "\(red) \(clases)")
             }
         }
@@ -142,6 +142,6 @@ import Testing
             PresentacionDeRedes.midi(
                 en: trazado.centro(de: CoordenadaAxial(q: 1, r: 0)), de: tocadas,
                 enLaRed: .tonnetz) == 67)
-        #expect(PresentacionDeRedes.nombre(tocadas, en: .tonnetz, notacion: .espanolUnicode) == "Tonnetz · Do")
+        #expect(PresentacionDeRedes.nombre(tocadas, en: .tonnetz, notacion: .espanolCompacto) == "Tonnetz · Do")
     }
 }

@@ -68,7 +68,7 @@ import Testing
         #expect(arpegio.nombre(en: .inglesASCII).hasSuffix(" arpeggio"))
         #expect(arpegio.nombre(en: .aleman).hasPrefix("Arpeggio: "))
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolUnicode.conTextos(en: idioma)
+            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             #expect(!(arpegio.nombre(en: notacion).contains("{}")), "\(idioma)")
             #expect(arpegio.nombre(en: notacion).count > Acorde("Do").nombre(en: notacion).count, "\(idioma)")
             for patron in Arpegio.Patron.allCases {
@@ -88,7 +88,7 @@ import Testing
         #expect(Arpegio.Patron(leyendo: "zigzag") == nil)
         for idioma in Idioma.allCases {
             for patron in Arpegio.Patron.allCases {
-                let nombre = patron.nombre(en: Notacion.espanolUnicode.conTextos(en: idioma))
+                let nombre = patron.nombre(en: Notacion.espanolCompacto.conTextos(en: idioma))
                 #expect(Arpegio.Patron(leyendo: nombre) == patron, "\(nombre) (\(idioma))")
             }
         }
@@ -108,8 +108,8 @@ import Testing
         let svg = Arpegio(Acorde("Do7")).svgPentagrama()
         #expect(svg.hasPrefix("<svg"))
         #expect((svg.components(separatedBy: "<g><title>").count - 1) == 5)
-        #expect(svg.contains("<title>Do4</title>"))
-        #expect(svg.contains("<title>Do5</title>"))
+        #expect(svg.contains("<title>Do₄</title>"))
+        #expect(svg.contains("<title>Do₅</title>"))
         let alberti = Arpegio(Acorde("Do"), patron: .alberti, octavas: 2).svgPentagrama(octava: 3)
         #expect((alberti.components(separatedBy: "<g><title>").count - 1) == 8)
         #expect(svg == Arpegio(Acorde("Do7")).svgPentagrama())

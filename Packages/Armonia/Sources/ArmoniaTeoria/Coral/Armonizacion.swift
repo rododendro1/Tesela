@@ -29,7 +29,7 @@ public struct Armonizacion: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// "Do Sol Do (I–V–I)".
-    public var description: String { texto(en: .espanolUnicode) }
+    public var description: String { texto(en: .espanolCompacto) }
 
     public func texto(en notacion: Notacion) -> String {
         acordes.map { $0.cifrado(en: notacion) }.joined(separator: " ") + " (" + cifrados.joined(separator: "–") + ")"

@@ -17,7 +17,7 @@ import Testing
             #expect(ajuste.teclado != nil, Comment(rawValue: conocido.nombre))
             #expect(ajuste.resultado != nil, Comment(rawValue: conocido.nombre))
             #expect(
-                PresentacionDeRedes.svg(doMayor, en: .uil, notacion: .espanolUnicode, uil: ajuste) != nil,
+                PresentacionDeRedes.svg(doMayor, en: .uil, notacion: .espanolCompacto, uil: ajuste) != nil,
                 Comment(rawValue: conocido.nombre))
         }
     }
@@ -80,9 +80,9 @@ import Testing
             }
         }
         // Y cada uno dice algo distinto.
-        #expect(Set(avisos.map { $0.texto(en: .espanolUnicode) }).count == avisos.count)
+        #expect(Set(avisos.map { $0.texto(en: .espanolCompacto) }).count == avisos.count)
         #expect(
-            CoralPresentado.Aviso.sinRealizacion.texto(en: .espanolUnicode)
+            CoralPresentado.Aviso.sinRealizacion.texto(en: .espanolCompacto)
                 != CoralPresentado.Aviso.sinRealizacion.texto(en: .inglesASCII))
     }
 }

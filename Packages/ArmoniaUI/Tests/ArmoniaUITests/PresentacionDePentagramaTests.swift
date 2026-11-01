@@ -11,15 +11,15 @@ import Testing
         #expect(pentagrama.fichero.formato == .svg)
         #expect(pentagrama.fichero.nombreDeFichero == "Pentagrama Re dórico.svg")
         #expect(String(decoding: pentagrama.fichero.datos, as: UTF8.self) == pentagrama.svg)
-        #expect(pentagrama.descripcion.hasPrefix("Re dórico: Re4, Mi4"))
+        #expect(pentagrama.descripcion.hasPrefix("Re dórico: Re₄, Mi₄"))
     }
 
     @Test func elAcordeLlevaElCifradoYLasNotasSolasSiSePide() {
         let pentagrama = PentagramaPresentado(Acorde("Sol7"))
         #expect(pentagrama.svg.contains(">Sol7</text>"))
         #expect(pentagrama.descripcion == "Sol7: Sol, Si, Re, Fa")
-        #expect(!pentagrama.svg.contains("Sol4 Si4"))
-        #expect(PentagramaPresentado(Acorde("Sol7"), nombresDeLasNotas: true).svg.contains("Sol4 Si4"))
+        #expect(!pentagrama.svg.contains("Sol₄ Si₄"))
+        #expect(PentagramaPresentado(Acorde("Sol7"), nombresDeLasNotas: true).svg.contains("Sol₄ Si₄"))
     }
 
     @Test func laNotacionSeSigue() {
@@ -37,7 +37,7 @@ import Testing
 
     @Test func elArpegioVaNotaANota() {
         let pentagrama = PentagramaPresentado(Arpegio(Acorde("Do"), patron: .alberti))
-        #expect(pentagrama.descripcion.hasSuffix(": Do4, Sol4, Mi4, Sol4"), Comment(rawValue: pentagrama.descripcion))
+        #expect(pentagrama.descripcion.hasSuffix(": Do₄, Sol₄, Mi₄, Sol₄"), Comment(rawValue: pentagrama.descripcion))
         #expect(pentagrama.fichero.nombreDeFichero.hasPrefix("Pentagrama Arpegio de Do"))
         #expect(pentagrama.svg.hasPrefix("<svg"))
     }
@@ -49,8 +49,8 @@ import Testing
         let resaltada = PentagramaPresentado(arpegio, resaltada: 2)
         // Solo la tercera nota (Sol4) cambia de color.
         #expect((resaltada.svg.components(separatedBy: "<g fill=\"#E8590C\"><title>").count - 1) == 1)
-        #expect(resaltada.svg.contains("<g fill=\"#E8590C\"><title>Sol4</title>"))
-        #expect(PentagramaPresentado(Escala("Do mayor"), resaltada: 0).svg.contains("<title>Do4") == true)
+        #expect(resaltada.svg.contains("<g fill=\"#E8590C\"><title>Sol₄</title>"))
+        #expect(PentagramaPresentado(Escala("Do mayor"), resaltada: 0).svg.contains("<title>Do₄") == true)
     }
 
     @Test func unViewBoxSinCerrar() {
@@ -66,7 +66,7 @@ import Testing
     }
 
     @Test func laOctavaCambiaLasAlturas() {
-        #expect(PentagramaPresentado(Escala("Re dórico"), octava: 3).descripcion.hasPrefix("Re dórico: Re3, Mi3"))
+        #expect(PentagramaPresentado(Escala("Re dórico"), octava: 3).descripcion.hasPrefix("Re dórico: Re₃, Mi₃"))
         #expect(
             PentagramaPresentado(Escala("Re dórico"), octava: 3).svg != PentagramaPresentado(Escala("Re dórico")).svg)
     }

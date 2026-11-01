@@ -18,8 +18,8 @@ import Testing
         let progresion = try ImportacionDeProgresion.progresion(de: AnalisisArmonico.analizar(leyendo: texto).midi())
         #expect(progresion == texto)
         #expect(
-            try (PresentacionDeAnalisis.analizar(progresion, notacion: .espanolUnicode))
-                == (PresentacionDeAnalisis.analizar(texto, notacion: .espanolUnicode)))
+            try (PresentacionDeAnalisis.analizar(progresion, notacion: .espanolCompacto))
+                == (PresentacionDeAnalisis.analizar(texto, notacion: .espanolCompacto)))
     }
 
     @Test func unaMelodiaSolaNoTieneAcordes() throws {
@@ -67,10 +67,10 @@ import Testing
 
     @Test func elAnalisisSigueElRitmo() throws {
         let leida = try importada()
-        let analisis = try #require(PresentacionDeAnalisis.analizar(leida, notacion: .espanolUnicode))
+        let analisis = try #require(PresentacionDeAnalisis.analizar(leida, notacion: .espanolCompacto))
         #expect(analisis.ritmo == leida.ritmo)
         // Lo mismo que escrita, salvo el ritmo.
-        let escrita = try PresentacionDeAnalisis.analizar("Do Fa Sol7 Do", notacion: .espanolUnicode)
+        let escrita = try PresentacionDeAnalisis.analizar("Do Fa Sol7 Do", notacion: .espanolCompacto)
         #expect(analisis.titulo == escrita.titulo)
         #expect(analisis.tramos == escrita.tramos)
         #expect(escrita.ritmo == nil)
@@ -79,7 +79,7 @@ import Testing
         let inicios = Set(analisis.sonido.notas.map { ($0.inicio * 1000).rounded() / 1000 })
         #expect(inicios == [0, 1.333, 2, 2.667])
         // Los arpegios también: 4 + 2 + 2 + 8 corcheas.
-        let arpegiada = try #require(analisis.arpegiada(.ascendente, notacion: .espanolUnicode))
+        let arpegiada = try #require(analisis.arpegiada(.ascendente, notacion: .espanolCompacto))
         #expect(arpegiada.voz.eventos.count == 16)
         #expect(arpegiada.voz.eventos.reduce(Duracion.cero) { $0 + $1.duracion } == Duracion(2))
     }
@@ -87,12 +87,12 @@ import Testing
     @Test func unRitmoQueNoCuadraNoSeUsa() {
         let acordes = [Acorde("Do"), Acorde("Sol")]
         let cojo = RitmoArmonico(duraciones: [.blanca])
-        #expect(PresentacionDeAnalisis.analizar(acordes, ritmo: cojo, notacion: .espanolUnicode)?.ritmo == nil)
+        #expect(PresentacionDeAnalisis.analizar(acordes, ritmo: cojo, notacion: .espanolCompacto)?.ritmo == nil)
         let nulo = RitmoArmonico(duraciones: [.blanca, .cero])
-        #expect(PresentacionDeAnalisis.analizar(acordes, ritmo: nulo, notacion: .espanolUnicode)?.ritmo == nil)
+        #expect(PresentacionDeAnalisis.analizar(acordes, ritmo: nulo, notacion: .espanolCompacto)?.ritmo == nil)
         #expect(
-            PresentacionDeAnalisis.analizar(acordes, notacion: .espanolUnicode)
-                == PresentacionDeAnalisis.analizar(acordes, ritmo: cojo, notacion: .espanolUnicode))
+            PresentacionDeAnalisis.analizar(acordes, notacion: .espanolCompacto)
+                == PresentacionDeAnalisis.analizar(acordes, ritmo: cojo, notacion: .espanolCompacto))
     }
 
     @Test func sonidoConDuraciones() {

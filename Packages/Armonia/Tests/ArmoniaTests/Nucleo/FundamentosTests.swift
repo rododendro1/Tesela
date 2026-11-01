@@ -77,7 +77,7 @@ import Testing
                 #expect(try (Alteracion(leyendo: Alteracion(n).simbolo(en: tipografia))) == Alteracion(n))
             }
         }
-        #expect(Notacion.espanolUnicode.tipografia == .unicode)
+        #expect(Notacion.espanolCompacto.tipografia == .unicode)
         #expect(Notacion.inglesASCII.tipografia == .ascii)
         #expect(Notacion.espanolASCII.tipografia == .ascii)
         #expect(Notacion.frances.tipografia == .unicode)
@@ -302,7 +302,7 @@ import Testing
 
 /// Pruebas de los protocolos comunes: cada una recorre varios tipos con el mismo código genérico.
 @Suite struct ProtocolosTests {
-    private static let notaciones: [Notacion] = [.espanolUnicode, .espanolASCII, .inglesASCII, .inglesUnicode]
+    private static let notaciones: [Notacion] = [.espanolCompacto, .espanolASCII, .inglesASCII, .inglesCompacto]
 
     private func comprobarIdaYVuelta<T: RepresentableComoTexto & Equatable>(
         _ valores: [T], sourceLocation: SourceLocation = #_sourceLocation
@@ -327,7 +327,7 @@ import Testing
         #expect(Intervalo.terceraMayor.texto(en: .inglesASCII) == "M3")
         #expect(Intervalo.terceraMayor.texto == "3M")
         #expect(Altura("Fa#3").texto == "Fa♯3")
-        #expect(Escala("Re dórico").texto(en: .inglesUnicode) == "D dorian")
+        #expect(Escala("Re dórico").texto(en: .inglesCompacto) == "D dorian")
     }
 
     @Test func loQueAportaElProtocolo() throws {
@@ -350,7 +350,7 @@ import Testing
         let casos: [(any Nombrable, String, String)] = [
             (NotaNatural.re, "Re", "D"),
             (Nota("Fa#"), "Fa♯", "F#"),
-            (Altura("Sib3"), "Si♭3", "Bb3"),
+            (Altura("Sib3"), "Si♭₃", "Bb3"),
             (Intervalo.terceraMayor, "3ª mayor", "major third"),
             (CalidadDeIntervalo.justa, "justa", "perfect"),
             (Consonancia.perfecta, "consonancia perfecta", "perfect consonance"),
@@ -365,7 +365,7 @@ import Testing
             (CalidadDeTriada.aumentada, "aumentada", "augmented"),
         ]
         for (valor, espanol, ingles) in casos {
-            #expect(valor.nombre(en: .espanolUnicode) == espanol)
+            #expect(valor.nombre(en: .espanolCompacto) == espanol)
             #expect(valor.nombre(en: .inglesASCII) == ingles)
             #expect(valor.nombre(en: .inglesASCII) == ingles)
         }

@@ -99,8 +99,8 @@ import Testing
             fr: "fr", oc: "oc", it: "it", de: "de", el: "el", ru: "ru")
         #expect(
             Notacion.allCases.map(t.en) == [
-                "es", "es", "es", "en", "en", "en", "ca", "gl", "ast", "an", "eu", "pt", "fr", "oc", "it", "de", "el",
-                "ru",
+                "es", "es", "es", "en", "en", "en", "ca", "gl", "ast", "an", "eu", "pt", "fr", "oc", "it", "de", "de",
+                "el", "ru",
             ])
         #expect(Idioma.allCases.count == Idioma.allCases.count)
     }

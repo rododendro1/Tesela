@@ -55,7 +55,7 @@ extension Coral {
         tonalidad: Tonalidad? = nil, tempo: Tempo? = nil,
         titulo: String? = nil, parte: String = "Coro",
         cifrados: Bool = false, analisis: Bool = false,
-        notacion: Notacion = .espanolUnicode
+        notacion: Notacion = .espanolCompacto
     ) -> String {
         Exportacion.documento(
             EscritorMEI.self, de: self, duracion: duracion, compas: compas, tonalidad: tonalidad, tempo: tempo,
@@ -79,7 +79,7 @@ extension AnalisisArmonico {
     public func mei(
         duracion: Duracion = .blanca, compas: Compas = .compasillo, tempo: Tempo? = nil,
         titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
-        analisis: Bool = true, notacion: Notacion = .espanolUnicode
+        analisis: Bool = true, notacion: Notacion = .espanolCompacto
     ) -> String {
         mei(
             duraciones: Array(repeating: duracion, count: acordes.count), compas: compas, tempo: tempo,
@@ -92,7 +92,7 @@ extension AnalisisArmonico {
     public func mei(
         duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil,
         titulo: String? = nil, parte: String = "Piano", cifrados: Bool = true,
-        analisis: Bool = true, notacion: Notacion = .espanolUnicode
+        analisis: Bool = true, notacion: Notacion = .espanolCompacto
     ) -> String {
         Exportacion.documento(
             EscritorMEI.self, de: self, duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo,

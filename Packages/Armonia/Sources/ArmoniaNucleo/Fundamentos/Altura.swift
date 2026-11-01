@@ -57,7 +57,7 @@ public struct Altura: Hashable, Sendable {
         self = leida
     }
 
-    /// Lee una nota escrita en una notación concreta: `Altura(leyendo: "Fis4", en: .aleman)`,
+    /// Lee una nota escrita en una notación concreta: `Altura(leyendo: "Fis4", en: .alemanCompacto)`,
     /// `Altura(leyendo: "ré bémol 3", en: .frances)`. La octava es la científica (Do4 = do central), con cifras o
     /// en subíndice ("ré bémol ₃").
     public init(leyendo texto: String, en notacion: Notacion) throws {
@@ -112,12 +112,12 @@ public struct Altura: Hashable, Sendable {
         frecuenciaDelLa4 * pow(2, Double(midi - 69) / 12)
     }
 
-    /// "Fa♯4".
-    public var nombreCompleto: String { nombre(en: .espanolUnicode) }
+    /// "Fa♯4": el nombre en `.espanolCompacto` con la octava en cifras, como `description` y la codificación.
+    public var nombreCompleto: String { nombre(en: .deCodificacion) }
 
-    /// Nombre con octava (científica en todas las notaciones): "Fa♯4", "F#4", "Fis4",
-    /// "fa dièse 4" (con espacio cuando el nombre tiene varias palabras). Con
-    /// `notacion.conOctavas(.subindices)`, la octava va en subíndice: "Fa♯₄".
+    /// Nombre con octava (científica en todas las notaciones): "Fa#4", "fa dièse 4" (con espacio cuando el
+    /// nombre tiene varias palabras) y, en las notaciones compactas, con la octava en subíndice: "Fa♯₄", "F♯₄",
+    /// "Fis₄". `notacion.conOctavas(_:)` elige la escritura de la octava: "Fa♯4".
     public func nombre(en notacion: Notacion) -> String {
         let nombre = nota.nombre(en: notacion)
         return nombre + (nombre.contains(" ") ? " " : "") + octavaEscrita(en: notacion)
@@ -129,7 +129,7 @@ public struct Altura: Hashable, Sendable {
         nota.nombreCompacto(en: notacion) + octavaEscrita(en: notacion)
     }
 
-    /// La octava escrita como pide la notación: "4" o, con `conOctavas(.subindices)`, "₄".
+    /// La octava escrita como pide la notación: "₄" en las compactas, "4" en las demás o con `conOctavas(.cifras)`.
     public func octavaEscrita(en notacion: Notacion) -> String {
         notacion.octavas.escribir(octava)
     }

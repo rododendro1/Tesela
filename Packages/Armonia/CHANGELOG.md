@@ -2,6 +2,19 @@
 
 ## Sin publicar
 
+- **Notaciones compactas**: `Notacion.espanolUnicode` e `.inglesUnicode` pasan a llamarse `.espanolCompacto` e
+  `.inglesCompacto` (igual en `EscrituraDeNotas`, y `EstiloDeCifrado.inglesUnicode` pasa a `.inglesCompacto`). Los
+  nombres de antes siguen, obsoletos, en `Obsoletos.swift`. Las compactas escriben la octava como subíndice: La₄,
+  F♯₃ (`EscrituraDeNotas.esCompacta` y `.octavas`); las demás siguen con cifras, y `conOctavas(_:)` elige otra.
+  `description`, `texto` y la codificación de las alturas siguen con cifras ("Fa♯4"), para que lo guardado no
+  cambie. Los SVG con nombres de nota (pentagramas y teclados) llevan ahora los subíndices.
+- **Alemán con palabras y compacto**: `.aleman` escribe ahora las alteraciones con palabras (F Kreuz, H Be,
+  E Doppel-Be), como `.espanol` e `.ingles`, y la escritura de siempre (Fis, Es, B, H) es `.alemanCompacto`, con la
+  octava en subíndice. Los cifrados y las tonalidades de las dos van a la alemana (Fis7, Fis-Dur), las dos leen las
+  dos formas, y `Notacion.delIdioma(.aleman)` es `.alemanCompacto`. `EscrituraDeNotas.allCases` tiene diecinueve
+  escrituras.
+- En la línea de comandos, `--escritura` acepta también `compacto` (o `compact`, además de `unicode`) y, en alemán,
+  `palabras` y `compacto`. La octava sigue con cifras salvo con `--subindices`, también en las notaciones compactas.
 - Exportación a LilyPond y ABC: `Voz.lilyPond(tonalidad:clave:tempo:titulo:parte:)` y `Voz.abc(…)`, y las mismas
   en `Coral` y `AnalisisArmonico`, con los cifrados encima y el análisis debajo del bajo. LilyPond escribe las
   alturas en absoluto con los nombres holandeses; ABC escribe las alteraciones que se ven, como el MEI. Las dos

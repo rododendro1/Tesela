@@ -44,7 +44,7 @@ public struct EstiloDeCifrado: Hashable, Sendable {
     /// Sin `tensionesEnASCII`, las tensiones llevan b y # si las notas las llevan (`Notacion.usaASCII`): el
     /// estilo básico de cada notación es `EstiloDeCifrado(notacion:)`, y `.inglesASCII` escribe Bb7(b9).
     public init(
-        notacion: Notacion = .espanolUnicode,
+        notacion: Notacion = .espanolCompacto,
         tensionesEnASCII: Bool? = nil,
         menor: Menor = .m,
         disminuido: Disminuido = .circulo,
@@ -68,7 +68,7 @@ public struct EstiloDeCifrado: Hashable, Sendable {
     /// Letras internacionales: C#m7(b5), Ebmaj7.
     public static let inglesASCII = EstiloDeCifrado(notacion: .inglesASCII)
     /// Letras internacionales con símbolos tipográficos: C♯m7(♭5), E♭maj7.
-    public static let inglesUnicode = EstiloDeCifrado(notacion: .inglesUnicode)
+    public static let inglesCompacto = EstiloDeCifrado(notacion: .inglesCompacto)
     /// Notación habitual en jazz: C#ø7, EbΔ7.
     public static let jazz = EstiloDeCifrado(notacion: .inglesASCII, septimaMayor: .delta, semidisminuido: .barrado)
     /// Calidades escritas con palabras: Domin7, Fadim, Solaug. No confundir con las notaciones con palabras

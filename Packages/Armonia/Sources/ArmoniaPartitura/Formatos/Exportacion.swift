@@ -367,7 +367,7 @@ extension Exportacion {
         var escritor = Escritor(
             compas: voz.compas, anacrusa: voz.anacrusa, tonalidad: armadura,
             tempo: tempo, titulo: titulo, parte: parte, claves: [laClave])
-        escritor.anadir(voz, pentagrama: 1, plicaArriba: nil, cifrados: [:], analisis: [:], notacion: .espanolUnicode)
+        escritor.anadir(voz, pentagrama: 1, plicaArriba: nil, cifrados: [:], analisis: [:], notacion: .espanolCompacto)
         return escritor.documento
     }
 

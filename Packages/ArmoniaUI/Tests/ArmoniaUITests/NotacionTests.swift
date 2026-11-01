@@ -14,8 +14,13 @@ import Testing
     /// La clave de cada notación es el nombre de su constante, y el título, el idioma con un ejemplo.
     @Test func lasClavesSonLosCasos() {
         #expect(Notacion.desde(clave: "espanol") == .espanol)
-        #expect(Notacion.desde(clave: "espanolUnicode") == .espanolUnicode)
+        #expect(Notacion.desde(clave: "espanolCompacto") == .espanolCompacto)
         #expect(Notacion.desde(clave: "inglesASCII") == .inglesASCII)
+        // Las claves de antes de las notaciones compactas se siguen leyendo.
+        #expect(Notacion.desde(clave: "espanolUnicode") == .espanolCompacto)
+        #expect(Notacion.desde(clave: "inglesUnicode+catalan") == Notacion.inglesCompacto.conTextos(en: .catalan))
+        #expect(Notacion.espanolCompacto.clave == "espanolCompacto")
+        #expect(Notacion.inglesCompacto.clave == "inglesCompacto")
         #expect(Notacion.desde(clave: "inglesASCII+catalan") == Notacion.inglesASCII.conTextos(en: .catalan))
         #expect(Notacion.espanol.clave == "espanol")
         #expect(Notacion.ingles.clave == "ingles")
@@ -23,7 +28,11 @@ import Testing
         #expect(Notacion.ingles.titulo == "English (F sharp)")
         #expect(Notacion.espanolASCII.titulo == "Español (Fa#)")
         #expect(Notacion.inglesASCII.titulo == "English (F#)")
-        #expect(Notacion.aleman.titulo == "Deutsch (Fis)")
+        #expect(Notacion.aleman.titulo == "Deutsch (F Kreuz)")
+        #expect(Notacion.alemanCompacto.titulo == "Deutsch (Fis)")
+        #expect(Notacion.aleman.clave == "aleman")
+        #expect(Notacion.alemanCompacto.clave == "alemanCompacto")
+        #expect(Notacion.desde(clave: "alemanCompacto") == .alemanCompacto)
         #expect(Notacion.espanolASCII.clave == "espanolASCII")
         #expect(Notacion.catalan.clave == "catalan")
     }
@@ -39,9 +48,13 @@ import Testing
         let conSubindices = Notacion.desde(clave: "ruso+espanol", octavasEnSubindice: true)
         #expect(conSubindices == Notacion.ruso.conTextos(en: .espanol).conOctavas(.subindices))
         #expect(conSubindices.clave == "ruso+espanol")
-        #expect(Notacion.desde(clave: "espanolUnicode", octavasEnSubindice: false) == .espanolUnicode)
+        // En las apps manda el ajuste, también en las compactas, que sin él llevarían subíndices.
+        #expect(
+            Notacion.desde(clave: "espanolCompacto", octavasEnSubindice: false) == .espanolCompacto.conOctavas(.cifras))
+        #expect(Notacion.desde(clave: "espanolCompacto", octavasEnSubindice: true) == .espanolCompacto)
+        #expect(Notacion.desde(clave: "espanolCompacto") == .espanolCompacto)
         let la4 = Altura(Nota.la, octava: 4)
-        #expect(la4.nombre(en: .desde(clave: "espanolUnicode", octavasEnSubindice: true)) == "La₄")
+        #expect(la4.nombre(en: .desde(clave: "espanolCompacto", octavasEnSubindice: true)) == "La₄")
     }
 
     @Test func notasYTextosPorSeparado() {
@@ -58,20 +71,20 @@ import Testing
         #expect(Notacion.inglesASCII.conTextosElegidos(.catalan).clave == "inglesASCII+catalan")
         // Una parte desconocida no rompe nada.
         #expect(Notacion.desde(clave: "ruso+klingon") == .ruso)
-        #expect(Notacion.desde(clave: "klingon+espanol") == .espanolUnicode)
+        #expect(Notacion.desde(clave: "klingon+espanol") == .espanolCompacto)
         #expect(Set(Idioma.allCases.map(\.clave)).count == Idioma.allCases.count)
     }
 
     @Test func unaClaveDesconocidaDaElEspanol() {
-        #expect(Notacion.desde(clave: "") == .espanolUnicode)
-        #expect(Notacion.desde(clave: "klingon") == .espanolUnicode)
+        #expect(Notacion.desde(clave: "") == .espanolCompacto)
+        #expect(Notacion.desde(clave: "klingon") == .espanolCompacto)
         // Un ajuste antiguo guardado como índice no rompe nada.
-        #expect(Notacion.desde(clave: "3") == .espanolUnicode)
+        #expect(Notacion.desde(clave: "3") == .espanolCompacto)
     }
 
     @Test func elMensajeDeUnErrorAjenoEsSuDescripcion() {
         struct Falla: LocalizedError { var errorDescription: String? { "falla de prueba" } }
-        #expect(Notacion.espanolUnicode.mensaje(de: Falla()) == "falla de prueba")
+        #expect(Notacion.espanolCompacto.mensaje(de: Falla()) == "falla de prueba")
     }
 
     @Test func elMensajeDeUnErrorDeLecturaNoEstaVacio() throws {
@@ -79,7 +92,7 @@ import Testing
             _ = try Acorde(leyendo: "xyz!")
             Issue.record("«xyz!» no es un cifrado")
         } catch {
-            #expect(!(Notacion.espanolUnicode.mensaje(de: error).isEmpty))
+            #expect(!(Notacion.espanolCompacto.mensaje(de: error).isEmpty))
             #expect(!(Notacion.inglesASCII.mensaje(de: error).isEmpty))
         }
     }

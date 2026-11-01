@@ -4,7 +4,7 @@ import Armonia
 /// una melodía («Mi4:4 Re4:8») o un coral («Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4»), palabra a palabra. No usa
 /// SwiftUI, así que se prueba en Linux.
 ///
-///     try PresentacionDeTransposicion.transponer("Do Lam Re7 Sol7", .segundaMayor, notacion: .espanolUnicode)
+///     try PresentacionDeTransposicion.transponer("Do Lam Re7 Sol7", .segundaMayor, notacion: .espanolCompacto)
 ///     // "Re Sim Mi7 La7"
 public enum PresentacionDeTransposicion {
     /// Lo que hay escrito: acordes (Sol7 es el acorde) o notas (Sol7 es el Sol de la octava 7).
@@ -110,9 +110,10 @@ public enum PresentacionDeTransposicion {
     }
 
     /// El valor escrito en la notación si se vuelve a leer igual; si no (una notación que las lecturas no
-    /// entienden), en la española.
+    /// entienden), en la española, con la octava escrita como en la notación.
     private static func escribir<T: RepresentableComoTexto & Equatable>(_ valor: T, _ notacion: Notacion) -> String {
         let escrito = valor.texto(en: notacion)
-        return (try? T(leyendo: escrito)) == valor ? escrito : valor.texto(en: .espanolUnicode)
+        return (try? T(leyendo: escrito)) == valor
+            ? escrito : valor.texto(en: Notacion.espanolCompacto.conOctavas(notacion.octavas))
     }
 }

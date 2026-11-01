@@ -167,7 +167,7 @@ import Testing
             #expect(salida(orden).hasPrefix("armonia: music theory"), Comment(rawValue: orden))
         }
         #expect(salida("help --ingles").contains("fingerings <symbol>"))
-        #expect(LineaDeComandos.ayuda(en: .espanolUnicode).hasPrefix("armonia: teoría musical"))
+        #expect(LineaDeComandos.ayuda(en: .espanolCompacto).hasPrefix("armonia: teoría musical"))
     }
 
     @Test func idiomas() {
@@ -256,6 +256,17 @@ import Testing
         #expect(
             salida("acorde Bb7 --ingles --escritura unicode").hasPrefix("B♭7: dominant seventh\n  notes: B♭ D F A♭"))
         #expect(salida("acorde Bb7 --ingles --escritura ASCII") == salida("acorde Bb7 --ingles"))
+        #expect(salida("acorde Bb7 --ingles --escritura compacto") == salida("acorde Bb7 --ingles --escritura unicode"))
+        // En alemán, compacta (Fis) o con palabras (F Kreuz).
+        #expect(salida("escala Fa# dórico --idioma de").hasPrefix("Fis dorisch\n  Noten: Fis Gis A H"))
+        #expect(salida("escala Fa# dórico --idioma de --escritura compacto") == salida("escala Fa# dórico --idioma de"))
+        #expect(
+            salida("escala Fa# dórico --idioma de --escritura palabras")
+                .hasPrefix("F Kreuz dorisch\n  Noten: F Kreuz G Kreuz A H"))
+        // La octava, con cifras salvo con --subindices, también en las compactas.
+        #expect(salida("transponer 2M Mi4") == "Fa♯4\n")
+        #expect(salida("transponer 2M Mi4 --idioma de") == "Fa♯4\n")
+        #expect(salida("transponer 2M Mi4 --ingles --escritura compacto --subindices") == "F♯₄\n")
         #expect(
             salida("acorde Sib7 --idioma en --escritura palabras --textos es")
                 .hasPrefix("B♭7: séptima de dominante\n  notas: B flat D F A flat"))

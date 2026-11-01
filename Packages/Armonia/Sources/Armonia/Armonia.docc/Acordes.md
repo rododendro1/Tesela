@@ -91,7 +91,7 @@ cambiar el significado. Todos los estilos se vuelven a leer igual.
 | `.predeterminado` | Si♭7(♭9)/Re | Do♯m7(♭5) | Mi♭maj7 | Fa+ |
 | `.espanolASCII` | Sib7(b9)/Re | Do#m7(b5) | Mibmaj7 | Fa+ |
 | `.inglesASCII` | Bb7(b9)/D | C#m7(b5) | Ebmaj7 | F+ |
-| `.inglesUnicode` | B♭7(♭9)/D | C♯m7(♭5) | E♭maj7 | F+ |
+| `.inglesCompacto` | B♭7(♭9)/D | C♯m7(♭5) | E♭maj7 | F+ |
 | `.jazz` | Bb7(b9)/D | C#ø7 | EbΔ7 | F+ |
 | `.calidadesConPalabras` | Si♭7(♭9)/Re | Do♯min7(♭5) | Mi♭maj7 | Faaug |
 
