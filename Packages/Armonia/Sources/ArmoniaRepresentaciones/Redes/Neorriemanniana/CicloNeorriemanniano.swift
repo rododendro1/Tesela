@@ -184,9 +184,9 @@ extension Tonnetz {
         else { return punto.nota }
         let cerca = notaCercana.pasosDeQuinta - cercano.pasosDeQuinta
         let opciones = (-3...3).map { Nota(pasosDeQuinta: punto.pasosDeQuinta + 12 * $0) }
-        return opciones.min {
+        return opciones.menor(siNoHay: punto.nota) {
             (abs($0.alteracion.semitonos), abs($0.pasosDeQuinta - punto.pasosDeQuinta - cerca))
                 < (abs($1.alteracion.semitonos), abs($1.pasosDeQuinta - punto.pasosDeQuinta - cerca))
-        } ?? punto.nota
+        }
     }
 }

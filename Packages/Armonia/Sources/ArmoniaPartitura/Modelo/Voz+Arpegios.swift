@@ -69,7 +69,7 @@ extension Voz {
         let referencia = acordes.first.map { Altura($0.bajo, octava: octava).midi } ?? 0
         for (acorde, porAcorde) in zip(acordes, duraciones) {
             let distancia = { (candidata: Int) in abs(Altura(acorde.bajo, octava: candidata).midi - referencia) }
-            let suya = ((octava - 1)...(octava + 1)).min(by: { distancia($0) < distancia($1) }) ?? octava
+            let suya = ((octava - 1)...(octava + 1)).menor(siNoHay: octava) { distancia($0) < distancia($1) }
             let alturas = Arpegio(acorde, patron: patron, octavas: octavas, conOctava: conOctava).alturas(octava: suya)
             guard !alturas.isEmpty else { continue }
             guard let porAcorde, porAcorde > .cero else {

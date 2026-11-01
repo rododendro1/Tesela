@@ -47,7 +47,9 @@ extension Acorde {
         switch opciones.disposicionDelAcorde {
         case .cerrada: abierta = false
         case .abierta: abierta = true
-        case .automatica: abierta = (cerrada.last.map(\.midi) ?? 0) - (cerrada.first.map(\.midi) ?? 0) >= 17
+        case .automatica:
+            let ambito = cerrada.map(\.midi).extremos(siNoHay: 0...0)
+            abierta = ambito.upperBound - ambito.lowerBound >= 17
         }
         var alturas = cerrada
         if abierta, let bajo = notasDesdeElBajo.first, notasDesdeElBajo.count > 1 {

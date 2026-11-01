@@ -177,7 +177,8 @@ extension Tonnetz {
                     fundamental: PuntoDeLaRed(quintas: triada.fundamental.quintas - 4 * terceras, terceras: terceras),
                     mayor: triada.mayor)
             }
-            triadas.append(copias.min { Tonnetz.separacion(anterior, $0) < Tonnetz.separacion(anterior, $1) } ?? triada)
+            triadas.append(
+                copias.menor(siNoHay: triada) { Tonnetz.separacion(anterior, $0) < Tonnetz.separacion(anterior, $1) })
         }
         var puntos: [PuntoDeLaRed] = []
         for vertice in triadas.flatMap(\.vertices) where !puntos.contains(vertice) { puntos.append(vertice) }
