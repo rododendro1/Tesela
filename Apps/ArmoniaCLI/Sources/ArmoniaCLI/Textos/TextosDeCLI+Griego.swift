@@ -99,7 +99,7 @@ extension TextosDeCLI {
         cabeceraDeLaAyuda: """
         armonia: θεωρία της μουσικής από τη γραμμή εντολών.
 
-        Χρήση: armonia <εντολή> <ορίσματα> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru]
+        Χρήση: armonia <εντολή> <ορίσματα> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
 
         Εντολές (οι εντολές και οι επιλογές γράφονται στα ισπανικά ή στα αγγλικά):
         """,
@@ -203,7 +203,7 @@ extension TextosDeCLI {
         pruebaLaAyuda: "Δοκίμασε «armonia help».",
         ordenDesconocida: { orden in "άγνωστη εντολή: «\(orden)»" },
         opcionDesconocida: { opcion in "άγνωστη επιλογή: «\(opcion)»" },
-        idiomaDesconocido: { idioma in "άγνωστη γλώσσα: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el ή ru)" },
+        idiomaDesconocido: { idioma in "άγνωστη γλώσσα: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru ή hu)" },
         terminalDesconocida: { t in "άγνωστο κέλυφος: «\(t)» (bash, zsh ή fish)" },
         escrituraNoValida: { escritura in "μη έγκυρη γραφή: «\(escritura)» (palabras/words, ascii ή unicode· μόνο με es και en)" },
 

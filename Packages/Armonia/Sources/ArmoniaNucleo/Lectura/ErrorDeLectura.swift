@@ -3,7 +3,7 @@ import Foundation
 /// Error al leer un texto: una nota, un intervalo, un cifrado, una escala, una voz con su ritmo, unos
 /// acordes a varias voces…
 ///
-/// Indica el texto, el carácter donde se detuvo la lectura y el motivo, en los catorce idiomas de los
+/// Indica el texto, el carácter donde se detuvo la lectura y el motivo, en los quince idiomas de los
 /// textos (`Traduccion`):
 ///
 ///     do {
@@ -82,7 +82,7 @@ extension ErrorDeLectura: LocalizedError {
 
 // MARK: - Idiomas
 //
-// Los mensajes de `ErrorDeLectura` en los catorce idiomas de los textos (`Traduccion`). Aquí están los
+// Los mensajes de `ErrorDeLectura` en los quince idiomas de los textos (`Traduccion`). Aquí están los
 // generales (texto vacío, caracteres que sobran); los demás, según lo que se leía, más abajo en
 // TextosDeNotas, TextosDeAcordes, TextosDeEscalas y TextosDePartitura, una función por motivo, para que un motivo nuevo no
 // compile hasta que tiene su texto.
@@ -112,7 +112,7 @@ extension ErrorDeLectura {
         return inicio + TextosDeNucleo.en(notacion, \.dosPuntos) + explicacion(en: notacion)
     }
 
-    /// La explicación en los catorce idiomas de los textos. La notación solo hace falta para los
+    /// La explicación en los quince idiomas de los textos. La notación solo hace falta para los
     /// nombres de calidades e intervalos en inglés, que siguen su vocabulario.
     private func explicacionTraducida(_ notacion: Notacion) -> Traduccion {
         switch motivo {
@@ -147,7 +147,7 @@ extension ErrorDeLectura {
     }
 }
 
-// Los mensajes de `ErrorDeLectura` al leer las notas, las alteraciones, las octavas y los intervalos, en los catorce idiomas de los textos.
+// Los mensajes de `ErrorDeLectura` al leer las notas, las alteraciones, las octavas y los intervalos, en los quince idiomas de los textos.
 
 extension ErrorDeLectura {
     enum TextosDeNotas {
@@ -192,7 +192,7 @@ extension ErrorDeLectura {
     }
 }
 
-// Los mensajes de `ErrorDeLectura` al leer los cifrados de los acordes, en los catorce idiomas de los textos.
+// Los mensajes de `ErrorDeLectura` al leer los cifrados de los acordes, en los quince idiomas de los textos.
 
 extension ErrorDeLectura {
     enum TextosDeAcordes {
@@ -254,7 +254,7 @@ extension ErrorDeLectura {
     }
 }
 
-// Los mensajes de `ErrorDeLectura` al leer las escalas y los modos, en los catorce idiomas de los textos.
+// Los mensajes de `ErrorDeLectura` al leer las escalas y los modos, en los quince idiomas de los textos.
 
 extension ErrorDeLectura {
     enum TextosDeEscalas {
@@ -270,7 +270,7 @@ extension ErrorDeLectura {
     }
 }
 
-// Los mensajes de `ErrorDeLectura` al leer las duraciones, los compases, las voces y el contrapunto, en los catorce idiomas de los textos.
+// Los mensajes de `ErrorDeLectura` al leer las duraciones, los compases, las voces y el contrapunto, en los quince idiomas de los textos.
 
 extension ErrorDeLectura {
     enum TextosDePartitura {

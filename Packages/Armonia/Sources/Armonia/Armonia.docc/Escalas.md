@@ -298,7 +298,7 @@ TipoDeEscala.rast == .mayor                       // false: baja distinto
 
 Un arpegio no es un tipo de escala sino un acorde tocado nota a nota, así que ``Arpegio`` no entra en el catálogo de escalas:
 guarda un ``Acorde``, el orden del recorrido (``Arpegio/Patron``: ascendente, descendente, de ida y vuelta o el bajo de Alberti) y
-las octavas que abarca. Se obtiene de un acorde o de un grado de una escala, se lee y se nombra en los catorce idiomas
+las octavas que abarca. Se obtiene de un acorde o de un grado de una escala, se lee y se nombra en los quince idiomas
 («Arpegio de Do mayor», «C major arpeggio», «Arpège de Do majeur») y se dibuja en un pentagrama. ``Acorde/escalasCompatibles(entre:)``
 da la relación acorde-escala del jazz: las escalas sobre la fundamental que contienen todas las notas del acorde.
 

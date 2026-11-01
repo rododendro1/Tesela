@@ -3,14 +3,14 @@ import ArmoniaPresentacion
 
 // MARK: - Textos
 //
-// Lo que escribe la herramienta por su cuenta, en los catorce idiomas de los textos: las
+// Lo que escribe la herramienta por su cuenta, en los quince idiomas de los textos: las
 // etiquetas de la salida (`Mensaje`, en este archivo) y los errores de uso (`ErrorDeUso`, en
 // ErrorDeUso.swift). Lo musical (notas, acordes, escalas…) no está aquí: lo traduce el motor
 // con `Notacion`.
 //
 // Los textos están en `TextosDeCLI`, un idioma por fichero (`Textos/TextosDeCLI+Espanol.swift`…): cada
-// fichero da todos los campos, así que un caso nuevo no compila hasta que tiene su texto en los catorce. El idioma es el de la notación (`--ingles`, `--idioma eu`…).
-// La ayuda (`LineaDeComandos.ayuda(en:)`) también está en los catorce idiomas.
+// fichero da todos los campos, así que un caso nuevo no compila hasta que tiene su texto en los quince. El idioma es el de la notación (`--ingles`, `--idioma eu`…).
+// La ayuda (`LineaDeComandos.ayuda(en:)`) también está en los quince idiomas.
 // Los avisos del coral (sin armonización, sin faltas…) los comparte con las apps: son
 // `CoralPresentado.Aviso`, en `ArmoniaPresentacion`.
 
@@ -90,7 +90,7 @@ enum Mensaje {
         case .ciclo(let ciclo):
             return Traduccion(cadaIdioma: { ciclo.nombre(en: $0) })
         case .instrumento(let encordado):
-            // `--instrumento` acepta el nombre en cualquiera de los catorce idiomas.
+            // `--instrumento` acepta el nombre en cualquiera de los quince idiomas.
             return Traduccion(cadaIdioma: { encordado.nombre(en: $0) })
         }
     }

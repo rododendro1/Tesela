@@ -57,7 +57,7 @@ public struct Escala: Hashable, Sendable {
     /// última, en español o inglés con palabras («Fa sostenido dórico», «F sharp dorian»).
     private static func leerTonica(_ texto: String) -> (Nota, Notacion)? {
         let clave = texto.claveDeBusqueda
-        for notacion in Notacion.deLecturaGenerica + [.frances, .italiano, .aleman] + Notacion.conPalabras {
+        for notacion in Notacion.deLecturaGenerica + [.frances, .italiano, .aleman, .hungaro] + Notacion.conPalabras {
             if let nombre = Nota.porNombre[notacion]?[clave] { return (nombre, notacion) }
         }
         return nil
@@ -336,7 +336,7 @@ extension Escala {
 
 // MARK: - Idiomas
 //
-// Nombres de los grados de la escala en los catorce idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
+// Nombres de los grados de la escala en los quince idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
 
 // MARK: - NombreDeGrado
 

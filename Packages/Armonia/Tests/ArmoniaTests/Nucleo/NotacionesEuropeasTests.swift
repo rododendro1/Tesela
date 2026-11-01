@@ -7,7 +7,7 @@ import Testing
 @testable import ArmoniaRepresentaciones
 @testable import ArmoniaTeoria
 
-/// Las notaciones y los textos en alemán, francés, italiano, occitano, griego y ruso.
+/// Las notaciones y los textos en alemán, húngaro, francés, italiano, occitano, griego y ruso.
 @Suite struct NotacionesEuropeasTests {
     @Test func aleman() throws {
         let casos: [(String, String)] = [
@@ -50,6 +50,70 @@ import Testing
         #expect(Alteracion(2).nombre(en: .aleman) == "Doppelkreuz")
         #expect(Alteracion(-1).nombre(en: .aleman) == "Be")
         #expect(throws: (any Error).self) { try Nota(leyendo: "Xis", en: .aleman) }
+    }
+
+    /// El húngaro escribe las notas como el alemán, con «isz» y «esz»: Fisz, Esz, Asz, B, H.
+    @Test func hungaro() throws {
+        let casos: [(String, String)] = [
+            ("Do", "C"), ("Fa#", "Fisz"), ("Dob", "Cesz"), ("Mib", "Esz"), ("Mibb", "Eszesz"),
+            ("Lab", "Asz"), ("Labb", "Aszasz"), ("Sib", "B"), ("Sibb", "Heszesz"), ("Si", "H"),
+            ("Si#", "Hisz"), ("Rex", "Diszisz"), ("Solb", "Gesz"),
+        ]
+        for (espanol, hungaro) in casos {
+            let nombre = Nota(texto: espanol)!
+            #expect(nombre.nombre(en: .hungaroCompacto) == hungaro, Comment(rawValue: espanol))
+            #expect(try (Nota(leyendo: hungaro, en: .hungaroCompacto)) == nombre, Comment(rawValue: hungaro))
+        }
+        // Con palabras, como el alemán: los cifrados y las tonalidades siguen a la alemana, y se leen las dos formas.
+        #expect(Nota("Fa#").nombre(en: .hungaro) == "F kereszt")
+        #expect(Nota("Sib").nombre(en: .hungaro) == "H bé")
+        #expect(Acorde("Fa#7").cifrado(en: .hungaro) == "Fisz7")
+        #expect(Tonalidad("Fa# mayor").nombre(en: .hungaro) == "Fisz-dúr")
+        #expect(try (Nota(leyendo: "Fisz", en: .hungaro)) == Nota("Fa#"))
+        #expect(try (Nota(leyendo: "F kereszt", en: .hungaroCompacto)) == Nota("Fa#"))
+        #expect(Notacion.delIdioma(.hungaro) == .hungaroCompacto)
+        // El alemán no cambia.
+        #expect(Nota("Mibb").nombreAleman == "Eses")
+        #expect(try (Nota(leyendo: "fisz", en: .hungaroCompacto)) == Nota("Fa#"))
+        #expect(Altura("Fa#4").nombre(en: .hungaroCompacto) == "Fisz₄")
+        #expect(try (Altura(leyendo: "B3", en: .hungaroCompacto)) == Altura("Sib3"))
+        #expect(Acorde("Sib7").cifrado(en: .hungaroCompacto) == "B7")
+        #expect(Acorde("Sim7").cifrado(en: .hungaroCompacto) == "Hm7")
+        #expect(Acorde("Fa#7").cifrado(en: .hungaroCompacto) == "Fisz7")
+        #expect(Tonalidad("Fa# mayor").nombre(en: .hungaroCompacto) == "Fisz-dúr")
+        #expect(Tonalidad("La menor").nombre(en: .hungaroCompacto) == "a-moll")
+        #expect(Tonalidad("Mib menor").nombre(en: .hungaroCompacto) == "esz-moll")
+        #expect(Tonalidad("Fisz-dúr") == Tonalidad("Fa# mayor"))
+        #expect(Tonalidad("esz-moll") == Tonalidad("Mib menor"))
+        #expect(Escala("Re dórico").nombre(en: .hungaroCompacto) == "D dór")
+        #expect(Escala("Fisz dór") == Escala("Fa# dórico"))
+        #expect(Escala("A összhangzatos moll") == Escala("La menor armónica"))
+        #expect(Alteracion(1).nombre(en: .hungaro) == "kereszt")
+        #expect(Alteracion(-2).nombre(en: .hungaro) == "kettős bé")
+        #expect(Idioma(codigo: "hu-HU") == .hungaro)
+        #expect(Idioma(nombre: "magyar") == .hungaro)
+        #expect(Idioma(nombre: "húngaro") == .hungaro)
+        #expect(Idioma.hungaro.nombrePropio == "Magyar")
+        // Los textos.
+        #expect(Intervalo.terceraMayor.nombre(en: .hungaro) == "nagy terc")
+        #expect(Intervalo("P5").nombre(en: .hungaro) == "tiszta kvint")
+        #expect(Intervalo("-m6").nombre(en: .hungaro) == "lefelé kis szext")
+        #expect(Acorde("Sol7").nombre(en: .hungaro) == "G domináns szeptimakkord, alaphelyzet")
+        #expect(Tonalidad(.do).analizar(["Do", "Fa", "Sol7", "Do"]).nombre(en: .hungaro) == "I–IV–V7–I C-dúrban")
+        // Con un número, el nombre va en singular.
+        #expect(Idioma.hungaro.contar(5, "félhang") == "5 félhang")
+        #expect(throws: (any Error).self) { try Nota(leyendo: "Xisz", en: .hungaroCompacto) }
+    }
+
+    /// El artículo húngaro: «az» ante vocal o ante 1, 5, 1000…; «a» si no.
+    @Test func articuloHungaro() {
+        #expect("alt".conArticuloHungaro == "az alt")
+        #expect("basszus".conArticuloHungaro == "a basszus")
+        #expect("5. szólam".conArticuloHungaro == "az 5. szólam")
+        #expect("1. szólam".conArticuloHungaro == "az 1. szólam")
+        #expect("10. szólam".conArticuloHungaro == "a 10. szólam")
+        #expect("3. szólam".conArticuloHungaro == "a 3. szólam")
+        #expect("Esz".conArticuloHungaro == "az Esz")
     }
 
     @Test func francesEItaliano() throws {

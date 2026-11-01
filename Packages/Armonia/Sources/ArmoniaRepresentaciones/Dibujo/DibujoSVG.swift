@@ -74,7 +74,7 @@ package enum DibujoSVG {
         package static let primera = "#f39c12"
     }
 
-    /// Los textos de la leyenda, en los catorce idiomas de los textos (`Traduccion`).
+    /// Los textos de la leyenda, en los quince idiomas de los textos (`Traduccion`).
     package enum Texto {
         case nota, claseDeAltura, altura, intervalos, contorno, triadaMayor, triadaMenor, pasoDelRecorrido
         case fundamentalDelPrimerAcorde

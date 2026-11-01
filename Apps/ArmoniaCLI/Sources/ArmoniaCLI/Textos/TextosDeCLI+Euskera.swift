@@ -99,7 +99,7 @@ extension TextosDeCLI {
         cabeceraDeLaAyuda: """
         armonia: musika-teoria komando-lerrotik.
 
-        Erabilera: armonia <agindua> <argumentuak> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru]
+        Erabilera: armonia <agindua> <argumentuak> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
 
         Aginduak (aginduak eta aukerak gaztelaniaz edo ingelesez idazten dira):
         """,
@@ -203,7 +203,7 @@ extension TextosDeCLI {
         pruebaLaAyuda: "Probatu «armonia ayuda».",
         ordenDesconocida: { orden in "agindu ezezaguna: «\(orden)»" },
         opcionDesconocida: { opcion in "aukera ezezaguna: «\(opcion)»" },
-        idiomaDesconocido: { idioma in "hizkuntza ezezaguna: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el edo ru)" },
+        idiomaDesconocido: { idioma in "hizkuntza ezezaguna: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru edo hu)" },
         terminalDesconocida: { t in "terminal ezezaguna: «\(t)» (bash, zsh edo fish)" },
         escrituraNoValida: { escritura in "idazkera baliogabea: «\(escritura)» (palabras/words, ascii edo unicode; es eta en-ekin bakarrik)" },
 

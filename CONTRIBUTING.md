@@ -37,7 +37,7 @@ cd Packages/ArmoniaUI && swift test      # la interfaz (en Linux, solo la parte 
 - **Dependencias en orden.** Un paquete solo depende de los que tiene debajo, nunca de una app. Si añades un
   módulo o un paquete, sigue el apartado «Añadir un paquete o una app» del README:
   `Scripts/comprobaciones/comprobar_dependencias.py` comprueba que el `Package.swift` de la raíz coincide con los de `Packages/`.
-- **Textos traducidos.** Un texto nuevo de la interfaz o del motor va en los catorce idiomas.
+- **Textos traducidos.** Un texto nuevo de la interfaz o del motor va en los quince idiomas.
   `Scripts/comprobaciones/comprobar_traducciones.py` avisa de los que faltan.
 - **Documentación.** La API pública lleva comentario de documentación. Los enlaces de DocC (``Tipo/miembro`` y
   `<doc:Articulo>`) tienen que apuntar a algo que exista, y los ejemplos de código de los artículos se prueban:

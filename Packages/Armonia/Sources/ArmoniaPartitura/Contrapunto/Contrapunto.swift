@@ -380,7 +380,7 @@ public struct Contrapunto: Hashable, Sendable {
 
 // MARK: - Idiomas
 //
-// Los textos del contrapunto de especies en los catorce idiomas de los textos (`Traduccion`).
+// Los textos del contrapunto de especies en los quince idiomas de los textos (`Traduccion`).
 
 extension FaltaDeContrapunto {
     /// "Quintas paralelas (compases 3 → 4)", "Parallel fifths (bars 3 → 4)". Los compases se cuentan desde 1.

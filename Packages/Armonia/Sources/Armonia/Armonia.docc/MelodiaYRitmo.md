@@ -244,7 +244,7 @@ pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca]   // t
   analizada lo aceptan con `duraciones:` (`musicXML(duraciones:)`, `mei(duraciones:)` y
   `midi(duraciones:)`), y `Voz(arpegiando:duraciones:)` la arpegia con ese ritmo.
 - Todavía no se leen las repeticiones ni los saltos. Del .mxl se lee la partitura que señala
-  `META-INF/container.xml`. Los errores son `ErrorDeImportacion`, con su explicación en los catorce
+  `META-INF/container.xml`. Los errores son `ErrorDeImportacion`, con su explicación en los quince
   idiomas.
 - Desde la terminal: `armonia analizar --archivo coral.mid` (o `.musicxml`, o `.mxl`), y
   `armonia musicxml acordes --archivo coral.mid` para la progresión con su ritmo armónico (también

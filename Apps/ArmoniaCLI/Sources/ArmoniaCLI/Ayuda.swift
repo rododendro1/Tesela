@@ -2,9 +2,9 @@ import Armonia
 
 // MARK: - La ayuda
 //
-// La ayuda de `armonia` en los catorce idiomas de los textos, montada a partir de una tabla de órdenes:
+// La ayuda de `armonia` en los quince idiomas de los textos, montada a partir de una tabla de órdenes:
 // cada orden tiene su sintaxis, su descripción, un ejemplo y, si hace falta, unas notas, cada cosa
-// en los catorce idiomas (`Traduccion` no compila si falta alguno). Las columnas se calculan: la
+// en los quince idiomas (`Traduccion` no compila si falta alguno). Las columnas se calculan: la
 // sintaxis va en la columna 2, la descripción en la 31 y el ejemplo en la 69. Una sintaxis que no
 // cabe en su columna deja la descripción en la línea siguiente, y un ejemplo que no cabe al final
 // de la descripción va en una línea propia.
@@ -66,12 +66,12 @@ extension LineaDeComandos {
 
     /// Un ejemplo: con los nombres españoles de las órdenes y las notas en español, catalán, gallego,
     /// asturiano, aragonés, euskera, portugués, francés, occitano y italiano, y con los ingleses en
-    /// inglés, alemán, griego y ruso.
+    /// inglés, alemán, griego, ruso y húngaro.
     static func ejemplo(_ espanol: String, _ ingles: String) -> Traduccion {
         Traduccion(
             espanol, ingles, ca: espanol, gl: espanol, ast: espanol, an: espanol, eu: espanol, pt: espanol,
             fr: espanol, oc: espanol, it: espanol, de: ingles,
-            el: ingles, ru: ingles)
+            el: ingles, ru: ingles, hu: ingles)
     }
 
     /// Lo que va antes de las órdenes: qué es, cómo se usa y el título de la lista.

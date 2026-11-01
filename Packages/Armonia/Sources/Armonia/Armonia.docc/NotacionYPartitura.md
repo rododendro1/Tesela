@@ -94,7 +94,7 @@ Tonalidad("ля минор")                               // La menor
 - Los textos del motor (mensajes de error, intervalos, calidades, papeles en el acorde, grados,
   claves, figuras, cadencias y faltas de conducción) están en español, inglés, catalán, gallego,
   asturiano, aragonés, euskera, portugués, francés, occitano, italiano, alemán, griego y ruso. Es lo que indica
-  `notacion.textos`, y cada texto es una `Traduccion` con los catorce idiomas.
+  `notacion.textos`, y cada texto es una `Traduccion` con los quince idiomas.
 - Los nombres de los catálogos (tipos de acorde y de escala, instrumentos) siguen el mismo
   `textos`. Los nombres tradicionales de escala (raga, maqam, pentatónicas japonesas…)
   se escriben igual en todos los idiomas, y una escala se lee también con su nombre en catalán,

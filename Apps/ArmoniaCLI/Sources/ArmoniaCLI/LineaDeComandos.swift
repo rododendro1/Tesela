@@ -44,6 +44,8 @@ public enum LineaDeComandos {
     public static let ajudaEnOccitan = textoDeAyuda(en: .occitano)
     /// La ayuda en ruso (`armonia ayuda --idioma ru`).
     public static let spravka = textoDeAyuda(en: .ruso)
+    /// La ayuda en húngaro (`armonia ayuda --idioma hu`).
+    public static let sugo = textoDeAyuda(en: .hungaro)
     /// La ayuda en griego (`armonia ayuda --idioma el`).
     public static let voitheia = textoDeAyuda(en: .griego)
     /// La ayuda en aragonés (`armonia ayuda --idioma an`).
@@ -144,7 +146,7 @@ public enum LineaDeComandos {
         uniqueKeysWithValues: Idioma.allCases.map { ($0, textoDeAyuda(en: $0)) })
 
     /// La escritura de `--escritura` en español o inglés: palabras (o words), ascii o compacto (compact o
-    /// unicode); en alemán, palabras o compacto. `nil` en los demás idiomas, que tienen una sola.
+    /// unicode); en alemán y en húngaro, palabras o compacto. `nil` en los demás idiomas, que tienen una sola.
     static func escritura(_ texto: String, en idioma: Idioma) -> EscrituraDeNotas? {
         let compacto = ["compacto", "compact", "unicode"]
         switch (idioma, texto.lowercased()) {
@@ -156,11 +158,13 @@ public enum LineaDeComandos {
         case (.ingles, let t) where compacto.contains(t): return .inglesCompacto
         case (.aleman, "palabras"), (.aleman, "words"), (.aleman, "worte"): return .aleman
         case (.aleman, let t) where compacto.contains(t) || t == "kompakt": return .alemanCompacto
+        case (.hungaro, "palabras"), (.hungaro, "words"), (.hungaro, "szavak"): return .hungaro
+        case (.hungaro, let t) where compacto.contains(t) || t == "tomor": return .hungaroCompacto
         default: return nil
         }
     }
 
-    /// La notación de `--idioma`: es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el o ru, o el nombre del idioma.
+    /// La notación de `--idioma`: es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu, o el nombre del idioma.
     static func notacionDelIdioma(_ texto: String) -> Notacion? {
         Idioma(nombre: texto).map(Notacion.delIdioma)
     }

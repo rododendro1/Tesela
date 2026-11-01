@@ -13,7 +13,8 @@ import Testing
             ["uno", "dos"], ["one", "two"], ca: ["un", "dos"], gl: ["un", "dous"],
             ast: ["un", "dos"], an: ["un", "dos"], eu: ["bat", "bi"],
             pt: ["um", "dois"], fr: ["un", "deux"], oc: ["un", "dos"],
-            it: ["uno", "due"], de: ["eins", "zwei"], el: ["ένα", "δύο"], ru: ["один", "два"])
+            it: ["uno", "due"], de: ["eins", "zwei"], el: ["ένα", "δύο"], ru: ["один", "два"],
+            hu: ["egy", "kettő"])
         #expect(numeros.en(.aleman)[1] == "zwei")
         #expect(numeros.texto(en: .griego) == ["ένα", "δύο"])
         #expect(numeros.map(\.count).en(.ruso) == 2)
@@ -174,8 +175,13 @@ import Testing
         #expect(Alteracion(3).nombre(en: .gallego) == "triplo sostido")
         // Las tipografías de cada escritura.
         #expect(
-            EscrituraDeNotas.allCases.filter(\.usaASCII) == [.espanolASCII, .inglesASCII, .aleman, .alemanCompacto])
-        #expect(EscrituraDeNotas.allCases.filter(\.esCompacta) == [.espanolCompacto, .inglesCompacto, .alemanCompacto])
+            EscrituraDeNotas.allCases.filter(\.usaASCII) == [
+                .espanolASCII, .inglesASCII, .aleman, .alemanCompacto, .hungaro, .hungaroCompacto,
+            ])
+        #expect(
+            EscrituraDeNotas.allCases.filter(\.esCompacta) == [
+                .espanolCompacto, .inglesCompacto, .alemanCompacto, .hungaroCompacto,
+            ])
         for escritura in EscrituraDeNotas.allCases {
             #expect(escritura.usaASCII == (escritura.tipografia == .ascii))
         }

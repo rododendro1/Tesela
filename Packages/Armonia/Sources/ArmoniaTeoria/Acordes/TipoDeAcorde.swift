@@ -179,7 +179,7 @@ public struct TipoDeAcorde: Sendable {
         .mayorNovenaAnadida, .dominanteUndecima, .menorSeptimaUndecima, .dominanteDecimotercera,
     ]
 
-    /// Nombres en los catorce idiomas de los textos (`Traduccion`) de los tipos habituales, indexados
+    /// Nombres en los quince idiomas de los textos (`Traduccion`) de los tipos habituales, indexados
     /// por su conjunto de quintas.
     /// Se construye sin crear `TipoDeAcorde` para no depender de otras constantes estáticas.
     package static let nombresConocidos: [Set<Int>: Traduccion] = {

@@ -164,7 +164,7 @@ extension Escala {
 
 // MARK: - Idiomas
 //
-// Nombres de las correspondencias de colores en los catorce idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
+// Nombres de las correspondencias de colores en los quince idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
 
 // MARK: - CorrespondenciaDeColores
 

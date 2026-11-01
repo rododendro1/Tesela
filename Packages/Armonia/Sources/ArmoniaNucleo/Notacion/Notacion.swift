@@ -25,8 +25,10 @@
 /// | `.alemanCompacto` | Fis | große Terz | Dominantseptakkord | Fis dorisch |
 /// | `.griego` | φα δίεση | μεγάλη τρίτη | συγχορδία έβδομης δεσπόζουσας | φα δίεση δώριος |
 /// | `.ruso` | фа-диез | большая терция | доминантсептаккорд | фа-диез дорийский |
+/// | `.hungaro` | F kereszt | nagy terc | domináns szeptimakkord | F kereszt dór |
+/// | `.hungaroCompacto` | Fisz | nagy terc | domináns szeptimakkord | Fisz dór |
 ///
-/// En los catorce idiomas están traducidos los nombres de nota y de alteración, los modos de las
+/// En los quince idiomas están traducidos los nombres de nota y de alteración, los modos de las
 /// tonalidades (Fis-Dur, fa dièse majeur, фа-диез мажор), los textos del motor (mensajes de error,
 /// intervalos, cadencias…) y los nombres de los catálogos (acordes, escalas, instrumentos).
 ///
@@ -95,14 +97,20 @@ public struct Notacion: Hashable, Sendable, CaseIterable {
     public static let griego = Notacion(escritura: .griego)
     /// Ruso: до, ре, фа-диез, си-бемоль; en los cifrados, Фа♯7, Си♭m.
     public static let ruso = Notacion(escritura: .ruso)
+    /// Húngaro con las alteraciones en palabras: C, F kereszt, H bé, E kettős bé; en los cifrados y las
+    /// tonalidades, a la alemana (Fisz7, B7, Fisz-dúr).
+    public static let hungaro = Notacion(escritura: .hungaro)
+    /// Húngaro compacto, como el alemán con «isz» y «esz» y la octava en subíndice: C, Fisz, Esz, B (= Si♭),
+    /// H (= Si), Heszesz; A₄. Los cifrados quedan Fisz7, B7, Hm7.
+    public static let hungaroCompacto = Notacion(escritura: .hungaroCompacto)
 
     /// Las notaciones con nombre, una por escritura, con los textos en el idioma de sus notas. No incluye
     /// las combinadas (`conTextos(en:)`), que también son notaciones válidas.
     public static let allCases: [Notacion] = EscrituraDeNotas.allCases.map { Notacion(escritura: $0) }
 
     /// La notación habitual de un idioma: con ♯ y ♭ en español (`.espanolCompacto`), con # y b en inglés
-    /// (`.inglesASCII`) y con Fis y Es en alemán (`.alemanCompacto`), que es como se suelen escribir; en los
-    /// demás, la única que hay. `Notacion.delIdioma(.catalan)` es `.catalan`.
+    /// (`.inglesASCII`) y con Fis y Es en alemán (`.alemanCompacto`) o Fisz en húngaro (`.hungaroCompacto`), que es
+    /// como se suelen escribir; en los demás, la única que hay. `Notacion.delIdioma(.catalan)` es `.catalan`.
     public static func delIdioma(_ idioma: Idioma) -> Notacion {
         Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: idioma == .ingles))
     }
@@ -181,9 +189,9 @@ public enum EscrituraDeLaOctava: Hashable, Sendable, CaseIterable {
 /// Cómo se escriben los nombres de nota en una `Notacion`: el idioma y, en español, inglés y alemán, si las
 /// alteraciones van en palabras o de forma compacta (con #/b o con ♯/♭ en español e inglés; Fis en alemán).
 ///
-/// No es una lista de casos, sino el idioma y su variante: las diecinueve escrituras con nombre
-/// (`.espanolCompacto`, `.ruso`…) salen de los catorce idiomas, con tres formas en español y en inglés
-/// (palabras, ASCII y compacta), dos en alemán (palabras y compacta) y una en los demás. Añadir un idioma es añadir su caso a ``Idioma`` y su fila a ``ReglasDeIdioma``; aquí no
+/// No es una lista de casos, sino el idioma y su variante: las veintiuna escrituras con nombre
+/// (`.espanolCompacto`, `.ruso`…) salen de los quince idiomas, con tres formas en español y en inglés
+/// (palabras, ASCII y compacta), dos en alemán y en húngaro (palabras y compacta) y una en los demás. Añadir un idioma es añadir su caso a ``Idioma`` y su fila a ``ReglasDeIdioma``; aquí no
 /// hay nada que tocar. `allCases` las recorre en el orden de `Idioma`.
 public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     /// El idioma de los nombres de nota.
@@ -239,9 +247,13 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     public static let griego = EscrituraDeNotas(.griego)
     /// до, ре, фа-диез, си-бемоль.
     public static let ruso = EscrituraDeNotas(.ruso)
+    /// C, F kereszt, E bé, H bé, H.
+    public static let hungaro = EscrituraDeNotas(.hungaro, conPalabras: true)
+    /// C, Fisz, Esz, B, H.
+    public static let hungaroCompacto = EscrituraDeNotas(.hungaro)
 
-    /// Las escrituras de los catorce idiomas: tres en los que tienen variantes de signos (palabras, ASCII y
-    /// compacta), dos en alemán (palabras y compacta) y una en los demás.
+    /// Las escrituras de los quince idiomas: tres en los que tienen variantes de signos (palabras, ASCII y
+    /// compacta), dos en alemán y en húngaro (palabras y compacta) y una en los demás.
     public static let allCases: [EscrituraDeNotas] = Idioma.allCases.flatMap { idioma in
         switch idioma.reglas.alteraciones {
         case .signos:
@@ -322,15 +334,16 @@ public enum Idioma: String, Hashable, Sendable, CaseIterable {
     case aleman
     case griego
     case ruso
+    case hungaro
 }
 
 extension Idioma {
     /// El código ISO 639 del idioma: «es», «en», «ca», «gl», «ast», «an», «eu», «pt», «fr», «oc», «it», «de»,
-    /// «el» y «ru». Está en sus ``ReglasDeIdioma``.
+    /// «el», «ru» y «hu». Está en sus ``ReglasDeIdioma``.
     public var codigo: String { reglas.codigo }
 
     /// El idioma de un código ISO 639 («ast») o de una etiqueta de idioma con región («ca-ES», «pt_BR»), sin
-    /// importar las mayúsculas; `nil` si no es uno de los catorce.
+    /// importar las mayúsculas; `nil` si no es uno de los quince.
     public init?(codigo: String) {
         let idioma = codigo.lowercased().split(whereSeparator: { $0 == "-" || $0 == "_" }).first.map(String.init)
         guard let encontrado = Idioma.allCases.first(where: { $0.codigo == idioma }) else { return nil }
@@ -346,7 +359,7 @@ extension Idioma {
 
     /// El idioma de un código (como `init?(codigo:)`: «eu», «pt-BR») o de uno de sus `nombres` («euskara»,
     /// «Deutsch»), sin importar las mayúsculas ni las tildes («aleman», «FRANCAIS», «ελληνικα»); `nil` si no es uno
-    /// de los catorce.
+    /// de los quince.
     public init?(nombre: String) {
         if let idioma = Idioma(codigo: nombre) {
             self = idioma
