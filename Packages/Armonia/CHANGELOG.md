@@ -2,6 +2,24 @@
 
 ## Sin publicar
 
+### Análisis armónico ampliado
+
+- **Sustituto tritonal** (`AcordeAnalizado.Categoria.sustitutoTritonal(de:)`): una séptima de dominante medio tono
+  por encima de su destino, cuando resuelve en él, se cifra «subV7» (o «subV7/ii»), con función de dominante y la
+  escala lidia dominante. La♭7–Sol sigue siendo la sexta aumentada alemana.
+- **I64 cadencial** (`AcordeAnalizado.Categoria.cuartaYSextaCadencial`): la tónica en segunda inversión que va a la
+  dominante sobre el mismo bajo sigue cifrándose «I64», pero tiene función de dominante.
+- **Semicadencia frigia** (`Cadencia.esFrigia`, del iv6 al V) y **plagal menor** (`Cadencia.esPlagalMenor`, del iv
+  prestado al I mayor). `Cadencia.nombre(en:)` y `description` las nombran así en los quince idiomas.
+
+### Bajo cifrado
+
+- **`Tonalidad.acorde(sobre:cifras:)`** lee las cifras del bajo continuo sobre una nota del bajo, contando los
+  intervalos en la armadura (abreviaturas «6», «64», «7», «65», «43», «42», «4», «9»; alteraciones delante o detrás
+  de una cifra, o solas para la tercera).
+- **`Tonalidad.acordes(bajoCifrado:)`** lee una línea («La Fa:6 Mi:# La») y
+  **`Coral.realizar(bajoCifrado:en:soprano:)`** la realiza a cuatro voces.
+
 ### Notas extrañas a la armonía
 
 - **`NotaDeLaMelodia.analizar(_:sobre:partesFuertes:)`** mira cada nota de una melodía con el acorde que suena con

@@ -105,6 +105,8 @@ extension TextosDeTeoria {
         cadenciaPlagal: "cadència plagal",
         cadenciaRota: "cadència trencada",
         semicadencia: "semicadència",
+        semicadenciaFrigia: "semicadència frígia",
+        cadenciaPlagalMenor: "cadència plagal menor",
 
         // RecorridoTonal.swift
         deUnaTonalidadAOtra: { de, a, n in "De \(de) a \(a) a l'acord \(n)" },

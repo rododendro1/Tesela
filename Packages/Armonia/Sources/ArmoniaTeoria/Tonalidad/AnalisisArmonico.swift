@@ -59,6 +59,13 @@ public struct AcordeAnalizado: Hashable, Sendable, CustomStringConvertible {
         case dominanteSecundaria(de: Int)
         /// Acorde de sensible (vii°, vii°7, viiø7) de otro grado: vii°7/V.
         case sensibleSecundaria(de: Int)
+        /// Sustituto tritonal de la dominante de un grado: la séptima de dominante medio tono por encima de su
+        /// destino, a la que resuelve (Re♭7–Do es subV7; La♭7–Sol, en cambio, se lee como sexta aumentada alemana).
+        /// El grado es el de destino, y puede ser la tónica.
+        case sustitutoTritonal(de: Int)
+        /// El I64 (o i64) cadencial: la tónica en segunda inversión sobre el bajo de la dominante, que va a la
+        /// dominante y tiene su función (la cuarta y la sexta resuelven en la tercera y la quinta del V).
+        case cuartaYSextaCadencial
         /// Sexta napolitana: el acorde mayor sobre el 2.º grado rebajado (♭II).
         case napolitana
         /// Sexta aumentada italiana, francesa o alemana: ♭6̂ y ♯4̂ con la tónica (It+6, Fr+6, Ger+6).
@@ -182,8 +189,9 @@ public struct AnalisisArmonico: Hashable, Sendable, CustomStringConvertible {
     package static func coste(de analizado: AcordeAnalizado, siguiente: AcordeAnalizado?) -> Double {
         switch analizado.categoria {
         case .diatonico: return 0
-        case .dominanteSecundaria(let destino), .sensibleSecundaria(let destino):
+        case .dominanteSecundaria(let destino), .sensibleSecundaria(let destino), .sustitutoTritonal(let destino):
             return siguiente?.grado == destino ? 0.25 : 0.75
+        case .cuartaYSextaCadencial: return 0
         case .napolitana, .sextaAumentada, .prestamo: return 0.5
         case .cromatico: return 1.5
         }
@@ -228,9 +236,13 @@ extension Tonalidad {
             AcordeAnalizado(acorde: acorde, grado: grado, cifrado: cifrado, funcion: funcion, categoria: categoria)
         }
 
-        // Diatónico.
+        // Diatónico (el I64 que va a la dominante, con su función).
         if acorde.notas.allSatisfy(propias.contains) {
-            return analizado(numeral(acorde, grado: grado) + sufijo(acorde), FuncionTonal(grado: grado), .diatonico)
+            let cifrado = numeral(acorde, grado: grado) + sufijo(acorde)
+            if esCuartaYSextaCadencial(acorde, grado: grado, siguiente: siguiente) {
+                return analizado(cifrado, .dominante, .cuartaYSextaCadencial)
+            }
+            return analizado(cifrado, FuncionTonal(grado: grado), .diatonico)
         }
 
         // Sexta aumentada, antes que cualquier lectura por su fundamental.
@@ -242,6 +254,12 @@ extension Tonalidad {
         let secundaria = secundariaDe(acorde)
         if let secundaria, gradoDe(siguiente?.fundamental) == secundaria.destino {
             return analizado(secundaria.cifrado, .dominante, secundaria.categoria)
+        }
+
+        // Sustituto tritonal: una séptima de dominante que baja medio tono a su destino.
+        if let destino = sustitutoTritonalDe(acorde, siguiente: siguiente) {
+            let cifrado = "subV" + sufijo(acorde) + (destino == 1 ? "" : "/" + cifradoRomano(grado: destino))
+            return analizado(cifrado, .dominante, .sustitutoTritonal(de: destino))
         }
 
         // Sexta napolitana: ♭II mayor.
@@ -318,6 +336,32 @@ extension Tonalidad {
             let siguiente, siguiente.fundamental == dominante || siguiente.bajo == dominante
         else { return nil }
         return "Ger+6"
+    }
+
+    /// Si el acorde es la tónica en segunda inversión (tríada mayor o menor con la quinta en el bajo) y el
+    /// siguiente es la dominante mayor sobre el mismo bajo: el I64 cadencial.
+    private func esCuartaYSextaCadencial(_ acorde: Acorde, grado: Int, siguiente: Acorde?) -> Bool {
+        guard grado == 1, acorde.inversion == 2, acorde.tipo.esMayor || acorde.tipo.esMenor,
+            let siguiente, siguiente.fundamental == tonica + .quintaJusta, siguiente.bajo == acorde.bajo
+        else { return false }
+        return siguiente.tipo.estructura.calidadDeTriada == .mayor
+    }
+
+    /// El grado al que resuelve una séptima de dominante (tríada mayor con séptima menor) que baja medio tono a
+    /// su fundamental, si es un grado de la tonalidad con acorde mayor o menor y el siguiente acorde está sobre
+    /// él.
+    private func sustitutoTritonalDe(_ acorde: Acorde, siguiente: Acorde?) -> Int? {
+        let estructura = acorde.tipo.estructura
+        guard estructura.calidadDeTriada == .mayor, estructura.septima == .septimaMenor,
+            let siguiente, siguiente.fundamental == acorde.fundamental + .septimaMayor,
+            notasPropias.contains(siguiente.fundamental)
+        else { return nil }
+        let grado = gradoDe(siguiente.fundamental)
+        let acordeDestino = self.acorde(grado: grado)
+        guard acordeDestino.fundamental == siguiente.fundamental,
+            acordeDestino.tipo.estructura.calidadDeTriada != .disminuida
+        else { return nil }
+        return grado
     }
 
     /// Si el acorde es la dominante (V, V7) o el acorde de sensible (vii°, vii°7, viiø7) de un

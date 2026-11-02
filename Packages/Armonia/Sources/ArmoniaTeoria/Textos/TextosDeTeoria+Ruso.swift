@@ -105,6 +105,8 @@ extension TextosDeTeoria {
         cadenciaPlagal: "плагальный каданс",
         cadenciaRota: "прерванный каданс",
         semicadencia: "половинный каданс",
+        semicadenciaFrigia: "фригийский половинный каданс",
+        cadenciaPlagalMenor: "минорный плагальный каданс",
 
         // RecorridoTonal.swift
         deUnaTonalidadAOtra: { de, a, n in "\(de) → \(a), аккорд \(n)" },

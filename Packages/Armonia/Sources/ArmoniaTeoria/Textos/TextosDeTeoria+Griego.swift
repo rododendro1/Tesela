@@ -105,6 +105,8 @@ extension TextosDeTeoria {
         cadenciaPlagal: "πλάγια πτώση",
         cadenciaRota: "απατηλή πτώση",
         semicadencia: "ατελής πτώση",
+        semicadenciaFrigia: "φρυγική ατελής πτώση",
+        cadenciaPlagalMenor: "ελάσσονα πλάγια πτώση",
 
         // RecorridoTonal.swift
         deUnaTonalidadAOtra: { de, a, n in "Από \(de) σε \(a) στη συγχορδία \(n)" },

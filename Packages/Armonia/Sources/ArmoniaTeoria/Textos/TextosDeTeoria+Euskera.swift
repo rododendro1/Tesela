@@ -106,6 +106,8 @@ extension TextosDeTeoria {
         cadenciaPlagal: "kadentzia plagala",
         cadenciaRota: "kadentzia hautsia",
         semicadencia: "erdi-kadentzia",
+        semicadenciaFrigia: "erdi-kadentzia frigiarra",
+        cadenciaPlagalMenor: "kadentzia plagal minorra",
 
         // RecorridoTonal.swift
         // Con el ablativo y el adlativo: "Do maiorretik sol maiorrera, 5. akordean".
