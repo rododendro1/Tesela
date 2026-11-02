@@ -124,6 +124,8 @@ extension TextosDeTeoria {
         papelTensionDisponible: "tension",
         papelNotaAEvitar: "avoid note",
         modoDe: { modo, escala in "mode \(modo) of \(escala)" },
+        // NotaExtrana.swift
+        nombresDeNotasExtranas: ["passing tone", "neighbor tone", "appoggiatura", "suspension", "anticipation", "escape tone", "pedal tone", "free tone"],
         // Rearmonizacion.swift
         sustitutoTritonal: "tritone substitution",
         dominanteSecundaria: "secondary dominant",

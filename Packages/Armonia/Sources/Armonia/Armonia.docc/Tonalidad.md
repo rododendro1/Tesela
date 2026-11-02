@@ -285,6 +285,26 @@ armonizada.coral.voz(3)               // [Mi4, Fa4, Re4, Do4]
 armonizada.coral.esCorrecta           // true
 ```
 
+## Notas extrañas a la armonía
+
+`NotaDeLaMelodia.analizar(_:sobre:partesFuertes:)` mira cada nota de una melodía con el acorde
+que suena con ella (uno por nota; si un acorde dura varias, se repite) y, si no es del acorde,
+dice qué nota extraña es (`NotaExtrana`) por cómo se llega a ella y cómo se sale: de paso
+(grado conjunto en el mismo sentido), bordadura (grado conjunto de ida y vuelta), apoyatura
+(salto y grado conjunto), escapada (grado conjunto y salto), anticipación (la nota del acorde
+siguiente antes de tiempo), retardo (la nota del acorde anterior que se mantiene y resuelve
+por grado conjunto, con sus cifras sobre el bajo), pedal (la que se repite mientras cambian los
+acordes) o libre (ninguna de las anteriores).
+
+```swift
+let melodia: [Altura] = ["Mi5", "Re5", "Do5", "Do5", "Si4", "Do5"]
+let notas = NotaDeLaMelodia.analizar(melodia, sobre: ["Do", "Do", "Fa", "Sol", "Sol", "Do"])!
+notas[1].description           // "Re5 (nota de paso)"
+notas[3].description           // "Do5 (retardo 4-3)"
+notas.notasExtranas.map(\.indice)   // [1, 3]
+NotaExtrana.apoyatura.nombre(en: .inglesASCII)   // "appoggiatura"
+```
+
 ## Contrapunto de especies
 
 `Contrapunto` comprueba un ejercicio de contrapunto a dos voces como los del *Gradus ad

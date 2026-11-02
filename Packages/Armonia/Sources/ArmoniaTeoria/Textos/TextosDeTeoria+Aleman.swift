@@ -123,6 +123,8 @@ extension TextosDeTeoria {
         papelTensionDisponible: "Spannungston",
         papelNotaAEvitar: "Avoid-Ton",
         modoDe: { modo, escala in "\(modo). Modus von \(escala)" },
+        // NotaExtrana.swift
+        nombresDeNotasExtranas: ["Durchgangston", "Wechselnote", "freier Vorhalt", "Vorhalt", "Antizipation", "Echappée", "Orgelpunkt", "freie Dissonanz"],
         // Rearmonizacion.swift
         sustitutoTritonal: "Tritonussubstitution",
         dominanteSecundaria: "Zwischendominante",

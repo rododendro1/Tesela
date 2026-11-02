@@ -124,6 +124,8 @@ extension TextosDeTeoria {
         papelTensionDisponible: "feszültség",
         papelNotaAEvitar: "kerülendő hang",
         modoDe: { modo, escala in "\(escala) \(modo). módusza" },
+        // NotaExtrana.swift
+        nombresDeNotasExtranas: ["átmenőhang", "váltóhang", "appoggiatura", "késleltetés", "anticipáció", "szökőhang", "orgonapont", "szabad hang"],
         // Rearmonizacion.swift
         sustitutoTritonal: "tritónuszhelyettesítés",
         dominanteSecundaria: "mellékdomináns",

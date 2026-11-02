@@ -131,6 +131,11 @@ struct TextosDeTeoria: TextosTraducidos {
     /// Una escala como modo de otra: «modo 2 de Do mayor», «mode 2 of C major».
     let modoDe: @Sendable (_ modo: Int, _ escala: String) -> String
 
+    // MARK: NotaExtrana.swift
+    /// En el orden de `NotaExtrana.allCases`: nota de paso, bordadura, apoyatura, retardo, anticipación, escapada,
+    /// pedal y libre.
+    let nombresDeNotasExtranas: [String]
+
     // MARK: Rearmonizacion.swift
     let sustitutoTritonal: String
     let dominanteSecundaria: String

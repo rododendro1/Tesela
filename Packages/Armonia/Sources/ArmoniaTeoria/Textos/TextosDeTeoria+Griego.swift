@@ -123,6 +123,8 @@ extension TextosDeTeoria {
         papelTensionDisponible: "ένταση",
         papelNotaAEvitar: "φθόγγος προς αποφυγή",
         modoDe: { modo, escala in "τρόπος \(modo) της κλίμακας \(escala)" },
+        // NotaExtrana.swift
+        nombresDeNotasExtranas: ["διαβατική νότα", "γειτονική νότα", "αποτζιατούρα", "καθυστέρηση", "πρόληψη", "νότα διαφυγής", "νότα πεντάλ", "ελεύθερη νότα"],
         // Rearmonizacion.swift
         sustitutoTritonal: "τριτονική υποκατάσταση",
         dominanteSecundaria: "δευτερεύουσα δεσπόζουσα",

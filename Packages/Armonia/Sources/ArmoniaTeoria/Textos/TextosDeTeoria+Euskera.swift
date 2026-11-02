@@ -127,6 +127,8 @@ extension TextosDeTeoria {
         papelTensionDisponible: "tentsioa",
         papelNotaAEvitar: "saihesteko nota",
         modoDe: { modo, escala in "\(escala): \(modo). modua" },
+        // NotaExtrana.swift
+        nombresDeNotasExtranas: ["igarotze-nota", "brodadura", "apoiatura", "atzerapena", "aurrerapena", "ihes-nota", "pedal-nota", "nota askea"],
         // Rearmonizacion.swift
         sustitutoTritonal: "tritono-ordezkapena",
         dominanteSecundaria: "bigarren mailako dominantea",
