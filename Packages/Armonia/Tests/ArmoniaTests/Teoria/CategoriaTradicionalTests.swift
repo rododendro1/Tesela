@@ -61,7 +61,7 @@ import Testing
         #expect(TipoDeEscala.rastMakami == TipoDeEscala.rast)
         #expect(TipoDeEscala.rast.categoria == .dromos)
         #expect(TipoDeEscala.maqamRast.categoria == .maqam)
-        // Un mēḷakarta y un janya son rāgas; un thāṭ, no.
+        // Un mēḷa y un janya son rāgas; un thāṭ, no.
         #expect(TipoDeEscala.melakarta(15)?.esRaga ?? false)
         let janyas = TipoDeEscala.janyas.allSatisfy(\.esRaga)
         let ragas = TipoDeEscala.ragasIndostanicos.allSatisfy(\.esRaga)
@@ -84,7 +84,7 @@ import Testing
         let griego = Notacion.espanolCompacto.conTextos(en: .griego)
         let frances = Notacion.espanolCompacto.conTextos(en: .frances)
         #expect(CategoriaTradicional.raga.nombre == "rāga")
-        #expect(CategoriaTradicional.melakarta.nombre == "mēḷakarta")
+        #expect(CategoriaTradicional.melakarta.nombre == "mēḷa")
         #expect(CategoriaTradicional.thaat.nombre == "thāṭ")
         #expect(CategoriaTradicional.raga.nombre(en: ruso) == "рага")
         #expect(CategoriaTradicional.dromos.nombre(en: griego) == "δρόμος")
@@ -117,7 +117,7 @@ import Testing
         #expect(igual.categoria == .thaat)
     }
 
-    /// El padre de un janya es un mēḷakarta que contiene todas sus notas; Revati no tiene uno único.
+    /// El padre de un janya es un mēḷa que contiene todas sus notas; Revati no tiene uno único.
     @Test func elPadreDeUnJanyaEsUnMelakartaCompatible() {
         #expect(TipoDeEscala.mohanam.padre?.numeroDeMelakarta == 28)
         #expect(TipoDeEscala.hindolam.padre?.nombre == "Naṭabhairavī")

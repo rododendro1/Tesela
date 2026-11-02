@@ -1,9 +1,9 @@
 import ArmoniaNucleo
 
 extension TipoDeEscala {
-    // MARK: Mēḷakarta (música carnática)
+    // MARK: Mēḷa (música carnática)
 
-    /// Nombres de los 72 mēḷakarta, en orden, transliterados según el AITS (IAST).
+    /// Nombres de los 72 mēḷa, en orden, transliterados según el AITS (IAST).
     package static let nombresDeMelakarta = [
         "Kanakāṅgī", "Ratnāṅgī", "Gānamūrti", "Vanaspati", "Mānavatī", "Tānarūpī",
         "Senāvatī", "Hanumattoḍī", "Dhenukā", "Nāṭakapriyā", "Kokilapriyā", "Rūpavatī",
@@ -51,7 +51,7 @@ extension TipoDeEscala {
         "सुचरित्र", "ज्योतिस्वरूपिणी", "धातुवर्धनी", "नासिकाभूषणी", "कोसलम्", "रसिकप्रिया",
     ]
 
-    /// Los 72 mēḷakarta, en orden. Cada uno tiene Sa y Pa (unísono y 5ª justa), un Ma (4ª justa
+    /// Los 72 mēḷa, en orden. Cada uno tiene Sa y Pa (unísono y 5ª justa), un Ma (4ª justa
     /// en los 36 primeros, aumentada en los 36 últimos) y una de las seis parejas Ri–Ga y Dha–Ni.
     /// Ri3 se escribe como 2ª aumentada, Ga1 como 3ª disminuida, Dha3 como 6ª aumentada y Ni1
     /// como 7ª disminuida, que es como los nombra la tradición.
@@ -85,12 +85,12 @@ extension TipoDeEscala {
         return tipos
     }()
 
-    /// Mēḷakarta por su número (1…72): `TipoDeEscala.melakarta(15)` → Māyāmālavagauḷa.
+    /// Mēḷa por su número (1…72): `TipoDeEscala.melakarta(15)` → Māyāmālavagauḷa.
     public static func melakarta(_ numero: Int) -> TipoDeEscala? {
         (1...72).contains(numero) ? melakartas[numero - 1] : nil
     }
 
-    /// Número de mēḷakarta de una escala heptatónica con unísono y 5ª justa, una nota entre
+    /// Número de mēḷa de una escala heptatónica con unísono y 5ª justa, una nota entre
     /// la 2ª menor y la 3ª mayor… según sus semitonos: la escala mayor es el 29
     /// (Dhīraśaṅkarābharaṇam) y la menor armónica, el 21 (Kīravāṇī). `nil` si no encaja.
     public var numeroDeMelakarta: Int? {
@@ -100,7 +100,7 @@ extension TipoDeEscala {
             .map { $0 + 1 }
     }
 
-    /// Mēḷakarta de los que puede derivar la escala (los que contienen todas sus notas, al subir y
+    /// Mēḷa de los que puede derivar la escala (los que contienen todas sus notas, al subir y
     /// al bajar), por número: Mohanam, sin 4ª ni 7ª, encaja en 28, 29, 64 y 65.
     /// Se compara la escritura y no solo los semitonos: la 6ª mayor (Dha2) no es la 7ª
     /// disminuida (Ni1), así que Mohanam no encaja en el 25.

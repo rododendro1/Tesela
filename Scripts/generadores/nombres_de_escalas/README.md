@@ -10,7 +10,7 @@ regenerar una familia de alias. Todos reciben la raíz del repositorio y reescri
 | `generar.py` | Añade alias a las filas `.init(…)` sin alias de esos diez idiomas, componiéndolos con `lexico.py` y evitando choques. |
 | `generar_rg.py` | Alias del ruso y del griego, escritos a mano por tipo; los suma a los que ya hay. |
 | `tradicionales.py` | Añade a cada fichero de idioma las filas `.tradicional(…)` de las escalas de otras tradiciones. |
-| `translit_trad.py` | Transcribe al ruso y al griego los nombres de esas tradicionales (no los mēḷakarta). |
+| `translit_trad.py` | Transcribe al ruso y al griego los nombres de esas tradicionales (no los mēḷa). |
 | `quitar_alias_normalizados.py` | Quita de `alias:` las grafías que `aliasNormalizados` ya deduce (`aplicar` para escribir). |
 
 Después de cualquiera: `python3 Scripts/comprobaciones/comprobar_catalogo.py` (cobertura y choques de alias) y los tests de

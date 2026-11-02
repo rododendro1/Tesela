@@ -229,7 +229,7 @@ extension TipoDeEscala {
         ],
         alias: ["menor melódica clásica"])
     /// La menor melódica tal como se usa en el jazz: con la 6ª y la 7ª mayores también al bajar.
-    /// Es el mismo contenido que el mēḷakarta 23 (Gaurīmanoharī), y la escala madre de los modos
+    /// Es el mismo contenido que el mēḷa 23 (Gaurīmanoharī), y la escala madre de los modos
     /// de la menor melódica (dórico ♭2, lidio aumentado, lidio dominante, alterada…).
     public static let menorMelodicaJazz = TipoDeEscala(
         nombre: "menor melódica de jazz",

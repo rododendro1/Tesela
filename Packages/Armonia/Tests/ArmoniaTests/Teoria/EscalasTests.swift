@@ -936,7 +936,7 @@ import Testing
         #expect(TipoDeEscala.buscar(nombre: "भैरवी")?.nombre == "Bhairavī")
         #expect(TipoDeEscala.buscar(nombre: "यमन")?.nombre == "Yaman")
         #expect(Escala("Re मोहनम्").tipo.nombre == Escala("Re Mohanam").tipo.nombre)
-        // Las 72 mēḷakartas.
+        // Los 72 mēḷa.
         #expect(TipoDeEscala.nombresDeMelakartaEnDevanagari.count == 72)
         #expect(Set(TipoDeEscala.nombresDeMelakartaEnDevanagari).count == 72)
         for (devanagari, nombre) in zip(TipoDeEscala.nombresDeMelakartaEnDevanagari, TipoDeEscala.nombresDeMelakarta) {

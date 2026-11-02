@@ -105,7 +105,7 @@ Escala(.do, .cromaticaConCincoSostenidos).nombre(claseDeAltura: 10)   // La♯
 Escalas de otras tradiciones, en su versión temperada (en la práctica, sobre todo los dromoi
 usan microtonos):
 
-- **Los 72 mēḷakarta** de la música carnática, generados por su regla: Sa y Pa fijos, Ma (4ª
+- **Los 72 mēḷa** de la música carnática, generados por su regla: Sa y Pa fijos, Ma (4ª
   justa o aumentada) y una de seis parejas Ri–Ga y Dha–Ni. Ri3, Ga1, Dha3 y Ni1 se escriben
   como 2ª aumentada, 3ª disminuida, 6ª aumentada y 7ª disminuida.
 - **Los 10 thāṭ** de la música indostánica: Bilāval, Kalyāṇ, Khamāj, Kāfī, Āsāvarī, Bhairavī,
@@ -191,15 +191,15 @@ están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `
 `ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`…). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
-las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 mēḷakarta,
+las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 mēḷa,
 que siguen en IAST; la forma latina se sigue leyendo.
 
-### Rāga, mēḷakarta, dromos: la categoría de una escala
+### Rāga, mēḷa, dromos: la categoría de una escala
 
 `categoria` y `tradicion` dicen qué es una escala de otra tradición. Salen de las listas de arriba y
 valen `nil` en las occidentales y en las escalas propias (también en una propia que se llame «Kāfī» pero
-suene distinta). Un mēḷakarta es también un rāga (`esRaga`); un thāṭ, que es una escala madre de la que se
-derivan rāgas, no. Un rāga janya tiene `padre`, el mēḷakarta del que deriva por la tradición.
+suene distinta). Un mēḷa es también un rāga (`esRaga`); un thāṭ, que es una escala madre de la que se
+derivan rāgas, no. Un rāga janya tiene `padre`, el mēḷa del que deriva por la tradición.
 
 ```swift
 TipoDeEscala.kafi.categoria                     // .thaat
@@ -323,7 +323,7 @@ TipoDeEscala.bilahari.intervalosEnAmbasDirecciones
 
 Los rāgas janya incluidos son Mohanam, Hindolam, Haṃsadhvani, Ābhogi, Madhyamāvatī, Revati,
 Amṛtavarṣiṇī (iguales al subir y al bajar), Bilahari, Kāmbhoji, Ārabhi y Kedāragauḷa (distintos). Se dejan fuera los
-vakra, que suben o bajan en zigzag. `melakartasCompatibles` dice de qué mēḷakarta puede derivar
+vakra, que suben o bajan en zigzag. `melakartasCompatibles` dice de qué mēḷa puede derivar
 cada uno: `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 
 ### Qué forma usa cada operación
@@ -341,7 +341,7 @@ cada uno: `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 `menorMelodica` es la clásica: sube con la 6ª y la 7ª mayores y baja como la natural.
 `menorMelodicaJazz` usa la 6ª y la 7ª mayores también al bajar; es la escala madre de los modos
 de la menor melódica (`TipoDeEscala.alterada.rotacion(2) == .menorMelodicaJazz`) y tiene el mismo
-contenido que el mēḷakarta 23, Gaurīmanoharī. En inglés, "melodic minor" es la clásica y
+contenido que el mēḷa 23, Gaurīmanoharī. En inglés, "melodic minor" es la clásica y
 "jazz minor" o "ascending melodic minor", la de jazz.
 
 ## Misma escala y mismo nombre

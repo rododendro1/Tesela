@@ -9,7 +9,7 @@ import ArmoniaNucleo
 // tradiciones (Kafi, Hitzaz, Hirajoshi…) van al final de cada fichero, con `.tradicional(.kafi)`, que nombra la
 // escala por su miembro de `TipoDeEscala` (si se renombra o se quita, no compila): casi todas llevan un nombre
 // propio que se escribe igual en todos los idiomas, y las que no (las andinas, los tetracordos y las harmoniai
-// griegas, el mayor y el menor de las etíopes) llevan su traducción. Una escala sin fila (los 72 mēḷakarta) conserva
+// griegas, el mayor y el menor de las etíopes) llevan su traducción. Una escala sin fila (los 72 mēḷa) conserva
 // su nombre original. El español sale del propio
 // catálogo (`TipoDeEscala.nombre` y `alias`). Un idioma nuevo es un fichero más y su fila en `traducidos`.
 //
@@ -84,7 +84,7 @@ package struct NombresDeEscalas: Sendable {
     package let indice: [String: TipoDeEscala]
 
     init(_ listadas: [Fila]) {
-        // Las tradicionales sin fila (los mēḷakarta) conservan su nombre original.
+        // Las tradicionales sin fila (los mēḷa) conservan su nombre original.
         let conFila = Set(listadas.compactMap(\.clave))
         var vistas = Set<String>()
         let filas = listadas + TipoDeEscala.tradicionales
