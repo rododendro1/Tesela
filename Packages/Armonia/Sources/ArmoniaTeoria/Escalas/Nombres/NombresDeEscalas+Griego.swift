@@ -218,10 +218,29 @@ extension NombresDeEscalas {
         .tradicional(.ajam, "Ατζάμ"),
         .tradicional(.hiyazkar, "Χιτζαζκάρ"),
         .tradicional(.nawaAthar, "Νάβα Ατάρ"),
+        .tradicional(.maqamRast, "μακάμ Ραστ"),
+        .tradicional(.bayati, "Μπαγιατί"),
+        .tradicional(.saba, "Σαμπά"),
+        .tradicional(.suznak, "Σουζνάκ"),
         // Persia: dastgāh
         .tradicional(.mahur, "Μαχούρ"),
         .tradicional(.homayun, "Χομαγιούν"),
         .tradicional(.cahargah, "Τσαχαργκάχ"),
+        .tradicional(.sur, "Σουρ"),
+        .tradicional(.rastPanjgah, "Ραστ-Πανζγκάχ"),
+        // Turquía: makamlar
+        .tradicional(.rastMakami, "Ραστ μακαμί"),
+        .tradicional(.hicazMakami, "Χιτζάζ μακαμί"),
+        .tradicional(.hicazkarMakami, "Χιτζαζκιάρ μακαμί"),
+        .tradicional(.nihavendMakami, "Νιχαβέντ μακαμί"),
+        .tradicional(.kurdiMakami, "Κιουρντί μακαμί"),
+        .tradicional(.buselikMakami, "Μπουσελίκ μακαμί"),
+        .tradicional(.cargahMakami, "Τσαργκιάχ μακαμί"),
+        // Azerbaiyán: mugam
+        .tradicional(.rastMugami, "μουγκάμ Ραστ"),
+        .tradicional(.surMugami, "μουγκάμ Σουρ"),
+        .tradicional(.segahMugami, "μουγκάμ Σεγκιάχ"),
+        .tradicional(.cahargahMugami, "μουγκάμ Τσαχαργκιάχ"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "ράγκα"),
@@ -231,6 +250,8 @@ extension NombresDeEscalas {
         .categoria(.dromos, "δρόμος"),
         .categoria(.maqam, "μακάμ"),
         .categoria(.dastgah, "ντασγκάχ"),
+        .categoria(.makam, "μακάμ"),
+        .categoria(.mugam, "μουγκάμ"),
         .categoria(.shteyger, "στέιγκερ"),
         .categoria(.qenet, "κενέτ"),
         .categoria(.laras, "λάρας"),

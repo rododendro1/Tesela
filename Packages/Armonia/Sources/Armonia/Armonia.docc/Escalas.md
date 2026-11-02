@@ -121,15 +121,26 @@ usan microtonos):
   va la más citada.
 - **6 qenet etíopes**: Təzəta mayor y menor, Bati mayor y menor, Ambassäl y Ančihoye. Las
   fuentes no coinciden del todo en sus notas: aquí va la versión más citada.
-- **6 maqamat árabes**, solo los que no necesitan cuartos de tono: Ḥijāz (frigio dominante),
+- **10 maqamat árabes**: seis que no necesitan cuartos de tono, Ḥijāz (frigio dominante),
   Nahāwand (menor armónica), Kurd (frigio), ʿAjam (mayor), Ḥijāzkār (doble armónica) y Nawā
-  Athar (menor húngara). Rast, Bayati o Saba necesitarían microtonos.
+  Athar (menor húngara); y cuatro aproximados, con el cuarto de tono en su letra y redondeado
+  como se suele escribir: maqām Rāst (como el dromos Rast), Bayātī (frigio), Ṣabā y Sūznāk
+  (mayor armónica). Sīkāh, Huzām e ʿIrāq, con la tónica en un cuarto de tono, no están.
 - **Indonesia**, aproximadas a doce notas: Pélog selisir (también «balinesa») y Sléndro.
 - **10 ragas indostánicos** que no son thaat: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
   (el Valaji carnático), Candrakauns y Megh, pentatónicos; Yaman; y Bāgeśrī y Deś, que suben y
   bajan distinto. Se deja fuera Darbārī, que es vakra.
-- **3 dastgāh persas**: Māhur (la mayor), y Homāyun y Čahārgāh, aproximados (como el frigio
-  dominante y la doble armónica); Šur y los demás necesitan microtonos (*koron*).
+- **5 dastgāh persas**: Māhur (la mayor) y Rāst-Panjgāh (el mixolidio), y Homāyun, Čahārgāh y
+  Šur, aproximados (como el frigio dominante, la doble armónica y el frigio); Segāh, con la
+  tónica en un *koron*, y Navā no están.
+- **7 makamlar turcos**: Rast, Hicaz, Hicazkâr, Nihâvend, Kürdî, Bûselik y Çârgâh, con
+  «makamı» detrás (Rast makamı). Cada nota del sistema de Arel-Ezgi-Uzdilek, de 53 comas, va
+  a su semitono más cercano; solo están los makamlar en que eso no cambia el carácter (Uşşak,
+  Hüseyni o Segâh no).
+- **4 mugam azerbaiyanos**, los de Üzeyir Hacıbəyov que ya están en doce notas: Rast, Şur,
+  Segah y Çahargah, con «muğamı» detrás. Los tres primeros encadenan tres tetracordos y tienen
+  una nota distinta por debajo de la tónica y por encima, así que tienen ocho notas (Rast
+  muğamı en Do: Do Re Mi Fa Sol La Si♭ Si).
 - **2 escalas coreanas**: P'yŏngjo y Kyemyŏnjo.
 - **Los Andes**: la pentatónica andina (menor) y la tritónica andina (Do Mi♭ Sol).
 - **La Grecia antigua**: los tetracordos diatónico y cromático, y las harmoniai doria (el frigio
@@ -144,7 +155,8 @@ Māyāmālavagauḷa, Ṣaṇmukhapriyā, Mecakalyāṇī. Los griegos llevan el
 en Hepburn con macrones en las vocales largas (Hirajōshi, Ryūkyū), los etíopes como en la
 Encyclopaedia Aethiopica (Təzəta, Ančihoye), los árabes en ALA-LC (Ḥijāz, ʿAjam) y los de
 Indonesia con la grafía javanesa (Pélog, Sléndro), los persas en la transliteración de la
-Encyclopædia Iranica (Čahārgāh) y los coreanos en McCune-Reischauer (P'yŏngjo), con la
+Encyclopædia Iranica (Čahārgāh), los turcos y los azerbaiyanos en su ortografía (Hicazkâr,
+Şur muğamı) y los coreanos en McCune-Reischauer (P'yŏngjo), con la
 romanización oficial y el hangul como alias. Un nombre gana a un alias: «Hijaz» es el
 maqam Ḥijāz, y el dromos se busca como Hitzáz o Hicaz. Al buscar no importan los
 diacríticos ni las mayúsculas, y también se aceptan las transliteraciones habituales sin ellos
@@ -165,11 +177,13 @@ Escala("Do 平調子").tipo.nombre               // "Hirajōshi"
 Escala("Re Χιτζάζ").tipo.nombre               // "Hitzáz"
 Escala("Do भैरवी").tipo.nombre                // "Bhairavī"
 TipoDeEscala.gong == .pentatonicaMayor       // true
+Escala("Do Rast muğamı").notas               // Do Re Mi Fa Sol La Si♭ Si
+Escala("La hicaz makami").notas              // La Si♭ Do♯ Re Mi Fa♯ Sol
 ```
 
 No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales;
 están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `chinas`, `japonesas`,
-`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`…). Sus nombres
+`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`…). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
 las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 melakarta,
@@ -186,6 +200,7 @@ derivan ragas, no. Un raga janya tiene `padre`, el melakarta del que deriva por 
 TipoDeEscala.kafi.categoria                     // .thaat
 TipoDeEscala.melakarta(15)?.categoria           // .melakarta
 TipoDeEscala.hitzaz.tradicion                   // .grecia
+TipoDeEscala.rastMakami.categoria               // .makam
 TipoDeEscala.mohanam.esRaga                     // true
 TipoDeEscala.kafi.esRaga                        // false
 TipoDeEscala.mohanam.padre?.numeroDeMelakarta   // 28

@@ -707,6 +707,49 @@ import Testing
         }
     }
 
+    @Test func makamlarMugamYMaqamatAproximados() {
+        func notas(_ tipo: TipoDeEscala, _ tonica: Nota = .do) -> String {
+            Escala(tonica, tipo).notas.map(\.description).joined(separator: " ")
+        }
+        // Maqamat y dastgāh con cuartos de tono, aproximados.
+        #expect(notas(.maqamRast) == "Do Re Mi Fa Sol La Si")
+        #expect(Escala(.do, TipoDeEscala.maqamRast.formaDescendente).notas.last?.description == "Si♭")
+        #expect(TipoDeEscala.maqamRast == .rast)
+        #expect(notas(.bayati, .re) == "Re Mi♭ Fa Sol La Si♭ Do")
+        #expect(notas(.saba, .re) == "Re Mi♭ Fa Sol♭ La Si♭ Do")
+        #expect(TipoDeEscala.suznak == .mayorArmonica)
+        #expect(TipoDeEscala.sur == .frigio)
+        #expect(TipoDeEscala.rastPanjgah == .mixolidio)
+        // Makamlar.
+        #expect(notas(.rastMakami, .sol) == "Sol La Si Do Re Mi Fa♯")
+        #expect(TipoDeEscala.rastMakami.esDireccional)
+        #expect(notas(.hicazMakami, .la) == "La Si♭ Do♯ Re Mi Fa♯ Sol")
+        #expect(TipoDeEscala.hicazMakami.formaDescendente.intervalos == TipoDeEscala.frigioDominante.intervalos)
+        #expect(TipoDeEscala.hicazkarMakami == .dobleArmonica)
+        #expect(TipoDeEscala.kurdiMakami == .frigio)
+        #expect(TipoDeEscala.buselikMakami == .menorNatural)
+        #expect(TipoDeEscala.cargahMakami == .mayor)
+        #expect(TipoDeEscala.nihavendMakami.formaAscendente == .menorArmonica)
+        // Mugam: Rast, Şur y Segah tienen ocho notas (una por debajo de la tónica y otra por encima).
+        #expect(notas(.rastMugami) == "Do Re Mi Fa Sol La Si♭ Si")
+        #expect(notas(.surMugami, .sol) == "Sol La Si♭ Do Re Mi♭ Mi Fa")
+        #expect(notas(.segahMugami, .mi) == "Mi Fa Sol La Si♭ Si Do Re")
+        #expect(TipoDeEscala.cahargahMugami == .dobleArmonica)
+        // Se leen con sus letras turcas y azerbaiyanas y sin ellas (la ı sin punto como i).
+        for (texto, nombre) in [
+            ("Sol Rast makamı", "Rast makamı"), ("La hicaz makami", "Hicaz makamı"),
+            ("Sol nihavend makami", "Nihâvend makamı"), ("Do Çârgâh makamı", "Çârgâh makamı"),
+            ("Do cargah makami", "Çârgâh makamı"), ("Sol makam Rast", "Rast makamı"),
+            ("Do Rast muğamı", "Rast muğamı"), ("Sol sur mugami", "Şur muğamı"), ("Mi mugam Segah", "Segah muğamı"),
+            ("Do maqam rast", "maqām Rāst"), ("Re bayati", "Bayātī"), ("Re Saba", "Ṣabā"), ("Re Šur", "Šur"),
+            ("Re shur", "Šur"), ("Do rast panjgah", "Rāst-Panjgāh"),
+        ] {
+            #expect(Escala(texto: texto)?.tipo.nombre == nombre, Comment(rawValue: texto))
+        }
+        // «Rast» sola sigue siendo el dromos.
+        #expect(Escala(texto: "Re rast")?.tipo.nombre == "Rast")
+    }
+
     @Test func modosDeLaMayorHungaraPentatonicasYAliasDeCompositor() {
         func notas(_ escala: Escala) -> String { escala.notas.map(\.description).joined(separator: " ") }
         // Las rotaciones de la mayor húngara (Do Re♯ Mi Fa♯ Sol La Si♭) dan sus seis modos.

@@ -1,5 +1,17 @@
 # Cambios
 
+## Sin publicar
+
+- **Makamlar, mugam y más maqamat y dastgāh**, en su versión temperada: dos tradiciones nuevas, `Tradicion.turquia`
+  y `.azerbaiyan`, con sus categorías `CategoriaTradicional.makam` y `.mugam` (con su nombre en los quince idiomas).
+  Siete makamlar turcos (`TipoDeEscala.makamlar`: Rast, Hicaz, Hicazkâr, Nihâvend, Kürdî, Bûselik y Çârgâh, con
+  «makamı» detrás) y cuatro mugam de Hacıbəyov (`TipoDeEscala.mugamlar`: Rast, Şur, Segah y Çahargah, con «muğamı»
+  detrás; los tres primeros, de ocho notas). Los maqamat pasan de 6 a 10, con los primeros que tienen cuartos de
+  tono, aproximados: maqām Rāst, Bayātī, Ṣabā y Sūznāk. Los dastgāh, de 3 a 5, con Šur (aproximado) y Rāst-Panjgāh.
+  Los nombres llevan el sufijo o el prefijo de su categoría donde «Rast» sola sería el dromos griego. Los que tienen
+  la tónica en un cuarto de tono, o cuyo redondeo cambia el carácter (Sīkāh, Uşşak, Segāh…), esperan a la capa
+  microtonal.
+
 ## 0.3.0 (2026-11-01)
 
 - **Sin nombres obsoletos**: desaparecen los que la 0.2.0 marcó como obsoletos al revisar la terminología (los

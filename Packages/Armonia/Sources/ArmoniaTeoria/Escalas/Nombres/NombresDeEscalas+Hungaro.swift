@@ -218,10 +218,29 @@ extension NombresDeEscalas {
         .tradicional(.ajam),
         .tradicional(.hiyazkar),
         .tradicional(.nawaAthar),
+        .tradicional(.maqamRast),
+        .tradicional(.bayati),
+        .tradicional(.saba),
+        .tradicional(.suznak),
         // Persia: dastgāh
         .tradicional(.mahur),
         .tradicional(.homayun),
         .tradicional(.cahargah),
+        .tradicional(.sur),
+        .tradicional(.rastPanjgah),
+        // Turquía: makamlar
+        .tradicional(.rastMakami),
+        .tradicional(.hicazMakami),
+        .tradicional(.hicazkarMakami),
+        .tradicional(.nihavendMakami),
+        .tradicional(.kurdiMakami),
+        .tradicional(.buselikMakami),
+        .tradicional(.cargahMakami),
+        // Azerbaiyán: mugam
+        .tradicional(.rastMugami),
+        .tradicional(.surMugami),
+        .tradicional(.segahMugami),
+        .tradicional(.cahargahMugami),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "Raga"),
@@ -231,6 +250,8 @@ extension NombresDeEscalas {
         .categoria(.dromos, "Dromos"),
         .categoria(.maqam, "Maqam"),
         .categoria(.dastgah, "Dastgāh"),
+        .categoria(.makam, "Makam"),
+        .categoria(.mugam, "Mugam"),
         .categoria(.shteyger, "Shteyger"),
         .categoria(.qenet, "Qenet"),
         .categoria(.laras, "Laras"),
