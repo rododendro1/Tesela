@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- **`PresentacionDeDisposiciones`**: las disposiciones de un acorde (de Do3 a Sol5) y una progresión dispuesta con
+  el menor movimiento de las voces, con sus filas, su pentagrama, su sonido y, en la progresión, la partitura y el
+  MIDI. `PentagramaPresentado` dibuja acordes con sus alturas escritas, y `DisposicionDeAcorde.nombre(en:)` los
+  nombra en los quince idiomas (los drops, igual en todos).
 - **`PresentacionDeContrapunto`**, la vista de contrapunto de la app de armonía: comprueba un contrapunto de
   especies y lo enseña con una fila por compás (sus notas, los intervalos con el cantus y las faltas que lo tocan),
   las faltas una a una, el sonido de las dos voces (con el compás que suena) y los ficheros para exportar. Trae un

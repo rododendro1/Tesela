@@ -57,6 +57,15 @@ public struct PentagramaPresentado: Hashable, Sendable {
         self.init(svg: dibujo, descripcion: nombre + ": " + notas, nombre: "Pentagrama " + nombre)
     }
 
+    /// Acordes con sus alturas escritas, uno por columna: las disposiciones de un acorde o una progresión dispuesta
+    /// (`PresentacionDeDisposiciones`).
+    public init(_ acordes: [[Altura]], titulo: String, notacion: Notacion = .espanolCompacto) {
+        let opciones = OpcionesDePentagrama(notacion: notacion)
+        let dibujo = DisposicionDeAcorde.svgPentagrama(acordes, titulo: titulo, opciones: opciones)
+        let notas = acordes.map { $0.map { $0.nombre(en: notacion) }.joined(separator: " ") }.joined(separator: "; ")
+        self.init(svg: dibujo, descripcion: titulo + ": " + notas, nombre: "Pentagrama " + titulo)
+    }
+
     private init(svg: String, descripcion: String, nombre: String) {
         self.svg = svg
         self.descripcion = descripcion

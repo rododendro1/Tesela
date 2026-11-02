@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- **Disposiciones en Armonía.** En Acordes, el acorde cerrado, en drop 2, drop 3, drop 2 y 4, con la fundamental,
+  la tercera y la séptima o solo con las notas guía, en todas sus octavas, con el pentagrama y un botón para escuchar
+  cada una. En Análisis, la progresión dispuesta así con el menor movimiento de las voces: se escucha (resaltando el
+  acorde que suena) y se exporta como partitura y MIDI.
 - **Contrapunto en Armonía.** Desde la pestaña Coral se abre el contrapunto de especies: se elige la especie (de la
   primera a la quinta, cada una con un ejemplo sin faltas sobre el cantus en re de Fux), se escriben el cantus firmus
   y el contrapunto, y se ve compás a compás qué notas hay, sus intervalos con el cantus y las faltas. Se escucha

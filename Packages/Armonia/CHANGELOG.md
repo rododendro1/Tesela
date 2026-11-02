@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+### Disposiciones de piano y jazz
+
+- **`DisposicionDeAcorde`**: cerrada, drop 2, drop 3, drop 2 y 4, la shell (fundamental, tercera y séptima) y las
+  notas guía. `Acorde.disposiciones(_:en:)` da todas las de un acorde en un ámbito, y
+  `DisposicionDeAcorde.conducir(_:en:)`, una por acorde de una progresión con el menor movimiento de las voces.
+  `Acorde.notasParaDisponer` elige las cuatro notas de un acorde extenso (tercera, séptima y tensiones) y
+  `Acorde.notasGuia`, la tercera y la séptima. `DisposicionDeAcorde.svgPentagrama(_:titulo:opciones:)` las dibuja,
+  una por columna.
+
 ### Contrapunto
 
 - **El contrapunto se exporta.** `Contrapunto` escribe sus dos voces en MusicXML, MEI, LilyPond y ABC

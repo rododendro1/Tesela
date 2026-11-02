@@ -130,6 +130,12 @@ public struct TextosDeApps: TextosTraducidos {
     public let siguiente: String
     public let abreUnaPartitura: String
 
+    // MARK: PresentacionDeDisposiciones.swift
+    public let disposicion: String
+    public let disposicionCerrada: String
+    public let fundamentalTerceraYSeptima: String
+    public let terceraYSeptima: String
+
     // MARK: FicheroParaExportar.swift
     public let partituraMusicXML: String
     public let partituraMEI: String

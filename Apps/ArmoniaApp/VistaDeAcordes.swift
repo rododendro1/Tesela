@@ -17,6 +17,8 @@ struct VistaDeAcordes: View {
     @State private var figura = Figura.corchea
     /// El traste del capo en las digitaciones y el arpegio en el mástil, o 0 sin capo.
     @State private var capo = 0
+    /// La disposición de piano o jazz que se enseña (drop 2, shell…).
+    @State private var disposicion = DisposicionDeAcorde.drop2
     /// Lo que está sonando, para resaltar la nota en el pentagrama y en el mástil.
     @ObservedObject private var reproductor = Reproductor.compartido
     /// Las digitaciones y para qué texto e instrumento se calcularon. Mientras no coincidan con lo que hay
@@ -50,6 +52,7 @@ struct VistaDeAcordes: View {
                     DiagramaDePentagrama(PentagramaPresentado(acorde, notacion: notacion))
                 }
                 seccionDelArpegio(de: acorde)
+                disposiciones(de: acorde)
                 escalas(de: acorde)
                 digitaciones(de: acorde)
                 arpegioEnElMastil(de: acorde)
@@ -88,6 +91,9 @@ struct VistaDeAcordes: View {
             PentagramaPresentado(acorde, notacion: notacion).fichero,
             PentagramaPresentado(arpegio, notacion: notacion).fichero,
         ]
+        if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, notacion: notacion) {
+            ficheros.append(presentadas.pentagrama.fichero)
+        }
         ficheros += PresentacionDeArpegios.arpegio(arpegio, figura: figura.duracion, notacion: notacion).ficheros
         let cifrado = acorde.cifrado(en: notacion)
         if let formas = digitaciones?.valor(para: claveActual), !formas.isEmpty {
@@ -103,6 +109,31 @@ struct VistaDeAcordes: View {
             ficheros.append(.musicXML(xml, nombre: titulo))
         }
         return ficheros
+    }
+
+    /// El acorde dispuesto como en el piano o el jazz (cerrado, drop 2, drop 3, drop 2 y 4, con la fundamental, la
+    /// tercera y la séptima, o solo las notas guía), en todas las octavas de Do3 a Sol5: su pentagrama y cada
+    /// disposición con su botón para escucharla.
+    @ViewBuilder
+    private func disposiciones(de acorde: Acorde) -> some View {
+        Section(notacion.texto(\.disposicion)) {
+            Picker(notacion.texto(\.disposicion), selection: $disposicion) {
+                ForEach(DisposicionDeAcorde.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
+            }
+            if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, notacion: notacion) {
+                DiagramaDePentagrama(presentadas.pentagrama)
+                ForEach(Array(presentadas.filas.enumerated()), id: \.offset) { _, fila in
+                    HStack {
+                        Text(fila.voces).font(.system(.body, design: .monospaced))
+                        Spacer()
+                        BotonDeEscuchar(fila.sonido).labelStyle(.iconOnly)
+                    }
+                    .buttonStyle(.borderless)
+                }
+            } else {
+                Text(notacion.texto(\.noSeDibuja)).foregroundColor(.secondary)
+            }
+        }
     }
 
     /// El arpegio en el patrón, las octavas y la figura elegidos: su pentagrama, nota a nota, y cómo suena. Mientras

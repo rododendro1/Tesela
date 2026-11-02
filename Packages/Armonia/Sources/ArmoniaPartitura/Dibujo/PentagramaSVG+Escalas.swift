@@ -80,3 +80,17 @@ extension Arpegio {
         ).svg()
     }
 }
+
+extension DisposicionDeAcorde {
+    /// Acordes con sus alturas escritas (las disposiciones de `Acorde.disposiciones(_:en:)` o de
+    /// `DisposicionDeAcorde.conducir(_:en:)`), uno por columna, sin armadura: en dos pentagramas si las notas pasan a
+    /// los dos lados del Do central y con uno harían falta más de tres líneas adicionales.
+    ///
+    ///     let voces = DisposicionDeAcorde.drop2.conducir([Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]) ?? []
+    ///     let svg = DisposicionDeAcorde.svgPentagrama(voces, titulo: "ii–V–I")
+    public static func svgPentagrama(
+        _ acordes: [[Altura]], titulo: String, opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+    ) -> String {
+        PentagramaSVG(columnas: acordes, armadura: [], cifrado: nil, titulo: titulo, opciones: opciones).svg()
+    }
+}

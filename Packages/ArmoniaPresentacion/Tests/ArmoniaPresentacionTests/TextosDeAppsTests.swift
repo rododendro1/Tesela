@@ -113,6 +113,10 @@ import Testing
         { $0.texto(\.anterior) },
         { $0.texto(\.siguiente) },
         { $0.texto(\.abreUnaPartitura) },
+        { $0.texto(\.disposicion) },
+        { $0.texto(\.disposicionCerrada) },
+        { $0.texto(\.fundamentalTerceraYSeptima) },
+        { $0.texto(\.terceraYSeptima) },
     ]
 
     @Test func cadaTextoEstaEnCadaIdioma() {

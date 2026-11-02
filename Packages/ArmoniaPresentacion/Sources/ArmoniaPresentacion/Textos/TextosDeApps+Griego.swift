@@ -119,6 +119,11 @@ extension TextosDeApps {
         anterior: "Προηγούμενο",
         siguiente: "Επόμενο",
         abreUnaPartitura: "Άνοιξε ένα αρχείο MIDI, MusicXML, MEI ή ABC για να ακολουθήσεις τις συγχορδίες του στο πλέγμα.",
+        // PresentacionDeDisposiciones.swift
+        disposicion: "Διάταξη",
+        disposicionCerrada: "Κλειστή",
+        fundamentalTerceraYSeptima: "Θεμέλιος, τρίτη και έβδομη",
+        terceraYSeptima: "Τρίτη και έβδομη",
         // FicheroParaExportar.swift
         partituraMusicXML: "Παρτιτούρα MusicXML",
         partituraMEI: "Παρτιτούρα MEI",

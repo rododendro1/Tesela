@@ -119,6 +119,11 @@ extension TextosDeApps {
         anterior: "Anterior",
         siguiente: "Seguinte",
         abreUnaPartitura: "Abre un ficheiro MIDI, MusicXML, MEI ou ABC para seguir os seus acordes na rede.",
+        // PresentacionDeDisposiciones.swift
+        disposicion: "Disposición",
+        disposicionCerrada: "Pechada",
+        fundamentalTerceraYSeptima: "Fundamental, terceira e sétima",
+        terceraYSeptima: "Terceira e sétima",
         // FicheroParaExportar.swift
         partituraMusicXML: "Partitura MusicXML",
         partituraMEI: "Partitura MEI",

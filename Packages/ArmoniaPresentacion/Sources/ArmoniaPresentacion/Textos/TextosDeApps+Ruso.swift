@@ -119,6 +119,11 @@ extension TextosDeApps {
         anterior: "Назад",
         siguiente: "Далее",
         abreUnaPartitura: "Открой файл MIDI, MusicXML, MEI или ABC, чтобы следить за его аккордами на сетке.",
+        // PresentacionDeDisposiciones.swift
+        disposicion: "Расположение",
+        disposicionCerrada: "Тесное",
+        fundamentalTerceraYSeptima: "Основной тон, терция и септима",
+        terceraYSeptima: "Терция и септима",
         // FicheroParaExportar.swift
         partituraMusicXML: "Партитура MusicXML",
         partituraMEI: "Партитура MEI",
