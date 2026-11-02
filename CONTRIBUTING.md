@@ -29,7 +29,8 @@ cd Packages/ArmoniaUI && swift test      # la interfaz (en Linux, solo la parte 
   Linux y la deja en el resumen de cada ejecución, y falla si el porcentaje de funciones o de líneas probadas de un
   paquete baja de su mínimo (en el job `cobertura` de `.github/workflows/ci.yml`). Si tu cambio lo sube, sube también
   el mínimo. Lo que lee ficheros de fuera tiene además pruebas con ficheros estropeados al azar
-  (`ImportacionAlAzarTests`): si tocas esa lectura, añade ahí los casos nuevos.
+  (`ImportacionAlAzarTests`): si tocas esa lectura, añade ahí los casos nuevos. Un lector nuevo va también en
+  `Herramientas/FuzzArmonia`, que el CI pasa con libFuzzer cada semana (mira «Fuzzing» en el README).
 - **Dibujos.** Los SVG del pentagrama, el Tonnetz, la tabla armónica y los teclados se comparan con los guardados en
   `Packages/Armonia/Tests/ArmoniaTests/Referencias` (`ReferenciasSVGTests`). Si cambias un dibujo a propósito,
   regenéralos con `TESELA_REGENERAR_REFERENCIAS=1 swift test --filter ReferenciasSVGTests` (en `Packages/Armonia`) y
