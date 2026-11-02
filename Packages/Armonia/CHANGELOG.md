@@ -9,8 +9,8 @@
 - **`Escala.modosParalelos`** (los siete modos de la mayor sobre la misma tónica, del lidio al locrio),
   **`modosRelativos`** y **`brillo`** (cuántas notas sube o baja cada modo respecto al mayor).
 - **`Escala.comparar(con:)`** da una **`ComparacionDeEscalas`**: notas comunes, las que solo están en una, los grados
-  que cambian (`CambioDeGrado`) y la distancia en el círculo de quintas. `Escala.cambios(desde:)` y
-  `Acorde.notasGuia` sirven para seguir una progresión.
+  que cambian (`CambioDeGrado`) y la distancia en el círculo de quintas. `Escala.cambios(desde:)` sirve
+  para seguir una progresión.
 - **`Acorde.escalasBebop`** (`EscalaBebop`, con su nota de paso y el recorrido bajando con las notas del acorde en
   los tiempos fuertes) y **`Acorde.pentatonicas`** (`PentatonicaSobreElAcorde`: las mayores y menores sin notas a
   evitar, con las tensiones que suman). `TipoDeEscala.bebop` y `modosPorBrillo`.

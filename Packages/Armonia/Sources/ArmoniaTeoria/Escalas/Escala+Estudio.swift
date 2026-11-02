@@ -162,14 +162,6 @@ extension Escala {
     }
 }
 
-extension Acorde {
-    /// Las notas guía: la tercera y la séptima (o la sexta), las que dicen qué acorde es y las que más se mueven de
-    /// uno al siguiente. Sin tercera, la suspensión.
-    public var notasGuia: [Nota] {
-        [tercera ?? notas(conPapel: .suspension).first, septima ?? notas(conPapel: .sexta).first].compactMap { $0 }
-    }
-}
-
 // MARK: - Bebop y pentatónicas sobre un acorde
 
 extension TipoDeEscala {
