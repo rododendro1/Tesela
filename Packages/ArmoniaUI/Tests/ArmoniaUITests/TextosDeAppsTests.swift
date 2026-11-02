@@ -233,12 +233,12 @@ import Testing
     }
 
     @Test func laNotacionInicialEsLaDelSistema() {
-        #expect(Notacion.delSistema(idiomas: ["ca-ES", "es-ES"]) == .catalan)
+        #expect(Notacion.delSistema(idiomas: ["ca-ES", "es-ES"]) == .catalanPalabras)
         #expect(Notacion.delSistema(idiomas: ["en-GB"]) == .inglesASCII)
-        #expect(Notacion.delSistema(idiomas: ["eu"]) == .euskera)
-        #expect(Notacion.delSistema(idiomas: ["pt_BR"]) == .portugues)
+        #expect(Notacion.delSistema(idiomas: ["eu"]) == .euskeraPalabras)
+        #expect(Notacion.delSistema(idiomas: ["pt_BR"]) == .portuguesPalabras)
         // Un idioma sin notación se salta; si no queda ninguno, el español.
-        #expect(Notacion.delSistema(idiomas: ["ja-JP", "fr-CA"]) == .frances)
+        #expect(Notacion.delSistema(idiomas: ["ja-JP", "fr-CA"]) == .francesPalabras)
         #expect(Notacion.delSistema(idiomas: ["ja-JP"]) == .espanolCompacto)
         #expect(Notacion.delSistema(idiomas: []) == .espanolCompacto)
     }

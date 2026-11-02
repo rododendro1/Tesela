@@ -111,7 +111,7 @@ import Testing
         #expect(rusoEnEspanol.esCombinada)
         #expect(!Notacion.rusoPalabras.esCombinada)
         #expect(Notacion.rusoPalabras.textos == .ruso)
-        #expect(Notacion(escritura: .alemanPalabras, textos: .aleman) == .aleman)
+        #expect(Notacion(escritura: .alemanPalabras, textos: .aleman) == .alemanPalabras)
         #expect(Notacion.allCases.map(\.escritura) == EscrituraDeNotas.allCases)
         #expect(Acorde("Sol7/Si").nombre(en: rusoEnEspanol) == "соль séptima de dominante, primera inversión")
         #expect(Acorde("Sol7/La").nombre(en: rusoEnEspanol) == "соль séptima de dominante, con bajo en ля")

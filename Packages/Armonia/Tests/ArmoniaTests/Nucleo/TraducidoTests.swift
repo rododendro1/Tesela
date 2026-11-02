@@ -15,16 +15,17 @@ import Testing
             pt: ["um", "dois"], fr: ["un", "deux"], oc: ["un", "dos"],
             it: ["uno", "due"], de: ["eins", "zwei"], el: ["ένα", "δύο"], ru: ["один", "два"],
             hu: ["egy", "kettő"])
-        #expect(numeros.en(.aleman)[1] == "zwei")
+        #expect(numeros.en(.alemanPalabras)[1] == "zwei")
         #expect(numeros.texto(en: .griego) == ["ένα", "δύο"])
-        #expect(numeros.map(\.count).en(.ruso) == 2)
+        #expect(numeros.map(\.count).en(.rusoPalabras) == 2)
         #expect(numeros.todos.count == Idioma.allCases.count)
         // Con la notación habitual de cada idioma: ♯ en español, # en inglés.
         let fa = Traduccion(cadaIdioma: { Nota.fa.sostenido.nombre(en: $0) })
         #expect(fa.en(.espanolCompacto) == "Fa♯")
         #expect(fa.en(.inglesASCII) == "F#")
-        #expect(fa.en(.aleman) == "Fis")
-        #expect(Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) }).en(.aleman) == "erste Umkehrung")
+        #expect(fa.en(.alemanPalabras) == "Fis")
+        #expect(
+            Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) }).en(.alemanPalabras) == "erste Umkehrung")
     }
 
     /// Las sílabas y la forma de pegar la alteración son datos, no `switch` repartidos.
@@ -110,7 +111,7 @@ import Testing
         // La notación habitual de cada idioma: # en inglés, ♯ en español.
         #expect(Notacion.delIdioma(.ingles) == .inglesASCII)
         #expect(Notacion.delIdioma(.espanol) == .espanolCompacto)
-        #expect(Notacion.delIdioma(.griego) == .griego)
+        #expect(Notacion.delIdioma(.griego) == .griegoPalabras)
         for idioma in Idioma.allCases {
             #expect(Notacion.delIdioma(idioma).idiomaDeLasNotas == idioma)
         }
@@ -176,7 +177,7 @@ import Testing
         // Las tipografías de cada escritura.
         #expect(
             EscrituraDeNotas.allCases.filter(\.usaASCII) == [
-                .espanolASCII, .inglesASCII, .aleman, .alemanCompacto, .hungaro, .hungaroCompacto,
+                .espanolASCII, .inglesASCII, .alemanPalabras, .alemanCompacto, .hungaroPalabras, .hungaroCompacto,
             ])
         #expect(
             EscrituraDeNotas.allCases.filter(\.esCompacta) == [
@@ -219,7 +220,7 @@ import Testing
             #expect(!(textos.acordeDesconocido(false, "X", "X").isEmpty))
             #expect(textos.enLaVoz("X").contains("X"))
         }
-        #expect(TextosDeTeoria.traducidos.en(.aleman).enLaVoz("Stimme 2") == "in Stimme 2")
+        #expect(TextosDeTeoria.traducidos.en(.alemanPalabras).enLaVoz("Stimme 2") == "in Stimme 2")
         for textos in TextosDePartitura.traducidos.todos {
             #expect(textos.especieConElContrapuntoDebajo(3).contains("3"))
         }

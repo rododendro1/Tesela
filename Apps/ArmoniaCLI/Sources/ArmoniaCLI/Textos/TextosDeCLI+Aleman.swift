@@ -191,7 +191,7 @@ extension TextosDeCLI {
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "das Instrument fehlt: \(digitaciones.1)" },
-        instrumentoDesconocido: { nombre, lista in "unbekanntes Instrument: „\(nombre)“ (\(lista(.aleman)))" },
+        instrumentoDesconocido: { nombre, lista in "unbekanntes Instrument: „\(nombre)“ (\(lista(.alemanPalabras)))" },
         faltaLimite: "die Anzahl der Griffe fehlt: --limit 5",
         limiteFueraDeRango: "das Limit ist eine Zahl von 1 bis 200: --limit 5",
         faltanDedos: "die Anzahl der Finger fehlt: --fingers 3",

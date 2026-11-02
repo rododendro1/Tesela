@@ -73,7 +73,7 @@ import Testing
         #expect(nombres(bayati, en: .inglesCompacto) == "D E𝄳 F G A B♭ C")
         #expect(nombres(bayati, en: .inglesASCII) == "D Eqb F G A Bb C")
         #expect(nombres(bayati, en: .espanolASCII) == "Re Miqb Fa Sol La Sib Do")
-        #expect(nombres(bayati, en: .frances) == "Ré Mi𝄳 Fa Sol La Si♭ Do")
+        #expect(nombres(bayati, en: .francesPalabras) == "Ré Mi𝄳 Fa Sol La Si♭ Do")
         #expect(nombres(Escala(.sol, .rastMakami), en: .inglesASCII) == "G A B(-1) C D E F#(-1)")
         #expect(Escala(.re, .bayati).notasMicrotonales()?[1].description == "Mi𝄳")
     }

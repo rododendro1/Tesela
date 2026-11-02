@@ -275,7 +275,7 @@ public struct Nota: Hashable, Sendable {
             }
             tablas[notacion] = tabla
         }
-        // «H Be», como se escribía el Si♭ en `.aleman` en la 0.3.0, se sigue leyendo.
+        // «H Be», como se escribía el Si♭ en `.alemanPalabras` (antes `.aleman`) en la 0.3.0, se sigue leyendo.
         tablas[.alemanPalabras]?["H Be".claveDeBusqueda] = Nota(.si, .bemol)
         return tablas
     }()

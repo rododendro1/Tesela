@@ -53,7 +53,8 @@ import Testing
         #expect(Altura(Nota.fa.sostenido, octava: 3).nombre(en: subindices) == "Fa♯₃")
         #expect(Altura(Nota.si.bemol, octava: -1).nombre(en: subindices) == "Si♭₋₁")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .inglesASCII.conOctavas(.subindices)) == "F#₄")
-        #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .frances.conOctavas(.subindices)) == "fa dièse ₄")
+        #expect(
+            Altura(Nota.fa.sostenido, octava: 4).nombre(en: .francesPalabras.conOctavas(.subindices)) == "fa dièse ₄")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombreCompacto(en: subindices) == "Fa♯₄")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombreCompacto(en: .espanolPalabras) == "Fa♯4")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .inglesCompacto) == "F♯₄")
@@ -79,7 +80,7 @@ import Testing
     }
 
     @Test func idaYVuelta() throws {
-        for notacion in [subindices, .inglesASCII.conOctavas(.subindices), .aleman.conOctavas(.subindices)] {
+        for notacion in [subindices, .inglesASCII.conOctavas(.subindices), .alemanPalabras.conOctavas(.subindices)] {
             for midi in [21, 47, 60, 61, 70, 108] {
                 let altura = Altura(midi: midi)
                 #expect(try (Altura(leyendo: altura.nombre(en: notacion), en: notacion)) == altura, "\(notacion)")

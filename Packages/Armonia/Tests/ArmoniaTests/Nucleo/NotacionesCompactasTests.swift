@@ -45,8 +45,8 @@ import Testing
         }
         #expect(EscrituraDeNotas.allCases.count == 32)
         // La notación de cada idioma sigue siendo la de siempre.
-        #expect(Notacion.delIdioma(.catalan) == .catalan)
-        #expect(Notacion.delIdioma(.frances) == .frances)
+        #expect(Notacion.delIdioma(.catalan) == .catalanPalabras)
+        #expect(Notacion.delIdioma(.frances) == .francesPalabras)
         #expect(Notacion.delIdioma(.espanol) == .espanolCompacto)
         // Los textos son los del idioma.
         #expect(Intervalo.terceraMayor.nombre(en: .francesCompacto) == "tierce majeure")

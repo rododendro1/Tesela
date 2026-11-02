@@ -244,7 +244,7 @@ import Testing
             .revisar, "Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4", notacion: .espanolCompacto)
         #expect(coral.avisos == [.sinFaltasDeConduccion])
         #expect(coral.avisos[0].texto(en: .espanolCompacto) == "Sin faltas de conducción.")
-        #expect(coral.avisos[0].texto(en: .euskera) == "Ez dago ahots-eramate akatsik.")
+        #expect(coral.avisos[0].texto(en: .euskeraPalabras) == "Ez dago ahots-eramate akatsik.")
     }
 
     @Test func unTextoVacioEsUnError() throws {
