@@ -2,6 +2,7 @@
 
 ## Sin publicar
 
+- «Abrir» en el análisis también abre ficheros MEI (.mei) y ABC (.abc).
 - «Escuchar» toca los microtonos: el Mi𝄳 de Re Bayātī suena un cuarto de tono sobre Mi♭, y las voces con desvíos
   (`Mi♭4(50¢):4`) suenan con sus cents. `Escucha.NotaMIDI` guarda el `microtono`, y `afinado(en:)` lo suma a la
   afinación del temperamento elegido.

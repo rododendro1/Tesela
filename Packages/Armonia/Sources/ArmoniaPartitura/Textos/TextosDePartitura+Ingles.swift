@@ -27,12 +27,12 @@ extension TextosDePartitura {
         pistaDelBajo: "bass",
 
         // Importacion.swift
-        formatoDesconocido: "The file is neither MIDI nor MusicXML.",
+        formatoDesconocido: "The file is not MIDI, MusicXML, MEI or ABC.",
         musicXMLComprimido: "The compressed MusicXML (.mxl) is damaged or cannot be read: export it uncompressed (.musicxml).",
         midiDanado: "The MIDI file is damaged or truncated.",
         midiConTiempoSMPTE: "The MIDI file counts time in SMPTE frames, not in ticks per quarter note.",
-        xmlDanado: { linea in "The MusicXML file is damaged (line \(linea))." },
-        noEsMusicXMLPorPartes: "The XML is not a partwise MusicXML score (score-partwise).",
+        xmlDanado: { linea in "The XML file is damaged (line \(linea))." },
+        noEsMusicXMLPorPartes: "The XML is neither a partwise MusicXML score (score-partwise) nor MEI.",
         sinNotas: "The file has no notes.",
         sinAcordes: "No chords sound in the file.",
 

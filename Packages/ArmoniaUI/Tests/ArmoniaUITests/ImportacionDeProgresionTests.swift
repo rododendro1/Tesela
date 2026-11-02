@@ -63,6 +63,8 @@ import Testing
         #expect(try abs(#require(leida.ritmo.tempo).negrasPorMinuto - (90)) <= 0.001)
         #expect(leida.titulo == "Coral")
         #expect(ImportacionDeProgresion.extensiones.contains("mxl"))
+        #expect(ImportacionDeProgresion.extensiones.contains("mei"))
+        #expect(ImportacionDeProgresion.extensiones.contains("abc"))
     }
 
     @Test func elAnalisisSigueElRitmo() throws {

@@ -1,14 +1,14 @@
 import Armonia
 import Foundation
 
-/// Lo que hace «Abrir» en la vista de análisis: lee un fichero MIDI o MusicXML (también comprimido, .mxl) y
-/// escribe sus acordes como una progresión, en español («Do Sol/Si Lam Mi7»), que es como la lee el campo de la
+/// Lo que hace «Abrir» en la vista de análisis: lee un fichero MIDI, MusicXML (también comprimido, .mxl), MEI o
+/// ABC y escribe sus acordes como una progresión, en español («Do Sol/Si Lam Mi7»), que es como la lee el campo de la
 /// progresión. Así se puede retocar antes de analizarla. Guarda además el ritmo armónico de la pieza (lo que
 /// dura cada acorde), que siguen la partitura, el MIDI y «Escuchar» mientras no se retoque. No usa SwiftUI, así
 /// que se prueba en Linux.
 public enum ImportacionDeProgresion {
     /// Las extensiones que se ofrecen al abrir.
-    public static let extensiones = ["mid", "midi", "musicxml", "xml", "mxl"]
+    public static let extensiones = ["mid", "midi", "musicxml", "xml", "mxl", "mei", "abc"]
 
     /// La progresión de un fichero, con un acorde por pulso (`ventana`, como en `PiezaImportada.acordes`).
     /// Lanza `ErrorDeImportacion` si no se puede leer o no suena ningún acorde.

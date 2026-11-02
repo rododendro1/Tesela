@@ -2,11 +2,22 @@
 
 ## Sin publicar
 
+- **`PiezaImportada` lee MEI y ABC**, además de MIDI y MusicXML: `init(mei:)`, `init(abc:)`, y `init(leyendo:)`
+  los reconoce solos. De MEI: partes y capas, armadura, compás, tempo, tresillos, ligaduras, notas de adorno
+  (que no cuentan), `accid.ges` y los microtonos (cuartos de tono, koron y sori, comas turcas). De ABC, como lo
+  escriben los cancioneros: cabecera (T, M, L, Q, K con sus modos, V), alteraciones que duran el compás,
+  ligaduras, tresillos `(3`, ritmo con puntillo `>`/`<`, acordes `[CEG]`, campos dentro de la música `[K:D]`,
+  silencios de varios compases y cuartos de tono `^/`. Lee la primera canción del fichero. Lo que exportan
+  `mei()` y `abc()` vuelve igual (por ABC, las comas, temperadas).
+- **Lector de XML propio** en lugar de `XMLParser`: MusicXML y MEI ya no necesitan FoundationXML (ni libxml2 en
+  Linux). Admite UTF-8, UTF-16 y las codificaciones de un byte (Latin-1, windows-1252), y da la línea del error.
+  `ErrorDeImportacion.xmlDanado` dice ahora «El fichero XML está dañado» y `formatoDesconocido` nombra los cuatro
+  formatos.
 - **Tutorial interactivo de DocC**, «De una nota a un análisis armónico», en tres partes: notas, alturas e
   intervalos; acordes y escalas, y el análisis de una progresión, de la tonalidad a las cadencias y desde un
   fichero MIDI hasta MusicXML. El código de cada paso se prueba como los ejemplos de los artículos.
 - **Fuzzing de los lectores** (`Herramientas/FuzzArmonia`): libFuzzer con AddressSanitizer sobre MIDI, MusicXML,
-  MXL, UIL y los textos de cifrados, notas, escalas, corales y voces, diez minutos cada domingo en el CI.
+  MXL, MEI, ABC, UIL y los textos de cifrados, notas, escalas, corales y voces, diez minutos cada domingo en el CI.
 - `PiezaImportada.acordes()` identifica una sola vez el acorde de las ventanas que suenan igual. Un fichero con
   las doce notas sostenidas durante horas tardaba más de un minuto en leer sus acordes, y ahora una fracción de
   segundo (lo encontró el fuzzing en su primer minuto).

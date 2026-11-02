@@ -11,23 +11,14 @@ import Foundation
 // Las notas de adorno y las notas guía (`<grace>`, `<cue>`) no cuentan, ni la percusión (`<unpitched>`).
 // Del primer compás que los tenga: la armadura, el compás y el tempo (`<sound tempo>`).
 
-#if canImport(FoundationXML)
-    import FoundationXML
-#endif
-
 extension PiezaImportada {
     /// Lee una partitura MusicXML por partes.
     ///
     ///     let xml = coral.musicXML(duracion: .blanca)
     ///     let pieza = try PiezaImportada(musicXML: Data(xml.utf8))
     public init(musicXML datos: Data) throws {
-        if let linea = Self.lineaConUTF8NoValido(datos) { throw ErrorDeImportacion.xmlDanado(linea: linea) }
         let lector = LectorMusicXML()
-        let parser = XMLParser(data: datos)
-        parser.shouldResolveExternalEntities = false
-        parser.delegate = lector
-        // En Linux, `parse()` da por bueno un documento que se corta con elementos abiertos.
-        guard parser.parse(), lector.cerrado else { throw ErrorDeImportacion.xmlDanado(linea: parser.lineNumber) }
+        try LectorXML.leer(datos, con: lector)
         guard lector.raiz == "score-partwise" else { throw ErrorDeImportacion.noEsMusicXMLPorPartes }
         guard !lector.notas.isEmpty else { throw ErrorDeImportacion.sinNotas }
         self.init(
@@ -37,19 +28,10 @@ extension PiezaImportada {
 
     /// La línea del primer byte que no es UTF-8 válido, o `nil` si todo es válido o el documento está en UTF-16 (con
     /// su marca) o declara una codificación de un byte por carácter (ISO-8859, Windows-125x).
-    ///
-    /// En Linux, `XMLParser` detiene el programa si el nombre de un elemento o de un atributo no es UTF-8 válido
-    /// (un fichero dañado), en vez de dar un error: por eso se mira antes de leer.
     static func lineaConUTF8NoValido(_ datos: Data) -> Int? {
         let bytes = [UInt8](datos)
         if bytes.starts(with: [0xFE, 0xFF]) || bytes.starts(with: [0xFF, 0xFE]) { return nil }
-        let cabecera = String(decoding: bytes.prefix(200), as: UTF8.self)
-        if cabecera.hasPrefix("<?xml"), let fin = cabecera.range(of: "?>") {
-            let declaracion = cabecera[..<fin.lowerBound].lowercased()
-            // Las codificaciones de un byte por carácter: XMLParser las convierte a UTF-8 antes de dar los nombres.
-            let deUnByte = #"encoding\s*=\s*["'](iso-8859-[0-9]+|latin-?[0-9]|windows-125[0-8]|cp125[0-8])["']"#
-            if declaracion.range(of: deUnByte, options: .regularExpression) != nil { return nil }
-        }
+        if LectorXML.codificacionDeUnByte(bytes) != nil { return nil }
         var posicion = 0
         var linea = 1
         while posicion < bytes.count {
@@ -80,7 +62,7 @@ extension PiezaImportada {
 }
 
 /// Recorre el documento elemento a elemento y va colocando las notas en el tiempo.
-final class LectorMusicXML: NSObject, XMLParserDelegate {
+final class LectorMusicXML: LectorDeElementosXML {
     private(set) var raiz: String?
     private(set) var titulo: String?
     private(set) var tonalidad: Tonalidad?
@@ -90,7 +72,7 @@ final class LectorMusicXML: NSObject, XMLParserDelegate {
 
     /// Los elementos abiertos, del documento al actual, y el texto del actual.
     private var pila: [String] = []
-    private var texto = ""
+    private var contenido = ""
 
     // La parte en curso.
     private var parte = -1
@@ -124,13 +106,10 @@ final class LectorMusicXML: NSObject, XMLParserDelegate {
         var ligaduraQueAcaba = false
     }
 
-    func parser(
-        _ parser: XMLParser, didStartElement nombre: String, namespaceURI: String?,
-        qualifiedName: String?, attributes atributos: [String: String] = [:]
-    ) {
+    func abre(_ nombre: String, atributos: [String: String]) {
         if raiz == nil { raiz = nombre }
         defer { pila.append(nombre) }
-        texto = ""
+        contenido = ""
         // `padre` es todavía el elemento que contiene a este.
         switch nombre {
         case "part":
@@ -170,13 +149,13 @@ final class LectorMusicXML: NSObject, XMLParserDelegate {
         }
     }
 
-    func parser(_ parser: XMLParser, foundCharacters cadena: String) {
-        texto += cadena
+    func texto(_ cadena: String) {
+        contenido += cadena
     }
 
-    func parser(_ parser: XMLParser, didEndElement nombre: String, namespaceURI: String?, qualifiedName: String?) {
-        let valor = texto.trimmingCharacters(in: .whitespacesAndNewlines)
-        texto = ""
+    func cierra(_ nombre: String) {
+        let valor = contenido.trimmingCharacters(in: .whitespacesAndNewlines)
+        contenido = ""
         pila.removeLast()
         // Los números, redondeados; los que no son finitos o son desmesurados no se tienen en cuenta.
         let numero = Double(valor).flatMap { $0.isFinite && abs($0) < 10_000_000 ? Int($0.rounded()) : nil }
@@ -243,9 +222,6 @@ final class LectorMusicXML: NSObject, XMLParserDelegate {
 
     /// El elemento que contiene al actual.
     private var padre: String? { pila.last }
-
-    /// Si se ha llegado al final con todos los elementos cerrados.
-    var cerrado: Bool { raiz != nil && pila.isEmpty }
 
     private func avanzar(_ pulsos: Int) {
         posicion = max(.cero, posicion + Duracion(pulsos, 4 * divisiones))

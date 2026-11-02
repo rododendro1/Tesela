@@ -26,7 +26,7 @@ struct VistaDeAnalisis: View {
     /// Las figuras que se ofrecen para las notas de la progresión arpegiada.
     private static let figuras: [Figura] = [.negra, .corchea, .semicorchea]
 
-    /// MIDI y MusicXML sin comprimir (.musicxml y .xml).
+    /// MIDI, MusicXML (.musicxml, .xml y .mxl), MEI y ABC.
     private static let tipos: [UTType] =
         [.midi, .xml]
         + ImportacionDeProgresion.extensiones.compactMap { UTType(filenameExtension: $0) }

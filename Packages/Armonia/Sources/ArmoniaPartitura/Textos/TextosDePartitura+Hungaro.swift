@@ -27,12 +27,12 @@ extension TextosDePartitura {
         pistaDelBajo: "basszus",
 
         // Importacion.swift
-        formatoDesconocido: "A fájl nem MIDI és nem MusicXML.",
+        formatoDesconocido: "A fájl nem MIDI, MusicXML, MEI és nem is ABC.",
         musicXMLComprimido: "A tömörített MusicXML (.mxl) sérült vagy nem olvasható: exportáld tömörítetlenül (.musicxml).",
         midiDanado: "A MIDI-fájl sérült vagy csonka.",
         midiConTiempoSMPTE: "A MIDI-fájl SMPTE-képkockákban méri az időt, nem negyedhangonkénti tickekben.",
-        xmlDanado: { linea in "A MusicXML-fájl sérült (\(linea). sor)." },
-        noEsMusicXMLPorPartes: "Az XML nem szólamonkénti MusicXML-partitúra (score-partwise).",
+        xmlDanado: { linea in "Az XML-fájl sérült (\(linea). sor)." },
+        noEsMusicXMLPorPartes: "Az XML nem szólamonkénti MusicXML-partitúra (score-partwise), és nem is MEI.",
         sinNotas: "A fájlban nincsenek hangok.",
         sinAcordes: "A fájlban nem szólnak akkordok.",
 

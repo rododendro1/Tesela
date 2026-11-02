@@ -216,7 +216,7 @@ import Testing
         #expect(ErrorDeImportacion.sinNotas.description == "El fichero no tiene ninguna nota.")
         #expect(
             ErrorDeImportacion.xmlDanado(linea: 3).descripcion(en: .francesPalabras)
-                == "Le fichier MusicXML est endommagé (ligne 3).")
+                == "Le fichier XML est endommagé (ligne 3).")
     }
 
     // MARK: Auxiliares
