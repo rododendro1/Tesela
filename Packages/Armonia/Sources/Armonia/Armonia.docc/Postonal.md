@@ -54,3 +54,27 @@ berg.esTotalmenteCombinatoria                          // true
 La ``SerieDodecafonica/matriz`` tiene la serie en la primera fila y su inversión en la primera columna: cada fila es
 una P (al revés, su R) y cada columna una I (de abajo arriba, su RI). ``SerieDodecafonica/formasCombinatorias`` son
 las formas cuyo primer hexacordo completa el total cromático con el primero de la serie.
+
+## Simetrías y notas comunes
+
+``ConjuntoDeClases/vectorDeIndice`` cuenta, para cada TnI, cuántas clases del conjunto caen sobre otra del conjunto,
+y ``ConjuntoDeClases/vectorDeTransposicion``, lo mismo para cada Tn. Las inversiones que lo dejan igual tienen cada
+una su ``EjeDeInversion``: la recta del círculo de las clases que pasa por n/2 y n/2 + 6.
+
+```swift
+let menorConSeptima: ConjuntoDeClases = [0, 3, 7, 10]
+menorConSeptima.vectorDeIndice                 // [1, 2, 1, 2, 0, 2, 1, 2, 1, 0, 4, 0]
+menorConSeptima.notasComunes(invirtiendo: 10)  // 4
+menorConSeptima.ejesDeSimetria                 // [5–11]
+ConjuntoDeClases([0, 1]).ejesDeSimetria        // [0½–6½]
+```
+
+## Escribir un conjunto con notas
+
+``ConjuntoDeClases/notas(con:)`` escribe cada clase con la nota más sencilla: busca el tramo más corto de la línea
+de quintas con una nota de cada clase, así que lo que cabe en una escala diatónica sale sin repetir letra.
+
+```swift
+ConjuntoDeClases([1, 5, 8]).notas()                        // [Re♭, Fa, La♭]
+ConjuntoDeClases([1, 5, 8]).notas(con: Nota(.do, .sostenido))   // [Do♯, Mi♯, Sol♯]
+```

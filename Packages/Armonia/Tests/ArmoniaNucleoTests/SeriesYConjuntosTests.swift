@@ -201,3 +201,88 @@ import Testing
         #expect(try JSONDecoder().decode(FormaDeSerie.self, from: forma) == FormaDeSerie(.inversion, 3))
     }
 }
+
+@Suite struct SimetriaDeConjuntosTests {
+    @Test func notasComunes() {
+        let mayor: ConjuntoDeClases = [0, 4, 7]
+        #expect(mayor.notasComunes(transponiendo: 0) == 3)
+        #expect(mayor.notasComunes(transponiendo: 5) == 1)
+        #expect(mayor.notasComunes(invirtiendo: 7) == 2)
+        #expect(mayor.vectorDeTransposicion == [3, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0])
+        #expect(mayor.vectorDeIndice == [1, 0, 1, 0, 2, 0, 0, 2, 1, 0, 0, 2])
+        // El vector de índice da las notas comunes de cada TnI, y el de transposición sale del interválico.
+        for clases in [[0, 1, 4, 6], [0, 2, 4, 5, 7, 9, 11], [0, 3, 6, 9], [0, 1, 6, 7], [5]] {
+            let conjunto = ConjuntoDeClases(clases)
+            #expect(conjunto.vectorDeIndice == (0..<12).map { conjunto.notasComunes(invirtiendo: $0) })
+            let iv = conjunto.vectorIntervalico
+            for n in 1...5 {
+                #expect(conjunto.vectorDeTransposicion[n] == iv[n - 1])
+                #expect(conjunto.vectorDeTransposicion[12 - n] == iv[n - 1])
+            }
+            #expect(conjunto.vectorDeTransposicion[6] == 2 * iv[5])
+        }
+    }
+
+    @Test func ejes() {
+        #expect(ConjuntoDeClases([0, 4, 7]).ejesDeSimetria.isEmpty)
+        #expect(ConjuntoDeClases([0, 4, 7, 10]).ejesDeSimetria.isEmpty)
+        #expect(ConjuntoDeClases([0, 3, 7, 10]).ejesDeSimetria == [EjeDeInversion(indice: 10)])
+        #expect(ConjuntoDeClases([0, 3, 7, 10]).ejesDeSimetria.map(\.description) == ["5–11"])
+        #expect(ConjuntoDeClases([0, 3, 6, 9]).ejesDeSimetria.map(\.indice) == [0, 3, 6, 9])
+        #expect(ConjuntoDeClases([0, 1]).ejesDeSimetria.map(\.description) == ["0½–6½"])
+        let eje = EjeDeInversion(indice: 13)
+        #expect(eje.indice == 1 && eje.clasesFijas.isEmpty && eje.extremos == (0.5, 6.5))
+        #expect(EjeDeInversion(indice: 4).clasesFijas == [2, 8])
+        #expect(EjeDeInversion(indice: 11).extremos == (5.5, 11.5))
+        #expect(EjeDeInversion(indice: 2) < EjeDeInversion(indice: 3))
+        for clases in [[0, 4, 8], [0, 2, 4, 6, 8, 10], [0, 1, 3, 7], [0, 1, 2, 3]] {
+            let conjunto = ConjuntoDeClases(clases)
+            #expect(conjunto.ejesDeSimetria.count == conjunto.simetriasPorInversion)
+            #expect(conjunto.transposicionesQueLoDejanIgual.count == conjunto.simetriasPorTransposicion)
+        }
+        #expect(ConjuntoDeClases([0, 4, 8]).transposicionesQueLoDejanIgual == [0, 4, 8])
+    }
+}
+
+@Suite struct OrtografiaDeConjuntosTests {
+    private func escribir(_ clases: [Int], con fija: Nota? = nil) -> String {
+        ConjuntoDeClases(clases).notas(con: fija).map(\.nombre).joined(separator: " ")
+    }
+
+    @Test func laEscrituraMasSencilla() {
+        #expect(escribir([0, 4, 7]) == "Do Mi Sol")
+        #expect(escribir([0, 3, 7]) == "Do Mi♭ Sol")
+        #expect(escribir([2, 6, 9]) == "Re Fa♯ La")
+        #expect(escribir([1, 5, 8]) == "Re♭ Fa La♭")
+        #expect(escribir([1, 4, 8]) == "Do♯ Mi Sol♯")
+        #expect(escribir([0, 4, 7, 10]) == "Do Mi Sol Si♭")
+        #expect(escribir([0, 1]) == "Do Re♭")
+        #expect(escribir([0, 2, 4, 5, 7, 9, 11]) == "Do Re Mi Fa Sol La Si")
+        #expect(escribir([1, 3, 6, 8, 10]) == "Re♭ Mi♭ Sol♭ La♭ Si♭")
+        #expect(escribir([6]) == "Fa♯")
+        #expect(escribir([10]) == "Si♭")
+        #expect(escribir([]) == "")
+        #expect(ConjuntoDeClases(0..<12).notas().count == 12)
+    }
+
+    @Test func sinRepetirLetra() {
+        // Las escalas mayores y sus subconjuntos salen siempre con letras distintas y sin dobles alteraciones.
+        let mayor = [0, 2, 4, 5, 7, 9, 11]
+        for t in 0..<12 {
+            let escala = ConjuntoDeClases(mayor.map { $0 + t })
+            let notas = escala.notas()
+            #expect(Set(notas.map(\.natural)).count == 7, "\(notas)")
+            #expect(notas.allSatisfy { abs($0.alteracion.semitonos) <= 1 }, "\(notas)")
+            #expect(notas.map(\.claseDeAltura) == escala.clases)
+        }
+    }
+
+    @Test func conUnaNotaFija() {
+        #expect(escribir([1, 5, 8], con: Nota(.do, .sostenido)) == "Do♯ Mi♯ Sol♯")
+        #expect(escribir([0, 4, 7], con: .sol) == "Do Mi Sol")
+        #expect(escribir([3, 7, 10], con: Nota(.re, .sostenido)) == "Re♯ Fa𝄪 La♯")
+        // Una nota fija que no es del conjunto orienta la escritura pero no se añade.
+        #expect(escribir([8], con: Nota(.mi)) == "Sol♯")
+        #expect(escribir([8]) == "La♭")
+    }
+}

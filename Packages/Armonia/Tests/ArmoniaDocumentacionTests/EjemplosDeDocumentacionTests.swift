@@ -738,6 +738,21 @@ import Hexagonos
         comprobar(berg.esTotalmenteCombinatoria, #"true"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 51)
     }
 
+    @Test func postonal4() throws {
+        // Sources/Armonia/Armonia.docc/Postonal.md, línea 65
+        let menorConSeptima: ConjuntoDeClases = [0, 3, 7, 10]
+        comprobar(menorConSeptima.vectorDeIndice, #"[1, 2, 1, 2, 0, 2, 1, 2, 1, 0, 4, 0]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 66)
+        comprobar(menorConSeptima.notasComunes(invirtiendo: 10), #"4"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 67)
+        comprobar(menorConSeptima.ejesDeSimetria, #"[5–11]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 68)
+        comprobar(ConjuntoDeClases([0, 1]).ejesDeSimetria, #"[0½–6½]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 69)
+    }
+
+    @Test func postonal5() throws {
+        // Sources/Armonia/Armonia.docc/Postonal.md, línea 78
+        comprobar(ConjuntoDeClases([1, 5, 8]).notas(), #"[Re♭, Fa, La♭]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 78)
+        comprobar(ConjuntoDeClases([1, 5, 8]).notas(con: Nota(.do, .sostenido)), #"[Do♯, Mi♯, Sol♯]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 79)
+    }
+
     @Test func tonalidad1() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, línea 13
         let laMenor: Tonalidad = "La menor"

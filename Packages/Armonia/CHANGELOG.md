@@ -12,6 +12,19 @@
   `tiposDeCombinatoriedad`, `esTotalmenteCombinatoria`). Se lee como un conjunto (`init(leyendo:)`) y se guarda en
   JSON como la lista de sus clases.
 
+### Simetrías y notas comunes de un conjunto
+
+- **`ConjuntoDeClases.vectorDeIndice`** (las notas comunes de cada TnI) y **`vectorDeTransposicion`** (las de cada
+  Tn), con `notasComunes(transponiendo:)` y `notasComunes(invirtiendo:)`.
+- **`ejesDeSimetria`**: el `EjeDeInversion` de cada TnI que deja el conjunto igual, con los puntos por donde pasa
+  («5–11», «0½–6½») y las clases que deja fijas; y `transposicionesQueLoDejanIgual`.
+
+### Ortografía de un conjunto
+
+- **`ConjuntoDeClases.notas(con:)`** escribe cada clase con la nota más sencilla, buscando el tramo más corto de la
+  línea de quintas: {1, 5, 8} es Re♭–Fa–La♭, y con Do♯ fijo, Do♯–Mi♯–Sol♯. Lo que cabe en una escala diatónica
+  sale sin repetir letra.
+
 ### Conjuntos escritos a mano
 
 - **`ConjuntoDeClases(leyendo:)`** lee «[0, 4, 7]», «{0 4 7}», «047», «01t» (con `t` y `e` para el 10 y el 11),
