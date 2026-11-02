@@ -20,7 +20,9 @@ declarado como dependencia si otra ruta lo compila antes, así que se comprueba 
   1. las dependencias declaradas en Package.swift son exactamente las permitidas;
   2. ningún fichero importa un módulo `Armonia*` que no sea una dependencia permitida;
   3. ningún fichero nombra un tipo declarado en un módulo que no puede usar (aproximación por nombre);
-  4. `Armonia` reexporta los cinco módulos, y `Sources/Armonia` no tiene más código que eso.
+  4. `Armonia` reexporta los cinco módulos, y `Sources/Armonia` no tiene más código que eso;
+  5. las pruebas de cada módulo (`Tests/<Módulo>Tests`) dependen e importan solo ese módulo y los que puede usar,
+     más `ApoyoDePruebas`; las que cruzan capas van en `Tests/ArmoniaTests`.
 
 Uso:  python3 Scripts/comprobaciones/comprobar_modulos.py     (sale con 1 si hay un problema)
 """
@@ -39,6 +41,8 @@ PERMITIDO = {
     "ArmoniaTrastes": {"ArmoniaNucleo", "ArmoniaTeoria"},
 }
 PARAGUAS = "Armonia"
+# Lo que comparten las pruebas (Tests/ApoyoDePruebas): no es parte de la biblioteca.
+APOYO = "ApoyoDePruebas"
 # Ficheros permitidos en el módulo paraguas.
 EN_PARAGUAS = {"Exportaciones.swift"}
 
@@ -127,6 +131,22 @@ def main() -> int:
     ]
     if extra:
         errores.append(f"Código en subcarpetas de Sources/{PARAGUAS}: {extra}")
+
+    # 5. Las pruebas de cada módulo.
+    pruebas = RAIZ / "Tests"
+    for modulo, permitidas in PERMITIDO.items():
+        objetivo = f"{modulo}Tests"
+        validas = permitidas | {modulo, APOYO}
+        if objetivo not in objetivos:
+            errores.append(f"Package.swift no declara {objetivo}")
+            continue
+        if not objetivos[objetivo] <= validas or modulo not in objetivos[objetivo]:
+            errores.append(f"{objetivo}: dependencias declaradas {sorted(objetivos[objetivo])}, deben ser {modulo} y algunas de {sorted(validas - {modulo})}")
+        for p in sorted((pruebas / objetivo).rglob("*.swift")):
+            texto = limpiar(p.read_text(encoding="utf-8"))
+            for m in re.finditer(r"^\s*(?:@\w+\s+)*import\s+(Armonia\w*|Hexagonos)\b", texto, re.M):
+                if m.group(1) not in validas:
+                    errores.append(f"Tests/{objetivo}/{p.name}: importa {m.group(1)}, que {modulo} no puede usar")
 
     print("Dependencias entre módulos (tipos usados):")
     for (a, b), nombres in sorted(uso.items()):

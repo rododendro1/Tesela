@@ -19,7 +19,7 @@ import PackageDescription
 
 let hexagonos: Target.Dependency = .product(name: "Hexagonos", package: "Hexagonos")
 
-/// Todos los módulos de la biblioteca, para las pruebas que usan lo interno.
+/// Todos los módulos de la biblioteca, para las pruebas que cruzan capas.
 let modulos: [Target.Dependency] = [
     "Armonia", "ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaTrastes",
     hexagonos,
@@ -57,9 +57,23 @@ let package = Package(
             dependencies: [
                 "ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaTrastes",
             ]),
-        // Las pruebas ven lo `internal` de cada módulo con `@testable import`, y por eso dependen de todos.
-        // `Referencias` son los dibujos guardados con que se comparan los de ahora (ReferenciasSVGTests).
-        .testTarget(name: "ArmoniaTests", dependencies: modulos, exclude: ["Referencias"]),
+        // Las pruebas de cada módulo dependen solo de él y de los que puede usar, como el módulo mismo: una prueba de
+        // Núcleo que necesitara Teoría no compila. Ven lo `internal` con `@testable import`.
+        .testTarget(name: "ArmoniaNucleoTests", dependencies: ["ArmoniaNucleo"]),
+        .testTarget(name: "ArmoniaTeoriaTests", dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ApoyoDePruebas"]),
+        .testTarget(
+            name: "ArmoniaRepresentacionesTests",
+            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", hexagonos, "ApoyoDePruebas"]),
+        .testTarget(
+            name: "ArmoniaPartituraTests",
+            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura", "ApoyoDePruebas"]),
+        .testTarget(name: "ArmoniaTrastesTests", dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaTrastes"]),
+        // Las que cruzan capas: entradas no válidas y propiedades de todo el motor, la API poco usada, y los dibujos
+        // guardados en `Referencias` con que se comparan los de ahora (ReferenciasSVGTests).
+        .testTarget(name: "ArmoniaTests", dependencies: modulos + ["ApoyoDePruebas"], exclude: ["Referencias"]),
+        // Lo que comparten las pruebas de varios módulos (el generador al azar con semilla y el lector de XML con que se
+        // comprueban los ficheros exportados y los dibujos). No es parte del motor.
+        .target(name: "ApoyoDePruebas", path: "Tests/ApoyoDePruebas"),
         .testTarget(name: "ArmoniaExhaustivasTests", dependencies: modulos),
         // Los ejemplos de la documentación usan también la rejilla (`CoordenadaAxial`, `FormasDeMapa`…).
         .testTarget(name: "ArmoniaDocumentacionTests", dependencies: ["Armonia", hexagonos]),
