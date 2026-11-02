@@ -523,7 +523,8 @@ extension TipoDeEscala {
     // nombres de escalas que ya había (Ḥijāz es el frigio dominante; Nahāwand, la menor armónica…). Rāst,
     // Bayātī, Ṣabā y Sūznāk sí los tienen, y van aproximados como se suelen escribir: el cuarto de tono se
     // queda en su letra y se redondea hacia el lado de la costumbre (Mi𝄳 a Mi en Rāst y Sūznāk, a Mi♭ en
-    // Bayātī y Ṣabā). Sīkāh, Huzām e ʿIrāq, con la tónica en un cuarto de tono, esperan a la capa microtonal.
+    // Bayātī y Ṣabā). Sīkāh, Huzām e ʿIrāq tienen la tónica en un cuarto de tono (Mi𝄳, Si𝄳): se escriben sobre la
+    // nota temperada a la que se redondea (Mi, Si), y su versión microtonal la baja.
     // Transliterados con el sistema ALA-LC (ḥ, ā, ʿ), y sin diacríticos como alias. Rāst se llama
     // «maqām Rāst» porque «Rast» sola es el dromos griego.
 
@@ -625,10 +626,35 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["Nairuz", "maqam Nairuz", "نيروز"])
+    /// سيكاه (Mi𝄳 Fa Sol La Si𝄳 Do Re: un jins Sīkāh y un jins Rāst), aproximado sobre Mi: el frigio.
+    public static let sikah = TipoDeEscala(
+        nombre: "Sīkāh",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["maqam Sikah", "سيكاه"])
+    /// هزام (Mi𝄳 Fa Sol La♭ Si Do Re: un jins Sīkāh y un jins Ḥijāz en Sol), aproximado sobre Mi. Se llama
+    /// «maqām Huzām» porque «Huzam» es también el dromos Houzám.
+    public static let huzam = TipoDeEscala(
+        nombre: "maqām Huzām",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["هزام"])
+    /// عراق (Si𝄳 Do Re Mi𝄳 Fa Sol La: un jins Sīkāh y un jins Bayātī en Re), aproximado sobre Si: el locrio.
+    public static let iraq = TipoDeEscala(
+        nombre: "ʿIrāq",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Iraq", "maqam Iraq", "عراق"])
 
     public static let maqamat: [TipoDeEscala] = [
         .hiyaz, .nahawand, .kurd, .ajam, .hiyazkar, .nawaAthar, .maqamRast, .bayati, .saba, .suznak, .husayni,
-        .nayruz,
+        .nayruz, .sikah, .huzam, .iraq,
     ]
 }
 
@@ -697,8 +723,8 @@ extension TipoDeEscala {
     // (koma), 4 (bakiye), 5 (küçük mücennep) y 8 (büyük mücennep). Aquí cada nota se redondea a su
     // semitono más cercano: la koma desaparece y las demás se escriben como ♯ o ♭. Uşşak y Hüseynî, cuya
     // segâh (Si una koma bajo, que en la práctica suena casi un cuarto de tono bajo) se pierde al redondear,
-    // tienen además su versión microtonal (`TipoDeEscala.microtonal`). Segâh y Saba, con la tónica o el
-    // tetracordo en una segâh, siguen fuera.
+    // tienen además su versión microtonal (`TipoDeEscala.microtonal`), como Segâh, con la tónica en la segâh,
+    // que se escribe sobre Si. Saba, cuyas fuentes no coinciden en el tetracordo, sigue fuera.
     // Los nombres van en turco con «makamı» detrás, como se dicen: «Rast» sola es el dromos griego.
 
     /// Rast (Sol La Si Do Re Mi Fa♯, con Si y Fa♯ una koma bajos): sube como la mayor y baja con Fa, como el
@@ -778,11 +804,20 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["makam Hüseynî"])
+    /// Segâh (Si Do Re Mi Fa♯ Sol La, con Si y Fa♯ una koma bajos): un pentacordo Segâh desde la segâh y un
+    /// tetracordo Uşşak en la eviç. Aproximado sobre Si: el frigio.
+    public static let segahMakami = TipoDeEscala(
+        nombre: "Segâh makamı",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Segâh"])
 
     /// Los makamlar: los que el temperamento igual escribe sin cambiarles el carácter y los que solo se oyen bien
-    /// con su versión microtonal (Uşşak y Hüseynî).
+    /// con su versión microtonal (Uşşak, Hüseynî y Segâh).
     public static let makamlar: [TipoDeEscala] = [
         .rastMakami, .hicazMakami, .hicazkarMakami, .nihavendMakami, .kurdiMakami, .buselikMakami, .cargahMakami,
-        .ussakMakami, .huseyniMakami,
+        .ussakMakami, .huseyniMakami, .segahMakami,
     ]
 }

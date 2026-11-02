@@ -224,6 +224,9 @@ extension NombresDeEscalas {
         .tradicional(.suznak),
         .tradicional(.husayni),
         .tradicional(.nayruz),
+        .tradicional(.sikah),
+        .tradicional(.huzam),
+        .tradicional(.iraq),
         // Persia: dastgāh
         .tradicional(.mahur),
         .tradicional(.homayun),
@@ -240,6 +243,7 @@ extension NombresDeEscalas {
         .tradicional(.cargahMakami),
         .tradicional(.ussakMakami),
         .tradicional(.huseyniMakami),
+        .tradicional(.segahMakami),
         // Azerbaiyán: mugam
         .tradicional(.rastMugami),
         .tradicional(.surMugami),

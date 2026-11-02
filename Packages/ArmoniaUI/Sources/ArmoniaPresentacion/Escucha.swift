@@ -146,7 +146,9 @@ public struct Escucha: Hashable, Sendable {
         let subida = cerrada(escala.notas, desde: 60)
         guard let tonica = subida.first else { return .silencio }
         let alturas = subida + [tonica + .octava]
-        let microtonos = escala.tipo.microtonal?.desvios ?? []
+        // La tónica de arriba, como la de abajo: en Sīkāh, las dos son Mi𝄳.
+        let desvios = escala.tipo.microtonal?.desvios ?? []
+        let microtonos = desvios + [desvios.first ?? 0]
         let paso = 0.3
         return Escucha(
             notas: alturas.enumerated().map { i, altura in

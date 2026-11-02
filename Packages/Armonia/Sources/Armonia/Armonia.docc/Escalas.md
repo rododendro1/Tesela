@@ -112,6 +112,8 @@ usan microtonos):
   Bhairav, Mārvā, Pūrvī y Toḍī.
 - **15 dromoi** griegos: Ousák, Hitzáz, Hitzazkiár, Pireótikos, Tabahaniótikos, Niavént,
   Nikríz (Souzinak), Kartzigár, Sabáh, Houzám, Sengáh, Tsingánikos, Rast, Kiourdí y Houseïní.
+  Seis tienen versión microtonal, la de su maqam o su makam: Ousák y Sabáh, con la segunda
+  neutra de Bayātī y de Ṣabā; Hitzáz, Hitzazkiár, Kartzigár y Rast, en comas turcas.
 - **8 escalas chinas**: los cinco modos pentatónicos Gōng, Shāng, Jué, Zhǐ y Yǔ (la pentatónica
   desde cada una de sus notas) y las heptatónicas Qīngyuè, Yǎyuè y Yànyuè (como la mayor, el
   lidio y el mixolidio).
@@ -121,12 +123,12 @@ usan microtonos):
   va la más citada.
 - **6 qenet etíopes**: Təzəta mayor y menor, Bati mayor y menor, Ambassäl y Ančihoye. Las
   fuentes no coinciden del todo en sus notas: aquí va la versión más citada.
-- **12 maqamat árabes**: seis que no necesitan cuartos de tono, Ḥijāz (frigio dominante),
+- **15 maqamat árabes**: seis que no necesitan cuartos de tono, Ḥijāz (frigio dominante),
   Nahāwand (menor armónica), Kurd (frigio), ʿAjam (mayor), Ḥijāzkār (doble armónica) y Nawā
-  Athar (menor húngara); y seis aproximados, con el cuarto de tono en su letra y redondeado
+  Athar (menor húngara); y nueve aproximados, con el cuarto de tono en su letra y redondeado
   como se suele escribir: maqām Rāst (como el dromos Rast), Bayātī (frigio), Ṣabā, Sūznāk
-  (mayor armónica), Ḥusaynī (frigio) y Nayrūz (menor natural). Sīkāh, Huzām e ʿIrāq, con la
-  tónica en un cuarto de tono, no están.
+  (mayor armónica), Ḥusaynī (frigio), Nayrūz (menor natural), y Sīkāh, maqām Huzām e ʿIrāq,
+  con la tónica en un cuarto de tono, escritos sobre Mi y Si.
 - **Indonesia**, aproximadas a doce notas: Pélog selisir (también «balinesa») y Sléndro.
 - **10 ragas indostánicos** que no son thaat: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
   (el Valaji carnático), Candrakauns y Megh, pentatónicos; Yaman; y Bāgeśrī y Deś, que suben y
@@ -134,10 +136,10 @@ usan microtonos):
 - **5 dastgāh persas**: Māhur (la mayor) y Rāst-Panjgāh (el mixolidio), y Homāyun, Čahārgāh y
   Šur, aproximados (como el frigio dominante, la doble armónica y el frigio); Segāh, con la
   tónica en un *koron*, y Navā no están.
-- **9 makamlar turcos**: Rast, Hicaz, Hicazkâr, Nihâvend, Kürdî, Bûselik, Çârgâh, Uşşak y
-  Hüseynî, con «makamı» detrás (Rast makamı). Cada nota del sistema de Arel-Ezgi-Uzdilek, de 53
-  comas, va a su semitono más cercano. Uşşak y Hüseynî pierden así su segâh (Si una koma bajo),
-  que solo se oye en su versión microtonal; Segâh y Saba no están.
+- **10 makamlar turcos**: Rast, Hicaz, Hicazkâr, Nihâvend, Kürdî, Bûselik, Çârgâh, Uşşak,
+  Hüseynî y Segâh, con «makamı» detrás (Rast makamı). Cada nota del sistema de Arel-Ezgi-Uzdilek,
+  de 53 comas, va a su semitono más cercano. Uşşak, Hüseynî y Segâh pierden así su segâh (Si una
+  koma bajo), que solo se oye en su versión microtonal; Saba no está.
 - **4 mugam azerbaiyanos**, los de Üzeyir Hacıbəyov que ya están en doce notas: Rast, Şur,
   Segah y Çahargah, con «muğamı» detrás. Los tres primeros encadenan tres tetracordos y tienen
   una nota distinta por debajo de la tónica y por encima, así que tienen ocho notas (Rast
@@ -214,10 +216,12 @@ CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .f
 
 Algunas escalas aproximadas tienen también su versión microtonal, `microtonal` (un ``TipoDeEscalaMicrotonal``):
 dónde cae cada grado en la teoría de su tradición, en los pasos de su sistema (``SistemaMicrotonal``) contados
-desde la tónica. La tienen maqām Rāst, Bayātī, Ṣabā, Sūznāk, Ḥusaynī y Nayrūz, en cuartos de tono
-(`.cuartosDeTono`, la teoría árabe moderna); Šur, Homāyun y Čahārgāh, con el *koron* de Vaziri (`.persa`); y
-Rast, Hicaz, Hicazkâr, Uşşak y Hüseynî makamı, en las 53 comas de Arel-Ezgi-Uzdilek (`.comas53`). Los mugam
-azerbaiyanos no la tienen: son los de Hacıbəyov, ya en doce notas. Cada grado conserva la letra de su nota temperada y se aparta de ella
+desde la tónica temperada. La tienen todos los maqamat que usan cuartos de tono, en cuartos de tono
+(`.cuartosDeTono`, la teoría árabe moderna); Šur, Homāyun y Čahārgāh, con el *koron* de Vaziri (`.persa`); los
+makamlar Rast, Hicaz, Hicazkâr, Uşşak, Hüseynî y Segâh, en las 53 comas de Arel-Ezgi-Uzdilek (`.comas53`); y seis
+dromoi, con la afinación de su maqam o su makam. Los que en su propia teoría no tienen microtonos (Ḥijāz, Māhur…)
+no la necesitan, y los mugam azerbaiyanos tampoco: son los de Hacıbəyov, ya en doce notas. En Sīkāh, ʿIrāq y
+Segâh la tónica misma es un microtono: Sīkāh se escribe sobre Mi, y su primer grado es Mi𝄳. Cada grado conserva la letra de su nota temperada y se aparta de ella
 medio semitono como mucho, así que la escala de doce notas sigue valiendo para todo lo demás.
 
 `Escala.notasMicrotonales(sentido:)` da sus notas (``NotaMicrotonal``), con los cents desde la tónica. Se

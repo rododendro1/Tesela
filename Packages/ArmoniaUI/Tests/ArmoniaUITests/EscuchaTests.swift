@@ -62,6 +62,9 @@ import Testing
         // Las comas de un makam.
         let rast = Escucha.escala(Escala(.sol, .rastMakami))
         #expect(abs(rast.notas[2].microtono - (17.0 * 1200 / 53 - 400)) < 1e-9)
+        // Sīkāh: la tónica, abajo y arriba, es Mi𝄳.
+        let sikah = Escucha.escala(Escala(.mi, .sikah))
+        #expect(sikah.notas.first?.microtono == -50 && sikah.notas.last?.microtono == -50)
         // Una voz con desvíos.
         let voz = Escucha.voz(try Voz(leyendo: "Do4:4 Mi♭4(50¢):4 Do4+Si4(-15¢):2"))
         #expect(voz.notas.map(\.microtono) == [0, 50, 0, -15])
