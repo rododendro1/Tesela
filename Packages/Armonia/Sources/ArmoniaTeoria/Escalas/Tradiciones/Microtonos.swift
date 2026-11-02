@@ -133,7 +133,8 @@ public struct NotaMicrotonal: Hashable, Sendable {
             let base = temperada.natural.nombre(en: notacion)
             let silaba = notacion.idiomaDeLasNotas.reglas.alteraciones == .palabras ? base.conMayusculaInicial : base
             let cuartos = 2 * temperada.alteracion.semitonos + ajuste
-            let entera = Alteracion(cuartos / 2).simbolo(en: notacion.usaASCII ? .ascii : .conSimples)
+            let alteracion = Alteracion(cuartos / 2)
+            let entera = alteracion.esNatural ? "" : alteracion.simbolo(en: notacion.tipografia)
             switch cuartos % 2 {
             case 1: return silaba + entera + (notacion.usaASCII ? "q#" : "𝄲")
             case -1: return silaba + entera + (notacion.usaASCII ? "qb" : "𝄳")
