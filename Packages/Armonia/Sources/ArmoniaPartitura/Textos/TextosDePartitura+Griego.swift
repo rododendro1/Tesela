@@ -91,6 +91,10 @@ extension TextosDePartitura {
         instrumentoBajoElectrico: "ηλεκτρικό μπάσο",
         instrumentoXilofono: "ξυλόφωνο",
         instrumentoGlockenspiel: "γκλόκενσπιλ",
-        instrumentoCelesta: "τσελέστα"
+        instrumentoCelesta: "τσελέστα",
+        // ErrorDeLecturaDePartitura.swift
+        duracionNoValida: { texto in "το «\(texto)» δεν είναι διάρκεια: αναμενόταν αξία νότας (1, 2, 4, 8, 16…, με τελεία: 4.) ή κλάσμα ολόκληρου (3/8, 1/12)" },
+        compasNoValido: { texto in "το «\(texto)» δεν είναι μέτρο: αναμενόταν αριθμητής/παρονομαστής με παρονομαστή δύναμη του 2 (4/4, 6/8, 7/8), C ή ¢" },
+        contrapuntoDeOtraDuracion: { redondas in "η αντίστιξη πρέπει να διαρκεί όσο το cantus firmus: \(redondas) ολόκληρα, ένα ανά νότα" }
     )
 }

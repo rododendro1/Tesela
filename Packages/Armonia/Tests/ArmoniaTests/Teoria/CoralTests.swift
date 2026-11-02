@@ -116,7 +116,7 @@ import Testing
             _ = try Coral(leyendo: "Do3 Mi4 | Sol2")
             Issue.record("Se esperaba un error")
         } catch {
-            guard case .vocesDistintas? = (error as? ErrorDeLectura)?.motivo else {
+            guard case .vocesDistintas? = (error as? ErrorDeLecturaDeTeoria)?.motivo else {
                 Issue.record("\(error)")
                 return
             }

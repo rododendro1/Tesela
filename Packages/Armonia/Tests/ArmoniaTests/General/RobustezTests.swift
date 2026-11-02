@@ -137,11 +137,11 @@ struct GeneradorConSemilla: RandomNumberGenerator {
             _ = try Acorde(leyendo: "Sol7/B")
             Issue.record("Se esperaba un error")
         } catch {
-            guard case .idiomasMezclados("B")? = (error as? ErrorDeLectura)?.motivo else {
+            guard case .idiomasMezclados("B")? = (error as? ErrorDeLecturaDeTeoria)?.motivo else {
                 Issue.record("\(error)")
                 return
             }
-            #expect((error as? ErrorDeLectura)?.posicion == 5)
+            #expect((error as? any ErrorAlLeer)?.posicion == 5)
 
         }
     }

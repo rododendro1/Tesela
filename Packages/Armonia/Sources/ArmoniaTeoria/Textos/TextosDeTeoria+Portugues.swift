@@ -123,6 +123,29 @@ extension TextosDeTeoria {
         dominanteSecundaria: "dominante secundária",
         prestamoModal: "empréstimo modal",
         sustitutoDiatonico: "substituto diatónico",
+        // ErrorDeLecturaDeTeoria.swift (acordes)
+        simboloNoReconocido: { simbolo in "«\(simbolo)» não faz parte de nenhuma cifra conhecida" },
+        tensionNoValida: { tension in "«\(tension)» não é uma tensão válida (admitem-se ♭/♯ com 5, 9, 11 e 13, e add com 2, 4, 6, 9, 11 e 13)" },
+        numeroDeAcordeNoValido: { numero in "«\(numero)» não é um número de acorde (5, 6, 7, 9, 11 ou 13)" },
+        numeroRepetido: { numero in "«\(numero)» aparece depois de outro número; as tensões adicionais vão entre parênteses, como em 7(9)" },
+        disminuidoYSemidisminuido: "diminuto (°) e meio-diminuto (ø) não podem ser combinados",
+        quintaConCalidad: "o acorde de quinta (5) não tem terceira, por isso não admite m, °, ø nem +",
+        fundamentalNoOmitible: "não se pode omitir a fundamental",
+        gradoNoOmitible: { grado in "«omit\(grado)» não é válido (podem omitir-se 3, 5, 7, 9, 11 e 13)" },
+        faltaLaFundamental: "falta a fundamental",
+        intervaloSinPapel: { intervalo, notacion in "a \(intervalo.nombre(en: .portuguesPalabras)) não tem papel num acorde por terceiras" },
+        terceraMayorYMenor: "tem terceira maior e menor ao mesmo tempo (a ♯9 escreve-se como 9ª aumentada, não como 3ª menor)",
+        variasSeptimas: "tem mais de uma sétima",
+        septimaDisminuidaFueraDelDisminuido: "a sétima diminuta só aparece no acorde diminuto (com 3ª menor e 5ª diminuta)",
+        noEsPorTerceras: "não é um acorde por terceiras",
+        bajoNoValido: { bajo in "«\(bajo)» não é um nome de nota para o baixo" },
+        idiomasMezclados: { nombre in "«\(nombre)» está escrito noutro idioma que a fundamental: escreve-se tudo com sílabas (Sol7/Si) ou tudo com letras (G7/B)" },
+        // ErrorDeLecturaDeTeoria.swift (escalas)
+        modoNoReconocido: { nombre in "«\(nombre)» não é o modo de uma tonalidade: uma tonalidade é maior ou menor (para os outros modos, use Escala)" },
+        faltaElTipoDeEscala: "falta o tipo de escala (maior, dórico, menor harmónica…)",
+        tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» não é um tipo de escala conhecido" },
+        // ErrorDeLecturaDeTeoria.swift (coral)
+        vocesDistintas: "todos os acordes têm de ter o mesmo número de vozes, e pelo menos duas",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in "em " + tonalidad }

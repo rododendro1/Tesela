@@ -33,14 +33,14 @@ public struct Acorde: Hashable, Sendable {
         try inicio.exigirContenido()
         // Primero se lee la fundamental en español; si el resto no es un cifrado válido,
         // se prueba con letras ("Faug" es F aumentado, no Fa seguido de "ug").
-        var primerError: ErrorDeLectura?
+        var primerError: (any ErrorAlLeer)?
         for espanol in [true, false] {
             var lector = inicio
             guard let (fundamental, idioma) = lector.leerNombreNotaConIdioma(espanol: espanol) else { continue }
             do {
                 self = try Acorde.leer(fundamental: fundamental, idioma: idioma, lector: lector)
                 return
-            } catch let error as ErrorDeLectura {
+            } catch let error as any ErrorAlLeer {
                 if primerError == nil { primerError = error }
             }
         }

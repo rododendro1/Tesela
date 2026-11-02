@@ -74,7 +74,7 @@ public struct Duracion: Hashable, Sendable, Comparable {
     /// "2.." blanca con doble puntillo) o una fracción de redonda ("3/8", "1/12", "2/1").
     public init(leyendo texto: String) throws {
         let limpio = texto.trimmingEspacios()
-        let error = ErrorDeLectura(texto: texto, posicion: nil, motivo: .duracionNoValida(limpio))
+        let error = ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .duracionNoValida(limpio))
         if let barra = limpio.firstIndex(of: "/") {
             guard let numerador = Int(limpio[..<barra]), let denominador = Int(limpio[limpio.index(after: barra)...]),
                 numerador >= 0, denominador > 0

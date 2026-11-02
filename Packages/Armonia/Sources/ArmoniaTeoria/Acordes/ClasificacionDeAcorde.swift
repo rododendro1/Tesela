@@ -46,7 +46,7 @@ package struct ClasificacionDeAcorde: Hashable, Sendable {
     }
 
     /// Explicación de por qué un conjunto no es un acorde interpretable, o `nil` si lo es.
-    package static func motivoDeRechazo(_ conjunto: Set<Int>) -> ErrorDeLectura.RechazoDeAcorde? {
+    package static func motivoDeRechazo(_ conjunto: Set<Int>) -> ErrorDeLecturaDeTeoria.RechazoDeAcorde? {
         guard conjunto.contains(0) else { return .faltaLaFundamental }
         for intervalo in conjunto.sorted() where intervalo != 0 && !posicionesValidas.contains(intervalo) {
             return .intervaloSinPapel(Intervalo.simpleAscendente(pasosDeQuinta: intervalo))
@@ -151,8 +151,8 @@ extension ClasificacionDeAcorde {
         var parentesisAbierto: Substring?
         var despuesDeMaj = false
 
-        func fallo(_ motivo: ErrorDeLectura.Motivo, en fragmento: Substring?) -> ErrorDeLectura {
-            ErrorDeLectura(texto: original, posicion: fragmento?.posicionEnOrigen, motivo: motivo)
+        func fallo(_ motivo: ErrorDeLecturaDeTeoria.Motivo, en fragmento: Substring?) -> ErrorDeLecturaDeTeoria {
+            ErrorDeLecturaDeTeoria(texto: original, posicion: fragmento?.posicionEnOrigen, motivo: motivo)
         }
         func consumir(_ prefijo: String) -> Bool {
             guard resto.hasPrefix(prefijo) else { return false }
@@ -343,7 +343,7 @@ extension ClasificacionDeAcorde {
                 if tercera == -3 { tensiones.insert(-1) }
             }
         case let otro?:
-            throw ErrorDeLectura(
+            throw ErrorDeLecturaDeTeoria(
                 texto: original, posicion: posicionDelNumero,
                 motivo: .numeroDeAcordeNoValido(otro))
         }

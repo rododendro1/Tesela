@@ -106,7 +106,7 @@ import Testing
             _ = try Contrapunto(cantusFirmus: "Re4 Fa4", contrapunto: "La4", especie: .primera)
             Issue.record("Se esperaba un error")
         } catch {
-            guard case .contrapuntoDeOtraDuracion(redondas: 2)? = (error as? ErrorDeLectura)?.motivo else {
+            guard case .contrapuntoDeOtraDuracion(redondas: 2)? = (error as? ErrorDeLecturaDePartitura)?.motivo else {
                 Issue.record("\(error)")
                 return
             }

@@ -57,6 +57,13 @@ struct TextosDeRepresentaciones: TextosTraducidos {
     let acordeonC: String
     let acordeonB: String
 
+    // MARK: FormatoUIL.swift
+    let uilNoValido: @Sendable (_ texto: String) -> String
+    let intervalosIncoherentes: @Sendable (_ menor: Int, _ mayor: Int, _ diferencia: Int) -> String
+    let giroNoValido: @Sendable (_ grados: Int) -> String
+    let afinacionNoSoportada: @Sendable (_ tonos: Int) -> String
+    let cizallaNoSoportada: @Sendable (_ cizalla: Int) -> String
+
     /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeRepresentaciones>(

@@ -31,29 +31,6 @@ struct TextosDeNucleo: TextosTraducidos {
     let palabraSostenidos: String
     let palabraBemoles: String
 
-    // MARK: ErrorDeLectura.swift (acordes)
-    let simboloNoReconocido: @Sendable (String) -> String
-    let tensionNoValida: @Sendable (String) -> String
-    let numeroDeAcordeNoValido: @Sendable (Int) -> String
-    let numeroRepetido: @Sendable (Int) -> String
-    let disminuidoYSemidisminuido: String
-    let quintaConCalidad: String
-    let fundamentalNoOmitible: String
-    let gradoNoOmitible: @Sendable (Int) -> String
-    let faltaLaFundamental: String
-    let intervaloSinPapel: @Sendable (Intervalo, Notacion) -> String
-    let terceraMayorYMenor: String
-    let variasSeptimas: String
-    let septimaDisminuidaFueraDelDisminuido: String
-    let noEsPorTerceras: String
-    let bajoNoValido: @Sendable (String) -> String
-    let idiomasMezclados: @Sendable (String) -> String
-
-    // MARK: ErrorDeLectura.swift (escalas)
-    let modoNoReconocido: @Sendable (String) -> String
-    let faltaElTipoDeEscala: String
-    let tipoDeEscalaNoReconocido: @Sendable (String) -> String
-
     // MARK: ErrorDeLectura.swift (generales)
     let valorNoValido: String
     let noSePuedeLeer: @Sendable (String) -> String
@@ -74,12 +51,6 @@ struct TextosDeNucleo: TextosTraducidos {
     let reglaDeLasMayores: String
     let intervaloInexistente: @Sendable (Int, CalidadDeIntervalo, Notacion, Traduccion) -> String
     let alteracionNoReconocida: @Sendable (String) -> String
-
-    // MARK: ErrorDeLectura.swift (partitura)
-    let duracionNoValida: @Sendable (String) -> String
-    let compasNoValido: @Sendable (String) -> String
-    let vocesDistintas: String
-    let contrapuntoDeOtraDuracion: @Sendable (Int) -> String
 
     // MARK: Gramática (Intervalo.swift, ErrorDeLectura.swift)
     /// El nombre de un intervalo con su calidad y su número: «3ª mayor», «major third».

@@ -1,5 +1,10 @@
 # Cambios
 
+## Sin publicar
+
+- `Notacion.mensaje(de:)` traduce cualquier error del motor (`any ErrorDeArmonia`), también los de UIL, que antes
+  salían siempre en español.
+
 ## 0.3.1 (2026-11-02)
 
 - «Abrir» en el análisis también abre ficheros MEI (.mei) y ABC (.abc).

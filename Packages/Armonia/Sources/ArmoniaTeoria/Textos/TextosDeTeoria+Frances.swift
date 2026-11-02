@@ -123,6 +123,29 @@ extension TextosDeTeoria {
         dominanteSecundaria: "dominante secondaire",
         prestamoModal: "emprunt modal",
         sustitutoDiatonico: "substitution diatonique",
+        // ErrorDeLecturaDeTeoria.swift (acordes)
+        simboloNoReconocido: { simbolo in "« \(simbolo) » ne fait partie d'aucun chiffrage connu" },
+        tensionNoValida: { tension in "« \(tension) » n'est pas une tension valide (♭/♯ s'emploient avec 5, 9, 11 et 13, et add avec 2, 4, 6, 9, 11 et 13)" },
+        numeroDeAcordeNoValido: { numero in "« \(numero) » n'est pas un numéro d'accord (5, 6, 7, 9, 11 ou 13)" },
+        numeroRepetido: { numero in "« \(numero) » suit un autre numéro ; les tensions supplémentaires se mettent entre parenthèses, comme dans 7(9)" },
+        disminuidoYSemidisminuido: "diminué (°) et semi-diminué (ø) ne peuvent pas se combiner",
+        quintaConCalidad: "l'accord de quinte (5) n'a pas de tierce, il n'admet donc ni m, ni °, ni ø, ni +",
+        fundamentalNoOmitible: "on ne peut pas omettre la fondamentale",
+        gradoNoOmitible: { grado in "« omit\(grado) » n'est pas valide (on peut omettre 3, 5, 7, 9, 11 et 13)" },
+        faltaLaFundamental: "il manque la fondamentale",
+        intervaloSinPapel: { intervalo, notacion in "l'intervalle de \(intervalo.nombre(en: .francesPalabras)) n'a aucun rôle dans un accord par tierces" },
+        terceraMayorYMenor: "il a à la fois une tierce majeure et une tierce mineure (la ♯9 s'écrit comme neuvième augmentée, pas comme tierce mineure)",
+        variasSeptimas: "il a plus d'une septième",
+        septimaDisminuidaFueraDelDisminuido: "la septième diminuée n'apparaît que dans l'accord diminué (avec tierce mineure et quinte diminuée)",
+        noEsPorTerceras: "ce n'est pas un accord par tierces",
+        bajoNoValido: { bajo in "« \(bajo) » n'est pas un nom de note pour la basse" },
+        idiomasMezclados: { nombre in "« \(nombre) » est écrit dans une autre langue que la fondamentale : on écrit tout en syllabes (Sol7/Si) ou tout en lettres (G7/B)" },
+        // ErrorDeLecturaDeTeoria.swift (escalas)
+        modoNoReconocido: { nombre in "« \(nombre) » n'est pas le mode d'une tonalité : une tonalité est majeure ou mineure (pour les autres modes, utilisez Escala)" },
+        faltaElTipoDeEscala: "il manque le type de gamme (majeur, dorien, mineur harmonique…)",
+        tipoDeEscalaNoReconocido: { nombre in "« \(nombre) » n'est pas un type de gamme connu" },
+        // ErrorDeLecturaDeTeoria.swift (coral)
+        vocesDistintas: "tous les accords doivent avoir le même nombre de voix, et au moins deux",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in "en " + tonalidad }

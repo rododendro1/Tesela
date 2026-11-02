@@ -99,6 +99,11 @@ struct TextosDePartitura: TextosTraducidos {
     let instrumentoGlockenspiel: String
     let instrumentoCelesta: String
 
+    // MARK: ErrorDeLecturaDePartitura.swift
+    let duracionNoValida: @Sendable (String) -> String
+    let compasNoValido: @Sendable (String) -> String
+    let contrapuntoDeOtraDuracion: @Sendable (Int) -> String
+
     /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDePartitura>(

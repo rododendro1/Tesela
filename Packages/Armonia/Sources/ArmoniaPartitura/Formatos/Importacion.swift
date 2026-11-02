@@ -236,7 +236,7 @@ public struct PiezaImportada: Hashable, Sendable {
 // MARK: - Errores
 
 /// Por qué no se puede importar un fichero.
-public enum ErrorDeImportacion: Error, Hashable, Sendable, CustomStringConvertible {
+public enum ErrorDeImportacion: ErrorDeArmonia, Hashable {
     /// No es MIDI ni MusicXML.
     case formatoDesconocido
     /// Es un zip, como el MusicXML comprimido (.mxl), pero está dañado, no tiene partitura o usa una compresión
@@ -255,8 +255,6 @@ public enum ErrorDeImportacion: Error, Hashable, Sendable, CustomStringConvertib
     /// Tiene notas, pero no suena ningún acorde (una melodía sola, por ejemplo).
     case sinAcordes
 
-    public var description: String { descripcion(en: .espanolCompacto) }
-
     /// La explicación en el idioma de los textos de la notación.
     public func descripcion(en notacion: Notacion) -> String {
         let textos = TextosDePartitura.traducidos
@@ -271,10 +269,6 @@ public enum ErrorDeImportacion: Error, Hashable, Sendable, CustomStringConvertib
         case .sinAcordes: return textos.map(\.sinAcordes).en(notacion)
         }
     }
-}
-
-extension ErrorDeImportacion: LocalizedError {
-    public var errorDescription: String? { description }
 }
 
 // MARK: - Auxiliares

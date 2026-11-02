@@ -142,7 +142,7 @@ import Testing
         do {
             _ = try Acorde(leyendo: "Do7(b3)")
             Issue.record("Do7(b3) no es un cifrado válido")
-        } catch let error as ErrorDeLectura {
+        } catch let error as ErrorDeLecturaDeTeoria {
             #expect(error.descripcion(en: Notacion.inglesASCII.conTextos(en: .espanol)) == error.description)
         } catch {
             Issue.record("\(error)")

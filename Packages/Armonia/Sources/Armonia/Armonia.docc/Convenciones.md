@@ -40,7 +40,7 @@ Escala(.la, .menorArmonica).cifradosRomanos(referencia: .menorNatural)
 ```
 
 Literales, `Codable` e `init?(texto:)` llegan a través de `RepresentableComoTexto`. Un literal no
-válido detiene la ejecución con el mensaje de `ErrorDeLectura` (es un error de programación).
+válido detiene la ejecución con el mensaje del error de lectura (es un error de programación).
 Para texto que viene del usuario, usa `init(leyendo:)`, que dice dónde y por qué falla, o
 `init?(texto:)`, que devuelve `nil`.
 
@@ -50,7 +50,7 @@ Para texto que viene del usuario, usa `init(leyendo:)`, que dice dónde y por qu
 ```swift
 let a = Acorde("Sol7")              // Acorde (literal; se detiene si no es válido)
 let b = Acorde(texto: entrada)      // Acorde? (nil si no se puede leer)
-let c = try Acorde(leyendo: entrada) // Acorde, o ErrorDeLectura con posición y motivo
+let c = try Acorde(leyendo: entrada) // Acorde, o un ErrorAlLeer con posición y motivo
 ```
 
 El texto se acepta en español (`Do`, `Sib`, `Fa#`, `Solx`, `Mi♭♭`) o con letras (`C#`, `Bb`).

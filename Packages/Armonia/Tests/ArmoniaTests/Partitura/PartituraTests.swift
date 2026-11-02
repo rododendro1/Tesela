@@ -116,7 +116,7 @@ import Testing
             _ = try Duracion(leyendo: "3")
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLectura)?.motivo == .duracionNoValida("3"))
+            #expect((error as? ErrorDeLecturaDePartitura)?.motivo == .duracionNoValida("3"))
 
         }
     }
@@ -165,8 +165,8 @@ import Testing
             _ = try Evento(leyendo: "Do4:3")
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLectura)?.motivo == .duracionNoValida("3"))
-            #expect((error as? ErrorDeLectura)?.posicion == 4)
+            #expect((error as? ErrorDeLecturaDePartitura)?.motivo == .duracionNoValida("3"))
+            #expect((error as? any ErrorAlLeer)?.posicion == 4)
 
         }
         #expect(Evento(texto: "Do4") == nil)
@@ -197,7 +197,7 @@ import Testing
             _ = try Voz(leyendo: "Do4:4 Re4:3")
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLectura)?.posicion == 10)
+            #expect((error as? any ErrorAlLeer)?.posicion == 10)
 
         }
     }

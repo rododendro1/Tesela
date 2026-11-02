@@ -128,11 +128,9 @@ public struct Coral: Hashable, Sendable {
             guard !actual.isEmpty else { return }
             do {
                 acordes[acordes.count - 1].append(try Altura(leyendo: actual))
-            } catch let error as ErrorDeLectura {
+            } catch let error as any ErrorAlLeer {
                 let inicio = posicion - actual.count
-                throw ErrorDeLectura(
-                    texto: texto, posicion: error.posicion.map { inicio + $0 } ?? inicio,
-                    motivo: error.motivo)
+                throw error.situado(en: texto, posicion: error.posicion.map { inicio + $0 } ?? inicio)
             }
         }
         for caracter in texto {
@@ -150,7 +148,7 @@ public struct Coral: Hashable, Sendable {
         acordes.removeAll { $0.isEmpty }
         guard !acordes.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
         guard let conduccion = Coral(acordes) else {
-            throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .vocesDistintas)
+            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .vocesDistintas)
         }
         self = conduccion
     }

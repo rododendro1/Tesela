@@ -124,8 +124,8 @@ public struct Contrapunto: Hashable, Sendable {
         for trozo in cantusFirmus.split(separator: " ", omittingEmptySubsequences: false) {
             defer { inicio += trozo.count + 1 }
             guard !trozo.isEmpty else { continue }
-            do { cantus.append(try Altura(leyendo: String(trozo))) } catch let e as ErrorDeLectura {
-                throw ErrorDeLectura(texto: cantusFirmus, posicion: inicio + (e.posicion ?? 0), motivo: e.motivo)
+            do { cantus.append(try Altura(leyendo: String(trozo))) } catch let e as any ErrorAlLeer {
+                throw e.situado(en: cantusFirmus, posicion: inicio + (e.posicion ?? 0))
             }
         }
         guard !cantus.isEmpty else { throw ErrorDeLectura(texto: cantusFirmus, posicion: nil, motivo: .textoVacio) }
@@ -135,7 +135,7 @@ public struct Contrapunto: Hashable, Sendable {
         }
         let voz = try Voz(leyendo: eventos.joined(separator: " "))
         guard let leido = Contrapunto(cantusFirmus: cantus, contrapunto: voz.eventos, especie: especie) else {
-            throw ErrorDeLectura(
+            throw ErrorDeLecturaDePartitura(
                 texto: contrapunto, posicion: nil, motivo: .contrapuntoDeOtraDuracion(redondas: cantus.count))
         }
         self = leido

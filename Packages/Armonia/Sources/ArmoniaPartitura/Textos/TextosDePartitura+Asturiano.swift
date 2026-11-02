@@ -91,6 +91,10 @@ extension TextosDePartitura {
         instrumentoBajoElectrico: "baxu llétricu",
         instrumentoXilofono: "xilófonu",
         instrumentoGlockenspiel: "glockenspiel",
-        instrumentoCelesta: "celesta"
+        instrumentoCelesta: "celesta",
+        // ErrorDeLecturaDePartitura.swift
+        duracionNoValida: { texto in "«\(texto)» nun ye una duración: esperábase una figura (1, 2, 4, 8, 16…, con puntiellos: 4.) o una fraición de redonda (3/8, 1/12)" },
+        compasNoValido: { texto in "«\(texto)» nun ye un compás: esperábase numerador/denominador col denominador potencia de 2 (4/4, 6/8, 7/8), C o ¢" },
+        contrapuntoDeOtraDuracion: { redondas in "el contrapuntu tien que durar lo mesmo que\'l cantus firmus: \(redondas) redondes, una por nota" }
     )
 }

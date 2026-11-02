@@ -91,6 +91,10 @@ extension TextosDePartitura {
         instrumentoBajoElectrico: "basso elettrico",
         instrumentoXilofono: "xilofono",
         instrumentoGlockenspiel: "glockenspiel",
-        instrumentoCelesta: "celesta"
+        instrumentoCelesta: "celesta",
+        // ErrorDeLecturaDePartitura.swift
+        duracionNoValida: { texto in "«\(texto)» non è una durata: si aspettava una figura (1, 2, 4, 8, 16…, puntata: 4.) o una frazione di semibreve (3/8, 1/12)" },
+        compasNoValido: { texto in "«\(texto)» non è un tempo: si aspettava numeratore/denominatore con il denominatore potenza di 2 (4/4, 6/8, 7/8), C o ¢" },
+        contrapuntoDeOtraDuracion: { redondas in "il contrappunto deve durare quanto il cantus firmus: \(redondas) semibrevi, una per nota" }
     )
 }

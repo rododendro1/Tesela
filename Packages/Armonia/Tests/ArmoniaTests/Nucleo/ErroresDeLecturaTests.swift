@@ -14,17 +14,31 @@ import Testing
         _ leer: @autoclosure () throws -> T, _ motivo: ErrorDeLectura.Motivo,
         posicion: Int?, sourceLocation: SourceLocation = #_sourceLocation
     ) {
+        comprobar(try leer(), ErrorDeLectura.self, motivo, posicion: posicion, sourceLocation: sourceLocation)
+    }
+
+    /// Lo mismo con un motivo de Teoría.
+    private func comprobar<T>(
+        _ leer: @autoclosure () throws -> T, _ motivo: ErrorDeLecturaDeTeoria.Motivo,
+        posicion: Int?, sourceLocation: SourceLocation = #_sourceLocation
+    ) {
+        comprobar(try leer(), ErrorDeLecturaDeTeoria.self, motivo, posicion: posicion, sourceLocation: sourceLocation)
+    }
+
+    private func comprobar<T, E: ErrorAlLeer>(
+        _ leer: @autoclosure () throws -> T, _ tipo: E.Type, _ motivo: E.Motivo,
+        posicion: Int?, sourceLocation: SourceLocation
+    ) {
         do {
             _ = try leer()
             Issue.record("Se esperaba un error", sourceLocation: sourceLocation)
         } catch {
-            guard let error = error as? ErrorDeLectura else {
+            guard let error = error as? E else {
                 Issue.record("Error inesperado: \(error)", sourceLocation: sourceLocation)
                 return
             }
             #expect(error.motivo == motivo, sourceLocation: sourceLocation)
             #expect(error.posicion == posicion, sourceLocation: sourceLocation)
-
         }
     }
 
@@ -42,7 +56,7 @@ import Testing
             _ = try Acorde(leyendo: "Dodimø")
             Issue.record("Se esperaba un error")
         } catch {
-            guard case .calidadesIncompatibles = (error as? ErrorDeLectura)?.motivo else {
+            guard case .calidadesIncompatibles = (error as? ErrorDeLecturaDeTeoria)?.motivo else {
                 Issue.record("\(error)")
                 return
             }
@@ -52,7 +66,7 @@ import Testing
             _ = try Acorde(leyendo: "Dom5")
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLectura)?.posicion == nil)
+            #expect((error as? ErrorDeLecturaDeTeoria)?.posicion == nil)
 
         }
     }
@@ -126,7 +140,7 @@ import Testing
             _ = try Acorde(leyendo: "Do7(b3)")
             Issue.record("Se esperaba un error")
         } catch {
-            let error = error as! ErrorDeLectura
+            let error = error as! ErrorDeLecturaDeTeoria
             #expect(
                 error.descripcion(en: .inglesASCII)
                     == ("Cannot read \"Do7(b3)\" (character 5): \"b3\" is not a valid tension "
@@ -177,7 +191,7 @@ import Testing
             Issue.record("Se esperaba un error")
         } catch {
             #expect(
-                (error as! ErrorDeLectura).explicacion(en: .inglesASCII)
+                (error as! ErrorDeLecturaDeTeoria).explicacion(en: .inglesASCII)
                     == "the augmented unison has no role in a tertian chord")
 
         }
@@ -190,27 +204,33 @@ import Testing
             ])
     }
 
-    private static let motivos: [ErrorDeLectura.Motivo] = [
-        .textoVacio, .notaNoReconocida, .caracteresSobrantes("x"), .octavaNoValida(""), .octavaNoValida("x"),
-        .numeroDeIntervaloNoValido(""), .numeroDeIntervaloNoValido("x"), .calidadNoValida(""),
-        .calidadNoValida("X"), .intervaloInexistente(numero: 1, calidad: .disminuida(1)),
-        .intervaloInexistente(numero: 3, calidad: .justa), .simboloNoReconocido("x"), .tensionNoValida("b3"),
-        .numeroDeAcordeNoValido(8), .numeroRepetido(9), .calidadesIncompatibles(.disminuidoYSemidisminuido),
-        .calidadesIncompatibles(.quintaConCalidad), .gradoNoOmitible(1), .gradoNoOmitible(2),
-        .acordeNoInterpretable(.faltaLaFundamental), .acordeNoInterpretable(.intervaloSinPapel(.unisonoAumentado)),
-        .acordeNoInterpretable(.terceraMayorYMenor), .acordeNoInterpretable(.variasSeptimas),
-        .acordeNoInterpretable(.septimaDisminuidaFueraDelDisminuido), .acordeNoInterpretable(.noEsPorTerceras),
-        .bajoNoValido("x"), .idiomasMezclados("B"), .tipoDeEscalaNoReconocido(""),
-        .tipoDeEscalaNoReconocido("x"), .modoNoReconocido("dórico"), .alteracionNoReconocida("?"),
-        .duracionNoValida("x"), .compasNoValido("x"), .vocesDistintas, .contrapuntoDeOtraDuracion(redondas: 8),
-    ]
+    /// Un error de cada motivo, de las tres capas.
+    private static let errores: [any ErrorAlLeer] =
+        [ErrorDeLectura.Motivo]([
+            .textoVacio, .notaNoReconocida, .caracteresSobrantes("x"), .octavaNoValida(""), .octavaNoValida("x"),
+            .numeroDeIntervaloNoValido(""), .numeroDeIntervaloNoValido("x"), .calidadNoValida(""),
+            .calidadNoValida("X"), .intervaloInexistente(numero: 1, calidad: .disminuida(1)),
+            .intervaloInexistente(numero: 3, calidad: .justa), .alteracionNoReconocida("?"),
+        ]).map { ErrorDeLectura(texto: "x", posicion: 0, motivo: $0) }
+        + [ErrorDeLecturaDeTeoria.Motivo]([
+            .simboloNoReconocido("x"), .tensionNoValida("b3"), .numeroDeAcordeNoValido(8), .numeroRepetido(9),
+            .calidadesIncompatibles(.disminuidoYSemidisminuido), .calidadesIncompatibles(.quintaConCalidad),
+            .gradoNoOmitible(1), .gradoNoOmitible(2), .acordeNoInterpretable(.faltaLaFundamental),
+            .acordeNoInterpretable(.intervaloSinPapel(.unisonoAumentado)), .acordeNoInterpretable(.terceraMayorYMenor),
+            .acordeNoInterpretable(.variasSeptimas), .acordeNoInterpretable(.septimaDisminuidaFueraDelDisminuido),
+            .acordeNoInterpretable(.noEsPorTerceras), .bajoNoValido("x"), .idiomasMezclados("B"),
+            .tipoDeEscalaNoReconocido(""), .tipoDeEscalaNoReconocido("x"), .modoNoReconocido("dórico"),
+            .vocesDistintas,
+        ]).map { ErrorDeLecturaDeTeoria(texto: "x", posicion: 0, motivo: $0) }
+        + [ErrorDeLecturaDePartitura.Motivo]([
+            .duracionNoValida("x"), .compasNoValido("x"), .contrapuntoDeOtraDuracion(redondas: 8),
+        ]).map { ErrorDeLecturaDePartitura(texto: "x", posicion: 0, motivo: $0) }
 
     /// Todos los motivos tienen explicación en inglés, y la inglesa no lleva texto en español.
     @Test func todosLosMotivosEnLosDosIdiomas() {
-        let motivos = Self.motivos
         let espanol = ["el ", "la ", " no ", "falta", "sobra", "se esperaba", "tiene", "texto"]
-        for motivo in motivos {
-            let error = ErrorDeLectura(texto: "x", posicion: 0, motivo: motivo)
+        for error in Self.errores {
+            let motivo = error.motivo
             let ingles = error.explicacion(en: .inglesASCII)
             #expect(!ingles.isEmpty, "\(motivo)")
             #expect(ingles != error.explicacion, "\(motivo)")
@@ -231,8 +251,8 @@ import Testing
                 // En francés, las comillas llevan espacios: « x ».
                 .map { "«" + $0.dropFirst().dropLast().trimmingCharacters(in: .whitespaces) + "»" }
         }
-        for motivo in Self.motivos {
-            let error = ErrorDeLectura(texto: "x", posicion: 0, motivo: motivo)
+        for error in Self.errores {
+            let motivo = error.motivo
             let espanol = error.explicacion
             for notacion in [
                 Notacion.catalanPalabras, .gallegoPalabras, .euskeraPalabras, .portuguesPalabras, .francesPalabras,
@@ -268,7 +288,7 @@ import Testing
             _ = try Acorde(leyendo: "Do7(b3)")
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLectura)?.motivo == .tensionNoValida("b3"))
+            #expect((error as? ErrorDeLecturaDeTeoria)?.motivo == .tensionNoValida("b3"))
 
         }
     }

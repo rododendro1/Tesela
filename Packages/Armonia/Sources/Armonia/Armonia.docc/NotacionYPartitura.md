@@ -254,9 +254,15 @@ Escala("Do mayor").svgPentagrama(octava: 3, opciones: OpcionesDePentagrama(penta
 
 ## Errores
 
-Cada tipo tiene un inicializador `init(leyendo:)` que lanza `ErrorDeLectura` con el
-texto, el carácter donde se detuvo y el motivo. Los inicializadores opcionales
-(`Acorde(texto: …)`) siguen existiendo y devuelven `nil`.
+Cada tipo tiene un inicializador `init(leyendo:)` que lanza un error con el texto, el carácter
+donde se detuvo y el motivo. Cada capa tiene el suyo: `ErrorDeLectura` para las notas, las alturas y
+los intervalos, `ErrorDeLecturaDeTeoria` para los cifrados, las escalas, las tonalidades y los corales,
+y `ErrorDeLecturaDePartitura` para las duraciones, los compases y el contrapunto. Leer un acorde puede
+lanzar los dos primeros (si falla la fundamental o si falla el cifrado); los tres cumplen
+`ErrorAlLeer`. Los inicializadores opcionales (`Acorde(texto: …)`) siguen existiendo y devuelven `nil`.
+
+Todos los errores del motor, también `ErrorDeImportacion` y `ErrorDeUIL`, cumplen `ErrorDeArmonia`:
+para mostrar cualquiera basta `catch let error as any ErrorDeArmonia` y `error.descripcion(en:)`.
 
 El mensaje está en español (`description`, `explicacion`) y también en inglés, catalán, gallego,
 euskera, portugués, francés, occitano, italiano, alemán, griego y ruso: `descripcion(en:)` y
@@ -267,7 +273,7 @@ nombres de intervalos.
 do {
     let acorde = try Acorde(leyendo: "Do7(b3)")
     print(acorde)                     // no se llega aquí: la línea anterior lanza el error
-} catch let error as ErrorDeLectura {
+} catch let error as ErrorDeLecturaDeTeoria {
     print(error)
     // No se puede leer «Do7(b3)» (carácter 5): «b3» no es una tensión válida
     // (se admiten ♭/♯ con 5, 9, 11 y 13, y add con 2, 4, 6, 9, 11 y 13)

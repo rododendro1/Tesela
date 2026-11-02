@@ -123,6 +123,29 @@ extension TextosDeTeoria {
         dominanteSecundaria: "dominante secundaria",
         prestamoModal: "emprestu modal",
         sustitutoDiatonico: "sustitutu diatónicu",
+        // ErrorDeLecturaDeTeoria.swift (acordes)
+        simboloNoReconocido: { simbolo in "«\(simbolo)» nun fai parte de nengún cifráu conocíu" },
+        tensionNoValida: { tension in "«\(tension)» nun ye una tensión válida (almítense ♭/♯ con 5, 9, 11 y 13, y add con 2, 4, 6, 9, 11 y 13)" },
+        numeroDeAcordeNoValido: { numero in "«\(numero)» nun ye un númberu d\'acorde (5, 6, 7, 9, 11 o 13)" },
+        numeroRepetido: { numero in "«\(numero)» apaez tres d\'otru númberu; les tensiones adicionales van ente paréntesis, como en 7(9)" },
+        disminuidoYSemidisminuido: "menguáu (°) y semimenguáu (ø) nun se puen combinar",
+        quintaConCalidad: "l\'acorde de quinta (5) nun lleva tercera, asina que nun almite m, °, ø nin +",
+        fundamentalNoOmitible: "nun se pue omitir la fundamental",
+        gradoNoOmitible: { grado in "«omit\(grado)» nun ye válidu (puen omitise 3, 5, 7, 9, 11 y 13)" },
+        faltaLaFundamental: "falta la fundamental",
+        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .asturianoPalabras)) nun tien papel nun acorde per terceres" },
+        terceraMayorYMenor: "tien tercera mayor y menor al empar (la ♯9 escríbese como 9ª aumentada, non como 3ª menor)",
+        variasSeptimas: "tien más d\'una séptima",
+        septimaDisminuidaFueraDelDisminuido: "la séptima menguada namás apaez nel acorde menguáu (con 3ª menor y 5ª menguada)",
+        noEsPorTerceras: "nun ye un acorde per terceres",
+        bajoNoValido: { bajo in "«\(bajo)» nun ye un nome de nota pal baxu" },
+        idiomasMezclados: { nombre in "«\(nombre)» ta escritu n\'otra llingua que la fundamental: escríbese too en castellán (Sol7/Si) o too con lletres (G7/B)" },
+        // ErrorDeLecturaDeTeoria.swift (escalas)
+        modoNoReconocido: { nombre in "«\(nombre)» nun ye\'l mou d\'una tonalidá: una tonalidá ye mayor o menor (pa los demás moos, usa Escala)" },
+        faltaElTipoDeEscala: "falta\'l tipu d\'escala (mayor, dóricu, menor armónica…)",
+        tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» nun ye un tipu d\'escala conocíu" },
+        // ErrorDeLecturaDeTeoria.swift (coral)
+        vocesDistintas: "tolos acordes tienen que tener el mesmu númberu de voces, y polo menos dos",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in "en " + tonalidad }
