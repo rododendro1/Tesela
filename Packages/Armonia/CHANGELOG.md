@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### Cifrado romano
+
+- **`Tonalidad.acorde(romano:)`** y **`Tonalidad.acordes(romanos:)`** leen cifrados romanos, el camino inverso
+  de `analizar(_:)`: inversiones («ii65», «V43»), grados alterados y prestados («♭VI», «♭VII»), dominantes y
+  sensibles secundarias («V7/V», «vii°7/ii», también encadenadas: «V/V/V»), sustituto tritonal («subV7/ii»),
+  napolitana («N6», «♭II6») y sextas aumentadas («It+6», «Fr+6», «Ger+6»).
+
 ### Armonía negativa, disposición por cuartas y armonía modal
 
 - **Armonía negativa**: `Tonalidad.negativa(_:)` refleja una nota sobre el eje entre la tónica y la dominante (Mi ↔
