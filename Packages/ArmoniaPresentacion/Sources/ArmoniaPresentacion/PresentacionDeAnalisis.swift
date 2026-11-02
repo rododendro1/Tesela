@@ -36,7 +36,7 @@ public struct AnalisisPresentado: Hashable, Sendable {
 }
 
 /// El ritmo armónico de una progresión: lo que dura cada acorde, en el compás y el tempo de la pieza de la que
-/// sale (un fichero MIDI o MusicXML).
+/// sale (un fichero MIDI, MusicXML, MEI o ABC).
 public struct RitmoArmonico: Hashable, Sendable {
     public let duraciones: [Duracion]
     public let compas: Compas
@@ -75,7 +75,7 @@ public enum PresentacionDeAnalisis {
         return presentar(try AnalisisArmonico.analizar(leyendo: texto), recorrido: recorrido, notacion)
     }
 
-    /// Igual, con los acordes ya leídos (los de un fichero MIDI o MusicXML, por ejemplo). `nil` si no hay ninguno.
+    /// Igual, con los acordes ya leídos (los de un fichero MIDI o MEI, por ejemplo). `nil` si no hay ninguno.
     /// Con su ritmo armónico (una duración por acorde), la partitura, el MIDI, «Escuchar» y la progresión
     /// arpegiada lo siguen; si no, cada acorde dura una blanca.
     public static func analizar(

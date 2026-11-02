@@ -212,12 +212,12 @@ let datos = alberti.midi(titulo: "Bajo de Alberti")
 - Desde la terminal: `armonia musicxml arpegios Do Lam Fa Sol7 --patron alberti --duracion 2`, y lo mismo
   con `mei` y `midi`. `--figura 16` cambia lo que dura cada nota (corchea si no).
 
-## Importar MIDI y MusicXML
+## Importar MIDI, MusicXML, MEI y ABC
 
-`PiezaImportada(leyendo:)` lee un fichero MIDI estándar o una partitura MusicXML, sin comprimir o
-comprimida (.mxl) (lo distingue por el contenido, no por la extensión) y da sus notas, cada una con su altura, su
-comienzo y su duración en redondas, junto con el título, la armadura, el compás y el tempo del
-fichero. `acordes(ventana:)` reduce las notas a los acordes que suenan y `analisis(en:ventana:)`
+`PiezaImportada(leyendo:)` lee un fichero MIDI estándar o una partitura MusicXML (sin comprimir o
+comprimida, .mxl), MEI o ABC (lo distingue por el contenido, no por la extensión) y da sus notas,
+cada una con su altura, su comienzo y su duración en redondas, junto con el título, la armadura,
+el compás y el tempo del fichero. `acordes(ventana:)` reduce las notas a los acordes que suenan y `analisis(en:ventana:)`
 los analiza.
 
 ```swift
@@ -231,7 +231,7 @@ pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca]   // t
 ```
 
 - MIDI solo da números de nota: la ortografía sale de la armadura del fichero o, si no la
-  tiene, de la tonalidad que mejor explica las notas. MusicXML conserva la suya.
+  tiene, de la tonalidad que mejor explica las notas. MusicXML, MEI y ABC conservan la suya.
 - La reducción corta la pieza en ventanas de un pulso del compás. En cada una, cada nota pesa
   lo que suena dentro; si quitando una o dos de las que menos pesan sale una lectura mucho más
   probable, se quitan (son de paso, bordaduras, apoyaturas). Las ventanas seguidas con el mismo
@@ -246,6 +246,6 @@ pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca]   // t
 - Todavía no se leen las repeticiones ni los saltos. Del .mxl se lee la partitura que señala
   `META-INF/container.xml`. Los errores son `ErrorDeImportacion`, con su explicación en los quince
   idiomas.
-- Desde la terminal: `armonia analizar --archivo coral.mid` (o `.musicxml`, o `.mxl`), y
+- Desde la terminal: `armonia analizar --archivo coral.mid` (o `.musicxml`, `.mxl`, `.mei`, `.abc`), y
   `armonia musicxml acordes --archivo coral.mid` para la progresión con su ritmo armónico (también
   `arpegios`, `mei` y `midi`).

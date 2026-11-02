@@ -4,8 +4,8 @@ import Testing
 
 @testable import ArmoniaPresentacion
 
-// «Abrir» en la vista de análisis: de un fichero MIDI o MusicXML a una progresión que se analiza como si se
-// hubiera escrito.
+// «Abrir» en la vista de análisis: de un fichero MIDI, MusicXML, MEI o ABC a una progresión que se analiza como si
+// se hubiera escrito.
 @Suite struct ImportacionDeProgresionTests {
     @Test func unFicheroDaSuProgresion() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")

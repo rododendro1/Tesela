@@ -3,8 +3,8 @@ import ArmoniaUI
 import SwiftUI
 import UniformTypeIdentifiers
 
-/// Escribe una progresión (Do Fa Sol7 Do Lam Re7 Sol), o la saca de un fichero MIDI o MusicXML con «Abrir» (con su
-/// ritmo armónico, que siguen la partitura, el MIDI y «Escuchar» mientras no se retoque), y
+/// Escribe una progresión (Do Fa Sol7 Do Lam Re7 Sol), o la saca de un fichero MIDI, MusicXML, MEI o ABC con «Abrir»
+/// (con su ritmo armónico, que siguen la partitura, el MIDI y «Escuchar» mientras no se retoque), y
 /// muestra sus tonalidades, los grados, las funciones, las modulaciones y las cadencias, y la exporta como
 /// partitura o MIDI, también arpegiada. Mientras suena, se resalta el acorde que se oye. La progresión se puede
 /// llevar a otra tonalidad y rearmonizar acorde a acorde.

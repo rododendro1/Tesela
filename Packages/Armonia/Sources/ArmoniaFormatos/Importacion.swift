@@ -3,9 +3,9 @@ import ArmoniaPartitura
 import ArmoniaTeoria
 import Foundation
 
-// Importación de partituras: ficheros MIDI estándar (LecturaMIDI.swift) y MusicXML, sin comprimir
-// (LecturaMusicXML.swift) o comprimido (.mxl, LecturaMXL.swift), leídos como una lista de notas con su
-// comienzo y su duración.
+// Importación de partituras: ficheros MIDI estándar (LecturaMIDI.swift), MusicXML, sin comprimir
+// (LecturaMusicXML.swift) o comprimido (.mxl, LecturaMXL.swift), MEI (LecturaMEI.swift) y ABC
+// (LecturaABC.swift), leídos como una lista de notas con su comienzo y su duración.
 //
 // De ahí salen los acordes que suenan (`acordes(ventana:)`) y su análisis armónico. La reducción
 // a acordes es una estimación: la pieza se corta en ventanas de un pulso, en cada una se pesan las
@@ -42,7 +42,7 @@ public struct NotaDeLaPieza: Hashable, Sendable {
     public var fin: Duracion { inicio + duracion }
 }
 
-/// Una pieza leída de un fichero MIDI o MusicXML.
+/// Una pieza leída de un fichero MIDI, MusicXML, MEI o ABC.
 ///
 ///     let pieza = try PiezaImportada(leyendo: Data(contentsOf: URL(fileURLWithPath: "coral.mid")))
 ///     pieza.tonalidad                 // la de la armadura del fichero, si la tiene
