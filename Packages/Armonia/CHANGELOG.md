@@ -2,6 +2,21 @@
 
 ## Sin publicar
 
+- **Veintiocho escalas tradicionales más** (el catálogo microtonal pasa de 68 a 74):
+  - Grecia antigua: las harmoniai que faltaban (mixolidia, hipolidia, hipofrigia e hipodoria), que con la doria,
+    la frigia y la lidia son las siete especies de octava (`TipoDeEscala.harmoniai`), y el tetracordo
+    enarmónico, Mi Fa♭ Fa La en doce notas y Mi Fa𝄳 Fa La en cuartos de tono. `Intervalo.segundaDisminuida`,
+    para escribirlo.
+  - Makamlar: Mâhur, Acemaşiran, Sultânîyegâh, Şedaraban, Hümâyun, Uzzâl y Zirgüleli Hicaz, los cinco últimos
+    con su versión en comas de Arel-Ezgi-Uzdilek.
+  - Maqamat sin cuartos de tono: Āthār Kurd, maqām Nikrīz, Lāmī y Ṣabā Zamzam.
+  - Indonesia: los pathet de Java (pélog lima, nem y barang; sléndro nem, sanga y manyura) y los modos tembung
+    y sunaren de Bali, en la categoría nueva `CategoriaTradicional.pathet` (`TipoDeEscala.pathets`).
+  - Rāgas que suben y bajan en línea recta: los janya Mohanakalyāṇi, Sāveri y Nāṭa (con su mēḷa padre) y el
+    indostánico Lalit.
+- La escala de sexta disminuida de Barry Harris se encuentra por su nombre: «sexta disminuida» es el bebop
+  mayor y «sexta menor disminuida», el bebop menor melódica (en inglés, «major/minor sixth diminished»).
+
 - **`PiezaImportada` lee MEI y ABC**, además de MIDI y MusicXML: `init(mei:)`, `init(abc:)`, y `init(leyendo:)`
   los reconoce solos. De MEI: partes y capas, armadura, compás, tempo, tresillos, ligaduras, notas de adorno
   (que no cuentan), `accid.ges` y los microtonos (cuartos de tono, koron y sori, comas turcas). De ABC, como lo

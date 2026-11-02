@@ -39,6 +39,12 @@ import Testing
         let tetracordos = TipoDeEscala.tradicionales(categoria: .tetracordo)
         let harmoniai = TipoDeEscala.tradicionales(categoria: .harmonia)
         #expect((tetracordos.count + harmoniai.count) == TipoDeEscala.griegasAntiguas.count)
+        #expect(tetracordos == TipoDeEscala.tetracordosGriegos && harmoniai == TipoDeEscala.harmoniai)
+        #expect(harmoniai.count == 8)
+        // Los pathet y los laras de Indonesia.
+        #expect(TipoDeEscala.tradicionales(categoria: .pathet) == TipoDeEscala.pathets)
+        #expect(TipoDeEscala.tradicionales(categoria: .laras) == TipoDeEscala.indonesias)
+        #expect(TipoDeEscala.tradicionales(tradicion: .indonesia).count == 10)
         // Todas las escalas de la India son de una de las cuatro categorías indias.
         let indias = TipoDeEscala.tradicionales(tradicion: .india)
         #expect(indias.allSatisfy { [.thaat, .melakarta, .janya, .raga].contains($0.categoria) })
@@ -122,6 +128,10 @@ import Testing
         #expect(TipoDeEscala.mohanam.padre?.numeroDeMelakarta == 28)
         #expect(TipoDeEscala.hindolam.padre?.nombre == "Naṭabhairavī")
         #expect(TipoDeEscala.revati.padre == nil)
+        #expect(TipoDeEscala.mohanakalyani.padre?.numeroDeMelakarta == 65)
+        #expect(TipoDeEscala.saveri.padre?.numeroDeMelakarta == 15)
+        #expect(TipoDeEscala.nata.padre?.numeroDeMelakarta == 36)
+        #expect(TipoDeEscala.lalit.categoria == .raga && TipoDeEscala.lalit.padre == nil)
         for janya in TipoDeEscala.janyas {
             guard let padre = janya.padre, let numero = padre.numeroDeMelakarta else { continue }
             #expect(padre.categoria == .melakarta, Comment(rawValue: janya.nombre))

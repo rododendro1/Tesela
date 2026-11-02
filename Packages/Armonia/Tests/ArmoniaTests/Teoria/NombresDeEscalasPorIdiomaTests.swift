@@ -106,7 +106,8 @@ import Testing
     @Test func soloSeTraducenLosNombresDescriptivosDeLasTradicionales() {
         let traducidos: Set<String> = [
             "pentatónica andina", "tritónica andina", "tetracordo diatónico", "tetracordo cromático", "harmonía doria",
-            "harmonía doria cromática", "harmonía frigia", "harmonía lidia",
+            "harmonía doria cromática", "harmonía frigia", "harmonía lidia", "tetracordo enarmónico",
+            "harmonía mixolidia", "harmonía hipolidia", "harmonía hipofrigia", "harmonía hipodoria",
             "Təzəta mayor", "Təzəta menor", "Bati mayor", "Bati menor",
         ]
         for idioma in Idioma.allCases {
@@ -162,6 +163,8 @@ import Testing
     @Test func losNombresTraducidosDeLasTradicionalesSeLeen() {
         #expect(Escala("Fis andine Pentatonik").tipo.nombre == "pentatónica andina")
         #expect(Escala("do tetracord cromàtic").tipo.nombre == "tetracordo cromático")
+        #expect(Escala("E enharmonic tetrachord").tipo.nombre == "tetracordo enarmónico")
+        #expect(Escala("Si harmonie mixolydienne").tipo.nombre == "harmonía mixolidia")
     }
 
     // MARK: Alias escritos y alias normalizados
