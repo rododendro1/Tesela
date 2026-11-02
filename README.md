@@ -8,8 +8,8 @@ SwiftUI para iOS y macOS.
 Apps/
 ├── ArmoniaApp/       Acordes (con su arpegio, también en el mástil, las escalas que encajan y las digitaciones),
 │                     escalas (con el mástil y sus posiciones, CAGED o de tres notas por cuerda), análisis
-│                     armónico (con modulaciones y cadencias, también de un fichero MIDI o MusicXML, .mxl
-│                     incluido, con su ritmo armónico, y la progresión arpegiada),
+│                     armónico (con modulaciones y cadencias, también de un fichero MIDI, MusicXML, .mxl
+│                     incluido, MEI o ABC, con su ritmo armónico, y la progresión arpegiada),
 │                     corales (armonizar, realizar a cuatro voces y revisar) e identificar un acorde tocándolo en
 │                     el mástil o en un teclado MIDI (con su forma prima, su número de Forte y su vector
 │                     interválico); exporta MusicXML, MEI, LilyPond, ABC y MIDI
@@ -138,7 +138,7 @@ lentitud, porque sus máquinas varían demasiado para fijar límites absolutos.
 ## Fuzzing
 
 `Herramientas/FuzzArmonia` prueba con [libFuzzer](https://llvm.org/docs/LibFuzzer.html) todo lo que el motor lee
-de fuera: ficheros MIDI, MusicXML y MXL (con lo que se saca después de ellos: acordes, tonalidad y análisis),
+de fuera: ficheros MIDI, MusicXML, MXL, MEI y ABC (con lo que se saca después de ellos: acordes, tonalidad y análisis),
 teclados en UIL y los textos que se escriben en las apps y en `armonia` (cifrados, notas, escalas, corales,
 voces…). Compilado con AddressSanitizer, un fallo es cualquier caso que detenga el programa, se cuelgue más de
 10 segundos o pierda memoria. Solo en Linux, que es donde Swift trae libFuzzer:

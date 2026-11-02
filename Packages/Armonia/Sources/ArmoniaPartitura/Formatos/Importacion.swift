@@ -67,16 +67,23 @@ public struct PiezaImportada: Hashable, Sendable {
         self.notas = notas.sorted { ($0.inicio, $0.altura.midi, $0.parte) < ($1.inicio, $1.altura.midi, $1.parte) }
     }
 
-    /// Lee un fichero MIDI estándar o MusicXML, comprimido o no, según lo que contenga (no según su extensión).
-    /// Lanza `ErrorDeImportacion` si no es ninguno de los dos, está dañado o no tiene notas.
+    /// Lee un fichero MIDI estándar, MusicXML (comprimido o no), MEI o ABC, según lo que contenga (no según su
+    /// extensión). Lanza `ErrorDeImportacion` si no es ninguno de ellos, está dañado o no tiene notas.
     public init(leyendo datos: Data) throws {
         let inicio = [UInt8](datos.prefix(4))
         if inicio == Array("MThd".utf8) {
             try self.init(midi: datos)
         } else if inicio == [0x50, 0x4B, 0x03, 0x04] {
             try self.init(mxl: datos) // un zip: MusicXML comprimido (.mxl)
+        } else if PiezaImportada.pareceABC(datos) {
+            try self.init(abc: String(decoding: datos, as: UTF8.self))
         } else if String(decoding: datos.prefix(1024), as: UTF8.self).contains("<") {
-            try self.init(musicXML: datos)
+            // MusicXML o MEI, según su elemento raíz.
+            if LectorXML.raiz(de: datos) == "mei" {
+                try self.init(mei: datos)
+            } else {
+                try self.init(musicXML: datos)
+            }
         } else {
             throw ErrorDeImportacion.formatoDesconocido
         }

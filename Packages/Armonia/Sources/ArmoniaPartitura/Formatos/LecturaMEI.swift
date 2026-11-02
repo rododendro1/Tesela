@@ -1,0 +1,353 @@
+import ArmoniaNucleo
+import ArmoniaTeoria
+import Foundation
+
+// Lectura de MEI (Music Encoding Initiative), versiones 3 a 5: lo que exportan Verovio, mei-friend, Sibelius (con su
+// complemento), MuseScore 4 y `mei()`.
+//
+// Se leen las notas (`<note>`), los acordes (`<chord>`), los silencios y los huecos (`<rest>`, `<space>`, `<mRest>`,
+// `<mSpace>`), los grupos irregulares (`<tuplet>`), los puntillos (`dots` o `<dot/>`), las ligaduras (`tie`), cada
+// pentagrama como una parte y cada capa (`<layer>`) desde el principio del compás. La duración exacta es la de
+// `dur.ppq` cuando el pentagrama da sus divisiones (`ppq`) y, si no, la de la figura.
+//
+// La alteración que suena es `accid.ges` o, si no está, la escrita (`accid`); si no hay ninguna, la que vale en el
+// compás o en la armadura. Los cuartos de tono (`1qf`, `3qs`…), el koron y el sori y las comas de Arel-Ezgi-Uzdilek
+// (`kf`, `bs`…) se leen con su desvío en cents. Los instrumentos transpositores (`trans.diat`, `trans.semi`) se leen
+// como suenan. Las notas de adorno (`grace`) no cuentan. Del principio: el título, la armadura, el compás y el tempo
+// (`midi.bpm`).
+
+extension PiezaImportada {
+    /// Lee una partitura MEI.
+    ///
+    ///     let mei = coral.mei(duracion: .blanca)
+    ///     let pieza = try PiezaImportada(mei: Data(mei.utf8))
+    public init(mei datos: Data) throws {
+        let lector = LectorMEI()
+        try LectorXML.leer(datos, con: lector)
+        guard lector.raiz == "mei" else { throw ErrorDeImportacion.noEsMusicXMLPorPartes }
+        guard !lector.notas.isEmpty else { throw ErrorDeImportacion.sinNotas }
+        self.init(
+            titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas,
+            tempo: lector.tempo, notas: lector.notas)
+    }
+}
+
+/// El tiempo de los formatos de texto (MEI y ABC) en pulsos enteros, para que sumar duraciones no desborde las
+/// fracciones: 322 560 por redonda, que dividen la redonda hasta la garrapatea de la garrapatea (1/1024) y los
+/// grupos de 3, 5, 7 y 9.
+enum PulsosDeLectura {
+    static let porRedonda = 322_560
+    /// Hasta dónde se lee: unas 200 000 redondas, horas de música. Lo que empieza después no se lee, para que las
+    /// cuentas con las duraciones no desborden.
+    static let limite = 1 << 36
+
+    /// Los pulsos de una duración, redondeados.
+    static func de(_ duracion: Duracion) -> Int {
+        Int((Double(duracion.numerador) * Double(porRedonda) / Double(duracion.denominador)).rounded())
+    }
+
+    static func duracion(_ pulsos: Int) -> Duracion { Duracion(pulsos, porRedonda) }
+
+    /// La duración en pulsos de una figura de MEI o ABC (`1` redonda, `4` negra, `breve`, `long`) con sus puntillos.
+    static func figura(_ valor: String, puntillos: Int) -> Int? {
+        let redondas: Duracion
+        switch valor {
+        case "maxima": redondas = Duracion(8)
+        case "long": redondas = Duracion(4)
+        case "breve": redondas = Duracion(2)
+        default:
+            guard let n = Int(valor), [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048].contains(n) else {
+                return nil
+            }
+            redondas = Duracion(1, n)
+        }
+        guard (0...4).contains(puntillos) else { return nil }
+        return de(redondas * Duracion((1 << (puntillos + 1)) - 1, 1 << puntillos))
+    }
+}
+
+/// Los cents sobre la nota natural de una alteración de MEI: «s» 100, «ff» −200, «1qf» −50, «kf» una coma
+/// (1200/53 cents) menos. `nil` si no es una alteración.
+func centsDeAlteracionMEI(_ valor: String) -> Double? {
+    let coma = 1200.0 / 53
+    let tabla: [String: Double] = [
+        "n": 0, "s": 100, "f": -100, "ss": 200, "x": 200, "ff": -200, "xs": 300, "sx": 300, "ts": 300, "tf": -300,
+        "nf": -100, "ns": 100, "1qf": -50, "3qf": -150, "1qs": 50, "3qs": 150, "koron": -50, "sori": 50,
+        "ks": coma, "kf": -coma, "bs": 4 * coma, "bf": -4 * coma, "kms": 5 * coma, "kmf": -5 * coma,
+        "bms": 8 * coma, "bmf": -8 * coma,
+    ]
+    return tabla[valor]
+}
+
+/// La alteración en semitonos y el desvío en cents de unos cents sobre la natural: el semitono más cercano y, a medio
+/// camino, el de abajo, como el `<alter>` de MusicXML (−50 es un bemol y 50 cents).
+func alteracionYDesvio(cents: Double) -> (semitonos: Int, desvio: Double) {
+    let semitonos = (cents / 100 - 0.5).rounded(.up)
+    return (Int(semitonos), cents - 100 * semitonos)
+}
+
+/// Recorre el documento elemento a elemento y va colocando las notas en el tiempo.
+final class LectorMEI: LectorDeElementosXML {
+    private(set) var raiz: String?
+    private(set) var titulo: String?
+    private(set) var tonalidad: Tonalidad?
+    private(set) var compas: Compas?
+    private(set) var tempo: Tempo?
+    private(set) var notas: [NotaDeLaPieza] = []
+
+    private var pila: [String] = []
+    private var contenido = ""
+
+    /// Lo que se sabe de cada pentagrama, por su `n`.
+    private struct Pentagrama {
+        var parte: Int
+        var ppq: Int?
+        var transposicion: (pasos: Int, semitonos: Int)?
+    }
+    private var pentagramas: [String: Pentagrama] = [:]
+    private var armadura: [NotaNatural: Int] = [:]
+    /// Lo que dura un compás entero (para `<mRest>`), en pulsos.
+    private var duracionDelCompas = PulsosDeLectura.porRedonda
+
+    // El compás, el pentagrama y la capa en curso.
+    private var inicioDelCompas = 0
+    private var finDelCompas = 0
+    private var pentagrama: Pentagrama?
+    private var nombreDelPentagrama = "1"
+    private var posicion = 0
+    /// Las alteraciones escritas en el compás, por pentagrama y lugar (octava y nota natural), en cents.
+    private var vigentes: [String: Double] = [:]
+    /// Los grupos irregulares abiertos: lo que dura cada figura, en proporción.
+    private var irregulares: [(normales: Int, reales: Int)] = []
+
+    /// Un acorde o una nota sueltos, con lo que se va leyendo de sus hijos.
+    private struct Evento {
+        var figura: String?
+        var puntillos = 0
+        var pulsosExactos: Int?
+        var sinTiempo = false
+    }
+    private var acorde: Evento?
+    private var inicioDelAcorde = 0
+    private var evento = Evento()
+    private var nota = NotaLeida()
+
+    private struct NotaLeida {
+        var paso: NotaNatural?
+        var octava: Int?
+        var escrita: Double?
+        var sonora: Double?
+        var ligaduraQueEmpieza = false
+        var ligaduraQueAcaba = false
+    }
+    /// Las notas con una ligadura que sigue, por parte y altura MIDI: su índice en `notas`.
+    private var ligadas: [Int: Int] = [:]
+
+    func abre(_ nombre: String, atributos: [String: String]) {
+        if raiz == nil { raiz = nombre }
+        defer { pila.append(nombre) }
+        contenido = ""
+        switch nombre {
+        case "scoreDef", "staffDef":
+            definicion(atributos)
+            if nombre == "staffDef", let n = atributos["n"] {
+                var suyo = pentagramas[n] ?? Pentagrama(parte: pentagramas.count)
+                if let ppq = atributos["ppq"].flatMap(Int.init), ppq > 0, ppq <= 100_000 { suyo.ppq = ppq }
+                let pasos = atributos["trans.diat"].flatMap(Int.init) ?? 0
+                let semitonos = atributos["trans.semi"].flatMap(Int.init) ?? 0
+                if abs(pasos) <= 100, abs(semitonos) <= 200, pasos != 0 || semitonos != 0 {
+                    suyo.transposicion = (pasos, semitonos)
+                }
+                pentagramas[n] = suyo
+            }
+        case "keySig":
+            definicion(["keysig": atributos["sig"] ?? "", "key.mode": atributos["mode"] ?? ""])
+        case "meterSig":
+            definicion(["meter.count": atributos["count"] ?? "", "meter.unit": atributos["unit"] ?? ""])
+        case "tempo":
+            definicion(["midi.bpm": atributos["midi.bpm"] ?? ""])
+        case "measure":
+            posicion = inicioDelCompas
+            finDelCompas = inicioDelCompas
+            vigentes = [:]
+        case "staff":
+            nombreDelPentagrama = atributos["n"] ?? "1"
+            if pentagramas[nombreDelPentagrama] == nil {
+                pentagramas[nombreDelPentagrama] = Pentagrama(parte: pentagramas.count)
+            }
+            pentagrama = pentagramas[nombreDelPentagrama]
+        case "layer":
+            posicion = inicioDelCompas
+        case "tuplet":
+            let reales = atributos["num"].flatMap(Int.init) ?? 3
+            let normales = atributos["numbase"].flatMap(Int.init) ?? 2
+            // Como mucho cuatro grupos uno dentro de otro, de hasta 64 figuras.
+            irregulares.append(
+                (1...64).contains(reales) && (1...64).contains(normales) && irregulares.count < 4
+                    ? (normales, reales) : (1, 1))
+        case "chord":
+            acorde = leerEvento(atributos)
+            inicioDelAcorde = posicion
+        case "note":
+            if acorde == nil { evento = leerEvento(atributos) }
+            nota = NotaLeida()
+            nota.paso = atributos["pname"].flatMap {
+                ["c", "d", "e", "f", "g", "a", "b"].firstIndex(of: $0.lowercased()).flatMap(NotaNatural.init(rawValue:))
+            }
+            nota.octava = atributos["oct"].flatMap(Int.init).flatMap { abs($0) <= 20 ? $0 : nil }
+            alteraciones(atributos)
+            let ligadura = atributos["tie"] ?? ""
+            nota.ligaduraQueEmpieza = ligadura == "i" || ligadura == "m"
+            nota.ligaduraQueAcaba = ligadura == "t" || ligadura == "m"
+        case "accid" where padre == "note":
+            alteraciones(atributos)
+        case "rest", "space":
+            if acorde == nil { evento = leerEvento(atributos) }
+        case "dot":
+            if padre == "chord" {
+                acorde?.puntillos += 1
+            } else if padre == "note" || padre == "rest" {
+                evento.puntillos += 1
+            }
+        default:
+            break
+        }
+    }
+
+    func texto(_ cadena: String) {
+        contenido += cadena
+    }
+
+    func cierra(_ nombre: String) {
+        let valor = contenido.trimmingCharacters(in: .whitespacesAndNewlines)
+        contenido = ""
+        pila.removeLast()
+        switch nombre {
+        case "title" where pila.contains("titleStmt"):
+            if titulo == nil, !valor.isEmpty { titulo = valor }
+        case "note":
+            if acorde != nil {
+                colocar(desde: inicioDelAcorde, pulsos: pulsos(de: acorde!))
+            } else {
+                let duracion = pulsos(de: evento)
+                colocar(desde: posicion, pulsos: duracion)
+                avanzar(duracion)
+            }
+        case "chord":
+            if let acorde { avanzar(pulsos(de: acorde)) }
+            acorde = nil
+        case "rest", "space":
+            if acorde == nil { avanzar(pulsos(de: evento)) }
+        case "mRest", "mSpace":
+            avanzar(duracionDelCompas)
+        case "tuplet":
+            if !irregulares.isEmpty { irregulares.removeLast() }
+        case "staff":
+            pentagrama = nil
+        case "measure":
+            inicioDelCompas = max(finDelCompas, posicion)
+        default:
+            break
+        }
+    }
+
+    /// El elemento que contiene al actual.
+    private var padre: String? { pila.last }
+
+    /// La armadura, el compás y el tempo de `<scoreDef>`, `<staffDef>` y sus hijos; solo los primeros.
+    private func definicion(_ atributos: [String: String]) {
+        if let firma = atributos["keysig"] ?? atributos["key.sig"], let quintas = LectorMEI.quintas(firma) {
+            let menor = (atributos["key.mode"] ?? atributos["mode"]) == "minor"
+            if tonalidad == nil, abs(quintas) <= 7 {
+                tonalidad = Tonalidad(armadura: quintas, modo: menor ? .menor : .mayor)
+            }
+            armadura = Dictionary(
+                (Tonalidad(armadura: max(-7, min(7, quintas))).notasDeLaArmadura).map {
+                    ($0.natural, $0.alteracion.semitonos)
+                }, uniquingKeysWith: { primera, _ in primera })
+        }
+        if let pulsos = (atributos["meter.count"]).map({ texto in
+            texto.split(separator: "+").map { Int($0.trimmingCharacters(in: .whitespaces)) }
+        }), !pulsos.contains(nil), let unidad = atributos["meter.unit"].flatMap(Int.init) {
+            let total = pulsos.compactMap { $0 }.reduce(0, +)
+            if let leido = Compas(comprobando: total, unidad), total <= 1000 {
+                if compas == nil { compas = leido }
+                duracionDelCompas = PulsosDeLectura.de(leido.duracion)
+            }
+        }
+        if tempo == nil, let bpm = atributos["midi.bpm"].flatMap(Double.init), bpm > 0, bpm < 10_000 {
+            tempo = Tempo(comprobando: bpm)
+        }
+    }
+
+    /// «2s» → 2, «3f» → −3, «0» → 0.
+    private static func quintas(_ firma: String) -> Int? {
+        if firma == "0" { return 0 }
+        guard let signo = firma.last, signo == "s" || signo == "f", let n = Int(firma.dropLast()), n <= 7 else {
+            return nil
+        }
+        return signo == "s" ? n : -n
+    }
+
+    private func leerEvento(_ atributos: [String: String]) -> Evento {
+        var evento = Evento()
+        evento.figura = atributos["dur"]
+        evento.puntillos = atributos["dots"].flatMap(Int.init) ?? 0
+        if let exactos = atributos["dur.ppq"].flatMap(Int.init), exactos > 0, exactos < 10_000_000,
+            let ppq = pentagrama?.ppq
+        {
+            evento.pulsosExactos = Int(
+                (Double(exactos) * Double(PulsosDeLectura.porRedonda) / Double(4 * ppq)).rounded())
+        }
+        evento.sinTiempo = atributos["grace"] != nil
+        return evento
+    }
+
+    private func alteraciones(_ atributos: [String: String]) {
+        if let escrita = atributos["accid"].flatMap(centsDeAlteracionMEI) { nota.escrita = escrita }
+        if let sonora = atributos["accid.ges"].flatMap(centsDeAlteracionMEI) { nota.sonora = sonora }
+    }
+
+    /// Lo que dura un evento, en pulsos: el exacto o el de su figura, en su grupo irregular.
+    private func pulsos(de evento: Evento) -> Int {
+        guard !evento.sinTiempo else { return 0 }
+        if let exactos = evento.pulsosExactos { return exactos }
+        guard let figura = evento.figura, var pulsos = PulsosDeLectura.figura(figura, puntillos: evento.puntillos)
+        else { return 0 }
+        for (normales, reales) in irregulares { pulsos = pulsos * normales / reales }
+        return pulsos
+    }
+
+    private func avanzar(_ pulsos: Int) {
+        posicion = min(posicion + pulsos, PulsosDeLectura.limite + 1)
+        finDelCompas = max(finDelCompas, posicion)
+    }
+
+    private func colocar(desde inicio: Int, pulsos: Int) {
+        guard pulsos > 0, inicio + pulsos <= PulsosDeLectura.limite, let paso = nota.paso, let octava = nota.octava,
+            let pentagrama
+        else { return }
+        let lugar = "\(nombreDelPentagrama) \(octava * 7 + paso.rawValue)"
+        if let escrita = nota.escrita { vigentes[lugar] = escrita }
+        let cents = nota.sonora ?? nota.escrita ?? vigentes[lugar] ?? 100 * Double(armadura[paso] ?? 0)
+        let (semitonos, desvio) = alteracionYDesvio(cents: cents)
+        var altura = Altura(Nota(paso, Alteracion(semitonos)), octava: octava)
+        if let transposicion = pentagrama.transposicion {
+            altura = Altura(pasos: altura.pasos + transposicion.pasos, midi: altura.midi + transposicion.semitonos)
+        }
+        let parte = pentagrama.parte
+        let desde = PulsosDeLectura.duracion(inicio)
+        let duracion = PulsosDeLectura.duracion(pulsos)
+        let clave = parte * 1024 + altura.midi + 512
+        if nota.ligaduraQueAcaba, let i = ligadas[clave], notas[i].fin == desde {
+            let anterior = notas[i]
+            notas[i] = NotaDeLaPieza(
+                altura: anterior.altura, inicio: anterior.inicio, duracion: anterior.duracion + duracion, parte: parte,
+                desvio: anterior.desvio)
+            if !nota.ligaduraQueEmpieza { ligadas[clave] = nil }
+        } else {
+            notas.append(NotaDeLaPieza(altura: altura, inicio: desde, duracion: duracion, parte: parte, desvio: desvio))
+            if nota.ligaduraQueEmpieza { ligadas[clave] = notas.count - 1 }
+        }
+    }
+}

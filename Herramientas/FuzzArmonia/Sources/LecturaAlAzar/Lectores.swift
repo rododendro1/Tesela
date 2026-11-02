@@ -14,7 +14,7 @@ public enum LecturaAlAzar {
 
     public static let lectores: [Lector] = [
         Lector(nombre: "fichero") { datos in
-            // MIDI, MusicXML o MXL, según lo que contenga: lo que abren las apps y `armonia importar`.
+            // MIDI, MusicXML, MXL, MEI o ABC, según lo que contenga: lo que abren las apps y `armonia importar`.
             let pieza = try PiezaImportada(leyendo: datos)
             _ = pieza.duracion
             _ = pieza.tonalidadEstimada
@@ -54,6 +54,17 @@ public enum LecturaAlAzar {
         texto("evento") { _ = try Evento(leyendo: $0) },
         texto("duración") { _ = try Duracion(leyendo: $0) },
         texto("compás") { _ = try Compas(leyendo: $0) },
+        Lector(nombre: "MEI") { datos in
+            // Directo al lector de MEI, para que los cambios al azar no lo conviertan en otro formato.
+            let pieza = try PiezaImportada(mei: datos)
+            _ = pieza.acordes()
+            _ = pieza.analisis()
+        },
+        texto("ABC") { texto in
+            let pieza = try PiezaImportada(abc: texto)
+            _ = pieza.acordes()
+            _ = pieza.analisis()
+        },
         texto("UIL") { texto in
             // Los teclados que abre TonnetzApp: se leen y se vuelven a escribir.
             let formato = try FormatoUIL(leyendo: texto)
@@ -81,6 +92,18 @@ public enum LecturaAlAzar {
             Data(analisis.musicXML().utf8),
             Data(voz.musicXML().utf8),
             mxl,
+            Data(coral.mei(duracion: .blanca, compas: Compas(3, 2), tonalidad: Tonalidad(.do)).utf8),
+            Data(voz.abc().utf8),
+        ]
+        let partituras: [String: [Data]] = [
+            "MEI": [
+                Data(analisis.mei().utf8), Data(voz.mei().utf8),
+                Data(try Escala(leyendo: "Re bayati").voz().mei().utf8),
+            ],
+            "ABC": [
+                Data(analisis.abc().utf8), Data(try Escala(leyendo: "Re bayati").voz().abc().utf8),
+                Data(Self.abcDeCancionero.utf8),
+            ],
         ]
         let textos: [String: [String]] = [
             "acorde": ["Do", "Sol7/Si", "Fa#m7(b5)", "Mib maj9(#11)", "C7alt", "Lam6/9"],
@@ -102,7 +125,9 @@ public enum LecturaAlAzar {
         ]
         var semillas: [(nombre: String, datos: Data)] = []
         for (i, lector) in lectores.enumerated() {
-            let ejemplos = lector.nombre == "fichero" ? ficheros : (textos[lector.nombre] ?? []).map { Data($0.utf8) }
+            let ejemplos =
+                lector.nombre == "fichero"
+                ? ficheros : partituras[lector.nombre] ?? (textos[lector.nombre] ?? []).map { Data($0.utf8) }
             for (j, ejemplo) in ejemplos.enumerated() {
                 semillas.append(
                     ("\(lector.nombre.replacingOccurrences(of: " ", with: "-"))-\(j + 1)", Data([UInt8(i)]) + ejemplo))
@@ -114,6 +139,19 @@ public enum LecturaAlAzar {
     private static func texto(_ nombre: String, _ leer: @escaping @Sendable (String) throws -> Void) -> Lector {
         Lector(nombre: nombre) { try leer(String(decoding: $0, as: UTF8.self)) }
     }
+
+    /// Un ABC escrito a mano, como los de los cancioneros: adornos, repeticiones, tresillos, ligaduras y acordes.
+    private static let abcDeCancionero = """
+        X:1
+        T:The Kesh
+        M:6/8
+        L:1/8
+        Q:3/8=116
+        K:G
+        |:"G"GAG GAB|"D"ABA ABd|"G"edd gdd|"D"edB dBA|
+        "G"GAG GAB|"D"ABA ABd|"C"edd gdB|1"D"AGF G3:|2"D"AGF G2||
+        (3Bcd e2 ^f/=f/|[GBd]2 z G>A B<c|d2-d !trill!c2 B|]
+        """
 
     /// Un .mxl como los de MuseScore (el de `ImportacionMXLTests`): tres redondas comprimidas con DEFLATE.
     private static let mxl = Data(
