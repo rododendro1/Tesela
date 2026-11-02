@@ -129,6 +129,98 @@ extension LineaDeComandos {
         return lineas.joined(separator: "\n")
     }
 
+    // MARK: Catálogo de escalas
+
+    /// Cómo se escribe cada tradición en `--tradicion`, con los nombres españoles y con los ingleses (se aceptan los
+    /// dos en cualquier idioma): `--tradicion mundo-arabe`, `--tradition arab-world`.
+    static let nombresDeLasTradiciones: [(tradicion: Tradicion, espanol: String, ingles: String)] = [
+        (.india, "india", "india"), (.grecia, "grecia", "greece"), (.greciaAntigua, "grecia-antigua", "ancient-greece"),
+        (.mundoArabe, "mundo-arabe", "arab-world"), (.persia, "persia", "persia"), (.turquia, "turquia", "turkey"),
+        (.azerbaiyan, "azerbaiyan", "azerbaijan"), (.china, "china", "china"), (.japon, "japon", "japan"),
+        (.corea, "corea", "korea"), (.etiopia, "etiopia", "ethiopia"), (.indonesia, "indonesia", "indonesia"),
+        (.klezmer, "klezmer", "klezmer"), (.andes, "andes", "andes"),
+    ]
+
+    /// Un texto para comparar nombres: sin mayúsculas, tildes, guiones ni espacios («Mundo árabe» → «mundoarabe»).
+    private static func claveDeBusqueda(_ texto: String) -> String {
+        texto.replacingOccurrences(of: "ı", with: "i")
+            .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil)
+            .filter { $0.isLetter || $0.isNumber }
+    }
+
+    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>]`: el catálogo de escalas, las habituales
+    /// y las de otras tradiciones agrupadas por tradición y categoría, cada una con sus notas desde Do (y la marca de
+    /// los microtonos, si los tiene). Un texto suelto busca en los nombres.
+    static func escalas(_ argumentos: [String], _ notacion: Notacion) -> ResultadoDeOrden {
+        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        var entrada = Argumentos(argumentos)
+        var tradicion: Tradicion?
+        switch entrada.quitarOpcion("--tradicion", "--tradición", "--tradition") {
+        case .ausente: break
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            let clave = claveDeBusqueda(texto)
+            guard
+                let encontrada = nombresDeLasTradiciones.first(where: {
+                    claveDeBusqueda($0.espanol) == clave || claveDeBusqueda($0.ingles) == clave
+                })
+            else { return uso(.tradicionDesconocida(texto), notacion) }
+            tradicion = encontrada.tradicion
+        }
+        var categoria: CategoriaTradicional?
+        switch entrada.quitarOpcion("--categoria", "--categoría", "--category") {
+        case .ausente: break
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            let clave = claveDeBusqueda(texto)
+            let nombres = { (candidata: CategoriaTradicional) in
+                [candidata.rawValue, candidata.nombre, candidata.nombre(en: notacion)].map(claveDeBusqueda)
+            }
+            guard let encontrada = CategoriaTradicional.allCases.first(where: { nombres($0).contains(clave) }) else {
+                return uso(.categoriaDesconocida(texto), notacion)
+            }
+            categoria = encontrada
+        }
+        if let opcion = entrada.opcionDesconocida { return uso(.opcionDesconocida(opcion), notacion) }
+        let buscado = claveDeBusqueda(entrada.unidos)
+        func cumple(_ tipo: TipoDeEscala) -> Bool {
+            buscado.isEmpty || claveDeBusqueda(tipo.nombre(en: notacion)).contains(buscado)
+                || claveDeBusqueda(tipo.nombre).contains(buscado)
+        }
+
+        // Los grupos, en el orden del catálogo: las habituales (si no se filtra por tradición ni por categoría) y,
+        // después, cada tradición con su categoría.
+        var grupos: [(titulo: String, tipos: [TipoDeEscala])] = []
+        if tradicion == nil && categoria == nil {
+            let habituales = TipoDeEscala.todos.filter(cumple)
+            if !habituales.isEmpty { grupos.append((t(.habituales), habituales)) }
+        }
+        for tipo in TipoDeEscala.tradicionales where cumple(tipo) {
+            guard let suya = tipo.tradicion, let deTipo = tipo.categoria else { continue }
+            guard tradicion == nil || tradicion == suya, categoria == nil || categoria == deTipo else { continue }
+            let nombres = nombresDeLasTradiciones.first(where: { $0.tradicion == suya })
+            let nombre = nombres.map { ejemplo($0.espanol, $0.ingles).en(notacion) } ?? suya.rawValue
+            let titulo = nombre + " · " + deTipo.nombre(en: notacion)
+            if let i = grupos.firstIndex(where: { $0.titulo == titulo }) {
+                grupos[i].tipos.append(tipo)
+            } else {
+                grupos.append((titulo, [tipo]))
+            }
+        }
+        guard !grupos.isEmpty else { return bien(t(.ningunaEscala)) }
+        var lineas: [String] = []
+        for grupo in grupos {
+            if !lineas.isEmpty { lineas.append("") }
+            lineas.append("\(grupo.titulo) (\(grupo.tipos.count))")
+            for tipo in grupo.tipos {
+                let notas = Escala(.do, tipo).notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
+                let microtonos = tipo.microtonal == nil ? "" : " · " + t(.microtonos)
+                lineas.append("  \(tipo.nombre(en: notacion)): \(notas)\(microtonos)")
+            }
+        }
+        return bien(lineas.joined(separator: "\n"))
+    }
+
     static func describir(tonalidad: Tonalidad, _ notacion: Notacion) -> String {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let armadura: String

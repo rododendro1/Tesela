@@ -22,6 +22,13 @@ if git fetch -q --depth=1 origin "$commit" && git cat-file -e "$commit^{commit}"
   fi
   cambiados=$(git diff --name-only "$commit" HEAD | wc -l)
   git diff -z --name-only "$commit" HEAD | xargs -0 -r touch -c -m
+  # Al cambiar el código de un módulo, lo que lo usa desde otro módulo puede no recompilarse aunque cambie la forma de
+  # un tipo: con un campo nuevo en `Evento`, ArmoniaUI y los ejemplos seguían con el tamaño viejo y se caían al leer
+  # uno. Así que se recompila todo el código propio; lo recuperado sigue sirviendo cuando solo cambian las pruebas.
+  if [ -n "$(git diff --name-only "$commit" HEAD -- '*/Sources/*.swift')" ]; then
+    echo "Desde ${commit:0:7} ha cambiado el código de algún módulo: se recompila todo el código propio."
+    git ls-files -z '*.swift' | xargs -0 -r touch -c -m
+  fi
   echo "Caché de ${commit:0:7}: $cambiados ficheros cambiados desde entonces."
 else
   echo "::warning::No se encuentra el commit $commit de la caché; se compila todo."

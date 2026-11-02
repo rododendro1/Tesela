@@ -37,6 +37,26 @@ extension LineaDeComandosTests {
         }
     }
 
+    /// `musicxml escala …` y los demás formatos: la escala en negras, con sus microtonos.
+    @Test func escalasEnPartituras() throws {
+        let bayati = salida("musicxml escala Re bayati")
+        for fragmento in ["<alter>-0.5</alter>", "<accidental>quarter-flat</accidental>", "Re Bayātī"] {
+            #expect(bayati.contains(fragmento), Comment(rawValue: fragmento))
+        }
+        #expect(salida("musicxml scale D bayati --ingles").contains("<alter>-0.5</alter>"))
+        #expect(salida("mei escala Re bayati").contains("accid=\"1qf\""))
+        #expect(salida("lilypond escala Re bayati").contains("eeh'"))
+        #expect(salida("abc escala Re bayati").contains("_/E"))
+        let rast = salida("mei escala Sol rast makami --duracion 2")
+        #expect(rast.contains("accid=\"kf\"") && rast.contains("accid=\"bs\""), Comment(rawValue: rast))
+        // Una escala sin microtonos, como siempre.
+        #expect(!salida("musicxml escala Do mayor").contains("<accidental>"))
+        let midi = try #require(LineaDeComandos.ejecutar(["midi", "escala", "Re", "bayati"]).datos)
+        // La inflexión de +50 cents (8192 + 2048) antes del Mi𝄳.
+        let bytes = [UInt8](midi)
+        #expect(bytes.indices.dropLast(2).contains { bytes[$0...($0 + 2)].elementsEqual([0xE0, 0x00, 0x50]) })
+    }
+
     @Test func musicXML() {
         let melodia = salida(
             "musicxml melodia Sol4:4 Do5:2 Re5:4 Mi5:2 --compas 3/4 --anacrusa 4 --tonalidad Sol mayor --tempo 60 4. --titulo Mi canción --clave sol8b"

@@ -16,6 +16,15 @@ struct PentagramaSVG {
     let cifrado: String?
     let titulo: String
     let opciones: OpcionesDePentagrama
+    /// Las notas que se apartan de la temperada (los microtonos de un maqam), por columna y en el orden de sus
+    /// alturas: el signo que llevan (o `nil`, si se escribe la temperada) y su nombre (Mi𝄳). Vacío si no hay.
+    var microtonos: [[Microtono?]] = []
+
+    /// Una nota microtonal: su signo y su nombre.
+    struct Microtono {
+        let signo: SignoMicrotonal?
+        let nombre: String
+    }
 
     /// Cuerpo de la letra del cifrado y de los nombres de las notas, en espacios de pentagrama.
     private static let letraDelCifrado = 1.9
@@ -56,6 +65,18 @@ struct PentagramaSVG {
         var desplazada = false
         var alteracion: Glifo?
         var columnaDeAlteracion = 0
+        var microtono: Microtono?
+    }
+
+    /// El microtono de la altura `indice` de una columna, si lo tiene.
+    private func microtono(_ columna: Int, _ indice: Int) -> Microtono? {
+        guard microtonos.indices.contains(columna), microtonos[columna].indices.contains(indice) else { return nil }
+        return microtonos[columna][indice]
+    }
+
+    /// El nombre de la altura `indice` de una columna: el de su microtono, si lo tiene.
+    private func nombreDeLaAltura(_ columna: Int, _ indice: Int) -> String {
+        microtono(columna, indice)?.nombre ?? columnas[columna][indice].nombre(en: opciones.notacion)
     }
 
     /// La altura escrita en el pentagrama: `octavas` octavas más grave (o más aguda, si es negativo) de la que suena.
@@ -162,7 +183,8 @@ struct PentagramaSVG {
         x += armadura.isEmpty ? 0.8 : 0.9
 
         // Notas, columna a columna. En el pentagrama doble, del Do central para arriba van en el de sol.
-        var enVigor: [Int: Int] = [:] // altura diatónica (letra y octava) → alteración vigente
+        // Altura diatónica (letra y octava) → alteración vigente: «s1» (un sostenido) o el glifo SMuFL de un microtono.
+        var enVigor: [Int: String] = [:]
         var etiquetas: [(x: Double, texto: String)] = []
         var cifradoX: Double?
         // Por pentagrama: dónde empiezan y acaban sus notas y lo que suben y bajan, para la marca de octava.
@@ -175,12 +197,13 @@ struct PentagramaSVG {
         for (columna, alturas) in columnas.enumerated() {
             var grupos: [[NotaColocada]] = []
             for k in claves.indices {
-                let delPentagrama = alturas.filter { !doble || ($0.midi >= doCentral) == (k == 0) }
+                let delPentagrama = alturas.indices.filter { !doble || (alturas[$0].midi >= doCentral) == (k == 0) }
                 grupos.append(
-                    delPentagrama.map {
-                        NotaColocada(
-                            altura: $0,
-                            lugar: claves[k].posicion(de: PentagramaSVG.escrita($0, octavas: octavas[k])).lugar)
+                    delPentagrama.map { i in
+                        let escrita = PentagramaSVG.escrita(alturas[i], octavas: octavas[k])
+                        return NotaColocada(
+                            altura: alturas[i], lugar: claves[k].posicion(de: escrita).lugar,
+                            microtono: microtono(columna, i))
                     }
                     .sorted { ($0.lugar, $0.altura.midi) < ($1.lugar, $1.altura.midi) })
             }
@@ -198,12 +221,14 @@ struct PentagramaSVG {
                     let semitonos = grupos[k][i].altura.nota.alteracion.semitonos
                     // Lo que vale en esa línea o espacio: lo último que se escribió o, si nada, la armadura. Así la
                     // bajada de la menor melódica lleva los becuadros que anulan los ♯ de la subida.
+                    // Un microtono lleva su signo, y la nota siguiente en esa línea vuelve a llevar el suyo.
                     let pasos = grupos[k][i].altura.pasos
-                    guard semitonos != (enVigor[pasos] ?? vigentes[grupos[k][i].altura.nota.natural] ?? 0) else {
-                        continue
-                    }
-                    enVigor[pasos] = semitonos
-                    let glifo = PentagramaSVG.glifoDeAlteracion(semitonos)
+                    let signo = grupos[k][i].microtono?.signo
+                    let propia = signo?.smufl ?? "s\(semitonos)"
+                    let deLaArmadura = "s\(vigentes[grupos[k][i].altura.nota.natural] ?? 0)"
+                    guard propia != (enVigor[pasos] ?? deLaArmadura) else { continue }
+                    enVigor[pasos] = propia
+                    let glifo = signo?.glifo ?? PentagramaSVG.glifoDeAlteracion(semitonos)
                     grupos[k][i].alteracion = glifo
                     // Va a la primera columna cuyo último glifo no se le monta por arriba: un bemol baja menos que un
                     // sostenido, así que caben más juntos.
@@ -235,8 +260,8 @@ struct PentagramaSVG {
             let etiqueta: String? =
                 opciones.nombresDeLasNotas
                 ? (columnas.count == 1
-                    ? alturas.map { $0.nombre(en: opciones.notacion) }.joined(separator: " ")
-                    : alturas[0].nombre(en: opciones.notacion))
+                    ? alturas.indices.map { nombreDeLaAltura(columna, $0) }.joined(separator: " ")
+                    : nombreDeLaAltura(columna, 0))
                 : nil
             // Las etiquetas de las notas no se pisan: si la de esta columna cae demasiado cerca de la anterior, la
             // columna se corre a la derecha.
@@ -272,7 +297,7 @@ struct PentagramaSVG {
                     arribaDeLasNotas[k] = min(arribaDeLasNotas[k], PentagramaSVG.y(deLugar: nota.lugar, pentagrama: k))
                     abajoDeLasNotas[k] = max(abajoDeLasNotas[k], PentagramaSVG.y(deLugar: nota.lugar, pentagrama: k))
                     partes.append(PentagramaSVG.glifo(GlifosSMuFL.redonda, x: xn, lugar: nota.lugar, pentagrama: k))
-                    let nombre = nota.altura.nombre(en: opciones.notacion)
+                    let nombre = nota.microtono?.nombre ?? nota.altura.nombre(en: opciones.notacion)
                     let relleno = opciones.resaltada == columna ? resaltado : ""
                     notasSVG.append(
                         "<g\(relleno)><title>\(EscrituraXML.escapar(nombre))</title>\(partes.joined())</g>")

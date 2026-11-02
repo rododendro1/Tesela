@@ -40,12 +40,22 @@ extension LineaDeComandos {
             ["sol", "fa", "do1", "do2", "do3", "do4", "sol8b", "sol8a", "fa3", "treble", "bass", "alto", "tenor"]
         ),
         (["--ciclo", "--cycle"], ["hexatonico", "octatonico"]),
+        (
+            ["--tradicion", "--tradition"],
+            LineaDeComandos.nombresDeLasTradiciones.flatMap { [$0.espanol, $0.ingles] }.reduce(into: [String]()) {
+                if !$0.contains($1) { $0.append($1) }
+            }
+        ),
+        (["--categoria", "--category"], CategoriaTradicional.allCases.map(\.rawValue)),
     ]
 
     /// Lo que va tras el nombre de algunas órdenes.
     static func tipos(de orden: Orden) -> [String] {
         if ordenesDePartituras.contains(where: { $0.nombres == orden.nombres }) {
-            return ["melodia", "coral", "acordes", "arpegios", "melody", "chorale", "chords", "arpeggios"]
+            return [
+                "melodia", "coral", "acordes", "arpegios", "escala", "melody", "chorale", "chords", "arpeggios",
+                "scale",
+            ]
         }
         if orden.nombres.contains("completado") { return ["bash", "zsh", "fish"] }
         return []

@@ -21,6 +21,7 @@ extension LineaDeComandos {
             guard !resto.isEmpty else { return uso(.faltaEscala, notacion) }
             return bien(describir(escala: try Escala(leyendo: resto.joined(separator: " ")), notacion))
         },
+        Orden(nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas) { escalas($0, $1) },
         Orden(nombres: ["tonalidad", "key"], ayuda: ayudaDeTonalidad) { resto, notacion in
             guard !resto.isEmpty else { return uso(.faltaTonalidad, notacion) }
             return bien(describir(tonalidad: try Tonalidad(leyendo: resto.joined(separator: " ")), notacion))
@@ -75,6 +76,17 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia escala Re dórico",
                 "armonia scale D dorian"))
+    ]
+
+    static let ayudaDeEscalas: [EntradaDeAyuda] = [
+        // escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>]
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisEscalas),
+            descripcion: TextosDeCLI.traduccion(\.descripcionEscalas),
+            ejemplo: ejemplo(
+                "armonia escalas --tradicion turquia",
+                "armonia scales --tradition turkey"),
+            notas: TextosDeCLI.traduccion(\.notasEscalas))
     ]
 
     static let ayudaDeTonalidad: [EntradaDeAyuda] = [

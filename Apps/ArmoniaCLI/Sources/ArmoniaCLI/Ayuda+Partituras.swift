@@ -41,6 +41,13 @@ extension LineaDeComandos {
                 "armonia musicxml arpegios Do Lam Fa Sol7 --patron alberti --duracion 2 > arpegios.musicxml",
                 "armonia musicxml arpeggios C Am F G7 --patron alberti --duracion 2 > arpeggios.musicxml"),
             notas: TextosDeCLI.traduccion(\.notasMusicxmlArpegios)),
+        // musicxml escala <escala> [opciones]
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisMusicxmlEscala),
+            descripcion: TextosDeCLI.traduccion(\.descripcionMusicxmlEscala),
+            ejemplo: ejemplo(
+                "armonia musicxml escala Re bayati > bayati.musicxml",
+                "armonia musicxml scale D bayati > bayati.musicxml")),
         // musicxml acordes --archivo <fichero>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisMusicxmlArchivo),

@@ -385,18 +385,28 @@ package struct EscritorMEI: EscritorDePartitura {
                 }
             }
             notas.sort { ($0.inicio, $0.linea, $0.evento) < ($1.inicio, $1.linea, $1.evento) }
-            var vigentes: [Int: Int] = [:] // por línea o espacio del pentagrama: nota natural y octava
+            // Por línea o espacio del pentagrama (nota natural y octava), la alteración en vigor, como valor de MEI.
+            var vigentes: [Int: String] = [:]
             for (_, l, i) in notas {
-                for (k, altura) in grafias[l][c][i].alturas.enumerated() {
+                let evento = grafias[l][c][i]
+                for (k, altura) in evento.alturas.enumerated() {
                     let semitonos = altura.nota.alteracion.semitonos
                     let lugar = altura.octava * 7 + altura.nota.natural.rawValue
-                    let vigente = vigentes[lugar] ?? armadura[altura.nota.natural] ?? 0
-                    let sonora = semitonos == 0 ? nil : EscritorMEI.accid(semitonos)
-                    if continuaciones[l][i].contains(altura) || semitonos == vigente {
+                    let vigente = vigentes[lugar] ?? EscritorMEI.accid(armadura[altura.nota.natural] ?? 0)
+                    // Un microtono se escribe con su signo (1qf, kf, koron…); solo los cuartos de tono suenan sin él.
+                    let signo = SignoMicrotonal(semitonos: semitonos, desvio: evento.desvio(k))
+                    let propia = signo?.mei ?? EscritorMEI.accid(semitonos)
+                    let sonora: String?
+                    switch signo {
+                    case .cuartos?: sonora = propia
+                    case .some: sonora = nil
+                    case nil: sonora = semitonos == 0 ? nil : propia
+                    }
+                    if continuaciones[l][i].contains(altura) || propia == vigente {
                         resultado[l][i][k] = AlteracionEscrita(escrita: nil, sonora: sonora)
                     } else {
-                        resultado[l][i][k] = AlteracionEscrita(escrita: EscritorMEI.accid(semitonos), sonora: nil)
-                        vigentes[lugar] = semitonos
+                        resultado[l][i][k] = AlteracionEscrita(escrita: propia, sonora: nil)
+                        vigentes[lugar] = propia
                     }
                 }
             }

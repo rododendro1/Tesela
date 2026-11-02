@@ -31,6 +31,18 @@ GLIFOS = {
     "bemol": (0xE260, "accidentalFlat"), "becuadro": (0xE261, "accidentalNatural"),
     "sostenido": (0xE262, "accidentalSharp"), "dobleSostenido": (0xE263, "accidentalDoubleSharp"),
     "dobleBemol": (0xE264, "accidentalDoubleFlat"),
+    # Microtonos: cuartos de tono (Stein-Zimmermann), las comas de Arel-Ezgi-Uzdilek y el koron y el sori persas.
+    "medioBemol": (0xE280, "accidentalQuarterToneFlatStein"),
+    "tresCuartosBemol": (0xE281, "accidentalThreeQuarterTonesFlatZimmermann"),
+    "medioSostenido": (0xE282, "accidentalQuarterToneSharpStein"),
+    "tresCuartosSostenido": (0xE283, "accidentalThreeQuarterTonesSharpStein"),
+    "buyukMucennebBemol": (0xE440, "accidentalBuyukMucennebFlat"),
+    "kucukMucennebBemol": (0xE441, "accidentalKucukMucennebFlat"),
+    "bakiyeBemol": (0xE442, "accidentalBakiyeFlat"), "komaBemol": (0xE443, "accidentalKomaFlat"),
+    "komaSostenido": (0xE444, "accidentalKomaSharp"), "bakiyeSostenido": (0xE445, "accidentalBakiyeSharp"),
+    "kucukMucennebSostenido": (0xE446, "accidentalKucukMucennebSharp"),
+    "buyukMucennebSostenido": (0xE447, "accidentalBuyukMucennebSharp"),
+    "koron": (0xE460, "accidentalKoron"), "sori": (0xE461, "accidentalSori"),
 }
 
 
