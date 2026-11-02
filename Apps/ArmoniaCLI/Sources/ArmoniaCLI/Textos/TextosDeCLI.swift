@@ -201,6 +201,8 @@ struct TextosDeCLI: TextosTraducidos {
     // MARK: Mensaje.swift
     let mensajeNotas: String
     let mensajeAcordes: String
+    /// La línea de `armonia escala` con las notas de la versión microtonal (maqamat, dastgāh, makamlar).
+    let mensajeMicrotonos: String
     let mensajeEscalas: String
     let mensajeArmadura: String
     let mensajeRelativa: String

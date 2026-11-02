@@ -212,6 +212,7 @@ extension TextosDeCLI {
         // Mensaje.swift
         mensajeNotas: "notes",
         mensajeAcordes: "acordes",
+        mensajeMicrotonos: "microtonos",
         mensajeEscalas: "escales",
         mensajeArmadura: "armadura",
         mensajeRelativa: "relativa",

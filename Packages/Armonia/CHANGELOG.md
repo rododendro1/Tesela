@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+- **Microtonos**: la versión microtonal de las escalas que se aproximan, `TipoDeEscala.microtonal` (un
+  `TipoDeEscalaMicrotonal`: la escala temperada y la posición de cada grado en los pasos de su `SistemaMicrotonal`).
+  Maqām Rāst, Bayātī, Ṣabā y Sūznāk van en cuartos de tono (`.cuartosDeTono`); Šur, Homāyun y Čahārgāh, con el
+  koron (`.persa`); Rast y Hicaz makamı, en las 53 comas de Arel-Ezgi-Uzdilek (`.comas53`).
+  `Escala.notasMicrotonales(sentido:)` da sus notas (`NotaMicrotonal`), con los cents desde la tónica y su nombre
+  (Mi𝄳, Fa𝄲, Si⁻¹ para una koma bajo Si). En la línea de comandos, `armonia escala Re bayati` añade una línea
+  con los microtonos y otra con los cents.
 - **Makamlar, mugam y más maqamat y dastgāh**, en su versión temperada: dos tradiciones nuevas, `Tradicion.turquia`
   y `.azerbaiyan`, con sus categorías `CategoriaTradicional.makam` y `.mugam` (con su nombre en los quince idiomas).
   Siete makamlar turcos (`TipoDeEscala.makamlar`: Rast, Hicaz, Hicazkâr, Nihâvend, Kürdî, Bûselik y Çârgâh, con

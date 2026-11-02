@@ -212,6 +212,7 @@ extension TextosDeCLI {
         // Mensaje.swift
         mensajeNotas: "hangok",
         mensajeAcordes: "akkordok",
+        mensajeMicrotonos: "mikrohangok",
         mensajeEscalas: "skálák",
         mensajeArmadura: "előjegyzés",
         mensajeRelativa: "párhuzamos hangnem",

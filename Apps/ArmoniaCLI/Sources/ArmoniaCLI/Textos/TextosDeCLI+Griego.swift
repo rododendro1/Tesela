@@ -212,6 +212,7 @@ extension TextosDeCLI {
         // Mensaje.swift
         mensajeNotas: "νότες",
         mensajeAcordes: "συγχορδίες",
+        mensajeMicrotonos: "μικροτόνια",
         mensajeEscalas: "κλίμακες",
         mensajeArmadura: "οπλισμός",
         mensajeRelativa: "σχετική",
