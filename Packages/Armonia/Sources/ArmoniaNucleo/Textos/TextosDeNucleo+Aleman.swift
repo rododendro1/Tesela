@@ -49,6 +49,14 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "es gibt keine \(calidad.nombre(en: .alemanPalabras)) \(Intervalo.ordinal(numero, en: .aleman)): \(regla.aleman)" },
         alteracionNoReconocida: { signo in "„\(signo)“ ist kein Vorzeichen (erwartet ♯, ♭, 𝄪, 𝄫, #, b, x oder ♮)" },
 
+        // ErrorDeLectura.swift (conjuntos y series)
+        claseDeAlturaNoValida: { texto in "„\(texto)“ ist weder eine Tonhöhenklasse (0 bis 11, oder t und e für 10 und 11) noch ein Notenname" },
+        numeroDeForteDesconocido: { texto in "„\(texto)“ ist keine Forte-Nummer (zum Beispiel 3-11 oder 4-Z15)" },
+        faltaElCierre: { signo in "das schließende „\(signo)“ fehlt" },
+        serieNoDodecafonica: "eine Zwölftonreihe enthält alle zwölf Tonhöhenklassen, jede genau einmal",
+        faltanEnLaSerie: { clases in "es fehlen \(clases)" },
+        repetidasEnLaSerie: { clases in "wiederholt: \(clases)" },
+
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },
         unisonoEnMasculino: { calidad in calidad },

@@ -41,6 +41,16 @@ enum Mensaje {
     case triadas(Int)
     case ciclo(CicloNeorriemanniano)
     case instrumento(Encordado)
+    case formaNormal
+    case formaPrima
+    case vectorIntervalico
+    case vectorDeIndice
+    case ejesDeSimetria
+    case intervalos
+    case deTodosLosIntervalos
+    case formasDistintas(Int)
+    case hexacordos
+    case formasCombinatorias
 
     func texto(en notacion: Notacion) -> String {
         traduccion.en(notacion)
@@ -98,6 +108,16 @@ enum Mensaje {
         case .instrumento(let encordado):
             // `--instrumento` acepta el nombre en cualquiera de los quince idiomas.
             return Traduccion(cadaIdioma: { encordado.nombre(en: $0) })
+        case .formaNormal: return TextosDeCLI.traduccion(\.mensajeFormaNormal)
+        case .formaPrima: return TextosDeCLI.traduccion(\.mensajeFormaPrima)
+        case .vectorIntervalico: return TextosDeCLI.traduccion(\.mensajeVectorIntervalico)
+        case .vectorDeIndice: return TextosDeCLI.traduccion(\.mensajeVectorDeIndice)
+        case .ejesDeSimetria: return TextosDeCLI.traduccion(\.mensajeEjesDeSimetria)
+        case .intervalos: return TextosDeCLI.traduccion(\.mensajeIntervalos)
+        case .deTodosLosIntervalos: return TextosDeCLI.traduccion(\.mensajeDeTodosLosIntervalos)
+        case .formasDistintas(let n): return TextosDeCLI.traduccion { $0.mensajeFormasDistintas(n) }
+        case .hexacordos: return TextosDeCLI.traduccion(\.mensajeHexacordos)
+        case .formasCombinatorias: return TextosDeCLI.traduccion(\.mensajeFormasCombinatorias)
         }
     }
 }

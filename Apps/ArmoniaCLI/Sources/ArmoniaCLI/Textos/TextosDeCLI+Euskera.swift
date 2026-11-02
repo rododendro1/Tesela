@@ -41,6 +41,10 @@ extension TextosDeCLI {
         notasEscalas: "aukerak: --tradicion turquia (edo india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) eta --categoria maqam (edo rāga, makam,\ndastgah, dromos…); testu batek izenetan bilatzen du",
         sintaxisTonalidad: "tonalidad <tonalitatea>",
         descripcionTonalidad: "armadura, erlatiboak eta graduak",
+        sintaxisConjunto: "conjunto <klaseak>",
+        descripcionConjunto: "forma lehena, Forte zenbakia,\nbektoreak, simetriak eta notak",
+        sintaxisSerie: "serie <seriea>",
+        descripcionSerie: "serie dodekafoniko baten matrizea,\nformak eta konbinatorietatea",
 
         // Ayuda+Dibujos.swift
         sintaxisTonnetz: "tonnetz <notak>",
@@ -150,6 +154,8 @@ extension TextosDeCLI {
         faltaEscala: "eskala falta da: armonia escala Re dórico",
         faltaTonalidad: "tonalitatea falta da: armonia tonalidad La menor",
         faltaTonalidadTrasEn: "tonalitatea falta da --en ondoren",
+        faltaConjunto: "multzoa falta da: armonia conjunto 0 4 7",
+        faltaSerie: "seriea falta da: armonia serie 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "akordeak falta dira: " + ejemplo },
         archivoIlegible: { nombre in "ezin da «\(nombre)» fitxategia irakurri" },
         archivoConAcordes: "--archivo erabiltzean ez idatzi akorderik",
@@ -162,7 +168,7 @@ extension TextosDeCLI {
         faltanNotasDelDibujo: { ejemplo, orden in "notak falta dira: " + ejemplo },
         faltaAcordeDelDibujo: { ejemplo, orden in "akordea falta da: " + ejemplo },
         faltaEscalaDelDibujo: { ejemplo, orden in "eskala falta da: " + ejemplo },
-        clasesFueraDeRango: { ejemplo, orden in "altuera-klaseak 0tik 11ra bitarteko zenbakiak dira: " + ejemplo },
+        faltanClasesDelDibujo: { ejemplo, orden in "altuera-klaseak falta dira: " + ejemplo },
         faltanTriadasDelRecorrido: { ejemplo, orden in "triadeak falta dira: " + ejemplo },
         cicloMalEscrito: { ejemplo, orden in "zikloa hexatonikoa, oktatonikoa edo LR da, triade batetik abiatuta: " + ejemplo },
         recorridoSoloTriadas: { ejemplo, orden in "ibilbidea triade handi eta txikiz osatzen da: " + ejemplo },
@@ -248,6 +254,16 @@ extension TextosDeCLI {
         mensajeNingunPaso: "urratsik ez",
         mensajeUnPaso: "urrats 1",
         mensajePasos: { n in "\(n) urrats" },
-        mensajeTriadas: { n in "\(n) triade" }
+        mensajeTriadas: { n in "\(n) triade" },
+        mensajeFormaNormal: "forma normala",
+        mensajeFormaPrima: "forma lehena",
+        mensajeVectorIntervalico: "bektore tartekatua",
+        mensajeVectorDeIndice: "indize-bektorea",
+        mensajeEjesDeSimetria: "simetria-ardatzak",
+        mensajeIntervalos: "tarteak",
+        mensajeDeTodosLosIntervalos: "tarte guztietakoa",
+        mensajeFormasDistintas: { n in "\(n) forma desberdin" },
+        mensajeHexacordos: "hexakordoak",
+        mensajeFormasCombinatorias: "forma konbinatorioak"
     )
 }

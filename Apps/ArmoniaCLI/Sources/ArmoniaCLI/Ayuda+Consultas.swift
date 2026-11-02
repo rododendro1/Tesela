@@ -29,6 +29,14 @@ extension LineaDeComandos {
             guard !resto.isEmpty else { return uso(.faltaTonalidad, notacion) }
             return bien(describir(tonalidad: try Tonalidad(leyendo: resto.joined(separator: " ")), notacion))
         },
+        Orden(nombres: ["conjunto", "set"], ayuda: ayudaDeConjunto) { resto, notacion in
+            guard !resto.isEmpty else { return uso(.faltaConjunto, notacion) }
+            return bien(describir(conjunto: try ConjuntoDeClases(leyendo: resto.joined(separator: " ")), notacion))
+        },
+        Orden(nombres: ["serie", "row"], ayuda: ayudaDeSerie) { resto, notacion in
+            guard !resto.isEmpty else { return uso(.faltaSerie, notacion) }
+            return bien(describir(serie: try SerieDodecafonica(leyendo: resto.joined(separator: " ")), notacion))
+        },
     ]
 
     static let ayudaDeAcorde: [EntradaDeAyuda] = [
@@ -101,5 +109,25 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia tonalidad La menor",
                 "armonia key A minor"))
+    ]
+
+    static let ayudaDeConjunto: [EntradaDeAyuda] = [
+        // conjunto <clases>
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisConjunto),
+            descripcion: TextosDeCLI.traduccion(\.descripcionConjunto),
+            ejemplo: ejemplo(
+                "armonia conjunto 4-Z15",
+                "armonia set 4-Z15"))
+    ]
+
+    static let ayudaDeSerie: [EntradaDeAyuda] = [
+        // serie <serie>
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisSerie),
+            descripcion: TextosDeCLI.traduccion(\.descripcionSerie),
+            ejemplo: ejemplo(
+                "armonia serie 0e742 938t156",
+                "armonia row 0e742 938t156"))
     ]
 }

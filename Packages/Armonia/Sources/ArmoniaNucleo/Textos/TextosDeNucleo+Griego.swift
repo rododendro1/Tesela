@@ -49,6 +49,14 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "δεν υπάρχει \(calidad.nombre(en: .griegoPalabras)) \(Intervalo.ordinal(numero, en: .griego)): \(regla.griego)" },
         alteracionNoReconocida: { signo in "το «\(signo)» δεν είναι αλλοίωση (αναμενόταν ♯, ♭, 𝄪, 𝄫, #, b, x ή ♮)" },
 
+        // ErrorDeLectura.swift (conjuntos y series)
+        claseDeAlturaNoValida: { texto in "το «\(texto)» δεν είναι ούτε τονική κλάση (από 0 έως 11, ή t και e για το 10 και το 11) ούτε όνομα νότας" },
+        numeroDeForteDesconocido: { texto in "το «\(texto)» δεν είναι αριθμός Forte (για παράδειγμα, 3-11 ή 4-Z15)" },
+        faltaElCierre: { signo in "λείπει το τελικό «\(signo)»" },
+        serieNoDodecafonica: "μια δωδεκάφθογγη σειρά έχει και τις δώδεκα τονικές κλάσεις, την καθεμία μία φορά",
+        faltanEnLaSerie: { clases in "λείπουν \(clases)" },
+        repetidasEnLaSerie: { clases in "επαναλαμβάνονται \(clases)" },
+
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },
         unisonoEnMasculino: { calidad in calidad },

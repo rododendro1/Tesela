@@ -65,6 +65,16 @@ public enum LecturaAlAzar {
             _ = pieza.acordes()
             _ = pieza.analisis()
         },
+        texto("conjunto de clases") { texto in
+            let conjunto = try ConjuntoDeClases(leyendo: texto)
+            _ = conjunto.numeroDeForte
+        },
+        texto("serie dodecafónica") { texto in
+            let serie = try SerieDodecafonica(leyendo: texto)
+            _ = serie.matriz
+            _ = serie.formasCombinatorias
+            _ = try SerieDodecafonica(leyendo: serie.description)
+        },
         texto("UIL") { texto in
             // Los teclados que abre TonnetzApp: se leen y se vuelven a escribir.
             let formato = try FormatoUIL(leyendo: texto)
@@ -121,6 +131,10 @@ public enum LecturaAlAzar {
             "evento": ["Do4+Mi4:2~", "-:8", "Sol4:4.", "Mi♭4(50¢):4", "Do4+Si4(-15.094¢):2"],
             "duración": ["4", "8.", "2..", "16"],
             "compás": ["3/4", "6/8", "C"],
+            "conjunto de clases": ["[0, 4, 7]", "01t", "4-Z15", "Do Mi Sol", "{t e 0}"],
+            "serie dodecafónica": [
+                "0 e 7 4 2 9 3 8 t 1 5 6", "0e742 938t156", "Fa Mi Do La Sol Re La♭ Re♭ Mi♭ Sol♭ Si♭ Si",
+            ],
             "UIL": ["2,7,5;R30M", "1,4,3;R0", "2,7,5;R30;M"],
         ]
         var semillas: [(nombre: String, datos: Data)] = []

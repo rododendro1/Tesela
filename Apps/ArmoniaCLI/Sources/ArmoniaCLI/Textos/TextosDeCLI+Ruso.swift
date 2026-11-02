@@ -41,6 +41,10 @@ extension TextosDeCLI {
         notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) и --category maqam (или rāga, makam,\ndastgah, dromos…); текст ищет в названиях",
         sintaxisTonalidad: "key <тональность>",
         descripcionTonalidad: "ключевые знаки, родственные\nтональности и ступени",
+        sintaxisConjunto: "set <классы>",
+        descripcionConjunto: "первичная форма, номер Форта,\nвекторы, симметрии и ноты",
+        sintaxisSerie: "row <серия>",
+        descripcionSerie: "матрица, формы и комбинаторность\nдвенадцатитоновой серии",
 
         // Ayuda+Dibujos.swift
         sintaxisTonnetz: "tonnetz <ноты>",
@@ -150,6 +154,8 @@ extension TextosDeCLI {
         faltaEscala: "не указана гамма: armonia scale D dorian",
         faltaTonalidad: "не указана тональность: armonia key A minor",
         faltaTonalidadTrasEn: "не указана тональность после --in",
+        faltaConjunto: "не указано множество: armonia set 0 4 7",
+        faltaSerie: "не указана серия: armonia row 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "не указаны аккорды: armonia analyze C F G7 C" },
         archivoIlegible: { nombre in "не удаётся прочитать файл «\(nombre)»" },
         archivoConAcordes: "с --file аккорды не указываются",
@@ -162,7 +168,7 @@ extension TextosDeCLI {
         faltanNotasDelDibujo: { ejemplo, orden in "не указаны ноты: armonia \(orden) C E G" },
         faltaAcordeDelDibujo: { ejemplo, orden in "не указан аккорд: armonia \(orden) --chord G7" },
         faltaEscalaDelDibujo: { ejemplo, orden in "не указана гамма: armonia \(orden) --scale D dorian" },
-        clasesFueraDeRango: { ejemplo, orden in "звуковысотные классы — числа от 0 до 11: armonia \(orden) --pcs 0 4 7" },
+        faltanClasesDelDibujo: { ejemplo, orden in "не указаны звуковысотные классы: armonia \(orden) --pcs 0 4 7" },
         faltanTriadasDelRecorrido: { ejemplo, orden in "не указаны трезвучия: armonia \(orden) --sequence C Am F Dm" },
         cicloMalEscrito: { ejemplo, orden in "цикл — гексатонический, октатонический или LR, от трезвучия: armonia \(orden) --cycle hexatonic C" },
         recorridoSoloTriadas: { ejemplo, orden in "последовательность — из мажорных и минорных трезвучий: armonia \(orden) --sequence C Am F Dm" },
@@ -248,6 +254,16 @@ extension TextosDeCLI {
         mensajeNingunPaso: "ни одного шага",
         mensajeUnPaso: "1 шаг",
         mensajePasos: { n in Idioma.ruso.contar(n, "шаг", "шага", "шагов") },
-        mensajeTriadas: { n in Idioma.ruso.contar(n, "трезвучие", "трезвучия", "трезвучий") }
+        mensajeTriadas: { n in Idioma.ruso.contar(n, "трезвучие", "трезвучия", "трезвучий") },
+        mensajeFormaNormal: "нормальная форма",
+        mensajeFormaPrima: "первичная форма",
+        mensajeVectorIntervalico: "интервальный вектор",
+        mensajeVectorDeIndice: "индексный вектор",
+        mensajeEjesDeSimetria: "оси симметрии",
+        mensajeIntervalos: "интервалы",
+        mensajeDeTodosLosIntervalos: "всеинтервальная",
+        mensajeFormasDistintas: { n in "различных форм: \(n)" },
+        mensajeHexacordos: "гексахорды",
+        mensajeFormasCombinatorias: "комбинаторные формы"
     )
 }

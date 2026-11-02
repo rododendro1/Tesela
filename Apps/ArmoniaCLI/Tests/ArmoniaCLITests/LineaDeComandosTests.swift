@@ -115,7 +115,7 @@ import Testing
         #expect(Set(nombres).count == nombres.count)
         for nombre in nombres { #expect(nombre == nombre.lowercased(), Comment(rawValue: nombre)) }
         for orden in LineaDeComandos.ordenes { #expect(!orden.ayuda.isEmpty, Comment(rawValue: orden.nombres[0])) }
-        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 42)
+        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 44)
         // Los nombres no distinguen mayúsculas.
         #expect(salida("ACORDE Do") == salida("acorde Do"))
     }
@@ -128,7 +128,8 @@ import Testing
         "digitaciones C --limite 0",
         "digitaciones C --dedos 9", "digitaciones C --traste 99", "digitaciones C --capo", "vecinos",
         "vecinos C7 --voces 3", "conduccion-parsimoniosa G7", "plr", "plr G7 P", "musicxml", "musicxml coral",
-        "musicxml melodia C4:4 --foo 1", "midi acordes C --cifrados", "tonnetz", "tonnetz --clases 13",
+        "musicxml melodia C4:4 --foo 1", "midi acordes C --cifrados", "tonnetz", "tonnetz --clases", "conjunto",
+        "serie",
         "tonnetz --camino C", "tabla --ciclo C", "tabla --margen 9 C", "contrapunto", "contrapunto D4 A4",
         "contrapunto D4 / A4 --especie 6", "contrapunto D4 / ", "acorde Do --escritura foo",
         "arpegio", "arpegio Do --patron zigzag", "arpegio Do --patron", "arpegio Do --octavas 0",
@@ -163,6 +164,7 @@ import Testing
             "arpeggio C7", "arpeggio C --pattern alberti", "transpose M2 C Am F G7", "reharmonize C Am Dm7 G7 C",
             "digitaciones C --capo 2", "arpeggio C --from E --tensions 9 --octaves 2 --no-octave --approach above",
             "arpeggio C7 --degrees 1-5-3-8 --approach enclosure",
+            "set 0 4 7", "set C E G", "set 4-Z15", "row 0 e 7 4 2 9 3 8 t 1 5 6",
         ] {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
             #expect(resultado.codigo == 0, "\(orden): \(resultado.error)")

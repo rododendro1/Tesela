@@ -49,6 +49,14 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "\(numero). \(calidad.nombre(en: .euskeraPalabras)) ez da existitzen: \(regla.euskera)" },
         alteracionNoReconocida: { signo in "«\(signo)» ez da alterazio bat (♯, ♭, 𝄪, 𝄫, #, b, x edo ♮ espero zen)" },
 
+        // ErrorDeLectura.swift (conjuntos y series)
+        claseDeAlturaNoValida: { texto in "«\(texto)» ez da altuera-klase bat (0tik 11ra, edo t eta e 10erako eta 11rako) ez nota-izen bat" },
+        numeroDeForteDesconocido: { texto in "«\(texto)» ez da Forte zenbaki bat (adibidez, 3-11 edo 4-Z15)" },
+        faltaElCierre: { signo in "amaierako «\(signo)» falta da" },
+        serieNoDodecafonica: "serie dodekafoniko batek hamabi altuera-klaseak ditu, bakoitza behin",
+        faltanEnLaSerie: { clases in "falta dira: \(clases)" },
+        repetidasEnLaSerie: { clases in "errepikatuta daude: \(clases)" },
+
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(ordinal) \(calidad)" },
         unisonoEnMasculino: { calidad in calidad },

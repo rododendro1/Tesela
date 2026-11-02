@@ -23,6 +23,46 @@
   (`--connect`). La ayuda nombra todos los patrones, también «quebrado» y «baja y sube», y el autocompletado los
   propone.
 
+### Teoría postonal en la línea de comandos
+
+- **`armonia conjunto`** (`set`): un conjunto escrito como lo lee `ConjuntoDeClases(leyendo:)` («0 4 7», «047»,
+  «Do Mi Sol», «4-Z15»), con sus notas, su forma normal y su forma prima, su número de Forte, el vector interválico,
+  el vector de índice y los ejes de simetría.
+- **`armonia serie`** (`row`): una serie dodecafónica con sus notas, sus intervalos, sus hexacordos, sus formas
+  combinatorias, cuántas formas distintas tiene y la matriz, con P y R a los lados e I y RI arriba y abajo.
+- **`--clases`** de `tonnetz` y `tabla` lee igual que `armonia conjunto`: «047», «01t», «Do Mi Sol» o «3-11». Como
+  en las cifras seguidas cada cifra es una clase, «--clases 13» es {1, 3} y ya no un error.
+
+### Series dodecafónicas
+
+- **`SerieDodecafonica`**: las doce clases de altura en su orden. Sus 48 formas (`FormaDeSerie`: P, I, R y RI, con
+  el índice de la clase con que empieza la P o la I, como en Straus) con `forma(_:)`, `original(_:)`,
+  `inversion(_:)`, `retrogrado(_:)` y `retrogradoDeLaInversion(_:)`; `identificar(_:)` dice qué formas son otra
+  serie y `numeroDeFormasDistintas`, si es simétrica. La `matriz` de 12 × 12, los `intervalos` y
+  `esDeTodosLosIntervalos`, los `hexacordos` y la combinatoriedad hexacordal (`formasCombinatorias`,
+  `tiposDeCombinatoriedad`, `esTotalmenteCombinatoria`). Se lee como un conjunto (`init(leyendo:)`) y se guarda en
+  JSON como la lista de sus clases.
+
+### Simetrías y notas comunes de un conjunto
+
+- **`ConjuntoDeClases.vectorDeIndice`** (las notas comunes de cada TnI) y **`vectorDeTransposicion`** (las de cada
+  Tn), con `notasComunes(transponiendo:)` y `notasComunes(invirtiendo:)`.
+- **`ejesDeSimetria`**: el `EjeDeInversion` de cada TnI que deja el conjunto igual, con los puntos por donde pasa
+  («5–11», «0½–6½») y las clases que deja fijas; y `transposicionesQueLoDejanIgual`.
+
+### Ortografía de un conjunto
+
+- **`ConjuntoDeClases.notas(con:)`** escribe cada clase con la nota más sencilla, buscando el tramo más corto de la
+  línea de quintas: {1, 5, 8} es Re♭–Fa–La♭, y con Do♯ fijo, Do♯–Mi♯–Sol♯. Lo que cabe en una escala diatónica
+  sale sin repetir letra.
+
+### Conjuntos escritos a mano
+
+- **`ConjuntoDeClases(leyendo:)`** lee «[0, 4, 7]», «{0 4 7}», «047», «01t» (con `t` y `e` para el 10 y el 11),
+  «Do Mi Sol» o «C E G», y el número de Forte («3-11», «4-Z15»), que da la forma prima. `ErrorDeLectura` tiene
+  cuatro motivos nuevos, en los quince idiomas: `claseDeAlturaNoValida`, `numeroDeForteDesconocido`,
+  `faltaElCierre` y `serieNoDodecafonica(faltan:repetidas:)`.
+
 ### Planificar modulaciones
 
 - **`Tonalidad.modulaciones(hasta:)`** escribe progresiones que modulan a otra tonalidad (`PlanDeModulacion`): por

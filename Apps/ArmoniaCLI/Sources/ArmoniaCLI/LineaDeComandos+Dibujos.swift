@@ -47,11 +47,9 @@ extension LineaDeComandos {
             guard !resto.isEmpty else { return .error(uso(.faltaEscalaDelDibujo(orden: orden), notacion)) }
             dibujo = .escala(try Escala(leyendo: resto))
         case "--clases", "--pcs":
-            let numeros = resto.split(whereSeparator: { $0 == " " || $0 == "," }).map { Int($0) }
-            guard !numeros.isEmpty, numeros.allSatisfy({ $0.map { (0...11).contains($0) } ?? false }) else {
-                return .error(uso(.clasesFueraDeRango(orden: orden), notacion))
-            }
-            dibujo = .clases(ConjuntoDeClases(numeros.map { $0! }))
+            // Como `armonia conjunto`: «0 4 7», «047», «01t», «Do Mi Sol» o «3-11».
+            guard !resto.isEmpty else { return .error(uso(.faltanClasesDelDibujo(orden: orden), notacion)) }
+            dibujo = .clases(try ConjuntoDeClases(leyendo: resto))
         case "--recorrido", "--sequence":
             let acordes = try argumentos.dropFirst().map { try Acorde(leyendo: $0) }
             guard !acordes.isEmpty else { return .error(uso(.faltanTriadasDelRecorrido(orden: orden), notacion)) }

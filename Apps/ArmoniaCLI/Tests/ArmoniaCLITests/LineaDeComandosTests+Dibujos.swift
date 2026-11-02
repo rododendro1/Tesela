@@ -10,7 +10,8 @@ extension LineaDeComandosTests {
     @Test func tonnetz() {
         for orden in [
             "tonnetz Do Mi Sol", "tonnetz --acorde Sol7", "tonnetz --escala Re dórico", "tonnetz --clases 0 4 7",
-            "tonnetz --clases 0,3,6,9 --margen 2", "tonnetz C E G --ingles",
+            "tonnetz --clases 0,3,6,9 --margen 2", "tonnetz C E G --ingles", "tonnetz --clases 047",
+            "tonnetz --clases 3-11", "tonnetz --pcs C E G",
         ] {
             let svg = salida(orden)
             #expect(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"), Comment(rawValue: orden))
@@ -18,7 +19,7 @@ extension LineaDeComandosTests {
         #expect(salida("tonnetz --acorde Do").contains(">Mi</text>"))
         #expect(salida("tonnetz C E G --ingles").contains(">E</text>"))
         for orden in [
-            "tonnetz", "tonnetz --clases 0 12", "tonnetz --clases", "tonnetz --acorde", "tonnetz --escala",
+            "tonnetz", "tonnetz --clases", "tonnetz --acorde", "tonnetz --escala",
             "tonnetz --color Do", "tonnetz Do --margen 9",
         ] {
             #expect(
@@ -26,6 +27,14 @@ extension LineaDeComandosTests {
                 Comment(rawValue: orden))
         }
         #expect(LineaDeComandos.ejecutar(["tonnetz", "Do", "Hm"]).codigo == 1)
+        // --clases lee como `armonia conjunto`: una cifra por clase, así que «0 12» es {0, 1, 2}.
+        #expect(salida("tonnetz --clases 0 12") == salida("tonnetz --clases 0 1 2"))
+        #expect(salida("tonnetz --clases 3-11") == salida("tonnetz --clases 0 3 7"))
+        for orden in ["tonnetz --clases 0 x", "tonnetz --clases [0 4", "tonnetz --clases 3-13"] {
+            #expect(
+                LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 1,
+                Comment(rawValue: orden))
+        }
         #expect(salida("tonnetz --recorrido Do Lam Fa Rem").contains("Do –R→ Lam –L→ Fa –R→ Rem"))
         #expect(salida("tonnetz --camino Do Mibm").contains("Do –P→ Dom –R→ Mi♭ –P→ Mi♭m"))
         for orden in [
@@ -46,7 +55,8 @@ extension LineaDeComandosTests {
             #expect(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"), Comment(rawValue: orden))
         }
         #expect(salida("tabla Do₃ Sol₃ Mi₄").contains(">Sol₃</text>"))
-        for orden in ["tabla", "tabla --acorde", "tabla --clases 13", "tabla --foo", "tabla Do --margen 7"] {
+        #expect(salida("tabla --clases 13") == salida("tabla --clases 1 3"))
+        for orden in ["tabla", "tabla --acorde", "tabla --clases", "tabla --foo", "tabla Do --margen 7"] {
             #expect(
                 LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,
                 Comment(rawValue: orden))

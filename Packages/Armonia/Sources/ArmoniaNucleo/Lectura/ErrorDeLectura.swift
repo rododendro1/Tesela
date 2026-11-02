@@ -1,6 +1,7 @@
 import Foundation
 
-/// Error al leer una nota, una altura o un intervalo, o un texto vacío o con caracteres de más.
+/// Error al leer una nota, una altura, un intervalo, un conjunto de clases o una serie dodecafónica, o un texto vacío
+/// o con caracteres de más.
 ///
 /// Indica el texto, el carácter donde se detuvo la lectura y el motivo, en los quince idiomas de los
 /// textos (`Traduccion`). Los cifrados, las escalas y la partitura tienen el suyo en su capa
@@ -22,6 +23,14 @@ public struct ErrorDeLectura: ErrorAlLeer {
         case calidadNoValida(String)
         case intervaloInexistente(numero: Int, calidad: CalidadDeIntervalo)
         case alteracionNoReconocida(String)
+        /// Ni una clase de altura (0…11, `t`, `e`) ni un nombre de nota, o clases y notas mezcladas.
+        case claseDeAlturaNoValida(String)
+        /// Un número con la forma de los de Forte («3-13») que no está en la tabla.
+        case numeroDeForteDesconocido(String)
+        /// Se abrió un corchete, una llave o un paréntesis y no se cerró.
+        case faltaElCierre(String)
+        /// Una serie que no tiene las doce clases una vez cada una: las que faltan y las que se repiten.
+        case serieNoDodecafonica(faltan: [Int], repetidas: [Int])
     }
 
     public let texto: String
@@ -63,6 +72,20 @@ extension ErrorDeLectura.Motivo {
         case .intervaloInexistente(let numero, let calidad):
             return TextosDeNotas.intervaloInexistente(numero: numero, calidad: calidad, en: notacion)
         case .alteracionNoReconocida(let signo): return TextosDeNotas.alteracionNoReconocida(signo)
+        case .claseDeAlturaNoValida(let texto): return TextosDeNucleo.traduccion { $0.claseDeAlturaNoValida(texto) }
+        case .numeroDeForteDesconocido(let texto):
+            return TextosDeNucleo.traduccion { $0.numeroDeForteDesconocido(texto) }
+        case .faltaElCierre(let signo): return TextosDeNucleo.traduccion { $0.faltaElCierre(signo) }
+        case .serieNoDodecafonica(let faltan, let repetidas):
+            func lista(_ clases: [Int]) -> String { clases.map(String.init).joined(separator: ", ") }
+            return TextosDeNucleo.traduccion { textos in
+                let partes =
+                    (faltan.isEmpty ? [] : [textos.faltanEnLaSerie(lista(faltan))])
+                    + (repetidas.isEmpty ? [] : [textos.repetidasEnLaSerie(lista(repetidas))])
+                return partes.isEmpty
+                    ? textos.serieNoDodecafonica
+                    : textos.serieNoDodecafonica + textos.dosPuntos + partes.joined(separator: "; ")
+            }
         }
     }
 }

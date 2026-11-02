@@ -32,6 +32,8 @@ enum ErrorDeUso {
     case faltanAcordesDeLasVoces
     case dosAcordesDeConduccion
     case faltaTonalidadTrasEn
+    case faltaConjunto
+    case faltaSerie
     case faltanAcordesDelAnalisis
     /// `analizar --archivo` con un fichero que no existe o no se puede abrir.
     case archivoIlegible(String)
@@ -107,7 +109,7 @@ enum ErrorDeUso {
     case faltanNotasDelDibujo(orden: String)
     case faltaAcordeDelDibujo(orden: String)
     case faltaEscalaDelDibujo(orden: String)
-    case clasesFueraDeRango(orden: String)
+    case faltanClasesDelDibujo(orden: String)
     case faltanTriadasDelRecorrido(orden: String)
     case cicloMalEscrito(orden: String)
     case recorridoSoloTriadas(orden: String)
@@ -157,6 +159,8 @@ enum ErrorDeUso {
             let ejemplo = "armonia conduccion-minima Sol7 Do"
             return TextosDeCLI.traduccion { $0.dosAcordesDeConduccion(ejemplo) }
         case .faltaTonalidadTrasEn: return TextosDeCLI.traduccion(\.faltaTonalidadTrasEn)
+        case .faltaConjunto: return TextosDeCLI.traduccion(\.faltaConjunto)
+        case .faltaSerie: return TextosDeCLI.traduccion(\.faltaSerie)
         case .faltanAcordesDelAnalisis:
             let ejemplo = "armonia analizar Do Fa Sol7 Do"
             return TextosDeCLI.traduccion { $0.faltanAcordesDelAnalisis(ejemplo) }
@@ -257,9 +261,9 @@ enum ErrorDeUso {
         case .faltaEscalaDelDibujo(let orden):
             let ejemplo = "armonia \(orden) --escala Re dórico"
             return TextosDeCLI.traduccion { $0.faltaEscalaDelDibujo(ejemplo, orden) }
-        case .clasesFueraDeRango(let orden):
+        case .faltanClasesDelDibujo(let orden):
             let ejemplo = "armonia \(orden) --clases 0 4 7"
-            return TextosDeCLI.traduccion { $0.clasesFueraDeRango(ejemplo, orden) }
+            return TextosDeCLI.traduccion { $0.faltanClasesDelDibujo(ejemplo, orden) }
         case .faltanTriadasDelRecorrido(let orden):
             let ejemplo = "armonia \(orden) --recorrido Do Lam Fa Rem"
             return TextosDeCLI.traduccion { $0.faltanTriadasDelRecorrido(ejemplo, orden) }

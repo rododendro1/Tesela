@@ -41,6 +41,10 @@ extension TextosDeCLI {
         notasEscalas: "opcions: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) e --categoria maqam (o rāga, makam,\ndastgah, dromos…); un tèxte cerca dins los noms",
         sintaxisTonalidad: "tonalidad <tonalitat>",
         descripcionTonalidad: "armadura, relativas e grases",
+        sintaxisConjunto: "conjunto <classas>",
+        descripcionConjunto: "forma prima, numèro de Forte,\nvectors, simetrias e nòtas",
+        sintaxisSerie: "serie <seria>",
+        descripcionSerie: "matritz, formas e combinatòria\nd'una seria dodecafonica",
 
         // Ayuda+Dibujos.swift
         sintaxisTonnetz: "tonnetz <nòtas>",
@@ -150,6 +154,8 @@ extension TextosDeCLI {
         faltaEscala: "manca la gama: armonia escala Re dórico",
         faltaTonalidad: "manca la tonalitat: armonia tonalidad La menor",
         faltaTonalidadTrasEn: "manca la tonalitat aprèp --en",
+        faltaConjunto: "manca lo conjunt: armonia conjunto 0 4 7",
+        faltaSerie: "manca la seria: armonia serie 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "mancan los acòrds: " + ejemplo },
         archivoIlegible: { nombre in "se pòt pas legir lo fichièr « \(nombre) »" },
         archivoConAcordes: "amb --archivo, escrivètz pas d'acòrds",
@@ -162,7 +168,7 @@ extension TextosDeCLI {
         faltanNotasDelDibujo: { ejemplo, orden in "mancan las nòtas: " + ejemplo },
         faltaAcordeDelDibujo: { ejemplo, orden in "manca l'acòrd: " + ejemplo },
         faltaEscalaDelDibujo: { ejemplo, orden in "manca la gama: " + ejemplo },
-        clasesFueraDeRango: { ejemplo, orden in "las classas de nautor son de nombres de 0 a 11: " + ejemplo },
+        faltanClasesDelDibujo: { ejemplo, orden in "mancan las classas d'autor: " + ejemplo },
         faltanTriadasDelRecorrido: { ejemplo, orden in "mancan las triadas: " + ejemplo },
         cicloMalEscrito: { ejemplo, orden in "lo cicle es exatonic, octatonic o LR, dempuèi una triada: " + ejemplo },
         recorridoSoloTriadas: { ejemplo, orden in "lo percors es fach de triadas majoras e menoras: " + ejemplo },
@@ -248,6 +254,16 @@ extension TextosDeCLI {
         mensajeNingunPaso: "cap de pas",
         mensajeUnPaso: "1 pas",
         mensajePasos: { n in "\(n) passes" },
-        mensajeTriadas: { n in Idioma.occitano.contar(n, "triada", "triadas") }
+        mensajeTriadas: { n in Idioma.occitano.contar(n, "triada", "triadas") },
+        mensajeFormaNormal: "forma normala",
+        mensajeFormaPrima: "forma prima",
+        mensajeVectorIntervalico: "vector d'intervals",
+        mensajeVectorDeIndice: "vector d'indèx",
+        mensajeEjesDeSimetria: "axes de simetria",
+        mensajeIntervalos: "intervals",
+        mensajeDeTodosLosIntervalos: "de totes los intervals",
+        mensajeFormasDistintas: { n in "\(n) formas diferentas" },
+        mensajeHexacordos: "hexacòrds",
+        mensajeFormasCombinatorias: "formas combinatòrias"
     )
 }

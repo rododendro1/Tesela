@@ -44,6 +44,10 @@ struct TextosDeCLI: TextosTraducidos {
     let notasEscalas: String
     let sintaxisTonalidad: String
     let descripcionTonalidad: String
+    let sintaxisConjunto: String
+    let descripcionConjunto: String
+    let sintaxisSerie: String
+    let descripcionSerie: String
 
     // MARK: Ayuda+Dibujos.swift
     let sintaxisTonnetz: String
@@ -138,6 +142,8 @@ struct TextosDeCLI: TextosTraducidos {
     let faltaEscala: String
     let faltaTonalidad: String
     let faltaTonalidadTrasEn: String
+    let faltaConjunto: String
+    let faltaSerie: String
     let faltanAcordesDelAnalisis: @Sendable (String) -> String
     let archivoIlegible: @Sendable (String) -> String
     let archivoConAcordes: String
@@ -150,7 +156,7 @@ struct TextosDeCLI: TextosTraducidos {
     let faltanNotasDelDibujo: @Sendable (String, String) -> String
     let faltaAcordeDelDibujo: @Sendable (String, String) -> String
     let faltaEscalaDelDibujo: @Sendable (String, String) -> String
-    let clasesFueraDeRango: @Sendable (String, String) -> String
+    let faltanClasesDelDibujo: @Sendable (String, String) -> String
     let faltanTriadasDelRecorrido: @Sendable (String, String) -> String
     let cicloMalEscrito: @Sendable (String, String) -> String
     let recorridoSoloTriadas: @Sendable (String, String) -> String
@@ -238,6 +244,16 @@ struct TextosDeCLI: TextosTraducidos {
     let mensajeUnPaso: String
     let mensajePasos: @Sendable (Int) -> String
     let mensajeTriadas: @Sendable (Int) -> String
+    let mensajeFormaNormal: String
+    let mensajeFormaPrima: String
+    let mensajeVectorIntervalico: String
+    let mensajeVectorDeIndice: String
+    let mensajeEjesDeSimetria: String
+    let mensajeIntervalos: String
+    let mensajeDeTodosLosIntervalos: String
+    let mensajeFormasDistintas: @Sendable (Int) -> String
+    let mensajeHexacordos: String
+    let mensajeFormasCombinatorias: String
 
     /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.

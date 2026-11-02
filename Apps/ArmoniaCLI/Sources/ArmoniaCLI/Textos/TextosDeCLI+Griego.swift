@@ -41,6 +41,10 @@ extension TextosDeCLI {
         notasEscalas: "επιλογές: --tradition turkey (ή india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) και --category maqam (ή rāga, makam,\ndastgah, dromos…)· ένα κείμενο ψάχνει στα ονόματα",
         sintaxisTonalidad: "key <τονικότητα>",
         descripcionTonalidad: "οπλισμός, σχετικές τονικότητες και\nβαθμίδες",
+        sintaxisConjunto: "set <κλάσεις>",
+        descripcionConjunto: "πρωταρχική μορφή, αριθμός Forte,\nδιανύσματα, συμμετρίες και νότες",
+        sintaxisSerie: "row <σειρά>",
+        descripcionSerie: "πίνακας, μορφές και συνδυαστικότητα\nδωδεκάφθογγης σειράς",
 
         // Ayuda+Dibujos.swift
         sintaxisTonnetz: "tonnetz <νότες>",
@@ -150,6 +154,8 @@ extension TextosDeCLI {
         faltaEscala: "λείπει η κλίμακα: armonia scale D dorian",
         faltaTonalidad: "λείπει η τονικότητα: armonia key A minor",
         faltaTonalidadTrasEn: "λείπει η τονικότητα μετά το --in",
+        faltaConjunto: "λείπει το σύνολο: armonia set 0 4 7",
+        faltaSerie: "λείπει η σειρά: armonia row 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "λείπουν οι συγχορδίες: armonia analyze C F G7 C" },
         archivoIlegible: { nombre in "δεν είναι δυνατή η ανάγνωση του αρχείου «\(nombre)»" },
         archivoConAcordes: "με το --file δεν γράφονται συγχορδίες",
@@ -162,7 +168,7 @@ extension TextosDeCLI {
         faltanNotasDelDibujo: { ejemplo, orden in "λείπουν οι νότες: armonia \(orden) C E G" },
         faltaAcordeDelDibujo: { ejemplo, orden in "λείπει η συγχορδία: armonia \(orden) --chord G7" },
         faltaEscalaDelDibujo: { ejemplo, orden in "λείπει η κλίμακα: armonia \(orden) --scale D dorian" },
-        clasesFueraDeRango: { ejemplo, orden in "οι τονικές κλάσεις είναι αριθμοί από 0 έως 11: armonia \(orden) --pcs 0 4 7" },
+        faltanClasesDelDibujo: { ejemplo, orden in "λείπουν οι τονικές κλάσεις: armonia \(orden) --pcs 0 4 7" },
         faltanTriadasDelRecorrido: { ejemplo, orden in "λείπουν τα τρίφωνα: armonia \(orden) --sequence C Am F Dm" },
         cicloMalEscrito: { ejemplo, orden in "ο κύκλος είναι εξατονικός, οκτατονικός ή LR, από ένα τρίφωνο: armonia \(orden) --cycle hexatonic C" },
         recorridoSoloTriadas: { ejemplo, orden in "η ακολουθία αποτελείται από μείζονα και ελάσσονα τρίφωνα: armonia \(orden) --sequence C Am F Dm" },
@@ -248,6 +254,16 @@ extension TextosDeCLI {
         mensajeNingunPaso: "κανένα βήμα",
         mensajeUnPaso: "1 βήμα",
         mensajePasos: { n in "\(n) βήματα" },
-        mensajeTriadas: { n in Idioma.griego.contar(n, "τρίφωνο", "τρίφωνα") }
+        mensajeTriadas: { n in Idioma.griego.contar(n, "τρίφωνο", "τρίφωνα") },
+        mensajeFormaNormal: "κανονική μορφή",
+        mensajeFormaPrima: "πρωταρχική μορφή",
+        mensajeVectorIntervalico: "διάνυσμα διαστημάτων",
+        mensajeVectorDeIndice: "διάνυσμα δεικτών",
+        mensajeEjesDeSimetria: "άξονες συμμετρίας",
+        mensajeIntervalos: "διαστήματα",
+        mensajeDeTodosLosIntervalos: "όλων των διαστημάτων",
+        mensajeFormasDistintas: { n in "\(n) διαφορετικές μορφές" },
+        mensajeHexacordos: "εξάχορδα",
+        mensajeFormasCombinatorias: "συνδυαστικές μορφές"
     )
 }

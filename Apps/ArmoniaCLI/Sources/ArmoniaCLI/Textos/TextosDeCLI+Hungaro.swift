@@ -41,6 +41,10 @@ extension TextosDeCLI {
         notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) és --category maqam (vagy rāga, makam,\ndastgah, dromos…); a szöveg a nevekben keres",
         sintaxisTonalidad: "key <hangnem>",
         descripcionTonalidad: "előjegyzés, rokon hangnemek és fokok",
+        sintaxisConjunto: "set <osztályok>",
+        descripcionConjunto: "prímforma, Forte-szám,\nvektorok, szimmetriák és hangok",
+        sintaxisSerie: "row <sor>",
+        descripcionSerie: "tizenkétfokú sor mátrixa,\nformái és kombinatorikája",
 
         // Ayuda+Dibujos.swift
         sintaxisTonnetz: "tonnetz <hangok>",
@@ -150,6 +154,8 @@ extension TextosDeCLI {
         faltaEscala: "hiányzik a skála: armonia scale D dorian",
         faltaTonalidad: "hiányzik a hangnem: armonia key A minor",
         faltaTonalidadTrasEn: "hiányzik a hangnem a --in után",
+        faltaConjunto: "hiányzik a halmaz: armonia set 0 4 7",
+        faltaSerie: "hiányzik a sor: armonia row 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "hiányoznak az akkordok: armonia analyze C F G7 C" },
         archivoIlegible: { nombre in "nem olvasható a fájl: „\(nombre)”" },
         archivoConAcordes: "a --file mellett ne írj akkordokat",
@@ -162,7 +168,7 @@ extension TextosDeCLI {
         faltanNotasDelDibujo: { ejemplo, orden in "hiányoznak a hangok: armonia \(orden) C E G" },
         faltaAcordeDelDibujo: { ejemplo, orden in "hiányzik az akkord: armonia \(orden) --chord G7" },
         faltaEscalaDelDibujo: { ejemplo, orden in "hiányzik a skála: armonia \(orden) --scale D dorian" },
-        clasesFueraDeRango: { ejemplo, orden in "a hangosztályok 0 és 11 közötti számok: armonia \(orden) --pcs 0 4 7" },
+        faltanClasesDelDibujo: { ejemplo, orden in "hiányoznak a hangosztályok: armonia \(orden) --pcs 0 4 7" },
         faltanTriadasDelRecorrido: { ejemplo, orden in "hiányoznak a hármashangzatok: armonia \(orden) --sequence C Am F Dm" },
         cicloMalEscrito: { ejemplo, orden in "a ciklus hexatonikus, oktatonikus vagy LR, egy hármashangzattól indulva: armonia \(orden) --cycle hexatonic C" },
         recorridoSoloTriadas: { ejemplo, orden in "a sor dúr és moll hármashangzatokból áll: armonia \(orden) --sequence C Am F Dm" },
@@ -248,6 +254,16 @@ extension TextosDeCLI {
         mensajeNingunPaso: "nincs lépés",
         mensajeUnPaso: "1 lépés",
         mensajePasos: { n in "\(n) lépés" },
-        mensajeTriadas: { n in Idioma.hungaro.contar(n, "hármashangzat") }
+        mensajeTriadas: { n in Idioma.hungaro.contar(n, "hármashangzat") },
+        mensajeFormaNormal: "normálforma",
+        mensajeFormaPrima: "prímforma",
+        mensajeVectorIntervalico: "intervallumvektor",
+        mensajeVectorDeIndice: "indexvektor",
+        mensajeEjesDeSimetria: "szimmetriatengelyek",
+        mensajeIntervalos: "hangközök",
+        mensajeDeTodosLosIntervalos: "minden hangközös",
+        mensajeFormasDistintas: { n in "\(n) különböző forma" },
+        mensajeHexacordos: "hexachordok",
+        mensajeFormasCombinatorias: "kombinatorikus formák"
     )
 }
