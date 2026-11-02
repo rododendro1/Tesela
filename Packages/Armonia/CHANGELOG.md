@@ -8,6 +8,11 @@
   (`.espanol`, `.catalan`…) no cambian.
 - `Tipografia.unicode` pasa a llamarse `.conSimples` (un signo por semitono: Fa♯, Si♭♭), junto a `.conDobles`;
   también sin obsoleto. El `rawValue` es ahora «conSimples».
+- **Las compactas de do, re, mi escriben las dobles con 𝄪 y 𝄫**: `.espanolCompacto`, `.catalanCompacto`,
+  `.francesCompacto`, `.griegoCompacto`, `.rusoCompacto`… (los doce idiomas que nombran las notas por sílabas) usan
+  `Tipografia.conDobles`: Fa𝄪, Si𝄫, Do𝄪♯. `.inglesCompacto` sigue con `.conSimples` (F♯♯), y el alemán y el húngaro,
+  con sus sufijos. `texto`, `description` y la codificación no cambian (Si♭♭3), ni `Nota.nombre`.
+  `ReglasDeIdioma.usaSilabas` dice qué idiomas son.
 - **Microtonos en las partituras**: cada nota de un `Evento` puede apartarse de su nota temperada (`desvios`, en
   cents; en texto, `Mi♭4(50¢):4`), y `Escala.voz(octava:sentido:duracion:)` da una escala en negras con sus
   microtonos. Los formatos los escriben: MusicXML, con el `alter` en decimales (−0.5) y su `<accidental>`
@@ -38,9 +43,8 @@
   la tónica en un cuarto de tono, o cuyo redondeo cambia el carácter (Sīkāh, Uşşak, Segāh…), esperan a la capa
   microtonal.
 - `Tipografia.compacta` pasa a llamarse `.conDobles` (𝄪 y 𝄫 por cada pareja), y `Alteracion.simboloCompacto`,
-  `simboloConDobles`, para no confundirlas con las notaciones compactas (`.espanolCompacto`), que usan `.conSimples`
-  (Fa♯♯, no Fa𝄪). Los nombres de antes siguen, obsoletos, en `Obsoletos.swift`. El `rawValue` del caso es ahora
-  «conDobles».
+  `simboloConDobles`, para no confundirlas con las notaciones compactas. Los nombres de antes siguen, obsoletos,
+  en `Obsoletos.swift`. El `rawValue` del caso es ahora «conDobles».
 - `.alemanPalabras` escribe el Si♭ como B, igual que sus cifrados (B7) y tonalidades (B-Dur), y no «H Be»; «H Be» se
   sigue leyendo. El Si𝄫 sigue siendo «H Doppel-Be».
 - En la línea de comandos la octava va como la escriba la notación: en subíndice en las compactas (la de siempre,

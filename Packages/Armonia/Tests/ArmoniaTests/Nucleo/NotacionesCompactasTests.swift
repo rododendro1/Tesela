@@ -13,10 +13,29 @@ import Testing
         #expect(Nota("Sib").nombre(en: .portuguesCompacto) == "Si♭")
         #expect(Nota("Fa#").nombre(en: .rusoCompacto) == "Фа♯")
         #expect(Nota("Fa#").nombre(en: .griegoCompacto) == "Φα♯")
-        #expect(Nota("Do##").nombre(en: .italianoCompacto) == "Do♯♯")
+        #expect(Nota("Do##").nombre(en: .italianoCompacto) == "Do𝄪")
         #expect(Nota("Mi").nombre(en: .euskeraCompacto) == "Mi")
         // Las de palabras no cambian.
         #expect(Nota("Reb").nombre(en: .francesPalabras) == "ré bémol")
+    }
+
+    @Test func lasDeDoReMiEscribenLasDoblesConDobles() throws {
+        let silabas = Idioma.allCases.filter(\.reglas.usaSilabas)
+        #expect(silabas.count == 12)
+        #expect(![Idioma.ingles, .aleman, .hungaro].contains(where: \.reglas.usaSilabas))
+        for idioma in silabas {
+            #expect(Notacion(escritura: .compacta(idioma)).tipografia == .conDobles, Comment(rawValue: idioma.codigo))
+        }
+        #expect(Nota("Sibb").nombre(en: .espanolCompacto) == "Si𝄫")
+        #expect(Nota("Do###").nombre(en: .francesCompacto) == "Do𝄪♯")
+        #expect(Nota("Fa##").nombre(en: .rusoCompacto) == "Фа𝄪")
+        #expect(Nota("Re").nombre(en: .espanolCompacto) == "Re")
+        #expect(Nota("Sibb").nombre(en: .inglesCompacto) == "B♭♭")
+        #expect(Notacion.delIdioma(.espanol) == .espanolCompacto)
+        #expect(try Nota(leyendo: "Si𝄫") == Nota("Sibb"))
+        // Lo guardado no cambia.
+        #expect(Altura("Sibb3").description == "Si♭♭3")
+        #expect(Nota("Sibb").nombre == "Si♭♭")
     }
 
     @Test func alturasConSubindice() {

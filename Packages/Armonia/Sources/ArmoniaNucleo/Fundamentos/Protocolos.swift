@@ -61,9 +61,9 @@ extension RepresentableComoTexto {
 }
 
 extension Notacion {
-    /// La de `texto` y la codificación: `.espanolCompacto` con la octava en cifras ("Fa♯4"), para que lo guardado
-    /// no cambie con la escritura de la octava.
-    package static let deCodificacion = Notacion.espanolCompacto.conOctavas(.cifras)
+    /// La de `texto` y la codificación: la española compacta con la octava en cifras ("Fa♯4") y ♯ y ♭ también en las
+    /// dobles ("Si♭♭3"), para que lo guardado no cambie con la escritura de la octava ni con la de los signos.
+    package static let deCodificacion = Notacion(escritura: .espanolConSimples).conOctavas(.cifras)
 }
 
 // MARK: - Nombrable

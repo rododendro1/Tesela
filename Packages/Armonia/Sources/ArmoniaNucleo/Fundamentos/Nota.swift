@@ -144,8 +144,8 @@ public enum Tipografia: String, Hashable, Sendable, CaseIterable {
     case conSimples
     /// Un signo por semitono, # y b, como se escribe en un teclado: F#, Bbb.
     case ascii
-    /// 𝄪 y 𝄫 para cada pareja de signos, y ♮ para el natural: Fa𝄪, Si𝄫, Do𝄪♯. No es la de las notaciones
-    /// compactas (`.espanolCompacto`, `.inglesCompacto`), que usan `.conSimples`.
+    /// 𝄪 y 𝄫 para cada pareja de signos, y ♮ para el natural: Fa𝄪, Si𝄫, Do𝄪♯. La de las notaciones compactas de
+    /// los idiomas de do, re, mi (`.espanolCompacto`, `.francesCompacto`…); `.inglesCompacto` usa `.conSimples`.
     case conDobles
 }
 
@@ -423,7 +423,7 @@ extension Nota {
         case .signos:
             // En las compactas de los idiomas con palabras, la sílaba va en mayúscula, como en los cifrados: Ré♭.
             let silaba = notacion.idiomaDeLasNotas.reglas.alteraciones == .palabras ? base.conMayusculaInicial : base
-            return silaba + (notacion.usaASCII ? alteracion.simboloASCII : alteracion.simbolo)
+            return silaba + (alteracion.esNatural ? "" : alteracion.simbolo(en: notacion.tipografia))
         case .palabras:
             // El separador lo pone el idioma: un espacio en casi todos, un guion en ruso (фа-диез).
             guard !alteracion.esNatural else { return base }

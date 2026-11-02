@@ -77,7 +77,7 @@ import Testing
                 #expect(try (Alteracion(leyendo: Alteracion(n).simbolo(en: tipografia))) == Alteracion(n))
             }
         }
-        #expect(Notacion.espanolCompacto.tipografia == .conSimples)
+        #expect(Notacion.espanolCompacto.tipografia == .conDobles)
         #expect(Notacion.inglesASCII.tipografia == .ascii)
         #expect(Notacion.espanolASCII.tipografia == .ascii)
         #expect(Notacion.francesPalabras.tipografia == .conSimples)
