@@ -17,7 +17,7 @@ import Testing
             #expect(microtonal.temperada.microtonal == microtonal, Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(TipoDeEscalaMicrotonal.catalogo.count == 9)
+        #expect(TipoDeEscalaMicrotonal.catalogo.count == 33)
     }
 
     /// Se busca por el nombre: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
@@ -25,7 +25,7 @@ import Testing
         #expect(TipoDeEscala.bayati == .frigio)
         #expect(TipoDeEscala.bayati.microtonal != nil)
         #expect(TipoDeEscala.frigio.microtonal == nil)
-        #expect(TipoDeEscala.ousak.microtonal == nil)
+        #expect(TipoDeEscala.ajam.microtonal == nil)
         #expect(Escala(.do, .mayor).notasMicrotonales() == nil)
         let propia = TipoDeEscala(nombre: "Bayātī", intervalos: [.unisono, .quintaJusta])
         #expect(propia.microtonal == nil)
@@ -45,6 +45,15 @@ import Testing
         // En otra tónica, el medio signo se suma a la alteración: Sol Rāst tiene Si𝄳 y Fa𝄲 (medio sostenido).
         #expect(nombres(Escala(.sol, .maqamRast)) == "Sol La Si𝄳 Do Re Mi Fa𝄲")
         #expect(nombres(Escala(.fa, .bayati)) == "Fa Sol𝄳 La♭ Si♭ Do Re♭ Mi♭")
+        // Ḥusaynī, con un segundo jins Bayātī en la quinta; Nayrūz, un jins Rāst y uno Bayātī.
+        #expect(nombres(Escala(.re, .husayni)) == "Re Mi𝄳 Fa Sol La Si𝄳 Do")
+        #expect(nombres(Escala(.do, .nayruz)) == "Do Re Mi𝄳 Fa Sol La𝄳 Si♭")
+        // Con la tónica en un cuarto de tono, escritas sobre la nota temperada.
+        #expect(nombres(Escala(.mi, .sikah)) == "Mi𝄳 Fa Sol La Si𝄳 Do Re")
+        #expect(nombres(Escala(.mi, .huzam)) == "Mi𝄳 Fa Sol La♭ Si Do Re")
+        #expect(nombres(Escala(.si, .iraq)) == "Si𝄳 Do Re Mi𝄳 Fa Sol La")
+        #expect(TipoDeEscala.sikah.microtonal?.desvios().first == -50)
+        #expect(Escala(.mi, .sikah).notasMicrotonales()?.first?.cents == -50)
         #expect(nombres(Escala(.si, .bayati)) == "Si Do𝄲 Re Mi Fa♯ Sol La")
     }
 
@@ -63,6 +72,27 @@ import Testing
         #expect(nombres(Escala(.sol, .rastMakami), .descendente) == "Sol La Si⁻¹ Do Re Mi Fa")
         #expect(nombres(Escala(.la, .hicazMakami)) == "La Si♭⁺¹ Do♯⁻¹ Re Mi Fa♯⁻¹ Sol")
         #expect(nombres(Escala(.la, .hicazMakami), .descendente) == "La Si♭⁺¹ Do♯⁻¹ Re Mi⁻¹ Fa Sol")
+        #expect(nombres(Escala(.sol, .hicazkarMakami)) == "Sol La♭⁺¹ Si⁻¹ Do Re Mi♭⁺¹ Fa♯⁻¹")
+        // Uşşak y Hüseynî, con la segâh: Si una koma bajo, como en Rast.
+        #expect(nombres(Escala(.la, .ussakMakami)) == "La Si⁻¹ Do Re Mi Fa Sol")
+        #expect(nombres(Escala(.la, .huseyniMakami)) == "La Si⁻¹ Do Re Mi Fa♯⁻¹ Sol")
+        #expect(nombres(Escala(.la, .huseyniMakami), .descendente) == "La Si⁻¹ Do Re Mi Fa Sol")
+        // Segâh, desde la segâh.
+        #expect(nombres(Escala(.si, .segahMakami)) == "Si⁻¹ Do Re Mi Fa♯⁻¹ Sol La")
+        #expect(TipoDeEscala.ussakMakami.microtonal?.cents[1] == 8.0 * 1200 / 53)
+        // Dromoi, con la afinación de su maqam o su makam.
+        #expect(nombres(Escala(.re, .ousak)) == "Re Mi𝄳 Fa Sol La Si♭ Do")
+        #expect(nombres(Escala(.re, .sabah)) == "Re Mi𝄳 Fa Sol♭ La Si♭ Do")
+        #expect(nombres(Escala(.re, .hitzaz)) == "Re Mi♭⁺¹ Fa♯⁻¹ Sol La Si♭ Do")
+        #expect(nombres(Escala(.re, .kartzigar)) == "Re Mi⁻¹ Fa Sol La♭⁺¹ Si⁻¹ Do")
+        #expect(nombres(Escala(.do, .rast), .descendente) == "Do Re Mi⁻¹ Fa Sol La Si♭")
+        #expect(nombres(Escala(.re, .pireotikos)) == "Re Mi♭⁺¹ Fa♯⁻¹ Sol♯⁻¹ La Si♭⁺¹ Do♯⁻¹")
+        #expect(nombres(Escala(.re, .nikriz)) == "Re Mi Fa Sol♯⁻¹ La Si Do")
+        #expect(nombres(Escala(.re, .houzam)) == "Re Mi♯⁻¹ Fa♯⁻¹ Sol La Si Do♯")
+        #expect(nombres(Escala(.re, .kiourdi), .descendente) == "Re Mi⁻¹ Fa Sol La Si♭ Do")
+        // Todos los dromoi tienen versión microtonal; los maqamat sin cuartos de tono, no.
+        #expect(TipoDeEscala.dromoi.allSatisfy { $0.microtonal != nil })
+        #expect(TipoDeEscala.hiyaz.microtonal == nil)
         // Una coma son 1200/53 cents.
         let si = Escala(.sol, .rastMakami).notasMicrotonales()?[2]
         #expect(abs((si?.cents ?? 0) - 17.0 * 1200 / 53) < 1e-9)

@@ -24,7 +24,9 @@ package enum SignoMicrotonal: Hashable, Sendable {
     /// bemol y el medio sostenido se escriben como koron y sori.
     package init?(semitonos: Int, desvio: Double, persa: Bool = false) {
         guard abs(desvio) >= 0.5 else { return nil }
-        let total = 100 * Double(semitonos) + desvio
+        // Redondeado a la centésima, como `Evento.desvios`, para que el pentagrama y los formatos den el mismo signo:
+        // en Segâh, el Fa♯ una koma bajo cae justo entre 3 y 4 comas sobre Fa.
+        let total = 100 * Double(semitonos) + (desvio * 100).rounded() / 100
         let cuartos = (total / 50).rounded()
         if abs(total / 50 - cuartos) < 0.1 {
             let n = Int(cuartos)
@@ -127,15 +129,18 @@ package typealias AlturaMicrotonal = (altura: Altura, desvio: Double, nota: Nota
 
 extension Escala {
     /// Las alturas de la escala con lo que se aparta cada una de su nota temperada, en cents, y su nota microtonal
-    /// (`nil` si la escala no tiene microtonos, y en la tónica de arriba), como las escriben el pentagrama y los
+    /// (`nil` si la escala no tiene microtonos), como las escriben el pentagrama y los
     /// formatos: la subida o la bajada y, si `sentido` es `nil`, la subida y, en las escalas que bajan con otras
     /// notas, también la bajada.
     package func alturasMicrotonales(octava: Int, sentido: SentidoDelIntervalo?) -> [AlturaMicrotonal] {
         func tramo(_ sentido: SentidoDelIntervalo) -> [AlturaMicrotonal] {
             let alturas = self.alturas(octava: octava, sentido: sentido)
-            // Los desvíos y las notas van grado a grado desde la tónica; la tónica de arriba no se aparta.
-            var desvios = (tipo.microtonal?.desvios(sentido: sentido) ?? []) + [0]
-            var notas = (notasMicrotonales(sentido: sentido) ?? []).map { Optional($0) } + [nil]
+            // Los desvíos y las notas van grado a grado desde la tónica; la de arriba se aparta como la de abajo
+            // (en Sīkāh, las dos son Mi𝄳).
+            var desvios = tipo.microtonal?.desvios(sentido: sentido) ?? []
+            desvios += [desvios.first ?? 0]
+            var notas = (notasMicrotonales(sentido: sentido) ?? []).map { Optional($0) }
+            notas += [notas.first ?? nil]
             if sentido == .descendente {
                 desvios.reverse()
                 notas.reverse()
