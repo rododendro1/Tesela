@@ -150,11 +150,11 @@ struct LectorABC {
 
     private mutating func leerCompas(_ valor: String) {
         let texto = valor.trimmingCharacters(in: .whitespaces)
-        let leido: Compas?
+        let resultado: Compas?
         switch texto {
-        case "C": leido = .compasillo
-        case "C|": leido = .partido
-        case "none", "": leido = nil
+        case "C": resultado = .compasillo
+        case "C|": resultado = .partido
+        case "none", "": resultado = nil
         default:
             let partes = texto.split(separator: "/")
             guard partes.count == 2, let unidad = Int(partes[1].trimmingCharacters(in: .whitespaces)) else { return }
@@ -162,9 +162,9 @@ struct LectorABC {
                 .map { Int($0.trimmingCharacters(in: .whitespaces)) }
             guard !numeradores.isEmpty, !numeradores.contains(nil) else { return }
             let total = numeradores.compactMap { $0 }.reduce(0, +)
-            leido = total <= 1000 ? Compas(comprobando: total, unidad) : nil
+            resultado = total <= 1000 ? Compas(comprobando: total, unidad) : nil
         }
-        guard let leido else { return }
+        guard let leido = resultado else { return }
         if compas == nil { compas = leido }
         duracionDelCompas = PulsosDeLectura.de(leido.duracion)
         compuesto = leido.numerador % 3 == 0 && leido.numerador > 3 && leido.denominador >= 8

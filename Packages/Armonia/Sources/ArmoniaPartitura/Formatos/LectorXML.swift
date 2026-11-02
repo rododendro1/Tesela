@@ -309,10 +309,10 @@ enum LectorXML {
                 default:
                     if nombre.hasPrefix("#") {
                         let cifras = nombre.dropFirst()
-                        let valor =
+                        let numero =
                             cifras.first == "x" || cifras.first == "X"
                             ? UInt32(cifras.dropFirst(), radix: 16) : UInt32(cifras, radix: 10)
-                        guard let valor, let escalar = Unicode.Scalar(valor), valor != 0 else {
+                        guard let valor = numero, let escalar = Unicode.Scalar(valor), valor != 0 else {
                             throw Fallo(posicion: desde + (k - trozo.startIndex))
                         }
                         sustituto = String(Character(escalar))
