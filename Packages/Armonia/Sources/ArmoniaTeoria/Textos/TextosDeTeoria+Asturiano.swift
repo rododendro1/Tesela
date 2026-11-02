@@ -141,6 +141,12 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "dominante backdoor",
         rearmonizacionIIRelativo: "ii relativu",
         rearmonizacionDisminuido: "sustitutu diminuyíu",
+        secuenciaTerceras: "por terceres",
+        secuenciaCuartas: "por cuartes",
+        secuenciaGruposDeTres: "en grupos de tres",
+        secuenciaGruposDeCuatro: "en grupos de cuatro",
+        secuenciaTriadas: "en tríades",
+        secuenciaCuatriadas: "en cuatríades",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» nun fai parte de nengún cifráu conocíu" },
         tensionNoValida: { tension in "«\(tension)» nun ye una tensión válida (almítense ♭/♯ con 5, 9, 11 y 13, y add con 2, 4, 6, 9, 11 y 13)" },

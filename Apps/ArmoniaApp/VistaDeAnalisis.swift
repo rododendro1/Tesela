@@ -53,6 +53,8 @@ struct VistaDeAnalisis: View {
                 }
                 // El acorde que suena, contado desde el primero de todos los tramos.
                 let sonando = reproductor.paso(de: analisis.sonido)
+                // Lo que cambia de una escala a la siguiente y las notas guía de cada acorde.
+                let cambios = analisis.cambiosDeEscala(en: notacion)
                 ForEach(Array(analisis.tramos.enumerated()), id: \.offset) { t, tramo in
                     let antes = analisis.tramos.prefix(t).map(\.filas.count).reduce(0, +)
                     Section(tramo.cabecera ?? notacion.texto(\.acordeAAcorde)) {
@@ -67,6 +69,9 @@ struct VistaDeAnalisis: View {
                                     Text(fila.funcion).foregroundColor(.secondary)
                                 }
                                 if let escala = fila.escala { escalaDelAcorde(escala) }
+                                if cambios.indices.contains(antes + i) {
+                                    Text(cambios[antes + i]).font(.caption).foregroundColor(.secondary)
+                                }
                             }
                             .listRowBackground(sonando == antes + i ? TemaDeLasApps.resaltado.opacity(0.25) : nil)
                         }

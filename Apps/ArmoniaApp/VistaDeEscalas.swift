@@ -11,6 +11,12 @@ struct VistaDeEscalas: View {
     @State private var tipo = 0 // índice en `catalogo`
     /// Las posiciones en el mástil: las del sistema CAGED o las de tres (o dos) notas por cuerda.
     @State private var caged = true
+    /// La secuencia de estudio, su sentido y cuántas octavas abarca.
+    @State private var secuencia = SecuenciaDeEscala.terceras
+    @State private var bajando = false
+    @State private var octavas = 1
+    /// La escala con que se compara la elegida, o vacío.
+    @State private var otraEscala = "Do lidio"
     /// Lo que está sonando, para resaltar la nota en el pentagrama y en el mástil.
     @ObservedObject private var reproductor = Reproductor.compartido
 
@@ -89,6 +95,10 @@ struct VistaDeEscalas: View {
                 DiagramaDeMastil(mastil: Mastil(.guitarra, trastes: 12), escala: escala, notacion: notacion)
             }
             posiciones(de: escala)
+            seccionDeLaSecuencia(de: escala)
+            digitacionDePiano(de: escala)
+            modos(de: escala)
+            comparacion(de: escala)
         }
         .navigationTitle(notacion.texto(\.escalas))
         .selectorDeNotacionEnLaBarra()
@@ -97,7 +107,7 @@ struct VistaDeEscalas: View {
         .onAppear(perform: tomarLaEscalaPedida)
         .toolbar {
             ToolbarItem {
-                BotonDeExportar([pentagrama.fichero])
+                BotonDeExportar([pentagrama.fichero] + secuenciaPresentada(de: escala).ficheros)
             }
         }
     }
@@ -116,6 +126,107 @@ struct VistaDeEscalas: View {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private func secuenciaPresentada(de escala: Escala) -> SecuenciaPresentada {
+        PresentacionDeEstudioDeEscala.secuencia(
+            escala, secuencia, octavas: octavas, sentido: bajando ? .descendente : .ascendente, notacion: notacion)
+    }
+
+    /// La escala en una secuencia de estudio (por terceras, en grupos, en tríadas…), subiendo o bajando, con su
+    /// pentagrama y «Escuchar»; se exporta con la barra.
+    @ViewBuilder
+    private func seccionDeLaSecuencia(de escala: Escala) -> some View {
+        let presentada = secuenciaPresentada(de: escala)
+        Section(notacion.texto(\.secuencia)) {
+            Picker(notacion.texto(\.secuencia), selection: $secuencia) {
+                ForEach(SecuenciaDeEscala.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
+            }
+            Toggle(notacion.texto(\.bajando), isOn: $bajando)
+            Stepper("\(notacion.texto(\.octavas)): \(octavas)", value: $octavas, in: 1...3)
+            if presentada.notas.isEmpty {
+                Text("—").foregroundColor(.secondary)
+            } else {
+                Text(presentada.notas).font(.system(.footnote, design: .monospaced))
+                DiagramaDePentagrama(presentada.pentagrama)
+                BotonDeEscuchar(presentada.sonido)
+            }
+        }
+    }
+
+    /// La digitación de piano de cada mano, con el dedo debajo de cada nota.
+    @ViewBuilder
+    private func digitacionDePiano(de escala: Escala) -> some View {
+        Section(notacion.texto(\.digitacionDePiano)) {
+            ForEach(PresentacionDeEstudioDeEscala.digitaciones(escala, notacion: notacion), id: \.self) { mano in
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(mano.mano).bold()
+                    let pares = zip(mano.notas.split(separator: " "), mano.dedos.split(separator: " "))
+                    Text(pares.map { "\($0) \($1)" }.joined(separator: " · "))
+                        .font(.system(.footnote, design: .monospaced))
+                }
+            }
+        }
+    }
+
+    /// Los modos sobre la misma tónica, del más brillante al más oscuro, con lo que cambia cada uno, y los modos
+    /// con las mismas notas; cada uno se abre al tocarlo.
+    @ViewBuilder
+    private func modos(de escala: Escala) -> some View {
+        let paralelos = PresentacionDeEstudioDeEscala.modosParalelos(de: escala, notacion: notacion)
+        let relativos = PresentacionDeEstudioDeEscala.modosRelativos(de: escala, notacion: notacion)
+        Section(notacion.texto(\.modosParalelos)) {
+            ForEach(paralelos, id: \.self) { filaDeModo($0) }
+        }
+        if !relativos.isEmpty {
+            Section(notacion.texto(\.modosRelativos)) {
+                ForEach(relativos, id: \.self) { filaDeModo($0) }
+            }
+        }
+    }
+
+    private func filaDeModo(_ modo: ModoPresentado) -> some View {
+        HStack {
+            Button {
+                navegacion.ver(modo.escala)
+            } label: {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(modo.brillo.isEmpty ? modo.nombre : modo.nombre + " (" + modo.brillo + ")")
+                    if !modo.cambios.isEmpty {
+                        Text(modo.cambios).font(.caption).foregroundColor(.secondary)
+                    }
+                }
+            }
+            Spacer()
+            BotonDeEscuchar(modo.sonido).labelStyle(.iconOnly)
+        }
+        .buttonStyle(.borderless)
+    }
+
+    /// La escala elegida y otra escrita: notas comunes, las que solo están en una, los grados que cambian y la
+    /// distancia en el círculo de quintas.
+    @ViewBuilder
+    private func comparacion(de escala: Escala) -> some View {
+        Section(notacion.texto(\.compararCon)) {
+            TextField(notacion.campo(.escala), text: $otraEscala)
+                .comoCampoDeCifrado()
+            if let otra = try? Escala(leyendo: otraEscala) {
+                let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, notacion: notacion)
+                LabeledContent(notacion.texto(\.notasComunes), value: comparacion.comunes)
+                ForEach([comparacion.soloEnOrigen, comparacion.soloEnDestino].filter { !$0.isEmpty }, id: \.self) {
+                    Text($0)
+                }
+                ForEach(comparacion.cambios, id: \.self) { Text($0).font(.system(.body, design: .monospaced)) }
+                HStack {
+                    if let distancia = comparacion.distancia {
+                        Text(distancia).foregroundColor(.secondary)
+                    }
+                    Spacer()
+                    BotonDeEscuchar(comparacion.sonido).labelStyle(.iconOnly)
+                }
+                .buttonStyle(.borderless)
             }
         }
     }

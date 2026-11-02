@@ -2,6 +2,25 @@
 
 ## Sin publicar
 
+### Estudiar escalas
+
+- **`Escala.secuencia(_:octava:octavas:sentido:)`** con **`SecuenciaDeEscala`**: la escala por terceras, por cuartas,
+  en grupos de tres o de cuatro, en tríadas o en cuatriadas, subiendo o bajando (la menor melódica baja natural).
+- **`Escala.modosParalelos`** (los siete modos de la mayor sobre la misma tónica, del lidio al locrio),
+  **`modosRelativos`** y **`brillo`** (cuántas notas sube o baja cada modo respecto al mayor).
+- **`Escala.comparar(con:)`** da una **`ComparacionDeEscalas`**: notas comunes, las que solo están en una, los grados
+  que cambian (`CambioDeGrado`) y la distancia en el círculo de quintas. `Escala.cambios(desde:)` y
+  `Acorde.notasGuia` sirven para seguir una progresión.
+- **`Acorde.escalasBebop`** (`EscalaBebop`, con su nota de paso y el recorrido bajando con las notas del acorde en
+  los tiempos fuertes) y **`Acorde.pentatonicas`** (`PentatonicaSobreElAcorde`: las mayores y menores sin notas a
+  evitar, con las tensiones que suman). `TipoDeEscala.bebop` y `modosPorBrillo`.
+- **`Escala.digitacionDePiano(_:octava:octavas:)`** (`DigitacionDePiano`, `Mano`): los dedos de cada mano, sin
+  pulgar en las teclas negras.
+- **En la línea de comandos**, `armonia escala` acepta `--secuencia <tipo>`, `--bajando`, `--octavas`, `--piano`,
+  `--modos` y `--comparar <escala>` (en inglés, `--sequence`, `--descending`, `--octaves`, `--modes` y `--compare`);
+  `armonia acorde`, `--bebop` y `--pentatonicas`; y `armonia analizar --escalas` añade las notas que cambian de una
+  escala a la siguiente y las notas guía.
+
 ### Más acordes
 
 - **`DisposicionDeAcorde.sinFundamentalA`, `sinFundamentalB` y `dosManos`**: las disposiciones sin fundamental de

@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+- **Estudiar escalas en Armonía.** En Escalas, la escala en secuencias (por terceras, en grupos, en tríadas…),
+  subiendo o bajando, con su pentagrama, para escucharla y exportarla; la digitación de piano de cada mano; los modos
+  sobre la misma tónica, del más brillante al más oscuro, con lo que cambia cada uno, y los de las mismas notas; y la
+  comparación con otra escala. En Acordes, las escalas bebop y las pentatónicas para improvisar. En Análisis, debajo
+  de cada acorde, las notas que cambian y las notas guía.
+
 - **Más acordes en Armonía.** En Acordes, las disposiciones sin fundamental (A y B) y a dos manos; cada disposición
   en un grupo de cuerdas del instrumento, con su diagrama, la tablatura y los dedos; los otros nombres del acorde, el
   que queda sin la fundamental, las tonalidades en que está, sus sustituciones para escucharlas y la comparación con

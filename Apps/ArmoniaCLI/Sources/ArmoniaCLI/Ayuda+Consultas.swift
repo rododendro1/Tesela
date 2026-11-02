@@ -13,13 +13,7 @@ extension LineaDeComandos {
             guard resto.count == 2 else { return uso(.dosNotas, notacion) }
             return bien(try intervalo(resto[0], resto[1], notacion))
         },
-        Orden(nombres: ["escala", "scale"], ayuda: ayudaDeEscala) { resto, notacion in
-            var argumentos = Argumentos(resto)
-            let conAcordes = argumentos.quitarMarca("--acordes", "--chords")
-            guard !argumentos.restantes.isEmpty else { return uso(.faltaEscala, notacion) }
-            let escala = try Escala(leyendo: argumentos.restantes.joined(separator: " "))
-            return bien(describir(escala: escala, conTodosSusAcordes: conAcordes, notacion))
-        },
+        Orden(nombres: ["escala", "scale"], ayuda: ayudaDeEscala) { try escala($0, $1) },
         Orden(nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas) { escalas($0, $1) },
         Orden(nombres: ["tonalidad", "key"], ayuda: ayudaDeTonalidad) { resto, notacion in
             guard !resto.isEmpty else { return uso(.faltaTonalidad, notacion) }
@@ -84,7 +78,8 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionEscala),
             ejemplo: ejemplo(
                 "armonia escala Re dórico",
-                "armonia scale D dorian"))
+                "armonia scale D dorian"),
+            notas: TextosDeCLI.traduccion(\.notasEscala))
     ]
 
     static let ayudaDeEscalas: [EntradaDeAyuda] = [

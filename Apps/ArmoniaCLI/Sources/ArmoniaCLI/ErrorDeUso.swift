@@ -73,6 +73,7 @@ enum ErrorDeUso {
     case gradosMalEscritos
     /// `arpegio --aproximacion` con un nombre que no se conoce.
     case aproximacionDesconocida(String)
+    case secuenciaDesconocida(String)
 
     // Neorriemanniano
     case vocesFueraDeRango
@@ -208,6 +209,8 @@ enum ErrorDeUso {
         case .gradosMalEscritos: return TextosDeCLI.traduccion(\.gradosMalEscritos)
         case .aproximacionDesconocida(let nombre):
             return TextosDeCLI.traduccion { $0.aproximacionDesconocida(nombre) }
+        case .secuenciaDesconocida(let nombre):
+            return TextosDeCLI.traduccion { $0.secuenciaDesconocida(nombre) }
         case .vocesFueraDeRango: return TextosDeCLI.traduccion(\.vocesFueraDeRango)
         case .unAcordeDeVecinos:
             let ejemplo = "armonia vecinos Sol7"

@@ -40,6 +40,7 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionIntervalo: String
     let sintaxisEscala: String
     let descripcionEscala: String
+    let notasEscala: String
     let sintaxisEscalas: String
     let descripcionEscalas: String
     let notasEscalas: String
@@ -209,6 +210,7 @@ struct TextosDeCLI: TextosTraducidos {
     let tensionesMalEscritas: String
     let gradosMalEscritos: String
     let aproximacionDesconocida: @Sendable (String) -> String
+    let secuenciaDesconocida: @Sendable (String) -> String
 
     // MARK: ErrorDeUso.swift (comunes)
     let pruebaLaAyuda: String

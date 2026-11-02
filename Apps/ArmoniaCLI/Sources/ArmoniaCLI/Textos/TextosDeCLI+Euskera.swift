@@ -27,7 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <zifratua>…",
         descripcionAcorde: "notak, mota eta nota bakoitzaren\npapera",
-        notasAcorde: "aukerak: --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(--en Do mayor tonalitatean, amaieran) eta --comparar Do\n(nota komunak eta ahotsen eramatea)",
+        notasAcorde: "aukerak: --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(--en Do mayor tonalitatean, amaieran) eta --comparar Do\n(nota komunak eta ahotsen eramatea); --bebop eta --pentatonicas\n(gainean inprobisatzeko eskalak)",
         sintaxisArpegio: "arpegio <zifratua> [--patron <eredua>]",
         descripcionArpegio: "arpegioaren notak eta akordeari\ndagozkion eskalak (--patron\nascendente, descendente,\nida-y-vuelta, baja-y-sube,\nquebrado, alberti)",
         notasArpegio: "aukerak: --octavas 2 (1etik 4ra), --sin-octava, --desde Mi\n(edo 3: nota horretatik hasten da), --tensiones 9,13, --grados\n1-5-3-8 (ibilbide propioa) eta --aproximacion abajo, arriba\nedo encierro (nota bakoitzera daramaten nota kromatikoak)",
@@ -37,6 +37,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "bi nota edo altueren arteko tartea",
         sintaxisEscala: "escala <eskala> [--acordes]",
         descripcionEscala: "eskala baten notak eta akordeak\n--acordes: gradu bakoitzean sartzen\ndiren guztiak, ez hirurenak bakarrik",
+        notasEscala: "aukerak: --secuencia terceras (edo cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(1etik 4ra), --piano (hatzkera), --modos (paraleloak eta erlatiboak)\neta --comparar Do lidio (amaieran)",
         sintaxisEscalas: "escalas [<testua>] [aukerak]",
         descripcionEscalas: "eskalen katalogoa: ohikoak eta beste\ntradizio batzuetakoak, kategoriaka,\nDo-tik hasitako notekin",
         notasEscalas: "aukerak: --tradicion turquia (edo india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) eta --categoria maqam (edo rāga, makam,\ndastgah, dromos…); testu batek izenetan bilatzen du",
@@ -221,6 +222,7 @@ extension TextosDeCLI {
         tensionesMalEscritas: "tentsioak 9, 11 edo 13 dira: --tensiones 9,13",
         gradosMalEscritos: "graduak 1 eta 22 arteko zenbakiak dira: --grados 1-5-3-8",
         aproximacionDesconocida: { aproximacion in "hurbilketa ezezaguna: «\(aproximacion)» (abajo, arriba edo encierro)" },
+        secuenciaDesconocida: { secuencia in "sekuentzia ezezaguna: «\(secuencia)» (terceras, cuartas, grupos-de-3, grupos-de-4, triadas edo cuatriadas)" },
 
         // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Probatu «armonia ayuda».",

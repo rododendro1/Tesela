@@ -158,6 +158,20 @@ public struct TextosDeApps: TextosTraducidos {
     public let notasComunes: String
     public let ningunaNotaComun: String
     public let movimientoTotal: @Sendable (Int) -> String
+    public let secuencia: String
+    public let bajando: String
+    public let digitacionDePiano: String
+    public let manoDerecha: String
+    public let manoIzquierda: String
+    public let modosParalelos: String
+    public let modosRelativos: String
+    public let soloEn: @Sendable (String) -> String
+    public let alteracionesDeDiferencia: @Sendable (Int) -> String
+    public let escalasBebop: String
+    public let notaDePaso: @Sendable (String) -> String
+    public let pentatonicas: String
+    public let cambian: @Sendable (String) -> String
+    public let notasGuia: @Sendable (String) -> String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String

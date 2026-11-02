@@ -141,6 +141,12 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "dominante backdoor",
         rearmonizacionIIRelativo: "ii relativo",
         rearmonizacionDisminuido: "sostituzione diminuita",
+        secuenciaTerceras: "per terze",
+        secuenciaCuartas: "per quarte",
+        secuenciaGruposDeTres: "a gruppi di tre",
+        secuenciaGruposDeCuatro: "a gruppi di quattro",
+        secuenciaTriadas: "per triadi",
+        secuenciaCuatriadas: "per quadriadi",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» non fa parte di nessuna sigla conosciuta" },
         tensionNoValida: { tension in "«\(tension)» non è una tensione valida (si ammettono ♭/♯ con 5, 9, 11 e 13, e add con 2, 4, 6, 9, 11 e 13)" },

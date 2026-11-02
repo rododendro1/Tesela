@@ -140,6 +140,8 @@ import Testing
         "digitaciones C --capo 13", "completado", "completado tcsh", "completado bash zsh", "manual extra",
         "acorde Do --comparar", "acorde Do --en", "acorde Do --foo", "acorde --nombres",
         "escalas --tradicion marte", "escalas --categoria foo", "musicxml escala", "midi escala Re bayati --clave fa",
+        "escala Do mayor --secuencia foo", "escala Do mayor --secuencia", "escala Do mayor --comparar",
+        "escala Do mayor --octavas 9", "escala Do mayor --foo", "escala --piano",
     ]
 
     /// Con --ingles no se cuela nada en español: ni en la salida, ni en los errores, ni en la ayuda.
@@ -167,6 +169,8 @@ import Testing
             "arpeggio C7 --degrees 1-5-3-8 --approach enclosure",
             "set 0 4 7", "set C E G", "set 4-Z15", "row 0 e 7 4 2 9 3 8 t 1 5 6",
             "chord G7 --voicings --names --keys --substitutions --compare C", "chord C --substitutions --in G major",
+            "scale C major --sequence thirds --descending --octaves 2 --piano --modes --compare C lydian",
+            "chord C7 --bebop --pentatonics", "analyze Dm7 G7 Cmaj7 --in C major --scales",
         ] {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
             #expect(resultado.codigo == 0, "\(orden): \(resultado.error)")

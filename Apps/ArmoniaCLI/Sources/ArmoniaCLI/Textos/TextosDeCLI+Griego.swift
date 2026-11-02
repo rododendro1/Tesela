@@ -27,7 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <σύμβολο>…",
         descripcionAcorde: "νότες, είδος και ρόλος κάθε νότας",
-        notasAcorde: "επιλογές: --voicings, --names, --keys, --substitutions\n(στην τονικότητα του --in C major, στο τέλος) και --compare C\n(κοινές νότες και οδήγηση φωνών)",
+        notasAcorde: "επιλογές: --voicings, --names, --keys, --substitutions\n(στην τονικότητα του --in C major, στο τέλος) και --compare C\n(κοινές νότες και οδήγηση φωνών); --bebop και --pentatonics\n(κλίμακες για αυτοσχεδιασμό)",
         sintaxisArpegio: "arpeggio <σύμβολο> [--pattern <μοτίβο>]",
         descripcionArpegio: "νότες του αρπέζ και κλίμακες της\nσυγχορδίας (--pattern ascending,\ndescending, up-down, down-up,\nbroken, alberti)",
         notasArpegio: "επιλογές: --octaves 2 (από 1 έως 4), --no-octave, --from E\n(ή 3: ξεκινά από αυτή τη νότα), --tensions 9,13, --degrees\n1-5-3-8 (δική σας πορεία) και --approach below, above ή\nenclosure (χρωματικές νότες που οδηγούν σε καθεμία)",
@@ -37,6 +37,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "διάστημα ανάμεσα σε δύο νότες ή τονικά\nύψη",
         sintaxisEscala: "scale <κλίμακα> [--chords]",
         descripcionEscala: "νότες και συγχορδίες μιας κλίμακας\n--chords: όλες όσες χωρούν σε κάθε\nβαθμίδα, όχι μόνο κατά τρίτες",
+        notasEscala: "επιλογές: --sequence thirds (ή fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(από 1 έως 4), --piano (δακτυλοθεσία), --modes (παράλληλοι και σχετικοί)\nκαι --compare C lydian (στο τέλος)",
         sintaxisEscalas: "scales [<κείμενο>] [επιλογές]",
         descripcionEscalas: "ο κατάλογος των κλιμάκων: οι συνήθεις\nκαι όσες άλλων παραδόσεων, ανά\nκατηγορία, με τις νότες τους από το Ντο",
         notasEscalas: "επιλογές: --tradition turkey (ή india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) και --category maqam (ή rāga, makam,\ndastgah, dromos…)· ένα κείμενο ψάχνει στα ονόματα",
@@ -221,6 +222,7 @@ extension TextosDeCLI {
         tensionesMalEscritas: "οι επεκτάσεις είναι 9, 11 ή 13: --tensions 9,13",
         gradosMalEscritos: "οι βαθμίδες είναι αριθμοί από 1 έως 22: --degrees 1-5-3-8",
         aproximacionDesconocida: { aproximacion in "άγνωστη προσέγγιση: «\(aproximacion)» (below, above ή enclosure)" },
+        secuenciaDesconocida: { secuencia in "άγνωστη αλληλουχία: «\(secuencia)» (thirds, fourths, groups-of-3, groups-of-4, triads ή sevenths)" },
 
         // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Δοκίμασε «armonia help».",
