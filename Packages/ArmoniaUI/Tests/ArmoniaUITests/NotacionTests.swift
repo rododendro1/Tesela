@@ -30,7 +30,11 @@ import Testing
         #expect(Notacion.inglesASCII.titulo == "English (F#)")
         #expect(Notacion.aleman.titulo == "Deutsch (F Kreuz)")
         #expect(Notacion.alemanCompacto.titulo == "Deutsch (Fis)")
-        #expect(Notacion.aleman.clave == "aleman")
+        #expect(Notacion.aleman.clave == "alemanPalabras")
+        #expect(Notacion.desde(clave: "alemanPalabras") == .aleman)
+        // «aleman» era Fis antes de la 0.3.0, y se sigue leyendo así.
+        #expect(Notacion.desde(clave: "aleman") == .alemanCompacto)
+        #expect(Notacion.desde(clave: "aleman+espanol") == Notacion.alemanCompacto.conTextos(en: .espanol))
         #expect(Notacion.alemanCompacto.clave == "alemanCompacto")
         #expect(Notacion.desde(clave: "alemanCompacto") == .alemanCompacto)
         #expect(Notacion.espanolASCII.clave == "espanolASCII")

@@ -1,5 +1,11 @@
 # Cambios
 
+## Sin publicar
+
+- El alemán con palabras (Deutsch (F Kreuz)) se guarda con la clave «alemanPalabras», y «aleman» se lee como
+  `.alemanCompacto` (Deutsch (Fis)), que es lo que significaba hasta la 0.3.0: quien eligió Fis antes de la 0.3.0
+  lo sigue viendo. `Notacion.desde(clave:)` lee las dos.
+
 ## 0.3.0 (2026-11-01)
 
 - **Sin nombres obsoletos**: desaparecen los que la 0.2.0 marcó como obsoletos: `PresentacionDePentagrama`
