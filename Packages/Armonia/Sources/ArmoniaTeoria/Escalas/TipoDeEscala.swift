@@ -341,7 +341,8 @@ extension TipoDeEscala {
     package static let nombresTradicionales: Set<String> = Set(tradicionales.map(\.nombre))
 
     /// Minúsculas, sin diacríticos (dórico → dorico, Kāfī → kafi), ♯/♭ como #/b, sin ♮ ni ordinales
-    /// (4ª → 4), «−» como «-», «…» como «..» y con un solo espacio entre palabras. En devanagari no se quitan los signos: las vocales y el virama
+    /// (4ª → 4), «−» como «-», «…» como «..», la ı sin punto del turco como i (makamı → makami) y con
+    /// un solo espacio entre palabras. En devanagari no se quitan los signos: las vocales y el virama
     /// son parte de la letra (भैरव y भैरवी son dos ragas).
     package static func normalizar(_ texto: String) -> String {
         let devanagari = texto.unicodeScalars.contains { (0x0900...0x097F).contains($0.value) }
@@ -351,6 +352,7 @@ extension TipoDeEscala {
             .replacingOccurrences(of: "ª", with: "")
             .replacingOccurrences(of: "−", with: "-")
             .replacingOccurrences(of: "…", with: "..")
+            .replacingOccurrences(of: "ı", with: "i")
             .folding(options: devanagari ? [.caseInsensitive] : [.diacriticInsensitive, .caseInsensitive], locale: nil)
             .lowercased()
             .split(whereSeparator: { $0 == " " || $0 == "-" }).joined(separator: " ")

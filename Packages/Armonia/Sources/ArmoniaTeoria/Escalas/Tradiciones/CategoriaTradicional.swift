@@ -4,10 +4,12 @@ import ArmoniaNucleo
 
 /// La tradición musical de que viene una escala de `TipoDeEscala.tradicionales`.
 public enum Tradicion: String, Sendable, Codable, CaseIterable {
-    case india, grecia, greciaAntigua, mundoArabe, persia, china, japon, corea, etiopia, indonesia, klezmer, andes
+    case india, grecia, greciaAntigua, mundoArabe, persia, turquia, azerbaiyan
+    case china, japon, corea, etiopia, indonesia, klezmer, andes
 }
 
-/// Qué es una escala dentro de su tradición: un raga, un melakarta («mela»), un dromos, un maqam…
+/// Qué es una escala dentro de su tradición: un raga, un melakarta («mela»), un dromos, un maqam, un makam,
+/// un mugam…
 ///
 /// Un melakarta es también un raga (`esRaga`): son los 72 ragas madre de la música carnática. Un thaat, en cambio, es
 /// una escala madre de la música indostánica de la que se derivan ragas, pero no es un raga.
@@ -26,6 +28,10 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     case maqam
     /// Los dastgāh de la música persa.
     case dastgah
+    /// Los makam (plural «makamlar») de la música clásica turca.
+    case makam
+    /// Los mugam de la música azerbaiyana.
+    case mugam
     /// Modos (shteyger) del klezmer.
     case shteyger
     /// Modos (qenet) de la música etíope.
@@ -56,6 +62,8 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         case .dromos: "dromos"
         case .maqam: "maqam"
         case .dastgah: "dastgāh"
+        case .makam: "makam"
+        case .mugam: "mugam"
         case .shteyger: "shteyger"
         case .qenet: "qenet"
         case .laras: "laras"
@@ -122,6 +130,7 @@ extension TipoDeEscala {
             (.etiopia, .qenet, etiopes), (.mundoArabe, .maqam, maqamat), (.indonesia, .laras, indonesias),
             (.klezmer, .shteyger, klezmer), (.india, .raga, ragasIndostanicos), (.persia, .dastgah, dastgah),
             (.corea, .jo, coreanas), (.andes, .escala, andinas),
+            (.turquia, .makam, makamlar), (.azerbaiyan, .mugam, mugamlar),
             (.greciaAntigua, .tetracordo, [.tetracordoDiatonico, .tetracordoCromatico]),
             (.greciaAntigua, .harmonia, [.harmoniaDoria, .harmoniaDoriaCromatica, .harmoniaFrigia, .harmoniaLidia]),
         ]
