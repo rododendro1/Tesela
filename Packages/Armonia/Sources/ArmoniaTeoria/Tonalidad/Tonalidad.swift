@@ -230,7 +230,7 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
 extension Tonalidad.Modo {
     public var nombre: String { self == .mayor ? "mayor" : "menor" }
 
-    /// «mayor», «major», «Dur», «maiorra»…: el de las ``ReglasDeIdioma`` del idioma de las notas.
+    /// «mayor», «major», «Dur», «maiorra»…: el de las `ReglasDeIdioma` (de ArmoniaNucleo) del idioma de las notas.
     public func nombre(en notacion: Notacion) -> String {
         let reglas = notacion.idiomaDeLasNotas.reglas
         return self == .mayor ? reglas.mayor : reglas.menor
