@@ -25,7 +25,8 @@ extension Notacion {
     }
 
     /// La notación guardada con esa clave; si no existe, el español con ♯ y ♭. Lee también las claves de antes
-    /// de las notaciones compactas («espanolUnicode», «inglesUnicode»).
+    /// de las notaciones compactas («espanolUnicode», «inglesUnicode») y la del alemán de antes de la 0.3.0
+    /// («aleman», que era Fis y por eso lleva a `.alemanCompacto`).
     public static func desde(clave: String) -> Notacion {
         let partes = clave.split(separator: "+", maxSplits: 1).map(String.init)
         let clave = partes.first.map { clavesAntiguas[$0] ?? $0 }
@@ -37,7 +38,9 @@ extension Notacion {
     }
 
     /// Las claves que se guardaban antes con otro nombre, con la de ahora.
-    private static let clavesAntiguas = ["espanolUnicode": "espanolCompacto", "inglesUnicode": "inglesCompacto"]
+    private static let clavesAntiguas = [
+        "espanolUnicode": "espanolCompacto", "inglesUnicode": "inglesCompacto", "aleman": "alemanCompacto",
+    ]
 
     /// La notación guardada con esa clave, con la octava como subíndice (La₄) si `octavasEnSubindice` y con cifras
     /// (La4) si no, también en las notaciones compactas: en las apps manda el ajuste.
@@ -80,9 +83,10 @@ extension EscrituraDeNotas {
     private static let ejemplo = Nota(.fa, .sostenido)
 
     /// El nombre con que se guarda en los ajustes: el del idioma y, en los que tienen variantes, la suya
-    /// («espanol», «espanolASCII», «espanolCompacto»; «aleman», «alemanCompacto»; «frances», «francesCompacto»).
+    /// («espanol», «espanolASCII», «espanolCompacto»; «frances», «francesCompacto»). El alemán con palabras se
+    /// guarda como «alemanPalabras», porque «aleman» era el alemán compacto (Fis) hasta la 0.3.0.
     public var clave: String {
-        if conPalabras { return idioma.clave }
+        if conPalabras { return idioma == .aleman ? "alemanPalabras" : idioma.clave }
         return idioma.clave + (usaASCII && idioma.reglas.tieneVariantes ? "ASCII" : "Compacto")
     }
 }

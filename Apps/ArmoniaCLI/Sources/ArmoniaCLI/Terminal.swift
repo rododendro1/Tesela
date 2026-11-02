@@ -28,9 +28,9 @@ extension LineaDeComandos {
     static let valoresDeOpciones: [(opciones: [String], valores: [String])] = [
         (
             ["--idioma", "--language", "--textos", "--texts"],
-            ["es", "en", "ca", "gl", "ast", "an", "eu", "pt", "fr", "oc", "it", "de", "el", "ru"]
+            ["es", "en", "ca", "gl", "ast", "an", "eu", "pt", "fr", "oc", "it", "de", "el", "ru", "hu"]
         ),
-        (["--escritura", "--writing"], ["palabras", "ascii", "unicode", "words"]),
+        (["--escritura", "--writing"], ["palabras", "compacto", "ascii", "unicode", "words", "compact"]),
         (
             ["--patron", "--pattern"],
             ["ascendente", "descendente", "ida-y-vuelta", "alberti", "up", "down", "up-down"]

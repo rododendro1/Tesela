@@ -473,7 +473,7 @@ jobs:
         run: >
           xcodebuild build -project Tesela.xcodeproj -scheme TonnetzApp
           -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO
-      # Los catorce idiomas, en el Info.plist y como carpetas .lproj, en cada app de iOS.
+      # Los quince idiomas, en el Info.plist y como carpetas .lproj, en cada app de iOS.
       - name: Idiomas de las apps
         run: |
           for app in ArmoniaApp TonnetzApp; do
@@ -482,7 +482,7 @@ jobs:
             idiomas=$(plutil -extract CFBundleLocalizations json -o - "$paquete/Info.plist" | python3 -c 'import json, sys; print(len(json.load(sys.stdin)))')
             carpetas=$(ls -d "$paquete"/*.lproj | wc -l | tr -d ' ')
             echo "$app: $idiomas idiomas en el Info.plist, $carpetas carpetas .lproj"
-            test "$idiomas" -eq 14 && test "$carpetas" -ge 14 || { echo "::error::$app no declara los catorce idiomas"; exit 1; }
+            test "$idiomas" -eq 15 && test "$carpetas" -ge 15 || { echo "::error::$app no declara los quince idiomas"; exit 1; }
           done
 
   interfaz:

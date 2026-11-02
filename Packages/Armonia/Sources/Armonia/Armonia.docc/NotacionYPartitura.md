@@ -131,8 +131,8 @@ Una `Notacion` son dos elecciones: `escritura` (``EscrituraDeNotas``, cómo se e
 y `textos` (el ``Idioma`` de los intervalos, acordes y mensajes). Las notaciones con nombre (`.ruso`…)
 llevan los textos en el idioma de sus notas, y `conTextos(en:)` los cambia; también se puede crear
 directamente con `Notacion(escritura:textos:)`. Las apps lo ofrecen en el selector de notación, y la
-línea de comandos con `--textos` (y, en español e inglés, la escritura con `--escritura palabras`, `ascii`
-o `unicode`).
+línea de comandos con `--textos` (y la escritura con `--escritura palabras` o `compacto`, y en español e
+inglés también `ascii` o `unicode`).
 
 ```swift
 let notacion = Notacion.ruso.conTextos(en: .espanol)

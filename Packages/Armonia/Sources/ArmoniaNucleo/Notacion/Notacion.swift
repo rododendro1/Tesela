@@ -143,7 +143,8 @@ public struct Notacion: Hashable, Sendable, CaseIterable {
 
     /// La notación habitual de un idioma: con ♯ y ♭ en español (`.espanolCompacto`), con # y b en inglés
     /// (`.inglesASCII`) y con Fis y Es en alemán (`.alemanCompacto`) o Fisz en húngaro (`.hungaroCompacto`), que es
-    /// como se suelen escribir; en los demás, la única que hay. `Notacion.delIdioma(.catalan)` es `.catalan`.
+    /// como se suelen escribir; en los demás, la de las alteraciones con palabras, y no la compacta:
+    /// `Notacion.delIdioma(.catalan)` es `.catalan` (fa sostingut), no `.catalanCompacto` (Fa♯).
     public static func delIdioma(_ idioma: Idioma) -> Notacion {
         Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: idioma == .ingles))
     }

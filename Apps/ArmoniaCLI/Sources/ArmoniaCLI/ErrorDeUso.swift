@@ -16,7 +16,7 @@ enum ErrorDeUso {
     case idiomaDesconocido(String)
     /// `completado` sin bash, zsh ni fish.
     case terminalDesconocida(String)
-    /// `--escritura` con un valor que no es palabras, ascii ni unicode, o con un idioma que solo tiene una.
+    /// `--escritura` con un valor que no es palabras ni compacto (ni, en español e inglés, ascii o unicode).
     case escrituraNoValida(String)
 
     // Consultas y armonización
