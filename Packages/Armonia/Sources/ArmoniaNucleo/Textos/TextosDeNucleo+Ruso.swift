@@ -38,7 +38,7 @@ extension TextosDeNucleo {
         fundamentalNoOmitible: "основной тон нельзя опустить",
         gradoNoOmitible: { grado in "«omit\(grado)» недопустимо (опустить можно 3, 5, 7, 9, 11 и 13)" },
         faltaLaFundamental: "нет основного тона",
-        intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: .ruso)) не играет роли в аккорде терцового строения" },
+        intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: .rusoPalabras)) не играет роли в аккорде терцового строения" },
         terceraMayorYMenor: "в нём одновременно большая и малая терция (♯9 пишется как увеличенная нона, а не как малая терция)",
         variasSeptimas: "в нём больше одной септимы",
         septimaDisminuidaFueraDelDisminuido: "уменьшённая септима встречается только в уменьшённом аккорде (с малой терцией и уменьшённой квинтой)",
@@ -69,7 +69,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "уменьшённой примы не существует: от до до до-бемоль — нисходящая увеличенная прима (пиши -A1)",
         reglaDeLasJustas: "прима, кварта, квинта и октава бывают чистыми, увеличенными или уменьшёнными",
         reglaDeLasMayores: "секунда, терция, секста и септима бывают большими, малыми, увеличенными или уменьшёнными",
-        intervaloInexistente: { numero, calidad, notacion, regla in "«\(calidad.nombre(en: .ruso)) \(Intervalo.ordinal(numero, en: .ruso))» не существует: \(regla.ruso)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "«\(calidad.nombre(en: .rusoPalabras)) \(Intervalo.ordinal(numero, en: .ruso))» не существует: \(regla.ruso)" },
         alteracionNoReconocida: { signo in "«\(signo)» — не знак альтерации (ожидалось ♯, ♭, 𝄪, 𝄫, #, b, x или ♮)" },
 
         // ErrorDeLectura.swift (partitura)

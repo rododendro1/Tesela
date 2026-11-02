@@ -77,10 +77,10 @@ import Testing
                 #expect(try (Alteracion(leyendo: Alteracion(n).simbolo(en: tipografia))) == Alteracion(n))
             }
         }
-        #expect(Notacion.espanolCompacto.tipografia == .unicode)
+        #expect(Notacion.espanolCompacto.tipografia == .conSimples)
         #expect(Notacion.inglesASCII.tipografia == .ascii)
         #expect(Notacion.espanolASCII.tipografia == .ascii)
-        #expect(Notacion.frances.tipografia == .unicode)
+        #expect(Notacion.francesPalabras.tipografia == .conSimples)
         #expect(Alteracion(-2).numeroDeSignos == 2)
         #expect(Alteracion.sostenido.pasosDeQuinta == 7)
         #expect(Alteracion.bemol.esBemol)

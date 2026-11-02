@@ -38,7 +38,7 @@ extension TextosDeNucleo {
         fundamentalNoOmitible: "no es pot ometre la fonamental",
         gradoNoOmitible: { grado in "«omit\(grado)» no és vàlid (es poden ometre 3, 5, 7, 9, 11 i 13)" },
         faltaLaFundamental: "falta la fonamental",
-        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .catalan)) no té cap paper en un acord per terceres" },
+        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .catalanPalabras)) no té cap paper en un acord per terceres" },
         terceraMayorYMenor: "té tercera major i menor alhora (la ♯9 s'escriu com a 9a augmentada, no com a 3a menor)",
         variasSeptimas: "té més d'una sèptima",
         septimaDisminuidaFueraDelDisminuido: "la sèptima disminuïda només apareix a l'acord disminuït (amb 3a menor i 5a disminuïda)",
@@ -69,7 +69,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "no existeix l'uníson disminuït: de Do a Do♭ hi ha un uníson augmentat descendent (escriu-lo -1A)",
         reglaDeLasJustas: "l'uníson, la 4a, la 5a i la 8a són justes, augmentades o disminuïdes",
         reglaDeLasMayores: "la 2a, la 3a, la 6a i la 7a són majors, menors, augmentades o disminuïdes",
-        intervaloInexistente: { numero, calidad, notacion, regla in "no existeix la \(numero)a \(calidad.nombre(en: .catalan)): \(regla.catalan)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "no existeix la \(numero)a \(calidad.nombre(en: .catalanPalabras)): \(regla.catalan)" },
         alteracionNoReconocida: { signo in "«\(signo)» no és una alteració (s'esperava ♯, ♭, 𝄪, 𝄫, #, b, x o ♮)" },
 
         // ErrorDeLectura.swift (partitura)

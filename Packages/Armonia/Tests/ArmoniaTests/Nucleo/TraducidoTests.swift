@@ -15,16 +15,17 @@ import Testing
             pt: ["um", "dois"], fr: ["un", "deux"], oc: ["un", "dos"],
             it: ["uno", "due"], de: ["eins", "zwei"], el: ["ένα", "δύο"], ru: ["один", "два"],
             hu: ["egy", "kettő"])
-        #expect(numeros.en(.aleman)[1] == "zwei")
+        #expect(numeros.en(.alemanPalabras)[1] == "zwei")
         #expect(numeros.texto(en: .griego) == ["ένα", "δύο"])
-        #expect(numeros.map(\.count).en(.ruso) == 2)
+        #expect(numeros.map(\.count).en(.rusoPalabras) == 2)
         #expect(numeros.todos.count == Idioma.allCases.count)
         // Con la notación habitual de cada idioma: ♯ en español, # en inglés.
         let fa = Traduccion(cadaIdioma: { Nota.fa.sostenido.nombre(en: $0) })
         #expect(fa.en(.espanolCompacto) == "Fa♯")
         #expect(fa.en(.inglesASCII) == "F#")
-        #expect(fa.en(.aleman) == "Fis")
-        #expect(Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) }).en(.aleman) == "erste Umkehrung")
+        #expect(fa.en(.alemanPalabras) == "Fis")
+        #expect(
+            Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) }).en(.alemanPalabras) == "erste Umkehrung")
     }
 
     /// Las sílabas y la forma de pegar la alteración son datos, no `switch` repartidos.
@@ -42,8 +43,8 @@ import Testing
             }
         }
         #expect(EscrituraDeNotas.alemanCompacto.escrituraDeLaAlteracion == .alemana)
-        #expect(EscrituraDeNotas.aleman.escrituraDeLaAlteracion == .palabras)
-        #expect(EscrituraDeNotas.espanol.escrituraDeLaAlteracion == .palabras)
+        #expect(EscrituraDeNotas.alemanPalabras.escrituraDeLaAlteracion == .palabras)
+        #expect(EscrituraDeNotas.espanolPalabras.escrituraDeLaAlteracion == .palabras)
         #expect(EscrituraDeNotas.inglesASCII.escrituraDeLaAlteracion == .signos)
     }
 
@@ -54,11 +55,11 @@ import Testing
     }
 
     @Test func textosHechosConListas() {
-        #expect(Duracion(7, 8).nombre(en: .aleman) == "doppelt punktierte Halbe")
-        #expect(Duracion(3, 8).nombre(en: .frances) == "noire pointée")
+        #expect(Duracion(7, 8).nombre(en: .alemanPalabras) == "doppelt punktierte Halbe")
+        #expect(Duracion(3, 8).nombre(en: .francesPalabras) == "noire pointée")
         #expect(TipoDeAcorde("7(b9,#11)").nombre(en: .espanolCompacto) == "acorde 7(♭9,♯11)")
-        #expect(TipoDeAcorde("7(b9,#11)").nombre(en: .euskera) == "7(♭9,♯11) akordea")
-        #expect(Acorde.nombreDeLaInversion(9, en: .ruso) == "9-е обращение")
+        #expect(TipoDeAcorde("7(b9,#11)").nombre(en: .euskeraPalabras) == "7(♭9,♯11) akordea")
+        #expect(Acorde.nombreDeLaInversion(9, en: .rusoPalabras) == "9-е обращение")
     }
 
     @Test func codigosDeIdioma() {
@@ -82,10 +83,10 @@ import Testing
             #expect(idioma.nombres.contains(idioma.nombrePropio.lowercased()), Comment(rawValue: idioma.codigo))
             #expect(idioma.reglas.mayor != idioma.reglas.menor, Comment(rawValue: idioma.codigo))
         }
-        #expect(Tonalidad(.la, .menor).nombre(en: .aleman) == "a-Moll")
-        #expect(Tonalidad(.do, .mayor).nombre(en: .aleman) == "C-Dur")
-        #expect(Tonalidad(.la, .menor).nombre(en: .euskera) == "la minorra")
-        #expect(Tonalidad.Modo.mayor.nombre(en: .asturiano) == "mayor")
+        #expect(Tonalidad(.la, .menor).nombre(en: .alemanPalabras) == "a-Moll")
+        #expect(Tonalidad(.do, .mayor).nombre(en: .alemanPalabras) == "C-Dur")
+        #expect(Tonalidad(.la, .menor).nombre(en: .euskeraPalabras) == "la minorra")
+        #expect(Tonalidad.Modo.mayor.nombre(en: .asturianoPalabras) == "mayor")
     }
 
     @Test func elIdiomaPorSuNombre() {
@@ -110,7 +111,7 @@ import Testing
         // La notación habitual de cada idioma: # en inglés, ♯ en español.
         #expect(Notacion.delIdioma(.ingles) == .inglesASCII)
         #expect(Notacion.delIdioma(.espanol) == .espanolCompacto)
-        #expect(Notacion.delIdioma(.griego) == .griego)
+        #expect(Notacion.delIdioma(.griego) == .griegoPalabras)
         for idioma in Idioma.allCases {
             #expect(Notacion.delIdioma(idioma).idiomaDeLasNotas == idioma)
         }
@@ -123,12 +124,12 @@ import Testing
     }
 
     @Test func lasAbreviaturasDeCadaIdioma() {
-        #expect(Notacion.catalan.idiomaDeLasAbreviaturas == .espanol)
-        #expect(Notacion.occitano.idiomaDeLasAbreviaturas == .espanol)
-        #expect(Notacion.frances.idiomaDeLasAbreviaturas == .ingles)
-        #expect(Notacion.ruso.idiomaDeLasAbreviaturas == .ingles)
+        #expect(Notacion.catalanPalabras.idiomaDeLasAbreviaturas == .espanol)
+        #expect(Notacion.occitanoPalabras.idiomaDeLasAbreviaturas == .espanol)
+        #expect(Notacion.francesPalabras.idiomaDeLasAbreviaturas == .ingles)
+        #expect(Notacion.rusoPalabras.idiomaDeLasAbreviaturas == .ingles)
         // Con los textos en otro idioma, mandan los textos.
-        #expect(Notacion.ruso.conTextos(en: .gallego).idiomaDeLasAbreviaturas == .espanol)
+        #expect(Notacion.rusoPalabras.conTextos(en: .gallego).idiomaDeLasAbreviaturas == .espanol)
         for idioma in Idioma.allCases {
             #expect([.espanol, .ingles].contains(idioma.reglas.abreviaturas), Comment(rawValue: idioma.codigo))
         }
@@ -164,19 +165,19 @@ import Testing
 
     @Test func alteracionesYOrdinalesEnCadaIdioma() {
         // Las alteraciones con varios signos.
-        #expect(Alteracion(4).nombre(en: .aleman) == "Vierfachkreuz")
-        #expect(Alteracion(-4).nombre(en: .aleman) == "Vierfach-Be")
-        #expect(Alteracion(-3).nombre(en: .ruso) == "тройной бемоль")
-        #expect(Nota(.si, Alteracion(-3)).nombre(en: .ruso) == "си-тройной бемоль")
-        #expect(Nota(.si, Alteracion(-2)).nombre(en: .ruso) == "си-дубль-бемоль")
+        #expect(Alteracion(4).nombre(en: .alemanPalabras) == "Vierfachkreuz")
+        #expect(Alteracion(-4).nombre(en: .alemanPalabras) == "Vierfach-Be")
+        #expect(Alteracion(-3).nombre(en: .rusoPalabras) == "тройной бемоль")
+        #expect(Nota(.si, Alteracion(-3)).nombre(en: .rusoPalabras) == "си-тройной бемоль")
+        #expect(Nota(.si, Alteracion(-2)).nombre(en: .rusoPalabras) == "си-дубль-бемоль")
         #expect(Alteracion(5).nombre == "5 sostenidos")
         #expect(Alteracion(-5).nombre(en: .inglesASCII) == "5 flats")
-        #expect(Alteracion(4).nombre(en: .euskera) == "diesa laukoitza")
-        #expect(Alteracion(3).nombre(en: .gallego) == "triplo sostido")
+        #expect(Alteracion(4).nombre(en: .euskeraPalabras) == "diesa laukoitza")
+        #expect(Alteracion(3).nombre(en: .gallegoPalabras) == "triplo sostido")
         // Las tipografías de cada escritura.
         #expect(
             EscrituraDeNotas.allCases.filter(\.usaASCII) == [
-                .espanolASCII, .inglesASCII, .aleman, .alemanCompacto, .hungaro, .hungaroCompacto,
+                .espanolASCII, .inglesASCII, .alemanPalabras, .alemanCompacto, .hungaroPalabras, .hungaroCompacto,
             ])
         #expect(
             EscrituraDeNotas.allCases.filter(\.esCompacta) == [
@@ -198,12 +199,12 @@ import Testing
         for idioma in Idioma.allCases {
             #expect([0, 15].contains(TextosDeNucleo.en(idioma: idioma, \.ordinales).count), "\(idioma)")
         }
-        #expect(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .frances) == "unisson augmenté")
-        #expect(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .italiano) == "unisono aumentato")
-        #expect(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .occitano) == "unisson aumentat")
-        #expect((-Intervalo.terceraMayor).nombre(en: .aragones) == "3ª mayor descendent")
-        #expect((-Intervalo.terceraMayor).nombre(en: .euskera) == "beheranzko 3. handia")
-        #expect(Intervalo(numero: 4, calidad: .aumentada(3))!.nombre(en: .gallego) == "4ª tripla aumentada")
+        #expect(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .francesPalabras) == "unisson augmenté")
+        #expect(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .italianoPalabras) == "unisono aumentato")
+        #expect(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .occitanoPalabras) == "unisson aumentat")
+        #expect((-Intervalo.terceraMayor).nombre(en: .aragonesPalabras) == "3ª mayor descendent")
+        #expect((-Intervalo.terceraMayor).nombre(en: .euskeraPalabras) == "beheranzko 3. handia")
+        #expect(Intervalo(numero: 4, calidad: .aumentada(3))!.nombre(en: .gallegoPalabras) == "4ª tripla aumentada")
     }
 
     /// Los textos que llevan un número o un nombre dentro, en cada idioma, también con los casos que
@@ -219,7 +220,7 @@ import Testing
             #expect(!(textos.acordeDesconocido(false, "X", "X").isEmpty))
             #expect(textos.enLaVoz("X").contains("X"))
         }
-        #expect(TextosDeTeoria.traducidos.en(.aleman).enLaVoz("Stimme 2") == "in Stimme 2")
+        #expect(TextosDeTeoria.traducidos.en(.alemanPalabras).enLaVoz("Stimme 2") == "in Stimme 2")
         for textos in TextosDePartitura.traducidos.todos {
             #expect(textos.especieConElContrapuntoDebajo(3).contains("3"))
         }

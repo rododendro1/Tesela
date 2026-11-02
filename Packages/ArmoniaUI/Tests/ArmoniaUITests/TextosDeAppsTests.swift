@@ -116,12 +116,12 @@ import Testing
             }
         }
         #expect(Notacion.inglesASCII.texto(\.digitaciones) == "Fingerings")
-        #expect(Notacion.euskera.texto(\.acordes) == "Akordeak")
-        #expect(Notacion.aleman.texto(\.escalas) == "Skalen")
-        #expect(Notacion.occitano.texto(\.digitaciones) == "Digitacions")
-        #expect(Notacion.ruso.texto { $0.dedosYCejilla(3, 5) } == "3 пальца, барре на 5-м ладу")
-        #expect(Notacion.ruso.texto { $0.marcas(11) } == "11 отметок")
-        #expect(Notacion.griego.texto(\.acordes) == "Συγχορδίες")
+        #expect(Notacion.euskeraPalabras.texto(\.acordes) == "Akordeak")
+        #expect(Notacion.alemanPalabras.texto(\.escalas) == "Skalen")
+        #expect(Notacion.occitanoPalabras.texto(\.digitaciones) == "Digitacions")
+        #expect(Notacion.rusoPalabras.texto { $0.dedosYCejilla(3, 5) } == "3 пальца, барре на 5-м ладу")
+        #expect(Notacion.rusoPalabras.texto { $0.marcas(11) } == "11 отметок")
+        #expect(Notacion.griegoPalabras.texto(\.acordes) == "Συγχορδίες")
     }
 
     /// Todos los textos caben en la pila de un hilo secundario de macOS (512 KB), también sin optimizar. Con un
@@ -193,7 +193,7 @@ import Testing
         // En español, los del motor: es lo que se escribe en `--instrumento`.
         #expect(Encordado.todos.map { $0.nombre(en: .espanolCompacto) } == Encordado.todos.map(\.nombre))
         #expect(Encordado.guitarraDeSieteCuerdas.titulo(en: .inglesASCII) == "Seven-string guitar")
-        #expect(Encordado.mandolina.nombre(en: .portugues) == "bandolim")
+        #expect(Encordado.mandolina.nombre(en: .portuguesPalabras) == "bandolim")
         #expect(TransformacionNeorriemanniana.l.nombre(en: .inglesASCII) == "leading-tone exchange")
         // Un instrumento propio conserva su nombre.
         let laud = Encordado(nombre: "laúd", cuerdas: Encordado.mandolina.cuerdas)
@@ -205,7 +205,9 @@ import Testing
         #expect(
             PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [5], cuerdas: 6, en: .inglesASCII)
                 == "string 6, fret 0; string 5, fret 3; muted strings: 1")
-        #expect(PresentacionDeMastil.descripcion(marcas: [], apagadas: [], cuerdas: 6, en: .frances) == "Aucune marque")
+        #expect(
+            PresentacionDeMastil.descripcion(marcas: [], apagadas: [], cuerdas: 6, en: .francesPalabras)
+                == "Aucune marque")
         #expect(
             PresentacionDeMastil.etiqueta(de: Mastil(.ukelele), rango: 0...5, en: .inglesASCII)
                 == "Ukulele neck, frets 0 to 5")
@@ -213,7 +215,7 @@ import Testing
             PresentacionDeMastil.etiqueta(de: Mastil(.guitarra), rango: 3...7, en: .espanolCompacto)
                 == "Mástil de guitarra, trastes 3 a 7")
         #expect(PresentacionDeRejilla.descripcion(casillas: 1, seleccionada: nil, en: .inglesASCII) == "1 cell")
-        #expect(Notacion.euskera.texto { $0.casillas(19) } == "19 gelaxka")
+        #expect(Notacion.euskeraPalabras.texto { $0.casillas(19) } == "19 gelaxka")
     }
 
     /// Las claves con que se guardan los idiomas en los ajustes no cambian: son los nombres de los casos.
@@ -231,19 +233,19 @@ import Testing
     }
 
     @Test func laNotacionInicialEsLaDelSistema() {
-        #expect(Notacion.delSistema(idiomas: ["ca-ES", "es-ES"]) == .catalan)
+        #expect(Notacion.delSistema(idiomas: ["ca-ES", "es-ES"]) == .catalanPalabras)
         #expect(Notacion.delSistema(idiomas: ["en-GB"]) == .inglesASCII)
-        #expect(Notacion.delSistema(idiomas: ["eu"]) == .euskera)
-        #expect(Notacion.delSistema(idiomas: ["pt_BR"]) == .portugues)
+        #expect(Notacion.delSistema(idiomas: ["eu"]) == .euskeraPalabras)
+        #expect(Notacion.delSistema(idiomas: ["pt_BR"]) == .portuguesPalabras)
         // Un idioma sin notación se salta; si no queda ninguno, el español.
-        #expect(Notacion.delSistema(idiomas: ["ja-JP", "fr-CA"]) == .frances)
+        #expect(Notacion.delSistema(idiomas: ["ja-JP", "fr-CA"]) == .francesPalabras)
         #expect(Notacion.delSistema(idiomas: ["ja-JP"]) == .espanolCompacto)
         #expect(Notacion.delSistema(idiomas: []) == .espanolCompacto)
     }
 
     @Test func unaMarca() {
         #expect(Notacion.espanolCompacto.texto { $0.marcas(1) } == "1 marca")
-        #expect(Notacion.euskera.texto { $0.marcas(1) } == "marka 1")
+        #expect(Notacion.euskeraPalabras.texto { $0.marcas(1) } == "marka 1")
         for notacion in Idioma.allCases.map(Notacion.delIdioma) {
             #expect(
                 notacion.texto { $0.marcas(1) } != notacion.texto { $0.marcas(2) }, Comment(rawValue: notacion.clave))

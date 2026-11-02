@@ -198,7 +198,7 @@ extension TextosDeCLI {
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "λείπει το όργανο: \(digitaciones.1)" },
-        instrumentoDesconocido: { nombre, lista in "άγνωστο όργανο: «\(nombre)» (\(lista(.griego)))" },
+        instrumentoDesconocido: { nombre, lista in "άγνωστο όργανο: «\(nombre)» (\(lista(.griegoPalabras)))" },
         faltaLimite: "λείπει ο αριθμός δακτυλοθεσιών: --limit 5",
         limiteFueraDeRango: "το όριο είναι αριθμός από 1 έως 200: --limit 5",
         faltanDedos: "λείπει ο αριθμός δαχτύλων: --fingers 3",
