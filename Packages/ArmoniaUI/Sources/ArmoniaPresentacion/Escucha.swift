@@ -17,14 +17,21 @@ public struct Escucha: Hashable, Sendable {
         public let duracion: Double
         /// Cents por encima (o por debajo) de la nota MIDI en temperamento igual con La4 = 440.
         public var desviacion: Double
+        /// Los cents que se aparta de su nota escrita por ser un microtono (el Mi𝄳 de Bayātī es un Mi♭ cincuenta
+        /// cents más alto), sea cual sea el temperamento: `afinado(en:)` los suma a los del temperamento.
+        public let microtono: Double
 
         public var midi: Int { altura.midi }
 
-        public init(altura: Altura, inicio: Double, duracion: Double, desviacion: Double = 0) {
+        /// Una nota; `desviacion`, si no se da, es la del microtono.
+        public init(
+            altura: Altura, inicio: Double, duracion: Double, desviacion: Double? = nil, microtono: Double = 0
+        ) {
             self.altura = altura
             self.inicio = inicio
             self.duracion = duracion
-            self.desviacion = desviacion
+            self.microtono = microtono
+            self.desviacion = desviacion ?? microtono
         }
 
         /// Una nota con la ortografía más habitual de su número MIDI.
@@ -59,6 +66,7 @@ public struct Escucha: Hashable, Sendable {
     }
 
     /// Lo mismo, con cada nota afinada en `temperamento` (la justa, sobre la tónica, o sobre Do si no se conoce).
+    /// Los microtonos se conservan: se suman a la afinación de su nota escrita.
     ///
     ///     Escucha.acorde(Acorde("Do")).afinado(en: .justa).notas.map { Int($0.desviacion.rounded()) }   // [0, -14, 2]
     public func afinado(en temperamento: AfinacionHistorica) -> Escucha {
@@ -66,7 +74,7 @@ public struct Escucha: Hashable, Sendable {
         return Escucha(
             notas: notas.map { nota in
                 var afinada = nota
-                afinada.desviacion = afinacion.desviacion(de: nota.altura)
+                afinada.desviacion = afinacion.desviacion(de: nota.altura) + nota.microtono
                 return afinada
             }, tonica: tonica)
     }
@@ -130,15 +138,21 @@ public struct Escucha: Hashable, Sendable {
             }, tonica: acorde.fundamental)
     }
 
-    /// Una escala de la tónica a su octava, desde la tónica en la octava 4, y vuelta a la tónica.
+    /// Una escala de la tónica a su octava, desde la tónica en la octava 4, y vuelta a la tónica. Si la escala
+    /// tiene microtonos, suenan: el Mi𝄳 de Re Bayātī, un cuarto de tono sobre el Mi♭.
+    ///
+    ///     Escucha.escala(Escala(.re, .bayati)).notas.map(\.microtono)   // [0, 50, 0, 0, 0, 0, 0, 0]
     public static func escala(_ escala: Escala) -> Escucha {
         let subida = cerrada(escala.notas, desde: 60)
         guard let tonica = subida.first else { return .silencio }
         let alturas = subida + [tonica + .octava]
+        let microtonos = escala.tipo.microtonal?.desvios ?? []
         let paso = 0.3
         return Escucha(
             notas: alturas.enumerated().map { i, altura in
-                NotaMIDI(altura: altura, inicio: paso * Double(i), duracion: paso * 0.9)
+                NotaMIDI(
+                    altura: altura, inicio: paso * Double(i), duracion: paso * 0.9,
+                    microtono: microtonos.indices.contains(i) ? microtonos[i] : 0)
             }, tonica: escala.tonica)
     }
 
@@ -183,13 +197,18 @@ public struct Escucha: Hashable, Sendable {
     /// El tempo de lo que tiene ritmo, si no se da otro: negra a 72.
     public static let tempo = Tempo(72)
 
-    /// Una voz con su ritmo: los silencios callan y las notas ligadas suenan como una sola.
+    /// Una voz con su ritmo: los silencios callan, las notas ligadas suenan como una sola y los microtonos
+    /// (`Evento.desvios`) suenan con sus cents.
     ///
     ///     Escucha.voz(try Voz(leyendo: "Do4:4 Re4:8 -:8 Mi4:2")).notas.map(\.inicio)   // [0, 0.83, 1.67]
     public static func voz(_ voz: Voz, tempo: Tempo = Escucha.tempo) -> Escucha {
         Escucha(
             notas: notas(de: voz, tempo: tempo).flatMap { nota in
-                nota.alturas.map { NotaMIDI(altura: $0, inicio: nota.inicio, duracion: nota.duracion * 0.95) }
+                nota.evento.alturas.indices.map {
+                    NotaMIDI(
+                        altura: nota.evento.alturas[$0], inicio: nota.inicio, duracion: nota.duracion * 0.95,
+                        microtono: nota.evento.desvio($0))
+                }
             })
     }
 
@@ -202,10 +221,10 @@ public struct Escucha: Hashable, Sendable {
             })
     }
 
-    /// Las notas de una voz con su comienzo y su duración en segundos, sin los silencios; una nota ligada
-    /// se alarga con la siguiente en lugar de volver a empezar.
-    static func notas(de voz: Voz, tempo: Tempo) -> [(alturas: [Altura], inicio: Double, duracion: Double)] {
-        var notas: [(alturas: [Altura], inicio: Double, duracion: Double)] = []
+    /// Las notas de una voz (su evento) con su comienzo y su duración en segundos, sin los silencios; una nota
+    /// ligada se alarga con la siguiente en lugar de volver a empezar.
+    static func notas(de voz: Voz, tempo: Tempo) -> [(evento: Evento, inicio: Double, duracion: Double)] {
+        var notas: [(evento: Evento, inicio: Double, duracion: Double)] = []
         var tiempo = 0.0
         var ligadaALaAnterior = false
         for evento in voz.eventos {
@@ -213,7 +232,7 @@ public struct Escucha: Hashable, Sendable {
             if ligadaALaAnterior, !notas.isEmpty {
                 notas[notas.count - 1].duracion += segundos
             } else if !evento.alturas.isEmpty {
-                notas.append((evento.alturas, tiempo, segundos))
+                notas.append((evento, tiempo, segundos))
             }
             tiempo += segundos
             ligadaALaAnterior = evento.ligada

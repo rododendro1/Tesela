@@ -126,7 +126,9 @@ public enum PresentacionDeCoral {
         let voz = try partes.contains { $0.contains(":") } ? Voz(leyendo: partes.joined(separator: " ")) : nil
         let alturas =
             voz.map { voz in
-                Escucha.notas(de: voz, tempo: Escucha.tempo).compactMap { $0.alturas.max { $0.midi < $1.midi } }
+                Escucha.notas(de: voz, tempo: Escucha.tempo).compactMap { nota in
+                    nota.evento.alturas.max { $0.midi < $1.midi }
+                }
             } ?? partes.compactMap { Altura(texto: $0) }
         guard !alturas.isEmpty || voz == nil else {
             throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio)

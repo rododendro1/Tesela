@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- «Escuchar» toca los microtonos: el Mi𝄳 de Re Bayātī suena un cuarto de tono sobre Mi♭, y las voces con desvíos
+  (`Mi♭4(50¢):4`) suenan con sus cents. `Escucha.NotaMIDI` guarda el `microtono`, y `afinado(en:)` lo suma a la
+  afinación del temperamento elegido.
 - Mientras no se toque el interruptor «Octava en subíndice», la octava va como la escriba la notación: en subíndice
   en las compactas (La₄) y con cifras en las demás, como en el motor y en la línea de comandos. El ajuste se lee como
   `Bool?` y `Notacion.desde(clave:octavasEnSubindice:)` acepta `nil`.

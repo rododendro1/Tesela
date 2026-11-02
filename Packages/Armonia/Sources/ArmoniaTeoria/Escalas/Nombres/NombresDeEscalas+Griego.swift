@@ -222,6 +222,8 @@ extension NombresDeEscalas {
         .tradicional(.bayati, "Μπαγιατί"),
         .tradicional(.saba, "Σαμπά"),
         .tradicional(.suznak, "Σουζνάκ"),
+        .tradicional(.husayni, "Χουσαϊνί"),
+        .tradicional(.nayruz, "Ναϊρούζ"),
         // Persia: dastgāh
         .tradicional(.mahur, "Μαχούρ"),
         .tradicional(.homayun, "Χομαγιούν"),
@@ -236,6 +238,8 @@ extension NombresDeEscalas {
         .tradicional(.kurdiMakami, "Κιουρντί μακαμί"),
         .tradicional(.buselikMakami, "Μπουσελίκ μακαμί"),
         .tradicional(.cargahMakami, "Τσαργκιάχ μακαμί"),
+        .tradicional(.ussakMakami, "Ουσσάκ μακαμί"),
+        .tradicional(.huseyniMakami, "Χουσεϊνί μακαμί"),
         // Azerbaiyán: mugam
         .tradicional(.rastMugami, "μουγκάμ Ραστ"),
         .tradicional(.surMugami, "μουγκάμ Σουρ"),

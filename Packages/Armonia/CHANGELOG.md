@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- **Más escalas con microtonos**: Ḥusaynī y Nayrūz, maqamat nuevos en cuartos de tono; Uşşak y Hüseynî makamı,
+  makamlar nuevos con su segâh (Si una koma bajo); y la versión microtonal de Hicazkâr makamı. Ya son catorce las
+  escalas con `TipoDeEscala.microtonal`.
 - **Microtonos en las partituras**: cada nota de un `Evento` puede apartarse de su nota temperada (`desvios`, en
   cents; en texto, `Mi♭4(50¢):4`), y `Escala.voz(octava:sentido:duracion:)` da una escala en negras con sus
   microtonos. Los formatos los escriben: MusicXML, con el `alter` en decimales (−0.5) y su `<accidental>`

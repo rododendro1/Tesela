@@ -609,9 +609,26 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         alias: ["maqam Suznak", "سوزناك"])
+    /// حسيني (Re Mi𝄳 Fa Sol La Si𝄳 Do: un jins Bayātī y otro en la quinta), aproximado: como Bayātī, con Si♭.
+    public static let husayni = TipoDeEscala(
+        nombre: "Ḥusaynī",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Husseini", "maqam Husayni", "حسيني"])
+    /// نيروز (Do Re Mi𝄳 Fa Sol La𝄳 Si♭: un jins Rāst y un jins Bayātī en la quinta), aproximado: la menor natural.
+    public static let nayruz = TipoDeEscala(
+        nombre: "Nayrūz",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Nairuz", "maqam Nairuz", "نيروز"])
 
     public static let maqamat: [TipoDeEscala] = [
-        .hiyaz, .nahawand, .kurd, .ajam, .hiyazkar, .nawaAthar, .maqamRast, .bayati, .saba, .suznak,
+        .hiyaz, .nahawand, .kurd, .ajam, .hiyazkar, .nawaAthar, .maqamRast, .bayati, .saba, .suznak, .husayni,
+        .nayruz,
     ]
 }
 
@@ -678,9 +695,10 @@ extension TipoDeEscala {
     //
     // En la teoría de Arel-Ezgi-Uzdilek (AEU) la octava tiene 53 comas, y las alteraciones son de 1 coma
     // (koma), 4 (bakiye), 5 (küçük mücennep) y 8 (büyük mücennep). Aquí cada nota se redondea a su
-    // semitono más cercano: la koma desaparece y las demás se escriben como ♯ o ♭. Solo están los
-    // makamlar en que ese redondeo no cambia el carácter; Uşşak, Hüseyni, Segâh o Saba, cuya segah (Si
-    // una koma bajo) suena en la práctica casi un cuarto de tono bajo, esperan a la capa microtonal.
+    // semitono más cercano: la koma desaparece y las demás se escriben como ♯ o ♭. Uşşak y Hüseynî, cuya
+    // segâh (Si una koma bajo, que en la práctica suena casi un cuarto de tono bajo) se pierde al redondear,
+    // tienen además su versión microtonal (`TipoDeEscala.microtonal`). Segâh y Saba, con la tónica o el
+    // tetracordo en una segâh, siguen fuera.
     // Los nombres van en turco con «makamı» detrás, como se dicen: «Rast» sola es el dromos griego.
 
     /// Rast (Sol La Si Do Re Mi Fa♯, con Si y Fa♯ una koma bajos): sube como la mayor y baja con Fa, como el
@@ -742,9 +760,29 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         alias: ["makam Çârgâh"])
+    /// Uşşak (La Si Do Re Mi Fa Sol, con Si una koma y media bajo: la segâh): un tetracordo Uşşak y un pentacordo
+    /// Bûselik en la cuarta. Aproximado: la menor natural; su segâh solo suena en la versión microtonal.
+    public static let ussakMakami = TipoDeEscala(
+        nombre: "Uşşak makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Uşşak"])
+    /// Hüseynî (La Si Do Re Mi Fa♯ Sol, con la segâh y Fa♯ una koma bajo): un pentacordo Hüseynî y un tetracordo
+    /// Uşşak en la quinta; al bajar, Fa. Aproximado: sube como el dórico y baja como la menor natural.
+    public static let huseyniMakami = TipoDeEscala(
+        nombre: "Hüseynî makamı",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Hüseynî"])
 
-    /// Los makamlar que el temperamento igual escribe sin cambiarles el carácter.
+    /// Los makamlar: los que el temperamento igual escribe sin cambiarles el carácter y los que solo se oyen bien
+    /// con su versión microtonal (Uşşak y Hüseynî).
     public static let makamlar: [TipoDeEscala] = [
         .rastMakami, .hicazMakami, .hicazkarMakami, .nihavendMakami, .kurdiMakami, .buselikMakami, .cargahMakami,
+        .ussakMakami, .huseyniMakami,
     ]
 }

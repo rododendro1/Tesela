@@ -192,6 +192,8 @@ extension TipoDeEscalaMicrotonal {
         TipoDeEscalaMicrotonal(.bayati, .cuartosDeTono, pasos: [0, 3, 6, 10, 14, 16, 20]),
         TipoDeEscalaMicrotonal(.saba, .cuartosDeTono, pasos: [0, 3, 6, 8, 14, 16, 20]),
         TipoDeEscalaMicrotonal(.suznak, .cuartosDeTono, pasos: [0, 4, 7, 10, 14, 16, 22]),
+        TipoDeEscalaMicrotonal(.husayni, .cuartosDeTono, pasos: [0, 3, 6, 10, 14, 17, 20]),
+        TipoDeEscalaMicrotonal(.nayruz, .cuartosDeTono, pasos: [0, 4, 7, 10, 14, 17, 20]),
         // Dastgāh (koron).
         TipoDeEscalaMicrotonal(.sur, .persa, pasos: [0, 3, 6, 10, 14, 16, 20]),
         TipoDeEscalaMicrotonal(.homayun, .persa, pasos: [0, 3, 8, 10, 14, 16, 20]),
@@ -201,6 +203,10 @@ extension TipoDeEscalaMicrotonal {
             .rastMakami, .comas53, pasos: [0, 9, 17, 22, 31, 40, 48], pasosDescendentes: [0, 9, 17, 22, 31, 40, 44]),
         TipoDeEscalaMicrotonal(
             .hicazMakami, .comas53, pasos: [0, 5, 17, 22, 31, 39, 44], pasosDescendentes: [0, 5, 17, 22, 30, 35, 44]),
+        TipoDeEscalaMicrotonal(.hicazkarMakami, .comas53, pasos: [0, 5, 17, 22, 31, 36, 48]),
+        TipoDeEscalaMicrotonal(.ussakMakami, .comas53, pasos: [0, 8, 13, 22, 31, 35, 44]),
+        TipoDeEscalaMicrotonal(
+            .huseyniMakami, .comas53, pasos: [0, 8, 13, 22, 31, 39, 44], pasosDescendentes: [0, 8, 13, 22, 31, 35, 44]),
     ]
 
     /// Nombre de la escala temperada → su versión microtonal.
