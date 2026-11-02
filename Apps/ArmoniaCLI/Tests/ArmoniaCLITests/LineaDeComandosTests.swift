@@ -33,6 +33,11 @@ import Testing
         return url.path
     }
 
+    /// La ayuda en un idioma, como la da `armonia ayuda --idioma …`.
+    func ayudaEn(_ idioma: Idioma) -> String {
+        LineaDeComandos.ayuda(en: .delIdioma(idioma))
+    }
+
     /// El resultado de una orden con los argumentos tal cual (un valor puede llevar espacios).
     func resultado(_ argumentos: String...) -> ResultadoDeOrden {
         LineaDeComandos.ejecutar(argumentos)
@@ -191,33 +196,28 @@ import Testing
         #expect(salida("acorde Do --language es") == salida("acorde Do"))
         // La ayuda, en los quince idiomas.
         #expect(salida("ayuda --idioma ca").hasPrefix("armonia: "))
-        #expect(salida("ayuda --idioma ca") == (LineaDeComandos.ajuda + "\n"))
-        #expect(salida("ayuda --idioma gl") == (LineaDeComandos.axuda + "\n"))
-        #expect(salida("ayuda --idioma eu") == (LineaDeComandos.laguntza + "\n"))
-        #expect(salida("ayuda --idioma pt") == (LineaDeComandos.ajudaEmPortugues + "\n"))
-        #expect(salida("ayuda --idioma fr") == (LineaDeComandos.aide + "\n"))
-        #expect(salida("ayuda --idioma italiano") == (LineaDeComandos.aiuto + "\n"))
-        #expect(salida("ayuda --idioma de") == (LineaDeComandos.hilfe + "\n"))
-        #expect(salida("ayuda --idioma oc") == (LineaDeComandos.ajudaEnOccitan + "\n"))
-        #expect(salida("ayuda --idioma ru") == (LineaDeComandos.spravka + "\n"))
-        #expect(salida("ayuda --idioma hu") == (LineaDeComandos.sugo + "\n"))
+        #expect(salida("ayuda --idioma ca") == (ayudaEn(.catalan) + "\n"))
+        #expect(salida("ayuda --idioma gl") == (ayudaEn(.gallego) + "\n"))
+        #expect(salida("ayuda --idioma eu") == (ayudaEn(.euskera) + "\n"))
+        #expect(salida("ayuda --idioma pt") == (ayudaEn(.portugues) + "\n"))
+        #expect(salida("ayuda --idioma fr") == (ayudaEn(.frances) + "\n"))
+        #expect(salida("ayuda --idioma italiano") == (ayudaEn(.italiano) + "\n"))
+        #expect(salida("ayuda --idioma de") == (ayudaEn(.aleman) + "\n"))
+        #expect(salida("ayuda --idioma oc") == (ayudaEn(.occitano) + "\n"))
+        #expect(salida("ayuda --idioma ru") == (ayudaEn(.ruso) + "\n"))
+        #expect(salida("ayuda --idioma hu") == (ayudaEn(.hungaro) + "\n"))
         #expect(salida("ayuda --idioma magyar").hasPrefix("armonia: zeneelmélet a parancssorban."))
         #expect(salida("tonalidad Mib mayor --idioma hu").contains("Esz-dúr"))
-        #expect(salida("ayuda --idioma el") == (LineaDeComandos.voitheia + "\n"))
-        #expect(salida("ayuda --idioma an") == (LineaDeComandos.aduya + "\n"))
-        #expect(salida("ayuda --idioma asturianu") == (LineaDeComandos.ayudaEnAsturianu + "\n"))
-        #expect(LineaDeComandos.ayudaEnAsturianu.hasPrefix("armonia: teoría musical dende la llinia"))
-        #expect(LineaDeComandos.hilfe.hasPrefix("armonia: Musiktheorie"))
-        #expect(LineaDeComandos.spravka.contains("armonia chord G7/B"))
-        #expect(LineaDeComandos.ajudaEnOccitan.contains("armonia acorde Sol7/Si"))
-        typealias L = LineaDeComandos
-        let ayudas: [String] = [
-            L.ayuda, L.help, L.ajuda, L.axuda, L.laguntza, L.ajudaEmPortugues, L.aide, L.aiuto,
-            L.hilfe, L.ajudaEnOccitan, L.spravka, L.voitheia, L.aduya, L.ayudaEnAsturianu, L.sugo,
-        ]
-        // Una por idioma, y las constantes con nombre son las del mapa.
-        #expect(Set(ayudas).count == LineaDeComandos.ayudas.count)
-        #expect(Set(ayudas) == Set(LineaDeComandos.ayudas.values))
+        #expect(salida("ayuda --idioma el") == (ayudaEn(.griego) + "\n"))
+        #expect(salida("ayuda --idioma an") == (ayudaEn(.aragones) + "\n"))
+        #expect(salida("ayuda --idioma asturianu") == (ayudaEn(.asturiano) + "\n"))
+        #expect(ayudaEn(.asturiano).hasPrefix("armonia: teoría musical dende la llinia"))
+        #expect(ayudaEn(.aleman).hasPrefix("armonia: Musiktheorie"))
+        #expect(ayudaEn(.ruso).contains("armonia chord G7/B"))
+        #expect(ayudaEn(.occitano).contains("armonia acorde Sol7/Si"))
+        // Una distinta por idioma, y la de cada idioma es la del mapa.
+        #expect(Set(Idioma.allCases.map { ayudaEn($0) }).count == Idioma.allCases.count)
+        #expect(Set(Idioma.allCases.map { ayudaEn($0) }) == Set(LineaDeComandos.ayudas.values))
         #expect(salida("acorde Sol7/Si --idioma fr").hasPrefix("Sol7/Si: septième de dominante\n"))
         #expect(salida("acorde Sol7/Si --idioma it").contains("(basso si, primo rivolto)"))
         #expect(salida("tonalidad Mib mayor --idioma pt").contains("(3 bemóis)"))

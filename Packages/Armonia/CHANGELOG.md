@@ -1,5 +1,16 @@
 # Cambios
 
+## Sin publicar
+
+### Eliminado
+
+- Los dos nombres que la 0.3.1 dejó marcados como obsoletos, y con ellos `ArmoniaNucleo/Obsoletos.swift`:
+  `Tipografia.compacta` (ahora `.conDobles`) y `Alteracion.simboloCompacto` (ahora `simboloConDobles`).
+- `armonia`: las quince constantes públicas con la ayuda de cada idioma en `LineaDeComandos` (`ayuda`, `help`,
+  `ajuda`, `axuda`, `laguntza`, `ajudaEmPortugues`, `aide`, `aiuto`, `hilfe`, `ajudaEnOccitan`, `spravka`, `sugo`,
+  `voitheia`, `aduya` y `ayudaEnAsturianu`). La de cualquier idioma es `LineaDeComandos.ayuda(en:)`:
+  `ayuda(en: .delIdioma(.catalan))` es la de `armonia ayuda --idioma ca`.
+
 ## 0.3.1 (2026-11-02)
 
 - **Veintiocho escalas tradicionales más** (el catálogo microtonal pasa de 68 a 74):
