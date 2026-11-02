@@ -22,6 +22,7 @@ import Testing
     }
 
     @Test func escapaElTextoYLosAtributos() {
-        #expect(ElementoSVG("text").con("class", "a\"b").conTexto("Do & <Mi>") == #"<text class="a&quot;b">Do &amp; &lt;Mi&gt;</text>"#)
+        let texto = ElementoSVG("text").con("class", "a\"b").conTexto("Do & <Mi>")
+        #expect(texto == #"<text class="a&quot;b">Do &amp; &lt;Mi&gt;</text>"#)
     }
 }
