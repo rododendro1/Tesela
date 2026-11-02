@@ -6,7 +6,8 @@ import ArmoniaTeoria
 extension Escala {
     /// La escala en un pentagrama, como SVG: `Escala("Re dórico").svgPentagrama()`. Si la escala tiene microtonos
     /// (`TipoDeEscala.microtonal`), sus notas llevan los signos de Bravura: el medio bemol de un maqam, el koron de un
-    /// dastgāh o las comas de Arel-Ezgi-Uzdilek de un makam.
+    /// dastgāh, las comas de Arel-Ezgi-Uzdilek de un makam, los moria de un echos bizantino (con los signos de
+    /// Wyschnegradsky) o la flecha de Helmholtz-Ellis de un śruti.
     ///
     /// - Parameters:
     ///   - octava: la octava de la tónica.
@@ -20,12 +21,12 @@ extension Escala {
         let alturas = alturasMicrotonales(octava: octava, sentido: sentido)
         var armadura: [Nota] = []
         if opciones.armadura == .automatica, let propia = notasDeLaArmadura, propia.count <= 7 { armadura = propia }
-        // Los microtonos, con su signo: el medio bemol de un maqam, el koron de un dastgāh, las comas de un makam.
-        let persa = tipo.microtonal?.sistema == .persa
+        // Los microtonos, con su signo: el medio bemol de un maqam, el koron de un dastgāh, las comas de un makam, los
+        // moria de un echos, la flecha de un śruti.
         let microtonos = alturas.map { altura -> [PentagramaSVG.Microtono?] in
             guard let nota = altura.nota, altura.desvio != 0 else { return [nil] }
             let signo = SignoMicrotonal(
-                semitonos: altura.altura.nota.alteracion.semitonos, desvio: altura.desvio, persa: persa)
+                nota: nota, semitonos: altura.altura.nota.alteracion.semitonos, desvio: altura.desvio)
             return [PentagramaSVG.Microtono(signo: signo, nombre: nota.nombre(en: opciones.notacion))]
         }
         return PentagramaSVG(

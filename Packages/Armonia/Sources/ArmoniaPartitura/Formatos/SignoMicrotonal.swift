@@ -5,7 +5,9 @@ import ArmoniaTeoria
 //
 // Cómo se escribe una nota que se aparta de su nota temperada (`Evento.desvios`): el signo que lleva en cada formato
 // y en el pentagrama SVG. Se deduce de los cents: un cuarto de tono es un medio bemol o un medio sostenido (o el
-// koron y el sori, en una escala persa); lo demás se aproxima a las comas de 53 por octava de Arel-Ezgi-Uzdilek.
+// koron y el sori, en una escala persa); un número exacto de moria (72 por octava), un signo de doceavos de tono de
+// Wyschnegradsky; lo demás se aproxima a las comas de 53 por octava de Arel-Ezgi-Uzdilek. En el pentagrama de una
+// escala, que sabe en qué sistema está cada nota, los śruti llevan además la flecha de Helmholtz-Ellis.
 
 /// El signo de una nota que se aparta de su nota temperada.
 package enum SignoMicrotonal: Hashable, Sendable {
@@ -18,6 +20,15 @@ package enum SignoMicrotonal: Hashable, Sendable {
     case koron
     /// El sori persa: un cuarto de tono sobre la natural.
     case sori
+    /// Moria (doceavos de tono, 72 por octava) desde la nota natural, con los signos de Wyschnegradsky: ±2, ±4, ±8 y
+    /// ±10 (−2: dos moria bajo la natural; 8: un sostenido y dos moria).
+    case moria(Int)
+    /// La flecha de Helmholtz-Ellis de una coma sintónica (81/80) en una alteración: `flecha(-1, -1)` es un bemol una
+    /// coma bajo; `flecha(0, 1)`, un becuadro una coma sobre.
+    case flecha(semitonos: Int, comas: Int)
+
+    /// Los moria que tienen signo.
+    static let moriaConSigno: Set<Int> = [-10, -8, -4, -2, 2, 4, 8, 10]
 
     /// El signo de una nota escrita con `semitonos` de alteración que suena `desvio` cents más alta; `nil` si no se
     /// aparta, o si lo que se aparta no tiene signo (se escribe entonces la nota temperada). Con `persa`, el medio
@@ -38,9 +49,31 @@ package enum SignoMicrotonal: Hashable, Sendable {
             }
             return
         }
+        // Un número exacto de moria (los de 53 comas nunca lo son: les falta un tercio de cent como poco).
+        let moria = total * 72 / 1200
+        if abs(moria - moria.rounded()) < 0.01 {
+            guard SignoMicrotonal.moriaConSigno.contains(Int(moria.rounded())) else { return nil }
+            self = .moria(Int(moria.rounded()))
+            return
+        }
         let comas = Int((total * 53 / 1200).rounded())
         guard [-8, -5, -4, -1, 1, 4, 5, 8].contains(comas) else { return nil }
         self = .comas(comas)
+    }
+
+    /// El signo de una nota de una escala microtonal, por su sistema: el koron de un dastgāh, los moria de un echos
+    /// bizantino, la flecha de un śruti; en los demás, por los cents, como `init(semitonos:desvio:)`.
+    package init?(nota: NotaMicrotonal, semitonos: Int, desvio: Double) {
+        switch nota.sistema {
+        case .sruti:
+            guard nota.ajuste != 0, abs(nota.ajuste) == 1, (-1...1).contains(semitonos) else { return nil }
+            self = .flecha(semitonos: semitonos, comas: nota.ajuste)
+        case .moria72:
+            guard SignoMicrotonal.moriaConSigno.contains(6 * semitonos + nota.ajuste) else { return nil }
+            self = .moria(6 * semitonos + nota.ajuste)
+        case .persa: self.init(semitonos: semitonos, desvio: desvio, persa: true)
+        case .cuartosDeTono, .comas53: self.init(semitonos: semitonos, desvio: desvio)
+        }
     }
 
     /// El glifo de Bravura.
@@ -60,6 +93,23 @@ package enum SignoMicrotonal: Hashable, Sendable {
         case .comas: GlifosSMuFL.buyukMucennebSostenido
         case .koron: GlifosSMuFL.koron
         case .sori: GlifosSMuFL.sori
+        case .moria(-10): GlifosSMuFL.moriaBemol10
+        case .moria(-8): GlifosSMuFL.moriaBemol8
+        case .moria(-4): GlifosSMuFL.moriaBemol4
+        case .moria(-2): GlifosSMuFL.moriaBemol2
+        case .moria(2): GlifosSMuFL.moriaSostenido2
+        case .moria(4): GlifosSMuFL.moriaSostenido4
+        case .moria(8): GlifosSMuFL.moriaSostenido8
+        case .moria: GlifosSMuFL.moriaSostenido10
+        case .flecha(let semitonos, let comas):
+            switch (semitonos, comas < 0) {
+            case (..<0, true): GlifosSMuFL.bemolFlechaAbajo
+            case (0, true): GlifosSMuFL.becuadroFlechaAbajo
+            case (_, true): GlifosSMuFL.sostenidoFlechaAbajo
+            case (..<0, false): GlifosSMuFL.bemolFlechaArriba
+            case (0, false): GlifosSMuFL.becuadroFlechaArriba
+            case (_, false): GlifosSMuFL.sostenidoFlechaArriba
+            }
         }
     }
 
@@ -75,6 +125,10 @@ package enum SignoMicrotonal: Hashable, Sendable {
             return "accidental" + nombre + (n < 0 ? "Flat" : "Sharp")
         case .koron: return "accidentalKoron"
         case .sori: return "accidentalSori"
+        case .moria(let n): return "accidentalWyschnegradsky\(abs(n))Twelfths" + (n < 0 ? "Flat" : "Sharp")
+        case .flecha(let semitonos, let comas):
+            let alteracion = semitonos < 0 ? "Flat" : semitonos == 0 ? "Natural" : "Sharp"
+            return "accidental" + alteracion + "OneArrow" + (comas < 0 ? "Down" : "Up")
         }
     }
 
@@ -85,41 +139,45 @@ package enum SignoMicrotonal: Hashable, Sendable {
         case .cuartos(-1): ("quarter-flat", nil)
         case .cuartos(1): ("quarter-sharp", nil)
         case .cuartos: ("three-quarters-sharp", nil)
-        case .comas: ("other", smufl)
+        case .comas, .moria, .flecha: ("other", smufl)
         case .koron: ("koron", nil)
         case .sori: ("sori", nil)
         }
     }
 
-    /// El valor de `accid` en MEI: «1qf», «kf» (koma bemol, de Arel-Ezgi-Uzdilek), «koron».
-    package var mei: String {
+    /// El valor de `accid` en MEI: «1qf», «kf» (koma bemol, de Arel-Ezgi-Uzdilek), «koron»; `nil` para los moria y
+    /// las flechas, que MEI no tiene y se escriben temperados.
+    package var mei: String? {
         switch self {
         case .cuartos(let n): "\(abs(n))q" + (n < 0 ? "f" : "s")
         case .comas(let n): ([1: "k", 4: "b", 5: "km", 8: "bm"][abs(n)] ?? "k") + (n < 0 ? "f" : "s")
         case .koron: "koron"
         case .sori: "sori"
+        case .moria, .flecha: nil
         }
     }
 
-    /// La terminación del nombre en LilyPond (`eh`, `isih`); `nil` para las comas, que se escriben temperadas.
+    /// La terminación del nombre en LilyPond (`eh`, `isih`); `nil` para las comas, los moria y las flechas, que se
+    /// escriben temperados.
     package var lilypond: String? {
         switch self {
         case .cuartos(-3): "eseh"
         case .cuartos(-1), .koron: "eh"
         case .cuartos(1), .sori: "ih"
         case .cuartos: "isih"
-        case .comas: nil
+        case .comas, .moria, .flecha: nil
         }
     }
 
-    /// La alteración en ABC (`_/`, `^3/2`); `nil` para las comas, que se escriben temperadas.
+    /// La alteración en ABC (`_/`, `^3/2`); `nil` para las comas, los moria y las flechas, que se escriben
+    /// temperados.
     package var abc: String? {
         switch self {
         case .cuartos(-3): "_3/2"
         case .cuartos(-1), .koron: "_/"
         case .cuartos(1), .sori: "^/"
         case .cuartos: "^3/2"
-        case .comas: nil
+        case .comas, .moria, .flecha: nil
         }
     }
 }

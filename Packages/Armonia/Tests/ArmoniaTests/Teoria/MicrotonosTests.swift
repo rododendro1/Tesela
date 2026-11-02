@@ -17,7 +17,7 @@ import Testing
             #expect(microtonal.temperada.microtonal == microtonal, Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(TipoDeEscalaMicrotonal.catalogo.count == 49)
+        #expect(TipoDeEscalaMicrotonal.catalogo.count == 68)
     }
 
     /// Se busca por el nombre: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
@@ -116,6 +116,53 @@ import Testing
         // Una coma son 1200/53 cents.
         let si = Escala(.sol, .rastMakami).notasMicrotonales()?[2]
         #expect(abs((si?.cents ?? 0) - 17.0 * 1200 / 53) < 1e-9)
+    }
+
+    @Test func echoiEnMoria() {
+        let protos = TipoDeEscala.echosProtos.microtonal
+        #expect(protos?.sistema == .moria72)
+        #expect(protos?.desvios.map { ($0 * 100).rounded() / 100 } == [0, -33.33, 0, 0, 0, -33.33, 0])
+        #expect(nombres(Escala(.re, .echosProtos)) == "Re Mi⁻² Fa Sol La Si⁻² Do")
+        #expect(nombres(Escala(.la, .echosPlagiosProtos)) == "La Si⁻² Do Re Mi⁻² Fa Sol")
+        // El segundo, cromático blando; el plagal del segundo, cromático duro: los dos, la doble armónica.
+        #expect(nombres(Escala(.sol, .echosDefteros)) == "Sol La♭⁺² Si⁻² Do Re Mi♭⁺² Fa♯⁻²")
+        #expect(nombres(Escala(.re, .echosPlagiosDefteros)) == "Re Mi♭ Fa♯⁺² Sol La Si♭ Do♯⁺²")
+        // El varýs y el légetos, con la tónica dos moria baja.
+        #expect(nombres(Escala(.si, .echosVarys)) == "Si⁻² Do Re Mi⁻² Fa Sol La")
+        #expect(nombres(Escala(.mi, .echosLegetos)) == "Mi⁻² Fa Sol La Si⁻² Do Re")
+        #expect(nombres(Escala(.sol, .echosTetartos)) == "Sol La Si⁻² Do Re Mi⁻² Fa")
+        #expect(nombres(Escala(.do, .echosPlagiosTetartos)) == "Do Re Mi⁻² Fa Sol La Si⁻²")
+        #expect(nombres(Escala(.re, .echosProtos), en: .inglesASCII) == "D E(-2) F G A B(-2) C")
+        // El tercero, enarmónico, ya es la escala mayor.
+        #expect(TipoDeEscala.echosTritos == .mayor && TipoDeEscala.echosTritos.microtonal == nil)
+        #expect(TipoDeEscala.echoi.filter { $0.microtonal == nil } == [.echosTritos])
+        #expect(TipoDeEscala.echosProtos.tradicion == .bizancio && TipoDeEscala.echosProtos.categoria == .echos)
+        #expect(SistemaMicrotonal.moria72.cents(de: 12) == 200)
+    }
+
+    @Test func thaatEnSruti() {
+        // Los 22 śruti: razones justas, con un limma, una coma o un semitono menor entre dos seguidos.
+        #expect(SistemaMicrotonal.razonesDeLosSruti.count == 22)
+        #expect(abs(SistemaMicrotonal.sruti.cents(de: 7) - 386.31) < 0.01)
+        #expect(abs(SistemaMicrotonal.sruti.cents(de: 22 + 13) - 1901.96) < 0.01)
+        #expect(abs(SistemaMicrotonal.sruti.cents(de: -9) - (-498.04)) < 0.01)
+        let bilaval = TipoDeEscala.bilaval.microtonal
+        #expect(bilaval?.sistema == .sruti)
+        #expect(nombres(Escala(.do, .bilaval)) == "Do Re↓ Mi↓ Fa Sol La↓ Si↓")
+        #expect(nombres(Escala(.do, .kafi)) == "Do Re↓ Mi♭ Fa Sol La↓ Si♭")
+        #expect(nombres(Escala(.do, .kalyan)) == "Do Re↓ Mi↓ Fa♯↓ Sol La↓ Si↓")
+        #expect(nombres(Escala(.do, .yaman)) == nombres(Escala(.do, .kalyan)))
+        #expect(nombres(Escala(.do, .bhairav)) == "Do Re♭ Mi↓ Fa Sol La♭ Si↓")
+        #expect(nombres(Escala(.do, .purvi)) == "Do Re♭↑ Mi↓ Fa♯↓ Sol La♭↑ Si↓")
+        #expect(nombres(Escala(.do, .todi)) == "Do Re♭ Mi♭ Fa♯↓ Sol La♭ Si")
+        #expect(nombres(Escala(.do, .bilaval), en: .inglesASCII) == "C D(-1) E(-1) F G A(-1) B(-1)")
+        // Mi↓ es 5/4: 13,69 cents bajo el Mi temperado.
+        let mi = Escala(.do, .bilaval).notasMicrotonales()?[2]
+        #expect(abs((mi?.cents ?? 0) - 386.31) < 0.01)
+        #expect(abs((bilaval?.desvios[2] ?? 0) - (-13.69)) < 0.01)
+        // Todos los thāṭ tienen versión microtonal; los mēḷa carnáticos, no.
+        #expect(TipoDeEscala.thaats.allSatisfy { $0.microtonal?.sistema == .sruti })
+        #expect(TipoDeEscala.melakarta(29)?.microtonal == nil)
     }
 
     @Test func lasDoblesConDobles() {

@@ -1,7 +1,7 @@
 import ArmoniaNucleo
 
-// MARK: - Escalas de la India, dromoi griegos, maqamat, dastgāh, makamlar, mugam, escalas chinas, japonesas,
-// coreanas, etíopes, de Indonesia, andinas, klezmer y de la Grecia antigua
+// MARK: - Escalas de la India, dromoi griegos, echoi bizantinos, maqamat, dastgāh, makamlar, mugam, escalas chinas,
+// japonesas, coreanas, etíopes, de Indonesia, andinas, klezmer y de la Grecia antigua
 //
 // Escalas de otras tradiciones, en su aproximación al temperamento igual: los 72 mēḷa de
 // la música carnática y algunos de sus rāgas janya, los 10 thāṭ de la indostánica y los dromoi del rebético y la música
@@ -19,18 +19,18 @@ import ArmoniaNucleo
 // un maqam, un makam, un mugam…; salen de estas listas. Sus nombres en cada idioma están en `Escalas/Nombres/`.
 //
 // La India, que es la más larga, está en `TipoDeEscala+India.swift`; las demás, más abajo, cada una tras su
-// `// MARK: - Nombre`: Andes, Azerbaiyan (mugam), China, Corea, Etiopia, Grecia, Indonesia, Japon, Klezmer,
-// MundoArabe (maqamat), Persia (dastgah) y Turquia (makamlar).
+// `// MARK: - Nombre`: Andes, Azerbaiyan (mugam), Bizancio (echoi), China, Corea, Etiopia, Grecia, Indonesia, Japon,
+// Klezmer, MundoArabe (maqamat), Persia (dastgah) y Turquia (makamlar).
 // `Scripts/generadores/nombres_de_escalas/tradicionales.py` las busca por esas marcas.
 
 extension TipoDeEscala {
     /// Escalas de otras tradiciones: thāṭ, dromoi, mēḷa, janya, chinas, japonesas, etíopes,
     /// maqamat, de Indonesia, klezmer, rāgas indostánicos, dastgāh, coreanas, andinas, de la
-    /// Grecia antigua, makamlar turcos y mugam azerbaiyanos.
+    /// Grecia antigua, makamlar turcos, mugam azerbaiyanos y echoi bizantinos.
     public static let tradicionales: [TipoDeEscala] =
         thaats + dromoi + melakartas + janyas + chinas + japonesas
         + etiopes + maqamat + indonesias + klezmer + ragasIndostanicos + dastgah + coreanas + andinas
-        + griegasAntiguas + makamlar + mugamlar
+        + griegasAntiguas + makamlar + mugamlar + echoi
 }
 
 // MARK: - Andes
@@ -102,6 +102,74 @@ extension TipoDeEscala {
 
     /// Los mugam de Hacıbəyov que se escriben en doce notas sin dudas.
     public static let mugamlar: [TipoDeEscala] = [.rastMugami, .surMugami, .segahMugami, .cahargahMugami]
+}
+
+// MARK: - Bizancio
+
+extension TipoDeEscala {
+    // MARK: Echoi bizantinos
+    //
+    // Los ocho modos (echoi, ἦχοι) de la salmodia bizantina, en la teoría de la Comisión Patriarcal de Constantinopla
+    // (1881): la octava en 72 moria y cuatro géneros de tetracordo, el diatónico (12, 10 y 8 moria), el cromático
+    // blando (8, 14 y 8), el cromático duro (6, 20 y 4) y el enarmónico (12, 12 y 6). Las notas se llaman Ni, Pa,
+    // Vou, Ga, Di, Ke y Zo, de Do a Si. Cada echos va sobre su nota base más habitual (varios tienen más de una), con
+    // las notas de su género en doce notas; su versión microtonal, en moria, está en `Microtonos.swift`. El tercero,
+    // enarmónico, ya es la escala mayor. Va también el légetos, la variante del cuarto sobre Vou. Fuentes:
+    // Wikipedia («Neobyzantine Octoechos») y la tabla de escalas del St Andrew's Greek Orthodox Theological College.
+
+    /// El primero (Re Mi Fa Sol La Si Do, sobre Pa): diatónico, con Vou y Zo dos moria bajo Mi y Si.
+    public static let echosProtos = TipoDeEscala(
+        nombre: "echos prótos",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        alias: ["Ήχος πρώτος", "ichos protos"])
+    /// El plagal del primero (La Si Do Re Mi Fa Sol, sobre Ke): diatónico.
+    public static let echosPlagiosProtos = TipoDeEscala(
+        nombre: "echos plágios prótos",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
+        alias: ["Ήχος πλάγιος του πρώτου", "plagal protos"])
+    /// El segundo (Sol La♭ Si Do Re Mi♭ Fa♯, sobre Di): cromático blando, aproximado a la doble armónica.
+    public static let echosDefteros = TipoDeEscala(
+        nombre: "echos défteros",
+        intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
+        alias: ["Ήχος δεύτερος", "echos deuteros", "ichos defteros"])
+    /// El plagal del segundo (Re Mi♭ Fa♯ Sol La Si♭ Do♯, sobre Pa): cromático duro, la doble armónica.
+    public static let echosPlagiosDefteros = TipoDeEscala(
+        nombre: "echos plágios défteros",
+        intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
+        alias: ["Ήχος πλάγιος του δευτέρου", "echos plagios deuteros", "plagal defteros"])
+    /// El tercero (Fa Sol La Si♭ Do Re Mi, sobre Ga): enarmónico, que en la teoría de 1881 ya es la escala mayor.
+    public static let echosTritos = TipoDeEscala(
+        nombre: "echos trítos",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
+        alias: ["Ήχος τρίτος", "ichos tritos"])
+    /// El grave, el plagal del tercero (Si Do Re Mi Fa Sol La, sobre Zo): diatónico, con la tónica dos moria bajo Si.
+    public static let echosVarys = TipoDeEscala(
+        nombre: "echos varýs",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Ήχος βαρύς", "echos barys", "grave"])
+    /// El cuarto (Sol La Si Do Re Mi Fa, sobre Di): diatónico.
+    public static let echosTetartos = TipoDeEscala(
+        nombre: "echos tétartos",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        alias: ["Ήχος τέταρτος", "ichos tetartos"])
+    /// El plagal del cuarto (Do Re Mi Fa Sol La Si, sobre Ni): diatónico.
+    public static let echosPlagiosTetartos = TipoDeEscala(
+        nombre: "echos plágios tétartos",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
+        alias: ["Ήχος πλάγιος του τετάρτου", "plagal tetartos"])
+    /// El légetos (Mi Fa Sol La Si Do Re, sobre Vou): el cuarto en su forma de los himnos breves, con la tónica dos
+    /// moria bajo Mi.
+    public static let echosLegetos = TipoDeEscala(
+        nombre: "echos légetos",
+        intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
+        alias: ["Λέγετος", "legetos"])
+
+    public static let echoi: [TipoDeEscala] = [
+        .echosProtos, .echosPlagiosProtos, .echosDefteros, .echosPlagiosDefteros, .echosTritos, .echosVarys,
+        .echosTetartos, .echosPlagiosTetartos, .echosLegetos,
+    ]
 }
 
 // MARK: - China

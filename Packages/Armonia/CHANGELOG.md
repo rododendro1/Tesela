@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+- **Echoi bizantinos y śruti indios**, dos sistemas microtonales nuevos (el catálogo microtonal pasa de 49 a 68):
+  - `SistemaMicrotonal.moria72`, los 72 moria de la Comisión Patriarcal (1881), y nueve escalas nuevas de la
+    tradición `.bizancio`, categoría `.echos` (`TipoDeEscala.echoi`): los ocho echoi y el légetos. Todos menos el
+    trítos, que ya es la mayor, tienen versión microtonal (Re Mi⁻² Fa Sol La Si⁻² Do).
+  - `SistemaMicrotonal.sruti`, los 22 śruti con sus razones justas (`razonesDeLosSruti`), y la versión
+    microtonal de los diez thāṭ y de Yaman: el ṣaḍja-grāma de Arnold, con el re y el dha pitagóricos de Bhairav,
+    Bhairavī y Toḍī (Do Re↓ Mi↓ Fa Sol La↓ Si↓ en Bilāval).
+  - En el pentagrama, los moria llevan los signos de Wyschnegradsky y los śruti la flecha de Helmholtz-Ellis
+    (catorce glifos más de Bravura); en MusicXML, los moria también.
 - **Dieciséis escalas tradicionales más**, todas con su versión microtonal (de treinta y tres a cuarenta y nueve):
   - Makamlar: Hüzzam, Saba, Karcığar, Suzinak, Nikriz y Nev'eser, en comas de Arel-Ezgi-Uzdilek.
   - Dastgāh y āvāz persas, con el *koron*: Segāh (sobre Mi, con la tónica en un *koron*), Navā, Bayāt-e Tork,

@@ -37,7 +37,7 @@ extension TextosDeCLI {
         descripcionEscala: "egy skála hangjai és akkordjai",
         sintaxisEscalas: "scales [<szöveg>] [opciók]",
         descripcionEscalas: "a skálák katalógusa: a szokásosak és\nmás hagyományokéi, kategóriánként,\nC-től induló hangjaikkal",
-        notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes) és --category maqam (vagy rāga, makam,\ndastgah, dromos…); a szöveg a nevekben keres",
+        notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) és --category maqam (vagy rāga, makam,\ndastgah, dromos…); a szöveg a nevekben keres",
         sintaxisTonalidad: "key <hangnem>",
         descripcionTonalidad: "előjegyzés, rokon hangnemek és fokok",
 

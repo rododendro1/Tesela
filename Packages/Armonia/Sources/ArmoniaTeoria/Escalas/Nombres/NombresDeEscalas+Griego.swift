@@ -265,6 +265,15 @@ extension NombresDeEscalas {
         .tradicional(.surMugami, "μουγκάμ Σουρ"),
         .tradicional(.segahMugami, "μουγκάμ Σεγκιάχ"),
         .tradicional(.cahargahMugami, "μουγκάμ Τσαχαργκιάχ"),
+        .tradicional(.echosProtos, "ήχος πρώτος"),
+        .tradicional(.echosPlagiosProtos, "ήχος πλάγιος του πρώτου"),
+        .tradicional(.echosDefteros, "ήχος δεύτερος"),
+        .tradicional(.echosPlagiosDefteros, "ήχος πλάγιος του δευτέρου"),
+        .tradicional(.echosTritos, "ήχος τρίτος"),
+        .tradicional(.echosVarys, "ήχος βαρύς"),
+        .tradicional(.echosTetartos, "ήχος τέταρτος"),
+        .tradicional(.echosPlagiosTetartos, "ήχος πλάγιος του τετάρτου"),
+        .tradicional(.echosLegetos, "ήχος λέγετος"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "ράγκα"),
@@ -276,6 +285,7 @@ extension NombresDeEscalas {
         .categoria(.dastgah, "ντασγκάχ"),
         .categoria(.makam, "μακάμ"),
         .categoria(.mugam, "μουγκάμ"),
+        .categoria(.echos, "ήχος"),
         .categoria(.shteyger, "στέιγκερ"),
         .categoria(.qenet, "κενέτ"),
         .categoria(.laras, "λάρας"),

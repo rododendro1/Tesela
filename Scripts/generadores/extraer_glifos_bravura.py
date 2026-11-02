@@ -43,6 +43,22 @@ GLIFOS = {
     "kucukMucennebSostenido": (0xE446, "accidentalKucukMucennebSharp"),
     "buyukMucennebSostenido": (0xE447, "accidentalBuyukMucennebSharp"),
     "koron": (0xE460, "accidentalKoron"), "sori": (0xE461, "accidentalSori"),
+    # Los moria bizantinos (72 por octava), con los signos de doceavos de tono de Wyschnegradsky que usan sus escalas.
+    "moriaSostenido2": (0xE421, "accidentalWyschnegradsky2TwelfthsSharp"),
+    "moriaSostenido4": (0xE423, "accidentalWyschnegradsky4TwelfthsSharp"),
+    "moriaSostenido8": (0xE427, "accidentalWyschnegradsky8TwelfthsSharp"),
+    "moriaSostenido10": (0xE429, "accidentalWyschnegradsky10TwelfthsSharp"),
+    "moriaBemol2": (0xE42C, "accidentalWyschnegradsky2TwelfthsFlat"),
+    "moriaBemol4": (0xE42E, "accidentalWyschnegradsky4TwelfthsFlat"),
+    "moriaBemol8": (0xE432, "accidentalWyschnegradsky8TwelfthsFlat"),
+    "moriaBemol10": (0xE434, "accidentalWyschnegradsky10TwelfthsFlat"),
+    # Los śruti: la coma sintónica de Helmholtz-Ellis, una flecha en el bemol, el becuadro o el sostenido.
+    "bemolFlechaAbajo": (0xE2C1, "accidentalFlatOneArrowDown"),
+    "becuadroFlechaAbajo": (0xE2C2, "accidentalNaturalOneArrowDown"),
+    "sostenidoFlechaAbajo": (0xE2C3, "accidentalSharpOneArrowDown"),
+    "bemolFlechaArriba": (0xE2C6, "accidentalFlatOneArrowUp"),
+    "becuadroFlechaArriba": (0xE2C7, "accidentalNaturalOneArrowUp"),
+    "sostenidoFlechaArriba": (0xE2C8, "accidentalSharpOneArrowUp"),
 }
 
 

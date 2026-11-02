@@ -37,7 +37,7 @@ extension TextosDeCLI {
         descripcionEscala: "ноты и аккорды гаммы",
         sintaxisEscalas: "scales [<текст>] [параметры]",
         descripcionEscalas: "каталог гамм: обычные и гаммы других\nтрадиций, по категориям, с нотами\nот до",
-        notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes) и --category maqam (или rāga, makam,\ndastgah, dromos…); текст ищет в названиях",
+        notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) и --category maqam (или rāga, makam,\ndastgah, dromos…); текст ищет в названиях",
         sintaxisTonalidad: "key <тональность>",
         descripcionTonalidad: "ключевые знаки, родственные\nтональности и ступени",
 
