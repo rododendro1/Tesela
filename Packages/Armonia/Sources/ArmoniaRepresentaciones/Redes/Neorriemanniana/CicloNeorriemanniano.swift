@@ -9,7 +9,7 @@ import Foundation
 //   octatónico (P, R): ocho, Do – Dom – Mi♭ – Mi♭m – Sol♭ – Fa♯m – La – Lam;
 //   LR (L, R): las veinticuatro, por quintas, Do – Mim – Sol – Sim – Re…
 //
-// Con ortografía, el ciclo no se cierra: tras seis pasos del hexatónico, Do llega a Re♭♭. Por
+// Con ortografía, el ciclo no se cierra: tras seis pasos del hexatónico, Do llega a Re𝄫. Por
 // eso cada tríada se escribe con la ortografía más sencilla (Mi, no Fa♭; Fa♯m, no Sol♭m) y la
 // última es la de partida. En el dibujo, la banda sigue recta y los puntos llevan el nombre de
 // la primera tríada del ciclo que los toca.
@@ -113,7 +113,7 @@ extension Acorde {
 extension Tonnetz.Triada {
     /// La misma tríada escrita como su enarmónica (la fundamental, doce quintas más allá) si
     /// tiene dobles alteraciones o si la enarmónica lleva al menos dos alteraciones menos: Fa♭
-    /// pasa a Mi y Sol♭m (con Si♭♭) a Fa♯m, pero La♭m sigue siendo La♭m.
+    /// pasa a Mi y Sol♭m (con Si𝄫) a Fa♯m, pero La♭m sigue siendo La♭m.
     package var sencilla: Tonnetz.Triada {
         func alteraciones(_ triada: Tonnetz.Triada) -> Int {
             triada.vertices.map { abs($0.nota.alteracion.semitonos) }.reduce(0, +)

@@ -193,7 +193,7 @@ package enum Exportacion {
     }
 
     /// Una altura escrita sin alteraciones triples, que no tienen todos los formatos: con la nota natural vecina
-    /// que suena igual (Fa♯♯♯4 → Sol♯4). La octava es la de la nota natural escrita.
+    /// que suena igual (Fa𝄪♯4 → Sol♯4). La octava es la de la nota natural escrita.
     package static func sinTriples(_ altura: Altura) -> (natural: NotaNatural, semitonos: Int, octava: Int) {
         let escala = [0, 2, 4, 5, 7, 9, 11]
         var natural = altura.nota.natural.rawValue

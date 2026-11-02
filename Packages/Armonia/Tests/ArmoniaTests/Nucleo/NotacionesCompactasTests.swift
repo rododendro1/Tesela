@@ -13,10 +13,29 @@ import Testing
         #expect(Nota("Sib").nombre(en: .portuguesCompacto) == "Si♭")
         #expect(Nota("Fa#").nombre(en: .rusoCompacto) == "Фа♯")
         #expect(Nota("Fa#").nombre(en: .griegoCompacto) == "Φα♯")
-        #expect(Nota("Do##").nombre(en: .italianoCompacto) == "Do♯♯")
+        #expect(Nota("Do##").nombre(en: .italianoCompacto) == "Do𝄪")
         #expect(Nota("Mi").nombre(en: .euskeraCompacto) == "Mi")
         // Las de palabras no cambian.
         #expect(Nota("Reb").nombre(en: .francesPalabras) == "ré bémol")
+    }
+
+    @Test func lasCompactasEscribenLasDoblesConDobles() throws {
+        for idioma in Idioma.allCases where ![.aleman, .hungaro].contains(idioma) {
+            #expect(Notacion(escritura: .compacta(idioma)).tipografia == .conDobles, Comment(rawValue: idioma.codigo))
+        }
+        let conSignos = EscrituraDeNotas.allCases.filter { $0.esCompacta && $0.escrituraDeLaAlteracion == .signos }
+        #expect(conSignos.count == 13)
+        #expect(Set(conSignos.map(\.tipografia)) == [.conDobles])
+        #expect(Nota("Sibb").nombre(en: .espanolCompacto) == "Si𝄫")
+        #expect(Nota("Do###").nombre(en: .francesCompacto) == "Do𝄪♯")
+        #expect(Nota("Fa##").nombre(en: .rusoCompacto) == "Фа𝄪")
+        #expect(Nota("Re").nombre(en: .espanolCompacto) == "Re")
+        #expect(Nota("Sibb").nombre(en: .inglesCompacto) == "B𝄫")
+        #expect(Notacion.delIdioma(.espanol) == .espanolCompacto)
+        #expect(try Nota(leyendo: "Si𝄫") == Nota("Sibb"))
+        // También el nombre, la descripción y lo guardado.
+        #expect(Altura("Sibb3").description == "Si𝄫3")
+        #expect(Nota("Sibb").nombre == "Si𝄫")
     }
 
     @Test func alturasConSubindice() {

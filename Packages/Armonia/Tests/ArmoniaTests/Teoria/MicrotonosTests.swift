@@ -118,6 +118,15 @@ import Testing
         #expect(abs((si?.cents ?? 0) - 17.0 * 1200 / 53) < 1e-9)
     }
 
+    @Test func lasDoblesConDobles() {
+        let nota = NotaMicrotonal(temperada: Nota(.si, -2), sistema: .cuartosDeTono, ajuste: -1, cents: 0)
+        #expect(nota.nombre() == "Si𝄫𝄳")
+        #expect(nota.nombre(en: .inglesCompacto) == "B𝄫𝄳")
+        #expect(nota.nombre(en: .inglesASCII) == "Bbbqb")
+        let mi = NotaMicrotonal(temperada: .mi, sistema: .cuartosDeTono, ajuste: -1, cents: 0)
+        #expect(mi.nombre() == "Mi𝄳")
+    }
+
     @Test func nombresEnOtrasNotaciones() {
         let bayati = Escala(.re, .bayati)
         #expect(nombres(bayati, en: .inglesCompacto) == "D E𝄳 F G A B♭ C")
