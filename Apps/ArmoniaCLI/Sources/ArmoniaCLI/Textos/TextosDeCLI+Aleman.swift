@@ -40,6 +40,10 @@ extension TextosDeCLI {
         notasEscalas: "Optionen: --tradition turkey (oder india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) und --category maqam (oder rāga, makam,\ndastgah, dromos…); ein Text sucht in den Namen",
         sintaxisTonalidad: "key <Tonart>",
         descripcionTonalidad: "Vorzeichen, verwandte Tonarten und\nStufen",
+        sintaxisConjunto: "set <Klassen>",
+        descripcionConjunto: "Primform, Forte-Nummer,\nVektoren, Symmetrien und Noten",
+        sintaxisSerie: "row <Reihe>",
+        descripcionSerie: "Matrix, Formen und Kombinatorik\neiner Zwölftonreihe",
 
         // Ayuda+Dibujos.swift
         sintaxisTonnetz: "tonnetz <Noten>",
@@ -149,6 +153,8 @@ extension TextosDeCLI {
         faltaEscala: "die Skala fehlt: armonia scale D dorian",
         faltaTonalidad: "die Tonart fehlt: armonia key A minor",
         faltaTonalidadTrasEn: "die Tonart nach --in fehlt",
+        faltaConjunto: "die Menge fehlt: armonia set 0 4 7",
+        faltaSerie: "die Reihe fehlt: armonia row 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "die Akkorde fehlen: armonia analyze C F G7 C" },
         archivoIlegible: { nombre in "die Datei „\(nombre)“ kann nicht gelesen werden" },
         archivoConAcordes: "mit --file keine Akkorde angeben",
@@ -161,7 +167,7 @@ extension TextosDeCLI {
         faltanNotasDelDibujo: { ejemplo, orden in "die Noten fehlen: armonia \(orden) C E G" },
         faltaAcordeDelDibujo: { ejemplo, orden in "der Akkord fehlt: armonia \(orden) --chord G7" },
         faltaEscalaDelDibujo: { ejemplo, orden in "die Skala fehlt: armonia \(orden) --scale D dorian" },
-        clasesFueraDeRango: { ejemplo, orden in "Tonklassen sind Zahlen von 0 bis 11: armonia \(orden) --pcs 0 4 7" },
+        faltanClasesDelDibujo: { ejemplo, orden in "die Tonhöhenklassen fehlen: armonia \(orden) --pcs 0 4 7" },
         faltanTriadasDelRecorrido: { ejemplo, orden in "die Dreiklänge fehlen: armonia \(orden) --sequence C Am F Dm" },
         cicloMalEscrito: { ejemplo, orden in "der Zyklus ist hexatonisch, oktatonisch oder LR, ab einem Dreiklang: armonia \(orden) --cycle hexatonic C" },
         recorridoSoloTriadas: { ejemplo, orden in "die Folge besteht aus Dur- und Molldreiklängen: armonia \(orden) --sequence C Am F Dm" },
@@ -242,6 +248,16 @@ extension TextosDeCLI {
         mensajeNingunPaso: "keine Schritte",
         mensajeUnPaso: "1 Schritt",
         mensajePasos: { n in "\(n) Schritte" },
-        mensajeTriadas: { n in Idioma.aleman.contar(n, "Dreiklang", "Dreiklänge") }
+        mensajeTriadas: { n in Idioma.aleman.contar(n, "Dreiklang", "Dreiklänge") },
+        mensajeFormaNormal: "Normalform",
+        mensajeFormaPrima: "Primform",
+        mensajeVectorIntervalico: "Intervallvektor",
+        mensajeVectorDeIndice: "Indexvektor",
+        mensajeEjesDeSimetria: "Symmetrieachsen",
+        mensajeIntervalos: "Intervalle",
+        mensajeDeTodosLosIntervalos: "Allintervallreihe",
+        mensajeFormasDistintas: { n in "\(n) verschiedene Formen" },
+        mensajeHexacordos: "Hexachorde",
+        mensajeFormasCombinatorias: "kombinatorische Formen"
     )
 }

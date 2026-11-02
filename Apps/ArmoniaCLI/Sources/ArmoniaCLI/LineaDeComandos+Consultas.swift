@@ -314,4 +314,61 @@ extension LineaDeComandos {
         lineas += analisis.cadencias
         return bien(lineas.joined(separator: "\n"))
     }
+
+    // MARK: Teoría postonal
+
+    /// `conjunto 0 4 7`: el conjunto con sus notas, sus formas, sus vectores y sus ejes de simetría.
+    static func describir(conjunto: ConjuntoDeClases, _ notacion: Notacion) -> String {
+        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        func lista(_ numeros: [Int]) -> String { "[" + numeros.map(String.init).joined(separator: ", ") + "]" }
+        let ejes = conjunto.ejesDeSimetria.map(\.description).joined(separator: " · ")
+        return [
+            [conjunto.description, conjunto.numeroDeForte].compactMap { $0 }.joined(separator: "  "),
+            "  \(t(.notas)): " + conjunto.notas().map { $0.nombre(en: notacion) }.joined(separator: " "),
+            "  \(t(.formaNormal)): \(lista(conjunto.formaNormal))",
+            "  \(t(.formaPrima)): \(lista(conjunto.formaPrima))",
+            "  \(t(.vectorIntervalico)): \(lista(conjunto.vectorIntervalico))",
+            "  \(t(.vectorDeIndice)): \(lista(conjunto.vectorDeIndice))",
+            "  \(t(.ejesDeSimetria)): " + (ejes.isEmpty ? "—" : ejes),
+        ].joined(separator: "\n")
+    }
+
+    /// `serie 0 e 7 4 2 9 3 8 t 1 5 6`: la serie con sus notas, sus intervalos, sus hexacordos, sus formas
+    /// combinatorias y la matriz, con las P a la izquierda, las R a la derecha, las I arriba y las RI abajo.
+    static func describir(serie: SerieDodecafonica, _ notacion: Notacion) -> String {
+        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        // Una nota por clase, escritas todas a la vez para que no se repita ninguna.
+        let total = ConjuntoDeClases(0..<12)
+        let nombres = Dictionary(uniqueKeysWithValues: zip(total.clases, total.notas()))
+        let notas = serie.clases.compactMap { nombres[$0]?.nombre(en: notacion) }.joined(separator: " ")
+        var intervalos = "  \(t(.intervalos)): " + serie.intervalos.map(String.init).joined(separator: " ")
+        if serie.esDeTodosLosIntervalos { intervalos += "  (\(t(.deTodosLosIntervalos)))" }
+        let (primero, segundo) = serie.hexacordos
+        let hexacordos = [primero, segundo].map { $0.numeroDeForte ?? $0.description }.joined(separator: " · ")
+        var lineas = [
+            serie.description,
+            "  \(t(.notas)): \(notas)",
+            intervalos,
+            "  \(t(.hexacordos)): \(hexacordos)",
+            "  \(t(.formasCombinatorias)): "
+                + serie.formasCombinatorias.map(\.description).joined(separator: " "),
+            "  " + t(.formasDistintas(serie.numeroDeFormasDistintas)),
+            "",
+        ]
+        func celda(_ texto: String) -> String { texto + String(repeating: " ", count: max(1, 5 - texto.count)) }
+        func cifra(_ clase: Int) -> String { clase == 10 ? "t" : clase == 11 ? "e" : String(clase) }
+        let matriz = serie.matriz
+        let margen = "  " + celda("")
+        func cabecera(_ tipo: TipoDeFormaDeSerie) -> String {
+            margen + matriz[0].map { celda(FormaDeSerie(tipo, $0).description) }.joined()
+        }
+        lineas.append(cabecera(.inversion))
+        for fila in matriz {
+            let p = FormaDeSerie(.original, fila[0]).description
+            let r = FormaDeSerie(.retrogrado, fila[0]).description
+            lineas.append("  " + celda(p) + fila.map { celda(cifra($0)) }.joined() + r)
+        }
+        lineas.append(cabecera(.retrogradoDeLaInversion))
+        return lineas.map { String($0.reversed().drop(while: { $0 == " " }).reversed()) }.joined(separator: "\n")
+    }
 }

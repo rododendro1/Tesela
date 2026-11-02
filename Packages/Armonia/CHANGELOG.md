@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+### Teoría postonal en la línea de comandos
+
+- **`armonia conjunto`** (`set`): un conjunto escrito como lo lee `ConjuntoDeClases(leyendo:)` («0 4 7», «047»,
+  «Do Mi Sol», «4-Z15»), con sus notas, su forma normal y su forma prima, su número de Forte, el vector interválico,
+  el vector de índice y los ejes de simetría.
+- **`armonia serie`** (`row`): una serie dodecafónica con sus notas, sus intervalos, sus hexacordos, sus formas
+  combinatorias, cuántas formas distintas tiene y la matriz, con P y R a los lados e I y RI arriba y abajo.
+- **`--clases`** de `tonnetz` y `tabla` lee igual que `armonia conjunto`: «047», «01t», «Do Mi Sol» o «3-11». Como
+  en las cifras seguidas cada cifra es una clase, «--clases 13» es {1, 3} y ya no un error.
+
 ### Series dodecafónicas
 
 - **`SerieDodecafonica`**: las doce clases de altura en su orden. Sus 48 formas (`FormaDeSerie`: P, I, R y RI, con

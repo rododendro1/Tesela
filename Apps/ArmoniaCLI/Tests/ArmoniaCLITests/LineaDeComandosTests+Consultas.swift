@@ -231,4 +231,44 @@ extension LineaDeComandosTests {
         // Con la tonalidad dada no se buscan modulaciones.
         #expect(!(salida("analizar Do Fa Sol7 Do Lam Re7 Sol --en Do mayor").contains("De Do mayor a")))
     }
+
+    @Test func conjunto() {
+        #expect(
+            salida("conjunto 0 4 7") == """
+                [0, 4, 7]  3-11
+                  notas: Do Mi Sol
+                  forma normal: [0, 4, 7]
+                  forma prima: [0, 3, 7]
+                  vector interválico: [0, 0, 1, 1, 1, 0]
+                  vector de índice: [1, 0, 1, 0, 2, 0, 0, 2, 1, 0, 0, 2]
+                  ejes de simetría: —
+
+                """)
+        #expect(salida("conjunto 047") == salida("conjunto Do Mi Sol"))
+        #expect(salida("conjunto 4-Z15").hasPrefix("[0, 1, 4, 6]  4-Z15"))
+        #expect(salida("conjunto 0 3 7 t").contains("ejes de simetría: 5–11"))
+        #expect(salida("set 0 3 6 9 --ingles").contains("axes of symmetry: 0–6 · 1½–7½ · 3–9 · 4½–10½"))
+        #expect(LineaDeComandos.ejecutar(["conjunto", "0", "x"]).codigo == 1)
+        #expect(LineaDeComandos.ejecutar(["conjunto"]).codigo == 2)
+    }
+
+    @Test func serie() {
+        let berg = salida("serie Fa Mi Do La Sol Re La♭ Re♭ Mi♭ Sol♭ Si♭ Si")
+        #expect(berg.hasPrefix("5 4 0 9 7 2 8 1 3 6 t e\n"))
+        #expect(berg.contains("  notas: Fa Mi Do La Sol Re La♭ Do♯ Mi♭ Fa♯ Si♭ Si\n"))
+        #expect(berg.contains("  intervalos: 11 8 9 10 7 6 5 2 3 4 1  (de todos los intervalos)\n"))
+        #expect(berg.contains("  hexacordos: 6-32 · 6-32\n"))
+        #expect(berg.contains("  formas combinatorias: P11 I10 R5 RI4\n"))
+        #expect(berg.contains("  24 formas distintas\n"))
+        #expect(berg.contains("\n       I5   I4   I0   I9   I7   I2   I8   I1   I3   I6   I10  I11\n"))
+        #expect(berg.contains("  P5   5    4    0    9    7    2    8    1    3    6    t    e    R5\n"))
+        #expect(berg.hasSuffix("RI10 RI11\n"))
+        let lineas = berg.split(separator: "\n", omittingEmptySubsequences: false)
+        #expect(lineas.count == 22)
+        #expect(salida("row 0 e 7 4 2 9 3 8 t 1 5 6 --ingles").contains("combinatorial forms: P6 I5 R0 RI11"))
+        let error = LineaDeComandos.ejecutar(["serie", "0", "1", "2"])
+        #expect(error.codigo == 1)
+        #expect(error.error.contains("faltan 3, 4, 5, 6, 7, 8, 9, 10, 11"))
+        #expect(LineaDeComandos.ejecutar(["serie"]).codigo == 2)
+    }
 }
