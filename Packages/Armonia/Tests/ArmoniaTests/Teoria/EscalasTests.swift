@@ -724,6 +724,10 @@ import Testing
         #expect(TipoDeEscala.nayruz == .menorNatural)
         #expect(TipoDeEscala.sikah == .frigio)
         #expect(TipoDeEscala.iraq == .locrio)
+        #expect(TipoDeEscala.jiharkah == .mayor)
+        #expect(TipoDeEscala.bayateTork == .mixolidio)
+        #expect(TipoDeEscala.bayateEsfahan == .menorArmonica)
+        #expect(TipoDeEscala.abuAta == .locrio && TipoDeEscala.segah == .locrio)
         #expect(notas(.huzam, .mi) == "Mi Fa Sol La♭ Si Do Re")
         // Makamlar.
         #expect(notas(.rastMakami, .sol) == "Sol La Si Do Re Mi Fa♯")
@@ -737,6 +741,9 @@ import Testing
         #expect(TipoDeEscala.nihavendMakami.formaAscendente == .menorArmonica)
         #expect(TipoDeEscala.ussakMakami == .menorNatural)
         #expect(TipoDeEscala.segahMakami == .frigio)
+        #expect(TipoDeEscala.suzinakMakami == .mayorArmonica)
+        #expect(TipoDeEscala.karcigarMakami == .kartzigar && TipoDeEscala.nikrizMakami == .nikriz)
+        #expect(TipoDeEscala.neveserMakami == .niavent)
         #expect(TipoDeEscala.huseyniMakami.formaAscendente == .dorico)
         #expect(TipoDeEscala.huseyniMakami.formaDescendente.intervalos == TipoDeEscala.menorNatural.intervalos)
         // Mugam: Rast, Şur y Segah tienen ocho notas (una por debajo de la tónica y otra por encima).
