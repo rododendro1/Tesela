@@ -90,6 +90,19 @@ import Testing
         #expect(dorico?.description == "modo 2 de Do mayor")
     }
 
+    @Test func enLosQuinceIdiomas() {
+        let modo = Escala(.re, .dorico).escalaMadre
+        for idioma in Idioma.allCases {
+            let notacion = Notacion.delIdioma(idioma)
+            let nombre = modo?.nombre(en: notacion) ?? ""
+            #expect(nombre.contains("2"), Comment(rawValue: nombre))
+            #expect(nombre.contains(Escala(.do, .mayor).nombre(en: notacion)), Comment(rawValue: nombre))
+            #expect(Set(PapelEnLaEscala.allCases.map { $0.nombre(en: notacion) }).count == 3)
+        }
+        let nota = Escala(.do, .mayor).notas(sobre: Acorde("Do7M"))[3]
+        #expect(nota.description == "Fa (11)")
+    }
+
     // MARK: Escala en su contexto
 
     private func escalas(_ acordes: [Acorde], en tonalidad: Tonalidad) -> [String?] {
