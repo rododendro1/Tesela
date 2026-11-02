@@ -135,17 +135,16 @@ extension Acorde {
     }
 
     /// Las escalas sobre la fundamental del acorde que contienen todas sus notas (la relación acorde-escala del
-    /// jazz: Do7 → Do mixolidio…), de las de menos notas a las de más. Por defecto, entre las del catálogo
-    /// (`TipoDeEscala.todos`); las tensiones cuentan como la nota que son (la novena, como la segunda).
-    public func escalasCompatibles(entre tipos: [TipoDeEscala] = TipoDeEscala.todos) -> [Escala] {
-        let propias = notas
-        let compatibles = tipos.map { Escala(fundamental, $0) }.filter { escala in
-            propias.allSatisfy { escala.contiene($0) }
-        }
-        return compatibles.enumerated().sorted { a, b in
-            let (x, y) = (a.element.tipo.intervalos.count, b.element.tipo.intervalos.count)
-            return x != y ? x < y : a.offset < b.offset
-        }.map(\.element)
+    /// jazz: Do7 → Do mixolidio…), de las que tienen menos notas a evitar sobre el acorde
+    /// (``Escala/notasAEvitar(sobre:)``) a las que más y, a igualdad, en el orden de `tipos`. Por defecto, entre
+    /// las de ``TipoDeEscala/deJazz``: Do7(♯11) da primero Do lidio dominante, sin ninguna. Las tensiones cuentan
+    /// como la nota que son (la novena, como la segunda), y una nota escrita de otra forma vale (Fa♭ por Mi).
+    public func escalasCompatibles(entre tipos: [TipoDeEscala] = TipoDeEscala.deJazz) -> [Escala] {
+        let compatibles = tipos.map { Escala(fundamental, $0) }.filter { $0.contiene(acorde: self) }
+        let aEvitar = compatibles.map { $0.notasAEvitar(sobre: self).count }
+        return compatibles.indices.sorted { a, b in
+            aEvitar[a] != aEvitar[b] ? aEvitar[a] < aEvitar[b] : a < b
+        }.map { compatibles[$0] }
     }
 }
 

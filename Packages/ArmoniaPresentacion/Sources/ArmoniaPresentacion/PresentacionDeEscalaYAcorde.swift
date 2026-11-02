@@ -16,6 +16,18 @@ public struct EscalaSobreAcordePresentada: Hashable, Sendable {
     public let aEvitar: String
     /// Lo que cabe en una línea: «Tensiones: Mi 9 · Sol 11 · Si 13 — A evitar: Si♭ ♭13».
     public let resumen: String
+    /// Las tríadas de tensiones que se tocan sobre el acorde con esta escala: «Re · Sim · Sol · Lam» en Do lidio
+    /// sobre Do7M; "" si no tiene.
+    public let estructurasSuperiores: String
+}
+
+/// Los acordes que caben sobre un grado de una escala, para la vista de escalas y `armonia escala --acordes`.
+public struct AcordesDelGrado: Hashable, Sendable {
+    /// «1 · Do».
+    public let grado: String
+    public let acordes: [Acorde]
+    /// Sus cifrados: «Do · Dosus2 · Dosus4 · Do6…».
+    public let cifrados: String
 }
 
 /// La relación escala-acorde en la vista de acordes, en la de escalas y en el análisis, y en `armonia analizar
@@ -47,7 +59,20 @@ public enum PresentacionDeEscalaYAcorde {
             notas: lista(nil),
             tensiones: tensiones,
             aEvitar: aEvitar,
-            resumen: partes.joined(separator: " — "))
+            resumen: partes.joined(separator: " — "),
+            estructurasSuperiores: escala.estructurasSuperiores(sobre: acorde).map { $0.cifrado(en: notacion) }
+                .joined(separator: " · "))
+    }
+
+    /// Los acordes que caben en la escala, grado a grado (`Escala.acordesQueCaben(grado:)`), sin los grados en los
+    /// que no cabe ninguno.
+    public static func acordesQueCaben(_ escala: Escala, notacion: Notacion) -> [AcordesDelGrado] {
+        escala.acordesQueCaben.enumerated().compactMap { i, acordes in
+            guard !acordes.isEmpty else { return nil }
+            return AcordesDelGrado(
+                grado: "\(i + 1) · " + escala.grado(i + 1).nombre(en: notacion), acordes: acordes,
+                cifrados: acordes.map { $0.cifrado(en: notacion) }.joined(separator: " · "))
+        }
     }
 
     /// «modo 2 de Do mayor»; `nil` si la escala no es modo de otra o si es la propia madre.

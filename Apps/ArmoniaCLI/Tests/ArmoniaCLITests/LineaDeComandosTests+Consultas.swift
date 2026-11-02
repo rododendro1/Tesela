@@ -157,6 +157,7 @@ extension LineaDeComandosTests {
         #expect(analisis.contains("\n    Re dórico — Tensiones: Mi 9 · Sol 11 · Si 13\n"))
         #expect(analisis.contains("\n    Sol mixolidio — Tensiones: La 9 · Mi 13 — A evitar: Do 11\n"))
         #expect(analisis.contains("\n    Do mayor — Tensiones: Re 9 · La 13 — A evitar: Fa 11\n"))
+        #expect(analisis.contains("\n      Estructuras superiores: Mim · Sol · Do · Lam\n"))
         // Sin --escalas, como siempre.
         #expect(!salida("analizar Rem7 Sol7 Do7M --en Do mayor").contains("dórico"))
         #expect(salida("analyze Dm7 G7 Cmaj7 --in C major --scales --ingles").contains("    D dorian — Tensions:"))
@@ -166,6 +167,14 @@ extension LineaDeComandosTests {
         #expect(salida("escala Re dórico").contains("\n  modo 2 de Do mayor\n"))
         #expect(salida("escala Do alterada").contains("modo 7 de Re♭ menor melódica de jazz"))
         #expect(!salida("escala Do mayor").contains("modo 1"))
+    }
+
+    @Test func escalaConTodosSusAcordes() {
+        let escala = salida("escala Do mayor --acordes")
+        #expect(escala.contains("\n  Acordes que caben:\n    1 · Do: Do · "), Comment(rawValue: escala))
+        #expect(escala.contains("\n    5 · Sol: "))
+        #expect(!salida("escala Do mayor").contains("Acordes que caben"))
+        #expect(salida("scale C major --chords --ingles").contains("\n  Chords that fit:\n    1 · C: C · "))
     }
 
     @Test func analizarUnArchivo() throws {

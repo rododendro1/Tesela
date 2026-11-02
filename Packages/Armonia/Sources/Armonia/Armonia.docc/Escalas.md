@@ -382,7 +382,8 @@ Un arpegio no es un tipo de escala sino un acorde tocado nota a nota, así que `
 guarda un ``Acorde``, el orden del recorrido (``Arpegio/Patron``: ascendente, descendente, de ida y vuelta o el bajo de Alberti) y
 las octavas que abarca. Se obtiene de un acorde o de un grado de una escala, se lee y se nombra en los quince idiomas
 («Arpegio de Do mayor», «C major arpeggio», «Arpège de Do majeur») y se dibuja en un pentagrama. ``Acorde/escalasCompatibles(entre:)``
-da la relación acorde-escala del jazz: las escalas sobre la fundamental que contienen todas las notas del acorde.
+da la relación acorde-escala del jazz: las escalas sobre la fundamental que contienen todas las notas del acorde, entre
+las de ``TipoDeEscala/deJazz`` y de las que tienen menos notas a evitar a las que más.
 
 ```swift
 Arpegio(Acorde("Do7")).alturas(octava: 4).map(\.midi) == [60, 64, 67, 70, 72]       // true
@@ -420,4 +421,18 @@ Tonalidad(.do).analizar(["Do", "La7", "Rem7", "Sol7"]).escalas[1] == Escala(.la,
 Tonalidad(.do).escalaDelAcorde(Acorde("Sib7")) == Escala(Nota(.si, .bemol), .lidioDominante)               // true
 Escala(.do, .alterada).escalaMadre?.madre == Escala(Nota(.re, .bemol), .menorMelodicaJazz)               // true
 Escala(.re, .dorico).escalaMadre?.nombre(en: .espanolCompacto) == "modo 2 de Do mayor"                   // true
+Acorde("Do7(#11)").escalasCompatibles().first == Escala(.do, .lidioDominante)                            // true
+```
+
+### Los acordes de una escala
+
+En el otro sentido, ``Escala/acordesQueCaben(grado:)`` da todos los acordes de ``TipoDeAcorde/paraEscalas`` que caben
+sobre un grado, no solo los de terceras superpuestas: en Do mayor, sobre el 1.º, también Dosus2, Do6, Do6/9 y
+Do(add9); en Do frigio dominante, Do7(♭9). ``Escala/estructurasSuperiores(sobre:)`` da las tríadas mayores y menores
+de la escala que se pueden tocar sobre el acorde: las que tienen alguna tensión y ninguna nota a evitar, primero las
+de más tensiones. Sobre Do7M en lidio, Re mayor: la 9, la ♯11 y la 13.
+
+```swift
+Escala(.do, .mayor).acordesQueCaben(grado: 1).contains(Acorde(.do, .mayorSexta))                        // true
+Escala(.do, .lidio).estructurasSuperiores(sobre: Acorde("Do7M")).first == Acorde(.re, .mayor)             // true
 ```

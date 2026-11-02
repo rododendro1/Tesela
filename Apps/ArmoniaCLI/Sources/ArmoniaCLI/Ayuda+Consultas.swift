@@ -18,8 +18,11 @@ extension LineaDeComandos {
             return bien(try intervalo(resto[0], resto[1], notacion))
         },
         Orden(nombres: ["escala", "scale"], ayuda: ayudaDeEscala) { resto, notacion in
-            guard !resto.isEmpty else { return uso(.faltaEscala, notacion) }
-            return bien(describir(escala: try Escala(leyendo: resto.joined(separator: " ")), notacion))
+            var argumentos = Argumentos(resto)
+            let conAcordes = argumentos.quitarMarca("--acordes", "--chords")
+            guard !argumentos.restantes.isEmpty else { return uso(.faltaEscala, notacion) }
+            let escala = try Escala(leyendo: argumentos.restantes.joined(separator: " "))
+            return bien(describir(escala: escala, conTodosSusAcordes: conAcordes, notacion))
         },
         Orden(nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas) { escalas($0, $1) },
         Orden(nombres: ["tonalidad", "key"], ayuda: ayudaDeTonalidad) { resto, notacion in
@@ -69,7 +72,7 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeEscala: [EntradaDeAyuda] = [
-        // escala <escala>
+        // escala <escala> [--acordes]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisEscala),
             descripcion: TextosDeCLI.traduccion(\.descripcionEscala),

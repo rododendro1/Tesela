@@ -100,8 +100,18 @@ import Testing
         let escalas = Acorde("Do7").escalasCompatibles()
         #expect(escalas.contains(Escala(.do, .mixolidio)))
         #expect(!escalas.contains(Escala(.do, .mayor))) // le falta el Si♭
-        let tamanos = escalas.map { $0.tipo.intervalos.count }
-        #expect(tamanos == tamanos.sorted())
+        // De las que tienen menos notas a evitar a las que más.
+        let aEvitar = escalas.map { $0.notasAEvitar(sobre: Acorde("Do7")).count }
+        #expect(aEvitar == aEvitar.sorted())
+        #expect(escalas.first == Escala(.do, .lidioDominante))
+        #expect(escalas.allSatisfy { TipoDeEscala.deJazz.contains($0.tipo) })
+        // Con la ♯11 en el cifrado, el lidio dominante va primero y el mixolidio ya no cabe.
+        let conOncena = Acorde("Do7(#11)").escalasCompatibles()
+        #expect(conOncena.first == Escala(.do, .lidioDominante))
+        #expect(!conOncena.contains(Escala(.do, .mixolidio)))
+        // En Do7M, el lidio (sin notas a evitar) antes que el jónico (con el fa).
+        let mayor = Acorde("Do7M").escalasCompatibles()
+        #expect(mayor.firstIndex(of: Escala(.do, .lidio))! < mayor.firstIndex(of: Escala(.do, .mayor))!)
         #expect(Acorde("Do").escalasCompatibles(entre: [.mayor, .menorNatural]) == [Escala(.do, .mayor)])
         #expect(Acorde("Dom").escalasCompatibles().contains(Escala(.do, .dorico)))
     }

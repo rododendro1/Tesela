@@ -14,12 +14,14 @@ import Testing
         #expect(dorico.tensiones == "Mi 9 · Sol 11 · Si 13")
         #expect(dorico.aEvitar.isEmpty)
         #expect(dorico.resumen == "Tensiones: Mi 9 · Sol 11 · Si 13")
+        #expect(dorico.estructurasSuperiores == "Mim · Sol · Do · Lam")
 
         let jonico = PresentacionDeEscalaYAcorde.presentar(
             Escala(.do, .mayor), sobre: Acorde("Do7M"), notacion: .espanolCompacto)
         #expect(jonico.modo == nil) // es la propia madre
         #expect(jonico.aEvitar == "Fa 11")
         #expect(jonico.resumen == "Tensiones: Re 9 · La 13 — A evitar: Fa 11")
+        #expect(jonico.estructurasSuperiores == "Sol · Lam")
     }
 
     @Test func enOtroIdioma() {
@@ -35,6 +37,16 @@ import Testing
             PresentacionDeEscalaYAcorde.modo(de: Escala(.do, .alterada), notacion: .espanolCompacto)
                 == "modo 7 de Re♭ menor melódica de jazz")
         #expect(PresentacionDeEscalaYAcorde.modo(de: Escala(.do, .tonosEnteros), notacion: .espanolCompacto) == nil)
+    }
+
+    @Test func losAcordesQueCaben() throws {
+        let grados = PresentacionDeEscalaYAcorde.acordesQueCaben(Escala(.do, .mayor), notacion: .espanolCompacto)
+        #expect(grados.count == 7)
+        let primero = try #require(grados.first)
+        #expect(primero.grado == "1 · Do")
+        #expect(primero.cifrados.hasPrefix("Do · "))
+        #expect(primero.acordes.contains(Acorde(.do, .mayorSexta)))
+        #expect(grados[4].acordes.contains(Acorde("Sol7")))
     }
 
     @Test func laEscalaDeCadaAcordeDelAnalisis() throws {

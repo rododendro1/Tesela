@@ -157,8 +157,8 @@ struct VistaDeAcordes: View {
         }
     }
 
-    /// Las escalas sobre la fundamental que contienen el acorde (Sol7 → Sol mixolidio…), de las de menos notas
-    /// a las de más, con las tensiones y las notas a evitar de cada una.
+    /// Las escalas sobre la fundamental que contienen el acorde (Sol7 → Sol mixolidio…), de las que tienen menos
+    /// notas a evitar a las que más, con las tensiones y las notas a evitar de cada una.
     @ViewBuilder
     private func escalas(de acorde: Acorde) -> some View {
         let escalas = acorde.escalasCompatibles()

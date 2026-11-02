@@ -127,6 +127,8 @@ extension TextosDeApps {
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tentsioak",
         notasAEvitar: "Saihesteko",
+        acordesQueCaben: "Sartzen diren akordeak",
+        estructurasSuperiores: "Goiko egiturak",
         // FicheroParaExportar.swift
         partituraMusicXML: "MusicXML partitura",
         partituraMEI: "MEI partitura",

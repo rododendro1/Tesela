@@ -2,6 +2,19 @@
 
 ## Sin publicar
 
+### Escalas compatibles y acordes de una escala
+
+- **`Acorde.escalasCompatibles(entre:)`** busca por defecto entre las escalas de jazz (`TipoDeEscala.deJazz`: los
+  modos de la mayor, de la menor melódica y de la menor armónica, las disminuidas, la de tonos enteros, las bebop,
+  las pentatónicas y la de blues), no en todo el catálogo, y las ordena de las que tienen menos notas a evitar a
+  las que más, no por su número de notas: Do7(♯11) da primero Do lidio dominante.
+- **`Escala.acordesQueCaben(grado:)`** y `Escala.acordesQueCaben`: los acordes de `TipoDeAcorde.paraEscalas` que
+  caben sobre cada grado (sus, sextas, 6/9, add9, dominantes alteradas…), no solo los de terceras.
+- **`Escala.estructurasSuperiores(sobre:)`**: las tríadas de la escala con tensiones y sin notas a evitar que se
+  tocan sobre un acorde (Re sobre Do7M en lidio).
+- `armonia escala --acordes` escribe los acordes que caben en cada grado, y `armonia analizar --escalas`, las
+  estructuras superiores de cada acorde.
+
 ### Escalas sobre un acorde
 
 - **`Escala.notas(sobre:)`**: cada nota de una escala sobre un acorde, con su papel (`PapelEnLaEscala`: nota del

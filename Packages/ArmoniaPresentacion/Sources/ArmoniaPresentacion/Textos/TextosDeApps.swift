@@ -139,6 +139,8 @@ public struct TextosDeApps: TextosTraducidos {
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String
     public let notasAEvitar: String
+    public let acordesQueCaben: String
+    public let estructurasSuperiores: String
 
     // MARK: FicheroParaExportar.swift
     public let partituraMusicXML: String
