@@ -15,7 +15,7 @@ extension Notacion {
     }
 
     /// La notación del idioma del sistema, para cuando aún no se ha elegido ninguna: con el sistema en
-    /// catalán, `.catalan`; en un idioma sin notación propia, la española. `idiomas` son los códigos
+    /// catalán, `.catalanPalabras`; en un idioma sin notación propia, la española. `idiomas` son los códigos
     /// de `Locale.preferredLanguages` («ca-ES», «en-GB»…), y manda el primero que se conozca.
     public static func delSistema(idiomas: [String] = Locale.preferredLanguages) -> Notacion {
         for codigo in idiomas {

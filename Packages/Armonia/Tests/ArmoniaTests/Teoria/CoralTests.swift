@@ -38,9 +38,12 @@ import Testing
                 "Octavas paralelas entre bajo y soprano (acordes 1 → 2)",
             ])
         #expect(c.faltas[0].descripcion(en: .inglesASCII) == "Parallel fifths between bass and tenor (chords 1 → 2)")
-        #expect(c.faltas[0].descripcion(en: .gallego) == "Quintas paralelas entre baixo e tenor (acordes 1 → 2)")
-        #expect(c.faltas[1].descripcion(en: .catalan) == "Octaves paral·leles entre baix i soprano (acords 1 → 2)")
-        #expect(c.faltas[0].descripcion(en: .euskera) == "Bosgarren paraleloak baxua eta tenorra (1 → 2 akordeak)")
+        #expect(
+            c.faltas[0].descripcion(en: .gallegoPalabras) == "Quintas paralelas entre baixo e tenor (acordes 1 → 2)")
+        #expect(
+            c.faltas[1].descripcion(en: .catalanPalabras) == "Octaves paral·leles entre baix i soprano (acords 1 → 2)")
+        #expect(
+            c.faltas[0].descripcion(en: .euskeraPalabras) == "Bosgarren paraleloak baxua eta tenorra (1 → 2 akordeak)")
         // Por movimiento contrario también cuentan; el unísono es una octava.
         #expect(problemas("Do3 Sol3 Mi4 Do5 | Sol2 Re4 Sol4 Si4") == [.quintasParalelas])
         #expect(

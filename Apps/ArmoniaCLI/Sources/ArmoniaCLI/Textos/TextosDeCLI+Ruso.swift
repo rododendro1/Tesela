@@ -198,7 +198,7 @@ extension TextosDeCLI {
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "не указан инструмент: \(digitaciones.1)" },
-        instrumentoDesconocido: { nombre, lista in "неизвестный инструмент: «\(nombre)» (\(lista(.ruso)))" },
+        instrumentoDesconocido: { nombre, lista in "неизвестный инструмент: «\(nombre)» (\(lista(.rusoPalabras)))" },
         faltaLimite: "не указано число аппликатур: --limit 5",
         limiteFueraDeRango: "предел — число от 1 до 200: --limit 5",
         faltanDedos: "не указано число пальцев: --fingers 3",

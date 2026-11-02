@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- Con los nombres nuevos del motor (`Notacion.espanolPalabras`…), las claves guardadas en los ajustes no cambian:
+  «espanol», «catalan», «alemanPalabras»…
 - Mientras no se toque el interruptor «Octava en subíndice», la octava va como la escriba la notación: en subíndice
   en las compactas (La₄) y con cifras en las demás, como en el motor y en la línea de comandos. El ajuste se lee como
   `Bool?` y `Notacion.desde(clave:octavasEnSubindice:)` acepta `nil`.

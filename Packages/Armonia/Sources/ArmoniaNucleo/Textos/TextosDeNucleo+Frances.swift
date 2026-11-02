@@ -38,7 +38,7 @@ extension TextosDeNucleo {
         fundamentalNoOmitible: "on ne peut pas omettre la fondamentale",
         gradoNoOmitible: { grado in "« omit\(grado) » n'est pas valide (on peut omettre 3, 5, 7, 9, 11 et 13)" },
         faltaLaFundamental: "il manque la fondamentale",
-        intervaloSinPapel: { intervalo, notacion in "l'intervalle de \(intervalo.nombre(en: .frances)) n'a aucun rôle dans un accord par tierces" },
+        intervaloSinPapel: { intervalo, notacion in "l'intervalle de \(intervalo.nombre(en: .francesPalabras)) n'a aucun rôle dans un accord par tierces" },
         terceraMayorYMenor: "il a à la fois une tierce majeure et une tierce mineure (la ♯9 s'écrit comme neuvième augmentée, pas comme tierce mineure)",
         variasSeptimas: "il a plus d'une septième",
         septimaDisminuidaFueraDelDisminuido: "la septième diminuée n'apparaît que dans l'accord diminué (avec tierce mineure et quinte diminuée)",
@@ -69,7 +69,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "l'unisson diminué n'existe pas : de do à do♭, il y a un unisson augmenté descendant (écrivez -1A)",
         reglaDeLasJustas: "l'unisson, la quarte, la quinte et l'octave sont justes, augmentées ou diminuées",
         reglaDeLasMayores: "la seconde, la tierce, la sixte et la septième sont majeures, mineures, augmentées ou diminuées",
-        intervaloInexistente: { numero, calidad, notacion, regla in "il n'existe pas de \(numero)e \(calidad.nombre(en: .frances)) : \(regla.frances)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "il n'existe pas de \(numero)e \(calidad.nombre(en: .francesPalabras)) : \(regla.frances)" },
         alteracionNoReconocida: { signo in "« \(signo) » n'est pas une altération (♯, ♭, 𝄪, 𝄫, #, b, x ou ♮ attendu)" },
 
         // ErrorDeLectura.swift (partitura)

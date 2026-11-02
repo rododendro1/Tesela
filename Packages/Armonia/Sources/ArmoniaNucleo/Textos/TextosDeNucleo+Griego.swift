@@ -38,7 +38,7 @@ extension TextosDeNucleo {
         fundamentalNoOmitible: "η θεμέλια δεν μπορεί να παραλειφθεί",
         gradoNoOmitible: { grado in "το «omit\(grado)» δεν είναι έγκυρο (παραλείπονται μόνο τα 3, 5, 7, 9, 11 και 13)" },
         faltaLaFundamental: "λείπει η θεμέλια",
-        intervaloSinPapel: { intervalo, notacion in "η \(intervalo.nombre(en: .griego)) δεν έχει ρόλο σε συγχορδία κατά τρίτες" },
+        intervaloSinPapel: { intervalo, notacion in "η \(intervalo.nombre(en: .griegoPalabras)) δεν έχει ρόλο σε συγχορδία κατά τρίτες" },
         terceraMayorYMenor: "έχει ταυτόχρονα μεγάλη και μικρή τρίτη (η ♯9 γράφεται ως αυξημένη ένατη, όχι ως μικρή τρίτη)",
         variasSeptimas: "έχει περισσότερες από μία έβδομες",
         septimaDisminuidaFueraDelDisminuido: "η ελαττωμένη έβδομη εμφανίζεται μόνο στην ελαττωμένη συγχορδία (με μικρή τρίτη και ελαττωμένη πέμπτη)",
@@ -69,7 +69,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "δεν υπάρχει ελαττωμένη πρώτη: από ντο σε ντο ύφεση είναι κατιούσα αυξημένη πρώτη (γράψε -A1)",
         reglaDeLasJustas: "η πρώτη, η τέταρτη, η πέμπτη και η όγδοη είναι καθαρές, αυξημένες ή ελαττωμένες",
         reglaDeLasMayores: "η δεύτερη, η τρίτη, η έκτη και η έβδομη είναι μεγάλες, μικρές, αυξημένες ή ελαττωμένες",
-        intervaloInexistente: { numero, calidad, notacion, regla in "δεν υπάρχει \(calidad.nombre(en: .griego)) \(Intervalo.ordinal(numero, en: .griego)): \(regla.griego)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "δεν υπάρχει \(calidad.nombre(en: .griegoPalabras)) \(Intervalo.ordinal(numero, en: .griego)): \(regla.griego)" },
         alteracionNoReconocida: { signo in "το «\(signo)» δεν είναι αλλοίωση (αναμενόταν ♯, ♭, 𝄪, 𝄫, #, b, x ή ♮)" },
 
         // ErrorDeLectura.swift (partitura)

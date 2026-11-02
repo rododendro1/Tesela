@@ -44,7 +44,7 @@ elegir una; es lo que usa el botón «Escuchar» de las apps:
 AfinacionHistorica.allCases.count                                       // 8
 AfinacionHistorica.justa.afinacion(tonica: .re).desviacion(de: "Fa#4")    // −13,69
 AfinacionHistorica.mesotonico.distingueEnarmonicas                      // true
-AfinacionHistorica.vallotti.nombre(en: .ruso)                           // "Валлотти"
+AfinacionHistorica.vallotti.nombre(en: .rusoPalabras)                           // "Валлотти"
 ```
 
 ## Base 40, base 54 y base 600

@@ -66,7 +66,7 @@ import Testing
         let arpegio = Arpegio(Acorde("Do"))
         #expect(arpegio.nombre.hasPrefix("Arpegio de Do"), Comment(rawValue: arpegio.nombre))
         #expect(arpegio.nombre(en: .inglesASCII).hasSuffix(" arpeggio"))
-        #expect(arpegio.nombre(en: .aleman).hasPrefix("Arpeggio: "))
+        #expect(arpegio.nombre(en: .alemanPalabras).hasPrefix("Arpeggio: "))
         for idioma in Idioma.allCases {
             let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             #expect(!(arpegio.nombre(en: notacion).contains("{}")), "\(idioma)")

@@ -108,7 +108,7 @@ public struct ReglasDeIdioma: Hashable, Sendable {
         codigo: String, nombrePropio: String, nombres: [String],
         naturales: [String], separador: String = " ", multiplicador: Multiplicador = .delante,
         alteraciones: EscrituraDeLaAlteracion = .palabras, sufijoDeSostenido: String = "is",
-        sufijoDeBemol: String = "es", tipografia: Tipografia = .unicode,
+        sufijoDeBemol: String = "es", tipografia: Tipografia = .conSimples,
         mayor: String, menor: String, separadorDelModo: String = " ", menorEnMinuscula: Bool = false,
         abreviaturas: Idioma = .ingles, plural: Plural = .unoYLosDemas
     ) {

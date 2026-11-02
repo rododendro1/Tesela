@@ -38,7 +38,7 @@ extension TextosDeNucleo {
         fundamentalNoOmitible: "se pòt pas ometre la fondamentala",
         gradoNoOmitible: { grado in "«omit\(grado)» es pas valid (se pòdon ometre 3, 5, 7, 9, 11 e 13)" },
         faltaLaFundamental: "manca la fondamentala",
-        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .occitano)) a pas cap de ròtle dins un acòrd per tèrças" },
+        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .occitanoPalabras)) a pas cap de ròtle dins un acòrd per tèrças" },
         terceraMayorYMenor: "a una tèrça majora e una tèrça menora alhora (la ♯9 s'escriu coma novena aumentada, pas coma tèrça menora)",
         variasSeptimas: "a mai d'una setena",
         septimaDisminuidaFueraDelDisminuido: "la setena diminuida apareis sonque dins l'acòrd diminuit (amb tèrça menora e quinta diminuida)",
@@ -69,7 +69,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "l'unisson diminuit existís pas: de Do a Do♭ i a un unisson aumentat descendent (escriu-lo -1A)",
         reglaDeLasJustas: "l'unisson, la quarta, la quinta e l'octava son justas, aumentadas o diminuidas",
         reglaDeLasMayores: "la segonda, la tèrça, la sexta e la setena son majoras, menoras, aumentadas o diminuidas",
-        intervaloInexistente: { numero, calidad, notacion, regla in "i a pas de \(Intervalo.ordinal(numero, en: .occitano)) \(calidad.nombre(en: .occitano)): \(regla.occitano)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "i a pas de \(Intervalo.ordinal(numero, en: .occitano)) \(calidad.nombre(en: .occitanoPalabras)): \(regla.occitano)" },
         alteracionNoReconocida: { signo in "«\(signo)» es pas una alteracion (s'esperava ♯, ♭, 𝄪, 𝄫, #, b, x o ♮)" },
 
         // ErrorDeLectura.swift (partitura)

@@ -215,7 +215,7 @@ import Testing
         #expect(ErrorDeImportacion.sinNotas.descripcion(en: .inglesASCII) == "The file has no notes.")
         #expect(ErrorDeImportacion.sinNotas.description == "El fichero no tiene ninguna nota.")
         #expect(
-            ErrorDeImportacion.xmlDanado(linea: 3).descripcion(en: .frances)
+            ErrorDeImportacion.xmlDanado(linea: 3).descripcion(en: .francesPalabras)
                 == "Le fichier MusicXML est endommagé (ligne 3).")
     }
 

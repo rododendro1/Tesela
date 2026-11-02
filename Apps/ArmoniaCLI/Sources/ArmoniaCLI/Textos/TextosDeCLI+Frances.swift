@@ -198,7 +198,7 @@ extension TextosDeCLI {
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "il manque l'instrument : \(d)" },
-        instrumentoDesconocido: { nombre, lista in "instrument inconnu : « \(nombre) » (\(lista(.frances)))" },
+        instrumentoDesconocido: { nombre, lista in "instrument inconnu : « \(nombre) » (\(lista(.francesPalabras)))" },
         faltaLimite: "il manque le nombre de doigtés : --limite 5",
         limiteFueraDeRango: "la limite est un nombre de 1 à 200 : --limite 5",
         faltanDedos: "il manque le nombre de doigts : --dedos 3",

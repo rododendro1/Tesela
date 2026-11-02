@@ -198,7 +198,7 @@ extension TextosDeCLI {
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "instrumentua falta da: \(d)" },
-        instrumentoDesconocido: { nombre, lista in "instrumentu ezezaguna: «\(nombre)» (\(lista(.euskera)))" },
+        instrumentoDesconocido: { nombre, lista in "instrumentu ezezaguna: «\(nombre)» (\(lista(.euskeraPalabras)))" },
         faltaLimite: "hatz-jarrera kopurua falta da: --limite 5",
         limiteFueraDeRango: "muga 1etik 200era bitarteko zenbaki bat da: --limite 5",
         faltanDedos: "hatz kopurua falta da: --dedos 3",

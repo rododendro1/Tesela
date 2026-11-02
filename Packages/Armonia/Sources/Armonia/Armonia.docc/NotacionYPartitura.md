@@ -13,7 +13,7 @@ Notación española e inglesa, alteraciones, intervalos, pentagrama, instrumento
 | Nombre de acorde | Sol séptima de dominante, primera inversión | G dominant seventh, first inversion |
 
 `Notacion` reúne el idioma y cómo se escriben las alteraciones. En español y en inglés hay tres
-modalidades: con palabras, `.espanol` (Fa sostenido) e `.ingles` (F sharp); en ASCII, `.espanolASCII` (Fa#)
+modalidades: con palabras, `.espanolPalabras` (Fa sostenido) e `.inglesPalabras` (F sharp); en ASCII, `.espanolASCII` (Fa#)
 e `.inglesASCII` (F#), y compactas, con los símbolos Unicode y la octava en subíndice, `.espanolCompacto`
 (Fa♯, La₄) e `.inglesCompacto` (F♯, A₄). Con palabras, los cifrados llevan los símbolos Unicode: Fa♯7, F♯7. Se usa en `nombre(en:)`, `texto(en:)`,
 `abreviatura(en:)`, `cifrado(en:)` y `EstiloDeCifrado(notacion:)`.
@@ -25,52 +25,52 @@ cómo se escribe.
 
 ## Otras lenguas
 
-Además del español y el inglés, `Notacion` tiene `.aleman` y `.alemanCompacto`, `.frances`, `.italiano`,
-`.catalan`, `.gallego`, `.euskera`, `.portugues`, `.occitano`, `.ruso` y `.griego`. El alemán, como el español
-y el inglés, escribe las alteraciones con palabras (`.aleman`: C Kreuz, E Be, con B para el Si♭) o de forma compacta
+Además del español y el inglés, `Notacion` tiene `.alemanPalabras` y `.alemanCompacto`, `.francesPalabras`, `.italianoPalabras`,
+`.catalanPalabras`, `.gallegoPalabras`, `.euskeraPalabras`, `.portuguesPalabras`, `.occitanoPalabras`, `.rusoPalabras` y `.griegoPalabras`. El alemán, como el español
+y el inglés, escribe las alteraciones con palabras (`.alemanPalabras`: C Kreuz, E Be, con B para el Si♭) o de forma compacta
 (`.alemanCompacto`: Cis, Es, con la octava en subíndice); en los cifrados y las tonalidades, las dos escriben
 a la alemana (Cis7, Fis-Dur), y se leen las dos formas:
 
 | | Do♯ | Mi♭ | Si♭ | Si | Fa♯ mayor | La menor |
 |---|---|---|---|---|---|---|
-| `.aleman` | C Kreuz | E Be | B | H | Fis-Dur | a-Moll |
+| `.alemanPalabras` | C Kreuz | E Be | B | H | Fis-Dur | a-Moll |
 | `.alemanCompacto` | Cis | Es | B | H | Fis-Dur | a-Moll |
-| `.frances` | do dièse | mi bémol | si bémol | si | fa dièse majeur | la mineur |
-| `.italiano` | do diesis | mi bemolle | si bemolle | si | fa diesis maggiore | la minore |
-| `.catalan` | do sostingut | mi bemoll | si bemoll | si | fa sostingut major | la menor |
-| `.gallego` | do sostido | mi bemol | si bemol | si | fa sostido maior | la menor |
-| `.euskera` | do diesa | mi bemol | si bemol | si | fa diesa maiorra | la minorra |
-| `.portugues` | dó sustenido | mi bemol | si bemol | si | fá sustenido maior | lá menor |
-| `.occitano` | do dièsi | mi bemòl | si bemòl | si | fa dièsi major | la menor |
-| `.ruso` | до-диез | ми-бемоль | си-бемоль | си | фа-диез мажор | ля минор |
-| `.griego` | ντο δίεση | μι ύφεση | σι ύφεση | σι | φα δίεση μείζονα | λα ελάσσονα |
-| `.aragones` | do sosteniu | mi bemol | si bemol | si | fa sosteniu mayor | la menor |
-| `.asturiano` | do sosteníu | mi bemol | si bemol | si | fa sosteníu mayor | la menor |
+| `.francesPalabras` | do dièse | mi bémol | si bémol | si | fa dièse majeur | la mineur |
+| `.italianoPalabras` | do diesis | mi bemolle | si bemolle | si | fa diesis maggiore | la minore |
+| `.catalanPalabras` | do sostingut | mi bemoll | si bemoll | si | fa sostingut major | la menor |
+| `.gallegoPalabras` | do sostido | mi bemol | si bemol | si | fa sostido maior | la menor |
+| `.euskeraPalabras` | do diesa | mi bemol | si bemol | si | fa diesa maiorra | la minorra |
+| `.portuguesPalabras` | dó sustenido | mi bemol | si bemol | si | fá sustenido maior | lá menor |
+| `.occitanoPalabras` | do dièsi | mi bemòl | si bemòl | si | fa dièsi major | la menor |
+| `.rusoPalabras` | до-диез | ми-бемоль | си-бемоль | си | фа-диез мажор | ля минор |
+| `.griegoPalabras` | ντο δίεση | μι ύφεση | σι ύφεση | σι | φα δίεση μείζονα | λα ελάσσονα |
+| `.aragonesPalabras` | do sosteniu | mi bemol | si bemol | si | fa sosteniu mayor | la menor |
+| `.asturianoPalabras` | do sosteníu | mi bemol | si bemol | si | fa sosteníu mayor | la menor |
 
 ```swift
 Nota("Sib").nombre(en: .alemanCompacto)    // "B"
 Nota("Mibb").nombre(en: .alemanCompacto)   // "Eses"
-Nota("Fa#").nombre(en: .aleman)            // "F Kreuz"
+Nota("Fa#").nombre(en: .alemanPalabras)            // "F Kreuz"
 Altura("Fa#3").nombre(en: .alemanCompacto)           // "Fis₃"
-Altura("Fa#3").nombre(en: .frances)                  // "fa dièse 3"
-Acorde("Sim7").cifrado(en: .aleman)                // "Hm7"
-Acorde("Rebmaj7").cifrado(en: .frances)            // "Ré♭maj7"
+Altura("Fa#3").nombre(en: .francesPalabras)                  // "fa dièse 3"
+Acorde("Sim7").cifrado(en: .alemanPalabras)                // "Hm7"
+Acorde("Rebmaj7").cifrado(en: .francesPalabras)            // "Ré♭maj7"
 try Nota(leyendo: "B", en: .alemanCompacto) // Si♭
 try Nota(leyendo: "F Kreuz", en: .alemanCompacto)   // Fa♯
-try Altura(leyendo: "re diesis 5", en: .italiano)     // Re♯5
+try Altura(leyendo: "re diesis 5", en: .italianoPalabras)     // Re♯5
 Tonalidad("Fis-Dur"), Tonalidad("ré bémol majeur"), Tonalidad("la minore")
-Alteracion(-2).nombre(en: .frances)                 // "double bémol"
-Nota("Fa#").nombre(en: .portugues)                  // "fá sustenido"
-Alteracion(2).nombre(en: .portugues)                // "duplo sustenido"
-Acorde("Rebmaj7").cifrado(en: .portugues)           // "Ré♭maj7"
+Alteracion(-2).nombre(en: .francesPalabras)                 // "double bémol"
+Nota("Fa#").nombre(en: .portuguesPalabras)                  // "fá sustenido"
+Alteracion(2).nombre(en: .portuguesPalabras)                // "duplo sustenido"
+Acorde("Rebmaj7").cifrado(en: .portuguesPalabras)           // "Ré♭maj7"
 Altura("fá sustenido 3")                            // Fa♯3
 Tonalidad("si bemol maior")                         // Si♭ mayor
 Escala("ré dórico")                                 // Re dórico
-Nota("Fa#").nombre(en: .ruso)                       // "фа-диез"
-Tonalidad("Re mayor").nombre(en: .griego)           // "ρε μείζονα"
-Acorde("Sibm7").cifrado(en: .griego)                // "Σι♭m7"
+Nota("Fa#").nombre(en: .rusoPalabras)                       // "фа-диез"
+Tonalidad("Re mayor").nombre(en: .griegoPalabras)           // "ρε μείζονα"
+Acorde("Sibm7").cifrado(en: .griegoPalabras)                // "Σι♭m7"
 Altura("sòl dièsi 2")                               // Sol♯2
-Nota("Fa#").nombre(en: .asturiano)                  // "fa sosteníu"
+Nota("Fa#").nombre(en: .asturianoPalabras)                  // "fa sosteníu"
 Altura("fa sosteniu 3")                             // Fa♯3
 Tonalidad("ля минор")                               // La menor
 ```
@@ -104,41 +104,41 @@ Tonalidad("ля минор")                               // La menor
   gallego, euskera, portugués, occitano u alemán (`Escala("re doriarra")`, `Escala("dó maior")`).
 
 ```swift
-Intervalo.terceraMayor.nombre(en: .catalan)        // "3a major"
-Intervalo.terceraMayor.nombre(en: .gallego)        // "3ª maior"
-Intervalo.sextaMenor.nombre(en: .euskera)          // "6. txikia"
-Cadencia.Tipo.rota.nombre(en: .catalan)            // "cadència trencada"
-Escala(.re, .dorico).nombre(en: .euskera)          // "re doriarra"
-Acorde("Sol7/Si").nombre(en: .catalan)           // "sol sèptima de dominant, primera inversió"
-Intervalo.terceraMayor.nombre(en: .frances)        // "tierce majeure"
-Cadencia.Tipo.rota.nombre(en: .italiano)           // "cadenza d'inganno"
-Escala(.re, .dorico).nombre(en: .frances)          // "ré dorien"
-Acorde("Sol7/Si").nombre(en: .portugues)         // "sol sétima de dominante, primeira inversão"
-Escala(.re, .dorico).nombre(en: .asturiano)        // "re dóricu"
-Acorde("Sol7/Si").nombre(en: .asturiano)         // "sol séptima de dominante, primer inversión"
-Intervalo.terceraMayor.nombre(en: .aleman)         // "große Terz"
-Cadencia.Tipo.rota.nombre(en: .aleman)             // "Trugschluss"
-Acorde("Sol7/Si").nombre(en: .aleman)            // "Dominantseptakkord auf G, erste Umkehrung"
-Intervalo.terceraMayor.nombre(en: .occitano)       // "tèrça majora"
-Intervalo.terceraMayor.nombre(en: .ruso)           // "большая терция"
-Escala(.re, .dorico).nombre(en: .ruso)             // "ре дорийский"
-Intervalo.terceraMayor.nombre(en: .griego)         // "μεγάλη τρίτη"
+Intervalo.terceraMayor.nombre(en: .catalanPalabras)        // "3a major"
+Intervalo.terceraMayor.nombre(en: .gallegoPalabras)        // "3ª maior"
+Intervalo.sextaMenor.nombre(en: .euskeraPalabras)          // "6. txikia"
+Cadencia.Tipo.rota.nombre(en: .catalanPalabras)            // "cadència trencada"
+Escala(.re, .dorico).nombre(en: .euskeraPalabras)          // "re doriarra"
+Acorde("Sol7/Si").nombre(en: .catalanPalabras)           // "sol sèptima de dominant, primera inversió"
+Intervalo.terceraMayor.nombre(en: .francesPalabras)        // "tierce majeure"
+Cadencia.Tipo.rota.nombre(en: .italianoPalabras)           // "cadenza d'inganno"
+Escala(.re, .dorico).nombre(en: .francesPalabras)          // "ré dorien"
+Acorde("Sol7/Si").nombre(en: .portuguesPalabras)         // "sol sétima de dominante, primeira inversão"
+Escala(.re, .dorico).nombre(en: .asturianoPalabras)        // "re dóricu"
+Acorde("Sol7/Si").nombre(en: .asturianoPalabras)         // "sol séptima de dominante, primer inversión"
+Intervalo.terceraMayor.nombre(en: .alemanPalabras)         // "große Terz"
+Cadencia.Tipo.rota.nombre(en: .alemanPalabras)             // "Trugschluss"
+Acorde("Sol7/Si").nombre(en: .alemanPalabras)            // "Dominantseptakkord auf G, erste Umkehrung"
+Intervalo.terceraMayor.nombre(en: .occitanoPalabras)       // "tèrça majora"
+Intervalo.terceraMayor.nombre(en: .rusoPalabras)           // "большая терция"
+Escala(.re, .dorico).nombre(en: .rusoPalabras)             // "ре дорийский"
+Intervalo.terceraMayor.nombre(en: .griegoPalabras)         // "μεγάλη τρίτη"
 ```
 
 ### Notas y textos en idiomas distintos
 
 Una `Notacion` son dos elecciones: `escritura` (``EscrituraDeNotas``, cómo se escriben las notas)
-y `textos` (el ``Idioma`` de los intervalos, acordes y mensajes). Las notaciones con nombre (`.ruso`…)
+y `textos` (el ``Idioma`` de los intervalos, acordes y mensajes). Las notaciones con nombre (`.rusoPalabras`…)
 llevan los textos en el idioma de sus notas, y `conTextos(en:)` los cambia; también se puede crear
 directamente con `Notacion(escritura:textos:)`. Las apps lo ofrecen en el selector de notación, y la
 línea de comandos con `--textos` (y la escritura con `--escritura palabras` o `compacto`, y en español e
 inglés también `ascii` o `unicode`).
 
 ```swift
-let notacion = Notacion.ruso.conTextos(en: .espanol)
+let notacion = Notacion.rusoPalabras.conTextos(en: .espanol)
 Acorde("Sol7/Si").nombre(en: notacion)              // "соль séptima de dominante, primera inversión"
 Escala(.re, .dorico).nombre(en: Notacion.inglesASCII.conTextos(en: .euskera))   // "D doriarra"
-Notacion(escritura: .ruso, textos: .espanol) == notacion   // true
+Notacion(escritura: .rusoPalabras, textos: .espanol) == notacion   // true
 ```
 
 ### La octava en subíndice
@@ -186,9 +186,9 @@ Alteracion.sostenido + .sostenido         // doble sostenido
 Alteracion.sostenido.pasosDeQuinta        // 7: un sostenido son siete quintas
 ```
 
-Los signos se escriben en una de las tres `Tipografia`: `.unicode` (♯ y ♭, uno por semitono), `.ascii`
+Los signos se escriben en una de las tres `Tipografia`: `.conSimples` (♯ y ♭, uno por semitono), `.ascii`
 (# y b) y `.conDobles` (𝄪 y 𝄫 por cada pareja, y ♮ para el natural). `Notacion.tipografia` dice cuál usa
-cada notación: las compactas (`.espanolCompacto`, `.inglesCompacto`) usan `.unicode`.
+cada notación: las compactas (`.espanolCompacto`, `.inglesCompacto`) usan `.conSimples`.
 
 También la usan `PosicionEnPentagrama.alteracion` y `Clave.altura(lugar:alteracion:)`.
 
