@@ -90,9 +90,10 @@ import Testing
     }
 
     @Test func generacion() {
-        #expect(EsquemaArmonico.Tipo.iiVI.acordes(en: Tonalidad(.do)).map(\.cifrado) == ["Rem7", "Sol7", "Do7M"])
-        #expect(EsquemaArmonico.Tipo.iiVI.acordes(en: Tonalidad(.la, .menor)).map(\.cifrado).first == "Siø7")
-        #expect(EsquemaArmonico.Tipo.backdoor.acordes(en: Tonalidad(.do)).map(\.cifrado) == ["Fam7", "Si♭7", "Do7M"])
+        #expect(EsquemaArmonico.Tipo.iiVI.acordes(en: Tonalidad(.do)).map(\.cifrado) == ["Rem7", "Sol7", "Domaj7"])
+        #expect(EsquemaArmonico.Tipo.iiVI.acordes(en: Tonalidad(.la, .menor)).map(\.cifrado).first == "Sim7(♭5)")
+        #expect(
+            EsquemaArmonico.Tipo.backdoor.acordes(en: Tonalidad(.do)).map(\.cifrado) == ["Fam7", "Si♭7", "Domaj7"])
         // Cada esquema generado se reconoce a sí mismo.
         for tipo in EsquemaArmonico.Tipo.allCases {
             for tonalidad in [Tonalidad(.do), Tonalidad(Nota.mi.bemol), Tonalidad(.la, .menor)] {

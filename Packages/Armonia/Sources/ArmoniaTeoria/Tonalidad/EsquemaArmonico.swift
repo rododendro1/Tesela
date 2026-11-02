@@ -216,7 +216,7 @@ extension EsquemaArmonico.Tipo {
     /// El esquema escrito en una tonalidad, con los acordes de la tonalidad (en menor, la V mayor) y las
     /// séptimas que lleva en el jazz.
     ///
-    ///     EsquemaArmonico.Tipo.iiVI.acordes(en: Tonalidad(.do))          // [Rem7, Sol7, Do7M]
+    ///     EsquemaArmonico.Tipo.iiVI.acordes(en: Tonalidad(.do))          // [Rem7, Sol7, Domaj7]
     ///     EsquemaArmonico.Tipo.pachelbel.acordes(en: Tonalidad(.re))     // [Re, La, Sim, Fa♯m, Sol, Re, Sol, La]
     public func acordes(en tonalidad: Tonalidad) -> [Acorde] {
         let t = tonalidad.tonica

@@ -55,9 +55,9 @@ import Testing
     }
 
     @Test func elIIVYElBackdoor() {
-        // El Lam (vi) con su ii–V menor; el Rem7 (ii) con el suyo, mayor.
+        // El Lam (vi) y el Rem7 (ii), menores, con su ii–V menor.
         #expect(propuestas(.iiV, en: 1) == [[Acorde(.si, .semidisminuido), Acorde("Mi7"), Acorde("Lam")]])
-        #expect(propuestas(.iiV, en: 2) == [[Acorde("Mim7"), Acorde("La7"), Acorde("Rem7")]])
+        #expect(propuestas(.iiV, en: 2) == [[Acorde(.mi, .semidisminuido), Acorde("La7"), Acorde("Rem7")]])
         // Ni la tónica ni un acorde que ya tiene su dominante delante.
         #expect(propuestas(.iiV, en: 0) == [])
         #expect(propuestas(.iiV, en: 4) == [])
