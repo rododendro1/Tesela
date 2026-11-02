@@ -112,7 +112,8 @@ extension TextosDeCLI {
         Fa sostenido, Fa# vagy Fa♯ (angolul F sharp, F# vagy F♯).
         A többi nyelven a --escritura palabras|compacto a szavas vagy a tömör írásmódot választja:
         fa dièse vagy Fa♯, F Kreuz vagy Fis.
-        A --subindices kapcsolóval az oktáv alsó indexbe kerül: La₄, Fa♯₃ (mindkettőt olvassa, La4 és La₄).
+        A tömör írásmódokban az oktáv alsó indexbe kerül (La₄), a többiben számjeggyel (La4);
+        a --subindices vagy a --cifras rögzíti (mindkettőt olvassa).
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "ez a súgó",

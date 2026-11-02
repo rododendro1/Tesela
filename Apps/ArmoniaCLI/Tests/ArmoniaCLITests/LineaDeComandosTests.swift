@@ -78,11 +78,15 @@ import Testing
     }
 
     @Test func octavasEnSubindice() {
-        // Con --subindices, la octava sale en subíndice; se lee igual con subíndices que con cifras.
+        // En las compactas (la de siempre, Fa♯) la octava sale en subíndice, y con cifras en las demás; --cifras y
+        // --subindices la fijan. Se lee igual con subíndices que con cifras.
+        #expect(salida("transponer 2M Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4") == "Re₃ Fa♯₄ La₄ Re₅ | La₂ Mi₄ La₄ Do♯₅\n")
         #expect(
-            salida("transponer 2M Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 --subindices")
-                == "Re₃ Fa♯₄ La₄ Re₅ | La₂ Mi₄ La₄ Do♯₅\n")
-        #expect(salida("transponer 2M Do₃ Mi₄ Sol₄ Do₅ | Sol₂ Re₄ Sol₄ Si₄") == "Re3 Fa♯4 La4 Re5 | La2 Mi4 La4 Do♯5\n")
+            salida("transponer 2M Do₃ Mi₄ Sol₄ Do₅ | Sol₂ Re₄ Sol₄ Si₄ --cifras") == "Re3 Fa♯4 La4 Re5 | La2 Mi4 La4 Do♯5\n")
+        #expect(salida("transponer 2M Do3 --ingles") == "D3\n")
+        #expect(salida("transponer 2M Do3 --ingles --subindices") == "D₃\n")
+        #expect(salida("transponer 2M Do3 --digits") == salida("transponer 2M Do3 --cifras"))
+        #expect(salida("ayuda").contains("--cifras"))
         #expect(salida("intervalo Do₄ Mi₅") == salida("intervalo Do4 Mi5"))
         #expect(salida("ayuda").contains("--subindices"))
         #expect(salida("help --english").contains("--subscripts"))

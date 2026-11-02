@@ -112,7 +112,8 @@ extension TextosDeCLI {
         Fa sostenido, Fa# ή Fa♯ (στα αγγλικά, F sharp, F# ή F♯).
         Στις άλλες γλώσσες, το --escritura palabras|compacto επιλέγει λέξεις ή τη σύντομη μορφή:
         fa dièse ή Fa♯, F Kreuz ή Fis.
-        Με --subindices, η οκτάβα γράφεται ως δείκτης: La₄, Fa♯₃ (διαβάζονται και τα δύο, La4 και La₄).
+        Στις συμπαγείς γραφές η οκτάβα γράφεται ως δείκτης (La₄) και στις άλλες με ψηφία (La4)·
+        το --subindices ή το --cifras την ορίζει (διαβάζονται και τα δύο).
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "αυτή η βοήθεια",

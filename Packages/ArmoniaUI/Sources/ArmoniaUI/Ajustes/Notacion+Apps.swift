@@ -43,9 +43,12 @@ extension Notacion {
     ]
 
     /// La notación guardada con esa clave, con la octava como subíndice (La₄) si `octavasEnSubindice` y con cifras
-    /// (La4) si no, también en las notaciones compactas: en las apps manda el ajuste.
-    public static func desde(clave: String, octavasEnSubindice: Bool) -> Notacion {
-        desde(clave: clave).conOctavas(octavasEnSubindice ? .subindices : .cifras)
+    /// (La4) si es `false`. Si es `nil` (no se ha tocado el ajuste), como la escriba la notación: en subíndice en las
+    /// compactas y con cifras en las demás, como en el motor y en la línea de comandos.
+    public static func desde(clave: String, octavasEnSubindice: Bool?) -> Notacion {
+        let notacion = desde(clave: clave)
+        guard let octavasEnSubindice else { return notacion }
+        return notacion.conOctavas(octavasEnSubindice ? .subindices : .cifras)
     }
 
     /// El idioma elegido para los textos, o `nil` si van en el de las notas.

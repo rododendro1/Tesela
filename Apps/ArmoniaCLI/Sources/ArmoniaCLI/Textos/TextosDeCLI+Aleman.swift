@@ -112,7 +112,8 @@ extension TextosDeCLI {
         Fa sostenido, Fa# oder Fa♯ (auf Englisch F sharp, F# oder F♯).
         In den anderen Sprachen wählt --escritura palabras|compacto Wörter oder die Kurzform:
         fa dièse oder Fa♯, F Kreuz oder Fis.
-        Mit --subindices steht die Oktave als Index: La₄, Fa♯₃ (gelesen wird beides, La4 und La₄).
+        In den kompakten Schreibweisen steht die Oktave als Index (La₄), sonst als Ziffer (La4);
+        --subindices oder --cifras legen sie fest (gelesen wird beides).
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "diese Hilfe",

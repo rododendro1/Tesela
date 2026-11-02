@@ -8,6 +8,8 @@
   «conDobles».
 - `.aleman` escribe el Si♭ como B, igual que sus cifrados (B7) y tonalidades (B-Dur), y no «H Be»; «H Be» se
   sigue leyendo. El Si𝄫 sigue siendo «H Doppel-Be».
+- En la línea de comandos la octava va como la escriba la notación: en subíndice en las compactas (la de siempre,
+  Fa♯₄; `--ingles` sigue con F#4) y con cifras en las demás. `--cifras` (o `--digits`) y `--subindices` la fijan.
 - `EstiloDeCifrado.espanolCompacto`, como `.inglesCompacto`: es el mismo que `.predeterminado`.
 
 ## 0.3.0 (2026-11-01)

@@ -112,7 +112,8 @@ extension TextosDeCLI {
         Fa# или Fa♯ (по-английски F sharp, F# или F♯).
         В остальных языках --escritura palabras|compacto выбирает слова или краткую форму:
         fa dièse или Fa♯, F Kreuz или Fis.
-        С --subindices октава пишется нижним индексом: La₄, Fa♯₃ (читаются обе формы, La4 и La₄).
+        В компактных написаниях октава пишется нижним индексом (La₄), в остальных — цифрами (La4);
+        --subindices или --cifras задают её (читаются обе формы).
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "эта справка",

@@ -14,14 +14,14 @@ extension LineaDeComandos {
     /// Las opciones que valen en cualquier orden (`LineaDeComandos.ejecutar`).
     static let opcionesGenerales = [
         "--ingles", "--english", "--idioma", "--language", "--textos", "--texts", "--escritura", "--writing",
-        "--subindices", "--subscripts",
+        "--subindices", "--subscripts", "--cifras", "--digits",
     ]
 
     /// Las opciones que no llevan valor detrás; las demás, sí.
     static let marcas: Set = [
-        "--ingles", "--english", "--subindices", "--subscripts", "--cifrados", "--analisis", "--completo",
-        "--complete", "--diagrama", "--diagram", "--tab", "--caged", "--ampliada", "--extended", "--musicxml",
-        "--help", "--ayuda",
+        "--ingles", "--english", "--subindices", "--subscripts", "--cifras", "--digits", "--cifrados", "--analisis",
+        "--completo", "--complete", "--diagrama", "--diagram", "--tab", "--caged", "--ampliada", "--extended",
+        "--musicxml", "--help", "--ayuda",
     ]
 
     /// Los valores que se proponen tras una opción.

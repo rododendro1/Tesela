@@ -113,7 +113,8 @@ extension TextosDeCLI {
         Fa# o Fa♯ (en inglés, F sharp, F# o F♯).
         En los demás idiomas, --escritura palabras|compacto elige las palabras o la forma compacta:
         fa dièse o Fa♯, F Kreuz o Fis.
-        Con --subindices, la octava va en subíndice: La₄, Fa♯₃ (se lee de las dos formas, La4 y La₄).
+        En las escrituras compactas la octava va en subíndice (La₄) y en las demás, con cifras (La4);
+        --subindices o --cifras la fijan (se leen las dos formas).
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "esta ayuda",
