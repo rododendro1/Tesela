@@ -77,6 +77,17 @@ extension LineaDeComandosTests {
         #expect(salida("escala Re dórico").contains("i7 Rem7 · ii7 Mim7"))
         // Sin acordes cuando la escala no es heptatónica.
         #expect(!(salida("escala Do pentatónica mayor").contains("acordes")))
+        // Las escalas con microtonos dan también su versión microtonal y los cents de cada grado.
+        let bayati = salida("escala Re bayati")
+        #expect(bayati.contains("notas: Re Mi♭ Fa Sol La Si♭ Do"), Comment(rawValue: bayati))
+        #expect(bayati.contains("microtonos: Re Mi𝄳 Fa Sol La Si♭ Do"), Comment(rawValue: bayati))
+        #expect(bayati.contains("¢: 0 150 300 500 700 800 1000"), Comment(rawValue: bayati))
+        #expect(!bayati.contains("↓"))
+        let rast = salida("escala Sol rast makami")
+        #expect(rast.contains("microtonos: Sol La Si⁻¹ Do Re Mi Fa♯⁻¹"), Comment(rawValue: rast))
+        #expect(rast.contains("¢: 0 204 385 498 702 906 1087"), Comment(rawValue: rast))
+        #expect(rast.contains("microtonos ↓: Sol La Si⁻¹ Do Re Mi Fa"), Comment(rawValue: rast))
+        #expect(!(salida("escala Re dórico").contains("microtonos")))
         #expect(salida("tonalidad Mib mayor").contains("armadura: Si♭ Mi♭ La♭ (3 bemoles)"))
         #expect(salida("tonalidad Sol mayor").contains("armadura: Fa♯ (1 sostenido)"))
         #expect(salida("tonalidad La menor").contains("relativa: Do mayor · homónima: La mayor"))

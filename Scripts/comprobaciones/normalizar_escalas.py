@@ -2,8 +2,8 @@
 """`TipoDeEscala.normalizar` en Python, para los scripts que comparan nombres de escalas.
 
 Es una copia de la función de Swift (`ArmoniaTeoria/Escalas/TipoDeEscala.swift`): minúsculas, sin diacríticos
-(salvo en devanagari), ♯/♭ como #/b, sin ♮ ni ordinales (4ª), «−» como «-», «…» como «..» y un solo espacio entre
-palabras. Para que las dos no se separen, las dos leen los mismos casos de `Scripts/datos/normalizar.tsv`: el test de
+(salvo en devanagari), ♯/♭ como #/b, sin ♮ ni ordinales (4ª), «−» como «-», «…» como «..», la ı sin punto del
+turco como i y un solo espacio entre palabras. Para que las dos no se separen, las dos leen los mismos casos de `Scripts/datos/normalizar.tsv`: el test de
 Swift (`NormalizarVectoresTests`) y este script.
 
 Uso:  python3 Scripts/comprobaciones/normalizar_escalas.py --comprobar     (sale con 1 si algún caso no coincide)
@@ -15,7 +15,7 @@ import unicodedata
 from pathlib import Path
 
 VECTORES = Path(__file__).resolve().parents[1] / "datos" / "normalizar.tsv"
-_SUSTITUCIONES = (("♯", "#"), ("♭", "b"), ("♮", ""), ("ª", ""), ("−", "-"), ("…", ".."))
+_SUSTITUCIONES = (("♯", "#"), ("♭", "b"), ("♮", ""), ("ª", ""), ("−", "-"), ("…", ".."), ("ı", "i"))
 
 
 def normalizar(texto):

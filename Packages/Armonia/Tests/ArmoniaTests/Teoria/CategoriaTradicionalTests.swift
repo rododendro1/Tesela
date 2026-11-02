@@ -29,6 +29,11 @@ import Testing
         #expect(TipoDeEscala.tradicionales(categoria: .thaat).count == TipoDeEscala.thaats.count)
         #expect(TipoDeEscala.tradicionales(categoria: .dromos).count == TipoDeEscala.dromoi.count)
         #expect(TipoDeEscala.tradicionales(categoria: .maqam).count == TipoDeEscala.maqamat.count)
+        #expect(TipoDeEscala.tradicionales(categoria: .dastgah).count == TipoDeEscala.dastgah.count)
+        #expect(TipoDeEscala.tradicionales(categoria: .makam).count == TipoDeEscala.makamlar.count)
+        #expect(TipoDeEscala.tradicionales(categoria: .mugam).count == TipoDeEscala.mugamlar.count)
+        #expect(TipoDeEscala.tradicionales(tradicion: .turquia) == TipoDeEscala.makamlar)
+        #expect(TipoDeEscala.tradicionales(tradicion: .azerbaiyan) == TipoDeEscala.mugamlar)
         #expect(TipoDeEscala.tradicionales(categoria: .janya).count == TipoDeEscala.janyas.count)
         #expect(TipoDeEscala.tradicionales(categoria: .raga).count == TipoDeEscala.ragasIndostanicos.count)
         let tetracordos = TipoDeEscala.tradicionales(categoria: .tetracordo)
@@ -46,6 +51,16 @@ import Testing
         #expect(TipoDeEscala.hitzaz.categoria == .dromos)
         #expect(TipoDeEscala.hitzaz.tradicion == .grecia)
         #expect(TipoDeEscala.hiyaz.categoria == .maqam)
+        #expect(TipoDeEscala.bayati.categoria == .maqam)
+        #expect(TipoDeEscala.sur.tradicion == .persia)
+        #expect(TipoDeEscala.rastMakami.categoria == .makam)
+        #expect(TipoDeEscala.rastMakami.tradicion == .turquia)
+        #expect(TipoDeEscala.surMugami.categoria == .mugam)
+        #expect(TipoDeEscala.surMugami.tradicion == .azerbaiyan)
+        // Con los mismos intervalos, cada uno conserva su categoría por el nombre.
+        #expect(TipoDeEscala.rastMakami == TipoDeEscala.rast)
+        #expect(TipoDeEscala.rast.categoria == .dromos)
+        #expect(TipoDeEscala.maqamRast.categoria == .maqam)
         // Un melakarta y un janya son ragas; un thaat, no.
         #expect(TipoDeEscala.melakarta(15)?.esRaga ?? false)
         let janyas = TipoDeEscala.janyas.allSatisfy(\.esRaga)
@@ -74,6 +89,9 @@ import Testing
         #expect(CategoriaTradicional.escala.nombre(en: frances) == "gamme")
         #expect(CategoriaTradicional.tetracordo.nombre(en: frances) == "tétracorde")
         #expect(CategoriaTradicional.maqam.nombre(en: frances) == "maqam")
+        #expect(CategoriaTradicional.mugam.nombre == "mugam")
+        #expect(CategoriaTradicional.mugam.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "mugham")
+        #expect(CategoriaTradicional.makam.nombre(en: ruso) == "макам")
         #expect(CategoriaTradicional.raga.nombre(en: Notacion.espanolCompacto.conTextos(en: .aleman)) == "Raga")
         // Cada fichero de idioma da el nombre de todas las categorías.
         for categoria in CategoriaTradicional.allCases {

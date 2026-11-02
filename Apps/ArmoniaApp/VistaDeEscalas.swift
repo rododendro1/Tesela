@@ -54,6 +54,14 @@ struct VistaDeEscalas: View {
                 Text(escala.nombre(en: notacion)).font(.headline)
                 Text(escala.notas.map { $0.nombre(en: notacion) }.joined(separator: "  "))
                     .font(.system(.body, design: .monospaced))
+                // La versión microtonal (Re Bayātī: Re Mi𝄳 Fa…) y los cents de cada grado, si la escala la tiene.
+                if let microtonos = escala.notasMicrotonales() {
+                    Text(microtonos.map { $0.nombre(en: notacion) }.joined(separator: "  "))
+                        .font(.system(.body, design: .monospaced))
+                    Text("¢  " + microtonos.map { "\(Int($0.cents.rounded()))" }.joined(separator: "  "))
+                        .font(.system(.footnote, design: .monospaced))
+                        .foregroundColor(.secondary)
+                }
                 BotonDeEscuchar(sonido)
             }
             let acordes = escala.armonizar().compactMap { $0 }

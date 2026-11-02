@@ -9,7 +9,8 @@ ESC = RAIZ / "Packages/Armonia/Sources/ArmoniaTeoria/Escalas"
 CAD = re.compile(r'"((?:[^"\\]|\\.)*)"')
 TRAD = [("Andes", "Andes"), ("China", "China"), ("Corea", "Corea"), ("Etiopía", "Etiopia"),
         ("Grecia: dromoi y escalas de la Grecia antigua", "Grecia"), ("India", "India"), ("Indonesia", "Indonesia"),
-        ("Japón", "Japon"), ("Klezmer", "Klezmer"), ("Mundo árabe: maqamat", "MundoArabe"), ("Persia: dastgāh", "Persia")]
+        ("Japón", "Japon"), ("Klezmer", "Klezmer"), ("Mundo árabe: maqamat", "MundoArabe"), ("Persia: dastgāh", "Persia"),
+        ("Turquía: makamlar", "Turquia"), ("Azerbaiyán: mugam", "Azerbaiyan")]
 
 # Nombres que se traducen: original -> {idioma: traducción}. El resto se escribe igual en todos los idiomas.
 ORDEN = ["Catalan", "Gallego", "Asturiano", "Aragones", "Euskera", "Portugues", "Frances", "Occitano", "Italiano", "Aleman",
