@@ -124,6 +124,7 @@ extension TextosDeApps {
         disposicionCerrada: "Enge Lage",
         fundamentalTerceraYSeptima: "Grundton, Terz und Septime",
         terceraYSeptima: "Terz und Septime",
+        disposicionCuartal: "Quartenschichtung",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Spannungstöne",
         notasAEvitar: "Avoid-Töne",

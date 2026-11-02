@@ -174,3 +174,12 @@ más de cuatro notas se queda con la tercera, la séptima y las tensiones (``Aco
 tríada dobla una nota. ``Acorde/disposiciones(_:en:)`` da todas las de un acorde dentro de un ámbito, y
 ``DisposicionDeAcorde/conducir(_:en:)``, una para cada acorde de una progresión con la menor suma de movimientos de
 las voces: en un ii–V–I en drop 2, la séptima de cada acorde baja por grado a la tercera del siguiente.
+
+La disposición **cuartal** apila cuatro notas por cuartas (justas, o alguna aumentada), como en el jazz modal: las
+toma de la escala de siete notas del acorde con menos notas a evitar, y se queda con las pilas que llevan las notas
+guía y ninguna nota a evitar.
+
+```swift
+Acorde("Sol7").disposiciones(.cuartal).isEmpty   // false
+DisposicionDeAcorde.cuartal.voces                // 4
+```

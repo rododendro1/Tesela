@@ -87,6 +87,12 @@ import Hexagonos
         comprobar(Acorde("Do").conduccionMinima(hasta: "Lam").semitonosMovidos == 2, #"true"#, #"Sources/Armonia/Armonia.docc/Acordes.md"#, 154)
     }
 
+    @Test func acordes8() throws {
+        // Sources/Armonia/Armonia.docc/Acordes.md, línea 183
+        comprobar(Acorde("Sol7").disposiciones(.cuartal).isEmpty, #"false"#, #"Sources/Armonia/Armonia.docc/Acordes.md"#, 183)
+        comprobar(DisposicionDeAcorde.cuartal.voces, #"4"#, #"Sources/Armonia/Armonia.docc/Acordes.md"#, 184)
+    }
+
     @Test func afinacionYRepresentaciones1() throws {
         // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 8
         _ = TemperamentoRegular.igual
@@ -454,6 +460,14 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/Escalas.md, línea 436
         comprobar(Escala(.do, .mayor).acordesQueCaben(grado: 1).contains(Acorde(.do, .mayorSexta)), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 436)
         comprobar(Escala(.do, .lidio).estructurasSuperiores(sobre: Acorde("Do7M")).first == Acorde(.re, .mayor), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 437)
+    }
+
+    @Test func escalas14() throws {
+        // Sources/Armonia/Armonia.docc/Escalas.md, línea 449
+        comprobar(Escala(.re, .dorico).notaCaracteristica == .si, #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 449)
+        comprobar(Escala(.re, .dorico).acordesCaracteristicos == [Acorde("Mim"), Acorde("Sol")], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 450)
+        comprobar(Escala(.sol, .mixolidio).cadenciaModal == [Acorde("Fa"), Acorde("Sol")], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 451)
+        comprobar(Escala(.mi, .frigio).cadenciaModal == [Acorde("Fa"), Acorde("Mim")], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 452)
     }
 
     @Test func melodiaYRitmo1() throws {
@@ -897,28 +911,35 @@ import Hexagonos
     }
 
     @Test func tonalidad20() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, línea 356
-        let melodia: [Altura] = ["Mi5", "Re5", "Do5", "Do5", "Si4", "Do5"]
-        let notas = NotaDeLaMelodia.analizar(melodia, sobre: ["Do", "Do", "Fa", "Sol", "Sol", "Do"])!
-        comprobar(notas[1].description, #""Re5 (nota de paso)""#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 358)
-        comprobar(notas[3].description, #""Do5 (retardo 4-3)""#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 359)
-        comprobar(notas.notasExtranas.map(\.indice), #"[1, 3]"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 360)
-        comprobar(NotaExtrana.apoyatura.nombre(en: .inglesASCII), #""appoggiatura""#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 361)
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, línea 353
+        comprobar(Tonalidad(.do).negativa(.mi) == Nota(.mi, .bemol), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 353)
+        comprobar(Tonalidad(.do).negativo(Acorde("Do")) == Acorde("Dom"), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 354)
+        comprobar(Tonalidad(.do).negativo(Acorde("Fa")) == Acorde("Solm"), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 355)
     }
 
     @Test func tonalidad21() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, línea 373
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, línea 370
+        let melodia: [Altura] = ["Mi5", "Re5", "Do5", "Do5", "Si4", "Do5"]
+        let notas = NotaDeLaMelodia.analizar(melodia, sobre: ["Do", "Do", "Fa", "Sol", "Sol", "Do"])!
+        comprobar(notas[1].description, #""Re5 (nota de paso)""#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 372)
+        comprobar(notas[3].description, #""Do5 (retardo 4-3)""#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 373)
+        comprobar(notas.notasExtranas.map(\.indice), #"[1, 3]"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 374)
+        comprobar(NotaExtrana.apoyatura.nombre(en: .inglesASCII), #""appoggiatura""#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 375)
+    }
+
+    @Test func tonalidad22() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, línea 387
         let cantus = "Re4 Fa4 Mi4 Re4 Sol4 Fa4 La4 Sol4 Fa4 Mi4 Re4"
         let fux = try Contrapunto(cantusFirmus: cantus, contrapunto: "La4 La4 Sol4 La4 Si4 Do5 Do5 Si4 Re5 Do#5 Re5", especie: .primera)
-        comprobar(fux.esCorrecto, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 375)
-        comprobar(fux.contrapuntoArriba, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 376)
-        comprobar(fux.informe().hasPrefix("Especie 1, con el contrapunto encima del cantus firmus\n"), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 377)
-        comprobar(fux.informe().hasSuffix("Sin faltas."), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 378)
+        comprobar(fux.esCorrecto, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 389)
+        comprobar(fux.contrapuntoArriba, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 390)
+        comprobar(fux.informe().hasPrefix("Especie 1, con el contrapunto encima del cantus firmus\n"), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 391)
+        comprobar(fux.informe().hasSuffix("Sin faltas."), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 392)
         let quintas = try Contrapunto(cantusFirmus: "Do4 Re4 Mi4 Do4", contrapunto: "Sol4 La4 Sol4 Do5", especie: .primera)
-        comprobar(quintas.faltas.contains(FaltaDeContrapunto(tipo: .quintasParalelas, compases: 0...1)), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 381)
-        comprobar(FaltaDeContrapunto(tipo: .quintasParalelas, compases: 0...1).description, #""Quintas paralelas (compases 1 → 2)""#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 382)
-        comprobar(try Contrapunto(cantusFirmus: "Re4 Fa4 Mi4 Re4", contrapunto: "-:2 La4 Re5 La4 Si4 Do#5 Re5:1", especie: .segunda).esCorrecto, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 385)
-        comprobar(try Contrapunto(cantusFirmus: "Re4 Mi4 Re4", contrapunto: "-:2 Re5:1 Do#5 Re5:1", especie: .cuarta).esCorrecto, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 386)
+        comprobar(quintas.faltas.contains(FaltaDeContrapunto(tipo: .quintasParalelas, compases: 0...1)), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 395)
+        comprobar(FaltaDeContrapunto(tipo: .quintasParalelas, compases: 0...1).description, #""Quintas paralelas (compases 1 → 2)""#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 396)
+        comprobar(try Contrapunto(cantusFirmus: "Re4 Fa4 Mi4 Re4", contrapunto: "-:2 La4 Re5 La4 Si4 Do#5 Re5:1", especie: .segunda).esCorrecto, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 399)
+        comprobar(try Contrapunto(cantusFirmus: "Re4 Mi4 Re4", contrapunto: "-:2 Re5:1 Do#5 Re5:1", especie: .cuarta).esCorrecto, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 400)
     }
 
     @Test func trastes1() throws {

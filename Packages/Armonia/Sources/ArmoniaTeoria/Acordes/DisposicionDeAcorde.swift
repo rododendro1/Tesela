@@ -16,6 +16,10 @@ import ArmoniaNucleo
 ///
 /// Las otras dos son de tres y dos voces: `shell` es el bajo con la tercera y la séptima encima (en los dos órdenes),
 /// y `notasGuia`, solo la tercera y la séptima.
+///
+/// `cuartal` son cuatro notas por cuartas (justas, o alguna aumentada), como en el jazz modal: Re Sol Do Fa para
+/// Rem7, Fa Si Mi La para Sol7. Salen de la escala de siete notas del acorde con menos notas
+/// a evitar (`Acorde.escalasCompatibles(entre:)`), llevan sus notas guía y ninguna nota a evitar.
 public enum DisposicionDeAcorde: String, CaseIterable, Hashable, Sendable {
     case cerrada
     case drop2
@@ -23,6 +27,7 @@ public enum DisposicionDeAcorde: String, CaseIterable, Hashable, Sendable {
     case drop24
     case shell
     case notasGuia
+    case cuartal
 
     /// Cuántas voces tiene: 4, salvo la shell (3) y las notas guía (2).
     public var voces: Int {
@@ -104,6 +109,8 @@ extension Acorde {
     /// bajo de la posición cerrada (o, en la shell y las notas guía, por cada orden de la tercera y la séptima).
     func formas(_ disposicion: DisposicionDeAcorde) -> [[Altura]] {
         switch disposicion {
+        case .cuartal:
+            return formasCuartales()
         case .shell, .notasGuia:
             let guias = notasGuia
             guard guias.count == 2 else { return [] }
@@ -127,6 +134,32 @@ extension Acorde {
             }
             return formas
         }
+    }
+
+    /// Las pilas de cuatro notas por cuartas (justas o aumentadas) de la escala de siete notas del acorde con menos
+    /// notas a evitar que llevan las notas guía y ninguna nota a evitar.
+    private func formasCuartales() -> [[Altura]] {
+        let guias = notasGuia
+        guard !guias.isEmpty, let escala = escalasCompatibles().first(where: { $0.notas.count == 7 }) else { return [] }
+        let evitar = escala.notasAEvitar(sobre: self)
+        let notas = escala.notas
+        var formas: [[Altura]] = []
+        for inicio in notas {
+            var pila = [inicio]
+            while pila.count < 4, let ultima = pila.last {
+                let letra = (ultima.natural.indiceDiatonico + 3) % 7
+                guard let siguiente = notas.first(where: { $0.natural.indiceDiatonico == letra }),
+                    [5, 6].contains(Acorde.distancia(ultima, siguiente))
+                else { break }
+                pila.append(siguiente)
+            }
+            guard pila.count == 4, guias.allSatisfy({ guia in pila.contains { $0.esEnarmonica(de: guia) } }),
+                !pila.contains(where: evitar.contains)
+            else { continue }
+            let alturas = Acorde.apilar(pila)
+            if !formas.contains(alturas) { formas.append(alturas) }
+        }
+        return formas
     }
 
     /// La tercera (o la suspensión) y la séptima (o la sexta, o si no hay ninguna, la quinta): las notas guía.
