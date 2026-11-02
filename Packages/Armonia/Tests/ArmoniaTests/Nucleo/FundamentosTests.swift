@@ -14,8 +14,8 @@ import Testing
         #expect(Nota(pasosDeQuinta: 5).nombre == "Si")
         #expect(Nota(pasosDeQuinta: 6).nombre == "Fa♯")
         #expect(Nota(pasosDeQuinta: -2).nombre == "Si♭")
-        #expect(Nota(pasosDeQuinta: -9).nombre == "Si♭♭")
-        #expect(Nota(pasosDeQuinta: 13).nombre == "Fa♯♯")
+        #expect(Nota(pasosDeQuinta: -9).nombre == "Si𝄫")
+        #expect(Nota(pasosDeQuinta: 13).nombre == "Fa𝄪")
     }
 
     @Test func letraYAlteracion() {
@@ -119,7 +119,7 @@ import Testing
 
     @Test func enLosNombresDeNota() {
         #expect(Nota(.fa, .sostenido) == Nota("Fa#"))
-        #expect(Nota(.si, -2).nombre == "Si♭♭")
+        #expect(Nota(.si, -2).nombre == "Si𝄫")
         #expect(Nota("Mibb").alteracion == .dobleBemol)
         #expect(Nota.re.alteracion == .natural)
         #expect(Clave.sol.posicion(de: "Fa#4").alteracion == .sostenido)

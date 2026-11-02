@@ -11,8 +11,8 @@ import Testing
         let casos: [(String, String, String, String, String, String, String)] = [
             ("Fa#", "Fa sostenido", "Fa#", "Fa♯", "F sharp", "F#", "F♯"),
             ("Sib", "Si bemol", "Sib", "Si♭", "B flat", "Bb", "B♭"),
-            ("Dox", "Do doble sostenido", "Do##", "Do𝄪", "C double sharp", "C##", "C♯♯"),
-            ("Mibb", "Mi doble bemol", "Mibb", "Mi𝄫", "E double flat", "Ebb", "E♭♭"),
+            ("Dox", "Do doble sostenido", "Do##", "Do𝄪", "C double sharp", "C##", "C𝄪"),
+            ("Mibb", "Mi doble bemol", "Mibb", "Mi𝄫", "E double flat", "Ebb", "E𝄫"),
             ("Re", "Re", "Re", "Re", "D", "D", "D"),
         ]
         for (texto, espanol, espanolASCII, espanolCompacto, ingles, inglesASCII, inglesCompacto) in casos {

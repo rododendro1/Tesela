@@ -188,8 +188,8 @@ Alteracion.sostenido.pasosDeQuinta        // 7: un sostenido son siete quintas
 
 Los signos se escriben en una de las tres `Tipografia`: `.conSimples` (♯ y ♭, uno por semitono), `.ascii`
 (# y b) y `.conDobles` (𝄪 y 𝄫 por cada pareja, y ♮ para el natural). `Notacion.tipografia` dice cuál usa
-cada notación: las compactas de los idiomas de do, re, mi (`.espanolCompacto`, `.francesCompacto`…) usan
-`.conDobles` (Fa𝄪, Si𝄫), y `.inglesCompacto`, `.conSimples` (F♯♯).
+cada notación: las compactas (`.espanolCompacto`, `.inglesCompacto`, `.francesCompacto`…) usan `.conDobles`
+(Fa𝄪, B𝄫).
 
 También la usan `PosicionEnPentagrama.alteracion` y `Clave.altura(lugar:alteracion:)`.
 

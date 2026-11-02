@@ -331,7 +331,7 @@ import Testing
         // Ri3 y Ga1, Dha3 y Ni1 con su escritura tradicional.
         #expect(
             Escala(.do, TipoDeEscala.melakarta(1)!).notas.map(\.nombre) == [
-                "Do", "Re♭", "Mi♭♭", "Fa", "Sol", "La♭", "Si♭♭",
+                "Do", "Re♭", "Mi𝄫", "Fa", "Sol", "La♭", "Si𝄫",
             ])
         #expect(
             Escala(.do, TipoDeEscala.melakarta(36)!).notas.map(\.nombre) == [
@@ -591,7 +591,7 @@ import Testing
             ])
         func notas(_ escala: Escala) -> String { escala.notas.map(\.description).joined(separator: " ") }
         #expect(notas(Escala(.do, .oriental)) == "Do Re♭ Mi Fa Sol♭ La Si♭")
-        #expect(notas(Escala(.do, .ultrafrigio)) == "Do Re♭ Mi♭ Fa♭ Sol La♭ Si♭♭")
+        #expect(notas(Escala(.do, .ultrafrigio)) == "Do Re♭ Mi♭ Fa♭ Sol La♭ Si𝄫")
         #expect(Escala("C leading whole tone").tipo == .lidioAumentadoSextaAumentada)
         #expect(Escala("La gitana húngara").tipo == .eolicoCuartaAumentada)
     }

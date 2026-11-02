@@ -130,10 +130,6 @@ public struct ReglasDeIdioma: Hashable, Sendable {
         self.plural = plural
     }
 
-    /// Si las notas se llaman por sílabas (do, re, mi; ντο, ре) y no por letras (C, D, E), como en inglés, alemán y
-    /// húngaro.
-    public var usaSilabas: Bool { (naturales.first?.count ?? 0) > 1 }
-
     /// Si el idioma tiene las tres escrituras (palabras, ASCII y compacta), como el español y el inglés.
     public var tieneVariantes: Bool { alteraciones == .signos }
 }

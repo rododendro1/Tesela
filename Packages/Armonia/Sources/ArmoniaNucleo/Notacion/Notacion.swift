@@ -78,7 +78,7 @@ public struct Notacion: Hashable, Sendable, CaseIterable {
     public static let inglesPalabras = Notacion(escritura: .inglesPalabras)
     /// Inglés con caracteres ASCII: C, F#, Bb (la forma habitual de escribir en inglés).
     public static let inglesASCII = Notacion(escritura: .inglesASCII)
-    /// Inglés compacto, con símbolos tipográficos y la octava en subíndice: C, F♯, B♭; A₄.
+    /// Inglés compacto, con símbolos tipográficos y la octava en subíndice: C, F♯, B𝄫; A₄.
     public static let inglesCompacto = Notacion(escritura: .inglesCompacto)
     /// Catalán: do, re, fa sostingut, si bemoll; en los cifrados, Fa♯7, Si♭m.
     public static let catalanPalabras = Notacion(escritura: .catalanPalabras)
@@ -234,7 +234,7 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     /// compacta: Fa#, Fa♯, Fis, Fa♯ (con la sílaba en mayúscula, como en los cifrados).
     public let conPalabras: Bool
     /// Cómo se escriben los signos de las alteraciones: con # y b (`.ascii`) en español e inglés ASCII y en
-    /// alemán; con 𝄪 y 𝄫 (`.conDobles`) en las compactas de los idiomas de do, re, mi (Fa𝄪, Si𝄫); con ♯ y ♭
+    /// alemán; con 𝄪 y 𝄫 para las dobles (`.conDobles`) en las demás compactas (Fa𝄪, B𝄫); con ♯ y ♭
     /// (`.conSimples`) en las demás, también en los cifrados de las que usan palabras.
     public let tipografia: Tipografia
 
@@ -254,8 +254,8 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     public static let inglesPalabras = EscrituraDeNotas(.ingles, conPalabras: true, tipografia: .conSimples)
     /// C, F#, Bb.
     public static let inglesASCII = EscrituraDeNotas(.ingles, tipografia: .ascii)
-    /// C, F♯, B♭.
-    public static let inglesCompacto = EscrituraDeNotas(.ingles, tipografia: .conSimples)
+    /// C, F♯, B♭, F𝄪, B𝄫.
+    public static let inglesCompacto = EscrituraDeNotas(.ingles, tipografia: .conDobles)
     /// do, re, fa sostingut, si bemoll.
     public static let catalanPalabras = EscrituraDeNotas(.catalan, conPalabras: true)
     /// Fa♯, Si♭, Fa𝄪, Si𝄫.
@@ -320,7 +320,7 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
                 EscrituraDeNotas(idioma, tipografia: tipografiaCompacta(idioma)),
             ]
         case .alemana, .palabras:
-            return [EscrituraDeNotas(idioma, conPalabras: true), EscrituraDeNotas(idioma)]
+            return [EscrituraDeNotas(idioma, conPalabras: true), .compacta(idioma)]
         }
     }
 
@@ -334,16 +334,11 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
         EscrituraDeNotas(idioma, tipografia: tipografiaCompacta(idioma))
     }
 
-    /// Los signos de la compacta de un idioma: 𝄪 y 𝄫 en los de do, re, mi (Fa𝄪); ♯ y ♭ en inglés (F♯♯); los
-    /// del idioma en los demás (en alemán y en húngaro no se usan: Fisis).
+    /// Los signos de la compacta de un idioma: 𝄪 y 𝄫 (Fa𝄪, F𝄪); en alemán y en húngaro, los del idioma, que
+    /// escriben las alteraciones con sufijos (Fisis).
     private static func tipografiaCompacta(_ idioma: Idioma) -> Tipografia? {
-        if idioma.reglas.usaSilabas { return .conDobles }
-        return idioma.reglas.tieneVariantes ? .conSimples : nil
+        idioma.reglas.alteraciones == .alemana ? nil : .conDobles
     }
-
-    /// Como `.espanolCompacto`, pero con ♯ y ♭ para las dobles (Si♭♭): la de `texto` y la codificación, para que
-    /// lo guardado no cambie.
-    package static let espanolConSimples = EscrituraDeNotas(.espanol, tipografia: .conSimples)
 
     /// La escritura habitual de un idioma: en español e inglés, con # y b si `ascii` y la compacta si no; en alemán
     /// y en húngaro, la compacta (Fis, Fisz); en los demás, con palabras («fa sostingut»), como se escriben en el
