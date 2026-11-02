@@ -116,6 +116,8 @@ final class LectorMusicXML: NSObject, XMLParserDelegate {
         var muda = false // silencio, nota guía o percusión
         var paso: NotaNatural?
         var alteracion = 0
+        /// Lo que `<alter>` tiene de más sobre `alteracion`, en cents: 50 en Fa𝄲 (`<alter>0.5</alter>`).
+        var desvio = 0.0
         var octava: Int?
         var pulsos: Int?
         var ligaduraQueEmpieza = false
@@ -186,7 +188,15 @@ final class LectorMusicXML: NSObject, XMLParserDelegate {
         case "step" where padre == "pitch":
             nota.paso = ["C", "D", "E", "F", "G", "A", "B"].firstIndex(of: valor).flatMap(NotaNatural.init(rawValue:))
         case "alter" where padre == "pitch":
-            nota.alteracion = numero ?? 0
+            // Un microtono es un alter con decimales: −0.5 es Mi𝄳 sobre Mi, que se lee como Mi♭ y 50 cents. El
+            // semitono es el más cercano y, a medio camino, el de abajo, como lo escribe la exportación.
+            if let alter = Double(valor), alter.isFinite, abs(alter) <= 10 {
+                let semitonos = (alter - 0.5).rounded(.up)
+                nota.alteracion = Int(semitonos)
+                nota.desvio = (alter - semitonos) * 100
+            } else {
+                nota.alteracion = 0
+            }
         case "octave" where padre == "pitch":
             nota.octava = numero
         case "duration":
@@ -260,10 +270,11 @@ final class LectorMusicXML: NSObject, XMLParserDelegate {
             let anterior = notas[i]
             notas[i] = NotaDeLaPieza(
                 altura: anterior.altura, inicio: anterior.inicio,
-                duracion: anterior.duracion + duracion, parte: parte)
+                duracion: anterior.duracion + duracion, parte: parte, desvio: anterior.desvio)
             if !nota.ligaduraQueEmpieza { ligadas[clave] = nil }
         } else {
-            notas.append(NotaDeLaPieza(altura: altura, inicio: inicio, duracion: duracion, parte: parte))
+            notas.append(
+                NotaDeLaPieza(altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: nota.desvio))
             if nota.ligaduraQueEmpieza { ligadas[clave] = notas.count - 1 }
         }
     }

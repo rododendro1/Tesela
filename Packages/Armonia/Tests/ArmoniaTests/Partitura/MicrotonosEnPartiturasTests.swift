@@ -154,4 +154,72 @@ import Testing
         #expect(Escala(.do, .purvi).svgPentagrama().contains(GlifosSMuFL.bemolFlechaArriba.trazado))
         #expect(!Escala(.do, .bhairavi).svgPentagrama().contains(GlifosSMuFL.bemolFlechaArriba.trazado))
     }
+
+    // MARK: Lectura
+
+    /// Lo que suena de cada nota, en cents desde el Do0, y su letra.
+    private func sonidos(_ voz: Voz) -> [(cents: Double, letra: NotaNatural)] {
+        voz.eventos.flatMap { evento in
+            evento.alturas.indices.map { i in
+                (Double(evento.alturas[i].midi * 100) + evento.desvio(i), evento.alturas[i].nota.natural)
+            }
+        }
+    }
+
+    private func sonidos(_ pieza: PiezaImportada) -> [(cents: Double, letra: NotaNatural)] {
+        pieza.notas.sorted { ($0.inicio, $0.altura.midi) < ($1.inicio, $1.altura.midi) }.map {
+            (Double($0.altura.midi * 100) + $0.desvio, $0.altura.nota.natural)
+        }
+    }
+
+    @Test func elAlterConDecimalesEsUnMicrotono() throws {
+        let xml = Escala(.mi, .sikah).voz().musicXML()
+        let pieza = try PiezaImportada(musicXML: Data(xml.utf8))
+        // Mi𝄳 (`<alter>-0.5</alter>` sobre E) se lee como Mi♭ y 50 cents: suena igual y conserva la letra.
+        #expect(pieza.notas[0].altura == "Mi♭4" && pieza.notas[0].desvio == 50)
+        #expect(pieza.notas[1].altura == "Fa4" && pieza.notas[1].desvio == 0)
+        let fa = try PiezaImportada(musicXML: Data(Voz(leyendo: "Fa4(50¢):4 Re4(-22.64¢):4").musicXML().utf8))
+        #expect(fa.notas.map(\.altura) == ["Fa4", "Re4"])
+        #expect(fa.notas.map(\.desvio) == [50, -22.64])
+    }
+
+    /// Cada escala con microtonos sale y vuelve igual por MusicXML y por MIDI: la letra en MusicXML, y lo que suena
+    /// en los dos (en MIDI, con la precisión de la inflexión de tono: 200/8192 cents).
+    @Test(arguments: [true, false])
+    func idaYVueltaDeLasEscalasMicrotonales(musicXML: Bool) throws {
+        let tipos = TipoDeEscala.tradicionales.filter { $0.microtonal != nil }
+        #expect(tipos.count > 20)
+        for tipo in tipos {
+            let voz = Escala(.re, tipo).voz()
+            let pieza =
+                musicXML
+                ? try PiezaImportada(musicXML: Data(voz.musicXML().utf8)) : try PiezaImportada(midi: voz.midi())
+            let esperados = sonidos(voz)
+            let leidos = sonidos(pieza)
+            #expect(leidos.count == esperados.count, Comment(rawValue: tipo.nombre))
+            for (leido, esperado) in zip(leidos, esperados) {
+                #expect(abs(leido.cents - esperado.cents) < 0.05, Comment(rawValue: tipo.nombre))
+                if musicXML { #expect(leido.letra == esperado.letra, Comment(rawValue: tipo.nombre)) }
+            }
+        }
+    }
+
+    @Test func laInflexionDeTonoEnMIDI() throws {
+        // Sin microtonos, sin desvíos.
+        let temperada = try PiezaImportada(midi: Voz(leyendo: "Do4:4 Mi4:4").midi())
+        #expect(temperada.notas.allSatisfy { $0.desvio == 0 })
+        // Con un ámbito de 12 semitonos (RPN 0 = 12), la inflexión máxima es una octava.
+        let cabecera: [UInt8] = Array("MThd".utf8) + [0, 0, 0, 6, 0, 0, 0, 1, 1, 224]
+        let cuerpo: [UInt8] = [
+            0x00, 0xB0, 101, 0, 0x00, 0xB0, 100, 0, 0x00, 0xB0, 6, 12,
+            0x00, 0xE0, 0x00, 0x60, // 12288: la mitad de la mitad de arriba, +6 semitonos
+            0x00, 0x90, 60, 80, 0x83, 0x60, 0x80, 60, 0,
+            0x00, 0xE0, 0x00, 0x40, // de vuelta al centro
+            0x00, 0x90, 62, 80, 0x83, 0x60, 0x80, 62, 0,
+            0x00, 0xFF, 0x2F, 0x00,
+        ]
+        let datos = cabecera + Array("MTrk".utf8) + [0, 0, 0, UInt8(cuerpo.count)] + cuerpo
+        let pieza = try PiezaImportada(midi: Data(datos))
+        #expect(pieza.notas.map(\.desvio) == [600, 0])
+    }
 }
