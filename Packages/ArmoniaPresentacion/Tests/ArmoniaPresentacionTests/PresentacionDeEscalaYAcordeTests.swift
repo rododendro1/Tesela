@@ -17,7 +17,7 @@ import Testing
 
         let jonico = PresentacionDeEscalaYAcorde.presentar(
             Escala(.do, .mayor), sobre: Acorde("Do7M"), notacion: .espanolCompacto)
-        #expect(jonico.modo == nil)  // es la propia madre
+        #expect(jonico.modo == nil) // es la propia madre
         #expect(jonico.aEvitar == "Fa 11")
         #expect(jonico.resumen == "Tensiones: Re 9 · La 13 — A evitar: Fa 11")
     }

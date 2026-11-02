@@ -55,7 +55,7 @@ import Testing
         let acorde = Acorde(.do, .dominanteSeptima)
         let notas = alterada.notas(sobre: acorde)
         #expect(notas.contains { $0.nota == .mi && $0.papel == .delAcorde })
-        #expect(!alterada.contiene(acorde: acorde))  // no tiene el sol
+        #expect(!alterada.contiene(acorde: acorde)) // no tiene el sol
         #expect(Escala(.do, .mixolidio).contiene(acorde: acorde))
     }
 
