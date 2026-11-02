@@ -117,6 +117,19 @@ public struct TextosDeApps: TextosTraducidos {
     public let indicacionArmonizar: @Sendable (String, String) -> String
     public let indicacionRevisar: @Sendable (String) -> String
 
+    // MARK: PresentacionDeContrapunto.swift
+    public let contrapunto: String
+    public let especie: String
+    public let indicacionCantus: @Sendable (String) -> String
+    public let indicacionContrapunto: @Sendable (String) -> String
+    public let compasNumero: @Sendable (Int) -> String
+
+    // MARK: RecorridoDePartitura.swift
+    public let partitura: String
+    public let anterior: String
+    public let siguiente: String
+    public let abreUnaPartitura: String
+
     // MARK: FicheroParaExportar.swift
     public let partituraMusicXML: String
     public let partituraMEI: String

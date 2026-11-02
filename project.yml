@@ -98,6 +98,9 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: $(BUNDLE_ID_PREFIX).tonnetz
         # Dibuja con un WKWebView (VistaSVG): en macOS, con sandbox, WebKit no pinta sin esta conexión.
         "ENABLE_OUTGOING_NETWORK_CONNECTIONS[sdk=macosx*]": YES
+        # «Partitura» lee un fichero MIDI, MusicXML, MEI o ABC que elige quien usa la app: con sandbox, macOS
+        # solo lo deja leer con este permiso.
+        "ENABLE_USER_SELECTED_FILES[sdk=macosx*]": readonly
         INFOPLIST_KEY_CFBundleDisplayName: Tonnetz
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES

@@ -310,6 +310,12 @@ try Contrapunto(cantusFirmus: "Re4 Fa4 Mi4 Re4", contrapunto: "-:2 La4 Re5 La4 S
 try Contrapunto(cantusFirmus: "Re4 Mi4 Re4", contrapunto: "-:2 Re5:1 Do#5 Re5:1", especie: .cuarta).esCorrecto                // true
 ```
 
+Las dos voces se exportan como las de un coral, cada una en su pentagrama y con su clave:
+``Contrapunto/musicXML(tonalidad:tempo:titulo:)``, ``Contrapunto/mei(tonalidad:tempo:titulo:)``,
+``Contrapunto/lilyPond(tonalidad:tempo:titulo:)``, ``Contrapunto/abc(tonalidad:tempo:titulo:)`` y
+``Contrapunto/midi(tonalidad:tempo:titulo:instrumento:)``. Sin tonalidad no llevan armadura, como los ejemplos
+modales de Fux, y las voces se llaman en latín: *Cantus firmus* y *Contrapunctus*.
+
 Las faltas que encuentra (`FaltaDeContrapunto.Tipo`), con los compases contados desde 0 (en la
 descripción, desde 1):
 

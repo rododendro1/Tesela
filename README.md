@@ -10,11 +10,13 @@ Apps/
 │                     escalas (con el mástil y sus posiciones, CAGED o de tres notas por cuerda), análisis
 │                     armónico (con modulaciones y cadencias, también de un fichero MIDI, MusicXML, .mxl
 │                     incluido, MEI o ABC, con su ritmo armónico, y la progresión arpegiada),
-│                     corales (armonizar, realizar a cuatro voces y revisar) e identificar un acorde tocándolo en
+│                     corales (armonizar, realizar a cuatro voces y revisar), contrapunto de especies (de la
+│                     primera a la quinta, con las faltas compás a compás) e identificar un acorde tocándolo en
 │                     el mástil o en un teclado MIDI (con su forma prima, su número de Forte y su vector
 │                     interválico); exporta MusicXML, MEI, LilyPond, ABC y MIDI
-├── TonnetzApp/       Un acorde, una escala, un recorrido con P, L y R, o las notas que se toquen (y qué acorde
-│                     forman), en el Tonnetz, la tabla armónica o un
+├── TonnetzApp/       Un acorde, una escala, un recorrido con P, L y R, los acordes de un fichero MIDI, MusicXML,
+│                     MEI o ABC mientras suenan (con las transformaciones entre ellos), o las notas que se toquen (y
+│                     qué acorde forman), en el Tonnetz, la tabla armónica o un
 │                     teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático, Gerhard, Park, o uno en formato UIL con giros de 30°); exporta el dibujo en SVG
 ├── ArmoniaCLI/       La herramienta `armonia`, con sus pruebas (SwiftPM)
 └── PruebasDeInterfaz/  Las pruebas de interfaz de las dos apps (XCUITest), con los ejemplos de cada vista

@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### Contrapunto
+
+- **El contrapunto se exporta.** `Contrapunto` escribe sus dos voces en MusicXML, MEI, LilyPond y ABC
+  (`musicXML(tonalidad:tempo:titulo:)`, `mei`, `lilyPond`, `abc`), cada una en su pentagrama con la clave que le
+  va mejor, y en MIDI (`midi(tonalidad:tempo:titulo:instrumento:)`), con una pista por voz. `vozDelCantus` da el
+  cantus firmus como `Voz`, en redondas.
+
 ### ArmoniaFormatos
 
 - Los formatos de fichero salen de `ArmoniaPartitura` a un módulo propio, **`ArmoniaFormatos`** (con su producto):
