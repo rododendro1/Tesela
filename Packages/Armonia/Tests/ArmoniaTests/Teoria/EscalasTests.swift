@@ -284,7 +284,7 @@ import Testing
         #expect(TipoDeEscala.hindolam.melakartasCompatibles == [8, 20])
         #expect(TipoDeEscala.abhogi.melakartasCompatibles == [22, 23])
         #expect(Escala("Do hamsadhwani") == Escala(.do, .hamsadhvani))
-        #expect(TipoDeEscala.janyas.count == 11)
+        #expect(TipoDeEscala.janyas.count == 14)
     }
 
     @Test func identidadYEquivalentes() {
