@@ -164,3 +164,13 @@ armonia vecinos Sol7 --ampliada   # también Solmaj7 (Fa→Fa♯)
 armonia conduccion-parsimoniosa Sol7 Rem7   # Sol7 –Sol→Sol♯→ Sol♯°7 –Sol♯→La→ Sim7(♭5) –Si→Do→ Rem7
 armonia conduccion-minima Sol7 Do           # Sol→Sol, Si→Do (+1), Re→Do (−2), Fa→Mi (−1): 4 semitonos
 ```
+
+## Disposiciones de piano y jazz
+
+``DisposicionDeAcorde`` reparte las notas de un acorde entre las voces como en el piano o en el jazz: cerrada,
+drop 2, drop 3, drop 2 y 4 (la segunda, la tercera, o la segunda y la cuarta voz desde arriba, una octava más
+grave), la shell (el bajo con la tercera y la séptima) y las notas guía (la tercera y la séptima solas). Un acorde de
+más de cuatro notas se queda con la tercera, la séptima y las tensiones (``Acorde/notasParaDisponer``), y una
+tríada dobla una nota. ``Acorde/disposiciones(_:en:)`` da todas las de un acorde dentro de un ámbito, y
+``DisposicionDeAcorde/conducir(_:en:)``, una para cada acorde de una progresión con la menor suma de movimientos de
+las voces: en un ii–V–I en drop 2, la séptima de cada acorde baja por grado a la tercera del siguiente.

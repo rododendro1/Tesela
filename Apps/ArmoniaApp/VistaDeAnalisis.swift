@@ -20,6 +20,8 @@ struct VistaDeAnalisis: View {
     @State private var importada: ProgresionImportada?
     @State private var patron = Arpegio.Patron.ascendente
     @State private var figura = Figura.corchea
+    /// La disposición de la progresión dispuesta (drop 2, shell…).
+    @State private var disposicion = DisposicionDeAcorde.drop2
     /// Lo que está sonando, para resaltar el acorde que se oye.
     @ObservedObject private var reproductor = Reproductor.compartido
 
@@ -70,6 +72,7 @@ struct VistaDeAnalisis: View {
                     }
                 }
                 arpegiar(analisis)
+                disponer(analisis)
                 rearmonizar(analisis)
             case .some(.failure(let error)):
                 Section {
@@ -115,7 +118,9 @@ struct VistaDeAnalisis: View {
     private var ficheros: [FicheroParaExportar] {
         guard let analisis = try? resultado?.get() else { return [] }
         let arpegiada = analisis.arpegiada(patron, figura: figura.duracion, notacion: notacion)
-        return analisis.ficheros + (arpegiada?.ficheros ?? [])
+        let dispuesta = PresentacionDeDisposiciones.progresion(
+            analisis.acordes, disposicion, notacion: notacion)
+        return analisis.ficheros + (arpegiada?.ficheros ?? []) + (dispuesta?.ficheros ?? [])
     }
 
     /// «Transponer»: las demás tonalidades del mismo modo. Lo abierto de un fichero conserva su ritmo armónico.
@@ -179,6 +184,36 @@ struct VistaDeAnalisis: View {
                     ForEach(Self.figuras, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
                 }
                 BotonDeEscuchar(arpegiada.sonido)
+            }
+        }
+    }
+
+    /// La progresión dispuesta como en el piano o el jazz, con el menor movimiento de las voces de un acorde al
+    /// siguiente: cada acorde con sus alturas, el pentagrama y cómo suena. Mientras suena, se resalta el acorde.
+    @ViewBuilder
+    private func disponer(_ analisis: AnalisisPresentado) -> some View {
+        Section(notacion.texto(\.disposicion)) {
+            Picker(notacion.texto(\.disposicion), selection: $disposicion) {
+                ForEach(DisposicionDeAcorde.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
+            }
+            if let dispuesta = PresentacionDeDisposiciones.progresion(
+                analisis.acordes, disposicion, notacion: notacion)
+            {
+                let sonando = reproductor.paso(de: dispuesta.sonido)
+                DiagramaDePentagrama(dispuesta.pentagrama)
+                BotonDeEscuchar(dispuesta.sonido)
+                ForEach(Array(dispuesta.filas.enumerated()), id: \.offset) { i, fila in
+                    HStack {
+                        Text(fila.cifrado)
+                            .font(.system(.body, design: .monospaced))
+                            .frame(minWidth: 80, alignment: .leading)
+                        Spacer()
+                        Text(fila.voces).font(.system(.callout, design: .monospaced))
+                    }
+                    .listRowBackground(sonando == i ? TemaDeLasApps.resaltado.opacity(0.25) : nil)
+                }
+            } else {
+                Text(notacion.texto(\.noSeDibuja)).foregroundColor(.secondary)
             }
         }
     }

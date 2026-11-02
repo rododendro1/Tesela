@@ -119,6 +119,11 @@ extension TextosDeApps {
         anterior: "Előző",
         siguiente: "Következő",
         abreUnaPartitura: "Nyiss meg egy MIDI-, MusicXML-, MEI- vagy ABC-fájlt, és kövesd az akkordjait a rácson.",
+        // PresentacionDeDisposiciones.swift
+        disposicion: "Fekvés",
+        disposicionCerrada: "Szűk",
+        fundamentalTerceraYSeptima: "Alaphang, terc és szeptim",
+        terceraYSeptima: "Terc és szeptim",
         // FicheroParaExportar.swift
         partituraMusicXML: "MusicXML-kotta",
         partituraMEI: "MEI-kotta",

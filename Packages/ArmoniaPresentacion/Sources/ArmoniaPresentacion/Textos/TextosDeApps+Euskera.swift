@@ -119,6 +119,11 @@ extension TextosDeApps {
         anterior: "Aurrekoa",
         siguiente: "Hurrengoa",
         abreUnaPartitura: "Ireki MIDI, MusicXML, MEI edo ABC fitxategi bat, haren akordeak sarean jarraitzeko.",
+        // PresentacionDeDisposiciones.swift
+        disposicion: "Antolamendua",
+        disposicionCerrada: "Itxia",
+        fundamentalTerceraYSeptima: "Oinarria, hirugarrena eta zazpigarrena",
+        terceraYSeptima: "Hirugarrena eta zazpigarrena",
         // FicheroParaExportar.swift
         partituraMusicXML: "MusicXML partitura",
         partituraMEI: "MEI partitura",

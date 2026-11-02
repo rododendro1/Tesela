@@ -119,6 +119,11 @@ extension TextosDeApps {
         anterior: "Previous",
         siguiente: "Next",
         abreUnaPartitura: "Open a MIDI, MusicXML, MEI or ABC file to follow its chords on the grid.",
+        // PresentacionDeDisposiciones.swift
+        disposicion: "Voicing",
+        disposicionCerrada: "Close",
+        fundamentalTerceraYSeptima: "Root, third and seventh",
+        terceraYSeptima: "Third and seventh",
         // FicheroParaExportar.swift
         partituraMusicXML: "MusicXML score",
         partituraMEI: "MEI score",

@@ -6,10 +6,12 @@ SwiftUI para iOS y macOS.
 
 ```
 Apps/
-├── ArmoniaApp/       Acordes (con su arpegio, también en el mástil, las escalas que encajan y las digitaciones),
+├── ArmoniaApp/       Acordes (con su arpegio, también en el mástil, sus disposiciones de piano y jazz, las
+│                     escalas que encajan y las digitaciones),
 │                     escalas (con el mástil y sus posiciones, CAGED o de tres notas por cuerda), análisis
 │                     armónico (con modulaciones y cadencias, también de un fichero MIDI, MusicXML, .mxl
-│                     incluido, MEI o ABC, con su ritmo armónico, y la progresión arpegiada),
+│                     incluido, MEI o ABC, con su ritmo armónico, y la progresión arpegiada o dispuesta en drop 2,
+│                     shell… con el menor movimiento de las voces),
 │                     corales (armonizar, realizar a cuatro voces y revisar), contrapunto de especies (de la
 │                     primera a la quinta, con las faltas compás a compás) e identificar un acorde tocándolo en
 │                     el mástil o en un teclado MIDI (con su forma prima, su número de Forte y su vector

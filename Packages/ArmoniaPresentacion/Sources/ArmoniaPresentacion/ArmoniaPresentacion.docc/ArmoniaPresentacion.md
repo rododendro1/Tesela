@@ -67,6 +67,8 @@ el selector de notación cambia la app entera.
 - ``PresentacionDeArpegios``
 - ``ArpegioPresentado``
 - ``PentagramaPresentado``
+- ``PresentacionDeDisposiciones``
+- ``DisposicionesPresentadas``
 - ``PresentacionDeTablatura``
 
 ### Conjuntos de clases
