@@ -735,7 +735,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["راست پنجگاه"])
-    /// سه‌گاه (Mi𝄳 Fa Sol La𝄳 Si♭ Do Re), con la tónica en un koron, aproximado sobre Mi. Se llama «dastgāh Segāh»
+    /// سهگاه (Mi𝄳 Fa Sol La𝄳 Si♭ Do Re), con la tónica en un koron, aproximado sobre Mi. Se llama «dastgāh Segāh»
     /// porque «Segah» es también el dromos Sengáh.
     public static let segah = TipoDeEscala(
         nombre: "dastgāh Segāh",
@@ -743,7 +743,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        alias: ["سه‌گاه"])
+        alias: ["سه\u{200C}گاه"])
     /// نوا (Sol La Si♭ Do Re Mi𝄳 Fa), aproximado: la menor natural.
     public static let nava = TipoDeEscala(
         nombre: "Navā",
