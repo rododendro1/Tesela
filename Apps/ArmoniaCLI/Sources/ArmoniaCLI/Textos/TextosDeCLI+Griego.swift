@@ -37,7 +37,7 @@ extension TextosDeCLI {
         descripcionEscala: "νότες και συγχορδίες μιας κλίμακας",
         sintaxisEscalas: "scales [<κείμενο>] [επιλογές]",
         descripcionEscalas: "ο κατάλογος των κλιμάκων: οι συνήθεις\nκαι όσες άλλων παραδόσεων, ανά\nκατηγορία, με τις νότες τους από το Ντο",
-        notasEscalas: "επιλογές: --tradition turkey (ή india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes) και --category maqam (ή raga, makam,\ndastgah, dromos…)· ένα κείμενο ψάχνει στα ονόματα",
+        notasEscalas: "επιλογές: --tradition turkey (ή india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes) και --category maqam (ή rāga, makam,\ndastgah, dromos…)· ένα κείμενο ψάχνει στα ονόματα",
         sintaxisTonalidad: "key <τονικότητα>",
         descripcionTonalidad: "οπλισμός, σχετικές τονικότητες και\nβαθμίδες",
 
@@ -143,7 +143,7 @@ extension TextosDeCLI {
         faltaCifradoDelArpegio: "λείπει το σύμβολο της συγχορδίας: armonia arpeggio C7",
         patronDesconocido: { patron in "άγνωστο μοτίβο: «\(patron)» (ascending, descending, up-down, down-up, broken ή alberti)" },
         tradicionDesconocida: { tradicion in "«\(tradicion)»: δεν είναι παράδοση (india, greece, arab-world, persia, turkey…)" },
-        categoriaDesconocida: { categoria in "«\(categoria)»: δεν είναι κατηγορία κλιμάκων (raga, maqam, makam, dastgah…)" },
+        categoriaDesconocida: { categoria in "«\(categoria)»: δεν είναι κατηγορία κλιμάκων (rāga, maqam, makam, dastgah…)" },
         faltanNotas: "λείπουν οι νότες: armonia identify C E G",
         dosNotas: "χρειάζονται δύο νότες: armonia interval C E",
         faltaEscala: "λείπει η κλίμακα: armonia scale D dorian",

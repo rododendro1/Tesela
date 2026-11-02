@@ -22,6 +22,10 @@
   (`.espanol`, `.catalan`…) no cambian.
 - `Tipografia.unicode` pasa a llamarse `.conSimples` (un signo por semitono: Fa♯, Si♭♭), junto a `.conDobles`;
   también sin obsoleto. El `rawValue` es ahora «conSimples».
+- **Categorías indias en IAST**: `CategoriaTradicional.nombre` y sus traducciones de alfabeto latino escriben
+  thāṭ, mēḷa y rāga (Thāṭ, Mēḷa y Rāga en alemán y húngaro), como dastgāh; igual la ayuda de
+  `armonia escalas` y la documentación. Los casos (`.thaat`, `.melakarta`, `.raga`) no cambian, y
+  `--categoria thaat`, `that` o `thāṭ` (y `melakarta`, `mela` o `mēḷa`) siguen encontrando la misma categoría.
 - **Las compactas escriben las dobles con 𝄪 y 𝄫**: `.espanolCompacto`, `.inglesCompacto`, `.catalanCompacto`,
   `.francesCompacto`, `.griegoCompacto`, `.rusoCompacto`… usan `Tipografia.conDobles`: Fa𝄪, B𝄫, Do𝄪♯. El alemán y
   el húngaro siguen con sus sufijos (Fisis). También `Nota.nombre`, `description`, `texto` y la codificación

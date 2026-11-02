@@ -6,7 +6,7 @@ extension TipoDeEscala {
     // Escalas «exóticas» de la tradición occidental, con dos segundas aumentadas o casi.
 
     /// Dos tetracordos con 2ª aumentada (Do Re♭ Mi Fa Sol La♭ Si): el mismo contenido que el
-    /// dromos Hitzazkiár y el thaat Bhairav.
+    /// dromos Hitzazkiár y el thāṭ Bhairav.
     public static let dobleArmonica = TipoDeEscala(
         nombre: "doble armónica",
         intervalos: [

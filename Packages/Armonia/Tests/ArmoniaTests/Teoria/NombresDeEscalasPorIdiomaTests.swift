@@ -125,7 +125,7 @@ import Testing
         #expect(TipoDeEscala.andina.nombre(en: .espanolCompacto) == "pentatónica andina")
     }
 
-    /// En ruso y griego los nombres propios van en su alfabeto (salvo los 72 melakarta, que siguen en IAST) y
+    /// En ruso y griego los nombres propios van en su alfabeto (salvo los 72 mēḷa, que siguen en IAST) y
     /// se leen de vuelta; el nombre original, en latino, sigue valiendo.
     @Test func rusoYGriegoTranscribenLosNombresPropiosDeLasTradicionales() {
         for (idioma, ejemplo, original) in [
@@ -207,7 +207,7 @@ import Testing
         #expect(TipoDeEscala.buscar(nombre: "cromatica -5..6") == TipoDeEscala.buscar(nombre: "cromática −5…6"))
     }
 
-    /// Las filas `.tradicional(.miembro)` apuntan al tipo, y las escalas sin fila (los melakarta) conservan su nombre.
+    /// Las filas `.tradicional(.miembro)` apuntan al tipo, y las escalas sin fila (los mēḷa) conservan su nombre.
     @Test func lasTradicionalesSinFilaConservanSuNombreOriginal() {
         for idioma in Idioma.allCases {
             let nombres = NombresDeEscalas.de(idioma)

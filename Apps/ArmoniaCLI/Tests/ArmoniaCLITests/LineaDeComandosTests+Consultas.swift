@@ -109,7 +109,15 @@ extension LineaDeComandosTests {
         #expect(salida("escalas --tradition turkey") == turcas)
         #expect(salida("escalas --categoria makam") == turcas)
         #expect(salida("escalas --tradicion mundo-arabe").hasPrefix("mundo-arabe · maqam ("))
-        #expect(salida("escalas --tradicion india --categoria thaat").hasPrefix("india · thaat (10)"))
+        let thats = salida("escalas --tradicion india --categoria thaat")
+        #expect(thats.hasPrefix("india · thāṭ (10)"), Comment(rawValue: thats))
+        // Las categorías indias salen en IAST (thāṭ, mēḷa, rāga), pero se encuentran con o sin diacríticos.
+        #expect(salida("escalas --tradicion india --categoria thāṭ") == thats)
+        #expect(salida("escalas --tradicion india --categoria that") == thats)
+        #expect(salida("escalas --categoria melakarta").hasPrefix("india · mēḷa (72)"))
+        #expect(salida("escalas --categoria mēḷa") == salida("escalas --categoria melakarta"))
+        #expect(salida("escalas --categoria mela") == salida("escalas --categoria melakarta"))
+        #expect(salida("escalas --categoria rāga") == salida("escalas --categoria raga"))
         #expect(salida("escalas --tradition turkey --ingles").hasPrefix("turkey · makam (16)"))
         // Un texto busca en los nombres, sin tildes.
         let hicaz = salida("escalas hicaz")

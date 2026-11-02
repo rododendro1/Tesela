@@ -37,7 +37,7 @@ extension TextosDeCLI {
         descripcionEscala: "ноты и аккорды гаммы",
         sintaxisEscalas: "scales [<текст>] [параметры]",
         descripcionEscalas: "каталог гамм: обычные и гаммы других\nтрадиций, по категориям, с нотами\nот до",
-        notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes) и --category maqam (или raga, makam,\ndastgah, dromos…); текст ищет в названиях",
+        notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes) и --category maqam (или rāga, makam,\ndastgah, dromos…); текст ищет в названиях",
         sintaxisTonalidad: "key <тональность>",
         descripcionTonalidad: "ключевые знаки, родственные\nтональности и ступени",
 
@@ -143,7 +143,7 @@ extension TextosDeCLI {
         faltaCifradoDelArpegio: "не указано обозначение аккорда: armonia arpeggio C7",
         patronDesconocido: { patron in "неизвестный рисунок: «\(patron)» (ascending, descending, up-down, down-up, broken или alberti)" },
         tradicionDesconocida: { tradicion in "«\(tradicion)»: это не традиция (india, greece, arab-world, persia, turkey…)" },
-        categoriaDesconocida: { categoria in "«\(categoria)»: это не категория гамм (raga, maqam, makam, dastgah…)" },
+        categoriaDesconocida: { categoria in "«\(categoria)»: это не категория гамм (rāga, maqam, makam, dastgah…)" },
         faltanNotas: "не указаны ноты: armonia identify C E G",
         dosNotas: "нужны две ноты: armonia interval C E",
         faltaEscala: "не указана гамма: armonia scale D dorian",

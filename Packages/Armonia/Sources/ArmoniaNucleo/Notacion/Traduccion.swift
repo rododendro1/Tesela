@@ -12,7 +12,7 @@
 // de un campo en un idioma, y `TextosDeX.traduccion(\.campo)` su `Traduccion` (ver `TextosTraducidos`).
 //
 // Los nombres de los catálogos (tipos de acorde y de escala, instrumentos) también están en los quince idiomas, salvo los nombres tradicionales de escala
-// (raga, maqam, pentatónicas japonesas…), que se escriben igual en todos.
+// (rāga, maqam, pentatónicas japonesas…), que se escriben igual en todos.
 
 /// Un valor en cada uno de los quince idiomas en los que escribe el motor: un texto, una lista de textos…
 ///

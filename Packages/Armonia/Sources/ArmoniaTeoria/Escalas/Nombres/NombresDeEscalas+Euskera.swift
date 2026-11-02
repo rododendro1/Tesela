@@ -112,7 +112,7 @@ extension NombresDeEscalas {
 
         // Escalas de otras tradiciones: nombres propios, iguales en todos los idiomas salvo los que se traducen.
         // Para traducir una: `.tradicional(.hitzaz, "…")`. Los alias (Hijaz, Hicaz…) están en el catálogo.
-        // Los 72 melakarta no se listan: sin fila, conservan su nombre en IAST.
+        // Los 72 mēḷa no se listan: sin fila, conservan su nombre en IAST.
         // Andes
         .tradicional(.andina, "Andeetako pentatonikoa"),
         .tradicional(.tritonicaAndina, "Andeetako tritonikoa"),
@@ -157,7 +157,7 @@ extension NombresDeEscalas {
         .tradicional(.harmoniaDoriaCromatica, "harmonia doriar kromatikoa"),
         .tradicional(.harmoniaFrigia, "harmonia frigiarra"),
         .tradicional(.harmoniaLidia, "harmonia lidiarra"),
-        // India: ragas janya, thaat y ragas indostánicos
+        // India: rāgas janya, thāṭ y rāgas indostánicos
         .tradicional(.mohanam),
         .tradicional(.hindolam),
         .tradicional(.revati),
@@ -267,10 +267,10 @@ extension NombresDeEscalas {
         .tradicional(.cahargahMugami),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
-        .categoria(.raga, "raga"),
-        .categoria(.melakarta, "melakarta"),
+        .categoria(.raga, "rāga"),
+        .categoria(.melakarta, "mēḷa"),
         .categoria(.janya, "janya"),
-        .categoria(.thaat, "thaat"),
+        .categoria(.thaat, "thāṭ"),
         .categoria(.dromos, "dromos"),
         .categoria(.maqam, "maqam"),
         .categoria(.dastgah, "dastgāh"),

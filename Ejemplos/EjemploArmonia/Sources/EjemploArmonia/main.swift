@@ -256,7 +256,7 @@ titulo("Escalas de la India y dromoi griegos")
 for tipo in [TipoDeEscala.melakarta(15)!, .todi, .hitzaz, .houzam] {
     print("  \(Escala(.re, tipo).nombre):", Escala(.re, tipo).notas.map(\.nombre).joined(separator: " "))
 }
-print("  La escala mayor es el melakarta", TipoDeEscala.mayor.numeroDeMelakarta ?? 0)
+print("  La escala mayor es el mēḷa", TipoDeEscala.mayor.numeroDeMelakarta ?? 0)
 let rast = Escala(.re, .rast)
 print(
     "  \(rast.nombre): sube", rast.alturas(octava: 4).map(\.description).joined(separator: " "),

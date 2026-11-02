@@ -37,7 +37,7 @@ extension TextosDeCLI {
         descripcionEscala: "egy skála hangjai és akkordjai",
         sintaxisEscalas: "scales [<szöveg>] [opciók]",
         descripcionEscalas: "a skálák katalógusa: a szokásosak és\nmás hagyományokéi, kategóriánként,\nC-től induló hangjaikkal",
-        notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes) és --category maqam (vagy raga, makam,\ndastgah, dromos…); a szöveg a nevekben keres",
+        notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes) és --category maqam (vagy rāga, makam,\ndastgah, dromos…); a szöveg a nevekben keres",
         sintaxisTonalidad: "key <hangnem>",
         descripcionTonalidad: "előjegyzés, rokon hangnemek és fokok",
 
@@ -143,7 +143,7 @@ extension TextosDeCLI {
         faltaCifradoDelArpegio: "hiányzik az akkordjelzés: armonia arpeggio C7",
         patronDesconocido: { patron in "ismeretlen minta: „\(patron)” (ascending, descending, up-down, down-up, broken vagy alberti)" },
         tradicionDesconocida: { tradicion in "„\(tradicion)”: ez nem hagyomány (india, greece, arab-world, persia, turkey…)" },
-        categoriaDesconocida: { categoria in "„\(categoria)”: ez nem skálakategória (raga, maqam, makam, dastgah…)" },
+        categoriaDesconocida: { categoria in "„\(categoria)”: ez nem skálakategória (rāga, maqam, makam, dastgah…)" },
         faltanNotas: "hiányoznak a hangok: armonia identify C E G",
         dosNotas: "két hang kell: armonia interval C E",
         faltaEscala: "hiányzik a skála: armonia scale D dorian",
