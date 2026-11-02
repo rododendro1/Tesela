@@ -49,8 +49,8 @@ def nombres():
     for titulo, fichero in TRAD:
         texto = texto_de(fichero)
         ns = re.findall(r'static let (`?\w+`?) = TipoDeEscala\(\s*nombre: "((?:[^"\\]|\\.)*)"', texto)
-        if fichero == "India":    # los 72 melakarta no llevan fila: conservan su nombre original
-            titulo = "India: ragas janya, thaat y ragas indostánicos"
+        if fichero == "India":    # los 72 mēḷakarta no llevan fila: conservan su nombre original
+            titulo = "India: rāgas janya, thāṭ y rāgas indostánicos"
         grupos.append((titulo, ns))
     return grupos
 
@@ -58,7 +58,7 @@ def nombres():
 def bloque(idioma):
     lineas = ["", "        // Escalas de otras tradiciones: nombres propios, iguales en todos los idiomas salvo los que se traducen.",
               '        // Para traducir una: `.tradicional(.hitzaz, "…")`. Los alias (Hijaz, Hicaz…) están en el catálogo.',
-              "        // Los 72 melakarta no se listan: sin fila, conservan su nombre en IAST."]
+              "        // Los 72 mēḷakarta no se listan: sin fila, conservan su nombre en IAST."]
     vistos = set()
     for titulo, ns in nombres():
         lineas.append(f"        // {titulo}")

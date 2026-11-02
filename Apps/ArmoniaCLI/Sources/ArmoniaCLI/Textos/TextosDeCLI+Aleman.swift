@@ -37,7 +37,7 @@ extension TextosDeCLI {
         descripcionEscala: "Noten und Akkorde einer Skala",
         sintaxisEscalas: "scales [<Text>] [Optionen]",
         descripcionEscalas: "der Skalenkatalog: die gängigen und\ndie anderer Traditionen, nach\nKategorien, mit ihren Tönen ab C",
-        notasEscalas: "Optionen: --tradition turkey (oder india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes) und --category maqam (oder raga, makam,\ndastgah, dromos…); ein Text sucht in den Namen",
+        notasEscalas: "Optionen: --tradition turkey (oder india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes) und --category maqam (oder rāga, makam,\ndastgah, dromos…); ein Text sucht in den Namen",
         sintaxisTonalidad: "key <Tonart>",
         descripcionTonalidad: "Vorzeichen, verwandte Tonarten und\nStufen",
 
@@ -143,7 +143,7 @@ extension TextosDeCLI {
         faltaCifradoDelArpegio: "das Akkordsymbol fehlt: armonia arpeggio C7",
         patronDesconocido: { patron in "unbekanntes Muster: „\(patron)“ (ascending, descending, up-down, down-up, broken oder alberti)" },
         tradicionDesconocida: { tradicion in "„\(tradicion)“ ist keine Tradition (india, greece, arab-world, persia, turkey…)" },
-        categoriaDesconocida: { categoria in "„\(categoria)“ ist keine Skalenkategorie (raga, maqam, makam, dastgah…)" },
+        categoriaDesconocida: { categoria in "„\(categoria)“ ist keine Skalenkategorie (rāga, maqam, makam, dastgah…)" },
         faltanNotas: "die Noten fehlen: armonia identify C E G",
         dosNotas: "zwei Noten sind nötig: armonia interval C E",
         faltaEscala: "die Skala fehlt: armonia scale D dorian",

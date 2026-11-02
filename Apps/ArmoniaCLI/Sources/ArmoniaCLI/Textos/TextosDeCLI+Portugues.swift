@@ -37,7 +37,7 @@ extension TextosDeCLI {
         descripcionEscala: "notas e acordes de uma escala",
         sintaxisEscalas: "escalas [<texto>] [opções]",
         descripcionEscalas: "o catálogo de escalas: as habituais e\nas de outras tradições, por\ncategorias, com as notas a partir de Dó",
-        notasEscalas: "opções: --tradicion turquia (ou india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes) e --categoria maqam (ou raga, makam,\ndastgah, dromos…); um texto procura nos nomes",
+        notasEscalas: "opções: --tradicion turquia (ou india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes) e --categoria maqam (ou rāga, makam,\ndastgah, dromos…); um texto procura nos nomes",
         sintaxisTonalidad: "tonalidad <tonalidade>",
         descripcionTonalidad: "armadura, relativas e graus",
 
@@ -143,7 +143,7 @@ extension TextosDeCLI {
         faltaCifradoDelArpegio: "falta o cifrado: armonia arpegio Do7",
         patronDesconocido: { patron in "padrão desconhecido: «\(patron)» (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado ou alberti)" },
         tradicionDesconocida: { tradicion in "«\(tradicion)»: não é uma tradição (india, grecia, mundo-arabe, persia, turquia…)" },
-        categoriaDesconocida: { categoria in "«\(categoria)»: não é uma categoria de escalas (raga, maqam, makam, dastgah…)" },
+        categoriaDesconocida: { categoria in "«\(categoria)»: não é uma categoria de escalas (rāga, maqam, makam, dastgah…)" },
         faltanNotas: "faltam as notas: armonia identificar Do Mi Sol",
         dosNotas: "são necessárias duas notas: armonia intervalo Do Mi",
         faltaEscala: "falta a escala: armonia escala Re dórico",

@@ -325,7 +325,7 @@ import Testing
         #expect(TipoDeEscala.melakarta(23) == .menorMelodicaJazz)
         #expect(TipoDeEscala.melakarta(0) == nil)
         #expect(TipoDeEscala.melakarta(73) == nil)
-        // Mayamalavagowla, el thaat Bhairav y el dromos Hitzazkiar son la misma escala.
+        // Mayamalavagowla, el thāṭ Bhairav y el dromos Hitzazkiar son la misma escala.
         #expect(TipoDeEscala.melakarta(15) == .bhairav)
         #expect(TipoDeEscala.melakarta(15) == .hitzazkiar)
         // Ri3 y Ga1, Dha3 y Ni1 con su escritura tradicional.
@@ -931,12 +931,12 @@ import Testing
         ] {
             #expect(TipoDeEscala.buscar(nombre: texto)?.nombre == nombre, Comment(rawValue: texto))
         }
-        // Las escalas indias, en devanagari. Ahí las marcas cuentan: भैरव y भैरवी son dos ragas.
+        // Las escalas indias, en devanagari. Ahí las marcas cuentan: भैरव y भैरवी son dos rāgas.
         #expect(TipoDeEscala.buscar(nombre: "भैरव")?.nombre == "Bhairav")
         #expect(TipoDeEscala.buscar(nombre: "भैरवी")?.nombre == "Bhairavī")
         #expect(TipoDeEscala.buscar(nombre: "यमन")?.nombre == "Yaman")
         #expect(Escala("Re मोहनम्").tipo.nombre == Escala("Re Mohanam").tipo.nombre)
-        // Las 72 melakartas.
+        // Las 72 mēḷakartas.
         #expect(TipoDeEscala.nombresDeMelakartaEnDevanagari.count == 72)
         #expect(Set(TipoDeEscala.nombresDeMelakartaEnDevanagari).count == 72)
         for (devanagari, nombre) in zip(TipoDeEscala.nombresDeMelakartaEnDevanagari, TipoDeEscala.nombresDeMelakarta) {

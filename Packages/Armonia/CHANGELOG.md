@@ -17,6 +17,10 @@
   (`.espanol`, `.catalan`…) no cambian.
 - `Tipografia.unicode` pasa a llamarse `.conSimples` (un signo por semitono: Fa♯, Si♭♭), junto a `.conDobles`;
   también sin obsoleto. El `rawValue` es ahora «conSimples».
+- **Categorías indias en IAST**: `CategoriaTradicional.nombre` y sus traducciones de alfabeto latino escriben
+  thāṭ, mēḷakarta y rāga (Thāṭ, Mēḷakarta y Rāga en alemán y húngaro), como dastgāh; igual la ayuda de
+  `armonia escalas` y la documentación. Los casos (`.thaat`, `.melakarta`, `.raga`) no cambian, y
+  `--categoria thaat`, `that` o `thāṭ` siguen encontrando la misma categoría.
 - **Microtonos en las partituras**: cada nota de un `Evento` puede apartarse de su nota temperada (`desvios`, en
   cents; en texto, `Mi♭4(50¢):4`), y `Escala.voz(octava:sentido:duracion:)` da una escala en negras con sus
   microtonos. Los formatos los escriben: MusicXML, con el `alter` en decimales (−0.5) y su `<accidental>`

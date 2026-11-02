@@ -61,7 +61,7 @@ import Testing
         #expect(TipoDeEscala.rastMakami == TipoDeEscala.rast)
         #expect(TipoDeEscala.rast.categoria == .dromos)
         #expect(TipoDeEscala.maqamRast.categoria == .maqam)
-        // Un melakarta y un janya son ragas; un thaat, no.
+        // Un mēḷakarta y un janya son rāgas; un thāṭ, no.
         #expect(TipoDeEscala.melakarta(15)?.esRaga ?? false)
         let janyas = TipoDeEscala.janyas.allSatisfy(\.esRaga)
         let ragas = TipoDeEscala.ragasIndostanicos.allSatisfy(\.esRaga)
@@ -72,7 +72,7 @@ import Testing
         #expect(!TipoDeEscala.hitzaz.esRaga)
     }
 
-    /// Āsāvarī (un thaat) tiene los intervalos de la menor natural, que no tiene categoría: se busca por el nombre.
+    /// Āsāvarī (un thāṭ) tiene los intervalos de la menor natural, que no tiene categoría: se busca por el nombre.
     @Test func asavariTieneClaseAunqueSeaIgualALaMenorNatural() {
         #expect(TipoDeEscala.asavari == TipoDeEscala.menorNatural)
         #expect(TipoDeEscala.asavari.categoria == .thaat)
@@ -83,7 +83,9 @@ import Testing
         let ruso = Notacion.espanolCompacto.conTextos(en: .ruso)
         let griego = Notacion.espanolCompacto.conTextos(en: .griego)
         let frances = Notacion.espanolCompacto.conTextos(en: .frances)
-        #expect(CategoriaTradicional.raga.nombre == "raga")
+        #expect(CategoriaTradicional.raga.nombre == "rāga")
+        #expect(CategoriaTradicional.melakarta.nombre == "mēḷakarta")
+        #expect(CategoriaTradicional.thaat.nombre == "thāṭ")
         #expect(CategoriaTradicional.raga.nombre(en: ruso) == "рага")
         #expect(CategoriaTradicional.dromos.nombre(en: griego) == "δρόμος")
         #expect(CategoriaTradicional.escala.nombre(en: frances) == "gamme")
@@ -92,7 +94,8 @@ import Testing
         #expect(CategoriaTradicional.mugam.nombre == "mugam")
         #expect(CategoriaTradicional.mugam.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "mugham")
         #expect(CategoriaTradicional.makam.nombre(en: ruso) == "макам")
-        #expect(CategoriaTradicional.raga.nombre(en: Notacion.espanolCompacto.conTextos(en: .aleman)) == "Raga")
+        #expect(CategoriaTradicional.raga.nombre(en: Notacion.espanolCompacto.conTextos(en: .aleman)) == "Rāga")
+        #expect(CategoriaTradicional.thaat.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "thāṭ")
         // Cada fichero de idioma da el nombre de todas las categorías.
         for categoria in CategoriaTradicional.allCases {
             for idioma in Idioma.allCases {
@@ -114,7 +117,7 @@ import Testing
         #expect(igual.categoria == .thaat)
     }
 
-    /// El padre de un janya es un melakarta que contiene todas sus notas; Revati no tiene uno único.
+    /// El padre de un janya es un mēḷakarta que contiene todas sus notas; Revati no tiene uno único.
     @Test func elPadreDeUnJanyaEsUnMelakartaCompatible() {
         #expect(TipoDeEscala.mohanam.padre?.numeroDeMelakarta == 28)
         #expect(TipoDeEscala.hindolam.padre?.nombre == "Naṭabhairavī")

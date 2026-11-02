@@ -99,7 +99,7 @@ Tonalidad("ля минор")                               // La menor
   asturiano, aragonés, euskera, portugués, francés, occitano, italiano, alemán, griego y ruso. Es lo que indica
   `notacion.textos`, y cada texto es una `Traduccion` con los quince idiomas.
 - Los nombres de los catálogos (tipos de acorde y de escala, instrumentos) siguen el mismo
-  `textos`. Los nombres tradicionales de escala (raga, maqam, pentatónicas japonesas…)
+  `textos`. Los nombres tradicionales de escala (rāga, maqam, pentatónicas japonesas…)
   se escriben igual en todos los idiomas, y una escala se lee también con su nombre en catalán,
   gallego, euskera, portugués, occitano u alemán (`Escala("re doriarra")`, `Escala("dó maior")`).
 
@@ -228,7 +228,7 @@ Acorde("Sol7").svgPentagrama(cifrado: false).contains("<text")     // false
 Escala("Do mayor").svgPentagrama(opciones: OpcionesDePentagrama(notacion: .inglesASCII)).contains("<title>C4</title>")   // true
 ```
 
-- La escala sube y, si baja con otras notas (la menor melódica, muchos ragas), también baja, con los becuadros que
+- La escala sube y, si baja con otras notas (la menor melódica, muchos rāgas), también baja, con los becuadros que
   hagan falta. Con `sentido:` se dibuja solo la subida o la bajada.
 - Con la clave sin fijar, se elige la de sol o la de fa. Si el rango pasa a los dos lados del Do central y haría
   falta más de tres líneas adicionales, se usan los dos pentagramas (`OpcionesDePentagrama.pentagramas`:

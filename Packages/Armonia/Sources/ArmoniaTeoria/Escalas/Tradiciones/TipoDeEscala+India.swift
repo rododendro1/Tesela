@@ -1,9 +1,9 @@
 import ArmoniaNucleo
 
 extension TipoDeEscala {
-    // MARK: Melakarta (música carnática)
+    // MARK: Mēḷakarta (música carnática)
 
-    /// Nombres de los 72 melakarta, en orden, transliterados según el AITS (IAST).
+    /// Nombres de los 72 mēḷakarta, en orden, transliterados según el AITS (IAST).
     package static let nombresDeMelakarta = [
         "Kanakāṅgī", "Ratnāṅgī", "Gānamūrti", "Vanaspati", "Mānavatī", "Tānarūpī",
         "Senāvatī", "Hanumattoḍī", "Dhenukā", "Nāṭakapriyā", "Kokilapriyā", "Rūpavatī",
@@ -51,7 +51,7 @@ extension TipoDeEscala {
         "सुचरित्र", "ज्योतिस्वरूपिणी", "धातुवर्धनी", "नासिकाभूषणी", "कोसलम्", "रसिकप्रिया",
     ]
 
-    /// Los 72 melakarta, en orden. Cada uno tiene Sa y Pa (unísono y 5ª justa), un Ma (4ª justa
+    /// Los 72 mēḷakarta, en orden. Cada uno tiene Sa y Pa (unísono y 5ª justa), un Ma (4ª justa
     /// en los 36 primeros, aumentada en los 36 últimos) y una de las seis parejas Ri–Ga y Dha–Ni.
     /// Ri3 se escribe como 2ª aumentada, Ga1 como 3ª disminuida, Dha3 como 6ª aumentada y Ni1
     /// como 7ª disminuida, que es como los nombra la tradición.
@@ -85,12 +85,12 @@ extension TipoDeEscala {
         return tipos
     }()
 
-    /// Melakarta por su número (1…72): `TipoDeEscala.melakarta(15)` → Māyāmālavagauḷa.
+    /// Mēḷakarta por su número (1…72): `TipoDeEscala.melakarta(15)` → Māyāmālavagauḷa.
     public static func melakarta(_ numero: Int) -> TipoDeEscala? {
         (1...72).contains(numero) ? melakartas[numero - 1] : nil
     }
 
-    /// Número de melakarta de una escala heptatónica con unísono y 5ª justa, una nota entre
+    /// Número de mēḷakarta de una escala heptatónica con unísono y 5ª justa, una nota entre
     /// la 2ª menor y la 3ª mayor… según sus semitonos: la escala mayor es el 29
     /// (Dhīraśaṅkarābharaṇam) y la menor armónica, el 21 (Kīravāṇī). `nil` si no encaja.
     public var numeroDeMelakarta: Int? {
@@ -100,7 +100,7 @@ extension TipoDeEscala {
             .map { $0 + 1 }
     }
 
-    /// Melakarta de los que puede derivar la escala (los que contienen todas sus notas, al subir y
+    /// Mēḷakarta de los que puede derivar la escala (los que contienen todas sus notas, al subir y
     /// al bajar), por número: Mohanam, sin 4ª ni 7ª, encaja en 28, 29, 64 y 65.
     /// Se compara la escritura y no solo los semitonos: la 6ª mayor (Dha2) no es la 7ª
     /// disminuida (Ni1), así que Mohanam no encaja en el 25.
@@ -111,9 +111,9 @@ extension TipoDeEscala {
         }.map { $0 + 1 }
     }
 
-    // MARK: Janya (ragas derivados, música carnática)
+    // MARK: Janya (rāgas derivados, música carnática)
 
-    // Algunos ragas janya muy habituales, con su ārohaṇa (subida) y avarohaṇa (bajada). Se dejan
+    // Algunos rāgas janya muy habituales, con su ārohaṇa (subida) y avarohaṇa (bajada). Se dejan
     // fuera los vakra (los que suben o bajan en zigzag), que no son escalas ordenadas.
 
     public static let mohanam = TipoDeEscala(
@@ -168,13 +168,13 @@ extension TipoDeEscala {
         ],
         alias: ["Kedaragowla", "केदारगौळ"])
 
-    /// Ragas janya incluidos.
+    /// Rāgas janya incluidos.
     public static let janyas: [TipoDeEscala] = [
         .mohanam, .hindolam, .hamsadhvani, .abhogi, .madhyamavati, .bilahari, .kambhoji, .arabhi, .kedaragaula,
         .revati, .amrtavarsini,
     ]
 
-    // MARK: Thaat (música indostánica)
+    // MARK: Thāṭ (música indostánica)
 
     public static let bilaval = TipoDeEscala(
         nombre: "Bilāval",
@@ -243,14 +243,14 @@ extension TipoDeEscala {
         ],
         alias: ["तोडी"])
 
-    /// Los diez thaat de Bhatkhande.
+    /// Los diez thāṭ de Bhatkhande.
     public static let thaats: [TipoDeEscala] = [
         .bilaval, .kalyan, .khamaj, .kafi, .asavari, .bhairavi, .bhairav, .marva, .purvi, .todi,
     ]
 
-    // MARK: Ragas indostánicos
+    // MARK: Rāgas indostánicos
     //
-    // Algunos de los ragas más tocados, con su āroh (subida) y avaroh (bajada) en la forma recta
+    // Algunos de los rāgas más tocados, con su āroh (subida) y avaroh (bajada) en la forma recta
     // que dan los libros de teoría (sin los giros vakra). Darbārī Kānaṛā, que es vakra de por sí, no
     // está.
 
@@ -266,7 +266,7 @@ extension TipoDeEscala {
     public static let durga = TipoDeEscala(
         nombre: "Durgā", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         alias: ["दुर्गा"])
-    /// Yaman: el thaat Kalyāṇ entero, con la 4ª aumentada.
+    /// Yaman: el thāṭ Kalyāṇ entero, con la 4ª aumentada.
     public static let yaman = TipoDeEscala(
         nombre: "Yaman",
         intervalos: [
@@ -305,7 +305,7 @@ extension TipoDeEscala {
         ],
         alias: ["Desh", "देश"])
 
-    /// Ragas indostánicos incluidos.
+    /// Rāgas indostánicos incluidos.
     public static let ragasIndostanicos: [TipoDeEscala] = [
         .bhupali, .malkauns, .durga, .yaman, .bagesri, .des, .sivaranjani, .kalavati, .candrakauns, .megh,
     ]

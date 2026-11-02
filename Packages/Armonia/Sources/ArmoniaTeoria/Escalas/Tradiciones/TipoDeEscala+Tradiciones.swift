@@ -3,8 +3,8 @@ import ArmoniaNucleo
 // MARK: - Escalas de la India, dromoi griegos, maqamat, dastgāh, makamlar, mugam, escalas chinas, japonesas,
 // coreanas, etíopes, de Indonesia, andinas, klezmer y de la Grecia antigua
 //
-// Escalas de otras tradiciones, en su aproximación al temperamento igual: los 72 melakarta de
-// la música carnática y algunos de sus ragas janya, los 10 thaat de la indostánica y los dromoi del rebético y la música
+// Escalas de otras tradiciones, en su aproximación al temperamento igual: los 72 mēḷakarta de
+// la música carnática y algunos de sus rāgas janya, los 10 thāṭ de la indostánica y los dromoi del rebético y la música
 // popular griega. En la práctica varias usan microtonos (sobre todo los dromoi, que vienen de
 // los makam otomanos); aquí se escriben con los intervalos de la escala temperada.
 //
@@ -15,8 +15,8 @@ import ArmoniaNucleo
 // No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales,
 // pero `buscar(nombre:)` y `Escala("Re hitzaz")` las encuentran.
 //
-// `categoria` y `tradicion` (en `CategoriaTradicional.swift`) dicen de cada una si es un raga, un melakarta, un dromos, un
-// maqam, un makam, un mugam…; salen de estas listas. Sus nombres en cada idioma están en `Escalas/Nombres/`.
+// `categoria` y `tradicion` (en `CategoriaTradicional.swift`) dicen de cada una si es un rāga, un mēḷakarta, un dromos,
+// un maqam, un makam, un mugam…; salen de estas listas. Sus nombres en cada idioma están en `Escalas/Nombres/`.
 //
 // La India, que es la más larga, está en `TipoDeEscala+India.swift`; las demás, más abajo, cada una tras su
 // `// MARK: - Nombre`: Andes, Azerbaiyan (mugam), China, Corea, Etiopia, Grecia, Indonesia, Japon, Klezmer,
@@ -24,8 +24,8 @@ import ArmoniaNucleo
 // `Scripts/generadores/nombres_de_escalas/tradicionales.py` las busca por esas marcas.
 
 extension TipoDeEscala {
-    /// Escalas de otras tradiciones: thaat, dromoi, melakarta, janya, chinas, japonesas, etíopes,
-    /// maqamat, de Indonesia, klezmer, ragas indostánicos, dastgāh, coreanas, andinas, de la
+    /// Escalas de otras tradiciones: thāṭ, dromoi, mēḷakarta, janya, chinas, japonesas, etíopes,
+    /// maqamat, de Indonesia, klezmer, rāgas indostánicos, dastgāh, coreanas, andinas, de la
     /// Grecia antigua, makamlar turcos y mugam azerbaiyanos.
     public static let tradicionales: [TipoDeEscala] =
         thaats + dromoi + melakartas + janyas + chinas + japonesas

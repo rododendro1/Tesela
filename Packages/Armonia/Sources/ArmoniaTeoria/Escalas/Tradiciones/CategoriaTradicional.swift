@@ -8,17 +8,17 @@ public enum Tradicion: String, Sendable, Codable, CaseIterable {
     case china, japon, corea, etiopia, indonesia, klezmer, andes
 }
 
-/// Qué es una escala dentro de su tradición: un raga, un melakarta («mela»), un dromos, un maqam, un makam,
+/// Qué es una escala dentro de su tradición: un rāga, un mēḷakarta («mēḷa»), un dromos, un maqam, un makam,
 /// un mugam…
 ///
-/// Un melakarta es también un raga (`esRaga`): son los 72 ragas madre de la música carnática. Un thaat, en cambio, es
-/// una escala madre de la música indostánica de la que se derivan ragas, pero no es un raga.
+/// Un mēḷakarta es también un rāga (`esRaga`): son los 72 rāgas madre de la música carnática. Un thāṭ, en cambio, es
+/// una escala madre de la música indostánica de la que se derivan rāgas, pero no es un rāga.
 public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
-    /// Raga indostánico.
+    /// Rāga indostánico.
     case raga
-    /// «Mela»: uno de los 72 ragas madre carnáticos.
+    /// «Mēḷa»: uno de los 72 rāgas madre carnáticos.
     case melakarta
-    /// Raga carnático derivado de un melakarta.
+    /// Rāga carnático derivado de un mēḷakarta.
     case janya
     /// Escala madre indostánica.
     case thaat
@@ -49,16 +49,16 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     /// Escala sin un nombre propio para su categoría (las japonesas y las andinas).
     case escala
 
-    /// ¿Es un raga? Lo son los ragas indostánicos, los melakarta y los janya; el thaat no.
+    /// ¿Es un rāga? Lo son los rāgas indostánicos, los mēḷakarta y los janya; el thāṭ no.
     public var esRaga: Bool { self == .raga || self == .melakarta || self == .janya }
 
     /// El nombre de la categoría en español.
     public var nombre: String {
         switch self {
-        case .raga: "raga"
-        case .melakarta: "melakarta"
+        case .raga: "rāga"
+        case .melakarta: "mēḷakarta"
         case .janya: "janya"
-        case .thaat: "thaat"
+        case .thaat: "thāṭ"
         case .dromos: "dromos"
         case .maqam: "maqam"
         case .dastgah: "dastgāh"
@@ -85,8 +85,8 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
 }
 
 extension TipoDeEscala {
-    /// La categoría de la escala en su tradición (raga, melakarta, dromos, maqam…); `nil` en las occidentales y en
-    /// las propias. Se busca por el nombre, no por los intervalos: Āsāvarī (un thaat) tiene los de la escala menor
+    /// La categoría de la escala en su tradición (rāga, mēḷakarta, dromos, maqam…); `nil` en las occidentales y en
+    /// las propias. Se busca por el nombre, no por los intervalos: Āsāvarī (un thāṭ) tiene los de la escala menor
     /// natural.
     public var categoria: CategoriaTradicional? { clasificada?.categoria }
 
@@ -94,23 +94,23 @@ extension TipoDeEscala {
     public var tradicion: Tradicion? { clasificada?.tradicion }
 
     /// La entrada de la tabla si el nombre es el de una escala tradicional *y* los intervalos coinciden: una escala
-    /// propia que se llame «Kafi» pero suene distinto no es el thaat.
+    /// propia que se llame «Kafi» pero suene distinto no es el thāṭ.
     private var clasificada: (tradicion: Tradicion, categoria: CategoriaTradicional)? {
         guard let entrada = TipoDeEscala.clasificacion[nombre], entrada.tipo == self else { return nil }
         return (entrada.tradicion, entrada.categoria)
     }
 
-    /// El melakarta del que deriva un raga janya, por la tradición («Mohanam» → Harikāmbhojī); `nil` en las demás
+    /// El mēḷakarta del que deriva un rāga janya, por la tradición («Mohanam» → Harikāmbhojī); `nil` en las demás
     /// escalas y en los janya sin un padre claro (Revati). Siempre es uno de los `melakartasCompatibles`.
     public var padre: TipoDeEscala? {
         guard categoria == .janya, let numero = TipoDeEscala.padresDeLosJanya[nombre] else { return nil }
         return TipoDeEscala.melakarta(numero)
     }
 
-    /// ¿Es un raga (indostánico, melakarta o janya)?
+    /// ¿Es un rāga (indostánico, mēḷakarta o janya)?
     public var esRaga: Bool { categoria?.esRaga ?? false }
 
-    /// Las escalas de otras tradiciones de una categoría: `tradicionales(categoria: .melakarta)` da los 72 melakarta.
+    /// Las escalas de otras tradiciones de una categoría: `tradicionales(categoria: .melakarta)` da los 72 mēḷakarta.
     public static func tradicionales(categoria: CategoriaTradicional) -> [TipoDeEscala] {
         tradicionales.filter { $0.categoria == categoria }
     }
@@ -141,7 +141,7 @@ extension TipoDeEscala {
         return tabla
     }()
 
-    /// Número del melakarta padre de cada janya incluido (el de uso general; Revati no tiene uno único).
+    /// Número del mēḷakarta padre de cada janya incluido (el de uso general; Revati no tiene uno único).
     private static let padresDeLosJanya: [String: Int] = [
         "Mohanam": 28, "Hindolam": 20, "Haṃsadhvani": 29, "Ābhogi": 22, "Madhyamāvatī": 22, "Bilahari": 29,
         "Kāmbhoji": 28, "Ārabhi": 29, "Kedāragauḷa": 28, "Amṛtavarṣiṇī": 65,
