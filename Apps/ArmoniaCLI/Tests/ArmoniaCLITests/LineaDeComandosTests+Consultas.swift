@@ -94,6 +94,36 @@ extension LineaDeComandosTests {
         #expect(salida("tonalidad La menor").contains("V7 Mi7"))
     }
 
+    /// `escalas`: el catálogo, por tradición y categoría, con filtros y búsqueda.
+    @Test func catalogoDeEscalas() {
+        let todas = salida("escalas")
+        #expect(todas.hasPrefix("habituales ("), Comment(rawValue: todas))
+        #expect(todas.contains("turquia · makam (7)"), Comment(rawValue: todas))
+        #expect(todas.contains("  Bayātī: Do Re♭ Mi♭ Fa Sol La♭ Si♭ · microtonos"))
+        let turcas = salida("escalas --tradicion turquia")
+        #expect(turcas.hasPrefix("turquia · makam (7)\n"), Comment(rawValue: turcas))
+        #expect(turcas.contains("  Hicaz makamı: Do Re♭ Mi Fa Sol La Si♭ · microtonos"), Comment(rawValue: turcas))
+        #expect(!turcas.contains("habituales"))
+        // Las tradiciones y las categorías se escriben de varias maneras, en español o en inglés.
+        #expect(salida("escalas --tradicion Turquía") == turcas)
+        #expect(salida("escalas --tradition turkey") == turcas)
+        #expect(salida("escalas --categoria makam") == turcas)
+        #expect(salida("escalas --tradicion mundo-arabe").hasPrefix("mundo-arabe · maqam ("))
+        #expect(salida("escalas --tradicion india --categoria thaat").hasPrefix("india · thaat (10)"))
+        #expect(salida("escalas --tradition turkey --ingles").hasPrefix("turkey · makam (7)"))
+        // Un texto busca en los nombres, sin tildes.
+        let hicaz = salida("escalas hicaz")
+        #expect(hicaz.contains("Hicaz makamı") && hicaz.contains("Hicazkâr makamı"), Comment(rawValue: hicaz))
+        #expect(!hicaz.contains("Bayātī"))
+        #expect(salida("escalas bayati").contains("Bayātī"))
+        #expect(salida("escalas zzz") == "no hay ninguna escala así\n")
+        #expect(salida("escalas --tradicion india --categoria maqam") == "no hay ninguna escala así\n")
+        for orden in ["escalas --tradicion marte", "escalas --categoria foo", "escalas --tradicion", "escalas --foo"] {
+            #expect(LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2)
+        }
+        #expect(LineaDeComandos.ejecutar(["escalas", "--tradicion", "marte"]).error.contains("«marte»"))
+    }
+
     @Test func analizar() {
         #expect(
             salida("analizar Do Lam Re7 Sol7 Do") == """

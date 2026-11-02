@@ -12,7 +12,8 @@ extension LineaDeComandos {
     }
 
     /// `musicxml melodia …`, `mei melodia …`, `lilypond melodia …`, `abc melodia …` y `midi melodia …`: las mismas
-    /// opciones, salvo la clave y las marcas (no en MIDI) y el instrumento (solo MIDI).
+    /// opciones, salvo la clave y las marcas (no en MIDI) y el instrumento (solo MIDI). Además de una melodía, se
+    /// exporta un coral, unos acordes, sus arpegios o una escala (`musicxml escala Re bayati`, con sus microtonos).
     static func partitura(_ argumentos: [String], _ notacion: Notacion, formato: Formato) throws -> ResultadoDeOrden {
         let orden = formato.rawValue
         guard let tipo = argumentos.first?.lowercased() else {
@@ -225,6 +226,30 @@ extension LineaDeComandos {
                 mei: voz.mei(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo),
                 lilyPond: voz.lilyPond(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo),
                 abc: voz.abc(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo))
+        case "escala", "scale":
+            // Una escala en negras (o en lo que diga `--duracion`), con sus microtonos si los tiene.
+            guard !musica.isEmpty else { return uso(.faltaEscala, notacion) }
+            if !marcas.isEmpty { return uso(.marcasSoloCoral, notacion) }
+            if opciones["anacrusa"] != nil { return uso(.soloParaMelodia("anacrusa"), notacion) }
+            var clave: Clave?
+            if let texto = opciones["clave"] {
+                guard let leida = leerClave(texto) else { return uso(.claveDesconocida(texto), notacion) }
+                clave = leida
+            }
+            let escala = try Escala(leyendo: musica.joined(separator: " "))
+            let duracion = try opciones["duracion"].map { try Duracion(leyendo: $0) } ?? .negra
+            var voz = escala.voz(duracion: duracion)
+            voz.compas = compas
+            let titulo = titulo ?? escala.nombre(en: notacion)
+            if formato == .midi {
+                return binario(
+                    voz.midi(tonalidad: tonalidad, tempo: tempo, titulo: titulo, instrumento: instrumento ?? 0))
+            }
+            return escrita(
+                formato, voz.musicXML(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
+                mei: voz.mei(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
+                lilyPond: voz.lilyPond(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
+                abc: voz.abc(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo))
         default:
             return uso(.tipoDePartituraDesconocido(tipo), notacion)
         }

@@ -38,6 +38,9 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionIntervalo: String
     let sintaxisEscala: String
     let descripcionEscala: String
+    let sintaxisEscalas: String
+    let descripcionEscalas: String
+    let notasEscalas: String
     let sintaxisTonalidad: String
     let descripcionTonalidad: String
 
@@ -83,6 +86,8 @@ struct TextosDeCLI: TextosTraducidos {
     let notasMusicxmlArpegios: String
     let sintaxisMusicxmlArchivo: String
     let descripcionMusicxmlArchivo: String
+    let sintaxisMusicxmlEscala: String
+    let descripcionMusicxmlEscala: String
     let sintaxisMeiMelodia: String
     let descripcionMeiMelodia: String
     let sintaxisLilypondMelodia: String
@@ -125,6 +130,8 @@ struct TextosDeCLI: TextosTraducidos {
     let faltaCifrado: String
     let faltaCifradoDelArpegio: String
     let patronDesconocido: @Sendable (String) -> String
+    let tradicionDesconocida: @Sendable (String) -> String
+    let categoriaDesconocida: @Sendable (String) -> String
     let faltanNotas: String
     let dosNotas: String
     let faltaEscala: String
@@ -204,6 +211,8 @@ struct TextosDeCLI: TextosTraducidos {
     /// La línea de `armonia escala` con las notas de la versión microtonal (maqamat, dastgāh, makamlar).
     let mensajeMicrotonos: String
     let mensajeEscalas: String
+    let mensajeHabituales: String
+    let mensajeNingunaEscala: String
     let mensajeArmadura: String
     let mensajeRelativa: String
     let mensajeHomonima: String

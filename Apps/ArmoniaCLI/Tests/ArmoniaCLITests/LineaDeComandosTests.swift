@@ -110,7 +110,7 @@ import Testing
         #expect(Set(nombres).count == nombres.count)
         for nombre in nombres { #expect(nombre == nombre.lowercased(), Comment(rawValue: nombre)) }
         for orden in LineaDeComandos.ordenes { #expect(!orden.ayuda.isEmpty, Comment(rawValue: orden.nombres[0])) }
-        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 40)
+        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 42)
         // Los nombres no distinguen mayúsculas.
         #expect(salida("ACORDE Do") == salida("acorde Do"))
     }
@@ -130,6 +130,7 @@ import Testing
         "posiciones", "posiciones Do mayor --foo", "musicxml acordes C --ventana 1",
         "musicxml melodia C4:4 --archivo coral.mid", "transponer", "transponer 2M", "rearmonizar",
         "digitaciones C --capo 13", "completado", "completado tcsh", "completado bash zsh", "manual extra",
+        "escalas --tradicion marte", "escalas --categoria foo", "musicxml escala", "midi escala Re bayati --clave fa",
     ]
 
     /// Con --ingles no se cuela nada en español: ni en la salida, ni en los errores, ni en la ayuda.

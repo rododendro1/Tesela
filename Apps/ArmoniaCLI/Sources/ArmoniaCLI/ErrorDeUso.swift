@@ -23,6 +23,8 @@ enum ErrorDeUso {
     case faltaCifrado
     case faltaCifradoDelArpegio
     case patronDesconocido(String)
+    case tradicionDesconocida(String)
+    case categoriaDesconocida(String)
     case faltanNotas
     case dosNotas
     case faltaEscala
@@ -130,6 +132,10 @@ enum ErrorDeUso {
         case .faltaCifrado: return TextosDeCLI.traduccion(\.faltaCifrado)
         case .faltaCifradoDelArpegio: return TextosDeCLI.traduccion(\.faltaCifradoDelArpegio)
         case .patronDesconocido(let patron): return TextosDeCLI.traduccion { $0.patronDesconocido(patron) }
+        case .tradicionDesconocida(let tradicion):
+            return TextosDeCLI.traduccion { $0.tradicionDesconocida(tradicion) }
+        case .categoriaDesconocida(let categoria):
+            return TextosDeCLI.traduccion { $0.categoriaDesconocida(categoria) }
         case .faltanNotas: return TextosDeCLI.traduccion(\.faltanNotas)
         case .dosNotas: return TextosDeCLI.traduccion(\.dosNotas)
         case .faltaEscala: return TextosDeCLI.traduccion(\.faltaEscala)

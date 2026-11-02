@@ -187,8 +187,9 @@ package struct EscritorABC: EscritorDePartitura {
             }
             let irregulares = Exportacion.irregulares(eventos.map(\.evento))
             let unidos = Set(barras[c].flatMap { $0.dropLast() })
-            // Las alteraciones que valen en el compás, por línea o espacio del pentagrama.
-            var vigentes: [Int: Int] = [:]
+            // Las alteraciones que valen en el compás, por línea o espacio del pentagrama, como se escriben.
+            var vigentes: [Int: String] = [:]
+            let simbolo = { (semitonos: Int) in [-2: "__", -1: "_", 0: "=", 1: "^", 2: "^^"][semitonos] ?? "" }
             var texto = ""
             for (i, (evento, inicio, nuevo)) in eventos.enumerated() {
                 let grupo = irregulares.first { $0.rango.contains(i) }
@@ -199,13 +200,16 @@ package struct EscritorABC: EscritorDePartitura {
                 var debajo = (nuevo ? linea.letras[inicio] ?? [] : []).filter { !$0.isEmpty }
                 if c == 0 && i == 0, let conRotulo { debajo.insert(conRotulo, at: 0) }
                 for linea in debajo { texto += "\"_\(EscritorABC.texto(linea))\"" }
-                let alturas = evento.alturas.map { altura in
-                    let (natural, semitonos, octava) = Exportacion.sinTriples(altura)
+                let alturas = evento.alturas.indices.map { k in
+                    let (natural, semitonos, octava) = Exportacion.sinTriples(evento.alturas[k])
                     let lugar = octava * 7 + natural.rawValue
+                    // Un cuarto de tono se escribe `_/` o `^/`; las comas, temperadas.
+                    let propia =
+                        SignoMicrotonal(semitonos: semitonos, desvio: evento.desvio(k))?.abc ?? simbolo(semitonos)
                     var escrita = ""
-                    if semitonos != vigentes[lugar] ?? armadura[natural] ?? 0 {
-                        escrita = [-2: "__", -1: "_", 0: "=", 1: "^", 2: "^^"][semitonos] ?? ""
-                        vigentes[lugar] = semitonos
+                    if propia != vigentes[lugar] ?? simbolo(armadura[natural] ?? 0) {
+                        escrita = propia
+                        vigentes[lugar] = propia
                     }
                     return escrita + EscritorABC.nombre(natural, octava: octava)
                 }

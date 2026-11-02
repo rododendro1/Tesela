@@ -359,14 +359,19 @@ package struct EscritorMusicXML: EscritorDePartitura {
                 if i > 0 { xml += "        <chord/>\n" }
                 let nota = altura.nota
                 xml += "        <pitch>\n          <step>\(EscritorMusicXML.paso(nota.natural))</step>\n"
-                if nota.alteracion.semitonos != 0 { xml += "          <alter>\(nota.alteracion.semitonos)</alter>\n" }
+                // Un microtono va en `alter` con decimales (Mi𝄳 = Mi con −0.5) y con su signo en `<accidental>`.
+                let desvio = evento.desvio(i)
+                if nota.alteracion.semitonos != 0 || desvio != 0 {
+                    xml += "          <alter>\(NotaEscrita.alter(nota.alteracion.semitonos, desvio))</alter>\n"
+                }
                 xml += "          <octave>\(altura.octava)</octave>\n        </pitch>\n"
                 xml += "        <duration>\(duracion)</duration>\n"
                 var ligadura: [String] = []
                 if ligadaDesde.contains(altura) { ligadura.append("stop") }
                 if evento.ligada { ligadura.append("start") }
                 for tipo in ligadura { xml += "        <tie type=\"\(tipo)\"/>\n" }
-                xml += comun(incluirFigura: true, plica: i == 0, barra: i == 0 ? barra : nil)
+                let signo = SignoMicrotonal(semitonos: nota.alteracion.semitonos, desvio: desvio)
+                xml += comun(incluirFigura: true, plica: i == 0, barra: i == 0 ? barra : nil, signo: signo)
                 xml += notaciones(ligadura: ligadura, grupo: i == 0 ? grupo : [])
                 if i == 0 {
                     for (k, letra) in letras.enumerated() where !letra.isEmpty {
@@ -380,11 +385,15 @@ package struct EscritorMusicXML: EscritorDePartitura {
             return xml
         }
 
-        private func comun(incluirFigura: Bool, plica: Bool, barra: String?) -> String {
+        private func comun(incluirFigura: Bool, plica: Bool, barra: String?, signo: SignoMicrotonal? = nil) -> String {
             var xml = "        <voice>\(linea.numero)</voice>\n"
             if incluirFigura, let tipo = figura.tipo {
                 xml += "        <type>\(tipo)</type>\n"
                 xml += String(repeating: "        <dot/>\n", count: figura.puntillos)
+            }
+            if let signo {
+                let (valor, smufl) = signo.musicXML
+                xml += "        <accidental" + (smufl.map { " smufl=\"\($0)\"" } ?? "") + ">\(valor)</accidental>\n"
             }
             if incluirFigura, let (reales, normales) = figura.irregular {
                 xml += "        <time-modification>\n          <actual-notes>\(reales)</actual-notes>\n"
@@ -394,6 +403,12 @@ package struct EscritorMusicXML: EscritorDePartitura {
             if variosPentagramas { xml += "        <staff>\(linea.pentagrama)</staff>\n" }
             if let barra { xml += "        <beam number=\"1\">\(barra)</beam>\n" }
             return xml
+        }
+
+        /// La alteración en semitonos con el microtono en decimales: −1 y 50 cents → «-0.5».
+        package static func alter(_ semitonos: Int, _ desvio: Double) -> String {
+            let valor = (Double(semitonos) * 10_000 + desvio * 100).rounded() / 10_000
+            return valor == valor.rounded() ? String(Int(valor)) : String(valor)
         }
 
         private func notaciones(ligadura: [String], grupo: [String] = []) -> String {

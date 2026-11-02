@@ -187,25 +187,33 @@ package struct ArchivoMIDI {
             ]
             // Las notas: las ligadas siguen sonando mientras la siguiente nota las repita.
             var inicio = 0
-            var sonando: [Int: Int] = [:] // altura MIDI → cuándo empezó
-            var notas: [(clave: Int, desde: Int, hasta: Int)] = []
+            var sonando: [Int: (desde: Int, desvio: Double)] = [:] // altura MIDI → cuándo empezó y sus cents
+            var notas: [(clave: Int, desde: Int, hasta: Int, desvio: Double)] = []
             var ligadas: Set<Int> = []
             for (k, evento) in pista.eventos.enumerated() {
                 let claves = Set(evento.alturas.map(\.midi).filter { (0...127).contains($0) })
+                // Lo que se aparta cada nota de la temperada, en cents.
+                var desvios: [Int: Double] = [:]
+                for (i, altura) in evento.alturas.enumerated() where desvios[altura.midi] == nil {
+                    desvios[altura.midi] = evento.desvio(i)
+                }
                 // Las que venían ligadas y no siguen, terminan aquí.
                 let terminan = sonando.filter { !(ligadas.contains($0.key) && claves.contains($0.key)) }
-                for (clave, desde) in terminan.sorted(by: { $0.key < $1.key }) {
-                    notas.append((clave, desde, inicio))
+                for (clave, nota) in terminan.sorted(by: { $0.key < $1.key }) {
+                    notas.append((clave, nota.desde, inicio, nota.desvio))
                     sonando[clave] = nil
                 }
-                for clave in claves where sonando[clave] == nil { sonando[clave] = inicio }
+                for clave in claves where sonando[clave] == nil { sonando[clave] = (inicio, desvios[clave] ?? 0) }
                 if k < pista.marcadores.count, !pista.marcadores[k].isEmpty {
                     mensajes.append((inicio, ArchivoMIDI.meta(0x06, ArchivoMIDI.texto(pista.marcadores[k]))))
                 }
                 inicio += pulsos(evento.duracion)
                 ligadas = evento.ligada ? claves : []
             }
-            for (clave, desde) in sonando.sorted(by: { $0.key < $1.key }) { notas.append((clave, desde, inicio)) }
+            for (clave, nota) in sonando.sorted(by: { $0.key < $1.key }) {
+                notas.append((clave, nota.desde, inicio, nota.desvio))
+            }
+            mensajes += ArchivoMIDI.inflexiones(de: notas.map { ($0.desde, $0.desvio) }, canal: canal)
             for nota in notas {
                 mensajes.append((nota.desde, [0x90 | canal, UInt8(nota.clave), 80]))
                 mensajes.append((nota.hasta, [0x80 | canal, UInt8(nota.clave), 64]))
@@ -221,7 +229,8 @@ package struct ArchivoMIDI {
         func orden(_ m: [UInt8]) -> Int {
             switch m[0] & 0xF0 {
             case 0x80: return 1
-            case 0x90: return 2
+            case 0xE0: return 2 // la inflexión, tras los finales de nota y antes de la que empieza
+            case 0x90: return 3
             default: return 0 // meta y cambio de programa, primero
             }
         }
@@ -236,6 +245,26 @@ package struct ArchivoMIDI {
         }
         cuerpo += [0x00, 0xFF, 0x2F, 0x00]
         return Array("MTrk".utf8) + entero(cuerpo.count, bytes: 4) + cuerpo
+    }
+
+    /// Los microtonos de una pista (`Evento.desvios`), como inflexiones de tono (pitch bend) en el
+    /// ámbito de ±2 semitonos de General MIDI, que se fija al principio. La inflexión afecta a todo el canal:
+    /// cuando empiezan a la vez notas que se apartan distinto, manda la primera que se aparta. Sin microtonos, nada.
+    package static func inflexiones(de notas: [(desde: Int, desvio: Double)], canal: UInt8) -> [(Int, [UInt8])] {
+        guard notas.contains(where: { $0.desvio != 0 }) else { return [] }
+        // RPN 0 (ámbito de la inflexión) = 2 semitonos.
+        let ambito: [(UInt8, UInt8)] = [(101, 0), (100, 0), (6, 2), (38, 0)]
+        var mensajes: [(Int, [UInt8])] = ambito.map { (0, [0xB0 | canal, $0.0, $0.1]) }
+        var actual = 8192
+        for desde in Set(notas.map { $0.desde }).sorted() {
+            let empiezan = notas.filter { $0.desde == desde }
+            let desvio = empiezan.first(where: { $0.desvio != 0 })?.desvio ?? 0
+            let valor = max(0, min(16_383, 8192 + Int((desvio / 200 * 8192).rounded())))
+            guard valor != actual else { continue }
+            mensajes.append((desde, [0xE0 | canal, UInt8(valor & 0x7F), UInt8(valor >> 7)]))
+            actual = valor
+        }
+        return mensajes
     }
 
     /// Un texto en Latin-1, con las alteraciones en ASCII ("Mi♭ · ♭VI" → "Mib · bVI") y "?" en
