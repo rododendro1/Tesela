@@ -40,6 +40,10 @@ extension TextosDeCLI {
         notasEscalas: "options: --tradition turkey (or india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) and --category maqam (or rāga, makam,\ndastgah, dromos…); a text searches the names",
         sintaxisTonalidad: "key <key>",
         descripcionTonalidad: "key signature, relatives and degrees",
+        sintaxisConjunto: "set <pcs>",
+        descripcionConjunto: "prime form, Forte number,\nvectors, symmetries and notes",
+        sintaxisSerie: "row <row>",
+        descripcionSerie: "matrix, forms and combinatoriality\nof a twelve-tone row",
 
         // Ayuda+Dibujos.swift
         sintaxisTonnetz: "tonnetz <notes>",
@@ -151,6 +155,8 @@ extension TextosDeCLI {
         faltaEscala: "missing the scale: armonia scale D dorian",
         faltaTonalidad: "missing the key: armonia key A minor",
         faltaTonalidadTrasEn: "missing the key after --in",
+        faltaConjunto: "missing the set: armonia set 0 4 7",
+        faltaSerie: "missing the row: armonia row 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "missing the chords: armonia analyze C F G7 C" },
         archivoIlegible: { nombre in "cannot read the file \"\(nombre)\"" },
         archivoConAcordes: "with --file, do not write chords",
@@ -163,7 +169,7 @@ extension TextosDeCLI {
         faltanNotasDelDibujo: { ejemplo, orden in "missing the notes: armonia \(orden) C E G" },
         faltaAcordeDelDibujo: { ejemplo, orden in "missing the chord: armonia \(orden) --chord G7" },
         faltaEscalaDelDibujo: { ejemplo, orden in "missing the scale: armonia \(orden) --scale D dorian" },
-        clasesFueraDeRango: { ejemplo, orden in "pitch classes are numbers from 0 to 11: armonia \(orden) --pcs 0 4 7" },
+        faltanClasesDelDibujo: { ejemplo, orden in "missing the pitch classes: armonia \(orden) --pcs 0 4 7" },
         faltanTriadasDelRecorrido: { ejemplo, orden in "missing the triads: armonia \(orden) --sequence C Am F Dm" },
         cicloMalEscrito: { ejemplo, orden in "the cycle is hexatonic, octatonic or LR, from a triad: armonia \(orden) --cycle hexatonic C" },
         recorridoSoloTriadas: { ejemplo, orden in "the sequence is made of major and minor triads: armonia \(orden) --sequence C Am F Dm" },
@@ -244,6 +250,16 @@ extension TextosDeCLI {
         mensajeNingunPaso: "no steps",
         mensajeUnPaso: "1 step",
         mensajePasos: { n in "\(n) steps" },
-        mensajeTriadas: { n in Idioma.ingles.contar(n, "triad", "triads") }
+        mensajeTriadas: { n in Idioma.ingles.contar(n, "triad", "triads") },
+        mensajeFormaNormal: "normal form",
+        mensajeFormaPrima: "prime form",
+        mensajeVectorIntervalico: "interval vector",
+        mensajeVectorDeIndice: "index vector",
+        mensajeEjesDeSimetria: "axes of symmetry",
+        mensajeIntervalos: "intervals",
+        mensajeDeTodosLosIntervalos: "all-interval",
+        mensajeFormasDistintas: { n in "\(n) distinct forms" },
+        mensajeHexacordos: "hexachords",
+        mensajeFormasCombinatorias: "combinatorial forms"
     )
 }

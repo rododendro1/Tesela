@@ -49,6 +49,14 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "«\(calidad.nombre(en: .rusoPalabras)) \(Intervalo.ordinal(numero, en: .ruso))» не существует: \(regla.ruso)" },
         alteracionNoReconocida: { signo in "«\(signo)» — не знак альтерации (ожидалось ♯, ♭, 𝄪, 𝄫, #, b, x или ♮)" },
 
+        // ErrorDeLectura.swift (conjuntos y series)
+        claseDeAlturaNoValida: { texto in "«\(texto)» — не звуковысотный класс (от 0 до 11, или t и e для 10 и 11) и не название ноты" },
+        numeroDeForteDesconocido: { texto in "«\(texto)» — не номер Форта (например, 3-11 или 4-Z15)" },
+        faltaElCierre: { signo in "не хватает закрывающего «\(signo)»" },
+        serieNoDodecafonica: "в двенадцатитоновой серии есть все двенадцать звуковысотных классов, каждый по одному разу",
+        faltanEnLaSerie: { clases in "не хватает \(clases)" },
+        repetidasEnLaSerie: { clases in "повторяются \(clases)" },
+
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },
         unisonoEnMasculino: { calidad in calidad },

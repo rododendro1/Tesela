@@ -730,6 +730,43 @@ import Hexagonos
         comprobar(Escala(.re).conjuntoDeClases.numeroDeForte, #""7-35""#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 14)
     }
 
+    @Test func postonal2() throws {
+        // Sources/Armonia/Armonia.docc/Postonal.md, línea 28
+        let triada = try ConjuntoDeClases(leyendo: "{0 4 7}")
+        comprobar(triada.numeroDeForte, #""3-11""#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 29)
+        comprobar(try ConjuntoDeClases(leyendo: "01t").clases, #"[0, 1, 10]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 30)
+        comprobar(try ConjuntoDeClases(leyendo: "Re Fa La").clases, #"[2, 5, 9]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 31)
+        comprobar(try ConjuntoDeClases(leyendo: "4-Z15").clases, #"[0, 1, 4, 6]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 32)
+    }
+
+    @Test func postonal3() throws {
+        // Sources/Armonia/Armonia.docc/Postonal.md, línea 43
+        let berg = try SerieDodecafonica(leyendo: "Fa Mi Do La Sol Re La♭ Re♭ Mi♭ Sol♭ Si♭ Si")
+        comprobar(berg.description, #""5 4 0 9 7 2 8 1 3 6 t e""#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 44)
+        comprobar(berg.inversion(5).description, #""5 6 t 1 3 8 2 9 7 4 0 e""#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 45)
+        comprobar(berg.matriz[1], #"[6, 5, 1, 10, 8, 3, 9, 2, 4, 7, 11, 0]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 46)
+        comprobar(berg.esDeTodosLosIntervalos, #"true"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 47)
+        comprobar(berg.identificar(berg.retrogrado(5)), #"[P11, R5]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 48)
+        comprobar(berg.hexacordos.primero.numeroDeForte, #""6-32""#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 49)
+        comprobar(berg.formasCombinatorias, #"[P11, I10, R5, RI4]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 50)
+        comprobar(berg.esTotalmenteCombinatoria, #"true"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 51)
+    }
+
+    @Test func postonal4() throws {
+        // Sources/Armonia/Armonia.docc/Postonal.md, línea 65
+        let menorConSeptima: ConjuntoDeClases = [0, 3, 7, 10]
+        comprobar(menorConSeptima.vectorDeIndice, #"[1, 2, 1, 2, 0, 2, 1, 2, 1, 0, 4, 0]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 66)
+        comprobar(menorConSeptima.notasComunes(invirtiendo: 10), #"4"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 67)
+        comprobar(menorConSeptima.ejesDeSimetria, #"[5–11]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 68)
+        comprobar(ConjuntoDeClases([0, 1]).ejesDeSimetria, #"[0½–6½]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 69)
+    }
+
+    @Test func postonal5() throws {
+        // Sources/Armonia/Armonia.docc/Postonal.md, línea 78
+        comprobar(ConjuntoDeClases([1, 5, 8]).notas(), #"[Re♭, Fa, La♭]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 78)
+        comprobar(ConjuntoDeClases([1, 5, 8]).notas(con: Nota(.do, .sostenido)), #"[Do♯, Mi♯, Sol♯]"#, #"Sources/Armonia/Armonia.docc/Postonal.md"#, 79)
+    }
+
     @Test func tonalidad1() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, línea 13
         let laMenor: Tonalidad = "La menor"

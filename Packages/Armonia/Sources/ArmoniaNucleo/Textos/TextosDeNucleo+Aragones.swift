@@ -49,6 +49,14 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "no existe a \(numero)ª \(calidad.nombre(en: .aragonesPalabras)): \(regla.aragones)" },
         alteracionNoReconocida: { signo in "«\(signo)» no ye una alteración (s\'asperaba ♯, ♭, 𝄪, 𝄫, #, b, x u ♮)" },
 
+        // ErrorDeLectura.swift (conjuntos y series)
+        claseDeAlturaNoValida: { texto in "«\(texto)» no ye una clase d'altura (de 0 a 11, u t y e ta lo 10 y l'11) ni un nombre de nota" },
+        numeroDeForteDesconocido: { texto in "«\(texto)» no ye un numero de Forte (per eixemplo, 3-11 u 4-Z15)" },
+        faltaElCierre: { signo in "falta lo «\(signo)» d'o final" },
+        serieNoDodecafonica: "una serie dodecafonica tien as doce clases d'altura, cadaguna una vegada",
+        faltanEnLaSerie: { clases in "faltan \(clases)" },
+        repetidasEnLaSerie: { clases in "se repiten \(clases)" },
+
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(ordinal) \(calidad)" },
         unisonoEnMasculino: { calidad in calidad },

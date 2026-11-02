@@ -49,6 +49,14 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "non esiste la \(numero)ª \(calidad.nombre(en: .italianoPalabras)): \(regla.italiano)" },
         alteracionNoReconocida: { signo in "«\(signo)» non è un'alterazione (si aspettava ♯, ♭, 𝄪, 𝄫, #, b, x o ♮)" },
 
+        // ErrorDeLectura.swift (conjuntos y series)
+        claseDeAlturaNoValida: { texto in "«\(texto)» non è né una classe di altezza (da 0 a 11, o t ed e per 10 e 11) né un nome di nota" },
+        numeroDeForteDesconocido: { texto in "«\(texto)» non è un numero di Forte (per esempio, 3-11 o 4-Z15)" },
+        faltaElCierre: { signo in "manca la «\(signo)» finale" },
+        serieNoDodecafonica: "una serie dodecafonica ha tutte e dodici le classi di altezza, ciascuna una volta",
+        faltanEnLaSerie: { clases in "mancano \(clases)" },
+        repetidasEnLaSerie: { clases in "si ripetono \(clases)" },
+
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(ordinal) \(calidad)" },
         unisonoEnMasculino: { calidad in calidad.hasSuffix("a") ? String(calidad.dropLast()) + "o" : calidad },

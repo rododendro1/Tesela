@@ -49,6 +49,14 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "nun esiste la \(numero)ª \(calidad.nombre(en: .asturianoPalabras)): \(regla.asturiano)" },
         alteracionNoReconocida: { signo in "«\(signo)» nun ye una alteración (esperábase ♯, ♭, 𝄪, 𝄫, #, b, x o ♮)" },
 
+        // ErrorDeLectura.swift (conjuntos y series)
+        claseDeAlturaNoValida: { texto in "«\(texto)» nun ye una clase d'altura (de 0 a 11, o t y e pal 10 y l'11) nin un nome de nota" },
+        numeroDeForteDesconocido: { texto in "«\(texto)» nun ye un númberu de Forte (por exemplu, 3-11 o 4-Z15)" },
+        faltaElCierre: { signo in "falta'l «\(signo)» del final" },
+        serieNoDodecafonica: "una serie dodecafónica tien les doce clases d'altura, cada una una vegada",
+        faltanEnLaSerie: { clases in "falten \(clases)" },
+        repetidasEnLaSerie: { clases in "repítense \(clases)" },
+
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(ordinal) \(calidad)" },
         unisonoEnMasculino: { calidad in calidad },
