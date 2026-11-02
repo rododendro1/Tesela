@@ -213,12 +213,10 @@ public struct Voz: Hashable, Sendable, Codable {
         for evento in eventos {
             var pendiente = evento
             while pendiente.duracion > restante {
-                actual.append(Evento(alturas: pendiente.alturas, duracion: restante, ligada: true))
+                actual.append(pendiente.con(duracion: restante, ligada: true))
                 resultado.append(actual)
                 actual = []
-                pendiente = Evento(
-                    alturas: pendiente.alturas, duracion: pendiente.duracion - restante,
-                    ligada: pendiente.ligada)
+                pendiente = pendiente.con(duracion: pendiente.duracion - restante, ligada: pendiente.ligada)
                 restante = compas.duracion
             }
             actual.append(pendiente)
@@ -270,10 +268,7 @@ public struct Voz: Hashable, Sendable, Codable {
                     : Voz.partir(desde: posicion, duracion: evento.duracion, compas: compas)
                 for (k, parte) in partes.enumerated() {
                     let ultima = k == partes.count - 1
-                    escritos.append(
-                        Evento(
-                            alturas: evento.alturas, duracion: parte,
-                            ligada: ultima ? evento.ligada : true))
+                    escritos.append(evento.con(duracion: parte, ligada: ultima ? evento.ligada : true))
                 }
                 posicion = posicion + evento.duracion
             }
@@ -374,14 +369,14 @@ public struct Voz: Hashable, Sendable, Codable {
     /// Aumentación: todas las duraciones multiplicadas por `factor` (2 = el doble de largo).
     public func aumentar(_ factor: Int) -> Voz {
         Voz(
-            eventos.map { Evento(alturas: $0.alturas, duracion: $0.duracion * factor, ligada: $0.ligada) },
+            eventos.map { $0.con(duracion: $0.duracion * factor, ligada: $0.ligada) },
             compas: compas, anacrusa: anacrusa * factor)
     }
 
     /// Disminución: todas las duraciones divididas por `factor` (2 = la mitad de largo).
     public func disminuir(_ factor: Int) -> Voz {
         Voz(
-            eventos.map { Evento(alturas: $0.alturas, duracion: $0.duracion / factor, ligada: $0.ligada) },
+            eventos.map { $0.con(duracion: $0.duracion / factor, ligada: $0.ligada) },
             compas: compas, anacrusa: anacrusa / factor)
     }
 
@@ -390,7 +385,7 @@ public struct Voz: Hashable, Sendable, Codable {
         let invertidos = eventos.reversed().map { $0 }
         let religados = invertidos.enumerated().map { i, evento -> Evento in
             let ligada = i + 1 < invertidos.count && invertidos[i + 1].ligada
-            return Evento(alturas: evento.alturas, duracion: evento.duracion, ligada: ligada)
+            return evento.con(duracion: evento.duracion, ligada: ligada)
         }
         return Voz(religados, compas: compas)
     }

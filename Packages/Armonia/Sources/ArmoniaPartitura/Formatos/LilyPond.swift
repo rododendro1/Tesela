@@ -228,16 +228,21 @@ package struct EscritorLilyPond: EscritorDePartitura {
         let ligadura = evento.ligada ? "~" : ""
         switch evento.alturas.count {
         case 0: return "r" + figura
-        case 1: return altura(evento.alturas[0]) + figura + ligadura
-        default: return "<" + evento.alturas.map(altura).joined(separator: " ") + ">" + figura + ligadura
+        case 1: return altura(evento.alturas[0], desvio: evento.desvio(0)) + figura + ligadura
+        default:
+            let notas = evento.alturas.indices.map { altura(evento.alturas[$0], desvio: evento.desvio($0)) }
+            return "<" + notas.joined(separator: " ") + ">" + figura + ligadura
         }
     }
 
-    /// La altura absoluta con el nombre holandés: Do4 → `c'`, Fa♯3 → `fis`, Si♭1 → `bes,,`.
-    package static func altura(_ altura: Altura) -> String {
+    /// La altura absoluta con el nombre holandés: Do4 → `c'`, Fa♯3 → `fis`, Si♭1 → `bes,,`. Con un `desvio` de
+    /// un cuarto de tono (en cents), con los nombres de los cuartos de tono: Mi♭4 + 50 → `eeh'`; las comas no
+    /// tienen nombre y se escribe la nota temperada.
+    package static func altura(_ altura: Altura, desvio: Double = 0) -> String {
         let (natural, semitonos, octava) = Exportacion.sinTriples(altura)
         let nombre = ["c", "d", "e", "f", "g", "a", "b"][natural.rawValue]
-        let alteracion = [-2: "eses", -1: "es", 0: "", 1: "is", 2: "isis"][semitonos] ?? ""
+        let temperada = [-2: "eses", -1: "es", 0: "", 1: "is", 2: "isis"][semitonos] ?? ""
+        let alteracion = SignoMicrotonal(semitonos: semitonos, desvio: desvio)?.lilypond ?? temperada
         let marcas = octava >= 3 ? String(repeating: "'", count: octava - 3) : String(repeating: ",", count: 3 - octava)
         return nombre + alteracion + marcas
     }

@@ -150,8 +150,8 @@ package enum Exportacion {
         return partidos.map { eventos in
             eventos.map { original in
                 let siguiente = k + 1 < todos.count ? todos[k + 1].alturas : []
-                let evento = Evento(
-                    alturas: original.alturas, duracion: original.duracion,
+                let evento = original.con(
+                    duracion: original.duracion,
                     ligada: original.ligada && original.alturas.contains(where: siguiente.contains))
                 defer {
                     k += 1
@@ -186,8 +186,8 @@ package enum Exportacion {
         guard resto.esCero, partes.count > 1 else { return [evento] }
         return partes.enumerated().map { i, parte in
             let ultima = i == partes.count - 1
-            return Evento(
-                alturas: evento.alturas, duracion: impar > 1 ? parte * Duracion(normales, impar) : parte,
+            return evento.con(
+                duracion: impar > 1 ? parte * Duracion(normales, impar) : parte,
                 ligada: ultima ? evento.ligada : !evento.esSilencio)
         }
     }

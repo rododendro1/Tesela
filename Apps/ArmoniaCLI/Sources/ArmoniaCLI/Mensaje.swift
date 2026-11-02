@@ -20,6 +20,8 @@ enum Mensaje {
     case acordes
     case microtonos
     case escalas
+    case habituales
+    case ningunaEscala
     case armadura
     case relativa
     case homonima
@@ -50,6 +52,8 @@ enum Mensaje {
         case .acordes: return TextosDeCLI.traduccion(\.mensajeAcordes)
         case .microtonos: return TextosDeCLI.traduccion(\.mensajeMicrotonos)
         case .escalas: return TextosDeCLI.traduccion(\.mensajeEscalas)
+        case .habituales: return TextosDeCLI.traduccion(\.mensajeHabituales)
+        case .ningunaEscala: return TextosDeCLI.traduccion(\.mensajeNingunaEscala)
         case .armadura: return TextosDeCLI.traduccion(\.mensajeArmadura)
         case .relativa: return TextosDeCLI.traduccion(\.mensajeRelativa)
         case .homonima: return TextosDeCLI.traduccion(\.mensajeHomonima)

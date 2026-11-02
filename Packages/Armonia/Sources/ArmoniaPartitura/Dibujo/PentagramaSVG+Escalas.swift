@@ -4,7 +4,9 @@ import ArmoniaTeoria
 // Lo que dibuja un pentagrama en SVG: escalas, acordes y arpegios. El dibujo está en `PentagramaSVG.swift`.
 
 extension Escala {
-    /// La escala en un pentagrama, como SVG: `Escala("Re dórico").svgPentagrama()`.
+    /// La escala en un pentagrama, como SVG: `Escala("Re dórico").svgPentagrama()`. Si la escala tiene microtonos
+    /// (`TipoDeEscala.microtonal`), sus notas llevan los signos de Bravura: el medio bemol de un maqam, el koron de un
+    /// dastgāh o las comas de Arel-Ezgi-Uzdilek de un makam.
     ///
     /// - Parameters:
     ///   - octava: la octava de la tónica.
@@ -15,20 +17,20 @@ extension Escala {
         octava: Int = 4, sentido: SentidoDelIntervalo? = nil,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
-        let alturas: [Altura]
-        switch sentido {
-        case .ascendente?: alturas = self.alturas(octava: octava)
-        case .descendente?: alturas = self.alturas(octava: octava, sentido: .descendente)
-        case nil:
-            let subida = self.alturas(octava: octava)
-            alturas =
-                tipo.esDireccional ? subida + self.alturas(octava: octava, sentido: .descendente).dropFirst() : subida
-        }
+        let alturas = alturasMicrotonales(octava: octava, sentido: sentido)
         var armadura: [Nota] = []
         if opciones.armadura == .automatica, let propia = notasDeLaArmadura, propia.count <= 7 { armadura = propia }
+        // Los microtonos, con su signo: el medio bemol de un maqam, el koron de un dastgāh, las comas de un makam.
+        let persa = tipo.microtonal?.sistema == .persa
+        let microtonos = alturas.map { altura -> [PentagramaSVG.Microtono?] in
+            guard let nota = altura.nota, altura.desvio != 0 else { return [nil] }
+            let signo = SignoMicrotonal(
+                semitonos: altura.altura.nota.alteracion.semitonos, desvio: altura.desvio, persa: persa)
+            return [PentagramaSVG.Microtono(signo: signo, nombre: nota.nombre(en: opciones.notacion))]
+        }
         return PentagramaSVG(
-            columnas: alturas.map { [$0] }, armadura: armadura, cifrado: nil,
-            titulo: nombre(en: opciones.notacion), opciones: opciones
+            columnas: alturas.map { [$0.altura] }, armadura: armadura, cifrado: nil,
+            titulo: nombre(en: opciones.notacion), opciones: opciones, microtonos: microtonos
         ).svg()
     }
 }

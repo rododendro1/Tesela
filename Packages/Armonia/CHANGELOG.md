@@ -8,6 +8,19 @@
   (`.espanol`, `.catalan`…) no cambian.
 - `Tipografia.unicode` pasa a llamarse `.conSimples` (un signo por semitono: Fa♯, Si♭♭), junto a `.conDobles`;
   también sin obsoleto. El `rawValue` es ahora «conSimples».
+- **Microtonos en las partituras**: cada nota de un `Evento` puede apartarse de su nota temperada (`desvios`, en
+  cents; en texto, `Mi♭4(50¢):4`), y `Escala.voz(octava:sentido:duracion:)` da una escala en negras con sus
+  microtonos. Los formatos los escriben: MusicXML, con el `alter` en decimales (−0.5) y su `<accidental>`
+  (`quarter-flat`, `koron` y, para las comas, `other` con el glifo SMuFL); MEI, con `accid` (`1qf`, el koron y las
+  comas de Arel-Ezgi-Uzdilek, `kf`, `bs`…); LilyPond y ABC, con los cuartos de tono (`eeh`, `_/E`), y las comas como
+  la nota temperada; MIDI, con una inflexión de tono (pitch bend, en el ámbito de ±2 semitonos) antes de cada nota.
+  `Escala.svgPentagrama()` dibuja sus signos con catorce glifos más de Bravura: los cuartos de tono de
+  Stein-Zimmermann, las ocho comas de Arel-Ezgi-Uzdilek, el koron y el sori. En la línea de comandos,
+  `armonia musicxml|mei|lilypond|abc|midi escala Re bayati` exporta una escala.
+- **`armonia escalas`**: el catálogo de escalas en la línea de comandos, las habituales y las de otras tradiciones
+  agrupadas por tradición y categoría, con sus notas desde Do y la marca de las que tienen microtonos. Se filtra con
+  `--tradicion turquia` (o `--tradition turkey`) y `--categoria maqam`, y un texto busca en los nombres. Con su ayuda
+  en los quince idiomas.
 - **Microtonos**: la versión microtonal de las escalas que se aproximan, `TipoDeEscala.microtonal` (un
   `TipoDeEscalaMicrotonal`: la escala temperada y la posición de cada grado en los pasos de su `SistemaMicrotonal`).
   Maqām Rāst, Bayātī, Ṣabā y Sūznāk van en cuartos de tono (`.cuartosDeTono`); Šur, Homāyun y Čahārgāh, con el
