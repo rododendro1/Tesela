@@ -90,13 +90,14 @@ import Testing
         #expect(leyenda(alturas) == ["pitch (every key)", "first note", "outline of the shape"])
         #expect(try leyenda(#require(ElementoXML.leer(TablaArmonica(Acorde("Do")).svg(leyenda: false)))).isEmpty)
         // En catalán, gallego y euskera, el título y la leyenda también.
-        let euskera = try #require(ElementoXML.leer(TablaArmonica(Escala(.re, .dorico)).svg(notacion: .euskera)))
+        let euskera = try #require(
+            ElementoXML.leer(TablaArmonica(Escala(.re, .dorico)).svg(notacion: .euskeraPalabras)))
         #expect(euskera.todos("title").first?.texto == "re doriarra")
         #expect(leyenda(euskera)[1] == "tonika")
-        let catalan = try #require(ElementoXML.leer(TablaArmonica(Acorde("Domaj7")).svg(notacion: .catalan)))
+        let catalan = try #require(ElementoXML.leer(TablaArmonica(Acorde("Domaj7")).svg(notacion: .catalanPalabras)))
         #expect(leyenda(catalan) == ["nota", "fonamental", "contorn de la forma", "tríada major", "tríada menor"])
         let tabla = try #require(TablaArmonica(ciclo: .hexatonico, desde: "Do"))
-        let ciclo = try #require(ElementoXML.leer(tabla.svg(notacion: .gallego)))
+        let ciclo = try #require(ElementoXML.leer(tabla.svg(notacion: .gallegoPalabras)))
         #expect(leyenda(ciclo).contains("fundamental do primeiro acorde"))
     }
 

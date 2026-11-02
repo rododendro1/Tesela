@@ -38,7 +38,7 @@ extension TextosDeNucleo {
         fundamentalNoOmitible: "no se puede omitir a fundamental",
         gradoNoOmitible: { grado in "«omit\(grado)» no ye válido (se pueden omitir 3, 5, 7, 9, 11 y 13)" },
         faltaLaFundamental: "falta a fundamental",
-        intervaloSinPapel: { intervalo, notacion in "a \(intervalo.nombre(en: .aragones)) no tiene papel en un acorde per terceras" },
+        intervaloSinPapel: { intervalo, notacion in "a \(intervalo.nombre(en: .aragonesPalabras)) no tiene papel en un acorde per terceras" },
         terceraMayorYMenor: "tiene tercera mayor y menor a l\'ombre (a ♯9 s\'escribe como 9ª aumentada, no como 3ª menor)",
         variasSeptimas: "tiene más d\'una séptima",
         septimaDisminuidaFueraDelDisminuido: "a séptima disminuida nomás amaneix en l\'acorde disminuiu (con 3ª menor y 5ª disminuida)",
@@ -69,7 +69,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "no existe l\'unísono disminuiu: de Do a Do♭ bi ha un unísono aumentau descendent (escribe-lo -1A)",
         reglaDeLasJustas: "l\'unísono, a 4ª, a 5ª y a 8ª son chustas, aumentadas u disminuidas",
         reglaDeLasMayores: "a 2ª, a 3ª, a 6ª y a 7ª son mayors, menors, aumentadas u disminuidas",
-        intervaloInexistente: { numero, calidad, notacion, regla in "no existe a \(numero)ª \(calidad.nombre(en: .aragones)): \(regla.aragones)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "no existe a \(numero)ª \(calidad.nombre(en: .aragonesPalabras)): \(regla.aragones)" },
         alteracionNoReconocida: { signo in "«\(signo)» no ye una alteración (s\'asperaba ♯, ♭, 𝄪, 𝄫, #, b, x u ♮)" },
 
         // ErrorDeLectura.swift (partitura)

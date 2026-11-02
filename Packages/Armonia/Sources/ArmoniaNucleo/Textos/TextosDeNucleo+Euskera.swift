@@ -38,7 +38,7 @@ extension TextosDeNucleo {
         fundamentalNoOmitible: "oinarria ezin da kendu",
         gradoNoOmitible: { grado in "«omit\(grado)» ez da baliozkoa (3, 5, 7, 9, 11 eta 13 ken daitezke)" },
         faltaLaFundamental: "oinarria falta da",
-        intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: .euskera)): tarte honek ez du paperik hirugarrenez osatutako akorde batean" },
+        intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: .euskeraPalabras)): tarte honek ez du paperik hirugarrenez osatutako akorde batean" },
         terceraMayorYMenor: "hirugarren handia eta txikia ditu aldi berean (♯9 9. gehitu gisa idazten da, ez 3. txiki gisa)",
         variasSeptimas: "zazpigarren bat baino gehiago ditu",
         septimaDisminuidaFueraDelDisminuido: "zazpigarren gutxitua akorde gutxituan bakarrik agertzen da (3. txikiarekin eta 5. gutxituarekin)",
@@ -69,7 +69,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "unisono gutxitua ez da existitzen: Do-tik Do♭-ra beheranzko unisono gehitua dago (idatzi -1A)",
         reglaDeLasJustas: "unisonoa, 4.a, 5.a eta 8.a justuak, gehituak edo gutxituak dira",
         reglaDeLasMayores: "2.a, 3.a, 6.a eta 7.a handiak, txikiak, gehituak edo gutxituak dira",
-        intervaloInexistente: { numero, calidad, notacion, regla in "\(numero). \(calidad.nombre(en: .euskera)) ez da existitzen: \(regla.euskera)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "\(numero). \(calidad.nombre(en: .euskeraPalabras)) ez da existitzen: \(regla.euskera)" },
         alteracionNoReconocida: { signo in "«\(signo)» ez da alterazio bat (♯, ♭, 𝄪, 𝄫, #, b, x edo ♮ espero zen)" },
 
         // ErrorDeLectura.swift (partitura)

@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- **Notaciones con palabras**: `Notacion.espanol`, `.ingles`, `.catalan`… pasan a llamarse `.espanolPalabras`,
+  `.inglesPalabras`, `.catalanPalabras`… en los quince idiomas, como `.espanolASCII` y `.espanolCompacto`; igual en
+  `EscrituraDeNotas`. Los nombres de antes desaparecen sin pasar por obsoletos. Los casos de `Idioma`
+  (`.espanol`, `.catalan`…) no cambian.
 - **Microtonos**: la versión microtonal de las escalas que se aproximan, `TipoDeEscala.microtonal` (un
   `TipoDeEscalaMicrotonal`: la escala temperada y la posición de cada grado en los pasos de su `SistemaMicrotonal`).
   Maqām Rāst, Bayātī, Ṣabā y Sūznāk van en cuartos de tono (`.cuartosDeTono`); Šur, Homāyun y Čahārgāh, con el

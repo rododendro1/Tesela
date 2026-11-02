@@ -51,7 +51,7 @@ enum DibujoDeReferencia: String, CaseIterable, CustomTestStringConvertible {
             return Escala("La menor melódica").svgPentagrama()
         case .pentagramaSiBemolMayorEnIngles:
             return Escala("Si♭ mayor").svgPentagrama(
-                opciones: OpcionesDePentagrama(notacion: .ingles, nombresDeLasNotas: true))
+                opciones: OpcionesDePentagrama(notacion: .inglesPalabras, nombresDeLasNotas: true))
         case .pentagramaDoble:
             return Escala(.do).svgPentagrama(octava: 3, opciones: OpcionesDePentagrama(pentagramas: .doble))
         case .pentagramaAcordeSol7Si:
@@ -63,7 +63,7 @@ enum DibujoDeReferencia: String, CaseIterable, CustomTestStringConvertible {
         case .tonnetzDoMayor:
             return Tonnetz(Acorde("Do")).svg()
         case .tonnetzEscala:
-            return Tonnetz(Escala("Do mayor")).svg(notacion: .ingles)
+            return Tonnetz(Escala("Do mayor")).svg(notacion: .inglesPalabras)
         case .tonnetzRecorrido:
             return Tonnetz(recorrido: [Acorde("Do"), Acorde("Lam"), Acorde("Fa"), Acorde("Rem")])!.svg()
         case .tablaArmonicaRecorrido:

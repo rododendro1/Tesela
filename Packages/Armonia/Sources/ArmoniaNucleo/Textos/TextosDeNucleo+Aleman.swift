@@ -38,7 +38,7 @@ extension TextosDeNucleo {
         fundamentalNoOmitible: "der Grundton kann nicht weggelassen werden",
         gradoNoOmitible: { grado in "„omit\(grado)“ ist ungültig (weglassen lassen sich 3, 5, 7, 9, 11 und 13)" },
         faltaLaFundamental: "der Grundton fehlt",
-        intervaloSinPapel: { intervalo, notacion in "die \(intervalo.nombre(en: .aleman)) hat in einem Terzakkord keine Funktion" },
+        intervaloSinPapel: { intervalo, notacion in "die \(intervalo.nombre(en: .alemanPalabras)) hat in einem Terzakkord keine Funktion" },
         terceraMayorYMenor: "er hat zugleich eine große und eine kleine Terz (♯9 wird als übermäßige None geschrieben, nicht als kleine Terz)",
         variasSeptimas: "er hat mehr als eine Septime",
         septimaDisminuidaFueraDelDisminuido: "die verminderte Septime kommt nur im verminderten Akkord vor (mit kleiner Terz und verminderter Quinte)",
@@ -69,7 +69,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "eine verminderte Prime gibt es nicht: von C nach Ces ist es eine übermäßige Prime abwärts (schreib -A1)",
         reglaDeLasJustas: "Prime, Quarte, Quinte und Oktave sind rein, übermäßig oder vermindert",
         reglaDeLasMayores: "Sekunde, Terz, Sexte und Septime sind groß, klein, übermäßig oder vermindert",
-        intervaloInexistente: { numero, calidad, notacion, regla in "es gibt keine \(calidad.nombre(en: .aleman)) \(Intervalo.ordinal(numero, en: .aleman)): \(regla.aleman)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "es gibt keine \(calidad.nombre(en: .alemanPalabras)) \(Intervalo.ordinal(numero, en: .aleman)): \(regla.aleman)" },
         alteracionNoReconocida: { signo in "„\(signo)“ ist kein Vorzeichen (erwartet ♯, ♭, 𝄪, 𝄫, #, b, x oder ♮)" },
 
         // ErrorDeLectura.swift (partitura)

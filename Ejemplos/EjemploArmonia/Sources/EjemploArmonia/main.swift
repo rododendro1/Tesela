@@ -242,7 +242,10 @@ for correspondencia in CorrespondenciaDeColores.allCases {
 }
 
 titulo("Otras lenguas")
-for notacion in [Notacion.alemanCompacto, .frances, .italiano, .catalan, .gallego, .euskera, .portugues] {
+for notacion in [
+    Notacion.alemanCompacto, .francesPalabras, .italianoPalabras, .catalanPalabras, .gallegoPalabras, .euskeraPalabras,
+    .portuguesPalabras,
+] {
     let notas = ["Do#", "Mib", "Sib", "Si"].map { Nota(texto: $0)!.nombre(en: notacion) }
     print(
         "  \(notacion):", notas.joined(separator: ", "), "·", Tonalidad("Fa# mayor").nombre(en: notacion),

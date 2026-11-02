@@ -74,7 +74,7 @@ public struct EstiloDeCifrado: Hashable, Sendable {
     /// Notación habitual en jazz: C#ø7, EbΔ7.
     public static let jazz = EstiloDeCifrado(notacion: .inglesASCII, septimaMayor: .delta, semidisminuido: .barrado)
     /// Calidades escritas con palabras: Domin7, Fadim, Solaug. No confundir con las notaciones con palabras
-    /// (`Notacion.espanol`), que escriben así las alteraciones de las notas.
+    /// (`Notacion.espanolPalabras`), que escriben así las alteraciones de las notas.
     public static let calidadesConPalabras = EstiloDeCifrado(menor: .min, disminuido: .dim, aumentado: .aug)
 
     package func nombre(_ nota: Nota) -> String { nota.nombreCompacto(en: notacion) }

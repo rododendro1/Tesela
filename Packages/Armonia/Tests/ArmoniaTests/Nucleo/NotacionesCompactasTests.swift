@@ -16,20 +16,20 @@ import Testing
         #expect(Nota("Do##").nombre(en: .italianoCompacto) == "Do♯♯")
         #expect(Nota("Mi").nombre(en: .euskeraCompacto) == "Mi")
         // Las de palabras no cambian.
-        #expect(Nota("Reb").nombre(en: .frances) == "ré bémol")
+        #expect(Nota("Reb").nombre(en: .francesPalabras) == "ré bémol")
     }
 
     @Test func alturasConSubindice() {
         #expect(Altura("Fa#4").nombre(en: .catalanCompacto) == "Fa♯₄")
         #expect(Altura("Sib3").nombre(en: .gallegoCompacto) == "Si♭₃")
         #expect(Notacion.occitanoCompacto.octavas == .subindices)
-        #expect(Notacion.occitano.octavas == .cifras)
+        #expect(Notacion.occitanoPalabras.octavas == .cifras)
     }
 
     @Test func leerEnCompacto() throws {
         #expect(try Nota(leyendo: "Ré♭", en: .francesCompacto) == Nota("Reb"))
         #expect(try Nota(leyendo: "ré bémol", en: .francesCompacto) == Nota("Reb"))
-        #expect(try Nota(leyendo: "Ré♭", en: .frances) == Nota("Reb"))
+        #expect(try Nota(leyendo: "Ré♭", en: .francesPalabras) == Nota("Reb"))
         #expect(try Nota(leyendo: "Фа♯", en: .rusoCompacto) == Nota("Fa#"))
         #expect(try Altura(leyendo: "Fa♯₄", en: .catalanCompacto) == Altura("Fa#4"))
         #expect(throws: ErrorDeLectura.self) { try Nota(leyendo: "F#", en: .italianoCompacto) }

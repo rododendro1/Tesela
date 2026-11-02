@@ -180,9 +180,9 @@ extension TipoDeEscala {
     /// o el inglés; en alemán y en húngaro, el alemán o el húngaro ("H mayor" no es una escala); en las demás, los de las lenguas
     /// peninsulares y romances o, si no, el español (sin inglés: "Re dorian" mezclaría idiomas).
     package static func buscar(nombre: String, conTonicaEn notacion: Notacion) -> TipoDeEscala? {
-        if notacion == .ingles { return buscar(nombre: nombre, aceptarIngles: true) }
+        if notacion == .inglesPalabras { return buscar(nombre: nombre, aceptarIngles: true) }
         let normalizado = normalizar(nombre)
-        if notacion == .ruso || notacion == .griego {
+        if notacion == .rusoPalabras || notacion == .griegoPalabras {
             return NombresDeEscalas.indiceRusoGriego[normalizado] ?? buscar(nombre: nombre, aceptarIngles: true)
         }
         // En alemán y en húngaro, el suyo o el del otro, que escriben las notas igual (C, H, B): «C dór», «H moll».

@@ -134,31 +134,31 @@ import Testing
             #expect(error.descripcion(en: .espanolCompacto) == error.description)
             // El idioma lo da la notación.
             #expect(
-                error.descripcion(en: .aleman)
+                error.descripcion(en: .alemanPalabras)
                     == ("„Do7(b3)“ kann nicht gelesen werden (Zeichen 5): „b3“ ist keine gültige Tension "
                         + "(♭/♯ gehen mit 5, 9, 11 und 13, add mit 2, 4, 6, 9, 11 und 13)"))
             #expect(
-                error.descripcion(en: .portugues)
+                error.descripcion(en: .portuguesPalabras)
                     == ("Não é possível ler «Do7(b3)» (caractere 5): «b3» não é uma tensão válida "
                         + "(admitem-se ♭/♯ com 5, 9, 11 e 13, e add com 2, 4, 6, 9, 11 e 13)"))
             #expect(
-                error.descripcion(en: .frances)
+                error.descripcion(en: .francesPalabras)
                     == ("Impossible de lire « Do7(b3) » (caractère 5) : « b3 » n'est pas une tension valide "
                         + "(♭/♯ s'emploient avec 5, 9, 11 et 13, et add avec 2, 4, 6, 9, 11 et 13)"))
             #expect(
-                error.descripcion(en: .italiano)
+                error.descripcion(en: .italianoPalabras)
                     == ("Impossibile leggere «Do7(b3)» (carattere 5): «b3» non è una tensione valida "
                         + "(si ammettono ♭/♯ con 5, 9, 11 e 13, e add con 2, 4, 6, 9, 11 e 13)"))
             #expect(
-                error.descripcion(en: .catalan)
+                error.descripcion(en: .catalanPalabras)
                     == ("No es pot llegir «Do7(b3)» (caràcter 5): «b3» no és una tensió vàlida "
                         + "(s'admeten ♭/♯ amb 5, 9, 11 i 13, i add amb 2, 4, 6, 9, 11 i 13)"))
             #expect(
-                error.descripcion(en: .gallego)
+                error.descripcion(en: .gallegoPalabras)
                     == ("Non se pode ler «Do7(b3)» (carácter 5): «b3» non é unha tensión válida "
                         + "(admítense ♭/♯ con 5, 9, 11 e 13, e add con 2, 4, 6, 9, 11 e 13)"))
             #expect(
-                error.descripcion(en: .euskera)
+                error.descripcion(en: .euskeraPalabras)
                     == ("Ezin da «Do7(b3)» irakurri (5. karakterea): «b3» ez da tentsio baliozkoa "
                         + "(♭/♯ 5, 9, 11 eta 13rekin onartzen dira, eta add 2, 4, 6, 9, 11 eta 13rekin)"))
 
@@ -234,21 +234,24 @@ import Testing
         for motivo in Self.motivos {
             let error = ErrorDeLectura(texto: "x", posicion: 0, motivo: motivo)
             let espanol = error.explicacion
-            for notacion in [Notacion.catalan, .gallego, .euskera, .portugues, .frances, .italiano] {
+            for notacion in [
+                Notacion.catalanPalabras, .gallegoPalabras, .euskeraPalabras, .portuguesPalabras, .francesPalabras,
+                .italianoPalabras,
+            ] {
                 let texto = error.explicacion(en: notacion)
                 #expect(!texto.isEmpty, "\(motivo) \(notacion)")
                 #expect(Set(citas(texto)) == Set(citas(espanol)), "\(motivo) \(notacion): \(texto)")
             }
-            for notacion in [Notacion.euskera, .frances, .italiano] {
+            for notacion in [Notacion.euskeraPalabras, .francesPalabras, .italianoPalabras] {
                 #expect(error.explicacion(en: notacion) != espanol, "\(motivo) \(notacion)")
             }
         }
         #expect(
-            ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio).descripcion(en: .gallego)
+            ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio).descripcion(en: .gallegoPalabras)
                 == "Valor non válido: o texto está baleiro")
         #expect(
             ErrorDeLectura(texto: "x", posicion: nil, motivo: .intervaloInexistente(numero: 5, calidad: .mayor))
-                .explicacion(en: .euskera)
+                .explicacion(en: .euskeraPalabras)
                 == "5. handia ez da existitzen: unisonoa, 4.a, 5.a eta 8.a justuak, gehituak edo gutxituak dira")
     }
 

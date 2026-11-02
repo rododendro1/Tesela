@@ -400,9 +400,9 @@ extension DigitacionTests {
     @Test func nombresDeLosInstrumentos() {
         #expect(Encordado.todos.map { $0.nombre(en: .espanolCompacto) } == Encordado.todos.map(\.nombre))
         #expect(Encordado.guitarraDeSieteCuerdas.titulo(en: .inglesASCII) == "Seven-string guitar")
-        #expect(Encordado.mandolina.nombre(en: .portugues) == "bandolim")
+        #expect(Encordado.mandolina.nombre(en: .portuguesPalabras) == "bandolim")
         let propio = Encordado(nombre: "laúd", cuerdas: Encordado.guitarra.cuerdas)
-        #expect(propio.nombre(en: .aleman) == "laúd")
+        #expect(propio.nombre(en: .alemanPalabras) == "laúd")
     }
 
     @Test func nombresDeLasTransformaciones() {
@@ -410,7 +410,7 @@ extension DigitacionTests {
             TransformacionNeorriemanniana.allCases.map { $0.nombre(en: .espanolCompacto) }
                 == TransformacionNeorriemanniana.allCases.map(\.nombre))
         #expect(TransformacionNeorriemanniana.l.nombre(en: .inglesASCII) == "leading-tone exchange")
-        #expect(TransformacionNeorriemanniana.r.nombre(en: .aleman) == "Parallele")
+        #expect(TransformacionNeorriemanniana.r.nombre(en: .alemanPalabras) == "Parallele")
     }
 }
 

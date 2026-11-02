@@ -38,7 +38,7 @@ extension TextosDeNucleo {
         fundamentalNoOmitible: "não se pode omitir a fundamental",
         gradoNoOmitible: { grado in "«omit\(grado)» não é válido (podem omitir-se 3, 5, 7, 9, 11 e 13)" },
         faltaLaFundamental: "falta a fundamental",
-        intervaloSinPapel: { intervalo, notacion in "a \(intervalo.nombre(en: .portugues)) não tem papel num acorde por terceiras" },
+        intervaloSinPapel: { intervalo, notacion in "a \(intervalo.nombre(en: .portuguesPalabras)) não tem papel num acorde por terceiras" },
         terceraMayorYMenor: "tem terceira maior e menor ao mesmo tempo (a ♯9 escreve-se como 9ª aumentada, não como 3ª menor)",
         variasSeptimas: "tem mais de uma sétima",
         septimaDisminuidaFueraDelDisminuido: "a sétima diminuta só aparece no acorde diminuto (com 3ª menor e 5ª diminuta)",
@@ -69,7 +69,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "não existe o uníssono diminuto: de Dó a Dó♭ há um uníssono aumentado descendente (escreva -1A)",
         reglaDeLasJustas: "o uníssono, a 4ª, a 5ª e a 8ª são justas, aumentadas ou diminutas",
         reglaDeLasMayores: "a 2ª, a 3ª, a 6ª e a 7ª são maiores, menores, aumentadas ou diminutas",
-        intervaloInexistente: { numero, calidad, notacion, regla in "não existe a \(numero)ª \(calidad.nombre(en: .portugues)): \(regla.portugues)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "não existe a \(numero)ª \(calidad.nombre(en: .portuguesPalabras)): \(regla.portugues)" },
         alteracionNoReconocida: { signo in "«\(signo)» não é uma alteração (esperava-se ♯, ♭, 𝄪, 𝄫, #, b, x ou ♮)" },
 
         // ErrorDeLectura.swift (partitura)

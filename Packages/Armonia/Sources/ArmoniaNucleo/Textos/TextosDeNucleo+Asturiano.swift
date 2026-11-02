@@ -38,7 +38,7 @@ extension TextosDeNucleo {
         fundamentalNoOmitible: "nun se pue omitir la fundamental",
         gradoNoOmitible: { grado in "«omit\(grado)» nun ye válidu (puen omitise 3, 5, 7, 9, 11 y 13)" },
         faltaLaFundamental: "falta la fundamental",
-        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .asturiano)) nun tien papel nun acorde per terceres" },
+        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .asturianoPalabras)) nun tien papel nun acorde per terceres" },
         terceraMayorYMenor: "tien tercera mayor y menor al empar (la ♯9 escríbese como 9ª aumentada, non como 3ª menor)",
         variasSeptimas: "tien más d\'una séptima",
         septimaDisminuidaFueraDelDisminuido: "la séptima menguada namás apaez nel acorde menguáu (con 3ª menor y 5ª menguada)",
@@ -69,7 +69,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "nun esiste l\'unísonu menguáu: de Do a Do♭ hai un unísonu aumentáu descendente (escríbilu -1A)",
         reglaDeLasJustas: "l\'unísonu, la 4ª, la 5ª y la 8ª son xustes, aumentaes o menguaes",
         reglaDeLasMayores: "la 2ª, la 3ª, la 6ª y la 7ª son mayores, menores, aumentaes o menguaes",
-        intervaloInexistente: { numero, calidad, notacion, regla in "nun esiste la \(numero)ª \(calidad.nombre(en: .asturiano)): \(regla.asturiano)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "nun esiste la \(numero)ª \(calidad.nombre(en: .asturianoPalabras)): \(regla.asturiano)" },
         alteracionNoReconocida: { signo in "«\(signo)» nun ye una alteración (esperábase ♯, ♭, 𝄪, 𝄫, #, b, x o ♮)" },
 
         // ErrorDeLectura.swift (partitura)

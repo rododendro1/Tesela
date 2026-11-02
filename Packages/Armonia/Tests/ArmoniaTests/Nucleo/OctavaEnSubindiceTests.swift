@@ -25,7 +25,10 @@ import Testing
         #expect(Notacion.espanolCompacto.octavas == .subindices)
         #expect(Notacion.inglesCompacto.octavas == .subindices)
         #expect(Notacion.alemanCompacto.octavas == .subindices)
-        for notacion in [Notacion.espanol, .espanolASCII, .ingles, .inglesASCII, .aleman, .frances, .ruso] {
+        for notacion in [
+            Notacion.espanolPalabras, .espanolASCII, .inglesPalabras, .inglesASCII, .alemanPalabras, .francesPalabras,
+            .rusoPalabras,
+        ] {
             #expect(notacion.octavas == .cifras, "\(notacion)")
         }
         #expect(
@@ -52,13 +55,13 @@ import Testing
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .inglesASCII.conOctavas(.subindices)) == "F#₄")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .frances.conOctavas(.subindices)) == "fa dièse ₄")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombreCompacto(en: subindices) == "Fa♯₄")
-        #expect(Altura(Nota.fa.sostenido, octava: 4).nombreCompacto(en: .espanol) == "Fa♯4")
+        #expect(Altura(Nota.fa.sostenido, octava: 4).nombreCompacto(en: .espanolPalabras) == "Fa♯4")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .inglesCompacto) == "F♯₄")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .alemanCompacto) == "Fis₄")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: cifras) == "Fa♯4")
         // En las que no son compactas, y en `description` y la codificación, con cifras.
         #expect(Altura(.la, octava: 4).nombre(en: .espanolASCII) == "La4")
-        #expect(Altura(.la, octava: 4).nombre(en: .espanol) == "La4")
+        #expect(Altura(.la, octava: 4).nombre(en: .espanolPalabras) == "La4")
         #expect(Altura(.la, octava: 4).description == "La4")
         #expect(Altura(.la, octava: 4).texto == "La4")
         #expect(Altura(.la, octava: 4).nombreCompleto == "La4")
@@ -69,8 +72,8 @@ import Testing
         #expect(try (Altura(leyendo: "Do♯₃")) == Altura(Nota.`do`.sostenido, octava: 3))
         #expect(try (Altura(leyendo: "Si♭₋₁")) == Altura(Nota.si.bemol, octava: -1))
         #expect(try (Altura(leyendo: "C#₅")) == Altura(Nota.`do`.sostenido, octava: 5))
-        #expect(try (Altura(leyendo: "ré bémol ₃", en: .frances)) == Altura(Nota.re.bemol, octava: 3))
-        #expect(try (Altura(leyendo: "Fis₄", en: .aleman)) == Altura(Nota.fa.sostenido, octava: 4))
+        #expect(try (Altura(leyendo: "ré bémol ₃", en: .francesPalabras)) == Altura(Nota.re.bemol, octava: 3))
+        #expect(try (Altura(leyendo: "Fis₄", en: .alemanPalabras)) == Altura(Nota.fa.sostenido, octava: 4))
         #expect(throws: (any Error).self) { try Altura(leyendo: "La₄x") }
         #expect(throws: (any Error).self) { try Altura(leyendo: "La") }
     }

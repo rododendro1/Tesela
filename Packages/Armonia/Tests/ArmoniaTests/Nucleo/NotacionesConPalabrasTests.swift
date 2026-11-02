@@ -5,7 +5,7 @@ import Testing
 @testable import ArmoniaNucleo
 @testable import ArmoniaTeoria
 
-/// Las tres modalidades del español y del inglés: con palabras (`.espanol`, `.ingles`), ASCII y Unicode.
+/// Las tres modalidades del español y del inglés: con palabras (`.espanolPalabras`, `.inglesPalabras`), ASCII y Unicode.
 @Suite struct NotacionesConPalabrasTests {
     @Test func nombresDeNota() {
         let casos: [(String, String, String, String, String, String, String)] = [
@@ -17,17 +17,18 @@ import Testing
         ]
         for (texto, espanol, espanolASCII, espanolCompacto, ingles, inglesASCII, inglesCompacto) in casos {
             let nota = Nota(texto: texto)!
-            #expect(nota.nombre(en: .espanol) == espanol)
+            #expect(nota.nombre(en: .espanolPalabras) == espanol)
             #expect(nota.nombre(en: .espanolASCII) == espanolASCII)
             #expect(nota.nombre(en: .espanolCompacto) == espanolCompacto)
-            #expect(nota.nombre(en: .ingles) == ingles)
+            #expect(nota.nombre(en: .inglesPalabras) == ingles)
             #expect(nota.nombre(en: .inglesASCII) == inglesASCII)
             #expect(nota.nombre(en: .inglesCompacto) == inglesCompacto)
             // Las seis formas se leen, sin indicar la notación y en cualquiera de las seis.
             for escrito in [espanol, espanolASCII, espanolCompacto, ingles, inglesASCII, inglesCompacto] {
                 #expect(Nota(texto: escrito) == nota, Comment(rawValue: escrito))
                 for notacion in [
-                    Notacion.espanol, .espanolASCII, .espanolCompacto, .ingles, .inglesASCII, .inglesCompacto,
+                    Notacion.espanolPalabras, .espanolASCII, .espanolCompacto, .inglesPalabras, .inglesASCII,
+                    .inglesCompacto,
                 ] {
                     #expect((try? Nota(leyendo: escrito, en: notacion)) == nota, "\(escrito) \(notacion)")
                 }
@@ -37,24 +38,24 @@ import Testing
 
     @Test func alturas() {
         let fa = Altura("Fa#4")
-        #expect(fa.nombre(en: .espanol) == "Fa sostenido 4")
-        #expect(fa.nombre(en: .ingles) == "F sharp 4")
+        #expect(fa.nombre(en: .espanolPalabras) == "Fa sostenido 4")
+        #expect(fa.nombre(en: .inglesPalabras) == "F sharp 4")
         #expect(Altura(texto: "Fa sostenido 4") == fa)
         #expect(Altura(texto: "B flat 3") == Altura("Sib3"))
-        #expect((try? Altura(leyendo: "Fa#4", en: .espanol)) == fa)
-        #expect((try? Altura(leyendo: "F sharp 4", en: .ingles)) == fa)
+        #expect((try? Altura(leyendo: "Fa#4", en: .espanolPalabras)) == fa)
+        #expect((try? Altura(leyendo: "F sharp 4", en: .inglesPalabras)) == fa)
     }
 
     /// Con palabras, los cifrados llevan ♯ y ♭ en los dos idiomas.
     @Test func cifrados() {
         let acorde = Acorde("Sib7(b9)/Re")
-        #expect(acorde.cifrado(en: .espanol) == "Si♭7(♭9)/Re")
-        #expect(acorde.cifrado(en: .ingles) == "B♭7(♭9)/D")
+        #expect(acorde.cifrado(en: .espanolPalabras) == "Si♭7(♭9)/Re")
+        #expect(acorde.cifrado(en: .inglesPalabras) == "B♭7(♭9)/D")
         #expect(acorde.cifrado(en: .espanolCompacto) == "Si♭7(♭9)/Re")
         #expect(acorde.cifrado(en: .inglesASCII) == "Bb7(b9)/D")
-        #expect(Notacion.espanol.tipografia == .unicode)
-        #expect(Notacion.ingles.tipografia == .unicode)
-        #expect(Acorde(texto: acorde.cifrado(en: .ingles)) == acorde)
+        #expect(Notacion.espanolPalabras.tipografia == .unicode)
+        #expect(Notacion.inglesPalabras.tipografia == .unicode)
+        #expect(Acorde(texto: acorde.cifrado(en: .inglesPalabras)) == acorde)
     }
 
     /// Los cifrados se leen con la fundamental y el bajo en palabras, separadas de la nota por un espacio.
@@ -78,7 +79,7 @@ import Testing
         // Ida y vuelta: la fundamental y el bajo con palabras, y el tipo como siempre.
         let acordes: [Acorde] = ["Fa#m7", "Sib7(b9)/Re", "Mibmaj7", "Do#°7", "Lab/Do"]
         for acorde in acordes {
-            for notacion in [Notacion.espanol, .ingles] {
+            for notacion in [Notacion.espanolPalabras, .inglesPalabras] {
                 let bajo = acorde.bajo == acorde.fundamental ? "" : "/" + acorde.bajo.nombre(en: notacion)
                 let escrito = acorde.fundamental.nombre(en: notacion) + " " + acorde.tipo.cifrado + bajo
                 #expect(Acorde(texto: escrito) == acorde, Comment(rawValue: escrito))
@@ -95,7 +96,7 @@ import Testing
         // «B» sola en alemán sigue siendo Si♭.
         #expect(Escala(texto: "B dorisch") == Escala("Sib dórico"))
         for tonalidad in [Tonalidad("Fa# mayor"), Tonalidad("Mib menor"), Tonalidad("Do mayor")] {
-            for notacion in [Notacion.espanol, .ingles] {
+            for notacion in [Notacion.espanolPalabras, .inglesPalabras] {
                 #expect(
                     Tonalidad(texto: tonalidad.texto(en: notacion)) == tonalidad,
                     Comment(rawValue: tonalidad.texto(en: notacion)))
@@ -109,9 +110,9 @@ import Testing
         #expect(Notacion.delIdioma(.ingles) == .inglesASCII)
         #expect(EscrituraDeNotas(idioma: .espanol, ascii: false) == .espanolCompacto)
         #expect(EscrituraDeNotas(idioma: .ingles, ascii: true) == .inglesASCII)
-        #expect(Notacion.espanol.idiomaDeLasNotas == .espanol)
-        #expect(Notacion.ingles.idiomaDeLasNotas == .ingles)
-        #expect(!Notacion.espanol.usaASCII)
-        #expect(!Notacion.ingles.usaASCII)
+        #expect(Notacion.espanolPalabras.idiomaDeLasNotas == .espanol)
+        #expect(Notacion.inglesPalabras.idiomaDeLasNotas == .ingles)
+        #expect(!Notacion.espanolPalabras.usaASCII)
+        #expect(!Notacion.inglesPalabras.usaASCII)
     }
 }

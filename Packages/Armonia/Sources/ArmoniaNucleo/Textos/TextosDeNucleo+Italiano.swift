@@ -38,7 +38,7 @@ extension TextosDeNucleo {
         fundamentalNoOmitible: "non si può omettere la fondamentale",
         gradoNoOmitible: { grado in "«omit\(grado)» non è valido (si possono omettere 3, 5, 7, 9, 11 e 13)" },
         faltaLaFundamental: "manca la fondamentale",
-        intervaloSinPapel: { intervalo, notacion in "l'intervallo di \(intervalo.nombre(en: .italiano)) non ha un ruolo in un accordo per terze" },
+        intervaloSinPapel: { intervalo, notacion in "l'intervallo di \(intervalo.nombre(en: .italianoPalabras)) non ha un ruolo in un accordo per terze" },
         terceraMayorYMenor: "ha insieme la terza maggiore e quella minore (la ♯9 si scrive come 9ª aumentata, non come 3ª minore)",
         variasSeptimas: "ha più di una settima",
         septimaDisminuidaFueraDelDisminuido: "la settima diminuita compare solo nell'accordo diminuito (con 3ª minore e 5ª diminuita)",
@@ -69,7 +69,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "l'unisono diminuito non esiste: da Do a Do♭ c'è un unisono aumentato discendente (scrivilo -1A)",
         reglaDeLasJustas: "l'unisono, la 4ª, la 5ª e l'8ª sono giuste, aumentate o diminuite",
         reglaDeLasMayores: "la 2ª, la 3ª, la 6ª e la 7ª sono maggiori, minori, aumentate o diminuite",
-        intervaloInexistente: { numero, calidad, notacion, regla in "non esiste la \(numero)ª \(calidad.nombre(en: .italiano)): \(regla.italiano)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "non esiste la \(numero)ª \(calidad.nombre(en: .italianoPalabras)): \(regla.italiano)" },
         alteracionNoReconocida: { signo in "«\(signo)» non è un'alterazione (si aspettava ♯, ♭, 𝄪, 𝄫, #, b, x o ♮)" },
 
         // ErrorDeLectura.swift (partitura)
