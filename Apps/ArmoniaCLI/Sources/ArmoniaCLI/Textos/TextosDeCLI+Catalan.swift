@@ -7,10 +7,10 @@ import Armonia
 extension TextosDeCLI {
     static let catalan = TextosDeCLI(
         // Ayuda+Armonizacion.swift
-        sintaxisAnalizar: "analizar <acords> [--en <tonalitat>]",
-        descripcionAnalizar: "xifrat romà, funcions, cadències i\nmodulacions (amb l'acord pivot;\nsense --en)",
+        sintaxisAnalizar: "analizar <acords> [--en <tonalitat>] [--escalas]",
+        descripcionAnalizar: "xifrat romà, funcions, cadències i\nmodulacions (amb l'acord pivot;\nsense --en)\n--escalas: l'escala de cada acord,\namb les tensions i notes a evitar",
         sintaxisAnalizarArchivo: "analizar --archivo <fitxer> [--ventana <durada>]",
-        descripcionAnalizarArchivo: "el mateix, amb els acords d'un fitxer\nMIDI o MusicXML (un per pols;\n--ventana 2: un per blanca)",
+        descripcionAnalizarArchivo: "el mateix, amb els acords d'un fitxer\nMIDI, MusicXML, MEI o ABC (un per\npols; --ventana 2: un per blanca)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalitat>] [--propuestas 3]",
         descripcionArmonizar: "acords per a una melodia, de millor\na pitjor; amb octaves (Mi4), també\nel coral a quatre veus",
         sintaxisRealizar: "realizar <acords> [--en <tonalitat>]",
@@ -33,8 +33,11 @@ extension TextosDeCLI {
         descripcionIdentificar: "acords que formen unes notes",
         sintaxisIntervalo: "intervalo <nota> <nota>",
         descripcionIntervalo: "interval entre dues notes o altures",
-        sintaxisEscala: "escala <escala>",
-        descripcionEscala: "notes i acords d'una escala",
+        sintaxisEscala: "escala <escala> [--acordes]",
+        descripcionEscala: "notes i acords d'una escala\n--acordes: tots els que hi caben a\ncada grau, no només els de terceres",
+        sintaxisEscalas: "escalas [<text>] [opcions]",
+        descripcionEscalas: "el catàleg d'escales: les habituals i\nles d'altres tradicions, per\ncategories, amb les notes des de Do",
+        notasEscalas: "opcions: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) i --categoria maqam (o rāga, makam,\ndastgah, dromos…); un text cerca en els noms",
         sintaxisTonalidad: "tonalidad <tonalitat>",
         descripcionTonalidad: "armadura, relatives i graus",
 
@@ -79,10 +82,16 @@ extension TextosDeCLI {
         descripcionMusicxmlArpegios: "els acords arpegiats, nota a nota",
         notasMusicxmlArpegios: "opcions: --patron alberti (o ascendente, descendente, ida y\nvuelta), --figura 16 (el que dura cada nota; corxera si no),\n--duracion 1 (el que dura cada acord: el patró es repeteix fins\na omplir-lo) i les altres d'«acordes»",
         sintaxisMusicxmlArchivo: "musicxml acordes --archivo <fitxer>",
-        descripcionMusicxmlArchivo: "la progressió d'un fitxer MIDI o\nMusicXML, amb el que dura cada acord\n(també arpegios, mei i midi)",
-        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [opcions]",
+        descripcionMusicxmlArchivo: "la progressió d'un fitxer MIDI,\nMusicXML, MEI o ABC, amb el que dura\ncada acord (també arpegios, mei i\nmidi)",
+        sintaxisMusicxmlEscala: "musicxml escala <escala> [opcions]",
+        descripcionMusicxmlEscala: "una escala en negres, amb els seus\nmicrotons: el mig bemoll d'un maqam,\nel koron, les comes d'un makam",
+        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios|escala <…> [opcions]",
         descripcionMeiMelodia: "el mateix en MEI 5, el format de les\nedicions crítiques (amb les mateixes\nopcions)",
-        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [opcions]",
+        sintaxisLilypondMelodia: "lilypond melodia|coral|acordes|arpegios|escala <…> [opcions]",
+        descripcionLilypondMelodia: "el mateix en LilyPond, per gravar la\npartitura en PDF",
+        sintaxisAbcMelodia: "abc melodia|coral|acordes|arpegios|escala <…> [opcions]",
+        descripcionAbcMelodia: "el mateix en ABC, la notació en text\nde la música tradicional",
+        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios|escala <…> [opcions]",
         descripcionMidiMelodia: "el mateix com a fitxer MIDI, per\nescoltar-lo (sense --clave ni\n--cifrados; amb --programa 0…127,\nGeneral MIDI)",
 
         // Ayuda+Trastes.swift
@@ -95,7 +104,7 @@ extension TextosDeCLI {
         cabeceraDeLaAyuda: """
         armonia: teoria musical des de la línia d'ordres.
 
-        Ús: armonia <ordre> <arguments> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru]
+        Ús: armonia <ordre> <arguments> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
 
         Ordres (les ordres i les opcions s'escriuen en castellà o en anglès):
         """,
@@ -106,11 +115,21 @@ extension TextosDeCLI {
         Amb --textos, els textos van en un altre idioma que les notes: --idioma en --textos ca.
         En castellà i anglès, --escritura palabras|ascii|unicode escriu les notes com a Fa sostenido,
         Fa# o Fa♯ (en anglès, F sharp, F# o F♯).
+        En els altres idiomes, --escritura palabras|compacto tria les paraules o la forma compacta:
+        fa dièse o Fa♯, F Kreuz o Fis.
+        En les escriptures compactes l'octava va en subíndex (La₄) i en les altres, amb xifres (La4);
+        --subindices o --cifras la fixen (es llegeixen totes dues maneres).
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "aquesta ajuda",
+        sintaxisCompletado: "completado bash|zsh|fish",
+        descripcionCompletado: "l'autocompleció de les ordres i\nopcions per al terminal",
+        sintaxisManual: "manual",
+        descripcionManual: "aquesta ajuda com a pàgina de manual",
+        manualNombre: "NOM",
+        manualNotas: "NOTES",
 
-        // ErrorDeUso+Armonizacion.swift
+        // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "falten els acords: " + ejemplo },
         dosAcordesDeConduccion: { ejemplo in "calen dos acords: " + ejemplo },
         faltanNotasDeLaArmonizacion: { ejemplo in "falten les notes de la melodia: " + ejemplo },
@@ -119,10 +138,12 @@ extension TextosDeCLI {
         especieFueraDeRango: "--especie va d'1 a 5",
         faltanAcordesDeLaRealizacion: { ejemplo in "falten els acords: " + ejemplo },
 
-        // ErrorDeUso+Consultas.swift
+        // ErrorDeUso.swift (consultas)
         faltaCifrado: "falta el xifrat: armonia acorde Sol7",
         faltaCifradoDelArpegio: "falta el xifrat: armonia arpegio Do7",
         patronDesconocido: { patron in "patró desconegut: «\(patron)» (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado o alberti)" },
+        tradicionDesconocida: { tradicion in "«\(tradicion)»: no és una tradició (india, grecia, mundo-arabe, persia, turquia…)" },
+        categoriaDesconocida: { categoria in "«\(categoria)»: no és una categoria d'escales (rāga, maqam, makam, dastgah…)" },
         faltanNotas: "falten les notes: armonia identificar Do Mi Sol",
         dosNotas: "calen dues notes: armonia intervalo Do Mi",
         faltaEscala: "falta l'escala: armonia escala Re dórico",
@@ -135,7 +156,7 @@ extension TextosDeCLI {
         faltaTransporte: { ejemplo in "falten l'interval (o la nova tònica) i el que es transporta: " + ejemplo },
         faltanAcordesDeLaRearmonizacion: { ejemplo in "falten els acords: " + ejemplo },
 
-        // ErrorDeUso+Dibujos.swift
+        // ErrorDeUso.swift (dibujos)
         margenFueraDeRango: "el marge és un nombre de 0 a 6: --margen 2",
         faltanNotasDelDibujo: { ejemplo, orden in "falten les notes: " + ejemplo },
         faltaAcordeDelDibujo: { ejemplo, orden in "falta l'acord: " + ejemplo },
@@ -147,7 +168,7 @@ extension TextosDeCLI {
         caminoSoloTriadas: { ejemplo, orden in "el camí va d'una tríada major o menor a una altra: " + ejemplo },
         cicloSoloTriadas: { ejemplo, orden in "el cicle comença en una tríada major o menor: " + ejemplo },
 
-        // ErrorDeUso+Neorriemann.swift
+        // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "les veus que es mouen són 1 o 2: --voces 2",
         unAcordeDeVecinos: { ejemplo in "cal un acord: " + ejemplo },
         vecinosSinFamilia: "els veïns es busquen entre sèptimes de dominant, menors, semidisminuïdes, disminuïdes i maj7, o entre tríades majors, menors i augmentades",
@@ -156,10 +177,10 @@ extension TextosDeCLI {
         faltanPasosDePLR: { ejemplo in "calen una tríada i uns passos o una altra tríada: " + ejemplo },
         plrSoloTriadas: { ejemplo, camino in "P, L i R s'apliquen a tríades majors i menors: " + ejemplo },
 
-        // ErrorDeUso+Partituras.swift
+        // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "falta «melodia», «coral» o «acordes»: " + ejemplo },
         instrumentoMIDI: "el programa és un nombre General MIDI de 0 a 127: --programa 52",
-        marcasSoloMusicXML: "--cifrados i --analisis són per a MusicXML i MEI",
+        marcasSoloMusicXML: "--cifrados i --analisis són per a MusicXML, MEI, LilyPond i ABC",
         faltaValor: { opcion in "falta el valor de --\(opcion)" },
         tempoMalEscrito: "el tempo s'escriu «--tempo 90» o «--tempo 60 4.»",
         faltanNotasDeLaMelodia: { ejemplo, orden in "falten les notes: " + ejemplo },
@@ -173,11 +194,11 @@ extension TextosDeCLI {
         ventanaSinArchivo: "--ventana va amb --archivo",
         faltanAcordesDeLaProgresion: { ejemplo, orden in "falten els acords: " + ejemplo },
         acordesConCifradosYAnalisis: "els acords porten sempre xifrats i anàlisi",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: s'exporta una «melodia», un «coral», uns «acordes» o els seus «arpegios»" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: s'exporta una «melodia», un «coral», uns «acordes», els seus «arpegios» o una «escala»" },
 
-        // ErrorDeUso+Trastes.swift
+        // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "falta l'instrument: \(d)" },
-        instrumentoDesconocido: { nombre, lista in "instrument desconegut: «\(nombre)» (\(lista(.catalan)))" },
+        instrumentoDesconocido: { nombre, lista in "instrument desconegut: «\(nombre)» (\(lista(.catalanPalabras)))" },
         faltaLimite: "falta el nombre de digitacions: --limite 5",
         limiteFueraDeRango: "el límit és un nombre d'1 a 200: --limite 5",
         faltanDedos: "falta el nombre de dits: --dedos 3",
@@ -188,17 +209,21 @@ extension TextosDeCLI {
         faltaEscalaDePosiciones: "falta l'escala: armonia posiciones Sol mayor",
         capoFueraDeRango: "el capo és un nombre de 0 a 12: --capo 2",
 
-        // ErrorDeUso.swift
+        // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Prova «armonia ayuda».",
         ordenDesconocida: { orden in "ordre desconeguda: «\(orden)»" },
         opcionDesconocida: { opcion in "opció desconeguda: «\(opcion)»" },
-        idiomaDesconocido: { idioma in "idioma desconegut: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el o ru)" },
-        escrituraNoValida: { escritura in "escriptura no vàlida: «\(escritura)» (palabras/words, ascii o unicode; només amb es i en)" },
+        idiomaDesconocido: { idioma in "idioma desconegut: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu)" },
+        terminalDesconocida: { t in "terminal desconegut: «\(t)» (bash, zsh o fish)" },
+        escrituraNoValida: { escritura in "escriptura no vàlida: «\(escritura)» (palabras/words o compacto/compact; ascii o unicode, només amb es i en)" },
 
         // Mensaje.swift
         mensajeNotas: "notes",
         mensajeAcordes: "acords",
+        mensajeMicrotonos: "microtons",
         mensajeEscalas: "escales",
+        mensajeHabituales: "habituals",
+        mensajeNingunaEscala: "cap escala no ho compleix",
         mensajeArmadura: "armadura",
         mensajeRelativa: "relativa",
         mensajeHomonima: "homònima",
@@ -208,15 +233,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "sense \(notas)" },
         mensajeSemitonos: { n in "\(n) semitons" },
         mensajeSinAlteraciones: "sense alteracions",
-        mensajeSostenidos: { n in n == 1 ? "1 sostingut" : "\(n) sostinguts" },
-        mensajeBemoles: { n in n == 1 ? "1 bemoll" : "\(n) bemolls" },
+        mensajeSostenidos: { n in Idioma.catalan.contar(n, "sostingut", "sostinguts") },
+        mensajeBemoles: { n in Idioma.catalan.contar(n, "bemoll", "bemolls") },
         mensajeACuatroVoces: "A quatre veus (baix, tenor, contralt, soprano):",
         mensajeSinDigitaciones: "no hi ha digitacions còmodes",
-        mensajeDedos: { n in n == 1 ? "1 dit" : "\(n) dits" },
+        mensajeDedos: { n in Idioma.catalan.contar(n, "dit", "dits") },
         mensajeCejilla: { traste in "celleta al trast \(traste)" },
         mensajeNingunPaso: "cap pas",
         mensajeUnPaso: "1 pas",
         mensajePasos: { n in "\(n) passos" },
-        mensajeTriadas: { n in n == 1 ? "1 tríada" : "\(n) tríades" }
+        mensajeTriadas: { n in Idioma.catalan.contar(n, "tríada", "tríades") }
     )
 }

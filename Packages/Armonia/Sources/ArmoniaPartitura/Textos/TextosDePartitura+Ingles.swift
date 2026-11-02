@@ -22,20 +22,6 @@ extension TextosDePartitura {
         especieConElContrapuntoDebajo: { n in "Species \(n), counterpoint below the cantus firmus" },
         sinFaltas: "No faults.",
 
-        // ArchivoMIDI.swift
-        pistaDeAcordes: "chords",
-        pistaDelBajo: "bass",
-
-        // Importacion.swift
-        formatoDesconocido: "The file is neither MIDI nor MusicXML.",
-        musicXMLComprimido: "The compressed MusicXML (.mxl) is damaged or cannot be read: export it uncompressed (.musicxml).",
-        midiDanado: "The MIDI file is damaged or truncated.",
-        midiConTiempoSMPTE: "The MIDI file counts time in SMPTE frames, not in ticks per quarter note.",
-        xmlDanado: { linea in "The MusicXML file is damaged (line \(linea))." },
-        noEsMusicXMLPorPartes: "The XML is not a partwise MusicXML score (score-partwise).",
-        sinNotas: "The file has no notes.",
-        sinAcordes: "No chords sound in the file.",
-
         // Duracion.swift
         cuadrada: "double whole note",
         redonda: "whole note",
@@ -59,6 +45,42 @@ extension TextosDePartitura {
         claveDeDoEnPrimera: "soprano clef",
         claveDeDoEnSegunda: "mezzo-soprano clef",
         claveDeDoEnTercera: "alto clef",
-        claveDeDoEnCuarta: "tenor clef"
+        claveDeDoEnCuarta: "tenor clef",
+        // Pentagrama.swift (InstrumentoDePartitura)
+        instrumentosPropiosEnIngles: true,
+        instrumentoPiano: "piano",
+        instrumentoFlauta: "flute",
+        instrumentoFlautin: "piccolo",
+        instrumentoFlautaEnSol: "alto flute",
+        instrumentoOboe: "oboe",
+        instrumentoCornoIngles: "English horn",
+        instrumentoClarineteEnSib: "B♭ clarinet",
+        instrumentoClarineteEnLa: "A clarinet",
+        instrumentoClarineteEnMib: "E♭ clarinet",
+        instrumentoClarineteBajo: "bass clarinet",
+        instrumentoFagot: "bassoon",
+        instrumentoSaxofonSoprano: "soprano saxophone",
+        instrumentoSaxofonAlto: "alto saxophone",
+        instrumentoSaxofonTenor: "tenor saxophone",
+        instrumentoSaxofonBaritono: "baritone saxophone",
+        instrumentoTrompetaEnSib: "B♭ trumpet",
+        instrumentoTrompetaEnDo: "C trumpet",
+        instrumentoFliscorno: "flugelhorn",
+        instrumentoTrompaEnFa: "horn in F",
+        instrumentoTrombon: "trombone",
+        instrumentoTuba: "tuba",
+        instrumentoViolin: "violin",
+        instrumentoViola: "viola",
+        instrumentoViolonchelo: "cello",
+        instrumentoContrabajo: "double bass",
+        instrumentoGuitarra: "guitar",
+        instrumentoBajoElectrico: "electric bass",
+        instrumentoXilofono: "xylophone",
+        instrumentoGlockenspiel: "glockenspiel",
+        instrumentoCelesta: "celesta",
+        // ErrorDeLecturaDePartitura.swift
+        duracionNoValida: { texto in "\"\(texto)\" is not a duration: expected a note value (1, 2, 4, 8, 16…, dotted: 4.) or a fraction of a whole note (3/8, 1/12)" },
+        compasNoValido: { texto in "\"\(texto)\" is not a time signature: expected numerator/denominator with a power-of-2 denominator (4/4, 6/8, 7/8), C or ¢" },
+        contrapuntoDeOtraDuracion: { redondas in "the counterpoint must last as long as the cantus firmus: \(redondas) whole notes, one per note" }
     )
 }

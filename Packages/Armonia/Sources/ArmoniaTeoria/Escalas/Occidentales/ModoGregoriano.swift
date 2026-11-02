@@ -51,9 +51,9 @@ public struct ModoGregoriano: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// Los ocho modos, del 1 al 8.
-    public static let todos: [ModoGregoriano] = (1...8).map { ModoGregoriano($0)! }
+    public static let todos: [ModoGregoriano] = (1...8).compactMap { ModoGregoriano($0) }
 
-    public var maneria: Maneria { Maneria(rawValue: (numero - 1) / 2)! }
+    public var maneria: Maneria { Maneria.allCases[(numero - 1) / 2] }
 
     /// Los modos impares son auténticos, y los pares, plagales.
     public var esAutentico: Bool { numero % 2 == 1 }

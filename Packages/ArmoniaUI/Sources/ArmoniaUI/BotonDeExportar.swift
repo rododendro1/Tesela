@@ -36,7 +36,7 @@
                     }
                 }
             } label: {
-                Label(notacion.texto(.exportar), systemImage: "square.and.arrow.up")
+                Label(notacion.texto(\.exportar), systemImage: "square.and.arrow.up")
             }
             .disabled(escritos.isEmpty)
             .accessibilityIdentifier("exportar")

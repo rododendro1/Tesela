@@ -17,6 +17,8 @@ struct VistaDeAcordes: View {
     @State private var figura = Figura.corchea
     /// El traste del capo en las digitaciones y el arpegio en el mástil, o 0 sin capo.
     @State private var capo = 0
+    /// La disposición de piano o jazz que se enseña (drop 2, shell…).
+    @State private var disposicion = DisposicionDeAcorde.drop2
     /// Lo que está sonando, para resaltar la nota en el pentagrama y en el mástil.
     @ObservedObject private var reproductor = Reproductor.compartido
     /// Las digitaciones y para qué texto e instrumento se calcularon. Mientras no coincidan con lo que hay
@@ -39,17 +41,18 @@ struct VistaDeAcordes: View {
 
     var body: some View {
         Form {
-            Section(notacion.texto(.acorde)) {
-                TextField(notacion.texto(.campoDeCifrado), text: $texto)
+            Section(notacion.texto(\.acorde)) {
+                TextField(notacion.campo(.cifrado), text: $texto)
                     .comoCampoDeCifrado()
             }
             switch lectura {
             case .success(let acorde):
                 informacion(de: acorde)
-                Section(notacion.texto(.pentagrama)) {
-                    DiagramaDePentagrama(PresentacionDePentagrama(acorde, notacion: notacion))
+                Section(notacion.texto(\.pentagrama)) {
+                    DiagramaDePentagrama(PentagramaPresentado(acorde, notacion: notacion))
                 }
                 seccionDelArpegio(de: acorde)
+                disposiciones(de: acorde)
                 escalas(de: acorde)
                 digitaciones(de: acorde)
                 arpegioEnElMastil(de: acorde)
@@ -59,7 +62,7 @@ struct VistaDeAcordes: View {
                 }
             }
         }
-        .navigationTitle(notacion.texto(.acordes))
+        .navigationTitle(notacion.texto(\.acordes))
         .selectorDeNotacionEnLaBarra()
         .toolbar {
             ToolbarItem {
@@ -85,9 +88,12 @@ struct VistaDeAcordes: View {
         guard case .success(let acorde) = lectura else { return [] }
         let arpegio = self.arpegio(de: acorde)
         var ficheros = [
-            PresentacionDePentagrama(acorde, notacion: notacion).fichero,
-            PresentacionDePentagrama(arpegio, notacion: notacion).fichero,
+            PentagramaPresentado(acorde, notacion: notacion).fichero,
+            PentagramaPresentado(arpegio, notacion: notacion).fichero,
         ]
+        if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, notacion: notacion) {
+            ficheros.append(presentadas.pentagrama.fichero)
+        }
         ficheros += PresentacionDeArpegios.arpegio(arpegio, figura: figura.duracion, notacion: notacion).ficheros
         let cifrado = acorde.cifrado(en: notacion)
         if let formas = digitaciones?.valor(para: claveActual), !formas.isEmpty {
@@ -105,37 +111,72 @@ struct VistaDeAcordes: View {
         return ficheros
     }
 
+    /// El acorde dispuesto como en el piano o el jazz (cerrado, drop 2, drop 3, drop 2 y 4, con la fundamental, la
+    /// tercera y la séptima, o solo las notas guía), en todas las octavas de Do3 a Sol5: su pentagrama y cada
+    /// disposición con su botón para escucharla.
+    @ViewBuilder
+    private func disposiciones(de acorde: Acorde) -> some View {
+        Section(notacion.texto(\.disposicion)) {
+            Picker(notacion.texto(\.disposicion), selection: $disposicion) {
+                ForEach(DisposicionDeAcorde.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
+            }
+            if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, notacion: notacion) {
+                DiagramaDePentagrama(presentadas.pentagrama)
+                ForEach(Array(presentadas.filas.enumerated()), id: \.offset) { _, fila in
+                    HStack {
+                        Text(fila.voces).font(.system(.body, design: .monospaced))
+                        Spacer()
+                        BotonDeEscuchar(fila.sonido).labelStyle(.iconOnly)
+                    }
+                    .buttonStyle(.borderless)
+                }
+            } else {
+                Text(notacion.texto(\.noSeDibuja)).foregroundColor(.secondary)
+            }
+        }
+    }
+
     /// El arpegio en el patrón, las octavas y la figura elegidos: su pentagrama, nota a nota, y cómo suena. Mientras
     /// suena, la nota que se oye se resalta en el pentagrama.
     @ViewBuilder
     private func seccionDelArpegio(de acorde: Acorde) -> some View {
         let arpegio = self.arpegio(de: acorde)
         let sonido = PresentacionDeArpegios.arpegio(arpegio, figura: figura.duracion, notacion: notacion).sonido
-        Section(notacion.texto(.arpegio)) {
-            Picker(notacion.texto(.patron), selection: $patron) {
+        Section(notacion.texto(\.arpegio)) {
+            Picker(notacion.texto(\.patron), selection: $patron) {
                 ForEach(Arpegio.Patron.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
             }
-            Stepper("\(notacion.texto(.octavas)): \(octavas)", value: $octavas, in: 1...3)
-            Toggle(notacion.texto(.conLaOctavaFinal), isOn: $conOctava)
-            Picker(notacion.texto(.figura), selection: $figura) {
+            Stepper("\(notacion.texto(\.octavas)): \(octavas)", value: $octavas, in: 1...3)
+            Toggle(notacion.texto(\.conLaOctavaFinal), isOn: $conOctava)
+            Picker(notacion.texto(\.figura), selection: $figura) {
                 ForEach(Self.figuras, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
             }
             DiagramaDePentagrama(
-                PresentacionDePentagrama(arpegio, notacion: notacion, resaltada: reproductor.paso(de: sonido)))
+                PentagramaPresentado(arpegio, notacion: notacion, resaltada: reproductor.paso(de: sonido)))
             BotonDeEscuchar(sonido)
         }
     }
 
-    /// Las escalas sobre la fundamental que contienen el acorde (Sol7 → Sol mixolidio…), de las de menos notas
-    /// a las de más.
+    /// Las escalas sobre la fundamental que contienen el acorde (Sol7 → Sol mixolidio…), de las que tienen menos
+    /// notas a evitar a las que más, con las tensiones y las notas a evitar de cada una.
     @ViewBuilder
     private func escalas(de acorde: Acorde) -> some View {
         let escalas = acorde.escalasCompatibles()
         if !escalas.isEmpty {
-            Section(notacion.texto(.escalasCompatibles)) {
-                // Cada una se abre en la pestaña de escalas.
+            Section(notacion.texto(\.escalasCompatibles)) {
+                // Cada una se abre en la pestaña de escalas, y lleva debajo sus tensiones y sus notas a evitar.
                 ForEach(Array(escalas.prefix(10).enumerated()), id: \.offset) { _, escala in
-                    Button(escala.nombre(en: notacion)) { navegacion.ver(escala) }
+                    let presentada = PresentacionDeEscalaYAcorde.presentar(escala, sobre: acorde, notacion: notacion)
+                    Button {
+                        navegacion.ver(escala)
+                    } label: {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(presentada.nombre)
+                            if !presentada.resumen.isEmpty {
+                                Text(presentada.resumen).font(.caption).foregroundColor(.secondary)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -143,11 +184,11 @@ struct VistaDeAcordes: View {
 
     @ViewBuilder
     private func informacion(de acorde: Acorde) -> some View {
-        Section(notacion.texto(.informacion)) {
-            LabeledContent(notacion.texto(.nombre), value: acorde.nombre(en: notacion))
-            LabeledContent(notacion.texto(.cifrado), value: acorde.cifrado(en: notacion))
+        Section(notacion.texto(\.informacion)) {
+            LabeledContent(notacion.texto(\.nombre), value: acorde.nombre(en: notacion))
+            LabeledContent(notacion.texto(\.cifrado), value: acorde.cifrado(en: notacion))
             LabeledContent(
-                notacion.texto(.notas),
+                notacion.texto(\.notas),
                 value: acorde.notasDesdeElBajo.map { $0.nombre(en: notacion) }.joined(separator: " "))
             BotonDeEscuchar(.acorde(acorde))
         }
@@ -155,22 +196,22 @@ struct VistaDeAcordes: View {
 
     @ViewBuilder
     private func digitaciones(de acorde: Acorde) -> some View {
-        Section(notacion.texto(.digitaciones)) {
-            Picker(notacion.texto(.instrumentoYAfinacion), selection: $encordado) {
+        Section(notacion.texto(\.digitaciones)) {
+            Picker(notacion.texto(\.instrumentoYAfinacion), selection: $encordado) {
                 ForEach(Encordado.todos, id: \.self) { Text($0.titulo(en: notacion)).tag($0) }
             }
             // Los trastes se cuentan desde el capo, como los cuenta quien toca.
-            Stepper(notacion.texto(.capo(capo)), value: $capo, in: 0...9)
+            Stepper(notacion.texto { $0.capoEnElTraste(capo) }, value: $capo, in: 0...9)
             if let formas = digitaciones?.valor(para: claveActual) {
                 if formas.isEmpty {
-                    Text(notacion.texto(.sinDigitaciones))
+                    Text(notacion.texto(\.sinDigitaciones))
                         .foregroundColor(.secondary)
                 }
                 ForEach(formas, id: \.tablatura) { forma in
                     VStack(alignment: .leading, spacing: 4) {
                         HStack(alignment: .firstTextBaseline) {
                             Text(forma.tablatura).font(.system(.body, design: .monospaced))
-                            Text(notacion.texto(.dedos(forma.dedos, cejilla: forma.cejilla)))
+                            Text(notacion.texto { $0.dedosYCejilla(forma.dedos, forma.cejilla) })
                                 .font(.caption).foregroundColor(.secondary)
                         }
                         DiagramaDeMastil(digitacion: forma, acorde: acorde, notacion: notacion)
@@ -188,24 +229,20 @@ struct VistaDeAcordes: View {
     @ViewBuilder
     private func arpegioEnElMastil(de acorde: Acorde) -> some View {
         let mastil = self.mastil(trastes: 12)
-        let instrumento = encordado.titulo(en: notacion) + (capo > 0 ? " · " + notacion.texto(.capo(capo)) : "")
-        Section(notacion.texto(.arpegioEnElMastil)) {
+        let instrumento = encordado.titulo(en: notacion) + (capo > 0 ? " · " + notacion.texto { $0.capo(capo) } : "")
+        Section(notacion.texto(\.arpegioEnElMastil)) {
             Text(instrumento)
                 .foregroundColor(.secondary)
             DiagramaDeMastil(mastil: mastil, acorde: acorde, notacion: notacion)
             ForEach(mastil.arpegios(de: acorde), id: \.trastes) { posicion in
                 // De grave a agudo, en corcheas, como se toca al subir; mientras suena, se resalta la nota.
                 let voz = Voz(posicion.alturas.map { Evento($0, .corchea) })
-                let sonido = Sonido.voz(voz).conTonica(acorde.fundamental)
+                let sonido = Escucha.voz(voz).conTonica(acorde.fundamental)
                 let paso = reproductor.paso(de: sonido)
                 let sonando = paso.flatMap { posicion.posiciones.indices.contains($0) ? posicion.posiciones[$0] : nil }
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
-                        Text(
-                            notacion.texto(
-                                .trastes(
-                                    desde: posicion.trastes.lowerBound,
-                                    hasta: posicion.trastes.upperBound)))
+                        Text(notacion.texto { $0.trastes(posicion.trastes.lowerBound, posicion.trastes.upperBound) })
                         Spacer()
                         BotonDeEscuchar(sonido)
                     }

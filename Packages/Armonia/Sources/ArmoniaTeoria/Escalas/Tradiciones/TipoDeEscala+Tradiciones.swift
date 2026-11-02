@@ -1,10 +1,10 @@
 import ArmoniaNucleo
 
-// MARK: - Escalas de la India, dromoi griegos, maqamat, dastgāh, escalas chinas, japonesas, coreanas,
-// etíopes, de Indonesia, andinas, klezmer y de la Grecia antigua
+// MARK: - Escalas de la India, dromoi griegos, echoi bizantinos, maqamat, dastgāh, makamlar, mugam, escalas chinas,
+// japonesas, coreanas, etíopes, de Indonesia, andinas, klezmer y de la Grecia antigua
 //
-// Escalas de otras tradiciones, en su aproximación al temperamento igual: los 72 melakarta de
-// la música carnática y algunos de sus ragas janya, los 10 thaat de la indostánica y los dromoi del rebético y la música
+// Escalas de otras tradiciones, en su aproximación al temperamento igual: los 72 mēḷa de
+// la música carnática y algunos de sus rāgas janya, los 10 thāṭ de la indostánica y los dromoi del rebético y la música
 // popular griega. En la práctica varias usan microtonos (sobre todo los dromoi, que vienen de
 // los makam otomanos); aquí se escriben con los intervalos de la escala temperada.
 //
@@ -15,21 +15,22 @@ import ArmoniaNucleo
 // No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales,
 // pero `buscar(nombre:)` y `Escala("Re hitzaz")` las encuentran.
 //
-// `clase` y `tradicion` (en `ClaseDeEscala.swift`) dicen de cada una si es un raga, un melakarta, un dromos, un
-// maqam…; salen de estas listas. Sus nombres en cada idioma están en `Escalas/Nombres/`.
+// `categoria` y `tradicion` (en `CategoriaTradicional.swift`) dicen de cada una si es un rāga, un mēḷa, un dromos,
+// un maqam, un makam, un mugam…; salen de estas listas. Sus nombres en cada idioma están en `Escalas/Nombres/`.
 //
 // La India, que es la más larga, está en `TipoDeEscala+India.swift`; las demás, más abajo, cada una tras su
-// `// MARK: - Nombre`: Andes, China, Corea, Etiopia, Grecia, Indonesia, Japon, Klezmer, MundoArabe (maqamat) y
-// Persia (dastgah). `Scripts/nombres_de_escalas/tradicionales.py` las busca por esas marcas.
+// `// MARK: - Nombre`: Andes, Azerbaiyan (mugam), Bizancio (echoi), China, Corea, Etiopia, Grecia, Indonesia, Japon,
+// Klezmer, MundoArabe (maqamat), Persia (dastgah) y Turquia (makamlar).
+// `Scripts/generadores/nombres_de_escalas/tradicionales.py` las busca por esas marcas.
 
 extension TipoDeEscala {
-    /// Escalas de otras tradiciones: thaat, dromoi, melakarta, janya, chinas, japonesas, etíopes,
-    /// maqamat, de Indonesia, klezmer, ragas indostánicos, dastgāh, coreanas, andinas y de la
-    /// Grecia antigua.
+    /// Escalas de otras tradiciones: thāṭ, dromoi, mēḷa, janya, chinas, japonesas, etíopes,
+    /// maqamat, de Indonesia (laras y pathet), klezmer, rāgas indostánicos, dastgāh, coreanas, andinas, de la
+    /// Grecia antigua, makamlar turcos, mugam azerbaiyanos y echoi bizantinos.
     public static let tradicionales: [TipoDeEscala] =
         thaats + dromoi + melakartas + janyas + chinas + japonesas
-        + etiopes + maqamat + indonesias + klezmer + ragasIndostanicos + dastgah + coreanas + andinas
-        + griegasAntiguas
+        + etiopes + maqamat + indonesias + pathets + klezmer + ragasIndostanicos + dastgah + coreanas + andinas
+        + griegasAntiguas + makamlar + mugamlar + echoi
 }
 
 // MARK: - Andes
@@ -47,6 +48,128 @@ extension TipoDeEscala {
         alias: ["tritónica"])
 
     public static let andinas: [TipoDeEscala] = [.andina, .tritonicaAndina]
+}
+
+// MARK: - Azerbaiyan
+
+extension TipoDeEscala {
+    // MARK: Mugam azerbaiyanos
+    //
+    // Los modos de Üzeyir Hacıbəyov («Principios de la música popular azerbaiyana», 1945), que ya están en doce
+    // notas: cada uno es una cadena de tetracordos iguales. Rast, Şur y Segah encadenan tres (diez grados, con la
+    // tónica en el cuarto), así que tienen una nota distinta por debajo de la tónica y por encima de ella: aquí
+    // van las dos, y la escala tiene ocho notas. Çahargah une dos tetracordos y separa el tercero con un tono,
+    // y le basta la octava. Şüştər, Bayatı-Şiraz y Hümayun, que las fuentes describen de formas que no casan,
+    // no están todavía. Los nombres van en azerbaiyano, con «muğamı» detrás, como se dicen: «Rast» sola es el
+    // dromos griego.
+
+    /// Rast: tres tetracordos tono-tono-semitono encadenados (Sol La Si | Do Re Mi Fa | Sol La Si♭ en Do). Si
+    /// por debajo de la tónica y Si♭ por encima.
+    public static let rastMugami = TipoDeEscala(
+        nombre: "Rast muğamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor, .septimaMayor,
+        ],
+        alias: ["mugam Rast", "Rast mugham"])
+    /// Şur: tres tetracordos tono-semitono-tono encadenados (Re Mi Fa | Sol La Si♭ Do | Re Mi♭ Fa en Sol). Mi
+    /// por debajo de la tónica y Mi♭ por encima; el 2.º grado (La) se baja a veces un poco.
+    public static let surMugami = TipoDeEscala(
+        nombre: "Şur muğamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["mugam Şur", "Shur mugham"])
+    /// Segah: tres tetracordos semitono-tono-tono encadenados (Si Do Re | Mi Fa Sol La | Si♭ Do Re en Mi). Si
+    /// por debajo de la tónica y Si♭ por encima.
+    public static let segahMugami = TipoDeEscala(
+        nombre: "Segah muğamı",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["mugam Segah", "Segah mugham"])
+    /// Çahargah: tetracordos semitono-segunda aumentada-semitono, los dos de abajo encadenados y el de arriba
+    /// tras un tono (Sol La♭ Si | Do Re♭ Mi Fa | Sol La♭ Si Do en Do): la doble armónica.
+    public static let cahargahMugami = TipoDeEscala(
+        nombre: "Çahargah muğamı",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        alias: ["mugam Çahargah", "Chahargah mugham"])
+
+    /// Los mugam de Hacıbəyov que se escriben en doce notas sin dudas.
+    public static let mugamlar: [TipoDeEscala] = [.rastMugami, .surMugami, .segahMugami, .cahargahMugami]
+}
+
+// MARK: - Bizancio
+
+extension TipoDeEscala {
+    // MARK: Echoi bizantinos
+    //
+    // Los ocho modos (echoi, ἦχοι) de la salmodia bizantina, en la teoría de la Comisión Patriarcal de Constantinopla
+    // (1881): la octava en 72 moria y cuatro géneros de tetracordo, el diatónico (12, 10 y 8 moria), el cromático
+    // blando (8, 14 y 8), el cromático duro (6, 20 y 4) y el enarmónico (12, 12 y 6). Las notas se llaman Ni, Pa,
+    // Vou, Ga, Di, Ke y Zo, de Do a Si. Cada echos va sobre su nota base más habitual (varios tienen más de una), con
+    // las notas de su género en doce notas; su versión microtonal, en moria, está en `Microtonos.swift`. El tercero,
+    // enarmónico, ya es la escala mayor. Va también el légetos, la variante del cuarto sobre Vou. Fuentes:
+    // Wikipedia («Neobyzantine Octoechos») y la tabla de escalas del St Andrew's Greek Orthodox Theological College.
+
+    /// El primero (Re Mi Fa Sol La Si Do, sobre Pa): diatónico, con Vou y Zo dos moria bajo Mi y Si.
+    public static let echosProtos = TipoDeEscala(
+        nombre: "echos prótos",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        alias: ["Ήχος πρώτος", "ichos protos"])
+    /// El plagal del primero (La Si Do Re Mi Fa Sol, sobre Ke): diatónico.
+    public static let echosPlagiosProtos = TipoDeEscala(
+        nombre: "echos plágios prótos",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
+        alias: ["Ήχος πλάγιος του πρώτου", "plagal protos"])
+    /// El segundo (Sol La♭ Si Do Re Mi♭ Fa♯, sobre Di): cromático blando, aproximado a la doble armónica.
+    public static let echosDefteros = TipoDeEscala(
+        nombre: "echos défteros",
+        intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
+        alias: ["Ήχος δεύτερος", "echos deuteros", "ichos defteros"])
+    /// El plagal del segundo (Re Mi♭ Fa♯ Sol La Si♭ Do♯, sobre Pa): cromático duro, la doble armónica.
+    public static let echosPlagiosDefteros = TipoDeEscala(
+        nombre: "echos plágios défteros",
+        intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
+        alias: ["Ήχος πλάγιος του δευτέρου", "echos plagios deuteros", "plagal defteros"])
+    /// El tercero (Fa Sol La Si♭ Do Re Mi, sobre Ga): enarmónico, que en la teoría de 1881 ya es la escala mayor.
+    public static let echosTritos = TipoDeEscala(
+        nombre: "echos trítos",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
+        alias: ["Ήχος τρίτος", "ichos tritos"])
+    /// El grave, el plagal del tercero (Si Do Re Mi Fa Sol La, sobre Zo): diatónico, con la tónica dos moria bajo Si.
+    public static let echosVarys = TipoDeEscala(
+        nombre: "echos varýs",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Ήχος βαρύς", "echos barys", "grave"])
+    /// El cuarto (Sol La Si Do Re Mi Fa, sobre Di): diatónico.
+    public static let echosTetartos = TipoDeEscala(
+        nombre: "echos tétartos",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        alias: ["Ήχος τέταρτος", "ichos tetartos"])
+    /// El plagal del cuarto (Do Re Mi Fa Sol La Si, sobre Ni): diatónico.
+    public static let echosPlagiosTetartos = TipoDeEscala(
+        nombre: "echos plágios tétartos",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
+        alias: ["Ήχος πλάγιος του τετάρτου", "plagal tetartos"])
+    /// El légetos (Mi Fa Sol La Si Do Re, sobre Vou): el cuarto en su forma de los himnos breves, con la tónica dos
+    /// moria bajo Mi.
+    public static let echosLegetos = TipoDeEscala(
+        nombre: "echos légetos",
+        intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
+        alias: ["Λέγετος", "legetos"])
+
+    public static let echoi: [TipoDeEscala] = [
+        .echosProtos, .echosPlagiosProtos, .echosDefteros, .echosPlagiosDefteros, .echosTritos, .echosVarys,
+        .echosTetartos, .echosPlagiosTetartos, .echosLegetos,
+    ]
 }
 
 // MARK: - China
@@ -279,8 +402,11 @@ extension TipoDeEscala {
     // MARK: Grecia antigua
     //
     // Los tetracordos de Aristóxeno, de grave a agudo (semitono, tono, tono en el diatónico;
-    // semitono, semitono y tercera menor en el cromático), y las harmoniai de dos tetracordos
-    // disjuntos. El género enarmónico, con cuartos de tono, no está.
+    // semitono, semitono y tercera menor en el cromático; cuarto de tono, cuarto de tono y tercera mayor en el
+    // enarmónico), y las siete harmoniai, las especies de octava de Cleónides, cada una desde su nota de la escala
+    // de Mi a Mi: mixolidia en Si, lidia en Do, frigia en Re, doria en Mi, hipolidia en Fa, hipofrigia en Sol e
+    // hipodoria en La. El enarmónico no cabe en doce notas: su parhýpate, un cuarto de tono sobre Mi, se escribe
+    // Fa♭ (Mi Fa♭ Fa La), y su versión microtonal, en cuartos de tono, la sube a Fa𝄳.
 
     /// Mi Fa Sol La.
     public static let tetracordoDiatonico = TipoDeEscala(
@@ -289,6 +415,17 @@ extension TipoDeEscala {
     /// Mi Fa Sol♭ La: la lichanós baja medio tono.
     public static let tetracordoCromatico = TipoDeEscala(
         nombre: "tetracordo cromático", intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta])
+    /// Mi Fa♭ Fa La: dos cuartos de tono y un dítono (Mi Fa𝄳 Fa La en su versión microtonal).
+    public static let tetracordoEnarmonico = TipoDeEscala(
+        nombre: "tetracordo enarmónico", intervalos: [.unisono, .segundaDisminuida, .segundaMenor, .cuartaJusta])
+    /// De Si a Si (el locrio moderno).
+    public static let harmoniaMixolidia = TipoDeEscala(
+        nombre: "harmonía mixolidia",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["mixolidia antigua"])
     /// De Mi a Mi: dos tetracordos diatónicos (el frigio moderno).
     public static let harmoniaDoria = TipoDeEscala(
         nombre: "harmonía doria",
@@ -320,11 +457,42 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         alias: ["lidia antigua"])
+    /// De Fa a Fa (el lidio moderno).
+    public static let harmoniaHipolidia = TipoDeEscala(
+        nombre: "harmonía hipolidia",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["hipolidia antigua"])
+    /// De Sol a Sol (el mixolidio moderno).
+    public static let harmoniaHipofrigia = TipoDeEscala(
+        nombre: "harmonía hipofrigia",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["hipofrigia antigua"])
+    /// De La a La (el eolio moderno); Cleónides la llama también locria.
+    public static let harmoniaHipodoria = TipoDeEscala(
+        nombre: "harmonía hipodoria",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["hipodoria antigua"])
 
-    public static let griegasAntiguas: [TipoDeEscala] = [
-        .tetracordoDiatonico, .tetracordoCromatico, .harmoniaDoria, .harmoniaDoriaCromatica, .harmoniaFrigia,
-        .harmoniaLidia,
+    /// Los tres tetracordos de Aristóxeno.
+    public static let tetracordosGriegos: [TipoDeEscala] = [
+        .tetracordoDiatonico, .tetracordoCromatico, .tetracordoEnarmonico,
     ]
+    /// Las siete harmoniai, de la más aguda a la más grave, y la doria en el género cromático.
+    public static let harmoniai: [TipoDeEscala] = [
+        .harmoniaMixolidia, .harmoniaLidia, .harmoniaFrigia, .harmoniaDoria, .harmoniaDoriaCromatica,
+        .harmoniaHipolidia, .harmoniaHipofrigia, .harmoniaHipodoria,
+    ]
+
+    public static let griegasAntiguas: [TipoDeEscala] = tetracordosGriegos + harmoniai
 }
 
 // MARK: - Indonesia
@@ -335,6 +503,16 @@ extension TipoDeEscala {
     // Las afinaciones del gamelan no son temperadas ni iguales de un conjunto a otro: estas son
     // las aproximaciones habituales a doce notas. Los nombres van con la grafía javanesa (pélog,
     // sléndro).
+    //
+    // Los pathet (modos) se escriben sobre las mismas notas que las escalas de arriba, numeradas como en el
+    // gamelan: el pélog de siete, 1 Do, 2 Re♭, 3 Mi♭, 4 Fa♯, 5 Sol, 6 La♭ y 7 Si♭ (selisir es 1 2 3 5 6), y el
+    // sléndro, 1 Do, 2 Re, 3 Mi, 5 Sol y 6 La. Cada pathet va sobre la nota en que acaban sus cadencias: en Java,
+    // pélog lima en 1, nem en 5 y barang en 6 (lima y nem usan 1 2 3 5 6, barang 2 3 5 6 7, y el 4 solo de
+    // adorno); sléndro nem en 2, sanga en 5 y manyura en 6. En Bali, tembung (4 5 6 1 2) y sunaren (5 6 7 2 3),
+    // que con selisir son los tres modos del pélog de siete notas (saih pitu). En el sléndro, casi equidistante,
+    // los tres pathet tienen los mismos intervalos; en doce notas, que no reparten la octava en cinco partes
+    // iguales, cada uno sale con otros.
+    // Fuente: Wikipedia («Pathet», «Pelog»).
 
     /// Pélog en el modo selisir de Bali (Do Re♭ Mi♭ Sol La♭).
     public static let pelog = TipoDeEscala(
@@ -345,7 +523,52 @@ extension TipoDeEscala {
         nombre: "Sléndro", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         alias: ["Saléndro"])
 
+    /// Pélog pathet lima (1 2 3 5 6 desde 1: Do Re♭ Mi♭ Sol La♭), con las notas de selisir.
+    public static let pelogLima = TipoDeEscala(
+        nombre: "Pélog pathet lima", intervalos: [.unisono, .segundaMenor, .terceraMenor, .quintaJusta, .sextaMenor],
+        alias: ["Pélog lima", "Pelog patet lima"])
+    /// Pélog pathet nem (1 2 3 5 6 desde 5: Sol La♭ Do Re♭ Mi♭).
+    public static let pelogNem = TipoDeEscala(
+        nombre: "Pélog pathet nem",
+        intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaDisminuida, .sextaMenor],
+        alias: ["Pélog nem", "Pelog patet nem"])
+    /// Pélog pathet barang (2 3 5 6 7 desde 6: La♭ Si♭ Re♭ Mi♭ Sol).
+    public static let pelogBarang = TipoDeEscala(
+        nombre: "Pélog pathet barang",
+        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
+        alias: ["Pélog barang", "Pelog patet barang"])
+    /// Sléndro pathet nem (desde 2: Re Mi Sol La Do).
+    public static let slendroNem = TipoDeEscala(
+        nombre: "Sléndro pathet nem",
+        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
+        alias: ["Sléndro nem", "Slendro patet nem"])
+    /// Sléndro pathet sanga (desde 5: Sol La Do Re Mi), con los intervalos de `slendro`.
+    public static let slendroSanga = TipoDeEscala(
+        nombre: "Sléndro pathet sanga",
+        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
+        alias: ["Sléndro sanga", "Slendro patet sanga"])
+    /// Sléndro pathet manyura (desde 6: La Do Re Mi Sol).
+    public static let slendroManyura = TipoDeEscala(
+        nombre: "Sléndro pathet manyura",
+        intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
+        alias: ["Sléndro manyura", "Slendro patet manyura"])
+    /// Tembung, el modo de Bali sobre el 4 (4 5 6 1 2: Sol♭ Sol La♭ Do Re♭, escrito desde Do como Do Do♯ Re Fa♯ Sol).
+    public static let pelogTembung = TipoDeEscala(
+        nombre: "Pélog tembung",
+        intervalos: [.unisono, .unisonoAumentado, .segundaMayor, .cuartaAumentada, .quintaJusta],
+        alias: ["Tembung"])
+    /// Sunaren, el modo de Bali sobre el 5 (5 6 7 2 3: Sol La♭ Si♭ Re♭ Mi♭).
+    public static let pelogSunaren = TipoDeEscala(
+        nombre: "Pélog sunaren",
+        intervalos: [.unisono, .segundaMenor, .terceraMenor, .quintaDisminuida, .sextaMenor],
+        alias: ["Sunaren"])
+
     public static let indonesias: [TipoDeEscala] = [.pelog, .slendro]
+    /// Los pathet de Java y los modos de Bali.
+    public static let pathets: [TipoDeEscala] = [
+        .pelogLima, .pelogNem, .pelogBarang, .slendroNem, .slendroSanga, .slendroManyura, .pelogTembung,
+        .pelogSunaren,
+    ]
 }
 
 // MARK: - Japon
@@ -464,10 +687,17 @@ extension TipoDeEscala {
 extension TipoDeEscala {
     // MARK: Maqamat árabes (temperados)
     //
-    // Solo los maqamat sin cuartos de tono, que el temperamento igual escribe sin aproximar (Rast,
-    // Bayati o Saba los necesitan y no están). Son nombres de escalas que ya había: Ḥijāz es el
-    // frigio dominante; Nahāwand, la menor armónica… Transliterados con el sistema ALA-LC (ḥ, ā,
-    // ʿ), y sin diacríticos como alias.
+    // Los seis primeros no tienen cuartos de tono, y el temperamento igual los escribe sin aproximar: son
+    // nombres de escalas que ya había (Ḥijāz es el frigio dominante; Nahāwand, la menor armónica…). Rāst,
+    // Bayātī, Ṣabā y Sūznāk sí los tienen, y van aproximados como se suelen escribir: el cuarto de tono se
+    // queda en su letra y se redondea hacia el lado de la costumbre (Mi𝄳 a Mi en Rāst y Sūznāk, a Mi♭ en
+    // Bayātī y Ṣabā). Sīkāh, Huzām, ʿIrāq y Rāḥat al-Arwāḥ tienen la tónica en un cuarto de tono (Mi𝄳, Si𝄳): se
+    // escriben sobre la nota temperada a la que se redondea (Mi, Si), y su versión microtonal la baja.
+    // Transliterados con el sistema ALA-LC (ḥ, ā, ʿ), y sin diacríticos como alias. Rāst se llama
+    // «maqām Rāst» porque «Rast» sola es el dromos griego, y Nikrīz, «maqām Nikrīz», por el dromos Nikríz.
+    //
+    // Āthār Kurd, maqām Nikrīz, Lāmī y Ṣabā Zamzam no tienen cuartos de tono: sus ajnas (Kurd, Nikrīz, Lāmī,
+    // Ḥijāz, Nahāwand, Ṣabā Zamzam) están todos en doce notas. Fuente: Maqam World (Sami Abu Shumays).
 
     /// حجاز (Re Mi♭ Fa♯ Sol La Si♭ Do).
     public static let hiyaz = TipoDeEscala(
@@ -518,7 +748,143 @@ extension TipoDeEscala {
         ],
         alias: ["Nawathar", "Neveser", "نوى أثر"])
 
-    public static let maqamat: [TipoDeEscala] = [.hiyaz, .nahawand, .kurd, .ajam, .hiyazkar, .nawaAthar]
+    /// راست (Do Re Mi𝄳 Fa Sol La Si𝄳, y Si♭ al bajar), aproximado: sube como la mayor y baja como el
+    /// mixolidio, como el dromos Rast.
+    public static let maqamRast = TipoDeEscala(
+        nombre: "maqām Rāst",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["راست"])
+    /// بياتي (Re Mi𝄳 Fa Sol La Si♭ Do), aproximado: como el frigio, igual que el dromos Ousák.
+    public static let bayati = TipoDeEscala(
+        nombre: "Bayātī",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Bayyātī", "maqam Bayati", "بياتي"])
+    /// صبا (Re Mi𝄳 Fa Sol♭ La Si♭ Do), aproximado: Re Mi♭ Fa Sol♭ La Si♭ Do.
+    public static let saba = TipoDeEscala(
+        nombre: "Ṣabā",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["maqam Saba", "صبا"])
+    /// سوزناك (Do Re Mi𝄳 Fa Sol La♭ Si: un jins Rāst y un jins Ḥijāz), aproximado: la mayor armónica.
+    public static let suznak = TipoDeEscala(
+        nombre: "Sūznāk",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        alias: ["maqam Suznak", "سوزناك"])
+    /// حسيني (Re Mi𝄳 Fa Sol La Si𝄳 Do: un jins Bayātī y otro en la quinta), aproximado: como Bayātī, con Si♭.
+    public static let husayni = TipoDeEscala(
+        nombre: "Ḥusaynī",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Husseini", "maqam Husayni", "حسيني"])
+    /// نيروز (Do Re Mi𝄳 Fa Sol La𝄳 Si♭: un jins Rāst y un jins Bayātī en la quinta), aproximado: la menor natural.
+    public static let nayruz = TipoDeEscala(
+        nombre: "Nayrūz",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Nairuz", "maqam Nairuz", "نيروز"])
+    /// سيكاه (Mi𝄳 Fa Sol La Si𝄳 Do Re: un jins Sīkāh y un jins Rāst), aproximado sobre Mi: el frigio.
+    public static let sikah = TipoDeEscala(
+        nombre: "Sīkāh",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["maqam Sikah", "سيكاه"])
+    /// هزام (Mi𝄳 Fa Sol La♭ Si Do Re: un jins Sīkāh y un jins Ḥijāz en Sol), aproximado sobre Mi. Se llama
+    /// «maqām Huzām» porque «Huzam» es también el dromos Houzám.
+    public static let huzam = TipoDeEscala(
+        nombre: "maqām Huzām",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["هزام"])
+    /// عراق (Si𝄳 Do Re Mi𝄳 Fa Sol La: un jins Sīkāh y un jins Bayātī en Re), aproximado sobre Si: el locrio.
+    public static let iraq = TipoDeEscala(
+        nombre: "ʿIrāq",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Iraq", "maqam Iraq", "عراق"])
+    /// راحة الأرواح (Si𝄳 Do Re Mi♭ Fa♯ Sol La: Huzām desde Si𝄳), aproximado sobre Si.
+    public static let rahatAlArwah = TipoDeEscala(
+        nombre: "Rāḥat al-Arwāḥ",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["راحة الأرواح"])
+    /// بياتي شوري (Re Mi𝄳 Fa Sol La♭ Si Do: un jins Bayātī y un jins Ḥijāz en Sol), aproximado: Mi𝄳 a Mi♭.
+    public static let bayatiShuri = TipoDeEscala(
+        nombre: "Bayātī Shūrī",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["بياتي شوري"])
+    /// جهاركاه (Fa Sol La Si♭ Do Re Mi𝄳: un jins Jiharkāh y un jins Rāst en Do), aproximado: la mayor.
+    public static let jiharkah = TipoDeEscala(
+        nombre: "Jiharkāh",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["Jaharkah", "جهاركاه"])
+    /// آثار كرد (Do Re♭ Mi♭ Fa♯ Sol La♭ Si: un jins Āthār Kurd, que es un Kurd con la cuarta de Nikrīz, y un jins
+    /// Ḥijāzkār en Sol).
+    public static let atharKurd = TipoDeEscala(
+        nombre: "Āthār Kurd",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaAumentada,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        alias: ["آثار كرد"])
+    /// نكريز (Do Re Mi♭ Fa♯ Sol La Si♭: un jins Nikrīz y un jins Nahāwand en Sol), como el dromos Nikríz.
+    public static let maqamNikriz = TipoDeEscala(
+        nombre: "maqām Nikrīz",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["Nakriz", "نكريز"])
+    /// لامي (Re Mi♭ Fa Sol La♭ Si♭ Do: un jins Lāmī y un jins Kurd en Sol), el locrio.
+    public static let lami = TipoDeEscala(
+        nombre: "Lāmī",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["لامي"])
+    /// صبا زمزم (Re Mi♭ Fa Sol♭ La Si♭ Do: Ṣabā con Mi♭ en lugar de Mi𝄳, un jins Ṣabā Zamzam y un jins Ḥijāz en Fa).
+    public static let sabaZamzam = TipoDeEscala(
+        nombre: "Ṣabā Zamzam",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["صبا زمزم"])
+
+    public static let maqamat: [TipoDeEscala] = [
+        .hiyaz, .nahawand, .kurd, .ajam, .hiyazkar, .nawaAthar, .maqamRast, .bayati, .saba, .suznak, .husayni,
+        .nayruz, .sikah, .huzam, .iraq, .rahatAlArwah, .bayatiShuri, .jiharkah, .atharKurd, .maqamNikriz, .lami,
+        .sabaZamzam,
+    ]
 }
 
 // MARK: - Persia
@@ -526,9 +892,12 @@ extension TipoDeEscala {
 extension TipoDeEscala {
     // MARK: Dastgāh persas (temperados)
     //
-    // Casi todos los dastgāh usan koron (un cuarto de tono bajo): solo Māhur se escribe sin
-    // aproximar. Homāyun y Čahārgāh van con la aproximación temperada habitual, el koron
-    // redondeado a semitono. Transliterados como en la Encyclopædia Iranica.
+    // Casi todos los dastgāh usan koron (un cuarto de tono bajo): solo Māhur y Rāst-Panjgāh se
+    // escriben sin aproximar. Los demás, y los āvāz que derivan de Šur (Bayāt-e Tork, Afšāri, Dašti,
+    // Abu ʿAtā) y de Homāyun (Bayāt-e Esfahān), van con la aproximación temperada habitual, el koron
+    // redondeado a semitono hacia abajo, y su versión microtonal lo devuelve a su sitio. Segāh, con la
+    // tónica en un koron, se escribe sobre Mi. Las notas, como en la Wikipedia inglesa (Dastgāh) y en la
+    // guía del radif de Ableton. Transliterados como en la Encyclopædia Iranica.
 
     /// ماهور: la mayor.
     public static let mahur = TipoDeEscala(
@@ -555,5 +924,312 @@ extension TipoDeEscala {
         ],
         alias: ["Chahārgāh", "چهارگاه"])
 
-    public static let dastgah: [TipoDeEscala] = [.mahur, .homayun, .cahargah]
+    /// شور (Re Mi𝄳 Fa Sol La Si♭ Do), aproximado: como el frigio.
+    public static let sur = TipoDeEscala(
+        nombre: "Šur",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Shur", "Shoor", "شور"])
+    /// راست پنجگاه: el mixolidio.
+    public static let rastPanjgah = TipoDeEscala(
+        nombre: "Rāst-Panjgāh",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["راست پنجگاه"])
+    /// سهگاه (Mi𝄳 Fa Sol La𝄳 Si♭ Do Re), con la tónica en un koron, aproximado sobre Mi. Se llama «dastgāh Segāh»
+    /// porque «Segah» es también el dromos Sengáh.
+    public static let segah = TipoDeEscala(
+        nombre: "dastgāh Segāh",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["سه\u{200C}گاه"])
+    /// نوا (Sol La Si♭ Do Re Mi𝄳 Fa), aproximado: la menor natural.
+    public static let nava = TipoDeEscala(
+        nombre: "Navā",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["نوا"])
+    /// بیات ترک (Fa Sol La Si♭ Do Re Mi𝄳), un āvāz de Šur, aproximado: el mixolidio.
+    public static let bayateTork = TipoDeEscala(
+        nombre: "Bayāt-e Tork",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["Bayat-e Turk", "بیات ترک"])
+    /// افشاری (Do Re Mi𝄳 Fa Sol La𝄳 Si♭), un āvāz de Šur, aproximado: la menor natural.
+    public static let afshari = TipoDeEscala(
+        nombre: "Afšāri",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Afshari", "افشاری"])
+    /// دشتی (Re Mi𝄳 Fa Sol La Si♭ Do), un āvāz de Šur con sus mismas notas y el šāhed en La, aproximado: el frigio.
+    public static let dashti = TipoDeEscala(
+        nombre: "Dašti",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Dashti", "دشتی"])
+    /// ابوعطا (Re Mi𝄳 Fa Sol La𝄳 Si♭ Do), un āvāz de Šur, aproximado: el locrio.
+    public static let abuAta = TipoDeEscala(
+        nombre: "Abu ʿAtā",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Abu Ata", "Abuata", "ابوعطا"])
+    /// بیات اصفهان (Sol La Si♭ Do Re Mi𝄳 Fa♯), un āvāz de Homāyun, aproximado: la menor armónica.
+    public static let bayateEsfahan = TipoDeEscala(
+        nombre: "Bayāt-e Esfahān",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        alias: ["Bayat-e Isfahan", "Isfahan", "بیات اصفهان"])
+
+    /// Los dastgāh y, con ellos, los āvāz que derivan de Šur y de Homāyun.
+    public static let dastgah: [TipoDeEscala] = [
+        .mahur, .homayun, .cahargah, .sur, .rastPanjgah, .segah, .nava, .bayateTork, .afshari, .dashti, .abuAta,
+        .bayateEsfahan,
+    ]
+}
+
+// MARK: - Turquia
+
+extension TipoDeEscala {
+    // MARK: Makamlar turcos (temperados)
+    //
+    // En la teoría de Arel-Ezgi-Uzdilek (AEU) la octava tiene 53 comas, y las alteraciones son de 1 coma
+    // (koma), 4 (bakiye), 5 (küçük mücennep) y 8 (büyük mücennep). Aquí cada nota se redondea a su
+    // semitono más cercano: la koma desaparece y las demás se escriben como ♯ o ♭. Uşşak y Hüseynî, cuya
+    // segâh (Si una koma bajo, que en la práctica suena casi un cuarto de tono bajo) se pierde al redondear,
+    // tienen además su versión microtonal (`TipoDeEscala.microtonal`), como Segâh, con la tónica en la segâh,
+    // que se escribe sobre Si. Saba, cuyas fuentes no coinciden en el tetracordo, sigue fuera.
+    // Los nombres van en turco con «makamı» detrás, como se dicen: «Rast» sola es el dromos griego.
+    //
+    // Mâhur, Acemaşiran, Sultânîyegâh y Şedaraban son *şed*: las notas de otro makam (Çârgâh, Nihâvend,
+    // Hicazkâr) llevadas a otra perde. Hümâyun, Uzzâl y Zirgüleli Hicaz son, con Hicaz, las cuatro formas del
+    // tetracordo Hicaz en la dügâh, que cambian lo que sigue. Varios comparten notas con otro makam y se distinguen
+    // por el recorrido (seyir), la nota de reposo (güçlü) y el registro, que una escala no recoge. Fuente: los
+    // artículos de cada makam de la TDV İslâm Ansiklopedisi.
+
+    /// Rast (Sol La Si Do Re Mi Fa♯, con Si y Fa♯ una koma bajos): sube como la mayor y baja con Fa, como el
+    /// mixolidio.
+    public static let rastMakami = TipoDeEscala(
+        nombre: "Rast makamı",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["makam Rast"])
+    /// Hicaz (La Si♭ Do♯ Re | Mi Fa♯ Sol): un tetracordo Hicaz y, al subir, un pentacordo Rast en la cuarta;
+    /// al bajar, Fa, como el frigio dominante.
+    public static let hicazMakami = TipoDeEscala(
+        nombre: "Hicaz makamı",
+        intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Hicaz"])
+    /// Hicazkâr (Sol La♭ Si Do Re Mi♭ Fa♯): la doble armónica.
+    public static let hicazkarMakami = TipoDeEscala(
+        nombre: "Hicazkâr makamı",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        alias: ["makam Hicazkâr"])
+    /// Nihâvend (Sol La Si♭ Do Re Mi♭ Fa♯): un pentacordo Bûselik y, en la quinta, un tetracordo Hicaz al
+    /// subir y uno Kürdî al bajar: la menor armónica y la natural.
+    public static let nihavendMakami = TipoDeEscala(
+        nombre: "Nihâvend makamı",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Nihâvend"])
+    /// Kürdî (La Si♭ Do Re Mi Fa Sol): el frigio.
+    public static let kurdiMakami = TipoDeEscala(
+        nombre: "Kürdî makamı",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Kürdî"])
+    /// Bûselik (La Si Do Re Mi Fa Sol): un pentacordo Bûselik y un tetracordo Kürdî, la menor natural.
+    public static let buselikMakami = TipoDeEscala(
+        nombre: "Bûselik makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Bûselik"])
+    /// Çârgâh (Do Re Mi Fa Sol La Si): la mayor.
+    public static let cargahMakami = TipoDeEscala(
+        nombre: "Çârgâh makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["makam Çârgâh"])
+    /// Uşşak (La Si Do Re Mi Fa Sol, con Si una koma y media bajo: la segâh): un tetracordo Uşşak y un pentacordo
+    /// Bûselik en la cuarta. Aproximado: la menor natural; su segâh solo suena en la versión microtonal.
+    public static let ussakMakami = TipoDeEscala(
+        nombre: "Uşşak makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Uşşak"])
+    /// Hüseynî (La Si Do Re Mi Fa♯ Sol, con la segâh y Fa♯ una koma bajo): un pentacordo Hüseynî y un tetracordo
+    /// Uşşak en la quinta; al bajar, Fa. Aproximado: sube como el dórico y baja como la menor natural.
+    public static let huseyniMakami = TipoDeEscala(
+        nombre: "Hüseynî makamı",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Hüseynî"])
+    /// Segâh (Si Do Re Mi Fa♯ Sol La, con Si y Fa♯ una koma bajos): un pentacordo Segâh desde la segâh y un
+    /// tetracordo Uşşak en la eviç. Aproximado sobre Si: el frigio.
+    public static let segahMakami = TipoDeEscala(
+        nombre: "Segâh makamı",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Segâh"])
+    /// Hüzzam (Si Do Re Mi♭ Fa♯ Sol La, desde la segâh, con Si y Fa♯ una koma bajos y Mi♭ una alto): un pentacordo
+    /// Hüzzam y un tetracordo Hicaz en la nevâ. Aproximado sobre Si.
+    public static let huzzamMakami = TipoDeEscala(
+        nombre: "Hüzzam makamı",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Hüzzam"])
+    /// Saba (La Si Do Re♭ Mi Fa Sol, con la segâh): un tetracordo Saba y uno Hicaz en la çârgâh. Aproximado: la segâh a
+    /// Si, como el dromos Sabáh.
+    public static let sabaMakami = TipoDeEscala(
+        nombre: "Saba makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaDisminuida,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Saba"])
+    /// Karcığar (La Si Do Re Mi♭ Fa♯ Sol): un tetracordo Uşşak y un pentacordo Hicaz en la cuarta, como el dromos
+    /// Kartzigár.
+    public static let karcigarMakami = TipoDeEscala(
+        nombre: "Karcığar makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["makam Karcığar"])
+    /// Suzinak (Sol La Si Do Re Mi♭ Fa♯): un pentacordo Rast y un tetracordo Hicaz, la mayor armónica.
+    public static let suzinakMakami = TipoDeEscala(
+        nombre: "Suzinak makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        alias: ["makam Suzinak"])
+    /// Nikriz (Sol La Si♭ Do♯ Re Mi Fa): un pentacordo Nikriz y un tetracordo Bûselik, el dórico con la 4ª aumentada.
+    public static let nikrizMakami = TipoDeEscala(
+        nombre: "Nikriz makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["makam Nikriz"])
+    /// Nev'eser (Sol La Si♭ Do♯ Re Mi♭ Fa♯): un pentacordo Nikriz y un tetracordo Hicaz, la menor húngara.
+    public static let neveserMakami = TipoDeEscala(
+        nombre: "Nev'eser makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        alias: ["makam Nev'eser", "Neveser makamı"])
+
+    /// Mâhur (Sol La Si Do Re Mi Fa♯): un pentacordo y un tetracordo Çârgâh, la mayor pitagórica sobre la rast.
+    public static let mahurMakami = TipoDeEscala(
+        nombre: "Mâhur makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["makam Mâhur"])
+    /// Acemaşiran (Fa Sol La Si♭ Do Re Mi): Çârgâh llevado a la acemaşiran, con el Si♭ (kürdî) en la armadura.
+    public static let acemasiranMakami = TipoDeEscala(
+        nombre: "Acemaşiran makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["makam Acemaşiran", "Acem-aşiran makamı"])
+    /// Sultânîyegâh (Re Mi Fa Sol La Si♭ Do♯): Bûselik llevado a la yegâh, un pentacordo Bûselik y, en la dügâh, un
+    /// tetracordo Hicaz al subir y uno Kürdî al bajar, como Nihâvend.
+    public static let sultaniyegahMakami = TipoDeEscala(
+        nombre: "Sultânîyegâh makamı",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Sultânîyegâh"])
+    /// Şedaraban (Re Mi♭ Fa♯ Sol La Si♭ Do♯): Zirgüleli Hicaz llevado a la yegâh, un pentacordo Zirgüleli Hicaz y un
+    /// tetracordo Hicaz en la dügâh. La doble armónica.
+    public static let sedarabanMakami = TipoDeEscala(
+        nombre: "Şedaraban makamı",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        alias: ["makam Şedaraban", "Şedarabân makamı"])
+    /// Hümâyun (La Si♭ Do♯ Re Mi Fa Sol): un tetracordo Hicaz y un pentacordo Bûselik en la nevâ, el frigio
+    /// dominante.
+    public static let humayunMakami = TipoDeEscala(
+        nombre: "Hümâyun makamı",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Hümâyun"])
+    /// Uzzâl (La Si♭ Do♯ Re Mi Fa♯ Sol): un pentacordo Hicaz y un tetracordo Uşşak en la hüseynî, con las notas
+    /// de Hicaz al subir.
+    public static let uzzalMakami = TipoDeEscala(
+        nombre: "Uzzâl makamı",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["makam Uzzâl"])
+    /// Zirgüleli Hicaz (La Si♭ Do♯ Re Mi Fa Sol♯): un pentacordo Hicaz y un tetracordo Hicaz en la hüseynî, la doble
+    /// armónica.
+    public static let zirguleliHicazMakami = TipoDeEscala(
+        nombre: "Zirgüleli Hicaz makamı",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        alias: ["makam Zirgüleli Hicaz"])
+
+    /// Los makamlar: los que el temperamento igual escribe sin cambiarles el carácter y los que solo se oyen bien
+    /// con su versión microtonal (Uşşak, Hüseynî y Segâh).
+    public static let makamlar: [TipoDeEscala] = [
+        .rastMakami, .hicazMakami, .hicazkarMakami, .nihavendMakami, .kurdiMakami, .buselikMakami, .cargahMakami,
+        .ussakMakami, .huseyniMakami, .segahMakami, .huzzamMakami, .sabaMakami, .karcigarMakami, .suzinakMakami,
+        .nikrizMakami, .neveserMakami, .mahurMakami, .acemasiranMakami, .sultaniyegahMakami, .sedarabanMakami,
+        .humayunMakami, .uzzalMakami, .zirguleliHicazMakami,
+    ]
 }

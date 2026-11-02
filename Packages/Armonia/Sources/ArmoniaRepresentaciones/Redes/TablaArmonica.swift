@@ -165,7 +165,7 @@ public struct TablaArmonica: Hashable, Sendable {
     ///   - titulo: el título; si es `nil`, el que corresponda, y si es "", ninguno.
     ///   - leyenda: si se dibuja la leyenda.
     public func svg(
-        notacion: Notacion = .espanolUnicode, margen: Int? = nil, paso: Double? = nil,
+        notacion: Notacion = .espanolCompacto, margen: Int? = nil, paso: Double? = nil,
         titulo: String? = nil, leyenda: Bool = true
     ) -> String {
         let paso = paso ?? (recorrido.isEmpty ? 56 : 72)
@@ -182,10 +182,11 @@ public struct TablaArmonica: Hashable, Sendable {
 
         // La ventana: un rectángulo alrededor de las notas.
         let base = puntos.isEmpty ? [PuntoDeLaRed(quintas: 0, terceras: 0)] : puntos
-        let minX = base.map(x).min()! - Double(margen) * coseno * paso - paso * 0.1
-        let maxX = base.map(x).max()! + Double(margen) * coseno * paso + paso * 0.1
-        let minY = base.map(y).min()! - Double(margen) * paso - paso * 0.1
-        let maxY = base.map(y).max()! + Double(margen) * paso + paso * 0.1
+        let (xs, ys) = (base.map(x).extremosOSi(noHay: 0...0), base.map(y).extremosOSi(noHay: 0...0))
+        let minX = xs.lowerBound - Double(margen) * coseno * paso - paso * 0.1
+        let maxX = xs.upperBound + Double(margen) * coseno * paso + paso * 0.1
+        let minY = ys.lowerBound - Double(margen) * paso - paso * 0.1
+        let maxY = ys.upperBound + Double(margen) * paso + paso * 0.1
         var red: [PuntoDeLaRed] = []
         let columnas = Int((minX / (coseno * paso)).rounded(.up))...Int((maxX / (coseno * paso)).rounded(.down))
         for b in columnas {
@@ -206,7 +207,7 @@ public struct TablaArmonica: Hashable, Sendable {
         let (marcados, principales) = DibujoSVG.marcar(puntos, en: red, clave: clave)
         // Los nombres de las alturas dadas, por número MIDI.
         let nombres = Dictionary(
-            alturas.map { ($0.midi, $0.nota.nombreCompacto(en: notacion) + "\($0.octava)") },
+            alturas.map { ($0.midi, $0.nombreCompacto(en: notacion)) },
             uniquingKeysWith: { uno, _ in uno })
         // Con bemoles en las alturas dadas, los demás hexágonos también los usan.
         let bemoles = alturas.contains { $0.nota.alteracion.simbolo.contains("♭") }
@@ -219,7 +220,7 @@ public struct TablaArmonica: Hashable, Sendable {
                 let midi = TablaArmonica.midi(de: p)
                 if let nombre = nombres[midi] { return nombre }
                 let altura = Altura(midi: midi, preferirBemoles: bemoles)
-                return altura.nota.nombreCompacto(en: notacion) + "\(altura.octava)"
+                return altura.nombreCompacto(en: notacion)
             }
         }
 
@@ -239,11 +240,11 @@ public struct TablaArmonica: Hashable, Sendable {
         for punto in red {
             let marcado = marcados.contains(punto)
             let esquinas = vertices(punto)
-            svg += "  <polygon points=\"\(esquinas.map { "\(f($0.0)),\(f($0.1))" }.joined(separator: " "))\" "
             svg +=
-                marcado
-                ? "fill=\"\(DibujoSVG.Color.nota)\" stroke=\"#ffffff\" stroke-width=\"1.5\"/>\n"
-                : "fill=\"#f4f4f4\" stroke=\"#bbbbbb\" stroke-width=\"1\"/>\n"
+                "  "
+                + ElementoSVG("polygon").con("points", puntos: esquinas.map { ($0.0, $0.1) })
+                .con("fill", marcado ? DibujoSVG.Color.nota : "#f4f4f4").con("stroke", marcado ? "#ffffff" : "#bbbbbb")
+                .con("stroke-width", marcado ? "1.5" : "1").vacio + "\n"
         }
         // El contorno de la forma: los lados entre un hexágono marcado y uno que no lo está.
         // El vecino en la dirección θ comparte el lado entre los vértices θ − 30° y θ + 30°.
@@ -259,15 +260,21 @@ public struct TablaArmonica: Hashable, Sendable {
                 let (x1, y1) = vertice(punto, angulo - 30)
                 let (x2, y2) = vertice(punto, angulo + 30)
                 svg +=
-                    "  <line x1=\"\(f(x1))\" y1=\"\(f(y1))\" x2=\"\(f(x2))\" y2=\"\(f(y2))\" stroke=\"#111111\" stroke-width=\"3\" stroke-linecap=\"round\"/>\n"
+                    "  "
+                    + ElementoSVG("line").con("x1", x1).con("y1", y1).con("x2", x2).con("y2", y2)
+                    .con("stroke", "#111111").con("stroke-width", "3").con("stroke-linecap", "round").vacio + "\n"
             }
         }
         // La primera nota, con borde naranja.
         for punto in red where principales.contains(punto) {
             let esquinas = vertices(punto)
-            svg += "  <polygon points=\"\(esquinas.map { "\(f($0.0)),\(f($0.1))" }.joined(separator: " "))\" "
+            let transformacion =
+                "translate(\(f(x(punto))) \(f(y(punto)))) scale(0.86) translate(\(f(-x(punto))) \(f(-y(punto))))"
             svg +=
-                "fill=\"none\" stroke=\"\(DibujoSVG.Color.primera)\" stroke-width=\"3.5\" transform=\"translate(\(f(x(punto))) \(f(y(punto)))) scale(0.86) translate(\(f(-x(punto))) \(f(-y(punto))))\"/>\n"
+                "  "
+                + ElementoSVG("polygon").con("points", puntos: esquinas.map { ($0.0, $0.1) }).con("fill", "none")
+                .con("stroke", DibujoSVG.Color.primera).con("stroke-width", "3.5").con("transform", transformacion)
+                .vacio + "\n"
         }
         // Nombres.
         for punto in red {
@@ -275,10 +282,12 @@ public struct TablaArmonica: Hashable, Sendable {
             let texto = nombre(punto)
             let tamano = paso * (texto.count > 4 ? 0.2 : texto.count > 3 ? 0.23 : 0.27)
             svg +=
-                "  <text x=\"\(f(x(punto)))\" y=\"\(f(y(punto)))\" text-anchor=\"middle\" dominant-baseline=\"central\" "
-            svg += "font-size=\"\(f(tamano))\" fill=\"\(marcado ? "#ffffff" : "#888888")\""
-            svg += marcado ? " font-weight=\"bold\">" : ">"
-            svg += DibujoSVG.escapar(texto) + "</text>\n"
+                "  "
+                + ElementoSVG("text").con("x", x(punto)).con("y", y(punto)).con("text-anchor", "middle")
+                .con("dominant-baseline", "central").con("font-size", tamano).con(
+                    "fill", marcado ? "#ffffff" : "#888888"
+                )
+                .con("font-weight", "bold", si: marcado).conTexto(texto) + "\n"
         }
         // Las tríadas: un punto en el vértice común de sus tres hexágonos.
         let triadas = DibujoSVG.triadas(en: red, marcados: marcados)
@@ -286,8 +295,10 @@ public struct TablaArmonica: Hashable, Sendable {
             let cx = triada.vertices.map(x).reduce(0, +) / 3
             let cy = triada.vertices.map(y).reduce(0, +) / 3
             svg +=
-                "  <circle cx=\"\(f(cx))\" cy=\"\(f(cy))\" r=\"\(f(paso * (recorrido.isEmpty ? 0.1 : 0.075)))\" fill=\"\(triada.mayor ? DibujoSVG.Color.mayor : DibujoSVG.Color.menor)\" "
-            svg += "stroke=\"#111111\" stroke-width=\"1.5\"/>\n"
+                "  "
+                + ElementoSVG("circle").con("cx", cx).con("cy", cy).con("r", paso * (recorrido.isEmpty ? 0.1 : 0.075))
+                .con("fill", triada.mayor ? DibujoSVG.Color.mayor : DibujoSVG.Color.menor).con("stroke", "#111111")
+                .con("stroke-width", "1.5").vacio + "\n"
         }
         // Recorrido: flechas entre los vértices comunes de las tríadas.
         svg += DibujoSVG.flechas(

@@ -21,3 +21,36 @@ public struct Candidato<Valor: Hashable & Sendable>: Hashable, Sendable {
         self.notasOmitidas = notasOmitidas
     }
 }
+
+// MARK: - ElMejor
+
+/// El candidato de menor coste de una búsqueda, para los bucles que prueban opciones una a una. A igual
+/// coste se queda el primero.
+///
+///     var mejor = ElMejor<Acorde, Double>()
+///     for (acorde, coste) in opciones { mejor.proponer(acorde, coste: coste) }
+///     mejor.valor    // el de menor coste, o nil si no hubo ninguno
+///
+/// Con un coste que no es `Comparable`, como una tupla, se da la comparación: `ElMejor<…, (Int, Int)>(por: <)`.
+package struct ElMejor<Valor, Coste> {
+    private let menor: (Coste, Coste) -> Bool
+    /// El mejor hasta ahora; `nil` si no se ha propuesto ninguno.
+    package private(set) var valor: Valor?
+    package private(set) var coste: Coste?
+
+    package init(por menor: @escaping (Coste, Coste) -> Bool) { self.menor = menor }
+
+    /// Si un candidato con este coste sería el nuevo mejor.
+    package func mejora(_ coste: Coste) -> Bool { self.coste.map { menor(coste, $0) } ?? true }
+
+    /// Se queda con el candidato si mejora al mejor; el valor solo se calcula entonces.
+    package mutating func proponer(_ valor: @autoclosure () -> Valor, coste: Coste) {
+        guard mejora(coste) else { return }
+        self.valor = valor()
+        self.coste = coste
+    }
+}
+
+extension ElMejor where Coste: Comparable {
+    package init() { self.init(por: <) }
+}

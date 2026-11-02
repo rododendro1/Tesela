@@ -57,7 +57,8 @@ public struct Escala: Hashable, Sendable {
     /// última, en español o inglés con palabras («Fa sostenido dórico», «F sharp dorian»).
     private static func leerTonica(_ texto: String) -> (Nota, Notacion)? {
         let clave = texto.claveDeBusqueda
-        for notacion in Notacion.deLecturaGenerica + [.frances, .italiano, .aleman] + Notacion.conPalabras {
+        let otras = [Notacion.francesPalabras, .italianoPalabras, .alemanPalabras, .hungaroPalabras]
+        for notacion in Notacion.deLecturaGenerica + otras + Notacion.conPalabras {
             if let nombre = Nota.porNombre[notacion]?[clave] { return (nombre, notacion) }
         }
         return nil
@@ -191,7 +192,7 @@ public struct Escala: Hashable, Sendable {
     /// "Re dórico".
     public var nombre: String { "\(tonica.nombre) \(tipo.nombre)" }
 
-    /// Nombre en la notación indicada: "Re dórico", "D dorian", `.inglesUnicode` → "B♭ harmonic minor".
+    /// Nombre en la notación indicada: "Re dórico", "D dorian", `.inglesCompacto` → "B♭ harmonic minor".
     public func nombre(en notacion: Notacion) -> String {
         "\(tonica.nombre(en: notacion)) \(tipo.nombre(en: notacion))"
     }
@@ -336,27 +337,25 @@ extension Escala {
 
 // MARK: - Idiomas
 //
-// Nombres de los grados de la escala en los catorce idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
+// Nombres de los grados de la escala en los quince idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
 
 // MARK: - NombreDeGrado
 
 extension NombreDeGrado {
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
 
     private var traduccion: Traduccion {
         switch self {
-        case .tonica: return TextosDeTeoria.traducidos.map(\.gradoTonica)
-        case .supertonica: return TextosDeTeoria.traducidos.map(\.gradoSupertonica)
-        case .mediante: return TextosDeTeoria.traducidos.map(\.gradoMediante)
+        case .tonica: return TextosDeTeoria.traduccion(\.gradoTonica)
+        case .supertonica: return TextosDeTeoria.traduccion(\.gradoSupertonica)
+        case .mediante: return TextosDeTeoria.traduccion(\.gradoMediante)
         case .subdominante:
-            return TextosDeTeoria.traducidos.map(\.gradoSubdominante)
-        case .dominante: return TextosDeTeoria.traducidos.map(\.gradoDominante)
+            return TextosDeTeoria.traduccion(\.gradoSubdominante)
+        case .dominante: return TextosDeTeoria.traduccion(\.gradoDominante)
         case .superdominante:
-            return TextosDeTeoria.traducidos.map(\.gradoSuperdominante)
-        case .sensible: return TextosDeTeoria.traducidos.map(\.gradoSensible)
-        case .subtonica: return TextosDeTeoria.traducidos.map(\.gradoSubtonica)
+            return TextosDeTeoria.traduccion(\.gradoSuperdominante)
+        case .sensible: return TextosDeTeoria.traduccion(\.gradoSensible)
+        case .subtonica: return TextosDeTeoria.traduccion(\.gradoSubtonica)
         }
     }
 }

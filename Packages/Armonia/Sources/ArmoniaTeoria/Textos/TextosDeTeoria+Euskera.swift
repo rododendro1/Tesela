@@ -7,7 +7,7 @@ import ArmoniaNucleo
 extension TextosDeTeoria {
     static let euskera = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "baxua \(bajo) dela" },
+        conBajoEn: { acorde, bajo in "\(acorde), baxua \(bajo) dela" },
         nombresDeLasInversiones: ["oinarrizko egoera", "lehen inbertsioa", "bigarren inbertsioa", "hirugarren inbertsioa",
                                   "laugarren inbertsioa", "bosgarren inbertsioa", "seigarren inbertsioa"],
         inversionConNumero: "_. inbertsioa",
@@ -106,6 +106,8 @@ extension TextosDeTeoria {
         cadenciaPlagal: "kadentzia plagala",
         cadenciaRota: "kadentzia hautsia",
         semicadencia: "erdi-kadentzia",
+        semicadenciaFrigia: "erdi-kadentzia frigiarra",
+        cadenciaPlagalMenor: "kadentzia plagal minorra",
 
         // RecorridoTonal.swift
         // Con el ablativo y el adlativo: "Do maiorretik sol maiorrera, 5. akordean".
@@ -113,6 +115,56 @@ extension TextosDeTeoria {
             Tonalidad.declinar(de, "etik").conMayusculaInicial + " " + Tonalidad.declinar(a, "era") + ", \(n). akordean"
         },
         pivote: "pibota",
-        directa: " (zuzena)"
+        directa: " (zuzena)",
+        // Arpegio.swift
+        arpegioDe: { acorde in "\(acorde) arpegioa" },
+        patronAscendente: "igoera",
+        patronDescendente: "jaitsiera",
+        patronIdaYVuelta: "joan-etorria",
+        patronAlberti: "Albertiren baxua",
+        patronQuebrado: "hautsia",
+        patronBajaYSube: "jaitsi-igoa",
+        // Escala+Acorde.swift
+        papelNotaDelAcorde: "akordeko nota",
+        papelTensionDisponible: "tentsioa",
+        papelNotaAEvitar: "saihesteko nota",
+        modoDe: { modo, escala in "\(escala): \(modo). modua" },
+        // NotaExtrana.swift
+        nombresDeNotasExtranas: ["igarotze-nota", "brodadura", "apoiatura", "atzerapena", "aurrerapena", "ihes-nota", "pedal-nota", "nota askea"],
+        // EsquemaArmonico.swift
+        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "12 konpaseko bluesa", "boskoen progresioa", "romanesca", "Pachelbelen kanona", "monte", "fonte", "ponte"],
+        // Rearmonizacion.swift
+        sustitutoTritonal: "tritono-ordezkapena",
+        dominanteSecundaria: "bigarren mailako dominantea",
+        prestamoModal: "mailegu modala",
+        sustitutoDiatonico: "ordezko diatonikoa",
+        rearmonizacionIIV: "ii–V",
+        rearmonizacionBackdoor: "backdoor dominantea",
+        // ErrorDeLecturaDeTeoria.swift (acordes)
+        simboloNoReconocido: { simbolo in "«\(simbolo)» ez dago zifratu ezagunetan" },
+        tensionNoValida: { tension in "«\(tension)» ez da tentsio baliozkoa (♭/♯ 5, 9, 11 eta 13rekin onartzen dira, eta add 2, 4, 6, 9, 11 eta 13rekin)" },
+        numeroDeAcordeNoValido: { numero in "«\(numero)» ez da akorde-zenbaki bat (5, 6, 7, 9, 11 edo 13)" },
+        numeroRepetido: { numero in "«\(numero)» beste zenbaki baten ondoren dago; tentsio gehigarriak parentesi artean doaz, 7(9)-n bezala" },
+        disminuidoYSemidisminuido: "gutxitua (°) eta erdi-gutxitua (ø) ezin dira batera erabili",
+        quintaConCalidad: "bosgarren akordeak (5) ez du hirugarrenik, beraz ez ditu m, °, ø eta + onartzen",
+        fundamentalNoOmitible: "oinarria ezin da kendu",
+        gradoNoOmitible: { grado in "«omit\(grado)» ez da baliozkoa (3, 5, 7, 9, 11 eta 13 ken daitezke)" },
+        faltaLaFundamental: "oinarria falta da",
+        intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: .euskeraPalabras)): tarte honek ez du paperik hirugarrenez osatutako akorde batean" },
+        terceraMayorYMenor: "hirugarren handia eta txikia ditu aldi berean (♯9 9. gehitu gisa idazten da, ez 3. txiki gisa)",
+        variasSeptimas: "zazpigarren bat baino gehiago ditu",
+        septimaDisminuidaFueraDelDisminuido: "zazpigarren gutxitua akorde gutxituan bakarrik agertzen da (3. txikiarekin eta 5. gutxituarekin)",
+        noEsPorTerceras: "ez da hirugarrenez osatutako akordea",
+        bajoNoValido: { bajo in "«\(bajo)» ez da baxurako nota-izen bat" },
+        idiomasMezclados: { nombre in "«\(nombre)» oinarria ez bezalako hizkuntzan idatzita dago: idatzi dena silabekin (Sol7/Si) edo dena letrekin (G7/B)" },
+        // ErrorDeLecturaDeTeoria.swift (escalas)
+        modoNoReconocido: { nombre in "«\(nombre)» ez da tonalitate baten modua: tonalitatea maiorra edo minorra da (beste moduetarako, erabili Escala)" },
+        faltaElTipoDeEscala: "eskala-mota falta da (mayor, dórico, menor armónica…)",
+        tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» ez da eskala-mota ezagun bat" },
+        // ErrorDeLecturaDeTeoria.swift (coral)
+        vocesDistintas: "akorde guztiek ahots kopuru bera izan behar dute, eta gutxienez bi",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        enLaTonalidad: { tonalidad in Tonalidad.declinar(tonalidad, "ean") }
     )
 }

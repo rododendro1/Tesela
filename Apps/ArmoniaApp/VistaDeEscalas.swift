@@ -30,52 +30,67 @@ struct VistaDeEscalas: View {
 
     var body: some View {
         let escala = self.escala
-        let pentagrama = PresentacionDePentagrama(escala, notacion: notacion)
-        let sonido = Sonido.escala(escala)
+        let pentagrama = PentagramaPresentado(escala, notacion: notacion)
+        let sonido = Escucha.escala(escala)
         Form {
-            Section(notacion.texto(.escala)) {
-                Picker(notacion.texto(.tonica), selection: $tonica) {
+            Section(notacion.texto(\.escala)) {
+                Picker(notacion.texto(\.tonica), selection: $tonica) {
                     ForEach(VistaDeEscalas.tonicas.indices, id: \.self) {
                         Text(VistaDeEscalas.tonicas[$0].nombre(en: notacion)).tag($0)
                     }
                 }
-                Picker(notacion.texto(.tipo), selection: $tipo) {
-                    Section(notacion.texto(.habituales)) {
+                Picker(notacion.texto(\.tipo), selection: $tipo) {
+                    Section(notacion.texto(\.habituales)) {
                         ForEach(0..<TipoDeEscala.todos.count, id: \.self) { Text(nombre($0)).tag($0) }
                     }
-                    Section(notacion.texto(.otrasTradiciones)) {
+                    Section(notacion.texto(\.otrasTradiciones)) {
                         ForEach(TipoDeEscala.todos.count..<VistaDeEscalas.catalogo.count, id: \.self) {
                             Text(nombre($0)).tag($0)
                         }
                     }
                 }
             }
-            Section(notacion.texto(.notas)) {
+            Section(notacion.texto(\.notas)) {
                 Text(escala.nombre(en: notacion)).font(.headline)
+                // De qué escala es modo (Re dórico → modo 2 de Do mayor); se abre al tocarlo.
+                if let modo = PresentacionDeEscalaYAcorde.modo(de: escala, notacion: notacion),
+                    let madre = escala.escalaMadre?.madre
+                {
+                    Button(modo) { navegacion.ver(madre) }
+                }
                 Text(escala.notas.map { $0.nombre(en: notacion) }.joined(separator: "  "))
                     .font(.system(.body, design: .monospaced))
+                // La versión microtonal (Re Bayātī: Re Mi𝄳 Fa…) y los cents de cada grado, si la escala la tiene.
+                if let microtonos = escala.notasMicrotonales() {
+                    Text(microtonos.map { $0.nombre(en: notacion) }.joined(separator: "  "))
+                        .font(.system(.body, design: .monospaced))
+                    Text("¢  " + microtonos.map { "\(Int($0.cents.rounded()))" }.joined(separator: "  "))
+                        .font(.system(.footnote, design: .monospaced))
+                        .foregroundColor(.secondary)
+                }
                 BotonDeEscuchar(sonido)
             }
             let acordes = escala.armonizar().compactMap { $0 }
             if !acordes.isEmpty {
-                Section(notacion.texto(.acordesDeLaEscala)) {
+                Section(notacion.texto(\.acordesDeLaEscala)) {
                     Text(acordes.map { $0.cifrado(en: notacion) }.joined(separator: "   "))
                 }
             }
-            Section(notacion.texto(.pentagrama)) {
+            acordesQueCaben(en: escala)
+            Section(notacion.texto(\.pentagrama)) {
                 // Mientras suena, la nota que se oye, de otro color.
                 if let paso = reproductor.paso(de: sonido) {
-                    DiagramaDePentagrama(PresentacionDePentagrama(escala, notacion: notacion, resaltada: paso))
+                    DiagramaDePentagrama(PentagramaPresentado(escala, notacion: notacion, resaltada: paso))
                 } else {
                     DiagramaDePentagrama(pentagrama)
                 }
             }
-            Section(notacion.texto(.mastilDeGuitarra)) {
+            Section(notacion.texto(\.mastilDeGuitarra)) {
                 DiagramaDeMastil(mastil: Mastil(.guitarra, trastes: 12), escala: escala, notacion: notacion)
             }
             posiciones(de: escala)
         }
-        .navigationTitle(notacion.texto(.escalas))
+        .navigationTitle(notacion.texto(\.escalas))
         .selectorDeNotacionEnLaBarra()
         // Una escala pedida desde otra pestaña (las compatibles con un acorde), ahora o si se pidió antes de abrir esta.
         .onChange(of: navegacion.escalaPedida) { _ in tomarLaEscalaPedida() }
@@ -83,6 +98,24 @@ struct VistaDeEscalas: View {
         .toolbar {
             ToolbarItem {
                 BotonDeExportar([pentagrama.fichero])
+            }
+        }
+    }
+
+    /// Los acordes que caben sobre cada grado, no solo los de terceras (sus, sextas, add9, dominantes alteradas),
+    /// plegados por grado; cada uno se abre en la pestaña de acordes.
+    @ViewBuilder
+    private func acordesQueCaben(en escala: Escala) -> some View {
+        let grados = PresentacionDeEscalaYAcorde.acordesQueCaben(escala, notacion: notacion)
+        if !grados.isEmpty {
+            Section(notacion.texto(\.acordesQueCaben)) {
+                ForEach(grados, id: \.self) { grado in
+                    DisclosureGroup("\(grado.grado) (\(grado.acordes.count))") {
+                        ForEach(Array(grado.acordes.enumerated()), id: \.offset) { _, acorde in
+                            Button(acorde.cifrado(en: notacion)) { navegacion.ver(acorde) }
+                        }
+                    }
+                }
             }
         }
     }
@@ -95,8 +128,8 @@ struct VistaDeEscalas: View {
         if let indice = VistaDeEscalas.tonicas.firstIndex(where: { $0.claseDeAltura == pedida.tonica.claseDeAltura }) {
             tonica = indice
         }
-        let nombre = pedida.tipo.nombre(en: .espanolUnicode)
-        if let indice = VistaDeEscalas.catalogo.firstIndex(where: { $0.nombre(en: .espanolUnicode) == nombre })
+        let nombre = pedida.tipo.nombre(en: .espanolCompacto)
+        if let indice = VistaDeEscalas.catalogo.firstIndex(where: { $0.nombre(en: .espanolCompacto) == nombre })
             ?? VistaDeEscalas.catalogo.firstIndex(of: pedida.tipo)
         {
             tipo = indice
@@ -110,10 +143,10 @@ struct VistaDeEscalas: View {
         let mastil = Mastil(.guitarra, trastes: 15)
         let porCuerda = escala.notas.count >= 6 ? 3 : 2
         let posiciones = caged ? mastil.posicionesCAGED(de: escala) : mastil.posicionesPorCuerda(de: escala)
-        Section(notacion.texto(.posicionesEnElMastil)) {
-            Picker(notacion.texto(.posicionesEnElMastil), selection: $caged) {
+        Section(notacion.texto(\.posicionesEnElMastil)) {
+            Picker(notacion.texto(\.posicionesEnElMastil), selection: $caged) {
                 Text("CAGED").tag(true)
-                Text(notacion.texto(.notasPorCuerda(porCuerda))).tag(false)
+                Text(notacion.texto { $0.notasPorCuerda(porCuerda) }).tag(false)
             }
             .pickerStyle(.segmented)
             ForEach(posiciones, id: \.self) { posicion in
@@ -123,7 +156,7 @@ struct VistaDeEscalas: View {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
                         if let forma = posicion.forma {
-                            Text(notacion.texto(.forma(forma.rawValue))).bold()
+                            Text(notacion.texto { $0.forma(forma.rawValue) }).bold()
                         }
                         Text(rotulo(de: posicion)).foregroundColor(.secondary)
                         Spacer()
@@ -139,12 +172,12 @@ struct VistaDeEscalas: View {
 
     /// Los trastes que abarca una posición: «Trastes 2–6».
     private func rotulo(de posicion: EscalaEnElMastil) -> String {
-        notacion.texto(.trastes(desde: posicion.trastes.lowerBound, hasta: posicion.trastes.upperBound))
+        notacion.texto { $0.trastes(posicion.trastes.lowerBound, posicion.trastes.upperBound) }
     }
 
     /// Una posición nota a nota, cuerda a cuerda, como se estudia.
-    private func sonido(de posicion: EscalaEnElMastil, en escala: Escala) -> Sonido {
-        Sonido.voz(Voz(posicion.alturas.map { Evento($0, .corchea) })).conTonica(escala.tonica)
+    private func sonido(de posicion: EscalaEnElMastil, en escala: Escala) -> Escucha {
+        Escucha.voz(Voz(posicion.alturas.map { Evento($0, .corchea) })).conTonica(escala.tonica)
     }
 
     private func nombre(_ indice: Int) -> String {

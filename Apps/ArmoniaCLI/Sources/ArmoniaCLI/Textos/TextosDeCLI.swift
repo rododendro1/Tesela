@@ -4,11 +4,11 @@ import Armonia
 // MARK: - Textos de ArmoniaCLI
 //
 // Un idioma por fichero: `TextosDeCLI+Espanol.swift`, `TextosDeCLI+Ingles.swift`… Cada uno da todos los
-// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los catorce y
+// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los quince y
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de ArmoniaCLI en un idioma.
-struct TextosDeCLI: Sendable {
+struct TextosDeCLI: TextosTraducidos {
     // MARK: Ayuda+Armonizacion.swift
     let sintaxisAnalizar: String
     let descripcionAnalizar: String
@@ -38,6 +38,9 @@ struct TextosDeCLI: Sendable {
     let descripcionIntervalo: String
     let sintaxisEscala: String
     let descripcionEscala: String
+    let sintaxisEscalas: String
+    let descripcionEscalas: String
+    let notasEscalas: String
     let sintaxisTonalidad: String
     let descripcionTonalidad: String
 
@@ -83,8 +86,14 @@ struct TextosDeCLI: Sendable {
     let notasMusicxmlArpegios: String
     let sintaxisMusicxmlArchivo: String
     let descripcionMusicxmlArchivo: String
+    let sintaxisMusicxmlEscala: String
+    let descripcionMusicxmlEscala: String
     let sintaxisMeiMelodia: String
     let descripcionMeiMelodia: String
+    let sintaxisLilypondMelodia: String
+    let descripcionLilypondMelodia: String
+    let sintaxisAbcMelodia: String
+    let descripcionAbcMelodia: String
     let sintaxisMidiMelodia: String
     let descripcionMidiMelodia: String
 
@@ -100,7 +109,15 @@ struct TextosDeCLI: Sendable {
     let sintaxisAyuda: String
     let descripcionAyuda: String
 
-    // MARK: ErrorDeUso+Armonizacion.swift
+    // MARK: Terminal.swift
+    let sintaxisCompletado: String
+    let descripcionCompletado: String
+    let sintaxisManual: String
+    let descripcionManual: String
+    let manualNombre: String
+    let manualNotas: String
+
+    // MARK: ErrorDeUso.swift (armonización)
     let faltanAcordesDeLasVoces: @Sendable (String) -> String
     let dosAcordesDeConduccion: @Sendable (String) -> String
     let faltanNotasDeLaArmonizacion: @Sendable (String) -> String
@@ -109,10 +126,12 @@ struct TextosDeCLI: Sendable {
     let especieFueraDeRango: String
     let faltanAcordesDeLaRealizacion: @Sendable (String) -> String
 
-    // MARK: ErrorDeUso+Consultas.swift
+    // MARK: ErrorDeUso.swift (consultas)
     let faltaCifrado: String
     let faltaCifradoDelArpegio: String
     let patronDesconocido: @Sendable (String) -> String
+    let tradicionDesconocida: @Sendable (String) -> String
+    let categoriaDesconocida: @Sendable (String) -> String
     let faltanNotas: String
     let dosNotas: String
     let faltaEscala: String
@@ -125,7 +144,7 @@ struct TextosDeCLI: Sendable {
     let faltaTransporte: @Sendable (String) -> String
     let faltanAcordesDeLaRearmonizacion: @Sendable (String) -> String
 
-    // MARK: ErrorDeUso+Dibujos.swift
+    // MARK: ErrorDeUso.swift (dibujos)
     let margenFueraDeRango: String
     let faltanNotasDelDibujo: @Sendable (String, String) -> String
     let faltaAcordeDelDibujo: @Sendable (String, String) -> String
@@ -137,7 +156,7 @@ struct TextosDeCLI: Sendable {
     let caminoSoloTriadas: @Sendable (String, String) -> String
     let cicloSoloTriadas: @Sendable (String, String) -> String
 
-    // MARK: ErrorDeUso+Neorriemann.swift
+    // MARK: ErrorDeUso.swift (neorriemanniana)
     let vocesFueraDeRango: String
     let unAcordeDeVecinos: @Sendable (String) -> String
     let vecinosSinFamilia: String
@@ -146,7 +165,7 @@ struct TextosDeCLI: Sendable {
     let faltanPasosDePLR: @Sendable (String) -> String
     let plrSoloTriadas: @Sendable (String, Bool) -> String
 
-    // MARK: ErrorDeUso+Partituras.swift
+    // MARK: ErrorDeUso.swift (partituras)
     let faltaTipoDePartitura: @Sendable (String, String) -> String
     let instrumentoMIDI: String
     let marcasSoloMusicXML: String
@@ -165,7 +184,7 @@ struct TextosDeCLI: Sendable {
     let acordesConCifradosYAnalisis: String
     let tipoDePartituraDesconocido: @Sendable (String) -> String
 
-    // MARK: ErrorDeUso+Trastes.swift
+    // MARK: ErrorDeUso.swift (digitaciones)
     let faltaInstrumento: @Sendable (String, (String, String)) -> String
     let instrumentoDesconocido: @Sendable (String, (Notacion) -> String) -> String
     let faltaLimite: String
@@ -178,17 +197,22 @@ struct TextosDeCLI: Sendable {
     let faltaEscalaDePosiciones: String
     let capoFueraDeRango: String
 
-    // MARK: ErrorDeUso.swift
+    // MARK: ErrorDeUso.swift (comunes)
     let pruebaLaAyuda: String
     let ordenDesconocida: @Sendable (String) -> String
     let opcionDesconocida: @Sendable (String) -> String
     let idiomaDesconocido: @Sendable (String) -> String
+    let terminalDesconocida: @Sendable (String) -> String
     let escrituraNoValida: @Sendable (String) -> String
 
     // MARK: Mensaje.swift
     let mensajeNotas: String
     let mensajeAcordes: String
+    /// La línea de `armonia escala` con las notas de la versión microtonal (maqamat, dastgāh, makamlar).
+    let mensajeMicrotonos: String
     let mensajeEscalas: String
+    let mensajeHabituales: String
+    let mensajeNingunaEscala: String
     let mensajeArmadura: String
     let mensajeRelativa: String
     let mensajeHomonima: String
@@ -209,8 +233,9 @@ struct TextosDeCLI: Sendable {
     let mensajePasos: @Sendable (Int) -> String
     let mensajeTriadas: @Sendable (Int) -> String
 
-    /// Los textos en los catorce idiomas: `traducidos.map(\.campo)` es la `Traduccion` de un campo.
+    /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// `Traduccion`.
     static let traducidos = Traducido<TextosDeCLI>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
-        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso)
+        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
 }

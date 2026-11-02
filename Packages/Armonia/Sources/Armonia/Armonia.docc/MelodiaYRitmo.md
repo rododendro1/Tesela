@@ -139,6 +139,33 @@ mei.contains("<tuplet num=\"3\" numbase=\"2\">") // true
   con los cifrados en `<harm>` y el análisis como letra debajo del bajo.
 - Desde la terminal: `armonia mei melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4 > escala.mei`.
 
+## Exportar a LilyPond y ABC
+
+`lilyPond(tonalidad:clave:tempo:titulo:parte:)` escribe la voz como fuente de LilyPond 2.24,
+para grabarla en PDF con calidad de imprenta (`lilypond escala.ly`), y
+`abc(tonalidad:clave:tempo:titulo:parte:)`, en notación ABC, el texto de las colecciones de
+música tradicional que leen abcm2ps, abcjs o EasyABC. Llevan lo mismo que el MusicXML: grafía,
+barras, grupos irregulares, ligaduras, anacrusa, tempo y doble barra final.
+
+```swift
+let tema = try Voz(leyendo: "Sol4:4 Do5:2 Re5:8 Mi5:8 Fa#5:4 Sol5:2", compas: "3/4", anacrusa: .negra)
+let ly = tema.lilyPond(tonalidad: Tonalidad(.sol), titulo: "Tema")
+ly.contains("\\key g \\major \\time 3/4 \\partial 4")   // true
+ly.contains("fis''4 g''2")                            // true
+let abc = tema.abc(tonalidad: Tonalidad(.sol), titulo: "Tema")
+abc.contains("K:G")                                   // true
+abc.contains("c2 d/2e/2 | f g2 |]")                   // true
+```
+
+- LilyPond escribe las alturas en absoluto (`c'` es Do4) y con los nombres holandeses
+  (`fis`, `bes`); una nota que no cabe en el compás se parte con `~`.
+- ABC, como MEI, escribe las alteraciones que se ven: la de la armadura no, y el becuadro
+  sí, hasta la barra. Las corcheas de un mismo pulso van juntas, con su viga.
+- `Coral` y `AnalisisArmonico` tienen las dos también: el coral en dos pentagramas, con los
+  cifrados encima y el análisis debajo del bajo.
+- Desde la terminal: `armonia lilypond melodia Do4:4 Re4:8 Mi4:8 Fa4:2 > escala.ly` y
+  `armonia abc melodia Do4:4 Re4:8 Mi4:8 Fa4:2 > escala.abc`.
+
 ## Exportar a MIDI
 
 `midi(tonalidad:tempo:titulo:parte:instrumento:)` da la voz como fichero MIDI estándar
@@ -185,12 +212,12 @@ let datos = alberti.midi(titulo: "Bajo de Alberti")
 - Desde la terminal: `armonia musicxml arpegios Do Lam Fa Sol7 --patron alberti --duracion 2`, y lo mismo
   con `mei` y `midi`. `--figura 16` cambia lo que dura cada nota (corchea si no).
 
-## Importar MIDI y MusicXML
+## Importar MIDI, MusicXML, MEI y ABC
 
-`PiezaImportada(leyendo:)` lee un fichero MIDI estándar o una partitura MusicXML, sin comprimir o
-comprimida (.mxl) (lo distingue por el contenido, no por la extensión) y da sus notas, cada una con su altura, su
-comienzo y su duración en redondas, junto con el título, la armadura, el compás y el tempo del
-fichero. `acordes(ventana:)` reduce las notas a los acordes que suenan y `analisis(en:ventana:)`
+`PiezaImportada(leyendo:)` lee un fichero MIDI estándar o una partitura MusicXML (sin comprimir o
+comprimida, .mxl), MEI o ABC (lo distingue por el contenido, no por la extensión) y da sus notas,
+cada una con su altura, su comienzo y su duración en redondas, junto con el título, la armadura,
+el compás y el tempo del fichero. `acordes(ventana:)` reduce las notas a los acordes que suenan y `analisis(en:ventana:)`
 los analiza.
 
 ```swift
@@ -204,7 +231,7 @@ pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca]   // t
 ```
 
 - MIDI solo da números de nota: la ortografía sale de la armadura del fichero o, si no la
-  tiene, de la tonalidad que mejor explica las notas. MusicXML conserva la suya.
+  tiene, de la tonalidad que mejor explica las notas. MusicXML, MEI y ABC conservan la suya.
 - La reducción corta la pieza en ventanas de un pulso del compás. En cada una, cada nota pesa
   lo que suena dentro; si quitando una o dos de las que menos pesan sale una lectura mucho más
   probable, se quitan (son de paso, bordaduras, apoyaturas). Las ventanas seguidas con el mismo
@@ -217,8 +244,8 @@ pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca]   // t
   analizada lo aceptan con `duraciones:` (`musicXML(duraciones:)`, `mei(duraciones:)` y
   `midi(duraciones:)`), y `Voz(arpegiando:duraciones:)` la arpegia con ese ritmo.
 - Todavía no se leen las repeticiones ni los saltos. Del .mxl se lee la partitura que señala
-  `META-INF/container.xml`. Los errores son `ErrorDeImportacion`, con su explicación en los catorce
+  `META-INF/container.xml`. Los errores son `ErrorDeImportacion`, con su explicación en los quince
   idiomas.
-- Desde la terminal: `armonia analizar --archivo coral.mid` (o `.musicxml`, o `.mxl`), y
+- Desde la terminal: `armonia analizar --archivo coral.mid` (o `.musicxml`, `.mxl`, `.mei`, `.abc`), y
   `armonia musicxml acordes --archivo coral.mid` para la progresión con su ritmo armónico (también
   `arpegios`, `mei` y `midi`).

@@ -91,7 +91,7 @@ cambiar el significado. Todos los estilos se vuelven a leer igual.
 | `.predeterminado` | Si♭7(♭9)/Re | Do♯m7(♭5) | Mi♭maj7 | Fa+ |
 | `.espanolASCII` | Sib7(b9)/Re | Do#m7(b5) | Mibmaj7 | Fa+ |
 | `.inglesASCII` | Bb7(b9)/D | C#m7(b5) | Ebmaj7 | F+ |
-| `.inglesUnicode` | B♭7(♭9)/D | C♯m7(♭5) | E♭maj7 | F+ |
+| `.inglesCompacto` | B♭7(♭9)/D | C♯m7(♭5) | E♭maj7 | F+ |
 | `.jazz` | Bb7(b9)/D | C#ø7 | EbΔ7 | F+ |
 | `.calidadesConPalabras` | Si♭7(♭9)/Re | Do♯min7(♭5) | Mi♭maj7 | Faaug |
 
@@ -163,4 +163,23 @@ armonia vecinos Domaj7            # Do♯m7(♭5) (Do→Do♯), Do7 (Si→Si♭)
 armonia vecinos Sol7 --ampliada   # también Solmaj7 (Fa→Fa♯)
 armonia conduccion-parsimoniosa Sol7 Rem7   # Sol7 –Sol→Sol♯→ Sol♯°7 –Sol♯→La→ Sim7(♭5) –Si→Do→ Rem7
 armonia conduccion-minima Sol7 Do           # Sol→Sol, Si→Do (+1), Re→Do (−2), Fa→Mi (−1): 4 semitonos
+```
+
+## Disposiciones de piano y jazz
+
+``DisposicionDeAcorde`` reparte las notas de un acorde entre las voces como en el piano o en el jazz: cerrada,
+drop 2, drop 3, drop 2 y 4 (la segunda, la tercera, o la segunda y la cuarta voz desde arriba, una octava más
+grave), la shell (el bajo con la tercera y la séptima) y las notas guía (la tercera y la séptima solas). Un acorde de
+más de cuatro notas se queda con la tercera, la séptima y las tensiones (``Acorde/notasParaDisponer``), y una
+tríada dobla una nota. ``Acorde/disposiciones(_:en:)`` da todas las de un acorde dentro de un ámbito, y
+``DisposicionDeAcorde/conducir(_:en:)``, una para cada acorde de una progresión con la menor suma de movimientos de
+las voces: en un ii–V–I en drop 2, la séptima de cada acorde baja por grado a la tercera del siguiente.
+
+La disposición **cuartal** apila cuatro notas por cuartas (justas, o alguna aumentada), como en el jazz modal: las
+toma de la escala de siete notas del acorde con menos notas a evitar, y se queda con las pilas que llevan las notas
+guía y ninguna nota a evitar.
+
+```swift
+Acorde("Sol7").disposiciones(.cuartal).isEmpty   // false
+DisposicionDeAcorde.cuartal.voces                // 4
 ```

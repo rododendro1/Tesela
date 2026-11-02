@@ -44,7 +44,7 @@ public struct MovimientoDeVoz: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// "Fa→Mi"; con otra notación, `texto(en:)`.
-    public var description: String { texto(en: .espanolUnicode) }
+    public var description: String { texto(en: .espanolCompacto) }
 
     public func texto(en notacion: Notacion) -> String {
         desde.nombreCompacto(en: notacion) + "→" + hasta.nombreCompacto(en: notacion)
@@ -57,7 +57,7 @@ public struct PasoParsimonioso: Hashable, Sendable, CustomStringConvertible {
     public let movimientos: [MovimientoDeVoz]
 
     /// "Sol♯o7 (Sol→Sol♯)".
-    public var description: String { texto(en: .espanolUnicode) }
+    public var description: String { texto(en: .espanolCompacto) }
 
     public func texto(en notacion: Notacion) -> String {
         acorde.cifrado(en: notacion) + " (" + movimientos.map { $0.texto(en: notacion) }.joined(separator: ", ") + ")"
@@ -138,7 +138,7 @@ extension Acorde {
         func mascara<S: Sequence>(_ clases: S) -> Int where S.Element == Int { clases.reduce(0) { $0 | 1 << $1 } }
         let mascarasDeTipos = tipos.map { mascara($0.intervalos.map { modulo($0.semitonos, 12) }) }
         func rotar(_ bits: Int, _ semitonos: Int) -> Int { ((bits << semitonos) | (bits >> (12 - semitonos))) & 0xFFF }
-        var mejor: (coste: Int, paso: PasoParsimonioso)?
+        var mejor = ElMejor<PasoParsimonioso, Int>()
         for nuevas in variantes {
             let clases = Set(nuevas.map(\.claseDeAltura))
             guard clases.count == notas.count else { continue }
@@ -153,18 +153,18 @@ extension Acorde {
                     guard rotar(mascaraDelTipo, fundamental.claseDeAltura) == objetivo else { continue }
                     let acorde = Acorde(fundamental, tipo)
                     // Cada nota, con el nombre que tiene en el acorde.
-                    let escritas = nuevas.map { n in acorde.notas.first { $0.claseDeAltura == n.claseDeAltura }! }
+                    let escritas = nuevas.map { n in acorde.notas.first { $0.claseDeAltura == n.claseDeAltura } ?? n }
                     let alteraciones = acorde.notas.reduce(0) { $0 + abs($1.alteracion.semitonos) }
                     let cambiadas = quietas.filter { escritas[$0] != notas[$0] }.count
                     let coste = alteraciones + 2 * cambiadas
-                    if mejor == nil || coste < mejor!.coste {
+                    if mejor.mejora(coste) {
                         let movimientos = grupo.map { MovimientoDeVoz(desde: notas[$0], hasta: escritas[$0]) }
-                        mejor = (coste, PasoParsimonioso(acorde: acorde, movimientos: movimientos))
+                        mejor.proponer(PasoParsimonioso(acorde: acorde, movimientos: movimientos), coste: coste)
                     }
                 }
             }
         }
-        return mejor?.paso
+        return mejor.valor
     }
 
     /// La conducción con menos semitonos en total hasta otro acorde, de cualquier tamaño: si tienen
@@ -180,7 +180,7 @@ extension Acorde {
         // Se asigna a cada nota del acorde mayor una del menor, sin dejar ninguna sin usar.
         let invertir = origen.count < destino.count
         let (grande, pequeno) = invertir ? (destino, origen) : (origen, destino)
-        var mejor: (coste: (Int, Int), pares: [(Nota, Nota)])?
+        var mejor = ElMejor<[(Nota, Nota)], (Int, Int)>(por: <)
         var eleccion = [Int](repeating: 0, count: grande.count)
         func probar(_ i: Int) {
             if i == grande.count {
@@ -192,7 +192,7 @@ extension Acorde {
                 let coste = (
                     movimientos.reduce(0) { $0 + abs($1.semitonos) }, movimientos.filter { $0.semitonos != 0 }.count
                 )
-                if mejor == nil || coste < mejor!.coste { mejor = (coste, pares) }
+                mejor.proponer(pares, coste: coste)
                 return
             }
             for j in pequeno.indices {
@@ -201,7 +201,7 @@ extension Acorde {
             }
         }
         if !grande.isEmpty && !pequeno.isEmpty { probar(0) }
-        let movimientos = (mejor?.pares ?? []).map { MovimientoDeVoz(desde: $0.0, hasta: $0.1) }
+        let movimientos = (mejor.valor ?? []).map { MovimientoDeVoz(desde: $0.0, hasta: $0.1) }
         // En el orden de las notas del primer acorde.
         let ordenados = movimientos.enumerated().sorted {
             ((origen.firstIndex(of: $0.element.desde) ?? 0), $0.offset) < (
@@ -223,7 +223,7 @@ public struct ConduccionMinima: Hashable, Sendable, CustomStringConvertible {
     public var vocesQueSeMueven: [MovimientoDeVoz] { movimientos.filter { $0.semitonos != 0 } }
 
     /// "Sol→Sol, Si→Do (+1), Re→Do (−2), Fa→Mi (−1): 4 semitonos".
-    public var description: String { texto(en: .espanolUnicode) }
+    public var description: String { texto(en: .espanolCompacto) }
 
     public func texto(en notacion: Notacion) -> String {
         let voces = movimientos.map { m -> String in
@@ -232,7 +232,7 @@ public struct ConduccionMinima: Hashable, Sendable, CustomStringConvertible {
                 : m.texto(en: notacion) + " (" + (m.semitonos > 0 ? "+" : "−") + "\(abs(m.semitonos)))"
         }
         let n = semitonosMovidos
-        let semitonos = TextosDeRepresentaciones.traducidos.map { $0.semitonos(n) }.en(notacion)
+        let semitonos = TextosDeRepresentaciones.en(notacion) { $0.semitonos(n) }
         return voces.joined(separator: ", ") + ": " + semitonos
     }
 }
@@ -254,7 +254,7 @@ extension Tonnetz {
             familia.contains(destino.tipo), (1...2).contains(voces)
         else { return nil }
         func clave(_ a: Acorde) -> [Int] {
-            a.notas.map(\.claseDeAltura).sorted() + [familia.firstIndex(of: a.tipo)!]
+            a.notas.map(\.claseDeAltura).sorted() + [familia.firstIndex(of: a.tipo) ?? -1]
         }
         let meta = clave(destino)
         // Con dos voces, hay familias que no están conectadas: puede no haber camino.

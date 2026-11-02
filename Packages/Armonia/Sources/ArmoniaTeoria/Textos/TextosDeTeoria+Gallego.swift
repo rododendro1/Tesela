@@ -6,7 +6,7 @@
 extension TextosDeTeoria {
     static let gallego = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "co baixo en \(bajo)" },
+        conBajoEn: { acorde, bajo in "\(acorde), co baixo en \(bajo)" },
         nombresDeLasInversiones: ["estado fundamental", "primeira inversión", "segunda inversión", "terceira inversión",
                                   "cuarta inversión", "quinta inversión", "sexta inversión"],
         inversionConNumero: "inversión _",
@@ -105,10 +105,62 @@ extension TextosDeTeoria {
         cadenciaPlagal: "cadencia plagal",
         cadenciaRota: "cadencia rota",
         semicadencia: "semicadencia",
+        semicadenciaFrigia: "semicadencia frixia",
+        cadenciaPlagalMenor: "cadencia plagal menor",
 
         // RecorridoTonal.swift
         deUnaTonalidadAOtra: { de, a, n in "De \(de) a \(a) no acorde \(n)" },
         pivote: "pivote",
-        directa: " (directa)"
+        directa: " (directa)",
+        // Arpegio.swift
+        arpegioDe: { acorde in "Arpexo de \(acorde)" },
+        patronAscendente: "ascendente",
+        patronDescendente: "descendente",
+        patronIdaYVuelta: "de ida e volta",
+        patronAlberti: "baixo de Alberti",
+        patronQuebrado: "quebrado",
+        patronBajaYSube: "de baixada e subida",
+        // Escala+Acorde.swift
+        papelNotaDelAcorde: "nota do acorde",
+        papelTensionDisponible: "tensión",
+        papelNotaAEvitar: "nota que evitar",
+        modoDe: { modo, escala in "modo \(modo) de \(escala)" },
+        // NotaExtrana.swift
+        nombresDeNotasExtranas: ["nota de paso", "bordadura", "apoiatura", "retardo", "anticipación", "escapada", "nota pedal", "nota libre"],
+        // EsquemaArmonico.swift
+        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "blues de 12 compases", "progresión por quintas", "romanesca", "canon de Pachelbel", "monte", "fonte", "ponte"],
+        // Rearmonizacion.swift
+        sustitutoTritonal: "substituto de trítono",
+        dominanteSecundaria: "dominante secundaria",
+        prestamoModal: "préstamo modal",
+        sustitutoDiatonico: "substituto diatónico",
+        rearmonizacionIIV: "ii–V",
+        rearmonizacionBackdoor: "dominante backdoor",
+        // ErrorDeLecturaDeTeoria.swift (acordes)
+        simboloNoReconocido: { simbolo in "«\(simbolo)» non forma parte de ningún cifrado coñecido" },
+        tensionNoValida: { tension in "«\(tension)» non é unha tensión válida (admítense ♭/♯ con 5, 9, 11 e 13, e add con 2, 4, 6, 9, 11 e 13)" },
+        numeroDeAcordeNoValido: { numero in "«\(numero)» non é un número de acorde (5, 6, 7, 9, 11 ou 13)" },
+        numeroRepetido: { numero in "«\(numero)» aparece despois doutro número; as tensións adicionais van entre parénteses, como en 7(9)" },
+        disminuidoYSemidisminuido: "diminuído (°) e semidiminuído (ø) non se poden combinar",
+        quintaConCalidad: "o acorde de quinta (5) non leva terceira, así que non admite m, °, ø nin +",
+        fundamentalNoOmitible: "non se pode omitir a fundamental",
+        gradoNoOmitible: { grado in "«omit\(grado)» non é válido (pódense omitir 3, 5, 7, 9, 11 e 13)" },
+        faltaLaFundamental: "falta a fundamental",
+        intervaloSinPapel: { intervalo, notacion in "a \(intervalo.nombre(en: .gallegoPalabras)) non ten papel nun acorde por terceiras" },
+        terceraMayorYMenor: "ten terceira maior e menor á vez (a ♯9 escríbese como 9ª aumentada, non como 3ª menor)",
+        variasSeptimas: "ten máis dunha sétima",
+        septimaDisminuidaFueraDelDisminuido: "a sétima diminuída só aparece no acorde diminuído (con 3ª menor e 5ª diminuída)",
+        noEsPorTerceras: "non é un acorde por terceiras",
+        bajoNoValido: { bajo in "«\(bajo)» non é un nome de nota para o baixo" },
+        idiomasMezclados: { nombre in "«\(nombre)» está escrito noutro idioma que a fundamental: escríbese todo con sílabas (Sol7/Si) ou todo con letras (G7/B)" },
+        // ErrorDeLecturaDeTeoria.swift (escalas)
+        modoNoReconocido: { nombre in "«\(nombre)» non é o modo dunha tonalidade: unha tonalidade é maior ou menor (para os demais modos, usa Escala)" },
+        faltaElTipoDeEscala: "falta o tipo de escala (mayor, dórico, menor armónica…)",
+        tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» non é un tipo de escala coñecido" },
+        // ErrorDeLecturaDeTeoria.swift (coral)
+        vocesDistintas: "todos os acordes teñen que ter o mesmo número de voces, e polo menos dúas",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        enLaTonalidad: { tonalidad in "en " + tonalidad }
     )
 }

@@ -260,7 +260,7 @@ public struct Tonnetz: Hashable, Sendable {
             presupuesto -= 1
             guard presupuesto > 0 else { return }
             if colocados == orden.count {
-                let puntos = [primero] + asignacion.map { $0! }
+                let puntos = [primero] + asignacion.compactMap { $0 }
                 let costeDeEstos = coste(puntos)
                 if costeDeEstos < mejorCoste {
                     mejor = puntos
@@ -320,25 +320,26 @@ public struct Tonnetz: Hashable, Sendable {
         // El primero, en la fila 0 (con ortografía) o lo más cerca posible del origen.
         let inicial =
             candidatos(primero, 0...0).min { $0.distancia(hasta: origen) < $1.distancia(hasta: origen) }
-            ?? candidatos(primero, -2...2).min { $0.distancia(hasta: origen) < $1.distancia(hasta: origen) }!
+            ?? candidatos(primero, -2...2).min { $0.distancia(hasta: origen) < $1.distancia(hasta: origen) } ?? origen
         var colocados: [Int: PuntoDeLaRed] = [primero: inicial]
         var pendientes = Array(elementos.dropFirst())
         while !pendientes.isEmpty {
-            let filas = colocados.values.map(\.terceras)
-            let cerca = (filas.min()! - 3)...(filas.max()! + 3)
-            var mejor: (indice: Int, punto: PuntoDeLaRed, coste: (Int, Int, Int))?
+            let filas = colocados.values.map(\.terceras).extremosOSi(noHay: 0...0)
+            let cerca = (filas.lowerBound - 3)...(filas.upperBound + 3)
+            var mejor = ElMejor<(indice: Int, punto: PuntoDeLaRed), (Int, Int, Int)>(por: <)
             for (i, elemento) in pendientes.enumerated() {
                 for punto in candidatos(elemento, cerca) {
                     let distancias = colocados.values.map { $0.distancia(hasta: punto) }
                     // Lo más cerca del vecino más próximo, después del conjunto y, a igualdad, del origen.
-                    let coste = (distancias.min()!, distancias.reduce(0, +), punto.distancia(hasta: origen))
-                    if mejor == nil || coste < mejor!.coste { mejor = (i, punto, coste) }
+                    let coste = (distancias.min() ?? 0, distancias.reduce(0, +), punto.distancia(hasta: origen))
+                    mejor.proponer((i, punto), coste: coste)
                 }
             }
-            colocados[pendientes[mejor!.indice]] = mejor!.punto
-            pendientes.remove(at: mejor!.indice)
+            guard let elegido = mejor.valor else { break }
+            colocados[pendientes[elegido.indice]] = elegido.punto
+            pendientes.remove(at: elegido.indice)
         }
-        return elementos.map { colocados[$0]! }
+        return elementos.map { colocados[$0] ?? origen }
     }
 
     // MARK: Dibujo
@@ -360,7 +361,7 @@ public struct Tonnetz: Hashable, Sendable {
     ///   - titulo: el título; si es `nil`, el que corresponda, y si es "", ninguno.
     ///   - leyenda: si se dibuja la leyenda.
     public func svg(
-        notacion: Notacion = .espanolUnicode, margen: Int? = nil, paso: Double? = nil,
+        notacion: Notacion = .espanolCompacto, margen: Int? = nil, paso: Double? = nil,
         titulo: String? = nil, leyenda: Bool = true
     ) -> String {
         let paso = paso ?? (recorrido.isEmpty ? 64 : 88)
@@ -372,12 +373,14 @@ public struct Tonnetz: Hashable, Sendable {
 
         // La ventana: un rectángulo alrededor de las notas.
         let base = puntos.isEmpty ? [PuntoDeLaRed(quintas: 0, terceras: 0)] : puntos
-        let filas = (base.map(\.terceras).min()! - margen)...(base.map(\.terceras).max()! + margen)
+        let tercerasDeLaBase = base.map(\.terceras).extremosOSi(noHay: 0...0)
+        let filas = (tercerasDeLaBase.lowerBound - margen)...(tercerasDeLaBase.upperBound + margen)
         // En unidades de `paso` y con la fórmula exacta (a + b/2), no con `x`: los bordes caen en
         // medios enteros y un error de redondeo cambiaría las columnas que se dibujan.
         func columna(_ p: PuntoDeLaRed) -> Double { Double(p.quintas) + Double(p.terceras) / 2 }
-        let minX = (base.map(columna).min()! - Double(margen) - 0.5) * paso
-        let maxX = (base.map(columna).max()! + Double(margen) + 0.5) * paso
+        let columnas = base.map(columna).extremosOSi(noHay: 0...0)
+        let minX = (columnas.lowerBound - Double(margen) - 0.5) * paso
+        let maxX = (columnas.upperBound + Double(margen) + 0.5) * paso
         var red: [PuntoDeLaRed] = []
         for terceras in filas {
             let desde = Int((minX / paso - Double(terceras) / 2).rounded(.up))
@@ -396,7 +399,6 @@ public struct Tonnetz: Hashable, Sendable {
         let ancho = maxX - minX + 2 * borde
         let arriba = y(PuntoDeLaRed(quintas: 0, terceras: filas.upperBound)) - borde
         let alto = Double(filas.count - 1) * altura + 2 * borde
-        let f = DibujoSVG.f
         let origenX = minX - borde
         var hayLados = false
 
@@ -404,9 +406,11 @@ public struct Tonnetz: Hashable, Sendable {
         // Tríadas.
         let triadasDibujadas = DibujoSVG.triadas(en: red, marcados: marcados)
         for triada in triadasDibujadas {
-            let puntosTexto = triada.vertices.map { "\(f(x($0))),\(f(y($0)))" }.joined(separator: " ")
             svg +=
-                "  <polygon points=\"\(puntosTexto)\" fill=\"\(triada.mayor ? DibujoSVG.Color.mayor : DibujoSVG.Color.menor)\" fill-opacity=\"0.55\"/>\n"
+                "  "
+                + ElementoSVG("polygon").con("points", puntos: triada.vertices.map { (x($0), y($0)) })
+                .con("fill", triada.mayor ? DibujoSVG.Color.mayor : DibujoSVG.Color.menor).con("fill-opacity", "0.55")
+                .vacio + "\n"
         }
         // Aristas: grises, y resaltadas entre notas marcadas.
         for punto in red {
@@ -415,10 +419,11 @@ public struct Tonnetz: Hashable, Sendable {
                 guard enRed.contains(otro) else { continue }
                 let resaltada = marcados.contains(punto) && marcados.contains(otro)
                 if resaltada { hayLados = true }
-                svg += "  <line x1=\"\(f(x(punto)))\" y1=\"\(f(y(punto)))\" x2=\"\(f(x(otro)))\" y2=\"\(f(y(otro)))\" "
                 svg +=
-                    resaltada
-                    ? "stroke=\"#333333\" stroke-width=\"3\"/>\n" : "stroke=\"#cccccc\" stroke-width=\"1\"/>\n"
+                    "  "
+                    + ElementoSVG("line").con("x1", x(punto)).con("y1", y(punto)).con("x2", x(otro)).con("y2", y(otro))
+                    .con("stroke", resaltada ? "#333333" : "#cccccc").con("stroke-width", resaltada ? "3" : "1").vacio
+                    + "\n"
             }
         }
         // Recorrido: flechas de triángulo a triángulo.
@@ -428,17 +433,17 @@ public struct Tonnetz: Hashable, Sendable {
             let marcado = marcados.contains(punto)
             let nombre =
                 tieneOrtografia ? self.nombre(de: punto).nombreCompacto(en: notacion) : String(punto.claseDeAltura)
-            svg += "  <circle cx=\"\(f(x(punto)))\" cy=\"\(f(y(punto)))\" r=\"\(f(radio))\" "
             svg +=
-                marcado
-                ? "fill=\"\(DibujoSVG.Color.nota)\" stroke=\"\(DibujoSVG.Color.nota)\"/>\n"
-                : "fill=\"#ffffff\" stroke=\"#bbbbbb\"/>\n"
+                "  "
+                + ElementoSVG("circle").con("cx", x(punto)).con("cy", y(punto)).con("r", radio)
+                .con("fill", marcado ? DibujoSVG.Color.nota : "#ffffff")
+                .con("stroke", marcado ? DibujoSVG.Color.nota : "#bbbbbb").vacio + "\n"
             svg +=
-                "  <text x=\"\(f(x(punto)))\" y=\"\(f(y(punto)))\" text-anchor=\"middle\" dominant-baseline=\"central\" "
-            svg +=
-                "font-size=\"\(f(paso * (nombre.count > 3 ? 0.17 : 0.22)))\" fill=\"\(marcado ? "#ffffff" : "#777777")\""
-            svg += marcado ? " font-weight=\"bold\">" : ">"
-            svg += DibujoSVG.escapar(nombre) + "</text>\n"
+                "  "
+                + ElementoSVG("text").con("x", x(punto)).con("y", y(punto)).con("text-anchor", "middle")
+                .con("dominant-baseline", "central").con("font-size", paso * (nombre.count > 3 ? 0.17 : 0.22))
+                .con("fill", marcado ? "#ffffff" : "#777777").con("font-weight", "bold", si: marcado).conTexto(nombre)
+                + "\n"
         }
 
         // La leyenda: solo lo que aparece.

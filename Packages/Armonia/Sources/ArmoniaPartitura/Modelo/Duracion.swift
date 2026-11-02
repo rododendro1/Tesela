@@ -74,7 +74,7 @@ public struct Duracion: Hashable, Sendable, Comparable {
     /// "2.." blanca con doble puntillo) o una fracción de redonda ("3/8", "1/12", "2/1").
     public init(leyendo texto: String) throws {
         let limpio = texto.trimmingEspacios()
-        let error = ErrorDeLectura(texto: texto, posicion: nil, motivo: .duracionNoValida(limpio))
+        let error = ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .duracionNoValida(limpio))
         if let barra = limpio.firstIndex(of: "/") {
             guard let numerador = Int(limpio[..<barra]), let denominador = Int(limpio[limpio.index(after: barra)...]),
                 numerador >= 0, denominador > 0
@@ -85,9 +85,8 @@ public struct Duracion: Hashable, Sendable, Comparable {
         let cifras = limpio.cifrasIniciales
         let puntos = limpio.dropFirst(cifras.count)
         guard let divisor = Int(cifras), divisor > 0, divisor & (divisor - 1) == 0, divisor <= 128,
-            puntos.allSatisfy({ $0 == "." })
+            puntos.allSatisfy({ $0 == "." }), let figura = Figura(rawValue: divisor.trailingZeroBitCount)
         else { throw error }
-        let figura = Figura(rawValue: divisor.trailingZeroBitCount)!
         self.init(figura, puntillos: puntos.count)
     }
 
@@ -205,30 +204,30 @@ extension Sequence where Element == Duracion {
 ///     Tempo(60, unidad: Duracion(.negra, puntillos: 1)).negrasPorMinuto   // 90
 ///     Tempo(100).indicacion                // "Andante"
 public struct Tempo: Hashable, Sendable, CustomStringConvertible {
-    public let pulsacionesPorMinuto: Double
+    public let pulsosPorMinuto: Double
     public let unidad: Duracion
 
     /// Como `init(_:unidad:)`, pero devuelve `nil` si la velocidad o la unidad no son positivas.
-    public init?(comprobando pulsacionesPorMinuto: Double, unidad: Duracion = .negra) {
-        guard pulsacionesPorMinuto > 0, unidad > .cero else { return nil }
-        self.init(pulsacionesPorMinuto, unidad: unidad)
+    public init?(comprobando pulsosPorMinuto: Double, unidad: Duracion = .negra) {
+        guard pulsosPorMinuto > 0, unidad > .cero else { return nil }
+        self.init(pulsosPorMinuto, unidad: unidad)
     }
 
     /// Detiene el programa si la velocidad o la unidad no son positivas: con datos de fuera,
     /// `init?(comprobando:unidad:)`.
-    public init(_ pulsacionesPorMinuto: Double, unidad: Duracion = .negra) {
-        precondition(pulsacionesPorMinuto > 0 && unidad > .cero, "el tempo tiene que ser positivo")
-        self.pulsacionesPorMinuto = pulsacionesPorMinuto
+    public init(_ pulsosPorMinuto: Double, unidad: Duracion = .negra) {
+        precondition(pulsosPorMinuto > 0 && unidad > .cero, "el tempo tiene que ser positivo")
+        self.pulsosPorMinuto = pulsosPorMinuto
         self.unidad = unidad
     }
 
     /// Lo que dura una duración, en segundos.
     public func segundos(de duracion: Duracion) -> Double {
-        (duracion / unidad).enRedondas * 60 / pulsacionesPorMinuto
+        (duracion / unidad).enRedondas * 60 / pulsosPorMinuto
     }
 
     /// El mismo tempo expresado en negras por minuto.
-    public var negrasPorMinuto: Double { pulsacionesPorMinuto * (unidad / .negra).enRedondas }
+    public var negrasPorMinuto: Double { pulsosPorMinuto * (unidad / .negra).enRedondas }
 
     /// Indicación italiana aproximada según las negras por minuto (los márgenes varían según
     /// la época y el metrónomo): Grave < 40 ≤ Largo < 60 ≤ Larghetto < 66 ≤ Adagio < 76 ≤
@@ -244,34 +243,32 @@ public struct Tempo: Hashable, Sendable, CustomStringConvertible {
     /// "♩ = 120" o, con otra unidad, "negra con puntillo = 60".
     public var description: String {
         let cifra =
-            pulsacionesPorMinuto.rounded() == pulsacionesPorMinuto
-            ? String(Int(pulsacionesPorMinuto)) : String(pulsacionesPorMinuto)
+            pulsosPorMinuto.rounded() == pulsosPorMinuto
+            ? String(Int(pulsosPorMinuto)) : String(pulsosPorMinuto)
         return (unidad == .negra ? "♩" : unidad.nombre) + " = " + cifra
     }
 }
 
 // MARK: - Idiomas
 //
-// Nombres de las figuras y de las duraciones en los catorce idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
+// Nombres de las figuras y de las duraciones en los quince idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
 
 // MARK: - Figura
 
 extension Figura {
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     /// En español, "negra"; en inglés, el nombre estadounidense ("quarter note").
     public func nombre(en notacion: Notacion) -> String { Figura.nombres[rawValue + 1].en(notacion) }
 
     private static let nombres: [Traduccion] = [
-        TextosDePartitura.traducidos.map(\.cuadrada),
-        TextosDePartitura.traducidos.map(\.redonda),
-        TextosDePartitura.traducidos.map(\.blanca),
-        TextosDePartitura.traducidos.map(\.negra),
-        TextosDePartitura.traducidos.map(\.corchea),
-        TextosDePartitura.traducidos.map(\.semicorchea),
-        TextosDePartitura.traducidos.map(\.fusa),
-        TextosDePartitura.traducidos.map(\.semifusa),
-        TextosDePartitura.traducidos.map(\.garrapatea),
+        TextosDePartitura.traduccion(\.cuadrada),
+        TextosDePartitura.traduccion(\.redonda),
+        TextosDePartitura.traduccion(\.blanca),
+        TextosDePartitura.traduccion(\.negra),
+        TextosDePartitura.traduccion(\.corchea),
+        TextosDePartitura.traduccion(\.semicorchea),
+        TextosDePartitura.traduccion(\.fusa),
+        TextosDePartitura.traduccion(\.semifusa),
+        TextosDePartitura.traduccion(\.garrapatea),
     ]
 }
 
@@ -280,13 +277,11 @@ extension Figura {
 extension Duracion {
     /// "negra", "corchea con puntillo", "blanca con doble puntillo"; si no es una figura,
     /// la fracción: "5/8 de redonda". La duración nula es "cero".
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String {
-        if esCero { return TextosDePartitura.traducidos.map(\.cero).en(notacion) }
+        if esCero { return TextosDePartitura.en(notacion, \.cero) }
         guard let escritura = figuraYPuntillos else {
             let fraccion = "\(numerador)/\(denominador)"
-            return TextosDePartitura.traducidos.map { $0.fraccionDeRedonda(fraccion) }.en(notacion)
+            return TextosDePartitura.en(notacion) { $0.fraccionDeRedonda(fraccion) }
         }
         let figura = escritura.figura.nombre(en: notacion)
         let puntillos = escritura.puntillos
@@ -297,5 +292,5 @@ extension Duracion {
 
 extension Duracion {
     /// La figura con uno, dos, tres o cuatro puntillos, en el sitio de `_`.
-    private static let conPuntillos = TextosDePartitura.traducidos.map(\.conPuntillos)
+    private static let conPuntillos = TextosDePartitura.traduccion(\.conPuntillos)
 }

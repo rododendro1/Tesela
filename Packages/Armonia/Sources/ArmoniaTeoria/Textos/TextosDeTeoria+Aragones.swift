@@ -6,7 +6,7 @@
 extension TextosDeTeoria {
     static let aragones = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "con baixo en \(bajo)" },
+        conBajoEn: { acorde, bajo in "\(acorde), con baixo en \(bajo)" },
         nombresDeLasInversiones: ["estau fundamental", "primera inversión", "segunda inversión", "tercera inversión",
                                   "cuarta inversión", "quinta inversión", "sexta inversión"],
         inversionConNumero: "inversión _",
@@ -105,10 +105,62 @@ extension TextosDeTeoria {
         cadenciaPlagal: "cadencia plagal",
         cadenciaRota: "cadencia rota",
         semicadencia: "semicadencia",
+        semicadenciaFrigia: "semicadencia frichia",
+        cadenciaPlagalMenor: "cadencia plagal menor",
 
         // RecorridoTonal.swift
         deUnaTonalidadAOtra: { de, a, n in "De \(de) a \(a) en l\'acorde \(n)" },
         pivote: "pivot",
-        directa: " (directa)"
+        directa: " (directa)",
+        // Arpegio.swift
+        arpegioDe: { acorde in "Arpechio de \(acorde)" },
+        patronAscendente: "ascendent",
+        patronDescendente: "descendent",
+        patronIdaYVuelta: "d'ida y tornada",
+        patronAlberti: "baixo d'Alberti",
+        patronQuebrado: "trencau",
+        patronBajaYSube: "de baixada y puyada",
+        // Escala+Acorde.swift
+        papelNotaDelAcorde: "nota de l'acorde",
+        papelTensionDisponible: "tensión",
+        papelNotaAEvitar: "nota a evitar",
+        modoDe: { modo, escala in "modo \(modo) de \(escala)" },
+        // NotaExtrana.swift
+        nombresDeNotasExtranas: ["nota de paso", "bordadura", "apoyatura", "retardo", "anticipación", "escapada", "nota pedal", "nota libre"],
+        // EsquemaArmonico.swift
+        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "blues de 12 compases", "progresión por quintas", "romanesca", "canon de Pachelbel", "monte", "fonte", "ponte"],
+        // Rearmonizacion.swift
+        sustitutoTritonal: "sustituto tritonal",
+        dominanteSecundaria: "dominant secundaria",
+        prestamoModal: "emprestamiento modal",
+        sustitutoDiatonico: "sustituto diatonico",
+        rearmonizacionIIV: "ii–V",
+        rearmonizacionBackdoor: "dominant backdoor",
+        // ErrorDeLecturaDeTeoria.swift (acordes)
+        simboloNoReconocido: { simbolo in "«\(simbolo)» no fa parte de garra cifrau conoixiu" },
+        tensionNoValida: { tension in "«\(tension)» no ye una tensión válida (s\'admiten ♭/♯ con 5, 9, 11 y 13, y add con 2, 4, 6, 9, 11 y 13)" },
+        numeroDeAcordeNoValido: { numero in "«\(numero)» no ye un número d\'acorde (5, 6, 7, 9, 11 u 13)" },
+        numeroRepetido: { numero in "«\(numero)» amaneix dimpués d\'atro número; as tensions adicionals van entre paréntesis, como en 7(9)" },
+        disminuidoYSemidisminuido: "disminuiu (°) y semidisminuiu (ø) no se pueden combinar",
+        quintaConCalidad: "l\'acorde de quinta (5) no leva tercera, asinas que no admite m, °, ø ni +",
+        fundamentalNoOmitible: "no se puede omitir a fundamental",
+        gradoNoOmitible: { grado in "«omit\(grado)» no ye válido (se pueden omitir 3, 5, 7, 9, 11 y 13)" },
+        faltaLaFundamental: "falta a fundamental",
+        intervaloSinPapel: { intervalo, notacion in "a \(intervalo.nombre(en: .aragonesPalabras)) no tiene papel en un acorde per terceras" },
+        terceraMayorYMenor: "tiene tercera mayor y menor a l\'ombre (a ♯9 s\'escribe como 9ª aumentada, no como 3ª menor)",
+        variasSeptimas: "tiene más d\'una séptima",
+        septimaDisminuidaFueraDelDisminuido: "a séptima disminuida nomás amaneix en l\'acorde disminuiu (con 3ª menor y 5ª disminuida)",
+        noEsPorTerceras: "no ye un acorde per terceras",
+        bajoNoValido: { bajo in "«\(bajo)» no ye un nombre de nota ta o baixo" },
+        idiomasMezclados: { nombre in "«\(nombre)» ye escrito en atro idioma que a fundamental: s\'escribe tot en castellano (Sol7/Si) u tot con letras (G7/B)" },
+        // ErrorDeLecturaDeTeoria.swift (escalas)
+        modoNoReconocido: { nombre in "«\(nombre)» no ye o modo d\'una tonalidat: una tonalidat ye mayor u menor (ta os atros modos, fe servir Escala)" },
+        faltaElTipoDeEscala: "falta o tipo d\'escala (mayor, dórico, menor armónica…)",
+        tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» no ye un tipo d\'escala conoixiu" },
+        // ErrorDeLecturaDeTeoria.swift (coral)
+        vocesDistintas: "toz os acordes han de tener o mesmo número de voces, y a lo menos dos",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        enLaTonalidad: { tonalidad in "en " + tonalidad }
     )
 }

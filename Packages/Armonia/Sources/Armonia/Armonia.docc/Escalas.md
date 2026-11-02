@@ -105,13 +105,17 @@ Escala(.do, .cromaticaConCincoSostenidos).nombre(claseDeAltura: 10)   // La♯
 Escalas de otras tradiciones, en su versión temperada (en la práctica, sobre todo los dromoi
 usan microtonos):
 
-- **Los 72 melakarta** de la música carnática, generados por su regla: Sa y Pa fijos, Ma (4ª
+- **Los 72 mēḷa** de la música carnática, generados por su regla: Sa y Pa fijos, Ma (4ª
   justa o aumentada) y una de seis parejas Ri–Ga y Dha–Ni. Ri3, Ga1, Dha3 y Ni1 se escriben
   como 2ª aumentada, 3ª disminuida, 6ª aumentada y 7ª disminuida.
-- **Los 10 thaat** de la música indostánica: Bilāval, Kalyāṇ, Khamāj, Kāfī, Āsāvarī, Bhairavī,
+- **Los 10 thāṭ** de la música indostánica: Bilāval, Kalyāṇ, Khamāj, Kāfī, Āsāvarī, Bhairavī,
   Bhairav, Mārvā, Pūrvī y Toḍī.
 - **15 dromoi** griegos: Ousák, Hitzáz, Hitzazkiár, Pireótikos, Tabahaniótikos, Niavént,
   Nikríz (Souzinak), Kartzigár, Sabáh, Houzám, Sengáh, Tsingánikos, Rast, Kiourdí y Houseïní.
+  Todos tienen versión microtonal: Ousák y Sabáh, con la segunda neutra de Bayātī y de Ṣabā;
+  los demás, en las comas de Arel-Ezgi-Uzdilek, con las notas del makam que tiene las suyas
+  (Hicaz, Hicazkâr, Suzinak, Nev'eser, Nikriz, Karcığar, Rast) o, los que solo existen en
+  Grecia, con sus tetracordos (la segunda aumentada de Hicaz, la cuarta aumentada de Nikriz).
 - **8 escalas chinas**: los cinco modos pentatónicos Gōng, Shāng, Jué, Zhǐ y Yǔ (la pentatónica
   desde cada una de sus notas) y las heptatónicas Qīngyuè, Yǎyuè y Yànyuè (como la mayor, el
   lidio y el mixolidio).
@@ -121,15 +125,37 @@ usan microtonos):
   va la más citada.
 - **6 qenet etíopes**: Təzəta mayor y menor, Bati mayor y menor, Ambassäl y Ančihoye. Las
   fuentes no coinciden del todo en sus notas: aquí va la versión más citada.
-- **6 maqamat árabes**, solo los que no necesitan cuartos de tono: Ḥijāz (frigio dominante),
+- **18 maqamat árabes**: seis que no necesitan cuartos de tono, Ḥijāz (frigio dominante),
   Nahāwand (menor armónica), Kurd (frigio), ʿAjam (mayor), Ḥijāzkār (doble armónica) y Nawā
-  Athar (menor húngara). Rast, Bayati o Saba necesitarían microtonos.
+  Athar (menor húngara); y doce aproximados, con el cuarto de tono en su letra y redondeado
+  como se suele escribir: maqām Rāst (como el dromos Rast), Bayātī (frigio), Ṣabā, Sūznāk
+  (mayor armónica), Ḥusaynī (frigio), Nayrūz (menor natural), Bayātī Shūrī (Bayātī con Ḥijāz
+  en la cuarta), Jiharkāh (la mayor, con la séptima un cuarto de tono baja), y Sīkāh, maqām
+  Huzām, ʿIrāq y Rāḥat al-Arwāḥ, con la tónica en un cuarto de tono, escritos sobre Mi y Si.
+  ʿUshshāq Turkī no está: en cuartos de tono es Bayātī.
 - **Indonesia**, aproximadas a doce notas: Pélog selisir (también «balinesa») y Sléndro.
-- **10 ragas indostánicos** que no son thaat: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
+- **10 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
   (el Valaji carnático), Candrakauns y Megh, pentatónicos; Yaman; y Bāgeśrī y Deś, que suben y
   bajan distinto. Se deja fuera Darbārī, que es vakra.
-- **3 dastgāh persas**: Māhur (la mayor), y Homāyun y Čahārgāh, aproximados (como el frigio
-  dominante y la doble armónica); Šur y los demás necesitan microtonos (*koron*).
+- **12 dastgāh y āvāz persas**: Māhur (la mayor) y Rāst-Panjgāh (el mixolidio); Homāyun,
+  Čahārgāh y Šur, aproximados (como el frigio dominante, la doble armónica y el frigio); los
+  dastgāh Navā y Segāh, este con la tónica en un *koron* (escrito sobre Mi); y los āvāz Bayāt-e
+  Tork, Afšāri, Dašti (las notas de Šur), Abu ʿAtā y Bayāt-e Esfahān, con el *koron* en su letra
+  y redondeado al bemol, como se suele escribir.
+- **16 makamlar turcos**: Rast, Hicaz, Hicazkâr, Nihâvend, Kürdî, Bûselik, Çârgâh, Uşşak,
+  Hüseynî, Segâh, Hüzzam, Saba, Karcığar, Suzinak, Nikriz y Nev'eser, con «makamı» detrás (Rast
+  makamı). Cada nota del sistema de Arel-Ezgi-Uzdilek, de 53 comas, va a su semitono más
+  cercano. Uşşak, Hüseynî y Segâh pierden así su segâh (Si una koma bajo), que solo se oye en su
+  versión microtonal.
+- **4 mugam azerbaiyanos**, los de Üzeyir Hacıbəyov que ya están en doce notas: Rast, Şur,
+  Segah y Çahargah, con «muğamı» detrás. Los tres primeros encadenan tres tetracordos y tienen
+  una nota distinta por debajo de la tónica y por encima, así que tienen ocho notas (Rast
+  muğamı en Do: Do Re Mi Fa Sol La Si♭ Si).
+- **9 echoi bizantinos**, los ocho modos de la salmodia y el légetos: echos prótos (el dórico, sobre Re), plágios
+  prótos (el eólico, sobre La), défteros y plágios défteros (la doble armónica, sobre Sol y Re), trítos (la mayor,
+  sobre Fa), varýs (el locrio, sobre Si), tétartos (el mixolidio, sobre Sol), plágios tétartos (la mayor, sobre Do)
+  y légetos (el frigio, sobre Mi). Cada uno sobre su nota base más habitual, con los nombres en transliteración
+  griega (ήχος πρώτος → echos prótos).
 - **2 escalas coreanas**: P'yŏngjo y Kyemyŏnjo.
 - **Los Andes**: la pentatónica andina (menor) y la tritónica andina (Do Mi♭ Sol).
 - **La Grecia antigua**: los tetracordos diatónico y cromático, y las harmoniai doria (el frigio
@@ -144,13 +170,14 @@ Māyāmālavagauḷa, Ṣaṇmukhapriyā, Mecakalyāṇī. Los griegos llevan el
 en Hepburn con macrones en las vocales largas (Hirajōshi, Ryūkyū), los etíopes como en la
 Encyclopaedia Aethiopica (Təzəta, Ančihoye), los árabes en ALA-LC (Ḥijāz, ʿAjam) y los de
 Indonesia con la grafía javanesa (Pélog, Sléndro), los persas en la transliteración de la
-Encyclopædia Iranica (Čahārgāh) y los coreanos en McCune-Reischauer (P'yŏngjo), con la
+Encyclopædia Iranica (Čahārgāh), los turcos y los azerbaiyanos en su ortografía (Hicazkâr,
+Şur muğamı) y los coreanos en McCune-Reischauer (P'yŏngjo), con la
 romanización oficial y el hangul como alias. Un nombre gana a un alias: «Hijaz» es el
 maqam Ḥijāz, y el dromos se busca como Hitzáz o Hicaz. Al buscar no importan los
 diacríticos ni las mayúsculas, y también se aceptan las transliteraciones habituales sin ellos
 (Mayamalavagowla, Shanmukhapriya, Hitzaz, hirajoshi), los nombres en chino y en japonés (宫, 平調子), los de
 los dromoi en griego (Χιτζάζ) y los de las escalas indias en devanagari (यमन, मायामालवगौळ). En devanagari no se
-quitan las marcas, porque भैरव (Bhairav) y भैरवी (Bhairavī) son dos ragas distintos.
+quitan las marcas, porque भैरव (Bhairav) y भैरवी (Bhairavī) son dos rāgas distintos.
 
 ```swift
 TipoDeEscala.melakarta(15)                   // Māyāmālavagauḷa
@@ -165,33 +192,88 @@ Escala("Do 平調子").tipo.nombre               // "Hirajōshi"
 Escala("Re Χιτζάζ").tipo.nombre               // "Hitzáz"
 Escala("Do भैरवी").tipo.nombre                // "Bhairavī"
 TipoDeEscala.gong == .pentatonicaMayor       // true
+Escala("Do Rast muğamı").notas               // Do Re Mi Fa Sol La Si♭ Si
+Escala("La hicaz makami").notas              // La Si♭ Do♯ Re Mi Fa♯ Sol
 ```
 
 No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales;
 están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `chinas`, `japonesas`,
-`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`…). Sus nombres
+`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `pathets`…). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
-las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 melakarta,
+las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 mēḷa,
 que siguen en IAST; la forma latina se sigue leyendo.
 
-### Raga, melakarta, dromos: la clase de una escala
+### Rāga, mēḷa, dromos: la categoría de una escala
 
-`clase` y `tradicion` dicen qué es una escala de otra tradición. Salen de las listas de arriba y
+`categoria` y `tradicion` dicen qué es una escala de otra tradición. Salen de las listas de arriba y
 valen `nil` en las occidentales y en las escalas propias (también en una propia que se llame «Kāfī» pero
-suene distinta). Un melakarta es también un raga (`esRaga`); un thaat, que es una escala madre de la que se
-derivan ragas, no. Un raga janya tiene `padre`, el melakarta del que deriva por la tradición.
+suene distinta). Un mēḷa es también un rāga (`esRaga`); un thāṭ, que es una escala madre de la que se
+derivan rāgas, no. Un rāga janya tiene `padre`, el mēḷa del que deriva por la tradición.
 
 ```swift
-TipoDeEscala.kafi.clase                         // .thaat
-TipoDeEscala.melakarta(15)?.clase               // .melakarta
+TipoDeEscala.kafi.categoria                     // .thaat
+TipoDeEscala.melakarta(15)?.categoria           // .melakarta
 TipoDeEscala.hitzaz.tradicion                   // .grecia
+TipoDeEscala.rastMakami.categoria               // .makam
 TipoDeEscala.mohanam.esRaga                     // true
 TipoDeEscala.kafi.esRaga                        // false
 TipoDeEscala.mohanam.padre?.numeroDeMelakarta   // 28
-TipoDeEscala.menorNatural.clase                 // nil: las occidentales no tienen clase
-TipoDeEscala.tradicionales(clase: .melakarta).count   // 72
-ClaseDeEscala.escala.nombre(en: Notacion.espanolUnicode.conTextos(en: .frances))   // "gamme"
+TipoDeEscala.menorNatural.categoria             // nil: las occidentales no tienen categoría
+TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72
+CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .frances))   // "gamme"
+```
+
+### Microtonos
+
+Algunas escalas aproximadas tienen también su versión microtonal, `microtonal` (un ``TipoDeEscalaMicrotonal``):
+dónde cae cada grado en la teoría de su tradición, en los pasos de su sistema (``SistemaMicrotonal``) contados
+desde la tónica temperada. La tienen todos los maqamat que usan cuartos de tono, en cuartos de tono
+(`.cuartosDeTono`, la teoría árabe moderna); los dastgāh y āvāz con *koron*, con el de Vaziri (`.persa`); los
+makamlar, salvo los seis pitagóricos (Nihâvend, Kürdî, Bûselik, Çârgâh, Mâhur y Acemaşiran), en las 53 comas de Arel-Ezgi-Uzdilek
+(`.comas53`); los quince dromoi, con la afinación de su maqam o su makam; los echoi bizantinos, salvo el trítos, en
+los 72 moria de la Comisión Patriarcal de 1881 (`.moria72`); y los diez thāṭ y Yaman, en los 22 śruti indios
+(`.sruti`), cada uno una razón justa; y el tetracordo enarmónico griego, en cuartos de tono (Mi Fa𝄳 Fa La). Los thāṭ siguen el ṣaḍja-grāma de Bharata como lo reconstruye E. J. Arnold
+(Kāfī: Sa, Re 10/9, ga 32/27, ma 4/3, Pa, Dha 5/3, ni 16/9), con el re y el dha pitagóricos (256/243, 128/81) en
+Bhairav, Bhairavī y Toḍī, y Toḍī como lo miden Bel y otros. Los que en su propia teoría no tienen microtonos (Ḥijāz,
+Māhur…) no la necesitan, y los mugam azerbaiyanos tampoco: son los de Hacıbəyov, ya en doce notas. En Sīkāh, ʿIrāq,
+Segāh, Segâh, Hüzzam, el varýs o el légetos la tónica misma es un microtono: Sīkāh se escribe sobre Mi, y su
+primer grado es Mi𝄳. Cada grado conserva la letra de su nota temperada y se aparta de ella medio semitono como mucho, así que la escala de doce notas sigue valiendo para todo lo demás.
+
+`Escala.notasMicrotonales(sentido:)` da sus notas (``NotaMicrotonal``), con los cents desde la tónica. Se
+escriben con el medio bemol y el medio sostenido (Mi𝄳, Fa𝄲; en ASCII, Miqb y Faq#), también el *koron* y el
+*sori*, que no están en Unicode; en el sistema turco, con la nota pitagórica y las comas que se aparta (Si⁻¹,
+una koma bajo Si; en ASCII, Si(-1)); en el bizantino, con los moria que se aparta de la nota temperada (Mi⁻², dos
+moria bajo Mi); y en los śruti, con la flecha de Helmholtz-Ellis de una coma sintónica (81/80) sobre la nota
+pitagórica (Mi↓ es 5/4; Re♭↑, 16/15). Son las afinaciones teóricas: cada escuela afina un poco distinto. Se
+buscan por el nombre, como `categoria`: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
+
+```swift
+Escala(.re, .bayati).notas                                       // Re Mi♭ Fa Sol La Si♭ Do
+Escala(.re, .bayati).notasMicrotonales()                         // Re Mi𝄳 Fa Sol La Si♭ Do
+Escala(.do, .maqamRast).notasMicrotonales(sentido: .descendente) // Do Re Mi𝄳 Fa Sol La Si♭
+Escala(.sol, .rastMakami).notasMicrotonales()                    // Sol La Si⁻¹ Do Re Mi Fa♯⁻¹
+TipoDeEscala.rastMakami.microtonal?.sistema                      // .comas53
+Escala(.re, .echosProtos).notasMicrotonales()                    // Re Mi⁻² Fa Sol La Si⁻² Do
+Escala(.do, .bilaval).notasMicrotonales()                        // Do Re↓ Mi↓ Fa Sol La↓ Si↓
+TipoDeEscala.frigio.microtonal                                   // nil
+```
+
+Los microtonos llegan también a las partituras. `Escala.voz(octava:sentido:duracion:)` da la escala en negras, y
+cada nota lleva lo que se aparta de su nota temperada, en cents (`Evento.desvios`; en texto, `Mi♭4(50¢):4`). Los
+formatos la escriben así: MusicXML, con el `alter` en decimales (−0.5) y su `<accidental>`; MEI, con `accid`
+(`1qf`, el *koron* o las comas de Arel-Ezgi-Uzdilek: `kf`, `bs`…); LilyPond y ABC, con sus cuartos de tono (`eeh`,
+`_/E`), y las comas y los moria como la nota temperada; y MIDI, con una inflexión de tono (*pitch bend*) antes de
+cada nota. Los moria exactos llevan en MusicXML el signo de doceavos de tono de Wyschnegradsky. `svgPentagrama()`
+dibuja sus signos con los glifos de Bravura: los cuartos de tono de Stein-Zimmermann, las comas de
+Arel-Ezgi-Uzdilek, el *koron* y el *sori*, los moria de Wyschnegradsky y, en los śruti, la flecha de
+Helmholtz-Ellis.
+
+```swift
+let voz = Escala(.re, .bayati).voz()
+voz.eventos[1]                                   // Mi♭4(50¢):4
+voz.musicXML().contains("<alter>-0.5</alter>")   // true
+Evento("Si4(-15.09¢):4").desvios                 // [-15.09]
 ```
 
 ## Nombres en cada idioma y alias
@@ -201,8 +283,8 @@ fichero por idioma: `Escalas/Nombres/NombresDeEscalas+Catalan.swift`, `+Gallego`
 del propio catálogo). `TipoDeEscala.nombre(en:)` usa el fichero del idioma de la notación, y
 `buscar(nombre:)` y `Escala("Re dòric")` leen los de todos. Cada fichero da todos los tipos de
 `TipoDeEscala.todos`, las escalas de otras tradiciones (`.tradicional(.kafi)`, que apunta al miembro de
-`TipoDeEscala` y no compila si deja de existir) y el nombre de cada `ClaseDeEscala` (`.clase`);
-`Scripts/comprobar_catalogo.py` vigila que no falte ninguno. Un idioma nuevo es un fichero más.
+`TipoDeEscala` y no compila si deja de existir) y el nombre de cada `CategoriaTradicional` (`.categoria`);
+`Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno. Un idioma nuevo es un fichero más.
 
 `TipoDeEscala.alias` guarda solo las grafías correctas («dórico ♭2», «húngara»). Las simplificadas («dorico b2»,
 «hungara») no se repiten: salen de `aliasNormalizados` y de `normalizar` (minúsculas, sin diacríticos, ♯/♭ como
@@ -247,7 +329,7 @@ ModoGregoriano(6)!.ambito.first                  // Do4
 ## Escalas que suben y bajan distinto
 
 Algunas escalas usan notas distintas al subir y al bajar: la menor melódica clásica (que baja
-como la natural), los dromoi Rast, Kiourdí y Houseïní, y muchos ragas janya. `intervalos` es la
+como la natural), los dromoi Rast, Kiourdí y Houseïní, y muchos rāgas janya. `intervalos` es la
 forma ascendente e `intervalosDescendentes`, la descendente (`nil` si la escala baja igual que sube).
 
 ```swift
@@ -259,9 +341,9 @@ TipoDeEscala.kiourdi.formaDescendente             // == .menorNatural
 TipoDeEscala.bilahari.intervalosEnAmbasDirecciones
 ```
 
-Los ragas janya incluidos son Mohanam, Hindolam, Haṃsadhvani, Ābhogi, Madhyamāvatī, Revati,
+Los rāgas janya incluidos son Mohanam, Hindolam, Haṃsadhvani, Ābhogi, Madhyamāvatī, Revati,
 Amṛtavarṣiṇī (iguales al subir y al bajar), Bilahari, Kāmbhoji, Ārabhi y Kedāragauḷa (distintos). Se dejan fuera los
-vakra, que suben o bajan en zigzag. `melakartasCompatibles` dice de qué melakarta puede derivar
+vakra, que suben o bajan en zigzag. `melakartasCompatibles` dice de qué mēḷa puede derivar
 cada uno: `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 
 ### Qué forma usa cada operación
@@ -279,7 +361,7 @@ cada uno: `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 `menorMelodica` es la clásica: sube con la 6ª y la 7ª mayores y baja como la natural.
 `menorMelodicaJazz` usa la 6ª y la 7ª mayores también al bajar; es la escala madre de los modos
 de la menor melódica (`TipoDeEscala.alterada.rotacion(2) == .menorMelodicaJazz`) y tiene el mismo
-contenido que el melakarta 23, Gaurīmanoharī. En inglés, "melodic minor" es la clásica y
+contenido que el mēḷa 23, Gaurīmanoharī. En inglés, "melodic minor" es la clásica y
 "jazz minor" o "ascending melodic minor", la de jazz.
 
 ## Misma escala y mismo nombre
@@ -298,9 +380,10 @@ TipoDeEscala.rast == .mayor                       // false: baja distinto
 
 Un arpegio no es un tipo de escala sino un acorde tocado nota a nota, así que ``Arpegio`` no entra en el catálogo de escalas:
 guarda un ``Acorde``, el orden del recorrido (``Arpegio/Patron``: ascendente, descendente, de ida y vuelta o el bajo de Alberti) y
-las octavas que abarca. Se obtiene de un acorde o de un grado de una escala, se lee y se nombra en los catorce idiomas
+las octavas que abarca. Se obtiene de un acorde o de un grado de una escala, se lee y se nombra en los quince idiomas
 («Arpegio de Do mayor», «C major arpeggio», «Arpège de Do majeur») y se dibuja en un pentagrama. ``Acorde/escalasCompatibles(entre:)``
-da la relación acorde-escala del jazz: las escalas sobre la fundamental que contienen todas las notas del acorde.
+da la relación acorde-escala del jazz: las escalas sobre la fundamental que contienen todas las notas del acorde, entre
+las de ``TipoDeEscala/deJazz`` y de las que tienen menos notas a evitar a las que más.
 
 ```swift
 Arpegio(Acorde("Do7")).alturas(octava: 4).map(\.midi) == [60, 64, 67, 70, 72]       // true
@@ -310,4 +393,61 @@ Escala("Do mayor").arpegios().count == 7                                        
 try Arpegio(leyendo: "arpegio Dom7").acorde == Acorde("Dom7")                        // true
 Acorde("Do7").escalasCompatibles().contains(Escala(.do, .mixolidio))                 // true
 let dibujo = Arpegio(Acorde("Do7")).svgPentagrama()
+```
+
+## Escalas sobre un acorde
+
+La teoría acorde-escala del jazz mira cada nota de una escala desde el acorde que suena. ``Escala/notas(sobre:)`` dice
+qué es cada una (``PapelEnLaEscala``): una nota del acorde, una tensión disponible o una nota a evitar, la que está un
+semitono por encima de una nota del acorde y choca con ella si se sostiene (el fa sobre Do7M en jónico). En un acorde
+de dominante, la ♭9 y la ♭13 no se evitan; en uno sus4, sí la tercera mayor. Cada nota lleva su grado sobre la
+fundamental (``NotaSobreElAcorde/cifra``) como en los cifrados de jazz: las 2.ª, 4.ª y 6.ª se cuentan como 9, 11 y 13, y
+una 3.ª menor sobre un acorde mayor, como ♯9.
+
+Qué escala toca sobre cada acorde depende de lo que hace en la tonalidad. ``Tonalidad/escalaDelAcorde(_:siguiente:)`` y
+``AnalisisArmonico/escalas`` la eligen por su papel en el análisis: el modo de la tonalidad para un acorde diatónico
+(Rem7 en Do, dórico), el de la escala del destino para una dominante secundaria (V7/ii, frigio dominante: el
+mixolidio ♭9 ♭13), el de la homónima para un préstamo (♭VI, lidio) y lidio dominante para el sustituto tritonal. Si el
+acorde no cabe en esa escala, se queda con la de ``TipoDeEscala/paraAcordes`` que saca menos notas de la tonalidad.
+
+``Escala/escalaMadre`` dice de qué escala es modo cada una, entre las mayores, las menores melódicas, las menores
+armónicas y las mayores armónicas (``TipoDeEscala/familiasDeModos``).
+
+```swift
+Escala(.do, .mayor).notasAEvitar(sobre: Acorde("Do7M")) == [.fa]                       // true
+Escala(.re, .dorico).notas(sobre: Acorde("Rem7")).map(\.cifra) == ["1", "9", "♭3", "11", "5", "13", "♭7"]   // true
+Escala(.sol, .frigioDominante).tensiones(sobre: Acorde("Sol7")) == [Nota(.la, .bemol), Nota(.mi, .bemol)]   // true
+Tonalidad(.do).analizar(["Do", "La7", "Rem7", "Sol7"]).escalas[1] == Escala(.la, .frigioDominante)          // true
+Tonalidad(.do).escalaDelAcorde(Acorde("Sib7")) == Escala(Nota(.si, .bemol), .lidioDominante)               // true
+Escala(.do, .alterada).escalaMadre?.madre == Escala(Nota(.re, .bemol), .menorMelodicaJazz)               // true
+Escala(.re, .dorico).escalaMadre?.nombre(en: .espanolCompacto) == "modo 2 de Do mayor"                   // true
+Acorde("Do7(#11)").escalasCompatibles().first == Escala(.do, .lidioDominante)                            // true
+```
+
+### Los acordes de una escala
+
+En el otro sentido, ``Escala/acordesQueCaben(grado:)`` da todos los acordes de ``TipoDeAcorde/paraEscalas`` que caben
+sobre un grado, no solo los de terceras superpuestas: en Do mayor, sobre el 1.º, también Dosus2, Do6, Do6/9 y
+Do(add9); en Do frigio dominante, Do7(♭9). ``Escala/estructurasSuperiores(sobre:)`` da las tríadas mayores y menores
+de la escala que se pueden tocar sobre el acorde: las que tienen alguna tensión y ninguna nota a evitar, primero las
+de más tensiones. Sobre Do7M en lidio, Re mayor: la 9, la ♯11 y la 13.
+
+```swift
+Escala(.do, .mayor).acordesQueCaben(grado: 1).contains(Acorde(.do, .mayorSexta))                        // true
+Escala(.do, .lidio).estructurasSuperiores(sobre: Acorde("Do7M")).first == Acorde(.re, .mayor)             // true
+```
+
+### Armonía modal
+
+Los siete modos de la escala mayor (``Escala/modoDeLaMayor``, de 1 a 7) se distinguen del mayor o del menor más
+parecido por una nota, ``Escala/notaCaracteristica``: la 6.ª mayor del dórico, la 2.ª menor del frigio, la 4.ª
+aumentada del lidio, la 7.ª menor del mixolidio… ``Escala/acordesCaracteristicos`` son las tríadas del modo que la
+llevan (sin la de la tónica ni las disminuidas), y ``Escala/cadenciaModal``, la cadencia que afirma el modo sin la
+dominante de la tonalidad: IV–i en dórico, ♭II–i en frigio, II–I en lidio, ♭VII–I en mixolidio.
+
+```swift
+Escala(.re, .dorico).notaCaracteristica == .si                                          // true
+Escala(.re, .dorico).acordesCaracteristicos == [Acorde("Mim"), Acorde("Sol")]           // true
+Escala(.sol, .mixolidio).cadenciaModal == [Acorde("Fa"), Acorde("Sol")]                 // true
+Escala(.mi, .frigio).cadenciaModal == [Acorde("Fa"), Acorde("Mim")]                     // true
 ```

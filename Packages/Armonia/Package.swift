@@ -1,28 +1,29 @@
 // swift-tools-version:6.0
 import PackageDescription
 
-// La biblioteca se reparte en cinco módulos por capas, y `Armonia` los reexporta: quien escribe
+// La biblioteca se reparte en seis módulos por capas, y `Armonia` los reexporta: quien escribe
 // `import Armonia` ve la misma API de siempre. Lo que antes era interno y se usa entre capas es
 // `package`: visible dentro de este paquete y no en la API pública.
 //
 //     ArmoniaNucleo            Fundamentos, Texto, Postonal
 //     ArmoniaTeoria            Acordes, Escalas, Tonalidad
 //     ArmoniaRepresentaciones  Afinacion, Color, Dibujo, Redes
-//     ArmoniaPartitura         Modelo, Formatos
+//     ArmoniaPartitura         Modelo, Dibujo, Contrapunto
+//     ArmoniaFormatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond: exportar e importar
 //     ArmoniaTrastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes)
 //
 // La geometría de las rejillas hexagonales (el Tonnetz, la tabla armónica, los teclados isomórficos) viene
 // del paquete `Hexagonos`, que no depende de nada. `ArmoniaRepresentaciones` lo usa; `Armonia` no lo reexporta,
 // para no meter sus nombres en el código de quien importa el motor: quien use la rejilla, `import Hexagonos`.
 //
-// `Scripts/comprobar_modulos.py` vigila que las dependencias sean estas y no otras.
+// `Scripts/comprobaciones/comprobar_modulos.py` vigila que las dependencias sean estas y no otras.
 
 let hexagonos: Target.Dependency = .product(name: "Hexagonos", package: "Hexagonos")
 
-/// Todos los módulos de la biblioteca, para las pruebas que usan lo interno.
+/// Todos los módulos de la biblioteca, para las pruebas que cruzan capas.
 let modulos: [Target.Dependency] = [
-    "Armonia", "ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaTrastes",
-    hexagonos,
+    "Armonia", "ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaFormatos",
+    "ArmoniaTrastes", hexagonos,
 ]
 
 let package = Package(
@@ -38,6 +39,7 @@ let package = Package(
         .library(name: "ArmoniaTeoria", targets: ["ArmoniaTeoria"]),
         .library(name: "ArmoniaRepresentaciones", targets: ["ArmoniaRepresentaciones"]),
         .library(name: "ArmoniaPartitura", targets: ["ArmoniaPartitura"]),
+        .library(name: "ArmoniaFormatos", targets: ["ArmoniaFormatos"]),
         .library(name: "ArmoniaTrastes", targets: ["ArmoniaTrastes"]),
     ],
     dependencies: [
@@ -50,15 +52,35 @@ let package = Package(
             name: "ArmoniaRepresentaciones",
             dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", .product(name: "Hexagonos", package: "Hexagonos")]),
         .target(name: "ArmoniaPartitura", dependencies: ["ArmoniaNucleo", "ArmoniaTeoria"]),
+        .target(name: "ArmoniaFormatos", dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura"]),
         .target(name: "ArmoniaTrastes", dependencies: ["ArmoniaNucleo", "ArmoniaTeoria"]),
-        // El módulo paraguas: reexporta los cinco y guarda la documentación (DocC).
+        // El módulo paraguas: reexporta los seis y guarda la documentación (DocC).
         .target(
             name: "Armonia",
             dependencies: [
-                "ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaTrastes",
+                "ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaFormatos",
+                "ArmoniaTrastes",
             ]),
-        // Las pruebas ven lo `internal` de cada módulo con `@testable import`, y por eso dependen de todos.
-        .testTarget(name: "ArmoniaTests", dependencies: modulos),
+        // Las pruebas de cada módulo dependen solo de él y de los que puede usar, como el módulo mismo: una prueba de
+        // Núcleo que necesitara Teoría no compila. Ven lo `internal` con `@testable import`.
+        .testTarget(name: "ArmoniaNucleoTests", dependencies: ["ArmoniaNucleo"]),
+        .testTarget(name: "ArmoniaTeoriaTests", dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ApoyoDePruebas"]),
+        .testTarget(
+            name: "ArmoniaRepresentacionesTests",
+            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", hexagonos, "ApoyoDePruebas"]),
+        .testTarget(
+            name: "ArmoniaPartituraTests",
+            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura", "ApoyoDePruebas"]),
+        .testTarget(
+            name: "ArmoniaFormatosTests",
+            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura", "ArmoniaFormatos", "ApoyoDePruebas"]),
+        .testTarget(name: "ArmoniaTrastesTests", dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaTrastes"]),
+        // Las que cruzan capas: entradas no válidas y propiedades de todo el motor, la API poco usada, y los dibujos
+        // guardados en `Referencias` con que se comparan los de ahora (ReferenciasSVGTests).
+        .testTarget(name: "ArmoniaTests", dependencies: modulos + ["ApoyoDePruebas"], exclude: ["Referencias"]),
+        // Lo que comparten las pruebas de varios módulos (el generador al azar con semilla y el lector de XML con que se
+        // comprueban los ficheros exportados y los dibujos). No es parte del motor.
+        .target(name: "ApoyoDePruebas", path: "Tests/ApoyoDePruebas"),
         .testTarget(name: "ArmoniaExhaustivasTests", dependencies: modulos),
         // Los ejemplos de la documentación usan también la rejilla (`CoordenadaAxial`, `FormasDeMapa`…).
         .testTarget(name: "ArmoniaDocumentacionTests", dependencies: ["Armonia", hexagonos]),

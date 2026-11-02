@@ -4,12 +4,12 @@ import ArmoniaNucleo
 // MARK: - Textos de ArmoniaRepresentaciones
 //
 // Un idioma por fichero: `TextosDeRepresentaciones+Espanol.swift`, `TextosDeRepresentaciones+Ingles.swift`… Cada uno da todos los
-// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los catorce y
+// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los quince y
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de ArmoniaRepresentaciones en un idioma.
-struct TextosDeRepresentaciones: Sendable {
-    // MARK: Temperamento.swift
+struct TextosDeRepresentaciones: TextosTraducidos {
+    // MARK: AfinacionHistorica.swift
     let temperamentoIgual: String
     let pitagorico: String
     let mesotonico: String
@@ -50,8 +50,23 @@ struct TextosDeRepresentaciones: Sendable {
     let cambioDeSensible: String
     let relativa: String
 
-    /// Los textos en los catorce idiomas: `traducidos.map(\.campo)` es la `Traduccion` de un campo.
+    // MARK: TecladoIsomorfico.swift
+    let tablaArmonica: String
+    let wickiHaydenEspejo: String
+    let wickiHaydenPlano: String
+    let acordeonC: String
+    let acordeonB: String
+
+    // MARK: FormatoUIL.swift
+    let uilNoValido: @Sendable (_ texto: String) -> String
+    let intervalosIncoherentes: @Sendable (_ menor: Int, _ mayor: Int, _ diferencia: Int) -> String
+    let giroNoValido: @Sendable (_ grados: Int) -> String
+    let afinacionNoSoportada: @Sendable (_ tonos: Int) -> String
+    let cizallaNoSoportada: @Sendable (_ cizalla: Int) -> String
+
+    /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// `Traduccion`.
     static let traducidos = Traducido<TextosDeRepresentaciones>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
-        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso)
+        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
 }

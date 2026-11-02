@@ -22,20 +22,6 @@ extension TextosDePartitura {
         especieConElContrapuntoDebajo: { n in "Especie \(n), con el contrapunto debajo del cantus firmus" },
         sinFaltas: "Sin faltas.",
 
-        // ArchivoMIDI.swift
-        pistaDeAcordes: "acordes",
-        pistaDelBajo: "bajo",
-
-        // Importacion.swift
-        formatoDesconocido: "El fichero no es MIDI ni MusicXML.",
-        musicXMLComprimido: "El MusicXML comprimido (.mxl) está dañado o no se puede leer: expórtalo sin comprimir (.musicxml).",
-        midiDanado: "El fichero MIDI está dañado o cortado.",
-        midiConTiempoSMPTE: "El fichero MIDI cuenta el tiempo en fotogramas SMPTE, no en pulsos por negra.",
-        xmlDanado: { linea in "El fichero MusicXML está dañado (línea \(linea))." },
-        noEsMusicXMLPorPartes: "El XML no es una partitura MusicXML por partes (score-partwise).",
-        sinNotas: "El fichero no tiene ninguna nota.",
-        sinAcordes: "En el fichero no suena ningún acorde.",
-
         // Duracion.swift
         cuadrada: "cuadrada",
         redonda: "redonda",
@@ -59,6 +45,42 @@ extension TextosDePartitura {
         claveDeDoEnPrimera: "clave de do en primera",
         claveDeDoEnSegunda: "clave de do en segunda",
         claveDeDoEnTercera: "clave de do en tercera",
-        claveDeDoEnCuarta: "clave de do en cuarta"
+        claveDeDoEnCuarta: "clave de do en cuarta",
+        // Pentagrama.swift (InstrumentoDePartitura)
+        instrumentosPropiosEnIngles: false,
+        instrumentoPiano: "piano",
+        instrumentoFlauta: "flauta",
+        instrumentoFlautin: "flautín",
+        instrumentoFlautaEnSol: "flauta en sol",
+        instrumentoOboe: "oboe",
+        instrumentoCornoIngles: "corno inglés",
+        instrumentoClarineteEnSib: "clarinete en si♭",
+        instrumentoClarineteEnLa: "clarinete en la",
+        instrumentoClarineteEnMib: "clarinete en mi♭",
+        instrumentoClarineteBajo: "clarinete bajo",
+        instrumentoFagot: "fagot",
+        instrumentoSaxofonSoprano: "saxofón soprano",
+        instrumentoSaxofonAlto: "saxofón alto",
+        instrumentoSaxofonTenor: "saxofón tenor",
+        instrumentoSaxofonBaritono: "saxofón barítono",
+        instrumentoTrompetaEnSib: "trompeta en si♭",
+        instrumentoTrompetaEnDo: "trompeta en do",
+        instrumentoFliscorno: "fliscorno",
+        instrumentoTrompaEnFa: "trompa en fa",
+        instrumentoTrombon: "trombón",
+        instrumentoTuba: "tuba",
+        instrumentoViolin: "violín",
+        instrumentoViola: "viola",
+        instrumentoViolonchelo: "violonchelo",
+        instrumentoContrabajo: "contrabajo",
+        instrumentoGuitarra: "guitarra",
+        instrumentoBajoElectrico: "bajo eléctrico",
+        instrumentoXilofono: "xilófono",
+        instrumentoGlockenspiel: "glockenspiel",
+        instrumentoCelesta: "celesta",
+        // ErrorDeLecturaDePartitura.swift
+        duracionNoValida: { texto in "«\(texto)» no es una duración: se esperaba una figura (1, 2, 4, 8, 16…, con puntillos: 4.) o una fracción de redonda (3/8, 1/12)" },
+        compasNoValido: { texto in "«\(texto)» no es un compás: se esperaba numerador/denominador con el denominador potencia de 2 (4/4, 6/8, 7/8), C o ¢" },
+        contrapuntoDeOtraDuracion: { redondas in "el contrapunto tiene que durar lo mismo que el cantus firmus: \(redondas) redondas, una por nota" }
     )
 }

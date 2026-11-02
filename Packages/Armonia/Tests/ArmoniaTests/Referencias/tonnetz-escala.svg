@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-215.0 -168.5 430.1 305.2" width="430.1" height="305.2" font-family="sans-serif">
+  <title>C major</title>
+  <rect x="-215.0" y="-168.5" width="430.1" height="305.2" fill="#ffffff"/>
+  <text x="-205.4" y="-146.4" dominant-baseline="central" font-size="19.2" font-weight="600" fill="#222222">C major</text>
+  <polygon points="-64.0,0.0 -32.0,-55.4 0.0,0.0" fill="#f6b26b" fill-opacity="0.55"/>
+  <polygon points="0.0,0.0 32.0,-55.4 64.0,0.0" fill="#f6b26b" fill-opacity="0.55"/>
+  <polygon points="-96.0,-55.4 -64.0,0.0 -32.0,-55.4" fill="#8fb8e8" fill-opacity="0.55"/>
+  <polygon points="-32.0,-55.4 0.0,0.0 32.0,-55.4" fill="#8fb8e8" fill-opacity="0.55"/>
+  <polygon points="32.0,-55.4 64.0,0.0 96.0,-55.4" fill="#8fb8e8" fill-opacity="0.55"/>
+  <line x1="-160.0" y1="55.4" x2="-96.0" y2="55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-160.0" y1="55.4" x2="-128.0" y2="0.0" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-96.0" y1="55.4" x2="-32.0" y2="55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-96.0" y1="55.4" x2="-64.0" y2="0.0" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-32.0" y1="55.4" x2="32.0" y2="55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-32.0" y1="55.4" x2="0.0" y2="0.0" stroke="#cccccc" stroke-width="1"/>
+  <line x1="32.0" y1="55.4" x2="96.0" y2="55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="32.0" y1="55.4" x2="64.0" y2="0.0" stroke="#cccccc" stroke-width="1"/>
+  <line x1="96.0" y1="55.4" x2="160.0" y2="55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="96.0" y1="55.4" x2="128.0" y2="0.0" stroke="#cccccc" stroke-width="1"/>
+  <line x1="160.0" y1="55.4" x2="192.0" y2="0.0" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-192.0" y1="0.0" x2="-128.0" y2="0.0" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-192.0" y1="0.0" x2="-160.0" y2="-55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-192.0" y1="0.0" x2="-160.0" y2="55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-128.0" y1="0.0" x2="-64.0" y2="0.0" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-128.0" y1="0.0" x2="-96.0" y2="-55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-128.0" y1="0.0" x2="-96.0" y2="55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-64.0" y1="0.0" x2="0.0" y2="0.0" stroke="#333333" stroke-width="3"/>
+  <line x1="-64.0" y1="0.0" x2="-32.0" y2="-55.4" stroke="#333333" stroke-width="3"/>
+  <line x1="-64.0" y1="0.0" x2="-32.0" y2="55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="0.0" y1="0.0" x2="64.0" y2="0.0" stroke="#333333" stroke-width="3"/>
+  <line x1="0.0" y1="0.0" x2="32.0" y2="-55.4" stroke="#333333" stroke-width="3"/>
+  <line x1="0.0" y1="0.0" x2="32.0" y2="55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="64.0" y1="0.0" x2="128.0" y2="0.0" stroke="#cccccc" stroke-width="1"/>
+  <line x1="64.0" y1="0.0" x2="96.0" y2="-55.4" stroke="#333333" stroke-width="3"/>
+  <line x1="64.0" y1="0.0" x2="96.0" y2="55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="128.0" y1="0.0" x2="192.0" y2="0.0" stroke="#cccccc" stroke-width="1"/>
+  <line x1="128.0" y1="0.0" x2="160.0" y2="-55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="128.0" y1="0.0" x2="160.0" y2="55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-160.0" y1="-55.4" x2="-96.0" y2="-55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-160.0" y1="-55.4" x2="-128.0" y2="-110.9" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-160.0" y1="-55.4" x2="-128.0" y2="0.0" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-96.0" y1="-55.4" x2="-32.0" y2="-55.4" stroke="#333333" stroke-width="3"/>
+  <line x1="-96.0" y1="-55.4" x2="-64.0" y2="-110.9" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-96.0" y1="-55.4" x2="-64.0" y2="0.0" stroke="#333333" stroke-width="3"/>
+  <line x1="-32.0" y1="-55.4" x2="32.0" y2="-55.4" stroke="#333333" stroke-width="3"/>
+  <line x1="-32.0" y1="-55.4" x2="0.0" y2="-110.9" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-32.0" y1="-55.4" x2="0.0" y2="0.0" stroke="#333333" stroke-width="3"/>
+  <line x1="32.0" y1="-55.4" x2="96.0" y2="-55.4" stroke="#333333" stroke-width="3"/>
+  <line x1="32.0" y1="-55.4" x2="64.0" y2="-110.9" stroke="#cccccc" stroke-width="1"/>
+  <line x1="32.0" y1="-55.4" x2="64.0" y2="0.0" stroke="#333333" stroke-width="3"/>
+  <line x1="96.0" y1="-55.4" x2="160.0" y2="-55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="96.0" y1="-55.4" x2="128.0" y2="-110.9" stroke="#cccccc" stroke-width="1"/>
+  <line x1="96.0" y1="-55.4" x2="128.0" y2="0.0" stroke="#cccccc" stroke-width="1"/>
+  <line x1="160.0" y1="-55.4" x2="192.0" y2="-110.9" stroke="#cccccc" stroke-width="1"/>
+  <line x1="160.0" y1="-55.4" x2="192.0" y2="0.0" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-192.0" y1="-110.9" x2="-128.0" y2="-110.9" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-192.0" y1="-110.9" x2="-160.0" y2="-55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-128.0" y1="-110.9" x2="-64.0" y2="-110.9" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-128.0" y1="-110.9" x2="-96.0" y2="-55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-64.0" y1="-110.9" x2="0.0" y2="-110.9" stroke="#cccccc" stroke-width="1"/>
+  <line x1="-64.0" y1="-110.9" x2="-32.0" y2="-55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="0.0" y1="-110.9" x2="64.0" y2="-110.9" stroke="#cccccc" stroke-width="1"/>
+  <line x1="0.0" y1="-110.9" x2="32.0" y2="-55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="64.0" y1="-110.9" x2="128.0" y2="-110.9" stroke="#cccccc" stroke-width="1"/>
+  <line x1="64.0" y1="-110.9" x2="96.0" y2="-55.4" stroke="#cccccc" stroke-width="1"/>
+  <line x1="128.0" y1="-110.9" x2="192.0" y2="-110.9" stroke="#cccccc" stroke-width="1"/>
+  <line x1="128.0" y1="-110.9" x2="160.0" y2="-55.4" stroke="#cccccc" stroke-width="1"/>
+  <circle cx="-160.0" cy="55.4" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="-160.0" y="55.4" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">G♭</text>
+  <circle cx="-96.0" cy="55.4" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="-96.0" y="55.4" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">D♭</text>
+  <circle cx="-32.0" cy="55.4" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="-32.0" y="55.4" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">A♭</text>
+  <circle cx="32.0" cy="55.4" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="32.0" y="55.4" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">E♭</text>
+  <circle cx="96.0" cy="55.4" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="96.0" y="55.4" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">B♭</text>
+  <circle cx="160.0" cy="55.4" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="160.0" y="55.4" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">F</text>
+  <circle cx="-192.0" cy="0.0" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="-192.0" y="0.0" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">E♭</text>
+  <circle cx="-128.0" cy="0.0" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="-128.0" y="0.0" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">B♭</text>
+  <circle cx="-64.0" cy="0.0" r="16.6" fill="#1f4e9c" stroke="#1f4e9c"/>
+  <text x="-64.0" y="0.0" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#ffffff" font-weight="bold">F</text>
+  <circle cx="0.0" cy="0.0" r="16.6" fill="#1f4e9c" stroke="#1f4e9c"/>
+  <text x="0.0" y="0.0" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#ffffff" font-weight="bold">C</text>
+  <circle cx="64.0" cy="0.0" r="16.6" fill="#1f4e9c" stroke="#1f4e9c"/>
+  <text x="64.0" y="0.0" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#ffffff" font-weight="bold">G</text>
+  <circle cx="128.0" cy="0.0" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="128.0" y="0.0" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">D</text>
+  <circle cx="192.0" cy="0.0" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="192.0" y="0.0" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">A</text>
+  <circle cx="-160.0" cy="-55.4" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="-160.0" y="-55.4" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">G</text>
+  <circle cx="-96.0" cy="-55.4" r="16.6" fill="#1f4e9c" stroke="#1f4e9c"/>
+  <text x="-96.0" y="-55.4" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#ffffff" font-weight="bold">D</text>
+  <circle cx="-32.0" cy="-55.4" r="16.6" fill="#1f4e9c" stroke="#1f4e9c"/>
+  <text x="-32.0" y="-55.4" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#ffffff" font-weight="bold">A</text>
+  <circle cx="32.0" cy="-55.4" r="16.6" fill="#1f4e9c" stroke="#1f4e9c"/>
+  <text x="32.0" y="-55.4" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#ffffff" font-weight="bold">E</text>
+  <circle cx="96.0" cy="-55.4" r="16.6" fill="#1f4e9c" stroke="#1f4e9c"/>
+  <text x="96.0" y="-55.4" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#ffffff" font-weight="bold">B</text>
+  <circle cx="160.0" cy="-55.4" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="160.0" y="-55.4" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">F♯</text>
+  <circle cx="-192.0" cy="-110.9" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="-192.0" y="-110.9" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">E</text>
+  <circle cx="-128.0" cy="-110.9" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="-128.0" y="-110.9" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">B</text>
+  <circle cx="-64.0" cy="-110.9" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="-64.0" y="-110.9" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">F♯</text>
+  <circle cx="0.0" cy="-110.9" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="0.0" y="-110.9" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">C♯</text>
+  <circle cx="64.0" cy="-110.9" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="64.0" y="-110.9" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">G♯</text>
+  <circle cx="128.0" cy="-110.9" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="128.0" y="-110.9" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">D♯</text>
+  <circle cx="192.0" cy="-110.9" r="16.6" fill="#ffffff" stroke="#bbbbbb"/>
+  <text x="192.0" y="-110.9" text-anchor="middle" dominant-baseline="central" font-size="14.1" fill="#777777">A♯</text>
+  <g class="leyenda"><circle cx="-195.2" cy="95.4" r="7.7" fill="#1f4e9c" stroke="#1f4e9c" stroke-width="1.5"/><text x="-178.6" y="95.4" dominant-baseline="central" font-size="12.8" fill="#444444">note</text></g>
+  <g class="leyenda"><line x1="-131.3" y1="95.4" x2="-112.1" y2="95.4" stroke="#333333" stroke-width="3.0"/><text x="-105.1" y="95.4" dominant-baseline="central" font-size="12.8" fill="#444444">fifth or third between notes</text></g>
+  <g class="leyenda"><polygon points="-204.8,127.4 -185.6,127.4 -195.2,111.1" fill="#f6b26b" fill-opacity="0.8" stroke="#333333" stroke-width="1"/><text x="-178.6" y="119.7" dominant-baseline="central" font-size="12.8" fill="#444444">major triad</text></g>
+  <g class="leyenda"><polygon points="-81.2,127.4 -62.0,127.4 -71.6,111.1" fill="#8fb8e8" fill-opacity="0.8" stroke="#333333" stroke-width="1"/><text x="-54.9" y="119.7" dominant-baseline="central" font-size="12.8" fill="#444444">minor triad</text></g>
+</svg>

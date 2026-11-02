@@ -22,20 +22,6 @@ extension TextosDePartitura {
         especieConElContrapuntoDebajo: { n in "Είδος \(n), αντίστιξη κάτω από το cantus firmus" },
         sinFaltas: "Χωρίς λάθη.",
 
-        // ArchivoMIDI.swift
-        pistaDeAcordes: "συγχορδίες",
-        pistaDelBajo: "μπάσο",
-
-        // Importacion.swift
-        formatoDesconocido: "Το αρχείο δεν είναι ούτε MIDI ούτε MusicXML.",
-        musicXMLComprimido: "Το συμπιεσμένο MusicXML (.mxl) είναι κατεστραμμένο ή δεν διαβάζεται: εξαγάγετέ το χωρίς συμπίεση (.musicxml).",
-        midiDanado: "Το αρχείο MIDI είναι κατεστραμμένο ή κομμένο.",
-        midiConTiempoSMPTE: "Το αρχείο MIDI μετρά τον χρόνο σε καρέ SMPTE, όχι σε παλμούς ανά τέταρτο.",
-        xmlDanado: { linea in "Το αρχείο MusicXML είναι κατεστραμμένο (γραμμή \(linea))." },
-        noEsMusicXMLPorPartes: "Το XML δεν είναι παρτιτούρα MusicXML ανά μέρη (score-partwise).",
-        sinNotas: "Το αρχείο δεν έχει καμία νότα.",
-        sinAcordes: "Στο αρχείο δεν ακούγεται καμία συγχορδία.",
-
         // Duracion.swift
         cuadrada: "διπλό ολόκληρο",
         redonda: "ολόκληρο",
@@ -59,6 +45,42 @@ extension TextosDePartitura {
         claveDeDoEnPrimera: "κλειδί του ντο στην πρώτη γραμμή",
         claveDeDoEnSegunda: "κλειδί του ντο στη δεύτερη γραμμή",
         claveDeDoEnTercera: "κλειδί του ντο στην τρίτη γραμμή",
-        claveDeDoEnCuarta: "κλειδί του ντο στην τέταρτη γραμμή"
+        claveDeDoEnCuarta: "κλειδί του ντο στην τέταρτη γραμμή",
+        // Pentagrama.swift (InstrumentoDePartitura)
+        instrumentosPropiosEnIngles: true,
+        instrumentoPiano: "πιάνο",
+        instrumentoFlauta: "φλάουτο",
+        instrumentoFlautin: "πίκολο",
+        instrumentoFlautaEnSol: "φλάουτο άλτο σε σολ",
+        instrumentoOboe: "όμποε",
+        instrumentoCornoIngles: "αγγλικό κόρνο",
+        instrumentoClarineteEnSib: "κλαρινέτο σε σι♭",
+        instrumentoClarineteEnLa: "κλαρινέτο σε λα",
+        instrumentoClarineteEnMib: "κλαρινέτο σε μι♭",
+        instrumentoClarineteBajo: "μπάσο κλαρινέτο",
+        instrumentoFagot: "φαγκότο",
+        instrumentoSaxofonSoprano: "σαξόφωνο σοπράνο",
+        instrumentoSaxofonAlto: "σαξόφωνο άλτο",
+        instrumentoSaxofonTenor: "σαξόφωνο τενόρο",
+        instrumentoSaxofonBaritono: "σαξόφωνο βαρύτονο",
+        instrumentoTrompetaEnSib: "τρομπέτα σε σι♭",
+        instrumentoTrompetaEnDo: "τρομπέτα σε ντο",
+        instrumentoFliscorno: "φλικόρνο",
+        instrumentoTrompaEnFa: "κόρνο σε φα",
+        instrumentoTrombon: "τρομπόνι",
+        instrumentoTuba: "τούμπα",
+        instrumentoViolin: "βιολί",
+        instrumentoViola: "βιόλα",
+        instrumentoViolonchelo: "βιολοντσέλο",
+        instrumentoContrabajo: "κοντραμπάσο",
+        instrumentoGuitarra: "κιθάρα",
+        instrumentoBajoElectrico: "ηλεκτρικό μπάσο",
+        instrumentoXilofono: "ξυλόφωνο",
+        instrumentoGlockenspiel: "γκλόκενσπιλ",
+        instrumentoCelesta: "τσελέστα",
+        // ErrorDeLecturaDePartitura.swift
+        duracionNoValida: { texto in "το «\(texto)» δεν είναι διάρκεια: αναμενόταν αξία νότας (1, 2, 4, 8, 16…, με τελεία: 4.) ή κλάσμα ολόκληρου (3/8, 1/12)" },
+        compasNoValido: { texto in "το «\(texto)» δεν είναι μέτρο: αναμενόταν αριθμητής/παρονομαστής με παρονομαστή δύναμη του 2 (4/4, 6/8, 7/8), C ή ¢" },
+        contrapuntoDeOtraDuracion: { redondas in "η αντίστιξη πρέπει να διαρκεί όσο το cantus firmus: \(redondas) ολόκληρα, ένα ανά νότα" }
     )
 }

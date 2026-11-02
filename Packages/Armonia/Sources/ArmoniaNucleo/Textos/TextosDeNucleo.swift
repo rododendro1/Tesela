@@ -3,11 +3,11 @@
 // MARK: - Textos de ArmoniaNucleo
 //
 // Un idioma por fichero: `TextosDeNucleo+Espanol.swift`, `TextosDeNucleo+Ingles.swift`… Cada uno da todos los
-// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los catorce y
+// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los quince y
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de ArmoniaNucleo en un idioma.
-struct TextosDeNucleo: Sendable {
+struct TextosDeNucleo: TextosTraducidos {
     // MARK: Intervalo.swift
     let calidadJusta: String
     let calidadMayor: String
@@ -31,29 +31,6 @@ struct TextosDeNucleo: Sendable {
     let palabraSostenidos: String
     let palabraBemoles: String
 
-    // MARK: ErrorDeLectura.swift (acordes)
-    let simboloNoReconocido: @Sendable (String) -> String
-    let tensionNoValida: @Sendable (String) -> String
-    let numeroDeAcordeNoValido: @Sendable (Int) -> String
-    let numeroRepetido: @Sendable (Int) -> String
-    let disminuidoYSemidisminuido: String
-    let quintaConCalidad: String
-    let fundamentalNoOmitible: String
-    let gradoNoOmitible: @Sendable (Int) -> String
-    let faltaLaFundamental: String
-    let intervaloSinPapel: @Sendable (Intervalo, Notacion) -> String
-    let terceraMayorYMenor: String
-    let variasSeptimas: String
-    let septimaDisminuidaFueraDelDisminuido: String
-    let noEsPorTerceras: String
-    let bajoNoValido: @Sendable (String) -> String
-    let idiomasMezclados: @Sendable (String) -> String
-
-    // MARK: ErrorDeLectura.swift (escalas)
-    let modoNoReconocido: @Sendable (String) -> String
-    let faltaElTipoDeEscala: String
-    let tipoDeEscalaNoReconocido: @Sendable (String) -> String
-
     // MARK: ErrorDeLectura.swift (generales)
     let valorNoValido: String
     let noSePuedeLeer: @Sendable (String) -> String
@@ -75,14 +52,21 @@ struct TextosDeNucleo: Sendable {
     let intervaloInexistente: @Sendable (Int, CalidadDeIntervalo, Notacion, Traduccion) -> String
     let alteracionNoReconocida: @Sendable (String) -> String
 
-    // MARK: ErrorDeLectura.swift (partitura)
-    let duracionNoValida: @Sendable (String) -> String
-    let compasNoValido: @Sendable (String) -> String
-    let vocesDistintas: String
-    let contrapuntoDeOtraDuracion: @Sendable (Int) -> String
+    // MARK: Gramática (Intervalo.swift, ErrorDeLectura.swift)
+    /// El nombre de un intervalo con su calidad y su número: «3ª mayor», «major third».
+    let nombreDeIntervalo: @Sendable (_ calidad: String, _ ordinal: String) -> String
+    /// La calidad del unísono, que en francés, occitano e italiano es masculino: «unisson augmenté».
+    let unisonoEnMasculino: @Sendable (String) -> String
+    /// Los nombres de los intervalos del unísono a la doble octava; vacío si se escriben con número.
+    let ordinales: [String]
+    /// El número de un intervalo en cifras: «3ª», «3a», «3.», «16e», «21st», «16-я».
+    let ordinalEnCifras: @Sendable (Int) -> String
+    /// Los dos puntos de un mensaje: «: », y « : » en francés.
+    let dosPuntos: String
 
-    /// Los textos en los catorce idiomas: `traducidos.map(\.campo)` es la `Traduccion` de un campo.
+    /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// `Traduccion`.
     static let traducidos = Traducido<TextosDeNucleo>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
-        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso)
+        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
 }

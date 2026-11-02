@@ -3,7 +3,8 @@ import ArmoniaTeoria
 
 /// Un sitio del mástil: una cuerda y un traste (0 = cuerda al aire).
 public struct PosicionEnElMastil: Hashable, Sendable, Comparable, CustomStringConvertible {
-    /// Índice de la cuerda en el `Encordado`: 0 es la primera.
+    /// Índice de la cuerda en `Encordado.cuerdas`: 0 es la de arriba (el Mi grave de la guitarra, la 6.ª). El
+    /// número tradicional, en el que la 1.ª es la de abajo, lo da `Encordado.numeroTradicional(deCuerda:)`.
     public let cuerda: Int
     public let traste: Int
 
@@ -16,7 +17,9 @@ public struct PosicionEnElMastil: Hashable, Sendable, Comparable, CustomStringCo
         (a.traste, a.cuerda) < (b.traste, b.cuerda)
     }
 
-    public var description: String { "cuerda \(cuerda + 1), traste \(traste)" }
+    /// «cuerda 1 desde arriba, traste 3»: sin el encordado no se sabe cuántas cuerdas hay, así que cuenta desde
+    /// la de arriba y no con la numeración tradicional.
+    public var description: String { "cuerda \(cuerda + 1) desde arriba, traste \(traste)" }
 }
 
 /// El mástil de un instrumento: un `Encordado` y su número de trastes.

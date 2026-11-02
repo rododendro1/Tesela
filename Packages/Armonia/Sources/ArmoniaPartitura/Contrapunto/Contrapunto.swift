@@ -60,7 +60,7 @@ public struct FaltaDeContrapunto: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// "Quintas paralelas (compases 3 → 4)". Los compases se cuentan desde 1.
-    public var description: String { descripcion(en: .espanolUnicode) }
+    public var description: String { descripcion(en: .espanolCompacto) }
 }
 
 // MARK: - Contrapunto
@@ -124,8 +124,8 @@ public struct Contrapunto: Hashable, Sendable {
         for trozo in cantusFirmus.split(separator: " ", omittingEmptySubsequences: false) {
             defer { inicio += trozo.count + 1 }
             guard !trozo.isEmpty else { continue }
-            do { cantus.append(try Altura(leyendo: String(trozo))) } catch let e as ErrorDeLectura {
-                throw ErrorDeLectura(texto: cantusFirmus, posicion: inicio + (e.posicion ?? 0), motivo: e.motivo)
+            do { cantus.append(try Altura(leyendo: String(trozo))) } catch let e as any ErrorAlLeer {
+                throw e.situado(en: cantusFirmus, posicion: inicio + (e.posicion ?? 0))
             }
         }
         guard !cantus.isEmpty else { throw ErrorDeLectura(texto: cantusFirmus, posicion: nil, motivo: .textoVacio) }
@@ -135,7 +135,7 @@ public struct Contrapunto: Hashable, Sendable {
         }
         let voz = try Voz(leyendo: eventos.joined(separator: " "))
         guard let leido = Contrapunto(cantusFirmus: cantus, contrapunto: voz.eventos, especie: especie) else {
-            throw ErrorDeLectura(
+            throw ErrorDeLecturaDePartitura(
                 texto: contrapunto, posicion: nil, motivo: .contrapuntoDeOtraDuracion(redondas: cantus.count))
         }
         self = leido
@@ -380,7 +380,7 @@ public struct Contrapunto: Hashable, Sendable {
 
 // MARK: - Idiomas
 //
-// Los textos del contrapunto de especies en los catorce idiomas de los textos (`Traduccion`).
+// Los textos del contrapunto de especies en los quince idiomas de los textos (`Traduccion`).
 
 extension FaltaDeContrapunto {
     /// "Quintas paralelas (compases 3 → 4)", "Parallel fifths (bars 3 → 4)". Los compases se cuentan desde 1.
@@ -388,18 +388,16 @@ extension FaltaDeContrapunto {
         let lugar: Traduccion
         if compases.count == 1 {
             let n = compases.lowerBound + 1
-            lugar = TextosDePartitura.traducidos.map { $0.enElCompas(n) }
+            lugar = TextosDePartitura.traduccion { $0.enElCompas(n) }
         } else {
             let pasos = "\(compases.lowerBound + 1) → \(compases.upperBound + 1)"
-            lugar = TextosDePartitura.traducidos.map { $0.enLosCompases(pasos) }
+            lugar = TextosDePartitura.traduccion { $0.enLosCompases(pasos) }
         }
         return tipo.nombre(en: notacion) + " " + lugar.en(notacion)
     }
 }
 
 extension FaltaDeContrapunto.Tipo: Nombrable, CustomStringConvertible {
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     public func nombre(en notacion: Notacion) -> String {
         let traduccion: Traduccion
         switch self {
@@ -410,25 +408,25 @@ extension FaltaDeContrapunto.Tipo: Nombrable, CustomStringConvertible {
         case .cruceDeVoces: return FaltaDeConduccion.Tipo.cruceDeVoces.nombre(en: notacion)
         case .saltoNoMelodico: return FaltaDeConduccion.Tipo.saltoNoMelodico.nombre(en: notacion)
         case .ritmoDeLaEspecie:
-            traduccion = TextosDePartitura.traducidos.map(\.ritmoDeLaEspecie)
+            traduccion = TextosDePartitura.traduccion(\.ritmoDeLaEspecie)
         case .comienzoImperfecto:
-            traduccion = TextosDePartitura.traducidos.map(\.comienzoImperfecto)
+            traduccion = TextosDePartitura.traduccion(\.comienzoImperfecto)
         case .finalImperfecto:
-            traduccion = TextosDePartitura.traducidos.map(\.finalImperfecto)
+            traduccion = TextosDePartitura.traduccion(\.finalImperfecto)
         case .finalSinGradoConjunto:
-            traduccion = TextosDePartitura.traducidos.map(\.finalSinGradoConjunto)
+            traduccion = TextosDePartitura.traduccion(\.finalSinGradoConjunto)
         case .disonanciaEnParteFuerte:
-            traduccion = TextosDePartitura.traducidos.map(\.disonanciaEnParteFuerte)
+            traduccion = TextosDePartitura.traduccion(\.disonanciaEnParteFuerte)
         case .disonanciaMalTratada:
-            traduccion = TextosDePartitura.traducidos.map(\.disonanciaMalTratada)
+            traduccion = TextosDePartitura.traduccion(\.disonanciaMalTratada)
         case .retardoMalResuelto:
-            traduccion = TextosDePartitura.traducidos.map(\.retardoMalResuelto)
+            traduccion = TextosDePartitura.traduccion(\.retardoMalResuelto)
         case .unisono:
-            traduccion = TextosDePartitura.traducidos.map(\.unisono)
+            traduccion = TextosDePartitura.traduccion(\.unisono)
         case .saltoSinCompensar:
-            traduccion = TextosDePartitura.traducidos.map(\.saltoSinCompensar)
+            traduccion = TextosDePartitura.traduccion(\.saltoSinCompensar)
         case .notaRepetida:
-            traduccion = TextosDePartitura.traducidos.map(\.notaRepetida)
+            traduccion = TextosDePartitura.traduccion(\.notaRepetida)
         }
         return traduccion.en(notacion)
     }
@@ -441,16 +439,16 @@ extension Contrapunto {
     ///
     ///     Especie 1, con el contrapunto encima del cantus firmus
     ///     Quintas paralelas (compases 1 → 2)
-    public func informe(en notacion: Notacion = .espanolUnicode) -> String {
+    public func informe(en notacion: Notacion = .espanolCompacto) -> String {
         let n = especie.rawValue
         let cabecera =
             contrapuntoArriba
-            ? TextosDePartitura.traducidos.map { $0.especieConElContrapuntoEncima(n) }
-            : TextosDePartitura.traducidos.map { $0.especieConElContrapuntoDebajo(n) }
+            ? TextosDePartitura.traduccion { $0.especieConElContrapuntoEncima(n) }
+            : TextosDePartitura.traduccion { $0.especieConElContrapuntoDebajo(n) }
         let faltas = self.faltas
         let lineas =
             faltas.isEmpty
-            ? [TextosDePartitura.traducidos.map(\.sinFaltas).en(notacion)] : faltas.map { $0.descripcion(en: notacion) }
+            ? [TextosDePartitura.en(notacion, \.sinFaltas)] : faltas.map { $0.descripcion(en: notacion) }
         return ([cabecera.en(notacion)] + lineas).joined(separator: "\n")
     }
 }

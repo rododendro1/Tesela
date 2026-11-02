@@ -1,0 +1,83 @@
+name: Fuzzing
+
+# Lo que el motor lee de fuera (MIDI, MusicXML, MXL, teclados UIL y los textos de las apps y de la línea de comandos),
+# con datos al azar que libFuzzer va cambiando para llegar a más código, compilado con AddressSanitizer
+# (`Herramientas/FuzzArmonia`). Corre los domingos, diez minutos, y a mano desde Actions con los segundos que se
+# quiera. Los casos que llegan a código nuevo se guardan en la caché para la semana siguiente, así que cada ejecución
+# empieza donde lo dejó la anterior. En un pull request que cambia la herramienta o este fichero, un minuto, como prueba.
+#
+# Si falla, el caso que lo provoca queda en el artefacto `fallos`. Para repetirlo:
+#
+#     cd Herramientas/FuzzArmonia
+#     swift run FuzzArmonia crash-…          # sin libFuzzer: lee el fichero y para donde falle
+on:
+  schedule:
+    - cron: "0 3 * * 0"   # los domingos a las 3:00 (UTC)
+  workflow_dispatch:
+    inputs:
+      segundos:
+        description: Cuánto tiempo, en segundos
+        default: "600"
+  pull_request:
+    paths: [Herramientas/FuzzArmonia/**, .github/workflows/fuzzing.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  fuzzing:
+    name: Lectores · libFuzzer
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    container: swift:6.2
+    defaults:
+      run:
+        shell: bash
+        working-directory: Herramientas/FuzzArmonia
+    env:
+      SEGUNDOS: ${{ github.event_name == 'pull_request' && '60' || inputs.segundos || '600' }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Compilar
+        run: |
+          set -euo pipefail
+          # Con libFuzzer y AddressSanitizer, y aparte (otra carpeta), sin ellos para escribir las semillas.
+          swift build -c release --product FuzzArmonia --scratch-path .build/fuzz \
+            -Xswiftc -sanitize=fuzzer,address -Xswiftc -DFUZZING
+          swift run FuzzArmonia --semillas semillas
+      - uses: actions/cache/restore@v6
+        with:
+          path: Herramientas/FuzzArmonia/corpus
+          key: fuzzing-corpus-${{ github.run_id }}
+          restore-keys: fuzzing-corpus-
+      - name: Fuzzing
+        run: |
+          set -euo pipefail
+          mkdir -p corpus fallos
+          echo "Casos de partida: $(ls semillas | wc -l) semillas y $(ls corpus | wc -l) de antes."
+          # -timeout: un caso que tarda más de 10 s es un cuelgue. Las fugas de Foundation, en fugas-ajenas.supp.
+          LSAN_OPTIONS=suppressions=$PWD/fugas-ajenas.supp .build/fuzz/release/FuzzArmonia corpus semillas \
+            -max_total_time="$SEGUNDOS" -max_len=65536 -timeout=10 -rss_limit_mb=4096 \
+            -artifact_prefix=fallos/ -print_final_stats=1 2>&1 | tee "$RUNNER_TEMP/fuzzing.log"
+      - name: Resumen
+        if: always()
+        run: |
+          {
+            echo "### Fuzzing de los lectores"
+            echo
+            echo "$SEGUNDOS s, $(ls corpus 2> /dev/null | wc -l) casos guardados."
+            echo
+            echo '```'
+            grep -E '^stat::|^SUMMARY|^==[0-9]+==ERROR' "$RUNNER_TEMP/fuzzing.log" || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: fallos
+          path: Herramientas/FuzzArmonia/fallos
+      - uses: actions/cache/save@v6
+        if: always() && github.event_name != 'pull_request'
+        with:
+          path: Herramientas/FuzzArmonia/corpus
+          key: fuzzing-corpus-${{ github.run_id }}

@@ -1,11 +1,12 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaRepresentaciones en aragonés. Los campos y lo que significa cada uno están en
 // `TextosDeRepresentaciones.swift`.
 
 extension TextosDeRepresentaciones {
     static let aragones = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "temperamento igual",
         pitagorico: "afinación pitagorica",
         mesotonico: "mesotonico de ¼ de coma",
@@ -39,11 +40,24 @@ extension TextosDeRepresentaciones {
         cicloLR: "ciclo LR",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in n == 1 ? "1 semitono" : "\(n) semitonos" },
+        semitonos: { n in Idioma.aragones.contar(n, "semitono", "semitonos") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "homónima",
         cambioDeSensible: "cambio de sensible",
-        relativa: "relativa"
+        relativa: "relativa",
+
+        // TecladoIsomorfico.swift
+        tablaArmonica: "Tabla armónica",
+        wickiHaydenEspejo: "Wicki-Hayden (espello)",
+        wickiHaydenPlano: "Wicki-Hayden (plano)",
+        acordeonC: "Acordeón sistema C",
+        acordeonB: "Acordeón sistema B",
+        // FormatoUIL.swift
+        uilNoValido: { texto in "UIL no valido: «\(texto)». S'aspera L,G,D;R<graus>[M], per eixemplo 2,7,5;R30M." },
+        intervalosIncoherentes: { menor, mayor, diferencia in "Intervalos incoherents: \(menor),\(mayor),\(diferencia). Han de cumplir 0 < L ≤ D y G = L + D." },
+        giroNoValido: { grados in "O chiro de \(grados)° no ye multiplo de 30°." },
+        afinacionNoSoportada: { tonos in "Nomás se dibuixan teclaus de 12 notas, no de \(tonos)." },
+        cizallaNoSoportada: { cizalla in "A cizalla S\(cizalla) no ye suportada." }
     )
 }

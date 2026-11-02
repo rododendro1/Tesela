@@ -41,12 +41,13 @@ omitir() { printf '==> %s\n    omitido: %s\n' "$1" "$2"; }
 
 # 0. Comprobaciones de Python: no necesitan Swift.
 paso "Comprobaciones (higiene, dependencias, DocC)" . sh -c '
-    python3 Scripts/comprobar_higiene.py &&
-    python3 Scripts/comprobar_dependencias.py &&
-    python3 Scripts/comprobar_modulos.py &&
-    python3 Scripts/comprobar_catalogo.py &&
-    python3 Scripts/comprobar_enlaces_docc.py &&
-    python3 Scripts/generar_pruebas_de_documentacion.py --comprobar'
+    python3 Scripts/comprobaciones/comprobar_higiene.py &&
+    python3 Scripts/comprobaciones/comprobar_dependencias.py &&
+    python3 Scripts/comprobaciones/comprobar_modulos.py &&
+    python3 Scripts/comprobaciones/comprobar_catalogo.py &&
+    python3 Scripts/comprobaciones/comprobar_enlaces_docc.py &&
+    python3 Scripts/generadores/generar_paquete_raiz.py --comprobar &&
+    python3 Scripts/generadores/generar_pruebas_de_documentacion.py --comprobar'
 
 if ! command -v swift >/dev/null 2>&1; then
     printf '\nNo hay Swift en esta máquina: instala Xcode (macOS) o la cadena de herramientas de swift.org.\n'
@@ -57,7 +58,7 @@ swift --version 2>&1 | head -2
 
 # 1. El motor, módulo a módulo y en el orden de sus dependencias: el primer error de verdad suele estar
 #    en la capa más baja que falla.
-for modulo in ArmoniaNucleo ArmoniaTeoria ArmoniaRepresentaciones ArmoniaPartitura ArmoniaTrastes Armonia; do
+for modulo in ArmoniaNucleo ArmoniaTeoria ArmoniaRepresentaciones ArmoniaPartitura ArmoniaFormatos ArmoniaTrastes Armonia; do
     if [ "$MOTOR_COMPILA" = 1 ]; then
         paso "Motor: compilar $modulo" Packages/Armonia swift build --target "$modulo" || MOTOR_COMPILA=0
     else
@@ -68,7 +69,7 @@ done
 # 2. Las pruebas del motor (compilarlas aparte separa «no compila» de «una prueba falla»).
 if [ "$MOTOR_COMPILA" = 1 ]; then
     if paso "Motor: compilar las pruebas" Packages/Armonia swift build --build-tests; then
-        paso "Motor: pruebas rápidas" Packages/Armonia swift test --skip-build --parallel --filter '^ArmoniaTests\.'
+        paso "Motor: pruebas rápidas" Packages/Armonia swift test --skip-build --parallel --filter '^Armonia(Nucleo|Teoria|Representaciones|Partitura|Formatos|Trastes)?Tests\.'
         paso "Motor: ejemplos de la documentación" Packages/Armonia swift test --skip-build --parallel --filter '^ArmoniaDocumentacionTests\.'
         if [ "$RAPIDO" = 0 ]; then
             paso "Motor: pruebas exhaustivas" Packages/Armonia swift test --skip-build --parallel --filter '^ArmoniaExhaustivasTests\.'
@@ -78,8 +79,11 @@ else
     omitir "Motor: pruebas" "el motor no compila"
 fi
 
-# 3. Lo que depende del motor: la línea de comandos, el ejemplo, la medida del rendimiento y ArmoniaUI.
+# 3. Lo que depende del motor: ArmoniaPresentacion, la línea de comandos, el ejemplo, la medida del rendimiento y
+#    ArmoniaUI.
 if [ "$MOTOR_COMPILA" = 1 ]; then
+    paso "ArmoniaPresentacion: compilar" Packages/ArmoniaPresentacion swift build &&
+        paso "ArmoniaPresentacion: pruebas" Packages/ArmoniaPresentacion swift test --parallel
     paso "Línea de comandos: compilar" Apps/ArmoniaCLI swift build &&
         paso "Línea de comandos: pruebas" Apps/ArmoniaCLI swift test --parallel
     paso "Ejemplo: ejecutar" Ejemplos/EjemploArmonia swift run EjemploArmonia
@@ -87,7 +91,7 @@ if [ "$MOTOR_COMPILA" = 1 ]; then
     paso "ArmoniaUI: compilar" Packages/ArmoniaUI swift build &&
         paso "ArmoniaUI: pruebas" Packages/ArmoniaUI swift test --parallel
 else
-    omitir "Línea de comandos, ejemplo, rendimiento y ArmoniaUI" "el motor no compila"
+    omitir "ArmoniaPresentacion, línea de comandos, ejemplo, rendimiento y ArmoniaUI" "el motor no compila"
 fi
 
 # 4. Las rejillas hexagonales: no dependen del motor.
@@ -103,7 +107,7 @@ elif [ "$(uname)" != "Darwin" ]; then
 elif ! command -v xcodegen >/dev/null 2>&1; then
     omitir "Apps de Xcode" "falta XcodeGen (brew install xcodegen)"
 elif [ "$MOTOR_COMPILA" = 1 ]; then
-    paso "Apps: generar el proyecto" . ./Scripts/generar_proyecto.sh &&
+    paso "Apps: generar el proyecto" . ./Scripts/generadores/generar_proyecto.sh &&
         for esquema in ArmoniaApp TonnetzApp; do
             paso "$esquema (macOS)" . xcodebuild build -project Tesela.xcodeproj -scheme "$esquema" \
                 -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO

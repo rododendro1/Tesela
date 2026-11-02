@@ -1,0 +1,5 @@
+# Fugas de memoria de las bibliotecas del sistema, no de Tesela, que LeakSanitizer no debe contar como fallos
+# (LSAN_OPTIONS=suppressions=fugas-ajenas.supp). Cada una, con dónde se ve.
+#
+# XMLParser de Foundation en Linux: el error que crea al leer un XML mal formado no se libera.
+leak:_CFErrorCreateFromXMLInterface

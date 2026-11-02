@@ -1,0 +1,168 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
+// Los textos de ArmoniaTeoria en húngaro. Los campos y lo que significa cada uno están en
+// `TextosDeTeoria.swift`.
+
+extension TextosDeTeoria {
+    static let hungaro = TextosDeTeoria(
+        // Acorde.swift
+        conBajoEn: { acorde, bajo in "\(acorde), \(bajo) a basszusban" },
+        nombresDeLasInversiones: ["alaphelyzet", "első fordítás", "második fordítás", "harmadik fordítás",
+                                  "negyedik fordítás", "ötödik fordítás", "hatodik fordítás"],
+        inversionConNumero: "_. fordítás",
+
+        // EstructuraDeAcorde.swift
+        papelFundamental: "alaphang",
+        papelTercera: "terc",
+        papelSuspension: "késleltetés",
+        papelQuinta: "kvint",
+        papelSexta: "szext",
+        papelSeptima: "szeptim",
+        papelNovena: "nóna",
+        papelUndecima: "undecima",
+        papelDecimotercera: "tercdecima",
+        papelTension: { n in Intervalo.ordinal(n, en: .hungaro) },
+        triadaMayor: "dúr",
+        triadaMenor: "moll",
+        triadaDisminuida: "szűkített",
+        triadaAumentada: "bővített",
+        triadaSuspendida: "felfüggesztett",
+        triadaDeQuinta: "kvintakkord",
+        triadaSinTercera: "terc nélkül",
+
+        // TipoDeAcorde.swift
+        acordeDesconocido: { vacio, latino, propio in vacio ? "dúr hármashangzat" : "\(propio) akkord" },
+        tipoMayor: "dúr",
+        tipoMenor: "moll",
+        tipoDisminuido: "szűkített",
+        tipoAumentado: "bővített",
+        tipoSuspendidoDeSegunda: "felfüggesztett szekund",
+        tipoSuspendidoDeCuarta: "felfüggesztett kvart",
+        tipoQuintaAcordeDePotencia: "kvintakkord",
+        tipoSeptimaDeDominante: "domináns szeptimakkord",
+        tipoSeptimaMayor: "nagy szeptimakkord",
+        tipoMenorSeptima: "moll szeptimakkord",
+        tipoSemidisminuido: "félszűkített szeptimakkord",
+        tipoSeptimaDisminuida: "szűkített szeptimakkord",
+        tipoMenorConSeptimaMayor: "moll nagy szeptimakkord",
+        tipoAumentadoConSeptimaMenor: "bővített szeptimakkord",
+        tipoAumentadoConSeptimaMayor: "bővített nagy szeptimakkord",
+        tipoSeptimaSuspendida: "domináns szeptimakkord felfüggesztett kvarttal",
+        tipoSexta: "dúr hozzáadott szexttel",
+        tipoMenorSexta: "moll hozzáadott szexttel",
+        tipoSextaYNovena: "dúr hozzáadott szexttel és nónával",
+        tipoNovenaDeDominante: "domináns nónakkord",
+        tipoNovenaMayor: "nagy nónakkord",
+        tipoMenorNovena: "moll nónakkord",
+        tipoNovenaAnadida: "dúr hozzáadott nónával",
+        tipoUndecima: "domináns undecimakkord",
+        tipoMenorUndecima: "moll undecimakkord",
+        tipoDecimotercera: "domináns tercdecimakkord",
+        tipoMenorDecimotercera: "moll tercdecimakkord",
+        tipoSeptimaConNovenaMenor: "domináns szeptimakkord kis nónával",
+        tipoSextaAumentadaItaliana: "olasz bővített szextakkord",
+        tipoSextaAumentadaFrancesa: "francia bővített szextakkord",
+        tipoSextaAumentadaAlemana: "német bővített szextakkord",
+
+        // Coral.swift
+        entreLasVoces: { nombres in nombres.map(\.conArticuloHungaro).joined(separator: " és ") + " között" },
+        enLaVoz: { primera in primera.conArticuloHungaro + "ban" },
+        enLosAcordes: { pasos in "(akkordok: \(pasos))" },
+        enElAcorde: { acorde in "(\(acorde + 1). akkord)" },
+        quintasParalelas: "Párhuzamos kvintek",
+        octavasParalelas: "Párhuzamos oktávok",
+        quintasDirectas: "Rejtett kvintek",
+        octavasDirectas: "Rejtett oktávok",
+        cruceDeVoces: "Szólamkeresztezés",
+        superposicion: "Szólamátfedés",
+        separacionExcesiva: "Egy oktávnál nagyobb távolság",
+        saltoNoMelodico: "Dallamtalan ugrás",
+        fueraDeTesitura: "Hangterjedelmen kívül",
+        vozBajo: "basszus",
+        vozTenor: "tenor",
+        vozContralto: "alt",
+        vozSoprano: "szoprán",
+        vozNumero: { numero in "\(numero). szólam" },
+
+        // Escala.swift
+        gradoTonica: "tonika",
+        gradoSupertonica: "szupertonika",
+        gradoMediante: "mediáns",
+        gradoSubdominante: "szubdomináns",
+        gradoDominante: "domináns",
+        gradoSuperdominante: "szubmediáns",
+        gradoSensible: "vezetőhang",
+        gradoSubtonica: "szubtonika",
+
+        // AnalisisArmonico.swift
+        funcionTonica: "tonika",
+        funcionSubdominante: "szubdomináns",
+        funcionDominante: "domináns",
+
+        // Cadencia.swift
+        cadenciaEnLosAcordes: { pasos in "akkordok: \(pasos)" },
+        cadenciaAutentica: "autentikus zárlat",
+        cadenciaPlagal: "plagális zárlat",
+        cadenciaRota: "megszakított zárlat",
+        semicadencia: "félzárlat",
+        semicadenciaFrigia: "fríg félzárlat",
+        cadenciaPlagalMenor: "moll plagális zárlat",
+
+        // RecorridoTonal.swift
+        deUnaTonalidadAOtra: { de, a, n in "\(de)ból \(a)ba (\(n). akkord)" },
+        pivote: "közvetítő akkord",
+        directa: " (közvetlen)",
+        // Arpegio.swift
+        arpegioDe: { acorde in "\(acorde) akkordfelbontás" },
+        patronAscendente: "felfelé",
+        patronDescendente: "lefelé",
+        patronIdaYVuelta: "fel és le",
+        patronAlberti: "Alberti-basszus",
+        patronQuebrado: "tört",
+        patronBajaYSube: "le és fel",
+        // Escala+Acorde.swift
+        papelNotaDelAcorde: "akkordhang",
+        papelTensionDisponible: "feszültség",
+        papelNotaAEvitar: "kerülendő hang",
+        modoDe: { modo, escala in "\(escala) \(modo). módusza" },
+        // NotaExtrana.swift
+        nombresDeNotasExtranas: ["átmenőhang", "váltóhang", "appoggiatura", "késleltetés", "anticipáció", "szökőhang", "orgonapont", "szabad hang"],
+        // EsquemaArmonico.swift
+        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "12 ütemes blues", "kvintszekvencia", "romanesca", "Pachelbel-kánon", "monte", "fonte", "ponte"],
+        // Rearmonizacion.swift
+        sustitutoTritonal: "tritónuszhelyettesítés",
+        dominanteSecundaria: "mellékdomináns",
+        prestamoModal: "modális kölcsönzés",
+        sustitutoDiatonico: "diatonikus helyettesítés",
+        rearmonizacionIIV: "ii–V",
+        rearmonizacionBackdoor: "backdoor domináns",
+        // ErrorDeLecturaDeTeoria.swift (acordes)
+        simboloNoReconocido: { simbolo in "„\(simbolo)” nem ismert akkordjelzés része" },
+        tensionNoValida: { tension in "„\(tension)” nem érvényes feszültséghang (a ♭ és a ♯ az 5, 9, 11 és 13 mellé, az add a 2, 4, 6, 9, 11 és 13 mellé kerülhet)" },
+        numeroDeAcordeNoValido: { numero in "„\(numero)” nem akkordszám (5, 6, 7, 9, 11 vagy 13)" },
+        numeroRepetido: { numero in "„\(numero)” egy másik szám után áll; a további hangok zárójelbe kerülnek, mint a 7(9)-ben" },
+        disminuidoYSemidisminuido: "a szűkített (°) és a félszűkített (ø) nem kombinálható",
+        quintaConCalidad: "a kvintakkordnak (5) nincs terce, ezért nem kaphat m, °, ø vagy + jelet",
+        fundamentalNoOmitible: "az alaphang nem hagyható el",
+        gradoNoOmitible: { grado in "„omit\(grado)” érvénytelen (a 3, 5, 7, 9, 11 és 13 hagyható el)" },
+        faltaLaFundamental: "hiányzik az alaphang",
+        intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: notacion).conArticuloHungaro) nem tölt be szerepet egy tercépítkezésű akkordban" },
+        terceraMayorYMenor: "egyszerre van benne nagy és kis terc (a ♯9 bővített nónaként íródik, nem kis tercként)",
+        variasSeptimas: "egynél több szeptim van benne",
+        septimaDisminuidaFueraDelDisminuido: "a szűkített szeptim csak a szűkített akkordban fordul elő (kis terccel és szűkített kvinttel)",
+        noEsPorTerceras: "nem tercépítkezésű akkord",
+        bajoNoValido: { bajo in "„\(bajo)” nem hangnév a basszus számára" },
+        idiomasMezclados: { nombre in "„\(nombre)” más nyelven van írva, mint az alaphang: vagy minden szótagokkal (Sol7/Si), vagy minden betűkkel (G7/B)" },
+        // ErrorDeLecturaDeTeoria.swift (escalas)
+        modoNoReconocido: { nombre in "„\(nombre)” nem hangnemi mód: a hangnem dúr vagy moll (a többi módhoz használd az Escala típust)" },
+        faltaElTipoDeEscala: "hiányzik a skála típusa (dúr, dór, összhangzatos moll…)",
+        tipoDeEscalaNoReconocido: { nombre in "„\(nombre)” nem ismert skálatípus" },
+        // ErrorDeLecturaDeTeoria.swift (coral)
+        vocesDistintas: "minden akkordnak ugyanannyi szólamból kell állnia, legalább kettőből",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        // Con el inesivo: «C-dúrban», «a-mollban» (dúr y moll piden -ban).
+        enLaTonalidad: { tonalidad in tonalidad + "ban" }
+    )
+}

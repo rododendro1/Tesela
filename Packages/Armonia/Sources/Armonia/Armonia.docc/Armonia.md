@@ -44,15 +44,19 @@ Tonalidad.identificar(midi: [69, 71, 72, 74, 76, 77, 80, 81]).first   // La meno
 
 - ``Acorde``
 - ``TipoDeAcorde``
+- ``DisposicionDeAcorde``
 - ``Escala``
 - ``TipoDeEscala``
 - ``ModoGregoriano``
 - ``Tonalidad``
 - ``AnalisisArmonico``
 - ``Cadencia``
+- ``EsquemaArmonico``
 - ``RecorridoTonal``
 - ``Coral``
 - ``Armonizacion``
+- ``NotaDeLaMelodia``
+- ``NotaExtrana``
 - ``Contrapunto``
 - ``FaltaDeContrapunto``
 
@@ -78,3 +82,13 @@ Tonalidad.identificar(midi: [69, 71, 72, 74, 76, 77, 80, 81]).first   // La meno
 - ``PiezaImportada``
 - ``NotaDeLaPieza``
 - ``ErrorDeImportacion``
+
+### Errores
+
+- ``ErrorDeArmonia``
+- ``ErrorAlLeer``
+- ``MotivoDeLectura``
+- ``ErrorDeLectura``
+- ``ErrorDeLecturaDeTeoria``
+- ``ErrorDeLecturaDePartitura``
+- ``ErrorDeUIL``

@@ -5,7 +5,7 @@
 
 extension TextosDeRepresentaciones {
     static let euskera = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "tenperamentu berdina",
         pitagorico: "afinazio pitagorikoa",
         mesotonico: "¼ komako mesotonikoa",
@@ -44,6 +44,19 @@ extension TextosDeRepresentaciones {
         // TransformacionNeorriemanniana.swift
         homonima: "homonimoa",
         cambioDeSensible: "sentsiblearen aldaketa",
-        relativa: "erlatiboa"
+        relativa: "erlatiboa",
+
+        // TecladoIsomorfico.swift
+        tablaArmonica: "Taula harmonikoa",
+        wickiHaydenEspejo: "Wicki-Hayden (ispilua)",
+        wickiHaydenPlano: "Wicki-Hayden (laua)",
+        acordeonC: "C sistemako akordeoia",
+        acordeonB: "B sistemako akordeoia",
+        // FormatoUIL.swift
+        uilNoValido: { texto in "UIL baliogabea: «\(texto)». L,G,D;R<graduak>[M] espero da, adibidez 2,7,5;R30M." },
+        intervalosIncoherentes: { menor, mayor, diferencia in "Tarte koherentegabeak: \(menor),\(mayor),\(diferencia). 0 < L ≤ D eta G = L + D bete behar dituzte." },
+        giroNoValido: { grados in "\(grados)°-ko biraketa ez da 30°-ren multiploa." },
+        afinacionNoSoportada: { tonos in "12 notako teklatuak bakarrik marrazten dira, ez \(tonos) notakoak." },
+        cizallaNoSoportada: { cizalla in "S\(cizalla) ebakidura ez dago onartuta." }
     )
 }

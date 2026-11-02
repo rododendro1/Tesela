@@ -2,16 +2,16 @@ import Armonia
 
 // MARK: - La ayuda
 //
-// La ayuda de `armonia` en los catorce idiomas de los textos, montada a partir de una tabla de órdenes:
+// La ayuda de `armonia` en los quince idiomas de los textos, montada a partir de una tabla de órdenes:
 // cada orden tiene su sintaxis, su descripción, un ejemplo y, si hace falta, unas notas, cada cosa
-// en los catorce idiomas (`Traduccion` no compila si falta alguno). Las columnas se calculan: la
+// en los quince idiomas (`Traduccion` no compila si falta alguno). Las columnas se calculan: la
 // sintaxis va en la columna 2, la descripción en la 31 y el ejemplo en la 69. Una sintaxis que no
 // cabe en su columna deja la descripción en la línea siguiente, y un ejemplo que no cabe al final
 // de la descripción va en una línea propia.
 //
-// Las entradas de las órdenes están en Ayuda+Consultas.swift, Ayuda+Armonizacion.swift y los demás
-// Ayuda+*.swift, uno por cada LineaDeComandos+*.swift; aquí quedan la cabecera, el pie y la entrada
-// de la propia ayuda.
+// Cada orden (`Orden`, en LineaDeComandos.swift) lleva sus entradas de la ayuda. Las órdenes están en
+// Ayuda+Consultas.swift, Ayuda+Armonizacion.swift y los demás Ayuda+*.swift, uno por cada LineaDeComandos+*.swift,
+// con sus nombres, lo que hacen y su ayuda; aquí quedan la cabecera, el pie y la propia ayuda.
 
 extension LineaDeComandos {
     /// Una orden de la ayuda. Cada texto puede tener varias líneas (separadas por "\n"), cortadas
@@ -66,29 +66,34 @@ extension LineaDeComandos {
 
     /// Un ejemplo: con los nombres españoles de las órdenes y las notas en español, catalán, gallego,
     /// asturiano, aragonés, euskera, portugués, francés, occitano y italiano, y con los ingleses en
-    /// inglés, alemán, griego y ruso.
+    /// inglés, alemán, griego, ruso y húngaro.
     static func ejemplo(_ espanol: String, _ ingles: String) -> Traduccion {
         Traduccion(
             espanol, ingles, ca: espanol, gl: espanol, ast: espanol, an: espanol, eu: espanol, pt: espanol,
             fr: espanol, oc: espanol, it: espanol, de: ingles,
-            el: ingles, ru: ingles)
+            el: ingles, ru: ingles, hu: ingles)
     }
 
     /// Lo que va antes de las órdenes: qué es, cómo se usa y el título de la lista.
-    static let cabeceraDeLaAyuda = TextosDeCLI.traducidos.map(\.cabeceraDeLaAyuda)
+    static let cabeceraDeLaAyuda = TextosDeCLI.traduccion(\.cabeceraDeLaAyuda)
 
     /// Lo que sigue a las órdenes, tras una línea en blanco.
-    static let pieDeLaAyuda = TextosDeCLI.traducidos.map(\.pieDeLaAyuda)
+    static let pieDeLaAyuda = TextosDeCLI.traduccion(\.pieDeLaAyuda)
 
-    static let ordenesDeLaAyuda: [EntradaDeAyuda] =
-        ayudaDeConsultas + ayudaDeArmonizacion + ayudaDePartituras
-        + ayudaDeDibujos + ayudaDeNeorriemann + ayudaDeTrastes + ayudaDeLaAyuda
+    /// Las entradas de todas las órdenes, en el orden de `ordenes`.
+    static let ordenesDeLaAyuda: [EntradaDeAyuda] = ordenes.flatMap(\.ayuda)
 
-    /// La ayuda de la propia ayuda; las demás órdenes están en los archivos Ayuda+*.swift.
+    /// La propia ayuda; las demás órdenes están en los archivos Ayuda+*.swift.
+    static let ordenesDeAyuda: [Orden] = [
+        Orden(nombres: ["ayuda", "help", "-h", "--help", "--ayuda"], ayuda: ayudaDeLaAyuda) { _, notacion in
+            bien(ayuda(en: notacion))
+        }
+    ]
+
     static let ayudaDeLaAyuda: [EntradaDeAyuda] = [
         // ayuda
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traducidos.map(\.sintaxisAyuda),
-            descripcion: TextosDeCLI.traducidos.map(\.descripcionAyuda))
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisAyuda),
+            descripcion: TextosDeCLI.traduccion(\.descripcionAyuda))
     ]
 }

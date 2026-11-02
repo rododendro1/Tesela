@@ -3,14 +3,14 @@ import ArmoniaPresentacion
 
 // MARK: - Textos
 //
-// Lo que escribe la herramienta por su cuenta, en los catorce idiomas de los textos: las
+// Lo que escribe la herramienta por su cuenta, en los quince idiomas de los textos: las
 // etiquetas de la salida (`Mensaje`, en este archivo) y los errores de uso (`ErrorDeUso`, en
 // ErrorDeUso.swift). Lo musical (notas, acordes, escalas…) no está aquí: lo traduce el motor
 // con `Notacion`.
 //
 // Los textos están en `TextosDeCLI`, un idioma por fichero (`Textos/TextosDeCLI+Espanol.swift`…): cada
-// fichero da todos los campos, así que un caso nuevo no compila hasta que tiene su texto en los catorce. El idioma es el de la notación (`--ingles`, `--idioma eu`…).
-// La ayuda (`LineaDeComandos.ayuda(en:)`) también está en los catorce idiomas.
+// fichero da todos los campos, así que un caso nuevo no compila hasta que tiene su texto en los quince. El idioma es el de la notación (`--ingles`, `--idioma eu`…).
+// La ayuda (`LineaDeComandos.ayuda(en:)`) también está en los quince idiomas.
 // Los avisos del coral (sin armonización, sin faltas…) los comparte con las apps: son
 // `CoralPresentado.Aviso`, en `ArmoniaPresentacion`.
 
@@ -18,7 +18,10 @@ import ArmoniaPresentacion
 enum Mensaje {
     case notas
     case acordes
+    case microtonos
     case escalas
+    case habituales
+    case ningunaEscala
     case armadura
     case relativa
     case homonima
@@ -45,71 +48,56 @@ enum Mensaje {
 
     var traduccion: Traduccion {
         switch self {
-        case .notas: return TextosDeCLI.traducidos.map(\.mensajeNotas)
-        case .acordes: return TextosDeCLI.traducidos.map(\.mensajeAcordes)
-        case .escalas: return TextosDeCLI.traducidos.map(\.mensajeEscalas)
-        case .armadura: return TextosDeCLI.traducidos.map(\.mensajeArmadura)
-        case .relativa: return TextosDeCLI.traducidos.map(\.mensajeRelativa)
-        case .homonima: return TextosDeCLI.traducidos.map(\.mensajeHomonima)
+        case .notas: return TextosDeCLI.traduccion(\.mensajeNotas)
+        case .acordes: return TextosDeCLI.traduccion(\.mensajeAcordes)
+        case .microtonos: return TextosDeCLI.traduccion(\.mensajeMicrotonos)
+        case .escalas: return TextosDeCLI.traduccion(\.mensajeEscalas)
+        case .habituales: return TextosDeCLI.traduccion(\.mensajeHabituales)
+        case .ningunaEscala: return TextosDeCLI.traduccion(\.mensajeNingunaEscala)
+        case .armadura: return TextosDeCLI.traduccion(\.mensajeArmadura)
+        case .relativa: return TextosDeCLI.traduccion(\.mensajeRelativa)
+        case .homonima: return TextosDeCLI.traduccion(\.mensajeHomonima)
         case .bajo(let nota):
-            return TextosDeCLI.traducidos.map { $0.mensajeBajo(nota) }
+            return TextosDeCLI.traduccion { $0.mensajeBajo(nota) }
         case .inversion(let n):
             // Los nombres de las inversiones son los de la biblioteca (`Acorde.nombreDeLaInversion`).
-            return Mensaje.traduccion { Acorde.nombreDeLaInversion(n, en: $0) }
+            return Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(n, en: $0) })
         case .bajoAjeno:
-            return TextosDeCLI.traducidos.map(\.mensajeBajoAjeno)
+            return TextosDeCLI.traduccion(\.mensajeBajoAjeno)
         case .sinAcordes:
-            return TextosDeCLI.traducidos.map(\.mensajeSinAcordes)
+            return TextosDeCLI.traduccion(\.mensajeSinAcordes)
         case .sin(let notas):
-            return TextosDeCLI.traducidos.map { $0.mensajeSin(notas) }
+            return TextosDeCLI.traduccion { $0.mensajeSin(notas) }
         case .semitonos(let n):
-            return TextosDeCLI.traducidos.map { $0.mensajeSemitonos(n) }
+            return TextosDeCLI.traduccion { $0.mensajeSemitonos(n) }
         case .sinAlteraciones:
-            return TextosDeCLI.traducidos.map(\.mensajeSinAlteraciones)
+            return TextosDeCLI.traduccion(\.mensajeSinAlteraciones)
         case .alteraciones(let n, let sostenidos):
             if sostenidos {
-                return TextosDeCLI.traducidos.map { $0.mensajeSostenidos(n) }
+                return TextosDeCLI.traduccion { $0.mensajeSostenidos(n) }
             }
-            return TextosDeCLI.traducidos.map { $0.mensajeBemoles(n) }
+            return TextosDeCLI.traduccion { $0.mensajeBemoles(n) }
         case .aCuatroVoces:
-            return TextosDeCLI.traducidos.map(\.mensajeACuatroVoces)
+            return TextosDeCLI.traduccion(\.mensajeACuatroVoces)
         case .sinDigitaciones:
-            return TextosDeCLI.traducidos.map(\.mensajeSinDigitaciones)
+            return TextosDeCLI.traduccion(\.mensajeSinDigitaciones)
         case .dedos(let n):
-            return TextosDeCLI.traducidos.map { $0.mensajeDedos(n) }
+            return TextosDeCLI.traduccion { $0.mensajeDedos(n) }
         case .cejilla(let traste):
-            return TextosDeCLI.traducidos.map { $0.mensajeCejilla(traste) }
+            return TextosDeCLI.traduccion { $0.mensajeCejilla(traste) }
         case .pasos(let n):
             switch n {
-            case 0: return TextosDeCLI.traducidos.map(\.mensajeNingunPaso)
-            case 1: return TextosDeCLI.traducidos.map(\.mensajeUnPaso)
-            default: return TextosDeCLI.traducidos.map { $0.mensajePasos(n) }
+            case 0: return TextosDeCLI.traduccion(\.mensajeNingunPaso)
+            case 1: return TextosDeCLI.traduccion(\.mensajeUnPaso)
+            default: return TextosDeCLI.traduccion { $0.mensajePasos(n) }
             }
         case .triadas(let n):
-            return TextosDeCLI.traducidos.map { $0.mensajeTriadas(n) }
+            return TextosDeCLI.traduccion { $0.mensajeTriadas(n) }
         case .ciclo(let ciclo):
-            return Traduccion(
-                ciclo.nombre(en: .espanolUnicode), ciclo.nombre(en: .inglesASCII), ca: ciclo.nombre(en: .catalan),
-                gl: ciclo.nombre(en: .gallego), ast: ciclo.nombre(en: .asturiano),
-                an: ciclo.nombre(en: .aragones), eu: ciclo.nombre(en: .euskera), pt: ciclo.nombre(en: .portugues),
-                fr: ciclo.nombre(en: .frances), oc: ciclo.nombre(en: .occitano),
-                it: ciclo.nombre(en: .italiano), de: ciclo.nombre(en: .aleman),
-                el: ciclo.nombre(en: .griego), ru: ciclo.nombre(en: .ruso))
+            return Traduccion(cadaIdioma: { ciclo.nombre(en: $0) })
         case .instrumento(let encordado):
-            // `--instrumento` acepta el nombre en cualquiera de los catorce idiomas.
-            return Mensaje.traduccion { encordado.nombre(en: $0) }
+            // `--instrumento` acepta el nombre en cualquiera de los quince idiomas.
+            return Traduccion(cadaIdioma: { encordado.nombre(en: $0) })
         }
-    }
-}
-
-extension Mensaje {
-    /// Una `Traduccion` con el texto que da la biblioteca para cada idioma.
-    static func traduccion(_ texto: (Notacion) -> String) -> Traduccion {
-        Traduccion(
-            texto(.espanolUnicode), texto(.inglesASCII), ca: texto(.catalan), gl: texto(.gallego),
-            ast: texto(.asturiano),
-            an: texto(.aragones), eu: texto(.euskera), pt: texto(.portugues),
-            fr: texto(.frances), oc: texto(.occitano), it: texto(.italiano), de: texto(.aleman),
-            el: texto(.griego), ru: texto(.ruso))
     }
 }

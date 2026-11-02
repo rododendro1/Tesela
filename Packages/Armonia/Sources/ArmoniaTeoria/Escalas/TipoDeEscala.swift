@@ -11,7 +11,7 @@ import Foundation
 /// una escala, `equivalentes`.
 ///
 /// Algunas escalas suben y bajan con notas distintas (la menor melódica, el dromos Rast, muchos
-/// ragas): `intervalos` es la forma ascendente e `intervalosDescendentes`, la descendente.
+/// rāgas): `intervalos` es la forma ascendente e `intervalosDescendentes`, la descendente.
 public struct TipoDeEscala: Sendable, Codable {
     public let nombre: String
     /// Intervalos ascendentes simples desde la tónica, ordenados (empieza por el unísono).
@@ -229,7 +229,7 @@ extension TipoDeEscala {
         ],
         alias: ["menor melódica clásica"])
     /// La menor melódica tal como se usa en el jazz: con la 6ª y la 7ª mayores también al bajar.
-    /// Es el mismo contenido que el melakarta 23 (Gaurīmanoharī), y la escala madre de los modos
+    /// Es el mismo contenido que el mēḷa 23 (Gaurīmanoharī), y la escala madre de los modos
     /// de la menor melódica (dórico ♭2, lidio aumentado, lidio dominante, alterada…).
     public static let menorMelodicaJazz = TipoDeEscala(
         nombre: "menor melódica de jazz",
@@ -341,8 +341,9 @@ extension TipoDeEscala {
     package static let nombresTradicionales: Set<String> = Set(tradicionales.map(\.nombre))
 
     /// Minúsculas, sin diacríticos (dórico → dorico, Kāfī → kafi), ♯/♭ como #/b, sin ♮ ni ordinales
-    /// (4ª → 4), «−» como «-», «…» como «..» y con un solo espacio entre palabras. En devanagari no se quitan los signos: las vocales y el virama
-    /// son parte de la letra (भैरव y भैरवी son dos ragas).
+    /// (4ª → 4), «−» como «-», «…» como «..», la ı sin punto del turco como i (makamı → makami) y con
+    /// un solo espacio entre palabras. En devanagari no se quitan los signos: las vocales y el virama
+    /// son parte de la letra (भैरव y भैरवी son dos rāgas).
     package static func normalizar(_ texto: String) -> String {
         let devanagari = texto.unicodeScalars.contains { (0x0900...0x097F).contains($0.value) }
         return texto.replacingOccurrences(of: "♯", with: "#")
@@ -351,6 +352,7 @@ extension TipoDeEscala {
             .replacingOccurrences(of: "ª", with: "")
             .replacingOccurrences(of: "−", with: "-")
             .replacingOccurrences(of: "…", with: "..")
+            .replacingOccurrences(of: "ı", with: "i")
             .folding(options: devanagari ? [.caseInsensitive] : [.diacriticInsensitive, .caseInsensitive], locale: nil)
             .lowercased()
             .split(whereSeparator: { $0 == " " || $0 == "-" }).joined(separator: " ")

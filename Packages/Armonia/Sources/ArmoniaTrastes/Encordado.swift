@@ -8,8 +8,9 @@ import ArmoniaTeoria
 /// no el de las alturas.
 public struct Encordado: Hashable, Sendable {
     public let nombre: String
-    /// Altura al aire de cada cuerda, de la primera (la más grave en el mástil) a la última. Con capo, la que
-    /// suena con el capo puesto: el traste 0 es el del capo.
+    /// Altura al aire de cada cuerda, en el orden en que están en el mástil: primero la de arriba (la más grave
+    /// en la guitarra, que es la sexta en la numeración tradicional) y al final la de abajo (la primera). Con
+    /// capo, la que suena con el capo puesto: el traste 0 es el del capo.
     public let cuerdas: [Altura]
     /// El traste en que va el capo (la cejilla móvil que se pinza en el mástil), o 0 si no lleva.
     public let capo: Int
@@ -48,8 +49,15 @@ public struct Encordado: Hashable, Sendable {
 
     public var numeroDeCuerdas: Int { cuerdas.count }
 
+    /// El número tradicional de la cuerda con ese índice en `cuerdas`: la 1.ª es la de abajo (el Mi agudo de la
+    /// guitarra) y la última, la de arriba.
+    ///
+    ///     Encordado.guitarra.numeroTradicional(deCuerda: 0)   // 6: el Mi grave
+    ///     Encordado.ukelele.numeroTradicional(deCuerda: 0)    // 4: el Sol
+    public func numeroTradicional(deCuerda indice: Int) -> Int { numeroDeCuerdas - indice }
+
     /// `true` si alguna cuerda suena más grave que la anterior en el mástil: el ukelele, cuya cuerda de Sol
-    /// (la primera) es más aguda que la de Do (la segunda). En estos instrumentos la nota más grave de un
+    /// (la de arriba, la 4.ª) es más aguda que la de Do (la 3.ª). En estos instrumentos la nota más grave de un
     /// acorde no tiene por qué ser su raíz.
     public var esReentrante: Bool {
         zip(cuerdas, cuerdas.dropFirst()).contains { $0.midi > $1.midi }
@@ -76,14 +84,14 @@ public struct Encordado: Hashable, Sendable {
         cuerdas: [Altura(.re, octava: 2)] + Encordado.guitarra.cuerdas.dropFirst())
 
     /// Bajo de cuatro cuerdas: Mi1 La1 Re2 Sol2.
-    public static let bajo = Encordado(
+    public static let bajoElectrico = Encordado(
         nombre: "bajo",
         cuerdas: [Altura(.mi, octava: 1), Altura(.la, octava: 1), Altura(.re, octava: 2), Altura(.sol, octava: 2)])
 
     /// Bajo de cinco cuerdas: Si0 Mi1 La1 Re2 Sol2.
     public static let bajoDeCincoCuerdas = Encordado(
         nombre: "bajo de cinco cuerdas",
-        cuerdas: [Altura(.si, octava: 0)] + Encordado.bajo.cuerdas)
+        cuerdas: [Altura(.si, octava: 0)] + Encordado.bajoElectrico.cuerdas)
 
     /// Ukelele soprano: Sol4 Do4 Mi4 La4 (cuerda reentrante).
     public static let ukelele = Encordado(
@@ -96,13 +104,14 @@ public struct Encordado: Hashable, Sendable {
         cuerdas: [Altura(.sol, octava: 3), Altura(.re, octava: 4), Altura(.la, octava: 4), Altura(.mi, octava: 5)])
 
     public static let todos: [Encordado] = [
-        .guitarra, .guitarraEnReGrave, .guitarraDeSieteCuerdas, .bajo, .bajoDeCincoCuerdas, .ukelele, .mandolina,
+        .guitarra, .guitarraEnReGrave, .guitarraDeSieteCuerdas, .bajoElectrico, .bajoDeCincoCuerdas, .ukelele,
+        .mandolina,
     ]
 }
 
 extension Encordado {
     /// Busca un instrumento por su nombre, sin distinguir mayúsculas ni tildes: «guitarra», «bajo de cinco
-    /// cuerdas», «ukulele», «drop D»… En cualquiera de los catorce idiomas de los textos: «bass»,
+    /// cuerdas», «ukulele», «drop D»… En cualquiera de los quince idiomas de los textos: «bass»,
     /// «seven-string guitar», «guitare», «bandolim», «гитара». `nil` si no se conoce.
     public init?(nombre texto: String) {
         let clave = texto.claveDeBusqueda
@@ -123,7 +132,7 @@ extension Encordado {
         "guitarra de 7 cuerdas": .guitarraDeSieteCuerdas, "guitarra de siete": .guitarraDeSieteCuerdas,
         "guitarra en re": .guitarraEnReGrave, "re grave": .guitarraEnReGrave, "drop d": .guitarraEnReGrave,
         "dropd": .guitarraEnReGrave,
-        "bass": .bajo,
+        "bass": .bajoElectrico, "bajo electrico": .bajoElectrico,
         "bajo 5": .bajoDeCincoCuerdas, "bajo5": .bajoDeCincoCuerdas, "bajo de 5 cuerdas": .bajoDeCincoCuerdas,
         "bajo de cinco": .bajoDeCincoCuerdas,
         "ukulele": .ukelele, "ukulele soprano": .ukelele, "ukelele soprano": .ukelele,
@@ -133,7 +142,7 @@ extension Encordado {
 
 // MARK: - Idiomas
 //
-// Los nombres de los instrumentos en los catorce idiomas de los textos. Los textos están en
+// Los nombres de los instrumentos en los quince idiomas de los textos. Los textos están en
 // `Textos/TextosDeTrastes+Espanol.swift`, `…+Ingles.swift`…, un fichero por idioma.
 
 extension Encordado: Nombrable {
@@ -150,23 +159,23 @@ extension Encordado: Nombrable {
         return nombre.prefix(1).uppercased() + nombre.dropFirst()
     }
 
-    /// El nombre en los catorce idiomas; `nil` si el encordado no es de los de `todos`.
+    /// El nombre en los quince idiomas; `nil` si el encordado no es de los de `todos`.
     package var traduccion: Traduccion? {
         switch self {
         case .guitarra:
-            return TextosDeTrastes.traducidos.map(\.guitarra)
+            return TextosDeTrastes.traduccion(\.guitarra)
         case .guitarraEnReGrave:
-            return TextosDeTrastes.traducidos.map(\.guitarraEnReGrave)
+            return TextosDeTrastes.traduccion(\.guitarraEnReGrave)
         case .guitarraDeSieteCuerdas:
-            return TextosDeTrastes.traducidos.map(\.guitarraDeSieteCuerdas)
-        case .bajo:
-            return TextosDeTrastes.traducidos.map(\.bajo)
+            return TextosDeTrastes.traduccion(\.guitarraDeSieteCuerdas)
+        case .bajoElectrico:
+            return TextosDeTrastes.traduccion(\.bajo)
         case .bajoDeCincoCuerdas:
-            return TextosDeTrastes.traducidos.map(\.bajoDeCincoCuerdas)
+            return TextosDeTrastes.traduccion(\.bajoDeCincoCuerdas)
         case .ukelele:
-            return TextosDeTrastes.traducidos.map(\.ukelele)
+            return TextosDeTrastes.traduccion(\.ukelele)
         case .mandolina:
-            return TextosDeTrastes.traducidos.map(\.mandolina)
+            return TextosDeTrastes.traduccion(\.mandolina)
         default:
             return nil
         }

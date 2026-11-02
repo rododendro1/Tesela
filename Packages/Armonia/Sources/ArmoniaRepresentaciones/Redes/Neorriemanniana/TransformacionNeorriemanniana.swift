@@ -177,7 +177,8 @@ extension Tonnetz {
                     fundamental: PuntoDeLaRed(quintas: triada.fundamental.quintas - 4 * terceras, terceras: terceras),
                     mayor: triada.mayor)
             }
-            triadas.append(copias.min { Tonnetz.separacion(anterior, $0) < Tonnetz.separacion(anterior, $1) }!)
+            triadas.append(
+                copias.menor(siNoHay: triada) { Tonnetz.separacion(anterior, $0) < Tonnetz.separacion(anterior, $1) })
         }
         var puntos: [PuntoDeLaRed] = []
         for vertice in triadas.flatMap(\.vertices) where !puntos.contains(vertice) { puntos.append(vertice) }
@@ -186,9 +187,15 @@ extension Tonnetz {
 
     /// El recorrido por el camino más corto entre dos tríadas: `Tonnetz(caminoDesde: "Do", hasta: "Mibm")`.
     public init?(caminoDesde origen: Acorde, hasta destino: Acorde) {
-        guard let camino = Tonnetz.camino(desde: origen, hasta: destino) else { return nil }
-        let inicio = Triada(origen)!
-        let triadas = camino.reduce(into: [inicio]) { $0.append($0.last!.transformar($1)) }
+        guard let camino = Tonnetz.camino(desde: origen, hasta: destino), let inicio = Triada(origen) else {
+            return nil
+        }
+        var triadas = [inicio]
+        var actual = inicio
+        for paso in camino {
+            actual = actual.transformar(paso)
+            triadas.append(actual)
+        }
         self.init(recorrido: triadas.map(\.acorde))
     }
 
@@ -211,7 +218,7 @@ extension Tonnetz.Triada {
 
 // MARK: - Idiomas
 //
-// Los nombres de las transformaciones neorriemannianas en los catorce idiomas de los textos (`Traduccion`).
+// Los nombres de las transformaciones neorriemannianas en los quince idiomas de los textos (`Traduccion`).
 
 extension TransformacionNeorriemanniana: Nombrable {
     /// El nombre de la transformación en el idioma de los textos: «relativa», «relative».
@@ -219,11 +226,11 @@ extension TransformacionNeorriemanniana: Nombrable {
         let traduccion: Traduccion
         switch self {
         case .p:
-            traduccion = TextosDeRepresentaciones.traducidos.map(\.homonima)
+            traduccion = TextosDeRepresentaciones.traduccion(\.homonima)
         case .l:
-            traduccion = TextosDeRepresentaciones.traducidos.map(\.cambioDeSensible)
+            traduccion = TextosDeRepresentaciones.traduccion(\.cambioDeSensible)
         case .r:
-            traduccion = TextosDeRepresentaciones.traducidos.map(\.relativa)
+            traduccion = TextosDeRepresentaciones.traduccion(\.relativa)
         }
         return traduccion.en(notacion)
     }

@@ -7,10 +7,10 @@ import Armonia
 extension TextosDeCLI {
     static let euskera = TextosDeCLI(
         // Ayuda+Armonizacion.swift
-        sintaxisAnalizar: "analizar <akordeak> [--en <tonalitatea>]",
-        descripcionAnalizar: "zifratu erromatarra, funtzioak,\nkadentziak eta modulazioak (pibota\nbarne; --en gabe)",
+        sintaxisAnalizar: "analizar <akordeak> [--en <tonalitatea>] [--escalas]",
+        descripcionAnalizar: "zifratu erromatarra, funtzioak,\nkadentziak eta modulazioak (pibota\nbarne; --en gabe)\n--escalas: akorde bakoitzaren eskala,\ntentsio eta saihesteko notekin",
         sintaxisAnalizarArchivo: "analizar --archivo <fitxategia> [--ventana <iraupena>]",
-        descripcionAnalizarArchivo: "gauza bera, MIDI edo MusicXML\nfitxategi baten akordeekin (bat\npultsuko; --ventana 2: bat zuriko)",
+        descripcionAnalizarArchivo: "gauza bera, MIDI, MusicXML, MEI edo\nABC fitxategi baten akordeekin (bat\npultsuko; --ventana 2: bat zuriko)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalitatea>] [--propuestas 3]",
         descripcionArmonizar: "melodia baterako akordeak, onenetik\ntxarrenera; zortzidunekin (Mi4), lau\nahotseko korala ere bai",
         sintaxisRealizar: "realizar <akordeak> [--en <tonalitatea>]",
@@ -33,8 +33,11 @@ extension TextosDeCLI {
         descripcionIdentificar: "nota batzuek osatzen dituzten\nakordeak",
         sintaxisIntervalo: "intervalo <nota> <nota>",
         descripcionIntervalo: "bi nota edo altueren arteko tartea",
-        sintaxisEscala: "escala <eskala>",
-        descripcionEscala: "eskala baten notak eta akordeak",
+        sintaxisEscala: "escala <eskala> [--acordes]",
+        descripcionEscala: "eskala baten notak eta akordeak\n--acordes: gradu bakoitzean sartzen\ndiren guztiak, ez hirurenak bakarrik",
+        sintaxisEscalas: "escalas [<testua>] [aukerak]",
+        descripcionEscalas: "eskalen katalogoa: ohikoak eta beste\ntradizio batzuetakoak, kategoriaka,\nDo-tik hasitako notekin",
+        notasEscalas: "aukerak: --tradicion turquia (edo india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) eta --categoria maqam (edo rāga, makam,\ndastgah, dromos…); testu batek izenetan bilatzen du",
         sintaxisTonalidad: "tonalidad <tonalitatea>",
         descripcionTonalidad: "armadura, erlatiboak eta graduak",
 
@@ -79,10 +82,16 @@ extension TextosDeCLI {
         descripcionMusicxmlArpegios: "akordeak arpegiatuta, notaz nota",
         notasMusicxmlArpegios: "aukerak: --patron alberti (edo ascendente, descendente, ida y\nvuelta), --figura 16 (nota bakoitzaren iraupena; bestela\nkortxea), --duracion 1 (akorde bakoitzaren iraupena: eredua\nerrepikatzen da bete arte) eta «acordes»en gainerakoak",
         sintaxisMusicxmlArchivo: "musicxml acordes --archivo <fitxategia>",
-        descripcionMusicxmlArchivo: "MIDI edo MusicXML fitxategi baten\nprogresioa, akorde bakoitzaren\niraupenarekin (baita arpegios, mei, midi)",
-        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios <…> [aukerak]",
+        descripcionMusicxmlArchivo: "MIDI, MusicXML, MEI edo ABC fitxategi\nbaten progresioa, akorde bakoitzaren\niraupenarekin (baita arpegios, mei, midi)",
+        sintaxisMusicxmlEscala: "musicxml escala <eskala> [aukerak]",
+        descripcionMusicxmlEscala: "eskala bat beltzetan, bere\nmikrotonuekin: maqam baten bemol erdia,\nkoron-a, makam baten komak",
+        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios|escala <…> [aukerak]",
         descripcionMeiMelodia: "gauza bera MEI 5en, edizio kritikoen\nformatuan (aukera berberekin)",
-        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios <…> [aukerak]",
+        sintaxisLilypondMelodia: "lilypond melodia|coral|acordes|arpegios|escala <…> [aukerak]",
+        descripcionLilypondMelodia: "gauza bera LilyPonden, partitura\nPDFan grabatzeko",
+        sintaxisAbcMelodia: "abc melodia|coral|acordes|arpegios|escala <…> [aukerak]",
+        descripcionAbcMelodia: "gauza bera ABCn, musika\ntradizionalaren testu-notazioa",
+        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios|escala <…> [aukerak]",
         descripcionMidiMelodia: "gauza bera MIDI fitxategi gisa,\nentzuteko (--clave eta --cifrados\ngabe; --programa 0…127, General\nMIDI)",
 
         // Ayuda+Trastes.swift
@@ -95,7 +104,7 @@ extension TextosDeCLI {
         cabeceraDeLaAyuda: """
         armonia: musika-teoria komando-lerrotik.
 
-        Erabilera: armonia <agindua> <argumentuak> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru]
+        Erabilera: armonia <agindua> <argumentuak> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
 
         Aginduak (aginduak eta aukerak gaztelaniaz edo ingelesez idazten dira):
         """,
@@ -106,11 +115,21 @@ extension TextosDeCLI {
         --textos erabiliz, testuak notak ez bezalako hizkuntzan daude: --idioma en --textos eu.
         Gaztelaniaz eta ingelesez, --escritura palabras|ascii|unicode erabiliz, notak Fa sostenido,
         Fa# edo Fa♯ idazten dira (ingelesez, F sharp, F# edo F♯).
+        Gainerako hizkuntzetan, --escritura palabras|compacto erabiliz, hitzak edo forma laburra aukeratzen da:
+        fa dièse edo Fa♯, F Kreuz edo Fis.
+        Idazkera trinkoetan zortziduna azpiindize gisa doa (La₄), eta besteetan zenbakiz (La4);
+        --subindices edo --cifras erabiliz finkatzen da (biak irakurtzen dira).
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "laguntza hau",
+        sintaxisCompletado: "completado bash|zsh|fish",
+        descripcionCompletado: "aginduen eta aukeren osatze\nautomatikoa terminalerako",
+        sintaxisManual: "manual",
+        descripcionManual: "laguntza hau eskuliburu-orri gisa",
+        manualNombre: "IZENA",
+        manualNotas: "OHARRAK",
 
-        // ErrorDeUso+Armonizacion.swift
+        // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "akordeak falta dira: " + ejemplo },
         dosAcordesDeConduccion: { ejemplo in "bi akorde behar dira: " + ejemplo },
         faltanNotasDeLaArmonizacion: { ejemplo in "melodiaren notak falta dira: " + ejemplo },
@@ -119,10 +138,12 @@ extension TextosDeCLI {
         especieFueraDeRango: "--especie 1etik 5era doa",
         faltanAcordesDeLaRealizacion: { ejemplo in "akordeak falta dira: " + ejemplo },
 
-        // ErrorDeUso+Consultas.swift
+        // ErrorDeUso.swift (consultas)
         faltaCifrado: "zifratua falta da: armonia acorde Sol7",
         faltaCifradoDelArpegio: "zifratua falta da: armonia arpegio Do7",
         patronDesconocido: { patron in "eredu ezezaguna: «\(patron)» (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado edo alberti)" },
+        tradicionDesconocida: { tradicion in "«\(tradicion)» ez da tradizio bat (india, grecia, mundo-arabe, persia, turquia…)" },
+        categoriaDesconocida: { categoria in "«\(categoria)» ez da eskala-kategoria bat (rāga, maqam, makam, dastgah…)" },
         faltanNotas: "notak falta dira: armonia identificar Do Mi Sol",
         dosNotas: "bi nota behar dira: armonia intervalo Do Mi",
         faltaEscala: "eskala falta da: armonia escala Re dórico",
@@ -135,7 +156,7 @@ extension TextosDeCLI {
         faltaTransporte: { ejemplo in "tartea (edo tonika berria) eta transposatzen dena falta dira: " + ejemplo },
         faltanAcordesDeLaRearmonizacion: { ejemplo in "akordeak falta dira: " + ejemplo },
 
-        // ErrorDeUso+Dibujos.swift
+        // ErrorDeUso.swift (dibujos)
         margenFueraDeRango: "marjina 0tik 6ra bitarteko zenbaki bat da: --margen 2",
         faltanNotasDelDibujo: { ejemplo, orden in "notak falta dira: " + ejemplo },
         faltaAcordeDelDibujo: { ejemplo, orden in "akordea falta da: " + ejemplo },
@@ -147,7 +168,7 @@ extension TextosDeCLI {
         caminoSoloTriadas: { ejemplo, orden in "bidea triade handi edo txiki batetik beste batera doa: " + ejemplo },
         cicloSoloTriadas: { ejemplo, orden in "zikloa triade handi edo txiki batean hasten da: " + ejemplo },
 
-        // ErrorDeUso+Neorriemann.swift
+        // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "mugitzen diren ahotsak 1 edo 2 dira: --voces 2",
         unAcordeDeVecinos: { ejemplo in "akorde bat behar da: " + ejemplo },
         vecinosSinFamilia: "auzokideak dominanteko zazpigarrenen, txikien, erdi-gutxituen, gutxituen eta maj7en artean bilatzen dira, edo triade handi, txiki eta gehituen artean",
@@ -156,10 +177,10 @@ extension TextosDeCLI {
         faltanPasosDePLR: { ejemplo in "triade bat eta urrats batzuk edo beste triade bat behar dira: " + ejemplo },
         plrSoloTriadas: { ejemplo, camino in "P, L eta R triade handi eta txikiei aplikatzen zaizkie: " + ejemplo },
 
-        // ErrorDeUso+Partituras.swift
+        // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "«melodia», «coral» edo «acordes» falta da: " + ejemplo },
         instrumentoMIDI: "programa 0tik 127ra bitarteko General MIDI zenbaki bat da: --programa 52",
-        marcasSoloMusicXML: "--cifrados eta --analisis MusicXML eta MEIrako dira",
+        marcasSoloMusicXML: "--cifrados eta --analisis MusicXML, MEI, LilyPond eta ABCrako dira",
         faltaValor: { opcion in "--\(opcion) aukeraren balioa falta da" },
         tempoMalEscrito: "tempoa «--tempo 90» edo «--tempo 60 4.» idazten da",
         faltanNotasDeLaMelodia: { ejemplo, orden in "notak falta dira: " + ejemplo },
@@ -173,11 +194,11 @@ extension TextosDeCLI {
         ventanaSinArchivo: "--ventana --archivo-rekin doa",
         faltanAcordesDeLaProgresion: { ejemplo, orden in "akordeak falta dira: " + ejemplo },
         acordesConCifradosYAnalisis: "akordeek beti daramatzate zifratuak eta analisia",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: «melodia», «coral», «acordes» edo haien «arpegios» esportatzen da" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: «melodia», «coral», «acordes», haien «arpegios» edo «escala» bat esportatzen da" },
 
-        // ErrorDeUso+Trastes.swift
+        // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "instrumentua falta da: \(d)" },
-        instrumentoDesconocido: { nombre, lista in "instrumentu ezezaguna: «\(nombre)» (\(lista(.euskera)))" },
+        instrumentoDesconocido: { nombre, lista in "instrumentu ezezaguna: «\(nombre)» (\(lista(.euskeraPalabras)))" },
         faltaLimite: "hatz-jarrera kopurua falta da: --limite 5",
         limiteFueraDeRango: "muga 1etik 200era bitarteko zenbaki bat da: --limite 5",
         faltanDedos: "hatz kopurua falta da: --dedos 3",
@@ -188,17 +209,21 @@ extension TextosDeCLI {
         faltaEscalaDePosiciones: "eskala falta da: armonia posiciones Sol mayor",
         capoFueraDeRango: "capoa 0 eta 12 arteko zenbakia da: --capo 2",
 
-        // ErrorDeUso.swift
+        // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Probatu «armonia ayuda».",
         ordenDesconocida: { orden in "agindu ezezaguna: «\(orden)»" },
         opcionDesconocida: { opcion in "aukera ezezaguna: «\(opcion)»" },
-        idiomaDesconocido: { idioma in "hizkuntza ezezaguna: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el edo ru)" },
-        escrituraNoValida: { escritura in "idazkera baliogabea: «\(escritura)» (palabras/words, ascii edo unicode; es eta en-ekin bakarrik)" },
+        idiomaDesconocido: { idioma in "hizkuntza ezezaguna: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru edo hu)" },
+        terminalDesconocida: { t in "terminal ezezaguna: «\(t)» (bash, zsh edo fish)" },
+        escrituraNoValida: { escritura in "idazkera baliogabea: «\(escritura)» (palabras/words edo compacto/compact; ascii edo unicode, es eta en-ekin bakarrik)" },
 
         // Mensaje.swift
         mensajeNotas: "notak",
         mensajeAcordes: "akordeak",
+        mensajeMicrotonos: "mikrotonuak",
         mensajeEscalas: "eskalak",
+        mensajeHabituales: "ohikoak",
+        mensajeNingunaEscala: "ez dago horrelako eskalarik",
         mensajeArmadura: "armadura",
         mensajeRelativa: "erlatiboa",
         mensajeHomonima: "homonimoa",

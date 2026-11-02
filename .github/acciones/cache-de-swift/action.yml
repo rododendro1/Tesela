@@ -1,0 +1,40 @@
+name: Caché de .build
+description: >-
+  Recupera el .build de la última ejecución en main y deja las fechas de los ficheros de forma que Swift solo
+  recompile lo que ha cambiado desde entonces. Guardarlo es aparte (actions/cache/save con la `clave`), al final del
+  job, para guardar solo lo que ha compilado bien.
+inputs:
+  nombre:
+    description: Qué se guarda (el job y su matriz), para que cada uno tenga su caché.
+    required: true
+  rutas:
+    description: Las carpetas .build, una por línea, relativas a la raíz del repositorio.
+    required: true
+outputs:
+  clave:
+    description: La clave con que guardar la caché al acabar.
+    value: ${{ steps.clave.outputs.clave }}
+runs:
+  using: composite
+  steps:
+    - id: clave
+      shell: bash
+      env:
+        NOMBRE: ${{ inputs.nombre }}
+      run: |
+        # Con otro compilador (la imagen swift:6.2 cambia de 6.2.1 a 6.2.2) los módulos guardados no sirven.
+        compilador=$(swift --version 2>&1 | head -n 1 | sha1sum | cut -c1-10)
+        echo "prefijo=swift-$compilador-$NOMBRE-" >> "$GITHUB_OUTPUT"
+        echo "clave=swift-$compilador-$NOMBRE-$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+    - id: restaurar
+      uses: actions/cache/restore@v6
+      with:
+        path: ${{ inputs.rutas }}
+        key: ${{ steps.clave.outputs.clave }}
+        restore-keys: ${{ steps.clave.outputs.prefijo }}
+    - shell: bash
+      env:
+        RECUPERADA: ${{ steps.restaurar.outputs.cache-matched-key }}
+        PREFIJO: ${{ steps.clave.outputs.prefijo }}
+        RUTAS: ${{ inputs.rutas }}
+      run: bash "$GITHUB_ACTION_PATH/fechas.sh"

@@ -48,7 +48,7 @@ public struct TecladoIsomorfico: Hashable, Sendable {
 
     /// La tabla armónica (C-Thru AXiS), en las casillas de `TablaArmonica.coordenada(de:)`: hexágonos
     /// planos con la quinta justa hacia arriba, la tercera mayor arriba a la derecha y la tercera menor
-    /// arriba a la izquierda.
+    /// arriba a la izquierda. Es el preset 3 del Lumatone («Harmonic Mode»).
     public static let tablaArmonica = TecladoIsomorfico(
         nombre: "Tabla armónica", orientacion: .plana,
         semitonosEnQ: -3, semitonosEnR: -7)
@@ -60,7 +60,8 @@ public struct TecladoIsomorfico: Hashable, Sendable {
         semitonosEnQ: 2, semitonosEnR: -5)
 
     /// Jankó: hexágonos puntiagudos con un tono hacia la derecha y un semitono en las dos diagonales de
-    /// la derecha; cada fila es una escala de tonos enteros.
+    /// la derecha; cada fila es una escala de tonos enteros. En 12 notas es también Bosanquet-Wilson, el preset 1 del
+    /// Lumatone («Classic Mode», y el 4, «Multi-Instrumental Mode», con colores por canal).
     public static let janko = TecladoIsomorfico(
         nombre: "Jankó", orientacion: .puntiaguda,
         semitonosEnQ: 2, semitonosEnR: 1)
@@ -73,7 +74,8 @@ public struct TecladoIsomorfico: Hashable, Sendable {
         semitonosEnQ: -2, semitonosEnR: -7)
 
     /// Wicki-Hayden con hexágonos planos: la quinta justa hacia arriba, un tono arriba a la derecha y una cuarta
-    /// justa arriba a la izquierda. Es el mismo teclado girado, con las columnas de quintas en vertical.
+    /// justa arriba a la izquierda. Es el mismo teclado girado, con las columnas de quintas en vertical, y el preset 2
+    /// del Lumatone («Melodic Mode»).
     public static let wickiHaydenPlano = TecladoIsomorfico(
         nombre: "Wicki-Hayden (plano)", orientacion: .plana,
         semitonosEnQ: -5, semitonosEnR: -7)
@@ -105,6 +107,14 @@ public struct TecladoIsomorfico: Hashable, Sendable {
         nombre: "Park", orientacion: .puntiaguda,
         semitonosEnQ: 5, semitonosEnR: 2)
 
+    /// Los teclados con nombre, en el orden en que los ofrecen las apps: la tabla armónica, Wicki-Hayden, Jankó,
+    /// Wicki-Hayden en espejo y plano, los dos acordeones, Gerhard y Park. Un teclado nuevo va aquí y, si su nombre
+    /// se traduce, en `traduccion`.
+    public static let todos: [TecladoIsomorfico] = [
+        .tablaArmonica, .wickiHayden, .janko, .wickiHaydenEspejo, .wickiHaydenPlano, .acordeonC, .acordeonB, .gerhard,
+        .park,
+    ]
+
     /// El número MIDI de una casilla.
     public func midi(en casilla: CoordenadaAxial) -> Int {
         midiDelOrigen + semitonosEnQ * casilla.q + semitonosEnR * casilla.r
@@ -132,15 +142,16 @@ public struct TecladoIsomorfico: Hashable, Sendable {
         return DireccionHexagonal.allCases.first { $0.rumbo(orientacion) == rumbo }.map { semitonos(hacia: $0) }
     }
 
-    /// El teclado girado `pasos` veces 30° en sentido horario (en antihorario si son negativos).
+    /// El teclado girado `doceavos` veces 30° (un doceavo de vuelta) en sentido horario, en antihorario si son
+    /// negativos.
     ///
     /// Es el mismo teclado con otra colocación, como el `R` del UIL: cada giro de 60° reparte los mismos
     /// intervalos una dirección más allá, y uno de 30° además cambia la orientación de los hexágonos
     /// (de planos a puntiagudos o al revés). Doce giros dan la vuelta entera.
-    public func rotado(pasos: Int, nombre: String? = nil) -> TecladoIsomorfico {
-        let grados = modulo(pasos * 30, 360)
+    public func rotado(doceavos: Int, nombre: String? = nil) -> TecladoIsomorfico {
+        let grados = modulo(doceavos * 30, 360)
         if grados == 0 && nombre == nil { return self }
-        let nueva = pasos % 2 == 0 ? orientacion : orientacion.alternada
+        let nueva = doceavos % 2 == 0 ? orientacion : orientacion.alternada
         return derivado(nombre: nombre ?? "\(self.nombre) ↻\(grados)°", orientacion: nueva) { rumbo in
             self.semitonos(rumbo: rumbo - grados) ?? 0
         }
@@ -148,7 +159,7 @@ public struct TecladoIsomorfico: Hashable, Sendable {
 
     /// El teclado girado esos grados en sentido horario, o `nil` si no son un múltiplo de 30.
     public func rotado(grados: Int, nombre: String? = nil) -> TecladoIsomorfico? {
-        grados % 30 == 0 ? rotado(pasos: grados / 30, nombre: nombre) : nil
+        grados % 30 == 0 ? rotado(doceavos: grados / 30, nombre: nombre) : nil
     }
 
     /// El teclado reflejado como en un espejo vertical: lo que subía a la derecha sube a la izquierda.
@@ -189,7 +200,7 @@ public struct TecladoIsomorfico: Hashable, Sendable {
     /// negras del piano en gris y, si se dan, las `marcadas` en el azul de las notas del Tonnetz.
     public func svg(
         _ casillas: [CoordenadaAxial], marcadas: Set<Int> = [], tamano: Double = 24,
-        notacion: Notacion = .espanolUnicode, preferirBemoles: Bool = false
+        notacion: Notacion = .espanolCompacto, preferirBemoles: Bool = false
     ) -> String {
         let negras: Set<Int> = [1, 3, 6, 8, 10]
         return Trazado(orientacion: orientacion, tamano: tamano).svg(
@@ -201,7 +212,7 @@ public struct TecladoIsomorfico: Hashable, Sendable {
             },
             rotulo: { casilla in
                 let altura = self.altura(en: casilla, preferirBemoles: preferirBemoles)
-                return altura.nota.nombreCompacto(en: notacion) + "\(altura.octava)"
+                return altura.nombreCompacto(en: notacion)
             })
     }
 }
@@ -209,5 +220,36 @@ public struct TecladoIsomorfico: Hashable, Sendable {
 extension TecladoIsomorfico: CustomStringConvertible {
     public var description: String {
         "\(nombre): q \(semitonosEnQ >= 0 ? "+" : "")\(semitonosEnQ), r \(semitonosEnR >= 0 ? "+" : "")\(semitonosEnR)"
+    }
+}
+
+// MARK: - Idiomas
+//
+// Los nombres de los teclados en los quince idiomas de los textos. Los textos están en
+// `Textos/TextosDeRepresentaciones+Espanol.swift`, `…+Ingles.swift`…, un fichero por idioma.
+
+extension TecladoIsomorfico: Nombrable {
+    /// El nombre del teclado en el idioma de los textos: «Tabla armónica», «Harmonic table». Los nombres propios
+    /// (Wicki-Hayden, Jankó, Gerhard, Park) y los de un teclado que no es de los de `todos` no cambian.
+    public func nombre(en notacion: Notacion) -> String {
+        traduccion?.en(notacion) ?? nombre
+    }
+
+    /// El nombre en los quince idiomas; `nil` si es un nombre propio o el teclado no es de los de `todos`.
+    package var traduccion: Traduccion? {
+        switch self {
+        case .tablaArmonica:
+            return TextosDeRepresentaciones.traduccion(\.tablaArmonica)
+        case .wickiHaydenEspejo:
+            return TextosDeRepresentaciones.traduccion(\.wickiHaydenEspejo)
+        case .wickiHaydenPlano:
+            return TextosDeRepresentaciones.traduccion(\.wickiHaydenPlano)
+        case .acordeonC:
+            return TextosDeRepresentaciones.traduccion(\.acordeonC)
+        case .acordeonB:
+            return TextosDeRepresentaciones.traduccion(\.acordeonB)
+        default:
+            return nil
+        }
     }
 }

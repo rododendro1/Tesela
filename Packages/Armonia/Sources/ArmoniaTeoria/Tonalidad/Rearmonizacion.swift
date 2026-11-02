@@ -9,8 +9,8 @@ import ArmoniaNucleo
 ///     let propuestas = Tonalidad(.do).rearmonizaciones(de: progresion)
 ///     propuestas.first { $0.recurso == .sustitutoTritonal }?.acordes   // [Re♭7]
 ///
-/// Cada propuesta cambia un solo acorde, el de `posicion`, por `acordes` (uno, o dos si lo prepara su
-/// dominante); `aplicar(a:)` da la progresión con el cambio.
+/// Cada propuesta cambia un solo acorde, el de `posicion`, por `acordes` (uno; dos si lo prepara su
+/// dominante o es un backdoor; tres si lo prepara su ii–V); `aplicar(a:)` da la progresión con el cambio.
 public struct Rearmonizacion: Hashable, Sendable {
     /// El recurso armónico de la propuesta.
     public enum Recurso: String, CaseIterable, Hashable, Sendable {
@@ -24,6 +24,11 @@ public struct Rearmonizacion: Hashable, Sendable {
         case prestamoModal
         /// Otro acorde de la tonalidad con la misma función, a una tercera (Do → Lam, Fa → Rem, Sol → Si°).
         case sustitutoDiatonico
+        /// El acorde, precedido de su ii–V (Rem → Mim7 La7 Rem; a un acorde menor, con el iiø7: Lam → Siø7 Mi7
+        /// Lam). Solo para los acordes de la tonalidad que no son la tónica.
+        case iiV
+        /// La dominante por la puerta de atrás: en mayor, el V7 por iv7–♭VII7 (Sol7 → Fam7 Si♭7 en Do).
+        case backdoor
     }
 
     public let recurso: Recurso
@@ -31,7 +36,7 @@ public struct Rearmonizacion: Hashable, Sendable {
     public let posicion: Int
     /// El acorde que había.
     public let original: Acorde
-    /// Lo que va en su lugar: uno o dos acordes.
+    /// Lo que va en su lugar: de uno a tres acordes.
     public let acordes: [Acorde]
 
     public init(recurso: Recurso, posicion: Int, original: Acorde, acordes: [Acorde]) {
@@ -106,6 +111,22 @@ extension Tonalidad {
             proponer(.prestamoModal, [prestado])
             let sustituto = [1: 6, 2: 4, 3: 1, 4: 2, 5: 7, 6: 1, 7: 5][grado] ?? grado
             proponer(.sustitutoDiatonico, [self.acorde(grado: sustituto, cuatriada: cuatriada)])
+
+            // Su ii–V, a los acordes mayores y menores que no son la tónica (ni tienen ya su dominante delante).
+            if grado != 1, acorde.tipo.esMayor || acorde.tipo.esMenor, acorde.tipo.pasosDeQuinta.contains(1) {
+                let dominante = Acorde(acorde.fundamental + .quintaJusta, .dominanteSeptima)
+                let tipoDelII: TipoDeAcorde = acorde.tipo.esMenor ? .semidisminuido : .menorSeptima
+                let ii = Acorde(dominante.fundamental + .quintaJusta, tipoDelII)
+                let yaEsta = anterior.map { $0.fundamental == dominante.fundamental && $0.tipo.esMayor } ?? false
+                if !yaEsta { proponer(.iiV, [ii, dominante, acorde]) }
+            }
+
+            // Backdoor: el V7 de una tonalidad mayor por iv7–♭VII7.
+            if modo == .mayor, grado == 5, acorde.tipo == .dominanteSeptima {
+                proponer(
+                    .backdoor,
+                    [Acorde(tonica + .cuartaJusta, .menorSeptima), Acorde(tonica + .septimaMenor, .dominanteSeptima)])
+            }
         }
         return propuestas
     }
@@ -129,41 +150,24 @@ extension Tonalidad {
 
 // MARK: - Idiomas
 
-extension Rearmonizacion.Recurso {
+extension Rearmonizacion.Recurso: Nombrable {
     /// «sustituto tritonal», «tritone substitution», «Zwischendominante»…
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
-
-    public var nombre: String { nombre(en: .espanolUnicode) }
 
     private var traduccion: Traduccion {
         switch self {
         case .sustitutoTritonal:
-            return Traduccion(
-                "sustituto tritonal", "tritone substitution", ca: "substitut de trítò", gl: "substituto de trítono",
-                ast: "sustitutu tritonal", an: "sustituto tritonal", eu: "tritono-ordezkapena",
-                pt: "substituto de trítono", fr: "substitution tritonique", oc: "substitut de triton",
-                it: "sostituzione di tritono", de: "Tritonussubstitution", el: "τριτονική υποκατάσταση",
-                ru: "тритоновая замена")
+            return TextosDeTeoria.traduccion(\.sustitutoTritonal)
         case .dominanteSecundaria:
-            return Traduccion(
-                "dominante secundaria", "secondary dominant", ca: "dominant secundària", gl: "dominante secundaria",
-                ast: "dominante secundaria", an: "dominant secundaria", eu: "bigarren mailako dominantea",
-                pt: "dominante secundária", fr: "dominante secondaire", oc: "dominanta segondària",
-                it: "dominante secondaria", de: "Zwischendominante", el: "δευτερεύουσα δεσπόζουσα",
-                ru: "побочная доминанта")
+            return TextosDeTeoria.traduccion(\.dominanteSecundaria)
         case .prestamoModal:
-            return Traduccion(
-                "préstamo modal", "modal borrowing", ca: "manlleu modal", gl: "préstamo modal",
-                ast: "emprestu modal", an: "emprestamiento modal", eu: "mailegu modala", pt: "empréstimo modal",
-                fr: "emprunt modal", oc: "manlèu modal", it: "prestito modale", de: "modale Entlehnung",
-                el: "τροπικός δανεισμός", ru: "модальное заимствование")
+            return TextosDeTeoria.traduccion(\.prestamoModal)
         case .sustitutoDiatonico:
-            return Traduccion(
-                "sustituto diatónico", "diatonic substitution", ca: "substitut diatònic", gl: "substituto diatónico",
-                ast: "sustitutu diatónicu", an: "sustituto diatonico", eu: "ordezko diatonikoa",
-                pt: "substituto diatónico", fr: "substitution diatonique", oc: "substitut diatonic",
-                it: "sostituzione diatonica", de: "diatonische Substitution", el: "διατονική υποκατάσταση",
-                ru: "диатоническая замена")
+            return TextosDeTeoria.traduccion(\.sustitutoDiatonico)
+        case .iiV:
+            return TextosDeTeoria.traduccion(\.rearmonizacionIIV)
+        case .backdoor:
+            return TextosDeTeoria.traduccion(\.rearmonizacionBackdoor)
         }
     }
 }

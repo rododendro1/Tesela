@@ -4,13 +4,14 @@ import ArmoniaNucleo
 // MARK: - Textos de ArmoniaTeoria
 //
 // Un idioma por fichero: `TextosDeTeoria+Espanol.swift`, `TextosDeTeoria+Ingles.swift`… Cada uno da todos los
-// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los catorce y
+// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los quince y
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de ArmoniaTeoria en un idioma.
-struct TextosDeTeoria: Sendable {
+struct TextosDeTeoria: TextosTraducidos {
     // MARK: Acorde.swift
-    let conBajoEn: @Sendable (String) -> String
+    /// Un acorde en estado fundamental con otro bajo: «Do mayor, con bajo en Re», «C major over D».
+    let conBajoEn: @Sendable (_ acorde: String, _ bajo: String) -> String
     let nombresDeLasInversiones: [String]
     let inversionConNumero: String
 
@@ -108,14 +109,82 @@ struct TextosDeTeoria: Sendable {
     let cadenciaPlagal: String
     let cadenciaRota: String
     let semicadencia: String
+    let semicadenciaFrigia: String
+    let cadenciaPlagalMenor: String
 
     // MARK: RecorridoTonal.swift
     let deUnaTonalidadAOtra: @Sendable (String, String, Int) -> String
     let pivote: String
     let directa: String
 
-    /// Los textos en los catorce idiomas: `traducidos.map(\.campo)` es la `Traduccion` de un campo.
+    // MARK: Arpegio.swift
+    let arpegioDe: @Sendable (String) -> String
+    let patronAscendente: String
+    let patronDescendente: String
+    let patronIdaYVuelta: String
+    let patronAlberti: String
+    let patronQuebrado: String
+    let patronBajaYSube: String
+
+    // MARK: Escala+Acorde.swift
+    let papelNotaDelAcorde: String
+    let papelTensionDisponible: String
+    let papelNotaAEvitar: String
+    /// Una escala como modo de otra: «modo 2 de Do mayor», «mode 2 of C major».
+    let modoDe: @Sendable (_ modo: Int, _ escala: String) -> String
+
+    // MARK: NotaExtrana.swift
+    /// En el orden de `NotaExtrana.allCases`: nota de paso, bordadura, apoyatura, retardo, anticipación, escapada,
+    /// pedal y libre.
+    let nombresDeNotasExtranas: [String]
+
+    // MARK: EsquemaArmonico.swift
+    /// En el orden de `EsquemaArmonico.Tipo.allCases`.
+    let nombresDeEsquemas: [String]
+
+    // MARK: Rearmonizacion.swift
+    let sustitutoTritonal: String
+    let dominanteSecundaria: String
+    let prestamoModal: String
+    let sustitutoDiatonico: String
+    let rearmonizacionIIV: String
+    let rearmonizacionBackdoor: String
+
+    // MARK: ErrorDeLecturaDeTeoria.swift (acordes)
+    let simboloNoReconocido: @Sendable (String) -> String
+    let tensionNoValida: @Sendable (String) -> String
+    let numeroDeAcordeNoValido: @Sendable (Int) -> String
+    let numeroRepetido: @Sendable (Int) -> String
+    let disminuidoYSemidisminuido: String
+    let quintaConCalidad: String
+    let fundamentalNoOmitible: String
+    let gradoNoOmitible: @Sendable (Int) -> String
+    let faltaLaFundamental: String
+    let intervaloSinPapel: @Sendable (Intervalo, Notacion) -> String
+    let terceraMayorYMenor: String
+    let variasSeptimas: String
+    let septimaDisminuidaFueraDelDisminuido: String
+    let noEsPorTerceras: String
+    let bajoNoValido: @Sendable (String) -> String
+    let idiomasMezclados: @Sendable (String) -> String
+
+    // MARK: ErrorDeLecturaDeTeoria.swift (escalas)
+    let modoNoReconocido: @Sendable (String) -> String
+    let faltaElTipoDeEscala: String
+    let tipoDeEscalaNoReconocido: @Sendable (String) -> String
+
+    // MARK: ErrorDeLecturaDeTeoria.swift (coral)
+    let vocesDistintas: String
+
+    // MARK: Gramática (Acorde.swift, Tonalidad.swift)
+    /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».
+    let acordeSobre: @Sendable (_ tipo: String, _ raiz: String) -> String
+    /// «en Do mayor», «in C major», «в до мажоре», «do maiorrean».
+    let enLaTonalidad: @Sendable (String) -> String
+
+    /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// `Traduccion`.
     static let traducidos = Traducido<TextosDeTeoria>(
         espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
-        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso)
+        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
 }

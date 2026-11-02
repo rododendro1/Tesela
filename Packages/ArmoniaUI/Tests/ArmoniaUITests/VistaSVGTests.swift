@@ -1,22 +1,23 @@
 import Armonia
-import XCTest
+import Foundation
+import Testing
 
 @testable import ArmoniaUI
 
 #if canImport(SwiftUI) && canImport(WebKit)
-    final class VistaSVGTests: XCTestCase {
-        func testLaPaginaIncluyeElSVG() {
+    @Suite struct VistaSVGTests {
+        @Test func laPaginaIncluyeElSVG() {
             let pagina = VistaSVG.pagina("<svg id=\"dibujo\"></svg>")
-            XCTAssertTrue(pagina.contains("<svg id=\"dibujo\"></svg>"))
-            XCTAssertTrue(pagina.hasPrefix("<!doctype html>"))
-            XCTAssertTrue(pagina.contains("background:#fff"))
+            #expect(pagina.contains("<svg id=\"dibujo\"></svg>"))
+            #expect(pagina.hasPrefix("<!doctype html>"))
+            #expect(pagina.contains("background:#fff"))
         }
 
-        func testLaPaginaAdaptableSigueElModoDelSistema() {
+        @Test func laPaginaAdaptableSigueElModoDelSistema() {
             let pagina = VistaSVG.pagina("<svg></svg>", adaptable: true)
-            XCTAssertTrue(pagina.contains("color-scheme:light dark"))
-            XCTAssertTrue(pagina.contains("background:Canvas"))
-            XCTAssertFalse(pagina.contains("#fff"))
+            #expect(pagina.contains("color-scheme:light dark"))
+            #expect(pagina.contains("background:Canvas"))
+            #expect(!pagina.contains("#fff"))
         }
     }
 #endif

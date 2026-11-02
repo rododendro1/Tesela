@@ -33,14 +33,14 @@ public struct Acorde: Hashable, Sendable {
         try inicio.exigirContenido()
         // Primero se lee la fundamental en español; si el resto no es un cifrado válido,
         // se prueba con letras ("Faug" es F aumentado, no Fa seguido de "ug").
-        var primerError: ErrorDeLectura?
+        var primerError: (any ErrorAlLeer)?
         for espanol in [true, false] {
             var lector = inicio
             guard let (fundamental, idioma) = lector.leerNombreNotaConIdioma(espanol: espanol) else { continue }
             do {
                 self = try Acorde.leer(fundamental: fundamental, idioma: idioma, lector: lector)
                 return
-            } catch let error as ErrorDeLectura {
+            } catch let error as any ErrorAlLeer {
                 if primerError == nil { primerError = error }
             }
         }
@@ -113,19 +113,8 @@ public struct Acorde: Hashable, Sendable {
         let bajo = self.bajo.nombre(en: notacion)
         let tipo = self.tipo.nombre(en: notacion)
         // En alemán, griego y ruso el tipo va delante: "Dominantseptakkord auf G".
-        let cabeza: String
-        switch notacion.textos {
-        case .aleman: cabeza = "\(tipo) auf \(raiz)"
-        case .griego: cabeza = "\(tipo) στο \(raiz)"
-        case .ruso: cabeza = "\(tipo) от \(raiz)"
-        case .espanol, .ingles, .catalan, .gallego, .asturiano, .aragones, .euskera, .portugues, .frances,
-            .occitano, .italiano:
-            cabeza = "\(raiz) \(tipo)"
-        }
-        guard let i = inversion else {
-            if notacion.textos == .ingles { return "\(raiz) \(tipo) over \(bajo)" }
-            return "\(cabeza), " + TextosDeTeoria.traducidos.map { $0.conBajoEn(bajo) }.en(notacion)
-        }
+        let cabeza = TextosDeTeoria.en(notacion) { $0.acordeSobre(tipo, raiz) }
+        guard let i = inversion else { return TextosDeTeoria.en(notacion) { $0.conBajoEn(cabeza, bajo) } }
         return "\(cabeza), " + Acorde.nombreDeLaInversion(i, en: notacion)
     }
 
@@ -139,16 +128,16 @@ public struct Acorde: Hashable, Sendable {
     }
 
     /// Del estado fundamental a la sexta inversión.
-    private static let nombresDeLasInversiones = TextosDeTeoria.traducidos.map(\.nombresDeLasInversiones)
+    private static let nombresDeLasInversiones = TextosDeTeoria.traduccion(\.nombresDeLasInversiones)
 
     /// A partir de la séptima inversión, con el número en el sitio de `_`.
-    private static let inversionConNumero = TextosDeTeoria.traducidos.map(\.inversionConNumero)
+    private static let inversionConNumero = TextosDeTeoria.traduccion(\.inversionConNumero)
 
     /// "Do séptima de dominante, primera inversión".
     public var nombre: String {
         let detalle: String
         if let i = inversion {
-            detalle = Acorde.nombreDeLaInversion(i, en: .espanolUnicode)
+            detalle = Acorde.nombreDeLaInversion(i, en: .espanolCompacto)
         } else {
             detalle = "con bajo en \(bajo.nombre)"
         }

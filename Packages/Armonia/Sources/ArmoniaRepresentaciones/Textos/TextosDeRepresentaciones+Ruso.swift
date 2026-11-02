@@ -6,7 +6,7 @@ import ArmoniaNucleo
 
 extension TextosDeRepresentaciones {
     static let ruso = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "равномерная темперация",
         pitagorico: "пифагоров строй",
         mesotonico: "среднетоновый строй в ¼ коммы",
@@ -40,11 +40,24 @@ extension TextosDeRepresentaciones {
         cicloLR: "LR-цикл",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in Traduccion.pluralRuso(n, "полутон", "полутона", "полутонов") },
+        semitonos: { n in Idioma.ruso.contar(n, "полутон", "полутона", "полутонов") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "одноимённая",
         cambioDeSensible: "смена вводного тона",
-        relativa: "параллельная"
+        relativa: "параллельная",
+
+        // TecladoIsomorfico.swift
+        tablaArmonica: "Гармоническая таблица",
+        wickiHaydenEspejo: "Уикки-Хейден (зеркальный)",
+        wickiHaydenPlano: "Уикки-Хейден (плоский)",
+        acordeonC: "Аккордеон системы C",
+        acordeonB: "Аккордеон системы B",
+        // FormatoUIL.swift
+        uilNoValido: { texto in "Неверный UIL: «\(texto)». Ожидается L,G,D;R<градусы>[M], например 2,7,5;R30M." },
+        intervalosIncoherentes: { menor, mayor, diferencia in "Несогласованные интервалы: \(menor),\(mayor),\(diferencia). Должно выполняться 0 < L ≤ D и G = L + D." },
+        giroNoValido: { grados in "Поворот на \(grados)° не кратен 30°." },
+        afinacionNoSoportada: { tonos in "Рисуются только клавиатуры на 12 звуков, а не на \(tonos)." },
+        cizallaNoSoportada: { cizalla in "Сдвиг S\(cizalla) не поддерживается." }
     )
 }

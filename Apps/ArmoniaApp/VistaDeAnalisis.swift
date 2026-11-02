@@ -3,13 +3,14 @@ import ArmoniaUI
 import SwiftUI
 import UniformTypeIdentifiers
 
-/// Escribe una progresión (Do Fa Sol7 Do Lam Re7 Sol), o la saca de un fichero MIDI o MusicXML con «Abrir» (con su
-/// ritmo armónico, que siguen la partitura, el MIDI y «Escuchar» mientras no se retoque), y
+/// Escribe una progresión (Do Fa Sol7 Do Lam Re7 Sol), o la saca de un fichero MIDI, MusicXML, MEI o ABC con «Abrir»
+/// (con su ritmo armónico, que siguen la partitura, el MIDI y «Escuchar» mientras no se retoque), y
 /// muestra sus tonalidades, los grados, las funciones, las modulaciones y las cadencias, y la exporta como
 /// partitura o MIDI, también arpegiada. Mientras suena, se resalta el acorde que se oye. La progresión se puede
 /// llevar a otra tonalidad y rearmonizar acorde a acorde.
 struct VistaDeAnalisis: View {
     @Environment(\.notacion) private var notacion
+    @EnvironmentObject private var navegacion: Navegacion
     @State private var texto = "Do Fa Sol7 Do Lam Re7 Sol"
     /// El análisis de `texto`, que se rehace al cambiar el texto o la notación, no en cada redibujado.
     @State private var resultado: Result<AnalisisPresentado, Error>?
@@ -20,21 +21,23 @@ struct VistaDeAnalisis: View {
     @State private var importada: ProgresionImportada?
     @State private var patron = Arpegio.Patron.ascendente
     @State private var figura = Figura.corchea
+    /// La disposición de la progresión dispuesta (drop 2, shell…).
+    @State private var disposicion = DisposicionDeAcorde.drop2
     /// Lo que está sonando, para resaltar el acorde que se oye.
     @ObservedObject private var reproductor = Reproductor.compartido
 
     /// Las figuras que se ofrecen para las notas de la progresión arpegiada.
     private static let figuras: [Figura] = [.negra, .corchea, .semicorchea]
 
-    /// MIDI y MusicXML sin comprimir (.musicxml y .xml).
+    /// MIDI, MusicXML (.musicxml, .xml y .mxl), MEI y ABC.
     private static let tipos: [UTType] =
         [.midi, .xml]
         + ImportacionDeProgresion.extensiones.compactMap { UTType(filenameExtension: $0) }
 
     var body: some View {
         Form {
-            Section(notacion.texto(.progresion)) {
-                TextField(notacion.texto(.campoDeProgresion), text: $texto)
+            Section(notacion.texto(\.progresion)) {
+                TextField(notacion.texto(\.campoDeProgresion), text: $texto)
                     .comoCampoDeCifrado()
                 if let errorAlAbrir {
                     Text(notacion.mensaje(de: errorAlAbrir)).foregroundColor(.red)
@@ -42,7 +45,7 @@ struct VistaDeAnalisis: View {
             }
             switch resultado {
             case .some(.success(let analisis)):
-                Section(notacion.texto(.resultado)) {
+                Section(notacion.texto(\.resultado)) {
                     Text(analisis.titulo).font(.headline)
                     BotonDeEscuchar(analisis.sonido)
                 }
@@ -50,26 +53,30 @@ struct VistaDeAnalisis: View {
                 let sonando = reproductor.paso(de: analisis.sonido)
                 ForEach(Array(analisis.tramos.enumerated()), id: \.offset) { t, tramo in
                     let antes = analisis.tramos.prefix(t).map(\.filas.count).reduce(0, +)
-                    Section(tramo.cabecera ?? notacion.texto(.acordeAAcorde)) {
+                    Section(tramo.cabecera ?? notacion.texto(\.acordeAAcorde)) {
                         ForEach(Array(tramo.filas.enumerated()), id: \.offset) { i, fila in
-                            HStack {
-                                Text(fila.cifrado)
-                                    .font(.system(.body, design: .monospaced))
-                                    .frame(minWidth: 80, alignment: .leading)
-                                Text(fila.grado).bold()
-                                Spacer()
-                                Text(fila.funcion).foregroundColor(.secondary)
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Text(fila.cifrado)
+                                        .font(.system(.body, design: .monospaced))
+                                        .frame(minWidth: 80, alignment: .leading)
+                                    Text(fila.grado).bold()
+                                    Spacer()
+                                    Text(fila.funcion).foregroundColor(.secondary)
+                                }
+                                if let escala = fila.escala { escalaDelAcorde(escala) }
                             }
                             .listRowBackground(sonando == antes + i ? TemaDeLasApps.resaltado.opacity(0.25) : nil)
                         }
                     }
                 }
                 if !analisis.cadencias.isEmpty {
-                    Section(notacion.texto(.cadencias)) {
+                    Section(notacion.texto(\.cadencias)) {
                         ForEach(analisis.cadencias, id: \.self) { Text($0) }
                     }
                 }
                 arpegiar(analisis)
+                disponer(analisis)
                 rearmonizar(analisis)
             case .some(.failure(let error)):
                 Section {
@@ -79,14 +86,14 @@ struct VistaDeAnalisis: View {
                 EmptyView()
             }
         }
-        .navigationTitle(notacion.texto(.analisis))
+        .navigationTitle(notacion.texto(\.analisis))
         .selectorDeNotacionEnLaBarra()
         .toolbar {
             ToolbarItem {
                 Button {
                     abriendo = true
                 } label: {
-                    Label(notacion.texto(.abrir), systemImage: "folder")
+                    Label(notacion.texto(\.abrir), systemImage: "folder")
                 }
             }
             ToolbarItem {
@@ -115,7 +122,9 @@ struct VistaDeAnalisis: View {
     private var ficheros: [FicheroParaExportar] {
         guard let analisis = try? resultado?.get() else { return [] }
         let arpegiada = analisis.arpegiada(patron, figura: figura.duracion, notacion: notacion)
-        return analisis.ficheros + (arpegiada?.ficheros ?? [])
+        let dispuesta = PresentacionDeDisposiciones.progresion(
+            analisis.acordes, disposicion, notacion: notacion)
+        return analisis.ficheros + (arpegiada?.ficheros ?? []) + (dispuesta?.ficheros ?? [])
     }
 
     /// «Transponer»: las demás tonalidades del mismo modo. Lo abierto de un fichero conserva su ritmo armónico.
@@ -127,7 +136,7 @@ struct VistaDeAnalisis: View {
                     Button(destino.nombre(en: notacion)) { transponer(de: tonalidad, a: destino) }
                 }
             } label: {
-                Label(notacion.texto(.transponer), systemImage: "arrow.up.arrow.down")
+                Label(notacion.texto(\.transponer), systemImage: "arrow.up.arrow.down")
             }
         }
     }
@@ -148,16 +157,16 @@ struct VistaDeAnalisis: View {
     /// Otras armonías para cada acorde: cómo suena el pasaje con el cambio y el botón que lo pone en la progresión.
     @ViewBuilder
     private func rearmonizar(_ analisis: AnalisisPresentado) -> some View {
-        let propuestas = analisis.rearmonizaciones(notacion: notacion)
+        let propuestas = analisis.rearmonizaciones(en: notacion)
         if !propuestas.isEmpty {
-            Section(notacion.texto(.rearmonizar)) {
+            Section(notacion.texto(\.rearmonizar)) {
                 ForEach(propuestas, id: \.self) { propuesta in
                     HStack {
                         Text(propuesta.descripcion)
                         Spacer()
                         BotonDeEscuchar(propuesta.sonido)
                             .labelStyle(.iconOnly)
-                        Button(notacion.texto(.aplicar)) { texto = propuesta.texto }
+                        Button(notacion.texto(\.aplicar)) { texto = propuesta.texto }
                     }
                     // Cada botón por su lado, no la fila entera.
                     .buttonStyle(.borderless)
@@ -171,14 +180,60 @@ struct VistaDeAnalisis: View {
     @ViewBuilder
     private func arpegiar(_ analisis: AnalisisPresentado) -> some View {
         if let arpegiada = analisis.arpegiada(patron, figura: figura.duracion, notacion: notacion) {
-            Section(notacion.texto(.arpegiar)) {
-                Picker(notacion.texto(.patron), selection: $patron) {
+            Section(notacion.texto(\.arpegiar)) {
+                Picker(notacion.texto(\.patron), selection: $patron) {
                     ForEach(Arpegio.Patron.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
                 }
-                Picker(notacion.texto(.figura), selection: $figura) {
+                Picker(notacion.texto(\.figura), selection: $figura) {
                     ForEach(Self.figuras, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
                 }
                 BotonDeEscuchar(arpegiada.sonido)
+            }
+        }
+    }
+
+    /// La escala del acorde en su tonalidad, que se abre en la pestaña de escalas, con sus tensiones, sus notas a
+    /// evitar y sus estructuras superiores debajo.
+    @ViewBuilder
+    private func escalaDelAcorde(_ escala: EscalaSobreAcordePresentada) -> some View {
+        Button(escala.nombre) { navegacion.ver(escala.escala) }
+            .buttonStyle(.borderless)
+            .font(.callout)
+        if !escala.resumen.isEmpty {
+            Text(escala.resumen).font(.caption).foregroundColor(.secondary)
+        }
+        if !escala.estructurasSuperiores.isEmpty {
+            Text(notacion.texto(\.estructurasSuperiores) + ": " + escala.estructurasSuperiores)
+                .font(.caption).foregroundColor(.secondary)
+        }
+    }
+
+    /// La progresión dispuesta como en el piano o el jazz, con el menor movimiento de las voces de un acorde al
+    /// siguiente: cada acorde con sus alturas, el pentagrama y cómo suena. Mientras suena, se resalta el acorde.
+    @ViewBuilder
+    private func disponer(_ analisis: AnalisisPresentado) -> some View {
+        Section(notacion.texto(\.disposicion)) {
+            Picker(notacion.texto(\.disposicion), selection: $disposicion) {
+                ForEach(DisposicionDeAcorde.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
+            }
+            if let dispuesta = PresentacionDeDisposiciones.progresion(
+                analisis.acordes, disposicion, notacion: notacion)
+            {
+                let sonando = reproductor.paso(de: dispuesta.sonido)
+                DiagramaDePentagrama(dispuesta.pentagrama)
+                BotonDeEscuchar(dispuesta.sonido)
+                ForEach(Array(dispuesta.filas.enumerated()), id: \.offset) { i, fila in
+                    HStack {
+                        Text(fila.cifrado)
+                            .font(.system(.body, design: .monospaced))
+                            .frame(minWidth: 80, alignment: .leading)
+                        Spacer()
+                        Text(fila.voces).font(.system(.callout, design: .monospaced))
+                    }
+                    .listRowBackground(sonando == i ? TemaDeLasApps.resaltado.opacity(0.25) : nil)
+                }
+            } else {
+                Text(notacion.texto(\.noSeDibuja)).foregroundColor(.secondary)
             }
         }
     }

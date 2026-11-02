@@ -9,7 +9,7 @@ extension XCUIApplication {
     /// la prueba, y `@AppStorage` los lee como si estuvieran guardados.
     static func enEspanol() -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments += ["-notacionElegida", "espanolUnicode", "-temperamentoElegido", "igual"]
+        app.launchArguments += ["-notacionElegida", "espanolCompacto", "-temperamentoElegido", "igual"]
         app.launch()
         return app
     }

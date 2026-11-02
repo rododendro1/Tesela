@@ -22,20 +22,6 @@ extension TextosDePartitura {
         especieConElContrapuntoDebajo: { n in "\(n). espeziea, kontrapuntua cantus firmusaren azpian" },
         sinFaltas: "Akatsik gabe.",
 
-        // ArchivoMIDI.swift
-        pistaDeAcordes: "akordeak",
-        pistaDelBajo: "baxua",
-
-        // Importacion.swift
-        formatoDesconocido: "Fitxategia ez da MIDI ez MusicXML.",
-        musicXMLComprimido: "MusicXML konprimitua (.mxl) hondatuta dago edo ezin da irakurri: esportatu konprimitu gabe (.musicxml).",
-        midiDanado: "MIDI fitxategia hondatuta edo moztuta dago.",
-        midiConTiempoSMPTE: "MIDI fitxategiak SMPTE fotogrametan neurtzen du denbora, ez beltz bakoitzeko pultsutan.",
-        xmlDanado: { linea in "MusicXML fitxategia hondatuta dago (\(linea). lerroa)." },
-        noEsMusicXMLPorPartes: "XMLa ez da zatikako MusicXML partitura bat (score-partwise).",
-        sinNotas: "Fitxategiak ez du notarik.",
-        sinAcordes: "Fitxategian ez da akorderik entzuten.",
-
         // Duracion.swift
         cuadrada: "karratua",
         redonda: "biribila",
@@ -59,6 +45,42 @@ extension TextosDePartitura {
         claveDeDoEnPrimera: "do giltza lehen lerroan",
         claveDeDoEnSegunda: "do giltza bigarren lerroan",
         claveDeDoEnTercera: "do giltza hirugarren lerroan",
-        claveDeDoEnCuarta: "do giltza laugarren lerroan"
+        claveDeDoEnCuarta: "do giltza laugarren lerroan",
+        // Pentagrama.swift (InstrumentoDePartitura)
+        instrumentosPropiosEnIngles: false,
+        instrumentoPiano: "pianoa",
+        instrumentoFlauta: "flauta",
+        instrumentoFlautin: "pikoloa",
+        instrumentoFlautaEnSol: "sol flauta",
+        instrumentoOboe: "oboea",
+        instrumentoCornoIngles: "korno ingelesa",
+        instrumentoClarineteEnSib: "si♭ klarinetea",
+        instrumentoClarineteEnLa: "la klarinetea",
+        instrumentoClarineteEnMib: "mi♭ klarinetea",
+        instrumentoClarineteBajo: "klarinete baxua",
+        instrumentoFagot: "fagota",
+        instrumentoSaxofonSoprano: "saxofoi sopranoa",
+        instrumentoSaxofonAlto: "saxofoi altua",
+        instrumentoSaxofonTenor: "saxofoi tenorra",
+        instrumentoSaxofonBaritono: "saxofoi baritonoa",
+        instrumentoTrompetaEnSib: "si♭ tronpeta",
+        instrumentoTrompetaEnDo: "do tronpeta",
+        instrumentoFliscorno: "fliscornoa",
+        instrumentoTrompaEnFa: "fa tronpa",
+        instrumentoTrombon: "tronboia",
+        instrumentoTuba: "tuba",
+        instrumentoViolin: "biolina",
+        instrumentoViola: "biola",
+        instrumentoViolonchelo: "biolontxeloa",
+        instrumentoContrabajo: "kontrabaxua",
+        instrumentoGuitarra: "gitarra",
+        instrumentoBajoElectrico: "baxu elektrikoa",
+        instrumentoXilofono: "xilofonoa",
+        instrumentoGlockenspiel: "glockenspiela",
+        instrumentoCelesta: "zelesta",
+        // ErrorDeLecturaDePartitura.swift
+        duracionNoValida: { texto in "«\(texto)» ez da iraupen bat: figura bat espero zen (1, 2, 4, 8, 16…, puntuekin: 4.) edo biribilaren zatiki bat (3/8, 1/12)" },
+        compasNoValido: { texto in "«\(texto)» ez da konpas bat: zenbakitzailea/izendatzailea espero zen, izendatzailea 2ren berretura izanik (4/4, 6/8, 7/8), C edo ¢" },
+        contrapuntoDeOtraDuracion: { redondas in "kontrapuntuak cantus firmusak beste iraun behar du: \(redondas) biribil, nota bakoitzeko bat" }
     )
 }

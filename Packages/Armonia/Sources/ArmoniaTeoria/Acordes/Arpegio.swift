@@ -135,41 +135,31 @@ extension Acorde {
     }
 
     /// Las escalas sobre la fundamental del acorde que contienen todas sus notas (la relación acorde-escala del
-    /// jazz: Do7 → Do mixolidio…), de las de menos notas a las de más. Por defecto, entre las del catálogo
-    /// (`TipoDeEscala.todos`); las tensiones cuentan como la nota que son (la novena, como la segunda).
-    public func escalasCompatibles(entre tipos: [TipoDeEscala] = TipoDeEscala.todos) -> [Escala] {
-        let propias = notas
-        let compatibles = tipos.map { Escala(fundamental, $0) }.filter { escala in
-            propias.allSatisfy { escala.contiene($0) }
-        }
-        return compatibles.enumerated().sorted { a, b in
-            let (x, y) = (a.element.tipo.intervalos.count, b.element.tipo.intervalos.count)
-            return x != y ? x < y : a.offset < b.offset
-        }.map(\.element)
+    /// jazz: Do7 → Do mixolidio…), de las que tienen menos notas a evitar sobre el acorde
+    /// (``Escala/notasAEvitar(sobre:)``) a las que más y, a igualdad, en el orden de `tipos`. Por defecto, entre
+    /// las de ``TipoDeEscala/deJazz``: Do7(♯11) da primero Do lidio dominante, sin ninguna. Las tensiones cuentan
+    /// como la nota que son (la novena, como la segunda), y una nota escrita de otra forma vale (Fa♭ por Mi).
+    public func escalasCompatibles(entre tipos: [TipoDeEscala] = TipoDeEscala.deJazz) -> [Escala] {
+        let compatibles = tipos.map { Escala(fundamental, $0) }.filter { $0.contiene(acorde: self) }
+        let aEvitar = compatibles.map { $0.notasAEvitar(sobre: self).count }
+        return compatibles.indices.sorted { a, b in
+            aEvitar[a] != aEvitar[b] ? aEvitar[a] < aEvitar[b] : a < b
+        }.map { compatibles[$0] }
     }
 }
 
 // MARK: - Idiomas
 //
-// Nombres de los arpegios y de sus patrones en los catorce idiomas de los textos (`Traduccion`).
+// Nombres de los arpegios y de sus patrones en los quince idiomas, en `TextosDeTeoria`.
 
 // MARK: - Arpegio
 
-extension Arpegio {
+extension Arpegio: Nombrable {
     /// «Arpegio de Do mayor», «C major arpeggio», «Arpège de Do majeur», «C-Dur-Arpeggio», «Арпеджио до мажор».
     public func nombre(en notacion: Notacion) -> String {
         let acorde = self.acorde.nombre(en: notacion)
-        let plantilla = Traduccion(
-            "Arpegio de {}", "{} arpeggio", ca: "Arpegi de {}", gl: "Arpexo de {}",
-            ast: "Arpexu de {}", an: "Arpechio de {}", eu: "{} arpegioa",
-            pt: "Arpejo de {}", fr: "Arpège de {}", oc: "Arpegi de {}",
-            it: "Arpeggio di {}", de: "Arpeggio: {}",
-            el: "Αρπέζ {}", ru: "Арпеджио {}"
-        ).en(notacion)
-        return plantilla.replacingOccurrences(of: "{}", with: acorde)
+        return TextosDeTeoria.en(notacion) { $0.arpegioDe(acorde) }
     }
-
-    public var nombre: String { nombre(en: .espanolUnicode) }
 
     /// Lee «arpegio Dom7», «Dom7 arpeggio», «Arpège de Do» o solo el cifrado: se quitan las palabras «arpegio»
     /// (en cualquier idioma) y las preposiciones que las acompañan, y el resto es un cifrado de acorde.
@@ -179,10 +169,7 @@ extension Arpegio {
             "arpegio", "arpeggio", "arpegi", "arpexo", "arpexu", "arpechio", "arpegioa", "arpejo", "arpege",
             "αρπεζ", "арпеджио", "de", "di", "of", "d'",
         ]
-        func sinAcentos(_ s: String) -> String {
-            s.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: nil)
-        }
-        let resto = texto.split(separator: " ").filter { !palabras.contains(sinAcentos(String($0))) }
+        let resto = texto.split(separator: " ").filter { !palabras.contains(String($0).claveDeBusqueda) }
             .joined(separator: " ")
         self.init(try Acorde(leyendo: resto.isEmpty ? texto : resto))
     }
@@ -191,45 +178,42 @@ extension Arpegio {
 // MARK: - Patron
 
 extension Arpegio.Patron {
-    public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
+    /// Lee un patrón por su nombre en el código (`alberti`, `idaYVuelta`), con guiones o guiones bajos
+    /// (`ida-y-vuelta`), en inglés abreviado (`up`, `down`, `up-down`, `down-up`, `broken`) o como lo escribe
+    /// cualquiera de los quince idiomas («bajo de Alberti», «aller-retour»), sin mirar mayúsculas ni tildes.
+    public init?(leyendo texto: String) {
+        func clave(_ texto: String) -> String { texto.replacingOccurrences(of: "_", with: " ").claveDeBusqueda }
+        let buscado = clave(texto)
+        let abreviados: [String: Arpegio.Patron] = [
+            "ida y vuelta": .idaYVuelta, "up": .ascendente, "down": .descendente, "up down": .idaYVuelta,
+            "baja y sube": .bajaYSube, "down up": .bajaYSube, "broken": .quebrado,
+        ]
+        func esElBuscado(_ patron: Arpegio.Patron) -> Bool {
+            clave(patron.rawValue) == buscado
+                || Idioma.allCases.contains { clave(patron.nombre(en: .delIdioma($0))) == buscado }
+        }
+        guard let leido = abreviados[buscado] ?? Self.allCases.first(where: esElBuscado) else { return nil }
+        self = leido
+    }
+}
 
-    public var nombre: String { nombre(en: .espanolUnicode) }
+extension Arpegio.Patron: Nombrable {
+    public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
 
     private var traduccion: Traduccion {
         switch self {
         case .ascendente:
-            return Traduccion(
-                "ascendente", "ascending", ca: "ascendent", gl: "ascendente", ast: "ascendente",
-                an: "ascendent", eu: "igoera", pt: "ascendente", fr: "ascendant", oc: "ascendent",
-                it: "ascendente", de: "aufwärts", el: "ανιούσα", ru: "восходящий")
+            return TextosDeTeoria.traduccion(\.patronAscendente)
         case .descendente:
-            return Traduccion(
-                "descendente", "descending", ca: "descendent", gl: "descendente", ast: "descendente",
-                an: "descendent", eu: "jaitsiera", pt: "descendente", fr: "descendant", oc: "descendent",
-                it: "discendente", de: "abwärts", el: "κατιούσα", ru: "нисходящий")
+            return TextosDeTeoria.traduccion(\.patronDescendente)
         case .idaYVuelta:
-            return Traduccion(
-                "de ida y vuelta", "up and down", ca: "d'anada i tornada", gl: "de ida e volta",
-                ast: "d'ida y vuelta", an: "d'ida y tornada", eu: "joan-etorria", pt: "de ida e volta",
-                fr: "aller-retour", oc: "d'anada e de tornada", it: "andata e ritorno",
-                de: "auf und ab", el: "πάνω-κάτω", ru: "вверх и вниз")
+            return TextosDeTeoria.traduccion(\.patronIdaYVuelta)
         case .alberti:
-            return Traduccion(
-                "bajo de Alberti", "Alberti bass", ca: "baix d'Alberti", gl: "baixo de Alberti",
-                ast: "baxu d'Alberti", an: "baixo d'Alberti", eu: "Albertiren baxua",
-                pt: "baixo de Alberti", fr: "basse d'Alberti", oc: "bassa d'Alberti",
-                it: "basso albertino", de: "Albertibass", el: "μπάσο Alberti", ru: "альбертиев бас")
+            return TextosDeTeoria.traduccion(\.patronAlberti)
         case .quebrado:
-            return Traduccion(
-                "quebrado", "broken", ca: "trencat", gl: "quebrado", ast: "quebráu", an: "trencau",
-                eu: "hautsia", pt: "quebrado", fr: "brisé", oc: "trencat", it: "spezzato",
-                de: "gebrochen", el: "σπαστό", ru: "ломаный")
+            return TextosDeTeoria.traduccion(\.patronQuebrado)
         case .bajaYSube:
-            return Traduccion(
-                "de bajada y subida", "down and up", ca: "de baixada i pujada", gl: "de baixada e subida",
-                ast: "de baxada y subida", an: "de baixada y puyada", eu: "jaitsi-igoa",
-                pt: "de descida e subida", fr: "descente-montée", oc: "de davalada e de montada",
-                it: "discesa e salita", de: "ab und auf", el: "κάτω-πάνω", ru: "вниз и вверх")
+            return TextosDeTeoria.traduccion(\.patronBajaYSube)
         }
     }
 }

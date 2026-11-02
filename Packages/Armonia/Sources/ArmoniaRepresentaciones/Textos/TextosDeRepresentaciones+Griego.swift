@@ -1,11 +1,12 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaRepresentaciones en griego. Los campos y lo que significa cada uno están en
 // `TextosDeRepresentaciones.swift`.
 
 extension TextosDeRepresentaciones {
     static let griego = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "ίσος συγκερασμός",
         pitagorico: "πυθαγόρειο κούρδισμα",
         mesotonico: "μεσοτονικό ¼ κόμματος",
@@ -39,11 +40,24 @@ extension TextosDeRepresentaciones {
         cicloLR: "κύκλος LR",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in n == 1 ? "1 ημιτόνιο" : "\(n) ημιτόνια" },
+        semitonos: { n in Idioma.griego.contar(n, "ημιτόνιο", "ημιτόνια") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "ομώνυμη",
         cambioDeSensible: "αλλαγή προσαγωγέα",
-        relativa: "σχετική"
+        relativa: "σχετική",
+
+        // TecladoIsomorfico.swift
+        tablaArmonica: "Αρμονικός πίνακας",
+        wickiHaydenEspejo: "Wicki-Hayden (καθρέφτης)",
+        wickiHaydenPlano: "Wicki-Hayden (επίπεδο)",
+        acordeonC: "Ακορντεόν συστήματος C",
+        acordeonB: "Ακορντεόν συστήματος B",
+        // FormatoUIL.swift
+        uilNoValido: { texto in "Μη έγκυρο UIL: «\(texto)». Αναμένεται L,G,D;R<μοίρες>[M], για παράδειγμα 2,7,5;R30M." },
+        intervalosIncoherentes: { menor, mayor, diferencia in "Ασυνεπή διαστήματα: \(menor),\(mayor),\(diferencia). Πρέπει να ισχύει 0 < L ≤ D και G = L + D." },
+        giroNoValido: { grados in "Η περιστροφή των \(grados)° δεν είναι πολλαπλάσιο των 30°." },
+        afinacionNoSoportada: { tonos in "Σχεδιάζονται μόνο πληκτρολόγια 12 φθόγγων, όχι \(tonos)." },
+        cizallaNoSoportada: { cizalla in "Η διάτμηση S\(cizalla) δεν υποστηρίζεται." }
     )
 }

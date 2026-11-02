@@ -73,7 +73,7 @@ extension LineaDeComandos {
             "\(arpegio.nombre(en: notacion)) (\(arpegio.patron.nombre(en: notacion)))",
             "  \(t(.notas)): \(notas)",
         ]
-        // Las escalas del acorde, de las de menos notas a las de más; con ocho basta para orientarse.
+        // Las escalas del acorde, de las que tienen menos notas a evitar a las que más; con ocho basta para orientarse.
         let escalas = arpegio.acorde.escalasCompatibles()
         if !escalas.isEmpty {
             let nombres = escalas.prefix(8).map { $0.nombre(en: notacion) }.joined(separator: ", ")
@@ -82,26 +82,9 @@ extension LineaDeComandos {
         return lineas.joined(separator: "\n")
     }
 
-    /// El patrón de `--patron`: su nombre en el código (`alberti`, `idaYVuelta`), con guiones (`ida-y-vuelta`),
-    /// en inglés (`ascending`, `up-down`, `down-up`, `broken`) o como lo escribe cualquiera de los catorce idiomas
-    /// («bajo de Alberti»).
-    static func patronDeArpegio(_ texto: String) -> Arpegio.Patron? {
-        func plano(_ s: String) -> String {
-            s.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: nil)
-                .replacingOccurrences(of: "-", with: " ")
-                .replacingOccurrences(of: "_", with: " ")
-        }
-        let buscado = plano(texto)
-        let abreviados: [String: Arpegio.Patron] = [
-            "ida y vuelta": .idaYVuelta, "up": .ascendente, "down": .descendente, "up down": .idaYVuelta,
-            "baja y sube": .bajaYSube, "down up": .bajaYSube, "broken": .quebrado,
-        ]
-        if let patron = abreviados[buscado] { return patron }
-        return Arpegio.Patron.allCases.first { patron in
-            plano(patron.rawValue) == buscado
-                || Idioma.allCases.contains { plano(patron.nombre(en: .delIdioma($0))) == buscado }
-        }
-    }
+    /// El patrón de `--patron`, como lo lee `Arpegio.Patron(leyendo:)`: `alberti`, `ida-y-vuelta`, `up-down` o su
+    /// nombre en cualquiera de los quince idiomas («bajo de Alberti»).
+    static func patronDeArpegio(_ texto: String) -> Arpegio.Patron? { Arpegio.Patron(leyendo: texto) }
 
     static func intervalo(_ a: String, _ b: String, _ notacion: Notacion) throws -> String {
         let intervalo: Intervalo
@@ -114,12 +97,32 @@ extension LineaDeComandos {
         return "\(intervalo.nombre(en: notacion)) (\(intervalo.texto(en: notacion)), \(semitonos))"
     }
 
-    static func describir(escala: Escala, _ notacion: Notacion) -> String {
+    /// Con `conTodosSusAcordes` (`--acordes`), también los acordes que caben sobre cada grado, no solo los de
+    /// terceras.
+    static func describir(escala: Escala, conTodosSusAcordes: Bool = false, _ notacion: Notacion) -> String {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         var lineas = [
             escala.nombre(en: notacion),
             "  \(t(.notas)): " + escala.notas.map { $0.nombre(en: notacion) }.joined(separator: " "),
         ]
+        // De qué escala es modo: Re dórico → modo 2 de Do mayor.
+        if let modo = PresentacionDeEscalaYAcorde.modo(de: escala, notacion: notacion) { lineas.append("  " + modo) }
+        // La versión microtonal (Re Bayātī: Re Mi𝄳 Fa…) y los cents de cada grado, si la escala la tiene.
+        if let subida = escala.notasMicrotonales() {
+            let bajada = escala.notasMicrotonales(sentido: .descendente) ?? subida
+            func nombres(_ notas: [NotaMicrotonal]) -> String {
+                notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
+            }
+            func cents(_ notas: [NotaMicrotonal]) -> String {
+                notas.map { "\(Int($0.cents.rounded()))" }.joined(separator: " ")
+            }
+            lineas.append("  \(t(.microtonos)): " + nombres(subida))
+            lineas.append("  ¢: " + cents(subida))
+            if bajada != subida {
+                lineas.append("  \(t(.microtonos)) ↓: " + nombres(bajada))
+                lineas.append("  ¢ ↓: " + cents(bajada))
+            }
+        }
         // Los acordes de cada grado, si la escala es heptatónica y todos forman un acorde conocido.
         let acordes = escala.armonizar(cuatriadas: true).compactMap { $0 }
         let romanos = escala.cifradosRomanos(cuatriadas: true).compactMap { $0 }
@@ -127,7 +130,104 @@ extension LineaDeComandos {
             let pares = zip(romanos, acordes).map { "\($0) \($1.cifrado(en: notacion))" }
             lineas.append("  \(t(.acordes)): " + pares.joined(separator: " · "))
         }
+        let grados = conTodosSusAcordes ? PresentacionDeEscalaYAcorde.acordesQueCaben(escala, notacion: notacion) : []
+        if !grados.isEmpty {
+            lineas.append("  " + notacion.texto(\.acordesQueCaben) + ":")
+            lineas += grados.map { "    \($0.grado): \($0.cifrados)" }
+        }
         return lineas.joined(separator: "\n")
+    }
+
+    // MARK: Catálogo de escalas
+
+    /// Cómo se escribe cada tradición en `--tradicion`, con los nombres españoles y con los ingleses (se aceptan los
+    /// dos en cualquier idioma): `--tradicion mundo-arabe`, `--tradition arab-world`.
+    static let nombresDeLasTradiciones: [(tradicion: Tradicion, espanol: String, ingles: String)] = [
+        (.india, "india", "india"), (.grecia, "grecia", "greece"), (.greciaAntigua, "grecia-antigua", "ancient-greece"),
+        (.mundoArabe, "mundo-arabe", "arab-world"), (.persia, "persia", "persia"), (.turquia, "turquia", "turkey"),
+        (.azerbaiyan, "azerbaiyan", "azerbaijan"), (.china, "china", "china"), (.japon, "japon", "japan"),
+        (.corea, "corea", "korea"), (.etiopia, "etiopia", "ethiopia"), (.indonesia, "indonesia", "indonesia"),
+        (.klezmer, "klezmer", "klezmer"), (.andes, "andes", "andes"), (.bizancio, "bizancio", "byzantium"),
+    ]
+
+    /// Un texto para comparar nombres: sin mayúsculas, tildes, guiones ni espacios («Mundo árabe» → «mundoarabe»).
+    private static func claveDeBusqueda(_ texto: String) -> String {
+        texto.replacingOccurrences(of: "ı", with: "i")
+            .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil)
+            .filter { $0.isLetter || $0.isNumber }
+    }
+
+    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>]`: el catálogo de escalas, las habituales
+    /// y las de otras tradiciones agrupadas por tradición y categoría, cada una con sus notas desde Do (y la marca de
+    /// los microtonos, si los tiene). Un texto suelto busca en los nombres.
+    static func escalas(_ argumentos: [String], _ notacion: Notacion) -> ResultadoDeOrden {
+        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        var entrada = Argumentos(argumentos)
+        var tradicion: Tradicion?
+        switch entrada.quitarOpcion("--tradicion", "--tradición", "--tradition") {
+        case .ausente: break
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            let clave = claveDeBusqueda(texto)
+            guard
+                let encontrada = nombresDeLasTradiciones.first(where: {
+                    claveDeBusqueda($0.espanol) == clave || claveDeBusqueda($0.ingles) == clave
+                })
+            else { return uso(.tradicionDesconocida(texto), notacion) }
+            tradicion = encontrada.tradicion
+        }
+        var categoria: CategoriaTradicional?
+        switch entrada.quitarOpcion("--categoria", "--categoría", "--category") {
+        case .ausente: break
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            let clave = claveDeBusqueda(texto)
+            let nombres = { (candidata: CategoriaTradicional) in
+                [candidata.rawValue, candidata.nombre, candidata.nombre(en: notacion)].map(claveDeBusqueda)
+            }
+            guard let encontrada = CategoriaTradicional.allCases.first(where: { nombres($0).contains(clave) }) else {
+                return uso(.categoriaDesconocida(texto), notacion)
+            }
+            categoria = encontrada
+        }
+        if let opcion = entrada.opcionDesconocida { return uso(.opcionDesconocida(opcion), notacion) }
+        let buscado = claveDeBusqueda(entrada.unidos)
+        func cumple(_ tipo: TipoDeEscala) -> Bool {
+            buscado.isEmpty || claveDeBusqueda(tipo.nombre(en: notacion)).contains(buscado)
+                || claveDeBusqueda(tipo.nombre).contains(buscado)
+        }
+
+        // Los grupos, en el orden del catálogo: las habituales (si no se filtra por tradición ni por categoría) y,
+        // después, cada tradición con su categoría.
+        var grupos: [(titulo: String, tipos: [TipoDeEscala])] = []
+        if tradicion == nil && categoria == nil {
+            let habituales = TipoDeEscala.todos.filter(cumple)
+            if !habituales.isEmpty { grupos.append((t(.habituales), habituales)) }
+        }
+        for tipo in TipoDeEscala.tradicionales where cumple(tipo) {
+            guard let suya = tipo.tradicion, let deTipo = tipo.categoria else { continue }
+            guard tradicion == nil || tradicion == suya, categoria == nil || categoria == deTipo else { continue }
+            let nombres = nombresDeLasTradiciones.first(where: { $0.tradicion == suya })
+            let nombre = nombres.map { ejemplo($0.espanol, $0.ingles).en(notacion) } ?? suya.rawValue
+            let titulo = nombre + " · " + deTipo.nombre(en: notacion)
+            if let i = grupos.firstIndex(where: { $0.titulo == titulo }) {
+                grupos[i].tipos.append(tipo)
+            } else {
+                grupos.append((titulo, [tipo]))
+            }
+        }
+        guard !grupos.isEmpty else { return bien(t(.ningunaEscala)) }
+        var lineas: [String] = []
+        for grupo in grupos {
+            if !lineas.isEmpty { lineas.append("") }
+            lineas.append("\(grupo.titulo) (\(grupo.tipos.count))")
+            for tipo in grupo.tipos {
+                let notas = Escala(.do, tipo).notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
+                let microtonos = tipo.microtonal == nil ? "" : " · " + t(.microtonos)
+                lineas.append("  \(tipo.nombre(en: notacion)): \(notas)\(microtonos)")
+            }
+        }
+        return bien(lineas.joined(separator: "\n"))
     }
 
     static func describir(tonalidad: Tonalidad, _ notacion: Notacion) -> String {
@@ -152,6 +252,9 @@ extension LineaDeComandos {
 
     static func analizar(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var acordes = Argumentos(argumentos)
+        // Con --escalas, debajo de cada acorde, su escala con sus tensiones y sus notas a evitar. Se quita antes que
+        // la tonalidad, que se lleva todo lo que va detrás de --en.
+        let conEscalas = acordes.quitarMarca("--escalas", "--scales")
         guard let tonalidad = try acordes.quitarTonalidad() else { return uso(.faltaTonalidadTrasEn, notacion) }
         let archivo: String?
         switch acordes.quitarOpcion("--archivo", "--file") {
@@ -198,6 +301,14 @@ extension LineaDeComandos {
                 lineas.append(
                     "  " + fila.cifrado.padding(hasta: anchoDelCifrado) + fila.grado.padding(hasta: anchoDelGrado)
                         + funcion)
+                if conEscalas, let escala = fila.escala {
+                    let resumen = escala.resumen.isEmpty ? "" : " — " + escala.resumen
+                    lineas.append("    " + escala.nombre + resumen)
+                    if !escala.estructurasSuperiores.isEmpty {
+                        let etiqueta = notacion.texto(\.estructurasSuperiores)
+                        lineas.append("      " + etiqueta + ": " + escala.estructurasSuperiores)
+                    }
+                }
             }
         }
         lineas += analisis.cadencias

@@ -1,11 +1,12 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaRepresentaciones en asturiano. Los campos y lo que significa cada uno están en
 // `TextosDeRepresentaciones.swift`.
 
 extension TextosDeRepresentaciones {
     static let asturiano = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "temperamentu igual",
         pitagorico: "afinación pitagórica",
         mesotonico: "mesotónicu de ¼ de coma",
@@ -39,11 +40,24 @@ extension TextosDeRepresentaciones {
         cicloLR: "ciclu LR",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in n == 1 ? "1 semitonu" : "\(n) semitonos" },
+        semitonos: { n in Idioma.asturiano.contar(n, "semitonu", "semitonos") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "homónima",
         cambioDeSensible: "cambéu de sensible",
-        relativa: "relativa"
+        relativa: "relativa",
+
+        // TecladoIsomorfico.swift
+        tablaArmonica: "Tabla armónica",
+        wickiHaydenEspejo: "Wicki-Hayden (espeyu)",
+        wickiHaydenPlano: "Wicki-Hayden (planu)",
+        acordeonC: "Acordeón sistema C",
+        acordeonB: "Acordeón sistema B",
+        // FormatoUIL.swift
+        uilNoValido: { texto in "UIL non válidu: «\(texto)». Espérase L,G,D;R<graos>[M], por exemplu 2,7,5;R30M." },
+        intervalosIncoherentes: { menor, mayor, diferencia in "Intervalos incoherentes: \(menor),\(mayor),\(diferencia). Tienen de cumplir 0 < L ≤ D y G = L + D." },
+        giroNoValido: { grados in "El xiru de \(grados)° nun ye múltiplu de 30°." },
+        afinacionNoSoportada: { tonos in "Namás se dibuxen teclaos de 12 notes, non de \(tonos)." },
+        cizallaNoSoportada: { cizalla in "La cizalla S\(cizalla) nun ta soportada." }
     )
 }

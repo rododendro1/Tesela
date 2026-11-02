@@ -112,7 +112,7 @@ print(
 titulo("Notación internacional")
 let ejemploAcorde: Acorde = "Sib7(b9)/Re"
 print(
-    ejemploAcorde.cifrado(en: .inglesASCII), "·", ejemploAcorde.cifrado(estilo: .inglesUnicode), "·",
+    ejemploAcorde.cifrado(en: .inglesASCII), "·", ejemploAcorde.cifrado(estilo: .inglesCompacto), "·",
     ejemploAcorde.nombre(en: .inglesASCII))
 print(
     Intervalo.cuartaAumentada.abreviatura(en: .inglesASCII), "·", Intervalo.novenaMenor.nombre(en: .inglesASCII),
@@ -171,7 +171,7 @@ let afinaciones: [(String, any Afinacion)] = [
     ("igual", TemperamentoRegular.igual), ("pitagórico", TemperamentoRegular.pitagorico),
     ("mesotónico ¼", TemperamentoRegular.mesotonicoCuartoDeComa),
     ("31 divisiones", TemperamentoRegular.igual(divisiones: 31)),
-    ("justa en Do", EntonacionJusta(tonica: .do)),
+    ("justa en Do", AfinacionJusta(tonica: .do)),
 ]
 for (nombre, afinacion) in afinaciones {
     let notas: [Altura] = ["Do4", "Mi4", "Sol4", "La4", "Sol#4", "Lab4"]
@@ -242,7 +242,10 @@ for correspondencia in CorrespondenciaDeColores.allCases {
 }
 
 titulo("Otras lenguas")
-for notacion in [Notacion.aleman, .frances, .italiano, .catalan, .gallego, .euskera, .portugues] {
+for notacion in [
+    Notacion.alemanCompacto, .francesPalabras, .italianoPalabras, .catalanPalabras, .gallegoPalabras, .euskeraPalabras,
+    .portuguesPalabras,
+] {
     let notas = ["Do#", "Mib", "Sib", "Si"].map { Nota(texto: $0)!.nombre(en: notacion) }
     print(
         "  \(notacion):", notas.joined(separator: ", "), "·", Tonalidad("Fa# mayor").nombre(en: notacion),
@@ -253,7 +256,7 @@ titulo("Escalas de la India y dromoi griegos")
 for tipo in [TipoDeEscala.melakarta(15)!, .todi, .hitzaz, .houzam] {
     print("  \(Escala(.re, tipo).nombre):", Escala(.re, tipo).notas.map(\.nombre).joined(separator: " "))
 }
-print("  La escala mayor es el melakarta", TipoDeEscala.mayor.numeroDeMelakarta ?? 0)
+print("  La escala mayor es el mēḷa", TipoDeEscala.mayor.numeroDeMelakarta ?? 0)
 let rast = Escala(.re, .rast)
 print(
     "  \(rast.nombre): sube", rast.alturas(octava: 4).map(\.description).joined(separator: " "),
@@ -295,7 +298,7 @@ let nombrables: [any Nombrable] = [
     NombreDeGrado.sensible, Clave.doEnTercera, InstrumentoDePartitura.saxofonAlto,
 ]
 for valor in nombrables {
-    print("  \(valor.nombre(en: .espanolUnicode)) — \(valor.nombre(en: .inglesASCII))")
+    print("  \(valor.nombre(en: .espanolCompacto)) — \(valor.nombre(en: .inglesASCII))")
 }
 let textos: [any RepresentableComoTexto] = [Nota("Fa#"), Intervalo.septimaMenor, Acorde("Sib7(b9)/Re")]
 print("  En notación internacional:", textos.map { $0.texto(en: .inglesASCII) }.joined(separator: " · "))

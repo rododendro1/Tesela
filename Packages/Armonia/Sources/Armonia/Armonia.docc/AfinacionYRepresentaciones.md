@@ -9,11 +9,11 @@ TemperamentoRegular.igual                    // quinta de 700 cents
 TemperamentoRegular.pitagorico               // quintas puras
 TemperamentoRegular.mesotonicoCuartoDeComa   // terceras mayores puras
 TemperamentoRegular.igual(divisiones: 31)    // la octava dividida en 31 partes iguales
-EntonacionJusta(tonica: .do)                  // razones 1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8
+AfinacionJusta(tonica: .do)                  // razones 1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8
 Altura("Sol#4").frecuencia(en: TemperamentoRegular.mesotonicoCuartoDeComa)   // más grave que La♭4
 Intervalo.terceraMayor.razonJusta            // 5/4
 TemperamentoRegular.igual.cents(de: .terceraMayor)       // 400
-EntonacionJusta(tonica: .do).desviacion(de: "Mi4")        // −13,69 cents
+AfinacionJusta(tonica: .do).desviacion(de: "Mi4")        // −13,69 cents
 ```
 
 En un temperamento regular cada nota se afina con su coordenada de quintas:
@@ -32,19 +32,19 @@ let werckmeister = TemperamentoCircular.werckmeisterIII     // Do–Sol, Sol–R
 werckmeister.desviaciones[4]                                  // −9,78: Mi, respecto al temperamento igual
 werckmeister.frecuencia(de: "Sol#4") == werckmeister.frecuencia(de: "Lab4")   // true
 TemperamentoCircular.kirnbergerIII.cents(desde: "Do4", hasta: "Mi4")      // 386,31: la tercera pura
-TemperamentoCircular.vallotti.afinar(la4: 415).frecuencia(de: "La4")       // 415
+TemperamentoCircular.vallotti.afinar(frecuenciaDelLa4: 415).frecuencia(de: "La4")       // 415
 TemperamentoCircular(nombre: "mío", quintas: Array(repeating: 701, count: 12))   // nil: no cierra el círculo
 ```
 
-`Temperamento` reúne los más conocidos (igual, pitagórico, mesotónico de ¼ de coma, Werckmeister
+`AfinacionHistorica` reúne las afinaciones más conocidas (igual, pitagórico, mesotónico de ¼ de coma, Werckmeister
 III, Kirnberger III, Vallotti, Young y la afinación justa), con su nombre en cada idioma, para
-elegir uno; es lo que usa el botón «Escuchar» de las apps:
+elegir una; es lo que usa el botón «Escuchar» de las apps:
 
 ```swift
-Temperamento.allCases.count                                       // 8
-Temperamento.justa.afinacion(tonica: .re).desviacion(de: "Fa#4")    // −13,69
-Temperamento.mesotonico.distingueEnarmonicas                      // true
-Temperamento.vallotti.nombre(en: .ruso)                           // "Валлотти"
+AfinacionHistorica.allCases.count                                       // 8
+AfinacionHistorica.justa.afinacion(tonica: .re).desviacion(de: "Fa#4")    // −13,69
+AfinacionHistorica.mesotonico.distingueEnarmonicas                      // true
+AfinacionHistorica.vallotti.nombre(en: .rusoPalabras)                           // "Валлотти"
 ```
 
 ## Base 40, base 54 y base 600
@@ -196,9 +196,9 @@ Alternando dos transformaciones se vuelve a la tríada de partida (`CicloNeorrie
 - **octatónico** (P, R): ocho, con las de una octatónica;
 - **LR** (L, R): las veinticuatro tríadas mayores y menores, avanzando por quintas.
 
-Con ortografía, un ciclo no se cierra: seis pasos del hexatónico llevan de Do a Re♭♭. Por eso
+Con ortografía, un ciclo no se cierra: seis pasos del hexatónico llevan de Do a Re𝄫. Por eso
 `Acorde.ciclo(_:)` escribe cada tríada con su enarmónica cuando esta evita dobles alteraciones o
-lleva al menos dos alteraciones menos (Mi y no Fa♭; Fa♯m y no Sol♭m, que tiene Si♭♭; pero La♭m
+lleva al menos dos alteraciones menos (Mi y no Fa♭; Fa♯m y no Sol♭m, que tiene Si𝄫; pero La♭m
 sigue siendo La♭m), y termina en la tríada de partida.
 
 ```swift
@@ -306,7 +306,10 @@ Gerhard y Park, y admite cualquier otro con los semitonos de cada eje. Los tres 
 teclado: 7, 4 y 3 (tabla armónica), 2, 5 y 7 (Wicki-Hayden), 3, 2 y 1 (acordeón cromático), 2, 1 y 1 (Jankó), 4, 3 y 1
 (Gerhard, con la escala cromática en cada columna) o 5, 3 y 2 (Park, con la cuarta en horizontal). Bosanquet-Wilson,
 en 12 notas, es el mismo teclado que Jankó: el tono en horizontal y los dos semitonos, que aquí valen lo mismo, en las
-diagonales.
+diagonales. Los tres presets de 12 notas del Lumatone son de aquí: el 1 («Classic Mode», Bosanquet-Wilson) es
+``TecladoIsomorfico/janko``, el 2 («Melodic Mode») es ``TecladoIsomorfico/wickiHaydenPlano`` y el 3 («Harmonic Mode»)
+es ``TecladoIsomorfico/tablaArmonica``. Cambia la forma del instrumento, con las teclas inclinadas y varios manuales
+repetidos por canales MIDI, pero no los intervalos.
 
 ```swift
 import Hexagonos

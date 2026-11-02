@@ -1,11 +1,12 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaRepresentaciones en francés. Los campos y lo que significa cada uno están en
 // `TextosDeRepresentaciones.swift`.
 
 extension TextosDeRepresentaciones {
     static let frances = TextosDeRepresentaciones(
-        // Temperamento.swift
+        // AfinacionHistorica.swift
         temperamentoIgual: "tempérament égal",
         pitagorico: "accord pythagoricien",
         mesotonico: "mésotonique au quart de comma",
@@ -39,11 +40,24 @@ extension TextosDeRepresentaciones {
         cicloLR: "cycle LR",
 
         // ConduccionParsimoniosa.swift
-        semitonos: { n in n == 1 ? "1 demi-ton" : "\(n) demi-tons" },
+        semitonos: { n in Idioma.frances.contar(n, "demi-ton", "demi-tons") },
 
         // TransformacionNeorriemanniana.swift
         homonima: "homonyme",
         cambioDeSensible: "échange de sensible",
-        relativa: "relative"
+        relativa: "relative",
+
+        // TecladoIsomorfico.swift
+        tablaArmonica: "Table harmonique",
+        wickiHaydenEspejo: "Wicki-Hayden (miroir)",
+        wickiHaydenPlano: "Wicki-Hayden (plat)",
+        acordeonC: "Accordéon système C",
+        acordeonB: "Accordéon système B",
+        // FormatoUIL.swift
+        uilNoValido: { texto in "UIL non valide : « \(texto) ». On attend L,G,D;R<degrés>[M], par exemple 2,7,5;R30M." },
+        intervalosIncoherentes: { menor, mayor, diferencia in "Intervalles incohérents : \(menor),\(mayor),\(diferencia). Ils doivent vérifier 0 < L ≤ D et G = L + D." },
+        giroNoValido: { grados in "Une rotation de \(grados)° n'est pas un multiple de 30°." },
+        afinacionNoSoportada: { tonos in "Seuls les claviers à 12 notes se dessinent, pas à \(tonos)." },
+        cizallaNoSoportada: { cizalla in "Le cisaillement S\(cizalla) n'est pas pris en charge." }
     )
 }

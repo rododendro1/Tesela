@@ -37,7 +37,7 @@ public struct AcordePivote: Hashable, Sendable, CustomStringConvertible {
     public var acorde: Acorde { enLaDePartida.acorde }
 
     /// "Lam = vi en Do mayor = ii en Sol mayor".
-    public var description: String { descripcion(en: .espanolUnicode) }
+    public var description: String { descripcion(en: .espanolCompacto) }
 
     public func descripcion(en notacion: Notacion) -> String {
         acorde.cifrado(en: notacion)
@@ -59,19 +59,19 @@ public struct Modulacion: Hashable, Sendable, CustomStringConvertible {
     public let pivote: AcordePivote?
 
     /// "De Do mayor a Sol mayor en el acorde 5 (pivote: Lam = vi en Do mayor = ii en Sol mayor)".
-    public var description: String { descripcion(en: .espanolUnicode) }
+    public var description: String { descripcion(en: .espanolCompacto) }
 
     public func descripcion(en notacion: Notacion) -> String {
         let de = self.desde.nombre(en: notacion)
         let a = self.hasta.nombre(en: notacion)
         let n = acorde + 1
-        var texto = TextosDeTeoria.traducidos.map { $0.deUnaTonalidadAOtra(de, a, n) }.en(notacion)
+        var texto = TextosDeTeoria.en(notacion) { $0.deUnaTonalidadAOtra(de, a, n) }
         if let pivote {
             texto +=
-                " (" + TextosDeTeoria.traducidos.map(\.pivote).en(notacion)
+                " (" + TextosDeTeoria.en(notacion, \.pivote)
                 + ": " + pivote.descripcion(en: notacion) + ")"
         } else {
-            texto += TextosDeTeoria.traducidos.map(\.directa).en(notacion)
+            texto += TextosDeTeoria.en(notacion, \.directa)
         }
         return texto
     }
@@ -123,7 +123,7 @@ public struct RecorridoTonal: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// "I–IV–V7–I en Do mayor → ii–V7–I en Sol mayor".
-    public var description: String { nombre(en: .espanolUnicode) }
+    public var description: String { nombre(en: .espanolCompacto) }
 
     public func nombre(en notacion: Notacion) -> String {
         tramos.map { $0.analisis.nombre(en: notacion) }.joined(separator: " → ")
@@ -131,7 +131,10 @@ public struct RecorridoTonal: Hashable, Sendable, CustomStringConvertible {
 
     /// Lee una progresión como ``AnalisisArmonico/analizar(leyendo:en:)`` y busca sus modulaciones.
     public init(leyendo texto: String) throws {
-        self = RecorridoTonal(try AnalisisArmonico.leerAcordes(texto))!
+        guard let recorrido = RecorridoTonal(try AnalisisArmonico.leerAcordes(texto)) else {
+            throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio)
+        }
+        self = recorrido
     }
 
     /// `nil` si no hay acordes.

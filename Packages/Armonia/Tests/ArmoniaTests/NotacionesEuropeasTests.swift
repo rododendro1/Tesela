@@ -1,14 +1,16 @@
-import XCTest
+import Foundation
+import Testing
 
 @testable import Armonia
 @testable import ArmoniaNucleo
 @testable import ArmoniaPartitura
 @testable import ArmoniaRepresentaciones
 @testable import ArmoniaTeoria
+@testable import ArmoniaTrastes
 
-/// Las notaciones y los textos en alemán, francés, italiano, occitano, griego y ruso.
-final class NotacionesEuropeasTests: XCTestCase {
-    func testAleman() {
+/// Las notaciones y los textos en alemán, húngaro, francés, italiano, occitano, griego y ruso.
+@Suite struct NotacionesEuropeasTests {
+    @Test func aleman() throws {
         let casos: [(String, String)] = [
             ("Do", "C"), ("Fa#", "Fis"), ("Dob", "Ces"), ("Mib", "Es"), ("Mibb", "Eses"),
             ("Lab", "As"), ("Labb", "Asas"), ("Sib", "B"), ("Sibb", "Heses"), ("Si", "H"),
@@ -16,122 +18,215 @@ final class NotacionesEuropeasTests: XCTestCase {
         ]
         for (espanol, aleman) in casos {
             let nombre = Nota(texto: espanol)!
-            XCTAssertEqual(nombre.nombre(en: .aleman), aleman, espanol)
-            XCTAssertEqual(try Nota(leyendo: aleman, en: .aleman), nombre, aleman)
+            #expect(nombre.nombre(en: .alemanCompacto) == aleman, Comment(rawValue: espanol))
+            #expect(nombre.nombreCompacto(en: .alemanPalabras) == aleman, Comment(rawValue: espanol))
+            #expect(try (Nota(leyendo: aleman, en: .alemanCompacto)) == nombre, Comment(rawValue: aleman))
+            #expect(try (Nota(leyendo: aleman, en: .alemanPalabras)) == nombre, Comment(rawValue: aleman))
+            let conPalabras = nombre.nombre(en: .alemanPalabras)
+            #expect(try (Nota(leyendo: conPalabras, en: .alemanPalabras)) == nombre, Comment(rawValue: conPalabras))
+            #expect(try (Nota(leyendo: conPalabras, en: .alemanCompacto)) == nombre, Comment(rawValue: conPalabras))
         }
-        XCTAssertEqual(try Nota(leyendo: "fis", en: .aleman), Nota("Fa#"))
-        XCTAssertEqual(Altura("Fa#4").nombre(en: .aleman), "Fis4")
-        XCTAssertEqual(try Altura(leyendo: "B3", en: .aleman), Altura("Sib3"))
-        XCTAssertEqual(Acorde("Sib7").cifrado(en: .aleman), "B7")
-        XCTAssertEqual(Acorde("Sim7").cifrado(en: .aleman), "Hm7")
-        XCTAssertEqual(Acorde("Fa#7(b9)").cifrado(en: .aleman), "Fis7(b9)")
-        XCTAssertEqual(Tonalidad("Fa# mayor").nombre(en: .aleman), "Fis-Dur")
-        XCTAssertEqual(Tonalidad("La menor").nombre(en: .aleman), "a-Moll")
-        XCTAssertEqual(Tonalidad("Sib mayor").nombre(en: .aleman), "B-Dur")
-        XCTAssertEqual(Tonalidad("Fis-Dur"), Tonalidad("Fa# mayor"))
-        XCTAssertEqual(Tonalidad("es-Moll"), Tonalidad("Mib menor"))
-        XCTAssertEqual(Alteracion(2).nombre(en: .aleman), "Doppelkreuz")
-        XCTAssertEqual(Alteracion(-1).nombre(en: .aleman), "Be")
-        XCTAssertThrowsError(try Nota(leyendo: "Xis", en: .aleman))
+        #expect(try (Nota(leyendo: "fis", en: .alemanCompacto)) == Nota("Fa#"))
+        #expect(Altura("Fa#4").nombre(en: .alemanCompacto) == "Fis₄")
+        #expect(Altura("Fa#4").nombre(en: .alemanCompacto.conOctavas(.cifras)) == "Fis4")
+        #expect(try (Altura(leyendo: "B3", en: .alemanCompacto)) == Altura("Sib3"))
+        #expect(try (Altura(leyendo: "Fis₄", en: .alemanCompacto)) == Altura("Fa#4"))
+        // Con palabras: la letra y «Kreuz» o «Be», como «Fa sostenido».
+        #expect(Nota("Fa#").nombre(en: .alemanPalabras) == "F Kreuz")
+        // El Si♭ es B también con palabras, y «H Be» se sigue leyendo.
+        #expect(Nota("Sib").nombre(en: .alemanPalabras) == "B")
+        #expect(Nota("Sibb").nombre(en: .alemanPalabras) == "H Doppel-Be")
+        #expect(try (Nota(leyendo: "H Be", en: .alemanPalabras)) == Nota("Sib"))
+        #expect(Altura("Sib3").nombre(en: .alemanPalabras) == "B3")
+        #expect(Nota("Mibb").nombre(en: .alemanPalabras) == "E Doppel-Be")
+        #expect(Nota("Do").nombre(en: .alemanPalabras) == "C")
+        #expect(Altura("Fa#4").nombre(en: .alemanPalabras) == "F Kreuz 4")
+        #expect(try (Altura(leyendo: "F Kreuz 4", en: .alemanPalabras)) == Altura("Fa#4"))
+        #expect(Tonalidad("Fa# mayor").nombre(en: .alemanCompacto) == "Fis-Dur")
+        #expect(Escala("Fa# dórico").nombre(en: .alemanCompacto) == "Fis dorisch")
+        #expect(Acorde("Sib7").cifrado(en: .alemanPalabras) == "B7")
+        #expect(Acorde("Sim7").cifrado(en: .alemanPalabras) == "Hm7")
+        #expect(Acorde("Fa#7(b9)").cifrado(en: .alemanPalabras) == "Fis7(b9)")
+        #expect(Tonalidad("Fa# mayor").nombre(en: .alemanPalabras) == "Fis-Dur")
+        #expect(Tonalidad("La menor").nombre(en: .alemanPalabras) == "a-Moll")
+        #expect(Tonalidad("Sib mayor").nombre(en: .alemanPalabras) == "B-Dur")
+        #expect(Tonalidad("Fis-Dur") == Tonalidad("Fa# mayor"))
+        #expect(Tonalidad("es-Moll") == Tonalidad("Mib menor"))
+        #expect(Alteracion(2).nombre(en: .alemanPalabras) == "Doppelkreuz")
+        #expect(Alteracion(-1).nombre(en: .alemanPalabras) == "Be")
+        #expect(throws: (any Error).self) { try Nota(leyendo: "Xis", en: .alemanPalabras) }
     }
 
-    func testFrancesEItaliano() {
-        XCTAssertEqual(Nota("Re").nombre(en: .frances), "ré")
-        XCTAssertEqual(Nota("Mib").nombre(en: .frances), "mi bémol")
-        XCTAssertEqual(Nota("Fa#").nombre(en: .frances), "fa dièse")
-        XCTAssertEqual(Nota("Dox").nombre(en: .frances), "do double dièse")
-        XCTAssertEqual(Nota("Mib").nombre(en: .italiano), "mi bemolle")
-        XCTAssertEqual(Nota("Re#").nombre(en: .italiano), "re diesis")
-        XCTAssertEqual(Nota("Sibb").nombre(en: .italiano), "si doppio bemolle")
-        XCTAssertEqual(Nota("Reb").nombreCompacto(en: .frances), "Ré♭")
-        XCTAssertEqual(Nota("Reb").nombreCompacto(en: .italiano), "Re♭")
-        XCTAssertEqual(Altura("Fa#3").nombre(en: .frances), "fa dièse 3")
-        XCTAssertEqual(Altura("Re4").nombre(en: .frances), "ré4")
-        XCTAssertEqual(try Altura(leyendo: "fa dièse 3", en: .frances), Altura("Fa#3"))
-        XCTAssertEqual(try Altura(leyendo: "re diesis 5", en: .italiano), Altura("Re#5"))
-        XCTAssertEqual(try Nota(leyendo: "RE BEMOL", en: .frances), Nota("Reb"))
-        XCTAssertEqual(try Nota(leyendo: "Ré♭", en: .frances), Nota("Reb"))
-        XCTAssertEqual(Acorde("Fa#m7").cifrado(en: .frances), "Fa♯m7")
-        XCTAssertEqual(Acorde("Rebmaj7").cifrado(en: .frances), "Ré♭maj7")
-        XCTAssertEqual(Tonalidad("Reb mayor").nombre(en: .frances), "ré bémol majeur")
-        XCTAssertEqual(Tonalidad("Fa# menor").nombre(en: .italiano), "fa diesis minore")
-        XCTAssertEqual(Tonalidad("ré bémol majeur"), Tonalidad("Reb mayor"))
-        XCTAssertEqual(Tonalidad("la minore"), Tonalidad("La menor"))
-        XCTAssertEqual(Alteracion(-2).nombre(en: .frances), "double bémol")
-        XCTAssertEqual(Alteracion(1).nombre(en: .italiano), "diesis")
-        XCTAssertEqual(Alteracion.natural.nombre(en: .italiano), "bequadro")
-        XCTAssertEqual(Alteracion("bémol"), .bemol)
-        XCTAssertEqual(Alteracion("doppio diesis"), .dobleSostenido)
+    /// El húngaro escribe las notas como el alemán, con «isz» y «esz»: Fisz, Esz, Asz, B, H.
+    @Test func hungaro() throws {
+        let casos: [(String, String)] = [
+            ("Do", "C"), ("Fa#", "Fisz"), ("Dob", "Cesz"), ("Mib", "Esz"), ("Mibb", "Eszesz"),
+            ("Lab", "Asz"), ("Labb", "Aszasz"), ("Sib", "B"), ("Sibb", "Heszesz"), ("Si", "H"),
+            ("Si#", "Hisz"), ("Rex", "Diszisz"), ("Solb", "Gesz"),
+        ]
+        for (espanol, hungaro) in casos {
+            let nombre = Nota(texto: espanol)!
+            #expect(nombre.nombre(en: .hungaroCompacto) == hungaro, Comment(rawValue: espanol))
+            #expect(try (Nota(leyendo: hungaro, en: .hungaroCompacto)) == nombre, Comment(rawValue: hungaro))
+        }
+        // Con palabras, como el alemán: los cifrados y las tonalidades siguen a la alemana, y se leen las dos formas.
+        #expect(Nota("Fa#").nombre(en: .hungaroPalabras) == "F kereszt")
+        #expect(Nota("Sib").nombre(en: .hungaroPalabras) == "H bé")
+        #expect(Acorde("Fa#7").cifrado(en: .hungaroPalabras) == "Fisz7")
+        #expect(Tonalidad("Fa# mayor").nombre(en: .hungaroPalabras) == "Fisz-dúr")
+        #expect(try (Nota(leyendo: "Fisz", en: .hungaroPalabras)) == Nota("Fa#"))
+        #expect(try (Nota(leyendo: "F kereszt", en: .hungaroCompacto)) == Nota("Fa#"))
+        #expect(Notacion.delIdioma(.hungaro) == .hungaroCompacto)
+        // El alemán no cambia.
+        #expect(Nota("Mibb").nombreAleman == "Eses")
+        #expect(try (Nota(leyendo: "fisz", en: .hungaroCompacto)) == Nota("Fa#"))
+        #expect(Altura("Fa#4").nombre(en: .hungaroCompacto) == "Fisz₄")
+        #expect(try (Altura(leyendo: "B3", en: .hungaroCompacto)) == Altura("Sib3"))
+        #expect(Acorde("Sib7").cifrado(en: .hungaroCompacto) == "B7")
+        #expect(Acorde("Sim7").cifrado(en: .hungaroCompacto) == "Hm7")
+        #expect(Acorde("Fa#7").cifrado(en: .hungaroCompacto) == "Fisz7")
+        #expect(Tonalidad("Fa# mayor").nombre(en: .hungaroCompacto) == "Fisz-dúr")
+        #expect(Tonalidad("La menor").nombre(en: .hungaroCompacto) == "a-moll")
+        #expect(Tonalidad("Mib menor").nombre(en: .hungaroCompacto) == "esz-moll")
+        #expect(Tonalidad("Fisz-dúr") == Tonalidad("Fa# mayor"))
+        #expect(Tonalidad("esz-moll") == Tonalidad("Mib menor"))
+        #expect(Escala("Re dórico").nombre(en: .hungaroCompacto) == "D dór")
+        #expect(Escala("Fisz dór") == Escala("Fa# dórico"))
+        #expect(Escala("A összhangzatos moll") == Escala("La menor armónica"))
+        #expect(Alteracion(1).nombre(en: .hungaroPalabras) == "kereszt")
+        #expect(Alteracion(-2).nombre(en: .hungaroPalabras) == "kettős bé")
+        #expect(Idioma(codigo: "hu-HU") == .hungaro)
+        #expect(Idioma(nombre: "magyar") == .hungaro)
+        #expect(Idioma(nombre: "húngaro") == .hungaro)
+        #expect(Idioma.hungaro.nombrePropio == "Magyar")
+        // Los textos.
+        #expect(Intervalo.terceraMayor.nombre(en: .hungaroPalabras) == "nagy terc")
+        #expect(Intervalo("P5").nombre(en: .hungaroPalabras) == "tiszta kvint")
+        #expect(Intervalo("-m6").nombre(en: .hungaroPalabras) == "lefelé kis szext")
+        #expect(Acorde("Sol7").nombre(en: .hungaroPalabras) == "G domináns szeptimakkord, alaphelyzet")
+        #expect(
+            Tonalidad(.do).analizar(["Do", "Fa", "Sol7", "Do"]).nombre(en: .hungaroPalabras) == "I–IV–V7–I C-dúrban")
+        // Con un número, el nombre va en singular.
+        #expect(Idioma.hungaro.contar(5, "félhang") == "5 félhang")
+        #expect(throws: (any Error).self) { try Nota(leyendo: "Xisz", en: .hungaroCompacto) }
+    }
+
+    /// El artículo húngaro: «az» ante vocal o ante 1, 5, 1000…; «a» si no.
+    @Test func articuloHungaro() {
+        #expect("alt".conArticuloHungaro == "az alt")
+        #expect("basszus".conArticuloHungaro == "a basszus")
+        #expect("5. szólam".conArticuloHungaro == "az 5. szólam")
+        #expect("1. szólam".conArticuloHungaro == "az 1. szólam")
+        #expect("10. szólam".conArticuloHungaro == "a 10. szólam")
+        #expect("3. szólam".conArticuloHungaro == "a 3. szólam")
+        #expect("Esz".conArticuloHungaro == "az Esz")
+    }
+
+    @Test func francesEItaliano() throws {
+        #expect(Nota("Re").nombre(en: .francesPalabras) == "ré")
+        #expect(Nota("Mib").nombre(en: .francesPalabras) == "mi bémol")
+        #expect(Nota("Fa#").nombre(en: .francesPalabras) == "fa dièse")
+        #expect(Nota("Dox").nombre(en: .francesPalabras) == "do double dièse")
+        #expect(Nota("Mib").nombre(en: .italianoPalabras) == "mi bemolle")
+        #expect(Nota("Re#").nombre(en: .italianoPalabras) == "re diesis")
+        #expect(Nota("Sibb").nombre(en: .italianoPalabras) == "si doppio bemolle")
+        #expect(Nota("Reb").nombreCompacto(en: .francesPalabras) == "Ré♭")
+        #expect(Nota("Reb").nombreCompacto(en: .italianoPalabras) == "Re♭")
+        #expect(Altura("Fa#3").nombre(en: .francesPalabras) == "fa dièse 3")
+        #expect(Altura("Re4").nombre(en: .francesPalabras) == "ré4")
+        #expect(try (Altura(leyendo: "fa dièse 3", en: .francesPalabras)) == Altura("Fa#3"))
+        #expect(try (Altura(leyendo: "re diesis 5", en: .italianoPalabras)) == Altura("Re#5"))
+        #expect(try (Nota(leyendo: "RE BEMOL", en: .francesPalabras)) == Nota("Reb"))
+        #expect(try (Nota(leyendo: "Ré♭", en: .francesPalabras)) == Nota("Reb"))
+        #expect(Acorde("Fa#m7").cifrado(en: .francesPalabras) == "Fa♯m7")
+        #expect(Acorde("Rebmaj7").cifrado(en: .francesPalabras) == "Ré♭maj7")
+        #expect(Tonalidad("Reb mayor").nombre(en: .francesPalabras) == "ré bémol majeur")
+        #expect(Tonalidad("Fa# menor").nombre(en: .italianoPalabras) == "fa diesis minore")
+        #expect(Tonalidad("ré bémol majeur") == Tonalidad("Reb mayor"))
+        #expect(Tonalidad("la minore") == Tonalidad("La menor"))
+        #expect(Alteracion(-2).nombre(en: .francesPalabras) == "double bémol")
+        #expect(Alteracion(1).nombre(en: .italianoPalabras) == "diesis")
+        #expect(Alteracion.natural.nombre(en: .italianoPalabras) == "bequadro")
+        #expect(Alteracion("bémol") == .bemol)
+        #expect(Alteracion("doppio diesis") == .dobleSostenido)
     }
 
     /// Los textos del motor y los catálogos en portugués, francés e italiano.
-    func testTextosEnPortuguesFrancesItaliano() throws {
-        XCTAssertEqual(Notacion.frances.textos, .frances)
-        XCTAssertEqual(Notacion.italiano.textos, .italiano)
+    @Test func textosEnPortuguesFrancesItaliano() throws {
+        #expect(Notacion.francesPalabras.textos == .frances)
+        #expect(Notacion.italianoPalabras.textos == .italiano)
 
         let sexta = try Intervalo(leyendo: "-6m")
-        XCTAssertEqual(sexta.nombre(en: .portugues), "6ª menor descendente")
-        XCTAssertEqual(sexta.nombre(en: .frances), "sixte mineure descendante")
-        XCTAssertEqual(sexta.nombre(en: .italiano), "sesta minore discendente")
-        XCTAssertEqual(Intervalo.terceraMayor.nombre(en: .portugues), "3ª maior")
-        XCTAssertEqual(Intervalo.quintaJusta.nombre(en: .frances), "quinte juste")
-        XCTAssertEqual(Intervalo.terceraMayor.nombre(en: .italiano), "terza maggiore")
+        #expect(sexta.nombre(en: .portuguesPalabras) == "6ª menor descendente")
+        #expect(sexta.nombre(en: .francesPalabras) == "sixte mineure descendante")
+        #expect(sexta.nombre(en: .italianoPalabras) == "sesta minore discendente")
+        #expect(Intervalo.terceraMayor.nombre(en: .portuguesPalabras) == "3ª maior")
+        #expect(Intervalo.quintaJusta.nombre(en: .francesPalabras) == "quinte juste")
+        #expect(Intervalo.terceraMayor.nombre(en: .italianoPalabras) == "terza maggiore")
         // El unísono es masculino.
         let unisono = try Intervalo(leyendo: "1A")
-        XCTAssertEqual(unisono.nombre(en: .frances), "unisson augmenté")
-        XCTAssertEqual(unisono.nombre(en: .italiano), "unisono aumentato")
-        XCTAssertEqual(CalidadDeIntervalo.disminuida(2).nombre(en: .frances), "doublement diminuée")
-        XCTAssertEqual(Consonancia.perfecta.nombre(en: .italiano), "consonanza perfetta")
-        XCTAssertEqual(PapelEnAcorde.fundamental.nombre(en: .frances), "fondamentale")
-        XCTAssertEqual(NombreDeGrado.sensible.nombre(en: .portugues), "sensível")
-        XCTAssertEqual(Clave.sol.nombre(en: .italiano), "chiave di violino")
-        XCTAssertEqual(Duracion(.negra, puntillos: 1).nombre(en: .frances), "noire pointée")
-        XCTAssertEqual(Duracion(.corchea, puntillos: 2).nombre(en: .italiano), "croma doppiamente puntata")
-        XCTAssertEqual(Figura.blanca.nombre(en: .portugues), "mínima")
-        XCTAssertEqual(Cadencia.Tipo.rota.nombre(en: .frances), "cadence rompue")
-        XCTAssertEqual(
-            Tonalidad(.do).analizar(["Do", "Fa", "Sol7", "Do"]).nombre(en: .portugues), "I–IV–V7–I em dó maior")
-        XCTAssertEqual(
-            Tonalidad(.la, .menor).analizar(["Lam", "Mi7", "Lam"]).nombre(en: .italiano),
-            "i–V7–i in la minore")
+        #expect(unisono.nombre(en: .francesPalabras) == "unisson augmenté")
+        #expect(unisono.nombre(en: .italianoPalabras) == "unisono aumentato")
+        #expect(CalidadDeIntervalo.disminuida(2).nombre(en: .francesPalabras) == "doublement diminuée")
+        #expect(Consonancia.perfecta.nombre(en: .italianoPalabras) == "consonanza perfetta")
+        #expect(PapelEnAcorde.fundamental.nombre(en: .francesPalabras) == "fondamentale")
+        #expect(NombreDeGrado.sensible.nombre(en: .portuguesPalabras) == "sensível")
+        #expect(Clave.sol.nombre(en: .italianoPalabras) == "chiave di violino")
+        #expect(Duracion(.negra, puntillos: 1).nombre(en: .francesPalabras) == "noire pointée")
+        #expect(Duracion(.corchea, puntillos: 2).nombre(en: .italianoPalabras) == "croma doppiamente puntata")
+        #expect(Figura.blanca.nombre(en: .portuguesPalabras) == "mínima")
+        #expect(Cadencia.Tipo.rota.nombre(en: .francesPalabras) == "cadence rompue")
+        #expect(
+            Tonalidad(.do).analizar(["Do", "Fa", "Sol7", "Do"]).nombre(en: .portuguesPalabras)
+                == "I–IV–V7–I em dó maior")
+        #expect(
+            Tonalidad(.la, .menor).analizar(["Lam", "Mi7", "Lam"]).nombre(en: .italianoPalabras)
+                == "i–V7–i in la minore")
 
-        XCTAssertEqual(TipoDeAcorde.dominanteSeptima.nombre(en: .frances), "septième de dominante")
-        XCTAssertEqual(TipoDeAcorde.dominanteSeptima.nombre(en: .italiano), "settima di dominante")
-        XCTAssertEqual(Acorde("Sol7/Si").nombre(en: .portugues), "sol sétima de dominante, primeira inversão")
-        XCTAssertEqual(Acorde("Sol7/Si").nombre(en: .frances), "sol septième de dominante, premier renversement")
-        XCTAssertEqual(Acorde("Sol7/Si").nombre(en: .italiano), "sol settima di dominante, primo rivolto")
-        XCTAssertEqual(Acorde("Do/Re").nombre(en: .italiano), "do maggiore, con il basso in re")
+        #expect(TipoDeAcorde.dominanteSeptima.nombre(en: .francesPalabras) == "septième de dominante")
+        #expect(TipoDeAcorde.dominanteSeptima.nombre(en: .italianoPalabras) == "settima di dominante")
+        #expect(Acorde("Sol7/Si").nombre(en: .portuguesPalabras) == "sol sétima de dominante, primeira inversão")
+        #expect(Acorde("Sol7/Si").nombre(en: .francesPalabras) == "sol septième de dominante, premier renversement")
+        #expect(Acorde("Sol7/Si").nombre(en: .italianoPalabras) == "sol settima di dominante, primo rivolto")
+        #expect(Acorde("Do/Re").nombre(en: .italianoPalabras) == "do maggiore, con il basso in re")
         for (_, nombre) in TipoDeAcorde.nombresConocidos {
-            XCTAssertFalse(
-                nombre.portugues.isEmpty || nombre.frances.isEmpty || nombre.italiano.isEmpty, nombre.espanol)
+            #expect(
+                !(nombre.portugues.isEmpty || nombre.frances.isEmpty || nombre.italiano.isEmpty),
+                Comment(rawValue: nombre.espanol))
         }
 
-        XCTAssertEqual(Escala(.re, .dorico).nombre(en: .frances), "ré dorien")
-        XCTAssertEqual(Escala(.la, .menorArmonica).nombre(en: .italiano), "la minore armonica")
-        XCTAssertEqual(Escala("dó maior"), Escala("Do mayor"))
-        XCTAssertEqual(Escala(.re, .hirajoshi).nombre(en: .frances), "ré " + TipoDeEscala.hirajoshi.nombre)
+        #expect(Escala(.re, .dorico).nombre(en: .francesPalabras) == "ré dorien")
+        #expect(Escala(.la, .menorArmonica).nombre(en: .italianoPalabras) == "la minore armonica")
+        #expect(Escala("dó maior") == Escala("Do mayor"))
+        #expect(Escala(.re, .hirajoshi).nombre(en: .francesPalabras) == ("ré " + TipoDeEscala.hirajoshi.nombre))
         // Cada escala del catálogo tiene nombre en los tres idiomas; la portuguesa se vuelve a leer igual.
         for tipo in TipoDeEscala.todos {
             for idioma in [Idioma.portugues, .frances, .italiano] {
-                XCTAssertNotNil(NombresDeEscalas.de(idioma).porTipo[tipo], "\(idioma): \(tipo.nombre)")
+                #expect(NombresDeEscalas.de(idioma).porTipo[tipo] != nil, "\(idioma): \(tipo.nombre)")
             }
             let escala = Escala(.re, tipo)
-            let nombre = escala.nombre(en: .portugues)
-            XCTAssertEqual(Escala(texto: nombre), escala, "\(nombre) (\(tipo.nombre))")
+            let nombre = escala.nombre(en: .portuguesPalabras)
+            #expect(Escala(texto: nombre) == escala, "\(nombre) (\(tipo.nombre))")
         }
 
-        XCTAssertEqual(InstrumentoDePartitura.clarineteEnSib.nombre(en: .frances), "clarinette en si♭")
-        XCTAssertEqual(InstrumentoDePartitura.violin.nombre(en: .portugues), "violino")
-        XCTAssertEqual(InstrumentoDePartitura.saxofonAlto.nombre(en: .italiano), "sassofono contralto")
+        #expect(InstrumentoDePartitura.clarineteEnSib.nombre(en: .francesPalabras) == "clarinette en si♭")
+        #expect(InstrumentoDePartitura.violin.nombre(en: .portuguesPalabras) == "violino")
+        #expect(InstrumentoDePartitura.saxofonAlto.nombre(en: .italianoPalabras) == "sassofono contralto")
         for instrumento in InstrumentoDePartitura.todos {
-            XCTAssertNotNil(InstrumentoDePartitura.nombresRomanicos[instrumento.nombre], instrumento.nombre)
+            #expect(
+                InstrumentoDePartitura.traducciones[instrumento.nombre] != nil, Comment(rawValue: instrumento.nombre))
         }
-        XCTAssertEqual(CicloNeorriemanniano.hexatonico.nombre(en: .italiano), "ciclo esatonico")
+        #expect(InstrumentoDePartitura.traducciones.count == InstrumentoDePartitura.todos.count)
+        // Un instrumento propio usa su nombre español o, en alemán, su nombre inglés.
+        let propio = InstrumentoDePartitura(nombre: "laúd", nombreEnIngles: "lute")
+        #expect(propio.nombre(en: .francesPalabras) == "laúd")
+        #expect(propio.nombre(en: .alemanPalabras) == "lute")
+        #expect(CicloNeorriemanniano.hexatonico.nombre(en: .italianoPalabras) == "ciclo esatonico")
     }
 
     /// Los nombres de nota en occitano, griego y ruso: se escriben y se leen, también sin indicar
     /// la notación; los demás textos salen en el idioma de las notas.
-    func testOccitanoRusoGriego() throws {
+    @Test func occitanoRusoGriego() throws {
         let casos: [(String, String, String, String)] = [
             ("Fa#", "fa dièsi", "фа-диез", "φα δίεση"),
             ("Sib", "si bemòl", "си-бемоль", "σι ύφεση"),
@@ -143,42 +238,44 @@ final class NotacionesEuropeasTests: XCTestCase {
         ]
         for (espanol, occitano, ruso, griego) in casos {
             let nota = Nota(texto: espanol)!
-            for (notacion, nombre) in [(Notacion.occitano, occitano), (.ruso, ruso), (.griego, griego)] {
-                XCTAssertEqual(nota.nombre(en: notacion), nombre)
-                XCTAssertEqual(try Nota(leyendo: nombre, en: notacion), nota, nombre)
-                XCTAssertEqual(Nota(texto: nombre), nota, nombre)
-                XCTAssertEqual(Nota(texto: nota.nombreCompacto(en: notacion)), nota, nombre)
+            for (notacion, nombre) in [
+                (Notacion.occitanoPalabras, occitano), (.rusoPalabras, ruso), (.griegoPalabras, griego),
+            ] {
+                #expect(nota.nombre(en: notacion) == nombre)
+                #expect(try (Nota(leyendo: nombre, en: notacion)) == nota, Comment(rawValue: nombre))
+                #expect(Nota(texto: nombre) == nota, Comment(rawValue: nombre))
+                #expect(Nota(texto: nota.nombreCompacto(en: notacion)) == nota, Comment(rawValue: nombre))
             }
         }
         // Sin tildes y con o sin guion.
-        XCTAssertEqual(Nota(texto: "σι υφεση"), Nota("Sib"))
-        XCTAssertEqual(Nota(texto: "фа диез"), Nota("Fa#"))
-        XCTAssertEqual(Nota(texto: "sol diesi"), Nota("Sol#"))
-        XCTAssertEqual(Nota("Reb").nombreCompacto(en: .ruso), "Ре♭")
-        XCTAssertEqual(Nota("Reb").nombreCompacto(en: .griego), "Ρε♭")
-        XCTAssertEqual(Nota("Sol#").nombreCompacto(en: .occitano), "Sòl♯")
-        XCTAssertEqual(Acorde("Fa#m7").cifrado(en: .ruso), "Фа♯m7")
-        XCTAssertEqual(Altura("Fa#3").nombre(en: .griego), "φα δίεση 3")
-        XCTAssertEqual(Altura("Fa#3").nombre(en: .ruso), "фа-диез3")
-        XCTAssertEqual(Altura("фа-диез3"), Altura("Fa#3"))
-        XCTAssertEqual(Altura("σι ύφεση 4"), Altura("Sib4"))
-        XCTAssertEqual(Altura("sòl dièsi 2"), Altura("Sol#2"))
-        XCTAssertEqual(Alteracion(-1).nombre(en: .griego), "ύφεση")
-        XCTAssertEqual(Alteracion(2).nombre(en: .ruso), "дубль-диез")
-        XCTAssertEqual(Alteracion(0).nombre(en: .occitano), "becarre")
+        #expect(Nota(texto: "σι υφεση") == Nota("Sib"))
+        #expect(Nota(texto: "фа диез") == Nota("Fa#"))
+        #expect(Nota(texto: "sol diesi") == Nota("Sol#"))
+        #expect(Nota("Reb").nombreCompacto(en: .rusoPalabras) == "Ре♭")
+        #expect(Nota("Reb").nombreCompacto(en: .griegoPalabras) == "Ρε♭")
+        #expect(Nota("Sol#").nombreCompacto(en: .occitanoPalabras) == "Sòl♯")
+        #expect(Acorde("Fa#m7").cifrado(en: .rusoPalabras) == "Фа♯m7")
+        #expect(Altura("Fa#3").nombre(en: .griegoPalabras) == "φα δίεση 3")
+        #expect(Altura("Fa#3").nombre(en: .rusoPalabras) == "фа-диез3")
+        #expect(Altura("фа-диез3") == Altura("Fa#3"))
+        #expect(Altura("σι ύφεση 4") == Altura("Sib4"))
+        #expect(Altura("sòl dièsi 2") == Altura("Sol#2"))
+        #expect(Alteracion(-1).nombre(en: .griegoPalabras) == "ύφεση")
+        #expect(Alteracion(2).nombre(en: .rusoPalabras) == "дубль-диез")
+        #expect(Alteracion(0).nombre(en: .occitanoPalabras) == "becarre")
         // Tonalidades.
-        XCTAssertEqual(Tonalidad("Fa# mayor").nombre(en: .ruso), "фа-диез мажор")
-        XCTAssertEqual(Tonalidad("La menor").nombre(en: .ruso), "ля минор")
-        XCTAssertEqual(Tonalidad("Re mayor").nombre(en: .griego), "ρε μείζονα")
-        XCTAssertEqual(Tonalidad("Sib menor").nombre(en: .griego), "σι ύφεση ελάσσονα")
-        XCTAssertEqual(Tonalidad("Sol mayor").nombre(en: .occitano), "sòl major")
-        XCTAssertEqual(Tonalidad("ре мажор"), Tonalidad("Re mayor"))
-        XCTAssertEqual(Tonalidad("σι ύφεση ελάσσονα"), Tonalidad("Sib menor"))
-        XCTAssertEqual(Tonalidad("fa dièsi menor"), Tonalidad("Fa# menor"))
+        #expect(Tonalidad("Fa# mayor").nombre(en: .rusoPalabras) == "фа-диез мажор")
+        #expect(Tonalidad("La menor").nombre(en: .rusoPalabras) == "ля минор")
+        #expect(Tonalidad("Re mayor").nombre(en: .griegoPalabras) == "ρε μείζονα")
+        #expect(Tonalidad("Sib menor").nombre(en: .griegoPalabras) == "σι ύφεση ελάσσονα")
+        #expect(Tonalidad("Sol mayor").nombre(en: .occitanoPalabras) == "sòl major")
+        #expect(Tonalidad("ре мажор") == Tonalidad("Re mayor"))
+        #expect(Tonalidad("σι ύφεση ελάσσονα") == Tonalidad("Sib menor"))
+        #expect(Tonalidad("fa dièsi menor") == Tonalidad("Fa# menor"))
         // Los demás textos, en el idioma de las notas.
-        XCTAssertEqual(Notacion.ruso.textos, .ruso)
-        XCTAssertEqual(Intervalo.terceraMayor.nombre(en: .griego), "μεγάλη τρίτη")
-        XCTAssertEqual(Acorde("Sol7/Si").nombre(en: .ruso), "доминантсептаккорд от соль, первое обращение")
-        XCTAssertEqual(Escala(.re, .dorico).nombre(en: .occitano), "re dorian")
+        #expect(Notacion.rusoPalabras.textos == .ruso)
+        #expect(Intervalo.terceraMayor.nombre(en: .griegoPalabras) == "μεγάλη τρίτη")
+        #expect(Acorde("Sol7/Si").nombre(en: .rusoPalabras) == "доминантсептаккорд от соль, первое обращение")
+        #expect(Escala(.re, .dorico).nombre(en: .occitanoPalabras) == "re dorian")
     }
 }

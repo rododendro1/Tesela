@@ -2,7 +2,8 @@ name: CI
 
 # `push` solo en la rama principal: en una rama con pull request ya corre el de `pull_request`, y con los
 # dos se ejecutaba todo dos veces. Si tu rama principal no se llama main ni master, cámbialo aquí.
-# Los jobs de macOS solo corren a mano (workflow_dispatch) y una vez por semana (`schedule`).
+# Los jobs de macOS solo corren a mano (workflow_dispatch) y una vez por semana (`schedule`), salvo `apps`, que compila
+# las dos apps en los pull requests que las tocan.
 on:
   push:
     branches: [main, master]
@@ -23,8 +24,11 @@ env:
   # Xcode de los jobs de macOS: `latest-stable`, o una versión concreta («16.4») para fijarla.
   XCODE: latest-stable
 
-# No se guarda `.build` en caché a propósito: el repositorio no tiene dependencias externas, así que la
-# caché solo guardaría el código propio, que se recompila igual en cada commit.
+# Los jobs de Linux recuperan el `.build` de la última ejecución en main (`.github/acciones/cache-de-swift`), con las
+# fechas de los ficheros arregladas para que Swift recompile solo lo que ha cambiado desde entonces. Solo se guarda
+# fuera de los pull requests (en main, a mano y los lunes), para que haya una caché por job y no una por rama.
+# Las compilaciones «Sin avisos» van en `.build/sin-avisos`: con otras opciones en la misma carpeta, la siguiente
+# compilación normal tendría que rehacerlo todo.
 
 jobs:
   comprobaciones:
@@ -34,9 +38,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Higiene (invisibles, tabuladores, permisos, scripts que compilan)
-        run: python3 Scripts/comprobar_higiene.py
+        run: python3 Scripts/comprobaciones/comprobar_higiene.py
       - name: Dependencias entre paquetes y apps
-        run: python3 Scripts/comprobar_dependencias.py
+        run: python3 Scripts/comprobaciones/comprobar_dependencias.py
       - name: Rutas sin colisiones de mayúsculas
         run: |
           duplicadas=$(git ls-files | tr 'A-Z' 'a-z' | sort | uniq -d)
@@ -44,17 +48,19 @@ jobs:
           carpetas=$(git ls-files | xargs -n1 dirname | sort -u | tr 'A-Z' 'a-z' | sort | uniq -d)
           if [ -n "$carpetas" ]; then echo "Carpetas que solo difieren en mayúsculas:"; echo "$carpetas"; exit 1; fi
       - name: Módulos del motor
-        run: python3 Scripts/comprobar_modulos.py
+        run: python3 Scripts/comprobaciones/comprobar_modulos.py
       - name: Catálogo de escalas
-        run: python3 Scripts/comprobar_catalogo.py
+        run: python3 Scripts/comprobaciones/comprobar_catalogo.py
       - name: Enlaces de la documentación (DocC)
-        run: python3 Scripts/comprobar_enlaces_docc.py
+        run: python3 Scripts/comprobaciones/comprobar_enlaces_docc.py
       - name: Traducciones
-        run: python3 Scripts/comprobar_traducciones.py
+        run: python3 Scripts/comprobaciones/comprobar_traducciones.py
+      - name: Package.swift de la raíz al día
+        run: python3 Scripts/generadores/generar_paquete_raiz.py --comprobar
       - name: Ejemplos de la documentación al día
-        run: python3 Scripts/generar_pruebas_de_documentacion.py --comprobar
+        run: python3 Scripts/generadores/generar_pruebas_de_documentacion.py --comprobar
       - name: CHANGELOG (secciones y notas de la versión actual)
-        run: python3 Scripts/notas_de_version.py --comprobar
+        run: python3 Scripts/comprobaciones/notas_de_version.py --comprobar
 
   # El formato del código Swift, con swift-format (viene con Swift 6) y la configuración de `.swift-format`. Para
   # arreglarlo: `swift format -i -r --parallel Packages Apps Ejemplos Herramientas Package.swift`. Los ficheros que
@@ -84,10 +90,16 @@ jobs:
         working-directory: Packages/Armonia
     steps:
       - uses: actions/checkout@v7
+      - id: cache
+        uses: ./.github/acciones/cache-de-swift
+        with:
+          nombre: motor-${{ matrix.swift }}
+          rutas: |
+            Packages/Armonia/.build
       - name: Compilar
         run: swift build
       - name: Pruebas rápidas
-        run: swift test --parallel --filter "^ArmoniaTests\\."
+        run: swift test --parallel --filter "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Formatos|Trastes)?Tests\\."
       - name: Pruebas exhaustivas
         run: swift test --parallel --filter "^ArmoniaExhaustivasTests\\."
       - name: Ejemplos de la documentación
@@ -96,9 +108,15 @@ jobs:
       - name: Sin avisos (módulos)
         if: matrix.swift == '6.2'
         run: |
-          for objetivo in ArmoniaNucleo ArmoniaTeoria ArmoniaRepresentaciones ArmoniaPartitura ArmoniaTrastes Armonia; do
-            swift build --target "$objetivo" -Xswiftc -warnings-as-errors
+          for objetivo in ArmoniaNucleo ArmoniaTeoria ArmoniaRepresentaciones ArmoniaPartitura ArmoniaFormatos ArmoniaTrastes Armonia; do
+            swift build --scratch-path .build/sin-avisos --target "$objetivo" -Xswiftc -warnings-as-errors
           done
+      - uses: actions/cache/save@v6
+        if: github.event_name != 'pull_request'
+        with:
+          path: |
+            Packages/Armonia/.build
+          key: ${{ steps.cache.outputs.clave }}
 
   herramientas:
     name: ${{ matrix.paquete.nombre }} · Linux · Swift ${{ matrix.swift }}
@@ -114,48 +132,94 @@ jobs:
           - { nombre: EjemploArmonia, ruta: Ejemplos/EjemploArmonia }
           - { nombre: EjemploHexagonos, ruta: Ejemplos/EjemploHexagonos }
           - { nombre: RendimientoArmonia, ruta: Herramientas/RendimientoArmonia }
+          - { nombre: FuzzArmonia, ruta: Herramientas/FuzzArmonia }
     defaults:
       run:
         working-directory: ${{ matrix.paquete.ruta }}
     steps:
       - uses: actions/checkout@v7
+      - id: cache
+        uses: ./.github/acciones/cache-de-swift
+        with:
+          nombre: ${{ matrix.paquete.nombre }}-${{ matrix.swift }}
+          rutas: |
+            ${{ matrix.paquete.ruta }}/.build
       - name: Compilar
         run: swift build
-      - name: Pruebas de la línea de comandos
-        if: matrix.paquete.nombre == 'ArmoniaCLI'
+      - name: Pruebas
+        if: matrix.paquete.nombre == 'ArmoniaCLI' || matrix.paquete.nombre == 'FuzzArmonia'
         run: swift test --parallel
       - name: Ejemplo
         if: startsWith(matrix.paquete.nombre, 'Ejemplo')
         run: swift run ${{ matrix.paquete.nombre }}
       - name: Sin avisos
         if: matrix.paquete.nombre == 'ArmoniaCLI' && matrix.swift == '6.2'
-        run: swift build --target ArmoniaCLI -Xswiftc -warnings-as-errors
+        run: swift build --scratch-path .build/sin-avisos --target ArmoniaCLI -Xswiftc -warnings-as-errors
+      - uses: actions/cache/save@v6
+        if: github.event_name != 'pull_request'
+        with:
+          path: |
+            ${{ matrix.paquete.ruta }}/.build
+          key: ${{ steps.cache.outputs.clave }}
 
   # Los tiempos del motor, compilado con optimización, en el resumen de la ejecución y como artefacto
-  # (`rendimiento.json`), para compararlos con `--comparar`. No falla por lentitud: las máquinas del CI
-  # varían demasiado para fijar límites; sirve para ver el orden de magnitud y cómo crece cada caso.
+  # (`rendimiento.json`). En un pull request mide también la rama de destino (main) en la misma máquina, una
+  # detrás de otra, y avisa (sin fallar) de los casos que van más de un 25 % más lentos que en main, en la
+  # mediana y en el mínimo: las máquinas del CI varían demasiado para fijar límites absolutos, pero dos medidas
+  # seguidas en la misma sí se pueden comparar.
   rendimiento:
     name: Rendimiento del motor · Linux
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     container: swift:6.2
     defaults:
       run:
-        working-directory: Herramientas/RendimientoArmonia
         shell: bash
     steps:
       - uses: actions/checkout@v7
+      - id: cache
+        uses: ./.github/acciones/cache-de-swift
+        with:
+          nombre: rendimiento
+          rutas: |
+            Herramientas/RendimientoArmonia/.build
+      - uses: actions/checkout@v7
+        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.base_ref }}
+          path: base
+      - name: Medir la rama de destino
+        if: github.event_name == 'pull_request'
+        working-directory: base/Herramientas/RendimientoArmonia
+        run: swift run -c release RendimientoArmonia --json "$RUNNER_TEMP/base.json" > /dev/null
       - name: Compilar con optimización
+        working-directory: Herramientas/RendimientoArmonia
         run: swift build -c release
       - name: Medir
+        working-directory: Herramientas/RendimientoArmonia
+        env:
+          BASE: ${{ github.base_ref }}
         run: |
           set -o pipefail
-          echo "## Rendimiento del motor" >> "$GITHUB_STEP_SUMMARY"
-          swift run -c release RendimientoArmonia --json "$GITHUB_WORKSPACE/rendimiento.json" | tee -a "$GITHUB_STEP_SUMMARY"
+          comparar=()
+          if [ -f "$RUNNER_TEMP/base.json" ]; then
+            comparar=(--comparar "$RUNNER_TEMP/base.json" --avisar 25)
+            echo "## Rendimiento del motor (comparado con $BASE)" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## Rendimiento del motor" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          swift run -c release RendimientoArmonia --json "$GITHUB_WORKSPACE/rendimiento.json" "${comparar[@]}" \
+            | tee -a "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v7
         with:
           name: rendimiento
           path: rendimiento.json
+      - uses: actions/cache/save@v6
+        if: github.event_name != 'pull_request'
+        with:
+          path: |
+            Herramientas/RendimientoArmonia/.build
+          key: ${{ steps.cache.outputs.clave }}
 
   paquetes:
     name: ${{ matrix.paquete }} · Linux · Swift ${{ matrix.swift }}
@@ -166,19 +230,31 @@ jobs:
       fail-fast: false
       matrix:
         swift: ["6.0", "6.2"]
-        paquete: [ArmoniaUI, Hexagonos]
+        paquete: [ArmoniaPresentacion, ArmoniaUI, Hexagonos]
     defaults:
       run:
         working-directory: Packages/${{ matrix.paquete }}
     steps:
       - uses: actions/checkout@v7
+      - id: cache
+        uses: ./.github/acciones/cache-de-swift
+        with:
+          nombre: ${{ matrix.paquete }}-${{ matrix.swift }}
+          rutas: |
+            Packages/${{ matrix.paquete }}/.build
       - name: Compilar
         run: swift build
       - name: Pruebas
         run: swift test --parallel
       - name: Sin avisos
         if: matrix.paquete == 'Hexagonos' && matrix.swift == '6.2'
-        run: swift build --target Hexagonos -Xswiftc -warnings-as-errors
+        run: swift build --scratch-path .build/sin-avisos --target Hexagonos -Xswiftc -warnings-as-errors
+      - uses: actions/cache/save@v6
+        if: github.event_name != 'pull_request'
+        with:
+          path: |
+            Packages/${{ matrix.paquete }}/.build
+          key: ${{ steps.cache.outputs.clave }}
 
   # La cobertura de las pruebas de cada paquete en Linux: el total y los ficheros con menos líneas probadas, en
   # el resumen de la ejecución, y el informe entero por fichero como artefacto (`cobertura-<paquete>.txt`).
@@ -194,7 +270,8 @@ jobs:
       matrix:
         paquete:
           # Las exhaustivas tardan y no prueban código distinto del de las rápidas.
-          - { nombre: Armonia, filtro: "^(ArmoniaTests|ArmoniaDocumentacionTests)\\.", funciones: 95.5, lineas: 98.0 }
+          - { nombre: Armonia, filtro: "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Formatos|Trastes|Documentacion)?Tests\\.", funciones: 95.5, lineas: 98.0 }
+          - { nombre: ArmoniaPresentacion, filtro: "", funciones: 96.5, lineas: 96.0 }
           - { nombre: ArmoniaUI, filtro: "", funciones: 97.0, lineas: 99.0 }
           - { nombre: Hexagonos, filtro: "", funciones: 93.5, lineas: 97.5 }
     defaults:
@@ -203,10 +280,19 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v7
+      - id: cache
+        uses: ./.github/acciones/cache-de-swift
+        with:
+          nombre: cobertura-${{ matrix.paquete.nombre }}
+          rutas: |
+            Packages/${{ matrix.paquete.nombre }}/.build
       - name: Pruebas con cobertura
         env:
           FILTRO: ${{ matrix.paquete.filtro }}
-        run: swift test --parallel --enable-code-coverage ${FILTRO:+--filter "$FILTRO"}
+        # Sin los datos de cobertura que trae la caché, que se sumarían a los de ahora.
+        run: |
+          rm -rf .build/*/debug/codecov
+          swift test --parallel --enable-code-coverage ${FILTRO:+--filter "$FILTRO"}
       - name: Informe
         env:
           PAQUETE: ${{ matrix.paquete.nombre }}
@@ -218,13 +304,15 @@ jobs:
           # Solo el código del paquete (Sources), no el de las pruebas ni el de los paquetes de los que depende.
           llvm-cov report "$pruebas" -instr-profile="$binarios/codecov/default.profdata" "$PWD/Sources" > "$informe"
           {
+            # Sin `head`: al cerrar la tubería antes de que `sort` acabe de escribir, `sort` muere con SIGPIPE y,
+            # con pipefail, el paso falla (código 141).
             echo "## Cobertura de $PAQUETE"
             echo
             echo "| | Funciones | Líneas |"
             echo "|---|---:|---:|"
             awk '$1 == "TOTAL" { print "| **Total** | " $7 " | " $10 " |" }' "$informe"
             awk '$1 != "TOTAL" && $1 != "Filename" && $1 !~ /^-+$/ && NF >= 10 { sub("%", "", $10); print $10 " " $1 " " $7 }' "$informe" \
-              | sort -n | head -n 15 | awk '{ print "| `" $2 "` | " $3 " | " $1 "% |" }'
+              | sort -n | awk 'NR <= 15 { print "| `" $2 "` | " $3 " | " $1 "% |" }'
             echo
             echo "Arriba, el total y los 15 ficheros con menos líneas probadas. El informe entero está en el artefacto."
           } | tee -a "$GITHUB_STEP_SUMMARY"
@@ -248,6 +336,12 @@ jobs:
         with:
           name: cobertura-${{ matrix.paquete.nombre }}
           path: cobertura-${{ matrix.paquete.nombre }}.txt
+      - uses: actions/cache/save@v6
+        if: github.event_name != 'pull_request'
+        with:
+          path: |
+            Packages/${{ matrix.paquete.nombre }}/.build
+          key: ${{ steps.cache.outputs.clave }}
 
   # El Package.swift de la raíz, el que usa quien añade el repositorio por URL: debe compilar igual.
   raiz:
@@ -261,12 +355,74 @@ jobs:
         swift: ["6.0", "6.2"]
     steps:
       - uses: actions/checkout@v7
+      - id: cache
+        uses: ./.github/acciones/cache-de-swift
+        with:
+          nombre: raiz-${{ matrix.swift }}
+          rutas: |
+            .build
       - name: Compilar
         run: swift build
+      - uses: actions/cache/save@v6
+        if: github.event_name != 'pull_request'
+        with:
+          path: |
+            .build
+          key: ${{ steps.cache.outputs.clave }}
+
+  # Un pull request que cambia las apps, sus vistas (ArmoniaUI) o el proyecto de Xcode compila las dos apps en macOS,
+  # sin pruebas ni simulador de iOS: es lo que Linux no puede compilar. Lo demás de macOS sigue en el job `macos`.
+  # `cambios-en-las-apps` corre en Linux y solo mira los ficheros, para no ocupar un runner de macOS en los demás.
+  cambios-en-las-apps:
+    name: ¿Toca las apps?
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      apps: ${{ steps.mirar.outputs.apps }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - id: mirar
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          cambiados=$(git diff --name-only "$BASE"...HEAD)
+          echo "$cambiados"
+          if echo "$cambiados" | grep -qE '^(Apps/ArmoniaApp/|Apps/TonnetzApp/|Packages/ArmoniaUI/|Packages/ArmoniaPresentacion/|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
+            echo "apps=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "apps=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  apps:
+    name: Apps · macOS
+    needs: cambios-en-las-apps
+    if: needs.cambios-en-las-apps.outputs.apps == 'true'
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE }}
+      - name: Instalar XcodeGen
+        run: brew install xcodegen
+      - name: Generar el proyecto
+        run: ./Scripts/generadores/generar_proyecto.sh
+      - name: Armonía (macOS)
+        run: >
+          xcodebuild build -project Tesela.xcodeproj -scheme ArmoniaApp
+          -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
+      - name: Tonnetz (macOS)
+        run: >
+          xcodebuild build -project Tesela.xcodeproj -scheme TonnetzApp
+          -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
 
   # Los jobs de macOS (este, las pruebas de interfaz y DocC) son los que más tardan: corren a mano desde la
-  # pestaña Actions y los lunes, no en cada push ni en cada pull request. Un pull request que toque las apps,
-  # las vistas o la documentación puede lanzarlos a mano en su rama antes de fusionarse.
+  # pestaña Actions y los lunes, no en cada push ni en cada pull request. Un pull request que toque las apps ya las
+  # compila en `apps`; para sus pruebas, el simulador de iOS o la documentación, se lanzan a mano en su rama.
   macos:
     name: macOS · paquetes y apps
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
@@ -280,8 +436,11 @@ jobs:
       - name: Versión de Swift y de Xcode
         run: swift --version && xcodebuild -version
       - name: Armonia
-        run: swift build && swift test --parallel --filter "^ArmoniaTests\\."
+        run: swift build && swift test --parallel --filter "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Formatos|Trastes)?Tests\\."
         working-directory: Packages/Armonia
+      - name: ArmoniaPresentacion
+        run: swift test --parallel
+        working-directory: Packages/ArmoniaPresentacion
       - name: ArmoniaUI
         run: swift test --parallel
         working-directory: Packages/ArmoniaUI
@@ -296,7 +455,7 @@ jobs:
       - name: Instalar XcodeGen
         run: brew install xcodegen
       - name: Generar el proyecto
-        run: ./Scripts/generar_proyecto.sh
+        run: ./Scripts/generadores/generar_proyecto.sh
       - name: Armonía (macOS)
         run: >
           xcodebuild build -project Tesela.xcodeproj -scheme ArmoniaApp
@@ -321,7 +480,7 @@ jobs:
         run: >
           xcodebuild build -project Tesela.xcodeproj -scheme TonnetzApp
           -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO
-      # Los catorce idiomas, en el Info.plist y como carpetas .lproj, en cada app de iOS.
+      # Los quince idiomas, en el Info.plist y como carpetas .lproj, en cada app de iOS.
       - name: Idiomas de las apps
         run: |
           for app in ArmoniaApp TonnetzApp; do
@@ -330,7 +489,7 @@ jobs:
             idiomas=$(plutil -extract CFBundleLocalizations json -o - "$paquete/Info.plist" | python3 -c 'import json, sys; print(len(json.load(sys.stdin)))')
             carpetas=$(ls -d "$paquete"/*.lproj | wc -l | tr -d ' ')
             echo "$app: $idiomas idiomas en el Info.plist, $carpetas carpetas .lproj"
-            test "$idiomas" -eq 14 && test "$carpetas" -ge 14 || { echo "::error::$app no declara los catorce idiomas"; exit 1; }
+            test "$idiomas" -eq 15 && test "$carpetas" -ge 15 || { echo "::error::$app no declara los quince idiomas"; exit 1; }
           done
 
   interfaz:
@@ -351,7 +510,7 @@ jobs:
       - name: Instalar XcodeGen
         run: brew install xcodegen
       - name: Generar el proyecto
-        run: ./Scripts/generar_proyecto.sh
+        run: ./Scripts/generadores/generar_proyecto.sh
       - name: Permitir que las pruebas manejen las apps
         if: matrix.plataforma == 'macOS'
         run: sudo automationmodetool enable-automationmode-without-authentication
@@ -410,6 +569,19 @@ jobs:
           # Con un solo producto, el esquema se llama como él (sin «-Package»).
           xcodebuild docbuild -scheme Hexagonos -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-hexagonos" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-hexagonos.log"
+      - name: Construir la documentación de ArmoniaPresentacion
+        working-directory: Packages/ArmoniaPresentacion
+        run: |
+          set -o pipefail
+          # Con un solo producto, el esquema se llama como él (sin «-Package»).
+          xcodebuild docbuild -scheme ArmoniaPresentacion -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/docc-armoniapresentacion" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-armoniapresentacion.log"
+      - name: Construir la documentación de ArmoniaUI
+        working-directory: Packages/ArmoniaUI
+        run: |
+          set -o pipefail
+          xcodebuild docbuild -scheme ArmoniaUI -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/docc-armoniaui" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-armoniaui.log"
       - name: Enlaces sin resolver
         run: |
           if grep -E "warning: .*(doesn.t exist|couldn.t be resolved|unresolved|not found)" "$RUNNER_TEMP"/docbuild*.log; then

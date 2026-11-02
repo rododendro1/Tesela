@@ -31,7 +31,7 @@ public struct TipoDeAcorde: Sendable {
     package init(comprobandoPasosDeQuinta pasosDeQuinta: Set<Int>, texto: String) throws {
         guard let clasificacion = ClasificacionDeAcorde(pasosDeQuinta) else {
             let rechazo = ClasificacionDeAcorde.motivoDeRechazo(pasosDeQuinta) ?? .noEsPorTerceras
-            throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .acordeNoInterpretable(rechazo))
+            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .acordeNoInterpretable(rechazo))
         }
         self.pasosDeQuinta = pasosDeQuinta
         self.clasificacion = clasificacion
@@ -71,9 +71,6 @@ public struct TipoDeAcorde: Sendable {
     /// Cifrado en el estilo básico de una notación: `.inglesASCII` → "7(b9,#11)".
     public func cifrado(en notacion: Notacion) -> String { cifrado(estilo: EstiloDeCifrado(notacion: notacion)) }
 
-    /// Nombre en español si es un tipo conocido; si no, "acorde 7(♭9,♯11)".
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     /// "séptima de dominante", "dominant seventh", "sèptima de dominant", "dominanteko zazpigarrena"
     /// si es un tipo conocido; si no, "acorde 7(♭9,♯11)", "7(b9,#11) chord", "7(♭9,♯11) akordea"…
     public func nombre(en notacion: Notacion) -> String {
@@ -81,7 +78,7 @@ public struct TipoDeAcorde: Sendable {
         // En inglés, alemán, griego y ruso, el cifrado en el estilo de la notación ("7(b9,#11)").
         let (latino, propio) = (cifrado, cifrado(en: notacion))
         let vacio = cifrado.isEmpty
-        return TextosDeTeoria.traducidos.map { $0.acordeDesconocido(vacio, latino, propio) }.en(notacion)
+        return TextosDeTeoria.en(notacion) { $0.acordeDesconocido(vacio, latino, propio) }
     }
 
     /// Sufijo para el cifrado romano (V7, viiø7, i(maj7), ii°…). La sexta añadida se escribe
@@ -118,8 +115,12 @@ public struct TipoDeAcorde: Sendable {
 
     // MARK: Tipos predefinidos
 
+    /// Los tipos predefinidos, que son conjuntos válidos; si uno no lo fuera, el mensaje dice cuál.
     private static func crear(_ intervalos: [Intervalo]) -> TipoDeAcorde {
-        TipoDeAcorde(intervalos: intervalos)!
+        guard let tipo = TipoDeAcorde(intervalos: intervalos) else {
+            preconditionFailure("\(intervalos) no es un tipo de acorde")
+        }
+        return tipo
     }
 
     // Nombres: «tríada + lo añadido», de abajo arriba, con el calificativo detrás de lo que
@@ -178,83 +179,83 @@ public struct TipoDeAcorde: Sendable {
         .mayorNovenaAnadida, .dominanteUndecima, .menorSeptimaUndecima, .dominanteDecimotercera,
     ]
 
-    /// Nombres en los catorce idiomas de los textos (`Traduccion`) de los tipos habituales, indexados
+    /// Nombres en los quince idiomas de los textos (`Traduccion`) de los tipos habituales, indexados
     /// por su conjunto de quintas.
     /// Se construye sin crear `TipoDeAcorde` para no depender de otras constantes estáticas.
     package static let nombresConocidos: [Set<Int>: Traduccion] = {
         let tabla: [([Intervalo], Traduccion)] = [
-            ([.terceraMayor, .quintaJusta], TextosDeTeoria.traducidos.map(\.tipoMayor)),
-            ([.terceraMenor, .quintaJusta], TextosDeTeoria.traducidos.map(\.tipoMenor)),
-            ([.terceraMenor, .quintaDisminuida], TextosDeTeoria.traducidos.map(\.tipoDisminuido)),
-            ([.terceraMayor, .quintaAumentada], TextosDeTeoria.traducidos.map(\.tipoAumentado)),
-            ([.segundaMayor, .quintaJusta], TextosDeTeoria.traducidos.map(\.tipoSuspendidoDeSegunda)),
-            ([.cuartaJusta, .quintaJusta], TextosDeTeoria.traducidos.map(\.tipoSuspendidoDeCuarta)),
-            ([.quintaJusta], TextosDeTeoria.traducidos.map(\.tipoQuintaAcordeDePotencia)),
-            ([.terceraMayor, .quintaJusta, .septimaMenor], TextosDeTeoria.traducidos.map(\.tipoSeptimaDeDominante)),
-            ([.terceraMayor, .quintaJusta, .septimaMayor], TextosDeTeoria.traducidos.map(\.tipoSeptimaMayor)),
-            ([.terceraMenor, .quintaJusta, .septimaMenor], TextosDeTeoria.traducidos.map(\.tipoMenorSeptima)),
-            ([.terceraMenor, .quintaDisminuida, .septimaMenor], TextosDeTeoria.traducidos.map(\.tipoSemidisminuido)),
+            ([.terceraMayor, .quintaJusta], TextosDeTeoria.traduccion(\.tipoMayor)),
+            ([.terceraMenor, .quintaJusta], TextosDeTeoria.traduccion(\.tipoMenor)),
+            ([.terceraMenor, .quintaDisminuida], TextosDeTeoria.traduccion(\.tipoDisminuido)),
+            ([.terceraMayor, .quintaAumentada], TextosDeTeoria.traduccion(\.tipoAumentado)),
+            ([.segundaMayor, .quintaJusta], TextosDeTeoria.traduccion(\.tipoSuspendidoDeSegunda)),
+            ([.cuartaJusta, .quintaJusta], TextosDeTeoria.traduccion(\.tipoSuspendidoDeCuarta)),
+            ([.quintaJusta], TextosDeTeoria.traduccion(\.tipoQuintaAcordeDePotencia)),
+            ([.terceraMayor, .quintaJusta, .septimaMenor], TextosDeTeoria.traduccion(\.tipoSeptimaDeDominante)),
+            ([.terceraMayor, .quintaJusta, .septimaMayor], TextosDeTeoria.traduccion(\.tipoSeptimaMayor)),
+            ([.terceraMenor, .quintaJusta, .septimaMenor], TextosDeTeoria.traduccion(\.tipoMenorSeptima)),
+            ([.terceraMenor, .quintaDisminuida, .septimaMenor], TextosDeTeoria.traduccion(\.tipoSemidisminuido)),
             (
                 [.terceraMenor, .quintaDisminuida, .septimaDisminuida],
-                TextosDeTeoria.traducidos.map(\.tipoSeptimaDisminuida)
+                TextosDeTeoria.traduccion(\.tipoSeptimaDisminuida)
             ),
-            ([.terceraMenor, .quintaJusta, .septimaMayor], TextosDeTeoria.traducidos.map(\.tipoMenorConSeptimaMayor)),
+            ([.terceraMenor, .quintaJusta, .septimaMayor], TextosDeTeoria.traduccion(\.tipoMenorConSeptimaMayor)),
             (
                 [.terceraMayor, .quintaAumentada, .septimaMenor],
-                TextosDeTeoria.traducidos.map(\.tipoAumentadoConSeptimaMenor)
+                TextosDeTeoria.traduccion(\.tipoAumentadoConSeptimaMenor)
             ),
             (
                 [.terceraMayor, .quintaAumentada, .septimaMayor],
-                TextosDeTeoria.traducidos.map(\.tipoAumentadoConSeptimaMayor)
+                TextosDeTeoria.traduccion(\.tipoAumentadoConSeptimaMayor)
             ),
-            ([.cuartaJusta, .quintaJusta, .septimaMenor], TextosDeTeoria.traducidos.map(\.tipoSeptimaSuspendida)),
-            ([.terceraMayor, .quintaJusta, .sextaMayor], TextosDeTeoria.traducidos.map(\.tipoSexta)),
-            ([.terceraMenor, .quintaJusta, .sextaMayor], TextosDeTeoria.traducidos.map(\.tipoMenorSexta)),
+            ([.cuartaJusta, .quintaJusta, .septimaMenor], TextosDeTeoria.traduccion(\.tipoSeptimaSuspendida)),
+            ([.terceraMayor, .quintaJusta, .sextaMayor], TextosDeTeoria.traduccion(\.tipoSexta)),
+            ([.terceraMenor, .quintaJusta, .sextaMayor], TextosDeTeoria.traduccion(\.tipoMenorSexta)),
             (
                 [.terceraMayor, .quintaJusta, .sextaMayor, .segundaMayor],
-                TextosDeTeoria.traducidos.map(\.tipoSextaYNovena)
+                TextosDeTeoria.traduccion(\.tipoSextaYNovena)
             ),
             (
                 [.terceraMayor, .quintaJusta, .septimaMenor, .segundaMayor],
-                TextosDeTeoria.traducidos.map(\.tipoNovenaDeDominante)
+                TextosDeTeoria.traduccion(\.tipoNovenaDeDominante)
             ),
             (
                 [.terceraMayor, .quintaJusta, .septimaMayor, .segundaMayor],
-                TextosDeTeoria.traducidos.map(\.tipoNovenaMayor)
+                TextosDeTeoria.traduccion(\.tipoNovenaMayor)
             ),
             (
                 [.terceraMenor, .quintaJusta, .septimaMenor, .segundaMayor],
-                TextosDeTeoria.traducidos.map(\.tipoMenorNovena)
+                TextosDeTeoria.traduccion(\.tipoMenorNovena)
             ),
-            ([.terceraMayor, .quintaJusta, .segundaMayor], TextosDeTeoria.traducidos.map(\.tipoNovenaAnadida)),
+            ([.terceraMayor, .quintaJusta, .segundaMayor], TextosDeTeoria.traduccion(\.tipoNovenaAnadida)),
             (
                 [.terceraMayor, .quintaJusta, .septimaMenor, .segundaMayor, .cuartaJusta],
-                TextosDeTeoria.traducidos.map(\.tipoUndecima)
+                TextosDeTeoria.traduccion(\.tipoUndecima)
             ),
             (
                 [.terceraMenor, .quintaJusta, .septimaMenor, .segundaMayor, .cuartaJusta],
-                TextosDeTeoria.traducidos.map(\.tipoMenorUndecima)
+                TextosDeTeoria.traduccion(\.tipoMenorUndecima)
             ),
             (
                 [.terceraMayor, .quintaJusta, .septimaMenor, .segundaMayor, .sextaMayor],
-                TextosDeTeoria.traducidos.map(\.tipoDecimotercera)
+                TextosDeTeoria.traduccion(\.tipoDecimotercera)
             ),
             (
                 [.terceraMenor, .quintaJusta, .septimaMenor, .segundaMayor, .cuartaJusta, .sextaMayor],
-                TextosDeTeoria.traducidos.map(\.tipoMenorDecimotercera)
+                TextosDeTeoria.traduccion(\.tipoMenorDecimotercera)
             ),
             (
                 [.terceraMayor, .quintaJusta, .septimaMenor, .segundaMenor],
-                TextosDeTeoria.traducidos.map(\.tipoSeptimaConNovenaMenor)
+                TextosDeTeoria.traduccion(\.tipoSeptimaConNovenaMenor)
             ),
-            ([.terceraMayor, .sextaAumentada], TextosDeTeoria.traducidos.map(\.tipoSextaAumentadaItaliana)),
+            ([.terceraMayor, .sextaAumentada], TextosDeTeoria.traduccion(\.tipoSextaAumentadaItaliana)),
             (
                 [.terceraMayor, .cuartaAumentada, .sextaAumentada],
-                TextosDeTeoria.traducidos.map(\.tipoSextaAumentadaFrancesa)
+                TextosDeTeoria.traduccion(\.tipoSextaAumentadaFrancesa)
             ),
             (
                 [.terceraMayor, .quintaJusta, .sextaAumentada],
-                TextosDeTeoria.traducidos.map(\.tipoSextaAumentadaAlemana)
+                TextosDeTeoria.traduccion(\.tipoSextaAumentadaAlemana)
             ),
         ]
         var diccionario: [Set<Int>: Traduccion] = [:]

@@ -115,7 +115,10 @@ una carpeta del `PATH`.
 ## Documentación
 
 La documentación está en el catálogo DocC `Sources/Armonia/Armonia.docc`, que Xcode muestra
-con *Product › Build Documentation*. También se puede leer directamente:
+con *Product › Build Documentation*. Para empezar, el tutorial interactivo [De una nota a un análisis
+armónico](https://rododendro1.github.io/Tesela/armonia/tutorials/armonia) lleva paso a paso de nombrar una nota a
+analizar una progresión leída de un fichero MIDI ([sus tres partes](Sources/Armonia/Armonia.docc/Tutoriales), con
+el código de cada paso probado). Los artículos también se pueden leer directamente:
 
 - [El modelo](Sources/Armonia/Armonia.docc/ElModelo.md): las coordenadas de quintas y octavas en que se apoya todo el motor.
 - [Acordes](Sources/Armonia/Armonia.docc/Acordes.md): cifrado americano generativo, identificación tolerante, estilos, estructura y conducción parsimoniosa de los acordes.
@@ -132,10 +135,11 @@ con *Product › Build Documentation*. También se puede leer directamente:
 ```
 swift build
 swift test                                    # todas las pruebas
-swift test --filter "^ArmoniaTests\."          # solo las rápidas (segundos)
+swift test --filter "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Formatos|Trastes)?Tests\."   # solo las rápidas (segundos)
+swift test --filter "^ArmoniaTeoriaTests\."    # las de un módulo
 swift test --filter "^ArmoniaExhaustivasTests\."  # solo las exhaustivas
 swift test --filter "^ArmoniaDocumentacionTests\."  # los ejemplos del README y de DocC
-python3 ../../Scripts/generar_pruebas_de_documentacion.py # regenera esas pruebas tras cambiar un ejemplo
+python3 ../../Scripts/generadores/generar_pruebas_de_documentacion.py # regenera esas pruebas tras cambiar un ejemplo
 ```
 
 La herramienta `armonia` y el ejemplo (`swift run EjemploArmonia`) son paquetes aparte, en
@@ -148,13 +152,13 @@ Los cambios de cada versión, con la guía para actualizar, están en [CHANGELOG
 
 ### Organización de los ficheros
 
-La biblioteca son cinco módulos por capas, y `Armonia` los reexporta: `import Armonia` da toda la API, e
+La biblioteca son seis módulos por capas, y `Armonia` los reexporta: `import Armonia` da toda la API, e
 `import ArmoniaTeoria` (con `ArmoniaNucleo`, de que depende) solo los acordes, las escalas y las tonalidades.
 Lo interno que se usa entre capas es `package`, no público. Un módulo solo usa los de su izquierda, y
-`Scripts/comprobar_modulos.py`, en la raíz del repositorio, lo vigila:
+`Scripts/comprobaciones/comprobar_modulos.py`, en la raíz del repositorio, lo vigila:
 
     ArmoniaNucleo ◄── ArmoniaTeoria ◄──┬── ArmoniaRepresentaciones
-                                       ├── ArmoniaPartitura
+                                       ├── ArmoniaPartitura ◄── ArmoniaFormatos
                                        └── ArmoniaTrastes
 
 Un fichero por concepto: el tipo principal junto con sus tipos auxiliares y sus extensiones
@@ -168,10 +172,12 @@ Sources/
 │   ├── Fundamentos/       Nota (con NotaNatural y Alteracion), Altura, Intervalo (con SentidoDelIntervalo,
 │   │                      CalidadDeIntervalo, Consonancia), Candidato, Protocolos, Aritmetica, y los
 │   │                      nombres de notas e intervalos en cada idioma (al final de Nota e Intervalo)
-│   ├── Texto/             Notacion (con EscrituraDeNotas e Idioma), EstiloDeCifrado, Traduccion, Lector,
-│   │                      ErrorDeLectura
+│   ├── Notacion/          Notacion (con EscrituraDeNotas e Idioma), ReglasDeIdioma, EstiloDeCifrado, Traduccion
+│   ├── Lectura/           Lector, ErrorDeArmonia (con ErrorAlLeer y MotivoDeLectura), ErrorDeLectura
+│   ├── Textos/            TextosDeNucleo y un fichero por idioma
 │   └── Postonal/          ConjuntoDeClases, TablaForte
 ├── ArmoniaTeoria/
+│   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
 │   │                      PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde
 │   ├── Escalas/           TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
@@ -182,12 +188,12 @@ Sources/
 │   │   │                  Messiaen), ModoGregoriano
 │   │   └── Tradiciones/   TipoDeEscala+India, +Tradiciones (la lista `tradicionales` y, cada una tras su marca,
 │   │                      Andes, China, Corea, Etiopia, Grecia, Indonesia, Japon, Klezmer, MundoArabe (maqamat) y
-│   │                      Persia (dastgah)) y ClaseDeEscala (con `Tradicion`: raga, melakarta, dromos…)
+│   │                      Persia (dastgah)) y CategoriaTradicional (con `Tradicion`: raga, melakarta, dromos…)
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
 │   │                      FuncionTonal y AcordeAnalizado)
 │   └── Coral/             Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion
 ├── ArmoniaRepresentaciones/
-│   ├── Afinacion/     Afinacion (frecuencias: temperamentos regulares y circulares, justa), Temperamento (el catálogo),
+│   ├── Afinacion/     Afinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica (el catálogo),
 │   │                  BaseDeHewlett (números)
 │   ├── Color/         CorrespondenciaDeColores (colores)
 │   ├── Redes/         Tonnetz (la red de quintas y terceras, en SVG),
@@ -197,50 +203,58 @@ Sources/
 │   │                  conducción mínima): todo lo que se apoya en el Tonnetz
 │   └── Dibujo/        DibujoSVG (título, leyenda y colores comunes de los dibujos)
 ├── ArmoniaPartitura/
-│   ├── Modelo/        Duracion (con Figura y Tempo), Compas, Evento, Melodia (con Voz),
-│   │                  Pentagrama (Clave, PosicionEnPentagrama, InstrumentoDePartitura)
-│   ├── Formatos/      MusicXML y MEI (exportación de voces, corales y progresiones),
-│   │                  ArchivoMIDI (ficheros MIDI estándar de voces, corales y progresiones)
+│   ├── Modelo/        Duracion (con Figura y Tempo), Compas, Evento, Melodia (con Voz), ErrorDeLecturaDePartitura,
+│   │                  Pentagrama (Clave, PosicionEnPentagrama, InstrumentoDePartitura), SignoMicrotonal
+│   ├── Dibujo/        PentagramaSVG (con sus opciones y los glifos SMuFL)
 │   └── Contrapunto/   Contrapunto (contrapunto de especies a dos voces, con sus faltas)
+├── ArmoniaFormatos/   MusicXML, MEI, LilyPond y ABC (exportación de voces, corales y progresiones),
+│                      ArchivoMIDI (ficheros MIDI estándar), la importación de MusicXML, MXL, MEI, ABC y MIDI
+│                      (Importacion, con ErrorDeImportacion) y el lector de XML propio (LectorXML)
 ├── ArmoniaTrastes/    Encordado (afinaciones del instrumento), Mastil (con PosicionEnElMastil: dónde suena cada nota),
 │                      Digitacion (formas de tocar un acorde en el mástil)
-└── Armonia/           el módulo paraguas, sin código propio: Exportaciones (reexporta los cinco)
+└── Armonia/           el módulo paraguas, sin código propio: Exportaciones (reexporta los seis)
     │                  y la documentación
     └── Armonia.docc/  portada y un artículo por tema
 ```
 
 Los nombres que dependen del idioma están en el fichero de cada tipo, al final, tras `// MARK: - Idiomas`
 (`grep -rl 'MARK: - Idiomas' Sources` los lista): en el núcleo, `Nota.swift` (letras, alteraciones
-y nombres de nota en las catorce lenguas de las notaciones), `Intervalo.swift` (calidades de
-intervalo, intervalos y consonancias) y `ErrorDeLectura.swift` (los mensajes de error: los generales y los de
-cada lectura, en `TextosDeNotas`, `TextosDeAcordes`, `TextosDeEscalas` y `TextosDePartitura`); en las demás
-capas, los modos y las tonalidades, los papeles en el acorde, las calidades de tríada, los grados, las claves,
-las figuras, las duraciones y los colores. Los textos usan `Traduccion`, que pide los catorce idiomas:
+y nombres de nota en las quince lenguas de las notaciones), `Intervalo.swift` (calidades de
+intervalo, intervalos y consonancias) y `ErrorDeLectura.swift` (los mensajes de error generales y los de las
+notas); en las demás capas, los errores de lectura de cada una (`ErrorDeLecturaDeTeoria.swift`,
+`ErrorDeLecturaDePartitura.swift`), los modos y las tonalidades, los papeles en el acorde, las calidades de tríada, los grados, las claves,
+las figuras, las duraciones y los colores. Los textos usan `Traduccion`, que pide los quince idiomas:
 español, inglés, catalán, gallego, asturiano, aragonés, euskera, portugués, francés, occitano, italiano, alemán,
 griego y ruso. Los nombres que son datos de un catálogo (tipos de acorde y de escala, instrumentos)
-siguen junto a su catálogo, en los catorce idiomas (los de las escalas en los que no son español ni inglés,
+siguen junto a su catálogo, en los quince idiomas (los de las escalas en los que no son español ni inglés,
 un fichero por idioma en `ArmoniaTeoria/Escalas/Nombres/`, `NombresDeEscalas+Catalan.swift`…, con los alias con que también se leen;
-`Scripts/comprobar_catalogo.py` vigila que no falte ninguno, y `Scripts/nombres_de_escalas/` tiene las herramientas con que se sembraron).
+`Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno, y `Scripts/generadores/nombres_de_escalas/` tiene las herramientas con que se sembraron).
 
-Para añadir un idioma: un caso en `Idioma` (con su `codigo`) y en `EscrituraDeNotas` (con su constante en
-`Notacion`), un campo en `Traducido`, y corregir lo que el compilador señale: ningún `switch` sobre el
+Para añadir un idioma: un caso en `Idioma`, su fila en `ReglasDeIdioma` (código, nombre, sílabas, alteraciones y
+modos) y en `Scripts/comprobaciones/idiomas.py`, un caso en `EscrituraDeNotas` (con su constante en `Notacion`), un campo en
+`Traducido`, un fichero en cada `Textos/`, y corregir lo que el compilador señale: ningún `switch` sobre el
 idioma o la escritura tiene `default`, y cada `Traduccion` sin el idioma nuevo deja de compilar.
 
-Las pruebas rápidas están en `Tests/ArmoniaTests/`, un fichero por carpeta de fuentes
-(`FundamentosTests.swift`, `TonalidadTests.swift`, `PartituraTests.swift`…) más `GeneralTests.swift`, solo con lo que atraviesa todo el motor
-(literales, Codable y convenciones de nombres). Las exhaustivas
+Las pruebas rápidas están en un objetivo por módulo (`Tests/ArmoniaNucleoTests/`, `Tests/ArmoniaTeoriaTests/`,
+`Tests/ArmoniaRepresentacionesTests/`, `Tests/ArmoniaPartituraTests/`, `Tests/ArmoniaFormatosTests/`,
+`Tests/ArmoniaTrastesTests/`), que depende
+solo de ese módulo y de los que puede usar: una prueba de Teoría que necesitara Partitura no compila. Lo que cruza
+capas (leer acordes en cada notación, literales, Codable, convenciones de nombres, entradas inválidas, robustez, los
+textos con valores y los dibujos de referencia) está en `Tests/ArmoniaTests/`, y lo que comparten varias (el
+generador al azar con semilla y el lector de XML) en `Tests/ApoyoDePruebas/`. Las exhaustivas
 están en un objetivo aparte, `Tests/ArmoniaExhaustivasTests/ExhaustivasTests.swift`. Las de la
 línea de comandos están con ella, en `Apps/ArmoniaCLI/Tests/`.
 
 ### Capas
 
-La biblioteca se reparte en cinco módulos que siguen unas capas: **ArmoniaNucleo** (Fundamentos,
+La biblioteca se reparte en seis módulos que siguen unas capas: **ArmoniaNucleo** (Fundamentos,
 Texto, Postonal), **ArmoniaTeoria** (Acordes, Escalas, Tonalidad, que se necesitan entre sí) y
-tres hojas que usan las anteriores y no se usan entre sí: **ArmoniaRepresentaciones** (afinación,
-color, dibujo y redes, con la teoría neorriemanniana), **ArmoniaPartitura** (modelo y formatos)
+tres ramas que usan las anteriores y no se usan entre sí: **ArmoniaRepresentaciones** (afinación,
+color, dibujo y redes, con la teoría neorriemanniana), **ArmoniaPartitura** (el modelo, el pentagrama en SVG y el
+contrapunto), con **ArmoniaFormatos** encima (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond),
 y **ArmoniaTrastes** (instrumentos de cuerda con trastes). `Armonia` los reexporta
 todos; `Hexagonos`, que usan las Representaciones, se importa aparte. `python3
-Scripts/comprobar_modulos.py`, que ejecuta el CI, comprueba que las dependencias declaradas y los
+Scripts/comprobaciones/comprobar_modulos.py`, que ejecuta el CI, comprueba que las dependencias declaradas y los
 `import` respetan esas capas.
 
 ### Integración continua

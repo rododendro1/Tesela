@@ -22,20 +22,6 @@ extension TextosDePartitura {
         especieConElContrapuntoDebajo: { n in "Вид \(n), контрапункт под cantus firmus" },
         sinFaltas: "Ошибок нет.",
 
-        // ArchivoMIDI.swift
-        pistaDeAcordes: "аккорды",
-        pistaDelBajo: "бас",
-
-        // Importacion.swift
-        formatoDesconocido: "Файл не является ни MIDI, ни MusicXML.",
-        musicXMLComprimido: "Сжатый MusicXML (.mxl) повреждён или не читается: экспортируйте его без сжатия (.musicxml).",
-        midiDanado: "Файл MIDI повреждён или обрезан.",
-        midiConTiempoSMPTE: "Файл MIDI считает время в кадрах SMPTE, а не в тиках на четверть.",
-        xmlDanado: { linea in "Файл MusicXML повреждён (строка \(linea))." },
-        noEsMusicXMLPorPartes: "XML не является партитурой MusicXML по партиям (score-partwise).",
-        sinNotas: "В файле нет ни одной ноты.",
-        sinAcordes: "В файле не звучит ни одного аккорда.",
-
         // Duracion.swift
         cuadrada: "бревис",
         redonda: "целая",
@@ -59,6 +45,42 @@ extension TextosDePartitura {
         claveDeDoEnPrimera: "сопрановый ключ",
         claveDeDoEnSegunda: "меццо-сопрановый ключ",
         claveDeDoEnTercera: "альтовый ключ",
-        claveDeDoEnCuarta: "теноровый ключ"
+        claveDeDoEnCuarta: "теноровый ключ",
+        // Pentagrama.swift (InstrumentoDePartitura)
+        instrumentosPropiosEnIngles: true,
+        instrumentoPiano: "фортепиано",
+        instrumentoFlauta: "флейта",
+        instrumentoFlautin: "флейта-пикколо",
+        instrumentoFlautaEnSol: "альтовая флейта",
+        instrumentoOboe: "гобой",
+        instrumentoCornoIngles: "английский рожок",
+        instrumentoClarineteEnSib: "кларнет in B",
+        instrumentoClarineteEnLa: "кларнет in A",
+        instrumentoClarineteEnMib: "кларнет in Es",
+        instrumentoClarineteBajo: "бас-кларнет",
+        instrumentoFagot: "фагот",
+        instrumentoSaxofonSoprano: "саксофон-сопрано",
+        instrumentoSaxofonAlto: "саксофон-альт",
+        instrumentoSaxofonTenor: "саксофон-тенор",
+        instrumentoSaxofonBaritono: "саксофон-баритон",
+        instrumentoTrompetaEnSib: "труба in B",
+        instrumentoTrompetaEnDo: "труба in C",
+        instrumentoFliscorno: "флюгельгорн",
+        instrumentoTrompaEnFa: "валторна in F",
+        instrumentoTrombon: "тромбон",
+        instrumentoTuba: "туба",
+        instrumentoViolin: "скрипка",
+        instrumentoViola: "альт",
+        instrumentoViolonchelo: "виолончель",
+        instrumentoContrabajo: "контрабас",
+        instrumentoGuitarra: "гитара",
+        instrumentoBajoElectrico: "бас-гитара",
+        instrumentoXilofono: "ксилофон",
+        instrumentoGlockenspiel: "колокольчики",
+        instrumentoCelesta: "челеста",
+        // ErrorDeLecturaDePartitura.swift
+        duracionNoValida: { texto in "«\(texto)» — не длительность: ожидалась нота (1, 2, 4, 8, 16…, с точкой: 4.) или доля целой (3/8, 1/12)" },
+        compasNoValido: { texto in "«\(texto)» — не размер: ожидалось числитель/знаменатель, где знаменатель — степень двойки (4/4, 6/8, 7/8), C или ¢" },
+        contrapuntoDeOtraDuracion: { redondas in "контрапункт должен длиться столько же, сколько cantus firmus: \(redondas) целых, по одной на ноту" }
     )
 }

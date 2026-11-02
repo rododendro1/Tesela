@@ -2,6 +2,396 @@
 
 ## Sin publicar
 
+### Planificar modulaciones
+
+- **`Tonalidad.modulaciones(hasta:)`** escribe progresiones que modulan a otra tonalidad (`PlanDeModulacion`): por
+  acorde común (Do → Sol por Lam, vi = ii), por séptima disminuida enarmónica (Do → La♭: Do♯°7, vii°7/ii, escrito
+  Sol°7, vii°7 en La♭) o directa (ii–V7–I de la nueva). Cada plan lleva su progresión completa y su acorde pivote
+  leído en las dos tonalidades.
+
+### Cifrado romano
+
+- **`Tonalidad.acorde(romano:)`** y **`Tonalidad.acordes(romanos:)`** leen cifrados romanos, el camino inverso
+  de `analizar(_:)`: inversiones («ii65», «V43»), grados alterados y prestados («♭VI», «♭VII»), dominantes y
+  sensibles secundarias («V7/V», «vii°7/ii», también encadenadas: «V/V/V»), sustituto tritonal («subV7/ii»),
+  napolitana («N6», «♭II6») y sextas aumentadas («It+6», «Fr+6», «Ger+6»).
+
+### Armonía negativa, disposición por cuartas y armonía modal
+
+- **Armonía negativa**: `Tonalidad.negativa(_:)` refleja una nota sobre el eje entre la tónica y la dominante (Mi ↔
+  Mi♭, Si ↔ La♭ en Do), y `Tonalidad.negativo(_:)` y `negativos(_:)` hacen lo mismo con un acorde y con una
+  progresión (Do → Dom, Fa → Solm, Sol7 → Reø7).
+- **`DisposicionDeAcorde.cuartal`**: cuatro notas por cuartas de la escala del acorde, con sus notas guía y sin notas
+  a evitar (Rem7 → Re Sol Do Fa, Sol7 → Fa Si Mi La).
+- **Armonía modal**: `Escala.modoDeLaMayor`, `Escala.notaCaracteristica` (la 6.ª mayor del dórico, la 4.ª aumentada
+  del lidio…), `Escala.acordesCaracteristicos` (las tríadas que la llevan) y `Escala.cadenciaModal` (IV–i en
+  dórico, ♭II–i en frigio, ♭VII–I en mixolidio…).
+
+### Esquemas armónicos: jazz y secuencias
+
+- **`EsquemaArmonico.buscar(en:)`** reconoce en una progresión, en cualquier tonalidad, el ii–V–I (y el ii–V sin
+  resolver), el turnaround, el backdoor y el blues de 12 compases, y las secuencias y esquemas del barroco y el
+  galante: quintas descendentes, romanesca, canon de Pachelbel, monte, fonte y ponte. Cada uno dice dónde está y a
+  qué tónica va, y `EsquemaArmonico.Tipo.acordes(en:)` lo escribe en una tonalidad. Nombres en los quince idiomas.
+- **`Rearmonizacion.Recurso.iiV`** (preparar un acorde con su ii–V: Rem → Mim7 La7 Rem) y
+  **`Rearmonizacion.Recurso.backdoor`** (el V7 de una tonalidad mayor por iv7–♭VII7).
+
+### Análisis armónico ampliado
+
+- **Sustituto tritonal** (`AcordeAnalizado.Categoria.sustitutoTritonal(de:)`): una séptima de dominante medio tono
+  por encima de su destino, cuando resuelve en él, se cifra «subV7» (o «subV7/ii»), con función de dominante y la
+  escala lidia dominante. La♭7–Sol sigue siendo la sexta aumentada alemana.
+- **I64 cadencial** (`AcordeAnalizado.Categoria.cuartaYSextaCadencial`): la tónica en segunda inversión que va a la
+  dominante sobre el mismo bajo sigue cifrándose «I64», pero tiene función de dominante.
+- **Semicadencia frigia** (`Cadencia.esFrigia`, del iv6 al V) y **plagal menor** (`Cadencia.esPlagalMenor`, del iv
+  prestado al I mayor). `Cadencia.nombre(en:)` y `description` las nombran así en los quince idiomas.
+
+### Bajo cifrado
+
+- **`Tonalidad.acorde(sobre:cifras:)`** lee las cifras del bajo continuo sobre una nota del bajo, contando los
+  intervalos en la armadura (abreviaturas «6», «64», «7», «65», «43», «42», «4», «9»; alteraciones delante o detrás
+  de una cifra, o solas para la tercera).
+- **`Tonalidad.acordes(bajoCifrado:)`** lee una línea («La Fa:6 Mi:# La») y
+  **`Coral.realizar(bajoCifrado:en:soprano:)`** la realiza a cuatro voces.
+
+### Notas extrañas a la armonía
+
+- **`NotaDeLaMelodia.analizar(_:sobre:partesFuertes:)`** mira cada nota de una melodía con el acorde que suena con
+  ella y, si no es del acorde, dice qué nota extraña es (`NotaExtrana`) por cómo se llega a ella y cómo se sale: de
+  paso, bordadura, apoyatura, retardo, anticipación, escapada, pedal o libre. Los retardos llevan sus cifras sobre
+  el bajo (`cifrasDelRetardo`: «4-3», «7-6», «9-8») y, si se dan las partes fuertes, cada nota dice si está
+  acentuada. Los nombres, en los quince idiomas («nota de paso», «passing tone», «Durchgangston»).
+
+### Escalas compatibles y acordes de una escala
+
+- **`Acorde.escalasCompatibles(entre:)`** busca por defecto entre las escalas de jazz (`TipoDeEscala.deJazz`: los
+  modos de la mayor, de la menor melódica y de la menor armónica, las disminuidas, la de tonos enteros, las bebop,
+  las pentatónicas y la de blues), no en todo el catálogo, y las ordena de las que tienen menos notas a evitar a
+  las que más, no por su número de notas: Do7(♯11) da primero Do lidio dominante.
+- **`Escala.acordesQueCaben(grado:)`** y `Escala.acordesQueCaben`: los acordes de `TipoDeAcorde.paraEscalas` que
+  caben sobre cada grado (sus, sextas, 6/9, add9, dominantes alteradas…), no solo los de terceras.
+- **`Escala.estructurasSuperiores(sobre:)`**: las tríadas de la escala con tensiones y sin notas a evitar que se
+  tocan sobre un acorde (Re sobre Do7M en lidio).
+- `armonia escala --acordes` escribe los acordes que caben en cada grado, y `armonia analizar --escalas`, las
+  estructuras superiores de cada acorde.
+
+### Escalas sobre un acorde
+
+- **`Escala.notas(sobre:)`**: cada nota de una escala sobre un acorde, con su papel (`PapelEnLaEscala`: nota del
+  acorde, tensión disponible o nota a evitar) y su grado como en los cifrados de jazz (`NotaSobreElAcorde.cifra`:
+  «9», «♯11», «♭13»). `Escala.tensiones(sobre:)` y `Escala.notasAEvitar(sobre:)` dan solo unas u otras, y
+  `Escala.contiene(acorde:)`, si la escala tiene todas las notas de un acorde.
+- **La escala de cada acorde en su tonalidad**: `Tonalidad.escalaDelAcorde(_:)` y `AnalisisArmonico.escalas` la eligen
+  por lo que hace el acorde en el análisis (diatónico, dominante o sensible secundaria, napolitana, sexta
+  aumentada, préstamo o cromático): Re dórico para Rem7 en Do, La frigio dominante para V7/ii, Si♭ lidio dominante
+  para ♭VII7. Si no cabe, la de `TipoDeEscala.paraAcordes` que saca menos notas de la tonalidad.
+- **`Escala.escalaMadre`**: de qué escala es modo cada una (`ModoDeEscala`), entre la mayor, la menor melódica, la
+  menor armónica y la mayor armónica (`TipoDeEscala.familiasDeModos`): Do alterada, modo 7 de Re♭ menor melódica.
+  Se nombra en los quince idiomas («modo 2 de Do mayor», «mode 2 of C major»).
+- **`armonia analizar --escalas`** escribe debajo de cada acorde su escala, sus tensiones y sus notas a evitar, y
+  `armonia escala` dice de qué escala es modo.
+
+### Disposiciones de piano y jazz
+
+- **`DisposicionDeAcorde`**: cerrada, drop 2, drop 3, drop 2 y 4, la shell (fundamental, tercera y séptima) y las
+  notas guía. `Acorde.disposiciones(_:en:)` da todas las de un acorde en un ámbito, y
+  `DisposicionDeAcorde.conducir(_:en:)`, una por acorde de una progresión con el menor movimiento de las voces.
+  `Acorde.notasParaDisponer` elige las cuatro notas de un acorde extenso (tercera, séptima y tensiones) y
+  `Acorde.notasGuia`, la tercera y la séptima. `DisposicionDeAcorde.svgPentagrama(_:titulo:opciones:)` las dibuja,
+  una por columna.
+
+### Contrapunto
+
+- **El contrapunto se exporta.** `Contrapunto` escribe sus dos voces en MusicXML, MEI, LilyPond y ABC
+  (`musicXML(tonalidad:tempo:titulo:)`, `mei`, `lilyPond`, `abc`), cada una en su pentagrama con la clave que le
+  va mejor, y en MIDI (`midi(tonalidad:tempo:titulo:instrumento:)`), con una pista por voz. `vozDelCantus` da el
+  cantus firmus como `Voz`, en redondas.
+
+### ArmoniaFormatos
+
+- Los formatos de fichero salen de `ArmoniaPartitura` a un módulo propio, **`ArmoniaFormatos`** (con su producto):
+  la exportación a MusicXML, MEI, LilyPond, ABC y MIDI, la importación (`PiezaImportada`, `ErrorDeImportacion`) y
+  el lector de XML. `ArmoniaPartitura` se queda con el modelo, el pentagrama en SVG y el contrapunto. Con
+  `import Armonia` no cambia nada; quien importe solo `ArmoniaPartitura` y use los formatos tiene que añadir
+  `import ArmoniaFormatos` (y el producto `ArmoniaFormatos` en su `Package.swift`).
+
+### Errores por capa
+
+Cambia la API pública de los errores: quien haga `catch let error as ErrorDeLectura` o un `switch` sobre su
+`motivo` tiene que adaptarse.
+
+- **`ErrorDeArmonia`**, el protocolo común de los errores del motor, con `descripcion(en:)`, `description` y
+  `errorDescription`. Lo cumplen los tres errores de lectura, `ErrorDeImportacion` y `ErrorDeUIL`, así que para
+  mostrar cualquiera basta `catch let error as any ErrorDeArmonia`.
+- **Un error de lectura por capa.** `ErrorDeLectura` (Núcleo) se queda con las notas, las alturas, los intervalos y
+  lo general (`textoVacio`, `caracteresSobrantes`). Los motivos de los cifrados, las escalas, las tonalidades y los
+  corales pasan a `ErrorDeLecturaDeTeoria.Motivo`, con `CalidadesIncompatibles` y `RechazoDeAcorde`; los de las
+  duraciones, los compases y el contrapunto, a `ErrorDeLecturaDePartitura.Motivo`. Los tres cumplen `ErrorAlLeer`
+  (texto, posición, motivo, `explicacion(en:)` y `situado(en:posicion:)`), y sus motivos, `MotivoDeLectura`.
+  `Acorde(leyendo:)` lanza `ErrorDeLectura` si falla la fundamental y `ErrorDeLecturaDeTeoria` si falla el
+  cifrado; `Voz(leyendo:)`, `ErrorDeLectura` si falla una nota y `ErrorDeLecturaDePartitura` si falla una
+  duración.
+- Los textos de esos motivos pasan de `TextosDeNucleo` a `TextosDeTeoria` y `TextosDePartitura`: el Núcleo ya no
+  sabe nada de acordes, escalas ni partituras.
+- `ErrorDeUIL` se lee en los quince idiomas (`descripcion(en:)`); antes solo tenía su `description` en español.
+- La CLI y `Notacion.mensaje(de:)` de las apps tratan todos los errores con un solo `catch`, y muestran los de UIL
+  en el idioma elegido.
+
+### Eliminado
+
+- Los dos nombres que la 0.3.1 dejó marcados como obsoletos, y con ellos `ArmoniaNucleo/Obsoletos.swift`:
+  `Tipografia.compacta` (ahora `.conDobles`) y `Alteracion.simboloCompacto` (ahora `simboloConDobles`).
+- `armonia`: las quince constantes públicas con la ayuda de cada idioma en `LineaDeComandos` (`ayuda`, `help`,
+  `ajuda`, `axuda`, `laguntza`, `ajudaEmPortugues`, `aide`, `aiuto`, `hilfe`, `ajudaEnOccitan`, `spravka`, `sugo`,
+  `voitheia`, `aduya` y `ayudaEnAsturianu`). La de cualquier idioma es `LineaDeComandos.ayuda(en:)`:
+  `ayuda(en: .delIdioma(.catalan))` es la de `armonia ayuda --idioma ca`.
+
+## 0.3.1 (2026-11-02)
+
+- **Veintiocho escalas tradicionales más** (el catálogo microtonal pasa de 68 a 74):
+  - Grecia antigua: las harmoniai que faltaban (mixolidia, hipolidia, hipofrigia e hipodoria), que con la doria,
+    la frigia y la lidia son las siete especies de octava (`TipoDeEscala.harmoniai`), y el tetracordo
+    enarmónico, Mi Fa♭ Fa La en doce notas y Mi Fa𝄳 Fa La en cuartos de tono. `Intervalo.segundaDisminuida`,
+    para escribirlo.
+  - Makamlar: Mâhur, Acemaşiran, Sultânîyegâh, Şedaraban, Hümâyun, Uzzâl y Zirgüleli Hicaz, los cinco últimos
+    con su versión en comas de Arel-Ezgi-Uzdilek.
+  - Maqamat sin cuartos de tono: Āthār Kurd, maqām Nikrīz, Lāmī y Ṣabā Zamzam.
+  - Indonesia: los pathet de Java (pélog lima, nem y barang; sléndro nem, sanga y manyura) y los modos tembung
+    y sunaren de Bali, en la categoría nueva `CategoriaTradicional.pathet` (`TipoDeEscala.pathets`).
+  - Rāgas que suben y bajan en línea recta: los janya Mohanakalyāṇi, Sāveri y Nāṭa (con su mēḷa padre) y el
+    indostánico Lalit.
+- La escala de sexta disminuida de Barry Harris se encuentra por su nombre: «sexta disminuida» es el bebop
+  mayor y «sexta menor disminuida», el bebop menor melódica (en inglés, «major/minor sixth diminished»).
+- **`PiezaImportada` lee MEI y ABC**, además de MIDI y MusicXML: `init(mei:)`, `init(abc:)`, y `init(leyendo:)`
+  los reconoce solos. De MEI: partes y capas, armadura, compás, tempo, tresillos, ligaduras, notas de adorno
+  (que no cuentan), `accid.ges` y los microtonos (cuartos de tono, koron y sori, comas turcas). De ABC, como lo
+  escriben los cancioneros: cabecera (T, M, L, Q, K con sus modos, V), alteraciones que duran el compás,
+  ligaduras, tresillos `(3`, ritmo con puntillo `>`/`<`, acordes `[CEG]`, campos dentro de la música `[K:D]`,
+  silencios de varios compases y cuartos de tono `^/`. Lee la primera canción del fichero. Lo que exportan
+  `mei()` y `abc()` vuelve igual (por ABC, las comas, temperadas).
+- **Lector de XML propio** en lugar de `XMLParser`: MusicXML y MEI ya no necesitan FoundationXML (ni libxml2 en
+  Linux). Admite UTF-8, UTF-16 y las codificaciones de un byte (Latin-1, windows-1252), y da la línea del error.
+  `ErrorDeImportacion.xmlDanado` dice ahora «El fichero XML está dañado» y `formatoDesconocido` nombra los cuatro
+  formatos.
+- **Tutorial interactivo de DocC**, «De una nota a un análisis armónico», en tres partes: notas, alturas e
+  intervalos; acordes y escalas, y el análisis de una progresión, de la tonalidad a las cadencias y desde un
+  fichero MIDI hasta MusicXML. El código de cada paso se prueba como los ejemplos de los artículos.
+- **Fuzzing de los lectores** (`Herramientas/FuzzArmonia`): libFuzzer con AddressSanitizer sobre MIDI, MusicXML,
+  MXL, MEI, ABC, UIL y los textos de cifrados, notas, escalas, corales y voces, diez minutos cada domingo en el CI.
+- `PiezaImportada.acordes()` identifica una sola vez el acorde de las ventanas que suenan igual. Un fichero con
+  las doce notas sostenidas durante horas tardaba más de un minuto en leer sus acordes, y ahora una fracción de
+  segundo (lo encontró el fuzzing en su primer minuto).
+- **Los microtonos también se leen**: `NotaDeLaPieza.desvio`, los cents que una nota importada se aparta de su
+  altura. En MusicXML, un `<alter>` con decimales ya no se redondea: `-0.5` sobre E es Mi♭ y 50 cents (antes, Mi♭
+  sin más). En MIDI, cada nota se lleva la inflexión de tono (pitch bend) de su canal, en el ámbito que fije el
+  RPN 0. Las escalas microtonales salen y vuelven igual por los dos formatos.
+- Los binarios de `armonia` para Linux se compilan sin información de depuración ni símbolos, y el workflow de la
+  versión crea la etiqueta si se lanza a mano y pone las notas del CHANGELOG a una release creada sin ellas.
+- **Echoi bizantinos y śruti indios**, dos sistemas microtonales nuevos (el catálogo microtonal pasa de 49 a 68):
+  - `SistemaMicrotonal.moria72`, los 72 moria de la Comisión Patriarcal (1881), y nueve escalas nuevas de la
+    tradición `.bizancio`, categoría `.echos` (`TipoDeEscala.echoi`): los ocho echoi y el légetos. Todos menos el
+    trítos, que ya es la mayor, tienen versión microtonal (Re Mi⁻² Fa Sol La Si⁻² Do).
+  - `SistemaMicrotonal.sruti`, los 22 śruti con sus razones justas (`razonesDeLosSruti`), y la versión
+    microtonal de los diez thāṭ y de Yaman: el ṣaḍja-grāma de Arnold, con el re y el dha pitagóricos de Bhairav,
+    Bhairavī y Toḍī (Do Re↓ Mi↓ Fa Sol La↓ Si↓ en Bilāval).
+  - En el pentagrama, los moria llevan los signos de Wyschnegradsky y los śruti la flecha de Helmholtz-Ellis
+    (catorce glifos más de Bravura); en MusicXML, los moria también.
+- **Dieciséis escalas tradicionales más**, todas con su versión microtonal (de treinta y tres a cuarenta y nueve):
+  - Makamlar: Hüzzam, Saba, Karcığar, Suzinak, Nikriz y Nev'eser, en comas de Arel-Ezgi-Uzdilek.
+  - Dastgāh y āvāz persas, con el *koron*: Segāh (sobre Mi, con la tónica en un *koron*), Navā, Bayāt-e Tork,
+    Afšāri, Dašti, Abu ʿAtā y Bayāt-e Esfahān.
+  - Maqamat en cuartos de tono: Rāḥat al-Arwāḥ (sobre Si𝄳), Bayātī Shūrī y Jiharkāh.
+- **Más escalas con microtonos**, de nueve a treinta y tres:
+  - Maqamat nuevos en cuartos de tono: Ḥusaynī y Nayrūz, y Sīkāh, maqām Huzām e ʿIrāq, con la tónica en un cuarto
+    de tono (se escriben sobre Mi y Si; su primer paso microtonal es −1).
+  - Makamlar nuevos con su segâh (Si una koma bajo): Uşşak, Hüseynî y Segâh makamı, que empieza en la segâh.
+  - Versión microtonal de Hicazkâr makamı y de los quince dromoi: Ousák y Sabáh, en cuartos de tono, con la
+    segunda neutra de Bayātī y de Ṣabā; los demás, en comas de Arel-Ezgi-Uzdilek, con las notas del makam que tiene
+    las suyas (Hitzáz como Hicaz, Tabahaniótikos como Suzinak, Niavént como Nev'eser, Kartzigár como Karcığar…) o,
+    los que solo existen en Grecia (Pireótikos, Tsingánikos, Houzám, Sengáh), con los mismos tetracordos.
+  - `TipoDeEscalaMicrotonal.pasos` cuenta desde la tónica temperada, y la tónica puede ser un microtono.
+- **Notaciones con palabras**: `Notacion.espanol`, `.ingles`, `.catalan`… pasan a llamarse `.espanolPalabras`,
+  `.inglesPalabras`, `.catalanPalabras`… en los quince idiomas, como `.espanolASCII` y `.espanolCompacto`; igual en
+  `EscrituraDeNotas`. Los nombres de antes desaparecen sin pasar por obsoletos. Los casos de `Idioma`
+  (`.espanol`, `.catalan`…) no cambian.
+- `Tipografia.unicode` pasa a llamarse `.conSimples` (un signo por semitono: Fa♯, Si♭♭), junto a `.conDobles`;
+  también sin obsoleto. El `rawValue` es ahora «conSimples».
+- **Categorías indias en IAST**: `CategoriaTradicional.nombre` y sus traducciones de alfabeto latino escriben
+  thāṭ, mēḷa y rāga (Thāṭ, Mēḷa y Rāga en alemán y húngaro), como dastgāh; igual la ayuda de
+  `armonia escalas` y la documentación. Los casos (`.thaat`, `.melakarta`, `.raga`) no cambian, y
+  `--categoria thaat`, `that` o `thāṭ` (y `melakarta`, `mela` o `mēḷa`) siguen encontrando la misma categoría.
+- **Las compactas escriben las dobles con 𝄪 y 𝄫**: `.espanolCompacto`, `.inglesCompacto`, `.catalanCompacto`,
+  `.francesCompacto`, `.griegoCompacto`, `.rusoCompacto`… usan `Tipografia.conDobles`: Fa𝄪, B𝄫, Do𝄪♯. El alemán y
+  el húngaro siguen con sus sufijos (Fisis). También `Nota.nombre`, `description`, `texto` y la codificación
+  (Si𝄫3); lo guardado con ♭♭ se sigue leyendo.
+- **Microtonos en las partituras**: cada nota de un `Evento` puede apartarse de su nota temperada (`desvios`, en
+  cents; en texto, `Mi♭4(50¢):4`), y `Escala.voz(octava:sentido:duracion:)` da una escala en negras con sus
+  microtonos. Los formatos los escriben: MusicXML, con el `alter` en decimales (−0.5) y su `<accidental>`
+  (`quarter-flat`, `koron` y, para las comas, `other` con el glifo SMuFL); MEI, con `accid` (`1qf`, el koron y las
+  comas de Arel-Ezgi-Uzdilek, `kf`, `bs`…); LilyPond y ABC, con los cuartos de tono (`eeh`, `_/E`), y las comas como
+  la nota temperada; MIDI, con una inflexión de tono (pitch bend, en el ámbito de ±2 semitonos) antes de cada nota.
+  `Escala.svgPentagrama()` dibuja sus signos con catorce glifos más de Bravura: los cuartos de tono de
+  Stein-Zimmermann, las ocho comas de Arel-Ezgi-Uzdilek, el koron y el sori. En la línea de comandos,
+  `armonia musicxml|mei|lilypond|abc|midi escala Re bayati` exporta una escala.
+- **`armonia escalas`**: el catálogo de escalas en la línea de comandos, las habituales y las de otras tradiciones
+  agrupadas por tradición y categoría, con sus notas desde Do y la marca de las que tienen microtonos. Se filtra con
+  `--tradicion turquia` (o `--tradition turkey`) y `--categoria maqam`, y un texto busca en los nombres. Con su ayuda
+  en los quince idiomas.
+- **Microtonos**: la versión microtonal de las escalas que se aproximan, `TipoDeEscala.microtonal` (un
+  `TipoDeEscalaMicrotonal`: la escala temperada y la posición de cada grado en los pasos de su `SistemaMicrotonal`).
+  Maqām Rāst, Bayātī, Ṣabā y Sūznāk van en cuartos de tono (`.cuartosDeTono`); Šur, Homāyun y Čahārgāh, con el
+  koron (`.persa`); Rast y Hicaz makamı, en las 53 comas de Arel-Ezgi-Uzdilek (`.comas53`).
+  `Escala.notasMicrotonales(sentido:)` da sus notas (`NotaMicrotonal`), con los cents desde la tónica y su nombre
+  (Mi𝄳, Fa𝄲, Si⁻¹ para una koma bajo Si). En la línea de comandos, `armonia escala Re bayati` añade una línea
+  con los microtonos y otra con los cents.
+- **Makamlar, mugam y más maqamat y dastgāh**, en su versión temperada: dos tradiciones nuevas, `Tradicion.turquia`
+  y `.azerbaiyan`, con sus categorías `CategoriaTradicional.makam` y `.mugam` (con su nombre en los quince idiomas).
+  Siete makamlar turcos (`TipoDeEscala.makamlar`: Rast, Hicaz, Hicazkâr, Nihâvend, Kürdî, Bûselik y Çârgâh, con
+  «makamı» detrás) y cuatro mugam de Hacıbəyov (`TipoDeEscala.mugamlar`: Rast, Şur, Segah y Çahargah, con «muğamı»
+  detrás; los tres primeros, de ocho notas). Los maqamat pasan de 6 a 10, con los primeros que tienen cuartos de
+  tono, aproximados: maqām Rāst, Bayātī, Ṣabā y Sūznāk. Los dastgāh, de 3 a 5, con Šur (aproximado) y Rāst-Panjgāh.
+  Los nombres llevan el sufijo o el prefijo de su categoría donde «Rast» sola sería el dromos griego. Los que tienen
+  la tónica en un cuarto de tono, o cuyo redondeo cambia el carácter (Sīkāh, Uşşak, Segāh…), esperan a la capa
+  microtonal.
+- `Tipografia.compacta` pasa a llamarse `.conDobles` (𝄪 y 𝄫 por cada pareja), y `Alteracion.simboloCompacto`,
+  `simboloConDobles`, para no confundirlas con las notaciones compactas. Los nombres de antes siguen, obsoletos,
+  en `Obsoletos.swift`. El `rawValue` del caso es ahora «conDobles».
+- `.alemanPalabras` escribe el Si♭ como B, igual que sus cifrados (B7) y tonalidades (B-Dur), y no «H Be»; «H Be» se
+  sigue leyendo. El Si𝄫 sigue siendo «H Doppel-Be».
+- En la línea de comandos la octava va como la escriba la notación: en subíndice en las compactas (la de siempre,
+  Fa♯₄; `--ingles` sigue con F#4) y con cifras en las demás. `--cifras` (o `--digits`) y `--subindices` la fijan.
+- `EstiloDeCifrado.espanolCompacto`, como `.inglesCompacto`: es el mismo que `.predeterminado`.
+
+## 0.3.0 (2026-11-01)
+
+- **Sin nombres obsoletos**: desaparecen los que la 0.2.0 marcó como obsoletos al revisar la terminología (los
+  ficheros `Obsoletos.swift` de cada módulo). Con su nombre nuevo: `Altura.la440` (`la4`), `frecuencia(la4:)`
+  (`frecuencia(frecuenciaDelLa4:)`), `ClaseDeEscala` (`CategoriaTradicional`), `TipoDeEscala.clase` (`categoria`) y
+  `tradicionales(clase:)` (`tradicionales(categoria:)`), `Temperamento` (`AfinacionHistorica`), `EntonacionJusta`
+  (`AfinacionJusta`) y su `frecuenciaTonica` (`frecuenciaDeLaTonica`), las variantes con `la4:` de
+  `TemperamentoRegular`, `TemperamentoCircular`, `AfinacionJusta` y `AfinacionHistorica.afinacion` (con
+  `frecuenciaDelLa4:`), `TecladoIsomorfico.rotado(pasos:)` (`rotado(doceavos:)`), `Tempo.pulsacionesPorMinuto`
+  (`pulsosPorMinuto`) y `Encordado.bajo` (`bajoElectrico`).
+- **Compactas en todos los idiomas**: cada idioma que escribe las alteraciones con palabras tiene ahora también su
+  escritura compacta, con la sílaba en mayúscula, el signo y la octava en subíndice: `.catalanCompacto`,
+  `.gallegoCompacto`, `.asturianoCompacto`, `.aragonesCompacto`, `.euskeraCompacto`, `.portuguesCompacto`,
+  `.francesCompacto` (Ré♭₄), `.occitanoCompacto`, `.italianoCompacto`, `.griegoCompacto` (Φα♯) y `.rusoCompacto`
+  (Фа♯), en `Notacion` y en `EscrituraDeNotas`. Los textos siguen en el idioma, y se leen las dos formas («ré bémol»
+  y «Ré♭»). `EscrituraDeNotas.conPalabras(_:)` y `.compacta(_:)` dan las dos de cualquier idioma. La notación de
+  cada idioma (`Notacion.delIdioma(_:)`) no cambia. En la línea de comandos, `--escritura palabras|compacto` vale
+  con todos los idiomas.
+- El húngaro, el decimoquinto idioma: `Idioma.hungaro` («hu»). Como el alemán, tiene dos escrituras:
+  `.hungaroCompacto`, la habitual, con las notas a la alemana con «isz» y «esz» (Fisz, Esz, Asz, B para Si♭, H para
+  Si, Heszesz) y la octava en subíndice, y `.hungaro`, con las alteraciones en palabras (F kereszt, H bé). Las
+  tonalidades se escriben C-dúr y a-moll, y se leen las mismas formas («Fisz-dúr», «esz-moll», «Fisz dór»). Todos los
+  textos del motor y los nombres de las escalas están en húngaro. La escritura a la alemana toma sus sufijos de
+  `ReglasDeIdioma.sufijoDeSostenido` y `sufijoDeBemol`, así que otro idioma con letras puede reutilizarla.
+- Solfeo relativo (do móvil, como en el método Kodály): `SolfeoRelativo(tonalidad, menor:)` da la sílaba de cada
+  nota según la tónica («do re mi fa so la ti», con «di ri fi si li» y «ra me se le te» para las alteradas, y las
+  húngaras «dó ré mi fá szó lá ti» con `en: .hungaro`). En menor, la tónica es «la» (`.enLa`, Kodály) o «do»
+  (`.enDo`). `Escala.solfeoRelativo(menor:en:)` da las sílabas de una escala.
+- En la línea de comandos, `--idioma hu` (o `magyar`) escribe las notas, los mensajes y la ayuda en húngaro, y
+  `--escritura palabras|compacto` elige entre F kereszt y Fisz.
+- **Notaciones compactas**: `Notacion.espanolUnicode` e `.inglesUnicode` pasan a llamarse `.espanolCompacto` e
+  `.inglesCompacto` (igual en `EscrituraDeNotas`, y `EstiloDeCifrado.inglesUnicode` pasa a `.inglesCompacto`). Los
+  nombres de antes ya no existen. Las compactas escriben la octava como subíndice: La₄,
+  F♯₃ (`EscrituraDeNotas.esCompacta` y `.octavas`); las demás siguen con cifras, y `conOctavas(_:)` elige otra.
+  `description`, `texto` y la codificación de las alturas siguen con cifras ("Fa♯4"), para que lo guardado no
+  cambie. Los SVG con nombres de nota (pentagramas y teclados) llevan ahora los subíndices.
+- **Alemán con palabras y compacto**: `.aleman` escribe ahora las alteraciones con palabras (F Kreuz, H Be,
+  E Doppel-Be), como `.espanol` e `.ingles`, y la escritura de siempre (Fis, Es, B, H) es `.alemanCompacto`, con la
+  octava en subíndice. Los cifrados y las tonalidades de las dos van a la alemana (Fis7, Fis-Dur), las dos leen las
+  dos formas, y `Notacion.delIdioma(.aleman)` es `.alemanCompacto`. `EscrituraDeNotas.allCases` tiene diecinueve
+  escrituras.
+- En la línea de comandos, `--escritura` acepta también `compacto` (o `compact`, además de `unicode`) y, en alemán,
+  `palabras` y `compacto`. La octava sigue con cifras salvo con `--subindices`, también en las notaciones compactas.
+- Exportación a LilyPond y ABC: `Voz.lilyPond(tonalidad:clave:tempo:titulo:parte:)` y `Voz.abc(…)`, y las mismas
+  en `Coral` y `AnalisisArmonico`, con los cifrados encima y el análisis debajo del bajo. LilyPond escribe las
+  alturas en absoluto con los nombres holandeses; ABC escribe las alteraciones que se ven, como el MEI. Las dos
+  parten las duraciones que no tienen figura (o que llevan más de dos puntillos) en notas ligadas, y una ligadura
+  solo se escribe si la nota siguiente es la misma. El MEI comparte con ellas los grupos irregulares
+  (`Exportacion.irregulares`).
+- En la línea de comandos, `armonia lilypond|abc melodia|coral|acordes|arpegios …`, con las opciones de `musicxml`.
+- En la línea de comandos, `armonia completado bash|zsh|fish` (o `completion`) escribe el autocompletado de las
+  órdenes, sus opciones y sus valores (`source <(armonia completado bash)`), y `armonia manual` (o `man`), la ayuda
+  como página de manual en roff, en el idioma de los textos (`armonia manual --ingles > armonia.1`).
+- Cada versión publica en su release la herramienta `armonia` ya compilada: Linux x86_64 y arm64, estáticos, y
+  macOS universal, con el manual y el completado (`Scripts/empaquetar_cli.sh`).
+- `EscrituraXML.escapar`: una sola forma de escapar `&`, `<`, `>` y `"` para el SVG, el MusicXML y el MEI, en vez
+  de cuatro copias (la del Tonnetz y la tabla armónica no escapaba las comillas).
+- Sin `!` en el motor: los datos fijos (intervalos, tipos de acorde, temperamentos) dicen en un mensaje cuál no es
+  válido, los colores se guardan como números, y los mínimos, los máximos y las búsquedas tienen su alternativa.
+  `AnalisisArmonico.analizar(leyendo:)` y `RecorridoTonal(leyendo:)` lanzan un error en vez de fallar.
+- `PentagramaSVG.swift` se parte en cuatro ficheros: las opciones, las escalas, acordes y arpegios, el dibujo y la
+  geometría.
+- El plural de cada idioma está en sus reglas (`ReglasDeIdioma.plural`): singular con 1 en casi todos, con 0 y 1
+  en francés («0 demi-ton»), una forma en euskera y tres en ruso. `Idioma.contar(n, formas…)` escribe el número con
+  la forma que le toca («5 полутонов»); `Traduccion.pluralRuso` desaparece en su favor.
+- `ReglasDeIdioma.abreviaturas`: el idioma de las abreviaturas de intervalo (5J o P5) es un dato más de cada fila,
+  y `Notacion.idiomaDeLasAbreviaturas` lo lee de ahí en vez de un `switch`.
+- `Idioma.reglas` se calcula una sola vez por idioma, en una tabla, en lugar de en cada llamada.
+- `Idioma(nombre:)` no distingue tildes («aleman», «FRANCAIS», «ελληνικα»), así que `nombres` ya no repite cada
+  nombre sin ellas.
+- `Traducido(porIdioma:)`: los catorce valores a partir del idioma.
+- Desaparece `Idioma.traducidos`: era igual que `Idioma.allCases`.
+- `Traducido(cadaIdioma:)`: los catorce valores a partir de la notación habitual de cada idioma
+  (`Traduccion(cadaIdioma: { acorde.nombre(en: $0) })`), para no escribir a mano los catorce argumentos.
+- Los datos de cada idioma, en una fila de `ReglasDeIdioma`: además de las sílabas y la alteración, su código
+  (`codigo`), cómo se llama (`nombrePropio`, nuevo, y `nombres`) y los modos de sus tonalidades (`mayor`, `menor`,
+  y el «a-Moll» alemán con `separadorDelModo` y `menorEnMinuscula`). `Idioma.codigo`, `nombres` y
+  `Tonalidad.Modo.nombre(en:)` los leen de ahí, sin un `switch` cada uno. `ReglasDeIdioma.init` pide los datos nuevos.
+- `Idioma` tiene `rawValue`: el nombre del caso («euskera», «aleman»).
+- Si un instrumento de partitura propio se llama por su nombre inglés o el español lo dice el campo
+  `instrumentosPropiosEnIngles` de los textos de cada idioma, en lugar de un `switch`.
+- `TextosTraducidos`: los textos de cada módulo se leen con `TextosDeX.en(notacion, \.campo)` (el texto en un
+  idioma) o `TextosDeX.traduccion(\.campo)` (su `Traduccion`), en vez de `traducidos.map(…)`, que copiaba en la pila
+  los catorce idiomas en cada llamada. Es el arreglo de la pila de 0.2.0, ahora en el motor y la CLI.
+- Los nombres de los instrumentos de partitura pasan a `TextosDePartitura` (un fichero por idioma) y
+  `comprobar_traducciones` los revisa; `InstrumentoDePartitura.traducciones` sustituye a los cuatro diccionarios.
+- `Arpegio.Patron(leyendo:)`: el patrón por su nombre en el código, en inglés abreviado o en cualquiera de los
+  catorce idiomas. `claveDeBusqueda` quita también circunflejos, diéresis, ã/õ y la cedilla.
+- `ElMejor`, para quedarse con el candidato de menor coste en las búsquedas, sustituye a seis bucles con `!`.
+- La gramática de cada idioma pasa a su fichero de textos: el orden de calidad y número en los intervalos («3ª
+  mayor», «große Terz»), el unísono en masculino, los ordinales con palabras o en cifras, el tipo delante de la
+  fundamental en los acordes («Dominantseptakkord auf G»), «en Do mayor» con su declinación en ruso y euskera, y los
+  dos puntos del francés. Desaparecen los `switch` sobre el idioma de `Intervalo`, `Acorde`, `Tonalidad` y
+  `ErrorDeLectura`. `TextosTraducidos.en(idioma:_:)` lee un texto por su idioma.
+
+## 0.2.0 (2026-10-31)
+
+- Revisión de la terminología de la API. Los nombres viejos siguen compilando, marcados como obsoletos (con el
+  nombre nuevo en el aviso), y se quitarán en la próxima versión:
+  - `Altura.la440` pasa a `Altura.la4` (es una altura, no una frecuencia), y los parámetros y propiedades `la4:` que
+    son frecuencias pasan a `frecuenciaDelLa4:` (`frecuencia(frecuenciaDelLa4:)`, `afinar(frecuenciaDelLa4:)`,
+    `TemperamentoRegular.igual(divisiones:frecuenciaDelLa4:)`…).
+  - `Temperamento` pasa a `AfinacionHistorica`: incluye la afinación justa, que no es un temperamento.
+  - `EntonacionJusta` pasa a `AfinacionJusta` («entonación justa» es un calco del inglés), y `frecuenciaTonica`, a
+    `frecuenciaDeLaTonica`.
+  - `Encordado.bajo` pasa a `Encordado.bajoElectrico`, como en `InstrumentoDePartitura`; `bajo` es la nota más
+    grave de un acorde. «bajo eléctrico» también se lee con `Encordado(nombre:)`.
+  - `ClaseDeEscala` pasa a `CategoriaTradicional`, `TipoDeEscala.clase` a `categoria` y `tradicionales(clase:)` a
+    `tradicionales(categoria:)`: «clase» es la clase de altura.
+  - `TecladoIsomorfico.rotado(pasos:)` pasa a `rotado(doceavos:)`: cada paso es un doceavo de vuelta (30°), y en
+    Hexagonos `rotada(sextos:)` gira 60°.
+  - `Tempo.pulsacionesPorMinuto` pasa a `pulsosPorMinuto`, como `pulso` y `pulsos` en el resto de la API.
+- Las cuerdas: `Encordado.numeroTradicional(deCuerda:)` da el número con que se nombra una cuerda (la 1.ª es la de
+  abajo, el Mi agudo de la guitarra), y la documentación de `Encordado.cuerdas` y `PosicionEnElMastil.cuerda` dice
+  que el índice 0 es la de arriba. `PosicionEnElMastil.description` dice «cuerda 1 desde arriba, traste 3».
+- La octava de las alturas en subíndice: `Notacion.conOctavas(.subindices)` escribe La₄, Fa♯₃ y Si♭₋₁
+  (`EscrituraDeLaOctava`, con `.cifras` por defecto), y `Altura(leyendo:)` lee las dos formas, también en las
+  melodías y los corales. `Altura.nombreCompacto(en:)` y `octavaEscrita(en:)` dan las etiquetas de los teclados, la
+  tabla armónica y los dibujos con la octava de la notación. En la línea de comandos, `--subindices` (`--subscripts`).
+- `TecladoIsomorfico.todos` (los nueve teclados con nombre) y `TecladoIsomorfico.nombre(en:)`, con los nombres en los
+  catorce idiomas en `TextosDeRepresentaciones`.
+- `Nombrable` da `nombre` (el nombre en español) a todo tipo que lo adopta; desaparecen las 21 copias. `Arpegio`,
+  `Arpegio.Patron` y `Rearmonizacion.Recurso` pasan a ser `Nombrable`.
+- `Idioma.nombres` e `Idioma(nombre:)`: el idioma por su código o por su nombre («euskara», «Deutsch»).
+- Las exportaciones a MusicXML y MEI de una voz, un coral y una progresión se preparan en un solo sitio
+  (`Exportacion.documento` con un `EscritorDePartitura`); las funciones públicas no cambian.
+- Los nombres de los arpegios, de sus patrones y de los recursos de rearmonización pasan a `TextosDeTeoria`. Ya no
+  queda ningún `Traduccion("…", …)` en línea en el código: `Scripts/comprobar_higiene.py` avisa si vuelve uno.
+- La documentación de `TecladoIsomorfico.janko`, `.wickiHaydenPlano` y `.tablaArmonica` dice a qué preset de 12 notas
+  del Lumatone corresponde cada uno (1, «Classic Mode», Bosanquet-Wilson; 2, «Melodic Mode», y 3, «Harmonic Mode»).
 - Dos patrones de arpegio más: `Arpegio.Patron.quebrado` (por terceras quebradas: Do Sol Mi Do) y `.bajaYSube` (baja
   desde la nota de arriba y vuelve a subir), con su nombre en los catorce idiomas.
 - `Rearmonizacion` y `Tonalidad.rearmonizaciones(de:)`: otras armonías para cada acorde de una progresión (sustituto

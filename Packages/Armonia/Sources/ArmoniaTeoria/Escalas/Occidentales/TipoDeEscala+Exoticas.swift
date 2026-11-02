@@ -6,7 +6,7 @@ extension TipoDeEscala {
     // Escalas «exóticas» de la tradición occidental, con dos segundas aumentadas o casi.
 
     /// Dos tetracordos con 2ª aumentada (Do Re♭ Mi Fa Sol La♭ Si): el mismo contenido que el
-    /// dromos Hitzazkiár y el thaat Bhairav.
+    /// dromos Hitzazkiár y el thāṭ Bhairav.
     public static let dobleArmonica = TipoDeEscala(
         nombre: "doble armónica",
         intervalos: [
@@ -251,14 +251,16 @@ extension TipoDeEscala {
 extension TipoDeEscala {
     // Bebop menores: una nota de paso más para que los tiempos caigan en notas del acorde.
 
-    /// La menor melódica con la 5ª aumentada de paso (Do Re Mi♭ Fa Sol Sol♯ La Si).
+    /// La menor melódica con la 5ª aumentada de paso (Do Re Mi♭ Fa Sol Sol♯ La Si). Es también la «sexta menor
+    /// disminuida» de Barry Harris: el acorde de sexta menor (Do Mi♭ Sol La) y el de séptima disminuida de la
+    /// sensible alternados.
     public static let bebopMenorMelodica = TipoDeEscala(
         nombre: "bebop menor melódica",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .quintaAumentada, .sextaMayor, .septimaMayor,
         ],
-        alias: ["bebop melódica"])
+        alias: ["bebop melódica", "sexta menor disminuida", "de sexta menor disminuida"])
     /// La menor armónica con la 7ª menor de paso (Do Re Mi♭ Fa Sol La♭ Si♭ Si).
     public static let bebopMenorArmonica = TipoDeEscala(
         nombre: "bebop menor armónica",

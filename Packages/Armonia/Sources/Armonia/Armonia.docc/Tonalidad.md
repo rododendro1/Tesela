@@ -82,6 +82,11 @@ Cada acorde cae en una de estas categorías (`AcordeAnalizado.Categoria`):
   tónica y nada más (italiana), con 2̂ (francesa) o con ♭3̂ (alemana), sea cual sea el bajo. Tiene
   función de subdominante y va a la dominante o al I64 cadencial. La alemana escrita como
   séptima de dominante (La♭7 en Do, con Sol♭ en vez de Fa♯) cuenta como tal si va a la dominante.
+- **Sustituto tritonal** (subV7, subV7/ii): una séptima de dominante medio tono por encima de
+  su destino, cuando resuelve en él (Re♭7–Do en Do). Tiene función de dominante. La♭7–Sol sigue
+  leyéndose como sexta aumentada alemana.
+- **I64 cadencial**: la tónica en segunda inversión que va a la dominante sobre el mismo bajo.
+  Se cifra I64, pero tiene función de dominante (`cuartaYSextaCadencial`).
 - **Préstamo** del modo homónimo: iv, ♭VI o ♭VII en mayor, o el I mayor (tercera de picardía)
   en menor.
 - **Cromático**: ninguno de los anteriores; se cifra con la alteración del grado y sin función.
@@ -92,6 +97,8 @@ Tonalidad(.do).analizar(["Fa", "Re7(b5)/Lab", "Sol"]).cifrados                  
 Tonalidad(.do).analizar(["Lab(#6)", "Do/Sol", "Sol7", "Do"]).cifrados           // ["Ger+6", "I64", "V7", "I"]
 Tonalidad(.do).analizar(["Lab7", "Sol"]).cifrados                               // ["Ger+6", "V"]
 Tonalidad(.do).analizar(["Reb/Lab", "Sol7", "Do"]).cifrados                     // ["♭II64", "V7", "I"]
+Tonalidad(.do).analizar(["Mib7", "Rem7", "Reb7", "Do"]).cifrados                // ["subV7/ii", "ii7", "subV7", "I"]
+Tonalidad(.do).analizar(["Do/Sol", "Sol7", "Do"]).funciones.map { $0!.abreviatura }   // ["D", "D", "T"]
 ```
 
 Las funciones siguen los grados: I, iii y vi son de tónica; ii y IV, de subdominante; V y
@@ -128,7 +135,11 @@ progresion.mei().contains("<syl>V7/V</syl>")                   // true
   (`esPerfecta`) con V y I en estado fundamental.
 - **Plagal**: de IV (o iv) a la tónica.
 - **Rota**: de V a vi (VI en menor, o el ♭VI prestado en mayor).
-- **Semicadencia**: termina en V en estado fundamental.
+- **Semicadencia**: termina en V en estado fundamental. Es **frigia** (`esFrigia`) si llega
+  desde el iv6, con el bajo bajando medio tono (Rem/Fa–Mi en La menor).
+
+Una plagal desde el iv prestado al I mayor es una **plagal menor** (`esPlagalMenor`), y las dos
+se nombran así en `description` y en `nombre(en:)`.
 
 ```swift
 let cadencia = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do").cadencias[0]
@@ -140,6 +151,8 @@ cadencia.descripcion(en: .inglesASCII)     // "Authentic cadence V7–I (chords 
 Tonalidad(.do).analizar(["Do", "Fa", "Do"]).cadencias.first?.tipo          // .plagal
 Tonalidad(.do).analizar(["Do", "Sol7", "Lam"]).cadencias.first?.tipo       // .rota
 Tonalidad(.do).analizar(["Do", "Lam", "Fa", "Sol"]).cadencias.first?.tipo  // .semicadencia
+Tonalidad(.la, .menor).analizar(["Lam", "Rem/Fa", "Mi"]).cadencias[0].description   // "Semicadencia frigia iv6–V (acordes 2 → 3)"
+Tonalidad(.do).analizar(["Do", "Fam", "Do"]).cadencias[0].description       // "Cadencia plagal menor iv–I (acordes 2 → 3)"
 ```
 
 Sin la partitura no se sabe dónde acaban las frases, así que cada V–I cuenta como cadencia
@@ -177,6 +190,22 @@ Entre las particiones posibles se elige la de menor coste, con el mismo coste po
 `AnalisisArmonico` para elegir la tonalidad, una rebaja por cada cadencia auténtica en la
 tonalidad del tramo y un coste fijo por cada modulación. Si la progresión no modula, el único
 tramo es el mismo análisis que da `AnalisisArmonico.analizar`.
+
+### Planificar una modulación
+
+`modulaciones(hasta:)` hace el camino contrario: escribe progresiones que van de una tonalidad
+a otra (`PlanDeModulacion`). Cada una afirma la de partida con I–IV–V7–I, pasa por un puente y
+confirma la de llegada con V7–I. Salen de la más suave a la más brusca: primero por un **acorde
+común** (los que en la nueva son ii o IV, luego vi y iii); después por una **séptima disminuida
+enarmónica**, el vii°7 de un grado de la de partida que, escrito de otra forma, es el de la nueva;
+y al final la **directa**, el ii–V7–I de la nueva sin puente.
+
+```swift
+let planes = Tonalidad(.do).modulaciones(hasta: Tonalidad(.sol))
+planes[0].tecnica                    // .acordeComun
+planes[0].pivote?.description        // "Lam = vi en Do mayor = ii en Sol mayor"
+Tonalidad(.do).modulaciones(hasta: Tonalidad(Nota.la.bemol))[0].tecnica   // .disminuidaEnarmonica
+```
 
 ## Conducción de voces
 
@@ -285,6 +314,99 @@ armonizada.coral.voz(3)               // [Mi4, Fa4, Re4, Do4]
 armonizada.coral.esCorrecta           // true
 ```
 
+## Esquemas armónicos
+
+`EsquemaArmonico.buscar(en:)` reconoce en una progresión las fórmulas hechas, por el movimiento
+de las fundamentales y el tipo de los acordes, en cualquier tonalidad (también las secundarias):
+
+- Del jazz: **ii–V–I** (y el ii–V que no resuelve), **turnaround** (I–vi–ii–V o iii–vi–ii–V),
+  **backdoor** (iv7–♭VII7–I) y **blues de 12 compases** (un acorde por compás).
+- Secuencias y esquemas del barroco y el galante: **quintas descendentes** (cuatro acordes o
+  más), **romanesca** (I–V–vi–iii), **canon de Pachelbel** (I–V–vi–iii–IV–I–IV–V), **monte**
+  (V7/IV–IV–V7/V–V), **fonte** (V7/ii–ii–V7–I) y **ponte** (V–V7 sobre el mismo bajo, y la tónica).
+
+Cada esquema dice dónde está (`indices`) y a qué tónica va. `acordes(en:)` lo escribe en una
+tonalidad.
+
+```swift
+let esquemas = EsquemaArmonico.buscar(en: ["Do7M", "Lam7", "Rem7", "Sol7", "Do7M"])
+esquemas.map(\.tipo)          // [turnaround, progresión por quintas, ii–V–I]
+esquemas.map(\.indices)       // [0..<4, 1..<5, 2..<5]
+EsquemaArmonico.buscar(en: ["Fam7", "Sib7", "Do7M"])[0].tipo   // .backdoor
+EsquemaArmonico.Tipo.pachelbel.acordes(en: Tonalidad(.re))     // [Re, La, Sim, Fa♯m, Sol, Re, Sol, La]
+EsquemaArmonico.Tipo.blues.acordes(en: Tonalidad(.fa)).count   // 12
+```
+
+`rearmonizaciones(de:)` propone también preparar un acorde con su **ii–V** (Rem → Mim7 La7 Rem)
+y cambiar el V7 de una tonalidad mayor por el **backdoor** (Sol7 → Fam7 Si♭7).
+
+## Cifrado romano
+
+`acorde(romano:)` lee un cifrado romano en la tonalidad, escrito como lo escribe `analizar(_:)`:
+el numeral en mayúsculas o minúsculas (tríada mayor o menor), la calidad detrás («°», «ø7»,
+«maj7», «7»), las inversiones en cifras de bajo continuo («6», «64», «65», «43», «42»), una
+alteración delante para los grados cromáticos («♭VI», «♭VII») y, tras una barra, el grado del
+que es dominante, sensible o sustituto («V7/V», «vii°7/ii», «subV7/ii»). «N6» es la napolitana, y
+«It+6», «Fr+6» y «Ger+6», las sextas aumentadas. `acordes(romanos:)` lee una progresión entera.
+
+```swift
+Tonalidad(.do).acorde(romano: "ii65") == Acorde("Rem7/Fa")                       // true
+Tonalidad(.do).acorde(romano: "V7/V") == Acorde("Re7")                           // true
+Tonalidad(.la, .menor).acorde(romano: "vii°7") == Acorde("Sol#°7")               // true
+Tonalidad(.do).acordes(romanos: "I ♭VI ♭VII I") == ["Do", "Lab", "Sib", "Do"]    // true
+```
+
+## Bajo cifrado
+
+`acorde(sobre:cifras:)` lee las cifras del bajo continuo sobre una nota del bajo, contando los
+intervalos en la armadura de la tonalidad (en menor, la natural: la sensible se escribe con su
+alteración). Completa las abreviaturas (nada o «5» es la tríada, «6» y «64» sus inversiones,
+«7», «65», «43» y «42» la séptima y las suyas), y una alteración sola altera la tercera.
+`acordes(bajoCifrado:)` lee una línea entera, con cada nota del bajo y sus cifras tras dos
+puntos, y `Coral.realizar(bajoCifrado:en:soprano:)` la realiza a cuatro voces.
+
+```swift
+Tonalidad(.do).acorde(sobre: .si, cifras: "65")                    // Sol7/Si
+Tonalidad(.la, .menor).acorde(sobre: .mi, cifras: "#")             // Mi
+Tonalidad(.la, .menor).acordes(bajoCifrado: "La Fa:6 Mi:# La")     // [Lam, Rem/Fa, Mi, Lam]
+let realizado = Coral.realizar(bajoCifrado: "Do Fa Sol:7 Do", en: Tonalidad(.do))!
+realizado.esCorrecta                  // true
+```
+
+## Armonía negativa
+
+`negativa(_:)` refleja una nota sobre el eje que queda entre la tónica y la dominante (entre Mi♭ y
+Mi en Do): Do ↔ Sol, Mi ↔ Mi♭, Si ↔ La♭, Re ↔ Fa. El eje es el mismo en mayor y en menor.
+`negativo(_:)` refleja todas las notas de un acorde y lo lee en estado fundamental si puede: el
+acorde mayor se vuelve menor, y la dominante, subdominante menor (Sol7 → Reø7). `negativos(_:)`
+hace lo mismo con una progresión.
+
+```swift
+Tonalidad(.do).negativa(.mi) == Nota(.mi, .bemol)                  // true
+Tonalidad(.do).negativo(Acorde("Do")) == Acorde("Dom")             // true
+Tonalidad(.do).negativo(Acorde("Fa")) == Acorde("Solm")            // true
+```
+
+## Notas extrañas a la armonía
+
+`NotaDeLaMelodia.analizar(_:sobre:partesFuertes:)` mira cada nota de una melodía con el acorde
+que suena con ella (uno por nota; si un acorde dura varias, se repite) y, si no es del acorde,
+dice qué nota extraña es (`NotaExtrana`) por cómo se llega a ella y cómo se sale: de paso
+(grado conjunto en el mismo sentido), bordadura (grado conjunto de ida y vuelta), apoyatura
+(salto y grado conjunto), escapada (grado conjunto y salto), anticipación (la nota del acorde
+siguiente antes de tiempo), retardo (la nota del acorde anterior que se mantiene y resuelve
+por grado conjunto, con sus cifras sobre el bajo), pedal (la que se repite mientras cambian los
+acordes) o libre (ninguna de las anteriores).
+
+```swift
+let melodia: [Altura] = ["Mi5", "Re5", "Do5", "Do5", "Si4", "Do5"]
+let notas = NotaDeLaMelodia.analizar(melodia, sobre: ["Do", "Do", "Fa", "Sol", "Sol", "Do"])!
+notas[1].description           // "Re5 (nota de paso)"
+notas[3].description           // "Do5 (retardo 4-3)"
+notas.notasExtranas.map(\.indice)   // [1, 3]
+NotaExtrana.apoyatura.nombre(en: .inglesASCII)   // "appoggiatura"
+```
+
 ## Contrapunto de especies
 
 `Contrapunto` comprueba un ejercicio de contrapunto a dos voces como los del *Gradus ad
@@ -309,6 +431,12 @@ FaltaDeContrapunto(tipo: .quintasParalelas, compases: 0...1).description        
 try Contrapunto(cantusFirmus: "Re4 Fa4 Mi4 Re4", contrapunto: "-:2 La4 Re5 La4 Si4 Do#5 Re5:1", especie: .segunda).esCorrecto   // true
 try Contrapunto(cantusFirmus: "Re4 Mi4 Re4", contrapunto: "-:2 Re5:1 Do#5 Re5:1", especie: .cuarta).esCorrecto                // true
 ```
+
+Las dos voces se exportan como las de un coral, cada una en su pentagrama y con su clave:
+``Contrapunto/musicXML(tonalidad:tempo:titulo:)``, ``Contrapunto/mei(tonalidad:tempo:titulo:)``,
+``Contrapunto/lilyPond(tonalidad:tempo:titulo:)``, ``Contrapunto/abc(tonalidad:tempo:titulo:)`` y
+``Contrapunto/midi(tonalidad:tempo:titulo:instrumento:)``. Sin tonalidad no llevan armadura, como los ejemplos
+modales de Fux, y las voces se llaman en latín: *Cantus firmus* y *Contrapunctus*.
 
 Las faltas que encuentra (`FaltaDeContrapunto.Tipo`), con los compases contados desde 0 (en la
 descripción, desde 1):

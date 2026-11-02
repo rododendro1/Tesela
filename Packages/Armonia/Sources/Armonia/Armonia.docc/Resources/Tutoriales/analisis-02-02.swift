@@ -1,0 +1,6 @@
+import Armonia
+
+let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
+analisis.tonalidad // Do mayor
+analisis.cifrados // ["I", "vi", "V7/V", "V7", "I"]
+analisis.funciones.map { $0?.abreviatura ?? "–" } // ["T", "T", "D", "D", "T"]

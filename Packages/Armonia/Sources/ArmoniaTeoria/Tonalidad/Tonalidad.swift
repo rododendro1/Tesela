@@ -177,25 +177,26 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
         let escala: Escala
         do {
             escala = try Escala(leyendo: texto)
-        } catch let error as ErrorDeLectura {
+        } catch let error as any ErrorAlLeer {
             guard let otra = Tonalidad.leerEnOtrasNotaciones(texto) else { throw error }
             self = otra
             return
         }
         guard let tonalidad = Tonalidad(escala) else {
-            throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .modoNoReconocido(escala.tipo.nombre))
+            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .modoNoReconocido(escala.tipo.nombre))
         }
         self = tonalidad
     }
 
-    /// Lectura en alemán ("Fis-Dur", "a-Moll"), francés ("ré majeur"), italiano ("re maggiore") y las
-    /// demás lenguas de `Notacion` ("фа-диез мажор", "λα ελάσσονα").
+    /// Lectura en alemán ("Fis-Dur", "a-Moll"), húngaro ("Fisz-dúr"), francés ("ré majeur"), italiano ("re
+    /// maggiore") y las demás lenguas de `Notacion` ("фа-диез мажор", "λα ελάσσονα").
     package static func leerEnOtrasNotaciones(_ texto: String) -> Tonalidad? {
         let limpio = texto.trimmingEspacios()
-        for notacion in [Notacion.aleman, .frances, .italiano] + Notacion.deLecturaGenerica {
+        let notaciones = [Notacion.alemanPalabras, .hungaroPalabras, .francesPalabras, .italianoPalabras]
+        for notacion in notaciones + Notacion.deLecturaGenerica {
             for modo in [Modo.mayor, .menor] {
                 let palabra = modo.nombre(en: notacion)
-                let separador = notacion == .aleman ? "-" : " "
+                let separador = notacion.idiomaDeLasNotas.reglas.separadorDelModo
                 let sufijo = (separador + palabra).claveDeBusqueda
                 let clave = limpio.claveDeBusqueda
                 guard clave.hasSuffix(sufijo) else { continue }
@@ -229,22 +230,10 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
 extension Tonalidad.Modo {
     public var nombre: String { self == .mayor ? "mayor" : "menor" }
 
+    /// «mayor», «major», «Dur», «maiorra»…: el de las `ReglasDeIdioma` (de ArmoniaNucleo) del idioma de las notas.
     public func nombre(en notacion: Notacion) -> String {
-        switch notacion.idiomaDeLasNotas {
-        case .espanol: return nombre
-        case .ingles: return self == .mayor ? "major" : "minor"
-        case .catalan: return self == .mayor ? "major" : "menor"
-        case .gallego: return self == .mayor ? "maior" : "menor"
-        case .euskera: return self == .mayor ? "maiorra" : "minorra"
-        case .portugues: return self == .mayor ? "maior" : "menor"
-        case .frances: return self == .mayor ? "majeur" : "mineur"
-        case .occitano: return self == .mayor ? "major" : "menor"
-        case .italiano: return self == .mayor ? "maggiore" : "minore"
-        case .aleman: return self == .mayor ? "Dur" : "Moll"
-        case .griego: return self == .mayor ? "μείζονα" : "ελάσσονα"
-        case .ruso: return self == .mayor ? "мажор" : "минор"
-        case .asturiano, .aragones: return nombre
-        }
+        let reglas = notacion.idiomaDeLasNotas.reglas
+        return self == .mayor ? reglas.mayor : reglas.menor
     }
 }
 
@@ -252,14 +241,16 @@ extension Tonalidad.Modo {
 
 extension Tonalidad {
     /// "La menor" en español, "A minor" en inglés, "a-Moll" en alemán (con la tónica en minúscula
-    /// si es menor), "la mineur" en francés, "la minore" en italiano, "ля минор" en ruso, "λα ελάσσονα"
-    /// en griego.
+    /// si es menor, y a la alemana también en `.alemanPalabras`: "Fis-Dur"), "la mineur" en francés, "la minore" en
+    /// italiano, "ля минор" en ruso, "λα ελάσσονα" en griego.
     public func nombre(en notacion: Notacion) -> String {
-        guard notacion.idiomaDeLasNotas == .aleman else {
-            return "\(tonica.nombre(en: notacion)) \(modo.nombre(en: notacion))"
-        }
-        let nombreTonica = tonica.nombre(en: .aleman)
-        return (modo == .menor ? nombreTonica.lowercased() : nombreTonica) + "-" + modo.nombre(en: .aleman)
+        let reglas = notacion.idiomaDeLasNotas.reglas
+        // En alemán la tónica y el modo forman una palabra (Fis-Dur), así que la tónica va siempre compacta.
+        let nombreTonica =
+            reglas.alteraciones == .alemana ? tonica.nombreCompacto(en: notacion) : tonica.nombre(en: notacion)
+        let enMinuscula = modo == .menor && reglas.menorEnMinuscula
+        return (enMinuscula ? nombreTonica.lowercased() : nombreTonica) + reglas.separadorDelModo
+            + modo.nombre(en: notacion)
     }
 }
 
@@ -270,17 +261,8 @@ extension Tonalidad {
     /// "do maiorrean".
     package func lugar(en notacion: Notacion) -> String {
         let completo = self.nombre(en: notacion)
-        switch notacion.textos {
-        case .espanol, .catalan, .gallego, .asturiano, .aragones, .frances, .occitano: return "en " + completo
-        case .portugues: return "em " + completo
-        case .ingles, .italiano, .aleman: return "in " + completo
-        case .griego: return "σε " + completo
-        case .ruso:
-            // En preposicional: "в до мажоре", "в ля миноре".
-            let declinado = completo.hasSuffix("мажор") || completo.hasSuffix("минор") ? completo + "е" : completo
-            return "в " + declinado
-        case .euskera: return Tonalidad.declinar(completo, "ean")
-        }
+        // En ruso, en preposicional ("в ля миноре"); en euskera, con el inesivo ("do maiorrean").
+        return TextosDeTeoria.en(notacion) { $0.enLaTonalidad(completo) }
     }
 
     /// En euskera los nombres acaban en "maiorra" o "minorra": el caso sustituye a la "a" del artículo

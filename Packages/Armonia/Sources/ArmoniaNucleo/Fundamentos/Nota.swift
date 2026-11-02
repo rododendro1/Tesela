@@ -83,12 +83,12 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
     public var esSostenido: Bool { semitonos > 0 }
     public var esBemol: Bool { semitonos < 0 }
 
-    /// Los signos de la alteración en una tipografía: `Alteracion(2).simbolo(en: .compacta)` → "𝄪".
+    /// Los signos de la alteración en una tipografía: `Alteracion(2).simbolo(en: .conDobles)` → "𝄪".
     public func simbolo(en tipografia: Tipografia) -> String {
         switch tipografia {
-        case .unicode: return signos(sostenido: "♯", bemol: "♭")
+        case .conSimples: return signos(sostenido: "♯", bemol: "♭")
         case .ascii: return signos(sostenido: "#", bemol: "b")
-        case .compacta:
+        case .conDobles:
             if semitonos == 0 { return "♮" }
             let (pares, suelto) = (numeroDeSignos / 2, numeroDeSignos % 2)
             return esSostenido
@@ -98,11 +98,11 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
     }
 
     /// Signos tipográficos que se escriben tras el nombre de la nota: "♯♯", "♭"; "" si es natural.
-    public var simbolo: String { simbolo(en: .unicode) }
+    public var simbolo: String { simbolo(en: .conSimples) }
     /// Signos en ASCII: "##", "b"; "" si es natural.
     public var simboloASCII: String { simbolo(en: .ascii) }
-    /// Signos compactos, con 𝄪 y 𝄫 para cada pareja: 𝄪♯ (triple sostenido), 𝄫 (doble bemol); ♮ si es natural.
-    public var simboloCompacto: String { simbolo(en: .compacta) }
+    /// Signos con 𝄪 y 𝄫 para cada pareja: 𝄪♯ (triple sostenido), 𝄫 (doble bemol); ♮ si es natural.
+    public var simboloConDobles: String { simbolo(en: .conDobles) }
 
     package func signos(sostenido: String, bemol: String) -> String {
         String(repeating: esSostenido ? sostenido : bemol, count: numeroDeSignos)
@@ -113,8 +113,9 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
         for n in -4...4 where n != 0 {
             let a = Alteracion(n)
             for notacion in [
-                Notacion.espanolUnicode, .inglesASCII, .aleman, .frances, .italiano, .catalan, .gallego,
-                .euskera, .portugues, .occitano, .ruso, .griego, .aragones, .asturiano,
+                Notacion.espanolCompacto, .inglesASCII, .alemanPalabras, .francesPalabras, .italianoPalabras,
+                .catalanPalabras, .gallegoPalabras, .euskeraPalabras, .portuguesPalabras, .occitanoPalabras,
+                .rusoPalabras, .griegoPalabras, .aragonesPalabras, .asturianoPalabras, .hungaroPalabras,
             ] {
                 tabla[a.nombre(en: notacion).claveDeBusqueda] = a
             }
@@ -132,19 +133,20 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
 
 /// Los estilos de escribir los signos de una alteración.
 ///
-///     Alteracion(-2).simbolo(en: .unicode)    // "♭♭"
+///     Alteracion(-2).simbolo(en: .conSimples)    // "♭♭"
 ///     Alteracion(-2).simbolo(en: .ascii)      // "bb"
-///     Alteracion(-2).simbolo(en: .compacta)   // "𝄫"
+///     Alteracion(-2).simbolo(en: .conDobles)  // "𝄫"
 ///
 /// Un natural no lleva signo en `unicode` ni en `ascii` (la nota se escribe sola) y se escribe "♮" en
-/// `compacta`. Las tres se leen igual con `Alteracion(leyendo:)`.
+/// `conDobles`. Las tres se leen igual con `Alteracion(leyendo:)`.
 public enum Tipografia: String, Hashable, Sendable, CaseIterable {
     /// Un signo por semitono, ♯ y ♭: Fa♯, Si♭♭.
-    case unicode
+    case conSimples
     /// Un signo por semitono, # y b, como se escribe en un teclado: F#, Bbb.
     case ascii
-    /// 𝄪 y 𝄫 para cada pareja de signos, y ♮ para el natural: Fa𝄪, Si𝄫, Do𝄪♯.
-    case compacta
+    /// 𝄪 y 𝄫 para cada pareja de signos, y ♮ para el natural: Fa𝄪, Si𝄫, Do𝄪♯. La de las notaciones compactas
+    /// (`.espanolCompacto`, `.inglesCompacto`, `.francesCompacto`…).
+    case conDobles
 }
 
 extension Alteracion: CustomStringConvertible {
@@ -161,11 +163,11 @@ extension Alteracion: RepresentableComoTexto, Nombrable {
 
 // MARK: - Nota
 
-/// Nota sin octava (con su ortografía): Do, Fa♯, Si♭♭… La nota con octava es `Altura`.
+/// Nota sin octava (con su ortografía): Do, Fa♯, Si𝄫… La nota con octava es `Altura`.
 ///
 /// Se codifica como una única coordenada: la posición en la **línea de quintas**.
 ///
-///     … Si♭♭  Fa♭  Do♭  Sol♭  Re♭  La♭  Mi♭  Si♭  Fa  Do  Sol  Re  La  Mi  Si  Fa♯  Do♯ …
+///     … Si𝄫  Fa♭  Do♭  Sol♭  Re♭  La♭  Mi♭  Si♭  Fa  Do  Sol  Re  La  Mi  Si  Fa♯  Do♯ …
 ///        −9   −8   −7    −6   −5   −4   −3   −2  −1   0    1   2   3   4   5    6    7
 ///
 /// Subir una quinta suma 1; un sostenido suma 7; un bemol resta 7.
@@ -223,7 +225,7 @@ public struct Nota: Hashable, Sendable {
 
     public var natural: NotaNatural { NotaNatural(pasosDeQuinta: pasosDeQuinta) }
 
-    /// Alteración: Fa♯ → sostenido, Si♭♭ → doble bemol, Do → natural.
+    /// Alteración: Fa♯ → sostenido, Si𝄫 → doble bemol, Do → natural.
     public var alteracion: Alteracion { Alteracion(divisionEntera(pasosDeQuinta + 1, 7)) }
 
     /// Clase de altura 0…11 (Do = 0, Do♯/Re♭ = 1 … Si = 11).
@@ -236,16 +238,20 @@ public struct Nota: Hashable, Sendable {
         return [base - 12, base, base + 12]
     }
 
-    /// Lee un nombre escrito en una notación concreta: `Nota(leyendo: "Fis", en: .aleman)`,
-    /// `Nota(leyendo: "B", en: .aleman)` → Si♭, `Nota(leyendo: "ré bémol", en: .frances)`.
-    /// No distingue mayúsculas ni tildes. En español e inglés, igual que `init(leyendo:)`.
+    /// Lee un nombre escrito en una notación concreta: `Nota(leyendo: "Fis", en: .alemanCompacto)`,
+    /// `Nota(leyendo: "B", en: .alemanCompacto)` → Si♭, `Nota(leyendo: "ré bémol", en: .francesPalabras)`.
+    /// No distingue mayúsculas ni tildes. En español e inglés, igual que `init(leyendo:)`; en los demás idiomas se
+    /// leen las dos formas, con palabras y compacta: «F Kreuz» y «Fis», «ré bémol» y «Ré♭».
     public init(leyendo texto: String, en notacion: Notacion) throws {
         let notacion = notacion.notas
-        switch notacion.escritura.escrituraDeLaAlteracion {
-        case .signos:
+        let idioma = notacion.idiomaDeLasNotas
+        if idioma.reglas.tieneVariantes && notacion.escritura.escrituraDeLaAlteracion == .signos {
             try self.init(leyendo: texto)
-        case .palabras, .alemana:
-            if let nombre = Nota.porNombre[notacion]?[texto.claveDeBusqueda] {
+        } else {
+            // La tabla de la escritura con palabras tiene también los nombres compactos (Fis, Ré♭), que salen en sus
+            // cifrados.
+            let tabla = idioma.reglas.tieneVariantes ? notacion : Notacion(escritura: .conPalabras(idioma))
+            if let nombre = Nota.porNombre[tabla]?[texto.claveDeBusqueda] {
                 self = nombre
             } else if Notacion.conPalabras.contains(notacion) {
                 // En español e inglés se leen las tres formas: «Fa sostenido», «Fa#» y «Fa♯».
@@ -259,7 +265,8 @@ public struct Nota: Hashable, Sendable {
     /// Nombres de cada notación (hasta cuatro alteraciones) → nombre de nota.
     package static let porNombre: [Notacion: [String: Nota]] = {
         var tablas: [Notacion: [String: Nota]] = [:]
-        for notacion in [Notacion.aleman, .frances, .italiano] + Notacion.deLecturaGenerica + Notacion.conPalabras {
+        let notaciones = [Notacion.alemanPalabras, .hungaroPalabras, .francesPalabras, .italianoPalabras]
+        for notacion in notaciones + Notacion.deLecturaGenerica + Notacion.conPalabras {
             var tabla: [String: Nota] = [:]
             for quintas in -29...33 {
                 let nombre = Nota(pasosDeQuinta: quintas)
@@ -268,6 +275,8 @@ public struct Nota: Hashable, Sendable {
             }
             tablas[notacion] = tabla
         }
+        // «H Be», como se escribía el Si♭ en `.alemanPalabras` (antes `.aleman`) en la 0.3.0, se sigue leyendo.
+        tablas[.alemanPalabras]?["H Be".claveDeBusqueda] = Nota(.si, .bemol)
         return tablas
     }()
 
@@ -326,19 +335,19 @@ extension Notacion {
     /// Notaciones que también leen `Nota(leyendo:)` y `Altura(leyendo:)` sin indicar el idioma,
     /// porque sus nombres no se confunden con los españoles ni con los ingleses.
     package static let deLecturaGenerica: [Notacion] = [
-        .catalan, .gallego, .euskera, .portugues,
-        .occitano, .ruso, .griego, .aragones, .asturiano,
+        .catalanPalabras, .gallegoPalabras, .euskeraPalabras, .portuguesPalabras,
+        .occitanoPalabras, .rusoPalabras, .griegoPalabras, .aragonesPalabras, .asturianoPalabras,
     ]
 
     /// El español y el inglés con las alteraciones en palabras («Fa sostenido», «B flat»), que también se leen
     /// sin indicar la notación. Van aparte de `deLecturaGenerica` porque se prueban los últimos: «B» sola
     /// es Si en inglés, pero en «B dorisch» manda el alemán.
-    package static let conPalabras: [Notacion] = [.espanol, .ingles]
+    package static let conPalabras: [Notacion] = [.espanolPalabras, .inglesPalabras]
 }
 
 // MARK: - Idiomas
 //
-// Las letras, las alteraciones y los nombres de nota en las catorce lenguas de `Notacion`. Siguen el idioma
+// Las letras, las alteraciones y los nombres de nota en las quince lenguas de `Notacion`. Siguen el idioma
 // de las notas (`Notacion.idiomaDeLasNotas`), no el de los textos. Los intervalos, en `Intervalo.swift`.
 
 // MARK: - NotaNatural
@@ -358,9 +367,6 @@ extension NotaNatural {
 // MARK: - Alteracion
 
 extension Alteracion {
-    /// "natural", "sostenido", "doble bemol", "triple sostenido", "5 bemoles"…
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
     /// Nombre en cada idioma: "double sharp", "Doppelkreuz", "double dièse", "doppio diesis"…
     public func nombre(en notacion: Notacion) -> String {
         let idioma = notacion.idiomaDeLasNotas
@@ -385,64 +391,81 @@ extension Alteracion {
         }
     }
 
-    private static let palabraNatural = TextosDeNucleo.traducidos.map(\.palabraNatural)
-    private static let palabraSostenido = TextosDeNucleo.traducidos.map(\.palabraSostenido)
-    private static let palabraBemol = TextosDeNucleo.traducidos.map(\.palabraBemol)
+    private static let palabraNatural = TextosDeNucleo.traduccion(\.palabraNatural)
+    private static let palabraSostenido = TextosDeNucleo.traduccion(\.palabraSostenido)
+    private static let palabraBemol = TextosDeNucleo.traduccion(\.palabraBemol)
     /// «Doble», «triple» y «cuádruple», para 2, 3 y 4 signos. Dónde se ponen y cómo se pegan a la palabra
     /// lo dice `ReglasDeIdioma.multiplicador`: delante y separados, detrás (euskera) o unidos (alemán).
-    private static let multiplicadores = TextosDeNucleo.traducidos.map(\.multiplicadores)
+    private static let multiplicadores = TextosDeNucleo.traduccion(\.multiplicadores)
     /// Para 5 signos o más: "5 sostenidos".
-    private static let palabraSostenidos = TextosDeNucleo.traducidos.map(\.palabraSostenidos)
-    private static let palabraBemoles = TextosDeNucleo.traducidos.map(\.palabraBemoles)
+    private static let palabraSostenidos = TextosDeNucleo.traduccion(\.palabraSostenidos)
+    private static let palabraBemoles = TextosDeNucleo.traduccion(\.palabraBemoles)
 }
 
 // MARK: - Nota
 
 extension Nota {
-    /// Nombre con símbolos tipográficos: "Fa♯", "Si♭".
-    public var nombre: String { natural.nombre + alteracion.simbolo }
+    /// Nombre con símbolos tipográficos, como en `.espanolCompacto`: "Fa♯", "Si♭", "Fa𝄪", "Si𝄫".
+    public var nombre: String { nombre(en: .espanolCompacto) }
 
     /// Nombre en ASCII: "Fa#", "Sib".
     public var nombreASCII: String { natural.nombre + alteracion.simboloASCII }
 
-    /// Nombre en la notación indicada: `.espanol` → "Fa sostenido", `.espanolASCII` → "Fa#",
-    /// `.espanolUnicode` → "Fa♯", `.ingles` → "F sharp", `.inglesASCII` → "F#", `.inglesUnicode` → "F♯",
-    /// `.aleman` → "Fis", `.frances` → "fa dièse",
-    /// `.italiano` → "fa diesis", `.ruso` → "фа-диез", `.griego` → "φα δίεση".
+    /// Nombre en la notación indicada: `.espanolPalabras` → "Fa sostenido", `.espanolASCII` → "Fa#",
+    /// `.espanolCompacto` → "Fa♯", `.inglesPalabras` → "F sharp", `.inglesASCII` → "F#", `.inglesCompacto` → "F♯",
+    /// `.alemanPalabras` → "F Kreuz", `.alemanCompacto` → "Fis", `.francesPalabras` → "fa dièse",
+    /// `.italianoPalabras` → "fa diesis", `.rusoPalabras` → "фа-диез", `.griegoPalabras` → "φα δίεση", `.francesCompacto` → "Fa♯".
     public func nombre(en notacion: Notacion) -> String {
         let base = natural.nombre(en: notacion)
         switch notacion.escritura.escrituraDeLaAlteracion {
         case .alemana:
-            return nombreAleman
+            return nombreConSufijos(en: notacion.idiomaDeLasNotas)
         case .signos:
-            return base + (notacion.usaASCII ? alteracion.simboloASCII : alteracion.simbolo)
+            // En las compactas de los idiomas con palabras, la sílaba va en mayúscula, como en los cifrados: Ré♭.
+            let silaba = notacion.idiomaDeLasNotas.reglas.alteraciones == .palabras ? base.conMayusculaInicial : base
+            return silaba + (alteracion.esNatural ? "" : alteracion.simbolo(en: notacion.tipografia))
         case .palabras:
             // El separador lo pone el idioma: un espacio en casi todos, un guion en ruso (фа-диез).
             guard !alteracion.esNatural else { return base }
+            // En alemán el Si♭ es B, también con palabras, como en sus cifrados (B7) y tonalidades (B-Dur).
+            if natural == .si, alteracion.semitonos == -1, notacion.idiomaDeLasNotas == .aleman { return "B" }
             return base + notacion.idiomaDeLasNotas.reglas.separador + alteracion.nombre(en: notacion)
         }
     }
 
     /// Nombre alemán: sostenidos con -is (Fis, Cisis), bemoles con -es (Des, Ges), con Es y As
     /// para Mi♭ y La♭ (Eses, Asas), B para Si♭ y H para Si (His, Heses).
-    package var nombreAleman: String {
+    package var nombreAleman: String { nombreConSufijos(en: .aleman) }
+
+    /// Nombre a la alemana, con los sufijos del idioma (``ReglasDeIdioma/sufijoDeSostenido`` y
+    /// ``ReglasDeIdioma/sufijoDeBemol``): Fis, Eses, Asas, Heses en alemán; Fisz, Eszesz, Aszasz, Heszesz en húngaro.
+    package func nombreConSufijos(en idioma: Idioma) -> String {
+        let reglas = idioma.reglas
+        let letra = reglas.naturales[natural.rawValue]
         let n = alteracion.numeroDeSignos
-        if alteracion.esNatural { return natural.nombre(en: .aleman) }
-        if alteracion.esSostenido { return natural.nombre(en: .aleman) + String(repeating: "is", count: n) }
+        if alteracion.esNatural { return letra }
+        if alteracion.esSostenido { return letra + String(repeating: reglas.sufijoDeSostenido, count: n) }
+        let bemol = reglas.sufijoDeBemol
+        // Tras vocal, el bemol pierde la «e»: Es, As; Esz, Asz.
+        let trasVocal = String(bemol.dropFirst())
         switch natural {
-        case .si: return n == 1 ? "B" : "H" + String(repeating: "es", count: n)
-        case .mi: return "Es" + String(repeating: "es", count: n - 1)
-        case .la: return "As" + String(repeating: "as", count: n - 1)
-        default: return natural.nombre(en: .aleman) + String(repeating: "es", count: n)
+        case .si: return n == 1 ? "B" : letra + String(repeating: bemol, count: n)
+        case .mi: return "E" + trasVocal + String(repeating: bemol, count: n - 1)
+        case .la: return "A" + trasVocal + String(repeating: "a" + trasVocal, count: n - 1)
+        default: return letra + String(repeating: bemol, count: n)
         }
     }
 
     /// Nombre compacto para cifrados: igual que `nombre(en:)` salvo en las notaciones que escriben
-    /// las alteraciones con palabras, que usan la sílaba con mayúscula y el símbolo (Fa♯, F♯, Ré♭, Фа♯, Φα♯).
+    /// las alteraciones con palabras, que usan la sílaba con mayúscula y el símbolo (Fa♯, F♯, Ré♭, Фа♯, Φα♯) o,
+    /// en alemán, el nombre a la alemana (Fis).
     public func nombreCompacto(en notacion: Notacion) -> String {
         let notacion = notacion.notas
         switch notacion.escritura.escrituraDeLaAlteracion {
         case .palabras:
+            if notacion.idiomaDeLasNotas.reglas.alteraciones == .alemana {
+                return nombreConSufijos(en: notacion.idiomaDeLasNotas)
+            }
             return natural.nombre(en: notacion).conMayusculaInicial + alteracion.simbolo
         case .signos, .alemana:
             return nombre(en: notacion)

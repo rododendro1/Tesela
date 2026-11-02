@@ -7,10 +7,10 @@ import Armonia
 extension TextosDeCLI {
     static let griego = TextosDeCLI(
         // Ayuda+Armonizacion.swift
-        sintaxisAnalizar: "analyze <συγχορδίες> [--in <τονικότητα>]",
-        descripcionAnalizar: "ρωμαϊκή αρίθμηση, λειτουργίες, πτώσεις\nκαι μετατροπίες (με την κοινή τους\nσυγχορδία· χωρίς --in)",
+        sintaxisAnalizar: "analyze <συγχορδίες> [--in <τονικότητα>] [--scales]",
+        descripcionAnalizar: "ρωμαϊκή αρίθμηση, λειτουργίες, πτώσεις\nκαι μετατροπίες (με την κοινή τους\nσυγχορδία· χωρίς --in)\n--scales: η κλίμακα κάθε συγχορδίας,\nμε τις εντάσεις και τους φθόγγους\nπρος αποφυγή",
         sintaxisAnalizarArchivo: "analyze --file <αρχείο> [--window <διάρκεια>]",
-        descripcionAnalizarArchivo: "το ίδιο, με τις συγχορδίες ενός αρχείου\nMIDI ή MusicXML (μία ανά χρόνο;\n--window 2: μία ανά μισό)",
+        descripcionAnalizarArchivo: "το ίδιο, με τις συγχορδίες ενός αρχείου\nMIDI, MusicXML, MEI ή ABC (μία ανά\nχρόνο; --window 2: μία ανά μισό)",
         sintaxisArmonizar: "harmonize <μελωδία> [--in <τονικότητα>] [--proposals 3]",
         descripcionArmonizar: "συγχορδίες για μια μελωδία, οι\nκαλύτερες πρώτα· με οκτάβες (E4), και\nτο τετράφωνο χορικό",
         sintaxisRealizar: "realize <συγχορδίες> [--in <τονικότητα>]",
@@ -33,8 +33,11 @@ extension TextosDeCLI {
         descripcionIdentificar: "συγχορδίες που σχηματίζουν οι νότες",
         sintaxisIntervalo: "interval <νότα> <νότα>",
         descripcionIntervalo: "διάστημα ανάμεσα σε δύο νότες ή τονικά\nύψη",
-        sintaxisEscala: "scale <κλίμακα>",
-        descripcionEscala: "νότες και συγχορδίες μιας κλίμακας",
+        sintaxisEscala: "scale <κλίμακα> [--chords]",
+        descripcionEscala: "νότες και συγχορδίες μιας κλίμακας\n--chords: όλες όσες χωρούν σε κάθε\nβαθμίδα, όχι μόνο κατά τρίτες",
+        sintaxisEscalas: "scales [<κείμενο>] [επιλογές]",
+        descripcionEscalas: "ο κατάλογος των κλιμάκων: οι συνήθεις\nκαι όσες άλλων παραδόσεων, ανά\nκατηγορία, με τις νότες τους από το Ντο",
+        notasEscalas: "επιλογές: --tradition turkey (ή india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) και --category maqam (ή rāga, makam,\ndastgah, dromos…)· ένα κείμενο ψάχνει στα ονόματα",
         sintaxisTonalidad: "key <τονικότητα>",
         descripcionTonalidad: "οπλισμός, σχετικές τονικότητες και\nβαθμίδες",
 
@@ -79,10 +82,16 @@ extension TextosDeCLI {
         descripcionMusicxmlArpegios: "οι συγχορδίες σε αρπίσματα, νότα νότα",
         notasMusicxmlArpegios: "επιλογές: --patron alberti (ή up, down, up-down), --figura 16\n(πόσο διαρκεί κάθε νότα· από προεπιλογή όγδοο), --duracion 1\n(πόσο διαρκεί κάθε συγχορδία: το σχήμα επαναλαμβάνεται ώσπου\nνα τη γεμίσει) και οι υπόλοιπες των «chords»",
         sintaxisMusicxmlArchivo: "musicxml chords --file <αρχείο>",
-        descripcionMusicxmlArchivo: "η αλληλουχία ενός αρχείου MIDI ή\nMusicXML, με τη διάρκεια κάθε\nσυγχορδίας (και arpeggios, mei, midi)",
-        sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios <…> [επιλογές]",
+        descripcionMusicxmlArchivo: "η αλληλουχία ενός αρχείου MIDI,\nMusicXML, MEI ή ABC, με τη διάρκεια\nκάθε συγχορδίας (και arpeggios, mei,\nmidi)",
+        sintaxisMusicxmlEscala: "musicxml scale <κλίμακα> [επιλογές]",
+        descripcionMusicxmlEscala: "μια κλίμακα σε τέταρτα, με τα\nμικροτόνιά της: την ημιύφεση ενός\nμακάμ, το κορόν, τα κόμματα ενός μακάμ",
+        sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios|scale <…> [επιλογές]",
         descripcionMeiMelodia: "το ίδιο σε MEI 5, τη μορφή των\nκριτικών εκδόσεων (με τις ίδιες\nεπιλογές)",
-        sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios <…> [επιλογές]",
+        sintaxisLilypondMelodia: "lilypond melody|chorale|chords|arpeggios|scale <…> [επιλογές]",
+        descripcionLilypondMelodia: "το ίδιο σε LilyPond, για να χαραχθεί\nη παρτιτούρα σε PDF",
+        sintaxisAbcMelodia: "abc melody|chorale|chords|arpeggios|scale <…> [επιλογές]",
+        descripcionAbcMelodia: "το ίδιο σε ABC, τη γραφή με κείμενο\nτης παραδοσιακής μουσικής",
+        sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios|scale <…> [επιλογές]",
         descripcionMidiMelodia: "το ίδιο ως αρχείο MIDI, για να το\nακούσεις (χωρίς --clave ή --cifrados·\nμε --program 0…127, General MIDI)",
 
         // Ayuda+Trastes.swift
@@ -95,7 +104,7 @@ extension TextosDeCLI {
         cabeceraDeLaAyuda: """
         armonia: θεωρία της μουσικής από τη γραμμή εντολών.
 
-        Χρήση: armonia <εντολή> <ορίσματα> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru]
+        Χρήση: armonia <εντολή> <ορίσματα> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
 
         Εντολές (οι εντολές και οι επιλογές γράφονται στα ισπανικά ή στα αγγλικά):
         """,
@@ -106,11 +115,21 @@ extension TextosDeCLI {
         Με --textos, τα κείμενα βγαίνουν σε άλλη γλώσσα από τις νότες: --idioma en --textos el.
         Στα ισπανικά και στα αγγλικά, το --escritura palabras|ascii|unicode γράφει τις νότες
         Fa sostenido, Fa# ή Fa♯ (στα αγγλικά, F sharp, F# ή F♯).
+        Στις άλλες γλώσσες, το --escritura palabras|compacto επιλέγει λέξεις ή τη σύντομη μορφή:
+        fa dièse ή Fa♯, F Kreuz ή Fis.
+        Στις συμπαγείς γραφές η οκτάβα γράφεται ως δείκτης (La₄) και στις άλλες με ψηφία (La4)·
+        το --subindices ή το --cifras την ορίζει (διαβάζονται και τα δύο).
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "αυτή η βοήθεια",
+        sintaxisCompletado: "completion bash|zsh|fish",
+        descripcionCompletado: "η αυτόματη συμπλήρωση εντολών και\nεπιλογών για το τερματικό",
+        sintaxisManual: "manual",
+        descripcionManual: "αυτή η βοήθεια ως σελίδα εγχειριδίου",
+        manualNombre: "ΟΝΟΜΑ",
+        manualNotas: "ΣΗΜΕΙΩΣΕΙΣ",
 
-        // ErrorDeUso+Armonizacion.swift
+        // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "λείπουν οι συγχορδίες: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },
         dosAcordesDeConduccion: { ejemplo in "χρειάζονται δύο συγχορδίες: armonia minimal-voice-leading G7 C" },
         faltanNotasDeLaArmonizacion: { ejemplo in "λείπουν οι νότες της μελωδίας: armonia harmonize E4 D4 C4" },
@@ -119,10 +138,12 @@ extension TextosDeCLI {
         especieFueraDeRango: "το --species πάει από 1 έως 5",
         faltanAcordesDeLaRealizacion: { ejemplo in "λείπουν οι συγχορδίες: armonia realize C F G7 C" },
 
-        // ErrorDeUso+Consultas.swift
+        // ErrorDeUso.swift (consultas)
         faltaCifrado: "λείπει το σύμβολο της συγχορδίας: armonia chord G7",
         faltaCifradoDelArpegio: "λείπει το σύμβολο της συγχορδίας: armonia arpeggio C7",
         patronDesconocido: { patron in "άγνωστο μοτίβο: «\(patron)» (ascending, descending, up-down, down-up, broken ή alberti)" },
+        tradicionDesconocida: { tradicion in "«\(tradicion)»: δεν είναι παράδοση (india, greece, arab-world, persia, turkey…)" },
+        categoriaDesconocida: { categoria in "«\(categoria)»: δεν είναι κατηγορία κλιμάκων (rāga, maqam, makam, dastgah…)" },
         faltanNotas: "λείπουν οι νότες: armonia identify C E G",
         dosNotas: "χρειάζονται δύο νότες: armonia interval C E",
         faltaEscala: "λείπει η κλίμακα: armonia scale D dorian",
@@ -135,7 +156,7 @@ extension TextosDeCLI {
         faltaTransporte: { ejemplo in "λείπουν το διάστημα (ή η νέα τονική) και ό,τι μεταφέρεται: armonia transpose M2 C Am F G7" },
         faltanAcordesDeLaRearmonizacion: { ejemplo in "λείπουν οι συγχορδίες: armonia reharmonize C Am Dm7 G7" },
 
-        // ErrorDeUso+Dibujos.swift
+        // ErrorDeUso.swift (dibujos)
         margenFueraDeRango: "το περιθώριο είναι αριθμός από 0 έως 6: --margen 2",
         faltanNotasDelDibujo: { ejemplo, orden in "λείπουν οι νότες: armonia \(orden) C E G" },
         faltaAcordeDelDibujo: { ejemplo, orden in "λείπει η συγχορδία: armonia \(orden) --chord G7" },
@@ -147,7 +168,7 @@ extension TextosDeCLI {
         caminoSoloTriadas: { ejemplo, orden in "η συντομότερη διαδρομή πάει από ένα μείζον ή ελάσσον τρίφωνο σε άλλο: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "ο κύκλος ξεκινά από ένα μείζον ή ελάσσον τρίφωνο: armonia \(orden) --cycle hexatonic C" },
 
-        // ErrorDeUso+Neorriemann.swift
+        // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "κινούνται 1 ή 2 φωνές: --voices 2",
         unAcordeDeVecinos: { ejemplo in "χρειάζεται μία συγχορδία: armonia neighbors G7" },
         vecinosSinFamilia: "οι γειτονικές αναζητούνται ανάμεσα σε συγχορδίες έβδομης δεσπόζουσας, ελάσσονες, ημιελαττωμένες, ελαττωμένες και maj7, ή ανάμεσα σε μείζονα, ελάσσονα και αυξημένα τρίφωνα",
@@ -156,10 +177,10 @@ extension TextosDeCLI {
         faltanPasosDePLR: { ejemplo in "χρειάζονται ένα τρίφωνο και κάποια βήματα ή άλλο τρίφωνο: armonia plr C PLR" },
         plrSoloTriadas: { ejemplo, camino in "τα P, L και R εφαρμόζονται σε μείζονα και ελάσσονα τρίφωνα: armonia plr " + (camino ? "C Ebm" : "C PLR") },
 
-        // ErrorDeUso+Partituras.swift
+        // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "λείπει το «melody», «chorale» ή «chords»: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
         instrumentoMIDI: "το πρόγραμμα είναι αριθμός General MIDI από 0 έως 127: --program 52",
-        marcasSoloMusicXML: "τα --cifrados και --analisis είναι για MusicXML και MEI",
+        marcasSoloMusicXML: "τα --cifrados και --analisis είναι για MusicXML, MEI, LilyPond και ABC",
         faltaValor: { opcion in "λείπει η τιμή του --\(opcion)" },
         tempoMalEscrito: "το τέμπο γράφεται «--tempo 90» ή «--tempo 60 4.»",
         faltanNotasDeLaMelodia: { ejemplo, orden in "λείπουν οι νότες: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
@@ -173,11 +194,11 @@ extension TextosDeCLI {
         ventanaSinArchivo: "το --window πάει με το --file",
         faltanAcordesDeLaProgresion: { ejemplo, orden in "λείπουν οι συγχορδίες: armonia \(orden) chords C Am D7 G7 C" },
         acordesConCifradosYAnalisis: "οι συγχορδίες έχουν πάντα σύμβολα και ανάλυση",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: εξάγεται «melody», «chorale», «chords» ή τα «arpeggios» τους" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: εξάγεται «melody», «chorale», «chords», τα «arpeggios» τους ή «scale»" },
 
-        // ErrorDeUso+Trastes.swift
+        // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "λείπει το όργανο: \(digitaciones.1)" },
-        instrumentoDesconocido: { nombre, lista in "άγνωστο όργανο: «\(nombre)» (\(lista(.griego)))" },
+        instrumentoDesconocido: { nombre, lista in "άγνωστο όργανο: «\(nombre)» (\(lista(.griegoPalabras)))" },
         faltaLimite: "λείπει ο αριθμός δακτυλοθεσιών: --limit 5",
         limiteFueraDeRango: "το όριο είναι αριθμός από 1 έως 200: --limit 5",
         faltanDedos: "λείπει ο αριθμός δαχτύλων: --fingers 3",
@@ -188,17 +209,21 @@ extension TextosDeCLI {
         faltaEscalaDePosiciones: "λείπει η κλίμακα: armonia positions G major",
         capoFueraDeRango: "το καποτάστο είναι αριθμός από 0 έως 12: --capo 2",
 
-        // ErrorDeUso.swift
+        // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Δοκίμασε «armonia help».",
         ordenDesconocida: { orden in "άγνωστη εντολή: «\(orden)»" },
         opcionDesconocida: { opcion in "άγνωστη επιλογή: «\(opcion)»" },
-        idiomaDesconocido: { idioma in "άγνωστη γλώσσα: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el ή ru)" },
-        escrituraNoValida: { escritura in "μη έγκυρη γραφή: «\(escritura)» (palabras/words, ascii ή unicode· μόνο με es και en)" },
+        idiomaDesconocido: { idioma in "άγνωστη γλώσσα: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru ή hu)" },
+        terminalDesconocida: { t in "άγνωστο κέλυφος: «\(t)» (bash, zsh ή fish)" },
+        escrituraNoValida: { escritura in "μη έγκυρη γραφή: «\(escritura)» (palabras/words ή compacto/compact· ascii ή unicode, μόνο με es και en)" },
 
         // Mensaje.swift
         mensajeNotas: "νότες",
         mensajeAcordes: "συγχορδίες",
+        mensajeMicrotonos: "μικροτόνια",
         mensajeEscalas: "κλίμακες",
+        mensajeHabituales: "συνήθεις",
+        mensajeNingunaEscala: "καμία κλίμακα δεν ταιριάζει",
         mensajeArmadura: "οπλισμός",
         mensajeRelativa: "σχετική",
         mensajeHomonima: "ομώνυμη",
@@ -208,15 +233,15 @@ extension TextosDeCLI {
         mensajeSin: { notas in "χωρίς \(notas)" },
         mensajeSemitonos: { n in "\(n) ημιτόνια" },
         mensajeSinAlteraciones: "χωρίς αλλοιώσεις",
-        mensajeSostenidos: { n in n == 1 ? "1 δίεση" : "\(n) διέσεις" },
-        mensajeBemoles: { n in n == 1 ? "1 ύφεση" : "\(n) υφέσεις" },
+        mensajeSostenidos: { n in Idioma.griego.contar(n, "δίεση", "διέσεις") },
+        mensajeBemoles: { n in Idioma.griego.contar(n, "ύφεση", "υφέσεις") },
         mensajeACuatroVoces: "Σε τετραφωνία (μπάσο, τενόρος, άλτο, σοπράνο):",
         mensajeSinDigitaciones: "δεν υπάρχουν άνετες δακτυλοθεσίες",
-        mensajeDedos: { n in n == 1 ? "1 δάχτυλο" : "\(n) δάχτυλα" },
+        mensajeDedos: { n in Idioma.griego.contar(n, "δάχτυλο", "δάχτυλα") },
         mensajeCejilla: { traste in "μπαρέ στο \(traste)ο τάστο" },
         mensajeNingunPaso: "κανένα βήμα",
         mensajeUnPaso: "1 βήμα",
         mensajePasos: { n in "\(n) βήματα" },
-        mensajeTriadas: { n in n == 1 ? "1 τρίφωνο" : "\(n) τρίφωνα" }
+        mensajeTriadas: { n in Idioma.griego.contar(n, "τρίφωνο", "τρίφωνα") }
     )
 }

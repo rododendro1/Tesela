@@ -3,7 +3,7 @@ import ArmoniaUI
 import SwiftUI
 
 /// Armoniza una melodía, escribe unos acordes a cuatro voces o revisa la conducción de unas voces, y
-/// exporta el coral como partitura o MIDI.
+/// exporta el coral como partitura o MIDI. Arriba, el paso al contrapunto de especies (`VistaDeContrapunto`).
 struct VistaDeCoral: View {
     @Environment(\.notacion) private var notacion
     @State private var tarea = PresentacionDeCoral.Tarea.armonizar
@@ -20,7 +20,14 @@ struct VistaDeCoral: View {
     var body: some View {
         Form {
             Section {
-                Picker(notacion.texto(.tarea), selection: $tarea) {
+                NavigationLink {
+                    VistaDeContrapunto()
+                } label: {
+                    Label(notacion.texto(\.contrapunto), systemImage: "music.note.list")
+                }
+            }
+            Section {
+                Picker(notacion.texto(\.tarea), selection: $tarea) {
                     ForEach(PresentacionDeCoral.Tarea.allCases) { Text($0.titulo(en: notacion)).tag($0) }
                 }
                 .pickerStyle(.segmented)
@@ -30,7 +37,7 @@ struct VistaDeCoral: View {
                 )
                 .comoCampoDeCifrado()
                 if tarea.usaTonalidad {
-                    TextField(notacion.texto(.campoDeTonalidad), text: $tonalidad)
+                    TextField(notacion.texto(\.campoDeTonalidad), text: $tonalidad)
                         .comoCampoDeCifrado()
                 }
             }
@@ -49,7 +56,7 @@ struct VistaDeCoral: View {
                 }
             }
         }
-        .navigationTitle(notacion.texto(.coral))
+        .navigationTitle(notacion.texto(\.coral))
         .selectorDeNotacionEnLaBarra()
         .toolbar {
             ToolbarItem {
@@ -74,7 +81,7 @@ struct VistaDeCoral: View {
                 Button("↓ " + intervalo.nombre(en: notacion)) { transponer(-intervalo) }
             }
         } label: {
-            Label(notacion.texto(.transponer), systemImage: "arrow.up.arrow.down")
+            Label(notacion.texto(\.transponer), systemImage: "arrow.up.arrow.down")
         }
     }
 
@@ -101,19 +108,19 @@ struct VistaDeCoral: View {
     @ViewBuilder
     private func contenido(_ coral: CoralPresentado) -> some View {
         if !coral.titulo.isEmpty {
-            Section(notacion.texto(.tonalidad)) {
+            Section(notacion.texto(\.tonalidad)) {
                 Text(coral.titulo).font(.headline)
             }
         }
         if !coral.propuestas.isEmpty {
-            Section(notacion.texto(.armonizaciones)) {
+            Section(notacion.texto(\.armonizaciones)) {
                 ForEach(Array(coral.propuestas.enumerated()), id: \.offset) { n, propuesta in
                     Text("\(n + 1). \(propuesta)")
                 }
             }
         }
         if !coral.filas.isEmpty {
-            Section(notacion.texto(.aCuatroVoces)) {
+            Section(notacion.texto(\.aCuatroVoces)) {
                 BotonDeEscuchar(coral.sonido)
                 ForEach(Array(coral.filas.enumerated()), id: \.offset) { _, fila in
                     HStack {
@@ -129,7 +136,7 @@ struct VistaDeCoral: View {
             }
         }
         if !coral.avisos.isEmpty {
-            let titulo = notacion.texto(tarea == .revisar ? .conduccionDeLasVoces : .avisos)
+            let titulo = tarea == .revisar ? notacion.texto(\.conduccionDeLasVoces) : notacion.texto(\.avisos)
             Section(titulo) {
                 ForEach(coral.avisos, id: \.self) { Text($0.texto(en: notacion)) }
             }

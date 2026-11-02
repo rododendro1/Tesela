@@ -2,6 +2,90 @@
 
 ## Sin publicar
 
+- **Disposiciones en Armonía.** En Acordes, el acorde cerrado, en drop 2, drop 3, drop 2 y 4, con la fundamental,
+  la tercera y la séptima o solo con las notas guía, en todas sus octavas, con el pentagrama y un botón para escuchar
+  cada una. En Análisis, la progresión dispuesta así con el menor movimiento de las voces: se escucha (resaltando el
+  acorde que suena) y se exporta como partitura y MIDI.
+- **Contrapunto en Armonía.** Desde la pestaña Coral se abre el contrapunto de especies: se elige la especie (de la
+  primera a la quinta, cada una con un ejemplo sin faltas sobre el cantus en re de Fux), se escriben el cantus firmus
+  y el contrapunto, y se ve compás a compás qué notas hay, sus intervalos con el cantus y las faltas. Se escucha
+  (resaltando el compás que suena) y se exporta en MusicXML, MEI, LilyPond, ABC y MIDI.
+- **«Partitura» en Tonnetz.** Un modo nuevo abre un fichero MIDI, MusicXML (también .mxl), MEI o ABC y sigue sus
+  acordes en la red, con «Anterior» y «Siguiente» o mientras suena: cada tríada se dibuja con las que llevan a ella
+  y sus flechas, y se dice qué transformaciones P, L y R hay desde la anterior. En macOS, la app pide permiso para
+  leer el fichero elegido.
+- `ArmoniaPresentacion` sale del paquete a uno propio, `Packages/ArmoniaPresentacion`, con sus pruebas. `ArmoniaUI`
+  lo sigue reexportando, así que las apps no cambian; quien use `ArmoniaPresentacion` por ruta local debe apuntar a
+  `Packages/ArmoniaPresentacion` y nombrar el producto con `package: "ArmoniaPresentacion"`. Por URL (el
+  `Package.swift` de la raíz) no cambia nada.
+- `Notacion.mensaje(de:)` traduce cualquier error del motor (`any ErrorDeArmonia`), también los de UIL, que antes
+  salían siempre en español.
+
+## 0.3.1 (2026-11-02)
+
+- «Abrir» en el análisis también abre ficheros MEI (.mei) y ABC (.abc).
+- «Escuchar» toca los microtonos: el Mi𝄳 de Re Bayātī suena un cuarto de tono sobre Mi♭, y las voces con desvíos
+  (`Mi♭4(50¢):4`) suenan con sus cents. `Escucha.NotaMIDI` guarda el `microtono`, y `afinado(en:)` lo suma a la
+  afinación del temperamento elegido.
+- Con los nombres nuevos del motor (`Notacion.espanolPalabras`…), las claves guardadas en los ajustes no cambian:
+  «espanol», «catalan», «alemanPalabras»…
+- Mientras no se toque el interruptor «Octava en subíndice», la octava va como la escriba la notación: en subíndice
+  en las compactas (La₄) y con cifras en las demás, como en el motor y en la línea de comandos. El ajuste se lee como
+  `Bool?` y `Notacion.desde(clave:octavasEnSubindice:)` acepta `nil`.
+- El alemán con palabras (Deutsch (F Kreuz)) se guarda con la clave «alemanPalabras», y «aleman» se lee como
+  `.alemanCompacto` (Deutsch (Fis)), que es lo que significaba hasta la 0.3.0: quien eligió Fis antes de la 0.3.0
+  lo sigue viendo. `Notacion.desde(clave:)` lee las dos.
+
+## 0.3.0 (2026-11-01)
+
+- **Sin nombres obsoletos**: desaparecen los que la 0.2.0 marcó como obsoletos: `PresentacionDePentagrama`
+  (`PentagramaPresentado`), `PresentacionPostonal` (`AnalisisPostonalPresentado`), `Sonido` (`Escucha`) y
+  `AnalisisPresentado.rearmonizaciones(notacion:)` (`rearmonizaciones(en:)`).
+- El selector de notación ofrece también la escritura compacta de cada idioma con palabras: Français (Fa♯),
+  Русский (Фа♯)… Se guardan como «francesCompacto», «rusoCompacto»; las claves de antes no cambian.
+- Los textos de las apps, en húngaro (`TextosDeApps.hungaro`); el selector de idioma lo ofrece solo, y las apps
+  lo declaran en `Config/Idiomas.plist` y en sus carpetas `hu.lproj`.
+- Las claves de las notaciones compactas son «espanolCompacto», «inglesCompacto» y «alemanCompacto», y
+  `Notacion.desde(clave:)` lee también las de antes («espanolUnicode», «inglesUnicode»). «aleman» es ahora el
+  alemán con palabras (Deutsch (F Kreuz)), y el selector ofrece también Deutsch (Fis). En las apps la octava sigue
+  el ajuste de los subíndices, también en las notaciones compactas.
+- El menú para exportar de las apps ofrece también LilyPond (`.ly`) y ABC (`.abc`) en el análisis, el coral y los
+  arpegios: `FicheroParaExportar.Formato.lilyPond` y `.abc`, con sus textos en los catorce idiomas.
+- La tablatura en MusicXML escapa sus textos con `EscrituraXML.escapar`, la del motor.
+- Los textos con un número usan `Idioma.contar`, con el plural de cada idioma: en francés, «0 note par corde»
+  en vez de «0 notes». El selector de idioma recorre `Idioma.allCases`.
+- Desaparece `TextoDeLasApps`: sus casos solo llevaban a un campo de `TextosDeApps`, que pasa a ser público. Un texto
+  de las apps se lee con `notacion.texto(\.digitaciones)` o `notacion.texto { $0.notasPorCuerda(3) }`, y los campos
+  con ejemplos en la notación con `notacion.campo(.cifrado)` (`CampoDeLasApps`). `TextosDeApps.dedosYCejilla(_:_:)`,
+  `capoEnElTraste(_:)` y `casillaElegida(q:r:)` juntan los textos compuestos. Los textos no cambian.
+- `Idioma.titulo` es el `nombrePropio` del motor y `Idioma.clave`, su `rawValue`: las claves guardadas en los ajustes
+  no cambian.
+- `TextosDeApps` adopta `TextosTraducidos` del motor; `TextosDeApps.traduccion(_:)` sigue igual.
+- El selector de notación de las apps tiene un interruptor «Octava en subíndice» (La₄), traducido a los catorce
+  idiomas. Se guarda aparte, en `AjustesDeLasApps.claveDeOctavasEnSubindice`, y `notacionGuardada()` lo aplica con
+  `Notacion.desde(clave:octavasEnSubindice:)`. `SelectorDeNotacion` acepta el binding `octavasEnSubindice:`.
+
+## 0.2.0 (2026-10-31)
+
+- Arreglado: en macOS, sin optimizar, los textos de las apps desbordaban la pila (señal 11). Pasaba en las pruebas
+  de ArmoniaUI y en Tonnetz al elegir «Acorde». Cada caso de `TextoDeLasApps` copiaba en la pila los catorce
+  `TextosDeApps`; ahora la copia es una, en `TextosDeApps.traduccion(_:)`.
+- Revisión de la terminología de la API. Los nombres viejos siguen compilando, marcados como obsoletos, y se quitarán
+  en la próxima versión:
+  - `PresentacionDePentagrama` pasa a `PentagramaPresentado` y `PresentacionPostonal`, a `AnalisisPostonalPresentado`,
+    como los demás resultados (`AnalisisPresentado`, `CoralPresentado`…); las `PresentacionDe…` son las que preparan.
+  - `AnalisisPresentado.rearmonizaciones(notacion:)` pasa a `rearmonizaciones(en:)`, como las demás funciones que
+    reciben una `Notacion`.
+  - `Sonido` pasa a `Escucha`: es lo que suena al pulsar «Escuchar», y «sonido» es también otro nombre de la altura.
+  - `Reproductor`, `SelectorDeNotacion` y `Escucha.afinado(en:)` usan `AfinacionHistorica`, el nombre nuevo de
+    `Temperamento`.
+- VoiceOver numera las cuerdas del mástil como quien toca: en la guitarra, el Mi grave es la cuerda 6 (antes, la 1).
+- Documentación de DocC para `ArmoniaUI` y `ArmoniaPresentacion`: una página de entrada por módulo, con un ejemplo y
+  los tipos agrupados por tarea, publicada en GitHub Pages junto a la de Armonia y Hexagonos.
+- `RedDeNotas` toma el teclado y el nombre de cada red de `TecladoIsomorfico.todos` y `nombre(en:)` del motor.
+- Los textos de las apps (`TextoDeLasApps`, los avisos y las tareas del coral y los nombres de los formatos de
+  exportación) pasan a `TextosDeApps`, un fichero por idioma en `ArmoniaPresentacion/Textos/`, como los del motor.
+  Los textos no cambian.
 - Más opciones de arpegio en ArmoniaApp. En la pestaña Acordes, el arpegio elige también cuántas octavas abarca, si
   acaba en la octava y la figura de sus notas (negra, corchea o semicorchea); en Análisis, la figura de la progresión
   arpegiada. `PresentacionDeArpegios.arpegio(_:figura:notacion:)`, `progresion(…figura:…)` y

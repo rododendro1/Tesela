@@ -6,7 +6,7 @@
 extension TextosDeTeoria {
     static let occitano = TextosDeTeoria(
         // Acorde.swift
-        conBajoEn: { bajo in "amb la bassa en \(bajo)" },
+        conBajoEn: { acorde, bajo in "\(acorde), amb la bassa en \(bajo)" },
         nombresDeLasInversiones: ["estat fondamental", "primièra inversion", "segonda inversion", "tresena inversion",
                                   "quatrena inversion", "cinquena inversion", "sisena inversion"],
         inversionConNumero: "inversion _",
@@ -105,10 +105,62 @@ extension TextosDeTeoria {
         cadenciaPlagal: "cadéncia plagala",
         cadenciaRota: "cadéncia rompuda",
         semicadencia: "semicadéncia",
+        semicadenciaFrigia: "semicadéncia frigiana",
+        cadenciaPlagalMenor: "cadéncia plagala menora",
 
         // RecorridoTonal.swift
         deUnaTonalidadAOtra: { de, a, n in "De \(de) a \(a) a l'acòrd \(n)" },
         pivote: "pivòt",
-        directa: " (dirècta)"
+        directa: " (dirècta)",
+        // Arpegio.swift
+        arpegioDe: { acorde in "Arpegi de \(acorde)" },
+        patronAscendente: "ascendent",
+        patronDescendente: "descendent",
+        patronIdaYVuelta: "d'anada e de tornada",
+        patronAlberti: "bassa d'Alberti",
+        patronQuebrado: "trencat",
+        patronBajaYSube: "de davalada e de montada",
+        // Escala+Acorde.swift
+        papelNotaDelAcorde: "nòta de l'acòrd",
+        papelTensionDisponible: "tension",
+        papelNotaAEvitar: "nòta d'evitar",
+        modoDe: { modo, escala in "mòde \(modo) de \(escala)" },
+        // NotaExtrana.swift
+        nombresDeNotasExtranas: ["nòta de passatge", "brodadura", "apojatura", "retard", "anticipacion", "escapada", "nòta pedala", "nòta liura"],
+        // EsquemaArmonico.swift
+        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "blues de 12 mesuras", "progression per quintas", "romanesca", "canon de Pachelbel", "monte", "fonte", "ponte"],
+        // Rearmonizacion.swift
+        sustitutoTritonal: "substitut de triton",
+        dominanteSecundaria: "dominanta segondària",
+        prestamoModal: "manlèu modal",
+        sustitutoDiatonico: "substitut diatonic",
+        rearmonizacionIIV: "ii–V",
+        rearmonizacionBackdoor: "dominanta backdoor",
+        // ErrorDeLecturaDeTeoria.swift (acordes)
+        simboloNoReconocido: { simbolo in "«\(simbolo)» fa pas part de cap de chifratge conegut" },
+        tensionNoValida: { tension in "«\(tension)» es pas una tension valida (♭/♯ van amb 5, 9, 11 e 13, e add amb 2, 4, 6, 9, 11 e 13)" },
+        numeroDeAcordeNoValido: { numero in "«\(numero)» es pas un nombre d'acòrd (5, 6, 7, 9, 11 o 13)" },
+        numeroRepetido: { numero in "«\(numero)» ven aprèp un autre nombre; las tensions suplementàrias van entre parentèsis, coma dins 7(9)" },
+        disminuidoYSemidisminuido: "diminuit (°) e semidiminuit (ø) se pòdon pas combinar",
+        quintaConCalidad: "l'acòrd de quinta (5) a pas de tèrça, doncas admet pas m, °, ø ni +",
+        fundamentalNoOmitible: "se pòt pas ometre la fondamentala",
+        gradoNoOmitible: { grado in "«omit\(grado)» es pas valid (se pòdon ometre 3, 5, 7, 9, 11 e 13)" },
+        faltaLaFundamental: "manca la fondamentala",
+        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .occitanoPalabras)) a pas cap de ròtle dins un acòrd per tèrças" },
+        terceraMayorYMenor: "a una tèrça majora e una tèrça menora alhora (la ♯9 s'escriu coma novena aumentada, pas coma tèrça menora)",
+        variasSeptimas: "a mai d'una setena",
+        septimaDisminuidaFueraDelDisminuido: "la setena diminuida apareis sonque dins l'acòrd diminuit (amb tèrça menora e quinta diminuida)",
+        noEsPorTerceras: "es pas un acòrd per tèrças",
+        bajoNoValido: { bajo in "«\(bajo)» es pas un nom de nòta per la bassa" },
+        idiomasMezclados: { nombre in "«\(nombre)» es escrich dins una autra lenga que la fondamentala: s'escriu tot amb sillabas (Sol7/Si) o tot amb letras (G7/B)" },
+        // ErrorDeLecturaDeTeoria.swift (escalas)
+        modoNoReconocido: { nombre in "«\(nombre)» es pas lo mòde d'una tonalitat: una tonalitat es majora o menora (pels autres mòdes, utiliza Escala)" },
+        faltaElTipoDeEscala: "manca lo tipe de gama (major, dorian, menor armonica…)",
+        tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» es pas un tipe de gama conegut" },
+        // ErrorDeLecturaDeTeoria.swift (coral)
+        vocesDistintas: "totes los acòrds devon aver lo meteis nombre de voses, e almens doas",
+        // Gramática (Acorde.swift, Tonalidad.swift)
+        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        enLaTonalidad: { tonalidad in "en " + tonalidad }
     )
 }

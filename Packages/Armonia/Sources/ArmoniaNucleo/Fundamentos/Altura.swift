@@ -30,7 +30,8 @@ public struct Altura: Hashable, Sendable {
         self.init(pasosDeQuinta: nombre.pasosDeQuinta, pasosDeOctava: (pasos - 4 * nombre.pasosDeQuinta) / 7)
     }
 
-    /// Lee textos como "Do4", "Fa#3", "Sib-1", "C#5", "Fa sostenido 3", "B flat 4".
+    /// Lee textos como "Do4", "Fa#3", "Sib-1", "C#5", "Fa sostenido 3", "B flat 4", y también con la octava en
+    /// subíndice: "La₄", "Do♯₃", "Si♭₋₁".
     /// Si no se puede leer, el error indica dónde y por qué.
     /// También acepta los nombres en catalán, gallego, asturiano, aragonés, euskera, portugués, occitano, griego y
     /// ruso:
@@ -43,7 +44,9 @@ public struct Altura: Hashable, Sendable {
             guard let nombre = lector.leerNombreNota() else { throw lector.error(.notaNoReconocida) }
             lector.saltarEspacios()
             let textoOctava = lector.restoSinEspacios
-            guard let octava = Int(textoOctava) else { throw lector.error(.octavaNoValida(textoOctava)) }
+            guard let octava = Int(EscrituraDeLaOctava.conCifras(textoOctava)) else {
+                throw lector.error(.octavaNoValida(textoOctava))
+            }
             leida = Altura(nombre, octava: octava)
         } catch {
             let otras = Notacion.deLecturaGenerica + Notacion.conPalabras
@@ -54,18 +57,21 @@ public struct Altura: Hashable, Sendable {
         self = leida
     }
 
-    /// Lee una nota escrita en una notación concreta: `Altura(leyendo: "Fis4", en: .aleman)`,
-    /// `Altura(leyendo: "ré bémol 3", en: .frances)`. La octava es la científica (Do4 = do central).
+    /// Lee una nota escrita en una notación concreta: `Altura(leyendo: "Fis4", en: .alemanCompacto)`,
+    /// `Altura(leyendo: "ré bémol 3", en: .francesPalabras)`. La octava es la científica (Do4 = do central), con cifras o
+    /// en subíndice ("ré bémol ₃").
     public init(leyendo texto: String, en notacion: Notacion) throws {
         let notacion = notacion.notas
-        switch notacion.escritura.escrituraDeLaAlteracion {
-        // En español e inglés con palabras, «Fa sostenido 4», y también «Fa#4» (lo lee `Nota(leyendo:en:)`).
-        case .palabras, .alemana:
+        // En español e inglés con signos, el lector de siempre («Fa#4»). En los demás casos, el nombre y la octava por
+        // separado: «Fa sostenido 4» (también «Fa#4», que lee `Nota(leyendo:en:)`), «Fis₄», «Ré♭₃».
+        let conSignos = notacion.escritura.escrituraDeLaAlteracion == .signos
+        switch conSignos && notacion.idiomaDeLasNotas.reglas.tieneVariantes {
+        case false:
             let limpio = texto.trimmingEspacios()
-            let cifras = limpio.reversed().prefix(while: { $0.isNumber || $0 == "-" })
+            let cifras = limpio.reversed().prefix(while: { $0.isNumber || $0 == "-" || $0 == "₋" })
             let textoOctava = String(cifras.reversed())
             let parteNombre = String(limpio.dropLast(cifras.count)).trimmingEspacios()
-            guard let octava = Int(textoOctava) else {
+            guard let octava = Int(EscrituraDeLaOctava.conCifras(textoOctava)) else {
                 throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .octavaNoValida(textoOctava))
             }
             do {
@@ -73,7 +79,7 @@ public struct Altura: Hashable, Sendable {
             } catch let error as ErrorDeLectura {
                 throw ErrorDeLectura(texto: texto, posicion: 0, motivo: error.motivo)
             }
-        case .signos:
+        case true:
             try self.init(leyendo: texto)
         }
     }
@@ -103,23 +109,31 @@ public struct Altura: Hashable, Sendable {
 
     public var midi: Int { 60 + 7 * pasosDeQuinta + 12 * pasosDeOctava }
 
-    /// Frecuencia en temperamento igual.
-    public func frecuencia(la4: Double = 440) -> Double {
-        la4 * pow(2, Double(midi - 69) / 12)
+    /// Frecuencia en temperamento igual, con el La4 a `frecuenciaDelLa4` hercios.
+    public func frecuencia(frecuenciaDelLa4: Double = 440) -> Double {
+        frecuenciaDelLa4 * pow(2, Double(midi - 69) / 12)
     }
 
-    /// "Fa♯4".
-    public var nombreCompleto: String { nombre(en: .espanolUnicode) }
+    /// "Fa♯4": el nombre en `.espanolCompacto` con la octava en cifras, como `description` y la codificación.
+    public var nombreCompleto: String { nombre(en: .deCodificacion) }
 
-    /// Nombre con octava en la notación indicada: "Fa♯4", "F#4", `.inglesUnicode` → "F♯4".
-    /// Nombre en español: "Fa♯4".
-    public var nombre: String { nombre(en: .espanolUnicode) }
-
-    /// Nombre con octava (científica en todas las notaciones): "Fa♯4", "F#4", "Fis4",
-    /// "fa dièse 4" (con espacio cuando el nombre tiene varias palabras).
+    /// Nombre con octava (científica en todas las notaciones): "Fa#4", "fa dièse 4" (con espacio cuando el
+    /// nombre tiene varias palabras) y, en las notaciones compactas, con la octava en subíndice: "Fa♯₄", "F♯₄",
+    /// "Fis₄". `notacion.conOctavas(_:)` elige la escritura de la octava: "Fa♯4".
     public func nombre(en notacion: Notacion) -> String {
         let nombre = nota.nombre(en: notacion)
-        return nombre + (nombre.contains(" ") ? " " : "") + "\(octava)"
+        return nombre + (nombre.contains(" ") ? " " : "") + octavaEscrita(en: notacion)
+    }
+
+    /// Nombre compacto con octava, para las etiquetas de los teclados y las tablas: como
+    /// `nota.nombreCompacto(en:)` (Fa♯ también en las notaciones con palabras) y la octava pegada: "Fa♯4", "Fa♯₄".
+    public func nombreCompacto(en notacion: Notacion) -> String {
+        nota.nombreCompacto(en: notacion) + octavaEscrita(en: notacion)
+    }
+
+    /// La octava escrita como pide la notación: "₄" en las compactas, "4" en las demás o con `conOctavas(.cifras)`.
+    public func octavaEscrita(en notacion: Notacion) -> String {
+        notacion.octavas.escribir(octava)
     }
 
     // MARK: Operaciones
@@ -141,7 +155,8 @@ public struct Altura: Hashable, Sendable {
     public static func - (b: Altura, a: Altura) -> Intervalo { a.intervalo(hasta: b) }
 
     public static let doCentral = Altura(pasosDeQuinta: 0, pasosDeOctava: 0)
-    public static let la440 = Altura(pasosDeQuinta: 3, pasosDeOctava: -1)
+    /// El La4, el de la frecuencia de referencia (440 Hz, salvo que se elija otra).
+    public static let la4 = Altura(pasosDeQuinta: 3, pasosDeOctava: -1)
 }
 
 extension Altura: Comparable {

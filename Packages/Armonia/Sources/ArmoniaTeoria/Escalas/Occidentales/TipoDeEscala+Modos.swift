@@ -107,12 +107,15 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor, .septimaMayor,
         ],
         alias: ["bebop"])
+    /// La mayor con la 5ª aumentada de paso (Do Re Mi Fa Sol Sol♯ La Si). Es también la «sexta disminuida» de Barry
+    /// Harris: el acorde de sexta (Do Mi Sol La) y el de séptima disminuida de la sensible (Si Re Fa Sol♯) alternados.
     public static let bebopMayor = TipoDeEscala(
         nombre: "bebop mayor",
         intervalos: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .quintaAumentada, .sextaMayor, .septimaMayor,
-        ])
+        ],
+        alias: ["sexta disminuida", "sexta mayor disminuida", "de sexta disminuida", "Barry Harris"])
     public static let bebopDorico = TipoDeEscala(
         nombre: "bebop dórico",
         intervalos: [
@@ -175,7 +178,7 @@ extension TipoDeEscala {
             .unisono, .segundaAumentada, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaAumentada, .septimaMayor,
         ])
-    /// Do Re♭ Mi♭ Fa♭ Sol La♭ Si♭♭.
+    /// Do Re♭ Mi♭ Fa♭ Sol La♭ Si𝄫.
     public static let ultrafrigio = TipoDeEscala(
         nombre: "ultrafrigio",
         intervalos: [
@@ -196,7 +199,7 @@ extension TipoDeEscala {
             .unisono, .segundaAumentada, .terceraMayor, .cuartaJusta,
             .quintaAumentada, .sextaMayor, .septimaMayor,
         ])
-    /// Do Re♭ Mi♭♭ Fa Sol♭ La♭ Si♭♭.
+    /// Do Re♭ Mi𝄫 Fa Sol♭ La♭ Si𝄫.
     public static let locrioTerceraSeptimaDisminuidas = TipoDeEscala(
         nombre: "locrio ♭♭3 ♭♭7",
         intervalos: [
@@ -231,7 +234,7 @@ extension TipoDeEscala {
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
         alias: ["semidisminuida ♭4", "locrio natural 2 ♭4"])
-    /// Do Re♭ Mi♭♭ Fa♭ Sol♭ La♭ Si♭.
+    /// Do Re♭ Mi𝄫 Fa♭ Sol♭ La♭ Si♭.
     public static let superlocrioTerceraDisminuida = TipoDeEscala(
         nombre: "superlocrio ♭♭3",
         intervalos: [
@@ -280,7 +283,7 @@ extension TipoDeEscala {
             .unisono, .segundaAumentada, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMayor,
         ])
-    /// Do Re♭ Mi♭♭ Fa♭ Sol♭ La♭ Si♭♭.
+    /// Do Re♭ Mi𝄫 Fa♭ Sol♭ La♭ Si𝄫.
     public static let ultralocrioTerceraDisminuida = TipoDeEscala(
         nombre: "ultralocrio ♭♭3",
         intervalos: [
@@ -290,7 +293,7 @@ extension TipoDeEscala {
 
     // Modos de la mayor húngara (2.º a 7.º).
 
-    /// Do Re♭ Mi♭ Fa♭ Sol♭ La♭♭ Si♭♭.
+    /// Do Re♭ Mi♭ Fa♭ Sol♭ La𝄫 Si𝄫.
     public static let ultralocrioSextaDisminuida = TipoDeEscala(
         nombre: "ultralocrio ♭♭6",
         intervalos: [

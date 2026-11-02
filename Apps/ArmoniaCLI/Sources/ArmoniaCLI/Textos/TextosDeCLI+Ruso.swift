@@ -7,10 +7,10 @@ import Armonia
 extension TextosDeCLI {
     static let ruso = TextosDeCLI(
         // Ayuda+Armonizacion.swift
-        sintaxisAnalizar: "analyze <аккорды> [--in <тональность>]",
-        descripcionAnalizar: "римские цифры, функции, кадансы и\nмодуляции (с общим аккордом; без --in)",
+        sintaxisAnalizar: "analyze <аккорды> [--in <тональность>] [--scales]",
+        descripcionAnalizar: "римские цифры, функции, кадансы и\nмодуляции (с общим аккордом; без --in)\n--scales: лад каждого аккорда, с\nнапряжениями и избегаемыми звуками",
         sintaxisAnalizarArchivo: "analyze --file <файл> [--window <длительность>]",
-        descripcionAnalizarArchivo: "то же самое с аккордами файла MIDI\nили MusicXML (по одному на долю;\n--window 2: по одному на половинную)",
+        descripcionAnalizarArchivo: "то же самое с аккордами файла MIDI,\nMusicXML, MEI или ABC (по одному на\nдолю; --window 2: по одному на\nполовинную)",
         sintaxisArmonizar: "harmonize <мелодия> [--in <тональность>] [--proposals 3]",
         descripcionArmonizar: "аккорды для мелодии, лучшие первыми; с\nоктавами (E4) — ещё и четырёхголосный\nхорал",
         sintaxisRealizar: "realize <аккорды> [--in <тональность>]",
@@ -33,8 +33,11 @@ extension TextosDeCLI {
         descripcionIdentificar: "аккорды, которые образуют ноты",
         sintaxisIntervalo: "interval <нота> <нота>",
         descripcionIntervalo: "интервал между двумя нотами или\nвысотами",
-        sintaxisEscala: "scale <гамма>",
-        descripcionEscala: "ноты и аккорды гаммы",
+        sintaxisEscala: "scale <гамма> [--chords]",
+        descripcionEscala: "ноты и аккорды гаммы\n--chords: все аккорды на каждой\nступени, не только терцовые",
+        sintaxisEscalas: "scales [<текст>] [параметры]",
+        descripcionEscalas: "каталог гамм: обычные и гаммы других\nтрадиций, по категориям, с нотами\nот до",
+        notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) и --category maqam (или rāga, makam,\ndastgah, dromos…); текст ищет в названиях",
         sintaxisTonalidad: "key <тональность>",
         descripcionTonalidad: "ключевые знаки, родственные\nтональности и ступени",
 
@@ -79,10 +82,16 @@ extension TextosDeCLI {
         descripcionMusicxmlArpegios: "аккорды арпеджио, нота за нотой",
         notasMusicxmlArpegios: "параметры: --patron alberti (или up, down, up-down), --figura 16\n(длительность каждой ноты; по умолчанию восьмая), --duracion 1\n(длительность каждого аккорда: рисунок повторяется, пока не\nзаполнит его) и остальные параметры «chords»",
         sintaxisMusicxmlArchivo: "musicxml chords --file <файл>",
-        descripcionMusicxmlArchivo: "последовательность из файла MIDI или\nMusicXML с длительностью каждого\nаккорда (также arpeggios, mei, midi)",
-        sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios <…> [параметры]",
+        descripcionMusicxmlArchivo: "последовательность из файла MIDI,\nMusicXML, MEI или ABC с длительностью\nкаждого аккорда (также arpeggios, mei,\nmidi)",
+        sintaxisMusicxmlEscala: "musicxml scale <гамма> [параметры]",
+        descripcionMusicxmlEscala: "гамма четвертями, с микротонами:\nполубемоль макама, корон, коммы\nмакама",
+        sintaxisMeiMelodia: "mei melody|chorale|chords|arpeggios|scale <…> [параметры]",
         descripcionMeiMelodia: "то же самое в MEI 5, формате\nкритических изданий (с теми же\nпараметрами)",
-        sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios <…> [параметры]",
+        sintaxisLilypondMelodia: "lilypond melody|chorale|chords|arpeggios|scale <…> [параметры]",
+        descripcionLilypondMelodia: "то же самое в LilyPond, чтобы набрать\nпартитуру в PDF",
+        sintaxisAbcMelodia: "abc melody|chorale|chords|arpeggios|scale <…> [параметры]",
+        descripcionAbcMelodia: "то же самое в ABC, текстовой нотации\nнародной музыки",
+        sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios|scale <…> [параметры]",
         descripcionMidiMelodia: "то же самое в виде файла MIDI, чтобы\nпослушать (без --clave и --cifrados; с\n--program 0…127, General MIDI)",
 
         // Ayuda+Trastes.swift
@@ -95,7 +104,7 @@ extension TextosDeCLI {
         cabeceraDeLaAyuda: """
         armonia: теория музыки в командной строке.
 
-        Использование: armonia <команда> <аргументы> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru]
+        Использование: armonia <команда> <аргументы> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
 
         Команды (команды и параметры пишутся по-испански или по-английски):
         """,
@@ -106,11 +115,21 @@ extension TextosDeCLI {
         С --textos тексты выводятся на другом языке, чем ноты: --idioma en --textos ru.
         По-испански и по-английски --escritura palabras|ascii|unicode пишет ноты как Fa sostenido,
         Fa# или Fa♯ (по-английски F sharp, F# или F♯).
+        В остальных языках --escritura palabras|compacto выбирает слова или краткую форму:
+        fa dièse или Fa♯, F Kreuz или Fis.
+        В компактных написаниях октава пишется нижним индексом (La₄), в остальных — цифрами (La4);
+        --subindices или --cifras задают её (читаются обе формы).
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "эта справка",
+        sintaxisCompletado: "completion bash|zsh|fish",
+        descripcionCompletado: "автодополнение команд и параметров\nдля оболочки",
+        sintaxisManual: "manual",
+        descripcionManual: "эта справка в виде страницы man",
+        manualNombre: "ИМЯ",
+        manualNotas: "ПРИМЕЧАНИЯ",
 
-        // ErrorDeUso+Armonizacion.swift
+        // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "не указаны аккорды: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },
         dosAcordesDeConduccion: { ejemplo in "нужны два аккорда: armonia minimal-voice-leading G7 C" },
         faltanNotasDeLaArmonizacion: { ejemplo in "не указаны ноты мелодии: armonia harmonize E4 D4 C4" },
@@ -119,10 +138,12 @@ extension TextosDeCLI {
         especieFueraDeRango: "--species — от 1 до 5",
         faltanAcordesDeLaRealizacion: { ejemplo in "не указаны аккорды: armonia realize C F G7 C" },
 
-        // ErrorDeUso+Consultas.swift
+        // ErrorDeUso.swift (consultas)
         faltaCifrado: "не указано обозначение аккорда: armonia chord G7",
         faltaCifradoDelArpegio: "не указано обозначение аккорда: armonia arpeggio C7",
         patronDesconocido: { patron in "неизвестный рисунок: «\(patron)» (ascending, descending, up-down, down-up, broken или alberti)" },
+        tradicionDesconocida: { tradicion in "«\(tradicion)»: это не традиция (india, greece, arab-world, persia, turkey…)" },
+        categoriaDesconocida: { categoria in "«\(categoria)»: это не категория гамм (rāga, maqam, makam, dastgah…)" },
         faltanNotas: "не указаны ноты: armonia identify C E G",
         dosNotas: "нужны две ноты: armonia interval C E",
         faltaEscala: "не указана гамма: armonia scale D dorian",
@@ -135,7 +156,7 @@ extension TextosDeCLI {
         faltaTransporte: { ejemplo in "не указаны интервал (или новая тоника) и что транспонировать: armonia transpose M2 C Am F G7" },
         faltanAcordesDeLaRearmonizacion: { ejemplo in "не указаны аккорды: armonia reharmonize C Am Dm7 G7" },
 
-        // ErrorDeUso+Dibujos.swift
+        // ErrorDeUso.swift (dibujos)
         margenFueraDeRango: "поле — число от 0 до 6: --margen 2",
         faltanNotasDelDibujo: { ejemplo, orden in "не указаны ноты: armonia \(orden) C E G" },
         faltaAcordeDelDibujo: { ejemplo, orden in "не указан аккорд: armonia \(orden) --chord G7" },
@@ -147,7 +168,7 @@ extension TextosDeCLI {
         caminoSoloTriadas: { ejemplo, orden in "кратчайший путь идёт от одного мажорного или минорного трезвучия к другому: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "цикл начинается с мажорного или минорного трезвучия: armonia \(orden) --cycle hexatonic C" },
 
-        // ErrorDeUso+Neorriemann.swift
+        // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "движутся 1 или 2 голоса: --voices 2",
         unAcordeDeVecinos: { ejemplo in "нужен один аккорд: armonia neighbors G7" },
         vecinosSinFamilia: "соседи ищутся среди доминантсептаккордов, малых минорных, малых и уменьшённых септаккордов и maj7 или среди мажорных, минорных и увеличенных трезвучий",
@@ -156,10 +177,10 @@ extension TextosDeCLI {
         faltanPasosDePLR: { ejemplo in "нужны трезвучие и шаги или другое трезвучие: armonia plr C PLR" },
         plrSoloTriadas: { ejemplo, camino in "P, L и R применяются к мажорным и минорным трезвучиям: armonia plr " + (camino ? "C Ebm" : "C PLR") },
 
-        // ErrorDeUso+Partituras.swift
+        // ErrorDeUso.swift (partituras)
         faltaTipoDePartitura: { ejemplo, orden in "не указано «melody», «chorale» или «chords»: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
         instrumentoMIDI: "программа — номер General MIDI от 0 до 127: --program 52",
-        marcasSoloMusicXML: "--cifrados и --analisis — только для MusicXML и MEI",
+        marcasSoloMusicXML: "--cifrados и --analisis — только для MusicXML, MEI, LilyPond и ABC",
         faltaValor: { opcion in "не указано значение --\(opcion)" },
         tempoMalEscrito: "темп пишется «--tempo 90» или «--tempo 60 4.»",
         faltanNotasDeLaMelodia: { ejemplo, orden in "не указаны ноты: armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --compas 3/4" },
@@ -173,11 +194,11 @@ extension TextosDeCLI {
         ventanaSinArchivo: "--window используется с --file",
         faltanAcordesDeLaProgresion: { ejemplo, orden in "не указаны аккорды: armonia \(orden) chords C Am D7 G7 C" },
         acordesConCifradosYAnalisis: "аккорды всегда выводятся с обозначениями и анализом",
-        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: экспортируется «melody», «chorale», «chords» или их «arpeggios»" },
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: экспортируется «melody», «chorale», «chords», их «arpeggios» или «scale»" },
 
-        // ErrorDeUso+Trastes.swift
+        // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "не указан инструмент: \(digitaciones.1)" },
-        instrumentoDesconocido: { nombre, lista in "неизвестный инструмент: «\(nombre)» (\(lista(.ruso)))" },
+        instrumentoDesconocido: { nombre, lista in "неизвестный инструмент: «\(nombre)» (\(lista(.rusoPalabras)))" },
         faltaLimite: "не указано число аппликатур: --limit 5",
         limiteFueraDeRango: "предел — число от 1 до 200: --limit 5",
         faltanDedos: "не указано число пальцев: --fingers 3",
@@ -188,17 +209,21 @@ extension TextosDeCLI {
         faltaEscalaDePosiciones: "не указана гамма: armonia positions G major",
         capoFueraDeRango: "каподастр — число от 0 до 12: --capo 2",
 
-        // ErrorDeUso.swift
+        // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Попробуй «armonia help».",
         ordenDesconocida: { orden in "неизвестная команда: «\(orden)»" },
         opcionDesconocida: { opcion in "неизвестный параметр: «\(opcion)»" },
-        idiomaDesconocido: { idioma in "неизвестный язык: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el или ru)" },
-        escrituraNoValida: { escritura in "недопустимое написание: «\(escritura)» (palabras/words, ascii или unicode; только с es и en)" },
+        idiomaDesconocido: { idioma in "неизвестный язык: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru или hu)" },
+        terminalDesconocida: { t in "неизвестная оболочка: «\(t)» (bash, zsh или fish)" },
+        escrituraNoValida: { escritura in "недопустимое написание: «\(escritura)» (palabras/words или compacto/compact; ascii или unicode, только с es и en)" },
 
         // Mensaje.swift
         mensajeNotas: "ноты",
         mensajeAcordes: "аккорды",
+        mensajeMicrotonos: "микротоны",
         mensajeEscalas: "гаммы",
+        mensajeHabituales: "обычные",
+        mensajeNingunaEscala: "таких гамм нет",
         mensajeArmadura: "ключевые знаки",
         mensajeRelativa: "параллельная",
         mensajeHomonima: "одноимённая",
@@ -206,17 +231,17 @@ extension TextosDeCLI {
         mensajeBajoAjeno: "бас не из аккорда",
         mensajeSinAcordes: "Известный аккорд не найден.",
         mensajeSin: { notas in "без \(notas)" },
-        mensajeSemitonos: { n in Traduccion.pluralRuso(n, "полутон", "полутона", "полутонов") },
+        mensajeSemitonos: { n in Idioma.ruso.contar(n, "полутон", "полутона", "полутонов") },
         mensajeSinAlteraciones: "без знаков",
-        mensajeSostenidos: { n in Traduccion.pluralRuso(n, "диез", "диеза", "диезов") },
-        mensajeBemoles: { n in Traduccion.pluralRuso(n, "бемоль", "бемоля", "бемолей") },
+        mensajeSostenidos: { n in Idioma.ruso.contar(n, "диез", "диеза", "диезов") },
+        mensajeBemoles: { n in Idioma.ruso.contar(n, "бемоль", "бемоля", "бемолей") },
         mensajeACuatroVoces: "В четырёхголосии (бас, тенор, альт, сопрано):",
         mensajeSinDigitaciones: "удобных аппликатур нет",
-        mensajeDedos: { n in Traduccion.pluralRuso(n, "палец", "пальца", "пальцев") },
+        mensajeDedos: { n in Idioma.ruso.contar(n, "палец", "пальца", "пальцев") },
         mensajeCejilla: { traste in "баррэ на \(traste)-м ладу" },
         mensajeNingunPaso: "ни одного шага",
         mensajeUnPaso: "1 шаг",
-        mensajePasos: { n in Traduccion.pluralRuso(n, "шаг", "шага", "шагов") },
-        mensajeTriadas: { n in Traduccion.pluralRuso(n, "трезвучие", "трезвучия", "трезвучий") }
+        mensajePasos: { n in Idioma.ruso.contar(n, "шаг", "шага", "шагов") },
+        mensajeTriadas: { n in Idioma.ruso.contar(n, "трезвучие", "трезвучия", "трезвучий") }
     )
 }
