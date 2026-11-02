@@ -25,7 +25,7 @@ import Testing
         }
         let conSignos = EscrituraDeNotas.allCases.filter { $0.esCompacta && $0.escrituraDeLaAlteracion == .signos }
         #expect(conSignos.count == 13)
-        #expect(conSignos.allSatisfy { $0.tipografia == .conDobles })
+        #expect(Set(conSignos.map(\.tipografia)) == [.conDobles])
         #expect(Nota("Sibb").nombre(en: .espanolCompacto) == "Si𝄫")
         #expect(Nota("Do###").nombre(en: .francesCompacto) == "Do𝄪♯")
         #expect(Nota("Fa##").nombre(en: .rusoCompacto) == "Фа𝄪")
