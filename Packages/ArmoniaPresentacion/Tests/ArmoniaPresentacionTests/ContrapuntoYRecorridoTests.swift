@@ -92,7 +92,7 @@ import Testing
 
     @Test func lasTransformacionesEntreTriadas() throws {
         let leido = try recorrido("Do Lam Fa Fam Lab Sol7 Do")
-        #expect(leido.pasos.map(\.cifrado) == ["Do", "Lam", "Fa", "Fam", "Lab", "Sol7", "Do"])
+        #expect(leido.pasos.map(\.cifrado) == ["Do", "Lam", "Fa", "Fam", "La♭", "Sol7", "Do"])
         #expect(leido.pasos.map(\.transformacion) == ["", "R", "L", "P", "R", "–", "–"])
         // Una blanca cada uno; el último, hasta la barra.
         #expect(leido.pasos.dropLast().allSatisfy { $0.duracion == .blanca })
