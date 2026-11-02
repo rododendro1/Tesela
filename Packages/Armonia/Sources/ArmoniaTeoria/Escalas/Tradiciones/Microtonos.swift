@@ -5,8 +5,9 @@ import ArmoniaNucleo
 // La capa microtonal de las escalas de otras tradiciones. Cada escala sigue siendo un `TipoDeEscala` de doce
 // notas, con el que funciona todo lo demás (armonizar, el mástil, el Tonnetz…). Algunas tienen además una
 // versión microtonal, `TipoDeEscala.microtonal`: dónde cae cada grado en la teoría de su tradición, medido en
-// los pasos de su sistema (cuartos de tono o comas) desde la tónica. Cada grado se aparta de su nota temperada
-// medio semitono como mucho, y conserva su letra: Mi𝄳 se aproxima a Mi o a Mi♭, nunca a Re♯.
+// los pasos de su sistema (cuartos de tono o comas) desde la tónica temperada. Cada grado se aparta de su nota
+// temperada medio semitono como mucho, y conserva su letra: Mi𝄳 se aproxima a Mi o a Mi♭, nunca a Re♯. También la
+// tónica puede apartarse: Sīkāh empieza en Mi𝄳, y se escribe sobre Mi.
 
 /// Con qué teoría se mide una escala microtonal: cuántos pasos tiene la octava y cómo se escriben.
 public enum SistemaMicrotonal: String, Sendable, Codable, CaseIterable {
@@ -32,7 +33,8 @@ public enum SistemaMicrotonal: String, Sendable, Codable, CaseIterable {
 }
 
 /// Una escala con microtonos: su aproximación de doce notas (`temperada`) y la posición de cada grado en los
-/// pasos de su `sistema`, contados desde la tónica.
+/// pasos de su `sistema`, contados desde la tónica temperada. La tónica misma puede caer fuera de su nota
+/// temperada: en Sīkāh, sobre Mi, el primer paso es −1 (Mi𝄳, un cuarto de tono bajo).
 ///
 ///     TipoDeEscala.bayati.microtonal?.cents        // [0, 150, 300, 500, 700, 800, 1000]
 ///     TipoDeEscala.bayati.microtonal?.desvios      // [0, 50, 0, 0, 0, 0, 0]: Mi𝄳 es Mi♭ + 50 cents
@@ -40,8 +42,8 @@ public struct TipoDeEscalaMicrotonal: Hashable, Sendable {
     /// La escala de doce notas a la que se aproxima.
     public let temperada: TipoDeEscala
     public let sistema: SistemaMicrotonal
-    /// Posición de cada grado al subir, en pasos del sistema desde la tónica (uno por cada intervalo de
-    /// `temperada`, en el mismo orden).
+    /// Posición de cada grado al subir, en pasos del sistema desde la tónica temperada (uno por cada intervalo
+    /// de `temperada`, en el mismo orden; el primero, 0 salvo que la tónica sea un microtono).
     public let pasos: [Int]
     /// Lo mismo al bajar, si la escala baja con otras notas; `nil` si baja como sube.
     public let pasosDescendentes: [Int]?
@@ -65,7 +67,7 @@ public struct TipoDeEscalaMicrotonal: Hashable, Sendable {
         sentido == .ascendente ? temperada.intervalos : temperada.intervalosDescendentes ?? temperada.intervalos
     }
 
-    /// Cents de cada grado desde la tónica.
+    /// Cents de cada grado desde la tónica temperada.
     public func cents(sentido: SentidoDelIntervalo = .ascendente) -> [Double] {
         pasos(sentido: sentido).map(sistema.cents(de:))
     }
@@ -120,7 +122,7 @@ public struct NotaMicrotonal: Hashable, Sendable {
     public let sistema: SistemaMicrotonal
     /// Cuartos de tono sobre la nota temperada (−1: medio bemol más), o comas sobre la pitagórica (comas53).
     public let ajuste: Int
-    /// Cents desde la tónica.
+    /// Cents desde la tónica temperada (la de `Escala.tonica`).
     public let cents: Double
 
     /// Nombre con el signo de su sistema: «Mi𝄳», «Si♭𝄳», «Si⁻¹» (una koma bajo Si). En ASCII, «Miqb», «Siq#» y
@@ -179,7 +181,7 @@ extension TipoDeEscala {
 }
 
 extension TipoDeEscalaMicrotonal {
-    /// Las escalas con versión microtonal: los maqamat, los dastgāh y los makamlar que se aproximan.
+    /// Las escalas con versión microtonal: los maqamat, los dastgāh y los makamlar que se aproximan, y los dromoi.
     ///
     /// Los maqamat van en cuartos de tono, como en la teoría árabe moderna; los dastgāh, en la notación de
     /// Vaziri (el koron, un cuarto de tono bajo); los makamlar, en las comas de Arel-Ezgi-Uzdilek. Son las
@@ -192,15 +194,58 @@ extension TipoDeEscalaMicrotonal {
         TipoDeEscalaMicrotonal(.bayati, .cuartosDeTono, pasos: [0, 3, 6, 10, 14, 16, 20]),
         TipoDeEscalaMicrotonal(.saba, .cuartosDeTono, pasos: [0, 3, 6, 8, 14, 16, 20]),
         TipoDeEscalaMicrotonal(.suznak, .cuartosDeTono, pasos: [0, 4, 7, 10, 14, 16, 22]),
+        TipoDeEscalaMicrotonal(.husayni, .cuartosDeTono, pasos: [0, 3, 6, 10, 14, 17, 20]),
+        TipoDeEscalaMicrotonal(.nayruz, .cuartosDeTono, pasos: [0, 4, 7, 10, 14, 17, 20]),
         // Dastgāh (koron).
         TipoDeEscalaMicrotonal(.sur, .persa, pasos: [0, 3, 6, 10, 14, 16, 20]),
         TipoDeEscalaMicrotonal(.homayun, .persa, pasos: [0, 3, 8, 10, 14, 16, 20]),
         TipoDeEscalaMicrotonal(.cahargah, .persa, pasos: [0, 3, 8, 10, 14, 17, 22]),
+        // Con la tónica en un cuarto de tono, escritas sobre la nota temperada: Sīkāh en Mi es Mi𝄳 Fa Sol La Si𝄳.
+        TipoDeEscalaMicrotonal(.sikah, .cuartosDeTono, pasos: [-1, 2, 6, 10, 13, 16, 20]),
+        TipoDeEscalaMicrotonal(.huzam, .cuartosDeTono, pasos: [-1, 2, 6, 8, 14, 16, 20]),
+        TipoDeEscalaMicrotonal(.iraq, .cuartosDeTono, pasos: [-1, 2, 6, 9, 12, 16, 20]),
+        // Dromoi, todos. Ousák y Sabáh, con la segunda neutra de Bayātī y de Ṣabā, en cuartos de tono (la segâh de
+        // Uşşak, una koma bajo Mi, no cabe en su Mi♭). Los demás, en comas, con las perdes de Arel-Ezgi-Uzdilek: los
+        // que tienen las notas de un makam, con las de ese makam (Hicaz, Hicazkâr, Suzinak, Nev'eser, Nikriz,
+        // Karcığar, Rast); los que solo existen en Grecia, con sus mismos tetracordos: la segunda aumentada de 12 o
+        // 13 comas entre dos semitonos de 4 o 5, como en Hicaz, la cuarta aumentada de Nikriz y lo demás pitagórico.
+        TipoDeEscalaMicrotonal(.ousak, .cuartosDeTono, pasos: [0, 3, 6, 10, 14, 16, 20]),
+        TipoDeEscalaMicrotonal(.sabah, .cuartosDeTono, pasos: [0, 3, 6, 8, 14, 16, 20]),
+        TipoDeEscalaMicrotonal(.hitzaz, .comas53, pasos: [0, 5, 17, 22, 31, 35, 44]),
+        TipoDeEscalaMicrotonal(.hitzazkiar, .comas53, pasos: [0, 5, 17, 22, 31, 36, 48]),
+        // Pireótikos: Hicaz con la cuarta aumentada de Nikriz y un tetracordo Hicaz en la quinta.
+        TipoDeEscalaMicrotonal(.pireotikos, .comas53, pasos: [0, 5, 17, 26, 31, 36, 48]),
+        // Tabahaniótikos, como Suzinak: un pentacordo Rast y un tetracordo Hicaz.
+        TipoDeEscalaMicrotonal(.tabahaniotikos, .comas53, pasos: [0, 9, 17, 22, 31, 36, 48]),
+        // Niavént, como Nev'eser: un pentacordo Nikriz y un tetracordo Hicaz.
+        TipoDeEscalaMicrotonal(.niavent, .comas53, pasos: [0, 9, 13, 26, 31, 36, 48]),
+        // Nikríz: un pentacordo Nikriz y un tetracordo Bûselik.
+        TipoDeEscalaMicrotonal(.nikriz, .comas53, pasos: [0, 9, 13, 26, 31, 40, 44]),
+        // Kartzigár, como Karcığar: un tetracordo Uşşak y un pentacordo Hicaz en la cuarta.
+        TipoDeEscalaMicrotonal(.kartzigar, .comas53, pasos: [0, 8, 13, 22, 27, 39, 44]),
+        // Houzám y Sengáh: la segunda aumentada de 13 comas, y dos semitonos de 4 y 5 hasta la cuarta.
+        TipoDeEscalaMicrotonal(.houzam, .comas53, pasos: [0, 13, 17, 22, 31, 40, 49]),
+        TipoDeEscalaMicrotonal(.sengah, .comas53, pasos: [0, 13, 17, 22, 31, 36, 48]),
+        // Tsingánikos: un tetracordo Hicaz y otro en la cuarta.
+        TipoDeEscalaMicrotonal(.tsinganikos, .comas53, pasos: [0, 5, 17, 22, 27, 39, 44]),
+        TipoDeEscalaMicrotonal(
+            .rast, .comas53, pasos: [0, 9, 17, 22, 31, 40, 48], pasosDescendentes: [0, 9, 17, 22, 31, 40, 44]),
+        // Kiourdí sube como Kartzigár y baja como Uşşak; Houseïní sube como Rast al bajar y baja como Bûselik.
+        TipoDeEscalaMicrotonal(
+            .kiourdi, .comas53, pasos: [0, 8, 13, 22, 27, 39, 44], pasosDescendentes: [0, 8, 13, 22, 31, 35, 44]),
+        TipoDeEscalaMicrotonal(
+            .houseini, .comas53, pasos: [0, 9, 17, 22, 31, 40, 44], pasosDescendentes: [0, 9, 13, 22, 31, 35, 44]),
         // Makamlar (comas de AEU).
         TipoDeEscalaMicrotonal(
             .rastMakami, .comas53, pasos: [0, 9, 17, 22, 31, 40, 48], pasosDescendentes: [0, 9, 17, 22, 31, 40, 44]),
         TipoDeEscalaMicrotonal(
             .hicazMakami, .comas53, pasos: [0, 5, 17, 22, 31, 39, 44], pasosDescendentes: [0, 5, 17, 22, 30, 35, 44]),
+        TipoDeEscalaMicrotonal(.hicazkarMakami, .comas53, pasos: [0, 5, 17, 22, 31, 36, 48]),
+        TipoDeEscalaMicrotonal(.ussakMakami, .comas53, pasos: [0, 8, 13, 22, 31, 35, 44]),
+        TipoDeEscalaMicrotonal(
+            .huseyniMakami, .comas53, pasos: [0, 8, 13, 22, 31, 39, 44], pasosDescendentes: [0, 8, 13, 22, 31, 35, 44]),
+        // Segâh, desde la segâh (Si una koma bajo): sobre Si, el primer paso es −1.
+        TipoDeEscalaMicrotonal(.segahMakami, .comas53, pasos: [-1, 4, 13, 22, 30, 35, 44]),
     ]
 
     /// Nombre de la escala temperada → su versión microtonal.

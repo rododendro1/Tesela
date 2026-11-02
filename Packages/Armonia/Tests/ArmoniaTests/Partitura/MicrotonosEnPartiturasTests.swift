@@ -48,6 +48,10 @@ import Testing
         #expect(rast.eventos.count == 15)
         #expect(rast.eventos[6].desvio(0) == -50 && rast.eventos[8].desvio(0) == 0)
         #expect(Escala(.do, .maqamRast).voz(sentido: .descendente).eventos.first?.alturas == ["Do5"])
+        // Sīkāh empieza y acaba en Mi𝄳: las dos tónicas se apartan.
+        let sikah = Escala(.mi, .sikah).voz()
+        #expect(sikah.eventos.first?.desvio(0) == -50 && sikah.eventos.last?.desvio(0) == -50)
+        #expect(sikah.musicXML().contains("<alter>-0.5</alter>"))
         // Sin microtonos, sin desvíos.
         #expect(Escala(.do, .mayor).voz().eventos.allSatisfy { !$0.esMicrotonal })
     }
@@ -124,5 +128,9 @@ import Testing
         let maqamRast = Escala(.do, .maqamRast).svgPentagrama()
         #expect(maqamRast.contains(GlifosSMuFL.medioBemol.trazado) && maqamRast.contains(GlifosSMuFL.bemol.trazado))
         #expect(!Escala(.re, .dorico).svgPentagrama().contains(GlifosSMuFL.medioBemol.trazado))
+        // Segâh: la tónica, koma bemol; el Fa♯ una koma bajo, bakiye sostenido.
+        let segah = Escala(.si, .segahMakami).svgPentagrama()
+        #expect(segah.contains(GlifosSMuFL.komaBemol.trazado) && segah.contains(GlifosSMuFL.bakiyeSostenido.trazado))
+        #expect(SignoMicrotonal(semitonos: 1, desvio: 30 * 1200 / 53 - 700) == .comas(4))
     }
 }
