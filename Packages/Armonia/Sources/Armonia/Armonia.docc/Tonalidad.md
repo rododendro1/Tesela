@@ -324,6 +324,22 @@ EsquemaArmonico.Tipo.blues.acordes(en: Tonalidad(.fa)).count   // 12
 `rearmonizaciones(de:)` propone también preparar un acorde con su **ii–V** (Rem → Mim7 La7 Rem)
 y cambiar el V7 de una tonalidad mayor por el **backdoor** (Sol7 → Fam7 Si♭7).
 
+## Cifrado romano
+
+`acorde(romano:)` lee un cifrado romano en la tonalidad, escrito como lo escribe `analizar(_:)`:
+el numeral en mayúsculas o minúsculas (tríada mayor o menor), la calidad detrás («°», «ø7»,
+«maj7», «7»), las inversiones en cifras de bajo continuo («6», «64», «65», «43», «42»), una
+alteración delante para los grados cromáticos («♭VI», «♭VII») y, tras una barra, el grado del
+que es dominante, sensible o sustituto («V7/V», «vii°7/ii», «subV7/ii»). «N6» es la napolitana, y
+«It+6», «Fr+6» y «Ger+6», las sextas aumentadas. `acordes(romanos:)` lee una progresión entera.
+
+```swift
+Tonalidad(.do).acorde(romano: "ii65") == Acorde("Rem7/Fa")                       // true
+Tonalidad(.do).acorde(romano: "V7/V") == Acorde("Re7")                           // true
+Tonalidad(.la, .menor).acorde(romano: "vii°7") == Acorde("Sol#°7")               // true
+Tonalidad(.do).acordes(romanos: "I ♭VI ♭VII I") == ["Do", "Lab", "Sib", "Do"]    // true
+```
+
 ## Bajo cifrado
 
 `acorde(sobre:cifras:)` lee las cifras del bajo continuo sobre una nota del bajo, contando los
