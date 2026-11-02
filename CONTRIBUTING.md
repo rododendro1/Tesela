@@ -19,6 +19,7 @@ XcodeGen. Los pasos están en el apartado «Empezar» del [README](README.md):
 ```sh
 cd Packages/Armonia && swift test        # el motor
 cd Packages/Hexagonos && swift test      # las rejillas hexagonales
+cd Packages/ArmoniaPresentacion && swift test   # lo que enseñan las apps, sin SwiftUI
 cd Packages/ArmoniaUI && swift test      # la interfaz (en Linux, solo la parte sin SwiftUI)
 ./Scripts/compilar_todo.sh               # todo, por capas, como el CI
 ```
@@ -81,7 +82,7 @@ python3 Scripts/comprobaciones/notas_de_version.py --comprobar
 ```
 
 En cada pull request corren estas comprobaciones, la del formato y las pruebas en Linux (Swift 6.0 y 6.2). Si el pull
-request cambia las apps, `ArmoniaUI` o el proyecto de Xcode, las dos apps se compilan además en macOS (el job `apps`). Los
+request cambia las apps, `ArmoniaPresentacion`, `ArmoniaUI` o el proyecto de Xcode, las dos apps se compilan además en macOS (el job `apps`). Los
 demás jobs de macOS (las pruebas de interfaz, el simulador de iOS y DocC) corren los lunes y a mano desde la pestaña
 Actions; si tu cambio toca las vistas o la documentación, pide en el pull request que se lancen.
 

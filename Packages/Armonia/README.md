@@ -135,7 +135,8 @@ el código de cada paso probado). Los artículos también se pueden leer directa
 ```
 swift build
 swift test                                    # todas las pruebas
-swift test --filter "^ArmoniaTests\."          # solo las rápidas (segundos)
+swift test --filter "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Trastes)?Tests\."   # solo las rápidas (segundos)
+swift test --filter "^ArmoniaTeoriaTests\."    # las de un módulo
 swift test --filter "^ArmoniaExhaustivasTests\."  # solo las exhaustivas
 swift test --filter "^ArmoniaDocumentacionTests\."  # los ejemplos del README y de DocC
 python3 ../../Scripts/generadores/generar_pruebas_de_documentacion.py # regenera esas pruebas tras cambiar un ejemplo
@@ -232,10 +233,12 @@ modos) y en `Scripts/comprobaciones/idiomas.py`, un caso en `EscrituraDeNotas` (
 `Traducido`, un fichero en cada `Textos/`, y corregir lo que el compilador señale: ningún `switch` sobre el
 idioma o la escritura tiene `default`, y cada `Traduccion` sin el idioma nuevo deja de compilar.
 
-Las pruebas rápidas están en `Tests/ArmoniaTests/`, en una carpeta por módulo (`Nucleo/`, `Teoria/`, `Partitura/`,
-`Representaciones/`, `Trastes/`) y un fichero por carpeta de fuentes (`Nucleo/FundamentosTests.swift`,
-`Teoria/TonalidadTests.swift`…). En `General/` está lo que atraviesa todo el motor (literales, Codable, convenciones
-de nombres, entradas inválidas, robustez y los textos con valores). Las exhaustivas
+Las pruebas rápidas están en un objetivo por módulo (`Tests/ArmoniaNucleoTests/`, `Tests/ArmoniaTeoriaTests/`,
+`Tests/ArmoniaRepresentacionesTests/`, `Tests/ArmoniaPartituraTests/`, `Tests/ArmoniaTrastesTests/`), que depende
+solo de ese módulo y de los que puede usar: una prueba de Teoría que necesitara Partitura no compila. Lo que cruza
+capas (leer acordes en cada notación, literales, Codable, convenciones de nombres, entradas inválidas, robustez, los
+textos con valores y los dibujos de referencia) está en `Tests/ArmoniaTests/`, y lo que comparten varias (el
+generador al azar con semilla y el lector de XML) en `Tests/ApoyoDePruebas/`. Las exhaustivas
 están en un objetivo aparte, `Tests/ArmoniaExhaustivasTests/ExhaustivasTests.swift`. Las de la
 línea de comandos están con ella, en `Apps/ArmoniaCLI/Tests/`.
 

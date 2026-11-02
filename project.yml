@@ -47,6 +47,8 @@ settings:
 packages:
   Armonia:
     path: Packages/Armonia
+  ArmoniaPresentacion:
+    path: Packages/ArmoniaPresentacion
   ArmoniaUI:
     path: Packages/ArmoniaUI
 

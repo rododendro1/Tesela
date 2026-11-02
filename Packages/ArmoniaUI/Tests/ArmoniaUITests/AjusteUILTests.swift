@@ -5,7 +5,7 @@ import Testing
 @testable import ArmoniaPresentacion
 @testable import ArmoniaUI
 
-// El teclado UIL de la app Tonnetz con cada teclado del artículo, y los avisos del coral en todos los idiomas.
+// El teclado UIL de la app Tonnetz con cada teclado del artículo.
 // No usa SwiftUI: se ejecuta también en Linux.
 
 @Suite struct AjusteUILTests {
@@ -65,24 +65,5 @@ import Testing
             #expect(reflejado.semitonos(rumbo: -rumbo) == semitonos, "rumbo \(rumbo)")
         }
         #expect(vecinas == 6)
-    }
-}
-
-@Suite struct AvisosDelCoralTests {
-    @Test func losAvisosTienenTextoEnCadaNotacion() {
-        let avisos: [CoralPresentado.Aviso] = [
-            .sinArmonizacion, .faltanOctavas, .sinCoralParaLaMelodia, .sinRealizacion,
-            .sinFaltasDeConduccion,
-        ]
-        for notacion in Notacion.allCases {
-            for aviso in avisos {
-                #expect(!(aviso.texto(en: notacion).isEmpty), "\(aviso) en \(notacion)")
-            }
-        }
-        // Y cada uno dice algo distinto.
-        #expect(Set(avisos.map { $0.texto(en: .espanolCompacto) }).count == avisos.count)
-        #expect(
-            CoralPresentado.Aviso.sinRealizacion.texto(en: .espanolCompacto)
-                != CoralPresentado.Aviso.sinRealizacion.texto(en: .inglesASCII))
     }
 }

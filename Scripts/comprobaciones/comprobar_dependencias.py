@@ -25,7 +25,9 @@ PERMITIDO = {
     "Hexagonos": set(),
     # El motor usa su geometría para el Tonnetz, la tabla armónica y los teclados isomórficos.
     "Armonia": {"Hexagonos"},
-    "ArmoniaUI": {"Armonia", "Hexagonos"},
+    # Lo que enseñan las apps y la línea de comandos, sin SwiftUI.
+    "ArmoniaPresentacion": {"Armonia"},
+    "ArmoniaUI": {"Armonia", "ArmoniaPresentacion", "Hexagonos"},
 }
 
 errores = []
@@ -73,7 +75,7 @@ def llamadas(texto, funcion):
 
 
 def modulos(texto):
-    """{módulo: (dependencias, ruta)} de los `.target` (no las pruebas) y {biblioteca: módulos}."""
+    """{módulo: (dependencias, ruta)} de los `.target` (no los `.testTarget`) y {biblioteca: módulos}."""
     texto = re.sub(r"//.*", "", texto)
     variables = dict(re.findall(r'let (\w+): Target\.Dependency = \.product\(name: "(\w+)"', texto))
     objetivos = {}
@@ -95,7 +97,10 @@ raiz_objetivos, raiz_bibliotecas = modulos((RAIZ / "Package.swift").read_text(en
 esperados = set()
 for carpeta in carpetas:
     objetivos, bibliotecas = modulos((PAQUETES / carpeta / "Package.swift").read_text(encoding="utf-8"))
-    for nombre, (dependencias, _) in objetivos.items():
+    for nombre, (dependencias, ruta) in objetivos.items():
+        # Los módulos de apoyo de las pruebas (en Tests/) no son parte de la biblioteca.
+        if ruta and ruta.startswith("Tests/"):
+            continue
         esperados.add(nombre)
         if nombre not in raiz_objetivos:
             errores.append(f"Package.swift (raíz): falta el módulo {nombre} de Packages/{carpeta}")

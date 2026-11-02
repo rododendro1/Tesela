@@ -68,7 +68,7 @@ done
 # 2. Las pruebas del motor (compilarlas aparte separa «no compila» de «una prueba falla»).
 if [ "$MOTOR_COMPILA" = 1 ]; then
     if paso "Motor: compilar las pruebas" Packages/Armonia swift build --build-tests; then
-        paso "Motor: pruebas rápidas" Packages/Armonia swift test --skip-build --parallel --filter '^ArmoniaTests\.'
+        paso "Motor: pruebas rápidas" Packages/Armonia swift test --skip-build --parallel --filter '^Armonia(Nucleo|Teoria|Representaciones|Partitura|Trastes)?Tests\.'
         paso "Motor: ejemplos de la documentación" Packages/Armonia swift test --skip-build --parallel --filter '^ArmoniaDocumentacionTests\.'
         if [ "$RAPIDO" = 0 ]; then
             paso "Motor: pruebas exhaustivas" Packages/Armonia swift test --skip-build --parallel --filter '^ArmoniaExhaustivasTests\.'
@@ -78,8 +78,11 @@ else
     omitir "Motor: pruebas" "el motor no compila"
 fi
 
-# 3. Lo que depende del motor: la línea de comandos, el ejemplo, la medida del rendimiento y ArmoniaUI.
+# 3. Lo que depende del motor: ArmoniaPresentacion, la línea de comandos, el ejemplo, la medida del rendimiento y
+#    ArmoniaUI.
 if [ "$MOTOR_COMPILA" = 1 ]; then
+    paso "ArmoniaPresentacion: compilar" Packages/ArmoniaPresentacion swift build &&
+        paso "ArmoniaPresentacion: pruebas" Packages/ArmoniaPresentacion swift test --parallel
     paso "Línea de comandos: compilar" Apps/ArmoniaCLI swift build &&
         paso "Línea de comandos: pruebas" Apps/ArmoniaCLI swift test --parallel
     paso "Ejemplo: ejecutar" Ejemplos/EjemploArmonia swift run EjemploArmonia
@@ -87,7 +90,7 @@ if [ "$MOTOR_COMPILA" = 1 ]; then
     paso "ArmoniaUI: compilar" Packages/ArmoniaUI swift build &&
         paso "ArmoniaUI: pruebas" Packages/ArmoniaUI swift test --parallel
 else
-    omitir "Línea de comandos, ejemplo, rendimiento y ArmoniaUI" "el motor no compila"
+    omitir "ArmoniaPresentacion, línea de comandos, ejemplo, rendimiento y ArmoniaUI" "el motor no compila"
 fi
 
 # 4. Las rejillas hexagonales: no dependen del motor.

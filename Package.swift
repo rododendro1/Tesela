@@ -5,7 +5,7 @@ import PackageDescription
 //
 //     .package(url: "https://github.com/rododendro1/Tesela.git", branch: "main")
 //
-// SwiftPM solo lee el `Package.swift` de la raíz de un repositorio, así que este reúne los tres con los
+// SwiftPM solo lee el `Package.swift` de la raíz de un repositorio, así que este reúne los cuatro con los
 // mismos módulos y dependencias que cada uno declara en su carpeta. Dentro del repositorio se sigue
 // trabajando con aquellos (`cd Packages/Armonia && swift test`): aquí no hay pruebas.
 // `Scripts/comprobaciones/comprobar_dependencias.py` vigila que los dos lados coincidan.
@@ -23,9 +23,10 @@ let package = Package(
         .library(name: "ArmoniaRepresentaciones", targets: ["ArmoniaRepresentaciones"]),
         .library(name: "ArmoniaPartitura", targets: ["ArmoniaPartitura"]),
         .library(name: "ArmoniaTrastes", targets: ["ArmoniaTrastes"]),
+        // Packages/ArmoniaPresentacion
+        .library(name: "ArmoniaPresentacion", targets: ["ArmoniaPresentacion"]),
         // Packages/ArmoniaUI
         .library(name: "ArmoniaUI", targets: ["ArmoniaUI"]),
-        .library(name: "ArmoniaPresentacion", targets: ["ArmoniaPresentacion"]),
     ],
     targets: [
         .target(name: "Hexagonos", path: "Packages/Hexagonos/Sources/Hexagonos"),
@@ -54,7 +55,7 @@ let package = Package(
         .target(
             name: "ArmoniaPresentacion",
             dependencies: ["Armonia"],
-            path: "Packages/ArmoniaUI/Sources/ArmoniaPresentacion"),
+            path: "Packages/ArmoniaPresentacion/Sources/ArmoniaPresentacion"),
         .target(
             name: "ArmoniaUI",
             dependencies: ["ArmoniaPresentacion", "Armonia", "Hexagonos"],
