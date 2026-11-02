@@ -138,11 +138,17 @@ struct TextosDeTeoria: TextosTraducidos {
     /// pedal y libre.
     let nombresDeNotasExtranas: [String]
 
+    // MARK: EsquemaArmonico.swift
+    /// En el orden de `EsquemaArmonico.Tipo.allCases`.
+    let nombresDeEsquemas: [String]
+
     // MARK: Rearmonizacion.swift
     let sustitutoTritonal: String
     let dominanteSecundaria: String
     let prestamoModal: String
     let sustitutoDiatonico: String
+    let rearmonizacionIIV: String
+    let rearmonizacionBackdoor: String
 
     // MARK: ErrorDeLecturaDeTeoria.swift (acordes)
     let simboloNoReconocido: @Sendable (String) -> String

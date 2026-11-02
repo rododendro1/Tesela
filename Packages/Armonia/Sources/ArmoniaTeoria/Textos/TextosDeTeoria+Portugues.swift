@@ -127,11 +127,15 @@ extension TextosDeTeoria {
         modoDe: { modo, escala in "modo \(modo) de \(escala)" },
         // NotaExtrana.swift
         nombresDeNotasExtranas: ["nota de passagem", "bordadura", "apojatura", "retardo", "antecipação", "escapada", "nota pedal", "nota livre"],
+        // EsquemaArmonico.swift
+        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "blues de 12 compassos", "progressão por quintas", "romanesca", "cânone de Pachelbel", "monte", "fonte", "ponte"],
         // Rearmonizacion.swift
         sustitutoTritonal: "substituto de trítono",
         dominanteSecundaria: "dominante secundária",
         prestamoModal: "empréstimo modal",
         sustitutoDiatonico: "substituto diatónico",
+        rearmonizacionIIV: "ii–V",
+        rearmonizacionBackdoor: "dominante backdoor",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» não faz parte de nenhuma cifra conhecida" },
         tensionNoValida: { tension in "«\(tension)» não é uma tensão válida (admitem-se ♭/♯ com 5, 9, 11 e 13, e add com 2, 4, 6, 9, 11 e 13)" },

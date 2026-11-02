@@ -128,11 +128,15 @@ extension TextosDeTeoria {
         modoDe: { modo, escala in "\(escala) \(modo). módusza" },
         // NotaExtrana.swift
         nombresDeNotasExtranas: ["átmenőhang", "váltóhang", "appoggiatura", "késleltetés", "anticipáció", "szökőhang", "orgonapont", "szabad hang"],
+        // EsquemaArmonico.swift
+        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "12 ütemes blues", "kvintszekvencia", "romanesca", "Pachelbel-kánon", "monte", "fonte", "ponte"],
         // Rearmonizacion.swift
         sustitutoTritonal: "tritónuszhelyettesítés",
         dominanteSecundaria: "mellékdomináns",
         prestamoModal: "modális kölcsönzés",
         sustitutoDiatonico: "diatonikus helyettesítés",
+        rearmonizacionIIV: "ii–V",
+        rearmonizacionBackdoor: "backdoor domináns",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "„\(simbolo)” nem ismert akkordjelzés része" },
         tensionNoValida: { tension in "„\(tension)” nem érvényes feszültséghang (a ♭ és a ♯ az 5, 9, 11 és 13 mellé, az add a 2, 4, 6, 9, 11 és 13 mellé kerülhet)" },
