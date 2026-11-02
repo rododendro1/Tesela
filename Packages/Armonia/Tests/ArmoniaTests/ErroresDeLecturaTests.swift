@@ -211,6 +211,8 @@ import Testing
             .numeroDeIntervaloNoValido(""), .numeroDeIntervaloNoValido("x"), .calidadNoValida(""),
             .calidadNoValida("X"), .intervaloInexistente(numero: 1, calidad: .disminuida(1)),
             .intervaloInexistente(numero: 3, calidad: .justa), .alteracionNoReconocida("?"),
+            .claseDeAlturaNoValida("x"), .numeroDeForteDesconocido("3-13"), .faltaElCierre("]"),
+            .serieNoDodecafonica(faltan: [2], repetidas: [1]), .serieNoDodecafonica(faltan: [], repetidas: []),
         ]).map { ErrorDeLectura(texto: "x", posicion: 0, motivo: $0) }
         + [ErrorDeLecturaDeTeoria.Motivo]([
             .simboloNoReconocido("x"), .tensionNoValida("b3"), .numeroDeAcordeNoValido(8), .numeroRepetido(9),

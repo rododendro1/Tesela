@@ -2,6 +2,23 @@
 
 ## Sin publicar
 
+### Series dodecafónicas
+
+- **`SerieDodecafonica`**: las doce clases de altura en su orden. Sus 48 formas (`FormaDeSerie`: P, I, R y RI, con
+  el índice de la clase con que empieza la P o la I, como en Straus) con `forma(_:)`, `original(_:)`,
+  `inversion(_:)`, `retrogrado(_:)` y `retrogradoDeLaInversion(_:)`; `identificar(_:)` dice qué formas son otra
+  serie y `numeroDeFormasDistintas`, si es simétrica. La `matriz` de 12 × 12, los `intervalos` y
+  `esDeTodosLosIntervalos`, los `hexacordos` y la combinatoriedad hexacordal (`formasCombinatorias`,
+  `tiposDeCombinatoriedad`, `esTotalmenteCombinatoria`). Se lee como un conjunto (`init(leyendo:)`) y se guarda en
+  JSON como la lista de sus clases.
+
+### Conjuntos escritos a mano
+
+- **`ConjuntoDeClases(leyendo:)`** lee «[0, 4, 7]», «{0 4 7}», «047», «01t» (con `t` y `e` para el 10 y el 11),
+  «Do Mi Sol» o «C E G», y el número de Forte («3-11», «4-Z15»), que da la forma prima. `ErrorDeLectura` tiene
+  cuatro motivos nuevos, en los quince idiomas: `claseDeAlturaNoValida`, `numeroDeForteDesconocido`,
+  `faltaElCierre` y `serieNoDodecafonica(faltan:repetidas:)`.
+
 ### Análisis armónico ampliado
 
 - **Sustituto tritonal** (`AcordeAnalizado.Categoria.sustitutoTritonal(de:)`): una séptima de dominante medio tono

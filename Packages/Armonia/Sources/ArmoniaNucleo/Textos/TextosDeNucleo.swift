@@ -52,6 +52,14 @@ struct TextosDeNucleo: TextosTraducidos {
     let intervaloInexistente: @Sendable (Int, CalidadDeIntervalo, Notacion, Traduccion) -> String
     let alteracionNoReconocida: @Sendable (String) -> String
 
+    // MARK: ErrorDeLectura.swift (conjuntos y series)
+    let claseDeAlturaNoValida: @Sendable (String) -> String
+    let numeroDeForteDesconocido: @Sendable (String) -> String
+    let faltaElCierre: @Sendable (String) -> String
+    let serieNoDodecafonica: String
+    let faltanEnLaSerie: @Sendable (String) -> String
+    let repetidasEnLaSerie: @Sendable (String) -> String
+
     // MARK: Gramática (Intervalo.swift, ErrorDeLectura.swift)
     /// El nombre de un intervalo con su calidad y su número: «3ª mayor», «major third».
     let nombreDeIntervalo: @Sendable (_ calidad: String, _ ordinal: String) -> String

@@ -49,6 +49,14 @@ extension TextosDeNucleo {
         intervaloInexistente: { numero, calidad, notacion, regla in "nincs \(calidad.nombre(en: notacion)) \(Intervalo.ordinal(numero, en: .hungaro)): \(regla.hungaro)" },
         alteracionNoReconocida: { signo in "„\(signo)” nem módosítójel (♯, ♭, 𝄪, 𝄫, #, b, x vagy ♮ várható)" },
 
+        // ErrorDeLectura.swift (conjuntos y series)
+        claseDeAlturaNoValida: { texto in "„\(texto)” nem hangmagasság-osztály (0-tól 11-ig, vagy t és e a 10-hez és a 11-hez), és nem is hangnév" },
+        numeroDeForteDesconocido: { texto in "„\(texto)” nem Forte-szám (például 3-11 vagy 4-Z15)" },
+        faltaElCierre: { signo in "hiányzik a záró „\(signo)”" },
+        serieNoDodecafonica: "egy tizenkétfokú sorban mind a tizenkét hangmagasság-osztály megvan, mindegyik egyszer",
+        faltanEnLaSerie: { clases in "hiányzik: \(clases)" },
+        repetidasEnLaSerie: { clases in "ismétlődik: \(clases)" },
+
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },
         unisonoEnMasculino: { calidad in calidad },
