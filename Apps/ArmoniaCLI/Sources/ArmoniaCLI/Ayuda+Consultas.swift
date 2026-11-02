@@ -3,11 +3,7 @@ import Armonia
 extension LineaDeComandos {
     /// Las consultas: acordes, notas, intervalos, escalas y tonalidades, en el orden en que salen en la ayuda.
     static let ordenesDeConsultas: [Orden] = [
-        Orden(nombres: ["acorde", "chord"], ayuda: ayudaDeAcorde) { resto, notacion in
-            guard !resto.isEmpty else { return uso(.faltaCifrado, notacion) }
-            return bien(
-                try resto.map { try describir(acorde: Acorde(leyendo: $0), notacion) }.joined(separator: "\n\n"))
-        },
+        Orden(nombres: ["acorde", "chord"], ayuda: ayudaDeAcorde) { try acorde($0, $1) },
         Orden(nombres: ["identificar", "identify"], ayuda: ayudaDeIdentificar) { resto, notacion in
             guard !resto.isEmpty else { return uso(.faltanNotas, notacion) }
             return bien(try identificar(resto, notacion))
@@ -46,7 +42,8 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionAcorde),
             ejemplo: ejemplo(
                 "armonia acorde Sol7/Si",
-                "armonia chord G7/B"))
+                "armonia chord G7/B"),
+            notas: TextosDeCLI.traduccion(\.notasAcorde))
     ]
 
     static let ayudaDeIdentificar: [EntradaDeAyuda] = [

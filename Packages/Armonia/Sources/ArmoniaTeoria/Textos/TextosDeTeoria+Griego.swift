@@ -139,6 +139,8 @@ extension TextosDeTeoria {
         sustitutoDiatonico: "διατονική υποκατάσταση",
         rearmonizacionIIV: "ii–V",
         rearmonizacionBackdoor: "δεσπόζουσα backdoor",
+        rearmonizacionIIRelativo: "σχετική ii",
+        rearmonizacionDisminuido: "υποκατάσταση με ελαττωμένη",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "το «\(simbolo)» δεν ανήκει σε κανένα γνωστό σύμβολο συγχορδίας" },
         tensionNoValida: { tension in "το «\(tension)» δεν είναι έγκυρη τάση (τα ♭/♯ μπαίνουν με 5, 9, 11 και 13, και το add με 2, 4, 6, 9, 11 και 13)" },

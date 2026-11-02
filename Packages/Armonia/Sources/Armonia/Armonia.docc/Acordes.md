@@ -183,3 +183,21 @@ guía y ninguna nota a evitar.
 Acorde("Sol7").disposiciones(.cuartal).isEmpty   // false
 DisposicionDeAcorde.cuartal.voces                // 4
 ```
+
+Las disposiciones **sin fundamental** (``DisposicionDeAcorde/sinFundamentalA`` y
+``DisposicionDeAcorde/sinFundamentalB``) son las de Bill Evans para la mano izquierda del piano: tercera, quinta,
+séptima y novena, o séptima, novena, tercera y quinta, con la 13.ª en lugar de la quinta en los acordes de
+dominante. ``DisposicionDeAcorde/dosManos`` pone la fundamental y la séptima en la izquierda y la tercera, la quinta
+(o la 13.ª) y la novena en la derecha. En la guitarra, ``Mastil/gruposDeCuerdas(para:)`` y
+``Mastil/disposiciones(de:_:cuerdas:abertura:)`` las tocan con una voz por cuerda, y
+``Digitacion/dedosSugeridos`` dice qué dedo pisa cada una.
+
+## Un acorde entre los demás
+
+``Acorde/otrosNombres`` da otros cifrados de las mismas notas sobre el mismo bajo (Do6 es también Lam7/Do; un
+disminuido con séptima se llama igual desde cualquiera de sus notas), y ``Acorde/sinFundamental``, el acorde que
+queda sin la fundamental (Sol7(♭9) sin Sol es Si°7). ``Acorde/tonalidades`` dice en qué tonalidades mayores y
+menores es diatónico, con su cifrado romano y su función. ``Acorde/comparar(con:disposicion:)`` da las notas
+comunes con otro acorde y cómo va cada voz de uno a otro (``ComparacionDeAcordes``), y
+``Acorde/sustituciones(en:)``, por qué acordes se puede cambiar suelto: las rearmonizaciones de su tonalidad y, en
+una dominante, su ii relativo y el disminuido sobre su tercera.

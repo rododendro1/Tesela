@@ -29,6 +29,12 @@ public struct Rearmonizacion: Hashable, Sendable {
         case iiV
         /// La dominante por la puerta de atrás: en mayor, el V7 por iv7–♭VII7 (Sol7 → Fam7 Si♭7 en Do).
         case backdoor
+        /// Una dominante, precedida de su ii relativo: el acorde menor con séptima una quinta por encima (Sol7 →
+        /// Rem7 Sol7). Solo para un acorde suelto (``Acorde/sustituciones(en:)``).
+        case iiRelativo
+        /// Una dominante por el acorde disminuido sobre su tercera: es ella sin la fundamental y con la novena menor
+        /// (Sol7 → Si°7). Solo para un acorde suelto (``Acorde/sustituciones(en:)``).
+        case disminuido
     }
 
     public let recurso: Recurso
@@ -168,6 +174,10 @@ extension Rearmonizacion.Recurso: Nombrable {
             return TextosDeTeoria.traduccion(\.rearmonizacionIIV)
         case .backdoor:
             return TextosDeTeoria.traduccion(\.rearmonizacionBackdoor)
+        case .iiRelativo:
+            return TextosDeTeoria.traduccion(\.rearmonizacionIIRelativo)
+        case .disminuido:
+            return TextosDeTeoria.traduccion(\.rearmonizacionDisminuido)
         }
     }
 }

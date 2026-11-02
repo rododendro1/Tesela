@@ -30,6 +30,7 @@ struct TextosDeCLI: TextosTraducidos {
     // MARK: Ayuda+Consultas.swift
     let sintaxisAcorde: String
     let descripcionAcorde: String
+    let notasAcorde: String
     let sintaxisArpegio: String
     let descripcionArpegio: String
     let notasArpegio: String

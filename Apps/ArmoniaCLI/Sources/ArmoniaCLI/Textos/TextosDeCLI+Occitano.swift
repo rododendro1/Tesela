@@ -27,6 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <chifratge>…",
         descripcionAcorde: "nòtas, tipe e ròtle de cada nòta",
+        notasAcorde: "opcions: --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(dins la tonalitat de --en Do mayor, a la fin) e --comparar Do\n(nòtas comunas e conducha de las vòtz)",
         sintaxisArpegio: "arpegio <chifratge> [--patron <motiu>]",
         descripcionArpegio: "nòtas de l'arpegi e gamas de\nl'acòrd (--patron ascendente,\ndescendente, ida-y-vuelta,\nbaja-y-sube, quebrado, alberti)",
         notasArpegio: "opcions: --octavas 2 (d'1 a 4), --sin-octava, --desde Mi\n(o 3: comença per aquela nòta), --tensiones 9,13, --grados\n1-5-3-8 (un percors pròpri) e --aproximacion abajo, arriba\no encierro (nòtas cromaticas que mènan a caduna)",

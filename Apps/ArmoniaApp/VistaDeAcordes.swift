@@ -30,6 +30,10 @@ struct VistaDeAcordes: View {
     @State private var capo = 0
     /// La disposición de piano o jazz que se enseña (drop 2, shell…).
     @State private var disposicion = DisposicionDeAcorde.drop2
+    /// El grupo de cuerdas en que se toca la disposición en el instrumento de las digitaciones.
+    @State private var grupoDeCuerdas = 0
+    /// El acorde con que se compara el leído, o vacío.
+    @State private var otroAcorde = "Do"
     /// Lo que está sonando, para resaltar la nota en el pentagrama y en el mástil.
     @ObservedObject private var reproductor = Reproductor.compartido
     /// Las digitaciones y para qué texto e instrumento se calcularon. Mientras no coincidan con lo que hay
@@ -86,6 +90,8 @@ struct VistaDeAcordes: View {
                 }
                 seccionDelArpegio(de: acorde)
                 disposiciones(de: acorde)
+                disposicionesEnElMastil(de: acorde)
+                relaciones(de: acorde)
                 escalas(de: acorde)
                 digitaciones(de: acorde)
                 arpegioEnElMastil(de: acorde)
@@ -129,6 +135,7 @@ struct VistaDeAcordes: View {
         ]
         if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, notacion: notacion) {
             ficheros.append(presentadas.pentagrama.fichero)
+            ficheros += presentadas.ficheros
         }
         ficheros += presentado(arpegio).ficheros
         let cifrado = acorde.cifrado(en: notacion)
@@ -168,6 +175,86 @@ struct VistaDeAcordes: View {
                 }
             } else {
                 Text(notacion.texto(\.noSeDibuja)).foregroundColor(.secondary)
+            }
+        }
+    }
+
+    /// La disposición elegida tocada en un grupo de cuerdas del instrumento de las digitaciones (drop 2 en las
+    /// cuerdas 4-3-2-1…): cada forma con su tablatura, los dedos sugeridos, su diagrama y su sonido.
+    @ViewBuilder
+    private func disposicionesEnElMastil(de acorde: Acorde) -> some View {
+        let mastil = self.mastil(trastes: 15)
+        let grupos = PresentacionDeDisposiciones.gruposDeCuerdas(disposicion, mastil: mastil, notacion: notacion)
+        if !grupos.isEmpty {
+            let elegido = min(grupoDeCuerdas, grupos.count - 1)
+            let formas = PresentacionDeDisposiciones.enElMastil(
+                acorde, disposicion, mastil: mastil, cuerdas: grupos[elegido].cuerdas)
+            Section(notacion.texto(\.enElMastil) + " · " + disposicion.nombre(en: notacion)) {
+                Picker(notacion.texto(\.enElMastil), selection: $grupoDeCuerdas) {
+                    ForEach(grupos.indices, id: \.self) { Text(grupos[$0].nombre).tag($0) }
+                }
+                if formas.isEmpty {
+                    Text(notacion.texto(\.noSeDibuja)).foregroundColor(.secondary)
+                }
+                ForEach(formas, id: \.tablatura) { forma in
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(alignment: .firstTextBaseline) {
+                            Text(forma.tablatura).font(.system(.body, design: .monospaced))
+                            Text(forma.dedos).font(.system(.caption, design: .monospaced)).foregroundColor(.secondary)
+                            Spacer()
+                            BotonDeEscuchar(forma.sonido).labelStyle(.iconOnly)
+                        }
+                        .buttonStyle(.borderless)
+                        DiagramaDeMastil(digitacion: forma.digitacion, acorde: acorde, notacion: notacion)
+                            .frame(maxHeight: 120)
+                    }
+                }
+            }
+        }
+    }
+
+    /// Otros nombres del acorde, el que queda sin la fundamental, las tonalidades en que está, sus sustituciones y
+    /// la comparación con otro acorde: notas comunes y cómo va cada voz.
+    @ViewBuilder
+    private func relaciones(de acorde: Acorde) -> some View {
+        let relaciones = PresentacionDeRelacionesDeAcorde.relaciones(de: acorde, notacion: notacion)
+        Section(notacion.texto(\.otrosNombres)) {
+            if !relaciones.otrosNombres.isEmpty {
+                Text(relaciones.otrosNombres.joined(separator: " · "))
+            }
+            if let sinFundamental = relaciones.sinFundamental {
+                LabeledContent(notacion.texto(\.sinLaFundamental), value: sinFundamental)
+            }
+        }
+        Section(notacion.texto(\.tonalidadesDelAcorde)) {
+            ForEach(relaciones.tonalidades, id: \.self) { Text($0) }
+        }
+        Section(notacion.texto(\.sustituciones) + " · " + relaciones.tonalidad.nombre(en: notacion)) {
+            ForEach(Array(relaciones.sustituciones.enumerated()), id: \.offset) { _, propuesta in
+                HStack {
+                    Text(propuesta.descripcion)
+                    Spacer()
+                    BotonDeEscuchar(propuesta.sonido).labelStyle(.iconOnly)
+                }
+                .buttonStyle(.borderless)
+            }
+        }
+        Section(notacion.texto(\.compararCon)) {
+            TextField(notacion.campo(.cifrado), text: $otroAcorde)
+                .comoCampoDeCifrado()
+            if let otro = try? Acorde(leyendo: otroAcorde),
+                let comparacion = PresentacionDeRelacionesDeAcorde.comparar(acorde, con: otro, notacion: notacion)
+            {
+                LabeledContent(notacion.texto(\.notasComunes), value: comparacion.comunes)
+                ForEach(comparacion.voces.reversed(), id: \.self) {
+                    Text($0).font(.system(.body, design: .monospaced))
+                }
+                HStack {
+                    Text(comparacion.movimiento).foregroundColor(.secondary)
+                    Spacer()
+                    BotonDeEscuchar(comparacion.sonido).labelStyle(.iconOnly)
+                }
+                .buttonStyle(.borderless)
             }
         }
     }

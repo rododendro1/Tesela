@@ -5,6 +5,84 @@ import Foundation
 // MARK: - Consultas: acordes, notas, escalas, tonalidades y análisis
 
 extension LineaDeComandos {
+    /// `acorde Sol7 [--disposiciones] [--nombres] [--tonalidades] [--sustituciones] [--comparar Do] [--en Do mayor]`:
+    /// cada acorde con sus notas y, si se piden, sus disposiciones, sus otros nombres, las tonalidades en que está,
+    /// sus sustituciones (en la tonalidad de `--en` o en la suya) y la conducción hasta otro acorde.
+    static func acorde(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        var argumentos = Argumentos(textos)
+        guard let tonalidad = try argumentos.quitarTonalidad() else { return uso(.faltaTonalidadTrasEn, notacion) }
+        var otro: Acorde?
+        switch argumentos.quitarOpcion("--comparar", "--compare") {
+        case .ausente: break
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto): otro = try Acorde(leyendo: texto)
+        }
+        let pedido = RelacionesPedidas(
+            disposiciones: argumentos.quitarMarca("--disposiciones", "--voicings"),
+            nombres: argumentos.quitarMarca("--nombres", "--names"),
+            tonalidades: argumentos.quitarMarca("--tonalidades", "--keys"),
+            sustituciones: argumentos.quitarMarca("--sustituciones", "--substitutions"),
+            tonalidad: tonalidad, otro: otro)
+        if let desconocida = argumentos.opcionDesconocida {
+            return uso(.opcionDesconocida(desconocida), notacion)
+        }
+        guard !argumentos.restantes.isEmpty else { return uso(.faltaCifrado, notacion) }
+        let bloques = try argumentos.restantes.map { texto in
+            let acorde = try Acorde(leyendo: texto)
+            return ([describir(acorde: acorde, notacion)] + relaciones(de: acorde, pedido, notacion))
+                .joined(separator: "\n")
+        }
+        return bien(bloques.joined(separator: "\n\n"))
+    }
+
+    /// Lo que se pide de cada acorde además de sus notas.
+    struct RelacionesPedidas {
+        var disposiciones: Bool
+        var nombres: Bool
+        var tonalidades: Bool
+        var sustituciones: Bool
+        var tonalidad: Tonalidad?
+        var otro: Acorde?
+    }
+
+    /// Las líneas de lo pedido de un acorde, cada parte con su título.
+    static func relaciones(de acorde: Acorde, _ pedido: RelacionesPedidas, _ notacion: Notacion) -> [String] {
+        var lineas: [String] = []
+        if pedido.disposiciones {
+            lineas.append(notacion.texto(\.disposicion) + ":")
+            for disposicion in DisposicionDeAcorde.allCases {
+                if let fila = PresentacionDeDisposiciones.acorde(acorde, disposicion, notacion: notacion)?.filas.first {
+                    lineas.append("  " + disposicion.nombre(en: notacion) + ": " + fila.voces)
+                }
+            }
+        }
+        let relaciones = PresentacionDeRelacionesDeAcorde.relaciones(
+            de: acorde, en: pedido.tonalidad, notacion: notacion)
+        if pedido.nombres {
+            lineas.append(notacion.texto(\.otrosNombres) + ": " + relaciones.otrosNombres.joined(separator: ", "))
+            if let sinFundamental = relaciones.sinFundamental {
+                lineas.append(notacion.texto(\.sinLaFundamental) + ": " + sinFundamental)
+            }
+        }
+        if pedido.tonalidades {
+            lineas.append(notacion.texto(\.tonalidadesDelAcorde) + ":")
+            lineas += relaciones.tonalidades.map { "  " + $0 }
+        }
+        if pedido.sustituciones {
+            lineas.append(notacion.texto(\.sustituciones) + " (" + relaciones.tonalidad.nombre(en: notacion) + "):")
+            lineas += relaciones.sustituciones.map { "  " + $0.descripcion }
+        }
+        if let otro = pedido.otro,
+            let comparacion = PresentacionDeRelacionesDeAcorde.comparar(acorde, con: otro, notacion: notacion)
+        {
+            lineas.append(notacion.texto(\.compararCon) + " " + otro.cifrado(en: notacion) + ":")
+            lineas.append("  " + notacion.texto(\.notasComunes) + ": " + comparacion.comunes)
+            lineas += comparacion.voces.reversed().map { "  " + $0 }
+            lineas.append("  " + comparacion.movimiento)
+        }
+        return lineas
+    }
+
     static func describir(acorde: Acorde, _ notacion: Notacion) -> String {
         var lineas = ["\(acorde.cifrado(en: notacion)): \(acorde.tipo.nombre(en: notacion))"]
         let notas = acorde.notas.map { $0.nombre(en: notacion) }.joined(separator: " ")

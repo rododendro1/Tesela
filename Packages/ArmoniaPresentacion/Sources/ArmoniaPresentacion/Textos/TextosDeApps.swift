@@ -145,6 +145,19 @@ public struct TextosDeApps: TextosTraducidos {
     public let fundamentalTerceraYSeptima: String
     public let terceraYSeptima: String
     public let disposicionCuartal: String
+    public let disposicionSinFundamentalA: String
+    public let disposicionSinFundamentalB: String
+    public let disposicionDosManos: String
+    public let enElMastil: String
+    public let cuerdas: @Sendable (String) -> String
+    public let otrosNombres: String
+    public let sinLaFundamental: String
+    public let tonalidadesDelAcorde: String
+    public let sustituciones: String
+    public let compararCon: String
+    public let notasComunes: String
+    public let ningunaNotaComun: String
+    public let movimientoTotal: @Sendable (Int) -> String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String

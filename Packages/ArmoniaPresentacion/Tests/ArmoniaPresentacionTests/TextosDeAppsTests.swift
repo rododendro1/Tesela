@@ -126,6 +126,10 @@ import Testing
         { $0.texto(\.disposicionCerrada) },
         { $0.texto(\.fundamentalTerceraYSeptima) },
         { $0.texto(\.terceraYSeptima) },
+        { $0.texto { $0.cuerdas("6-5-4-3") } },
+        { $0.texto { $0.movimientoTotal(7) } },
+        { $0.texto(\.otrosNombres) },
+        { $0.texto(\.sustituciones) },
     ]
 
     @Test func cadaTextoEstaEnCadaIdioma() {

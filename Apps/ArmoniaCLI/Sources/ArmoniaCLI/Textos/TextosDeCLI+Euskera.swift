@@ -27,6 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <zifratua>…",
         descripcionAcorde: "notak, mota eta nota bakoitzaren\npapera",
+        notasAcorde: "aukerak: --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(--en Do mayor tonalitatean, amaieran) eta --comparar Do\n(nota komunak eta ahotsen eramatea)",
         sintaxisArpegio: "arpegio <zifratua> [--patron <eredua>]",
         descripcionArpegio: "arpegioaren notak eta akordeari\ndagozkion eskalak (--patron\nascendente, descendente,\nida-y-vuelta, baja-y-sube,\nquebrado, alberti)",
         notasArpegio: "aukerak: --octavas 2 (1etik 4ra), --sin-octava, --desde Mi\n(edo 3: nota horretatik hasten da), --tensiones 9,13, --grados\n1-5-3-8 (ibilbide propioa) eta --aproximacion abajo, arriba\nedo encierro (nota bakoitzera daramaten nota kromatikoak)",

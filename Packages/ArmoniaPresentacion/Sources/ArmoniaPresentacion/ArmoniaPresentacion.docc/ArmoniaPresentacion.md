@@ -69,6 +69,10 @@ el selector de notación cambia la app entera.
 - ``PentagramaPresentado``
 - ``PresentacionDeDisposiciones``
 - ``DisposicionesPresentadas``
+- ``DisposicionEnElMastilPresentada``
+- ``PresentacionDeRelacionesDeAcorde``
+- ``RelacionesPresentadas``
+- ``ComparacionPresentada``
 - ``PresentacionDeTablatura``
 
 ### Conjuntos de clases

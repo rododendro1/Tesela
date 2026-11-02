@@ -27,6 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <cifrado>…",
         descripcionAcorde: "notas, tipo e papel de cada nota",
+        notasAcorde: "opcións: --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(na tonalidade de --en Do mayor, ao final) e --comparar Do\n(notas comúns e condución das voces)",
         sintaxisArpegio: "arpegio <cifrado> [--patron <padrón>]",
         descripcionArpegio: "notas do arpexo e escalas do\nacorde (--patron ascendente,\ndescendente, ida-y-vuelta,\nbaja-y-sube, quebrado, alberti)",
         notasArpegio: "opcións: --octavas 2 (de 1 a 4), --sin-octava, --desde Mi\n(ou 3: empeza por esa nota), --tensiones 9,13, --grados\n1-5-3-8 (un percorrido propio) e --aproximacion abajo, arriba\nou encierro (notas cromáticas que levan a cada unha)",

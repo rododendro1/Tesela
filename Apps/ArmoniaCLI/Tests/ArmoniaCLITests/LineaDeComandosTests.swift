@@ -138,6 +138,7 @@ import Testing
         "posiciones", "posiciones Do mayor --foo", "musicxml acordes C --ventana 1",
         "musicxml melodia C4:4 --archivo coral.mid", "transponer", "transponer 2M", "rearmonizar",
         "digitaciones C --capo 13", "completado", "completado tcsh", "completado bash zsh", "manual extra",
+        "acorde Do --comparar", "acorde Do --en", "acorde Do --foo", "acorde --nombres",
         "escalas --tradicion marte", "escalas --categoria foo", "musicxml escala", "midi escala Re bayati --clave fa",
     ]
 
@@ -165,6 +166,7 @@ import Testing
             "digitaciones C --capo 2", "arpeggio C --from E --tensions 9 --octaves 2 --no-octave --approach above",
             "arpeggio C7 --degrees 1-5-3-8 --approach enclosure",
             "set 0 4 7", "set C E G", "set 4-Z15", "row 0 e 7 4 2 9 3 8 t 1 5 6",
+            "chord G7 --voicings --names --keys --substitutions --compare C", "chord C --substitutions --in G major",
         ] {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
             #expect(resultado.codigo == 0, "\(orden): \(resultado.error)")
