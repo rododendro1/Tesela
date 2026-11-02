@@ -201,6 +201,15 @@ extension LineaDeComandosTests {
             salida("musicxml arpegios Do Sol7 --patron ida y vuelta")
                 == salida("musicxml arpeggios Do Sol7 --pattern up-down"))
         #expect(salida("mei arpegios Do Sol7 --patron descendente").hasSuffix("</mei>\n"))
+        // --enlazar: Sol7 empieza por Si, la nota más cercana al último Do, en vez de por Sol.
+        let enlazados = salida("musicxml arpegios Do Sol7 --enlazar")
+        #expect(notas(enlazados) == 9)
+        #expect(enlazados != sencillo)
+        #expect(enlazados == salida("musicxml arpegios Do Sol7 --connect"))
+        #expect(LineaDeComandos.ejecutar(["midi", "arpegios", "Do", "Sol7", "--enlazar"]).codigo == 0)
+        #expect(
+            LineaDeComandos.ejecutar(["musicxml", "arpegios", "Do", "Sol7", "--enlazar", "--duracion", "1"]).codigo
+                == 0)
         let midi = LineaDeComandos.ejecutar(["midi", "arpegios", "Do", "Sol7", "--programa", "24"])
         #expect(midi.codigo == 0, Comment(rawValue: midi.error))
         #expect(try Array(#require(midi.datos).prefix(4)) == Array("MThd".utf8))

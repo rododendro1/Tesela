@@ -138,6 +138,20 @@ import Testing
         #expect(sonido.notas.map { $0.duracion.rounded(toPlaces: 6) } == [0.95, 0.475, 2.85])
     }
 
+    @Test func elSwingAlargaLaPrimeraCorcheaDeCadaPulso() {
+        let recta = Escucha.voz(Voz(Arpegio(Acorde("Do")), figura: .corchea), tempo: Tempo(60))
+        #expect(recta.inicios == [0, 0.5, 1, 1.5])
+        let conSwing = recta.conSwing(pulso: 1)
+        #expect(conSwing.inicios.map { $0.rounded(toPlaces: 3) } == [0, 0.667, 1, 1.667])
+        #expect(conSwing.notas.map(\.midi) == recta.notas.map(\.midi))
+        // Larga-corta: la primera dura más que en recto y la segunda, menos.
+        #expect(conSwing.notas[0].duracion > recta.notas[0].duracion)
+        #expect(conSwing.notas[1].duracion < recta.notas[1].duracion)
+        // Sin pulso o con una proporción imposible, nada cambia.
+        #expect(recta.conSwing(pulso: 0) == recta)
+        #expect(recta.conSwing(pulso: 1, proporcion: 1) == recta)
+    }
+
     @Test func unaMelodiaConRitmoSeArmonizaYElCoralSuenaConEse() throws {
         let coral = try PresentacionDeCoral.presentar(
             .armonizar, "Mi4:2 Re4:4 Do4:4", tonalidad: "Do mayor",

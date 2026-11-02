@@ -120,6 +120,9 @@ extension TextosDeTeoria {
         patronAlberti: "альбертиев бас",
         patronQuebrado: "ломаный",
         patronBajaYSube: "вниз и вверх",
+        aproximacionDesdeAbajo: "снизу",
+        aproximacionDesdeArriba: "сверху",
+        aproximacionEncierro: "окружение",
         // Escala+Acorde.swift
         papelNotaDelAcorde: "звук аккорда",
         papelTensionDisponible: "напряжение",

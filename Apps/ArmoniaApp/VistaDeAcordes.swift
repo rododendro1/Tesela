@@ -15,6 +15,17 @@ struct VistaDeAcordes: View {
     @State private var octavas = 1
     @State private var conOctava = true
     @State private var figura = Figura.corchea
+    /// La nota del acorde por la que empieza el arpegio, desde el bajo (``Arpegio/inicio``).
+    @State private var inicio = 0
+    @State private var tensiones: [Int] = []
+    /// Un recorrido propio por grados («1 5 3 8»); si se lee, manda sobre el patrón.
+    @State private var grados = ""
+    @State private var aproximacion: Arpegio.Aproximacion?
+    @State private var tresillos = false
+    @State private var swing = false
+    @State private var tempo = 72
+    /// Qué posiciones del arpegio se enseñan en el mástil.
+    @State private var formas = FormasEnElMastil.porPosiciones
     /// El traste del capo en las digitaciones y el arpegio en el mástil, o 0 sin capo.
     @State private var capo = 0
     /// La disposición de piano o jazz que se enseña (drop 2, shell…).
@@ -30,13 +41,35 @@ struct VistaDeAcordes: View {
     /// Las figuras que se ofrecen para las notas del arpegio.
     private static let figuras: [Figura] = [.negra, .corchea, .semicorchea]
 
+    /// Las tensiones que se ofrecen para añadir al arpegio.
+    private static let opcionesDeTensiones: [[Int]] = [[], [9], [9, 11], [9, 13], [9, 11, 13]]
+
+    /// Las posiciones del arpegio en el mástil: en franjas desde la fundamental, en las formas CAGED o con una
+    /// nota por cuerda.
+    private enum FormasEnElMastil: Hashable, CaseIterable {
+        case porPosiciones, caged, unaNotaPorCuerda
+    }
+
+    /// Lo que dura cada nota del arpegio: la figura elegida, de tresillo si se pide.
+    private var duracion: Duracion { tresillos ? figura.duracion.grupoIrregular(3, en: 2) : figura.duracion }
+
     /// El mástil del instrumento elegido, con el capo si lo lleva.
     private func mastil(trastes: Int) -> Mastil {
         Mastil(encordado.conCapo(capo), trastes: trastes)
     }
 
     private func arpegio(de acorde: Acorde) -> Arpegio {
-        Arpegio(acorde, patron: patron, octavas: octavas, conOctava: conOctava)
+        if let grados = Arpegio.grados(leyendo: grados) {
+            return Arpegio(acorde, grados: grados, octavas: octavas, aproximacion: aproximacion)
+        }
+        return Arpegio(
+            acorde, patron: patron, octavas: octavas, conOctava: conOctava, inicio: inicio, tensiones: tensiones,
+            aproximacion: aproximacion)
+    }
+
+    private func presentado(_ arpegio: Arpegio) -> ArpegioPresentado {
+        PresentacionDeArpegios.arpegio(
+            arpegio, figura: duracion, tempo: Tempo(Double(tempo)), swing: swing, notacion: notacion)
     }
 
     var body: some View {
@@ -69,7 +102,10 @@ struct VistaDeAcordes: View {
                 BotonDeExportar(ficheros)
             }
         }
-        .onChange(of: texto) { lectura = Self.leer($0) }
+        .onChange(of: texto) {
+            lectura = Self.leer($0)
+            inicio = 0
+        }
         // Un acorde pedido desde otra pestaña («Ver en Acordes»), ahora o si se pidió antes de abrir esta.
         .onChange(of: navegacion.acordePedido) { _ in tomarElAcordePedido() }
         .onAppear(perform: tomarElAcordePedido)
@@ -94,7 +130,7 @@ struct VistaDeAcordes: View {
         if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, notacion: notacion) {
             ficheros.append(presentadas.pentagrama.fichero)
         }
-        ficheros += PresentacionDeArpegios.arpegio(arpegio, figura: figura.duracion, notacion: notacion).ficheros
+        ficheros += presentado(arpegio).ficheros
         let cifrado = acorde.cifrado(en: notacion)
         if let formas = digitaciones?.valor(para: claveActual), !formas.isEmpty {
             let titulo = "Tablatura " + cifrado
@@ -136,21 +172,43 @@ struct VistaDeAcordes: View {
         }
     }
 
-    /// El arpegio en el patrón, las octavas y la figura elegidos: su pentagrama, nota a nota, y cómo suena. Mientras
-    /// suena, la nota que se oye se resalta en el pentagrama.
+    /// El arpegio en el patrón (o los grados), las octavas, la nota de partida, las tensiones, las notas de
+    /// aproximación y el ritmo elegidos: su pentagrama, nota a nota, y cómo suena. Mientras suena, la nota que se
+    /// oye se resalta en el pentagrama.
     @ViewBuilder
     private func seccionDelArpegio(de acorde: Acorde) -> some View {
         let arpegio = self.arpegio(de: acorde)
-        let sonido = PresentacionDeArpegios.arpegio(arpegio, figura: figura.duracion, notacion: notacion).sonido
+        let sonido = presentado(arpegio).sonido
         Section(notacion.texto(\.arpegio)) {
-            Picker(notacion.texto(\.patron), selection: $patron) {
-                ForEach(Arpegio.Patron.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
+            TextField(notacion.texto(\.porGrados) + " (1 5 3 8)", text: $grados)
+                .comoCampoDeCifrado()
+            if arpegio.grados.isEmpty {
+                Picker(notacion.texto(\.patron), selection: $patron) {
+                    ForEach(Arpegio.Patron.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
+                }
+                Picker(notacion.texto(\.empezarEn), selection: $inicio) {
+                    ForEach(Array(acorde.notasDesdeElBajo.enumerated()), id: \.offset) { i, nota in
+                        Text(nota.nombre(en: notacion)).tag(i)
+                    }
+                }
+                Picker(notacion.texto(\.tensiones), selection: $tensiones) {
+                    ForEach(Self.opcionesDeTensiones, id: \.self) { opcion in
+                        Text(opcion.isEmpty ? "—" : opcion.map(String.init).joined(separator: " ")).tag(opcion)
+                    }
+                }
+                Toggle(notacion.texto(\.conLaOctavaFinal), isOn: $conOctava)
             }
             Stepper("\(notacion.texto(\.octavas)): \(octavas)", value: $octavas, in: 1...3)
-            Toggle(notacion.texto(\.conLaOctavaFinal), isOn: $conOctava)
+            Picker(notacion.texto(\.aproximacion), selection: $aproximacion) {
+                Text("—").tag(Arpegio.Aproximacion?.none)
+                ForEach(Arpegio.Aproximacion.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag(Optional($0)) }
+            }
             Picker(notacion.texto(\.figura), selection: $figura) {
                 ForEach(Self.figuras, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
             }
+            Toggle(notacion.texto(\.tresillos), isOn: $tresillos)
+            Toggle(notacion.texto(\.swing), isOn: $swing)
+            Stepper(notacion.texto { $0.tempo(tempo) }, value: $tempo, in: 40...240, step: 4)
             DiagramaDePentagrama(
                 PentagramaPresentado(arpegio, notacion: notacion, resaltada: reproductor.paso(de: sonido)))
             BotonDeEscuchar(sonido)
@@ -225,32 +283,52 @@ struct VistaDeAcordes: View {
     }
 
     /// El arpegio en el mástil del instrumento elegido en las digitaciones: las notas del acorde por todo el
-    /// mástil y, debajo, cada posición en que la mano lo toca sin moverse, de la más baja a la más alta.
+    /// mástil y, debajo, cada posición en que la mano lo toca (en franjas desde la fundamental, en las formas
+    /// CAGED o con una nota por cuerda), de la más baja a la más alta, con los dedos que la pisan.
     @ViewBuilder
     private func arpegioEnElMastil(de acorde: Acorde) -> some View {
-        let mastil = self.mastil(trastes: 12)
+        let mastil = self.mastil(trastes: formas == .porPosiciones ? 12 : 15)
         let instrumento = encordado.titulo(en: notacion) + (capo > 0 ? " · " + notacion.texto { $0.capo(capo) } : "")
+        let posiciones = self.posiciones(de: acorde, en: mastil)
         Section(notacion.texto(\.arpegioEnElMastil)) {
             Text(instrumento)
                 .foregroundColor(.secondary)
             DiagramaDeMastil(mastil: mastil, acorde: acorde, notacion: notacion)
-            ForEach(mastil.arpegios(de: acorde), id: \.trastes) { posicion in
+            Picker(notacion.texto(\.porPosiciones), selection: $formas) {
+                Text(notacion.texto(\.porPosiciones)).tag(FormasEnElMastil.porPosiciones)
+                Text("CAGED").tag(FormasEnElMastil.caged)
+                Text(notacion.texto { $0.notasPorCuerda(1) }).tag(FormasEnElMastil.unaNotaPorCuerda)
+            }
+            .pickerStyle(.segmented)
+            ForEach(posiciones, id: \.self) { posicion in
                 // De grave a agudo, en corcheas, como se toca al subir; mientras suena, se resalta la nota.
                 let voz = Voz(posicion.alturas.map { Evento($0, .corchea) })
                 let sonido = Escucha.voz(voz).conTonica(acorde.fundamental)
                 let paso = reproductor.paso(de: sonido)
                 let sonando = paso.flatMap { posicion.posiciones.indices.contains($0) ? posicion.posiciones[$0] : nil }
+                let trastes = notacion.texto { $0.trastes(posicion.trastes.lowerBound, posicion.trastes.upperBound) }
+                let dedos = posicion.dedos.map(String.init).joined(separator: " ")
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
-                        Text(notacion.texto { $0.trastes(posicion.trastes.lowerBound, posicion.trastes.upperBound) })
+                        Text((posicion.forma.map { $0.rawValue + " · " } ?? "") + trastes)
                         Spacer()
                         BotonDeEscuchar(sonido)
                     }
                     DiagramaDeMastil(arpegio: posicion, acorde: acorde, notacion: notacion)
                         .resaltando(sonando)
                         .frame(maxHeight: 120)
+                    Text(notacion.texto(\.dedosSugeridos) + ": " + dedos)
+                        .font(.caption).foregroundColor(.secondary)
                 }
             }
+        }
+    }
+
+    private func posiciones(de acorde: Acorde, en mastil: Mastil) -> [ArpegioEnElMastil] {
+        switch formas {
+        case .porPosiciones: return mastil.arpegios(de: acorde)
+        case .caged: return mastil.arpegiosCAGED(de: acorde)
+        case .unaNotaPorCuerda: return mastil.arpegiosDeUnaNotaPorCuerda(de: acorde)
         }
     }
 

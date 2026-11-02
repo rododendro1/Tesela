@@ -41,6 +41,17 @@ extension LineaDeComandosTests {
                 "(de ida y vuelta)\n  notas: Do₄ Mi₄ Sol₄ Do₅ Sol₄ Mi₄ Do₄\n"))
         #expect(salida("arpeggio C7 --pattern descending --ingles").contains("notes: C5 Bb4 G4 E4 C4"))
         #expect(salida("arpegio Do Fa").components(separatedBy: "\n\n").count == 2)
+        // El recorrido: octavas, sin la octava, desde otra nota, con tensiones, por grados y con aproximaciones.
+        #expect(salida("arpegio Do --octavas 2").contains("notas: Do₄ Mi₄ Sol₄ Do₅ Mi₅ Sol₅ Do₆\n"))
+        #expect(salida("arpegio Do --sin-octava").contains("notas: Do₄ Mi₄ Sol₄\n"))
+        #expect(salida("arpegio Do --desde Mi").contains("notas: Mi₄ Sol₄ Do₅ Mi₅\n"))
+        #expect(salida("arpegio Do --desde 5").contains("notas: Sol₄ Do₅ Mi₅ Sol₅\n"))
+        #expect(salida("arpegio Do7 --tensiones 9").contains("notas: Do₄ Mi₄ Sol₄ Si♭₄ Re₅ Do₆\n"))
+        #expect(salida("arpegio Do --grados 1-5-3-8").contains("(1-5-3-8)\n  notas: Do₄ Sol₄ Mi₄ Do₅\n"))
+        #expect(
+            salida("arpegio Do --aproximacion abajo --sin-octava").contains("notas: Si₃ Do₄ Re♯₄ Mi₄ Fa♯₄ Sol₄\n"))
+        #expect(
+            salida("arpeggio C --from E --octaves 2 --no-octave --ingles").contains("notes: E4 G4 C5 E5 G5 C6\n"))
         #expect(LineaDeComandos.patronDeArpegio("bajo de Alberti") == .alberti)
         #expect(LineaDeComandos.patronDeArpegio("up-down") == .idaYVuelta)
         #expect(LineaDeComandos.patronDeArpegio("Ascending") == .ascendente)

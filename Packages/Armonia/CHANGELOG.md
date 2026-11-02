@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### Más arpegios
+
+- **`Arpegio(_:grados:octavas:aproximacion:)`**: un recorrido propio por grados sobre la fundamental («1 5 3 8» es
+  Do–Sol–Mi–Do en Do; 9, 11 y 13 son tensiones). `Arpegio.grados(leyendo:)` lo lee de un texto.
+- **`Arpegio(…inicio:)`** empieza por otra nota del acorde (Mi–Sol–Do–Mi en Do); `Arpegio.indice(de:en:)` e
+  `indice(delGrado:en:)` la buscan por su nombre o por su grado.
+- **`Arpegio(…tensiones:)`** suma la 9, la 11 y la 13 por encima del acorde, de su escala (`nota(delGrado:)`: en Do7,
+  la del lidio dominante); `Arpegio.tensiones(leyendo:)` las lee.
+- **`Arpegio.Aproximacion`**: notas cromáticas que llevan a cada nota del arpegio, desde abajo, desde arriba o en
+  encierro (Fa–Re♯–Mi), con nombre en los quince idiomas y `Aproximacion(leyendo:)`.
+- **`Voz(arpegiando:…tensiones:aproximacion:enlazados:)`**: con `enlazados`, cada arpegio de la progresión empieza
+  por la nota de su acorde más cercana a la última del anterior (en Do–Fa, el Fa empieza por Do).
+- **En el mástil**: `Mastil.arpegiosCAGED(de:ancho:)` (las cinco formas, con `ArpegioEnElMastil.forma`),
+  `arpegiosDeUnaNotaPorCuerda(de:alcance:)` (para barrido) y `ArpegioEnElMastil.dedos`, el dedo sugerido para cada
+  nota.
+- **En la línea de comandos**, `armonia arpegio` acepta `--octavas`, `--sin-octava`, `--desde Mi` (o `--desde 3`),
+  `--tensiones 9,13`, `--grados 1-5-3-8` y `--aproximacion abajo|arriba|encierro` (en inglés, `--octaves`,
+  `--no-octave`, `--from`, `--tensions`, `--degrees` y `--approach`), y `musicxml arpegios` acepta `--enlazar`
+  (`--connect`). La ayuda nombra todos los patrones, también «quebrado» y «baja y sube», y el autocompletado los
+  propone.
+
 ### Planificar modulaciones
 
 - **`Tonalidad.modulaciones(hasta:)`** escribe progresiones que modulan a otra tonalidad (`PlanDeModulacion`): por

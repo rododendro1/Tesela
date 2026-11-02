@@ -16,15 +16,28 @@ public struct ArpegioEnElMastil: Hashable, Sendable {
     public let trastes: ClosedRange<Int>
     /// Las notas, de la más grave a la más aguda; las que suenan igual en dos cuerdas (un unísono), una vez.
     public let posiciones: [PosicionEnElMastil]
+    /// La forma CAGED de la posición, si es una de ``Mastil/arpegiosCAGED(de:ancho:)``.
+    public let forma: FormaCAGED?
 
-    public init(mastil: Mastil, trastes: ClosedRange<Int>, posiciones: [PosicionEnElMastil]) {
+    public init(
+        mastil: Mastil, trastes: ClosedRange<Int>, posiciones: [PosicionEnElMastil], forma: FormaCAGED? = nil
+    ) {
         self.mastil = mastil
         self.trastes = trastes
         self.posiciones = posiciones
+        self.forma = forma
     }
 
     /// Las alturas en el orden en que se tocan.
     public var alturas: [Altura] { posiciones.map { mastil.altura(en: $0) } }
+
+    /// El dedo de la mano que pisa cada nota, en el orden de `posiciones`: 0 en las cuerdas al aire y, en las
+    /// demás, el índice (1) en el traste más bajo que se pisa y un dedo por traste hasta el meñique (4), que toma
+    /// también los que quedan más arriba.
+    public var dedos: [Int] {
+        guard let base = posiciones.map(\.traste).filter({ $0 > 0 }).min() else { return posiciones.map { _ in 0 } }
+        return posiciones.map { $0.traste == 0 ? 0 : min(4, $0.traste - base + 1) }
+    }
 }
 
 extension Mastil {
@@ -52,17 +65,65 @@ extension Mastil {
                 if !inicios.contains(inicio) { inicios.append(inicio) }
             }
         }
-        let todas = posiciones(deClases: clases)
         return inicios.sorted().compactMap { inicio in
-            let franja = inicio...min(trastes, inicio + ancho - 1)
-            let ordenadas = todas.filter { franja.contains($0.traste) }
-                .sorted { (midi(en: $0), $0.cuerda) < (midi(en: $1), $1.cuerda) }
-            var unicas: [PosicionEnElMastil] = []
-            for posicion in ordenadas where unicas.last.map({ midi(en: $0) != midi(en: posicion) }) ?? true {
-                unicas.append(posicion)
-            }
-            guard Set(unicas.map { Mastil.clase(midi(en: $0)) }) == clases else { return nil }
-            return ArpegioEnElMastil(mastil: self, trastes: franja, posiciones: unicas)
+            arpegio(de: clases, en: inicio...min(trastes, inicio + ancho - 1), forma: nil)
         }
+    }
+
+    /// El arpegio de un acorde en las cinco formas del sistema CAGED, de la más baja a la más alta: en cada una,
+    /// las notas del acorde dentro de la franja de la escala mayor de su fundamental en esa forma
+    /// (``posicionesCAGED(de:ancho:)``). Solo para la guitarra afinada como siempre; en otro instrumento, vacío.
+    ///
+    ///     Mastil(.guitarra, trastes: 15).arpegiosCAGED(de: Acorde("Do")).map(\.forma)   // [C, A, G, E, D]
+    public func arpegiosCAGED(de acorde: Acorde, ancho: Int = 5) -> [ArpegioEnElMastil] {
+        let clases = Set(acorde.notas.map(\.claseDeAltura))
+        return posicionesCAGED(de: Escala(acorde.fundamental, .mayor), ancho: ancho).compactMap {
+            arpegio(de: clases, en: $0.trastes, forma: $0.forma)
+        }
+    }
+
+    /// El arpegio de un acorde con una sola nota en cada cuerda, de la grave a la aguda, como se toca con barrido
+    /// (*sweep picking*): uno por cada nota del acorde en la cuerda más grave, de la más baja a la más alta, si las
+    /// cuerdas siguientes encuentran nota sin que la mano tenga que abrirse más de `alcance` trastes.
+    ///
+    ///     Mastil(.guitarra, trastes: 15).arpegiosDeUnaNotaPorCuerda(de: Acorde("Lam"))[0].alturas
+    ///     // Mi2 La2 Mi3 La3 Do4 Mi4: el La menor al aire, de la 6.ª cuerda a la 1.ª
+    ///
+    /// Vacío si las cuerdas no van de grave a aguda (un ukelele con el Sol agudo, por ejemplo).
+    public func arpegiosDeUnaNotaPorCuerda(de acorde: Acorde, alcance: Int = 5) -> [ArpegioEnElMastil] {
+        let clases = Set(acorde.notas.map(\.claseDeAltura))
+        let cuerdas = encordado.cuerdas.map(\.midi)
+        guard !clases.isEmpty, !encordado.esReentrante, let grave = cuerdas.first else { return [] }
+        var resultado: [ArpegioEnElMastil] = []
+        for inicio in 0...trastes where clases.contains(Mastil.clase(grave + inicio)) {
+            var posiciones = [PosicionEnElMastil(cuerda: 0, traste: inicio)]
+            var altura = grave + inicio
+            for (cuerda, alAire) in cuerdas.enumerated().dropFirst() {
+                // La nota siguiente del acorde que se puede pisar en esta cuerda.
+                altura += 1
+                while !clases.contains(Mastil.clase(altura)) || altura < alAire { altura += 1 }
+                posiciones.append(PosicionEnElMastil(cuerda: cuerda, traste: altura - alAire))
+            }
+            let usados = posiciones.map(\.traste)
+            // La mano abarca de la nota pisada más baja a la más alta; las cuerdas al aire no cuentan.
+            guard let menor = usados.min(), let mayor = usados.max(), mayor <= trastes,
+                usados.allSatisfy({ $0 == 0 || mayor - $0 < max(1, alcance) })
+            else { continue }
+            resultado.append(ArpegioEnElMastil(mastil: self, trastes: menor...mayor, posiciones: posiciones))
+        }
+        return resultado
+    }
+
+    /// Las notas de unas clases de altura dentro de una franja, de la más grave a la más aguda y sin unísonos, o
+    /// `nil` si falta alguna.
+    private func arpegio(de clases: Set<Int>, en franja: ClosedRange<Int>, forma: FormaCAGED?) -> ArpegioEnElMastil? {
+        let ordenadas = posiciones(deClases: clases).filter { franja.contains($0.traste) }
+            .sorted { (midi(en: $0), $0.cuerda) < (midi(en: $1), $1.cuerda) }
+        var unicas: [PosicionEnElMastil] = []
+        for posicion in ordenadas where unicas.last.map({ midi(en: $0) != midi(en: posicion) }) ?? true {
+            unicas.append(posicion)
+        }
+        guard Set(unicas.map { Mastil.clase(midi(en: $0)) }) == clases else { return nil }
+        return ArpegioEnElMastil(mastil: self, trastes: franja, posiciones: unicas, forma: forma)
     }
 }

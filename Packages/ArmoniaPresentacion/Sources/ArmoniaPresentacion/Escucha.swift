@@ -100,6 +100,34 @@ public struct Escucha: Hashable, Sendable {
         return inicios.lastIndex { $0 <= tiempo }
     }
 
+    /// Lo mismo con swing: en cada pulso de `pulso` segundos, la primera mitad se alarga hasta `proporcion` del
+    /// pulso y la segunda se acorta (dos tercios y un tercio por omisión, como un tresillo de negra y corchea), así
+    /// que dos corcheas iguales suenan larga-corta. Lo que empieza en el pulso no se mueve.
+    ///
+    ///     Escucha.voz(Voz(arpegio, figura: .corchea), tempo: Tempo(60)).conSwing(pulso: 1).inicios
+    ///     // [0, 0.667, 1, 1.667…] en vez de [0, 0.5, 1, 1.5…]
+    public func conSwing(pulso: Double, proporcion: Double = 2.0 / 3.0) -> Escucha {
+        guard pulso > 0, proporcion > 0, proporcion < 1 else { return self }
+        func mover(_ tiempo: Double) -> Double {
+            let pulsos = (tiempo / pulso + 1e-9).rounded(.down)
+            let dentro = max(0, tiempo - pulsos * pulso)
+            let mitad = pulso / 2
+            let movido =
+                dentro <= mitad
+                ? dentro * 2 * proporcion
+                : pulso * proporcion + (dentro - mitad) * 2 * (1 - proporcion)
+            return pulsos * pulso + movido
+        }
+        let movidas = notas.map { nota -> NotaMIDI in
+            let inicio = mover(nota.inicio)
+            let fin = mover(nota.inicio + nota.duracion)
+            return NotaMIDI(
+                altura: nota.altura, inicio: inicio, duracion: max(0.01, fin - inicio), desviacion: nota.desviacion,
+                microtono: nota.microtono)
+        }
+        return Escucha(notas: movidas, tonica: tonica)
+    }
+
     /// Los comienzos y finales de las notas, por orden de tiempo. A un mismo tiempo, los finales van antes,
     /// para que una nota repetida vuelva a sonar.
     public var cambios: [Cambio] {

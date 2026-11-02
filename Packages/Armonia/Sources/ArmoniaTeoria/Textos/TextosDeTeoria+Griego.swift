@@ -120,6 +120,9 @@ extension TextosDeTeoria {
         patronAlberti: "μπάσο Alberti",
         patronQuebrado: "σπαστό",
         patronBajaYSube: "κάτω-πάνω",
+        aproximacionDesdeAbajo: "από κάτω",
+        aproximacionDesdeArriba: "από πάνω",
+        aproximacionEncierro: "περικύκλωση",
         // Escala+Acorde.swift
         papelNotaDelAcorde: "φθόγγος της συγχορδίας",
         papelTensionDisponible: "ένταση",
