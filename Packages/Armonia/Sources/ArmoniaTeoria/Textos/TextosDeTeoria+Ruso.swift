@@ -127,11 +127,15 @@ extension TextosDeTeoria {
         modoDe: { modo, escala in "\(modo)-й лад гаммы \(escala)" },
         // NotaExtrana.swift
         nombresDeNotasExtranas: ["проходящий звук", "вспомогательный звук", "неприготовленное задержание", "задержание", "предъём", "отлетающий звук", "органный пункт", "свободный звук"],
+        // EsquemaArmonico.swift
+        nombresDeEsquemas: ["ii–V–I", "ii–V", "тёрнэраунд", "бэкдор", "12-тактовый блюз", "квинтовая секвенция", "романеска", "канон Пахельбеля", "монте", "фонте", "понте"],
         // Rearmonizacion.swift
         sustitutoTritonal: "тритоновая замена",
         dominanteSecundaria: "побочная доминанта",
         prestamoModal: "модальное заимствование",
         sustitutoDiatonico: "диатоническая замена",
+        rearmonizacionIIV: "ii–V",
+        rearmonizacionBackdoor: "доминанта «бэкдор»",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» не входит ни в одно известное буквенное обозначение" },
         tensionNoValida: { tension in "«\(tension)» — недопустимая альтерация или добавленный тон (♭/♯ — с 5, 9, 11 и 13, add — с 2, 4, 6, 9, 11 и 13)" },

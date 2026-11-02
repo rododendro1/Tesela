@@ -127,11 +127,15 @@ extension TextosDeTeoria {
         modoDe: { modo, escala in "τρόπος \(modo) της κλίμακας \(escala)" },
         // NotaExtrana.swift
         nombresDeNotasExtranas: ["διαβατική νότα", "γειτονική νότα", "αποτζιατούρα", "καθυστέρηση", "πρόληψη", "νότα διαφυγής", "νότα πεντάλ", "ελεύθερη νότα"],
+        // EsquemaArmonico.swift
+        nombresDeEsquemas: ["ii–V–I", "ii–V", "τέρναραουντ", "μπακντόρ", "μπλουζ 12 μέτρων", "αλυσίδα πεμπτών", "ρομανέσκα", "κανόνας του Πάχελμπελ", "μόντε", "φόντε", "πόντε"],
         // Rearmonizacion.swift
         sustitutoTritonal: "τριτονική υποκατάσταση",
         dominanteSecundaria: "δευτερεύουσα δεσπόζουσα",
         prestamoModal: "τροπικός δανεισμός",
         sustitutoDiatonico: "διατονική υποκατάσταση",
+        rearmonizacionIIV: "ii–V",
+        rearmonizacionBackdoor: "δεσπόζουσα backdoor",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "το «\(simbolo)» δεν ανήκει σε κανένα γνωστό σύμβολο συγχορδίας" },
         tensionNoValida: { tension in "το «\(tension)» δεν είναι έγκυρη τάση (τα ♭/♯ μπαίνουν με 5, 9, 11 και 13, και το add με 2, 4, 6, 9, 11 και 13)" },

@@ -131,11 +131,15 @@ extension TextosDeTeoria {
         modoDe: { modo, escala in "\(escala): \(modo). modua" },
         // NotaExtrana.swift
         nombresDeNotasExtranas: ["igarotze-nota", "brodadura", "apoiatura", "atzerapena", "aurrerapena", "ihes-nota", "pedal-nota", "nota askea"],
+        // EsquemaArmonico.swift
+        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "12 konpaseko bluesa", "boskoen progresioa", "romanesca", "Pachelbelen kanona", "monte", "fonte", "ponte"],
         // Rearmonizacion.swift
         sustitutoTritonal: "tritono-ordezkapena",
         dominanteSecundaria: "bigarren mailako dominantea",
         prestamoModal: "mailegu modala",
         sustitutoDiatonico: "ordezko diatonikoa",
+        rearmonizacionIIV: "ii–V",
+        rearmonizacionBackdoor: "backdoor dominantea",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» ez dago zifratu ezagunetan" },
         tensionNoValida: { tension in "«\(tension)» ez da tentsio baliozkoa (♭/♯ 5, 9, 11 eta 13rekin onartzen dira, eta add 2, 4, 6, 9, 11 eta 13rekin)" },

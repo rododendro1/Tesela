@@ -124,6 +124,7 @@ extension TextosDeApps {
         disposicionCerrada: "Тесное",
         fundamentalTerceraYSeptima: "Основной тон, терция и септима",
         terceraYSeptima: "Терция и септима",
+        disposicionCuartal: "Квартовое",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Напряжения",
         notasAEvitar: "Избегать",

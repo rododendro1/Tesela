@@ -57,7 +57,7 @@ import Testing
         #expect(shells.allSatisfy { $0.count == 3 && $0[0].nota == .do })
         let guias = Acorde("Do7").disposiciones(.notasGuia)
         #expect(guias.allSatisfy { $0.count == 2 && Set($0.map(\.nota)) == Set(Acorde("Do7").notasGuia) })
-        #expect(DisposicionDeAcorde.allCases.map(\.voces) == [4, 4, 4, 4, 3, 2])
+        #expect(DisposicionDeAcorde.allCases.map(\.voces) == [4, 4, 4, 4, 3, 2, 4])
     }
 
     @Test func laConduccionDeUnIIVI() throws {

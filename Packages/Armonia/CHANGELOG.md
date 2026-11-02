@@ -42,6 +42,40 @@
   cuatro motivos nuevos, en los quince idiomas: `claseDeAlturaNoValida`, `numeroDeForteDesconocido`,
   `faltaElCierre` y `serieNoDodecafonica(faltan:repetidas:)`.
 
+### Planificar modulaciones
+
+- **`Tonalidad.modulaciones(hasta:)`** escribe progresiones que modulan a otra tonalidad (`PlanDeModulacion`): por
+  acorde común (Do → Sol por Lam, vi = ii), por séptima disminuida enarmónica (Do → La♭: Do♯°7, vii°7/ii, escrito
+  Sol°7, vii°7 en La♭) o directa (ii–V7–I de la nueva). Cada plan lleva su progresión completa y su acorde pivote
+  leído en las dos tonalidades.
+
+### Cifrado romano
+
+- **`Tonalidad.acorde(romano:)`** y **`Tonalidad.acordes(romanos:)`** leen cifrados romanos, el camino inverso
+  de `analizar(_:)`: inversiones («ii65», «V43»), grados alterados y prestados («♭VI», «♭VII»), dominantes y
+  sensibles secundarias («V7/V», «vii°7/ii», también encadenadas: «V/V/V»), sustituto tritonal («subV7/ii»),
+  napolitana («N6», «♭II6») y sextas aumentadas («It+6», «Fr+6», «Ger+6»).
+
+### Armonía negativa, disposición por cuartas y armonía modal
+
+- **Armonía negativa**: `Tonalidad.negativa(_:)` refleja una nota sobre el eje entre la tónica y la dominante (Mi ↔
+  Mi♭, Si ↔ La♭ en Do), y `Tonalidad.negativo(_:)` y `negativos(_:)` hacen lo mismo con un acorde y con una
+  progresión (Do → Dom, Fa → Solm, Sol7 → Reø7).
+- **`DisposicionDeAcorde.cuartal`**: cuatro notas por cuartas de la escala del acorde, con sus notas guía y sin notas
+  a evitar (Rem7 → Re Sol Do Fa, Sol7 → Fa Si Mi La).
+- **Armonía modal**: `Escala.modoDeLaMayor`, `Escala.notaCaracteristica` (la 6.ª mayor del dórico, la 4.ª aumentada
+  del lidio…), `Escala.acordesCaracteristicos` (las tríadas que la llevan) y `Escala.cadenciaModal` (IV–i en
+  dórico, ♭II–i en frigio, ♭VII–I en mixolidio…).
+
+### Esquemas armónicos: jazz y secuencias
+
+- **`EsquemaArmonico.buscar(en:)`** reconoce en una progresión, en cualquier tonalidad, el ii–V–I (y el ii–V sin
+  resolver), el turnaround, el backdoor y el blues de 12 compases, y las secuencias y esquemas del barroco y el
+  galante: quintas descendentes, romanesca, canon de Pachelbel, monte, fonte y ponte. Cada uno dice dónde está y a
+  qué tónica va, y `EsquemaArmonico.Tipo.acordes(en:)` lo escribe en una tonalidad. Nombres en los quince idiomas.
+- **`Rearmonizacion.Recurso.iiV`** (preparar un acorde con su ii–V: Rem → Mim7 La7 Rem) y
+  **`Rearmonizacion.Recurso.backdoor`** (el V7 de una tonalidad mayor por iv7–♭VII7).
+
 ### Análisis armónico ampliado
 
 - **Sustituto tritonal** (`AcordeAnalizado.Categoria.sustitutoTritonal(de:)`): una séptima de dominante medio tono

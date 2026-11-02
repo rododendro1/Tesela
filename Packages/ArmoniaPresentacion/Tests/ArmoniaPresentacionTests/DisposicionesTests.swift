@@ -39,6 +39,7 @@ import Testing
         #expect(DisposicionDeAcorde.drop24.nombre(en: .inglesASCII) == "Drop 2 + 4")
         #expect(DisposicionDeAcorde.shell.nombre(en: .inglesASCII) == "Root, third and seventh")
         #expect(DisposicionDeAcorde.notasGuia.nombre(en: .espanolCompacto) == "Tercera y séptima")
+        #expect(DisposicionDeAcorde.cuartal.nombre(en: .inglesASCII) == "Quartal")
         for idioma in Idioma.allCases {
             let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             let nombres = DisposicionDeAcorde.allCases.map { $0.nombre(en: notacion) }

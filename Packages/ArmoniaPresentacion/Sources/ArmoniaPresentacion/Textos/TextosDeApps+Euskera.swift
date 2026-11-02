@@ -124,6 +124,7 @@ extension TextosDeApps {
         disposicionCerrada: "Itxia",
         fundamentalTerceraYSeptima: "Oinarria, hirugarrena eta zazpigarrena",
         terceraYSeptima: "Hirugarrena eta zazpigarrena",
+        disposicionCuartal: "Laurdenka",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tentsioak",
         notasAEvitar: "Saihesteko",

@@ -191,6 +191,22 @@ Entre las particiones posibles se elige la de menor coste, con el mismo coste po
 tonalidad del tramo y un coste fijo por cada modulación. Si la progresión no modula, el único
 tramo es el mismo análisis que da `AnalisisArmonico.analizar`.
 
+### Planificar una modulación
+
+`modulaciones(hasta:)` hace el camino contrario: escribe progresiones que van de una tonalidad
+a otra (`PlanDeModulacion`). Cada una afirma la de partida con I–IV–V7–I, pasa por un puente y
+confirma la de llegada con V7–I. Salen de la más suave a la más brusca: primero por un **acorde
+común** (los que en la nueva son ii o IV, luego vi y iii); después por una **séptima disminuida
+enarmónica**, el vii°7 de un grado de la de partida que, escrito de otra forma, es el de la nueva;
+y al final la **directa**, el ii–V7–I de la nueva sin puente.
+
+```swift
+let planes = Tonalidad(.do).modulaciones(hasta: Tonalidad(.sol))
+planes[0].tecnica                    // .acordeComun
+planes[0].pivote?.description        // "Lam = vi en Do mayor = ii en Sol mayor"
+Tonalidad(.do).modulaciones(hasta: Tonalidad(Nota.la.bemol))[0].tecnica   // .disminuidaEnarmonica
+```
+
 ## Conducción de voces
 
 `Coral` comprueba las reglas de la armonía escrita voz por voz. Cada acorde lleva
@@ -298,6 +314,48 @@ armonizada.coral.voz(3)               // [Mi4, Fa4, Re4, Do4]
 armonizada.coral.esCorrecta           // true
 ```
 
+## Esquemas armónicos
+
+`EsquemaArmonico.buscar(en:)` reconoce en una progresión las fórmulas hechas, por el movimiento
+de las fundamentales y el tipo de los acordes, en cualquier tonalidad (también las secundarias):
+
+- Del jazz: **ii–V–I** (y el ii–V que no resuelve), **turnaround** (I–vi–ii–V o iii–vi–ii–V),
+  **backdoor** (iv7–♭VII7–I) y **blues de 12 compases** (un acorde por compás).
+- Secuencias y esquemas del barroco y el galante: **quintas descendentes** (cuatro acordes o
+  más), **romanesca** (I–V–vi–iii), **canon de Pachelbel** (I–V–vi–iii–IV–I–IV–V), **monte**
+  (V7/IV–IV–V7/V–V), **fonte** (V7/ii–ii–V7–I) y **ponte** (V–V7 sobre el mismo bajo, y la tónica).
+
+Cada esquema dice dónde está (`indices`) y a qué tónica va. `acordes(en:)` lo escribe en una
+tonalidad.
+
+```swift
+let esquemas = EsquemaArmonico.buscar(en: ["Do7M", "Lam7", "Rem7", "Sol7", "Do7M"])
+esquemas.map(\.tipo)          // [turnaround, progresión por quintas, ii–V–I]
+esquemas.map(\.indices)       // [0..<4, 1..<5, 2..<5]
+EsquemaArmonico.buscar(en: ["Fam7", "Sib7", "Do7M"])[0].tipo   // .backdoor
+EsquemaArmonico.Tipo.pachelbel.acordes(en: Tonalidad(.re))     // [Re, La, Sim, Fa♯m, Sol, Re, Sol, La]
+EsquemaArmonico.Tipo.blues.acordes(en: Tonalidad(.fa)).count   // 12
+```
+
+`rearmonizaciones(de:)` propone también preparar un acorde con su **ii–V** (Rem → Mim7 La7 Rem)
+y cambiar el V7 de una tonalidad mayor por el **backdoor** (Sol7 → Fam7 Si♭7).
+
+## Cifrado romano
+
+`acorde(romano:)` lee un cifrado romano en la tonalidad, escrito como lo escribe `analizar(_:)`:
+el numeral en mayúsculas o minúsculas (tríada mayor o menor), la calidad detrás («°», «ø7»,
+«maj7», «7»), las inversiones en cifras de bajo continuo («6», «64», «65», «43», «42»), una
+alteración delante para los grados cromáticos («♭VI», «♭VII») y, tras una barra, el grado del
+que es dominante, sensible o sustituto («V7/V», «vii°7/ii», «subV7/ii»). «N6» es la napolitana, y
+«It+6», «Fr+6» y «Ger+6», las sextas aumentadas. `acordes(romanos:)` lee una progresión entera.
+
+```swift
+Tonalidad(.do).acorde(romano: "ii65") == Acorde("Rem7/Fa")                       // true
+Tonalidad(.do).acorde(romano: "V7/V") == Acorde("Re7")                           // true
+Tonalidad(.la, .menor).acorde(romano: "vii°7") == Acorde("Sol#°7")               // true
+Tonalidad(.do).acordes(romanos: "I ♭VI ♭VII I") == ["Do", "Lab", "Sib", "Do"]    // true
+```
+
 ## Bajo cifrado
 
 `acorde(sobre:cifras:)` lee las cifras del bajo continuo sobre una nota del bajo, contando los
@@ -313,6 +371,20 @@ Tonalidad(.la, .menor).acorde(sobre: .mi, cifras: "#")             // Mi
 Tonalidad(.la, .menor).acordes(bajoCifrado: "La Fa:6 Mi:# La")     // [Lam, Rem/Fa, Mi, Lam]
 let realizado = Coral.realizar(bajoCifrado: "Do Fa Sol:7 Do", en: Tonalidad(.do))!
 realizado.esCorrecta                  // true
+```
+
+## Armonía negativa
+
+`negativa(_:)` refleja una nota sobre el eje que queda entre la tónica y la dominante (entre Mi♭ y
+Mi en Do): Do ↔ Sol, Mi ↔ Mi♭, Si ↔ La♭, Re ↔ Fa. El eje es el mismo en mayor y en menor.
+`negativo(_:)` refleja todas las notas de un acorde y lo lee en estado fundamental si puede: el
+acorde mayor se vuelve menor, y la dominante, subdominante menor (Sol7 → Reø7). `negativos(_:)`
+hace lo mismo con una progresión.
+
+```swift
+Tonalidad(.do).negativa(.mi) == Nota(.mi, .bemol)                  // true
+Tonalidad(.do).negativo(Acorde("Do")) == Acorde("Dom")             // true
+Tonalidad(.do).negativo(Acorde("Fa")) == Acorde("Solm")            // true
 ```
 
 ## Notas extrañas a la armonía

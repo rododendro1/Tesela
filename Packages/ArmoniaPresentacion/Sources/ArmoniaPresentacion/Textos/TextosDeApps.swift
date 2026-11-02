@@ -135,6 +135,7 @@ public struct TextosDeApps: TextosTraducidos {
     public let disposicionCerrada: String
     public let fundamentalTerceraYSeptima: String
     public let terceraYSeptima: String
+    public let disposicionCuartal: String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String
