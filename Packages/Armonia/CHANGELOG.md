@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### Planificar modulaciones
+
+- **`Tonalidad.modulaciones(hasta:)`** escribe progresiones que modulan a otra tonalidad (`PlanDeModulacion`): por
+  acorde común (Do → Sol por Lam, vi = ii), por séptima disminuida enarmónica (Do → La♭: Do♯°7, vii°7/ii, escrito
+  Sol°7, vii°7 en La♭) o directa (ii–V7–I de la nueva). Cada plan lleva su progresión completa y su acorde pivote
+  leído en las dos tonalidades.
+
 ### Cifrado romano
 
 - **`Tonalidad.acorde(romano:)`** y **`Tonalidad.acordes(romanos:)`** leen cifrados romanos, el camino inverso
