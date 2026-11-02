@@ -27,7 +27,7 @@ extension Tonalidad {
         var mejor: Candidato<Acorde>?
         for i in unicas.indices {
             let orden = [unicas[i]] + unicas.enumerated().filter { $0.offset != i }.map(\.element)
-            let candidatos = Acorde.candidatos(orden).filter { $0.valor.inversion == 0 && $0.valor.omitidas.isEmpty }
+            let candidatos = Acorde.candidatos(orden).filter { $0.valor.inversion == 0 && $0.omitidas.isEmpty }
             if let primero = candidatos.first, primero.coste < (mejor?.coste ?? .infinity) { mejor = primero }
         }
         return mejor?.valor ?? Acorde.identificar(unicas).first

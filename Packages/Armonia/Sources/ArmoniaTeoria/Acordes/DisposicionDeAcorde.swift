@@ -154,7 +154,7 @@ extension Acorde {
                 pila.append(siguiente)
             }
             guard pila.count == 4, guias.allSatisfy({ guia in pila.contains { $0.esEnarmonica(de: guia) } }),
-                !pila.contains(where: evitar.contains)
+                !pila.contains(where: { evitar.contains($0) })
             else { continue }
             let alturas = Acorde.apilar(pila)
             if !formas.contains(alturas) { formas.append(alturas) }
