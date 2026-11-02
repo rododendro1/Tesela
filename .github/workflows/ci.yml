@@ -228,7 +228,7 @@ jobs:
       fail-fast: false
       matrix:
         swift: ["6.0", "6.2"]
-        paquete: [ArmoniaUI, Hexagonos]
+        paquete: [ArmoniaPresentacion, ArmoniaUI, Hexagonos]
     defaults:
       run:
         working-directory: Packages/${{ matrix.paquete }}
@@ -269,6 +269,7 @@ jobs:
         paquete:
           # Las exhaustivas tardan y no prueban código distinto del de las rápidas.
           - { nombre: Armonia, filtro: "^(ArmoniaTests|ArmoniaDocumentacionTests)\\.", funciones: 95.5, lineas: 98.0 }
+          - { nombre: ArmoniaPresentacion, filtro: "", funciones: 96.5, lineas: 96.0 }
           - { nombre: ArmoniaUI, filtro: "", funciones: 97.0, lineas: 99.0 }
           - { nombre: Hexagonos, filtro: "", funciones: 93.5, lineas: 97.5 }
     defaults:
@@ -387,7 +388,7 @@ jobs:
         run: |
           cambiados=$(git diff --name-only "$BASE"...HEAD)
           echo "$cambiados"
-          if echo "$cambiados" | grep -qE '^(Apps/ArmoniaApp/|Apps/TonnetzApp/|Packages/ArmoniaUI/|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
+          if echo "$cambiados" | grep -qE '^(Apps/ArmoniaApp/|Apps/TonnetzApp/|Packages/ArmoniaUI/|Packages/ArmoniaPresentacion/|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
             echo "apps=true" >> "$GITHUB_OUTPUT"
           else
             echo "apps=false" >> "$GITHUB_OUTPUT"
@@ -435,6 +436,9 @@ jobs:
       - name: Armonia
         run: swift build && swift test --parallel --filter "^ArmoniaTests\\."
         working-directory: Packages/Armonia
+      - name: ArmoniaPresentacion
+        run: swift test --parallel
+        working-directory: Packages/ArmoniaPresentacion
       - name: ArmoniaUI
         run: swift test --parallel
         working-directory: Packages/ArmoniaUI
@@ -563,11 +567,18 @@ jobs:
           # Con un solo producto, el esquema se llama como él (sin «-Package»).
           xcodebuild docbuild -scheme Hexagonos -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-hexagonos" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-hexagonos.log"
+      - name: Construir la documentación de ArmoniaPresentacion
+        working-directory: Packages/ArmoniaPresentacion
+        run: |
+          set -o pipefail
+          # Con un solo producto, el esquema se llama como él (sin «-Package»).
+          xcodebuild docbuild -scheme ArmoniaPresentacion -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/docc-armoniapresentacion" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-armoniapresentacion.log"
       - name: Construir la documentación de ArmoniaUI
         working-directory: Packages/ArmoniaUI
         run: |
           set -o pipefail
-          xcodebuild docbuild -scheme ArmoniaUI-Package -destination 'generic/platform=macOS' \
+          xcodebuild docbuild -scheme ArmoniaUI -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-armoniaui" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-armoniaui.log"
       - name: Enlaces sin resolver
         run: |

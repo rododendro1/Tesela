@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- `ArmoniaPresentacion` sale del paquete a uno propio, `Packages/ArmoniaPresentacion`, con sus pruebas. `ArmoniaUI`
+  lo sigue reexportando, así que las apps no cambian; quien use `ArmoniaPresentacion` por ruta local debe apuntar a
+  `Packages/ArmoniaPresentacion` y nombrar el producto con `package: "ArmoniaPresentacion"`. Por URL (el
+  `Package.swift` de la raíz) no cambia nada.
 - `Notacion.mensaje(de:)` traduce cualquier error del motor (`any ErrorDeArmonia`), también los de UIL, que antes
   salían siempre en español.
 
