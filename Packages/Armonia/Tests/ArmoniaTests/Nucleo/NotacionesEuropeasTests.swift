@@ -32,7 +32,11 @@ import Testing
         #expect(try (Altura(leyendo: "Fis₄", en: .alemanCompacto)) == Altura("Fa#4"))
         // Con palabras: la letra y «Kreuz» o «Be», como «Fa sostenido».
         #expect(Nota("Fa#").nombre(en: .aleman) == "F Kreuz")
-        #expect(Nota("Sib").nombre(en: .aleman) == "H Be")
+        // El Si♭ es B también con palabras, y «H Be» se sigue leyendo.
+        #expect(Nota("Sib").nombre(en: .aleman) == "B")
+        #expect(Nota("Sibb").nombre(en: .aleman) == "H Doppel-Be")
+        #expect(try (Nota(leyendo: "H Be", en: .aleman)) == Nota("Sib"))
+        #expect(Altura("Sib3").nombre(en: .aleman) == "B 3")
         #expect(Nota("Mibb").nombre(en: .aleman) == "E Doppel-Be")
         #expect(Nota("Do").nombre(en: .aleman) == "C")
         #expect(Altura("Fa#4").nombre(en: .aleman) == "F Kreuz 4")

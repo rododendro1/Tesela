@@ -83,12 +83,12 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
     public var esSostenido: Bool { semitonos > 0 }
     public var esBemol: Bool { semitonos < 0 }
 
-    /// Los signos de la alteración en una tipografía: `Alteracion(2).simbolo(en: .compacta)` → "𝄪".
+    /// Los signos de la alteración en una tipografía: `Alteracion(2).simbolo(en: .conDobles)` → "𝄪".
     public func simbolo(en tipografia: Tipografia) -> String {
         switch tipografia {
         case .unicode: return signos(sostenido: "♯", bemol: "♭")
         case .ascii: return signos(sostenido: "#", bemol: "b")
-        case .compacta:
+        case .conDobles:
             if semitonos == 0 { return "♮" }
             let (pares, suelto) = (numeroDeSignos / 2, numeroDeSignos % 2)
             return esSostenido
@@ -101,8 +101,8 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
     public var simbolo: String { simbolo(en: .unicode) }
     /// Signos en ASCII: "##", "b"; "" si es natural.
     public var simboloASCII: String { simbolo(en: .ascii) }
-    /// Signos compactos, con 𝄪 y 𝄫 para cada pareja: 𝄪♯ (triple sostenido), 𝄫 (doble bemol); ♮ si es natural.
-    public var simboloCompacto: String { simbolo(en: .compacta) }
+    /// Signos con 𝄪 y 𝄫 para cada pareja: 𝄪♯ (triple sostenido), 𝄫 (doble bemol); ♮ si es natural.
+    public var simboloConDobles: String { simbolo(en: .conDobles) }
 
     package func signos(sostenido: String, bemol: String) -> String {
         String(repeating: esSostenido ? sostenido : bemol, count: numeroDeSignos)
@@ -134,17 +134,18 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
 ///
 ///     Alteracion(-2).simbolo(en: .unicode)    // "♭♭"
 ///     Alteracion(-2).simbolo(en: .ascii)      // "bb"
-///     Alteracion(-2).simbolo(en: .compacta)   // "𝄫"
+///     Alteracion(-2).simbolo(en: .conDobles)  // "𝄫"
 ///
 /// Un natural no lleva signo en `unicode` ni en `ascii` (la nota se escribe sola) y se escribe "♮" en
-/// `compacta`. Las tres se leen igual con `Alteracion(leyendo:)`.
+/// `conDobles`. Las tres se leen igual con `Alteracion(leyendo:)`.
 public enum Tipografia: String, Hashable, Sendable, CaseIterable {
     /// Un signo por semitono, ♯ y ♭: Fa♯, Si♭♭.
     case unicode
     /// Un signo por semitono, # y b, como se escribe en un teclado: F#, Bbb.
     case ascii
-    /// 𝄪 y 𝄫 para cada pareja de signos, y ♮ para el natural: Fa𝄪, Si𝄫, Do𝄪♯.
-    case compacta
+    /// 𝄪 y 𝄫 para cada pareja de signos, y ♮ para el natural: Fa𝄪, Si𝄫, Do𝄪♯. No es la de las notaciones
+    /// compactas (`.espanolCompacto`, `.inglesCompacto`), que usan `.unicode`.
+    case conDobles
 }
 
 extension Alteracion: CustomStringConvertible {
@@ -274,6 +275,8 @@ public struct Nota: Hashable, Sendable {
             }
             tablas[notacion] = tabla
         }
+        // «H Be», como se escribía el Si♭ en `.aleman` en la 0.3.0, se sigue leyendo.
+        tablas[.aleman]?["H Be".claveDeBusqueda] = Nota(.si, .bemol)
         return tablas
     }()
 
@@ -424,6 +427,8 @@ extension Nota {
         case .palabras:
             // El separador lo pone el idioma: un espacio en casi todos, un guion en ruso (фа-диез).
             guard !alteracion.esNatural else { return base }
+            // En alemán el Si♭ es B, también con palabras, como en sus cifrados (B7) y tonalidades (B-Dur).
+            if natural == .si, alteracion.semitonos == -1, notacion.idiomaDeLasNotas == .aleman { return "B" }
             return base + notacion.idiomaDeLasNotas.reglas.separador + alteracion.nombre(en: notacion)
         }
     }

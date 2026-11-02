@@ -1,5 +1,15 @@
 # Cambios
 
+## Sin publicar
+
+- `Tipografia.compacta` pasa a llamarse `.conDobles` (𝄪 y 𝄫 por cada pareja), y `Alteracion.simboloCompacto`,
+  `simboloConDobles`, para no confundirlas con las notaciones compactas (`.espanolCompacto`), que usan `.unicode`
+  (Fa♯♯, no Fa𝄪). Los nombres de antes siguen, obsoletos, en `Obsoletos.swift`. El `rawValue` del caso es ahora
+  «conDobles».
+- `.aleman` escribe el Si♭ como B, igual que sus cifrados (B7) y tonalidades (B-Dur), y no «H Be»; «H Be» se
+  sigue leyendo. El Si𝄫 sigue siendo «H Doppel-Be».
+- `EstiloDeCifrado.espanolCompacto`, como `.inglesCompacto`: es el mismo que `.predeterminado`.
+
 ## 0.3.0 (2026-11-01)
 
 - **Sin nombres obsoletos**: desaparecen los que la 0.2.0 marcó como obsoletos al revisar la terminología (los
