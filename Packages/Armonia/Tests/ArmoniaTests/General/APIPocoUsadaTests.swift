@@ -28,7 +28,7 @@ import Testing
         #expect((Alteracion(2) - Alteracion(3)) == Alteracion(-1))
         #expect(Nota("Fa").sostenido == Nota("Fa#"))
         #expect(Nota("Fa#").nombreASCII == "Fa#")
-        #expect(try (Nota(leyendo: "Si𝄫").nombre) == "Si♭♭")
+        #expect(try (Nota(leyendo: "Si𝄫").nombre) == "Si𝄫")
         #expect(try (Nota(leyendo: "Do♮")) == Nota("Do"))
         // Con más de cuatro signos, el número.
         #expect(Alteracion(5).nombre(en: .alemanPalabras) == "5 Kreuze")

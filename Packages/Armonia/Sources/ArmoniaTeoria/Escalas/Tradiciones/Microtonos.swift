@@ -133,7 +133,8 @@ public struct NotaMicrotonal: Hashable, Sendable {
             let base = temperada.natural.nombre(en: notacion)
             let silaba = notacion.idiomaDeLasNotas.reglas.alteraciones == .palabras ? base.conMayusculaInicial : base
             let cuartos = 2 * temperada.alteracion.semitonos + ajuste
-            let entera = Alteracion(cuartos / 2).simbolo(en: notacion.usaASCII ? .ascii : .conSimples)
+            let alteracion = Alteracion(cuartos / 2)
+            let entera = alteracion.esNatural ? "" : alteracion.simbolo(en: notacion.tipografia)
             switch cuartos % 2 {
             case 1: return silaba + entera + (notacion.usaASCII ? "q#" : "𝄲")
             case -1: return silaba + entera + (notacion.usaASCII ? "qb" : "𝄳")
@@ -200,10 +201,20 @@ extension TipoDeEscalaMicrotonal {
         TipoDeEscalaMicrotonal(.sur, .persa, pasos: [0, 3, 6, 10, 14, 16, 20]),
         TipoDeEscalaMicrotonal(.homayun, .persa, pasos: [0, 3, 8, 10, 14, 16, 20]),
         TipoDeEscalaMicrotonal(.cahargah, .persa, pasos: [0, 3, 8, 10, 14, 17, 22]),
+        TipoDeEscalaMicrotonal(.segah, .persa, pasos: [-1, 2, 6, 9, 12, 16, 20]),
+        TipoDeEscalaMicrotonal(.nava, .persa, pasos: [0, 4, 6, 10, 14, 17, 20]),
+        TipoDeEscalaMicrotonal(.bayateTork, .persa, pasos: [0, 4, 8, 10, 14, 18, 21]),
+        TipoDeEscalaMicrotonal(.afshari, .persa, pasos: [0, 4, 7, 10, 14, 17, 20]),
+        TipoDeEscalaMicrotonal(.dashti, .persa, pasos: [0, 3, 6, 10, 14, 16, 20]),
+        TipoDeEscalaMicrotonal(.abuAta, .persa, pasos: [0, 3, 6, 10, 13, 16, 20]),
+        TipoDeEscalaMicrotonal(.bayateEsfahan, .persa, pasos: [0, 4, 6, 10, 14, 17, 22]),
         // Con la tónica en un cuarto de tono, escritas sobre la nota temperada: Sīkāh en Mi es Mi𝄳 Fa Sol La Si𝄳.
         TipoDeEscalaMicrotonal(.sikah, .cuartosDeTono, pasos: [-1, 2, 6, 10, 13, 16, 20]),
         TipoDeEscalaMicrotonal(.huzam, .cuartosDeTono, pasos: [-1, 2, 6, 8, 14, 16, 20]),
         TipoDeEscalaMicrotonal(.iraq, .cuartosDeTono, pasos: [-1, 2, 6, 9, 12, 16, 20]),
+        TipoDeEscalaMicrotonal(.rahatAlArwah, .cuartosDeTono, pasos: [-1, 2, 6, 8, 14, 16, 20]),
+        TipoDeEscalaMicrotonal(.bayatiShuri, .cuartosDeTono, pasos: [0, 3, 6, 10, 12, 18, 20]),
+        TipoDeEscalaMicrotonal(.jiharkah, .cuartosDeTono, pasos: [0, 4, 8, 10, 14, 18, 21]),
         // Dromoi, todos. Ousák y Sabáh, con la segunda neutra de Bayātī y de Ṣabā, en cuartos de tono (la segâh de
         // Uşşak, una koma bajo Mi, no cabe en su Mi♭). Los demás, en comas, con las perdes de Arel-Ezgi-Uzdilek: los
         // que tienen las notas de un makam, con las de ese makam (Hicaz, Hicazkâr, Suzinak, Nev'eser, Nikriz,
@@ -246,6 +257,13 @@ extension TipoDeEscalaMicrotonal {
             .huseyniMakami, .comas53, pasos: [0, 8, 13, 22, 31, 39, 44], pasosDescendentes: [0, 8, 13, 22, 31, 35, 44]),
         // Segâh, desde la segâh (Si una koma bajo): sobre Si, el primer paso es −1.
         TipoDeEscalaMicrotonal(.segahMakami, .comas53, pasos: [-1, 4, 13, 22, 30, 35, 44]),
+        // Hüzzam, desde la segâh; Saba, Karcığar, Suzinak, Nikriz y Nev'eser, con las perdes de sus dromoi.
+        TipoDeEscalaMicrotonal(.huzzamMakami, .comas53, pasos: [-1, 4, 13, 18, 30, 35, 44]),
+        TipoDeEscalaMicrotonal(.sabaMakami, .comas53, pasos: [0, 8, 13, 18, 31, 35, 44]),
+        TipoDeEscalaMicrotonal(.karcigarMakami, .comas53, pasos: [0, 8, 13, 22, 27, 39, 44]),
+        TipoDeEscalaMicrotonal(.suzinakMakami, .comas53, pasos: [0, 9, 17, 22, 31, 36, 48]),
+        TipoDeEscalaMicrotonal(.nikrizMakami, .comas53, pasos: [0, 9, 13, 26, 31, 40, 44]),
+        TipoDeEscalaMicrotonal(.neveserMakami, .comas53, pasos: [0, 9, 13, 26, 31, 36, 48]),
     ]
 
     /// Nombre de la escala temperada → su versión microtonal.

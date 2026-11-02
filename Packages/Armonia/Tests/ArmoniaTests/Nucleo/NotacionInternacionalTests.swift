@@ -11,7 +11,7 @@ import Testing
     @Test func notas() {
         #expect(Nota("Fa#").nombre(en: .inglesASCII) == "F#")
         #expect(Nota("Fa#").nombre(en: .inglesCompacto) == "F♯")
-        #expect(Nota("Sibb").nombre(en: .inglesCompacto) == "B♭♭")
+        #expect(Nota("Sibb").nombre(en: .inglesCompacto) == "B𝄫")
         #expect(Nota("B♭") == Nota("Sib"))
         #expect(Altura("C#4") == Altura("Do#4"))
         #expect(Altura("Sib3").nombre(en: .inglesASCII) == "Bb3")

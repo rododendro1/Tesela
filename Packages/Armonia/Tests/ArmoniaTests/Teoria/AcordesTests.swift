@@ -12,7 +12,7 @@ import Testing
         #expect(Acorde(.do, .mayor).notas == [.do, .mi, .sol])
         #expect(Acorde("Sol7").notas.map(\.nombre) == ["Sol", "Si", "Re", "Fa"])
         #expect(Acorde("Fa#m7b5").notas.map(\.nombre) == ["Fa♯", "La", "Do", "Mi"])
-        #expect(Acorde("Mib°7").notas.map(\.nombre) == ["Mi♭", "Sol♭", "Si♭♭", "Re♭♭"])
+        #expect(Acorde("Mib°7").notas.map(\.nombre) == ["Mi♭", "Sol♭", "Si𝄫", "Re𝄫"])
         #expect(Acorde("Do6/9").notas.map(\.nombre) == ["Do", "Mi", "Sol", "La", "Re"])
         #expect(Acorde("Do6/9").bajo == .do)
         #expect(Acorde("Rem11").notas.count == 6)
@@ -333,7 +333,7 @@ import Testing
         let acorde = Acorde.identificar(midi: [60, 64, 68]).first!
         #expect(acorde.ortografiar(midi: [60, 64, 68]).map(\.description) == ["Do4", "Mi4", "Sol♯4"])
         #expect(
-            Acorde("Do°7").ortografiar(midi: [57, 60, 63, 66]).map(\.description) == ["Si♭♭3", "Do4", "Mi♭4", "Sol♭4"])
+            Acorde("Do°7").ortografiar(midi: [57, 60, 63, 66]).map(\.description) == ["Si𝄫3", "Do4", "Mi♭4", "Sol♭4"])
         #expect(Acorde("Do").ortografiar(midi: [61]).map(\.description) == ["Do♯4"])
         #expect(Altura(Nota("Sol#"), midi: 68)?.description == "Sol♯4")
         #expect(Altura(.la, midi: 68) == nil)
