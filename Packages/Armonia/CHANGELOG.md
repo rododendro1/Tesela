@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+### Notas extrañas a la armonía
+
+- **`NotaDeLaMelodia.analizar(_:sobre:partesFuertes:)`** mira cada nota de una melodía con el acorde que suena con
+  ella y, si no es del acorde, dice qué nota extraña es (`NotaExtrana`) por cómo se llega a ella y cómo se sale: de
+  paso, bordadura, apoyatura, retardo, anticipación, escapada, pedal o libre. Los retardos llevan sus cifras sobre
+  el bajo (`cifrasDelRetardo`: «4-3», «7-6», «9-8») y, si se dan las partes fuertes, cada nota dice si está
+  acentuada. Los nombres, en los quince idiomas («nota de paso», «passing tone», «Durchgangston»).
+
 ### Escalas compatibles y acordes de una escala
 
 - **`Acorde.escalasCompatibles(entre:)`** busca por defecto entre las escalas de jazz (`TipoDeEscala.deJazz`: los

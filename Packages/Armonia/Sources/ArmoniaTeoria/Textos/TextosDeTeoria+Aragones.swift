@@ -123,6 +123,8 @@ extension TextosDeTeoria {
         papelTensionDisponible: "tensión",
         papelNotaAEvitar: "nota a evitar",
         modoDe: { modo, escala in "modo \(modo) de \(escala)" },
+        // NotaExtrana.swift
+        nombresDeNotasExtranas: ["nota de paso", "bordadura", "apoyatura", "retardo", "anticipación", "escapada", "nota pedal", "nota libre"],
         // Rearmonizacion.swift
         sustitutoTritonal: "sustituto tritonal",
         dominanteSecundaria: "dominant secundaria",

@@ -123,6 +123,8 @@ extension TextosDeTeoria {
         papelTensionDisponible: "напряжение",
         papelNotaAEvitar: "избегаемый звук",
         modoDe: { modo, escala in "\(modo)-й лад гаммы \(escala)" },
+        // NotaExtrana.swift
+        nombresDeNotasExtranas: ["проходящий звук", "вспомогательный звук", "неприготовленное задержание", "задержание", "предъём", "отлетающий звук", "органный пункт", "свободный звук"],
         // Rearmonizacion.swift
         sustitutoTritonal: "тритоновая замена",
         dominanteSecundaria: "побочная доминанта",
