@@ -5,7 +5,7 @@ import ArmoniaNucleo
 /// La tradición musical de que viene una escala de `TipoDeEscala.tradicionales`.
 public enum Tradicion: String, Sendable, Codable, CaseIterable {
     case india, grecia, greciaAntigua, mundoArabe, persia, turquia, azerbaiyan
-    case china, japon, corea, etiopia, indonesia, klezmer, andes
+    case china, japon, corea, etiopia, indonesia, klezmer, andes, bizancio
 }
 
 /// Qué es una escala dentro de su tradición: un rāga, un mēḷa (o mēḷakarta), un dromos, un maqam, un makam,
@@ -32,6 +32,8 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     case makam
     /// Los mugam de la música azerbaiyana.
     case mugam
+    /// Los modos (echoi) de la salmodia bizantina.
+    case echos
     /// Modos (shteyger) del klezmer.
     case shteyger
     /// Modos (qenet) de la música etíope.
@@ -64,6 +66,7 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         case .dastgah: "dastgāh"
         case .makam: "makam"
         case .mugam: "mugam"
+        case .echos: "echos"
         case .shteyger: "shteyger"
         case .qenet: "qenet"
         case .laras: "laras"
@@ -130,7 +133,7 @@ extension TipoDeEscala {
             (.etiopia, .qenet, etiopes), (.mundoArabe, .maqam, maqamat), (.indonesia, .laras, indonesias),
             (.klezmer, .shteyger, klezmer), (.india, .raga, ragasIndostanicos), (.persia, .dastgah, dastgah),
             (.corea, .jo, coreanas), (.andes, .escala, andinas),
-            (.turquia, .makam, makamlar), (.azerbaiyan, .mugam, mugamlar),
+            (.turquia, .makam, makamlar), (.azerbaiyan, .mugam, mugamlar), (.bizancio, .echos, echoi),
             (.greciaAntigua, .tetracordo, [.tetracordoDiatonico, .tetracordoCromatico]),
             (.greciaAntigua, .harmonia, [.harmoniaDoria, .harmoniaDoriaCromatica, .harmoniaFrigia, .harmoniaLidia]),
         ]

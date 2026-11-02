@@ -151,6 +151,11 @@ usan microtonos):
   Segah y Çahargah, con «muğamı» detrás. Los tres primeros encadenan tres tetracordos y tienen
   una nota distinta por debajo de la tónica y por encima, así que tienen ocho notas (Rast
   muğamı en Do: Do Re Mi Fa Sol La Si♭ Si).
+- **9 echoi bizantinos**, los ocho modos de la salmodia y el légetos: echos prótos (el dórico, sobre Re), plágios
+  prótos (el eólico, sobre La), défteros y plágios défteros (la doble armónica, sobre Sol y Re), trítos (la mayor,
+  sobre Fa), varýs (el locrio, sobre Si), tétartos (el mixolidio, sobre Sol), plágios tétartos (la mayor, sobre Do)
+  y légetos (el frigio, sobre Mi). Cada uno sobre su nota base más habitual, con los nombres en transliteración
+  griega (ήχος πρώτος → echos prótos).
 - **2 escalas coreanas**: P'yŏngjo y Kyemyŏnjo.
 - **Los Andes**: la pentatónica andina (menor) y la tritónica andina (Do Mi♭ Sol).
 - **La Grecia antigua**: los tetracordos diatónico y cromático, y las harmoniai doria (el frigio
@@ -193,7 +198,7 @@ Escala("La hicaz makami").notas              // La Si♭ Do♯ Re Mi Fa♯ Sol
 
 No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales;
 están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `chinas`, `japonesas`,
-`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`…). Sus nombres
+`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`…). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
 las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 mēḷa,
@@ -226,15 +231,21 @@ dónde cae cada grado en la teoría de su tradición, en los pasos de su sistema
 desde la tónica temperada. La tienen todos los maqamat que usan cuartos de tono, en cuartos de tono
 (`.cuartosDeTono`, la teoría árabe moderna); los dastgāh y āvāz con *koron*, con el de Vaziri (`.persa`); los
 makamlar, salvo los cuatro pitagóricos (Nihâvend, Kürdî, Bûselik y Çârgâh), en las 53 comas de Arel-Ezgi-Uzdilek
-(`.comas53`); y los quince dromoi, con la afinación de su maqam o su makam. Los que en su propia teoría no tienen microtonos (Ḥijāz, Māhur…)
-no la necesitan, y los mugam azerbaiyanos tampoco: son los de Hacıbəyov, ya en doce notas. En Sīkāh, ʿIrāq,
-Segāh, Segâh o Hüzzam la tónica misma es un microtono: Sīkāh se escribe sobre Mi, y su primer grado es Mi𝄳. Cada grado conserva la letra de su nota temperada y se aparta de ella
-medio semitono como mucho, así que la escala de doce notas sigue valiendo para todo lo demás.
+(`.comas53`); los quince dromoi, con la afinación de su maqam o su makam; los echoi bizantinos, salvo el trítos, en
+los 72 moria de la Comisión Patriarcal de 1881 (`.moria72`); y los diez thāṭ y Yaman, en los 22 śruti indios
+(`.sruti`), cada uno una razón justa. Los thāṭ siguen el ṣaḍja-grāma de Bharata como lo reconstruye E. J. Arnold
+(Kāfī: Sa, Re 10/9, ga 32/27, ma 4/3, Pa, Dha 5/3, ni 16/9), con el re y el dha pitagóricos (256/243, 128/81) en
+Bhairav, Bhairavī y Toḍī, y Toḍī como lo miden Bel y otros. Los que en su propia teoría no tienen microtonos (Ḥijāz,
+Māhur…) no la necesitan, y los mugam azerbaiyanos tampoco: son los de Hacıbəyov, ya en doce notas. En Sīkāh, ʿIrāq,
+Segāh, Segâh, Hüzzam, el varýs o el légetos la tónica misma es un microtono: Sīkāh se escribe sobre Mi, y su
+primer grado es Mi𝄳. Cada grado conserva la letra de su nota temperada y se aparta de ella medio semitono como mucho, así que la escala de doce notas sigue valiendo para todo lo demás.
 
 `Escala.notasMicrotonales(sentido:)` da sus notas (``NotaMicrotonal``), con los cents desde la tónica. Se
 escriben con el medio bemol y el medio sostenido (Mi𝄳, Fa𝄲; en ASCII, Miqb y Faq#), también el *koron* y el
 *sori*, que no están en Unicode; en el sistema turco, con la nota pitagórica y las comas que se aparta (Si⁻¹,
-una koma bajo Si; en ASCII, Si(-1)). Son las afinaciones teóricas: cada escuela afina un poco distinto. Se
+una koma bajo Si; en ASCII, Si(-1)); en el bizantino, con los moria que se aparta de la nota temperada (Mi⁻², dos
+moria bajo Mi); y en los śruti, con la flecha de Helmholtz-Ellis de una coma sintónica (81/80) sobre la nota
+pitagórica (Mi↓ es 5/4; Re♭↑, 16/15). Son las afinaciones teóricas: cada escuela afina un poco distinto. Se
 buscan por el nombre, como `categoria`: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
 
 ```swift
@@ -243,6 +254,8 @@ Escala(.re, .bayati).notasMicrotonales()                         // Re Mi𝄳 Fa
 Escala(.do, .maqamRast).notasMicrotonales(sentido: .descendente) // Do Re Mi𝄳 Fa Sol La Si♭
 Escala(.sol, .rastMakami).notasMicrotonales()                    // Sol La Si⁻¹ Do Re Mi Fa♯⁻¹
 TipoDeEscala.rastMakami.microtonal?.sistema                      // .comas53
+Escala(.re, .echosProtos).notasMicrotonales()                    // Re Mi⁻² Fa Sol La Si⁻² Do
+Escala(.do, .bilaval).notasMicrotonales()                        // Do Re↓ Mi↓ Fa Sol La↓ Si↓
 TipoDeEscala.frigio.microtonal                                   // nil
 ```
 
@@ -250,9 +263,11 @@ Los microtonos llegan también a las partituras. `Escala.voz(octava:sentido:dura
 cada nota lleva lo que se aparta de su nota temperada, en cents (`Evento.desvios`; en texto, `Mi♭4(50¢):4`). Los
 formatos la escriben así: MusicXML, con el `alter` en decimales (−0.5) y su `<accidental>`; MEI, con `accid`
 (`1qf`, el *koron* o las comas de Arel-Ezgi-Uzdilek: `kf`, `bs`…); LilyPond y ABC, con sus cuartos de tono (`eeh`,
-`_/E`), y las comas como la nota temperada; y MIDI, con una inflexión de tono (*pitch bend*) antes de cada nota.
-`svgPentagrama()` dibuja sus signos con los glifos de Bravura: los cuartos de tono de Stein-Zimmermann, las comas
-de Arel-Ezgi-Uzdilek, el *koron* y el *sori*.
+`_/E`), y las comas y los moria como la nota temperada; y MIDI, con una inflexión de tono (*pitch bend*) antes de
+cada nota. Los moria exactos llevan en MusicXML el signo de doceavos de tono de Wyschnegradsky. `svgPentagrama()`
+dibuja sus signos con los glifos de Bravura: los cuartos de tono de Stein-Zimmermann, las comas de
+Arel-Ezgi-Uzdilek, el *koron* y el *sori*, los moria de Wyschnegradsky y, en los śruti, la flecha de
+Helmholtz-Ellis.
 
 ```swift
 let voz = Escala(.re, .bayati).voz()

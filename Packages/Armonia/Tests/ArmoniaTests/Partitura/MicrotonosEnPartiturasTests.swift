@@ -71,6 +71,14 @@ import Testing
         #expect(SignoMicrotonal.comas(5).smufl == "accidentalKucukMucennebSharp")
         #expect(SignoMicrotonal.cuartos(-1).mei == "1qf" && SignoMicrotonal.comas(8).mei == "bms")
         #expect(SignoMicrotonal.comas(4).lilypond == nil && SignoMicrotonal.cuartos(3).lilypond == "isih")
+        // Un número exacto de moria, con los signos de Wyschnegradsky; MEI no los tiene.
+        #expect(SignoMicrotonal(semitonos: 0, desvio: -100.0 / 3) == .moria(-2))
+        #expect(SignoMicrotonal(semitonos: 1, desvio: -100.0 / 3) == .moria(4))
+        #expect(SignoMicrotonal.moria(-2).smufl == "accidentalWyschnegradsky2TwelfthsFlat")
+        #expect(SignoMicrotonal.moria(8).musicXML.smufl == "accidentalWyschnegradsky8TwelfthsSharp")
+        #expect(SignoMicrotonal.moria(-2).mei == nil && SignoMicrotonal.moria(-2).lilypond == nil)
+        #expect(SignoMicrotonal.flecha(semitonos: -1, comas: 1).smufl == "accidentalFlatOneArrowUp")
+        #expect(SignoMicrotonal.flecha(semitonos: 0, comas: -1).smufl == "accidentalNaturalOneArrowDown")
         #expect(EscritorMusicXML.NotaEscrita.alter(-1, 50) == "-0.5")
         #expect(EscritorMusicXML.NotaEscrita.alter(1, 0) == "1")
     }
@@ -88,6 +96,10 @@ import Testing
         #expect(rast.musicXML().contains("<alter>-0.1509</alter>"))
         #expect(rast.musicXML().contains("<accidental smufl=\"accidentalKomaFlat\">other</accidental>"))
         #expect(rast.mei().contains("accid=\"kf\"") && rast.mei().contains("accid=\"bs\""))
+        // Los moria de un echos: el `alter` exacto y el signo de Wyschnegradsky.
+        let protos = Escala(.re, .echosProtos).voz(sentido: .ascendente).musicXML()
+        #expect(protos.contains("<alter>-0.3333</alter>"))
+        #expect(protos.contains("smufl=\"accidentalWyschnegradsky2TwelfthsFlat\""))
         // LilyPond no tiene nombres para las comas: la nota temperada.
         #expect(rast.lilyPond().contains("fis'"))
         // Sin microtonos, como antes.
@@ -132,5 +144,14 @@ import Testing
         let segah = Escala(.si, .segahMakami).svgPentagrama()
         #expect(segah.contains(GlifosSMuFL.komaBemol.trazado) && segah.contains(GlifosSMuFL.bakiyeSostenido.trazado))
         #expect(SignoMicrotonal(semitonos: 1, desvio: 30 * 1200 / 53 - 700) == .comas(4))
+        // Un echos, con los moria de Wyschnegradsky: Mi y Si dos moria bajos.
+        let protos = Escala(.re, .echosProtos).svgPentagrama()
+        #expect(protos.contains(GlifosSMuFL.moriaBemol2.trazado) && protos.contains("<title>Mi⁻²</title>"))
+        #expect(Escala(.sol, .echosDefteros).svgPentagrama().contains(GlifosSMuFL.moriaBemol4.trazado))
+        // Un thāṭ, con la flecha de Helmholtz-Ellis en los śruti que se apartan una coma de los pitagóricos.
+        let bilaval = Escala(.do, .bilaval).svgPentagrama()
+        #expect(bilaval.contains(GlifosSMuFL.becuadroFlechaAbajo.trazado) && bilaval.contains("<title>Mi↓</title>"))
+        #expect(Escala(.do, .purvi).svgPentagrama().contains(GlifosSMuFL.bemolFlechaArriba.trazado))
+        #expect(!Escala(.do, .bhairavi).svgPentagrama().contains(GlifosSMuFL.bemolFlechaArriba.trazado))
     }
 }

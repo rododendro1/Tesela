@@ -37,7 +37,7 @@ extension TextosDeCLI {
         descripcionEscala: "notes y acordes d\'una escala",
         sintaxisEscalas: "escalas [<testu>] [opciones]",
         descripcionEscalas: "el catálogu d'escales: les habituales\ny les d'otres tradiciones, per\ncategoríes, coles sos notes dende Do",
-        notasEscalas: "opciones: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes) y --categoria maqam (o rāga, makam,\ndastgah, dromos…); un testu busca nos nomes",
+        notasEscalas: "opciones: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) y --categoria maqam (o rāga, makam,\ndastgah, dromos…); un testu busca nos nomes",
         sintaxisTonalidad: "tonalidad <tonalidá>",
         descripcionTonalidad: "armadura, relatives y graos",
 

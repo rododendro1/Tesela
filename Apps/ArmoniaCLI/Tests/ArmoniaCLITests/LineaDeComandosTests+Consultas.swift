@@ -109,6 +109,10 @@ extension LineaDeComandosTests {
         #expect(salida("escalas --tradition turkey") == turcas)
         #expect(salida("escalas --categoria makam") == turcas)
         #expect(salida("escalas --tradicion mundo-arabe").hasPrefix("mundo-arabe · maqam ("))
+        let bizantinas = salida("escalas --tradicion bizancio")
+        #expect(bizantinas.hasPrefix("bizancio · echos (9)\n"), Comment(rawValue: bizantinas))
+        #expect(bizantinas.contains("  echos prótos: Do Re Mi♭ Fa Sol La Si♭ · microtonos"))
+        #expect(salida("escalas --tradition byzantium") == bizantinas)
         let thats = salida("escalas --tradicion india --categoria thaat")
         #expect(thats.hasPrefix("india · thāṭ (10)"), Comment(rawValue: thats))
         // Las categorías indias salen en IAST (thāṭ, mēḷa, rāga), pero se encuentran con o sin diacríticos.

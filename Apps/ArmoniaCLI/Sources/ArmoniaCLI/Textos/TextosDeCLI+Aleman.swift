@@ -37,7 +37,7 @@ extension TextosDeCLI {
         descripcionEscala: "Noten und Akkorde einer Skala",
         sintaxisEscalas: "scales [<Text>] [Optionen]",
         descripcionEscalas: "der Skalenkatalog: die gängigen und\ndie anderer Traditionen, nach\nKategorien, mit ihren Tönen ab C",
-        notasEscalas: "Optionen: --tradition turkey (oder india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes) und --category maqam (oder rāga, makam,\ndastgah, dromos…); ein Text sucht in den Namen",
+        notasEscalas: "Optionen: --tradition turkey (oder india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) und --category maqam (oder rāga, makam,\ndastgah, dromos…); ein Text sucht in den Namen",
         sintaxisTonalidad: "key <Tonart>",
         descripcionTonalidad: "Vorzeichen, verwandte Tonarten und\nStufen",
 
