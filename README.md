@@ -39,14 +39,14 @@ Packages/
                     la tabla armónica y los teclados isomórficos
 Scripts/
 ├── comprobaciones/   Las del repositorio y del motor, que pasa el CI (comprobar_*.py, notas_de_version.py)
-├── generadores/      El proyecto de Xcode, las pruebas de la documentación, los glifos de Bravura y los nombres de escalas
+├── generadores/      El proyecto de Xcode, el Package.swift de la raíz, las pruebas de la documentación, los glifos de Bravura y los nombres de escalas
 ├── datos/            Los casos que comparten las comprobaciones en Python y las pruebas en Swift (normalizar.tsv)
 └── compilar_todo.sh  Todo, por capas, como el CI
 Config/             Ajustes de compilación de las apps (Local.xcconfig, el de tu equipo, no se guarda en git), su
                     manifiesto de privacidad (PrivacyInfo.xcprivacy) y sus quince idiomas (Idiomas.plist; cada
                     app tiene además sus carpetas Idiomas/<idioma>.lproj)
 project.yml         Definición del proyecto de Xcode (XcodeGen)
-Package.swift       Los cuatro paquetes juntos, para usarlos desde otro proyecto por URL
+Package.swift       Los paquetes juntos, para usarlos desde otro proyecto por URL (generado)
 ```
 
 ## Dependencias
@@ -160,7 +160,8 @@ arregla con su prueba en `ImportacionAlAzarTests`, con el caso dentro.
 
 1. Crea la carpeta en `Packages/` (con el mismo nombre que el paquete) o en `Apps/`.
 2. Un paquete se añade a `PERMITIDO` en `Scripts/comprobaciones/comprobar_dependencias.py`, con los paquetes de los que puede depender,
-   y sus módulos y bibliotecas al `Package.swift` de la raíz (el script avisa si no coinciden).
+   y se regenera el `Package.swift` de la raíz con `python3 Scripts/generadores/generar_paquete_raiz.py`, que reúne
+   los módulos y las bibliotecas de todos (el CI comprueba que está al día).
 3. Una app de SwiftUI, además, en `project.yml` (un `target` y su `scheme`, y sus pruebas de interfaz en `Apps/PruebasDeInterfaz/<App>`); un paquete, en `packages:`. Una app de
    SwiftPM solo necesita su `Package.swift`, con dependencias por ruta a `Packages/`.
 4. Añade su job a `.github/workflows/ci.yml`.

@@ -38,7 +38,8 @@ cd Packages/ArmoniaUI && swift test      # la interfaz (en Linux, solo la parte 
   revisa el diff: es lo que verá quien revise el pull request.
 - **Dependencias en orden.** Un paquete solo depende de los que tiene debajo, nunca de una app. Si añades un
   módulo o un paquete, sigue el apartado «Añadir un paquete o una app» del README:
-  `Scripts/comprobaciones/comprobar_dependencias.py` comprueba que el `Package.swift` de la raíz coincide con los de `Packages/`.
+  El `Package.swift` de la raíz no se edita a mano: tras cambiar uno de `Packages/`, regenéralo con
+  `python3 Scripts/generadores/generar_paquete_raiz.py` (el CI comprueba que está al día).
 - **Textos traducidos.** Un texto nuevo de la interfaz o del motor va en los quince idiomas.
   `Scripts/comprobaciones/comprobar_traducciones.py` avisa de los que faltan.
 - **Documentación.** La API pública lleva comentario de documentación. Los enlaces de DocC (``Tipo/miembro`` y
@@ -77,6 +78,7 @@ python3 Scripts/comprobaciones/comprobar_modulos.py
 python3 Scripts/comprobaciones/comprobar_catalogo.py
 python3 Scripts/comprobaciones/comprobar_enlaces_docc.py
 python3 Scripts/comprobaciones/comprobar_traducciones.py
+python3 Scripts/generadores/generar_paquete_raiz.py --comprobar
 python3 Scripts/generadores/generar_pruebas_de_documentacion.py --comprobar
 python3 Scripts/comprobaciones/notas_de_version.py --comprobar
 ```
