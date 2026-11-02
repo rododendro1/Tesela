@@ -516,7 +516,8 @@ extension DigitacionTests {
         let alAire = Digitacion(mastil: Mastil(.guitarra), trastes: [nil, 0, 2, 2, 2, 0])
         // Tres cuerdas en el traste más bajo: todas con el índice.
         #expect(alAire.dedosSugeridos == [nil, 0, 1, 1, 1, 0])
-        #expect(Digitacion(mastil: Mastil(.guitarra), trastes: [0, 0, 0, 0, 0, 0]).dedosSugeridos == [0, 0, 0, 0, 0, 0])
+        let todasAlAire = Digitacion(mastil: Mastil(.guitarra), trastes: [0, 0, 0, 0, 0, 0])
+        #expect(todasAlAire.dedosSugeridos == [0, 0, 0, 0, 0, 0])
     }
 }
 
