@@ -27,6 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <chiffrage>…",
         descripcionAcorde: "notes, type et rôle de chaque note",
+        notasAcorde: "options : --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(dans la tonalité de --en Do mayor, à la fin) et --comparar Do\n(notes communes et conduite des voix)",
         sintaxisArpegio: "arpegio <chiffrage> [--patron <motif>]",
         descripcionArpegio: "notes de l'arpège et gammes de\nl'accord (--patron ascendente,\ndescendente, ida-y-vuelta,\nbaja-y-sube, quebrado, alberti)",
         notasArpegio: "options : --octavas 2 (de 1 à 4), --sin-octava, --desde Mi\n(ou 3 : commence par cette note), --tensiones 9,13, --grados\n1-5-3-8 (un parcours à soi) et --aproximacion abajo, arriba\nou encierro (notes chromatiques qui mènent à chacune)",

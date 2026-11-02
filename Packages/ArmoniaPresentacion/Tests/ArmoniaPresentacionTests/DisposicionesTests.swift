@@ -11,7 +11,7 @@ import Testing
             PresentacionDeDisposiciones.acorde(Acorde("Do7"), .drop2, notacion: .espanolCompacto))
         #expect(presentadas.filas.first?.voces == "Do₃ Sol₃ Si♭₃ Mi₄")
         #expect(presentadas.filas.allSatisfy { $0.cifrado.isEmpty })
-        #expect(presentadas.ficheros.isEmpty)
+        #expect(presentadas.ficheros.count == 5)
         #expect(presentadas.sonido.inicios.count == presentadas.filas.count)
         #expect(presentadas.pentagrama.descripcion.hasPrefix("Do7 · Drop 2: Do₃ Sol₃ Si♭₃ Mi₄;"))
         #expect(presentadas.pentagrama.svg.contains("<svg"))
@@ -31,6 +31,7 @@ import Testing
     }
 
     @Test func sinDisposicion() {
+        #expect(PresentacionDeDisposiciones.acorde(Acorde(.do, .potencia), .shell, notacion: .espanolCompacto) == nil)
         #expect(PresentacionDeDisposiciones.progresion([], .drop2, notacion: .espanolCompacto) == nil)
     }
 
@@ -40,10 +41,32 @@ import Testing
         #expect(DisposicionDeAcorde.shell.nombre(en: .inglesASCII) == "Root, third and seventh")
         #expect(DisposicionDeAcorde.notasGuia.nombre(en: .espanolCompacto) == "Tercera y séptima")
         #expect(DisposicionDeAcorde.cuartal.nombre(en: .inglesASCII) == "Quartal")
+        #expect(DisposicionDeAcorde.sinFundamentalA.nombre(en: .espanolCompacto) == "Sin fundamental (A)")
+        #expect(DisposicionDeAcorde.dosManos.nombre(en: .espanolCompacto) == "A dos manos")
         for idioma in Idioma.allCases {
             let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             let nombres = DisposicionDeAcorde.allCases.map { $0.nombre(en: notacion) }
             #expect(Set(nombres).count == nombres.count, "\(idioma)")
         }
+    }
+}
+
+// Las disposiciones de un acorde en un grupo de cuerdas de la guitarra.
+@Suite struct DisposicionesEnElMastilTests {
+    @Test func losGruposDeCuerdas() {
+        let grupos = PresentacionDeDisposiciones.gruposDeCuerdas(
+            .drop2, mastil: Mastil(.guitarra), notacion: .espanolCompacto)
+        #expect(grupos.map(\.nombre) == ["Cuerdas 6-5-4-3", "Cuerdas 5-4-3-2", "Cuerdas 4-3-2-1"])
+        #expect(grupos.first?.cuerdas == [0, 1, 2, 3])
+    }
+
+    @Test func lasFormasConSusDedos() throws {
+        let formas = PresentacionDeDisposiciones.enElMastil(
+            Acorde("Do7M"), .drop2, mastil: Mastil(.guitarra), cuerdas: [1, 2, 3, 4])
+        let primera = try #require(formas.first)
+        #expect(primera.tablatura == "x2201x")
+        #expect(primera.dedos == "x 2 3 0 1 x")
+        #expect(primera.sonido.notas.count == 4)
+        #expect(formas.count > 1)
     }
 }

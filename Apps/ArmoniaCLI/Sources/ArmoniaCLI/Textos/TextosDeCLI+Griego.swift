@@ -27,6 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <σύμβολο>…",
         descripcionAcorde: "νότες, είδος και ρόλος κάθε νότας",
+        notasAcorde: "επιλογές: --voicings, --names, --keys, --substitutions\n(στην τονικότητα του --in C major, στο τέλος) και --compare C\n(κοινές νότες και οδήγηση φωνών)",
         sintaxisArpegio: "arpeggio <σύμβολο> [--pattern <μοτίβο>]",
         descripcionArpegio: "νότες του αρπέζ και κλίμακες της\nσυγχορδίας (--pattern ascending,\ndescending, up-down, down-up,\nbroken, alberti)",
         notasArpegio: "επιλογές: --octaves 2 (από 1 έως 4), --no-octave, --from E\n(ή 3: ξεκινά από αυτή τη νότα), --tensions 9,13, --degrees\n1-5-3-8 (δική σας πορεία) και --approach below, above ή\nenclosure (χρωματικές νότες που οδηγούν σε καθεμία)",

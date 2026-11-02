@@ -22,6 +22,27 @@ extension LineaDeComandosTests {
         #expect(salida("acorde C/G --ingles").contains("(bass G, second inversion)"))
     }
 
+    @Test func lasRelacionesDeUnAcorde() {
+        let sol7 = salida("acorde Sol7 --disposiciones --nombres --tonalidades --sustituciones --comparar Do")
+        #expect(sol7.hasPrefix(salida("acorde Sol7").dropLast()))
+        #expect(sol7.contains("\nDisposición:\n  Cerrada: "))
+        #expect(sol7.contains("\n  Drop 2: "))
+        #expect(sol7.contains("\n  Sin fundamental (A): "))
+        #expect(sol7.contains("\nOtros nombres: "))
+        #expect(sol7.contains("\nEn qué tonalidades está:\n  V7 en Do mayor · dominante\n"))
+        #expect(sol7.contains("\nSustituciones (Do mayor):\n"))
+        #expect(sol7.contains("Sol7 → Re♭7 (sustituto tritonal)"))
+        #expect(sol7.contains("\nComparar con Do:\n  Notas comunes: Sol\n"))
+        #expect(sol7.hasSuffix(" semitonos\n"))
+        // Sin la fundamental: Do6 es Lam7/Do, y Sol7(♭9) sin su Sol es Si°7.
+        let do6 = salida("acorde Do6 --nombres")
+        #expect(do6.contains("\nOtros nombres: ") && do6.contains("Lam7/Do"))
+        #expect(salida("acorde Sol7(b9) --nombres").contains("\nSin la fundamental: Si°7"))
+        let enSol = salida("acorde Do --sustituciones --en Sol mayor")
+        #expect(enSol.contains("\nSustituciones (Sol mayor):\n"))
+        #expect(salida("chord G7 --substitutions --keys --ingles").contains("\nSubstitutions (C major):\n"))
+    }
+
     @Test func identificar() {
         #expect(salida("identificar Do Mi Sol Sib").hasPrefix("Do7  séptima de dominante\n"))
         // Con octavas cuenta el bajo.

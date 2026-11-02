@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### Más acordes
+
+- **`DisposicionDeAcorde.sinFundamentalA`, `sinFundamentalB` y `dosManos`**: las disposiciones sin fundamental de
+  piano (la A, de la tercera a la novena; la B, de la séptima a la quinta, con la 13 en lugar de la 5 en los acordes
+  de dominante) y a dos manos (fundamental y séptima en la izquierda; tercera, quinta y novena en la derecha).
+- **`Mastil.gruposDeCuerdas(para:)` y `disposiciones(de:_:cuerdas:abertura:)`**: cada disposición tocada en un grupo
+  de cuerdas (el drop 2 en las cuerdas 4-3-2-1, el drop 3 saltando la que sigue al bajo), con
+  `Digitacion.dedosSugeridos`.
+- **`Acorde.otrosNombres`** (Do6 = Lam7/Do; Si°7 = Re°7 = Fa°7 = La♭°7) y **`sinFundamental`** (Sol7(♭9) sin el Sol
+  es Si°7).
+- **`Acorde.tonalidades`**: las tonalidades mayores y menores en que el acorde es diatónico, con su grado y su
+  función.
+- **`Acorde.comparar(con:disposicion:)`** da una **`ComparacionDeAcordes`**: las notas comunes y la conducción de
+  las voces de menor movimiento.
+- **`Acorde.sustituciones(en:)`**: las rearmonizaciones del acorde suelto y, si es de dominante, su ii relativo y el
+  disminuido sobre su tercera (`Rearmonizacion.Recurso.iiRelativo` y `.disminuido`, en los quince idiomas), con
+  `esDeDominante` y `tonalidadPropia`.
+- **En la línea de comandos**, `armonia acorde` acepta `--disposiciones`, `--nombres`, `--tonalidades`,
+  `--sustituciones` (con `--en <tonalidad>`) y `--comparar <acorde>` (en inglés, `--voicings`, `--names`, `--keys`,
+  `--substitutions`, `--in` y `--compare`).
+
 ### Más arpegios
 
 - **`Arpegio(_:grados:octavas:aproximacion:)`**: un recorrido propio por grados sobre la fundamental («1 5 3 8» es

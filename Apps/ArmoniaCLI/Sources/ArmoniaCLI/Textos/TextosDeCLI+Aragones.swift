@@ -27,6 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <cifrau>…",
         descripcionAcorde: "notas, tipo y papel de cada nota",
+        notasAcorde: "opcions: --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(en a tonalidat de --en Do mayor, a la fin) y --comparar Do\n(notas comuns y conducción d'as voces)",
         sintaxisArpegio: "arpegio <cifrau> [--patron <patrón>]",
         descripcionArpegio: "notas de l'arpechio y escalas de\nl'acorde (--patron ascendente,\ndescendente, ida-y-vuelta,\nbaja-y-sube, quebrado, alberti)",
         notasArpegio: "opcions: --octavas 2 (de 1 a 4), --sin-octava, --desde Mi\n(u 3: empecipia por ixa nota), --tensiones 9,13, --grados\n1-5-3-8 (un recorriu propio) y --aproximacion abajo, arriba\nu encierro (notas cromaticas que levan a cadaguna)",

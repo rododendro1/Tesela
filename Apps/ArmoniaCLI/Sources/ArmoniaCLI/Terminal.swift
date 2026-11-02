@@ -22,7 +22,8 @@ extension LineaDeComandos {
         "--ingles", "--english", "--subindices", "--subscripts", "--cifras", "--digits", "--cifrados", "--analisis",
         "--completo", "--complete", "--diagrama", "--diagram", "--tab", "--caged", "--ampliada", "--extended",
         "--musicxml", "--help", "--ayuda", "--escalas", "--scales", "--acordes", "--chords", "--sin-octava",
-        "--no-octave", "--enlazar", "--connect",
+        "--no-octave", "--enlazar", "--connect", "--disposiciones", "--voicings", "--nombres", "--names",
+        "--tonalidades", "--keys", "--sustituciones", "--substitutions",
     ]
 
     /// Los valores que se proponen tras una opción.

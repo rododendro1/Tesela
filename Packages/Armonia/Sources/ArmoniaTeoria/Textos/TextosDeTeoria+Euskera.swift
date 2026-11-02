@@ -143,6 +143,8 @@ extension TextosDeTeoria {
         sustitutoDiatonico: "ordezko diatonikoa",
         rearmonizacionIIV: "ii–V",
         rearmonizacionBackdoor: "backdoor dominantea",
+        rearmonizacionIIRelativo: "ii erlatiboa",
+        rearmonizacionDisminuido: "ordezko txikitua",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» ez dago zifratu ezagunetan" },
         tensionNoValida: { tension in "«\(tension)» ez da tentsio baliozkoa (♭/♯ 5, 9, 11 eta 13rekin onartzen dira, eta add 2, 4, 6, 9, 11 eta 13rekin)" },

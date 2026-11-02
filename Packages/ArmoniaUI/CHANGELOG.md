@@ -2,6 +2,11 @@
 
 ## Sin publicar
 
+- **Más acordes en Armonía.** En Acordes, las disposiciones sin fundamental (A y B) y a dos manos; cada disposición
+  en un grupo de cuerdas del instrumento, con su diagrama, la tablatura y los dedos; los otros nombres del acorde, el
+  que queda sin la fundamental, las tonalidades en que está, sus sustituciones para escucharlas y la comparación con
+  otro acorde (notas comunes y cómo va cada voz). Las disposiciones se exportan en partitura y MIDI.
+
 - **Más arpegios en Armonía.** En Acordes, el arpegio se escribe también por grados («1 5 3 8»), empieza por la
   tercera o la quinta, suma tensiones (9, 11, 13), lleva notas cromáticas de aproximación y suena en tresillos, con
   swing y al tempo elegido. En el mástil, además de por posiciones, en las cinco formas CAGED y con una nota por

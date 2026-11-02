@@ -139,6 +139,8 @@ extension TextosDeTeoria {
         sustitutoDiatonico: "диатоническая замена",
         rearmonizacionIIV: "ii–V",
         rearmonizacionBackdoor: "доминанта «бэкдор»",
+        rearmonizacionIIRelativo: "родственная ii",
+        rearmonizacionDisminuido: "уменьшённая замена",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» не входит ни в одно известное буквенное обозначение" },
         tensionNoValida: { tension in "«\(tension)» — недопустимая альтерация или добавленный тон (♭/♯ — с 5, 9, 11 и 13, add — с 2, 4, 6, 9, 11 и 13)" },

@@ -27,6 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <symbol>…",
         descripcionAcorde: "notes, type and role of each note",
+        notasAcorde: "options: --voicings, --names, --keys, --substitutions\n(in the key given by --in C major, at the end) and --compare C\n(common tones and voice leading)",
         sintaxisArpegio: "arpeggio <symbol> [--pattern <pattern>]",
         descripcionArpegio: "arpeggio notes and the scales that\nfit the chord (--pattern ascending,\ndescending, up-down, down-up,\nbroken, alberti)",
         notasArpegio: "options: --octaves 2 (from 1 to 4), --no-octave, --from E\n(or 3: start on that note), --tensions 9,13, --degrees\n1-5-3-8 (a pattern of your own) and --approach below, above\nor enclosure (chromatic notes leading to each one)",

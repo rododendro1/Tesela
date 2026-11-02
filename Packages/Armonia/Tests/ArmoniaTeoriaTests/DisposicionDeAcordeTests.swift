@@ -57,7 +57,24 @@ import Testing
         #expect(shells.allSatisfy { $0.count == 3 && $0[0].nota == .do })
         let guias = Acorde("Do7").disposiciones(.notasGuia)
         #expect(guias.allSatisfy { $0.count == 2 && Set($0.map(\.nota)) == Set(Acorde("Do7").notasGuia) })
-        #expect(DisposicionDeAcorde.allCases.map(\.voces) == [4, 4, 4, 4, 3, 2, 4])
+        #expect(DisposicionDeAcorde.allCases.map(\.voces) == [4, 4, 4, 4, 3, 2, 4, 4, 4, 5])
+    }
+
+    @Test func sinFundamentalYADosManos() {
+        // Sol7: la A es Si Mi Fa La (con la 13.ª en lugar de la quinta) y la B, Fa La Si Mi.
+        #expect(Acorde("Sol7").disposiciones(.sinFundamentalA).map(midis) == [[59, 64, 65, 69]])
+        #expect(Acorde("Sol7").disposiciones(.sinFundamentalB).map(midis) == [[53, 57, 59, 64], [65, 69, 71, 76]])
+        // Do7M: tercera, quinta, séptima y novena.
+        let doMayor = Acorde("Do7M").disposiciones(.sinFundamentalA)
+        #expect(!doMayor.isEmpty)
+        #expect(doMayor.allSatisfy { Set($0.map(\.nota)) == [.mi, .sol, .si, .re] })
+        let doSexta = Acorde("Do6").disposiciones(.sinFundamentalB)
+        #expect(!doSexta.isEmpty)
+        #expect(doSexta.allSatisfy { Set($0.map(\.nota)) == [.mi, .sol, .la, .re] })
+        // A dos manos: Do y Si♭ abajo; Mi, La y Re arriba.
+        #expect(Acorde("Do7").disposiciones(.dosManos).map(midis) == [[48, 58, 64, 69, 74]])
+        // Sin séptima ni sexta no hay disposición sin fundamental.
+        #expect(Acorde("Do").disposiciones(.sinFundamentalA).isEmpty)
     }
 
     @Test func laConduccionDeUnIIVI() throws {

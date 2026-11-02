@@ -27,6 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <akkordjelzés>…",
         descripcionAcorde: "hangok, típus és minden hang szerepe",
+        notasAcorde: "opciók: --voicings, --names, --keys, --substitutions\n(a --in C major hangnemében, a végén) és --compare C\n(közös hangok és szólamvezetés)",
         sintaxisArpegio: "arpeggio <akkordjelzés> [--pattern <minta>]",
         descripcionArpegio: "a felbontás hangjai és az akkordhoz\nillő skálák (--pattern ascending,\ndescending, up-down, down-up,\nbroken, alberti)",
         notasArpegio: "opciók: --octaves 2 (1-től 4-ig), --no-octave, --from E\n(vagy 3: ezzel a hanggal kezd), --tensions 9,13, --degrees\n1-5-3-8 (saját menet) és --approach below, above vagy\nenclosure (kromatikus hangok, amelyek mindegyikhez vezetnek)",

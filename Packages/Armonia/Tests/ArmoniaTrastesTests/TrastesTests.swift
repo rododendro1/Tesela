@@ -482,6 +482,45 @@ extension DigitacionTests {
     }
 }
 
+@Suite struct DisposicionEnElMastilTests {
+    @Test func losGruposDeCuerdas() {
+        let mastil = Mastil(.guitarra, trastes: 15)
+        #expect(mastil.gruposDeCuerdas(para: .drop2) == [[0, 1, 2, 3], [1, 2, 3, 4], [2, 3, 4, 5]])
+        // El drop 3 salta la cuerda que sigue al bajo.
+        #expect(mastil.gruposDeCuerdas(para: .drop3) == [[0, 2, 3, 4], [1, 3, 4, 5]])
+        #expect(mastil.gruposDeCuerdas(para: .shell).count == 4)
+        #expect(Mastil(.ukelele).gruposDeCuerdas(para: .drop2).isEmpty)
+        #expect(Mastil(.bajoElectrico).gruposDeCuerdas(para: .dosManos).isEmpty)
+    }
+
+    @Test func elDrop2EnLasCuerdasCentrales() {
+        let mastil = Mastil(.guitarra, trastes: 15)
+        let formas = mastil.disposiciones(de: Acorde("Do7M"), .drop2, cuerdas: [1, 2, 3, 4])
+        // Si Mi Sol Do y Do Sol Si Mi, de las más graves.
+        #expect(formas.prefix(2).map(\.tablatura) == ["x2201x", "x3545x"])
+        for forma in formas {
+            #expect(forma.trastes[0] == nil && forma.trastes[5] == nil)
+            #expect(Set(forma.alturas.map(\.nota)) == Set(Acorde("Do7M").notas))
+            #expect(forma.alturas.map(\.midi) == forma.alturas.map(\.midi).sorted())
+        }
+        #expect(formas[1].dedosSugeridos == [nil, 1, 3, 2, 4, nil])
+        #expect(formas[0].dedosSugeridos == [nil, 2, 3, 0, 1, nil])
+        // Con la mano más cerrada caben menos; con otro número de cuerdas, ninguna.
+        let cerradas = mastil.disposiciones(de: Acorde("Do7M"), .drop2, cuerdas: [1, 2, 3, 4], abertura: 2)
+        #expect(cerradas.count < formas.count)
+        #expect(mastil.disposiciones(de: Acorde("Do7M"), .drop2, cuerdas: [1, 2, 3]).isEmpty)
+        #expect(mastil.disposiciones(de: Acorde("Do7M"), .drop2, cuerdas: [3, 4, 5, 6]).isEmpty)
+    }
+
+    @Test func losDedosDeUnaFormaAlAire() {
+        let alAire = Digitacion(mastil: Mastil(.guitarra), trastes: [nil, 0, 2, 2, 2, 0])
+        // Tres cuerdas en el traste más bajo: todas con el índice.
+        #expect(alAire.dedosSugeridos == [nil, 0, 1, 1, 1, 0])
+        let todasAlAire = Digitacion(mastil: Mastil(.guitarra), trastes: [0, 0, 0, 0, 0, 0])
+        #expect(todasAlAire.dedosSugeridos == [0, 0, 0, 0, 0, 0])
+    }
+}
+
 @Suite struct EscalaEnElMastilTests {
     @Test func tresNotasPorCuerda() {
         let mastil = Mastil(.guitarra, trastes: 15)

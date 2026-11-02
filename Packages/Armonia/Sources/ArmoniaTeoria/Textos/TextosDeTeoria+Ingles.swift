@@ -140,6 +140,8 @@ extension TextosDeTeoria {
         sustitutoDiatonico: "diatonic substitution",
         rearmonizacionIIV: "ii–V",
         rearmonizacionBackdoor: "backdoor",
+        rearmonizacionIIRelativo: "related ii",
+        rearmonizacionDisminuido: "diminished substitution",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "\"\(simbolo)\" is not part of any known chord symbol" },
         tensionNoValida: { tension in "\"\(tension)\" is not a valid tension (♭/♯ go with 5, 9, 11 and 13, and add with 2, 4, 6, 9, 11 and 13)" },

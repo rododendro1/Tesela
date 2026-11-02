@@ -152,6 +152,8 @@ struct TextosDeTeoria: TextosTraducidos {
     let sustitutoDiatonico: String
     let rearmonizacionIIV: String
     let rearmonizacionBackdoor: String
+    let rearmonizacionIIRelativo: String
+    let rearmonizacionDisminuido: String
 
     // MARK: ErrorDeLecturaDeTeoria.swift (acordes)
     let simboloNoReconocido: @Sendable (String) -> String

@@ -17,6 +17,12 @@ import ArmoniaNucleo
 /// Las otras dos son de tres y dos voces: `shell` es el bajo con la tercera y la séptima encima (en los dos órdenes),
 /// y `notasGuia`, solo la tercera y la séptima.
 ///
+/// `sinFundamentalA` y `sinFundamentalB` son las disposiciones de piano sin fundamental (*rootless*) de Bill Evans:
+/// tercera, quinta, séptima y novena (la A) o séptima, novena, tercera y quinta (la B); en un acorde de dominante, la
+/// 13.ª va en lugar de la quinta (Sol7: Si Mi Fa La y Fa La Si Mi). La novena y la 13.ª, si el acorde no las tiene,
+/// salen de su escala (``Arpegio/nota(delGrado:)``). `dosManos` pone la fundamental y la séptima en la mano
+/// izquierda y la tercera, la quinta (o la 13.ª) y la novena en la derecha: Do Si♭ Mi La Re en Do7.
+///
 /// `cuartal` son cuatro notas por cuartas (justas, o alguna aumentada), como en el jazz modal: Re Sol Do Fa para
 /// Rem7, Fa Si Mi La para Sol7. Salen de la escala de siete notas del acorde con menos notas
 /// a evitar (`Acorde.escalasCompatibles(entre:)`), llevan sus notas guía y ninguna nota a evitar.
@@ -28,12 +34,16 @@ public enum DisposicionDeAcorde: String, CaseIterable, Hashable, Sendable {
     case shell
     case notasGuia
     case cuartal
+    case sinFundamentalA
+    case sinFundamentalB
+    case dosManos
 
-    /// Cuántas voces tiene: 4, salvo la shell (3) y las notas guía (2).
+    /// Cuántas voces tiene: 4, salvo la shell (3), las notas guía (2) y la de dos manos (5).
     public var voces: Int {
         switch self {
         case .shell: return 3
         case .notasGuia: return 2
+        case .dosManos: return 5
         default: return 4
         }
     }
@@ -111,6 +121,8 @@ extension Acorde {
         switch disposicion {
         case .cuartal:
             return formasCuartales()
+        case .sinFundamentalA, .sinFundamentalB, .dosManos:
+            return formasSinFundamental(disposicion)
         case .shell, .notasGuia:
             let guias = notasGuia
             guard guias.count == 2 else { return [] }
@@ -160,6 +172,24 @@ extension Acorde {
             if !formas.contains(alturas) { formas.append(alturas) }
         }
         return formas
+    }
+
+    /// Las formas sin fundamental (A y B) y la de dos manos, o ninguna si al acorde le falta la tercera (o la
+    /// suspensión) o la séptima (o la sexta).
+    private func formasSinFundamental(_ disposicion: DisposicionDeAcorde) -> [[Altura]] {
+        guard let tercera = self.tercera ?? notas(conPapel: .suspension).first,
+            let septima = self.septima ?? notas(conPapel: .sexta).first
+        else { return [] }
+        let arpegio = Arpegio(self)
+        let novena = arpegio.nota(delGrado: 2)
+        // En un acorde de dominante (tercera mayor y séptima menor), la 13.ª en lugar de la quinta.
+        let dominante = Acorde.distancia(fundamental, tercera) == 4 && Acorde.distancia(fundamental, septima) == 10
+        let quinta = dominante ? arpegio.nota(delGrado: 6) : arpegio.nota(delGrado: 5)
+        switch disposicion {
+        case .sinFundamentalA: return [Acorde.apilar([tercera, quinta, septima, novena])]
+        case .sinFundamentalB: return [Acorde.apilar([septima, novena, tercera, quinta])]
+        default: return [Acorde.apilar([fundamental, septima, tercera, quinta, novena])]
+        }
     }
 
     /// La tercera (o la suspensión) y la séptima (o la sexta, o si no hay ninguna, la quinta): las notas guía.

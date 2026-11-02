@@ -2,7 +2,7 @@ import Armonia
 import Foundation
 
 /// Unos acordes con sus alturas escritas, dispuestos como en el piano o el jazz (drop 2, shell…): una fila por acorde,
-/// el pentagrama, lo que suena y, en una progresión, los ficheros para exportar.
+/// el pentagrama, lo que suena y los ficheros para exportar.
 public struct DisposicionesPresentadas: Hashable, Sendable {
     public struct Fila: Hashable, Sendable {
         /// El cifrado del acorde, o «» si son las disposiciones de un solo acorde.
@@ -17,7 +17,8 @@ public struct DisposicionesPresentadas: Hashable, Sendable {
     /// Todos los acordes, uno detrás de otro.
     public let sonido: Escucha
     public let pentagrama: PentagramaPresentado
-    /// En una progresión, la partitura en MusicXML, MEI, LilyPond y ABC, y el MIDI; vacío con un solo acorde.
+    /// La partitura en MusicXML, MEI, LilyPond y ABC, y el MIDI: la progresión, o todas las disposiciones del acorde
+    /// una detrás de otra.
     public let ficheros: [FicheroParaExportar]
 }
 
@@ -34,9 +35,11 @@ public enum PresentacionDeDisposiciones {
         _ acorde: Acorde, _ disposicion: DisposicionDeAcorde, notacion: Notacion
     ) -> DisposicionesPresentadas? {
         let todas = acorde.disposiciones(disposicion)
-        guard !todas.isEmpty else { return nil }
+        guard let coral = Coral(todas) else { return nil }
         let titulo = acorde.cifrado(en: notacion) + " · " + disposicion.nombre(en: notacion)
-        return presentar(todas, cifrados: nil, titulo: titulo, ficheros: [], notacion: notacion)
+        return presentar(
+            todas, cifrados: nil, titulo: titulo,
+            ficheros: PresentacionDeCoral.ficheros(coral, nil, notacion, nombre: titulo), notacion: notacion)
     }
 
     /// Una disposición para cada acorde de la progresión, con el menor movimiento de las voces de uno al siguiente.
@@ -82,6 +85,47 @@ extension DisposicionDeAcorde {
         case .shell: return notacion.texto(\.fundamentalTerceraYSeptima)
         case .notasGuia: return notacion.texto(\.terceraYSeptima)
         case .cuartal: return notacion.texto(\.disposicionCuartal)
+        case .sinFundamentalA: return notacion.texto(\.disposicionSinFundamentalA)
+        case .sinFundamentalB: return notacion.texto(\.disposicionSinFundamentalB)
+        case .dosManos: return notacion.texto(\.disposicionDosManos)
+        }
+    }
+}
+
+// MARK: - En el mástil
+
+/// Una disposición tocada en un grupo de cuerdas: su diagrama, su tablatura, los dedos y cómo suena.
+public struct DisposicionEnElMastilPresentada: Hashable, Sendable {
+    public let digitacion: Digitacion
+    /// «x3545x».
+    public let tablatura: String
+    /// Los dedos sugeridos, cuerda a cuerda como la tablatura: «x 1 3 2 4 x», con 0 al aire.
+    public let dedos: String
+    public let sonido: Escucha
+}
+
+extension PresentacionDeDisposiciones {
+    /// Los grupos de cuerdas en que se toca la disposición, con su nombre: «Cuerdas 6-5-4-3», numeradas como en la
+    /// guitarra, de la más aguda (1) a la más grave.
+    public static func gruposDeCuerdas(
+        _ disposicion: DisposicionDeAcorde, mastil: Mastil, notacion: Notacion
+    ) -> [(cuerdas: [Int], nombre: String)] {
+        let total = mastil.encordado.cuerdas.count
+        return mastil.gruposDeCuerdas(para: disposicion).map { grupo in
+            let numeros = grupo.map { String(total - $0) }.joined(separator: "-")
+            return (grupo, notacion.texto { $0.cuerdas(numeros) })
+        }
+    }
+
+    /// Las formas de la disposición en un grupo de cuerdas, de la más grave a la más aguda.
+    public static func enElMastil(
+        _ acorde: Acorde, _ disposicion: DisposicionDeAcorde, mastil: Mastil, cuerdas: [Int]
+    ) -> [DisposicionEnElMastilPresentada] {
+        mastil.disposiciones(de: acorde, disposicion, cuerdas: cuerdas).map { digitacion in
+            let dedos = digitacion.dedosSugeridos.map { $0.map(String.init) ?? "x" }
+            return DisposicionEnElMastilPresentada(
+                digitacion: digitacion, tablatura: digitacion.tablatura, dedos: dedos.joined(separator: " "),
+                sonido: .coral([digitacion.alturas], duracion: 1.5))
         }
     }
 }

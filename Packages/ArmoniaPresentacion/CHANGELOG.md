@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+- **Más acordes.** `PresentacionDeRelacionesDeAcorde.relaciones(de:en:notacion:)` (otros nombres, sin la
+  fundamental, tonalidades con su función y sustituciones con su sonido) y `comparar(_:con:disposicion:notacion:)`
+  (notas comunes, cada voz con su movimiento y el movimiento total). `PresentacionDeDisposiciones.gruposDeCuerdas` y
+  `enElMastil` dan las disposiciones en la guitarra con su tablatura y los dedos, y `acorde(_:_:notacion:)` da ya
+  los ficheros para exportar. Textos nuevos en los quince idiomas.
+
 - **Arpegios con tempo, swing y enlace.** `PresentacionDeArpegios.arpegio(_:figura:tempo:swing:notacion:)` y
   `progresion(…enlazados:tempo:swing:…)`; `AnalisisPresentado.arpegiada(_:figura:enlazados:notacion:)`. El tempo va
   también en las partituras; el swing solo cambia cómo suena (`Escucha.conSwing(pulso:proporcion:)`, larga-corta en

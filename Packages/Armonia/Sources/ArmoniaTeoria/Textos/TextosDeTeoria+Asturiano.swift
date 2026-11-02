@@ -139,6 +139,8 @@ extension TextosDeTeoria {
         sustitutoDiatonico: "sustitutu diatónicu",
         rearmonizacionIIV: "ii–V",
         rearmonizacionBackdoor: "dominante backdoor",
+        rearmonizacionIIRelativo: "ii relativu",
+        rearmonizacionDisminuido: "sustitutu diminuyíu",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "«\(simbolo)» nun fai parte de nengún cifráu conocíu" },
         tensionNoValida: { tension in "«\(tension)» nun ye una tensión válida (almítense ♭/♯ con 5, 9, 11 y 13, y add con 2, 4, 6, 9, 11 y 13)" },
