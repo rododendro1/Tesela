@@ -114,8 +114,8 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
             let a = Alteracion(n)
             for notacion in [
                 Notacion.espanolCompacto, .inglesASCII, .alemanPalabras, .francesPalabras, .italianoPalabras,
-                .catalanPalabras, .gallegoPalabras, .euskeraPalabras, .portuguesPalabras, .occitanoPalabras, .rusoPalabras,
-                .griegoPalabras, .aragonesPalabras, .asturianoPalabras, .hungaroPalabras,
+                .catalanPalabras, .gallegoPalabras, .euskeraPalabras, .portuguesPalabras, .occitanoPalabras,
+                .rusoPalabras, .griegoPalabras, .aragonesPalabras, .asturianoPalabras, .hungaroPalabras,
             ] {
                 tabla[a.nombre(en: notacion).claveDeBusqueda] = a
             }
