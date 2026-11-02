@@ -52,7 +52,7 @@ import Testing
         #expect(nombres(Escala(.mi, .sikah)) == "Mi𝄳 Fa Sol La Si𝄳 Do Re")
         #expect(nombres(Escala(.mi, .huzam)) == "Mi𝄳 Fa Sol La♭ Si Do Re")
         #expect(nombres(Escala(.si, .iraq)) == "Si𝄳 Do Re Mi𝄳 Fa Sol La")
-        #expect(TipoDeEscala.sikah.microtonal?.desvios.first == -50)
+        #expect(TipoDeEscala.sikah.microtonal?.desvios().first == -50)
         #expect(Escala(.mi, .sikah).notasMicrotonales()?.first?.cents == -50)
         #expect(nombres(Escala(.si, .bayati)) == "Si Do𝄲 Re Mi Fa♯ Sol La")
     }
