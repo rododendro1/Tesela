@@ -191,6 +191,22 @@ Entre las particiones posibles se elige la de menor coste, con el mismo coste po
 tonalidad del tramo y un coste fijo por cada modulación. Si la progresión no modula, el único
 tramo es el mismo análisis que da `AnalisisArmonico.analizar`.
 
+### Planificar una modulación
+
+`modulaciones(hasta:)` hace el camino contrario: escribe progresiones que van de una tonalidad
+a otra (`PlanDeModulacion`). Cada una afirma la de partida con I–IV–V7–I, pasa por un puente y
+confirma la de llegada con V7–I. Salen de la más suave a la más brusca: primero por un **acorde
+común** (los que en la nueva son ii o IV, luego vi y iii); después por una **séptima disminuida
+enarmónica**, el vii°7 de un grado de la de partida que, escrito de otra forma, es el de la nueva;
+y al final la **directa**, el ii–V7–I de la nueva sin puente.
+
+```swift
+let planes = Tonalidad(.do).modulaciones(hasta: Tonalidad(.sol))
+planes[0].tecnica                    // .acordeComun
+planes[0].pivote?.description        // "Lam = vi en Do mayor = ii en Sol mayor"
+Tonalidad(.do).modulaciones(hasta: Tonalidad(Nota.la.bemol))[0].tecnica   // .disminuidaEnarmonica
+```
+
 ## Conducción de voces
 
 `Coral` comprueba las reglas de la armonía escrita voz por voz. Cada acorde lleva
