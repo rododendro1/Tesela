@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+import ArmoniaPartitura
 import ArmoniaTeoria
 
 // Lo que comparten las exportaciones a MusicXML (MusicXML.swift), a MEI (MEI.swift) y a MIDI
@@ -39,19 +40,6 @@ package enum Exportacion {
         return resto.esCero ? duraciones : Array(duraciones.dropLast()) + [ultima + compas.duracion - resto]
     }
 
-    /// Las notas apiladas en posición cerrada: la primera, en la primera octava en que su MIDI
-    /// llegue a `minimo`, y cada una, en la primera octava por encima de la anterior.
-    package static func posicionCerrada(_ notas: [Nota], desde minimo: Int) -> [Altura] {
-        var alturas: [Altura] = []
-        for nota in notas {
-            let limite = alturas.last.map { $0.midi + 1 } ?? minimo
-            var octava = 0
-            while Altura(nota, octava: octava).midi < limite { octava += 1 }
-            alturas.append(Altura(nota, octava: octava))
-        }
-        return alturas
-    }
-
     /// Una voz de un coral: una nota por acorde, de `duracion`, y la última de `final`.
     package static func eventos(de alturas: [Altura], duracion: Duracion, final: Duracion) -> [Evento] {
         alturas.enumerated().map { Evento($1, $0 == alturas.count - 1 ? final : duracion) }
@@ -72,8 +60,8 @@ package enum Exportacion {
         var superior: [Evento] = []
         var grave: [Evento] = []
         for (acorde, figura) in zip(acordes, duraciones) {
-            superior.append(Evento(alturas: posicionCerrada(acorde.notas, desde: 57), duracion: figura))
-            grave.append(Evento(posicionCerrada([acorde.bajo], desde: 41)[0], figura))
+            superior.append(Evento(alturas: Altura.posicionCerrada(acorde.notas, desde: 57), duracion: figura))
+            grave.append(Evento(Altura.posicionCerrada([acorde.bajo], desde: 41)[0], figura))
         }
         return (superior, grave)
     }

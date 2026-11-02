@@ -4,7 +4,7 @@ import Foundation
 
 // Un pentagrama en SVG, para escalas y acordes: redondas sobre cinco líneas, con clave, armadura, alteraciones,
 // líneas adicionales y, en los acordes, las segundas desplazadas. No hay ritmo, vigas ni varias voces: para
-// partituras completas, el MEI o el MusicXML de `Formatos/` y un motor como Verovio.
+// partituras completas, el MEI o el MusicXML de `ArmoniaFormatos` y un motor como Verovio.
 //
 // Las medidas están en espacios de pentagrama (1 = la distancia entre dos líneas) y el eje y baja, como en SVG:
 // la línea de arriba está en y = 0 y la de abajo en y = 4. Los glifos son los de Bravura (`GlifosSMuFL`).
@@ -117,7 +117,8 @@ struct PentagramaSVG {
     func svg() -> String {
         let claves = clavesDelPentagrama()
         let color = EscrituraXML.escapar(opciones.color)
-        let resaltado = " fill=\"\(EscrituraXML.escapar(opciones.colorResaltado))\""
+        /// Un elemento con los números del pentagrama (en espacios, con tres decimales como mucho).
+        func elemento(_ nombre: String) -> ElementoSVG { ElementoSVG(nombre, numeros: .hastaTresDecimales) }
         let doble = claves.count == 2
 
         // Una octava más cerca del pentagrama, con la marca 8va u 8vb, si con la clave elegida harían falta demasiadas
@@ -298,9 +299,9 @@ struct PentagramaSVG {
                     abajoDeLasNotas[k] = max(abajoDeLasNotas[k], PentagramaSVG.y(deLugar: nota.lugar, pentagrama: k))
                     partes.append(PentagramaSVG.glifo(GlifosSMuFL.redonda, x: xn, lugar: nota.lugar, pentagrama: k))
                     let nombre = nota.microtono?.nombre ?? nota.altura.nombre(en: opciones.notacion)
-                    let relleno = opciones.resaltada == columna ? resaltado : ""
                     notasSVG.append(
-                        "<g\(relleno)><title>\(EscrituraXML.escapar(nombre))</title>\(partes.joined())</g>")
+                        elemento("g").con("fill", opciones.colorResaltado, si: opciones.resaltada == columna)
+                            .conHijos(elemento("title").conTexto(nombre) + partes.joined()))
                     for lugar in PentagramaSVG.lugaresDeLasLineasAdicionales(de: nota.lugar) {
                         lineasAdicionales.append((k, lugar, xn - 0.4, xn + PentagramaSVG.anchoDeLaRedonda + 0.4))
                     }
@@ -332,13 +333,17 @@ struct PentagramaSVG {
             let yDeLaLinea = y - 0.45
             let gancho = arriba ? yDeLaLinea + 1.0 : yDeLaLinea - 1.0
             marcaSVG.append(
-                "<text x=\"\(PentagramaSVG.n(inicio - 0.3))\" y=\"\(PentagramaSVG.n(y))\" font-size=\"1.4\" font-style=\"italic\" font-family=\"sans-serif\" fill=\"\(color)\" stroke=\"none\">\(rotulo)</text>"
+                elemento("text").con("x", inicio - 0.3).con("y", y).con("font-size", "1.4").con("font-style", "italic")
+                    .con("font-family", "sans-serif").con("fill", opciones.color).con("stroke", "none").conTexto(rotulo)
             )
             // Con una sola columna (un acorde) no hay línea de puntos: solo el rótulo.
             if ultimaX[k] - (finDelRotulo + 0.3) > 1.0 {
+                let n = PentagramaSVG.n
                 marcaSVG.append(
-                    "<path d=\"M\(PentagramaSVG.n(finDelRotulo + 0.3)) \(PentagramaSVG.n(yDeLaLinea)) H\(PentagramaSVG.n(ultimaX[k])) V\(PentagramaSVG.n(gancho))\" stroke-dasharray=\"0.5 0.35\"/>"
-                )
+                    elemento("path").con(
+                        "d", "M\(n(finDelRotulo + 0.3)) \(n(yDeLaLinea)) H\(n(ultimaX[k])) V\(n(gancho))"
+                    )
+                    .con("stroke-dasharray", "0.5 0.35").vacio)
             }
             if arriba { minimoY = min(minimoY, y - 1.2) } else { maximoY = max(maximoY, y + 0.3) }
         }
@@ -367,43 +372,59 @@ struct PentagramaSVG {
         let ancho = final + 0.6 + margen
         let alto = fondo - cima
 
+        /// Una línea horizontal, del pentagrama o adicional.
+        func linea(desde: Double, hasta: Double, y: Double, grosor: String) -> String {
+            elemento("line").con("x1", desde).con("y1", y).con("x2", hasta).con("y2", y).con("stroke-width", grosor)
+                .vacio
+        }
         var lineas: [String] = []
         for k in claves.indices {
             for i in 0..<5 {
-                let y = PentagramaSVG.n(PentagramaSVG.y(deLugar: 8 - 2 * i, pentagrama: k))
-                lineas.append(
-                    "<line x1=\"0\" y1=\"\(y)\" x2=\"\(PentagramaSVG.n(final))\" y2=\"\(y)\" stroke-width=\"0.13\"/>")
+                let y = PentagramaSVG.y(deLugar: 8 - 2 * i, pentagrama: k)
+                lineas.append(linea(desde: 0, hasta: final, y: y, grosor: "0.13"))
             }
         }
         // Barra del principio (si hay dos pentagramas, una sola que los une) y barra final.
         let abajoDelSistema = PentagramaSVG.y(deLugar: 0, pentagrama: claves.count - 1)
-        lineas.append(
-            "<line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"\(PentagramaSVG.n(abajoDelSistema))\" stroke-width=\"0.16\"/>")
-        lineas.append(
-            "<line x1=\"\(PentagramaSVG.n(final))\" y1=\"0\" x2=\"\(PentagramaSVG.n(final))\" y2=\"\(PentagramaSVG.n(abajoDelSistema))\" stroke-width=\"0.16\"/>"
-        )
+        for xDeLaBarra in [0, final] {
+            lineas.append(
+                elemento("line").con("x1", xDeLaBarra).con("y1", 0).con("x2", xDeLaBarra).con("y2", abajoDelSistema)
+                    .con("stroke-width", "0.16").vacio)
+        }
         // La llave de Bravura, estirada de sus 4 espacios a lo que miden los dos pentagramas (14).
+        let n = PentagramaSVG.n
         let llave =
             doble
-            ? "<path transform=\"translate(\(PentagramaSVG.n(-PentagramaSVG.margenDeLaLlave + 0.3)) \(PentagramaSVG.n(abajoDelSistema))) scale(\(PentagramaSVG.n(abajoDelSistema / 4)))\" d=\"\(GlifosSMuFL.llave.trazado)\"/>"
+            ? elemento("path")
+                .con(
+                    "transform",
+                    "translate(\(n(-PentagramaSVG.margenDeLaLlave + 0.3)) \(n(abajoDelSistema))) scale(\(n(abajoDelSistema / 4)))"
+                )
+                .con("d", GlifosSMuFL.llave.trazado).vacio
             : ""
-        var adicionalesSVG: [String] = []
-        for linea in lineasAdicionales {
-            let y = PentagramaSVG.n(PentagramaSVG.y(deLugar: linea.lugar, pentagrama: linea.pentagrama))
-            adicionalesSVG.append(
-                "<line x1=\"\(PentagramaSVG.n(linea.desde))\" y1=\"\(y)\" x2=\"\(PentagramaSVG.n(linea.hasta))\" y2=\"\(y)\" stroke-width=\"0.16\"/>"
-            )
+        let adicionalesSVG = lineasAdicionales.map {
+            linea(
+                desde: $0.desde, hasta: $0.hasta, y: PentagramaSVG.y(deLugar: $0.lugar, pentagrama: $0.pentagrama),
+                grosor: "0.16")
         }
 
+        /// Un texto centrado en `x`, estirado o encogido a lo que se calcula que mide.
+        func texto(_ texto: String, x: Double, y: Double, cuerpoDeLetra: Double) -> String {
+            elemento("text").con("x", x).con("y", y).con("text-anchor", "middle").con("font-size", cuerpoDeLetra)
+                .con("lengthAdjust", "spacingAndGlyphs")
+                .con(
+                    "textLength",
+                    PentagramaSVG.anchoEstimado(texto, cuerpoDeLetra: cuerpoDeLetra, proporcion: proporcion)
+                )
+                .con("font-family", "sans-serif").conTexto(texto)
+        }
         var textos: [String] = []
         if let cifrado, let cx = cifradoX {
-            textos.append(
-                "<text x=\"\(PentagramaSVG.n(cx))\" y=\"\(PentagramaSVG.n(minimoY - 0.6))\" text-anchor=\"middle\" font-size=\"\(PentagramaSVG.letraDelCifrado)\" lengthAdjust=\"spacingAndGlyphs\" textLength=\"\(PentagramaSVG.n(PentagramaSVG.anchoEstimado(cifrado, cuerpoDeLetra: PentagramaSVG.letraDelCifrado, proporcion: proporcion)))\" font-family=\"sans-serif\">\(EscrituraXML.escapar(cifrado))</text>"
-            )
+            textos.append(texto(cifrado, x: cx, y: minimoY - 0.6, cuerpoDeLetra: PentagramaSVG.letraDelCifrado))
         }
         for etiqueta in etiquetas {
             textos.append(
-                "<text x=\"\(PentagramaSVG.n(etiqueta.x))\" y=\"\(PentagramaSVG.n(maximoY + 1.6))\" text-anchor=\"middle\" font-size=\"\(PentagramaSVG.letraDeLasEtiquetas)\" lengthAdjust=\"spacingAndGlyphs\" textLength=\"\(PentagramaSVG.n(PentagramaSVG.anchoEstimado(etiqueta.texto, cuerpoDeLetra: PentagramaSVG.letraDeLasEtiquetas, proporcion: proporcion)))\" font-family=\"sans-serif\">\(EscrituraXML.escapar(etiqueta.texto))</text>"
+                texto(etiqueta.texto, x: etiqueta.x, y: maximoY + 1.6, cuerpoDeLetra: PentagramaSVG.letraDeLasEtiquetas)
             )
         }
 

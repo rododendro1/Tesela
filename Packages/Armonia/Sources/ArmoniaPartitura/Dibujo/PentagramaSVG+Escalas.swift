@@ -45,7 +45,7 @@ extension Acorde {
         octava: Int = 4, cifrado conCifrado: Bool = true,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
-        let cerrada = Exportacion.posicionCerrada(notasDesdeElBajo, desde: Altura(.do, octava: octava).midi)
+        let cerrada = Altura.posicionCerrada(notasDesdeElBajo, desde: Altura(.do, octava: octava).midi)
         let abierta: Bool
         switch opciones.disposicionDelAcorde {
         case .cerrada: abierta = false
@@ -57,8 +57,8 @@ extension Acorde {
         var alturas = cerrada
         if abierta, let bajo = notasDesdeElBajo.first, notasDesdeElBajo.count > 1 {
             alturas =
-                Exportacion.posicionCerrada([bajo], desde: Altura(.do, octava: octava - 1).midi)
-                + Exportacion.posicionCerrada(
+                Altura.posicionCerrada([bajo], desde: Altura(.do, octava: octava - 1).midi)
+                + Altura.posicionCerrada(
                     Array(notasDesdeElBajo.dropFirst()), desde: Altura(.do, octava: octava).midi)
         }
         let texto = cifrado(en: opciones.notacion)

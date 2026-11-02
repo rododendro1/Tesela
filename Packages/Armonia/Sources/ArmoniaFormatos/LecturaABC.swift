@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+import ArmoniaPartitura
 import ArmoniaTeoria
 import Foundation
 

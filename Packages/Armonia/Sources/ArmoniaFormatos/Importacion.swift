@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+import ArmoniaPartitura
 import ArmoniaTeoria
 import Foundation
 
@@ -257,7 +258,7 @@ public enum ErrorDeImportacion: ErrorDeArmonia, Hashable {
 
     /// La explicación en el idioma de los textos de la notación.
     public func descripcion(en notacion: Notacion) -> String {
-        let textos = TextosDePartitura.traducidos
+        let textos = TextosDeFormatos.traducidos
         switch self {
         case .formatoDesconocido: return textos.map(\.formatoDesconocido).en(notacion)
         case .comprimido: return textos.map(\.musicXMLComprimido).en(notacion)

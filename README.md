@@ -25,7 +25,7 @@ Herramientas/
 ├── FuzzArmonia/         Los lectores de ficheros y textos con datos al azar (libFuzzer; el CI lo pasa cada semana)
 └── RendimientoArmonia/  Cuánto tarda el motor en lo que hacen las apps (SwiftPM; el CI lo mide en cada cambio)
 Packages/
-├── Armonia/        El motor de armonía, en cinco módulos (Núcleo, Teoría, Representaciones, Partitura, Trastes)
+├── Armonia/        El motor de armonía, en seis módulos (Núcleo, Teoría, Representaciones, Partitura, Formatos, Trastes)
 │                   y el paraguas `Armonia`: notas, acordes, escalas, tonalidad, Tonnetz, MusicXML, MEI, LilyPond, ABC, MIDI, pentagramas en SVG,
 │                   y los mástiles, afinaciones, digitaciones de acordes y escalas por posiciones (guitarra, bajo, ukelele…)
 ├── ArmoniaUI/      Componentes SwiftUI (DiagramaDeMastil, DiagramaDePentagrama, DiagramaDeTonnetz, DiagramaDeRejilla, VistaSVG, tema) y lo que comparten las apps:

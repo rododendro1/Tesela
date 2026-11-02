@@ -10,6 +10,7 @@ builder:
         - ArmoniaTeoria
         - ArmoniaRepresentaciones
         - ArmoniaPartitura
+        - ArmoniaFormatos
         - ArmoniaTrastes
         - Hexagonos
         - ArmoniaPresentacion

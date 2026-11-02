@@ -4,7 +4,7 @@ import Foundation
 
 // Lo común a los dibujos SVG del Tonnetz y de la tabla armónica: los colores, qué puntos se
 // marcan, las tríadas que se rellenan, los textos de la leyenda, el título encima, la leyenda
-// debajo, el fondo, el escapado del texto y el formato de los números.
+// debajo y el fondo. Cada elemento se escribe con `ElementoSVG`, que escapa el texto y da formato a los números.
 
 /// Lo que se dibuja: de dónde salen las notas, para ponerle título al dibujo.
 package enum OrigenDelDibujo: Hashable, Sendable {
@@ -104,7 +104,8 @@ package enum DibujoSVG {
         }
     }
 
-    package static func f(_ v: Double) -> String { String(format: "%.1f", v) }
+    /// Un número con un decimal, como todos los de estos dibujos.
+    package static func f(_ v: Double) -> String { NumerosSVG.unDecimal.texto(v) }
 
     /// Los puntos de la ventana que se marcan y, entre ellos, los de la primera nota. Sin `clave`,
     /// los puntos mismos; con ella (la clase de altura o el número MIDI), todos los de la ventana
@@ -169,16 +170,20 @@ package enum DibujoSVG {
         let alto = caja.alto + altoDelTitulo + altoDeLeyenda
 
         var svg =
-            "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"\(f(izquierda)) \(f(arriba)) \(f(ancho)) \(f(alto))\" "
-        svg += "width=\"\(f(ancho))\" height=\"\(f(alto))\" font-family=\"sans-serif\">\n"
-        if !titulo.isEmpty { svg += "  <title>\(EscrituraXML.escapar(titulo))</title>\n" }
+            ElementoSVG("svg").con("xmlns", "http://www.w3.org/2000/svg")
+            .con("viewBox", [izquierda, arriba, ancho, alto].map(f).joined(separator: " "))
+            .con("width", ancho).con("height", alto).con("font-family", "sans-serif").apertura + "\n"
+        if !titulo.isEmpty { svg += "  " + ElementoSVG("title").conTexto(titulo) + "\n" }
         svg +=
-            "  <rect x=\"\(f(izquierda))\" y=\"\(f(arriba))\" width=\"\(f(ancho))\" height=\"\(f(alto))\" fill=\"#ffffff\"/>\n"
+            "  "
+            + ElementoSVG("rect").con("x", izquierda).con("y", arriba).con("width", ancho).con("height", alto)
+            .con("fill", "#ffffff").vacio + "\n"
         if !titulo.isEmpty {
             svg +=
-                "  <text x=\"\(f(izquierda + margen))\" y=\"\(f(arriba + altoDelTitulo / 2 + margen / 2))\" dominant-baseline=\"central\" "
-            svg +=
-                "font-size=\"\(f(tamanoDelTitulo))\" font-weight=\"600\" fill=\"#222222\">\(EscrituraXML.escapar(titulo))</text>\n"
+                "  "
+                + ElementoSVG("text").con("x", izquierda + margen).con("y", arriba + altoDelTitulo / 2 + margen / 2)
+                .con("dominant-baseline", "central").con("font-size", tamanoDelTitulo).con("font-weight", "600")
+                .con("fill", "#222222").conTexto(titulo) + "\n"
         }
         svg += cuerpo
         // La leyenda.
@@ -188,33 +193,46 @@ package enum DibujoSVG {
             var x = izquierda + margen
             for (entrada, anchoDeEntrada) in fila {
                 let cx = x + muestra / 2
-                svg += "  <g class=\"leyenda\">"
+                let linea = ElementoSVG("line").con("x1", cx - medioLado).con("y1", y).con("x2", cx + medioLado)
+                    .con("y2", y)
+                let dibujo: String
                 switch entrada.muestra {
                 case .triangulo(let color):
-                    svg +=
-                        "<polygon points=\"\(f(cx - medioLado)),\(f(y + medioLado * 0.8)) \(f(cx + medioLado)),\(f(y + medioLado * 0.8)) \(f(cx)),\(f(y - medioLado * 0.9))\" "
-                    svg += "fill=\"\(color)\" fill-opacity=\"0.8\" stroke=\"#333333\" stroke-width=\"1\"/>"
+                    dibujo =
+                        ElementoSVG("polygon")
+                        .con(
+                            "points",
+                            puntos: [
+                                (cx - medioLado, y + medioLado * 0.8), (cx + medioLado, y + medioLado * 0.8),
+                                (cx, y - medioLado * 0.9),
+                            ]
+                        )
+                        .con("fill", color).con("fill-opacity", "0.8").con("stroke", "#333333").con("stroke-width", "1")
+                        .vacio
                 case .hexagono(let relleno, let borde):
                     let radio = medioLado * 1.05
-                    let esquinas = stride(from: 0.0, to: 360, by: 60).map { grados in
-                        "\(f(cx + radio * cos(grados * .pi / 180))),\(f(y + radio * sin(grados * .pi / 180)))"
-                    }.joined(separator: " ")
-                    svg +=
-                        "<polygon points=\"\(esquinas)\" fill=\"\(relleno)\" stroke=\"\(borde)\" stroke-width=\"2\"/>"
+                    let esquinas = stride(from: 0.0, to: 360, by: 60).map { grados -> (x: Double, y: Double) in
+                        let angulo = grados * .pi / 180
+                        return (cx + radio * cos(angulo), y + radio * sin(angulo))
+                    }
+                    dibujo =
+                        ElementoSVG("polygon").con("points", puntos: esquinas).con("fill", relleno).con("stroke", borde)
+                        .con("stroke-width", "2").vacio
                 case .circulo(let relleno, let borde):
-                    svg +=
-                        "<circle cx=\"\(f(cx))\" cy=\"\(f(y))\" r=\"\(f(medioLado * 0.8))\" fill=\"\(relleno)\" stroke=\"\(borde)\" stroke-width=\"1.5\"/>"
+                    dibujo =
+                        ElementoSVG("circle").con("cx", cx).con("cy", y).con("r", medioLado * 0.8).con("fill", relleno)
+                        .con("stroke", borde).con("stroke-width", "1.5").vacio
                 case .linea(let color, let grosor):
-                    svg +=
-                        "<line x1=\"\(f(cx - medioLado))\" y1=\"\(f(y))\" x2=\"\(f(cx + medioLado))\" y2=\"\(f(y))\" stroke=\"\(color)\" stroke-width=\"\(f(grosor))\"/>"
+                    dibujo = linea.con("stroke", color).con("stroke-width", grosor).vacio
                 case .flecha:
-                    svg +=
-                        "<line x1=\"\(f(cx - medioLado))\" y1=\"\(f(y))\" x2=\"\(f(cx + medioLado))\" y2=\"\(f(y))\" stroke=\"#c0392b\" stroke-width=\"2.5\" marker-end=\"url(#flecha)\"/>"
+                    dibujo =
+                        linea.con("stroke", Color.flecha).con("stroke-width", "2.5").con("marker-end", "url(#flecha)")
+                        .vacio
                 }
-                svg +=
-                    "<text x=\"\(f(x + muestra + tamanoDeLeyenda * 0.5))\" y=\"\(f(y))\" dominant-baseline=\"central\" "
-                svg +=
-                    "font-size=\"\(f(tamanoDeLeyenda))\" fill=\"#444444\">\(EscrituraXML.escapar(entrada.texto))</text></g>\n"
+                let texto = ElementoSVG("text").con("x", x + muestra + tamanoDeLeyenda * 0.5).con("y", y)
+                    .con("dominant-baseline", "central").con("font-size", tamanoDeLeyenda).con("fill", "#444444")
+                    .conTexto(entrada.texto)
+                svg += "  " + ElementoSVG("g").con("class", "leyenda").conHijos(dibujo + texto) + "\n"
                 x += anchoDeEntrada
             }
             y += altoDeFila
@@ -249,12 +267,15 @@ package enum DibujoSVG {
     ) -> String {
         var svg = ""
         if !recorrido.isEmpty {
-            svg += "  <defs><marker id=\"flecha\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"5\" "
-            svg +=
-                "markerHeight=\"5\" orient=\"auto\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"\(DibujoSVG.Color.flecha)\"/></marker></defs>\n"
+            let punta = ElementoSVG("path").con("d", "M0,0 L10,5 L0,10 z").con("fill", Color.flecha).vacio
+            let marcador = ElementoSVG("marker").con("id", "flecha").con("viewBox", "0 0 10 10").con("refX", "9")
+                .con("refY", "5").con("markerWidth", "5").con("markerHeight", "5").con("orient", "auto")
+            svg += "  " + ElementoSVG("defs").conHijos(marcador.conHijos(punta)) + "\n"
             let (xInicial, yInicial) = centro(recorrido[0])
             svg +=
-                "  <circle cx=\"\(f(xInicial * paso))\" cy=\"\(f(yInicial * paso))\" r=\"\(f(paso * 0.07))\" fill=\"\(DibujoSVG.Color.flecha)\"/>\n"
+                "  "
+                + ElementoSVG("circle").con("cx", xInicial * paso).con("cy", yInicial * paso).con("r", paso * 0.07)
+                .con("fill", Color.flecha).vacio + "\n"
         }
         // Las flechas entre los mismos dos triángulos (de ida o de vuelta) se separan: se curvan
         // hacia lados distintos de la línea entre sus centros, cada una un poco más que la anterior.
@@ -286,16 +307,23 @@ package enum DibujoSVG {
             let recorte = min(0.1, largo / 4) / largo
             let (ax, ay) = (x1 + (x2 - x1) * recorte, y1 + (y2 - y1) * recorte)
             let (bx, by) = (x2 - (x2 - x1) * recorte, y2 - (y2 - y1) * recorte)
+            let trazo: ElementoSVG
             if separacion == 0 {
-                svg +=
-                    "  <line x1=\"\(f(ax * paso))\" y1=\"\(f(ay * paso))\" x2=\"\(f(bx * paso))\" y2=\"\(f(by * paso))\" "
+                trazo = ElementoSVG("line").con("x1", ax * paso).con("y1", ay * paso).con("x2", bx * paso)
+                    .con("y2", by * paso)
             } else {
                 let (cx, cy) = ((ax + bx) / 2 + nx * separacion * 1.4, (ay + by) / 2 + ny * separacion * 1.4)
-                svg +=
-                    "  <path d=\"M\(f(ax * paso)),\(f(ay * paso)) Q\(f(cx * paso)),\(f(cy * paso)) \(f(bx * paso)),\(f(by * paso))\" fill=\"none\" "
+                trazo = ElementoSVG("path")
+                    .con(
+                        "d",
+                        "M\(f(ax * paso)),\(f(ay * paso)) Q\(f(cx * paso)),\(f(cy * paso)) \(f(bx * paso)),\(f(by * paso))"
+                    )
+                    .con("fill", "none")
             }
             svg +=
-                "stroke=\"\(DibujoSVG.Color.flecha)\" stroke-width=\"\(veces[clave]! > 1 ? "2.2" : "3")\" marker-end=\"url(#flecha)\"/>\n"
+                "  "
+                + trazo.con("stroke", Color.flecha).con("stroke-width", veces[clave]! > 1 ? "2.2" : "3")
+                .con("marker-end", "url(#flecha)").vacio + "\n"
         }
         return svg
     }

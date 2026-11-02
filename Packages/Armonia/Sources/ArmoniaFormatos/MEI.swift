@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+import ArmoniaPartitura
 import ArmoniaTeoria
 
 // Exportación a MEI 5 (Music Encoding Initiative), el formato de las ediciones críticas y de la

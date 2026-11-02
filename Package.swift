@@ -22,6 +22,7 @@ let package = Package(
         .library(name: "ArmoniaTeoria", targets: ["ArmoniaTeoria"]),
         .library(name: "ArmoniaRepresentaciones", targets: ["ArmoniaRepresentaciones"]),
         .library(name: "ArmoniaPartitura", targets: ["ArmoniaPartitura"]),
+        .library(name: "ArmoniaFormatos", targets: ["ArmoniaFormatos"]),
         .library(name: "ArmoniaTrastes", targets: ["ArmoniaTrastes"]),
         // Packages/ArmoniaPresentacion
         .library(name: "ArmoniaPresentacion", targets: ["ArmoniaPresentacion"]),
@@ -42,13 +43,18 @@ let package = Package(
             dependencies: ["ArmoniaNucleo", "ArmoniaTeoria"],
             path: "Packages/Armonia/Sources/ArmoniaPartitura"),
         .target(
+            name: "ArmoniaFormatos",
+            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura"],
+            path: "Packages/Armonia/Sources/ArmoniaFormatos"),
+        .target(
             name: "ArmoniaTrastes",
             dependencies: ["ArmoniaNucleo", "ArmoniaTeoria"],
             path: "Packages/Armonia/Sources/ArmoniaTrastes"),
         .target(
             name: "Armonia",
             dependencies: [
-                "ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaTrastes",
+                "ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaFormatos",
+                "ArmoniaTrastes",
             ],
             path: "Packages/Armonia/Sources/Armonia"),
 
