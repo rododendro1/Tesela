@@ -124,6 +124,7 @@ extension TextosDeApps {
         disposicionCerrada: "Κλειστή",
         fundamentalTerceraYSeptima: "Θεμέλιος, τρίτη και έβδομη",
         terceraYSeptima: "Τρίτη και έβδομη",
+        disposicionCuartal: "Με τέταρτες",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Εντάσεις",
         notasAEvitar: "Προς αποφυγή",

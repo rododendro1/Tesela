@@ -124,6 +124,7 @@ extension TextosDeApps {
         disposicionCerrada: "Szűk",
         fundamentalTerceraYSeptima: "Alaphang, terc és szeptim",
         terceraYSeptima: "Terc és szeptim",
+        disposicionCuartal: "Kvartos",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Feszültségek",
         notasAEvitar: "Kerülendő",

@@ -341,6 +341,20 @@ let realizado = Coral.realizar(bajoCifrado: "Do Fa Sol:7 Do", en: Tonalidad(.do)
 realizado.esCorrecta                  // true
 ```
 
+## Armonía negativa
+
+`negativa(_:)` refleja una nota sobre el eje que queda entre la tónica y la dominante (entre Mi♭ y
+Mi en Do): Do ↔ Sol, Mi ↔ Mi♭, Si ↔ La♭, Re ↔ Fa. El eje es el mismo en mayor y en menor.
+`negativo(_:)` refleja todas las notas de un acorde y lo lee en estado fundamental si puede: el
+acorde mayor se vuelve menor, y la dominante, subdominante menor (Sol7 → Reø7). `negativos(_:)`
+hace lo mismo con una progresión.
+
+```swift
+Tonalidad(.do).negativa(.mi) == Nota(.mi, .bemol)                  // true
+Tonalidad(.do).negativo(Acorde("Do")) == Acorde("Dom")             // true
+Tonalidad(.do).negativo(Acorde("Fa")) == Acorde("Solm")            // true
+```
+
 ## Notas extrañas a la armonía
 
 `NotaDeLaMelodia.analizar(_:sobre:partesFuertes:)` mira cada nota de una melodía con el acorde

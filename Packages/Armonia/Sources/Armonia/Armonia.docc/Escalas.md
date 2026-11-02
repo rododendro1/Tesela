@@ -436,3 +436,18 @@ de más tensiones. Sobre Do7M en lidio, Re mayor: la 9, la ♯11 y la 13.
 Escala(.do, .mayor).acordesQueCaben(grado: 1).contains(Acorde(.do, .mayorSexta))                        // true
 Escala(.do, .lidio).estructurasSuperiores(sobre: Acorde("Do7M")).first == Acorde(.re, .mayor)             // true
 ```
+
+### Armonía modal
+
+Los siete modos de la escala mayor (``Escala/modoDeLaMayor``, de 1 a 7) se distinguen del mayor o del menor más
+parecido por una nota, ``Escala/notaCaracteristica``: la 6.ª mayor del dórico, la 2.ª menor del frigio, la 4.ª
+aumentada del lidio, la 7.ª menor del mixolidio… ``Escala/acordesCaracteristicos`` son las tríadas del modo que la
+llevan (sin la de la tónica ni las disminuidas), y ``Escala/cadenciaModal``, la cadencia que afirma el modo sin la
+dominante de la tonalidad: IV–i en dórico, ♭II–i en frigio, II–I en lidio, ♭VII–I en mixolidio.
+
+```swift
+Escala(.re, .dorico).notaCaracteristica == .si                                          // true
+Escala(.re, .dorico).acordesCaracteristicos == [Acorde("Mim"), Acorde("Sol")]           // true
+Escala(.sol, .mixolidio).cadenciaModal == [Acorde("Fa"), Acorde("Sol")]                 // true
+Escala(.mi, .frigio).cadenciaModal == [Acorde("Fa"), Acorde("Mim")]                     // true
+```

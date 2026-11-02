@@ -81,6 +81,7 @@ extension DisposicionDeAcorde {
         case .drop24: return "Drop 2 + 4"
         case .shell: return notacion.texto(\.fundamentalTerceraYSeptima)
         case .notasGuia: return notacion.texto(\.terceraYSeptima)
+        case .cuartal: return notacion.texto(\.disposicionCuartal)
         }
     }
 }

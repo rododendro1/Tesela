@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- **`DisposicionDeAcorde.cuartal`** se nombra en los quince idiomas («Por cuartas», «Quartal»), y Armonía la ofrece
+  junto a las demás disposiciones.
 - **`PresentacionDeEscalaYAcorde.acordesQueCaben(_:notacion:)`** (`AcordesDelGrado`) y
   `EscalaSobreAcordePresentada.estructurasSuperiores`. En Armonía, la vista de escalas pliega por grado todos los
   acordes que caben (cada uno se abre en Acordes) y el análisis pone las estructuras superiores debajo de cada

@@ -124,6 +124,7 @@ extension TextosDeApps {
         disposicionCerrada: "Stretta",
         fundamentalTerceraYSeptima: "Fondamentale, terza e settima",
         terceraYSeptima: "Terza e settima",
+        disposicionCuartal: "Per quarte",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensioni",
         notasAEvitar: "Da evitare",

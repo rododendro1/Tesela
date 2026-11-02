@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### Armonía negativa, disposición por cuartas y armonía modal
+
+- **Armonía negativa**: `Tonalidad.negativa(_:)` refleja una nota sobre el eje entre la tónica y la dominante (Mi ↔
+  Mi♭, Si ↔ La♭ en Do), y `Tonalidad.negativo(_:)` y `negativos(_:)` hacen lo mismo con un acorde y con una
+  progresión (Do → Dom, Fa → Solm, Sol7 → Reø7).
+- **`DisposicionDeAcorde.cuartal`**: cuatro notas por cuartas de la escala del acorde, con sus notas guía y sin notas
+  a evitar (Rem7 → Re Sol Do Fa, Sol7 → Fa Si Mi La).
+- **Armonía modal**: `Escala.modoDeLaMayor`, `Escala.notaCaracteristica` (la 6.ª mayor del dórico, la 4.ª aumentada
+  del lidio…), `Escala.acordesCaracteristicos` (las tríadas que la llevan) y `Escala.cadenciaModal` (IV–i en
+  dórico, ♭II–i en frigio, ♭VII–I en mixolidio…).
+
 ### Esquemas armónicos: jazz y secuencias
 
 - **`EsquemaArmonico.buscar(en:)`** reconoce en una progresión, en cualquier tonalidad, el ii–V–I (y el ii–V sin
