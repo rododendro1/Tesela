@@ -118,6 +118,11 @@ extension TextosDeTeoria {
         patronAlberti: "baixo d'Alberti",
         patronQuebrado: "trencau",
         patronBajaYSube: "de baixada y puyada",
+        // Escala+Acorde.swift
+        papelNotaDelAcorde: "nota de l'acorde",
+        papelTensionDisponible: "tensión",
+        papelNotaAEvitar: "nota a evitar",
+        modoDe: { modo, escala in "modo \(modo) de \(escala)" },
         // Rearmonizacion.swift
         sustitutoTritonal: "sustituto tritonal",
         dominanteSecundaria: "dominant secundaria",

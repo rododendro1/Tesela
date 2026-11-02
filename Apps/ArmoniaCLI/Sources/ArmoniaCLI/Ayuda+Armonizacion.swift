@@ -16,7 +16,7 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeAnalizar: [EntradaDeAyuda] = [
-        // analizar <acordes> [--en <tonalidad>]
+        // analizar <acordes> [--en <tonalidad>] [--escalas]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisAnalizar),
             descripcion: TextosDeCLI.traduccion(\.descripcionAnalizar),

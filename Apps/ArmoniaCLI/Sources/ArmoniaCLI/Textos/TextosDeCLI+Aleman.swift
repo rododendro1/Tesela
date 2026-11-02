@@ -7,8 +7,8 @@ import Armonia
 extension TextosDeCLI {
     static let aleman = TextosDeCLI(
         // Ayuda+Armonizacion.swift
-        sintaxisAnalizar: "analyze <Akkorde> [--in <Tonart>]",
-        descripcionAnalizar: "Stufenbezeichnung, Funktionen,\nKadenzen und Modulationen (mit ihrem\nDrehakkord; ohne --in)",
+        sintaxisAnalizar: "analyze <Akkorde> [--in <Tonart>] [--scales]",
+        descripcionAnalizar: "Stufenbezeichnung, Funktionen,\nKadenzen und Modulationen (mit ihrem\nDrehakkord; ohne --in)\n--scales: die Skala jedes Akkords,\nmit Spannungs- und Avoid-Tönen",
         sintaxisAnalizarArchivo: "analyze --file <Datei> [--window <Dauer>]",
         descripcionAnalizarArchivo: "dasselbe mit den Akkorden einer MIDI-,\nMusicXML-, MEI- oder ABC-Datei (einer\npro Schlag; --window 2: einer pro\nHalbe)",
         sintaxisArmonizar: "harmonize <Melodie> [--in <Tonart>] [--proposals 3]",

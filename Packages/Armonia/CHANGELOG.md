@@ -2,6 +2,22 @@
 
 ## Sin publicar
 
+### Escalas sobre un acorde
+
+- **`Escala.notas(sobre:)`**: cada nota de una escala sobre un acorde, con su papel (`PapelEnLaEscala`: nota del
+  acorde, tensión disponible o nota a evitar) y su grado como en los cifrados de jazz (`NotaSobreElAcorde.cifra`:
+  «9», «♯11», «♭13»). `Escala.tensiones(sobre:)` y `Escala.notasAEvitar(sobre:)` dan solo unas u otras, y
+  `Escala.contiene(acorde:)`, si la escala tiene todas las notas de un acorde.
+- **La escala de cada acorde en su tonalidad**: `Tonalidad.escalaDelAcorde(_:)` y `AnalisisArmonico.escalas` la eligen
+  por lo que hace el acorde en el análisis (diatónico, dominante o sensible secundaria, napolitana, sexta
+  aumentada, préstamo o cromático): Re dórico para Rem7 en Do, La frigio dominante para V7/ii, Si♭ lidio dominante
+  para ♭VII7. Si no cabe, la de `TipoDeEscala.paraAcordes` que saca menos notas de la tonalidad.
+- **`Escala.escalaMadre`**: de qué escala es modo cada una (`ModoDeEscala`), entre la mayor, la menor melódica, la
+  menor armónica y la mayor armónica (`TipoDeEscala.familiasDeModos`): Do alterada, modo 7 de Re♭ menor melódica.
+  Se nombra en los quince idiomas («modo 2 de Do mayor», «mode 2 of C major»).
+- **`armonia analizar --escalas`** escribe debajo de cada acorde su escala, sus tensiones y sus notas a evitar, y
+  `armonia escala` dice de qué escala es modo.
+
 ### Disposiciones de piano y jazz
 
 - **`DisposicionDeAcorde`**: cerrada, drop 2, drop 3, drop 2 y 4, la shell (fundamental, tercera y séptima) y las

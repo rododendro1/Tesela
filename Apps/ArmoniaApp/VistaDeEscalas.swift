@@ -52,6 +52,12 @@ struct VistaDeEscalas: View {
             }
             Section(notacion.texto(\.notas)) {
                 Text(escala.nombre(en: notacion)).font(.headline)
+                // De qué escala es modo (Re dórico → modo 2 de Do mayor); se abre al tocarlo.
+                if let modo = PresentacionDeEscalaYAcorde.modo(de: escala, notacion: notacion),
+                    let madre = escala.escalaMadre?.madre
+                {
+                    Button(modo) { navegacion.ver(madre) }
+                }
                 Text(escala.notas.map { $0.nombre(en: notacion) }.joined(separator: "  "))
                     .font(.system(.body, design: .monospaced))
                 // La versión microtonal (Re Bayātī: Re Mi𝄳 Fa…) y los cents de cada grado, si la escala la tiene.

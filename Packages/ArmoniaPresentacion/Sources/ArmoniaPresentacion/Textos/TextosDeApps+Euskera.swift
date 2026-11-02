@@ -124,6 +124,9 @@ extension TextosDeApps {
         disposicionCerrada: "Itxia",
         fundamentalTerceraYSeptima: "Oinarria, hirugarrena eta zazpigarrena",
         terceraYSeptima: "Hirugarrena eta zazpigarrena",
+        // PresentacionDeEscalaYAcorde.swift
+        tensiones: "Tentsioak",
+        notasAEvitar: "Saihesteko",
         // FicheroParaExportar.swift
         partituraMusicXML: "MusicXML partitura",
         partituraMEI: "MEI partitura",

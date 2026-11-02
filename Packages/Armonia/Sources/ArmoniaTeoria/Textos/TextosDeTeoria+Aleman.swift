@@ -118,6 +118,11 @@ extension TextosDeTeoria {
         patronAlberti: "Albertibass",
         patronQuebrado: "gebrochen",
         patronBajaYSube: "ab und auf",
+        // Escala+Acorde.swift
+        papelNotaDelAcorde: "Akkordton",
+        papelTensionDisponible: "Spannungston",
+        papelNotaAEvitar: "Avoid-Ton",
+        modoDe: { modo, escala in "\(modo). Modus von \(escala)" },
         // Rearmonizacion.swift
         sustitutoTritonal: "Tritonussubstitution",
         dominanteSecundaria: "Zwischendominante",

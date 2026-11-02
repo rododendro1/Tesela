@@ -119,6 +119,11 @@ extension TextosDeTeoria {
         patronAlberti: "Alberti-basszus",
         patronQuebrado: "tört",
         patronBajaYSube: "le és fel",
+        // Escala+Acorde.swift
+        papelNotaDelAcorde: "akkordhang",
+        papelTensionDisponible: "feszültség",
+        papelNotaAEvitar: "kerülendő hang",
+        modoDe: { modo, escala in "\(escala) \(modo). módusza" },
         // Rearmonizacion.swift
         sustitutoTritonal: "tritónuszhelyettesítés",
         dominanteSecundaria: "mellékdomináns",

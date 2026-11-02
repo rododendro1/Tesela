@@ -124,6 +124,9 @@ extension TextosDeApps {
         disposicionCerrada: "Szűk",
         fundamentalTerceraYSeptima: "Alaphang, terc és szeptim",
         terceraYSeptima: "Terc és szeptim",
+        // PresentacionDeEscalaYAcorde.swift
+        tensiones: "Feszültségek",
+        notasAEvitar: "Kerülendő",
         // FicheroParaExportar.swift
         partituraMusicXML: "MusicXML-kotta",
         partituraMEI: "MEI-kotta",

@@ -7,8 +7,8 @@ import Armonia
 extension TextosDeCLI {
     static let occitano = TextosDeCLI(
         // Ayuda+Armonizacion.swift
-        sintaxisAnalizar: "analizar <acòrds> [--en <tonalitat>]",
-        descripcionAnalizar: "chifratge roman, foncions, cadéncias e\nmodulacions (amb lor acòrd pivòt; sens\n--en)",
+        sintaxisAnalizar: "analizar <acòrds> [--en <tonalitat>] [--escalas]",
+        descripcionAnalizar: "chifratge roman, foncions, cadéncias e\nmodulacions (amb lor acòrd pivòt; sens\n--en)\n--escalas: la gama de cada acòrd,\namb las tensions e nòtas d'evitar",
         sintaxisAnalizarArchivo: "analizar --archivo <fichièr> [--ventana <durada>]",
         descripcionAnalizarArchivo: "lo meteis, amb los acòrds d'un fichièr\nMIDI, MusicXML, MEI o ABC (un per\ntemps ; --ventana 2 : un per blanca)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalitat>] [--propuestas 3]",

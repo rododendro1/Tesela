@@ -124,6 +124,9 @@ extension TextosDeApps {
         disposicionCerrada: "Zarrada",
         fundamentalTerceraYSeptima: "Fundamental, tercera y séptima",
         terceraYSeptima: "Tercera y séptima",
+        // PresentacionDeEscalaYAcorde.swift
+        tensiones: "Tensiones",
+        notasAEvitar: "A evitar",
         // FicheroParaExportar.swift
         partituraMusicXML: "Partitura MusicXML",
         partituraMEI: "Partitura MEI",

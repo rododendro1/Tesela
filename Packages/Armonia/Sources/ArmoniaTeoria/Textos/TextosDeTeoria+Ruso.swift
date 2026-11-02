@@ -118,6 +118,11 @@ extension TextosDeTeoria {
         patronAlberti: "альбертиев бас",
         patronQuebrado: "ломаный",
         patronBajaYSube: "вниз и вверх",
+        // Escala+Acorde.swift
+        papelNotaDelAcorde: "звук аккорда",
+        papelTensionDisponible: "напряжение",
+        papelNotaAEvitar: "избегаемый звук",
+        modoDe: { modo, escala in "\(modo)-й лад гаммы \(escala)" },
         // Rearmonizacion.swift
         sustitutoTritonal: "тритоновая замена",
         dominanteSecundaria: "побочная доминанта",

@@ -124,6 +124,9 @@ extension TextosDeApps {
         disposicionCerrada: "Sarrada",
         fundamentalTerceraYSeptima: "Fondamentala, tèrça e setena",
         terceraYSeptima: "Tèrça e setena",
+        // PresentacionDeEscalaYAcorde.swift
+        tensiones: "Tensions",
+        notasAEvitar: "D'evitar",
         // FicheroParaExportar.swift
         partituraMusicXML: "Particion MusicXML",
         partituraMEI: "Particion MEI",

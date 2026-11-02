@@ -118,6 +118,11 @@ extension TextosDeTeoria {
         patronAlberti: "μπάσο Alberti",
         patronQuebrado: "σπαστό",
         patronBajaYSube: "κάτω-πάνω",
+        // Escala+Acorde.swift
+        papelNotaDelAcorde: "φθόγγος της συγχορδίας",
+        papelTensionDisponible: "ένταση",
+        papelNotaAEvitar: "φθόγγος προς αποφυγή",
+        modoDe: { modo, escala in "τρόπος \(modo) της κλίμακας \(escala)" },
         // Rearmonizacion.swift
         sustitutoTritonal: "τριτονική υποκατάσταση",
         dominanteSecundaria: "δευτερεύουσα δεσπόζουσα",
