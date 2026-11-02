@@ -192,8 +192,8 @@ struct VistaDeAnalisis: View {
         }
     }
 
-    /// La escala del acorde en su tonalidad, que se abre en la pestaña de escalas, con sus tensiones y sus notas a
-    /// evitar debajo.
+    /// La escala del acorde en su tonalidad, que se abre en la pestaña de escalas, con sus tensiones, sus notas a
+    /// evitar y sus estructuras superiores debajo.
     @ViewBuilder
     private func escalaDelAcorde(_ escala: EscalaSobreAcordePresentada) -> some View {
         Button(escala.nombre) { navegacion.ver(escala.escala) }
@@ -201,6 +201,10 @@ struct VistaDeAnalisis: View {
             .font(.callout)
         if !escala.resumen.isEmpty {
             Text(escala.resumen).font(.caption).foregroundColor(.secondary)
+        }
+        if !escala.estructurasSuperiores.isEmpty {
+            Text(notacion.texto(\.estructurasSuperiores) + ": " + escala.estructurasSuperiores)
+                .font(.caption).foregroundColor(.secondary)
         }
     }
 

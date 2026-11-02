@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- **`PresentacionDeEscalaYAcorde.acordesQueCaben(_:notacion:)`** (`AcordesDelGrado`) y
+  `EscalaSobreAcordePresentada.estructurasSuperiores`. En Armonía, la vista de escalas pliega por grado todos los
+  acordes que caben (cada uno se abre en Acordes) y el análisis pone las estructuras superiores debajo de cada
+  acorde. Las escalas compatibles de la vista de acordes salen de las que menos notas a evitar tienen a las que más.
 - **`PresentacionDeEscalaYAcorde`**: una escala sobre un acorde, con su nombre, de qué escala es modo, cada nota
   con su grado y las tensiones y notas a evitar (`EscalaSobreAcordePresentada`). Cada fila del análisis lleva la
   escala de su acorde (`AnalisisPresentado.Fila.escala`). En Armonía, la vista de análisis la enseña debajo de cada

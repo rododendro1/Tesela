@@ -155,9 +155,47 @@ import Testing
         }
     }
 
+    // MARK: Acordes que caben
+
+    @Test func acordesQueCabenEnUnGrado() {
+        let primero = Escala(.do, .mayor).acordesQueCaben(grado: 1)
+        let tipos: [TipoDeAcorde] = [
+            .mayor, .sus2, .sus4, .mayorSexta, .mayorSeptimaMayor, .mayorSextaNovena, .mayorSeptimaMayorNovena,
+            .mayorNovenaAnadida,
+        ]
+        for tipo in tipos { #expect(primero.contains(Acorde(.do, tipo)), Comment(rawValue: tipo.description)) }
+        #expect(!primero.contains(Acorde("Do7"))) // le falta el si♭
+        #expect(!primero.contains(Acorde(.do, .potencia)))
+        // De los de menos notas a los de más.
+        let cuantas = primero.map(\.notas.count)
+        #expect(cuantas == cuantas.sorted())
+        // Sobre el 5.º, la dominante con sus tensiones diatónicas, pero no las alteradas.
+        let quinto = Escala(.do, .mayor).acordesQueCaben(grado: 5)
+        #expect(quinto.contains(Acorde("Sol7")) && quinto.contains(Acorde(.sol, .dominanteDecimotercera)))
+        #expect(!quinto.contains(Acorde("Sol7(b9)")))
+        #expect(Escala(.do, .frigioDominante).acordesQueCaben(grado: 1).contains(Acorde("Do7(b9)")))
+        // Uno por grado.
+        #expect(Escala(.do, .mayor).acordesQueCaben.count == 7)
+        #expect(Escala(.do, .mayor).acordesQueCaben.allSatisfy { !$0.isEmpty })
+    }
+
+    @Test func estructurasSuperiores() {
+        let lidio = Escala(.do, .lidio).estructurasSuperiores(sobre: Acorde("Do7M"))
+        #expect(lidio.map(\.cifrado) == ["Re", "Sim", "Sol", "Lam"])
+        let mixolidio = Escala(.do, .mixolidio).estructurasSuperiores(sobre: Acorde("Do7"))
+        #expect(mixolidio.map(\.cifrado) == ["Solm", "Lam"])
+        // La de tríadas de la disminuida semitono-tono: La y Fa♯ sobre Do7, con la 13, la ♭9 y la ♯11.
+        let disminuida = Escala(.do, .disminuidaSemitonoTono).estructurasSuperiores(sobre: Acorde("Do7"))
+        #expect(disminuida.contains(Acorde(.la, .mayor)))
+        #expect(disminuida.contains(Acorde(Nota(.fa, .sostenido), .mayor)))
+        #expect(TipoDeAcorde.paraEscalas.count == Set(TipoDeAcorde.paraEscalas).count)
+    }
+
     @Test func lasEscalasParaAcordes() {
         #expect(TipoDeEscala.paraAcordes.count == Set(TipoDeEscala.paraAcordes).count)
         #expect(TipoDeEscala.paraAcordes.allSatisfy { TipoDeEscala.todos.contains($0) })
         #expect(TipoDeEscala.familiasDeModos.first == .mayor)
+        #expect(TipoDeEscala.deJazz.starts(with: TipoDeEscala.paraAcordes))
+        #expect(TipoDeEscala.deJazz.count == Set(TipoDeEscala.deJazz).count)
     }
 }

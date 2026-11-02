@@ -15,6 +15,11 @@ extension TipoDeEscala {
         .lidioSegundaAumentada, .ultralocrio,
         .disminuida, .disminuidaSemitonoTono, .tonosEnteros,
     ]
+
+    /// Las escalas de ``paraAcordes`` y además las bebop, las pentatónicas y la de blues: entre las que
+    /// `Acorde.escalasCompatibles(entre:)` busca por defecto.
+    public static let deJazz: [TipoDeEscala] =
+        paraAcordes + [.bebopDominante, .bebopMayor, .bebopDorico, .pentatonicaMayor, .pentatonicaMenor, .blues]
 }
 
 extension Tonalidad {

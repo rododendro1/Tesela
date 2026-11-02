@@ -127,6 +127,8 @@ extension TextosDeApps {
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "D'evitar",
+        acordesQueCaben: "Acòrds possibles",
+        estructurasSuperiores: "Estructuras superioras",
         // FicheroParaExportar.swift
         partituraMusicXML: "Particion MusicXML",
         partituraMEI: "Particion MEI",

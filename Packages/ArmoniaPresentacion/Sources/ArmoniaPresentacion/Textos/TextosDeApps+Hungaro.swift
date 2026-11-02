@@ -127,6 +127,8 @@ extension TextosDeApps {
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Feszültségek",
         notasAEvitar: "Kerülendő",
+        acordesQueCaben: "Beleillő akkordok",
+        estructurasSuperiores: "Felső struktúrák",
         // FicheroParaExportar.swift
         partituraMusicXML: "MusicXML-kotta",
         partituraMEI: "MEI-kotta",

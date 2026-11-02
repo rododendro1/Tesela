@@ -76,6 +76,7 @@ struct VistaDeEscalas: View {
                     Text(acordes.map { $0.cifrado(en: notacion) }.joined(separator: "   "))
                 }
             }
+            acordesQueCaben(en: escala)
             Section(notacion.texto(\.pentagrama)) {
                 // Mientras suena, la nota que se oye, de otro color.
                 if let paso = reproductor.paso(de: sonido) {
@@ -97,6 +98,24 @@ struct VistaDeEscalas: View {
         .toolbar {
             ToolbarItem {
                 BotonDeExportar([pentagrama.fichero])
+            }
+        }
+    }
+
+    /// Los acordes que caben sobre cada grado, no solo los de terceras (sus, sextas, add9, dominantes alteradas),
+    /// plegados por grado; cada uno se abre en la pestaña de acordes.
+    @ViewBuilder
+    private func acordesQueCaben(en escala: Escala) -> some View {
+        let grados = PresentacionDeEscalaYAcorde.acordesQueCaben(escala, notacion: notacion)
+        if !grados.isEmpty {
+            Section(notacion.texto(\.acordesQueCaben)) {
+                ForEach(grados, id: \.self) { grado in
+                    DisclosureGroup("\(grado.grado) (\(grado.acordes.count))") {
+                        ForEach(Array(grado.acordes.enumerated()), id: \.offset) { _, acorde in
+                            Button(acorde.cifrado(en: notacion)) { navegacion.ver(acorde) }
+                        }
+                    }
+                }
             }
         }
     }

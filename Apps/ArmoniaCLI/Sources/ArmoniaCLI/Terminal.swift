@@ -21,7 +21,7 @@ extension LineaDeComandos {
     static let marcas: Set = [
         "--ingles", "--english", "--subindices", "--subscripts", "--cifras", "--digits", "--cifrados", "--analisis",
         "--completo", "--complete", "--diagrama", "--diagram", "--tab", "--caged", "--ampliada", "--extended",
-        "--musicxml", "--help", "--ayuda", "--escalas", "--scales",
+        "--musicxml", "--help", "--ayuda", "--escalas", "--scales", "--acordes", "--chords",
     ]
 
     /// Los valores que se proponen tras una opción.

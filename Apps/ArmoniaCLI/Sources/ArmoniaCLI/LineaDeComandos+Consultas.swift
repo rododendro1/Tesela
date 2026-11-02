@@ -73,7 +73,7 @@ extension LineaDeComandos {
             "\(arpegio.nombre(en: notacion)) (\(arpegio.patron.nombre(en: notacion)))",
             "  \(t(.notas)): \(notas)",
         ]
-        // Las escalas del acorde, de las de menos notas a las de más; con ocho basta para orientarse.
+        // Las escalas del acorde, de las que tienen menos notas a evitar a las que más; con ocho basta para orientarse.
         let escalas = arpegio.acorde.escalasCompatibles()
         if !escalas.isEmpty {
             let nombres = escalas.prefix(8).map { $0.nombre(en: notacion) }.joined(separator: ", ")
@@ -97,7 +97,9 @@ extension LineaDeComandos {
         return "\(intervalo.nombre(en: notacion)) (\(intervalo.texto(en: notacion)), \(semitonos))"
     }
 
-    static func describir(escala: Escala, _ notacion: Notacion) -> String {
+    /// Con `conTodosSusAcordes` (`--acordes`), también los acordes que caben sobre cada grado, no solo los de
+    /// terceras.
+    static func describir(escala: Escala, conTodosSusAcordes: Bool = false, _ notacion: Notacion) -> String {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         var lineas = [
             escala.nombre(en: notacion),
@@ -127,6 +129,11 @@ extension LineaDeComandos {
         if acordes.count == escala.notas.count, romanos.count == acordes.count {
             let pares = zip(romanos, acordes).map { "\($0) \($1.cifrado(en: notacion))" }
             lineas.append("  \(t(.acordes)): " + pares.joined(separator: " · "))
+        }
+        let grados = conTodosSusAcordes ? PresentacionDeEscalaYAcorde.acordesQueCaben(escala, notacion: notacion) : []
+        if !grados.isEmpty {
+            lineas.append("  " + notacion.texto(\.acordesQueCaben) + ":")
+            lineas += grados.map { "    \($0.grado): \($0.cifrados)" }
         }
         return lineas.joined(separator: "\n")
     }
@@ -297,6 +304,10 @@ extension LineaDeComandos {
                 if conEscalas, let escala = fila.escala {
                     let resumen = escala.resumen.isEmpty ? "" : " — " + escala.resumen
                     lineas.append("    " + escala.nombre + resumen)
+                    if !escala.estructurasSuperiores.isEmpty {
+                        let etiqueta = notacion.texto(\.estructurasSuperiores)
+                        lineas.append("      " + etiqueta + ": " + escala.estructurasSuperiores)
+                    }
                 }
             }
         }
