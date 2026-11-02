@@ -57,7 +57,7 @@ swift --version 2>&1 | head -2
 
 # 1. El motor, módulo a módulo y en el orden de sus dependencias: el primer error de verdad suele estar
 #    en la capa más baja que falla.
-for modulo in ArmoniaNucleo ArmoniaTeoria ArmoniaRepresentaciones ArmoniaPartitura ArmoniaTrastes Armonia; do
+for modulo in ArmoniaNucleo ArmoniaTeoria ArmoniaRepresentaciones ArmoniaPartitura ArmoniaFormatos ArmoniaTrastes Armonia; do
     if [ "$MOTOR_COMPILA" = 1 ]; then
         paso "Motor: compilar $modulo" Packages/Armonia swift build --target "$modulo" || MOTOR_COMPILA=0
     else
@@ -68,7 +68,7 @@ done
 # 2. Las pruebas del motor (compilarlas aparte separa «no compila» de «una prueba falla»).
 if [ "$MOTOR_COMPILA" = 1 ]; then
     if paso "Motor: compilar las pruebas" Packages/Armonia swift build --build-tests; then
-        paso "Motor: pruebas rápidas" Packages/Armonia swift test --skip-build --parallel --filter '^Armonia(Nucleo|Teoria|Representaciones|Partitura|Trastes)?Tests\.'
+        paso "Motor: pruebas rápidas" Packages/Armonia swift test --skip-build --parallel --filter '^Armonia(Nucleo|Teoria|Representaciones|Partitura|Formatos|Trastes)?Tests\.'
         paso "Motor: ejemplos de la documentación" Packages/Armonia swift test --skip-build --parallel --filter '^ArmoniaDocumentacionTests\.'
         if [ "$RAPIDO" = 0 ]; then
             paso "Motor: pruebas exhaustivas" Packages/Armonia swift test --skip-build --parallel --filter '^ArmoniaExhaustivasTests\.'

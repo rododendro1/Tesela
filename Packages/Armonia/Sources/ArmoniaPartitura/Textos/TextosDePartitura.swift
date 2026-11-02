@@ -26,20 +26,6 @@ struct TextosDePartitura: TextosTraducidos {
     let especieConElContrapuntoDebajo: @Sendable (Int) -> String
     let sinFaltas: String
 
-    // MARK: ArchivoMIDI.swift
-    let pistaDeAcordes: String
-    let pistaDelBajo: String
-
-    // MARK: Importacion.swift
-    let formatoDesconocido: String
-    let musicXMLComprimido: String
-    let midiDanado: String
-    let midiConTiempoSMPTE: String
-    let xmlDanado: @Sendable (Int) -> String
-    let noEsMusicXMLPorPartes: String
-    let sinNotas: String
-    let sinAcordes: String
-
     // MARK: Duracion.swift
     let cuadrada: String
     let redonda: String

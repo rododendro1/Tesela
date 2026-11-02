@@ -1,26 +1,27 @@
 #!/usr/bin/env python3
 """Comprueba que los módulos de `Sources/` respetan las capas del diseño.
 
-La biblioteca se reparte en cinco módulos, más `Armonia`, que los reexporta:
+La biblioteca se reparte en seis módulos, más `Armonia`, que los reexporta:
 
     ArmoniaNucleo            Fundamentos, Texto, Postonal
     ArmoniaTeoria            Acordes, Escalas, Tonalidad   (se necesitan entre sí: van juntas)
     ArmoniaRepresentaciones  Afinacion, Color, Dibujo, Redes (con Neorriemanniana)
-    ArmoniaPartitura         Modelo, Formatos, Contrapunto
+    ArmoniaPartitura         Modelo, Dibujo, Contrapunto
+    ArmoniaFormatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond (sobre Partitura)
     ArmoniaTrastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes)
-    Armonia                  solo reexporta los cinco (no Hexagonos: quien lo use, lo importa)
+    Armonia                  solo reexporta los seis (no Hexagonos: quien lo use, lo importa)
 
 Fuera del paquete, Representaciones usa `Hexagonos` (la geometría de las rejillas hexagonales), que no depende
 de nada; `Armonia` no lo reexporta.
 
 Un módulo solo puede usar los de su izquierda: Teoría usa Núcleo; Representaciones, Partitura y Trastes
-usan Teoría y Núcleo, y no se usan entre sí. SwiftPM no impide por sí solo importar un módulo que no está
+usan Teoría y Núcleo, y no se usan entre sí; Formatos usa además Partitura. SwiftPM no impide por sí solo importar un módulo que no está
 declarado como dependencia si otra ruta lo compila antes, así que se comprueba aquí:
 
   1. las dependencias declaradas en Package.swift son exactamente las permitidas;
   2. ningún fichero importa un módulo `Armonia*` que no sea una dependencia permitida;
   3. ningún fichero nombra un tipo declarado en un módulo que no puede usar (aproximación por nombre);
-  4. `Armonia` reexporta los cinco módulos, y `Sources/Armonia` no tiene más código que eso;
+  4. `Armonia` reexporta los seis módulos, y `Sources/Armonia` no tiene más código que eso;
   5. las pruebas de cada módulo (`Tests/<Módulo>Tests`) dependen e importan solo ese módulo y los que puede usar,
      más `ApoyoDePruebas`; las que cruzan capas van en `Tests/ArmoniaTests`.
 
@@ -38,6 +39,7 @@ PERMITIDO = {
     "ArmoniaTeoria": {"ArmoniaNucleo"},
     "ArmoniaRepresentaciones": {"ArmoniaNucleo", "ArmoniaTeoria", "Hexagonos"},
     "ArmoniaPartitura": {"ArmoniaNucleo", "ArmoniaTeoria"},
+    "ArmoniaFormatos": {"ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura"},
     "ArmoniaTrastes": {"ArmoniaNucleo", "ArmoniaTeoria"},
 }
 PARAGUAS = "Armonia"

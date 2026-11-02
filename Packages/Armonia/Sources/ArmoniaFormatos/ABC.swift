@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+import ArmoniaPartitura
 import ArmoniaTeoria
 
 // Exportación a ABC 2.1 (abcnotation.com), la notación en texto de la música tradicional: la leen abcjs (en el

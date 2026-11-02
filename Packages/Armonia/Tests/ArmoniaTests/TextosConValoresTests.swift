@@ -1,6 +1,7 @@
 import Foundation
 import Testing
 
+@testable import ArmoniaFormatos
 @testable import ArmoniaNucleo
 @testable import ArmoniaPartitura
 @testable import ArmoniaRepresentaciones
@@ -88,7 +89,6 @@ import Testing
                 textos.enLosCompases("x"),
                 textos.especieConElContrapuntoEncima(3),
                 textos.especieConElContrapuntoDebajo(3),
-                textos.xmlDanado(3),
                 textos.fraccionDeRedonda("x"),
                 textos.duracionNoValida("x"),
                 textos.compasNoValido("x"),
@@ -97,6 +97,10 @@ import Testing
             for (i, texto) in resultados.enumerated() {
                 #expect(!texto.isEmpty, "TextosDePartitura, texto \(i) en \(idioma)")
             }
+        }
+        for idioma in Idioma.allCases {
+            let texto = TextosDeFormatos.traducidos.texto(en: idioma).xmlDanado(3)
+            #expect(!texto.isEmpty, "TextosDeFormatos, xmlDanado en \(idioma)")
         }
     }
 }

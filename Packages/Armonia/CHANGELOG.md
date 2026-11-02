@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+### ArmoniaFormatos
+
+- Los formatos de fichero salen de `ArmoniaPartitura` a un módulo propio, **`ArmoniaFormatos`** (con su producto):
+  la exportación a MusicXML, MEI, LilyPond, ABC y MIDI, la importación (`PiezaImportada`, `ErrorDeImportacion`) y
+  el lector de XML. `ArmoniaPartitura` se queda con el modelo, el pentagrama en SVG y el contrapunto. Con
+  `import Armonia` no cambia nada; quien importe solo `ArmoniaPartitura` y use los formatos tiene que añadir
+  `import ArmoniaFormatos` (y el producto `ArmoniaFormatos` en su `Package.swift`).
+
 ### Errores por capa
 
 Cambia la API pública de los errores: quien haga `catch let error as ErrorDeLectura` o un `switch` sobre su

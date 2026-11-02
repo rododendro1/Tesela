@@ -97,7 +97,7 @@ jobs:
       - name: Compilar
         run: swift build
       - name: Pruebas rápidas
-        run: swift test --parallel --filter "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Trastes)?Tests\\."
+        run: swift test --parallel --filter "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Formatos|Trastes)?Tests\\."
       - name: Pruebas exhaustivas
         run: swift test --parallel --filter "^ArmoniaExhaustivasTests\\."
       - name: Ejemplos de la documentación
@@ -106,7 +106,7 @@ jobs:
       - name: Sin avisos (módulos)
         if: matrix.swift == '6.2'
         run: |
-          for objetivo in ArmoniaNucleo ArmoniaTeoria ArmoniaRepresentaciones ArmoniaPartitura ArmoniaTrastes Armonia; do
+          for objetivo in ArmoniaNucleo ArmoniaTeoria ArmoniaRepresentaciones ArmoniaPartitura ArmoniaFormatos ArmoniaTrastes Armonia; do
             swift build --scratch-path .build/sin-avisos --target "$objetivo" -Xswiftc -warnings-as-errors
           done
       - uses: actions/cache/save@v6
@@ -268,7 +268,7 @@ jobs:
       matrix:
         paquete:
           # Las exhaustivas tardan y no prueban código distinto del de las rápidas.
-          - { nombre: Armonia, filtro: "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Trastes|Documentacion)?Tests\\.", funciones: 95.5, lineas: 98.0 }
+          - { nombre: Armonia, filtro: "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Formatos|Trastes|Documentacion)?Tests\\.", funciones: 95.5, lineas: 98.0 }
           - { nombre: ArmoniaPresentacion, filtro: "", funciones: 96.5, lineas: 96.0 }
           - { nombre: ArmoniaUI, filtro: "", funciones: 97.0, lineas: 99.0 }
           - { nombre: Hexagonos, filtro: "", funciones: 93.5, lineas: 97.5 }
@@ -434,7 +434,7 @@ jobs:
       - name: Versión de Swift y de Xcode
         run: swift --version && xcodebuild -version
       - name: Armonia
-        run: swift build && swift test --parallel --filter "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Trastes)?Tests\\."
+        run: swift build && swift test --parallel --filter "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Formatos|Trastes)?Tests\\."
         working-directory: Packages/Armonia
       - name: ArmoniaPresentacion
         run: swift test --parallel

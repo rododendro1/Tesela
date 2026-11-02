@@ -22,20 +22,6 @@ extension TextosDePartitura {
         especieConElContrapuntoDebajo: { n in "\(n). espeziea, kontrapuntua cantus firmusaren azpian" },
         sinFaltas: "Akatsik gabe.",
 
-        // ArchivoMIDI.swift
-        pistaDeAcordes: "akordeak",
-        pistaDelBajo: "baxua",
-
-        // Importacion.swift
-        formatoDesconocido: "Fitxategia ez da MIDI, MusicXML, MEI edo ABC.",
-        musicXMLComprimido: "MusicXML konprimitua (.mxl) hondatuta dago edo ezin da irakurri: esportatu konprimitu gabe (.musicxml).",
-        midiDanado: "MIDI fitxategia hondatuta edo moztuta dago.",
-        midiConTiempoSMPTE: "MIDI fitxategiak SMPTE fotogrametan neurtzen du denbora, ez beltz bakoitzeko pultsutan.",
-        xmlDanado: { linea in "XML fitxategia hondatuta dago (\(linea). lerroa)." },
-        noEsMusicXMLPorPartes: "XMLa ez da zatikako MusicXML partitura bat (score-partwise) ezta MEI ere.",
-        sinNotas: "Fitxategiak ez du notarik.",
-        sinAcordes: "Fitxategian ez da akorderik entzuten.",
-
         // Duracion.swift
         cuadrada: "karratua",
         redonda: "biribila",

@@ -22,20 +22,6 @@ extension TextosDePartitura {
         especieConElContrapuntoDebajo: { n in "Espécie \(n), com o contraponto abaixo do cantus firmus" },
         sinFaltas: "Sem erros.",
 
-        // ArchivoMIDI.swift
-        pistaDeAcordes: "acordes",
-        pistaDelBajo: "baixo",
-
-        // Importacion.swift
-        formatoDesconocido: "O ficheiro não é MIDI, MusicXML, MEI nem ABC.",
-        musicXMLComprimido: "O MusicXML comprimido (.mxl) está danificado ou não se pode ler: exporte-o sem comprimir (.musicxml).",
-        midiDanado: "O ficheiro MIDI está danificado ou cortado.",
-        midiConTiempoSMPTE: "O ficheiro MIDI conta o tempo em fotogramas SMPTE, não em pulsos por semínima.",
-        xmlDanado: { linea in "O ficheiro XML está danificado (linha \(linea))." },
-        noEsMusicXMLPorPartes: "O XML não é uma partitura MusicXML por partes (score-partwise) nem MEI.",
-        sinNotas: "O ficheiro não tem nenhuma nota.",
-        sinAcordes: "No ficheiro não soa nenhum acorde.",
-
         // Duracion.swift
         cuadrada: "breve",
         redonda: "semibreve",

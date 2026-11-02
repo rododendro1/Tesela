@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+import ArmoniaPartitura
 import Foundation
 
 // Lectura de MusicXML comprimido (.mxl, lo que exportan por omisión MuseScore y otros): un zip con la

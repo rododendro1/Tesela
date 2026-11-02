@@ -135,7 +135,7 @@ el código de cada paso probado). Los artículos también se pueden leer directa
 ```
 swift build
 swift test                                    # todas las pruebas
-swift test --filter "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Trastes)?Tests\."   # solo las rápidas (segundos)
+swift test --filter "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Formatos|Trastes)?Tests\."   # solo las rápidas (segundos)
 swift test --filter "^ArmoniaTeoriaTests\."    # las de un módulo
 swift test --filter "^ArmoniaExhaustivasTests\."  # solo las exhaustivas
 swift test --filter "^ArmoniaDocumentacionTests\."  # los ejemplos del README y de DocC
@@ -152,13 +152,13 @@ Los cambios de cada versión, con la guía para actualizar, están en [CHANGELOG
 
 ### Organización de los ficheros
 
-La biblioteca son cinco módulos por capas, y `Armonia` los reexporta: `import Armonia` da toda la API, e
+La biblioteca son seis módulos por capas, y `Armonia` los reexporta: `import Armonia` da toda la API, e
 `import ArmoniaTeoria` (con `ArmoniaNucleo`, de que depende) solo los acordes, las escalas y las tonalidades.
 Lo interno que se usa entre capas es `package`, no público. Un módulo solo usa los de su izquierda, y
 `Scripts/comprobaciones/comprobar_modulos.py`, en la raíz del repositorio, lo vigila:
 
     ArmoniaNucleo ◄── ArmoniaTeoria ◄──┬── ArmoniaRepresentaciones
-                                       ├── ArmoniaPartitura
+                                       ├── ArmoniaPartitura ◄── ArmoniaFormatos
                                        └── ArmoniaTrastes
 
 Un fichero por concepto: el tipo principal junto con sus tipos auxiliares y sus extensiones
@@ -204,13 +204,15 @@ Sources/
 │   └── Dibujo/        DibujoSVG (título, leyenda y colores comunes de los dibujos)
 ├── ArmoniaPartitura/
 │   ├── Modelo/        Duracion (con Figura y Tempo), Compas, Evento, Melodia (con Voz), ErrorDeLecturaDePartitura,
-│   │                  Pentagrama (Clave, PosicionEnPentagrama, InstrumentoDePartitura)
-│   ├── Formatos/      MusicXML, MEI, LilyPond y ABC (exportación de voces, corales y progresiones),
-│   │                  ArchivoMIDI (ficheros MIDI estándar de voces, corales y progresiones)
+│   │                  Pentagrama (Clave, PosicionEnPentagrama, InstrumentoDePartitura), SignoMicrotonal
+│   ├── Dibujo/        PentagramaSVG (con sus opciones y los glifos SMuFL)
 │   └── Contrapunto/   Contrapunto (contrapunto de especies a dos voces, con sus faltas)
+├── ArmoniaFormatos/   MusicXML, MEI, LilyPond y ABC (exportación de voces, corales y progresiones),
+│                      ArchivoMIDI (ficheros MIDI estándar), la importación de MusicXML, MXL, MEI, ABC y MIDI
+│                      (Importacion, con ErrorDeImportacion) y el lector de XML propio (LectorXML)
 ├── ArmoniaTrastes/    Encordado (afinaciones del instrumento), Mastil (con PosicionEnElMastil: dónde suena cada nota),
 │                      Digitacion (formas de tocar un acorde en el mástil)
-└── Armonia/           el módulo paraguas, sin código propio: Exportaciones (reexporta los cinco)
+└── Armonia/           el módulo paraguas, sin código propio: Exportaciones (reexporta los seis)
     │                  y la documentación
     └── Armonia.docc/  portada y un artículo por tema
 ```
@@ -234,7 +236,8 @@ modos) y en `Scripts/comprobaciones/idiomas.py`, un caso en `EscrituraDeNotas` (
 idioma o la escritura tiene `default`, y cada `Traduccion` sin el idioma nuevo deja de compilar.
 
 Las pruebas rápidas están en un objetivo por módulo (`Tests/ArmoniaNucleoTests/`, `Tests/ArmoniaTeoriaTests/`,
-`Tests/ArmoniaRepresentacionesTests/`, `Tests/ArmoniaPartituraTests/`, `Tests/ArmoniaTrastesTests/`), que depende
+`Tests/ArmoniaRepresentacionesTests/`, `Tests/ArmoniaPartituraTests/`, `Tests/ArmoniaFormatosTests/`,
+`Tests/ArmoniaTrastesTests/`), que depende
 solo de ese módulo y de los que puede usar: una prueba de Teoría que necesitara Partitura no compila. Lo que cruza
 capas (leer acordes en cada notación, literales, Codable, convenciones de nombres, entradas inválidas, robustez, los
 textos con valores y los dibujos de referencia) está en `Tests/ArmoniaTests/`, y lo que comparten varias (el
@@ -244,10 +247,11 @@ línea de comandos están con ella, en `Apps/ArmoniaCLI/Tests/`.
 
 ### Capas
 
-La biblioteca se reparte en cinco módulos que siguen unas capas: **ArmoniaNucleo** (Fundamentos,
+La biblioteca se reparte en seis módulos que siguen unas capas: **ArmoniaNucleo** (Fundamentos,
 Texto, Postonal), **ArmoniaTeoria** (Acordes, Escalas, Tonalidad, que se necesitan entre sí) y
-tres hojas que usan las anteriores y no se usan entre sí: **ArmoniaRepresentaciones** (afinación,
-color, dibujo y redes, con la teoría neorriemanniana), **ArmoniaPartitura** (modelo y formatos)
+tres ramas que usan las anteriores y no se usan entre sí: **ArmoniaRepresentaciones** (afinación,
+color, dibujo y redes, con la teoría neorriemanniana), **ArmoniaPartitura** (el modelo, el pentagrama en SVG y el
+contrapunto), con **ArmoniaFormatos** encima (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond),
 y **ArmoniaTrastes** (instrumentos de cuerda con trastes). `Armonia` los reexporta
 todos; `Hexagonos`, que usan las Representaciones, se importa aparte. `python3
 Scripts/comprobaciones/comprobar_modulos.py`, que ejecuta el CI, comprueba que las dependencias declaradas y los

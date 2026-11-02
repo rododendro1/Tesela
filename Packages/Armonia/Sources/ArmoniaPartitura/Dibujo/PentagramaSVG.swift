@@ -4,7 +4,7 @@ import Foundation
 
 // Un pentagrama en SVG, para escalas y acordes: redondas sobre cinco líneas, con clave, armadura, alteraciones,
 // líneas adicionales y, en los acordes, las segundas desplazadas. No hay ritmo, vigas ni varias voces: para
-// partituras completas, el MEI o el MusicXML de `Formatos/` y un motor como Verovio.
+// partituras completas, el MEI o el MusicXML de `ArmoniaFormatos` y un motor como Verovio.
 //
 // Las medidas están en espacios de pentagrama (1 = la distancia entre dos líneas) y el eje y baja, como en SVG:
 // la línea de arriba está en y = 0 y la de abajo en y = 4. Los glifos son los de Bravura (`GlifosSMuFL`).

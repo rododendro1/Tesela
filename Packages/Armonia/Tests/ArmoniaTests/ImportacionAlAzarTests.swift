@@ -4,6 +4,7 @@ import Hexagonos
 import Testing
 
 @testable import Armonia
+@testable import ArmoniaFormatos
 @testable import ArmoniaNucleo
 @testable import ArmoniaPartitura
 @testable import ArmoniaRepresentaciones
