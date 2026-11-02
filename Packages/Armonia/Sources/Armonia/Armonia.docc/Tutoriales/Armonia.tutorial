@@ -1,0 +1,24 @@
+@Tutorials(name: "De una nota a un análisis armónico") {
+    @Intro(title: "De una nota a un análisis armónico") {
+        Aprende a usar Armonia paso a paso: empieza por nombrar una nota y termina analizando una progresión,
+        leída de un fichero MIDI y escrita como partitura. Cada paso es un programa que puedes ejecutar.
+    }
+
+    @Chapter(name: "Los fundamentos") {
+        Las notas, las alturas y los intervalos, y con ellos los acordes y las escalas.
+
+        @Image(source: "capitulo-fundamentos.svg", alt: "Sol7 con Si en el bajo, en un pentagrama en clave de sol.")
+
+        @TutorialReference(tutorial: "doc:NotasEIntervalos")
+        @TutorialReference(tutorial: "doc:AcordesYEscalas")
+    }
+
+    @Chapter(name: "El análisis") {
+        La tonalidad de una melodía, el grado y la función de cada acorde de una progresión, sus cadencias, y
+        el mismo análisis hecho desde un fichero.
+
+        @Image(source: "capitulo-analisis.svg", alt: "Un recorrido en el Tonnetz: Do, La menor, Fa y Re menor, unidos por las transformaciones R y L.")
+
+        @TutorialReference(tutorial: "doc:AnalizarUnaProgresion")
+    }
+}

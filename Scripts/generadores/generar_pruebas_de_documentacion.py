@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Convierte los ejemplos de código del README y del catálogo DocC en pruebas.
 
-Cada bloque ```swift se convierte en una función de prueba que se compila y se ejecuta:
+Cada bloque ```swift, y cada fichero de código de los tutoriales (`Armonia.docc/Resources/Tutoriales`, uno por
+paso), se convierte en una función de prueba que se compila y se ejecuta:
 así un ejemplo que deja de compilar, o que se detiene, rompe las pruebas. Además, cuando una
 línea es una sola expresión con un comentario detrás (`Nota.re + "3M"   // Fa♯`), se comprueba
 que el valor escrito coincide con el principio del comentario. El comentario puede seguir con
@@ -23,7 +24,8 @@ import re
 import sys
 
 RAIZ = pathlib.Path(__file__).resolve().parents[2] / "Packages" / "Armonia"
-FUENTES = [RAIZ / "README.md"] + sorted((RAIZ / "Sources/Armonia/Armonia.docc").glob("*.md"))
+CATALOGO = RAIZ / "Sources/Armonia/Armonia.docc"
+FUENTES = [RAIZ / "README.md"] + sorted(CATALOGO.glob("*.md")) + sorted((CATALOGO / "Resources/Tutoriales").glob("*.swift"))
 DESTINO = RAIZ / "Tests/ArmoniaDocumentacionTests/EjemplosDeDocumentacionTests.swift"
 
 # Variables que los ejemplos usan sin declarar (vienen del texto que los rodea).
@@ -37,7 +39,10 @@ INICIOS_DE_SENTENCIA = ("let ", "var ", "func ", "import ", "do ", "do{", "}", "
 
 
 def bloques(ruta):
-    """(línea de inicio, [líneas]) de cada bloque swift del fichero."""
+    """(línea de inicio, [líneas]) de cada bloque swift del fichero; un fichero .swift es un solo bloque."""
+    if ruta.suffix == ".swift":
+        yield 1, ruta.read_text(encoding="utf-8").rstrip("\n").split("\n")
+        return
     dentro, inicio, actual = False, 0, []
     for n, linea in enumerate(ruta.read_text(encoding="utf-8").split("\n"), start=1):
         if linea.strip().startswith("```"):
@@ -131,7 +136,7 @@ def generar():
     funciones = []
     for ruta in FUENTES:
         nombre_fichero = ruta.relative_to(RAIZ).as_posix()
-        base = re.sub(r"\W", "", ruta.stem)
+        base = re.sub(r"\W", "", ruta.stem if ruta.suffix == ".md" else "Tutorial" + ruta.stem.title())
         for indice, (inicio, lineas) in enumerate(bloques(ruta), start=1):
             texto = "\n".join(lineas)
             # Solo el código, sin comentarios ni cadenas, para buscar qué nombres se usan.

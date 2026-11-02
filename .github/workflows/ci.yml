@@ -130,6 +130,7 @@ jobs:
           - { nombre: EjemploArmonia, ruta: Ejemplos/EjemploArmonia }
           - { nombre: EjemploHexagonos, ruta: Ejemplos/EjemploHexagonos }
           - { nombre: RendimientoArmonia, ruta: Herramientas/RendimientoArmonia }
+          - { nombre: FuzzArmonia, ruta: Herramientas/FuzzArmonia }
     defaults:
       run:
         working-directory: ${{ matrix.paquete.ruta }}
@@ -143,8 +144,8 @@ jobs:
             ${{ matrix.paquete.ruta }}/.build
       - name: Compilar
         run: swift build
-      - name: Pruebas de la línea de comandos
-        if: matrix.paquete.nombre == 'ArmoniaCLI'
+      - name: Pruebas
+        if: matrix.paquete.nombre == 'ArmoniaCLI' || matrix.paquete.nombre == 'FuzzArmonia'
         run: swift test --parallel
       - name: Ejemplo
         if: startsWith(matrix.paquete.nombre, 'Ejemplo')

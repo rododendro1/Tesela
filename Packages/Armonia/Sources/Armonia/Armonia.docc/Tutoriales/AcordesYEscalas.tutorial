@@ -1,0 +1,131 @@
+@Tutorial(time: 15) {
+    @Intro(title: "Acordes y escalas") {
+        Lee un acorde de su cifrado, reconoce el acorde que forman unas notas y saca los grados de una escala
+        y los acordes de una tonalidad.
+    }
+
+    @Section(title: "Leer un cifrado") {
+        @ContentAndMedia {
+            Un ``Acorde`` se escribe con su cifrado, en español o en inglés: `"Sol7/Si"` o `"G7/B"`. De él
+            salen sus notas, sus alturas en una octava y el mismo cifrado en otro estilo.
+        }
+
+        @Steps {
+            @Step {
+                Sol7 con Si en el bajo tiene cuatro notas, de la fundamental a la séptima.
+
+                @Code(name: "main.swift", file: "acordes-01-01.swift")
+            }
+
+            @Step {
+                En posición cerrada, desde el bajo, el acorde empieza en Si3.
+
+                @Code(name: "main.swift", file: "acordes-01-02.swift")
+            }
+
+            @Step {
+                Un cifrado se puede escribir en otro estilo, como el americano, y las tensiones se leen con o
+                sin signos: `b9` es ♭9.
+
+                @Code(name: "main.swift", file: "acordes-01-03.swift")
+            }
+        }
+    }
+
+    @Section(title: "Reconocer un acorde") {
+        @ContentAndMedia {
+            Al revés: unas notas, o unos números MIDI de un teclado, y el acorde que forman. Hay varias
+            lecturas posibles, de la más probable a la menos.
+        }
+
+        @Steps {
+            @Step {
+                Mi, Sol y Do forman Do mayor en primera inversión.
+
+                @Code(name: "main.swift", file: "acordes-02-01.swift")
+            }
+
+            @Step {
+                Con números MIDI, Armonia elige también cómo se escribe cada nota.
+
+                @Code(name: "main.swift", file: "acordes-02-02.swift")
+            }
+
+            @Step {
+                Cada lectura es un candidato, con las notas que le faltan: Do, Mi y Si♭ es un Do7 sin quinta.
+
+                @Code(name: "main.swift", file: "acordes-02-03.swift")
+            }
+        }
+    }
+
+    @Section(title: "Escalas y tonalidades") {
+        @ContentAndMedia {
+            Una ``Escala`` tiene sus notas y, sobre cada grado, un acorde. Una ``Tonalidad`` es una escala
+            mayor o menor con todo lo que la armonía tonal dice de ella.
+        }
+
+        @Steps {
+            @Step {
+                La menor armónica, con el séptimo grado elevado.
+
+                @Code(name: "main.swift", file: "acordes-03-01.swift")
+            }
+
+            @Step {
+                Los acordes de sus grados en cifrado romano, con la séptima.
+
+                @Code(name: "main.swift", file: "acordes-03-02.swift")
+            }
+
+            @Step {
+                La tonalidad de La menor usa el séptimo grado elevado para la dominante (Mi7) y la sensible
+                (Sol♯°7).
+
+                @Code(name: "main.swift", file: "acordes-03-03.swift")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            ¿Cuál es el bajo de `Acorde("Sol7/Si").posicionCerrada(octava: 3)`?
+
+            @Choice(isCorrect: false) {
+                Sol3
+
+                @Justification(reaction: "Vuelve a intentarlo") {
+                    Sol es la fundamental, pero el cifrado pone Si en el bajo.
+                }
+            }
+
+            @Choice(isCorrect: true) {
+                Si3
+
+                @Justification(reaction: "¡Correcto!") {
+                    Lo que va detrás de la barra es el bajo, y la posición cerrada empieza por él.
+                }
+            }
+        }
+
+        @MultipleChoice {
+            ¿Qué da `Acorde.candidatos(_:)` que no da `Acorde.identificar(_:)`?
+
+            @Choice(isCorrect: true) {
+                Las notas que faltan en cada lectura y su coste.
+
+                @Justification(reaction: "¡Correcto!") {
+                    Cada candidato dice cuánto se aleja de las notas dadas, por ejemplo una quinta omitida.
+                }
+            }
+
+            @Choice(isCorrect: false) {
+                Los acordes en otro estilo de cifrado.
+
+                @Justification(reaction: "Vuelve a intentarlo") {
+                    El estilo lo cambia `cifrado(estilo:)`, sobre cualquier acorde.
+                }
+            }
+        }
+    }
+}

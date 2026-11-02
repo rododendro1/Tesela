@@ -22,6 +22,7 @@ Ejemplos/
 ├── EjemploArmonia/     Un recorrido por la API del motor, ejecutable (SwiftPM)
 └── EjemploHexagonos/   Un recorrido por las rejillas hexagonales, con mapas dibujados en el terminal (SwiftPM)
 Herramientas/
+├── FuzzArmonia/         Los lectores de ficheros y textos con datos al azar (libFuzzer; el CI lo pasa cada semana)
 └── RendimientoArmonia/  Cuánto tarda el motor en lo que hacen las apps (SwiftPM; el CI lo mide en cada cambio)
 Packages/
 ├── Armonia/        El motor de armonía, en cinco módulos (Núcleo, Teoría, Representaciones, Partitura, Trastes)
@@ -52,7 +53,7 @@ Package.swift       Los tres paquetes juntos, para usarlos desde otro proyecto p
 ```
 ArmoniaApp ──┬──► ArmoniaUI ──┬──► Armonia ──► Hexagonos
 TonnetzApp ──┘               └──► Hexagonos
-ArmoniaApp, TonnetzApp, ArmoniaCLI, EjemploArmonia, RendimientoArmonia ──► Armonia
+ArmoniaApp, TonnetzApp, ArmoniaCLI, EjemploArmonia, RendimientoArmonia, FuzzArmonia ──► Armonia
 ArmoniaCLI ──► ArmoniaPresentacion (en el paquete ArmoniaUI, sin SwiftUI) ──► Armonia
 EjemploHexagonos ──► Hexagonos
 ```
@@ -133,6 +134,26 @@ El CI la ejecuta en cada cambio y deja la tabla en el resumen de la ejecución y
 casos que van más de un 25 % más lentos que en main, en la mediana y en el mínimo (`--avisar 25`). No falla por
 lentitud, porque sus máquinas varían demasiado para fijar límites absolutos.
 
+
+## Fuzzing
+
+`Herramientas/FuzzArmonia` prueba con [libFuzzer](https://llvm.org/docs/LibFuzzer.html) todo lo que el motor lee
+de fuera: ficheros MIDI, MusicXML y MXL (con lo que se saca después de ellos: acordes, tonalidad y análisis),
+teclados en UIL y los textos que se escriben en las apps y en `armonia` (cifrados, notas, escalas, corales,
+voces…). Compilado con AddressSanitizer, un fallo es cualquier caso que detenga el programa, se cuelgue más de
+10 segundos o pierda memoria. Solo en Linux, que es donde Swift trae libFuzzer:
+
+```sh
+cd Herramientas/FuzzArmonia
+swift build -c release --product FuzzArmonia --scratch-path .build/fuzz -Xswiftc -sanitize=fuzzer,address -Xswiftc -DFUZZING
+swift run FuzzArmonia --semillas semillas         # los casos de partida, de lo que escribe la propia biblioteca
+LSAN_OPTIONS=suppressions=fugas-ajenas.supp .build/fuzz/release/FuzzArmonia corpus semillas -max_total_time=600
+swift run FuzzArmonia crash-…                     # repite un fallo, sin libFuzzer
+```
+
+El CI (`.github/workflows/fuzzing.yml`) lo pasa diez minutos cada domingo, guarda los casos que llegan a código
+nuevo para la semana siguiente y, si encuentra un fallo, deja el caso en el artefacto `fallos`. Un fallo así se
+arregla con su prueba en `ImportacionAlAzarTests`, con el caso dentro.
 ## Añadir un paquete o una app
 
 1. Crea la carpeta en `Packages/` (con el mismo nombre que el paquete) o en `Apps/`.

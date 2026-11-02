@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+- **Tutorial interactivo de DocC**, «De una nota a un análisis armónico», en tres partes: notas, alturas e
+  intervalos; acordes y escalas, y el análisis de una progresión, de la tonalidad a las cadencias y desde un
+  fichero MIDI hasta MusicXML. El código de cada paso se prueba como los ejemplos de los artículos.
+- **Fuzzing de los lectores** (`Herramientas/FuzzArmonia`): libFuzzer con AddressSanitizer sobre MIDI, MusicXML,
+  MXL, UIL y los textos de cifrados, notas, escalas, corales y voces, diez minutos cada domingo en el CI.
+- `PiezaImportada.acordes()` identifica una sola vez el acorde de las ventanas que suenan igual. Un fichero con
+  las doce notas sostenidas durante horas tardaba más de un minuto en leer sus acordes, y ahora una fracción de
+  segundo (lo encontró el fuzzing en su primer minuto).
 - **Los microtonos también se leen**: `NotaDeLaPieza.desvio`, los cents que una nota importada se aparta de su
   altura. En MusicXML, un `<alter>` con decimales ya no se redondea: `-0.5` sobre E es Mi♭ y 50 cents (antes, Mi♭
   sin más). En MIDI, cada nota se lleva la inflexión de tono (pitch bend) de su canal, en el ámbito que fije el

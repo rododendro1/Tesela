@@ -1,0 +1,128 @@
+@Tutorial(time: 10) {
+    @Intro(title: "Notas, alturas e intervalos") {
+        Armonia distingue una nota (Fa♯), que no tiene octava, de una altura (Fa♯4), que sí la tiene y suena
+        a una frecuencia. Entre dos notas o dos alturas hay un intervalo, con su número y su calidad.
+    }
+
+    @Section(title: "Nombrar las notas") {
+        @ContentAndMedia {
+            Una nota se escribe como en una partitura: con su nombre y su alteración. Armonia conserva la
+            ortografía, así que Fa♯ y Sol♭ son notas distintas aunque suenen igual en un piano.
+        }
+
+        @Steps {
+            @Step {
+                Crea un proyecto con Armonia como dependencia e importa el módulo. Una nota se puede escribir
+                como un texto: `"Fa#"`, `"Fa♯"` o `"fa sostenido"`.
+
+                @Code(name: "main.swift", file: "notas-01-01.swift")
+            }
+
+            @Step {
+                Escribe Sol♭ y compáralo con Fa♯: no son la misma nota.
+
+                @Code(name: "main.swift", file: "notas-01-02.swift")
+            }
+
+            @Step {
+                La distancia entre las dos lo dice: de Fa♯ a Sol♭ hay una segunda disminuida, no un unísono.
+
+                @Code(name: "main.swift", file: "notas-01-03.swift")
+            }
+        }
+    }
+
+    @Section(title: "Alturas y MIDI") {
+        @ContentAndMedia {
+            Una ``Altura`` es una nota en una octava. Tiene su número MIDI y su frecuencia, y se puede
+            obtener desde un número MIDI eligiendo cómo se escribe.
+        }
+
+        @Steps {
+            @Step {
+                El La4 es el 69 de MIDI y suena a 440 Hz.
+
+                @Code(name: "main.swift", file: "notas-02-01.swift")
+            }
+
+            @Step {
+                Un número MIDI no dice cómo se escribe la nota: con `preferirBemoles` sale Mi♭ y no Re♯, y con
+                una tonalidad sale la nota que le corresponde, como la sensible de La menor.
+
+                @Code(name: "main.swift", file: "notas-02-02.swift")
+            }
+        }
+    }
+
+    @Section(title: "Intervalos") {
+        @ContentAndMedia {
+            Un ``Intervalo`` tiene un número (tercera, quinta…) y una calidad (mayor, menor, justa,
+            aumentada, disminuida). Se mide entre dos notas y se suma a una nota o a una altura.
+        }
+
+        @Steps {
+            @Step {
+                De Si a Fa hay una quinta disminuida, y la inversión de una tercera mayor es una sexta menor.
+
+                @Code(name: "main.swift", file: "notas-03-01.swift")
+            }
+
+            @Step {
+                Suma un intervalo a una nota para obtener otra: una tercera mayor sobre Re es Fa♯. Sobre una
+                altura, el resultado tiene su octava.
+
+                @Code(name: "main.swift", file: "notas-03-02.swift")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            ¿Qué devuelve `Nota("Fa#") == Nota("Solb")`?
+
+            @Choice(isCorrect: false) {
+                `true`
+
+                @Justification(reaction: "Vuelve a intentarlo") {
+                    Suenan igual en un piano, pero Armonia conserva la ortografía: son notas distintas.
+                }
+            }
+
+            @Choice(isCorrect: true) {
+                `false`
+
+                @Justification(reaction: "¡Correcto!") {
+                    Fa♯ y Sol♭ son enarmónicas: entre ellas hay una segunda disminuida.
+                }
+            }
+        }
+
+        @MultipleChoice {
+            ¿Qué tipo representa una nota en una octava concreta, con su número MIDI?
+
+            @Choice(isCorrect: false) {
+                `Nota`
+
+                @Justification(reaction: "Casi") {
+                    Una nota no tiene octava: Fa♯ es la misma en cualquier octava.
+                }
+            }
+
+            @Choice(isCorrect: true) {
+                `Altura`
+
+                @Justification(reaction: "¡Correcto!") {
+                    Una altura como Fa♯4 tiene octava, número MIDI y frecuencia.
+                }
+            }
+
+            @Choice(isCorrect: false) {
+                `Intervalo`
+
+                @Justification(reaction: "Vuelve a intentarlo") {
+                    Un intervalo es la distancia entre dos notas o dos alturas.
+                }
+            }
+        }
+    }
+}

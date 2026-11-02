@@ -119,7 +119,12 @@ def main() -> int:
         reexportados |= set(re.findall(r"@_exported\s+import\s+(\w+)", p.read_text(encoding="utf-8")))
     if reexportados != set(PERMITIDO):
         errores.append(f"{PARAGUAS} reexporta {sorted(reexportados)}, debe reexportar {sorted(PERMITIDO)}")
-    extra = [p.relative_to(paraguas).as_posix() for p in paraguas.rglob("*.swift") if p.parent != paraguas]
+    # El código de los tutoriales, dentro del catálogo DocC, no se compila con el módulo.
+    extra = [
+        p.relative_to(paraguas).as_posix()
+        for p in paraguas.rglob("*.swift")
+        if p.parent != paraguas and not any(c.suffix == ".docc" for c in p.relative_to(paraguas).parents)
+    ]
     if extra:
         errores.append(f"Código en subcarpetas de Sources/{PARAGUAS}: {extra}")
 

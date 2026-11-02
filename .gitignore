@@ -12,3 +12,8 @@ Config/Local.xcconfig
 # Python
 __pycache__/
 *.pyc
+
+# Lo que deja el fuzzing (Herramientas/FuzzArmonia)
+Herramientas/FuzzArmonia/corpus/
+Herramientas/FuzzArmonia/semillas/
+Herramientas/FuzzArmonia/fallos/
