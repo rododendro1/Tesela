@@ -39,14 +39,34 @@ public struct Cadencia: Hashable, Sendable, CustomStringConvertible {
         tipo == .autentica && acordes[0].grado == 5 && acordes.allSatisfy { $0.acorde.inversion == 0 }
     }
 
+    /// Semicadencia frigia: del iv6 al V, con el bajo bajando medio tono de ♭6̂ a 5̂ (Rem/Fa–Mi en La menor; en
+    /// mayor, con el iv prestado).
+    public var esFrigia: Bool {
+        let iv = acordes[0]
+        return tipo == .semicadencia && iv.grado == 4 && iv.acorde.tipo.esMenor && iv.acorde.inversion == 1
+    }
+
+    /// Cadencia plagal menor: del iv al I mayor (Fam–Do en Do mayor), con el iv prestado del modo menor.
+    public var esPlagalMenor: Bool {
+        tipo == .plagal && acordes[0].acorde.tipo.esMenor && acordes[1].acorde.tipo.esMayor
+    }
+
+    /// El nombre de la cadencia, precisando si es una semicadencia frigia o una plagal menor: «cadencia
+    /// auténtica», «semicadencia frigia», «Phrygian half cadence».
+    public func nombre(en notacion: Notacion) -> String {
+        if esFrigia { return TextosDeTeoria.en(notacion, \.semicadenciaFrigia) }
+        if esPlagalMenor { return TextosDeTeoria.en(notacion, \.cadenciaPlagalMenor) }
+        return tipo.nombre(en: notacion)
+    }
+
     /// "Cadencia auténtica V7–I (acordes 3 → 4)". Los acordes se cuentan desde 1.
     public var description: String { descripcion(en: .espanolCompacto) }
 
     public func descripcion(en notacion: Notacion) -> String {
         let pasos = "\(acorde + 1) → \(acorde + 2)"
         let lugar = TextosDeTeoria.en(notacion) { $0.cadenciaEnLosAcordes(pasos) }
-        let nombre = tipo.nombre(en: notacion)
-        return nombre.conMayusculaInicial
+        let titulo = nombre(en: notacion)
+        return titulo.conMayusculaInicial
             + " " + acordes.map(\.cifrado).joined(separator: "–") + " (\(lugar))"
     }
 

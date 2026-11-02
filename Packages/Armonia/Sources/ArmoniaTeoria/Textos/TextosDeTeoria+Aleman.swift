@@ -105,6 +105,8 @@ extension TextosDeTeoria {
         cadenciaPlagal: "plagaler Schluss",
         cadenciaRota: "Trugschluss",
         semicadencia: "Halbschluss",
+        semicadenciaFrigia: "phrygischer Halbschluss",
+        cadenciaPlagalMenor: "Moll-Plagalschluss",
 
         // RecorridoTonal.swift
         deUnaTonalidadAOtra: { de, a, n in "Von \(de) nach \(a) bei Akkord \(n)" },

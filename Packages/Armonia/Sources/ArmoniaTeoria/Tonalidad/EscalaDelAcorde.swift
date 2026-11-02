@@ -67,13 +67,15 @@ extension Tonalidad {
         let estructura = acorde.estructura
         let esDominante = estructura.tercera == .terceraMayor && estructura.septima == .septimaMenor
         switch analizado.categoria {
-        case .diatonico:
+        case .diatonico, .cuartaYSextaCadencial:
             return Self.modos(sobre: raiz, de: madres(de: self))
         case .dominanteSecundaria(let grado), .sensibleSecundaria(let grado):
             let destino = self.acorde(grado: grado)
             let mayor = Escala(destino.fundamental, .mayor)
             let armonica = Escala(destino.fundamental, .menorArmonica)
             return Self.modos(sobre: raiz, de: destino.tipo.esMenor ? [armonica] : [mayor, armonica])
+        case .sustitutoTritonal:
+            return [Escala(raiz, .lidioDominante)]
         case .napolitana:
             return [Escala(raiz, .lidio)]
         case .sextaAumentada:

@@ -106,6 +106,8 @@ extension TextosDeTeoria {
         cadenciaPlagal: "plagális zárlat",
         cadenciaRota: "megszakított zárlat",
         semicadencia: "félzárlat",
+        semicadenciaFrigia: "fríg félzárlat",
+        cadenciaPlagalMenor: "moll plagális zárlat",
 
         // RecorridoTonal.swift
         deUnaTonalidadAOtra: { de, a, n in "\(de)ból \(a)ba (\(n). akkord)" },

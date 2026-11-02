@@ -106,6 +106,8 @@ extension TextosDeTeoria {
         cadenciaPlagal: "plagal cadence",
         cadenciaRota: "deceptive cadence",
         semicadencia: "half cadence",
+        semicadenciaFrigia: "Phrygian half cadence",
+        cadenciaPlagalMenor: "minor plagal cadence",
 
         // RecorridoTonal.swift
         deUnaTonalidadAOtra: { de, a, n in "From \(de) to \(a) at chord \(n)" },

@@ -109,6 +109,8 @@ struct TextosDeTeoria: TextosTraducidos {
     let cadenciaPlagal: String
     let cadenciaRota: String
     let semicadencia: String
+    let semicadenciaFrigia: String
+    let cadenciaPlagalMenor: String
 
     // MARK: RecorridoTonal.swift
     let deUnaTonalidadAOtra: @Sendable (String, String, Int) -> String

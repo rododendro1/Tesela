@@ -82,6 +82,11 @@ Cada acorde cae en una de estas categorías (`AcordeAnalizado.Categoria`):
   tónica y nada más (italiana), con 2̂ (francesa) o con ♭3̂ (alemana), sea cual sea el bajo. Tiene
   función de subdominante y va a la dominante o al I64 cadencial. La alemana escrita como
   séptima de dominante (La♭7 en Do, con Sol♭ en vez de Fa♯) cuenta como tal si va a la dominante.
+- **Sustituto tritonal** (subV7, subV7/ii): una séptima de dominante medio tono por encima de
+  su destino, cuando resuelve en él (Re♭7–Do en Do). Tiene función de dominante. La♭7–Sol sigue
+  leyéndose como sexta aumentada alemana.
+- **I64 cadencial**: la tónica en segunda inversión que va a la dominante sobre el mismo bajo.
+  Se cifra I64, pero tiene función de dominante (`cuartaYSextaCadencial`).
 - **Préstamo** del modo homónimo: iv, ♭VI o ♭VII en mayor, o el I mayor (tercera de picardía)
   en menor.
 - **Cromático**: ninguno de los anteriores; se cifra con la alteración del grado y sin función.
@@ -92,6 +97,8 @@ Tonalidad(.do).analizar(["Fa", "Re7(b5)/Lab", "Sol"]).cifrados                  
 Tonalidad(.do).analizar(["Lab(#6)", "Do/Sol", "Sol7", "Do"]).cifrados           // ["Ger+6", "I64", "V7", "I"]
 Tonalidad(.do).analizar(["Lab7", "Sol"]).cifrados                               // ["Ger+6", "V"]
 Tonalidad(.do).analizar(["Reb/Lab", "Sol7", "Do"]).cifrados                     // ["♭II64", "V7", "I"]
+Tonalidad(.do).analizar(["Mib7", "Rem7", "Reb7", "Do"]).cifrados                // ["subV7/ii", "ii7", "subV7", "I"]
+Tonalidad(.do).analizar(["Do/Sol", "Sol7", "Do"]).funciones.map { $0!.abreviatura }   // ["D", "D", "T"]
 ```
 
 Las funciones siguen los grados: I, iii y vi son de tónica; ii y IV, de subdominante; V y
@@ -128,7 +135,11 @@ progresion.mei().contains("<syl>V7/V</syl>")                   // true
   (`esPerfecta`) con V y I en estado fundamental.
 - **Plagal**: de IV (o iv) a la tónica.
 - **Rota**: de V a vi (VI en menor, o el ♭VI prestado en mayor).
-- **Semicadencia**: termina en V en estado fundamental.
+- **Semicadencia**: termina en V en estado fundamental. Es **frigia** (`esFrigia`) si llega
+  desde el iv6, con el bajo bajando medio tono (Rem/Fa–Mi en La menor).
+
+Una plagal desde el iv prestado al I mayor es una **plagal menor** (`esPlagalMenor`), y las dos
+se nombran así en `description` y en `nombre(en:)`.
 
 ```swift
 let cadencia = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do").cadencias[0]
@@ -140,6 +151,8 @@ cadencia.descripcion(en: .inglesASCII)     // "Authentic cadence V7–I (chords 
 Tonalidad(.do).analizar(["Do", "Fa", "Do"]).cadencias.first?.tipo          // .plagal
 Tonalidad(.do).analizar(["Do", "Sol7", "Lam"]).cadencias.first?.tipo       // .rota
 Tonalidad(.do).analizar(["Do", "Lam", "Fa", "Sol"]).cadencias.first?.tipo  // .semicadencia
+Tonalidad(.la, .menor).analizar(["Lam", "Rem/Fa", "Mi"]).cadencias[0].description   // "Semicadencia frigia iv6–V (acordes 2 → 3)"
+Tonalidad(.do).analizar(["Do", "Fam", "Do"]).cadencias[0].description       // "Cadencia plagal menor iv–I (acordes 2 → 3)"
 ```
 
 Sin la partitura no se sabe dónde acaban las frases, así que cada V–I cuenta como cadencia
@@ -283,6 +296,23 @@ let armonizada = Tonalidad(.do).armonizarACuatroVoces(["Mi4", "Fa4", "Re4", "Do4
 armonizada.armonizacion.cifrados      // ["I", "IV", "V", "I"]
 armonizada.coral.voz(3)               // [Mi4, Fa4, Re4, Do4]
 armonizada.coral.esCorrecta           // true
+```
+
+## Bajo cifrado
+
+`acorde(sobre:cifras:)` lee las cifras del bajo continuo sobre una nota del bajo, contando los
+intervalos en la armadura de la tonalidad (en menor, la natural: la sensible se escribe con su
+alteración). Completa las abreviaturas (nada o «5» es la tríada, «6» y «64» sus inversiones,
+«7», «65», «43» y «42» la séptima y las suyas), y una alteración sola altera la tercera.
+`acordes(bajoCifrado:)` lee una línea entera, con cada nota del bajo y sus cifras tras dos
+puntos, y `Coral.realizar(bajoCifrado:en:soprano:)` la realiza a cuatro voces.
+
+```swift
+Tonalidad(.do).acorde(sobre: .si, cifras: "65")                    // Sol7/Si
+Tonalidad(.la, .menor).acorde(sobre: .mi, cifras: "#")             // Mi
+Tonalidad(.la, .menor).acordes(bajoCifrado: "La Fa:6 Mi:# La")     // [Lam, Rem/Fa, Mi, Lam]
+let realizado = Coral.realizar(bajoCifrado: "Do Fa Sol:7 Do", en: Tonalidad(.do))!
+realizado.esCorrecta                  // true
 ```
 
 ## Notas extrañas a la armonía
