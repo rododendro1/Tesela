@@ -59,14 +59,11 @@ extension PentagramaSVG {
 
     /// Un glifo con su origen en `x` y en la altura de una posición del pentagrama.
     static func glifo(_ glifo: Glifo, x: Double, lugar: Int, pentagrama: Int = 0) -> String {
-        "<path transform=\"translate(\(n(x)) \(n(y(deLugar: lugar, pentagrama: pentagrama))))\" d=\"\(glifo.trazado)\"/>"
+        ElementoSVG("path", numeros: .hastaTresDecimales)
+            .con("transform", "translate(\(n(x)) \(n(y(deLugar: lugar, pentagrama: pentagrama))))")
+            .con("d", glifo.trazado).vacio
     }
 
     /// Un número con tres decimales como mucho y sin ceros de más.
-    static func n(_ valor: Double) -> String {
-        let redondeado = (valor * 1000).rounded() / 1000
-        var texto = "\(redondeado)"
-        if texto.hasSuffix(".0") { texto.removeLast(2) }
-        return texto == "-0" ? "0" : texto
-    }
+    static func n(_ valor: Double) -> String { NumerosSVG.hastaTresDecimales.texto(valor) }
 }
