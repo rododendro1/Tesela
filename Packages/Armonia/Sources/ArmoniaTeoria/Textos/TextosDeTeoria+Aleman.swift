@@ -120,6 +120,9 @@ extension TextosDeTeoria {
         patronAlberti: "Albertibass",
         patronQuebrado: "gebrochen",
         patronBajaYSube: "ab und auf",
+        aproximacionDesdeAbajo: "von unten",
+        aproximacionDesdeArriba: "von oben",
+        aproximacionEncierro: "Umspielung",
         // Escala+Acorde.swift
         papelNotaDelAcorde: "Akkordton",
         papelTensionDisponible: "Spannungston",

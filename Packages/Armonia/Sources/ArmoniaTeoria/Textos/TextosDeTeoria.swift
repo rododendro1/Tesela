@@ -125,6 +125,9 @@ struct TextosDeTeoria: TextosTraducidos {
     let patronAlberti: String
     let patronQuebrado: String
     let patronBajaYSube: String
+    let aproximacionDesdeAbajo: String
+    let aproximacionDesdeArriba: String
+    let aproximacionEncierro: String
 
     // MARK: Escala+Acorde.swift
     let papelNotaDelAcorde: String

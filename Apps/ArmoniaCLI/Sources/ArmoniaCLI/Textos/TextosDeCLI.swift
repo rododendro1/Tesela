@@ -32,6 +32,7 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionAcorde: String
     let sintaxisArpegio: String
     let descripcionArpegio: String
+    let notasArpegio: String
     let sintaxisIdentificar: String
     let descripcionIdentificar: String
     let sintaxisIntervalo: String
@@ -202,6 +203,11 @@ struct TextosDeCLI: TextosTraducidos {
     let faltaCifradoDeDigitaciones: @Sendable (String, (String, String)) -> String
     let faltaEscalaDePosiciones: String
     let capoFueraDeRango: String
+    let octavasFueraDeRango: String
+    let desdeNoValido: @Sendable (String) -> String
+    let tensionesMalEscritas: String
+    let gradosMalEscritos: String
+    let aproximacionDesconocida: @Sendable (String) -> String
 
     // MARK: ErrorDeUso.swift (comunes)
     let pruebaLaAyuda: String

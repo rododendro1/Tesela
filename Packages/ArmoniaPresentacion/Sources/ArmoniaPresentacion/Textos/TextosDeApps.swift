@@ -86,6 +86,15 @@ public struct TextosDeApps: TextosTraducidos {
     public let octavas: String
     public let conLaOctavaFinal: String
     public let figura: String
+    public let empezarEn: String
+    public let porGrados: String
+    public let aproximacion: String
+    public let tresillos: String
+    public let swing: String
+    public let enlazarLosAcordes: String
+    public let porPosiciones: String
+    public let dedosSugeridos: String
+    public let tempo: @Sendable (Int) -> String
     public let sinCapo: String
     public let capo: @Sendable (Int) -> String
     public let rearmonizar: String

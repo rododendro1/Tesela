@@ -121,6 +121,9 @@ extension TextosDeTeoria {
         patronAlberti: "Alberti bass",
         patronQuebrado: "broken",
         patronBajaYSube: "down and up",
+        aproximacionDesdeAbajo: "from below",
+        aproximacionDesdeArriba: "from above",
+        aproximacionEncierro: "enclosure",
         // Escala+Acorde.swift
         papelNotaDelAcorde: "chord tone",
         papelTensionDisponible: "tension",

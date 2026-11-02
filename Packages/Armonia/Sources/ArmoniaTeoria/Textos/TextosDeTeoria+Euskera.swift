@@ -124,6 +124,9 @@ extension TextosDeTeoria {
         patronAlberti: "Albertiren baxua",
         patronQuebrado: "hautsia",
         patronBajaYSube: "jaitsi-igoa",
+        aproximacionDesdeAbajo: "behetik",
+        aproximacionDesdeArriba: "goitik",
+        aproximacionEncierro: "inguratzea",
         // Escala+Acorde.swift
         papelNotaDelAcorde: "akordeko nota",
         papelTensionDisponible: "tentsioa",

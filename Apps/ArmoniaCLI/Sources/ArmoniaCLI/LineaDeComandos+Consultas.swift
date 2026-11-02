@@ -56,21 +56,100 @@ extension LineaDeComandos {
             guard let elegido = patronDeArpegio(texto) else { return uso(.patronDesconocido(texto), notacion) }
             patron = elegido
         }
+        var recorrido = RecorridoDeArpegio()
+        if let error = leerRecorrido(&argumentos, en: &recorrido) { return uso(error, notacion) }
         if let desconocida = argumentos.opcionDesconocida {
             return uso(.opcionDesconocida(desconocida), notacion)
         }
         guard !argumentos.restantes.isEmpty else { return uso(.faltaCifradoDelArpegio, notacion) }
-        let bloques = try argumentos.restantes.map { texto in
-            describir(arpegio: Arpegio(try Acorde(leyendo: texto), patron: patron), notacion)
+        var bloques: [String] = []
+        for texto in argumentos.restantes {
+            let acorde = try Acorde(leyendo: texto)
+            var inicio = 0
+            if let desde = recorrido.desde {
+                let delGrado = Int(desde).flatMap { Arpegio.indice(delGrado: $0, en: acorde) }
+                let deLaNota = (try? Nota(leyendo: desde)).flatMap { Arpegio.indice(de: $0, en: acorde) }
+                guard let indice = delGrado ?? deLaNota else { return uso(.desdeNoValido(desde), notacion) }
+                inicio = indice
+            }
+            let arpegio: Arpegio
+            if let grados = recorrido.grados {
+                arpegio = Arpegio(
+                    acorde, grados: grados, octavas: recorrido.octavas, aproximacion: recorrido.aproximacion)
+            } else {
+                arpegio = Arpegio(
+                    acorde, patron: patron, octavas: recorrido.octavas, conOctava: recorrido.conOctava, inicio: inicio,
+                    tensiones: recorrido.tensiones, aproximacion: recorrido.aproximacion)
+            }
+            bloques.append(describir(arpegio: arpegio, notacion))
         }
         return bien(bloques.joined(separator: "\n\n"))
+    }
+
+    /// Lo que cambia el recorrido de `arpegio`, además del patrón.
+    struct RecorridoDeArpegio {
+        var octavas = 1
+        var conOctava = true
+        /// Lo que sigue a `--desde`: una nota o un grado, que se busca en cada acorde.
+        var desde: String?
+        var tensiones: [Int] = []
+        var grados: [Int]?
+        var aproximacion: Arpegio.Aproximacion?
+    }
+
+    /// Quita y lee `--octavas`, `--sin-octava`, `--desde`, `--tensiones`, `--grados` y `--aproximacion`, o dice
+    /// qué está mal escrito.
+    static func leerRecorrido(_ argumentos: inout Argumentos, en recorrido: inout RecorridoDeArpegio)
+        -> ErrorDeUso?
+    {
+        recorrido.conOctava = !argumentos.quitarMarca("--sin-octava", "--no-octave")
+        var sinValor: String?
+        /// El valor de la opción, `nil` si no está o no lo lleva (y entonces se apunta en `sinValor`).
+        func valor(_ opcion: Argumentos.Opcion) -> String? {
+            switch opcion {
+            case .ausente: return nil
+            case .sinValor(let nombre):
+                sinValor = sinValor ?? nombre
+                return nil
+            case .valor(let texto): return texto
+            }
+        }
+        let octavas = valor(argumentos.quitarOpcion("--octavas", "--octaves"))
+        recorrido.desde = valor(argumentos.quitarOpcion("--desde", "--from"))
+        let tensiones = valor(argumentos.quitarOpcion("--tensiones", "--tensions"))
+        let grados = valor(argumentos.quitarOpcion("--grados", "--degrees"))
+        let aproximacion = valor(argumentos.quitarOpcion("--aproximacion", "--aproximación", "--approach"))
+        if let sinValor { return .faltaValor(sinValor) }
+        if let octavas {
+            guard let n = Int(octavas), (1...4).contains(n) else { return .octavasFueraDeRango }
+            recorrido.octavas = n
+        }
+        if let tensiones {
+            guard let leidas = Arpegio.tensiones(leyendo: tensiones) else { return .tensionesMalEscritas }
+            recorrido.tensiones = leidas
+        }
+        if let grados {
+            guard let leidos = Arpegio.grados(leyendo: grados) else { return .gradosMalEscritos }
+            recorrido.grados = leidos
+        }
+        if let aproximacion {
+            guard let leida = Arpegio.Aproximacion(leyendo: aproximacion) else {
+                return .aproximacionDesconocida(aproximacion)
+            }
+            recorrido.aproximacion = leida
+        }
+        return nil
     }
 
     static func describir(arpegio: Arpegio, _ notacion: Notacion) -> String {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let notas = arpegio.alturas(octava: 4).map { $0.nombre(en: notacion) }.joined(separator: " ")
+        // El patrón, o el recorrido por grados si es propio: «Do (1-5-3-8)».
+        let recorrido =
+            arpegio.grados.isEmpty
+            ? arpegio.patron.nombre(en: notacion) : arpegio.grados.map(String.init).joined(separator: "-")
         var lineas = [
-            "\(arpegio.nombre(en: notacion)) (\(arpegio.patron.nombre(en: notacion)))",
+            "\(arpegio.nombre(en: notacion)) (\(recorrido))",
             "  \(t(.notas)): \(notas)",
         ]
         // Las escalas del acorde, de las que tienen menos notas a evitar a las que más; con ocho basta para orientarse.

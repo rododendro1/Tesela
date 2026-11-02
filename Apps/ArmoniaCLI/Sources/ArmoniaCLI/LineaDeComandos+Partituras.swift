@@ -26,6 +26,8 @@ extension LineaDeComandos {
         let alias: [(String, String)] =
             (formato == .midi ? [("program", "programa")] : [])
             + [("patrón", "patron"), ("pattern", "patron"), ("file", "archivo"), ("window", "ventana")]
+        // `--enlazar`: cada arpegio empieza cerca de donde acabó el anterior.
+        let enlazados = entrada.quitarMarca("--enlazar", "--connect")
         let (opciones, marcas) = entrada.quitarOpcionesConTexto(
             marcas: ["cifrados": "cifrados", "analisis": "analisis", "análisis": "analisis"], alias: alias)
         let musica = entrada.restantes
@@ -69,6 +71,7 @@ extension LineaDeComandos {
         if !arpegios.contains(tipo), let opcion = ["figura", "patron"].first(where: { opciones[$0] != nil }) {
             return uso(.soloParaArpegios(opcion), notacion)
         }
+        if !arpegios.contains(tipo) && enlazados { return uso(.soloParaArpegios("enlazar"), notacion) }
         // `--archivo`: los acordes de un fichero MIDI, MusicXML, MEI o ABC, con su ritmo armónico (lo que dura cada
         // uno), y su compás, su tempo y su título si no se dan otros.
         var leidos: (acordes: [Acorde], duraciones: [Duracion])?
@@ -209,11 +212,11 @@ extension LineaDeComandos {
             if let ritmo {
                 voz = Voz(
                     arpegiando: analisis.acordes.map(\.acorde), duraciones: ritmo, patron: patron, figura: figura,
-                    compas: compas)
+                    compas: compas, enlazados: enlazados)
             } else {
                 voz = Voz(
                     arpegiando: analisis.acordes.map(\.acorde), patron: patron, figura: figura,
-                    porAcorde: porAcorde, compas: compas)
+                    porAcorde: porAcorde, compas: compas, enlazados: enlazados)
             }
             if formato == .midi {
                 return binario(

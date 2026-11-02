@@ -21,7 +21,8 @@ extension LineaDeComandos {
     static let marcas: Set = [
         "--ingles", "--english", "--subindices", "--subscripts", "--cifras", "--digits", "--cifrados", "--analisis",
         "--completo", "--complete", "--diagrama", "--diagram", "--tab", "--caged", "--ampliada", "--extended",
-        "--musicxml", "--help", "--ayuda", "--escalas", "--scales", "--acordes", "--chords",
+        "--musicxml", "--help", "--ayuda", "--escalas", "--scales", "--acordes", "--chords", "--sin-octava",
+        "--no-octave", "--enlazar", "--connect",
     ]
 
     /// Los valores que se proponen tras una opción.
@@ -33,8 +34,12 @@ extension LineaDeComandos {
         (["--escritura", "--writing"], ["palabras", "compacto", "ascii", "unicode", "words", "compact"]),
         (
             ["--patron", "--pattern"],
-            ["ascendente", "descendente", "ida-y-vuelta", "alberti", "up", "down", "up-down"]
+            [
+                "ascendente", "descendente", "ida-y-vuelta", "baja-y-sube", "quebrado", "alberti", "up", "down",
+                "up-down", "down-up", "broken",
+            ]
         ),
+        (["--aproximacion", "--approach"], ["abajo", "arriba", "encierro", "below", "above", "enclosure"]),
         (
             ["--clave"],
             ["sol", "fa", "do1", "do2", "do3", "do4", "sol8b", "sol8a", "fa3", "treble", "bass", "alto", "tenor"]

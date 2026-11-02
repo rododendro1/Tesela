@@ -120,6 +120,9 @@ extension TextosDeTeoria {
         patronAlberti: "basso albertino",
         patronQuebrado: "spezzato",
         patronBajaYSube: "discesa e salita",
+        aproximacionDesdeAbajo: "da sotto",
+        aproximacionDesdeArriba: "da sopra",
+        aproximacionEncierro: "accerchiamento",
         // Escala+Acorde.swift
         papelNotaDelAcorde: "nota dell'accordo",
         papelTensionDisponible: "tensione",

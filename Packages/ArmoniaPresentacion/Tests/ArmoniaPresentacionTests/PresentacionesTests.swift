@@ -104,6 +104,33 @@ import Testing
         #expect(negras.voz.eventos.allSatisfy { $0.duracion == .negra })
     }
 
+    @Test func tresillosTempoSwingYEnlace() throws {
+        let tresillo = Duracion.corchea.grupoIrregular(3, en: 2)
+        let arpegio = PresentacionDeArpegios.arpegio(
+            Arpegio(Acorde("Do"), conOctava: false), figura: tresillo, tempo: Tempo(120), notacion: .espanolCompacto)
+        #expect(arpegio.voz.eventos.allSatisfy { $0.duracion == tresillo })
+        // A 120, cada negra dura medio segundo y cada corchea de tresillo, un sexto.
+        #expect(arpegio.sonido.inicios.map { ($0 * 6).rounded() } == [0, 1, 2])
+        #expect(String(decoding: arpegio.ficheros[0].datos, as: UTF8.self).contains("<per-minute>120"))
+        let conSwing = PresentacionDeArpegios.arpegio(
+            Arpegio(Acorde("Do")), swing: true, notacion: .espanolCompacto)
+        let recta = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Do")), notacion: .espanolCompacto)
+        #expect(conSwing.sonido != recta.sonido)
+        #expect(conSwing.ficheros == recta.ficheros)
+        // Enlazados, el Fa empieza por el Do, la nota más cercana al último Do del primero.
+        let analisis = try PresentacionDeAnalisis.analizar("Do Fa", notacion: .espanolCompacto)
+        let suelta = try #require(analisis.arpegiada(.ascendente, figura: .semicorchea, notacion: .espanolCompacto))
+        let enlazada = try #require(
+            analisis.arpegiada(.ascendente, figura: .semicorchea, enlazados: true, notacion: .espanolCompacto))
+        #expect(suelta.voz.eventos[8].alturas.first?.nota == .fa)
+        #expect(enlazada.voz.eventos[8].alturas.first?.nota == .do)
+        let lenta = try #require(
+            PresentacionDeArpegios.progresion(
+                [Acorde("Do")], patron: .ascendente, tonalidad: nil, tempo: Tempo(60), swing: true,
+                notacion: .espanolCompacto))
+        #expect(lenta.sonido.notas.count == 4)
+    }
+
     @Test func losFicherosDelArpegioSeLeenConLasMismasNotas() throws {
         let arpegio = PresentacionDeArpegios.arpegio(
             Arpegio(Acorde("Fa#m7"), patron: .alberti), notacion: .espanolCompacto)

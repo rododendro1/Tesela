@@ -432,6 +432,53 @@ extension DigitacionTests {
         #expect(mastil.arpegios(de: Acorde("Do")).map(\.trastes) == [2...5, 7...10])
         // En un solo traste no caben las tres notas.
         #expect(mastil.arpegios(de: Acorde("Do"), ancho: 1).isEmpty)
+        #expect(lam.allSatisfy { $0.forma == nil })
+    }
+
+    @Test func losArpegiosCAGED() {
+        let mastil = Mastil(.guitarra, trastes: 15)
+        let enDo = mastil.arpegiosCAGED(de: Acorde("Do"))
+        #expect(enDo.map(\.forma) == [.c, .a, .g, .e, .d])
+        #expect(enDo.map(\.trastes) == [0...4, 2...6, 5...9, 7...11, 9...13])
+        for arpegio in enDo {
+            #expect(Set(arpegio.alturas.map { $0.midi % 12 }) == [0, 4, 7])
+            #expect(arpegio.posiciones.allSatisfy { arpegio.trastes.contains($0.traste) })
+        }
+        #expect(Mastil(.bajoElectrico).arpegiosCAGED(de: Acorde("Do")).isEmpty)
+    }
+
+    @Test func unaNotaPorCuerda() {
+        let mastil = Mastil(.guitarra, trastes: 15)
+        let lam = mastil.arpegiosDeUnaNotaPorCuerda(de: Acorde("Lam"))
+        #expect(!lam.isEmpty)
+        // El La menor al aire, de la 6.ª cuerda a la 1.ª: Mi2 La2 Mi3 La3 Do4 Mi4.
+        #expect(lam[0].alturas.map(\.midi) == [40, 45, 52, 57, 60, 64])
+        #expect(lam[0].posiciones.map(\.traste) == [0, 0, 2, 2, 1, 0])
+        #expect(lam[0].dedos == [0, 0, 2, 2, 1, 0])
+        for arpegio in lam {
+            // Una nota por cuerda, de grave a agudo, todas del acorde.
+            #expect(arpegio.posiciones.map(\.cuerda) == Array(0..<6))
+            #expect(arpegio.alturas.map(\.midi) == arpegio.alturas.map(\.midi).sorted())
+            #expect(arpegio.alturas.allSatisfy { [9, 0, 4].contains($0.midi % 12) })
+        }
+        // Con menos alcance caben menos; en el ukelele, con el Sol agudo, no hay.
+        #expect(mastil.arpegiosDeUnaNotaPorCuerda(de: Acorde("Lam"), alcance: 1).count < lam.count)
+        #expect(Mastil(.ukelele).arpegiosDeUnaNotaPorCuerda(de: Acorde("Do")).isEmpty)
+    }
+
+    @Test func losDedosSugeridos() {
+        let mastil = Mastil(.guitarra, trastes: 12)
+        let alAire = ArpegioEnElMastil(
+            mastil: mastil, trastes: 0...0, posiciones: [PosicionEnElMastil(cuerda: 0, traste: 0)])
+        #expect(alAire.dedos == [0])
+        let estirado = ArpegioEnElMastil(
+            mastil: mastil, trastes: 5...10,
+            posiciones: [
+                PosicionEnElMastil(cuerda: 0, traste: 5), PosicionEnElMastil(cuerda: 1, traste: 7),
+                PosicionEnElMastil(cuerda: 2, traste: 10),
+            ])
+        // Índice en el 5, anular en el 7 y el meñique, que se estira, en el 10.
+        #expect(estirado.dedos == [1, 3, 4])
     }
 }
 

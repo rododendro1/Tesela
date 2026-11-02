@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+- **Más arpegios en Armonía.** En Acordes, el arpegio se escribe también por grados («1 5 3 8»), empieza por la
+  tercera o la quinta, suma tensiones (9, 11, 13), lleva notas cromáticas de aproximación y suena en tresillos, con
+  swing y al tempo elegido. En el mástil, además de por posiciones, en las cinco formas CAGED y con una nota por
+  cuerda, con los dedos sugeridos. En Análisis, la progresión arpegiada puede enlazar cada acorde con el anterior por
+  la nota más cercana.
+
 - **Disposiciones en Armonía.** En Acordes, el acorde cerrado, en drop 2, drop 3, drop 2 y 4, con la fundamental,
   la tercera y la séptima o solo con las notas guía, en todas sus octavas, con el pentagrama y un botón para escuchar
   cada una. En Análisis, la progresión dispuesta así con el menor movimiento de las voces: se escucha (resaltando el

@@ -36,6 +36,88 @@ import Testing
         #expect(Arpegio(Acorde("Do7")).alturas(octava: 4)[3].nota == Nota.si.bemol)
     }
 
+    @Test func empezarPorOtraNota() {
+        let enDo = Acorde("Do")
+        #expect(midis(Arpegio(enDo, inicio: 1)) == [64, 67, 72, 76])
+        #expect(midis(Arpegio(enDo, inicio: 2)) == [67, 72, 76, 79])
+        // Se cuenta en círculo: -1 es la última nota y 3, otra vez el bajo.
+        #expect(Arpegio(enDo, inicio: -1).inicio == 2)
+        #expect(Arpegio(enDo, inicio: 3).inicio == 0)
+        #expect(midis(Arpegio(enDo, patron: .descendente, conOctava: false, inicio: 1)) == [72, 67, 64])
+        #expect(Arpegio.indice(de: .mi, en: enDo) == 1)
+        #expect(Arpegio.indice(de: Nota.fa.bemol, en: enDo) == 1)
+        #expect(Arpegio.indice(de: .fa, en: enDo) == nil)
+        #expect(Arpegio.indice(delGrado: 3, en: enDo) == 1)
+        #expect(Arpegio.indice(delGrado: 10, en: enDo) == 1)
+        #expect(Arpegio.indice(delGrado: 5, en: enDo) == 2)
+        #expect(Arpegio.indice(delGrado: 4, en: enDo) == nil)
+        #expect(Arpegio.indice(delGrado: 0, en: enDo) == nil)
+    }
+
+    @Test func lasTensiones() {
+        let do7 = Acorde("Do7")
+        // La 9 por encima de la séptima, y la octava final, a dos octavas.
+        #expect(midis(Arpegio(do7, tensiones: [9])) == [60, 64, 67, 70, 74, 84])
+        // En Do7, la escala es el lidio dominante: la 11 es Fa♯.
+        #expect(midis(Arpegio(do7, conOctava: false, tensiones: [13, 9, 11])) == [60, 64, 67, 70, 74, 78, 81])
+        #expect(Arpegio(do7).nota(delGrado: 4) == Nota.fa.sostenido)
+        #expect(Arpegio(Acorde("Dom")).nota(delGrado: 3) == Nota.mi.bemol)
+        // Las que el acorde ya tiene no se repiten, y las que no son 9, 11 o 13 no cuentan.
+        #expect(midis(Arpegio(Acorde("Do9"), tensiones: [9])) == midis(Arpegio(Acorde("Do9"))))
+        #expect(Arpegio(do7, tensiones: [9, 9, 10]).tensiones == [9])
+        let dosOctavas = [60, 64, 67, 70, 74, 84, 88, 91, 94, 98]
+        #expect(midis(Arpegio(do7, octavas: 2, conOctava: false, tensiones: [9])) == dosOctavas)
+        #expect(Arpegio.tensiones(leyendo: "9,13") == [9, 13])
+        #expect(Arpegio.tensiones(leyendo: "9 11") == [9, 11])
+        #expect(Arpegio.tensiones(leyendo: "10") == nil)
+        #expect(Arpegio.tensiones(leyendo: "") == nil)
+    }
+
+    @Test func unRecorridoPorGrados() {
+        let enDo = Acorde("Do")
+        let propio = Arpegio(enDo, grados: [1, 5, 3, 8])
+        #expect(midis(propio) == [60, 67, 64, 72])
+        #expect(propio.grados == [1, 5, 3, 8])
+        #expect(midis(Arpegio(enDo, grados: [1, 5, 3, 8], octavas: 2)) == [60, 67, 64, 72, 72, 79, 76, 84])
+        // La 9 y la 10 están en la octava de arriba; cada vuelta sube dos.
+        let conNovena = [60, 64, 67, 74, 76, 84, 88, 91, 98, 100]
+        #expect(midis(Arpegio(enDo, grados: [1, 3, 5, 9, 10], octavas: 2)) == conNovena)
+        #expect(Arpegio(Acorde("Dom"), grados: [1, 3]).alturas()[1].nota == Nota.mi.bemol)
+        #expect(Arpegio(enDo, grados: [0, 1]).grados == [1])
+        #expect(Arpegio.grados(leyendo: "1 5 3 8") == [1, 5, 3, 8])
+        #expect(Arpegio.grados(leyendo: "1-5-3-8") == [1, 5, 3, 8])
+        #expect(Arpegio.grados(leyendo: "1, 5, 3, 8") == [1, 5, 3, 8])
+        #expect(Arpegio.grados(leyendo: "1-x") == nil)
+        #expect(Arpegio.grados(leyendo: "23") == nil)
+        #expect(Arpegio.grados(leyendo: "") == nil)
+    }
+
+    @Test func lasNotasDeAproximacion() {
+        let enDo = Acorde("Do")
+        #expect(midis(Arpegio(enDo, conOctava: false, aproximacion: .desdeAbajo)) == [59, 60, 63, 64, 66, 67])
+        #expect(midis(Arpegio(enDo, conOctava: false, aproximacion: .desdeArriba)) == [61, 60, 65, 64, 68, 67])
+        #expect(
+            midis(Arpegio(enDo, conOctava: false, aproximacion: .encierro)) == [61, 59, 60, 65, 63, 64, 68, 66, 67])
+        #expect(midis(Arpegio(enDo, grados: [1, 5], aproximacion: .desdeAbajo)) == [59, 60, 66, 67])
+        // La ortografía: Re♯ lleva a Mi y Fa♯ a Sol.
+        #expect(Arpegio(enDo, aproximacion: .desdeAbajo).alturas()[2].nota == Nota.re.sostenido)
+
+        #expect(Arpegio.Aproximacion(leyendo: "abajo") == .desdeAbajo)
+        #expect(Arpegio.Aproximacion(leyendo: "Above") == .desdeArriba)
+        #expect(Arpegio.Aproximacion(leyendo: "desde-abajo") == .desdeAbajo)
+        #expect(Arpegio.Aproximacion(leyendo: "desdeArriba") == .desdeArriba)
+        #expect(Arpegio.Aproximacion(leyendo: "enclosure") == .encierro)
+        #expect(Arpegio.Aproximacion(leyendo: "lejos") == nil)
+        for idioma in Idioma.allCases {
+            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            for aproximacion in Arpegio.Aproximacion.allCases {
+                let nombre = aproximacion.nombre(en: notacion)
+                #expect(!nombre.isEmpty, "\(aproximacion) en \(idioma)")
+                #expect(Arpegio.Aproximacion(leyendo: nombre) == aproximacion, "\(nombre) (\(idioma))")
+            }
+        }
+    }
+
     @Test func desdeUnaEscala() throws {
         let doMayor = Escala("Do mayor")
         #expect(try (#require(doMayor.arpegio(grado: 5, cuatriada: true)).acorde) == Acorde("Sol7"))
@@ -55,6 +137,11 @@ import Testing
         #expect(sol.acorde == Acorde("Sol7"))
         #expect(sol.patron == .idaYVuelta)
         #expect(midis(sol) == midis(arpegio).map { $0 + 7 })
+        let completo = Arpegio(Acorde("Do7"), inicio: 1, tensiones: [9], aproximacion: .encierro)
+        #expect(midis(completo.transponer(.quintaJusta)) == midis(completo).map { $0 + 7 })
+        let propio = Arpegio(Acorde("Do"), grados: [1, 5, 3, 8]).transponer(.segundaMayor)
+        #expect(propio.grados == [1, 5, 3, 8])
+        #expect(propio.acorde == Acorde("Re"))
     }
 
     @Test func leerYNombrar() throws {
@@ -162,6 +249,23 @@ import Testing
         let larga = Voz(arpegiando: [Acorde("Do")], porAcorde: .redonda)
         #expect(larga.eventos.flatMap(\.alturas).map(\.midi) == [48, 52, 55, 60, 48, 52, 55, 60])
         #expect(Voz(arpegiando: []).eventos.isEmpty)
+    }
+
+    @Test func unaProgresionEnlazada() {
+        // Tras Do3 Mi3 Sol3 Do4, el Sol7 empieza por Si3, a un semitono, en vez de bajar a Sol2.
+        let sol7 = Voz(arpegiando: [Acorde("Do"), Acorde("Sol7")], enlazados: true)
+        #expect(sol7.eventos.flatMap(\.alturas).map(\.midi) == [48, 52, 55, 60, 59, 62, 65, 67, 71])
+        // Y el Fa, por el mismo Do.
+        let fa = Voz(arpegiando: [Acorde("Do"), Acorde("Fa")], enlazados: true)
+        #expect(fa.eventos.flatMap(\.alturas).map(\.midi) == [48, 52, 55, 60, 60, 65, 69, 72])
+        // Con una blanca por acorde se enlaza con la última nota que suena (la cuarta corchea).
+        let llenos = Voz(arpegiando: [Acorde("Do"), Acorde("Fa")], porAcorde: .blanca, enlazados: true)
+        #expect(llenos.eventos[4].alturas.first?.midi == 60)
+        // Las tensiones y las aproximaciones valen para todos los acordes, también con su ritmo.
+        let conRitmo = Voz(
+            arpegiando: [Acorde("Do")], duraciones: [.blanca], tensiones: [9], aproximacion: .desdeAbajo,
+            enlazados: true)
+        #expect(conRitmo.eventos.flatMap(\.alturas).map(\.midi) == [47, 48, 51, 52])
     }
 
     @Test func unaProgresionArpegiadaSeExporta() throws {

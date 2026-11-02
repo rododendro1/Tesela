@@ -132,7 +132,9 @@ import Testing
         "serie",
         "tonnetz --camino C", "tabla --ciclo C", "tabla --margen 9 C", "contrapunto", "contrapunto D4 A4",
         "contrapunto D4 / A4 --especie 6", "contrapunto D4 / ", "acorde Do --escritura foo",
-        "arpegio", "arpegio Do --patron zigzag", "arpegio Do --patron", "arpegio Do --octavas 2",
+        "arpegio", "arpegio Do --patron zigzag", "arpegio Do --patron", "arpegio Do --octavas 0",
+        "arpegio Do --octavas", "arpegio Do --desde Fa", "arpegio Do --desde 4", "arpegio Do --grados 1-x",
+        "arpegio Do --tensiones 10", "arpegio Do --aproximacion lejos", "musicxml acordes Do --enlazar",
         "posiciones", "posiciones Do mayor --foo", "musicxml acordes C --ventana 1",
         "musicxml melodia C4:4 --archivo coral.mid", "transponer", "transponer 2M", "rearmonizar",
         "digitaciones C --capo 13", "completado", "completado tcsh", "completado bash zsh", "manual extra",
@@ -160,7 +162,9 @@ import Testing
             "digitaciones C --instrumento ukelele",
             "digitaciones C --instrumento bajo --dedos 1 --traste 0", "counterpoint C4 D4 E4 C4 / G4 A4 G4 C5",
             "arpeggio C7", "arpeggio C --pattern alberti", "transpose M2 C Am F G7", "reharmonize C Am Dm7 G7 C",
-            "digitaciones C --capo 2", "set 0 4 7", "set C E G", "set 4-Z15", "row 0 e 7 4 2 9 3 8 t 1 5 6",
+            "digitaciones C --capo 2", "arpeggio C --from E --tensions 9 --octaves 2 --no-octave --approach above",
+            "arpeggio C7 --degrees 1-5-3-8 --approach enclosure",
+            "set 0 4 7", "set C E G", "set 4-Z15", "row 0 e 7 4 2 9 3 8 t 1 5 6",
         ] {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
             #expect(resultado.codigo == 0, "\(orden): \(resultado.error)")

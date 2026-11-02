@@ -31,10 +31,11 @@ public struct AnalisisPresentado: Hashable, Sendable {
     /// La progresión arpegiada con un patrón, en la tonalidad de la partitura y con su ritmo armónico; las notas,
     /// en corcheas o en la figura que se diga.
     public func arpegiada(
-        _ patron: Arpegio.Patron, figura: Duracion = .corchea, notacion: Notacion
+        _ patron: Arpegio.Patron, figura: Duracion = .corchea, enlazados: Bool = false, notacion: Notacion
     ) -> ArpegioPresentado? {
         PresentacionDeArpegios.progresion(
-            acordes, patron: patron, tonalidad: tonalidad, ritmo: ritmo, figura: figura, notacion: notacion)
+            acordes, patron: patron, tonalidad: tonalidad, ritmo: ritmo, figura: figura, enlazados: enlazados,
+            notacion: notacion)
     }
 }
 

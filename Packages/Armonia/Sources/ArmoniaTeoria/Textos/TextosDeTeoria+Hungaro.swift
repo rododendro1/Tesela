@@ -121,6 +121,9 @@ extension TextosDeTeoria {
         patronAlberti: "Alberti-basszus",
         patronQuebrado: "tört",
         patronBajaYSube: "le és fel",
+        aproximacionDesdeAbajo: "alulról",
+        aproximacionDesdeArriba: "felülről",
+        aproximacionEncierro: "körülírás",
         // Escala+Acorde.swift
         papelNotaDelAcorde: "akkordhang",
         papelTensionDisponible: "feszültség",

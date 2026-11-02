@@ -63,6 +63,16 @@ enum ErrorDeUso {
     case faltaEscalaDePosiciones
     /// `--capo` sin valor o fuera de 0…12.
     case capoFueraDeRango
+    /// `arpegio --octavas` fuera de 1…4.
+    case octavasFueraDeRango
+    /// `arpegio --desde` con algo que no es una nota ni un grado del acorde.
+    case desdeNoValido(String)
+    /// `arpegio --tensiones` con algo que no es 9, 11 o 13.
+    case tensionesMalEscritas
+    /// `arpegio --grados` con algo que no es un número de 1 a 22.
+    case gradosMalEscritos
+    /// `arpegio --aproximacion` con un nombre que no se conoce.
+    case aproximacionDesconocida(String)
 
     // Neorriemanniano
     case vocesFueraDeRango
@@ -192,6 +202,12 @@ enum ErrorDeUso {
             return TextosDeCLI.traduccion { $0.faltaCifradoDeDigitaciones(Self.digitaciones.0, Self.digitaciones) }
         case .faltaEscalaDePosiciones: return TextosDeCLI.traduccion(\.faltaEscalaDePosiciones)
         case .capoFueraDeRango: return TextosDeCLI.traduccion(\.capoFueraDeRango)
+        case .octavasFueraDeRango: return TextosDeCLI.traduccion(\.octavasFueraDeRango)
+        case .desdeNoValido(let desde): return TextosDeCLI.traduccion { $0.desdeNoValido(desde) }
+        case .tensionesMalEscritas: return TextosDeCLI.traduccion(\.tensionesMalEscritas)
+        case .gradosMalEscritos: return TextosDeCLI.traduccion(\.gradosMalEscritos)
+        case .aproximacionDesconocida(let nombre):
+            return TextosDeCLI.traduccion { $0.aproximacionDesconocida(nombre) }
         case .vocesFueraDeRango: return TextosDeCLI.traduccion(\.vocesFueraDeRango)
         case .unAcordeDeVecinos:
             let ejemplo = "armonia vecinos Sol7"

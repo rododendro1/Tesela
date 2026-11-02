@@ -6,10 +6,14 @@ import Foundation
 /// Un acorde tocado nota a nota: el acorde, el orden en que se recorre y cuántas octavas abarca.
 ///
 /// No es un tipo de escala. Sus notas son las del acorde (con su ortografía y su bajo), así que se leen, se
-/// transportan y se nombran como el acorde; lo que añade es el recorrido.
+/// transportan y se nombran como el acorde; lo que añade es el recorrido: el patrón (o uno propio por grados),
+/// la nota por la que empieza, las tensiones que se suman por encima y las notas cromáticas que llevan a cada una.
 ///
 ///     Arpegio(Acorde("Do7")).alturas(octava: 4)                        // [Do4, Mi4, Sol4, Si♭4, Do5]
 ///     Arpegio(Acorde("Do"), patron: .alberti).alturas(octava: 3)       // [Do3, Sol3, Mi3, Sol3]
+///     Arpegio(Acorde("Do"), inicio: 1).alturas(octava: 4)              // [Mi4, Sol4, Do5, Mi5]
+///     Arpegio(Acorde("Do7"), tensiones: [9]).alturas(octava: 4)        // [Do4, Mi4, Sol4, Si♭4, Re5, Do6]
+///     Arpegio(Acorde("Do"), grados: [1, 5, 3, 8]).alturas(octava: 4)   // [Do4, Sol4, Mi4, Do5]
 ///     Escala("Re dórico").arpegio(grado: 1, cuatriada: true)           // el arpegio de Rem7
 public struct Arpegio: Hashable, Sendable {
     /// El orden en que se recorren las notas.
@@ -30,25 +34,92 @@ public struct Arpegio: Hashable, Sendable {
         case bajaYSube
     }
 
+    /// Las notas cromáticas que llevan a cada nota del arpegio, como en las líneas de bebop.
+    public enum Aproximacion: String, CaseIterable, Hashable, Sendable {
+        /// Un semitono por debajo: Re♯–Mi.
+        case desdeAbajo
+        /// Un semitono por encima: Fa–Mi.
+        case desdeArriba
+        /// Rodeándola: un semitono por encima, otro por debajo y la nota (Fa–Re♯–Mi).
+        case encierro
+    }
+
     public let acorde: Acorde
     public let patron: Patron
-    /// Cuántas octavas abarca (al menos una).
+    /// Cuántas octavas abarca (al menos una). Con tensiones, cada vuelta ocupa las octavas que hagan falta.
     public let octavas: Int
     /// Si el recorrido acaba en la nota inicial una octava (o `octavas`) más arriba: Do–Mi–Sol–**Do**.
     public let conOctava: Bool
+    /// La nota del acorde por la que empieza, contando desde el bajo en posición cerrada: 0 es el bajo; en Do, 1
+    /// empieza por Mi (Mi–Sol–Do) y 2 por Sol. Las de antes suben una octava.
+    public let inicio: Int
+    /// Las tensiones que se tocan por encima de las notas del acorde, de entre 9, 11 y 13, en ese orden. Las que el
+    /// acorde ya tiene (la 9 de Do9) no se repiten; las demás salen de su escala (``nota(delGrado:)``).
+    public let tensiones: [Int]
+    /// Un recorrido propio, por grados sobre la fundamental: `[1, 5, 3, 8]` es Do–Sol–Mi–Do en Do; 9, 11 y 13 son
+    /// las tensiones y 10 o 12, la tercera y la quinta una octava más arriba. Si no está vacío, manda sobre
+    /// `patron`, `inicio`, `tensiones` y `conOctava`.
+    public let grados: [Int]
+    /// Las notas cromáticas que llevan a cada nota, o `nil` si no las hay.
+    public let aproximacion: Aproximacion?
 
-    public init(_ acorde: Acorde, patron: Patron = .ascendente, octavas: Int = 1, conOctava: Bool = true) {
+    public init(
+        _ acorde: Acorde, patron: Patron = .ascendente, octavas: Int = 1, conOctava: Bool = true,
+        inicio: Int = 0, tensiones: [Int] = [], aproximacion: Aproximacion? = nil
+    ) {
+        let cuantas = acorde.notasDesdeElBajo.count
+        self.init(
+            acorde: acorde, patron: patron, octavas: octavas, conOctava: conOctava,
+            inicio: cuantas > 0 ? ((inicio % cuantas) + cuantas) % cuantas : 0,
+            tensiones: Array(Set(tensiones.filter { [9, 11, 13].contains($0) })).sorted(), grados: [],
+            aproximacion: aproximacion)
+    }
+
+    /// Un arpegio con un recorrido propio por grados sobre la fundamental (los menores que 1 no cuentan), que se
+    /// repite `octavas` veces, cada vez más arriba.
+    public init(_ acorde: Acorde, grados: [Int], octavas: Int = 1, aproximacion: Aproximacion? = nil) {
+        self.init(
+            acorde: acorde, patron: .ascendente, octavas: octavas, conOctava: false, inicio: 0, tensiones: [],
+            grados: grados.filter { $0 >= 1 }, aproximacion: aproximacion)
+    }
+
+    private init(
+        acorde: Acorde, patron: Patron, octavas: Int, conOctava: Bool, inicio: Int, tensiones: [Int],
+        grados: [Int], aproximacion: Aproximacion?
+    ) {
         self.acorde = acorde
         self.patron = patron
         self.octavas = max(1, octavas)
         self.conOctava = conOctava
+        self.inicio = inicio
+        self.tensiones = tensiones
+        self.grados = grados
+        self.aproximacion = aproximacion
     }
 
-    /// Las notas, con octava, a partir de `octava` (la del bajo del acorde, en posición cerrada), en el orden
-    /// del patrón.
+    /// Las notas, con octava, a partir de `octava` (la del bajo del acorde, en posición cerrada; la de la
+    /// fundamental en un recorrido por grados), en el orden del patrón y con sus notas de aproximación.
     public func alturas(octava: Int = 4) -> [Altura] {
-        let base = acorde.posicionCerrada(octava: octava)
+        let recorrido = grados.isEmpty ? recorridoDelPatron(octava: octava) : recorridoPorGrados(octava: octava)
+        guard let aproximacion else { return recorrido }
+        return recorrido.flatMap { nota -> [Altura] in
+            switch aproximacion {
+            case .desdeAbajo: return [nota - Intervalo.segundaMenor, nota]
+            case .desdeArriba: return [nota + Intervalo.segundaMenor, nota]
+            case .encierro: return [nota + Intervalo.segundaMenor, nota - Intervalo.segundaMenor, nota]
+            }
+        }
+    }
+
+    private func recorridoDelPatron(octava: Int) -> [Altura] {
+        var base = acorde.posicionCerrada(octava: octava)
+        if inicio > 0, inicio < base.count {
+            base = Array(base[inicio...]) + base[..<inicio].map { $0 + Intervalo.octava }
+        }
+        base += alturasDeLasTensiones(encimaDe: base)
         guard let primera = base.first, let ultima = base.last else { return [] }
+        // Las octavas que ocupa cada vuelta: una sin tensiones; con ellas, las que hagan falta.
+        let vuelta = (ultima.midi - primera.midi) / 12 + 1
 
         func subida(_ altura: Altura, _ octavas: Int) -> Altura {
             var resultado = altura
@@ -56,8 +127,8 @@ public struct Arpegio: Hashable, Sendable {
             return resultado
         }
         var sube: [Altura] = []
-        for o in 0..<octavas { sube += base.map { subida($0, o) } }
-        if conOctava { sube.append(subida(primera, octavas)) }
+        for o in 0..<octavas { sube += base.map { subida($0, o * vuelta) } }
+        if conOctava { sube.append(subida(primera, octavas * vuelta)) }
 
         switch patron {
         case .ascendente:
@@ -70,7 +141,8 @@ public struct Arpegio: Hashable, Sendable {
             guard base.count >= 3 else { return sube }
             var alberti: [Altura] = []
             for o in 0..<octavas {
-                alberti += [subida(primera, o), subida(ultima, o), subida(base[1], o), subida(ultima, o)]
+                let v = o * vuelta
+                alberti += [subida(primera, v), subida(ultima, v), subida(base[1], v), subida(ultima, v)]
             }
             return alberti
         case .quebrado:
@@ -83,12 +155,94 @@ public struct Arpegio: Hashable, Sendable {
         }
     }
 
+    /// Las tensiones que el acorde no tiene, cada una por encima de la anterior y de la nota más aguda.
+    private func alturasDeLasTensiones(encimaDe base: [Altura]) -> [Altura] {
+        guard var arriba = base.last else { return [] }
+        let suyos = Set(acorde.notas.map { acorde.fundamental.intervalo(hasta: $0).numeroSimple })
+        var resultado: [Altura] = []
+        for tension in tensiones where !suyos.contains(tension - 7) {
+            let nota = self.nota(delGrado: tension - 7)
+            var altura = Altura(nota, octava: arriba.octava - 1)
+            while altura.midi <= arriba.midi { altura = altura + Intervalo.octava }
+            resultado.append(altura)
+            arriba = altura
+        }
+        return resultado
+    }
+
+    private func recorridoPorGrados(octava: Int) -> [Altura] {
+        let mayor = grados.reduce(1, max)
+        let raiz = Altura(acorde.fundamental, octava: octava)
+        // Cada vuelta sube las octavas que abarca el recorrido: una hasta el 8, dos hasta el 15.
+        let vuelta = max(1, (mayor + 5) / 7)
+        var resultado: [Altura] = []
+        for o in 0..<octavas {
+            for grado in grados {
+                let nota = self.nota(delGrado: (grado - 1) % 7 + 1)
+                let semitonos = ((nota.claseDeAltura - raiz.nota.claseDeAltura) % 12 + 12) % 12
+                let midi = raiz.midi + semitonos + 12 * ((grado - 1) / 7 + o * vuelta)
+                resultado.append(Self.altura(nota, midi: midi))
+            }
+        }
+        return resultado
+    }
+
+    /// La nota de un grado (de 1 a 7) sobre la fundamental: la del acorde si la tiene (la 3.ª de Dom es Mi♭) y, si
+    /// no, la de su escala, la primera de siete notas de ``Acorde/escalasCompatibles(entre:)`` (la que menos notas
+    /// a evitar tiene: en Do7, Do lidio dominante, así que la 11 es Fa♯), o la mayor si no encaja ninguna.
+    public func nota(delGrado grado: Int) -> Nota {
+        let fundamental = acorde.fundamental
+        if let propia = acorde.notas.first(where: { fundamental.intervalo(hasta: $0).numeroSimple == grado }) {
+            return propia
+        }
+        let escalas = acorde.escalasCompatibles().filter { $0.notas.count == 7 } + [Escala(fundamental, .mayor)]
+        return escalas[0].grado(grado)
+    }
+
+    /// La altura de `nota` que suena como `midi`, que tiene que ser de su misma clase de altura.
+    static func altura(_ nota: Nota, midi: Int) -> Altura {
+        let cerca = Altura(nota, octava: 4)
+        return Altura(nota, octava: 4 + (midi - cerca.midi) / 12)
+    }
+
     /// Los nombres de las notas en el orden del patrón y desde la octava 4, con repeticiones.
     public var notas: [Nota] { alturas().map(\.nota) }
 
     /// El mismo arpegio en otro tono.
     public func transponer(_ intervalo: Intervalo) -> Arpegio {
-        Arpegio(acorde.transponer(intervalo), patron: patron, octavas: octavas, conOctava: conOctava)
+        Arpegio(
+            acorde: acorde.transponer(intervalo), patron: patron, octavas: octavas, conOctava: conOctava,
+            inicio: inicio, tensiones: tensiones, grados: grados, aproximacion: aproximacion)
+    }
+
+    /// El `inicio` que empieza por una nota del acorde (Mi en Do, o Fa♭, que suena igual), o `nil` si no es suya.
+    public static func indice(de nota: Nota, en acorde: Acorde) -> Int? {
+        acorde.notasDesdeElBajo.firstIndex { $0.claseDeAltura == nota.claseDeAltura }
+    }
+
+    /// El `inicio` que empieza por un grado del acorde sobre su fundamental (3 en Do es Mi; 10, también), o `nil`
+    /// si el acorde no lo tiene.
+    public static func indice(delGrado grado: Int, en acorde: Acorde) -> Int? {
+        guard grado >= 1 else { return nil }
+        let simple = (grado - 1) % 7 + 1
+        return acorde.notasDesdeElBajo.firstIndex { acorde.fundamental.intervalo(hasta: $0).numeroSimple == simple }
+    }
+
+    /// Lee un recorrido por grados: «1 5 3 8», «1-5-3-8» o «1, 5, 3, 8». `nil` si está vacío o algo no es un
+    /// número de 1 a 22 (tres octavas).
+    public static func grados(leyendo texto: String) -> [Int]? {
+        let partes = texto.split { $0 == " " || $0 == "," || $0 == "-" }
+        let grados = partes.compactMap { Int($0) }.filter { (1...22).contains($0) }
+        guard !grados.isEmpty, grados.count == partes.count else { return nil }
+        return grados
+    }
+
+    /// Lee las tensiones: «9», «9 13», «9,11,13». `nil` si está vacío o algo no es 9, 11 o 13.
+    public static func tensiones(leyendo texto: String) -> [Int]? {
+        let partes = texto.split { $0 == " " || $0 == "," || $0 == "-" }
+        let tensiones = partes.compactMap { Int($0) }.filter { [9, 11, 13].contains($0) }
+        guard !tensiones.isEmpty, tensiones.count == partes.count else { return nil }
+        return tensiones
     }
 }
 
@@ -214,6 +368,45 @@ extension Arpegio.Patron: Nombrable {
             return TextosDeTeoria.traduccion(\.patronQuebrado)
         case .bajaYSube:
             return TextosDeTeoria.traduccion(\.patronBajaYSube)
+        }
+    }
+}
+
+// MARK: - Aproximacion
+
+extension Arpegio.Aproximacion {
+    /// Lee una aproximación por su nombre en el código (`desdeAbajo`, `desde-abajo`), abreviada (`abajo`,
+    /// `arriba`, `below`, `above`, `enclosure`) o como la escribe cualquiera de los quince idiomas, sin mirar
+    /// mayúsculas ni tildes.
+    public init?(leyendo texto: String) {
+        func clave(_ texto: String) -> String {
+            texto.replacingOccurrences(of: "_", with: " ").replacingOccurrences(of: "-", with: " ").claveDeBusqueda
+        }
+        let buscado = clave(texto)
+        let abreviados: [String: Arpegio.Aproximacion] = [
+            "abajo": .desdeAbajo, "arriba": .desdeArriba, "below": .desdeAbajo, "above": .desdeArriba,
+            "enclosure": .encierro, "desde abajo": .desdeAbajo, "desde arriba": .desdeArriba,
+        ]
+        func esElBuscado(_ aproximacion: Arpegio.Aproximacion) -> Bool {
+            clave(aproximacion.rawValue) == buscado
+                || Idioma.allCases.contains { clave(aproximacion.nombre(en: .delIdioma($0))) == buscado }
+        }
+        guard let leida = abreviados[buscado] ?? Self.allCases.first(where: esElBuscado) else { return nil }
+        self = leida
+    }
+}
+
+extension Arpegio.Aproximacion: Nombrable {
+    public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
+
+    private var traduccion: Traduccion {
+        switch self {
+        case .desdeAbajo:
+            return TextosDeTeoria.traduccion(\.aproximacionDesdeAbajo)
+        case .desdeArriba:
+            return TextosDeTeoria.traduccion(\.aproximacionDesdeArriba)
+        case .encierro:
+            return TextosDeTeoria.traduccion(\.aproximacionEncierro)
         }
     }
 }

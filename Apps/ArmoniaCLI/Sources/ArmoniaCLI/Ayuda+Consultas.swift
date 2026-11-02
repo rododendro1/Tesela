@@ -66,7 +66,8 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionArpegio),
             ejemplo: ejemplo(
                 "armonia arpegio Do7 --patron alberti",
-                "armonia arpeggio C7 --pattern alberti"))
+                "armonia arpeggio C7 --pattern alberti"),
+            notas: TextosDeCLI.traduccion(\.notasArpegio))
     ]
 
     static let ayudaDeIntervalo: [EntradaDeAyuda] = [

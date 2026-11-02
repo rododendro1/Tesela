@@ -21,6 +21,8 @@ struct VistaDeAnalisis: View {
     @State private var importada: ProgresionImportada?
     @State private var patron = Arpegio.Patron.ascendente
     @State private var figura = Figura.corchea
+    /// Si cada arpegio empieza por la nota más cercana a la última del anterior.
+    @State private var enlazados = false
     /// La disposición de la progresión dispuesta (drop 2, shell…).
     @State private var disposicion = DisposicionDeAcorde.drop2
     /// Lo que está sonando, para resaltar el acorde que se oye.
@@ -121,7 +123,7 @@ struct VistaDeAnalisis: View {
     /// Las partituras y el MIDI de la progresión y de la progresión arpegiada con el patrón elegido.
     private var ficheros: [FicheroParaExportar] {
         guard let analisis = try? resultado?.get() else { return [] }
-        let arpegiada = analisis.arpegiada(patron, figura: figura.duracion, notacion: notacion)
+        let arpegiada = analisis.arpegiada(patron, figura: figura.duracion, enlazados: enlazados, notacion: notacion)
         let dispuesta = PresentacionDeDisposiciones.progresion(
             analisis.acordes, disposicion, notacion: notacion)
         return analisis.ficheros + (arpegiada?.ficheros ?? []) + (dispuesta?.ficheros ?? [])
@@ -179,7 +181,9 @@ struct VistaDeAnalisis: View {
     /// figura elegidos.
     @ViewBuilder
     private func arpegiar(_ analisis: AnalisisPresentado) -> some View {
-        if let arpegiada = analisis.arpegiada(patron, figura: figura.duracion, notacion: notacion) {
+        if let arpegiada = analisis.arpegiada(
+            patron, figura: figura.duracion, enlazados: enlazados, notacion: notacion)
+        {
             Section(notacion.texto(\.arpegiar)) {
                 Picker(notacion.texto(\.patron), selection: $patron) {
                     ForEach(Arpegio.Patron.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
@@ -187,6 +191,7 @@ struct VistaDeAnalisis: View {
                 Picker(notacion.texto(\.figura), selection: $figura) {
                     ForEach(Self.figuras, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
                 }
+                Toggle(notacion.texto(\.enlazarLosAcordes), isOn: $enlazados)
                 BotonDeEscuchar(arpegiada.sonido)
             }
         }
