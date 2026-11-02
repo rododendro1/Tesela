@@ -54,6 +54,26 @@ import Testing
         #expect(ajeno.allSatisfy { $0.recurso == .dominanteSecundaria })
     }
 
+    @Test func elIIVYElBackdoor() {
+        // El Lam (vi) con su ii–V menor; el Rem7 (ii) con el suyo, mayor.
+        #expect(propuestas(.iiV, en: 1) == [[Acorde(.si, .semidisminuido), Acorde("Mi7"), Acorde("Lam")]])
+        #expect(propuestas(.iiV, en: 2) == [[Acorde("Mim7"), Acorde("La7"), Acorde("Rem7")]])
+        // Ni la tónica ni un acorde que ya tiene su dominante delante.
+        #expect(propuestas(.iiV, en: 0) == [])
+        #expect(propuestas(.iiV, en: 4) == [])
+        #expect(Tonalidad(.do).rearmonizaciones(de: [Acorde("La7"), Acorde("Rem7")]).allSatisfy { $0.recurso != .iiV })
+        // El backdoor, solo en lugar del V7 de una tonalidad mayor.
+        #expect(propuestas(.backdoor, en: 3) == [[Acorde("Fam7"), Acorde(Nota.si.bemol, .dominanteSeptima)]])
+        #expect(propuestas(.backdoor, en: 2) == [])
+        let enMenor = Tonalidad(.la, .menor).rearmonizaciones(de: [Acorde("Lam"), Acorde("Mi7"), Acorde("Lam")])
+        #expect(enMenor.allSatisfy { $0.recurso != .backdoor })
+        let backdoor = Rearmonizacion(
+            recurso: .backdoor, posicion: 3, original: Acorde("Sol7"),
+            acordes: [Acorde("Fam7"), Acorde(Nota.si.bemol, .dominanteSeptima)])
+        #expect(backdoor.aplicar(a: progresion).map(\.cifrado) == ["Do", "Lam", "Rem7", "Fam7", "Si♭7", "Do"])
+        #expect(backdoor.descripcion(en: .espanolCompacto) == "Sol7 → Fam7 Si♭7 (backdoor)")
+    }
+
     @Test func aplicarYDescribir() throws {
         let tritonal = try #require(
             Tonalidad(.do).rearmonizaciones(de: progresion).first { $0.recurso == .sustitutoTritonal })

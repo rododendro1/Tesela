@@ -9,8 +9,8 @@ import ArmoniaNucleo
 ///     let propuestas = Tonalidad(.do).rearmonizaciones(de: progresion)
 ///     propuestas.first { $0.recurso == .sustitutoTritonal }?.acordes   // [Re♭7]
 ///
-/// Cada propuesta cambia un solo acorde, el de `posicion`, por `acordes` (uno, o dos si lo prepara su
-/// dominante); `aplicar(a:)` da la progresión con el cambio.
+/// Cada propuesta cambia un solo acorde, el de `posicion`, por `acordes` (uno; dos si lo prepara su
+/// dominante o es un backdoor; tres si lo prepara su ii–V); `aplicar(a:)` da la progresión con el cambio.
 public struct Rearmonizacion: Hashable, Sendable {
     /// El recurso armónico de la propuesta.
     public enum Recurso: String, CaseIterable, Hashable, Sendable {
@@ -24,6 +24,11 @@ public struct Rearmonizacion: Hashable, Sendable {
         case prestamoModal
         /// Otro acorde de la tonalidad con la misma función, a una tercera (Do → Lam, Fa → Rem, Sol → Si°).
         case sustitutoDiatonico
+        /// El acorde, precedido de su ii–V (Rem → Mim7 La7 Rem; a un acorde menor, con el iiø7: Lam → Siø7 Mi7
+        /// Lam). Solo para los acordes de la tonalidad que no son la tónica.
+        case iiV
+        /// La dominante por la puerta de atrás: en mayor, el V7 por iv7–♭VII7 (Sol7 → Fam7 Si♭7 en Do).
+        case backdoor
     }
 
     public let recurso: Recurso
@@ -31,7 +36,7 @@ public struct Rearmonizacion: Hashable, Sendable {
     public let posicion: Int
     /// El acorde que había.
     public let original: Acorde
-    /// Lo que va en su lugar: uno o dos acordes.
+    /// Lo que va en su lugar: de uno a tres acordes.
     public let acordes: [Acorde]
 
     public init(recurso: Recurso, posicion: Int, original: Acorde, acordes: [Acorde]) {
@@ -106,6 +111,22 @@ extension Tonalidad {
             proponer(.prestamoModal, [prestado])
             let sustituto = [1: 6, 2: 4, 3: 1, 4: 2, 5: 7, 6: 1, 7: 5][grado] ?? grado
             proponer(.sustitutoDiatonico, [self.acorde(grado: sustituto, cuatriada: cuatriada)])
+
+            // Su ii–V, a los acordes mayores y menores que no son la tónica (ni tienen ya su dominante delante).
+            if grado != 1, acorde.tipo.esMayor || acorde.tipo.esMenor, acorde.tipo.pasosDeQuinta.contains(1) {
+                let dominante = Acorde(acorde.fundamental + .quintaJusta, .dominanteSeptima)
+                let tipoDelII: TipoDeAcorde = acorde.tipo.esMenor ? .semidisminuido : .menorSeptima
+                let ii = Acorde(dominante.fundamental + .quintaJusta, tipoDelII)
+                let yaEsta = anterior.map { $0.fundamental == dominante.fundamental && $0.tipo.esMayor } ?? false
+                if !yaEsta { proponer(.iiV, [ii, dominante, acorde]) }
+            }
+
+            // Backdoor: el V7 de una tonalidad mayor por iv7–♭VII7.
+            if modo == .mayor, grado == 5, acorde.tipo == .dominanteSeptima {
+                proponer(
+                    .backdoor,
+                    [Acorde(tonica + .cuartaJusta, .menorSeptima), Acorde(tonica + .septimaMenor, .dominanteSeptima)])
+            }
         }
         return propuestas
     }
@@ -143,6 +164,10 @@ extension Rearmonizacion.Recurso: Nombrable {
             return TextosDeTeoria.traduccion(\.prestamoModal)
         case .sustitutoDiatonico:
             return TextosDeTeoria.traduccion(\.sustitutoDiatonico)
+        case .iiV:
+            return TextosDeTeoria.traduccion(\.rearmonizacionIIV)
+        case .backdoor:
+            return TextosDeTeoria.traduccion(\.rearmonizacionBackdoor)
         }
     }
 }

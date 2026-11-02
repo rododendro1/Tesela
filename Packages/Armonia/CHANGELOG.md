@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+### Esquemas armónicos: jazz y secuencias
+
+- **`EsquemaArmonico.buscar(en:)`** reconoce en una progresión, en cualquier tonalidad, el ii–V–I (y el ii–V sin
+  resolver), el turnaround, el backdoor y el blues de 12 compases, y las secuencias y esquemas del barroco y el
+  galante: quintas descendentes, romanesca, canon de Pachelbel, monte, fonte y ponte. Cada uno dice dónde está y a
+  qué tónica va, y `EsquemaArmonico.Tipo.acordes(en:)` lo escribe en una tonalidad. Nombres en los quince idiomas.
+- **`Rearmonizacion.Recurso.iiV`** (preparar un acorde con su ii–V: Rem → Mim7 La7 Rem) y
+  **`Rearmonizacion.Recurso.backdoor`** (el V7 de una tonalidad mayor por iv7–♭VII7).
+
 ### Análisis armónico ampliado
 
 - **Sustituto tritonal** (`AcordeAnalizado.Categoria.sustitutoTritonal(de:)`): una séptima de dominante medio tono

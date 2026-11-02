@@ -298,6 +298,32 @@ armonizada.coral.voz(3)               // [Mi4, Fa4, Re4, Do4]
 armonizada.coral.esCorrecta           // true
 ```
 
+## Esquemas armónicos
+
+`EsquemaArmonico.buscar(en:)` reconoce en una progresión las fórmulas hechas, por el movimiento
+de las fundamentales y el tipo de los acordes, en cualquier tonalidad (también las secundarias):
+
+- Del jazz: **ii–V–I** (y el ii–V que no resuelve), **turnaround** (I–vi–ii–V o iii–vi–ii–V),
+  **backdoor** (iv7–♭VII7–I) y **blues de 12 compases** (un acorde por compás).
+- Secuencias y esquemas del barroco y el galante: **quintas descendentes** (cuatro acordes o
+  más), **romanesca** (I–V–vi–iii), **canon de Pachelbel** (I–V–vi–iii–IV–I–IV–V), **monte**
+  (V7/IV–IV–V7/V–V), **fonte** (V7/ii–ii–V7–I) y **ponte** (V–V7 sobre el mismo bajo, y la tónica).
+
+Cada esquema dice dónde está (`indices`) y a qué tónica va. `acordes(en:)` lo escribe en una
+tonalidad.
+
+```swift
+let esquemas = EsquemaArmonico.buscar(en: ["Do7M", "Lam7", "Rem7", "Sol7", "Do7M"])
+esquemas.map(\.tipo)          // [turnaround, progresión por quintas, ii–V–I]
+esquemas.map(\.indices)       // [0..<4, 1..<5, 2..<5]
+EsquemaArmonico.buscar(en: ["Fam7", "Sib7", "Do7M"])[0].tipo   // .backdoor
+EsquemaArmonico.Tipo.pachelbel.acordes(en: Tonalidad(.re))     // [Re, La, Sim, Fa♯m, Sol, Re, Sol, La]
+EsquemaArmonico.Tipo.blues.acordes(en: Tonalidad(.fa)).count   // 12
+```
+
+`rearmonizaciones(de:)` propone también preparar un acorde con su **ii–V** (Rem → Mim7 La7 Rem)
+y cambiar el V7 de una tonalidad mayor por el **backdoor** (Sol7 → Fam7 Si♭7).
+
 ## Bajo cifrado
 
 `acorde(sobre:cifras:)` lee las cifras del bajo continuo sobre una nota del bajo, contando los
