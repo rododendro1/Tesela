@@ -7,6 +7,8 @@ frecuente sin necesidad de Swift:
   - ``Tipo`` y ``Tipo/miembro``: el tipo tiene que estar declarado en algún módulo y el miembro
     (func, var, let, case, init, subscript) en alguna parte del código.
   - <doc:Articulo>: tiene que existir Articulo.md en el catálogo.
+  - En los tutoriales (.tutorial), lo mismo, y `tutorial: "doc:Tutorial"` tiene que ser otro tutorial del
+    catálogo y `file:`/`source:` un fichero de él.
 
 Revisa los catálogos de todos los paquetes de `Packages/`, cada uno con los símbolos de su paquete.
 
@@ -47,8 +49,10 @@ def revisar(raiz: Path):
     enlaces = errores = 0
     for catalogo in catalogos:
         articulos = {f.stem for f in catalogo.glob("*.md")}
+        tutoriales = {f.stem for f in catalogo.rglob("*.tutorial")}
+        recursos = {f.name for f in catalogo.rglob("*") if f.is_file()}
         modulo = catalogo.parent.name
-        for md in sorted(catalogo.rglob("*.md")):
+        for md in sorted([*catalogo.rglob("*.md"), *catalogo.rglob("*.tutorial")]):
             lugar = md.relative_to(PAQUETES)
             texto = md.read_text(encoding="utf-8")
             # Los bloques de código no llevan enlaces.
@@ -71,6 +75,16 @@ def revisar(raiz: Path):
                         if nombre and nombre not in miembros and nombre not in tipos:
                             print(f"{lugar}: ``{ruta}``: no hay ningún miembro «{nombre}»")
                             errores += 1
+                for destino in re.findall(r'tutorial:\s*"doc:([^"]+)"', linea):
+                    enlaces += 1
+                    if destino not in tutoriales:
+                        print(f"{lugar}: doc:{destino}: no hay un tutorial con ese nombre")
+                        errores += 1
+                for recurso in re.findall(r'\b(?:file|source):\s*"([^"]+)"', linea):
+                    enlaces += 1
+                    if recurso not in recursos:
+                        print(f"{lugar}: {recurso}: no está en el catálogo")
+                        errores += 1
                 for destino in re.findall(r"<doc:([^>#\s]+)", linea):
                     enlaces += 1
                     if destino not in articulos:

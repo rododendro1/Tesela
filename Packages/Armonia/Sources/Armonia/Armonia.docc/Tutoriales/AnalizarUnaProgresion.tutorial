@@ -1,0 +1,158 @@
+@Tutorial(time: 20) {
+    @Intro(title: "Analizar una progresión") {
+        Encuentra la tonalidad de una melodía, analiza una progresión de acordes (el grado, la función y la
+        cadencia de cada uno) y haz el mismo análisis desde un fichero MIDI, para escribirlo como partitura.
+    }
+
+    @Section(title: "Encontrar la tonalidad") {
+        @ContentAndMedia {
+            Unas notas bastan para estimar la tonalidad en que están: Armonia las compara con el perfil de
+            cada tonalidad mayor y menor y ordena las tonalidades de la más probable a la menos.
+        }
+
+        @Steps {
+            @Step {
+                La escala de La menor armónica, como números MIDI, está en La menor.
+
+                @Code(name: "main.swift", file: "analisis-01-01.swift")
+            }
+
+            @Step {
+                Una tonalidad tiene su relativa y sus grados, en cifrado romano.
+
+                @Code(name: "main.swift", file: "analisis-01-02.swift")
+            }
+        }
+    }
+
+    @Section(title: "Analizar los acordes") {
+        @ContentAndMedia {
+            ``AnalisisArmonico`` lee una sucesión de acordes y elige la tonalidad que mejor la explica. De
+            cada acorde dice su grado en cifrado romano, su función y por qué está ahí.
+        }
+
+        @Steps {
+            @Step {
+                Escribe la progresión con sus cifrados, separados por espacios. Sin tonalidad, Armonia elige Do
+                mayor.
+
+                @Code(name: "main.swift", file: "analisis-02-01.swift")
+            }
+
+            @Step {
+                Cada acorde tiene su grado y su función: tónica (T), subdominante (S) o dominante (D).
+
+                @Code(name: "main.swift", file: "analisis-02-02.swift")
+            }
+
+            @Step {
+                Re7 no es de Do mayor: es la dominante de la dominante (V7/V), una dominante secundaria del
+                quinto grado. El análisis entero se escribe en una línea.
+
+                @Code(name: "main.swift", file: "analisis-02-03.swift")
+            }
+        }
+    }
+
+    @Section(title: "Las cadencias") {
+        @ContentAndMedia {
+            Un análisis busca también las cadencias: los finales de frase, de la dominante a la tónica
+            (auténtica), de la subdominante a la tónica (plagal), de la dominante al sexto grado (rota), o
+            en la dominante (semicadencia).
+        }
+
+        @Steps {
+            @Step {
+                La progresión termina con V7–I, en estado fundamental: una cadencia auténtica perfecta.
+
+                @Code(name: "main.swift", file: "analisis-03-01.swift")
+            }
+
+            @Step {
+                Una frase que acaba en la dominante termina con una semicadencia.
+
+                @Code(name: "main.swift", file: "analisis-03-02.swift")
+            }
+        }
+    }
+
+    @Section(title: "De un fichero a una partitura") {
+        @ContentAndMedia {
+            ``PiezaImportada`` lee un fichero MIDI o MusicXML, agrupa sus notas en acordes y los analiza como
+            antes. El análisis se puede escribir como MusicXML, con el cifrado americano encima de los
+            acordes y el romano debajo del bajo, para abrirlo en un editor de partituras.
+        }
+
+        @Steps {
+            @Step {
+                Escribe la progresión como MIDI y vuelve a leerla: el fichero no dice la tonalidad, así que se
+                estima por sus notas.
+
+                @Code(name: "main.swift", file: "analisis-04-01.swift")
+            }
+
+            @Step {
+                De las notas salen otra vez los acordes y el mismo análisis.
+
+                @Code(name: "main.swift", file: "analisis-04-02.swift")
+            }
+
+            @Step {
+                Escribe el análisis como partitura MusicXML. Guárdalo en un fichero `.musicxml` para abrirlo
+                en MuseScore, Finale, Sibelius o Dorico.
+
+                @Code(name: "main.swift", file: "analisis-04-03.swift")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            En Do mayor, ¿cómo se cifra Re7 cuando va a Sol7?
+
+            @Choice(isCorrect: false) {
+                II7
+
+                @Justification(reaction: "Vuelve a intentarlo") {
+                    El segundo grado de Do mayor es menor (Rem). Re7, con Fa♯, viene de otra tonalidad.
+                }
+            }
+
+            @Choice(isCorrect: true) {
+                V7/V
+
+                @Justification(reaction: "¡Correcto!") {
+                    Es la dominante de Sol, el quinto grado: una dominante secundaria.
+                }
+            }
+        }
+
+        @MultipleChoice {
+            ¿Qué cadencia termina una frase en la dominante?
+
+            @Choice(isCorrect: false) {
+                La cadencia rota
+
+                @Justification(reaction: "Vuelve a intentarlo") {
+                    La rota va de la dominante al sexto grado.
+                }
+            }
+
+            @Choice(isCorrect: true) {
+                La semicadencia
+
+                @Justification(reaction: "¡Correcto!") {
+                    Termina en V, en estado fundamental, y deja la frase abierta.
+                }
+            }
+
+            @Choice(isCorrect: false) {
+                La cadencia plagal
+
+                @Justification(reaction: "Vuelve a intentarlo") {
+                    La plagal va de la subdominante a la tónica.
+                }
+            }
+        }
+    }
+}

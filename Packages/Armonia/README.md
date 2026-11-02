@@ -115,7 +115,10 @@ una carpeta del `PATH`.
 ## Documentación
 
 La documentación está en el catálogo DocC `Sources/Armonia/Armonia.docc`, que Xcode muestra
-con *Product › Build Documentation*. También se puede leer directamente:
+con *Product › Build Documentation*. Para empezar, el tutorial interactivo [De una nota a un análisis
+armónico](https://rododendro1.github.io/Tesela/armonia/tutorials/armonia) lleva paso a paso de nombrar una nota a
+analizar una progresión leída de un fichero MIDI ([sus tres partes](Sources/Armonia/Armonia.docc/Tutoriales), con
+el código de cada paso probado). Los artículos también se pueden leer directamente:
 
 - [El modelo](Sources/Armonia/Armonia.docc/ElModelo.md): las coordenadas de quintas y octavas en que se apoya todo el motor.
 - [Acordes](Sources/Armonia/Armonia.docc/Acordes.md): cifrado americano generativo, identificación tolerante, estilos, estructura y conducción parsimoniosa de los acordes.

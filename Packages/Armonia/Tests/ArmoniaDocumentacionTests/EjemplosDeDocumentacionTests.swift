@@ -916,4 +916,236 @@ import Hexagonos
         let sonido = mastil.midiSiExiste(en: PosicionEnElMastil(cuerda: 9, traste: 0))
         _ = (leida, comprobada, sonido)
     }
+
+    @Test func tutorialAcordes01011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-01-01.swift, línea 1
+        let dominante: Acorde = "Sol7/Si"
+        comprobar(dominante.notas, #"[Sol, Si, Re, Fa]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-01-01.swift"#, 4)
+    }
+
+    @Test func tutorialAcordes01021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-01-02.swift, línea 1
+        let dominante: Acorde = "Sol7/Si"
+        comprobar(dominante.notas, #"[Sol, Si, Re, Fa]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-01-02.swift"#, 4)
+        comprobar(dominante.posicionCerrada(octava: 3), #"[Si3, Re4, Fa4, Sol4]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-01-02.swift"#, 5)
+    }
+
+    @Test func tutorialAcordes01031() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-01-03.swift, línea 1
+        let dominante: Acorde = "Sol7/Si"
+        comprobar(dominante.notas, #"[Sol, Si, Re, Fa]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-01-03.swift"#, 4)
+        comprobar(dominante.posicionCerrada(octava: 3), #"[Si3, Re4, Fa4, Sol4]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-01-03.swift"#, 5)
+        comprobar(dominante.cifrado(estilo: .inglesASCII), #""G7/B""#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-01-03.swift"#, 6)
+        comprobar(Acorde("G7(b9,#11)").cifrado, #""Sol7(♭9,♯11)""#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-01-03.swift"#, 7)
+    }
+
+    @Test func tutorialAcordes02011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-01.swift, línea 1
+        comprobar(Acorde.identificar([.mi, .sol, .do]).first, #"Do/Mi"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-01.swift"#, 3)
+    }
+
+    @Test func tutorialAcordes02021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-02.swift, línea 1
+        comprobar(Acorde.identificar([.mi, .sol, .do]).first, #"Do/Mi"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-02.swift"#, 3)
+        comprobar(Acorde.identificar(midi: [55, 59, 62, 65, 68]).first, #"Sol7(♭9)"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-02.swift"#, 4)
+    }
+
+    @Test func tutorialAcordes02031() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-03.swift, línea 1
+        comprobar(Acorde.identificar([.mi, .sol, .do]).first, #"Do/Mi"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-03.swift"#, 3)
+        comprobar(Acorde.identificar(midi: [55, 59, 62, 65, 68]).first, #"Sol7(♭9)"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-03.swift"#, 4)
+        let candidato = Acorde.candidatos([.do, .mi, "Sib"]).first!
+        comprobar(candidato.valor.cifrado, #""Do7""#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-03.swift"#, 7)
+        comprobar(candidato.omitidas, #"[Sol]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-03.swift"#, 8)
+    }
+
+    @Test func tutorialAcordes03011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-03-01.swift, línea 1
+        let menor = Escala("La menor armónica")
+        comprobar(menor.notas, #"[La, Si, Do, Re, Mi, Fa, Sol♯]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-03-01.swift"#, 4)
+    }
+
+    @Test func tutorialAcordes03021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-03-02.swift, línea 1
+        let menor = Escala("La menor armónica")
+        comprobar(menor.notas, #"[La, Si, Do, Re, Mi, Fa, Sol♯]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-03-02.swift"#, 4)
+        comprobar(menor.cifradosRomanos(cuatriadas: true), #"["i(maj7)", "iiø7", "♭III+maj7", "iv7", "V7", "♭VImaj7", "vii°7"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-03-02.swift"#, 5)
+    }
+
+    @Test func tutorialAcordes03031() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-03-03.swift, línea 1
+        let menor = Escala("La menor armónica")
+        comprobar(menor.notas, #"[La, Si, Do, Re, Mi, Fa, Sol♯]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-03-03.swift"#, 4)
+        comprobar(menor.cifradosRomanos(cuatriadas: true), #"["i(maj7)", "iiø7", "♭III+maj7", "iv7", "V7", "♭VImaj7", "vii°7"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-03-03.swift"#, 5)
+        let laMenor: Tonalidad = "La menor"
+        comprobar(laMenor.armonizar(cuatriadas: true), #"Lam7 Sim7(♭5) Domaj7 Rem7 Mi7 Famaj7 Sol♯°7"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-03-03.swift"#, 9)
+    }
+
+    @Test func tutorialAnalisis01011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-01-01.swift, línea 1
+        let melodia = [69, 71, 72, 74, 76, 77, 80, 81]
+        comprobar(Tonalidad.identificar(midi: melodia).first, #"La menor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-01-01.swift"#, 4)
+    }
+
+    @Test func tutorialAnalisis01021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-01-02.swift, línea 1
+        let melodia = [69, 71, 72, 74, 76, 77, 80, 81]
+        comprobar(Tonalidad.identificar(midi: melodia).first, #"La menor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-01-02.swift"#, 4)
+        let laMenor: Tonalidad = "La menor"
+        comprobar(laMenor.relativa, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-01-02.swift"#, 7)
+        _ = laMenor.cifradosRomanos()
+    }
+
+    @Test func tutorialAnalisis02011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-02-01.swift, línea 1
+        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
+        comprobar(analisis.tonalidad, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-02-01.swift"#, 4)
+    }
+
+    @Test func tutorialAnalisis02021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-02-02.swift, línea 1
+        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
+        comprobar(analisis.tonalidad, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-02-02.swift"#, 4)
+        comprobar(analisis.cifrados, #"["I", "vi", "V7/V", "V7", "I"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-02-02.swift"#, 5)
+        comprobar(analisis.funciones.map { $0?.abreviatura ?? "–" }, #"["T", "T", "D", "D", "T"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-02-02.swift"#, 6)
+    }
+
+    @Test func tutorialAnalisis02031() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-02-03.swift, línea 1
+        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
+        comprobar(analisis.tonalidad, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-02-03.swift"#, 4)
+        comprobar(analisis.cifrados, #"["I", "vi", "V7/V", "V7", "I"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-02-03.swift"#, 5)
+        comprobar(analisis.funciones.map { $0?.abreviatura ?? "–" }, #"["T", "T", "D", "D", "T"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-02-03.swift"#, 6)
+        comprobarIgual(analisis.acordes[2].categoria, .dominanteSecundaria(de: 5), #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-02-03.swift"#, 7)
+        comprobar(analisis, #"I–vi–V7/V–V7–I en Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-02-03.swift"#, 8)
+    }
+
+    @Test func tutorialAnalisis03011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-01.swift, línea 1
+        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
+        comprobar(analisis.tonalidad, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-01.swift"#, 4)
+        comprobar(analisis.cifrados, #"["I", "vi", "V7/V", "V7", "I"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-01.swift"#, 5)
+        comprobar(analisis.funciones.map { $0?.abreviatura ?? "–" }, #"["T", "T", "D", "D", "T"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-01.swift"#, 6)
+        comprobarIgual(analisis.acordes[2].categoria, .dominanteSecundaria(de: 5), #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-01.swift"#, 7)
+        comprobar(analisis, #"I–vi–V7/V–V7–I en Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-01.swift"#, 8)
+        let cadencia = analisis.cadencias.last!
+        comprobarIgual(cadencia.tipo, .autentica, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-01.swift"#, 11)
+        comprobar(cadencia.esPerfecta, #"true"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-01.swift"#, 12)
+    }
+
+    @Test func tutorialAnalisis03021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-02.swift, línea 1
+        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
+        comprobar(analisis.tonalidad, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-02.swift"#, 4)
+        comprobar(analisis.cifrados, #"["I", "vi", "V7/V", "V7", "I"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-02.swift"#, 5)
+        comprobar(analisis.funciones.map { $0?.abreviatura ?? "–" }, #"["T", "T", "D", "D", "T"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-02.swift"#, 6)
+        comprobarIgual(analisis.acordes[2].categoria, .dominanteSecundaria(de: 5), #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-02.swift"#, 7)
+        comprobar(analisis, #"I–vi–V7/V–V7–I en Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-02.swift"#, 8)
+        let cadencia = analisis.cadencias.last!
+        comprobarIgual(cadencia.tipo, .autentica, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-02.swift"#, 11)
+        comprobar(cadencia.esPerfecta, #"true"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-02.swift"#, 12)
+        comprobarIgual(try AnalisisArmonico.analizar(leyendo: "Do Fa Sol").cadencias.last!.tipo, .semicadencia, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-03-02.swift"#, 13)
+    }
+
+    @Test func tutorialAnalisis04011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-01.swift, línea 1
+        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
+        comprobar(analisis.tonalidad, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-01.swift"#, 4)
+        comprobar(analisis.cifrados, #"["I", "vi", "V7/V", "V7", "I"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-01.swift"#, 5)
+        comprobar(analisis.funciones.map { $0?.abreviatura ?? "–" }, #"["T", "T", "D", "D", "T"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-01.swift"#, 6)
+        comprobarIgual(analisis.acordes[2].categoria, .dominanteSecundaria(de: 5), #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-01.swift"#, 7)
+        comprobar(analisis, #"I–vi–V7/V–V7–I en Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-01.swift"#, 8)
+        let fichero = analisis.midi()
+        let pieza = try PiezaImportada(leyendo: fichero)
+        comprobar(pieza.tonalidadEstimada, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-01.swift"#, 12)
+    }
+
+    @Test func tutorialAnalisis04021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-02.swift, línea 1
+        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
+        comprobar(analisis.tonalidad, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-02.swift"#, 4)
+        comprobar(analisis.cifrados, #"["I", "vi", "V7/V", "V7", "I"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-02.swift"#, 5)
+        comprobar(analisis.funciones.map { $0?.abreviatura ?? "–" }, #"["T", "T", "D", "D", "T"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-02.swift"#, 6)
+        comprobarIgual(analisis.acordes[2].categoria, .dominanteSecundaria(de: 5), #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-02.swift"#, 7)
+        comprobar(analisis, #"I–vi–V7/V–V7–I en Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-02.swift"#, 8)
+        let fichero = analisis.midi()
+        let pieza = try PiezaImportada(leyendo: fichero)
+        comprobar(pieza.tonalidadEstimada, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-02.swift"#, 12)
+        comprobar(pieza.acordes(), #"[Do, Lam, Re7, Sol7, Do]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-02.swift"#, 13)
+        if let leido = pieza.analisis() {
+            comprobar(leido.cifrados, #"["I", "vi", "V7/V", "V7", "I"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-02.swift"#, 15)
+        }
+    }
+
+    @Test func tutorialAnalisis04031() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-03.swift, línea 1
+        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
+        comprobar(analisis.tonalidad, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-03.swift"#, 4)
+        comprobar(analisis.cifrados, #"["I", "vi", "V7/V", "V7", "I"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-03.swift"#, 5)
+        comprobar(analisis.funciones.map { $0?.abreviatura ?? "–" }, #"["T", "T", "D", "D", "T"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-03.swift"#, 6)
+        comprobarIgual(analisis.acordes[2].categoria, .dominanteSecundaria(de: 5), #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-03.swift"#, 7)
+        comprobar(analisis, #"I–vi–V7/V–V7–I en Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-03.swift"#, 8)
+        let fichero = analisis.midi()
+        let pieza = try PiezaImportada(leyendo: fichero)
+        comprobar(pieza.tonalidadEstimada, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-03.swift"#, 12)
+        comprobar(pieza.acordes(), #"[Do, Lam, Re7, Sol7, Do]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-03.swift"#, 13)
+        if let leido = pieza.analisis() {
+            comprobar(leido.cifrados, #"["I", "vi", "V7/V", "V7", "I"]"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-03.swift"#, 15)
+        }
+        let partitura = analisis.musicXML(titulo: "Mi primera progresión")
+        comprobar(partitura.contains("<text>V7/V</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/analisis-04-03.swift"#, 19)
+    }
+
+    @Test func tutorialNotas01011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-01-01.swift, línea 1
+        let fa: Nota = "Fa#"
+        comprobar(fa, #"Fa♯"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-01-01.swift"#, 4)
+    }
+
+    @Test func tutorialNotas01021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-01-02.swift, línea 1
+        let fa: Nota = "Fa#"
+        comprobar(fa, #"Fa♯"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-01-02.swift"#, 4)
+        let solBemol: Nota = "Solb"
+        comprobar(fa == solBemol, #"false"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-01-02.swift"#, 6)
+    }
+
+    @Test func tutorialNotas01031() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-01-03.swift, línea 1
+        let fa: Nota = "Fa#"
+        comprobar(fa, #"Fa♯"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-01-03.swift"#, 4)
+        let solBemol: Nota = "Solb"
+        comprobar(fa == solBemol, #"false"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-01-03.swift"#, 6)
+        comprobar(fa.intervalo(hasta: solBemol), #"2ª disminuida"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-01-03.swift"#, 7)
+    }
+
+    @Test func tutorialNotas02011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-02-01.swift, línea 1
+        let la = Altura("La4")
+        comprobar(la.midi, #"69"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-02-01.swift"#, 4)
+        comprobar(la.frecuencia(), #"440.0"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-02-01.swift"#, 5)
+    }
+
+    @Test func tutorialNotas02021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-02-02.swift, línea 1
+        let la = Altura("La4")
+        comprobar(la.midi, #"69"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-02-02.swift"#, 4)
+        comprobar(la.frecuencia(), #"440.0"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-02-02.swift"#, 5)
+        comprobar(Altura(midi: 63, preferirBemoles: true), #"Mi♭4"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-02-02.swift"#, 6)
+        comprobar(Altura(midi: 68, tonalidad: "La menor"), #"Sol♯4"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-02-02.swift"#, 7)
+    }
+
+    @Test func tutorialNotas03011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-03-01.swift, línea 1
+        comprobar(Nota.si.intervalo(hasta: .fa), #"5ª disminuida"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-03-01.swift"#, 3)
+        comprobar(Intervalo.terceraMayor.inversion, #"6ª menor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-03-01.swift"#, 4)
+    }
+
+    @Test func tutorialNotas03021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-03-02.swift, línea 1
+        comprobar(Nota.si.intervalo(hasta: .fa), #"5ª disminuida"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-03-02.swift"#, 3)
+        comprobar(Intervalo.terceraMayor.inversion, #"6ª menor"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-03-02.swift"#, 4)
+        comprobar(Nota.re + "3M", #"Fa♯"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-03-02.swift"#, 5)
+        comprobar(Altura("Do4") + "5J", #"Sol4"#, #"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-03-02.swift"#, 6)
+    }
 }
