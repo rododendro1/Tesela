@@ -22,37 +22,6 @@ public struct ResultadoDeOrden: Equatable, Sendable {
 }
 
 public enum LineaDeComandos {
-    /// La ayuda en español (`armonia ayuda`). Todas salen de la tabla de `Ayuda.swift`.
-    public static let ayuda = textoDeAyuda(en: .espanol)
-    /// La ayuda en inglés (`armonia help --ingles`).
-    public static let help = textoDeAyuda(en: .ingles)
-    /// La ayuda en catalán (`armonia ayuda --idioma ca`).
-    public static let ajuda = textoDeAyuda(en: .catalan)
-    /// La ayuda en gallego (`armonia ayuda --idioma gl`).
-    public static let axuda = textoDeAyuda(en: .gallego)
-    /// La ayuda en euskera (`armonia ayuda --idioma eu`).
-    public static let laguntza = textoDeAyuda(en: .euskera)
-    /// La ayuda en portugués (`armonia ayuda --idioma pt`).
-    public static let ajudaEmPortugues = textoDeAyuda(en: .portugues)
-    /// La ayuda en francés (`armonia ayuda --idioma fr`).
-    public static let aide = textoDeAyuda(en: .frances)
-    /// La ayuda en italiano (`armonia ayuda --idioma it`).
-    public static let aiuto = textoDeAyuda(en: .italiano)
-    /// La ayuda en alemán (`armonia ayuda --idioma de`).
-    public static let hilfe = textoDeAyuda(en: .aleman)
-    /// La ayuda en occitano (`armonia ayuda --idioma oc`).
-    public static let ajudaEnOccitan = textoDeAyuda(en: .occitano)
-    /// La ayuda en ruso (`armonia ayuda --idioma ru`).
-    public static let spravka = textoDeAyuda(en: .ruso)
-    /// La ayuda en húngaro (`armonia ayuda --idioma hu`).
-    public static let sugo = textoDeAyuda(en: .hungaro)
-    /// La ayuda en griego (`armonia ayuda --idioma el`).
-    public static let voitheia = textoDeAyuda(en: .griego)
-    /// La ayuda en aragonés (`armonia ayuda --idioma an`).
-    public static let aduya = textoDeAyuda(en: .aragones)
-    /// La ayuda en asturiano (`armonia ayuda --idioma ast`).
-    public static let ayudaEnAsturianu = textoDeAyuda(en: .asturiano)
-
     /// Ejecuta una orden con sus argumentos (sin el nombre del programa).
     public static func ejecutar(_ argumentos: [String]) -> ResultadoDeOrden {
         var opciones = Argumentos(argumentos)
@@ -145,10 +114,13 @@ public enum LineaDeComandos {
     }
 
     /// La ayuda en el idioma de los textos de la notación (`Notacion.textos`).
-    public static func ayuda(en notacion: Notacion) -> String { ayudas[notacion.textos] ?? ayuda }
+    /// Todas salen de la tabla de `Ayuda.swift`: `ayuda(en: .delIdioma(.catalan))` es la de
+    /// `armonia ayuda --idioma ca`.
+    public static func ayuda(en notacion: Notacion) -> String {
+        ayudas[notacion.textos] ?? textoDeAyuda(en: notacion.textos)
+    }
 
-    /// La ayuda en cada idioma, montada una sola vez. Las constantes con nombre (`ayuda`, `help`,
-    /// `ajuda`…) salen de aquí, así que un idioma nuevo no añade ningún caso.
+    /// La ayuda en cada idioma, montada una sola vez.
     static let ayudas: [Idioma: String] = Dictionary(
         uniqueKeysWithValues: Idioma.allCases.map { ($0, textoDeAyuda(en: $0)) })
 
