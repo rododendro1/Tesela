@@ -195,7 +195,7 @@ import Testing
         #expect(Notacion.alemanPalabras.idiomaDeLasNotas == .aleman)
         #expect(Notacion.francesPalabras.idiomaDeLasAbreviaturas == .ingles)
         #expect(Notacion.espanolASCII.idiomaDeLasAbreviaturas == .espanol)
-        #expect(Notacion(escritura: EscrituraDeNotas(idioma: .italiano, ascii: false)) == .italiano)
+        #expect(Notacion(escritura: EscrituraDeNotas(idioma: .italiano, ascii: false)) == .italianoPalabras)
         // En alemán, el resto del vocabulario también.
         #expect(Escala(.re, .dorico).nombre(en: .alemanPalabras) == "D dorisch")
         #expect(Intervalo.terceraMayor.nombre(en: .alemanPalabras) == "große Terz")

@@ -193,7 +193,7 @@ import Testing
         #expect(Alteracion("sustenido") == .sostenido)
         #expect(Alteracion("duplo bemol") == .dobleBemol)
         #expect(Notacion.portuguesPalabras.idiomaDeLasAbreviaturas == .espanol)
-        #expect(Notacion(escritura: EscrituraDeNotas(idioma: .portugues, ascii: true)) == .portugues)
+        #expect(Notacion(escritura: EscrituraDeNotas(idioma: .portugues, ascii: true)) == .portuguesPalabras)
         #expect(EstiloDeCifrado(notacion: .portuguesPalabras).notacion == .portuguesPalabras)
     }
 
