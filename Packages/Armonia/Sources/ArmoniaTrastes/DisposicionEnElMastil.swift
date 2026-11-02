@@ -18,8 +18,9 @@ extension Mastil {
         let salto = disposicion == .drop3 ? 1 : 0
         let ancho = disposicion.voces + salto
         guard ancho <= orden.count else { return [] }
-        return (0...(orden.count - ancho)).map { inicio in
-            [orden[inicio]] + orden[(inicio + 1 + salto)..<(inicio + ancho)]
+        return (0...(orden.count - ancho)).map { (inicio: Int) -> [Int] in
+            let resto: [Int] = Array(orden[(inicio + 1 + salto)..<(inicio + ancho)])
+            return [orden[inicio]] + resto
         }
     }
 
