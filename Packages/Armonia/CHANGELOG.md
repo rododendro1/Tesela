@@ -2,12 +2,14 @@
 
 ## Sin publicar
 
-- **Más escalas con microtonos**, de nueve a veinticuatro:
+- **Más escalas con microtonos**, de nueve a treinta y tres:
   - Maqamat nuevos en cuartos de tono: Ḥusaynī y Nayrūz, y Sīkāh, maqām Huzām e ʿIrāq, con la tónica en un cuarto
     de tono (se escriben sobre Mi y Si; su primer paso microtonal es −1).
   - Makamlar nuevos con su segâh (Si una koma bajo): Uşşak, Hüseynî y Segâh makamı, que empieza en la segâh.
-  - Versión microtonal de Hicazkâr makamı y de seis dromoi, con la afinación de su maqam o su makam: Ousák, Sabáh,
-    Hitzáz, Hitzazkiár, Kartzigár y Rast.
+  - Versión microtonal de Hicazkâr makamı y de los quince dromoi: Ousák y Sabáh, en cuartos de tono, con la
+    segunda neutra de Bayātī y de Ṣabā; los demás, en comas de Arel-Ezgi-Uzdilek, con las notas del makam que tiene
+    las suyas (Hitzáz como Hicaz, Tabahaniótikos como Suzinak, Niavént como Nev'eser, Kartzigár como Karcığar…) o,
+    los que solo existen en Grecia (Pireótikos, Tsingánikos, Houzám, Sengáh), con los mismos tetracordos.
   - `TipoDeEscalaMicrotonal.pasos` cuenta desde la tónica temperada, y la tónica puede ser un microtono.
 - **Notaciones con palabras**: `Notacion.espanol`, `.ingles`, `.catalan`… pasan a llamarse `.espanolPalabras`,
   `.inglesPalabras`, `.catalanPalabras`… en los quince idiomas, como `.espanolASCII` y `.espanolCompacto`; igual en

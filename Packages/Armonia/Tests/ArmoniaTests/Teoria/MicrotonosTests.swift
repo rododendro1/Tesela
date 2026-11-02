@@ -17,7 +17,7 @@ import Testing
             #expect(microtonal.temperada.microtonal == microtonal, Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(TipoDeEscalaMicrotonal.catalogo.count == 24)
+        #expect(TipoDeEscalaMicrotonal.catalogo.count == 33)
     }
 
     /// Se busca por el nombre: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
@@ -25,7 +25,7 @@ import Testing
         #expect(TipoDeEscala.bayati == .frigio)
         #expect(TipoDeEscala.bayati.microtonal != nil)
         #expect(TipoDeEscala.frigio.microtonal == nil)
-        #expect(TipoDeEscala.houzam.microtonal == nil)
+        #expect(TipoDeEscala.ajam.microtonal == nil)
         #expect(Escala(.do, .mayor).notasMicrotonales() == nil)
         let propia = TipoDeEscala(nombre: "Bayātī", intervalos: [.unisono, .quintaJusta])
         #expect(propia.microtonal == nil)
@@ -86,7 +86,13 @@ import Testing
         #expect(nombres(Escala(.re, .hitzaz)) == "Re Mi♭⁺¹ Fa♯⁻¹ Sol La Si♭ Do")
         #expect(nombres(Escala(.re, .kartzigar)) == "Re Mi⁻¹ Fa Sol La♭⁺¹ Si⁻¹ Do")
         #expect(nombres(Escala(.do, .rast), .descendente) == "Do Re Mi⁻¹ Fa Sol La Si♭")
-        #expect(TipoDeEscala.houzam.microtonal == nil && TipoDeEscala.hiyaz.microtonal == nil)
+        #expect(nombres(Escala(.re, .pireotikos)) == "Re Mi♭⁺¹ Fa♯⁻¹ Sol♯⁻¹ La Si♭⁺¹ Do♯⁻¹")
+        #expect(nombres(Escala(.re, .nikriz)) == "Re Mi Fa Sol♯⁻¹ La Si Do")
+        #expect(nombres(Escala(.re, .houzam)) == "Re Mi♯⁻¹ Fa♯⁻¹ Sol La Si Do♯")
+        #expect(nombres(Escala(.re, .kiourdi), .descendente) == "Re Mi⁻¹ Fa Sol La Si♭ Do")
+        // Todos los dromoi tienen versión microtonal; los maqamat sin cuartos de tono, no.
+        #expect(TipoDeEscala.dromoi.allSatisfy { $0.microtonal != nil })
+        #expect(TipoDeEscala.hiyaz.microtonal == nil)
         // Una coma son 1200/53 cents.
         let si = Escala(.sol, .rastMakami).notasMicrotonales()?[2]
         #expect(abs((si?.cents ?? 0) - 17.0 * 1200 / 53) < 1e-9)

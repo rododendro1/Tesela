@@ -112,8 +112,10 @@ usan microtonos):
   Bhairav, Mārvā, Pūrvī y Toḍī.
 - **15 dromoi** griegos: Ousák, Hitzáz, Hitzazkiár, Pireótikos, Tabahaniótikos, Niavént,
   Nikríz (Souzinak), Kartzigár, Sabáh, Houzám, Sengáh, Tsingánikos, Rast, Kiourdí y Houseïní.
-  Seis tienen versión microtonal, la de su maqam o su makam: Ousák y Sabáh, con la segunda
-  neutra de Bayātī y de Ṣabā; Hitzáz, Hitzazkiár, Kartzigár y Rast, en comas turcas.
+  Todos tienen versión microtonal: Ousák y Sabáh, con la segunda neutra de Bayātī y de Ṣabā;
+  los demás, en las comas de Arel-Ezgi-Uzdilek, con las notas del makam que tiene las suyas
+  (Hicaz, Hicazkâr, Suzinak, Nev'eser, Nikriz, Karcığar, Rast) o, los que solo existen en
+  Grecia, con sus tetracordos (la segunda aumentada de Hicaz, la cuarta aumentada de Nikriz).
 - **8 escalas chinas**: los cinco modos pentatónicos Gōng, Shāng, Jué, Zhǐ y Yǔ (la pentatónica
   desde cada una de sus notas) y las heptatónicas Qīngyuè, Yǎyuè y Yànyuè (como la mayor, el
   lidio y el mixolidio).
@@ -218,8 +220,8 @@ Algunas escalas aproximadas tienen también su versión microtonal, `microtonal`
 dónde cae cada grado en la teoría de su tradición, en los pasos de su sistema (``SistemaMicrotonal``) contados
 desde la tónica temperada. La tienen todos los maqamat que usan cuartos de tono, en cuartos de tono
 (`.cuartosDeTono`, la teoría árabe moderna); Šur, Homāyun y Čahārgāh, con el *koron* de Vaziri (`.persa`); los
-makamlar Rast, Hicaz, Hicazkâr, Uşşak, Hüseynî y Segâh, en las 53 comas de Arel-Ezgi-Uzdilek (`.comas53`); y seis
-dromoi, con la afinación de su maqam o su makam. Los que en su propia teoría no tienen microtonos (Ḥijāz, Māhur…)
+makamlar Rast, Hicaz, Hicazkâr, Uşşak, Hüseynî y Segâh, en las 53 comas de Arel-Ezgi-Uzdilek (`.comas53`); y los
+quince dromoi, con la afinación de su maqam o su makam. Los que en su propia teoría no tienen microtonos (Ḥijāz, Māhur…)
 no la necesitan, y los mugam azerbaiyanos tampoco: son los de Hacıbəyov, ya en doce notas. En Sīkāh, ʿIrāq y
 Segâh la tónica misma es un microtono: Sīkāh se escribe sobre Mi, y su primer grado es Mi𝄳. Cada grado conserva la letra de su nota temperada y se aparta de ella
 medio semitono como mucho, así que la escala de doce notas sigue valiendo para todo lo demás.
