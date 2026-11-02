@@ -101,5 +101,10 @@ python3 Scripts/comprobaciones/notas_de_version.py --publicar 0.2.0   # «Sin pu
 git tag 0.2.0 && git push origin 0.2.0                 # en el commit de main
 ```
 
-Con la etiqueta, `.github/workflows/version.yml` crea la release con las notas de esa versión y `documentacion.yml`
-publica la documentación.
+Sin git, la etiqueta la crea el propio workflow: Actions → Versión → Run workflow con `0.2.0` (o
+`gh workflow run version.yml -f etiqueta=0.2.0`), sobre el último commit de main y solo si sus CHANGELOG y
+project.yml tienen esa versión.
+
+Con la etiqueta, `.github/workflows/version.yml` crea la release con las notas de esa versión (o se las pone si se
+creó a mano en GitHub y están vacías), le sube `armonia` compilada para Linux y macOS, y `documentacion.yml` publica
+la documentación.

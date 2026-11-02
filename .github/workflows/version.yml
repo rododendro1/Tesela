@@ -2,16 +2,20 @@ name: Versión
 
 # Al subir una etiqueta de versión («0.2.0» o «v0.2.0») crea su release en GitHub con las notas de la sección de
 # esa versión en el CHANGELOG.md de cada paquete (`Scripts/comprobaciones/notas_de_version.py`). Falla, sin crear nada, si
-# ningún CHANGELOG la tiene o si no coincide con MARKETING_VERSION de project.yml. Si la release ya existe, no la
-# toca. A mano (workflow_dispatch) crea la de una etiqueta que ya está subida.
+# ningún CHANGELOG la tiene o si no coincide con MARKETING_VERSION de project.yml. Si la release ya existe (creada a
+# mano en GitHub, por ejemplo), solo le pone las notas si las tiene vacías.
 #
 # Para publicar una versión, pasa lo que está en «## Sin publicar» de los CHANGELOG a la versión y sube
-# MARKETING_VERSION en project.yml (el script hace las dos cosas), fusiona en main y etiqueta ese commit:
+# MARKETING_VERSION en project.yml (el script hace las dos cosas), fusiona en main y etiqueta ese commit, o con git:
 #
 #     python3 Scripts/comprobaciones/notas_de_version.py --publicar 0.2.0
 #     git tag 0.2.0 && git push origin 0.2.0
 #
-# La misma etiqueta publica también la documentación (documentacion.yml).
+# o sin git, desde Actions → Versión → Run workflow con la etiqueta (`gh workflow run version.yml -f etiqueta=0.2.0`):
+# si no existe, se crea sobre el último commit de main, después de comprobar sus CHANGELOG y su versión.
+#
+# La misma etiqueta publica también la documentación (documentacion.yml). Una etiqueta creada aquí, con el token del
+# workflow, no lanza otros workflows, así que este la pide a mano.
 #
 # Además compila la herramienta `armonia` y sube a la release un paquete por plataforma
 # (`Scripts/empaquetar_cli.sh`): Linux x86_64 y arm64 (estáticos, con el SDK musl de Swift: no dependen de nada
@@ -25,21 +29,50 @@ on:
   workflow_dispatch:
     inputs:
       etiqueta:
-        description: Etiqueta ya subida (por ejemplo 0.2.0)
+        description: Etiqueta (por ejemplo 0.4.0); si no existe, se crea sobre main
         required: true
 
 permissions:
   contents: write
-  actions: read
+  actions: write
 
 concurrency:
   group: version-${{ inputs.etiqueta || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
+  # A mano, la etiqueta que falta: sobre el último commit de main, si sus CHANGELOG tienen esa versión.
+  etiqueta:
+    name: Etiqueta
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      ETIQUETA: ${{ inputs.etiqueta }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - name: Crear la etiqueta si no existe
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --tags origin "refs/tags/$ETIQUETA" > /dev/null; then
+            echo "La etiqueta $ETIQUETA ya existe; no se toca."
+            exit 0
+          fi
+          # Las mismas comprobaciones que al etiquetar a mano: la versión está en los CHANGELOG y en project.yml.
+          python3 Scripts/comprobaciones/notas_de_version.py "$ETIQUETA" > /dev/null
+          git tag "$ETIQUETA" HEAD
+          git push origin "refs/tags/$ETIQUETA"
+          echo "Etiqueta $ETIQUETA sobre $(git rev-parse --short HEAD)." >> "$GITHUB_STEP_SUMMARY"
+          gh workflow run documentacion.yml --repo "$GITHUB_REPOSITORY" --ref "$ETIQUETA"
+
   release:
     name: Release
-    if: github.event_name != 'pull_request'
+    needs: etiqueta
+    # Tras la etiqueta, o sin ella (al subir una con git, el job de la etiqueta no corre).
+    if: ${{ !cancelled() && github.event_name != 'pull_request' && needs.etiqueta.result != 'failure' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -55,7 +88,12 @@ jobs:
         run: |
           set -euo pipefail
           if gh release view "$ETIQUETA" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
-            echo "::notice::La release $ETIQUETA ya existe; no se cambia."
+            if [ -z "$(gh release view "$ETIQUETA" --repo "$GITHUB_REPOSITORY" --json body --jq .body)" ]; then
+              gh release edit "$ETIQUETA" --repo "$GITHUB_REPOSITORY" --notes-file "$RUNNER_TEMP/notas.md"
+              echo "::notice::La release $ETIQUETA ya existía sin notas; se le ponen las del CHANGELOG."
+            else
+              echo "::notice::La release $ETIQUETA ya existe con sus notas; no se cambia."
+            fi
             exit 0
           fi
           gh release create "$ETIQUETA" --repo "$GITHUB_REPOSITORY" --verify-tag \
@@ -64,6 +102,9 @@ jobs:
 
   linux:
     name: armonia · Linux
+    # Las dos compilan la etiqueta, así que esperan a que exista.
+    needs: etiqueta
+    if: ${{ !cancelled() && needs.etiqueta.result != 'failure' }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     container: swift:6.2
@@ -102,7 +143,9 @@ jobs:
         run: |
           set -euo pipefail
           for arquitectura in x86_64 aarch64; do
-            swift build -c release --product armonia --swift-sdk "$arquitectura-swift-linux-musl"
+            # Sin información de depuración ni símbolos (-s): el binario estático pasa de cientos de MB a unos 60.
+            swift build -c release --product armonia --swift-sdk "$arquitectura-swift-linux-musl" \
+              -Xswiftc -gnone -Xlinker -s
           done
       - name: Empaquetar
         run: |
@@ -125,6 +168,9 @@ jobs:
 
   macos:
     name: armonia · macOS
+    # Las dos compilan la etiqueta, así que esperan a que exista.
+    needs: etiqueta
+    if: ${{ !cancelled() && needs.etiqueta.result != 'failure' }}
     runs-on: macos-15
     timeout-minutes: 45
     env:
@@ -152,8 +198,11 @@ jobs:
 
   binarios:
     name: Subir los binarios
-    if: github.event_name != 'pull_request'
     needs: [release, linux, macos]
+    # El job de la etiqueta puede no haber corrido: sin `!cancelled()`, este se saltaría con él.
+    if: >-
+      ${{ !cancelled() && github.event_name != 'pull_request' && needs.release.result == 'success'
+      && needs.linux.result == 'success' && needs.macos.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:

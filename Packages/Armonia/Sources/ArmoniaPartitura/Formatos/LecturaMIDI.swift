@@ -8,6 +8,9 @@ import Foundation
 // MIDI solo da números de nota: la ortografía (Fa♯ o Sol♭) sale de la armadura del fichero o, si no
 // la tiene, de la tonalidad que mejor explica las notas. Una nota que empieza mientras la misma
 // tecla ya suena en el mismo canal cierra la anterior; las que no se cierran, terminan con su pista.
+//
+// Los microtonos llegan como inflexiones de tono (pitch bend): cada nota se lleva, como `desvio`, la inflexión de
+// su canal cuando empieza, en el ámbito que fije el RPN 0 (±2 semitonos si no lo fija).
 
 extension PiezaImportada {
     /// Lee un fichero MIDI estándar.
@@ -34,7 +37,7 @@ extension PiezaImportada {
             let altura = tonalidad.map { Altura(midi: nota.clave, tonalidad: $0) } ?? Altura(midi: nota.clave)
             return NotaDeLaPieza(
                 altura: altura, inicio: Duracion(nota.desde, redonda),
-                duracion: Duracion(nota.hasta - nota.desde, redonda), parte: parte)
+                duracion: Duracion(nota.hasta - nota.desde, redonda), parte: parte, desvio: nota.desvio)
         }
         self.init(
             titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas,
@@ -52,8 +55,9 @@ struct LectorMIDI {
     var tonalidad: Tonalidad?
     var compas: Compas?
     var tempo: Tempo?
-    /// Las notas en pulsos de reloj; `parte` es la pista por 16 más el canal.
-    var notas: [(clave: Int, desde: Int, hasta: Int, parte: Int)] = []
+    /// Las notas en pulsos de reloj; `parte` es la pista por 16 más el canal, y `desvio`, los cents de la
+    /// inflexión de tono con que empezó.
+    var notas: [(clave: Int, desde: Int, hasta: Int, parte: Int, desvio: Double)] = []
 
     init(bytes: [UInt8]) { self.bytes = bytes }
 
@@ -86,14 +90,19 @@ struct LectorMIDI {
     private mutating func leerPista(hasta fin: Int, numero: Int) throws {
         var ahora = 0
         var estado: UInt8 = 0 // el estado en curso (running status)
-        var sonando: [Int: [Int]] = [:] // canal * 128 + tecla → cuándo empezó cada nota abierta
-        var leidas: [(clave: Int, desde: Int, hasta: Int, parte: Int)] = []
+        // canal * 128 + tecla → cuándo empezó cada nota abierta, y con qué inflexión.
+        var sonando: [Int: [(desde: Int, desvio: Double)]] = [:]
+        var leidas: [(clave: Int, desde: Int, hasta: Int, parte: Int, desvio: Double)] = []
+        // Por canal: la inflexión en curso (en cents), su ámbito en semitonos y el RPN elegido (101 y 100).
+        var inflexion = [Double](repeating: 0, count: 16)
+        var ambito = [Double](repeating: 2, count: 16)
+        var rpn = [(Int, Int)](repeating: (127, 127), count: 16)
         func cerrar(_ clave: Int, canal: Int, en tiempo: Int) {
             let indice = canal * 128 + clave
             guard var abiertas = sonando[indice], !abiertas.isEmpty else { return }
-            let desde = abiertas.removeFirst()
+            let nota = abiertas.removeFirst()
             sonando[indice] = abiertas
-            if tiempo > desde { leidas.append((clave, desde, tiempo, numero * 16 + canal)) }
+            if tiempo > nota.desde { leidas.append((clave, nota.desde, tiempo, numero * 16 + canal, nota.desvio)) }
         }
         while posicion < fin {
             ahora += try cantidadVariable()
@@ -124,9 +133,24 @@ struct LectorMIDI {
                     guard canal != 9 else { break } // percusión
                     cerrar(clave, canal: canal, en: ahora)
                     if estado & 0xF0 == 0x90 && velocidad > 0 {
-                        sonando[canal * 128 + clave, default: []].append(ahora)
+                        sonando[canal * 128 + clave, default: []].append((ahora, inflexion[canal]))
                     }
-                case 0xA0, 0xB0, 0xE0:
+                case 0xB0:
+                    let control = Int(primero & 0x7F)
+                    let valor = Int(try byte() & 0x7F)
+                    switch control {
+                    case 101: rpn[canal].0 = valor
+                    case 100: rpn[canal].1 = valor
+                    // El ámbito de la inflexión (RPN 0): semitonos y, en el byte bajo, cents.
+                    case 6 where rpn[canal] == (0, 0): ambito[canal] = Double(valor)
+                    case 38 where rpn[canal] == (0, 0):
+                        ambito[canal] = ambito[canal].rounded(.down) + Double(valor) / 100
+                    default: break
+                    }
+                case 0xE0:
+                    let valor = Int(primero & 0x7F) | Int(try byte() & 0x7F) << 7
+                    inflexion[canal] = Double(valor - 8192) / 8192 * ambito[canal] * 100
+                case 0xA0:
                     _ = try byte()
                 case 0xC0, 0xD0:
                     break // un solo byte de datos, ya leído
@@ -138,8 +162,8 @@ struct LectorMIDI {
         posicion = fin
         // Las que no se cerraron terminan con la pista.
         for (indice, abiertas) in sonando {
-            for desde in abiertas where ahora > desde {
-                leidas.append((indice % 128, desde, ahora, numero * 16 + indice / 128))
+            for nota in abiertas where ahora > nota.desde {
+                leidas.append((indice % 128, nota.desde, ahora, numero * 16 + indice / 128, nota.desvio))
             }
         }
         notas += leidas

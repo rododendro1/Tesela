@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+- **Los microtonos también se leen**: `NotaDeLaPieza.desvio`, los cents que una nota importada se aparta de su
+  altura. En MusicXML, un `<alter>` con decimales ya no se redondea: `-0.5` sobre E es Mi♭ y 50 cents (antes, Mi♭
+  sin más). En MIDI, cada nota se lleva la inflexión de tono (pitch bend) de su canal, en el ámbito que fije el
+  RPN 0. Las escalas microtonales salen y vuelven igual por los dos formatos.
+- Los binarios de `armonia` para Linux se compilan sin información de depuración ni símbolos, y el workflow de la
+  versión crea la etiqueta si se lanza a mano y pone las notas del CHANGELOG a una release creada sin ellas.
 - **Echoi bizantinos y śruti indios**, dos sistemas microtonales nuevos (el catálogo microtonal pasa de 49 a 68):
   - `SistemaMicrotonal.moria72`, los 72 moria de la Comisión Patriarcal (1881), y nueve escalas nuevas de la
     tradición `.bizancio`, categoría `.echos` (`TipoDeEscala.echoi`): los ocho echoi y el légetos. Todos menos el

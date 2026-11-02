@@ -16,19 +16,25 @@ import Foundation
 // saltos (da capo, coda), y los instrumentos transpositores de MIDI (que ya suenan en su altura).
 
 /// Una nota de una pieza importada: su altura, cuándo empieza y cuánto dura, contado en redondas
-/// desde el principio de la pieza, y la parte (pista o pentagrama) de la que viene.
+/// desde el principio de la pieza, y la parte (pista o pentagrama) de la que viene. Un microtono lleva además su
+/// `desvio`: cuántos cents se aparta de su altura temperada (`<alter>-0.5</alter>` en MusicXML, una inflexión de
+/// tono en MIDI).
 public struct NotaDeLaPieza: Hashable, Sendable {
     public let altura: Altura
     public let inicio: Duracion
     public let duracion: Duracion
     /// La parte de la pieza, contando desde 0: la pista y el canal en MIDI, la parte en MusicXML.
     public let parte: Int
+    /// Cents sobre (o bajo) `altura`; 0 si es una nota temperada.
+    public let desvio: Double
 
-    public init(altura: Altura, inicio: Duracion, duracion: Duracion, parte: Int = 0) {
+    public init(altura: Altura, inicio: Duracion, duracion: Duracion, parte: Int = 0, desvio: Double = 0) {
         self.altura = altura
         self.inicio = inicio
         self.duracion = duracion
         self.parte = parte
+        // Redondeado a la centésima de cent, como `Evento.desvios`.
+        self.desvio = (desvio * 100).rounded() / 100
     }
 
     /// Cuándo termina.
