@@ -80,7 +80,6 @@ extension TextosDeApps {
         conLaOctavaFinal: "С завершающей октавой",
         figura: "Длительность",
         empezarEn: "Начать с",
-        tensiones: "Натяжения",
         porGrados: "Рисунок по ступеням",
         aproximacion: "Подход",
         tresillos: "Триоли",

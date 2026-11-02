@@ -80,7 +80,6 @@ extension TextosDeApps {
         conLaOctavaFinal: "Με την τελική οκτάβα",
         figura: "Ρυθμική αξία",
         empezarEn: "Έναρξη από",
-        tensiones: "Εντάσεις",
         porGrados: "Μοτίβο ανά βαθμίδες",
         aproximacion: "Προσέγγιση",
         tresillos: "Τρίηχα",

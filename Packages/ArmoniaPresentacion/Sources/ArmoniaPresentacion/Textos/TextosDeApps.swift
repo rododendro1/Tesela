@@ -87,7 +87,6 @@ public struct TextosDeApps: TextosTraducidos {
     public let conLaOctavaFinal: String
     public let figura: String
     public let empezarEn: String
-    public let tensiones: String
     public let porGrados: String
     public let aproximacion: String
     public let tresillos: String

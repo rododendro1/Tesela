@@ -80,7 +80,6 @@ extension TextosDeApps {
         conLaOctavaFinal: "Ending on the octave",
         figura: "Note value",
         empezarEn: "Start on",
-        tensiones: "Tensions",
         porGrados: "Pattern by degrees",
         aproximacion: "Approach notes",
         tresillos: "Triplets",

@@ -80,7 +80,6 @@ extension TextosDeApps {
         conLaOctavaFinal: "Mit der Schlussoktave",
         figura: "Notenwert",
         empezarEn: "Beginnen mit",
-        tensiones: "Optionstöne",
         porGrados: "Muster nach Stufen",
         aproximacion: "Annäherung",
         tresillos: "Triolen",

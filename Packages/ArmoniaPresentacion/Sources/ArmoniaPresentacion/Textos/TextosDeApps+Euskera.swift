@@ -80,7 +80,6 @@ extension TextosDeApps {
         conLaOctavaFinal: "Azken zortzidunarekin",
         figura: "Irudia",
         empezarEn: "Hasi",
-        tensiones: "Tentsioak",
         porGrados: "Eredua mailaka",
         aproximacion: "Hurbilketa",
         tresillos: "Hirukoteak",

@@ -80,7 +80,6 @@ extension TextosDeApps {
         conLaOctavaFinal: "Amb l'octava finala",
         figura: "Figura",
         empezarEn: "Començar per",
-        tensiones: "Tensions",
         porGrados: "Motiu per grads",
         aproximacion: "Aproximacion",
         tresillos: "Triolets",

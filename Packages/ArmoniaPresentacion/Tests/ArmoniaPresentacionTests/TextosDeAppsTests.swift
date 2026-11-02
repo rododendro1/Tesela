@@ -99,7 +99,6 @@ import Testing
         { $0.texto(\.conLaOctavaFinal) },
         { $0.texto(\.figura) },
         { $0.texto(\.empezarEn) },
-        { $0.texto(\.tensiones) },
         { $0.texto(\.porGrados) },
         { $0.texto(\.aproximacion) },
         { $0.texto(\.tresillos) },

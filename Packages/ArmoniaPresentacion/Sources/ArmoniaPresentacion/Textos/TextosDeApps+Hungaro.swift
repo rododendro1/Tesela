@@ -80,7 +80,6 @@ extension TextosDeApps {
         conLaOctavaFinal: "Az oktávval zárva",
         figura: "Hangérték",
         empezarEn: "Kezdőhang",
-        tensiones: "Feszültséghangok",
         porGrados: "Minta fokokkal",
         aproximacion: "Közelítőhangok",
         tresillos: "Triolák",
