@@ -172,10 +172,11 @@ Sources/
 │   │                      CalidadDeIntervalo, Consonancia), Candidato, Protocolos, Aritmetica, y los
 │   │                      nombres de notas e intervalos en cada idioma (al final de Nota e Intervalo)
 │   ├── Notacion/          Notacion (con EscrituraDeNotas e Idioma), ReglasDeIdioma, EstiloDeCifrado, Traduccion
-│   ├── Lectura/           Lector, ErrorDeLectura
+│   ├── Lectura/           Lector, ErrorDeArmonia (con ErrorAlLeer y MotivoDeLectura), ErrorDeLectura
 │   ├── Textos/            TextosDeNucleo y un fichero por idioma
 │   └── Postonal/          ConjuntoDeClases, TablaForte
 ├── ArmoniaTeoria/
+│   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
 │   │                      PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde
 │   ├── Escalas/           TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
@@ -201,7 +202,7 @@ Sources/
 │   │                  conducción mínima): todo lo que se apoya en el Tonnetz
 │   └── Dibujo/        DibujoSVG (título, leyenda y colores comunes de los dibujos)
 ├── ArmoniaPartitura/
-│   ├── Modelo/        Duracion (con Figura y Tempo), Compas, Evento, Melodia (con Voz),
+│   ├── Modelo/        Duracion (con Figura y Tempo), Compas, Evento, Melodia (con Voz), ErrorDeLecturaDePartitura,
 │   │                  Pentagrama (Clave, PosicionEnPentagrama, InstrumentoDePartitura)
 │   ├── Formatos/      MusicXML, MEI, LilyPond y ABC (exportación de voces, corales y progresiones),
 │   │                  ArchivoMIDI (ficheros MIDI estándar de voces, corales y progresiones)
@@ -216,9 +217,9 @@ Sources/
 Los nombres que dependen del idioma están en el fichero de cada tipo, al final, tras `// MARK: - Idiomas`
 (`grep -rl 'MARK: - Idiomas' Sources` los lista): en el núcleo, `Nota.swift` (letras, alteraciones
 y nombres de nota en las quince lenguas de las notaciones), `Intervalo.swift` (calidades de
-intervalo, intervalos y consonancias) y `ErrorDeLectura.swift` (los mensajes de error: los generales y los de
-cada lectura, en `TextosDeNotas`, `TextosDeAcordes`, `TextosDeEscalas` y `TextosDePartitura`); en las demás
-capas, los modos y las tonalidades, los papeles en el acorde, las calidades de tríada, los grados, las claves,
+intervalo, intervalos y consonancias) y `ErrorDeLectura.swift` (los mensajes de error generales y los de las
+notas); en las demás capas, los errores de lectura de cada una (`ErrorDeLecturaDeTeoria.swift`,
+`ErrorDeLecturaDePartitura.swift`), los modos y las tonalidades, los papeles en el acorde, las calidades de tríada, los grados, las claves,
 las figuras, las duraciones y los colores. Los textos usan `Traduccion`, que pide los quince idiomas:
 español, inglés, catalán, gallego, asturiano, aragonés, euskera, portugués, francés, occitano, italiano, alemán,
 griego y ruso. Los nombres que son datos de un catálogo (tipos de acorde y de escala, instrumentos)

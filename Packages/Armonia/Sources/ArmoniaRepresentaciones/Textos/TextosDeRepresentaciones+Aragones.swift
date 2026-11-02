@@ -52,6 +52,12 @@ extension TextosDeRepresentaciones {
         wickiHaydenEspejo: "Wicki-Hayden (espello)",
         wickiHaydenPlano: "Wicki-Hayden (plano)",
         acordeonC: "Acordeón sistema C",
-        acordeonB: "Acordeón sistema B"
+        acordeonB: "Acordeón sistema B",
+        // FormatoUIL.swift
+        uilNoValido: { texto in "UIL no valido: «\(texto)». S'aspera L,G,D;R<graus>[M], per eixemplo 2,7,5;R30M." },
+        intervalosIncoherentes: { menor, mayor, diferencia in "Intervalos incoherents: \(menor),\(mayor),\(diferencia). Han de cumplir 0 < L ≤ D y G = L + D." },
+        giroNoValido: { grados in "O chiro de \(grados)° no ye multiplo de 30°." },
+        afinacionNoSoportada: { tonos in "Nomás se dibuixan teclaus de 12 notas, no de \(tonos)." },
+        cizallaNoSoportada: { cizalla in "A cizalla S\(cizalla) no ye suportada." }
     )
 }

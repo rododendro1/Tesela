@@ -123,6 +123,29 @@ extension TextosDeTeoria {
         dominanteSecundaria: "Zwischendominante",
         prestamoModal: "modale Entlehnung",
         sustitutoDiatonico: "diatonische Substitution",
+        // ErrorDeLecturaDeTeoria.swift (acordes)
+        simboloNoReconocido: { simbolo in "„\(simbolo)“ gehört zu keinem bekannten Akkordsymbol" },
+        tensionNoValida: { tension in "„\(tension)“ ist keine gültige Tension (♭/♯ gehen mit 5, 9, 11 und 13, add mit 2, 4, 6, 9, 11 und 13)" },
+        numeroDeAcordeNoValido: { numero in "„\(numero)“ ist keine Akkordzahl (5, 6, 7, 9, 11 oder 13)" },
+        numeroRepetido: { numero in "„\(numero)“ steht nach einer anderen Zahl; weitere Optionen kommen in Klammern, wie in 7(9)" },
+        disminuidoYSemidisminuido: "vermindert (°) und halbvermindert (ø) lassen sich nicht kombinieren",
+        quintaConCalidad: "der Powerchord (5) hat keine Terz und erlaubt daher weder m noch °, ø oder +",
+        fundamentalNoOmitible: "der Grundton kann nicht weggelassen werden",
+        gradoNoOmitible: { grado in "„omit\(grado)“ ist ungültig (weglassen lassen sich 3, 5, 7, 9, 11 und 13)" },
+        faltaLaFundamental: "der Grundton fehlt",
+        intervaloSinPapel: { intervalo, notacion in "die \(intervalo.nombre(en: .alemanPalabras)) hat in einem Terzakkord keine Funktion" },
+        terceraMayorYMenor: "er hat zugleich eine große und eine kleine Terz (♯9 wird als übermäßige None geschrieben, nicht als kleine Terz)",
+        variasSeptimas: "er hat mehr als eine Septime",
+        septimaDisminuidaFueraDelDisminuido: "die verminderte Septime kommt nur im verminderten Akkord vor (mit kleiner Terz und verminderter Quinte)",
+        noEsPorTerceras: "es ist kein Terzakkord",
+        bajoNoValido: { bajo in "„\(bajo)“ ist kein Notenname für den Bass" },
+        idiomasMezclados: { nombre in "„\(nombre)“ ist in einer anderen Sprache geschrieben als der Grundton: entweder alles mit Silben (Sol7/Si) oder alles mit Buchstaben (G7/B)" },
+        // ErrorDeLecturaDeTeoria.swift (escalas)
+        modoNoReconocido: { nombre in "„\(nombre)“ ist kein Tongeschlecht: eine Tonart ist Dur oder Moll (für die anderen Modi nimm Escala)" },
+        faltaElTipoDeEscala: "die Skalenart fehlt (Dur, dorisch, harmonisch Moll…)",
+        tipoDeEscalaNoReconocido: { nombre in "„\(nombre)“ ist keine bekannte Skalenart" },
+        // ErrorDeLecturaDeTeoria.swift (coral)
+        vocesDistintas: "alle Akkorde müssen gleich viele Stimmen haben, mindestens zwei",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(tipo) auf \(raiz)" },
         enLaTonalidad: { tonalidad in "in " + tonalidad }

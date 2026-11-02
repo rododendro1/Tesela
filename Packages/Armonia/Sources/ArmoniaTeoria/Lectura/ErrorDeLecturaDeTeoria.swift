@@ -1,0 +1,130 @@
+import ArmoniaNucleo
+
+/// Error al leer un cifrado, una escala, una tonalidad o los acordes de un coral.
+///
+/// Como `ErrorDeLectura`, indica el texto, el carácter donde se detuvo la lectura y el motivo, en los quince
+/// idiomas de los textos. Leer un acorde puede lanzar cualquiera de los dos: `ErrorDeLectura` si falla la
+/// fundamental y `ErrorDeLecturaDeTeoria` si falla el cifrado. Para tratarlos juntos, `any ErrorAlLeer`:
+///
+///     do {
+///         let acorde = try Acorde(leyendo: "Do7(b3)")
+///     } catch let error as ErrorDeLecturaDeTeoria {
+///         error.motivo   // .tensionNoValida("b3")
+///         print(error)   // No se puede leer «Do7(b3)» (carácter 4): «b3» no es una tensión válida…
+///     }
+public struct ErrorDeLecturaDeTeoria: ErrorAlLeer {
+    public enum Motivo: MotivoDeLectura {
+        // Cifrados
+        case simboloNoReconocido(String)
+        case tensionNoValida(String)
+        case numeroDeAcordeNoValido(Int)
+        case numeroRepetido(Int)
+        case calidadesIncompatibles(CalidadesIncompatibles)
+        case gradoNoOmitible(Int)
+        case acordeNoInterpretable(RechazoDeAcorde)
+        case bajoNoValido(String)
+        /// Un nombre de nota escrito en otro idioma que el resto ("Sol7/B" en lugar de "Sol7/Si").
+        case idiomasMezclados(String)
+        // Escalas y tonalidades
+        case tipoDeEscalaNoReconocido(String)
+        case modoNoReconocido(String)
+        // Corales
+        /// Los acordes de una conducción de voces no tienen todos el mismo número de voces (o tienen menos de dos).
+        case vocesDistintas
+    }
+
+    /// Símbolos de un cifrado que no pueden ir juntos.
+    public enum CalidadesIncompatibles: Hashable, Sendable {
+        /// ° y ø a la vez ("Dodimø").
+        case disminuidoYSemidisminuido
+        /// El acorde de quinta con m, °, ø o + ("Dom5").
+        case quintaConCalidad
+    }
+
+    /// Por qué un conjunto de notas no es un acorde por terceras.
+    public enum RechazoDeAcorde: Hashable, Sendable {
+        case faltaLaFundamental
+        /// Un intervalo que no es tercera, quinta, séptima ni tensión (la 1ª aumentada, por ejemplo).
+        case intervaloSinPapel(Intervalo)
+        case terceraMayorYMenor
+        case variasSeptimas
+        case septimaDisminuidaFueraDelDisminuido
+        case noEsPorTerceras
+    }
+
+    public let texto: String
+    public let posicion: Int?
+    public let motivo: Motivo
+
+    public init(texto: String, posicion: Int?, motivo: Motivo) {
+        self.texto = texto
+        self.posicion = posicion
+        self.motivo = motivo
+    }
+}
+
+extension Lector {
+    /// Error de Teoría en la posición actual.
+    package func error(_ motivo: ErrorDeLecturaDeTeoria.Motivo) -> ErrorDeLecturaDeTeoria {
+        ErrorDeLecturaDeTeoria(texto: texto, posicion: posicion, motivo: motivo)
+    }
+
+    /// Error de Teoría en una posición concreta (`nil` si el problema no está en un punto del texto).
+    package func error(_ motivo: ErrorDeLecturaDeTeoria.Motivo, posicion: Int?) -> ErrorDeLecturaDeTeoria {
+        ErrorDeLecturaDeTeoria(texto: texto, posicion: posicion, motivo: motivo)
+    }
+}
+
+// MARK: - Idiomas
+//
+// Los mensajes en los quince idiomas de los textos, una función por motivo, para que un motivo nuevo no compile
+// hasta que tiene su texto. Los textos están en `TextosDeTeoria`.
+
+extension ErrorDeLecturaDeTeoria.Motivo {
+    public func explicacion(en notacion: Notacion) -> String {
+        explicacionTraducida(notacion).en(notacion)
+    }
+
+    /// La explicación en los quince idiomas de los textos. La notación solo hace falta para los
+    /// nombres de los intervalos, que siguen su vocabulario.
+    private func explicacionTraducida(_ notacion: Notacion) -> Traduccion {
+        switch self {
+        case .simboloNoReconocido(let simbolo): return TextosDeTeoria.traduccion { $0.simboloNoReconocido(simbolo) }
+        case .tensionNoValida(let tension): return TextosDeTeoria.traduccion { $0.tensionNoValida(tension) }
+        case .numeroDeAcordeNoValido(let numero):
+            return TextosDeTeoria.traduccion { $0.numeroDeAcordeNoValido(numero) }
+        case .numeroRepetido(let numero): return TextosDeTeoria.traduccion { $0.numeroRepetido(numero) }
+        case .calidadesIncompatibles(.disminuidoYSemidisminuido):
+            return TextosDeTeoria.traduccion(\.disminuidoYSemidisminuido)
+        case .calidadesIncompatibles(.quintaConCalidad): return TextosDeTeoria.traduccion(\.quintaConCalidad)
+        case .gradoNoOmitible(let grado):
+            return grado == 1
+                ? TextosDeTeoria.traduccion(\.fundamentalNoOmitible)
+                : TextosDeTeoria.traduccion { $0.gradoNoOmitible(grado) }
+        case .acordeNoInterpretable(let rechazo): return Self.rechazo(rechazo, en: notacion)
+        case .bajoNoValido(let bajo): return TextosDeTeoria.traduccion { $0.bajoNoValido(bajo) }
+        case .idiomasMezclados(let nombre): return TextosDeTeoria.traduccion { $0.idiomasMezclados(nombre) }
+        case .tipoDeEscalaNoReconocido(let nombre):
+            return nombre.isEmpty
+                ? TextosDeTeoria.traduccion(\.faltaElTipoDeEscala)
+                : TextosDeTeoria.traduccion { $0.tipoDeEscalaNoReconocido(nombre) }
+        case .modoNoReconocido(let nombre): return TextosDeTeoria.traduccion { $0.modoNoReconocido(nombre) }
+        case .vocesDistintas: return TextosDeTeoria.traduccion(\.vocesDistintas)
+        }
+    }
+
+    private static func rechazo(_ rechazo: ErrorDeLecturaDeTeoria.RechazoDeAcorde, en notacion: Notacion)
+        -> Traduccion
+    {
+        switch rechazo {
+        case .faltaLaFundamental: return TextosDeTeoria.traduccion(\.faltaLaFundamental)
+        case .intervaloSinPapel(let intervalo):
+            return TextosDeTeoria.traduccion { $0.intervaloSinPapel(intervalo, notacion) }
+        case .terceraMayorYMenor: return TextosDeTeoria.traduccion(\.terceraMayorYMenor)
+        case .variasSeptimas: return TextosDeTeoria.traduccion(\.variasSeptimas)
+        case .septimaDisminuidaFueraDelDisminuido:
+            return TextosDeTeoria.traduccion(\.septimaDisminuidaFueraDelDisminuido)
+        case .noEsPorTerceras: return TextosDeTeoria.traduccion(\.noEsPorTerceras)
+        }
+    }
+}

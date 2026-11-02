@@ -123,6 +123,29 @@ extension TextosDeTeoria {
         dominanteSecundaria: "dominante secondaria",
         prestamoModal: "prestito modale",
         sustitutoDiatonico: "sostituzione diatonica",
+        // ErrorDeLecturaDeTeoria.swift (acordes)
+        simboloNoReconocido: { simbolo in "«\(simbolo)» non fa parte di nessuna sigla conosciuta" },
+        tensionNoValida: { tension in "«\(tension)» non è una tensione valida (si ammettono ♭/♯ con 5, 9, 11 e 13, e add con 2, 4, 6, 9, 11 e 13)" },
+        numeroDeAcordeNoValido: { numero in "«\(numero)» non è un numero di accordo (5, 6, 7, 9, 11 o 13)" },
+        numeroRepetido: { numero in "«\(numero)» compare dopo un altro numero; le tensioni aggiuntive vanno tra parentesi, come in 7(9)" },
+        disminuidoYSemidisminuido: "diminuito (°) e semidiminuito (ø) non si possono combinare",
+        quintaConCalidad: "l'accordo di quinta (5) non ha la terza, quindi non ammette m, °, ø né +",
+        fundamentalNoOmitible: "non si può omettere la fondamentale",
+        gradoNoOmitible: { grado in "«omit\(grado)» non è valido (si possono omettere 3, 5, 7, 9, 11 e 13)" },
+        faltaLaFundamental: "manca la fondamentale",
+        intervaloSinPapel: { intervalo, notacion in "l'intervallo di \(intervalo.nombre(en: .italianoPalabras)) non ha un ruolo in un accordo per terze" },
+        terceraMayorYMenor: "ha insieme la terza maggiore e quella minore (la ♯9 si scrive come 9ª aumentata, non come 3ª minore)",
+        variasSeptimas: "ha più di una settima",
+        septimaDisminuidaFueraDelDisminuido: "la settima diminuita compare solo nell'accordo diminuito (con 3ª minore e 5ª diminuita)",
+        noEsPorTerceras: "non è un accordo per terze",
+        bajoNoValido: { bajo in "«\(bajo)» non è un nome di nota per il basso" },
+        idiomasMezclados: { nombre in "«\(nombre)» è scritto in un'altra lingua rispetto alla fondamentale: si scrive tutto in sillabe (Sol7/Si) o tutto in lettere (G7/B)" },
+        // ErrorDeLecturaDeTeoria.swift (escalas)
+        modoNoReconocido: { nombre in "«\(nombre)» non è il modo di una tonalità: una tonalità è maggiore o minore (per gli altri modi, usa Escala)" },
+        faltaElTipoDeEscala: "manca il tipo di scala (maggiore, dorica, minore armonica…)",
+        tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» non è un tipo di scala conosciuto" },
+        // ErrorDeLecturaDeTeoria.swift (coral)
+        vocesDistintas: "tutti gli accordi devono avere lo stesso numero di voci, e almeno due",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in "in " + tonalidad }

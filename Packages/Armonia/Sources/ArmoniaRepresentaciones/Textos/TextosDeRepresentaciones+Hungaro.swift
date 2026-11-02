@@ -52,6 +52,12 @@ extension TextosDeRepresentaciones {
         wickiHaydenEspejo: "Wicki–Hayden (tükrözött)",
         wickiHaydenPlano: "Wicki–Hayden (lapos tetejű)",
         acordeonC: "C-rendszerű harmonika",
-        acordeonB: "B-rendszerű harmonika"
+        acordeonB: "B-rendszerű harmonika",
+        // FormatoUIL.swift
+        uilNoValido: { texto in "Érvénytelen UIL: „\(texto)”. A várt alak L,G,D;R<fok>[M], például 2,7,5;R30M." },
+        intervalosIncoherentes: { menor, mayor, diferencia in "Ellentmondó hangközök: \(menor),\(mayor),\(diferencia). Teljesülnie kell: 0 < L ≤ D és G = L + D." },
+        giroNoValido: { grados in "A \(grados)°-os elforgatás nem többszöröse a 30°-nak." },
+        afinacionNoSoportada: { tonos in "Csak 12 hangú billentyűzet rajzolható, \(tonos) hangú nem." },
+        cizallaNoSoportada: { cizalla in "Az S\(cizalla) nyírás nem támogatott." }
     )
 }

@@ -674,14 +674,14 @@ import Hexagonos
     }
 
     @Test func notacionYPartitura10() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 267
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 273
         do {
             let acorde = try Acorde(leyendo: "Do7(b3)")
             print(acorde)
-        } catch let error as ErrorDeLectura {
+        } catch let error as ErrorDeLecturaDeTeoria {
             print(error)
-            comprobarIgual(error.motivo, .tensionNoValida("b3"), #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 274)
-            comprobar(error.posicion, #"4"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 275)
+            comprobarIgual(error.motivo, .tensionNoValida("b3"), #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 280)
+            comprobar(error.posicion, #"4"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 281)
             print(error.descripcion(en: .inglesASCII))
         }
         do { _ = try TipoDeAcorde(comprobandoPasosDeQuinta: [0, -3, 4]) } catch { print(error) }

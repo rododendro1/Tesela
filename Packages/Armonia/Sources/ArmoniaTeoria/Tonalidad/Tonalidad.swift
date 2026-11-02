@@ -177,13 +177,13 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
         let escala: Escala
         do {
             escala = try Escala(leyendo: texto)
-        } catch let error as ErrorDeLectura {
+        } catch let error as any ErrorAlLeer {
             guard let otra = Tonalidad.leerEnOtrasNotaciones(texto) else { throw error }
             self = otra
             return
         }
         guard let tonalidad = Tonalidad(escala) else {
-            throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .modoNoReconocido(escala.tipo.nombre))
+            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .modoNoReconocido(escala.tipo.nombre))
         }
         self = tonalidad
     }

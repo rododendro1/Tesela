@@ -31,7 +31,7 @@ public struct TipoDeAcorde: Sendable {
     package init(comprobandoPasosDeQuinta pasosDeQuinta: Set<Int>, texto: String) throws {
         guard let clasificacion = ClasificacionDeAcorde(pasosDeQuinta) else {
             let rechazo = ClasificacionDeAcorde.motivoDeRechazo(pasosDeQuinta) ?? .noEsPorTerceras
-            throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .acordeNoInterpretable(rechazo))
+            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .acordeNoInterpretable(rechazo))
         }
         self.pasosDeQuinta = pasosDeQuinta
         self.clasificacion = clasificacion

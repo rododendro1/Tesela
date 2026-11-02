@@ -74,9 +74,7 @@ public enum LineaDeComandos {
         }
         do {
             return try orden.ejecutar(Array(argumentos.dropFirst()), notacion)
-        } catch let error as ErrorDeLectura {
-            return ResultadoDeOrden(salida: "", error: error.descripcion(en: notacion) + "\n", codigo: 1)
-        } catch let error as ErrorDeImportacion {
+        } catch let error as any ErrorDeArmonia {
             return ResultadoDeOrden(salida: "", error: error.descripcion(en: notacion) + "\n", codigo: 1)
         } catch {
             return ResultadoDeOrden(salida: "", error: "\(error)\n", codigo: 1)

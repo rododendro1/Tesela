@@ -84,7 +84,7 @@ public struct Compas: Hashable, Sendable, CustomStringConvertible {
             return
         default: break
         }
-        let error = ErrorDeLectura(texto: texto, posicion: nil, motivo: .compasNoValido(limpio))
+        let error = ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .compasNoValido(limpio))
         let partes = limpio.split(separator: "/", omittingEmptySubsequences: false)
         guard partes.count == 2, let denominador = Int(partes[1]) else { throw error }
         let sumandos = partes[0].split(separator: "+", omittingEmptySubsequences: false).map { Int($0) }

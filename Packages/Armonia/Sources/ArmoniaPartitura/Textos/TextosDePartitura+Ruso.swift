@@ -91,6 +91,10 @@ extension TextosDePartitura {
         instrumentoBajoElectrico: "бас-гитара",
         instrumentoXilofono: "ксилофон",
         instrumentoGlockenspiel: "колокольчики",
-        instrumentoCelesta: "челеста"
+        instrumentoCelesta: "челеста",
+        // ErrorDeLecturaDePartitura.swift
+        duracionNoValida: { texto in "«\(texto)» — не длительность: ожидалась нота (1, 2, 4, 8, 16…, с точкой: 4.) или доля целой (3/8, 1/12)" },
+        compasNoValido: { texto in "«\(texto)» — не размер: ожидалось числитель/знаменатель, где знаменатель — степень двойки (4/4, 6/8, 7/8), C или ¢" },
+        contrapuntoDeOtraDuracion: { redondas in "контрапункт должен длиться столько же, сколько cantus firmus: \(redondas) целых, по одной на ноту" }
     )
 }

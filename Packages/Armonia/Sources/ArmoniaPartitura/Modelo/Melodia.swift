@@ -174,8 +174,8 @@ public struct Voz: Hashable, Sendable, Codable {
         for trozo in texto.split(separator: " ", omittingEmptySubsequences: false) {
             defer { inicio += trozo.count + 1 }
             guard !trozo.isEmpty else { continue }
-            do { eventos.append(try Evento(leyendo: String(trozo))) } catch let e as ErrorDeLectura {
-                throw ErrorDeLectura(texto: texto, posicion: inicio + (e.posicion ?? 0), motivo: e.motivo)
+            do { eventos.append(try Evento(leyendo: String(trozo))) } catch let e as any ErrorAlLeer {
+                throw e.situado(en: texto, posicion: inicio + (e.posicion ?? 0))
             }
         }
         self.init(eventos, compas: compas, anacrusa: anacrusa)

@@ -147,11 +147,9 @@ public struct AnalisisArmonico: Hashable, Sendable, CustomStringConvertible {
             guard !actual.isEmpty else { return }
             do {
                 acordes.append(try Acorde(leyendo: actual))
-            } catch let error as ErrorDeLectura {
+            } catch let error as any ErrorAlLeer {
                 let inicio = posicion - actual.count
-                throw ErrorDeLectura(
-                    texto: texto, posicion: error.posicion.map { inicio + $0 } ?? inicio,
-                    motivo: error.motivo)
+                throw error.situado(en: texto, posicion: error.posicion.map { inicio + $0 } ?? inicio)
             }
         }
         for caracter in texto {

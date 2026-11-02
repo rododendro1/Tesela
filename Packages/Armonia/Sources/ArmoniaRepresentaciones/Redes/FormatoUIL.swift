@@ -257,7 +257,7 @@ extension FormatoUIL: CustomStringConvertible {
 }
 
 /// Por qué no se puede leer o usar un texto UIL.
-public enum ErrorDeUIL: Error, Hashable, Sendable, CustomStringConvertible {
+public enum ErrorDeUIL: ErrorDeArmonia, Hashable {
     /// El texto no tiene la forma `L,G,D;R…`.
     case formatoNoValido(String)
     /// Los intervalos no cumplen `0 < L ≤ D` y `G = L + D` (ni son el caso cero `0,1,1`).
@@ -269,18 +269,17 @@ public enum ErrorDeUIL: Error, Hashable, Sendable, CustomStringConvertible {
     /// La cizalla (`S`) distinta de 0 no está soportada.
     case cizallaNoSoportada(Int)
 
-    public var description: String {
+    /// La explicación en el idioma de los textos de la notación.
+    public func descripcion(en notacion: Notacion) -> String {
         switch self {
-        case .formatoNoValido(let texto):
-            return "UIL no válido: «\(texto)». Se espera L,G,D;R<grados>[M], por ejemplo 2,7,5;R30M."
+        case .formatoNoValido(let texto): return TextosDeRepresentaciones.en(notacion) { $0.uilNoValido(texto) }
         case .intervalosIncoherentes(let menor, let mayor, let diferencia):
-            return "Intervalos incoherentes: \(menor),\(mayor),\(diferencia). Deben cumplir 0 < L ≤ D y G = L + D."
-        case .rotacionNoValida(let grados):
-            return "El giro de \(grados)° no es múltiplo de 30°."
+            return TextosDeRepresentaciones.en(notacion) { $0.intervalosIncoherentes(menor, mayor, diferencia) }
+        case .rotacionNoValida(let grados): return TextosDeRepresentaciones.en(notacion) { $0.giroNoValido(grados) }
         case .afinacionNoSoportada(let tonos):
-            return "Solo se dibujan teclados de 12 notas, no de \(tonos)."
+            return TextosDeRepresentaciones.en(notacion) { $0.afinacionNoSoportada(tonos) }
         case .cizallaNoSoportada(let cizalla):
-            return "La cizalla S\(cizalla) no está soportada."
+            return TextosDeRepresentaciones.en(notacion) { $0.cizallaNoSoportada(cizalla) }
         }
     }
 }

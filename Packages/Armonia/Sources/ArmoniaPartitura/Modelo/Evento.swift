@@ -54,14 +54,15 @@ public struct Evento: Hashable, Sendable {
     public init(leyendo texto: String) throws {
         let caracteres = Array(texto)
         guard let dosPuntos = caracteres.lastIndex(of: ":") else {
-            throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .duracionNoValida(texto.trimmingEspacios()))
+            throw ErrorDeLecturaDePartitura(
+                texto: texto, posicion: nil, motivo: .duracionNoValida(texto.trimmingEspacios()))
         }
         var parteDuracion = String(caracteres[(dosPuntos + 1)...]).trimmingEspacios()
         let ligada = parteDuracion.hasSuffix("~")
         if ligada { parteDuracion.removeLast() }
         let duracion: Duracion
-        do { duracion = try Duracion(leyendo: parteDuracion) } catch let e as ErrorDeLectura {
-            throw ErrorDeLectura(texto: texto, posicion: dosPuntos + 1, motivo: e.motivo)
+        do { duracion = try Duracion(leyendo: parteDuracion) } catch let e as any ErrorAlLeer {
+            throw e.situado(en: texto, posicion: dosPuntos + 1)
         }
         let parteNotas = String(caracteres[..<dosPuntos])
         let limpia = parteNotas.trimmingEspacios()
@@ -86,8 +87,8 @@ public struct Evento: Hashable, Sendable {
                 desvio = cents
                 nota = String(nota[..<parentesis])
             }
-            do { alturas.append(try Altura(leyendo: nota)) } catch let e as ErrorDeLectura {
-                throw ErrorDeLectura(texto: texto, posicion: inicio + (e.posicion ?? 0), motivo: e.motivo)
+            do { alturas.append(try Altura(leyendo: nota)) } catch let e as any ErrorAlLeer {
+                throw e.situado(en: texto, posicion: inicio + (e.posicion ?? 0))
             }
             desvios.append(desvio)
             inicio += trozo.count + 1

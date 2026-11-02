@@ -91,6 +91,10 @@ extension TextosDePartitura {
         instrumentoBajoElectrico: "E-Bass",
         instrumentoXilofono: "Xylophon",
         instrumentoGlockenspiel: "Glockenspiel",
-        instrumentoCelesta: "Celesta"
+        instrumentoCelesta: "Celesta",
+        // ErrorDeLecturaDePartitura.swift
+        duracionNoValida: { texto in "„\(texto)“ ist keine Dauer: erwartet wurde ein Notenwert (1, 2, 4, 8, 16…, punktiert: 4.) oder ein Bruchteil der Ganzen (3/8, 1/12)" },
+        compasNoValido: { texto in "„\(texto)“ ist keine Taktart: erwartet wurde Zähler/Nenner mit einer Zweierpotenz als Nenner (4/4, 6/8, 7/8), C oder ¢" },
+        contrapuntoDeOtraDuracion: { redondas in "der Kontrapunkt muss so lange dauern wie der Cantus firmus: \(redondas) ganze Noten, eine pro Note" }
     )
 }

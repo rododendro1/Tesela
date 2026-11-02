@@ -123,6 +123,29 @@ extension TextosDeTeoria {
         dominanteSecundaria: "dominanta segondària",
         prestamoModal: "manlèu modal",
         sustitutoDiatonico: "substitut diatonic",
+        // ErrorDeLecturaDeTeoria.swift (acordes)
+        simboloNoReconocido: { simbolo in "«\(simbolo)» fa pas part de cap de chifratge conegut" },
+        tensionNoValida: { tension in "«\(tension)» es pas una tension valida (♭/♯ van amb 5, 9, 11 e 13, e add amb 2, 4, 6, 9, 11 e 13)" },
+        numeroDeAcordeNoValido: { numero in "«\(numero)» es pas un nombre d'acòrd (5, 6, 7, 9, 11 o 13)" },
+        numeroRepetido: { numero in "«\(numero)» ven aprèp un autre nombre; las tensions suplementàrias van entre parentèsis, coma dins 7(9)" },
+        disminuidoYSemidisminuido: "diminuit (°) e semidiminuit (ø) se pòdon pas combinar",
+        quintaConCalidad: "l'acòrd de quinta (5) a pas de tèrça, doncas admet pas m, °, ø ni +",
+        fundamentalNoOmitible: "se pòt pas ometre la fondamentala",
+        gradoNoOmitible: { grado in "«omit\(grado)» es pas valid (se pòdon ometre 3, 5, 7, 9, 11 e 13)" },
+        faltaLaFundamental: "manca la fondamentala",
+        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .occitanoPalabras)) a pas cap de ròtle dins un acòrd per tèrças" },
+        terceraMayorYMenor: "a una tèrça majora e una tèrça menora alhora (la ♯9 s'escriu coma novena aumentada, pas coma tèrça menora)",
+        variasSeptimas: "a mai d'una setena",
+        septimaDisminuidaFueraDelDisminuido: "la setena diminuida apareis sonque dins l'acòrd diminuit (amb tèrça menora e quinta diminuida)",
+        noEsPorTerceras: "es pas un acòrd per tèrças",
+        bajoNoValido: { bajo in "«\(bajo)» es pas un nom de nòta per la bassa" },
+        idiomasMezclados: { nombre in "«\(nombre)» es escrich dins una autra lenga que la fondamentala: s'escriu tot amb sillabas (Sol7/Si) o tot amb letras (G7/B)" },
+        // ErrorDeLecturaDeTeoria.swift (escalas)
+        modoNoReconocido: { nombre in "«\(nombre)» es pas lo mòde d'una tonalitat: una tonalitat es majora o menora (pels autres mòdes, utiliza Escala)" },
+        faltaElTipoDeEscala: "manca lo tipe de gama (major, dorian, menor armonica…)",
+        tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» es pas un tipe de gama conegut" },
+        // ErrorDeLecturaDeTeoria.swift (coral)
+        vocesDistintas: "totes los acòrds devon aver lo meteis nombre de voses, e almens doas",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in "en " + tonalidad }

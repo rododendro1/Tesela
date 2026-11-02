@@ -2,6 +2,28 @@
 
 ## Sin publicar
 
+### Errores por capa
+
+Cambia la API pública de los errores: quien haga `catch let error as ErrorDeLectura` o un `switch` sobre su
+`motivo` tiene que adaptarse.
+
+- **`ErrorDeArmonia`**, el protocolo común de los errores del motor, con `descripcion(en:)`, `description` y
+  `errorDescription`. Lo cumplen los tres errores de lectura, `ErrorDeImportacion` y `ErrorDeUIL`, así que para
+  mostrar cualquiera basta `catch let error as any ErrorDeArmonia`.
+- **Un error de lectura por capa.** `ErrorDeLectura` (Núcleo) se queda con las notas, las alturas, los intervalos y
+  lo general (`textoVacio`, `caracteresSobrantes`). Los motivos de los cifrados, las escalas, las tonalidades y los
+  corales pasan a `ErrorDeLecturaDeTeoria.Motivo`, con `CalidadesIncompatibles` y `RechazoDeAcorde`; los de las
+  duraciones, los compases y el contrapunto, a `ErrorDeLecturaDePartitura.Motivo`. Los tres cumplen `ErrorAlLeer`
+  (texto, posición, motivo, `explicacion(en:)` y `situado(en:posicion:)`), y sus motivos, `MotivoDeLectura`.
+  `Acorde(leyendo:)` lanza `ErrorDeLectura` si falla la fundamental y `ErrorDeLecturaDeTeoria` si falla el
+  cifrado; `Voz(leyendo:)`, `ErrorDeLectura` si falla una nota y `ErrorDeLecturaDePartitura` si falla una
+  duración.
+- Los textos de esos motivos pasan de `TextosDeNucleo` a `TextosDeTeoria` y `TextosDePartitura`: el Núcleo ya no
+  sabe nada de acordes, escalas ni partituras.
+- `ErrorDeUIL` se lee en los quince idiomas (`descripcion(en:)`); antes solo tenía su `description` en español.
+- La CLI y `Notacion.mensaje(de:)` de las apps tratan todos los errores con un solo `catch`, y muestran los de UIL
+  en el idioma elegido.
+
 ### Eliminado
 
 - Los dos nombres que la 0.3.1 dejó marcados como obsoletos, y con ellos `ArmoniaNucleo/Obsoletos.swift`:

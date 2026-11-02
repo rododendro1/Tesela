@@ -123,6 +123,29 @@ extension TextosDeTeoria {
         dominanteSecundaria: "побочная доминанта",
         prestamoModal: "модальное заимствование",
         sustitutoDiatonico: "диатоническая замена",
+        // ErrorDeLecturaDeTeoria.swift (acordes)
+        simboloNoReconocido: { simbolo in "«\(simbolo)» не входит ни в одно известное буквенное обозначение" },
+        tensionNoValida: { tension in "«\(tension)» — недопустимая альтерация или добавленный тон (♭/♯ — с 5, 9, 11 и 13, add — с 2, 4, 6, 9, 11 и 13)" },
+        numeroDeAcordeNoValido: { numero in "«\(numero)» — не число аккорда (5, 6, 7, 9, 11 или 13)" },
+        numeroRepetido: { numero in "«\(numero)» стоит после другого числа; дополнительные тоны пишутся в скобках, как в 7(9)" },
+        disminuidoYSemidisminuido: "уменьшённый (°) и полууменьшённый (ø) нельзя совмещать",
+        quintaConCalidad: "в квинтовом созвучии (5) нет терции, поэтому к нему нельзя добавить m, °, ø или +",
+        fundamentalNoOmitible: "основной тон нельзя опустить",
+        gradoNoOmitible: { grado in "«omit\(grado)» недопустимо (опустить можно 3, 5, 7, 9, 11 и 13)" },
+        faltaLaFundamental: "нет основного тона",
+        intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: .rusoPalabras)) не играет роли в аккорде терцового строения" },
+        terceraMayorYMenor: "в нём одновременно большая и малая терция (♯9 пишется как увеличенная нона, а не как малая терция)",
+        variasSeptimas: "в нём больше одной септимы",
+        septimaDisminuidaFueraDelDisminuido: "уменьшённая септима встречается только в уменьшённом аккорде (с малой терцией и уменьшённой квинтой)",
+        noEsPorTerceras: "это не аккорд терцового строения",
+        bajoNoValido: { bajo in "«\(bajo)» — не название ноты для баса" },
+        idiomasMezclados: { nombre in "«\(nombre)» записано не на том языке, что основной тон: пиши всё слогами (Sol7/Si) или всё буквами (G7/B)" },
+        // ErrorDeLecturaDeTeoria.swift (escalas)
+        modoNoReconocido: { nombre in "«\(nombre)» — не лад тональности: тональность бывает мажорной или минорной (для других ладов используй Escala)" },
+        faltaElTipoDeEscala: "не указан тип гаммы (мажор, дорийский, гармонический минор…)",
+        tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» — неизвестный тип гаммы" },
+        // ErrorDeLecturaDeTeoria.swift (coral)
+        vocesDistintas: "во всех аккордах должно быть одинаковое число голосов, не меньше двух",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(tipo) от \(raiz)" },
         enLaTonalidad: { tonalidad in "в " + (tonalidad.hasSuffix("мажор") || tonalidad.hasSuffix("минор") ? tonalidad + "е" : tonalidad) }

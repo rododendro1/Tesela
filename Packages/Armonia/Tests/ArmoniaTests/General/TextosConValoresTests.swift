@@ -18,6 +18,26 @@ import Testing
             let textos = TextosDeNucleo.traducidos.texto(en: idioma)
             let resultados = [
                 textos.multiplicidad(3),
+                textos.noSePuedeLeer("x"),
+                textos.caracter(3),
+                textos.caracteresSobrantes("x"),
+                textos.octavaNoValida("x"),
+                textos.numeroDeIntervaloNoValido("x"),
+                textos.calidadNoValida("x"),
+                textos.intervaloInexistente(3, .mayor, notacion, TextosDeNucleo.traduccion(\.disonancia)),
+                textos.alteracionNoReconocida("x"),
+                textos.nombreDeIntervalo("x", "x"),
+                textos.unisonoEnMasculino("x"),
+                textos.ordinalEnCifras(3),
+            ]
+            for (i, texto) in resultados.enumerated() {
+                #expect(!texto.isEmpty, "TextosDeNucleo, texto \(i) en \(idioma)")
+            }
+        }
+        for idioma in Idioma.allCases {
+            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            let textos = TextosDeTeoria.traducidos.texto(en: idioma)
+            let resultados = [
                 textos.simboloNoReconocido("x"),
                 textos.tensionNoValida("x"),
                 textos.numeroDeAcordeNoValido(3),
@@ -28,28 +48,6 @@ import Testing
                 textos.idiomasMezclados("x"),
                 textos.modoNoReconocido("x"),
                 textos.tipoDeEscalaNoReconocido("x"),
-                textos.noSePuedeLeer("x"),
-                textos.caracter(3),
-                textos.caracteresSobrantes("x"),
-                textos.octavaNoValida("x"),
-                textos.numeroDeIntervaloNoValido("x"),
-                textos.calidadNoValida("x"),
-                textos.intervaloInexistente(3, .mayor, notacion, TextosDeNucleo.traduccion(\.disonancia)),
-                textos.alteracionNoReconocida("x"),
-                textos.duracionNoValida("x"),
-                textos.compasNoValido("x"),
-                textos.contrapuntoDeOtraDuracion(3),
-                textos.nombreDeIntervalo("x", "x"),
-                textos.unisonoEnMasculino("x"),
-                textos.ordinalEnCifras(3),
-            ]
-            for (i, texto) in resultados.enumerated() {
-                #expect(!texto.isEmpty, "TextosDeNucleo, texto \(i) en \(idioma)")
-            }
-        }
-        for idioma in Idioma.allCases {
-            let textos = TextosDeTeoria.traducidos.texto(en: idioma)
-            let resultados = [
                 textos.conBajoEn("x", "x"),
                 textos.papelTension(3),
                 textos.acordeDesconocido(true, "x", "x"),
@@ -73,6 +71,11 @@ import Testing
             let resultados = [
                 textos.cicloDesde("x", "x"),
                 textos.semitonos(3),
+                textos.uilNoValido("x"),
+                textos.intervalosIncoherentes(1, 2, 3),
+                textos.giroNoValido(45),
+                textos.afinacionNoSoportada(19),
+                textos.cizallaNoSoportada(2),
             ]
             for (i, texto) in resultados.enumerated() {
                 #expect(!texto.isEmpty, "TextosDeRepresentaciones, texto \(i) en \(idioma)")
@@ -87,6 +90,9 @@ import Testing
                 textos.especieConElContrapuntoDebajo(3),
                 textos.xmlDanado(3),
                 textos.fraccionDeRedonda("x"),
+                textos.duracionNoValida("x"),
+                textos.compasNoValido("x"),
+                textos.contrapuntoDeOtraDuracion(3),
             ]
             for (i, texto) in resultados.enumerated() {
                 #expect(!texto.isEmpty, "TextosDePartitura, texto \(i) en \(idioma)")

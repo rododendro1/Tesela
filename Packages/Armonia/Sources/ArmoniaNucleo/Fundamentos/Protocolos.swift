@@ -16,7 +16,8 @@ import Foundation
 /// Un valor que se lee y se escribe como texto, sin pérdida: `T(leyendo: x.texto(en: n)) == x`
 /// para cualquier notación `n`.
 public protocol RepresentableComoTexto: Codable, ExpressibleByStringLiteral where StringLiteralType == String {
-    /// Lee un texto. Si no se puede, lanza `ErrorDeLectura` con la posición y el motivo.
+    /// Lee un texto. Si no se puede, lanza un `ErrorAlLeer` (`ErrorDeLectura` o el de su capa) con la posición y
+    /// el motivo.
     init(leyendo texto: String) throws
     /// Escribe el valor en una notación; `init(leyendo:)` lo vuelve a leer igual.
     func texto(en notacion: Notacion) -> String
@@ -37,7 +38,7 @@ extension RepresentableComoTexto {
     }
 
     /// Literal de texto: `let a: Acorde = "Sol7/Si"`. Un literal no válido es un error de
-    /// programación y detiene la ejecución con el mensaje de `ErrorDeLectura`.
+    /// programación y detiene la ejecución con el mensaje del error.
     public init(stringLiteral texto: String) {
         do { self = try Self(leyendo: texto) } catch { preconditionFailure("\(error)") }
     }
@@ -48,7 +49,7 @@ extension RepresentableComoTexto {
         let texto = try contenedor.decode(String.self)
         do {
             self = try Self(leyendo: texto)
-        } catch let error as ErrorDeLectura {
+        } catch let error as any ErrorDeArmonia {
             throw DecodingError.dataCorruptedError(in: contenedor, debugDescription: error.description)
         }
     }

@@ -124,6 +124,29 @@ extension TextosDeTeoria {
         dominanteSecundaria: "mellékdomináns",
         prestamoModal: "modális kölcsönzés",
         sustitutoDiatonico: "diatonikus helyettesítés",
+        // ErrorDeLecturaDeTeoria.swift (acordes)
+        simboloNoReconocido: { simbolo in "„\(simbolo)” nem ismert akkordjelzés része" },
+        tensionNoValida: { tension in "„\(tension)” nem érvényes feszültséghang (a ♭ és a ♯ az 5, 9, 11 és 13 mellé, az add a 2, 4, 6, 9, 11 és 13 mellé kerülhet)" },
+        numeroDeAcordeNoValido: { numero in "„\(numero)” nem akkordszám (5, 6, 7, 9, 11 vagy 13)" },
+        numeroRepetido: { numero in "„\(numero)” egy másik szám után áll; a további hangok zárójelbe kerülnek, mint a 7(9)-ben" },
+        disminuidoYSemidisminuido: "a szűkített (°) és a félszűkített (ø) nem kombinálható",
+        quintaConCalidad: "a kvintakkordnak (5) nincs terce, ezért nem kaphat m, °, ø vagy + jelet",
+        fundamentalNoOmitible: "az alaphang nem hagyható el",
+        gradoNoOmitible: { grado in "„omit\(grado)” érvénytelen (a 3, 5, 7, 9, 11 és 13 hagyható el)" },
+        faltaLaFundamental: "hiányzik az alaphang",
+        intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: notacion).conArticuloHungaro) nem tölt be szerepet egy tercépítkezésű akkordban" },
+        terceraMayorYMenor: "egyszerre van benne nagy és kis terc (a ♯9 bővített nónaként íródik, nem kis tercként)",
+        variasSeptimas: "egynél több szeptim van benne",
+        septimaDisminuidaFueraDelDisminuido: "a szűkített szeptim csak a szűkített akkordban fordul elő (kis terccel és szűkített kvinttel)",
+        noEsPorTerceras: "nem tercépítkezésű akkord",
+        bajoNoValido: { bajo in "„\(bajo)” nem hangnév a basszus számára" },
+        idiomasMezclados: { nombre in "„\(nombre)” más nyelven van írva, mint az alaphang: vagy minden szótagokkal (Sol7/Si), vagy minden betűkkel (G7/B)" },
+        // ErrorDeLecturaDeTeoria.swift (escalas)
+        modoNoReconocido: { nombre in "„\(nombre)” nem hangnemi mód: a hangnem dúr vagy moll (a többi módhoz használd az Escala típust)" },
+        faltaElTipoDeEscala: "hiányzik a skála típusa (dúr, dór, összhangzatos moll…)",
+        tipoDeEscalaNoReconocido: { nombre in "„\(nombre)” nem ismert skálatípus" },
+        // ErrorDeLecturaDeTeoria.swift (coral)
+        vocesDistintas: "minden akkordnak ugyanannyi szólamból kell állnia, legalább kettőből",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         // Con el inesivo: «C-dúrban», «a-mollban» (dúr y moll piden -ban).

@@ -52,6 +52,12 @@ extension TextosDeRepresentaciones {
         wickiHaydenEspejo: "Wicki-Hayden (καθρέφτης)",
         wickiHaydenPlano: "Wicki-Hayden (επίπεδο)",
         acordeonC: "Ακορντεόν συστήματος C",
-        acordeonB: "Ακορντεόν συστήματος B"
+        acordeonB: "Ακορντεόν συστήματος B",
+        // FormatoUIL.swift
+        uilNoValido: { texto in "Μη έγκυρο UIL: «\(texto)». Αναμένεται L,G,D;R<μοίρες>[M], για παράδειγμα 2,7,5;R30M." },
+        intervalosIncoherentes: { menor, mayor, diferencia in "Ασυνεπή διαστήματα: \(menor),\(mayor),\(diferencia). Πρέπει να ισχύει 0 < L ≤ D και G = L + D." },
+        giroNoValido: { grados in "Η περιστροφή των \(grados)° δεν είναι πολλαπλάσιο των 30°." },
+        afinacionNoSoportada: { tonos in "Σχεδιάζονται μόνο πληκτρολόγια 12 φθόγγων, όχι \(tonos)." },
+        cizallaNoSoportada: { cizalla in "Η διάτμηση S\(cizalla) δεν υποστηρίζεται." }
     )
 }

@@ -130,6 +130,32 @@ struct TextosDeTeoria: TextosTraducidos {
     let prestamoModal: String
     let sustitutoDiatonico: String
 
+    // MARK: ErrorDeLecturaDeTeoria.swift (acordes)
+    let simboloNoReconocido: @Sendable (String) -> String
+    let tensionNoValida: @Sendable (String) -> String
+    let numeroDeAcordeNoValido: @Sendable (Int) -> String
+    let numeroRepetido: @Sendable (Int) -> String
+    let disminuidoYSemidisminuido: String
+    let quintaConCalidad: String
+    let fundamentalNoOmitible: String
+    let gradoNoOmitible: @Sendable (Int) -> String
+    let faltaLaFundamental: String
+    let intervaloSinPapel: @Sendable (Intervalo, Notacion) -> String
+    let terceraMayorYMenor: String
+    let variasSeptimas: String
+    let septimaDisminuidaFueraDelDisminuido: String
+    let noEsPorTerceras: String
+    let bajoNoValido: @Sendable (String) -> String
+    let idiomasMezclados: @Sendable (String) -> String
+
+    // MARK: ErrorDeLecturaDeTeoria.swift (escalas)
+    let modoNoReconocido: @Sendable (String) -> String
+    let faltaElTipoDeEscala: String
+    let tipoDeEscalaNoReconocido: @Sendable (String) -> String
+
+    // MARK: ErrorDeLecturaDeTeoria.swift (coral)
+    let vocesDistintas: String
+
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».
     let acordeSobre: @Sendable (_ tipo: String, _ raiz: String) -> String
