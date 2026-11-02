@@ -61,8 +61,10 @@ public struct EstiloDeCifrado: Hashable, Sendable {
         self.semidisminuido = semidisminuido
     }
 
-    /// Do♯m7(♭5), Mi♭maj7.
+    /// Do♯m7(♭5), Mi♭maj7: el de `.espanolCompacto`.
     public static let predeterminado = EstiloDeCifrado()
+    /// Sílabas con símbolos tipográficos: Do♯m7(♭5), Mi♭maj7. Es el `predeterminado`.
+    public static let espanolCompacto = EstiloDeCifrado(notacion: .espanolCompacto)
     /// Solo caracteres ASCII: Do#m7(b5), Mibmaj7.
     public static let espanolASCII = EstiloDeCifrado(notacion: .espanolASCII)
     /// Letras internacionales: C#m7(b5), Ebmaj7.

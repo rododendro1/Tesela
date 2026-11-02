@@ -69,6 +69,8 @@ import Testing
         #expect(acorde.nombre(en: .inglesASCII) == "G dominant seventh, first inversion")
         #expect(Acorde("Do/Re").nombre(en: .inglesASCII) == "C major over D")
         #expect(Acorde("Sib7(b9)/Re").cifrado(estilo: .inglesCompacto) == "B♭7(♭9)/D")
+        #expect(Acorde("Sib7(b9)/Re").cifrado(estilo: .espanolCompacto) == "Si♭7(♭9)/Re")
+        #expect(EstiloDeCifrado.espanolCompacto == .predeterminado)
         #expect(Acorde("B♭7(♭9)/D") == Acorde("Sib7(b9)/Re"))
         #expect(TipoDeAcorde.semidisminuido.nombre(en: .inglesASCII) == "half-diminished seventh")
         #expect(TipoDeAcorde("7(b9,#11)").nombre(en: .inglesASCII) == "7(b9,#11) chord")

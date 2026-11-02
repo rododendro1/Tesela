@@ -88,8 +88,15 @@ public enum LineaDeComandos {
             }
             notacion = Notacion(escritura: escritura, textos: notacion.textos)
         }
-        // En la terminal, la octava va con cifras salvo con --subindices, también en las notaciones compactas.
-        notacion = notacion.conOctavas(opciones.quitarMarca("--subindices", "--subscripts") ? .subindices : .cifras)
+        // La octava va como la escriba la notación (en subíndice en las compactas, con cifras en las demás), salvo
+        // con --subindices o --cifras.
+        let subindices = opciones.quitarMarca("--subindices", "--subscripts")
+        let cifras = opciones.quitarMarca("--cifras", "--digits")
+        if subindices {
+            notacion = notacion.conOctavas(.subindices)
+        } else if cifras {
+            notacion = notacion.conOctavas(.cifras)
+        }
         let argumentos = opciones.restantes
 
         guard let nombre = argumentos.first?.lowercased() else { return bien(ayuda(en: notacion)) }

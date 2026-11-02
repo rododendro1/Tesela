@@ -116,7 +116,7 @@ public struct Notacion: Hashable, Sendable, CaseIterable {
     public static let italiano = Notacion(escritura: .italiano)
     /// Italiano compacto, con la sílaba en mayúscula, el signo y la octava en subíndice: Fa♯, Si♭; La₄.
     public static let italianoCompacto = Notacion(escritura: .italianoCompacto)
-    /// Alemán con las alteraciones en palabras: C, F Kreuz, H Be, E Doppel-Be; en los cifrados y las tonalidades,
+    /// Alemán con las alteraciones en palabras: C, F Kreuz, B (Si♭), E Doppel-Be; en los cifrados y las tonalidades,
     /// a la alemana (Fis7, B7, Fis-Dur).
     public static let aleman = Notacion(escritura: .aleman)
     /// Alemán compacto, con la alteración dentro del nombre y la octava en subíndice: C, Fis, Es, B (= Si♭),
@@ -291,7 +291,7 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     public static let italiano = EscrituraDeNotas(.italiano, conPalabras: true)
     /// Fa♯, Si♭.
     public static let italianoCompacto = EscrituraDeNotas(.italiano)
-    /// C, F Kreuz, E Be, H Be, H.
+    /// C, F Kreuz, E Be, B, H.
     public static let aleman = EscrituraDeNotas(.aleman, conPalabras: true)
     /// C, Fis, Es, B, H.
     public static let alemanCompacto = EscrituraDeNotas(.aleman)

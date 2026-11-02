@@ -114,7 +114,8 @@ extension TextosDeCLI {
         (in Spanish, Fa sostenido, Fa# or Fa♯).
         In the other languages, --writing words|compact picks words or the compact form:
         fa dièse or Fa♯, F Kreuz or Fis.
-        With --subscripts, the octave is a subscript: A₄, F♯₃ (both A4 and A₄ are read).
+        In compact writings the octave is a subscript (A₄) and in the others, digits (A4);
+        --subscripts or --digits choose one (both forms are read).
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "this help",

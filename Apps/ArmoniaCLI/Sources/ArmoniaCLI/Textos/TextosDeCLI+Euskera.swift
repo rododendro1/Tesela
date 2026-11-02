@@ -112,7 +112,8 @@ extension TextosDeCLI {
         Fa# edo Fa♯ idazten dira (ingelesez, F sharp, F# edo F♯).
         Gainerako hizkuntzetan, --escritura palabras|compacto erabiliz, hitzak edo forma laburra aukeratzen da:
         fa dièse edo Fa♯, F Kreuz edo Fis.
-        --subindices erabiliz, zortziduna azpiindize gisa idazten da: La₄, Fa♯₃ (biak irakurtzen dira, La4 eta La₄).
+        Idazkera trinkoetan zortziduna azpiindize gisa doa (La₄), eta besteetan zenbakiz (La4);
+        --subindices edo --cifras erabiliz finkatzen da (biak irakurtzen dira).
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "laguntza hau",

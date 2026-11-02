@@ -624,9 +624,9 @@ import Hexagonos
         comprobar(Alteracion(3).nombre, #""triple sostenido""#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 178)
         comprobar(Alteracion(-1).nombre(en: .inglesASCII), #""flat""#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 179)
         comprobar(Alteracion(2).simbolo, #""♯♯""#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 180)
-        comprobar(Alteracion(3).simboloCompacto, #""𝄪♯""#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 181)
+        comprobar(Alteracion(3).simboloConDobles, #""𝄪♯""#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 181)
         comprobar(Alteracion(-2).simboloASCII, #""bb""#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 182)
-        comprobar(Alteracion(-2).simbolo(en: .compacta), #""𝄫""#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 183)
+        comprobar(Alteracion(-2).simbolo(en: .conDobles), #""𝄫""#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 183)
         _ = (Alteracion("x"), Alteracion("doble bemol"), Alteracion("♮"))
         _ = Alteracion.sostenido + .sostenido
         comprobar(Alteracion.sostenido.pasosDeQuinta, #"7"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 186)

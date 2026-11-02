@@ -24,7 +24,7 @@
     /// mismos ajustes.
     struct NotacionGuardada: ViewModifier {
         @AppStorage(AjustesDeLasApps.claveDeNotacion) private var clave = Notacion.delSistema().clave
-        @AppStorage(AjustesDeLasApps.claveDeOctavasEnSubindice) private var octavasEnSubindice = false
+        @AppStorage(AjustesDeLasApps.claveDeOctavasEnSubindice) private var octavasEnSubindice: Bool?
 
         func body(content: Content) -> some View {
             content.environment(\.notacion, .desde(clave: clave, octavasEnSubindice: octavasEnSubindice))

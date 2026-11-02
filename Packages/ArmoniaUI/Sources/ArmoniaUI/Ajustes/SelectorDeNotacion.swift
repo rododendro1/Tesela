@@ -75,11 +75,17 @@
     /// El selector, guardando la notación, la octava en subíndice y el temperamento en los ajustes de las apps.
     struct SelectorDeNotacionGuardada: View {
         @AppStorage(AjustesDeLasApps.claveDeNotacion) private var clave = Notacion.delSistema().clave
-        @AppStorage(AjustesDeLasApps.claveDeOctavasEnSubindice) private var octavasEnSubindice = false
+        @AppStorage(AjustesDeLasApps.claveDeOctavasEnSubindice) private var octavasEnSubindice: Bool?
         @AppStorage(AjustesDeLasApps.claveDeTemperamento) private var temperamento = AfinacionHistorica.igual.rawValue
 
         var body: some View {
-            SelectorDeNotacion(clave: $clave, temperamento: $temperamento, octavasEnSubindice: $octavasEnSubindice)
+            // Sin tocar el ajuste, el interruptor enseña lo que hace la notación elegida (La₄ en las compactas).
+            let enSubindice = Binding<Bool>(
+                get: {
+                    Notacion.desde(clave: clave, octavasEnSubindice: octavasEnSubindice).octavas == .subindices
+                },
+                set: { octavasEnSubindice = $0 })
+            SelectorDeNotacion(clave: $clave, temperamento: $temperamento, octavasEnSubindice: enSubindice)
         }
     }
 

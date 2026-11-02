@@ -15,6 +15,9 @@ import Testing
     @Test func lasClavesSonLosCasos() {
         #expect(Notacion.desde(clave: "espanol") == .espanol)
         #expect(Notacion.desde(clave: "espanolCompacto") == .espanolCompacto)
+        // Sin tocar el ajuste, la octava va como la escriba la notación.
+        #expect(Notacion.desde(clave: "espanolCompacto", octavasEnSubindice: nil).octavas == .subindices)
+        #expect(Notacion.desde(clave: "espanol", octavasEnSubindice: nil).octavas == .cifras)
         #expect(Notacion.desde(clave: "inglesASCII") == .inglesASCII)
         // Las claves de antes de las notaciones compactas se siguen leyendo.
         #expect(Notacion.desde(clave: "espanolUnicode") == .espanolCompacto)
@@ -57,7 +60,7 @@ import Testing
         let conSubindices = Notacion.desde(clave: "ruso+espanol", octavasEnSubindice: true)
         #expect(conSubindices == Notacion.ruso.conTextos(en: .espanol).conOctavas(.subindices))
         #expect(conSubindices.clave == "ruso+espanol")
-        // En las apps manda el ajuste, también en las compactas, que sin él llevarían subíndices.
+        // Si se ha tocado, manda el ajuste, también en las compactas.
         #expect(
             Notacion.desde(clave: "espanolCompacto", octavasEnSubindice: false) == .espanolCompacto.conOctavas(.cifras))
         #expect(Notacion.desde(clave: "espanolCompacto", octavasEnSubindice: true) == .espanolCompacto)

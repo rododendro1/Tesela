@@ -18,6 +18,15 @@
   Los nombres llevan el sufijo o el prefijo de su categoría donde «Rast» sola sería el dromos griego. Los que tienen
   la tónica en un cuarto de tono, o cuyo redondeo cambia el carácter (Sīkāh, Uşşak, Segāh…), esperan a la capa
   microtonal.
+- `Tipografia.compacta` pasa a llamarse `.conDobles` (𝄪 y 𝄫 por cada pareja), y `Alteracion.simboloCompacto`,
+  `simboloConDobles`, para no confundirlas con las notaciones compactas (`.espanolCompacto`), que usan `.unicode`
+  (Fa♯♯, no Fa𝄪). Los nombres de antes siguen, obsoletos, en `Obsoletos.swift`. El `rawValue` del caso es ahora
+  «conDobles».
+- `.aleman` escribe el Si♭ como B, igual que sus cifrados (B7) y tonalidades (B-Dur), y no «H Be»; «H Be» se
+  sigue leyendo. El Si𝄫 sigue siendo «H Doppel-Be».
+- En la línea de comandos la octava va como la escriba la notación: en subíndice en las compactas (la de siempre,
+  Fa♯₄; `--ingles` sigue con F#4) y con cifras en las demás. `--cifras` (o `--digits`) y `--subindices` la fijan.
+- `EstiloDeCifrado.espanolCompacto`, como `.inglesCompacto`: es el mismo que `.predeterminado`.
 
 ## 0.3.0 (2026-11-01)
 

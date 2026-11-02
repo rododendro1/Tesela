@@ -45,7 +45,7 @@ extension LineaDeComandosTests {
             let svg = salida(orden)
             #expect(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"), Comment(rawValue: orden))
         }
-        #expect(salida("tabla Do3 Sol3 Mi4").contains(">Sol3</text>"))
+        #expect(salida("tabla Do₃ Sol₃ Mi₄").contains(">Sol₃</text>"))
         for orden in ["tabla", "tabla --acorde", "tabla --clases 13", "tabla --foo", "tabla Do --margen 7"] {
             #expect(
                 LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,

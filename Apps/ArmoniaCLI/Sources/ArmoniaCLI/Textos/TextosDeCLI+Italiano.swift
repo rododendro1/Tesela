@@ -112,7 +112,8 @@ extension TextosDeCLI {
         Fa# o Fa♯ (in inglese, F sharp, F# o F♯).
         Nelle altre lingue, --escritura palabras|compacto sceglie le parole o la forma compatta:
         fa dièse o Fa♯, F Kreuz o Fis.
-        Con --subindices, l'ottava va in pedice: La₄, Fa♯₃ (si leggono entrambe le forme, La4 e La₄).
+        Nelle scritture compatte l'ottava va in pedice (La₄) e nelle altre in cifre (La4);
+        --subindices o --cifras la fissano (si leggono entrambe le forme).
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "questo aiuto",

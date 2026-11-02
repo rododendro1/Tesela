@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- Mientras no se toque el interruptor «Octava en subíndice», la octava va como la escriba la notación: en subíndice
+  en las compactas (La₄) y con cifras en las demás, como en el motor y en la línea de comandos. El ajuste se lee como
+  `Bool?` y `Notacion.desde(clave:octavasEnSubindice:)` acepta `nil`.
 - El alemán con palabras (Deutsch (F Kreuz)) se guarda con la clave «alemanPalabras», y «aleman» se lee como
   `.alemanCompacto` (Deutsch (Fis)), que es lo que significaba hasta la 0.3.0: quien eligió Fis antes de la 0.3.0
   lo sigue viendo. `Notacion.desde(clave:)` lee las dos.

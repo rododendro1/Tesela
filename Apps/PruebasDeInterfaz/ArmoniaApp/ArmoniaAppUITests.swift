@@ -33,7 +33,7 @@ final class ArmoniaAppUITests: XCTestCase {
         let app = XCUIApplication.enEspanol()
         app.opcion("Escalas").tap()
         esperar(app.texto("Do  Re  Mi  Fa  Sol  La  Si"), "las notas de Do mayor")
-        esperar(app.buscandoHaciaAbajo(app.etiqueta("Do mayor: Do4, Re4")), "el pentagrama de Do mayor")
+        esperar(app.buscandoHaciaAbajo(app.etiqueta("Do mayor: Do₄, Re₄")), "el pentagrama de Do mayor")
     }
 
     func testAnalisis() {

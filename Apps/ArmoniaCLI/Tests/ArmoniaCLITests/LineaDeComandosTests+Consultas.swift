@@ -32,13 +32,13 @@ extension LineaDeComandosTests {
     @Test func arpegio() {
         let do7 = salida("arpegio Do7")
         #expect(do7.hasPrefix("Arpegio de "), Comment(rawValue: do7))
-        #expect(do7.contains("(ascendente)\n  notas: Do4 Mi4 Sol4 Si♭4 Do5\n"), Comment(rawValue: do7))
+        #expect(do7.contains("(ascendente)\n  notas: Do₄ Mi₄ Sol₄ Si♭₄ Do₅\n"), Comment(rawValue: do7))
         // Las escalas que encajan con el acorde: Do7 → Do mixolidio.
         #expect(do7.contains("  escalas: ") && do7.contains("mixolidio"), Comment(rawValue: do7))
-        #expect(salida("arpegio Do --patron alberti").contains("notas: Do4 Sol4 Mi4 Sol4\n"))
+        #expect(salida("arpegio Do --patron alberti").contains("notas: Do₄ Sol₄ Mi₄ Sol₄\n"))
         #expect(
             salida("arpegio Do --patron ida-y-vuelta").contains(
-                "(de ida y vuelta)\n  notas: Do4 Mi4 Sol4 Do5 Sol4 Mi4 Do4\n"))
+                "(de ida y vuelta)\n  notas: Do₄ Mi₄ Sol₄ Do₅ Sol₄ Mi₄ Do₄\n"))
         #expect(salida("arpeggio C7 --pattern descending --ingles").contains("notes: C5 Bb4 G4 E4 C4"))
         #expect(salida("arpegio Do Fa").components(separatedBy: "\n\n").count == 2)
         #expect(LineaDeComandos.patronDeArpegio("bajo de Alberti") == .alberti)
@@ -56,7 +56,7 @@ extension LineaDeComandosTests {
         #expect(salida("transponer Re Do Lam Fa Sol7") == "Re Sim Sol La7\n")
         #expect(salida("transpose -m3 C Am F G7 --ingles") == "A F#m D E7\n")
         // Lo que no son acordes se transporta como notas: un coral.
-        #expect(salida("transponer 2M Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4") == "Re3 Fa♯4 La4 Re5 | La2 Mi4 La4 Do♯5\n")
+        #expect(salida("transponer 2M Do₃ Mi₄ Sol₄ Do₅ | Sol₂ Re₄ Sol₄ Si₄") == "Re₃ Fa♯₄ La₄ Re₅ | La₂ Mi₄ La₄ Do♯₅\n")
         #expect(LineaDeComandos.ejecutar(["transponer", "2M"]).codigo == 2)
     }
 

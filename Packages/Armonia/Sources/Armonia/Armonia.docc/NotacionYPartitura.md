@@ -27,13 +27,13 @@ cómo se escribe.
 
 Además del español y el inglés, `Notacion` tiene `.aleman` y `.alemanCompacto`, `.frances`, `.italiano`,
 `.catalan`, `.gallego`, `.euskera`, `.portugues`, `.occitano`, `.ruso` y `.griego`. El alemán, como el español
-y el inglés, escribe las alteraciones con palabras (`.aleman`: C Kreuz, E Be) o de forma compacta
+y el inglés, escribe las alteraciones con palabras (`.aleman`: C Kreuz, E Be, con B para el Si♭) o de forma compacta
 (`.alemanCompacto`: Cis, Es, con la octava en subíndice); en los cifrados y las tonalidades, las dos escriben
 a la alemana (Cis7, Fis-Dur), y se leen las dos formas:
 
 | | Do♯ | Mi♭ | Si♭ | Si | Fa♯ mayor | La menor |
 |---|---|---|---|---|---|---|
-| `.aleman` | C Kreuz | E Be | H Be | H | Fis-Dur | a-Moll |
+| `.aleman` | C Kreuz | E Be | B | H | Fis-Dur | a-Moll |
 | `.alemanCompacto` | Cis | Es | B | H | Fis-Dur | a-Moll |
 | `.frances` | do dièse | mi bémol | si bémol | si | fa dièse majeur | la mineur |
 | `.italiano` | do diesis | mi bemolle | si bemolle | si | fa diesis maggiore | la minore |
@@ -178,17 +178,17 @@ Nota("Sibb").alteracion          // doble bemol
 Alteracion(3).nombre                      // "triple sostenido"
 Alteracion(-1).nombre(en: .inglesASCII)        // "flat"
 Alteracion(2).simbolo                     // "♯♯"
-Alteracion(3).simboloCompacto             // "𝄪♯"
+Alteracion(3).simboloConDobles            // "𝄪♯"
 Alteracion(-2).simboloASCII               // "bb"
-Alteracion(-2).simbolo(en: .compacta)     // "𝄫"
+Alteracion(-2).simbolo(en: .conDobles)    // "𝄫"
 Alteracion("x"), Alteracion("doble bemol"), Alteracion("♮")
 Alteracion.sostenido + .sostenido         // doble sostenido
 Alteracion.sostenido.pasosDeQuinta        // 7: un sostenido son siete quintas
 ```
 
 Los signos se escriben en una de las tres `Tipografia`: `.unicode` (♯ y ♭, uno por semitono), `.ascii`
-(# y b) y `.compacta` (𝄪 y 𝄫 por cada pareja, y ♮ para el natural). `Notacion.tipografia` dice cuál usa
-cada notación.
+(# y b) y `.conDobles` (𝄪 y 𝄫 por cada pareja, y ♮ para el natural). `Notacion.tipografia` dice cuál usa
+cada notación: las compactas (`.espanolCompacto`, `.inglesCompacto`) usan `.unicode`.
 
 También la usan `PosicionEnPentagrama.alteracion` y `Clave.altura(lugar:alteracion:)`.
 
