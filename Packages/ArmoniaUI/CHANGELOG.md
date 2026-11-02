@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.1 (2026-11-02)
 
 - «Abrir» en el análisis también abre ficheros MEI (.mei) y ABC (.abc).
 - «Escuchar» toca los microtonos: el Mi𝄳 de Re Bayātī suena un cuarto de tono sobre Mi♭, y las voces con desvíos

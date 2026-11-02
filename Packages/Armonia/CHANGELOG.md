@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.1 (2026-11-02)
 
 - **Veintiocho escalas tradicionales más** (el catálogo microtonal pasa de 68 a 74):
   - Grecia antigua: las harmoniai que faltaban (mixolidia, hipolidia, hipofrigia e hipodoria), que con la doria,
@@ -16,7 +16,6 @@
     indostánico Lalit.
 - La escala de sexta disminuida de Barry Harris se encuentra por su nombre: «sexta disminuida» es el bebop
   mayor y «sexta menor disminuida», el bebop menor melódica (en inglés, «major/minor sixth diminished»).
-
 - **`PiezaImportada` lee MEI y ABC**, además de MIDI y MusicXML: `init(mei:)`, `init(abc:)`, y `init(leyendo:)`
   los reconoce solos. De MEI: partes y capas, armadura, compás, tempo, tresillos, ligaduras, notas de adorno
   (que no cuentan), `accid.ges` y los microtonos (cuartos de tono, koron y sori, comas turcas). De ABC, como lo
