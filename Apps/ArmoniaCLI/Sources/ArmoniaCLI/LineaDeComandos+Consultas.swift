@@ -103,6 +103,22 @@ extension LineaDeComandos {
             escala.nombre(en: notacion),
             "  \(t(.notas)): " + escala.notas.map { $0.nombre(en: notacion) }.joined(separator: " "),
         ]
+        // La versión microtonal (Re Bayātī: Re Mi𝄳 Fa…) y los cents de cada grado, si la escala la tiene.
+        if let subida = escala.notasMicrotonales() {
+            let bajada = escala.notasMicrotonales(sentido: .descendente) ?? subida
+            func nombres(_ notas: [NotaMicrotonal]) -> String {
+                notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
+            }
+            func cents(_ notas: [NotaMicrotonal]) -> String {
+                notas.map { "\(Int($0.cents.rounded()))" }.joined(separator: " ")
+            }
+            lineas.append("  \(t(.microtonos)): " + nombres(subida))
+            lineas.append("  ¢: " + cents(subida))
+            if bajada != subida {
+                lineas.append("  \(t(.microtonos)) ↓: " + nombres(bajada))
+                lineas.append("  ¢ ↓: " + cents(bajada))
+            }
+        }
         // Los acordes de cada grado, si la escala es heptatónica y todos forman un acorde conocido.
         let acordes = escala.armonizar(cuatriadas: true).compactMap { $0 }
         let romanos = escala.cifradosRomanos(cuatriadas: true).compactMap { $0 }

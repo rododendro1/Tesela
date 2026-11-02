@@ -209,6 +209,30 @@ TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72
 CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .frances))   // "gamme"
 ```
 
+### Microtonos
+
+Algunas escalas aproximadas tienen también su versión microtonal, `microtonal` (un ``TipoDeEscalaMicrotonal``):
+dónde cae cada grado en la teoría de su tradición, en los pasos de su sistema (``SistemaMicrotonal``) contados
+desde la tónica. La tienen maqām Rāst, Bayātī, Ṣabā y Sūznāk, en cuartos de tono (`.cuartosDeTono`, la teoría
+árabe moderna); Šur, Homāyun y Čahārgāh, con el *koron* de Vaziri (`.persa`); y Rast y Hicaz makamı, en las 53
+comas de Arel-Ezgi-Uzdilek (`.comas53`). Cada grado conserva la letra de su nota temperada y se aparta de ella
+medio semitono como mucho, así que la escala de doce notas sigue valiendo para todo lo demás.
+
+`Escala.notasMicrotonales(sentido:)` da sus notas (``NotaMicrotonal``), con los cents desde la tónica. Se
+escriben con el medio bemol y el medio sostenido (Mi𝄳, Fa𝄲; en ASCII, Miqb y Faq#), también el *koron* y el
+*sori*, que no están en Unicode; en el sistema turco, con la nota pitagórica y las comas que se aparta (Si⁻¹,
+una koma bajo Si; en ASCII, Si(-1)). Son las afinaciones teóricas: cada escuela afina un poco distinto. Se
+buscan por el nombre, como `categoria`: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
+
+```swift
+Escala(.re, .bayati).notas                                       // Re Mi♭ Fa Sol La Si♭ Do
+Escala(.re, .bayati).notasMicrotonales()                         // Re Mi𝄳 Fa Sol La Si♭ Do
+Escala(.do, .maqamRast).notasMicrotonales(sentido: .descendente) // Do Re Mi𝄳 Fa Sol La Si♭
+Escala(.sol, .rastMakami).notasMicrotonales()                    // Sol La Si⁻¹ Do Re Mi Fa♯⁻¹
+TipoDeEscala.rastMakami.microtonal?.sistema                      // .comas53
+TipoDeEscala.frigio.microtonal                                   // nil
+```
+
 ## Nombres en cada idioma y alias
 
 El nombre de cada tipo de escala en cada idioma, y las otras formas con que se lee (sus alias), están en un
