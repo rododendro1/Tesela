@@ -65,9 +65,8 @@ import Testing
         // Las que el acorde ya tiene no se repiten, y las que no son 9, 11 o 13 no cuentan.
         #expect(midis(Arpegio(Acorde("Do9"), tensiones: [9])) == midis(Arpegio(Acorde("Do9"))))
         #expect(Arpegio(do7, tensiones: [9, 9, 10]).tensiones == [9])
-        #expect(midis(Arpegio(do7, octavas: 2, conOctava: false, tensiones: [9])) == [
-            60, 64, 67, 70, 74, 84, 88, 91, 94, 98,
-        ])
+        let dosOctavas = [60, 64, 67, 70, 74, 84, 88, 91, 94, 98]
+        #expect(midis(Arpegio(do7, octavas: 2, conOctava: false, tensiones: [9])) == dosOctavas)
         #expect(Arpegio.tensiones(leyendo: "9,13") == [9, 13])
         #expect(Arpegio.tensiones(leyendo: "9 11") == [9, 11])
         #expect(Arpegio.tensiones(leyendo: "10") == nil)
@@ -81,9 +80,8 @@ import Testing
         #expect(propio.grados == [1, 5, 3, 8])
         #expect(midis(Arpegio(enDo, grados: [1, 5, 3, 8], octavas: 2)) == [60, 67, 64, 72, 72, 79, 76, 84])
         // La 9 y la 10 están en la octava de arriba; cada vuelta sube dos.
-        #expect(midis(Arpegio(enDo, grados: [1, 3, 5, 9, 10], octavas: 2)) == [
-            60, 64, 67, 74, 76, 84, 88, 91, 98, 100,
-        ])
+        let conNovena = [60, 64, 67, 74, 76, 84, 88, 91, 98, 100]
+        #expect(midis(Arpegio(enDo, grados: [1, 3, 5, 9, 10], octavas: 2)) == conNovena)
         #expect(Arpegio(Acorde("Dom"), grados: [1, 3]).alturas()[1].nota == Nota.mi.bemol)
         #expect(Arpegio(enDo, grados: [0, 1]).grados == [1])
         #expect(Arpegio.grados(leyendo: "1 5 3 8") == [1, 5, 3, 8])
