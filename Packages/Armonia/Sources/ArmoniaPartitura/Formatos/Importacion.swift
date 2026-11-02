@@ -129,13 +129,25 @@ public struct PiezaImportada: Hashable, Sendable {
         var primera = 0
         var desde = Duracion.cero
         let total = duracion
+        // Las ventanas iguales (un acorde que se mantiene, o una nota de horas) dan el mismo acorde: se identifica
+        // una vez. Sin esto, una nota larga de un fichero dañado hacía identificar el mismo acorde 100 000 veces.
+        var identificados: [VentanaSonora: Acorde?] = [:]
         while desde < total {
             let hasta = desde + paso
             while primera < notas.count, finales[primera] <= desde { primera += 1 }
             let suenan = notas[primera...].prefix { $0.inicio < hasta }.filter { $0.fin > desde }
-            if let acorde = PiezaImportada.acorde(de: suenan, desde: desde, hasta: hasta, tonalidad: tonalidad),
-                resultado.last?.acorde != acorde
-            {
+            guard let ventana = VentanaSonora(suenan, desde: desde, hasta: hasta) else {
+                desde = hasta
+                continue
+            }
+            let leido: Acorde?
+            if let previo = identificados[ventana] {
+                leido = previo
+            } else {
+                leido = PiezaImportada.acorde(de: ventana, tonalidad: tonalidad)
+                identificados[ventana] = leido
+            }
+            if let acorde = leido, resultado.last?.acorde != acorde {
                 resultado.append((acorde, desde))
             }
             desde = hasta
@@ -158,21 +170,30 @@ public struct PiezaImportada: Hashable, Sendable {
         }
     }
 
-    /// El acorde de una ventana, o `nil` si no hay ninguna lectura.
-    static func acorde(
-        de notas: [NotaDeLaPieza], desde: Duracion, hasta: Duracion,
-        tonalidad: Tonalidad?
-    ) -> Acorde? {
-        guard !notas.isEmpty else { return nil }
-        let largo = (hasta - desde).enRedondas
-        var pesos: [Int: Double] = [:]
-        for nota in notas {
-            let solapado = (min(nota.fin, hasta) - max(nota.inicio, desde)).enRedondas
-            pesos[modulo(nota.altura.midi, 12), default: 0] += min(1, solapado / largo)
+    /// Lo que cuenta de una ventana para leer su acorde: el bajo y cuánto suena cada clase de altura.
+    struct VentanaSonora: Hashable {
+        let bajo: Int
+        let pesos: [Int: Double]
+
+        init?(_ notas: [NotaDeLaPieza], desde: Duracion, hasta: Duracion) {
+            guard !notas.isEmpty else { return nil }
+            let largo = (hasta - desde).enRedondas
+            var pesos: [Int: Double] = [:]
+            for nota in notas {
+                let solapado = (min(nota.fin, hasta) - max(nota.inicio, desde)).enRedondas
+                pesos[modulo(nota.altura.midi, 12), default: 0] += min(1, solapado / largo)
+            }
+            let alComienzo = notas.filter { $0.inicio <= desde }
+            guard let grave = (alComienzo.isEmpty ? notas : alComienzo).map(\.altura.midi).min() else { return nil }
+            self.bajo = modulo(grave, 12)
+            self.pesos = pesos
         }
-        let alComienzo = notas.filter { $0.inicio <= desde }
-        guard let grave = (alComienzo.isEmpty ? notas : alComienzo).map(\.altura.midi).min() else { return nil }
-        let bajo = modulo(grave, 12)
+    }
+
+    /// El acorde de una ventana, o `nil` si no hay ninguna lectura.
+    static func acorde(de ventana: VentanaSonora, tonalidad: Tonalidad?) -> Acorde? {
+        let bajo = ventana.bajo
+        let pesos = ventana.pesos
         // Las demás clases, de más a menos peso (a igual peso, de grave a agudo, para que no dependa del orden).
         let resto = pesos.keys.filter { $0 != bajo }.sorted {
             (-pesos[$0, default: 0], $0) < (-pesos[$1, default: 0], $1)

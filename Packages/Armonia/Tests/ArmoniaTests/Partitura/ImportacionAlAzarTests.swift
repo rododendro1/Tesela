@@ -129,6 +129,20 @@ import Testing
         #expect(pieza.acordes().map(\.cifrado) == ["Do"])
     }
 
+    @Test func doceNotasLarguisimasALaVez() throws {
+        // Las doce notas a la vez durante más de 100 000 negras: cada ventana suena igual, y su acorde (el más
+        // caro de identificar, con todas las clases) se identifica una sola vez. Lo encontró el fuzzing:
+        // identificarlo 100 000 veces tardaba minutos.
+        let claves = (60..<72).map(UInt8.init)
+        let datos = midi(
+            divisiones: 32_749,
+            claves.flatMap { [0x00, 0x90, $0, 100] } + variable((1 << 28) - 1)
+                + claves.flatMap { [0x00, 0x80, $0, 0] }.dropFirst())
+        let pieza = try PiezaImportada(leyendo: datos)
+        #expect(pieza.notas.count == 12)
+        #expect(pieza.acordes().count == 1)
+    }
+
     @Test func muchasNotasLargasSeguidas() throws {
         // Cuarenta notas de 2^27 pulsos una detrás de otra: la pieza dura años, pero se lee en poco tiempo.
         var eventos: [UInt8] = []
