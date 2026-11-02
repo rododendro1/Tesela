@@ -60,62 +60,8 @@ for carpeta in carpetas:
     for p in sorted(productos - dependencias):
         errores.append(f"{carpeta}: usa un producto de {p} sin declarar la dependencia")
 
-# El Package.swift de la raíz reúne los paquetes para usarlos por URL: debe tener los mismos módulos, con las
-# mismas dependencias y en sus carpetas, y las mismas bibliotecas.
-def llamadas(texto, funcion):
-    """El contenido de cada `.funcion(...)`, con los paréntesis equilibrados."""
-    resultado = []
-    for inicio in (m.end() for m in re.finditer(rf"\.{funcion}\(", texto)):
-        nivel, i = 1, inicio
-        while nivel:
-            nivel += {"(": 1, ")": -1}.get(texto[i], 0)
-            i += 1
-        resultado.append(texto[inicio:i - 1])
-    return resultado
-
-
-def modulos(texto):
-    """{módulo: (dependencias, ruta)} de los `.target` (no los `.testTarget`) y {biblioteca: módulos}."""
-    texto = re.sub(r"//.*", "", texto)
-    variables = dict(re.findall(r'let (\w+): Target\.Dependency = \.product\(name: "(\w+)"', texto))
-    objetivos = {}
-    for cuerpo in llamadas(texto, "target"):
-        nombre = re.search(r'name:\s*"(\w+)"', cuerpo).group(1)
-        lista = re.search(r"dependencies:\s*\[(.*?)\]", cuerpo, re.S)
-        dependencias = set()
-        if lista:
-            sin_productos = re.sub(r'\.product\(name:\s*"(\w+)"[^)]*\)', r'"\1"', lista.group(1))
-            dependencias = set(re.findall(r'"(\w+)"', sin_productos))
-            dependencias |= {variables[v] for v in re.findall(r"(?<![\w\"])(\w+)(?![\w\"])", sin_productos) if v in variables}
-        ruta = re.search(r'path:\s*"([^"]+)"', cuerpo)
-        objetivos[nombre] = (dependencias, ruta.group(1) if ruta else None)
-    bibliotecas = {n: set(re.findall(r'"(\w+)"', o)) for n, o in re.findall(r'\.library\(name:\s*"(\w+)",\s*targets:\s*\[([^\]]*)\]', texto)}
-    return objetivos, bibliotecas
-
-
-raiz_objetivos, raiz_bibliotecas = modulos((RAIZ / "Package.swift").read_text(encoding="utf-8"))
-esperados = set()
-for carpeta in carpetas:
-    objetivos, bibliotecas = modulos((PAQUETES / carpeta / "Package.swift").read_text(encoding="utf-8"))
-    for nombre, (dependencias, ruta) in objetivos.items():
-        # Los módulos de apoyo de las pruebas (en Tests/) no son parte de la biblioteca.
-        if ruta and ruta.startswith("Tests/"):
-            continue
-        esperados.add(nombre)
-        if nombre not in raiz_objetivos:
-            errores.append(f"Package.swift (raíz): falta el módulo {nombre} de Packages/{carpeta}")
-            continue
-        suyas, ruta = raiz_objetivos[nombre]
-        if ruta != f"Packages/{carpeta}/Sources/{nombre}":
-            errores.append(f"Package.swift (raíz): {nombre} debe estar en Packages/{carpeta}/Sources/{nombre}, no en {ruta}")
-        if suyas != dependencias:
-            errores.append(f"Package.swift (raíz): {nombre} depende de {sorted(suyas)}, y en Packages/{carpeta} de {sorted(dependencias)}")
-    for biblioteca, contenido in bibliotecas.items():
-        if raiz_bibliotecas.get(biblioteca) != contenido:
-            errores.append(f"Package.swift (raíz): la biblioteca {biblioteca} no es la de Packages/{carpeta}")
-for sobra in sorted(set(raiz_objetivos) - esperados):
-    errores.append(f"Package.swift (raíz): el módulo {sobra} no está en ningún paquete de Packages/")
-
+# El Package.swift de la raíz no se comprueba aquí: lo escribe Scripts/generadores/generar_paquete_raiz.py a partir
+# de los de Packages/, y su `--comprobar` (en el CI) vigila que esté al día.
 
 proyecto = (RAIZ / "project.yml").read_text(encoding="utf-8")
 declarados = set(re.findall(r"^  (\w+):\n    path: Packages/(\w+)$", proyecto, re.M))
