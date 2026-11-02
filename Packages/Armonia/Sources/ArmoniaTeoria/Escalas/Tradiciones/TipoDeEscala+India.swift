@@ -167,11 +167,37 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["Kedaragowla", "केदारगौळ"])
+    /// Mohanakalyāṇi, del mēḷa 65 (Mecakalyāṇī): sube como Mohanam (Sa Ri₂ Ga₃ Pa Dha₂) y baja con las siete notas,
+    /// con Ma₂ (Do Si La Sol Fa♯ Mi Re).
+    public static let mohanakalyani = TipoDeEscala(
+        nombre: "Mohanakalyāṇi",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["मोहनकल्याणि"])
+    /// Sāveri, del mēḷa 15 (Māyāmālavagauḷa): sube Sa Ri₁ Ma₁ Pa Dha₁ y baja con las siete notas (Do Si La♭ Sol Fa
+    /// Mi Re♭).
+    public static let saveri = TipoDeEscala(
+        nombre: "Sāveri",
+        intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        alias: ["सावेरि"])
+    /// Nāṭa, del mēḷa 36 (Calanāṭa): sube Sa Ri₃ Ga₃ Ma₁ Pa Dha₃ Ni₃ (Do Re♯ Mi Fa Sol La♯ Si) y baja sin Ga ni Dha.
+    public static let nata = TipoDeEscala(
+        nombre: "Nāṭa",
+        intervalos: [
+            .unisono, .segundaAumentada, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaAumentada, .septimaMayor,
+        ],
+        intervalosDescendentes: [.unisono, .segundaAumentada, .cuartaJusta, .quintaJusta, .septimaMayor],
+        alias: ["Nattai", "नाट"])
 
     /// Rāgas janya incluidos.
     public static let janyas: [TipoDeEscala] = [
         .mohanam, .hindolam, .hamsadhvani, .abhogi, .madhyamavati, .bilahari, .kambhoji, .arabhi, .kedaragaula,
-        .revati, .amrtavarsini,
+        .revati, .amrtavarsini, .mohanakalyani, .saveri, .nata,
     ]
 
     // MARK: Thāṭ (música indostánica)
@@ -304,9 +330,16 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["Desh", "देश"])
+    /// Lalit (Sa re Ga ma Ma dha Ni, sin Pa): los dos Ma seguidos, el natural y el tīvra (Do Re♭ Mi Fa Fa♯ La♭ Si).
+    public static let lalit = TipoDeEscala(
+        nombre: "Lalit",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .cuartaAumentada, .sextaMenor, .septimaMayor,
+        ],
+        alias: ["ललित"])
 
     /// Rāgas indostánicos incluidos.
     public static let ragasIndostanicos: [TipoDeEscala] = [
-        .bhupali, .malkauns, .durga, .yaman, .bagesri, .des, .sivaranjani, .kalavati, .candrakauns, .megh,
+        .bhupali, .malkauns, .durga, .yaman, .bagesri, .des, .sivaranjani, .kalavati, .candrakauns, .megh, .lalit,
     ]
 }

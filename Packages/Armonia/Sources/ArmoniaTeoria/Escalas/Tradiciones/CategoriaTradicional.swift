@@ -40,6 +40,8 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     case qenet
     /// Sistemas de afinación (laras) del gamelan.
     case laras
+    /// Modos de un laras: los pathet de Java y los de Bali (tembung, sunaren).
+    case pathet
     /// Modos (diào) de la música china.
     case diao
     /// Modos (jo) de la música coreana.
@@ -70,6 +72,7 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         case .shteyger: "shteyger"
         case .qenet: "qenet"
         case .laras: "laras"
+        case .pathet: "pathet"
         case .diao: "diào"
         case .jo: "jo"
         case .tetracordo: "tetracordo"
@@ -131,11 +134,11 @@ extension TipoDeEscala {
             (.india, .thaat, thaats), (.grecia, .dromos, dromoi), (.india, .melakarta, melakartas),
             (.india, .janya, janyas), (.china, .diao, chinas), (.japon, .escala, japonesas),
             (.etiopia, .qenet, etiopes), (.mundoArabe, .maqam, maqamat), (.indonesia, .laras, indonesias),
+            (.indonesia, .pathet, pathets),
             (.klezmer, .shteyger, klezmer), (.india, .raga, ragasIndostanicos), (.persia, .dastgah, dastgah),
             (.corea, .jo, coreanas), (.andes, .escala, andinas),
             (.turquia, .makam, makamlar), (.azerbaiyan, .mugam, mugamlar), (.bizancio, .echos, echoi),
-            (.greciaAntigua, .tetracordo, [.tetracordoDiatonico, .tetracordoCromatico]),
-            (.greciaAntigua, .harmonia, [.harmoniaDoria, .harmoniaDoriaCromatica, .harmoniaFrigia, .harmoniaLidia]),
+            (.greciaAntigua, .tetracordo, tetracordosGriegos), (.greciaAntigua, .harmonia, harmoniai),
         ]
         var tabla: [String: Clasificada] = [:]
         for (tradicion, categoria, tipos) in grupos {
@@ -147,6 +150,7 @@ extension TipoDeEscala {
     /// Número del mēḷa padre de cada janya incluido (el de uso general; Revati no tiene uno único).
     private static let padresDeLosJanya: [String: Int] = [
         "Mohanam": 28, "Hindolam": 20, "Haṃsadhvani": 29, "Ābhogi": 22, "Madhyamāvatī": 22, "Bilahari": 29,
-        "Kāmbhoji": 28, "Ārabhi": 29, "Kedāragauḷa": 28, "Amṛtavarṣiṇī": 65,
+        "Kāmbhoji": 28, "Ārabhi": 29, "Kedāragauḷa": 28, "Amṛtavarṣiṇī": 65, "Mohanakalyāṇi": 65, "Sāveri": 15,
+        "Nāṭa": 36,
     ]
 }

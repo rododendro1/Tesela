@@ -107,12 +107,15 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor, .septimaMayor,
         ],
         alias: ["bebop"])
+    /// La mayor con la 5ª aumentada de paso (Do Re Mi Fa Sol Sol♯ La Si). Es también la «sexta disminuida» de Barry
+    /// Harris: el acorde de sexta (Do Mi Sol La) y el de séptima disminuida de la sensible (Si Re Fa Sol♯) alternados.
     public static let bebopMayor = TipoDeEscala(
         nombre: "bebop mayor",
         intervalos: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .quintaAumentada, .sextaMayor, .septimaMayor,
-        ])
+        ],
+        alias: ["sexta disminuida", "sexta mayor disminuida", "de sexta disminuida", "Barry Harris"])
     public static let bebopDorico = TipoDeEscala(
         nombre: "bebop dórico",
         intervalos: [

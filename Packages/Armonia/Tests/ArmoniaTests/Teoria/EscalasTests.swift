@@ -912,6 +912,59 @@ import Testing
         #expect(!(TipoDeEscala.todos.contains { $0.nombre == "Hirajōshi" }))
     }
 
+    @Test func harmoniaiMakamlarMaqamatPathetYRagasNuevos() {
+        func notas(_ tipo: TipoDeEscala, _ tonica: Nota = .do) -> String {
+            Escala(tonica, tipo).notas.map(\.description).joined(separator: " ")
+        }
+        // Las siete harmoniai son las siete especies de octava de la escala de Mi a Mi.
+        #expect(TipoDeEscala.harmoniaMixolidia == .locrio)
+        #expect(TipoDeEscala.harmoniaHipolidia == .lidio)
+        #expect(TipoDeEscala.harmoniaHipofrigia == .mixolidio)
+        #expect(TipoDeEscala.harmoniaHipodoria == .menorNatural)
+        #expect(notas(.tetracordoEnarmonico, .mi) == "Mi Fa♭ Fa La")
+        // Makamlar: varios son las notas de otro makam en otra perde.
+        #expect(TipoDeEscala.mahurMakami == .mayor && TipoDeEscala.acemasiranMakami == .mayor)
+        #expect(TipoDeEscala.sultaniyegahMakami == .nihavendMakami)
+        #expect(notas(.sultaniyegahMakami, .re) == "Re Mi Fa Sol La Si♭ Do♯")
+        #expect(TipoDeEscala.sedarabanMakami == .dobleArmonica && TipoDeEscala.zirguleliHicazMakami == .dobleArmonica)
+        #expect(TipoDeEscala.humayunMakami == .frigioDominante)
+        #expect(notas(.uzzalMakami, .la) == "La Si♭ Do♯ Re Mi Fa♯ Sol")
+        #expect(TipoDeEscala.uzzalMakami.intervalos == TipoDeEscala.hicazMakami.intervalos)
+        // Maqamat sin cuartos de tono.
+        #expect(notas(.atharKurd) == "Do Re♭ Mi♭ Fa♯ Sol La♭ Si")
+        #expect(TipoDeEscala.maqamNikriz == .nikriz && TipoDeEscala.maqamNikriz.categoria == .maqam)
+        #expect(TipoDeEscala.lami == .locrio)
+        #expect(TipoDeEscala.sabaZamzam == .saba)
+        // Pathet y modos de Bali, con el pélog de siete notas 1 Do, 2 Re♭, 3 Mi♭, 4 Fa♯, 5 Sol, 6 La♭, 7 Si♭.
+        #expect(TipoDeEscala.pelogLima == .pelog)
+        #expect(notas(.pelogNem, .sol) == "Sol La♭ Do Re♭ Mi♭")
+        #expect(notas(.pelogBarang, .la.bemol) == "La♭ Si♭ Re♭ Mi♭ Sol")
+        #expect(notas(.pelogSunaren, .sol) == "Sol La♭ Si♭ Re♭ Mi♭")
+        #expect(notas(.pelogTembung) == "Do Do♯ Re Fa♯ Sol")
+        #expect(TipoDeEscala.slendroSanga == .slendro)
+        #expect(TipoDeEscala.slendroManyura == .pentatonicaMenor)
+        #expect(notas(.slendroNem, .re) == "Re Mi Sol La Do")
+        // Rāgas: los cuatro suben y bajan en línea recta.
+        #expect(notas(.lalit) == "Do Re♭ Mi Fa Fa♯ La♭ Si")
+        #expect(TipoDeEscala.mohanakalyani.formaAscendente.intervalos == TipoDeEscala.mohanam.intervalos)
+        #expect(notas(.mohanakalyani.formaDescendente) == "Do Re Mi Fa♯ Sol La Si")
+        #expect(notas(.saveri) == "Do Re♭ Fa Sol La♭")
+        #expect(notas(.nata) == "Do Re♯ Mi Fa Sol La♯ Si")
+        #expect(notas(.nata.formaDescendente) == "Do Re♯ Fa Sol Si")
+        // Se leen por su nombre, con sus letras y sin ellas, y la sexta disminuida de Barry Harris es el bebop.
+        for (texto, nombre) in [
+            ("Re Sultaniyegah makami", "Sultânîyegâh makamı"), ("La makam Uzzal", "Uzzâl makamı"),
+            ("Re Sedaraban makami", "Şedaraban makamı"), ("Do Athar Kurd", "Āthār Kurd"),
+            ("Do maqam Nikriz", "maqām Nikrīz"), ("Re Saba Zamzam", "Ṣabā Zamzam"), ("Do Tembung", "Pélog tembung"),
+            ("Do Slendro manyura", "Sléndro pathet manyura"), ("Do Mohanakalyani", "Mohanakalyāṇi"),
+            ("Do Lalit", "Lalit"), ("Si harmonia mixolidia", "harmonía mixolidia"),
+        ] {
+            #expect(Escala(texto: texto)?.tipo.nombre == nombre, Comment(rawValue: texto))
+        }
+        #expect(Escala("Do sexta disminuida").tipo == .bebopMayor)
+        #expect(Escala("C minor sixth diminished").tipo == .bebopMenorMelodica)
+    }
+
     @Test func busquedaYNombres() {
         #expect(Escala("Re hitzaz") == Escala(.re, .hitzaz))
         #expect(Escala("Re Hicaz").tipo.nombre == "Hitzáz")

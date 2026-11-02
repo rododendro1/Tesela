@@ -324,6 +324,7 @@ public struct Intervalo: Hashable, Sendable {
 
     public static let unisono = crear(1, .justa)
     public static let unisonoAumentado = crear(1, .aumentada(1))
+    public static let segundaDisminuida = crear(2, .disminuida(1))
     public static let segundaMenor = crear(2, .menor)
     public static let segundaMayor = crear(2, .mayor)
     public static let segundaAumentada = crear(2, .aumentada(1))

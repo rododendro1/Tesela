@@ -17,7 +17,7 @@ import Testing
             #expect(microtonal.temperada.microtonal == microtonal, Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(TipoDeEscalaMicrotonal.catalogo.count == 68)
+        #expect(TipoDeEscalaMicrotonal.catalogo.count == 74)
     }
 
     /// Se busca por el nombre: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
@@ -97,8 +97,9 @@ import Testing
         #expect(nombres(Escala(.sol, .suzinakMakami)) == "Sol La Si⁻¹ Do Re Mi♭⁺¹ Fa♯⁻¹")
         #expect(nombres(Escala(.sol, .nikrizMakami)) == "Sol La Si♭ Do♯⁻¹ Re Mi Fa")
         #expect(nombres(Escala(.sol, .neveserMakami)) == "Sol La Si♭ Do♯⁻¹ Re Mi♭⁺¹ Fa♯⁻¹")
-        // Solo los cuatro pitagóricos (Nihâvend, Kürdî, Bûselik y Çârgâh) no tienen versión microtonal.
-        #expect(TipoDeEscala.makamlar.filter { $0.microtonal == nil }.count == 4)
+        // Solo los seis pitagóricos (Nihâvend, Kürdî, Bûselik, Çârgâh, Mâhur y Acemaşiran) no tienen versión
+        // microtonal.
+        #expect(TipoDeEscala.makamlar.filter { $0.microtonal == nil }.count == 6)
         #expect(TipoDeEscala.ussakMakami.microtonal?.cents[1] == 8.0 * 1200 / 53)
         // Dromoi, con la afinación de su maqam o su makam.
         #expect(nombres(Escala(.re, .ousak)) == "Re Mi𝄳 Fa Sol La Si♭ Do")
@@ -172,6 +173,29 @@ import Testing
         #expect(nota.nombre(en: .inglesASCII) == "Bbbqb")
         let mi = NotaMicrotonal(temperada: .mi, sistema: .cuartosDeTono, ajuste: -1, cents: 0)
         #expect(mi.nombre() == "Mi𝄳")
+    }
+
+    /// Los makamlar del tetracordo Hicaz en la dügâh y los *şed* de Nihâvend y Hicazkâr en la yegâh, con bakiye.
+    @Test func makamlarDeLaFamiliaHicazYSultaniyegah() {
+        #expect(nombres(Escala(.re, .sultaniyegahMakami)) == "Re Mi Fa Sol La Si♭⁺¹ Do♯⁻¹")
+        #expect(nombres(Escala(.re, .sultaniyegahMakami), .descendente) == "Re Mi Fa Sol La Si♭ Do")
+        #expect(nombres(Escala(.re, .sedarabanMakami)) == "Re Mi♭⁺¹ Fa♯⁻¹ Sol La Si♭⁺¹ Do♯⁻¹")
+        #expect(nombres(Escala(.la, .humayunMakami)) == "La Si♭⁺¹ Do♯⁻¹ Re Mi Fa Sol")
+        #expect(nombres(Escala(.la, .uzzalMakami)) == "La Si♭⁺¹ Do♯⁻¹ Re Mi Fa♯⁻¹ Sol")
+        #expect(nombres(Escala(.la, .zirguleliHicazMakami)) == "La Si♭⁺¹ Do♯⁻¹ Re Mi Fa⁺¹ Sol♯⁻¹")
+        // Uzzâl sube con las perdes de Hicaz.
+        #expect(TipoDeEscala.uzzalMakami.microtonal?.pasos == TipoDeEscala.hicazMakami.microtonal?.pasos)
+        #expect(TipoDeEscala.mahurMakami.microtonal == nil && TipoDeEscala.acemasiranMakami.microtonal == nil)
+    }
+
+    /// El tetracordo enarmónico griego: dos cuartos de tono y un dítono.
+    @Test func tetracordoEnarmonicoEnCuartosDeTono() {
+        let enarmonico = TipoDeEscala.tetracordoEnarmonico.microtonal
+        #expect(enarmonico?.sistema == .cuartosDeTono)
+        #expect(enarmonico?.cents == [0, 50, 100, 500])
+        #expect(Escala(.mi, .tetracordoEnarmonico).notas.map(\.description).joined(separator: " ") == "Mi Fa♭ Fa La")
+        #expect(nombres(Escala(.mi, .tetracordoEnarmonico)) == "Mi Fa𝄳 Fa La")
+        #expect(nombres(Escala(.mi, .tetracordoEnarmonico), en: .inglesASCII) == "E Fqb F A")
     }
 
     @Test func nombresEnOtrasNotaciones() {

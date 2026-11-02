@@ -198,7 +198,7 @@ Escala("La hicaz makami").notas              // La Si♭ Do♯ Re Mi Fa♯ Sol
 
 No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales;
 están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `chinas`, `japonesas`,
-`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`…). Sus nombres
+`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `pathets`…). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
 las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 mēḷa,
@@ -230,10 +230,10 @@ Algunas escalas aproximadas tienen también su versión microtonal, `microtonal`
 dónde cae cada grado en la teoría de su tradición, en los pasos de su sistema (``SistemaMicrotonal``) contados
 desde la tónica temperada. La tienen todos los maqamat que usan cuartos de tono, en cuartos de tono
 (`.cuartosDeTono`, la teoría árabe moderna); los dastgāh y āvāz con *koron*, con el de Vaziri (`.persa`); los
-makamlar, salvo los cuatro pitagóricos (Nihâvend, Kürdî, Bûselik y Çârgâh), en las 53 comas de Arel-Ezgi-Uzdilek
+makamlar, salvo los seis pitagóricos (Nihâvend, Kürdî, Bûselik, Çârgâh, Mâhur y Acemaşiran), en las 53 comas de Arel-Ezgi-Uzdilek
 (`.comas53`); los quince dromoi, con la afinación de su maqam o su makam; los echoi bizantinos, salvo el trítos, en
 los 72 moria de la Comisión Patriarcal de 1881 (`.moria72`); y los diez thāṭ y Yaman, en los 22 śruti indios
-(`.sruti`), cada uno una razón justa. Los thāṭ siguen el ṣaḍja-grāma de Bharata como lo reconstruye E. J. Arnold
+(`.sruti`), cada uno una razón justa; y el tetracordo enarmónico griego, en cuartos de tono (Mi Fa𝄳 Fa La). Los thāṭ siguen el ṣaḍja-grāma de Bharata como lo reconstruye E. J. Arnold
 (Kāfī: Sa, Re 10/9, ga 32/27, ma 4/3, Pa, Dha 5/3, ni 16/9), con el re y el dha pitagóricos (256/243, 128/81) en
 Bhairav, Bhairavī y Toḍī, y Toḍī como lo miden Bel y otros. Los que en su propia teoría no tienen microtonos (Ḥijāz,
 Māhur…) no la necesitan, y los mugam azerbaiyanos tampoco: son los de Hacıbəyov, ya en doce notas. En Sīkāh, ʿIrāq,

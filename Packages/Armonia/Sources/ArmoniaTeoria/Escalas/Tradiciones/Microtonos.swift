@@ -231,7 +231,7 @@ extension TipoDeEscala {
 
 extension TipoDeEscalaMicrotonal {
     /// Las escalas con versión microtonal: los maqamat, los dastgāh y los makamlar que se aproximan, los dromoi, los
-    /// echoi bizantinos y los thāṭ indios (con Yaman).
+    /// echoi bizantinos, los thāṭ indios (con Yaman) y el tetracordo enarmónico griego.
     ///
     /// Los maqamat van en cuartos de tono, como en la teoría árabe moderna; los dastgāh, en la notación de
     /// Vaziri (el koron, un cuarto de tono bajo); los makamlar, en las comas de Arel-Ezgi-Uzdilek; los echoi, en los
@@ -314,6 +314,16 @@ extension TipoDeEscalaMicrotonal {
         TipoDeEscalaMicrotonal(.suzinakMakami, .comas53, pasos: [0, 9, 17, 22, 31, 36, 48]),
         TipoDeEscalaMicrotonal(.nikrizMakami, .comas53, pasos: [0, 9, 13, 26, 31, 40, 44]),
         TipoDeEscalaMicrotonal(.neveserMakami, .comas53, pasos: [0, 9, 13, 26, 31, 36, 48]),
+        // Sultânîyegâh, Bûselik en la yegâh: el tetracordo Hicaz de la dügâh (Si♭ y Do♯ con bakiye) al subir y el
+        // Kürdî al bajar. Şedaraban y Zirgüleli Hicaz, con las perdes de Hicazkâr; Hümâyun y Uzzâl, con el
+        // tetracordo Hicaz de Hicaz y su pentacordo Bûselik o su tetracordo Uşşak (eviç, Fa♯ una koma bajo).
+        TipoDeEscalaMicrotonal(
+            .sultaniyegahMakami, .comas53, pasos: [0, 9, 13, 22, 31, 36, 48],
+            pasosDescendentes: [0, 9, 13, 22, 31, 35, 44]),
+        TipoDeEscalaMicrotonal(.sedarabanMakami, .comas53, pasos: [0, 5, 17, 22, 31, 36, 48]),
+        TipoDeEscalaMicrotonal(.humayunMakami, .comas53, pasos: [0, 5, 17, 22, 31, 35, 44]),
+        TipoDeEscalaMicrotonal(.uzzalMakami, .comas53, pasos: [0, 5, 17, 22, 31, 39, 44]),
+        TipoDeEscalaMicrotonal(.zirguleliHicazMakami, .comas53, pasos: [0, 5, 17, 22, 31, 36, 48]),
         // Echoi bizantinos (moria de la Comisión Patriarcal, desde Ni = Do: Pa 12, Vou 22, Ga 30, Di 42, Ke 54, Zo 64).
         // Los diatónicos, con Vou y Zo dos moria bajo Mi y Si; el segundo, cromático blando (8, 14, 8); el plagal del
         // segundo, cromático duro (6, 20, 4). El varýs y el légetos empiezan en Zo y en Vou: su primer paso es −2.
@@ -341,6 +351,9 @@ extension TipoDeEscalaMicrotonal {
         TipoDeEscalaMicrotonal(.marva, .sruti, pasos: [0, 2, 7, 11, 13, 16, 20]),
         TipoDeEscalaMicrotonal(.purvi, .sruti, pasos: [0, 2, 7, 11, 13, 15, 20]),
         TipoDeEscalaMicrotonal(.todi, .sruti, pasos: [0, 1, 5, 11, 13, 14, 21]),
+        // El tetracordo enarmónico de Aristóxeno, en cuartos de tono: Mi Fa𝄳 Fa La (la parhýpate, un cuarto de tono
+        // sobre Mi, se escribe Fa♭ en doce notas).
+        TipoDeEscalaMicrotonal(.tetracordoEnarmonico, .cuartosDeTono, pasos: [0, 1, 2, 10]),
     ]
 
     /// Nombre de la escala temperada → su versión microtonal.
