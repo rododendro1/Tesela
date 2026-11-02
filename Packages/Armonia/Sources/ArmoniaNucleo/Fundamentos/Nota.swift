@@ -86,7 +86,7 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
     /// Los signos de la alteración en una tipografía: `Alteracion(2).simbolo(en: .conDobles)` → "𝄪".
     public func simbolo(en tipografia: Tipografia) -> String {
         switch tipografia {
-        case .unicode: return signos(sostenido: "♯", bemol: "♭")
+        case .conSimples: return signos(sostenido: "♯", bemol: "♭")
         case .ascii: return signos(sostenido: "#", bemol: "b")
         case .conDobles:
             if semitonos == 0 { return "♮" }
@@ -98,7 +98,7 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
     }
 
     /// Signos tipográficos que se escriben tras el nombre de la nota: "♯♯", "♭"; "" si es natural.
-    public var simbolo: String { simbolo(en: .unicode) }
+    public var simbolo: String { simbolo(en: .conSimples) }
     /// Signos en ASCII: "##", "b"; "" si es natural.
     public var simboloASCII: String { simbolo(en: .ascii) }
     /// Signos con 𝄪 y 𝄫 para cada pareja: 𝄪♯ (triple sostenido), 𝄫 (doble bemol); ♮ si es natural.
@@ -133,7 +133,7 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
 
 /// Los estilos de escribir los signos de una alteración.
 ///
-///     Alteracion(-2).simbolo(en: .unicode)    // "♭♭"
+///     Alteracion(-2).simbolo(en: .conSimples)    // "♭♭"
 ///     Alteracion(-2).simbolo(en: .ascii)      // "bb"
 ///     Alteracion(-2).simbolo(en: .conDobles)  // "𝄫"
 ///
@@ -141,11 +141,11 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
 /// `conDobles`. Las tres se leen igual con `Alteracion(leyendo:)`.
 public enum Tipografia: String, Hashable, Sendable, CaseIterable {
     /// Un signo por semitono, ♯ y ♭: Fa♯, Si♭♭.
-    case unicode
+    case conSimples
     /// Un signo por semitono, # y b, como se escribe en un teclado: F#, Bbb.
     case ascii
     /// 𝄪 y 𝄫 para cada pareja de signos, y ♮ para el natural: Fa𝄪, Si𝄫, Do𝄪♯. No es la de las notaciones
-    /// compactas (`.espanolCompacto`, `.inglesCompacto`), que usan `.unicode`.
+    /// compactas (`.espanolCompacto`, `.inglesCompacto`), que usan `.conSimples`.
     case conDobles
 }
 

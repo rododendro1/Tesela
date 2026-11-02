@@ -53,8 +53,8 @@ import Testing
         #expect(acorde.cifrado(en: .inglesPalabras) == "B♭7(♭9)/D")
         #expect(acorde.cifrado(en: .espanolCompacto) == "Si♭7(♭9)/Re")
         #expect(acorde.cifrado(en: .inglesASCII) == "Bb7(b9)/D")
-        #expect(Notacion.espanolPalabras.tipografia == .unicode)
-        #expect(Notacion.inglesPalabras.tipografia == .unicode)
+        #expect(Notacion.espanolPalabras.tipografia == .conSimples)
+        #expect(Notacion.inglesPalabras.tipografia == .conSimples)
         #expect(Acorde(texto: acorde.cifrado(en: .inglesPalabras)) == acorde)
     }
 

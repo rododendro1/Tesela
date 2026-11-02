@@ -234,7 +234,7 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     /// compacta: Fa#, Fa♯, Fis, Fa♯ (con la sílaba en mayúscula, como en los cifrados).
     public let conPalabras: Bool
     /// Cómo se escriben los signos de las alteraciones: con # y b (`.ascii`) en español e inglés ASCII y en
-    /// alemán; con ♯ y ♭ (`.unicode`) en las demás, también en los cifrados de las que usan palabras.
+    /// alemán; con ♯ y ♭ (`.conSimples`) en las demás, también en los cifrados de las que usan palabras.
     public let tipografia: Tipografia
 
     private init(_ idioma: Idioma, conPalabras: Bool = false, tipografia: Tipografia? = nil) {
@@ -244,17 +244,17 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     }
 
     /// Do, Fa sostenido, Si bemol.
-    public static let espanolPalabras = EscrituraDeNotas(.espanol, conPalabras: true, tipografia: .unicode)
+    public static let espanolPalabras = EscrituraDeNotas(.espanol, conPalabras: true, tipografia: .conSimples)
     /// Do, Fa#, Sib.
     public static let espanolASCII = EscrituraDeNotas(.espanol, tipografia: .ascii)
     /// Do, Fa♯, Si♭.
-    public static let espanolCompacto = EscrituraDeNotas(.espanol, tipografia: .unicode)
+    public static let espanolCompacto = EscrituraDeNotas(.espanol, tipografia: .conSimples)
     /// C, F sharp, B flat.
-    public static let inglesPalabras = EscrituraDeNotas(.ingles, conPalabras: true, tipografia: .unicode)
+    public static let inglesPalabras = EscrituraDeNotas(.ingles, conPalabras: true, tipografia: .conSimples)
     /// C, F#, Bb.
     public static let inglesASCII = EscrituraDeNotas(.ingles, tipografia: .ascii)
     /// C, F♯, B♭.
-    public static let inglesCompacto = EscrituraDeNotas(.ingles, tipografia: .unicode)
+    public static let inglesCompacto = EscrituraDeNotas(.ingles, tipografia: .conSimples)
     /// do, re, fa sostingut, si bemoll.
     public static let catalanPalabras = EscrituraDeNotas(.catalan, conPalabras: true)
     /// Fa♯, Si♭.
@@ -314,9 +314,9 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
         switch idioma.reglas.alteraciones {
         case .signos:
             return [
-                EscrituraDeNotas(idioma, conPalabras: true, tipografia: .unicode),
+                EscrituraDeNotas(idioma, conPalabras: true, tipografia: .conSimples),
                 EscrituraDeNotas(idioma, tipografia: .ascii),
-                EscrituraDeNotas(idioma, tipografia: .unicode),
+                EscrituraDeNotas(idioma, tipografia: .conSimples),
             ]
         case .alemana, .palabras:
             return [EscrituraDeNotas(idioma, conPalabras: true), EscrituraDeNotas(idioma)]
@@ -325,12 +325,12 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
 
     /// La escritura de un idioma con las alteraciones en palabras: «Fa sostenido», «F Kreuz», «fa dièse».
     public static func conPalabras(_ idioma: Idioma) -> EscrituraDeNotas {
-        EscrituraDeNotas(idioma, conPalabras: true, tipografia: idioma.reglas.tieneVariantes ? .unicode : nil)
+        EscrituraDeNotas(idioma, conPalabras: true, tipografia: idioma.reglas.tieneVariantes ? .conSimples : nil)
     }
 
     /// La escritura compacta de un idioma, con la octava en subíndice: Fa♯, F♯, Fis, Ré♭, Фа♯.
     public static func compacta(_ idioma: Idioma) -> EscrituraDeNotas {
-        EscrituraDeNotas(idioma, tipografia: idioma.reglas.tieneVariantes ? .unicode : nil)
+        EscrituraDeNotas(idioma, tipografia: idioma.reglas.tieneVariantes ? .conSimples : nil)
     }
 
     /// La escritura habitual de un idioma: en español e inglés, con # y b si `ascii` y con ♯ y ♭ si no; en alemán
@@ -338,7 +338,7 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     /// texto. Para las otras, ``conPalabras(_:)`` y ``compacta(_:)``.
     public init(idioma: Idioma, ascii: Bool) {
         switch idioma.reglas.alteraciones {
-        case .signos: self = EscrituraDeNotas(idioma, tipografia: ascii ? .ascii : .unicode)
+        case .signos: self = EscrituraDeNotas(idioma, tipografia: ascii ? .ascii : .conSimples)
         case .alemana: self = EscrituraDeNotas(idioma)
         case .palabras: self = EscrituraDeNotas(idioma, conPalabras: true)
         }
@@ -352,7 +352,7 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     public var esCompacta: Bool {
         switch escrituraDeLaAlteracion {
         case .alemana: return true
-        case .signos: return tipografia == .unicode
+        case .signos: return tipografia == .conSimples
         case .palabras: return false
         }
     }
