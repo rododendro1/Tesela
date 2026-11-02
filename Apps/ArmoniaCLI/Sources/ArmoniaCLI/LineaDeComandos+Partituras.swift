@@ -69,8 +69,8 @@ extension LineaDeComandos {
         if !arpegios.contains(tipo), let opcion = ["figura", "patron"].first(where: { opciones[$0] != nil }) {
             return uso(.soloParaArpegios(opcion), notacion)
         }
-        // `--archivo`: los acordes de un fichero MIDI o MusicXML, con su ritmo armónico (lo que dura cada uno), y su
-        // compás, su tempo y su título si no se dan otros.
+        // `--archivo`: los acordes de un fichero MIDI, MusicXML, MEI o ABC, con su ritmo armónico (lo que dura cada
+        // uno), y su compás, su tempo y su título si no se dan otros.
         var leidos: (acordes: [Acorde], duraciones: [Duracion])?
         if let archivo = opciones["archivo"] {
             guard acordes.contains(tipo) || arpegios.contains(tipo) else {
