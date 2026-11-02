@@ -197,11 +197,11 @@ extension LineaDeComandosTests {
 
     @Test func estudiarUnaEscala() {
         let terceras = salida("escala Do mayor --secuencia terceras")
-        #expect(terceras.contains("\nSecuencia por terceras:\n  Do4 Mi4 Re4 Fa4 "), Comment(rawValue: terceras))
-        #expect(terceras.hasSuffix(" Do5\n"))
+        #expect(terceras.contains("\nSecuencia por terceras:\n  Do₄ Mi₄ Re₄ Fa₄ "), Comment(rawValue: terceras))
+        #expect(terceras.hasSuffix(" Do₅\n"))
         let bajando = salida("escala Do mayor --secuencia triadas --bajando --octavas 2")
-        #expect(bajando.contains("\n  Do6 La5 Fa5 "), Comment(rawValue: bajando))
-        #expect(bajando.hasSuffix(" Do4\n"))
+        #expect(bajando.contains("\n  Do₆ La₅ Fa₅ "), Comment(rawValue: bajando))
+        #expect(bajando.hasSuffix(" Do₄\n"))
         #expect(salida("escala Do mayor --secuencia grupos-de-3").contains("Secuencia en grupos de tres:"))
         let piano = salida("escala Do mayor --piano")
         let derecha = "\nDigitación de piano:\n  Mano derecha: Do 1 · Re 2 · Mi 3 · Fa 1 · "
