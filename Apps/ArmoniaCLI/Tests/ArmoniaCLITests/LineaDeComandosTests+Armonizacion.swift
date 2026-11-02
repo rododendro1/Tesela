@@ -15,10 +15,10 @@ extension LineaDeComandosTests {
                   2. Do Fa Sol7 Do (I–IV–V7–I)
                   3. Do Rem Sol Do (I–ii–V–I)
                 A cuatro voces (bajo, tenor, contralto, soprano):
-                  Do        I         Do3 Sol3 Do4 Mi4
-                  Fa        IV        Fa2 La3 Do4 Fa4
-                  Sol       V         Sol2 Sol3 Si3 Re4
-                  Do        I         Do3 Mi3 Do4 Do4
+                  Do        I         Do₃ Sol₃ Do₄ Mi₄
+                  Fa        IV        Fa₂ La₃ Do₄ Fa₄
+                  Sol       V         Sol₂ Sol₃ Si₃ Re₄
+                  Do        I         Do₃ Mi₃ Do₄ Do₄
 
                 """)
         // Sin octavas, solo los acordes; con --propuestas, cuántos.
@@ -33,7 +33,7 @@ extension LineaDeComandosTests {
             .map { $0.split(separator: " ").suffix(4).joined(separator: " ") }
         #expect(voces.count == 8)
         #expect(
-            voces.map { $0.split(separator: " ").last! } == ["Do5", "Si4", "La4", "Sol4", "Fa4", "Mi4", "Re4", "Do4"])
+            voces.map { $0.split(separator: " ").last! } == ["Do₅", "Si₄", "La₄", "Sol₄", "Fa₄", "Mi₄", "Re₄", "Do₄"])
         #expect(salida("revisar " + voces.joined(separator: ", ")) == "Sin faltas de conducción.\n")
         // Fuera de la tesitura del soprano no hay coral.
         #expect(salida("armonizar Do6 Si5 Do6").hasSuffix("No hay ninguna realización sin faltas de conducción.\n"))
@@ -43,10 +43,10 @@ extension LineaDeComandosTests {
         #expect(
             salida("realizar Do Fa Sol7 Do") == """
                 Do mayor
-                  Do        I         Do3 Mi4 Sol4 Do5
-                  Fa        IV        Fa3 Fa4 La4 Do5
-                  Sol7      V7        Sol3 Fa4 Sol4 Si4
-                  Do        I         Do4 Mi4 Sol4 Do5
+                  Do        I         Do₃ Mi₄ Sol₄ Do₅
+                  Fa        IV        Fa₃ Fa₄ La₄ Do₅
+                  Sol7      V7        Sol₃ Fa₄ Sol₄ Si₄
+                  Do        I         Do₄ Mi₄ Sol₄ Do₅
 
                 """)
         #expect(salida("realize C F G7 C --ingles").hasPrefix("C major\n  C         I         C3 E4 G4 C5"))

@@ -82,7 +82,8 @@ import Testing
         // --subindices la fijan. Se lee igual con subíndices que con cifras.
         #expect(salida("transponer 2M Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4") == "Re₃ Fa♯₄ La₄ Re₅ | La₂ Mi₄ La₄ Do♯₅\n")
         #expect(
-            salida("transponer 2M Do₃ Mi₄ Sol₄ Do₅ | Sol₂ Re₄ Sol₄ Si₄ --cifras") == "Re3 Fa♯4 La4 Re5 | La2 Mi4 La4 Do♯5\n")
+            salida("transponer 2M Do₃ Mi₄ Sol₄ Do₅ | Sol₂ Re₄ Sol₄ Si₄ --cifras")
+                == "Re3 Fa♯4 La4 Re5 | La2 Mi4 La4 Do♯5\n")
         #expect(salida("transponer 2M Do3 --ingles") == "D3\n")
         #expect(salida("transponer 2M Do3 --ingles --subindices") == "D₃\n")
         #expect(salida("transponer 2M Do3 --digits") == salida("transponer 2M Do3 --cifras"))
@@ -270,9 +271,9 @@ import Testing
         #expect(
             salida("escala Fa# dórico --idioma de --escritura palabras")
                 .hasPrefix("F Kreuz dorisch\n  Noten: F Kreuz G Kreuz A H"))
-        // La octava, con cifras salvo con --subindices, también en las compactas.
-        #expect(salida("transponer 2M Mi4") == "Fa♯4\n")
-        #expect(salida("transponer 2M Mi4 --idioma de") == "Fa♯4\n")
+        // La octava, en subíndice en las compactas salvo con --cifras.
+        #expect(salida("transponer 2M Mi4") == "Fa♯₄\n")
+        #expect(salida("transponer 2M Mi4 --idioma de") == "Fa♯₄\n")
         #expect(salida("transponer 2M Mi4 --ingles --escritura compacto --subindices") == "F♯₄\n")
         #expect(
             salida("acorde Sib7 --idioma en --escritura palabras --textos es")

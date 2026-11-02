@@ -36,7 +36,7 @@ import Testing
         #expect(Nota("Sib").nombre(en: .aleman) == "B")
         #expect(Nota("Sibb").nombre(en: .aleman) == "H Doppel-Be")
         #expect(try (Nota(leyendo: "H Be", en: .aleman)) == Nota("Sib"))
-        #expect(Altura("Sib3").nombre(en: .aleman) == "B 3")
+        #expect(Altura("Sib3").nombre(en: .aleman) == "B3")
         #expect(Nota("Mibb").nombre(en: .aleman) == "E Doppel-Be")
         #expect(Nota("Do").nombre(en: .aleman) == "C")
         #expect(Altura("Fa#4").nombre(en: .aleman) == "F Kreuz 4")
