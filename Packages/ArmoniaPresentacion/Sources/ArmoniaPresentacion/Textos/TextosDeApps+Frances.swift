@@ -108,6 +108,17 @@ extension TextosDeApps {
         revisar: "Vérifier",
         indicacionArmonizar: { e, r in "Mélodie (\(e), sans octaves ou avec rythme : \(r))" },
         indicacionRevisar: { e in "Voix du grave à l'aigu (\(e))" },
+        // PresentacionDeContrapunto.swift
+        contrapunto: "Contrepoint",
+        especie: "Espèce",
+        indicacionCantus: { e in "Cantus firmus (\(e))" },
+        indicacionContrapunto: { e in "Contrepoint (\(e))" },
+        compasNumero: { n in "Mesure \(n)" },
+        // RecorridoDePartitura.swift
+        partitura: "Partition",
+        anterior: "Précédent",
+        siguiente: "Suivant",
+        abreUnaPartitura: "Ouvre un fichier MIDI, MusicXML, MEI ou ABC pour suivre ses accords sur le réseau.",
         // FicheroParaExportar.swift
         partituraMusicXML: "Partition MusicXML",
         partituraMEI: "Partition MEI",

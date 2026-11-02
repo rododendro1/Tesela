@@ -108,6 +108,17 @@ extension TextosDeApps {
         revisar: "Έλεγχος",
         indicacionArmonizar: { e, r in "Μελωδία (\(e), χωρίς οκτάβες ή με ρυθμό: \(r))" },
         indicacionRevisar: { e in "Φωνές από το βαθύ στο οξύ (\(e))" },
+        // PresentacionDeContrapunto.swift
+        contrapunto: "Αντίστιξη",
+        especie: "Είδος",
+        indicacionCantus: { e in "Κάντους φίρμους (\(e))" },
+        indicacionContrapunto: { e in "Αντίστιξη (\(e))" },
+        compasNumero: { n in "Μέτρο \(n)" },
+        // RecorridoDePartitura.swift
+        partitura: "Παρτιτούρα",
+        anterior: "Προηγούμενο",
+        siguiente: "Επόμενο",
+        abreUnaPartitura: "Άνοιξε ένα αρχείο MIDI, MusicXML, MEI ή ABC για να ακολουθήσεις τις συγχορδίες του στο πλέγμα.",
         // FicheroParaExportar.swift
         partituraMusicXML: "Παρτιτούρα MusicXML",
         partituraMEI: "Παρτιτούρα MEI",

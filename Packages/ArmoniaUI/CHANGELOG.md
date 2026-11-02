@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+- **Contrapunto en Armonía.** Desde la pestaña Coral se abre el contrapunto de especies: se elige la especie (de la
+  primera a la quinta, cada una con un ejemplo sin faltas sobre el cantus en re de Fux), se escriben el cantus firmus
+  y el contrapunto, y se ve compás a compás qué notas hay, sus intervalos con el cantus y las faltas. Se escucha
+  (resaltando el compás que suena) y se exporta en MusicXML, MEI, LilyPond, ABC y MIDI.
+- **«Partitura» en Tonnetz.** Un modo nuevo abre un fichero MIDI, MusicXML (también .mxl), MEI o ABC y sigue sus
+  acordes en la red, con «Anterior» y «Siguiente» o mientras suena: cada tríada se dibuja con las que llevan a ella
+  y sus flechas, y se dice qué transformaciones P, L y R hay desde la anterior. En macOS, la app pide permiso para
+  leer el fichero elegido.
 - `ArmoniaPresentacion` sale del paquete a uno propio, `Packages/ArmoniaPresentacion`, con sus pruebas. `ArmoniaUI`
   lo sigue reexportando, así que las apps no cambian; quien use `ArmoniaPresentacion` por ruta local debe apuntar a
   `Packages/ArmoniaPresentacion` y nombrar el producto con `package: "ArmoniaPresentacion"`. Por URL (el

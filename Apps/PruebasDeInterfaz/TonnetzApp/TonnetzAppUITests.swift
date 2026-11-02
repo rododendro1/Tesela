@@ -1,6 +1,7 @@
 import XCTest
 
-/// El recorrido con P, L y R desde Do, deshacer, el cambio a un acorde y a una escala, y el modo de identificar.
+/// El recorrido con P, L y R desde Do, deshacer, el cambio a un acorde y a una escala, el modo de partitura y el de
+/// identificar.
 @MainActor
 final class TonnetzAppUITests: XCTestCase {
     func testRecorrido() {
@@ -22,6 +23,14 @@ final class TonnetzAppUITests: XCTestCase {
         app.opcion("Escala").tap()
         esperar(app.textFields.firstMatch, "el campo de la escala")
         XCTAssertEqual(app.textFields.firstMatch.value as? String, "Re dórico")
+    }
+
+    /// Sin fichero, «Partitura» pide abrir uno.
+    func testPartitura() {
+        let app = XCUIApplication.enEspanol()
+        app.opcion("Partitura").tap()
+        esperar(app.texto("Abre un fichero MIDI"), "la indicación")
+        esperar(app.buttons["Abrir"], "el botón de abrir")
     }
 
     func testIdentificar() {

@@ -108,6 +108,17 @@ extension TextosDeApps {
         revisar: "Berrikusi",
         indicacionArmonizar: { e, r in "Melodia (\(e), zortzidunik gabe edo erritmoarekin: \(r))" },
         indicacionRevisar: { e in "Ahotsak, baxuenetik altuenera (\(e))" },
+        // PresentacionDeContrapunto.swift
+        contrapunto: "Kontrapuntua",
+        especie: "Espeziea",
+        indicacionCantus: { e in "Cantus firmus (\(e))" },
+        indicacionContrapunto: { e in "Kontrapuntua (\(e))" },
+        compasNumero: { n in "\(n). konpasa" },
+        // RecorridoDePartitura.swift
+        partitura: "Partitura",
+        anterior: "Aurrekoa",
+        siguiente: "Hurrengoa",
+        abreUnaPartitura: "Ireki MIDI, MusicXML, MEI edo ABC fitxategi bat, haren akordeak sarean jarraitzeko.",
         // FicheroParaExportar.swift
         partituraMusicXML: "MusicXML partitura",
         partituraMEI: "MEI partitura",

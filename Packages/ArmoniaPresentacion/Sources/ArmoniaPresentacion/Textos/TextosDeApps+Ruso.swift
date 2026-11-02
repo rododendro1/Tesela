@@ -108,6 +108,17 @@ extension TextosDeApps {
         revisar: "Проверить",
         indicacionArmonizar: { e, r in "Мелодия (\(e), без октав или с ритмом: \(r))" },
         indicacionRevisar: { e in "Голоса снизу вверх (\(e))" },
+        // PresentacionDeContrapunto.swift
+        contrapunto: "Контрапункт",
+        especie: "Вид",
+        indicacionCantus: { e in "Кантус фирмус (\(e))" },
+        indicacionContrapunto: { e in "Контрапункт (\(e))" },
+        compasNumero: { n in "Такт \(n)" },
+        // RecorridoDePartitura.swift
+        partitura: "Партитура",
+        anterior: "Назад",
+        siguiente: "Далее",
+        abreUnaPartitura: "Открой файл MIDI, MusicXML, MEI или ABC, чтобы следить за его аккордами на сетке.",
         // FicheroParaExportar.swift
         partituraMusicXML: "Партитура MusicXML",
         partituraMEI: "Партитура MEI",

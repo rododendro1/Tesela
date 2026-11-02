@@ -3,7 +3,7 @@ import ArmoniaUI
 import SwiftUI
 
 /// Armoniza una melodía, escribe unos acordes a cuatro voces o revisa la conducción de unas voces, y
-/// exporta el coral como partitura o MIDI.
+/// exporta el coral como partitura o MIDI. Arriba, el paso al contrapunto de especies (`VistaDeContrapunto`).
 struct VistaDeCoral: View {
     @Environment(\.notacion) private var notacion
     @State private var tarea = PresentacionDeCoral.Tarea.armonizar
@@ -19,6 +19,13 @@ struct VistaDeCoral: View {
 
     var body: some View {
         Form {
+            Section {
+                NavigationLink {
+                    VistaDeContrapunto()
+                } label: {
+                    Label(notacion.texto(\.contrapunto), systemImage: "music.note.list")
+                }
+            }
             Section {
                 Picker(notacion.texto(\.tarea), selection: $tarea) {
                     ForEach(PresentacionDeCoral.Tarea.allCases) { Text($0.titulo(en: notacion)).tag($0) }

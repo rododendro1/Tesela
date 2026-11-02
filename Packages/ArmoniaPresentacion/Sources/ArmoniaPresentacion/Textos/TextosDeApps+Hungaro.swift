@@ -108,6 +108,17 @@ extension TextosDeApps {
         revisar: "Ellenőrzés",
         indicacionArmonizar: { e, r in "Dallam (\(e), oktáv nélkül vagy ritmussal: \(r))" },
         indicacionRevisar: { e in "Szólamok mélytől magasig (\(e))" },
+        // PresentacionDeContrapunto.swift
+        contrapunto: "Ellenpont",
+        especie: "Fajta",
+        indicacionCantus: { e in "Cantus firmus (\(e))" },
+        indicacionContrapunto: { e in "Ellenpont (\(e))" },
+        compasNumero: { n in "\(n). ütem" },
+        // RecorridoDePartitura.swift
+        partitura: "Kotta",
+        anterior: "Előző",
+        siguiente: "Következő",
+        abreUnaPartitura: "Nyiss meg egy MIDI-, MusicXML-, MEI- vagy ABC-fájlt, és kövesd az akkordjait a rácson.",
         // FicheroParaExportar.swift
         partituraMusicXML: "MusicXML-kotta",
         partituraMEI: "MEI-kotta",

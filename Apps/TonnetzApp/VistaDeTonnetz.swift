@@ -1,19 +1,22 @@
 import Armonia
 import ArmoniaUI
 import SwiftUI
+import UniformTypeIdentifiers
 
 /// Un acorde, una escala o un recorrido de tríadas con las transformaciones P, L y R, en el Tonnetz, en la
 /// tabla armónica o en un teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático, Gerhard o Park), y su dibujo
 /// para exportar. Al tocar una nota del dibujo, suena. En el modo «Identificar», además, la nota tocada se marca (o se
 /// desmarca) y se dice
 /// qué acorde forman las marcadas y su número de Forte; un acorde tocado en un teclado MIDI conectado también se
-/// marca, con la nota más grave como bajo.
+/// marca, con la nota más grave como bajo. En el modo «Partitura» se abre un fichero MIDI, MusicXML, MEI o ABC y se
+/// siguen sus acordes en la red, paso a paso o mientras suenan, con las transformaciones P, L y R entre las tríadas.
 struct VistaDeTonnetz: View {
     enum Contenido: CaseIterable, Identifiable {
         case recorrido
         case acorde
         case escala
         case identificar
+        case partitura
         var id: Self { self }
 
         func titulo(en notacion: Notacion) -> String {
@@ -22,6 +25,7 @@ struct VistaDeTonnetz: View {
             case .acorde: return notacion.texto(\.acorde)
             case .escala: return notacion.texto(\.escala)
             case .identificar: return notacion.texto(\.identificar)
+            case .partitura: return notacion.texto(\.partitura)
             }
         }
     }
@@ -41,6 +45,21 @@ struct VistaDeTonnetz: View {
     /// El último acorde tocado en el teclado MIDI y las teclas pulsadas la última vez que cambiaron.
     @State private var notasMIDI: [Int] = []
     @State private var pulsadasAntes: [Int] = []
+    /// La pieza abierta en el modo «Partitura», el acorde elegido con «Anterior» y «Siguiente», y por qué no se pudo
+    /// abrir el último fichero.
+    @State private var partitura: RecorridoDePartitura?
+    /// Lo leído del fichero, para volver a escribir los cifrados si cambia la notación.
+    @State private var importada: ProgresionImportada?
+    @State private var pasoElegido: Int?
+    @State private var abriendo = false
+    @State private var errorAlAbrir: Error?
+    /// Lo que está sonando, para seguir en la red el acorde que se oye.
+    @ObservedObject private var reproductor = Reproductor.compartido
+
+    /// MIDI, MusicXML (.musicxml, .xml y .mxl), MEI y ABC.
+    private static let tipos: [UTType] =
+        [.midi, .xml]
+        + ImportacionDeProgresion.extensiones.compactMap { UTType(filenameExtension: $0) }
 
     var body: some View {
         VStack(spacing: 12) {
@@ -85,6 +104,12 @@ struct VistaDeTonnetz: View {
             ToolbarItem {
                 BotonDeExportar(ficheros)
             }
+        }
+        .fileImporter(isPresented: $abriendo, allowedContentTypes: Self.tipos) { elegido in
+            abrir(elegido)
+        }
+        .onChange(of: notacion.clave) { _ in
+            partitura = importada.map { RecorridoDePartitura($0, notacion: notacion) }
         }
         .onAppear {
             if recorrido.isEmpty { reiniciar() }
@@ -157,6 +182,8 @@ struct VistaDeTonnetz: View {
             TextField(notacion.campo(.escala), text: $textoEscala)
                 .textFieldStyle(.roundedBorder)
                 .comoCampoDeCifrado()
+        case .partitura:
+            controlesDePartitura
         case .identificar:
             HStack {
                 Text(identificado)
@@ -166,6 +193,69 @@ struct VistaDeTonnetz: View {
                     .disabled(clasesTocadas.isEmpty)
             }
         }
+    }
+
+    /// «Abrir», el título de la pieza y, con «Anterior» y «Siguiente», el acorde que se ve y cómo se llega a él.
+    @ViewBuilder
+    private var controlesDePartitura: some View {
+        HStack {
+            Button {
+                abriendo = true
+            } label: {
+                Label(notacion.texto(\.abrir), systemImage: "folder")
+            }
+            if let titulo = partitura?.titulo, !titulo.isEmpty {
+                Text(titulo).font(.headline).lineLimit(1)
+            }
+            Spacer()
+        }
+        if let errorAlAbrir {
+            Text(notacion.mensaje(de: errorAlAbrir)).foregroundColor(.red)
+        }
+        if let partitura, let actual = pasoActual {
+            HStack {
+                Button {
+                    elegirPaso(avanzando: false)
+                } label: {
+                    Label(notacion.texto(\.anterior), systemImage: "chevron.backward")
+                }
+                .disabled(actual == 0)
+                Spacer()
+                Text(descripcion(de: actual, en: partitura))
+                    .font(.system(.callout, design: .monospaced))
+                Spacer()
+                Button {
+                    elegirPaso(avanzando: true)
+                } label: {
+                    Label(notacion.texto(\.siguiente), systemImage: "chevron.forward")
+                }
+                .disabled(actual == partitura.pasos.count - 1)
+            }
+            .labelStyle(.iconOnly)
+        } else if errorAlAbrir == nil {
+            Text(notacion.texto(\.abreUnaPartitura)).foregroundColor(.secondary)
+        }
+    }
+
+    /// «3/24 · Lam –R→ Fa»: el número del paso, el acorde anterior y el actual y las transformaciones entre ellos.
+    private func descripcion(de i: Int, en partitura: RecorridoDePartitura) -> String {
+        let paso = partitura.pasos[i]
+        let numero = "\(i + 1)/\(partitura.pasos.count) · "
+        guard i > 0 else { return numero + paso.cifrado }
+        return numero + partitura.pasos[i - 1].cifrado + " –" + paso.transformacion + "→ " + paso.cifrado
+    }
+
+    /// El acorde de la partitura que se ve: el que suena, si suena; si no, el elegido (el primero al abrirla).
+    private var pasoActual: Int? {
+        guard let partitura, !partitura.pasos.isEmpty else { return nil }
+        if let sonando = reproductor.paso(de: partitura.sonido) { return sonando }
+        return min(pasoElegido ?? 0, partitura.pasos.count - 1)
+    }
+
+    private func elegirPaso(avanzando: Bool) {
+        guard let partitura else { return }
+        pasoElegido = partitura.paso(desde: pasoActual, avanzando: avanzando)
+        if let pasoElegido { Reproductor.compartido.tocar(.acorde(partitura.pasos[pasoElegido].acorde)) }
     }
 
     /// Lo que forman las notas tocadas: el acorde más probable con su nombre y, detrás, otras lecturas. Sin notas,
@@ -200,11 +290,17 @@ struct VistaDeTonnetz: View {
             return (try? Escala(leyendo: textoEscala)).map { .escala($0) }
         case .identificar:
             return .clases(clasesTocadas)
+        case .partitura:
+            // El acorde que se ve, con las tríadas que llevan a él y sus flechas.
+            guard let partitura, let actual = pasoActual else { return nil }
+            let tramo = partitura.tramo(hasta: actual)
+            return tramo.count >= 2 ? .recorrido(tramo) : tramo.first.map { .acorde($0) }
         }
     }
 
     /// Lo que suena al pulsar «Escuchar»: el acorde, la escala o el recorrido.
     private var sonido: Escucha {
+        if contenido == .partitura { return partitura?.sonido ?? .silencio }
         switch dibujado {
         case .acorde(let acorde): return .acorde(acorde)
         case .escala(let escala): return .escala(escala)
@@ -224,6 +320,23 @@ struct VistaDeTonnetz: View {
     }
 
     // MARK: Acciones
+
+    /// Lee el fichero elegido y empieza por su primer acorde.
+    private func abrir(_ elegido: Result<URL, Error>) {
+        do {
+            let url = try elegido.get()
+            // Los ficheros de fuera de la app (Archivos, iCloud) solo se leen con permiso.
+            let conPermiso = url.startAccessingSecurityScopedResource()
+            defer { if conPermiso { url.stopAccessingSecurityScopedResource() } }
+            let leida = try ImportacionDeProgresion.leer(Data(contentsOf: url))
+            importada = leida
+            partitura = RecorridoDePartitura(leida, notacion: notacion)
+            pasoElegido = 0
+            errorAlAbrir = nil
+        } catch {
+            errorAlAbrir = error
+        }
+    }
 
     private func reiniciar() {
         transformaciones = []

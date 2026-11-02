@@ -44,11 +44,17 @@ el selector de notación cambia la app entera.
 
 - ``ImportacionDeProgresion``
 - ``ProgresionImportada``
+- ``RecorridoDePartitura``
 
 ### Coral a cuatro voces
 
 - ``PresentacionDeCoral``
 - ``CoralPresentado``
+
+### Contrapunto de especies
+
+- ``PresentacionDeContrapunto``
+- ``ContrapuntoPresentado``
 
 ### Transponer y rearmonizar
 

@@ -104,6 +104,15 @@ import Testing
         { $0.texto(\.aplicar) },
         { $0.texto(\.detener) },
         { $0.texto(\.transponer) },
+        { $0.texto(\.contrapunto) },
+        { $0.texto(\.especie) },
+        { PresentacionDeContrapunto.indicacionDelCantus(en: $0) },
+        { PresentacionDeContrapunto.indicacionDelContrapunto(en: $0) },
+        { $0.texto { $0.compasNumero(3) } },
+        { $0.texto(\.partitura) },
+        { $0.texto(\.anterior) },
+        { $0.texto(\.siguiente) },
+        { $0.texto(\.abreUnaPartitura) },
     ]
 
     @Test func cadaTextoEstaEnCadaIdioma() {

@@ -54,6 +54,19 @@ final class ArmoniaAppUITests: XCTestCase {
         esperar(app.texto("V7"), "el grado de Sol7", segundos: 30)
     }
 
+    /// El contrapunto se abre desde Coral y empieza con el ejemplo de Fux de la primera especie, sin faltas.
+    func testContrapunto() {
+        let app = XCUIApplication.enEspanol()
+        app.opcion("Coral").tap()
+        app.buttons["Contrapunto"].tap()
+        esperar(app.texto("Sin faltas."), "el ejemplo de la primera especie")
+        esperar(app.texto("Compás 1"), "la fila del primer compás")
+        // La segunda especie, también con su ejemplo sin faltas.
+        app.opcion("2").tap()
+        esperar(app.texto("Especie 2"), "la cabecera de la segunda especie")
+        esperar(app.texto("Sin faltas."), "el ejemplo de la segunda especie")
+    }
+
     func testIdentificar() {
         let app = XCUIApplication.enEspanol()
         app.opcion("Identificar").tap()
