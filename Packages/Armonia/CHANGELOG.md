@@ -2,6 +2,11 @@
 
 ## Sin publicar
 
+- **Dieciséis escalas tradicionales más**, todas con su versión microtonal (de treinta y tres a cuarenta y nueve):
+  - Makamlar: Hüzzam, Saba, Karcığar, Suzinak, Nikriz y Nev'eser, en comas de Arel-Ezgi-Uzdilek.
+  - Dastgāh y āvāz persas, con el *koron*: Segāh (sobre Mi, con la tónica en un *koron*), Navā, Bayāt-e Tork,
+    Afšāri, Dašti, Abu ʿAtā y Bayāt-e Esfahān.
+  - Maqamat en cuartos de tono: Rāḥat al-Arwāḥ (sobre Si𝄳), Bayātī Shūrī y Jiharkāh.
 - **Más escalas con microtonos**, de nueve a treinta y tres:
   - Maqamat nuevos en cuartos de tono: Ḥusaynī y Nayrūz, y Sīkāh, maqām Huzām e ʿIrāq, con la tónica en un cuarto
     de tono (se escriben sobre Mi y Si; su primer paso microtonal es −1).
