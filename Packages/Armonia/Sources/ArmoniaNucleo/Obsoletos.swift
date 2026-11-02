@@ -5,7 +5,7 @@
 
 extension Tipografia {
     /// 𝄪 y 𝄫 para cada pareja de signos: ahora `Tipografia.conDobles`, para no confundirla con las notaciones
-    /// compactas, que usan `.conSimples`.
+    /// compactas.
     @available(*, deprecated, renamed: "conDobles")
     public static var compacta: Tipografia { .conDobles }
 }

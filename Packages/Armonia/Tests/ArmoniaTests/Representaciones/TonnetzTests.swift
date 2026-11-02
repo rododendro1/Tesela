@@ -311,7 +311,7 @@ import Testing
         func cifrados(_ acorde: Acorde, _ ciclo: CicloNeorriemanniano) -> [String] {
             acorde.ciclo(ciclo)?.map(\.cifrado) ?? []
         }
-        // Con la ortografía más sencilla: Mi y no Fa♭, Fa♯m y no Sol♭m (con Si♭♭).
+        // Con la ortografía más sencilla: Mi y no Fa♭, Fa♯m y no Sol♭m (con Si𝄫).
         #expect(cifrados("Do", .hexatonico) == ["Do", "Dom", "La♭", "La♭m", "Mi", "Mim", "Do"])
         #expect(cifrados("Do", .octatonico) == ["Do", "Dom", "Mi♭", "Mi♭m", "Sol♭", "Fa♯m", "La", "Lam", "Do"])
         #expect(cifrados("Mim", .hexatonico) == ["Mim", "Mi", "Sol♯m", "Sol♯", "Dom", "Do", "Mim"])

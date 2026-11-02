@@ -196,9 +196,9 @@ Alternando dos transformaciones se vuelve a la tríada de partida (`CicloNeorrie
 - **octatónico** (P, R): ocho, con las de una octatónica;
 - **LR** (L, R): las veinticuatro tríadas mayores y menores, avanzando por quintas.
 
-Con ortografía, un ciclo no se cierra: seis pasos del hexatónico llevan de Do a Re♭♭. Por eso
+Con ortografía, un ciclo no se cierra: seis pasos del hexatónico llevan de Do a Re𝄫. Por eso
 `Acorde.ciclo(_:)` escribe cada tríada con su enarmónica cuando esta evita dobles alteraciones o
-lleva al menos dos alteraciones menos (Mi y no Fa♭; Fa♯m y no Sol♭m, que tiene Si♭♭; pero La♭m
+lleva al menos dos alteraciones menos (Mi y no Fa♭; Fa♯m y no Sol♭m, que tiene Si𝄫; pero La♭m
 sigue siendo La♭m), y termina en la tríada de partida.
 
 ```swift

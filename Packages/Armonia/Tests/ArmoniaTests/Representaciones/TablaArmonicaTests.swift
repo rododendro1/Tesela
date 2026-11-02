@@ -150,7 +150,7 @@ import Testing
         // Los hexágonos se llaman como en las tríadas del ciclo: Do♭ en La♭m, nunca Fa♭.
         let textos = raiz.todos("text").map(\.texto)
         #expect(textos.contains("Do♭"))
-        #expect(!(textos.contains("Fa♭") || textos.contains { $0.contains("♭♭") }))
+        #expect(!(textos.contains("Fa♭") || textos.contains { $0.contains("♭♭") || $0.contains("𝄫") }))
         #expect(TablaArmonica(ciclo: .octatonico, desde: "Do")?.recorrido.count == 9)
         #expect(TablaArmonica(ciclo: .lr, desde: "Do7") == nil)
     }

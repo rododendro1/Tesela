@@ -144,8 +144,8 @@ public enum Tipografia: String, Hashable, Sendable, CaseIterable {
     case conSimples
     /// Un signo por semitono, # y b, como se escribe en un teclado: F#, Bbb.
     case ascii
-    /// 𝄪 y 𝄫 para cada pareja de signos, y ♮ para el natural: Fa𝄪, Si𝄫, Do𝄪♯. No es la de las notaciones
-    /// compactas (`.espanolCompacto`, `.inglesCompacto`), que usan `.conSimples`.
+    /// 𝄪 y 𝄫 para cada pareja de signos, y ♮ para el natural: Fa𝄪, Si𝄫, Do𝄪♯. La de las notaciones compactas
+    /// (`.espanolCompacto`, `.inglesCompacto`, `.francesCompacto`…).
     case conDobles
 }
 
@@ -163,11 +163,11 @@ extension Alteracion: RepresentableComoTexto, Nombrable {
 
 // MARK: - Nota
 
-/// Nota sin octava (con su ortografía): Do, Fa♯, Si♭♭… La nota con octava es `Altura`.
+/// Nota sin octava (con su ortografía): Do, Fa♯, Si𝄫… La nota con octava es `Altura`.
 ///
 /// Se codifica como una única coordenada: la posición en la **línea de quintas**.
 ///
-///     … Si♭♭  Fa♭  Do♭  Sol♭  Re♭  La♭  Mi♭  Si♭  Fa  Do  Sol  Re  La  Mi  Si  Fa♯  Do♯ …
+///     … Si𝄫  Fa♭  Do♭  Sol♭  Re♭  La♭  Mi♭  Si♭  Fa  Do  Sol  Re  La  Mi  Si  Fa♯  Do♯ …
 ///        −9   −8   −7    −6   −5   −4   −3   −2  −1   0    1   2   3   4   5    6    7
 ///
 /// Subir una quinta suma 1; un sostenido suma 7; un bemol resta 7.
@@ -225,7 +225,7 @@ public struct Nota: Hashable, Sendable {
 
     public var natural: NotaNatural { NotaNatural(pasosDeQuinta: pasosDeQuinta) }
 
-    /// Alteración: Fa♯ → sostenido, Si♭♭ → doble bemol, Do → natural.
+    /// Alteración: Fa♯ → sostenido, Si𝄫 → doble bemol, Do → natural.
     public var alteracion: Alteracion { Alteracion(divisionEntera(pasosDeQuinta + 1, 7)) }
 
     /// Clase de altura 0…11 (Do = 0, Do♯/Re♭ = 1 … Si = 11).
@@ -405,8 +405,8 @@ extension Alteracion {
 // MARK: - Nota
 
 extension Nota {
-    /// Nombre con símbolos tipográficos: "Fa♯", "Si♭".
-    public var nombre: String { natural.nombre + alteracion.simbolo }
+    /// Nombre con símbolos tipográficos, como en `.espanolCompacto`: "Fa♯", "Si♭", "Fa𝄪", "Si𝄫".
+    public var nombre: String { nombre(en: .espanolCompacto) }
 
     /// Nombre en ASCII: "Fa#", "Sib".
     public var nombreASCII: String { natural.nombre + alteracion.simboloASCII }
@@ -423,7 +423,7 @@ extension Nota {
         case .signos:
             // En las compactas de los idiomas con palabras, la sílaba va en mayúscula, como en los cifrados: Ré♭.
             let silaba = notacion.idiomaDeLasNotas.reglas.alteraciones == .palabras ? base.conMayusculaInicial : base
-            return silaba + (notacion.usaASCII ? alteracion.simboloASCII : alteracion.simbolo)
+            return silaba + (alteracion.esNatural ? "" : alteracion.simbolo(en: notacion.tipografia))
         case .palabras:
             // El separador lo pone el idioma: un espacio en casi todos, un guion en ruso (фа-диез).
             guard !alteracion.esNatural else { return base }
