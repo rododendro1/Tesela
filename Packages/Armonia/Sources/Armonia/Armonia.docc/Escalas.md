@@ -393,3 +393,31 @@ try Arpegio(leyendo: "arpegio Dom7").acorde == Acorde("Dom7")                   
 Acorde("Do7").escalasCompatibles().contains(Escala(.do, .mixolidio))                 // true
 let dibujo = Arpegio(Acorde("Do7")).svgPentagrama()
 ```
+
+## Escalas sobre un acorde
+
+La teoría acorde-escala del jazz mira cada nota de una escala desde el acorde que suena. ``Escala/notas(sobre:)`` dice
+qué es cada una (``PapelEnLaEscala``): una nota del acorde, una tensión disponible o una nota a evitar, la que está un
+semitono por encima de una nota del acorde y choca con ella si se sostiene (el fa sobre Do7M en jónico). En un acorde
+de dominante, la ♭9 y la ♭13 no se evitan; en uno sus4, sí la tercera mayor. Cada nota lleva su grado sobre la
+fundamental (``NotaSobreElAcorde/cifra``) como en los cifrados de jazz: las 2.ª, 4.ª y 6.ª se cuentan como 9, 11 y 13, y
+una 3.ª menor sobre un acorde mayor, como ♯9.
+
+Qué escala toca sobre cada acorde depende de lo que hace en la tonalidad. ``Tonalidad/escalaDelAcorde(_:siguiente:)`` y
+``AnalisisArmonico/escalas`` la eligen por su papel en el análisis: el modo de la tonalidad para un acorde diatónico
+(Rem7 en Do, dórico), el de la escala del destino para una dominante secundaria (V7/ii, frigio dominante: el
+mixolidio ♭9 ♭13), el de la homónima para un préstamo (♭VI, lidio) y lidio dominante para el sustituto tritonal. Si el
+acorde no cabe en esa escala, se queda con la de ``TipoDeEscala/paraAcordes`` que saca menos notas de la tonalidad.
+
+``Escala/escalaMadre`` dice de qué escala es modo cada una, entre las mayores, las menores melódicas, las menores
+armónicas y las mayores armónicas (``TipoDeEscala/familiasDeModos``).
+
+```swift
+Escala(.do, .mayor).notasAEvitar(sobre: Acorde("Do7M")) == [.fa]                       // true
+Escala(.re, .dorico).notas(sobre: Acorde("Rem7")).map(\.cifra) == ["1", "9", "♭3", "11", "5", "13", "♭7"]   // true
+Escala(.sol, .frigioDominante).tensiones(sobre: Acorde("Sol7")) == [Nota(.la, .bemol), Nota(.mi, .bemol)]   // true
+Tonalidad(.do).analizar(["Do", "La7", "Rem7", "Sol7"]).escalas[1] == Escala(.la, .frigioDominante)          // true
+Tonalidad(.do).escalaDelAcorde(Acorde("Sib7")) == Escala(Nota(.si, .bemol), .lidioDominante)               // true
+Escala(.do, .alterada).escalaMadre?.madre == Escala(Nota(.re, .bemol), .menorMelodicaJazz)               // true
+Escala(.re, .dorico).escalaMadre?.nombre(en: .espanolCompacto) == "modo 2 de Do mayor"                   // true
+```

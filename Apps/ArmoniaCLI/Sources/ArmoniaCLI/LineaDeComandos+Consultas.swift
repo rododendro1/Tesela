@@ -103,6 +103,8 @@ extension LineaDeComandos {
             escala.nombre(en: notacion),
             "  \(t(.notas)): " + escala.notas.map { $0.nombre(en: notacion) }.joined(separator: " "),
         ]
+        // De qué escala es modo: Re dórico → modo 2 de Do mayor.
+        if let modo = PresentacionDeEscalaYAcorde.modo(de: escala, notacion: notacion) { lineas.append("  " + modo) }
         // La versión microtonal (Re Bayātī: Re Mi𝄳 Fa…) y los cents de cada grado, si la escala la tiene.
         if let subida = escala.notasMicrotonales() {
             let bajada = escala.notasMicrotonales(sentido: .descendente) ?? subida
@@ -243,6 +245,9 @@ extension LineaDeComandos {
 
     static func analizar(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var acordes = Argumentos(argumentos)
+        // Con --escalas, debajo de cada acorde, su escala con sus tensiones y sus notas a evitar. Se quita antes que
+        // la tonalidad, que se lleva todo lo que va detrás de --en.
+        let conEscalas = acordes.quitarMarca("--escalas", "--scales")
         guard let tonalidad = try acordes.quitarTonalidad() else { return uso(.faltaTonalidadTrasEn, notacion) }
         let archivo: String?
         switch acordes.quitarOpcion("--archivo", "--file") {
@@ -289,6 +294,10 @@ extension LineaDeComandos {
                 lineas.append(
                     "  " + fila.cifrado.padding(hasta: anchoDelCifrado) + fila.grado.padding(hasta: anchoDelGrado)
                         + funcion)
+                if conEscalas, let escala = fila.escala {
+                    let resumen = escala.resumen.isEmpty ? "" : " — " + escala.resumen
+                    lineas.append("    " + escala.nombre + resumen)
+                }
             }
         }
         lineas += analisis.cadencias

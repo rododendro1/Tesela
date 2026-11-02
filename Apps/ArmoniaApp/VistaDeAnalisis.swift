@@ -10,6 +10,7 @@ import UniformTypeIdentifiers
 /// llevar a otra tonalidad y rearmonizar acorde a acorde.
 struct VistaDeAnalisis: View {
     @Environment(\.notacion) private var notacion
+    @EnvironmentObject private var navegacion: Navegacion
     @State private var texto = "Do Fa Sol7 Do Lam Re7 Sol"
     /// El análisis de `texto`, que se rehace al cambiar el texto o la notación, no en cada redibujado.
     @State private var resultado: Result<AnalisisPresentado, Error>?
@@ -54,13 +55,16 @@ struct VistaDeAnalisis: View {
                     let antes = analisis.tramos.prefix(t).map(\.filas.count).reduce(0, +)
                     Section(tramo.cabecera ?? notacion.texto(\.acordeAAcorde)) {
                         ForEach(Array(tramo.filas.enumerated()), id: \.offset) { i, fila in
-                            HStack {
-                                Text(fila.cifrado)
-                                    .font(.system(.body, design: .monospaced))
-                                    .frame(minWidth: 80, alignment: .leading)
-                                Text(fila.grado).bold()
-                                Spacer()
-                                Text(fila.funcion).foregroundColor(.secondary)
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Text(fila.cifrado)
+                                        .font(.system(.body, design: .monospaced))
+                                        .frame(minWidth: 80, alignment: .leading)
+                                    Text(fila.grado).bold()
+                                    Spacer()
+                                    Text(fila.funcion).foregroundColor(.secondary)
+                                }
+                                if let escala = fila.escala { escalaDelAcorde(escala) }
                             }
                             .listRowBackground(sonando == antes + i ? TemaDeLasApps.resaltado.opacity(0.25) : nil)
                         }
@@ -185,6 +189,18 @@ struct VistaDeAnalisis: View {
                 }
                 BotonDeEscuchar(arpegiada.sonido)
             }
+        }
+    }
+
+    /// La escala del acorde en su tonalidad, que se abre en la pestaña de escalas, con sus tensiones y sus notas a
+    /// evitar debajo.
+    @ViewBuilder
+    private func escalaDelAcorde(_ escala: EscalaSobreAcordePresentada) -> some View {
+        Button(escala.nombre) { navegacion.ver(escala.escala) }
+            .buttonStyle(.borderless)
+            .font(.callout)
+        if !escala.resumen.isEmpty {
+            Text(escala.resumen).font(.caption).foregroundColor(.secondary)
         }
     }
 

@@ -2,6 +2,11 @@
 
 ## Sin publicar
 
+- **`PresentacionDeEscalaYAcorde`**: una escala sobre un acorde, con su nombre, de qué escala es modo, cada nota
+  con su grado y las tensiones y notas a evitar (`EscalaSobreAcordePresentada`). Cada fila del análisis lleva la
+  escala de su acorde (`AnalisisPresentado.Fila.escala`). En Armonía, la vista de análisis la enseña debajo de cada
+  acorde, la de acordes pone las tensiones y notas a evitar de cada escala compatible y la de escalas dice de qué
+  escala es modo (y la abre).
 - **`PresentacionDeDisposiciones`**: las disposiciones de un acorde (de Do3 a Sol5) y una progresión dispuesta con
   el menor movimiento de las voces, con sus filas, su pentagrama, su sonido y, en la progresión, la partitura y el
   MIDI. `PentagramaPresentado` dibuja acordes con sus alturas escritas, y `DisposicionDeAcorde.nombre(en:)` los

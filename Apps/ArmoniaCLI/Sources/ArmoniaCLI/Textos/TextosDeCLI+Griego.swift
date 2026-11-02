@@ -7,8 +7,8 @@ import Armonia
 extension TextosDeCLI {
     static let griego = TextosDeCLI(
         // Ayuda+Armonizacion.swift
-        sintaxisAnalizar: "analyze <συγχορδίες> [--in <τονικότητα>]",
-        descripcionAnalizar: "ρωμαϊκή αρίθμηση, λειτουργίες, πτώσεις\nκαι μετατροπίες (με την κοινή τους\nσυγχορδία· χωρίς --in)",
+        sintaxisAnalizar: "analyze <συγχορδίες> [--in <τονικότητα>] [--scales]",
+        descripcionAnalizar: "ρωμαϊκή αρίθμηση, λειτουργίες, πτώσεις\nκαι μετατροπίες (με την κοινή τους\nσυγχορδία· χωρίς --in)\n--scales: η κλίμακα κάθε συγχορδίας,\nμε τις εντάσεις και τους φθόγγους\nπρος αποφυγή",
         sintaxisAnalizarArchivo: "analyze --file <αρχείο> [--window <διάρκεια>]",
         descripcionAnalizarArchivo: "το ίδιο, με τις συγχορδίες ενός αρχείου\nMIDI, MusicXML, MEI ή ABC (μία ανά\nχρόνο; --window 2: μία ανά μισό)",
         sintaxisArmonizar: "harmonize <μελωδία> [--in <τονικότητα>] [--proposals 3]",

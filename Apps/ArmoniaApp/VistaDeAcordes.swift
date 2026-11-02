@@ -158,15 +158,25 @@ struct VistaDeAcordes: View {
     }
 
     /// Las escalas sobre la fundamental que contienen el acorde (Sol7 → Sol mixolidio…), de las de menos notas
-    /// a las de más.
+    /// a las de más, con las tensiones y las notas a evitar de cada una.
     @ViewBuilder
     private func escalas(de acorde: Acorde) -> some View {
         let escalas = acorde.escalasCompatibles()
         if !escalas.isEmpty {
             Section(notacion.texto(\.escalasCompatibles)) {
-                // Cada una se abre en la pestaña de escalas.
+                // Cada una se abre en la pestaña de escalas, y lleva debajo sus tensiones y sus notas a evitar.
                 ForEach(Array(escalas.prefix(10).enumerated()), id: \.offset) { _, escala in
-                    Button(escala.nombre(en: notacion)) { navegacion.ver(escala) }
+                    let presentada = PresentacionDeEscalaYAcorde.presentar(escala, sobre: acorde, notacion: notacion)
+                    Button {
+                        navegacion.ver(escala)
+                    } label: {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(presentada.nombre)
+                            if !presentada.resumen.isEmpty {
+                                Text(presentada.resumen).font(.caption).foregroundColor(.secondary)
+                            }
+                        }
+                    }
                 }
             }
         }

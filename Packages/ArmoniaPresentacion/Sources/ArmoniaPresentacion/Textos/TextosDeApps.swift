@@ -136,6 +136,10 @@ public struct TextosDeApps: TextosTraducidos {
     public let fundamentalTerceraYSeptima: String
     public let terceraYSeptima: String
 
+    // MARK: PresentacionDeEscalaYAcorde.swift
+    public let tensiones: String
+    public let notasAEvitar: String
+
     // MARK: FicheroParaExportar.swift
     public let partituraMusicXML: String
     public let partituraMEI: String

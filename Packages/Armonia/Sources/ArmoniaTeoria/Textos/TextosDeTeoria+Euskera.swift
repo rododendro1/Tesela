@@ -122,6 +122,11 @@ extension TextosDeTeoria {
         patronAlberti: "Albertiren baxua",
         patronQuebrado: "hautsia",
         patronBajaYSube: "jaitsi-igoa",
+        // Escala+Acorde.swift
+        papelNotaDelAcorde: "akordeko nota",
+        papelTensionDisponible: "tentsioa",
+        papelNotaAEvitar: "saihesteko nota",
+        modoDe: { modo, escala in "\(escala): \(modo). modua" },
         // Rearmonizacion.swift
         sustitutoTritonal: "tritono-ordezkapena",
         dominanteSecundaria: "bigarren mailako dominantea",

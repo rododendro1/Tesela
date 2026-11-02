@@ -124,6 +124,9 @@ extension TextosDeApps {
         disposicionCerrada: "Κλειστή",
         fundamentalTerceraYSeptima: "Θεμέλιος, τρίτη και έβδομη",
         terceraYSeptima: "Τρίτη και έβδομη",
+        // PresentacionDeEscalaYAcorde.swift
+        tensiones: "Εντάσεις",
+        notasAEvitar: "Προς αποφυγή",
         // FicheroParaExportar.swift
         partituraMusicXML: "Παρτιτούρα MusicXML",
         partituraMEI: "Παρτιτούρα MEI",

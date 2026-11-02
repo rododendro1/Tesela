@@ -119,6 +119,11 @@ extension TextosDeTeoria {
         patronAlberti: "Alberti bass",
         patronQuebrado: "broken",
         patronBajaYSube: "down and up",
+        // Escala+Acorde.swift
+        papelNotaDelAcorde: "chord tone",
+        papelTensionDisponible: "tension",
+        papelNotaAEvitar: "avoid note",
+        modoDe: { modo, escala in "mode \(modo) of \(escala)" },
         // Rearmonizacion.swift
         sustitutoTritonal: "tritone substitution",
         dominanteSecundaria: "secondary dominant",

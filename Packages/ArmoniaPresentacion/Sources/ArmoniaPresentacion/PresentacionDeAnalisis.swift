@@ -10,6 +10,9 @@ public struct AnalisisPresentado: Hashable, Sendable {
         public let grado: String
         /// La función tonal, o "" si no tiene.
         public let funcion: String
+        /// La escala del acorde en su tonalidad (Re7 en V7/V → Re mixolidio), con sus tensiones y sus notas a
+        /// evitar; `nil` si ninguna tiene todas sus notas.
+        public let escala: EscalaSobreAcordePresentada?
     }
 
     /// La tonalidad, o el recorrido de tonalidades si modula («Do mayor → Sol mayor»).
@@ -114,12 +117,15 @@ public enum PresentacionDeAnalisis {
             let cabeceras = [nil] + recorrido.modulaciones.map { Optional($0.descripcion(en: notacion)) }
             titulo = recorrido.nombre(en: notacion)
             tramos = zip(cabeceras, recorrido.tramos).map { cabecera, tramo in
-                TramoPresentado(cabecera: cabecera, filas: tramo.analisis.acordes.map { fila($0, notacion) })
+                let tonalidad = tramo.analisis.tonalidad
+                return TramoPresentado(
+                    cabecera: cabecera, filas: tramo.analisis.acordes.map { fila($0, en: tonalidad, notacion) })
             }
             cadencias = recorrido.cadencias
         } else {
             titulo = analisis.nombre(en: notacion)
-            tramos = [TramoPresentado(cabecera: nil, filas: analisis.acordes.map { fila($0, notacion) })]
+            let filas = analisis.acordes.map { fila($0, en: analisis.tonalidad, notacion) }
+            tramos = [TramoPresentado(cabecera: nil, filas: filas)]
             cadencias = analisis.cadencias
         }
         let nombre = "Progresión"
@@ -173,9 +179,12 @@ public enum PresentacionDeAnalisis {
             ritmo: ritmo)
     }
 
-    static func fila(_ analizado: AcordeAnalizado, _ notacion: Notacion) -> AnalisisPresentado.Fila {
+    static func fila(
+        _ analizado: AcordeAnalizado, en tonalidad: Tonalidad, _ notacion: Notacion
+    ) -> AnalisisPresentado.Fila {
         AnalisisPresentado.Fila(
             cifrado: analizado.acorde.cifrado(en: notacion), grado: analizado.cifrado,
-            funcion: analizado.funcion?.nombre(en: notacion) ?? "")
+            funcion: analizado.funcion?.nombre(en: notacion) ?? "",
+            escala: PresentacionDeEscalaYAcorde.escala(de: analizado, en: tonalidad, notacion: notacion))
     }
 }

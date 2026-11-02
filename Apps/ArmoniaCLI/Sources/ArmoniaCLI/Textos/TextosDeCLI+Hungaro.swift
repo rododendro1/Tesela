@@ -7,8 +7,8 @@ import Armonia
 extension TextosDeCLI {
     static let hungaro = TextosDeCLI(
         // Ayuda+Armonizacion.swift
-        sintaxisAnalizar: "analyze <akkordok> [--in <hangnem>]",
-        descripcionAnalizar: "fokszámok, funkciók, zárlatok és\nmodulációk (közvetítő akkordjukkal;\n--in nélkül)",
+        sintaxisAnalizar: "analyze <akkordok> [--in <hangnem>] [--scales]",
+        descripcionAnalizar: "fokszámok, funkciók, zárlatok és\nmodulációk (közvetítő akkordjukkal;\n--in nélkül)\n--scales: minden akkord skálája, a\nfeszültségekkel és kerülendő hangokkal",
         sintaxisAnalizarArchivo: "analyze --file <fájl> [--window <időtartam>]",
         descripcionAnalizarArchivo: "ugyanez egy MIDI-, MusicXML-, MEI-\nvagy ABC-fájl akkordjaival (ütésenként\negy; --window 2: félhangonként egy)",
         sintaxisArmonizar: "harmonize <dallam> [--in <hangnem>] [--proposals 3]",

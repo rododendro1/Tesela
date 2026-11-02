@@ -7,8 +7,8 @@ import Armonia
 extension TextosDeCLI {
     static let ruso = TextosDeCLI(
         // Ayuda+Armonizacion.swift
-        sintaxisAnalizar: "analyze <аккорды> [--in <тональность>]",
-        descripcionAnalizar: "римские цифры, функции, кадансы и\nмодуляции (с общим аккордом; без --in)",
+        sintaxisAnalizar: "analyze <аккорды> [--in <тональность>] [--scales]",
+        descripcionAnalizar: "римские цифры, функции, кадансы и\nмодуляции (с общим аккордом; без --in)\n--scales: лад каждого аккорда, с\nнапряжениями и избегаемыми звуками",
         sintaxisAnalizarArchivo: "analyze --file <файл> [--window <длительность>]",
         descripcionAnalizarArchivo: "то же самое с аккордами файла MIDI,\nMusicXML, MEI или ABC (по одному на\nдолю; --window 2: по одному на\nполовинную)",
         sintaxisArmonizar: "harmonize <мелодия> [--in <тональность>] [--proposals 3]",

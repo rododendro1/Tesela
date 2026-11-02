@@ -7,8 +7,8 @@ import Armonia
 extension TextosDeCLI {
     static let espanol = TextosDeCLI(
         // Ayuda+Armonizacion.swift
-        sintaxisAnalizar: "analizar <acordes> [--en <tonalidad>]",
-        descripcionAnalizar: "cifrado romano, funciones, cadencias\ny modulaciones (con su acorde\npivote; sin --en)",
+        sintaxisAnalizar: "analizar <acordes> [--en <tonalidad>] [--escalas]",
+        descripcionAnalizar: "cifrado romano, funciones, cadencias\ny modulaciones (con su acorde\npivote; sin --en)\n--escalas: la escala de cada acorde,\ncon sus tensiones y notas a evitar",
         sintaxisAnalizarArchivo: "analizar --archivo <fichero> [--ventana <duración>]",
         descripcionAnalizarArchivo: "lo mismo, con los acordes de un\nfichero MIDI, MusicXML, MEI o ABC (uno\npor pulso; --ventana 2: uno por\nblanca)",
         sintaxisArmonizar: "armonizar <melodía> [--en <tonalidad>] [--propuestas 3]",

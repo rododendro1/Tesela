@@ -152,6 +152,22 @@ extension LineaDeComandosTests {
         #expect(salida("analizar Do Lam Fa Sol").hasSuffix("Semicadencia IV–V (acordes 3 → 4)\n"))
     }
 
+    @Test func analizarConEscalas() {
+        let analisis = salida("analizar Rem7 Sol7 Do7M --en Do mayor --escalas")
+        #expect(analisis.contains("\n    Re dórico — Tensiones: Mi 9 · Sol 11 · Si 13\n"))
+        #expect(analisis.contains("\n    Sol mixolidio — Tensiones: La 9 · Mi 13 — A evitar: Do 11\n"))
+        #expect(analisis.contains("\n    Do mayor — Tensiones: Re 9 · La 13 — A evitar: Fa 11\n"))
+        // Sin --escalas, como siempre.
+        #expect(!salida("analizar Rem7 Sol7 Do7M --en Do mayor").contains("dórico"))
+        #expect(salida("analyze Dm7 G7 Cmaj7 --in C major --scales --ingles").contains("    D dorian — Tensions:"))
+    }
+
+    @Test func escalaMadre() {
+        #expect(salida("escala Re dórico").contains("\n  modo 2 de Do mayor\n"))
+        #expect(salida("escala Do alterada").contains("modo 7 de Re♭ menor melódica de jazz"))
+        #expect(!salida("escala Do mayor").contains("modo 1"))
+    }
+
     @Test func analizarUnArchivo() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
         let esperado = salida("analizar Do Lam Re7 Sol7 Do")
