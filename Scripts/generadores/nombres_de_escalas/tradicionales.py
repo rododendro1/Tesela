@@ -33,15 +33,14 @@ for base in ("Təzəta", "Bati"):
 
 
 def texto_de(tradicion):
-    """El código de una tradición: la India tiene su fichero; las demás están en `TipoDeEscala+Tradiciones.swift`,
-    cada una desde su `// MARK: - Nombre` hasta la marca siguiente."""
-    if tradicion == "India":
-        return (ESC / "Tradiciones" / "TipoDeEscala+India.swift").read_text(encoding="utf-8")
-    texto = (ESC / "Tradiciones" / "TipoDeEscala+Tradiciones.swift").read_text(encoding="utf-8")
-    m = re.search(rf"^// MARK: - {tradicion}$(.*?)(?=^// MARK: - |\Z)", texto, re.M | re.S)
-    if m is None:
-        sys.exit(f"No encuentro `// MARK: - {tradicion}` en TipoDeEscala+Tradiciones.swift")
-    return m.group(1)
+    """El código de una tradición: cada una tiene su fichero, `Tradiciones/TipoDeEscala+Nombre.swift`. La de Grecia
+    reúne los dromoi y la Grecia antigua."""
+    ficheros = ["Grecia", "GreciaAntigua"] if tradicion == "Grecia" else [tradicion]
+    rutas = [ESC / "Tradiciones" / f"TipoDeEscala+{f}.swift" for f in ficheros]
+    for ruta in rutas:
+        if not ruta.exists():
+            sys.exit(f"No encuentro {ruta.name}")
+    return "".join(r.read_text(encoding="utf-8") for r in rutas)
 
 
 def nombres():

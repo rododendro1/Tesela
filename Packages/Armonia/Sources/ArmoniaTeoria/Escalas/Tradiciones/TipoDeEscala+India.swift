@@ -351,7 +351,7 @@ extension TipoDeEscala {
     // escala que empieza en cada una de sus notas, en el orden del texto: las del ṣaḍja-grāma bajan desde Sa
     // (Uttaramandrā) hasta Ri; las del madhyama-grāma, desde Ma (Sauvīrī) hasta Pa.
     //
-    // Se escriben como el modelo de E. J. Arnold de los thāṭ, el que siguen los śruti de `Microtonos.swift`: el
+    // Se escriben como el modelo de E. J. Arnold de los thāṭ, el que siguen los śruti de la ficha, abajo: el
     // ṣaḍja-grāma es Sa Ri(10/9) ga(32/27) ma(4/3) Pa(3/2) Dha(5/3) ni(16/9), las notas de Kāfī, y el madhyama-grāma
     // tiene Pa una coma sintónica más bajo (40/27). Cada mūrchanā lleva las razones de su grāma contadas desde su
     // primera nota. En doce notas son los siete modos diatónicos (el ṣaḍja-grāma es el dórico); su versión microtonal
@@ -454,4 +454,63 @@ extension TipoDeEscala {
         .uttaramandra, .rajani, .uttarayata, .suddhasadja, .matsarikrta, .asvakranta, .abhirudgata,
         .sauviri, .harinasva, .kalopanata, .suddhamadhya, .margi, .pauravi, .hrsyaka,
     ]
+}
+
+// MARK: Ficha
+
+extension FichaDeTradicion {
+    static let india = FichaDeTradicion(
+        .india,
+        [
+            .init(.thaat, TipoDeEscala.thaats),
+            .init(.melakarta, TipoDeEscala.melakartas),
+            .init(.janya, TipoDeEscala.janyas),
+            .init(.grama, TipoDeEscala.gramas),
+            .init(.murchana, TipoDeEscala.murchanas),
+            .init(.raga, TipoDeEscala.ragasIndostanicos),
+        ],
+        microtonales: [
+            // Thāṭ y Yaman (los 22 śruti, por su número desde Sa: 0 = 1/1, 3 = 10/9, 7 = 5/4, 9 = 4/3, 13 = 3/2…). Los
+            // de grado natural siguen el ṣaḍja-grāma de Bharata, el modelo de E. J. Arnold: Kāfī es Sa Re(10/9)
+            // ga(32/27) ma Pa Dha(5/3) ni(16/9); Khamāj sube ga a Ga(5/4), Bilāval también ni a Ni(15/8) y Kalyāṇ, ma a
+            // Ma(45/32). Los rāgas con ati-komal (Bhairav, Bhairavī, Toḍī) llevan el re y el dha pitagóricos (256/243,
+            // 128/81); Toḍī, como lo miden Bel y otros (Ga 32/27, Ma 45/32, Ni 243/128); Mārvā y Pūrvī, el re de 16/15.
+            TipoDeEscalaMicrotonal(.bilaval, .sruti, pasos: [0, 3, 7, 9, 13, 16, 20]),
+            TipoDeEscalaMicrotonal(.kalyan, .sruti, pasos: [0, 3, 7, 11, 13, 16, 20]),
+            TipoDeEscalaMicrotonal(.yaman, .sruti, pasos: [0, 3, 7, 11, 13, 16, 20]),
+            TipoDeEscalaMicrotonal(.khamaj, .sruti, pasos: [0, 3, 7, 9, 13, 16, 18]),
+            TipoDeEscalaMicrotonal(.kafi, .sruti, pasos: [0, 3, 5, 9, 13, 16, 18]),
+            TipoDeEscalaMicrotonal(.asavari, .sruti, pasos: [0, 3, 5, 9, 13, 14, 18]),
+            TipoDeEscalaMicrotonal(.bhairavi, .sruti, pasos: [0, 1, 5, 9, 13, 14, 18]),
+            TipoDeEscalaMicrotonal(.bhairav, .sruti, pasos: [0, 1, 7, 9, 13, 14, 20]),
+            TipoDeEscalaMicrotonal(.marva, .sruti, pasos: [0, 2, 7, 11, 13, 16, 20]),
+            TipoDeEscalaMicrotonal(.purvi, .sruti, pasos: [0, 2, 7, 11, 13, 15, 20]),
+            TipoDeEscalaMicrotonal(.todi, .sruti, pasos: [0, 1, 5, 11, 13, 14, 21]),
+            // Grāma y mūrchanā del Nāṭyaśāstra, con las razones de los thāṭ: en śruti, por su número desde Sa, y en
+            // cents las que tienen una quinta una coma corta (40/27) o la quinta disminuida de 64/45, que no son
+            // ninguno de los 22.
+            TipoDeEscalaMicrotonal(.sadjaGrama, .sruti, pasos: [0, 3, 5, 9, 13, 16, 18]),
+            TipoDeEscalaMicrotonal(.madhyamaGrama, .razones, pasos: [0, 182, 294, 498, 680, 884, 996]),
+            TipoDeEscalaMicrotonal(.uttaramandra, .sruti, pasos: [0, 3, 5, 9, 13, 16, 18]),
+            TipoDeEscalaMicrotonal(.rajani, .sruti, pasos: [0, 4, 7, 9, 13, 17, 20]),
+            TipoDeEscalaMicrotonal(.uttarayata, .razones, pasos: [0, 112, 316, 498, 610, 814, 1018]),
+            TipoDeEscalaMicrotonal(.suddhasadja, .razones, pasos: [0, 182, 294, 498, 680, 792, 996]),
+            TipoDeEscalaMicrotonal(.matsarikrta, .sruti, pasos: [0, 4, 7, 9, 13, 16, 18]),
+            TipoDeEscalaMicrotonal(.asvakranta, .sruti, pasos: [0, 4, 8, 11, 13, 17, 20]),
+            TipoDeEscalaMicrotonal(.abhirudgata, .sruti, pasos: [0, 2, 6, 10, 13, 15, 19]),
+            TipoDeEscalaMicrotonal(.sauviri, .sruti, pasos: [0, 3, 7, 9, 13, 16, 18]),
+            TipoDeEscalaMicrotonal(.harinasva, .sruti, pasos: [0, 4, 7, 11, 13, 17, 20]),
+            TipoDeEscalaMicrotonal(.kalopanata, .sruti, pasos: [0, 2, 6, 9, 13, 15, 19]),
+            TipoDeEscalaMicrotonal(.suddhamadhya, .razones, pasos: [0, 182, 294, 498, 680, 884, 996]),
+            TipoDeEscalaMicrotonal(.margi, .sruti, pasos: [0, 4, 7, 9, 13, 16, 20]),
+            TipoDeEscalaMicrotonal(.pauravi, .razones, pasos: [0, 112, 316, 498, 610, 814, 996]),
+            TipoDeEscalaMicrotonal(.hrsyaka, .sruti, pasos: [0, 4, 6, 10, 13, 15, 19]),
+        ],
+        padres: [
+            .init(.mohanam, mela: 28), .init(.hindolam, mela: 20), .init(.hamsadhvani, mela: 29),
+            .init(.abhogi, mela: 22), .init(.madhyamavati, mela: 22), .init(.bilahari, mela: 29),
+            .init(.kambhoji, mela: 28), .init(.arabhi, mela: 29), .init(.kedaragaula, mela: 28),
+            .init(.amrtavarsini, mela: 65), .init(.mohanakalyani, mela: 65), .init(.saveri, mela: 15),
+            .init(.nata, mela: 36),
+        ])
 }

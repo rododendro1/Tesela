@@ -151,4 +151,30 @@ import Testing
         #expect(TipoDeEscala.mayor.padre == nil)
         #expect(TipoDeEscala.thaats[0].padre == nil)
     }
+
+    /// Las fichas reparten todas las escalas de otras tradiciones, cada una en la suya, y su versión microtonal y su
+    /// padre van en la ficha de su tradición.
+    @Test func lasFichasRepartenLasTradicionales() {
+        var tipos: [TipoDeEscala] = []
+        for ficha in FichaDeTradicion.todas {
+            for lista in ficha.listas {
+                for tipo in lista.tipos {
+                    #expect(tipo.tradicion == ficha.tradicion, Comment(rawValue: tipo.nombre))
+                    #expect(tipo.categoria == lista.categoria, Comment(rawValue: tipo.nombre))
+                }
+                tipos += lista.tipos
+            }
+            for microtonal in ficha.microtonales {
+                let nombre = microtonal.temperada.nombre
+                #expect(microtonal.temperada.tradicion == ficha.tradicion, Comment(rawValue: nombre))
+            }
+            for padre in ficha.padres {
+                #expect(padre.janya.categoria == .janya, Comment(rawValue: padre.janya.nombre))
+                #expect(padre.janya.padre == TipoDeEscala.melakarta(padre.mela), Comment(rawValue: padre.janya.nombre))
+            }
+        }
+        #expect(tipos.count == TipoDeEscala.tradicionales.count)
+        #expect(Set(tipos.map(\.nombre)) == Set(TipoDeEscala.tradicionales.map(\.nombre)))
+        #expect(FichaDeTradicion.todas.map(\.tradicion) == Tradicion.allCases)
+    }
 }
