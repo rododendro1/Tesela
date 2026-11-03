@@ -14,9 +14,11 @@ import Foundation
 // La alteración que suena es `accid.ges` o, si no está, la escrita (`accid`); si no hay ninguna, la que vale en el
 // compás o en la armadura. Los cuartos de tono (`1qf`, `3qs`…), el koron y el sori y las comas de Arel-Ezgi-Uzdilek
 // (`kf`, `bs`…) se leen con su desvío en cents. Los instrumentos transpositores (`trans.diat`, `trans.semi`) se leen
-// como suenan. Las notas de adorno (`grace`) no cuentan. Del principio: el título, la armadura, el compás y el tempo
-// (`midi.bpm`). De cada nota o acorde, sus articulaciones (`artic`, `<artic>`, `fermata`) y su dinámica (`<dynam>`
-// con `startid`).
+// como suenan. Las notas de adorno (`grace`) van aparte, sin duración. Las repeticiones (`left` y `right` de
+// `<measure>`: `rptstart`, `rptend`, `rptboth`), las casillas (`<ending>`) y los saltos (`<repeatMark>` y los textos
+// de `<dir>`: «D.C.», «D.S.», «Fine», «To Coda») se despliegan. Del principio: el título, la armadura, el compás y el
+// tempo (`midi.bpm`). De cada nota o acorde, sus articulaciones (`artic`, `<artic>`, `fermata`) y su dinámica
+// (`<dynam>` con `startid`).
 
 extension PiezaImportada {
     /// Lee una partitura MEI.
@@ -28,9 +30,11 @@ extension PiezaImportada {
         try LectorXML.leer(datos, con: lector)
         guard lector.raiz == "mei" else { throw ErrorDeImportacion.noEsMusicXMLPorPartes }
         guard !lector.notas.isEmpty else { throw ErrorDeImportacion.sinNotas }
+        let fin = PulsosDeLectura.duracion(lector.finDeLaPieza)
         self.init(
-            titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas,
-            tempo: lector.tempo, notas: lector.notas)
+            titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas, tempo: lector.tempo,
+            notas: CompasLeido.desplegar(lector.notas, compases: lector.compases, fin: fin),
+            notasDeAdorno: CompasLeido.desplegar(lector.adornos, compases: lector.compases, fin: fin))
     }
 }
 
@@ -96,6 +100,15 @@ final class LectorMEI: LectorDeElementosXML {
     private(set) var compas: Compas?
     private(set) var tempo: Tempo?
     private(set) var notas: [NotaDeLaPieza] = []
+    private(set) var adornos: [NotaDeLaPieza] = []
+    /// Los compases, con sus repeticiones y sus saltos.
+    private(set) var compases: [CompasLeido] = []
+    /// Donde acaba el último compás, en pulsos.
+    private(set) var finDeLaPieza = 0
+    /// Los números del `<ending>` abierto.
+    private var casillas: Set<Int>?
+    /// Si el compás anterior acababa en `rptboth`: el siguiente abre una repetición.
+    private var abreElSiguiente = false
 
     private var pila: [String] = []
     private var contenido = ""
@@ -192,6 +205,32 @@ final class LectorMEI: LectorDeElementosXML {
             posicion = inicioDelCompas
             finDelCompas = inicioDelCompas
             vigentes = [:]
+            var leido = CompasLeido(inicio: PulsosDeLectura.duracion(inicioDelCompas))
+            let izquierda = atributos["left"] ?? ""
+            let derecha = atributos["right"] ?? ""
+            leido.abreRepeticion = abreElSiguiente || izquierda == "rptstart" || izquierda == "rptboth"
+            if derecha == "rptend" || derecha == "rptboth" {
+                leido.cierraRepeticion = 2
+            }
+            if izquierda == "rptend" || izquierda == "rptboth", !compases.isEmpty {
+                compases[compases.count - 1].cierraRepeticion = 2
+            }
+            abreElSiguiente = derecha == "rptboth"
+            leido.casillas = casillas ?? []
+            compases.append(leido)
+        case "ending":
+            casillas = LectorMusicXML.numerosDeCasilla(atributos["n"] ?? atributos["label"] ?? "1")
+        case "repeatMark":
+            marcar { compas in
+                switch atributos["func"] {
+                case "daCapo": compas.daCapo = true
+                case "dalSegno": compas.dalSegno = true
+                case "segno": compas.segno = true
+                case "coda": compas.coda = true
+                case "fine": compas.fine = true
+                default: break
+                }
+            }
         case "staff":
             nombreDelPentagrama = atributos["n"] ?? "1"
             if pentagramas[nombreDelPentagrama] == nil {
@@ -287,6 +326,11 @@ final class LectorMEI: LectorDeElementosXML {
             pentagrama = nil
         case "measure":
             inicioDelCompas = max(finDelCompas, posicion)
+            finDeLaPieza = inicioDelCompas
+        case "ending":
+            casillas = nil
+        case "dir":
+            marcar { $0.leer(indicacion: valor) }
         default:
             break
         }
@@ -361,14 +405,21 @@ final class LectorMEI: LectorDeElementosXML {
         return pulsos
     }
 
+    /// Cambia lo que se sabe del compás en curso.
+    private func marcar(_ cambio: (inout CompasLeido) -> Void) {
+        guard !compases.isEmpty else { return }
+        cambio(&compases[compases.count - 1])
+    }
+
     private func avanzar(_ pulsos: Int) {
         posicion = min(posicion + pulsos, PulsosDeLectura.limite + 1)
         finDelCompas = max(finDelCompas, posicion)
     }
 
     private func colocar(desde inicio: Int, pulsos: Int) {
-        guard pulsos > 0, inicio + pulsos <= PulsosDeLectura.limite, let paso = nota.paso, let octava = nota.octava,
-            let pentagrama
+        let deAdorno = (acorde ?? evento).sinTiempo
+        guard pulsos > 0 || deAdorno, inicio + pulsos <= PulsosDeLectura.limite, let paso = nota.paso,
+            let octava = nota.octava, let pentagrama
         else { return }
         let lugar = "\(nombreDelPentagrama) \(octava * 7 + paso.rawValue)"
         if let escrita = nota.escrita { vigentes[lugar] = escrita }
@@ -381,6 +432,12 @@ final class LectorMEI: LectorDeElementosXML {
         let parte = pentagrama.parte
         let desde = PulsosDeLectura.duracion(inicio)
         let duracion = PulsosDeLectura.duracion(pulsos)
+        if deAdorno {
+            // Empieza donde empezará la nota a la que adorna.
+            adornos.append(
+                NotaDeLaPieza(altura: altura, inicio: desde, duracion: .cero, parte: parte, desvio: desvio))
+            return
+        }
         let clave = parte * 1024 + altura.midi + 512
         if nota.ligaduraQueAcaba, let i = ligadas[clave], notas[i].fin == desde {
             notas[i] = notas[i].con(duracion: notas[i].duracion + duracion)

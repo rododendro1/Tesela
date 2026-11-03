@@ -2,6 +2,23 @@
 
 ## Sin publicar
 
+### Repeticiones, saltos y notas de adorno al importar
+
+- `PiezaImportada` despliega las repeticiones de MusicXML, MEI y ABC, con sus casillas de primera y segunda vez y
+  las que se tocan más de dos veces, y los saltos: da capo, dal segno, fine y coda. `notas` las da en el orden en que
+  se tocan; antes se leía cada compás una vez.
+- **`PiezaImportada.notasDeAdorno`**: las notas de adorno de MusicXML (`<grace>`), MEI (`grace`) y ABC (`{…}`), que
+  antes se descartaban. Empiezan donde empieza la nota a la que adornan y no duran.
+
+### Swing y polirritmias
+
+- **`Voz.conSwing(_:)`** y **`Swing`**: cada par de corcheas (o de la figura que se elija) se toca desigual, en la
+  proporción que se pida: 2:1 (`ternario`), 3:1 (`conPuntillo`) u otra. Las duraciones salen exactas, con figuras de
+  tresillo en 2:1.
+- **`Polirritmia`**: dos pulsaciones contra el mismo tramo (3 contra 2, 4 contra 3…), con los ataques de cada una
+  (`ataques(ciclo:)`), el ritmo que resulta de oírlas juntas (`resultante(ciclo:)`) y las dos voces que la tocan
+  (`voces(compas:compases:alturas:)`).
+
 ### Frases, forma y motivos
 
 - **`Voz.frases(minimo:)`**: las frases de una melodía (`Frase`), que acaban antes de un silencio o en una nota más

@@ -9,7 +9,9 @@ import Foundation
 // Se leen las notas con su ortografía tal cual (un Sol♯ sigue siendo Sol♯), los acordes (`<chord/>`),
 // las voces que vuelven atrás (`<backup>`) o avanzan (`<forward>`), las ligaduras (dos notas ligadas son
 // una sola) y los instrumentos transpositores (`<transpose>`: se lee lo que suena, no lo que se escribe).
-// Las notas de adorno y las notas guía (`<grace>`, `<cue>`) no cuentan, ni la percusión (`<unpitched>`).
+// Las notas guía (`<cue>`) no cuentan, ni la percusión (`<unpitched>`); las de adorno (`<grace>`) van aparte, sin
+// duración. Las repeticiones (`<repeat>`, con sus `times`), las casillas (`<ending>`) y los saltos (`<sound>` con
+// `dacapo`, `dalsegno`, `segno`, `coda`, `tocoda` y `fine`; `<segno/>` y `<coda/>`) se despliegan.
 // Del primer compás que los tenga: la armadura, el compás y el tempo (`<sound tempo>`). De cada nota, sus
 // articulaciones (`<articulations>`, `<fermata>`) y la dinámica (`<dynamics>`) que la precede, que vale también para
 // las demás notas de su acorde.
@@ -24,9 +26,11 @@ extension PiezaImportada {
         try LectorXML.leer(datos, con: lector)
         guard lector.raiz == "score-partwise" else { throw ErrorDeImportacion.noEsMusicXMLPorPartes }
         guard !lector.notas.isEmpty else { throw ErrorDeImportacion.sinNotas }
+        let fin = lector.finDeLaPieza
         self.init(
-            titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas,
-            tempo: lector.tempo, notas: lector.notas)
+            titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas, tempo: lector.tempo,
+            notas: CompasLeido.desplegar(lector.notas, compases: lector.compases, fin: fin),
+            notasDeAdorno: CompasLeido.desplegar(lector.adornos, compases: lector.compases, fin: fin))
     }
 
     /// La línea del primer byte que no es UTF-8 válido, o `nil` si todo es válido o el documento está en UTF-16 (con
@@ -72,6 +76,11 @@ final class LectorMusicXML: LectorDeElementosXML {
     private(set) var compas: Compas?
     private(set) var tempo: Tempo?
     private(set) var notas: [NotaDeLaPieza] = []
+    private(set) var adornos: [NotaDeLaPieza] = []
+    /// Los compases, con sus repeticiones y sus saltos.
+    private(set) var compases: [CompasLeido] = []
+    /// Donde acaba el último compás de la primera parte.
+    private(set) var finDeLaPieza = Duracion.cero
 
     /// Los elementos abiertos, del documento al actual, y el texto del actual.
     private var pila: [String] = []
@@ -86,6 +95,10 @@ final class LectorMusicXML: LectorDeElementosXML {
     private var finDelCompas = Duracion.cero
     private var inicioDeLaAnterior = Duracion.cero
     private var transposicion: (pasos: Int, semitonos: Int)?
+    /// El compás en curso de la parte, contando desde 0.
+    private var indiceDelCompas = -1
+    /// Las casillas abiertas (`<ending type="start">`) y si se cierran al acabar el compás.
+    private var casillas: (numeros: Set<Int>, seCierran: Bool)?
     /// Las notas con una ligadura que sigue, por parte y altura MIDI: su índice en `notas`.
     private var ligadas: [Int: Int] = [:]
     /// La dinámica leída que espera a la nota siguiente.
@@ -140,9 +153,30 @@ final class LectorMusicXML: LectorDeElementosXML {
             finDelCompas = .cero
             inicioDeLaAnterior = .cero
             transposicion = nil
+            indiceDelCompas = -1
+            casillas = nil
         case "measure":
             posicion = inicioDelCompas
             finDelCompas = inicioDelCompas
+            indiceDelCompas += 1
+            if parte == 0 { compases.append(CompasLeido(inicio: inicioDelCompas)) }
+        case "repeat" where padre == "barline":
+            if atributos["direction"] == "forward" {
+                marcar { $0.abreRepeticion = true }
+            } else {
+                let veces = atributos["times"].flatMap { Int($0) }.map { min(max($0, 1), 100) } ?? 2
+                marcar { $0.cierraRepeticion = veces }
+            }
+        case "ending" where padre == "barline":
+            if atributos["type"] == "start" {
+                casillas = (LectorMusicXML.numerosDeCasilla(atributos["number"] ?? "1"), false)
+            } else if casillas != nil {
+                casillas?.seCierran = true
+            }
+        case "segno" where padre == "direction-type":
+            marcar { $0.segno = true }
+        case "coda" where padre == "direction-type":
+            marcar { $0.coda = true }
         case "note":
             nota = NotaLeida()
         case "chord" where padre == "note":
@@ -161,6 +195,14 @@ final class LectorMusicXML: LectorDeElementosXML {
         case "transpose":
             transporte = (0, 0, 0)
         case "sound":
+            marcar { compas in
+                if atributos["dacapo"] == "yes" { compas.daCapo = true }
+                if atributos["dalsegno"] != nil { compas.dalSegno = true }
+                if atributos["segno"] != nil { compas.segno = true }
+                if atributos["coda"] != nil { compas.coda = true }
+                if atributos["tocoda"] != nil { compas.alCoda = true }
+                if atributos["fine"] != nil { compas.fine = true }
+            }
             if tempo == nil, let valor = atributos["tempo"].flatMap({ Double($0) }), valor > 0, valor < 10_000 {
                 tempo = Tempo(comprobando: valor)
             }
@@ -180,6 +222,8 @@ final class LectorMusicXML: LectorDeElementosXML {
         // Los números, redondeados; los que no son finitos o son desmesurados no se tienen en cuenta.
         let numero = Double(valor).flatMap { $0.isFinite && abs($0) < 10_000_000 ? Int($0.rounded()) : nil }
         switch nombre {
+        case "words" where padre == "direction-type":
+            marcar { $0.leer(indicacion: valor) }
         case "work-title", "movement-title":
             if titulo == nil || nombre == "work-title", !valor.isEmpty { titulo = valor }
         case "divisions":
@@ -209,6 +253,11 @@ final class LectorMusicXML: LectorDeElementosXML {
             colocarLaNota()
         case "measure":
             inicioDelCompas = max(finDelCompas, posicion)
+            if let abiertas = casillas {
+                marcar { $0.casillas = abiertas.numeros }
+                if abiertas.seCierran { casillas = nil }
+            }
+            if parte == 0 { finDeLaPieza = inicioDelCompas }
         case "fifths" where padre == "key":
             armadura.quintas = numero
         case "mode" where padre == "key":
@@ -243,29 +292,55 @@ final class LectorMusicXML: LectorDeElementosXML {
     /// El elemento que contiene al actual.
     private var padre: String? { pila.last }
 
+    /// Cambia lo que se sabe del compás en curso (el mismo en todas las partes).
+    private func marcar(_ cambio: (inout CompasLeido) -> Void) {
+        guard compases.indices.contains(indiceDelCompas) else { return }
+        cambio(&compases[indiceDelCompas])
+    }
+
+    /// "1", "1, 2", "1 2" o "1-3": los números de las casillas.
+    static func numerosDeCasilla(_ texto: String) -> Set<Int> {
+        var numeros: Set<Int> = []
+        for trozo in texto.split(whereSeparator: { $0 == "," || $0 == " " }) {
+            let extremos = trozo.split(separator: "-").compactMap { Int($0) }
+            if extremos.count == 2, extremos[0] <= extremos[1], extremos[1] - extremos[0] < 100 {
+                numeros.formUnion(extremos[0]...extremos[1])
+            } else if let numero = extremos.first {
+                numeros.insert(numero)
+            }
+        }
+        return numeros.isEmpty ? [1] : numeros
+    }
+
     private func avanzar(_ pulsos: Int) {
         posicion = max(.cero, posicion + Duracion(pulsos, 4 * divisiones))
         finDelCompas = max(finDelCompas, posicion)
     }
 
     private func colocarLaNota() {
-        guard !nota.sinTiempo, let pulsos = nota.pulsos, pulsos > 0 else { return }
+        if nota.sinTiempo {
+            // Una nota de adorno: empieza donde empezará la nota a la que adorna.
+            if !nota.muda, let altura = alturaQueSuena() {
+                adornos.append(
+                    NotaDeLaPieza(
+                        altura: altura, inicio: posicion, duracion: .cero, parte: parte, desvio: nota.desvio,
+                        articulaciones: nota.articulaciones))
+            }
+            return
+        }
+        guard let pulsos = nota.pulsos, pulsos > 0 else { return }
         let duracion = Duracion(pulsos, 4 * divisiones)
         let inicio = nota.esDeAcorde ? inicioDeLaAnterior : posicion
         if !nota.esDeAcorde {
             inicioDeLaAnterior = posicion
             avanzar(pulsos)
         }
-        guard !nota.muda, let paso = nota.paso, let octava = nota.octava else { return }
+        guard !nota.muda, let altura = alturaQueSuena() else { return }
         if nota.esDeAcorde {
             marcasDelAcorde.articulaciones += nota.articulaciones
         } else {
             marcasDelAcorde = (dinamicaPendiente, nota.articulaciones)
             dinamicaPendiente = nil
-        }
-        var altura = Altura(Nota(paso, Alteracion(nota.alteracion)), octava: octava)
-        if let transposicion {
-            altura = Altura(pasos: altura.pasos + transposicion.pasos, midi: altura.midi + transposicion.semitonos)
         }
         let clave = parte * 1024 + altura.midi + 512
         if nota.ligaduraQueAcaba, let i = ligadas[clave], notas[i].fin == inicio {
@@ -278,5 +353,13 @@ final class LectorMusicXML: LectorDeElementosXML {
                     dinamica: marcasDelAcorde.dinamica, articulaciones: marcasDelAcorde.articulaciones))
             if nota.ligaduraQueEmpieza { ligadas[clave] = notas.count - 1 }
         }
+    }
+
+    /// La altura de la nota leída, como suena (con la transposición del instrumento).
+    private func alturaQueSuena() -> Altura? {
+        guard let paso = nota.paso, let octava = nota.octava else { return nil }
+        let altura = Altura(Nota(paso, Alteracion(nota.alteracion)), octava: octava)
+        guard let transposicion else { return altura }
+        return Altura(pasos: altura.pasos + transposicion.pasos, midi: altura.midi + transposicion.semitonos)
     }
 }

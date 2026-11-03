@@ -229,22 +229,27 @@ private func f(_ duracion: Duracion) -> String {
         #expect(pieza.tonalidad == Tonalidad(.sol))
         #expect(pieza.tempo == Tempo(120, unidad: Duracion(3, 8)))
         let notas = pieza.notas.map { "\($0.altura) \(f($0.inicio)) \(f($0.duracion))" }
-        // La primera línea: 24 corcheas desde Sol4 (los cifrados entre comillas y la repetición no cuentan).
+        // La primera línea: 24 corcheas desde Sol4 (los cifrados entre comillas no cuentan), dos veces: acaba en una
+        // repetición, que vuelve al principio.
         #expect(notas.prefix(3) == ["Sol4 0 1/8", "La4 1/8 1/8", "Sol4 1/4 1/8"])
         #expect(notas[23] == "La4 23/8 1/8")
+        #expect(notas[24] == "Sol4 3 1/8")
+        #expect(notas[47] == "La4 47/8 1/8")
         #expect(
-            Array(notas[24...]) == [
+            Array(notas[48...]) == [
                 // El acorde, el silencio, el tresillo y el ritmo con puntillo («c>d d<e»).
-                "Do4 3 1/4", "Mi4 3 1/4", "Sol4 3 1/4",
-                "Do5 27/8 1/12", "Re5 83/24 1/12", "Mi5 85/24 1/12",
-                "Do5 29/8 3/16", "Re5 61/16 1/16", "Re5 31/8 1/16", "Mi5 63/16 3/16",
+                "Do4 6 1/4", "Mi4 6 1/4", "Sol4 6 1/4",
+                "Do5 51/8 1/12", "Re5 155/24 1/12", "Mi5 157/24 1/12",
+                "Do5 53/8 3/16", "Re5 109/16 1/16", "Re5 55/8 1/16", "Mi5 111/16 3/16",
                 // Las alteraciones valen hasta la barra y en su octava: el Fa♯ de la armadura vuelve en Fa,,
                 // (Fa♯2). Sol' y Sol4 no se ligan: no son la misma nota.
-                "Fa♯5 33/8 1/8", "Fa♯5 17/4 1/8", "Fa5 35/8 1/8", "Fa♯2 9/2 1/8", "Sol5 37/8 1/8", "Sol4 19/4 1/2",
-                // `_/B` es un cuarto de tono bajo Si (Si♭ y 50 cents), y vale hasta la barra; el adorno no cuenta.
-                "Si♭4 21/4 1/8", "La4 43/8 1/4", "Si♭4 45/8 1/8",
+                "Fa♯5 57/8 1/8", "Fa♯5 29/4 1/8", "Fa5 59/8 1/8", "Fa♯2 15/2 1/8", "Sol5 61/8 1/8", "Sol4 31/4 1/2",
+                // `_/B` es un cuarto de tono bajo Si (Si♭ y 50 cents), y vale hasta la barra.
+                "Si♭4 33/4 1/8", "La4 67/8 1/4", "Si♭4 69/8 1/8",
             ])
-        #expect(pieza.notas[40].desvio == 50 && pieza.notas[42].desvio == 50)
+        #expect(pieza.notas[64].desvio == 50 && pieza.notas[66].desvio == 50)
+        // El adorno ({g}) va aparte, donde empieza la nota a la que adorna.
+        #expect(pieza.notasDeAdorno.map { "\($0.altura) \(f($0.inicio)) \(f($0.duracion))" } == ["Sol5 67/8 0"])
     }
 
     @Test func lasVocesDeUnABC() throws {

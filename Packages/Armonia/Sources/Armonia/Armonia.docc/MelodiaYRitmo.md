@@ -98,6 +98,24 @@ motivo.esSecuencia                          // true
 En un acorde cuenta la nota más aguda, y una nota ligada cuenta una vez. Es una estimación: no
 reconoce períodos ni secciones a gran escala.
 
+### Swing y polirritmias
+
+`conSwing(_:)` toca una voz con swing: cada par de corcheas (o de la figura que se elija) dura lo
+mismo, pero la primera se alarga y la segunda se acorta, en la proporción de ``Swing``: 2:1
+(`ternario`, el del jazz, con figuras de tresillo), 3:1 (`conPuntillo`) o la que se pida. Las
+duraciones son fracciones exactas, así que la voz se escribe y se exporta como cualquier otra.
+``Polirritmia`` reparte el mismo tramo en dos pulsaciones (3 contra 2, 4 contra 3…): da los
+ataques de cada una, el ritmo que resulta de oírlas juntas y las dos voces que la tocan:
+
+```swift
+let corcheas = try Voz(leyendo: "Do4:8 Re4:8 Mi4:8 Fa4:8 Sol4:2")
+corcheas.conSwing().ritmo == [Duracion(1, 6), Duracion(1, 12), Duracion(1, 6), Duracion(1, 12), .blanca]   // true
+
+let tresContraDos = Polirritmia(3, contra: 2)!
+tresContraDos.resultante() == [Duracion(1, 3), Duracion(1, 6), Duracion(1, 6), Duracion(1, 3)]   // true
+tresContraDos.voces(compases: 2)[0].eventos.count                                                  // 6
+```
+
 ## Métrica
 
 Cada compás agrupa sus unidades en pulsos: `[1, 1, 1, 1]` en 4/4, `[3, 3]` en 6/8, `[2, 2, 3]`
@@ -307,15 +325,25 @@ pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca]   // t
   probable, se quitan (son de paso, bordaduras, apoyaturas). Las ventanas seguidas con el mismo
   acorde se funden. Con `ventana:` se elige otro tamaño: una blanca para un ritmo armónico lento.
 - De MusicXML se leen acordes, voces (`<backup>`, `<forward>`), ligaduras e instrumentos
-  transpositores (se lee lo que suena). No cuentan las notas de adorno, las notas guía ni la
-  percusión, y tampoco el canal 10 de MIDI.
+  transpositores (se lee lo que suena). No cuentan las notas guía ni la percusión, y tampoco el
+  canal 10 de MIDI. Las notas de adorno de MusicXML, MEI y ABC van aparte, en `notasDeAdorno`:
+  empiezan donde empieza la nota a la que adornan y no duran.
 - `acordesConDuracion(ventana:)` da además lo que dura cada acorde, el ritmo armónico de la pieza:
   hasta que empieza el siguiente y, el último, hasta el final. Las exportaciones de una progresión
   analizada lo aceptan con `duraciones:` (`musicXML(duraciones:)`, `mei(duraciones:)` y
   `midi(duraciones:)`), y `Voz(arpegiando:duraciones:)` la arpegia con ese ritmo.
-- Todavía no se leen las repeticiones ni los saltos. Del .mxl se lee la partitura que señala
+- Las repeticiones de MusicXML, MEI y ABC (con sus casillas de primera y segunda vez) y los saltos
+  (da capo, dal segno, fine, coda) se despliegan: `notas` las da en el orden en que se tocan. Tras
+  un da capo o un dal segno no se repite nada y se toman las últimas casillas. Del .mxl se lee la partitura que señala
   `META-INF/container.xml`. Los errores son `ErrorDeImportacion`, con su explicación en los quince
   idiomas.
 - Desde la terminal: `armonia analizar --archivo coral.mid` (o `.musicxml`, `.mxl`, `.mei`, `.abc`), y
   `armonia musicxml acordes --archivo coral.mid` para la progresión con su ritmo armónico (también
   `arpegios`, `mei` y `midi`).
+
+```swift
+let repetida = try PiezaImportada(abc: "X:1\nM:4/4\nL:1/4\nK:C\n|: {B}c4 |1 d4 :|2 e4 |]\n")
+repetida.notas.map(\.inicio) == [.cero, Duracion(1), Duracion(2), Duracion(3)]   // true
+repetida.notas[3].altura                                                          // Mi5
+repetida.notasDeAdorno.count                                                      // 2
+```
