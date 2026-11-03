@@ -309,7 +309,7 @@ extension TipoDeEscala {
         nombre: "pentatónica lidia",
         intervalos: [.unisono, .terceraMayor, .cuartaAumentada, .quintaJusta, .septimaMayor])
     /// Do Re Fa Sol La: la pentatónica mayor desde su 4.º grado, la de las gaitas escocesas (las
-    /// mismas notas que Sléndro, Durgā o Zhǐ).
+    /// mismas notas que Durgā o Zhǐ).
     public static let pentatonicaEscocesa = TipoDeEscala(
         nombre: "pentatónica escocesa",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],

@@ -6,6 +6,7 @@ import ArmoniaNucleo
 public enum Tradicion: String, Sendable, Codable, CaseIterable {
     case india, grecia, greciaAntigua, mundoArabe, persia, turquia, azerbaiyan
     case china, japon, corea, etiopia, indonesia, klezmer, andes, bizancio, mesopotamia
+    case africa, sudesteAsiatico, gregoriano
 }
 
 /// Qué es una escala dentro de su tradición: un rāga, un mēḷa (o mēḷakarta), un dromos, un maqam, un makam,
@@ -58,8 +59,11 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     case cesni
     /// Harmoniai de la Grecia antigua.
     case harmonia
-    /// Las siete afinaciones de la lira y el arpa babilónicas (išartu, kitmu…), de los textos cuneiformes.
+    /// Afinaciones de un instrumento: las siete de la lira y el arpa babilónicas (išartu, kitmu…), de los textos
+    /// cuneiformes, y las equidistantes de los xilófonos africanos y los conjuntos de Tailandia y Camboya.
     case afinacion
+    /// Los ocho modos del canto gregoriano.
+    case modoGregoriano
     /// Escala sin un nombre propio para su categoría (las japonesas y las andinas).
     case escala
 
@@ -71,7 +75,7 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         case .tetracordo, .jins, .cesni: .fragmento
         case .afinacion: .afinacion
         case .raga, .janya, .murchana, .dromos, .maqam, .dastgah, .makam, .mugam, .echos, .shteyger, .qenet, .pathet,
-            .diao, .jo, .harmonia, .escala:
+            .diao, .jo, .harmonia, .modoGregoriano, .escala:
             .modo
         }
     }
@@ -105,6 +109,7 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         case .cesni: "çeşni"
         case .harmonia: "harmonía"
         case .afinacion: "afinación"
+        case .modoGregoriano: "modo gregoriano"
         case .escala: "escala"
         }
     }

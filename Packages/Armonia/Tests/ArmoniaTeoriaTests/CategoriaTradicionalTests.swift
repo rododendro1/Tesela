@@ -48,8 +48,18 @@ import Testing
         #expect(tetracordos == TipoDeEscala.tetracordosGriegos + TipoDeEscala.generosDeArquitasYPtolomeo)
         #expect(harmoniai == TipoDeEscala.harmoniai)
         #expect(harmoniai.count == 8)
-        // Las siete afinaciones babilónicas.
-        #expect(TipoDeEscala.tradicionales(categoria: .afinacion) == TipoDeEscala.mesopotamicas)
+        // Las siete afinaciones babilónicas y las equidistantes de África y del sudeste asiático.
+        let afinaciones = TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + TipoDeEscala.sudesteAsiaticas
+        #expect(TipoDeEscala.tradicionales(categoria: .afinacion) == afinaciones)
+        #expect(TipoDeEscala.tradicionales(tradicion: .africa) == [.amadinda, .timbila])
+        #expect(TipoDeEscala.piphat.tradicion == .sudesteAsiatico && TipoDeEscala.piphat.clase == .afinacion)
+        // Los ocho modos gregorianos, desde su final, enlazados con `ModoGregoriano`.
+        #expect(TipoDeEscala.tradicionales(categoria: .modoGregoriano) == TipoDeEscala.modosGregorianos)
+        #expect(TipoDeEscala.tradicionales(tradicion: .gregoriano).count == 8)
+        #expect(ModoGregoriano.todos.map(\.tipoDeEscala) == TipoDeEscala.modosGregorianos)
+        #expect(ModoGregoriano.todos.allSatisfy { $0.tipoDeEscala.intervalos == $0.maneria.tipo.intervalos })
+        #expect(TipoDeEscala.buscar(nombre: "hipodórico") == .protusPlagalis)
+        #expect(TipoDeEscala.protusPlagalis.nombre == "protus plagalis" && TipoDeEscala.protusPlagalis.clase == .modo)
         #expect(TipoDeEscala.tradicionales(tradicion: .mesopotamia) == TipoDeEscala.mesopotamicas)
         #expect(TipoDeEscala.mesopotamicas.count == 7)
         #expect(TipoDeEscala.nidQabli.tradicion == .mesopotamia && TipoDeEscala.nidQabli.categoria == .afinacion)
@@ -191,12 +201,13 @@ import Testing
         let griegos = TipoDeEscala.tetracordosGriegos + TipoDeEscala.generosDeArquitasYPtolomeo
         #expect(fragmentos == griegos + TipoDeEscala.ajnas + TipoDeEscala.cesniler)
         #expect(fragmentos.allSatisfy { (3...5).contains($0.intervalos.count) })
-        #expect(TipoDeEscala.tradicionales(clase: .afinacion) == TipoDeEscala.mesopotamicas)
+        let afinaciones = TipoDeEscala.tradicionales(clase: .afinacion)
+        #expect(afinaciones == TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + TipoDeEscala.sudesteAsiaticas)
         let madres = TipoDeEscala.tradicionales(clase: .escalaMadre)
         let thaatsGramasYLaras = TipoDeEscala.thaats + TipoDeEscala.gramas + TipoDeEscala.indonesias
         #expect(madres.count == 72 + thaatsGramasYLaras.count)
         let modos = TipoDeEscala.tradicionales(clase: .modo)
-        #expect(modos.count + madres.count + fragmentos.count + 7 == TipoDeEscala.tradicionales.count)
+        #expect(modos.count + madres.count + fragmentos.count + afinaciones.count == TipoDeEscala.tradicionales.count)
         for tipo in TipoDeEscala.tradicionales {
             #expect(tipo.clase == tipo.categoria?.clase, Comment(rawValue: tipo.nombre))
         }

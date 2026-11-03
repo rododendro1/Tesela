@@ -72,6 +72,9 @@ public struct ModoGregoriano: Hashable, Sendable, CustomStringConvertible {
     /// auténtico, salvo en el 8 (Do y no Si).
     public var tenor: Nota { [Nota.la, .fa, .do, .la, .do, .la, .re, .do][numero - 1] }
 
+    /// El modo como escala del catálogo (`TipoDeEscala.protusAuthenticus`…), de la categoría `.modoGregoriano`.
+    public var tipoDeEscala: TipoDeEscala { TipoDeEscala.modosGregorianos[numero - 1] }
+
     /// Las notas desde la final. Los modos 5 y 6 se cantan muchas veces con Si♭, que aquí no
     /// figura.
     public var escala: Escala { Escala(finalis, maneria.tipo) }

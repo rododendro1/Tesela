@@ -17,7 +17,7 @@ import Testing
             #expect(microtonal.temperada.microtonal == microtonal, Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(TipoDeEscalaMicrotonal.catalogo.count == 113)
+        #expect(TipoDeEscalaMicrotonal.catalogo.count == 127)
     }
 
     /// Se busca por el nombre: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
@@ -125,6 +125,21 @@ import Testing
         // Una coma son 1200/53 cents.
         let si = Escala(.sol, .rastMakami).notasMicrotonales()?[2]
         #expect(abs((si?.cents ?? 0) - 17.0 * 1200 / 53) < 1e-9)
+    }
+
+    /// El gamelan, en nueve y cinco partes iguales; los xilófonos africanos y los conjuntos de Tailandia y Camboya, en
+    /// cinco o siete.
+    @Test func afinacionesEquidistantes() {
+        #expect(TipoDeEscala.pelog.microtonal?.sistema == .razones)
+        #expect(TipoDeEscala.pelogNem.microtonal?.pasos == [0, 133, 533, 667, 800])
+        #expect(TipoDeEscala.indonesias.allSatisfy { $0.microtonal != nil })
+        #expect(TipoDeEscala.pathets.allSatisfy { $0.microtonal != nil })
+        #expect(TipoDeEscala.slendro.microtonal?.pasos == [0, 240, 480, 720, 960])
+        #expect(TipoDeEscala.amadinda.microtonal?.pasos == TipoDeEscala.slendro.microtonal?.pasos)
+        #expect(TipoDeEscala.timbila.microtonal?.pasos == [0, 171, 343, 514, 686, 857, 1029])
+        #expect(TipoDeEscala.piphat.microtonal?.pasos == TipoDeEscala.timbila.microtonal?.pasos)
+        #expect(TipoDeEscala.pinpeat.microtonal != nil)
+        #expect(TipoDeEscala.protusAuthenticus.microtonal == nil)
     }
 
     @Test func echoiEnMoria() {

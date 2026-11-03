@@ -12,7 +12,8 @@ import Foundation
 //
 // Los sistemas: los cuartos de tono árabes, el koron persa, las 53 comas turcas, los 72 moria de la salmodia
 // bizantina, los 22 śruti indios, que no son iguales: cada uno es una razón justa, y los cents de cualquier otra razón
-// justa (los géneros de Arquitas y de Ptolomeo).
+// justa (los géneros de Arquitas y de Ptolomeo) o de una octava en partes iguales (el gamelan, los xilófonos
+// africanos, la música de Tailandia y Camboya).
 
 /// Con qué teoría se mide una escala microtonal: cuántos pasos tiene la octava y cómo se escriben.
 public enum SistemaMicrotonal: String, Sendable, Codable, CaseIterable {
@@ -32,9 +33,10 @@ public enum SistemaMicrotonal: String, Sendable, Codable, CaseIterable {
     /// Cada nota es la pitagórica o se aparta de ella una coma sintónica (81/80), y se escribe con la flecha de
     /// Helmholtz-Ellis: Mi↓ (5/4, una coma bajo el Mi pitagórico de 81/64), Re♭↑ (16/15).
     case sruti
-    /// Razones justas cualesquiera, medidas en cents (1200 por octava): las de los géneros de Arquitas y de Ptolomeo
-    /// (28/27, 8/7…) y las de los grāma que no están entre los 22 śruti. Se escriben con los cents que se apartan de
-    /// la nota temperada: Fa(−37¢).
+    /// Cents cualesquiera (1200 por octava): las razones justas de los géneros de Arquitas y de Ptolomeo (28/27,
+    /// 8/7…) y de los grāma que no están entre los 22 śruti, y las octavas partidas en partes iguales que no son doce
+    /// (el pélog en nueve, el sléndro y el amadinda en cinco, el timbila y el piphat en siete). Se escriben con los
+    /// cents que se apartan de la nota temperada: Fa(−37¢).
     case razones
 
     /// Pasos por octava: 24, 53, 24, 72, 22 o 1200.

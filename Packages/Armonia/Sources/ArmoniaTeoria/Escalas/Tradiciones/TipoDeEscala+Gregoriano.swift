@@ -1,0 +1,58 @@
+import ArmoniaNucleo
+
+// MARK: - Gregoriano
+
+extension TipoDeEscala {
+    // MARK: Modos gregorianos
+    //
+    // Los ocho modos del canto gregoriano como escalas del catálogo, con sus nombres latinos (protus authenticus,
+    // protus plagalis…) y, de alias, los españoles, el número y el griego medieval de los plagales (hipodórico…).
+    // Cada uno va desde su final: el auténtico y el plagal de una maneria tienen las mismas notas y solo se distinguen
+    // por el ámbito y el tenor, que están en `ModoGregoriano` (`ModoGregoriano.tipoDeEscala` lleva de uno a otro).
+    // Los modos 5 y 6 se cantan muchas veces con Si♭, que aquí no figura.
+
+    /// Modo 1, en Re: el dórico.
+    public static let protusAuthenticus = TipoDeEscala(
+        nombre: "protus authenticus", intervalos: TipoDeEscala.dorico.intervalos,
+        alias: ["protus auténtico", "modo gregoriano 1"])
+    /// Modo 2, en Re: el dórico, con el ámbito una 4ª más abajo.
+    public static let protusPlagalis = TipoDeEscala(
+        nombre: "protus plagalis", intervalos: TipoDeEscala.dorico.intervalos,
+        alias: ["protus plagal", "modo gregoriano 2", "hipodórico"])
+    /// Modo 3, en Mi: el frigio.
+    public static let deuterusAuthenticus = TipoDeEscala(
+        nombre: "deuterus authenticus", intervalos: TipoDeEscala.frigio.intervalos,
+        alias: ["deuterus auténtico", "modo gregoriano 3"])
+    /// Modo 4, en Mi: el frigio, con el ámbito una 4ª más abajo.
+    public static let deuterusPlagalis = TipoDeEscala(
+        nombre: "deuterus plagalis", intervalos: TipoDeEscala.frigio.intervalos,
+        alias: ["deuterus plagal", "modo gregoriano 4", "hipofrigio"])
+    /// Modo 5, en Fa: el lidio.
+    public static let tritusAuthenticus = TipoDeEscala(
+        nombre: "tritus authenticus", intervalos: TipoDeEscala.lidio.intervalos,
+        alias: ["tritus auténtico", "modo gregoriano 5"])
+    /// Modo 6, en Fa: el lidio, con el ámbito una 4ª más abajo.
+    public static let tritusPlagalis = TipoDeEscala(
+        nombre: "tritus plagalis", intervalos: TipoDeEscala.lidio.intervalos,
+        alias: ["tritus plagal", "modo gregoriano 6", "hipolidio"])
+    /// Modo 7, en Sol: el mixolidio.
+    public static let tetrardusAuthenticus = TipoDeEscala(
+        nombre: "tetrardus authenticus", intervalos: TipoDeEscala.mixolidio.intervalos,
+        alias: ["tetrardus auténtico", "modo gregoriano 7"])
+    /// Modo 8, en Sol: el mixolidio, con el ámbito una 4ª más abajo.
+    public static let tetrardusPlagalis = TipoDeEscala(
+        nombre: "tetrardus plagalis", intervalos: TipoDeEscala.mixolidio.intervalos,
+        alias: ["tetrardus plagal", "modo gregoriano 8", "hipomixolidio"])
+
+    /// Los ocho, del 1 al 8.
+    public static let modosGregorianos: [TipoDeEscala] = [
+        .protusAuthenticus, .protusPlagalis, .deuterusAuthenticus, .deuterusPlagalis, .tritusAuthenticus,
+        .tritusPlagalis, .tetrardusAuthenticus, .tetrardusPlagalis,
+    ]
+}
+
+// MARK: Ficha
+
+extension FichaDeTradicion {
+    static let gregoriano = FichaDeTradicion(.gregoriano, [.init(.modoGregoriano, TipoDeEscala.modosGregorianos)])
+}

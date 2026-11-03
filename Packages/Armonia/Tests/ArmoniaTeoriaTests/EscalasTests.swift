@@ -623,7 +623,7 @@ import Testing
         #expect(notas(.ambassel) == "Do Re♭ Fa Sol La♭")
         #expect(notas(.anchihoye) == "Do Re♭ Fa Sol♭ La")
         #expect(notas(.pelog) == "Do Re♭ Mi♭ Sol La♭")
-        #expect(notas(.slendro) == "Do Re Fa Sol La")
+        #expect(notas(.slendro) == "Do Re Fa Sol Si♭")
         #expect(notas(.akebono) == "Do Re Mi♭ Sol La")
         #expect(notas(.kokinjoshi) == "Do Re♭ Fa Sol Si♭")
         #expect(notas(.adonaiMalakh) == "Do Re Mi♭ Mi Fa Sol La Si♭")
@@ -784,7 +784,7 @@ import Testing
         #expect(notas(Escala(.do, .pentatonicaLidia)) == "Do Mi Fa♯ Sol Si")
         #expect(notas(Escala(.do, .pentatonicaEscocesa)) == "Do Re Fa Sol La")
         #expect(Escala(.do, .pentatonicaMayor).rotacion(4).tipo.nombre == "pentatónica escocesa")
-        #expect(TipoDeEscala.pentatonicaEscocesa.equivalentes.contains { $0.nombre == "Sléndro" })
+        #expect(TipoDeEscala.egipcia.equivalentes.contains { $0.nombre == "Sléndro" })
         #expect(TipoDeEscala.pentatonicaLidia.equivalentes.contains { $0.nombre == "Amṛtavarṣiṇī" })
         #expect(TipoDeEscala.egipcia.equivalentes.contains { $0.nombre == "Megh" })
         // Otras.
@@ -932,15 +932,14 @@ import Testing
         #expect(TipoDeEscala.maqamNikriz == .nikriz && TipoDeEscala.maqamNikriz.categoria == .maqam)
         #expect(TipoDeEscala.lami == .locrio)
         #expect(TipoDeEscala.sabaZamzam == .saba)
-        // Pathet y modos de Bali, con el pélog de siete notas 1 Do, 2 Re♭, 3 Mi♭, 4 Fa♯, 5 Sol, 6 La♭, 7 Si♭.
+        // Pathet y modos de Bali, cada grado del pélog de nueve partes iguales redondeado desde su tónica.
         #expect(TipoDeEscala.pelogLima == .pelog)
-        #expect(notas(.pelogNem, .sol) == "Sol La♭ Do Re♭ Mi♭")
-        #expect(notas(.pelogBarang, .la.bemol) == "La♭ Si♭ Re♭ Mi♭ Sol")
-        #expect(notas(.pelogSunaren, .sol) == "Sol La♭ Si♭ Re♭ Mi♭")
-        #expect(notas(.pelogTembung) == "Do Do♯ Re Fa♯ Sol")
-        #expect(TipoDeEscala.slendroSanga == .slendro)
-        #expect(TipoDeEscala.slendroManyura == .pentatonicaMenor)
-        #expect(notas(.slendroNem, .re) == "Re Mi Sol La Do")
+        #expect(notas(.pelogNem, .sol) == "Sol La♭ Do Re Mi♭")
+        #expect(notas(.pelogBarang, .la) == "La Si♭ Re Mi Sol♯")
+        #expect(TipoDeEscala.pelogSunaren == .pelog && TipoDeEscala.pelogTembung == .pelog)
+        // El sléndro, equidistante: los tres pathet tienen los mismos intervalos.
+        #expect(TipoDeEscala.slendroSanga == .slendro && TipoDeEscala.slendroManyura == .slendro)
+        #expect(TipoDeEscala.slendroNem == .egipcia)
         // Rāgas: los cuatro suben y bajan en línea recta.
         #expect(notas(.lalit) == "Do Re♭ Mi Fa Fa♯ La♭ Si")
         #expect(TipoDeEscala.mohanakalyani.formaAscendente.intervalos == TipoDeEscala.mohanam.intervalos)
