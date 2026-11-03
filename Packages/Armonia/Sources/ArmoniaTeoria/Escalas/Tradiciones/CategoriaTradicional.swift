@@ -5,7 +5,7 @@ import ArmoniaNucleo
 /// La tradición musical de que viene una escala de `TipoDeEscala.tradicionales`.
 public enum Tradicion: String, Sendable, Codable, CaseIterable {
     case india, grecia, greciaAntigua, mundoArabe, persia, turquia, azerbaiyan
-    case china, japon, corea, etiopia, indonesia, klezmer, andes, bizancio, mesopotamia
+    case china, japon, corea, etiopia, indonesia, klezmer, andes, bizancio, mesopotamia, gregoriano
 }
 
 /// Qué es una escala dentro de su tradición: un rāga, un mēḷa (o mēḷakarta), un dromos, un maqam, un makam,
@@ -22,6 +22,10 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     case janya
     /// Escala madre indostánica.
     case thaat
+    /// Las dos escalas madre del Nāṭyaśāstra: el ṣaḍja-grāma y el madhyama-grāma.
+    case grama
+    /// Las siete escalas de cada grāma, una desde cada una de sus notas.
+    case murchana
     /// Camino (plural «dromoi») de la música popular y el rebético griegos.
     case dromos
     /// Los maqamat del mundo árabe.
@@ -50,6 +54,8 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     case tetracordo
     /// Harmoniai de la Grecia antigua.
     case harmonia
+    /// Los ocho modos (toni) del canto gregoriano.
+    case modo
     /// Las siete afinaciones de la lira y el arpa babilónicas (išartu, kitmu…), de los textos cuneiformes.
     case afinacion
     /// Escala sin un nombre propio para su categoría (las japonesas y las andinas).
@@ -65,6 +71,8 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         case .melakarta: "mēḷa"
         case .janya: "janya"
         case .thaat: "thāṭ"
+        case .grama: "grāma"
+        case .murchana: "mūrchanā"
         case .dromos: "dromos"
         case .maqam: "maqam"
         case .dastgah: "dastgāh"
@@ -80,13 +88,14 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         case .tetracordo: "tetracordo"
         case .harmonia: "harmonía"
         case .afinacion: "afinación"
+        case .modo: "modo"
         case .escala: "escala"
         }
     }
 
     /// El nombre de la categoría en el idioma de la notación («escala» → gamme, Tonleiter, гамма…), de los ficheros de
     /// `Escalas/Nombres/` (las filas `.categoria`). Casi todas son préstamos: solo se traducen «tetracordo», «harmonía»,
-    /// «afinación» y «escala», y en ruso y griego se transcriben las demás.
+    /// «afinación», «modo» y «escala», y en ruso y griego se transcriben las demás.
     public func nombre(en notacion: Notacion) -> String {
         if notacion.textos == .espanol { return nombre }
         return NombresDeEscalas.de(notacion.textos).nombre(de: self) ?? nombre
@@ -135,14 +144,15 @@ extension TipoDeEscala {
     private static let clasificacion: [String: Clasificada] = {
         let grupos: [(Tradicion, CategoriaTradicional, [TipoDeEscala])] = [
             (.india, .thaat, thaats), (.grecia, .dromos, dromoi), (.india, .melakarta, melakartas),
-            (.india, .janya, janyas), (.china, .diao, chinas), (.japon, .escala, japonesas),
+            (.india, .janya, janyas), (.india, .grama, gramas), (.india, .murchana, murchanas),
+            (.china, .diao, chinas), (.japon, .escala, japonesas),
             (.etiopia, .qenet, etiopes), (.mundoArabe, .maqam, maqamat), (.indonesia, .laras, indonesias),
             (.indonesia, .pathet, pathets),
             (.klezmer, .shteyger, klezmer), (.india, .raga, ragasIndostanicos), (.persia, .dastgah, dastgah),
             (.corea, .jo, coreanas), (.andes, .escala, andinas),
             (.turquia, .makam, makamlar), (.azerbaiyan, .mugam, mugamlar), (.bizancio, .echos, echoi),
             (.greciaAntigua, .tetracordo, tetracordosGriegos), (.greciaAntigua, .harmonia, harmoniai),
-            (.mesopotamia, .afinacion, mesopotamicas),
+            (.mesopotamia, .afinacion, mesopotamicas), (.gregoriano, .modo, modosGregorianos),
         ]
         var tabla: [String: Clasificada] = [:]
         for (tradicion, categoria, tipos) in grupos {

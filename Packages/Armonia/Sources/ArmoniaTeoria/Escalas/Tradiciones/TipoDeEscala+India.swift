@@ -342,4 +342,116 @@ extension TipoDeEscala {
     public static let ragasIndostanicos: [TipoDeEscala] = [
         .bhupali, .malkauns, .durga, .yaman, .bagesri, .des, .sivaranjani, .kalavati, .candrakauns, .megh, .lalit,
     ]
+
+    // MARK: Grāma y mūrchanā (el Nāṭyaśāstra)
+    //
+    // Las escalas madre del Nāṭyaśāstra de Bharata (hacia el siglo II) y del Dattilam. El ṣaḍja-grāma reparte los 22
+    // śruti de la octava entre sus siete notas (Sa 4, Ri 3, Ga 2, Ma 4, Pa 4, Dha 3, Ni 2, cada nota en el último
+    // śruti de su intervalo) y el madhyama-grāma baja Pa un śruti (Pa 3, Dha 4). Cada grāma da siete mūrchanā, la
+    // escala que empieza en cada una de sus notas, en el orden del texto: las del ṣaḍja-grāma bajan desde Sa
+    // (Uttaramandrā) hasta Ri; las del madhyama-grāma, desde Ma (Sauvīrī) hasta Pa.
+    //
+    // Se escriben como el modelo de E. J. Arnold de los thāṭ, el que siguen los śruti de `Microtonos.swift`: el
+    // ṣaḍja-grāma es Sa Ri(10/9) ga(32/27) ma(4/3) Pa(3/2) Dha(5/3) ni(16/9), las notas de Kāfī, y el madhyama-grāma
+    // tiene Pa una coma sintónica más bajo (40/27). Cada mūrchanā lleva las razones de su grāma contadas desde su
+    // primera nota. En doce notas son los siete modos diatónicos (el ṣaḍja-grāma es el dórico); su versión microtonal
+    // va en los 22 śruti, salvo la de las que tienen una razón que no es uno de ellos (la quinta una coma corta de
+    // 40/27 o la quinta disminuida de 64/45), que va en cents.
+
+    /// El ṣaḍja-grāma, desde Sa: el dórico en doce notas.
+    public static let sadjaGrama = TipoDeEscala(
+        nombre: "ṣaḍja-grāma",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        alias: ["shadja grama", "shadjagrama", "षड्जग्राम"])
+    /// El madhyama-grāma, desde Sa: el dórico en doce notas.
+    public static let madhyamaGrama = TipoDeEscala(
+        nombre: "madhyama-grāma",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        alias: ["madhyamagrama", "मध्यमग्राम"])
+    /// La mūrchanā del ṣaḍja-grāma desde Sa: el dórico en doce notas.
+    public static let uttaramandra = TipoDeEscala(
+        nombre: "Uttaramandrā",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        alias: ["उत्तरमन्द्रा"])
+    /// La mūrchanā del ṣaḍja-grāma desde Ni: la mayor en doce notas.
+    public static let rajani = TipoDeEscala(
+        nombre: "Rajanī",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
+        alias: ["रजनी"])
+    /// La mūrchanā del ṣaḍja-grāma desde Dha: el locrio en doce notas.
+    public static let uttarayata = TipoDeEscala(
+        nombre: "Uttarāyatā",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["उत्तरायता"])
+    /// La mūrchanā del ṣaḍja-grāma desde Pa: el eólico en doce notas.
+    public static let suddhasadja = TipoDeEscala(
+        nombre: "Śuddhaṣaḍjā",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
+        alias: ["Shuddhashadja", "शुद्धषड्जा"])
+    /// La mūrchanā del ṣaḍja-grāma desde Ma: el mixolidio en doce notas.
+    public static let matsarikrta = TipoDeEscala(
+        nombre: "Matsarīkṛtā",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        alias: ["Matsarikrita", "मत्सरीकृता"])
+    /// La mūrchanā del ṣaḍja-grāma desde Ga: el lidio en doce notas.
+    public static let asvakranta = TipoDeEscala(
+        nombre: "Aśvakrāntā",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["Ashvakranta", "अश्वक्रान्ता"])
+    /// La mūrchanā del ṣaḍja-grāma desde Ri: el frigio en doce notas.
+    public static let abhirudgata = TipoDeEscala(
+        nombre: "Abhirudgatā",
+        intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
+        alias: ["अभिरुद्गता"])
+    /// La mūrchanā del madhyama-grāma desde Ma: el mixolidio en doce notas.
+    public static let sauviri = TipoDeEscala(
+        nombre: "Sauvīrī",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        alias: ["सौवीरी"])
+    /// La mūrchanā del madhyama-grāma desde Ga: el lidio en doce notas.
+    public static let harinasva = TipoDeEscala(
+        nombre: "Hariṇāśvā",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["Harinashva", "हरिणाश्वा"])
+    /// La mūrchanā del madhyama-grāma desde Ri: el frigio en doce notas.
+    public static let kalopanata = TipoDeEscala(
+        nombre: "Kalopanatā",
+        intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
+        alias: ["कलोपनता"])
+    /// La mūrchanā del madhyama-grāma desde Sa: el dórico en doce notas.
+    public static let suddhamadhya = TipoDeEscala(
+        nombre: "Śuddhamadhyā",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        alias: ["Shuddhamadhya", "शुद्धमध्या"])
+    /// La mūrchanā del madhyama-grāma desde Ni: la mayor en doce notas.
+    public static let margi = TipoDeEscala(
+        nombre: "Mārgī",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
+        alias: ["मार्गी"])
+    /// La mūrchanā del madhyama-grāma desde Dha: el locrio en doce notas.
+    public static let pauravi = TipoDeEscala(
+        nombre: "Pauravī",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["पौरवी"])
+    /// La mūrchanā del madhyama-grāma desde Pa: el eólico en doce notas.
+    public static let hrsyaka = TipoDeEscala(
+        nombre: "Hṛṣyakā",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
+        alias: ["Hrishyaka", "हृष्यका"])
+
+    /// Los dos grāma.
+    public static let gramas: [TipoDeEscala] = [.sadjaGrama, .madhyamaGrama]
+    /// Las catorce mūrchanā, en el orden del Nāṭyaśāstra: las siete del ṣaḍja-grāma y las siete del madhyama-grāma.
+    public static let murchanas: [TipoDeEscala] = [
+        .uttaramandra, .rajani, .uttarayata, .suddhasadja, .matsarikrta, .asvakranta, .abhirudgata,
+        .sauviri, .harinasva, .kalopanata, .suddhamadhya, .margi, .pauravi, .hrsyaka,
+    ]
 }

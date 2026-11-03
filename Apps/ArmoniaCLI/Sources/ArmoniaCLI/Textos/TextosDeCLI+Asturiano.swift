@@ -42,7 +42,7 @@ extension TextosDeCLI {
         notasEscala: "opciones: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (dixitación), --modos (paralelos y relativos)\ny --comparar Do lidio (al final); --simetria (cada cuánto\nse repite y los sos acordes);\n--vecinas (les que salen de mover una\nnota) y --doce (nes doce tonalidaes);\n--doce --acordes (los acordes de cada\ngráu; --triadas, ensin séptima)",
         sintaxisEscalas: "escalas [<testu>] [opciones]",
         descripcionEscalas: "el catálogu d'escales: les habituales\ny les d'otres tradiciones, per\ncategoríes, coles sos notes dende Do",
-        notasEscalas: "opciones: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio, mesopotamia) y --categoria maqam (o rāga, makam,\ndastgah, dromos…); un testu busca nos nomes",
+        notasEscalas: "opciones: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio, mesopotamia,\ngregoriano) y --categoria maqam (o rāga, makam,\ndastgah, dromos…); un testu busca nos nomes",
         sintaxisTonalidad: "tonalidad <tonalidá>",
         descripcionTonalidad: "armadura, relatives y graos",
         sintaxisConjunto: "conjunto <clases>",

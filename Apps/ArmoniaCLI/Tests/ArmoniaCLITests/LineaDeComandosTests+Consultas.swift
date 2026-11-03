@@ -150,6 +150,19 @@ extension LineaDeComandosTests {
         #expect(babilonicas.contains("  išartu: Do Re Mi Fa Sol La Si\n"), Comment(rawValue: babilonicas))
         #expect(babilonicas.contains("  nīd qabli: Do Re♭ Mi♭ Fa Sol La♭ Si♭"), Comment(rawValue: babilonicas))
         #expect(salida("escalas --categoria afinacion") == babilonicas)
+        let gregorianos = salida("escalas --tradicion gregoriano")
+        #expect(gregorianos.hasPrefix("gregoriano · modo (8)\n"), Comment(rawValue: gregorianos))
+        #expect(gregorianos.contains("  protus auténtico: Do Re Mi♭ Fa Sol La Si♭\n"), Comment(rawValue: gregorianos))
+        #expect(salida("escalas --tradition gregorian") == gregorianos)
+        let murchanas = salida("escalas --categoria murchana")
+        #expect(murchanas.hasPrefix("india · mūrchanā (14)\n"), Comment(rawValue: murchanas))
+        #expect(
+            murchanas.contains("  Uttaramandrā: Do Re Mi♭ Fa Sol La Si♭ · microtonos"), Comment(rawValue: murchanas))
+        #expect(salida("escalas --categoria grama").hasPrefix("india · grāma (2)\n"))
+        let griegas = salida("escalas --tradicion grecia-antigua --categoria tetracordo")
+        #expect(griegas.hasPrefix("grecia-antigua · tetracordo (12)\n"), Comment(rawValue: griegas))
+        let arquitas = "  tetracordo diatónico de Arquitas: Do Re♭ Mi♭ Fa · microtonos"
+        #expect(griegas.contains(arquitas), Comment(rawValue: griegas))
         let thats = salida("escalas --tradicion india --categoria thaat")
         #expect(thats.hasPrefix("india · thāṭ (10)"), Comment(rawValue: thats))
         // Las categorías indias salen en IAST (thāṭ, mēḷa, rāga), pero se encuentran con o sin diacríticos.

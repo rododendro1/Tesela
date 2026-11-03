@@ -39,20 +39,28 @@ import Testing
         let tetracordos = TipoDeEscala.tradicionales(categoria: .tetracordo)
         let harmoniai = TipoDeEscala.tradicionales(categoria: .harmonia)
         #expect((tetracordos.count + harmoniai.count) == TipoDeEscala.griegasAntiguas.count)
-        #expect(tetracordos == TipoDeEscala.tetracordosGriegos && harmoniai == TipoDeEscala.harmoniai)
+        #expect(tetracordos == TipoDeEscala.tetracordosGriegos + TipoDeEscala.generosDeArquitasYPtolomeo)
+        #expect(harmoniai == TipoDeEscala.harmoniai)
         #expect(harmoniai.count == 8)
         // Las siete afinaciones babilónicas.
         #expect(TipoDeEscala.tradicionales(categoria: .afinacion) == TipoDeEscala.mesopotamicas)
         #expect(TipoDeEscala.tradicionales(tradicion: .mesopotamia) == TipoDeEscala.mesopotamicas)
         #expect(TipoDeEscala.mesopotamicas.count == 7)
         #expect(TipoDeEscala.nidQabli.tradicion == .mesopotamia && TipoDeEscala.nidQabli.categoria == .afinacion)
+        // Los grāma y las mūrchanā del Nāṭyaśāstra, y los modos gregorianos.
+        #expect(TipoDeEscala.tradicionales(categoria: .grama) == TipoDeEscala.gramas)
+        #expect(TipoDeEscala.tradicionales(categoria: .murchana) == TipoDeEscala.murchanas)
+        #expect(TipoDeEscala.murchanas.count == 14 && TipoDeEscala.sauviri.tradicion == .india)
+        #expect(!TipoDeEscala.sadjaGrama.esRaga)
+        #expect(TipoDeEscala.tradicionales(tradicion: .gregoriano) == TipoDeEscala.modosGregorianos)
+        #expect(TipoDeEscala.tradicionales(categoria: .modo).count == 8)
         // Los pathet y los laras de Indonesia.
         #expect(TipoDeEscala.tradicionales(categoria: .pathet) == TipoDeEscala.pathets)
         #expect(TipoDeEscala.tradicionales(categoria: .laras) == TipoDeEscala.indonesias)
         #expect(TipoDeEscala.tradicionales(tradicion: .indonesia).count == 10)
-        // Todas las escalas de la India son de una de las cuatro categorías indias.
+        // Todas las escalas de la India son de una de las seis categorías indias.
         let indias = TipoDeEscala.tradicionales(tradicion: .india)
-        #expect(indias.allSatisfy { [.thaat, .melakarta, .janya, .raga].contains($0.categoria) })
+        #expect(indias.allSatisfy { [.thaat, .melakarta, .janya, .raga, .grama, .murchana].contains($0.categoria) })
         #expect(indias.count == TipoDeEscala.tradicionales.filter { $0.tradicion == .india }.count)
     }
 

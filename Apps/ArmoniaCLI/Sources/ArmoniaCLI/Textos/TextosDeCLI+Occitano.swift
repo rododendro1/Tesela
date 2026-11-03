@@ -42,7 +42,7 @@ extension TextosDeCLI {
         notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (digitacion), --modos (parallèls e relatius)\ne --comparar Do lidio (a la fin); --simetria (cada quant\nse repetís e sos acòrdis);\n--vecinas (las que sortisson en desplaçant\nuna nòta) e --doce (dins las dotze tonalitats);\n--doce --acordes (los acòrdis de cada\ngrad; --triadas, sens setena)",
         sintaxisEscalas: "escalas [<tèxte>] [opcions]",
         descripcionEscalas: "lo catalòg de las gamas: las abitualas\ne las d'autras tradicions, per\ncategorias, amb lors nòtas dempuèi Do",
-        notasEscalas: "opcions: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio, mesopotamia) e --categoria maqam (o rāga, makam,\ndastgah, dromos…); un tèxte cerca dins los noms",
+        notasEscalas: "opcions: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio, mesopotamia,\ngregoriano) e --categoria maqam (o rāga, makam,\ndastgah, dromos…); un tèxte cerca dins los noms",
         sintaxisTonalidad: "tonalidad <tonalitat>",
         descripcionTonalidad: "armadura, relativas e grases",
         sintaxisConjunto: "conjunto <classas>",

@@ -11,7 +11,8 @@ import Foundation
 // tónica puede apartarse: Sīkāh empieza en Mi𝄳, y se escribe sobre Mi.
 //
 // Los sistemas: los cuartos de tono árabes, el koron persa, las 53 comas turcas, los 72 moria de la salmodia
-// bizantina y los 22 śruti indios, que no son iguales: cada uno es una razón justa.
+// bizantina, los 22 śruti indios, que no son iguales: cada uno es una razón justa, y los cents de cualquier otra razón
+// justa (los géneros de Arquitas y de Ptolomeo).
 
 /// Con qué teoría se mide una escala microtonal: cuántos pasos tiene la octava y cómo se escriben.
 public enum SistemaMicrotonal: String, Sendable, Codable, CaseIterable {
@@ -31,14 +32,19 @@ public enum SistemaMicrotonal: String, Sendable, Codable, CaseIterable {
     /// Cada nota es la pitagórica o se aparta de ella una coma sintónica (81/80), y se escribe con la flecha de
     /// Helmholtz-Ellis: Mi↓ (5/4, una coma bajo el Mi pitagórico de 81/64), Re♭↑ (16/15).
     case sruti
+    /// Razones justas cualesquiera, medidas en cents (1200 por octava): las de los géneros de Arquitas y de Ptolomeo
+    /// (28/27, 8/7…) y las de los grāma que no están entre los 22 śruti. Se escriben con los cents que se apartan de
+    /// la nota temperada: Fa(−37¢).
+    case razones
 
-    /// Pasos por octava: 24, 53, 24, 72 o 22.
+    /// Pasos por octava: 24, 53, 24, 72, 22 o 1200.
     public var pasosPorOctava: Int {
         switch self {
         case .cuartosDeTono, .persa: 24
         case .comas53: 53
         case .moria72: 72
         case .sruti: 22
+        case .razones: 1200
         }
     }
 
@@ -130,6 +136,8 @@ public struct TipoDeEscalaMicrotonal: Hashable, Sendable {
             return desvios(sentido: sentido).map { Int(($0 / 50).rounded()) }
         case .moria72:
             return desvios(sentido: sentido).map { Int(($0 * 72 / 1200).rounded()) }
+        case .razones:
+            return desvios(sentido: sentido).map { Int($0.rounded()) }
         case .sruti:
             return zip(cents(sentido: sentido), intervalos(sentido: sentido)).map { cents, intervalo in
                 // La nota pitagórica, a quintas justas (3/2) de la tónica: Mi, cuatro quintas sobre Do, a 81/64.
@@ -163,13 +171,15 @@ public struct NotaMicrotonal: Hashable, Sendable {
     public let temperada: Nota
     public let sistema: SistemaMicrotonal
     /// Cuartos de tono sobre la nota temperada (−1: medio bemol más), comas sobre la pitagórica (comas53), moria
-    /// sobre la temperada (moria72) o comas sintónicas sobre la pitagórica (śruti).
+    /// sobre la temperada (moria72), comas sintónicas sobre la pitagórica (śruti) o cents sobre la temperada
+    /// (razones).
     public let ajuste: Int
     /// Cents desde la tónica temperada (la de `Escala.tonica`).
     public let cents: Double
 
     /// Nombre con el signo de su sistema: «Mi𝄳», «Si♭𝄳», «Si⁻¹» (una koma bajo Si), «Mi⁻²» (dos moria bajo Mi),
-    /// «Mi↓» (una coma sintónica bajo el Mi pitagórico). En ASCII, «Miqb», «Siq#», «Si(-1)», «Mi(-2)» y «Mi(-1)».
+    /// «Mi↓» (una coma sintónica bajo el Mi pitagórico), «Fa(−37¢)» (37 cents bajo Fa). En ASCII, «Miqb», «Siq#»,
+    /// «Si(-1)», «Mi(-2)», «Mi(-1)» y «Fa(-37c)».
     public func nombre(en notacion: Notacion = .espanolCompacto) -> String {
         switch sistema {
         case .cuartosDeTono, .persa:
@@ -188,6 +198,11 @@ public struct NotaMicrotonal: Hashable, Sendable {
             guard ajuste != 0 else { return nombre }
             if notacion.usaASCII { return nombre + "(\(ajuste > 0 ? "+" : "")\(ajuste))" }
             return nombre + String(repeating: ajuste > 0 ? "↑" : "↓", count: abs(ajuste))
+        case .razones:
+            let nombre = temperada.nombre(en: notacion)
+            guard ajuste != 0 else { return nombre }
+            if notacion.usaASCII { return nombre + "(\(ajuste > 0 ? "+" : "-")\(abs(ajuste))c)" }
+            return nombre + "(\(ajuste > 0 ? "+" : "−")\(abs(ajuste))¢)"
         case .comas53, .moria72:
             let nombre = temperada.nombre(en: notacion)
             guard ajuste != 0 else { return nombre }
@@ -231,7 +246,7 @@ extension TipoDeEscala {
 
 extension TipoDeEscalaMicrotonal {
     /// Las escalas con versión microtonal: los maqamat, los dastgāh y los makamlar que se aproximan, los dromoi, los
-    /// echoi bizantinos, los thāṭ indios (con Yaman) y el tetracordo enarmónico griego.
+    /// echoi bizantinos, los thāṭ indios (con Yaman), los grāma y las mūrchanā, y los tetracordos griegos.
     ///
     /// Los maqamat van en cuartos de tono, como en la teoría árabe moderna; los dastgāh, en la notación de
     /// Vaziri (el koron, un cuarto de tono bajo); los makamlar, en las comas de Arel-Ezgi-Uzdilek; los echoi, en los
@@ -351,9 +366,37 @@ extension TipoDeEscalaMicrotonal {
         TipoDeEscalaMicrotonal(.marva, .sruti, pasos: [0, 2, 7, 11, 13, 16, 20]),
         TipoDeEscalaMicrotonal(.purvi, .sruti, pasos: [0, 2, 7, 11, 13, 15, 20]),
         TipoDeEscalaMicrotonal(.todi, .sruti, pasos: [0, 1, 5, 11, 13, 14, 21]),
+        // Grāma y mūrchanā del Nāṭyaśāstra, con las razones de los thāṭ: en śruti, por su número desde Sa, y en cents
+        // las que tienen una quinta una coma corta (40/27) o la quinta disminuida de 64/45, que no son ninguno de los 22.
+        TipoDeEscalaMicrotonal(.sadjaGrama, .sruti, pasos: [0, 3, 5, 9, 13, 16, 18]),
+        TipoDeEscalaMicrotonal(.madhyamaGrama, .razones, pasos: [0, 182, 294, 498, 680, 884, 996]),
+        TipoDeEscalaMicrotonal(.uttaramandra, .sruti, pasos: [0, 3, 5, 9, 13, 16, 18]),
+        TipoDeEscalaMicrotonal(.rajani, .sruti, pasos: [0, 4, 7, 9, 13, 17, 20]),
+        TipoDeEscalaMicrotonal(.uttarayata, .razones, pasos: [0, 112, 316, 498, 610, 814, 1018]),
+        TipoDeEscalaMicrotonal(.suddhasadja, .razones, pasos: [0, 182, 294, 498, 680, 792, 996]),
+        TipoDeEscalaMicrotonal(.matsarikrta, .sruti, pasos: [0, 4, 7, 9, 13, 16, 18]),
+        TipoDeEscalaMicrotonal(.asvakranta, .sruti, pasos: [0, 4, 8, 11, 13, 17, 20]),
+        TipoDeEscalaMicrotonal(.abhirudgata, .sruti, pasos: [0, 2, 6, 10, 13, 15, 19]),
+        TipoDeEscalaMicrotonal(.sauviri, .sruti, pasos: [0, 3, 7, 9, 13, 16, 18]),
+        TipoDeEscalaMicrotonal(.harinasva, .sruti, pasos: [0, 4, 7, 11, 13, 17, 20]),
+        TipoDeEscalaMicrotonal(.kalopanata, .sruti, pasos: [0, 2, 6, 9, 13, 15, 19]),
+        TipoDeEscalaMicrotonal(.suddhamadhya, .razones, pasos: [0, 182, 294, 498, 680, 884, 996]),
+        TipoDeEscalaMicrotonal(.margi, .sruti, pasos: [0, 4, 7, 9, 13, 16, 20]),
+        TipoDeEscalaMicrotonal(.pauravi, .razones, pasos: [0, 112, 316, 498, 610, 814, 996]),
+        TipoDeEscalaMicrotonal(.hrsyaka, .sruti, pasos: [0, 4, 6, 10, 13, 15, 19]),
         // El tetracordo enarmónico de Aristóxeno, en cuartos de tono: Mi Fa𝄳 Fa La (la parhýpate, un cuarto de tono
         // sobre Mi, se escribe Fa♭ en doce notas).
         TipoDeEscalaMicrotonal(.tetracordoEnarmonico, .cuartosDeTono, pasos: [0, 1, 2, 10]),
+        // Los géneros de Arquitas y de Ptolomeo, con sus razones en cents (Mi a 0, La a 498, la cuarta justa 4/3).
+        TipoDeEscalaMicrotonal(.tetracordoCromaticoDeArquitas, .razones, pasos: [0, 63, 204, 498]),
+        TipoDeEscalaMicrotonal(.tetracordoDiatonicoDeArquitas, .razones, pasos: [0, 63, 294, 498]),
+        TipoDeEscalaMicrotonal(.tetracordoEnarmonicoDePtolomeo, .razones, pasos: [0, 38, 112, 498]),
+        TipoDeEscalaMicrotonal(.tetracordoCromaticoBlando, .razones, pasos: [0, 63, 182, 498]),
+        TipoDeEscalaMicrotonal(.tetracordoCromaticoTenso, .razones, pasos: [0, 81, 231, 498]),
+        TipoDeEscalaMicrotonal(.tetracordoDiatonicoBlando, .razones, pasos: [0, 84, 267, 498]),
+        TipoDeEscalaMicrotonal(.tetracordoDiatonicoDitonico, .razones, pasos: [0, 90, 294, 498]),
+        TipoDeEscalaMicrotonal(.tetracordoDiatonicoTenso, .razones, pasos: [0, 112, 316, 498]),
+        TipoDeEscalaMicrotonal(.tetracordoDiatonicoIgual, .razones, pasos: [0, 151, 316, 498]),
     ]
 
     /// Nombre de la escala temperada → su versión microtonal.

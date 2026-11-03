@@ -137,6 +137,11 @@ usan microtonos):
 - **10 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
   (el Valaji carnático), Candrakauns y Megh, pentatónicos; Yaman; y Bāgeśrī y Deś, que suben y
   bajan distinto. Se deja fuera Darbārī, que es vakra.
+- **Los 2 grāma y las 14 mūrchanā** del Nāṭyaśāstra: el ṣaḍja-grāma (el dórico, las razones de Kāfī) y el
+  madhyama-grāma (con Pa una coma más bajo), y las siete escalas de cada uno, una desde cada nota: Uttaramandrā,
+  Rajanī, Uttarāyatā, Śuddhaṣaḍjā, Matsarīkṛtā, Aśvakrāntā y Abhirudgatā; Sauvīrī, Hariṇāśvā, Kalopanatā,
+  Śuddhamadhyā, Mārgī, Pauravī y Hṛṣyakā. En doce notas son los siete modos diatónicos; se distinguen por sus
+  microtonos.
 - **12 dastgāh y āvāz persas**: Māhur (la mayor) y Rāst-Panjgāh (el mixolidio); Homāyun,
   Čahārgāh y Šur, aproximados (como el frigio dominante, la doble armónica y el frigio); los
   dastgāh Navā y Segāh, este con la tónica en un *koron* (escrito sobre Mi); y los āvāz Bayāt-e
@@ -164,9 +169,13 @@ usan microtonos):
   ascendente de 1971 cada nombre era otra especie de octava (išartu, la doria griega).
 - **2 escalas coreanas**: P'yŏngjo y Kyemyŏnjo.
 - **Los Andes**: la pentatónica andina (menor) y la tritónica andina (Do Mi♭ Sol).
-- **La Grecia antigua**: los tetracordos diatónico y cromático, y las harmoniai doria (el frigio
-  moderno, de Mi a Mi), doria cromática, frigia (el dórico moderno) y lidia (la mayor). El
-  género enarmónico usa cuartos de tono y queda fuera.
+- **La Grecia antigua**: los tetracordos diatónico, cromático y enarmónico de Aristóxeno; los géneros de
+  Arquitas (cromático y diatónico) y los de Ptolomeo (enarmónico, cromático blando y tenso, diatónico blando,
+  ditónico, tenso e igual), con sus razones justas; y las siete harmoniai, de la mixolidia a la hipodoria, y la
+  doria cromática.
+- **8 modos gregorianos**, del protus auténtico (modo I, el dórico) al tetrardus plagal (modo VIII). Cada
+  plagal tiene los intervalos de su auténtico desde la misma final: lo que cambia es el ámbito y la nota de
+  recitado, que no caben en una escala de doce notas. Se buscan también por su número («modo II», «octavo tono»).
 - **4 modos del klezmer**: Freygish (Ahavah Rabbah), Misheberakh, Adonai Malakh (mixolidio con
   la 3ª menor de paso) y Magen Avot (menor natural).
 
@@ -178,7 +187,8 @@ Encyclopaedia Aethiopica (Təzəta, Ančihoye), los árabes en ALA-LC (Ḥijāz,
 Indonesia con la grafía javanesa (Pélog, Sléndro), los persas en la transliteración de la
 Encyclopædia Iranica (Čahārgāh), los turcos y los azerbaiyanos en su ortografía (Hicazkâr,
 Şur muğamı) y los coreanos en McCune-Reischauer (P'yŏngjo), con la
-romanización oficial y el hangul como alias, y los acadios en su transliteración habitual (išartu, nīš tuḫri). Un nombre gana a un alias: «Hijaz» es el
+romanización oficial y el hangul como alias, y los acadios en su transliteración habitual (išartu, nīš tuḫri). Los modos gregorianos llevan su
+nombre latino (protus, deuterus, tritus, tetrardus). Un nombre gana a un alias: «Hijaz» es el
 maqam Ḥijāz, y el dromos se busca como Hitzáz o Hicaz. Al buscar no importan los
 diacríticos ni las mayúsculas, y también se aceptan las transliteraciones habituales sin ellos
 (Mayamalavagowla, Shanmukhapriya, Hitzaz, hirajoshi), los nombres en chino y en japonés (宫, 平調子), los de
@@ -204,7 +214,8 @@ Escala("La hicaz makami").notas              // La Si♭ Do♯ Re Mi Fa♯ Sol
 
 No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales;
 están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `chinas`, `japonesas`,
-`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `mesopotamicas`, `pathets`…). Sus nombres
+`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `mesopotamicas`, `gramas`, `murchanas`, `generosDeArquitasYPtolomeo`,
+`modosGregorianos`, `pathets`…). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
 las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 mēḷa,
@@ -239,7 +250,9 @@ desde la tónica temperada. La tienen todos los maqamat que usan cuartos de tono
 makamlar, salvo los seis pitagóricos (Nihâvend, Kürdî, Bûselik, Çârgâh, Mâhur y Acemaşiran), en las 53 comas de Arel-Ezgi-Uzdilek
 (`.comas53`); los quince dromoi, con la afinación de su maqam o su makam; los echoi bizantinos, salvo el trítos, en
 los 72 moria de la Comisión Patriarcal de 1881 (`.moria72`); y los diez thāṭ y Yaman, en los 22 śruti indios
-(`.sruti`), cada uno una razón justa; y el tetracordo enarmónico griego, en cuartos de tono (Mi Fa𝄳 Fa La). Los thāṭ siguen el ṣaḍja-grāma de Bharata como lo reconstruye E. J. Arnold
+(`.sruti`), cada uno una razón justa, como los grāma y las mūrchanā; el tetracordo enarmónico griego, en cuartos de
+tono (Mi Fa𝄳 Fa La); y los géneros de Arquitas y de Ptolomeo, en cents (`.razones`), igual que las mūrchanā con
+el Pa de 40/27, que no es uno de los 22 śruti. Los thāṭ siguen el ṣaḍja-grāma de Bharata como lo reconstruye E. J. Arnold
 (Kāfī: Sa, Re 10/9, ga 32/27, ma 4/3, Pa, Dha 5/3, ni 16/9), con el re y el dha pitagóricos (256/243, 128/81) en
 Bhairav, Bhairavī y Toḍī, y Toḍī como lo miden Bel y otros. Los que en su propia teoría no tienen microtonos (Ḥijāz,
 Māhur…) no la necesitan, y los mugam azerbaiyanos tampoco: son los de Hacıbəyov, ya en doce notas. En Sīkāh, ʿIrāq,
@@ -251,7 +264,8 @@ escriben con el medio bemol y el medio sostenido (Mi𝄳, Fa𝄲; en ASCII, Miqb
 *sori*, que no están en Unicode; en el sistema turco, con la nota pitagórica y las comas que se aparta (Si⁻¹,
 una koma bajo Si; en ASCII, Si(-1)); en el bizantino, con los moria que se aparta de la nota temperada (Mi⁻², dos
 moria bajo Mi); y en los śruti, con la flecha de Helmholtz-Ellis de una coma sintónica (81/80) sobre la nota
-pitagórica (Mi↓ es 5/4; Re♭↑, 16/15). Son las afinaciones teóricas: cada escuela afina un poco distinto. Se
+pitagórica (Mi↓ es 5/4; Re♭↑, 16/15); y en cents, con los que se aparta de la nota temperada (Fa(−37¢); en
+ASCII, Fa(-37c)). Son las afinaciones teóricas: cada escuela afina un poco distinto. Se
 buscan por el nombre, como `categoria`: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
 
 ```swift

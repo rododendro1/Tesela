@@ -42,7 +42,7 @@ extension TextosDeCLI {
         notasEscala: "επιλογές: --sequence thirds (ή fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(από 1 έως 4), --piano (δακτυλοθεσία), --modes (παράλληλοι και σχετικοί)\nκαι --compare C lydian (στο τέλος); --symmetry (κάθε πόσο\nεπαναλαμβάνεται και οι συγχορδίες της);\n--neighbors (μετακινώντας μία νότα) και\n--all-keys (και στις δώδεκα τονικότητες);\n--all-keys --chords (οι συγχορδίες κάθε\nβαθμίδας· --triads, χωρίς έβδομη)",
         sintaxisEscalas: "scales [<κείμενο>] [επιλογές]",
         descripcionEscalas: "ο κατάλογος των κλιμάκων: οι συνήθεις\nκαι όσες άλλων παραδόσεων, ανά\nκατηγορία, με τις νότες τους από το Ντο",
-        notasEscalas: "επιλογές: --tradition turkey (ή india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia) και --category maqam (ή rāga, makam,\ndastgah, dromos…)· ένα κείμενο ψάχνει στα ονόματα",
+        notasEscalas: "επιλογές: --tradition turkey (ή india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia,\ngregorian) και --category maqam (ή rāga, makam,\ndastgah, dromos…)· ένα κείμενο ψάχνει στα ονόματα",
         sintaxisTonalidad: "key <τονικότητα>",
         descripcionTonalidad: "οπλισμός, σχετικές τονικότητες και\nβαθμίδες",
         sintaxisConjunto: "set <κλάσεις>",

@@ -996,6 +996,24 @@ import Testing
         #expect(!(TipoDeEscala.todos.contains { $0.nombre == "išartu" }))
     }
 
+    @Test func modosGregorianos() {
+        // El auténtico y el plagal de cada final tienen los mismos intervalos desde ella.
+        #expect(TipoDeEscala.protusAutentico == .dorico && TipoDeEscala.protusPlagal == .dorico)
+        #expect(TipoDeEscala.deuterusAutentico == .frigio && TipoDeEscala.deuterusPlagal == .frigio)
+        #expect(TipoDeEscala.tritusAutentico == .lidio && TipoDeEscala.tritusPlagal == .lidio)
+        #expect(TipoDeEscala.tetrardusAutentico == .mixolidio && TipoDeEscala.tetrardusPlagal == .mixolidio)
+        #expect(Escala(texto: "Re modo II")?.tipo.nombre == "protus plagal")
+        #expect(TipoDeEscala.buscar(nombre: "octavo tono")?.nombre == "tetrardus plagal")
+        #expect(TipoDeEscala.buscar(nombre: "protus authenticus")?.nombre == "protus auténtico")
+        let ingles = Notacion.espanolCompacto.conTextos(en: .ingles)
+        #expect(TipoDeEscala.protusAutentico.nombre(en: ingles) == "authentic protus")
+        // Los grāma y las mūrchanā se encuentran sin diacríticos y en devanagari.
+        #expect(TipoDeEscala.buscar(nombre: "shadja grama")?.nombre == "ṣaḍja-grāma")
+        #expect(TipoDeEscala.buscar(nombre: "Suddhasadja")?.nombre == "Śuddhaṣaḍjā")
+        #expect(TipoDeEscala.buscar(nombre: "सौवीरी")?.nombre == "Sauvīrī")
+        #expect(TipoDeEscala.buscar(nombre: "tetracordo pitagórico")?.nombre == "tetracordo diatónico ditónico")
+    }
+
     @Test func busquedaYNombres() {
         #expect(Escala("Re hitzaz") == Escala(.re, .hitzaz))
         #expect(Escala("Re Hicaz").tipo.nombre == "Hitzáz")
