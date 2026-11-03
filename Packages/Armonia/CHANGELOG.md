@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### Exportar a GUIDO
+
+- **`Voz.guido`, `Coral.guido` y `AnalisisArmonico.guido`**: la partitura en GUIDO Music Notation (`.gmn`), la
+  entrada de Guido Engine, con lo mismo que LilyPond y ABC: grafía, barras, anacrusa, ligaduras, grupos irregulares
+  (`\tuplet`), tempo, cifrados encima (`\harmony`) y análisis debajo (`\text`). Los cuartos de tono se escriben con
+  la nota temperada.
+
 ### Más acordes
 
 - **`DisposicionDeAcorde.sinFundamentalA`, `sinFundamentalB` y `dosManos`**: las disposiciones sin fundamental de
