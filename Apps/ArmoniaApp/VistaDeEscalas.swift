@@ -110,10 +110,7 @@ struct VistaDeEscalas: View {
         .onAppear(perform: tomarLaEscalaPedida)
         .toolbar {
             ToolbarItem {
-                BotonDeExportar(
-                    [pentagrama.fichero] + secuenciaPresentada(de: escala).ficheros + teclados(de: escala).map {
-                        FicheroParaExportar.svg($0.svg, nombre: $0.titulo)
-                    })
+                BotonDeExportar([pentagrama.fichero] + secuenciaPresentada(de: escala).ficheros + svgs(de: escala))
             }
         }
     }
@@ -184,6 +181,11 @@ struct VistaDeEscalas: View {
                 }
             }
         }
+    }
+
+    /// Los teclados de cada mano, para exportarlos en SVG.
+    private func svgs(de escala: Escala) -> [FicheroParaExportar] {
+        teclados(de: escala).map { FicheroParaExportar.svg($0.svg, nombre: $0.titulo) }
     }
 
     /// La escala en el teclado de piano con los dedos de cada mano, la derecha primero: el dibujo y su título.
