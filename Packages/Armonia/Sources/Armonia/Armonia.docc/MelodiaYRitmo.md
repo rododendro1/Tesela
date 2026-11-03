@@ -72,6 +72,32 @@ MusicXML, MEI, LilyPond, ABC y GUIDO las escriben, y MusicXML, MEI y ABC las lee
 Una nota partida en varias ligadas las lleva solo en la primera. El pentagrama SVG todavía no
 las dibuja.
 
+## Frases, forma y motivos
+
+`Voz.frases(minimo:)` parte una melodía en frases con reglas sencillas de agrupamiento: una frase
+acaba antes de un silencio o en una nota más larga que la anterior y la siguiente, y dura al
+menos un compás (o lo que se pida). `forma(minimo:)` da una letra a cada frase: la misma a las
+que se repiten, aunque estén transportadas, y una prima a las variantes, que coinciden en la
+mitad o más de sus intervalos y su ritmo. `motivos(minimo:)` busca los trozos que vuelven, iguales
+o transportados, y dice si forman una progresión (`esSecuencia`):
+
+```swift
+let tema = try Voz(leyendo: "Do4:4 Re4:4 Mi4:2 Do4:4 Re4:4 Mi4:2 Sol4:4 Fa4:4 Mi4:2 Do4:4 Re4:4 Do4:2")
+tema.frases().count                         // 4
+tema.frases()[2].eventos == 6..<9           // true
+tema.forma() == ["A", "A", "B", "A′"]       // true
+
+let progresion = try Voz(leyendo: "Do4:8 Re4:8 Mi4:4 Re4:8 Mi4:8 Fa#4:4 Mi4:8 Fa#4:8 Sol#4:2")
+let motivo = progresion.motivos(minimo: 3)[0]
+motivo.intervalos == [2, 2]                 // true
+motivo.apariciones == [0, 3, 6]             // true
+motivo.transposiciones == [0, 2, 4]         // true
+motivo.esSecuencia                          // true
+```
+
+En un acorde cuenta la nota más aguda, y una nota ligada cuenta una vez. Es una estimación: no
+reconoce períodos ni secciones a gran escala.
+
 ## Métrica
 
 Cada compás agrupa sus unidades en pulsos: `[1, 1, 1, 1]` en 4/4, `[3, 3]` en 6/8, `[2, 2, 3]`
