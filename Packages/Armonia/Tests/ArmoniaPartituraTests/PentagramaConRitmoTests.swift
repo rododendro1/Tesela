@@ -91,7 +91,7 @@ import Testing
         // la barra.
         #expect(contar("<title>Re₄</title>", en: svg) == 2)
         #expect(contar("<title>Mi₄</title>", en: svg) == 2)
-        #expect(contar("Q", en: svg) == 4)  // dos ligaduras, de dos curvas cada una
+        #expect(contar("Q", en: svg) == 4) // dos ligaduras, de dos curvas cada una
         #expect(veces(GlifosSMuFL.puntillo, en: svg) == 0)
         let conPuntillo = try Voz(leyendo: "Sol4:2.", compas: Compas(3, 4)).svgPentagrama(titulo: "Puntillo")
         #expect(veces(GlifosSMuFL.puntillo, en: conPuntillo) == 1)
