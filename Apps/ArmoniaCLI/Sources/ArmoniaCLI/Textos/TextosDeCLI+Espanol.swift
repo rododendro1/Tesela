@@ -62,6 +62,10 @@ extension TextosDeCLI {
         descripcionTabla: "tabla armónica en SVG (hexágonos)",
         sintaxisTablaAcorde: "tabla --acorde <cifrado> | --escala <escala> | --clases <números>\ntabla --recorrido <tríadas> | --camino <tríada> <tríada>\ntabla --ciclo <ciclo> <tríada>",
         descripcionTablaAcorde: "(--margen 2: más tabla alrededor)",
+        sintaxisCuadricula: "cuadricula <notas o alturas> | --acorde | --escala | --clases",
+        descripcionCuadricula: "teclado de cuadrícula en SVG (pads),\ncon el contorno y la primera nota",
+        sintaxisCuadriculaOpciones: "cuadricula --ejes H,V --rejilla CxF --origen <altura>\ncuadricula --giro 0-3 --espejo --en-tono --escala <escala>",
+        descripcionCuadriculaOpciones: "ejes (1,5: en cuartas), rejilla del\ncontrolador (8x8), nota de la esquina,\ncuartos de vuelta, espejo y en tono",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "vecinos <acorde> [--voces 2]",
@@ -177,6 +181,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "el recorrido es de tríadas mayores y menores: " + ejemplo },
         caminoSoloTriadas: { ejemplo, orden in "el camino va de una tríada mayor o menor a otra: " + ejemplo },
         cicloSoloTriadas: { ejemplo, orden in "el ciclo empieza en una tríada mayor o menor: " + ejemplo },
+        opcionesDeCuadricula: "opciones de la cuadrícula: --ejes H,V (1,5), --rejilla CxF (8x8), --origen <altura> (Do2), --giro 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "las voces que se mueven son 1 o 2: --voces 2",

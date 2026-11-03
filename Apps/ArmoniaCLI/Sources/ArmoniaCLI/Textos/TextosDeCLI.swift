@@ -65,6 +65,10 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionTabla: String
     let sintaxisTablaAcorde: String
     let descripcionTablaAcorde: String
+    let sintaxisCuadricula: String
+    let descripcionCuadricula: String
+    let sintaxisCuadriculaOpciones: String
+    let descripcionCuadriculaOpciones: String
 
     // MARK: Ayuda+Neorriemann.swift
     let sintaxisVecinos: String
@@ -164,6 +168,7 @@ struct TextosDeCLI: TextosTraducidos {
     let recorridoSoloTriadas: @Sendable (String, String) -> String
     let caminoSoloTriadas: @Sendable (String, String) -> String
     let cicloSoloTriadas: @Sendable (String, String) -> String
+    let opcionesDeCuadricula: String
 
     // MARK: ErrorDeUso.swift (neorriemanniana)
     let vocesFueraDeRango: String

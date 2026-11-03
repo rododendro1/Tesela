@@ -59,6 +59,10 @@ extension TextosDeRepresentaciones {
         wickiHaydenCuadrado: "Wicki-Hayden (laukisarea)",
         cuadriculaDeTonosEnteros: "Tonu osoen laukisarea",
         tonnetzDeEuler: "Eulerren Tonnetz-a",
+        cuadriculaEnTercerasMenores: "Laukisarea hirugarren txikietan",
+        cuadriculaEnTritonos: "Laukisarea tritonoetan",
+        cuadriculaEnOctavas: "Laukisarea zortziduretan",
+        cuadriculaSecuencial: "Laukisare sekuentziala",
         // FormatoUIL.swift
         uilNoValido: { texto in "UIL baliogabea: «\(texto)». L,G,D;R<graduak>[M] espero da, adibidez 2,7,5;R30M." },
         intervalosIncoherentes: { menor, mayor, diferencia in "Tarte koherentegabeak: \(menor),\(mayor),\(diferencia). 0 < L ≤ D eta G = L + D bete behar dituzte." },

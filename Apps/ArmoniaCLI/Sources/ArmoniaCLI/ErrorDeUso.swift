@@ -116,6 +116,8 @@ enum ErrorDeUso {
     case recorridoSoloTriadas(orden: String)
     case caminoSoloTriadas(orden: String)
     case cicloSoloTriadas(orden: String)
+    /// `cuadricula` con una opción sin valor o con uno que no se lee: unos ejes, una rejilla, una altura o un giro.
+    case opcionesDeCuadricula
 
     /// El mensaje completo, con la línea que remite a la ayuda.
     func texto(en notacion: Notacion) -> String {
@@ -282,6 +284,7 @@ enum ErrorDeUso {
         case .cicloSoloTriadas(let orden):
             let ejemplo = "armonia \(orden) --ciclo hexatonico Do"
             return TextosDeCLI.traduccion { $0.cicloSoloTriadas(ejemplo, orden) }
+        case .opcionesDeCuadricula: return TextosDeCLI.traduccion(\.opcionesDeCuadricula)
         }
     }
 }

@@ -62,6 +62,10 @@ extension TextosDeCLI {
         descripcionTabla: "harmonische Tabelle in SVG (Sechsecke)",
         sintaxisTablaAcorde: "tabla --chord | --scale | --pcs | --sequence | --shortest | --cycle",
         descripcionTablaAcorde: "wie beim Tonnetz (--margen 2: mehr\nTabelle rundherum)",
+        sintaxisCuadricula: "cuadricula <Noten oder Tonhöhen> | --chord | --scale | --pcs",
+        descripcionCuadricula: "Rastertastatur in SVG (Pads), mit\nUmriss und erster Note",
+        sintaxisCuadriculaOpciones: "cuadricula --axes H,V --grid CxR --origin <Tonhöhe>\ncuadricula --rotate 0-3 --mirror --in-key --scale <Skala>",
+        descripcionCuadriculaOpciones: "Achsen (1,5: in Quarten), Raster des\nControllers (8x8), Ecknote,\nViertelumdrehungen, Spiegeln und in der Tonart",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "neighbors <Akkord> [--voices 2]",
@@ -176,6 +180,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "die Folge besteht aus Dur- und Molldreiklängen: armonia \(orden) --sequence C Am F Dm" },
         caminoSoloTriadas: { ejemplo, orden in "der kürzeste Weg führt von einem Dur- oder Molldreiklang zu einem anderen: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "der Zyklus beginnt mit einem Dur- oder Molldreiklang: armonia \(orden) --cycle hexatonic C" },
+        opcionesDeCuadricula: "Rasteroptionen: --axes H,V (1,5), --grid CxR (8x8), --origin <Tonhöhe> (C2), --rotate 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "es bewegen sich 1 oder 2 Stimmen: --voices 2",

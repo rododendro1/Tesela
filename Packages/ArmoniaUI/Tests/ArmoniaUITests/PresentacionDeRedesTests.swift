@@ -34,9 +34,66 @@ import Testing
         #expect(!svg.contains("<polygon"))
         #expect(svg.contains(">Do₄<"))
         #expect(svg.contains(">Do₅<"))
-        #expect(svg.components(separatedBy: "<rect").count - 1 == 12 * 7)
+        // Las 84 casillas y, encima, el borde de los siete Do.
+        #expect(svg.components(separatedBy: "<rect").count - 1 == 12 * 7 + 7)
         #expect(PresentacionDeRedes.casillasDelTecladoCuadrado.count == 12 * 7)
         #expect(PresentacionDeRedes.casillasDelTecladoCuadrado.contains(.origen))
+    }
+
+    @Test func elAjusteDeLaCuadricula() throws {
+        var ajuste = AjusteCuadrado()
+        #expect(ajuste.teclado(de: .cuadriculaPersonalizada)?.ejes == "1,5")
+        #expect(ajuste.teclado(de: .tonnetz) == nil)
+        #expect(ajuste.teclado(de: .cuadriculaEnQuintas)?.ejes == "1,7")
+        ajuste.texto = "2,7"
+        ajuste.giros = 1
+        #expect(ajuste.resultado == "7,-2")
+        ajuste.espejo = true
+        #expect(ajuste.resultado == "-7,-2")
+        ajuste.texto = "no"
+        #expect(ajuste.resultado == nil)
+        let doMayor = ContenidoDeRed.acorde(try Acorde(leyendo: "Do"))
+        let notacion = Notacion.espanolCompacto
+        let sinEjes = PresentacionDeRedes.svg(doMayor, en: .cuadriculaPersonalizada, notacion: notacion, cuadrado: ajuste)
+        #expect(sinEjes == nil)
+        // La rejilla trae su nota de origen, y al cambiarla se olvida la elegida.
+        ajuste = AjusteCuadrado(origen: 48)
+        #expect(ajuste.midiDelOrigen == 48)
+        ajuste.rejilla = .launchpad
+        #expect(ajuste.origen == nil)
+        #expect(ajuste.midiDelOrigen == 36)
+        #expect(ajuste.teclado(de: .cuadriculaEnCuartas)?.midi(en: .origen) == 36)
+        // En tono, solo con una escala.
+        ajuste.enTono = true
+        #expect(ajuste.teclado(de: .cuadriculaEnCuartas)?.esCromatico == true)
+        let enTono = try #require(ajuste.teclado(de: .cuadriculaEnCuartas, escala: Escala(.re, .dorico)))
+        #expect(enTono.semitonosEnV == 3)
+        #expect(enTono.midi(en: .origen) == 38) // Re2
+    }
+
+    @Test func laCuadriculaEnUnControladorEnTonoYConContorno() throws {
+        let escala = ContenidoDeRed.escala(try Escala(leyendo: "Re dórico"))
+        let ajuste = AjusteCuadrado(rejilla: .launchpad, enTono: true)
+        let svg = try #require(
+            PresentacionDeRedes.svg(escala, en: .cuadriculaEnCuartas, notacion: .espanolCompacto, cuadrado: ajuste))
+        // Las 64 casillas y, encima, el borde de las 10 que son Re.
+        #expect(svg.components(separatedBy: "<rect").count - 1 == 64 + 10)
+        #expect(svg.contains(">Re₂<"))
+        #expect(!svg.contains(">Do♯"))
+        #expect(svg.contains(#"class="primera""#))
+        #expect(svg.contains(#"class="contorno""#))
+        let lado = PresentacionDeRedes.ladoDelTecladoCuadrado
+        #expect(PresentacionDeRedes.midi(en: .cero, de: escala, enLaRed: .cuadriculaEnCuartas, cuadrado: ajuste) == 38)
+        #expect(
+            PresentacionDeRedes.midi(
+                en: Punto(x: lado, y: 0), de: escala, enLaRed: .cuadriculaEnCuartas, cuadrado: ajuste) == 40)
+        // Fuera de los 8 × 8, nada.
+        #expect(
+            PresentacionDeRedes.midi(
+                en: Punto(x: -lado, y: 0), de: escala, enLaRed: .cuadriculaEnCuartas, cuadrado: ajuste) == nil)
+        #expect(
+            PresentacionDeRedes.nombre(escala, en: .cuadriculaPersonalizada, notacion: .espanolCompacto)
+                == "H,V 1,5 · Re dórico")
     }
 
     @Test func unRecorridoVacioNoSeDibuja() {
@@ -68,7 +125,7 @@ import Testing
         // Cada teclado del catálogo del motor tiene su red, y cada red de teclado encuentra el suyo.
         let teclados = RedDeNotas.allCases.compactMap(\.teclado)
         #expect(([TecladoIsomorfico.tablaArmonica] + teclados) == TecladoIsomorfico.todos)
-        let hexagonales = RedDeNotas.allCases.filter { $0.tecladoCuadrado == nil }
+        let hexagonales = RedDeNotas.allCases.filter { !$0.esCuadricula }
         for red in hexagonales where ![.tonnetz, .tablaArmonica, .uil].contains(red) {
             #expect(red.teclado?.nombre == red.rawValue)
             #expect(red.nombre(en: .inglesASCII) == red.teclado?.nombre(en: .inglesASCII))

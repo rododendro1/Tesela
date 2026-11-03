@@ -60,6 +60,10 @@ extension TextosDeRepresentaciones {
         wickiHaydenCuadrado: "Wicki-Hayden (πλέγμα)",
         cuadriculaDeTonosEnteros: "Πλέγμα ολόκληρων τόνων",
         tonnetzDeEuler: "Tonnetz του Όιλερ",
+        cuadriculaEnTercerasMenores: "Πλέγμα μικρών τρίτων",
+        cuadriculaEnTritonos: "Πλέγμα τριτόνων",
+        cuadriculaEnOctavas: "Πλέγμα οκτάβων",
+        cuadriculaSecuencial: "Διαδοχικό πλέγμα",
         // FormatoUIL.swift
         uilNoValido: { texto in "Μη έγκυρο UIL: «\(texto)». Αναμένεται L,G,D;R<μοίρες>[M], για παράδειγμα 2,7,5;R30M." },
         intervalosIncoherentes: { menor, mayor, diferencia in "Ασυνεπή διαστήματα: \(menor),\(mayor),\(diferencia). Πρέπει να ισχύει 0 < L ≤ D και G = L + D." },

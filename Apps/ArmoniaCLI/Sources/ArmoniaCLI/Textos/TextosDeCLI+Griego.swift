@@ -62,6 +62,10 @@ extension TextosDeCLI {
         descripcionTabla: "αρμονικός πίνακας σε SVG (εξάγωνα)",
         sintaxisTablaAcorde: "tabla --chord | --scale | --pcs | --sequence | --shortest | --cycle",
         descripcionTablaAcorde: "όπως στο Tonnetz (--margen 2:\nπερισσότερος πίνακας γύρω)",
+        sintaxisCuadricula: "cuadricula <νότες ή τονικά ύψη> | --chord | --scale | --pcs",
+        descripcionCuadricula: "πληκτρολόγιο πλέγματος σε SVG (pads),\nμε το περίγραμμα και την πρώτη νότα",
+        sintaxisCuadriculaOpciones: "cuadricula --axes H,V --grid CxR --origin <τονικό ύψος>\ncuadricula --rotate 0-3 --mirror --in-key --scale <κλίμακα>",
+        descripcionCuadriculaOpciones: "άξονες (1,5: σε τέταρτες), πλέγμα του\nελεγκτή (8x8), νότα της γωνίας,\nτέταρτα στροφής, καθρέφτης και στην κλίμακα",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "neighbors <συγχορδία> [--voices 2]",
@@ -176,6 +180,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "η ακολουθία αποτελείται από μείζονα και ελάσσονα τρίφωνα: armonia \(orden) --sequence C Am F Dm" },
         caminoSoloTriadas: { ejemplo, orden in "η συντομότερη διαδρομή πάει από ένα μείζον ή ελάσσον τρίφωνο σε άλλο: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "ο κύκλος ξεκινά από ένα μείζον ή ελάσσον τρίφωνο: armonia \(orden) --cycle hexatonic C" },
+        opcionesDeCuadricula: "επιλογές του πλέγματος: --axes H,V (1,5), --grid CxR (8x8), --origin <τονικό ύψος> (C2), --rotate 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "κινούνται 1 ή 2 φωνές: --voices 2",

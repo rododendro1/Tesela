@@ -382,3 +382,24 @@ TecladoCuadrado(nombre: "Tonos", semitonosEnH: 2, semitonosEnV: 4).esCompleto ==
 let ventana = CasillaCuadrada.rectangulo(columnas: 0...11, filas: 0...3)
 let dibujo = cuartas.svg(ventana, marcadas: [60, 64, 67])
 ```
+
+Trae también las demás filas del LinnStrument, en terceras menores (1, 3), en tritonos (1, 6) y en octavas (1, 12), y
+la secuencial del Push (1, 8). Cualquier otro se escribe con sus ejes, `TecladoCuadrado.conEjes("2,7")`, y
+`conOrigen(_:)` cambia la nota de la casilla `(0, 0)`. ``RejillaDeControlador`` da las casillas de un controlador real:
+8 × 8 (Launchpad, Push), 16 × 8 y 25 × 8 (LinnStrument), con la `(0, 0)` en la esquina de abajo a la izquierda y el Do2
+en ella, o la ventana de 12 × 7 alrededor del Do4.
+
+`enTono(_:)` lo convierte en un teclado en tono, como el modo In Key del Push: solo suenan las notas de una escala, H y
+V cuentan grados (los que caben en sus semitonos: en cuartas, tres grados por fila en una escala de siete notas) y la
+casilla de origen es la tónica. `svg(_:marcadas:primeras:contorno:)` dibuja además el contorno de las notas marcadas y
+la primera (la tónica o la fundamental) con el borde naranja de la tabla armónica.
+
+```swift
+let enTono = TecladoCuadrado.cuartas.enTono(Escala(.re, .dorico))
+enTono.semitonosEnV == 3                                                  // true
+enTono.midi(en: .origen) == 62                                            // true
+TecladoCuadrado.conEjes("2,7")?.semitonosEnV == 7                         // true
+TecladoCuadrado.secuencial.conOrigen(36).midi(en: CasillaCuadrada(columna: 0, fila: 1)) == 44   // true
+RejillaDeControlador.launchpad.casillas.count == 64                       // true
+let pads = enTono.conOrigen(36).svg(RejillaDeControlador.launchpad.casillas, marcadas: [62], primeras: [62], contorno: true)
+```

@@ -62,6 +62,10 @@ extension TextosDeCLI {
         descripcionTabla: "taula harmonikoa SVGn (hexagonoak)",
         sintaxisTablaAcorde: "tabla --acorde | --escala | --clases | --recorrido | --camino | --ciclo",
         descripcionTablaAcorde: "Tonnetzean bezala (--margen 2: taula\ngehiago inguruan)",
+        sintaxisCuadricula: "cuadricula <notak edo altuerak> | --acorde | --escala | --clases",
+        descripcionCuadricula: "laukisare-teklatua SVGn (padak),\ningurua eta lehen nota",
+        sintaxisCuadriculaOpciones: "cuadricula --ejes H,V --rejilla CxF --origen <altuera>\ncuadricula --giro 0-3 --espejo --en-tono --escala <eskala>",
+        descripcionCuadriculaOpciones: "ardatzak (1,5: laugarrenetan),\nkontrolagailuaren sareta (8x8), izkinako\nnota, laurden-birak, ispilua eta tonuan",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "vecinos <akordea> [--voces 2]",
@@ -176,6 +180,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "ibilbidea triade handi eta txikiz osatzen da: " + ejemplo },
         caminoSoloTriadas: { ejemplo, orden in "bidea triade handi edo txiki batetik beste batera doa: " + ejemplo },
         cicloSoloTriadas: { ejemplo, orden in "zikloa triade handi edo txiki batean hasten da: " + ejemplo },
+        opcionesDeCuadricula: "laukisarearen aukerak: --ejes H,V (1,5), --rejilla CxF (8x8), --origen <altuera> (Do2), --giro 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "mugitzen diren ahotsak 1 edo 2 dira: --voces 2",
