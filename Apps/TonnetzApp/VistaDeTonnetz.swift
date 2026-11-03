@@ -4,7 +4,8 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 /// Un acorde, una escala o un recorrido de tríadas con las transformaciones P, L y R, en el Tonnetz, en la
-/// tabla armónica o en un teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático, Gerhard o Park), y su dibujo
+/// tabla armónica o en un teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático, Gerhard o Park, o uno de
+/// cuadrícula, como los de los controladores de pads, que se puede girar, reflejar y tocar en tono), y su dibujo
 /// para exportar. Al tocar una nota del dibujo, suena. En el modo «Identificar», además, la nota tocada se marca (o se
 /// desmarca) y se dice
 /// qué acorde forman las marcadas y su número de Forte; un acorde tocado en un teclado MIDI conectado también se
@@ -34,6 +35,7 @@ struct VistaDeTonnetz: View {
     @State private var contenido = Contenido.recorrido
     @State private var red = RedDeNotas.tonnetz
     @State private var uil = AjusteUIL()
+    @State private var cuadrado = AjusteCuadrado()
     @State private var textoInicial = "Do"
     @State private var textoAcorde = "Dom7"
     @State private var textoEscala = "Re dórico"
@@ -73,15 +75,18 @@ struct VistaDeTonnetz: View {
             }
 
             if red == .uil { controlesDeUIL }
+            if red.esCuadricula { controlesDeCuadricula }
 
             controles
             BotonDeEscuchar(sonido)
 
-            if let dibujado, let svg = PresentacionDeRedes.svg(dibujado, en: red, notacion: notacion, uil: uil) {
+            if let dibujado, let svg = dibujo(de: dibujado) {
                 VistaSVG(svg: svg)
                     // Tocar una nota la hace sonar.
                     .alTocarElSVG(svg) { punto in
-                        if let midi = PresentacionDeRedes.midi(en: punto, de: dibujado, enLaRed: red, uil: uil) {
+                        let tocado = PresentacionDeRedes.midi(
+                            en: punto, de: dibujado, enLaRed: red, uil: uil, cuadrado: cuadrado)
+                        if let midi = tocado {
                             Reproductor.compartido.tocar(.nota(midi))
                             if contenido == .identificar {
                                 clasesTocadas = PresentacionDeRedes.alternar(midi, en: clasesTocadas)
@@ -89,8 +94,7 @@ struct VistaDeTonnetz: View {
                         }
                     }
                     .clipShape(RoundedRectangle(cornerRadius: TemaDeLasApps.radioDeEsquina))
-                    .accessibilityLabel(
-                        Text(PresentacionDeRedes.nombre(dibujado, en: red, notacion: notacion, uil: uil)))
+                    .accessibilityLabel(Text(nombre(de: dibujado)))
             } else {
                 Spacer()
                 Text(notacion.texto(\.noSeDibuja)).foregroundColor(.secondary)
@@ -151,6 +155,43 @@ struct VistaDeTonnetz: View {
     }
 
     private func modulo360(_ grados: Int) -> Int { ((grados % 360) + 360) % 360 }
+
+    /// Los teclados de cuadrícula: los ejes del personalizado, la rejilla del controlador, la nota de origen, el giro
+    /// de 90° en 90°, el espejo y si se toca en tono (solo con una escala).
+    @ViewBuilder
+    private var controlesDeCuadricula: some View {
+        if red == .cuadriculaPersonalizada {
+            TextField(notacion.texto(\.ejesHV), text: $cuadrado.texto)
+                .textFieldStyle(.roundedBorder)
+                .font(.system(.body, design: .monospaced))
+                .comoCampoDeCifrado()
+        }
+        HStack {
+            Picker(notacion.texto(\.rejilla), selection: $cuadrado.rejilla) {
+                ForEach(RejillaDeControlador.todas) { Text($0.nombre).tag($0) }
+            }
+            Stepper("\(notacion.texto(\.notaDeOrigen)): \(nombreDelOrigen)", value: origenElegido, in: 0...127)
+        }
+        HStack {
+            Stepper("\(notacion.texto(\.giro)): \(modulo360(cuadrado.giros * 90))°", value: $cuadrado.giros)
+            Toggle(notacion.texto(\.espejo), isOn: $cuadrado.espejo)
+            Toggle(notacion.texto(\.enTono), isOn: $cuadrado.enTono)
+                .disabled(contenido != .escala)
+        }
+        if red == .cuadriculaPersonalizada {
+            Text(cuadrado.resultado ?? notacion.texto(\.noSeDibuja))
+                .font(.system(.callout, design: .monospaced))
+                .foregroundColor(.secondary)
+        }
+    }
+
+    /// La nota de la casilla de origen, con su octava: «Do₂».
+    private var nombreDelOrigen: String { Altura(midi: cuadrado.midiDelOrigen).nombreCompacto(en: notacion) }
+
+    /// La nota de la casilla de origen: la de la rejilla hasta que se elige otra.
+    private var origenElegido: Binding<Int> {
+        Binding(get: { cuadrado.midiDelOrigen }, set: { cuadrado.origen = $0 })
+    }
 
     @ViewBuilder
     private var controles: some View {
@@ -313,10 +354,18 @@ struct VistaDeTonnetz: View {
     }
 
     private var ficheros: [FicheroParaExportar] {
-        guard let dibujado, let svg = PresentacionDeRedes.svg(dibujado, en: red, notacion: notacion, uil: uil) else {
-            return []
-        }
-        return [.svg(svg, nombre: PresentacionDeRedes.nombre(dibujado, en: red, notacion: notacion, uil: uil))]
+        guard let dibujado, let svg = dibujo(de: dibujado) else { return [] }
+        return [.svg(svg, nombre: nombre(de: dibujado))]
+    }
+
+    /// El dibujo en la red elegida, con los ajustes del teclado UIL y de la cuadrícula.
+    private func dibujo(de dibujado: ContenidoDeRed) -> String? {
+        PresentacionDeRedes.svg(dibujado, en: red, notacion: notacion, uil: uil, cuadrado: cuadrado)
+    }
+
+    /// El nombre del dibujo, para exportarlo y para VoiceOver.
+    private func nombre(de dibujado: ContenidoDeRed) -> String {
+        PresentacionDeRedes.nombre(dibujado, en: red, notacion: notacion, uil: uil, cuadrado: cuadrado)
     }
 
     // MARK: Acciones

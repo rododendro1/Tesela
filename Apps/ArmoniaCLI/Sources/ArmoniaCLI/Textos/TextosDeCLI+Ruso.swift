@@ -9,6 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <аккорды> [--in <тональность>] [--scales]",
         descripcionAnalizar: "римские цифры, функции, кадансы и\nмодуляции (с общим аккордом; без --in)\n--scales: лад каждого аккорда, с\nнапряжениями и избегаемыми звуками",
+        notasAnalizar: "--guide-tones: две линии направляющих нот,\nот терции и от септимы",
         sintaxisAnalizarArchivo: "analyze --file <файл> [--window <длительность>]",
         descripcionAnalizarArchivo: "то же самое с аккордами файла MIDI,\nMusicXML, MEI или ABC (по одному на\nдолю; --window 2: по одному на\nполовинную)",
         sintaxisArmonizar: "harmonize <мелодия> [--in <тональность>] [--proposals 3]",
@@ -27,16 +28,18 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <обозначение>…",
         descripcionAcorde: "ноты, тип и роль каждой ноты",
-        notasAcorde: "параметры: --voicings, --names, --keys, --substitutions\n(в тональности --in C major, в конце) и --compare C\n(общие ноты и голосоведение)",
+        notasAcorde: "параметры: --voicings, --names, --keys, --substitutions\n(в тональности --in C major, в конце) и --compare C\n(общие ноты и голосоведение); --bebop и --pentatonics\n(гаммы для импровизации)",
         sintaxisArpegio: "arpeggio <обозначение> [--pattern <рисунок>]",
         descripcionArpegio: "ноты арпеджио и подходящие гаммы\n(--pattern ascending, descending,\nup-down, down-up, broken, alberti)",
         notasArpegio: "параметры: --octaves 2 (от 1 до 4), --no-octave, --from E\n(или 3: начать с этой ноты), --tensions 9,13, --degrees\n1-5-3-8 (свой рисунок) и --approach below, above или\nenclosure (хроматические ноты, ведущие к каждой)",
         sintaxisIdentificar: "identify <ноты>",
         descripcionIdentificar: "аккорды, которые образуют ноты",
+        notasIdentificar: "параметры: --scales (гаммы, содержащие\nэти ноты, вместо аккордов) и --file\nmelody.mid (ноты файла MIDI, MusicXML,\nMEI или ABC, с --scales)",
         sintaxisIntervalo: "interval <нота> <нота>",
         descripcionIntervalo: "интервал между двумя нотами или\nвысотами",
         sintaxisEscala: "scale <гамма> [--chords]",
         descripcionEscala: "ноты и аккорды гаммы\n--chords: все аккорды на каждой\nступени, не только терцовые",
+        notasEscala: "параметры: --sequence thirds (или fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(от 1 до 4), --piano (аппликатура), --modes (параллельные и относительные)\nи --compare C lydian (в конце); --symmetry (через сколько\nповторяется и её аккорды);\n--neighbors (сдвинув одну ноту) и\n--all-keys (во всех двенадцати тональностях);\n--all-keys --chords (аккорды каждой\nступени; --triads — без септимы)",
         sintaxisEscalas: "scales [<текст>] [параметры]",
         descripcionEscalas: "каталог гамм: обычные и гаммы других\nтрадиций, по категориям, с нотами\nот до",
         notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) и --category maqam (или rāga, makam,\ndastgah, dromos…); текст ищет в названиях",
@@ -61,6 +64,10 @@ extension TextosDeCLI {
         descripcionTabla: "гармоническая таблица в SVG\n(шестиугольники)",
         sintaxisTablaAcorde: "tabla --chord | --scale | --pcs | --sequence | --shortest | --cycle",
         descripcionTablaAcorde: "как в Tonnetz (--margen 2: больше\nтаблицы вокруг)",
+        sintaxisCuadricula: "cuadricula <ноты или высоты> | --chord | --scale | --pcs",
+        descripcionCuadricula: "сеточная клавиатура в SVG (пэды),\nс контуром и первой нотой",
+        sintaxisCuadriculaOpciones: "cuadricula --axes H,V --grid CxR --origin <высота>\ncuadricula --rotate 0-3 --mirror --in-key --scale <гамма>",
+        descripcionCuadriculaOpciones: "оси (1,5: по квартам), сетка\nконтроллера (8x8), угловая нота,\nчетверти оборота, зеркало и в тональности",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "neighbors <аккорд> [--voices 2]",
@@ -105,6 +112,15 @@ extension TextosDeCLI {
         descripcionDigitaciones: "способы сыграть аккорд, от самого удобного к наименее удобному,\nна струнном инструменте с ладами (струны снизу вверх)\nпараметры: --instrument guitar|bass|ukulele|mandolin|… (также\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (самый высокий используемый лад), --fingers 4 (сколько\nпальцев можно использовать), --complete (со всеми нотами: по\nумолчанию квинта может отсутствовать), --diagram (одна строка на\nструну),\n--capo 2 (лады от каподастра), --musicxml (первая аппликатура\nкаждого аккорда как табулатура MusicXML)",
         sintaxisPosiciones: "positions <гамма> [--caged]",
         descripcionPosiciones: "гамма по позициям на гитаре: три\nноты на струну (две в пентатонике)\nили CAGED",
+        notasPosiciones: "параметры: --sequence thirds (или другая:\nсеквенция в каждой позиции; с\n--descending — вниз) и --shapes (пять форм\nпентатоники и их общие ноты);\n--instrument bass (или другой;\nтакже open-d, open-g, dadgad) и --capo 2",
+        sintaxisTeclado: "keyboard <гамма> [--hand right]",
+        descripcionTeclado: "гамма на клавиатуре фортепиано\n(SVG): ноты или, с --hand right\nили left, пальцы; --octaves 2",
+        sintaxisReloj: "clock <scale> [--fifths]",
+        descripcionReloj: "гамма на двенадцатичасовом циферблате\n(SVG): хроматический круг или, с\n--fifths, квинтовый круг",
+        sintaxisPentagrama: "staff scale|chord|arpeggio|chords <ноты>",
+        descripcionPentagrama: "гамма, аккорд, арпеджио (с ритмом:\n--figure 16, --triplets) или аккорды с\nобозначениями на нотном стане\n(SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
+        sintaxisPosicionesArpegio: "positions --arpeggio <обозначение> [--caged|--sweep]",
+        descripcionPosicionesArpegio: "арпеджио аккорда в каждой позиции\nна грифе, табулатурой и с пальцами;\n--up-and-down — вверх и обратно вниз",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -175,6 +191,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "последовательность — из мажорных и минорных трезвучий: armonia \(orden) --sequence C Am F Dm" },
         caminoSoloTriadas: { ejemplo, orden in "кратчайший путь идёт от одного мажорного или минорного трезвучия к другому: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "цикл начинается с мажорного или минорного трезвучия: armonia \(orden) --cycle hexatonic C" },
+        opcionesDeCuadricula: "параметры сетки: --axes H,V (1,5), --grid CxR (8x8), --origin <высота> (C2), --rotate 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "движутся 1 или 2 голоса: --voices 2",
@@ -215,12 +232,19 @@ extension TextosDeCLI {
         trasteFueraDeRango: "самый высокий лад — число от 0 до 24: --fret 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "не указано обозначение аккорда: \(digitaciones.1)" },
         faltaEscalaDePosiciones: "не указана гамма: armonia positions G major",
+        faltaEscalaDelTeclado: "не указана гамма: armonia keyboard D major",
+        manoDesconocida: { texto in "неизвестная рука: «\(texto)» (right или left)" },
+        archivoConNotas: "с --file ноты не указываются",
+        noEsPentatonica: "формы есть только у пятиступенных гамм: armonia positions A minor pentatonic --shapes",
+        faltaEscalaDelReloj: "не указана гамма: armonia clock D major",
+        faltaLoQueDibujaElPentagrama: "не указано, что рисовать: armonia staff scale D dorian",
         capoFueraDeRango: "каподастр — число от 0 до 12: --capo 2",
         octavasFueraDeRango: "октавы — число от 1 до 4: --octaves 2",
         desdeNoValido: { desde in "«\(desde)» — не нота и не ступень аккорда: --from E или --from 3" },
         tensionesMalEscritas: "надстройки — 9, 11 или 13: --tensions 9,13",
         gradosMalEscritos: "ступени — числа от 1 до 22: --degrees 1-5-3-8",
         aproximacionDesconocida: { aproximacion in "неизвестный подход: «\(aproximacion)» (below, above или enclosure)" },
+        secuenciaDesconocida: { secuencia in "неизвестная секвенция: «\(secuencia)» (thirds, fourths, groups-of-3, groups-of-4, triads или sevenths)" },
 
         // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Попробуй «armonia help».",

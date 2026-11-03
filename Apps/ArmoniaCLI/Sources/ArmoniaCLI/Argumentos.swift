@@ -49,6 +49,17 @@ struct Argumentos {
         return .valor(valor)
     }
 
+    /// Quita una opción seguida de varias palabras, hasta la siguiente opción (`--comparar Do lidio`), y da las
+    /// palabras unidas por espacios.
+    mutating func quitarOpcionConPalabras(_ nombres: String...) -> Opcion {
+        guard let i = restantes.firstIndex(where: { nombres.contains($0) }) else { return .ausente }
+        let fin = restantes[(i + 1)...].firstIndex { $0.hasPrefix("--") } ?? restantes.endIndex
+        let palabras = restantes[(i + 1)..<fin]
+        let nombre = String(restantes[i].dropFirst(2))
+        restantes.removeSubrange(i..<fin)
+        return palabras.isEmpty ? .sinValor(nombre: nombre) : .valor(palabras.joined(separator: " "))
+    }
+
     /// Quita una opción con un número (`--voces 2`): `porDefecto` si no está, y `nil` si le falta el número
     /// o no está en `rango`.
     mutating func quitarNumero(_ nombres: String..., en rango: ClosedRange<Int>, porDefecto: Int) -> Int? {

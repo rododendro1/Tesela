@@ -73,6 +73,19 @@ enum ErrorDeUso {
     case gradosMalEscritos
     /// `arpegio --aproximacion` con un nombre que no se conoce.
     case aproximacionDesconocida(String)
+    case secuenciaDesconocida(String)
+    /// `teclado` sin escala.
+    case faltaEscalaDelTeclado
+    /// `teclado … --mano` con una mano que no es derecha ni izquierda.
+    case manoDesconocida(String)
+    /// `identificar --archivo` con notas detrás.
+    case archivoConNotas
+    /// `posiciones Do mayor --formas`: las formas son de las escalas de cinco notas.
+    case noEsPentatonica
+    /// `reloj` sin escala.
+    case faltaEscalaDelReloj
+    /// `pentagrama` sin escala, acorde ni arpegio.
+    case faltaLoQueDibujaElPentagrama
 
     // Neorriemanniano
     case vocesFueraDeRango
@@ -115,6 +128,8 @@ enum ErrorDeUso {
     case recorridoSoloTriadas(orden: String)
     case caminoSoloTriadas(orden: String)
     case cicloSoloTriadas(orden: String)
+    /// `cuadricula` con una opción sin valor o con uno que no se lee: unos ejes, una rejilla, una altura o un giro.
+    case opcionesDeCuadricula
 
     /// El mensaje completo, con la línea que remite a la ayuda.
     func texto(en notacion: Notacion) -> String {
@@ -208,6 +223,14 @@ enum ErrorDeUso {
         case .gradosMalEscritos: return TextosDeCLI.traduccion(\.gradosMalEscritos)
         case .aproximacionDesconocida(let nombre):
             return TextosDeCLI.traduccion { $0.aproximacionDesconocida(nombre) }
+        case .secuenciaDesconocida(let nombre):
+            return TextosDeCLI.traduccion { $0.secuenciaDesconocida(nombre) }
+        case .faltaEscalaDelTeclado: return TextosDeCLI.traduccion(\.faltaEscalaDelTeclado)
+        case .manoDesconocida(let mano): return TextosDeCLI.traduccion { $0.manoDesconocida(mano) }
+        case .archivoConNotas: return TextosDeCLI.traduccion(\.archivoConNotas)
+        case .noEsPentatonica: return TextosDeCLI.traduccion(\.noEsPentatonica)
+        case .faltaEscalaDelReloj: return TextosDeCLI.traduccion(\.faltaEscalaDelReloj)
+        case .faltaLoQueDibujaElPentagrama: return TextosDeCLI.traduccion(\.faltaLoQueDibujaElPentagrama)
         case .vocesFueraDeRango: return TextosDeCLI.traduccion(\.vocesFueraDeRango)
         case .unAcordeDeVecinos:
             let ejemplo = "armonia vecinos Sol7"
@@ -279,6 +302,7 @@ enum ErrorDeUso {
         case .cicloSoloTriadas(let orden):
             let ejemplo = "armonia \(orden) --ciclo hexatonico Do"
             return TextosDeCLI.traduccion { $0.cicloSoloTriadas(ejemplo, orden) }
+        case .opcionesDeCuadricula: return TextosDeCLI.traduccion(\.opcionesDeCuadricula)
         }
     }
 }

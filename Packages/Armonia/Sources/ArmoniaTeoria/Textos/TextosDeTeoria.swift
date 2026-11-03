@@ -154,6 +154,12 @@ struct TextosDeTeoria: TextosTraducidos {
     let rearmonizacionBackdoor: String
     let rearmonizacionIIRelativo: String
     let rearmonizacionDisminuido: String
+    let secuenciaTerceras: String
+    let secuenciaCuartas: String
+    let secuenciaGruposDeTres: String
+    let secuenciaGruposDeCuatro: String
+    let secuenciaTriadas: String
+    let secuenciaCuatriadas: String
 
     // MARK: ErrorDeLecturaDeTeoria.swift (acordes)
     let simboloNoReconocido: @Sendable (String) -> String

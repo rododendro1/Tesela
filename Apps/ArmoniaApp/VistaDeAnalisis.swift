@@ -53,6 +53,8 @@ struct VistaDeAnalisis: View {
                 }
                 // El acorde que suena, contado desde el primero de todos los tramos.
                 let sonando = reproductor.paso(de: analisis.sonido)
+                // Lo que cambia de una escala a la siguiente y las notas guía de cada acorde.
+                let cambios = analisis.cambiosDeEscala(en: notacion)
                 ForEach(Array(analisis.tramos.enumerated()), id: \.offset) { t, tramo in
                     let antes = analisis.tramos.prefix(t).map(\.filas.count).reduce(0, +)
                     Section(tramo.cabecera ?? notacion.texto(\.acordeAAcorde)) {
@@ -67,6 +69,9 @@ struct VistaDeAnalisis: View {
                                     Text(fila.funcion).foregroundColor(.secondary)
                                 }
                                 if let escala = fila.escala { escalaDelAcorde(escala) }
+                                if cambios.indices.contains(antes + i) {
+                                    Text(cambios[antes + i]).font(.caption).foregroundColor(.secondary)
+                                }
                             }
                             .listRowBackground(sonando == antes + i ? TemaDeLasApps.resaltado.opacity(0.25) : nil)
                         }
@@ -77,6 +82,7 @@ struct VistaDeAnalisis: View {
                         ForEach(analisis.cadencias, id: \.self) { Text($0) }
                     }
                 }
+                lineasDeNotasGuia(analisis)
                 arpegiar(analisis)
                 disponer(analisis)
                 rearmonizar(analisis)
@@ -126,7 +132,10 @@ struct VistaDeAnalisis: View {
         let arpegiada = analisis.arpegiada(patron, figura: figura.duracion, enlazados: enlazados, notacion: notacion)
         let dispuesta = PresentacionDeDisposiciones.progresion(
             analisis.acordes, disposicion, notacion: notacion)
-        return analisis.ficheros + (arpegiada?.ficheros ?? []) + (dispuesta?.ficheros ?? [])
+        let guias = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(
+            analisis.acordes, tonalidad: analisis.tonalidad, notacion: notacion
+        ).flatMap(\.ficheros)
+        return analisis.ficheros + (arpegiada?.ficheros ?? []) + (dispuesta?.ficheros ?? []) + guias
     }
 
     /// «Transponer»: las demás tonalidades del mismo modo. Lo abierto de un fichero conserva su ritmo armónico.
@@ -153,6 +162,29 @@ struct VistaDeAnalisis: View {
             texto, de: origen, a: destino, notacion: notacion)
         {
             texto = nuevo
+        }
+    }
+
+    /// Las dos líneas de notas guía de la progresión, desde la tercera y desde la séptima, con su pentagrama y
+    /// «Escuchar»; se exportan con la barra.
+    @ViewBuilder
+    private func lineasDeNotasGuia(_ analisis: AnalisisPresentado) -> some View {
+        let lineas = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(
+            analisis.acordes, tonalidad: analisis.tonalidad, notacion: notacion)
+        if !lineas.isEmpty {
+            Section(notacion.texto(\.lineasDeNotasGuia)) {
+                ForEach(lineas, id: \.titulo) { linea in
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Text(linea.titulo).bold()
+                            Spacer()
+                            BotonDeEscuchar(linea.sonido)
+                        }
+                        Text(linea.notas).font(.system(.footnote, design: .monospaced))
+                        DiagramaDePentagrama(linea.pentagrama)
+                    }
+                }
+            }
         }
     }
 

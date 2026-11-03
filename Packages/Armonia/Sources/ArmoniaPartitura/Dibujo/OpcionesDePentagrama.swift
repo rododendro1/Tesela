@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+import ArmoniaTeoria
 
 // Las opciones del pentagrama en SVG (`PentagramaSVG`). El dibujo está en `PentagramaSVG.swift`.
 
@@ -28,16 +29,34 @@ public struct OpcionesDePentagrama {
     }
 
     /// Qué armadura se escribe.
-    public enum Armadura {
-        /// La de la escala, si es diatónica (la mayor, el dórico…); las demás escalas y los acordes, sin armadura.
+    public enum Armadura: Hashable, Sendable {
+        /// La de la escala, si es diatónica (la mayor, el dórico…); las demás escalas, los acordes y los arpegios,
+        /// sin armadura.
         case automatica
         /// Ninguna: cada alteración se escribe delante de su nota.
         case ninguna
+        /// La de una tonalidad, en cualquier dibujo: el arpegio de Sol7 en Do mayor, sin alteraciones; el de Mi7 en
+        /// La menor, con el Sol♯ delante de su nota; la menor armónica en La menor, con el Sol♯ de la escala. Las notas
+        /// que la armadura no da llevan su alteración, y las que la contradicen, el becuadro.
+        case tonalidad(Tonalidad)
+
+        /// Las notas de la armadura para un dibujo; `propia`, la de la escala que se dibuja, si la tiene.
+        func notas(propia: [Nota]? = nil) -> [Nota] {
+            switch self {
+            case .automatica:
+                guard let propia, propia.count <= 7 else { return [] }
+                return propia
+            case .ninguna: return []
+            case .tonalidad(let tonalidad): return tonalidad.notasDeLaArmadura
+            }
+        }
     }
 
     /// La clave; si es `nil`, la de sol o la de fa, la que necesite menos líneas adicionales (con `pentagramas` en
     /// `.doble`, la clave no cuenta: van las dos).
     public var clave: Clave?
+    /// Qué armadura se escribe: por defecto, la de la escala si es diatónica; con `.tonalidad`, la de esa tonalidad
+    /// también en los acordes, los arpegios y las voces.
     public var armadura: Armadura
     /// Un pentagrama o dos (el de sol y el de fa): por defecto, dos solo si el rango lo pide.
     public var pentagramas: Pentagramas
@@ -45,6 +64,16 @@ public struct OpcionesDePentagrama {
     public var notacion: Notacion
     /// Si se escribe el nombre de cada nota debajo del pentagrama.
     public var nombresDeLasNotas: Bool
+    /// Si se escribe debajo de cada nota (y del nombre, si lo lleva) su intervalo desde la tónica de la escala o la
+    /// fundamental del acorde: 1, 2, ♭3, ♯4, 5… En un acorde con séptima, la segunda, la cuarta y la sexta se
+    /// escriben como tensiones: 9, 11, 13.
+    public var intervalosDeLasNotas = false
+    /// Si se unen con un arco, encima, las notas seguidas que están a un semitono (Mi–Fa y Si–Do en la mayor).
+    public var marcarSemitonos = false
+    /// Si las tónicas de la escala (o las fundamentales del acorde) se pintan de `colorDeLaTonica`.
+    public var marcarTonica = false
+    /// El color de las tónicas marcadas (cualquier color CSS).
+    public var colorDeLaTonica = "#1971C2"
     /// Píxeles por espacio de pentagrama: el pentagrama mide cuatro veces esto de alto.
     public var tamano: Double
     /// Color del dibujo (cualquier color CSS); `currentColor` toma el del texto que lo rodea.
@@ -68,7 +97,8 @@ public struct OpcionesDePentagrama {
         notacion: Notacion = .espanolCompacto,
         nombresDeLasNotas: Bool = false, tamano: Double = 10, color: String = "currentColor",
         marcaDeOctava: Bool = true, anchoDeLosCaracteres: Double = 1,
-        disposicionDelAcorde: Disposicion = .automatica
+        disposicionDelAcorde: Disposicion = .automatica, intervalosDeLasNotas: Bool = false,
+        marcarSemitonos: Bool = false, marcarTonica: Bool = false
     ) {
         self.clave = clave
         self.armadura = armadura
@@ -80,5 +110,8 @@ public struct OpcionesDePentagrama {
         self.marcaDeOctava = marcaDeOctava
         self.anchoDeLosCaracteres = anchoDeLosCaracteres
         self.disposicionDelAcorde = disposicionDelAcorde
+        self.intervalosDeLasNotas = intervalosDeLasNotas
+        self.marcarSemitonos = marcarSemitonos
+        self.marcarTonica = marcarTonica
     }
 }

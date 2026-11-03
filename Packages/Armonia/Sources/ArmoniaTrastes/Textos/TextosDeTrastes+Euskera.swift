@@ -8,6 +8,9 @@ extension TextosDeTrastes {
         // Encordado.swift
         guitarra: "gitarra",
         guitarraEnReGrave: "gitarra re baxuan",
+        guitarraEnReAbierto: "gitarra re irekian",
+        guitarraEnSolAbierto: "gitarra sol irekian",
+        guitarraDADGAD: "gitarra DADGAD-en",
         guitarraDeSieteCuerdas: "zazpi sokako gitarra",
         bajo: "baxua",
         bajoDeCincoCuerdas: "bost sokako baxua",

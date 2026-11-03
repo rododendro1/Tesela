@@ -195,6 +195,50 @@ extension LineaDeComandosTests {
         #expect(salida("analyze Dm7 G7 Cmaj7 --in C major --scales --ingles").contains("    D dorian — Tensions:"))
     }
 
+    @Test func estudiarUnaEscala() {
+        let terceras = salida("escala Do mayor --secuencia terceras")
+        #expect(terceras.contains("\nSecuencia por terceras:\n  Do₄ Mi₄ Re₄ Fa₄ "), Comment(rawValue: terceras))
+        #expect(terceras.hasSuffix(" Do₅\n"))
+        let bajando = salida("escala Do mayor --secuencia triadas --bajando --octavas 2")
+        #expect(bajando.contains("\n  Do₆ La₅ Fa₅ "), Comment(rawValue: bajando))
+        #expect(bajando.hasSuffix(" Do₄\n"))
+        #expect(salida("escala Do mayor --secuencia grupos-de-3").contains("Secuencia en grupos de tres:"))
+        let piano = salida("escala Do mayor --piano")
+        let derecha = "\nDigitación de piano:\n  Mano derecha: Do 1 · Re 2 · Mi 3 · Fa 1 · "
+        #expect(piano.contains(derecha), Comment(rawValue: piano))
+        #expect(piano.contains("\n  Mano izquierda: Do 5 · Re 4 · "))
+        let modos = salida("escala Do mayor --modos")
+        let lidioPrimero = "\nModos sobre la misma tónica:\n  Do lidio (+1): 4: Fa → Fa♯\n"
+        #expect(modos.contains(lidioPrimero), Comment(rawValue: modos))
+        #expect(modos.contains("\n  Do mayor (0)\n"))
+        #expect(modos.contains("\nModos con las mismas notas:\n  Do mayor · Re dórico · Mi frigio · "))
+        let lidio = salida("escala Do mayor --comparar Do lidio")
+        let comunes = "\nComparar con Do lidio:\n  Notas comunes: Do, Re, Mi, Sol, La, Si\n"
+        #expect(lidio.contains(comunes), Comment(rawValue: lidio))
+        #expect(lidio.contains("\n  Solo en Do mayor: Fa\n  Solo en Do lidio: Fa♯\n  4: Fa → Fa♯\n"))
+        // --comparar toma las palabras hasta la siguiente opción; sin notas comunes ni distancia en quintas.
+        let lejos = salida("escala Do mayor --comparar Fa# pentatónica mayor --piano")
+        #expect(lejos.contains("Notas comunes: ninguna"), Comment(rawValue: lejos))
+        #expect(lejos.contains("Mano derecha"))
+        #expect(!lejos.contains("alteraciones de diferencia"))
+    }
+
+    @Test func bebopYPentatonicasSobreUnAcorde() {
+        let do7 = salida("acorde Do7 --bebop --pentatonicas")
+        #expect(do7.contains("\nEscalas bebop:\n  "), Comment(rawValue: do7))
+        #expect(do7.contains(": nota de paso: Si · Do Si Si♭ La Sol Fa Mi Re\n"))
+        #expect(do7.contains("\nPentatónicas:\n  "))
+        #expect(!salida("acorde Do7").contains("bebop"))
+    }
+
+    @Test func notasGuiaAlAnalizar() {
+        let analisis = salida("analizar Rem7 Sol7 Do7M --en Do mayor --escalas")
+        #expect(analisis.contains("\n      notas guía: Fa, Do\n"), Comment(rawValue: analisis))
+        #expect(analisis.contains("\n      notas guía: Si, Fa\n"))
+        let cambia = salida("analizar Do La7 Rem7 --en Do mayor --escalas")
+        #expect(cambia.contains("cambian: "), Comment(rawValue: cambia))
+    }
+
     @Test func escalaMadre() {
         #expect(salida("escala Re dórico").contains("\n  modo 2 de Do mayor\n"))
         #expect(salida("escala Do alterada").contains("modo 7 de Re♭ menor melódica de jazz"))
@@ -302,5 +346,85 @@ extension LineaDeComandosTests {
         #expect(error.codigo == 1)
         #expect(error.error.contains("faltan 3, 4, 5, 6, 7, 8, 9, 10, 11"))
         #expect(LineaDeComandos.ejecutar(["serie"]).codigo == 2)
+    }
+
+    @Test func identificarEscalas() throws {
+        let escalas = salida("identificar Do Mi Sol Si Fa# --escalas")
+        #expect(escalas.hasPrefix("Do pentatónica lidia\n"), Comment(rawValue: escalas))
+        #expect(escalas.contains(" — además: Re, La\n") || escalas.hasSuffix(" — además: Re, La\n"))
+        #expect(escalas.split(separator: "\n").count == 10)
+        // Con octava, solo cuentan las notas.
+        #expect(salida("identificar Do4 Mi4 Sol4 Si4 Fa#5 --escalas") == escalas)
+        // Sin --escalas, los acordes de siempre.
+        #expect(salida("identificar Do Mi Sol") == salida("identify C E G"))
+        let melodia = try fichero(
+            Voz(leyendo: "Re4:4 Mi4:4 Fa4:4 Sol4:4 La4:4 Si4:4 Do5:4 Re5:4").midi(), extension: "mid")
+        let deLaMelodia = salida("identificar --archivo " + melodia)
+        #expect(!deLaMelodia.split(separator: "\n")[0].contains("además"), Comment(rawValue: deLaMelodia))
+        #expect(deLaMelodia.split(separator: "\n").count == 10)
+        let enIngles = salida("identify --file \(melodia) --scales --ingles")
+        #expect(enIngles.split(separator: "\n").count == 10 && !enIngles.contains("además"))
+        let conNotas = LineaDeComandos.ejecutar(["identificar", "--archivo", melodia, "Do"])
+        #expect(conNotas.error.hasPrefix("armonia: con --archivo no se escriben notas\n"))
+        let inexistente = LineaDeComandos.ejecutar(["identificar", "--archivo", "/no/existe.mid"])
+        #expect(inexistente.codigo == 2)
+    }
+
+    @Test func escalaSimetrica() {
+        let disminuida = salida("escala Do disminuida semitono-tono --simetria")
+        #expect(
+            disminuida.contains(
+                "\nSimetría:\n  Se repite cada 3 semitonos: 3 transposiciones distintas\n"
+                    + "  Empieza igual en: Do, Mi♭, Fa♯, La\n"),
+            Comment(rawValue: disminuida))
+        #expect(disminuida.contains(": Do7 · Mi♭7 · Fa♯7 · La7"))
+        #expect(
+            salida("escala Do mayor --simetria").hasSuffix(
+                "\nSimetría:\n  Se repite cada 12 semitonos: 12 transposiciones distintas\n"))
+        #expect(salida("scale C whole tone --symmetry --ingles").contains("\nSymmetry:\n"))
+    }
+
+    @Test func lineasDeNotasGuia() {
+        let analisis = salida("analizar Rem7 Sol7 Do7M --notas-guia")
+        #expect(
+            analisis.hasSuffix(
+                "\nLíneas de notas guía:\n  Desde la tercera: Fa₄ Fa₄ Mi₄\n  Desde la séptima: Do₄ Si₃ Si₃\n"),
+            Comment(rawValue: analisis))
+        #expect(salida("analizar Rem7 Sol7 Do7M --notas-guia --en Do mayor").contains("Desde la tercera: Fa₄"))
+        #expect(!salida("analizar Rem7 Sol7 Do7M").contains("notas guía"))
+    }
+
+    @Test func escalasPropiasVecinasYEnLasDoceTonalidades() {
+        #expect(salida("escala Do 2-2-3-2-3") == salida("escala Do pentatónica mayor"))
+        #expect(salida("escala Re Mi Fa Sol La Si Do") == salida("escala Re dórico"))
+        let rara = salida("escala Do Reb Re Mi Sol")
+        #expect(rara.contains("(1-1-2-3-5)"), Comment(rawValue: rara))
+        let vecinas = salida("escala Do mayor --vecinas")
+        #expect(vecinas.contains("\nEscalas vecinas:\n"), Comment(rawValue: vecinas))
+        #expect(vecinas.contains("\n  Do lidio: Fa → Fa♯\n"))
+        #expect(vecinas.contains("\n  Do mixolidio: Si → Si♭\n"))
+        let doce = salida("escala Do mayor --doce")
+        #expect(doce.contains("\nDo mayor · En las doce tonalidades:\n  Do mayor: Do₄ Re₄ "), Comment(rawValue: doce))
+        #expect(doce.contains("\n  Sol mayor: Sol₃ La₃ "))
+        #expect(doce.contains("\n  Fa mayor: Fa₄ "))
+        let terceras = salida("escala Do mayor --doce --secuencia terceras")
+        #expect(terceras.contains("\nDo mayor por terceras · En las doce tonalidades:\n  Do mayor: Do₄ Mi₄ Re₄ "))
+        let ingles = salida("scale C major --neighbors --all-keys --ingles")
+        #expect(ingles.contains("\n  C lydian: F → F#\n"), Comment(rawValue: ingles))
+        #expect(ingles.contains("C major · In all twelve keys:"))
+    }
+
+    @Test func acordesEnLasDoceTonalidades() {
+        let mayor = salida("escala Do mayor --doce --acordes")
+        #expect(mayor.contains("\nDo mayor · Acordes en las doce tonalidades:\n  "), Comment(rawValue: mayor))
+        #expect(mayor.contains(" · V7 · "))
+        #expect(mayor.contains(" · Re7 · "))
+        let triadas = salida("escala La menor armónica --doce --acordes --triadas")
+        #expect(triadas.contains("Acordes en las doce tonalidades:"), Comment(rawValue: triadas))
+        #expect(triadas.contains(" · Mi · Fa · "))
+        // Sin --acordes, solo las notas; y una pentatónica no tiene un acorde en cada grado.
+        #expect(!salida("escala Do mayor --doce").contains("Acordes en las doce"))
+        #expect(!salida("escala Do pentatónica mayor --doce --acordes").contains("Acordes en las doce"))
+        #expect(salida("scale C major --all-keys --chords --ingles").contains("C major · Chords in all twelve keys:"))
     }
 }

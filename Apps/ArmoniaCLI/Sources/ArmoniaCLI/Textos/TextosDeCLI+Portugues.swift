@@ -9,6 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <acordes> [--en <tonalidade>] [--escalas]",
         descripcionAnalizar: "cifra romana, funções, cadências e\nmodulações (com o acorde pivô; sem\n--en)\n--escalas: a escala de cada acorde,\ncom as tensões e notas a evitar",
+        notasAnalizar: "--notas-guia: duas linhas de notas-guia,\na partir da terceira e da sétima",
         sintaxisAnalizarArchivo: "analizar --archivo <ficheiro> [--ventana <duração>]",
         descripcionAnalizarArchivo: "o mesmo, com os acordes de um ficheiro\nMIDI, MusicXML, MEI ou ABC (um por\npulsação; --ventana 2: um por mínima)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalidade>] [--propuestas 3]",
@@ -27,16 +28,18 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <cifra>…",
         descripcionAcorde: "notas, tipo e papel de cada nota",
-        notasAcorde: "opções: --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(na tonalidade de --en Do mayor, no fim) e --comparar Do\n(notas comuns e condução das vozes)",
+        notasAcorde: "opções: --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(na tonalidade de --en Do mayor, no fim) e --comparar Do\n(notas comuns e condução das vozes); --bebop e --pentatonicas\n(escalas para improvisar por cima)",
         sintaxisArpegio: "arpegio <cifra> [--patron <padrão>]",
         descripcionArpegio: "notas do arpejo e escalas do\nacorde (--patron ascendente,\ndescendente, ida-y-vuelta,\nbaja-y-sube, quebrado, alberti)",
         notasArpegio: "opções: --octavas 2 (de 1 a 4), --sin-octava, --desde Mi\n(ou 3: começa por essa nota), --tensiones 9,13, --grados\n1-5-3-8 (um percurso próprio) e --aproximacion abajo, arriba\nou encierro (notas cromáticas que levam a cada uma)",
         sintaxisIdentificar: "identificar <notas>",
         descripcionIdentificar: "acordes que algumas notas formam",
+        notasIdentificar: "opções: --escalas (as escalas que contêm\nas notas, em vez de acordes) e --archivo\nmelodia.mid (as notas de um ficheiro MIDI,\nMusicXML, MEI ou ABC, com --escalas)",
         sintaxisIntervalo: "intervalo <nota> <nota>",
         descripcionIntervalo: "intervalo entre duas notas ou\nalturas",
         sintaxisEscala: "escala <escala> [--acordes]",
         descripcionEscala: "notas e acordes de uma escala\n--acordes: todos os que cabem em\ncada grau, não só os de terceiras",
+        notasEscala: "opções: --secuencia terceras (ou cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (dedilhado), --modos (paralelos e relativos)\ne --comparar Do lidio (no fim); --simetria (de quanto em\nquanto se repete e os seus acordes);\n--vecinas (as que saem de mover uma\nnota) e --doce (nas doze tonalidades);\n--doce --acordes (os acordes de cada\ngrau; --triadas, sem sétima)",
         sintaxisEscalas: "escalas [<texto>] [opções]",
         descripcionEscalas: "o catálogo de escalas: as habituais e\nas de outras tradições, por\ncategorias, com as notas a partir de Dó",
         notasEscalas: "opções: --tradicion turquia (ou india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) e --categoria maqam (ou rāga, makam,\ndastgah, dromos…); um texto procura nos nomes",
@@ -61,6 +64,10 @@ extension TextosDeCLI {
         descripcionTabla: "tabela harmónica em SVG (hexágonos)",
         sintaxisTablaAcorde: "tabla --acorde | --escala | --clases | --recorrido | --camino | --ciclo",
         descripcionTablaAcorde: "como no Tonnetz (--margen 2: mais\ntabela em volta)",
+        sintaxisCuadricula: "cuadricula <notas ou alturas> | --acorde | --escala | --clases",
+        descripcionCuadricula: "teclado de grelha em SVG (pads),\ncom o contorno e a primeira nota",
+        sintaxisCuadriculaOpciones: "cuadricula --ejes H,V --rejilla CxF --origen <altura>\ncuadricula --giro 0-3 --espejo --en-tono --escala <escala>",
+        descripcionCuadriculaOpciones: "eixos (1,5: em quartas), grelha do\ncontrolador (8x8), nota do canto,\nquartos de volta, espelho e no tom",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "vecinos <acorde> [--voces 2]",
@@ -105,6 +112,15 @@ extension TextosDeCLI {
         descripcionDigitaciones: "formas de tocar um acorde, da mais\ncómoda à menos, num instrumento de\ncordas com trastes\nopções: --instrumento guitarra|bajo|ukelele|mandolina|… (também\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D»),\n--limite 5, --traste 12 (o traste mais alto usado), --dedos 4 (os\nque se podem usar), --completo (com todas as notas: por omissão a\nquinta pode faltar), --diagrama (uma linha por corda),\n--capo 2 (as casas, contadas desde o capo), --musicxml (a primeira\nforma de cada acorde, como tablatura MusicXML)",
         sintaxisPosiciones: "posiciones <escala> [--caged]",
         descripcionPosiciones: "a escala por posições na guitarra:\ntrês notas por corda (duas nas\npentatónicas) ou CAGED",
+        notasPosiciones: "opções: --secuencia terceras (ou outra:\na sequência em cada posição; com\n--bajando, a descer) e --formas (as cinco\nformas da pentatónica e as notas comuns);\n--instrumento bajo (ou outro;\ntambém re-abierto, sol-abierto, dadgad) e --capo 2",
+        sintaxisTeclado: "teclado <escala> [--mano derecha]",
+        descripcionTeclado: "a escala num teclado de piano\n(SVG): as notas ou, com --mano derecha\nou izquierda, os dedos; --octavas 2",
+        sintaxisReloj: "reloj <escala> [--quintas]",
+        descripcionReloj: "a escala num relógio de doze horas\n(SVG): o círculo cromático ou, com\n--quintas, o de quintas",
+        sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
+        descripcionPentagrama: "uma escala, um acorde, um arpejo (com\nritmo: --figura 16, --tresillos) ou uns\nacordes com a sua cifra numa pauta\n(SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
+        sintaxisPosicionesArpegio: "posiciones --arpegio <cifra> [--caged|--barrido]",
+        descripcionPosicionesArpegio: "o arpejo de um acorde em cada\nposição do braço, em tablatura e com\nos dedos; --ida-y-vuelta, sobe e desce",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -175,6 +191,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "o percurso é de tríades maiores e menores: " + ejemplo },
         caminoSoloTriadas: { ejemplo, orden in "o caminho vai de uma tríade maior ou menor a outra: " + ejemplo },
         cicloSoloTriadas: { ejemplo, orden in "o ciclo começa numa tríade maior ou menor: " + ejemplo },
+        opcionesDeCuadricula: "opções da grelha: --ejes H,V (1,5), --rejilla CxF (8x8), --origen <altura> (Do2), --giro 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "as vozes que se movem são 1 ou 2: --voces 2",
@@ -215,12 +232,19 @@ extension TextosDeCLI {
         trasteFueraDeRango: "o traste mais alto é um número de 0 a 24: --traste 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "falta o cifrado: \(d)" },
         faltaEscalaDePosiciones: "falta a escala: armonia posiciones Sol mayor",
+        faltaEscalaDelTeclado: "falta a escala: armonia teclado Re mayor",
+        manoDesconocida: { texto in "mão desconhecida: «\(texto)» (derecha ou izquierda)" },
+        archivoConNotas: "com --archivo não se escrevem notas",
+        noEsPentatonica: "as formas são de uma escala de cinco notas: armonia posiciones La pentatónica menor --formas",
+        faltaEscalaDelReloj: "falta a escala: armonia reloj Re mayor",
+        faltaLoQueDibujaElPentagrama: "falta o que desenhar: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "o capo é um número de 0 a 12: --capo 2",
         octavasFueraDeRango: "as oitavas são um número de 1 a 4: --octavas 2",
         desdeNoValido: { desde in "«\(desde)» não é uma nota nem um grau do acorde: --desde Mi ou --desde 3" },
         tensionesMalEscritas: "as tensões são 9, 11 ou 13: --tensiones 9,13",
         gradosMalEscritos: "os graus são números de 1 a 22: --grados 1-5-3-8",
         aproximacionDesconocida: { aproximacion in "aproximação desconhecida: «\(aproximacion)» (abajo, arriba ou encierro)" },
+        secuenciaDesconocida: { secuencia in "sequência desconhecida: «\(secuencia)» (terceras, cuartas, grupos-de-3, grupos-de-4, triadas ou cuatriadas)" },
 
         // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Experimente «armonia ayuda».",

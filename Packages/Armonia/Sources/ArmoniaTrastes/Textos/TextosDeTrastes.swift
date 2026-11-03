@@ -12,6 +12,9 @@ struct TextosDeTrastes: TextosTraducidos {
     // MARK: Encordado.swift
     let guitarra: String
     let guitarraEnReGrave: String
+    let guitarraEnReAbierto: String
+    let guitarraEnSolAbierto: String
+    let guitarraDADGAD: String
     let guitarraDeSieteCuerdas: String
     let bajo: String
     let bajoDeCincoCuerdas: String

@@ -189,9 +189,26 @@ extension Escala {
     /// Las alturas de la escala con lo que se aparta cada una de su nota temperada, en cents, y su nota microtonal
     /// (`nil` si la escala no tiene microtonos), como las escriben el pentagrama y los
     /// formatos: la subida o la bajada y, si `sentido` es `nil`, la subida y, en las escalas que bajan con otras
-    /// notas, también la bajada.
-    package func alturasMicrotonales(octava: Int, sentido: SentidoDelIntervalo?) -> [AlturaMicrotonal] {
+    /// notas, también la bajada. Con `octavas` mayor que 1, la escala sube (y baja) esas octavas desde la tónica de
+    /// `octava`.
+    package func alturasMicrotonales(
+        octava: Int, octavas: Int = 1, sentido: SentidoDelIntervalo?
+    ) -> [AlturaMicrotonal] {
+        let octavas = max(1, octavas)
+        /// Una altura `o` octavas más aguda.
+        func subir(_ altura: AlturaMicrotonal, _ o: Int) -> AlturaMicrotonal {
+            (Altura(altura.altura.nota, octava: altura.altura.octava + o), altura.desvio, altura.nota)
+        }
+        // La escala de una octava, repetida: al subir, de la más grave a la más aguda; al bajar, al revés. La nota de
+        // llegada (la tónica de arriba o la de abajo) va una sola vez, al final.
         func tramo(_ sentido: SentidoDelIntervalo) -> [AlturaMicrotonal] {
+            let una = tramoDeUnaOctava(sentido)
+            guard octavas > 1, let llegada = una.last else { return una }
+            let orden = sentido == .ascendente ? Array(0..<octavas) : Array((0..<octavas).reversed())
+            let repetidas = orden.flatMap { o in una.dropLast().map { subir($0, o) } }
+            return repetidas + [subir(llegada, sentido == .ascendente ? octavas - 1 : 0)]
+        }
+        func tramoDeUnaOctava(_ sentido: SentidoDelIntervalo) -> [AlturaMicrotonal] {
             let alturas = self.alturas(octava: octava, sentido: sentido)
             // Los desvíos y las notas van grado a grado desde la tónica; la de arriba se aparta como la de abajo
             // (en Sīkāh, las dos son Mi𝄳).
@@ -220,10 +237,13 @@ extension Escala {
     ///
     /// - Parameters:
     ///   - octava: la octava de la tónica.
+    ///   - octavas: cuántas octavas sube (y baja) la escala.
     ///   - sentido: si se da, solo la subida o la bajada; si es `nil`, la subida y, en las escalas que bajan con
     ///     otras notas, también la bajada.
-    public func voz(octava: Int = 4, sentido: SentidoDelIntervalo? = nil, duracion: Duracion = .negra) -> Voz {
-        let alturas = alturasMicrotonales(octava: octava, sentido: sentido)
+    public func voz(
+        octava: Int = 4, octavas: Int = 1, sentido: SentidoDelIntervalo? = nil, duracion: Duracion = .negra
+    ) -> Voz {
+        let alturas = alturasMicrotonales(octava: octava, octavas: octavas, sentido: sentido)
         return Voz(alturas.map { Evento($0.altura, duracion, desvio: $0.desvio) })
     }
 }

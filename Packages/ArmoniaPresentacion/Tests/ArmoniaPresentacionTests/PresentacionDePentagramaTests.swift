@@ -53,6 +53,20 @@ import Testing
         #expect(PentagramaPresentado(Escala("Do mayor"), resaltada: 0).svg.contains("<title>Do₄") == true)
     }
 
+    /// El arpegio que suena en tresillos de corchea se dibuja así, con la nota que suena resaltada y la armadura de
+    /// la tonalidad, si se da.
+    @Test func laVozSeDibujaConSuRitmo() {
+        let figura = Duracion.corchea.grupoIrregular(3, en: 2)
+        let arpegio = PresentacionDeArpegios.arpegio(
+            Arpegio(Acorde("Mi7")), figura: figura, notacion: .espanolCompacto)
+        let pentagrama = PentagramaPresentado(arpegio.voz, titulo: "Mi7", resaltada: 1)
+        #expect(pentagrama.descripcion == "Mi7: Mi₄, Sol♯₄, Si₄, Re₅, Mi₅")
+        #expect(pentagrama.fichero.nombreDeFichero == "Pentagrama Mi7.svg")
+        #expect(pentagrama.svg.contains("<g fill=\"#E8590C\"><title>Sol♯₄</title>"))
+        let enLaMenor = PentagramaPresentado(arpegio.voz, titulo: "Mi7", tonalidad: Tonalidad(.la, .menor))
+        #expect(enLaMenor.svg != pentagrama.svg)
+    }
+
     @Test func unViewBoxSinCerrar() {
         #expect(PentagramaPresentado.relacionDeAspecto(deSVG: #"<svg viewBox="0 -3 20 10"#) == 4)
     }

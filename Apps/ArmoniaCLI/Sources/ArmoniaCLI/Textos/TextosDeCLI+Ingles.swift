@@ -9,6 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <chords> [--in <key>] [--scales]",
         descripcionAnalizar: "roman numerals, functions, cadences\nand modulations (with their pivot\nchord; without --in)\n--scales: each chord's scale, with\nits tensions and avoid notes",
+        notasAnalizar: "--guide-tones: two guide-tone lines,\nfrom the third and from the seventh",
         sintaxisAnalizarArchivo: "analyze --file <file> [--window <duration>]",
         descripcionAnalizarArchivo: "the same, with the chords of a MIDI,\nMusicXML, MEI or ABC file (one per\nbeat; --window 2: one per half note)",
         sintaxisArmonizar: "harmonize <melody> [--in <key>] [--proposals 3]",
@@ -27,16 +28,18 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <symbol>…",
         descripcionAcorde: "notes, type and role of each note",
-        notasAcorde: "options: --voicings, --names, --keys, --substitutions\n(in the key given by --in C major, at the end) and --compare C\n(common tones and voice leading)",
+        notasAcorde: "options: --voicings, --names, --keys, --substitutions\n(in the key given by --in C major, at the end) and --compare C\n(common tones and voice leading); --bebop and --pentatonics\n(scales to improvise over it)",
         sintaxisArpegio: "arpeggio <symbol> [--pattern <pattern>]",
         descripcionArpegio: "arpeggio notes and the scales that\nfit the chord (--pattern ascending,\ndescending, up-down, down-up,\nbroken, alberti)",
         notasArpegio: "options: --octaves 2 (from 1 to 4), --no-octave, --from E\n(or 3: start on that note), --tensions 9,13, --degrees\n1-5-3-8 (a pattern of your own) and --approach below, above\nor enclosure (chromatic notes leading to each one)",
         sintaxisIdentificar: "identify <notes>",
         descripcionIdentificar: "chords formed by some notes",
+        notasIdentificar: "options: --scales (the scales that contain\nthe notes, instead of chords) and --file\nmelody.mid (the notes of a MIDI, MusicXML,\nMEI or ABC file, with --scales)",
         sintaxisIntervalo: "interval <note> <note>",
         descripcionIntervalo: "interval between two notes or pitches",
         sintaxisEscala: "scale <scale> [--chords]",
         descripcionEscala: "notes and chords of a scale\n--chords: every chord that fits on\neach degree, not only stacked thirds",
+        notasEscala: "options: --sequence thirds (or fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(from 1 to 4), --piano (fingering), --modes (parallel and relative)\nand --compare C lydian (at the end); --symmetry (how often it\nrepeats and its chords);\n--neighbors (moving one note) and\n--all-keys (in all twelve keys);\n--all-keys --chords (the chords of each\ndegree; --triads, without sevenths)",
         sintaxisEscalas: "scales [<text>] [options]",
         descripcionEscalas: "the catalog of scales: the common ones\nand those of other traditions, by\ncategory, with their notes from C",
         notasEscalas: "options: --tradition turkey (or india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) and --category maqam (or rāga, makam,\ndastgah, dromos…); a text searches the names",
@@ -61,6 +64,10 @@ extension TextosDeCLI {
         descripcionTabla: "SVG harmonic table (hexagons)",
         sintaxisTablaAcorde: "tabla --chord <symbol> | --scale <scale> | --pcs <numbers>\ntabla --sequence <triads> | --shortest <triad> <triad>\ntabla --cycle <cycle> <triad>",
         descripcionTablaAcorde: "(--margen 2: more table around it)",
+        sintaxisCuadricula: "cuadricula <notes or pitches> | --chord | --scale | --pcs",
+        descripcionCuadricula: "SVG grid keyboard (pads), with the\noutline and the first note",
+        sintaxisCuadriculaOpciones: "cuadricula --axes H,V --grid CxR --origin <pitch>\ncuadricula --rotate 0-3 --mirror --in-key --scale <scale>",
+        descripcionCuadriculaOpciones: "axes (1,5: in fourths), controller\ngrid (8x8), corner note, quarter\nturns, mirror and in key",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "neighbors <chord> [--voices 2]",
@@ -105,6 +112,15 @@ extension TextosDeCLI {
         descripcionDigitaciones: "ways to play a chord, from the most comfortable to the least, on a\nfretted string instrument (strings from low to high)\noptions: --instrument guitar|bass|ukulele|mandolin|…\n(also \"seven-string guitar\", \"five-string bass\",\n\"drop D\"), --limit 5, --fret 12 (the highest one used),\n--fingers 4 (how many can be used), --complete (with every note:\nby default the fifth may be left out), --diagram (one line per string),\n--capo 2 (frets counted from the capo), --musicxml (the first shape\nof each chord as a MusicXML tablature)",
         sintaxisPosiciones: "positions <scale> [--caged]",
         descripcionPosiciones: "the scale by positions on the guitar:\nthree notes per string (two in the\npentatonics) or CAGED",
+        notasPosiciones: "options: --sequence thirds (or another:\nthe sequence in each position; with\n--descending, going down) and --shapes (the\nfive pentatonic shapes and their shared notes);\n--instrument bass (or another;\nalso open-d, open-g, dadgad) and --capo 2",
+        sintaxisTeclado: "keyboard <scale> [--hand right]",
+        descripcionTeclado: "the scale on a piano keyboard\n(SVG): its notes or, with --hand right\nor left, the fingers; --octaves 2",
+        sintaxisReloj: "clock <scale> [--fifths]",
+        descripcionReloj: "the scale on a twelve-hour clock\n(SVG): the chromatic circle or, with\n--fifths, the circle of fifths",
+        sintaxisPentagrama: "staff scale|chord|arpeggio|chords <…>",
+        descripcionPentagrama: "a scale, a chord, an arpeggio (with\nrhythm: --figure 16, --triplets) or some\nchords with their symbols on a staff\n(SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
+        sintaxisPosicionesArpegio: "positions --arpeggio <symbol> [--caged|--sweep]",
+        descripcionPosicionesArpegio: "a chord's arpeggio in each position\non the neck, in tab with the fingers;\n--up-and-down, up and back down",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -177,6 +193,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "the sequence is made of major and minor triads: armonia \(orden) --sequence C Am F Dm" },
         caminoSoloTriadas: { ejemplo, orden in "the shortest path goes from one major or minor triad to another: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "the cycle starts on a major or minor triad: armonia \(orden) --cycle hexatonic C" },
+        opcionesDeCuadricula: "grid options: --axes H,V (1,5), --grid CxR (8x8), --origin <pitch> (C2), --rotate 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "the moving voices are 1 or 2: --voices 2",
@@ -217,12 +234,19 @@ extension TextosDeCLI {
         trasteFueraDeRango: "the highest fret is a number from 0 to 24: --fret 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "missing the chord symbol: \(digitaciones.1)" },
         faltaEscalaDePosiciones: "missing the scale: armonia positions G major",
+        faltaEscalaDelTeclado: "missing the scale: armonia keyboard D major",
+        manoDesconocida: { texto in "unknown hand: \"\(texto)\" (right or left)" },
+        archivoConNotas: "with --file, do not write notes",
+        noEsPentatonica: "shapes need a five-note scale: armonia positions A minor pentatonic --shapes",
+        faltaEscalaDelReloj: "missing the scale: armonia clock D major",
+        faltaLoQueDibujaElPentagrama: "missing what to draw: armonia staff scale D dorian",
         capoFueraDeRango: "the capo is a number from 0 to 12: --capo 2",
         octavasFueraDeRango: "the octaves are a number from 1 to 4: --octaves 2",
         desdeNoValido: { desde in "\"\(desde)\" is not a note or degree of the chord: --from E or --from 3" },
         tensionesMalEscritas: "the tensions are 9, 11 or 13: --tensions 9,13",
         gradosMalEscritos: "the degrees are numbers from 1 to 22: --degrees 1-5-3-8",
         aproximacionDesconocida: { aproximacion in "unknown approach: \"\(aproximacion)\" (below, above or enclosure)" },
+        secuenciaDesconocida: { secuencia in "unknown sequence: \"\(secuencia)\" (thirds, fourths, groups-of-3, groups-of-4, triads or sevenths)" },
 
         // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Try \"armonia help\".",

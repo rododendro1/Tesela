@@ -4,22 +4,13 @@ extension LineaDeComandos {
     /// Las consultas: acordes, notas, intervalos, escalas y tonalidades, en el orden en que salen en la ayuda.
     static let ordenesDeConsultas: [Orden] = [
         Orden(nombres: ["acorde", "chord"], ayuda: ayudaDeAcorde) { try acorde($0, $1) },
-        Orden(nombres: ["identificar", "identify"], ayuda: ayudaDeIdentificar) { resto, notacion in
-            guard !resto.isEmpty else { return uso(.faltanNotas, notacion) }
-            return bien(try identificar(resto, notacion))
-        },
+        Orden(nombres: ["identificar", "identify"], ayuda: ayudaDeIdentificar) { try identificarConOpciones($0, $1) },
         Orden(nombres: ["arpegio", "arpeggio"], ayuda: ayudaDeArpegio) { try arpegio($0, $1) },
         Orden(nombres: ["intervalo", "interval"], ayuda: ayudaDeIntervalo) { resto, notacion in
             guard resto.count == 2 else { return uso(.dosNotas, notacion) }
             return bien(try intervalo(resto[0], resto[1], notacion))
         },
-        Orden(nombres: ["escala", "scale"], ayuda: ayudaDeEscala) { resto, notacion in
-            var argumentos = Argumentos(resto)
-            let conAcordes = argumentos.quitarMarca("--acordes", "--chords")
-            guard !argumentos.restantes.isEmpty else { return uso(.faltaEscala, notacion) }
-            let escala = try Escala(leyendo: argumentos.restantes.joined(separator: " "))
-            return bien(describir(escala: escala, conTodosSusAcordes: conAcordes, notacion))
-        },
+        Orden(nombres: ["escala", "scale"], ayuda: ayudaDeEscala) { try escala($0, $1) },
         Orden(nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas) { escalas($0, $1) },
         Orden(nombres: ["tonalidad", "key"], ayuda: ayudaDeTonalidad) { resto, notacion in
             guard !resto.isEmpty else { return uso(.faltaTonalidad, notacion) }
@@ -53,7 +44,8 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionIdentificar),
             ejemplo: ejemplo(
                 "armonia identificar Do Mi Sol Sib",
-                "armonia identify C E G Bb"))
+                "armonia identify C E G Bb"),
+            notas: TextosDeCLI.traduccion(\.notasIdentificar))
     ]
 
     static let ayudaDeArpegio: [EntradaDeAyuda] = [
@@ -84,7 +76,8 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionEscala),
             ejemplo: ejemplo(
                 "armonia escala Re dórico",
-                "armonia scale D dorian"))
+                "armonia scale D dorian"),
+            notas: TextosDeCLI.traduccion(\.notasEscala))
     ]
 
     static let ayudaDeEscalas: [EntradaDeAyuda] = [
