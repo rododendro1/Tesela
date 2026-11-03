@@ -121,7 +121,7 @@ import Testing
     /// Una negra de tresillo que cruza el pulso no se parte, y no lleva barra.
     @Test func lasNegrasDeTresilloNoSeParten() {
         let voz = Voz(Arpegio(Acorde("Fa"), conOctava: false), figura: Duracion.negra.grupoIrregular(3, en: 2))
-        let (ritmo, columnas) = PentagramaSVG.Ritmo.de(voz, resaltada: nil)
+        let (ritmo, columnas, _) = PentagramaSVG.Ritmo.de(voz, resaltada: nil)
         #expect(columnas.count == 3)
         #expect(ritmo.vigas.isEmpty)
         #expect(ritmo.tresillos == [[0, 1, 2]])

@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "la escala nun tecláu de pianu\n(SVG): les notes o, con --mano derecha\no izquierda, los deos; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "la escala nun reló de doce hores\n(SVG): el círculu cromáticu o, con\n--quintas, el de quintes",
+        sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
+        descripcionPentagrama: "una escala, un acorde, un arpexu (con\nritmu: --figura 16, --tresillos) o dellos\nacordes col so cifráu nun pentagrama\n(SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
         sintaxisPosicionesArpegio: "posiciones --arpegio <cifráu> [--caged|--barrido]",
         descripcionPosicionesArpegio: "l'arpexu d'un acorde en cada\nposición del mástil, en tablatura y colos\ndeos; --ida-y-vuelta, xube y baxa",
 
@@ -235,6 +237,7 @@ extension TextosDeCLI {
         archivoConNotas: "con --archivo nun s'escriben notes",
         noEsPentatonica: "les formes son d'una escala de cinco notes: armonia posiciones La pentatónica menor --formas",
         faltaEscalaDelReloj: "falta la escala: armonia reloj Re mayor",
+        faltaLoQueDibujaElPentagrama: "falta qué dibuxar: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "el capo ye un númberu de 0 a 12: --capo 2",
         octavasFueraDeRango: "les octaves son un númberu de 1 a 4: --octavas 2",
         desdeNoValido: { desde in "«\(desde)» nun ye una nota nin un grau del acorde: --desde Mi o --desde 3" },

@@ -28,7 +28,9 @@ extension PentagramaSVG {
         ///
         /// Si hay tresillos, las notas solo se dividen en las barras de compás (`compases`): la grafía las partiría en
         /// cada pulso, y una negra de tresillo que lo cruza se lee mejor entera.
-        static func de(_ voz: Voz, resaltada: Int?) -> (ritmo: Ritmo, columnas: [[Altura]]) {
+        static func de(
+            _ voz: Voz, resaltada: Int?
+        ) -> (ritmo: Ritmo, columnas: [[Altura]], primeras: [Int]) {
             let irregular = voz.eventos.contains { $0.duracion.figuraYPuntillos == nil }
             let compases = irregular ? voz.compases : voz.grafia
             let eventos = compases.flatMap { $0 }
@@ -112,7 +114,20 @@ extension PentagramaSVG {
             let ritmo = Ritmo(
                 figuras: figuras, ligadas: eventos.map(\.ligada), compas: voz.compas, finesDeCompas: finesDeCompas,
                 vigas: vigas, tresillos: tresillos, resaltadas: resaltadas)
-            return (ritmo, eventos.map(\.alturas))
+            // La primera columna de cada evento de la voz: la que empieza cuando él.
+            var primeras: [Int] = []
+            var inicioDelEvento = Duracion.cero
+            var inicioDeLaColumna = Duracion.cero
+            var columna = 0
+            for evento in voz.eventos {
+                while columna < eventos.count, inicioDeLaColumna < inicioDelEvento {
+                    inicioDeLaColumna = inicioDeLaColumna + eventos[columna].duracion
+                    columna += 1
+                }
+                primeras.append(min(columna, max(0, eventos.count - 1)))
+                inicioDelEvento = inicioDelEvento + evento.duracion
+            }
+            return (ritmo, eventos.map(\.alturas), primeras)
         }
 
         /// La cabeza de la nota de una columna: redonda, blanca o negra.
@@ -424,11 +439,26 @@ extension Voz {
     /// La clave, la armadura (`.tonalidad`), los pentagramas, los nombres de las notas y la marca de octava son los
     /// de `opciones`; `opciones.resaltada` cuenta las notas que se oyen (sin los silencios ni las notas a las que se
     /// liga otra), como los pasos de lo que suena.
-    public func svgPentagrama(titulo: String, opciones: OpcionesDePentagrama = OpcionesDePentagrama()) -> String {
-        let (ritmo, columnas) = PentagramaSVG.Ritmo.de(self, resaltada: opciones.resaltada)
+    ///
+    /// `acordes` pone el cifrado de cada acorde encima del evento (contado desde 0) en que empieza: en una progresión
+    /// arpegiada, encima de la primera nota de cada arpegio. Los intervalos de las notas (`intervalosDeLasNotas`) se
+    /// cuentan desde la fundamental del acorde que suena o, sin acordes, desde la tónica de la armadura `.tonalidad`.
+    public func svgPentagrama(
+        titulo: String, acordes: [Int: Acorde] = [:], opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+    ) -> String {
+        let (ritmo, columnas, primeras) = PentagramaSVG.Ritmo.de(self, resaltada: opciones.resaltada)
+        var cifrados: [Int: String] = [:]
+        var referencias: [Int: PentagramaSVG.Referencia] = [:]
+        if case .tonalidad(let tonalidad) = opciones.armadura {
+            referencias[0] = PentagramaSVG.Referencia(tonalidad.tonica)
+        }
+        for (evento, acorde) in acordes where primeras.indices.contains(evento) {
+            cifrados[primeras[evento]] = acorde.cifrado(en: opciones.notacion)
+            referencias[primeras[evento]] = PentagramaSVG.Referencia(acorde)
+        }
         return PentagramaSVG(
             columnas: columnas, armadura: opciones.armadura.notas(), cifrado: nil, titulo: titulo,
-            opciones: opciones, ritmo: ritmo
+            opciones: opciones, ritmo: ritmo, cifrados: cifrados, referencias: referencias
         ).svg()
     }
 }

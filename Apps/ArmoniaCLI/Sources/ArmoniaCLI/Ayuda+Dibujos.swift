@@ -9,6 +9,7 @@ extension LineaDeComandos {
         Orden(nombres: ["teclado", "keyboard"], ayuda: ayudaDeTeclado) { try teclado($0, $1) },
         Orden(nombres: ["cuadricula", "grid"], ayuda: ayudaDeCuadricula) { try cuadricula($0, $1) },
         Orden(nombres: ["reloj", "clock"], ayuda: ayudaDeReloj) { try reloj($0, $1) },
+        Orden(nombres: ["pentagrama", "staff"], ayuda: ayudaDePentagrama) { try pentagrama($0, $1) },
     ]
 
     static let ayudaDeTeclado: [EntradaDeAyuda] = [
@@ -29,6 +30,16 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia reloj Do disminuida --quintas > disminuida.svg",
                 "armonia clock C diminished --fifths > diminished.svg"))
+    ]
+
+    static let ayudaDePentagrama: [EntradaDeAyuda] = [
+        // pentagrama escala|acorde|arpegio|acordes <…>
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisPentagrama),
+            descripcion: TextosDeCLI.traduccion(\.descripcionPentagrama),
+            ejemplo: ejemplo(
+                "armonia pentagrama escala Re dórico --octavas 2 --semitonos > dorico.svg",
+                "armonia staff scale D dorian --octaves 2 --semitones > dorian.svg"))
     ]
 
     static let ayudaDeTonnetz: [EntradaDeAyuda] = [

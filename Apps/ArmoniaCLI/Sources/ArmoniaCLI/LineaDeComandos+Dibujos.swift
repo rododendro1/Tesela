@@ -184,6 +184,126 @@ extension LineaDeComandos {
         return bien(svg.trimmingCharacters(in: "\n"))
     }
 
+    /// `pentagrama escala Re dórico [--octavas 2] [--bajando]`, `pentagrama acorde Sol7`,
+    /// `pentagrama arpegio Do Lam [--patron alberti] [--figura 16] [--tresillos]`, `pentagrama acordes Rem7 Sol7 Do7M`:
+    /// lo que se pide en un pentagrama, en SVG. Con `--nombres`, `--intervalos`, `--semitonos` y `--tonica`, el nombre
+    /// y el intervalo de cada nota, los semitonos y la tónica en color; con `--en <tonalidad>` (al final), la armadura
+    /// de esa tonalidad.
+    static func pentagrama(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        var argumentos = Argumentos(textos)
+        guard let tonalidad = try argumentos.quitarTonalidad() else { return uso(.faltaValor("en"), notacion) }
+        var opciones = OpcionesDePentagrama(notacion: notacion)
+        if let tonalidad { opciones.armadura = .tonalidad(tonalidad) }
+        opciones.nombresDeLasNotas = argumentos.quitarMarca("--nombres", "--names")
+        opciones.intervalosDeLasNotas = argumentos.quitarMarca("--intervalos", "--intervals")
+        opciones.marcarSemitonos = argumentos.quitarMarca("--semitonos", "--semitones")
+        opciones.marcarTonica = argumentos.quitarMarca("--tonica", "--tónica", "--tonic")
+        let tipos = [
+            "escala": "escala", "scale": "escala", "acorde": "acorde", "chord": "acorde", "arpegio": "arpegio",
+            "arpeggio": "arpegio", "acordes": "acordes", "chords": "acordes",
+        ]
+        guard let primera = argumentos.restantes.first, let tipo = tipos[primera.lowercased()] else {
+            return uso(.faltaLoQueDibujaElPentagrama, notacion)
+        }
+        argumentos = Argumentos(Array(argumentos.restantes.dropFirst()))
+        let svg: String
+        switch tipo {
+        case "escala":
+            guard let octavas = argumentos.quitarNumero("--octavas", "--octaves", en: 1...4, porDefecto: 1) else {
+                return uso(.octavasFueraDeRango, notacion)
+            }
+            let sentido: SentidoDelIntervalo? =
+                argumentos.quitarMarca("--bajando", "--descending") ? .descendente : nil
+            if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
+            guard !argumentos.restantes.isEmpty else { return uso(.faltaLoQueDibujaElPentagrama, notacion) }
+            let escala = try Escala(leyendo: argumentos.unidos)
+            svg = escala.svgPentagrama(octavas: octavas, sentido: sentido, opciones: opciones)
+        case "acorde":
+            if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
+            guard !argumentos.restantes.isEmpty else { return uso(.faltaLoQueDibujaElPentagrama, notacion) }
+            svg = try Acorde(leyendo: argumentos.unidos).svgPentagrama(opciones: opciones)
+        case "acordes":
+            if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
+            guard !argumentos.restantes.isEmpty else { return uso(.faltaLoQueDibujaElPentagrama, notacion) }
+            let acordes = try argumentos.restantes.map { try Acorde(leyendo: $0) }
+            // En posición cerrada, desde el Do central, para que quepan en la clave de Sol.
+            let voces = DisposicionDeAcorde.cerrada.conducir(acordes, en: 60...84) ?? []
+            let titulo = acordes.map { $0.cifrado(en: notacion) }.joined(separator: " – ")
+            svg = DisposicionDeAcorde.svgPentagrama(voces, titulo: titulo, cifrados: acordes, opciones: opciones)
+        default:
+            return try pentagramaDeArpegios(&argumentos, opciones, notacion)
+        }
+        return bien(svg.trimmingCharacters(in: "\n"))
+    }
+
+    /// `pentagrama arpegio`: los arpegios uno detrás de otro, con el cifrado de cada uno encima de su primera nota;
+    /// con `--figura` o `--tresillos`, con su ritmo y sus barras.
+    private static func pentagramaDeArpegios(
+        _ argumentos: inout Argumentos, _ opciones: OpcionesDePentagrama, _ notacion: Notacion
+    ) throws -> ResultadoDeOrden {
+        var patron = Arpegio.Patron.ascendente
+        switch argumentos.quitarOpcion("--patron", "--patrón", "--pattern") {
+        case .ausente: break
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            guard let elegido = patronDeArpegio(texto) else { return uso(.patronDesconocido(texto), notacion) }
+            patron = elegido
+        }
+        var figura: Duracion?
+        switch argumentos.quitarOpcion("--figura", "--figure") {
+        case .ausente: break
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            let leida = try Duracion(leyendo: texto)
+            guard leida > .cero else {
+                throw ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .duracionNoValida(texto))
+            }
+            figura = leida
+        }
+        if argumentos.quitarMarca("--tresillos", "--triplets") {
+            figura = (figura ?? .corchea).grupoIrregular(3, en: 2)
+        }
+        var recorrido = RecorridoDeArpegio()
+        if let error = leerRecorrido(&argumentos, en: &recorrido) { return uso(error, notacion) }
+        if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
+        guard !argumentos.restantes.isEmpty else { return uso(.faltaLoQueDibujaElPentagrama, notacion) }
+        var arpegios: [Arpegio] = []
+        for texto in argumentos.restantes {
+            let acorde = try Acorde(leyendo: texto)
+            var inicio = 0
+            if let desde = recorrido.desde {
+                let delGrado = Int(desde).flatMap { Arpegio.indice(delGrado: $0, en: acorde) }
+                let deLaNota = (try? Nota(leyendo: desde)).flatMap { Arpegio.indice(de: $0, en: acorde) }
+                guard let indice = delGrado ?? deLaNota else { return uso(.desdeNoValido(desde), notacion) }
+                inicio = indice
+            }
+            if let grados = recorrido.grados {
+                arpegios.append(
+                    Arpegio(acorde, grados: grados, octavas: recorrido.octavas, aproximacion: recorrido.aproximacion))
+            } else {
+                arpegios.append(
+                    Arpegio(
+                        acorde, patron: patron, octavas: recorrido.octavas, conOctava: recorrido.conOctava,
+                        inicio: inicio, tensiones: recorrido.tensiones, aproximacion: recorrido.aproximacion))
+            }
+        }
+        let svg: String
+        if arpegios.count == 1, figura == nil {
+            svg = arpegios[0].svgPentagrama(cifrado: true, opciones: opciones)
+        } else {
+            // Uno detrás de otro, cada cifrado encima de la primera nota de su arpegio.
+            var eventos: [Evento] = []
+            var acordes: [Int: Acorde] = [:]
+            for arpegio in arpegios {
+                acordes[eventos.count] = arpegio.acorde
+                eventos += arpegio.alturas(octava: 4).map { Evento($0, figura ?? .corchea) }
+            }
+            let titulo = arpegios.map { $0.nombre(en: notacion) }.joined(separator: " – ")
+            svg = Voz(eventos).svgPentagrama(titulo: titulo, acordes: acordes, opciones: opciones)
+        }
+        return bien(svg.trimmingCharacters(in: "\n"))
+    }
+
     /// La mano de `--mano`, en español o en inglés.
     static func manoDePiano(_ texto: String) -> Mano? {
         let manos: [String: Mano] = [

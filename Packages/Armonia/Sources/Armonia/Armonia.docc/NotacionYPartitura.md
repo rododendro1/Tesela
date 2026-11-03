@@ -283,6 +283,28 @@ voz.svgPentagrama(titulo: "Do7").contains("<title>Si♭₄</title>")   // true
 - `OpcionesDePentagrama.resaltada` cuenta las notas que se oyen (sin silencios ni notas ligadas a la anterior), como
   los pasos de lo que suena.
 
+### Cifrados, intervalos, semitonos y tónica
+
+Alrededor de las notas se puede escribir lo que ayuda a estudiarlas:
+
+- **Cifrado de cada acorde.** `DisposicionDeAcorde.svgPentagrama(_:titulo:cifrados:)` pone el de cada acorde encima
+  de su columna; `Voz.svgPentagrama(titulo:acordes:)`, encima de la primera nota de cada arpegio de una progresión;
+  `Arpegio.svgPentagrama(cifrado: true)`, encima de la primera nota.
+- **Intervalos** (`intervalosDeLasNotas`). Debajo de cada nota, su intervalo desde la tónica de la escala o desde la
+  fundamental del acorde que suena (con 9, 11 y 13 si el acorde tiene séptima).
+- **Semitonos** (`marcarSemitonos`). Un arco une dos notas seguidas a un semitono.
+- **Tónica** (`marcarTonica`). La tónica va en color (`colorDeLaTonica`) en cada octava.
+- **Varias octavas.** `Escala.svgPentagrama(octavas:)` sube (y baja) dos, tres o cuatro octavas.
+
+```swift
+let opciones = OpcionesDePentagrama(intervalosDeLasNotas: true, marcarSemitonos: true, marcarTonica: true)
+Acorde("Sol9").svgPentagrama(opciones: opciones).contains(">1 3 5 ♭7 9</text>")   // true
+Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<title>Re₆</title>")   // true
+```
+
+En la línea de comandos, `armonia pentagrama escala|acorde|arpegio|acordes …` dibuja lo mismo (con `--octavas`,
+`--figura`, `--tresillos`, `--nombres`, `--intervalos`, `--semitonos`, `--tonica` y `--en <tonalidad>`).
+
 ## Errores
 
 Cada tipo tiene un inicializador `init(leyendo:)` que lanza un error con el texto, el carácter

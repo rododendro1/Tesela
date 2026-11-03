@@ -120,6 +120,8 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionTeclado: String
     let sintaxisReloj: String
     let descripcionReloj: String
+    let sintaxisPentagrama: String
+    let descripcionPentagrama: String
     let sintaxisPosicionesArpegio: String
     let descripcionPosicionesArpegio: String
 
@@ -223,6 +225,7 @@ struct TextosDeCLI: TextosTraducidos {
     let archivoConNotas: String
     let noEsPentatonica: String
     let faltaEscalaDelReloj: String
+    let faltaLoQueDibujaElPentagrama: String
     let capoFueraDeRango: String
     let octavasFueraDeRango: String
     let desdeNoValido: @Sendable (String) -> String

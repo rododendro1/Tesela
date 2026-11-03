@@ -136,4 +136,33 @@ extension LineaDeComandosTests {
         #expect(salida("clock C major --fifths --ingles").contains("<title>C major · Circle of fifths</title>"))
         #expect(salida("ayuda").contains("reloj <escala> [--quintas]"))
     }
+
+    @Test func pentagrama() {
+        func cuenta(_ trozo: String, _ texto: String) -> Int { texto.components(separatedBy: trozo).count - 1 }
+        for orden in [
+            "pentagrama escala Re dórico", "pentagrama acorde Sol7", "pentagrama arpegio Do7 --patron alberti",
+            "pentagrama acordes Rem7 Sol7 Do7M", "staff scale D dorian --ingles", "staff chord G7 --ingles",
+            "staff arpeggio C Am --figure 16 --ingles", "staff chords Dm7 G7 Cmaj7 --ingles",
+        ] {
+            let svg = salida(orden)
+            #expect(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"), Comment(rawValue: orden))
+        }
+        // Dos octavas: quince notas, tres tónicas en color y, en dórico, cuatro semitonos (Mi–Fa, Si–Do).
+        let dorico = salida("pentagrama escala Re dórico --octavas 2 --tonica --semitonos --nombres")
+        #expect(cuenta("<title>", dorico) == 15)
+        #expect(cuenta("fill=\"#1971C2\"", dorico) == 3)
+        #expect(dorico.contains(">Re₄</text>"))
+        #expect(salida("pentagrama escala La menor melódica --bajando").contains("<title>Sol₅</title>"))
+        // El cifrado y los intervalos del acorde.
+        let sol9 = salida("pentagrama acorde Sol9 --intervalos")
+        #expect(sol9.contains(">Sol9</text>") && sol9.contains(">1 3 5 ♭7 9</text>"))
+        // Una progresión arpegiada con ritmo: el cifrado de cada acorde y la cifra del compás.
+        let alberti = salida("pentagrama arpegio Do Lam Fa Sol7 --patron alberti")
+        #expect(["Do", "Lam", "Fa", "Sol7"].allSatisfy { alberti.contains(">\($0)</text>") })
+        #expect(salida("pentagrama arpegio Do7 --tresillos").contains("<svg"))
+        // Con la armadura de Fa mayor, el Si♭ de Do7 no lleva bemol delante.
+        #expect(salida("pentagrama arpegio Do7 --en Fa mayor") != salida("pentagrama arpegio Do7"))
+        #expect(salida("pentagrama acordes Rem7 Sol7 Do7M").contains(">Rem7</text>"))
+        #expect(salida("ayuda").contains("pentagrama escala|acorde|arpegio|acordes <…>"))
+    }
 }
