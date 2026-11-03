@@ -54,8 +54,8 @@ public struct EjecutorDelSistema: EjecutorDeProcesos {
         if let ruta = entorno[Self.variable(de: programa)], !ruta.isEmpty {
             return gestor.isExecutableFile(atPath: ruta) ? ruta : nil
         }
-        let carpetas = (entorno["PATH"] ?? "").split(separator: ":").map(String.init)
-            + ["/opt/homebrew/bin", "/usr/local/bin"]
+        let carpetas =
+            (entorno["PATH"] ?? "").split(separator: ":").map(String.init) + ["/opt/homebrew/bin", "/usr/local/bin"]
         return carpetas.lazy.map { $0 + "/" + programa }.first { gestor.isExecutableFile(atPath: $0) }
     }
 
