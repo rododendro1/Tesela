@@ -64,6 +64,8 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     case afinacion
     /// Los ocho modos del canto gregoriano.
     case modoGregoriano
+    /// Los tres hexacordos de Guido de Arezzo (natural, duro y blando).
+    case hexacordo
     /// Escala sin un nombre propio para su categoría (las japonesas y las andinas).
     case escala
 
@@ -72,7 +74,7 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     public var clase: ClaseDeEscala {
         switch self {
         case .melakarta, .thaat, .grama, .laras: .escalaMadre
-        case .tetracordo, .jins, .cesni: .fragmento
+        case .tetracordo, .jins, .cesni, .hexacordo: .fragmento
         case .afinacion: .afinacion
         case .raga, .janya, .murchana, .dromos, .maqam, .dastgah, .makam, .mugam, .echos, .shteyger, .qenet, .pathet,
             .diao, .jo, .harmonia, .modoGregoriano, .escala:
@@ -110,13 +112,14 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         case .harmonia: "harmonía"
         case .afinacion: "afinación"
         case .modoGregoriano: "modo gregoriano"
+        case .hexacordo: "hexacordo"
         case .escala: "escala"
         }
     }
 
     /// El nombre de la categoría en el idioma de la notación («escala» → gamme, Tonleiter, гамма…), de los ficheros de
-    /// `Escalas/Nombres/` (las filas `.categoria`). Casi todas son préstamos: solo se traducen «tetracordo», «harmonía»,
-    /// «afinación» y «escala», y en ruso y griego se transcriben las demás.
+    /// `Escalas/Nombres/` (las filas `.categoria`). Casi todas son préstamos: solo se traducen «tetracordo»,
+    /// «hexacordo», «harmonía», «modo gregoriano», «afinación» y «escala», y en ruso y griego se transcriben las demás.
     public func nombre(en notacion: Notacion) -> String {
         if notacion.textos == .espanol { return nombre }
         return NombresDeEscalas.de(notacion.textos).nombre(de: self) ?? nombre

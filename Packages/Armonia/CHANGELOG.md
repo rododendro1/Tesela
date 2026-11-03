@@ -2,6 +2,21 @@
 
 ## Sin publicar
 
+### Más escalas antiguas: harmoniai de Arístides, cromáticas y enarmónicas, géneros y hexacordos
+
+- **Harmoniai de Arístides Quintiliano** (`TipoDeEscala.harmoniaiDeAristides`): la lidia, la doria, la frigia, la
+  iastia, la mixolidia y la sintonolidia que da como las de Platón, de cinco a ocho notas, en cuartos de tono.
+- **Harmoniai cromáticas y enarmónicas** (`harmoniaiCromaticas`, `harmoniaiEnarmonicas`): las otras seis especies de
+  octava de Cleónides en el género cromático (Mi Fa Sol♭ La Si Do Re♭) y las siete en el enarmónico, estas con su
+  versión en cuartos de tono. La frigia y la hipofrigia enarmónicas tienen la tónica un cuarto de tono bajo la nota
+  escrita, como Sīkāh.
+- **Más géneros griegos** (`generosDeDidimoYEratostenes`): el enarmónico de Arquitas (28/27 · 36/35 · 5/4), los
+  tres de Dídimo y el cromático y el enarmónico de Eratóstenes, en la categoría `.tetracordo`, con sus razones en
+  cents.
+- **Hexacordos de Guido de Arezzo** (`TipoDeEscala.hexacordos`, categoría nueva `.hexacordo`, clase `.fragmento`):
+  el natural, el duro y el blando, en la tradición `.gregoriano`.
+- Todos con sus nombres en los catorce idiomas.
+
 ### Afinaciones equidistantes, gamelan en cents y modos gregorianos en el catálogo
 
 - **Gamelan**: el pélog sigue el modelo de nueve partes iguales de la octava y el sléndro el de cinco, y cada escala

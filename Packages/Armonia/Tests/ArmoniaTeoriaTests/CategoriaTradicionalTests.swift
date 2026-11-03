@@ -44,18 +44,31 @@ import Testing
         #expect(TipoDeEscala.tradicionales(categoria: .raga).count == TipoDeEscala.ragasIndostanicos.count)
         let tetracordos = TipoDeEscala.tradicionales(categoria: .tetracordo)
         let harmoniai = TipoDeEscala.tradicionales(categoria: .harmonia)
-        #expect((tetracordos.count + harmoniai.count) == TipoDeEscala.griegasAntiguas.count)
-        #expect(tetracordos == TipoDeEscala.tetracordosGriegos + TipoDeEscala.generosDeArquitasYPtolomeo)
-        #expect(harmoniai == TipoDeEscala.harmoniai)
-        #expect(harmoniai.count == 8)
+        let nuevas =
+            TipoDeEscala.generosDeDidimoYEratostenes + TipoDeEscala.harmoniaiCromaticas
+            + TipoDeEscala.harmoniaiEnarmonicas + TipoDeEscala.harmoniaiDeAristides
+        #expect((tetracordos.count + harmoniai.count) == TipoDeEscala.griegasAntiguas.count + nuevas.count)
+        #expect(
+            tetracordos
+                == TipoDeEscala.tetracordosGriegos + TipoDeEscala.generosDeArquitasYPtolomeo
+                + TipoDeEscala.generosDeDidimoYEratostenes)
+        #expect(
+            harmoniai
+                == TipoDeEscala.harmoniai + TipoDeEscala.harmoniaiCromaticas + TipoDeEscala.harmoniaiEnarmonicas
+                + TipoDeEscala.harmoniaiDeAristides)
+        #expect(TipoDeEscala.harmoniai.count == 8 && harmoniai.count == 8 + 6 + 7 + 6)
+        #expect(TipoDeEscala.tradicionales(categoria: .hexacordo) == TipoDeEscala.hexacordos)
+        #expect(TipoDeEscala.hexacordoBlando.tradicion == .gregoriano)
+        #expect(TipoDeEscala.hexacordoBlando.clase == .fragmento)
+        #expect(TipoDeEscala.buscar(nombre: "hexacordo duro") == .hexacordoDuro)
         // Las siete afinaciones babilónicas y las equidistantes de África y del sudeste asiático.
         let afinaciones = TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + TipoDeEscala.sudesteAsiaticas
         #expect(TipoDeEscala.tradicionales(categoria: .afinacion) == afinaciones)
         #expect(TipoDeEscala.tradicionales(tradicion: .africa) == [.amadinda, .timbila])
         #expect(TipoDeEscala.piphat.tradicion == .sudesteAsiatico && TipoDeEscala.piphat.clase == .afinacion)
-        // Los ocho modos gregorianos, desde su final, enlazados con `ModoGregoriano`.
+        // Los ocho modos gregorianos (y los tres hexacordos), desde su final, enlazados con `ModoGregoriano`.
         #expect(TipoDeEscala.tradicionales(categoria: .modoGregoriano) == TipoDeEscala.modosGregorianos)
-        #expect(TipoDeEscala.tradicionales(tradicion: .gregoriano).count == 8)
+        #expect(TipoDeEscala.tradicionales(tradicion: .gregoriano).count == 8 + 3)
         #expect(ModoGregoriano.todos.map(\.tipoDeEscala) == TipoDeEscala.modosGregorianos)
         #expect(ModoGregoriano.todos.allSatisfy { $0.tipoDeEscala.intervalos == $0.maneria.tipo.intervalos })
         #expect(TipoDeEscala.buscar(nombre: "hipodórico") == .protusPlagalis)
@@ -194,13 +207,16 @@ import Testing
         #expect(FichaDeTradicion.todas.map(\.tradicion) == Tradicion.allCases)
     }
 
-    /// Las clases: los fragmentos tienen menos de una octava de notas (de tres a cinco), las afinaciones son las
+    /// Las clases: los fragmentos tienen menos de una octava de notas (de tres a seis), las afinaciones son las
     /// babilónicas y las escalas madre, los mēḷa, los thāṭ, los grāma y los laras.
     @Test func clasesDeLasTradicionales() {
         let fragmentos = TipoDeEscala.tradicionales(clase: .fragmento)
         let griegos = TipoDeEscala.tetracordosGriegos + TipoDeEscala.generosDeArquitasYPtolomeo
-        #expect(fragmentos == griegos + TipoDeEscala.ajnas + TipoDeEscala.cesniler)
-        #expect(fragmentos.allSatisfy { (3...5).contains($0.intervalos.count) })
+        #expect(
+            fragmentos
+                == griegos + TipoDeEscala.ajnas + TipoDeEscala.cesniler + TipoDeEscala.generosDeDidimoYEratostenes
+                + TipoDeEscala.hexacordos)
+        #expect(fragmentos.allSatisfy { (3...6).contains($0.intervalos.count) })
         let afinaciones = TipoDeEscala.tradicionales(clase: .afinacion)
         #expect(afinaciones == TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + TipoDeEscala.sudesteAsiaticas)
         let madres = TipoDeEscala.tradicionales(clase: .escalaMadre)

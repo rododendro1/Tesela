@@ -49,10 +49,38 @@ extension TipoDeEscala {
         .protusAuthenticus, .protusPlagalis, .deuterusAuthenticus, .deuterusPlagalis, .tritusAuthenticus,
         .tritusPlagalis, .tetrardusAuthenticus, .tetrardusPlagalis,
     ]
+
+    // MARK: Hexacordos de Guido de Arezzo
+    //
+    // Los tres hexacordos de la solmisación medieval (ut re mi fa sol la), con el semitono mi–fa en medio: el natural
+    // en Do, el duro en Sol (con Si, el «b duro») y el blando en Fa (con Si♭, el «b blando»). Tienen los mismos
+    // intervalos y se distinguen por la nota en que empiezan, la que dice cada uno; con sus nombres latinos y, de
+    // alias, los españoles.
+
+    /// Do Re Mi Fa Sol La.
+    public static let hexacordoNatural = TipoDeEscala(
+        nombre: "hexachordum naturale",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
+        alias: ["hexacordo natural"])
+    /// Sol La Si Do Re Mi.
+    public static let hexacordoDuro = TipoDeEscala(
+        nombre: "hexachordum durum",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
+        alias: ["hexacordo duro"])
+    /// Fa Sol La Si♭ Do Re.
+    public static let hexacordoBlando = TipoDeEscala(
+        nombre: "hexachordum molle",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
+        alias: ["hexacordo blando"])
+
+    /// Los tres hexacordos: natural, duro y blando.
+    public static let hexacordos: [TipoDeEscala] = [.hexacordoNatural, .hexacordoDuro, .hexacordoBlando]
 }
 
 // MARK: Ficha
 
 extension FichaDeTradicion {
-    static let gregoriano = FichaDeTradicion(.gregoriano, [.init(.modoGregoriano, TipoDeEscala.modosGregorianos)])
+    static let gregoriano = FichaDeTradicion(
+        .gregoriano,
+        [.init(.modoGregoriano, TipoDeEscala.modosGregorianos), .init(.hexacordo, TipoDeEscala.hexacordos)])
 }

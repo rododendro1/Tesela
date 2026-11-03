@@ -89,8 +89,8 @@ extension TipoDeEscala {
     // MARK: Géneros de Arquitas y de Ptolomeo
     //
     // Las divisiones del tetracordo en razones justas que recoge Ptolomeo en sus Harmónicas (siglo II): las tres de
-    // Arquitas de Tarento (el enarmónico de Arquitas, con su parhýpate a 63 cents, no cabe en doce notas sin cambiar
-    // de letra y queda fuera) y las suyas, de grave a agudo. El diatónico tónico de Ptolomeo es el de Arquitas. En
+    // Arquitas de Tarento (el enarmónico de Arquitas, con su parhýpate a 63 cents, va más abajo con los de Dídimo y
+    // Eratóstenes) y las suyas, de grave a agudo. El diatónico tónico de Ptolomeo es el de Arquitas. En
     // doce notas son el tetracordo cromático o el diatónico (el igual, con su segunda neutra de 151 cents, sube a Fa♯,
     // y el enarmónico de Ptolomeo es el de Aristóxeno); su versión microtonal, en cents, está en la ficha, abajo.
 
@@ -157,6 +157,195 @@ extension TipoDeEscala {
     ]
 
     public static let griegasAntiguas: [TipoDeEscala] = tetracordosGriegos + generosDeArquitasYPtolomeo + harmoniai
+
+    // MARK: Más géneros: el enarmónico de Arquitas, Dídimo y Eratóstenes
+    //
+    // Las demás divisiones del tetracordo que recoge Ptolomeo: el enarmónico de Arquitas, con la parhýpate a 63
+    // cents, y los géneros de Dídimo (siglo I a. C.) y de Eratóstenes (siglo III a. C.). El diatónico de Eratóstenes
+    // es el pitagórico (el diatónico ditónico) y no se repite. En doce notas, los enarmónicos de Arquitas y de Dídimo,
+    // cuya parhýpate está más cerca de Fa que de Mi, se escriben Mi Mi♯ Fa La; su versión microtonal va en cents.
+
+    /// El enarmónico de Arquitas (28/27, 36/35, 5/4): Mi Mi♯ Fa La, con la parhýpate a 63 cents.
+    public static let tetracordoEnarmonicoDeArquitas = TipoDeEscala(
+        nombre: "tetracordo enarmónico de Arquitas",
+        intervalos: [.unisono, .unisonoAumentado, .segundaMenor, .cuartaJusta])
+    /// El cromático de Dídimo (16/15, 25/24, 6/5): Mi Fa Sol♭ La.
+    public static let tetracordoCromaticoDeDidimo = TipoDeEscala(
+        nombre: "tetracordo cromático de Dídimo",
+        intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta])
+    /// El diatónico de Dídimo (16/15, 10/9, 9/8): Mi Fa Sol La.
+    public static let tetracordoDiatonicoDeDidimo = TipoDeEscala(
+        nombre: "tetracordo diatónico de Dídimo",
+        intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta])
+    /// El enarmónico de Dídimo (32/31, 31/30, 5/4): Mi Mi♯ Fa La.
+    public static let tetracordoEnarmonicoDeDidimo = TipoDeEscala(
+        nombre: "tetracordo enarmónico de Dídimo",
+        intervalos: [.unisono, .unisonoAumentado, .segundaMenor, .cuartaJusta])
+    /// El cromático de Eratóstenes (20/19, 19/18, 6/5): Mi Fa Sol♭ La.
+    public static let tetracordoCromaticoDeEratostenes = TipoDeEscala(
+        nombre: "tetracordo cromático de Eratóstenes",
+        intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta])
+    /// El enarmónico de Eratóstenes (40/39, 39/38, 19/15): Mi Fa♭ Fa La.
+    public static let tetracordoEnarmonicoDeEratostenes = TipoDeEscala(
+        nombre: "tetracordo enarmónico de Eratóstenes",
+        intervalos: [.unisono, .segundaDisminuida, .segundaMenor, .cuartaJusta])
+
+    /// El enarmónico de Arquitas y los géneros de Dídimo y de Eratóstenes.
+    public static let generosDeDidimoYEratostenes: [TipoDeEscala] = [
+        .tetracordoEnarmonicoDeArquitas, .tetracordoCromaticoDeDidimo, .tetracordoDiatonicoDeDidimo,
+        .tetracordoEnarmonicoDeDidimo, .tetracordoCromaticoDeEratostenes, .tetracordoEnarmonicoDeEratostenes,
+    ]
+
+    // MARK: Las harmoniai en los géneros cromático y enarmónico
+    //
+    // Las especies de octava de Cleónides en la escala de Mi a Mi de los otros dos géneros, cada una desde su nota:
+    // la cromática, Mi Fa Sol♭ La Si Do Re♭ (la doria cromática ya está arriba), y la enarmónica, Mi Fa𝄳 Fa La Si Do𝄳
+    // Do. En doce notas cada grado de la enarmónica va al semitono más cercano desde su tónica (Fa𝄳 se escribe Fa♭ o
+    // Fa), y su versión microtonal va en cuartos de tono. La frigia y la hipofrigia tienen un grado un cuarto de tono
+    // bajo la octava, así que su tónica va un cuarto de tono bajo la nota escrita (Do𝄳 sobre Do), como Sīkāh.
+
+    /// Si Do Re♭ Mi Fa Sol♭ La, en la escala cromática de Mi a Mi.
+    public static let harmoniaMixolidiaCromatica = TipoDeEscala(
+        nombre: "harmonía mixolidia cromática",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta,
+            .quintaDisminuida, .sextaDisminuida, .septimaMenor,
+        ])
+    /// Do Re♭ Mi Fa Sol♭ La Si, en la escala cromática de Mi a Mi.
+    public static let harmoniaLidiaCromatica = TipoDeEscala(
+        nombre: "harmonía lidia cromática",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaDisminuida, .sextaMayor, .septimaMayor,
+        ])
+    /// Re♭ Mi Fa Sol♭ La Si Do, en la escala cromática de Mi a Mi.
+    public static let harmoniaFrigiaCromatica = TipoDeEscala(
+        nombre: "harmonía frigia cromática",
+        intervalos: [
+            .unisono, .segundaAumentada, .terceraMayor, .cuartaJusta,
+            .quintaAumentada, .sextaAumentada, .septimaMayor,
+        ])
+    /// Fa Sol♭ La Si Do Re♭ Mi, en la escala cromática de Mi a Mi.
+    public static let harmoniaHipolidiaCromatica = TipoDeEscala(
+        nombre: "harmonía hipolidia cromática",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ])
+    /// Sol♭ La Si Do Re♭ Mi Fa, en la escala cromática de Mi a Mi.
+    public static let harmoniaHipofrigiaCromatica = TipoDeEscala(
+        nombre: "harmonía hipofrigia cromática",
+        intervalos: [
+            .unisono, .segundaAumentada, .terceraAumentada, .cuartaAumentada,
+            .quintaJusta, .sextaAumentada, .septimaMayor,
+        ])
+    /// La Si Do Re♭ Mi Fa Sol♭, en la escala cromática de Mi a Mi.
+    public static let harmoniaHipodoriaCromatica = TipoDeEscala(
+        nombre: "harmonía hipodoria cromática",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaDisminuida,
+            .quintaJusta, .sextaMenor, .septimaDisminuida,
+        ])
+    /// Si Do𝄳 Do Mi Fa𝄳 Fa La, en la escala enarmónica de Mi a Mi.
+    public static let harmoniaMixolidiaEnarmonica = TipoDeEscala(
+        nombre: "harmonía mixolidia enarmónica",
+        intervalos: [
+            .unisono, .segundaDisminuida, .segundaMenor, .cuartaJusta,
+            .cuartaAumentada, .quintaDisminuida, .septimaMenor,
+        ])
+    /// Do𝄳 Do Mi Fa𝄳 Fa La Si, en la escala enarmónica de Mi a Mi.
+    public static let harmoniaLidiaEnarmonica = TipoDeEscala(
+        nombre: "harmonía lidia enarmónica",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaDisminuida, .septimaMenor, .septimaMayor,
+        ])
+    /// Do Mi Fa𝄳 Fa La Si Do𝄳, en la escala enarmónica de Mi a Mi.
+    public static let harmoniaFrigiaEnarmonica = TipoDeEscala(
+        nombre: "harmonía frigia enarmónica",
+        intervalos: [.unisono, .terceraMenor, .terceraMayor, .cuartaJusta, .sextaMayor, .septimaMenor, .septimaMayor])
+    /// Mi Fa𝄳 Fa La Si Do𝄳 Do, en la escala enarmónica de Mi a Mi.
+    public static let harmoniaDoriaEnarmonica = TipoDeEscala(
+        nombre: "harmonía doria enarmónica",
+        intervalos: [
+            .unisono, .segundaDisminuida, .segundaMenor, .cuartaJusta,
+            .quintaJusta, .sextaDisminuida, .sextaMenor,
+        ])
+    /// Fa𝄳 Fa La Si Do𝄳 Do Mi, en la escala enarmónica de Mi a Mi.
+    public static let harmoniaHipolidiaEnarmonica = TipoDeEscala(
+        nombre: "harmonía hipolidia enarmónica",
+        intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaDisminuida, .sextaMenor, .septimaMayor])
+    /// Fa La Si Do𝄳 Do Mi Fa𝄳, en la escala enarmónica de Mi a Mi.
+    public static let harmoniaHipofrigiaEnarmonica = TipoDeEscala(
+        nombre: "harmonía hipofrigia enarmónica",
+        intervalos: [
+            .unisono, .terceraMayor, .cuartaJusta, .quintaDisminuida,
+            .quintaJusta, .septimaMenor, .septimaMayor,
+        ])
+    /// La Si Do𝄳 Do Mi Fa𝄳 Fa, en la escala enarmónica de Mi a Mi.
+    public static let harmoniaHipodoriaEnarmonica = TipoDeEscala(
+        nombre: "harmonía hipodoria enarmónica",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraDisminuida, .terceraMenor,
+            .quintaJusta, .sextaDisminuida, .sextaMenor,
+        ])
+    /// Las harmoniai en el género cromático, salvo la doria (`harmoniaDoriaCromatica`), de la más aguda a la más grave.
+    public static let harmoniaiCromaticas: [TipoDeEscala] = [
+        .harmoniaMixolidiaCromatica, .harmoniaLidiaCromatica, .harmoniaFrigiaCromatica, .harmoniaHipolidiaCromatica,
+        .harmoniaHipofrigiaCromatica, .harmoniaHipodoriaCromatica,
+    ]
+    /// Las siete harmoniai en el género enarmónico, de la más aguda a la más grave.
+    public static let harmoniaiEnarmonicas: [TipoDeEscala] = [
+        .harmoniaMixolidiaEnarmonica, .harmoniaLidiaEnarmonica, .harmoniaFrigiaEnarmonica, .harmoniaDoriaEnarmonica,
+        .harmoniaHipolidiaEnarmonica, .harmoniaHipofrigiaEnarmonica, .harmoniaHipodoriaEnarmonica,
+    ]
+
+    // MARK: Las harmoniai de Arístides Quintiliano
+    //
+    // Las seis escalas que Arístides Quintiliano (siglo III) atribuye a «los muy antiguos», las de la época de Platón:
+    // lidia, doria, frigia, iastia (o jonia), mixolidia y sintonolidia. Son enarmónicas, no son especies de una misma
+    // escala y no todas abarcan una octava. Van en cuartos de tono en su versión microtonal y, en doce notas, con
+    // cada grado redondeado al semitono más cercano. Fuente: M. L. West, Ancient Greek Music (1992).
+
+    /// En tonos: ¼, 2, 1, ¼, ¼, 2 y ¼ (Mi𝄲 Fa La Si Si𝄲 Do Mi, desde Mi𝄲).
+    public static let harmoniaLidiaDeAristides = TipoDeEscala(
+        nombre: "harmonía lidia de Arístides",
+        intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaDisminuida, .sextaMenor, .septimaMayor])
+    /// En tonos: 1, ¼, ¼, 2, 1, ¼, ¼ y 2. Abarca una novena: el tono de arriba no cabe en la octava.
+    public static let harmoniaDoriaDeAristides = TipoDeEscala(
+        nombre: "harmonía doria de Arístides",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraDisminuida, .terceraMenor,
+            .quintaJusta, .sextaMayor, .septimaDisminuida, .septimaMenor,
+        ])
+    /// En tonos: 1, ¼, ¼, 2, 1, ¼, ¼ y 1: en una octava, las notas de la doria.
+    public static let harmoniaFrigiaDeAristides = TipoDeEscala(
+        nombre: "harmonía frigia de Arístides",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraDisminuida, .terceraMenor,
+            .quintaJusta, .sextaMayor, .septimaDisminuida, .septimaMenor,
+        ])
+    /// En tonos: ¼, ¼, 2, 1½ y 1. No llega a la octava.
+    public static let harmoniaIastiaDeAristides = TipoDeEscala(
+        nombre: "harmonía iastia de Arístides",
+        intervalos: [.unisono, .segundaDisminuida, .segundaMenor, .cuartaJusta, .sextaMenor, .septimaMenor],
+        alias: ["harmonía jonia de Arístides"])
+    /// En tonos: ¼, ¼, 1, 1, ¼, ¼ y 3.
+    public static let harmoniaMixolidiaDeAristides = TipoDeEscala(
+        nombre: "harmonía mixolidia de Arístides",
+        intervalos: [
+            .unisono, .segundaDisminuida, .segundaMenor, .terceraMenor,
+            .cuartaJusta, .cuartaAumentada, .quintaDisminuida,
+        ])
+    /// En tonos: ¼, ¼, 2 y 1½: abarca una sexta menor.
+    public static let harmoniaSintonolidiaDeAristides = TipoDeEscala(
+        nombre: "harmonía sintonolidia de Arístides",
+        intervalos: [.unisono, .segundaDisminuida, .segundaMenor, .cuartaJusta, .sextaMenor])
+    /// Las seis harmoniai de Arístides Quintiliano.
+    public static let harmoniaiDeAristides: [TipoDeEscala] = [
+        .harmoniaLidiaDeAristides, .harmoniaDoriaDeAristides, .harmoniaFrigiaDeAristides, .harmoniaIastiaDeAristides,
+        .harmoniaMixolidiaDeAristides, .harmoniaSintonolidiaDeAristides,
+    ]
 }
 
 // MARK: Ficha
@@ -168,6 +357,10 @@ extension FichaDeTradicion {
             .init(.tetracordo, TipoDeEscala.tetracordosGriegos),
             .init(.tetracordo, TipoDeEscala.generosDeArquitasYPtolomeo),
             .init(.harmonia, TipoDeEscala.harmoniai),
+            .init(.tetracordo, TipoDeEscala.generosDeDidimoYEratostenes),
+            .init(.harmonia, TipoDeEscala.harmoniaiCromaticas),
+            .init(.harmonia, TipoDeEscala.harmoniaiEnarmonicas),
+            .init(.harmonia, TipoDeEscala.harmoniaiDeAristides),
         ],
         microtonales: [
             // El tetracordo enarmónico de Aristóxeno, en cuartos de tono: Mi Fa𝄳 Fa La (la parhýpate, un cuarto de tono
@@ -183,5 +376,26 @@ extension FichaDeTradicion {
             TipoDeEscalaMicrotonal(.tetracordoDiatonicoDitonico, .razones, pasos: [0, 90, 294, 498]),
             TipoDeEscalaMicrotonal(.tetracordoDiatonicoTenso, .razones, pasos: [0, 112, 316, 498]),
             TipoDeEscalaMicrotonal(.tetracordoDiatonicoIgual, .razones, pasos: [0, 151, 316, 498]),
+            // El enarmónico de Arquitas y los géneros de Dídimo y de Eratóstenes, en cents.
+            TipoDeEscalaMicrotonal(.tetracordoEnarmonicoDeArquitas, .razones, pasos: [0, 63, 112, 498]),
+            TipoDeEscalaMicrotonal(.tetracordoCromaticoDeDidimo, .razones, pasos: [0, 112, 182, 498]),
+            TipoDeEscalaMicrotonal(.tetracordoDiatonicoDeDidimo, .razones, pasos: [0, 112, 294, 498]),
+            TipoDeEscalaMicrotonal(.tetracordoEnarmonicoDeDidimo, .razones, pasos: [0, 55, 112, 498]),
+            TipoDeEscalaMicrotonal(.tetracordoCromaticoDeEratostenes, .razones, pasos: [0, 89, 182, 498]),
+            TipoDeEscalaMicrotonal(.tetracordoEnarmonicoDeEratostenes, .razones, pasos: [0, 44, 89, 498]),
+            // Las harmoniai enarmónicas y las de Arístides, en cuartos de tono.
+            TipoDeEscalaMicrotonal(.harmoniaMixolidiaEnarmonica, .cuartosDeTono, pasos: [0, 1, 2, 10, 11, 12, 20]),
+            TipoDeEscalaMicrotonal(.harmoniaLidiaEnarmonica, .cuartosDeTono, pasos: [0, 1, 9, 10, 11, 19, 23]),
+            TipoDeEscalaMicrotonal(.harmoniaFrigiaEnarmonica, .cuartosDeTono, pasos: [-1, 7, 8, 9, 17, 21, 22]),
+            TipoDeEscalaMicrotonal(.harmoniaDoriaEnarmonica, .cuartosDeTono, pasos: [0, 1, 2, 10, 14, 15, 16]),
+            TipoDeEscalaMicrotonal(.harmoniaHipolidiaEnarmonica, .cuartosDeTono, pasos: [0, 1, 9, 13, 14, 15, 23]),
+            TipoDeEscalaMicrotonal(.harmoniaHipofrigiaEnarmonica, .cuartosDeTono, pasos: [-1, 7, 11, 12, 13, 21, 22]),
+            TipoDeEscalaMicrotonal(.harmoniaHipodoriaEnarmonica, .cuartosDeTono, pasos: [0, 4, 5, 6, 14, 15, 16]),
+            TipoDeEscalaMicrotonal(.harmoniaLidiaDeAristides, .cuartosDeTono, pasos: [0, 1, 9, 13, 14, 15, 23]),
+            TipoDeEscalaMicrotonal(.harmoniaDoriaDeAristides, .cuartosDeTono, pasos: [0, 4, 5, 6, 14, 18, 19, 20]),
+            TipoDeEscalaMicrotonal(.harmoniaFrigiaDeAristides, .cuartosDeTono, pasos: [0, 4, 5, 6, 14, 18, 19, 20]),
+            TipoDeEscalaMicrotonal(.harmoniaIastiaDeAristides, .cuartosDeTono, pasos: [0, 1, 2, 10, 16, 20]),
+            TipoDeEscalaMicrotonal(.harmoniaMixolidiaDeAristides, .cuartosDeTono, pasos: [0, 1, 2, 6, 10, 11, 12]),
+            TipoDeEscalaMicrotonal(.harmoniaSintonolidiaDeAristides, .cuartosDeTono, pasos: [0, 1, 2, 10, 16]),
         ])
 }

@@ -104,7 +104,7 @@ import Testing
 
     /// Los nombres propios se escriben igual en todos los idiomas; solo cambian los que se traducen.
     @Test func soloSeTraducenLosNombresDescriptivosDeLasTradicionales() {
-        let traducidos: Set<String> = [
+        var traducidos: Set<String> = [
             "pentatónica andina", "tritónica andina", "tetracordo diatónico", "tetracordo cromático", "harmonía doria",
             "harmonía doria cromática", "harmonía frigia", "harmonía lidia", "tetracordo enarmónico",
             "harmonía mixolidia", "harmonía hipolidia", "harmonía hipofrigia", "harmonía hipodoria",
@@ -112,7 +112,15 @@ import Testing
             "tetracordo cromático de Arquitas", "tetracordo diatónico de Arquitas", "tetracordo enarmónico de Ptolomeo",
             "tetracordo cromático blando", "tetracordo cromático tenso", "tetracordo diatónico blando",
             "tetracordo diatónico ditónico", "tetracordo diatónico tenso", "tetracordo diatónico igual",
+            "tetracordo enarmónico de Arquitas", "tetracordo cromático de Dídimo", "tetracordo diatónico de Dídimo",
+            "tetracordo enarmónico de Dídimo", "tetracordo cromático de Eratóstenes",
+            "tetracordo enarmónico de Eratóstenes",
         ]
+        let especies = ["mixolidia", "lidia", "frigia", "doria", "hipolidia", "hipofrigia", "hipodoria"]
+        traducidos.formUnion(especies.filter { $0 != "doria" }.map { "harmonía \($0) cromática" })
+        traducidos.formUnion(especies.map { "harmonía \($0) enarmónica" })
+        let deAristides = ["lidia", "doria", "frigia", "iastia", "mixolidia", "sintonolidia"]
+        traducidos.formUnion(deAristides.map { "harmonía \($0) de Arístides" })
         for idioma in Idioma.allCases {
             let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             // El ruso y el griego, que usan otro alfabeto, transcriben también los nombres propios.
