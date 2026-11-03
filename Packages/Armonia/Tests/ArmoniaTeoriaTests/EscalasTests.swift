@@ -895,7 +895,7 @@ import Testing
         #expect(TipoDeEscala.yo == .ritsu)
         #expect(TipoDeEscala.minyo == .pentatonicaMenor)
         #expect(TipoDeEscala.ryo == .pentatonicaMayor)
-        #expect(Set(TipoDeEscala.in.equivalentes.map(\.nombre)) == ["Miyakobushi", "Ambassäl"])
+        #expect(Set(TipoDeEscala.in.equivalentes.map(\.nombre)) == ["Miyakobushi", "Ambassäl", "Pélog pathet nem"])
         // Con macrones, sin ellos y en japonés.
         for (texto, nombre) in [
             ("Do Hirajōshi", "Hirajōshi"), ("Do hirajoshi", "Hirajōshi"), ("Do 平調子", "Hirajōshi"),
