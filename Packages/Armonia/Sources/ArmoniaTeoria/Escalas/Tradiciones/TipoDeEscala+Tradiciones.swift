@@ -20,17 +20,18 @@ import ArmoniaNucleo
 //
 // Cada tradición tiene su fichero, `TipoDeEscala+Nombre.swift` (el nombre del caso de `Tradicion`, con mayúscula):
 // Andes, Azerbaiyan (mugam), Bizancio (echoi), China, Corea, Etiopia, Grecia (dromoi), GreciaAntigua (tetracordos,
-// géneros y harmoniai), India, Indonesia, Japon, Klezmer, Mesopotamia (afinaciones babilónicas), MundoArabe
-// (maqamat), Persia (dastgāh) y Turquia (makamlar). Cada uno acaba con su ficha (`FichaDeTradicion`): la categoría
-// de cada lista, las versiones microtonales y, en la India, el mēḷa de cada janya. Una escala nueva se declara en
-// el fichero de su tradición, en una de sus listas, y, si la tiene, con su versión microtonal en la ficha.
+// géneros y harmoniai), India, Indonesia, Japon, Klezmer, Mesopotamia (afinaciones babilónicas), MundoArabe (maqamat y
+// ajnas), Persia (dastgāh) y Turquia (makamlar y çeşni). Cada uno acaba con su ficha (`FichaDeTradicion`): la categoría
+// de cada lista, las versiones microtonales y, en la India, el mēḷa de cada janya. Una escala nueva se declara en el
+// fichero de su tradición, en una de sus listas, y, si la tiene, con su versión microtonal en la ficha.
 
 extension TipoDeEscala {
     /// Escalas de otras tradiciones: thāṭ, dromoi, mēḷa, janya, chinas, japonesas, etíopes,
     /// maqamat, de Indonesia (laras y pathet), klezmer, rāgas indostánicos, dastgāh, coreanas, andinas, de la
-    /// Grecia antigua, makamlar turcos, mugam azerbaiyanos, echoi bizantinos y afinaciones babilónicas.
+    /// Grecia antigua, makamlar turcos, mugam azerbaiyanos, echoi bizantinos, afinaciones babilónicas, y los ajnas
+    /// árabes y los çeşni turcos.
     public static let tradicionales: [TipoDeEscala] =
         thaats + dromoi + melakartas + janyas + gramas + murchanas + chinas + japonesas
         + etiopes + maqamat + indonesias + pathets + klezmer + ragasIndostanicos + dastgah + coreanas + andinas
-        + griegasAntiguas + makamlar + mugamlar + echoi + mesopotamicas
+        + griegasAntiguas + makamlar + mugamlar + echoi + mesopotamicas + ajnas + cesniler
 }

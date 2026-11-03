@@ -203,6 +203,54 @@ extension TipoDeEscala {
         .nayruz, .sikah, .huzam, .iraq, .rahatAlArwah, .bayatiShuri, .jiharkah, .atharKurd, .maqamNikriz, .lami,
         .sabaZamzam,
     ]
+
+    // MARK: Ajnas (fragmentos)
+    //
+    // Los ajnas (singular «jins») son los trozos de tres, cuatro o cinco notas de los que se hacen los maqamat: un
+    // maqam es un jins en la tónica y otro, que se puede cambiar, encima (Sūznāk es un jins Rāst y un jins Ḥijāz en
+    // la quinta). Aquí van los nueve principales, cada uno con su número de notas habitual: tetracordos casi todos;
+    // Sīkāh, un tricordo, y Nahāwand, ʿAjam y Nikrīz, pentacordos. Se llaman «jins …» para no confundirse con su
+    // maqam. Rāst, Bayātī, Ṣabā y Sīkāh tienen cuartos de tono y van aproximados como sus maqamat. Fuente: Maqam World
+    // (Sami Abu Shumays).
+
+    /// جنس راست (Do Re Mi𝄳 Fa), aproximado: Do Re Mi Fa.
+    public static let jinsRast = TipoDeEscala(
+        nombre: "jins Rāst", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta], alias: ["جنس راست"])
+    /// جنس بياتي (Re Mi𝄳 Fa Sol), aproximado: Re Mi♭ Fa Sol.
+    public static let jinsBayati = TipoDeEscala(
+        nombre: "jins Bayātī", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
+        alias: ["جنس بياتي"])
+    /// جنس صبا (Re Mi𝄳 Fa Sol♭), aproximado: Re Mi♭ Fa Sol♭.
+    public static let jinsSaba = TipoDeEscala(
+        nombre: "jins Ṣabā", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida],
+        alias: ["جنس صبا"])
+    /// جنس سيكاه (Mi𝄳 Fa Sol), aproximado sobre Mi: Mi Fa Sol.
+    public static let jinsSikah = TipoDeEscala(
+        nombre: "jins Sīkāh", intervalos: [.unisono, .segundaMenor, .terceraMenor], alias: ["جنس سيكاه"])
+    /// جنس حجاز (Re Mi♭ Fa♯ Sol): la segunda aumentada en medio.
+    public static let jinsHijaz = TipoDeEscala(
+        nombre: "jins Ḥijāz", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta],
+        alias: ["جنس حجاز"])
+    /// جنس كرد (Re Mi♭ Fa Sol).
+    public static let jinsKurd = TipoDeEscala(
+        nombre: "jins Kurd", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta], alias: ["جنس كرد"])
+    /// جنس نهاوند (Do Re Mi♭ Fa Sol).
+    public static let jinsNahawand = TipoDeEscala(
+        nombre: "jins Nahāwand", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta],
+        alias: ["جنس نهاوند"])
+    /// جنس عجم (Do Re Mi Fa Sol).
+    public static let jinsAjam = TipoDeEscala(
+        nombre: "jins ʿAjam", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta],
+        alias: ["جنس عجم"])
+    /// جنس نكريز (Do Re Mi♭ Fa♯ Sol).
+    public static let jinsNikriz = TipoDeEscala(
+        nombre: "jins Nikrīz",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaAumentada, .quintaJusta],
+        alias: ["جنس نكريز"])
+
+    public static let ajnas: [TipoDeEscala] = [
+        .jinsRast, .jinsBayati, .jinsSaba, .jinsSikah, .jinsHijaz, .jinsKurd, .jinsNahawand, .jinsAjam, .jinsNikriz,
+    ]
 }
 
 // MARK: Ficha
@@ -210,7 +258,7 @@ extension TipoDeEscala {
 extension FichaDeTradicion {
     static let mundoArabe = FichaDeTradicion(
         .mundoArabe,
-        [.init(.maqam, TipoDeEscala.maqamat)],
+        [.init(.maqam, TipoDeEscala.maqamat), .init(.jins, TipoDeEscala.ajnas)],
         microtonales: [
             // Maqamat (cuartos de tono).
             TipoDeEscalaMicrotonal(
@@ -228,5 +276,10 @@ extension FichaDeTradicion {
             TipoDeEscalaMicrotonal(.rahatAlArwah, .cuartosDeTono, pasos: [-1, 2, 6, 8, 14, 16, 20]),
             TipoDeEscalaMicrotonal(.bayatiShuri, .cuartosDeTono, pasos: [0, 3, 6, 10, 12, 18, 20]),
             TipoDeEscalaMicrotonal(.jiharkah, .cuartosDeTono, pasos: [0, 4, 8, 10, 14, 18, 21]),
+            // Ajnas.
+            TipoDeEscalaMicrotonal(.jinsRast, .cuartosDeTono, pasos: [0, 4, 7, 10]),
+            TipoDeEscalaMicrotonal(.jinsBayati, .cuartosDeTono, pasos: [0, 3, 6, 10]),
+            TipoDeEscalaMicrotonal(.jinsSaba, .cuartosDeTono, pasos: [0, 3, 6, 8]),
+            TipoDeEscalaMicrotonal(.jinsSikah, .cuartosDeTono, pasos: [-1, 2, 6]),
         ])
 }

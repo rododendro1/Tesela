@@ -52,6 +52,10 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     case jo
     /// Tetracordos de la Grecia antigua.
     case tetracordo
+    /// Los ajnas (singular «jins»), los fragmentos de tres a cinco notas de los que se hacen los maqamat.
+    case jins
+    /// Los çeşni turcos: los dörtlü y beşli (tetracordos y pentacordos) de los que se hacen los makamlar.
+    case cesni
     /// Harmoniai de la Grecia antigua.
     case harmonia
     /// Las siete afinaciones de la lira y el arpa babilónicas (išartu, kitmu…), de los textos cuneiformes.
@@ -64,7 +68,7 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     public var clase: ClaseDeEscala {
         switch self {
         case .melakarta, .thaat, .grama, .laras: .escalaMadre
-        case .tetracordo: .fragmento
+        case .tetracordo, .jins, .cesni: .fragmento
         case .afinacion: .afinacion
         case .raga, .janya, .murchana, .dromos, .maqam, .dastgah, .makam, .mugam, .echos, .shteyger, .qenet, .pathet,
             .diao, .jo, .harmonia, .escala:
@@ -97,6 +101,8 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         case .diao: "diào"
         case .jo: "jo"
         case .tetracordo: "tetracordo"
+        case .jins: "jins"
+        case .cesni: "çeşni"
         case .harmonia: "harmonía"
         case .afinacion: "afinación"
         case .escala: "escala"
@@ -147,8 +153,8 @@ extension TipoDeEscala {
         tradicionales.filter { $0.categoria == categoria }
     }
 
-    /// Las escalas de otras tradiciones de una clase: `tradicionales(clase: .fragmento)` da los tetracordos y los
-    /// géneros griegos.
+    /// Las escalas de otras tradiciones de una clase: `tradicionales(clase: .fragmento)` da los tetracordos griegos,
+    /// los ajnas árabes y los çeşni turcos.
     public static func tradicionales(clase: ClaseDeEscala) -> [TipoDeEscala] {
         tradicionales.filter { $0.clase == clase }
     }

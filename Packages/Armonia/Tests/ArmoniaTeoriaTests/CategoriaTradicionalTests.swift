@@ -32,7 +32,13 @@ import Testing
         #expect(TipoDeEscala.tradicionales(categoria: .dastgah).count == TipoDeEscala.dastgah.count)
         #expect(TipoDeEscala.tradicionales(categoria: .makam).count == TipoDeEscala.makamlar.count)
         #expect(TipoDeEscala.tradicionales(categoria: .mugam).count == TipoDeEscala.mugamlar.count)
-        #expect(TipoDeEscala.tradicionales(tradicion: .turquia) == TipoDeEscala.makamlar)
+        #expect(TipoDeEscala.tradicionales(tradicion: .turquia) == TipoDeEscala.makamlar + TipoDeEscala.cesniler)
+        #expect(TipoDeEscala.tradicionales(categoria: .jins) == TipoDeEscala.ajnas)
+        #expect(TipoDeEscala.tradicionales(categoria: .cesni) == TipoDeEscala.cesniler)
+        #expect(TipoDeEscala.ajnas.count == 9 && TipoDeEscala.cesniler.count == 12)
+        #expect(TipoDeEscala.jinsHijaz.tradicion == .mundoArabe && TipoDeEscala.jinsHijaz.clase == .fragmento)
+        #expect(TipoDeEscala.buscar(nombre: "jins Hijaz") == .jinsHijaz)
+        #expect(TipoDeEscala.buscar(nombre: "Hicaz dörtlüsü")?.categoria == .cesni)
         #expect(TipoDeEscala.tradicionales(tradicion: .azerbaiyan) == TipoDeEscala.mugamlar)
         #expect(TipoDeEscala.tradicionales(categoria: .janya).count == TipoDeEscala.janyas.count)
         #expect(TipoDeEscala.tradicionales(categoria: .raga).count == TipoDeEscala.ragasIndostanicos.count)
@@ -178,12 +184,13 @@ import Testing
         #expect(FichaDeTradicion.todas.map(\.tradicion) == Tradicion.allCases)
     }
 
-    /// Las clases: los fragmentos tienen menos de una octava de notas (cuatro), las afinaciones son las babilónicas y
-    /// las escalas madre, los mēḷa, los thāṭ, los grāma y los laras.
+    /// Las clases: los fragmentos tienen menos de una octava de notas (de tres a cinco), las afinaciones son las
+    /// babilónicas y las escalas madre, los mēḷa, los thāṭ, los grāma y los laras.
     @Test func clasesDeLasTradicionales() {
         let fragmentos = TipoDeEscala.tradicionales(clase: .fragmento)
-        #expect(fragmentos == TipoDeEscala.tetracordosGriegos + TipoDeEscala.generosDeArquitasYPtolomeo)
-        #expect(fragmentos.allSatisfy { $0.intervalos.count == 4 })
+        let griegos = TipoDeEscala.tetracordosGriegos + TipoDeEscala.generosDeArquitasYPtolomeo
+        #expect(fragmentos == griegos + TipoDeEscala.ajnas + TipoDeEscala.cesniler)
+        #expect(fragmentos.allSatisfy { (3...5).contains($0.intervalos.count) })
         #expect(TipoDeEscala.tradicionales(clase: .afinacion) == TipoDeEscala.mesopotamicas)
         let madres = TipoDeEscala.tradicionales(clase: .escalaMadre)
         let thaatsGramasYLaras = TipoDeEscala.thaats + TipoDeEscala.gramas + TipoDeEscala.indonesias

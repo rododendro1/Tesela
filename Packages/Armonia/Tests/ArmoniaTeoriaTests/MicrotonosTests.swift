@@ -17,7 +17,7 @@ import Testing
             #expect(microtonal.temperada.microtonal == microtonal, Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(TipoDeEscalaMicrotonal.catalogo.count == 99)
+        #expect(TipoDeEscalaMicrotonal.catalogo.count == 113)
     }
 
     /// Se busca por el nombre: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
@@ -101,6 +101,14 @@ import Testing
         // microtonal.
         #expect(TipoDeEscala.makamlar.filter { $0.microtonal == nil }.count == 6)
         #expect(TipoDeEscala.ussakMakami.microtonal?.cents[1] == 8.0 * 1200 / 53)
+        #expect(nombres(Escala(.sol, .kurdilihicazkarMakami)) == "Sol La♭ Si♭ Do Re Mi♭ Fa")
+        #expect(nombres(Escala(.re, .ferahfezaMakami)) == "Re Mi Fa Sol La Si♭ Do")
+        // Los çeşni de Rast, Uşşak y Hicaz, en comas; los ajnas con cuartos de tono, en cuartos de tono.
+        #expect(nombres(Escala(.la, .hicazDortlusu)) == "La Si♭⁺¹ Do♯⁻¹ Re")
+        #expect(nombres(Escala(.la, .ussakBeslisi)) == "La Si⁻¹ Do Re Mi")
+        #expect(nombres(Escala(.re, .jinsBayati)) == "Re Mi𝄳 Fa Sol")
+        #expect(nombres(Escala(.mi, .jinsSikah)) == "Mi𝄳 Fa Sol")
+        #expect(TipoDeEscala.jinsHijaz.microtonal == nil && TipoDeEscala.kurdiDortlusu.microtonal == nil)
         // Dromoi, con la afinación de su maqam o su makam.
         #expect(nombres(Escala(.re, .ousak)) == "Re Mi𝄳 Fa Sol La Si♭ Do")
         #expect(nombres(Escala(.re, .sabah)) == "Re Mi𝄳 Fa Sol♭ La Si♭ Do")

@@ -219,13 +219,100 @@ extension TipoDeEscala {
         ],
         alias: ["makam Zirgüleli Hicaz"])
 
+    /// Kürdîlihicazkâr (Sol La♭ Si♭ Do Re Mi♭ Fa): el Kürdî llevado a la rast, inicio y reposo de un makam que arriba
+    /// toma prestadas las regiones de Hicazkâr, Arazbar o de un Bûselik en la çârgâh. Su dizi de la rast es el frigio.
+    public static let kurdilihicazkarMakami = TipoDeEscala(
+        nombre: "Kürdîlihicazkâr makamı",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Kürdîlihicazkâr", "Kürdîli Hicazkâr makamı"])
+    /// Muhayyer (La Si Do Re Mi Fa♯ Sol, con la segâh y Fa♯ una koma bajo): las notas de Hüseynî, un pentacordo
+    /// Hüseynî y un tetracordo Uşşak en la hüseynî, pero bajando desde la muhayyer, la octava aguda.
+    public static let muhayyerMakami = TipoDeEscala(
+        nombre: "Muhayyer makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["makam Muhayyer"])
+    /// Ferahfezâ (Re Mi Fa Sol La Si♭ Do): las notas de Acemaşiran con un pentacordo Bûselik en la yegâh, donde
+    /// reposa: la menor natural sobre Re.
+    public static let ferahfezaMakami = TipoDeEscala(
+        nombre: "Ferahfezâ makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Ferahfezâ"])
+    /// Isfahan (La Si Do Re Mi Fa Sol, con la segâh): un tetracordo Uşşak y un pentacordo Bûselik en la nevâ, las
+    /// notas de Uşşak, que sube y baja como Bayatî. Aproximado: la menor natural.
+    public static let isfahanMakami = TipoDeEscala(
+        nombre: "Isfahan makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Isfahan", "İsfahan makamı"])
+
     /// Los makamlar: los que el temperamento igual escribe sin cambiarles el carácter y los que solo se oyen bien
     /// con su versión microtonal (Uşşak, Hüseynî y Segâh).
     public static let makamlar: [TipoDeEscala] = [
         .rastMakami, .hicazMakami, .hicazkarMakami, .nihavendMakami, .kurdiMakami, .buselikMakami, .cargahMakami,
         .ussakMakami, .huseyniMakami, .segahMakami, .huzzamMakami, .sabaMakami, .karcigarMakami, .suzinakMakami,
         .nikrizMakami, .neveserMakami, .mahurMakami, .acemasiranMakami, .sultaniyegahMakami, .sedarabanMakami,
-        .humayunMakami, .uzzalMakami, .zirguleliHicazMakami,
+        .humayunMakami, .uzzalMakami, .zirguleliHicazMakami, .kurdilihicazkarMakami, .muhayyerMakami,
+        .ferahfezaMakami, .isfahanMakami,
+    ]
+
+    // MARK: Çeşni (fragmentos)
+    //
+    // Los dörtlü (tetracordos) y beşli (pentacordos) de AEU, de los que se hacen los makamlar: Rast es un beşli Rast
+    // en la rast y un dörtlü Rast en la nevâ. Son seis, cada uno de cuatro y de cinco notas: Çârgâh, Bûselik, Kürdî,
+    // Rast, Uşşak y Hicaz. Los tres primeros son pitagóricos y no cambian al redondear; los otros tres tienen versión
+    // microtonal (la segâh de Rast y Uşşak, la segunda aumentada de Hicaz, de 12 comas).
+
+    /// Do Re Mi Fa.
+    public static let cargahDortlusu = TipoDeEscala(
+        nombre: "Çârgâh dörtlüsü", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta])
+    /// Do Re Mi Fa Sol.
+    public static let cargahBeslisi = TipoDeEscala(
+        nombre: "Çârgâh beşlisi", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta])
+    /// La Si Do Re.
+    public static let buselikDortlusu = TipoDeEscala(
+        nombre: "Bûselik dörtlüsü", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta])
+    /// La Si Do Re Mi.
+    public static let buselikBeslisi = TipoDeEscala(
+        nombre: "Bûselik beşlisi", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta])
+    /// La Si♭ Do Re.
+    public static let kurdiDortlusu = TipoDeEscala(
+        nombre: "Kürdî dörtlüsü", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta])
+    /// La Si♭ Do Re Mi.
+    public static let kurdiBeslisi = TipoDeEscala(
+        nombre: "Kürdî beşlisi", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta])
+    /// Sol La Si Do, con Si una koma bajo.
+    public static let rastDortlusu = TipoDeEscala(
+        nombre: "Rast dörtlüsü", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta])
+    /// Sol La Si Do Re, con Si una koma bajo.
+    public static let rastBeslisi = TipoDeEscala(
+        nombre: "Rast beşlisi", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta])
+    /// La Si Do Re, con la segâh (Si una koma bajo). Aproximado: La Si Do Re.
+    public static let ussakDortlusu = TipoDeEscala(
+        nombre: "Uşşak dörtlüsü", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta])
+    /// La Si Do Re Mi, con la segâh.
+    public static let ussakBeslisi = TipoDeEscala(
+        nombre: "Uşşak beşlisi", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta])
+    /// La Si♭ Do♯ Re.
+    public static let hicazDortlusu = TipoDeEscala(
+        nombre: "Hicaz dörtlüsü", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta])
+    /// La Si♭ Do♯ Re Mi.
+    public static let hicazBeslisi = TipoDeEscala(
+        nombre: "Hicaz beşlisi", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta])
+
+    public static let cesniler: [TipoDeEscala] = [
+        .cargahDortlusu, .cargahBeslisi, .buselikDortlusu, .buselikBeslisi, .kurdiDortlusu, .kurdiBeslisi,
+        .rastDortlusu, .rastBeslisi, .ussakDortlusu, .ussakBeslisi, .hicazDortlusu, .hicazBeslisi,
     ]
 }
 
@@ -234,7 +321,7 @@ extension TipoDeEscala {
 extension FichaDeTradicion {
     static let turquia = FichaDeTradicion(
         .turquia,
-        [.init(.makam, TipoDeEscala.makamlar)],
+        [.init(.makam, TipoDeEscala.makamlar), .init(.cesni, TipoDeEscala.cesniler)],
         microtonales: [
             // Makamlar (comas de AEU).
             TipoDeEscalaMicrotonal(
@@ -267,5 +354,18 @@ extension FichaDeTradicion {
             TipoDeEscalaMicrotonal(.humayunMakami, .comas53, pasos: [0, 5, 17, 22, 31, 35, 44]),
             TipoDeEscalaMicrotonal(.uzzalMakami, .comas53, pasos: [0, 5, 17, 22, 31, 39, 44]),
             TipoDeEscalaMicrotonal(.zirguleliHicazMakami, .comas53, pasos: [0, 5, 17, 22, 31, 36, 48]),
+            // Kürdîlihicazkâr, con las perdes de Kürdî en la rast (La♭, Si♭ y Mi♭ con küçük mücennep); Muhayyer,
+            // con las de Hüseynî; Ferahfezâ, con las de Acemaşiran desde la yegâh, e Isfahan, con las de Uşşak.
+            TipoDeEscalaMicrotonal(.kurdilihicazkarMakami, .comas53, pasos: [0, 4, 13, 22, 31, 35, 44]),
+            TipoDeEscalaMicrotonal(.muhayyerMakami, .comas53, pasos: [0, 8, 13, 22, 31, 39, 44]),
+            TipoDeEscalaMicrotonal(.ferahfezaMakami, .comas53, pasos: [0, 9, 13, 22, 31, 35, 44]),
+            TipoDeEscalaMicrotonal(.isfahanMakami, .comas53, pasos: [0, 8, 13, 22, 31, 35, 44]),
+            // Çeşni.
+            TipoDeEscalaMicrotonal(.rastDortlusu, .comas53, pasos: [0, 9, 17, 22]),
+            TipoDeEscalaMicrotonal(.rastBeslisi, .comas53, pasos: [0, 9, 17, 22, 31]),
+            TipoDeEscalaMicrotonal(.ussakDortlusu, .comas53, pasos: [0, 8, 13, 22]),
+            TipoDeEscalaMicrotonal(.ussakBeslisi, .comas53, pasos: [0, 8, 13, 22, 31]),
+            TipoDeEscalaMicrotonal(.hicazDortlusu, .comas53, pasos: [0, 5, 17, 22]),
+            TipoDeEscalaMicrotonal(.hicazBeslisi, .comas53, pasos: [0, 5, 17, 22, 31]),
         ])
 }

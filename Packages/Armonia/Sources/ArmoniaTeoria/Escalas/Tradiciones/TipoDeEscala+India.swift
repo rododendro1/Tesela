@@ -277,8 +277,8 @@ extension TipoDeEscala {
     // MARK: Rāgas indostánicos
     //
     // Algunos de los rāgas más tocados, con su āroh (subida) y avaroh (bajada) en la forma recta
-    // que dan los libros de teoría (sin los giros vakra). Darbārī Kānaṛā, que es vakra de por sí, no
-    // está.
+    // que dan los libros de teoría (sin los giros vakra). Darbārī Kānaḍa, que es vakra de por sí, va con sus notas
+    // rectas: su ga y su dha ati-komal, con andolan, y sus giros no caben en una escala.
 
     /// Bhūpālī: la pentatónica mayor (Sa Re Ga Pa Dha).
     public static let bhupali = TipoDeEscala(
@@ -337,10 +337,44 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .cuartaAumentada, .sextaMenor, .septimaMayor,
         ],
         alias: ["ललित"])
+    /// Bhīmpalāsī (thāṭ Kāfī): sube sin Re ni Dha (Sa ga ma Pa ni) y baja con todas (Sa Re ga ma Pa Dha ni).
+    public static let bhimpalasi = TipoDeEscala(
+        nombre: "Bhīmpalāsī",
+        intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["Bhimpalas", "Bheempalasi", "भीमपलासी"])
+    /// Bihāg (thāṭ Bilāval): sube sin Re ni Dha (Sa Ga ma Pa Ni) y baja con todas; el Ma tīvra solo aparece de
+    /// paso (Pa Ma Ga ma Ga) y no entra en la escala.
+    public static let bihag = TipoDeEscala(
+        nombre: "Bihāg",
+        intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["Behag", "बिहाग"])
+    /// Darbārī Kānaḍa (thāṭ Āsāvarī: Sa Re ga ma Pa dha ni), en su forma recta: la menor natural, como Āsāvarī.
+    public static let darbariKanada = TipoDeEscala(
+        nombre: "Darbārī Kānaḍa",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Darbārī Kānaṛā", "Darbari Kanhra", "Darbari", "दरबारी कान्हड़ा"])
+    /// Pūriyā Dhanāśrī (thāṭ Pūrvī: Sa re Ga Ma Pa dha Ni, Do Re♭ Mi Fa♯ Sol La♭ Si).
+    public static let puriyaDhanasri = TipoDeEscala(
+        nombre: "Pūriyā Dhanāśrī",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        alias: ["Puriya Dhanashri", "Puriya Dhanashree", "पूरिया धनाश्री"])
 
     /// Rāgas indostánicos incluidos.
     public static let ragasIndostanicos: [TipoDeEscala] = [
         .bhupali, .malkauns, .durga, .yaman, .bagesri, .des, .sivaranjani, .kalavati, .candrakauns, .megh, .lalit,
+        .bhimpalasi, .bihag, .darbariKanada, .puriyaDhanasri,
     ]
 
     // MARK: Grāma y mūrchanā (el Nāṭyaśāstra)
