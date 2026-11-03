@@ -119,6 +119,8 @@ extension TextosDeCLI {
         descripcionReloj: "eskala hamabi orduko erloju batean\n(SVG): zirkulu kromatikoa edo,\n--quintas-ekin, bosten zirkulua",
         sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
         descripcionPentagrama: "eskala bat, akorde bat, arpegio bat\n(erritmoarekin: --figura 16, --tresillos)\nedo akordeak beren zifratuarekin pentagrama\nbatean (SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
+        sintaxisPentagramaEstudio: "pentagrama <zer> --romanos|--mano|--secuencia|--tab",
+        descripcionPentagramaEstudio: "graduak zenbaki erromatarretan akordeen\nazpian; pianoko hatzak (--mano derecha)\nedo gitarrakoak (--tab --dedos); eskala\nhirukoka edo taldeka (--secuencia\nterceras); tablatura azpian (--tab,\n--instrumento)",
         sintaxisPosicionesArpegio: "posiciones --arpegio <zifratua> [--caged|--barrido]",
         descripcionPosicionesArpegio: "akorde baten arpegioa mastilaren\nposizio bakoitzean, tablaturan eta\nhatzekin; --ida-y-vuelta, igo eta jaitsi",
 

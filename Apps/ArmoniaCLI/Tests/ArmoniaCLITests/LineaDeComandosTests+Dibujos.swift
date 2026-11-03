@@ -164,5 +164,30 @@ extension LineaDeComandosTests {
         #expect(salida("pentagrama arpegio Do7 --en Fa mayor") != salida("pentagrama arpegio Do7"))
         #expect(salida("pentagrama acordes Rem7 Sol7 Do7M").contains(">Rem7</text>"))
         #expect(salida("ayuda").contains("pentagrama escala|acorde|arpegio|acordes <…>"))
+        #expect(salida("ayuda").contains("pentagrama <qué> --romanos|--mano|--secuencia|--tab"))
+    }
+
+    @Test func pentagramaParaEstudiar() {
+        func cuenta(_ trozo: String, _ texto: String) -> Int { texto.components(separatedBy: trozo).count - 1 }
+        // Los grados en números romanos, en la tonalidad que mejor explica los acordes o en la de --en.
+        let romanos = salida("pentagrama acordes Rem7 Sol7 Do7M --romanos")
+        #expect(["ii7", "V7", "Imaj7"].allSatisfy { romanos.contains(">\($0)</text>") }, Comment(rawValue: romanos))
+        #expect(salida("pentagrama acordes Do Sol --romanos --en Sol mayor").contains(">IV</text>"))
+        let alberti = salida("pentagrama arpegio Do Lam Fa Sol7 --patron alberti --romanos")
+        #expect(["I", "vi", "IV", "V7"].allSatisfy { alberti.contains(">\($0)</text>") })
+        // Los dedos del piano: Re mayor con la derecha, 1 2 3 1 2 3 4 5.
+        let piano = salida("pentagrama escala Re mayor --mano derecha")
+        #expect(cuenta(">1</text>", piano) == 2 && cuenta(">5</text>", piano) == 1)
+        // Por terceras, en corcheas con su compás; en grupos de tres, en tresillos.
+        #expect(salida("pentagrama escala Do mayor --secuencia terceras").contains("Do mayor · por terceras</title>"))
+        #expect(salida("staff scale C major --sequence groups-of-3 --ingles").contains("<svg"))
+        // En la guitarra: la tablatura, con los trastes y los dedos; el arpegio de Do7, con su Si♭.
+        let sol = salida("pentagrama escala Sol mayor --tab --dedos")
+        #expect(sol.contains(">T</text>") && sol.contains(">3</text>"), Comment(rawValue: sol))
+        let do7 = salida("pentagrama arpegio Do7 --tab --figura 8")
+        #expect(do7.contains("Si♭") && !do7.contains("La♯"), Comment(rawValue: do7))
+        let ukelele = salida("pentagrama escala Do mayor --tab --instrumento ukelele --secuencia terceras")
+        #expect(ukelele.contains(">A</text>"))
+        #expect(salida("staff arpeggio G7 --tab --fingers --ingles").contains(">G7</text>"))
     }
 }

@@ -88,3 +88,74 @@ import Testing
         #expect(contar("fill=\"#E8590C\"", en: resaltada) == 1)
     }
 }
+
+/// Los grados en números romanos, los dedos, las secuencias con ritmo y la tablatura.
+@Suite struct PentagramaParaEstudiarTests {
+    private func contar(_ trozo: String, en texto: String) -> Int {
+        texto.components(separatedBy: trozo).count - 1
+    }
+
+    /// Cada acorde de una progresión lleva su grado debajo, en las disposiciones y en una voz arpegiada.
+    @Test func losGradosEnNumerosRomanos() {
+        let acordes = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
+        let voces = DisposicionDeAcorde.drop2.conducir(acordes) ?? []
+        let grados = Tonalidad(.do).analizar(acordes).cifrados
+        #expect(grados == ["ii7", "V7", "Imaj7"])
+        let svg = DisposicionDeAcorde.svgPentagrama(voces, titulo: "ii–V–I", cifrados: acordes, grados: grados)
+        #expect(grados.allSatisfy { svg.contains(">\($0)</text>") })
+        let voz = Voz(arpegiando: [Acorde("Do"), Acorde("Sol")])
+        let arpegiada = voz.svgPentagrama(titulo: "I–V", grados: [0: "I", 4: "V"])
+        #expect(arpegiada.contains(">I</text>") && arpegiada.contains(">V</text>"))
+        #expect(!Escala(.do).svgPentagrama().contains(">I</text>"))
+    }
+
+    /// Re mayor con la mano derecha: los dedos de `digitacionDePiano` encima de cada nota, y al bajar, al revés.
+    @Test func losDedosDelPiano() {
+        let escala = Escala(.re)
+        let svg = escala.svgPentagrama(digitacion: .derecha)
+        let dedos = escala.digitacionDePiano(.derecha).dedos
+        #expect(dedos == [1, 2, 3, 1, 2, 3, 4, 5])
+        for dedo in Set(dedos) { #expect(contar(">\(dedo)</text>", en: svg) == dedos.filter { $0 == dedo }.count) }
+        let bajando = escala.svgPentagrama(sentido: .descendente, digitacion: .derecha)
+        #expect(contar(">5</text>", en: bajando) == 1)
+        #expect(!escala.svgPentagrama().contains(">5</text>"))
+    }
+
+    /// Por terceras en corcheas (con la armadura de la escala), en grupos de tres en tresillos y de cuatro en
+    /// semicorcheas; la última nota es una negra.
+    @Test func lasSecuenciasConRitmo() {
+        let terceras = Escala(.re).svgPentagrama(secuencia: .terceras)
+        #expect(contar("d=\"\(GlifosSMuFL.sostenido.trazado)\"", en: terceras) == 2) // la armadura
+        #expect(contar("d=\"\(GlifosSMuFL.cifraDeCompas4.trazado)\"", en: terceras) == 2)
+        #expect(terceras.contains(">Re mayor · por terceras</title>"))
+        #expect(Escala.figura(deGruposDe: 2) == .corchea)
+        #expect(Escala.figura(deGruposDe: 3) == Duracion.corchea.grupoIrregular(3, en: 2))
+        #expect(Escala.figura(deGruposDe: 4) == .semicorchea)
+        let tresillos = Escala(.do).svgPentagrama(secuencia: .gruposDeTres)
+        #expect(contar("d=\"\(GlifosSMuFL.cifraDeTresillo.trazado)\"", en: tresillos) == 7)
+    }
+
+    /// La tablatura va debajo, con una línea por cuerda (cortada alrededor de cada número), «TAB» y el traste de
+    /// cada nota; las notas que da el mástil se escriben con las de la escala o el acorde.
+    @Test func laTablatura() {
+        // Do Mi Sol en la guitarra: 5.ª cuerda, traste 3; 4.ª, 2; 3.ª, al aire.
+        let tablatura = Tablatura(
+            cuerdas: 6,
+            notas: [
+                0: [.init(cuerda: 4, traste: 3)], 1: [.init(cuerda: 3, traste: 2)], 2: [.init(cuerda: 2, traste: 0)],
+            ])
+        let alturas = [Altura("Do4"), Altura("Mi4"), Altura("Sol4")]
+        let svg = Acorde("Do").svgPentagrama(arpegiadoEn: alturas, tablatura: tablatura)
+        #expect(svg.contains(">T</text>") && svg.contains(">A</text>") && svg.contains(">B</text>"))
+        #expect(svg.contains(">3</text>") && svg.contains(">2</text>") && svg.contains(">0</text>"))
+        // Cinco staff lines + seis cuerdas, tres de ellas cortadas en dos.
+        #expect(contar("stroke-width=\"0.13\"", en: svg) == 5 + 6 + 3)
+        #expect(svg.contains(">Do</text>"))
+        // La♯3 del mástil se escribe Si♭3 en Do7.
+        let do7 = Acorde("Do7").svgPentagrama(arpegiadoEn: [Altura("Do3"), Altura("La♯3")], figura: .corchea)
+        #expect(do7.contains("<title>Si♭₃</title>") && !do7.contains("La♯"))
+        #expect(Altura.reescritas([Altura("Re♯4")], con: Escala("Do menor").notas) == [Altura("Mi♭4")])
+        let tocada = Escala("Fa mayor").svgPentagrama(tocadaEn: [Altura("La♯4")], digitos: [0: [2]])
+        #expect(tocada.contains("<title>Si♭₄</title>") && tocada.contains(">2</text>"))
+    }
+}

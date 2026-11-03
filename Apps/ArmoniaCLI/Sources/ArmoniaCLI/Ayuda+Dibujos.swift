@@ -39,7 +39,14 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionPentagrama),
             ejemplo: ejemplo(
                 "armonia pentagrama escala Re dórico --octavas 2 --semitonos > dorico.svg",
-                "armonia staff scale D dorian --octaves 2 --semitones > dorian.svg"))
+                "armonia staff scale D dorian --octaves 2 --semitones > dorian.svg")),
+        // pentagrama <qué> --romanos|--mano|--secuencia|--tab
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisPentagramaEstudio),
+            descripcion: TextosDeCLI.traduccion(\.descripcionPentagramaEstudio),
+            ejemplo: ejemplo(
+                "armonia pentagrama escala Sol mayor --tab --dedos > sol.svg",
+                "armonia staff scale G major --tab --fingers > g.svg")),
     ]
 
     static let ayudaDeTonnetz: [EntradaDeAyuda] = [

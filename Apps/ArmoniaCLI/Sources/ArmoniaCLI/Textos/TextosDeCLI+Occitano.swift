@@ -119,6 +119,8 @@ extension TextosDeCLI {
         descripcionReloj: "la gama sus un relòtge de dotze oras\n(SVG): lo cercle cromatic o, amb\n--quintas, lo de quintas",
         sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
         descripcionPentagrama: "una gama, un acòrd, un arpègi (amb\nritme: --figura 16, --tresillos) o d'acòrds\namb lor chifratge sus una portada\n(SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
+        sintaxisPentagramaEstudio: "pentagrama <qué> --romanos|--mano|--secuencia|--tab",
+        descripcionPentagramaEstudio: "los grases en nombres romans jos los\nacòrds; los dets del piano (--mano\nderecha) o de la guitarra (--tab --dedos);\nla gama per tèrças o en grops\n(--secuencia terceras); la tablatura\ndejós (--tab, --instrumento)",
         sintaxisPosicionesArpegio: "posiciones --arpegio <chifratge> [--caged|--barrido]",
         descripcionPosicionesArpegio: "l'arpègi d'un acòrdi dins cada\nposicion del margue, en tablatura amb\nlos dets; --ida-y-vuelta, monta e davala",
 
