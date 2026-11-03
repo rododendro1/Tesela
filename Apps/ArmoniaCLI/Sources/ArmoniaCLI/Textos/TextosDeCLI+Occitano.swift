@@ -64,6 +64,10 @@ extension TextosDeCLI {
         descripcionTabla: "taula armonica en SVG (exagònes)",
         sintaxisTablaAcorde: "tabla --acorde | --escala | --clases | --recorrido | --camino | --ciclo",
         descripcionTablaAcorde: "coma pel Tonnetz (--margen 2: mai de\ntaula a l'entorn)",
+        sintaxisCuadricula: "cuadricula <nòtas o nautors> | --acorde | --escala | --clases",
+        descripcionCuadricula: "clavièr en quadrilha en SVG (pads),\namb lo contorn e la primièra nòta",
+        sintaxisCuadriculaOpciones: "cuadricula --ejes H,V --rejilla CxF --origen <nautor>\ncuadricula --giro 0-3 --espejo --en-tono --escala <gama>",
+        descripcionCuadriculaOpciones: "axes (1,5: en quartas), grasilha del\ncontrolaire (8x8), nòta del canton,\nquarts de torn, miralh e dins la tonalitat",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "vecinos <acòrd> [--voces 2]",
@@ -181,6 +185,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "lo percors es fach de triadas majoras e menoras: " + ejemplo },
         caminoSoloTriadas: { ejemplo, orden in "lo camin va d'una triada majora o menora a una autra: " + ejemplo },
         cicloSoloTriadas: { ejemplo, orden in "lo cicle comença sus una triada majora o menora: " + ejemplo },
+        opcionesDeCuadricula: "opcions de la quadrilha: --ejes H,V (1,5), --rejilla CxF (8x8), --origen <nautor> (Do2), --giro 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "las voses que se mòvon son 1 o 2: --voces 2",

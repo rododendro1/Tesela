@@ -64,6 +64,10 @@ extension TextosDeCLI {
         descripcionTabla: "harmonikus tábla SVG-ben (hatszögek)",
         sintaxisTablaAcorde: "tabla --chord | --scale | --pcs | --sequence | --shortest | --cycle",
         descripcionTablaAcorde: "mint a Tonnetznél (--margen 2: több\ntábla körülötte)",
+        sintaxisCuadricula: "cuadricula <hangok vagy hangmagasságok> | --chord | --scale | --pcs",
+        descripcionCuadricula: "rácsos billentyűzet SVG-ben (padek),\nkörvonallal és az első hanggal",
+        sintaxisCuadriculaOpciones: "cuadricula --axes H,V --grid CxR --origin <hangmagasság>\ncuadricula --rotate 0-3 --mirror --in-key --scale <skála>",
+        descripcionCuadriculaOpciones: "tengelyek (1,5: kvartokban), a vezérlő\nrácsa (8x8), sarokhang, negyedfordulat,\ntükrözés és hangnemben",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "neighbors <akkord> [--voices 2]",
@@ -181,6 +185,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "a sor dúr és moll hármashangzatokból áll: armonia \(orden) --sequence C Am F Dm" },
         caminoSoloTriadas: { ejemplo, orden in "a legrövidebb út egy dúr vagy moll hármashangzattól egy másikig vezet: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "a ciklus dúr vagy moll hármashangzaton kezdődik: armonia \(orden) --cycle hexatonic C" },
+        opcionesDeCuadricula: "a rács beállításai: --axes H,V (1,5), --grid CxR (8x8), --origin <hangmagasság> (C2), --rotate 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "1 vagy 2 szólam mozog: --voices 2",

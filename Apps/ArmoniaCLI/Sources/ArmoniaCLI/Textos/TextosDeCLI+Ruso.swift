@@ -64,6 +64,10 @@ extension TextosDeCLI {
         descripcionTabla: "гармоническая таблица в SVG\n(шестиугольники)",
         sintaxisTablaAcorde: "tabla --chord | --scale | --pcs | --sequence | --shortest | --cycle",
         descripcionTablaAcorde: "как в Tonnetz (--margen 2: больше\nтаблицы вокруг)",
+        sintaxisCuadricula: "cuadricula <ноты или высоты> | --chord | --scale | --pcs",
+        descripcionCuadricula: "сеточная клавиатура в SVG (пэды),\nс контуром и первой нотой",
+        sintaxisCuadriculaOpciones: "cuadricula --axes H,V --grid CxR --origin <высота>\ncuadricula --rotate 0-3 --mirror --in-key --scale <гамма>",
+        descripcionCuadriculaOpciones: "оси (1,5: по квартам), сетка\nконтроллера (8x8), угловая нота,\nчетверти оборота, зеркало и в тональности",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "neighbors <аккорд> [--voices 2]",
@@ -181,6 +185,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "последовательность — из мажорных и минорных трезвучий: armonia \(orden) --sequence C Am F Dm" },
         caminoSoloTriadas: { ejemplo, orden in "кратчайший путь идёт от одного мажорного или минорного трезвучия к другому: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "цикл начинается с мажорного или минорного трезвучия: armonia \(orden) --cycle hexatonic C" },
+        opcionesDeCuadricula: "параметры сетки: --axes H,V (1,5), --grid CxR (8x8), --origin <высота> (C2), --rotate 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "движутся 1 или 2 голоса: --voices 2",

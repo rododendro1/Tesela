@@ -81,6 +81,7 @@ $ swift run armonia midi arpegios Do Lam Fa Sol7 --patron alberti --duracion 2 >
 $ swift run armonia tonnetz --escala "Re dórico" > dorico.svg
 $ swift run armonia tonnetz --recorrido Do Lam Fa Rem > recorrido.svg
 $ swift run armonia tabla Do3 Sol3 Mi4 Si4 > tabla.svg
+$ swift run armonia cuadricula --rejilla 8x8 --en-tono --escala "Re dórico" > pads.svg
 $ swift run armonia conduccion-minima Sol7 Do
 Sol→Sol, Si→Do (+1), Re→Do (−2), Fa→Mi (−1): 4 semitonos
 

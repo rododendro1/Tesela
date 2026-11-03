@@ -64,6 +64,10 @@ extension TextosDeCLI {
         descripcionTabla: "SVG harmonic table (hexagons)",
         sintaxisTablaAcorde: "tabla --chord <symbol> | --scale <scale> | --pcs <numbers>\ntabla --sequence <triads> | --shortest <triad> <triad>\ntabla --cycle <cycle> <triad>",
         descripcionTablaAcorde: "(--margen 2: more table around it)",
+        sintaxisCuadricula: "cuadricula <notes or pitches> | --chord | --scale | --pcs",
+        descripcionCuadricula: "SVG grid keyboard (pads), with the\noutline and the first note",
+        sintaxisCuadriculaOpciones: "cuadricula --axes H,V --grid CxR --origin <pitch>\ncuadricula --rotate 0-3 --mirror --in-key --scale <scale>",
+        descripcionCuadriculaOpciones: "axes (1,5: in fourths), controller\ngrid (8x8), corner note, quarter\nturns, mirror and in key",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "neighbors <chord> [--voices 2]",
@@ -183,6 +187,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "the sequence is made of major and minor triads: armonia \(orden) --sequence C Am F Dm" },
         caminoSoloTriadas: { ejemplo, orden in "the shortest path goes from one major or minor triad to another: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "the cycle starts on a major or minor triad: armonia \(orden) --cycle hexatonic C" },
+        opcionesDeCuadricula: "grid options: --axes H,V (1,5), --grid CxR (8x8), --origin <pitch> (C2), --rotate 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "the moving voices are 1 or 2: --voices 2",

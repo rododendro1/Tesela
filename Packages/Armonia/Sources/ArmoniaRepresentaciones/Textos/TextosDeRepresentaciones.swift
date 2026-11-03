@@ -64,6 +64,10 @@ struct TextosDeRepresentaciones: TextosTraducidos {
     let wickiHaydenCuadrado: String
     let cuadriculaDeTonosEnteros: String
     let tonnetzDeEuler: String
+    let cuadriculaEnTercerasMenores: String
+    let cuadriculaEnTritonos: String
+    let cuadriculaEnOctavas: String
+    let cuadriculaSecuencial: String
 
     // MARK: FormatoUIL.swift
     let uilNoValido: @Sendable (_ texto: String) -> String
