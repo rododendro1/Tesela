@@ -8,8 +8,9 @@ import Testing
 
 @Suite struct FormatoDePartituraTests {
     @Test func extensionesYNombres() {
-        #expect(FormatoDePartitura.allCases.map(\.extensionDeFichero) == ["musicxml", "mei", "ly", "gmn", "abc", "mid"])
-        #expect(FormatoDePartitura.allCases.map(\.nombre) == ["MusicXML", "MEI", "LilyPond", "GUIDO", "ABC", "MIDI"])
+        let formatos = FormatoDePartitura.allCases
+        #expect(formatos.map(\.extensionDeFichero) == ["musicxml", "mei", "ly", "gmn", "abc", "mid"])
+        #expect(formatos.map(\.nombre) == ["MusicXML", "MEI", "LilyPond", "GUIDO", "ABC", "MIDI"])
         #expect(FormatoDePartitura.allCases.filter { !$0.esTexto } == [.midi])
         #expect(FormatoDePartitura(rawValue: "lilypond") == .lilyPond)
     }
