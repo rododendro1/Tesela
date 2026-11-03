@@ -184,6 +184,7 @@ package struct EscritorLilyPond: EscritorDePartitura {
                     compasEntero
                     ? "R" + EscritorLilyPond.duracion(compas.duracion)
                     : EscritorLilyPond.evento(evento, irregular: dentro != nil)
+                texto += EscritorLilyPond.expresion(evento)
                 if nuevo, let cifrado = linea.cifrados[inicio] {
                     texto += "^\\markup \(EscritorLilyPond.cadena(cifrado))"
                 }
@@ -234,6 +235,21 @@ package struct EscritorLilyPond: EscritorDePartitura {
             let notas = evento.alturas.indices.map { altura(evento.alturas[$0], desvio: evento.desvio($0)) }
             return "<" + notas.joined(separator: " ") + ">" + figura + ligadura
         }
+    }
+
+    /// Las articulaciones y la dinámica detrás de la nota: `-.` (staccato), `->` (acento), `\fermata`, `\mf`…
+    package static func expresion(_ evento: Evento) -> String {
+        let articulaciones = evento.articulaciones.map { articulacion -> String in
+            switch articulacion {
+            case .staccato: return "-."
+            case .staccatissimo: return "-!"
+            case .tenuto: return "--"
+            case .acento: return "->"
+            case .marcato: return "-^"
+            case .calderon: return "\\fermata"
+            }
+        }
+        return articulaciones.joined() + (evento.dinamica.map { "\\" + $0.rawValue } ?? "")
     }
 
     /// La altura absoluta con el nombre holandés: Do4 → `c'`, Fa♯3 → `fis`, Si♭1 → `bes,,`. Con un `desvio` de

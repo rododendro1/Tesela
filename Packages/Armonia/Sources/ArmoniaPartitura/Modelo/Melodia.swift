@@ -217,6 +217,7 @@ public struct Voz: Hashable, Sendable, Codable {
                 resultado.append(actual)
                 actual = []
                 pendiente = pendiente.con(duracion: pendiente.duracion - restante, ligada: pendiente.ligada)
+                    .sinExpresion
                 restante = compas.duracion
             }
             actual.append(pendiente)
@@ -268,7 +269,8 @@ public struct Voz: Hashable, Sendable, Codable {
                     : Voz.partir(desde: posicion, duracion: evento.duracion, compas: compas)
                 for (k, parte) in partes.enumerated() {
                     let ultima = k == partes.count - 1
-                    escritos.append(evento.con(duracion: parte, ligada: ultima ? evento.ligada : true))
+                    let escrito = evento.con(duracion: parte, ligada: ultima ? evento.ligada : true)
+                    escritos.append(k == 0 ? escrito : escrito.sinExpresion)
                 }
                 posicion = posicion + evento.duracion
             }

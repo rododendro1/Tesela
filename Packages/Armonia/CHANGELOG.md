@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### Dinámica y articulaciones
+
+- **`Dinamica`** (de *ppp* a *fff*, *sfz* y *fp*, con su `velocidadMIDI`) y **`Articulacion`** (staccato,
+  staccatissimo, tenuto, acento, marcato y calderón). `Evento` las lleva en `dinamica` y `articulaciones`, y se
+  escriben al final de su texto entre llaves: `"Do4:4{f,staccato}"`, `"Re4:2~{acento}"`. Las transformaciones de una
+  voz las conservan, y una nota partida en varias ligadas las lleva solo en la primera.
+- MusicXML, MEI, LilyPond, ABC y GUIDO las escriben. MusicXML, MEI y ABC las leen al importar, en
+  `NotaDeLaPieza.dinamica` y `NotaDeLaPieza.articulaciones`.
+- En MIDI, cada nota suena con la velocidad de su dinámica (80, *mf*, si no hay ninguna, como antes), el acento y el
+  marcato la refuerzan y el staccato y el staccatissimo la acortan.
+
 ### Los nombres de las doce clases y las cifras de una serie
 
 - `ConjuntoDeClases.nombresDeLasClases(en:)`: el nombre de cada clase de 0 a 11, escritas todas a la vez para que no

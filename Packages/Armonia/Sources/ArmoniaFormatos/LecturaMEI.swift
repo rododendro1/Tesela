@@ -15,7 +15,8 @@ import Foundation
 // compás o en la armadura. Los cuartos de tono (`1qf`, `3qs`…), el koron y el sori y las comas de Arel-Ezgi-Uzdilek
 // (`kf`, `bs`…) se leen con su desvío en cents. Los instrumentos transpositores (`trans.diat`, `trans.semi`) se leen
 // como suenan. Las notas de adorno (`grace`) no cuentan. Del principio: el título, la armadura, el compás y el tempo
-// (`midi.bpm`).
+// (`midi.bpm`). De cada nota o acorde, sus articulaciones (`artic`, `<artic>`, `fermata`) y su dinámica (`<dynam>`
+// con `startid`).
 
 extension PiezaImportada {
     /// Lee una partitura MEI.
@@ -127,6 +128,8 @@ final class LectorMEI: LectorDeElementosXML {
         var puntillos = 0
         var pulsosExactos: Int?
         var sinTiempo = false
+        var id: String?
+        var articulaciones: [Articulacion] = []
     }
     private var acorde: Evento?
     private var inicioDelAcorde = 0
@@ -140,9 +143,27 @@ final class LectorMEI: LectorDeElementosXML {
         var sonora: Double?
         var ligaduraQueEmpieza = false
         var ligaduraQueAcaba = false
+        var id: String?
+        var articulaciones: [Articulacion] = []
     }
     /// Las notas con una ligadura que sigue, por parte y altura MIDI: su índice en `notas`.
     private var ligadas: [Int: Int] = [:]
+    /// Las notas que se han colocado de cada nota o acorde, por su `xml:id`: a ellas va la dinámica de `<dynam>`.
+    private var notasPorId: [String: [Int]] = [:]
+    /// El `startid` del `<dynam>` que se está leyendo.
+    private var inicioDeLaDinamica: String?
+
+    /// Los valores de `artic` de MEI.
+    private static let valoresDeArtic: [String: Articulacion] = [
+        "stacc": .staccato, "stacciss": .staccatissimo, "spicc": .staccatissimo, "ten": .tenuto, "acc": .acento,
+        "marc": .marcato,
+    ]
+
+    /// Las articulaciones de los atributos `artic` (separadas por espacios) y `fermata` de un elemento.
+    private static func articulaciones(_ atributos: [String: String]) -> [Articulacion] {
+        let leidas = (atributos["artic"] ?? "").split(separator: " ").compactMap { valoresDeArtic[String($0)] }
+        return leidas + (atributos["fermata"] != nil ? [.calderon] : [])
+    }
 
     func abre(_ nombre: String, atributos: [String: String]) {
         if raiz == nil { raiz = nombre }
@@ -200,8 +221,22 @@ final class LectorMEI: LectorDeElementosXML {
             let ligadura = atributos["tie"] ?? ""
             nota.ligaduraQueEmpieza = ligadura == "i" || ligadura == "m"
             nota.ligaduraQueAcaba = ligadura == "t" || ligadura == "m"
+            // Una nota suelta tiene ya sus articulaciones en `evento`; la de un acorde, además las del acorde.
+            if acorde != nil {
+                nota.id = atributos["xml:id"]
+                nota.articulaciones = LectorMEI.articulaciones(atributos)
+            }
         case "accid" where padre == "note":
             alteraciones(atributos)
+        case "artic":
+            let suyas = LectorMEI.articulaciones(atributos)
+            if padre == "chord" {
+                acorde?.articulaciones += suyas
+            } else if padre == "note" {
+                if acorde != nil { nota.articulaciones += suyas } else { evento.articulaciones += suyas }
+            }
+        case "dynam":
+            inicioDeLaDinamica = atributos["startid"].map { $0.hasPrefix("#") ? String($0.dropFirst()) : $0 }
         case "rest", "space":
             if acorde == nil { evento = leerEvento(atributos) }
         case "dot":
@@ -226,6 +261,11 @@ final class LectorMEI: LectorDeElementosXML {
         switch nombre {
         case "title" where pila.contains("titleStmt"):
             if titulo == nil, !valor.isEmpty { titulo = valor }
+        case "dynam":
+            if let inicio = inicioDeLaDinamica, let dinamica = Dinamica(rawValue: valor.lowercased()) {
+                for i in notasPorId[inicio] ?? [] { notas[i] = notas[i].con(dinamica: dinamica) }
+            }
+            inicioDeLaDinamica = nil
         case "note":
             if acorde != nil {
                 colocar(desde: inicioDelAcorde, pulsos: pulsos(de: acorde!))
@@ -301,6 +341,8 @@ final class LectorMEI: LectorDeElementosXML {
                 (Double(exactos) * Double(PulsosDeLectura.porRedonda) / Double(4 * ppq)).rounded())
         }
         evento.sinTiempo = atributos["grace"] != nil
+        evento.id = atributos["xml:id"]
+        evento.articulaciones = LectorMEI.articulaciones(atributos)
         return evento
     }
 
@@ -341,14 +383,16 @@ final class LectorMEI: LectorDeElementosXML {
         let duracion = PulsosDeLectura.duracion(pulsos)
         let clave = parte * 1024 + altura.midi + 512
         if nota.ligaduraQueAcaba, let i = ligadas[clave], notas[i].fin == desde {
-            let anterior = notas[i]
-            notas[i] = NotaDeLaPieza(
-                altura: anterior.altura, inicio: anterior.inicio, duracion: anterior.duracion + duracion, parte: parte,
-                desvio: anterior.desvio)
+            notas[i] = notas[i].con(duracion: notas[i].duracion + duracion)
             if !nota.ligaduraQueEmpieza { ligadas[clave] = nil }
         } else {
-            notas.append(NotaDeLaPieza(altura: altura, inicio: desde, duracion: duracion, parte: parte, desvio: desvio))
+            let suyo = acorde ?? evento
+            notas.append(
+                NotaDeLaPieza(
+                    altura: altura, inicio: desde, duracion: duracion, parte: parte, desvio: desvio,
+                    articulaciones: suyo.articulaciones + nota.articulaciones))
             if nota.ligaduraQueEmpieza { ligadas[clave] = notas.count - 1 }
+            for id in [suyo.id, nota.id].compactMap({ $0 }) { notasPorId[id, default: []].append(notas.count - 1) }
         }
     }
 }

@@ -51,6 +51,27 @@ Voz(melodia: ["Do4", "Mi4", "Sol4"], ritmo: [.negra, .negra, .blanca], compas: "
 Al repartir en compases, una nota que cruza la barra se divide en dos ligadas y un silencio,
 en dos silencios. Las indicaciones de tempo son aproximadas: sus márgenes varían según la época.
 
+### Dinámica y articulaciones
+
+Cada evento puede llevar una dinámica (`Dinamica`: de *ppp* a *fff*, *sfz* y *fp*) y sus
+articulaciones (`Articulacion`: staccato, staccatissimo, tenuto, acento, marcato y calderón).
+En el texto van al final, entre llaves y separadas por comas, sin espacios; los nombres son los
+mismos en todos los idiomas:
+
+```swift
+let frase = try Voz(leyendo: "Do4:4{p} Re4:4{staccato} Mi4:2{f,acento}")
+frase.eventos[0].dinamica                         // .p
+frase.eventos[2].articulaciones == [.acento]      // true
+frase.eventos[2].description                      // "Mi4:2{f,acento}"
+Dinamica.f.velocidadMIDI                          // 96
+```
+
+MusicXML, MEI, LilyPond, ABC y GUIDO las escriben, y MusicXML, MEI y ABC las leen al importar
+(`NotaDeLaPieza.dinamica` y `articulaciones`). En MIDI, la dinámica es la velocidad de cada nota
+(*mf* si no se marca ninguna), el acento y el marcato la refuerzan y el staccato acorta la nota.
+Una nota partida en varias ligadas las lleva solo en la primera. El pentagrama SVG todavía no
+las dibuja.
+
 ## Métrica
 
 Cada compás agrupa sus unidades en pulsos: `[1, 1, 1, 1]` en 4/4, `[3, 3]` en 6/8, `[2, 2, 3]`

@@ -249,11 +249,15 @@ package struct EscritorMusicXML: EscritorDePartitura {
                         variosPentagramas: claves.count > 1,
                         medidaCompleta: compasEntero, barra: haciaBarra[i], grupo: grupo,
                         ligadaDesde: ligadaDesde[l])
-                    // Las anotaciones van con la primera nota escrita de cada evento, no con sus ligadas.
-                    let anotacion =
-                        ligadaDesde[l].isEmpty || evento.alturas != ligadaDesde[l]
-                        ? linea.anotaciones[posiciones[l]] : nil
+                    // Las anotaciones van con la primera nota escrita de cada evento, no con sus ligadas. La
+                    // dinámica y las articulaciones de una nota partida en varias ligadas ya van solo en la primera.
+                    let nuevo = ligadaDesde[l].isEmpty || evento.alturas != ligadaDesde[l]
+                    let anotacion = nuevo ? linea.anotaciones[posiciones[l]] : nil
                     if let armonia = anotacion?.armonia { xml += armonia }
+                    if let dinamica = evento.dinamica {
+                        xml += EscritorMusicXML.dinamica(
+                            dinamica, voz: linea.numero, pentagrama: claves.count > 1 ? linea.pentagrama : nil)
+                    }
                     xml += nota.xml(letras: anotacion?.letras ?? [])
                     ligadaDesde[l] = evento.ligada ? evento.alturas : []
                     posiciones[l] = posiciones[l] + evento.duracion
@@ -346,12 +350,13 @@ package struct EscritorMusicXML: EscritorDePartitura {
 
         package func xml(letras: [String]) -> String {
             let duracion = ticks(evento.duracion, divisiones)
+            let articulaciones = evento.articulaciones
             guard !evento.esSilencio else {
                 var xml = "      <note>\n"
                 xml += medidaCompleta ? "        <rest measure=\"yes\"/>\n" : "        <rest/>\n"
                 xml += "        <duration>\(duracion)</duration>\n"
                 xml += comun(incluirFigura: !medidaCompleta, plica: false, barra: nil)
-                xml += notaciones(ligadura: [])
+                xml += notaciones(ligadura: [], articulaciones: articulaciones)
                 return xml + "      </note>\n"
             }
             var xml = ""
@@ -373,7 +378,8 @@ package struct EscritorMusicXML: EscritorDePartitura {
                 for tipo in ligadura { xml += "        <tie type=\"\(tipo)\"/>\n" }
                 let signo = SignoMicrotonal(semitonos: nota.alteracion.semitonos, desvio: desvio)
                 xml += comun(incluirFigura: true, plica: i == 0, barra: i == 0 ? barra : nil, signo: signo)
-                xml += notaciones(ligadura: ligadura, grupo: i == 0 ? grupo : [])
+                xml += notaciones(
+                    ligadura: ligadura, grupo: i == 0 ? grupo : [], articulaciones: i == 0 ? articulaciones : [])
                 if i == 0 {
                     for (k, letra) in letras.enumerated() where !letra.isEmpty {
                         xml += "        <lyric number=\"\(k + 1)\" placement=\"below\">\n"
@@ -412,8 +418,10 @@ package struct EscritorMusicXML: EscritorDePartitura {
             return valor == valor.rounded() ? String(Int(valor)) : String(valor)
         }
 
-        private func notaciones(ligadura: [String], grupo: [String] = []) -> String {
-            guard !ligadura.isEmpty || !grupo.isEmpty else { return "" }
+        private func notaciones(
+            ligadura: [String], grupo: [String] = [], articulaciones: [Articulacion] = []
+        ) -> String {
+            guard !ligadura.isEmpty || !grupo.isEmpty || !articulaciones.isEmpty else { return "" }
             var xml = "        <notations>\n"
             for tipo in ligadura { xml += "          <tied type=\"\(tipo)\"/>\n" }
             for tipo in grupo {
@@ -422,8 +430,38 @@ package struct EscritorMusicXML: EscritorDePartitura {
                     ? "          <tuplet type=\"start\" bracket=\"yes\"/>\n"
                     : "          <tuplet type=\"stop\"/>\n"
             }
+            let elementos = articulaciones.compactMap(EscritorMusicXML.articulacion)
+            if !elementos.isEmpty {
+                xml += "          <articulations>\n"
+                for elemento in elementos { xml += "            <\(elemento)/>\n" }
+                xml += "          </articulations>\n"
+            }
+            if articulaciones.contains(.calderon) { xml += "          <fermata type=\"upright\"/>\n" }
             return xml + "        </notations>\n"
         }
+    }
+
+    // MARK: Expresión
+
+    /// El elemento de `<articulations>` de una articulación; `nil` para el calderón, que va aparte (`<fermata>`).
+    package static func articulacion(_ articulacion: Articulacion) -> String? {
+        switch articulacion {
+        case .staccato: return "staccato"
+        case .staccatissimo: return "staccatissimo"
+        case .tenuto: return "tenuto"
+        case .acento: return "accent"
+        case .marcato: return "strong-accent"
+        case .calderon: return nil
+        }
+    }
+
+    /// Una dinámica como `<direction>`, debajo del pentagrama, delante de su nota.
+    package static func dinamica(_ dinamica: Dinamica, voz: Int, pentagrama: Int?) -> String {
+        var xml = "      <direction placement=\"below\">\n        <direction-type>\n"
+        xml += "          <dynamics><\(dinamica.rawValue)/></dynamics>\n        </direction-type>\n"
+        xml += "        <voice>\(voz)</voice>\n"
+        if let pentagrama { xml += "        <staff>\(pentagrama)</staff>\n" }
+        return xml + "      </direction>\n"
     }
 
     // MARK: Armonía

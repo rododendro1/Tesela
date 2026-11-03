@@ -201,6 +201,7 @@ package struct EscritorABC: EscritorDePartitura {
                 var debajo = (nuevo ? linea.letras[inicio] ?? [] : []).filter { !$0.isEmpty }
                 if c == 0 && i == 0, let conRotulo { debajo.insert(conRotulo, at: 0) }
                 for linea in debajo { texto += "\"_\(EscritorABC.texto(linea))\"" }
+                texto += EscritorABC.decoraciones(evento)
                 let alturas = evento.alturas.indices.map { k in
                     let (natural, semitonos, octava) = Exportacion.sinTriples(evento.alturas[k])
                     let lugar = octava * 7 + natural.rawValue
@@ -248,6 +249,22 @@ package struct EscritorABC: EscritorDePartitura {
     // MARK: Auxiliares
 
     /// La nota en la octava: Do4 → `C`, Do5 → `c`, Do6 → `c'`, Do3 → `C,`.
+    /// La dinámica y las articulaciones como decoraciones delante de la nota: `!mf!`, `.` (staccato), `!>!`
+    /// (acento), `!fermata!`…
+    package static func decoraciones(_ evento: Evento) -> String {
+        let articulaciones = evento.articulaciones.map { articulacion -> String in
+            switch articulacion {
+            case .staccato: return "."
+            case .staccatissimo: return "!wedge!"
+            case .tenuto: return "!tenuto!"
+            case .acento: return "!>!"
+            case .marcato: return "!marcato!"
+            case .calderon: return "!fermata!"
+            }
+        }
+        return (evento.dinamica.map { "!\($0.rawValue)!" } ?? "") + articulaciones.joined()
+    }
+
     package static func nombre(_ natural: NotaNatural, octava: Int) -> String {
         let letra = ["C", "D", "E", "F", "G", "A", "B"][natural.rawValue]
         if octava >= 5 { return letra.lowercased() + String(repeating: "'", count: octava - 5) }

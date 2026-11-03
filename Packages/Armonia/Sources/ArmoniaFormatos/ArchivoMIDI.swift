@@ -186,11 +186,15 @@ package struct ArchivoMIDI {
                 (0, ArchivoMIDI.meta(0x03, ArchivoMIDI.texto(pista.nombre))),
                 (0, [0xC0 | canal, UInt8(pista.instrumento)]),
             ]
-            // Las notas: las ligadas siguen sonando mientras la siguiente nota las repita.
+            // Las notas: las ligadas siguen sonando mientras la siguiente nota las repita. Cada una suena con la
+            // velocidad de la dinámica que vale (mf si no se marca ninguna), más fuerte si lleva acento, y el
+            // staccato la acorta (`Articulacion.proporcionQueSuena`).
             var inicio = 0
-            var sonando: [Int: (desde: Int, desvio: Double)] = [:] // altura MIDI → cuándo empezó y sus cents
-            var notas: [(clave: Int, desde: Int, hasta: Int, desvio: Double)] = []
+            // Altura MIDI → cuándo empezó, sus cents, su velocidad y cuándo deja de sonar si se acorta.
+            var sonando: [Int: (desde: Int, desvio: Double, velocidad: Int, corte: Int?)] = [:]
+            var notas: [(clave: Int, desde: Int, hasta: Int, desvio: Double, velocidad: Int)] = []
             var ligadas: Set<Int> = []
+            var dinamica = Dinamica.mf
             for (k, evento) in pista.eventos.enumerated() {
                 let claves = Set(evento.alturas.map(\.midi).filter { (0...127).contains($0) })
                 // Lo que se aparta cada nota de la temperada, en cents.
@@ -201,10 +205,18 @@ package struct ArchivoMIDI {
                 // Las que venían ligadas y no siguen, terminan aquí.
                 let terminan = sonando.filter { !(ligadas.contains($0.key) && claves.contains($0.key)) }
                 for (clave, nota) in terminan.sorted(by: { $0.key < $1.key }) {
-                    notas.append((clave, nota.desde, inicio, nota.desvio))
+                    notas.append((clave, nota.desde, min(inicio, nota.corte ?? inicio), nota.desvio, nota.velocidad))
                     sonando[clave] = nil
                 }
-                for clave in claves where sonando[clave] == nil { sonando[clave] = (inicio, desvios[clave] ?? 0) }
+                let marcada = evento.dinamica ?? dinamica
+                if let nueva = evento.dinamica, !nueva.esDeUnaNota { dinamica = nueva }
+                let velocidad = ArchivoMIDI.velocidad(marcada, evento.articulaciones)
+                let proporcion = evento.articulaciones.map(\.proporcionQueSuena).min() ?? Duracion(1, 1)
+                let acortada = !evento.ligada && proporcion < Duracion(1, 1)
+                let corte = acortada ? inicio + pulsos(evento.duracion * proporcion) : nil
+                for clave in claves where sonando[clave] == nil {
+                    sonando[clave] = (inicio, desvios[clave] ?? 0, velocidad, corte)
+                }
                 if k < pista.marcadores.count, !pista.marcadores[k].isEmpty {
                     mensajes.append((inicio, ArchivoMIDI.meta(0x06, ArchivoMIDI.texto(pista.marcadores[k]))))
                 }
@@ -212,11 +224,11 @@ package struct ArchivoMIDI {
                 ligadas = evento.ligada ? claves : []
             }
             for (clave, nota) in sonando.sorted(by: { $0.key < $1.key }) {
-                notas.append((clave, nota.desde, inicio, nota.desvio))
+                notas.append((clave, nota.desde, min(inicio, nota.corte ?? inicio), nota.desvio, nota.velocidad))
             }
             mensajes += ArchivoMIDI.inflexiones(de: notas.map { ($0.desde, $0.desvio) }, canal: canal)
             for nota in notas {
-                mensajes.append((nota.desde, [0x90 | canal, UInt8(nota.clave), 80]))
+                mensajes.append((nota.desde, [0x90 | canal, UInt8(nota.clave), UInt8(nota.velocidad)]))
                 mensajes.append((nota.hasta, [0x80 | canal, UInt8(nota.clave), 64]))
             }
             bytes += ArchivoMIDI.pista(mensajes)
@@ -226,6 +238,12 @@ package struct ArchivoMIDI {
 
     /// Una pista: los mensajes ordenados por tiempo (a igual tiempo, los finales de nota
     /// antes que los comienzos), con el tiempo delta delante de cada uno y el fin de pista.
+    /// La velocidad de una nota: la de su dinámica, con 16 más si lleva acento y 24 si lleva marcato, hasta 127.
+    package static func velocidad(_ dinamica: Dinamica, _ articulaciones: [Articulacion]) -> Int {
+        let refuerzo = articulaciones.contains(.marcato) ? 24 : (articulaciones.contains(.acento) ? 16 : 0)
+        return min(127, dinamica.velocidadMIDI + refuerzo)
+    }
+
     package static func pista(_ mensajes: [(Int, [UInt8])]) -> [UInt8] {
         func orden(_ m: [UInt8]) -> Int {
             switch m[0] & 0xF0 {
