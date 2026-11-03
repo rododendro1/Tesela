@@ -216,8 +216,9 @@ public struct Voz: Hashable, Sendable, Codable {
                 actual.append(pendiente.con(duracion: restante, ligada: true))
                 resultado.append(actual)
                 actual = []
-                pendiente = pendiente.con(duracion: pendiente.duracion - restante, ligada: pendiente.ligada)
-                    .sinExpresion
+                // Lo que sigue tras la barra, sin la dinámica ni las articulaciones, que van en la primera parte.
+                let resto = pendiente.duracion - restante
+                pendiente = pendiente.con(duracion: resto, ligada: pendiente.ligada).sinExpresion
                 restante = compas.duracion
             }
             actual.append(pendiente)
