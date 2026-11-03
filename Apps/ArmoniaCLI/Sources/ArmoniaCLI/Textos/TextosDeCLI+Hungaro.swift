@@ -154,6 +154,7 @@ extension TextosDeCLI {
         fa dièse vagy Fa♯, F Kreuz vagy Fis.
         A tömör írásmódokban az oktáv alsó indexbe kerül (La₄), a többiben számjeggyel (La4);
         a --subindices vagy a --cifras rögzíti (mindkettőt olvassa).
+        A --json kapcsolóval a chord, identify, scale, analyze, set és row JSON-ban adja az adatait.
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "ez a súgó",
@@ -276,6 +277,7 @@ extension TextosDeCLI {
         idiomaDesconocido: { idioma in "ismeretlen nyelv: „\(idioma)” (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru vagy hu)" },
         terminalDesconocida: { t in "ismeretlen parancsértelmező: „\(t)” (bash, zsh vagy fish)" },
         escrituraNoValida: { escritura in "érvénytelen írásmód: „\(escritura)” (palabras/words vagy compacto/compact; ascii vagy unicode, csak es és en mellett)" },
+        sinSalidaJSON: { orden in "a(z) „\(orden)” parancsnak nincs JSON-kimenete" },
 
         // Mensaje.swift
         mensajeNotas: "hangok",

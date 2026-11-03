@@ -12,5 +12,5 @@
 - [ ] El código está formateado (`swift format -i -r --parallel Packages Apps Ejemplos Herramientas Package.swift`).
 - [ ] Pasan las comprobaciones de `Scripts/` (las de [CONTRIBUTING.md](https://github.com/rododendro1/Tesela/blob/main/CONTRIBUTING.md#comprobaciones)).
 - [ ] Textos nuevos en los quince idiomas, si los hay.
-- [ ] Documentación al día (comentarios, artículos de DocC, README).
+- [ ] Documentación al día (comentarios, artículos de DocC, README y DESARROLLO.md).
 - [ ] Entrada en `## Sin publicar` del `CHANGELOG.md` de cada paquete que cambia.

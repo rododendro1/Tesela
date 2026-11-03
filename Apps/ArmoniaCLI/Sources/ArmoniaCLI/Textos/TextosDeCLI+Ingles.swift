@@ -156,6 +156,7 @@ extension TextosDeCLI {
         fa dièse or Fa♯, F Kreuz or Fis.
         In compact writings the octave is a subscript (A₄) and in the others, digits (A4);
         --subscripts or --digits choose one (both forms are read).
+        With --json, chord, identify, scale, analyze, set and row give their data as JSON.
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "this help",
@@ -278,6 +279,7 @@ extension TextosDeCLI {
         idiomaDesconocido: { idioma in "unknown language: \"\(idioma)\" (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru or hu)" },
         terminalDesconocida: { t in "unknown shell: \"\(t)\" (bash, zsh or fish)" },
         escrituraNoValida: { escritura in "invalid writing: \"\(escritura)\" (words or compact; ascii or unicode, only with es and en)" },
+        sinSalidaJSON: { orden in "\"\(orden)\" has no JSON output" },
 
         // Mensaje.swift
         mensajeNotas: "notes",

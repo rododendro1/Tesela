@@ -274,6 +274,7 @@ struct TextosDeCLI: TextosTraducidos {
     let idiomaDesconocido: @Sendable (String) -> String
     let terminalDesconocida: @Sendable (String) -> String
     let escrituraNoValida: @Sendable (String) -> String
+    let sinSalidaJSON: @Sendable (String) -> String
 
     // MARK: Mensaje.swift
     let mensajeNotas: String

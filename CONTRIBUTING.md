@@ -14,7 +14,7 @@ commit), y lo que entra conviene que siga igual.
 ## Preparar el entorno
 
 Los paquetes solo necesitan Swift 6.0 o posterior, en macOS o en Linux; las apps, además, macOS con Xcode y
-XcodeGen. Los pasos están en el apartado «Empezar» del [README](README.md):
+XcodeGen. Los pasos están en el apartado «Empezar» de [DESARROLLO.md](DESARROLLO.md):
 
 ```sh
 cd Packages/Armonia && swift test        # el motor
@@ -31,13 +31,13 @@ cd Packages/ArmoniaUI && swift test      # la interfaz (en Linux, solo la parte 
   paquete baja de su mínimo (en el job `cobertura` de `.github/workflows/ci.yml`). Si tu cambio lo sube, sube también
   el mínimo. Lo que lee ficheros de fuera tiene además pruebas con ficheros estropeados al azar
   (`ImportacionAlAzarTests`): si tocas esa lectura, añade ahí los casos nuevos. Un lector nuevo va también en
-  `Herramientas/FuzzArmonia`, que el CI pasa con libFuzzer cada semana (mira «Fuzzing» en el README).
+  `Herramientas/FuzzArmonia`, que el CI pasa con libFuzzer cada semana (mira «Fuzzing» en [DESARROLLO.md](DESARROLLO.md)).
 - **Dibujos.** Los SVG del pentagrama, el Tonnetz, la tabla armónica y los teclados se comparan con los guardados en
   `Packages/Armonia/Tests/ArmoniaTests/Referencias` (`ReferenciasSVGTests`). Si cambias un dibujo a propósito,
   regenéralos con `TESELA_REGENERAR_REFERENCIAS=1 swift test --filter ReferenciasSVGTests` (en `Packages/Armonia`) y
   revisa el diff: es lo que verá quien revise el pull request.
 - **Dependencias en orden.** Un paquete solo depende de los que tiene debajo, nunca de una app. Si añades un
-  módulo o un paquete, sigue el apartado «Añadir un paquete o una app» del README:
+  módulo o un paquete, sigue el apartado «Añadir un paquete o una app» de [DESARROLLO.md](DESARROLLO.md):
   El `Package.swift` de la raíz no se edita a mano: tras cambiar uno de `Packages/`, regenéralo con
   `python3 Scripts/generadores/generar_paquete_raiz.py` (el CI comprueba que está al día).
 - **Textos traducidos.** Un texto nuevo de la interfaz o del motor va en los quince idiomas.

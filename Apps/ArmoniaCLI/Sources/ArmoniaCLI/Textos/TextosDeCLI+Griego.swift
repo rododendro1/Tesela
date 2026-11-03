@@ -154,6 +154,7 @@ extension TextosDeCLI {
         fa dièse ή Fa♯, F Kreuz ή Fis.
         Στις συμπαγείς γραφές η οκτάβα γράφεται ως δείκτης (La₄) και στις άλλες με ψηφία (La4)·
         το --subindices ή το --cifras την ορίζει (διαβάζονται και τα δύο).
+        Με --json, οι chord, identify, scale, analyze, set και row δίνουν τα δεδομένα τους σε JSON.
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "αυτή η βοήθεια",
@@ -276,6 +277,7 @@ extension TextosDeCLI {
         idiomaDesconocido: { idioma in "άγνωστη γλώσσα: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru ή hu)" },
         terminalDesconocida: { t in "άγνωστο κέλυφος: «\(t)» (bash, zsh ή fish)" },
         escrituraNoValida: { escritura in "μη έγκυρη γραφή: «\(escritura)» (palabras/words ή compacto/compact· ascii ή unicode, μόνο με es και en)" },
+        sinSalidaJSON: { orden in "η «\(orden)» δεν δίνει έξοδο JSON" },
 
         // Mensaje.swift
         mensajeNotas: "νότες",

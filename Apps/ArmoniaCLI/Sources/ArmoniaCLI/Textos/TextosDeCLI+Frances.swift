@@ -154,6 +154,8 @@ extension TextosDeCLI {
         fa dièse ou Fa♯, F Kreuz ou Fis.
         Dans les écritures compactes, l'octave s'écrit en indice (La₄), et dans les autres en chiffres (La4) ;
         --subindices ou --cifras la fixent (les deux se lisent).
+        Avec --json, acorde, identificar, escala, analizar, conjunto et serie donnent leurs données
+        en JSON.
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "cette aide",
@@ -276,6 +278,7 @@ extension TextosDeCLI {
         idiomaDesconocido: { idioma in "langue inconnue : « \(idioma) » (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru ou hu)" },
         terminalDesconocida: { t in "terminal inconnu : « \(t) » (bash, zsh ou fish)" },
         escrituraNoValida: { escritura in "écriture non valide : « \(escritura) » (palabras/words ou compacto/compact ; ascii ou unicode, seulement avec es et en)" },
+        sinSalidaJSON: { orden in "« \(orden) » ne donne pas de sortie JSON" },
 
         // Mensaje.swift
         mensajeNotas: "notes",
