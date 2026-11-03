@@ -44,7 +44,8 @@ import Testing
         #expect(TipoDeEscala.tradicionales(categoria: .raga).count == TipoDeEscala.ragasIndostanicos.count)
         let tetracordos = TipoDeEscala.tradicionales(categoria: .tetracordo)
         let harmoniai = TipoDeEscala.tradicionales(categoria: .harmonia)
-        let nuevas = TipoDeEscala.generosDeDidimoYEratostenes + TipoDeEscala.harmoniaiCromaticas
+        let nuevas =
+            TipoDeEscala.generosDeDidimoYEratostenes + TipoDeEscala.harmoniaiCromaticas
             + TipoDeEscala.harmoniaiEnarmonicas + TipoDeEscala.harmoniaiDeAristides
         #expect((tetracordos.count + harmoniai.count) == TipoDeEscala.griegasAntiguas.count + nuevas.count)
         #expect(
