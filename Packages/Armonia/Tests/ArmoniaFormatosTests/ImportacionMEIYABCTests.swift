@@ -105,7 +105,11 @@ private func f(_ duracion: Duracion) -> String {
                     let margen: Double
                     switch esperado.signo {
                     case nil where abs(esperado.desvio) < 0.5: margen = 0.05
-                    case .cuartos?, .koron?, .sori?: margen = 0.05
+                    case .cuartos?, .koron?, .sori?:
+                        // Un desvío que no es un cuarto de tono justo (la segunda neutra de 151 cents del diatónico
+                        // igual de Ptolomeo) se escribe con el cuarto de tono más cercano.
+                        let cuartos = esperado.desvio / 50
+                        margen = 0.05 + 50 * abs(cuartos - cuartos.rounded())
                     case .comas? where formato == "MEI": margen = 11.4
                     default: margen = 50.01
                     }
