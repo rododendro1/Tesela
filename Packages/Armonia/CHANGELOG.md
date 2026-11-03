@@ -14,6 +14,13 @@
   `--cambiar-clave` y `--ajenas`, y `armonia pentagrama melodia <notas> --sobre <acordes>` (en inglés,
   `--figured-bass`, `--octave`, `--clef`, `--grand-staff`, `--clef-changes`, `--non-chord` y `staff melody … --over`).
 
+### Exportar a GUIDO
+
+- **`Voz.guido`, `Coral.guido` y `AnalisisArmonico.guido`**: la partitura en GUIDO Music Notation (`.gmn`), la
+  entrada de Guido Engine, con lo mismo que LilyPond y ABC: grafía, barras, anacrusa, ligaduras, grupos irregulares
+  (`\tuplet`), tempo, cifrados encima (`\harmony`) y análisis debajo (`\text`). Los cuartos de tono se escriben con
+  la nota temperada.
+
 ### Grados, dedos, secuencias y tablatura en el pentagrama
 
 - **Grados en números romanos** debajo de cada acorde: `grados` en `DisposicionDeAcorde.svgPentagrama(…)` y
