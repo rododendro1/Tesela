@@ -165,6 +165,8 @@ extension NombresDeEscalas {
         .categoria(.diao, "Diào"),
         .categoria(.jo, "Jo"),
         .categoria(.tetracordo, "Tetrachord"),
+        .categoria(.jins, "Jins"),
+        .categoria(.cesni, "Çeşni"),
         .categoria(.harmonia, "Harmonia"),
         .categoria(.afinacion, "Hangolás"),
         .categoria(.escala, "Skála"),

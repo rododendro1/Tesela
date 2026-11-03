@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### Ajnas, çeşni y escalas que faltaban
+
+- **Ajnas árabes** (`TipoDeEscala.ajnas`, categoría `.jins`): los nueve fragmentos de los que se hacen los maqamat,
+  jins Rāst, Bayātī, Ṣabā, Sīkāh, Ḥijāz, Kurd, Nahāwand, ʿAjam y Nikrīz, con su versión en cuartos de tono los
+  que la tienen.
+- **Çeşni turcos** (`TipoDeEscala.cesniler`, categoría `.cesni`): los dörtlü y beşli de Çârgâh, Bûselik, Kürdî, Rast,
+  Uşşak y Hicaz, en comas los tres últimos. Los dos son de la clase `.fragmento`.
+- **Makamlar** Kürdîlihicazkâr, Muhayyer, Ferahfezâ e Isfahan, en comas.
+- **Rāgas indostánicos** Bhīmpalāsī, Bihāg, Darbārī Kānaḍa (en su forma recta) y Pūriyā Dhanāśrī.
+- Los nombres de las dos categorías en todos los idiomas, y los de las escalas nuevas en ruso y en griego.
+
 ### Clases de escala y un catálogo con prioridad
 
 - **`ClaseDeEscala`**: las categorías de otras tradiciones se agrupan en cuatro clases, `.modo` (rāgas, maqamat,

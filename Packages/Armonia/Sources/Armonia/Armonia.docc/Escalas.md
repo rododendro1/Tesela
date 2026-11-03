@@ -133,10 +133,14 @@ usan microtonos):
   en la cuarta), Jiharkāh (la mayor, con la séptima un cuarto de tono baja), y Sīkāh, maqām
   Huzām, ʿIrāq y Rāḥat al-Arwāḥ, con la tónica en un cuarto de tono, escritos sobre Mi y Si.
   ʿUshshāq Turkī no está: en cuartos de tono es Bayātī.
+- **9 ajnas árabes**, los fragmentos de los que se hacen los maqamat, con «jins» delante para no confundirse
+  con su maqam: Rāst, Bayātī, Ṣabā y Sīkāh (con cuartos de tono, aproximados como sus maqamat), Ḥijāz y Kurd,
+  tetracordos; Sīkāh es un tricordo, y Nahāwand, ʿAjam y Nikrīz, pentacordos.
 - **Indonesia**, aproximadas a doce notas: Pélog selisir (también «balinesa») y Sléndro.
-- **10 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
-  (el Valaji carnático), Candrakauns y Megh, pentatónicos; Yaman; y Bāgeśrī y Deś, que suben y
-  bajan distinto. Se deja fuera Darbārī, que es vakra.
+- **15 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
+  (el Valaji carnático), Candrakauns y Megh, pentatónicos; Yaman, Lalit, Pūriyā Dhanāśrī y Darbārī
+  Kānaḍa (en su forma recta: es vakra, y su ga y su dha ati-komal no caben en doce notas); y Bāgeśrī,
+  Deś, Bhīmpalāsī y Bihāg, que suben y bajan distinto.
 - **Los 2 grāma y las 14 mūrchanā** del Nāṭyaśāstra: el ṣaḍja-grāma (el dórico, las razones de Kāfī) y el
   madhyama-grāma (con Pa una coma más bajo), y las siete escalas de cada uno, una desde cada nota: Uttaramandrā,
   Rajanī, Uttarāyatā, Śuddhaṣaḍjā, Matsarīkṛtā, Aśvakrāntā y Abhirudgatā; Sauvīrī, Hariṇāśvā, Kalopanatā,
@@ -147,11 +151,15 @@ usan microtonos):
   dastgāh Navā y Segāh, este con la tónica en un *koron* (escrito sobre Mi); y los āvāz Bayāt-e
   Tork, Afšāri, Dašti (las notas de Šur), Abu ʿAtā y Bayāt-e Esfahān, con el *koron* en su letra
   y redondeado al bemol, como se suele escribir.
-- **16 makamlar turcos**: Rast, Hicaz, Hicazkâr, Nihâvend, Kürdî, Bûselik, Çârgâh, Uşşak,
-  Hüseynî, Segâh, Hüzzam, Saba, Karcığar, Suzinak, Nikriz y Nev'eser, con «makamı» detrás (Rast
-  makamı). Cada nota del sistema de Arel-Ezgi-Uzdilek, de 53 comas, va a su semitono más
+- **27 makamlar turcos**: Rast, Hicaz, Hicazkâr, Nihâvend, Kürdî, Bûselik, Çârgâh, Uşşak,
+  Hüseynî, Segâh, Hüzzam, Saba, Karcığar, Suzinak, Nikriz, Nev'eser, Mâhur, Acemaşiran, Sultânîyegâh,
+  Şedaraban, Hümâyun, Uzzâl, Zirgüleli Hicaz, Kürdîlihicazkâr, Muhayyer, Ferahfezâ e Isfahan, con
+  «makamı» detrás (Rast makamı). Cada nota del sistema de Arel-Ezgi-Uzdilek, de 53 comas, va a su semitono más
   cercano. Uşşak, Hüseynî y Segâh pierden así su segâh (Si una koma bajo), que solo se oye en su
   versión microtonal.
+- **12 çeşni turcos**, los dörtlü (tetracordos) y beşli (pentacordos) de Arel-Ezgi-Uzdilek de los que se
+  hacen los makamlar: Çârgâh, Bûselik, Kürdî, Rast, Uşşak y Hicaz, cada uno de cuatro y de cinco notas
+  (Hicaz dörtlüsü, Hicaz beşlisi).
 - **4 mugam azerbaiyanos**, los de Üzeyir Hacıbəyov que ya están en doce notas: Rast, Şur,
   Segah y Çahargah, con «muğamı» detrás. Los tres primeros encadenan tres tetracordos y tienen
   una nota distinta por debajo de la tónica y por encima, así que tienen ocho notas (Rast
@@ -210,7 +218,7 @@ Escala("La hicaz makami").notas              // La Si♭ Do♯ Re Mi Fa♯ Sol
 
 No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales;
 están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `chinas`, `japonesas`,
-`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `mesopotamicas`, `gramas`, `murchanas`, `generosDeArquitasYPtolomeo`,
+`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `mesopotamicas`, `gramas`, `murchanas`, `generosDeArquitasYPtolomeo`, `ajnas`, `cesniler`,
 `pathets`…). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
@@ -239,7 +247,7 @@ CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .f
 
 Las categorías se agrupan en cuatro clases (`ClaseDeEscala`), según qué es la escala: un modo que se toca (un rāga,
 un maqam, un dromos…), una escala madre de la que salen otras (los mēḷa, los thāṭ, los grāma y los laras), un
-fragmento de menos de una octava (los tetracordos y los géneros griegos) o la afinación de un instrumento (las
+fragmento de menos de una octava (los tetracordos y los géneros griegos, los ajnas árabes y los çeşni turcos) o la afinación de un instrumento (las
 babilónicas). Sirve, por ejemplo, para dejar fuera los fragmentos al buscar entre todas.
 
 ```swift
@@ -247,8 +255,9 @@ TipoDeEscala.mohanam.clase                        // .modo
 TipoDeEscala.kafi.clase                           // .escalaMadre
 TipoDeEscala.melakarta(15)?.clase                 // .escalaMadre
 TipoDeEscala.tetracordoDiatonico.clase            // .fragmento
+TipoDeEscala.jinsHijaz.categoria                  // .jins
 TipoDeEscala.menorNatural.clase                   // nil
-TipoDeEscala.tradicionales(clase: .fragmento).count   // 12
+TipoDeEscala.tradicionales(clase: .fragmento).count   // 33
 TipoDeEscala.tradicionales(clase: .afinacion).count   // 7
 ```
 
