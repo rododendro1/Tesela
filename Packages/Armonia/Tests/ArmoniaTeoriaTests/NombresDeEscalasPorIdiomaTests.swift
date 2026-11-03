@@ -109,6 +109,9 @@ import Testing
             "harmonía doria cromática", "harmonía frigia", "harmonía lidia", "tetracordo enarmónico",
             "harmonía mixolidia", "harmonía hipolidia", "harmonía hipofrigia", "harmonía hipodoria",
             "Təzəta mayor", "Təzəta menor", "Bati mayor", "Bati menor",
+            "tetracordo cromático de Arquitas", "tetracordo diatónico de Arquitas", "tetracordo enarmónico de Ptolomeo",
+            "tetracordo cromático blando", "tetracordo cromático tenso", "tetracordo diatónico blando",
+            "tetracordo diatónico ditónico", "tetracordo diatónico tenso", "tetracordo diatónico igual",
         ]
         for idioma in Idioma.allCases {
             let notacion = Notacion.espanolCompacto.conTextos(en: idioma)

@@ -17,7 +17,7 @@ import Testing
             #expect(microtonal.temperada.microtonal == microtonal, Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(TipoDeEscalaMicrotonal.catalogo.count == 74)
+        #expect(TipoDeEscalaMicrotonal.catalogo.count == 99)
     }
 
     /// Se busca por el nombre: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
@@ -196,6 +196,42 @@ import Testing
         #expect(Escala(.mi, .tetracordoEnarmonico).notas.map(\.description).joined(separator: " ") == "Mi Fa♭ Fa La")
         #expect(nombres(Escala(.mi, .tetracordoEnarmonico)) == "Mi Fa𝄳 Fa La")
         #expect(nombres(Escala(.mi, .tetracordoEnarmonico), en: .inglesASCII) == "E Fqb F A")
+    }
+
+    @Test func gramaYMurchanaDelNatyasastra() {
+        // El ṣaḍja-grāma tiene las razones de Kāfī; Uttaramandrā, su primera mūrchanā, empieza en Sa.
+        #expect(TipoDeEscala.sadjaGrama == .dorico)
+        #expect(TipoDeEscala.sadjaGrama.microtonal?.pasos == TipoDeEscala.kafi.microtonal?.pasos)
+        #expect(nombres(Escala(.re, .uttaramandra)) == "Re Mi↓ Fa Sol La Si↓ Do")
+        // Rajanī, desde Ni, es la mayor justa: Sa Re(9/8) Ga(5/4) ma Pa Dha(27/16) Ni(15/8).
+        #expect(TipoDeEscala.rajani == .mayor)
+        #expect(TipoDeEscala.rajani.microtonal?.pasos == [0, 4, 7, 9, 13, 17, 20])
+        // Sauvīrī, la primera del madhyama-grāma, desde Ma: su Pa (40/27) queda a 10/9 de la tónica.
+        #expect(TipoDeEscala.sauviri == .mixolidio)
+        #expect(TipoDeEscala.sauviri.microtonal?.pasos == [0, 3, 7, 9, 13, 16, 18])
+        #expect(TipoDeEscala.matsarikrta.microtonal?.pasos == [0, 4, 7, 9, 13, 16, 18])
+        // El madhyama-grāma desde Sa tiene el Pa una coma baja (40/27), que no es uno de los 22 śruti: va en cents.
+        let madhyama = TipoDeEscala.madhyamaGrama.microtonal
+        #expect(madhyama?.sistema == .razones)
+        #expect(madhyama?.pasos == [0, 182, 294, 498, 680, 884, 996])
+        #expect(nombres(Escala(.do, .madhyamaGrama)) == "Do Re(−18¢) Mi♭(−6¢) Fa(−2¢) Sol(−20¢) La(−16¢) Si♭(−4¢)")
+        #expect(TipoDeEscala.murchanas.allSatisfy { $0.microtonal != nil })
+    }
+
+    @Test func generosDeArquitasYPtolomeo() {
+        #expect(SistemaMicrotonal.razones.pasosPorOctava == 1200)
+        #expect(SistemaMicrotonal.razones.cents(de: 63) == 63)
+        #expect(nombres(Escala(.mi, .tetracordoDiatonicoDeArquitas)) == "Mi Fa(−37¢) Sol(−6¢) La(−2¢)")
+        #expect(
+            nombres(Escala(.mi, .tetracordoDiatonicoDeArquitas), en: .inglesASCII) == "E F(-37c) G(-6c) A(-2c)")
+        #expect(nombres(Escala(.mi, .tetracordoDiatonicoTenso)) == "Mi Fa(+12¢) Sol(+16¢) La(−2¢)")
+        #expect(nombres(Escala(.mi, .tetracordoEnarmonicoDePtolomeo)) == "Mi Fa♭(+38¢) Fa(+12¢) La(−2¢)")
+        // El diatónico igual, con su segunda neutra de 151 cents, se escribe con Fa♯.
+        #expect(nombres(Escala(.mi, .tetracordoDiatonicoIgual)) == "Mi Fa♯(−49¢) Sol(+16¢) La(−2¢)")
+        #expect(TipoDeEscala.tetracordoDiatonicoDitonico == .tetracordoDiatonico)
+        #expect(TipoDeEscala.tetracordoCromaticoTenso.tradicion == .greciaAntigua)
+        #expect(TipoDeEscala.tetracordoCromaticoTenso.categoria == .tetracordo)
+        #expect(TipoDeEscala.generosDeArquitasYPtolomeo.allSatisfy { $0.microtonal?.sistema == .razones })
     }
 
     @Test func nombresEnOtrasNotaciones() {

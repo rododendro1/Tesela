@@ -72,7 +72,7 @@ package enum SignoMicrotonal: Hashable, Sendable {
             guard SignoMicrotonal.moriaConSigno.contains(6 * semitonos + nota.ajuste) else { return nil }
             self = .moria(6 * semitonos + nota.ajuste)
         case .persa: self.init(semitonos: semitonos, desvio: desvio, persa: true)
-        case .cuartosDeTono, .comas53: self.init(semitonos: semitonos, desvio: desvio)
+        case .cuartosDeTono, .comas53, .razones: self.init(semitonos: semitonos, desvio: desvio)
         }
     }
 
