@@ -167,6 +167,7 @@ extension NombresDeEscalas {
         .categoria(.tetracordo, "tetrachord"),
         .categoria(.jins, "jins"),
         .categoria(.cesni, "çeşni"),
+        .categoria(.modoGregoriano, "Gregorian mode"),
         .categoria(.harmonia, "harmonia"),
         .categoria(.afinacion, "tuning"),
         .categoria(.escala, "scale"),

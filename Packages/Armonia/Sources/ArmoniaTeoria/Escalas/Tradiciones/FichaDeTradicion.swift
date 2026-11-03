@@ -69,6 +69,9 @@ extension Tradicion {
         case .andes: .andes
         case .bizancio: .bizancio
         case .mesopotamia: .mesopotamia
+        case .africa: .africa
+        case .sudesteAsiatico: .sudesteAsiatico
+        case .gregoriano: .gregoriano
         }
     }
 }

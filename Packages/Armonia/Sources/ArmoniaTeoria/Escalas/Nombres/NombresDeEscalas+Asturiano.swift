@@ -156,6 +156,7 @@ extension NombresDeEscalas {
         .categoria(.tetracordo, "tetracordu"),
         .categoria(.jins, "jins"),
         .categoria(.cesni, "çeşni"),
+        .categoria(.modoGregoriano, "mou gregorianu"),
         .categoria(.harmonia, "harmonía"),
         .categoria(.afinacion, "afinación"),
         .categoria(.escala, "escala"),

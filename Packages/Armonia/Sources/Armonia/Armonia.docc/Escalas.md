@@ -136,7 +136,10 @@ usan microtonos):
 - **9 ajnas árabes**, los fragmentos de los que se hacen los maqamat, con «jins» delante para no confundirse
   con su maqam: Rāst, Bayātī, Ṣabā y Sīkāh (con cuartos de tono, aproximados como sus maqamat), Ḥijāz y Kurd,
   tetracordos; Sīkāh es un tricordo, y Nahāwand, ʿAjam y Nikrīz, pentacordos.
-- **Indonesia**, aproximadas a doce notas: Pélog selisir (también «balinesa») y Sléndro.
+- **Indonesia**: Pélog selisir (también «balinesa») y Sléndro, y los pathet de Java y los modos de Bali. Siguen
+  los modelos de las medidas de Surjodiningrat: el pélog en nueve partes iguales de la octava y el sléndro en
+  cinco; en doce notas cada grado va al semitono más cercano desde su tónica (el sléndro, Do Re Fa Sol Si♭), y
+  en cents en su versión microtonal.
 - **15 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
   (el Valaji carnático), Candrakauns y Megh, pentatónicos; Yaman, Lalit, Pūriyā Dhanāśrī y Darbārī
   Kānaḍa (en su forma recta: es vakra, y su ga y su dha ati-komal no caben en doce notas); y Bāgeśrī,
@@ -176,6 +179,12 @@ usan microtonos):
   con las escalas descendentes que siguen Gurney y West desde 1994, desde la cuerda más aguda. En la lectura
   ascendente de 1971 cada nombre era otra especie de octava (išartu, la doria griega).
 - **2 escalas coreanas**: P'yŏngjo y Kyemyŏnjo.
+- **África**: dos afinaciones de xilófono casi equidistantes, el amadinda de Buganda (cinco partes iguales de
+  240 cents, Do Re Fa Sol Si♭ en doce notas) y el timbila de los chopi (siete de 171 cents, el dórico).
+- **El sudeste asiático**: las siete partes iguales de la música clásica de Tailandia (piphat) y de Camboya
+  (pinpeat), escritas como el timbila.
+- **Los 8 modos gregorianos**, con sus nombres latinos (protus authenticus, protus plagalis…), cada uno desde su
+  final. Ver «Modos gregorianos», más abajo.
 - **Los Andes**: la pentatónica andina (menor) y la tritónica andina (Do Mi♭ Sol).
 - **La Grecia antigua**: los tetracordos diatónico, cromático y enarmónico de Aristóxeno; los géneros de
   Arquitas (cromático y diatónico) y los de Ptolomeo (enarmónico, cromático blando y tenso, diatónico blando,
@@ -218,7 +227,8 @@ Escala("La hicaz makami").notas              // La Si♭ Do♯ Re Mi Fa♯ Sol
 
 No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales;
 están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `chinas`, `japonesas`,
-`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `mesopotamicas`, `gramas`, `murchanas`, `generosDeArquitasYPtolomeo`, `ajnas`, `cesniler`,
+`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `mesopotamicas`, `gramas`, `murchanas`, `generosDeArquitasYPtolomeo`, `ajnas`, `cesniler`, `africanas`,
+`sudesteAsiaticas`, `modosGregorianos`,
 `pathets`…). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
@@ -248,7 +258,7 @@ CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .f
 Las categorías se agrupan en cuatro clases (`ClaseDeEscala`), según qué es la escala: un modo que se toca (un rāga,
 un maqam, un dromos…), una escala madre de la que salen otras (los mēḷa, los thāṭ, los grāma y los laras), un
 fragmento de menos de una octava (los tetracordos y los géneros griegos, los ajnas árabes y los çeşni turcos) o la afinación de un instrumento (las
-babilónicas). Sirve, por ejemplo, para dejar fuera los fragmentos al buscar entre todas.
+babilónicas, las africanas y las del sudeste asiático). Sirve, por ejemplo, para dejar fuera los fragmentos al buscar entre todas.
 
 ```swift
 TipoDeEscala.mohanam.clase                        // .modo
@@ -258,7 +268,7 @@ TipoDeEscala.tetracordoDiatonico.clase            // .fragmento
 TipoDeEscala.jinsHijaz.categoria                  // .jins
 TipoDeEscala.menorNatural.clase                   // nil
 TipoDeEscala.tradicionales(clase: .fragmento).count   // 33
-TipoDeEscala.tradicionales(clase: .afinacion).count   // 7
+TipoDeEscala.tradicionales(clase: .afinacion).count   // 11
 ```
 
 ### Microtonos
@@ -271,7 +281,8 @@ makamlar, salvo los seis pitagóricos (Nihâvend, Kürdî, Bûselik, Çârgâh, 
 (`.comas53`); los quince dromoi, con la afinación de su maqam o su makam; los echoi bizantinos, salvo el trítos, en
 los 72 moria de la Comisión Patriarcal de 1881 (`.moria72`); y los diez thāṭ y Yaman, en los 22 śruti indios
 (`.sruti`), cada uno una razón justa, como los grāma y las mūrchanā; el tetracordo enarmónico griego, en cuartos de
-tono (Mi Fa𝄳 Fa La); y los géneros de Arquitas y de Ptolomeo, en cents (`.razones`), igual que las mūrchanā con
+tono (Mi Fa𝄳 Fa La); el gamelan, los xilófonos africanos y el piphat y el pinpeat, en cents, con la octava en
+partes iguales; y los géneros de Arquitas y de Ptolomeo, en cents (`.razones`), igual que las mūrchanā con
 el Pa de 40/27, que no es uno de los 22 śruti. Los thāṭ siguen el ṣaḍja-grāma de Bharata como lo reconstruye E. J. Arnold
 (Kāfī: Sa, Re 10/9, ga 32/27, ma 4/3, Pa, Dha 5/3, ni 16/9), con el re y el dha pitagóricos (256/243, 128/81) en
 Bhairav, Bhairavī y Toḍī, y Toḍī como lo miden Bel y otros. Los que en su propia teoría no tienen microtonos (Ḥijāz,
@@ -366,6 +377,14 @@ ModoGregoriano(6)!.ambito.first                  // Do4
 
 `ambito` da las notas de la más grave a la más aguda, con la final en la octava 4. Los modos 5 y
 6 se cantaban muchas veces con Si♭, que `escala` no incluye.
+
+Los ocho están también en el catálogo de escalas, en `TipoDeEscala.modosGregorianos` (la categoría
+`.modoGregoriano`), con sus nombres latinos; `tipoDeEscala` lleva del uno al otro.
+
+```swift
+ModoGregoriano(2)!.tipoDeEscala.nombre           // "protus plagalis"
+TipoDeEscala.buscar(nombre: "hipodórico")?.nombre  // "protus plagalis"
+```
 
 ## Escalas que suben y bajan distinto
 

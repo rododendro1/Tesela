@@ -2,6 +2,23 @@
 
 ## Sin publicar
 
+### Afinaciones equidistantes, gamelan en cents y modos gregorianos en el catálogo
+
+- **Gamelan**: el pélog sigue el modelo de nueve partes iguales de la octava y el sléndro el de cinco, y cada escala
+  y cada pathet tiene su versión microtonal en cents. Sus notas en doce cambian al semitono más cercano de ese
+  modelo desde su tónica: el sléndro y sus tres pathet son ahora Do Re Fa Sol Si♭ (antes Do Re Fa Sol La, Do Re Mi
+  Sol La o Do Mi♭ Fa Sol Si♭), pélog nem es Sol La♭ Do Re Mi♭, barang La Si♭ Re Mi Sol♯, y tembung y sunaren tienen
+  los intervalos de selisir.
+- **África** (`Tradicion.africa`, `TipoDeEscala.africanas`): las afinaciones del amadinda de Buganda (cinco partes
+  iguales) y del timbila chopi (siete), en la categoría `.afinacion`, con su versión en cents.
+- **Sudeste asiático** (`Tradicion.sudesteAsiatico`, `TipoDeEscala.sudesteAsiaticas`): el piphat tailandés y el
+  pinpeat camboyano, en siete partes iguales.
+- **Modos gregorianos en el catálogo** (`Tradicion.gregoriano`, categoría `.modoGregoriano`,
+  `TipoDeEscala.modosGregorianos`): los ocho, con sus nombres latinos (protus authenticus…) y de alias los
+  españoles, «modo gregoriano N» y los griegos de los plagales (hipodórico…). `ModoGregoriano.tipoDeEscala` lleva
+  de uno a otro.
+- `armonia escalas --tradicion` acepta africa, sudeste-asiatico y gregoriano.
+
 ### Ajnas, çeşni y escalas que faltaban
 
 - **Ajnas árabes** (`TipoDeEscala.ajnas`, categoría `.jins`): los nueve fragmentos de los que se hacen los maqamat,
