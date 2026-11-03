@@ -458,12 +458,25 @@ extension Voz {
             tablatura: tablatura, tonica: nil, armadura: nil, opciones: opciones)
     }
 
+    /// El microtono de cada altura de cada evento que se aparta de la temperada (`Evento.desvios`), por evento.
+    func microtonosDeLosEventos(en notacion: Notacion) -> [Int: [PentagramaSVG.Microtono?]] {
+        var microtonos: [Int: [PentagramaSVG.Microtono?]] = [:]
+        for (i, evento) in eventos.enumerated() where evento.esMicrotonal {
+            microtonos[i] = evento.alturas.indices.map {
+                PentagramaSVG.Microtono.de(
+                    evento.alturas[$0], desvio: evento.desvio($0), nota: nil, notacion: notacion)
+            }
+        }
+        return microtonos
+    }
+
     /// Como el público, y con `tonica`, la nota desde la que se cuentan los intervalos si no hay acordes (la de la
     /// escala de una secuencia); si es `nil`, la de la armadura `.tonalidad`. `armadura`, si se da, manda sobre la de
     /// `opciones`.
     func svgPentagrama(
         titulo: String, acordes: [Int: Acorde], grados: [Int: String], bajoCifrado: [Int: [String]],
-        digitos: [Int: [Int]], tablatura: Tablatura?, tonica: Nota?, armadura: [Nota]?, opciones: OpcionesDePentagrama
+        digitos: [Int: [Int]], tablatura: Tablatura?, tonica: Nota?, armadura: [Nota]?,
+        opciones: OpcionesDePentagrama, microtonos: [Int: [PentagramaSVG.Microtono?]]? = nil
     ) -> String {
         let (ritmo, columnas, primeras) = PentagramaSVG.Ritmo.de(self, resaltada: opciones.resaltada)
         var cifrados: [Int: String] = [:]
@@ -491,6 +504,14 @@ extension Voz {
         dibujo.bajosCifrados = porColumna(bajoCifrado)
         dibujo.digitos = porColumna(digitos)
         dibujo.tablatura = tablatura.map { Tablatura(cuerdas: $0.cuerdas, notas: porColumna($0.notas)) }
+        // Los microtonos de cada evento, en todas sus columnas (las partes de una nota que se liga, también).
+        let porEvento = microtonos ?? microtonosDeLosEventos(en: opciones.notacion)
+        if !porEvento.isEmpty {
+            dibujo.microtonos = columnas.indices.map { columna in
+                let evento = primeras.lastIndex { $0 <= columna } ?? 0
+                return porEvento[evento] ?? []
+            }
+        }
         return dibujo.svg()
     }
 }

@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+### Microtonos en el pentagrama con ritmo
+
+- `Voz.svgPentagrama(titulo:…)` dibuja los microtonos de los eventos (`Evento.desvios`) con los glifos de Bravura,
+  como ya hacía el pentagrama de una escala, y pone sus cents en el nombre de cada nota: «Mi♭₄ (+50¢)».
+- Las secuencias de estudio de una escala microtonal (`Escala.svgPentagrama(secuencia:)`) y la escala tocada en
+  unas alturas cualesquiera (`svgPentagrama(tocadaEn:)`) llevan también el signo de cada nota de su sistema: el
+  medio bemol de un maqam, el koron de un dastgāh, las comas de un makam…
+
 ### Repeticiones, saltos y notas de adorno al importar
 
 - `PiezaImportada` despliega las repeticiones de MusicXML, MEI y ABC, con sus casillas de primera y segunda vez y
