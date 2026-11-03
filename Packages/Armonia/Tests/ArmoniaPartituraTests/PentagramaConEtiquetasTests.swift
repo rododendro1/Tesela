@@ -159,3 +159,64 @@ import Testing
         #expect(tocada.contains("<title>Si♭₄</title>") && tocada.contains(">2</text>"))
     }
 }
+
+/// El bajo cifrado, los cambios de clave y las notas ajenas al acorde.
+@Suite struct PentagramaDeArmoniaTests {
+    private func contar(_ trozo: String, en texto: String) -> Int {
+        texto.components(separatedBy: trozo).count - 1
+    }
+
+    /// Las cifras van debajo de su acorde, una encima de otra: el 6 por encima del 5.
+    @Test func elBajoCifrado() {
+        let acordes = [Acorde("Do"), Acorde("Sol7/Si"), Acorde("Do")]
+        let voces = DisposicionDeAcorde.cerrada.conducir(acordes) ?? []
+        let cifras = acordes.map { Tonalidad(.do).cifrasDeBajo(de: $0) }
+        let svg = DisposicionDeAcorde.svgPentagrama(voces, titulo: "I–V65–I", bajoCifrado: cifras)
+        let seis = svg.range(of: ">6</text>")
+        let cinco = svg.range(of: ">5</text>")
+        #expect(seis != nil && cinco != nil)
+        func y(_ rango: Range<String.Index>?) -> Double? {
+            guard let rango else { return nil }
+            let antes = svg[..<rango.lowerBound]
+            guard let inicio = antes.range(of: " y=\"", options: .backwards) else { return nil }
+            return Double(antes[inicio.upperBound...].prefix { $0 != "\"" })
+        }
+        #expect((y(seis) ?? 0) < (y(cinco) ?? 0))
+        #expect(!DisposicionDeAcorde.svgPentagrama(voces, titulo: "I–V–I").contains(">6</text>"))
+    }
+
+    /// Do mayor en tres octavas desde Do2, en un solo pentagrama: empieza en clave de fa y pasa a la de sol, más
+    /// pequeña, delante de la nota; sin cambios de clave, lleva la marca de octava.
+    @Test func losCambiosDeClave() {
+        var opciones = OpcionesDePentagrama(pentagramas: .simple)
+        opciones.cambiosDeClave = true
+        let svg = Escala(.do).svgPentagrama(octava: 2, octavas: 3, sentido: .ascendente, opciones: opciones)
+        #expect(contar("d=\"\(GlifosSMuFL.claveDeFa.trazado)\"", en: svg) == 1)
+        #expect(contar("d=\"\(GlifosSMuFL.claveDeSol.trazado)\"", en: svg) == 1)
+        #expect(svg.contains("scale(0.75)"))
+        #expect(!svg.contains("8va") && !svg.contains("8vb"))
+        let sinCambios = Escala(.do).svgPentagrama(
+            octava: 2, octavas: 3, sentido: .ascendente, opciones: OpcionesDePentagrama(pentagramas: .simple))
+        #expect(!sinCambios.contains("scale(0.75)"))
+        // En el pentagrama doble no hay cambios.
+        opciones.pentagramas = .doble
+        #expect(!Escala(.do).svgPentagrama(octava: 2, octavas: 3, opciones: opciones).contains("scale(0.75)"))
+        #expect(PentagramaSVG.clavesPorRegistro([[Altura("Do2")], [Altura("Do6")]], desde: .fa) == [.fa, .sol])
+    }
+
+    /// Sobre Do, el Re es una nota de paso (verde) y el Re♯, en Do mayor, cromática (roja); las del acorde, sin color.
+    @Test func lasNotasAjenasAlAcorde() throws {
+        let voz = try Voz(leyendo: "Mi4:8 Re4:8 Do4:8 Re♯4:8 Mi4:2")
+        var opciones = OpcionesDePentagrama(armadura: .tonalidad(Tonalidad(.do)))
+        opciones.marcarNotasAjenas = true
+        let svg = voz.svgPentagrama(titulo: "Do", acordes: [0: Acorde("Do")], opciones: opciones)
+        #expect(contar("fill=\"#2F9E44\"", en: svg) == 1)
+        #expect(contar("fill=\"#C2255C\"", en: svg) == 1)
+        // Sin tonalidad, todas las ajenas son de paso; sin acorde, ninguna.
+        var sinTonalidad = OpcionesDePentagrama()
+        sinTonalidad.marcarNotasAjenas = true
+        let sinColorCromatico = voz.svgPentagrama(titulo: "Do", acordes: [0: Acorde("Do")], opciones: sinTonalidad)
+        #expect(contar("fill=\"#2F9E44\"", en: sinColorCromatico) == 2)
+        #expect(!voz.svgPentagrama(titulo: "Do", opciones: sinTonalidad).contains("#2F9E44"))
+    }
+}

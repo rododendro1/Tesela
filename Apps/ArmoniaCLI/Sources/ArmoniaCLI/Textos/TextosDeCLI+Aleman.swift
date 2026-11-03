@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "eine Skala, einen Akkord, ein Arpeggio\n(mit Rhythmus: --figure 16, --triplets)\noder Akkorde mit ihren Symbolen auf einem\nNotensystem (SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
         sintaxisPentagramaEstudio: "staff <was> --roman|--hand|--sequence|--tab",
         descripcionPentagramaEstudio: "die Stufen in römischen Ziffern unter den\nAkkorden; der Fingersatz am Klavier\n(--hand right) oder an der Gitarre (--tab\n--fingers); die Skala in Terzen oder in\nGruppen (--sequence thirds); die\nTabulatur darunter (--tab, --instrument)",
+        sintaxisPentagramaRegistro: "staff <was> --octave|--clef|--grand-staff|--clef-changes|--figured-bass",
+        descripcionPentagramaRegistro: "die Oktave (--octave 2), der Schlüssel\n(--clef bass), das Klaviersystem,\nSchlüsselwechsel nach Lage und der\nGeneralbass der Akkorde (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "staff melody <Noten> --over <Akkorde>",
+        descripcionPentagramaMelodia: "eine Melodie (C4:8 D4:8…) mit einem Akkord\npro Takt darüber; akkordfremde Töne grün\n(oder rot, wenn chromatisch); --non-chord\nmacht das auch sonst",
         sintaxisPosicionesArpegio: "positions --arpeggio <Akkordsymbol> [--caged|--sweep]",
         descripcionPosicionesArpegio: "das Arpeggio eines Akkords in jeder\nLage des Griffbretts, als Tabulatur mit\nden Fingern; --up-and-down, auf und ab",
 
@@ -242,6 +246,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "es fehlt, was gezeichnet werden soll: armonia staff scale D dorian",
         capoFueraDeRango: "der Kapodaster ist eine Zahl von 0 bis 12: --capo 2",
         octavasFueraDeRango: "die Oktaven sind eine Zahl von 1 bis 4: --octaves 2",
+        octavaFueraDeRango: "die Oktave ist eine Zahl von 0 bis 7: --octave 3",
         desdeNoValido: { desde in "„\(desde)“ ist weder ein Ton noch eine Stufe des Akkords: --from E oder --from 3" },
         tensionesMalEscritas: "die Optionstöne sind 9, 11 oder 13: --tensions 9,13",
         gradosMalEscritos: "die Stufen sind Zahlen von 1 bis 22: --degrees 1-5-3-8",

@@ -29,6 +29,8 @@ extension LineaDeComandos {
         "--quintas", "--fifths", "--triadas", "--triads", "--arpegio", "--arpeggio", "--barrido", "--sweep",
         "--ida-y-vuelta", "--up-and-down", "--intervalos", "--intervals", "--semitonos", "--semitones", "--tonica",
         "--tonic", "--tresillos", "--triplets", "--romanos", "--roman", "--dedos", "--fingers",
+        "--ajenas", "--non-chord", "--doble", "--grand-staff", "--cambiar-clave", "--clef-changes", "--bajo-cifrado",
+        "--figured-bass",
     ]
 
     /// Los valores que se proponen tras una opción.

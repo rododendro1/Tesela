@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "μια κλίμακα, μια συγχορδία, ένα αρπίσμα\n(με ρυθμό: --figure 16, --triplets) ή\nσυγχορδίες με τα σύμβολά τους σε πεντάγραμμο\n(SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
         sintaxisPentagramaEstudio: "staff <τι> --roman|--hand|--sequence|--tab",
         descripcionPentagramaEstudio: "οι βαθμίδες με λατινικούς αριθμούς κάτω\nαπό τις συγχορδίες· τα δάχτυλα στο πιάνο\n(--hand right) ή στην κιθάρα (--tab\n--fingers)· η κλίμακα σε τρίτες ή σε\nομάδες (--sequence thirds)· η ταμπλατούρα\nαπό κάτω (--tab, --instrument)",
+        sintaxisPentagramaRegistro: "staff <τι> --octave|--clef|--grand-staff|--clef-changes|--figured-bass",
+        descripcionPentagramaRegistro: "η οκτάβα (--octave 2), το κλειδί (--clef\nbass), το διπλό πεντάγραμμο, οι αλλαγές\nκλειδιού ανά περιοχή και ο αριθμημένος\nβαθύφωνος (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "staff melody <νότες> --over <συγχορδίες>",
+        descripcionPentagramaMelodia: "μια μελωδία (C4:8 D4:8…) με μία συγχορδία\nανά μέτρο από πάνω· οι ξένες νότες με\nπράσινο (ή κόκκινο αν είναι χρωματικές)·\nτο --non-chord το κάνει και αλλού",
         sintaxisPosicionesArpegio: "positions --arpeggio <σύμβολο> [--caged|--sweep]",
         descripcionPosicionesArpegio: "το αρπίσιμο μιας συγχορδίας σε κάθε\nθέση της ταστιέρας, σε ταμπλατούρα με\nτα δάχτυλα· --up-and-down, πάνω και κάτω",
 
@@ -242,6 +246,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "λείπει τι θα σχεδιαστεί: armonia staff scale D dorian",
         capoFueraDeRango: "το καποτάστο είναι αριθμός από 0 έως 12: --capo 2",
         octavasFueraDeRango: "οι οκτάβες είναι αριθμός από 1 έως 4: --octaves 2",
+        octavaFueraDeRango: "η οκτάβα είναι αριθμός από 0 έως 7: --octave 3",
         desdeNoValido: { desde in "το «\(desde)» δεν είναι νότα ή βαθμίδα της συγχορδίας: --from E ή --from 3" },
         tensionesMalEscritas: "οι επεκτάσεις είναι 9, 11 ή 13: --tensions 9,13",
         gradosMalEscritos: "οι βαθμίδες είναι αριθμοί από 1 έως 22: --degrees 1-5-3-8",

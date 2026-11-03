@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "una gama, un acòrd, un arpègi (amb\nritme: --figura 16, --tresillos) o d'acòrds\namb lor chifratge sus una portada\n(SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
         sintaxisPentagramaEstudio: "pentagrama <qué> --romanos|--mano|--secuencia|--tab",
         descripcionPentagramaEstudio: "los grases en nombres romans jos los\nacòrds; los dets del piano (--mano\nderecha) o de la guitarra (--tab --dedos);\nla gama per tèrças o en grops\n(--secuencia terceras); la tablatura\ndejós (--tab, --instrumento)",
+        sintaxisPentagramaRegistro: "pentagrama <qué> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado",
+        descripcionPentagramaRegistro: "l'octava (--octava 2), la clau (--clave\nfa), la portada dobla, los cambiaments de\nclau segon lo registre e lo bas chifrat\ndels acòrds (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "pentagrama melodia <nòtas> --sobre <acòrds>",
+        descripcionPentagramaMelodia: "una melodia (Do4:8 Re4:8…) amb un acòrd\nper mesura dessús; las nòtas que son pas\nde l'acòrd, en verd (o en roge se son\ncromaticas); --ajenas o fa dins los autres",
         sintaxisPosicionesArpegio: "posiciones --arpegio <chifratge> [--caged|--barrido]",
         descripcionPosicionesArpegio: "l'arpègi d'un acòrdi dins cada\nposicion del margue, en tablatura amb\nlos dets; --ida-y-vuelta, monta e davala",
 
@@ -242,6 +246,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "manca çò que cal dessenhar: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "lo capodastre es un nombre de 0 a 12: --capo 2",
         octavasFueraDeRango: "las octavas son un nombre d'1 a 4: --octavas 2",
+        octavaFueraDeRango: "l'octava es un nombre de 0 a 7: --octava 3",
         desdeNoValido: { desde in "«\(desde)» es pas una nòta ni un grau de l'acòrd: --desde Mi o --desde 3" },
         tensionesMalEscritas: "las tensions son 9, 11 o 13: --tensiones 9,13",
         gradosMalEscritos: "los graus son de nombres d'1 a 22: --grados 1-5-3-8",

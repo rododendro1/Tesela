@@ -181,7 +181,7 @@ extension PentagramaSVG {
                 Evento(alturas[i], i == alturas.count - 1 && alturas.count > 1 && figura < .negra ? .negra : figura)
             }
             return Voz(eventos).svgPentagrama(
-                titulo: titulo, acordes: acorde.map { [0: $0] } ?? [:], grados: [:], digitos: digitos,
+                titulo: titulo, acordes: acorde.map { [0: $0] } ?? [:], grados: [:], bajoCifrado: [:], digitos: digitos,
                 tablatura: tablatura, tonica: referencia.nota, armadura: armadura, opciones: opciones)
         }
         var dibujo = PentagramaSVG(
@@ -206,10 +206,12 @@ extension DisposicionDeAcorde {
     /// Con `cifrados` (un acorde por columna), cada columna lleva encima su cifrado, y los intervalos de las notas
     /// (`intervalosDeLasNotas`) se cuentan desde la fundamental de su acorde. Con `grados` (uno por columna, como
     /// los de `AnalisisArmonico.cifrados`), cada columna lleva debajo su grado en números romanos; con `digitos`, el
-    /// dedo de cada nota encima (de la grave a la aguda), y con `tablatura`, la cuerda y el traste debajo.
+    /// dedo de cada nota encima (de la grave a la aguda), y con `tablatura`, la cuerda y el traste debajo. Con
+    /// `bajoCifrado` (uno por columna, como los de `Tonalidad.cifrasDeBajo(de:)`), las cifras del bajo continuo
+    /// debajo de todo, una encima de otra.
     public static func svgPentagrama(
         _ acordes: [[Altura]], titulo: String, cifrados: [Acorde] = [], grados: [String] = [],
-        digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil,
+        bajoCifrado: [[String]] = [], digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
         var textos: [Int: String] = [:]
@@ -223,6 +225,7 @@ extension DisposicionDeAcorde {
             cifrados: textos, referencias: referencias
         )
         dibujo.grados = Dictionary(uniqueKeysWithValues: zip(acordes.indices, grados).map { ($0, $1) })
+        dibujo.bajosCifrados = Dictionary(uniqueKeysWithValues: zip(acordes.indices, bajoCifrado).map { ($0, $1) })
         dibujo.digitos = digitos
         dibujo.tablatura = tablatura
         return dibujo.svg()

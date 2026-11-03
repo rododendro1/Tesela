@@ -190,4 +190,29 @@ extension LineaDeComandosTests {
         #expect(ukelele.contains(">A</text>"))
         #expect(salida("staff arpeggio G7 --tab --fingers --ingles").contains(">G7</text>"))
     }
+
+    @Test func pentagramaDeArmonia() {
+        func cuenta(_ trozo: String, _ texto: String) -> Int { texto.components(separatedBy: trozo).count - 1 }
+        // El bajo cifrado: Fa/La, 6; Sol7/Si, 6 y 5.
+        let bajo = salida("pentagrama acordes Do Fa/La Sol7/Si Do --bajo-cifrado")
+        #expect(cuenta(">6</text>", bajo) == 2 && cuenta(">5</text>", bajo) == 1, Comment(rawValue: bajo))
+        #expect(salida("pentagrama acordes Lam Mi Lam --bajo-cifrado --en La menor").contains(">♯</text>"))
+        #expect(salida("pentagrama arpegio Do Sol7/Si --bajo-cifrado").contains(">5</text>"))
+        // La octava, la clave, el pentagrama doble y los cambios de clave.
+        #expect(salida("pentagrama escala Do mayor --octava 2").contains("<title>Do₂</title>"))
+        #expect(salida("pentagrama acorde Do --octava 3").contains("<title>Do₃</title>"))
+        let conClave = salida("pentagrama escala Mi mayor --octava 2 --clave sol")
+        #expect(conClave != salida("pentagrama escala Mi mayor --octava 2"))
+        // El pentagrama doble deja sitio a la izquierda para la llave.
+        #expect(salida("pentagrama escala Do mayor --doble").contains("viewBox=\"-1.9 "))
+        let cambios = salida("pentagrama escala Do mayor --octava 2 --octavas 3 --cambiar-clave")
+        #expect(cambios.contains("scale(0.75)"), Comment(rawValue: cambios))
+        #expect(salida("staff scale C major --octave 2 --octaves 3 --clef-changes --ingles").contains("scale(0.75)"))
+        // Una melodía sobre unos acordes: el Re (de paso) en verde; el Re♯ (cromático en Do mayor), en rojo.
+        let melodia = salida("pentagrama melodia Mi4:8 Re4:8 Do4:8 Re♯4:8 Mi4:2 Sol4:1 --sobre Do Sol7 --en Do mayor")
+        #expect(cuenta("#2F9E44", melodia) == 1 && cuenta("#C2255C", melodia) == 1, Comment(rawValue: melodia))
+        #expect(melodia.contains(">Do</text>") && melodia.contains(">Sol7</text>"))
+        #expect(salida("staff melody E4:8 D4:8 C4:2. --over C --ingles").contains("#2F9E44"))
+        #expect(salida("pentagrama arpegio Do --tensiones 9 --ajenas").contains("#2F9E44"))
+    }
 }

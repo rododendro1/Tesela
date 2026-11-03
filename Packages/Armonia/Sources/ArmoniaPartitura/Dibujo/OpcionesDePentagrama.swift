@@ -74,6 +74,15 @@ public struct OpcionesDePentagrama {
     public var marcarTonica = false
     /// El color de las tónicas marcadas (cualquier color CSS).
     public var colorDeLaTonica = "#1971C2"
+    /// Con un acorde que suena (el de una progresión o el de `Voz.svgPentagrama(…, acordes:)`), las notas que no son
+    /// suyas en color: las de la tonalidad (notas de paso, bordaduras, apoyaturas…) en `colorDeLasNotasDePaso` y las
+    /// demás (cromáticas, con la armadura de una tonalidad) en `colorDeLasCromaticas`.
+    public var marcarNotasAjenas = false
+    public var colorDeLasNotasDePaso = "#2F9E44"
+    public var colorDeLasCromaticas = "#C2255C"
+    /// Con una sola clave (sin `clave` ni pentagrama doble), cambia entre la de sol y la de fa cuando las notas se
+    /// van a tres o más líneas adicionales, con la clave nueva, más pequeña, delante de la nota.
+    public var cambiosDeClave = false
     /// Píxeles por espacio de pentagrama: el pentagrama mide cuatro veces esto de alto.
     public var tamano: Double
     /// Color del dibujo (cualquier color CSS); `currentColor` toma el del texto que lo rodea.

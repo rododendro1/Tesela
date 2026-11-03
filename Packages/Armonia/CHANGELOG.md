@@ -2,6 +2,18 @@
 
 ## Sin publicar
 
+### Bajo cifrado, cambios de clave y notas ajenas al acorde en el pentagrama
+
+- **`Tonalidad.cifrasDeBajo(de:)`**: las cifras del bajo continuo de un acorde («6», «6 4», «6 5», «4 3», «4 2»),
+  con las alteraciones que la armadura no da; `bajoCifrado` las escribe debajo de las disposiciones y las voces.
+- **`OpcionesDePentagrama.cambiosDeClave`**: en un solo pentagrama, la clave pasa de fa a sol (y vuelve) según el
+  registro, con la clave nueva más pequeña delante de la nota.
+- **`marcarNotasAjenas`**: las notas que no son del acorde que suena, en color (`colorDeLasNotasDePaso` las de la
+  tonalidad, `colorDeLasCromaticas` las demás).
+- **En la línea de comandos**, `armonia pentagrama` con `--bajo-cifrado`, `--octava`, `--clave`, `--doble`,
+  `--cambiar-clave` y `--ajenas`, y `armonia pentagrama melodia <notas> --sobre <acordes>` (en inglés,
+  `--figured-bass`, `--octave`, `--clef`, `--grand-staff`, `--clef-changes`, `--non-chord` y `staff melody … --over`).
+
 ### Grados, dedos, secuencias y tablatura en el pentagrama
 
 - **Grados en números romanos** debajo de cada acorde: `grados` en `DisposicionDeAcorde.svgPentagrama(…)` y

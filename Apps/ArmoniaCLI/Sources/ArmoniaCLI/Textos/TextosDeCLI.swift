@@ -124,6 +124,10 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionPentagrama: String
     let sintaxisPentagramaEstudio: String
     let descripcionPentagramaEstudio: String
+    let sintaxisPentagramaRegistro: String
+    let descripcionPentagramaRegistro: String
+    let sintaxisPentagramaMelodia: String
+    let descripcionPentagramaMelodia: String
     let sintaxisPosicionesArpegio: String
     let descripcionPosicionesArpegio: String
 
@@ -230,6 +234,7 @@ struct TextosDeCLI: TextosTraducidos {
     let faltaLoQueDibujaElPentagrama: String
     let capoFueraDeRango: String
     let octavasFueraDeRango: String
+    let octavaFueraDeRango: String
     let desdeNoValido: @Sendable (String) -> String
     let tensionesMalEscritas: String
     let gradosMalEscritos: String
