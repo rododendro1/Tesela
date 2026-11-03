@@ -9,6 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <συγχορδίες> [--in <τονικότητα>] [--scales]",
         descripcionAnalizar: "ρωμαϊκή αρίθμηση, λειτουργίες, πτώσεις\nκαι μετατροπίες (με την κοινή τους\nσυγχορδία· χωρίς --in)\n--scales: η κλίμακα κάθε συγχορδίας,\nμε τις εντάσεις και τους φθόγγους\nπρος αποφυγή",
+        notasAnalizar: "--guide-tones: δύο γραμμές νοτών-οδηγών,\nαπό την τρίτη και από την έβδομη",
         sintaxisAnalizarArchivo: "analyze --file <αρχείο> [--window <διάρκεια>]",
         descripcionAnalizarArchivo: "το ίδιο, με τις συγχορδίες ενός αρχείου\nMIDI, MusicXML, MEI ή ABC (μία ανά\nχρόνο; --window 2: μία ανά μισό)",
         sintaxisArmonizar: "harmonize <μελωδία> [--in <τονικότητα>] [--proposals 3]",
@@ -33,11 +34,12 @@ extension TextosDeCLI {
         notasArpegio: "επιλογές: --octaves 2 (από 1 έως 4), --no-octave, --from E\n(ή 3: ξεκινά από αυτή τη νότα), --tensions 9,13, --degrees\n1-5-3-8 (δική σας πορεία) και --approach below, above ή\nenclosure (χρωματικές νότες που οδηγούν σε καθεμία)",
         sintaxisIdentificar: "identify <νότες>",
         descripcionIdentificar: "συγχορδίες που σχηματίζουν οι νότες",
+        notasIdentificar: "επιλογές: --scales (οι κλίμακες που περιέχουν\nτις νότες, αντί για συγχορδίες) και --file\nmelody.mid (οι νότες ενός αρχείου MIDI,\nMusicXML, MEI ή ABC, με --scales)",
         sintaxisIntervalo: "interval <νότα> <νότα>",
         descripcionIntervalo: "διάστημα ανάμεσα σε δύο νότες ή τονικά\nύψη",
         sintaxisEscala: "scale <κλίμακα> [--chords]",
         descripcionEscala: "νότες και συγχορδίες μιας κλίμακας\n--chords: όλες όσες χωρούν σε κάθε\nβαθμίδα, όχι μόνο κατά τρίτες",
-        notasEscala: "επιλογές: --sequence thirds (ή fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(από 1 έως 4), --piano (δακτυλοθεσία), --modes (παράλληλοι και σχετικοί)\nκαι --compare C lydian (στο τέλος)",
+        notasEscala: "επιλογές: --sequence thirds (ή fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(από 1 έως 4), --piano (δακτυλοθεσία), --modes (παράλληλοι και σχετικοί)\nκαι --compare C lydian (στο τέλος); --symmetry (κάθε πόσο\nεπαναλαμβάνεται και οι συγχορδίες της)",
         sintaxisEscalas: "scales [<κείμενο>] [επιλογές]",
         descripcionEscalas: "ο κατάλογος των κλιμάκων: οι συνήθεις\nκαι όσες άλλων παραδόσεων, ανά\nκατηγορία, με τις νότες τους από το Ντο",
         notasEscalas: "επιλογές: --tradition turkey (ή india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) και --category maqam (ή rāga, makam,\ndastgah, dromos…)· ένα κείμενο ψάχνει στα ονόματα",
@@ -62,6 +64,10 @@ extension TextosDeCLI {
         descripcionTabla: "αρμονικός πίνακας σε SVG (εξάγωνα)",
         sintaxisTablaAcorde: "tabla --chord | --scale | --pcs | --sequence | --shortest | --cycle",
         descripcionTablaAcorde: "όπως στο Tonnetz (--margen 2:\nπερισσότερος πίνακας γύρω)",
+        sintaxisCuadricula: "cuadricula <νότες ή τονικά ύψη> | --chord | --scale | --pcs",
+        descripcionCuadricula: "πληκτρολόγιο πλέγματος σε SVG (pads),\nμε το περίγραμμα και την πρώτη νότα",
+        sintaxisCuadriculaOpciones: "cuadricula --axes H,V --grid CxR --origin <τονικό ύψος>\ncuadricula --rotate 0-3 --mirror --in-key --scale <κλίμακα>",
+        descripcionCuadriculaOpciones: "άξονες (1,5: σε τέταρτες), πλέγμα του\nελεγκτή (8x8), νότα της γωνίας,\nτέταρτα στροφής, καθρέφτης και στην κλίμακα",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "neighbors <συγχορδία> [--voices 2]",
@@ -106,6 +112,9 @@ extension TextosDeCLI {
         descripcionDigitaciones: "τρόποι να παίξεις μια συγχορδία, από τον πιο άνετο στον\nλιγότερο, σε έγχορδο όργανο με τάστα (χορδές από χαμηλά προς\nψηλά)\nεπιλογές: --instrument guitar|bass|ukulele|mandolin|… (και\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (το ψηλότερο τάστο που χρησιμοποιείται), --fingers 4\n(πόσα δάχτυλα μπορούν να χρησιμοποιηθούν), --complete (με όλες\nτις νότες: από προεπιλογή μπορεί να λείπει η πέμπτη), --diagram\n(μία γραμμή ανά χορδή),\n--capo 2 (τάστα από το καποτάστο), --musicxml (η πρώτη μορφή κάθε\nσυγχορδίας ως ταμπλατούρα MusicXML)",
         sintaxisPosiciones: "positions <κλίμακα> [--caged]",
         descripcionPosiciones: "η κλίμακα σε θέσεις στην κιθάρα:\nτρεις νότες ανά χορδή (δύο στις\nπεντατονικές) ή CAGED",
+        notasPosiciones: "επιλογές: --sequence thirds (ή άλλη:\nη αλληλουχία σε κάθε θέση· με\n--descending, κατεβαίνοντας) και --shapes (τα πέντε\nσχήματα της πεντατονικής και οι κοινές νότες)",
+        sintaxisTeclado: "keyboard <κλίμακα> [--hand right]",
+        descripcionTeclado: "η κλίμακα σε πληκτρολόγιο πιάνου\n(SVG): οι νότες ή, με --hand right\nή left, τα δάχτυλα· --octaves 2",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -176,6 +185,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "η ακολουθία αποτελείται από μείζονα και ελάσσονα τρίφωνα: armonia \(orden) --sequence C Am F Dm" },
         caminoSoloTriadas: { ejemplo, orden in "η συντομότερη διαδρομή πάει από ένα μείζον ή ελάσσον τρίφωνο σε άλλο: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "ο κύκλος ξεκινά από ένα μείζον ή ελάσσον τρίφωνο: armonia \(orden) --cycle hexatonic C" },
+        opcionesDeCuadricula: "επιλογές του πλέγματος: --axes H,V (1,5), --grid CxR (8x8), --origin <τονικό ύψος> (C2), --rotate 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "κινούνται 1 ή 2 φωνές: --voices 2",
@@ -216,6 +226,10 @@ extension TextosDeCLI {
         trasteFueraDeRango: "το ψηλότερο τάστο είναι αριθμός από 0 έως 24: --fret 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "λείπει το σύμβολο της συγχορδίας: \(digitaciones.1)" },
         faltaEscalaDePosiciones: "λείπει η κλίμακα: armonia positions G major",
+        faltaEscalaDelTeclado: "λείπει η κλίμακα: armonia keyboard D major",
+        manoDesconocida: { texto in "άγνωστο χέρι: «\(texto)» (right ή left)" },
+        archivoConNotas: "με το --file δεν γράφονται νότες",
+        noEsPentatonica: "τα σχήματα είναι για κλίμακα πέντε φθόγγων: armonia positions A minor pentatonic --shapes",
         capoFueraDeRango: "το καποτάστο είναι αριθμός από 0 έως 12: --capo 2",
         octavasFueraDeRango: "οι οκτάβες είναι αριθμός από 1 έως 4: --octaves 2",
         desdeNoValido: { desde in "το «\(desde)» δεν είναι νότα ή βαθμίδα της συγχορδίας: --from E ή --from 3" },

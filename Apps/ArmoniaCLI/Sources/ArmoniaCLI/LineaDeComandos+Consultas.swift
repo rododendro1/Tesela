@@ -117,6 +117,41 @@ extension LineaDeComandos {
         return lineas.joined(separator: "\n")
     }
 
+    /// `identificar Do Mi Sol Si Fa# [--escalas]` o `identificar --archivo melodia.mid`: los acordes que forman
+    /// unas notas o, con `--escalas` o con un fichero, las escalas que las contienen.
+    static func identificarConOpciones(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        var argumentos = Argumentos(textos)
+        let conEscalas = argumentos.quitarMarca("--escalas", "--scales")
+        let archivo: String?
+        switch argumentos.quitarOpcion("--archivo", "--file") {
+        case .ausente: archivo = nil
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let ruta): archivo = ruta
+        }
+        if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
+        let encontradas: [EscalaEncontrada]
+        if let archivo {
+            guard argumentos.restantes.isEmpty else { return uso(.archivoConNotas, notacion) }
+            guard let datos = FileManager.default.contents(atPath: archivo) else {
+                return uso(.archivoIlegible(archivo), notacion)
+            }
+            let pieza = try PiezaImportada(leyendo: datos)
+            encontradas = PresentacionDeEstudioDeEscala.escalas(de: pieza, notacion: notacion)
+        } else {
+            guard !argumentos.restantes.isEmpty else { return uso(.faltanNotas, notacion) }
+            guard conEscalas else { return bien(try identificar(argumentos.restantes, notacion)) }
+            // Con octava o sin ella, solo cuentan las notas.
+            let notas = try argumentos.restantes.map { texto in
+                try (try? Altura(leyendo: texto))?.nota ?? Nota(leyendo: texto)
+            }
+            encontradas = PresentacionDeEstudioDeEscala.escalas(conLasNotas: notas, notacion: notacion)
+        }
+        // Nunca vacío: la cromática las contiene todas.
+        return bien(
+            encontradas.map { $0.ademas.isEmpty ? $0.nombre : $0.nombre + " — " + $0.ademas }
+                .joined(separator: "\n"))
+    }
+
     static func identificar(_ textos: [String], _ notacion: Notacion) throws -> String {
         // Con octava se tiene en cuenta el bajo; sin ella, solo las notas.
         let candidatos: [Candidato<Acorde>]
@@ -281,6 +316,7 @@ extension LineaDeComandos {
         let bajando = argumentos.quitarMarca("--bajando", "--descending")
         let piano = argumentos.quitarMarca("--piano")
         let modos = argumentos.quitarMarca("--modos", "--modes")
+        let simetria = argumentos.quitarMarca("--simetria", "--symmetry")
         guard let octavas = argumentos.quitarNumero("--octavas", "--octaves", en: 1...4, porDefecto: 1) else {
             return uso(.octavasFueraDeRango, notacion)
         }
@@ -324,6 +360,7 @@ extension LineaDeComandos {
             lineas.append(notacion.texto(\.modosRelativos) + ":")
             lineas.append("  " + relativos.map(\.nombre).joined(separator: " · "))
         }
+        if simetria { lineas += lineasDeSimetria(de: escala, notacion) }
         if let otra {
             let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, notacion: notacion)
             lineas.append(notacion.texto(\.compararCon) + " " + otra.nombre(en: notacion) + ":")
@@ -332,6 +369,20 @@ extension LineaDeComandos {
             lineas += (resto + [comparacion.distancia ?? ""]).filter { !$0.isEmpty }.map { "  " + $0 }
         }
         return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// `escala … --simetria`: cada cuánto se repite, desde qué notas empieza igual y los acordes que se repiten. Una
+    /// escala que no es simétrica se repite a la octava, con sus doce transposiciones.
+    static func lineasDeSimetria(de escala: Escala, _ notacion: Notacion) -> [String] {
+        var lineas = [notacion.texto(\.simetria) + ":"]
+        guard let simetria = PresentacionDeEstudioDeEscala.simetria(de: escala, notacion: notacion) else {
+            let veces = escala.transposicionesDistintas
+            return lineas + ["  " + notacion.texto { $0.repiteCada(veces, veces) }]
+        }
+        lineas.append("  " + simetria.resumen)
+        lineas.append("  " + notacion.texto(\.tonicasEquivalentes) + ": " + simetria.tonicas)
+        lineas += simetria.ciclos.map { "  " + $0.nombre + ": " + $0.detalle }
+        return lineas
     }
 
     /// La secuencia de `--secuencia`, por su nombre en español o en inglés.
@@ -501,6 +552,7 @@ extension LineaDeComandos {
         // Con --escalas, debajo de cada acorde, su escala con sus tensiones y sus notas a evitar. Se quita antes que
         // la tonalidad, que se lleva todo lo que va detrás de --en.
         let conEscalas = acordes.quitarMarca("--escalas", "--scales")
+        let conNotasGuia = acordes.quitarMarca("--notas-guia", "--guide-tones")
         guard let tonalidad = try acordes.quitarTonalidad() else { return uso(.faltaTonalidadTrasEn, notacion) }
         let archivo: String?
         switch acordes.quitarOpcion("--archivo", "--file") {
@@ -563,6 +615,12 @@ extension LineaDeComandos {
             }
         }
         lineas += analisis.cadencias
+        if conNotasGuia {
+            lineas.append(notacion.texto(\.lineasDeNotasGuia) + ":")
+            lineas += PresentacionDeEstudioDeEscala.lineasDeNotasGuia(
+                analisis.acordes, tonalidad: analisis.tonalidad, notacion: notacion
+            ).map { "  " + $0.titulo + ": " + $0.notas }
+        }
         return bien(lineas.joined(separator: "\n"))
     }
 

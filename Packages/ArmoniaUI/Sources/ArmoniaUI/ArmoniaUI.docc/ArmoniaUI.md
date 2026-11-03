@@ -52,6 +52,7 @@ Las vistas están tras `#if canImport(SwiftUI)`: en Linux el módulo compila sol
 - ``ContenidoDeRed``
 - ``PresentacionDeRedes``
 - ``AjusteUIL``
+- ``AjusteCuadrado``
 
 ### Sonido y teclados MIDI
 

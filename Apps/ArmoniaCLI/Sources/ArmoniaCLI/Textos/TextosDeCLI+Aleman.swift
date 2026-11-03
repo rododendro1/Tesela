@@ -9,6 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <Akkorde> [--in <Tonart>] [--scales]",
         descripcionAnalizar: "Stufenbezeichnung, Funktionen,\nKadenzen und Modulationen (mit ihrem\nDrehakkord; ohne --in)\n--scales: die Skala jedes Akkords,\nmit Spannungs- und Avoid-Tönen",
+        notasAnalizar: "--guide-tones: zwei Leittonlinien,\nab der Terz und ab der Septime",
         sintaxisAnalizarArchivo: "analyze --file <Datei> [--window <Dauer>]",
         descripcionAnalizarArchivo: "dasselbe mit den Akkorden einer MIDI-,\nMusicXML-, MEI- oder ABC-Datei (einer\npro Schlag; --window 2: einer pro\nHalbe)",
         sintaxisArmonizar: "harmonize <Melodie> [--in <Tonart>] [--proposals 3]",
@@ -33,11 +34,12 @@ extension TextosDeCLI {
         notasArpegio: "Optionen: --octaves 2 (1 bis 4), --no-octave, --from E\n(oder 3: beginnt mit diesem Ton), --tensions 9,13, --degrees\n1-5-3-8 (ein eigener Verlauf) und --approach below, above\noder enclosure (chromatische Töne, die zu jedem führen)",
         sintaxisIdentificar: "identify <Noten>",
         descripcionIdentificar: "Akkorde, die einige Noten bilden",
+        notasIdentificar: "Optionen: --scales (die Skalen, die die Töne\nenthalten, statt Akkorden) und --file\nmelody.mid (die Töne einer MIDI-, MusicXML-,\nMEI- oder ABC-Datei, mit --scales)",
         sintaxisIntervalo: "interval <Note> <Note>",
         descripcionIntervalo: "Intervall zwischen zwei Noten oder\nTonhöhen",
         sintaxisEscala: "scale <Skala> [--chords]",
         descripcionEscala: "Noten und Akkorde einer Skala\n--chords: alle Akkorde, die auf jede\nStufe passen, nicht nur Terzschichtungen",
-        notasEscala: "Optionen: --sequence thirds (oder fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1 bis 4), --piano (Fingersatz), --modes (parallel und relativ)\nund --compare C lydian (am Ende)",
+        notasEscala: "Optionen: --sequence thirds (oder fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1 bis 4), --piano (Fingersatz), --modes (parallel und relativ)\nund --compare C lydian (am Ende); --symmetry (wie oft sie sich\nwiederholt, und ihre Akkorde)",
         sintaxisEscalas: "scales [<Text>] [Optionen]",
         descripcionEscalas: "der Skalenkatalog: die gängigen und\ndie anderer Traditionen, nach\nKategorien, mit ihren Tönen ab C",
         notasEscalas: "Optionen: --tradition turkey (oder india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) und --category maqam (oder rāga, makam,\ndastgah, dromos…); ein Text sucht in den Namen",
@@ -62,6 +64,10 @@ extension TextosDeCLI {
         descripcionTabla: "harmonische Tabelle in SVG (Sechsecke)",
         sintaxisTablaAcorde: "tabla --chord | --scale | --pcs | --sequence | --shortest | --cycle",
         descripcionTablaAcorde: "wie beim Tonnetz (--margen 2: mehr\nTabelle rundherum)",
+        sintaxisCuadricula: "cuadricula <Noten oder Tonhöhen> | --chord | --scale | --pcs",
+        descripcionCuadricula: "Rastertastatur in SVG (Pads), mit\nUmriss und erster Note",
+        sintaxisCuadriculaOpciones: "cuadricula --axes H,V --grid CxR --origin <Tonhöhe>\ncuadricula --rotate 0-3 --mirror --in-key --scale <Skala>",
+        descripcionCuadriculaOpciones: "Achsen (1,5: in Quarten), Raster des\nControllers (8x8), Ecknote,\nViertelumdrehungen, Spiegeln und in der Tonart",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "neighbors <Akkord> [--voices 2]",
@@ -106,6 +112,9 @@ extension TextosDeCLI {
         descripcionDigitaciones: "Griffe für einen Akkord, vom bequemsten zum unbequemsten, auf\neinem Saiteninstrument mit Bünden (Saiten von tief nach hoch)\nOptionen: --instrument guitar|bass|ukulele|mandolin|… (auch\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (der höchste verwendete Bund), --fingers 4 (wie viele\nbenutzt werden dürfen), --complete (mit allen Noten:\nstandardmäßig darf die Quinte fehlen), --diagram (eine Zeile pro\nSaite),\n--capo 2 (Bünde ab dem Kapodaster), --musicxml (die erste Griffform\njedes Akkords als MusicXML-Tabulatur)",
         sintaxisPosiciones: "positions <Skala> [--caged]",
         descripcionPosiciones: "die Skala in Lagen auf der Gitarre:\ndrei Töne pro Saite (zwei bei\nPentatonik) oder CAGED",
+        notasPosiciones: "Optionen: --sequence thirds (oder eine andere:\ndie Sequenz in jeder Lage; mit\n--descending abwärts) und --shapes (die fünf\nPentatonik-Formen und ihre gemeinsamen Töne)",
+        sintaxisTeclado: "keyboard <Skala> [--hand right]",
+        descripcionTeclado: "die Skala auf einer Klaviertastatur\n(SVG): ihre Töne oder, mit --hand right\noder left, die Finger; --octaves 2",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -176,6 +185,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "die Folge besteht aus Dur- und Molldreiklängen: armonia \(orden) --sequence C Am F Dm" },
         caminoSoloTriadas: { ejemplo, orden in "der kürzeste Weg führt von einem Dur- oder Molldreiklang zu einem anderen: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "der Zyklus beginnt mit einem Dur- oder Molldreiklang: armonia \(orden) --cycle hexatonic C" },
+        opcionesDeCuadricula: "Rasteroptionen: --axes H,V (1,5), --grid CxR (8x8), --origin <Tonhöhe> (C2), --rotate 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "es bewegen sich 1 oder 2 Stimmen: --voices 2",
@@ -216,6 +226,10 @@ extension TextosDeCLI {
         trasteFueraDeRango: "der höchste Bund ist eine Zahl von 0 bis 24: --fret 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "das Akkordsymbol fehlt: \(digitaciones.1)" },
         faltaEscalaDePosiciones: "die Skala fehlt: armonia positions G major",
+        faltaEscalaDelTeclado: "die Skala fehlt: armonia keyboard D major",
+        manoDesconocida: { texto in "unbekannte Hand: „\(texto)“ (right oder left)" },
+        archivoConNotas: "mit --file keine Töne angeben",
+        noEsPentatonica: "die Formen gibt es nur bei fünftönigen Skalen: armonia positions A minor pentatonic --shapes",
         capoFueraDeRango: "der Kapodaster ist eine Zahl von 0 bis 12: --capo 2",
         octavasFueraDeRango: "die Oktaven sind eine Zahl von 1 bis 4: --octaves 2",
         desdeNoValido: { desde in "„\(desde)“ ist weder ein Ton noch eine Stufe des Akkords: --from E oder --from 3" },

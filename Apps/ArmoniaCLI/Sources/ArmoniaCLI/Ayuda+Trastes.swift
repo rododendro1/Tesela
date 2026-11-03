@@ -25,6 +25,7 @@ extension LineaDeComandos {
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPosiciones),
             descripcion: TextosDeCLI.traduccion(\.descripcionPosiciones),
-            ejemplo: ejemplo("armonia posiciones Sol mayor --caged", "armonia positions G major --caged"))
+            ejemplo: ejemplo("armonia posiciones Sol mayor --caged", "armonia positions G major --caged"),
+            notas: TextosDeCLI.traduccion(\.notasPosiciones))
     ]
 }

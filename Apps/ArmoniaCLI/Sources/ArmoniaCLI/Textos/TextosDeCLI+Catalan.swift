@@ -9,6 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <acords> [--en <tonalitat>] [--escalas]",
         descripcionAnalizar: "xifrat romà, funcions, cadències i\nmodulacions (amb l'acord pivot;\nsense --en)\n--escalas: l'escala de cada acord,\namb les tensions i notes a evitar",
+        notasAnalizar: "--notas-guia: dues línies de notes guia,\ndes de la tercera i des de la setena",
         sintaxisAnalizarArchivo: "analizar --archivo <fitxer> [--ventana <durada>]",
         descripcionAnalizarArchivo: "el mateix, amb els acords d'un fitxer\nMIDI, MusicXML, MEI o ABC (un per\npols; --ventana 2: un per blanca)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalitat>] [--propuestas 3]",
@@ -33,11 +34,12 @@ extension TextosDeCLI {
         notasArpegio: "opcions: --octavas 2 (d'1 a 4), --sin-octava, --desde Mi\n(o 3: comença per aquesta nota), --tensiones 9,13, --grados\n1-5-3-8 (un recorregut propi) i --aproximacion abajo, arriba\no encierro (notes cromàtiques que porten a cadascuna)",
         sintaxisIdentificar: "identificar <notes>",
         descripcionIdentificar: "acords que formen unes notes",
+        notasIdentificar: "opcions: --escalas (les escales que contenen\nles notes, en lloc d'acords) i --archivo\nmelodia.mid (les notes d'un fitxer MIDI,\nMusicXML, MEI o ABC, amb --escalas)",
         sintaxisIntervalo: "intervalo <nota> <nota>",
         descripcionIntervalo: "interval entre dues notes o altures",
         sintaxisEscala: "escala <escala> [--acordes]",
         descripcionEscala: "notes i acords d'una escala\n--acordes: tots els que hi caben a\ncada grau, no només els de terceres",
-        notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(d'1 a 4), --piano (digitació), --modos (paral·lels i relatius)\ni --comparar Do lidio (al final)",
+        notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(d'1 a 4), --piano (digitació), --modos (paral·lels i relatius)\ni --comparar Do lidio (al final); --simetria (cada quant\nes repeteix i els seus acords)",
         sintaxisEscalas: "escalas [<text>] [opcions]",
         descripcionEscalas: "el catàleg d'escales: les habituals i\nles d'altres tradicions, per\ncategories, amb les notes des de Do",
         notasEscalas: "opcions: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) i --categoria maqam (o rāga, makam,\ndastgah, dromos…); un text cerca en els noms",
@@ -62,6 +64,10 @@ extension TextosDeCLI {
         descripcionTabla: "taula harmònica en SVG (hexàgons)",
         sintaxisTablaAcorde: "tabla --acorde | --escala | --clases | --recorrido | --camino | --ciclo",
         descripcionTablaAcorde: "com al Tonnetz (--margen 2: més\ntaula al voltant)",
+        sintaxisCuadricula: "cuadricula <notes o altures> | --acorde | --escala | --clases",
+        descripcionCuadricula: "teclat de quadrícula en SVG (pads),\namb el contorn i la primera nota",
+        sintaxisCuadriculaOpciones: "cuadricula --ejes H,V --rejilla CxF --origen <altura>\ncuadricula --giro 0-3 --espejo --en-tono --escala <escala>",
+        descripcionCuadriculaOpciones: "eixos (1,5: en quartes), graella del\ncontrolador (8x8), nota de la cantonada,\nquarts de volta, mirall i en to",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "vecinos <acord> [--voces 2]",
@@ -106,6 +112,9 @@ extension TextosDeCLI {
         descripcionDigitaciones: "maneres de tocar un acord, de la més\ncòmoda a la menys, en un instrument\nde corda amb trasts\nopcions: --instrumento guitarra|bajo|ukelele|mandolina|… (també\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D»),\n--limite 5, --traste 12 (el més alt que es fa servir), --dedos 4\n(els que es poden fer servir), --completo (amb totes les notes:\nper defecte la quinta pot faltar), --diagrama (una línia per\ncorda),\n--capo 2 (els trasts, des del capo), --musicxml (la primera forma\nde cada acord, com a tabulatura MusicXML)",
         sintaxisPosiciones: "posiciones <escala> [--caged]",
         descripcionPosiciones: "l'escala per posicions a la guitarra:\ntres notes per corda (dues a les\npentatòniques) o CAGED",
+        notasPosiciones: "opcions: --secuencia terceras (o una altra:\nla seqüència a cada posició; amb\n--bajando, baixant) i --formas (les cinc\nformes de la pentatònica i les notes comunes)",
+        sintaxisTeclado: "teclado <escala> [--mano derecha]",
+        descripcionTeclado: "l'escala en un teclat de piano\n(SVG): les notes o, amb --mano derecha\no izquierda, els dits; --octavas 2",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -176,6 +185,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "el recorregut és de tríades majors i menors: " + ejemplo },
         caminoSoloTriadas: { ejemplo, orden in "el camí va d'una tríada major o menor a una altra: " + ejemplo },
         cicloSoloTriadas: { ejemplo, orden in "el cicle comença en una tríada major o menor: " + ejemplo },
+        opcionesDeCuadricula: "opcions de la quadrícula: --ejes H,V (1,5), --rejilla CxF (8x8), --origen <altura> (Do2), --giro 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "les veus que es mouen són 1 o 2: --voces 2",
@@ -216,6 +226,10 @@ extension TextosDeCLI {
         trasteFueraDeRango: "el trast més alt és un nombre de 0 a 24: --traste 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "falta el xifrat: \(d)" },
         faltaEscalaDePosiciones: "falta l'escala: armonia posiciones Sol mayor",
+        faltaEscalaDelTeclado: "falta l'escala: armonia teclado Re mayor",
+        manoDesconocida: { texto in "mà desconeguda: «\(texto)» (derecha o izquierda)" },
+        archivoConNotas: "amb --archivo no s'escriuen notes",
+        noEsPentatonica: "les formes són d'una escala de cinc notes: armonia posiciones La pentatónica menor --formas",
         capoFueraDeRango: "el capo és un nombre de 0 a 12: --capo 2",
         octavasFueraDeRango: "les octaves són un nombre d'1 a 4: --octavas 2",
         desdeNoValido: { desde in "«\(desde)» no és una nota ni un grau de l'acord: --desde Mi o --desde 3" },

@@ -14,6 +14,37 @@
 - Glifos nuevos de Bravura en `GlifosSMuFL` (cabeza negra, corchetes, silencios, puntillo, cifras del compás y del
   tresillo).
 
+### Más escalas
+
+- **Buscar escalas** en una pieza: `PiezaImportada.clasesDeAltura(umbral:)` (las notas que suenan, por lo que duran)
+  y `PiezaImportada.escalas(umbral:tipos:)`, de más a menos probable, con la tonalidad estimada como desempate.
+- **Escalas simétricas**: `Escala.intervaloDeSimetria`, `transposicionesDistintas`, `tonicasEquivalentes` y
+  `ciclosSimetricos` (`CicloSimetrico`: Do7 Mi♭7 Fa♯7 La7 en la disminuida semitono-tono).
+- **Líneas de notas guía**: `Acorde.lineaDeNotasGuia(_:desde:octava:)` (`InicioDeNotasGuia`), una nota por acorde,
+  la más cercana a la anterior.
+- **En el mástil**: `EscalaEnElMastil.recorrido`, `secuencia(_:sentido:)` (la secuencia sin salir de la posición) y
+  `notasComunes(con:)`; `Mastil.formasPentatonicas(de:)`, las cinco formas desde la tónica.
+- **`TecladoDePiano`**: un teclado en SVG con las teclas marcadas (los dedos o los nombres) y la tónica resaltada.
+- **En la línea de comandos**, `armonia identificar --escalas` y `--archivo <fichero>`, `armonia escala --simetria`,
+  `armonia analizar --notas-guia`, `armonia posiciones --secuencia <tipo>` (con `--bajando`) y `--formas`, y la orden
+  nueva `armonia teclado <escala> [--mano derecha] [--octavas 2]` (en inglés, `--scales`, `--file`, `--symmetry`,
+  `--guide-tones`, `--sequence`, `--descending`, `--shapes`, `keyboard` y `--hand`).
+
+### Teclados de cuadrícula
+
+- **Más teclados de cuadrícula**: `TecladoCuadrado.tercerasMenores`, `tritonos`, `octavas` y `secuencial`;
+  `conEjes(_:)` lee unos ejes escritos «H,V», `conOrigen(_:)` cambia la nota de la casilla de origen y `enTono(_:)`
+  deja solo las notas de una escala, como el modo In Key del Push (`grados`, `esCromatico`). `svg` dibuja el contorno de
+  las notas marcadas y la primera con borde naranja (`primeras:`, `contorno:`). **`RejillaDeControlador`**: las
+  casillas de un Launchpad o un Push (8 × 8), un LinnStrument (16 × 8 y 25 × 8) o la ventana de 12 × 7.
+- **En la línea de comandos**, `armonia cuadricula` (`grid`) dibuja un teclado de cuadrícula con `--ejes H,V`,
+  `--rejilla 8x8`, `--origen <altura>`, `--giro 0-3`, `--espejo` y `--en-tono` (en inglés, `--axes`, `--grid`,
+  `--origin`, `--rotate`, `--mirror` y `--in-key`).
+- **`TecladoCuadrado`** y **`CasillaCuadrada`**: teclados isomórficos de botones cuadrados, definidos por sus ejes H
+  (los semitonos de un paso a la derecha) y V (los de un paso hacia arriba). Trae `cuartas` (LinnStrument, Launchpad,
+  Push), `tercerasMayores`, `quintas`, `wickiHaydenCuadrado`, `tonosEnteros` y `tonnetzDeEuler`, con `girado()`,
+  `reflejado`, `esCompleto`, `casillas(de:en:)` y su dibujo en SVG. Los nombres, en los quince idiomas.
+
 ### Estudiar escalas
 
 - **`Escala.secuencia(_:octava:octavas:sentido:)`** con **`SecuenciaDeEscala`**: la escala por terceras, por cuartas,

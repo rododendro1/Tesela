@@ -238,3 +238,35 @@ import Testing
         }
     }
 }
+
+/// El teclado de piano dibujado en SVG.
+@Suite struct TecladoDePianoTests {
+    @Test func teclas() {
+        let teclado = TecladoDePiano(desde: 61, hasta: 70)
+        #expect(teclado.desde == 60 && teclado.hasta == 71)
+        #expect(teclado.blancas == [60, 62, 64, 65, 67, 69, 71])
+        #expect(teclado.negras == [61, 63, 66, 68, 70])
+        #expect(teclado.x(de: 62) == 24)
+        #expect(teclado.x(de: 61) == 17)
+        let doMayor = TecladoDePiano(cubriendo: Escala(.do).alturas(octava: 4))
+        #expect(doMayor.desde == 60 && doMayor.hasta == 72)
+        let vacio = TecladoDePiano(cubriendo: [])
+        #expect(vacio.desde == 60 && vacio.hasta == 72)
+        #expect(TecladoDePiano(desde: 64, hasta: 60).hasta == 64)
+    }
+
+    @Test func dibujo() {
+        let teclado = TecladoDePiano(desde: 60, hasta: 72)
+        let svg = teclado.svg(marcadas: [60: "1", 61: "2", 64: "3"], primeras: [60], titulo: "Do & Re")
+        #expect(svg.hasPrefix("<svg xmlns=\"http://www.w3.org/2000/svg\""))
+        #expect(svg.hasSuffix("</svg>\n"))
+        #expect(svg.contains("<title>Do &amp; Re</title>"))
+        // El fondo, ocho blancas y cinco negras.
+        #expect(svg.components(separatedBy: "<rect").count - 1 == 14)
+        #expect(svg.components(separatedBy: "<circle").count - 1 == 3)
+        #expect(svg.components(separatedBy: DibujoSVG.Color.primera).count - 1 == 1)
+        #expect(svg.contains(">2</text>"))
+        let sinTitulo = teclado.svg()
+        #expect(!sinTitulo.contains("<title>") && !sinTitulo.contains("<circle"))
+    }
+}

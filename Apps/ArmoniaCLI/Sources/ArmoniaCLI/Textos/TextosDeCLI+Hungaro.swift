@@ -9,6 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <akkordok> [--in <hangnem>] [--scales]",
         descripcionAnalizar: "fokszámok, funkciók, zárlatok és\nmodulációk (közvetítő akkordjukkal;\n--in nélkül)\n--scales: minden akkord skálája, a\nfeszültségekkel és kerülendő hangokkal",
+        notasAnalizar: "--guide-tones: két vezetőhang-vonal,\na terctől és a szeptimtől",
         sintaxisAnalizarArchivo: "analyze --file <fájl> [--window <időtartam>]",
         descripcionAnalizarArchivo: "ugyanez egy MIDI-, MusicXML-, MEI-\nvagy ABC-fájl akkordjaival (ütésenként\negy; --window 2: félhangonként egy)",
         sintaxisArmonizar: "harmonize <dallam> [--in <hangnem>] [--proposals 3]",
@@ -33,11 +34,12 @@ extension TextosDeCLI {
         notasArpegio: "opciók: --octaves 2 (1-től 4-ig), --no-octave, --from E\n(vagy 3: ezzel a hanggal kezd), --tensions 9,13, --degrees\n1-5-3-8 (saját menet) és --approach below, above vagy\nenclosure (kromatikus hangok, amelyek mindegyikhez vezetnek)",
         sintaxisIdentificar: "identify <hangok>",
         descripcionIdentificar: "a hangokból alkotható akkordok",
+        notasIdentificar: "opciók: --scales (a hangokat tartalmazó\nskálák akkordok helyett) és --file\nmelody.mid (egy MIDI-, MusicXML-, MEI- vagy\nABC-fájl hangjai, --scales mellett)",
         sintaxisIntervalo: "interval <hang> <hang>",
         descripcionIntervalo: "két hang vagy hangmagasság közötti\nhangköz",
         sintaxisEscala: "scale <skála> [--chords]",
         descripcionEscala: "egy skála hangjai és akkordjai\n--chords: minden fokon minden beleillő\nakkord, nem csak a terces",
-        notasEscala: "opciók: --sequence thirds (vagy fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1-től 4-ig), --piano (ujjrend), --modes (párhuzamos és rokon)\nés --compare C lydian (a végén)",
+        notasEscala: "opciók: --sequence thirds (vagy fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1-től 4-ig), --piano (ujjrend), --modes (párhuzamos és rokon)\nés --compare C lydian (a végén); --symmetry (milyen gyakran\nismétlődik, és az akkordjai)",
         sintaxisEscalas: "scales [<szöveg>] [opciók]",
         descripcionEscalas: "a skálák katalógusa: a szokásosak és\nmás hagyományokéi, kategóriánként,\nC-től induló hangjaikkal",
         notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) és --category maqam (vagy rāga, makam,\ndastgah, dromos…); a szöveg a nevekben keres",
@@ -62,6 +64,10 @@ extension TextosDeCLI {
         descripcionTabla: "harmonikus tábla SVG-ben (hatszögek)",
         sintaxisTablaAcorde: "tabla --chord | --scale | --pcs | --sequence | --shortest | --cycle",
         descripcionTablaAcorde: "mint a Tonnetznél (--margen 2: több\ntábla körülötte)",
+        sintaxisCuadricula: "cuadricula <hangok vagy hangmagasságok> | --chord | --scale | --pcs",
+        descripcionCuadricula: "rácsos billentyűzet SVG-ben (padek),\nkörvonallal és az első hanggal",
+        sintaxisCuadriculaOpciones: "cuadricula --axes H,V --grid CxR --origin <hangmagasság>\ncuadricula --rotate 0-3 --mirror --in-key --scale <skála>",
+        descripcionCuadriculaOpciones: "tengelyek (1,5: kvartokban), a vezérlő\nrácsa (8x8), sarokhang, negyedfordulat,\ntükrözés és hangnemben",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "neighbors <akkord> [--voices 2]",
@@ -106,6 +112,9 @@ extension TextosDeCLI {
         descripcionDigitaciones: "egy akkord fogásai a legkényelmesebbtől a legkevésbé kényelmesig,\nbundos húros hangszeren (a húrok mélytől magasig)\nopciók: --instrument guitar|bass|ukulele|mandolin|… (\"seven-string\nguitar\", \"five-string bass\", \"drop D\" is), --limit 5, --fret 12\n(a legmagasabb használt bund), --fingers 4 (hány ujj használható),\n--complete (minden hanggal: alapból a kvint elhagyható), --diagram\n(húronként egy sor), --capo 2 (a bundok a kapodasztertől számítva),\n--musicxml (minden akkord első fogása MusicXML-tabulatúraként)",
         sintaxisPosiciones: "positions <skála> [--caged]",
         descripcionPosiciones: "a skála fekvésenként a gitáron:\nhúronként három hang (a pentatonnál\nkettő) vagy CAGED",
+        notasPosiciones: "opciók: --sequence thirds (vagy más:\na szekvencia minden fekvésben; a\n--descending lefelé) és --shapes (a pentaton\nöt formája és közös hangjaik)",
+        sintaxisTeclado: "keyboard <skála> [--hand right]",
+        descripcionTeclado: "a skála zongora-billentyűzeten\n(SVG): a hangjai vagy --hand right\nvagy left mellett az ujjak; --octaves 2",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -176,6 +185,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "a sor dúr és moll hármashangzatokból áll: armonia \(orden) --sequence C Am F Dm" },
         caminoSoloTriadas: { ejemplo, orden in "a legrövidebb út egy dúr vagy moll hármashangzattól egy másikig vezet: armonia \(orden) --shortest C Ebm" },
         cicloSoloTriadas: { ejemplo, orden in "a ciklus dúr vagy moll hármashangzaton kezdődik: armonia \(orden) --cycle hexatonic C" },
+        opcionesDeCuadricula: "a rács beállításai: --axes H,V (1,5), --grid CxR (8x8), --origin <hangmagasság> (C2), --rotate 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "1 vagy 2 szólam mozog: --voices 2",
@@ -216,6 +226,10 @@ extension TextosDeCLI {
         trasteFueraDeRango: "a legmagasabb bund 0 és 24 közötti szám: --fret 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "hiányzik az akkordjelzés: \(digitaciones.1)" },
         faltaEscalaDePosiciones: "hiányzik a skála: armonia positions G major",
+        faltaEscalaDelTeclado: "hiányzik a skála: armonia keyboard D major",
+        manoDesconocida: { texto in "ismeretlen kéz: „\(texto)” (right vagy left)" },
+        archivoConNotas: "a --file mellett ne írj hangokat",
+        noEsPentatonica: "a formák ötfokú skálához tartoznak: armonia positions A minor pentatonic --shapes",
         capoFueraDeRango: "a kapodaszter 0 és 12 közötti szám: --capo 2",
         octavasFueraDeRango: "az oktávok száma 1 és 4 közötti: --octaves 2",
         desdeNoValido: { desde in "„\(desde)” nem hangja és nem foka az akkordnak: --from E vagy --from 3" },

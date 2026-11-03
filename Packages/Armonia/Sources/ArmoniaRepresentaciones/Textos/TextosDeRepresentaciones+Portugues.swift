@@ -53,6 +53,17 @@ extension TextosDeRepresentaciones {
         wickiHaydenPlano: "Wicki-Hayden (plano)",
         acordeonC: "Acordeão sistema C",
         acordeonB: "Acordeão sistema B",
+        // TecladoCuadrado.swift
+        cuadriculaEnCuartas: "Grelha em quartas",
+        cuadriculaEnTercerasMayores: "Grelha em terceiras maiores",
+        cuadriculaEnQuintas: "Grelha em quintas",
+        wickiHaydenCuadrado: "Wicki-Hayden (grelha)",
+        cuadriculaDeTonosEnteros: "Grelha de tons inteiros",
+        tonnetzDeEuler: "Tonnetz de Euler",
+        cuadriculaEnTercerasMenores: "Grelha em terceiras menores",
+        cuadriculaEnTritonos: "Grelha em trítonos",
+        cuadriculaEnOctavas: "Grelha em oitavas",
+        cuadriculaSecuencial: "Grelha sequencial",
         // FormatoUIL.swift
         uilNoValido: { texto in "UIL inválido: «\(texto)». Espera-se L,G,D;R<graus>[M], por exemplo 2,7,5;R30M." },
         intervalosIncoherentes: { menor, mayor, diferencia in "Intervalos incoerentes: \(menor),\(mayor),\(diferencia). Devem cumprir 0 < L ≤ D e G = L + D." },

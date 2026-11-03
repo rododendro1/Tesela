@@ -9,6 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <accords> [--en <tonalité>] [--escalas]",
         descripcionAnalizar: "chiffrage romain, fonctions,\ncadences et modulations (avec\nl'accord pivot ; sans --en)\n--escalas : la gamme de chaque\naccord, ses tensions et notes à éviter",
+        notasAnalizar: "--notas-guia : deux lignes de notes guides,\ndepuis la tierce et depuis la septième",
         sintaxisAnalizarArchivo: "analizar --archivo <fichier> [--ventana <durée>]",
         descripcionAnalizarArchivo: "la même chose, avec les accords d'un\nfichier MIDI, MusicXML, MEI ou ABC (un\npar temps ; --ventana 2 : un par\nblanche)",
         sintaxisArmonizar: "armonizar <mélodie> [--en <tonalité>] [--propuestas 3]",
@@ -33,11 +34,12 @@ extension TextosDeCLI {
         notasArpegio: "options : --octavas 2 (de 1 à 4), --sin-octava, --desde Mi\n(ou 3 : commence par cette note), --tensiones 9,13, --grados\n1-5-3-8 (un parcours à soi) et --aproximacion abajo, arriba\nou encierro (notes chromatiques qui mènent à chacune)",
         sintaxisIdentificar: "identificar <notes>",
         descripcionIdentificar: "accords que forment des notes",
+        notasIdentificar: "options : --escalas (les gammes qui contiennent\nles notes, au lieu des accords) et --archivo\nmelodia.mid (les notes d'un fichier MIDI,\nMusicXML, MEI ou ABC, avec --escalas)",
         sintaxisIntervalo: "intervalo <note> <note>",
         descripcionIntervalo: "intervalle entre deux notes ou\nhauteurs",
         sintaxisEscala: "escala <gamme> [--acordes]",
         descripcionEscala: "notes et accords d'une gamme\n--acordes : tous ceux qui tiennent\nsur chaque degré, pas seulement en tierces",
-        notasEscala: "options : --secuencia terceras (ou cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 à 4), --piano (doigté), --modos (parallèles et relatifs)\net --comparar Do lidio (à la fin)",
+        notasEscala: "options : --secuencia terceras (ou cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 à 4), --piano (doigté), --modos (parallèles et relatifs)\net --comparar Do lidio (à la fin) ; --simetria (tous les combien\nelle se répète et ses accords)",
         sintaxisEscalas: "escalas [<texte>] [options]",
         descripcionEscalas: "le catalogue des gammes : les usuelles\net celles d'autres traditions, par\ncatégories, avec leurs notes depuis Do",
         notasEscalas: "options : --tradicion turquia (ou india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) et --categoria maqam (ou rāga, makam,\ndastgah, dromos…) ; un texte cherche dans les noms",
@@ -62,6 +64,10 @@ extension TextosDeCLI {
         descripcionTabla: "table harmonique en SVG (hexagones)",
         sintaxisTablaAcorde: "tabla --acorde | --escala | --clases | --recorrido | --camino | --ciclo",
         descripcionTablaAcorde: "comme pour le Tonnetz (--margen 2 :\nplus de table autour)",
+        sintaxisCuadricula: "cuadricula <notes ou hauteurs> | --acorde | --escala | --clases",
+        descripcionCuadricula: "clavier en grille en SVG (pads),\navec le contour et la première note",
+        sintaxisCuadriculaOpciones: "cuadricula --ejes H,V --rejilla CxF --origen <hauteur>\ncuadricula --giro 0-3 --espejo --en-tono --escala <gamme>",
+        descripcionCuadriculaOpciones: "axes (1,5 : en quartes), grille du\ncontrôleur (8x8), note du coin, quarts\nde tour, miroir et dans la tonalité",
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "vecinos <accord> [--voces 2]",
@@ -106,6 +112,9 @@ extension TextosDeCLI {
         descripcionDigitaciones: "façons de jouer un accord, de la\nplus commode à la moins commode, sur\nun instrument à cordes et à frettes\noptions : --instrumento guitarra|bajo|ukelele|mandolina|… (aussi\n« guitarra de siete cuerdas », « bajo de 5 cuerdas », « drop D\n»), --limite 5, --traste 12 (la case la plus haute utilisée),\n--dedos 4 (ceux qu'on peut utiliser), --completo (avec toutes\nles notes : par défaut la quinte peut manquer), --diagrama (une\nligne par corde),\n--capo 2 (cases comptées depuis le capodastre), --musicxml (la\npremière forme de chaque accord, en tablature MusicXML)",
         sintaxisPosiciones: "posiciones <gamme> [--caged]",
         descripcionPosiciones: "la gamme par positions à la guitare :\ntrois notes par corde (deux dans les\npentatoniques) ou CAGED",
+        notasPosiciones: "options : --secuencia terceras (ou une autre :\nla séquence dans chaque position ; avec\n--bajando, en descendant) et --formas (les cinq\nformes de la pentatonique et leurs notes communes)",
+        sintaxisTeclado: "teclado <gamme> [--mano derecha]",
+        descripcionTeclado: "la gamme sur un clavier de piano\n(SVG) : ses notes ou, avec --mano derecha\nou izquierda, les doigts ; --octavas 2",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -176,6 +185,7 @@ extension TextosDeCLI {
         recorridoSoloTriadas: { ejemplo, orden in "le parcours est fait de triades majeures et mineures : " + ejemplo },
         caminoSoloTriadas: { ejemplo, orden in "le chemin va d'une triade majeure ou mineure à une autre : " + ejemplo },
         cicloSoloTriadas: { ejemplo, orden in "le cycle commence sur une triade majeure ou mineure : " + ejemplo },
+        opcionesDeCuadricula: "options de la grille : --ejes H,V (1,5), --rejilla CxF (8x8), --origen <hauteur> (Do2), --giro 0-3",
 
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "les voix qui bougent sont 1 ou 2 : --voces 2",
@@ -216,6 +226,10 @@ extension TextosDeCLI {
         trasteFueraDeRango: "la case la plus haute est un nombre de 0 à 24 : --traste 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "il manque le chiffrage : \(d)" },
         faltaEscalaDePosiciones: "il manque la gamme : armonia posiciones Sol mayor",
+        faltaEscalaDelTeclado: "il manque la gamme : armonia teclado Re mayor",
+        manoDesconocida: { texto in "main inconnue : « \(texto) » (derecha ou izquierda)" },
+        archivoConNotas: "avec --archivo, n'écrivez pas de notes",
+        noEsPentatonica: "les formes sont celles d'une gamme de cinq notes : armonia posiciones La pentatónica menor --formas",
         capoFueraDeRango: "le capodastre est un nombre de 0 à 12 : --capo 2",
         octavasFueraDeRango: "les octaves sont un nombre de 1 à 4 : --octavas 2",
         desdeNoValido: { desde in "« \(desde) » n'est ni une note ni un degré de l'accord : --desde Mi ou --desde 3" },
