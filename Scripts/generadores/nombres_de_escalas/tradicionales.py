@@ -58,7 +58,8 @@ def nombres():
 def bloque(idioma):
     lineas = ["", "        // Escalas de otras tradiciones: nombres propios, iguales en todos los idiomas salvo los que se traducen.",
               '        // Para traducir una: `.tradicional(.hitzaz, "…")`. Los alias (Hijaz, Hicaz…) están en el catálogo.',
-              "        // Los 72 mēḷa no se listan: sin fila, conservan su nombre en IAST."]
+              "        // Solo llevan fila las que se traducen o tienen alias en este idioma: sin fila, una escala conserva su nombre",
+              "        // original, como los 72 mēḷa."]
     vistos = set()
     for titulo, ns in nombres():
         lineas.append(f"        // {titulo}")
@@ -68,9 +69,8 @@ def bloque(idioma):
             tr = T.get(n)
             if tr is not None:
                 t = tr[ORDEN.index(idioma)]
-                lineas.append(f'        .tradicional(.{miembro}, "{t}"),' if t != n else f'        .tradicional(.{miembro}),')
-            else:
-                lineas.append(f'        .tradicional(.{miembro}),')
+                if t != n:
+                    lineas.append(f'        .tradicional(.{miembro}, "{t}"),')
     faltan = set(T) - vistos
     if faltan: sys.exit(f"no existen: {faltan}")
     return "\n".join(lineas), len(vistos)

@@ -213,7 +213,7 @@ import Testing
         #expect(TipoDeEscala.buscar(nombre: "cromatica -5..6") == TipoDeEscala.buscar(nombre: "cromática −5…6"))
     }
 
-    /// Las filas `.tradicional(.miembro)` apuntan al tipo, y las escalas sin fila (los mēḷa) conservan su nombre.
+    /// Las filas `.tradicional(.miembro, "…")` apuntan al tipo, y las escalas sin fila (los mēḷa) conservan su nombre.
     @Test func lasTradicionalesSinFilaConservanSuNombreOriginal() {
         for idioma in Idioma.allCases {
             let nombres = NombresDeEscalas.de(idioma)

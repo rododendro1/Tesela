@@ -298,9 +298,10 @@ El nombre de cada tipo de escala en cada idioma, y las otras formas con que se l
 fichero por idioma: `Escalas/Nombres/NombresDeEscalas+Catalan.swift`, `+Gallego`, `+Ruso`… (el español sale
 del propio catálogo). `TipoDeEscala.nombre(en:)` usa el fichero del idioma de la notación, y
 `buscar(nombre:)` y `Escala("Re dòric")` leen los de todos. Cada fichero da todos los tipos de
-`TipoDeEscala.todos`, las escalas de otras tradiciones (`.tradicional(.kafi)`, que apunta al miembro de
-`TipoDeEscala` y no compila si deja de existir) y el nombre de cada `CategoriaTradicional` (`.categoria`);
-`Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno. Un idioma nuevo es un fichero más.
+`TipoDeEscala.todos`, el nombre de cada `CategoriaTradicional` (`.categoria`) y las escalas de otras tradiciones
+que se traducen en ese idioma (`.tradicional(.andina, "…")`, que apunta al miembro de `TipoDeEscala` y no compila si
+deja de existir); las demás, sin fila, conservan su nombre original (Kāfī, Hitzáz).
+`Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno y que no haya filas que no traducen nada. Un idioma nuevo es un fichero más.
 
 `TipoDeEscala.alias` guarda solo las grafías correctas («dórico ♭2», «húngara»). Las simplificadas («dorico b2»,
 «hungara») no se repiten: salen de `aliasNormalizados` y de `normalizar` (minúsculas, sin diacríticos, ♯/♭ como
