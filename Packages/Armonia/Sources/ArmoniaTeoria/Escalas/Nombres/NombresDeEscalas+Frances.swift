@@ -302,6 +302,14 @@ extension NombresDeEscalas {
         .tradicional(.echosTetartos),
         .tradicional(.echosPlagiosTetartos),
         .tradicional(.echosLegetos),
+        // Mesopotamia: afinaciones babilónicas
+        .tradicional(.isartu),
+        .tradicional(.kitmu),
+        .tradicional(.embubu),
+        .tradicional(.pitu),
+        .tradicional(.nidQabli),
+        .tradicional(.nisTuhri),
+        .tradicional(.qablitu),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),
@@ -322,6 +330,7 @@ extension NombresDeEscalas {
         .categoria(.jo, "jo"),
         .categoria(.tetracordo, "tétracorde"),
         .categoria(.harmonia, "harmonie"),
+        .categoria(.afinacion, "accord"),
         .categoria(.escala, "gamme"),
     ])
 }

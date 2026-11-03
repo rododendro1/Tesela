@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+### Afinaciones babilónicas
+
+- **Tradición `.mesopotamia`, categoría `.afinacion`** (`TipoDeEscala.mesopotamicas`): las siete afinaciones de
+  la lira y el arpa de los textos cuneiformes, išartu, kitmu, embūbu, pītu, nīd qabli, nīš tuḫri (antes nīš
+  gabarî) y qablītu, en el orden de UET VII 74. Siguen la reconstrucción de Kilmer con escalas descendentes
+  (išartu es la mayor, nīd qabli el frigio); se encuentran también sin diacríticos y con la mimación (išartum).
+  Sus nombres y el de la categoría, en los quince idiomas, y `armonia escalas --tradicion mesopotamia`.
+
 ### La línea de comandos en JSON
 
 - **`--json`**: `armonia acorde`, `identificar`, `escala`, `analizar`, `conjunto` y `serie` dan sus datos en JSON,

@@ -962,6 +962,40 @@ import Testing
         #expect(Escala("C minor sixth diminished").tipo == .bebopMenorMelodica)
     }
 
+    @Test func afinacionesBabilonicas() {
+        func notas(_ tipo: TipoDeEscala, _ tonica: Nota = .do) -> String {
+            Escala(tonica, tipo).notas.map(\.description).joined(separator: " ")
+        }
+        // En la reconstrucción de Kilmer con escalas descendentes, cada afinación es uno de los siete modos diatónicos.
+        #expect(TipoDeEscala.isartu == .mayor)
+        #expect(TipoDeEscala.kitmu == .mixolidio)
+        #expect(TipoDeEscala.embubu == .dorico)
+        #expect(TipoDeEscala.pitu == .menorNatural)
+        #expect(TipoDeEscala.nidQabli == .frigio)
+        #expect(TipoDeEscala.nisTuhri == .locrio)
+        #expect(TipoDeEscala.qablitu == .lidio)
+        #expect(notas(.nidQabli, .mi) == "Mi Fa Sol La Si Do Re")
+        // En el orden de UET VII 74, cada una baja un semitono una sola nota de la anterior (y qablītu, la tónica).
+        let lista = TipoDeEscala.mesopotamicas
+        for (anterior, siguiente) in zip(lista, lista.dropFirst()) {
+            let a = Set(Escala(.do, anterior).notas.map(\.claseDeAltura))
+            let b = Set(Escala(.do, siguiente).notas.map(\.claseDeAltura))
+            // De nīš tuḫri a qablītu baja la cuerda de la tónica: qablītu queda sobre Si.
+            let bajada = siguiente == .qablitu ? 11 : 0
+            let traspuesta = Set(b.map { ($0 + bajada) % 12 })
+            #expect(a.subtracting(traspuesta).count == 1, Comment(rawValue: siguiente.nombre))
+        }
+        // Se encuentran con o sin diacríticos, con la mimación y con la lectura antigua de nīš tuḫri.
+        for (texto, nombre) in [
+            ("isartu", "išartu"), ("ishartu", "išartu"), ("išartum", "išartu"), ("nid qabli", "nīd qabli"),
+            ("nis gabari", "nīš tuḫri"), ("nish tuhri", "nīš tuḫri"), ("qablitum", "qablītu"), ("embubu", "embūbu"),
+        ] {
+            #expect(TipoDeEscala.buscar(nombre: texto)?.nombre == nombre, Comment(rawValue: texto))
+        }
+        #expect(Escala(texto: "Re pitu")?.tipo.nombre == "pītu")
+        #expect(!(TipoDeEscala.todos.contains { $0.nombre == "išartu" }))
+    }
+
     @Test func busquedaYNombres() {
         #expect(Escala("Re hitzaz") == Escala(.re, .hitzaz))
         #expect(Escala("Re Hicaz").tipo.nombre == "Hitzáz")

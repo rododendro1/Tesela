@@ -156,6 +156,12 @@ usan microtonos):
   sobre Fa), varýs (el locrio, sobre Si), tétartos (el mixolidio, sobre Sol), plágios tétartos (la mayor, sobre Do)
   y légetos (el frigio, sobre Mi). Cada uno sobre su nota base más habitual, con los nombres en transliteración
   griega (ήχος πρώτος → echos prótos).
+- **7 afinaciones babilónicas**, las de la lira y el arpa de los textos cuneiformes (UET VII 74), con el nombre
+  del intervalo entre dos cuerdas que las define: išartu (la mayor), kitmu (el mixolidio), embūbu (el dórico),
+  pītu (el eólico), nīd qabli (el frigio, la del himno hurrita h.6), nīš tuḫri (el locrio; antes se leía nīš
+  gabarî) y qablītu (el lidio). Las notas se reconstruyen, y la reconstrucción se discute: aquí va la de Kilmer
+  con las escalas descendentes que siguen Gurney y West desde 1994, desde la cuerda más aguda. En la lectura
+  ascendente de 1971 cada nombre era otra especie de octava (išartu, la doria griega).
 - **2 escalas coreanas**: P'yŏngjo y Kyemyŏnjo.
 - **Los Andes**: la pentatónica andina (menor) y la tritónica andina (Do Mi♭ Sol).
 - **La Grecia antigua**: los tetracordos diatónico y cromático, y las harmoniai doria (el frigio
@@ -172,7 +178,7 @@ Encyclopaedia Aethiopica (Təzəta, Ančihoye), los árabes en ALA-LC (Ḥijāz,
 Indonesia con la grafía javanesa (Pélog, Sléndro), los persas en la transliteración de la
 Encyclopædia Iranica (Čahārgāh), los turcos y los azerbaiyanos en su ortografía (Hicazkâr,
 Şur muğamı) y los coreanos en McCune-Reischauer (P'yŏngjo), con la
-romanización oficial y el hangul como alias. Un nombre gana a un alias: «Hijaz» es el
+romanización oficial y el hangul como alias, y los acadios en su transliteración habitual (išartu, nīš tuḫri). Un nombre gana a un alias: «Hijaz» es el
 maqam Ḥijāz, y el dromos se busca como Hitzáz o Hicaz. Al buscar no importan los
 diacríticos ni las mayúsculas, y también se aceptan las transliteraciones habituales sin ellos
 (Mayamalavagowla, Shanmukhapriya, Hitzaz, hirajoshi), los nombres en chino y en japonés (宫, 平調子), los de
@@ -198,7 +204,7 @@ Escala("La hicaz makami").notas              // La Si♭ Do♯ Re Mi Fa♯ Sol
 
 No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales;
 están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `chinas`, `japonesas`,
-`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `pathets`…). Sus nombres
+`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `mesopotamicas`, `pathets`…). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
 las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 mēḷa,

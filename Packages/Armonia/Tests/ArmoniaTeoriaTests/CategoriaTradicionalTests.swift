@@ -41,6 +41,11 @@ import Testing
         #expect((tetracordos.count + harmoniai.count) == TipoDeEscala.griegasAntiguas.count)
         #expect(tetracordos == TipoDeEscala.tetracordosGriegos && harmoniai == TipoDeEscala.harmoniai)
         #expect(harmoniai.count == 8)
+        // Las siete afinaciones babilónicas.
+        #expect(TipoDeEscala.tradicionales(categoria: .afinacion) == TipoDeEscala.mesopotamicas)
+        #expect(TipoDeEscala.tradicionales(tradicion: .mesopotamia) == TipoDeEscala.mesopotamicas)
+        #expect(TipoDeEscala.mesopotamicas.count == 7)
+        #expect(TipoDeEscala.nidQabli.tradicion == .mesopotamia && TipoDeEscala.nidQabli.categoria == .afinacion)
         // Los pathet y los laras de Indonesia.
         #expect(TipoDeEscala.tradicionales(categoria: .pathet) == TipoDeEscala.pathets)
         #expect(TipoDeEscala.tradicionales(categoria: .laras) == TipoDeEscala.indonesias)

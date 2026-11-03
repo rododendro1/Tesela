@@ -145,6 +145,11 @@ extension LineaDeComandosTests {
         #expect(bizantinas.hasPrefix("bizancio · echos (9)\n"), Comment(rawValue: bizantinas))
         #expect(bizantinas.contains("  echos prótos: Do Re Mi♭ Fa Sol La Si♭ · microtonos"))
         #expect(salida("escalas --tradition byzantium") == bizantinas)
+        let babilonicas = salida("escalas --tradicion mesopotamia")
+        #expect(babilonicas.hasPrefix("mesopotamia · afinación (7)\n"), Comment(rawValue: babilonicas))
+        #expect(babilonicas.contains("  išartu: Do Re Mi Fa Sol La Si\n"), Comment(rawValue: babilonicas))
+        #expect(babilonicas.contains("  nīd qabli: Do Re♭ Mi♭ Fa Sol La♭ Si♭"), Comment(rawValue: babilonicas))
+        #expect(salida("escalas --categoria afinacion") == babilonicas)
         let thats = salida("escalas --tradicion india --categoria thaat")
         #expect(thats.hasPrefix("india · thāṭ (10)"), Comment(rawValue: thats))
         // Las categorías indias salen en IAST (thāṭ, mēḷa, rāga), pero se encuentran con o sin diacríticos.
