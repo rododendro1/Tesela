@@ -18,7 +18,8 @@ import Testing
         #expect(datos["Intervalos"] == "11 8 9 10 7 6 5 2 3 4 1 (De todos los intervalos)")
         #expect(datos["Hexacordos"] == "6-32 · 6-32")
         #expect(datos["Formas combinatorias"]?.split(separator: " ").contains("R5") == true)
-        #expect(presentada.formasDistintas == "48 formas distintas")
+        // Es simétrica: su retrógrado es una transposición de su inversión, así que solo tiene 24 formas distintas.
+        #expect(presentada.formasDistintas == "24 formas distintas")
     }
 
     @Test func laMatrizConSusFormas() throws {
@@ -74,7 +75,7 @@ import Testing
         let presentada = try PresentacionDeSerie.presentar(
             berg, forma: FormaDeSerie(.original, 5), notacion: .inglesASCII)
         #expect(presentada.datos.map(\.titulo).contains("Hexachords"))
-        #expect(presentada.formasDistintas == "48 distinct forms")
+        #expect(presentada.formasDistintas == "24 distinct forms")
         #expect(presentada.nombresDeLasClases[0] == "C")
         #expect(
             PresentacionDeSerie.indicacion(en: .espanolCompacto) == "Serie (5 4 0 9 7 2 8 1 3 6 t e, o Fa Mi Do La…)")
