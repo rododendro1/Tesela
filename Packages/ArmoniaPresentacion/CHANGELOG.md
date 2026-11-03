@@ -1,5 +1,13 @@
 # Cambios
 
+## Sin publicar
+
+- **Series dodecafónicas en las apps.** `PresentacionDeSerie.presentar(_:forma:notacion:)` da una serie
+  (`SeriePresentada`) con sus notas, sus intervalos, sus hexacordos, sus formas combinatorias, la matriz con el nombre
+  de cada fila y columna, y la forma elegida con su pentagrama, su sonido y sus ficheros para exportar.
+  `PresentacionDeSerie.indicacion(en:)` es lo que pide el campo. Textos nuevos en los quince idiomas. En Armonía, la
+  serie se abre desde Identificar.
+
 ## 0.3.2 (2026-11-03)
 
 - **El arpegio con su ritmo en el pentagrama.** `PentagramaPresentado(_:titulo:tonalidad:notacion:nombresDeLasNotas:resaltada:)`

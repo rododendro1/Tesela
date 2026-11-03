@@ -18,6 +18,8 @@ enum ErrorDeUso {
     case terminalDesconocida(String)
     /// `--escritura` con un valor que no es palabras ni compacto (ni, en español e inglés, ascii o unicode).
     case escrituraNoValida(String)
+    /// `--json` con una orden que no da JSON.
+    case sinSalidaJSON(String)
 
     // Consultas y armonización
     case faltaCifrado
@@ -168,6 +170,8 @@ enum ErrorDeUso {
             return TextosDeCLI.traduccion { $0.terminalDesconocida(terminal) }
         case .escrituraNoValida(let escritura):
             return TextosDeCLI.traduccion { $0.escrituraNoValida(escritura) }
+        case .sinSalidaJSON(let orden):
+            return TextosDeCLI.traduccion { $0.sinSalidaJSON(orden) }
         case .faltaCifrado: return TextosDeCLI.traduccion(\.faltaCifrado)
         case .faltaCifradoDelArpegio: return TextosDeCLI.traduccion(\.faltaCifradoDelArpegio)
         case .patronDesconocido(let patron): return TextosDeCLI.traduccion { $0.patronDesconocido(patron) }

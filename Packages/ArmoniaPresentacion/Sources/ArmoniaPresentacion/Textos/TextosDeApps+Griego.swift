@@ -127,6 +127,16 @@ extension TextosDeApps {
         indicacionCantus: { e in "Κάντους φίρμους (\(e))" },
         indicacionContrapunto: { e in "Αντίστιξη (\(e))" },
         compasNumero: { n in "Μέτρο \(n)" },
+        // PresentacionDeSerie.swift
+        serieDodecafonica: "Δωδεκάφθογγη σειρά",
+        indicacionSerie: { e, n in "Σειρά (\(e), ή \(n))" },
+        formaDeSerie: "Μορφή",
+        matriz: "Πίνακας",
+        intervalos: "Διαστήματα",
+        deTodosLosIntervalos: "Όλων των διαστημάτων",
+        hexacordos: "Εξάχορδα",
+        formasCombinatorias: "Συνδυαστικές μορφές",
+        formasDistintas: { n in "\(n) διαφορετικές μορφές" },
         // RecorridoDePartitura.swift
         partitura: "Παρτιτούρα",
         anterior: "Προηγούμενο",

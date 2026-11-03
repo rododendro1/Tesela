@@ -3,7 +3,7 @@ name: CI
 # `push` solo en la rama principal: en una rama con pull request ya corre el de `pull_request`, y con los
 # dos se ejecutaba todo dos veces. Si tu rama principal no se llama main ni master, cámbialo aquí.
 # Los jobs de macOS solo corren a mano (workflow_dispatch) y una vez por semana (`schedule`), salvo `apps`, que compila
-# las dos apps en los pull requests que las tocan.
+# las dos apps en los pull requests que las tocan, e `interfaz`, que en esos mismos pasa sus pruebas de interfaz.
 on:
   push:
     branches: [main, master]
@@ -508,7 +508,8 @@ jobs:
 
   # Los jobs de macOS (este, las pruebas de interfaz y DocC) son los que más tardan: corren a mano desde la
   # pestaña Actions y los lunes, no en cada push ni en cada pull request. Un pull request que toque las apps ya las
-  # compila en `apps`; para sus pruebas, el simulador de iOS o la documentación, se lanzan a mano en su rama.
+  # compila en `apps` y pasa sus pruebas de interfaz en `interfaz`; para las pruebas de los paquetes en macOS, la
+  # compilación para el simulador de iOS o la documentación, se lanzan a mano en su rama.
   macos:
     name: macOS · paquetes y apps
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
@@ -578,9 +579,15 @@ jobs:
             test "$idiomas" -eq 15 && test "$carpetas" -ge 15 || { echo "::error::$app no declara los quince idiomas"; exit 1; }
           done
 
+  # Las pruebas de interfaz corren también en los pull requests que cambian las apps (los mismos que compila `apps`),
+  # para que una vista nueva o cambiada no espere al lunes. `!cancelled()` hace falta porque fuera de los pull
+  # requests `cambios-en-las-apps` no corre, y sin él este job se saltaría también a mano y los lunes.
   interfaz:
     name: Pruebas de interfaz · ${{ matrix.plataforma }}
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    needs: cambios-en-las-apps
+    if: >-
+      !cancelled() && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+      || needs.cambios-en-las-apps.outputs.apps == 'true')
     runs-on: macos-15
     timeout-minutes: 45
     # macOS e iOS en paralelo: una tras otra tardaban unos 21 minutos.

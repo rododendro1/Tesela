@@ -66,6 +66,8 @@ public enum LineaDeComandos {
         } else if cifras {
             notacion = notacion.conOctavas(.cifras)
         }
+        // Con --json, las órdenes que lo admiten dan sus datos en JSON (LineaDeComandos+JSON.swift).
+        let json = opciones.quitarMarca("--json")
         let argumentos = opciones.restantes
 
         guard let nombre = argumentos.first?.lowercased() else { return bien(ayuda(en: notacion)) }
@@ -73,7 +75,11 @@ public enum LineaDeComandos {
             return uso(.ordenDesconocida(nombre), notacion)
         }
         do {
-            return try orden.ejecutar(Array(argumentos.dropFirst()), notacion)
+            guard json else { return try orden.ejecutar(Array(argumentos.dropFirst()), notacion) }
+            guard let salida = salidasJSON[orden.nombres[0]] else { return uso(.sinSalidaJSON(nombre), notacion) }
+            return bien(try textoJSON(salida(Array(argumentos.dropFirst()), notacion)))
+        } catch let fallo as FalloDeUso {
+            return uso(fallo.error, notacion)
         } catch let error as any ErrorDeArmonia {
             return ResultadoDeOrden(salida: "", error: error.descripcion(en: notacion) + "\n", codigo: 1)
         } catch {

@@ -127,6 +127,16 @@ extension TextosDeApps {
         indicacionCantus: { e in "Cantus firmus (\(e))" },
         indicacionContrapunto: { e in "Counterpoint (\(e))" },
         compasNumero: { n in "Bar \(n)" },
+        // PresentacionDeSerie.swift
+        serieDodecafonica: "Twelve-tone row",
+        indicacionSerie: { e, n in "Row (\(e), or \(n))" },
+        formaDeSerie: "Form",
+        matriz: "Matrix",
+        intervalos: "Intervals",
+        deTodosLosIntervalos: "All-interval",
+        hexacordos: "Hexachords",
+        formasCombinatorias: "Combinatorial forms",
+        formasDistintas: { n in "\(n) distinct forms" },
         // RecorridoDePartitura.swift
         partitura: "Score",
         anterior: "Previous",

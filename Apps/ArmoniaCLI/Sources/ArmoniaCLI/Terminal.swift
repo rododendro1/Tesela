@@ -14,7 +14,7 @@ extension LineaDeComandos {
     /// Las opciones que valen en cualquier orden (`LineaDeComandos.ejecutar`).
     static let opcionesGenerales = [
         "--ingles", "--english", "--idioma", "--language", "--textos", "--texts", "--escritura", "--writing",
-        "--subindices", "--subscripts", "--cifras", "--digits",
+        "--subindices", "--subscripts", "--cifras", "--digits", "--json",
     ]
 
     /// Las opciones que no llevan valor detrás; las demás, sí.
@@ -30,7 +30,7 @@ extension LineaDeComandos {
         "--ida-y-vuelta", "--up-and-down", "--intervalos", "--intervals", "--semitonos", "--semitones", "--tonica",
         "--tonic", "--tresillos", "--triplets", "--romanos", "--roman", "--dedos", "--fingers",
         "--ajenas", "--non-chord", "--doble", "--grand-staff", "--cambiar-clave", "--clef-changes", "--bajo-cifrado",
-        "--figured-bass",
+        "--figured-bass", "--json",
     ]
 
     /// Los valores que se proponen tras una opción.

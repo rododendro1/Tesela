@@ -2,6 +2,18 @@
 
 ## Sin publicar
 
+### La línea de comandos en JSON
+
+- **`--json`**: `armonia acorde`, `identificar`, `escala`, `analizar`, `conjunto` y `serie` dan sus datos en JSON,
+  para leerlos desde un script (`armonia acorde Sol7/Si --json | jq '.[0].notas'`). Las claves son siempre las mismas,
+  en español y sin tildes; los nombres van en la notación elegida, y al lado, las clases de altura. Los errores siguen
+  en texto, en la salida de errores. Con otra orden, `--json` es un error de uso.
+
+### Un README más corto
+
+- El README de la raíz cuenta qué es Tesela y cómo usarlo; lo de cada carpeta, las pruebas, el rendimiento, el
+  fuzzing y el CI pasa a `DESARROLLO.md`. Hay también un resumen en inglés, `README.en.md`.
+
 ### Más motores para grabar, y cuáles están instalados
 
 - **`armonia grabar --motor musescore|verovio|guido`**: además de LilyPond, MuseScore (a partir del MusicXML de

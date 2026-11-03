@@ -10,6 +10,10 @@ extension XCUIApplication {
     static func enEspanol() -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments += ["-notacionElegida", "espanolCompacto", "-temperamentoElegido", "igual"]
+        #if os(macOS)
+            // Sin el tamaño de ventana de la vez anterior: la del tamaño por omisión, que cabe en la pantalla.
+            app.launchArguments += ["-ApplePersistenceIgnoreState", "YES"]
+        #endif
         app.launch()
         return app
     }
@@ -88,7 +92,7 @@ extension XCUIApplication {
             let selector = popUpButtons.matching(NSPredicate(format: "value == %@ OR title == %@", actual, actual))
                 .firstMatch
             esperar(selector, "el selector que muestra «\(actual)»")
-            selector.click()
+            buscandoHaciaAbajo(selector).click()
         #else
             let selector = buttons.matching(NSPredicate(format: "label CONTAINS %@ OR value == %@", actual, actual))
                 .firstMatch
@@ -113,14 +117,28 @@ extension XCUIApplication {
         #endif
     }
 
-    /// El elemento, tras desplazar la vista hacia abajo si aún no existe: en iOS las listas solo crean las filas
-    /// que se ven.
-    func buscandoHaciaAbajo(_ elemento: XCUIElement, intentos: Int = 6) -> XCUIElement {
+    /// El elemento, tras desplazar la vista hacia abajo hasta que se vea: en iOS las listas solo crean las filas que
+    /// se ven; en macOS existen todas, pero un clic solo llega a las que están a la vista.
+    func buscandoHaciaAbajo(_ elemento: XCUIElement, intentos: Int = 12) -> XCUIElement {
+        var intento = 0
         #if os(iOS)
-            var intento = 0
             while !elemento.waitForExistence(timeout: 2) && intento < intentos {
                 swipeUp()
                 intento += 1
+            }
+        #else
+            _ = elemento.waitForExistence(timeout: 5)
+            // La rueda, cerca de lo alto de la ventana (que siempre está en la pantalla): hacia abajo o, si el
+            // elemento quedó por encima, hacia arriba. Cada vuelta mueve la vista mucho menos que su delta.
+            let ventana = windows.firstMatch
+            let rueda = ventana.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
+            while elemento.exists && !elemento.isHittable && intento < intentos {
+                let arriba = elemento.frame.midY < ventana.frame.midY
+                rueda.scroll(byDeltaX: 0, deltaY: arriba ? 1000 : -1000)
+                intento += 1
+            }
+            if elemento.exists && !elemento.isHittable {
+                print("No se ve \(elemento.frame); ventana \(ventana.frame)")
             }
         #endif
         return elemento
@@ -129,10 +147,16 @@ extension XCUIApplication {
     /// Borra lo escrito en `campo` y escribe `texto`.
     func reemplazar(en campo: XCUIElement, por texto: String) {
         #if os(macOS)
-            campo.click()
+            buscandoHaciaAbajo(campo).click()
             campo.typeKey("a", modifierFlags: .command)
             campo.typeText(XCUIKeyboardKey.delete.rawValue)
         #else
+            // Si la vista bajó hasta perderlo, se vuelve arriba: la lista solo crea las filas que se ven.
+            var intento = 0
+            while !campo.waitForExistence(timeout: 2) && intento < 6 {
+                swipeDown()
+                intento += 1
+            }
             // Tocando a la derecha el cursor queda al final del texto.
             campo.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
             let escrito = campo.value as? String ?? ""

@@ -127,6 +127,16 @@ extension TextosDeApps {
         indicacionCantus: { e in "Cantus firmus (\(e))" },
         indicacionContrapunto: { e in "Ellenpont (\(e))" },
         compasNumero: { n in "\(n). ütem" },
+        // PresentacionDeSerie.swift
+        serieDodecafonica: "Tizenkétfokú sor",
+        indicacionSerie: { e, n in "Sor (\(e) vagy \(n))" },
+        formaDeSerie: "Forma",
+        matriz: "Mátrix",
+        intervalos: "Hangközök",
+        deTodosLosIntervalos: "Minden hangközös",
+        hexacordos: "Hexachordok",
+        formasCombinatorias: "Kombinatorikus formák",
+        formasDistintas: { n in "\(n) különböző forma" },
         // RecorridoDePartitura.swift
         partitura: "Kotta",
         anterior: "Előző",

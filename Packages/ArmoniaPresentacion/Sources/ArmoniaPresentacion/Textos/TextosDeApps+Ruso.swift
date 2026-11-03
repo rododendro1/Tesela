@@ -127,6 +127,16 @@ extension TextosDeApps {
         indicacionCantus: { e in "Кантус фирмус (\(e))" },
         indicacionContrapunto: { e in "Контрапункт (\(e))" },
         compasNumero: { n in "Такт \(n)" },
+        // PresentacionDeSerie.swift
+        serieDodecafonica: "Двенадцатитоновая серия",
+        indicacionSerie: { e, n in "Серия (\(e) или \(n))" },
+        formaDeSerie: "Форма",
+        matriz: "Матрица",
+        intervalos: "Интервалы",
+        deTodosLosIntervalos: "Всеинтервальная",
+        hexacordos: "Гексахорды",
+        formasCombinatorias: "Комбинаторные формы",
+        formasDistintas: { n in "Различных форм: \(n)" },
         // RecorridoDePartitura.swift
         partitura: "Партитура",
         anterior: "Назад",

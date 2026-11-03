@@ -154,6 +154,8 @@ extension TextosDeCLI {
         fa dièse edo Fa♯, F Kreuz edo Fis.
         Idazkera trinkoetan zortziduna azpiindize gisa doa (La₄), eta besteetan zenbakiz (La4);
         --subindices edo --cifras erabiliz finkatzen da (biak irakurtzen dira).
+        --json aukerarekin, acorde, identificar, escala, analizar, conjunto eta serie aginduek JSONez
+        ematen dituzte datuak.
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "laguntza hau",
@@ -276,6 +278,7 @@ extension TextosDeCLI {
         idiomaDesconocido: { idioma in "hizkuntza ezezaguna: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru edo hu)" },
         terminalDesconocida: { t in "terminal ezezaguna: «\(t)» (bash, zsh edo fish)" },
         escrituraNoValida: { escritura in "idazkera baliogabea: «\(escritura)» (palabras/words edo compacto/compact; ascii edo unicode, es eta en-ekin bakarrik)" },
+        sinSalidaJSON: { orden in "«\(orden)» aginduak ez du JSON irteerarik" },
 
         // Mensaje.swift
         mensajeNotas: "notak",

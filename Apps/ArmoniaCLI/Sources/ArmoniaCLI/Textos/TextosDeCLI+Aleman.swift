@@ -154,6 +154,7 @@ extension TextosDeCLI {
         fa dièse oder Fa♯, F Kreuz oder Fis.
         In den kompakten Schreibweisen steht die Oktave als Index (La₄), sonst als Ziffer (La4);
         --subindices oder --cifras legen sie fest (gelesen wird beides).
+        Mit --json geben chord, identify, scale, analyze, set und row ihre Daten als JSON aus.
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "diese Hilfe",
@@ -276,6 +277,7 @@ extension TextosDeCLI {
         idiomaDesconocido: { idioma in "unbekannte Sprache: „\(idioma)“ (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru oder hu)" },
         terminalDesconocida: { t in "unbekannte Shell: „\(t)“ (bash, zsh oder fish)" },
         escrituraNoValida: { escritura in "ungültige Schreibweise: „\(escritura)“ (palabras/words oder compacto/compact; ascii oder unicode, nur bei es oder en)" },
+        sinSalidaJSON: { orden in "„\(orden)“ hat keine JSON-Ausgabe" },
 
         // Mensaje.swift
         mensajeNotas: "Noten",

@@ -154,6 +154,7 @@ extension TextosDeCLI {
         fa dièse или Fa♯, F Kreuz или Fis.
         В компактных написаниях октава пишется нижним индексом (La₄), в остальных — цифрами (La4);
         --subindices или --cifras задают её (читаются обе формы).
+        С --json команды chord, identify, scale, analyze, set и row выводят данные в JSON.
         """,
         sintaxisAyuda: "help",
         descripcionAyuda: "эта справка",
@@ -276,6 +277,7 @@ extension TextosDeCLI {
         idiomaDesconocido: { idioma in "неизвестный язык: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru или hu)" },
         terminalDesconocida: { t in "неизвестная оболочка: «\(t)» (bash, zsh или fish)" },
         escrituraNoValida: { escritura in "недопустимое написание: «\(escritura)» (palabras/words или compacto/compact; ascii или unicode, только с es и en)" },
+        sinSalidaJSON: { orden in "у «\(orden)» нет вывода в JSON" },
 
         // Mensaje.swift
         mensajeNotas: "ноты",

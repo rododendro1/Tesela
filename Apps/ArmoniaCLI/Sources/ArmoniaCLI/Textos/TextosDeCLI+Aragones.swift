@@ -154,6 +154,7 @@ extension TextosDeCLI {
         fa dièse u Fa♯, F Kreuz u Fis.
         En as escrituras compactas a octava va en subíndiz (La₄) y en as atras, con cifras (La4);
         --subindices u --cifras la fixan (se leyen as dos trazas).
+        Con --json, acorde, identificar, escala, analizar, conjunto y serie dan os suyos datos en JSON.
         """,
         sintaxisAyuda: "ayuda",
         descripcionAyuda: "esta aduya",
@@ -276,6 +277,7 @@ extension TextosDeCLI {
         idiomaDesconocido: { idioma in "idioma desconoixiu: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu)" },
         terminalDesconocida: { t in "terminal desconoixida: «\(t)» (bash, zsh u fish)" },
         escrituraNoValida: { escritura in "escritura no valida: «\(escritura)» (palabras/words u compacto/compact; ascii u unicode, nomás con es y en)" },
+        sinSalidaJSON: { orden in "«\(orden)» no da salida en JSON" },
 
         // Mensaje.swift
         mensajeNotas: "notas",
