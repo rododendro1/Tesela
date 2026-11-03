@@ -22,6 +22,8 @@ struct VistaDeEscalas: View {
     @State private var capo = 0
     /// El reloj de la escala: el círculo cromático o el de quintas.
     @State private var ordenDelReloj = RelojDeClases.Orden.cromatico
+    /// Si los acordes de las doce tonalidades llevan séptima.
+    @State private var conSeptima = true
     /// La escala con que se compara la elegida, o vacío.
     @State private var otraEscala = "Do lidio"
     /// Lo que está sonando, para resaltar la nota en el pentagrama y en el mástil.
@@ -118,6 +120,7 @@ struct VistaDeEscalas: View {
             reloj(de: escala)
             vecinas(de: escala)
             doceTonalidades(de: escala)
+            acordesEnLasDoceTonalidades(de: escala)
             modos(de: escala)
             comparacion(de: escala)
         }
@@ -462,6 +465,38 @@ struct VistaDeEscalas: View {
                     Text(tonalidad.notas).font(.system(.footnote, design: .monospaced))
                     DiagramaDePentagrama(tonalidad.pentagrama)
                     BotonDeEscuchar(tonalidad.sonido)
+                }
+            }
+        }
+    }
+
+    /// Los acordes de cada grado en las doce tonalidades, si la escala forma uno en cada grado: una fila por
+    /// tonalidad, para escucharla, y la partitura con todos para exportarla.
+    @ViewBuilder
+    private func acordesEnLasDoceTonalidades(de escala: Escala) -> some View {
+        if let tabla = PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
+            escala, cuatriadas: conSeptima, notacion: notacion)
+        {
+            Section(notacion.texto(\.acordesEnLasDoceTonalidades)) {
+                Toggle(notacion.texto(\.conSeptima), isOn: $conSeptima)
+                HStack {
+                    BotonDeEscuchar(tabla.sonido)
+                    Spacer()
+                    BotonDeExportar(tabla.ficheros)
+                }
+                .buttonStyle(.borderless)
+                Text(tabla.grados.joined(separator: " · "))
+                    .font(.system(.footnote, design: .monospaced)).foregroundColor(.secondary)
+                ForEach(tabla.filas, id: \.tonalidad) { fila in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(fila.tonalidad)
+                            Text(fila.acordes.joined(separator: " · ")).font(.system(.footnote, design: .monospaced))
+                        }
+                        Spacer()
+                        BotonDeEscuchar(fila.sonido).labelStyle(.iconOnly)
+                    }
+                    .buttonStyle(.borderless)
                 }
             }
         }

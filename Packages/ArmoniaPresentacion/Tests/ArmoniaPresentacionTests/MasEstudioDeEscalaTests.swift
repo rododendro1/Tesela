@@ -140,4 +140,64 @@ import Testing
         #expect(terceras.titulo == "Do mayor por terceras · En las doce tonalidades")
         #expect(terceras.tonalidades[0].notas.hasPrefix("Do₄ Mi₄ Re₄ Fa₄"))
     }
+
+    @Test func acordesEnLasDoceTonalidades() throws {
+        let tabla = try #require(
+            PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(Escala(.do), notacion: notacion))
+        #expect(tabla.titulo == "Do mayor · Acordes en las doce tonalidades")
+        #expect(tabla.grados.count == 7)
+        #expect(tabla.grados[4] == "V7")
+        #expect(tabla.filas.count == 12)
+        #expect(tabla.filas.map(\.tonalidad).prefix(2) == ["Do mayor", "Sol mayor"])
+        #expect(tabla.filas[1].acordes[4] == "Re7")
+        #expect(tabla.filas.allSatisfy { $0.acordes.count == 7 })
+        #expect(tabla.filas[0].sonido.notas.count == 7 * 4)
+        #expect(tabla.sonido.notas.count == 12 * 7 * 4)
+        #expect(tabla.ficheros.count == 5)
+        let triadas = try #require(
+            PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
+                Escala(.la, .menorArmonica), cuatriadas: false, notacion: notacion))
+        #expect(triadas.grados.count == 7)
+        #expect(triadas.sonido.notas.count == 12 * 7 * 3)
+        #expect(triadas.filas[0].acordes[4] == "Mi")
+        // Una pentatónica no forma un acorde en cada grado.
+        #expect(
+            PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
+                Escala(.do, .pentatonicaMayor), notacion: notacion) == nil)
+    }
+}
+
+/// El arpegio de un acorde en el mástil, con su tablatura y sus dedos.
+@Suite struct ArpegiosEnElMastilTests {
+    let notacion = Notacion.espanolCompacto
+
+    @Test func barrido() throws {
+        let barrido = PresentacionDeArpegios.enElMastil(Acorde("Lam"), formas: .unaNotaPorCuerda, notacion: notacion)
+        let primero = try #require(barrido.first)
+        #expect(primero.dedos == "0 0 2 2 1 0")
+        #expect(primero.notas.count == 6)
+        #expect(primero.tablatura.count == 6)
+        #expect(primero.tablatura[0].hasPrefix("Mi |") && primero.tablatura[0].hasSuffix("-0-"))
+        #expect(primero.sonido.notas.count == 6)
+        #expect(primero.fichero.formato == .musicXML)
+        #expect(primero.fichero.nombre.hasPrefix("Lam · Trastes "))
+        // Subiendo y bajando, sin repetir la nota de arriba.
+        let idaYVuelta = PresentacionDeArpegios.enElMastil(
+            Acorde("Lam"), formas: .unaNotaPorCuerda, idaYVuelta: true, notacion: notacion)
+        #expect(idaYVuelta[0].dedos == "0 0 2 2 1 0 1 2 2 0 0")
+        #expect(idaYVuelta[0].sonido.notas.count == 11)
+    }
+
+    @Test func formasYPosiciones() {
+        let caged = PresentacionDeArpegios.enElMastil(Acorde("Do"), formas: .caged, notacion: notacion)
+        #expect(caged.count == 5)
+        #expect(caged[0].titulo.hasPrefix("Forma C · Trastes "), Comment(rawValue: caged[0].titulo))
+        let posiciones = PresentacionDeArpegios.enElMastil(Acorde("Sol7"), notacion: notacion)
+        #expect(!posiciones.isEmpty)
+        #expect(posiciones.allSatisfy { $0.titulo.hasPrefix("Trastes ") && $0.arpegio.forma == nil })
+        let bajo = PresentacionDeArpegios.enElMastil(
+            Acorde("Do"), mastil: Mastil(.bajoElectrico, trastes: 12), notacion: notacion)
+        #expect(bajo.allSatisfy { $0.tablatura.count == 4 })
+        #expect(FormasDeArpegio.allCases.count == 3)
+    }
 }

@@ -186,6 +186,9 @@ extension TextosDeApps {
         circuloCromatico: "Cercle cromàtic",
         circuloDeQuintas: "Cercle de quintes",
         enLasDoceTonalidades: "En les dotze tonalitats",
+        acordesEnLasDoceTonalidades: "Acords en les dotze tonalitats",
+        conSeptima: "Amb setena",
+        subirYBajar: "Pujar i baixar",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "A evitar",

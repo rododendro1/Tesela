@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "intervalo entre duas notas ou\nalturas",
         sintaxisEscala: "escala <escala> [--acordes]",
         descripcionEscala: "notas e acordes de uma escala\n--acordes: todos os que cabem em\ncada grau, não só os de terceiras",
-        notasEscala: "opções: --secuencia terceras (ou cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (dedilhado), --modos (paralelos e relativos)\ne --comparar Do lidio (no fim); --simetria (de quanto em\nquanto se repete e os seus acordes);\n--vecinas (as que saem de mover uma\nnota) e --doce (nas doze tonalidades)",
+        notasEscala: "opções: --secuencia terceras (ou cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (dedilhado), --modos (paralelos e relativos)\ne --comparar Do lidio (no fim); --simetria (de quanto em\nquanto se repete e os seus acordes);\n--vecinas (as que saem de mover uma\nnota) e --doce (nas doze tonalidades);\n--doce --acordes (os acordes de cada\ngrau; --triadas, sem sétima)",
         sintaxisEscalas: "escalas [<texto>] [opções]",
         descripcionEscalas: "o catálogo de escalas: as habituais e\nas de outras tradições, por\ncategorias, com as notas a partir de Dó",
         notasEscalas: "opções: --tradicion turquia (ou india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) e --categoria maqam (ou rāga, makam,\ndastgah, dromos…); um texto procura nos nomes",
@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "a escala num teclado de piano\n(SVG): as notas ou, com --mano derecha\nou izquierda, os dedos; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "a escala num relógio de doze horas\n(SVG): o círculo cromático ou, com\n--quintas, o de quintas",
+        sintaxisPosicionesArpegio: "posiciones --arpegio <cifra> [--caged|--barrido]",
+        descripcionPosicionesArpegio: "o arpejo de um acorde em cada\nposição do braço, em tablatura e com\nos dedos; --ida-y-vuelta, sobe e desce",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """

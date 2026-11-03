@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "interval entre dues notes o altures",
         sintaxisEscala: "escala <escala> [--acordes]",
         descripcionEscala: "notes i acords d'una escala\n--acordes: tots els que hi caben a\ncada grau, no només els de terceres",
-        notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(d'1 a 4), --piano (digitació), --modos (paral·lels i relatius)\ni --comparar Do lidio (al final); --simetria (cada quant\nes repeteix i els seus acords);\n--vecinas (les que surten de moure una\nnota) i --doce (en les dotze tonalitats)",
+        notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(d'1 a 4), --piano (digitació), --modos (paral·lels i relatius)\ni --comparar Do lidio (al final); --simetria (cada quant\nes repeteix i els seus acords);\n--vecinas (les que surten de moure una\nnota) i --doce (en les dotze tonalitats);\n--doce --acordes (els acords de cada\ngrau; --triadas, sense setena)",
         sintaxisEscalas: "escalas [<text>] [opcions]",
         descripcionEscalas: "el catàleg d'escales: les habituals i\nles d'altres tradicions, per\ncategories, amb les notes des de Do",
         notasEscalas: "opcions: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) i --categoria maqam (o rāga, makam,\ndastgah, dromos…); un text cerca en els noms",
@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "l'escala en un teclat de piano\n(SVG): les notes o, amb --mano derecha\no izquierda, els dits; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "l'escala en un rellotge de dotze hores\n(SVG): el cercle cromàtic o, amb\n--quintas, el de quintes",
+        sintaxisPosicionesArpegio: "posiciones --arpegio <xifrat> [--caged|--barrido]",
+        descripcionPosicionesArpegio: "l'arpegi d'un acord a cada\nposició del mànec, en tabulatura i amb\nels dits; --ida-y-vuelta, puja i baixa",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """

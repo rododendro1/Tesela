@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "intervallo tra due note o altezze",
         sintaxisEscala: "escala <scala> [--acordes]",
         descripcionEscala: "note e accordi di una scala\n--acordes: tutti quelli che stanno\nsu ogni grado, non solo per terze",
-        notasEscala: "opzioni: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(da 1 a 4), --piano (diteggiatura), --modos (paralleli e relativi)\ne --comparar Do lidio (alla fine); --simetria (ogni quanto\nsi ripete e i suoi accordi);\n--vecinas (quelle che si ottengono spostando\nuna nota) e --doce (in tutte le dodici tonalità)",
+        notasEscala: "opzioni: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(da 1 a 4), --piano (diteggiatura), --modos (paralleli e relativi)\ne --comparar Do lidio (alla fine); --simetria (ogni quanto\nsi ripete e i suoi accordi);\n--vecinas (quelle che si ottengono spostando\nuna nota) e --doce (in tutte le dodici tonalità);\n--doce --acordes (gli accordi di ogni\ngrado; --triadas, senza settima)",
         sintaxisEscalas: "escalas [<testo>] [opzioni]",
         descripcionEscalas: "il catalogo delle scale: le consuete e\nquelle di altre tradizioni, per\ncategorie, con le note a partire da Do",
         notasEscalas: "opzioni: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) e --categoria maqam (o rāga, makam,\ndastgah, dromos…); un testo cerca nei nomi",
@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "la scala su una tastiera di pianoforte\n(SVG): le note o, con --mano derecha\no izquierda, le dita; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "la scala su un orologio di dodici ore\n(SVG): il cerchio cromatico o, con\n--quintas, il circolo delle quinte",
+        sintaxisPosicionesArpegio: "posiciones --arpegio <sigla> [--caged|--barrido]",
+        descripcionPosicionesArpegio: "l'arpeggio di un accordo in ogni\nposizione del manico, in intavolatura\ncon le dita; --ida-y-vuelta, sale e scende",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """

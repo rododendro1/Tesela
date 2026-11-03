@@ -186,6 +186,9 @@ extension TextosDeApps {
         circuloCromatico: "Χρωματικός κύκλος",
         circuloDeQuintas: "Κύκλος των πεμπτών",
         enLasDoceTonalidades: "Και στις δώδεκα τονικότητες",
+        acordesEnLasDoceTonalidades: "Συγχορδίες και στις δώδεκα τονικότητες",
+        conSeptima: "Με έβδομη",
+        subirYBajar: "Ανέβασμα και κατέβασμα",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Εντάσεις",
         notasAEvitar: "Προς αποφυγή",

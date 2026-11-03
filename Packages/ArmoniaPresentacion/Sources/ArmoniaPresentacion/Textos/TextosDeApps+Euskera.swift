@@ -186,6 +186,9 @@ extension TextosDeApps {
         circuloCromatico: "Zirkulu kromatikoa",
         circuloDeQuintas: "Bosten zirkulua",
         enLasDoceTonalidades: "Hamabi tonalitateetan",
+        acordesEnLasDoceTonalidades: "Akordeak hamabi tonalitateetan",
+        conSeptima: "Zazpigarrenarekin",
+        subirYBajar: "Igo eta jaitsi",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tentsioak",
         notasAEvitar: "Saihesteko",

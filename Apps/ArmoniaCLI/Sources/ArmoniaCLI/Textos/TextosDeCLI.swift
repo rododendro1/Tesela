@@ -120,6 +120,8 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionTeclado: String
     let sintaxisReloj: String
     let descripcionReloj: String
+    let sintaxisPosicionesArpegio: String
+    let descripcionPosicionesArpegio: String
 
     // MARK: Ayuda.swift
     let cabeceraDeLaAyuda: String

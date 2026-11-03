@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "интервал между двумя нотами или\nвысотами",
         sintaxisEscala: "scale <гамма> [--chords]",
         descripcionEscala: "ноты и аккорды гаммы\n--chords: все аккорды на каждой\nступени, не только терцовые",
-        notasEscala: "параметры: --sequence thirds (или fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(от 1 до 4), --piano (аппликатура), --modes (параллельные и относительные)\nи --compare C lydian (в конце); --symmetry (через сколько\nповторяется и её аккорды);\n--neighbors (сдвинув одну ноту) и\n--all-keys (во всех двенадцати тональностях)",
+        notasEscala: "параметры: --sequence thirds (или fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(от 1 до 4), --piano (аппликатура), --modes (параллельные и относительные)\nи --compare C lydian (в конце); --symmetry (через сколько\nповторяется и её аккорды);\n--neighbors (сдвинув одну ноту) и\n--all-keys (во всех двенадцати тональностях);\n--all-keys --chords (аккорды каждой\nступени; --triads — без септимы)",
         sintaxisEscalas: "scales [<текст>] [параметры]",
         descripcionEscalas: "каталог гамм: обычные и гаммы других\nтрадиций, по категориям, с нотами\nот до",
         notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) и --category maqam (или rāga, makam,\ndastgah, dromos…); текст ищет в названиях",
@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "гамма на клавиатуре фортепиано\n(SVG): ноты или, с --hand right\nили left, пальцы; --octaves 2",
         sintaxisReloj: "clock <scale> [--fifths]",
         descripcionReloj: "гамма на двенадцатичасовом циферблате\n(SVG): хроматический круг или, с\n--fifths, квинтовый круг",
+        sintaxisPosicionesArpegio: "positions --arpeggio <обозначение> [--caged|--sweep]",
+        descripcionPosicionesArpegio: "арпеджио аккорда в каждой позиции\nна грифе, табулатурой и с пальцами;\n--up-and-down — вверх и обратно вниз",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """

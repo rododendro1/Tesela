@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "intervalu ente dos notes o altures",
         sintaxisEscala: "escala <escala> [--acordes]",
         descripcionEscala: "notes y acordes d\'una escala\n--acordes: toos los que caben en\ncada grau, non solo los de terceres",
-        notasEscala: "opciones: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (dixitación), --modos (paralelos y relativos)\ny --comparar Do lidio (al final); --simetria (cada cuánto\nse repite y los sos acordes);\n--vecinas (les que salen de mover una\nnota) y --doce (nes doce tonalidaes)",
+        notasEscala: "opciones: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (dixitación), --modos (paralelos y relativos)\ny --comparar Do lidio (al final); --simetria (cada cuánto\nse repite y los sos acordes);\n--vecinas (les que salen de mover una\nnota) y --doce (nes doce tonalidaes);\n--doce --acordes (los acordes de cada\ngráu; --triadas, ensin séptima)",
         sintaxisEscalas: "escalas [<testu>] [opciones]",
         descripcionEscalas: "el catálogu d'escales: les habituales\ny les d'otres tradiciones, per\ncategoríes, coles sos notes dende Do",
         notasEscalas: "opciones: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) y --categoria maqam (o rāga, makam,\ndastgah, dromos…); un testu busca nos nomes",
@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "la escala nun tecláu de pianu\n(SVG): les notes o, con --mano derecha\no izquierda, los deos; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "la escala nun reló de doce hores\n(SVG): el círculu cromáticu o, con\n--quintas, el de quintes",
+        sintaxisPosicionesArpegio: "posiciones --arpegio <cifráu> [--caged|--barrido]",
+        descripcionPosicionesArpegio: "l'arpexu d'un acorde en cada\nposición del mástil, en tablatura y colos\ndeos; --ida-y-vuelta, xube y baxa",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """

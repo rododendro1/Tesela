@@ -25,7 +25,9 @@ struct VistaDeAcordes: View {
     @State private var swing = false
     @State private var tempo = 72
     /// Qué posiciones del arpegio se enseñan en el mástil.
-    @State private var formas = FormasEnElMastil.porPosiciones
+    @State private var formas = FormasDeArpegio.porPosiciones
+    /// Si cada posición del arpegio sube y vuelve a bajar.
+    @State private var subirYBajar = false
     /// El traste del capo en las digitaciones y el arpegio en el mástil, o 0 sin capo.
     @State private var capo = 0
     /// La disposición de piano o jazz que se enseña (drop 2, shell…).
@@ -47,12 +49,6 @@ struct VistaDeAcordes: View {
 
     /// Las tensiones que se ofrecen para añadir al arpegio.
     private static let opcionesDeTensiones: [[Int]] = [[], [9], [9, 11], [9, 13], [9, 11, 13]]
-
-    /// Las posiciones del arpegio en el mástil: en franjas desde la fundamental, en las formas CAGED o con una
-    /// nota por cuerda.
-    private enum FormasEnElMastil: Hashable, CaseIterable {
-        case porPosiciones, caged, unaNotaPorCuerda
-    }
 
     /// Lo que dura cada nota del arpegio: la figura elegida, de tresillo si se pide.
     private var duracion: Duracion { tresillos ? figura.duracion.grupoIrregular(3, en: 2) : figura.duracion }
@@ -413,46 +409,37 @@ struct VistaDeAcordes: View {
     private func arpegioEnElMastil(de acorde: Acorde) -> some View {
         let mastil = self.mastil(trastes: formas == .porPosiciones ? 12 : 15)
         let instrumento = encordado.titulo(en: notacion) + (capo > 0 ? " · " + notacion.texto { $0.capo(capo) } : "")
-        let posiciones = self.posiciones(de: acorde, en: mastil)
+        let posiciones = PresentacionDeArpegios.enElMastil(
+            acorde, formas: formas, idaYVuelta: subirYBajar, mastil: mastil, notacion: notacion)
         Section(notacion.texto(\.arpegioEnElMastil)) {
             Text(instrumento)
                 .foregroundColor(.secondary)
             DiagramaDeMastil(mastil: mastil, acorde: acorde, notacion: notacion)
             Picker(notacion.texto(\.porPosiciones), selection: $formas) {
-                Text(notacion.texto(\.porPosiciones)).tag(FormasEnElMastil.porPosiciones)
-                Text("CAGED").tag(FormasEnElMastil.caged)
-                Text(notacion.texto { $0.notasPorCuerda(1) }).tag(FormasEnElMastil.unaNotaPorCuerda)
+                Text(notacion.texto(\.porPosiciones)).tag(FormasDeArpegio.porPosiciones)
+                Text("CAGED").tag(FormasDeArpegio.caged)
+                Text(notacion.texto { $0.notasPorCuerda(1) }).tag(FormasDeArpegio.unaNotaPorCuerda)
             }
             .pickerStyle(.segmented)
+            Toggle(notacion.texto(\.subirYBajar), isOn: $subirYBajar)
             ForEach(posiciones, id: \.self) { posicion in
-                // De grave a agudo, en corcheas, como se toca al subir; mientras suena, se resalta la nota.
-                let voz = Voz(posicion.alturas.map { Evento($0, .corchea) })
-                let sonido = Escucha.voz(voz).conTonica(acorde.fundamental)
-                let paso = reproductor.paso(de: sonido)
-                let sonando = paso.flatMap { posicion.posiciones.indices.contains($0) ? posicion.posiciones[$0] : nil }
-                let trastes = notacion.texto { $0.trastes(posicion.trastes.lowerBound, posicion.trastes.upperBound) }
-                let dedos = posicion.dedos.map(String.init).joined(separator: " ")
+                // En corcheas, en el orden en que se toca; mientras suena, se resalta la nota.
+                let paso = reproductor.paso(de: posicion.sonido)
+                let sonando = paso.flatMap { posicion.notas.indices.contains($0) ? posicion.notas[$0] : nil }
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
-                        Text((posicion.forma.map { $0.rawValue + " · " } ?? "") + trastes)
+                        Text(posicion.titulo)
                         Spacer()
-                        BotonDeEscuchar(sonido)
+                        BotonDeEscuchar(posicion.sonido)
+                        BotonDeExportar([posicion.fichero])
                     }
-                    DiagramaDeMastil(arpegio: posicion, acorde: acorde, notacion: notacion)
+                    DiagramaDeMastil(arpegio: posicion.arpegio, acorde: acorde, notacion: notacion)
                         .resaltando(sonando)
                         .frame(maxHeight: 120)
-                    Text(notacion.texto(\.dedosSugeridos) + ": " + dedos)
+                    Text(notacion.texto(\.dedosSugeridos) + ": " + posicion.dedos)
                         .font(.caption).foregroundColor(.secondary)
                 }
             }
-        }
-    }
-
-    private func posiciones(de acorde: Acorde, en mastil: Mastil) -> [ArpegioEnElMastil] {
-        switch formas {
-        case .porPosiciones: return mastil.arpegios(de: acorde)
-        case .caged: return mastil.arpegiosCAGED(de: acorde)
-        case .unaNotaPorCuerda: return mastil.arpegiosDeUnaNotaPorCuerda(de: acorde)
         }
     }
 

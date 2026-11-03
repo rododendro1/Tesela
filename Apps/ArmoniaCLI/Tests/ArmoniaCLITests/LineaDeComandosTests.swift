@@ -148,6 +148,7 @@ import Testing
         "identificar --escalas", "posiciones Do mayor --secuencia foo", "posiciones Do mayor --secuencia",
         "posiciones Do mayor --formas", "reloj", "reloj Do mayor --foo", "posiciones Do mayor --instrumento arpa",
         "posiciones Do mayor --instrumento", "posiciones Do mayor --capo 13", "posiciones Do mayor --capo",
+        "posiciones --arpegio", "posiciones --arpegio Do --foo",
     ]
 
     /// Con --ingles no se cuela nada en español: ni en la salida, ni en los errores, ni en la ayuda.
@@ -183,6 +184,8 @@ import Testing
             "scale C major --neighbors --all-keys --sequence thirds", "clock C diminished --fifths",
             "positions C major --instrument bass --capo 2", "positions D major --instrument dadgad",
             "scale C 2-2-3-2-3",
+            "scale A harmonic minor --all-keys --chords --triads", "positions --arpeggio Am --sweep --up-and-down",
+            "positions --arpeggio C7 --caged --instrument bass --capo 1",
         ] {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
             #expect(resultado.codigo == 0, "\(orden): \(resultado.error)")
