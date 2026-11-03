@@ -139,34 +139,15 @@ public enum PresentacionDeAnalisis {
             let d = ritmo.duraciones
             let compas = ritmo.compas
             let tempo = ritmo.tempo
-            ficheros = [
-                .musicXML(
-                    analisis.musicXML(
-                        duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion),
-                    nombre: nombre),
-                .mei(
-                    analisis.mei(duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion),
-                    nombre: nombre),
-                .lilyPond(
-                    analisis.lilyPond(
-                        duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion),
-                    nombre: nombre),
-                .abc(
-                    analisis.abc(duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion),
-                    nombre: nombre),
-                .midi(
-                    analisis.midi(duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion),
-                    nombre: nombre),
-            ]
+            ficheros = FicheroParaExportar.partituras(nombre: nombre) { formato in
+                analisis.exportar(
+                    como: formato, duraciones: d, compas: compas, tempo: tempo, titulo: nombre, notacion: notacion)
+            }
             sonido = Escucha.acordes(acordes, duraciones: d, tempo: tempo ?? Escucha.tempo)
         } else {
-            ficheros = [
-                .musicXML(analisis.musicXML(titulo: nombre, notacion: notacion), nombre: nombre),
-                .mei(analisis.mei(titulo: nombre, notacion: notacion), nombre: nombre),
-                .lilyPond(analisis.lilyPond(titulo: nombre, notacion: notacion), nombre: nombre),
-                .abc(analisis.abc(titulo: nombre, notacion: notacion), nombre: nombre),
-                .midi(analisis.midi(titulo: nombre, notacion: notacion), nombre: nombre),
-            ]
+            ficheros = FicheroParaExportar.partituras(nombre: nombre) { formato in
+                analisis.exportar(como: formato, titulo: nombre, notacion: notacion)
+            }
             sonido = Escucha.acordes(acordes)
         }
         return AnalisisPresentado(

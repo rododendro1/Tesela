@@ -222,6 +222,7 @@ public struct TextosDeApps: TextosTraducidos {
     public let partituraMusicXML: String
     public let partituraMEI: String
     public let partituraLilyPond: String
+    public let partituraGUIDO: String
     public let partituraABC: String
     public let dibujoSVG: String
 

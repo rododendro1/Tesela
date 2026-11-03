@@ -11,7 +11,7 @@ import Testing
             PresentacionDeDisposiciones.acorde(Acorde("Do7"), .drop2, notacion: .espanolCompacto))
         #expect(presentadas.filas.first?.voces == "Do₃ Sol₃ Si♭₃ Mi₄")
         #expect(presentadas.filas.allSatisfy { $0.cifrado.isEmpty })
-        #expect(presentadas.ficheros.count == 5)
+        #expect(presentadas.ficheros.count == 6)
         #expect(presentadas.sonido.inicios.count == presentadas.filas.count)
         #expect(presentadas.pentagrama.descripcion.hasPrefix("Do7 · Drop 2: Do₃ Sol₃ Si♭₃ Mi₄;"))
         #expect(presentadas.pentagrama.svg.contains("<svg"))
@@ -23,7 +23,7 @@ import Testing
             PresentacionDeDisposiciones.progresion(acordes, .drop2, notacion: .espanolCompacto))
         #expect(presentadas.filas.map(\.cifrado) == acordes.map { $0.cifrado(en: .espanolCompacto) })
         #expect(presentadas.filas.allSatisfy { $0.voces.split(separator: " ").count == 4 })
-        #expect(presentadas.ficheros.count == 5)
+        #expect(presentadas.ficheros.count == 6)
         #expect(presentadas.sonido.notas.count == 12)
         let shells = try #require(
             PresentacionDeDisposiciones.progresion(acordes, .shell, notacion: .espanolCompacto))

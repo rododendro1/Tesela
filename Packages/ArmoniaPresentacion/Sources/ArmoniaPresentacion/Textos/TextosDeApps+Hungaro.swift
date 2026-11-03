@@ -208,6 +208,7 @@ extension TextosDeApps {
         partituraMusicXML: "MusicXML-kotta",
         partituraMEI: "MEI-kotta",
         partituraLilyPond: "LilyPond-kotta",
+        partituraGUIDO: "GUIDO-kotta",
         partituraABC: "ABC-kotta",
         dibujoSVG: "SVG-rajz"
     )

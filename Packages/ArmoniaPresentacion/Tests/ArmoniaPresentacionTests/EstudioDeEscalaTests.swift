@@ -10,7 +10,7 @@ import Testing
         #expect(terceras.titulo == "Do mayor por terceras")
         #expect(terceras.notas.hasPrefix("Do₄ Mi₄ Re₄ Fa₄"))
         #expect(terceras.sonido.notas.count == 15)
-        #expect(terceras.ficheros.count == 5)
+        #expect(terceras.ficheros.count == 6)
         #expect(terceras.pentagrama.svg.contains("<svg"))
         let bajando = PresentacionDeEstudioDeEscala.secuencia(
             Escala(.do), .triadas, octavas: 2, sentido: .descendente, notacion: .inglesASCII)

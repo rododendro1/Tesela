@@ -11,7 +11,7 @@ Teoría musical en Swift: un motor de armonía, dos apps para iOS y macOS y una 
 - **Armonía**, la app: acordes (con sus digitaciones, arpegios y disposiciones de piano y jazz), escalas (con el
   mástil y sus posiciones), análisis armónico de una progresión o de un fichero MIDI, MusicXML, MEI o ABC, corales a
   cuatro voces, contrapunto de especies, identificar un acorde tocándolo en el mástil o en un teclado MIDI, y series
-  dodecafónicas. Exporta MusicXML, MEI, LilyPond, ABC y MIDI.
+  dodecafónicas. Exporta MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI.
 - **Tonnetz**, la app: acordes, escalas, recorridos con P, L y R y partituras que suenan en el Tonnetz, la tabla
   armónica o un teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático…).
 - **`armonia`**, la línea de comandos: lo mismo desde la terminal, en texto o en JSON, y partituras en PDF, SVG o PNG.

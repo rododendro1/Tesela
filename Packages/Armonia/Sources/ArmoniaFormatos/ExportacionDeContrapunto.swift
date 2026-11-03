@@ -3,8 +3,8 @@ import ArmoniaPartitura
 import ArmoniaTeoria
 import Foundation
 
-// La exportación de un contrapunto de especies (`Contrapunto`): las dos voces en MusicXML, MEI, LilyPond, ABC y
-// MIDI, cada una en su pentagrama, con la de arriba encima. Las voces se nombran en latín, como en el Gradus ad
+// La exportación de un contrapunto de especies (`Contrapunto`): las dos voces en MusicXML, MEI, LilyPond, GUIDO, ABC
+// y MIDI, cada una en su pentagrama, con la de arriba encima. Las voces se nombran en latín, como en el Gradus ad
 // Parnassum de Fux: «Cantus firmus» y «Contrapunctus».
 
 extension Contrapunto {
@@ -48,6 +48,11 @@ extension Contrapunto {
     /// El contrapunto como partitura de LilyPond en dos pentagramas, como `musicXML(tonalidad:tempo:titulo:)`.
     public func lilyPond(tonalidad: Tonalidad? = nil, tempo: Tempo? = nil, titulo: String? = nil) -> String {
         Exportacion.documento(EscritorLilyPond.self, de: self, tonalidad: tonalidad, tempo: tempo, titulo: titulo)
+    }
+
+    /// El contrapunto como partitura GMN (GUIDO) en dos pentagramas, como `musicXML(tonalidad:tempo:titulo:)`.
+    public func guido(tonalidad: Tonalidad? = nil, tempo: Tempo? = nil, titulo: String? = nil) -> String {
+        Exportacion.documento(EscritorGUIDO.self, de: self, tonalidad: tonalidad, tempo: tempo, titulo: titulo)
     }
 
     /// El contrapunto en ABC, en dos pentagramas, como `musicXML(tonalidad:tempo:titulo:)`.

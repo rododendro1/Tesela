@@ -12,7 +12,7 @@ import Testing
             let presentado = try PresentacionDeContrapunto.presentar(
                 cantus: cantus, contrapunto: contrapunto, especie: especie, notacion: .espanolCompacto)
             #expect(presentado.filas.count == cantus.split(separator: " ").count, "especie \(especie.rawValue)")
-            #expect(presentado.ficheros.count == 5)
+            #expect(presentado.ficheros.count == 6)
         }
         // Los de la documentación del motor, que se sabe que no tienen faltas.
         for especie in [Contrapunto.Especie.primera, .segunda, .cuarta] {
