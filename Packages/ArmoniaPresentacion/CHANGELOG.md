@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- **El arpegio con su ritmo en el pentagrama.** `PentagramaPresentado(_:titulo:tonalidad:notacion:nombresDeLasNotas:resaltada:)`
+  dibuja una voz con sus figuras, barras y compás, y con la armadura de la tonalidad si se da. La pestaña de acordes
+  de la app enseña (y exporta) el arpegio con la figura y los tresillos con que suena.
+
 - **Acordes en las doce tonalidades y arpegios en el mástil.**
   `PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(_:cuatriadas:notacion:)` (`TablaDeAcordesPresentada`:
   los acordes de cada grado de quinta en quinta, con sonido y partitura) y

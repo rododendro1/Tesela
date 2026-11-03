@@ -2,6 +2,18 @@
 
 ## Sin publicar
 
+### Ritmo y armadura en el pentagrama
+
+- **`Voz.svgPentagrama(titulo:opciones:)`**: una voz en el pentagrama en SVG con su ritmo: cabezas negras, blancas
+  y redondas, plicas, corchetes, barras de unión por pulso, puntillos, silencios, ligaduras, tresillos (con el 3 y,
+  si no van unidos, su corchete), la cifra del compás y las barras de compás, que anulan las alteraciones. Con eso se
+  dibuja un arpegio en corcheas, semicorcheas o tresillos, o una progresión arpegiada. `resaltada` cuenta las notas
+  que se oyen, como los pasos de lo que suena.
+- **`OpcionesDePentagrama.Armadura.tonalidad(_:)`**: la armadura de una tonalidad en cualquier dibujo (acordes,
+  arpegios, disposiciones, escalas y voces); las notas solo llevan delante lo que la armadura no da.
+- Glifos nuevos de Bravura en `GlifosSMuFL` (cabeza negra, corchetes, silencios, puntillo, cifras del compás y del
+  tresillo).
+
 ### Acordes en las doce tonalidades y arpegios en el mástil
 
 - **En la línea de comandos**, `armonia escala --doce --acordes` (con `--triadas`, sin séptima) da los acordes de
