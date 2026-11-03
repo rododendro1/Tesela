@@ -286,3 +286,18 @@ import Testing
         #expect(escribir([8]) == "La♭")
     }
 }
+
+@Suite struct NombresDeLasClasesTests {
+    @Test func unNombreDistintoPorClase() {
+        let nombres = ConjuntoDeClases.nombresDeLasClases(en: .espanolCompacto)
+        #expect(nombres.count == 12)
+        #expect(Set(nombres).count == 12)
+        #expect(nombres[0] == "Do")
+        #expect(nombres[7] == "Sol")
+        #expect(ConjuntoDeClases.nombresDeLasClases(en: .inglesASCII)[0] == "C")
+    }
+
+    @Test func lasCifrasDeUnaSerie() {
+        #expect((0..<12).map(SerieDodecafonica.cifra) == ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "t", "e"])
+    }
+}

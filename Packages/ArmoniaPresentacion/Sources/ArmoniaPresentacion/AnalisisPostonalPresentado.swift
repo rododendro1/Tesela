@@ -15,9 +15,14 @@ public struct AnalisisPostonalPresentado: Hashable, Sendable {
 
     /// - Parameter clases: números MIDI o clases de altura; las octavas y las repeticiones no cuentan.
     public init(clases: [Int]) {
-        let conjunto = ConjuntoDeClases(clases)
-        formaPrima = "(" + conjunto.formaPrima.map(String.init).joined(separator: ", ") + ")"
-        numeroDeForte = conjunto.numeroDeForte
-        vectorIntervalico = "⟨" + conjunto.vectorIntervalico.map(String.init).joined(separator: ", ") + "⟩"
+        // Los mismos datos que da `armonia conjunto` (y su `--json`); los nombres de las notas no se enseñan aquí.
+        self.init(DatosDeConjunto(ConjuntoDeClases(clases), notacion: .espanolCompacto))
+    }
+
+    /// Los datos de un conjunto, escritos para mostrarlos.
+    public init(_ datos: DatosDeConjunto) {
+        formaPrima = "(" + datos.formaPrima.map(String.init).joined(separator: ", ") + ")"
+        numeroDeForte = datos.forte
+        vectorIntervalico = "⟨" + datos.vectorIntervalico.map(String.init).joined(separator: ", ") + "⟩"
     }
 }
