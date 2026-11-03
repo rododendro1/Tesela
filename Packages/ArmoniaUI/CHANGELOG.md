@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.2 (2026-11-03)
 
 - **Acordes en las doce tonalidades y arpegios para exportar.** En Escalas, los acordes de cada grado en las doce
   tonalidades, con o sin séptima, para escucharlos y exportarlos. En Acordes, cada posición del arpegio en el mástil
