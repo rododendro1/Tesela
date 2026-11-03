@@ -153,6 +153,17 @@ import Testing
         { $0.texto { $0.formaNumero(1) } },
         { $0.texto { $0.comparteCon(2, "6:8") } },
         { $0.texto(\.teclado) },
+        { $0.texto(\.escalaPropia) },
+        { $0.texto(\.campoDeEscalaPropia) },
+        { $0.texto(\.pasosEnSemitonos) },
+        { $0.texto(\.escalasVecinas) },
+        { $0.texto(\.relojDeLaEscala) },
+        { $0.texto(\.circuloCromatico) },
+        { $0.texto(\.circuloDeQuintas) },
+        { $0.texto(\.enLasDoceTonalidades) },
+        { $0.texto(\.acordesEnLasDoceTonalidades) },
+        { $0.texto(\.conSeptima) },
+        { $0.texto(\.subirYBajar) },
     ]
 
     @Test func cadaTextoEstaEnCadaIdioma() {

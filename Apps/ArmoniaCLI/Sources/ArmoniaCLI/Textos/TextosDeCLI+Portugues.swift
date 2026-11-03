@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "intervalo entre duas notas ou\nalturas",
         sintaxisEscala: "escala <escala> [--acordes]",
         descripcionEscala: "notas e acordes de uma escala\n--acordes: todos os que cabem em\ncada grau, não só os de terceiras",
-        notasEscala: "opções: --secuencia terceras (ou cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (dedilhado), --modos (paralelos e relativos)\ne --comparar Do lidio (no fim); --simetria (de quanto em\nquanto se repete e os seus acordes)",
+        notasEscala: "opções: --secuencia terceras (ou cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (dedilhado), --modos (paralelos e relativos)\ne --comparar Do lidio (no fim); --simetria (de quanto em\nquanto se repete e os seus acordes);\n--vecinas (as que saem de mover uma\nnota) e --doce (nas doze tonalidades);\n--doce --acordes (os acordes de cada\ngrau; --triadas, sem sétima)",
         sintaxisEscalas: "escalas [<texto>] [opções]",
         descripcionEscalas: "o catálogo de escalas: as habituais e\nas de outras tradições, por\ncategorias, com as notas a partir de Dó",
         notasEscalas: "opções: --tradicion turquia (ou india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) e --categoria maqam (ou rāga, makam,\ndastgah, dromos…); um texto procura nos nomes",
@@ -112,9 +112,13 @@ extension TextosDeCLI {
         descripcionDigitaciones: "formas de tocar um acorde, da mais\ncómoda à menos, num instrumento de\ncordas com trastes\nopções: --instrumento guitarra|bajo|ukelele|mandolina|… (também\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D»),\n--limite 5, --traste 12 (o traste mais alto usado), --dedos 4 (os\nque se podem usar), --completo (com todas as notas: por omissão a\nquinta pode faltar), --diagrama (uma linha por corda),\n--capo 2 (as casas, contadas desde o capo), --musicxml (a primeira\nforma de cada acorde, como tablatura MusicXML)",
         sintaxisPosiciones: "posiciones <escala> [--caged]",
         descripcionPosiciones: "a escala por posições na guitarra:\ntrês notas por corda (duas nas\npentatónicas) ou CAGED",
-        notasPosiciones: "opções: --secuencia terceras (ou outra:\na sequência em cada posição; com\n--bajando, a descer) e --formas (as cinco\nformas da pentatónica e as notas comuns)",
+        notasPosiciones: "opções: --secuencia terceras (ou outra:\na sequência em cada posição; com\n--bajando, a descer) e --formas (as cinco\nformas da pentatónica e as notas comuns);\n--instrumento bajo (ou outro;\ntambém re-abierto, sol-abierto, dadgad) e --capo 2",
         sintaxisTeclado: "teclado <escala> [--mano derecha]",
         descripcionTeclado: "a escala num teclado de piano\n(SVG): as notas ou, com --mano derecha\nou izquierda, os dedos; --octavas 2",
+        sintaxisReloj: "reloj <escala> [--quintas]",
+        descripcionReloj: "a escala num relógio de doze horas\n(SVG): o círculo cromático ou, com\n--quintas, o de quintas",
+        sintaxisPosicionesArpegio: "posiciones --arpegio <cifra> [--caged|--barrido]",
+        descripcionPosicionesArpegio: "o arpejo de um acorde em cada\nposição do braço, em tablatura e com\nos dedos; --ida-y-vuelta, sobe e desce",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -230,6 +234,7 @@ extension TextosDeCLI {
         manoDesconocida: { texto in "mão desconhecida: «\(texto)» (derecha ou izquierda)" },
         archivoConNotas: "com --archivo não se escrevem notas",
         noEsPentatonica: "as formas são de uma escala de cinco notas: armonia posiciones La pentatónica menor --formas",
+        faltaEscalaDelReloj: "falta a escala: armonia reloj Re mayor",
         capoFueraDeRango: "o capo é um número de 0 a 12: --capo 2",
         octavasFueraDeRango: "as oitavas são um número de 1 a 4: --octavas 2",
         desdeNoValido: { desde in "«\(desde)» não é uma nota nem um grau do acorde: --desde Mi ou --desde 3" },

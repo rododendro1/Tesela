@@ -393,4 +393,38 @@ extension LineaDeComandosTests {
         #expect(salida("analizar Rem7 Sol7 Do7M --notas-guia --en Do mayor").contains("Desde la tercera: Fa₄"))
         #expect(!salida("analizar Rem7 Sol7 Do7M").contains("notas guía"))
     }
+
+    @Test func escalasPropiasVecinasYEnLasDoceTonalidades() {
+        #expect(salida("escala Do 2-2-3-2-3") == salida("escala Do pentatónica mayor"))
+        #expect(salida("escala Re Mi Fa Sol La Si Do") == salida("escala Re dórico"))
+        let rara = salida("escala Do Reb Re Mi Sol")
+        #expect(rara.contains("(1-1-2-3-5)"), Comment(rawValue: rara))
+        let vecinas = salida("escala Do mayor --vecinas")
+        #expect(vecinas.contains("\nEscalas vecinas:\n"), Comment(rawValue: vecinas))
+        #expect(vecinas.contains("\n  Do lidio: Fa → Fa♯\n"))
+        #expect(vecinas.contains("\n  Do mixolidio: Si → Si♭\n"))
+        let doce = salida("escala Do mayor --doce")
+        #expect(doce.contains("\nDo mayor · En las doce tonalidades:\n  Do mayor: Do₄ Re₄ "), Comment(rawValue: doce))
+        #expect(doce.contains("\n  Sol mayor: Sol₃ La₃ "))
+        #expect(doce.contains("\n  Fa mayor: Fa₄ "))
+        let terceras = salida("escala Do mayor --doce --secuencia terceras")
+        #expect(terceras.contains("\nDo mayor por terceras · En las doce tonalidades:\n  Do mayor: Do₄ Mi₄ Re₄ "))
+        let ingles = salida("scale C major --neighbors --all-keys --ingles")
+        #expect(ingles.contains("\n  C lydian: F → F#\n"), Comment(rawValue: ingles))
+        #expect(ingles.contains("C major · In all twelve keys:"))
+    }
+
+    @Test func acordesEnLasDoceTonalidades() {
+        let mayor = salida("escala Do mayor --doce --acordes")
+        #expect(mayor.contains("\nDo mayor · Acordes en las doce tonalidades:\n  "), Comment(rawValue: mayor))
+        #expect(mayor.contains(" · V7 · "))
+        #expect(mayor.contains(" · Re7 · "))
+        let triadas = salida("escala La menor armónica --doce --acordes --triadas")
+        #expect(triadas.contains("Acordes en las doce tonalidades:"), Comment(rawValue: triadas))
+        #expect(triadas.contains(" · Mi · Fa · "))
+        // Sin --acordes, solo las notas; y una pentatónica no tiene un acorde en cada grado.
+        #expect(!salida("escala Do mayor --doce").contains("Acordes en las doce"))
+        #expect(!salida("escala Do pentatónica mayor --doce --acordes").contains("Acordes en las doce"))
+        #expect(salida("scale C major --all-keys --chords --ingles").contains("C major · Chords in all twelve keys:"))
+    }
 }

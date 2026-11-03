@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "interval entre dues notes o altures",
         sintaxisEscala: "escala <escala> [--acordes]",
         descripcionEscala: "notes i acords d'una escala\n--acordes: tots els que hi caben a\ncada grau, no només els de terceres",
-        notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(d'1 a 4), --piano (digitació), --modos (paral·lels i relatius)\ni --comparar Do lidio (al final); --simetria (cada quant\nes repeteix i els seus acords)",
+        notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(d'1 a 4), --piano (digitació), --modos (paral·lels i relatius)\ni --comparar Do lidio (al final); --simetria (cada quant\nes repeteix i els seus acords);\n--vecinas (les que surten de moure una\nnota) i --doce (en les dotze tonalitats);\n--doce --acordes (els acords de cada\ngrau; --triadas, sense setena)",
         sintaxisEscalas: "escalas [<text>] [opcions]",
         descripcionEscalas: "el catàleg d'escales: les habituals i\nles d'altres tradicions, per\ncategories, amb les notes des de Do",
         notasEscalas: "opcions: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) i --categoria maqam (o rāga, makam,\ndastgah, dromos…); un text cerca en els noms",
@@ -112,9 +112,13 @@ extension TextosDeCLI {
         descripcionDigitaciones: "maneres de tocar un acord, de la més\ncòmoda a la menys, en un instrument\nde corda amb trasts\nopcions: --instrumento guitarra|bajo|ukelele|mandolina|… (també\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D»),\n--limite 5, --traste 12 (el més alt que es fa servir), --dedos 4\n(els que es poden fer servir), --completo (amb totes les notes:\nper defecte la quinta pot faltar), --diagrama (una línia per\ncorda),\n--capo 2 (els trasts, des del capo), --musicxml (la primera forma\nde cada acord, com a tabulatura MusicXML)",
         sintaxisPosiciones: "posiciones <escala> [--caged]",
         descripcionPosiciones: "l'escala per posicions a la guitarra:\ntres notes per corda (dues a les\npentatòniques) o CAGED",
-        notasPosiciones: "opcions: --secuencia terceras (o una altra:\nla seqüència a cada posició; amb\n--bajando, baixant) i --formas (les cinc\nformes de la pentatònica i les notes comunes)",
+        notasPosiciones: "opcions: --secuencia terceras (o una altra:\nla seqüència a cada posició; amb\n--bajando, baixant) i --formas (les cinc\nformes de la pentatònica i les notes comunes);\n--instrumento bajo (o un altre;\ntambé re-abierto, sol-abierto, dadgad) i --capo 2",
         sintaxisTeclado: "teclado <escala> [--mano derecha]",
         descripcionTeclado: "l'escala en un teclat de piano\n(SVG): les notes o, amb --mano derecha\no izquierda, els dits; --octavas 2",
+        sintaxisReloj: "reloj <escala> [--quintas]",
+        descripcionReloj: "l'escala en un rellotge de dotze hores\n(SVG): el cercle cromàtic o, amb\n--quintas, el de quintes",
+        sintaxisPosicionesArpegio: "posiciones --arpegio <xifrat> [--caged|--barrido]",
+        descripcionPosicionesArpegio: "l'arpegi d'un acord a cada\nposició del mànec, en tabulatura i amb\nels dits; --ida-y-vuelta, puja i baixa",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -230,6 +234,7 @@ extension TextosDeCLI {
         manoDesconocida: { texto in "mà desconeguda: «\(texto)» (derecha o izquierda)" },
         archivoConNotas: "amb --archivo no s'escriuen notes",
         noEsPentatonica: "les formes són d'una escala de cinc notes: armonia posiciones La pentatónica menor --formas",
+        faltaEscalaDelReloj: "falta l'escala: armonia reloj Re mayor",
         capoFueraDeRango: "el capo és un nombre de 0 a 12: --capo 2",
         octavasFueraDeRango: "les octaves són un nombre d'1 a 4: --octavas 2",
         desdeNoValido: { desde in "«\(desde)» no és una nota ni un grau de l'acord: --desde Mi o --desde 3" },

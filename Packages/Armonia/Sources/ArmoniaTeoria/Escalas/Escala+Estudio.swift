@@ -321,3 +321,23 @@ extension Escala {
         return dedos
     }
 }
+
+// MARK: - En las doce tonalidades
+
+extension Escala {
+    /// La escala en las doce tonalidades, de quinta en quinta desde la suya: Do mayor, Sol mayor, Re mayor… hasta
+    /// Fa mayor. Cada una, salvo la primera, con la tónica que da menos alteraciones (Fa♯ mayor, Do♯ menor).
+    ///
+    ///     Escala(.do).enLasDoceTonalidades.map(\.nombre)   // ["Do mayor", "Sol mayor", …, "Fa mayor"]
+    public var enLasDoceTonalidades: [Escala] {
+        var escalas = [self]
+        for k in 1..<12 {
+            let clase = modulo(tonica.claseDeAltura + 7 * k, 12)
+            let opciones = Nota.pasosDeQuintaPosibles(deClase: clase).map { Escala(Nota(pasosDeQuinta: $0), tipo) }
+            // A igual coste (Sol♭ o Fa♯ mayor), la de sostenidos, que sigue el círculo de quintas.
+            escalas.append(
+                opciones.dropFirst().reduce(opciones[0]) { $1.costeDeEscritura <= $0.costeDeEscritura ? $1 : $0 })
+        }
+        return escalas
+    }
+}

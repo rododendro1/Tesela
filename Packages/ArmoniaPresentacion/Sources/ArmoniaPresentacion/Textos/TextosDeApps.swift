@@ -189,6 +189,17 @@ public struct TextosDeApps: TextosTraducidos {
     public let formaNumero: @Sendable (Int) -> String
     public let comparteCon: @Sendable (Int, String) -> String
     public let teclado: String
+    public let escalaPropia: String
+    public let campoDeEscalaPropia: String
+    public let pasosEnSemitonos: String
+    public let escalasVecinas: String
+    public let relojDeLaEscala: String
+    public let circuloCromatico: String
+    public let circuloDeQuintas: String
+    public let enLasDoceTonalidades: String
+    public let acordesEnLasDoceTonalidades: String
+    public let conSeptima: String
+    public let subirYBajar: String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String

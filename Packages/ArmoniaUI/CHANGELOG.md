@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+- **Acordes en las doce tonalidades y arpegios para exportar.** En Escalas, los acordes de cada grado en las doce
+  tonalidades, con o sin séptima, para escucharlos y exportarlos. En Acordes, cada posición del arpegio en el mástil
+  se exporta en tablatura MusicXML y puede subir y bajar, como se estudia el barrido.
+
+- **Escalas propias en Armonía.** En Escalas, una escala escrita por sus notas o por sus pasos en semitonos (con su
+  número de Forte), sus escalas vecinas, el reloj de la escala en el círculo cromático o en el de quintas, la escala
+  en las doce tonalidades para escucharla y exportarla, y las posiciones en el bajo, en afinaciones abiertas y con
+  capo.
+
 - **Más escalas en Armonía.** En Escalas, la digitación de piano dibujada en un teclado para cada mano (y para
   exportar en SVG), la simetría de las escalas simétricas con sus acordes que se repiten, las cinco formas de la
   pentatónica con las notas que comparten y la secuencia elegida tocada en cada posición, en tablatura. En

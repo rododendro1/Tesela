@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "Intervall zwischen zwei Noten oder\nTonhöhen",
         sintaxisEscala: "scale <Skala> [--chords]",
         descripcionEscala: "Noten und Akkorde einer Skala\n--chords: alle Akkorde, die auf jede\nStufe passen, nicht nur Terzschichtungen",
-        notasEscala: "Optionen: --sequence thirds (oder fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1 bis 4), --piano (Fingersatz), --modes (parallel und relativ)\nund --compare C lydian (am Ende); --symmetry (wie oft sie sich\nwiederholt, und ihre Akkorde)",
+        notasEscala: "Optionen: --sequence thirds (oder fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1 bis 4), --piano (Fingersatz), --modes (parallel und relativ)\nund --compare C lydian (am Ende); --symmetry (wie oft sie sich\nwiederholt, und ihre Akkorde);\n--neighbors (einen Ton verschoben) und\n--all-keys (in allen zwölf Tonarten);\n--all-keys --chords (die Akkorde jeder\nStufe; --triads, ohne Septime)",
         sintaxisEscalas: "scales [<Text>] [Optionen]",
         descripcionEscalas: "der Skalenkatalog: die gängigen und\ndie anderer Traditionen, nach\nKategorien, mit ihren Tönen ab C",
         notasEscalas: "Optionen: --tradition turkey (oder india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) und --category maqam (oder rāga, makam,\ndastgah, dromos…); ein Text sucht in den Namen",
@@ -112,9 +112,13 @@ extension TextosDeCLI {
         descripcionDigitaciones: "Griffe für einen Akkord, vom bequemsten zum unbequemsten, auf\neinem Saiteninstrument mit Bünden (Saiten von tief nach hoch)\nOptionen: --instrument guitar|bass|ukulele|mandolin|… (auch\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (der höchste verwendete Bund), --fingers 4 (wie viele\nbenutzt werden dürfen), --complete (mit allen Noten:\nstandardmäßig darf die Quinte fehlen), --diagram (eine Zeile pro\nSaite),\n--capo 2 (Bünde ab dem Kapodaster), --musicxml (die erste Griffform\njedes Akkords als MusicXML-Tabulatur)",
         sintaxisPosiciones: "positions <Skala> [--caged]",
         descripcionPosiciones: "die Skala in Lagen auf der Gitarre:\ndrei Töne pro Saite (zwei bei\nPentatonik) oder CAGED",
-        notasPosiciones: "Optionen: --sequence thirds (oder eine andere:\ndie Sequenz in jeder Lage; mit\n--descending abwärts) und --shapes (die fünf\nPentatonik-Formen und ihre gemeinsamen Töne)",
+        notasPosiciones: "Optionen: --sequence thirds (oder eine andere:\ndie Sequenz in jeder Lage; mit\n--descending abwärts) und --shapes (die fünf\nPentatonik-Formen und ihre gemeinsamen Töne);\n--instrument bass (oder ein anderes;\nauch open-d, open-g, dadgad) und --capo 2",
         sintaxisTeclado: "keyboard <Skala> [--hand right]",
         descripcionTeclado: "die Skala auf einer Klaviertastatur\n(SVG): ihre Töne oder, mit --hand right\noder left, die Finger; --octaves 2",
+        sintaxisReloj: "clock <scale> [--fifths]",
+        descripcionReloj: "die Skala auf einer Zwölf-Stunden-Uhr\n(SVG): der chromatische Kreis oder, mit\n--fifths, der Quintenzirkel",
+        sintaxisPosicionesArpegio: "positions --arpeggio <Akkordsymbol> [--caged|--sweep]",
+        descripcionPosicionesArpegio: "das Arpeggio eines Akkords in jeder\nLage des Griffbretts, als Tabulatur mit\nden Fingern; --up-and-down, auf und ab",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -230,6 +234,7 @@ extension TextosDeCLI {
         manoDesconocida: { texto in "unbekannte Hand: „\(texto)“ (right oder left)" },
         archivoConNotas: "mit --file keine Töne angeben",
         noEsPentatonica: "die Formen gibt es nur bei fünftönigen Skalen: armonia positions A minor pentatonic --shapes",
+        faltaEscalaDelReloj: "die Skala fehlt: armonia clock D major",
         capoFueraDeRango: "der Kapodaster ist eine Zahl von 0 bis 12: --capo 2",
         octavasFueraDeRango: "die Oktaven sind eine Zahl von 1 bis 4: --octaves 2",
         desdeNoValido: { desde in "„\(desde)“ ist weder ein Ton noch eine Stufe des Akkords: --from E oder --from 3" },

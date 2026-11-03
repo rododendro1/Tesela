@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "intervalle entre deux notes ou\nhauteurs",
         sintaxisEscala: "escala <gamme> [--acordes]",
         descripcionEscala: "notes et accords d'une gamme\n--acordes : tous ceux qui tiennent\nsur chaque degré, pas seulement en tierces",
-        notasEscala: "options : --secuencia terceras (ou cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 à 4), --piano (doigté), --modos (parallèles et relatifs)\net --comparar Do lidio (à la fin) ; --simetria (tous les combien\nelle se répète et ses accords)",
+        notasEscala: "options : --secuencia terceras (ou cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 à 4), --piano (doigté), --modos (parallèles et relatifs)\net --comparar Do lidio (à la fin) ; --simetria (tous les combien\nelle se répète et ses accords);\n--vecinas (celles qu'on obtient en déplaçant\nune note) et --doce (dans les douze tonalités);\n--doce --acordes (les accords de chaque\ndegré ; --triadas, sans septième)",
         sintaxisEscalas: "escalas [<texte>] [options]",
         descripcionEscalas: "le catalogue des gammes : les usuelles\net celles d'autres traditions, par\ncatégories, avec leurs notes depuis Do",
         notasEscalas: "options : --tradicion turquia (ou india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) et --categoria maqam (ou rāga, makam,\ndastgah, dromos…) ; un texte cherche dans les noms",
@@ -112,9 +112,13 @@ extension TextosDeCLI {
         descripcionDigitaciones: "façons de jouer un accord, de la\nplus commode à la moins commode, sur\nun instrument à cordes et à frettes\noptions : --instrumento guitarra|bajo|ukelele|mandolina|… (aussi\n« guitarra de siete cuerdas », « bajo de 5 cuerdas », « drop D\n»), --limite 5, --traste 12 (la case la plus haute utilisée),\n--dedos 4 (ceux qu'on peut utiliser), --completo (avec toutes\nles notes : par défaut la quinte peut manquer), --diagrama (une\nligne par corde),\n--capo 2 (cases comptées depuis le capodastre), --musicxml (la\npremière forme de chaque accord, en tablature MusicXML)",
         sintaxisPosiciones: "posiciones <gamme> [--caged]",
         descripcionPosiciones: "la gamme par positions à la guitare :\ntrois notes par corde (deux dans les\npentatoniques) ou CAGED",
-        notasPosiciones: "options : --secuencia terceras (ou une autre :\nla séquence dans chaque position ; avec\n--bajando, en descendant) et --formas (les cinq\nformes de la pentatonique et leurs notes communes)",
+        notasPosiciones: "options : --secuencia terceras (ou une autre :\nla séquence dans chaque position ; avec\n--bajando, en descendant) et --formas (les cinq\nformes de la pentatonique et leurs notes communes);\n--instrumento bajo (ou un autre ;\naussi re-abierto, sol-abierto, dadgad) et --capo 2",
         sintaxisTeclado: "teclado <gamme> [--mano derecha]",
         descripcionTeclado: "la gamme sur un clavier de piano\n(SVG) : ses notes ou, avec --mano derecha\nou izquierda, les doigts ; --octavas 2",
+        sintaxisReloj: "reloj <escala> [--quintas]",
+        descripcionReloj: "la gamme sur une horloge de douze heures\n(SVG) : le cercle chromatique ou, avec\n--quintas, le cycle des quintes",
+        sintaxisPosicionesArpegio: "posiciones --arpegio <chiffrage> [--caged|--barrido]",
+        descripcionPosicionesArpegio: "l'arpège d'un accord dans chaque\nposition du manche, en tablature avec\nles doigts ; --ida-y-vuelta, monte et descend",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -230,6 +234,7 @@ extension TextosDeCLI {
         manoDesconocida: { texto in "main inconnue : « \(texto) » (derecha ou izquierda)" },
         archivoConNotas: "avec --archivo, n'écrivez pas de notes",
         noEsPentatonica: "les formes sont celles d'une gamme de cinq notes : armonia posiciones La pentatónica menor --formas",
+        faltaEscalaDelReloj: "il manque la gamme : armonia reloj Re mayor",
         capoFueraDeRango: "le capodastre est un nombre de 0 à 12 : --capo 2",
         octavasFueraDeRango: "les octaves sont un nombre de 1 à 4 : --octavas 2",
         desdeNoValido: { desde in "« \(desde) » n'est ni une note ni un degré de l'accord : --desde Mi ou --desde 3" },

@@ -6,6 +6,17 @@
   dibuja una voz con sus figuras, barras y compás, y con la armadura de la tonalidad si se da. La pestaña de acordes
   de la app enseña (y exporta) el arpegio con la figura y los tresillos con que suena.
 
+- **Acordes en las doce tonalidades y arpegios en el mástil.**
+  `PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(_:cuatriadas:notacion:)` (`TablaDeAcordesPresentada`:
+  los acordes de cada grado de quinta en quinta, con sonido y partitura) y
+  `PresentacionDeArpegios.enElMastil(_:formas:idaYVuelta:mastil:notacion:)` (`ArpegioEnElMastilPresentado`, por
+  posiciones, CAGED o con una nota por cuerda, con tablatura, dedos, sonido y MusicXML). Textos nuevos en los quince
+  idiomas.
+
+- **Escalas propias.** `PresentacionDeEstudioDeEscala`: `vecinas(de:notacion:)`, `reloj(de:orden:notacion:)` (el
+  reloj de la escala en SVG) y `enLasDoceTonalidades(_:secuencia:notacion:)` (`HojaDeEstudioPresentada`, con
+  pentagramas, sonido y ficheros). Textos nuevos en los quince idiomas.
+
 - **Más escalas.** `PresentacionDeEstudioDeEscala`: `escalas(conLasNotas:)` y `escalas(de:)` (`EscalaEncontrada`, con
   las notas que añade cada una), `simetria(de:)` (`SimetriaPresentada`), `lineasDeNotasGuia`, `formasPentatonicas` y
   `secuenciaEnLasPosiciones` (`PosicionPresentada`, con tablatura de texto y MusicXML), `tablatura(_:en:notacion:)` y

@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "διάστημα ανάμεσα σε δύο νότες ή τονικά\nύψη",
         sintaxisEscala: "scale <κλίμακα> [--chords]",
         descripcionEscala: "νότες και συγχορδίες μιας κλίμακας\n--chords: όλες όσες χωρούν σε κάθε\nβαθμίδα, όχι μόνο κατά τρίτες",
-        notasEscala: "επιλογές: --sequence thirds (ή fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(από 1 έως 4), --piano (δακτυλοθεσία), --modes (παράλληλοι και σχετικοί)\nκαι --compare C lydian (στο τέλος); --symmetry (κάθε πόσο\nεπαναλαμβάνεται και οι συγχορδίες της)",
+        notasEscala: "επιλογές: --sequence thirds (ή fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(από 1 έως 4), --piano (δακτυλοθεσία), --modes (παράλληλοι και σχετικοί)\nκαι --compare C lydian (στο τέλος); --symmetry (κάθε πόσο\nεπαναλαμβάνεται και οι συγχορδίες της);\n--neighbors (μετακινώντας μία νότα) και\n--all-keys (και στις δώδεκα τονικότητες);\n--all-keys --chords (οι συγχορδίες κάθε\nβαθμίδας· --triads, χωρίς έβδομη)",
         sintaxisEscalas: "scales [<κείμενο>] [επιλογές]",
         descripcionEscalas: "ο κατάλογος των κλιμάκων: οι συνήθεις\nκαι όσες άλλων παραδόσεων, ανά\nκατηγορία, με τις νότες τους από το Ντο",
         notasEscalas: "επιλογές: --tradition turkey (ή india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) και --category maqam (ή rāga, makam,\ndastgah, dromos…)· ένα κείμενο ψάχνει στα ονόματα",
@@ -112,9 +112,13 @@ extension TextosDeCLI {
         descripcionDigitaciones: "τρόποι να παίξεις μια συγχορδία, από τον πιο άνετο στον\nλιγότερο, σε έγχορδο όργανο με τάστα (χορδές από χαμηλά προς\nψηλά)\nεπιλογές: --instrument guitar|bass|ukulele|mandolin|… (και\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (το ψηλότερο τάστο που χρησιμοποιείται), --fingers 4\n(πόσα δάχτυλα μπορούν να χρησιμοποιηθούν), --complete (με όλες\nτις νότες: από προεπιλογή μπορεί να λείπει η πέμπτη), --diagram\n(μία γραμμή ανά χορδή),\n--capo 2 (τάστα από το καποτάστο), --musicxml (η πρώτη μορφή κάθε\nσυγχορδίας ως ταμπλατούρα MusicXML)",
         sintaxisPosiciones: "positions <κλίμακα> [--caged]",
         descripcionPosiciones: "η κλίμακα σε θέσεις στην κιθάρα:\nτρεις νότες ανά χορδή (δύο στις\nπεντατονικές) ή CAGED",
-        notasPosiciones: "επιλογές: --sequence thirds (ή άλλη:\nη αλληλουχία σε κάθε θέση· με\n--descending, κατεβαίνοντας) και --shapes (τα πέντε\nσχήματα της πεντατονικής και οι κοινές νότες)",
+        notasPosiciones: "επιλογές: --sequence thirds (ή άλλη:\nη αλληλουχία σε κάθε θέση· με\n--descending, κατεβαίνοντας) και --shapes (τα πέντε\nσχήματα της πεντατονικής και οι κοινές νότες);\n--instrument bass (ή άλλο·\nεπίσης open-d, open-g, dadgad) και --capo 2",
         sintaxisTeclado: "keyboard <κλίμακα> [--hand right]",
         descripcionTeclado: "η κλίμακα σε πληκτρολόγιο πιάνου\n(SVG): οι νότες ή, με --hand right\nή left, τα δάχτυλα· --octaves 2",
+        sintaxisReloj: "clock <scale> [--fifths]",
+        descripcionReloj: "η κλίμακα σε ρολόι δώδεκα ωρών\n(SVG): ο χρωματικός κύκλος ή, με\n--fifths, ο κύκλος των πεμπτών",
+        sintaxisPosicionesArpegio: "positions --arpeggio <σύμβολο> [--caged|--sweep]",
+        descripcionPosicionesArpegio: "το αρπίσιμο μιας συγχορδίας σε κάθε\nθέση της ταστιέρας, σε ταμπλατούρα με\nτα δάχτυλα· --up-and-down, πάνω και κάτω",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -230,6 +234,7 @@ extension TextosDeCLI {
         manoDesconocida: { texto in "άγνωστο χέρι: «\(texto)» (right ή left)" },
         archivoConNotas: "με το --file δεν γράφονται νότες",
         noEsPentatonica: "τα σχήματα είναι για κλίμακα πέντε φθόγγων: armonia positions A minor pentatonic --shapes",
+        faltaEscalaDelReloj: "λείπει η κλίμακα: armonia clock D major",
         capoFueraDeRango: "το καποτάστο είναι αριθμός από 0 έως 12: --capo 2",
         octavasFueraDeRango: "οι οκτάβες είναι αριθμός από 1 έως 4: --octaves 2",
         desdeNoValido: { desde in "το «\(desde)» δεν είναι νότα ή βαθμίδα της συγχορδίας: --from E ή --from 3" },

@@ -14,6 +14,27 @@
 - Glifos nuevos de Bravura en `GlifosSMuFL` (cabeza negra, corchetes, silencios, puntillo, cifras del compás y del
   tresillo).
 
+### Acordes en las doce tonalidades y arpegios en el mástil
+
+- **En la línea de comandos**, `armonia escala --doce --acordes` (con `--triadas`, sin séptima) da los acordes de
+  cada grado en las doce tonalidades, y `armonia posiciones --arpegio <cifrado>` (con `--caged`, `--barrido` e
+  `--ida-y-vuelta`) el arpegio en cada posición del mástil, en tablatura y con los dedos (en inglés, `--chords`,
+  `--triads`, `--arpeggio`, `--sweep` y `--up-and-down`).
+
+### Escalas propias
+
+- **Escalas propias**: `Escala.propia(_:)` (por sus notas) y `Escala.propia(desde:pasos:)` (por sus pasos en
+  semitonos); `Escala(leyendo:)` lee también «Do Re Mi♭ Fa♯ Sol La Si» y «Do 2-1-3-1-2-2-1». Si no están en el
+  catálogo, `TipoDeEscala.propio(_:)` las nombra por su número de Forte y sus pasos. `Escala.pasosEnSemitonos` y
+  `numeroDeForte`.
+- **Escalas vecinas**: `Escala.vecinas(tipos:)` (`EscalaVecina`), las que salen moviendo una nota un semitono.
+- **`Escala.enLasDoceTonalidades`**, de quinta en quinta, cada una con la escritura más sencilla.
+- **`RelojDeClases`**: un conjunto de clases en un reloj de doce horas (SVG), cromático o de quintas.
+- **Afinaciones abiertas**: `Encordado.guitarraEnReAbierto`, `guitarraEnSolAbierto` y `guitarraDADGAD`.
+- **En la línea de comandos**, `armonia escala --vecinas` y `--doce`, `armonia posiciones --instrumento <nombre>` y
+  `--capo <traste>`, y la orden nueva `armonia reloj <escala> [--quintas]` (en inglés, `--neighbors`, `--all-keys`,
+  `--instrument`, `clock` y `--fifths`).
+
 ### Más escalas
 
 - **Buscar escalas** en una pieza: `PiezaImportada.clasesDeAltura(umbral:)` (las notas que suenan, por lo que duran)
