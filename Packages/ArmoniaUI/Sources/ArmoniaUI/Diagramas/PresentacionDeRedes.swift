@@ -3,8 +3,10 @@ import Hexagonos
 
 /// Las redes en que la app Tonnetz dibuja unas notas: el Tonnetz, la tabla armónica y varios teclados
 /// isomórficos (Wicki-Hayden, Jankó, el acordeón cromático, Gerhard y Park), más uno que el usuario describe en el
-/// formato UIL. Cada teclado es una fila más con el nombre del de `TecladoIsomorfico.todos`: su dibujo y su nombre en
-/// cada idioma los da el motor. No usa SwiftUI, así que se prueba en Linux.
+/// formato UIL, y los teclados de cuadrícula (en cuartas, en terceras, en quintas, Wicki-Hayden, tonos enteros y el
+/// Tonnetz de Euler). Cada teclado es una fila más con el nombre del de `TecladoIsomorfico.todos` o
+/// `TecladoCuadrado.todos`: su dibujo y su nombre en cada idioma los da el motor. No usa SwiftUI, así que se prueba en
+/// Linux.
 public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
     case tonnetz = "Tonnetz"
     case tablaArmonica = "Tabla armónica"
@@ -18,6 +20,12 @@ public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
     case park = "Park"
     /// Un teclado descrito en el formato UIL (`2,7,5;R30M`), que se puede girar de 30° en 30° y reflejar: ver ``AjusteUIL``.
     case uil = "UIL"
+    case cuadriculaEnCuartas = "Cuadrícula en cuartas"
+    case cuadriculaEnTercerasMayores = "Cuadrícula en terceras mayores"
+    case cuadriculaEnQuintas = "Cuadrícula en quintas"
+    case wickiHaydenCuadrado = "Wicki-Hayden (cuadrícula)"
+    case cuadriculaDeTonosEnteros = "Cuadrícula de tonos enteros"
+    case tonnetzDeEuler = "Tonnetz de Euler"
 
     public var id: Self { self }
 
@@ -27,18 +35,23 @@ public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
         switch self {
         case .tonnetz, .uil: return rawValue
         case .tablaArmonica: return TecladoIsomorfico.tablaArmonica.nombre(en: notacion)
-        default: return teclado?.nombre(en: notacion) ?? rawValue
+        default: return teclado?.nombre(en: notacion) ?? tecladoCuadrado?.nombre(en: notacion) ?? rawValue
         }
     }
 
     /// El teclado isomórfico de la red, el de `TecladoIsomorfico.todos` que se llama como ella; `nil` en el Tonnetz y
-    /// la tabla, que tienen su propio dibujo, y en `.uil`, cuyo teclado depende del ``AjusteUIL`` (ver
-    /// ``PresentacionDeRedes/teclado(de:uil:)``).
+    /// la tabla, que tienen su propio dibujo, en `.uil`, cuyo teclado depende del ``AjusteUIL`` (ver
+    /// ``PresentacionDeRedes/teclado(de:uil:)``), y en los de cuadrícula (ver ``tecladoCuadrado``).
     public var teclado: TecladoIsomorfico? {
         switch self {
         case .tonnetz, .tablaArmonica, .uil: return nil
         default: return TecladoIsomorfico.todos.first { $0.nombre == rawValue }
         }
+    }
+
+    /// El teclado de cuadrícula de la red, el de `TecladoCuadrado.todos` que se llama como ella; `nil` en las demás.
+    public var tecladoCuadrado: TecladoCuadrado? {
+        TecladoCuadrado.todos.first { $0.nombre == rawValue }
     }
 }
 
@@ -125,6 +138,12 @@ public enum PresentacionDeRedes {
     /// El lado de las casillas de los teclados en el dibujo.
     static let tamanoDelTeclado = 24.0
 
+    /// Las casillas de los teclados de cuadrícula: 12 columnas por 7 filas, con el Do4 hacia el centro.
+    public static let casillasDelTecladoCuadrado = CasillaCuadrada.rectangulo(columnas: -5...6, filas: -3...3)
+
+    /// El lado de los cuadrados de los teclados de cuadrícula en el dibujo.
+    static let ladoDelTecladoCuadrado = 40.0
+
     /// La distancia entre dos notas vecinas en el dibujo del Tonnetz o de la tabla: la que usan sus `svg`
     /// por defecto, con más sitio en un recorrido para las flechas. Se fija aquí para saber qué nota se toca.
     static func paso(_ contenido: ContenidoDeRed, en red: RedDeNotas) -> Double {
@@ -143,13 +162,18 @@ public enum PresentacionDeRedes {
     ) -> String? {
         let paso = Self.paso(contenido, en: red)
         if red == .uil && uil.teclado == nil { return nil }
+        let clases = Set(contenido.notas.map(\.claseDeAltura))
+        let marcadas = Set((0...127).filter { clases.contains($0 % 12) })
+        // Con bemoles si alguna nota lleva bemol: en la línea de quintas, las que quedan por debajo de Fa (Si♭…).
+        let bemoles = contenido.notas.contains { $0.pasosDeQuinta < -1 }
         if let teclado = Self.teclado(de: red, uil: uil) {
-            let clases = Set(contenido.notas.map(\.claseDeAltura))
-            let marcadas = Set((0...127).filter { clases.contains($0 % 12) })
-            // Con bemoles si alguna nota lleva bemol: en la línea de quintas, las que quedan por debajo de Fa (Si♭…).
-            let bemoles = contenido.notas.contains { $0.pasosDeQuinta < -1 }
             return teclado.svg(
                 casillasDelTeclado(teclado), marcadas: marcadas, tamano: tamanoDelTeclado, notacion: notacion,
+                preferirBemoles: bemoles)
+        }
+        if let teclado = red.tecladoCuadrado {
+            return teclado.svg(
+                casillasDelTecladoCuadrado, marcadas: marcadas, lado: ladoDelTecladoCuadrado, notacion: notacion,
                 preferirBemoles: bemoles)
         }
         switch (red, contenido) {
@@ -207,6 +231,12 @@ public enum PresentacionDeRedes {
         if let teclado = Self.teclado(de: red, uil: uil) {
             let casilla = Trazado(orientacion: teclado.orientacion, tamano: tamanoDelTeclado).casilla(en: punto)
             guard casillasDelTeclado(teclado).contains(casilla) else { return nil }
+            let midi = teclado.midi(en: casilla)
+            return (0...127).contains(midi) ? midi : nil
+        }
+        if let teclado = red.tecladoCuadrado {
+            let casilla = TecladoCuadrado.casilla(en: punto, lado: ladoDelTecladoCuadrado)
+            guard casillasDelTecladoCuadrado.contains(casilla) else { return nil }
             let midi = teclado.midi(en: casilla)
             return (0...127).contains(midi) ? midi : nil
         }

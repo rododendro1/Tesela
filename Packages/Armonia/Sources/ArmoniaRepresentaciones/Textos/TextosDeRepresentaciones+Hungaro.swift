@@ -53,6 +53,13 @@ extension TextosDeRepresentaciones {
         wickiHaydenPlano: "Wicki–Hayden (lapos tetejű)",
         acordeonC: "C-rendszerű harmonika",
         acordeonB: "B-rendszerű harmonika",
+        // TecladoCuadrado.swift
+        cuadriculaEnCuartas: "Kvartrács",
+        cuadriculaEnTercerasMayores: "Nagytercrács",
+        cuadriculaEnQuintas: "Kvintrács",
+        wickiHaydenCuadrado: "Wicki–Hayden (rács)",
+        cuadriculaDeTonosEnteros: "Egészhangú rács",
+        tonnetzDeEuler: "Euler-féle Tonnetz",
         // FormatoUIL.swift
         uilNoValido: { texto in "Érvénytelen UIL: „\(texto)”. A várt alak L,G,D;R<fok>[M], például 2,7,5;R30M." },
         intervalosIncoherentes: { menor, mayor, diferencia in "Ellentmondó hangközök: \(menor),\(mayor),\(diferencia). Teljesülnie kell: 0 < L ≤ D és G = L + D." },

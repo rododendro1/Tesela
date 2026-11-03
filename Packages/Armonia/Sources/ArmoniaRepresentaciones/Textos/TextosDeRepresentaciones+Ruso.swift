@@ -53,6 +53,13 @@ extension TextosDeRepresentaciones {
         wickiHaydenPlano: "Уикки-Хейден (плоский)",
         acordeonC: "Аккордеон системы C",
         acordeonB: "Аккордеон системы B",
+        // TecladoCuadrado.swift
+        cuadriculaEnCuartas: "Сетка по квартам",
+        cuadriculaEnTercerasMayores: "Сетка по большим терциям",
+        cuadriculaEnQuintas: "Сетка по квинтам",
+        wickiHaydenCuadrado: "Wicki-Hayden (сетка)",
+        cuadriculaDeTonosEnteros: "Целотонная сетка",
+        tonnetzDeEuler: "Тоннец Эйлера",
         // FormatoUIL.swift
         uilNoValido: { texto in "Неверный UIL: «\(texto)». Ожидается L,G,D;R<градусы>[M], например 2,7,5;R30M." },
         intervalosIncoherentes: { menor, mayor, diferencia in "Несогласованные интервалы: \(menor),\(mayor),\(diferencia). Должно выполняться 0 < L ≤ D и G = L + D." },

@@ -18,6 +18,13 @@
   nueva `armonia teclado <escala> [--mano derecha] [--octavas 2]` (en inglés, `--scales`, `--file`, `--symmetry`,
   `--guide-tones`, `--sequence`, `--descending`, `--shapes`, `keyboard` y `--hand`).
 
+### Teclados de cuadrícula
+
+- **`TecladoCuadrado`** y **`CasillaCuadrada`**: teclados isomórficos de botones cuadrados, definidos por sus ejes H
+  (los semitonos de un paso a la derecha) y V (los de un paso hacia arriba). Trae `cuartas` (LinnStrument, Launchpad,
+  Push), `tercerasMayores`, `quintas`, `wickiHaydenCuadrado`, `tonosEnteros` y `tonnetzDeEuler`, con `girado()`,
+  `reflejado`, `esCompleto`, `casillas(de:en:)` y su dibujo en SVG. Los nombres, en los quince idiomas.
+
 ### Estudiar escalas
 
 - **`Escala.secuencia(_:octava:octavas:sentido:)`** con **`SecuenciaDeEscala`**: la escala por terceras, por cuartas,
