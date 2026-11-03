@@ -50,7 +50,7 @@ import Testing
             acordes, tonalidad: Tonalidad(.do), notacion: notacion)
         #expect(lineas.map(\.titulo) == ["Desde la tercera", "Desde la séptima"])
         #expect(lineas.map(\.notas) == ["Fa₄ Fa₄ Mi₄", "Do₄ Si₃ Si₃"])
-        #expect(lineas[0].ficheros.count == 5)
+        #expect(lineas[0].ficheros.count == 6)
         #expect(lineas[0].sonido.notas.count == 3)
         let sinTonalidad = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(acordes, notacion: .inglesASCII)
         #expect(sinTonalidad.map(\.titulo) == ["From the third", "From the seventh"])
@@ -134,7 +134,7 @@ import Testing
         // Sol empieza en la octava 3, para no subir demasiado.
         #expect(hoja.tonalidades[1].notas.hasPrefix("Sol₃ La₃"))
         #expect(hoja.sonido.notas.count == 12 * 8)
-        #expect(hoja.ficheros.count == 5)
+        #expect(hoja.ficheros.count == 6)
         let terceras = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(
             Escala(.do), secuencia: .terceras, notacion: notacion)
         #expect(terceras.titulo == "Do mayor por terceras · En las doce tonalidades")
@@ -153,7 +153,7 @@ import Testing
         #expect(tabla.filas.allSatisfy { $0.acordes.count == 7 })
         #expect(tabla.filas[0].sonido.notas.count == 7 * 4)
         #expect(tabla.sonido.notas.count == 12 * 7 * 4)
-        #expect(tabla.ficheros.count == 5)
+        #expect(tabla.ficheros.count == 6)
         let triadas = try #require(
             PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
                 Escala(.la, .menorArmonica), cuatriadas: false, notacion: notacion))

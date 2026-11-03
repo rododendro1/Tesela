@@ -208,6 +208,7 @@ extension TextosDeApps {
         partituraMusicXML: "MusicXML score",
         partituraMEI: "MEI score",
         partituraLilyPond: "LilyPond score",
+        partituraGUIDO: "GUIDO score",
         partituraABC: "ABC score",
         dibujoSVG: "SVG drawing"
     )

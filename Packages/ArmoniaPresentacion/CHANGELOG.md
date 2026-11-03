@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+- **GUIDO en el menú de exportar, y todos los formatos de una vez.** `FicheroParaExportar.Formato.guido` («Partitura
+  GUIDO», `.gmn`, con su texto en los quince idiomas). `FicheroParaExportar.partituras(nombre:_:)` da una partitura
+  por cada `FormatoDePartitura`, en su orden, y `partitura(_:formato:nombre:)`, una. `Formato(_:)` y
+  `Formato.partitura` pasan de un tipo al otro. Todas las presentaciones que exportan (análisis, coral, arpegios,
+  disposiciones, escalas, contrapunto y serie) dan ahora seis ficheros en lugar de cinco, con el GUIDO entre el
+  LilyPond y el ABC. Las partituras de texto del contrapunto y de la serie llevan el tempo, como su MIDI.
+
 - **Series dodecafónicas en las apps.** `PresentacionDeSerie.presentar(_:forma:notacion:)` da una serie
   (`SeriePresentada`) con sus notas, sus intervalos, sus hexacordos, sus formas combinatorias, la matriz con el nombre
   de cada fila y columna, y la forma elegida con su pentagrama, su sonido y sus ficheros para exportar.

@@ -46,7 +46,7 @@ import Testing
         #expect((0..<12).allSatisfy { original.estaEnLaForma(fila: 0, columna: $0) })
         #expect(!original.estaEnLaForma(fila: 1, columna: 0))
         #expect(original.sonido.notas.map(\.midi) == original.clasesDeLaForma.map { 60 + $0 })
-        #expect(original.ficheros.count == 5)
+        #expect(original.ficheros.count == 6)
         #expect(original.pentagrama.svg.contains("<svg"))
 
         let inversion = try PresentacionDeSerie.presentar(

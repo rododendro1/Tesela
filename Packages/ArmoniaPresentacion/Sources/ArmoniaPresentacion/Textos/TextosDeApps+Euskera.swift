@@ -208,6 +208,7 @@ extension TextosDeApps {
         partituraMusicXML: "MusicXML partitura",
         partituraMEI: "MEI partitura",
         partituraLilyPond: "LilyPond partitura",
+        partituraGUIDO: "GUIDO partitura",
         partituraABC: "ABC partitura",
         dibujoSVG: "SVG marrazkia"
     )

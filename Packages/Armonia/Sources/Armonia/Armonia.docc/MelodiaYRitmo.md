@@ -194,6 +194,25 @@ datos.prefix(4) == Data("MThd".utf8)   // true
   `armonia midi acordes Do Lam Re7 Sol7 Do > progresion.mid`, con las mismas opciones que
   `musicxml` salvo `--clave` y los cifrados, y con `--instrumento 0…127`.
 
+## Todos los formatos a la vez
+
+``FormatoDePartitura`` reúne los seis formatos (MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI), y
+`exportar(como:…)` escribe una ``Voz``, un ``Coral``, un ``AnalisisArmonico`` o un ``Contrapunto`` en
+el que se pida, con las mismas opciones que la función de cada formato. Los formatos de texto salen en
+UTF-8, así que todos dan `Data`, listos para guardar con `extensionDeFichero`.
+
+```swift
+let tema = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2", compas: "3/4")
+FormatoDePartitura.allCases.map(\.extensionDeFichero) == ["musicxml", "mei", "ly", "gmn", "abc", "mid"]   // true
+tema.exportar(como: .lilyPond, titulo: "Tema") == Data(tema.lilyPond(titulo: "Tema").utf8)   // true
+tema.exportar(como: .midi, titulo: "Tema") == tema.midi(titulo: "Tema")                       // true
+```
+
+- La clave no cuenta en MIDI, ni el instrumento en los demás; el MIDI de un coral o de una
+  progresión no lleva cifrados ni análisis.
+- Las apps ofrecen así todos los formatos en el menú de exportar, y `armonia grabar` elige con él la
+  partitura que lee cada motor.
+
 ## Arpegios con ritmo
 
 Un ``Arpegio`` da las notas de un acorde en un orden; `Voz(_:figura:octava:compas:)` les pone ritmo, y

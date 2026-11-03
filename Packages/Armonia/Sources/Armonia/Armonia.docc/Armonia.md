@@ -90,6 +90,10 @@ Tonalidad.identificar(midi: [69, 71, 72, 74, 76, 77, 80, 81]).first   // La meno
 - ``Tempo``
 - ``Voz``
 
+### Exportación
+
+- ``FormatoDePartitura``
+
 ### Importación
 
 - ``PiezaImportada``

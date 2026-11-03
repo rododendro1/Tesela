@@ -18,7 +18,7 @@ Apps/
 │                     primera a la quinta, con las faltas compás a compás) e identificar un acorde tocándolo en
 │                     el mástil o en un teclado MIDI (con su forma prima, su número de Forte y su vector
 │                     interválico), y series dodecafónicas (la matriz, las 48 formas y su combinatoriedad);
-│                     exporta MusicXML, MEI, LilyPond, ABC y MIDI
+│                     exporta MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI
 ├── TonnetzApp/       Un acorde, una escala, un recorrido con P, L y R, los acordes de un fichero MIDI, MusicXML,
 │                     MEI o ABC mientras suenan (con las transformaciones entre ellos), o las notas que se toquen (y
 │                     qué acorde forman), en el Tonnetz, la tabla armónica o un

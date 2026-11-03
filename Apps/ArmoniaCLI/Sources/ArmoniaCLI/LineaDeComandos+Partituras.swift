@@ -4,18 +4,13 @@ import Foundation
 // MARK: - Partituras: MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI
 
 extension LineaDeComandos {
-    enum Formato: String {
-        case musicXML = "musicxml"
-        case mei
-        case lilyPond = "lilypond"
-        case guido, abc, midi
-    }
-
     /// `musicxml melodia …`, `mei melodia …`, `lilypond melodia …`, `guido melodia …`, `abc melodia …` y
     /// `midi melodia …`: las mismas opciones, salvo la clave y las marcas (no en MIDI) y el instrumento (solo MIDI).
     /// Además de una melodía, se exporta un coral, unos acordes, sus arpegios o una escala (`musicxml escala Re
     /// bayati`, con sus microtonos).
-    static func partitura(_ argumentos: [String], _ notacion: Notacion, formato: Formato) throws -> ResultadoDeOrden {
+    static func partitura(
+        _ argumentos: [String], _ notacion: Notacion, formato: FormatoDePartitura
+    ) throws -> ResultadoDeOrden {
         let orden = formato.rawValue
         guard let tipo = argumentos.first?.lowercased() else {
             return uso(.faltaTipoDePartitura(orden: orden), notacion)
@@ -122,16 +117,11 @@ extension LineaDeComandos {
             }
             let anacrusa = try opciones["anacrusa"].map { try Duracion(leyendo: $0) } ?? .cero
             let voz = try Voz(leyendo: musica.joined(separator: " "), compas: compas, anacrusa: anacrusa)
-            if formato == .midi {
-                return binario(
-                    voz.midi(tonalidad: tonalidad, tempo: tempo, titulo: titulo, instrumento: instrumento ?? 0))
-            }
-            return escrita(
-                formato, voz.musicXML(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
-                mei: voz.mei(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
-                lilyPond: voz.lilyPond(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
-                guido: voz.guido(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
-                abc: voz.abc(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo))
+            return salida(
+                formato,
+                voz.exportar(
+                    como: formato, tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo,
+                    instrumento: instrumento ?? 0))
         case "coral", "chorale":
             guard !musica.isEmpty else {
                 return uso(.faltanAcordesDelCoral(orden: orden), notacion)
@@ -141,31 +131,13 @@ extension LineaDeComandos {
             }
             let duracion = try opciones["duracion"].map { try Duracion(leyendo: $0) } ?? .negra
             let coral = try Coral(leyendo: musica.joined(separator: " "))
-            if formato == .midi {
-                return binario(
-                    coral.midi(
-                        duracion: duracion, compas: compas, tonalidad: tonalidad, tempo: tempo,
-                        titulo: titulo, instrumento: instrumento ?? 52, notacion: notacion))
-            }
-            let cifrados = marcas.contains("cifrados")
-            let conAnalisis = marcas.contains("analisis")
-            return escrita(
+            // En MIDI no hay marcas: ya se ha comprobado.
+            return salida(
                 formato,
-                coral.musicXML(
-                    duracion: duracion, compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo,
-                    cifrados: cifrados, analisis: conAnalisis, notacion: notacion),
-                mei: coral.mei(
-                    duracion: duracion, compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo,
-                    cifrados: cifrados, analisis: conAnalisis, notacion: notacion),
-                lilyPond: coral.lilyPond(
-                    duracion: duracion, compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo,
-                    cifrados: cifrados, analisis: conAnalisis, notacion: notacion),
-                guido: coral.guido(
-                    duracion: duracion, compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo,
-                    cifrados: cifrados, analisis: conAnalisis, notacion: notacion),
-                abc: coral.abc(
-                    duracion: duracion, compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo,
-                    cifrados: cifrados, analisis: conAnalisis, notacion: notacion))
+                coral.exportar(
+                    como: formato, duracion: duracion, compas: compas, tonalidad: tonalidad, tempo: tempo,
+                    titulo: titulo, cifrados: marcas.contains("cifrados"), analisis: marcas.contains("analisis"),
+                    instrumento: instrumento ?? 52, notacion: notacion))
         case _ where acordes.contains(tipo):
             for opcion in ["clave", "anacrusa"] where opciones[opcion] != nil {
                 return uso(.soloParaMelodia(opcion), notacion)
@@ -177,24 +149,11 @@ extension LineaDeComandos {
             }
             let (analisis, ritmo) = leida
             let duraciones = ritmo ?? Array(repeating: duracion, count: analisis.acordes.count)
-            if formato == .midi {
-                return binario(
-                    analisis.midi(
-                        duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo,
-                        instrumento: instrumento ?? 0, notacion: notacion))
-            }
-            return escrita(
+            return salida(
                 formato,
-                analisis.musicXML(
-                    duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo, notacion: notacion),
-                mei: analisis.mei(
-                    duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo, notacion: notacion),
-                lilyPond: analisis.lilyPond(
-                    duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo, notacion: notacion),
-                guido: analisis.guido(
-                    duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo, notacion: notacion),
-                abc: analisis.abc(
-                    duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo, notacion: notacion))
+                analisis.exportar(
+                    como: formato, duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo,
+                    instrumento: instrumento ?? 0, notacion: notacion))
         case _ where arpegios.contains(tipo):
             for opcion in ["clave", "anacrusa"] where opciones[opcion] != nil {
                 return uso(.soloParaMelodia(opcion), notacion)
@@ -225,18 +184,11 @@ extension LineaDeComandos {
                     arpegiando: analisis.acordes.map(\.acorde), patron: patron, figura: figura,
                     porAcorde: porAcorde, compas: compas, enlazados: enlazados)
             }
-            if formato == .midi {
-                return binario(
-                    voz.midi(
-                        tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo,
-                        instrumento: instrumento ?? 0))
-            }
-            return escrita(
-                formato, voz.musicXML(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo),
-                mei: voz.mei(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo),
-                lilyPond: voz.lilyPond(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo),
-                guido: voz.guido(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo),
-                abc: voz.abc(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo))
+            return salida(
+                formato,
+                voz.exportar(
+                    como: formato, tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo,
+                    instrumento: instrumento ?? 0))
         case "escala", "scale":
             // Una escala en negras (o en lo que diga `--duracion`), con sus microtonos si los tiene.
             guard !musica.isEmpty else { return uso(.faltaEscala, notacion) }
@@ -252,35 +204,21 @@ extension LineaDeComandos {
             var voz = escala.voz(duracion: duracion)
             voz.compas = compas
             let titulo = titulo ?? escala.nombre(en: notacion)
-            if formato == .midi {
-                return binario(
-                    voz.midi(tonalidad: tonalidad, tempo: tempo, titulo: titulo, instrumento: instrumento ?? 0))
-            }
-            return escrita(
-                formato, voz.musicXML(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
-                mei: voz.mei(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
-                lilyPond: voz.lilyPond(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
-                guido: voz.guido(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
-                abc: voz.abc(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo))
+            return salida(
+                formato,
+                voz.exportar(
+                    como: formato, tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo,
+                    instrumento: instrumento ?? 0))
         default:
             return uso(.tipoDePartituraDesconocido(tipo), notacion)
         }
     }
 
-    /// La partitura en el formato de texto pedido, sin el salto de línea del final. Solo se escribe la de ese formato.
-    private static func escrita(
-        _ formato: Formato, _ musicXML: @autoclosure () -> String, mei: @autoclosure () -> String,
-        lilyPond: @autoclosure () -> String, guido: @autoclosure () -> String, abc: @autoclosure () -> String
-    ) -> ResultadoDeOrden {
-        let texto: String
-        switch formato {
-        case .mei: texto = mei()
-        case .lilyPond: texto = lilyPond()
-        case .guido: texto = guido()
-        case .abc: texto = abc()
-        case .musicXML, .midi: texto = musicXML()
-        }
-        return bien(texto.trimmingCharacters(in: "\n"))
+    /// La partitura que da `exportar(como:…)`: el MIDI, tal cual, y los formatos de texto, sin el salto de línea del
+    /// final.
+    private static func salida(_ formato: FormatoDePartitura, _ datos: Data) -> ResultadoDeOrden {
+        guard formato.esTexto else { return binario(datos) }
+        return bien(String(decoding: datos, as: UTF8.self).trimmingCharacters(in: "\n"))
     }
 
     /// "sol", "fa", "do3", "do en tercera", "clave de fa", "treble", "bass", "alto"…

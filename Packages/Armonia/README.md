@@ -242,7 +242,7 @@ Sources/
 │   │                  Pentagrama (Clave, PosicionEnPentagrama, InstrumentoDePartitura), SignoMicrotonal
 │   ├── Dibujo/        PentagramaSVG (con sus opciones y los glifos SMuFL)
 │   └── Contrapunto/   Contrapunto (contrapunto de especies a dos voces, con sus faltas)
-├── ArmoniaFormatos/   MusicXML, MEI, LilyPond y ABC (exportación de voces, corales y progresiones),
+├── ArmoniaFormatos/   MusicXML, MEI, LilyPond, GUIDO y ABC (exportación de voces, corales y progresiones),
 │                      ArchivoMIDI (ficheros MIDI estándar), la importación de MusicXML, MXL, MEI, ABC y MIDI
 │                      (Importacion, con ErrorDeImportacion) y el lector de XML propio (LectorXML)
 ├── ArmoniaTrastes/    Encordado (afinaciones del instrumento), Mastil (con PosicionEnElMastil: dónde suena cada nota),

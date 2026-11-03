@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+### Los formatos de partitura como un solo tipo
+
+- **`FormatoDePartitura`** (MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI), con su `extensionDeFichero`, su `nombre` y si
+  es texto (`esTexto`). `exportar(como:…)` en `Voz`, `Coral`, `AnalisisArmonico` y `Contrapunto` escribe en el formato
+  pedido, con las mismas opciones que la función de cada uno (`musicXML(…)`, `guido(…)`…), y da `Data`: los formatos
+  de texto, en UTF-8. Las funciones de cada formato no cambian.
+- **`Contrapunto.guido(tonalidad:tempo:titulo:)`**: el contrapunto de especies también en GUIDO, como en los demás
+  formatos.
+
 ### Más escalas antiguas: harmoniai de Arístides, cromáticas y enarmónicas, géneros y hexacordos
 
 - **Harmoniai de Arístides Quintiliano** (`TipoDeEscala.harmoniaiDeAristides`): la lidia, la doria, la frigia, la

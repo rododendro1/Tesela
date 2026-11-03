@@ -58,7 +58,7 @@ extension LineaDeComandos {
         }
 
         /// La partitura que lee; `nil` el propio, que graba un dibujo.
-        var partitura: Formato? {
+        var partitura: FormatoDePartitura? {
             switch self {
             case .lilypond: return .lilyPond
             case .musescore: return .musicXML
@@ -84,13 +84,13 @@ extension LineaDeComandos {
         /// fichero que se les da, y Guido en la salida estándar. Si LilyPond o MuseScore hacen varias páginas en SVG
         /// o PNG, se queda la primera (`grabado-page1.png` o `grabado-1.svg`, según el programa y la versión).
         private func paso(para formato: FormatoDeGrabado) -> PasoDeGrabado {
-            let entrada: String
+            // Lee la partitura con la extensión de su formato: `grabado.ly`, `grabado.musicxml`, `grabado.mei`…
+            let entrada = partitura?.extensionDeFichero ?? "svg"
             let argumentos: [String]
             let ext = formato.rawValue
             var salidas = ["grabado.\(ext)", "grabado-page1.\(ext)", "grabado-1.\(ext)"]
             switch self {
             case .lilypond:
-                entrada = "ly"
                 let salida: [String]
                 switch formato {
                 case .pdf: salida = ["--pdf"]
@@ -99,15 +99,12 @@ extension LineaDeComandos {
                 }
                 argumentos = ["--loglevel=ERROR", "-dno-point-and-click"] + salida + ["-o", "grabado", "grabado.ly"]
             case .musescore:
-                entrada = "musicxml"
                 let resolucion = formato == .png ? ["-r", "150"] : []
                 argumentos = resolucion + ["-o", "grabado.\(ext)", "grabado.musicxml"]
             case .verovio:
-                entrada = "mei"
                 argumentos = ["-o", "grabado.svg", "grabado.mei"]
                 salidas = ["grabado.svg", "grabado_001.svg"]
             case .guido:
-                entrada = "gmn"
                 argumentos = ["grabado.gmn"]
                 salidas = []
             case .propio:

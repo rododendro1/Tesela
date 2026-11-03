@@ -112,13 +112,9 @@ public enum PresentacionDeSerie {
             notasDeLaForma: lista(clases),
             pentagrama: PentagramaPresentado(alturas.map { [$0] }, titulo: forma.description, notacion: notacion),
             sonido: Escucha.voz(voz, tempo: tempo),
-            ficheros: [
-                .musicXML(voz.musicXML(tonalidad: sinArmadura, titulo: titulo), nombre: titulo),
-                .mei(voz.mei(tonalidad: sinArmadura, titulo: titulo), nombre: titulo),
-                .lilyPond(voz.lilyPond(tonalidad: sinArmadura, titulo: titulo), nombre: titulo),
-                .abc(voz.abc(tonalidad: sinArmadura, titulo: titulo), nombre: titulo),
-                .midi(voz.midi(tonalidad: sinArmadura, tempo: tempo, titulo: titulo), nombre: titulo),
-            ])
+            ficheros: FicheroParaExportar.partituras(nombre: titulo) { formato in
+                voz.exportar(como: formato, tonalidad: sinArmadura, tempo: tempo, titulo: titulo)
+            })
     }
 
     private static func cifra(_ clase: Int) -> String { SeriePresentada.cifra(clase) }

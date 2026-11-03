@@ -1,8 +1,8 @@
 import Armonia
 import Foundation
 
-/// Un fichero que las apps ofrecen para compartir: una partitura MusicXML, MEI, LilyPond o ABC, un MIDI o
-/// un dibujo SVG.
+/// Un fichero que las apps ofrecen para compartir: una partitura en uno de los formatos de `FormatoDePartitura`
+/// (MusicXML, MEI, LilyPond, GUIDO, ABC o MIDI) o un dibujo SVG.
 /// No usa SwiftUI, así que se prueba en Linux; `BotonDeExportar` lo escribe y lo comparte.
 ///
 ///     let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
@@ -13,21 +13,38 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
         case musicXML
         case mei
         case lilyPond
+        case guido
         case abc
         case midi
         case svg
 
-        /// La extensión del fichero, sin el punto.
-        public var extensionDeFichero: String {
-            switch self {
-            case .musicXML: return "musicxml"
-            case .mei: return "mei"
-            case .lilyPond: return "ly"
-            case .abc: return "abc"
-            case .midi: return "mid"
-            case .svg: return "svg"
+        /// El de una partitura.
+        public init(_ partitura: FormatoDePartitura) {
+            switch partitura {
+            case .musicXML: self = .musicXML
+            case .mei: self = .mei
+            case .lilyPond: self = .lilyPond
+            case .guido: self = .guido
+            case .abc: self = .abc
+            case .midi: self = .midi
             }
         }
+
+        /// El formato de partitura que es; `nil` el dibujo SVG.
+        public var partitura: FormatoDePartitura? {
+            switch self {
+            case .musicXML: return .musicXML
+            case .mei: return .mei
+            case .lilyPond: return .lilyPond
+            case .guido: return .guido
+            case .abc: return .abc
+            case .midi: return .midi
+            case .svg: return nil
+            }
+        }
+
+        /// La extensión del fichero, sin el punto.
+        public var extensionDeFichero: String { partitura?.extensionDeFichero ?? "svg" }
 
         /// Cómo se llama el formato en el menú.
         public var titulo: String {
@@ -35,6 +52,7 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
             case .musicXML: return "Partitura MusicXML"
             case .mei: return "Partitura MEI"
             case .lilyPond: return "Partitura LilyPond"
+            case .guido: return "Partitura GUIDO"
             case .abc: return "Partitura ABC"
             case .midi: return "MIDI"
             case .svg: return "Dibujo SVG"
@@ -47,6 +65,7 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
             case .musicXML: return "music.note.list"
             case .mei: return "doc.richtext"
             case .lilyPond: return "doc.text"
+            case .guido: return "music.quarternote.3"
             case .abc: return "text.alignleft"
             case .midi: return "pianokeys"
             case .svg: return "photo"
@@ -63,6 +82,25 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
         self.nombre = nombre
         self.formato = formato
         self.datos = datos
+    }
+
+    /// Una partitura en un formato: los de texto, en UTF-8, como los da `exportar(como:…)`.
+    public static func partitura(
+        _ datos: Data, formato: FormatoDePartitura, nombre: String
+    ) -> FicheroParaExportar {
+        FicheroParaExportar(nombre: nombre, formato: Formato(formato), datos: datos)
+    }
+
+    /// Una partitura en todos los formatos, en el orden de `FormatoDePartitura.allCases`, para el menú de exportar:
+    ///
+    ///     let ficheros = FicheroParaExportar.partituras(nombre: "Coral") { formato in
+    ///         coral.exportar(como: formato, titulo: "Coral")
+    ///     }
+    ///     ficheros.map(\.nombreDeFichero)   // ["Coral.musicxml", "Coral.mei", "Coral.ly", "Coral.gmn", …]
+    public static func partituras(
+        nombre: String, _ exportar: (FormatoDePartitura) -> Data
+    ) -> [FicheroParaExportar] {
+        FormatoDePartitura.allCases.map { partitura(exportar($0), formato: $0, nombre: nombre) }
     }
 
     public static func musicXML(_ xml: String, nombre: String) -> FicheroParaExportar {
@@ -131,6 +169,8 @@ extension FicheroParaExportar.Formato {
             traduccion = TextosDeApps.traduccion(\.partituraMEI)
         case .lilyPond:
             traduccion = TextosDeApps.traduccion(\.partituraLilyPond)
+        case .guido:
+            traduccion = TextosDeApps.traduccion(\.partituraGUIDO)
         case .abc:
             traduccion = TextosDeApps.traduccion(\.partituraABC)
         case .midi:

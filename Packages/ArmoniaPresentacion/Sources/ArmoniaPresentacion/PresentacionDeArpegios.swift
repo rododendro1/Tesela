@@ -63,12 +63,8 @@ public enum PresentacionDeArpegios {
             voz: voz,
             sonido: (swing ? suena.conSwing(pulso: (tempo ?? Escucha.tempo).segundos(de: .negra)) : suena)
                 .conTonica(tonica),
-            ficheros: [
-                .musicXML(voz.musicXML(tonalidad: tonalidad, tempo: tempo, titulo: nombre), nombre: nombre),
-                .mei(voz.mei(tonalidad: tonalidad, tempo: tempo, titulo: nombre), nombre: nombre),
-                .lilyPond(voz.lilyPond(tonalidad: tonalidad, tempo: tempo, titulo: nombre), nombre: nombre),
-                .abc(voz.abc(tonalidad: tonalidad, tempo: tempo, titulo: nombre), nombre: nombre),
-                .midi(voz.midi(tonalidad: tonalidad, tempo: tempo, titulo: nombre), nombre: nombre),
-            ])
+            ficheros: FicheroParaExportar.partituras(nombre: nombre) { formato in
+                voz.exportar(como: formato, tonalidad: tonalidad, tempo: tempo, titulo: nombre)
+            })
     }
 }

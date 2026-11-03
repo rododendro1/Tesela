@@ -100,13 +100,9 @@ public enum PresentacionDeContrapunto {
         return ContrapuntoPresentado(
             cabecera: lineas.first ?? "", filas: filas, informe: Array(lineas.dropFirst()),
             esCorrecto: faltas.isEmpty,
-            ficheros: [
-                .musicXML(ejercicio.musicXML(titulo: nombre), nombre: nombre),
-                .mei(ejercicio.mei(titulo: nombre), nombre: nombre),
-                .lilyPond(ejercicio.lilyPond(titulo: nombre), nombre: nombre),
-                .abc(ejercicio.abc(titulo: nombre), nombre: nombre),
-                .midi(ejercicio.midi(tempo: tempo, titulo: nombre), nombre: nombre),
-            ],
+            ficheros: FicheroParaExportar.partituras(nombre: nombre) { formato in
+                ejercicio.exportar(como: formato, tempo: tempo, titulo: nombre)
+            },
             sonido: sonido,
             compasDePaso: sonido.inicios.map { Int(($0 / redonda + 1e-6).rounded(.down)) })
     }

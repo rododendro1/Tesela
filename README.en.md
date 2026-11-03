@@ -11,7 +11,7 @@ short English summary.
 - **Armonía** (app): chords (with fingerings, arpeggios and piano and jazz voicings), scales (on the fretboard, by
   position), harmonic analysis of a progression or of a MIDI, MusicXML, MEI or ABC file, four-part chorales, species
   counterpoint, chord identification from the fretboard or a MIDI keyboard, and twelve-tone rows. Exports MusicXML,
-  MEI, LilyPond, ABC and MIDI.
+  MEI, LilyPond, GUIDO, ABC and MIDI.
 - **Tonnetz** (app): chords, scales, P/L/R walks and scores played on the Tonnetz, the harmonic table or an
   isomorphic keyboard (Wicki-Hayden, Jankó, chromatic button accordion…).
 - **`armonia`** (command line): the same from the terminal, as text or JSON, plus engraved scores in PDF, SVG or PNG.
