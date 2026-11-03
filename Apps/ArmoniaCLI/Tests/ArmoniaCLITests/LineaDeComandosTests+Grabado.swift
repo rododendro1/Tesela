@@ -129,7 +129,8 @@ extension LineaDeComandosTests {
         let falso = EjecutorFalso()
         for orden in [
             "grabar", "grabar coral Do --motor", "grabar coral Do --motor foo", "grabar coral Do --formato gif",
-            "grabar acorde Do", "grabar nube Do", "grabar grabar coral Do", "grabar musicxml coral Do --motor propio",
+            "grabar acorde Do", "grabar nube Do", "grabar grabar coral Do",
+            "grabar musicxml melodia Do4:4 --motor propio",
             "grabar coral --foo 1", "grabar acorde Do --motor lilypond",
         ] {
             let resultado = grabado(orden, con: falso)
