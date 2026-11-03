@@ -113,6 +113,39 @@ y `camino` buscan acordes a un semitono (séptimas, maj7 y tríadas, con `--voce
 `identificar` (los acordes que forman unas notas), `intervalo`, `escala` y `tonalidad`. Para instalarla: `swift build -c release` y copiar `.build/release/armonia` a
 una carpeta del `PATH`.
 
+### Grabar partituras
+
+`grabar` (en inglés, `engrave`) pasa una partitura o un dibujo a PDF, SVG o PNG con un programa externo. Tesela
+escribe lo que ya sabe exportar en una carpeta temporal, el programa lo convierte allí y la orden devuelve el
+fichero:
+
+```
+$ swift run armonia grabar coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 --cifrados > coral.pdf
+$ swift run armonia grabar melodia Sol4:4 Do5:2 --compas 3/4 --anacrusa 4 --motor verovio --formato svg > tema.svg
+$ swift run armonia grabar pentagrama escala Re dórico --formato png > dorico.png
+$ swift run armonia motores
+lilypond   /opt/homebrew/bin/lilypond (GNU LilyPond 2.24.4)
+musescore  /Applications/MuseScore 4.app/Contents/MacOS/mscore (MuseScore4 4.5.2)
+verovio    no instalado (o pon su ruta en ARMONIA_VEROVIO)
+guido      no instalado (o pon su ruta en ARMONIA_GUIDO2SVG)
+propio     /opt/homebrew/bin/rsvg-convert (rsvg-convert version 2.60.0)
+```
+
+| `--motor`   | Programa            | Lee                         | Da                                     |
+| ----------- | ------------------- | --------------------------- | -------------------------------------- |
+| `lilypond`  | `lilypond`          | el `.ly` de `lilypond`      | PDF, SVG y PNG                         |
+| `musescore` | `mscore`            | el MusicXML de `musicxml`   | PDF, SVG y PNG                         |
+| `verovio`   | `verovio`           | el MEI de `mei`             | SVG; PDF y PNG, con rsvg-convert       |
+| `guido`     | `guido2svg`         | el `.gmn` de `guido`        | SVG; PDF y PNG, con rsvg-convert       |
+| `propio`    | `rsvg-convert`      | el SVG de la orden de dibujo | PDF y PNG; el SVG, tal cual           |
+
+Sin `--motor`, una partitura (`melodia`, `coral`, `acordes`, `arpegios`, `escala`) se graba con LilyPond y una orden
+de dibujo (`pentagrama`, `tonnetz`, `tabla`…) con el motor propio; sin `--formato`, sale en PDF. Cada programa se
+busca en el `PATH`, en las carpetas de Homebrew y en la de la app de MuseScore en macOS, o en la variable que dice
+`motores` (`ARMONIA_LILYPOND`, `ARMONIA_MSCORE`, `ARMONIA_VEROVIO`, `ARMONIA_GUIDO2SVG`, `ARMONIA_RSVG_CONVERT`).
+Los programas se llaman sin shell, con un tiempo límite de dos minutos, y no forman parte de Tesela: se instalan
+aparte (`brew install lilypond librsvg`, `apt install lilypond librsvg2-bin`…) y cada uno tiene su licencia.
+
 ## Documentación
 
 La documentación está en el catálogo DocC `Sources/Armonia/Armonia.docc`, que Xcode muestra
@@ -263,7 +296,8 @@ Scripts/comprobaciones/comprobar_modulos.py`, que ejecuta el CI, comprueba que l
 `.github/workflows/ci.yml` comprueba las rutas y las capas, compila, prueba y ejecuta el ejemplo en Linux (Swift 6.0, la
 mínima, y 6.2) y en macOS en cada push o pull request. Con Swift 6.2 también compila la
 biblioteca con los avisos tratados como errores. Primero ejecuta las
-pruebas rápidas y después las exhaustivas, así un fallo corriente se ve antes.
+pruebas rápidas y después las exhaustivas, así un fallo corriente se ve antes. El job «Grabado con LilyPond y rsvg-convert» instala
+los dos programas y graba partituras y dibujos de verdad con `armonia grabar`, y deja los ficheros como artefacto.
 
 ### Pruebas exhaustivas
 

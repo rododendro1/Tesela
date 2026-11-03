@@ -13,6 +13,8 @@
   (`ARMONIA_MSCORE`, `ARMONIA_VEROVIO`, `ARMONIA_GUIDO2SVG`…) que da su ruta si no se encuentra.
 - **`armonia guido`**: la melodía, el coral, los acordes, los arpegios o la escala en GUIDO (`.gmn`), con las mismas
   opciones que `armonia lilypond`.
+- **Documentación de `armonia grabar`** en el README, con la tabla de motores, y un job de CI que instala LilyPond
+  y rsvg-convert en Linux y graba partituras y dibujos de verdad en PDF, SVG y PNG.
 
 ## 0.3.2 (2026-11-03)
 
