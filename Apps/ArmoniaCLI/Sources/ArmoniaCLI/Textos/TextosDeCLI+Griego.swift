@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "η κλίμακα σε πληκτρολόγιο πιάνου\n(SVG): οι νότες ή, με --hand right\nή left, τα δάχτυλα· --octaves 2",
         sintaxisReloj: "clock <scale> [--fifths]",
         descripcionReloj: "η κλίμακα σε ρολόι δώδεκα ωρών\n(SVG): ο χρωματικός κύκλος ή, με\n--fifths, ο κύκλος των πεμπτών",
+        sintaxisPentagrama: "staff scale|chord|arpeggio|chords <νότες>",
+        descripcionPentagrama: "μια κλίμακα, μια συγχορδία, ένα αρπίσμα\n(με ρυθμό: --figure 16, --triplets) ή\nσυγχορδίες με τα σύμβολά τους σε πεντάγραμμο\n(SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
         sintaxisPosicionesArpegio: "positions --arpeggio <σύμβολο> [--caged|--sweep]",
         descripcionPosicionesArpegio: "το αρπίσιμο μιας συγχορδίας σε κάθε\nθέση της ταστιέρας, σε ταμπλατούρα με\nτα δάχτυλα· --up-and-down, πάνω και κάτω",
 
@@ -235,6 +237,7 @@ extension TextosDeCLI {
         archivoConNotas: "με το --file δεν γράφονται νότες",
         noEsPentatonica: "τα σχήματα είναι για κλίμακα πέντε φθόγγων: armonia positions A minor pentatonic --shapes",
         faltaEscalaDelReloj: "λείπει η κλίμακα: armonia clock D major",
+        faltaLoQueDibujaElPentagrama: "λείπει τι θα σχεδιαστεί: armonia staff scale D dorian",
         capoFueraDeRango: "το καποτάστο είναι αριθμός από 0 έως 12: --capo 2",
         octavasFueraDeRango: "οι οκτάβες είναι αριθμός από 1 έως 4: --octaves 2",
         desdeNoValido: { desde in "το «\(desde)» δεν είναι νότα ή βαθμίδα της συγχορδίας: --from E ή --from 3" },

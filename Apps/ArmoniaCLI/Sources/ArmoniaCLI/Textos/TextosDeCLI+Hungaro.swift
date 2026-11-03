@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "a skála zongora-billentyűzeten\n(SVG): a hangjai vagy --hand right\nvagy left mellett az ujjak; --octaves 2",
         sintaxisReloj: "clock <scale> [--fifths]",
         descripcionReloj: "a skála egy tizenkét órás számlapon\n(SVG): a kromatikus kör vagy\n--fifths mellett a kvintkör",
+        sintaxisPentagrama: "staff scale|chord|arpeggio|chords <hangok>",
+        descripcionPentagrama: "egy skála, egy akkord, egy arpeggio\n(ritmussal: --figure 16, --triplets) vagy\nakkordok a jelölésükkel egy kottasoron\n(SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
         sintaxisPosicionesArpegio: "positions --arpeggio <akkordjelzés> [--caged|--sweep]",
         descripcionPosicionesArpegio: "egy akkord arpeggiója a fogólap\nminden fekvésében, tabulatúrával és\nujjakkal; --up-and-down, fel és vissza",
 
@@ -235,6 +237,7 @@ extension TextosDeCLI {
         archivoConNotas: "a --file mellett ne írj hangokat",
         noEsPentatonica: "a formák ötfokú skálához tartoznak: armonia positions A minor pentatonic --shapes",
         faltaEscalaDelReloj: "hiányzik a skála: armonia clock D major",
+        faltaLoQueDibujaElPentagrama: "hiányzik, mit kell rajzolni: armonia staff scale D dorian",
         capoFueraDeRango: "a kapodaszter 0 és 12 közötti szám: --capo 2",
         octavasFueraDeRango: "az oktávok száma 1 és 4 közötti: --octaves 2",
         desdeNoValido: { desde in "„\(desde)” nem hangja és nem foka az akkordnak: --from E vagy --from 3" },

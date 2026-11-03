@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "die Skala auf einer Klaviertastatur\n(SVG): ihre Töne oder, mit --hand right\noder left, die Finger; --octaves 2",
         sintaxisReloj: "clock <scale> [--fifths]",
         descripcionReloj: "die Skala auf einer Zwölf-Stunden-Uhr\n(SVG): der chromatische Kreis oder, mit\n--fifths, der Quintenzirkel",
+        sintaxisPentagrama: "staff scale|chord|arpeggio|chords <Noten>",
+        descripcionPentagrama: "eine Skala, einen Akkord, ein Arpeggio\n(mit Rhythmus: --figure 16, --triplets)\noder Akkorde mit ihren Symbolen auf einem\nNotensystem (SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
         sintaxisPosicionesArpegio: "positions --arpeggio <Akkordsymbol> [--caged|--sweep]",
         descripcionPosicionesArpegio: "das Arpeggio eines Akkords in jeder\nLage des Griffbretts, als Tabulatur mit\nden Fingern; --up-and-down, auf und ab",
 
@@ -235,6 +237,7 @@ extension TextosDeCLI {
         archivoConNotas: "mit --file keine Töne angeben",
         noEsPentatonica: "die Formen gibt es nur bei fünftönigen Skalen: armonia positions A minor pentatonic --shapes",
         faltaEscalaDelReloj: "die Skala fehlt: armonia clock D major",
+        faltaLoQueDibujaElPentagrama: "es fehlt, was gezeichnet werden soll: armonia staff scale D dorian",
         capoFueraDeRango: "der Kapodaster ist eine Zahl von 0 bis 12: --capo 2",
         octavasFueraDeRango: "die Oktaven sind eine Zahl von 1 bis 4: --octaves 2",
         desdeNoValido: { desde in "„\(desde)“ ist weder ein Ton noch eine Stufe des Akkords: --from E oder --from 3" },

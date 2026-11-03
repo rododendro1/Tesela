@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "a escala nun teclado de piano\n(SVG): as notas ou, con --mano derecha\nou izquierda, os dedos; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "a escala nun reloxo de doce horas\n(SVG): o círculo cromático ou, con\n--quintas, o de quintas",
+        sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
+        descripcionPentagrama: "unha escala, un acorde, un arpexo (con\nritmo: --figura 16, --tresillos) ou uns\nacordes co seu cifrado nun pentagrama\n(SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
         sintaxisPosicionesArpegio: "posiciones --arpegio <cifrado> [--caged|--barrido]",
         descripcionPosicionesArpegio: "o arpexo dun acorde en cada\nposición do mástil, en tablatura e cos\ndedos; --ida-y-vuelta, sobe e baixa",
 
@@ -235,6 +237,7 @@ extension TextosDeCLI {
         archivoConNotas: "con --archivo non se escriben notas",
         noEsPentatonica: "as formas son dunha escala de cinco notas: armonia posiciones La pentatónica menor --formas",
         faltaEscalaDelReloj: "falta a escala: armonia reloj Re mayor",
+        faltaLoQueDibujaElPentagrama: "falta que debuxar: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "o capo é un número de 0 a 12: --capo 2",
         octavasFueraDeRango: "as oitavas son un número de 1 a 4: --octavas 2",
         desdeNoValido: { desde in "«\(desde)» non é unha nota nin un grao do acorde: --desde Mi ou --desde 3" },

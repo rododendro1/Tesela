@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "la gama sus un clavièr de piano\n(SVG): sas nòtas o, amb --mano derecha\no izquierda, los dets; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "la gama sus un relòtge de dotze oras\n(SVG): lo cercle cromatic o, amb\n--quintas, lo de quintas",
+        sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
+        descripcionPentagrama: "una gama, un acòrd, un arpègi (amb\nritme: --figura 16, --tresillos) o d'acòrds\namb lor chifratge sus una portada\n(SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
         sintaxisPosicionesArpegio: "posiciones --arpegio <chifratge> [--caged|--barrido]",
         descripcionPosicionesArpegio: "l'arpègi d'un acòrdi dins cada\nposicion del margue, en tablatura amb\nlos dets; --ida-y-vuelta, monta e davala",
 
@@ -235,6 +237,7 @@ extension TextosDeCLI {
         archivoConNotas: "amb --archivo, escrivètz pas de nòtas",
         noEsPentatonica: "las formas son d'una gama de cinc nòtas: armonia posiciones La pentatónica menor --formas",
         faltaEscalaDelReloj: "manca la gama: armonia reloj Re mayor",
+        faltaLoQueDibujaElPentagrama: "manca çò que cal dessenhar: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "lo capodastre es un nombre de 0 a 12: --capo 2",
         octavasFueraDeRango: "las octavas son un nombre d'1 a 4: --octavas 2",
         desdeNoValido: { desde in "«\(desde)» es pas una nòta ni un grau de l'acòrd: --desde Mi o --desde 3" },

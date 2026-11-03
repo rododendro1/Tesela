@@ -84,6 +84,8 @@ enum ErrorDeUso {
     case noEsPentatonica
     /// `reloj` sin escala.
     case faltaEscalaDelReloj
+    /// `pentagrama` sin escala, acorde ni arpegio.
+    case faltaLoQueDibujaElPentagrama
 
     // Neorriemanniano
     case vocesFueraDeRango
@@ -228,6 +230,7 @@ enum ErrorDeUso {
         case .archivoConNotas: return TextosDeCLI.traduccion(\.archivoConNotas)
         case .noEsPentatonica: return TextosDeCLI.traduccion(\.noEsPentatonica)
         case .faltaEscalaDelReloj: return TextosDeCLI.traduccion(\.faltaEscalaDelReloj)
+        case .faltaLoQueDibujaElPentagrama: return TextosDeCLI.traduccion(\.faltaLoQueDibujaElPentagrama)
         case .vocesFueraDeRango: return TextosDeCLI.traduccion(\.vocesFueraDeRango)
         case .unAcordeDeVecinos:
             let ejemplo = "armonia vecinos Sol7"

@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "eskala piano-teklatu batean\n(SVG): notak edo, --mano derecha\nedo izquierda-rekin, hatzak; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "eskala hamabi orduko erloju batean\n(SVG): zirkulu kromatikoa edo,\n--quintas-ekin, bosten zirkulua",
+        sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
+        descripcionPentagrama: "eskala bat, akorde bat, arpegio bat\n(erritmoarekin: --figura 16, --tresillos)\nedo akordeak beren zifratuarekin pentagrama\nbatean (SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
         sintaxisPosicionesArpegio: "posiciones --arpegio <zifratua> [--caged|--barrido]",
         descripcionPosicionesArpegio: "akorde baten arpegioa mastilaren\nposizio bakoitzean, tablaturan eta\nhatzekin; --ida-y-vuelta, igo eta jaitsi",
 
@@ -235,6 +237,7 @@ extension TextosDeCLI {
         archivoConNotas: "--archivo erabiltzean ez idatzi notarik",
         noEsPentatonica: "formak bost notako eskala batekoak dira: armonia posiciones La pentatónica menor --formas",
         faltaEscalaDelReloj: "eskala falta da: armonia reloj Re mayor",
+        faltaLoQueDibujaElPentagrama: "zer marraztu falta da: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "capoa 0 eta 12 arteko zenbakia da: --capo 2",
         octavasFueraDeRango: "zortzidunak 1 eta 4 arteko zenbakia dira: --octavas 2",
         desdeNoValido: { desde in "«\(desde)» ez da akordearen nota edo gradu bat: --desde Mi edo --desde 3" },

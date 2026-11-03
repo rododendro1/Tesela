@@ -115,7 +115,7 @@ import Testing
         #expect(Set(nombres).count == nombres.count)
         for nombre in nombres { #expect(nombre == nombre.lowercased(), Comment(rawValue: nombre)) }
         for orden in LineaDeComandos.ordenes { #expect(!orden.ayuda.isEmpty, Comment(rawValue: orden.nombres[0])) }
-        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 49)
+        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 50)
         // Los nombres no distinguen mayúsculas.
         #expect(salida("ACORDE Do") == salida("acorde Do"))
     }
@@ -148,7 +148,10 @@ import Testing
         "identificar --escalas", "posiciones Do mayor --secuencia foo", "posiciones Do mayor --secuencia",
         "posiciones Do mayor --formas", "reloj", "reloj Do mayor --foo", "posiciones Do mayor --instrumento arpa",
         "posiciones Do mayor --instrumento", "posiciones Do mayor --capo 13", "posiciones Do mayor --capo",
-        "posiciones --arpegio", "posiciones --arpegio Do --foo",
+        "posiciones --arpegio", "posiciones --arpegio Do --foo", "pentagrama", "pentagrama nube Do",
+        "pentagrama escala", "pentagrama escala Do mayor --octavas 9", "pentagrama acorde Do --foo",
+        "pentagrama arpegio Do --patron foo", "pentagrama arpegio Do --figura", "pentagrama acordes",
+        "pentagrama escala Do mayor --en",
     ]
 
     /// Con --ingles no se cuela nada en español: ni en la salida, ni en los errores, ni en la ayuda.

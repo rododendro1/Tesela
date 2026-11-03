@@ -2,6 +2,21 @@
 
 ## Sin publicar
 
+### Cifrados, intervalos, semitonos y tónica en el pentagrama
+
+- **Cifrado sobre cada acorde**: `DisposicionDeAcorde.svgPentagrama(_:titulo:cifrados:)`,
+  `Voz.svgPentagrama(titulo:acordes:)` (encima de la primera nota de cada arpegio) y
+  `Arpegio.svgPentagrama(cifrado:)`.
+- **`OpcionesDePentagrama.intervalosDeLasNotas`**: el intervalo de cada nota debajo, desde la tónica de la escala o
+  la fundamental del acorde que suena (9, 11 y 13 si tiene séptima).
+- **`marcarSemitonos`** (un arco entre las notas a un semitono) y **`marcarTonica`** (la tónica en
+  `colorDeLaTonica`).
+- **Escalas de varias octavas**: `Escala.svgPentagrama(octavas:)`, `Escala.voz(octavas:)` y
+  `alturasMicrotonales(octava:octavas:sentido:)`.
+- **En la línea de comandos**, `armonia pentagrama escala|acorde|arpegio|acordes …` (en inglés, `staff
+  scale|chord|arpeggio|chords`) con `--octavas`, `--bajando`, `--patron`, `--figura`, `--tresillos`, `--nombres`,
+  `--intervalos`, `--semitonos`, `--tonica` y `--en <tonalidad>`.
+
 ### Ritmo y armadura en el pentagrama
 
 - **`Voz.svgPentagrama(titulo:opciones:)`**: una voz en el pentagrama en SVG con su ritmo: cabezas negras, blancas

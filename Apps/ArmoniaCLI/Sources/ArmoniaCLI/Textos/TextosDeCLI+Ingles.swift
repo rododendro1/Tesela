@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "the scale on a piano keyboard\n(SVG): its notes or, with --hand right\nor left, the fingers; --octaves 2",
         sintaxisReloj: "clock <scale> [--fifths]",
         descripcionReloj: "the scale on a twelve-hour clock\n(SVG): the chromatic circle or, with\n--fifths, the circle of fifths",
+        sintaxisPentagrama: "staff scale|chord|arpeggio|chords <…>",
+        descripcionPentagrama: "a scale, a chord, an arpeggio (with\nrhythm: --figure 16, --triplets) or some\nchords with their symbols on a staff\n(SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
         sintaxisPosicionesArpegio: "positions --arpeggio <symbol> [--caged|--sweep]",
         descripcionPosicionesArpegio: "a chord's arpeggio in each position\non the neck, in tab with the fingers;\n--up-and-down, up and back down",
 
@@ -237,6 +239,7 @@ extension TextosDeCLI {
         archivoConNotas: "with --file, do not write notes",
         noEsPentatonica: "shapes need a five-note scale: armonia positions A minor pentatonic --shapes",
         faltaEscalaDelReloj: "missing the scale: armonia clock D major",
+        faltaLoQueDibujaElPentagrama: "missing what to draw: armonia staff scale D dorian",
         capoFueraDeRango: "the capo is a number from 0 to 12: --capo 2",
         octavasFueraDeRango: "the octaves are a number from 1 to 4: --octaves 2",
         desdeNoValido: { desde in "\"\(desde)\" is not a note or degree of the chord: --from E or --from 3" },

@@ -64,6 +64,16 @@ public struct OpcionesDePentagrama {
     public var notacion: Notacion
     /// Si se escribe el nombre de cada nota debajo del pentagrama.
     public var nombresDeLasNotas: Bool
+    /// Si se escribe debajo de cada nota (y del nombre, si lo lleva) su intervalo desde la tónica de la escala o la
+    /// fundamental del acorde: 1, 2, ♭3, ♯4, 5… En un acorde con séptima, la segunda, la cuarta y la sexta se
+    /// escriben como tensiones: 9, 11, 13.
+    public var intervalosDeLasNotas = false
+    /// Si se unen con un arco, encima, las notas seguidas que están a un semitono (Mi–Fa y Si–Do en la mayor).
+    public var marcarSemitonos = false
+    /// Si las tónicas de la escala (o las fundamentales del acorde) se pintan de `colorDeLaTonica`.
+    public var marcarTonica = false
+    /// El color de las tónicas marcadas (cualquier color CSS).
+    public var colorDeLaTonica = "#1971C2"
     /// Píxeles por espacio de pentagrama: el pentagrama mide cuatro veces esto de alto.
     public var tamano: Double
     /// Color del dibujo (cualquier color CSS); `currentColor` toma el del texto que lo rodea.
@@ -87,7 +97,8 @@ public struct OpcionesDePentagrama {
         notacion: Notacion = .espanolCompacto,
         nombresDeLasNotas: Bool = false, tamano: Double = 10, color: String = "currentColor",
         marcaDeOctava: Bool = true, anchoDeLosCaracteres: Double = 1,
-        disposicionDelAcorde: Disposicion = .automatica
+        disposicionDelAcorde: Disposicion = .automatica, intervalosDeLasNotas: Bool = false,
+        marcarSemitonos: Bool = false, marcarTonica: Bool = false
     ) {
         self.clave = clave
         self.armadura = armadura
@@ -99,5 +110,8 @@ public struct OpcionesDePentagrama {
         self.marcaDeOctava = marcaDeOctava
         self.anchoDeLosCaracteres = anchoDeLosCaracteres
         self.disposicionDelAcorde = disposicionDelAcorde
+        self.intervalosDeLasNotas = intervalosDeLasNotas
+        self.marcarSemitonos = marcarSemitonos
+        self.marcarTonica = marcarTonica
     }
 }
