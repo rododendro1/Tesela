@@ -51,7 +51,7 @@ final class ArmoniaAppUITests: XCTestCase {
         // Mi4 Fa4 Re4 Do4: las armonizaciones van numeradas.
         esperar(app.texto("1. "), "la primera armonización")
         // Do Fa Sol7 Do a cuatro voces, con sus grados.
-        app.opcion("Realizar").tap()
+        app.buscandoHaciaAbajo(app.opcion("Realizar")).tap()
         esperar(app.texto("V7"), "el grado de Sol7", segundos: 30)
     }
 
@@ -59,7 +59,7 @@ final class ArmoniaAppUITests: XCTestCase {
     func testContrapunto() {
         let app = XCUIApplication.enEspanol()
         app.opcion("Coral").tap()
-        app.buttons["Contrapunto"].tap()
+        app.buscandoHaciaAbajo(app.buttons["Contrapunto"]).tap()
         esperar(app.texto("Sin faltas."), "el ejemplo de la primera especie")
         esperar(app.texto("Compás 1"), "la fila del primer compás")
         // La segunda especie, también con su ejemplo sin faltas.

@@ -88,7 +88,7 @@ extension XCUIApplication {
             let selector = popUpButtons.matching(NSPredicate(format: "value == %@ OR title == %@", actual, actual))
                 .firstMatch
             esperar(selector, "el selector que muestra «\(actual)»")
-            selector.click()
+            buscandoHaciaAbajo(selector).click()
         #else
             let selector = buttons.matching(NSPredicate(format: "label CONTAINS %@ OR value == %@", actual, actual))
                 .firstMatch
@@ -113,13 +113,19 @@ extension XCUIApplication {
         #endif
     }
 
-    /// El elemento, tras desplazar la vista hacia abajo si aún no existe: en iOS las listas solo crean las filas
-    /// que se ven.
+    /// El elemento, tras desplazar la vista hacia abajo hasta que se vea: en iOS las listas solo crean las filas que
+    /// se ven; en macOS existen todas, pero un clic solo llega a las que están a la vista.
     func buscandoHaciaAbajo(_ elemento: XCUIElement, intentos: Int = 6) -> XCUIElement {
+        var intento = 0
         #if os(iOS)
-            var intento = 0
             while !elemento.waitForExistence(timeout: 2) && intento < intentos {
                 swipeUp()
+                intento += 1
+            }
+        #else
+            _ = elemento.waitForExistence(timeout: 5)
+            while elemento.exists && !elemento.isHittable && intento < intentos {
+                windows.firstMatch.scroll(byDeltaX: 0, deltaY: -300)
                 intento += 1
             }
         #endif

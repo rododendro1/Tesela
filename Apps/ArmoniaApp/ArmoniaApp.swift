@@ -9,6 +9,10 @@ struct ArmoniaApp: App {
             VistaRaiz()
                 .notacionGuardada()
         }
+        #if os(macOS)
+            // Sin un tamaño, la ventana se abre tan alta como el contenido de la pestaña y no cabe en la pantalla.
+            .defaultSize(width: 1000, height: 760)
+        #endif
     }
 }
 
