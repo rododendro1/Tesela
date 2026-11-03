@@ -27,7 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <akkordjelzés>…",
         descripcionAcorde: "hangok, típus és minden hang szerepe",
-        notasAcorde: "opciók: --voicings, --names, --keys, --substitutions\n(a --in C major hangnemében, a végén) és --compare C\n(közös hangok és szólamvezetés)",
+        notasAcorde: "opciók: --voicings, --names, --keys, --substitutions\n(a --in C major hangnemében, a végén) és --compare C\n(közös hangok és szólamvezetés); --bebop és --pentatonics\n(skálák az improvizációhoz)",
         sintaxisArpegio: "arpeggio <akkordjelzés> [--pattern <minta>]",
         descripcionArpegio: "a felbontás hangjai és az akkordhoz\nillő skálák (--pattern ascending,\ndescending, up-down, down-up,\nbroken, alberti)",
         notasArpegio: "opciók: --octaves 2 (1-től 4-ig), --no-octave, --from E\n(vagy 3: ezzel a hanggal kezd), --tensions 9,13, --degrees\n1-5-3-8 (saját menet) és --approach below, above vagy\nenclosure (kromatikus hangok, amelyek mindegyikhez vezetnek)",
@@ -37,6 +37,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "két hang vagy hangmagasság közötti\nhangköz",
         sintaxisEscala: "scale <skála> [--chords]",
         descripcionEscala: "egy skála hangjai és akkordjai\n--chords: minden fokon minden beleillő\nakkord, nem csak a terces",
+        notasEscala: "opciók: --sequence thirds (vagy fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1-től 4-ig), --piano (ujjrend), --modes (párhuzamos és rokon)\nés --compare C lydian (a végén)",
         sintaxisEscalas: "scales [<szöveg>] [opciók]",
         descripcionEscalas: "a skálák katalógusa: a szokásosak és\nmás hagyományokéi, kategóriánként,\nC-től induló hangjaikkal",
         notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) és --category maqam (vagy rāga, makam,\ndastgah, dromos…); a szöveg a nevekben keres",
@@ -221,6 +222,7 @@ extension TextosDeCLI {
         tensionesMalEscritas: "a feszültséghangok 9, 11 vagy 13: --tensions 9,13",
         gradosMalEscritos: "a fokok 1 és 22 közötti számok: --degrees 1-5-3-8",
         aproximacionDesconocida: { aproximacion in "ismeretlen közelítés: „\(aproximacion)” (below, above vagy enclosure)" },
+        secuenciaDesconocida: { secuencia in "ismeretlen szekvencia: „\(secuencia)” (thirds, fourths, groups-of-3, groups-of-4, triads vagy sevenths)" },
 
         // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Próbáld ki: „armonia help”.",

@@ -27,7 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <обозначение>…",
         descripcionAcorde: "ноты, тип и роль каждой ноты",
-        notasAcorde: "параметры: --voicings, --names, --keys, --substitutions\n(в тональности --in C major, в конце) и --compare C\n(общие ноты и голосоведение)",
+        notasAcorde: "параметры: --voicings, --names, --keys, --substitutions\n(в тональности --in C major, в конце) и --compare C\n(общие ноты и голосоведение); --bebop и --pentatonics\n(гаммы для импровизации)",
         sintaxisArpegio: "arpeggio <обозначение> [--pattern <рисунок>]",
         descripcionArpegio: "ноты арпеджио и подходящие гаммы\n(--pattern ascending, descending,\nup-down, down-up, broken, alberti)",
         notasArpegio: "параметры: --octaves 2 (от 1 до 4), --no-octave, --from E\n(или 3: начать с этой ноты), --tensions 9,13, --degrees\n1-5-3-8 (свой рисунок) и --approach below, above или\nenclosure (хроматические ноты, ведущие к каждой)",
@@ -37,6 +37,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "интервал между двумя нотами или\nвысотами",
         sintaxisEscala: "scale <гамма> [--chords]",
         descripcionEscala: "ноты и аккорды гаммы\n--chords: все аккорды на каждой\nступени, не только терцовые",
+        notasEscala: "параметры: --sequence thirds (или fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(от 1 до 4), --piano (аппликатура), --modes (параллельные и относительные)\nи --compare C lydian (в конце)",
         sintaxisEscalas: "scales [<текст>] [параметры]",
         descripcionEscalas: "каталог гамм: обычные и гаммы других\nтрадиций, по категориям, с нотами\nот до",
         notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) и --category maqam (или rāga, makam,\ndastgah, dromos…); текст ищет в названиях",
@@ -221,6 +222,7 @@ extension TextosDeCLI {
         tensionesMalEscritas: "надстройки — 9, 11 или 13: --tensions 9,13",
         gradosMalEscritos: "ступени — числа от 1 до 22: --degrees 1-5-3-8",
         aproximacionDesconocida: { aproximacion in "неизвестный подход: «\(aproximacion)» (below, above или enclosure)" },
+        secuenciaDesconocida: { secuencia in "неизвестная секвенция: «\(secuencia)» (thirds, fourths, groups-of-3, groups-of-4, triads или sevenths)" },
 
         // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Попробуй «armonia help».",

@@ -141,6 +141,12 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "Backdoor-Dominante",
         rearmonizacionIIRelativo: "zugehörige II",
         rearmonizacionDisminuido: "verminderte Substitution",
+        secuenciaTerceras: "in Terzen",
+        secuenciaCuartas: "in Quarten",
+        secuenciaGruposDeTres: "in Dreiergruppen",
+        secuenciaGruposDeCuatro: "in Vierergruppen",
+        secuenciaTriadas: "in Dreiklängen",
+        secuenciaCuatriadas: "in Vierklängen",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "„\(simbolo)“ gehört zu keinem bekannten Akkordsymbol" },
         tensionNoValida: { tension in "„\(tension)“ ist keine gültige Tension (♭/♯ gehen mit 5, 9, 11 und 13, add mit 2, 4, 6, 9, 11 und 13)" },

@@ -27,7 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <Akkordsymbol>…",
         descripcionAcorde: "Noten, Art und Funktion jeder Note",
-        notasAcorde: "Optionen: --voicings, --names, --keys, --substitutions\n(in der Tonart von --in C major, am Ende) und --compare C\n(gemeinsame Töne und Stimmführung)",
+        notasAcorde: "Optionen: --voicings, --names, --keys, --substitutions\n(in der Tonart von --in C major, am Ende) und --compare C\n(gemeinsame Töne und Stimmführung); --bebop und --pentatonics\n(Skalen zum Improvisieren darüber)",
         sintaxisArpegio: "arpeggio <Akkordsymbol> [--pattern <Muster>]",
         descripcionArpegio: "Töne des Arpeggios und passende\nSkalen (--pattern ascending,\ndescending, up-down, down-up,\nbroken, alberti)",
         notasArpegio: "Optionen: --octaves 2 (1 bis 4), --no-octave, --from E\n(oder 3: beginnt mit diesem Ton), --tensions 9,13, --degrees\n1-5-3-8 (ein eigener Verlauf) und --approach below, above\noder enclosure (chromatische Töne, die zu jedem führen)",
@@ -37,6 +37,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "Intervall zwischen zwei Noten oder\nTonhöhen",
         sintaxisEscala: "scale <Skala> [--chords]",
         descripcionEscala: "Noten und Akkorde einer Skala\n--chords: alle Akkorde, die auf jede\nStufe passen, nicht nur Terzschichtungen",
+        notasEscala: "Optionen: --sequence thirds (oder fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1 bis 4), --piano (Fingersatz), --modes (parallel und relativ)\nund --compare C lydian (am Ende)",
         sintaxisEscalas: "scales [<Text>] [Optionen]",
         descripcionEscalas: "der Skalenkatalog: die gängigen und\ndie anderer Traditionen, nach\nKategorien, mit ihren Tönen ab C",
         notasEscalas: "Optionen: --tradition turkey (oder india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) und --category maqam (oder rāga, makam,\ndastgah, dromos…); ein Text sucht in den Namen",
@@ -221,6 +222,7 @@ extension TextosDeCLI {
         tensionesMalEscritas: "die Optionstöne sind 9, 11 oder 13: --tensions 9,13",
         gradosMalEscritos: "die Stufen sind Zahlen von 1 bis 22: --degrees 1-5-3-8",
         aproximacionDesconocida: { aproximacion in "unbekannte Annäherung: „\(aproximacion)“ (below, above oder enclosure)" },
+        secuenciaDesconocida: { secuencia in "unbekannte Sequenz: „\(secuencia)“ (thirds, fourths, groups-of-3, groups-of-4, triads oder sevenths)" },
 
         // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Versuche „armonia help“.",

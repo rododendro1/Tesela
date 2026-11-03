@@ -93,6 +93,7 @@ struct VistaDeAcordes: View {
                 disposicionesEnElMastil(de: acorde)
                 relaciones(de: acorde)
                 escalas(de: acorde)
+                escalasParaImprovisar(sobre: acorde)
                 digitaciones(de: acorde)
                 arpegioEnElMastil(de: acorde)
             case .failure(let error):
@@ -325,6 +326,42 @@ struct VistaDeAcordes: View {
                 }
             }
         }
+    }
+
+    /// Las escalas bebop (con su nota de paso) y las pentatónicas sin notas a evitar (con sus tensiones) para
+    /// improvisar sobre el acorde, cada una con «Escuchar» y abriéndose en la pestaña de escalas.
+    @ViewBuilder
+    private func escalasParaImprovisar(sobre acorde: Acorde) -> some View {
+        let bebop = PresentacionDeEstudioDeEscala.bebop(sobre: acorde, notacion: notacion)
+        let pentatonicas = PresentacionDeEstudioDeEscala.pentatonicas(sobre: acorde, notacion: notacion)
+        if !bebop.isEmpty {
+            Section(notacion.texto(\.escalasBebop)) {
+                ForEach(bebop, id: \.self) { filaDeEscala($0) }
+            }
+        }
+        if !pentatonicas.isEmpty {
+            Section(notacion.texto(\.pentatonicas)) {
+                ForEach(pentatonicas, id: \.self) { filaDeEscala($0) }
+            }
+        }
+    }
+
+    private func filaDeEscala(_ presentada: EscalaSobreElAcordePresentada) -> some View {
+        HStack {
+            Button {
+                navegacion.ver(presentada.escala)
+            } label: {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(presentada.nombre)
+                    if !presentada.detalle.isEmpty {
+                        Text(presentada.detalle).font(.caption).foregroundColor(.secondary)
+                    }
+                }
+            }
+            Spacer()
+            BotonDeEscuchar(presentada.sonido).labelStyle(.iconOnly)
+        }
+        .buttonStyle(.borderless)
     }
 
     @ViewBuilder

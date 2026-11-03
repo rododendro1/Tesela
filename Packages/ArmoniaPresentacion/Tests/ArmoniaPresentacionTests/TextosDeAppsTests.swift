@@ -128,6 +128,12 @@ import Testing
         { $0.texto(\.terceraYSeptima) },
         { $0.texto { $0.cuerdas("6-5-4-3") } },
         { $0.texto { $0.movimientoTotal(7) } },
+        { $0.texto { $0.soloEn("Do mayor") } },
+        { $0.texto { $0.alteracionesDeDiferencia(2) } },
+        { $0.texto { $0.notaDePaso("Si") } },
+        { $0.texto { $0.cambian("Fa♯") } },
+        { $0.texto { $0.notasGuia("Mi, Si") } },
+        { $0.texto(\.digitacionDePiano) },
         { $0.texto(\.otrosNombres) },
         { $0.texto(\.sustituciones) },
     ]

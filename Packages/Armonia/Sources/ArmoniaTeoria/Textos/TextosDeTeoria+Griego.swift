@@ -141,6 +141,12 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "δεσπόζουσα backdoor",
         rearmonizacionIIRelativo: "σχετική ii",
         rearmonizacionDisminuido: "υποκατάσταση με ελαττωμένη",
+        secuenciaTerceras: "σε τρίτες",
+        secuenciaCuartas: "σε τέταρτες",
+        secuenciaGruposDeTres: "σε ομάδες των τριών",
+        secuenciaGruposDeCuatro: "σε ομάδες των τεσσάρων",
+        secuenciaTriadas: "σε τρίφωνα",
+        secuenciaCuatriadas: "σε τετράφωνα",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "το «\(simbolo)» δεν ανήκει σε κανένα γνωστό σύμβολο συγχορδίας" },
         tensionNoValida: { tension in "το «\(tension)» δεν είναι έγκυρη τάση (τα ♭/♯ μπαίνουν με 5, 9, 11 και 13, και το add με 2, 4, 6, 9, 11 και 13)" },

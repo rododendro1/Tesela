@@ -23,7 +23,8 @@ extension LineaDeComandos {
         "--completo", "--complete", "--diagrama", "--diagram", "--tab", "--caged", "--ampliada", "--extended",
         "--musicxml", "--help", "--ayuda", "--escalas", "--scales", "--acordes", "--chords", "--sin-octava",
         "--no-octave", "--enlazar", "--connect", "--disposiciones", "--voicings", "--nombres", "--names",
-        "--tonalidades", "--keys", "--sustituciones", "--substitutions",
+        "--tonalidades", "--keys", "--sustituciones", "--substitutions", "--bajando", "--descending", "--piano",
+        "--modos", "--modes", "--bebop", "--pentatonicas", "--pentatonics",
     ]
 
     /// Los valores que se proponen tras una opción.
@@ -41,6 +42,13 @@ extension LineaDeComandos {
             ]
         ),
         (["--aproximacion", "--approach"], ["abajo", "arriba", "encierro", "below", "above", "enclosure"]),
+        (
+            ["--secuencia", "--sequence"],
+            [
+                "terceras", "cuartas", "grupos-de-3", "grupos-de-4", "triadas", "cuatriadas", "thirds", "fourths",
+                "groups-of-3", "groups-of-4", "triads", "sevenths",
+            ]
+        ),
         (
             ["--clave"],
             ["sol", "fa", "do1", "do2", "do3", "do4", "sol8b", "sol8a", "fa3", "treble", "bass", "alto", "tenor"]

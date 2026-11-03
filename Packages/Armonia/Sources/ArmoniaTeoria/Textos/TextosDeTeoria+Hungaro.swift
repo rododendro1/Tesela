@@ -142,6 +142,12 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "backdoor domináns",
         rearmonizacionIIRelativo: "rokon ii",
         rearmonizacionDisminuido: "szűkített helyettesítés",
+        secuenciaTerceras: "tercekben",
+        secuenciaCuartas: "kvartokban",
+        secuenciaGruposDeTres: "hármas csoportokban",
+        secuenciaGruposDeCuatro: "négyes csoportokban",
+        secuenciaTriadas: "hármashangzatokban",
+        secuenciaCuatriadas: "négyeshangzatokban",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "„\(simbolo)” nem ismert akkordjelzés része" },
         tensionNoValida: { tension in "„\(tension)” nem érvényes feszültséghang (a ♭ és a ♯ az 5, 9, 11 és 13 mellé, az add a 2, 4, 6, 9, 11 és 13 mellé kerülhet)" },

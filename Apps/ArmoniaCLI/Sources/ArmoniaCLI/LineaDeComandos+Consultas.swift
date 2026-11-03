@@ -18,6 +18,8 @@ extension LineaDeComandos {
         case .valor(let texto): otro = try Acorde(leyendo: texto)
         }
         let pedido = RelacionesPedidas(
+            bebop: argumentos.quitarMarca("--bebop"),
+            pentatonicas: argumentos.quitarMarca("--pentatonicas", "--pentatonics"),
             disposiciones: argumentos.quitarMarca("--disposiciones", "--voicings"),
             nombres: argumentos.quitarMarca("--nombres", "--names"),
             tonalidades: argumentos.quitarMarca("--tonalidades", "--keys"),
@@ -37,6 +39,8 @@ extension LineaDeComandos {
 
     /// Lo que se pide de cada acorde además de sus notas.
     struct RelacionesPedidas {
+        var bebop: Bool
+        var pentatonicas: Bool
         var disposiciones: Bool
         var nombres: Bool
         var tonalidades: Bool
@@ -54,6 +58,18 @@ extension LineaDeComandos {
                 if let fila = PresentacionDeDisposiciones.acorde(acorde, disposicion, notacion: notacion)?.filas.first {
                     lineas.append("  " + disposicion.nombre(en: notacion) + ": " + fila.voces)
                 }
+            }
+        }
+        if pedido.bebop {
+            lineas.append(notacion.texto(\.escalasBebop) + ":")
+            lineas += PresentacionDeEstudioDeEscala.bebop(sobre: acorde, notacion: notacion).map {
+                "  " + $0.nombre + ": " + $0.detalle
+            }
+        }
+        if pedido.pentatonicas {
+            lineas.append(notacion.texto(\.pentatonicas) + ":")
+            lineas += PresentacionDeEstudioDeEscala.pentatonicas(sobre: acorde, notacion: notacion).map {
+                "  " + $0.nombre + ": " + $0.detalle
             }
         }
         let relaciones = PresentacionDeRelacionesDeAcorde.relaciones(
@@ -256,6 +272,79 @@ extension LineaDeComandos {
 
     /// Con `conTodosSusAcordes` (`--acordes`), también los acordes que caben sobre cada grado, no solo los de
     /// terceras.
+    /// `escala Do mayor [--acordes] [--secuencia terceras] [--bajando] [--octavas 2] [--piano] [--modos]
+    /// [--comparar Do lidio]`: la escala y, si se piden, todos los acordes que caben en cada grado, una secuencia de
+    /// estudio, la digitación de piano, los modos paralelos y relativos y la comparación con otra escala.
+    static func escala(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        var argumentos = Argumentos(textos)
+        let conAcordes = argumentos.quitarMarca("--acordes", "--chords")
+        let bajando = argumentos.quitarMarca("--bajando", "--descending")
+        let piano = argumentos.quitarMarca("--piano")
+        let modos = argumentos.quitarMarca("--modos", "--modes")
+        guard let octavas = argumentos.quitarNumero("--octavas", "--octaves", en: 1...4, porDefecto: 1) else {
+            return uso(.octavasFueraDeRango, notacion)
+        }
+        var secuencia: SecuenciaDeEscala?
+        switch argumentos.quitarOpcion("--secuencia", "--sequence") {
+        case .ausente: break
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            guard let elegida = secuenciaDeEscala(texto) else { return uso(.secuenciaDesconocida(texto), notacion) }
+            secuencia = elegida
+        }
+        var otra: Escala?
+        switch argumentos.quitarOpcionConPalabras("--comparar", "--compare") {
+        case .ausente: break
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto): otra = try Escala(leyendo: texto)
+        }
+        if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
+        guard !argumentos.restantes.isEmpty else { return uso(.faltaEscala, notacion) }
+        let escala = try Escala(leyendo: argumentos.unidos)
+        var lineas = [describir(escala: escala, conTodosSusAcordes: conAcordes, notacion)]
+        if let secuencia {
+            let presentada = PresentacionDeEstudioDeEscala.secuencia(
+                escala, secuencia, octavas: octavas, sentido: bajando ? .descendente : .ascendente, notacion: notacion)
+            lineas.append(notacion.texto(\.secuencia) + " " + secuencia.nombre(en: notacion) + ":")
+            lineas.append("  " + presentada.notas)
+        }
+        if piano {
+            lineas.append(notacion.texto(\.digitacionDePiano) + ":")
+            for mano in PresentacionDeEstudioDeEscala.digitaciones(escala, octavas: octavas, notacion: notacion) {
+                let pares = zip(mano.notas.split(separator: " "), mano.dedos.split(separator: " "))
+                lineas.append("  " + mano.mano + ": " + pares.map { "\($0) \($1)" }.joined(separator: " · "))
+            }
+        }
+        if modos {
+            lineas.append(notacion.texto(\.modosParalelos) + ":")
+            lineas += PresentacionDeEstudioDeEscala.modosParalelos(de: escala, notacion: notacion).map { modo in
+                "  " + modo.nombre + " (" + modo.brillo + ")" + (modo.cambios.isEmpty ? "" : ": " + modo.cambios)
+            }
+            let relativos = PresentacionDeEstudioDeEscala.modosRelativos(de: escala, notacion: notacion)
+            lineas.append(notacion.texto(\.modosRelativos) + ":")
+            lineas.append("  " + relativos.map(\.nombre).joined(separator: " · "))
+        }
+        if let otra {
+            let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, notacion: notacion)
+            lineas.append(notacion.texto(\.compararCon) + " " + otra.nombre(en: notacion) + ":")
+            lineas.append("  " + notacion.texto(\.notasComunes) + ": " + comparacion.comunes)
+            let resto = [comparacion.soloEnOrigen, comparacion.soloEnDestino] + comparacion.cambios
+            lineas += (resto + [comparacion.distancia ?? ""]).filter { !$0.isEmpty }.map { "  " + $0 }
+        }
+        return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// La secuencia de `--secuencia`, por su nombre en español o en inglés.
+    static func secuenciaDeEscala(_ texto: String) -> SecuenciaDeEscala? {
+        let nombres: [String: SecuenciaDeEscala] = [
+            "terceras": .terceras, "thirds": .terceras, "cuartas": .cuartas, "fourths": .cuartas,
+            "grupos-de-3": .gruposDeTres, "groups-of-3": .gruposDeTres, "grupos-de-4": .gruposDeCuatro,
+            "groups-of-4": .gruposDeCuatro, "triadas": .triadas, "tríadas": .triadas, "triads": .triadas,
+            "cuatriadas": .cuatriadas, "sevenths": .cuatriadas,
+        ]
+        return nombres[texto.lowercased()]
+    }
+
     static func describir(escala: Escala, conTodosSusAcordes: Bool = false, _ notacion: Notacion) -> String {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         var lineas = [
@@ -448,6 +537,9 @@ extension LineaDeComandos {
         }
         var lineas = [analisis.titulo]
         let todas = analisis.tramos.flatMap(\.filas)
+        // Con --escalas, también las notas que cambian de una escala a la siguiente y las notas guía.
+        let cambios = analisis.cambiosDeEscala(en: notacion)
+        var indice = 0
         // Columnas de al menos 10 caracteres, más anchas si un cifrado no cabe.
         let anchoDelCifrado = max(10, (todas.map(\.cifrado.count).max() ?? 0) + 2)
         let anchoDelGrado = max(10, (todas.map(\.grado.count).max() ?? 0) + 2)
@@ -465,7 +557,9 @@ extension LineaDeComandos {
                         let etiqueta = notacion.texto(\.estructurasSuperiores)
                         lineas.append("      " + etiqueta + ": " + escala.estructurasSuperiores)
                     }
+                    if cambios.indices.contains(indice) { lineas.append("      " + cambios[indice]) }
                 }
+                indice += 1
             }
         }
         lineas += analisis.cadencias

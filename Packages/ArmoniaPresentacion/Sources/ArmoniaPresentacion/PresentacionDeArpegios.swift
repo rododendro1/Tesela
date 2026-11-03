@@ -55,7 +55,7 @@ public enum PresentacionDeArpegios {
             tonica: tonalidad?.tonica)
     }
 
-    private static func presentar(
+    static func presentar(
         _ voz: Voz, nombre: String, tonalidad: Tonalidad?, tempo: Tempo?, swing: Bool, tonica: Nota?
     ) -> ArpegioPresentado {
         let suena = Escucha.voz(voz, tempo: tempo ?? Escucha.tempo)

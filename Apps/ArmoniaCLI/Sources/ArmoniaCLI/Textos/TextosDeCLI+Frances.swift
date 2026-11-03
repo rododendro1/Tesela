@@ -27,7 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <chiffrage>…",
         descripcionAcorde: "notes, type et rôle de chaque note",
-        notasAcorde: "options : --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(dans la tonalité de --en Do mayor, à la fin) et --comparar Do\n(notes communes et conduite des voix)",
+        notasAcorde: "options : --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(dans la tonalité de --en Do mayor, à la fin) et --comparar Do\n(notes communes et conduite des voix) ; --bebop et --pentatonicas\n(gammes pour improviser dessus)",
         sintaxisArpegio: "arpegio <chiffrage> [--patron <motif>]",
         descripcionArpegio: "notes de l'arpège et gammes de\nl'accord (--patron ascendente,\ndescendente, ida-y-vuelta,\nbaja-y-sube, quebrado, alberti)",
         notasArpegio: "options : --octavas 2 (de 1 à 4), --sin-octava, --desde Mi\n(ou 3 : commence par cette note), --tensiones 9,13, --grados\n1-5-3-8 (un parcours à soi) et --aproximacion abajo, arriba\nou encierro (notes chromatiques qui mènent à chacune)",
@@ -37,6 +37,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "intervalle entre deux notes ou\nhauteurs",
         sintaxisEscala: "escala <gamme> [--acordes]",
         descripcionEscala: "notes et accords d'une gamme\n--acordes : tous ceux qui tiennent\nsur chaque degré, pas seulement en tierces",
+        notasEscala: "options : --secuencia terceras (ou cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 à 4), --piano (doigté), --modos (parallèles et relatifs)\net --comparar Do lidio (à la fin)",
         sintaxisEscalas: "escalas [<texte>] [options]",
         descripcionEscalas: "le catalogue des gammes : les usuelles\net celles d'autres traditions, par\ncatégories, avec leurs notes depuis Do",
         notasEscalas: "options : --tradicion turquia (ou india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) et --categoria maqam (ou rāga, makam,\ndastgah, dromos…) ; un texte cherche dans les noms",
@@ -221,6 +222,7 @@ extension TextosDeCLI {
         tensionesMalEscritas: "les tensions sont 9, 11 ou 13 : --tensiones 9,13",
         gradosMalEscritos: "les degrés sont des nombres de 1 à 22 : --grados 1-5-3-8",
         aproximacionDesconocida: { aproximacion in "approche inconnue : « \(aproximacion) » (abajo, arriba ou encierro)" },
+        secuenciaDesconocida: { secuencia in "séquence inconnue : « \(secuencia) » (terceras, cuartas, grupos-de-3, grupos-de-4, triadas ou cuatriadas)" },
 
         // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Essayez « armonia ayuda ».",

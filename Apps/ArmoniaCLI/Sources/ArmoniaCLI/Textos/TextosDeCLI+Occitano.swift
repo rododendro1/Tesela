@@ -27,7 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <chifratge>…",
         descripcionAcorde: "nòtas, tipe e ròtle de cada nòta",
-        notasAcorde: "opcions: --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(dins la tonalitat de --en Do mayor, a la fin) e --comparar Do\n(nòtas comunas e conducha de las vòtz)",
+        notasAcorde: "opcions: --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(dins la tonalitat de --en Do mayor, a la fin) e --comparar Do\n(nòtas comunas e conducha de las vòtz); --bebop e --pentatonicas\n(gamas per improvisar dessús)",
         sintaxisArpegio: "arpegio <chifratge> [--patron <motiu>]",
         descripcionArpegio: "nòtas de l'arpegi e gamas de\nl'acòrd (--patron ascendente,\ndescendente, ida-y-vuelta,\nbaja-y-sube, quebrado, alberti)",
         notasArpegio: "opcions: --octavas 2 (d'1 a 4), --sin-octava, --desde Mi\n(o 3: comença per aquela nòta), --tensiones 9,13, --grados\n1-5-3-8 (un percors pròpri) e --aproximacion abajo, arriba\no encierro (nòtas cromaticas que mènan a caduna)",
@@ -37,6 +37,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "interval entre doas nòtas o nautors",
         sintaxisEscala: "escala <gama> [--acordes]",
         descripcionEscala: "nòtas e acòrds d'una gama\n--acordes: totes los que i caben sus\ncada gra, pas sonque los de tèrças",
+        notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (digitacion), --modos (parallèls e relatius)\ne --comparar Do lidio (a la fin)",
         sintaxisEscalas: "escalas [<tèxte>] [opcions]",
         descripcionEscalas: "lo catalòg de las gamas: las abitualas\ne las d'autras tradicions, per\ncategorias, amb lors nòtas dempuèi Do",
         notasEscalas: "opcions: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) e --categoria maqam (o rāga, makam,\ndastgah, dromos…); un tèxte cerca dins los noms",
@@ -221,6 +222,7 @@ extension TextosDeCLI {
         tensionesMalEscritas: "las tensions son 9, 11 o 13: --tensiones 9,13",
         gradosMalEscritos: "los graus son de nombres d'1 a 22: --grados 1-5-3-8",
         aproximacionDesconocida: { aproximacion in "aproximacion desconeguda: «\(aproximacion)» (abajo, arriba o encierro)" },
+        secuenciaDesconocida: { secuencia in "sequéncia desconeguda: «\(secuencia)» (terceras, cuartas, grupos-de-3, grupos-de-4, triadas o cuatriadas)" },
 
         // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Ensaja «armonia ayuda».",

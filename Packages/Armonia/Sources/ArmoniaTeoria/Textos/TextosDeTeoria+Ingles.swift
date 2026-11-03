@@ -142,6 +142,12 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "backdoor",
         rearmonizacionIIRelativo: "related ii",
         rearmonizacionDisminuido: "diminished substitution",
+        secuenciaTerceras: "in thirds",
+        secuenciaCuartas: "in fourths",
+        secuenciaGruposDeTres: "in groups of three",
+        secuenciaGruposDeCuatro: "in groups of four",
+        secuenciaTriadas: "in triads",
+        secuenciaCuatriadas: "in seventh chords",
         // ErrorDeLecturaDeTeoria.swift (acordes)
         simboloNoReconocido: { simbolo in "\"\(simbolo)\" is not part of any known chord symbol" },
         tensionNoValida: { tension in "\"\(tension)\" is not a valid tension (♭/♯ go with 5, 9, 11 and 13, and add with 2, 4, 6, 9, 11 and 13)" },

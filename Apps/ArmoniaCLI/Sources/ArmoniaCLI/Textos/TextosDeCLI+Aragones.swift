@@ -27,7 +27,7 @@ extension TextosDeCLI {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <cifrau>…",
         descripcionAcorde: "notas, tipo y papel de cada nota",
-        notasAcorde: "opcions: --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(en a tonalidat de --en Do mayor, a la fin) y --comparar Do\n(notas comuns y conducción d'as voces)",
+        notasAcorde: "opcions: --disposiciones, --nombres,\n--tonalidades, --sustituciones\n(en a tonalidat de --en Do mayor, a la fin) y --comparar Do\n(notas comuns y conducción d'as voces); --bebop y --pentatonicas\n(escalas ta improvisar encima)",
         sintaxisArpegio: "arpegio <cifrau> [--patron <patrón>]",
         descripcionArpegio: "notas de l'arpechio y escalas de\nl'acorde (--patron ascendente,\ndescendente, ida-y-vuelta,\nbaja-y-sube, quebrado, alberti)",
         notasArpegio: "opcions: --octavas 2 (de 1 a 4), --sin-octava, --desde Mi\n(u 3: empecipia por ixa nota), --tensiones 9,13, --grados\n1-5-3-8 (un recorriu propio) y --aproximacion abajo, arriba\nu encierro (notas cromaticas que levan a cadaguna)",
@@ -37,6 +37,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "intervalo entre dos notas u alturas",
         sintaxisEscala: "escala <escala> [--acordes]",
         descripcionEscala: "notas y acordes d\'una escala\n--acordes: toz os que caben en\ncada grau, no solo os de terceras",
+        notasEscala: "opcions: --secuencia terceras (u cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (dixitación), --modos (paralelos y relativos)\ny --comparar Do lidio (a la fin)",
         sintaxisEscalas: "escalas [<texto>] [opcions]",
         descripcionEscalas: "o catalogo d'escalas: as habituals y\nas d'atras tradicions, por\ncategorías, con as suyas notas dende Do",
         notasEscalas: "opcions: --tradicion turquia (u india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) y --categoria maqam (u rāga, makam,\ndastgah, dromos…); un texto busca en os nombres",
@@ -221,6 +222,7 @@ extension TextosDeCLI {
         tensionesMalEscritas: "as tensions son 9, 11 u 13: --tensiones 9,13",
         gradosMalEscritos: "os graus son numeros de 1 a 22: --grados 1-5-3-8",
         aproximacionDesconocida: { aproximacion in "aproximación desconoixida: «\(aproximacion)» (abajo, arriba u encierro)" },
+        secuenciaDesconocida: { secuencia in "secuencia desconoixida: «\(secuencia)» (terceras, cuartas, grupos-de-3, grupos-de-4, triadas u cuatriadas)" },
 
         // ErrorDeUso.swift (comunes)
         pruebaLaAyuda: "Preba «armonia ayuda».",
