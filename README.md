@@ -101,6 +101,7 @@ swift run --package-path Apps/ArmoniaCLI armonia acorde Sol7/Si  # la herramient
 swift run --package-path Apps/ArmoniaCLI armonia digitaciones Sol7/Si --instrumento ukelele --diagrama
 swift run --package-path Apps/ArmoniaCLI armonia lilypond coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 > coral.ly
 swift run --package-path Apps/ArmoniaCLI armonia grabar coral Do3 Mi4 Sol4 Do5 > coral.pdf   # con LilyPond instalado
+swift run --package-path Apps/ArmoniaCLI armonia motores   # LilyPond, MuseScore, Verovio, Guido: cuáles están instalados
 swift run --package-path Apps/ArmoniaCLI armonia manual > armonia.1   # y `completado bash|zsh|fish`, el autocompletado
 swift run --package-path Ejemplos/EjemploArmonia EjemploArmonia       # el ejemplo del motor
 swift run --package-path Ejemplos/EjemploHexagonos EjemploHexagonos   # el de las rejillas hexagonales

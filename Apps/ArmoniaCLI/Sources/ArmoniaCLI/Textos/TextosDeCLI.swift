@@ -105,6 +105,8 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionMeiMelodia: String
     let sintaxisLilypondMelodia: String
     let descripcionLilypondMelodia: String
+    let sintaxisGuidoMelodia: String
+    let descripcionGuidoMelodia: String
     let sintaxisAbcMelodia: String
     let descripcionAbcMelodia: String
     let sintaxisMidiMelodia: String
@@ -114,6 +116,8 @@ struct TextosDeCLI: TextosTraducidos {
     let sintaxisGrabar: String
     let descripcionGrabar: String
     let notasGrabar: String
+    let sintaxisMotores: String
+    let descripcionMotores: String
 
     // MARK: Ayuda+Trastes.swift
     let sintaxisDigitaciones: String
@@ -232,6 +236,10 @@ struct TextosDeCLI: TextosTraducidos {
     /// El programa y su código de salida; debajo van las últimas líneas de lo que dijo.
     let motorFallo: @Sendable (String, Int) -> String
     let motorSinTerminar: @Sendable (String) -> String
+    /// La variable de entorno que da la ruta del programa que no está.
+    let motorNoInstalado: @Sendable (String) -> String
+    /// El nombre de `--motor propio` en el idioma de las órdenes.
+    let motorPropio: String
 
     // MARK: ErrorDeUso.swift (digitaciones)
     let faltaInstrumento: @Sendable (String, (String, String)) -> String

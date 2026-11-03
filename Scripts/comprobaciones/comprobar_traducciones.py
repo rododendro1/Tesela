@@ -35,6 +35,8 @@ EXCEPCIONES = {
     "Name",     # alemán: también es la palabra alemana
     "completion bash|zsh|fish",  # la sintaxis de la orden, con los nombres de las terminales
     "manual",   # el nombre de la orden
+    "engines",  # el nombre de la orden
+    "own",      # el nombre de `--engine own`
 }
 
 _TEXTO = r'"((?:[^"\\]|\\.)*)"'

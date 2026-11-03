@@ -122,7 +122,7 @@ enum ErrorDeUso {
     // Grabado
     /// `grabar` sin nada detrás.
     case faltaLoQueSeGraba
-    /// `grabar … --motor` con un motor que no es lilypond ni propio.
+    /// `grabar … --motor` con un motor que no es lilypond, musescore, verovio, guido ni propio.
     case motorDesconocido(String)
     /// `grabar … --formato` con algo que no es pdf, svg ni png.
     case formatoDeGrabadoDesconocido(String)
