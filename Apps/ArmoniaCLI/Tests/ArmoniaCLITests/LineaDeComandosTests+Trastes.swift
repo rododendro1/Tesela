@@ -156,4 +156,25 @@ extension LineaDeComandosTests {
     @Test func laAyudaHablaDeLasDigitaciones() {
         #expect(salida("ayuda").contains("digitaciones <cifrado>"))
     }
+
+    @Test func formasDeLaPentatonicaYSecuenciasEnLasPosiciones() {
+        let formas = salida("posiciones La pentatónica menor --formas")
+        #expect(
+            formas.hasPrefix("La pentatónica menor · Formas de la pentatónica\n\n  Forma 1 · Trastes 5–8\n"),
+            Comment(rawValue: formas))
+        #expect(formas.contains("\n    Mi |--5--8-------------------------------\n"))
+        #expect(formas.contains("\n    comparte con la forma 2: 6:8 5:7 4:7 3:7 2:8 1:8\n"))
+        #expect(formas.contains("\n  Forma 5 · "))
+        let noPentatonica = LineaDeComandos.ejecutar(["posiciones", "Do", "mayor", "--formas"])
+        #expect(noPentatonica.codigo == 2)
+        #expect(noPentatonica.error.hasPrefix("armonia: las formas son de una escala de cinco notas: "))
+        let terceras = salida("posiciones Do mayor --secuencia terceras --caged")
+        #expect(
+            terceras.hasPrefix("Do mayor · Secuencia por terceras\n\n  Forma C · Trastes 0–4\n    Mi |-"),
+            Comment(rawValue: terceras))
+        let bajando = salida("posiciones Do mayor --secuencia grupos-de-3 --bajando")
+        #expect(bajando.hasPrefix("Do mayor · Secuencia en grupos de tres\n\n"), Comment(rawValue: bajando))
+        #expect(bajando != salida("posiciones Do mayor --secuencia grupos-de-3"))
+        #expect(salida("positions A minor pentatonic --shapes --ingles").contains("\n  Shape 2 · "))
+    }
 }

@@ -9,6 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <akordeak> [--en <tonalitatea>] [--escalas]",
         descripcionAnalizar: "zifratu erromatarra, funtzioak,\nkadentziak eta modulazioak (pibota\nbarne; --en gabe)\n--escalas: akorde bakoitzaren eskala,\ntentsio eta saihesteko notekin",
+        notasAnalizar: "--notas-guia: gida-noten bi lerro,\nhirugarrenetik eta zazpigarrenetik",
         sintaxisAnalizarArchivo: "analizar --archivo <fitxategia> [--ventana <iraupena>]",
         descripcionAnalizarArchivo: "gauza bera, MIDI, MusicXML, MEI edo\nABC fitxategi baten akordeekin (bat\npultsuko; --ventana 2: bat zuriko)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalitatea>] [--propuestas 3]",
@@ -33,11 +34,12 @@ extension TextosDeCLI {
         notasArpegio: "aukerak: --octavas 2 (1etik 4ra), --sin-octava, --desde Mi\n(edo 3: nota horretatik hasten da), --tensiones 9,13, --grados\n1-5-3-8 (ibilbide propioa) eta --aproximacion abajo, arriba\nedo encierro (nota bakoitzera daramaten nota kromatikoak)",
         sintaxisIdentificar: "identificar <notak>",
         descripcionIdentificar: "nota batzuek osatzen dituzten\nakordeak",
+        notasIdentificar: "aukerak: --escalas (notak dituzten eskalak,\nakordeen ordez) eta --archivo melodia.mid\n(MIDI, MusicXML, MEI edo ABC fitxategi\nbateko notak, --escalas-ekin)",
         sintaxisIntervalo: "intervalo <nota> <nota>",
         descripcionIntervalo: "bi nota edo altueren arteko tartea",
         sintaxisEscala: "escala <eskala> [--acordes]",
         descripcionEscala: "eskala baten notak eta akordeak\n--acordes: gradu bakoitzean sartzen\ndiren guztiak, ez hirurenak bakarrik",
-        notasEscala: "aukerak: --secuencia terceras (edo cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(1etik 4ra), --piano (hatzkera), --modos (paraleloak eta erlatiboak)\neta --comparar Do lidio (amaieran)",
+        notasEscala: "aukerak: --secuencia terceras (edo cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(1etik 4ra), --piano (hatzkera), --modos (paraleloak eta erlatiboak)\neta --comparar Do lidio (amaieran); --simetria (zenbatero\nerrepikatzen den eta bere akordeak)",
         sintaxisEscalas: "escalas [<testua>] [aukerak]",
         descripcionEscalas: "eskalen katalogoa: ohikoak eta beste\ntradizio batzuetakoak, kategoriaka,\nDo-tik hasitako notekin",
         notasEscalas: "aukerak: --tradicion turquia (edo india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) eta --categoria maqam (edo rāga, makam,\ndastgah, dromos…); testu batek izenetan bilatzen du",
@@ -106,6 +108,9 @@ extension TextosDeCLI {
         descripcionDigitaciones: "akorde bat jotzeko moduak,\nerosoenetik gutxien erosora,\ntrasteak dituen hari-instrumentu\nbatean\naukerak: --instrumento guitarra|bajo|ukelele|mandolina|… (baita\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D» ere),\n--limite 5, --traste 12 (erabiltzen den altuena), --dedos 4\n(erabil daitezkeenak), --completo (nota guztiekin: berez\nbosgarrena falta daiteke), --diagrama (lerro bat hari\nbakoitzeko),\n--capo 2 (trasteak capotik zenbatuta), --musicxml (akorde bakoitzaren\nlehen forma, MusicXML tablatura gisa)",
         sintaxisPosiciones: "posiciones <eskala> [--caged]",
         descripcionPosiciones: "eskala gitarran posizioka: hiru nota\nsoka bakoitzeko (bi pentatonikoetan)\nedo CAGED",
+        notasPosiciones: "aukerak: --secuencia terceras (edo beste bat:\nsekuentzia posizio bakoitzean; --bajando-rekin,\njaitsiz) eta --formas (pentatonikaren bost\nformak eta nota komunak)",
+        sintaxisTeclado: "teclado <eskala> [--mano derecha]",
+        descripcionTeclado: "eskala piano-teklatu batean\n(SVG): notak edo, --mano derecha\nedo izquierda-rekin, hatzak; --octavas 2",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -216,6 +221,10 @@ extension TextosDeCLI {
         trasteFueraDeRango: "traste altuena 0tik 24ra bitarteko zenbaki bat da: --traste 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "zifratua falta da: \(d)" },
         faltaEscalaDePosiciones: "eskala falta da: armonia posiciones Sol mayor",
+        faltaEscalaDelTeclado: "eskala falta da: armonia teclado Re mayor",
+        manoDesconocida: { texto in "esku ezezaguna: «\(texto)» (derecha edo izquierda)" },
+        archivoConNotas: "--archivo erabiltzean ez idatzi notarik",
+        noEsPentatonica: "formak bost notako eskala batekoak dira: armonia posiciones La pentatónica menor --formas",
         capoFueraDeRango: "capoa 0 eta 12 arteko zenbakia da: --capo 2",
         octavasFueraDeRango: "zortzidunak 1 eta 4 arteko zenbakia dira: --octavas 2",
         desdeNoValido: { desde in "«\(desde)» ez da akordearen nota edo gradu bat: --desde Mi edo --desde 3" },

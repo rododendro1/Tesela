@@ -4,10 +4,7 @@ extension LineaDeComandos {
     /// Las consultas: acordes, notas, intervalos, escalas y tonalidades, en el orden en que salen en la ayuda.
     static let ordenesDeConsultas: [Orden] = [
         Orden(nombres: ["acorde", "chord"], ayuda: ayudaDeAcorde) { try acorde($0, $1) },
-        Orden(nombres: ["identificar", "identify"], ayuda: ayudaDeIdentificar) { resto, notacion in
-            guard !resto.isEmpty else { return uso(.faltanNotas, notacion) }
-            return bien(try identificar(resto, notacion))
-        },
+        Orden(nombres: ["identificar", "identify"], ayuda: ayudaDeIdentificar) { try identificarConOpciones($0, $1) },
         Orden(nombres: ["arpegio", "arpeggio"], ayuda: ayudaDeArpegio) { try arpegio($0, $1) },
         Orden(nombres: ["intervalo", "interval"], ayuda: ayudaDeIntervalo) { resto, notacion in
             guard resto.count == 2 else { return uso(.dosNotas, notacion) }
@@ -47,7 +44,8 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionIdentificar),
             ejemplo: ejemplo(
                 "armonia identificar Do Mi Sol Sib",
-                "armonia identify C E G Bb"))
+                "armonia identify C E G Bb"),
+            notas: TextosDeCLI.traduccion(\.notasIdentificar))
     ]
 
     static let ayudaDeArpegio: [EntradaDeAyuda] = [

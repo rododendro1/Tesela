@@ -79,6 +79,9 @@ el selector de notación cambia la app entera.
 - ``ModoPresentado``
 - ``ComparacionDeEscalasPresentada``
 - ``EscalaSobreElAcordePresentada``
+- ``EscalaEncontrada``
+- ``SimetriaPresentada``
+- ``PosicionPresentada``
 - ``PresentacionDeTablatura``
 
 ### Conjuntos de clases

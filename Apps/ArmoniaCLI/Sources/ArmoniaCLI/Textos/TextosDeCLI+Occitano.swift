@@ -9,6 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <acòrds> [--en <tonalitat>] [--escalas]",
         descripcionAnalizar: "chifratge roman, foncions, cadéncias e\nmodulacions (amb lor acòrd pivòt; sens\n--en)\n--escalas: la gama de cada acòrd,\namb las tensions e nòtas d'evitar",
+        notasAnalizar: "--notas-guia: doas linhas de nòtas guidas,\ndempuèi la tèrça e dempuèi la setena",
         sintaxisAnalizarArchivo: "analizar --archivo <fichièr> [--ventana <durada>]",
         descripcionAnalizarArchivo: "lo meteis, amb los acòrds d'un fichièr\nMIDI, MusicXML, MEI o ABC (un per\ntemps ; --ventana 2 : un per blanca)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalitat>] [--propuestas 3]",
@@ -33,11 +34,12 @@ extension TextosDeCLI {
         notasArpegio: "opcions: --octavas 2 (d'1 a 4), --sin-octava, --desde Mi\n(o 3: comença per aquela nòta), --tensiones 9,13, --grados\n1-5-3-8 (un percors pròpri) e --aproximacion abajo, arriba\no encierro (nòtas cromaticas que mènan a caduna)",
         sintaxisIdentificar: "identificar <nòtas>",
         descripcionIdentificar: "acòrds que fan unas nòtas",
+        notasIdentificar: "opcions: --escalas (las gamas que contenon\nlas nòtas, en plaça d'acòrdis) e --archivo\nmelodia.mid (las nòtas d'un fichièr MIDI,\nMusicXML, MEI o ABC, amb --escalas)",
         sintaxisIntervalo: "intervalo <nòta> <nòta>",
         descripcionIntervalo: "interval entre doas nòtas o nautors",
         sintaxisEscala: "escala <gama> [--acordes]",
         descripcionEscala: "nòtas e acòrds d'una gama\n--acordes: totes los que i caben sus\ncada gra, pas sonque los de tèrças",
-        notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (digitacion), --modos (parallèls e relatius)\ne --comparar Do lidio (a la fin)",
+        notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (digitacion), --modos (parallèls e relatius)\ne --comparar Do lidio (a la fin); --simetria (cada quant\nse repetís e sos acòrdis)",
         sintaxisEscalas: "escalas [<tèxte>] [opcions]",
         descripcionEscalas: "lo catalòg de las gamas: las abitualas\ne las d'autras tradicions, per\ncategorias, amb lors nòtas dempuèi Do",
         notasEscalas: "opcions: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) e --categoria maqam (o rāga, makam,\ndastgah, dromos…); un tèxte cerca dins los noms",
@@ -106,6 +108,9 @@ extension TextosDeCLI {
         descripcionDigitaciones: "biaisses de jogar un acòrd, del mai comòde al mens, sus un\ninstrument de còrdas amb trasts (còrdas del grèu a l'agut)\nopcions: --instrumento guitarra|bajo|ukelele|mandolina|… (tanben\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D»),\n--limite 5, --traste 12 (lo mai naut que s'utiliza), --dedos 4\n(los que se pòdon utilizar), --completo (amb totas las nòtas:\nper defaut la quinta pòt mancar), --diagrama (una linha per\ncòrda),\n--capo 2 (los trasts, dempuèi lo capodastre), --musicxml (la\nprimièra forma de cada acòrd, coma tablatura MusicXML)",
         sintaxisPosiciones: "posiciones <gama> [--caged]",
         descripcionPosiciones: "la gama per posicions a la guitarra:\ntres nòtas per còrda (doas dins las\npentatonicas) o CAGED",
+        notasPosiciones: "opcions: --secuencia terceras (o una autra:\nla sequéncia dins cada posicion; amb\n--bajando, en davalant) e --formas (las cinc\nformas de la pentatonica e las nòtas comunas)",
+        sintaxisTeclado: "teclado <gama> [--mano derecha]",
+        descripcionTeclado: "la gama sus un clavièr de piano\n(SVG): sas nòtas o, amb --mano derecha\no izquierda, los dets; --octavas 2",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -216,6 +221,10 @@ extension TextosDeCLI {
         trasteFueraDeRango: "lo trast mai naut es un nombre de 0 a 24: --traste 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "manca lo chifratge: \(d)" },
         faltaEscalaDePosiciones: "manca la gama: armonia posiciones Sol mayor",
+        faltaEscalaDelTeclado: "manca la gama: armonia teclado Re mayor",
+        manoDesconocida: { texto in "man desconeguda: «\(texto)» (derecha o izquierda)" },
+        archivoConNotas: "amb --archivo, escrivètz pas de nòtas",
+        noEsPentatonica: "las formas son d'una gama de cinc nòtas: armonia posiciones La pentatónica menor --formas",
         capoFueraDeRango: "lo capodastre es un nombre de 0 a 12: --capo 2",
         octavasFueraDeRango: "las octavas son un nombre d'1 a 4: --octavas 2",
         desdeNoValido: { desde in "«\(desde)» es pas una nòta ni un grau de l'acòrd: --desde Mi o --desde 3" },

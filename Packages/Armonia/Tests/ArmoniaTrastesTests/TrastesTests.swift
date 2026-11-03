@@ -604,3 +604,53 @@ extension DigitacionTests {
         #expect(clases == [2, 6, 9])
     }
 }
+
+/// Las secuencias dentro de una posición y las cinco formas de la pentatónica.
+@Suite struct EstudioEnElMastilTests {
+    let mastil = Mastil(.guitarra, trastes: 15)
+
+    @Test func recorridoSinNotasRepetidas() {
+        let posiciones = mastil.posicionesCAGED(de: Escala(.do))
+        for posicion in posiciones {
+            let midis = posicion.recorrido.map { mastil.altura(en: $0).midi }
+            #expect(midis == midis.sorted() && Set(midis).count == midis.count)
+        }
+        // En la primera, el Si suena en la tercera cuerda (traste 4) y en la segunda al aire: se toca una vez.
+        let primera = posiciones[0]
+        #expect(primera.recorrido.count == primera.posiciones.count - 1)
+    }
+
+    @Test func secuenciaEnUnaPosicion() {
+        let posicion = mastil.posicionesPorCuerda(de: Escala(.do))[0]
+        let notas = posicion.recorrido
+        #expect(notas.count == 18)
+        let terceras = posicion.secuencia(.terceras)
+        #expect(terceras.count == 32)
+        #expect(Array(terceras.prefix(4)) == [notas[0], notas[2], notas[1], notas[3]])
+        #expect(terceras.last == notas.last)
+        #expect(posicion.secuencia(.gruposDeTres).count == 48)
+        let bajando = posicion.secuencia(.terceras, sentido: .descendente)
+        #expect(bajando.first == notas.last)
+        #expect(bajando.last == notas.first)
+        // Si el dibujo no cabe en la posición, nada.
+        let corta = EscalaEnElMastil(
+            mastil: mastil, trastes: 0...2,
+            posiciones: [PosicionEnElMastil(cuerda: 0, traste: 0), PosicionEnElMastil(cuerda: 0, traste: 2)])
+        #expect(corta.secuencia(.triadas).isEmpty)
+    }
+
+    @Test func formasDeLaPentatonica() {
+        let formas = mastil.formasPentatonicas(de: Escala(.la, .pentatonicaMenor))
+        #expect(formas.map(\.trastes) == [5...8, 7...10, 9...13, 0...3, 2...5])
+        #expect(formas.allSatisfy { $0.posiciones.count == 12 })
+        // Cada forma comparte una nota por cuerda con la siguiente, y la última con la primera.
+        for (forma, siguiente) in zip(formas, formas.dropFirst() + formas.prefix(1)) {
+            #expect(forma.notasComunes(con: siguiente).count == 6)
+        }
+        #expect(formas[0].notasComunes(con: formas[1]).map(\.traste) == [8, 7, 7, 7, 8, 8])
+        #expect(mastil.formasPentatonicas(de: Escala(.do)).isEmpty)
+        // En un mástil corto no cabe la de la tónica: las que caben, como salen.
+        let corto = Mastil(.guitarra, trastes: 4).formasPentatonicas(de: Escala(.la, .pentatonicaMenor))
+        #expect(corto.map(\.trastes) == [0...3])
+    }
+}

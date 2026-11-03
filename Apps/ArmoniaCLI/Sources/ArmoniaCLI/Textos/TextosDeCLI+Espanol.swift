@@ -9,6 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <acordes> [--en <tonalidad>] [--escalas]",
         descripcionAnalizar: "cifrado romano, funciones, cadencias\ny modulaciones (con su acorde\npivote; sin --en)\n--escalas: la escala de cada acorde,\ncon sus tensiones y notas a evitar",
+        notasAnalizar: "--notas-guia: dos líneas de notas guía,\ndesde la tercera y desde la séptima",
         sintaxisAnalizarArchivo: "analizar --archivo <fichero> [--ventana <duración>]",
         descripcionAnalizarArchivo: "lo mismo, con los acordes de un\nfichero MIDI, MusicXML, MEI o ABC (uno\npor pulso; --ventana 2: uno por\nblanca)",
         sintaxisArmonizar: "armonizar <melodía> [--en <tonalidad>] [--propuestas 3]",
@@ -33,11 +34,12 @@ extension TextosDeCLI {
         notasArpegio: "opciones: --octavas 2 (de 1 a 4), --sin-octava, --desde Mi\n(o 3: empieza por esa nota), --tensiones 9,13, --grados\n1-5-3-8 (un recorrido propio) y --aproximacion abajo, arriba\no encierro (notas cromáticas que llevan a cada una)",
         sintaxisIdentificar: "identificar <notas>",
         descripcionIdentificar: "acordes que forman unas notas",
+        notasIdentificar: "opciones: --escalas (las escalas que contienen\nlas notas, en vez de acordes) y --archivo\nmelodia.mid (las notas de un fichero MIDI,\nMusicXML, MEI o ABC, con --escalas)",
         sintaxisIntervalo: "intervalo <nota> <nota>",
         descripcionIntervalo: "intervalo entre dos notas o alturas",
         sintaxisEscala: "escala <escala> [--acordes]",
         descripcionEscala: "notas y acordes de una escala\n--acordes: todos los que caben\nen cada grado, no solo los de terceras",
-        notasEscala: "opciones: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (digitación), --modos (paralelos y relativos)\ny --comparar Do lidio (al final)",
+        notasEscala: "opciones: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (digitación), --modos (paralelos y relativos)\ny --comparar Do lidio (al final); --simetria (cada cuánto\nse repite y sus acordes)",
         sintaxisEscalas: "escalas [<texto>] [opciones]",
         descripcionEscalas: "el catálogo de escalas: las habituales\ny las de otras tradiciones, por\ncategorías, con sus notas desde Do",
         notasEscalas: "opciones: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) y --categoria maqam (o rāga, makam,\ndastgah, dromos…); un texto busca en los nombres",
@@ -106,6 +108,9 @@ extension TextosDeCLI {
         descripcionDigitaciones: "formas de tocar un acorde, de la más cómoda a la menos, en un\ninstrumento de cuerda con trastes (cuerdas de grave a agudo)\nopciones: --instrumento guitarra|bajo|ukelele|mandolina|…\n(también «guitarra de siete cuerdas», «bajo de 5 cuerdas»,\n«drop D»), --limite 5, --traste 12 (el más alto que se usa),\n--dedos 4 (los que se pueden usar), --completo (con todas las notas:\npor defecto la quinta puede faltar), --diagrama (una línea por cuerda),\n--capo 2 (los trastes, desde el capo), --musicxml (la primera forma\nde cada acorde, como tablatura MusicXML)",
         sintaxisPosiciones: "posiciones <escala> [--caged]",
         descripcionPosiciones: "la escala por posiciones en la\nguitarra: tres notas por cuerda (dos\nen las pentatónicas) o CAGED",
+        notasPosiciones: "opciones: --secuencia terceras (u otra:\nla secuencia en cada posición; con\n--bajando, bajando) y --formas (las cinco\nformas de la pentatónica y sus notas comunes)",
+        sintaxisTeclado: "teclado <escala> [--mano derecha]",
+        descripcionTeclado: "la escala en un teclado de piano\n(SVG): sus notas o, con --mano derecha\no izquierda, los dedos; --octavas 2",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -217,6 +222,10 @@ extension TextosDeCLI {
         trasteFueraDeRango: "el traste más alto es un número de 0 a 24: --traste 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "falta el cifrado: \(d)" },
         faltaEscalaDePosiciones: "falta la escala: armonia posiciones Sol mayor",
+        faltaEscalaDelTeclado: "falta la escala: armonia teclado Re mayor",
+        manoDesconocida: { texto in "mano desconocida: «\(texto)» (derecha o izquierda)" },
+        archivoConNotas: "con --archivo no se escriben notas",
+        noEsPentatonica: "las formas son de una escala de cinco notas: armonia posiciones La pentatónica menor --formas",
         capoFueraDeRango: "el capo es un número de 0 a 12: --capo 2",
         octavasFueraDeRango: "las octavas son un número de 1 a 4: --octavas 2",
         desdeNoValido: { desde in "«\(desde)» no es una nota ni un grado del acorde: --desde Mi o --desde 3" },

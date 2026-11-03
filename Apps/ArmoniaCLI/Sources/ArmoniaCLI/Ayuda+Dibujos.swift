@@ -5,6 +5,17 @@ extension LineaDeComandos {
     static let ordenesDeDibujos: [Orden] = [
         Orden(nombres: ["tonnetz"], ayuda: ayudaDeTonnetz) { try tonnetz($0, $1) },
         Orden(nombres: ["tabla", "harmonic-table"], ayuda: ayudaDeTabla) { try tablaArmonica($0, $1) },
+        Orden(nombres: ["teclado", "keyboard"], ayuda: ayudaDeTeclado) { try teclado($0, $1) },
+    ]
+
+    static let ayudaDeTeclado: [EntradaDeAyuda] = [
+        // teclado <escala> [--mano derecha|izquierda] [--octavas 2]
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisTeclado),
+            descripcion: TextosDeCLI.traduccion(\.descripcionTeclado),
+            ejemplo: ejemplo(
+                "armonia teclado Re mayor --mano derecha > re.svg",
+                "armonia keyboard D major --hand right > d.svg"))
     ]
 
     static let ayudaDeTonnetz: [EntradaDeAyuda] = [

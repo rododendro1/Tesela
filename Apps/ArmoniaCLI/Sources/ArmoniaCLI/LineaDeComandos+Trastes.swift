@@ -157,11 +157,25 @@ extension LineaDeComandos {
     static func posiciones(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
         let caged = argumentos.quitarMarca("--caged")
+        let bajando = argumentos.quitarMarca("--bajando", "--descending")
+        let formas = argumentos.quitarMarca("--formas", "--shapes")
+        var secuencia: SecuenciaDeEscala?
+        switch argumentos.quitarOpcion("--secuencia", "--sequence") {
+        case .ausente: break
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            guard let elegida = secuenciaDeEscala(texto) else { return uso(.secuenciaDesconocida(texto), notacion) }
+            secuencia = elegida
+        }
         if let desconocida = argumentos.opcionDesconocida {
             return uso(.opcionDesconocida(desconocida), notacion)
         }
         guard !argumentos.restantes.isEmpty else { return uso(.faltaEscalaDePosiciones, notacion) }
         let escala = try Escala(leyendo: argumentos.unidos)
+        if formas { return formasPentatonicas(de: escala, notacion) }
+        if let secuencia {
+            return secuenciaEnLasPosiciones(escala, secuencia, caged: caged, bajando: bajando, notacion)
+        }
         let mastil = Mastil(.guitarra, trastes: 15)
         let porCuerda = escala.notas.count >= 6 ? 3 : 2
         let sistema = caged ? "CAGED" : notacion.texto { $0.notasPorCuerda(porCuerda) }
@@ -185,6 +199,34 @@ extension LineaDeComandos {
                 let nombre = nombres[cuerda].padding(hasta: ancho + 1)
                 lineas.append("    " + nombre + "|-" + celdas.joined(separator: "-") + "-")
             }
+        }
+        return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// `posiciones La pentatónica menor --formas`: las cinco formas, cada una con su tablatura y las notas que
+    /// comparte con la siguiente.
+    static func formasPentatonicas(de escala: Escala, _ notacion: Notacion) -> ResultadoDeOrden {
+        let formas = PresentacionDeEstudioDeEscala.formasPentatonicas(de: escala, notacion: notacion)
+        guard !formas.isEmpty else { return uso(.noEsPentatonica, notacion) }
+        var lineas = [escala.nombre(en: notacion) + " · " + notacion.texto(\.formasDeLaPentatonica)]
+        for forma in formas {
+            lineas += ["", "  " + forma.titulo] + forma.tablatura.map { "    " + $0 } + ["    " + forma.comunes]
+        }
+        return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// `posiciones Do mayor --secuencia terceras [--caged] [--bajando]`: la secuencia tocada en cada posición, sin
+    /// salir de ella, en tablatura.
+    static func secuenciaEnLasPosiciones(
+        _ escala: Escala, _ secuencia: SecuenciaDeEscala, caged: Bool, bajando: Bool, _ notacion: Notacion
+    ) -> ResultadoDeOrden {
+        let posiciones = PresentacionDeEstudioDeEscala.secuenciaEnLasPosiciones(
+            escala, secuencia, caged: caged, sentido: bajando ? .descendente : .ascendente, notacion: notacion)
+        var lineas = [
+            escala.nombre(en: notacion) + " · " + notacion.texto(\.secuencia) + " " + secuencia.nombre(en: notacion)
+        ]
+        for posicion in posiciones where !posicion.notas.isEmpty {
+            lineas += ["", "  " + posicion.titulo] + posicion.tablatura.map { "    " + $0 }
         }
         return bien(lineas.joined(separator: "\n"))
     }

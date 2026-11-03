@@ -12,6 +12,7 @@ struct TextosDeCLI: TextosTraducidos {
     // MARK: Ayuda+Armonizacion.swift
     let sintaxisAnalizar: String
     let descripcionAnalizar: String
+    let notasAnalizar: String
     let sintaxisAnalizarArchivo: String
     let descripcionAnalizarArchivo: String
     let sintaxisArmonizar: String
@@ -36,6 +37,7 @@ struct TextosDeCLI: TextosTraducidos {
     let notasArpegio: String
     let sintaxisIdentificar: String
     let descripcionIdentificar: String
+    let notasIdentificar: String
     let sintaxisIntervalo: String
     let descripcionIntervalo: String
     let sintaxisEscala: String
@@ -109,6 +111,9 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionDigitaciones: String
     let sintaxisPosiciones: String
     let descripcionPosiciones: String
+    let notasPosiciones: String
+    let sintaxisTeclado: String
+    let descripcionTeclado: String
 
     // MARK: Ayuda.swift
     let cabeceraDeLaAyuda: String
@@ -204,6 +209,10 @@ struct TextosDeCLI: TextosTraducidos {
     let trasteFueraDeRango: String
     let faltaCifradoDeDigitaciones: @Sendable (String, (String, String)) -> String
     let faltaEscalaDePosiciones: String
+    let faltaEscalaDelTeclado: String
+    let manoDesconocida: @Sendable (String) -> String
+    let archivoConNotas: String
+    let noEsPentatonica: String
     let capoFueraDeRango: String
     let octavasFueraDeRango: String
     let desdeNoValido: @Sendable (String) -> String

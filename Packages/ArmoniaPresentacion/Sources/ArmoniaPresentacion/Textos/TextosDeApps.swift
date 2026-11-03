@@ -172,6 +172,19 @@ public struct TextosDeApps: TextosTraducidos {
     public let pentatonicas: String
     public let cambian: @Sendable (String) -> String
     public let notasGuia: @Sendable (String) -> String
+    public let escalasQueLasContienen: String
+    public let ademas: @Sendable (String) -> String
+    public let simetria: String
+    public let repiteCada: @Sendable (Int, Int) -> String
+    public let tonicasEquivalentes: String
+    public let lineasDeNotasGuia: String
+    public let desdeLaTercera: String
+    public let desdeLaSeptima: String
+    public let secuenciaEnLasPosiciones: String
+    public let formasDeLaPentatonica: String
+    public let formaNumero: @Sendable (Int) -> String
+    public let comparteCon: @Sendable (Int, String) -> String
+    public let teclado: String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String
