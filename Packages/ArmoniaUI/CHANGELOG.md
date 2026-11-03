@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+- **Más escalas en Armonía.** En Escalas, la digitación de piano dibujada en un teclado para cada mano (y para
+  exportar en SVG), la simetría de las escalas simétricas con sus acordes que se repiten, las cinco formas de la
+  pentatónica con las notas que comparten y la secuencia elegida tocada en cada posición, en tablatura. En
+  Identificar, las escalas que contienen lo que suena. En Análisis, las líneas de notas guía, para escucharlas y
+  exportarlas.
+
 - **Estudiar escalas en Armonía.** En Escalas, la escala en secuencias (por terceras, en grupos, en tríadas…),
   subiendo o bajando, con su pentagrama, para escucharla y exportarla; la digitación de piano de cada mano; los modos
   sobre la misma tónica, del más brillante al más oscuro, con lo que cambia cada uno, y los de las mismas notas; y la

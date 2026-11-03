@@ -17,6 +17,9 @@ import Testing
         #expect(escalas.contains { $0.ademas == "además: Re, La" })
         let dos = PresentacionDeEstudioDeEscala.escalas(conLasNotas: notas, limite: 2, notacion: .inglesASCII)
         #expect(dos.count == 2)
+        // Sin ortografía, de un mástil: Fa♯ en el teclado, 78 en MIDI.
+        let deClases = PresentacionDeEstudioDeEscala.escalas(conLasClases: [60, 64, 67, 71, 78], notacion: notacion)
+        #expect(deClases.first?.nombre == "Do pentatónica lidia")
         // De una pieza: Re Mi Fa Sol La Si Do Re, en Re menor.
         let notasDeLaPieza = [62, 64, 65, 67, 69, 71, 72, 74].enumerated().map { i, midi in
             NotaDeLaPieza(altura: Altura(midi: midi), inicio: .negra * i, duracion: .negra)

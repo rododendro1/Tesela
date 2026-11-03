@@ -50,6 +50,15 @@ extension PresentacionDeEstudioDeEscala {
         encontradas(Escala.identificar(notas), clases: Set(notas.map(\.claseDeAltura)), limite, notacion)
     }
 
+    /// Las escalas que contienen unas clases de altura (las de un mástil o un teclado MIDI, sin ortografía), cada
+    /// una escrita con la tónica que da menos alteraciones.
+    public static func escalas(
+        conLasClases clases: [Int], limite: Int = 10, notacion: Notacion
+    ) -> [EscalaEncontrada] {
+        let enLaOctava = Set(clases.map { ($0 % 12 + 12) % 12 })
+        return encontradas(Escala.identificar(clasesDeAltura: clases), clases: enLaOctava, limite, notacion)
+    }
+
     /// Las escalas que contienen las notas de una pieza (una melodía en MIDI, MusicXML, MEI o ABC), sin las que
     /// apenas suenan, de más a menos probable.
     public static func escalas(
