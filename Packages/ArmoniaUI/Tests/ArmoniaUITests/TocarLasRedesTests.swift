@@ -67,6 +67,24 @@ import Testing
         }
     }
 
+    @Test func enLosTecladosDeCuadriculaTambien() throws {
+        let doMayor = ContenidoDeRed.acorde(try Acorde(leyendo: "Do"))
+        for red in RedDeNotas.allCases where red.tecladoCuadrado != nil {
+            let teclado = try #require(red.tecladoCuadrado)
+            for casilla in PresentacionDeRedes.casillasDelTecladoCuadrado {
+                let centro = TecladoCuadrado.centro(de: casilla, lado: PresentacionDeRedes.ladoDelTecladoCuadrado)
+                #expect(
+                    PresentacionDeRedes.midi(en: centro, de: doMayor, enLaRed: red) == teclado.midi(en: casilla),
+                    "\(red) \(casilla)")
+            }
+            #expect(PresentacionDeRedes.midi(en: Punto(x: 10_000, y: 0), de: doMayor, enLaRed: red) == nil)
+        }
+        // En cuartas, la casilla de encima del Do4 es el Fa4, y la de su derecha, el Do♯4.
+        let lado = PresentacionDeRedes.ladoDelTecladoCuadrado
+        #expect(PresentacionDeRedes.midi(en: Punto(x: 0, y: -lado), de: doMayor, enLaRed: .cuadriculaEnCuartas) == 65)
+        #expect(PresentacionDeRedes.midi(en: Punto(x: lado, y: 0), de: doMayor, enLaRed: .cuadriculaEnCuartas) == 61)
+    }
+
     @Test func elTecladoUILSeGiraYSeRefleja() throws {
         let doMayor = ContenidoDeRed.acorde(try Acorde(leyendo: "Do"))
         var ajuste = AjusteUIL(texto: "2,7,5;R30M")

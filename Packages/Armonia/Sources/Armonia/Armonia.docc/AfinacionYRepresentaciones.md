@@ -359,3 +359,26 @@ No se leen todavía la cizalla (`S`) ni las razones o centésimas como intervalo
 Los acordeones del artículo (`1,3,2;R270M` y `R270`) son los de ``TecladoIsomorfico/acordeonC`` y ``TecladoIsomorfico/acordeonB``
 girados 90°: los mismos intervalos con otra colocación. La app Tonnetz los trae con las colocaciones de arriba; el
 artículo es la referencia de la colocación del bayan y de los sistemas C y B.
+
+## Teclados de cuadrícula
+
+``TecladoCuadrado`` es el teclado isomórfico de botones cuadrados en filas y columnas, como los de los controladores de
+pads (LinnStrument, Launchpad, Push). Se define por sus dos ejes: H, los semitonos que sube un paso hacia la derecha, y
+V, los que sube un paso hacia arriba; las diagonales suben H + V y V − H. Trae seis: en cuartas (H 1, V 5, la
+disposición por defecto del LinnStrument y la «4ths» del Launchpad y del Push), en terceras mayores (1, 4), en quintas
+(1, 7, como las cuerdas del violín), Wicki-Hayden en cuadrícula (2, 5, con la quinta en la diagonal), de tonos enteros
+(2, 1, como Jankó) y el Tonnetz de Euler (7, 4: quintas en horizontal y terceras mayores en vertical). Una casilla es
+una ``CasillaCuadrada``, con su columna y su fila; `girado()` le da un cuarto de vuelta y `reflejado`, la vuelve del
+revés, como en un espejo.
+
+```swift
+let cuartas = TecladoCuadrado.cuartas
+cuartas.midi(en: CasillaCuadrada(columna: 2, fila: 1)) == 67              // true
+cuartas.semitonosEnDiagonal == 6                                          // true
+TecladoCuadrado.wickiHaydenCuadrado.semitonosEnDiagonal == 7              // true
+cuartas.girado().semitonosEnH == 5                                        // true
+cuartas.reflejado.semitonosEnH == -1                                      // true
+TecladoCuadrado(nombre: "Tonos", semitonosEnH: 2, semitonosEnV: 4).esCompleto == false   // true
+let ventana = CasillaCuadrada.rectangulo(columnas: 0...11, filas: 0...3)
+let dibujo = cuartas.svg(ventana, marcadas: [60, 64, 67])
+```

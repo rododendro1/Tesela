@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- **Teclados de cuadrícula en la app Tonnetz.** Seis redes más en el selector: en cuartas, en terceras mayores, en
+  quintas, Wicki-Hayden en cuadrícula, de tonos enteros y el Tonnetz de Euler. Se dibujan con cuadrados de 12 columnas
+  por 7 filas, con el Do4 hacia el centro, y se tocan como los teclados hexagonales.
+
 - **Estudiar escalas en Armonía.** En Escalas, la escala en secuencias (por terceras, en grupos, en tríadas…),
   subiendo o bajando, con su pentagrama, para escucharla y exportarla; la digitación de piano de cada mano; los modos
   sobre la misma tónica, del más brillante al más oscuro, con lo que cambia cada uno, y los de las mismas notas; y la
