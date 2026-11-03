@@ -170,10 +170,9 @@ public struct ContrapuntoAVariasVoces: Hashable, Sendable {
                 if a != 0 {
                     for (antes, despues) in zip(comunes, comunes.dropFirst())
                     where antes.x != despues.x && antes.y != despues.y {
-                        let perfecta = Contrapunto.perfecta(intervalo(antes.x, antes.y))
-                        guard let perfecta, perfecta == Contrapunto.perfecta(intervalo(despues.x, despues.y)) else {
-                            continue
-                        }
+                        guard let perfecta = Contrapunto.perfecta(intervalo(antes.x, antes.y)),
+                            perfecta == Contrapunto.perfecta(intervalo(despues.x, despues.y))
+                        else { continue }
                         let tipo: FaltaDeContrapunto.Tipo = perfecta == 5 ? .quintasParalelas : .octavasParalelas
                         anotar(tipo, compas(antes.momento), compas(despues.momento), [a, b])
                     }
