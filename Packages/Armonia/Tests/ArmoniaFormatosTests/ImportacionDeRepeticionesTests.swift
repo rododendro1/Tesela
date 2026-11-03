@@ -124,7 +124,7 @@ import Testing
             ])
         // Una repetición sin principio vuelve al principio; las notas de adorno, aparte.
         let adornos = try PiezaImportada(abc: "X:1\nM:2/4\nL:1/4\nK:C\n{B}c d :| e2 |]\n")
-        #expect(tocadas(adornos) == ["Do5 0/1", "Re4 1/4", "Do5 1/2", "Re4 3/4", "Mi4 1/1"])
+        #expect(tocadas(adornos) == ["Do5 0/1", "Re5 1/4", "Do5 1/2", "Re5 3/4", "Mi5 1/1"])
         #expect(adornos.notasDeAdorno.map(\.altura) == [Altura("Si4"), Altura("Si4")])
     }
 
