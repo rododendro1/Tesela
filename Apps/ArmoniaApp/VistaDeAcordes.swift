@@ -76,6 +76,12 @@ struct VistaDeAcordes: View {
             arpegio, figura: duracion, tempo: Tempo(Double(tempo)), swing: swing, notacion: notacion)
     }
 
+    /// El arpegio en el pentagrama con el ritmo con que suena: la figura elegida, en tresillos si se piden.
+    private func pentagrama(de arpegio: Arpegio, resaltada: Int? = nil) -> PentagramaPresentado {
+        PentagramaPresentado(
+            presentado(arpegio).voz, titulo: arpegio.nombre(en: notacion), notacion: notacion, resaltada: resaltada)
+    }
+
     var body: some View {
         Form {
             Section(notacion.texto(\.acorde)) {
@@ -132,7 +138,7 @@ struct VistaDeAcordes: View {
         let arpegio = self.arpegio(de: acorde)
         var ficheros = [
             PentagramaPresentado(acorde, notacion: notacion).fichero,
-            PentagramaPresentado(arpegio, notacion: notacion).fichero,
+            pentagrama(de: arpegio).fichero,
         ]
         if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, notacion: notacion) {
             ficheros.append(presentadas.pentagrama.fichero)
@@ -297,8 +303,7 @@ struct VistaDeAcordes: View {
             Toggle(notacion.texto(\.tresillos), isOn: $tresillos)
             Toggle(notacion.texto(\.swing), isOn: $swing)
             Stepper(notacion.texto { $0.tempo(tempo) }, value: $tempo, in: 40...240, step: 4)
-            DiagramaDePentagrama(
-                PentagramaPresentado(arpegio, notacion: notacion, resaltada: reproductor.paso(de: sonido)))
+            DiagramaDePentagrama(pentagrama(de: arpegio, resaltada: reproductor.paso(de: sonido)))
             BotonDeEscuchar(sonido)
         }
     }

@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+import ArmoniaTeoria
 
 // Las opciones del pentagrama en SVG (`PentagramaSVG`). El dibujo está en `PentagramaSVG.swift`.
 
@@ -28,16 +29,34 @@ public struct OpcionesDePentagrama {
     }
 
     /// Qué armadura se escribe.
-    public enum Armadura {
-        /// La de la escala, si es diatónica (la mayor, el dórico…); las demás escalas y los acordes, sin armadura.
+    public enum Armadura: Hashable, Sendable {
+        /// La de la escala, si es diatónica (la mayor, el dórico…); las demás escalas, los acordes y los arpegios,
+        /// sin armadura.
         case automatica
         /// Ninguna: cada alteración se escribe delante de su nota.
         case ninguna
+        /// La de una tonalidad, en cualquier dibujo: el arpegio de Sol7 en Do mayor, sin alteraciones; el de Mi7 en
+        /// La menor, con el Sol♯ delante de su nota; la menor armónica en La menor, con el Sol♯ de la escala. Las notas
+        /// que la armadura no da llevan su alteración, y las que la contradicen, el becuadro.
+        case tonalidad(Tonalidad)
+
+        /// Las notas de la armadura para un dibujo; `propia`, la de la escala que se dibuja, si la tiene.
+        func notas(propia: [Nota]? = nil) -> [Nota] {
+            switch self {
+            case .automatica:
+                guard let propia, propia.count <= 7 else { return [] }
+                return propia
+            case .ninguna: return []
+            case .tonalidad(let tonalidad): return tonalidad.notasDeLaArmadura
+            }
+        }
     }
 
     /// La clave; si es `nil`, la de sol o la de fa, la que necesite menos líneas adicionales (con `pentagramas` en
     /// `.doble`, la clave no cuenta: van las dos).
     public var clave: Clave?
+    /// Qué armadura se escribe: por defecto, la de la escala si es diatónica; con `.tonalidad`, la de esa tonalidad
+    /// también en los acordes, los arpegios y las voces.
     public var armadura: Armadura
     /// Un pentagrama o dos (el de sol y el de fa): por defecto, dos solo si el rango lo pide.
     public var pentagramas: Pentagramas

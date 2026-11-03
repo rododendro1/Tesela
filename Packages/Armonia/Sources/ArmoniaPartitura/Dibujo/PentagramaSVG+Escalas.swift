@@ -19,8 +19,7 @@ extension Escala {
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
         let alturas = alturasMicrotonales(octava: octava, sentido: sentido)
-        var armadura: [Nota] = []
-        if opciones.armadura == .automatica, let propia = notasDeLaArmadura, propia.count <= 7 { armadura = propia }
+        let armadura = opciones.armadura.notas(propia: notasDeLaArmadura)
         // Los microtonos, con su signo: el medio bemol de un maqam, el koron de un dastgāh, las comas de un makam, los
         // moria de un echos, la flecha de un śruti.
         let microtonos = alturas.map { altura -> [PentagramaSVG.Microtono?] in
@@ -40,7 +39,8 @@ extension Acorde {
     /// El acorde en un pentagrama, como SVG: `Acorde("Sol7").svgPentagrama()`. Las notas van apiladas desde el bajo,
     /// en posición cerrada y a partir de `octava` (el bajo, en la primera octava en que su nota alcanza el Do de esa
     /// octava), con el cifrado encima. Los acordes muy extensos y `disposicionDelAcorde: .abierta` ponen el bajo una
-    /// octava más grave y el resto encima, y con eso suelen pasar al pentagrama doble.
+    /// octava más grave y el resto encima, y con eso suelen pasar al pentagrama doble. Sin armadura, salvo la de
+    /// `.tonalidad`.
     public func svgPentagrama(
         octava: Int = 4, cifrado conCifrado: Bool = true,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
@@ -63,7 +63,7 @@ extension Acorde {
         }
         let texto = cifrado(en: opciones.notacion)
         return PentagramaSVG(
-            columnas: [alturas], armadura: [], cifrado: conCifrado ? texto : nil,
+            columnas: [alturas], armadura: opciones.armadura.notas(), cifrado: conCifrado ? texto : nil,
             titulo: texto, opciones: opciones
         ).svg()
     }
@@ -71,11 +71,12 @@ extension Acorde {
 
 extension Arpegio {
     /// El arpegio en un pentagrama, como SVG: `Arpegio("Do7").svgPentagrama()`. Cada nota, en el orden del patrón y
-    /// a partir de `octava` (la del bajo), va en su columna, con las alteraciones que le hagan falta (no lleva
-    /// armadura) y su nombre en un `<title>`; el título de la imagen es el nombre del arpegio.
+    /// a partir de `octava` (la del bajo), va en su columna, con las alteraciones que le hagan falta (sin armadura,
+    /// salvo la de una tonalidad: `OpcionesDePentagrama(armadura: .tonalidad(…))`) y su nombre en un `<title>`; el
+    /// título de la imagen es el nombre del arpegio.
     public func svgPentagrama(octava: Int = 4, opciones: OpcionesDePentagrama = OpcionesDePentagrama()) -> String {
         PentagramaSVG(
-            columnas: alturas(octava: octava).map { [$0] }, armadura: [], cifrado: nil,
+            columnas: alturas(octava: octava).map { [$0] }, armadura: opciones.armadura.notas(), cifrado: nil,
             titulo: nombre(en: opciones.notacion), opciones: opciones
         ).svg()
     }
@@ -83,14 +84,17 @@ extension Arpegio {
 
 extension DisposicionDeAcorde {
     /// Acordes con sus alturas escritas (las disposiciones de `Acorde.disposiciones(_:en:)` o de
-    /// `DisposicionDeAcorde.conducir(_:en:)`), uno por columna, sin armadura: en dos pentagramas si las notas pasan a
-    /// los dos lados del Do central y con uno harían falta más de tres líneas adicionales.
+    /// `DisposicionDeAcorde.conducir(_:en:)`), uno por columna, sin armadura (salvo la de `.tonalidad`): en dos
+    /// pentagramas si las notas pasan a los dos lados del Do central y con uno harían falta más de tres líneas
+    /// adicionales.
     ///
     ///     let voces = DisposicionDeAcorde.drop2.conducir([Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]) ?? []
     ///     let svg = DisposicionDeAcorde.svgPentagrama(voces, titulo: "ii–V–I")
     public static func svgPentagrama(
         _ acordes: [[Altura]], titulo: String, opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
-        PentagramaSVG(columnas: acordes, armadura: [], cifrado: nil, titulo: titulo, opciones: opciones).svg()
+        PentagramaSVG(
+            columnas: acordes, armadura: opciones.armadura.notas(), cifrado: nil, titulo: titulo, opciones: opciones
+        ).svg()
     }
 }

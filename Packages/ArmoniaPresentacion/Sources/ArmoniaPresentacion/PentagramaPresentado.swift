@@ -57,6 +57,25 @@ public struct PentagramaPresentado: Hashable, Sendable {
         self.init(svg: dibujo, descripcion: nombre + ": " + notas, nombre: "Pentagrama " + nombre)
     }
 
+    /// Una voz con su ritmo (un arpegio en corcheas o en tresillos, una progresión arpegiada): figuras, plicas,
+    /// barras, compás y, si se da una tonalidad, su armadura. La `resaltada` cuenta las notas que se oyen, como
+    /// los pasos de su sonido.
+    ///
+    ///     let arpegio = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Do7")), figura: .semicorchea,
+    ///                                                 notacion: .espanolCompacto)
+    ///     PentagramaPresentado(arpegio.voz, titulo: "Do7").fichero.nombreDeFichero   // "Pentagrama Do7.svg"
+    public init(
+        _ voz: Voz, titulo: String, tonalidad: Tonalidad? = nil, notacion: Notacion = .espanolCompacto,
+        nombresDeLasNotas: Bool = true, resaltada: Int? = nil
+    ) {
+        var opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)
+        if let tonalidad { opciones.armadura = .tonalidad(tonalidad) }
+        opciones.resaltada = resaltada
+        let dibujo = voz.svgPentagrama(titulo: titulo, opciones: opciones)
+        let notas = voz.melodia.alturas.map { $0.nombre(en: notacion) }.joined(separator: ", ")
+        self.init(svg: dibujo, descripcion: titulo + ": " + notas, nombre: "Pentagrama " + titulo)
+    }
+
     /// Acordes con sus alturas escritas, uno por columna: las disposiciones de un acorde o una progresión dispuesta
     /// (`PresentacionDeDisposiciones`).
     public init(_ acordes: [[Altura]], titulo: String, notacion: Notacion = .espanolCompacto) {
