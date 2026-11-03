@@ -44,7 +44,9 @@ import Testing
     @Test func abc() throws {
         let abc = voz.abc()
         #expect(abc.contains("!p!.C") && abc.contains("!tenuto!D") && abc.contains("!f!!>![EG]"))
-        #expect(abc.contains("!marcato!F") && abc.contains("!sfz!G"))
+        // Delante de las alteraciones: la tonalidad que se deduce puede escribir Fa con becuadro (`=F`).
+        #expect(abc.contains("!marcato!F") || abc.contains("!marcato!=F"))
+        #expect(abc.contains("!sfz!G"))
         #expect(marcas(try PiezaImportada(abc: abc)) == esperadas)
     }
 
