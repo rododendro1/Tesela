@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "eskala bat, akorde bat, arpegio bat\n(erritmoarekin: --figura 16, --tresillos)\nedo akordeak beren zifratuarekin pentagrama\nbatean (SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
         sintaxisPentagramaEstudio: "pentagrama <zer> --romanos|--mano|--secuencia|--tab",
         descripcionPentagramaEstudio: "graduak zenbaki erromatarretan akordeen\nazpian; pianoko hatzak (--mano derecha)\nedo gitarrakoak (--tab --dedos); eskala\nhirukoka edo taldeka (--secuencia\nterceras); tablatura azpian (--tab,\n--instrumento)",
+        sintaxisPentagramaRegistro: "pentagrama <zer> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado",
+        descripcionPentagramaRegistro: "zortziduna (--octava 2), giltza (--clave\nfa), pentagrama bikoitza, erregistroaren\narabera giltza aldaketak eta akordeen\nbaxu zifratua (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "pentagrama melodia <notak> --sobre <akordeak>",
+        descripcionPentagramaMelodia: "melodia bat (Do4:8 Re4:8…) konpas\nbakoitzeko akorde batekin; akordekoak ez\ndiren notak berdez (edo gorriz,\nkromatikoak badira); --ajenas besteetan",
         sintaxisPosicionesArpegio: "posiciones --arpegio <zifratua> [--caged|--barrido]",
         descripcionPosicionesArpegio: "akorde baten arpegioa mastilaren\nposizio bakoitzean, tablaturan eta\nhatzekin; --ida-y-vuelta, igo eta jaitsi",
 
@@ -242,6 +246,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "zer marraztu falta da: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "capoa 0 eta 12 arteko zenbakia da: --capo 2",
         octavasFueraDeRango: "zortzidunak 1 eta 4 arteko zenbakia dira: --octavas 2",
+        octavaFueraDeRango: "zortziduna 0 eta 7 arteko zenbakia da: --octava 3",
         desdeNoValido: { desde in "«\(desde)» ez da akordearen nota edo gradu bat: --desde Mi edo --desde 3" },
         tensionesMalEscritas: "tentsioak 9, 11 edo 13 dira: --tensiones 9,13",
         gradosMalEscritos: "graduak 1 eta 22 arteko zenbakiak dira: --grados 1-5-3-8",

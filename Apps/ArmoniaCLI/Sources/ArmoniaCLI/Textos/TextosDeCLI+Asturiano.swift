@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "una escala, un acorde, un arpexu (con\nritmu: --figura 16, --tresillos) o dellos\nacordes col so cifráu nun pentagrama\n(SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
         sintaxisPentagramaEstudio: "pentagrama <qué> --romanos|--mano|--secuencia|--tab",
         descripcionPentagramaEstudio: "los graos en númberos romanos debaxo de\nlos acordes; los deos del pianu (--mano\nderecha) o de la guitarra (--tab --dedos);\nla escala por terceres o en grupos\n(--secuencia terceras); la tablatura\ndebaxo (--tab, --instrumento)",
+        sintaxisPentagramaRegistro: "pentagrama <qué> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado",
+        descripcionPentagramaRegistro: "la octava (--octava 2), la clave (--clave\nfa), el pentagrama doble, los cambeos de\nclave según el rexistru y el baxu cifráu\nde los acordes (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "pentagrama melodia <notes> --sobre <acordes>",
+        descripcionPentagramaMelodia: "una melodía (Do4:8 Re4:8…) con un acorde\npor compás enriba; les notes que nun son\ndel acorde, en verde (o en colloráu si son\ncromátiques); --ajenas failo nes demás",
         sintaxisPosicionesArpegio: "posiciones --arpegio <cifráu> [--caged|--barrido]",
         descripcionPosicionesArpegio: "l'arpexu d'un acorde en cada\nposición del mástil, en tablatura y colos\ndeos; --ida-y-vuelta, xube y baxa",
 
@@ -242,6 +246,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "falta qué dibuxar: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "el capo ye un númberu de 0 a 12: --capo 2",
         octavasFueraDeRango: "les octaves son un númberu de 1 a 4: --octavas 2",
+        octavaFueraDeRango: "la octava ye un númberu de 0 a 7: --octava 3",
         desdeNoValido: { desde in "«\(desde)» nun ye una nota nin un grau del acorde: --desde Mi o --desde 3" },
         tensionesMalEscritas: "les tensiones son 9, 11 o 13: --tensiones 9,13",
         gradosMalEscritos: "los graos son númberos de 1 a 22: --grados 1-5-3-8",

@@ -47,6 +47,20 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia pentagrama escala Sol mayor --tab --dedos > sol.svg",
                 "armonia staff scale G major --tab --fingers > g.svg")),
+        // pentagrama <qué> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisPentagramaRegistro),
+            descripcion: TextosDeCLI.traduccion(\.descripcionPentagramaRegistro),
+            ejemplo: ejemplo(
+                "armonia pentagrama acordes Do Fa/La Sol7/Si Do --bajo-cifrado > bajo.svg",
+                "armonia staff chords C F/A G7/B C --figured-bass > bass.svg")),
+        // pentagrama melodia <notas> --sobre <acordes>
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisPentagramaMelodia),
+            descripcion: TextosDeCLI.traduccion(\.descripcionPentagramaMelodia),
+            ejemplo: ejemplo(
+                "armonia pentagrama melodia Mi4:8 Re4:8 Do4:4 Si3:4 Do4:4 --sobre Do > melodia.svg",
+                "armonia staff melody E4:8 D4:8 C4:4 B3:4 C4:4 --over C > melody.svg")),
     ]
 
     static let ayudaDeTonnetz: [EntradaDeAyuda] = [

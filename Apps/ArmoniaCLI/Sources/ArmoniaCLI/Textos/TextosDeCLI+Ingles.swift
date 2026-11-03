@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "a scale, a chord, an arpeggio (with\nrhythm: --figure 16, --triplets) or some\nchords with their symbols on a staff\n(SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
         sintaxisPentagramaEstudio: "staff <what> --roman|--hand|--sequence|--tab",
         descripcionPentagramaEstudio: "the degrees in Roman numerals under the\nchords; piano fingering (--hand right) or\nguitar fingering (--tab --fingers); the\nscale in thirds or in groups (--sequence\nthirds); the tablature underneath (--tab,\n--instrument)",
+        sintaxisPentagramaRegistro: "staff <what> --octave|--clef|--grand-staff|--clef-changes|--figured-bass",
+        descripcionPentagramaRegistro: "the octave (--octave 2), the clef (--clef\nbass), the grand staff, clef changes by\nregister and the figured bass of the\nchords (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "staff melody <notes> --over <chords>",
+        descripcionPentagramaMelodia: "a melody (C4:8 D4:8…) with one chord per\nbar above it; notes outside the chord in\ngreen (or red if chromatic); --non-chord\ndoes the same elsewhere",
         sintaxisPosicionesArpegio: "positions --arpeggio <symbol> [--caged|--sweep]",
         descripcionPosicionesArpegio: "a chord's arpeggio in each position\non the neck, in tab with the fingers;\n--up-and-down, up and back down",
 
@@ -244,6 +248,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "missing what to draw: armonia staff scale D dorian",
         capoFueraDeRango: "the capo is a number from 0 to 12: --capo 2",
         octavasFueraDeRango: "the octaves are a number from 1 to 4: --octaves 2",
+        octavaFueraDeRango: "the octave is a number from 0 to 7: --octave 3",
         desdeNoValido: { desde in "\"\(desde)\" is not a note or degree of the chord: --from E or --from 3" },
         tensionesMalEscritas: "the tensions are 9, 11 or 13: --tensions 9,13",
         gradosMalEscritos: "the degrees are numbers from 1 to 22: --degrees 1-5-3-8",

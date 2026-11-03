@@ -70,3 +70,42 @@ import Testing
         #expect(Coral.realizar(bajoCifrado: "Do Xa", en: doMayor) == nil)
     }
 }
+
+/// Las cifras de bajo continuo de un acorde: lo contrario de leerlas.
+@Suite struct CifrasDeBajoTests {
+    @Test func lasAbreviaturasHabituales() {
+        let enDo = Tonalidad(.do)
+        #expect(enDo.cifrasDeBajo(de: Acorde("Do")) == [])
+        #expect(enDo.cifrasDeBajo(de: Acorde("Do/Mi")) == ["6"])
+        #expect(enDo.cifrasDeBajo(de: Acorde("Do/Sol")) == ["6", "4"])
+        #expect(enDo.cifrasDeBajo(de: Acorde("Sol7")) == ["7"])
+        #expect(enDo.cifrasDeBajo(de: Acorde("Sol7/Si")) == ["6", "5"])
+        #expect(enDo.cifrasDeBajo(de: Acorde("Sol7/Re")) == ["4", "3"])
+        #expect(enDo.cifrasDeBajo(de: Acorde("Sol7/Fa")) == ["4", "2"])
+    }
+
+    /// Las notas que la armadura no da llevan su alteración; la de una tercera que no se escribe va sola.
+    @Test func lasAlteraciones() {
+        let enLaMenor = Tonalidad(.la, .menor)
+        #expect(enLaMenor.cifrasDeBajo(de: Acorde("Mi")) == ["♯"])
+        #expect(enLaMenor.cifrasDeBajo(de: Acorde("Mi7")) == ["7", "♯"])
+        #expect(enLaMenor.cifrasDeBajo(de: Acorde("Mi7/Re")) == ["♯4", "2"])
+        #expect(enLaMenor.cifrasDeBajo(de: Acorde("Mi/Sol♯")) == ["6"])
+        #expect(Tonalidad(.do).cifrasDeBajo(de: Acorde("Re7/Fa♯")) == ["6", "5"])
+        #expect(Tonalidad(.do).cifrasDeBajo(de: Acorde("Re7")) == ["7", "♯"])
+    }
+
+    /// Leer las cifras que se escriben da el mismo acorde.
+    @Test func vanYVuelven() throws {
+        let enDo = Tonalidad(.do)
+        let cifrados = ["Do", "Do/Mi", "Do/Sol", "Sol7", "Sol7/Si", "Sol7/Re", "Sol7/Fa", "Rem/Fa", "Re7/Fa♯", "Fa/La"]
+        for cifrado in cifrados {
+            let acorde = try Acorde(leyendo: cifrado)
+            let cifras = enDo.cifrasDeBajo(de: acorde).joined(separator: "/")
+            let leido = enDo.acorde(sobre: acorde.bajo, cifras: cifras)
+            let clases = leido.map { Set($0.notas.map(\.claseDeAltura)) }
+            #expect(clases == Set(acorde.notas.map(\.claseDeAltura)), Comment(rawValue: cifrado))
+            #expect(leido?.bajo == acorde.bajo, Comment(rawValue: cifrado))
+        }
+    }
+}

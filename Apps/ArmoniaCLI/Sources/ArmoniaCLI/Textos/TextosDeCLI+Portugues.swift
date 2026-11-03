@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "uma escala, um acorde, um arpejo (com\nritmo: --figura 16, --tresillos) ou uns\nacordes com a sua cifra numa pauta\n(SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
         sintaxisPentagramaEstudio: "pentagrama <o quê> --romanos|--mano|--secuencia|--tab",
         descripcionPentagramaEstudio: "os graus em números romanos debaixo dos\nacordes; a dedilhação do piano (--mano\nderecha) ou da guitarra (--tab --dedos);\na escala por terceiras ou em grupos\n(--secuencia terceras); a tablatura\nembaixo (--tab, --instrumento)",
+        sintaxisPentagramaRegistro: "pentagrama <o quê> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado",
+        descripcionPentagramaRegistro: "a oitava (--octava 2), a clave (--clave\nfa), a pauta dupla, as mudanças de clave\nsegundo o registo e o baixo cifrado dos\nacordes (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "pentagrama melodia <notas> --sobre <acordes>",
+        descripcionPentagramaMelodia: "uma melodia (Do4:8 Re4:8…) com um acorde\npor compasso por cima; as notas que não\nsão do acorde, a verde (ou a vermelho se\nforem cromáticas); --ajenas nos outros",
         sintaxisPosicionesArpegio: "posiciones --arpegio <cifra> [--caged|--barrido]",
         descripcionPosicionesArpegio: "o arpejo de um acorde em cada\nposição do braço, em tablatura e com\nos dedos; --ida-y-vuelta, sobe e desce",
 
@@ -242,6 +246,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "falta o que desenhar: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "o capo é um número de 0 a 12: --capo 2",
         octavasFueraDeRango: "as oitavas são um número de 1 a 4: --octavas 2",
+        octavaFueraDeRango: "a oitava é um número de 0 a 7: --octava 3",
         desdeNoValido: { desde in "«\(desde)» não é uma nota nem um grau do acorde: --desde Mi ou --desde 3" },
         tensionesMalEscritas: "as tensões são 9, 11 ou 13: --tensiones 9,13",
         gradosMalEscritos: "os graus são números de 1 a 22: --grados 1-5-3-8",

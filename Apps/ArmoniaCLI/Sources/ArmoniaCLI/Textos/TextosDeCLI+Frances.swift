@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "une gamme, un accord, un arpège (avec\nrythme : --figura 16, --tresillos) ou des\naccords avec leur chiffrage sur une portée\n(SVG) ; --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
         sintaxisPentagramaEstudio: "pentagrama <quoi> --romanos|--mano|--secuencia|--tab",
         descripcionPentagramaEstudio: "les degrés en chiffres romains sous les\naccords ; les doigtés du piano (--mano\nderecha) ou de la guitare (--tab --dedos) ;\nla gamme par tierces ou par groupes\n(--secuencia terceras) ; la tablature\nen dessous (--tab, --instrumento)",
+        sintaxisPentagramaRegistro: "pentagrama <quoi> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado",
+        descripcionPentagramaRegistro: "l'octave (--octava 2), la clé (--clave\nfa), la double portée, les changements de\nclé selon le registre et la basse chiffrée\ndes accords (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "pentagrama melodia <notes> --sobre <accords>",
+        descripcionPentagramaMelodia: "une mélodie (Do4:8 Re4:8…) avec un accord\npar mesure au-dessus ; les notes étrangères\nà l'accord en vert (en rouge si elles sont\nchromatiques) ; --ajenas pour les autres",
         sintaxisPosicionesArpegio: "posiciones --arpegio <chiffrage> [--caged|--barrido]",
         descripcionPosicionesArpegio: "l'arpège d'un accord dans chaque\nposition du manche, en tablature avec\nles doigts ; --ida-y-vuelta, monte et descend",
 
@@ -242,6 +246,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "il manque ce qu'il faut dessiner : armonia pentagrama escala Re dórico",
         capoFueraDeRango: "le capodastre est un nombre de 0 à 12 : --capo 2",
         octavasFueraDeRango: "les octaves sont un nombre de 1 à 4 : --octavas 2",
+        octavaFueraDeRango: "l'octave est un nombre de 0 à 7 : --octava 3",
         desdeNoValido: { desde in "« \(desde) » n'est ni une note ni un degré de l'accord : --desde Mi ou --desde 3" },
         tensionesMalEscritas: "les tensions sont 9, 11 ou 13 : --tensiones 9,13",
         gradosMalEscritos: "les degrés sont des nombres de 1 à 22 : --grados 1-5-3-8",

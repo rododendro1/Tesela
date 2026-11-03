@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "egy skála, egy akkord, egy arpeggio\n(ritmussal: --figure 16, --triplets) vagy\nakkordok a jelölésükkel egy kottasoron\n(SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
         sintaxisPentagramaEstudio: "staff <mit> --roman|--hand|--sequence|--tab",
         descripcionPentagramaEstudio: "a fokok római számokkal az akkordok\nalatt; a zongora ujjrendje (--hand right)\nvagy a gitáré (--tab --fingers); a skála\nterceken vagy csoportokban (--sequence\nthirds); alatta a tabulatúra (--tab,\n--instrument)",
+        sintaxisPentagramaRegistro: "staff <mit> --octave|--clef|--grand-staff|--clef-changes|--figured-bass",
+        descripcionPentagramaRegistro: "az oktáv (--octave 2), a kulcs (--clef\nbass), a kettős kottasor, a kulcsváltás a\nfekvés szerint és az akkordok számozott\nbasszusa (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "staff melody <hangok> --over <akkordok>",
+        descripcionPentagramaMelodia: "egy dallam (C4:8 D4:8…) ütemenként egy\nakkorddal fölötte; az akkordidegen hangok\nzölddel (kromatikusak pirossal); a\n--non-chord máshol is ezt teszi",
         sintaxisPosicionesArpegio: "positions --arpeggio <akkordjelzés> [--caged|--sweep]",
         descripcionPosicionesArpegio: "egy akkord arpeggiója a fogólap\nminden fekvésében, tabulatúrával és\nujjakkal; --up-and-down, fel és vissza",
 
@@ -242,6 +246,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "hiányzik, mit kell rajzolni: armonia staff scale D dorian",
         capoFueraDeRango: "a kapodaszter 0 és 12 közötti szám: --capo 2",
         octavasFueraDeRango: "az oktávok száma 1 és 4 közötti: --octaves 2",
+        octavaFueraDeRango: "az oktáv 0 és 7 közötti szám: --octave 3",
         desdeNoValido: { desde in "„\(desde)” nem hangja és nem foka az akkordnak: --from E vagy --from 3" },
         tensionesMalEscritas: "a feszültséghangok 9, 11 vagy 13: --tensions 9,13",
         gradosMalEscritos: "a fokok 1 és 22 közötti számok: --degrees 1-5-3-8",

@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "гамма, аккорд, арпеджио (с ритмом:\n--figure 16, --triplets) или аккорды с\nобозначениями на нотном стане\n(SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
         sintaxisPentagramaEstudio: "staff <что> --roman|--hand|--sequence|--tab",
         descripcionPentagramaEstudio: "ступени римскими цифрами под аккордами;\nаппликатура для фортепиано (--hand right)\nили гитары (--tab --fingers); гамма\nтерциями или группами (--sequence\nthirds); табулатура внизу (--tab,\n--instrument)",
+        sintaxisPentagramaRegistro: "staff <что> --octave|--clef|--grand-staff|--clef-changes|--figured-bass",
+        descripcionPentagramaRegistro: "октава (--octave 2), ключ (--clef bass),\nфортепианная система, смена ключа по\nрегистру и цифрованный бас аккордов\n(6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "staff melody <ноты> --over <аккорды>",
+        descripcionPentagramaMelodia: "мелодия (C4:8 D4:8…) с аккордом на такт\nнад ней; неаккордовые звуки зелёным\n(хроматические — красным); --non-chord\nделает то же в других случаях",
         sintaxisPosicionesArpegio: "positions --arpeggio <обозначение> [--caged|--sweep]",
         descripcionPosicionesArpegio: "арпеджио аккорда в каждой позиции\nна грифе, табулатурой и с пальцами;\n--up-and-down — вверх и обратно вниз",
 
@@ -242,6 +246,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "не указано, что рисовать: armonia staff scale D dorian",
         capoFueraDeRango: "каподастр — число от 0 до 12: --capo 2",
         octavasFueraDeRango: "октавы — число от 1 до 4: --octaves 2",
+        octavaFueraDeRango: "октава — число от 0 до 7: --octave 3",
         desdeNoValido: { desde in "«\(desde)» — не нота и не ступень аккорда: --from E или --from 3" },
         tensionesMalEscritas: "надстройки — 9, 11 или 13: --tensions 9,13",
         gradosMalEscritos: "ступени — числа от 1 до 22: --degrees 1-5-3-8",

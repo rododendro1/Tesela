@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "unha escala, un acorde, un arpexo (con\nritmo: --figura 16, --tresillos) ou uns\nacordes co seu cifrado nun pentagrama\n(SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
         sintaxisPentagramaEstudio: "pentagrama <que> --romanos|--mano|--secuencia|--tab",
         descripcionPentagramaEstudio: "os graos en números romanos debaixo dos\nacordes; os dedos do piano (--mano\nderecha) ou da guitarra (--tab --dedos);\na escala por terceiras ou en grupos\n(--secuencia terceras); a tablatura\ndebaixo (--tab, --instrumento)",
+        sintaxisPentagramaRegistro: "pentagrama <que> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado",
+        descripcionPentagramaRegistro: "a oitava (--octava 2), a clave (--clave\nfa), o pentagrama dobre, os cambios de\nclave segundo o rexistro e o baixo cifrado\ndos acordes (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "pentagrama melodia <notas> --sobre <acordes>",
+        descripcionPentagramaMelodia: "unha melodía (Do4:8 Re4:8…) cun acorde\npor compás enriba; as notas que non son\ndo acorde, en verde (ou en vermello se son\ncromáticas); --ajenas faino nas demais",
         sintaxisPosicionesArpegio: "posiciones --arpegio <cifrado> [--caged|--barrido]",
         descripcionPosicionesArpegio: "o arpexo dun acorde en cada\nposición do mástil, en tablatura e cos\ndedos; --ida-y-vuelta, sobe e baixa",
 
@@ -242,6 +246,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "falta que debuxar: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "o capo é un número de 0 a 12: --capo 2",
         octavasFueraDeRango: "as oitavas son un número de 1 a 4: --octavas 2",
+        octavaFueraDeRango: "a oitava é un número de 0 a 7: --octava 3",
         desdeNoValido: { desde in "«\(desde)» non é unha nota nin un grao do acorde: --desde Mi ou --desde 3" },
         tensionesMalEscritas: "as tensións son 9, 11 ou 13: --tensiones 9,13",
         gradosMalEscritos: "os graos son números de 1 a 22: --grados 1-5-3-8",

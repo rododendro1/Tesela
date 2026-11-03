@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "una escala, un acord, un arpegi (amb\nritme: --figura 16, --tresillos) o uns\nacords amb el xifrat en un pentagrama\n(SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
         sintaxisPentagramaEstudio: "pentagrama <què> --romanos|--mano|--secuencia|--tab",
         descripcionPentagramaEstudio: "els graus en nombres romans sota els\nacords; els dits del piano (--mano\nderecha) o de la guitarra (--tab --dedos);\nl'escala per terceres o en grups\n(--secuencia terceras); la tabulatura\na sota (--tab, --instrumento)",
+        sintaxisPentagramaRegistro: "pentagrama <què> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado",
+        descripcionPentagramaRegistro: "l'octava (--octava 2), la clau (--clave\nfa), el pentagrama doble, els canvis de\nclau segons el registre i el baix xifrat\ndels acords (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "pentagrama melodia <notes> --sobre <acords>",
+        descripcionPentagramaMelodia: "una melodia (Do4:8 Re4:8…) amb un acord\nper compàs a sobre; les notes que no són\nde l'acord, en verd (o en vermell si són\ncromàtiques); --ajenas ho fa en les altres",
         sintaxisPosicionesArpegio: "posiciones --arpegio <xifrat> [--caged|--barrido]",
         descripcionPosicionesArpegio: "l'arpegi d'un acord a cada\nposició del mànec, en tabulatura i amb\nels dits; --ida-y-vuelta, puja i baixa",
 
@@ -242,6 +246,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "falta què dibuixar: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "el capo és un nombre de 0 a 12: --capo 2",
         octavasFueraDeRango: "les octaves són un nombre d'1 a 4: --octavas 2",
+        octavaFueraDeRango: "l'octava és un nombre de 0 a 7: --octava 3",
         desdeNoValido: { desde in "«\(desde)» no és una nota ni un grau de l'acord: --desde Mi o --desde 3" },
         tensionesMalEscritas: "les tensions són 9, 11 o 13: --tensiones 9,13",
         gradosMalEscritos: "els graus són nombres d'1 a 22: --grados 1-5-3-8",

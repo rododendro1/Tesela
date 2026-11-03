@@ -323,10 +323,26 @@ Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>")   /
 Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras")   // true
 ```
 
+### Bajo cifrado, claves y notas ajenas al acorde
+
+- **Bajo cifrado.** `Tonalidad.cifrasDeBajo(de:)` da las cifras del bajo continuo de un acorde (lo contrario de
+  `acorde(sobre:cifras:)`): «6», «6 4», «6 5», «4 3», «4 2», con la alteración de las notas que la armadura no da.
+  El parámetro `bajoCifrado` de las disposiciones y las voces las escribe debajo, una encima de otra.
+- **Cambios de clave.** Con `OpcionesDePentagrama.cambiosDeClave`, un solo pentagrama pasa de la clave de fa a la de
+  sol (y vuelve) cuando las notas se van a tres líneas adicionales, con la clave nueva más pequeña delante.
+- **Notas ajenas al acorde.** Con `marcarNotasAjenas`, las notas que no son del acorde que suena van en color: las de
+  la tonalidad (notas de paso, bordaduras…) en `colorDeLasNotasDePaso`, las cromáticas en `colorDeLasCromaticas`.
+
+```swift
+Tonalidad(.do).cifrasDeBajo(de: Acorde("Sol7/Si"))          // ["6", "5"]
+Tonalidad(.la, .menor).cifrasDeBajo(de: Acorde("Mi"))       // ["♯"]
+```
+
 En la línea de comandos, `armonia pentagrama escala|acorde|arpegio|acordes …` dibuja lo mismo (con `--octavas`,
 `--figura`, `--tresillos`, `--nombres`, `--intervalos`, `--semitonos`, `--tonica` y `--en <tonalidad>`), y con
 `--romanos`, `--mano`, `--dedos`, `--secuencia` y `--tab` (`--instrumento`), los grados, los dedos, las secuencias
-y la tablatura.
+y la tablatura; con `--bajo-cifrado`, `--octava`, `--clave`, `--doble` y `--cambiar-clave`, el
+bajo cifrado y el registro, y `armonia pentagrama melodia … --sobre <acordes>` colorea las notas ajenas.
 
 ## Errores
 

@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "una scala, un accordo, un arpeggio (con\nritmo: --figura 16, --tresillos) o degli\naccordi con la sigla su un pentagramma\n(SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
         sintaxisPentagramaEstudio: "pentagrama <cosa> --romanos|--mano|--secuencia|--tab",
         descripcionPentagramaEstudio: "i gradi in numeri romani sotto gli\naccordi; la diteggiatura del pianoforte\n(--mano derecha) o della chitarra (--tab\n--dedos); la scala per terze o a gruppi\n(--secuencia terceras); l'intavolatura\nsotto (--tab, --instrumento)",
+        sintaxisPentagramaRegistro: "pentagrama <cosa> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado",
+        descripcionPentagramaRegistro: "l'ottava (--octava 2), la chiave (--clave\nfa), il doppio pentagramma, i cambi di\nchiave secondo il registro e il basso\ncifrato degli accordi (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "pentagrama melodia <note> --sobre <accordi>",
+        descripcionPentagramaMelodia: "una melodia (Do4:8 Re4:8…) con un accordo\nper battuta sopra; le note estranee\nall'accordo in verde (in rosso se\ncromatiche); --ajenas lo fa negli altri",
         sintaxisPosicionesArpegio: "posiciones --arpegio <sigla> [--caged|--barrido]",
         descripcionPosicionesArpegio: "l'arpeggio di un accordo in ogni\nposizione del manico, in intavolatura\ncon le dita; --ida-y-vuelta, sale e scende",
 
@@ -242,6 +246,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "manca cosa disegnare: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "il capotasto è un numero da 0 a 12: --capo 2",
         octavasFueraDeRango: "le ottave sono un numero da 1 a 4: --octavas 2",
+        octavaFueraDeRango: "l'ottava è un numero da 0 a 7: --octava 3",
         desdeNoValido: { desde in "«\(desde)» non è una nota né un grado dell'accordo: --desde Mi o --desde 3" },
         tensionesMalEscritas: "le tensioni sono 9, 11 o 13: --tensiones 9,13",
         gradosMalEscritos: "i gradi sono numeri da 1 a 22: --grados 1-5-3-8",

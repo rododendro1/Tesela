@@ -121,6 +121,10 @@ extension TextosDeCLI {
         descripcionPentagrama: "una escala, un acorde, un arpegio (con\nritmo: --figura 16, --tresillos) o unos\nacordes con su cifrado en un pentagrama\n(SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
         sintaxisPentagramaEstudio: "pentagrama <qué> --romanos|--mano|--secuencia|--tab",
         descripcionPentagramaEstudio: "los grados en números romanos debajo de\nlos acordes; los dedos del piano (--mano\nderecha) o de la guitarra (--tab --dedos);\nla escala por terceras o en grupos\n(--secuencia terceras); la tablatura\ndebajo (--tab, --instrumento)",
+        sintaxisPentagramaRegistro: "pentagrama <qué> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado",
+        descripcionPentagramaRegistro: "la octava (--octava 2), la clave (--clave\nfa), el pentagrama doble, los cambios de\nclave según el registro y el bajo cifrado\nde los acordes (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "pentagrama melodia <notas> --sobre <acordes>",
+        descripcionPentagramaMelodia: "una melodía (Do4:8 Re4:8…) con un acorde\npor compás encima; las notas que no son\ndel acorde, en verde (o en rojo si son\ncromáticas); --ajenas lo hace en las demás",
         sintaxisPosicionesArpegio: "posiciones --arpegio <cifrado> [--caged|--barrido]",
         descripcionPosicionesArpegio: "el arpegio de un acorde en cada\nposición del mástil, en tablatura y con\nlos dedos; --ida-y-vuelta, sube y baja",
 
@@ -243,6 +247,7 @@ extension TextosDeCLI {
         faltaLoQueDibujaElPentagrama: "falta qué dibujar: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "el capo es un número de 0 a 12: --capo 2",
         octavasFueraDeRango: "las octavas son un número de 1 a 4: --octavas 2",
+        octavaFueraDeRango: "la octava es un número de 0 a 7: --octava 3",
         desdeNoValido: { desde in "«\(desde)» no es una nota ni un grado del acorde: --desde Mi o --desde 3" },
         tensionesMalEscritas: "las tensiones son 9, 11 o 13: --tensiones 9,13",
         gradosMalEscritos: "los grados son números de 1 a 22: --grados 1-5-3-8",

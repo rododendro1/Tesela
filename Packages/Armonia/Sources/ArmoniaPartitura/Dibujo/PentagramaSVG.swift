@@ -34,12 +34,16 @@ struct PentagramaSVG {
     var digitos: [Int: [Int]] = [:]
     /// La tablatura debajo del pentagrama, alineada columna a columna.
     var tablatura: Tablatura?
+    /// Las cifras del bajo continuo de cada columna, de arriba abajo («6», «4»), debajo de todo.
+    var bajosCifrados: [Int: [String]] = [:]
 
     /// La nota desde la que se cuentan los intervalos.
     struct Referencia {
         let nota: Nota
         /// Si es la fundamental de un acorde con séptima: la segunda, la cuarta y la sexta son tensiones (9, 11, 13).
         let conTensiones: Bool
+        /// Las clases de altura del acorde, si la referencia es un acorde: las demás notas son ajenas a él.
+        var clasesDelAcorde: Set<Int>?
 
         init(_ nota: Nota, conTensiones: Bool = false) {
             self.nota = nota
@@ -53,6 +57,7 @@ struct PentagramaSVG {
                 modulo($0.natural.indiceDiatonico - raiz.natural.indiceDiatonico, 7) == 6
             }
             self.init(raiz, conTensiones: conSeptima)
+            clasesDelAcorde = Set((acorde.notas + [acorde.bajo]).map(\.claseDeAltura))
         }
 
         /// «1», «♭3», «♯11», «𝄫7»: el intervalo simple desde la referencia, con la alteración respecto a la 2.ª, 3.ª,
@@ -82,6 +87,9 @@ struct PentagramaSVG {
     private static let letraDelCifrado = 1.9
     private static let letraDeLasEtiquetas = 1.2
     private static let letraDeLosGrados = 1.5
+    private static let letraDelBajoCifrado = 1.3
+    /// Lo que separa dos cifras del bajo continuo, una encima de otra.
+    private static let separacionDelBajoCifrado = 1.2
     private static let letraDeLosDedos = 1.2
     private static let letraDeLaTablatura = 1.2
     /// Lo que separa dos líneas de la tablatura.
@@ -170,6 +178,38 @@ struct PentagramaSVG {
         }
     }
 
+    /// Lo que encoge la clave de un cambio de clave.
+    static let escalaDelCambioDeClave = 0.75
+
+    /// La clave de cada columna, de sol o de fa, cambiando solo cuando la nueva ahorra líneas adicionales y con la que
+    /// va harían falta tres o más.
+    static func clavesPorRegistro(_ columnas: [[Altura]], desde inicial: Clave) -> [Clave] {
+        func lineas(_ alturas: [Altura], _ clave: Clave) -> Int {
+            alturas.map { lugaresDeLasLineasAdicionales(de: clave.posicion(de: $0).lugar).count }.max() ?? 0
+        }
+        var actual: Clave = inicial == .fa ? .fa : .sol
+        return columnas.map { alturas in
+            guard !alturas.isEmpty else { return actual }
+            let otra: Clave = actual == .sol ? .fa : .sol
+            if lineas(alturas, actual) >= 3, lineas(alturas, otra) < lineas(alturas, actual) { actual = otra }
+            return actual
+        }
+    }
+
+    /// El color de una nota ajena al acorde que suena (`marcarNotasAjenas`): el de las notas de paso si es de la
+    /// tonalidad (o si no hay tonalidad), el de las cromáticas si no; `nil` si es del acorde o no hay acorde.
+    private func colorDeNotaAjena(_ nota: Nota, _ columna: Int) -> String? {
+        guard opciones.marcarNotasAjenas, let clases = referencia(columna)?.clasesDelAcorde,
+            !clases.contains(nota.claseDeAltura)
+        else { return nil }
+        if case .tonalidad(let tonalidad) = opciones.armadura,
+            !tonalidad.notasPropias.map(\.claseDeAltura).contains(nota.claseDeAltura)
+        {
+            return opciones.colorDeLasCromaticas
+        }
+        return opciones.colorDeLasNotasDePaso
+    }
+
     func svg() -> String {
         let claves = clavesDelPentagrama()
         let color = EscrituraXML.escapar(opciones.color)
@@ -182,7 +222,15 @@ struct PentagramaSVG {
         // suenan (8va, encima del pentagrama de arriba); < 0, una más aguda (8vb, debajo del de abajo).
         let doCentral = Altura(.do, octava: 4).midi
         var octavas = [Int](repeating: 0, count: claves.count)
-        if opciones.marcaDeOctava, opciones.clave == nil || doble {
+        // Con cambios de clave (una sola clave, sin elegir), cada columna lleva la de sol o la de fa según su registro, y
+        // no hace falta la marca de octava.
+        let conCambios = opciones.cambiosDeClave && !doble && opciones.clave == nil
+        let clavesDeLasColumnas = conCambios ? PentagramaSVG.clavesPorRegistro(columnas, desde: claves[0]) : []
+        /// La clave con que se escribe una columna en el pentagrama `k`.
+        func clave(_ columna: Int, _ k: Int) -> Clave {
+            clavesDeLasColumnas.indices.contains(columna) ? clavesDeLasColumnas[columna] : claves[k]
+        }
+        if opciones.marcaDeOctava, opciones.clave == nil || doble, !conCambios {
             for k in claves.indices {
                 let suyas = columnas.flatMap { $0 }.filter { !doble || ($0.midi >= doCentral) == (k == 0) }
                 func lineas(_ octavas: Int) -> Int {
@@ -263,6 +311,7 @@ struct PentagramaSVG {
         var etiquetas: [(x: Double, texto: String)] = []
         var intervalos: [(x: Double, texto: String)] = []
         var gradosColocados: [(x: Double, texto: String)] = []
+        var bajoCifradoColocado: [(x: Double, cifras: [String])] = []
         // El centro de cada columna, para los dedos y la tablatura.
         var centros: [Double] = []
         var cifradosColocados: [(x: Double, texto: String, mitad: Double)] = []
@@ -283,6 +332,19 @@ struct PentagramaSVG {
         var ultimaSeparacion = PentagramaSVG.separacionEntreColumnas
         let resaltadas = ritmo?.resaltadas ?? Set(opciones.resaltada.map { [$0] } ?? [])
         for (columna, alturas) in columnas.enumerated() {
+            // Un cambio de clave: la nueva, más pequeña, delante de la columna.
+            if conCambios, columna > 0, clave(columna, 0) != clave(columna - 1, 0) {
+                let (glifoDeClave, lugarDeClave) = PentagramaSVG.glifoYLugar(de: clave(columna, 0))
+                let escala = PentagramaSVG.escalaDelCambioDeClave
+                let y = PentagramaSVG.y(deLugar: lugarDeClave)
+                minimoY = min(minimoY, y + glifoDeClave.arriba * escala)
+                maximoY = max(maximoY, y + glifoDeClave.abajo * escala)
+                notasSVG.append(
+                    elemento("path")
+                        .con("transform", "translate(\(PentagramaSVG.n(x)) \(PentagramaSVG.n(y))) scale(\(escala))")
+                        .con("d", glifoDeClave.trazado).vacio)
+                x += glifoDeClave.ancho * escala + 0.6
+            }
             let cabeza = ritmo?.cabeza(columna) ?? GlifosSMuFL.redonda
             // Una nota a la que se liga la de la columna anterior no repite la alteración.
             let ligadaALaAnterior: Set<Int> =
@@ -294,7 +356,7 @@ struct PentagramaSVG {
                     delPentagrama.map { i in
                         let escrita = PentagramaSVG.escrita(alturas[i], octavas: octavas[k])
                         return NotaColocada(
-                            altura: alturas[i], lugar: claves[k].posicion(de: escrita).lugar,
+                            altura: alturas[i], lugar: clave(columna, k).posicion(de: escrita).lugar,
                             microtono: microtono(columna, i))
                     }
                     .sorted { ($0.lugar, $0.altura.midi) < ($1.lugar, $1.altura.midi) })
@@ -368,6 +430,7 @@ struct PentagramaSVG {
                         .joined(separator: " ")
                 } : nil
             let grado = grados[columna]
+            let cifrasDelBajo = bajosCifrados[columna] ?? []
             // Las etiquetas de las notas no se pisan: si la de esta columna cae demasiado cerca de la anterior, la
             // columna se corre a la derecha.
             let anchosDeLasEtiquetas =
@@ -379,8 +442,12 @@ struct PentagramaSVG {
                     PentagramaSVG.anchoEstimado(
                         $0, cuerpoDeLetra: PentagramaSVG.letraDeLosGrados, proporcion: opciones.anchoDeLosCaracteres)
                 }
+                + cifrasDelBajo.map {
+                    PentagramaSVG.anchoEstimado(
+                        $0, cuerpoDeLetra: PentagramaSVG.letraDelBajoCifrado, proporcion: opciones.anchoDeLosCaracteres)
+                }
             let mitadDeLaEtiqueta = anchosDeLasEtiquetas.max().map { $0 / 2 } ?? 0
-            let conEtiqueta = etiqueta != nil || intervalo != nil || grado != nil
+            let conEtiqueta = etiqueta != nil || intervalo != nil || grado != nil || !cifrasDelBajo.isEmpty
             if columnas.count > 1, conEtiqueta, let anterior = ultimaEtiqueta {
                 let centroMinimo =
                     anterior.centro + anterior.mitad + mitadDeLaEtiqueta + PentagramaSVG.separacionEntreEtiquetas
@@ -432,7 +499,8 @@ struct PentagramaSVG {
                         && referencia(columna).map { $0.nota.claseDeAltura == nota.altura.nota.claseDeAltura } == true
                     let relleno: String? =
                         resaltadas.contains(columna)
-                        ? opciones.colorResaltado : (esTonica ? opciones.colorDeLaTonica : nil)
+                        ? opciones.colorResaltado
+                        : colorDeNotaAjena(nota.altura.nota, columna) ?? (esTonica ? opciones.colorDeLaTonica : nil)
                     notasSVG.append(
                         elemento("g").con("fill", relleno ?? "", si: relleno != nil)
                             .conHijos(elemento("title").conTexto(nombre) + partes.joined()))
@@ -461,6 +529,7 @@ struct PentagramaSVG {
             if let etiqueta { etiquetas.append((centro, etiqueta)) }
             if let intervalo { intervalos.append((centro, intervalo)) }
             if let grado { gradosColocados.append((centro, grado)) }
+            if !cifrasDelBajo.isEmpty { bajoCifradoColocado.append((centro, cifrasDelBajo)) }
             centros.append(centro)
             if conEtiqueta { ultimaEtiqueta = (centro, mitadDeLaEtiqueta) }
             if let cifradoDeLaColumna { cifradosColocados.append((centro, cifradoDeLaColumna, mitadDelCifrado)) }
@@ -617,9 +686,14 @@ struct PentagramaSVG {
         // Debajo, una fila por cada clase de etiqueta: los nombres, los intervalos y los grados.
         let filas = (opciones.nombresDeLasNotas ? 1 : 0) + (intervalos.isEmpty ? 0 : 1)
         let yDeLosGrados = maximoY + (filas == 0 ? 2.0 : 2.0 + 1.5 * Double(filas))
+        // El bajo cifrado, debajo de los grados (o donde irían), con las cifras una encima de otra.
+        let yDelBajoCifrado = gradosColocados.isEmpty ? yDeLosGrados - 0.2 : yDeLosGrados + 1.6
+        let cifrasPorColumna = bajoCifradoColocado.map(\.cifras.count).max() ?? 0
         let fondo =
-            !gradosColocados.isEmpty
-            ? yDeLosGrados + 0.6 : filas == 0 ? maximoY + 0.4 : maximoY + 2.4 + 1.5 * Double(filas - 1)
+            cifrasPorColumna > 0
+            ? yDelBajoCifrado + PentagramaSVG.separacionDelBajoCifrado * Double(cifrasPorColumna - 1) + 0.6
+            : !gradosColocados.isEmpty
+                ? yDeLosGrados + 0.6 : filas == 0 ? maximoY + 0.4 : maximoY + 2.4 + 1.5 * Double(filas - 1)
         // En el pentagrama doble, una llave a la izquierda, con el margen que pide.
         let margen = doble ? PentagramaSVG.margenDeLaLlave : 0
         let ancho = final + 0.6 + margen
@@ -725,6 +799,12 @@ struct PentagramaSVG {
         for grado in gradosColocados {
             let letra = PentagramaSVG.letraDeLosGrados
             textos.append(texto(grado.texto, x: grado.x, y: yDeLosGrados, cuerpoDeLetra: letra))
+        }
+        for columna in bajoCifradoColocado {
+            for (i, cifra) in columna.cifras.enumerated() {
+                let y = yDelBajoCifrado + PentagramaSVG.separacionDelBajoCifrado * Double(i)
+                textos.append(texto(cifra, x: columna.x, y: y, cuerpoDeLetra: PentagramaSVG.letraDelBajoCifrado))
+            }
         }
         // «TAB» a la izquierda de la tablatura, en vertical.
         if let (arriba, abajo) = tablaturaVertical {

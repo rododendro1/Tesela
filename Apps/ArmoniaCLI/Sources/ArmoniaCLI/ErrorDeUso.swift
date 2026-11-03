@@ -65,6 +65,8 @@ enum ErrorDeUso {
     case capoFueraDeRango
     /// `arpegio --octavas` fuera de 1…4.
     case octavasFueraDeRango
+    /// `--octava` fuera de 0…7.
+    case octavaFueraDeRango
     /// `arpegio --desde` con algo que no es una nota ni un grado del acorde.
     case desdeNoValido(String)
     /// `arpegio --tensiones` con algo que no es 9, 11 o 13.
@@ -218,6 +220,7 @@ enum ErrorDeUso {
         case .faltaEscalaDePosiciones: return TextosDeCLI.traduccion(\.faltaEscalaDePosiciones)
         case .capoFueraDeRango: return TextosDeCLI.traduccion(\.capoFueraDeRango)
         case .octavasFueraDeRango: return TextosDeCLI.traduccion(\.octavasFueraDeRango)
+        case .octavaFueraDeRango: return TextosDeCLI.traduccion(\.octavaFueraDeRango)
         case .desdeNoValido(let desde): return TextosDeCLI.traduccion { $0.desdeNoValido(desde) }
         case .tensionesMalEscritas: return TextosDeCLI.traduccion(\.tensionesMalEscritas)
         case .gradosMalEscritos: return TextosDeCLI.traduccion(\.gradosMalEscritos)
