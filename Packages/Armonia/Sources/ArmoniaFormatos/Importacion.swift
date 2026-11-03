@@ -13,8 +13,9 @@ import Foundation
 // dejando fuera, si hace falta, las notas breves (de paso, bordaduras, apoyaturas). Las ventanas
 // seguidas con el mismo acorde se funden en uno.
 //
-// Se queda fuera, por ahora: la percusión, las repeticiones y los
-// saltos (da capo, coda), y los instrumentos transpositores de MIDI (que ya suenan en su altura).
+// Las repeticiones y los saltos (da capo, dal segno, coda, fine) de MusicXML, MEI y ABC se despliegan en el orden en
+// que se tocan (Importacion+Repeticiones.swift). Las notas de adorno van aparte, en `notasDeAdorno`. Se queda fuera,
+// por ahora: la percusión y los instrumentos transpositores de MIDI (que ya suenan en su altura).
 
 /// Una nota de una pieza importada: su altura, cuándo empieza y cuánto dura, contado en redondas
 /// desde el principio de la pieza, y la parte (pista o pentagrama) de la que viene. Un microtono lleva además su
@@ -77,18 +78,27 @@ public struct PiezaImportada: Hashable, Sendable {
     public let tonalidad: Tonalidad?
     public let compas: Compas?
     public let tempo: Tempo?
-    /// Las notas, ordenadas por su comienzo y, a igual comienzo, de grave a agudo.
+    /// Las notas, ordenadas por su comienzo y, a igual comienzo, de grave a agudo. Con las repeticiones desplegadas:
+    /// un compás que se repite da sus notas dos veces, una detrás de otra.
     public let notas: [NotaDeLaPieza]
+    /// Las notas de adorno (apoyaturas y mordentes escritos con notas pequeñas), por su comienzo y en el orden en
+    /// que se escriben. No duran: cada una empieza donde empieza la nota a la que adorna y su `duracion` es cero. No
+    /// cuentan para los acordes.
+    public let notasDeAdorno: [NotaDeLaPieza]
 
     public init(
         titulo: String? = nil, tonalidad: Tonalidad? = nil, compas: Compas? = nil, tempo: Tempo? = nil,
-        notas: [NotaDeLaPieza]
+        notas: [NotaDeLaPieza], notasDeAdorno: [NotaDeLaPieza] = []
     ) {
         self.titulo = titulo
         self.tonalidad = tonalidad
         self.compas = compas
         self.tempo = tempo
         self.notas = notas.sorted { ($0.inicio, $0.altura.midi, $0.parte) < ($1.inicio, $1.altura.midi, $1.parte) }
+        // Las de adorno, en el orden en que se leen: varias seguidas empiezan todas en el mismo momento.
+        self.notasDeAdorno = notasDeAdorno.enumerated().sorted {
+            ($0.element.inicio, $0.element.parte, $0.offset) < ($1.element.inicio, $1.element.parte, $1.offset)
+        }.map(\.element)
     }
 
     /// Lee un fichero MIDI estándar, MusicXML (comprimido o no), MEI o ABC, según lo que contenga (no según su

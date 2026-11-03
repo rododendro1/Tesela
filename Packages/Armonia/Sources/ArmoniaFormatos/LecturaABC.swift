@@ -12,8 +12,10 @@ import Foundation
 // acordes (`[CEG]`), los silencios (`z`, `x`, `Z`), las ligaduras (`-`), el ritmo con puntillo (`>`, `<`), los grupos
 // irregulares (`(3`, `(p:q:r`) y cada voz (`V:`) como una parte. Los cambios en medio (`[K:…]`, `[M:…]`, `[L:…]`)
 // valen desde ahí. De las decoraciones, la dinámica (`!mf!`) y las articulaciones (`.`, `!tenuto!`, `!>!`,
-// `!fermata!`…) van con la nota siguiente. No cuentan las notas de adorno (`{…}`), los adornos (`!trill!`, `~`), los
-// cifrados y los textos entre comillas, la letra (`w:`) ni las repeticiones, que se leen una vez.
+// `!fermata!`…) van con la nota siguiente. Las notas de adorno (`{…}`) van aparte, sin duración. Las repeticiones
+// (`|:`, `:|`, `::`), las casillas (`|1`, `:|2`, `[1`) y los saltos (`!D.C.!`, `!D.S.!`, `!fine!`, `!segno!`,
+// `!coda!`, `!dacoda!`) de la primera voz se despliegan. No cuentan los adornos (`!trill!`, `~`), los cifrados y los
+// textos entre comillas ni la letra (`w:`).
 
 extension PiezaImportada {
     /// Lee la primera melodía de un texto en ABC.
@@ -24,9 +26,11 @@ extension PiezaImportada {
         var lector = LectorABC()
         lector.leer(texto)
         guard !lector.notas.isEmpty else { throw ErrorDeImportacion.sinNotas }
+        let fin = PulsosDeLectura.duracion(lector.finDeLaPieza)
         self.init(
             titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas, tempo: lector.tempo,
-            notas: lector.notas)
+            notas: CompasLeido.desplegar(lector.notas, compases: lector.compases, fin: fin),
+            notasDeAdorno: CompasLeido.desplegar(lector.adornos, compases: lector.compases, fin: fin))
     }
 
     /// Si el texto parece ABC: su primera línea con algo (sin contar los comentarios) es `X:`, o empieza por `%abc`.
@@ -48,6 +52,14 @@ struct LectorABC {
     private(set) var compas: Compas?
     private(set) var tempo: Tempo?
     private(set) var notas: [NotaDeLaPieza] = []
+    private(set) var adornos: [NotaDeLaPieza] = []
+    /// Los compases de la primera voz, con sus repeticiones y sus saltos.
+    private(set) var compases: [CompasLeido] = []
+    /// Las casillas abiertas (`|1`, `[2`): valen hasta una repetición, una doble barra u otra casilla.
+    private var casillas: Set<Int>?
+
+    /// Donde acaba la primera voz, en pulsos.
+    var finDeLaPieza: Int { voces.values.first { $0.parte == 0 }?.posicion ?? 0 }
 
     /// La unidad de las duraciones (`L:`), en pulsos; `nil` hasta que se da o se deduce del compás.
     private var unidad: Int?
@@ -86,6 +98,14 @@ struct LectorABC {
 
     /// Una decoración (`!mf!`, `!fermata!`): si es una dinámica o una articulación, para la nota siguiente.
     private mutating func decoracion(_ nombre: String) {
+        switch nombre.lowercased() {
+        case "segno": marcar { $0.segno = true }
+        case "coda": marcar { $0.coda = true }
+        case "dacoda": marcar { $0.alCoda = true }
+        case let otro where otro.hasPrefix("d.c.") || otro.hasPrefix("d.s.") || otro == "fine" || otro == "dacapo":
+            marcar { $0.leer(indicacion: otro) }
+        default: break
+        }
         if let dinamica = Dinamica(rawValue: nombre) {
             pendientes.dinamica = dinamica
         } else if let articulacion = LectorABC.decoraciones[nombre] {
@@ -115,6 +135,7 @@ struct LectorABC {
             musica(Array(linea.unicodeScalars))
             if notas.count > 1_000_000 { break }
         }
+        if let abiertas = casillas { marcar { $0.casillas = abiertas } }
     }
 
     /// `T:Título` → ("T", "Título"): una letra y dos puntos al principio de la línea.
@@ -277,6 +298,11 @@ struct LectorABC {
             while i < c.count, c[i] != fin { i += 1 }
             i += 1
         }
+        /// Si el carácter `k` es parte de una barra: `|`, `:`, `]` o el corchete de una casilla (`|[1`).
+        func esDeLaBarra(_ k: Int) -> Bool {
+            if c[k] == "|" || c[k] == ":" || c[k] == "]" { return true }
+            return c[k] == "[" && k > 0 && c[k - 1] == "|" && k + 1 < c.count && LectorABC.cifra(c[k + 1]) != nil
+        }
         /// Lo que hay entre `fin` y el siguiente `fin`, desde `i`, que queda detrás.
         func entre(_ fin: Unicode.Scalar) -> String {
             let inicio = i + 1
@@ -296,7 +322,12 @@ struct LectorABC {
                 pendientes.articulaciones.append(.staccato)
                 i += 1
             case "{":
-                hasta("}")
+                // Las notas de adorno: empiezan donde empezará la nota a la que adornan.
+                i += 1
+                while i < c.count, c[i] != "}" {
+                    if let nota = leerNota(c, &i) { adorno(nota.0, desvio: nota.1) } else { i += 1 }
+                }
+                i += 1
             case "-":
                 ligar()
                 i += 1
@@ -325,8 +356,16 @@ struct LectorABC {
                 }
                 puntillo(largo: ch == ">", veces: n)
             case "|", ":":
-                while i < c.count, c[i] == "|" || c[i] == ":" || c[i] == "]" { i += 1 }
-                barra()
+                let inicio = i
+                while i < c.count, esDeLaBarra(i) { i += 1 }
+                let signo = String(String.UnicodeScalarView(c[inicio..<i]))
+                // La casilla que empieza: `|1`, `:|2`, `|1,3`, `|1-2`.
+                let desde = i
+                while i < c.count, LectorABC.cifra(c[i]) != nil || (i > desde && (c[i] == "," || c[i] == "-")) {
+                    i += 1
+                }
+                let numeros = String(String.UnicodeScalarView(c[desde..<i]))
+                barra(signo, casillas: numeros.isEmpty ? nil : LectorMusicXML.numerosDeCasilla(numeros))
             case "[":
                 if i + 2 < c.count, c[i + 2] == ":", c[i + 1].properties.isAlphabetic {
                     // Un campo en medio: [K:D], [M:3/4], [V:2].
@@ -337,11 +376,17 @@ struct LectorABC {
                     i = fin + 1
                     cabecera(letra, valor)
                 } else if i + 1 < c.count, LectorABC.cifra(c[i + 1]) != nil || c[i + 1] == "|" {
+                    // `[1`, `[2`: una casilla; `[|`: una barra gruesa.
+                    let inicio = i
                     i += 1
                     while i < c.count, LectorABC.cifra(c[i]) != nil || c[i] == "," || c[i] == "-" || c[i] == "|" {
                         i += 1
                     }
-                    barra()
+                    let leido = String(String.UnicodeScalarView(c[inicio..<i]))
+                    let numeros = leido.filter { $0.isNumber || $0 == "," || $0 == "-" }
+                    barra(
+                        leido.filter { $0 == "[" || $0 == "|" },
+                        casillas: numeros.isEmpty ? nil : LectorMusicXML.numerosDeCasilla(numeros))
                 } else {
                     i += 1
                     var alturas: [(Altura, Double, Int?)] = []
@@ -379,7 +424,7 @@ struct LectorABC {
                     i += 1
                 }
                 silencio(duracionDelCompas * max(1, compases))
-                barra()
+                barra("|")
             default:
                 if let nota = leerNota(c, &i) {
                     colocar([(nota.0, nota.1)], pulsos: nota.2 ?? 0)
@@ -551,9 +596,46 @@ struct LectorABC {
         self.ultimo = (ultimo.indices, ultimo.inicio, nuevos)
     }
 
-    private mutating func barra() {
+    /// Una barra (`signo`: `|`, `|:`, `:|`, `::`, `||`, `|]`…), con la casilla que empieza tras ella, si empieza
+    /// alguna.
+    private mutating func barra(_ signo: String, casillas nuevas: Set<Int>? = nil) {
         guard var voz = voces[actual] else { return }
         voz.vigentes = [:]
         voces[actual] = voz
+        guard voz.parte == 0 else { return }
+        if compases.isEmpty { compases.append(CompasLeido(inicio: .cero)) }
+        let aqui = PulsosDeLectura.duracion(voz.posicion)
+        // El compás que acaba en esta barra: si el último aún no ha empezado (dos barras seguidas), el anterior.
+        let vacio = compases[compases.count - 1].inicio == aqui
+        let acabado = vacio && compases.count > 1 ? compases.count - 2 : compases.count - 1
+        let cierra = signo.hasPrefix(":")
+        let abre = signo.hasSuffix(":")
+        if let abiertas = casillas, !vacio { compases[acabado].casillas = abiertas }
+        if cierra { compases[acabado].cierraRepeticion = 2 }
+        if cierra || signo.contains("||") || signo.contains("]") || signo.contains("[") || nuevas != nil {
+            casillas = nil
+        }
+        if !vacio { compases.append(CompasLeido(inicio: aqui)) }
+        if abre { compases[compases.count - 1].abreRepeticion = true }
+        if let nuevas {
+            casillas = nuevas
+            compases[compases.count - 1].casillas = nuevas
+        }
+    }
+
+    /// Cambia lo que se sabe del compás en curso de la primera voz.
+    private mutating func marcar(_ cambio: (inout CompasLeido) -> Void) {
+        guard (voces[actual]?.parte ?? 0) == 0 else { return }
+        if compases.isEmpty { compases.append(CompasLeido(inicio: .cero)) }
+        cambio(&compases[compases.count - 1])
+    }
+
+    /// Una nota de adorno (`{g}`), que no dura.
+    private mutating func adorno(_ altura: Altura, desvio: Double) {
+        guard let voz = voces[actual], voz.posicion <= PulsosDeLectura.limite else { return }
+        adornos.append(
+            NotaDeLaPieza(
+                altura: altura, inicio: PulsosDeLectura.duracion(voz.posicion), duracion: .cero, parte: voz.parte,
+                desvio: desvio))
     }
 }
