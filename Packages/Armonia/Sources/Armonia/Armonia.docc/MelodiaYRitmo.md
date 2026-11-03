@@ -163,6 +163,10 @@ abc.contains("c2 d/2e/2 | f g2 |]")                   // true
   sí, hasta la barra. Las corcheas de un mismo pulso van juntas, con su viga.
 - `Coral` y `AnalisisArmonico` tienen las dos también: el coral en dos pentagramas, con los
   cifrados encima y el análisis debajo del bajo.
+- `guido(tonalidad:clave:tempo:titulo:parte:)` escribe lo mismo en GUIDO Music Notation
+  (`.gmn`), la entrada de Guido Engine (`guido2svg escala.gmn`): la octava 1 es la del Do central
+  (`c1` es Do4), las alteraciones son `#` y `&`, y cada duración va como fracción de redonda
+  (`/4`, `*3/8`). `Coral` y `AnalisisArmonico` la tienen también.
 - Desde la terminal: `armonia lilypond melodia Do4:4 Re4:8 Mi4:8 Fa4:2 > escala.ly` y
   `armonia abc melodia Do4:4 Re4:8 Mi4:8 Fa4:2 > escala.abc`.
 
