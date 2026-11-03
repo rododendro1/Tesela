@@ -59,6 +59,19 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     /// Escala sin un nombre propio para su categoría (las japonesas y las andinas).
     case escala
 
+    /// La clase de la categoría: modo, escala madre, fragmento o afinación. Un mēḷa es a la vez un rāga y una escala
+    /// madre (la de sus janya): aquí cuenta como escala madre.
+    public var clase: ClaseDeEscala {
+        switch self {
+        case .melakarta, .thaat, .grama, .laras: .escalaMadre
+        case .tetracordo: .fragmento
+        case .afinacion: .afinacion
+        case .raga, .janya, .murchana, .dromos, .maqam, .dastgah, .makam, .mugam, .echos, .shteyger, .qenet, .pathet,
+            .diao, .jo, .harmonia, .escala:
+            .modo
+        }
+    }
+
     /// ¿Es un rāga? Lo son los rāgas indostánicos, los mēḷa y los janya; el thāṭ no.
     public var esRaga: Bool { self == .raga || self == .melakarta || self == .janya }
 
@@ -125,9 +138,19 @@ extension TipoDeEscala {
     /// ¿Es un rāga (indostánico, mēḷa o janya)?
     public var esRaga: Bool { categoria?.esRaga ?? false }
 
+    /// La clase de la escala (modo, escala madre, fragmento o afinación), la de su categoría; `nil` en las
+    /// occidentales y en las propias.
+    public var clase: ClaseDeEscala? { categoria?.clase }
+
     /// Las escalas de otras tradiciones de una categoría: `tradicionales(categoria: .melakarta)` da los 72 mēḷa.
     public static func tradicionales(categoria: CategoriaTradicional) -> [TipoDeEscala] {
         tradicionales.filter { $0.categoria == categoria }
+    }
+
+    /// Las escalas de otras tradiciones de una clase: `tradicionales(clase: .fragmento)` da los tetracordos y los
+    /// géneros griegos.
+    public static func tradicionales(clase: ClaseDeEscala) -> [TipoDeEscala] {
+        tradicionales.filter { $0.clase == clase }
     }
 
     /// Las escalas de una tradición.

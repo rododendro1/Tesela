@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+### Clases de escala y un catálogo con prioridad
+
+- **`ClaseDeEscala`**: las categorías de otras tradiciones se agrupan en cuatro clases, `.modo` (rāgas, maqamat,
+  dromoi…), `.escalaMadre` (mēḷa, thāṭ, grāma, laras), `.fragmento` (tetracordos y géneros griegos) y `.afinacion`
+  (las babilónicas). `CategoriaTradicional.clase`, `TipoDeEscala.clase` y `TipoDeEscala.tradicionales(clase:)`.
+- **`TipoDeEscala.catalogo`**: todas las escalas en el orden en que tienen prioridad, las occidentales (`todos`) y
+  después las de otras tradiciones (`tradicionales`). La búsqueda por nombre, `propio` y `equivalentes` salen de él, en
+  lugar de juntar las dos listas cada uno por su cuenta; no cambia ningún resultado.
+
 ### Un fichero y una ficha por tradición
 
 - `Escalas/Tradiciones/` tiene un fichero por tradición (`TipoDeEscala+MundoArabe.swift`, `+Turquia`, `+Grecia`,

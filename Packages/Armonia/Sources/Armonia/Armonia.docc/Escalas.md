@@ -237,6 +237,21 @@ TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72
 CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .frances))   // "gamme"
 ```
 
+Las categorías se agrupan en cuatro clases (`ClaseDeEscala`), según qué es la escala: un modo que se toca (un rāga,
+un maqam, un dromos…), una escala madre de la que salen otras (los mēḷa, los thāṭ, los grāma y los laras), un
+fragmento de menos de una octava (los tetracordos y los géneros griegos) o la afinación de un instrumento (las
+babilónicas). Sirve, por ejemplo, para dejar fuera los fragmentos al buscar entre todas.
+
+```swift
+TipoDeEscala.mohanam.clase                        // .modo
+TipoDeEscala.kafi.clase                           // .escalaMadre
+TipoDeEscala.melakarta(15)?.clase                 // .escalaMadre
+TipoDeEscala.tetracordoDiatonico.clase            // .fragmento
+TipoDeEscala.menorNatural.clase                   // nil
+TipoDeEscala.tradicionales(clase: .fragmento).count   // 12
+TipoDeEscala.tradicionales(clase: .afinacion).count   // 7
+```
+
 ### Microtonos
 
 Algunas escalas aproximadas tienen también su versión microtonal, `microtonal` (un ``TipoDeEscalaMicrotonal``):
@@ -391,6 +406,17 @@ llamen como se llamen: `TipoDeEscala.kafi == .dorico`. Para comparar también el
 TipoDeEscala.kafi.esIdentico(a: .dorico)          // false
 TipoDeEscala.kafi.equivalentes.contains(.dorico)  // true
 TipoDeEscala.rast == .mayor                       // false: baja distinto
+```
+
+Cuando dos escalas del catálogo coinciden, gana la que va antes en `TipoDeEscala.catalogo`: primero las
+occidentales (`todos`) y después las de otras tradiciones (`tradicionales`), cada una en su orden. Así se
+nombra una escala escrita por sus notas, y así se ordenan los `equivalentes`. Al buscar por nombre, además, un
+nombre gana siempre a un alias:
+
+```swift
+TipoDeEscala.propio(TipoDeEscala.kafi.intervalos).nombre   // "dórico"
+TipoDeEscala.kafi.equivalentes.first?.nombre               // "dórico"
+TipoDeEscala.buscar(nombre: "Hijaz")?.nombre               // "Ḥijāz" (el maqam; el dromos Hitzáz lo tiene de alias)
 ```
 
 ## Arpegios

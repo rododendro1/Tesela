@@ -89,10 +89,10 @@ public struct TipoDeEscala: Sendable, Codable {
     /// Mismo contenido y mismo nombre: Kāfī y dórico son iguales (`==`), pero no idénticos.
     public func esIdentico(a otro: TipoDeEscala) -> Bool { self == otro && nombre == otro.nombre }
 
-    /// Otras escalas del catálogo (`todos` y `tradicionales`) con el mismo contenido y otro
+    /// Otras escalas del catálogo (`catalogo`, en su orden) con el mismo contenido y otro
     /// nombre: para la mayor, Bilāval, Dhīraśaṅkarābharaṇam y Qīngyuè.
     public var equivalentes: [TipoDeEscala] {
-        (TipoDeEscala.todos + TipoDeEscala.tradicionales).filter { $0 == self && $0.nombre != nombre }
+        TipoDeEscala.catalogo.filter { $0 == self && $0.nombre != nombre }
     }
 
     /// Rotación de la escala empezando en el grado `grado` (1 = la propia escala).
@@ -267,8 +267,8 @@ extension TipoDeEscala {
         alias: ["disminuida", "octatónica", "modo 2 de Messiaen inverso", "disminuida auxiliar"])
 }
 
-// El catálogo de búsqueda: `todos` (el orden decide qué escala gana al identificar), `buscar(nombre:)`
-// y los índices por nombre. Las escalas de otras tradiciones están en `tradicionales`.
+// El catálogo de búsqueda: `todos` (el orden decide qué escala gana al identificar), `catalogo` (todas, en el orden
+// de prioridad), `buscar(nombre:)` y los índices por nombre. Las escalas de otras tradiciones están en `tradicionales`.
 
 extension TipoDeEscala {
     public static let todos: [TipoDeEscala] = [
@@ -304,6 +304,15 @@ extension TipoDeEscala {
         .pentatonicaMixolidia, .pentatonicaLidia, .pentatonicaEscocesa,
     ]
 
+    /// Todas las escalas del catálogo, en el orden en que tienen prioridad: primero las occidentales (`todos`, en su
+    /// orden) y después las de otras tradiciones (`tradicionales`, en el suyo).
+    ///
+    /// Cuando dos escalas comparten algo, gana la primera: al buscar por nombre (aunque un nombre gana siempre a un
+    /// alias: «Hijaz» es el maqam Ḥijāz y no el dromos Hitzáz, que lo tiene de alias), al nombrar una escala por sus
+    /// notas (`propio`: Do Re Mi Fa Sol La Si es la mayor y no Bilāval) y en el orden de `equivalentes`.
+    /// `Escala.identificar` busca solo en `todos`, salvo que se le pasen otros tipos.
+    public static let catalogo: [TipoDeEscala] = todos + tradicionales
+
     /// Busca un tipo por su nombre en español o en inglés, sin distinguir mayúsculas
     /// ni guiones: "dórico", "dorico", "Dorian", "harmonic minor", "whole-tone". También
     /// encuentra las escalas de `tradicionales`: "Kafi", "hitzaz", "melakarta 15".
@@ -319,14 +328,13 @@ extension TipoDeEscala {
     }
 
     /// Nombres y alias normalizados → tipo. Un nombre gana a un alias (Hijaz es el maqam Ḥijāz,
-    /// no el dromos Hitzáz, que lo tiene de alias); entre nombres o entre alias, gana el primero
-    /// (los de `todos` antes que los de `tradicionales`).
+    /// no el dromos Hitzáz, que lo tiene de alias); entre nombres o entre alias, gana el primero de `catalogo`.
     package static let indicePorNombre: [String: TipoDeEscala] = {
         var indice: [String: TipoDeEscala] = [:]
-        for tipo in todos + tradicionales where indice[normalizar(tipo.nombre)] == nil {
+        for tipo in catalogo where indice[normalizar(tipo.nombre)] == nil {
             indice[normalizar(tipo.nombre)] = tipo
         }
-        for tipo in todos + tradicionales {
+        for tipo in catalogo {
             for nombre in tipo.alias where indice[normalizar(nombre)] == nil {
                 indice[normalizar(nombre)] = tipo
             }

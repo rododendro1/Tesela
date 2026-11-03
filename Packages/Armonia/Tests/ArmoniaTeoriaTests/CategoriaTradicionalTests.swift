@@ -177,4 +177,32 @@ import Testing
         #expect(Set(tipos.map(\.nombre)) == Set(TipoDeEscala.tradicionales.map(\.nombre)))
         #expect(FichaDeTradicion.todas.map(\.tradicion) == Tradicion.allCases)
     }
+
+    /// Las clases: los fragmentos tienen menos de una octava de notas (cuatro), las afinaciones son las babilónicas y
+    /// las escalas madre, los mēḷa, los thāṭ, los grāma y los laras.
+    @Test func clasesDeLasTradicionales() {
+        let fragmentos = TipoDeEscala.tradicionales(clase: .fragmento)
+        #expect(fragmentos == TipoDeEscala.tetracordosGriegos + TipoDeEscala.generosDeArquitasYPtolomeo)
+        #expect(fragmentos.allSatisfy { $0.intervalos.count == 4 })
+        #expect(TipoDeEscala.tradicionales(clase: .afinacion) == TipoDeEscala.mesopotamicas)
+        let madres = TipoDeEscala.tradicionales(clase: .escalaMadre)
+        let thaatsGramasYLaras = TipoDeEscala.thaats + TipoDeEscala.gramas + TipoDeEscala.indonesias
+        #expect(madres.count == 72 + thaatsGramasYLaras.count)
+        let modos = TipoDeEscala.tradicionales(clase: .modo)
+        #expect(modos.count + madres.count + fragmentos.count + 7 == TipoDeEscala.tradicionales.count)
+        for tipo in TipoDeEscala.tradicionales {
+            #expect(tipo.clase == tipo.categoria?.clase, Comment(rawValue: tipo.nombre))
+        }
+        #expect(TipoDeEscala.todos.allSatisfy { $0.clase == nil })
+    }
+
+    /// El catálogo son las occidentales y después las de otras tradiciones, y su orden decide quién gana.
+    @Test func catalogoConPrioridad() {
+        let todas = TipoDeEscala.todos + TipoDeEscala.tradicionales
+        #expect(TipoDeEscala.catalogo.map(\.nombre) == todas.map(\.nombre))
+        #expect(TipoDeEscala.propio(TipoDeEscala.bilaval.intervalos).nombre == "mayor")
+        #expect(TipoDeEscala.propio(TipoDeEscala.hiyaz.intervalos).nombre == TipoDeEscala.frigioDominante.nombre)
+        #expect(TipoDeEscala.buscar(nombre: "Hijaz")?.nombre == TipoDeEscala.hiyaz.nombre)
+        #expect(TipoDeEscala.bilaval.equivalentes.first?.nombre == "mayor")
+    }
 }

@@ -11,7 +11,7 @@ extension TipoDeEscala {
     ///     // pentatónica mayor
     public static func propio(_ intervalos: [Intervalo]) -> TipoDeEscala {
         let candidato = TipoDeEscala(nombre: "", intervalos: intervalos)
-        if let conocido = (TipoDeEscala.todos + TipoDeEscala.tradicionales).first(where: { $0 == candidato }) {
+        if let conocido = TipoDeEscala.catalogo.first(where: { $0 == candidato }) {
             return conocido
         }
         return TipoDeEscala(nombre: nombrePropio(candidato.intervalos.map(\.semitonos)), intervalos: intervalos)
