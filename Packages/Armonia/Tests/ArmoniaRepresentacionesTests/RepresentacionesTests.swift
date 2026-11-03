@@ -238,3 +238,62 @@ import Testing
         }
     }
 }
+
+/// El teclado de piano dibujado en SVG.
+@Suite struct TecladoDePianoTests {
+    @Test func teclas() {
+        let teclado = TecladoDePiano(desde: 61, hasta: 70)
+        #expect(teclado.desde == 60 && teclado.hasta == 71)
+        #expect(teclado.blancas == [60, 62, 64, 65, 67, 69, 71])
+        #expect(teclado.negras == [61, 63, 66, 68, 70])
+        #expect(teclado.x(de: 62) == 24)
+        #expect(teclado.x(de: 61) == 17)
+        let doMayor = TecladoDePiano(cubriendo: Escala(.do).alturas(octava: 4))
+        #expect(doMayor.desde == 60 && doMayor.hasta == 72)
+        let vacio = TecladoDePiano(cubriendo: [])
+        #expect(vacio.desde == 60 && vacio.hasta == 72)
+        #expect(TecladoDePiano(desde: 64, hasta: 60).hasta == 64)
+    }
+
+    @Test func dibujo() {
+        let teclado = TecladoDePiano(desde: 60, hasta: 72)
+        let svg = teclado.svg(marcadas: [60: "1", 61: "2", 64: "3"], primeras: [60], titulo: "Do & Re")
+        #expect(svg.hasPrefix("<svg xmlns=\"http://www.w3.org/2000/svg\""))
+        #expect(svg.hasSuffix("</svg>\n"))
+        #expect(svg.contains("<title>Do &amp; Re</title>"))
+        // El fondo, ocho blancas y cinco negras.
+        #expect(svg.components(separatedBy: "<rect").count - 1 == 14)
+        #expect(svg.components(separatedBy: "<circle").count - 1 == 3)
+        #expect(svg.components(separatedBy: DibujoSVG.Color.primera).count - 1 == 1)
+        #expect(svg.contains(">2</text>"))
+        let sinTitulo = teclado.svg()
+        #expect(!sinTitulo.contains("<title>") && !sinTitulo.contains("<circle"))
+    }
+}
+
+/// El reloj de una escala: sus notas en el círculo cromático o en el de quintas.
+@Suite struct RelojDeClasesTests {
+    @Test func horas() {
+        let diatonica = [0, 2, 4, 5, 7, 9, 11]
+        #expect(RelojDeClases(clases: diatonica).horas == diatonica)
+        // En el de quintas, la diatónica son siete horas seguidas, de Fa (las 11) a Si (las 5).
+        #expect(RelojDeClases(clases: diatonica, orden: .quintas).horas == [0, 1, 2, 3, 4, 5, 11])
+        #expect(RelojDeClases.hora(de: 7, en: .quintas) == 1)
+        #expect(RelojDeClases(clases: [12, -1], tonica: 12).clases == [0, 11])
+        #expect(RelojDeClases(clases: [12, -1], tonica: 12).tonica == 0)
+    }
+
+    @Test func dibujo() {
+        let reloj = RelojDeClases(clases: [0, 4, 7], tonica: 0)
+        let svg = reloj.svg(rotulos: [0: "Do", 4: "Mi"], titulo: "Do & Mi")
+        #expect(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"))
+        #expect(svg.components(separatedBy: "<circle").count - 1 == 13)
+        #expect(svg.contains("<polygon"))
+        #expect(svg.contains(">Do</text>") && svg.contains(">7</text>"))
+        #expect(svg.contains("<title>Do &amp; Mi</title>"))
+        #expect(svg.contains(DibujoSVG.Color.primera))
+        // Una sola nota no hace polígono; sin título, no hay texto de cabecera.
+        let sola = RelojDeClases(clases: [0]).svg()
+        #expect(!sola.contains("<polygon") && !sola.contains("<title>"))
+    }
+}

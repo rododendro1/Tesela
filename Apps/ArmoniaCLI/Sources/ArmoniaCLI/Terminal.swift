@@ -23,7 +23,14 @@ extension LineaDeComandos {
         "--completo", "--complete", "--diagrama", "--diagram", "--tab", "--caged", "--ampliada", "--extended",
         "--musicxml", "--help", "--ayuda", "--escalas", "--scales", "--acordes", "--chords", "--sin-octava",
         "--no-octave", "--enlazar", "--connect", "--disposiciones", "--voicings", "--nombres", "--names",
-        "--tonalidades", "--keys", "--sustituciones", "--substitutions",
+        "--tonalidades", "--keys", "--sustituciones", "--substitutions", "--bajando", "--descending", "--piano",
+        "--modos", "--modes", "--bebop", "--pentatonicas", "--pentatonics", "--simetria", "--symmetry",
+        "--notas-guia", "--guide-tones", "--formas", "--shapes", "--vecinas", "--neighbors", "--doce", "--all-keys",
+        "--quintas", "--fifths", "--triadas", "--triads", "--arpegio", "--arpeggio", "--barrido", "--sweep",
+        "--ida-y-vuelta", "--up-and-down", "--intervalos", "--intervals", "--semitonos", "--semitones", "--tonica",
+        "--tonic", "--tresillos", "--triplets", "--romanos", "--roman", "--dedos", "--fingers",
+        "--ajenas", "--non-chord", "--doble", "--grand-staff", "--cambiar-clave", "--clef-changes", "--bajo-cifrado",
+        "--figured-bass",
     ]
 
     /// Los valores que se proponen tras una opción.
@@ -40,7 +47,17 @@ extension LineaDeComandos {
                 "up-down", "down-up", "broken",
             ]
         ),
+        (["--motor", "--engine"], ["lilypond", "musescore", "verovio", "guido", "propio", "own"]),
+        (["--formato", "--format"], ["pdf", "svg", "png"]),
         (["--aproximacion", "--approach"], ["abajo", "arriba", "encierro", "below", "above", "enclosure"]),
+        (["--mano", "--hand"], ["derecha", "izquierda", "right", "left"]),
+        (
+            ["--secuencia", "--sequence"],
+            [
+                "terceras", "cuartas", "grupos-de-3", "grupos-de-4", "triadas", "cuatriadas", "thirds", "fourths",
+                "groups-of-3", "groups-of-4", "triads", "sevenths",
+            ]
+        ),
         (
             ["--clave"],
             ["sol", "fa", "do1", "do2", "do3", "do4", "sol8b", "sol8a", "fa3", "treble", "bass", "alto", "tenor"]
@@ -63,6 +80,10 @@ extension LineaDeComandos {
                 "scale",
             ]
         }
+        if orden.nombres.contains("grabar") {
+            // Una partitura, como en `lilypond`, o una orden de dibujo.
+            return tipos(de: ordenesDePartituras[0]) + ordenesDeDibujos.flatMap(nombres(de:))
+        }
         if orden.nombres.contains("completado") { return ["bash", "zsh", "fish"] }
         return []
     }
@@ -77,6 +98,11 @@ extension LineaDeComandos {
             return comunes.filter { !["--clave", "--cifrados", "--analisis"].contains($0) } + [
                 "--programa", "--program",
             ]
+        }
+        // `grabar` acepta también las opciones de la partitura que graba.
+        if orden.nombres.contains("grabar") {
+            let propias = opcionesDeLaAyuda(de: orden)
+            return propias + opciones(de: ordenesDePartituras[0]).filter { !propias.contains($0) }
         }
         return opcionesDeLaAyuda(de: orden)
     }

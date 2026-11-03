@@ -244,13 +244,105 @@ Escala("Do mayor").svgPentagrama(opciones: OpcionesDePentagrama(notacion: .ingle
 - `nombresDeLasNotas` escribe el nombre de cada nota debajo; las etiquetas no se pisan. La medida del texto sale de
   una tabla de anchos de Helvetica y Arial (`anchoDeLosCaracteres` la multiplica si la tipografía es más ancha), y el
   texto lleva `textLength`, así que no se sale de su sitio con ninguna tipografía.
-- Sin ritmo, vigas ni voces: para partituras completas, MusicXML o MEI y un motor como Verovio.
+- Una voz o varias voces en un pentagrama, saltos de línea y letra quedan fuera: para partituras completas, MusicXML o
+  MEI y un motor como Verovio.
 
 ```swift
 Acorde("Do13").svgPentagrama().contains("<title>Do₃</title>")      // true
 Escala("Do mayor").svgPentagrama(octava: 6).contains("8va")        // true
 Escala("Do mayor").svgPentagrama(octava: 3, opciones: OpcionesDePentagrama(pentagramas: .doble)).contains("<title>Do₃</title>")   // true
 ```
+
+### Armadura de una tonalidad
+
+Las escalas diatónicas llevan su armadura; los acordes, los arpegios y las disposiciones, ninguna. Con
+`OpcionesDePentagrama(armadura: .tonalidad(…))` cualquier dibujo lleva la de una tonalidad, y sus notas solo
+llevan delante las alteraciones que la armadura no da (o el becuadro que la anula): el arpegio de Mi7 en La menor
+lleva el sostenido del Sol, el acorde de Re7 en Sol mayor no lleva ninguno.
+
+```swift
+let enLaMenor = OpcionesDePentagrama(armadura: .tonalidad(Tonalidad(.la, .menor)))
+Arpegio(Acorde("Mi7")).svgPentagrama(opciones: enLaMenor).contains("<title>Sol♯₄</title>")   // true
+```
+
+### Ritmo
+
+Una ``Voz`` se dibuja con su ritmo: cabezas negras, blancas y redondas, plicas, corchetes, barras de unión
+(las de cada pulso, como en `barrasDeAgrupacion`), puntillos, silencios, ligaduras, tresillos, la cifra del compás y
+las barras de compás. Las notas que cruzan un pulso o una barra se dividen y se ligan como en `grafia`. Con eso se
+dibuja un arpegio en corcheas, en semicorcheas o en tresillos, o una progresión arpegiada.
+
+```swift
+let voz = Voz(Arpegio(Acorde("Do7"), patron: .idaYVuelta), figura: .semicorchea)
+voz.svgPentagrama(titulo: "Do7").contains("<title>Si♭₄</title>")   // true
+```
+
+- La plica sube si la nota más alejada de la 3.ª línea está debajo, y baja si no; las notas unidas por una barra
+  van todas hacia el mismo lado, con la barra un poco inclinada.
+- Un tresillo lleva el 3 del lado de las plicas, con corchete si sus notas no van unidas por una barra.
+- `OpcionesDePentagrama.resaltada` cuenta las notas que se oyen (sin silencios ni notas ligadas a la anterior), como
+  los pasos de lo que suena.
+
+### Cifrados, intervalos, semitonos y tónica
+
+Alrededor de las notas se puede escribir lo que ayuda a estudiarlas:
+
+- **Cifrado de cada acorde.** `DisposicionDeAcorde.svgPentagrama(_:titulo:cifrados:)` pone el de cada acorde encima
+  de su columna; `Voz.svgPentagrama(titulo:acordes:)`, encima de la primera nota de cada arpegio de una progresión;
+  `Arpegio.svgPentagrama(cifrado: true)`, encima de la primera nota.
+- **Intervalos** (`intervalosDeLasNotas`). Debajo de cada nota, su intervalo desde la tónica de la escala o desde la
+  fundamental del acorde que suena (con 9, 11 y 13 si el acorde tiene séptima).
+- **Semitonos** (`marcarSemitonos`). Un arco une dos notas seguidas a un semitono.
+- **Tónica** (`marcarTonica`). La tónica va en color (`colorDeLaTonica`) en cada octava.
+- **Varias octavas.** `Escala.svgPentagrama(octavas:)` sube (y baja) dos, tres o cuatro octavas.
+
+```swift
+let opciones = OpcionesDePentagrama(intervalosDeLasNotas: true, marcarSemitonos: true, marcarTonica: true)
+Acorde("Sol9").svgPentagrama(opciones: opciones).contains(">1 3 5 ♭7 9</text>")   // true
+Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<title>Re₆</title>")   // true
+```
+
+### Para estudiar: grados, dedos, secuencias y tablatura
+
+- **Grados en números romanos.** `DisposicionDeAcorde.svgPentagrama(_:titulo:cifrados:grados:)` y
+  `Voz.svgPentagrama(titulo:grados:)` escriben debajo de cada acorde su grado (los de `AnalisisArmonico.cifrados`).
+- **Dedos.** `Escala.svgPentagrama(digitacion:)` pone encima los dedos del piano de `digitacionDePiano(_:)`, y el
+  parámetro `digitos` de los demás dibujos, los que se le den (los de la guitarra, por ejemplo).
+- **Secuencias con ritmo.** `Escala.svgPentagrama(secuencia:)` toca la escala por terceras o en grupos, cada grupo en
+  un pulso: corcheas, tresillos o semicorcheas.
+- **Tablatura.** Una ``Tablatura`` (la cuerda y el traste de cada nota) va debajo del pentagrama, alineada nota a
+  nota. `Escala.svgPentagrama(tocadaEn:)` y `Acorde.svgPentagrama(arpegiadoEn:)` dibujan las alturas de una posición
+  del mástil escritas con las notas de la escala o del acorde (Si♭, no La♯, en Do7).
+
+```swift
+let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
+let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
+let grados = Tonalidad(.do).analizar(progresion).cifrados
+DisposicionDeAcorde.svgPentagrama(voces, titulo: "ii–V–I", grados: grados).contains(">V7</text>")   // true
+Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>")   // true
+Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras")   // true
+```
+
+### Bajo cifrado, claves y notas ajenas al acorde
+
+- **Bajo cifrado.** `Tonalidad.cifrasDeBajo(de:)` da las cifras del bajo continuo de un acorde (lo contrario de
+  `acorde(sobre:cifras:)`): «6», «6 4», «6 5», «4 3», «4 2», con la alteración de las notas que la armadura no da.
+  El parámetro `bajoCifrado` de las disposiciones y las voces las escribe debajo, una encima de otra.
+- **Cambios de clave.** Con `OpcionesDePentagrama.cambiosDeClave`, un solo pentagrama pasa de la clave de fa a la de
+  sol (y vuelve) cuando las notas se van a tres líneas adicionales, con la clave nueva más pequeña delante.
+- **Notas ajenas al acorde.** Con `marcarNotasAjenas`, las notas que no son del acorde que suena van en color: las de
+  la tonalidad (notas de paso, bordaduras…) en `colorDeLasNotasDePaso`, las cromáticas en `colorDeLasCromaticas`.
+
+```swift
+Tonalidad(.do).cifrasDeBajo(de: Acorde("Sol7/Si"))          // ["6", "5"]
+Tonalidad(.la, .menor).cifrasDeBajo(de: Acorde("Mi"))       // ["♯"]
+```
+
+En la línea de comandos, `armonia pentagrama escala|acorde|arpegio|acordes …` dibuja lo mismo (con `--octavas`,
+`--figura`, `--tresillos`, `--nombres`, `--intervalos`, `--semitonos`, `--tonica` y `--en <tonalidad>`), y con
+`--romanos`, `--mano`, `--dedos`, `--secuencia` y `--tab` (`--instrumento`), los grados, los dedos, las secuencias
+y la tablatura; con `--bajo-cifrado`, `--octava`, `--clave`, `--doble` y `--cambiar-clave`, el
+bajo cifrado y el registro, y `armonia pentagrama melodia … --sobre <acordes>` colorea las notas ajenas.
 
 ## Errores
 

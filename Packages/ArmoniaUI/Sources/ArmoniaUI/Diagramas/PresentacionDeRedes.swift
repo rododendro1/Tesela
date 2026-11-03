@@ -3,8 +3,10 @@ import Hexagonos
 
 /// Las redes en que la app Tonnetz dibuja unas notas: el Tonnetz, la tabla armónica y varios teclados
 /// isomórficos (Wicki-Hayden, Jankó, el acordeón cromático, Gerhard y Park), más uno que el usuario describe en el
-/// formato UIL. Cada teclado es una fila más con el nombre del de `TecladoIsomorfico.todos`: su dibujo y su nombre en
-/// cada idioma los da el motor. No usa SwiftUI, así que se prueba en Linux.
+/// formato UIL, y los teclados de cuadrícula (en cuartas, en terceras, en quintas, Wicki-Hayden, tonos enteros, el
+/// Tonnetz de Euler, las demás filas del LinnStrument y la secuencial), más uno con los ejes que escribe el usuario.
+/// Cada teclado es una fila más con el nombre del de `TecladoIsomorfico.todos` o `TecladoCuadrado.todos`: su dibujo y
+/// su nombre en cada idioma los da el motor. No usa SwiftUI, así que se prueba en Linux.
 public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
     case tonnetz = "Tonnetz"
     case tablaArmonica = "Tabla armónica"
@@ -18,6 +20,18 @@ public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
     case park = "Park"
     /// Un teclado descrito en el formato UIL (`2,7,5;R30M`), que se puede girar de 30° en 30° y reflejar: ver ``AjusteUIL``.
     case uil = "UIL"
+    case cuadriculaEnCuartas = "Cuadrícula en cuartas"
+    case cuadriculaEnTercerasMayores = "Cuadrícula en terceras mayores"
+    case cuadriculaEnQuintas = "Cuadrícula en quintas"
+    case wickiHaydenCuadrado = "Wicki-Hayden (cuadrícula)"
+    case cuadriculaDeTonosEnteros = "Cuadrícula de tonos enteros"
+    case tonnetzDeEuler = "Tonnetz de Euler"
+    case cuadriculaEnTercerasMenores = "Cuadrícula en terceras menores"
+    case cuadriculaEnTritonos = "Cuadrícula en tritonos"
+    case cuadriculaEnOctavas = "Cuadrícula en octavas"
+    case cuadriculaSecuencial = "Cuadrícula secuencial"
+    /// Un teclado de cuadrícula con los ejes que escribe el usuario (`1,5`): ver ``AjusteCuadrado``.
+    case cuadriculaPersonalizada = "H,V"
 
     public var id: Self { self }
 
@@ -25,21 +39,31 @@ public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
     /// que le da el motor (`TecladoIsomorfico.nombre(en:)`).
     public func nombre(en notacion: Notacion) -> String {
         switch self {
-        case .tonnetz, .uil: return rawValue
+        case .tonnetz, .uil, .cuadriculaPersonalizada: return rawValue
         case .tablaArmonica: return TecladoIsomorfico.tablaArmonica.nombre(en: notacion)
-        default: return teclado?.nombre(en: notacion) ?? rawValue
+        default: return teclado?.nombre(en: notacion) ?? tecladoCuadrado?.nombre(en: notacion) ?? rawValue
         }
     }
 
     /// El teclado isomórfico de la red, el de `TecladoIsomorfico.todos` que se llama como ella; `nil` en el Tonnetz y
-    /// la tabla, que tienen su propio dibujo, y en `.uil`, cuyo teclado depende del ``AjusteUIL`` (ver
-    /// ``PresentacionDeRedes/teclado(de:uil:)``).
+    /// la tabla, que tienen su propio dibujo, en `.uil`, cuyo teclado depende del ``AjusteUIL`` (ver
+    /// ``PresentacionDeRedes/teclado(de:uil:)``), y en los de cuadrícula (ver ``tecladoCuadrado``).
     public var teclado: TecladoIsomorfico? {
         switch self {
         case .tonnetz, .tablaArmonica, .uil: return nil
         default: return TecladoIsomorfico.todos.first { $0.nombre == rawValue }
         }
     }
+
+    /// El teclado de cuadrícula de la red, el de `TecladoCuadrado.todos` que se llama como ella; `nil` en las demás y
+    /// en `.cuadriculaPersonalizada`, cuyo teclado depende del ``AjusteCuadrado`` (ver
+    /// ``AjusteCuadrado/teclado(de:escala:)``).
+    public var tecladoCuadrado: TecladoCuadrado? {
+        TecladoCuadrado.todos.first { $0.nombre == rawValue }
+    }
+
+    /// ¿Es un teclado de cuadrícula, uno de los de `TecladoCuadrado.todos` o el personalizado?
+    public var esCuadricula: Bool { self == .cuadriculaPersonalizada || tecladoCuadrado != nil }
 }
 
 /// Lo que el usuario escribe y toca para el teclado UIL: el texto, cuántos giros de 30° se le dan encima y si se refleja.
@@ -75,6 +99,62 @@ public struct AjusteUIL: Hashable, Sendable {
     public static let conocidos: [(nombre: String, texto: String)] = FormatoUIL.conocidos.map {
         (nombre: $0.nombre, texto: $0.formato.descripcion)
     }
+}
+
+/// Lo que el usuario elige para los teclados de cuadrícula: los ejes del personalizado, el giro de 90° en 90°, el
+/// espejo, la rejilla del controlador, la nota de la casilla de origen y si se toca en tono (solo las notas de la
+/// escala).
+///
+///     var ajuste = AjusteCuadrado(texto: "1,5")
+///     ajuste.giros = 1                                              // un cuarto de vuelta
+///     ajuste.teclado(de: .cuadriculaPersonalizada)?.ejes            // "5,-1"
+///     ajuste.rejilla = .launchpad                                   // el Do2 en la esquina
+public struct AjusteCuadrado: Hashable, Sendable {
+    /// Los ejes del teclado personalizado, «H,V»: `1,5`.
+    public var texto: String
+    /// Los cuartos de vuelta en sentido horario (negativos, en antihorario).
+    public var giros: Int
+    /// Si se refleja el teclado después de girarlo.
+    public var espejo: Bool
+    /// Las casillas que se dibujan. Al cambiarla, la nota de origen vuelve a la suya (`origen` a `nil`).
+    public var rejilla: RejillaDeControlador {
+        didSet { if rejilla != oldValue { origen = nil } }
+    }
+    /// El número MIDI de la casilla `(0, 0)`; `nil` para el de la rejilla (`RejillaDeControlador.origenPorDefecto`).
+    public var origen: Int?
+    /// Si solo suenan las notas de la escala que se dibuja, como en el modo In Key del Push (ver
+    /// `TecladoCuadrado.enTono(_:)`). Sin escala, no cambia nada.
+    public var enTono: Bool
+
+    public init(
+        texto: String = "1,5", giros: Int = 0, espejo: Bool = false, rejilla: RejillaDeControlador = .ventana,
+        origen: Int? = nil, enTono: Bool = false
+    ) {
+        self.texto = texto
+        self.giros = giros
+        self.espejo = espejo
+        self.rejilla = rejilla
+        self.origen = origen
+        self.enTono = enTono
+    }
+
+    /// El número MIDI de la casilla de origen: el elegido o el de la rejilla.
+    public var midiDelOrigen: Int { origen ?? rejilla.origenPorDefecto }
+
+    /// El teclado de una red de cuadrícula con este ajuste: girado, reflejado, con su nota de origen y, si se pide y
+    /// hay escala, en tono. `nil` si la red no es de cuadrícula o si los ejes del personalizado no se pueden leer.
+    public func teclado(de red: RedDeNotas, escala: Escala? = nil) -> TecladoCuadrado? {
+        let elegido =
+            red == .cuadriculaPersonalizada ? TecladoCuadrado.conEjes(texto, nombre: red.rawValue) : red.tecladoCuadrado
+        guard let base = elegido else { return nil }
+        let girado = base.girado(cuartos: giros)
+        let colocado = (espejo ? girado.reflejado : girado).conOrigen(midiDelOrigen)
+        if enTono, let escala { return colocado.enTono(escala) }
+        return colocado
+    }
+
+    /// Los ejes del teclado personalizado ya girado y reflejado («5,-1»), o `nil` si no se pueden leer.
+    public var resultado: String? { teclado(de: .cuadriculaPersonalizada)?.ejes }
 }
 
 /// Lo que se dibuja: un acorde, una escala, un recorrido de tríadas o unas clases de altura sueltas (las que se
@@ -125,6 +205,13 @@ public enum PresentacionDeRedes {
     /// El lado de las casillas de los teclados en el dibujo.
     static let tamanoDelTeclado = 24.0
 
+    /// Las casillas de los teclados de cuadrícula si no se elige otra rejilla: 12 columnas por 7 filas, con el Do4
+    /// hacia el centro (`RejillaDeControlador.ventana`).
+    public static let casillasDelTecladoCuadrado = RejillaDeControlador.ventana.casillas
+
+    /// El lado de los cuadrados de los teclados de cuadrícula en el dibujo.
+    static let ladoDelTecladoCuadrado = 40.0
+
     /// La distancia entre dos notas vecinas en el dibujo del Tonnetz o de la tabla: la que usan sus `svg`
     /// por defecto, con más sitio en un recorrido para las flechas. Se fija aquí para saber qué nota se toca.
     static func paso(_ contenido: ContenidoDeRed, en red: RedDeNotas) -> Double {
@@ -139,15 +226,18 @@ public enum PresentacionDeRedes {
     /// El dibujo SVG del contenido en la red; `nil` si un recorrido está vacío.
     public static func svg(
         _ contenido: ContenidoDeRed, en red: RedDeNotas, notacion: Notacion,
-        uil: AjusteUIL = AjusteUIL()
+        uil: AjusteUIL = AjusteUIL(), cuadrado: AjusteCuadrado = AjusteCuadrado()
     ) -> String? {
         let paso = Self.paso(contenido, en: red)
         if red == .uil && uil.teclado == nil { return nil }
+        if red.esCuadricula {
+            return svgDeCuadricula(contenido, en: red, notacion: notacion, cuadrado: cuadrado)
+        }
+        let clases = Set(contenido.notas.map(\.claseDeAltura))
+        let marcadas = Set((0...127).filter { clases.contains($0 % 12) })
+        // Con bemoles si alguna nota lleva bemol: en la línea de quintas, las que quedan por debajo de Fa (Si♭…).
+        let bemoles = contenido.notas.contains { $0.pasosDeQuinta < -1 }
         if let teclado = Self.teclado(de: red, uil: uil) {
-            let clases = Set(contenido.notas.map(\.claseDeAltura))
-            let marcadas = Set((0...127).filter { clases.contains($0 % 12) })
-            // Con bemoles si alguna nota lleva bemol: en la línea de quintas, las que quedan por debajo de Fa (Si♭…).
-            let bemoles = contenido.notas.contains { $0.pasosDeQuinta < -1 }
             return teclado.svg(
                 casillasDelTeclado(teclado), marcadas: marcadas, tamano: tamanoDelTeclado, notacion: notacion,
                 preferirBemoles: bemoles)
@@ -177,6 +267,28 @@ public enum PresentacionDeRedes {
         }
     }
 
+    /// La escala del contenido, para tocar en tono; `nil` si no es una escala.
+    static func escala(de contenido: ContenidoDeRed) -> Escala? {
+        if case .escala(let escala) = contenido { return escala }
+        return nil
+    }
+
+    /// El dibujo en un teclado de cuadrícula: las notas marcadas en todas las octavas, con su contorno, y la primera
+    /// (la tónica de una escala o la fundamental de un acorde) con el borde naranja.
+    static func svgDeCuadricula(
+        _ contenido: ContenidoDeRed, en red: RedDeNotas, notacion: Notacion, cuadrado: AjusteCuadrado
+    ) -> String? {
+        guard let teclado = cuadrado.teclado(de: red, escala: escala(de: contenido)) else { return nil }
+        let notas = contenido.notas
+        let clases = Set(notas.map(\.claseDeAltura))
+        let marcadas = Set((0...127).filter { clases.contains($0 % 12) })
+        let primeras = Set((0...127).filter { $0 % 12 == notas.first?.claseDeAltura })
+        let bemoles = notas.contains { $0.pasosDeQuinta < -1 }
+        return teclado.svg(
+            cuadrado.rejilla.casillas, marcadas: marcadas, primeras: primeras, contorno: true,
+            lado: ladoDelTecladoCuadrado, notacion: notacion, preferirBemoles: bemoles)
+    }
+
     /// Pone una clase de altura entre las elegidas para identificar un acorde, al final, o la quita si ya estaba,
     /// sin cambiar el orden de las demás (la primera es el bajo).
     ///
@@ -201,12 +313,19 @@ public enum PresentacionDeRedes {
     /// en un teclado suena la altura de la casilla.
     public static func midi(
         en punto: Punto, de contenido: ContenidoDeRed, enLaRed red: RedDeNotas,
-        uil: AjusteUIL = AjusteUIL()
+        uil: AjusteUIL = AjusteUIL(), cuadrado: AjusteCuadrado = AjusteCuadrado()
     ) -> Int? {
         if red == .uil && uil.teclado == nil { return nil }
         if let teclado = Self.teclado(de: red, uil: uil) {
             let casilla = Trazado(orientacion: teclado.orientacion, tamano: tamanoDelTeclado).casilla(en: punto)
             guard casillasDelTeclado(teclado).contains(casilla) else { return nil }
+            let midi = teclado.midi(en: casilla)
+            return (0...127).contains(midi) ? midi : nil
+        }
+        if red.esCuadricula {
+            guard let teclado = cuadrado.teclado(de: red, escala: escala(de: contenido)) else { return nil }
+            let casilla = TecladoCuadrado.casilla(en: punto, lado: ladoDelTecladoCuadrado)
+            guard cuadrado.rejilla.casillas.contains(casilla) else { return nil }
             let midi = teclado.midi(en: casilla)
             return (0...127).contains(midi) ? midi : nil
         }
@@ -227,7 +346,7 @@ public enum PresentacionDeRedes {
     /// El nombre del fichero al exportar el dibujo: «Tonnetz · Dom7».
     public static func nombre(
         _ contenido: ContenidoDeRed, en red: RedDeNotas, notacion: Notacion,
-        uil: AjusteUIL = AjusteUIL()
+        uil: AjusteUIL = AjusteUIL(), cuadrado: AjusteCuadrado = AjusteCuadrado()
     ) -> String {
         let que: String
         switch contenido {
@@ -239,7 +358,12 @@ public enum PresentacionDeRedes {
                 acordes(de: clases).first?.cifrado(en: notacion)
                 ?? ContenidoDeRed.clases(clases).notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
         }
-        let donde = red == .uil ? "UIL " + (uil.resultado ?? "") : red.nombre(en: notacion)
+        let donde: String
+        switch red {
+        case .uil: donde = "UIL " + (uil.resultado ?? "")
+        case .cuadriculaPersonalizada: donde = "H,V " + (cuadrado.resultado ?? "")
+        default: donde = red.nombre(en: notacion)
+        }
         return donde + " · " + que
     }
 }

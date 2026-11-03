@@ -451,3 +451,22 @@ Escala(.re, .dorico).acordesCaracteristicos == [Acorde("Mim"), Acorde("Sol")]   
 Escala(.sol, .mixolidio).cadenciaModal == [Acorde("Fa"), Acorde("Sol")]                 // true
 Escala(.mi, .frigio).cadenciaModal == [Acorde("Fa"), Acorde("Mim")]                     // true
 ```
+
+### Estudiar una escala
+
+``Escala/secuencia(_:octava:octavas:sentido:)`` da la escala en una ``SecuenciaDeEscala`` de estudio, subiendo o
+bajando: por terceras (Do Mi, Re Fa, Mi Sol…), por cuartas, en grupos de tres o de cuatro notas, o en la tríada o la
+cuatriada de cada grado. ``Escala/digitacionDePiano(_:octava:octavas:)`` da los dedos de cada ``Mano``: en Do mayor,
+1 2 3 1 2 3 4 5 en la derecha y 5 4 3 2 1 3 2 1 en la izquierda; en Fa mayor, 1 2 3 4 1 2 3 4 en la derecha, para que
+el pulgar no caiga en el Si♭.
+
+``Escala/modosParalelos`` son los siete modos de la mayor sobre la misma tónica, del más brillante (lidio) al más
+oscuro (locrio), y ``Escala/brillo`` mide cuánto: lidio +1, jónico 0, dórico −2, locrio −5.
+``Escala/modosRelativos`` son las escalas con las mismas notas que empiezan en cada grado.
+``Escala/comparar(con:)`` da una ``ComparacionDeEscalas``: las notas comunes, las que solo están en una, los grados
+que cambian (de Do mayor a Do lidio, el 4.º, de Fa a Fa♯) y la distancia en el círculo de quintas.
+
+Sobre un acorde, ``Acorde/escalasBebop`` son las bebop que, bajando en corcheas, ponen una nota del acorde en cada
+parte fuerte (Do bebop dominante sobre Do7, con el Si de paso), y ``Acorde/pentatonicas``, las pentatónicas sin notas
+a evitar, con las tensiones que suma cada una. En una progresión, ``Escala/cambios(desde:)`` dice qué notas cambian
+de la escala de un acorde a la del siguiente y ``Acorde/notasGuia``, su tercera y su séptima.

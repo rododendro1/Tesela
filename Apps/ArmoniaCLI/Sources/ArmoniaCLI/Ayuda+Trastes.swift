@@ -25,6 +25,13 @@ extension LineaDeComandos {
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPosiciones),
             descripcion: TextosDeCLI.traduccion(\.descripcionPosiciones),
-            ejemplo: ejemplo("armonia posiciones Sol mayor --caged", "armonia positions G major --caged"))
+            ejemplo: ejemplo("armonia posiciones Sol mayor --caged", "armonia positions G major --caged"),
+            notas: TextosDeCLI.traduccion(\.notasPosiciones)),
+        // posiciones --arpegio <cifrado> [--caged|--barrido]
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisPosicionesArpegio),
+            descripcion: TextosDeCLI.traduccion(\.descripcionPosicionesArpegio),
+            ejemplo: ejemplo(
+                "armonia posiciones --arpegio Lam --barrido", "armonia positions --arpeggio Am --sweep")),
     ]
 }

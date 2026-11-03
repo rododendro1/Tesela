@@ -156,4 +156,58 @@ extension LineaDeComandosTests {
     @Test func laAyudaHablaDeLasDigitaciones() {
         #expect(salida("ayuda").contains("digitaciones <cifrado>"))
     }
+
+    @Test func formasDeLaPentatonicaYSecuenciasEnLasPosiciones() {
+        let formas = salida("posiciones La pentatónica menor --formas")
+        #expect(
+            formas.hasPrefix("La pentatónica menor · Formas de la pentatónica\n\n  Forma 1 · Trastes 5–8\n"),
+            Comment(rawValue: formas))
+        #expect(formas.contains("\n    Mi |--5--8-------------------------------\n"))
+        #expect(formas.contains("\n    comparte con la forma 2: 6:8 5:7 4:7 3:7 2:8 1:8\n"))
+        #expect(formas.contains("\n  Forma 5 · "))
+        let noPentatonica = LineaDeComandos.ejecutar(["posiciones", "Do", "mayor", "--formas"])
+        #expect(noPentatonica.codigo == 2)
+        #expect(noPentatonica.error.hasPrefix("armonia: las formas son de una escala de cinco notas: "))
+        let terceras = salida("posiciones Do mayor --secuencia terceras --caged")
+        #expect(
+            terceras.hasPrefix("Do mayor · Secuencia por terceras\n\n  Forma C · Trastes 0–4\n    Mi |-"),
+            Comment(rawValue: terceras))
+        let bajando = salida("posiciones Do mayor --secuencia grupos-de-3 --bajando")
+        #expect(bajando.hasPrefix("Do mayor · Secuencia en grupos de tres\n\n"), Comment(rawValue: bajando))
+        #expect(bajando != salida("posiciones Do mayor --secuencia grupos-de-3"))
+        #expect(salida("positions A minor pentatonic --shapes --ingles").contains("\n  Shape 2 · "))
+    }
+
+    @Test func posicionesEnOtrosInstrumentosYConCapo() {
+        let bajo = salida("posiciones Do mayor --instrumento bajo")
+        #expect(bajo.hasPrefix("Do mayor · 3 notas por cuerda · bajo\n"), Comment(rawValue: bajo))
+        #expect(!bajo.contains("\n    Si  |"))
+        let capo = salida("posiciones Re mayor --capo 2")
+        #expect(capo.contains("Capo en el traste 2"), Comment(rawValue: capo))
+        #expect(capo != salida("posiciones Re mayor"))
+        let dadgad = salida("posiciones Re mayor --instrumento dadgad")
+        #expect(dadgad.hasPrefix("Re mayor · 3 notas por cuerda · guitarra en DADGAD\n"), Comment(rawValue: dadgad))
+        #expect(salida("posiciones Sol mayor --instrumento sol-abierto").contains("guitarra en sol abierto"))
+        #expect(salida("posiciones Re mayor --instrumento re-abierto").contains("guitarra en re abierto"))
+        let formas = salida("posiciones La pentatónica menor --formas --instrumento bajo")
+        #expect(formas.contains("Formas de la pentatónica · bajo"), Comment(rawValue: formas))
+        #expect(salida("positions D major --instrument dadgad --ingles").contains("DADGAD guitar"))
+    }
+
+    @Test func arpegiosEnElMastil() {
+        let barrido = salida("posiciones --arpegio Lam --barrido")
+        #expect(barrido.hasPrefix("Lam · Arpegio en el mástil · "), Comment(rawValue: barrido))
+        #expect(barrido.contains("\n  Trastes 0–2\n    Mi |-"))
+        #expect(barrido.contains("\n    Dedos: 0 0 2 2 1 0\n"))
+        let idaYVuelta = salida("posiciones --arpegio Lam --barrido --ida-y-vuelta")
+        #expect(idaYVuelta.contains("\n    Dedos: 0 0 2 2 1 0 1 2 2 0 0\n"), Comment(rawValue: idaYVuelta))
+        let caged = salida("posiciones --arpegio Do --caged")
+        #expect(caged.hasPrefix("Do · Arpegio en el mástil · CAGED\n\n  Forma C · Trastes "), Comment(rawValue: caged))
+        let porPosiciones = salida("posiciones --arpegio Sol7 --instrumento bajo --capo 2")
+        #expect(
+            porPosiciones.hasPrefix("Sol7 · Arpegio en el mástil · Por posiciones · bajo · Capo en el traste 2\n"),
+            Comment(rawValue: porPosiciones))
+        #expect(salida("positions --arpeggio Am --sweep --ingles").contains("\n    Fingers: 0 0 2 2 1 0\n"))
+        #expect(salida("ayuda").contains("posiciones --arpegio <cifrado> [--caged|--barrido]"))
+    }
 }

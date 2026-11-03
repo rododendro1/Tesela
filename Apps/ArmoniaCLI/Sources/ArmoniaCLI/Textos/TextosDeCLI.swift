@@ -12,6 +12,7 @@ struct TextosDeCLI: TextosTraducidos {
     // MARK: Ayuda+Armonizacion.swift
     let sintaxisAnalizar: String
     let descripcionAnalizar: String
+    let notasAnalizar: String
     let sintaxisAnalizarArchivo: String
     let descripcionAnalizarArchivo: String
     let sintaxisArmonizar: String
@@ -36,10 +37,12 @@ struct TextosDeCLI: TextosTraducidos {
     let notasArpegio: String
     let sintaxisIdentificar: String
     let descripcionIdentificar: String
+    let notasIdentificar: String
     let sintaxisIntervalo: String
     let descripcionIntervalo: String
     let sintaxisEscala: String
     let descripcionEscala: String
+    let notasEscala: String
     let sintaxisEscalas: String
     let descripcionEscalas: String
     let notasEscalas: String
@@ -64,6 +67,10 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionTabla: String
     let sintaxisTablaAcorde: String
     let descripcionTablaAcorde: String
+    let sintaxisCuadricula: String
+    let descripcionCuadricula: String
+    let sintaxisCuadriculaOpciones: String
+    let descripcionCuadriculaOpciones: String
 
     // MARK: Ayuda+Neorriemann.swift
     let sintaxisVecinos: String
@@ -98,16 +105,40 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionMeiMelodia: String
     let sintaxisLilypondMelodia: String
     let descripcionLilypondMelodia: String
+    let sintaxisGuidoMelodia: String
+    let descripcionGuidoMelodia: String
     let sintaxisAbcMelodia: String
     let descripcionAbcMelodia: String
     let sintaxisMidiMelodia: String
     let descripcionMidiMelodia: String
+
+    // MARK: Ayuda+Grabado.swift
+    let sintaxisGrabar: String
+    let descripcionGrabar: String
+    let notasGrabar: String
+    let sintaxisMotores: String
+    let descripcionMotores: String
 
     // MARK: Ayuda+Trastes.swift
     let sintaxisDigitaciones: String
     let descripcionDigitaciones: String
     let sintaxisPosiciones: String
     let descripcionPosiciones: String
+    let notasPosiciones: String
+    let sintaxisTeclado: String
+    let descripcionTeclado: String
+    let sintaxisReloj: String
+    let descripcionReloj: String
+    let sintaxisPentagrama: String
+    let descripcionPentagrama: String
+    let sintaxisPentagramaEstudio: String
+    let descripcionPentagramaEstudio: String
+    let sintaxisPentagramaRegistro: String
+    let descripcionPentagramaRegistro: String
+    let sintaxisPentagramaMelodia: String
+    let descripcionPentagramaMelodia: String
+    let sintaxisPosicionesArpegio: String
+    let descripcionPosicionesArpegio: String
 
     // MARK: Ayuda.swift
     let cabeceraDeLaAyuda: String
@@ -163,6 +194,7 @@ struct TextosDeCLI: TextosTraducidos {
     let recorridoSoloTriadas: @Sendable (String, String) -> String
     let caminoSoloTriadas: @Sendable (String, String) -> String
     let cicloSoloTriadas: @Sendable (String, String) -> String
+    let opcionesDeCuadricula: String
 
     // MARK: ErrorDeUso.swift (neorriemanniana)
     let vocesFueraDeRango: String
@@ -192,6 +224,23 @@ struct TextosDeCLI: TextosTraducidos {
     let acordesConCifradosYAnalisis: String
     let tipoDePartituraDesconocido: @Sendable (String) -> String
 
+    // MARK: ErrorDeUso.swift (grabado)
+    let faltaLoQueSeGraba: String
+    let motorDesconocido: @Sendable (String) -> String
+    let formatoDeGrabadoDesconocido: @Sendable (String) -> String
+    let nadaQueGrabar: @Sendable (String) -> String
+
+    // MARK: LineaDeComandos+Grabado.swift
+    /// El programa y la variable de entorno que da su ruta.
+    let motorNoEncontrado: @Sendable (String, String) -> String
+    /// El programa y su código de salida; debajo van las últimas líneas de lo que dijo.
+    let motorFallo: @Sendable (String, Int) -> String
+    let motorSinTerminar: @Sendable (String) -> String
+    /// La variable de entorno que da la ruta del programa que no está.
+    let motorNoInstalado: @Sendable (String) -> String
+    /// El nombre de `--motor propio` en el idioma de las órdenes.
+    let motorPropio: String
+
     // MARK: ErrorDeUso.swift (digitaciones)
     let faltaInstrumento: @Sendable (String, (String, String)) -> String
     let instrumentoDesconocido: @Sendable (String, (Notacion) -> String) -> String
@@ -203,12 +252,20 @@ struct TextosDeCLI: TextosTraducidos {
     let trasteFueraDeRango: String
     let faltaCifradoDeDigitaciones: @Sendable (String, (String, String)) -> String
     let faltaEscalaDePosiciones: String
+    let faltaEscalaDelTeclado: String
+    let manoDesconocida: @Sendable (String) -> String
+    let archivoConNotas: String
+    let noEsPentatonica: String
+    let faltaEscalaDelReloj: String
+    let faltaLoQueDibujaElPentagrama: String
     let capoFueraDeRango: String
     let octavasFueraDeRango: String
+    let octavaFueraDeRango: String
     let desdeNoValido: @Sendable (String) -> String
     let tensionesMalEscritas: String
     let gradosMalEscritos: String
     let aproximacionDesconocida: @Sendable (String) -> String
+    let secuenciaDesconocida: @Sendable (String) -> String
 
     // MARK: ErrorDeUso.swift (comunes)
     let pruebaLaAyuda: String

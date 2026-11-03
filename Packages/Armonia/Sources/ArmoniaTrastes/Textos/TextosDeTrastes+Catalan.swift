@@ -8,6 +8,9 @@ extension TextosDeTrastes {
         // Encordado.swift
         guitarra: "guitarra",
         guitarraEnReGrave: "guitarra en re greu",
+        guitarraEnReAbierto: "guitarra en re obert",
+        guitarraEnSolAbierto: "guitarra en sol obert",
+        guitarraDADGAD: "guitarra en DADGAD",
         guitarraDeSieteCuerdas: "guitarra de set cordes",
         bajo: "baix",
         bajoDeCincoCuerdas: "baix de cinc cordes",

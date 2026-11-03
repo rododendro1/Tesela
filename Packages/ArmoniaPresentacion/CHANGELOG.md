@@ -1,6 +1,34 @@
 # Cambios
 
-## Sin publicar
+## 0.3.2 (2026-11-03)
+
+- **El arpegio con su ritmo en el pentagrama.** `PentagramaPresentado(_:titulo:tonalidad:notacion:nombresDeLasNotas:resaltada:)`
+  dibuja una voz con sus figuras, barras y compás, y con la armadura de la tonalidad si se da. La pestaña de acordes
+  de la app enseña (y exporta) el arpegio con la figura y los tresillos con que suena.
+
+- **Acordes en las doce tonalidades y arpegios en el mástil.**
+  `PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(_:cuatriadas:notacion:)` (`TablaDeAcordesPresentada`:
+  los acordes de cada grado de quinta en quinta, con sonido y partitura) y
+  `PresentacionDeArpegios.enElMastil(_:formas:idaYVuelta:mastil:notacion:)` (`ArpegioEnElMastilPresentado`, por
+  posiciones, CAGED o con una nota por cuerda, con tablatura, dedos, sonido y MusicXML). Textos nuevos en los quince
+  idiomas.
+
+- **Escalas propias.** `PresentacionDeEstudioDeEscala`: `vecinas(de:notacion:)`, `reloj(de:orden:notacion:)` (el
+  reloj de la escala en SVG) y `enLasDoceTonalidades(_:secuencia:notacion:)` (`HojaDeEstudioPresentada`, con
+  pentagramas, sonido y ficheros). Textos nuevos en los quince idiomas.
+
+- **Más escalas.** `PresentacionDeEstudioDeEscala`: `escalas(conLasNotas:)` y `escalas(de:)` (`EscalaEncontrada`, con
+  las notas que añade cada una), `simetria(de:)` (`SimetriaPresentada`), `lineasDeNotasGuia`, `formasPentatonicas` y
+  `secuenciaEnLasPosiciones` (`PosicionPresentada`, con tablatura de texto y MusicXML), `tablatura(_:en:notacion:)` y
+  `teclado(de:mano:octavas:notacion:)`, el teclado de piano en SVG. Textos nuevos en los quince idiomas.
+
+- **Textos de los teclados de cuadrícula**: `ejesHV`, `rejilla`, `notaDeOrigen` y `enTono`, en los quince idiomas.
+
+- **Estudiar escalas.** `PresentacionDeEstudioDeEscala`: `secuencia` (`SecuenciaPresentada`, con pentagrama,
+  sonido y ficheros para exportar), `digitaciones` (`DigitacionDePianoPresentada`), `modosParalelos` y
+  `modosRelativos` (`ModoPresentado`), `comparar` (`ComparacionDeEscalasPresentada`) y `bebop` y `pentatonicas`
+  sobre un acorde (`EscalaSobreElAcordePresentada`). `AnalisisPresentado.cambiosDeEscala(en:)` da, por acorde, las
+  notas que cambian y las notas guía. Textos nuevos en los quince idiomas.
 
 - **Series dodecafónicas en las apps.** `PresentacionDeSerie.presentar(_:forma:notacion:)` da una serie
   (`SeriePresentada`) con sus notas, sus intervalos, sus hexacordos, sus formas combinatorias, la matriz con el nombre

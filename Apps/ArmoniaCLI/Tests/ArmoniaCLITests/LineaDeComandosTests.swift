@@ -115,7 +115,7 @@ import Testing
         #expect(Set(nombres).count == nombres.count)
         for nombre in nombres { #expect(nombre == nombre.lowercased(), Comment(rawValue: nombre)) }
         for orden in LineaDeComandos.ordenes { #expect(!orden.ayuda.isEmpty, Comment(rawValue: orden.nombres[0])) }
-        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 44)
+        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 56)
         // Los nombres no distinguen mayúsculas.
         #expect(salida("ACORDE Do") == salida("acorde Do"))
     }
@@ -131,6 +131,7 @@ import Testing
         "musicxml melodia C4:4 --foo 1", "midi acordes C --cifrados", "tonnetz", "tonnetz --clases", "conjunto",
         "serie",
         "tonnetz --camino C", "tabla --ciclo C", "tabla --margen 9 C", "contrapunto", "contrapunto D4 A4",
+        "cuadricula", "cuadricula --ejes x C", "cuadricula --rejilla 0x8 C",
         "contrapunto D4 / A4 --especie 6", "contrapunto D4 / ", "acorde Do --escritura foo",
         "arpegio", "arpegio Do --patron zigzag", "arpegio Do --patron", "arpegio Do --octavas 0",
         "arpegio Do --octavas", "arpegio Do --desde Fa", "arpegio Do --desde 4", "arpegio Do --grados 1-x",
@@ -140,6 +141,24 @@ import Testing
         "digitaciones C --capo 13", "completado", "completado tcsh", "completado bash zsh", "manual extra",
         "acorde Do --comparar", "acorde Do --en", "acorde Do --foo", "acorde --nombres",
         "escalas --tradicion marte", "escalas --categoria foo", "musicxml escala", "midi escala Re bayati --clave fa",
+        "escala Do mayor --secuencia foo", "escala Do mayor --secuencia", "escala Do mayor --comparar",
+        "escala Do mayor --octavas 9", "escala Do mayor --foo", "escala --piano",
+        "teclado", "teclado Do mayor --mano foo", "teclado Do mayor --mano", "teclado Do mayor --octavas 9",
+        "teclado Do mayor --foo", "identificar --archivo coral.mid Do", "identificar --archivo", "identificar --foo Do",
+        "identificar --escalas", "posiciones Do mayor --secuencia foo", "posiciones Do mayor --secuencia",
+        "posiciones Do mayor --formas", "reloj", "reloj Do mayor --foo", "posiciones Do mayor --instrumento arpa",
+        "posiciones Do mayor --instrumento", "posiciones Do mayor --capo 13", "posiciones Do mayor --capo",
+        "posiciones --arpegio", "posiciones --arpegio Do --foo", "pentagrama", "pentagrama nube Do",
+        "pentagrama escala", "pentagrama escala Do mayor --octavas 9", "pentagrama acorde Do --foo",
+        "pentagrama arpegio Do --patron foo", "pentagrama arpegio Do --figura", "pentagrama acordes",
+        "pentagrama escala Do mayor --en", "pentagrama escala Do mayor --mano foo", "pentagrama escala Do mayor --mano",
+        "pentagrama escala Do mayor --secuencia foo", "pentagrama escala Do mayor --tab --instrumento arpa",
+        "pentagrama arpegio Do --tab --instrumento", "pentagrama acordes Do Sol --foo",
+        "pentagrama escala Do --octava 9",
+        "pentagrama escala Do --clave luna", "pentagrama escala Do --clave", "pentagrama melodia",
+        "pentagrama melodia Do4:4 --sobre", "pentagrama melodia Do4:4 --foo",
+        "grabar", "grabar coral C --motor foo", "grabar coral C --formato gif", "grabar acorde C", "grabar nube C",
+        "grabar pentagrama acorde C --motor verovio", "motores de mas", "guido", "guido melodia",
     ]
 
     /// Con --ingles no se cuela nada en español: ni en la salida, ni en los errores, ni en la ayuda.
@@ -167,6 +186,16 @@ import Testing
             "arpeggio C7 --degrees 1-5-3-8 --approach enclosure",
             "set 0 4 7", "set C E G", "set 4-Z15", "row 0 e 7 4 2 9 3 8 t 1 5 6",
             "chord G7 --voicings --names --keys --substitutions --compare C", "chord C --substitutions --in G major",
+            "scale C major --sequence thirds --descending --octaves 2 --piano --modes --compare C lydian",
+            "chord C7 --bebop --pentatonics", "analyze Dm7 G7 Cmaj7 --in C major --scales",
+            "identify C E G B F# --scales", "scale C half whole diminished --symmetry",
+            "analyze Dm7 G7 Cmaj7 --guide-tones", "positions A minor pentatonic --shapes",
+            "positions C major --sequence thirds --caged --descending", "keyboard D major --hand right --octaves 2",
+            "scale C major --neighbors --all-keys --sequence thirds", "clock C diminished --fifths",
+            "positions C major --instrument bass --capo 2", "positions D major --instrument dadgad",
+            "scale C 2-2-3-2-3",
+            "scale A harmonic minor --all-keys --chords --triads", "positions --arpeggio Am --sweep --up-and-down",
+            "positions --arpeggio C7 --caged --instrument bass --capo 1", "engines",
         ] {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
             #expect(resultado.codigo == 0, "\(orden): \(resultado.error)")

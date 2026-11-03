@@ -80,6 +80,7 @@ struct VistaDeIdentificar: View {
                         Button(notacion.texto(\.verEnAcordes)) { navegacion.ver(primero) }
                     }
                 }
+                escalasQueLasContienen(alturas)
                 postonal(alturas)
             }
             Section(notacion.texto(\.tecladoMIDI)) {
@@ -97,6 +98,35 @@ struct VistaDeIdentificar: View {
             if retenidas != notasMIDI {
                 notasMIDI = retenidas
                 trastes = [:]
+            }
+        }
+    }
+
+    /// Las escalas que contienen lo que suena, de más a menos probable, con las notas que añade cada una; cada una se
+    /// abre en la pestaña de escalas.
+    @ViewBuilder
+    private func escalasQueLasContienen(_ alturas: [Altura]) -> some View {
+        if alturas.count >= 2 {
+            let escalas = PresentacionDeEstudioDeEscala.escalas(
+                conLasClases: alturas.map(\.midi), limite: 5, notacion: notacion)
+            Section(notacion.texto(\.escalasQueLasContienen)) {
+                ForEach(escalas, id: \.self) { encontrada in
+                    HStack {
+                        Button {
+                            navegacion.ver(encontrada.escala)
+                        } label: {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(encontrada.nombre)
+                                if !encontrada.ademas.isEmpty {
+                                    Text(encontrada.ademas).font(.caption).foregroundColor(.secondary)
+                                }
+                            }
+                        }
+                        Spacer()
+                        BotonDeEscuchar(encontrada.sonido).labelStyle(.iconOnly)
+                    }
+                    .buttonStyle(.borderless)
+                }
             }
         }
     }

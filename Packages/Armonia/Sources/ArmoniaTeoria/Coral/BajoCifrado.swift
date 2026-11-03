@@ -56,6 +56,49 @@ extension Tonalidad {
         return acordes
     }
 
+    /// Las cifras de bajo continuo de un acorde, de arriba abajo, como se escriben debajo del bajo: las abreviaturas
+    /// habituales («6», «6 4», «7», «6 5», «4 3», «4 2»; nada en la tríada en estado fundamental) y, delante de cada
+    /// cifra, la alteración de la nota que la armadura de la tonalidad no da. Una tercera alterada que no se escribe
+    /// queda en su alteración sola, abajo. Es lo contrario de ``acorde(sobre:cifras:)``.
+    ///
+    ///     Tonalidad(.do).cifrasDeBajo(de: Acorde("Sol7/Si"))           // ["6", "5"]
+    ///     Tonalidad(.do).cifrasDeBajo(de: Acorde("Do/Sol"))            // ["6", "4"]
+    ///     Tonalidad(.la, .menor).cifrasDeBajo(de: Acorde("Mi"))        // ["♯"]
+    ///     Tonalidad(.la, .menor).cifrasDeBajo(de: Acorde("Mi7/Re"))    // ["♯4", "2"]
+    public func cifrasDeBajo(de acorde: Acorde) -> [String] {
+        let bajo = acorde.bajo
+        var alteradas: [Int: String] = [:]
+        var numeros: Set<Int> = []
+        func pasos(_ nota: Nota) -> Int { modulo(nota.natural.indiceDiatonico - bajo.natural.indiceDiatonico, 7) }
+        let conTercera = acorde.notas.contains { pasos($0) == 2 }
+        for nota in acorde.notas where nota.claseDeAltura != bajo.claseDeAltura {
+            var numero = pasos(nota) + 1
+            // Una segunda con tercera es la novena.
+            if numero == 2 && conTercera { numero = 9 }
+            guard numero != 1 else { continue }
+            numeros.insert(numero)
+            let diatonica = notaDiatonica(numero, sobre: bajo)
+            let diferencia = nota.alteracion.semitonos - diatonica.alteracion.semitonos
+            if diferencia != 0 { alteradas[numero] = nota.alteracion.semitonos == 0 ? "♮" : diferencia > 0 ? "♯" : "♭" }
+        }
+        let abreviaturas: [Set<Int>: [Int]] = [
+            [3, 5]: [], [3]: [], [5]: [], [3, 6]: [6], [4, 6]: [6, 4], [3, 5, 7]: [7], [3, 7]: [7], [3, 5, 6]: [6, 5],
+            [3, 4, 6]: [4, 3], [2, 4, 6]: [4, 2],
+        ]
+        let escritas = abreviaturas[numeros] ?? numeros.sorted(by: >)
+        var cifras = escritas.map { (alteradas[$0] ?? "") + String($0) }
+        // Las alteraciones de las notas que no se escriben: la de la tercera, sola; las demás, con su cifra.
+        for numero in numeros.subtracting(escritas).sorted(by: >) {
+            guard let alteracion = alteradas[numero] else { continue }
+            if numero == 3 {
+                cifras.append(alteracion)
+            } else {
+                cifras.append(alteracion + String(numero))
+            }
+        }
+        return cifras
+    }
+
     /// La nota que está `numero` grados por encima del bajo en la armadura de la tonalidad (3 = la tercera).
     private func notaDiatonica(_ numero: Int, sobre bajo: Nota) -> Nota {
         let letra = modulo(bajo.natural.indiceDiatonico + numero - 1, 7)

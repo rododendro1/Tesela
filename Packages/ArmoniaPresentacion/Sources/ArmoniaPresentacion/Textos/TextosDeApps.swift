@@ -76,6 +76,10 @@ public struct TextosDeApps: TextosTraducidos {
     public let formatoUIL: String
     public let giro: String
     public let espejo: String
+    public let ejesHV: String
+    public let rejilla: String
+    public let notaDeOrigen: String
+    public let enTono: String
     public let noSeDibuja: String
     public let campoDeTriadaInicial: @Sendable (String) -> String
     public let reiniciar: String
@@ -169,6 +173,44 @@ public struct TextosDeApps: TextosTraducidos {
     public let notasComunes: String
     public let ningunaNotaComun: String
     public let movimientoTotal: @Sendable (Int) -> String
+    public let secuencia: String
+    public let bajando: String
+    public let digitacionDePiano: String
+    public let manoDerecha: String
+    public let manoIzquierda: String
+    public let modosParalelos: String
+    public let modosRelativos: String
+    public let soloEn: @Sendable (String) -> String
+    public let alteracionesDeDiferencia: @Sendable (Int) -> String
+    public let escalasBebop: String
+    public let notaDePaso: @Sendable (String) -> String
+    public let pentatonicas: String
+    public let cambian: @Sendable (String) -> String
+    public let notasGuia: @Sendable (String) -> String
+    public let escalasQueLasContienen: String
+    public let ademas: @Sendable (String) -> String
+    public let simetria: String
+    public let repiteCada: @Sendable (Int, Int) -> String
+    public let tonicasEquivalentes: String
+    public let lineasDeNotasGuia: String
+    public let desdeLaTercera: String
+    public let desdeLaSeptima: String
+    public let secuenciaEnLasPosiciones: String
+    public let formasDeLaPentatonica: String
+    public let formaNumero: @Sendable (Int) -> String
+    public let comparteCon: @Sendable (Int, String) -> String
+    public let teclado: String
+    public let escalaPropia: String
+    public let campoDeEscalaPropia: String
+    public let pasosEnSemitonos: String
+    public let escalasVecinas: String
+    public let relojDeLaEscala: String
+    public let circuloCromatico: String
+    public let circuloDeQuintas: String
+    public let enLasDoceTonalidades: String
+    public let acordesEnLasDoceTonalidades: String
+    public let conSeptima: String
+    public let subirYBajar: String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String

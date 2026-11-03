@@ -57,6 +57,18 @@ struct TextosDeRepresentaciones: TextosTraducidos {
     let acordeonC: String
     let acordeonB: String
 
+    // MARK: TecladoCuadrado.swift
+    let cuadriculaEnCuartas: String
+    let cuadriculaEnTercerasMayores: String
+    let cuadriculaEnQuintas: String
+    let wickiHaydenCuadrado: String
+    let cuadriculaDeTonosEnteros: String
+    let tonnetzDeEuler: String
+    let cuadriculaEnTercerasMenores: String
+    let cuadriculaEnTritonos: String
+    let cuadriculaEnOctavas: String
+    let cuadriculaSecuencial: String
+
     // MARK: FormatoUIL.swift
     let uilNoValido: @Sendable (_ texto: String) -> String
     let intervalosIncoherentes: @Sendable (_ menor: Int, _ mayor: Int, _ diferencia: Int) -> String

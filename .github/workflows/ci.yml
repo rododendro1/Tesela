@@ -162,6 +162,92 @@ jobs:
             ${{ matrix.paquete.ruta }}/.build
           key: ${{ steps.cache.outputs.clave }}
 
+  # `armonia grabar` con los programas de verdad: instala LilyPond y rsvg-convert (librsvg) y graba partituras y
+  # dibujos en PDF, SVG y PNG, comprobando que cada fichero es lo que dice ser. Las pruebas de ArmoniaCLI usan un
+  # ejecutor falso; este job es el que dice que los argumentos y los nombres de los ficheros siguen sirviendo con
+  # las versiones de los programas de la distribución. Los ficheros quedan como artefacto (`grabados`).
+  # MuseScore, Verovio y Guido no tienen paquete ligero en Ubuntu, así que solo se comprueba que su falta se dice.
+  grabado:
+    name: Grabado con LilyPond y rsvg-convert · Linux
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container: swift:6.2
+    defaults:
+      run:
+        shell: bash
+        working-directory: Apps/ArmoniaCLI
+    steps:
+      - uses: actions/checkout@v7
+      - id: cache
+        uses: ./.github/acciones/cache-de-swift
+        with:
+          nombre: grabado
+          rutas: |
+            Apps/ArmoniaCLI/.build
+      - name: Instalar LilyPond y librsvg
+        run: |
+          apt-get update -q
+          DEBIAN_FRONTEND=noninteractive apt-get install -y -q --no-install-recommends \
+            lilypond librsvg2-bin fonts-dejavu-core
+      - name: Compilar
+        run: swift build --product armonia
+      - name: Motores instalados
+        run: |
+          .build/debug/armonia motores | tee motores.txt
+          grep -E '^lilypond +/.+ \(GNU LilyPond' motores.txt
+          grep -E '^propio +/.+rsvg-convert' motores.txt
+          grep -E '^musescore +no instalado .*ARMONIA_MSCORE' motores.txt
+          .build/debug/armonia engines --ingles | grep -E '^own +/'
+      - name: Grabar
+        run: |
+          armonia() { .build/debug/armonia "$@"; }
+          # Que el fichero exista, no esté vacío y empiece como su formato.
+          comprobar() {
+            local fichero="$1" formato="$2"
+            test -s "$fichero" || { echo "::error::$fichero está vacío"; exit 1; }
+            case "$formato" in
+              pdf) test "$(head -c 5 "$fichero")" = "%PDF-" ;;
+              png) test "$(head -c 8 "$fichero" | od -An -tx1 | tr -d ' \n')" = "89504e470d0a1a0a" ;;
+              svg) grep -q "<svg" "$fichero" ;;
+            esac || { echo "::error::$fichero no es un $formato"; exit 1; }
+            echo "$fichero: $formato, $(wc -c < "$fichero") bytes"
+          }
+          mkdir -p grabados
+          armonia grabar coral Do3 Mi4 Sol4 Do5, Fa2 La3 Fa4 Do5, Sol2 Re4 Sol4 Si4, Do3 Mi4 Sol4 Do5 \
+            --cifrados --analisis --titulo Cadencia > grabados/coral.pdf
+          comprobar grabados/coral.pdf pdf
+          armonia grabar melodia Sol4:4 Do5:2 Re5:8 Mi5:8 Fa#5:4 Sol5:2. --compas 3/4 --anacrusa 4 --tonalidad Sol mayor \
+            --formato svg > grabados/melodia.svg
+          comprobar grabados/melodia.svg svg
+          armonia grabar acordes Do Lam Re7 Sol7 Do --formato png > grabados/acordes.png
+          comprobar grabados/acordes.png png
+          armonia engrave chorale C3 E4 G4 C5, G2 D4 G4 B4 --ingles --format pdf > grabados/chorale.pdf
+          comprobar grabados/chorale.pdf pdf
+          armonia grabar pentagrama escala Re dórico --formato png > grabados/dorico.png
+          comprobar grabados/dorico.png png
+          armonia grabar pentagrama acorde Sol7 > grabados/sol7.pdf
+          comprobar grabados/sol7.pdf pdf
+          armonia grabar tonnetz --escala Re dórico --formato png > grabados/tonnetz.png
+          comprobar grabados/tonnetz.png png
+          # Sin MuseScore: código 1 y el mensaje que dice qué falta.
+          if armonia grabar coral Do3 Mi4 Sol4 Do5 --motor musescore > /dev/null 2> error.txt; then
+            echo "::error::grabar con MuseScore no debería funcionar sin MuseScore"; exit 1
+          fi
+          cat error.txt
+          grep -q "ARMONIA_MSCORE" error.txt
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: grabados
+          path: Apps/ArmoniaCLI/grabados
+          if-no-files-found: ignore
+      - uses: actions/cache/save@v6
+        if: github.event_name != 'pull_request'
+        with:
+          path: |
+            Apps/ArmoniaCLI/.build
+          key: ${{ steps.cache.outputs.clave }}
+
   # Los tiempos del motor, compilado con optimización, en el resumen de la ejecución y como artefacto
   # (`rendimiento.json`). En un pull request mide también la rama de destino (main) en la misma máquina, una
   # detrás de otra, y avisa (sin fallar) de los casos que van más de un 25 % más lentos que en main, en la

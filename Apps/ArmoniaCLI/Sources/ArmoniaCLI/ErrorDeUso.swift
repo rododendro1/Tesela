@@ -65,6 +65,8 @@ enum ErrorDeUso {
     case capoFueraDeRango
     /// `arpegio --octavas` fuera de 1…4.
     case octavasFueraDeRango
+    /// `--octava` fuera de 0…7.
+    case octavaFueraDeRango
     /// `arpegio --desde` con algo que no es una nota ni un grado del acorde.
     case desdeNoValido(String)
     /// `arpegio --tensiones` con algo que no es 9, 11 o 13.
@@ -73,6 +75,19 @@ enum ErrorDeUso {
     case gradosMalEscritos
     /// `arpegio --aproximacion` con un nombre que no se conoce.
     case aproximacionDesconocida(String)
+    case secuenciaDesconocida(String)
+    /// `teclado` sin escala.
+    case faltaEscalaDelTeclado
+    /// `teclado … --mano` con una mano que no es derecha ni izquierda.
+    case manoDesconocida(String)
+    /// `identificar --archivo` con notas detrás.
+    case archivoConNotas
+    /// `posiciones Do mayor --formas`: las formas son de las escalas de cinco notas.
+    case noEsPentatonica
+    /// `reloj` sin escala.
+    case faltaEscalaDelReloj
+    /// `pentagrama` sin escala, acorde ni arpegio.
+    case faltaLoQueDibujaElPentagrama
 
     // Neorriemanniano
     case vocesFueraDeRango
@@ -104,6 +119,16 @@ enum ErrorDeUso {
     case acordesConCifradosYAnalisis
     case tipoDePartituraDesconocido(String)
 
+    // Grabado
+    /// `grabar` sin nada detrás.
+    case faltaLoQueSeGraba
+    /// `grabar … --motor` con un motor que no es lilypond, musescore, verovio, guido ni propio.
+    case motorDesconocido(String)
+    /// `grabar … --formato` con algo que no es pdf, svg ni png.
+    case formatoDeGrabadoDesconocido(String)
+    /// `grabar` con algo que no es una partitura ni una orden que dibuja.
+    case nadaQueGrabar(String)
+
     // Dibujos (`orden` es «tonnetz» o «tabla»)
     case margenFueraDeRango
     case faltanNotasDelDibujo(orden: String)
@@ -115,6 +140,8 @@ enum ErrorDeUso {
     case recorridoSoloTriadas(orden: String)
     case caminoSoloTriadas(orden: String)
     case cicloSoloTriadas(orden: String)
+    /// `cuadricula` con una opción sin valor o con uno que no se lee: unos ejes, una rejilla, una altura o un giro.
+    case opcionesDeCuadricula
 
     /// El mensaje completo, con la línea que remite a la ayuda.
     func texto(en notacion: Notacion) -> String {
@@ -203,11 +230,20 @@ enum ErrorDeUso {
         case .faltaEscalaDePosiciones: return TextosDeCLI.traduccion(\.faltaEscalaDePosiciones)
         case .capoFueraDeRango: return TextosDeCLI.traduccion(\.capoFueraDeRango)
         case .octavasFueraDeRango: return TextosDeCLI.traduccion(\.octavasFueraDeRango)
+        case .octavaFueraDeRango: return TextosDeCLI.traduccion(\.octavaFueraDeRango)
         case .desdeNoValido(let desde): return TextosDeCLI.traduccion { $0.desdeNoValido(desde) }
         case .tensionesMalEscritas: return TextosDeCLI.traduccion(\.tensionesMalEscritas)
         case .gradosMalEscritos: return TextosDeCLI.traduccion(\.gradosMalEscritos)
         case .aproximacionDesconocida(let nombre):
             return TextosDeCLI.traduccion { $0.aproximacionDesconocida(nombre) }
+        case .secuenciaDesconocida(let nombre):
+            return TextosDeCLI.traduccion { $0.secuenciaDesconocida(nombre) }
+        case .faltaEscalaDelTeclado: return TextosDeCLI.traduccion(\.faltaEscalaDelTeclado)
+        case .manoDesconocida(let mano): return TextosDeCLI.traduccion { $0.manoDesconocida(mano) }
+        case .archivoConNotas: return TextosDeCLI.traduccion(\.archivoConNotas)
+        case .noEsPentatonica: return TextosDeCLI.traduccion(\.noEsPentatonica)
+        case .faltaEscalaDelReloj: return TextosDeCLI.traduccion(\.faltaEscalaDelReloj)
+        case .faltaLoQueDibujaElPentagrama: return TextosDeCLI.traduccion(\.faltaLoQueDibujaElPentagrama)
         case .vocesFueraDeRango: return TextosDeCLI.traduccion(\.vocesFueraDeRango)
         case .unAcordeDeVecinos:
             let ejemplo = "armonia vecinos Sol7"
@@ -251,6 +287,11 @@ enum ErrorDeUso {
         case .acordesConCifradosYAnalisis: return TextosDeCLI.traduccion(\.acordesConCifradosYAnalisis)
         case .tipoDePartituraDesconocido(let tipo):
             return TextosDeCLI.traduccion { $0.tipoDePartituraDesconocido(tipo) }
+        case .faltaLoQueSeGraba: return TextosDeCLI.traduccion(\.faltaLoQueSeGraba)
+        case .motorDesconocido(let motor): return TextosDeCLI.traduccion { $0.motorDesconocido(motor) }
+        case .formatoDeGrabadoDesconocido(let formato):
+            return TextosDeCLI.traduccion { $0.formatoDeGrabadoDesconocido(formato) }
+        case .nadaQueGrabar(let orden): return TextosDeCLI.traduccion { $0.nadaQueGrabar(orden) }
         case .margenFueraDeRango: return TextosDeCLI.traduccion(\.margenFueraDeRango)
         case .faltanNotasDelDibujo(let orden):
             let ejemplo = "armonia \(orden) Do Mi Sol"
@@ -279,6 +320,7 @@ enum ErrorDeUso {
         case .cicloSoloTriadas(let orden):
             let ejemplo = "armonia \(orden) --ciclo hexatonico Do"
             return TextosDeCLI.traduccion { $0.cicloSoloTriadas(ejemplo, orden) }
+        case .opcionesDeCuadricula: return TextosDeCLI.traduccion(\.opcionesDeCuadricula)
         }
     }
 }

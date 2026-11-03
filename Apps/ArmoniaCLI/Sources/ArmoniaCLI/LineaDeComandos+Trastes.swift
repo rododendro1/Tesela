@@ -157,15 +157,56 @@ extension LineaDeComandos {
     static func posiciones(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
         let caged = argumentos.quitarMarca("--caged")
+        let bajando = argumentos.quitarMarca("--bajando", "--descending")
+        let formas = argumentos.quitarMarca("--formas", "--shapes")
+        let arpegio = argumentos.quitarMarca("--arpegio", "--arpeggio")
+        let barrido = argumentos.quitarMarca("--barrido", "--sweep")
+        let idaYVuelta = argumentos.quitarMarca("--ida-y-vuelta", "--up-and-down")
+        var encordado = Encordado.guitarra
+        switch argumentos.quitarOpcion("--instrumento", "--instrument") {
+        case .ausente: break
+        case .sinValor: return uso(.faltaInstrumento, notacion)
+        case .valor(let nombre):
+            guard let encontrado = Encordado(nombre: nombre) else {
+                return uso(.instrumentoDesconocido(nombre), notacion)
+            }
+            encordado = encontrado
+        }
+        var capo = 0
+        switch argumentos.quitarOpcion("--capo") {
+        case .ausente: break
+        case .sinValor: return uso(.capoFueraDeRango, notacion)
+        case .valor(let texto):
+            guard let n = Int(texto), (0...12).contains(n) else { return uso(.capoFueraDeRango, notacion) }
+            capo = n
+        }
+        var secuencia: SecuenciaDeEscala?
+        switch argumentos.quitarOpcion("--secuencia", "--sequence") {
+        case .ausente: break
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            guard let elegida = secuenciaDeEscala(texto) else { return uso(.secuenciaDesconocida(texto), notacion) }
+            secuencia = elegida
+        }
         if let desconocida = argumentos.opcionDesconocida {
             return uso(.opcionDesconocida(desconocida), notacion)
         }
+        let mastil = Mastil(encordado.conCapo(capo), trastes: 15)
+        if arpegio {
+            guard !argumentos.restantes.isEmpty else { return uso(.faltaCifradoDelArpegio, notacion) }
+            let reparto: FormasDeArpegio = barrido ? .unaNotaPorCuerda : caged ? .caged : .porPosiciones
+            return arpegioEnElMastil(
+                try Acorde(leyendo: argumentos.unidos), formas: reparto, idaYVuelta: idaYVuelta, en: mastil, notacion)
+        }
         guard !argumentos.restantes.isEmpty else { return uso(.faltaEscalaDePosiciones, notacion) }
         let escala = try Escala(leyendo: argumentos.unidos)
-        let mastil = Mastil(.guitarra, trastes: 15)
+        if formas { return formasPentatonicas(de: escala, en: mastil, notacion) }
+        if let secuencia {
+            return secuenciaEnLasPosiciones(escala, secuencia, caged: caged, bajando: bajando, en: mastil, notacion)
+        }
         let porCuerda = escala.notas.count >= 6 ? 3 : 2
         let sistema = caged ? "CAGED" : notacion.texto { $0.notasPorCuerda(porCuerda) }
-        var lineas = [escala.nombre(en: notacion) + " · " + sistema]
+        var lineas = [escala.nombre(en: notacion) + " · " + sistema + instrumento(de: mastil, notacion)]
         let posiciones = caged ? mastil.posicionesCAGED(de: escala) : mastil.posicionesPorCuerda(de: escala)
         let cuerdas = mastil.encordado.cuerdas
         let nombres = cuerdas.map { $0.nota.nombre(en: notacion) }
@@ -187,5 +228,66 @@ extension LineaDeComandos {
             }
         }
         return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// `posiciones La pentatónica menor --formas`: las cinco formas, cada una con su tablatura y las notas que
+    /// comparte con la siguiente.
+    static func formasPentatonicas(de escala: Escala, en mastil: Mastil, _ notacion: Notacion) -> ResultadoDeOrden {
+        let formas = PresentacionDeEstudioDeEscala.formasPentatonicas(de: escala, mastil: mastil, notacion: notacion)
+        guard !formas.isEmpty else { return uso(.noEsPentatonica, notacion) }
+        let titulo = notacion.texto(\.formasDeLaPentatonica) + instrumento(de: mastil, notacion)
+        var lineas = [escala.nombre(en: notacion) + " · " + titulo]
+        for forma in formas {
+            lineas += ["", "  " + forma.titulo] + forma.tablatura.map { "    " + $0 } + ["    " + forma.comunes]
+        }
+        return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// `posiciones Do mayor --secuencia terceras [--caged] [--bajando]`: la secuencia tocada en cada posición, sin
+    /// salir de ella, en tablatura.
+    static func secuenciaEnLasPosiciones(
+        _ escala: Escala, _ secuencia: SecuenciaDeEscala, caged: Bool, bajando: Bool, en mastil: Mastil,
+        _ notacion: Notacion
+    ) -> ResultadoDeOrden {
+        let posiciones = PresentacionDeEstudioDeEscala.secuenciaEnLasPosiciones(
+            escala, secuencia, caged: caged, sentido: bajando ? .descendente : .ascendente, mastil: mastil,
+            notacion: notacion)
+        let titulo = notacion.texto(\.secuencia) + " " + secuencia.nombre(en: notacion)
+        var lineas = [escala.nombre(en: notacion) + " · " + titulo + instrumento(de: mastil, notacion)]
+        for posicion in posiciones where !posicion.notas.isEmpty {
+            lineas += ["", "  " + posicion.titulo] + posicion.tablatura.map { "    " + $0 }
+        }
+        return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// `posiciones --arpegio Sol7 [--caged | --barrido] [--ida-y-vuelta]`: el arpegio del acorde en cada posición
+    /// del mástil, en tablatura y con los dedos que pisan cada nota.
+    static func arpegioEnElMastil(
+        _ acorde: Acorde, formas: FormasDeArpegio, idaYVuelta: Bool, en mastil: Mastil, _ notacion: Notacion
+    ) -> ResultadoDeOrden {
+        let arpegios = PresentacionDeArpegios.enElMastil(
+            acorde, formas: formas, idaYVuelta: idaYVuelta, mastil: mastil, notacion: notacion)
+        let sistema: String
+        switch formas {
+        case .porPosiciones: sistema = notacion.texto(\.porPosiciones)
+        case .caged: sistema = "CAGED"
+        case .unaNotaPorCuerda: sistema = notacion.texto { $0.notasPorCuerda(1) }
+        }
+        let titulo = notacion.texto(\.arpegioEnElMastil) + " · " + sistema + instrumento(de: mastil, notacion)
+        var lineas = [acorde.cifrado(en: notacion) + " · " + titulo]
+        for presentado in arpegios {
+            lineas += ["", "  " + presentado.titulo] + presentado.tablatura.map { "    " + $0 }
+            lineas.append("    " + notacion.texto(\.dedosSugeridos) + ": " + presentado.dedos)
+        }
+        return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// « · bajo», « · guitarra · Capo en el traste 2»; vacío en la guitarra sin capo.
+    static func instrumento(de mastil: Mastil, _ notacion: Notacion) -> String {
+        let encordado = mastil.encordado
+        guard encordado != .guitarra else { return "" }
+        var texto = " · " + encordado.nombre(en: notacion)
+        if encordado.capo > 0 { texto += " · " + notacion.texto { $0.capo(encordado.capo) } }
+        return texto
     }
 }

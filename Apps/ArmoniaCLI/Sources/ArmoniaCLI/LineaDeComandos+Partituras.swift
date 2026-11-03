@@ -1,19 +1,20 @@
 import Armonia
 import Foundation
 
-// MARK: - Partituras: MusicXML, MEI, LilyPond, ABC y MIDI
+// MARK: - Partituras: MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI
 
 extension LineaDeComandos {
     enum Formato: String {
         case musicXML = "musicxml"
         case mei
         case lilyPond = "lilypond"
-        case abc, midi
+        case guido, abc, midi
     }
 
-    /// `musicxml melodia …`, `mei melodia …`, `lilypond melodia …`, `abc melodia …` y `midi melodia …`: las mismas
-    /// opciones, salvo la clave y las marcas (no en MIDI) y el instrumento (solo MIDI). Además de una melodía, se
-    /// exporta un coral, unos acordes, sus arpegios o una escala (`musicxml escala Re bayati`, con sus microtonos).
+    /// `musicxml melodia …`, `mei melodia …`, `lilypond melodia …`, `guido melodia …`, `abc melodia …` y
+    /// `midi melodia …`: las mismas opciones, salvo la clave y las marcas (no en MIDI) y el instrumento (solo MIDI).
+    /// Además de una melodía, se exporta un coral, unos acordes, sus arpegios o una escala (`musicxml escala Re
+    /// bayati`, con sus microtonos).
     static func partitura(_ argumentos: [String], _ notacion: Notacion, formato: Formato) throws -> ResultadoDeOrden {
         let orden = formato.rawValue
         guard let tipo = argumentos.first?.lowercased() else {
@@ -129,6 +130,7 @@ extension LineaDeComandos {
                 formato, voz.musicXML(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
                 mei: voz.mei(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
                 lilyPond: voz.lilyPond(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
+                guido: voz.guido(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
                 abc: voz.abc(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo))
         case "coral", "chorale":
             guard !musica.isEmpty else {
@@ -158,6 +160,9 @@ extension LineaDeComandos {
                 lilyPond: coral.lilyPond(
                     duracion: duracion, compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo,
                     cifrados: cifrados, analisis: conAnalisis, notacion: notacion),
+                guido: coral.guido(
+                    duracion: duracion, compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo,
+                    cifrados: cifrados, analisis: conAnalisis, notacion: notacion),
                 abc: coral.abc(
                     duracion: duracion, compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo,
                     cifrados: cifrados, analisis: conAnalisis, notacion: notacion))
@@ -185,6 +190,8 @@ extension LineaDeComandos {
                 mei: analisis.mei(
                     duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo, notacion: notacion),
                 lilyPond: analisis.lilyPond(
+                    duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo, notacion: notacion),
+                guido: analisis.guido(
                     duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo, notacion: notacion),
                 abc: analisis.abc(
                     duraciones: duraciones, compas: compas, tempo: tempo, titulo: titulo, notacion: notacion))
@@ -228,6 +235,7 @@ extension LineaDeComandos {
                 formato, voz.musicXML(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo),
                 mei: voz.mei(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo),
                 lilyPond: voz.lilyPond(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo),
+                guido: voz.guido(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo),
                 abc: voz.abc(tonalidad: analisis.tonalidad, tempo: tempo, titulo: titulo))
         case "escala", "scale":
             // Una escala en negras (o en lo que diga `--duracion`), con sus microtonos si los tiene.
@@ -252,6 +260,7 @@ extension LineaDeComandos {
                 formato, voz.musicXML(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
                 mei: voz.mei(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
                 lilyPond: voz.lilyPond(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
+                guido: voz.guido(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo),
                 abc: voz.abc(tonalidad: tonalidad, clave: clave, tempo: tempo, titulo: titulo))
         default:
             return uso(.tipoDePartituraDesconocido(tipo), notacion)
@@ -261,12 +270,13 @@ extension LineaDeComandos {
     /// La partitura en el formato de texto pedido, sin el salto de línea del final. Solo se escribe la de ese formato.
     private static func escrita(
         _ formato: Formato, _ musicXML: @autoclosure () -> String, mei: @autoclosure () -> String,
-        lilyPond: @autoclosure () -> String, abc: @autoclosure () -> String
+        lilyPond: @autoclosure () -> String, guido: @autoclosure () -> String, abc: @autoclosure () -> String
     ) -> ResultadoDeOrden {
         let texto: String
         switch formato {
         case .mei: texto = mei()
         case .lilyPond: texto = lilyPond()
+        case .guido: texto = guido()
         case .abc: texto = abc()
         case .musicXML, .midi: texto = musicXML()
         }

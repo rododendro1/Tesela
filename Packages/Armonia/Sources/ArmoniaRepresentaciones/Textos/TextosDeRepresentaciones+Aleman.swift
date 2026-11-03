@@ -53,6 +53,17 @@ extension TextosDeRepresentaciones {
         wickiHaydenPlano: "Wicki-Hayden (flach)",
         acordeonC: "Akkordeon C-Griff",
         acordeonB: "Akkordeon B-Griff",
+        // TecladoCuadrado.swift
+        cuadriculaEnCuartas: "Quartenraster",
+        cuadriculaEnTercerasMayores: "Großterzraster",
+        cuadriculaEnQuintas: "Quintenraster",
+        wickiHaydenCuadrado: "Wicki-Hayden (Raster)",
+        cuadriculaDeTonosEnteros: "Ganztonraster",
+        tonnetzDeEuler: "Eulers Tonnetz",
+        cuadriculaEnTercerasMenores: "Kleinterzraster",
+        cuadriculaEnTritonos: "Tritonusraster",
+        cuadriculaEnOctavas: "Oktavraster",
+        cuadriculaSecuencial: "Sequenzielles Raster",
         // FormatoUIL.swift
         uilNoValido: { texto in "Ungültiges UIL: „\(texto)“. Erwartet wird L,G,D;R<Grad>[M], zum Beispiel 2,7,5;R30M." },
         intervalosIncoherentes: { menor, mayor, diferencia in "Widersprüchliche Intervalle: \(menor),\(mayor),\(diferencia). Es muss 0 < L ≤ D und G = L + D gelten." },
