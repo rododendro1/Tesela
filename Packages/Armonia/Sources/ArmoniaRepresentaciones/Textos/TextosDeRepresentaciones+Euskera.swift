@@ -52,6 +52,13 @@ extension TextosDeRepresentaciones {
         wickiHaydenPlano: "Wicki-Hayden (laua)",
         acordeonC: "C sistemako akordeoia",
         acordeonB: "B sistemako akordeoia",
+        // TecladoCuadrado.swift
+        cuadriculaEnCuartas: "Laukisarea laugarrenetan",
+        cuadriculaEnTercerasMayores: "Laukisarea hirugarren handietan",
+        cuadriculaEnQuintas: "Laukisarea bosgarrenetan",
+        wickiHaydenCuadrado: "Wicki-Hayden (laukisarea)",
+        cuadriculaDeTonosEnteros: "Tonu osoen laukisarea",
+        tonnetzDeEuler: "Eulerren Tonnetz-a",
         // FormatoUIL.swift
         uilNoValido: { texto in "UIL baliogabea: «\(texto)». L,G,D;R<graduak>[M] espero da, adibidez 2,7,5;R30M." },
         intervalosIncoherentes: { menor, mayor, diferencia in "Tarte koherentegabeak: \(menor),\(mayor),\(diferencia). 0 < L ≤ D eta G = L + D bete behar dituzte." },

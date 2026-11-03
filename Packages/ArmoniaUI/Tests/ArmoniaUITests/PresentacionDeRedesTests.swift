@@ -26,6 +26,19 @@ import Testing
         }
     }
 
+    @Test func losTecladosDeCuadriculaSeDibujanConCuadrados() throws {
+        let svg = try #require(
+            PresentacionDeRedes.svg(
+                .acorde(try Acorde(leyendo: "Do")), en: .cuadriculaEnCuartas, notacion: .espanolCompacto))
+        #expect(svg.contains("<rect"))
+        #expect(!svg.contains("<polygon"))
+        #expect(svg.contains(">Do₄<"))
+        #expect(svg.contains(">Do₅<"))
+        #expect(svg.components(separatedBy: "<rect").count - 1 == 12 * 7)
+        #expect(PresentacionDeRedes.casillasDelTecladoCuadrado.count == 12 * 7)
+        #expect(PresentacionDeRedes.casillasDelTecladoCuadrado.contains(.origen))
+    }
+
     @Test func unRecorridoVacioNoSeDibuja() {
         #expect(PresentacionDeRedes.svg(.recorrido([]), en: .tonnetz, notacion: .espanolCompacto) == nil)
     }
@@ -55,11 +68,21 @@ import Testing
         // Cada teclado del catálogo del motor tiene su red, y cada red de teclado encuentra el suyo.
         let teclados = RedDeNotas.allCases.compactMap(\.teclado)
         #expect(([TecladoIsomorfico.tablaArmonica] + teclados) == TecladoIsomorfico.todos)
-        for red in RedDeNotas.allCases where ![.tonnetz, .tablaArmonica, .uil].contains(red) {
+        let hexagonales = RedDeNotas.allCases.filter { $0.tecladoCuadrado == nil }
+        for red in hexagonales where ![.tonnetz, .tablaArmonica, .uil].contains(red) {
             #expect(red.teclado?.nombre == red.rawValue)
             #expect(red.nombre(en: .inglesASCII) == red.teclado?.nombre(en: .inglesASCII))
         }
         #expect(RedDeNotas.acordeonC.nombre(en: .inglesASCII) == "C-system accordion")
+        // Y lo mismo con los de cuadrícula, que no son hexagonales.
+        #expect(RedDeNotas.allCases.compactMap(\.tecladoCuadrado) == TecladoCuadrado.todos)
+        for red in RedDeNotas.allCases where red.tecladoCuadrado != nil {
+            #expect(red.teclado == nil)
+            #expect(red.tecladoCuadrado?.nombre == red.rawValue)
+            #expect(red.nombre(en: .inglesASCII) == red.tecladoCuadrado?.nombre(en: .inglesASCII))
+        }
+        #expect(RedDeNotas.cuadriculaEnCuartas.nombre(en: .inglesASCII) == "Grid in fourths")
+        #expect(PresentacionDeRedes.teclado(de: .cuadriculaEnCuartas) == nil)
     }
 
     @Test func lasNotasNoSeRepiten() throws {
