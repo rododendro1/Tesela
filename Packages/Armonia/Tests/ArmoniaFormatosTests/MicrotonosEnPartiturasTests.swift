@@ -155,6 +155,22 @@ import Testing
         #expect(!Escala(.do, .bhairavi).svgPentagrama().contains(GlifosSMuFL.bemolFlechaArriba.trazado))
     }
 
+    @Test func pentagramaConRitmo() throws {
+        // Una escala microtonal en una secuencia de estudio, con ritmo: sus notas siguen llevando el signo.
+        let terceras = Escala(.re, .bayati).svgPentagrama(secuencia: .terceras)
+        #expect(terceras.contains(GlifosSMuFL.medioBemol.trazado) && terceras.contains("<title>Mi𝄳</title>"))
+        #expect(Escala(.re, .sur).svgPentagrama(secuencia: .terceras).contains(GlifosSMuFL.koron.trazado))
+        // Una voz con desvíos: la de una escala o una escrita a mano, con los cents en el nombre.
+        let bayati = Escala(.re, .bayati).voz().svgPentagrama(titulo: "Bayati")
+        #expect(bayati.contains(GlifosSMuFL.medioBemol.trazado))
+        let escrita = try Voz(leyendo: "Mi♭4(50¢):4 Re4:4 Fa4(-50¢):2").svgPentagrama(titulo: "A mano")
+        #expect(escrita.contains(GlifosSMuFL.medioBemol.trazado) && escrita.contains("(+50¢)</title>"))
+        #expect(escrita.contains("(-50¢)</title>"))
+        // Sin desvíos, nada cambia.
+        let temperada = try Voz(leyendo: "Mi♭4:4 Re4:4").svgPentagrama(titulo: "Temperada")
+        #expect(!temperada.contains(GlifosSMuFL.medioBemol.trazado) && !temperada.contains("¢"))
+    }
+
     // MARK: Lectura
 
     /// Lo que suena de cada nota, en cents desde el Do0, y su letra.

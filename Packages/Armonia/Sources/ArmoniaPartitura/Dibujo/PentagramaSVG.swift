@@ -81,6 +81,24 @@ struct PentagramaSVG {
     struct Microtono {
         let signo: SignoMicrotonal?
         let nombre: String
+
+        /// El de una altura que suena `desvio` cents más alta. Con su nota microtonal (la de una escala), el signo de
+        /// su sistema y su nombre (Mi𝄳); sin ella, el signo que dan los cents y la altura con sus cents («Mi♭₄
+        /// (+50¢)»). `nil` si no se aparta de la temperada.
+        static func de(_ altura: Altura, desvio: Double, nota: NotaMicrotonal?, notacion: Notacion) -> Microtono? {
+            guard desvio != 0 else { return nil }
+            let semitonos = altura.nota.alteracion.semitonos
+            if let nota {
+                return Microtono(
+                    signo: SignoMicrotonal(nota: nota, semitonos: semitonos, desvio: desvio),
+                    nombre: nota.nombre(en: notacion))
+            }
+            let cifra = desvio == desvio.rounded() ? String(Int(desvio)) : String(desvio)
+            let cents = (desvio > 0 ? "+" : "") + cifra + (notacion.usaASCII ? "c" : "¢")
+            return Microtono(
+                signo: SignoMicrotonal(semitonos: semitonos, desvio: desvio),
+                nombre: altura.nombre(en: notacion) + " (" + cents + ")")
+        }
     }
 
     /// Cuerpo de la letra del cifrado y de los nombres de las notas, en espacios de pentagrama.

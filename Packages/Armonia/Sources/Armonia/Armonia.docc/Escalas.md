@@ -324,13 +324,17 @@ formatos la escriben así: MusicXML, con el `alter` en decimales (−0.5) y su `
 cada nota. Los moria exactos llevan en MusicXML el signo de doceavos de tono de Wyschnegradsky. `svgPentagrama()`
 dibuja sus signos con los glifos de Bravura: los cuartos de tono de Stein-Zimmermann, las comas de
 Arel-Ezgi-Uzdilek, el *koron* y el *sori*, los moria de Wyschnegradsky y, en los śruti, la flecha de
-Helmholtz-Ellis.
+Helmholtz-Ellis. Los dibuja también con ritmo: en las secuencias de estudio de la escala
+(`svgPentagrama(secuencia:)`), al tocarla en unas alturas cualesquiera (`svgPentagrama(tocadaEn:)`) y en cualquier
+``Voz`` con desvíos (`Voz.svgPentagrama(titulo:…)`), que lleva en el nombre de cada nota sus cents.
 
 ```swift
 let voz = Escala(.re, .bayati).voz()
 voz.eventos[1]                                   // Mi♭4(50¢):4
 voz.musicXML().contains("<alter>-0.5</alter>")   // true
 Evento("Si4(-15.09¢):4").desvios                 // [-15.09]
+Escala(.re, .bayati).svgPentagrama(secuencia: .terceras).contains("<title>Mi𝄳</title>")   // true
+try Voz(leyendo: "Mi♭4(50¢):4 Re4:2.").svgPentagrama(titulo: "Bayātī").contains("(+50¢)</title>")   // true
 ```
 
 ## Nombres en cada idioma y alias
