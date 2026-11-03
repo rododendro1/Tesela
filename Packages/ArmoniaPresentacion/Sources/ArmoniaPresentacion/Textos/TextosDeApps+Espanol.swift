@@ -126,7 +126,7 @@ extension TextosDeApps {
         // PresentacionDeSerie.swift
         serieDodecafonica: "Serie dodecafónica",
         indicacionSerie: { e, n in "Serie (\(e), o \(n))" },
-        forma: "Forma",
+        formaDeSerie: "Forma",
         matriz: "Matriz",
         intervalos: "Intervalos",
         deTodosLosIntervalos: "De todos los intervalos",

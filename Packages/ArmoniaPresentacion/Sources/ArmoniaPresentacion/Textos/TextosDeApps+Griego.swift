@@ -126,7 +126,7 @@ extension TextosDeApps {
         // PresentacionDeSerie.swift
         serieDodecafonica: "Δωδεκάφθογγη σειρά",
         indicacionSerie: { e, n in "Σειρά (\(e), ή \(n))" },
-        forma: "Μορφή",
+        formaDeSerie: "Μορφή",
         matriz: "Πίνακας",
         intervalos: "Διαστήματα",
         deTodosLosIntervalos: "Όλων των διαστημάτων",

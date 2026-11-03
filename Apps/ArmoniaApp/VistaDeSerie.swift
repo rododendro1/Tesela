@@ -62,8 +62,8 @@ struct VistaDeSerie: View {
             }
             Text(presentada.formasDistintas).foregroundColor(.secondary)
         }
-        Section(notacion.texto(\.forma)) {
-            Picker(notacion.texto(\.forma), selection: $tipo) {
+        Section(notacion.texto(\.formaDeSerie)) {
+            Picker(notacion.texto(\.formaDeSerie), selection: $tipo) {
                 ForEach(TipoDeFormaDeSerie.allCases, id: \.self) { Text($0.simbolo).tag($0) }
             }
             .pickerStyle(.segmented)

@@ -136,7 +136,7 @@ public struct TextosDeApps: TextosTraducidos {
     // MARK: PresentacionDeSerie.swift
     public let serieDodecafonica: String
     public let indicacionSerie: @Sendable (String, String) -> String
-    public let forma: String
+    public let formaDeSerie: String
     public let matriz: String
     public let intervalos: String
     public let deTodosLosIntervalos: String

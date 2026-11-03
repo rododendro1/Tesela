@@ -126,7 +126,7 @@ extension TextosDeApps {
         // PresentacionDeSerie.swift
         serieDodecafonica: "Tizenkétfokú sor",
         indicacionSerie: { e, n in "Sor (\(e) vagy \(n))" },
-        forma: "Forma",
+        formaDeSerie: "Forma",
         matriz: "Mátrix",
         intervalos: "Hangközök",
         deTodosLosIntervalos: "Minden hangközös",
