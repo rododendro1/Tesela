@@ -41,7 +41,7 @@ Spanish) whatever the language.
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/rododendro1/Tesela.git", from: "0.3.2"),
+    .package(url: "https://github.com/rododendro1/Tesela.git", from: "0.3.3"),
 ],
 targets: [
     .target(name: "MyApp", dependencies: [

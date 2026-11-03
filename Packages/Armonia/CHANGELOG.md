@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.3 (2026-11-03)
 
 ### Más escalas antiguas: harmoniai de Arístides, cromáticas y enarmónicas, géneros y hexacordos
 

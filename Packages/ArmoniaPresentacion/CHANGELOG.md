@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.3 (2026-11-03)
 
 - **Series dodecafónicas en las apps.** `PresentacionDeSerie.presentar(_:forma:notacion:)` da una serie
   (`SeriePresentada`) con sus notas, sus intervalos, sus hexacordos, sus formas combinatorias, la matriz con el nombre
