@@ -29,88 +29,107 @@ extension LineaDeComandos {
 
     /// Quien graba: LilyPond, MuseScore, Verovio o Guido, a partir de la partitura que Tesela ya sabe exportar, o el
     /// dibujo SVG de Tesela (`propio`), que `rsvg-convert` pasa a PDF o PNG. Verovio y Guido solo dan SVG, así que
-    /// para PDF o PNG su SVG pasa también por `rsvg-convert`.
+    /// para PDF o PNG su SVG pasa también por `rsvg-convert`. Lo que distingue a cada uno está en su `ficha`: un
+    /// motor nuevo es un caso más y su ficha.
     enum MotorDeGrabado: String, CaseIterable {
         case lilypond, musescore, verovio, guido, propio
+
+        /// Todo lo de un motor: cómo se pide, su programa, lo que lee y cómo se le llama.
+        struct Ficha {
+            /// Cómo se escribe en `--motor`, en minúsculas.
+            let nombres: [String]
+            /// Los nombres que puede tener su programa; el primero da la variable de entorno (`ARMONIA_MSCORE`).
+            let programas: [String]
+            /// La partitura que lee; `nil` el propio, que graba un dibujo.
+            let partitura: FormatoDePartitura?
+            /// Si `programa --version` dice su versión.
+            let tieneVersion: Bool
+            /// Si solo da SVG: para PDF o PNG, su SVG pasa por `rsvg-convert`.
+            let soloSVG: Bool
+            /// Sus argumentos y los ficheros que puede dejar, para grabar en un formato (en SVG, si `soloSVG`);
+            /// ningún fichero si escribe en la salida estándar. Lee `grabado.<extensión de su partitura>`.
+            let llamada: (_ formato: FormatoDeGrabado) -> (argumentos: [String], salidas: [String])
+        }
+
+        /// Lo que dejan LilyPond y MuseScore: `grabado.pdf` o, si hacen varias páginas en SVG o PNG, la primera
+        /// (`grabado-page1.png` o `grabado-1.svg`, según el programa y la versión).
+        private static func paginas(_ formato: FormatoDeGrabado) -> [String] {
+            let ext = formato.rawValue
+            return ["grabado.\(ext)", "grabado-page1.\(ext)", "grabado-1.\(ext)"]
+        }
+
+        var ficha: Ficha {
+            switch self {
+            case .lilypond:
+                // LilyPond pone la extensión a lo que da `-o`.
+                return Ficha(
+                    nombres: ["lilypond"], programas: ["lilypond"], partitura: .lilyPond, tieneVersion: true,
+                    soloSVG: false
+                ) { formato in
+                    let salida: [String]
+                    switch formato {
+                    case .pdf: salida = ["--pdf"]
+                    case .svg: salida = ["-dbackend=svg"]
+                    case .png: salida = ["--png", "-dresolution=150"]
+                    }
+                    let opciones = ["--loglevel=ERROR", "-dno-point-and-click"] + salida
+                    return (opciones + ["-o", "grabado", "grabado.ly"], Self.paginas(formato))
+                }
+            case .musescore:
+                // MuseScore se instala con varios nombres según la versión y el sistema, y escribe en el fichero que
+                // se le da.
+                return Ficha(
+                    nombres: ["musescore", "mscore"],
+                    programas: ["mscore", "musescore", "mscore4portable", "musescore4", "mscore3"],
+                    partitura: .musicXML, tieneVersion: true, soloSVG: false
+                ) { formato in
+                    let resolucion = formato == .png ? ["-r", "150"] : []
+                    let salida = "grabado." + formato.rawValue
+                    return (resolucion + ["-o", salida, "grabado.musicxml"], Self.paginas(formato))
+                }
+            case .verovio:
+                return Ficha(
+                    nombres: ["verovio"], programas: ["verovio"], partitura: .mei, tieneVersion: true, soloSVG: true
+                ) { _ in (["-o", "grabado.svg", "grabado.mei"], ["grabado.svg", "grabado_001.svg"]) }
+            case .guido:
+                // `guido2svg` escribe en la salida estándar y no entiende `--version`.
+                return Ficha(
+                    nombres: ["guido", "guido2svg"], programas: ["guido2svg"], partitura: .guido, tieneVersion: false,
+                    soloSVG: true
+                ) { _ in (["grabado.gmn"], []) }
+            case .propio:
+                return Ficha(
+                    nombres: ["propio", "own", "rsvg", "rsvg-convert"], programas: ["rsvg-convert"], partitura: nil,
+                    tieneVersion: true, soloSVG: false
+                ) { _ in ([], []) }
+            }
+        }
 
         /// `--motor lilypond`, `musescore` (o `mscore`), `verovio`, `guido` (o `guido2svg`) y `propio` (u `own`, o
         /// `rsvg`).
         init?(nombre: String) {
-            switch nombre.lowercased() {
-            case "lilypond": self = .lilypond
-            case "musescore", "mscore": self = .musescore
-            case "verovio": self = .verovio
-            case "guido", "guido2svg": self = .guido
-            case "propio", "own", "rsvg", "rsvg-convert": self = .propio
-            default: return nil
-            }
+            let buscado = nombre.lowercased()
+            guard let motor = Self.allCases.first(where: { $0.ficha.nombres.contains(buscado) }) else { return nil }
+            self = motor
         }
 
-        /// Los nombres que puede tener su programa: MuseScore se instala con varios según la versión y el sistema.
-        var programas: [String] {
-            switch self {
-            case .lilypond: return ["lilypond"]
-            case .musescore: return ["mscore", "musescore", "mscore4portable", "musescore4", "mscore3"]
-            case .verovio: return ["verovio"]
-            case .guido: return ["guido2svg"]
-            case .propio: return ["rsvg-convert"]
-            }
-        }
+        /// Los nombres que puede tener su programa.
+        var programas: [String] { ficha.programas }
 
         /// La partitura que lee; `nil` el propio, que graba un dibujo.
-        var partitura: FormatoDePartitura? {
-            switch self {
-            case .lilypond: return .lilyPond
-            case .musescore: return .musicXML
-            case .verovio: return .mei
-            case .guido: return .guido
-            case .propio: return nil
-            }
-        }
+        var partitura: FormatoDePartitura? { ficha.partitura }
 
-        /// Si `programa --version` dice su versión: `guido2svg` no lo entiende.
-        var tieneVersion: Bool { self != .guido }
+        /// Si `programa --version` dice su versión.
+        var tieneVersion: Bool { ficha.tieneVersion }
 
         /// Los programas que se ejecutan, uno tras otro, para grabar en un formato; ninguno para el SVG propio.
         func pasos(para formato: FormatoDeGrabado) -> [PasoDeGrabado] {
-            switch self {
-            case .lilypond, .musescore: return [paso(para: formato)]
-            case .verovio, .guido: return formato == .svg ? [paso(para: .svg)] : [paso(para: .svg), Self.rsvg(formato)]
-            case .propio: return formato == .svg ? [] : [Self.rsvg(formato)]
-            }
-        }
-
-        /// El paso del propio motor. LilyPond pone la extensión a lo que da `-o`; MuseScore y Verovio escriben en el
-        /// fichero que se les da, y Guido en la salida estándar. Si LilyPond o MuseScore hacen varias páginas en SVG
-        /// o PNG, se queda la primera (`grabado-page1.png` o `grabado-1.svg`, según el programa y la versión).
-        private func paso(para formato: FormatoDeGrabado) -> PasoDeGrabado {
-            // Lee la partitura con la extensión de su formato: `grabado.ly`, `grabado.musicxml`, `grabado.mei`…
-            let entrada = partitura?.extensionDeFichero ?? "svg"
-            let argumentos: [String]
-            let ext = formato.rawValue
-            var salidas = ["grabado.\(ext)", "grabado-page1.\(ext)", "grabado-1.\(ext)"]
-            switch self {
-            case .lilypond:
-                let salida: [String]
-                switch formato {
-                case .pdf: salida = ["--pdf"]
-                case .svg: salida = ["-dbackend=svg"]
-                case .png: salida = ["--png", "-dresolution=150"]
-                }
-                argumentos = ["--loglevel=ERROR", "-dno-point-and-click"] + salida + ["-o", "grabado", "grabado.ly"]
-            case .musescore:
-                let resolucion = formato == .png ? ["-r", "150"] : []
-                argumentos = resolucion + ["-o", "grabado.\(ext)", "grabado.musicxml"]
-            case .verovio:
-                argumentos = ["-o", "grabado.svg", "grabado.mei"]
-                salidas = ["grabado.svg", "grabado_001.svg"]
-            case .guido:
-                argumentos = ["grabado.gmn"]
-                salidas = []
-            case .propio:
-                return Self.rsvg(formato)
-            }
-            return PasoDeGrabado(programas: programas, entrada: entrada, argumentos: argumentos, salidas: salidas)
+            guard let partitura = ficha.partitura else { return formato == .svg ? [] : [Self.rsvg(formato)] }
+            let directo = !ficha.soloSVG || formato == .svg
+            let (argumentos, salidas) = ficha.llamada(directo ? formato : .svg)
+            let propio = PasoDeGrabado(
+                programas: programas, entrada: partitura.extensionDeFichero, argumentos: argumentos, salidas: salidas)
+            return directo ? [propio] : [propio, Self.rsvg(formato)]
         }
 
         /// `rsvg-convert`, que pasa `grabado.svg` a PDF o PNG (al doble de tamaño, para que no se vea borroso).

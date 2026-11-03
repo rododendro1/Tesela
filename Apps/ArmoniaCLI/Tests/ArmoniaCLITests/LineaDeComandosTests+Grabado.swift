@@ -207,6 +207,26 @@ extension LineaDeComandosTests {
         #expect(grabado("grabar melodia Sol4:4 --motor guido --formato svg", con: sinRsvg).salida == "GRABADO\n")
     }
 
+    @Test func lasFichasDeLosMotores() {
+        typealias Motor = LineaDeComandos.MotorDeGrabado
+        for motor in Motor.allCases {
+            // Cada motor se pide por su nombre y por los demás de su ficha, en mayúsculas o en minúsculas.
+            #expect(motor.ficha.nombres.contains(motor.rawValue), "\(motor)")
+            for nombre in motor.ficha.nombres { #expect(Motor(nombre: nombre.uppercased()) == motor, "\(nombre)") }
+            // El SVG lo graba él solo (o nadie, el propio); a PDF o PNG llega con `rsvg-convert` si solo da SVG.
+            #expect(motor.pasos(para: .svg).count == (motor == .propio ? 0 : 1), "\(motor)")
+            #expect(motor.pasos(para: .pdf).count == (motor.ficha.soloSVG ? 2 : 1), "\(motor)")
+            // Lee la partitura con la extensión de su formato.
+            if let partitura = motor.partitura {
+                #expect(motor.pasos(para: .png)[0].entrada == partitura.extensionDeFichero, "\(motor)")
+            }
+        }
+        #expect(Motor(nombre: "sibelius") == nil)
+        #expect(Motor.lilypond.pasos(para: .png)[0].argumentos.contains("-dresolution=150"))
+        #expect(Motor.verovio.pasos(para: .png).map(\.programas[0]) == ["verovio", "rsvg-convert"])
+        #expect(Motor.guido.pasos(para: .svg)[0].salidas.isEmpty)
+    }
+
     @Test func exportarAGuido() {
         let melodia = salida("guido melodia Sol4:4 Do5:2 --compas 3/4 --titulo Canción")
         #expect(melodia.hasPrefix("{"))
