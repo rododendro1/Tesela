@@ -20,7 +20,8 @@ public struct Escala: Hashable, Sendable {
     /// con el tipo en español o en esas lenguas: "re bemoll dòric", "fa sostido menor", "re doriarra",
     /// "fá sustenido dórico", "ré bémol dorien", "fa diesis lidio". Con la tónica en ruso o en griego,
     /// el tipo va en esa lengua (los más comunes) o en inglés: "ре дорийский", "λα αρμονική ελάσσονα",
-    /// "до lydian dominant".
+    /// "до lydian dominant". Y escalas propias, por sus notas ("Do Re Mi♭ Fa♯ Sol La Si") o por su tónica y sus
+    /// pasos en semitonos ("Do 2-1-3-1-2-2-1"): ``Escala/propia(_:)``.
     public init(leyendo texto: String) throws {
         self = try Escala.leer(texto)
     }
@@ -48,6 +49,8 @@ public struct Escala: Hashable, Sendable {
                 let encontrado = TipoDeEscala.buscar(nombre: tipo, conTonicaEn: notacion)
                 if let encontrado { return Escala(nombre, encontrado) }
             }
+            // Una escala propia: sus notas («Do Re Mi♭ Fa♯ Sol La Si») o su tónica y sus pasos («Do 2-1-3-1-2-2-1»).
+            if let propia = Escala.leerPropia(texto) { return propia }
             throw error
         }
     }

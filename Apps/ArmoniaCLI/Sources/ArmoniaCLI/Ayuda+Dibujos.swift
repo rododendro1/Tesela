@@ -8,6 +8,7 @@ extension LineaDeComandos {
         Orden(nombres: ["tabla", "harmonic-table"], ayuda: ayudaDeTabla) { try tablaArmonica($0, $1) },
         Orden(nombres: ["teclado", "keyboard"], ayuda: ayudaDeTeclado) { try teclado($0, $1) },
         Orden(nombres: ["cuadricula", "grid"], ayuda: ayudaDeCuadricula) { try cuadricula($0, $1) },
+        Orden(nombres: ["reloj", "clock"], ayuda: ayudaDeReloj) { try reloj($0, $1) },
     ]
 
     static let ayudaDeTeclado: [EntradaDeAyuda] = [
@@ -18,6 +19,16 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia teclado Re mayor --mano derecha > re.svg",
                 "armonia keyboard D major --hand right > d.svg"))
+    ]
+
+    static let ayudaDeReloj: [EntradaDeAyuda] = [
+        // reloj <escala> [--quintas]
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisReloj),
+            descripcion: TextosDeCLI.traduccion(\.descripcionReloj),
+            ejemplo: ejemplo(
+                "armonia reloj Do disminuida --quintas > disminuida.svg",
+                "armonia clock C diminished --fifths > diminished.svg"))
     ]
 
     static let ayudaDeTonnetz: [EntradaDeAyuda] = [

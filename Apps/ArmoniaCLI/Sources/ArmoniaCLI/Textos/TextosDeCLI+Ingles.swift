@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "interval between two notes or pitches",
         sintaxisEscala: "scale <scale> [--chords]",
         descripcionEscala: "notes and chords of a scale\n--chords: every chord that fits on\neach degree, not only stacked thirds",
-        notasEscala: "options: --sequence thirds (or fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(from 1 to 4), --piano (fingering), --modes (parallel and relative)\nand --compare C lydian (at the end); --symmetry (how often it\nrepeats and its chords)",
+        notasEscala: "options: --sequence thirds (or fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(from 1 to 4), --piano (fingering), --modes (parallel and relative)\nand --compare C lydian (at the end); --symmetry (how often it\nrepeats and its chords);\n--neighbors (moving one note) and\n--all-keys (in all twelve keys)",
         sintaxisEscalas: "scales [<text>] [options]",
         descripcionEscalas: "the catalog of scales: the common ones\nand those of other traditions, by\ncategory, with their notes from C",
         notasEscalas: "options: --tradition turkey (or india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) and --category maqam (or rāga, makam,\ndastgah, dromos…); a text searches the names",
@@ -112,9 +112,11 @@ extension TextosDeCLI {
         descripcionDigitaciones: "ways to play a chord, from the most comfortable to the least, on a\nfretted string instrument (strings from low to high)\noptions: --instrument guitar|bass|ukulele|mandolin|…\n(also \"seven-string guitar\", \"five-string bass\",\n\"drop D\"), --limit 5, --fret 12 (the highest one used),\n--fingers 4 (how many can be used), --complete (with every note:\nby default the fifth may be left out), --diagram (one line per string),\n--capo 2 (frets counted from the capo), --musicxml (the first shape\nof each chord as a MusicXML tablature)",
         sintaxisPosiciones: "positions <scale> [--caged]",
         descripcionPosiciones: "the scale by positions on the guitar:\nthree notes per string (two in the\npentatonics) or CAGED",
-        notasPosiciones: "options: --sequence thirds (or another:\nthe sequence in each position; with\n--descending, going down) and --shapes (the\nfive pentatonic shapes and their shared notes)",
+        notasPosiciones: "options: --sequence thirds (or another:\nthe sequence in each position; with\n--descending, going down) and --shapes (the\nfive pentatonic shapes and their shared notes);\n--instrument bass (or another;\nalso open-d, open-g, dadgad) and --capo 2",
         sintaxisTeclado: "keyboard <scale> [--hand right]",
         descripcionTeclado: "the scale on a piano keyboard\n(SVG): its notes or, with --hand right\nor left, the fingers; --octaves 2",
+        sintaxisReloj: "clock <scale> [--fifths]",
+        descripcionReloj: "the scale on a twelve-hour clock\n(SVG): the chromatic circle or, with\n--fifths, the circle of fifths",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -232,6 +234,7 @@ extension TextosDeCLI {
         manoDesconocida: { texto in "unknown hand: \"\(texto)\" (right or left)" },
         archivoConNotas: "with --file, do not write notes",
         noEsPentatonica: "shapes need a five-note scale: armonia positions A minor pentatonic --shapes",
+        faltaEscalaDelReloj: "missing the scale: armonia clock D major",
         capoFueraDeRango: "the capo is a number from 0 to 12: --capo 2",
         octavasFueraDeRango: "the octaves are a number from 1 to 4: --octaves 2",
         desdeNoValido: { desde in "\"\(desde)\" is not a note or degree of the chord: --from E or --from 3" },

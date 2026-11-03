@@ -118,6 +118,8 @@ struct TextosDeCLI: TextosTraducidos {
     let notasPosiciones: String
     let sintaxisTeclado: String
     let descripcionTeclado: String
+    let sintaxisReloj: String
+    let descripcionReloj: String
 
     // MARK: Ayuda.swift
     let cabeceraDeLaAyuda: String
@@ -218,6 +220,7 @@ struct TextosDeCLI: TextosTraducidos {
     let manoDesconocida: @Sendable (String) -> String
     let archivoConNotas: String
     let noEsPentatonica: String
+    let faltaEscalaDelReloj: String
     let capoFueraDeRango: String
     let octavasFueraDeRango: String
     let desdeNoValido: @Sendable (String) -> String

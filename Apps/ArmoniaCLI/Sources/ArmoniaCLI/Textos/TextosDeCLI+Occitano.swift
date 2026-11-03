@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "interval entre doas nòtas o nautors",
         sintaxisEscala: "escala <gama> [--acordes]",
         descripcionEscala: "nòtas e acòrds d'una gama\n--acordes: totes los que i caben sus\ncada gra, pas sonque los de tèrças",
-        notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (digitacion), --modos (parallèls e relatius)\ne --comparar Do lidio (a la fin); --simetria (cada quant\nse repetís e sos acòrdis)",
+        notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (digitacion), --modos (parallèls e relatius)\ne --comparar Do lidio (a la fin); --simetria (cada quant\nse repetís e sos acòrdis);\n--vecinas (las que sortisson en desplaçant\nuna nòta) e --doce (dins las dotze tonalitats)",
         sintaxisEscalas: "escalas [<tèxte>] [opcions]",
         descripcionEscalas: "lo catalòg de las gamas: las abitualas\ne las d'autras tradicions, per\ncategorias, amb lors nòtas dempuèi Do",
         notasEscalas: "opcions: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) e --categoria maqam (o rāga, makam,\ndastgah, dromos…); un tèxte cerca dins los noms",
@@ -112,9 +112,11 @@ extension TextosDeCLI {
         descripcionDigitaciones: "biaisses de jogar un acòrd, del mai comòde al mens, sus un\ninstrument de còrdas amb trasts (còrdas del grèu a l'agut)\nopcions: --instrumento guitarra|bajo|ukelele|mandolina|… (tanben\n«guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D»),\n--limite 5, --traste 12 (lo mai naut que s'utiliza), --dedos 4\n(los que se pòdon utilizar), --completo (amb totas las nòtas:\nper defaut la quinta pòt mancar), --diagrama (una linha per\ncòrda),\n--capo 2 (los trasts, dempuèi lo capodastre), --musicxml (la\nprimièra forma de cada acòrd, coma tablatura MusicXML)",
         sintaxisPosiciones: "posiciones <gama> [--caged]",
         descripcionPosiciones: "la gama per posicions a la guitarra:\ntres nòtas per còrda (doas dins las\npentatonicas) o CAGED",
-        notasPosiciones: "opcions: --secuencia terceras (o una autra:\nla sequéncia dins cada posicion; amb\n--bajando, en davalant) e --formas (las cinc\nformas de la pentatonica e las nòtas comunas)",
+        notasPosiciones: "opcions: --secuencia terceras (o una autra:\nla sequéncia dins cada posicion; amb\n--bajando, en davalant) e --formas (las cinc\nformas de la pentatonica e las nòtas comunas);\n--instrumento bajo (o un autre;\ntanben re-abierto, sol-abierto, dadgad) e --capo 2",
         sintaxisTeclado: "teclado <gama> [--mano derecha]",
         descripcionTeclado: "la gama sus un clavièr de piano\n(SVG): sas nòtas o, amb --mano derecha\no izquierda, los dets; --octavas 2",
+        sintaxisReloj: "reloj <escala> [--quintas]",
+        descripcionReloj: "la gama sus un relòtge de dotze oras\n(SVG): lo cercle cromatic o, amb\n--quintas, lo de quintas",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -230,6 +232,7 @@ extension TextosDeCLI {
         manoDesconocida: { texto in "man desconeguda: «\(texto)» (derecha o izquierda)" },
         archivoConNotas: "amb --archivo, escrivètz pas de nòtas",
         noEsPentatonica: "las formas son d'una gama de cinc nòtas: armonia posiciones La pentatónica menor --formas",
+        faltaEscalaDelReloj: "manca la gama: armonia reloj Re mayor",
         capoFueraDeRango: "lo capodastre es un nombre de 0 a 12: --capo 2",
         octavasFueraDeRango: "las octavas son un nombre d'1 a 4: --octavas 2",
         desdeNoValido: { desde in "«\(desde)» es pas una nòta ni un grau de l'acòrd: --desde Mi o --desde 3" },

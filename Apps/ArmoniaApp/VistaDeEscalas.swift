@@ -15,6 +15,13 @@ struct VistaDeEscalas: View {
     @State private var secuencia = SecuenciaDeEscala.terceras
     @State private var bajando = false
     @State private var octavas = 1
+    /// Una escala propia, por sus notas o por sus pasos; si se lee, manda sobre la tónica y el tipo elegidos.
+    @State private var propia = ""
+    /// El instrumento y el capo de las posiciones en el mástil.
+    @State private var encordado = Encordado.guitarra
+    @State private var capo = 0
+    /// El reloj de la escala: el círculo cromático o el de quintas.
+    @State private var ordenDelReloj = RelojDeClases.Orden.cromatico
     /// La escala con que se compara la elegida, o vacío.
     @State private var otraEscala = "Do lidio"
     /// Lo que está sonando, para resaltar la nota en el pentagrama y en el mástil.
@@ -30,6 +37,7 @@ struct VistaDeEscalas: View {
     private static let tonicas: [Nota] = [0, -5, 2, -3, 4, -1, 6, 1, -4, 3, -2, 5].map { Nota(pasosDeQuinta: $0) }
 
     private var escala: Escala {
+        if !propia.isEmpty, let leida = try? Escala(leyendo: propia) { return leida }
         let nota = VistaDeEscalas.tonicas[min(tonica, VistaDeEscalas.tonicas.count - 1)]
         return Escala(nota, VistaDeEscalas.catalogo[min(tipo, VistaDeEscalas.catalogo.count - 1)])
     }
@@ -55,6 +63,9 @@ struct VistaDeEscalas: View {
                         }
                     }
                 }
+                TextField(notacion.texto(\.campoDeEscalaPropia), text: $propia)
+                    .comoCampoDeCifrado()
+                    .accessibilityLabel(Text(notacion.texto(\.escalaPropia)))
             }
             Section(notacion.texto(\.notas)) {
                 Text(escala.nombre(en: notacion)).font(.headline)
@@ -74,6 +85,10 @@ struct VistaDeEscalas: View {
                         .font(.system(.footnote, design: .monospaced))
                         .foregroundColor(.secondary)
                 }
+                LabeledContent(
+                    notacion.texto(\.pasosEnSemitonos),
+                    value: escala.pasosEnSemitonos.map(String.init).joined(separator: "-")
+                        + (escala.numeroDeForte.map { "  ·  " + $0 } ?? ""))
                 BotonDeEscuchar(sonido)
             }
             let acordes = escala.armonizar().compactMap { $0 }
@@ -100,17 +115,23 @@ struct VistaDeEscalas: View {
             secuenciaEnLasPosiciones(de: escala)
             digitacionDePiano(de: escala)
             simetria(de: escala)
+            reloj(de: escala)
+            vecinas(de: escala)
+            doceTonalidades(de: escala)
             modos(de: escala)
             comparacion(de: escala)
         }
         .navigationTitle(notacion.texto(\.escalas))
         .selectorDeNotacionEnLaBarra()
-        // Una escala pedida desde otra pestaña (las compatibles con un acorde), ahora o si se pidió antes de abrir esta.
+        // Una escala pedida desde otra pestaña (las compatibles con un acorde), ahora o si se pidió antes de abrir
+        // esta.
         .onChange(of: navegacion.escalaPedida) { _ in tomarLaEscalaPedida() }
         .onAppear(perform: tomarLaEscalaPedida)
         .toolbar {
             ToolbarItem {
-                BotonDeExportar([pentagrama.fichero] + secuenciaPresentada(de: escala).ficheros + svgs(de: escala))
+                BotonDeExportar(
+                    [pentagrama.fichero] + secuenciaPresentada(de: escala).ficheros + svgs(de: escala)
+                        + PresentacionDeEstudioDeEscala.enLasDoceTonalidades(escala, notacion: notacion).ficheros)
             }
         }
     }
@@ -224,7 +245,7 @@ struct VistaDeEscalas: View {
     /// Las cinco formas de una pentatónica en la guitarra, con las notas que cada una comparte con la siguiente.
     @ViewBuilder
     private func formasPentatonicas(de escala: Escala) -> some View {
-        let formas = PresentacionDeEstudioDeEscala.formasPentatonicas(de: escala, notacion: notacion)
+        let formas = PresentacionDeEstudioDeEscala.formasPentatonicas(de: escala, mastil: mastil, notacion: notacion)
         if !formas.isEmpty {
             Section(notacion.texto(\.formasDeLaPentatonica)) {
                 ForEach(formas, id: \.self) { forma in
@@ -248,7 +269,8 @@ struct VistaDeEscalas: View {
     @ViewBuilder
     private func secuenciaEnLasPosiciones(de escala: Escala) -> some View {
         let posiciones = PresentacionDeEstudioDeEscala.secuenciaEnLasPosiciones(
-            escala, secuencia, caged: caged, sentido: bajando ? .descendente : .ascendente, notacion: notacion
+            escala, secuencia, caged: caged, sentido: bajando ? .descendente : .ascendente, mastil: mastil,
+            notacion: notacion
         ).filter { !$0.notas.isEmpty }
         if !posiciones.isEmpty {
             Section(notacion.texto(\.secuenciaEnLasPosiciones)) {
@@ -335,6 +357,7 @@ struct VistaDeEscalas: View {
     private func tomarLaEscalaPedida() {
         guard let pedida = navegacion.escalaPedida else { return }
         navegacion.escalaPedida = nil
+        propia = ""
         if let indice = VistaDeEscalas.tonicas.firstIndex(where: { $0.claseDeAltura == pedida.tonica.claseDeAltura }) {
             tonica = indice
         }
@@ -350,7 +373,7 @@ struct VistaDeEscalas: View {
     /// más alta.
     @ViewBuilder
     private func posiciones(de escala: Escala) -> some View {
-        let mastil = Mastil(.guitarra, trastes: 15)
+        let mastil = self.mastil
         let porCuerda = escala.notas.count >= 6 ? 3 : 2
         let posiciones = caged ? mastil.posicionesCAGED(de: escala) : mastil.posicionesPorCuerda(de: escala)
         Section(notacion.texto(\.posicionesEnElMastil)) {
@@ -359,6 +382,11 @@ struct VistaDeEscalas: View {
                 Text(notacion.texto { $0.notasPorCuerda(porCuerda) }).tag(false)
             }
             .pickerStyle(.segmented)
+            Picker(notacion.texto(\.instrumentoYAfinacion), selection: $encordado) {
+                ForEach(Encordado.todos, id: \.self) { Text($0.titulo(en: notacion)).tag($0) }
+            }
+            Stepper(
+                capo == 0 ? notacion.texto(\.sinCapo) : notacion.texto { $0.capo(capo) }, value: $capo, in: 0...12)
             ForEach(posiciones, id: \.self) { posicion in
                 let sonido = self.sonido(de: posicion, en: escala)
                 let paso = reproductor.paso(de: sonido)
@@ -375,6 +403,65 @@ struct VistaDeEscalas: View {
                     DiagramaDeMastil(posicion: posicion, escala: escala, notacion: notacion)
                         .resaltando(sonando)
                         .frame(maxHeight: 120)
+                }
+            }
+        }
+    }
+
+    /// El mástil de las posiciones: el instrumento elegido, con su capo.
+    private var mastil: Mastil { Mastil(encordado.conCapo(capo), trastes: 15) }
+
+    /// La escala en un reloj de doce horas, en el círculo cromático o en el de quintas, para ver su forma.
+    @ViewBuilder
+    private func reloj(de escala: Escala) -> some View {
+        Section(notacion.texto(\.relojDeLaEscala)) {
+            Picker(notacion.texto(\.relojDeLaEscala), selection: $ordenDelReloj) {
+                Text(notacion.texto(\.circuloCromatico)).tag(RelojDeClases.Orden.cromatico)
+                Text(notacion.texto(\.circuloDeQuintas)).tag(RelojDeClases.Orden.quintas)
+            }
+            .pickerStyle(.segmented)
+            VistaSVG(svg: PresentacionDeEstudioDeEscala.reloj(de: escala, orden: ordenDelReloj, notacion: notacion))
+                .frame(height: 300)
+        }
+    }
+
+    /// Las escalas que salen de esta moviendo una nota un semitono, con el cambio; cada una se abre al tocarla.
+    @ViewBuilder
+    private func vecinas(de escala: Escala) -> some View {
+        let vecinas = PresentacionDeEstudioDeEscala.vecinas(de: escala, notacion: notacion)
+        if !vecinas.isEmpty {
+            Section(notacion.texto(\.escalasVecinas)) {
+                ForEach(vecinas, id: \.self) { vecina in
+                    HStack {
+                        Button {
+                            propia = ""
+                            navegacion.ver(vecina.escala)
+                        } label: {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(vecina.nombre)
+                                Text(vecina.detalle).font(.caption).foregroundColor(.secondary)
+                            }
+                        }
+                        Spacer()
+                        BotonDeEscuchar(vecina.sonido).labelStyle(.iconOnly)
+                    }
+                    .buttonStyle(.borderless)
+                }
+            }
+        }
+    }
+
+    /// La escala en las doce tonalidades, de quinta en quinta, para escucharla seguida y exportarla con la barra.
+    @ViewBuilder
+    private func doceTonalidades(de escala: Escala) -> some View {
+        let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(escala, notacion: notacion)
+        Section(notacion.texto(\.enLasDoceTonalidades)) {
+            BotonDeEscuchar(hoja.sonido)
+            ForEach(hoja.tonalidades, id: \.titulo) { tonalidad in
+                DisclosureGroup(tonalidad.titulo) {
+                    Text(tonalidad.notas).font(.system(.footnote, design: .monospaced))
+                    DiagramaDePentagrama(tonalidad.pentagrama)
+                    BotonDeEscuchar(tonalidad.sonido)
                 }
             }
         }

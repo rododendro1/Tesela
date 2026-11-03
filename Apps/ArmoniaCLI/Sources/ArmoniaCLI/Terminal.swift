@@ -25,7 +25,8 @@ extension LineaDeComandos {
         "--no-octave", "--enlazar", "--connect", "--disposiciones", "--voicings", "--nombres", "--names",
         "--tonalidades", "--keys", "--sustituciones", "--substitutions", "--bajando", "--descending", "--piano",
         "--modos", "--modes", "--bebop", "--pentatonicas", "--pentatonics", "--simetria", "--symmetry",
-        "--notas-guia", "--guide-tones", "--formas", "--shapes",
+        "--notas-guia", "--guide-tones", "--formas", "--shapes", "--vecinas", "--neighbors", "--doce", "--all-keys",
+        "--quintas", "--fifths",
     ]
 
     /// Los valores que se proponen tras una opción.

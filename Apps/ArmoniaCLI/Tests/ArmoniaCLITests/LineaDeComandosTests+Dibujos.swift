@@ -122,4 +122,18 @@ extension LineaDeComandosTests {
         }
         #expect(LineaDeComandos.ejecutar(["cuadricula", "--origen", "Hm", "Do"]).codigo == 1)
     }
+
+    @Test func relojDeLaEscala() {
+        let cromatico = salida("reloj Re mayor")
+        #expect(cromatico.hasPrefix("<svg") && cromatico.hasSuffix("</svg>\n"), Comment(rawValue: cromatico))
+        #expect(cromatico.contains("<title>Re mayor · Círculo cromático</title>"))
+        #expect(cromatico.components(separatedBy: "<circle").count - 1 == 13)
+        #expect(cromatico.contains("<polygon"))
+        #expect(cromatico.contains(">Fa♯</text>"))
+        let quintas = salida("reloj Do disminuida semitono-tono --quintas")
+        #expect(quintas.contains("Círculo de quintas</title>"), Comment(rawValue: quintas))
+        #expect(quintas != salida("reloj Do disminuida semitono-tono"))
+        #expect(salida("clock C major --fifths --ingles").contains("<title>C major · Circle of fifths</title>"))
+        #expect(salida("ayuda").contains("reloj <escala> [--quintas]"))
+    }
 }

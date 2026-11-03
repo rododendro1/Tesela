@@ -317,6 +317,8 @@ extension LineaDeComandos {
         let piano = argumentos.quitarMarca("--piano")
         let modos = argumentos.quitarMarca("--modos", "--modes")
         let simetria = argumentos.quitarMarca("--simetria", "--symmetry")
+        let vecinas = argumentos.quitarMarca("--vecinas", "--neighbors")
+        let doce = argumentos.quitarMarca("--doce", "--all-keys")
         guard let octavas = argumentos.quitarNumero("--octavas", "--octaves", en: 1...4, porDefecto: 1) else {
             return uso(.octavasFueraDeRango, notacion)
         }
@@ -361,6 +363,18 @@ extension LineaDeComandos {
             lineas.append("  " + relativos.map(\.nombre).joined(separator: " · "))
         }
         if simetria { lineas += lineasDeSimetria(de: escala, notacion) }
+        if vecinas {
+            lineas.append(notacion.texto(\.escalasVecinas) + ":")
+            lineas += PresentacionDeEstudioDeEscala.vecinas(de: escala, notacion: notacion).map {
+                "  " + $0.nombre + ": " + $0.detalle
+            }
+        }
+        if doce {
+            let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(
+                escala, secuencia: secuencia, notacion: notacion)
+            lineas.append(hoja.titulo + ":")
+            lineas += hoja.tonalidades.map { "  " + $0.titulo + ": " + $0.notas }
+        }
         if let otra {
             let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, notacion: notacion)
             lineas.append(notacion.texto(\.compararCon) + " " + otra.nombre(en: notacion) + ":")
