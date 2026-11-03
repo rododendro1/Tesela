@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.2 (2026-11-03)
 
 - **El arpegio con su ritmo en el pentagrama.** `PentagramaPresentado(_:titulo:tonalidad:notacion:nombresDeLasNotas:resaltada:)`
   dibuja una voz con sus figuras, barras y compás, y con la armadura de la tonalidad si se da. La pestaña de acordes

@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.2 (2026-11-03)
 
 ### Bajo cifrado, cambios de clave y notas ajenas al acorde en el pentagrama
 
