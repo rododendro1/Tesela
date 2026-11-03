@@ -72,6 +72,8 @@ Tonalidad.identificar(midi: [69, 71, 72, 74, 76, 77, 80, 81]).first   // La meno
 - ``NotaExtrana``
 - ``Contrapunto``
 - ``FaltaDeContrapunto``
+- ``ContrapuntoAVariasVoces``
+- ``FaltaEntreVoces``
 
 ### Mástil y digitaciones
 
@@ -89,6 +91,8 @@ Tonalidad.identificar(midi: [69, 71, 72, 74, 76, 77, 80, 81]).first   // La meno
 - ``Compas``
 - ``Tempo``
 - ``Voz``
+- ``Frase``
+- ``MotivoMelodico``
 
 ### Exportación
 

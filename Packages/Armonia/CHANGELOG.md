@@ -2,6 +2,22 @@
 
 ## Sin publicar
 
+### Frases, forma y motivos
+
+- **`Voz.frases(minimo:)`**: las frases de una melodía (`Frase`), que acaban antes de un silencio o en una nota más
+  larga que sus vecinas y duran al menos un compás.
+- **`Voz.forma(minimo:)`**: una letra por frase, la misma para las que se repiten aunque estén transportadas y con
+  prima para las variantes: `["A", "A", "B", "A′"]`.
+- **`Voz.motivos(minimo:)`**: los motivos que vuelven (`MotivoMelodico`), con dónde aparece cada uno, cuánto está
+  transportado y si forma una progresión.
+
+### Contrapunto a tres y cuatro voces
+
+- **`ContrapuntoAVariasVoces`**: un cantus firmus con varias voces, cada una de su especie. Aplica las reglas de dos
+  voces de cada una con el cantus, mide el principio y el final desde el bajo, admite la cuarta entre voces altas y
+  busca paralelas, unísonos, disonancias y cruces entre todas las voces. Cada falta (`FaltaEntreVoces`) dice qué
+  voces la cometen.
+
 ### Dinámica y articulaciones
 
 - **`Dinamica`** (de *ppp* a *fff*, *sfz* y *fp*, con su `velocidadMIDI`) y **`Articulacion`** (staccato,

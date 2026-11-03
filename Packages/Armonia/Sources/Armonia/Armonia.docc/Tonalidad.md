@@ -455,3 +455,21 @@ descripción, desde 1):
   vuelve en sentido contrario. Desde la segunda especie, tampoco se repite una nota sin ligarla.
 
 `informe(en:)` lo resume todo en el idioma que se pida, como la orden `armonia contrapunto`.
+
+### A tres y cuatro voces
+
+`ContrapuntoAVariasVoces` comprueba un cantus firmus con dos o tres voces más, cada una de su
+especie, como en el libro II de Fux. Cada voz cumple con el cantus las reglas de dos voces, con
+lo que cambia al haber más: el principio y el final se miden desde el bajo (consonancia perfecta
+o tercera), una cuarta entre dos voces que no son el bajo es consonante, las directas solo
+cuentan entre las voces extremas y el bajo puede llegar al final saltando. Entre cada par de
+voces, también entre las que se añaden, se buscan paralelas, unísonos, disonancias y cruces.
+Cada falta (``FaltaEntreVoces``) dice qué voces la cometen: 0 es el cantus.
+
+```swift
+let tres = try ContrapuntoAVariasVoces(cantusFirmus: "Re4 Fa4 Mi4 Re4", voces: [("La4 La4 Do#5 Re5", .primera), ("Re3 Re3 La2 Re3", .primera)])
+tres.esCorrecto            // true
+
+let paralelas = try ContrapuntoAVariasVoces(cantusFirmus: "Re4 Fa4 Mi4 Re4", voces: [("La4 La4 Sol4 La4", .primera), ("Re3 Re3 Do3 Re3", .primera)])
+paralelas.faltas.contains(FaltaEntreVoces(falta: FaltaDeContrapunto(tipo: .quintasParalelas, compases: 1...2), voces: [1, 2]))   // true
+```

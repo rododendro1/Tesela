@@ -567,88 +567,102 @@ import Hexagonos
     }
 
     @Test func melodiaYRitmo5() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 82
-        comprobar(Compas("7/8").agrupacion, #"[2, 2, 3]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 82)
-        comprobar(Compas("7/8").pulsos, #"3"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 83)
-        comprobar(Compas("6/8").iniciosDePulso, #"[cero, negra con puntillo]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 84)
-        comprobarIgual(Compas.compasillo.acento(pulso: 2), .semifuerte, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 85)
-        comprobar(Compas.compasillo.acento(en: .corchea), #"nil"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 86)
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 85
+        let tema = try Voz(leyendo: "Do4:4 Re4:4 Mi4:2 Do4:4 Re4:4 Mi4:2 Sol4:4 Fa4:4 Mi4:2 Do4:4 Re4:4 Do4:2")
+        comprobar(tema.frases().count, #"4"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 86)
+        comprobar(tema.frases()[2].eventos == 6..<9, #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 87)
+        comprobar(tema.forma() == ["A", "A", "B", "A′"], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 88)
+        let progresion = try Voz(leyendo: "Do4:8 Re4:8 Mi4:4 Re4:8 Mi4:8 Fa#4:4 Mi4:8 Fa#4:8 Sol#4:2")
+        let motivo = progresion.motivos(minimo: 3)[0]
+        comprobar(motivo.intervalos == [2, 2], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 92)
+        comprobar(motivo.apariciones == [0, 3, 6], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 93)
+        comprobar(motivo.transposiciones == [0, 2, 4], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 94)
+        comprobar(motivo.esSecuencia, #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 95)
     }
 
     @Test func melodiaYRitmo6() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 106
-        comprobar(try Voz(leyendo: "Do4:4 Re4:2 Mi4:4").grafia, #"[[Do4:4, Re4:4~, Re4:4, Mi4:4]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 106)
-        comprobar(try Voz(leyendo: "Do4:8 Re4:4 Mi4:8 Fa4:2").grafia, #"[[Do4:8, Re4:8~, Re4:8, Mi4:8, Fa4:2]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 107)
-        comprobar(try Voz(leyendo: "Do4:4. Re4:8 Mi4:2").grafia, #"[[Do4:4., Re4:8, Mi4:2]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 108)
-        comprobar(try Voz(leyendo: "Do4:4 Re4:4. Mi4:8 Fa4:4").grafia, #"[[Do4:4, Re4:4~, Re4:8, Mi4:8, Fa4:4]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 109)
-        comprobar(try Voz(leyendo: "Do4:4 Re4:4 Mi4:4", compas: "6/8").grafia, #"[[Do4:4, Re4:8~, Re4:8, Mi4:4]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 110)
-        comprobar(try Voz(leyendo: "Do4:2..", compas: "7/8").grafia, #"[[Do4:2~, Do4:4.]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 111)
-        comprobar(try Voz(leyendo: "Do4:2..", compas: "3+2+2/8").grafia, #"[[Do4:4.~, Do4:2]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 112)
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 108
+        comprobar(Compas("7/8").agrupacion, #"[2, 2, 3]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 108)
+        comprobar(Compas("7/8").pulsos, #"3"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 109)
+        comprobar(Compas("6/8").iniciosDePulso, #"[cero, negra con puntillo]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 110)
+        comprobarIgual(Compas.compasillo.acento(pulso: 2), .semifuerte, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 111)
+        comprobar(Compas.compasillo.acento(en: .corchea), #"nil"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 112)
     }
 
     @Test func melodiaYRitmo7() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 127
-        let escala = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2 Sol4:1/12 La4:1/12 Si4:1/12 Do5:2.", compas: "3/4")
-        let xml = escala.musicXML(tonalidad: Tonalidad(.do), tempo: Tempo(90), titulo: "Escala")
-        comprobar(xml.contains("<fifths>0</fifths>"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 129)
-        comprobar(xml.contains("<actual-notes>3</actual-notes>"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 130)
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 132
+        comprobar(try Voz(leyendo: "Do4:4 Re4:2 Mi4:4").grafia, #"[[Do4:4, Re4:4~, Re4:4, Mi4:4]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 132)
+        comprobar(try Voz(leyendo: "Do4:8 Re4:4 Mi4:8 Fa4:2").grafia, #"[[Do4:8, Re4:8~, Re4:8, Mi4:8, Fa4:2]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 133)
+        comprobar(try Voz(leyendo: "Do4:4. Re4:8 Mi4:2").grafia, #"[[Do4:4., Re4:8, Mi4:2]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 134)
+        comprobar(try Voz(leyendo: "Do4:4 Re4:4. Mi4:8 Fa4:4").grafia, #"[[Do4:4, Re4:4~, Re4:8, Mi4:8, Fa4:4]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 135)
+        comprobar(try Voz(leyendo: "Do4:4 Re4:4 Mi4:4", compas: "6/8").grafia, #"[[Do4:4, Re4:8~, Re4:8, Mi4:4]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 136)
+        comprobar(try Voz(leyendo: "Do4:2..", compas: "7/8").grafia, #"[[Do4:2~, Do4:4.]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 137)
+        comprobar(try Voz(leyendo: "Do4:2..", compas: "3+2+2/8").grafia, #"[[Do4:4.~, Do4:2]]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 138)
     }
 
     @Test func melodiaYRitmo8() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 150
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 153
         let escala = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2 Sol4:1/12 La4:1/12 Si4:1/12 Do5:2.", compas: "3/4")
-        let mei = escala.mei(tonalidad: Tonalidad(.do), tempo: Tempo(90), titulo: "Escala")
-        comprobar(mei.contains("keysig=\"0\""), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 152)
-        comprobar(mei.contains("<tuplet num=\"3\" numbase=\"2\">"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 153)
+        let xml = escala.musicXML(tonalidad: Tonalidad(.do), tempo: Tempo(90), titulo: "Escala")
+        comprobar(xml.contains("<fifths>0</fifths>"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 155)
+        comprobar(xml.contains("<actual-notes>3</actual-notes>"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 156)
     }
 
     @Test func melodiaYRitmo9() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 172
-        let tema = try Voz(leyendo: "Sol4:4 Do5:2 Re5:8 Mi5:8 Fa#5:4 Sol5:2", compas: "3/4", anacrusa: .negra)
-        let ly = tema.lilyPond(tonalidad: Tonalidad(.sol), titulo: "Tema")
-        comprobar(ly.contains("\\key g \\major \\time 3/4 \\partial 4"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 174)
-        comprobar(ly.contains("fis''4 g''2"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 175)
-        let abc = tema.abc(tonalidad: Tonalidad(.sol), titulo: "Tema")
-        comprobar(abc.contains("K:G"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 177)
-        comprobar(abc.contains("c2 d/2e/2 | f g2 |]"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 178)
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 176
+        let escala = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2 Sol4:1/12 La4:1/12 Si4:1/12 Do5:2.", compas: "3/4")
+        let mei = escala.mei(tonalidad: Tonalidad(.do), tempo: Tempo(90), titulo: "Escala")
+        comprobar(mei.contains("keysig=\"0\""), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 178)
+        comprobar(mei.contains("<tuplet num=\"3\" numbase=\"2\">"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 179)
     }
 
     @Test func melodiaYRitmo10() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 202
-        let melodia = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8~ Mi4:4 Sol4+Si4:2", compas: "3/4")
-        let datos = melodia.midi(tempo: Tempo(90), titulo: "Escala", instrumento: 40)
-        comprobar(datos.prefix(4) == Data("MThd".utf8), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 204)
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 198
+        let tema = try Voz(leyendo: "Sol4:4 Do5:2 Re5:8 Mi5:8 Fa#5:4 Sol5:2", compas: "3/4", anacrusa: .negra)
+        let ly = tema.lilyPond(tonalidad: Tonalidad(.sol), titulo: "Tema")
+        comprobar(ly.contains("\\key g \\major \\time 3/4 \\partial 4"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 200)
+        comprobar(ly.contains("fis''4 g''2"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 201)
+        let abc = tema.abc(tonalidad: Tonalidad(.sol), titulo: "Tema")
+        comprobar(abc.contains("K:G"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 203)
+        comprobar(abc.contains("c2 d/2e/2 | f g2 |]"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 204)
     }
 
     @Test func melodiaYRitmo11() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 226
-        let tema = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2", compas: "3/4")
-        comprobar(FormatoDePartitura.allCases.map(\.extensionDeFichero) == ["musicxml", "mei", "ly", "gmn", "abc", "mid"], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 227)
-        comprobar(tema.exportar(como: .lilyPond, titulo: "Tema") == Data(tema.lilyPond(titulo: "Tema").utf8), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 228)
-        comprobar(tema.exportar(como: .midi, titulo: "Tema") == tema.midi(titulo: "Tema"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 229)
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 228
+        let melodia = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8~ Mi4:4 Sol4+Si4:2", compas: "3/4")
+        let datos = melodia.midi(tempo: Tempo(90), titulo: "Escala", instrumento: 40)
+        comprobar(datos.prefix(4) == Data("MThd".utf8), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 230)
     }
 
     @Test func melodiaYRitmo12() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 247
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 252
+        let tema = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2", compas: "3/4")
+        comprobar(FormatoDePartitura.allCases.map(\.extensionDeFichero) == ["musicxml", "mei", "ly", "gmn", "abc", "mid"], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 253)
+        comprobar(tema.exportar(como: .lilyPond, titulo: "Tema") == Data(tema.lilyPond(titulo: "Tema").utf8), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 254)
+        comprobar(tema.exportar(como: .midi, titulo: "Tema") == tema.midi(titulo: "Tema"), #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 255)
+    }
+
+    @Test func melodiaYRitmo13() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 273
         let arpegio = Voz(Arpegio(Acorde("Do7"), patron: .idaYVuelta), figura: .semicorchea)
-        comprobar(arpegio.eventos.count, #"9"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 248)
+        comprobar(arpegio.eventos.count, #"9"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 274)
         let acordes = [Acorde("Do"), Acorde("Lam"), Acorde("Fa"), Acorde("Sol7")]
         let alberti = Voz(arpegiando: acordes, patron: .alberti, porAcorde: .blanca)
-        comprobar(alberti.eventos.count, #"16"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 251)
-        comprobar(alberti.eventos.prefix(4).flatMap(\.alturas).map(\.midi) == [48, 55, 52, 55], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 252)
+        comprobar(alberti.eventos.count, #"16"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 277)
+        comprobar(alberti.eventos.prefix(4).flatMap(\.alturas).map(\.midi) == [48, 55, 52, 55], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 278)
         let datos = alberti.midi(titulo: "Bajo de Alberti")
         _ = datos
     }
 
-    @Test func melodiaYRitmo13() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 268
+    @Test func melodiaYRitmo14() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 294
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
         let pieza = try PiezaImportada(leyendo: coral.midi(duracion: .blanca, tonalidad: Tonalidad(.do)))
-        comprobar(pieza.tonalidad, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 270)
-        comprobar(pieza.notas.count, #"12"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 271)
-        comprobar(pieza.acordes().map(\.cifrado), #"["Do", "Sol", "Do"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 272)
-        comprobar(pieza.analisis()?.cifrados, #"["I", "V", "I"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 273)
-        comprobar(pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 274)
+        comprobar(pieza.tonalidad, #"Do mayor"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 296)
+        comprobar(pieza.notas.count, #"12"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 297)
+        comprobar(pieza.acordes().map(\.cifrado), #"["Do", "Sol", "Do"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 298)
+        comprobar(pieza.analisis()?.cifrados, #"["I", "V", "I"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 299)
+        comprobar(pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 300)
     }
 
     @Test func notacionYPartitura1() throws {
@@ -1096,6 +1110,14 @@ import Hexagonos
         comprobar(FaltaDeContrapunto(tipo: .quintasParalelas, compases: 0...1).description, #""Quintas paralelas (compases 1 → 2)""#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 428)
         comprobar(try Contrapunto(cantusFirmus: "Re4 Fa4 Mi4 Re4", contrapunto: "-:2 La4 Re5 La4 Si4 Do#5 Re5:1", especie: .segunda).esCorrecto, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 431)
         comprobar(try Contrapunto(cantusFirmus: "Re4 Mi4 Re4", contrapunto: "-:2 Re5:1 Do#5 Re5:1", especie: .cuarta).esCorrecto, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 432)
+    }
+
+    @Test func tonalidad25() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, línea 470
+        let tres = try ContrapuntoAVariasVoces(cantusFirmus: "Re4 Fa4 Mi4 Re4", voces: [("La4 La4 Do#5 Re5", .primera), ("Re3 Re3 La2 Re3", .primera)])
+        comprobar(tres.esCorrecto, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 471)
+        let paralelas = try ContrapuntoAVariasVoces(cantusFirmus: "Re4 Fa4 Mi4 Re4", voces: [("La4 La4 Sol4 La4", .primera), ("Re3 Re3 Do3 Re3", .primera)])
+        comprobar(paralelas.faltas.contains(FaltaEntreVoces(falta: FaltaDeContrapunto(tipo: .quintasParalelas, compases: 1...2), voces: [1, 2])), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 474)
     }
 
     @Test func trastes1() throws {
