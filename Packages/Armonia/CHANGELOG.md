@@ -10,7 +10,7 @@
   (išartu es la mayor, nīd qabli el frigio); se encuentran también sin diacríticos y con la mimación (išartum).
   Sus nombres y el de la categoría, en los quince idiomas, y `armonia escalas --tradicion mesopotamia`.
 
-### Grāma y mūrchanā, géneros griegos y modos gregorianos
+### Grāma y mūrchanā, y géneros griegos
 
 - **Los 2 grāma y las 14 mūrchanā del Nāṭyaśāstra** (`TipoDeEscala.gramas`, `.murchanas`; categorías `.grama` y
   `.murchana`): el ṣaḍja-grāma y el madhyama-grāma, y las siete escalas de cada uno, con su versión microtonal en los
@@ -18,9 +18,7 @@
 - **Los géneros de Arquitas y de Ptolomeo** (`TipoDeEscala.generosDeArquitasYPtolomeo`): nueve tetracordos en razones
   justas, del cromático de Arquitas al diatónico igual de Ptolomeo, con un sistema microtonal nuevo,
   `SistemaMicrotonal.razones`, en cents (Fa(−37¢)).
-- **Los 8 modos gregorianos** (tradición `.gregoriano`, categoría `.modo`, `TipoDeEscala.modosGregorianos`): del
-  protus auténtico al tetrardus plagal, también por su número («modo II») y su nombre latino. Con sus nombres en los
-  quince idiomas y `armonia escalas --tradicion gregoriano`.
+- Los nombres y las categorías nuevas, en los quince idiomas.
 
 ### La línea de comandos en JSON
 

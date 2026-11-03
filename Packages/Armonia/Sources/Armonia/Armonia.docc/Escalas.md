@@ -173,9 +173,6 @@ usan microtonos):
   Arquitas (cromático y diatónico) y los de Ptolomeo (enarmónico, cromático blando y tenso, diatónico blando,
   ditónico, tenso e igual), con sus razones justas; y las siete harmoniai, de la mixolidia a la hipodoria, y la
   doria cromática.
-- **8 modos gregorianos**, del protus auténtico (modo I, el dórico) al tetrardus plagal (modo VIII). Cada
-  plagal tiene los intervalos de su auténtico desde la misma final: lo que cambia es el ámbito y la nota de
-  recitado, que no caben en una escala de doce notas. Se buscan también por su número («modo II», «octavo tono»).
 - **4 modos del klezmer**: Freygish (Ahavah Rabbah), Misheberakh, Adonai Malakh (mixolidio con
   la 3ª menor de paso) y Magen Avot (menor natural).
 
@@ -187,8 +184,7 @@ Encyclopaedia Aethiopica (Təzəta, Ančihoye), los árabes en ALA-LC (Ḥijāz,
 Indonesia con la grafía javanesa (Pélog, Sléndro), los persas en la transliteración de la
 Encyclopædia Iranica (Čahārgāh), los turcos y los azerbaiyanos en su ortografía (Hicazkâr,
 Şur muğamı) y los coreanos en McCune-Reischauer (P'yŏngjo), con la
-romanización oficial y el hangul como alias, y los acadios en su transliteración habitual (išartu, nīš tuḫri). Los modos gregorianos llevan su
-nombre latino (protus, deuterus, tritus, tetrardus). Un nombre gana a un alias: «Hijaz» es el
+romanización oficial y el hangul como alias, y los acadios en su transliteración habitual (išartu, nīš tuḫri). Un nombre gana a un alias: «Hijaz» es el
 maqam Ḥijāz, y el dromos se busca como Hitzáz o Hicaz. Al buscar no importan los
 diacríticos ni las mayúsculas, y también se aceptan las transliteraciones habituales sin ellos
 (Mayamalavagowla, Shanmukhapriya, Hitzaz, hirajoshi), los nombres en chino y en japonés (宫, 平調子), los de
@@ -215,7 +211,7 @@ Escala("La hicaz makami").notas              // La Si♭ Do♯ Re Mi Fa♯ Sol
 No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales;
 están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `chinas`, `japonesas`,
 `ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `mesopotamicas`, `gramas`, `murchanas`, `generosDeArquitasYPtolomeo`,
-`modosGregorianos`, `pathets`…). Sus nombres
+`pathets`…). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
 las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 mēḷa,

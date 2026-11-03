@@ -47,13 +47,11 @@ import Testing
         #expect(TipoDeEscala.tradicionales(tradicion: .mesopotamia) == TipoDeEscala.mesopotamicas)
         #expect(TipoDeEscala.mesopotamicas.count == 7)
         #expect(TipoDeEscala.nidQabli.tradicion == .mesopotamia && TipoDeEscala.nidQabli.categoria == .afinacion)
-        // Los grāma y las mūrchanā del Nāṭyaśāstra, y los modos gregorianos.
+        // Los grāma y las mūrchanā del Nāṭyaśāstra.
         #expect(TipoDeEscala.tradicionales(categoria: .grama) == TipoDeEscala.gramas)
         #expect(TipoDeEscala.tradicionales(categoria: .murchana) == TipoDeEscala.murchanas)
         #expect(TipoDeEscala.murchanas.count == 14 && TipoDeEscala.sauviri.tradicion == .india)
         #expect(!TipoDeEscala.sadjaGrama.esRaga)
-        #expect(TipoDeEscala.tradicionales(tradicion: .gregoriano) == TipoDeEscala.modosGregorianos)
-        #expect(TipoDeEscala.tradicionales(categoria: .modo).count == 8)
         // Los pathet y los laras de Indonesia.
         #expect(TipoDeEscala.tradicionales(categoria: .pathet) == TipoDeEscala.pathets)
         #expect(TipoDeEscala.tradicionales(categoria: .laras) == TipoDeEscala.indonesias)

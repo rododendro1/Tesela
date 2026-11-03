@@ -1,8 +1,7 @@
 import ArmoniaNucleo
 
 // MARK: - Escalas de la India, dromoi griegos, echoi bizantinos, maqamat, dastgāh, makamlar, mugam, escalas chinas,
-// japonesas, coreanas, etíopes, de Indonesia, andinas, klezmer, de la Grecia antigua, de Mesopotamia y modos
-// gregorianos
+// japonesas, coreanas, etíopes, de Indonesia, andinas, klezmer, de la Grecia antigua y de Mesopotamia
 //
 // Escalas de otras tradiciones, en su aproximación al temperamento igual: los 72 mēḷa de
 // la música carnática y algunos de sus rāgas janya, los 10 thāṭ de la indostánica y los dromoi del rebético y la música
@@ -20,20 +19,19 @@ import ArmoniaNucleo
 // un maqam, un makam, un mugam…; salen de estas listas. Sus nombres en cada idioma están en `Escalas/Nombres/`.
 //
 // La India, que es la más larga, está en `TipoDeEscala+India.swift`; las demás, más abajo, cada una tras su
-// `// MARK: - Nombre`: Andes, Azerbaiyan (mugam), Bizancio (echoi), China, Corea, Etiopia, Grecia, Gregoriano,
-// Indonesia, Japon,
+// `// MARK: - Nombre`: Andes, Azerbaiyan (mugam), Bizancio (echoi), China, Corea, Etiopia, Grecia, Indonesia,
+// Japon,
 // Klezmer, Mesopotamia (afinaciones babilónicas), MundoArabe (maqamat), Persia (dastgah) y Turquia (makamlar).
 // `Scripts/generadores/nombres_de_escalas/tradicionales.py` las busca por esas marcas.
 
 extension TipoDeEscala {
     /// Escalas de otras tradiciones: thāṭ, dromoi, mēḷa, janya, chinas, japonesas, etíopes,
     /// maqamat, de Indonesia (laras y pathet), klezmer, rāgas indostánicos, dastgāh, coreanas, andinas, de la
-    /// Grecia antigua, makamlar turcos, mugam azerbaiyanos, echoi bizantinos, afinaciones babilónicas y modos
-    /// gregorianos.
+    /// Grecia antigua, makamlar turcos, mugam azerbaiyanos, echoi bizantinos y afinaciones babilónicas.
     public static let tradicionales: [TipoDeEscala] =
         thaats + dromoi + melakartas + janyas + gramas + murchanas + chinas + japonesas
         + etiopes + maqamat + indonesias + pathets + klezmer + ragasIndostanicos + dastgah + coreanas + andinas
-        + griegasAntiguas + makamlar + mugamlar + echoi + mesopotamicas + modosGregorianos
+        + griegasAntiguas + makamlar + mugamlar + echoi + mesopotamicas
 }
 
 // MARK: - Andes
@@ -556,72 +554,6 @@ extension TipoDeEscala {
     ]
 
     public static let griegasAntiguas: [TipoDeEscala] = tetracordosGriegos + generosDeArquitasYPtolomeo + harmoniai
-}
-
-// MARK: - Gregoriano
-
-extension TipoDeEscala {
-    // MARK: Modos gregorianos
-    //
-    // Los ocho modos (toni) del canto gregoriano, en la teoría carolingia del octoechos: cuatro finales (protus en Re,
-    // deuterus en Mi, tritus en Fa y tetrardus en Sol), cada una con un modo auténtico, que sube una octava desde la
-    // final, y uno plagal, que va de la cuarta bajo la final a la quinta sobre ella. Como una escala de doce notas no
-    // tiene ámbito, el auténtico y el plagal de una final tienen los mismos intervalos desde ella: los distinguen el
-    // ámbito y la nota de recitado (la tuba o repercussio), que van en el comentario de cada uno. El tritus va con Si
-    // natural, como en la teoría; en la práctica se canta a menudo con Si♭. Los nombres griegos (dórico, hipodórico…)
-    // que les dio la teoría medieval son los de los modos eclesiásticos, y el número de cada modo va como alias.
-
-    /// Modo I, el protus auténtico (el dórico): final Re, ámbito de Re a Re, recitado en La.
-    public static let protusAutentico = TipoDeEscala(
-        nombre: "protus auténtico",
-        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
-        alias: ["modo I", "primer modo", "primer tono", "protus authenticus"])
-    /// Modo II, el protus plagal (el hipodórico): final Re, ámbito de La a La, recitado en Fa.
-    public static let protusPlagal = TipoDeEscala(
-        nombre: "protus plagal",
-        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
-        alias: ["modo II", "segundo modo", "segundo tono", "protus plagalis"])
-    /// Modo III, el deuterus auténtico (el frigio): final Mi, ámbito de Mi a Mi, recitado en Do (Si en los textos
-    /// antiguos).
-    public static let deuterusAutentico = TipoDeEscala(
-        nombre: "deuterus auténtico",
-        intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
-        alias: ["modo III", "tercer modo", "tercer tono", "deuterus authenticus"])
-    /// Modo IV, el deuterus plagal (el hipofrigio): final Mi, ámbito de Si a Si, recitado en La.
-    public static let deuterusPlagal = TipoDeEscala(
-        nombre: "deuterus plagal",
-        intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
-        alias: ["modo IV", "cuarto modo", "cuarto tono", "deuterus plagalis"])
-    /// Modo V, el tritus auténtico (el lidio): final Fa, ámbito de Fa a Fa, recitado en Do.
-    public static let tritusAutentico = TipoDeEscala(
-        nombre: "tritus auténtico",
-        intervalos: [
-            .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
-        ],
-        alias: ["modo V", "quinto modo", "quinto tono", "tritus authenticus"])
-    /// Modo VI, el tritus plagal (el hipolidio): final Fa, ámbito de Do a Do, recitado en La.
-    public static let tritusPlagal = TipoDeEscala(
-        nombre: "tritus plagal",
-        intervalos: [
-            .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
-        ],
-        alias: ["modo VI", "sexto modo", "sexto tono", "tritus plagalis"])
-    /// Modo VII, el tetrardus auténtico (el mixolidio): final Sol, ámbito de Sol a Sol, recitado en Re.
-    public static let tetrardusAutentico = TipoDeEscala(
-        nombre: "tetrardus auténtico",
-        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
-        alias: ["modo VII", "séptimo modo", "séptimo tono", "tetrardus authenticus"])
-    /// Modo VIII, el tetrardus plagal (el hipomixolidio): final Sol, ámbito de Re a Re, recitado en Do.
-    public static let tetrardusPlagal = TipoDeEscala(
-        nombre: "tetrardus plagal",
-        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
-        alias: ["modo VIII", "octavo modo", "octavo tono", "tetrardus plagalis"])
-
-    /// Los ocho modos, del I al VIII.
-    public static let modosGregorianos: [TipoDeEscala] = [
-        .protusAutentico, .protusPlagal, .deuterusAutentico, .deuterusPlagal,
-        .tritusAutentico, .tritusPlagal, .tetrardusAutentico, .tetrardusPlagal,
-    ]
 }
 
 // MARK: - Indonesia

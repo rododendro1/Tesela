@@ -337,15 +337,6 @@ extension NombresDeEscalas {
         .tradicional(.tetracordoDiatonicoDitonico, "ditonikus diatonikus tetrachord"),
         .tradicional(.tetracordoDiatonicoTenso, "feszes diatonikus tetrachord"),
         .tradicional(.tetracordoDiatonicoIgual, "egyenletes diatonikus tetrachord"),
-        // Canto gregoriano: los ocho modos
-        .tradicional(.protusAutentico, "autentikus protus"),
-        .tradicional(.protusPlagal, "plagális protus"),
-        .tradicional(.deuterusAutentico, "autentikus deuterus"),
-        .tradicional(.deuterusPlagal, "plagális deuterus"),
-        .tradicional(.tritusAutentico, "autentikus tritus"),
-        .tradicional(.tritusPlagal, "plagális tritus"),
-        .tradicional(.tetrardusAutentico, "autentikus tetrardus"),
-        .tradicional(.tetrardusPlagal, "plagális tetrardus"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "Rāga"),
@@ -369,7 +360,6 @@ extension NombresDeEscalas {
         .categoria(.tetracordo, "Tetrachord"),
         .categoria(.harmonia, "Harmonia"),
         .categoria(.afinacion, "Hangolás"),
-        .categoria(.modo, "Hangnem"),
         .categoria(.escala, "Skála"),
     ])
 }

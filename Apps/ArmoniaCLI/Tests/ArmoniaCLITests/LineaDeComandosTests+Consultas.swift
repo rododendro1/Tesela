@@ -150,10 +150,6 @@ extension LineaDeComandosTests {
         #expect(babilonicas.contains("  išartu: Do Re Mi Fa Sol La Si\n"), Comment(rawValue: babilonicas))
         #expect(babilonicas.contains("  nīd qabli: Do Re♭ Mi♭ Fa Sol La♭ Si♭"), Comment(rawValue: babilonicas))
         #expect(salida("escalas --categoria afinacion") == babilonicas)
-        let gregorianos = salida("escalas --tradicion gregoriano")
-        #expect(gregorianos.hasPrefix("gregoriano · modo (8)\n"), Comment(rawValue: gregorianos))
-        #expect(gregorianos.contains("  protus auténtico: Do Re Mi♭ Fa Sol La Si♭\n"), Comment(rawValue: gregorianos))
-        #expect(salida("escalas --tradition gregorian") == gregorianos)
         let murchanas = salida("escalas --categoria murchana")
         #expect(murchanas.hasPrefix("india · mūrchanā (14)\n"), Comment(rawValue: murchanas))
         #expect(

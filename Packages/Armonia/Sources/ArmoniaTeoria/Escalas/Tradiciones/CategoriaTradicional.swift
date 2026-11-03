@@ -5,7 +5,7 @@ import ArmoniaNucleo
 /// La tradición musical de que viene una escala de `TipoDeEscala.tradicionales`.
 public enum Tradicion: String, Sendable, Codable, CaseIterable {
     case india, grecia, greciaAntigua, mundoArabe, persia, turquia, azerbaiyan
-    case china, japon, corea, etiopia, indonesia, klezmer, andes, bizancio, mesopotamia, gregoriano
+    case china, japon, corea, etiopia, indonesia, klezmer, andes, bizancio, mesopotamia
 }
 
 /// Qué es una escala dentro de su tradición: un rāga, un mēḷa (o mēḷakarta), un dromos, un maqam, un makam,
@@ -54,8 +54,6 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     case tetracordo
     /// Harmoniai de la Grecia antigua.
     case harmonia
-    /// Los ocho modos (toni) del canto gregoriano.
-    case modo
     /// Las siete afinaciones de la lira y el arpa babilónicas (išartu, kitmu…), de los textos cuneiformes.
     case afinacion
     /// Escala sin un nombre propio para su categoría (las japonesas y las andinas).
@@ -88,14 +86,13 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         case .tetracordo: "tetracordo"
         case .harmonia: "harmonía"
         case .afinacion: "afinación"
-        case .modo: "modo"
         case .escala: "escala"
         }
     }
 
     /// El nombre de la categoría en el idioma de la notación («escala» → gamme, Tonleiter, гамма…), de los ficheros de
     /// `Escalas/Nombres/` (las filas `.categoria`). Casi todas son préstamos: solo se traducen «tetracordo», «harmonía»,
-    /// «afinación», «modo» y «escala», y en ruso y griego se transcriben las demás.
+    /// «afinación» y «escala», y en ruso y griego se transcriben las demás.
     public func nombre(en notacion: Notacion) -> String {
         if notacion.textos == .espanol { return nombre }
         return NombresDeEscalas.de(notacion.textos).nombre(de: self) ?? nombre
@@ -153,7 +150,7 @@ extension TipoDeEscala {
             (.turquia, .makam, makamlar), (.azerbaiyan, .mugam, mugamlar), (.bizancio, .echos, echoi),
             (.greciaAntigua, .tetracordo, tetracordosGriegos + generosDeArquitasYPtolomeo),
             (.greciaAntigua, .harmonia, harmoniai),
-            (.mesopotamia, .afinacion, mesopotamicas), (.gregoriano, .modo, modosGregorianos),
+            (.mesopotamia, .afinacion, mesopotamicas),
         ]
         var tabla: [String: Clasificada] = [:]
         for (tradicion, categoria, tipos) in grupos {
