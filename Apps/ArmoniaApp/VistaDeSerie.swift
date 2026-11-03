@@ -102,7 +102,8 @@ struct VistaDeSerie: View {
                             .frame(minWidth: 26, minHeight: 26)
                             .background(
                                 presentada.estaEnLaForma(fila: fila, columna: columna)
-                                    ? TemaDeLasApps.resaltado.opacity(0.3) : Color.clear)
+                                    ? TemaDeLasApps.resaltado.opacity(0.3) : Color.clear
+                            )
                             .accessibilityHidden(true)
                     }
                     nombre(
