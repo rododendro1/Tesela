@@ -62,7 +62,7 @@ public struct EjecutorDelSistema: EjecutorDeProcesos {
     public func ejecutar(_ ruta: String, _ argumentos: [String], en carpeta: URL) throws -> ResultadoDeProceso {
         // Las salidas van a un fichero y no a una tubería: una tubería llena bloquearía al programa.
         let registro = carpeta.appendingPathComponent(".salida-del-programa")
-        FileManager.default.createFile(atPath: registro.path, contents: nil)
+        try Data().write(to: registro)
         let manejador = try FileHandle(forWritingTo: registro)
         defer { try? manejador.close() }
         let proceso = Process()
