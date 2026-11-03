@@ -71,6 +71,20 @@ extension LineaDeComandosTests {
         }
     }
 
+    @Test func tecladoDePiano() {
+        let notas = salida("teclado Do mayor")
+        #expect(notas.hasPrefix("<svg") && notas.hasSuffix("</svg>\n"), Comment(rawValue: notas))
+        #expect(notas.components(separatedBy: "<circle").count - 1 == 8)
+        #expect(salida("teclado Do mayor --octavas 2").components(separatedBy: "<circle").count - 1 == 15)
+        let derecha = salida("teclado Re mayor --mano derecha")
+        #expect(derecha.contains("Re mayor · Mano derecha"), Comment(rawValue: derecha))
+        #expect(salida("keyboard D major --hand left --ingles").contains("D major · Left hand"))
+        #expect(LineaDeComandos.manoDePiano("Right") == .derecha)
+        #expect(LineaDeComandos.manoDePiano("arriba") == nil)
+        let sinMano = LineaDeComandos.ejecutar(["teclado", "Do", "mayor", "--mano", "arriba"])
+        #expect(sinMano.codigo == 2)
+    }
+
     @Test func cuadricula() {
         for orden in [
             "cuadricula Do Mi Sol", "cuadricula Do3 Mi3 Sol3", "cuadricula --acorde Sol7",

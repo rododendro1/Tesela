@@ -95,8 +95,11 @@ struct VistaDeEscalas: View {
                 DiagramaDeMastil(mastil: Mastil(.guitarra, trastes: 12), escala: escala, notacion: notacion)
             }
             posiciones(de: escala)
+            formasPentatonicas(de: escala)
             seccionDeLaSecuencia(de: escala)
+            secuenciaEnLasPosiciones(de: escala)
             digitacionDePiano(de: escala)
+            simetria(de: escala)
             modos(de: escala)
             comparacion(de: escala)
         }
@@ -107,7 +110,7 @@ struct VistaDeEscalas: View {
         .onAppear(perform: tomarLaEscalaPedida)
         .toolbar {
             ToolbarItem {
-                BotonDeExportar([pentagrama.fichero] + secuenciaPresentada(de: escala).ficheros)
+                BotonDeExportar([pentagrama.fichero] + secuenciaPresentada(de: escala).ficheros + svgs(de: escala))
             }
         }
     }
@@ -156,16 +159,112 @@ struct VistaDeEscalas: View {
         }
     }
 
-    /// La digitación de piano de cada mano, con el dedo debajo de cada nota.
+    /// La digitación de piano de cada mano, con el dedo debajo de cada nota y dibujada en un teclado.
     @ViewBuilder
     private func digitacionDePiano(de escala: Escala) -> some View {
+        let teclados = self.teclados(de: escala)
         Section(notacion.texto(\.digitacionDePiano)) {
-            ForEach(PresentacionDeEstudioDeEscala.digitaciones(escala, notacion: notacion), id: \.self) { mano in
-                VStack(alignment: .leading, spacing: 2) {
+            ForEach(
+                Array(PresentacionDeEstudioDeEscala.digitaciones(escala, notacion: notacion).enumerated()),
+                id: \.offset
+            ) { i, mano in
+                VStack(alignment: .leading, spacing: 4) {
                     Text(mano.mano).bold()
                     let pares = zip(mano.notas.split(separator: " "), mano.dedos.split(separator: " "))
                     Text(pares.map { "\($0) \($1)" }.joined(separator: " · "))
                         .font(.system(.footnote, design: .monospaced))
+                    if teclados.indices.contains(i) {
+                        VistaSVG(svg: teclados[i].svg)
+                            .frame(height: 150)
+                            .accessibilityLabel(Text(teclados[i].titulo))
+                    }
+                }
+            }
+        }
+    }
+
+    /// Los teclados de cada mano, para exportarlos en SVG.
+    private func svgs(de escala: Escala) -> [FicheroParaExportar] {
+        teclados(de: escala).map { FicheroParaExportar.svg($0.svg, nombre: $0.titulo) }
+    }
+
+    /// La escala en el teclado de piano con los dedos de cada mano, la derecha primero: el dibujo y su título.
+    private func teclados(de escala: Escala) -> [(svg: String, titulo: String)] {
+        Mano.allCases.map { mano in
+            let titulo =
+                escala.nombre(en: notacion) + " · "
+                + notacion.texto { mano == .derecha ? $0.manoDerecha : $0.manoIzquierda }
+            return (PresentacionDeEstudioDeEscala.teclado(de: escala, mano: mano, notacion: notacion), titulo)
+        }
+    }
+
+    /// Las escalas simétricas: cada cuánto se repiten, desde qué notas empiezan igual y los acordes que se repiten
+    /// sobre cada una, para escucharlos.
+    @ViewBuilder
+    private func simetria(de escala: Escala) -> some View {
+        if let simetria = PresentacionDeEstudioDeEscala.simetria(de: escala, notacion: notacion) {
+            Section(notacion.texto(\.simetria)) {
+                Text(simetria.resumen)
+                LabeledContent(notacion.texto(\.tonicasEquivalentes), value: simetria.tonicas)
+                ForEach(simetria.ciclos, id: \.self) { ciclo in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(ciclo.nombre).bold()
+                            Text(ciclo.detalle).font(.footnote)
+                        }
+                        Spacer()
+                        BotonDeEscuchar(ciclo.sonido).labelStyle(.iconOnly)
+                    }
+                    .buttonStyle(.borderless)
+                }
+            }
+        }
+    }
+
+    /// Las cinco formas de una pentatónica en la guitarra, con las notas que cada una comparte con la siguiente.
+    @ViewBuilder
+    private func formasPentatonicas(de escala: Escala) -> some View {
+        let formas = PresentacionDeEstudioDeEscala.formasPentatonicas(de: escala, notacion: notacion)
+        if !formas.isEmpty {
+            Section(notacion.texto(\.formasDeLaPentatonica)) {
+                ForEach(formas, id: \.self) { forma in
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Text(forma.titulo).bold()
+                            Spacer()
+                            BotonDeEscuchar(forma.sonido)
+                        }
+                        DiagramaDeMastil(posicion: forma.posicion, escala: escala, notacion: notacion)
+                            .frame(maxHeight: 120)
+                        Text(forma.comunes).font(.caption).foregroundColor(.secondary)
+                    }
+                }
+            }
+        }
+    }
+
+    /// La secuencia elegida tocada en cada posición (CAGED o por cuerdas, como arriba), sin salir de ella, en
+    /// tablatura.
+    @ViewBuilder
+    private func secuenciaEnLasPosiciones(de escala: Escala) -> some View {
+        let posiciones = PresentacionDeEstudioDeEscala.secuenciaEnLasPosiciones(
+            escala, secuencia, caged: caged, sentido: bajando ? .descendente : .ascendente, notacion: notacion
+        ).filter { !$0.notas.isEmpty }
+        if !posiciones.isEmpty {
+            Section(notacion.texto(\.secuenciaEnLasPosiciones)) {
+                ForEach(posiciones, id: \.self) { posicion in
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Text(posicion.titulo).bold()
+                            Spacer()
+                            BotonDeEscuchar(posicion.sonido)
+                        }
+                        ScrollView(.horizontal) {
+                            Text(posicion.tablatura.joined(separator: "\n"))
+                                .font(.system(.caption2, design: .monospaced))
+                                .fixedSize()
+                        }
+                    }
                 }
             }
         }

@@ -22,7 +22,8 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionAnalizar),
             ejemplo: ejemplo(
                 "armonia analizar Do Fa Sol7 Do Lam Re7 Sol",
-                "armonia analyze C F G7 C Am D7 G")),
+                "armonia analyze C F G7 C Am D7 G"),
+            notas: TextosDeCLI.traduccion(\.notasAnalizar)),
         // analizar --archivo <fichero> [--ventana <duración>]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisAnalizarArchivo),

@@ -24,7 +24,8 @@ extension LineaDeComandos {
         "--musicxml", "--help", "--ayuda", "--escalas", "--scales", "--acordes", "--chords", "--sin-octava",
         "--no-octave", "--enlazar", "--connect", "--disposiciones", "--voicings", "--nombres", "--names",
         "--tonalidades", "--keys", "--sustituciones", "--substitutions", "--bajando", "--descending", "--piano",
-        "--modos", "--modes", "--bebop", "--pentatonicas", "--pentatonics",
+        "--modos", "--modes", "--bebop", "--pentatonicas", "--pentatonics", "--simetria", "--symmetry",
+        "--notas-guia", "--guide-tones", "--formas", "--shapes",
     ]
 
     /// Los valores que se proponen tras una opción.
@@ -42,6 +43,7 @@ extension LineaDeComandos {
             ]
         ),
         (["--aproximacion", "--approach"], ["abajo", "arriba", "encierro", "below", "above", "enclosure"]),
+        (["--mano", "--hand"], ["derecha", "izquierda", "right", "left"]),
         (
             ["--secuencia", "--sequence"],
             [

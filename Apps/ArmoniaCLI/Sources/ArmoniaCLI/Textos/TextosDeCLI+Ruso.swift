@@ -9,6 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <аккорды> [--in <тональность>] [--scales]",
         descripcionAnalizar: "римские цифры, функции, кадансы и\nмодуляции (с общим аккордом; без --in)\n--scales: лад каждого аккорда, с\nнапряжениями и избегаемыми звуками",
+        notasAnalizar: "--guide-tones: две линии направляющих нот,\nот терции и от септимы",
         sintaxisAnalizarArchivo: "analyze --file <файл> [--window <длительность>]",
         descripcionAnalizarArchivo: "то же самое с аккордами файла MIDI,\nMusicXML, MEI или ABC (по одному на\nдолю; --window 2: по одному на\nполовинную)",
         sintaxisArmonizar: "harmonize <мелодия> [--in <тональность>] [--proposals 3]",
@@ -33,11 +34,12 @@ extension TextosDeCLI {
         notasArpegio: "параметры: --octaves 2 (от 1 до 4), --no-octave, --from E\n(или 3: начать с этой ноты), --tensions 9,13, --degrees\n1-5-3-8 (свой рисунок) и --approach below, above или\nenclosure (хроматические ноты, ведущие к каждой)",
         sintaxisIdentificar: "identify <ноты>",
         descripcionIdentificar: "аккорды, которые образуют ноты",
+        notasIdentificar: "параметры: --scales (гаммы, содержащие\nэти ноты, вместо аккордов) и --file\nmelody.mid (ноты файла MIDI, MusicXML,\nMEI или ABC, с --scales)",
         sintaxisIntervalo: "interval <нота> <нота>",
         descripcionIntervalo: "интервал между двумя нотами или\nвысотами",
         sintaxisEscala: "scale <гамма> [--chords]",
         descripcionEscala: "ноты и аккорды гаммы\n--chords: все аккорды на каждой\nступени, не только терцовые",
-        notasEscala: "параметры: --sequence thirds (или fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(от 1 до 4), --piano (аппликатура), --modes (параллельные и относительные)\nи --compare C lydian (в конце)",
+        notasEscala: "параметры: --sequence thirds (или fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(от 1 до 4), --piano (аппликатура), --modes (параллельные и относительные)\nи --compare C lydian (в конце); --symmetry (через сколько\nповторяется и её аккорды)",
         sintaxisEscalas: "scales [<текст>] [параметры]",
         descripcionEscalas: "каталог гамм: обычные и гаммы других\nтрадиций, по категориям, с нотами\nот до",
         notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) и --category maqam (или rāga, makam,\ndastgah, dromos…); текст ищет в названиях",
@@ -110,6 +112,9 @@ extension TextosDeCLI {
         descripcionDigitaciones: "способы сыграть аккорд, от самого удобного к наименее удобному,\nна струнном инструменте с ладами (струны снизу вверх)\nпараметры: --instrument guitar|bass|ukulele|mandolin|… (также\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (самый высокий используемый лад), --fingers 4 (сколько\nпальцев можно использовать), --complete (со всеми нотами: по\nумолчанию квинта может отсутствовать), --diagram (одна строка на\nструну),\n--capo 2 (лады от каподастра), --musicxml (первая аппликатура\nкаждого аккорда как табулатура MusicXML)",
         sintaxisPosiciones: "positions <гамма> [--caged]",
         descripcionPosiciones: "гамма по позициям на гитаре: три\nноты на струну (две в пентатонике)\nили CAGED",
+        notasPosiciones: "параметры: --sequence thirds (или другая:\nсеквенция в каждой позиции; с\n--descending — вниз) и --shapes (пять форм\nпентатоники и их общие ноты)",
+        sintaxisTeclado: "keyboard <гамма> [--hand right]",
+        descripcionTeclado: "гамма на клавиатуре фортепиано\n(SVG): ноты или, с --hand right\nили left, пальцы; --octaves 2",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -221,6 +226,10 @@ extension TextosDeCLI {
         trasteFueraDeRango: "самый высокий лад — число от 0 до 24: --fret 12",
         faltaCifradoDeDigitaciones: { d, digitaciones in "не указано обозначение аккорда: \(digitaciones.1)" },
         faltaEscalaDePosiciones: "не указана гамма: armonia positions G major",
+        faltaEscalaDelTeclado: "не указана гамма: armonia keyboard D major",
+        manoDesconocida: { texto in "неизвестная рука: «\(texto)» (right или left)" },
+        archivoConNotas: "с --file ноты не указываются",
+        noEsPentatonica: "формы есть только у пятиступенных гамм: armonia positions A minor pentatonic --shapes",
         capoFueraDeRango: "каподастр — число от 0 до 12: --capo 2",
         octavasFueraDeRango: "октавы — число от 1 до 4: --octaves 2",
         desdeNoValido: { desde in "«\(desde)» — не нота и не ступень аккорда: --from E или --from 3" },

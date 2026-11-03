@@ -2,6 +2,22 @@
 
 ## Sin publicar
 
+### Más escalas
+
+- **Buscar escalas** en una pieza: `PiezaImportada.clasesDeAltura(umbral:)` (las notas que suenan, por lo que duran)
+  y `PiezaImportada.escalas(umbral:tipos:)`, de más a menos probable, con la tonalidad estimada como desempate.
+- **Escalas simétricas**: `Escala.intervaloDeSimetria`, `transposicionesDistintas`, `tonicasEquivalentes` y
+  `ciclosSimetricos` (`CicloSimetrico`: Do7 Mi♭7 Fa♯7 La7 en la disminuida semitono-tono).
+- **Líneas de notas guía**: `Acorde.lineaDeNotasGuia(_:desde:octava:)` (`InicioDeNotasGuia`), una nota por acorde,
+  la más cercana a la anterior.
+- **En el mástil**: `EscalaEnElMastil.recorrido`, `secuencia(_:sentido:)` (la secuencia sin salir de la posición) y
+  `notasComunes(con:)`; `Mastil.formasPentatonicas(de:)`, las cinco formas desde la tónica.
+- **`TecladoDePiano`**: un teclado en SVG con las teclas marcadas (los dedos o los nombres) y la tónica resaltada.
+- **En la línea de comandos**, `armonia identificar --escalas` y `--archivo <fichero>`, `armonia escala --simetria`,
+  `armonia analizar --notas-guia`, `armonia posiciones --secuencia <tipo>` (con `--bajando`) y `--formas`, y la orden
+  nueva `armonia teclado <escala> [--mano derecha] [--octavas 2]` (en inglés, `--scales`, `--file`, `--symmetry`,
+  `--guide-tones`, `--sequence`, `--descending`, `--shapes`, `keyboard` y `--hand`).
+
 ### Teclados de cuadrícula
 
 - **Más teclados de cuadrícula**: `TecladoCuadrado.tercerasMenores`, `tritonos`, `octavas` y `secuencial`;

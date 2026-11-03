@@ -1,4 +1,5 @@
 import Armonia
+import ArmoniaPresentacion
 import Foundation
 
 // MARK: - Dibujos: Tonnetz, tabla armónica y teclados de cuadrícula
@@ -147,6 +148,36 @@ extension LineaDeComandos {
             tabla = dibujo
         }
         return bien(tabla.svg(notacion: notacion, margen: margen).trimmingCharacters(in: "\n"))
+    }
+
+    /// `teclado Re mayor [--mano derecha|izquierda] [--octavas 2]`: la escala en un teclado de piano, en SVG, con
+    /// el nombre de cada nota o, con una mano, sus dedos.
+    static func teclado(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        var argumentos = Argumentos(argumentos)
+        guard let octavas = argumentos.quitarNumero("--octavas", "--octaves", en: 1...4, porDefecto: 1) else {
+            return uso(.octavasFueraDeRango, notacion)
+        }
+        var mano: Mano?
+        switch argumentos.quitarOpcion("--mano", "--hand") {
+        case .ausente: break
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            guard let elegida = manoDePiano(texto) else { return uso(.manoDesconocida(texto), notacion) }
+            mano = elegida
+        }
+        if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
+        guard !argumentos.restantes.isEmpty else { return uso(.faltaEscalaDelTeclado, notacion) }
+        let escala = try Escala(leyendo: argumentos.unidos)
+        let svg = PresentacionDeEstudioDeEscala.teclado(de: escala, mano: mano, octavas: octavas, notacion: notacion)
+        return bien(svg.trimmingCharacters(in: "\n"))
+    }
+
+    /// La mano de `--mano`, en español o en inglés.
+    static func manoDePiano(_ texto: String) -> Mano? {
+        let manos: [String: Mano] = [
+            "derecha": .derecha, "right": .derecha, "izquierda": .izquierda, "left": .izquierda,
+        ]
+        return manos[texto.lowercased()]
     }
 
     /// `cuadricula Do Mi Sol`, `cuadricula --ejes 2,5 --acorde Sol7`,

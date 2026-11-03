@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+- **Más escalas en Armonía.** En Escalas, la digitación de piano dibujada en un teclado para cada mano (y para
+  exportar en SVG), la simetría de las escalas simétricas con sus acordes que se repiten, las cinco formas de la
+  pentatónica con las notas que comparten y la secuencia elegida tocada en cada posición, en tablatura. En
+  Identificar, las escalas que contienen lo que suena. En Análisis, las líneas de notas guía, para escucharlas y
+  exportarlas.
+
 - **Teclados de cuadrícula como los de un controlador.** En la app Tonnetz, cuatro redes más (terceras menores,
   tritonos, octavas y secuencial) y «H,V», con los ejes que se escriban. Con `AjusteCuadrado`, cualquiera se gira de
   90° en 90°, se refleja, se dibuja en la rejilla de un Launchpad, un Push o un LinnStrument con la nota de origen que

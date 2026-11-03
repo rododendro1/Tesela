@@ -74,6 +74,14 @@ enum ErrorDeUso {
     /// `arpegio --aproximacion` con un nombre que no se conoce.
     case aproximacionDesconocida(String)
     case secuenciaDesconocida(String)
+    /// `teclado` sin escala.
+    case faltaEscalaDelTeclado
+    /// `teclado … --mano` con una mano que no es derecha ni izquierda.
+    case manoDesconocida(String)
+    /// `identificar --archivo` con notas detrás.
+    case archivoConNotas
+    /// `posiciones Do mayor --formas`: las formas son de las escalas de cinco notas.
+    case noEsPentatonica
 
     // Neorriemanniano
     case vocesFueraDeRango
@@ -213,6 +221,10 @@ enum ErrorDeUso {
             return TextosDeCLI.traduccion { $0.aproximacionDesconocida(nombre) }
         case .secuenciaDesconocida(let nombre):
             return TextosDeCLI.traduccion { $0.secuenciaDesconocida(nombre) }
+        case .faltaEscalaDelTeclado: return TextosDeCLI.traduccion(\.faltaEscalaDelTeclado)
+        case .manoDesconocida(let mano): return TextosDeCLI.traduccion { $0.manoDesconocida(mano) }
+        case .archivoConNotas: return TextosDeCLI.traduccion(\.archivoConNotas)
+        case .noEsPentatonica: return TextosDeCLI.traduccion(\.noEsPentatonica)
         case .vocesFueraDeRango: return TextosDeCLI.traduccion(\.vocesFueraDeRango)
         case .unAcordeDeVecinos:
             let ejemplo = "armonia vecinos Sol7"

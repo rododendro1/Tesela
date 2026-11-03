@@ -140,6 +140,19 @@ import Testing
         { $0.texto(\.digitacionDePiano) },
         { $0.texto(\.otrosNombres) },
         { $0.texto(\.sustituciones) },
+        { $0.texto(\.escalasQueLasContienen) },
+        { $0.texto { $0.ademas("Fa, La") } },
+        { $0.texto(\.simetria) },
+        { $0.texto { $0.repiteCada(3, 3) } },
+        { $0.texto(\.tonicasEquivalentes) },
+        { $0.texto(\.lineasDeNotasGuia) },
+        { $0.texto(\.desdeLaTercera) },
+        { $0.texto(\.desdeLaSeptima) },
+        { $0.texto(\.secuenciaEnLasPosiciones) },
+        { $0.texto(\.formasDeLaPentatonica) },
+        { $0.texto { $0.formaNumero(1) } },
+        { $0.texto { $0.comparteCon(2, "6:8") } },
+        { $0.texto(\.teclado) },
     ]
 
     @Test func cadaTextoEstaEnCadaIdioma() {

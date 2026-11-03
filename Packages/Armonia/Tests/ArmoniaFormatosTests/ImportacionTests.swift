@@ -228,3 +228,34 @@ import Testing
         #expect(Altura(pasos: -1, midi: 58).nombre == "Si♭₃")
     }
 }
+
+/// Las escalas que contienen las notas de una pieza.
+@Suite struct EscalasDeUnaPiezaTests {
+    /// Re Mi Fa Sol La Si Do Re en negras, el Re final en redonda y un Do♯ muy corto.
+    private func dorica(tonalidad: Tonalidad?) -> PiezaImportada {
+        let midis = [62, 64, 65, 67, 69, 71, 72, 74]
+        var notas = midis.enumerated().map { i, midi in
+            NotaDeLaPieza(altura: Altura(midi: midi), inicio: .negra * i, duracion: .negra)
+        }
+        notas.append(NotaDeLaPieza(altura: Altura(midi: 62), inicio: .redonda * 2, duracion: .redonda))
+        notas.append(NotaDeLaPieza(altura: Altura(midi: 61), inicio: .redonda * 3, duracion: .fusa))
+        return PiezaImportada(tonalidad: tonalidad, notas: notas)
+    }
+
+    @Test func clasesDeAltura() {
+        let pieza = dorica(tonalidad: nil)
+        #expect(pieza.clasesDeAltura().first == 2)
+        #expect(pieza.clasesDeAltura().count == 7)
+        #expect(pieza.clasesDeAltura(umbral: 0).count == 8)
+        #expect(PiezaImportada(notas: []).clasesDeAltura().isEmpty)
+    }
+
+    @Test func escalas() {
+        let enRe = dorica(tonalidad: Tonalidad(.re, .menor)).escalas()
+        #expect(enRe.first == Escala(.re, .dorico))
+        // Con otra tónica, el modo que empieza en ella; todas las primeras, con las mismas siete notas.
+        let enMi = dorica(tonalidad: Tonalidad(.mi, .menor)).escalas()
+        #expect(enMi.first == Escala(.mi, .frigio))
+        #expect(enMi.prefix(7).allSatisfy { Set($0.notas.map(\.claseDeAltura)) == [0, 2, 4, 5, 7, 9, 11] })
+    }
+}

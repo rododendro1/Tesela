@@ -115,7 +115,7 @@ import Testing
         #expect(Set(nombres).count == nombres.count)
         for nombre in nombres { #expect(nombre == nombre.lowercased(), Comment(rawValue: nombre)) }
         for orden in LineaDeComandos.ordenes { #expect(!orden.ayuda.isEmpty, Comment(rawValue: orden.nombres[0])) }
-        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 46)
+        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 47)
         // Los nombres no distinguen mayúsculas.
         #expect(salida("ACORDE Do") == salida("acorde Do"))
     }
@@ -143,6 +143,10 @@ import Testing
         "escalas --tradicion marte", "escalas --categoria foo", "musicxml escala", "midi escala Re bayati --clave fa",
         "escala Do mayor --secuencia foo", "escala Do mayor --secuencia", "escala Do mayor --comparar",
         "escala Do mayor --octavas 9", "escala Do mayor --foo", "escala --piano",
+        "teclado", "teclado Do mayor --mano foo", "teclado Do mayor --mano", "teclado Do mayor --octavas 9",
+        "teclado Do mayor --foo", "identificar --archivo coral.mid Do", "identificar --archivo", "identificar --foo Do",
+        "identificar --escalas", "posiciones Do mayor --secuencia foo", "posiciones Do mayor --secuencia",
+        "posiciones Do mayor --formas",
     ]
 
     /// Con --ingles no se cuela nada en español: ni en la salida, ni en los errores, ni en la ayuda.
@@ -172,6 +176,9 @@ import Testing
             "chord G7 --voicings --names --keys --substitutions --compare C", "chord C --substitutions --in G major",
             "scale C major --sequence thirds --descending --octaves 2 --piano --modes --compare C lydian",
             "chord C7 --bebop --pentatonics", "analyze Dm7 G7 Cmaj7 --in C major --scales",
+            "identify C E G B F# --scales", "scale C half whole diminished --symmetry",
+            "analyze Dm7 G7 Cmaj7 --guide-tones", "positions A minor pentatonic --shapes",
+            "positions C major --sequence thirds --caged --descending", "keyboard D major --hand right --octaves 2",
         ] {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
             #expect(resultado.codigo == 0, "\(orden): \(resultado.error)")
