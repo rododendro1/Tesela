@@ -151,7 +151,8 @@ extension TipoDeEscala {
             (.klezmer, .shteyger, klezmer), (.india, .raga, ragasIndostanicos), (.persia, .dastgah, dastgah),
             (.corea, .jo, coreanas), (.andes, .escala, andinas),
             (.turquia, .makam, makamlar), (.azerbaiyan, .mugam, mugamlar), (.bizancio, .echos, echoi),
-            (.greciaAntigua, .tetracordo, tetracordosGriegos), (.greciaAntigua, .harmonia, harmoniai),
+            (.greciaAntigua, .tetracordo, tetracordosGriegos + generosDeArquitasYPtolomeo),
+            (.greciaAntigua, .harmonia, harmoniai),
             (.mesopotamia, .afinacion, mesopotamicas), (.gregoriano, .modo, modosGregorianos),
         ]
         var tabla: [String: Clasificada] = [:]
