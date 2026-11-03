@@ -12,7 +12,8 @@ extension PiezaImportada {
         for nota in notas { pesos[modulo(nota.altura.midi, 12)] += nota.duracion.enRedondas }
         let total = pesos.reduce(0, +)
         guard total > 0 else { return [] }
-        return (0..<12).filter { pesos[$0] / total >= umbral }.sorted { (-pesos[$0], $0) < (-pesos[$1], $1) }
+        let suenan = (0..<12).filter { pesos[$0] > 0 && pesos[$0] / total >= umbral }
+        return suenan.sorted { (-pesos[$0], $0) < (-pesos[$1], $1) }
     }
 
     /// Las escalas que contienen las notas de la pieza, de más a menos probable (las que menos notas añaden); a
