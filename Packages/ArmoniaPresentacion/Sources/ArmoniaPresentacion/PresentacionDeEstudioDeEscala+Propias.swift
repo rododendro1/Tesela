@@ -1,0 +1,77 @@
+import Armonia
+
+/// La escala en las doce tonalidades, de quinta en quinta, como hoja de estudio: cada tonalidad con sus notas y su
+/// pentagrama, y todas seguidas para escucharlas y exportarlas.
+public struct HojaDeEstudioPresentada: Hashable, Sendable {
+    /// «Do mayor por terceras en las doce tonalidades».
+    public let titulo: String
+    /// Una por tonalidad, con su título («Sol mayor»), sus notas y su pentagrama.
+    public let tonalidades: [SecuenciaPresentada]
+    /// Las doce seguidas.
+    public let sonido: Escucha
+    public let ficheros: [FicheroParaExportar]
+}
+
+extension PresentacionDeEstudioDeEscala {
+    // MARK: Escalas vecinas
+
+    /// Las escalas que salen de esta moviendo una nota un semitono, cada una con el cambio: «Fa → Fa♯».
+    ///
+    ///     PresentacionDeEstudioDeEscala.vecinas(de: Escala(.do), notacion: .espanolCompacto)
+    ///         .first { $0.nombre == "Do lidio" }?.detalle   // "Fa → Fa♯"
+    public static func vecinas(de escala: Escala, notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
+        escala.vecinas().map { vecina in
+            EscalaSobreElAcordePresentada(
+                escala: vecina.escala, nombre: vecina.escala.nombre(en: notacion),
+                detalle: vecina.de.nombre(en: notacion) + " → " + vecina.a.nombre(en: notacion),
+                sonido: .escala(vecina.escala))
+        }
+    }
+
+    // MARK: El reloj
+
+    /// La escala en un reloj de doce horas (SVG), en el círculo cromático o en el de quintas, con el nombre de
+    /// cada nota; las que no son de la escala, con el nombre más sencillo. La tónica lleva el borde naranja.
+    public static func reloj(
+        de escala: Escala, orden: RelojDeClases.Orden = .cromatico, notacion: Notacion
+    ) -> String {
+        // Las doce clases con el nombre más sencillo; encima, las de la escala como las escribe ella.
+        var rotulos: [Int: String] = [:]
+        for nota in ConjuntoDeClases(0..<12).notas() { rotulos[nota.claseDeAltura] = nota.nombre(en: notacion) }
+        for nota in escala.notas { rotulos[nota.claseDeAltura] = nota.nombre(en: notacion) }
+        let circulo = notacion.texto { orden == .cromatico ? $0.circuloCromatico : $0.circuloDeQuintas }
+        let reloj = RelojDeClases(
+            clases: escala.notas.map(\.claseDeAltura), tonica: escala.tonica.claseDeAltura, orden: orden)
+        return reloj.svg(rotulos: rotulos, titulo: escala.nombre(en: notacion) + " · " + circulo)
+    }
+
+    // MARK: Las doce tonalidades
+
+    /// La escala (o una secuencia de ella) en las doce tonalidades, de quinta en quinta desde la suya, en corcheas:
+    /// las que empiezan de Do a Fa♯ desde la octava 4; las demás, desde la 3, para no subir demasiado.
+    public static func enLasDoceTonalidades(
+        _ escala: Escala, secuencia: SecuenciaDeEscala? = nil, notacion: Notacion
+    ) -> HojaDeEstudioPresentada {
+        var titulo = escala.nombre(en: notacion)
+        if let secuencia { titulo += " " + secuencia.nombre(en: notacion) }
+        titulo += " · " + notacion.texto(\.enLasDoceTonalidades)
+        var todas: [Altura] = []
+        let tonalidades = escala.enLasDoceTonalidades.map { transportada in
+            let octava = transportada.tonica.claseDeAltura <= 6 ? 4 : 3
+            let alturas =
+                secuencia.map { transportada.secuencia($0, octava: octava) } ?? transportada.alturas(octava: octava)
+            todas += alturas
+            let nombre = transportada.nombre(en: notacion)
+            return SecuenciaPresentada(
+                titulo: nombre, notas: PresentacionDeCoral.voces(alturas, notacion),
+                sonido: Escucha.voz(Voz(alturas.map { Evento($0, .corchea) })).conTonica(transportada.tonica),
+                pentagrama: PentagramaPresentado(alturas.map { [$0] }, titulo: nombre, notacion: notacion),
+                ficheros: [])
+        }
+        let presentado = PresentacionDeArpegios.presentar(
+            Voz(todas.map { Evento($0, .corchea) }), nombre: titulo, tonalidad: nil, tempo: nil, swing: false,
+            tonica: escala.tonica)
+        return HojaDeEstudioPresentada(
+            titulo: titulo, tonalidades: tonalidades, sonido: presentado.sonido, ficheros: presentado.ficheros)
+    }
+}

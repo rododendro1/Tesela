@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "két hang vagy hangmagasság közötti\nhangköz",
         sintaxisEscala: "scale <skála> [--chords]",
         descripcionEscala: "egy skála hangjai és akkordjai\n--chords: minden fokon minden beleillő\nakkord, nem csak a terces",
-        notasEscala: "opciók: --sequence thirds (vagy fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1-től 4-ig), --piano (ujjrend), --modes (párhuzamos és rokon)\nés --compare C lydian (a végén); --symmetry (milyen gyakran\nismétlődik, és az akkordjai)",
+        notasEscala: "opciók: --sequence thirds (vagy fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1-től 4-ig), --piano (ujjrend), --modes (párhuzamos és rokon)\nés --compare C lydian (a végén); --symmetry (milyen gyakran\nismétlődik, és az akkordjai);\n--neighbors (egy hang elmozdításával) és\n--all-keys (mind a tizenkét hangnemben)",
         sintaxisEscalas: "scales [<szöveg>] [opciók]",
         descripcionEscalas: "a skálák katalógusa: a szokásosak és\nmás hagyományokéi, kategóriánként,\nC-től induló hangjaikkal",
         notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) és --category maqam (vagy rāga, makam,\ndastgah, dromos…); a szöveg a nevekben keres",
@@ -112,9 +112,11 @@ extension TextosDeCLI {
         descripcionDigitaciones: "egy akkord fogásai a legkényelmesebbtől a legkevésbé kényelmesig,\nbundos húros hangszeren (a húrok mélytől magasig)\nopciók: --instrument guitar|bass|ukulele|mandolin|… (\"seven-string\nguitar\", \"five-string bass\", \"drop D\" is), --limit 5, --fret 12\n(a legmagasabb használt bund), --fingers 4 (hány ujj használható),\n--complete (minden hanggal: alapból a kvint elhagyható), --diagram\n(húronként egy sor), --capo 2 (a bundok a kapodasztertől számítva),\n--musicxml (minden akkord első fogása MusicXML-tabulatúraként)",
         sintaxisPosiciones: "positions <skála> [--caged]",
         descripcionPosiciones: "a skála fekvésenként a gitáron:\nhúronként három hang (a pentatonnál\nkettő) vagy CAGED",
-        notasPosiciones: "opciók: --sequence thirds (vagy más:\na szekvencia minden fekvésben; a\n--descending lefelé) és --shapes (a pentaton\nöt formája és közös hangjaik)",
+        notasPosiciones: "opciók: --sequence thirds (vagy más:\na szekvencia minden fekvésben; a\n--descending lefelé) és --shapes (a pentaton\nöt formája és közös hangjaik);\n--instrument bass (vagy más;\nopen-d, open-g, dadgad is) és --capo 2",
         sintaxisTeclado: "keyboard <skála> [--hand right]",
         descripcionTeclado: "a skála zongora-billentyűzeten\n(SVG): a hangjai vagy --hand right\nvagy left mellett az ujjak; --octaves 2",
+        sintaxisReloj: "clock <scale> [--fifths]",
+        descripcionReloj: "a skála egy tizenkét órás számlapon\n(SVG): a kromatikus kör vagy\n--fifths mellett a kvintkör",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -230,6 +232,7 @@ extension TextosDeCLI {
         manoDesconocida: { texto in "ismeretlen kéz: „\(texto)” (right vagy left)" },
         archivoConNotas: "a --file mellett ne írj hangokat",
         noEsPentatonica: "a formák ötfokú skálához tartoznak: armonia positions A minor pentatonic --shapes",
+        faltaEscalaDelReloj: "hiányzik a skála: armonia clock D major",
         capoFueraDeRango: "a kapodaszter 0 és 12 közötti szám: --capo 2",
         octavasFueraDeRango: "az oktávok száma 1 és 4 közötti: --octaves 2",
         desdeNoValido: { desde in "„\(desde)” nem hangja és nem foka az akkordnak: --from E vagy --from 3" },

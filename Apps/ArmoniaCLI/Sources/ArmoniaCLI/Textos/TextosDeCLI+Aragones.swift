@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "intervalo entre dos notas u alturas",
         sintaxisEscala: "escala <escala> [--acordes]",
         descripcionEscala: "notas y acordes d\'una escala\n--acordes: toz os que caben en\ncada grau, no solo os de terceras",
-        notasEscala: "opcions: --secuencia terceras (u cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (dixitación), --modos (paralelos y relativos)\ny --comparar Do lidio (a la fin); --simetria (cada cuánto\nse repite y os suyos acordes)",
+        notasEscala: "opcions: --secuencia terceras (u cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (dixitación), --modos (paralelos y relativos)\ny --comparar Do lidio (a la fin); --simetria (cada cuánto\nse repite y os suyos acordes);\n--vecinas (as que salen de mover una\nnota) y --doce (en as dotze tonalidaz)",
         sintaxisEscalas: "escalas [<texto>] [opcions]",
         descripcionEscalas: "o catalogo d'escalas: as habituals y\nas d'atras tradicions, por\ncategorías, con as suyas notas dende Do",
         notasEscalas: "opcions: --tradicion turquia (u india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) y --categoria maqam (u rāga, makam,\ndastgah, dromos…); un texto busca en os nombres",
@@ -112,9 +112,11 @@ extension TextosDeCLI {
         descripcionDigitaciones: "formas de tocar un acorde, d\'a más cómoda a la menos, en un\ninstrumento de cuerda con trastes (cuerdas de grave a agudo)\nopcions: --instrumento guitarra|bajo|ukelele|mandolina|…\n(tamién «guitarra de siete cuerdas», «bajo de 5 cuerdas»,\n«drop D»), --limite 5, --traste 12 (o más alto que se fa servir),\n--dedos 4 (os que se pueden fer servir), --completo (con todas as notas:\nper defecto a quinta puede faltar), --diagrama (una linia per cuerda),\n--capo 2 (os trastes, dende o capo), --musicxml (a primera forma\nde cada acorde, como tablatura MusicXML)",
         sintaxisPosiciones: "posiciones <escala> [--caged]",
         descripcionPosiciones: "a escala por posicions en a guitarra:\ntres notas por corda (dos en as\npentatonicas) u CAGED",
-        notasPosiciones: "opcions: --secuencia terceras (u atra:\na secuencia en cada posición; con\n--bajando, baixando) y --formas (as cinco\nformas d'a pentatonica y as notas comuns)",
+        notasPosiciones: "opcions: --secuencia terceras (u atra:\na secuencia en cada posición; con\n--bajando, baixando) y --formas (as cinco\nformas d'a pentatonica y as notas comuns);\n--instrumento bajo (u atro;\ntamién re-abierto, sol-abierto, dadgad) y --capo 2",
         sintaxisTeclado: "teclado <escala> [--mano derecha]",
         descripcionTeclado: "a escala en un teclau de piano\n(SVG): as notas u, con --mano derecha\nu izquierda, os dedos; --octavas 2",
+        sintaxisReloj: "reloj <escala> [--quintas]",
+        descripcionReloj: "a escala en un reloch de dotze horas\n(SVG): o cerclo cromatico u, con\n--quintas, o de quintas",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -230,6 +232,7 @@ extension TextosDeCLI {
         manoDesconocida: { texto in "man desconoixida: «\(texto)» (derecha u izquierda)" },
         archivoConNotas: "con --archivo no s'escriben notas",
         noEsPentatonica: "as formas son d'una escala de cinco notas: armonia posiciones La pentatónica menor --formas",
+        faltaEscalaDelReloj: "falta a escala: armonia reloj Re mayor",
         capoFueraDeRango: "o capo ye un numero de 0 a 12: --capo 2",
         octavasFueraDeRango: "as octavas son un numero de 1 a 4: --octavas 2",
         desdeNoValido: { desde in "«\(desde)» no ye una nota ni un grau de l'acorde: --desde Mi u --desde 3" },

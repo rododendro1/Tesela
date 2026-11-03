@@ -177,4 +177,20 @@ extension LineaDeComandosTests {
         #expect(bajando != salida("posiciones Do mayor --secuencia grupos-de-3"))
         #expect(salida("positions A minor pentatonic --shapes --ingles").contains("\n  Shape 2 · "))
     }
+
+    @Test func posicionesEnOtrosInstrumentosYConCapo() {
+        let bajo = salida("posiciones Do mayor --instrumento bajo")
+        #expect(bajo.hasPrefix("Do mayor · 3 notas por cuerda · bajo\n"), Comment(rawValue: bajo))
+        #expect(!bajo.contains("\n    Si  |"))
+        let capo = salida("posiciones Re mayor --capo 2")
+        #expect(capo.contains("Capo en el traste 2"), Comment(rawValue: capo))
+        #expect(capo != salida("posiciones Re mayor"))
+        let dadgad = salida("posiciones Re mayor --instrumento dadgad")
+        #expect(dadgad.hasPrefix("Re mayor · 3 notas por cuerda · guitarra en DADGAD\n"), Comment(rawValue: dadgad))
+        #expect(salida("posiciones Sol mayor --instrumento sol-abierto").contains("guitarra en sol abierto"))
+        #expect(salida("posiciones Re mayor --instrumento re-abierto").contains("guitarra en re abierto"))
+        let formas = salida("posiciones La pentatónica menor --formas --instrumento bajo")
+        #expect(formas.contains("Formas de la pentatónica · bajo"), Comment(rawValue: formas))
+        #expect(salida("positions D major --instrument dadgad --ingles").contains("DADGAD guitar"))
+    }
 }

@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "интервал между двумя нотами или\nвысотами",
         sintaxisEscala: "scale <гамма> [--chords]",
         descripcionEscala: "ноты и аккорды гаммы\n--chords: все аккорды на каждой\nступени, не только терцовые",
-        notasEscala: "параметры: --sequence thirds (или fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(от 1 до 4), --piano (аппликатура), --modes (параллельные и относительные)\nи --compare C lydian (в конце); --symmetry (через сколько\nповторяется и её аккорды)",
+        notasEscala: "параметры: --sequence thirds (или fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(от 1 до 4), --piano (аппликатура), --modes (параллельные и относительные)\nи --compare C lydian (в конце); --symmetry (через сколько\nповторяется и её аккорды);\n--neighbors (сдвинув одну ноту) и\n--all-keys (во всех двенадцати тональностях)",
         sintaxisEscalas: "scales [<текст>] [параметры]",
         descripcionEscalas: "каталог гамм: обычные и гаммы других\nтрадиций, по категориям, с нотами\nот до",
         notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) и --category maqam (или rāga, makam,\ndastgah, dromos…); текст ищет в названиях",
@@ -112,9 +112,11 @@ extension TextosDeCLI {
         descripcionDigitaciones: "способы сыграть аккорд, от самого удобного к наименее удобному,\nна струнном инструменте с ладами (струны снизу вверх)\nпараметры: --instrument guitar|bass|ukulele|mandolin|… (также\n\"seven-string guitar\", \"five-string bass\", \"drop D\"), --limit 5,\n--fret 12 (самый высокий используемый лад), --fingers 4 (сколько\nпальцев можно использовать), --complete (со всеми нотами: по\nумолчанию квинта может отсутствовать), --diagram (одна строка на\nструну),\n--capo 2 (лады от каподастра), --musicxml (первая аппликатура\nкаждого аккорда как табулатура MusicXML)",
         sintaxisPosiciones: "positions <гамма> [--caged]",
         descripcionPosiciones: "гамма по позициям на гитаре: три\nноты на струну (две в пентатонике)\nили CAGED",
-        notasPosiciones: "параметры: --sequence thirds (или другая:\nсеквенция в каждой позиции; с\n--descending — вниз) и --shapes (пять форм\nпентатоники и их общие ноты)",
+        notasPosiciones: "параметры: --sequence thirds (или другая:\nсеквенция в каждой позиции; с\n--descending — вниз) и --shapes (пять форм\nпентатоники и их общие ноты);\n--instrument bass (или другой;\nтакже open-d, open-g, dadgad) и --capo 2",
         sintaxisTeclado: "keyboard <гамма> [--hand right]",
         descripcionTeclado: "гамма на клавиатуре фортепиано\n(SVG): ноты или, с --hand right\nили left, пальцы; --octaves 2",
+        sintaxisReloj: "clock <scale> [--fifths]",
+        descripcionReloj: "гамма на двенадцатичасовом циферблате\n(SVG): хроматический круг или, с\n--fifths, квинтовый круг",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """
@@ -230,6 +232,7 @@ extension TextosDeCLI {
         manoDesconocida: { texto in "неизвестная рука: «\(texto)» (right или left)" },
         archivoConNotas: "с --file ноты не указываются",
         noEsPentatonica: "формы есть только у пятиступенных гамм: armonia positions A minor pentatonic --shapes",
+        faltaEscalaDelReloj: "не указана гамма: armonia clock D major",
         capoFueraDeRango: "каподастр — число от 0 до 12: --capo 2",
         octavasFueraDeRango: "октавы — число от 1 до 4: --octaves 2",
         desdeNoValido: { desde in "«\(desde)» — не нота и не ступень аккорда: --from E или --from 3" },

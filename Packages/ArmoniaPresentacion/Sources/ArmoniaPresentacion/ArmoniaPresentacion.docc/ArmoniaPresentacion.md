@@ -81,6 +81,7 @@ el selector de notación cambia la app entera.
 - ``EscalaSobreElAcordePresentada``
 - ``EscalaEncontrada``
 - ``SimetriaPresentada``
+- ``HojaDeEstudioPresentada``
 - ``PosicionPresentada``
 - ``PresentacionDeTablatura``
 

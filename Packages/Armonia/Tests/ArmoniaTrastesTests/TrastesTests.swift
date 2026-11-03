@@ -654,3 +654,27 @@ extension DigitacionTests {
         #expect(corto.map(\.trastes) == [0...3])
     }
 }
+
+/// Las afinaciones abiertas.
+@Suite struct AfinacionesAbiertasTests {
+    @Test func seEncuentranYTienenNombre() {
+        #expect(Encordado(nombre: "open D") == .guitarraEnReAbierto)
+        #expect(Encordado(nombre: "sol abierto") == .guitarraEnSolAbierto)
+        #expect(Encordado(nombre: "DADGAD") == .guitarraDADGAD)
+        #expect(Encordado.guitarraEnReAbierto.nombre(en: .inglesASCII) == "open D guitar")
+        #expect(Encordado.guitarraEnSolAbierto.nombre(en: .inglesASCII) == "open G guitar")
+        #expect(Encordado.guitarraDADGAD.nombre(en: .inglesASCII) == "DADGAD guitar")
+        #expect(Encordado.guitarraEnReAbierto.cuerdas.map(\.midi) == [38, 45, 50, 54, 57, 62])
+        #expect(Encordado.guitarraEnSolAbierto.cuerdas.map(\.midi) == [38, 43, 50, 55, 59, 62])
+        #expect(Encordado.guitarraDADGAD.conCapo(2).sinCapo == .guitarraDADGAD)
+    }
+
+    @Test func lasEscalasPorPosicionesEnOtrasAfinaciones() {
+        let dadgad = Mastil(.guitarraDADGAD, trastes: 15)
+        let posiciones = dadgad.posicionesPorCuerda(de: Escala(.re))
+        #expect(!posiciones.isEmpty)
+        #expect(posiciones.allSatisfy { $0.posiciones.count == 18 })
+        // CAGED es de la guitarra con la afinación normal.
+        #expect(dadgad.posicionesCAGED(de: Escala(.re)).isEmpty)
+    }
+}

@@ -172,6 +172,18 @@ extension LineaDeComandos {
         return bien(svg.trimmingCharacters(in: "\n"))
     }
 
+    /// `reloj Do disminuida [--quintas]`: la escala en un reloj de doce horas, en SVG.
+    static func reloj(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        var argumentos = Argumentos(argumentos)
+        let quintas = argumentos.quitarMarca("--quintas", "--fifths")
+        if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
+        guard !argumentos.restantes.isEmpty else { return uso(.faltaEscalaDelReloj, notacion) }
+        let escala = try Escala(leyendo: argumentos.unidos)
+        let svg = PresentacionDeEstudioDeEscala.reloj(
+            de: escala, orden: quintas ? .quintas : .cromatico, notacion: notacion)
+        return bien(svg.trimmingCharacters(in: "\n"))
+    }
+
     /// La mano de `--mano`, en español o en inglés.
     static func manoDePiano(_ texto: String) -> Mano? {
         let manos: [String: Mano] = [

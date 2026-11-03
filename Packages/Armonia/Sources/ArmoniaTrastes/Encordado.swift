@@ -83,6 +83,30 @@ public struct Encordado: Hashable, Sendable {
         nombre: "guitarra en re grave",
         cuerdas: [Altura(.re, octava: 2)] + Encordado.guitarra.cuerdas.dropFirst())
 
+    /// Guitarra en re abierto (open D): Re2 La2 Re3 Fa♯3 La3 Re4, un acorde de Re al aire.
+    public static let guitarraEnReAbierto = Encordado(
+        nombre: "guitarra en re abierto",
+        cuerdas: [
+            Altura(.re, octava: 2), Altura(.la, octava: 2), Altura(.re, octava: 3),
+            Altura(Nota(.fa, .sostenido), octava: 3), Altura(.la, octava: 3), Altura(.re, octava: 4),
+        ])
+
+    /// Guitarra en sol abierto (open G): Re2 Sol2 Re3 Sol3 Si3 Re4, un acorde de Sol al aire.
+    public static let guitarraEnSolAbierto = Encordado(
+        nombre: "guitarra en sol abierto",
+        cuerdas: [
+            Altura(.re, octava: 2), Altura(.sol, octava: 2), Altura(.re, octava: 3),
+            Altura(.sol, octava: 3), Altura(.si, octava: 3), Altura(.re, octava: 4),
+        ])
+
+    /// Guitarra en DADGAD: Re2 La2 Re3 Sol3 La3 Re4, un Re con cuarta suspendida al aire.
+    public static let guitarraDADGAD = Encordado(
+        nombre: "guitarra en DADGAD",
+        cuerdas: [
+            Altura(.re, octava: 2), Altura(.la, octava: 2), Altura(.re, octava: 3),
+            Altura(.sol, octava: 3), Altura(.la, octava: 3), Altura(.re, octava: 4),
+        ])
+
     /// Bajo de cuatro cuerdas: Mi1 La1 Re2 Sol2.
     public static let bajoElectrico = Encordado(
         nombre: "bajo",
@@ -104,8 +128,8 @@ public struct Encordado: Hashable, Sendable {
         cuerdas: [Altura(.sol, octava: 3), Altura(.re, octava: 4), Altura(.la, octava: 4), Altura(.mi, octava: 5)])
 
     public static let todos: [Encordado] = [
-        .guitarra, .guitarraEnReGrave, .guitarraDeSieteCuerdas, .bajoElectrico, .bajoDeCincoCuerdas, .ukelele,
-        .mandolina,
+        .guitarra, .guitarraEnReGrave, .guitarraEnReAbierto, .guitarraEnSolAbierto, .guitarraDADGAD,
+        .guitarraDeSieteCuerdas, .bajoElectrico, .bajoDeCincoCuerdas, .ukelele, .mandolina,
     ]
 }
 
@@ -132,6 +156,8 @@ extension Encordado {
         "guitarra de 7 cuerdas": .guitarraDeSieteCuerdas, "guitarra de siete": .guitarraDeSieteCuerdas,
         "guitarra en re": .guitarraEnReGrave, "re grave": .guitarraEnReGrave, "drop d": .guitarraEnReGrave,
         "dropd": .guitarraEnReGrave,
+        "open d": .guitarraEnReAbierto, "re abierto": .guitarraEnReAbierto, "open g": .guitarraEnSolAbierto,
+        "sol abierto": .guitarraEnSolAbierto, "dadgad": .guitarraDADGAD,
         "bass": .bajoElectrico, "bajo electrico": .bajoElectrico,
         "bajo 5": .bajoDeCincoCuerdas, "bajo5": .bajoDeCincoCuerdas, "bajo de 5 cuerdas": .bajoDeCincoCuerdas,
         "bajo de cinco": .bajoDeCincoCuerdas,
@@ -166,6 +192,12 @@ extension Encordado: Nombrable {
             return TextosDeTrastes.traduccion(\.guitarra)
         case .guitarraEnReGrave:
             return TextosDeTrastes.traduccion(\.guitarraEnReGrave)
+        case .guitarraEnReAbierto:
+            return TextosDeTrastes.traduccion(\.guitarraEnReAbierto)
+        case .guitarraEnSolAbierto:
+            return TextosDeTrastes.traduccion(\.guitarraEnSolAbierto)
+        case .guitarraDADGAD:
+            return TextosDeTrastes.traduccion(\.guitarraDADGAD)
         case .guitarraDeSieteCuerdas:
             return TextosDeTrastes.traduccion(\.guitarraDeSieteCuerdas)
         case .bajoElectrico:

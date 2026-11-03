@@ -82,6 +82,8 @@ enum ErrorDeUso {
     case archivoConNotas
     /// `posiciones Do mayor --formas`: las formas son de las escalas de cinco notas.
     case noEsPentatonica
+    /// `reloj` sin escala.
+    case faltaEscalaDelReloj
 
     // Neorriemanniano
     case vocesFueraDeRango
@@ -225,6 +227,7 @@ enum ErrorDeUso {
         case .manoDesconocida(let mano): return TextosDeCLI.traduccion { $0.manoDesconocida(mano) }
         case .archivoConNotas: return TextosDeCLI.traduccion(\.archivoConNotas)
         case .noEsPentatonica: return TextosDeCLI.traduccion(\.noEsPentatonica)
+        case .faltaEscalaDelReloj: return TextosDeCLI.traduccion(\.faltaEscalaDelReloj)
         case .vocesFueraDeRango: return TextosDeCLI.traduccion(\.vocesFueraDeRango)
         case .unAcordeDeVecinos:
             let ejemplo = "armonia vecinos Sol7"

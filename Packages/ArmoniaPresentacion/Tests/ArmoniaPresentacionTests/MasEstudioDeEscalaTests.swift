@@ -108,4 +108,36 @@ import Testing
             de: Escala(.re), mano: .izquierda, octavas: 2, notacion: .inglesASCII)
         #expect(izquierda.contains("Left hand"))
     }
+
+    @Test func vecinas() {
+        let vecinas = PresentacionDeEstudioDeEscala.vecinas(de: Escala(.do), notacion: notacion)
+        #expect(vecinas.contains { $0.nombre == "Do lidio" && $0.detalle == "Fa → Fa♯" })
+        #expect(vecinas.allSatisfy { !$0.sonido.notas.isEmpty })
+    }
+
+    @Test func reloj() {
+        let cromatico = PresentacionDeEstudioDeEscala.reloj(de: Escala(.re), notacion: notacion)
+        #expect(cromatico.contains("<title>Re mayor · Círculo cromático</title>"))
+        #expect(cromatico.contains(">Fa♯</text>") && cromatico.contains(">Do♯</text>"))
+        // Las que no son de la escala, con el nombre más sencillo.
+        #expect(cromatico.contains(">Fa</text>"))
+        let quintas = PresentacionDeEstudioDeEscala.reloj(de: Escala(.re), orden: .quintas, notacion: .inglesASCII)
+        #expect(quintas.contains("Circle of fifths"))
+    }
+
+    @Test func enLasDoceTonalidades() {
+        let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(Escala(.do), notacion: notacion)
+        #expect(hoja.titulo == "Do mayor · En las doce tonalidades")
+        #expect(hoja.tonalidades.count == 12)
+        #expect(hoja.tonalidades.map(\.titulo).prefix(3) == ["Do mayor", "Sol mayor", "Re mayor"])
+        #expect(hoja.tonalidades[0].notas.hasPrefix("Do₄ Re₄ Mi₄"))
+        // Sol empieza en la octava 3, para no subir demasiado.
+        #expect(hoja.tonalidades[1].notas.hasPrefix("Sol₃ La₃"))
+        #expect(hoja.sonido.notas.count == 12 * 8)
+        #expect(hoja.ficheros.count == 5)
+        let terceras = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(
+            Escala(.do), secuencia: .terceras, notacion: notacion)
+        #expect(terceras.titulo == "Do mayor por terceras · En las doce tonalidades")
+        #expect(terceras.tonalidades[0].notas.hasPrefix("Do₄ Mi₄ Re₄ Fa₄"))
+    }
 }
