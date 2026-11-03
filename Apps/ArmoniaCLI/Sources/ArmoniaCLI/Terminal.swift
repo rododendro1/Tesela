@@ -47,7 +47,7 @@ extension LineaDeComandos {
                 "up-down", "down-up", "broken",
             ]
         ),
-        (["--motor", "--engine"], ["lilypond", "propio", "own"]),
+        (["--motor", "--engine"], ["lilypond", "musescore", "verovio", "guido", "propio", "own"]),
         (["--formato", "--format"], ["pdf", "svg", "png"]),
         (["--aproximacion", "--approach"], ["abajo", "arriba", "encierro", "below", "above", "enclosure"]),
         (["--mano", "--hand"], ["derecha", "izquierda", "right", "left"]),

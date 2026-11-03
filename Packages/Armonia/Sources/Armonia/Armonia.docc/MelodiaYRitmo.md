@@ -167,8 +167,8 @@ abc.contains("c2 d/2e/2 | f g2 |]")                   // true
   (`.gmn`), la entrada de Guido Engine (`guido2svg escala.gmn`): la octava 1 es la del Do central
   (`c1` es Do4), las alteraciones son `#` y `&`, y cada duración va como fracción de redonda
   (`/4`, `*3/8`). `Coral` y `AnalisisArmonico` la tienen también.
-- Desde la terminal: `armonia lilypond melodia Do4:4 Re4:8 Mi4:8 Fa4:2 > escala.ly` y
-  `armonia abc melodia Do4:4 Re4:8 Mi4:8 Fa4:2 > escala.abc`.
+- Desde la terminal: `armonia lilypond melodia Do4:4 Re4:8 Mi4:8 Fa4:2 > escala.ly`,
+  `armonia guido melodia … > escala.gmn` y `armonia abc melodia … > escala.abc`.
 
 ## Exportar a MIDI
 

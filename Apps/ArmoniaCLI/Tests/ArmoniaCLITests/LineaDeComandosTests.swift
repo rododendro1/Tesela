@@ -115,7 +115,7 @@ import Testing
         #expect(Set(nombres).count == nombres.count)
         for nombre in nombres { #expect(nombre == nombre.lowercased(), Comment(rawValue: nombre)) }
         for orden in LineaDeComandos.ordenes { #expect(!orden.ayuda.isEmpty, Comment(rawValue: orden.nombres[0])) }
-        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 54)
+        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 56)
         // Los nombres no distinguen mayúsculas.
         #expect(salida("ACORDE Do") == salida("acorde Do"))
     }
@@ -158,6 +158,7 @@ import Testing
         "pentagrama escala Do --clave luna", "pentagrama escala Do --clave", "pentagrama melodia",
         "pentagrama melodia Do4:4 --sobre", "pentagrama melodia Do4:4 --foo",
         "grabar", "grabar coral C --motor foo", "grabar coral C --formato gif", "grabar acorde C", "grabar nube C",
+        "grabar pentagrama acorde C --motor verovio", "motores de mas", "guido", "guido melodia",
     ]
 
     /// Con --ingles no se cuela nada en español: ni en la salida, ni en los errores, ni en la ayuda.
@@ -194,7 +195,7 @@ import Testing
             "positions C major --instrument bass --capo 2", "positions D major --instrument dadgad",
             "scale C 2-2-3-2-3",
             "scale A harmonic minor --all-keys --chords --triads", "positions --arpeggio Am --sweep --up-and-down",
-            "positions --arpeggio C7 --caged --instrument bass --capo 1",
+            "positions --arpeggio C7 --caged --instrument bass --capo 1", "engines",
         ] {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
             #expect(resultado.codigo == 0, "\(orden): \(resultado.error)")

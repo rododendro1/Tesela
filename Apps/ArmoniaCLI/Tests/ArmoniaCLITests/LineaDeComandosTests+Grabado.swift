@@ -4,16 +4,18 @@ import Testing
 
 @testable import ArmoniaCLI
 
-// Las pruebas de `grabar`: con un ejecutor que no ejecuta nada y apunta lo que se le pide, y con el de verdad, que
-// solo se prueba con `/bin/sh`, porque LilyPond y rsvg-convert no tienen por qué estar instalados.
+// Las pruebas de `grabar` y `motores`: con un ejecutor que no ejecuta nada y apunta lo que se le pide, y con el de
+// verdad, que solo se prueba con `/bin/sh`, porque LilyPond, MuseScore y los demás no tienen por qué estar instalados.
 
-/// Un ejecutor que hace como que el programa ha grabado: escribe «GRABADO» en el fichero que tocaba.
+/// Un ejecutor que hace como que el programa ha grabado: escribe «GRABADO» en el fichero que tocaba, o en la salida
+/// estándar si no se le dice ninguno (`guido2svg`). A `--version` responde «Falso 1.0».
 private final class EjecutorFalso: EjecutorDeProcesos, @unchecked Sendable {
     struct Llamada {
         let ruta: String
         let argumentos: [String]
-        /// Lo que Tesela escribió para el programa (el último argumento).
+        /// Lo que se escribió para el programa (el último argumento).
         let fuente: String
+        let limite: TimeInterval
     }
 
     let instalados: Set<String>
@@ -22,7 +24,10 @@ private final class EjecutorFalso: EjecutorDeProcesos, @unchecked Sendable {
     private let cerrojo = NSLock()
     private var apuntadas: [Llamada] = []
 
-    init(instalados: Set<String> = ["lilypond", "rsvg-convert"], codigo: Int32 = 0, agotado: Bool = false) {
+    init(
+        instalados: Set<String> = ["lilypond", "mscore", "verovio", "guido2svg", "rsvg-convert"], codigo: Int32 = 0,
+        agotado: Bool = false
+    ) {
         self.instalados = instalados
         self.codigo = codigo
         self.agotado = agotado
@@ -36,21 +41,29 @@ private final class EjecutorFalso: EjecutorDeProcesos, @unchecked Sendable {
 
     func buscar(_ programa: String) -> String? { instalados.contains(programa) ? "/falso/" + programa : nil }
 
-    func ejecutar(_ ruta: String, _ argumentos: [String], en carpeta: URL) throws -> ResultadoDeProceso {
-        let fuente = try String(contentsOf: carpeta.appendingPathComponent(argumentos.last!), encoding: .utf8)
+    func ejecutar(
+        _ ruta: String, _ argumentos: [String], en carpeta: URL, limite: TimeInterval
+    ) throws -> ResultadoDeProceso {
+        let version = argumentos == ["--version"]
+        let fuente =
+            version ? "" : try String(contentsOf: carpeta.appendingPathComponent(argumentos.last!), encoding: .utf8)
         cerrojo.lock()
-        apuntadas.append(Llamada(ruta: ruta, argumentos: argumentos, fuente: fuente))
+        apuntadas.append(Llamada(ruta: ruta, argumentos: argumentos, fuente: fuente, limite: limite))
         cerrojo.unlock()
         guard codigo == 0, !agotado else {
             return ResultadoDeProceso(codigo: codigo, error: "aviso\nerror: algo falló\n", agotado: agotado)
         }
-        // LilyPond pone la extensión a lo que va tras `-o`; rsvg-convert escribe en el fichero de `--output`.
+        if version { return ResultadoDeProceso(codigo: 0, salida: Data("\nFalso 1.0\nmás\n".utf8)) }
+        // LilyPond pone la extensión a lo que va tras `-o`; MuseScore y Verovio escriben en el fichero de `-o`, y
+        // rsvg-convert en el de `--output`.
         let nombre: String
         if let o = argumentos.firstIndex(of: "-o") {
             let ext = argumentos.contains("--png") ? "png" : argumentos.contains("-dbackend=svg") ? "svg" : "pdf"
-            nombre = argumentos[o + 1] + "." + ext
+            nombre = argumentos[o + 1].contains(".") ? argumentos[o + 1] : argumentos[o + 1] + "." + ext
+        } else if let output = argumentos.firstIndex(of: "--output") {
+            nombre = argumentos[output + 1]
         } else {
-            nombre = argumentos[argumentos.firstIndex(of: "--output")! + 1]
+            return ResultadoDeProceso(codigo: 0, salida: Data("GRABADO".utf8))
         }
         try Data("GRABADO".utf8).write(to: carpeta.appendingPathComponent(nombre))
         return ResultadoDeProceso(codigo: 0)
@@ -130,7 +143,8 @@ extension LineaDeComandosTests {
         for orden in [
             "grabar", "grabar coral Do --motor", "grabar coral Do --motor foo", "grabar coral Do --formato gif",
             "grabar acorde Do", "grabar nube Do", "grabar grabar coral Do",
-            "grabar musicxml melodia Do4:4 --motor propio",
+            "grabar musicxml melodia Do4:4 --motor propio", "grabar pentagrama acorde Do --motor musescore",
+            "motores --foo", "grabar coral Do --motor guido --formato gif",
             "grabar coral --foo 1", "grabar acorde Do --motor lilypond",
         ] {
             let resultado = grabado(orden, con: falso)
@@ -138,6 +152,93 @@ extension LineaDeComandosTests {
             #expect(resultado.error.hasPrefix("armonia: "), Comment(rawValue: orden))
         }
         #expect(falso.llamadas.isEmpty)
+    }
+
+    @Test func grabarConMuseScore() throws {
+        let falso = EjecutorFalso()
+        let pdf = grabado("grabar coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 --cifrados --motor musescore", con: falso)
+        #expect(pdf.codigo == 0, Comment(rawValue: pdf.error))
+        #expect(pdf.datos == Data("GRABADO".utf8))
+        let llamada = try #require(falso.llamadas.first)
+        #expect(llamada.ruta == "/falso/mscore")
+        #expect(llamada.argumentos == ["-o", "grabado.pdf", "grabado.musicxml"])
+        #expect(llamada.limite == 120)
+        // El MusicXML es el de `armonia musicxml`.
+        #expect(llamada.fuente == salida("musicxml coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 --cifrados"))
+        // Con otro nombre del programa (el de algunas distribuciones de Linux), y en PNG, con su resolución.
+        let otro = EjecutorFalso(instalados: ["musescore"])
+        let png = grabado("engrave melody C4:4 --engine mscore --format png --ingles", con: otro)
+        #expect(png.datos == Data("GRABADO".utf8))
+        #expect(otro.llamadas.first?.ruta == "/falso/musescore")
+        #expect(otro.llamadas.first?.argumentos == ["-r", "150", "-o", "grabado.png", "grabado.musicxml"])
+    }
+
+    @Test func grabarConVerovioYGuido() throws {
+        let falso = EjecutorFalso()
+        // En SVG, solo Verovio, con el MEI de `armonia mei`.
+        let svg = grabado("grabar acordes Do Lam Fa Sol7 --motor verovio --formato svg", con: falso)
+        #expect(svg.salida == "GRABADO\n")
+        let verovio = try #require(falso.llamadas.first)
+        #expect(verovio.ruta == "/falso/verovio")
+        #expect(verovio.argumentos == ["-o", "grabado.svg", "grabado.mei"])
+        #expect(verovio.fuente == salida("mei acordes Do Lam Fa Sol7"))
+        // En PDF, su SVG pasa después por rsvg-convert.
+        let pdf = grabado("grabar acordes Do Lam Fa Sol7 --motor verovio", con: falso)
+        #expect(pdf.datos == Data("GRABADO".utf8))
+        #expect(falso.llamadas.map(\.ruta).suffix(2) == ["/falso/verovio", "/falso/rsvg-convert"])
+        #expect(falso.llamadas.last?.argumentos == ["--format", "pdf", "--output", "grabado.pdf", "grabado.svg"])
+        #expect(falso.llamadas.last?.fuente == "GRABADO")
+        // Guido da el SVG en la salida estándar, a partir del `.gmn` de `armonia guido`.
+        let png = grabado("grabar melodia Sol4:4 Do5:2 --motor guido --formato png", con: falso)
+        #expect(png.codigo == 0, Comment(rawValue: png.error))
+        #expect(png.datos == Data("GRABADO".utf8))
+        let guido = try #require(falso.llamadas.dropLast().last)
+        #expect(guido.ruta == "/falso/guido2svg")
+        #expect(guido.argumentos == ["grabado.gmn"])
+        #expect(guido.fuente == salida("guido melodia Sol4:4 Do5:2"))
+        #expect(falso.llamadas.last?.fuente == "GRABADO")
+        #expect(falso.llamadas.last?.argumentos.contains("--zoom") == true)
+        // Sin rsvg-convert no se ejecuta nada: se dice antes.
+        let sinRsvg = EjecutorFalso(instalados: ["guido2svg"])
+        let fallo = grabado("grabar melodia Sol4:4 --motor guido", con: sinRsvg)
+        #expect(fallo.codigo == 1)
+        #expect(fallo.error.contains("ARMONIA_RSVG_CONVERT"))
+        #expect(sinRsvg.llamadas.isEmpty)
+        #expect(grabado("grabar melodia Sol4:4 --motor guido --formato svg", con: sinRsvg).salida == "GRABADO\n")
+    }
+
+    @Test func exportarAGuido() {
+        let melodia = salida("guido melodia Sol4:4 Do5:2 --compas 3/4 --titulo Canción")
+        #expect(melodia.hasPrefix("{"))
+        #expect(melodia.contains(#"\title<"Canción">"#))
+        #expect(melodia.contains("g1/4 c2/2"))
+        #expect(salida("guido coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 --cifrados").contains("\\harmony<"))
+        #expect(salida("guido chords C Am F G7 C --ingles").contains(#"\harmony<"G7">"#))
+    }
+
+    @Test func losMotores() throws {
+        let falso = EjecutorFalso(instalados: ["lilypond", "musescore", "guido2svg", "rsvg-convert"])
+        let lista = grabado("motores", con: falso)
+        #expect(lista.codigo == 0)
+        #expect(
+            lista.salida == """
+                lilypond   /falso/lilypond (Falso 1.0)
+                musescore  /falso/musescore (Falso 1.0)
+                verovio    no instalado (o pon su ruta en ARMONIA_VEROVIO)
+                guido      /falso/guido2svg
+                propio     /falso/rsvg-convert (Falso 1.0)
+
+                """)
+        // A `guido2svg` no se le pregunta la versión: no entiende `--version`.
+        #expect(falso.llamadas.map(\.ruta) == ["/falso/lilypond", "/falso/musescore", "/falso/rsvg-convert"])
+        #expect(falso.llamadas.allSatisfy { $0.argumentos == ["--version"] && $0.limite == 10 })
+        let ingles = grabado("engines --ingles", con: EjecutorFalso(instalados: []))
+        #expect(ingles.salida.hasPrefix("lilypond   not installed (or set ARMONIA_LILYPOND to its path)\n"))
+        #expect(ingles.salida.contains("\nmusescore  not installed (or set ARMONIA_MSCORE to its path)\n"))
+        #expect(ingles.salida.contains("\nown        not installed (or set ARMONIA_RSVG_CONVERT to its path)\n"))
+        // Si `--version` falla, sin versión.
+        let roto = grabado("motores", con: EjecutorFalso(instalados: ["verovio"], codigo: 1))
+        #expect(roto.salida.contains("\nverovio    /falso/verovio\n"))
     }
 
     @Test func elEjecutorDelSistema() throws {
@@ -152,14 +253,22 @@ extension LineaDeComandosTests {
         try FileManager.default.createDirectory(at: carpeta, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: carpeta) }
         // Sin shell: el argumento con espacios llega entero, y la carpeta es la de trabajo.
-        let bien = try EjecutorDelSistema().ejecutar(sh, ["-c", "echo \"$0\" > hecho.txt", "a b"], en: carpeta)
+        let sistema = EjecutorDelSistema()
+        let bien = try sistema.ejecutar(sh, ["-c", "echo \"$0\" > hecho.txt", "a b"], en: carpeta, limite: 120)
         #expect(bien == ResultadoDeProceso(codigo: 0))
         let hecho = try String(contentsOf: carpeta.appendingPathComponent("hecho.txt"), encoding: .utf8)
         #expect(hecho == "a b\n")
-        let mal = try EjecutorDelSistema().ejecutar(sh, ["-c", "echo uy >&2; exit 3"], en: carpeta)
+        // La salida estándar y la de errores, cada una por su lado.
+        let mal = try sistema.ejecutar(sh, ["-c", "echo hola; echo uy >&2; exit 3"], en: carpeta, limite: 120)
         #expect(mal.codigo == 3)
+        #expect(mal.salida == Data("hola\n".utf8))
         #expect(mal.error == "uy\n")
-        let lento = try EjecutorDelSistema(limite: 0.2).ejecutar(sh, ["-c", "sleep 5"], en: carpeta)
+        let lento = try sistema.ejecutar(sh, ["-c", "sleep 5"], en: carpeta, limite: 0.2)
         #expect(lento.agotado)
+        #if os(Linux)
+            // MuseScore, sin pantalla, dibuja con la plataforma `offscreen` de Qt.
+            #expect(EjecutorDelSistema.variablesDelPrograma(["PATH": "/bin"])["QT_QPA_PLATFORM"] == "offscreen")
+            #expect(EjecutorDelSistema.variablesDelPrograma(["DISPLAY": ":0"])["QT_QPA_PLATFORM"] == nil)
+        #endif
     }
 }

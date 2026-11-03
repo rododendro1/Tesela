@@ -155,7 +155,7 @@ extension LineaDeComandosTests {
         }
         #expect(
             LineaDeComandos.ejecutar(["midi", "coral", "Do3", "Do5", "--cifrados"]).error.contains(
-                "MusicXML, MEI, LilyPond y ABC"))
+                "MusicXML, MEI, LilyPond, GUIDO y ABC"))
     }
 
     @Test func lilyPondYABC() {

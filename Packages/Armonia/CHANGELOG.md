@@ -1,5 +1,19 @@
 # Cambios
 
+## Sin publicar
+
+### Más motores para grabar, y cuáles están instalados
+
+- **`armonia grabar --motor musescore|verovio|guido`**: además de LilyPond, MuseScore (a partir del MusicXML de
+  `armonia musicxml`), Verovio (del MEI de `armonia mei`) y Guido Engine (del `.gmn` de `armonia guido`, con
+  `guido2svg`). Verovio y Guido dan SVG; en PDF o PNG, su SVG pasa después por rsvg-convert. MuseScore se busca
+  también como `musescore`, `mscore4portable`… y en la carpeta de la app en macOS; en un Linux sin pantalla se le
+  pide que dibuje sin ella (`QT_QPA_PLATFORM=offscreen`).
+- **`armonia motores`** (en inglés, `engines`): cada motor, con la ruta de su programa y su versión, o la variable
+  (`ARMONIA_MSCORE`, `ARMONIA_VEROVIO`, `ARMONIA_GUIDO2SVG`…) que da su ruta si no se encuentra.
+- **`armonia guido`**: la melodía, el coral, los acordes, los arpegios o la escala en GUIDO (`.gmn`), con las mismas
+  opciones que `armonia lilypond`.
+
 ## 0.3.2 (2026-11-03)
 
 ### Grabar partituras y dibujos desde la línea de comandos
