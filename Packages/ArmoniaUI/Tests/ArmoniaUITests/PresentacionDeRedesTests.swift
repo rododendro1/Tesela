@@ -35,7 +35,8 @@ import Testing
         #expect(svg.contains(">Do₄<"))
         #expect(svg.contains(">Do₅<"))
         // Las 84 casillas y, encima, el borde de los siete Do.
-        #expect(svg.components(separatedBy: "<rect").count - 1 == 12 * 7 + 7)
+        let cuadrados = svg.components(separatedBy: "<rect").count - 1
+        #expect(cuadrados == 91)
         #expect(PresentacionDeRedes.casillasDelTecladoCuadrado.count == 12 * 7)
         #expect(PresentacionDeRedes.casillasDelTecladoCuadrado.contains(.origen))
     }
@@ -53,8 +54,8 @@ import Testing
         ajuste.texto = "no"
         #expect(ajuste.resultado == nil)
         let doMayor = ContenidoDeRed.acorde(try Acorde(leyendo: "Do"))
-        let notacion = Notacion.espanolCompacto
-        let sinEjes = PresentacionDeRedes.svg(doMayor, en: .cuadriculaPersonalizada, notacion: notacion, cuadrado: ajuste)
+        let personalizada = RedDeNotas.cuadriculaPersonalizada
+        let sinEjes = PresentacionDeRedes.svg(doMayor, en: personalizada, notacion: .espanolCompacto, cuadrado: ajuste)
         #expect(sinEjes == nil)
         // La rejilla trae su nota de origen, y al cambiarla se olvida la elegida.
         ajuste = AjusteCuadrado(origen: 48)
@@ -77,7 +78,8 @@ import Testing
         let svg = try #require(
             PresentacionDeRedes.svg(escala, en: .cuadriculaEnCuartas, notacion: .espanolCompacto, cuadrado: ajuste))
         // Las 64 casillas y, encima, el borde de las 10 que son Re.
-        #expect(svg.components(separatedBy: "<rect").count - 1 == 64 + 10)
+        let cuadrados = svg.components(separatedBy: "<rect").count - 1
+        #expect(cuadrados == 74)
         #expect(svg.contains(">Re₂<"))
         #expect(!svg.contains(">Do♯"))
         #expect(svg.contains(#"class="primera""#))
