@@ -41,6 +41,11 @@ struct VistaRaiz: View {
                 .tabItem { Label(notacion.texto(\.identificar), systemImage: "hand.tap") }
                 .tag(Navegacion.Pestana.identificar)
         }
+        #if os(macOS)
+            // En macOS, un `Form` con su estilo de columnas no se desplaza: la ventana no puede ser más baja que su
+            // contenido y, en una pantalla pequeña, lo de abajo queda fuera. El estilo agrupado sí se desplaza.
+            .formStyle(.grouped)
+        #endif
         .environmentObject(navegacion)
     }
 }

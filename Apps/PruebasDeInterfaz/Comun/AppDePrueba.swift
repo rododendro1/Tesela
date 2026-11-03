@@ -124,8 +124,11 @@ extension XCUIApplication {
             }
         #else
             _ = elemento.waitForExistence(timeout: 5)
+            // Hacia abajo o, si el elemento se quedó por encima de la ventana, hacia arriba.
+            let ventana = windows.firstMatch
             while elemento.exists && !elemento.isHittable && intento < intentos {
-                windows.firstMatch.scroll(byDeltaX: 0, deltaY: -300)
+                let arriba = elemento.frame.minY < ventana.frame.minY
+                ventana.scroll(byDeltaX: 0, deltaY: arriba ? 300 : -300)
                 intento += 1
             }
         #endif
@@ -135,7 +138,7 @@ extension XCUIApplication {
     /// Borra lo escrito en `campo` y escribe `texto`.
     func reemplazar(en campo: XCUIElement, por texto: String) {
         #if os(macOS)
-            campo.click()
+            buscandoHaciaAbajo(campo).click()
             campo.typeKey("a", modifierFlags: .command)
             campo.typeText(XCUIKeyboardKey.delete.rawValue)
         #else
