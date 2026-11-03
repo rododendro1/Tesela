@@ -65,9 +65,9 @@ import Testing
         #expect(TipoDeEscala.tradicionales(categoria: .afinacion) == afinaciones)
         #expect(TipoDeEscala.tradicionales(tradicion: .africa) == [.amadinda, .timbila])
         #expect(TipoDeEscala.piphat.tradicion == .sudesteAsiatico && TipoDeEscala.piphat.clase == .afinacion)
-        // Los ocho modos gregorianos, desde su final, enlazados con `ModoGregoriano`.
+        // Los ocho modos gregorianos (y los tres hexacordos), desde su final, enlazados con `ModoGregoriano`.
         #expect(TipoDeEscala.tradicionales(categoria: .modoGregoriano) == TipoDeEscala.modosGregorianos)
-        #expect(TipoDeEscala.tradicionales(tradicion: .gregoriano).count == 8)
+        #expect(TipoDeEscala.tradicionales(tradicion: .gregoriano).count == 8 + 3)
         #expect(ModoGregoriano.todos.map(\.tipoDeEscala) == TipoDeEscala.modosGregorianos)
         #expect(ModoGregoriano.todos.allSatisfy { $0.tipoDeEscala.intervalos == $0.maneria.tipo.intervalos })
         #expect(TipoDeEscala.buscar(nombre: "hipodórico") == .protusPlagalis)
