@@ -119,7 +119,7 @@ extension XCUIApplication {
 
     /// El elemento, tras desplazar la vista hacia abajo hasta que se vea: en iOS las listas solo crean las filas que
     /// se ven; en macOS existen todas, pero un clic solo llega a las que están a la vista.
-    func buscandoHaciaAbajo(_ elemento: XCUIElement, intentos: Int = 6) -> XCUIElement {
+    func buscandoHaciaAbajo(_ elemento: XCUIElement, intentos: Int = 12) -> XCUIElement {
         var intento = 0
         #if os(iOS)
             while !elemento.waitForExistence(timeout: 2) && intento < intentos {
@@ -129,12 +129,12 @@ extension XCUIApplication {
         #else
             _ = elemento.waitForExistence(timeout: 5)
             // La rueda, cerca de lo alto de la ventana (que siempre está en la pantalla): hacia abajo o, si el
-            // elemento quedó por encima, hacia arriba.
+            // elemento quedó por encima, hacia arriba. Cada vuelta mueve la vista mucho menos que su delta.
             let ventana = windows.firstMatch
             let rueda = ventana.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
             while elemento.exists && !elemento.isHittable && intento < intentos {
                 let arriba = elemento.frame.midY < ventana.frame.midY
-                rueda.scroll(byDeltaX: 0, deltaY: arriba ? 200 : -200)
+                rueda.scroll(byDeltaX: 0, deltaY: arriba ? 1000 : -1000)
                 intento += 1
             }
             if elemento.exists && !elemento.isHittable {
