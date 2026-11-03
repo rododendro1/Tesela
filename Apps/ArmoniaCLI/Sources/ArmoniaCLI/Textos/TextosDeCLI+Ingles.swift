@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "interval between two notes or pitches",
         sintaxisEscala: "scale <scale> [--chords]",
         descripcionEscala: "notes and chords of a scale\n--chords: every chord that fits on\neach degree, not only stacked thirds",
-        notasEscala: "options: --sequence thirds (or fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(from 1 to 4), --piano (fingering), --modes (parallel and relative)\nand --compare C lydian (at the end); --symmetry (how often it\nrepeats and its chords);\n--neighbors (moving one note) and\n--all-keys (in all twelve keys)",
+        notasEscala: "options: --sequence thirds (or fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(from 1 to 4), --piano (fingering), --modes (parallel and relative)\nand --compare C lydian (at the end); --symmetry (how often it\nrepeats and its chords);\n--neighbors (moving one note) and\n--all-keys (in all twelve keys);\n--all-keys --chords (the chords of each\ndegree; --triads, without sevenths)",
         sintaxisEscalas: "scales [<text>] [options]",
         descripcionEscalas: "the catalog of scales: the common ones\nand those of other traditions, by\ncategory, with their notes from C",
         notasEscalas: "options: --tradition turkey (or india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) and --category maqam (or rāga, makam,\ndastgah, dromos…); a text searches the names",
@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "the scale on a piano keyboard\n(SVG): its notes or, with --hand right\nor left, the fingers; --octaves 2",
         sintaxisReloj: "clock <scale> [--fifths]",
         descripcionReloj: "the scale on a twelve-hour clock\n(SVG): the chromatic circle or, with\n--fifths, the circle of fifths",
+        sintaxisPosicionesArpegio: "positions --arpeggio <symbol> [--caged|--sweep]",
+        descripcionPosicionesArpegio: "a chord's arpeggio in each position\non the neck, in tab with the fingers;\n--up-and-down, up and back down",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """

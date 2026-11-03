@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "διάστημα ανάμεσα σε δύο νότες ή τονικά\nύψη",
         sintaxisEscala: "scale <κλίμακα> [--chords]",
         descripcionEscala: "νότες και συγχορδίες μιας κλίμακας\n--chords: όλες όσες χωρούν σε κάθε\nβαθμίδα, όχι μόνο κατά τρίτες",
-        notasEscala: "επιλογές: --sequence thirds (ή fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(από 1 έως 4), --piano (δακτυλοθεσία), --modes (παράλληλοι και σχετικοί)\nκαι --compare C lydian (στο τέλος); --symmetry (κάθε πόσο\nεπαναλαμβάνεται και οι συγχορδίες της);\n--neighbors (μετακινώντας μία νότα) και\n--all-keys (και στις δώδεκα τονικότητες)",
+        notasEscala: "επιλογές: --sequence thirds (ή fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(από 1 έως 4), --piano (δακτυλοθεσία), --modes (παράλληλοι και σχετικοί)\nκαι --compare C lydian (στο τέλος); --symmetry (κάθε πόσο\nεπαναλαμβάνεται και οι συγχορδίες της);\n--neighbors (μετακινώντας μία νότα) και\n--all-keys (και στις δώδεκα τονικότητες);\n--all-keys --chords (οι συγχορδίες κάθε\nβαθμίδας· --triads, χωρίς έβδομη)",
         sintaxisEscalas: "scales [<κείμενο>] [επιλογές]",
         descripcionEscalas: "ο κατάλογος των κλιμάκων: οι συνήθεις\nκαι όσες άλλων παραδόσεων, ανά\nκατηγορία, με τις νότες τους από το Ντο",
         notasEscalas: "επιλογές: --tradition turkey (ή india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) και --category maqam (ή rāga, makam,\ndastgah, dromos…)· ένα κείμενο ψάχνει στα ονόματα",
@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "η κλίμακα σε πληκτρολόγιο πιάνου\n(SVG): οι νότες ή, με --hand right\nή left, τα δάχτυλα· --octaves 2",
         sintaxisReloj: "clock <scale> [--fifths]",
         descripcionReloj: "η κλίμακα σε ρολόι δώδεκα ωρών\n(SVG): ο χρωματικός κύκλος ή, με\n--fifths, ο κύκλος των πεμπτών",
+        sintaxisPosicionesArpegio: "positions --arpeggio <σύμβολο> [--caged|--sweep]",
+        descripcionPosicionesArpegio: "το αρπίσιμο μιας συγχορδίας σε κάθε\nθέση της ταστιέρας, σε ταμπλατούρα με\nτα δάχτυλα· --up-and-down, πάνω και κάτω",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """

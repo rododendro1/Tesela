@@ -413,4 +413,18 @@ extension LineaDeComandosTests {
         #expect(ingles.contains("\n  C lydian: F → F#\n"), Comment(rawValue: ingles))
         #expect(ingles.contains("C major · In all twelve keys:"))
     }
+
+    @Test func acordesEnLasDoceTonalidades() {
+        let mayor = salida("escala Do mayor --doce --acordes")
+        #expect(mayor.contains("\nDo mayor · Acordes en las doce tonalidades:\n  "), Comment(rawValue: mayor))
+        #expect(mayor.contains(" · V7 · "))
+        #expect(mayor.contains(" · Re7 · "))
+        let triadas = salida("escala La menor armónica --doce --acordes --triadas")
+        #expect(triadas.contains("Acordes en las doce tonalidades:"), Comment(rawValue: triadas))
+        #expect(triadas.contains(" · Mi · Fa · "))
+        // Sin --acordes, solo las notas; y una pentatónica no tiene un acorde en cada grado.
+        #expect(!salida("escala Do mayor --doce").contains("Acordes en las doce"))
+        #expect(!salida("escala Do pentatónica mayor --doce --acordes").contains("Acordes en las doce"))
+        #expect(salida("scale C major --all-keys --chords --ingles").contains("C major · Chords in all twelve keys:"))
+    }
 }

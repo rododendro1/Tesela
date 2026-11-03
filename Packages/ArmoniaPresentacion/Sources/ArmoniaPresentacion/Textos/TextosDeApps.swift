@@ -197,6 +197,9 @@ public struct TextosDeApps: TextosTraducidos {
     public let circuloCromatico: String
     public let circuloDeQuintas: String
     public let enLasDoceTonalidades: String
+    public let acordesEnLasDoceTonalidades: String
+    public let conSeptima: String
+    public let subirYBajar: String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String

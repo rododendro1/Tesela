@@ -159,6 +159,9 @@ extension LineaDeComandos {
         let caged = argumentos.quitarMarca("--caged")
         let bajando = argumentos.quitarMarca("--bajando", "--descending")
         let formas = argumentos.quitarMarca("--formas", "--shapes")
+        let arpegio = argumentos.quitarMarca("--arpegio", "--arpeggio")
+        let barrido = argumentos.quitarMarca("--barrido", "--sweep")
+        let idaYVuelta = argumentos.quitarMarca("--ida-y-vuelta", "--up-and-down")
         var encordado = Encordado.guitarra
         switch argumentos.quitarOpcion("--instrumento", "--instrument") {
         case .ausente: break
@@ -188,9 +191,15 @@ extension LineaDeComandos {
         if let desconocida = argumentos.opcionDesconocida {
             return uso(.opcionDesconocida(desconocida), notacion)
         }
+        let mastil = Mastil(encordado.conCapo(capo), trastes: 15)
+        if arpegio {
+            guard !argumentos.restantes.isEmpty else { return uso(.faltaCifradoDelArpegio, notacion) }
+            let reparto: FormasDeArpegio = barrido ? .unaNotaPorCuerda : caged ? .caged : .porPosiciones
+            return arpegioEnElMastil(
+                try Acorde(leyendo: argumentos.unidos), formas: reparto, idaYVuelta: idaYVuelta, en: mastil, notacion)
+        }
         guard !argumentos.restantes.isEmpty else { return uso(.faltaEscalaDePosiciones, notacion) }
         let escala = try Escala(leyendo: argumentos.unidos)
-        let mastil = Mastil(encordado.conCapo(capo), trastes: 15)
         if formas { return formasPentatonicas(de: escala, en: mastil, notacion) }
         if let secuencia {
             return secuenciaEnLasPosiciones(escala, secuencia, caged: caged, bajando: bajando, en: mastil, notacion)
@@ -247,6 +256,28 @@ extension LineaDeComandos {
         var lineas = [escala.nombre(en: notacion) + " · " + titulo + instrumento(de: mastil, notacion)]
         for posicion in posiciones where !posicion.notas.isEmpty {
             lineas += ["", "  " + posicion.titulo] + posicion.tablatura.map { "    " + $0 }
+        }
+        return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// `posiciones --arpegio Sol7 [--caged | --barrido] [--ida-y-vuelta]`: el arpegio del acorde en cada posición
+    /// del mástil, en tablatura y con los dedos que pisan cada nota.
+    static func arpegioEnElMastil(
+        _ acorde: Acorde, formas: FormasDeArpegio, idaYVuelta: Bool, en mastil: Mastil, _ notacion: Notacion
+    ) -> ResultadoDeOrden {
+        let arpegios = PresentacionDeArpegios.enElMastil(
+            acorde, formas: formas, idaYVuelta: idaYVuelta, mastil: mastil, notacion: notacion)
+        let sistema: String
+        switch formas {
+        case .porPosiciones: sistema = notacion.texto(\.porPosiciones)
+        case .caged: sistema = "CAGED"
+        case .unaNotaPorCuerda: sistema = notacion.texto { $0.notasPorCuerda(1) }
+        }
+        let titulo = notacion.texto(\.arpegioEnElMastil) + " · " + sistema + instrumento(de: mastil, notacion)
+        var lineas = [acorde.cifrado(en: notacion) + " · " + titulo]
+        for presentado in arpegios {
+            lineas += ["", "  " + presentado.titulo] + presentado.tablatura.map { "    " + $0 }
+            lineas.append("    " + notacion.texto(\.dedosSugeridos) + ": " + presentado.dedos)
         }
         return bien(lineas.joined(separator: "\n"))
     }

@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "interval entre doas nòtas o nautors",
         sintaxisEscala: "escala <gama> [--acordes]",
         descripcionEscala: "nòtas e acòrds d'una gama\n--acordes: totes los que i caben sus\ncada gra, pas sonque los de tèrças",
-        notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (digitacion), --modos (parallèls e relatius)\ne --comparar Do lidio (a la fin); --simetria (cada quant\nse repetís e sos acòrdis);\n--vecinas (las que sortisson en desplaçant\nuna nòta) e --doce (dins las dotze tonalitats)",
+        notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (digitacion), --modos (parallèls e relatius)\ne --comparar Do lidio (a la fin); --simetria (cada quant\nse repetís e sos acòrdis);\n--vecinas (las que sortisson en desplaçant\nuna nòta) e --doce (dins las dotze tonalitats);\n--doce --acordes (los acòrdis de cada\ngrad; --triadas, sens setena)",
         sintaxisEscalas: "escalas [<tèxte>] [opcions]",
         descripcionEscalas: "lo catalòg de las gamas: las abitualas\ne las d'autras tradicions, per\ncategorias, amb lors nòtas dempuèi Do",
         notasEscalas: "opcions: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) e --categoria maqam (o rāga, makam,\ndastgah, dromos…); un tèxte cerca dins los noms",
@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "la gama sus un clavièr de piano\n(SVG): sas nòtas o, amb --mano derecha\no izquierda, los dets; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "la gama sus un relòtge de dotze oras\n(SVG): lo cercle cromatic o, amb\n--quintas, lo de quintas",
+        sintaxisPosicionesArpegio: "posiciones --arpegio <chifratge> [--caged|--barrido]",
+        descripcionPosicionesArpegio: "l'arpègi d'un acòrdi dins cada\nposicion del margue, en tablatura amb\nlos dets; --ida-y-vuelta, monta e davala",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """

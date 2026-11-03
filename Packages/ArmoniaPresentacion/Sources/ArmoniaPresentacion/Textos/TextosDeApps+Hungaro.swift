@@ -186,6 +186,9 @@ extension TextosDeApps {
         circuloCromatico: "Kromatikus kör",
         circuloDeQuintas: "Kvintkör",
         enLasDoceTonalidades: "Mind a tizenkét hangnemben",
+        acordesEnLasDoceTonalidades: "Akkordok mind a tizenkét hangnemben",
+        conSeptima: "Szeptimmel",
+        subirYBajar: "Fel és le",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Feszültségek",
         notasAEvitar: "Kerülendő",

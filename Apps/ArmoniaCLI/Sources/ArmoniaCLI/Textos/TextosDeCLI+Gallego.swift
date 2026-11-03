@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "intervalo entre dúas notas ou\nalturas",
         sintaxisEscala: "escala <escala> [--acordes]",
         descripcionEscala: "notas e acordes dunha escala\n--acordes: todos os que caben en\ncada grao, non só os de terceiras",
-        notasEscala: "opcións: --secuencia terceras (ou cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (dixitación), --modos (paralelos e relativos)\ne --comparar Do lidio (ao final); --simetria (cada canto\nse repite e os seus acordes);\n--vecinas (as que saen de mover unha\nnota) e --doce (nas doce tonalidades)",
+        notasEscala: "opcións: --secuencia terceras (ou cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(de 1 a 4), --piano (dixitación), --modos (paralelos e relativos)\ne --comparar Do lidio (ao final); --simetria (cada canto\nse repite e os seus acordes);\n--vecinas (as que saen de mover unha\nnota) e --doce (nas doce tonalidades);\n--doce --acordes (os acordes de cada\ngrao; --triadas, sen sétima)",
         sintaxisEscalas: "escalas [<texto>] [opcións]",
         descripcionEscalas: "o catálogo de escalas: as habituais e\nas doutras tradicións, por\ncategorías, coas súas notas desde Do",
         notasEscalas: "opcións: --tradicion turquia (ou india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) e --categoria maqam (ou rāga, makam,\ndastgah, dromos…); un texto busca nos nomes",
@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "a escala nun teclado de piano\n(SVG): as notas ou, con --mano derecha\nou izquierda, os dedos; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "a escala nun reloxo de doce horas\n(SVG): o círculo cromático ou, con\n--quintas, o de quintas",
+        sintaxisPosicionesArpegio: "posiciones --arpegio <cifrado> [--caged|--barrido]",
+        descripcionPosicionesArpegio: "o arpexo dun acorde en cada\nposición do mástil, en tablatura e cos\ndedos; --ida-y-vuelta, sobe e baixa",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """

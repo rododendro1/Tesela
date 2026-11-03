@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "bi nota edo altueren arteko tartea",
         sintaxisEscala: "escala <eskala> [--acordes]",
         descripcionEscala: "eskala baten notak eta akordeak\n--acordes: gradu bakoitzean sartzen\ndiren guztiak, ez hirurenak bakarrik",
-        notasEscala: "aukerak: --secuencia terceras (edo cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(1etik 4ra), --piano (hatzkera), --modos (paraleloak eta erlatiboak)\neta --comparar Do lidio (amaieran); --simetria (zenbatero\nerrepikatzen den eta bere akordeak);\n--vecinas (nota bat mugituta ateratzen\ndirenak) eta --doce (hamabi tonalitateetan)",
+        notasEscala: "aukerak: --secuencia terceras (edo cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(1etik 4ra), --piano (hatzkera), --modos (paraleloak eta erlatiboak)\neta --comparar Do lidio (amaieran); --simetria (zenbatero\nerrepikatzen den eta bere akordeak);\n--vecinas (nota bat mugituta ateratzen\ndirenak) eta --doce (hamabi tonalitateetan);\n--doce --acordes (gradu bakoitzeko\nakordeak; --triadas, zazpigarrenik gabe)",
         sintaxisEscalas: "escalas [<testua>] [aukerak]",
         descripcionEscalas: "eskalen katalogoa: ohikoak eta beste\ntradizio batzuetakoak, kategoriaka,\nDo-tik hasitako notekin",
         notasEscalas: "aukerak: --tradicion turquia (edo india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio) eta --categoria maqam (edo rāga, makam,\ndastgah, dromos…); testu batek izenetan bilatzen du",
@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "eskala piano-teklatu batean\n(SVG): notak edo, --mano derecha\nedo izquierda-rekin, hatzak; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "eskala hamabi orduko erloju batean\n(SVG): zirkulu kromatikoa edo,\n--quintas-ekin, bosten zirkulua",
+        sintaxisPosicionesArpegio: "posiciones --arpegio <zifratua> [--caged|--barrido]",
+        descripcionPosicionesArpegio: "akorde baten arpegioa mastilaren\nposizio bakoitzean, tablaturan eta\nhatzekin; --ida-y-vuelta, igo eta jaitsi",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """

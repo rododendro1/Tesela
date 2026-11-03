@@ -186,6 +186,9 @@ extension TextosDeApps {
         circuloCromatico: "Хроматический круг",
         circuloDeQuintas: "Квинтовый круг",
         enLasDoceTonalidades: "Во всех двенадцати тональностях",
+        acordesEnLasDoceTonalidades: "Аккорды во всех двенадцати тональностях",
+        conSeptima: "С септимой",
+        subirYBajar: "Вверх и вниз",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Напряжения",
         notasAEvitar: "Избегать",

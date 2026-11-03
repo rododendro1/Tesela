@@ -161,6 +161,9 @@ import Testing
         { $0.texto(\.circuloCromatico) },
         { $0.texto(\.circuloDeQuintas) },
         { $0.texto(\.enLasDoceTonalidades) },
+        { $0.texto(\.acordesEnLasDoceTonalidades) },
+        { $0.texto(\.conSeptima) },
+        { $0.texto(\.subirYBajar) },
     ]
 
     @Test func cadaTextoEstaEnCadaIdioma() {

@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "két hang vagy hangmagasság közötti\nhangköz",
         sintaxisEscala: "scale <skála> [--chords]",
         descripcionEscala: "egy skála hangjai és akkordjai\n--chords: minden fokon minden beleillő\nakkord, nem csak a terces",
-        notasEscala: "opciók: --sequence thirds (vagy fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1-től 4-ig), --piano (ujjrend), --modes (párhuzamos és rokon)\nés --compare C lydian (a végén); --symmetry (milyen gyakran\nismétlődik, és az akkordjai);\n--neighbors (egy hang elmozdításával) és\n--all-keys (mind a tizenkét hangnemben)",
+        notasEscala: "opciók: --sequence thirds (vagy fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1-től 4-ig), --piano (ujjrend), --modes (párhuzamos és rokon)\nés --compare C lydian (a végén); --symmetry (milyen gyakran\nismétlődik, és az akkordjai);\n--neighbors (egy hang elmozdításával) és\n--all-keys (mind a tizenkét hangnemben);\n--all-keys --chords (minden fok\nakkordjai; --triads, szeptim nélkül)",
         sintaxisEscalas: "scales [<szöveg>] [opciók]",
         descripcionEscalas: "a skálák katalógusa: a szokásosak és\nmás hagyományokéi, kategóriánként,\nC-től induló hangjaikkal",
         notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium) és --category maqam (vagy rāga, makam,\ndastgah, dromos…); a szöveg a nevekben keres",
@@ -117,6 +117,8 @@ extension TextosDeCLI {
         descripcionTeclado: "a skála zongora-billentyűzeten\n(SVG): a hangjai vagy --hand right\nvagy left mellett az ujjak; --octaves 2",
         sintaxisReloj: "clock <scale> [--fifths]",
         descripcionReloj: "a skála egy tizenkét órás számlapon\n(SVG): a kromatikus kör vagy\n--fifths mellett a kvintkör",
+        sintaxisPosicionesArpegio: "positions --arpeggio <akkordjelzés> [--caged|--sweep]",
+        descripcionPosicionesArpegio: "egy akkord arpeggiója a fogólap\nminden fekvésében, tabulatúrával és\nujjakkal; --up-and-down, fel és vissza",
 
         // Ayuda.swift
         cabeceraDeLaAyuda: """

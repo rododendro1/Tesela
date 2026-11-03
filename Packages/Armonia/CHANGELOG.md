@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### Acordes en las doce tonalidades y arpegios en el mástil
+
+- **En la línea de comandos**, `armonia escala --doce --acordes` (con `--triadas`, sin séptima) da los acordes de
+  cada grado en las doce tonalidades, y `armonia posiciones --arpegio <cifrado>` (con `--caged`, `--barrido` e
+  `--ida-y-vuelta`) el arpegio en cada posición del mástil, en tablatura y con los dedos (en inglés, `--chords`,
+  `--triads`, `--arpeggio`, `--sweep` y `--up-and-down`).
+
 ### Escalas propias
 
 - **Escalas propias**: `Escala.propia(_:)` (por sus notas) y `Escala.propia(desde:pasos:)` (por sus pasos en
