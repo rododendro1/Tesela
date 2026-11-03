@@ -65,6 +65,78 @@ import Testing
         #expect(pieza.duracion == Duracion(5))
     }
 
+    @Test func saltosEnMusicXML() throws {
+        // Dal segno al coda: del cuarto compás al segno y, desde el «To Coda», a la coda.
+        let alCoda = musicXML([
+            ("", "C", ""),
+            ("<direction><direction-type><segno/></direction-type><sound segno=\"s\"/></direction>", "D", ""),
+            ("", "E", "<direction><direction-type><words>To Coda</words></direction-type></direction>"),
+            ("", "F", "<direction><sound dalsegno=\"s\"/></direction>"),
+            ("<direction><direction-type><coda/></direction-type><sound coda=\"c\"/></direction>", "G", ""),
+        ])
+        #expect(
+            tocadas(try PiezaImportada(musicXML: alCoda)) == [
+                "Do4 0/1", "Re4 1/1", "Mi4 2/1", "Fa4 3/1", "Re4 4/1", "Mi4 5/1", "Sol4 6/1",
+            ])
+        // El da capo y el fine de `<sound>`.
+        let daCapo = musicXML([
+            ("", "C", ""), ("", "D", "<sound fine=\"yes\"/>"), ("", "E", "<sound dacapo=\"yes\" tocoda=\"c\"/>"),
+        ])
+        #expect(
+            tocadas(try PiezaImportada(musicXML: daCapo)) == ["Do4 0/1", "Re4 1/1", "Mi4 2/1", "Do4 3/1", "Re4 4/1"])
+        // Casillas de varios números: «1, 2» y «3».
+        #expect(LectorMusicXML.numerosDeCasilla("1, 2") == [1, 2])
+        #expect(LectorMusicXML.numerosDeCasilla("1-3") == [1, 2, 3])
+        #expect(LectorMusicXML.numerosDeCasilla("") == [1])
+    }
+
+    @Test func saltosEnMEI() throws {
+        /// Un MEI de un pentagrama en 4/4 con una redonda por compás, cada una con sus atributos y lo que lleve
+        /// detrás.
+        func mei(_ compases: [(atributos: String, nota: String, despues: String)]) -> Data {
+            let medidas = compases.map { compas in
+                """
+                <measure \(compas.atributos)><staff n="1"><layer n="1"><note pname="\(compas.nota)" oct="4" dur="1"/>\
+                </layer></staff>\(compas.despues)</measure>
+                """
+            }
+            return Data(
+                """
+                <mei xmlns="http://www.music-encoding.org/ns/mei"><music><body><mdiv><score>
+                <scoreDef meter.count="4" meter.unit="4"><staffGrp><staffDef n="1"/></staffGrp></scoreDef>
+                <section>\(medidas.joined(separator: "\n"))</section></score></mdiv></body></music></mei>
+                """.utf8)
+        }
+        // Dos tramos repetidos, separados por una barra de doble repetición.
+        let dos = try PiezaImportada(mei: mei([("right=\"rptboth\"", "c", ""), ("right=\"rptend\"", "d", "")]))
+        #expect(tocadas(dos) == ["Do4 0/1", "Do4 1/1", "Re4 2/1", "Re4 3/1"])
+        // Dal segno al fine, con `<repeatMark>` y el texto de `<dir>`.
+        let alFine = try PiezaImportada(
+            mei: mei([
+                ("", "c", ""), ("", "d", "<repeatMark func=\"segno\"/>"), ("", "e", "<dir>Fine</dir>"),
+                ("", "f", "<repeatMark func=\"dalSegno\"/>"),
+            ]))
+        #expect(tocadas(alFine) == ["Do4 0/1", "Re4 1/1", "Mi4 2/1", "Fa4 3/1", "Re4 4/1", "Mi4 5/1"])
+        let daCapo = try PiezaImportada(
+            mei: mei([
+                ("", "c", "<repeatMark func=\"coda\"/>"), ("left=\"rptend\"", "d", "<repeatMark func=\"fine\"/>"),
+                ("", "e", "<repeatMark func=\"daCapo\"/>"),
+            ]))
+        #expect(tocadas(daCapo).prefix(2) == ["Do4 0/1", "Do4 1/1"])
+    }
+
+    @Test func otrasBarrasDeABC() throws {
+        // `::` cierra un tramo y abre otro; `|[1` y `:|[2`, casillas con corchete.
+        let barras = try PiezaImportada(abc: "X:1\nM:4/4\nL:1/4\nK:C\nC4 :: D4 |[1 E4 :|[2 F4 |]\n")
+        #expect(tocadas(barras) == ["Do4 0/1", "Do4 1/1", "Re4 2/1", "Mi4 3/1", "Re4 4/1", "Fa4 5/1"])
+        // D.C. al fine.
+        let daCapo = try PiezaImportada(abc: "X:1\nM:4/4\nL:1/4\nK:C\nC4 | D4 !fine! | E4 !D.C.! |]\n")
+        #expect(tocadas(daCapo) == ["Do4 0/1", "Re4 1/1", "Mi4 2/1", "Do4 3/1", "Re4 4/1"])
+        // Una casilla con corchete suelta, sin barra delante.
+        let suelta = try PiezaImportada(abc: "X:1\nM:4/4\nL:1/4\nK:C\n|: C4 [1 D4 :| [2 E4 |]\n")
+        #expect(tocadas(suelta) == ["Do4 0/1", "Re4 1/1", "Do4 2/1", "Mi4 3/1"])
+    }
+
     @Test func sinRepeticionesNoCambiaNada() throws {
         let xml = musicXML([("", "C", ""), ("", "D", "")])
         #expect(tocadas(try PiezaImportada(musicXML: xml)) == ["Do4 0/1", "Re4 1/1"])
