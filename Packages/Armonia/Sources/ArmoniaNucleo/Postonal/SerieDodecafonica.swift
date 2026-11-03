@@ -95,6 +95,9 @@ public struct SerieDodecafonica: Hashable, Sendable, CustomStringConvertible {
     /// Las clases separadas por espacios, con t y e para 10 y 11: «0 e 7 4 2 9 3 8 t 1 5 6». Se puede volver a leer.
     public var description: String { clases.map(LecturaDeClases.cifra).joined(separator: " ") }
 
+    /// Una clase como se escribe en una serie o en su matriz: 0…9, t (10) y e (11).
+    public static func cifra(_ clase: Int) -> String { LecturaDeClases.cifra(clase) }
+
     // MARK: Formas
 
     /// Tn: suma `n` semitonos a cada clase.

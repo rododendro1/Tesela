@@ -41,3 +41,13 @@ extension ConjuntoDeClases {
         return escritura(desde: mejor).map(Nota.init(pasosDeQuinta:))
     }
 }
+
+extension ConjuntoDeClases {
+    /// El nombre de cada clase de altura, de 0 (Do) a 11 (Si), escritas todas a la vez con `notas(con:)` para que no
+    /// se repita ninguna letra: la escritura con que se nombran las clases de una serie o de una matriz.
+    public static func nombresDeLasClases(en notacion: Notacion) -> [String] {
+        let total = ConjuntoDeClases(0..<12)
+        let notas = Dictionary(uniqueKeysWithValues: zip(total.clases, total.notas()))
+        return (0..<12).map { notas[$0]?.nombre(en: notacion) ?? String($0) }
+    }
+}

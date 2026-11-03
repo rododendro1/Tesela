@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+- **Los datos de las consultas, en un solo sitio.** `DatosDeAcorde`, `DatosDeCandidato` (con
+  `identificar(_:limite:notacion:)`), `DatosDeEscala`, `DatosDeConjunto` y `DatosDeSerie` son lo que se consulta de
+  un acorde, unas notas, una escala, un conjunto o una serie, sin darle forma. Son `Codable` y sus nombres son las
+  claves de `armonia … --json`, que no cambian. De ellos salen el texto de `armonia`, su JSON, la serie de la app
+  (`PresentacionDeSerie`) y `AnalisisPostonalPresentado`, que tiene además `init(_:)` desde un `DatosDeConjunto`.
+
 - **GUIDO en el menú de exportar, y todos los formatos de una vez.** `FicheroParaExportar.Formato.guido` («Partitura
   GUIDO», `.gmn`, con su texto en los quince idiomas). `FicheroParaExportar.partituras(nombre:_:)` da una partitura
   por cada `FormatoDePartitura`, en su orden, y `partitura(_:formato:nombre:)`, una. `Formato(_:)` y

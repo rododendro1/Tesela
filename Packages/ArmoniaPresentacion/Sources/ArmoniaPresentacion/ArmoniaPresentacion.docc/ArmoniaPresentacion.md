@@ -102,6 +102,17 @@ el selector de notación cambia la app entera.
 - ``Escucha``
 - ``CambioMIDI``
 
+### Datos de las consultas
+
+Lo que se consulta de un acorde, unas notas, una escala, un conjunto o una serie, sin escribir: lo mismo para el
+texto de `armonia`, para su `--json` (son sus claves) y para las apps.
+
+- ``DatosDeAcorde``
+- ``DatosDeCandidato``
+- ``DatosDeEscala``
+- ``DatosDeConjunto``
+- ``DatosDeSerie``
+
 ### Exportar
 
 - ``FicheroParaExportar``

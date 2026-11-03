@@ -99,21 +99,20 @@ extension LineaDeComandos {
         return lineas
     }
 
+    /// El acorde con sus notas y el papel de cada una: los datos de `--json` (`DatosDeAcorde`), en texto.
     static func describir(acorde: Acorde, _ notacion: Notacion) -> String {
-        var lineas = ["\(acorde.cifrado(en: notacion)): \(acorde.tipo.nombre(en: notacion))"]
-        let notas = acorde.notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
+        let datos = DatosDeAcorde(acorde, notacion: notacion)
+        var lineas = ["\(datos.cifrado): \(datos.nombre)"]
+        let notas = datos.notas.joined(separator: " ")
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
-        if acorde.bajo != acorde.fundamental {
-            let bajo = t(.bajo(acorde.bajo.nombre(en: notacion)))
-            let inversion = acorde.inversion.map { t(.inversion($0)) } ?? t(.bajoAjeno)
+        if datos.tieneOtroBajo {
+            let bajo = t(.bajo(datos.bajo))
+            let inversion = datos.inversion.map { t(.inversion($0)) } ?? t(.bajoAjeno)
             lineas.append("  \(t(.notas)): \(notas)  (\(bajo), \(inversion))")
         } else {
             lineas.append("  \(t(.notas)): \(notas)")
         }
-        lineas.append(
-            "  "
-                + acorde.componentes.map { "\($0.nota.nombre(en: notacion)) \($0.papel.nombre(en: notacion))" }
-                .joined(separator: " · "))
+        lineas.append("  " + datos.componentes.map { "\($0.nota) \($0.papel)" }.joined(separator: " · "))
         return lineas.joined(separator: "\n")
     }
 
@@ -152,20 +151,14 @@ extension LineaDeComandos {
                 .joined(separator: "\n"))
     }
 
+    /// Los acordes que pueden formar las notas, como en `--json` (`DatosDeCandidato.identificar`).
     static func identificar(_ textos: [String], _ notacion: Notacion) throws -> String {
-        // Con octava se tiene en cuenta el bajo; sin ella, solo las notas.
-        let candidatos: [Candidato<Acorde>]
-        if let alturas = try? textos.map({ try Altura(leyendo: $0) }) {
-            candidatos = Acorde.candidatos(alturas)
-        } else {
-            candidatos = Acorde.candidatos(try textos.map { try Nota(leyendo: $0) })
-        }
+        let candidatos = try DatosDeCandidato.identificar(textos, notacion: notacion)
         guard !candidatos.isEmpty else { return Mensaje.sinAcordes.texto(en: notacion) }
-        return candidatos.prefix(5).map { candidato in
-            var linea = "\(candidato.valor.cifrado(en: notacion))  \(candidato.valor.tipo.nombre(en: notacion))"
+        return candidatos.map { candidato in
+            var linea = "\(candidato.cifrado)  \(candidato.nombre)"
             if !candidato.omitidas.isEmpty {
-                let omitidas = candidato.omitidas.map { $0.nombre(en: notacion) }.joined(separator: ", ")
-                linea += "  (\(Mensaje.sin(omitidas).texto(en: notacion)))"
+                linea += "  (\(Mensaje.sin(candidato.omitidas.joined(separator: ", ")).texto(en: notacion)))"
             }
             return linea
         }.joined(separator: "\n")
@@ -420,14 +413,14 @@ extension LineaDeComandos {
         return nombres[texto.lowercased()]
     }
 
+    /// La escala con los datos de `--json` (`DatosDeEscala`) y, además, sus microtonos y, si se piden, todos los
+    /// acordes que caben en ella.
     static func describir(escala: Escala, conTodosSusAcordes: Bool = false, _ notacion: Notacion) -> String {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
-        var lineas = [
-            escala.nombre(en: notacion),
-            "  \(t(.notas)): " + escala.notas.map { $0.nombre(en: notacion) }.joined(separator: " "),
-        ]
+        let datos = DatosDeEscala(escala, notacion: notacion)
+        var lineas = [datos.nombre, "  \(t(.notas)): " + datos.notas.joined(separator: " ")]
         // De qué escala es modo: Re dórico → modo 2 de Do mayor.
-        if let modo = PresentacionDeEscalaYAcorde.modo(de: escala, notacion: notacion) { lineas.append("  " + modo) }
+        if let modo = datos.modo { lineas.append("  " + modo) }
         // La versión microtonal (Re Bayātī: Re Mi𝄳 Fa…) y los cents de cada grado, si la escala la tiene.
         if let subida = escala.notasMicrotonales() {
             let bajada = escala.notasMicrotonales(sentido: .descendente) ?? subida
@@ -445,10 +438,8 @@ extension LineaDeComandos {
             }
         }
         // Los acordes de cada grado, si la escala es heptatónica y todos forman un acorde conocido.
-        let acordes = escala.armonizar(cuatriadas: true).compactMap { $0 }
-        let romanos = escala.cifradosRomanos(cuatriadas: true).compactMap { $0 }
-        if acordes.count == escala.notas.count, romanos.count == acordes.count {
-            let pares = zip(romanos, acordes).map { "\($0) \($1.cifrado(en: notacion))" }
+        if let acordes = datos.acordes {
+            let pares = acordes.map { "\($0.grado) \($0.cifrado)" }
             lineas.append("  \(t(.acordes)): " + pares.joined(separator: " · "))
         }
         let grados = conTodosSusAcordes ? PresentacionDeEscalaYAcorde.acordesQueCaben(escala, notacion: notacion) : []
@@ -655,15 +646,16 @@ extension LineaDeComandos {
     /// `conjunto 0 4 7`: el conjunto con sus notas, sus formas, sus vectores y sus ejes de simetría.
     static func describir(conjunto: ConjuntoDeClases, _ notacion: Notacion) -> String {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        let datos = DatosDeConjunto(conjunto, notacion: notacion)
         func lista(_ numeros: [Int]) -> String { "[" + numeros.map(String.init).joined(separator: ", ") + "]" }
         let ejes = conjunto.ejesDeSimetria.map(\.description).joined(separator: " · ")
         return [
-            [conjunto.description, conjunto.numeroDeForte].compactMap { $0 }.joined(separator: "  "),
-            "  \(t(.notas)): " + conjunto.notas().map { $0.nombre(en: notacion) }.joined(separator: " "),
-            "  \(t(.formaNormal)): \(lista(conjunto.formaNormal))",
-            "  \(t(.formaPrima)): \(lista(conjunto.formaPrima))",
-            "  \(t(.vectorIntervalico)): \(lista(conjunto.vectorIntervalico))",
-            "  \(t(.vectorDeIndice)): \(lista(conjunto.vectorDeIndice))",
+            [lista(datos.clases), datos.forte].compactMap { $0 }.joined(separator: "  "),
+            "  \(t(.notas)): " + datos.notas.joined(separator: " "),
+            "  \(t(.formaNormal)): \(lista(datos.formaNormal))",
+            "  \(t(.formaPrima)): \(lista(datos.formaPrima))",
+            "  \(t(.vectorIntervalico)): \(lista(datos.vectorIntervalico))",
+            "  \(t(.vectorDeIndice)): \(lista(datos.vectorDeIndice))",
             "  \(t(.ejesDeSimetria)): " + (ejes.isEmpty ? "—" : ejes),
         ].joined(separator: "\n")
     }
@@ -672,27 +664,22 @@ extension LineaDeComandos {
     /// combinatorias y la matriz, con las P a la izquierda, las R a la derecha, las I arriba y las RI abajo.
     static func describir(serie: SerieDodecafonica, _ notacion: Notacion) -> String {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
-        // Una nota por clase, escritas todas a la vez para que no se repita ninguna.
-        let total = ConjuntoDeClases(0..<12)
-        let nombres = Dictionary(uniqueKeysWithValues: zip(total.clases, total.notas()))
-        let notas = serie.clases.compactMap { nombres[$0]?.nombre(en: notacion) }.joined(separator: " ")
-        var intervalos = "  \(t(.intervalos)): " + serie.intervalos.map(String.init).joined(separator: " ")
-        if serie.esDeTodosLosIntervalos { intervalos += "  (\(t(.deTodosLosIntervalos)))" }
-        let (primero, segundo) = serie.hexacordos
-        let hexacordos = [primero, segundo].map { $0.numeroDeForte ?? $0.description }.joined(separator: " · ")
+        // Los datos de `--json` (`DatosDeSerie`), en texto.
+        let datos = DatosDeSerie(serie, notacion: notacion)
+        var intervalos = "  \(t(.intervalos)): " + datos.intervalos.map(String.init).joined(separator: " ")
+        if datos.deTodosLosIntervalos { intervalos += "  (\(t(.deTodosLosIntervalos)))" }
         var lineas = [
-            serie.description,
-            "  \(t(.notas)): \(notas)",
+            datos.clases.map(SerieDodecafonica.cifra).joined(separator: " "),
+            "  \(t(.notas)): " + datos.notas.joined(separator: " "),
             intervalos,
-            "  \(t(.hexacordos)): \(hexacordos)",
-            "  \(t(.formasCombinatorias)): "
-                + serie.formasCombinatorias.map(\.description).joined(separator: " "),
-            "  " + t(.formasDistintas(serie.numeroDeFormasDistintas)),
+            "  \(t(.hexacordos)): " + datos.hexacordos.joined(separator: " · "),
+            "  \(t(.formasCombinatorias)): " + datos.formasCombinatorias.joined(separator: " "),
+            "  " + t(.formasDistintas(datos.formasDistintas)),
             "",
         ]
         func celda(_ texto: String) -> String { texto + String(repeating: " ", count: max(1, 5 - texto.count)) }
-        func cifra(_ clase: Int) -> String { clase == 10 ? "t" : clase == 11 ? "e" : String(clase) }
-        let matriz = serie.matriz
+        let cifra = SerieDodecafonica.cifra
+        let matriz = datos.matriz
         let margen = "  " + celda("")
         func cabecera(_ tipo: TipoDeFormaDeSerie) -> String {
             margen + matriz[0].map { celda(FormaDeSerie(tipo, $0).description) }.joined()

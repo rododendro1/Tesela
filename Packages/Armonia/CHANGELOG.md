@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+### Los nombres de las doce clases y las cifras de una serie
+
+- `ConjuntoDeClases.nombresDeLasClases(en:)`: el nombre de cada clase de 0 a 11, escritas todas a la vez para que no
+  se repita ninguna letra, como en la matriz de una serie.
+- `SerieDodecafonica.cifra(_:)`: una clase como se escribe en una serie, con t y e para 10 y 11.
+
 ### Los formatos de partitura como un solo tipo
 
 - **`FormatoDePartitura`** (MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI), con su `extensionDeFichero`, su `nombre` y si

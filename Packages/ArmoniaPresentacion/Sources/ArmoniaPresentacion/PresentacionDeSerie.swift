@@ -36,9 +36,7 @@ public struct SeriePresentada: Hashable, Sendable {
     public let ficheros: [FicheroParaExportar]
 
     /// La clase como se escribe en la matriz: 0…9, t (10) y e (11).
-    public static func cifra(_ clase: Int) -> String {
-        clase == 10 ? "t" : clase == 11 ? "e" : String(clase)
-    }
+    public static func cifra(_ clase: Int) -> String { SerieDodecafonica.cifra(clase) }
 
     /// Si la celda está en la forma elegida: en su fila (P o R) o en su columna (I o RI).
     public func estaEnLaForma(fila: Int, columna: Int) -> Bool {
@@ -74,27 +72,25 @@ public enum PresentacionDeSerie {
     ) throws -> SeriePresentada {
         let serie = try SerieDodecafonica(leyendo: texto)
         let t = { (campo: (TextosDeApps) -> String) in notacion.texto(campo) }
-        // Una nota por clase, escritas todas a la vez para que ninguna se repita.
-        let total = ConjuntoDeClases(0..<12)
-        let notaDeCada = Dictionary(uniqueKeysWithValues: zip(total.clases, total.notas()))
-        let nombres = (0..<12).map { notaDeCada[$0]?.nombre(en: notacion) ?? cifra($0) }
+        // Lo mismo que da `armonia serie` (y su `--json`), escrito para la vista.
+        let enDatos = DatosDeSerie(serie, notacion: notacion)
+        let nombres = ConjuntoDeClases.nombresDeLasClases(en: notacion)
         let lista = { (clases: [Int]) in clases.map { nombres[$0] }.joined(separator: " ") }
 
-        var intervalos = serie.intervalos.map(String.init).joined(separator: " ")
-        if serie.esDeTodosLosIntervalos { intervalos += " (" + t(\.deTodosLosIntervalos) + ")" }
-        let (primero, segundo) = serie.hexacordos
+        var intervalos = enDatos.intervalos.map(String.init).joined(separator: " ")
+        if enDatos.deTodosLosIntervalos { intervalos += " (" + t(\.deTodosLosIntervalos) + ")" }
         let datos = [
-            SeriePresentada.Dato(titulo: t(\.notas), valor: lista(serie.clases)),
+            SeriePresentada.Dato(titulo: t(\.notas), valor: enDatos.notas.joined(separator: " ")),
             SeriePresentada.Dato(titulo: t(\.intervalos), valor: intervalos),
+            SeriePresentada.Dato(titulo: t(\.hexacordos), valor: enDatos.hexacordos.joined(separator: " · ")),
             SeriePresentada.Dato(
-                titulo: t(\.hexacordos),
-                valor: [primero, segundo].map { $0.numeroDeForte ?? $0.description }.joined(separator: " · ")),
-            SeriePresentada.Dato(
-                titulo: t(\.formasCombinatorias),
-                valor: serie.formasCombinatorias.map(\.description).joined(separator: " ")),
+                titulo: t(\.formasCombinatorias), valor: enDatos.formasCombinatorias.joined(separator: " ")),
         ]
 
-        let matriz = serie.matriz
+        // Las notas de cada clase, para el pentagrama.
+        let total = ConjuntoDeClases(0..<12)
+        let notaDeCada = Dictionary(uniqueKeysWithValues: zip(total.clases, total.notas()))
+        let matriz = enDatos.matriz
         let clases = serie.forma(forma).clases
         let alturas = clases.map { clase in
             notaDeCada[clase].flatMap { Altura($0, midi: 60 + clase) } ?? Altura(midi: 60 + clase)
@@ -105,7 +101,7 @@ public enum PresentacionDeSerie {
         let sinArmadura = Tonalidad(armadura: 0)
         return SeriePresentada(
             serie: serie.description, datos: datos,
-            formasDistintas: notacion.texto { $0.formasDistintas(serie.numeroDeFormasDistintas) }, matriz: matriz,
+            formasDistintas: notacion.texto { $0.formasDistintas(enDatos.formasDistintas) }, matriz: matriz,
             formasDeLasFilas: matriz.map { FormaDeSerie(.original, $0[0]) },
             formasDeLasColumnas: matriz[0].map { FormaDeSerie(.inversion, $0) },
             nombresDeLasClases: nombres, forma: forma, clasesDeLaForma: clases,
@@ -116,8 +112,6 @@ public enum PresentacionDeSerie {
                 voz.exportar(como: formato, tonalidad: sinArmadura, tempo: tempo, titulo: titulo)
             })
     }
-
-    private static func cifra(_ clase: Int) -> String { SeriePresentada.cifra(clase) }
 
     /// Qué se escribe en el campo de la serie, con un ejemplo en cifras y otro en la notación:
     /// «Serie (5 4 0 9 7 2 8 1 3 6 t e, o Fa Mi Do La…)».
