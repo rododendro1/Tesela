@@ -187,6 +187,7 @@ package struct EscritorGUIDO: EscritorDePartitura {
                     dentro = (grupo.rango.upperBound, [], "\\tuplet<\"-\(grupo.reales)-\">(")
                 }
                 var texto = EscritorGUIDO.evento(evento)
+                texto = EscritorGUIDO.conExpresion(texto, evento)
                 var debajo = (nuevo ? linea.letras[inicio] ?? [] : []).filter { !$0.isEmpty }
                 if c == 0 && i == 0, let conRotulo { debajo.insert(conRotulo, at: 0) }
                 // De arriba abajo, cada línea un poco más baja que la anterior (en medios espacios).
@@ -240,6 +241,25 @@ package struct EscritorGUIDO: EscritorDePartitura {
         case 1: return altura(evento.alturas[0]) + figura
         default: return "{" + evento.alturas.map { altura($0) + figura }.joined(separator: ", ") + "}"
         }
+    }
+
+    /// Un evento con sus articulaciones, cada una una etiqueta que lo envuelve (`\stacc(c1/4)`), y su dinámica
+    /// delante (`\intens<"mf"> c1/4`).
+    package static func conExpresion(_ texto: String, _ evento: Evento) -> String {
+        var texto = texto
+        for articulacion in evento.articulaciones {
+            let etiqueta: String
+            switch articulacion {
+            case .staccato: etiqueta = "\\stacc"
+            case .staccatissimo: etiqueta = "\\stacc<type=\"heavy\">"
+            case .tenuto: etiqueta = "\\ten"
+            case .acento: etiqueta = "\\accent"
+            case .marcato: etiqueta = "\\marcato"
+            case .calderon: etiqueta = "\\fermata"
+            }
+            texto = etiqueta + "(" + texto + ")"
+        }
+        return (evento.dinamica.map { "\\intens<\"\($0.rawValue)\"> " } ?? "") + texto
     }
 
     /// La altura absoluta: Do4 → `c1`, Fa♯3 → `f#0`, Si♭1 → `b&-2`, Re𝄪5 → `d##2`.

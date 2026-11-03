@@ -252,6 +252,10 @@ package struct EscritorMEI: EscritorDePartitura {
                                 "<harm staff=\"\(pentagrama)\" place=\"above\" startid=\"#\(id)\">\(EscrituraXML.escapar(cifrado))</harm>"
                             )
                         }
+                        if let dinamica = evento.dinamica {
+                            let donde = "staff=\"\(pentagrama)\" place=\"below\" startid=\"#\(id)\""
+                            control.append("<dynam \(donde)>\(dinamica.rawValue)</dynam>")
+                        }
                         if c == 0 && i == 0 {
                             if let tempo, l == 0 {
                                 control.append(EscritorMEI.indicacion(tempo, pentagrama: pentagrama, id: id))
@@ -265,7 +269,8 @@ package struct EscritorMEI: EscritorDePartitura {
                         xml += EscritorMEI.evento(
                             evento, id: id, plicaArriba: linea.plicaArriba,
                             compasEntero: compasEntero, ligadaDesde: continuaciones[l][i],
-                            alteraciones: alteraciones[l][i], letras: letras, ppq: ppq, nivel: nivel)
+                            alteraciones: alteraciones[l][i], letras: letras,
+                            articulaciones: evento.articulaciones, ppq: ppq, nivel: nivel)
                         posiciones[l] = posiciones[l] + evento.duracion
                         for grupo in grupos.cierran[i, default: []] {
                             nivel -= 1
@@ -320,7 +325,7 @@ package struct EscritorMEI: EscritorDePartitura {
     private static func evento(
         _ evento: Evento, id: String, plicaArriba: Bool?, compasEntero: Bool,
         ligadaDesde: [Altura], alteraciones: [AlteracionEscrita], letras: [String],
-        ppq: Int, nivel: Int
+        articulaciones: [Articulacion] = [], ppq: Int, nivel: Int
     ) -> String {
         // La figura, si la hay; la duración exacta va siempre en `dur.ppq`, porque algunos trozos
         // de un grupo irregular partido por la barra no tienen figura propia.
@@ -330,9 +335,12 @@ package struct EscritorMEI: EscritorDePartitura {
         duracion += " dur.ppq=\"\(Int(((evento.duracion / .negra).enRedondas * Double(ppq)).rounded()))\""
         let plica = plicaArriba.map { " stem.dir=\"\($0 ? "up" : "down")\"" } ?? ""
         let fuera = sangria(nivel)
+        // El calderón es un atributo de la nota, el acorde o el silencio; las demás articulaciones, `<artic>`.
+        let calderon = articulaciones.contains(.calderon) ? " fermata=\"above\"" : ""
         guard !evento.esSilencio else {
             return compasEntero
-                ? fuera + "<mRest xml:id=\"\(id)\"/>\n" : fuera + "<rest xml:id=\"\(id)\"\(duracion)/>\n"
+                ? fuera + "<mRest xml:id=\"\(id)\"\(calderon)/>\n"
+                : fuera + "<rest xml:id=\"\(id)\"\(duracion)\(calderon)/>\n"
         }
         func nota(_ k: Int, _ atributos: String) -> String {
             let altura = evento.alturas[k]
@@ -347,15 +355,31 @@ package struct EscritorMEI: EscritorDePartitura {
         let versos = letras.enumerated().filter { !$0.element.isEmpty }.map { k, letra in
             "<verse n=\"\(k + 1)\" place=\"below\"><syl>\(EscrituraXML.escapar(letra))</syl></verse>"
         }
+        let artics = articulaciones.compactMap(artic).map { "<artic artic=\"\($0)\"/>" }
         if evento.alturas.count == 1 {
-            let abre = fuera + nota(0, " xml:id=\"\(id)\"" + duracion) + plica
-            guard !versos.isEmpty else { return abre + "/>\n" }
-            return abre + ">\n" + versos.map { fuera + "  " + $0 + "\n" }.joined() + fuera + "</note>\n"
+            let hijos = artics + versos
+            let abre = fuera + nota(0, " xml:id=\"\(id)\"" + duracion) + plica + calderon
+            guard !hijos.isEmpty else { return abre + "/>\n" }
+            return abre + ">\n" + hijos.map { fuera + "  " + $0 + "\n" }.joined() + fuera + "</note>\n"
         }
-        var xml = fuera + "<chord xml:id=\"\(id)\"\(duracion)\(plica)>\n"
+        // Las articulaciones del acorde, antes que sus notas.
+        var xml = fuera + "<chord xml:id=\"\(id)\"\(duracion)\(plica)\(calderon)>\n"
+        for artic in artics { xml += fuera + "  " + artic + "\n" }
         for k in evento.alturas.indices { xml += fuera + "  " + nota(k, "") + "/>\n" }
         for verso in versos { xml += fuera + "  " + verso + "\n" }
         return xml + fuera + "</chord>\n"
+    }
+
+    /// El valor de `@artic` de una articulación; `nil` para el calderón, que es `@fermata`.
+    package static func artic(_ articulacion: Articulacion) -> String? {
+        switch articulacion {
+        case .staccato: return "stacc"
+        case .staccatissimo: return "stacciss"
+        case .tenuto: return "ten"
+        case .acento: return "acc"
+        case .marcato: return "marc"
+        case .calderon: return nil
+        }
     }
 
     /// La alteración que se escribe y la que suena sin escribirse, en los valores de MEI.

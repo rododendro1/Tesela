@@ -10,7 +10,9 @@ import Foundation
 // las voces que vuelven atrás (`<backup>`) o avanzan (`<forward>`), las ligaduras (dos notas ligadas son
 // una sola) y los instrumentos transpositores (`<transpose>`: se lee lo que suena, no lo que se escribe).
 // Las notas de adorno y las notas guía (`<grace>`, `<cue>`) no cuentan, ni la percusión (`<unpitched>`).
-// Del primer compás que los tenga: la armadura, el compás y el tempo (`<sound tempo>`).
+// Del primer compás que los tenga: la armadura, el compás y el tempo (`<sound tempo>`). De cada nota, sus
+// articulaciones (`<articulations>`, `<fermata>`) y la dinámica (`<dynamics>`) que la precede, que vale también para
+// las demás notas de su acorde.
 
 extension PiezaImportada {
     /// Lee una partitura MusicXML por partes.
@@ -86,6 +88,10 @@ final class LectorMusicXML: LectorDeElementosXML {
     private var transposicion: (pasos: Int, semitonos: Int)?
     /// Las notas con una ligadura que sigue, por parte y altura MIDI: su índice en `notas`.
     private var ligadas: [Int: Int] = [:]
+    /// La dinámica leída que espera a la nota siguiente.
+    private var dinamicaPendiente: Dinamica?
+    /// La dinámica y las articulaciones de la primera nota del acorde en curso, para las demás.
+    private var marcasDelAcorde: (dinamica: Dinamica?, articulaciones: [Articulacion]) = (nil, [])
 
     // Lo que se va leyendo dentro de un elemento.
     private var nota = NotaLeida()
@@ -105,16 +111,29 @@ final class LectorMusicXML: LectorDeElementosXML {
         var pulsos: Int?
         var ligaduraQueEmpieza = false
         var ligaduraQueAcaba = false
+        var articulaciones: [Articulacion] = []
     }
+
+    /// Las articulaciones de MusicXML (dentro de `<articulations>`).
+    private static let articulaciones: [String: Articulacion] = [
+        "staccato": .staccato, "staccatissimo": .staccatissimo, "spiccato": .staccatissimo, "tenuto": .tenuto,
+        "accent": .acento, "strong-accent": .marcato,
+    ]
 
     func abre(_ nombre: String, atributos: [String: String]) {
         if raiz == nil { raiz = nombre }
         defer { pila.append(nombre) }
         contenido = ""
         // `padre` es todavía el elemento que contiene a este.
+        if padre == "dynamics", let dinamica = Dinamica(rawValue: nombre) { dinamicaPendiente = dinamica }
+        if padre == "articulations", let articulacion = LectorMusicXML.articulaciones[nombre] {
+            nota.articulaciones.append(articulacion)
+        }
+        if nombre == "fermata", padre == "notations" { nota.articulaciones.append(.calderon) }
         switch nombre {
         case "part":
             parte += 1
+            dinamicaPendiente = nil
             divisiones = 1
             posicion = .cero
             inicioDelCompas = .cero
@@ -238,20 +257,25 @@ final class LectorMusicXML: LectorDeElementosXML {
             avanzar(pulsos)
         }
         guard !nota.muda, let paso = nota.paso, let octava = nota.octava else { return }
+        if nota.esDeAcorde {
+            marcasDelAcorde.articulaciones += nota.articulaciones
+        } else {
+            marcasDelAcorde = (dinamicaPendiente, nota.articulaciones)
+            dinamicaPendiente = nil
+        }
         var altura = Altura(Nota(paso, Alteracion(nota.alteracion)), octava: octava)
         if let transposicion {
             altura = Altura(pasos: altura.pasos + transposicion.pasos, midi: altura.midi + transposicion.semitonos)
         }
         let clave = parte * 1024 + altura.midi + 512
         if nota.ligaduraQueAcaba, let i = ligadas[clave], notas[i].fin == inicio {
-            let anterior = notas[i]
-            notas[i] = NotaDeLaPieza(
-                altura: anterior.altura, inicio: anterior.inicio,
-                duracion: anterior.duracion + duracion, parte: parte, desvio: anterior.desvio)
+            notas[i] = notas[i].con(duracion: notas[i].duracion + duracion)
             if !nota.ligaduraQueEmpieza { ligadas[clave] = nil }
         } else {
             notas.append(
-                NotaDeLaPieza(altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: nota.desvio))
+                NotaDeLaPieza(
+                    altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: nota.desvio,
+                    dinamica: marcasDelAcorde.dinamica, articulaciones: marcasDelAcorde.articulaciones))
             if nota.ligaduraQueEmpieza { ligadas[clave] = notas.count - 1 }
         }
     }

@@ -174,9 +174,11 @@ package enum Exportacion {
         guard resto.esCero, partes.count > 1 else { return [evento] }
         return partes.enumerated().map { i, parte in
             let ultima = i == partes.count - 1
-            return evento.con(
+            let escrito = evento.con(
                 duracion: impar > 1 ? parte * Duracion(normales, impar) : parte,
                 ligada: ultima ? evento.ligada : !evento.esSilencio)
+            // La dinámica y las articulaciones, solo en la primera figura.
+            return i == 0 ? escrito : escrito.sinExpresion
         }
     }
 

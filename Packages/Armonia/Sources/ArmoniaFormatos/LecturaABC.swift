@@ -11,8 +11,9 @@ import Foundation
 // en esa octava), los cuartos de tono (`^/`, `_3/2`), las octavas (`c'`, `C,`), las duraciones (`3/2`, `/`, `//`), los
 // acordes (`[CEG]`), los silencios (`z`, `x`, `Z`), las ligaduras (`-`), el ritmo con puntillo (`>`, `<`), los grupos
 // irregulares (`(3`, `(p:q:r`) y cada voz (`V:`) como una parte. Los cambios en medio (`[K:…]`, `[M:…]`, `[L:…]`)
-// valen desde ahí. No cuentan las notas de adorno (`{…}`), los adornos (`!trill!`, `~`), los cifrados y los textos
-// entre comillas, la letra (`w:`) ni las repeticiones, que se leen una vez.
+// valen desde ahí. De las decoraciones, la dinámica (`!mf!`) y las articulaciones (`.`, `!tenuto!`, `!>!`,
+// `!fermata!`…) van con la nota siguiente. No cuentan las notas de adorno (`{…}`), los adornos (`!trill!`, `~`), los
+// cifrados y los textos entre comillas, la letra (`w:`) ni las repeticiones, que se leen una vez.
 
 extension PiezaImportada {
     /// Lee la primera melodía de un texto en ABC.
@@ -74,6 +75,23 @@ struct LectorABC {
 
     /// Las notas del último evento (una nota o un acorde), para las ligaduras y el ritmo con puntillo.
     private var ultimo: (indices: [Int], inicio: Int, pulsos: Int)?
+    /// La dinámica y las articulaciones leídas que esperan a la nota siguiente.
+    private var pendientes: (dinamica: Dinamica?, articulaciones: [Articulacion]) = (nil, [])
+
+    /// Las decoraciones que son articulaciones.
+    private static let decoraciones: [String: Articulacion] = [
+        "staccato": .staccato, "wedge": .staccatissimo, "tenuto": .tenuto, ">": .acento, "accent": .acento,
+        "emphasis": .acento, "marcato": .marcato, "fermata": .calderon,
+    ]
+
+    /// Una decoración (`!mf!`, `!fermata!`): si es una dinámica o una articulación, para la nota siguiente.
+    private mutating func decoracion(_ nombre: String) {
+        if let dinamica = Dinamica(rawValue: nombre) {
+            pendientes.dinamica = dinamica
+        } else if let articulacion = LectorABC.decoraciones[nombre] {
+            pendientes.articulaciones.append(articulacion)
+        }
+    }
 
     mutating func leer(_ texto: String) {
         var empezada = false
@@ -259,6 +277,12 @@ struct LectorABC {
             while i < c.count, c[i] != fin { i += 1 }
             i += 1
         }
+        /// Lo que hay entre `fin` y el siguiente `fin`, desde `i`, que queda detrás.
+        func entre(_ fin: Unicode.Scalar) -> String {
+            let inicio = i + 1
+            hasta(fin)
+            return String(String.UnicodeScalarView(c[inicio..<max(inicio, min(i - 1, c.count))]))
+        }
         while i < c.count {
             let ch = c[i]
             switch ch {
@@ -266,10 +290,11 @@ struct LectorABC {
                 return
             case "\"":
                 hasta("\"")
-            case "!":
-                hasta("!")
-            case "+":
-                hasta("+")
+            case "!", "+":
+                decoracion(entre(ch))
+            case ".":
+                pendientes.articulaciones.append(.staccato)
+                i += 1
             case "{":
                 hasta("}")
             case "-":
@@ -330,7 +355,7 @@ struct LectorABC {
                         } else if c[i] == "\"" {
                             hasta("\"")
                         } else if c[i] == "!" {
-                            hasta("!")
+                            decoracion(entre("!"))
                         } else {
                             i += 1
                         }
@@ -472,17 +497,17 @@ struct LectorABC {
         let duracion = PulsosDeLectura.duracion(pulsos)
         for (altura, desvio) in alturas {
             if let i = voz.ligadas[altura.midi], notas[i].fin == desde {
-                let anterior = notas[i]
-                notas[i] = NotaDeLaPieza(
-                    altura: anterior.altura, inicio: anterior.inicio, duracion: anterior.duracion + duracion,
-                    parte: voz.parte, desvio: anterior.desvio)
+                notas[i] = notas[i].con(duracion: notas[i].duracion + duracion)
                 indices.append(i)
             } else {
                 notas.append(
-                    NotaDeLaPieza(altura: altura, inicio: desde, duracion: duracion, parte: voz.parte, desvio: desvio))
+                    NotaDeLaPieza(
+                        altura: altura, inicio: desde, duracion: duracion, parte: voz.parte, desvio: desvio,
+                        dinamica: pendientes.dinamica, articulaciones: pendientes.articulaciones))
                 indices.append(notas.count - 1)
             }
         }
+        pendientes = (nil, [])
         voz.ligadas = [:]
         voz.posicion = inicio + pulsos
         voces[actual] = voz
@@ -494,6 +519,7 @@ struct LectorABC {
         guard pulsos > 0, var voz = voces[actual] else { return }
         voz.posicion = min(voz.posicion + pulsos, PulsosDeLectura.limite + 1)
         voz.ligadas = [:]
+        pendientes = (nil, [])
         voces[actual] = voz
         ultimo = nil
     }
@@ -516,10 +542,8 @@ struct LectorABC {
         guard nuevos > 0 else { return }
         for i in ultimo.indices {
             let nota = notas[i]
-            notas[i] = NotaDeLaPieza(
-                altura: nota.altura, inicio: nota.inicio,
-                duracion: nota.duracion - PulsosDeLectura.duracion(ultimo.pulsos) + PulsosDeLectura.duracion(nuevos),
-                parte: nota.parte, desvio: nota.desvio)
+            notas[i] = nota.con(
+                duracion: nota.duracion - PulsosDeLectura.duracion(ultimo.pulsos) + PulsosDeLectura.duracion(nuevos))
         }
         voz.posicion = ultimo.inicio + nuevos
         voz.siguiente = despues
