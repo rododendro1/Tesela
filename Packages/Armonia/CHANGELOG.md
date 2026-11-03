@@ -2,6 +2,20 @@
 
 ## Sin publicar
 
+### Grados, dedos, secuencias y tablatura en el pentagrama
+
+- **Grados en números romanos** debajo de cada acorde: `grados` en `DisposicionDeAcorde.svgPentagrama(…)` y
+  `Voz.svgPentagrama(…)`.
+- **Dedos encima de las notas**: `Escala.svgPentagrama(digitacion:)` (los de `digitacionDePiano(_:)`) y `digitos` en
+  las voces y las disposiciones.
+- **Secuencias con ritmo**: `Escala.svgPentagrama(secuencia:)`, por terceras en corcheas, en grupos de tres en
+  tresillos y de cuatro en semicorcheas.
+- **Tablatura debajo del pentagrama** (`Tablatura`), alineada nota a nota, y `Escala.svgPentagrama(tocadaEn:)` y
+  `Acorde.svgPentagrama(arpegiadoEn:)` para las alturas de una posición del mástil, escritas con las notas de la
+  escala o del acorde.
+- **En la línea de comandos**, `armonia pentagrama` con `--romanos`, `--mano`, `--dedos`, `--secuencia` y `--tab`
+  (con `--instrumento` y `--caged`); en inglés, `--roman`, `--hand`, `--fingers`, `--sequence` y `--instrument`.
+
 ### Cifrados, intervalos, semitonos y tónica en el pentagrama
 
 - **Cifrado sobre cada acorde**: `DisposicionDeAcorde.svgPentagrama(_:titulo:cifrados:)`,

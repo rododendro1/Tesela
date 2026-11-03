@@ -119,6 +119,8 @@ extension TextosDeCLI {
         descripcionReloj: "η κλίμακα σε ρολόι δώδεκα ωρών\n(SVG): ο χρωματικός κύκλος ή, με\n--fifths, ο κύκλος των πεμπτών",
         sintaxisPentagrama: "staff scale|chord|arpeggio|chords <νότες>",
         descripcionPentagrama: "μια κλίμακα, μια συγχορδία, ένα αρπίσμα\n(με ρυθμό: --figure 16, --triplets) ή\nσυγχορδίες με τα σύμβολά τους σε πεντάγραμμο\n(SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
+        sintaxisPentagramaEstudio: "staff <τι> --roman|--hand|--sequence|--tab",
+        descripcionPentagramaEstudio: "οι βαθμίδες με λατινικούς αριθμούς κάτω\nαπό τις συγχορδίες· τα δάχτυλα στο πιάνο\n(--hand right) ή στην κιθάρα (--tab\n--fingers)· η κλίμακα σε τρίτες ή σε\nομάδες (--sequence thirds)· η ταμπλατούρα\nαπό κάτω (--tab, --instrument)",
         sintaxisPosicionesArpegio: "positions --arpeggio <σύμβολο> [--caged|--sweep]",
         descripcionPosicionesArpegio: "το αρπίσιμο μιας συγχορδίας σε κάθε\nθέση της ταστιέρας, σε ταμπλατούρα με\nτα δάχτυλα· --up-and-down, πάνω και κάτω",
 

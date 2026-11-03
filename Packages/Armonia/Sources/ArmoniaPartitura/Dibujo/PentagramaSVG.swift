@@ -28,6 +28,12 @@ struct PentagramaSVG {
     /// La tónica o la fundamental desde la que se cuentan los intervalos de las notas y que se marca, a partir de
     /// cada columna (en una progresión, la de cada acorde).
     var referencias: [Int: Referencia] = [:]
+    /// Los grados de una progresión en números romanos (I, V7/V), debajo de su columna, en la última fila.
+    var grados: [Int: String] = [:]
+    /// Los dedos de cada columna, encima de las notas, uno por nota de la grave a la aguda (0, sin dedo).
+    var digitos: [Int: [Int]] = [:]
+    /// La tablatura debajo del pentagrama, alineada columna a columna.
+    var tablatura: Tablatura?
 
     /// La nota desde la que se cuentan los intervalos.
     struct Referencia {
@@ -75,6 +81,11 @@ struct PentagramaSVG {
     /// Cuerpo de la letra del cifrado y de los nombres de las notas, en espacios de pentagrama.
     private static let letraDelCifrado = 1.9
     private static let letraDeLasEtiquetas = 1.2
+    private static let letraDeLosGrados = 1.5
+    private static let letraDeLosDedos = 1.2
+    private static let letraDeLaTablatura = 1.2
+    /// Lo que separa dos líneas de la tablatura.
+    static let separacionDeLaTablatura = 1.3
 
     /// Lo que mide cada carácter, en partes del cuerpo de la letra, en Helvetica y Arial.
     private static let anchosDeLosCaracteres: [Character: Double] = {
@@ -251,6 +262,9 @@ struct PentagramaSVG {
         var enVigor: [Int: String] = [:]
         var etiquetas: [(x: Double, texto: String)] = []
         var intervalos: [(x: Double, texto: String)] = []
+        var gradosColocados: [(x: Double, texto: String)] = []
+        // El centro de cada columna, para los dedos y la tablatura.
+        var centros: [Double] = []
         var cifradosColocados: [(x: Double, texto: String, mitad: Double)] = []
         // Para el arco de los semitonos: dónde va la nota de cada columna de una sola nota.
         var notasSueltas: [(x: Double, y: Double, midi: Int)?] = []
@@ -353,14 +367,20 @@ struct PentagramaSVG {
                     (alturas.count > 1 ? alturas : [alturas[0]]).map { referencia.cifra(de: $0.nota) }
                         .joined(separator: " ")
                 } : nil
+            let grado = grados[columna]
             // Las etiquetas de las notas no se pisan: si la de esta columna cae demasiado cerca de la anterior, la
             // columna se corre a la derecha.
-            let mitadDeLaEtiqueta =
+            let anchosDeLasEtiquetas =
                 [etiqueta, intervalo].compactMap { $0 }.map {
                     PentagramaSVG.anchoEstimado(
                         $0, cuerpoDeLetra: PentagramaSVG.letraDeLasEtiquetas, proporcion: opciones.anchoDeLosCaracteres)
-                }.max().map { $0 / 2 } ?? 0
-            let conEtiqueta = etiqueta != nil || intervalo != nil
+                }
+                + [grado].compactMap { $0 }.map {
+                    PentagramaSVG.anchoEstimado(
+                        $0, cuerpoDeLetra: PentagramaSVG.letraDeLosGrados, proporcion: opciones.anchoDeLosCaracteres)
+                }
+            let mitadDeLaEtiqueta = anchosDeLasEtiquetas.max().map { $0 / 2 } ?? 0
+            let conEtiqueta = etiqueta != nil || intervalo != nil || grado != nil
             if columnas.count > 1, conEtiqueta, let anterior = ultimaEtiqueta {
                 let centroMinimo =
                     anterior.centro + anterior.mitad + mitadDeLaEtiqueta + PentagramaSVG.separacionEntreEtiquetas
@@ -440,6 +460,8 @@ struct PentagramaSVG {
             if cifradoX == nil { cifradoX = centro }
             if let etiqueta { etiquetas.append((centro, etiqueta)) }
             if let intervalo { intervalos.append((centro, intervalo)) }
+            if let grado { gradosColocados.append((centro, grado)) }
+            centros.append(centro)
             if conEtiqueta { ultimaEtiqueta = (centro, mitadDeLaEtiqueta) }
             if let cifradoDeLaColumna { cifradosColocados.append((centro, cifradoDeLaColumna, mitadDelCifrado)) }
             let suelta = grupos.enumerated().filter { !$0.element.isEmpty }
@@ -519,9 +541,61 @@ struct PentagramaSVG {
             if arriba { minimoY = min(minimoY, y - 1.2) } else { maximoY = max(maximoY, y + 0.3) }
         }
 
+        let proporcion = opciones.anchoDeLosCaracteres
+        // Los dedos, en una fila encima de todo lo demás (debajo del cifrado): en un acorde, el de la nota más aguda
+        // arriba.
+        var dedosSVG: [String] = []
+        if !digitos.isEmpty {
+            let base = minimoY - 0.4
+            var arribaDeLosDedos = base
+            for (columna, dedos) in digitos where centros.indices.contains(columna) {
+                let pares = zip(columnas[columna], dedos).sorted { $0.0.midi < $1.0.midi }
+                for (i, par) in pares.filter({ $0.1 > 0 }).enumerated() {
+                    let y = base - 1.1 * Double(i)
+                    arribaDeLosDedos = min(arribaDeLosDedos, y)
+                    dedosSVG.append(
+                        elemento("text").con("x", centros[columna]).con("y", y).con("text-anchor", "middle")
+                            .con("font-size", PentagramaSVG.letraDeLosDedos).con("font-family", "sans-serif")
+                            .conTexto(String(par.1)))
+                }
+            }
+            minimoY = min(minimoY, arribaDeLosDedos - 1.0)
+        }
+
+        // La tablatura, debajo del pentagrama: una línea por cuerda (la más aguda arriba) y el traste de cada nota en
+        // su cuerda, con la línea cortada alrededor del número.
+        var tablaturaSVG: [String] = []
+        var lineasDeLaTablatura: [(y: Double, huecos: [(Double, Double)])] = []
+        var tablaturaVertical: (arriba: Double, abajo: Double)?
+        if let tablatura, tablatura.cuerdas > 0 {
+            let arriba = maximoY + 2.0
+            let separacion = PentagramaSVG.separacionDeLaTablatura
+            let abajo = arriba + separacion * Double(tablatura.cuerdas - 1)
+            tablaturaVertical = (arriba, abajo)
+            lineasDeLaTablatura = (0..<tablatura.cuerdas).map { (arriba + separacion * Double($0), []) }
+            for (columna, pulsaciones) in tablatura.notas where centros.indices.contains(columna) {
+                for pulsacion in pulsaciones where (0..<tablatura.cuerdas).contains(pulsacion.cuerda) {
+                    let texto = String(pulsacion.traste)
+                    let mitad =
+                        PentagramaSVG.anchoEstimado(
+                            texto, cuerpoDeLetra: PentagramaSVG.letraDeLaTablatura, proporcion: proporcion) / 2
+                    let y = lineasDeLaTablatura[pulsacion.cuerda].y
+                    lineasDeLaTablatura[pulsacion.cuerda].huecos.append(
+                        (centros[columna] - mitad - 0.15, centros[columna] + mitad + 0.15))
+                    tablaturaSVG.append(
+                        elemento("text").con("x", centros[columna]).con("y", y + 0.42).con("text-anchor", "middle")
+                            .con("font-size", PentagramaSVG.letraDeLaTablatura).con("font-family", "sans-serif")
+                            .conTexto(texto))
+                }
+            }
+            // Lo que va debajo (los nombres, los intervalos, los grados), algo más separado de la última cuerda.
+            maximoY = abajo + 0.6
+        }
+
+        notasSVG += dedosSVG + tablaturaSVG
+
         // Un cifrado o los nombres de un acorde pueden ser más anchos que el acorde: el pentagrama se alarga a la derecha
         // y, si el texto sobresale por la izquierda, las notas se desplazan.
-        let proporcion = opciones.anchoDeLosCaracteres
         let anchoDelTexto = max(
             cifrado.map {
                 PentagramaSVG.anchoEstimado($0, cuerpoDeLetra: PentagramaSVG.letraDelCifrado, proporcion: proporcion)
@@ -540,9 +614,12 @@ struct PentagramaSVG {
 
         // Medidas verticales: del punto más alto al más bajo, con las claves, las alteraciones y las notas.
         let cima = cifrado == nil && cifradosColocados.isEmpty ? minimoY - 0.4 : minimoY - 2.6
-        // Debajo, una fila por cada clase de etiqueta: los nombres y los intervalos.
+        // Debajo, una fila por cada clase de etiqueta: los nombres, los intervalos y los grados.
         let filas = (opciones.nombresDeLasNotas ? 1 : 0) + (intervalos.isEmpty ? 0 : 1)
-        let fondo = filas == 0 ? maximoY + 0.4 : maximoY + 2.4 + 1.5 * Double(filas - 1)
+        let yDeLosGrados = maximoY + (filas == 0 ? 2.0 : 2.0 + 1.5 * Double(filas))
+        let fondo =
+            !gradosColocados.isEmpty
+            ? yDeLosGrados + 0.6 : filas == 0 ? maximoY + 0.4 : maximoY + 2.4 + 1.5 * Double(filas - 1)
         // En el pentagrama doble, una llave a la izquierda, con el margen que pide.
         let margen = doble ? PentagramaSVG.margenDeLaLlave : 0
         let ancho = final + 0.6 + margen
@@ -558,6 +635,26 @@ struct PentagramaSVG {
             for i in 0..<5 {
                 let y = PentagramaSVG.y(deLugar: 8 - 2 * i, pentagrama: k)
                 lineas.append(linea(desde: 0, hasta: final, y: y, grosor: "0.13"))
+            }
+        }
+        // Las líneas de la tablatura, cortadas alrededor de los números (que van corridos con las notas), y sus barras.
+        for fila in lineasDeLaTablatura {
+            var desde = 0.0
+            for hueco in fila.huecos.sorted(by: { $0.0 < $1.0 }) {
+                let (a, b) = (hueco.0 + desplazamiento, hueco.1 + desplazamiento)
+                if a > desde { lineas.append(linea(desde: desde, hasta: a, y: fila.y, grosor: "0.13")) }
+                desde = max(desde, b)
+            }
+            if final > desde { lineas.append(linea(desde: desde, hasta: final, y: fila.y, grosor: "0.13")) }
+        }
+        if let (arriba, abajo) = tablaturaVertical {
+            for xDeLaBarra in [0, final] + (ritmo != nil ? [final - 0.25, final - 0.95] : [])
+                + barrasDeCompas.map({ $0 + desplazamiento })
+            {
+                let grosor = ritmo != nil && xDeLaBarra == final - 0.25 ? "0.5" : "0.16"
+                lineas.append(
+                    elemento("line").con("x1", xDeLaBarra).con("y1", arriba).con("x2", xDeLaBarra).con("y2", abajo)
+                        .con("stroke-width", grosor).vacio)
             }
         }
         // Barra del principio (si hay dos pentagramas, una sola que los une) y barra final.
@@ -624,6 +721,20 @@ struct PentagramaSVG {
         for intervalo in intervalos {
             let letra = PentagramaSVG.letraDeLasEtiquetas
             textos.append(texto(intervalo.texto, x: intervalo.x, y: yDeLosIntervalos, cuerpoDeLetra: letra))
+        }
+        for grado in gradosColocados {
+            let letra = PentagramaSVG.letraDeLosGrados
+            textos.append(texto(grado.texto, x: grado.x, y: yDeLosGrados, cuerpoDeLetra: letra))
+        }
+        // «TAB» a la izquierda de la tablatura, en vertical.
+        if let (arriba, abajo) = tablaturaVertical {
+            let letra = min(1.6, (abajo - arriba + 1.0) / 3 * 0.85)
+            for (i, letraDeTab) in ["T", "A", "B"].enumerated() {
+                let y = (arriba + abajo) / 2 + letra * 0.36 + Double(i - 1) * letra * 1.05
+                cuerpo.append(
+                    elemento("text").con("x", 1.3).con("y", y).con("text-anchor", "middle").con("font-size", letra)
+                        .con("font-weight", "bold").con("font-family", "sans-serif").conTexto(letraDeTab))
+            }
         }
 
         let descripcion = columnas.flatMap { $0 }.map { $0.nombre(en: opciones.notacion) }.joined(separator: ", ")

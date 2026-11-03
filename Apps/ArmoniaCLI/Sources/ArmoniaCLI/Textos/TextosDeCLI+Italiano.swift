@@ -119,6 +119,8 @@ extension TextosDeCLI {
         descripcionReloj: "la scala su un orologio di dodici ore\n(SVG): il cerchio cromatico o, con\n--quintas, il circolo delle quinte",
         sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
         descripcionPentagrama: "una scala, un accordo, un arpeggio (con\nritmo: --figura 16, --tresillos) o degli\naccordi con la sigla su un pentagramma\n(SVG); --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
+        sintaxisPentagramaEstudio: "pentagrama <cosa> --romanos|--mano|--secuencia|--tab",
+        descripcionPentagramaEstudio: "i gradi in numeri romani sotto gli\naccordi; la diteggiatura del pianoforte\n(--mano derecha) o della chitarra (--tab\n--dedos); la scala per terze o a gruppi\n(--secuencia terceras); l'intavolatura\nsotto (--tab, --instrumento)",
         sintaxisPosicionesArpegio: "posiciones --arpegio <sigla> [--caged|--barrido]",
         descripcionPosicionesArpegio: "l'arpeggio di un accordo in ogni\nposizione del manico, in intavolatura\ncon le dita; --ida-y-vuelta, sale e scende",
 

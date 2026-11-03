@@ -119,6 +119,8 @@ extension TextosDeCLI {
         descripcionReloj: "die Skala auf einer Zwölf-Stunden-Uhr\n(SVG): der chromatische Kreis oder, mit\n--fifths, der Quintenzirkel",
         sintaxisPentagrama: "staff scale|chord|arpeggio|chords <Noten>",
         descripcionPentagrama: "eine Skala, einen Akkord, ein Arpeggio\n(mit Rhythmus: --figure 16, --triplets)\noder Akkorde mit ihren Symbolen auf einem\nNotensystem (SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
+        sintaxisPentagramaEstudio: "staff <was> --roman|--hand|--sequence|--tab",
+        descripcionPentagramaEstudio: "die Stufen in römischen Ziffern unter den\nAkkorden; der Fingersatz am Klavier\n(--hand right) oder an der Gitarre (--tab\n--fingers); die Skala in Terzen oder in\nGruppen (--sequence thirds); die\nTabulatur darunter (--tab, --instrument)",
         sintaxisPosicionesArpegio: "positions --arpeggio <Akkordsymbol> [--caged|--sweep]",
         descripcionPosicionesArpegio: "das Arpeggio eines Akkords in jeder\nLage des Griffbretts, als Tabulatur mit\nden Fingern; --up-and-down, auf und ab",
 

@@ -119,6 +119,8 @@ extension TextosDeCLI {
         descripcionReloj: "гамма на двенадцатичасовом циферблате\n(SVG): хроматический круг или, с\n--fifths, квинтовый круг",
         sintaxisPentagrama: "staff scale|chord|arpeggio|chords <ноты>",
         descripcionPentagrama: "гамма, аккорд, арпеджио (с ритмом:\n--figure 16, --triplets) или аккорды с\nобозначениями на нотном стане\n(SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
+        sintaxisPentagramaEstudio: "staff <что> --roman|--hand|--sequence|--tab",
+        descripcionPentagramaEstudio: "ступени римскими цифрами под аккордами;\nаппликатура для фортепиано (--hand right)\nили гитары (--tab --fingers); гамма\nтерциями или группами (--sequence\nthirds); табулатура внизу (--tab,\n--instrument)",
         sintaxisPosicionesArpegio: "positions --arpeggio <обозначение> [--caged|--sweep]",
         descripcionPosicionesArpegio: "арпеджио аккорда в каждой позиции\nна грифе, табулатурой и с пальцами;\n--up-and-down — вверх и обратно вниз",
 

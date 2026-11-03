@@ -15,9 +15,11 @@ extension Escala {
     ///     arriba.
     ///   - sentido: si se da, solo la subida o la bajada; si es `nil`, la subida y, en las escalas que bajan con
     ///     otras notas (la menor melódica), también la bajada.
+    ///   - digitacion: si se da una mano, el dedo de cada nota al piano encima (`digitacionDePiano(_:)`; al bajar, los
+    ///     mismos dedos al revés).
     ///   - opciones: clave, armadura, notación, tamaño y color.
     public func svgPentagrama(
-        octava: Int = 4, octavas: Int = 1, sentido: SentidoDelIntervalo? = nil,
+        octava: Int = 4, octavas: Int = 1, sentido: SentidoDelIntervalo? = nil, digitacion: Mano? = nil,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
         let alturas = alturasMicrotonales(octava: octava, octavas: octavas, sentido: sentido)
@@ -30,11 +32,60 @@ extension Escala {
                 nota: nota, semitonos: altura.altura.nota.alteracion.semitonos, desvio: altura.desvio)
             return [PentagramaSVG.Microtono(signo: signo, nombre: nota.nombre(en: opciones.notacion))]
         }
-        return PentagramaSVG(
+        var dibujo = PentagramaSVG(
             columnas: alturas.map { [$0.altura] }, armadura: armadura, cifrado: nil,
             titulo: nombre(en: opciones.notacion), opciones: opciones, microtonos: microtonos,
             referencias: [0: PentagramaSVG.Referencia(tonica)]
-        ).svg()
+        )
+        if let digitacion {
+            let subida = digitacionDePiano(digitacion, octava: octava, octavas: octavas).dedos
+            let dedos: [Int]
+            switch sentido {
+            case .ascendente: dedos = subida
+            case .descendente: dedos = subida.reversed()
+            case nil: dedos = alturas.count > subida.count ? subida + subida.reversed().dropFirst() : subida
+            }
+            for (columna, dedo) in zip(alturas.indices, dedos) { dibujo.digitos[columna] = [dedo] }
+        }
+        return dibujo.svg()
+    }
+
+    /// La escala tocada en una secuencia de estudio (`secuencia(_:octava:octavas:sentido:)`), con ritmo: de dos en
+    /// dos, en corcheas; de tres en tres, en tresillos de corcheas; de cuatro en cuatro, en semicorcheas. Así cada
+    /// grupo dura un pulso y va unido por su barra. La última nota, la tónica, es una negra.
+    ///
+    ///     Escala(.do).svgPentagrama(secuencia: .terceras)   // Do Mi, Re Fa, Mi Sol… en corcheas
+    public func svgPentagrama(
+        secuencia: SecuenciaDeEscala, octava: Int = 4, octavas: Int = 1, sentido: SentidoDelIntervalo = .ascendente,
+        opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+    ) -> String {
+        svgPentagrama(
+            tocadaEn: self.secuencia(secuencia, octava: octava, octavas: octavas, sentido: sentido),
+            titulo: nombre(en: opciones.notacion) + " · " + secuencia.nombre(en: opciones.notacion),
+            figura: Escala.figura(deGruposDe: secuencia.pasos.count), opciones: opciones)
+    }
+
+    /// La escala tocada en unas alturas cualesquiera (las de una posición del mástil, una secuencia…), con su
+    /// armadura, escritas con sus notas (el La♯ que da el mástil, como Si♭ si la escala lo tiene) y los intervalos
+    /// contados desde su tónica. Con `figura`, con ritmo (la última nota, una negra si la figura es más corta); sin
+    /// ella, en redondas. `digitos` y `tablatura` van por nota, como en `Voz.svgPentagrama(…)`.
+    public func svgPentagrama(
+        tocadaEn alturas: [Altura], titulo: String? = nil, figura: Duracion? = nil, digitos: [Int: [Int]] = [:],
+        tablatura: Tablatura? = nil, opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+    ) -> String {
+        PentagramaSVG.tocadas(
+            Altura.reescritas(alturas, con: notas), titulo: titulo ?? nombre(en: opciones.notacion),
+            armadura: opciones.armadura.notas(propia: notasDeLaArmadura), referencia: PentagramaSVG.Referencia(tonica),
+            acorde: nil, figura: figura, digitos: digitos, tablatura: tablatura, opciones: opciones)
+    }
+
+    /// La figura con que un grupo de `notas` dura un pulso de negra: corcheas, tresillos de corcheas o semicorcheas.
+    static func figura(deGruposDe notas: Int) -> Duracion {
+        switch notas {
+        case ...2: return .corchea
+        case 3: return Duracion.corchea.grupoIrregular(3, en: 2)
+        default: return .semicorchea
+        }
     }
 }
 
@@ -89,6 +140,59 @@ extension Arpegio {
     }
 }
 
+extension Acorde {
+    /// El acorde arpegiado en unas alturas cualesquiera (las de una posición del mástil), escritas con sus notas
+    /// (Si♭, no La♯, en Do7) y con el cifrado encima de la primera. Con `figura`, con ritmo; sin ella, en redondas.
+    /// `digitos` y `tablatura` van por nota, como en `Voz.svgPentagrama(…)`.
+    public func svgPentagrama(
+        arpegiadoEn alturas: [Altura], figura: Duracion? = nil, digitos: [Int: [Int]] = [:],
+        tablatura: Tablatura? = nil, opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+    ) -> String {
+        PentagramaSVG.tocadas(
+            Altura.reescritas(alturas, con: notas), titulo: cifrado(en: opciones.notacion),
+            armadura: opciones.armadura.notas(), referencia: PentagramaSVG.Referencia(self), acorde: self,
+            figura: figura, digitos: digitos, tablatura: tablatura, opciones: opciones)
+    }
+}
+
+extension Altura {
+    /// Las alturas escritas con las notas dadas cuando suenan igual: el La♯3 del mástil, como Si♭3 en Do7. Las que no
+    /// están entre las notas se quedan como estaban.
+    static func reescritas(_ alturas: [Altura], con notas: [Nota]) -> [Altura] {
+        alturas.map { altura in
+            guard let nota = notas.first(where: { $0.claseDeAltura == altura.nota.claseDeAltura }) else {
+                return altura
+            }
+            let octavas = (altura.octava - 1)...(altura.octava + 1)
+            return octavas.map { Altura(nota, octava: $0) }.first { $0.midi == altura.midi } ?? altura
+        }
+    }
+}
+
+extension PentagramaSVG {
+    /// Unas alturas tocadas una detrás de otra: en redondas o, con `figura`, con ritmo (la última, una negra si la
+    /// figura es más corta). Con `acorde`, su cifrado encima de la primera.
+    static func tocadas(
+        _ alturas: [Altura], titulo: String, armadura: [Nota], referencia: Referencia, acorde: Acorde?,
+        figura: Duracion?, digitos: [Int: [Int]], tablatura: Tablatura?, opciones: OpcionesDePentagrama
+    ) -> String {
+        if let figura {
+            let eventos = alturas.indices.map { i in
+                Evento(alturas[i], i == alturas.count - 1 && alturas.count > 1 && figura < .negra ? .negra : figura)
+            }
+            return Voz(eventos).svgPentagrama(
+                titulo: titulo, acordes: acorde.map { [0: $0] } ?? [:], grados: [:], digitos: digitos,
+                tablatura: tablatura, tonica: referencia.nota, armadura: armadura, opciones: opciones)
+        }
+        var dibujo = PentagramaSVG(
+            columnas: alturas.map { [$0] }, armadura: armadura, cifrado: nil, titulo: titulo, opciones: opciones,
+            cifrados: acorde.map { [0: $0.cifrado(en: opciones.notacion)] } ?? [:], referencias: [0: referencia])
+        dibujo.digitos = digitos
+        dibujo.tablatura = tablatura
+        return dibujo.svg()
+    }
+}
+
 extension DisposicionDeAcorde {
     /// Acordes con sus alturas escritas (las disposiciones de `Acorde.disposiciones(_:en:)` o de
     /// `DisposicionDeAcorde.conducir(_:en:)`), uno por columna, sin armadura (salvo la de `.tonalidad`): en dos
@@ -100,9 +204,12 @@ extension DisposicionDeAcorde {
     ///     let svg = DisposicionDeAcorde.svgPentagrama(voces, titulo: "ii–V–I", cifrados: progresion)
     ///
     /// Con `cifrados` (un acorde por columna), cada columna lleva encima su cifrado, y los intervalos de las notas
-    /// (`intervalosDeLasNotas`) se cuentan desde la fundamental de su acorde.
+    /// (`intervalosDeLasNotas`) se cuentan desde la fundamental de su acorde. Con `grados` (uno por columna, como
+    /// los de `AnalisisArmonico.cifrados`), cada columna lleva debajo su grado en números romanos; con `digitos`, el
+    /// dedo de cada nota encima (de la grave a la aguda), y con `tablatura`, la cuerda y el traste debajo.
     public static func svgPentagrama(
-        _ acordes: [[Altura]], titulo: String, cifrados: [Acorde] = [],
+        _ acordes: [[Altura]], titulo: String, cifrados: [Acorde] = [], grados: [String] = [],
+        digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
         var textos: [Int: String] = [:]
@@ -111,9 +218,13 @@ extension DisposicionDeAcorde {
             textos[columna] = acorde.cifrado(en: opciones.notacion)
             referencias[columna] = PentagramaSVG.Referencia(acorde)
         }
-        return PentagramaSVG(
+        var dibujo = PentagramaSVG(
             columnas: acordes, armadura: opciones.armadura.notas(), cifrado: nil, titulo: titulo, opciones: opciones,
             cifrados: textos, referencias: referencias
-        ).svg()
+        )
+        dibujo.grados = Dictionary(uniqueKeysWithValues: zip(acordes.indices, grados).map { ($0, $1) })
+        dibujo.digitos = digitos
+        dibujo.tablatura = tablatura
+        return dibujo.svg()
     }
 }

@@ -302,8 +302,31 @@ Acorde("Sol9").svgPentagrama(opciones: opciones).contains(">1 3 5 ♭7 9</text>"
 Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<title>Re₆</title>")   // true
 ```
 
+### Para estudiar: grados, dedos, secuencias y tablatura
+
+- **Grados en números romanos.** `DisposicionDeAcorde.svgPentagrama(_:titulo:cifrados:grados:)` y
+  `Voz.svgPentagrama(titulo:grados:)` escriben debajo de cada acorde su grado (los de `AnalisisArmonico.cifrados`).
+- **Dedos.** `Escala.svgPentagrama(digitacion:)` pone encima los dedos del piano de `digitacionDePiano(_:)`, y el
+  parámetro `digitos` de los demás dibujos, los que se le den (los de la guitarra, por ejemplo).
+- **Secuencias con ritmo.** `Escala.svgPentagrama(secuencia:)` toca la escala por terceras o en grupos, cada grupo en
+  un pulso: corcheas, tresillos o semicorcheas.
+- **Tablatura.** Una ``Tablatura`` (la cuerda y el traste de cada nota) va debajo del pentagrama, alineada nota a
+  nota. `Escala.svgPentagrama(tocadaEn:)` y `Acorde.svgPentagrama(arpegiadoEn:)` dibujan las alturas de una posición
+  del mástil escritas con las notas de la escala o del acorde (Si♭, no La♯, en Do7).
+
+```swift
+let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
+let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
+let grados = Tonalidad(.do).analizar(progresion).cifrados
+DisposicionDeAcorde.svgPentagrama(voces, titulo: "ii–V–I", grados: grados).contains(">V7</text>")   // true
+Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>")   // true
+Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras")   // true
+```
+
 En la línea de comandos, `armonia pentagrama escala|acorde|arpegio|acordes …` dibuja lo mismo (con `--octavas`,
-`--figura`, `--tresillos`, `--nombres`, `--intervalos`, `--semitonos`, `--tonica` y `--en <tonalidad>`).
+`--figura`, `--tresillos`, `--nombres`, `--intervalos`, `--semitonos`, `--tonica` y `--en <tonalidad>`), y con
+`--romanos`, `--mano`, `--dedos`, `--secuencia` y `--tab` (`--instrumento`), los grados, los dedos, las secuencias
+y la tablatura.
 
 ## Errores
 

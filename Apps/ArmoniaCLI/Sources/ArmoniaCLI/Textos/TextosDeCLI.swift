@@ -122,6 +122,8 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionReloj: String
     let sintaxisPentagrama: String
     let descripcionPentagrama: String
+    let sintaxisPentagramaEstudio: String
+    let descripcionPentagramaEstudio: String
     let sintaxisPosicionesArpegio: String
     let descripcionPosicionesArpegio: String
 

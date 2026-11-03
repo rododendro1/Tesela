@@ -443,22 +443,51 @@ extension Voz {
     /// `acordes` pone el cifrado de cada acorde encima del evento (contado desde 0) en que empieza: en una progresión
     /// arpegiada, encima de la primera nota de cada arpegio. Los intervalos de las notas (`intervalosDeLasNotas`) se
     /// cuentan desde la fundamental del acorde que suena o, sin acordes, desde la tónica de la armadura `.tonalidad`.
+    ///
+    /// También por evento: `grados` escribe debajo el grado en números romanos (I, V7/V); `digitos`, encima, el dedo
+    /// de cada nota (de la grave a la aguda; 0, ninguno), y `tablatura`, debajo del pentagrama, la cuerda y el traste.
+    /// Una nota que se parte y se liga lleva todo eso solo en su primera parte.
     public func svgPentagrama(
-        titulo: String, acordes: [Int: Acorde] = [:], opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+        titulo: String, acordes: [Int: Acorde] = [:], grados: [Int: String] = [:], digitos: [Int: [Int]] = [:],
+        tablatura: Tablatura? = nil, opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+    ) -> String {
+        svgPentagrama(
+            titulo: titulo, acordes: acordes, grados: grados, digitos: digitos, tablatura: tablatura, tonica: nil,
+            armadura: nil, opciones: opciones)
+    }
+
+    /// Como el público, y con `tonica`, la nota desde la que se cuentan los intervalos si no hay acordes (la de la
+    /// escala de una secuencia); si es `nil`, la de la armadura `.tonalidad`. `armadura`, si se da, manda sobre la de
+    /// `opciones`.
+    func svgPentagrama(
+        titulo: String, acordes: [Int: Acorde], grados: [Int: String], digitos: [Int: [Int]], tablatura: Tablatura?,
+        tonica: Nota?, armadura: [Nota]?, opciones: OpcionesDePentagrama
     ) -> String {
         let (ritmo, columnas, primeras) = PentagramaSVG.Ritmo.de(self, resaltada: opciones.resaltada)
         var cifrados: [Int: String] = [:]
         var referencias: [Int: PentagramaSVG.Referencia] = [:]
-        if case .tonalidad(let tonalidad) = opciones.armadura {
+        if let tonica {
+            referencias[0] = PentagramaSVG.Referencia(tonica)
+        } else if case .tonalidad(let tonalidad) = opciones.armadura {
             referencias[0] = PentagramaSVG.Referencia(tonalidad.tonica)
         }
         for (evento, acorde) in acordes where primeras.indices.contains(evento) {
             cifrados[primeras[evento]] = acorde.cifrado(en: opciones.notacion)
             referencias[primeras[evento]] = PentagramaSVG.Referencia(acorde)
         }
-        return PentagramaSVG(
-            columnas: columnas, armadura: opciones.armadura.notas(), cifrado: nil, titulo: titulo,
+        /// Lo de cada evento, en la primera columna en que se escribe.
+        func porColumna<T>(_ porEvento: [Int: T]) -> [Int: T] {
+            Dictionary(
+                porEvento.compactMap { primeras.indices.contains($0.key) ? (primeras[$0.key], $0.value) : nil },
+                uniquingKeysWith: { a, _ in a })
+        }
+        var dibujo = PentagramaSVG(
+            columnas: columnas, armadura: armadura ?? opciones.armadura.notas(), cifrado: nil, titulo: titulo,
             opciones: opciones, ritmo: ritmo, cifrados: cifrados, referencias: referencias
-        ).svg()
+        )
+        dibujo.grados = porColumna(grados)
+        dibujo.digitos = porColumna(digitos)
+        dibujo.tablatura = tablatura.map { Tablatura(cuerdas: $0.cuerdas, notas: porColumna($0.notas)) }
+        return dibujo.svg()
     }
 }

@@ -119,6 +119,8 @@ extension TextosDeCLI {
         descripcionReloj: "a skála egy tizenkét órás számlapon\n(SVG): a kromatikus kör vagy\n--fifths mellett a kvintkör",
         sintaxisPentagrama: "staff scale|chord|arpeggio|chords <hangok>",
         descripcionPentagrama: "egy skála, egy akkord, egy arpeggio\n(ritmussal: --figure 16, --triplets) vagy\nakkordok a jelölésükkel egy kottasoron\n(SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
+        sintaxisPentagramaEstudio: "staff <mit> --roman|--hand|--sequence|--tab",
+        descripcionPentagramaEstudio: "a fokok római számokkal az akkordok\nalatt; a zongora ujjrendje (--hand right)\nvagy a gitáré (--tab --fingers); a skála\nterceken vagy csoportokban (--sequence\nthirds); alatta a tabulatúra (--tab,\n--instrument)",
         sintaxisPosicionesArpegio: "positions --arpeggio <akkordjelzés> [--caged|--sweep]",
         descripcionPosicionesArpegio: "egy akkord arpeggiója a fogólap\nminden fekvésében, tabulatúrával és\nujjakkal; --up-and-down, fel és vissza",
 
