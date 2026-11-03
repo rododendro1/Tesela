@@ -144,6 +144,7 @@ extension NombresDeEscalas {
         .categoria(.jins, "jins"),
         .categoria(.cesni, "çeşni"),
         .categoria(.modoGregoriano, "modo gregoriano"),
+        .categoria(.hexacordo, "hexacordo"),
         .categoria(.harmonia, "harmonía"),
         .categoria(.afinacion, "afinación"),
         .categoria(.escala, "escala"),

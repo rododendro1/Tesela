@@ -17,7 +17,7 @@ import Testing
             #expect(microtonal.temperada.microtonal == microtonal, Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(TipoDeEscalaMicrotonal.catalogo.count == 127)
+        #expect(TipoDeEscalaMicrotonal.catalogo.count == 146)
     }
 
     /// Se busca por el nombre: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
@@ -140,6 +140,17 @@ import Testing
         #expect(TipoDeEscala.piphat.microtonal?.pasos == TipoDeEscala.timbila.microtonal?.pasos)
         #expect(TipoDeEscala.pinpeat.microtonal != nil)
         #expect(TipoDeEscala.protusAuthenticus.microtonal == nil)
+    }
+
+    /// Las harmoniai enarmónicas y las de Arístides, en cuartos de tono; los géneros de Dídimo y Eratóstenes, en cents.
+    @Test func harmoniaiEnCuartosDeTono() {
+        #expect(nombres(Escala(.mi, .harmoniaDoriaEnarmonica)) == "Mi Fa𝄳 Fa La Si Do𝄳 Do")
+        #expect(nombres(Escala(.do, .harmoniaFrigiaEnarmonica)) == "Do𝄳 Mi𝄳 Mi Fa𝄳 La𝄳 Si𝄳 Si")
+        #expect(nombres(Escala(.mi, .harmoniaLidiaDeAristides)) == "Mi Fa𝄳 La𝄳 Si𝄳 Do♭ Do𝄳 Re♯𝄲")
+        #expect(TipoDeEscala.harmoniaiDeAristides.allSatisfy { $0.microtonal?.sistema == .cuartosDeTono })
+        #expect(TipoDeEscala.harmoniaiCromaticas.allSatisfy { $0.microtonal == nil })
+        #expect(TipoDeEscala.tetracordoEnarmonicoDeArquitas.microtonal?.pasos == [0, 63, 112, 498])
+        #expect(Escala(.mi, .tetracordoEnarmonicoDeArquitas).notas.map(\.description) == ["Mi", "Mi♯", "Fa", "La"])
     }
 
     @Test func echoiEnMoria() {
