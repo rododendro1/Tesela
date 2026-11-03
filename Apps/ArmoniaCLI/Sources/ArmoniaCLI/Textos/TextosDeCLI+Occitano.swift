@@ -106,6 +106,9 @@ extension TextosDeCLI {
         descripcionAbcMelodia: "lo meteis en ABC, la notacion en\ntèxte de la musica tradicionala",
         sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios|escala <…> [opcions]",
         descripcionMidiMelodia: "lo meteis coma fichièr MIDI, per\nl'ausir (sens --clave ni --cifrados;\namb --programa 0…127, General MIDI)",
+        sintaxisGrabar: "grabar melodia|coral|acordes|arpegios|escala <…>\ngrabar pentagrama|tonnetz|tabla|teclado|reloj <…> [opcions]",
+        descripcionGrabar: "la partitura en PDF amb LilyPond, o lo\ndessenh en PDF o PNG amb rsvg-convert",
+        notasGrabar: "--motor lilypond|propio, --formato pdf|svg|png; lo\ncamin de cada programa, dins ARMONIA_LILYPOND e\nARMONIA_RSVG_CONVERT se es pas dins lo PATH",
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "digitaciones <chifratge>… [opcions]",
@@ -226,6 +229,13 @@ extension TextosDeCLI {
         faltanAcordesDeLaProgresion: { ejemplo, orden in "mancan los acòrds: " + ejemplo },
         acordesConCifradosYAnalisis: "los acòrds pòrtan totjorn chifratges e analisi",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: s'exporta una «melodia», un «coral», d'«acordes», lors «arpegios» o una «escala»" },
+        faltaLoQueSeGraba: "manca çò que se grava: armonia grabar coral Do3 Mi4 Sol4 Do5 > coral.pdf",
+        motorDesconocido: { motor in "«\(motor)»: lo motor es «lilypond» o «propio»" },
+        formatoDeGrabadoDesconocido: { formato in "«\(formato)»: se grava en «pdf», «svg» o «png»" },
+        nadaQueGrabar: { orden in "«\(orden)»: se grava una partitura (melodia, coral, acordes, arpegios, escala) o un dessenh (pentagrama, tonnetz, tabla, teclado, cuadricula, reloj)" },
+        motorNoEncontrado: { programa, variable in "se tròba pas «\(programa)»: installatz-lo o metètz son camin dins \(variable)" },
+        motorFallo: { programa, codigo in "«\(programa)» s\'es acabat amb lo còdi \(codigo):" },
+        motorSinTerminar: { programa in "«\(programa)» s\'es pas acabat a temps e es estat arrestat" },
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "manca l'instrument: \(d)" },

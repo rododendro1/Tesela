@@ -106,6 +106,9 @@ extension TextosDeCLI {
         descripcionAbcMelodia: "dasselbe in ABC, der Textnotation der\nVolksmusik",
         sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios|scale <…> [Optionen]",
         descripcionMidiMelodia: "dasselbe als MIDI-Datei zum Anhören\n(ohne --clave oder --cifrados; mit\n--program 0…127, General MIDI)",
+        sintaxisGrabar: "engrave melody|chorale|chords|arpeggios|scale <…>\nengrave staff|tonnetz|harmonic-table|keyboard|clock <…> [Optionen]",
+        descripcionGrabar: "die Partitur als PDF mit LilyPond oder\ndie Zeichnung als PDF oder PNG mit\nrsvg-convert",
+        notasGrabar: "--engine lilypond|own, --format pdf|svg|png; der\nPfad jedes Programms steht in ARMONIA_LILYPOND und\nARMONIA_RSVG_CONVERT, wenn es nicht im PATH ist",
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "fingerings <Akkordsymbol>… [Optionen]",
@@ -226,6 +229,13 @@ extension TextosDeCLI {
         faltanAcordesDeLaProgresion: { ejemplo, orden in "die Akkorde fehlen: armonia \(orden) chords C Am D7 G7 C" },
         acordesConCifradosYAnalisis: "Akkorde kommen immer mit Akkordsymbolen und Analyse",
         tipoDePartituraDesconocido: { tipo in "„\(tipo)“: exportiert wird eine „melody“, ein „chorale“, „chords“, ihre „arpeggios“ oder eine „scale“" },
+        faltaLoQueSeGraba: "es fehlt, was gesetzt werden soll: armonia engrave chorale C3 E4 G4 C5 > chorale.pdf",
+        motorDesconocido: { motor in "„\(motor)“: die Engine ist „lilypond“ oder „own“" },
+        formatoDeGrabadoDesconocido: { formato in "„\(formato)“: ausgegeben wird „pdf“, „svg“ oder „png“" },
+        nadaQueGrabar: { orden in "„\(orden)“: gesetzt wird eine Partitur (melody, chorale, chords, arpeggios, scale) oder eine Zeichnung (staff, tonnetz, harmonic-table, keyboard, grid, clock)" },
+        motorNoEncontrado: { programa, variable in "„\(programa)“ nicht gefunden: installiere es oder gib seinen Pfad in \(variable) an" },
+        motorFallo: { programa, codigo in "„\(programa)“ wurde mit Code \(codigo) beendet:" },
+        motorSinTerminar: { programa in "„\(programa)“ wurde nicht rechtzeitig fertig und abgebrochen" },
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "das Instrument fehlt: \(digitaciones.1)" },

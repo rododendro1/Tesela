@@ -106,6 +106,9 @@ extension TextosDeCLI {
         descripcionAbcMelodia: "ugyanez ABC-ben, a népzene szöveges\nkottaírásában",
         sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios|scale <…> [opciók]",
         descripcionMidiMelodia: "ugyanez MIDI-fájlként, meghallgatásra\n(--clave és --cifrados nélkül;\n--program 0…127, General MIDI)",
+        sintaxisGrabar: "engrave melody|chorale|chords|arpeggios|scale <…>\nengrave staff|tonnetz|harmonic-table|keyboard|clock <…> [opciók]",
+        descripcionGrabar: "a kotta PDF-ben LilyPonddal, vagy a\nrajz PDF-ben vagy PNG-ben\nrsvg-converttel",
+        notasGrabar: "--engine lilypond|own, --format pdf|svg|png; a\nprogramok útvonala az ARMONIA_LILYPOND és az\nARMONIA_RSVG_CONVERT változóban, ha nincsenek a PATH-ban",
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "fingerings <akkordjelzés>… [opciók]",
@@ -226,6 +229,13 @@ extension TextosDeCLI {
         faltanAcordesDeLaProgresion: { ejemplo, orden in "hiányoznak az akkordok: armonia \(orden) chords C Am D7 G7 C" },
         acordesConCifradosYAnalisis: "az akkordok mindig akkordjelzéssel és elemzéssel jelennek meg",
         tipoDePartituraDesconocido: { tipo in "„\(tipo)”: az export lehet „melody”, „chorale”, „chords”, ezek „arpeggios” változata vagy „scale”" },
+        faltaLoQueSeGraba: "hiányzik, mit kell szedni: armonia engrave chorale C3 E4 G4 C5 > chorale.pdf",
+        motorDesconocido: { motor in "„\(motor)”: a motor „lilypond” vagy „own”" },
+        formatoDeGrabadoDesconocido: { formato in "„\(formato)”: a kimenet „pdf”, „svg” vagy „png”" },
+        nadaQueGrabar: { orden in "„\(orden)”: kotta (melody, chorale, chords, arpeggios, scale) vagy rajz (staff, tonnetz, harmonic-table, keyboard, grid, clock) szedhető" },
+        motorNoEncontrado: { programa, variable in "nem található: „\(programa)”; telepítsd, vagy add meg az útvonalát a(z) \(variable) változóban" },
+        motorFallo: { programa, codigo in "a(z) „\(programa)” \(codigo) kóddal lépett ki:" },
+        motorSinTerminar: { programa in "a(z) „\(programa)” nem végzett időben, ezért leállt" },
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "hiányzik a hangszer: \(digitaciones.1)" },

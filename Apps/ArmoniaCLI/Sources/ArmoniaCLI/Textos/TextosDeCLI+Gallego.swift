@@ -106,6 +106,9 @@ extension TextosDeCLI {
         descripcionAbcMelodia: "o mesmo en ABC, a notación en texto\nda música tradicional",
         sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios|escala <…> [opcións]",
         descripcionMidiMelodia: "o mesmo como ficheiro MIDI, para\nescoitalo (sen --clave nin\n--cifrados; con --programa 0…127,\nGeneral MIDI)",
+        sintaxisGrabar: "grabar melodia|coral|acordes|arpegios|escala <…>\ngrabar pentagrama|tonnetz|tabla|teclado|reloj <…> [opcións]",
+        descripcionGrabar: "a partitura en PDF con LilyPond, ou o\ndebuxo en PDF ou PNG con rsvg-convert",
+        notasGrabar: "--motor lilypond|propio, --formato pdf|svg|png; a\nruta de cada programa, en ARMONIA_LILYPOND e\nARMONIA_RSVG_CONVERT se non está no PATH",
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "digitaciones <cifrado>… [opcións]",
@@ -226,6 +229,13 @@ extension TextosDeCLI {
         faltanAcordesDeLaProgresion: { ejemplo, orden in "faltan os acordes: " + ejemplo },
         acordesConCifradosYAnalisis: "os acordes levan sempre cifrados e análise",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: expórtase unha «melodia», un «coral», uns «acordes», os seus «arpegios» ou unha «escala»" },
+        faltaLoQueSeGraba: "falta o que se grava: armonia grabar coral Do3 Mi4 Sol4 Do5 > coral.pdf",
+        motorDesconocido: { motor in "«\(motor)»: o motor é «lilypond» ou «propio»" },
+        formatoDeGrabadoDesconocido: { formato in "«\(formato)»: grávase en «pdf», «svg» ou «png»" },
+        nadaQueGrabar: { orden in "«\(orden)»: grávase unha partitura (melodia, coral, acordes, arpegios, escala) ou un debuxo (pentagrama, tonnetz, tabla, teclado, cuadricula, reloj)" },
+        motorNoEncontrado: { programa, variable in "non se atopa «\(programa)»: instálao ou pon a súa ruta en \(variable)" },
+        motorFallo: { programa, codigo in "«\(programa)» rematou co código \(codigo):" },
+        motorSinTerminar: { programa in "«\(programa)» non rematou a tempo e parouse" },
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "falta o instrumento: \(d)" },

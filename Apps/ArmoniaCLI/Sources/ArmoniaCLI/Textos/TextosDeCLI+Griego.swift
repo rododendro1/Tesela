@@ -106,6 +106,9 @@ extension TextosDeCLI {
         descripcionAbcMelodia: "το ίδιο σε ABC, τη γραφή με κείμενο\nτης παραδοσιακής μουσικής",
         sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios|scale <…> [επιλογές]",
         descripcionMidiMelodia: "το ίδιο ως αρχείο MIDI, για να το\nακούσεις (χωρίς --clave ή --cifrados·\nμε --program 0…127, General MIDI)",
+        sintaxisGrabar: "engrave melody|chorale|chords|arpeggios|scale <…>\nengrave staff|tonnetz|harmonic-table|keyboard|clock <…> [επιλογές]",
+        descripcionGrabar: "η παρτιτούρα σε PDF με το LilyPond ή\nτο σχέδιο σε PDF ή PNG με το\nrsvg-convert",
+        notasGrabar: "--engine lilypond|own, --format pdf|svg|png· η\nδιαδρομή κάθε προγράμματος, στις ARMONIA_LILYPOND\nκαι ARMONIA_RSVG_CONVERT αν δεν είναι στο PATH",
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "fingerings <σύμβολο>… [επιλογές]",
@@ -226,6 +229,13 @@ extension TextosDeCLI {
         faltanAcordesDeLaProgresion: { ejemplo, orden in "λείπουν οι συγχορδίες: armonia \(orden) chords C Am D7 G7 C" },
         acordesConCifradosYAnalisis: "οι συγχορδίες έχουν πάντα σύμβολα και ανάλυση",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: εξάγεται «melody», «chorale», «chords», τα «arpeggios» τους ή «scale»" },
+        faltaLoQueSeGraba: "λείπει τι θα χαραχθεί: armonia engrave chorale C3 E4 G4 C5 > chorale.pdf",
+        motorDesconocido: { motor in "«\(motor)»: η μηχανή είναι «lilypond» ή «own»" },
+        formatoDeGrabadoDesconocido: { formato in "«\(formato)»: η έξοδος είναι «pdf», «svg» ή «png»" },
+        nadaQueGrabar: { orden in "«\(orden)»: χαράσσεται μια παρτιτούρα (melody, chorale, chords, arpeggios, scale) ή ένα σχέδιο (staff, tonnetz, harmonic-table, keyboard, grid, clock)" },
+        motorNoEncontrado: { programa, variable in "δεν βρέθηκε το «\(programa)»: εγκαταστήστε το ή δώστε τη διαδρομή του στη \(variable)" },
+        motorFallo: { programa, codigo in "το «\(programa)» τερμάτισε με κωδικό \(codigo):" },
+        motorSinTerminar: { programa in "το «\(programa)» δεν τελείωσε εγκαίρως και σταμάτησε" },
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "λείπει το όργανο: \(digitaciones.1)" },

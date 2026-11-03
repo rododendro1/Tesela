@@ -47,6 +47,8 @@ extension LineaDeComandos {
                 "up-down", "down-up", "broken",
             ]
         ),
+        (["--motor", "--engine"], ["lilypond", "propio", "own"]),
+        (["--formato", "--format"], ["pdf", "svg", "png"]),
         (["--aproximacion", "--approach"], ["abajo", "arriba", "encierro", "below", "above", "enclosure"]),
         (["--mano", "--hand"], ["derecha", "izquierda", "right", "left"]),
         (
@@ -78,6 +80,10 @@ extension LineaDeComandos {
                 "scale",
             ]
         }
+        if orden.nombres.contains("grabar") {
+            // Una partitura, como en `lilypond`, o una orden de dibujo.
+            return tipos(de: ordenesDePartituras[0]) + ordenesDeDibujos.flatMap(nombres(de:))
+        }
         if orden.nombres.contains("completado") { return ["bash", "zsh", "fish"] }
         return []
     }
@@ -92,6 +98,11 @@ extension LineaDeComandos {
             return comunes.filter { !["--clave", "--cifrados", "--analisis"].contains($0) } + [
                 "--programa", "--program",
             ]
+        }
+        // `grabar` acepta también las opciones de la partitura que graba.
+        if orden.nombres.contains("grabar") {
+            let propias = opcionesDeLaAyuda(de: orden)
+            return propias + opciones(de: ordenesDePartituras[0]).filter { !propias.contains($0) }
         }
         return opcionesDeLaAyuda(de: orden)
     }
