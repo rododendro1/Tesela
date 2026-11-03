@@ -10,6 +10,10 @@ extension XCUIApplication {
     static func enEspanol() -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments += ["-notacionElegida", "espanolCompacto", "-temperamentoElegido", "igual"]
+        #if os(macOS)
+            // Sin el tamaño de ventana de la vez anterior: la del tamaño por omisión, que cabe en la pantalla.
+            app.launchArguments += ["-ApplePersistenceIgnoreState", "YES"]
+        #endif
         app.launch()
         return app
     }
@@ -124,12 +128,17 @@ extension XCUIApplication {
             }
         #else
             _ = elemento.waitForExistence(timeout: 5)
-            // Hacia abajo o, si el elemento se quedó por encima de la ventana, hacia arriba.
+            // La rueda, cerca de lo alto de la ventana (que siempre está en la pantalla): hacia abajo o, si el
+            // elemento quedó por encima, hacia arriba.
             let ventana = windows.firstMatch
+            let rueda = ventana.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
             while elemento.exists && !elemento.isHittable && intento < intentos {
-                let arriba = elemento.frame.minY < ventana.frame.minY
-                ventana.scroll(byDeltaX: 0, deltaY: arriba ? 300 : -300)
+                let arriba = elemento.frame.midY < ventana.frame.midY
+                rueda.scroll(byDeltaX: 0, deltaY: arriba ? 200 : -200)
                 intento += 1
+            }
+            if elemento.exists && !elemento.isHittable {
+                print("No se ve \(elemento.frame); ventana \(ventana.frame)")
             }
         #endif
         return elemento
