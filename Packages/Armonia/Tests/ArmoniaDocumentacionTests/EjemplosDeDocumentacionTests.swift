@@ -751,14 +751,24 @@ import Hexagonos
     }
 
     @Test func notacionYPartitura13() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 326
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 318
+        let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
+        let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
+        let grados = Tonalidad(.do).analizar(progresion).cifrados
+        comprobar(DisposicionDeAcorde.svgPentagrama(voces, titulo: "ii–V–I", grados: grados).contains(">V7</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 321)
+        comprobar(Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 322)
+        comprobar(Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 323)
+    }
+
+    @Test func notacionYPartitura14() throws {
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 349
         do {
             let acorde = try Acorde(leyendo: "Do7(b3)")
             print(acorde)
         } catch let error as ErrorDeLecturaDeTeoria {
             print(error)
-            comprobarIgual(error.motivo, .tensionNoValida("b3"), #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 333)
-            comprobar(error.posicion, #"4"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 334)
+            comprobarIgual(error.motivo, .tensionNoValida("b3"), #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 356)
+            comprobar(error.posicion, #"4"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 357)
             print(error.descripcion(en: .inglesASCII))
         }
         do { _ = try TipoDeAcorde(comprobandoPasosDeQuinta: [0, -3, 4]) } catch { print(error) }

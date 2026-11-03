@@ -119,6 +119,8 @@ extension TextosDeCLI {
         descripcionReloj: "the scale on a twelve-hour clock\n(SVG): the chromatic circle or, with\n--fifths, the circle of fifths",
         sintaxisPentagrama: "staff scale|chord|arpeggio|chords <…>",
         descripcionPentagrama: "a scale, a chord, an arpeggio (with\nrhythm: --figure 16, --triplets) or some\nchords with their symbols on a staff\n(SVG); --names, --intervals,\n--semitones, --tonic, --in <key>",
+        sintaxisPentagramaEstudio: "staff <what> --roman|--hand|--sequence|--tab",
+        descripcionPentagramaEstudio: "the degrees in Roman numerals under the\nchords; piano fingering (--hand right) or\nguitar fingering (--tab --fingers); the\nscale in thirds or in groups (--sequence\nthirds); the tablature underneath (--tab,\n--instrument)",
         sintaxisPosicionesArpegio: "positions --arpeggio <symbol> [--caged|--sweep]",
         descripcionPosicionesArpegio: "a chord's arpeggio in each position\non the neck, in tab with the fingers;\n--up-and-down, up and back down",
 

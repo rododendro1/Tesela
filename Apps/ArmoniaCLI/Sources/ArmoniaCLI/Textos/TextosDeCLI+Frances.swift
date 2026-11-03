@@ -119,6 +119,8 @@ extension TextosDeCLI {
         descripcionReloj: "la gamme sur une horloge de douze heures\n(SVG) : le cercle chromatique ou, avec\n--quintas, le cycle des quintes",
         sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
         descripcionPentagrama: "une gamme, un accord, un arpège (avec\nrythme : --figura 16, --tresillos) ou des\naccords avec leur chiffrage sur une portée\n(SVG) ; --nombres, --intervalos,\n--semitonos, --tonica, --en <tonalidad>",
+        sintaxisPentagramaEstudio: "pentagrama <quoi> --romanos|--mano|--secuencia|--tab",
+        descripcionPentagramaEstudio: "les degrés en chiffres romains sous les\naccords ; les doigtés du piano (--mano\nderecha) ou de la guitare (--tab --dedos) ;\nla gamme par tierces ou par groupes\n(--secuencia terceras) ; la tablature\nen dessous (--tab, --instrumento)",
         sintaxisPosicionesArpegio: "posiciones --arpegio <chiffrage> [--caged|--barrido]",
         descripcionPosicionesArpegio: "l'arpège d'un accord dans chaque\nposition du manche, en tablature avec\nles doigts ; --ida-y-vuelta, monte et descend",
 
