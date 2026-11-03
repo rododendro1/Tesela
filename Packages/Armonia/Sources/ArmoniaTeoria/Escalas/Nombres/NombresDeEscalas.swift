@@ -6,11 +6,11 @@ import ArmoniaNucleo
 //
 // Un idioma por fichero: `NombresDeEscalas+Catalan.swift`, `…+Ingles.swift`… Cada uno da el nombre de cada tipo
 // del catálogo occidental y, si los tiene, las otras formas con que se lee (alias). Las escalas de otras
-// tradiciones (Kafi, Hitzaz, Hirajoshi…) van al final de cada fichero, con `.tradicional(.kafi)`, que nombra la
-// escala por su miembro de `TipoDeEscala` (si se renombra o se quita, no compila): casi todas llevan un nombre
-// propio que se escribe igual en todos los idiomas, y las que no (las andinas, los tetracordos y las harmoniai
-// griegas, el mayor y el menor de las etíopes) llevan su traducción. Una escala sin fila (los 72 mēḷa) conserva
-// su nombre original. El español sale del propio
+// tradiciones (Kafi, Hitzaz, Hirajoshi…) llevan casi todas un nombre propio que se escribe igual en todos los
+// idiomas, y no tienen fila: sin ella, una escala conserva su nombre original. Solo la llevan, al final del fichero,
+// las que se traducen o se transcriben en ese idioma (las andinas, los tetracordos y las harmoniai griegas, el mayor
+// y el menor de las etíopes; en ruso y en griego, casi todas), con `.tradicional(.kafi, "…")`, que nombra la
+// escala por su miembro de `TipoDeEscala` (si se renombra o se quita, no compila). El español sale del propio
 // catálogo (`TipoDeEscala.nombre` y `alias`). Un idioma nuevo es un fichero más y su fila en `traducidos`.
 //
 // Las escalas occidentales se buscan por tipo; las tradicionales, por su nombre (el del tipo al que apunta la

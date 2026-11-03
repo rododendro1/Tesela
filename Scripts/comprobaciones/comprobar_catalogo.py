@@ -10,9 +10,10 @@ un idioma cae al español.
 Comprueba:
   1. toda `public static let x = TipoDeEscala(…)` está en `todos` o en una lista de tradición;
   2. ninguna lista nombra dos veces la misma escala;
-  3. cada fichero de idioma de `Nombres/` da todas las escalas de `todos` (con `.init`) y todas las de otras
-     tradiciones (con `.tradicional(.miembro)`; los 72 melakarta no se listan), sin repetir ni nombrar escalas
-     que no existen;
+  3. cada fichero de idioma de `Nombres/` da todas las escalas de `todos` (con `.init`) sin repetir ni nombrar
+     escalas que no existen; de las de otras tradiciones solo lista las que traduce o a las que da alias
+     (`.tradicional(.miembro, "…")`): una fila `.tradicional(.miembro)` sin más no cambia nada, porque sin fila la
+     escala conserva su nombre original;
   4. cada fichero de idioma da el nombre de todas las categorías de `CategoriaTradicional` (con `.categoria`);
   5. en un idioma, ningún alias se escribe igual que el nombre o el alias de otra escala (el primero taparía
      al segundo al leer).
@@ -133,9 +134,8 @@ for idioma in IDIOMAS_DE_NOMBRES:
     for n, veces in collections.Counter(trad).items():
         if veces > 1:
             errores.append(f"{ruta.name}: la escala tradicional .{n} está {veces} veces")
-    for n in tradicionales_esperadas:
-        if n not in trad:
-            errores.append(f"{ruta.name}: falta la escala tradicional .{n}")
+    for n in re.findall(r'^\s*\.tradicional\(\.`?(\w+)`?\),$', texto, re.M):
+        errores.append(f"{ruta.name}: la fila de .{n} no traduce nada: sin ella conserva su nombre original")
     for n in sorted(set(trad) - set(tradicionales_esperadas)):
         errores.append(f"{ruta.name}: nombra la escala tradicional .{n}, que no existe")
     clases = re.findall(r'^\s*\.categoria\(\.(\w+), ', texto, re.M)

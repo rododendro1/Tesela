@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+### Ficheros de idioma más cortos
+
+- Los ficheros de `Escalas/Nombres/` ya no listan las escalas de otras tradiciones que no se traducen
+  (`.tradicional(.kafi)` sin nombre ni alias): sin fila, una escala ya conservaba su nombre original. Son 2243 filas
+  menos en los catorce idiomas y los nombres no cambian. `comprobar_catalogo.py` avisa si vuelve una de esas filas.
+
 ### Afinaciones babilónicas
 
 - **Tradición `.mesopotamia`, categoría `.afinacion`** (`TipoDeEscala.mesopotamicas`): las siete afinaciones de

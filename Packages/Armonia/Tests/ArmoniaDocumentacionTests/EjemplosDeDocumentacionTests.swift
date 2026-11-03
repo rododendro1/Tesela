@@ -427,73 +427,73 @@ import Hexagonos
     }
 
     @Test func escalas7() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, línea 310
-        comprobar(TipoDeEscala.buscar(nombre: "dorico b2") == TipoDeEscala.buscar(nombre: "dórico ♭2"), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 310)
-        comprobar(TipoDeEscala.dobleArmonica.aliasNormalizados.contains("doble armonica"), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 311)
-        comprobar(TipoDeEscala.buscar(nombre: "jonico sin 4") == TipoDeEscala.jonicoSinCuarta, #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 312)
+        // Sources/Armonia/Armonia.docc/Escalas.md, línea 311
+        comprobar(TipoDeEscala.buscar(nombre: "dorico b2") == TipoDeEscala.buscar(nombre: "dórico ♭2"), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 311)
+        comprobar(TipoDeEscala.dobleArmonica.aliasNormalizados.contains("doble armonica"), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 312)
+        comprobar(TipoDeEscala.buscar(nombre: "jonico sin 4") == TipoDeEscala.jonicoSinCuarta, #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 313)
     }
 
     @Test func escalas8() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, línea 335
-        comprobar(ModoGregoriano(2)!.description, #""modo 2 (protus plagal, hipodórico): final Re, tenor Fa, ámbito La3–La4""#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 335)
-        comprobar(ModoGregoriano(nombre: "hipofrigio")!.tenor, #"La"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 337)
-        comprobar(ModoGregoriano(3)!.escala, #"Mi frigio"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 338)
-        comprobar(ModoGregoriano(6)!.ambito.first, #"Do4"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 339)
+        // Sources/Armonia/Armonia.docc/Escalas.md, línea 336
+        comprobar(ModoGregoriano(2)!.description, #""modo 2 (protus plagal, hipodórico): final Re, tenor Fa, ámbito La3–La4""#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 336)
+        comprobar(ModoGregoriano(nombre: "hipofrigio")!.tenor, #"La"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 338)
+        comprobar(ModoGregoriano(3)!.escala, #"Mi frigio"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 339)
+        comprobar(ModoGregoriano(6)!.ambito.first, #"Do4"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 340)
     }
 
     @Test func escalas9() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, línea 352
-        comprobar(TipoDeEscala.menorMelodica.esDireccional, #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 352)
-        comprobarIgual(TipoDeEscala.menorMelodica.formaDescendente, .menorNatural, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 353)
-        comprobar(Escala(.la, .menorMelodica).alturas(octava: 4, sentido: .descendente), #"La5 Sol5 Fa5 … La4"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 354)
-        comprobar(TipoDeEscala.rast.formaAscendente == .mayor, #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 355)
-        comprobarIgual(TipoDeEscala.kiourdi.formaDescendente, .menorNatural, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 356)
+        // Sources/Armonia/Armonia.docc/Escalas.md, línea 353
+        comprobar(TipoDeEscala.menorMelodica.esDireccional, #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 353)
+        comprobarIgual(TipoDeEscala.menorMelodica.formaDescendente, .menorNatural, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 354)
+        comprobar(Escala(.la, .menorMelodica).alturas(octava: 4, sentido: .descendente), #"La5 Sol5 Fa5 … La4"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 355)
+        comprobar(TipoDeEscala.rast.formaAscendente == .mayor, #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 356)
+        comprobarIgual(TipoDeEscala.kiourdi.formaDescendente, .menorNatural, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 357)
         _ = TipoDeEscala.bilahari.intervalosEnAmbasDirecciones
     }
 
     @Test func escalas10() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, línea 390
-        comprobar(TipoDeEscala.kafi.esIdentico(a: .dorico), #"false"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 390)
-        comprobar(TipoDeEscala.kafi.equivalentes.contains(.dorico), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 391)
-        comprobar(TipoDeEscala.rast == .mayor, #"false"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 392)
+        // Sources/Armonia/Armonia.docc/Escalas.md, línea 391
+        comprobar(TipoDeEscala.kafi.esIdentico(a: .dorico), #"false"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 391)
+        comprobar(TipoDeEscala.kafi.equivalentes.contains(.dorico), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 392)
+        comprobar(TipoDeEscala.rast == .mayor, #"false"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 393)
     }
 
     @Test func escalas11() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, línea 405
-        comprobar(Arpegio(Acorde("Do7")).alturas(octava: 4).map(\.midi) == [60, 64, 67, 70, 72], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 405)
-        comprobar(Arpegio(Acorde("Do"), patron: .alberti).alturas(octava: 3).map(\.midi) == [48, 55, 52, 55], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 406)
-        comprobar(Escala("Do mayor").arpegio(grado: 5, cuatriada: true)?.acorde == Acorde("Sol7"), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 407)
-        comprobar(Escala("Do mayor").arpegios().count == 7, #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 408)
-        comprobar(try Arpegio(leyendo: "arpegio Dom7").acorde == Acorde("Dom7"), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 409)
-        comprobar(Acorde("Do7").escalasCompatibles().contains(Escala(.do, .mixolidio)), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 410)
+        // Sources/Armonia/Armonia.docc/Escalas.md, línea 406
+        comprobar(Arpegio(Acorde("Do7")).alturas(octava: 4).map(\.midi) == [60, 64, 67, 70, 72], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 406)
+        comprobar(Arpegio(Acorde("Do"), patron: .alberti).alturas(octava: 3).map(\.midi) == [48, 55, 52, 55], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 407)
+        comprobar(Escala("Do mayor").arpegio(grado: 5, cuatriada: true)?.acorde == Acorde("Sol7"), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 408)
+        comprobar(Escala("Do mayor").arpegios().count == 7, #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 409)
+        comprobar(try Arpegio(leyendo: "arpegio Dom7").acorde == Acorde("Dom7"), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 410)
+        comprobar(Acorde("Do7").escalasCompatibles().contains(Escala(.do, .mixolidio)), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 411)
         let dibujo = Arpegio(Acorde("Do7")).svgPentagrama()
         _ = dibujo
     }
 
     @Test func escalas12() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, línea 433
-        comprobar(Escala(.do, .mayor).notasAEvitar(sobre: Acorde("Do7M")) == [.fa], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 433)
-        comprobar(Escala(.re, .dorico).notas(sobre: Acorde("Rem7")).map(\.cifra) == ["1", "9", "♭3", "11", "5", "13", "♭7"], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 434)
-        comprobar(Escala(.sol, .frigioDominante).tensiones(sobre: Acorde("Sol7")) == [Nota(.la, .bemol), Nota(.mi, .bemol)], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 435)
-        comprobar(Tonalidad(.do).analizar(["Do", "La7", "Rem7", "Sol7"]).escalas[1] == Escala(.la, .frigioDominante), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 436)
-        comprobar(Tonalidad(.do).escalaDelAcorde(Acorde("Sib7")) == Escala(Nota(.si, .bemol), .lidioDominante), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 437)
-        comprobar(Escala(.do, .alterada).escalaMadre?.madre == Escala(Nota(.re, .bemol), .menorMelodicaJazz), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 438)
-        comprobar(Escala(.re, .dorico).escalaMadre?.nombre(en: .espanolCompacto) == "modo 2 de Do mayor", #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 439)
-        comprobar(Acorde("Do7(#11)").escalasCompatibles().first == Escala(.do, .lidioDominante), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 440)
+        // Sources/Armonia/Armonia.docc/Escalas.md, línea 434
+        comprobar(Escala(.do, .mayor).notasAEvitar(sobre: Acorde("Do7M")) == [.fa], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 434)
+        comprobar(Escala(.re, .dorico).notas(sobre: Acorde("Rem7")).map(\.cifra) == ["1", "9", "♭3", "11", "5", "13", "♭7"], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 435)
+        comprobar(Escala(.sol, .frigioDominante).tensiones(sobre: Acorde("Sol7")) == [Nota(.la, .bemol), Nota(.mi, .bemol)], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 436)
+        comprobar(Tonalidad(.do).analizar(["Do", "La7", "Rem7", "Sol7"]).escalas[1] == Escala(.la, .frigioDominante), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 437)
+        comprobar(Tonalidad(.do).escalaDelAcorde(Acorde("Sib7")) == Escala(Nota(.si, .bemol), .lidioDominante), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 438)
+        comprobar(Escala(.do, .alterada).escalaMadre?.madre == Escala(Nota(.re, .bemol), .menorMelodicaJazz), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 439)
+        comprobar(Escala(.re, .dorico).escalaMadre?.nombre(en: .espanolCompacto) == "modo 2 de Do mayor", #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 440)
+        comprobar(Acorde("Do7(#11)").escalasCompatibles().first == Escala(.do, .lidioDominante), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 441)
     }
 
     @Test func escalas13() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, línea 452
-        comprobar(Escala(.do, .mayor).acordesQueCaben(grado: 1).contains(Acorde(.do, .mayorSexta)), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 452)
-        comprobar(Escala(.do, .lidio).estructurasSuperiores(sobre: Acorde("Do7M")).first == Acorde(.re, .mayor), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 453)
+        // Sources/Armonia/Armonia.docc/Escalas.md, línea 453
+        comprobar(Escala(.do, .mayor).acordesQueCaben(grado: 1).contains(Acorde(.do, .mayorSexta)), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 453)
+        comprobar(Escala(.do, .lidio).estructurasSuperiores(sobre: Acorde("Do7M")).first == Acorde(.re, .mayor), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 454)
     }
 
     @Test func escalas14() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, línea 465
-        comprobar(Escala(.re, .dorico).notaCaracteristica == .si, #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 465)
-        comprobar(Escala(.re, .dorico).acordesCaracteristicos == [Acorde("Mim"), Acorde("Sol")], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 466)
-        comprobar(Escala(.sol, .mixolidio).cadenciaModal == [Acorde("Fa"), Acorde("Sol")], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 467)
-        comprobar(Escala(.mi, .frigio).cadenciaModal == [Acorde("Fa"), Acorde("Mim")], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 468)
+        // Sources/Armonia/Armonia.docc/Escalas.md, línea 466
+        comprobar(Escala(.re, .dorico).notaCaracteristica == .si, #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 466)
+        comprobar(Escala(.re, .dorico).acordesCaracteristicos == [Acorde("Mim"), Acorde("Sol")], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 467)
+        comprobar(Escala(.sol, .mixolidio).cadenciaModal == [Acorde("Fa"), Acorde("Sol")], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 468)
+        comprobar(Escala(.mi, .frigio).cadenciaModal == [Acorde("Fa"), Acorde("Mim")], #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 469)
     }
 
     @Test func melodiaYRitmo1() throws {
