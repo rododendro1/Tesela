@@ -60,6 +60,10 @@ extension TextosDeRepresentaciones {
         wickiHaydenCuadrado: "Wicki-Hayden (cuadrícula)",
         cuadriculaDeTonosEnteros: "Cuadrícula de tonos enteros",
         tonnetzDeEuler: "Tonnetz d'Euler",
+        cuadriculaEnTercerasMenores: "Cuadrícula en terceres menores",
+        cuadriculaEnTritonos: "Cuadrícula en trítonos",
+        cuadriculaEnOctavas: "Cuadrícula en octaves",
+        cuadriculaSecuencial: "Cuadrícula secuencial",
         // FormatoUIL.swift
         uilNoValido: { texto in "UIL non válidu: «\(texto)». Espérase L,G,D;R<graos>[M], por exemplu 2,7,5;R30M." },
         intervalosIncoherentes: { menor, mayor, diferencia in "Intervalos incoherentes: \(menor),\(mayor),\(diferencia). Tienen de cumplir 0 < L ≤ D y G = L + D." },

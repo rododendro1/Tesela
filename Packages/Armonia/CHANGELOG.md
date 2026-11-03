@@ -4,6 +4,14 @@
 
 ### Teclados de cuadrícula
 
+- **Más teclados de cuadrícula**: `TecladoCuadrado.tercerasMenores`, `tritonos`, `octavas` y `secuencial`;
+  `conEjes(_:)` lee unos ejes escritos «H,V», `conOrigen(_:)` cambia la nota de la casilla de origen y `enTono(_:)`
+  deja solo las notas de una escala, como el modo In Key del Push (`grados`, `esCromatico`). `svg` dibuja el contorno de
+  las notas marcadas y la primera con borde naranja (`primeras:`, `contorno:`). **`RejillaDeControlador`**: las
+  casillas de un Launchpad o un Push (8 × 8), un LinnStrument (16 × 8 y 25 × 8) o la ventana de 12 × 7.
+- **En la línea de comandos**, `armonia cuadricula` (`grid`) dibuja un teclado de cuadrícula con `--ejes H,V`,
+  `--rejilla 8x8`, `--origen <altura>`, `--giro 0-3`, `--espejo` y `--en-tono` (en inglés, `--axes`, `--grid`,
+  `--origin`, `--rotate`, `--mirror` y `--in-key`).
 - **`TecladoCuadrado`** y **`CasillaCuadrada`**: teclados isomórficos de botones cuadrados, definidos por sus ejes H
   (los semitonos de un paso a la derecha) y V (los de un paso hacia arriba). Trae `cuartas` (LinnStrument, Launchpad,
   Push), `tercerasMayores`, `quintas`, `wickiHaydenCuadrado`, `tonosEnteros` y `tonnetzDeEuler`, con `girado()`,

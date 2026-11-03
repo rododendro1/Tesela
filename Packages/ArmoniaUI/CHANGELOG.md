@@ -2,6 +2,11 @@
 
 ## Sin publicar
 
+- **Teclados de cuadrícula como los de un controlador.** En la app Tonnetz, cuatro redes más (terceras menores,
+  tritonos, octavas y secuencial) y «H,V», con los ejes que se escriban. Con `AjusteCuadrado`, cualquiera se gira de
+  90° en 90°, se refleja, se dibuja en la rejilla de un Launchpad, un Push o un LinnStrument con la nota de origen que
+  se elija y, con una escala, se toca en tono. Las notas llevan su contorno y la primera, el borde naranja.
+
 - **Teclados de cuadrícula en la app Tonnetz.** Seis redes más en el selector: en cuartas, en terceras mayores, en
   quintas, Wicki-Hayden en cuadrícula, de tonos enteros y el Tonnetz de Euler. Se dibujan con cuadrados de 12 columnas
   por 7 filas, con el Do4 hacia el centro, y se tocan como los teclados hexagonales.

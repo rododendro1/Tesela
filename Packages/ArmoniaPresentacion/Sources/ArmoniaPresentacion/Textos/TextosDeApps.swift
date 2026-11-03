@@ -76,6 +76,10 @@ public struct TextosDeApps: TextosTraducidos {
     public let formatoUIL: String
     public let giro: String
     public let espejo: String
+    public let ejesHV: String
+    public let rejilla: String
+    public let notaDeOrigen: String
+    public let enTono: String
     public let noSeDibuja: String
     public let campoDeTriadaInicial: @Sendable (String) -> String
     public let reiniciar: String

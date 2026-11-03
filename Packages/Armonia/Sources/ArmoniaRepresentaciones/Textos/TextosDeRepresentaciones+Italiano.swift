@@ -60,6 +60,10 @@ extension TextosDeRepresentaciones {
         wickiHaydenCuadrado: "Wicki-Hayden (griglia)",
         cuadriculaDeTonosEnteros: "Griglia a toni interi",
         tonnetzDeEuler: "Tonnetz di Eulero",
+        cuadriculaEnTercerasMenores: "Griglia per terze minori",
+        cuadriculaEnTritonos: "Griglia per tritoni",
+        cuadriculaEnOctavas: "Griglia per ottave",
+        cuadriculaSecuencial: "Griglia sequenziale",
         // FormatoUIL.swift
         uilNoValido: { texto in "UIL non valido: «\(texto)». Si attende L,G,D;R<gradi>[M], per esempio 2,7,5;R30M." },
         intervalosIncoherentes: { menor, mayor, diferencia in "Intervalli incoerenti: \(menor),\(mayor),\(diferencia). Devono rispettare 0 < L ≤ D e G = L + D." },
