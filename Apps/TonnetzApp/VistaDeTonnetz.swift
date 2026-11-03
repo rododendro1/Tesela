@@ -113,6 +113,7 @@ struct VistaDeTonnetz: View {
         }
         .onAppear {
             if recorrido.isEmpty { reiniciar() }
+            abrirLaPartituraDePrueba()
             entradaMIDI.empezar()
         }
         // En el modo «Identificar», lo que se toca en el teclado MIDI se marca en el dibujo.
@@ -336,6 +337,22 @@ struct VistaDeTonnetz: View {
         } catch {
             errorAlAbrir = error
         }
+    }
+
+    /// Las pruebas de interfaz no pueden usar el selector de ficheros: con `-partituraDePrueba "Do Lam Fa Sol"` la app
+    /// empieza en «Partitura» con esos acordes, como si se hubiera abierto su MusicXML. Solo en las compilaciones de
+    /// depuración, que son las que prueban.
+    private func abrirLaPartituraDePrueba() {
+        #if DEBUG
+            guard partitura == nil, let texto = UserDefaults.standard.string(forKey: "partituraDePrueba"),
+                let analisis = try? AnalisisArmonico.analizar(leyendo: texto),
+                let leida = try? ImportacionDeProgresion.leer(Data(analisis.musicXML().utf8))
+            else { return }
+            importada = leida
+            partitura = RecorridoDePartitura(leida, notacion: notacion)
+            pasoElegido = 0
+            contenido = .partitura
+        #endif
     }
 
     private func reiniciar() {

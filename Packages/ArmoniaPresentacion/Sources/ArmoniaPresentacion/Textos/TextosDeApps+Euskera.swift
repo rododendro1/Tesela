@@ -123,6 +123,16 @@ extension TextosDeApps {
         indicacionCantus: { e in "Cantus firmus (\(e))" },
         indicacionContrapunto: { e in "Kontrapuntua (\(e))" },
         compasNumero: { n in "\(n). konpasa" },
+        // PresentacionDeSerie.swift
+        serieDodecafonica: "Serie dodekafonikoa",
+        indicacionSerie: { e, n in "Seriea (\(e), edo \(n))" },
+        forma: "Forma",
+        matriz: "Matrizea",
+        intervalos: "Tarteak",
+        deTodosLosIntervalos: "Tarte guztietakoa",
+        hexacordos: "Hexakordoak",
+        formasCombinatorias: "Forma konbinatorioak",
+        formasDistintas: { n in "\(n) forma desberdin" },
         // RecorridoDePartitura.swift
         partitura: "Partitura",
         anterior: "Aurrekoa",

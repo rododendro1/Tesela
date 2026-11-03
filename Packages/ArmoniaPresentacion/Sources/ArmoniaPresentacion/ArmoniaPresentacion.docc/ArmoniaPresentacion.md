@@ -56,6 +56,11 @@ el selector de notación cambia la app entera.
 - ``PresentacionDeContrapunto``
 - ``ContrapuntoPresentado``
 
+### Series dodecafónicas
+
+- ``PresentacionDeSerie``
+- ``SeriePresentada``
+
 ### Transponer y rearmonizar
 
 - ``PresentacionDeTransposicion``

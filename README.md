@@ -16,7 +16,8 @@ Apps/
 │                     corales (armonizar, realizar a cuatro voces y revisar), contrapunto de especies (de la
 │                     primera a la quinta, con las faltas compás a compás) e identificar un acorde tocándolo en
 │                     el mástil o en un teclado MIDI (con su forma prima, su número de Forte y su vector
-│                     interválico); exporta MusicXML, MEI, LilyPond, ABC y MIDI
+│                     interválico), y series dodecafónicas (la matriz, las 48 formas y su combinatoriedad);
+│                     exporta MusicXML, MEI, LilyPond, ABC y MIDI
 ├── TonnetzApp/       Un acorde, una escala, un recorrido con P, L y R, los acordes de un fichero MIDI, MusicXML,
 │                     MEI o ABC mientras suenan (con las transformaciones entre ellos), o las notas que se toquen (y
 │                     qué acorde forman), en el Tonnetz, la tabla armónica o un
@@ -178,7 +179,7 @@ Todo compila y pasa las pruebas en el CI: el motor en Linux (Swift 6.0 y 6.2) y 
 comandos, el ejemplo, las dos apps en macOS y en el simulador de iOS (compiladas y con sus pruebas de interfaz), y la documentación de DocC, sin enlaces sin
 resolver. Los jobs de macOS (paquetes y apps, pruebas de interfaz y DocC) corren a mano desde la pestaña Actions y una vez por
 semana, los lunes; en cada push y en cada pull request corre Linux, y en los pull requests que cambian las apps,
-`ArmoniaPresentacion`, `ArmoniaUI` o el proyecto de Xcode, también la compilación de las dos apps en macOS. La documentación de DocC (Armonia, Hexagonos, ArmoniaUI y ArmoniaPresentacion) se publica en
+`ArmoniaPresentacion`, `ArmoniaUI` o el proyecto de Xcode, también la compilación de las dos apps en macOS y sus pruebas de interfaz, en macOS y en el simulador de iOS. La documentación de DocC (Armonia, Hexagonos, ArmoniaUI y ArmoniaPresentacion) se publica en
 [GitHub Pages](https://rododendro1.github.io/Tesela/) con cada versión (`.github/workflows/documentacion.yml`), y también se
 puede publicar a mano desde la pestaña Actions. Dependabot mantiene al día las acciones del CI (`.github/dependabot.yml`). El formato del código Swift se comprueba con swift-format (`.swift-format`; los comandos, en `CONTRIBUTING.md`). Los jobs de Linux guardan `.build` en caché y recompilan solo lo que ha cambiado desde la última ejecución en main. `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
 

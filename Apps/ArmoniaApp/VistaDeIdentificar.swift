@@ -4,7 +4,8 @@ import SwiftUI
 
 /// Toca notas en el mástil, una por cuerda como al tocar, o en un teclado MIDI conectado, y muestra qué acorde
 /// forman (el bajo es la más grave) y cómo es el conjunto en teoría postonal. En el mástil, tocar otra vez una nota
-/// la quita y las cuerdas que no se tocan se marcan apagadas; del teclado se queda el último acorde pulsado.
+/// la quita y las cuerdas que no se tocan se marcan apagadas; del teclado se queda el último acorde pulsado. Arriba,
+/// el paso a la serie dodecafónica (`VistaDeSerie`), su matriz y sus formas.
 struct VistaDeIdentificar: View {
     @Environment(\.notacion) private var notacion
     @EnvironmentObject private var navegacion: Navegacion
@@ -34,6 +35,13 @@ struct VistaDeIdentificar: View {
         // Con alturas sin ortografía (las de un mástil o un teclado), la primera, la más grave, es el bajo.
         let acordes = Acorde.candidatos(clasesDeAltura: alturas.map(\.midi)).map(\.valor)
         Form {
+            Section {
+                NavigationLink {
+                    VistaDeSerie()
+                } label: {
+                    Label(notacion.texto(\.serieDodecafonica), systemImage: "square.grid.3x3")
+                }
+            }
             Section(notacion.texto(\.identificar)) {
                 Picker(notacion.texto(\.instrumentoYAfinacion), selection: $encordado) {
                     ForEach(Encordado.todos, id: \.self) { Text($0.titulo(en: notacion)).tag($0) }

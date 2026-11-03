@@ -133,6 +133,17 @@ public struct TextosDeApps: TextosTraducidos {
     public let indicacionContrapunto: @Sendable (String) -> String
     public let compasNumero: @Sendable (Int) -> String
 
+    // MARK: PresentacionDeSerie.swift
+    public let serieDodecafonica: String
+    public let indicacionSerie: @Sendable (String, String) -> String
+    public let forma: String
+    public let matriz: String
+    public let intervalos: String
+    public let deTodosLosIntervalos: String
+    public let hexacordos: String
+    public let formasCombinatorias: String
+    public let formasDistintas: @Sendable (Int) -> String
+
     // MARK: RecorridoDePartitura.swift
     public let partitura: String
     public let anterior: String

@@ -1,7 +1,7 @@
 import XCTest
 
-/// El recorrido con P, L y R desde Do, deshacer, el cambio a un acorde y a una escala, el modo de partitura y el de
-/// identificar.
+/// El recorrido con P, L y R desde Do, deshacer, el cambio a un acorde y a una escala, el modo de partitura (sin
+/// fichero y con una progresión abierta) y el de identificar.
 @MainActor
 final class TonnetzAppUITests: XCTestCase {
     func testRecorrido() {
@@ -31,6 +31,23 @@ final class TonnetzAppUITests: XCTestCase {
         app.opcion("Partitura").tap()
         esperar(app.texto("Abre un fichero MIDI"), "la indicación")
         esperar(app.buttons["Abrir"], "el botón de abrir")
+    }
+
+    /// Con una progresión abierta, «Siguiente» avanza de acorde y dice la transformación: de Do a Lam, R.
+    func testPartituraAbierta() {
+        let app = XCUIApplication()
+        app.launchArguments += [
+            "-notacionElegida", "espanolCompacto", "-temperamentoElegido", "igual",
+            "-partituraDePrueba", "Do Lam Fa Sol",
+        ]
+        app.launch()
+        esperar(app.texto("1/4 · Do"), "el primer acorde")
+        app.buttons["Siguiente"].tap()
+        esperar(app.texto("2/4 · Do –R→ Lam"), "la relativa de Do")
+        app.buttons["Siguiente"].tap()
+        esperar(app.texto("3/4 · Lam –L→ Fa"), "el cambio de sensible de Lam")
+        app.buttons["Anterior"].tap()
+        esperar(app.texto("2/4 · Do –R→ Lam"), "otra vez Lam")
     }
 
     func testIdentificar() {
