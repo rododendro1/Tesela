@@ -220,9 +220,10 @@ Sources/
 │   │   │                  tipo, sus alias, las escalas de otras tradiciones y el nombre de cada clase
 │   │   ├── Occidentales/  TipoDeEscala+Modos (con los modos exóticos), +Exoticas (con hexatónicas, jazz y
 │   │   │                  Messiaen), ModoGregoriano
-│   │   └── Tradiciones/   TipoDeEscala+India, +Tradiciones (la lista `tradicionales` y, cada una tras su marca,
-│   │                      Andes, China, Corea, Etiopia, Grecia, Indonesia, Japon, Klezmer, MundoArabe (maqamat) y
-│   │                      Persia (dastgah)) y CategoriaTradicional (con `Tradicion`: raga, melakarta, dromos…)
+│   │   └── Tradiciones/   Un fichero por tradición (TipoDeEscala+India, +MundoArabe, +Turquia, +GreciaAntigua…), cada
+│   │                      uno con sus escalas y su ficha (FichaDeTradicion: categorías, microtonos, padres de los
+│   │                      janya); +Tradiciones (la lista `tradicionales`), CategoriaTradicional (con `Tradicion`) y
+│   │                      Microtonos (SistemaMicrotonal, TipoDeEscalaMicrotonal)
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
 │   │                      FuncionTonal y AcordeAnalizado)
 │   └── Coral/             Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion

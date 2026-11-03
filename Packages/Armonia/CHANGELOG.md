@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+### Un fichero y una ficha por tradición
+
+- `Escalas/Tradiciones/` tiene un fichero por tradición (`TipoDeEscala+MundoArabe.swift`, `+Turquia`, `+Grecia`,
+  `+GreciaAntigua`…) en lugar de `TipoDeEscala+Tradiciones.swift`, que se queda con la lista `tradicionales`.
+- Cada uno acaba con la ficha de su tradición (`FichaDeTradicion`, interna): la categoría de cada lista, las versiones
+  microtonales de sus escalas (antes, todas en `Microtonos.swift`) y, en la India, el mēḷa de cada janya (antes, una
+  tabla por nombre en texto). `categoria`, `tradicion`, `padre`, `microtonal` y `TipoDeEscalaMicrotonal.catalogo`
+  salen de las fichas, y una tradición sin ficha no compila. No cambia ninguna API pública; el catálogo microtonal
+  cambia de orden (va por tradiciones).
+
 ### Ficheros de idioma más cortos
 
 - Los ficheros de `Escalas/Nombres/` ya no listan las escalas de otras tradiciones que no se traducen

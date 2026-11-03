@@ -137,32 +137,21 @@ extension TipoDeEscala {
 
     private typealias Clasificada = (tipo: TipoDeEscala, tradicion: Tradicion, categoria: CategoriaTradicional)
 
-    /// Nombre → tradición y categoría, de las listas de cada tradición. Si un nombre estuviera en dos, vale la primera.
+    /// Nombre → tradición y categoría, de las fichas de cada tradición. Si un nombre estuviera en dos, vale la primera.
     private static let clasificacion: [String: Clasificada] = {
-        let grupos: [(Tradicion, CategoriaTradicional, [TipoDeEscala])] = [
-            (.india, .thaat, thaats), (.grecia, .dromos, dromoi), (.india, .melakarta, melakartas),
-            (.india, .janya, janyas), (.india, .grama, gramas), (.india, .murchana, murchanas),
-            (.china, .diao, chinas), (.japon, .escala, japonesas),
-            (.etiopia, .qenet, etiopes), (.mundoArabe, .maqam, maqamat), (.indonesia, .laras, indonesias),
-            (.indonesia, .pathet, pathets),
-            (.klezmer, .shteyger, klezmer), (.india, .raga, ragasIndostanicos), (.persia, .dastgah, dastgah),
-            (.corea, .jo, coreanas), (.andes, .escala, andinas),
-            (.turquia, .makam, makamlar), (.azerbaiyan, .mugam, mugamlar), (.bizancio, .echos, echoi),
-            (.greciaAntigua, .tetracordo, tetracordosGriegos + generosDeArquitasYPtolomeo),
-            (.greciaAntigua, .harmonia, harmoniai),
-            (.mesopotamia, .afinacion, mesopotamicas),
-        ]
         var tabla: [String: Clasificada] = [:]
-        for (tradicion, categoria, tipos) in grupos {
-            for tipo in tipos where tabla[tipo.nombre] == nil { tabla[tipo.nombre] = (tipo, tradicion, categoria) }
+        for ficha in FichaDeTradicion.todas {
+            for lista in ficha.listas {
+                for tipo in lista.tipos where tabla[tipo.nombre] == nil {
+                    tabla[tipo.nombre] = (tipo, ficha.tradicion, lista.categoria)
+                }
+            }
         }
         return tabla
     }()
 
-    /// Número del mēḷa padre de cada janya incluido (el de uso general; Revati no tiene uno único).
-    private static let padresDeLosJanya: [String: Int] = [
-        "Mohanam": 28, "Hindolam": 20, "Haṃsadhvani": 29, "Ābhogi": 22, "Madhyamāvatī": 22, "Bilahari": 29,
-        "Kāmbhoji": 28, "Ārabhi": 29, "Kedāragauḷa": 28, "Amṛtavarṣiṇī": 65, "Mohanakalyāṇi": 65, "Sāveri": 15,
-        "Nāṭa": 36,
-    ]
+    /// Nombre de cada janya incluido → el número de su mēḷa padre (el de uso general; Revati no tiene uno único).
+    private static let padresDeLosJanya: [String: Int] = Dictionary(
+        FichaDeTradicion.todas.flatMap(\.padres).map { ($0.janya.nombre, $0.mela) },
+        uniquingKeysWith: { primero, _ in primero })
 }
