@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+### Grabar partituras y dibujos desde la línea de comandos
+
+- **`armonia grabar`** (en inglés, `engrave`): la partitura en PDF, SVG o PNG con LilyPond (`armonia grabar coral
+  Do3 Mi4 Sol4 Do5 > coral.pdf`), con las mismas opciones que `armonia lilypond`, o un dibujo de Tesela en PDF o PNG
+  con rsvg-convert (`armonia grabar pentagrama escala Re dórico --formato png > dorico.png`). `--motor
+  lilypond|propio` elige quién graba y `--formato pdf|svg|png`, el fichero. Los programas se buscan en el `PATH`, o
+  en `ARMONIA_LILYPOND` y `ARMONIA_RSVG_CONVERT`.
+
 ### Bajo cifrado, cambios de clave y notas ajenas al acorde en el pentagrama
 
 - **`Tonalidad.cifrasDeBajo(de:)`**: las cifras del bajo continuo de un acorde («6», «6 4», «6 5», «4 3», «4 2»),

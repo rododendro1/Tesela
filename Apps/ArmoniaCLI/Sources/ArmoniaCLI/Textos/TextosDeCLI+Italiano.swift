@@ -106,6 +106,9 @@ extension TextosDeCLI {
         descripcionAbcMelodia: "lo stesso in ABC, la notazione\ntestuale della musica tradizionale",
         sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios|escala <…> [opzioni]",
         descripcionMidiMelodia: "lo stesso come file MIDI, per\nascoltarlo (senza --clave né\n--cifrados; con --programa 0…127,\nGeneral MIDI)",
+        sintaxisGrabar: "grabar melodia|coral|acordes|arpegios|escala <…>\ngrabar pentagrama|tonnetz|tabla|teclado|reloj <…> [opzioni]",
+        descripcionGrabar: "la partitura in PDF con LilyPond, o il\ndisegno in PDF o PNG con rsvg-convert",
+        notasGrabar: "--motor lilypond|propio, --formato pdf|svg|png; il\npercorso di ogni programma, in ARMONIA_LILYPOND e\nARMONIA_RSVG_CONVERT se non è nel PATH",
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "digitaciones <sigla>… [opzioni]",
@@ -226,6 +229,13 @@ extension TextosDeCLI {
         faltanAcordesDeLaProgresion: { ejemplo, orden in "mancano gli accordi: " + ejemplo },
         acordesConCifradosYAnalisis: "gli accordi hanno sempre sigle e analisi",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: si esporta una «melodia», un «coral», degli «acordes», i loro «arpegios» o una «escala»" },
+        faltaLoQueSeGraba: "manca ciò che si incide: armonia grabar coral Do3 Mi4 Sol4 Do5 > coral.pdf",
+        motorDesconocido: { motor in "«\(motor)»: il motore è «lilypond» o «propio»" },
+        formatoDeGrabadoDesconocido: { formato in "«\(formato)»: si incide in «pdf», «svg» o «png»" },
+        nadaQueGrabar: { orden in "«\(orden)»: si incide una partitura (melodia, coral, acordes, arpegios, escala) o un disegno (pentagrama, tonnetz, tabla, teclado, cuadricula, reloj)" },
+        motorNoEncontrado: { programa, variable in "impossibile trovare «\(programa)»: installalo o indica il suo percorso in \(variable)" },
+        motorFallo: { programa, codigo in "«\(programa)» è terminato con il codice \(codigo):" },
+        motorSinTerminar: { programa in "«\(programa)» non è terminato in tempo ed è stato fermato" },
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "manca lo strumento: \(d)" },

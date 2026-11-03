@@ -110,6 +110,11 @@ struct TextosDeCLI: TextosTraducidos {
     let sintaxisMidiMelodia: String
     let descripcionMidiMelodia: String
 
+    // MARK: Ayuda+Grabado.swift
+    let sintaxisGrabar: String
+    let descripcionGrabar: String
+    let notasGrabar: String
+
     // MARK: Ayuda+Trastes.swift
     let sintaxisDigitaciones: String
     let descripcionDigitaciones: String
@@ -214,6 +219,19 @@ struct TextosDeCLI: TextosTraducidos {
     let faltanAcordesDeLaProgresion: @Sendable (String, String) -> String
     let acordesConCifradosYAnalisis: String
     let tipoDePartituraDesconocido: @Sendable (String) -> String
+
+    // MARK: ErrorDeUso.swift (grabado)
+    let faltaLoQueSeGraba: String
+    let motorDesconocido: @Sendable (String) -> String
+    let formatoDeGrabadoDesconocido: @Sendable (String) -> String
+    let nadaQueGrabar: @Sendable (String) -> String
+
+    // MARK: LineaDeComandos+Grabado.swift
+    /// El programa y la variable de entorno que da su ruta.
+    let motorNoEncontrado: @Sendable (String, String) -> String
+    /// El programa y su código de salida; debajo van las últimas líneas de lo que dijo.
+    let motorFallo: @Sendable (String, Int) -> String
+    let motorSinTerminar: @Sendable (String) -> String
 
     // MARK: ErrorDeUso.swift (digitaciones)
     let faltaInstrumento: @Sendable (String, (String, String)) -> String

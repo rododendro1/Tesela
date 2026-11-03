@@ -106,6 +106,9 @@ extension TextosDeCLI {
         descripcionAbcMelodia: "то же самое в ABC, текстовой нотации\nнародной музыки",
         sintaxisMidiMelodia: "midi melody|chorale|chords|arpeggios|scale <…> [параметры]",
         descripcionMidiMelodia: "то же самое в виде файла MIDI, чтобы\nпослушать (без --clave и --cifrados; с\n--program 0…127, General MIDI)",
+        sintaxisGrabar: "engrave melody|chorale|chords|arpeggios|scale <…>\nengrave staff|tonnetz|harmonic-table|keyboard|clock <…> [параметры]",
+        descripcionGrabar: "партитура в PDF с LilyPond или\nрисунок в PDF или PNG с rsvg-convert",
+        notasGrabar: "--engine lilypond|own, --format pdf|svg|png; путь\nк каждой программе — в ARMONIA_LILYPOND и\nARMONIA_RSVG_CONVERT, если её нет в PATH",
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "fingerings <обозначение>… [параметры]",
@@ -226,6 +229,13 @@ extension TextosDeCLI {
         faltanAcordesDeLaProgresion: { ejemplo, orden in "не указаны аккорды: armonia \(orden) chords C Am D7 G7 C" },
         acordesConCifradosYAnalisis: "аккорды всегда выводятся с обозначениями и анализом",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: экспортируется «melody», «chorale», «chords», их «arpeggios» или «scale»" },
+        faltaLoQueSeGraba: "не указано, что набирать: armonia engrave chorale C3 E4 G4 C5 > chorale.pdf",
+        motorDesconocido: { motor in "«\(motor)»: движок — «lilypond» или «own»" },
+        formatoDeGrabadoDesconocido: { formato in "«\(formato)»: формат — «pdf», «svg» или «png»" },
+        nadaQueGrabar: { orden in "«\(orden)»: набирается партитура (melody, chorale, chords, arpeggios, scale) или рисунок (staff, tonnetz, harmonic-table, keyboard, grid, clock)" },
+        motorNoEncontrado: { programa, variable in "не найдено «\(programa)»: установите его или укажите путь в \(variable)" },
+        motorFallo: { programa, codigo in "«\(programa)» завершился с кодом \(codigo):" },
+        motorSinTerminar: { programa in "«\(programa)» не завершился вовремя и был остановлен" },
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "не указан инструмент: \(digitaciones.1)" },

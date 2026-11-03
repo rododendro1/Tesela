@@ -94,7 +94,7 @@ public enum LineaDeComandos {
 
     /// Todas las órdenes, en el orden en que salen en la ayuda.
     static let ordenes: [Orden] =
-        ordenesDeConsultas + ordenesDeArmonizacion + ordenesDePartituras
+        ordenesDeConsultas + ordenesDeArmonizacion + ordenesDePartituras + ordenesDeGrabado
         + ordenesDeDibujos + ordenesDeNeorriemann + ordenesDeTrastes + ordenesDeLaTerminal + ordenesDeAyuda
 
     // MARK: Auxiliares

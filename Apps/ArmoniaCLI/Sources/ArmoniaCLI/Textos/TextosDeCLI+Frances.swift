@@ -106,6 +106,9 @@ extension TextosDeCLI {
         descripcionAbcMelodia: "la même chose en ABC, la notation\ntextuelle de la musique\ntraditionnelle",
         sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios|escala <…> [options]",
         descripcionMidiMelodia: "la même chose en fichier MIDI, pour\nl'écouter (sans --clave ni\n--cifrados ; avec --programa 0…127,\nGeneral MIDI)",
+        sintaxisGrabar: "grabar melodia|coral|acordes|arpegios|escala <…>\ngrabar pentagrama|tonnetz|tabla|teclado|reloj <…> [options]",
+        descripcionGrabar: "la partition en PDF avec LilyPond, ou\nle dessin en PDF ou PNG avec\nrsvg-convert",
+        notasGrabar: "--motor lilypond|propio, --formato pdf|svg|png ; le\nchemin de chaque programme, dans ARMONIA_LILYPOND\net ARMONIA_RSVG_CONVERT s\'il n\'est pas dans le PATH",
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "digitaciones <chiffrage>… [options]",
@@ -226,6 +229,13 @@ extension TextosDeCLI {
         faltanAcordesDeLaProgresion: { ejemplo, orden in "il manque les accords : " + ejemplo },
         acordesConCifradosYAnalisis: "les accords ont toujours chiffrages et analyse",
         tipoDePartituraDesconocido: { tipo in "« \(tipo) » : on exporte une « melodia », un « coral », des « acordes », leurs « arpegios » ou une « escala »" },
+        faltaLoQueSeGraba: "il manque ce qu'on grave : armonia grabar coral Do3 Mi4 Sol4 Do5 > coral.pdf",
+        motorDesconocido: { motor in "« \(motor) » : le moteur est « lilypond » ou « propio »" },
+        formatoDeGrabadoDesconocido: { formato in "« \(formato) » : on grave en « pdf », « svg » ou « png »" },
+        nadaQueGrabar: { orden in "« \(orden) » : on grave une partition (melodia, coral, acordes, arpegios, escala) ou un dessin (pentagrama, tonnetz, tabla, teclado, cuadricula, reloj)" },
+        motorNoEncontrado: { programa, variable in "« \(programa) » introuvable : installez-le ou indiquez son chemin dans \(variable)" },
+        motorFallo: { programa, codigo in "« \(programa) » s\'est terminé avec le code \(codigo) :" },
+        motorSinTerminar: { programa in "« \(programa) » n\'a pas fini à temps et a été arrêté" },
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "il manque l'instrument : \(d)" },

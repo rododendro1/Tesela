@@ -119,6 +119,16 @@ enum ErrorDeUso {
     case acordesConCifradosYAnalisis
     case tipoDePartituraDesconocido(String)
 
+    // Grabado
+    /// `grabar` sin nada detrás.
+    case faltaLoQueSeGraba
+    /// `grabar … --motor` con un motor que no es lilypond ni propio.
+    case motorDesconocido(String)
+    /// `grabar … --formato` con algo que no es pdf, svg ni png.
+    case formatoDeGrabadoDesconocido(String)
+    /// `grabar` con algo que no es una partitura ni una orden que dibuja.
+    case nadaQueGrabar(String)
+
     // Dibujos (`orden` es «tonnetz» o «tabla»)
     case margenFueraDeRango
     case faltanNotasDelDibujo(orden: String)
@@ -277,6 +287,11 @@ enum ErrorDeUso {
         case .acordesConCifradosYAnalisis: return TextosDeCLI.traduccion(\.acordesConCifradosYAnalisis)
         case .tipoDePartituraDesconocido(let tipo):
             return TextosDeCLI.traduccion { $0.tipoDePartituraDesconocido(tipo) }
+        case .faltaLoQueSeGraba: return TextosDeCLI.traduccion(\.faltaLoQueSeGraba)
+        case .motorDesconocido(let motor): return TextosDeCLI.traduccion { $0.motorDesconocido(motor) }
+        case .formatoDeGrabadoDesconocido(let formato):
+            return TextosDeCLI.traduccion { $0.formatoDeGrabadoDesconocido(formato) }
+        case .nadaQueGrabar(let orden): return TextosDeCLI.traduccion { $0.nadaQueGrabar(orden) }
         case .margenFueraDeRango: return TextosDeCLI.traduccion(\.margenFueraDeRango)
         case .faltanNotasDelDibujo(let orden):
             let ejemplo = "armonia \(orden) Do Mi Sol"

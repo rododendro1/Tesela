@@ -106,6 +106,9 @@ extension TextosDeCLI {
         descripcionAbcMelodia: "gauza bera ABCn, musika\ntradizionalaren testu-notazioa",
         sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios|escala <…> [aukerak]",
         descripcionMidiMelodia: "gauza bera MIDI fitxategi gisa,\nentzuteko (--clave eta --cifrados\ngabe; --programa 0…127, General\nMIDI)",
+        sintaxisGrabar: "grabar melodia|coral|acordes|arpegios|escala <…>\ngrabar pentagrama|tonnetz|tabla|teclado|reloj <…> [aukerak]",
+        descripcionGrabar: "partitura PDFan LilyPondekin, edo\nmarrazkia PDFan edo PNGn\nrsvg-convertekin",
+        notasGrabar: "--motor lilypond|propio, --formato pdf|svg|png;\nprograma bakoitzaren bidea ARMONIA_LILYPOND eta\nARMONIA_RSVG_CONVERT aldagaietan, PATHen ez badago",
 
         // Ayuda+Trastes.swift
         sintaxisDigitaciones: "digitaciones <zifratua>… [aukerak]",
@@ -226,6 +229,13 @@ extension TextosDeCLI {
         faltanAcordesDeLaProgresion: { ejemplo, orden in "akordeak falta dira: " + ejemplo },
         acordesConCifradosYAnalisis: "akordeek beti daramatzate zifratuak eta analisia",
         tipoDePartituraDesconocido: { tipo in "«\(tipo)»: «melodia», «coral», «acordes», haien «arpegios» edo «escala» bat esportatzen da" },
+        faltaLoQueSeGraba: "grabatzekoa falta da: armonia grabar coral Do3 Mi4 Sol4 Do5 > coral.pdf",
+        motorDesconocido: { motor in "«\(motor)»: motorra «lilypond» edo «propio» da" },
+        formatoDeGrabadoDesconocido: { formato in "«\(formato)»: «pdf», «svg» edo «png» formatuan grabatzen da" },
+        nadaQueGrabar: { orden in "«\(orden)»: partitura bat (melodia, coral, acordes, arpegios, escala) edo marrazki bat (pentagrama, tonnetz, tabla, teclado, cuadricula, reloj) grabatzen da" },
+        motorNoEncontrado: { programa, variable in "ez da «\(programa)» aurkitzen: instalatu edo jarri haren bidea \(variable) aldagaian" },
+        motorFallo: { programa, codigo in "«\(programa)» \(codigo) kodearekin amaitu da:" },
+        motorSinTerminar: { programa in "«\(programa)» ez da garaiz amaitu eta gelditu egin da" },
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "instrumentua falta da: \(d)" },
