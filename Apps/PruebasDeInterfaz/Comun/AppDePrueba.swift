@@ -151,6 +151,12 @@ extension XCUIApplication {
             campo.typeKey("a", modifierFlags: .command)
             campo.typeText(XCUIKeyboardKey.delete.rawValue)
         #else
+            // Si la vista bajó hasta perderlo, se vuelve arriba: la lista solo crea las filas que se ven.
+            var intento = 0
+            while !campo.waitForExistence(timeout: 2) && intento < 6 {
+                swipeDown()
+                intento += 1
+            }
             // Tocando a la derecha el cursor queda al final del texto.
             campo.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
             let escrito = campo.value as? String ?? ""
