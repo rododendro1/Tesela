@@ -330,8 +330,8 @@ motor como Verovio.
 
 Alrededor de las notas se puede escribir lo que ayuda a estudiarlas:
 
-- **Cifrado de cada acorde.** `DisposicionDeAcorde.svgPentagrama(_:titulo:cifrados:)` pone el de cada acorde encima
-  de su columna; los `cifrados` de una ``Partitura/Linea``, encima de la nota en que empieza cada acorde;
+- **Cifrado de cada acorde.** Los `cifrados` de `Partitura(acordes:titulo:cifrados:)` van encima de la columna de
+  cada acorde; los `cifrados` de una ``Partitura/Linea``, encima de la nota en que empieza cada acorde;
   `Arpegio.svgPentagrama(cifrado: true)`, encima de la primera nota.
 - **Intervalos** (`intervalosDeLasNotas`). Debajo de cada nota, su intervalo desde la tónica de la escala o desde la
   fundamental del acorde que suena (con 9, 11 y 13 si el acorde tiene séptima).
@@ -347,8 +347,8 @@ Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<ti
 
 ### Para estudiar: grados, dedos, secuencias y tablatura
 
-- **Grados en números romanos.** `DisposicionDeAcorde.svgPentagrama(_:titulo:cifrados:grados:)` y
-  los `grados` (o el `analisis`) de una ``Partitura/Linea`` escriben debajo de cada acorde su grado (los de
+- **Grados en números romanos.** Los `grados` de `Partitura(acordes:titulo:cifrados:grados:)` y los de una
+  ``Partitura/Linea`` (o su `analisis`) escriben debajo de cada acorde su grado (los de
   `AnalisisArmonico.cifrados`), y su `bajoCifrado`, las cifras del bajo continuo.
 - **Dedos.** `Escala.svgPentagrama(digitacion:)` pone encima los dedos del piano de `digitacionDePiano(_:)`, y el
   parámetro `digitos` de los demás dibujos (y los de una ``Partitura/Linea``), los que se le den (los de la guitarra, por ejemplo).
@@ -362,7 +362,7 @@ Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<ti
 let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
 let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
 let grados = Tonalidad(.do).analizar(progresion).cifrados
-DisposicionDeAcorde.svgPentagrama(voces, titulo: "ii–V–I", grados: grados).contains(">V7</text>")   // true
+Partitura(acordes: voces, titulo: "ii–V–I", grados: grados).svg().contains(">V7</text>")   // true
 Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>")   // true
 Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras")   // true
 ```

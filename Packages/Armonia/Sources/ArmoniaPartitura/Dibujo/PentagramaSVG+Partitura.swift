@@ -44,8 +44,35 @@ extension Partitura {
         var grados = porEvento(primera.analisis.mapValues(\.cifrado))
         grados.merge(porEvento(primera.grados)) { _, propio in propio }
         let tablatura = pentagrama.cuerdas.map { Tablatura(cuerdas: $0, notas: porEvento(primera.pulsaciones)) }
+        if !ritmo {
+            return columnas(
+                primera.voz, titulo: titulo, acordes: acordes, grados: grados,
+                bajoCifrado: porEvento(primera.bajoCifrado), digitos: porEvento(primera.digitos), tablatura: tablatura,
+                opciones: suyas)
+        }
         return primera.voz.svgPentagrama(
             titulo: titulo, acordes: acordes, grados: grados, bajoCifrado: porEvento(primera.bajoCifrado),
             digitos: porEvento(primera.digitos), tablatura: tablatura, tonica: nil, armadura: nil, opciones: suyas)
+    }
+
+    /// La voz sin ritmo: cada evento en su columna, con lo que se anota en ella.
+    private func columnas(
+        _ voz: Voz, titulo: String, acordes: [Int: Acorde], grados: [Int: String], bajoCifrado: [Int: [String]],
+        digitos: [Int: [Int]], tablatura: Tablatura?, opciones: OpcionesDePentagrama
+    ) -> String {
+        var cifrados: [Int: String] = [:]
+        var referencias: [Int: PentagramaSVG.Referencia] = [:]
+        for (columna, acorde) in acordes {
+            cifrados[columna] = acorde.cifrado(en: opciones.notacion)
+            referencias[columna] = PentagramaSVG.Referencia(acorde)
+        }
+        var dibujo = PentagramaSVG(
+            columnas: voz.eventos.map(\.alturas), armadura: opciones.armadura.notas(), cifrado: nil, titulo: titulo,
+            opciones: opciones, cifrados: cifrados, referencias: referencias)
+        dibujo.grados = grados
+        dibujo.bajosCifrados = bajoCifrado
+        dibujo.digitos = digitos
+        dibujo.tablatura = tablatura
+        return dibujo.svg()
     }
 }

@@ -244,10 +244,11 @@ extension LineaDeComandos {
             let desde = Altura(.do, octava: octava).midi
             let voces = DisposicionDeAcorde.cerrada.conducir(acordes, en: desde...(desde + 24)) ?? []
             let titulo = acordes.map { $0.cifrado(en: notacion) }.joined(separator: " – ")
-            svg = DisposicionDeAcorde.svgPentagrama(
-                voces, titulo: titulo, cifrados: acordes,
+            let partitura = Partitura(
+                acordes: voces, titulo: titulo, cifrados: acordes,
                 grados: romanos ? gradosRomanos(de: acordes, en: tonalidad) : [],
-                bajoCifrado: conBajoCifrado ? bajoCifrado(de: acordes, en: tonalidad) : [], opciones: opciones)
+                bajoCifrado: conBajoCifrado ? bajoCifrado(de: acordes, en: tonalidad) : [])
+            svg = partitura.svg(opciones: opciones)
         case "melodia":
             return try pentagramaDeMelodia(&argumentos, opciones, notacion)
         default:

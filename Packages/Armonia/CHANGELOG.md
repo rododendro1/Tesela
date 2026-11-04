@@ -47,6 +47,20 @@
 - Todo lo público que no la tenía lleva documentación, salvo lo que solo cumple un protocolo.
 - `Tonalidad` y `Escala` ya no repiten `init?(texto:)`: el de `LegibleDesdeTexto` hace lo mismo.
 
+### Los acordes que se comparan, también en una `Partitura`
+
+- **Cambio incompatible:** `DisposicionDeAcorde.svgPentagrama(_:titulo:cifrados:grados:bajoCifrado:digitos:tablatura:opciones:)`
+  ya no existe. En su lugar, `Partitura(acordes:titulo:cifrados:grados:bajoCifrado:digitos:tablatura:)` hace la
+  partitura de esos acordes, una redonda por columna, y `svg(opciones:)` la dibuja igual que antes. Donde se
+  escribía `DisposicionDeAcorde.svgPentagrama(voces, titulo: "ii–V–I", cifrados: progresion, opciones: opciones)`,
+  ahora `Partitura(acordes: voces, titulo: "ii–V–I", cifrados: progresion).svg(opciones: opciones)`. Así lo que se
+  anota en un pentagrama (cifrados, grados, bajo cifrado, dedos y tablatura) pasa siempre por una `Partitura`, y la
+  misma progresión se escribe también en MusicXML, MEI, LilyPond, ABC o MIDI.
+- `Partitura.ritmo` (nuevo, `true` por omisión): con `false`, un pentagrama de una voz se dibuja con cada evento en
+  su columna, sin plicas, cifra de compás ni barras. Es lo que pone `Partitura(acordes:…)`.
+- `escala.svgPentagrama()`, `acorde.svgPentagrama()` y `arpegio.svgPentagrama()` siguen: son los dibujos de una
+  escala, un acorde o un arpegio solos.
+
 ## 0.3.4 (2026-11-04)
 
 ### Valores escritos a mano, sin opcionales
