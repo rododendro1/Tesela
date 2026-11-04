@@ -2,6 +2,18 @@
 
 ## Sin publicar
 
+### Una sola partitura para todos los formatos
+
+- **`Partitura`**: los pentagramas, de arriba abajo, con su clave y sus voces (`Partitura.Linea`: la voz, su nombre,
+  sus plicas, los cifrados, el análisis y los marcadores de MIDI), el compás, la tonalidad del análisis y si los une
+  una llave. Se escribe con `musicXML()`, `mei()`, `lilyPond()`, `guido()`, `abc()`, `midi(afinacion:)`,
+  `exportar(como:afinacion:)` y se dibuja con `svg(opciones:)`.
+- **`Encabezado`** reúne lo que vale para toda la partitura: título, tonalidad, tempo, parte e instrumento.
+- `Voz.partitura(clave:encabezado:)`, `Coral.partitura(duracion:compas:encabezado:cifrados:analisis:notacion:)`,
+  `AnalisisArmonico.partitura(duraciones:compas:encabezado:cifrados:analisis:notacion:)` y
+  `Contrapunto.partitura(encabezado:)` hacen la de cada uno. Los escritores de los seis formatos leen solo la
+  partitura, y las funciones de siempre (`voz.musicXML(…)`, `coral.midi(…)`…) son atajos que dan lo mismo.
+
 ### Microtonos y afinaciones en MIDI
 
 - **Un canal por inflexión**: las notas que suenan a la vez y se apartan distinto de la temperada van cada una a su

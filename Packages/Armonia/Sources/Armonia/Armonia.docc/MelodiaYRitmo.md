@@ -279,6 +279,29 @@ pieza.notas.map(\.parte) == [0, 0, 0]                                     // tru
 abs(400 + pieza.notas[1].desvio - pieza.notas[0].desvio - 386.31) < 0.05   // true: la tercera, pura
 ```
 
+## La partitura
+
+Todos los formatos y el dibujo salen de un mismo valor, ``Partitura``: los pentagramas de arriba abajo, cada uno con
+su clave y sus voces (una ``Partitura/Linea`` con su nombre, la dirección de sus plicas, los cifrados de encima, el
+análisis de debajo y los marcadores de MIDI), y un ``Encabezado`` con lo que vale para toda ella: el título, la
+armadura, el tempo, el nombre de la parte y el instrumento de MIDI. Una ``Voz``, un ``Coral``, un
+``AnalisisArmonico`` y un ``Contrapunto`` hacen la suya con `partitura(…)`, y de ella salen `musicXML()`, `mei()`,
+`lilyPond()`, `guido()`, `abc()`, `midi(afinacion:)`, `exportar(como:)` y `svg(opciones:)`. Las funciones de cada
+formato de las secciones de arriba son atajos de lo mismo; con la partitura se puede, además, cambiar algo antes de
+escribirla o montar una a mano.
+
+```swift
+let escala = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2", compas: "3/4")
+let partitura = escala.partitura(encabezado: Encabezado(titulo: "Escala", tempo: Tempo(90)))
+partitura.musicXML() == escala.musicXML(tempo: Tempo(90), titulo: "Escala")   // true
+partitura.pentagramas.count                                                  // 1
+let bajo = try Voz(leyendo: "Do3:2. Fa2:4", compas: "3/4")
+let manos: [Partitura.Pentagrama] = [.init(clave: .sol, voces: [.init(escala)]), .init(clave: .fa, voces: [.init(bajo)])]
+let dos = Partitura(pentagramas: manos, encabezado: Encabezado(titulo: "Dos manos"), llave: true)
+dos.lilyPond().contains("PianoStaff")                                        // true
+dos.svg().contains("<svg")                                                   // true
+```
+
 ## Todos los formatos a la vez
 
 ``FormatoDePartitura`` reúne los seis formatos (MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI), y
