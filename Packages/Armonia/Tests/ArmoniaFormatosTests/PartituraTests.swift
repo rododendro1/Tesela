@@ -107,4 +107,15 @@ import Testing
         let bytes = [UInt8](partitura.midi())
         #expect(bytes.indices.dropLast(3).contains { Array(bytes[$0...($0 + 3)]) == [0xFF, 0x06, 0x01, 0x56] })
     }
+
+    /// El título que se nombra por lo que se toca sale, en cada formato, en la notación de la partitura.
+    @Test func elTituloSigueLaNotacion() {
+        let escala = Escala("Re dórico")
+        var partitura = escala.partitura(tocadaEn: [Altura("Re4"), Altura("Mi4")])
+        let enEspanol = "<work-title>\(escala.nombre(en: .espanolCompacto))</work-title>"
+        #expect(partitura.musicXML().contains(enEspanol))
+        partitura.notacion = .inglesASCII
+        #expect(partitura.musicXML().contains("<work-title>\(escala.nombre(en: .inglesASCII))</work-title>"))
+        #expect(!partitura.musicXML().contains(enEspanol))
+    }
 }

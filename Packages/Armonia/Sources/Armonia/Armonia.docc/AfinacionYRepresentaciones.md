@@ -127,18 +127,22 @@ ellas, la de menor suma de distancias entre cada par de notas. Se prueban todas 
 escalas de `TipoDeEscala.todos` en Do, 21 quedan más juntas que colocando las notas una a una. `triadas` da los
 triángulos completos y `aristas`, los lados entre notas del conjunto.
 
-`svg(notacion:margen:paso:)` dibuja la red alrededor del conjunto: los triángulos mayores en
+`svg(opciones:margen:leyenda:)` dibuja la red alrededor del conjunto: los triángulos mayores en
 naranja, los menores en azul, los lados entre notas del conjunto en trazo grueso y las notas en
 círculos oscuros. Con clases de altura se marcan todas las repeticiones de cada clase en la ventana.
 Encima va un título (el acorde, la escala, las notas, el conjunto o, en un recorrido, la progresión
 con sus pasos) y debajo, una leyenda con solo lo que aparece en el dibujo; en notación inglesa, la
-leyenda está en inglés. `svg(titulo:)` cambia el título (`""` lo quita) y `svg(leyenda: false)`
-quita la leyenda. Lo mismo vale para la tabla armónica.
+leyenda está en inglés. `svg(opciones: .init(titulo: "Tónica"))` cambia el título (`""` lo quita),
+`.init(escala: 2)` lo dibuja el doble de grande y `svg(leyenda: false)` quita la leyenda. Lo mismo vale para la tabla
+armónica. Las ``OpcionesDeDiagrama`` (la notación, si se prefieren bemoles, el título y la escala) son las mismas en
+todos los dibujos que no son un pentagrama: el Tonnetz, la tabla armónica, los teclados isomórficos y cuadrados, el
+teclado de piano y el reloj de clases. Las notas marcadas de los teclados son unas ``MarcasDeDiagrama``: `[60, 64, 67]`
+las marca y `[60: "1", 64: "3"]` las marca con un rótulo, que se escribe en lugar del nombre de la nota.
 
 ```swift
 let dibujo = Tonnetz(Escala(.re, .dorico)).svg()          // con el título «Re dórico» y su leyenda
-let sinLeyenda = Tonnetz(Acorde("Do")).svg(titulo: "Tónica", leyenda: false)
-let ingles = Tonnetz(Acorde("Fa#m7")).svg(notacion: .inglesASCII, margen: 2)
+let sinLeyenda = Tonnetz(Acorde("Do")).svg(opciones: .init(titulo: "Tónica"), leyenda: false)
+let ingles = Tonnetz(Acorde("Fa#m7")).svg(opciones: .init(notacion: .inglesASCII), margen: 2)
 let toro = Tonnetz(ConjuntoDeClases([0, 4, 7, 11])).svg(margen: 3)
 ```
 
@@ -254,7 +258,7 @@ TablaArmonica([Altura("Do3"), Altura("Mi4"), Altura("Sol4")]).triadas.count == 0
 let dibujo = TablaArmonica(Escala(.re, .dorico)).svg()
 ```
 
-`svg(notacion:margen:paso:)` rellena los hexágonos de las notas, bordea en naranja la primera (la
+`svg(opciones:margen:leyenda:)` rellena los hexágonos de las notas, bordea en naranja la primera (la
 tónica de la escala o la fundamental del acorde), traza el contorno de la forma y pone un punto
 en el vértice común de cada tríada: naranja si es mayor, azul si es menor. Con clases de altura o
 alturas se marcan todos los hexágonos que suenan igual.
@@ -391,7 +395,7 @@ en ella, o la ventana de 12 × 7 alrededor del Do4.
 
 `enTono(_:)` lo convierte en un teclado en tono, como el modo In Key del Push: solo suenan las notas de una escala, H y
 V cuentan grados (los que caben en sus semitonos: en cuartas, tres grados por fila en una escala de siete notas) y la
-casilla de origen es la tónica. `svg(_:marcadas:primeras:contorno:)` dibuja además el contorno de las notas marcadas y
+casilla de origen es la tónica. `svg(_:marcadas:primeras:contorno:margen:opciones:)` dibuja además el contorno de las notas marcadas y
 la primera (la tónica o la fundamental) con el borde naranja de la tabla armónica.
 
 ```swift

@@ -111,7 +111,7 @@ extension LineaDeComandos {
             guard let dibujo = Tonnetz(ciclo: ciclo, desde: acorde) else { return errorDeCiclo("tonnetz", notacion) }
             tonnetz = dibujo
         }
-        return bien(tonnetz.svg(notacion: notacion, margen: margen).trimmingCharacters(in: "\n"))
+        return bien(tonnetz.svg(opciones: .init(notacion: notacion), margen: margen).trimmingCharacters(in: "\n"))
     }
 
     /// `tabla Do Mi Sol`, `tabla Do3 Sol3 Mi4` (con octava, alturas), `tabla --acorde Domaj7`,
@@ -148,7 +148,7 @@ extension LineaDeComandos {
             }
             tabla = dibujo
         }
-        return bien(tabla.svg(notacion: notacion, margen: margen).trimmingCharacters(in: "\n"))
+        return bien(tabla.svg(opciones: .init(notacion: notacion), margen: margen).trimmingCharacters(in: "\n"))
     }
 
     /// `teclado Re mayor [--mano derecha|izquierda] [--octavas 2]`: la escala en un teclado de piano, en SVG, con
@@ -608,9 +608,10 @@ extension LineaDeComandos {
         let primera = notas.first?.claseDeAltura
         let marcadas = Set((0...127).filter { clases.contains($0 % 12) })
         let primeras = Set((0...127).filter { $0 % 12 == primera })
+        let bemoles = notas.contains { $0.pasosDeQuinta < -1 }
         let svg = teclado.svg(
-            rejilla.casillas, marcadas: marcadas, primeras: primeras, contorno: true, notacion: notacion,
-            preferirBemoles: notas.contains { $0.pasosDeQuinta < -1 })
+            rejilla.casillas, marcadas: MarcasDeDiagrama(marcadas), primeras: primeras, contorno: true,
+            opciones: .init(notacion: notacion, preferirBemoles: bemoles))
         return bien(svg)
     }
 

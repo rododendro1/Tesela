@@ -358,7 +358,12 @@ Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<ti
   nota. `Escala.partitura(tocadaEn:)` y `Acorde.partitura(arpegiadoEn:)` hacen la partitura de las alturas de una
   posición del mástil, escritas con las notas de la escala o del acorde (Si♭, no La♯, en Do7), con la armadura de la
   escala (``Partitura/Pentagrama/armadura``) y los intervalos contados desde su tónica (``Partitura/Linea/tonica``);
-  `svgPentagrama(tocadaEn:)` y `svgPentagrama(arpegiadoEn:)` la dibujan.
+  `svgPentagrama(tocadaEn:)` y `svgPentagrama(arpegiadoEn:)` la dibujan. Su título es el nombre de la escala o el
+  cifrado del acorde (``Encabezado/tema``), escrito en la notación con que se dibuja o se exporta. La tablatura
+  cuenta las cuerdas desde la más aguda, al revés que el mástil: `Tablatura(cuerdas:desdeLaGrave:)` toma las
+  posiciones del mástil tal cual.
+- **Notación.** La de la partitura (``Partitura/notacion``) vale al exportarla y al dibujarla: `svg()` escribe en ella
+  los cifrados, los nombres de las notas y el título, salvo que `OpcionesDePentagrama(notacion:)` fije otra.
 
 ```swift
 let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]

@@ -36,7 +36,8 @@ extension Partitura {
     ///     try datos.write(to: URL(fileURLWithPath: "escala.mid"))
     public func midi(afinacion: (any Afinacion)? = nil) -> Data {
         var archivo = ArchivoMIDI(
-            compas: compas, tonalidad: encabezado.tonalidad, tempo: encabezado.tempo, titulo: encabezado.titulo,
+            compas: compas, tonalidad: encabezado.tonalidad, tempo: encabezado.tempo,
+            titulo: encabezado.titulo(en: notacion),
             afinacion: afinacion)
         for linea in lineas.map(\.linea) {
             var inicio = Duracion.cero

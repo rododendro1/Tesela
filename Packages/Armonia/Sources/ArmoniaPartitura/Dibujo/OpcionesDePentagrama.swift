@@ -160,17 +160,25 @@ public struct OpcionesDePentagrama: Hashable, Sendable {
     /// Qué armadura se escribe: por defecto, la de la escala si es diatónica; con `.tonalidad`, la de esa tonalidad
     /// también en los acordes, los arpegios y las voces.
     public var armadura: Armadura
-    /// Cómo se escriben los nombres (en el título y en las etiquetas) y el cifrado.
-    public var notacion: Notacion
+    /// La notación que fijan las opciones; si es `nil`, la de lo que se dibuja (``Partitura/notacion``) o, si no
+    /// tiene, la española compacta.
+    public var notacionFijada: Notacion?
+    /// Cómo se escriben los nombres (en el título y en las etiquetas) y el cifrado: `notacionFijada` o, si no la
+    /// hay, la española compacta. Darle un valor la fija.
+    public var notacion: Notacion {
+        get { notacionFijada ?? .espanolCompacto }
+        set { notacionFijada = newValue }
+    }
 
     /// Las opciones, por grupos:
-    /// `OpcionesDePentagrama(notacion: .inglesASCII, marcas: .init(nombresDeLasNotas: true))`.
+    /// `OpcionesDePentagrama(notacion: .inglesASCII, marcas: .init(nombresDeLasNotas: true))`. Sin `notacion`, la de
+    /// la partitura que se dibuja (``Partitura/notacion``).
     public init(
-        armadura: Armadura = .automatica, notacion: Notacion = .espanolCompacto, maquetacion: Maquetacion = .init(),
+        armadura: Armadura = .automatica, notacion: Notacion? = nil, maquetacion: Maquetacion = .init(),
         marcas: Marcas = .init(), colores: Colores = .init()
     ) {
         self.armadura = armadura
-        self.notacion = notacion
+        self.notacionFijada = notacion
         self.maquetacion = maquetacion
         self.marcas = marcas
         self.colores = colores

@@ -138,7 +138,7 @@ import Testing
         #expect(raiz.todos("polygon").count == 1)
         #expect(raiz.todos("line").filter { $0.atributos["stroke-width"] == "3" }.count == 3)
         // En inglés, y con clases de altura, todas las repeticiones de cada clase.
-        let ingles = try #require(ElementoXML.leer(Tonnetz(Acorde("Fa#")).svg(notacion: .inglesASCII)))
+        let ingles = try #require(ElementoXML.leer(Tonnetz(Acorde("Fa#")).svg(opciones: .init(notacion: .inglesASCII))))
         #expect(ingles.todos("text").contains { $0.texto == "F#" })
         let clases = try #require(ElementoXML.leer(Tonnetz(ConjuntoDeClases([0, 4, 7])).svg(margen: 3)))
         #expect(clases.todos("text").filter { $0.atributos["font-weight"] == "bold" }.count > 3)
@@ -239,7 +239,7 @@ import Testing
         let raiz = try #require(ElementoXML.leer(recorrido.svg()))
         #expect(raiz.todos("line").filter { $0.atributos["marker-end"] != nil }.count == 2)
         #expect(raiz.todos("text").contains { $0.texto == "Do –R→ Lam –L→ Fa" })
-        let ingles = try #require(ElementoXML.leer(camino.svg(notacion: .inglesASCII)))
+        let ingles = try #require(ElementoXML.leer(camino.svg(opciones: .init(notacion: .inglesASCII))))
         #expect(
             ingles.todos("text").contains {
                 $0.texto == "C –P→ Cm –R→ " + Acorde("Mib").cifrado(en: .inglesASCII) + " –P→ "
@@ -280,14 +280,13 @@ import Testing
                 raiz.todos("text").contains { $0.texto == titulo && $0.atributos["font-weight"] == "600" },
                 Comment(rawValue: titulo))
         }
-        #expect(
-            try
-                (#require(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(notacion: .inglesASCII))).todos("title").first?
-                .texto) == "C")
-        #expect(
-            try (#require(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(titulo: "Tónica"))).todos("title").first?.texto)
-                == "Tónica")
-        #expect(try #require(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(titulo: ""))).todos("title").isEmpty)
+        let enIngles = try #require(
+            ElementoXML.leer(Tonnetz(Acorde("Do")).svg(opciones: .init(notacion: .inglesASCII))))
+        #expect(enIngles.todos("title").first?.texto == "C")
+        let tonica = try #require(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(opciones: .init(titulo: "Tónica"))))
+        #expect(tonica.todos("title").first?.texto == "Tónica")
+        let sinTitulo = try #require(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(opciones: .init(titulo: ""))))
+        #expect(sinTitulo.todos("title").isEmpty)
         // La leyenda, solo con lo que aparece.
         #expect(
             try leyenda(#require(ElementoXML.leer(Tonnetz(Acorde("Domaj7")).svg()))) == [
@@ -305,7 +304,7 @@ import Testing
                 "clase de altura (todas sus copias)"
             ])
         #expect(
-            try leyenda(#require(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(notacion: .inglesASCII)))) == [
+            leyenda(enIngles) == [
                 "note", "fifth or third between notes", "major triad",
             ])
         #expect(try leyenda(#require(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(leyenda: false)))).isEmpty)
@@ -369,7 +368,7 @@ import Testing
         #expect(svg.contains("Do –P→ Dom –L→ La♭ –P→ La♭m –L→ Mi –P→ Mim –L→ Do"))
         #expect(!svg.contains("Fa♭"))
         #expect(!(svg.contains("𝄫") || svg.contains("♭♭") || svg.contains("Re♭♭")))
-        #expect(tonnetz.svg(notacion: .inglesASCII).contains("C –P→ Cm –L→ Ab"))
+        #expect(tonnetz.svg(opciones: .init(notacion: .inglesASCII)).contains("C –P→ Cm –L→ Ab"))
         #expect(Tonnetz(ciclo: .lr, desde: "Lam")?.recorrido.count == 25)
         #expect(Tonnetz(ciclo: .octatonico, desde: "Do7") == nil)
     }

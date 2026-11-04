@@ -159,18 +159,17 @@ public struct TablaArmonica: Hashable, Sendable {
     /// la progresión) y debajo, una leyenda de lo que aparece.
     ///
     /// - Parameters:
-    ///   - notacion: la de los nombres de las notas.
+    ///   - opciones: la notación de los nombres de las notas, el título (si es `nil`, el que corresponda, y si es
+    ///     "", ninguno) y la escala: con 1, 56 píxeles entre los centros de dos hexágonos vecinos, o 72 en un
+    ///     recorrido, para que quepan las flechas.
     ///   - margen: cuántos hexágonos se dibujan alrededor de las notas; si es `nil`, uno con
     ///     ortografía y dos en las demás colocaciones, para que se vean las repeticiones.
-    ///   - paso: la distancia entre los centros de dos hexágonos vecinos, en píxeles; si es `nil`,
-    ///     56, o 72 en un recorrido, para que quepan las flechas.
-    ///   - titulo: el título; si es `nil`, el que corresponda, y si es "", ninguno.
     ///   - leyenda: si se dibuja la leyenda.
     public func svg(
-        notacion: Notacion = .espanolCompacto, margen: Int? = nil, paso: Double? = nil,
-        titulo: String? = nil, leyenda: Bool = true
+        opciones: OpcionesDeDiagrama = OpcionesDeDiagrama(), margen: Int? = nil, leyenda: Bool = true
     ) -> String {
-        let paso = paso ?? (recorrido.isEmpty ? 56 : 72)
+        let (notacion, titulo) = (opciones.notacion, opciones.titulo)
+        let paso = (recorrido.isEmpty ? 56 : 72) * opciones.escala
         let margen = margen ?? (colocacion == .notas ? 1 : 2)
         let coseno = 0.8660254037844386 // cos 30°
         let trazado = TablaArmonica.trazado(paso: paso)

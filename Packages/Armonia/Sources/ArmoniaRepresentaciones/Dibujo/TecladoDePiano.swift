@@ -6,7 +6,7 @@ import Foundation
 ///
 ///     let teclado = TecladoDePiano(cubriendo: Escala(.do).alturas(octava: 4))
 ///     teclado.desde...teclado.hasta   // 60...72: de Do4 a Do5
-///     let svg = teclado.svg(marcadas: [60: "1", 62: "2", 64: "3"], titulo: "Do mayor")
+///     let svg = teclado.svg(marcadas: [60: "1", 62: "2", 64: "3"], opciones: .init(titulo: "Do mayor"))
 public struct TecladoDePiano: Hashable, Sendable {
     /// La tecla blanca más grave y la más aguda, en MIDI.
     public let desde: Int
@@ -55,9 +55,13 @@ public struct TecladoDePiano: Hashable, Sendable {
 
     // MARK: Dibujo
 
-    /// El teclado en SVG. Las teclas `marcadas` llevan un círculo azul con su rótulo (el dedo, o el nombre de la
-    /// nota); las de `primeras` (la tónica, la fundamental), con el borde naranja. Encima, el título, si lo hay.
-    public func svg(marcadas: [Int: String] = [:], primeras: Set<Int> = [], titulo: String = "") -> String {
+    /// El teclado en SVG. Las teclas `marcadas` llevan un círculo azul, con su rótulo si lo tiene (el dedo, o el
+    /// nombre de la nota); las de `primeras` (la tónica, la fundamental), con el borde naranja. Encima, el título de
+    /// `opciones`, si lo hay; `opciones.escala` cambia el tamaño.
+    public func svg(
+        marcadas: MarcasDeDiagrama = [], primeras: Set<Int> = [], opciones: OpcionesDeDiagrama = OpcionesDeDiagrama()
+    ) -> String {
+        let titulo = opciones.titulo ?? ""
         let alto = TecladoDePiano.altoDeBlanca
         let ancho = Double(blancas.count) * TecladoDePiano.anchoDeBlanca
         let margen = TecladoDePiano.margen
@@ -66,7 +70,8 @@ public struct TecladoDePiano: Hashable, Sendable {
         var svg =
             ElementoSVG("svg").con("xmlns", "http://www.w3.org/2000/svg")
             .con("viewBox", "0 0 \(NumerosSVG.unDecimal.texto(total.0)) \(NumerosSVG.unDecimal.texto(total.1))")
-            .con("width", total.0).con("height", total.1).con("font-family", "sans-serif").apertura + "\n"
+            .con("width", total.0 * opciones.escala).con("height", total.1 * opciones.escala)
+            .con("font-family", "sans-serif").apertura + "\n"
         if !titulo.isEmpty { svg += "  " + ElementoSVG("title").conTexto(titulo) + "\n" }
         svg += "  " + ElementoSVG("rect").con("width", total.0).con("height", total.1).con("fill", "#ffffff").vacio
         svg += "\n"
@@ -87,7 +92,7 @@ public struct TecladoDePiano: Hashable, Sendable {
                 "  "
                 + ElementoSVG("rect").con("x", x).con("y", y).con("width", anchoDeTecla).con("height", altoDeTecla)
                 .con("fill", negra ? "#222222" : "#ffffff").con("stroke", "#444444").vacio + "\n"
-            guard let rotulo = marcadas[midi] else { continue }
+            guard marcadas.contains(midi) else { continue }
             let cx = x + anchoDeTecla / 2
             let cy = y + altoDeTecla - (negra ? 10 : 14)
             let primera = primeras.contains(midi)
@@ -96,6 +101,7 @@ public struct TecladoDePiano: Hashable, Sendable {
                 + ElementoSVG("circle").con("cx", cx).con("cy", cy).con("r", negra ? 6.5 : 9)
                 .con("fill", DibujoSVG.Color.nota).con("stroke", primera ? DibujoSVG.Color.primera : "#ffffff")
                 .con("stroke-width", primera ? 2.5 : 1).vacio + "\n"
+            guard let rotulo = marcadas.rotulo(de: midi) else { continue }
             svg +=
                 "  "
                 + ElementoSVG("text").con("x", cx).con("y", cy).con("text-anchor", "middle")

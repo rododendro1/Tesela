@@ -64,7 +64,7 @@ enum DibujoDeReferencia: String, CaseIterable, CustomTestStringConvertible {
         case .tonnetzDoMayor:
             return Tonnetz(Acorde("Do")).svg()
         case .tonnetzEscala:
-            return Tonnetz(Escala("Do mayor")).svg(notacion: .inglesPalabras)
+            return Tonnetz(Escala("Do mayor")).svg(opciones: .init(notacion: .inglesPalabras))
         case .tonnetzRecorrido:
             return Tonnetz(recorrido: [Acorde("Do"), Acorde("Lam"), Acorde("Fa"), Acorde("Rem")])!.svg()
         case .tablaArmonicaRecorrido:
@@ -75,7 +75,7 @@ enum DibujoDeReferencia: String, CaseIterable, CustomTestStringConvertible {
         case .tecladoAcordeonC:
             return TecladoIsomorfico.acordeonC.svg(
                 FormasDeMapa.rectangulo(columnas: 6, filas: 6, .columnasImpares), marcadas: [50, 53, 57],
-                preferirBemoles: true)
+                opciones: .init(preferirBemoles: true))
         }
     }
 }

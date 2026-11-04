@@ -231,7 +231,8 @@ public enum PresentacionDeRedes {
         _ contenido: ContenidoDeRed, en red: RedDeNotas, notacion: Notacion,
         uil: AjusteUIL = AjusteUIL(), cuadrado: AjusteCuadrado = AjusteCuadrado()
     ) -> String? {
-        let paso = Self.paso(contenido, en: red)
+        let opciones = OpcionesDeDiagrama(notacion: notacion)
+        let sinTitulo = OpcionesDeDiagrama(notacion: notacion, titulo: "")
         if red == .uil && uil.teclado == nil { return nil }
         if red.esCuadricula {
             return svgDeCuadricula(contenido, en: red, notacion: notacion, cuadrado: cuadrado)
@@ -242,31 +243,31 @@ public enum PresentacionDeRedes {
         let bemoles = contenido.notas.contains { $0.pasosDeQuinta < -1 }
         if let teclado = Self.teclado(de: red, uil: uil) {
             return teclado.svg(
-                casillasDelTeclado(teclado), marcadas: marcadas, tamano: tamanoDelTeclado, notacion: notacion,
-                preferirBemoles: bemoles)
+                casillasDelTeclado(teclado), marcadas: MarcasDeDiagrama(marcadas),
+                opciones: .init(notacion: notacion, preferirBemoles: bemoles))
         }
         switch (red, contenido) {
         case (.tablaArmonica, .acorde(let acorde)):
-            return TablaArmonica(acorde).svg(notacion: notacion, paso: paso)
+            return TablaArmonica(acorde).svg(opciones: opciones)
         case (.tablaArmonica, .escala(let escala)):
-            return TablaArmonica(escala).svg(notacion: notacion, paso: paso)
+            return TablaArmonica(escala).svg(opciones: opciones)
         case (.tablaArmonica, .recorrido(let acordes)):
             guard let primero = acordes.first else { return nil }
-            return (acordes.count >= 2 ? TablaArmonica(recorrido: acordes) : nil)?.svg(notacion: notacion, paso: paso)
-                ?? TablaArmonica(primero).svg(notacion: notacion, paso: paso)
+            return (acordes.count >= 2 ? TablaArmonica(recorrido: acordes) : nil)?.svg(opciones: opciones)
+                ?? TablaArmonica(primero).svg(opciones: opciones)
         case (_, .acorde(let acorde)):
-            return Tonnetz(acorde).svg(notacion: notacion, paso: paso)
+            return Tonnetz(acorde).svg(opciones: opciones)
         case (_, .escala(let escala)):
-            return Tonnetz(escala).svg(notacion: notacion, paso: paso)
+            return Tonnetz(escala).svg(opciones: opciones)
         case (_, .recorrido(let acordes)):
             guard let primero = acordes.first else { return nil }
-            return (acordes.count >= 2 ? Tonnetz(recorrido: acordes) : nil)?.svg(notacion: notacion, paso: paso)
-                ?? Tonnetz(primero).svg(notacion: notacion, paso: paso)
+            return (acordes.count >= 2 ? Tonnetz(recorrido: acordes) : nil)?.svg(opciones: opciones)
+                ?? Tonnetz(primero).svg(opciones: opciones)
         // Para identificar: con margen de sobra para tocar más notas, aunque aún no haya ninguna, y sin título.
         case (.tablaArmonica, .clases(let clases)):
-            return TablaArmonica(ConjuntoDeClases(clases)).svg(notacion: notacion, margen: 3, paso: paso, titulo: "")
+            return TablaArmonica(ConjuntoDeClases(clases)).svg(opciones: sinTitulo, margen: 3)
         case (_, .clases(let clases)):
-            return Tonnetz(ConjuntoDeClases(clases)).svg(notacion: notacion, margen: 3, paso: paso, titulo: "")
+            return Tonnetz(ConjuntoDeClases(clases)).svg(opciones: sinTitulo, margen: 3)
         }
     }
 
@@ -288,8 +289,8 @@ public enum PresentacionDeRedes {
         let primeras = Set((0...127).filter { $0 % 12 == notas.first?.claseDeAltura })
         let bemoles = notas.contains { $0.pasosDeQuinta < -1 }
         return teclado.svg(
-            cuadrado.rejilla.casillas, marcadas: marcadas, primeras: primeras, contorno: true,
-            lado: ladoDelTecladoCuadrado, notacion: notacion, preferirBemoles: bemoles)
+            cuadrado.rejilla.casillas, marcadas: MarcasDeDiagrama(marcadas), primeras: primeras, contorno: true,
+            opciones: .init(notacion: notacion, preferirBemoles: bemoles))
     }
 
     /// Pone una clase de altura entre las elegidas para identificar un acorde, al final, o la quita si ya estaba,

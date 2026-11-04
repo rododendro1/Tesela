@@ -200,13 +200,15 @@ public struct TecladoIsomorfico: Hashable, Sendable {
     }
 
     /// El teclado dibujado en SVG: un hexágono por casilla con el nombre de su nota y su octava, las teclas
-    /// negras del piano en gris y, si se dan, las `marcadas` en el azul de las notas del Tonnetz.
+    /// negras del piano en gris y, si se dan, las `marcadas` en el azul de las notas del Tonnetz (con su rótulo en
+    /// lugar del nombre, las que lo llevan). En `opciones`, la notación de los nombres, si se prefieren bemoles, el
+    /// título (ninguno, si no se da) y la escala: con 1, 24 píxeles del centro de un hexágono a un vértice.
     public func svg(
-        _ casillas: [CoordenadaAxial], marcadas: Set<Int> = [], tamano: Double = 24,
-        notacion: Notacion = .espanolCompacto, preferirBemoles: Bool = false
+        _ casillas: [CoordenadaAxial], marcadas: MarcasDeDiagrama = [],
+        opciones: OpcionesDeDiagrama = OpcionesDeDiagrama()
     ) -> String {
         let negras: Set<Int> = [1, 3, 6, 8, 10]
-        return Trazado(orientacion: orientacion, tamano: tamano).svg(
+        let svg = Trazado(orientacion: orientacion, tamano: 24 * opciones.escala).svg(
             casillas,
             relleno: { casilla in
                 let midi = self.midi(en: casilla)
@@ -214,9 +216,14 @@ public struct TecladoIsomorfico: Hashable, Sendable {
                 return negras.contains(modulo(midi, 12)) ? "#bbbbbb" : "#f4f4f4"
             },
             rotulo: { casilla in
-                let altura = self.altura(en: casilla, preferirBemoles: preferirBemoles)
-                return altura.nombreCompacto(en: notacion)
+                if let rotulo = marcadas.rotulo(de: self.midi(en: casilla)) { return rotulo }
+                let altura = self.altura(en: casilla, preferirBemoles: opciones.preferirBemoles)
+                return altura.nombreCompacto(en: opciones.notacion)
             })
+        guard let titulo = opciones.titulo, !titulo.isEmpty, let fin = svg.firstIndex(of: ">") else { return svg }
+        // El título, justo tras la apertura del `<svg>`.
+        let despues = svg.index(after: fin)
+        return String(svg[..<despues]) + "\n" + ElementoSVG("title").conTexto(titulo) + String(svg[despues...])
     }
 }
 

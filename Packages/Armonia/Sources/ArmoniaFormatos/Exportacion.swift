@@ -348,7 +348,7 @@ extension Exportacion {
         let encabezado = partitura.encabezado
         var escritor = Escritor(
             compas: partitura.compas, anacrusa: partitura.anacrusa, tonalidad: encabezado.tonalidad,
-            tempo: encabezado.tempo, titulo: encabezado.titulo, parte: partitura.parte,
+            tempo: encabezado.tempo, titulo: encabezado.titulo(en: partitura.notacion), parte: partitura.parte,
             claves: partitura.pentagramas.map(\.claveEscrita))
         if let rotulo = partitura.tonalidadDelAnalisis {
             escritor.rotulo = (rotulo.nombre(en: partitura.notacion) + ":", partitura.pentagramas.count)

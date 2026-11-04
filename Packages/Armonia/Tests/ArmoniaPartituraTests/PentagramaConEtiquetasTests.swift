@@ -182,7 +182,8 @@ import Testing
         let escala = Escala("Re dórico")
         let partitura = escala.partitura(tocadaEn: alturas, digitos: [1: [3]])
         #expect(!partitura.ritmo)
-        #expect(partitura.encabezado.titulo == escala.nombre(en: .espanolCompacto))
+        #expect(partitura.encabezado.titulo == nil && partitura.encabezado.tema == .escala(escala))
+        #expect(partitura.encabezado.titulo(en: .espanolCompacto) == escala.nombre(en: .espanolCompacto))
         #expect(partitura.pentagramas[0].armadura == escala.notasDeLaArmadura)
         let linea = partitura.pentagramas[0].voces[0]
         #expect(linea.tonica == escala.tonica)
@@ -194,6 +195,52 @@ import Testing
         let arpegio = Acorde("Re7").partitura(arpegiadoEn: alturas)
         #expect(arpegio.pentagramas[0].voces[0].cifrados == [.cero: Acorde("Re7")])
         #expect(arpegio.svg() == Acorde("Re7").svgPentagrama(arpegiadoEn: alturas))
+    }
+
+    /// La notación de la partitura vale también al dibujarla, salvo que las opciones fijen otra; y el título que se
+    /// nombra por lo que se toca la sigue.
+    @Test func laNotacionDeLaPartitura() {
+        let escala = Escala("Re dórico")
+        var partitura = escala.partitura(tocadaEn: [Altura("Re4"), Altura("Mi4")])
+        let enIngles = escala.nombre(en: .inglesASCII)
+        #expect(enIngles != escala.nombre(en: .espanolCompacto))
+        #expect(partitura.encabezado.titulo(en: .inglesASCII) == enIngles)
+        // Las opciones mandan si fijan una; si no, la de la partitura.
+        #expect(partitura.svg(opciones: .init(notacion: .inglesASCII)).contains(enIngles))
+        #expect(!partitura.svg().contains(enIngles))
+        partitura.notacion = .inglesASCII
+        #expect(partitura.svg().contains(enIngles))
+        #expect(partitura.svg() == partitura.svg(opciones: .init(notacion: .inglesASCII)))
+        let tocada = escala.svgPentagrama(tocadaEn: [Altura("Re4")], opciones: .init(notacion: .inglesASCII))
+        #expect(tocada.contains(enIngles))
+        // Un título escrito a mano se queda como está.
+        partitura.encabezado.titulo = "Mi escala"
+        #expect(partitura.encabezado.titulo(en: .inglesASCII) == "Mi escala")
+        // Sin notación fijada, las opciones dibujan en español compacto lo que no es una partitura.
+        #expect(OpcionesDePentagrama().notacionFijada == nil && OpcionesDePentagrama().notacion == .espanolCompacto)
+        var opciones = OpcionesDePentagrama()
+        opciones.notacion = .inglesASCII
+        #expect(opciones.notacionFijada == .inglesASCII)
+        // El acorde arpegiado, con su cifrado en la notación de la partitura.
+        var arpegio = Acorde("Re7").partitura(arpegiadoEn: [Altura("Re4")])
+        #expect(arpegio.encabezado.tema == .acorde(Acorde("Re7")))
+        arpegio.notacion = .inglesASCII
+        #expect(arpegio.encabezado.titulo(en: arpegio.notacion) == Acorde("Re7").cifrado(en: .inglesASCII))
+    }
+
+    /// La tablatura cuenta las cuerdas desde la más aguda; el mástil, desde la más grave.
+    @Test func lasCuerdasDeLaTablaturaYDelMastil() {
+        // El Do3 de la guitarra: la cuerda 1 del mástil (La2), traste 3, es la 5.ª: la línea 4 desde arriba.
+        let pulsacion = Tablatura.Pulsacion(cuerdaDesdeLaGrave: 1, de: 6, traste: 3)
+        #expect(pulsacion == Tablatura.Pulsacion(cuerda: 4, traste: 3))
+        #expect(pulsacion.cuerdaDesdeLaGrave(de: 6) == 1)
+        let tablatura = Tablatura(cuerdas: 6, desdeLaGrave: [0: [(1, 3)], 1: [(2, 2)], 2: [(3, 0)]])
+        let aMano = Tablatura(
+            cuerdas: 6,
+            notas: [
+                0: [.init(cuerda: 4, traste: 3)], 1: [.init(cuerda: 3, traste: 2)], 2: [.init(cuerda: 2, traste: 0)],
+            ])
+        #expect(tablatura == aMano)
     }
 }
 

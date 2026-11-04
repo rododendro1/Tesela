@@ -42,7 +42,7 @@ extension PresentacionDeEstudioDeEscala {
         let circulo = notacion.texto { orden == .cromatico ? $0.circuloCromatico : $0.circuloDeQuintas }
         let reloj = RelojDeClases(
             clases: escala.notas.map(\.claseDeAltura), tonica: escala.tonica.claseDeAltura, orden: orden)
-        return reloj.svg(rotulos: rotulos, titulo: escala.nombre(en: notacion) + " · " + circulo)
+        return reloj.svg(rotulos: rotulos, opciones: .init(titulo: escala.nombre(en: notacion) + " · " + circulo))
     }
 
     // MARK: Las doce tonalidades
