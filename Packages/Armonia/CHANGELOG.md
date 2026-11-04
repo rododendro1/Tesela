@@ -197,6 +197,41 @@
   `glyph.name` en MEI. Un medio bemol no dice sistema: sus cents bastan. `NotaDeLaPieza.nota` da la nota como la
   de un evento, con su microtono y su sistema.
 
+### De la pieza importada a una partitura
+
+- `PiezaImportada.partitura()` hace de lo importado una `Partitura`, para dibujarla o exportarla otra vez: un
+  pentagrama por parte, con el título, la tonalidad, el tempo y el compás del fichero; las notas que empiezan y
+  acaban a la vez, en un acorde; las que se solapan de otra forma, en otra voz, y silencios en los huecos. Cada nota
+  lleva su microtono y su sistema, su dinámica y sus articulaciones.
+
+### Los diagramas nombran las notas como se escriben
+
+- `MarcasDeDiagrama(_:)` acepta alturas, que se nombran como se escriben en el piano y en los teclados isomórficos
+  y cuadrados (`MarcasDeDiagrama.alturas`, `altura(de:)`): el Si♭ de Fa mayor ya no sale como La♯.
+- `RelojDeClases(notas:tonica:orden:)` hace un reloj con notas, y sus horas se nombran como ellas
+  (`RelojDeClases.ortografia`).
+
+### Ritmo en la partitura de una escala o de un arpegio
+
+- `Escala.partitura(octava:octavas:sentido:digitacion:figura:)` y `Arpegio.partitura(octava:figura:)` admiten una
+  figura, como `partitura(tocadaEn:figura:)`: la escala o el arpegio en corcheas, con la última nota en negra.
+
+### El signo de un microtono, público
+
+- `SignoMicrotonal` es público, con sus nombres en cada formato (`smufl`, `musicXML`, `mei`, `lilypond`, `abc`), la
+  lectura de vuelta (`init(smufl:)`, `init(musicXML:smufl:)`, `init(mei:)`), `todos` y `sistemaYAjuste(altura:desvio:)`.
+  `Evento.Nota.signo(semitonos:)` dice con qué signo se escribe una nota.
+
+### Del mástil a la partitura, con la tablatura
+
+- `ArmoniaTrastes` usa ahora `ArmoniaPartitura` (como `ArmoniaFormatos`; ninguno de los dos usa al otro), y lo que se
+  toca en el mástil sale en una `Partitura` con la tablatura debajo:
+  - `Digitacion.partitura(de:titulo:)` y `Digitacion.partitura(_:acordes:titulo:)` (nuevos): una o varias
+    digitaciones, en redondas, escritas con la ortografía de su acorde y con el cifrado encima.
+  - `EscalaEnElMastil.partitura(de:titulo:figura:)` y `ArpegioEnElMastil.partitura(de:titulo:figura:)` (nuevos): la
+    posición o el arpegio en el orden en que se tocan, con sus dedos en el arpegio y, con `figura`, con ritmo.
+  - `Tablatura(_:posiciones:)` (nuevo): la tablatura con las posiciones del mástil.
+
 ## 0.3.4 (2026-11-04)
 
 ### Valores escritos a mano, sin opcionales

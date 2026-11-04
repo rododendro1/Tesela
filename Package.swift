@@ -51,7 +51,7 @@ let package = Package(
             path: "Packages/Armonia/Sources/ArmoniaFormatos"),
         .target(
             name: "ArmoniaTrastes",
-            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria"],
+            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura"],
             path: "Packages/Armonia/Sources/ArmoniaTrastes"),
         .target(
             name: "Armonia",

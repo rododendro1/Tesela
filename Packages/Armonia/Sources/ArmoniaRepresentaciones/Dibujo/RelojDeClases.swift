@@ -23,13 +23,31 @@ public struct RelojDeClases: Hashable, Sendable {
     /// La que lleva el borde naranja (la tónica de la escala, la fundamental del acorde), si hay.
     public let tonica: Int?
     public let orden: Orden
+    /// Cómo se escribe cada clase, si el reloj se hizo con notas (`init(notas:tonica:orden:)`): las horas sin
+    /// rótulo se nombran así (Si♭, y no La♯, en Fa mayor).
+    public let ortografia: [Int: Nota]
 
     /// Un reloj con esas clases de altura marcadas (reducidas módulo 12), la tónica resaltada si se da y las doce
     /// clases en ese orden.
     public init(clases: [Int], tonica: Int? = nil, orden: Orden = .cromatico) {
+        self.init(clases: clases, tonica: tonica, orden: orden, ortografia: [:])
+    }
+
+    private init(clases: [Int], tonica: Int?, orden: Orden, ortografia: [Int: Nota]) {
         self.clases = Set(clases.map { modulo($0, 12) })
         self.tonica = tonica.map { modulo($0, 12) }
         self.orden = orden
+        self.ortografia = ortografia
+    }
+
+    /// Un reloj con las clases de esas notas, que se nombran como se escriben (la primera, si dos suenan igual).
+    ///
+    ///     let fa = Escala("Fa mayor")
+    ///     RelojDeClases(notas: fa.notas, tonica: fa.tonica).svg()   // con Si♭ a las diez
+    public init(notas: [Nota], tonica: Nota? = nil, orden: Orden = .cromatico) {
+        self.init(
+            clases: notas.map(\.claseDeAltura), tonica: tonica?.claseDeAltura, orden: orden,
+            ortografia: Dictionary(notas.map { ($0.claseDeAltura, $0) }) { primera, _ in primera })
     }
 
     /// La hora del reloj en que cae una clase: la misma en el cromático; en el de quintas, Sol (7) a la una.
@@ -52,9 +70,9 @@ public struct RelojDeClases: Hashable, Sendable {
         return (centro.x + radio * cos(angulo), centro.y + radio * sin(angulo))
     }
 
-    /// El reloj en SVG: las doce horas con su rótulo (si no se da, el nombre de la nota en `opciones.notacion`, o su
-    /// número con `nombresDeLasNotas` en `false`), el polígono de las notas del conjunto y, encima, el título de
-    /// `opciones`, si lo hay; `opciones.escala` cambia el tamaño.
+    /// El reloj en SVG: las doce horas con su rótulo (si no se da, el nombre de la nota en `opciones.notacion`, como la
+    /// escribe `ortografia` si la tiene, o su número con `nombresDeLasNotas` en `false`), el polígono de las notas del
+    /// conjunto y, encima, el título de `opciones`, si lo hay; `opciones.escala` cambia el tamaño.
     public func svg(rotulos: [Int: String] = [:], opciones: OpcionesDeDiagrama = OpcionesDeDiagrama()) -> String {
         let titulo = opciones.titulo ?? ""
         let arriba = titulo.isEmpty ? 0 : RelojDeClases.altoDelTitulo
@@ -88,7 +106,8 @@ public struct RelojDeClases: Hashable, Sendable {
                 + "\n"
         }
         func nombre(de clase: Int) -> String {
-            opciones.nombresDeLasNotas ? opciones.nombre(de: 60 + clase) : String(clase)
+            guard opciones.nombresDeLasNotas else { return String(clase) }
+            return ortografia[clase]?.nombreCompacto(en: opciones.notacion) ?? opciones.nombre(de: 60 + clase)
         }
         for clase in 0..<12 {
             let hora = RelojDeClases.hora(de: clase, en: orden)

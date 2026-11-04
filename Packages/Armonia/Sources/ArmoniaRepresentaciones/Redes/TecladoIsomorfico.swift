@@ -216,8 +216,10 @@ public struct TecladoIsomorfico: Hashable, Sendable {
                 return negras.contains(modulo(midi, 12)) ? "#bbbbbb" : "#f4f4f4"
             },
             rotulo: { casilla in
-                if let rotulo = marcadas.rotulo(de: self.midi(en: casilla)) { return rotulo }
-                let altura = self.altura(en: casilla, preferirBemoles: opciones.preferirBemoles)
+                let midi = self.midi(en: casilla)
+                if let rotulo = marcadas.rotulo(de: midi) { return rotulo }
+                let altura =
+                    marcadas.altura(de: midi) ?? self.altura(en: casilla, preferirBemoles: opciones.preferirBemoles)
                 return altura.nombreCompacto(en: opciones.notacion)
             })
         guard let titulo = opciones.titulo, !titulo.isEmpty, let fin = svg.firstIndex(of: ">") else { return svg }

@@ -369,7 +369,8 @@ public struct TecladoCuadrado: Hashable, Sendable {
             lineas.append(cuadrado.con("width", lado).con("height", lado).con("fill", color).vacio)
             let rotulo =
                 marcadas.rotulo(de: midi)
-                ?? altura(en: casilla, preferirBemoles: opciones.preferirBemoles).nombreCompacto(en: opciones.notacion)
+                ?? (marcadas.altura(de: midi) ?? altura(en: casilla, preferirBemoles: opciones.preferirBemoles))
+                .nombreCompacto(en: opciones.notacion)
             let texto = ElementoSVG("text", numeros: .hastaTresDecimales).con("x", centro.x).con("y", centro.y)
             lineas.append(texto.conTexto(rotulo))
         }

@@ -11,7 +11,12 @@ import ArmoniaTeoria
 // el sori de un dastgāh, los moria de un echos, la flecha de Helmholtz-Ellis de un śruti.
 
 /// El signo de una nota que se aparta de su nota temperada.
-package enum SignoMicrotonal: Hashable, Sendable {
+///
+/// Es el que escriben los formatos (MusicXML, MEI, LilyPond, ABC) y el pentagrama, y el que se lee al importar:
+///
+///     Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1).signo()   // .koron
+///     SignoMicrotonal.koron.smufl                                          // "accidentalKoron"
+public enum SignoMicrotonal: Hashable, Sendable {
     /// Cuartos de tono desde la nota natural, impares: −3 (tres cuartos de bemol), −1 (medio bemol), 1 y 3.
     case cuartos(Int)
     /// Comas (53 por octava) desde la nota natural: ±1 (koma), ±4 (bakiye), ±5 (küçük mücennep) y ±8 (büyük
@@ -34,7 +39,7 @@ package enum SignoMicrotonal: Hashable, Sendable {
     /// El signo de una nota escrita con `semitonos` de alteración que suena `desvio` cents más alta; `nil` si no se
     /// aparta, o si lo que se aparta no tiene signo (se escribe entonces la nota temperada). Con `persa`, el medio
     /// bemol y el medio sostenido se escriben como koron y sori.
-    package init?(semitonos: Int, desvio: Double, persa: Bool = false) {
+    public init?(semitonos: Int, desvio: Double, persa: Bool = false) {
         guard abs(desvio) >= 0.5 else { return nil }
         // Redondeado a la centésima, como `Evento.Nota.desvio`, para que el pentagrama y los formatos den el mismo signo:
         // en Segâh, el Fa♯ una koma bajo cae justo entre 3 y 4 comas sobre Fa.
@@ -65,7 +70,7 @@ package enum SignoMicrotonal: Hashable, Sendable {
     /// El signo de una nota escrita en un sistema microtonal, `ajuste` pasos apartada (``NotaMicrotonal/ajuste``):
     /// el koron de un dastgāh, los moria de un echos bizantino, la flecha de un śruti; en los demás, por los cents,
     /// como `init(semitonos:desvio:)`.
-    package init?(sistema: SistemaMicrotonal, ajuste: Int, semitonos: Int, desvio: Double) {
+    public init?(sistema: SistemaMicrotonal, ajuste: Int, semitonos: Int, desvio: Double) {
         switch sistema {
         case .sruti:
             guard ajuste != 0, abs(ajuste) == 1, (-1...1).contains(semitonos) else { return nil }
@@ -116,7 +121,7 @@ package enum SignoMicrotonal: Hashable, Sendable {
     }
 
     /// El nombre SMuFL del glifo: «accidentalKomaFlat».
-    package var smufl: String {
+    public var smufl: String {
         switch self {
         case .cuartos(-3): return "accidentalThreeQuarterTonesFlatZimmermann"
         case .cuartos(-1): return "accidentalQuarterToneFlatStein"
@@ -135,7 +140,7 @@ package enum SignoMicrotonal: Hashable, Sendable {
     }
 
     /// El valor de `<accidental>` en MusicXML y, para las comas (que no tienen uno propio), el atributo `smufl`.
-    package var musicXML: (valor: String, smufl: String?) {
+    public var musicXML: (valor: String, smufl: String?) {
         switch self {
         case .cuartos(-3): ("three-quarters-flat", nil)
         case .cuartos(-1): ("quarter-flat", nil)
@@ -149,7 +154,7 @@ package enum SignoMicrotonal: Hashable, Sendable {
 
     /// El valor de `accid` en MEI: «1qf», «kf» (koma bemol, de Arel-Ezgi-Uzdilek), «koron»; `nil` para los moria y
     /// las flechas, que MEI no tiene y se escriben temperados.
-    package var mei: String? {
+    public var mei: String? {
         switch self {
         case .cuartos(let n): "\(abs(n))q" + (n < 0 ? "f" : "s")
         case .comas(let n): ([1: "k", 4: "b", 5: "km", 8: "bm"][abs(n)] ?? "k") + (n < 0 ? "f" : "s")
@@ -161,7 +166,7 @@ package enum SignoMicrotonal: Hashable, Sendable {
 
     /// La terminación del nombre en LilyPond (`eh`, `isih`); `nil` para las comas, los moria y las flechas, que se
     /// escriben temperados.
-    package var lilypond: String? {
+    public var lilypond: String? {
         switch self {
         case .cuartos(-3): "eseh"
         case .cuartos(-1), .koron: "eh"
@@ -173,7 +178,7 @@ package enum SignoMicrotonal: Hashable, Sendable {
 
     /// La alteración en ABC (`_/`, `^3/2`); `nil` para las comas, los moria y las flechas, que se escriben
     /// temperados.
-    package var abc: String? {
+    public var abc: String? {
         switch self {
         case .cuartos(-3): "_3/2"
         case .cuartos(-1), .koron: "_/"
@@ -187,8 +192,8 @@ package enum SignoMicrotonal: Hashable, Sendable {
 // MARK: - De vuelta: del signo al sistema
 
 extension SignoMicrotonal {
-    /// Todos los signos.
-    static let todos: [SignoMicrotonal] = {
+    /// Todos los signos: los cuartos de tono, las comas, el koron y el sori, los moria y las flechas.
+    public static let todos: [SignoMicrotonal] = {
         var todos: [SignoMicrotonal] = [.koron, .sori]
         for n in [-3, -1, 1, 3] { todos.append(.cuartos(n)) }
         for n in [-8, -5, -4, -1, 1, 4, 5, 8] { todos.append(.comas(n)) }
@@ -200,14 +205,14 @@ extension SignoMicrotonal {
     }()
 
     /// El signo de un nombre SMuFL («accidentalKoron», «accidentalKomaFlat»); `nil` si no es de ninguno.
-    package init?(smufl nombre: String) {
+    public init?(smufl nombre: String) {
         guard let signo = SignoMicrotonal.todos.first(where: { $0.smufl == nombre }) else { return nil }
         self = signo
     }
 
     /// El signo de un `<accidental>` de MusicXML: por su atributo `smufl`, si es de uno, o por su valor («koron»,
     /// «quarter-flat»).
-    package init?(musicXML valor: String, smufl: String?) {
+    public init?(musicXML valor: String, smufl: String?) {
         if let smufl, let signo = SignoMicrotonal(smufl: smufl) {
             self = signo
             return
@@ -218,7 +223,7 @@ extension SignoMicrotonal {
     }
 
     /// El signo de un `accid` de MEI («koron», «kf», «1qs»).
-    package init?(mei valor: String) {
+    public init?(mei valor: String) {
         guard let signo = SignoMicrotonal.todos.first(where: { $0.mei == valor }) else { return nil }
         self = signo
     }
@@ -227,7 +232,7 @@ extension SignoMicrotonal {
     /// cents más alta (``NotaMicrotonal/ajuste``): el koron y el sori son persas; las comas, de Arel-Ezgi-Uzdilek
     /// (contadas desde la nota pitagórica); los moria, de un echos, y las flechas, de un śruti. `nil` para los
     /// cuartos de tono, cuyo signo ya dan los cents.
-    package func sistemaYAjuste(altura: Altura, desvio: Double) -> (sistema: SistemaMicrotonal, ajuste: Int)? {
+    public func sistemaYAjuste(altura: Altura, desvio: Double) -> (sistema: SistemaMicrotonal, ajuste: Int)? {
         switch self {
         case .cuartos: return nil
         case .koron, .sori: return (.persa, Int((desvio / 50).rounded()))
