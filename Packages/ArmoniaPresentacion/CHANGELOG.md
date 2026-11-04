@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.4 (2026-11-04)
 
 - **Los datos de las consultas, en un solo sitio.** `DatosDeAcorde`, `DatosDeCandidato` (con
   `identificar(_:limite:notacion:)`), `DatosDeEscala`, `DatosDeConjunto` y `DatosDeSerie` son lo que se consulta de

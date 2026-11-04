@@ -114,7 +114,7 @@ ataques de cada una, el ritmo que resulta de oírlas juntas y las dos voces que 
 let corcheas = try Voz(leyendo: "Do4:8 Re4:8 Mi4:8 Fa4:8 Sol4:2")
 corcheas.conSwing().ritmo == [Duracion(1, 6), Duracion(1, 12), Duracion(1, 6), Duracion(1, 12), .blanca]   // true
 
-let tresContraDos = Polirritmia(3, contra: 2)!
+let tresContraDos = Polirritmia(3, contra: 2)
 tresContraDos.resultante() == [Duracion(1, 3), Duracion(1, 6), Duracion(1, 6), Duracion(1, 3)]   // true
 tresContraDos.voces(compases: 2)[0].eventos.count                                                  // 6
 ```

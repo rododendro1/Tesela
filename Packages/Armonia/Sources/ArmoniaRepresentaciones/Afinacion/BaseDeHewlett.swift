@@ -35,11 +35,20 @@ public struct BaseDeHewlett: Hashable, Sendable, CustomStringConvertible {
         self.alteracionMaxima = max(0, alteracionMaxima)
     }
 
-    /// Numeración con la base dada, si existe: 12, 26, 40, 54… (14m + 12). `nil` en otro caso.
-    public init?(base: Int) {
-        guard base >= 12, (base - 12) % 14 == 0 else { return nil }
+    /// Numeración con la base dada: 12, 26, 40, 54… (14m + 12). Detiene el programa con otra base (un error de
+    /// quien llama); si viene de fuera, `init?(comprobando:)` devuelve `nil`.
+    public init(base: Int) {
+        precondition(Self.existe(base), "Las bases de Hewlett son 12, 26, 40, 54… (14m + 12)")
         self.init(alteracionMaxima: (base - 12) / 14)
     }
+
+    /// Numeración con la base dada, si existe: 12, 26, 40, 54… (14m + 12). `nil` en otro caso.
+    public init?(comprobando base: Int) {
+        guard Self.existe(base) else { return nil }
+        self.init(base: base)
+    }
+
+    private static func existe(_ base: Int) -> Bool { base >= 12 && (base - 12) % 14 == 0 }
 
     /// Base 40 de Hewlett: hasta dobles sostenidos y dobles bemoles.
     public static let base40 = BaseDeHewlett(alteracionMaxima: 2)

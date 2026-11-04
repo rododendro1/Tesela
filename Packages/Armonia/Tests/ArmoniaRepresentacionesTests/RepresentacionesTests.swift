@@ -134,11 +134,12 @@ import Testing
         #expect(BaseDeHewlett.base54.base == 54)
         #expect(BaseDeHewlett.base600.base == 600)
         #expect(BaseDeHewlett(base: 40) == .base40)
-        #expect(BaseDeHewlett(base: 54)?.alteracionMaxima == 3)
-        #expect(BaseDeHewlett(base: 600)?.alteracionMaxima == 42)
-        #expect(BaseDeHewlett(base: 12)?.alteracionMaxima == 0)
-        #expect(BaseDeHewlett(base: 41) == nil)
-        #expect(BaseDeHewlett(base: 7) == nil)
+        #expect(BaseDeHewlett(base: 54).alteracionMaxima == 3)
+        #expect(BaseDeHewlett(base: 600).alteracionMaxima == 42)
+        #expect(BaseDeHewlett(base: 12).alteracionMaxima == 0)
+        #expect(BaseDeHewlett(comprobando: 41) == nil)
+        #expect(BaseDeHewlett(comprobando: 40) == .base40)
+        #expect(BaseDeHewlett(comprobando: 7) == nil)
         #expect(BaseDeHewlett.base40.description == "base 40")
     }
 

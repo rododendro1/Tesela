@@ -88,12 +88,13 @@ public struct RejillaDeControlador: Hashable, Sendable, Identifiable {
     /// Las rejillas con nombre, en el orden en que las ofrecen las apps.
     public static let todas: [RejillaDeControlador] = [.ventana, .launchpad, .linnStrument128, .linnStrument]
 
-    /// Una rejilla de `columnas` × `filas` con la `(0, 0)` en la esquina, o la de un controlador de ese tamaño;
-    /// `nil` si alguna medida no va de 1 a 32.
+    /// Una rejilla de `columnas` × `filas` con la `(0, 0)` en la esquina, o la de un controlador de ese tamaño.
+    /// Detiene el programa si alguna medida no va de 1 a 32 (un error de quien llama); si vienen de fuera,
+    /// `init?(comprobando:filas:)` devuelve `nil`.
     ///
     ///     RejillaDeControlador(columnas: 8, filas: 8) == .launchpad   // true
-    public init?(columnas: Int, filas: Int) {
-        guard (1...32).contains(columnas), (1...32).contains(filas) else { return nil }
+    public init(columnas: Int, filas: Int) {
+        precondition((1...32).contains(columnas) && (1...32).contains(filas), "Las medidas van de 1 a 32")
         if let conocida = Self.todas.first(where: { $0.columnas.count == columnas && $0.filas.count == filas }) {
             self = conocida
         } else {
@@ -101,6 +102,12 @@ public struct RejillaDeControlador: Hashable, Sendable, Identifiable {
                 nombre: "\(columnas) × \(filas)", columnas: 0...(columnas - 1), filas: 0...(filas - 1),
                 origenPorDefecto: 36)
         }
+    }
+
+    /// Como `init(columnas:filas:)`, o `nil` si alguna medida no va de 1 a 32.
+    public init?(comprobando columnas: Int, filas: Int) {
+        guard (1...32).contains(columnas), (1...32).contains(filas) else { return nil }
+        self.init(columnas: columnas, filas: filas)
     }
 }
 
