@@ -206,8 +206,8 @@ extension PentagramaSVG {
 
         /// Lo que se deja detrás de una columna, según lo que dura: más cuanto más larga, pero no en proporción.
         func separacion(_ columna: Int) -> Double {
-            let (figura, puntillos) = figuras[columna]
-            let duracion = Duracion(figura, puntillos: puntillos).enRedondas
+            let escrita = figuras[columna]
+            let duracion = Duracion(escrita.figura, puntillos: escrita.puntillos).enRedondas
             return 0.9 + 2.0 * (duracion * 4).squareRoot() + (llevaCorchete(columna) ? 0.5 : 0)
         }
 
