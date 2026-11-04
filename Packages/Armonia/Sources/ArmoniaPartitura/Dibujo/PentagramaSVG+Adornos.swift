@@ -186,9 +186,8 @@ extension PentagramaSVG {
         var colocada = TablaturaColocada(
             lineas: (0..<tablatura.cuerdas).map { (arriba + separacion * Double($0), []) }, arriba: arriba,
             abajo: abajo)
-        for (columna, pulsaciones) in tablatura.notas.sorted(by: { $0.key < $1.key })
-            where centros.indices.contains(columna)
-        {
+        let porColumna = tablatura.notas.sorted { $0.key < $1.key }
+        for (columna, pulsaciones) in porColumna where centros.indices.contains(columna) {
             for pulsacion in pulsaciones where (0..<tablatura.cuerdas).contains(pulsacion.cuerda) {
                 let texto = String(pulsacion.traste)
                 let mitad =
