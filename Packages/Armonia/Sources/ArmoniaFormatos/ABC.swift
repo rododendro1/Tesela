@@ -260,6 +260,11 @@ package struct EscritorABC: EscritorDePartitura {
             case .acento: return "!>!"
             case .marcato: return "!marcato!"
             case .calderon: return "!fermata!"
+            case .trino: return "!trill!"
+            case .mordenteSuperior: return "!uppermordent!"
+            case .mordenteInferior: return "!lowermordent!"
+            case .grupeto: return "!turn!"
+            case .grupetoInvertido: return "!invertedturn!"
             }
         }
         return (evento.dinamica.map { "!\($0.rawValue)!" } ?? "") + articulaciones.joined()

@@ -256,6 +256,11 @@ package struct EscritorGUIDO: EscritorDePartitura {
             case .acento: etiqueta = "\\accent"
             case .marcato: etiqueta = "\\marcato"
             case .calderon: etiqueta = "\\fermata"
+            case .trino: etiqueta = "\\trill"
+            case .mordenteSuperior: etiqueta = "\\mord"
+            case .mordenteInferior: etiqueta = "\\mord<inverted=\"true\">"
+            case .grupeto: etiqueta = "\\turn"
+            case .grupetoInvertido: etiqueta = "\\turn<inverted=\"true\">"
             }
             texto = etiqueta + "(" + texto + ")"
         }

@@ -143,6 +143,8 @@ final class LectorMusicXML: LectorDeElementosXML {
             nota.articulaciones.append(articulacion)
         }
         if nombre == "fermata", padre == "notations" { nota.articulaciones.append(.calderon) }
+        let ornamento = Articulacion.allCases.first { EscritorMusicXML.ornamento($0) == nombre }
+        if padre == "ornaments", let ornamento { nota.articulaciones.append(ornamento) }
         switch nombre {
         case "part":
             parte += 1

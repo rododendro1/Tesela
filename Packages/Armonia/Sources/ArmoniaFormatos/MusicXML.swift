@@ -436,6 +436,12 @@ package struct EscritorMusicXML: EscritorDePartitura {
                 for elemento in elementos { xml += "            <\(elemento)/>\n" }
                 xml += "          </articulations>\n"
             }
+            let ornamentos = articulaciones.compactMap(EscritorMusicXML.ornamento)
+            if !ornamentos.isEmpty {
+                xml += "          <ornaments>\n"
+                for ornamento in ornamentos { xml += "            <\(ornamento)/>\n" }
+                xml += "          </ornaments>\n"
+            }
             if articulaciones.contains(.calderon) { xml += "          <fermata type=\"upright\"/>\n" }
             return xml + "        </notations>\n"
         }
@@ -451,7 +457,19 @@ package struct EscritorMusicXML: EscritorDePartitura {
         case .tenuto: return "tenuto"
         case .acento: return "accent"
         case .marcato: return "strong-accent"
-        case .calderon: return nil
+        case .calderon, .trino, .mordenteSuperior, .mordenteInferior, .grupeto, .grupetoInvertido: return nil
+        }
+    }
+
+    /// El elemento de `<ornaments>` de un ornamento; `nil` para lo demás.
+    package static func ornamento(_ articulacion: Articulacion) -> String? {
+        switch articulacion {
+        case .trino: return "trill-mark"
+        case .mordenteSuperior: return "inverted-mordent"
+        case .mordenteInferior: return "mordent"
+        case .grupeto: return "turn"
+        case .grupetoInvertido: return "inverted-turn"
+        default: return nil
         }
     }
 

@@ -86,4 +86,45 @@ import Testing
         let leida = try PiezaImportada(musicXML: Data(sencilla.musicXML().utf8))
         #expect(marcas(leida).allSatisfy { $0.hasSuffix(" -") })
     }
+
+    // MARK: Ornamentos
+
+    let adornada = try! Voz(
+        leyendo: "Do5:4{trino} Re5:4{mordenteSuperior} Mi5:4{mordenteInferior} Fa5:4{grupeto} "
+            + "Sol5+Si5:1{grupetoInvertido}")
+
+    private let ornamentos = [
+        "Do5 - trino", "Re5 - mordenteSuperior", "Mi5 - mordenteInferior", "Fa5 - grupeto", "Sol5 - grupetoInvertido",
+        "Si5 - grupetoInvertido",
+    ]
+
+    @Test func ornamentosEnMusicXML() throws {
+        let xml = adornada.musicXML()
+        #expect(xml.contains("<ornaments>") && xml.contains("<trill-mark/>") && xml.contains("<inverted-mordent/>"))
+        #expect(xml.contains("<mordent/>") && xml.contains("<turn/>") && xml.contains("<inverted-turn/>"))
+        #expect(marcas(try PiezaImportada(musicXML: Data(xml.utf8))) == ornamentos)
+    }
+
+    @Test func ornamentosEnMEI() throws {
+        let mei = adornada.mei()
+        #expect(mei.contains("ornam=\"T\"") && mei.contains("ornam=\"M\"") && mei.contains("ornam=\"m\""))
+        #expect(mei.contains("ornam=\"S\"") && mei.contains("ornam=\"s\""))
+        #expect(marcas(try PiezaImportada(mei: Data(mei.utf8))) == ornamentos)
+    }
+
+    @Test func ornamentosEnABC() throws {
+        let abc = adornada.abc()
+        #expect(abc.contains("!trill!") && abc.contains("!uppermordent!") && abc.contains("!lowermordent!"))
+        #expect(abc.contains("!turn!") && abc.contains("!invertedturn!"))
+        #expect(marcas(try PiezaImportada(abc: abc)) == ornamentos)
+    }
+
+    @Test func ornamentosEnLilyPondYGUIDO() {
+        let ly = adornada.lilyPond()
+        #expect(ly.contains("\\trill") && ly.contains("\\prall") && ly.contains("\\mordent"))
+        #expect(ly.contains("\\turn") && ly.contains("\\reverseturn"))
+        let gmn = adornada.guido()
+        #expect(gmn.contains("\\trill(") && gmn.contains("\\mord(") && gmn.contains("\\mord<inverted=\"true\">("))
+        #expect(gmn.contains("\\turn(") && gmn.contains("\\turn<inverted=\"true\">("))
+    }
 }

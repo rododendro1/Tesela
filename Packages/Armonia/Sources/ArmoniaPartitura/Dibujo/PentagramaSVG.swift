@@ -37,6 +37,8 @@ struct PentagramaSVG {
     var tablatura: Tablatura?
     /// Las cifras del bajo continuo de cada columna, de arriba abajo («6», «4»), debajo de todo.
     var bajosCifrados: [Int: [String]] = [:]
+    /// Las articulaciones, los ornamentos y el calderón de cada columna (con ritmo).
+    var articulaciones: [Int: [Articulacion]] = [:]
     /// Las claves de cada pentagrama, si ya se han decidido (las de la voz entera, en una línea de una voz larga).
     var claves: [Clave]?
     /// Si se escribe la cifra del compás (con ritmo): en una voz partida en líneas, solo en la primera.
@@ -320,11 +322,12 @@ struct PentagramaSVG {
         if let ultimo = maquetacion.cifrados.last { final = max(final, ultimo.x + ultimo.mitad + 0.6) }
         // Las plicas, las barras de unión, las ligaduras y los tresillos.
         if let ritmo {
-            let (trazos, arriba, abajo) = trazosDelRitmo(
+            let (trazos, arriba, abajo, plicasArriba) = trazosDelRitmo(
                 ritmo, colocadas: maquetacion.colocadas, pentagramas: claves.count)
             lienzo.notas += trazos
             if arriba.isFinite { lienzo.minimoY = min(lienzo.minimoY, arriba) }
             if abajo.isFinite { lienzo.maximoY = max(lienzo.maximoY, abajo) }
+            dibujarLasArticulaciones(maquetacion.colocadas, plicasArriba: plicasArriba, en: &lienzo)
         }
         let marcasDeOctava = dibujarLasMarcasDeOctava(sistema, maquetacion, en: &lienzo)
         let dedos = dibujarLosDedos(maquetacion.centros, en: &lienzo)

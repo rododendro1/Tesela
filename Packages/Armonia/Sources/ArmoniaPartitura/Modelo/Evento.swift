@@ -96,7 +96,7 @@ public struct Evento: Hashable, Sendable {
                 let clave = String(marca).trimmingEspacios().claveDeBusqueda
                 if let leida = Dinamica(rawValue: clave), dinamica == nil {
                     dinamica = leida
-                } else if let leida = Articulacion(rawValue: clave) ?? Articulacion.alias[clave] {
+                } else if let leida = Articulacion(clave: clave) {
                     articulaciones.append(leida)
                 } else {
                     throw ErrorDeLectura(

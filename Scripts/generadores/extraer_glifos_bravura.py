@@ -69,6 +69,17 @@ GLIFOS = {
     "bemolFlechaArriba": (0xE2C6, "accidentalFlatOneArrowUp"),
     "becuadroFlechaArriba": (0xE2C7, "accidentalNaturalOneArrowUp"),
     "sostenidoFlechaArriba": (0xE2C8, "accidentalSharpOneArrowUp"),
+    # Las articulaciones y los ornamentos, encima de la nota (o debajo, los de las articulaciones que tienen dos).
+    "staccatoArriba": (0xE4A2, "articStaccatoAbove"), "staccatissimoArriba": (0xE4A6, "articStaccatissimoAbove"),
+    "staccatissimoAbajo": (0xE4A7, "articStaccatissimoBelow"),
+    "tenuto": (0xE4A4, "articTenutoAbove"), "acento": (0xE4A0, "articAccentAbove"),
+    "marcatoArriba": (0xE4AC, "articMarcatoAbove"), "marcatoAbajo": (0xE4AD, "articMarcatoBelow"),
+    "calderonArriba": (0xE4C0, "fermataAbove"), "calderonAbajo": (0xE4C1, "fermataBelow"),
+    "trino": (0xE566, "ornamentTrill"), "mordenteSuperior": (0xE56C, "ornamentShortTrill"),
+    "mordenteInferior": (0xE56D, "ornamentMordent"), "grupeto": (0xE567, "ornamentTurn"),
+    "grupetoInvertido": (0xE568, "ornamentTurnInverted"),
+    # Las cifras de los grupos irregulares (cinquillo, seisillo…).
+    **{f"cifraDeGrupo{i}": (0xE880 + i, f"tuplet{i}") for i in range(10)},
 }
 
 

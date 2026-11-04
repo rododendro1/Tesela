@@ -247,6 +247,11 @@ package struct EscritorLilyPond: EscritorDePartitura {
             case .acento: return "->"
             case .marcato: return "-^"
             case .calderon: return "\\fermata"
+            case .trino: return "\\trill"
+            case .mordenteSuperior: return "\\prall"
+            case .mordenteInferior: return "\\mordent"
+            case .grupeto: return "\\turn"
+            case .grupetoInvertido: return "\\reverseturn"
             }
         }
         return articulaciones.joined() + (evento.dinamica.map { "\\" + $0.rawValue } ?? "")

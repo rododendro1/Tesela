@@ -2,6 +2,21 @@
 
 ## Sin publicar
 
+### Ornamentos, grupos irregulares y sistemas de pentagramas
+
+- **Ornamentos** en `Articulacion`: `trino`, `mordenteSuperior`, `mordenteInferior`, `grupeto` y
+  `grupetoInvertido` (`esOrnamento`). Se leen en el texto de un evento («Sol4:2{trino}», también «trill», «prall»,
+  «mordent», «turn»), se escriben en MusicXML (`<ornaments>`), MEI (`@ornam`), ABC, LilyPond y GUIDO, y se leen al
+  importar MusicXML, MEI y ABC.
+- El pentagrama SVG dibuja por fin las **articulaciones** (staccato, staccatissimo, tenuto, acento, marcato) del lado
+  de la cabeza, y los ornamentos y el calderón encima, con los glifos de Bravura; con dos voces, los de la de abajo
+  van debajo.
+- Los **grupos irregulares** llevan su cifra en el dibujo: cinquillos, seisillos, septillos, grupos de nueve, once o
+  trece, con la figura que les toca; antes solo el tresillo.
+- **`Voz.svgSistema(_:titulo:claves:llave:opciones:)`**: varios pentagramas, uno debajo de otro, alineados y unidos
+  por las barras de compás y una llave o un corchete, con una o dos voces en cada uno y en líneas si se pide.
+  **`Coral.svgPentagrama(titulo:figura:compas:opciones:)`** pone un coral a cuatro voces en dos pentagramas.
+
 ### Opciones del pentagrama agrupadas
 
 - `OpcionesDePentagrama` reúne sus opciones en tres grupos: **`maquetacion`** (clave, pentagramas, cambios de clave,

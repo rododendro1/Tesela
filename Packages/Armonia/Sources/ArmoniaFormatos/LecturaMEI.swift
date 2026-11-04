@@ -175,7 +175,10 @@ final class LectorMEI: LectorDeElementosXML {
     /// Las articulaciones de los atributos `artic` (separadas por espacios) y `fermata` de un elemento.
     private static func articulaciones(_ atributos: [String: String]) -> [Articulacion] {
         let leidas = (atributos["artic"] ?? "").split(separator: " ").compactMap { valoresDeArtic[String($0)] }
-        return leidas + (atributos["fermata"] != nil ? [.calderon] : [])
+        let ornamentos = (atributos["ornam"] ?? "").compactMap { letra in
+            Articulacion.allCases.first { EscritorMEI.ornam($0) == String(letra) }
+        }
+        return leidas + (atributos["fermata"] != nil ? [.calderon] : []) + ornamentos
     }
 
     func abre(_ nombre: String, atributos: [String: String]) {

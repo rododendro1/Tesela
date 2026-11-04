@@ -18,12 +18,14 @@ extension PentagramaSVG {
         let finesDeCompas: Set<Int>
         /// Las columnas unidas por una barra, en grupos de dos o más.
         let vigas: [[Int]]
-        /// Las columnas de cada tresillo.
+        /// Las columnas de cada tresillo (o grupo irregular: cinquillo, seisillo, septillo…).
         let tresillos: [[Int]]
         /// Las columnas de la nota que está sonando (más de una si se divide en notas ligadas).
         let resaltadas: Set<Int>
         /// Dónde empieza cada columna, desde el principio de la voz.
         var inicios: [Duracion] = []
+        /// La cifra de cada grupo de `tresillos`: 3 en un tresillo, 5 en un cinquillo…
+        var cifrasDeLosGrupos: [Int] = []
 
         /// El ritmo de una voz y sus columnas (las alturas de cada evento de su grafía; un silencio, ninguna).
         /// `resaltada` cuenta las notas que se oyen: sin los silencios ni las notas a las que se liga otra.
@@ -37,19 +39,20 @@ extension PentagramaSVG {
             let compases = irregular ? voz.compases : voz.grafia
             let eventos = compases.flatMap { $0 }
             var figuras: [(figura: Figura, puntillos: Int)] = []
-            var deTresillo: [Bool] = []
+            // La proporción del grupo irregular de cada columna (3:2 en un tresillo, 5:4 en un cinquillo), o `nil`.
+            var deGrupo: [(numero: Int, en: Int)?] = []
             for evento in eventos {
                 if let escrita = evento.duracion.figuraYPuntillos {
                     figuras.append(escrita)
-                    deTresillo.append(false)
-                } else if let escrita = (evento.duracion * Duracion(3, 2)).figuraYPuntillos {
-                    figuras.append(escrita)
-                    deTresillo.append(true)
+                    deGrupo.append(nil)
+                } else if let grupo = Ritmo.grupoIrregular(evento.duracion) {
+                    figuras.append(grupo.figura)
+                    deGrupo.append(grupo.proporcion)
                 } else {
-                    // Otros grupos irregulares (cinquillos…): la figura más larga que no la pasa, sin cifra.
+                    // Los demás: la figura más larga que no la pasa, sin cifra.
                     let figura = Figura.allCases.first { $0.duracion <= evento.duracion } ?? .garrapatea
                     figuras.append((figura, 0))
-                    deTresillo.append(false)
+                    deGrupo.append(nil)
                 }
             }
 
@@ -81,26 +84,37 @@ extension PentagramaSVG {
                 if primera < eventos.count { finesDeCompas.insert(primera - 1) }
             }
 
-            // Los tresillos: notas seguidas de tresillo, hasta que suman una figura sin puntillo (tres corcheas de
-            // tresillo, una negra) o acaba el compás.
+            // Los tresillos y los demás grupos: notas seguidas con la misma proporción, hasta que suman una figura
+            // sin puntillo (tres corcheas de tresillo, una negra; cinco semicorcheas de cinquillo, otra) o acaba el
+            // compás.
             var tresillos: [[Int]] = []
+            var cifras: [Int] = []
             var actual: [Int] = []
             var suma = Duracion.cero
+            func cerrar(_ numero: Int) {
+                if !actual.isEmpty {
+                    tresillos.append(actual)
+                    cifras.append(numero)
+                }
+                actual = []
+                suma = .cero
+            }
+            // Un grupo que se corta antes de completarse (por otra figura u otra proporción) no lleva cifra.
             for i in eventos.indices {
-                guard deTresillo[i] else {
+                guard let proporcion = deGrupo[i] else {
                     actual = []
                     suma = .cero
                     continue
                 }
-                actual.append(i)
-                suma = suma + eventos[i].duracion
-                if suma.figuraYPuntillos?.puntillos == 0 || finesDeCompas.contains(i) {
-                    tresillos.append(actual)
+                if let anterior = actual.last.flatMap({ deGrupo[$0] }), anterior != proporcion {
                     actual = []
                     suma = .cero
                 }
+                actual.append(i)
+                suma = suma + eventos[i].duracion
+                if suma.figuraYPuntillos?.puntillos == 0 || finesDeCompas.contains(i) { cerrar(proporcion.numero) }
             }
-            if !actual.isEmpty { tresillos.append(actual) }
+            if let ultimo = actual.last.flatMap({ deGrupo[$0] }) { cerrar(ultimo.numero) }
 
             var resaltadas: Set<Int> = []
             if let resaltada {
@@ -116,6 +130,7 @@ extension PentagramaSVG {
             var ritmo = Ritmo(
                 figuras: figuras, ligadas: eventos.map(\.ligada), compas: voz.compas, finesDeCompas: finesDeCompas,
                 vigas: vigas, tresillos: tresillos, resaltadas: resaltadas)
+            ritmo.cifrasDeLosGrupos = cifras
             var momento = Duracion.cero
             for evento in eventos {
                 ritmo.inicios.append(momento)
@@ -135,6 +150,25 @@ extension PentagramaSVG {
                 inicioDelEvento = inicioDelEvento + evento.duracion
             }
             return (ritmo, eventos.map(\.alturas), primeras)
+        }
+
+        /// Las proporciones de los grupos irregulares que se reconocen, con la cifra que se escribe: el tresillo (3
+        /// en el tiempo de 2), el cinquillo (5 en 4), el septillo (7 en 4 o en 8), el de nueve (9 en 8), el dosillo
+        /// y el cuatrillo de los compases compuestos (2 y 4 en 3), el cinquillo en 2 o en 6 y el de once y trece.
+        static let proporcionesDeGrupo: [(numero: Int, en: Int)] = [
+            (3, 2), (5, 4), (7, 4), (2, 3), (4, 3), (6, 4), (7, 8), (9, 8), (5, 2), (5, 6), (11, 8), (13, 8),
+        ]
+
+        /// La proporción de un grupo irregular en que `duracion` es una figura, y esa figura; `nil` si no hay.
+        static func grupoIrregular(
+            _ duracion: Duracion
+        ) -> (proporcion: (numero: Int, en: Int), figura: (figura: Figura, puntillos: Int))? {
+            for proporcion in proporcionesDeGrupo {
+                if let escrita = (duracion * Duracion(proporcion.numero, proporcion.en)).figuraYPuntillos {
+                    return (proporcion, escrita)
+                }
+            }
+            return nil
         }
 
         /// La cabeza de la nota de una columna: redonda, blanca o negra.
@@ -185,6 +219,12 @@ extension PentagramaSVG {
         }
     }
 
+    static let cifrasDeGrupo = [
+        GlifosSMuFL.cifraDeGrupo0, GlifosSMuFL.cifraDeGrupo1, GlifosSMuFL.cifraDeGrupo2, GlifosSMuFL.cifraDeTresillo,
+        GlifosSMuFL.cifraDeGrupo4, GlifosSMuFL.cifraDeGrupo5, GlifosSMuFL.cifraDeGrupo6, GlifosSMuFL.cifraDeGrupo7,
+        GlifosSMuFL.cifraDeGrupo8, GlifosSMuFL.cifraDeGrupo9,
+    ]
+
     static let cifrasDeCompas = [
         GlifosSMuFL.cifraDeCompas0, GlifosSMuFL.cifraDeCompas1, GlifosSMuFL.cifraDeCompas2,
         GlifosSMuFL.cifraDeCompas3, GlifosSMuFL.cifraDeCompas4, GlifosSMuFL.cifraDeCompas5,
@@ -213,7 +253,7 @@ extension PentagramaSVG {
     /// Plicas, corchetes, barras de unión, ligaduras y tresillos, y lo que suben y bajan.
     func trazosDelRitmo(
         _ ritmo: Ritmo, colocadas: [ColumnaColocada], pentagramas: Int
-    ) -> (trazos: [String], arriba: Double, abajo: Double) {
+    ) -> (trazos: [String], arriba: Double, abajo: Double, plicasArriba: [Bool?]) {
         func elemento(_ nombre: String) -> ElementoSVG { ElementoSVG(nombre, numeros: .hastaTresDecimales) }
         let n = PentagramaSVG.n
         var trazos: [String] = []
@@ -397,8 +437,9 @@ extension PentagramaSVG {
             }
         }
 
-        // Los tresillos: el 3 del lado de las plicas, con corchete si las notas no van unidas por una barra.
-        for grupo in ritmo.tresillos {
+        // Los tresillos y los demás grupos: su cifra del lado de las plicas, con corchete si las notas no van unidas
+        // por una barra.
+        for (g, grupo) in ritmo.tresillos.enumerated() {
             guard let primera = grupo.first, let ultima = grupo.last else { continue }
             let k =
                 colocadas[primera].lugares.indices.first { !colocadas[primera].lugares[$0].isEmpty } ?? 0
@@ -409,16 +450,24 @@ extension PentagramaSVG {
             let extremos =
                 suyas.map(\.hasta)
                 + grupo.flatMap { colocadas[$0].lugares[k].map { y($0, k) } } + [y(arribaElNumero ? 8 : 0, k)]
-            let glifo = GlifosSMuFL.cifraDeTresillo
+            let numero = ritmo.cifrasDeLosGrupos.indices.contains(g) ? ritmo.cifrasDeLosGrupos[g] : 3
+            let digitos = String(numero).compactMap(\.wholeNumberValue).map { PentagramaSVG.cifrasDeGrupo[$0] }
+            // Lo que miden juntas las cifras.
+            let glifo = Glifo(
+                ancho: digitos.map(\.ancho).reduce(0, +), arriba: digitos.map(\.arriba).reduce(.infinity, min),
+                abajo: digitos.map(\.abajo).reduce(-.infinity, max), trazado: "")
             let baseDelNumero =
                 arribaElNumero
                 ? (extremos.min() ?? 0) - 0.6 - (PentagramaSVG.grosorDeLaBarra / 2)
                 : (extremos.max() ?? 4) + 0.6 - glifo.arriba + PentagramaSVG.grosorDeLaBarra / 2
             let centro = (inicio + fin) / 2
-            let xDelNumero = centro - glifo.ancho / 2
-            trazos.append(
-                elemento("path").con("transform", "translate(\(n(xDelNumero)) \(n(baseDelNumero)))")
-                    .con("d", glifo.trazado).vacio)
+            var xDelNumero = centro - glifo.ancho / 2
+            for digito in digitos {
+                trazos.append(
+                    elemento("path").con("transform", "translate(\(n(xDelNumero)) \(n(baseDelNumero)))")
+                        .con("d", digito.trazado).vacio)
+                xDelNumero += digito.ancho
+            }
             alcanzar(baseDelNumero + glifo.arriba)
             alcanzar(baseDelNumero)
             // Sin barra, un corchete partido por el número; si el grupo es tan corto que no cabe, solo el número.
@@ -437,7 +486,7 @@ extension PentagramaSVG {
                 }
             }
         }
-        return (trazos, arriba, abajo)
+        return (trazos, arriba, abajo, plicas.map { $0.compactMap { $0 }.first?.arriba })
     }
 }
 
@@ -529,6 +578,9 @@ extension Voz {
         dibujo.grados = porColumna.grados
         dibujo.bajosCifrados = porColumna.bajoCifrado
         dibujo.digitos = porColumna.digitos
+        for (evento, primera) in zip(eventos, primeras) where !evento.articulaciones.isEmpty {
+            dibujo.articulaciones[primera] = evento.articulaciones
+        }
         dibujo.tablatura = porColumna.tablatura
         // Los microtonos de cada evento, en todas sus columnas (las partes de una nota que se liga, también).
         let porEvento = anotaciones.microtonos ?? microtonosDeLosEventos(en: opciones.notacion)
