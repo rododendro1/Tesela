@@ -16,8 +16,8 @@ extension Trazado {
         }
         let ancho = rectangulo.ancho + 2 * margen
         let alto = rectangulo.alto + 2 * margen
-        let caja = [rectangulo.minimo.x - margen, rectangulo.minimo.y - margen, ancho, alto].map(numero)
-            .joined(separator: " ")
+        let esquina = (x: rectangulo.minimo.x - margen, y: rectangulo.minimo.y - margen)
+        let caja = [esquina.x, esquina.y, ancho, alto].map(numero).joined(separator: " ")
         var lineas = [
             #"<svg xmlns="http://www.w3.org/2000/svg" viewBox="\#(caja)" width="\#(numero(ancho))" height="\#(numero(alto))">"#,
             #"<style>.casilla { stroke: #444; stroke-width: 1; } text { font: \#(numero(min(tamano.x, tamano.y) * 0.5))px sans-serif; text-anchor: middle; dominant-baseline: central; }</style>"#,
