@@ -8,8 +8,7 @@ enum PresentacionDeRejilla {
     /// La proporción (ancho / alto) que ocupan los hexágonos de `casillas`, o `nil` si no hay ninguna.
     static func proporcion(de casillas: [CoordenadaAxial], orientacion: Orientacion) -> Double? {
         guard let caja = Trazado(orientacion: orientacion, tamano: 1).limites(de: casillas) else { return nil }
-        let alto = caja.maximo.y - caja.minimo.y
-        return alto > 0 ? (caja.maximo.x - caja.minimo.x) / alto : nil
+        return caja.alto > 0 ? caja.ancho / caja.alto : nil
     }
 
     /// El trazado que encaja `casillas` lo más grandes posible en un rectángulo de `ancho × alto`,
@@ -19,13 +18,9 @@ enum PresentacionDeRejilla {
         ancho: Double, alto: Double, margen: Double = 0
     ) -> Trazado? {
         guard let caja = Trazado(orientacion: orientacion, tamano: 1).limites(de: casillas) else { return nil }
-        let anchoUnidad = caja.maximo.x - caja.minimo.x
-        let altoUnidad = caja.maximo.y - caja.minimo.y
-        let escala = min((ancho - 2 * margen) / anchoUnidad, (alto - 2 * margen) / altoUnidad)
+        let escala = min((ancho - 2 * margen) / caja.ancho, (alto - 2 * margen) / caja.alto)
         guard escala > 0, escala.isFinite else { return nil }
-        let origen = Punto(
-            x: ancho / 2 - escala * (caja.minimo.x + caja.maximo.x) / 2,
-            y: alto / 2 - escala * (caja.minimo.y + caja.maximo.y) / 2)
+        let origen = Punto(x: ancho / 2 - escala * caja.centro.x, y: alto / 2 - escala * caja.centro.y)
         return Trazado(orientacion: orientacion, tamano: escala, origen: origen)
     }
 

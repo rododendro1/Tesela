@@ -23,6 +23,27 @@ extension Punto: CustomStringConvertible {
     public var description: String { "(x: \(x), y: \(y))" }
 }
 
+// MARK: - Rectangulo
+
+/// Un rectángulo del plano de dibujo con los lados paralelos a los ejes: de `minimo` (arriba a la izquierda, con el
+/// eje y hacia abajo) a `maximo`. Es lo que ocupan unos hexágonos (``Trazado/limites(de:)``).
+public struct Rectangulo: Hashable, Sendable, Codable {
+    public var minimo: Punto
+    public var maximo: Punto
+
+    public init(minimo: Punto, maximo: Punto) {
+        self.minimo = minimo
+        self.maximo = maximo
+    }
+
+    /// `maximo.x − minimo.x`.
+    public var ancho: Double { maximo.x - minimo.x }
+    /// `maximo.y − minimo.y`.
+    public var alto: Double { maximo.y - minimo.y }
+    /// El punto medio entre `minimo` y `maximo`.
+    public var centro: Punto { Punto(x: (minimo.x + maximo.x) / 2, y: (minimo.y + maximo.y) / 2) }
+}
+
 // MARK: - Orientacion
 
 /// Cómo se colocan los hexágonos al dibujarlos.
@@ -137,7 +158,7 @@ public struct Trazado: Hashable, Sendable, Codable {
     }
 
     /// El rectángulo que ocupan los hexágonos de `casillas` (sus vértices), o `nil` si no hay ninguna.
-    public func limites(de casillas: some Sequence<CoordenadaAxial>) -> (minimo: Punto, maximo: Punto)? {
+    public func limites(de casillas: some Sequence<CoordenadaAxial>) -> Rectangulo? {
         var minimo = Punto(x: .infinity, y: .infinity)
         var maximo = Punto(x: -.infinity, y: -.infinity)
         var alguna = false
@@ -149,6 +170,6 @@ public struct Trazado: Hashable, Sendable, Codable {
             }
         }
         guard alguna else { return nil }
-        return (minimo: minimo, maximo: maximo)
+        return Rectangulo(minimo: minimo, maximo: maximo)
     }
 }

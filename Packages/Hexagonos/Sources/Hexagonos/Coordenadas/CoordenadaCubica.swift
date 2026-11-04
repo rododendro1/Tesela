@@ -24,8 +24,9 @@ public struct CoordenadaCubica: Hashable, Sendable, Codable {
         self.s = s
     }
 
-    /// La casilla `(q, r, s)`, o `nil` si las tres no suman cero.
-    public init?(validando q: Int, _ r: Int, _ s: Int) {
+    /// La casilla `(q, r, s)`, o `nil` si las tres no suman cero: para coordenadas que vienen de fuera, donde
+    /// `init(q:r:s:)` detendría el programa.
+    public init?(comprobando q: Int, r: Int, s: Int) {
         guard q + r + s == 0 else { return nil }
         self.init(q: q, r: r, s: s)
     }

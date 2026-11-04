@@ -91,6 +91,9 @@ import Testing
         #expect(abs((uno?.maximo.x ?? 0) - (10)) <= 1e-9)
         #expect(abs((uno?.minimo.y ?? 0) - (-5 * raiz3)) <= 1e-9)
         #expect(abs((uno?.maximo.y ?? 0) - (5 * raiz3)) <= 1e-9)
+        #expect(abs((uno?.ancho ?? 0) - 20) <= 1e-9)
+        #expect(abs((uno?.alto ?? 0) - 10 * raiz3) <= 1e-9)
+        #expect(abs(uno?.centro.x ?? 1) <= 1e-9 && abs(uno?.centro.y ?? 1) <= 1e-9)
     }
 
     @Test func sVG() {

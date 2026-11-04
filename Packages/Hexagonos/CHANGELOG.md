@@ -1,5 +1,14 @@
 # Cambios
 
+## Sin publicar
+
+- **Cambio incompatible:** `CoordenadaCubica(validando:_:_:)` es ahora `CoordenadaCubica(comprobando:r:s:)`, como los
+  `init?(comprobando:)` de Armonía: `nil` si las tres no suman cero, para coordenadas que vienen de fuera.
+- **Cambio incompatible:** `Trazado.limites(de:)` y `MapaHexagonal.limites(con:)` dan un `Rectangulo` en lugar de la
+  tupla `(minimo:, maximo:)`. Los campos se llaman igual, así que `caja.minimo` sigue valiendo; solo cambia lo que
+  desestructura (`let (a, b) = …`). `Rectangulo` es `Hashable`, `Sendable` y `Codable`, y da además `ancho`, `alto` y
+  `centro`.
+
 ## 0.1.0 (2026-10-31)
 
 Primera versión con etiqueta del repositorio: `0.1.0`.
