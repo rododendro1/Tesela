@@ -129,6 +129,7 @@ public struct OpcionesDePentagrama {
     /// Cómo se escriben los nombres (en el título y en las etiquetas) y el cifrado.
     public var notacion: Notacion
 
+    /// Las opciones más usadas de una vez; las demás se cambian después en `maquetacion`, `marcas` y `colores`.
     public init(
         clave: Clave? = nil, armadura: Armadura = .automatica, pentagramas: Pentagramas = .automatico,
         notacion: Notacion = .espanolCompacto,

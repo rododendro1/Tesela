@@ -45,6 +45,7 @@ public struct CoralArmonizado: Hashable, Sendable {
     /// Las cuatro voces, con la melodía en el soprano.
     public let coral: Coral
 
+    /// Una armonización con el coral que la escribe a cuatro voces.
     public init(armonizacion: Armonizacion, coral: Coral) {
         self.armonizacion = armonizacion
         self.coral = coral

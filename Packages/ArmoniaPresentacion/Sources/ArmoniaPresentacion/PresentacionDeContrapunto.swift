@@ -78,6 +78,7 @@ public enum PresentacionDeContrapunto {
         public let cantus: String
         public let contrapunto: String
 
+        /// Un ejemplo con el cantus y el contrapunto escritos como se leen.
         public init(cantus: String, contrapunto: String) {
             self.cantus = cantus
             self.contrapunto = contrapunto

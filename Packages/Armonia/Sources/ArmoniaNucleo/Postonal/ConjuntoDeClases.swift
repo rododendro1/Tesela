@@ -5,18 +5,25 @@
 // la clase se representa por su forma prima y su número de Forte (3-11 para cualquier tríada
 // mayor o menor).
 
+/// Un conjunto de clases de altura: las clases (0 = Do … 11 = Si) sin ortografía, octava ni orden.
+///
+///     ConjuntoDeClases([0, 4, 7]).formaPrima   // [0, 3, 7]
 public struct ConjuntoDeClases: Hashable, Sendable, CustomStringConvertible {
     /// Clases de altura (0 = Do … 11 = Si), sin repetir y ordenadas.
     public let clases: [Int]
 
+    /// El conjunto de esas clases de altura (0 = Do … 11 = Si), reducidas módulo 12, sin repetir y ordenadas.
     public init<S: Sequence>(_ clases: S) where S.Element == Int {
         self.clases = Set(clases.map { modulo($0, 12) }).sorted()
     }
 
+    /// Las clases de altura de unas notas: Do, Mi y Sol dan {0, 4, 7}.
     public init(notas: [Nota]) { self.init(notas.map(\.claseDeAltura)) }
+    /// Las clases de altura de unas alturas, sin contar la octava.
     public init(alturas: [Altura]) { self.init(alturas.map(\.nota.claseDeAltura)) }
 
     public var cardinalidad: Int { clases.count }
+    /// `true` si tiene esa clase de altura (reducida módulo 12).
     public func contiene(_ clase: Int) -> Bool { clases.contains(modulo(clase, 12)) }
 
     public var description: String { "[" + clases.map(String.init).joined(separator: ", ") + "]" }
@@ -41,6 +48,7 @@ public struct ConjuntoDeClases: Hashable, Sendable, CustomStringConvertible {
         ConjuntoDeClases(clases.filter(otro.contiene))
     }
 
+    /// `true` si todas sus clases están en `otro`.
     public func esSubconjunto(de otro: ConjuntoDeClases) -> Bool { clases.allSatisfy(otro.contiene) }
 
     // MARK: Vector interválico

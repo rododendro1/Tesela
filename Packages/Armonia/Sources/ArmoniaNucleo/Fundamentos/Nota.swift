@@ -37,6 +37,7 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
     /// Semitonos: +1 = ♯, +2 = 𝄪, −1 = ♭, −2 = 𝄫, 0 = natural.
     public let semitonos: Int
 
+    /// La alteración de esos semitonos: 1 es el sostenido, −2 el doble bemol.
     public init(_ semitonos: Int) { self.semitonos = semitonos }
     public init(integerLiteral semitonos: Int) { self.init(semitonos) }
 
@@ -176,6 +177,7 @@ public struct Nota: Hashable, Sendable {
     /// Pasos de quinta desde Do: la posición en la línea de quintas (Do = 0, Sol = 1, Fa = −1).
     public let pasosDeQuinta: Int
 
+    /// La nota a `pasosDeQuinta` quintas justas de Do: 1 es Sol, −1 Fa y 7 Do♯.
     public init(pasosDeQuinta: Int) {
         self.pasosDeQuinta = pasosDeQuinta
     }

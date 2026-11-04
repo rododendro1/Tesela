@@ -11,6 +11,7 @@
         /// blanco fijo): para los dibujos que usan `currentColor`, como el pentagrama. Los demás traen su propio fondo.
         public let adaptable: Bool
 
+        /// Un SVG, de su tamaño o, si `adaptable`, del tamaño que haya.
         public init(svg: String, adaptable: Bool = false) {
             self.svg = svg
             self.adaptable = adaptable

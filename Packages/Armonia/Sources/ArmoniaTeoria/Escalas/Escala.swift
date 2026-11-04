@@ -8,6 +8,7 @@ public struct Escala: Hashable, Sendable {
     public let tonica: Nota
     public let tipo: TipoDeEscala
 
+    /// La escala de ese tipo sobre esa tónica: `Escala(.re, .dorico)`.
     public init(_ tonica: Nota, _ tipo: TipoDeEscala = .mayor) {
         self.tonica = tonica
         self.tipo = tipo
@@ -65,12 +66,6 @@ public struct Escala: Hashable, Sendable {
             if let nombre = Nota.porNombre[notacion]?[clave] { return (nombre, notacion) }
         }
         return nil
-    }
-
-    /// Como `init(leyendo:)`, devolviendo `nil` en lugar de un error.
-    public init?(texto: String) {
-        guard let escala = try? Escala(leyendo: texto) else { return nil }
-        self = escala
     }
 
     // MARK: Notas

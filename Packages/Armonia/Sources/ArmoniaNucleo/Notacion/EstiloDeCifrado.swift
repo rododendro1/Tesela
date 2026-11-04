@@ -8,23 +8,28 @@
 ///     a.cifrado(estilo: .inglesASCII)           // "Bb7(b9)"
 ///     Acorde("Sim7b5").cifrado(estilo: .jazz)   // "Bø7"
 public struct EstiloDeCifrado: Hashable, Sendable {
+    /// Cómo se escribe el acorde menor: Dom o Domin.
     public enum Menor: String, Hashable, Sendable {
         case m = "m"
         case min = "min"
     }
+    /// Cómo se escribe el acorde disminuido: Do° o Dodim.
     public enum Disminuido: String, Hashable, Sendable {
         case circulo = "°"
         case dim = "dim"
     }
+    /// Cómo se escribe el acorde aumentado: Do+ o Doaug.
     public enum Aumentado: String, Hashable, Sendable {
         case mas = "+"
         case aug = "aug"
     }
+    /// Cómo se escribe la séptima mayor: Domaj7, DoM7 o DoΔ7.
     public enum SeptimaMayor: String, Hashable, Sendable {
         case maj = "maj"
         case mayuscula = "M"
         case delta = "Δ"
     }
+    /// Cómo se escribe el semidisminuido: Dom7(♭5) o Doø7.
     public enum Semidisminuido: Hashable, Sendable {
         /// m7(♭5)
         case menorSeptimaQuintaBemol

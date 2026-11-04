@@ -23,6 +23,7 @@ public struct AcordeConInicio: Hashable, Sendable {
     public let acorde: Acorde
     public let inicio: Duracion
 
+    /// El acorde que empieza en `inicio` redondas desde el principio.
     public init(_ acorde: Acorde, inicio: Duracion) {
         self.acorde = acorde
         self.inicio = inicio
@@ -38,6 +39,7 @@ public struct RitmoArmonico: Hashable, Sendable {
     public let compas: Compas
     public let tempo: Tempo?
 
+    /// Los acordes, cada uno con lo que dura, en ese compás y, si se da, a ese tempo.
     public init(_ acordes: [AcordeConDuracion], compas: Compas = .compasillo, tempo: Tempo? = nil) {
         self.acordes = acordes
         self.compas = compas
@@ -65,3 +67,31 @@ extension RitmoArmonico: Transponible {
             tempo: tempo)
     }
 }
+
+extension AcordeConDuracion: Codable {
+    // Se codifica con sus dos campos, `acorde` y `duracion` (como texto), y al leerlo se comprueba que la duración
+    // sea positiva.
+    private enum Claves: String, CodingKey { case acorde, duracion }
+
+    public init(from decoder: Decoder) throws {
+        let contenedor = try decoder.container(keyedBy: Claves.self)
+        let acorde = try contenedor.decode(Acorde.self, forKey: .acorde)
+        let duracion = try contenedor.decode(Duracion.self, forKey: .duracion)
+        guard duracion > .cero else {
+            throw DecodingError.dataCorruptedError(
+                forKey: .duracion, in: contenedor, debugDescription: "un acorde tiene que durar algo")
+        }
+        self.init(acorde, duracion)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var contenedor = encoder.container(keyedBy: Claves.self)
+        try contenedor.encode(acorde, forKey: .acorde)
+        try contenedor.encode(duracion, forKey: .duracion)
+    }
+}
+
+/// Se codifica con sus acordes, su compás y su tempo (si lo tiene).
+extension RitmoArmonico: Codable {}
+
+extension AcordeConInicio: Codable {}

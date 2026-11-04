@@ -39,6 +39,7 @@ public struct Traducido<Valor> {
     public let ruso: Valor
     public let hungaro: Valor
 
+    /// El valor en cada idioma: el español y el inglés primero y los demás por su código ISO 639.
     public init(
         _ espanol: Valor, _ ingles: Valor, ca catalan: Valor, gl gallego: Valor, ast asturiano: Valor,
         an aragones: Valor, eu euskera: Valor, pt portugues: Valor, fr frances: Valor, oc occitano: Valor,

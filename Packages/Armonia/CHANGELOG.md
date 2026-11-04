@@ -29,6 +29,24 @@
   `rotado(cuartos:nombre:)`, con un cuarto de vuelta si no se dice otra cosa, como `TecladoIsomorfico` y
   `MapaHexagonal`, que ya decían `rotado`. `cuartas.girado()` es `cuartas.rotado()`.
 
+### Guardar en JSON
+
+- `Tempo`, `Encabezado`, `AcordeConDuracion`, `AcordeConInicio`, `RitmoArmonico`, `Coral`, `Contrapunto` y
+  `Contrapunto.Especie` son `Codable`. Al leer se comprueba lo mismo que al crearlos: un tempo que no es positivo, un
+  acorde que no dura nada, un coral con acordes de distintas voces o un contrapunto que no dura una redonda por nota
+  del cantus dan un `DecodingError` en lugar de un valor imposible. Un `Coral` se guarda como sus acordes
+  (`[["Do3", "Mi4"], …]`) y un `Contrapunto`, con el cantus, los eventos del contrapunto y la especie (1 a 5).
+- `Partitura` no es todavía `Codable`: lleva dentro análisis, claves y tablaturas que no lo son. Se guarda lo que la
+  hace (la voz, el coral o el contrapunto) y se vuelve a hacer.
+
+### Documentación
+
+- Las convenciones (`Convenciones`) dicen qué tipos cumplen cada protocolo, cuándo un nombre lleva `con…` o un
+  participio (`rotado`, `reflejado`, `desplazado`; nunca `girado`) y cuándo un lector lanza (`init(leyendo:)`) o da
+  `nil` (`init?(comprobando:)`).
+- Todo lo público que no la tenía lleva documentación, salvo lo que solo cumple un protocolo.
+- `Tonalidad` y `Escala` ya no repiten `init?(texto:)`: el de `LegibleDesdeTexto` hace lo mismo.
+
 ## 0.3.4 (2026-11-04)
 
 ### Valores escritos a mano, sin opcionales

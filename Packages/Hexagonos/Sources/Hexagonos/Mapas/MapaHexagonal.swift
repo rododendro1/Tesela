@@ -96,7 +96,7 @@ public struct MapaHexagonal<Valor> {
     }
 
     /// El rectángulo que ocupan sus hexágonos al dibujarlos con `trazado`, o `nil` si está vacío.
-    public func limites(con trazado: Trazado) -> (minimo: Punto, maximo: Punto)? {
+    public func limites(con trazado: Trazado) -> Rectangulo? {
         trazado.limites(de: casillas)
     }
 }

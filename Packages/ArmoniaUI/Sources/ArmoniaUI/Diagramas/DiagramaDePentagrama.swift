@@ -13,11 +13,13 @@
         /// Lo más alto que llega el dibujo, en puntos; el pentagrama doble y las escalas largas piden más que los demás.
         public let alturaMaxima: CGFloat
 
+        /// El pentagrama ya presentado, como mucho de esa altura.
         public init(_ presentacion: PentagramaPresentado, alturaMaxima: CGFloat = 260) {
             self.presentacion = presentacion
             self.alturaMaxima = alturaMaxima
         }
 
+        /// El pentagrama de una escala, como `PentagramaPresentado(_:octava:sentido:notacion:nombresDeLasNotas:)`.
         public init(
             _ escala: Escala, octava: Int = 4, sentido: SentidoDelIntervalo? = nil,
             notacion: Notacion = .espanolCompacto, nombresDeLasNotas: Bool = true, alturaMaxima: CGFloat = 260
@@ -28,6 +30,7 @@
                     nombresDeLasNotas: nombresDeLasNotas), alturaMaxima: alturaMaxima)
         }
 
+        /// El pentagrama de un acorde, como `PentagramaPresentado(_:octava:notacion:nombresDeLasNotas:)`.
         public init(
             _ acorde: Acorde, octava: Int = 4, notacion: Notacion = .espanolCompacto,
             nombresDeLasNotas: Bool = false, alturaMaxima: CGFloat = 260

@@ -85,6 +85,7 @@ public struct TipoDeEscalaMicrotonal: Hashable, Sendable {
     /// Lo mismo al bajar, si la escala baja con otras notas; `nil` si baja como sube.
     public let pasosDescendentes: [Int]?
 
+    /// Una escala con microtonos; si `pasosDescendentes` es igual que `pasos`, se guarda `nil`.
     public init(
         _ temperada: TipoDeEscala, _ sistema: SistemaMicrotonal, pasos: [Int], pasosDescendentes: [Int]? = nil
     ) {

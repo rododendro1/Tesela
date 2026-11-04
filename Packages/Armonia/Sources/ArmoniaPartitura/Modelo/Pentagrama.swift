@@ -20,6 +20,7 @@ import ArmoniaTeoria
 // Como `Altura.pasos` ya cuenta pasos diatónicos, la posición es una simple resta, y la
 // alteración (♯, ♭) no cambia la posición: Fa4 y Fa♯4 se escriben en el mismo sitio.
 
+/// Una clave: dónde se escribe cada altura en el pentagrama.
 public enum Clave: Hashable, Sendable, CaseIterable, CustomStringConvertible {
     /// Clave de sol en 2.ª línea (violín).
     case sol
@@ -94,6 +95,7 @@ public struct PosicionEnPentagrama: Hashable, Sendable, CustomStringConvertible 
     /// Alteración que hay que escribir delante (+1 = ♯, −1 = ♭), sin contar la armadura.
     public let alteracion: Alteracion
 
+    /// Una posición en ese `lugar` (0 la primera línea, 1 el primer espacio… 8 la quinta línea) con esa alteración.
     public init(lugar: Int, alteracion: Alteracion = .natural) {
         self.lugar = lugar
         self.alteracion = alteracion
@@ -151,6 +153,7 @@ public struct InstrumentoDePartitura: Hashable, Sendable, CustomStringConvertibl
     /// Clave en la que se escribe habitualmente.
     public let clave: Clave
 
+    /// Un instrumento; `transposicion` va desde la nota escrita hasta la que suena.
     public init(
         nombre: String, nombreEnIngles: String, transposicion: Intervalo = .unisono,
         clave: Clave = .sol
@@ -176,7 +179,9 @@ public struct InstrumentoDePartitura: Hashable, Sendable, CustomStringConvertibl
     /// Altura que hay que escribir para que suene la dada: clarinete en Si♭, Si♭4 → Do5.
     public func escritura(de sonido: Altura) -> Altura { sonido - transposicion }
 
+    /// La nota que suena al leer la escrita: saxo alto, Do → Mi♭.
     public func sonido(de escrita: Nota) -> Nota { escrita + transposicion }
+    /// La nota que hay que escribir para que suene esa: saxo alto, Mi♭ → Do.
     public func escritura(de sonido: Nota) -> Nota { sonido - transposicion }
 
     /// Cifrado escrito para un acorde que debe sonar: saxo alto, Do7 → La7.
@@ -198,6 +203,7 @@ public struct InstrumentoDePartitura: Hashable, Sendable, CustomStringConvertibl
 
     /// Melodía escrita para una melodía que debe sonar.
     public func escritura(de melodia: Melodia) -> Melodia { melodia.transponer(-transposicion) }
+    /// Melodía que suena al leer una melodía escrita.
     public func sonido(de melodia: Melodia) -> Melodia { melodia.transponer(transposicion) }
 
     public var description: String { nombre }

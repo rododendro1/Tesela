@@ -36,6 +36,7 @@ public struct MovimientoDeVoz: Hashable, Sendable, CustomStringConvertible {
     /// Semitonos, hacia arriba (+) o hacia abajo (−), por el camino más corto (de −5 a +6).
     public let semitonos: Int
 
+    /// El movimiento de una voz de `desde` a `hasta`, por el camino más corto.
     public init(desde: Nota, hasta: Nota) {
         self.desde = desde
         self.hasta = hasta

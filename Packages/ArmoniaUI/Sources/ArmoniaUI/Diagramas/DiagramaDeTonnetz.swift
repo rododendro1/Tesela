@@ -11,6 +11,7 @@
         public let notacion: Notacion
         public let leyenda: Bool
 
+        /// El Tonnetz con sus notas en la notación y, si `leyenda`, la explicación de los ejes.
         public init(_ tonnetz: Tonnetz, notacion: Notacion = .espanolCompacto, leyenda: Bool = true) {
             self.tonnetz = tonnetz
             self.notacion = notacion

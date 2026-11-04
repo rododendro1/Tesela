@@ -27,6 +27,7 @@ public struct RecorridoDePartitura: Hashable, Sendable {
     /// Los acordes con su ritmo, para «Escuchar»: el paso `i` de `Reproductor.paso(de:)` es `pasos[i]`.
     public let sonido: Escucha
 
+    /// El recorrido por la progresión importada, escrito en la notación.
     public init(_ progresion: ProgresionImportada, notacion: Notacion) {
         titulo = progresion.titulo
         let acordes = progresion.acordes

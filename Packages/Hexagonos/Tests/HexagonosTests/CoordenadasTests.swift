@@ -83,8 +83,8 @@ import Testing
     }
 
     @Test func validando() {
-        #expect(CoordenadaCubica(validando: 1, -3, 2) != nil)
-        #expect(CoordenadaCubica(validando: 1, 1, 1) == nil)
+        #expect(CoordenadaCubica(comprobando: 1, r: -3, s: 2) != nil)
+        #expect(CoordenadaCubica(comprobando: 1, r: 1, s: 1) == nil)
     }
 
     @Test func aritmeticaYDistancia() {

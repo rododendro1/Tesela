@@ -38,6 +38,7 @@ public struct AcordesDelGrado: Hashable, Sendable {
 ///     dorico.tensiones   // "Mi 9 · Sol 11 · Si 13"
 ///     dorico.modo        // "modo 2 de Do mayor"
 public enum PresentacionDeEscalaYAcorde {
+    /// La escala sobre el acorde, escrita en la notación: sus notas, las del acorde y las que evitar.
     public static func presentar(
         _ escala: Escala, sobre acorde: Acorde, notacion: Notacion
     ) -> EscalaSobreAcordePresentada {

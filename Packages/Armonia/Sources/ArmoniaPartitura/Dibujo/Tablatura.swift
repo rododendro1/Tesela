@@ -14,6 +14,7 @@ public struct Tablatura: Hashable, Sendable {
         public let cuerda: Int
         public let traste: Int
 
+        /// Una nota en esa cuerda (0 es la más grave) y en ese traste (0 al aire).
         public init(cuerda: Int, traste: Int) {
             self.cuerda = cuerda
             self.traste = traste
@@ -26,6 +27,7 @@ public struct Tablatura: Hashable, Sendable {
     /// disposiciones.
     public let notas: [Int: [Pulsacion]]
 
+    /// Una tablatura de `cuerdas` líneas con lo que se pulsa en cada nota, por su índice (ver `notas`).
     public init(cuerdas: Int, notas: [Int: [Pulsacion]]) {
         self.cuerdas = cuerdas
         self.notas = notas

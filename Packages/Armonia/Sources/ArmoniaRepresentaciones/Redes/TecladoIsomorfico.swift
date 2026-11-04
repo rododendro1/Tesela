@@ -35,6 +35,7 @@ public struct TecladoIsomorfico: Hashable, Sendable {
     /// El número MIDI de la casilla `(0, 0)`.
     public let midiDelOrigen: Int
 
+    /// Un teclado con esos generadores; la casilla `(0, 0)` suena `midiDelOrigen` (por defecto, el Do4).
     public init(
         nombre: String, orientacion: Orientacion, semitonosEnQ: Int, semitonosEnR: Int,
         midiDelOrigen: Int = 60

@@ -170,6 +170,7 @@ public struct NotaExtranaEnLaMelodia: Hashable, Sendable {
     public let indice: Int
     public let nota: NotaDeLaMelodia
 
+    /// La nota extraña en esa posición de la melodía, desde 0.
     public init(indice: Int, nota: NotaDeLaMelodia) {
         self.indice = indice
         self.nota = nota

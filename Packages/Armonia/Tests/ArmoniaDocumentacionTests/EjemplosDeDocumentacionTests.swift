@@ -323,12 +323,12 @@ import Hexagonos
     }
 
     @Test func convenciones4() throws {
-        // Sources/Armonia/Armonia.docc/Convenciones.md, línea 91
-        comprobarIgual(try NombreDeGrado(leyendo: "submediante"), .superdominante, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 91)
+        // Sources/Armonia/Armonia.docc/Convenciones.md, línea 102
+        comprobarIgual(try NombreDeGrado(leyendo: "submediante"), .superdominante, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 102)
         _ = (try NombreDeGrado(leyendo: "Tónica"), try NombreDeGrado(leyendo: "leading tone"))
-        comprobar(try PapelEnAcorde(leyendo: "oncena") == PapelEnAcorde(leyendo: "undécima"), #"true"#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 93)
-        comprobar(try PapelEnAcorde(leyendo: "trecena") == PapelEnAcorde(leyendo: "decimotercera"), #"true"#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 94)
-        comprobar(PapelEnAcorde.tension(11).nombre, #""undécima""#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 95)
+        comprobar(try PapelEnAcorde(leyendo: "oncena") == PapelEnAcorde(leyendo: "undécima"), #"true"#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 104)
+        comprobar(try PapelEnAcorde(leyendo: "trecena") == PapelEnAcorde(leyendo: "decimotercera"), #"true"#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 105)
+        comprobar(PapelEnAcorde.tension(11).nombre, #""undécima""#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 106)
     }
 
     @Test func elModelo1() throws {

@@ -146,6 +146,7 @@ public struct Acorde: Hashable, Sendable {
 
     // MARK: Operaciones
 
+    /// `true` si la nota está en el acorde tal como se escribe (Fa♯ no cuenta por Sol♭).
     public func contiene(_ nota: Nota) -> Bool { notas.contains(nota) }
 
     public func transponer(_ intervalo: Intervalo) -> Acorde {

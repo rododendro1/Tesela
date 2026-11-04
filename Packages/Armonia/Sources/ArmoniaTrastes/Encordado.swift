@@ -15,6 +15,8 @@ public struct Encordado: Hashable, Sendable {
     /// El traste en que va el capo (la cejilla móvil que se pinza en el mástil), o 0 si no lleva.
     public let capo: Int
 
+    /// Un instrumento con ese nombre y esas cuerdas al aire, de la 0 (la más grave en el mástil) en adelante, sin
+    /// cejilla.
     public init(nombre: String, cuerdas: [Altura]) {
         self.init(nombre: nombre, cuerdas: cuerdas, capo: 0)
     }

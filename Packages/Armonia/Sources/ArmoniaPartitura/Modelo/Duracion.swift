@@ -34,6 +34,7 @@ public struct FiguraConPuntillos: Hashable, Sendable {
     /// De 0 a 4.
     public let puntillos: Int
 
+    /// Una figura con esos puntillos: blanca con uno es 3/4 de redonda.
     public init(figura: Figura, puntillos: Int) {
         self.figura = figura
         self.puntillos = puntillos
@@ -307,4 +308,27 @@ extension Duracion {
 extension Duracion {
     /// La figura con uno, dos, tres o cuatro puntillos, en el sitio de `_`.
     private static let conPuntillos = TextosDePartitura.traduccion(\.conPuntillos)
+}
+
+extension Tempo: Codable {
+    // Se codifica con sus dos campos, `pulsosPorMinuto` y `unidad`, y al leerlo se comprueba, como en
+    // `init?(comprobando:unidad:)`, que los dos sean positivos.
+    private enum Claves: String, CodingKey { case pulsosPorMinuto, unidad }
+
+    public init(from decoder: Decoder) throws {
+        let contenedor = try decoder.container(keyedBy: Claves.self)
+        let pulsos = try contenedor.decode(Double.self, forKey: .pulsosPorMinuto)
+        let unidad = try contenedor.decode(Duracion.self, forKey: .unidad)
+        guard let tempo = Tempo(comprobando: pulsos, unidad: unidad) else {
+            throw DecodingError.dataCorruptedError(
+                forKey: .pulsosPorMinuto, in: contenedor, debugDescription: "el tempo tiene que ser positivo")
+        }
+        self = tempo
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var contenedor = encoder.container(keyedBy: Claves.self)
+        try contenedor.encode(pulsosPorMinuto, forKey: .pulsosPorMinuto)
+        try contenedor.encode(unidad, forKey: .unidad)
+    }
 }

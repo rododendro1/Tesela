@@ -7,6 +7,7 @@ public struct CaminoHexagonal: Hashable, Sendable {
     /// La suma de los costes de cada paso.
     public let coste: Double
 
+    /// Un camino por esas casillas, en orden, con lo que cuesta recorrerlo.
     public init(casillas: [CoordenadaAxial], coste: Double) {
         self.casillas = casillas
         self.coste = coste

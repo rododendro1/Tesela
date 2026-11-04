@@ -100,10 +100,12 @@ public struct TablaArmonica: Hashable, Sendable {
         origen = .notas(notas.reduce(into: []) { if !$0.contains($1) { $0.append($1) } })
     }
 
+    /// Las notas del acorde en la tabla armónica.
     public init(_ acorde: Acorde) {
         self.init(acorde.notas)
         origen = .acorde(acorde)
     }
+    /// Las notas de la escala en la tabla armónica.
     public init(_ escala: Escala) {
         self.init(escala.notas)
         origen = .escala(escala)

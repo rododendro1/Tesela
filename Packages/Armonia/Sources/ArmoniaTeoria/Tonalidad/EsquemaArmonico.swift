@@ -16,6 +16,7 @@ import ArmoniaNucleo
 /// Se reconocen por el movimiento de las fundamentales y el tipo de los acordes, sin mirar la tonalidad: un
 /// ii–V–I secundario (Mim7–La7–Rem7 en Do) cuenta igual, con Re de tónica.
 public struct EsquemaArmonico: Hashable, Sendable, CustomStringConvertible {
+    /// Los esquemas que se reconocen.
     public enum Tipo: Hashable, Sendable, CaseIterable, CustomStringConvertible {
         /// Un acorde menor (m7 o ø7), su dominante una cuarta por encima y la resolución otra cuarta por
         /// encima: Rem7–Sol7–Do7M, Siø7–Mi7–Lam.

@@ -26,6 +26,7 @@ public struct Encabezado: Hashable, Sendable {
     /// partitura (el piano, o el coro en un coral y en un contrapunto). Solo cuenta en MIDI.
     public var instrumento: Int?
 
+    /// Un encabezado con lo que se dé; lo que no, lo pone quien hace la partitura.
     public init(
         titulo: String? = nil, tonalidad: Tonalidad? = nil, tempo: Tempo? = nil, parte: String? = nil,
         instrumento: Int? = nil
@@ -75,6 +76,7 @@ public struct Partitura: Hashable, Sendable {
         /// SVG.
         public var pulsaciones: [Duracion: [Tablatura.Pulsacion]]
 
+        /// La voz con lo que se anota en ella, cada cosa por el punto de la voz en que empieza.
         public init(
             _ voz: Voz, nombre: String? = nil, plicaArriba: Bool? = nil, cifrados: [Duracion: Acorde] = [:],
             analisis: [Duracion: AcordeAnalizado] = [:], marcadores: [Duracion: String] = [:],
@@ -103,6 +105,8 @@ public struct Partitura: Hashable, Sendable {
         /// tablatura. Solo cuenta en SVG.
         public var cuerdas: Int?
 
+        /// Un pentagrama con esas voces, en esa clave (si no se da, la que mejor va a sus alturas: `claveEscrita`) y,
+        /// con `cuerdas`, con una tablatura de esas cuerdas debajo.
         public init(clave: Clave? = nil, voces: [Linea], cuerdas: Int? = nil) {
             self.clave = clave
             self.voces = voces
@@ -128,6 +132,7 @@ public struct Partitura: Hashable, Sendable {
     /// Si los pentagramas se unen con una llave, como el piano; si no, con un corchete. Solo cuenta en SVG.
     public var llave: Bool
 
+    /// Una partitura con esos pentagramas. Si no se dan `compas` y `anacrusa`, los de la primera voz.
     public init(
         pentagramas: [Pentagrama], encabezado: Encabezado = Encabezado(), compas: Compas? = nil,
         anacrusa: Duracion? = nil, tonalidadDelAnalisis: Tonalidad? = nil, notacion: Notacion = .espanolCompacto,
@@ -162,6 +167,7 @@ public struct Partitura: Hashable, Sendable {
         /// El número del pentagrama, desde 1 (el de arriba).
         public let pentagrama: Int
 
+        /// Una línea en el pentagrama con ese índice (0 es el de arriba).
         public init(linea: Linea, pentagrama: Int) {
             self.linea = linea
             self.pentagrama = pentagrama
@@ -206,3 +212,6 @@ extension Partitura {
         self.init(pentagramas: [Pentagrama(clave: clave, voces: [linea], cuerdas: cuerdas)], encabezado: encabezado)
     }
 }
+
+/// Se codifica con los campos que tiene, y sin los que faltan.
+extension Encabezado: Codable {}

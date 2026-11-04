@@ -45,6 +45,7 @@ public struct Rearmonizacion: Hashable, Sendable {
     /// Lo que va en su lugar: de uno a tres acordes.
     public let acordes: [Acorde]
 
+    /// Cambiar el acorde `original`, en esa posición de la progresión (desde 0), por `acordes` con ese recurso.
     public init(recurso: Recurso, posicion: Int, original: Acorde, acordes: [Acorde]) {
         self.recurso = recurso
         self.posicion = posicion

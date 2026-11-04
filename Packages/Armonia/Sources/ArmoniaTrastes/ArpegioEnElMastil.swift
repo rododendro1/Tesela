@@ -19,6 +19,7 @@ public struct ArpegioEnElMastil: Hashable, Sendable {
     /// La forma CAGED de la posición, si es una de ``Mastil/arpegiosCAGED(de:ancho:)``.
     public let forma: FormaCAGED?
 
+    /// Un arpegio en esa franja de trastes, con sus notas de la más grave a la más aguda.
     public init(
         mastil: Mastil, trastes: ClosedRange<Int>, posiciones: [PosicionEnElMastil], forma: FormaCAGED? = nil
     ) {

@@ -5,6 +5,7 @@ import Foundation
 /// armonización, si se armoniza una melodía, un acorde por fila con sus alturas, los avisos y los
 /// ficheros para exportar.
 public struct CoralPresentado: Hashable, Sendable {
+    /// Un acorde del coral, como se enseña en una fila.
     public struct Fila: Hashable, Sendable {
         /// El cifrado americano, o "–" si las notas no forman un acorde conocido.
         public let cifrado: String
@@ -71,6 +72,7 @@ public struct CoralPresentado: Hashable, Sendable {
 /// La parte de la vista de corales que no es dibujo, y la salida de `armonia armonizar`, `realizar` y
 /// `revisar`. No usa SwiftUI, así que se prueba en Linux.
 public enum PresentacionDeCoral {
+    /// Lo que se hace con el coral: armonizar una melodía, realizar un bajo cifrado o revisar uno escrito.
     public enum Tarea: String, CaseIterable, Identifiable, Hashable, Sendable {
         case armonizar = "Armonizar"
         case realizar = "Realizar"

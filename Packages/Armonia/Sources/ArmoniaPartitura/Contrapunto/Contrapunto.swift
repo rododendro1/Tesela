@@ -12,6 +12,7 @@ import ArmoniaTeoria
 /// Los compases se cuentan desde 0, uno por nota del cantus firmus. Si la falta es un movimiento,
 /// `compases` va del de la primera nota al de la segunda; si no, empieza y acaba en el mismo.
 public struct FaltaDeContrapunto: Hashable, Sendable, CustomStringConvertible {
+    /// Qué regla del contrapunto se rompe.
     public enum Tipo: Hashable, Sendable, CaseIterable {
         /// Un compás con un ritmo que no es el de la especie (por ejemplo, tres notas en la segunda).
         case ritmoDeLaEspecie
@@ -85,7 +86,8 @@ public struct FaltaDeContrapunto: Hashable, Sendable, CustomStringConvertible {
 /// En todas, el último compás es una redonda (en la segunda y la tercera, también el penúltimo
 /// puede serlo).
 public struct Contrapunto: Hashable, Sendable {
-    public enum Especie: Int, Hashable, Sendable, CaseIterable {
+    /// Las cinco especies de Fux, por su número: de nota contra nota (1) al contrapunto florido (5).
+    public enum Especie: Int, Hashable, Sendable, CaseIterable, Codable {
         case primera = 1
         case segunda, tercera, cuarta, quinta
 
@@ -453,5 +455,34 @@ extension Contrapunto {
             faltas.isEmpty
             ? [TextosDePartitura.en(notacion, \.sinFaltas)] : faltas.map { $0.descripcion(en: notacion) }
         return ([cabecera.en(notacion)] + lineas).joined(separator: "\n")
+    }
+}
+
+extension Contrapunto: Codable {
+    // Se codifica con el cantus, los eventos del contrapunto (las alturas y los eventos, como texto) y el número de
+    // la especie. Al leerlo se comprueba, como en `init(cantusFirmus:contrapunto:especie:)`, que el contrapunto dure
+    // una redonda por nota del cantus.
+    private enum Claves: String, CodingKey { case cantusFirmus, contrapunto, especie }
+
+    public init(from decoder: Decoder) throws {
+        let contenedor = try decoder.container(keyedBy: Claves.self)
+        let cantus = try contenedor.decode([Altura].self, forKey: .cantusFirmus)
+        let eventos = try contenedor.decode([Evento].self, forKey: .contrapunto)
+        let especie = try contenedor.decode(Especie.self, forKey: .especie)
+        let leido: Contrapunto
+        do {
+            leido = try Contrapunto(cantusFirmus: cantus, contrapunto: eventos, especie: especie)
+        } catch let error as any ErrorAlLeer {
+            throw DecodingError.dataCorruptedError(
+                forKey: .contrapunto, in: contenedor, debugDescription: error.description)
+        }
+        self = leido
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var contenedor = encoder.container(keyedBy: Claves.self)
+        try contenedor.encode(cantusFirmus, forKey: .cantusFirmus)
+        try contenedor.encode(contrapunto.eventos, forKey: .contrapunto)
+        try contenedor.encode(especie, forKey: .especie)
     }
 }

@@ -29,6 +29,7 @@ public struct DatosDeAcorde: Hashable, Sendable, Codable {
     public let clases: [Int]
     public let componentes: [Componente]
 
+    /// Los datos del acorde, escritos en la notación.
     public init(_ acorde: Acorde, notacion: Notacion) {
         cifrado = acorde.cifrado(en: notacion)
         nombre = acorde.tipo.nombre(en: notacion)
@@ -93,6 +94,7 @@ public struct DatosDeEscala: Hashable, Sendable, Codable {
     /// Las cuatríadas de cada grado, si la escala es heptatónica y todas forman un acorde conocido.
     public let acordes: [AcordeDelGrado]?
 
+    /// Los datos de la escala, escritos en la notación.
     public init(_ escala: Escala, notacion: Notacion) {
         nombre = escala.nombre(en: notacion)
         notas = escala.notas.map { $0.nombre(en: notacion) }
@@ -123,6 +125,7 @@ public struct DatosDeConjunto: Hashable, Sendable, Codable {
     public let vectorIntervalico: [Int]
     public let vectorDeIndice: [Int]
 
+    /// Los datos del conjunto de clases, con las notas escritas en la notación.
     public init(_ conjunto: ConjuntoDeClases, notacion: Notacion) {
         clases = conjunto.clases
         notas = conjunto.notas().map { $0.nombre(en: notacion) }
@@ -148,6 +151,7 @@ public struct DatosDeSerie: Hashable, Sendable, Codable {
     /// Cada fila es una P, de izquierda a derecha; cada columna, una I, de arriba abajo.
     public let matriz: [[Int]]
 
+    /// Los datos de la serie, con las notas escritas en la notación.
     public init(_ serie: SerieDodecafonica, notacion: Notacion) {
         let nombres = ConjuntoDeClases.nombresDeLasClases(en: notacion)
         let mitades = serie.hexacordos

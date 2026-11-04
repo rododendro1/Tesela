@@ -13,11 +13,11 @@ import Foundation
 /// Ejemplos: Do4 = (0, 0), Sol4 = (1, 0), Re4 = (2, −1), La4 = (3, −1), Fa4 = (−1, 1).
 /// La coordenada `pasosDeQuinta` coincide con la de su `Nota`, así que la ortografía
 /// se conserva: Fa♯4 y Sol♭4 tienen el mismo MIDI pero son alturas distintas.
-
 public struct Altura: Hashable, Sendable {
     public let pasosDeQuinta: Int
     public let pasosDeOctava: Int
 
+    /// La altura a `pasosDeQuinta` quintas justas y `pasosDeOctava` octavas justas de Do4: `(1, 0)` es Sol4.
     public init(pasosDeQuinta: Int, pasosDeOctava: Int) {
         self.pasosDeQuinta = pasosDeQuinta
         self.pasosDeOctava = pasosDeOctava
@@ -149,6 +149,7 @@ public struct Altura: Hashable, Sendable {
         Intervalo(pasosDeQuinta: otra.pasosDeQuinta - pasosDeQuinta, pasosDeOctava: otra.pasosDeOctava - pasosDeOctava)
     }
 
+    /// `true` si suena igual que `otra` aunque se escriba distinto: Fa♯4 y Sol♭4.
     public func esEnarmonica(de otra: Altura) -> Bool { midi == otra.midi }
 
     /// `b - a` es el intervalo que va de `a` a `b`.

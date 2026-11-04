@@ -11,6 +11,7 @@ public struct CicloSimetrico: Hashable, Sendable {
     /// Un acorde por tónica equivalente, de la tónica hacia arriba.
     public let acordes: [Acorde]
 
+    /// Los acordes de ese tipo sobre cada tónica equivalente.
     public init(tipo: TipoDeAcorde, acordes: [Acorde]) {
         self.tipo = tipo
         self.acordes = acordes

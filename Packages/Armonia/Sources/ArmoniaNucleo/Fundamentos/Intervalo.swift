@@ -376,6 +376,8 @@ extension Intervalo: RepresentableComoTexto, Nombrable {
 
 // MARK: - Consonancia
 
+/// Cómo suena un intervalo según la práctica común: consonancia perfecta, imperfecta o disonancia
+/// (``Intervalo/consonancia``).
 public enum Consonancia: Hashable, Sendable, CustomStringConvertible {
     /// Unísono, 8ª, 5ª y 4ª justas (y sus compuestos).
     case perfecta

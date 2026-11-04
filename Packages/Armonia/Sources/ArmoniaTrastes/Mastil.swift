@@ -8,6 +8,7 @@ public struct PosicionEnElMastil: Hashable, Sendable, Comparable, CustomStringCo
     public let cuerda: Int
     public let traste: Int
 
+    /// Esa cuerda (0 es la más grave) en ese traste (0 al aire).
     public init(cuerda: Int, traste: Int) {
         self.cuerda = cuerda
         self.traste = traste

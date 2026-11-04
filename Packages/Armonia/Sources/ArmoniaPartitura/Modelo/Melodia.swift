@@ -10,9 +10,12 @@ import ArmoniaTeoria
 
 // MARK: - Melodía
 
+/// Una melodía: alturas en orden, sin ritmo (la que tiene ritmo es ``Voz``). Se transporta, se invierte y se
+/// retrograda como en la teoría, conservando la ortografía.
 public struct Melodia: Hashable, Sendable, CustomStringConvertible {
     public var alturas: [Altura]
 
+    /// La melodía de esas alturas, en ese orden.
     public init(_ alturas: [Altura]) {
         self.alturas = alturas
     }
@@ -112,6 +115,7 @@ public struct Melodia: Hashable, Sendable, CustomStringConvertible {
 extension Melodia: RandomAccessCollection {
     public var startIndex: Int { alturas.startIndex }
     public var endIndex: Int { alturas.endIndex }
+    /// La altura en esa posición, desde 0.
     public subscript(posicion: Int) -> Altura { alturas[posicion] }
 }
 
@@ -152,6 +156,7 @@ public struct Voz: Hashable, Sendable, Codable {
     /// Duración del compás incompleto inicial (0 si no hay anacrusa).
     public var anacrusa: Duracion
 
+    /// Una voz con esos eventos en ese compás, y una anacrusa de esa duración antes del primero completo.
     public init(_ eventos: [Evento], compas: Compas = .compasillo, anacrusa: Duracion = .cero) {
         self.eventos = eventos
         self.compas = compas
