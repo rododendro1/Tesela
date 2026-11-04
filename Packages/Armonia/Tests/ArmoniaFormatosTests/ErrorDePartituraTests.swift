@@ -9,34 +9,25 @@ import Testing
 /// Con datos que no casan (los de una pieza importada, los de quien usa una app), un error en vez de detener el
 /// programa.
 @Suite struct ErrorDePartituraTests {
-    private func motivo(_ hacer: () throws(ErrorDePartitura) -> Void) -> ErrorDePartitura.Motivo? {
-        do {
-            try hacer()
-            return nil
-        } catch {
-            return error.motivo
-        }
-    }
-
     @Test func unaProgresionConMasOMenosDuracionesQueAcordes() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
-        #expect(
-            motivo { _ = try analisis.partitura(duraciones: [.blanca, .negra]) }
-                == .duracionesPorAcorde(acordes: 4, duraciones: 2))
-        #expect(
-            motivo { _ = try analisis.partitura(duraciones: [.blanca, .cero, .negra, .negra]) }
-                == .duracionNoPositiva(indice: 1))
-        #expect(motivo { _ = try analisis.partitura(duraciones: Array(repeating: .negra, count: 4)) } == nil)
+        #expect(throws: ErrorDePartitura(.duracionesPorAcorde(acordes: 4, duraciones: 2))) {
+            try analisis.partitura(duraciones: [.blanca, .negra])
+        }
+        #expect(throws: ErrorDePartitura(.duracionNoPositiva(indice: 1))) {
+            try analisis.partitura(duraciones: [.blanca, .cero, .negra, .negra])
+        }
+        #expect(try analisis.partitura(duraciones: Array(repeating: .negra, count: 4)).pentagramas.count == 2)
     }
 
     @Test func unArpegioConSuRitmoQueNoCasa() {
         let acordes = [Acorde("Do"), Acorde("Sol")]
-        #expect(
-            motivo { _ = try Voz(arpegiando: acordes, duraciones: [.redonda]) }
-                == .duracionesPorAcorde(acordes: 2, duraciones: 1))
-        #expect(
-            motivo { _ = try Voz(arpegiando: acordes, duraciones: [.blanca, .blanca], figura: .cero) }
-                == .figuraSinDuracion)
+        #expect(throws: ErrorDePartitura(.duracionesPorAcorde(acordes: 2, duraciones: 1))) {
+            try Voz(arpegiando: acordes, duraciones: [.redonda])
+        }
+        #expect(throws: ErrorDePartitura(.figuraSinDuracion)) {
+            try Voz(arpegiando: acordes, duraciones: [.blanca, .blanca], figura: .cero)
+        }
     }
 
     @Test func elMensajeEnCadaIdioma() {
