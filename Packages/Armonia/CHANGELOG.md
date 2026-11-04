@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.4 (2026-11-04)
 
 ### Valores escritos a mano, sin opcionales
 
