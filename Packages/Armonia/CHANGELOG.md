@@ -2,6 +2,23 @@
 
 ## Sin publicar
 
+### Tipos con nombre en lugar de tuplas
+
+- **Cambio incompatible:** lo que antes era una tupla es ahora un tipo con nombre, `Hashable` y `Sendable`, con los
+  mismos campos, así que `x.campo` sigue igual y solo cambia lo que desestructura (`let (a, b) = …`) o compara:
+  - `Tonalidad.armonizarACuatroVoces(_:)` da un `CoralArmonizado` (`armonizacion`, `coral`).
+  - `[NotaDeLaMelodia].notasExtranas` da `[NotaExtranaEnLaMelodia]` (`indice`, `nota`).
+  - `Partitura.lineas` da `[Partitura.LineaEnPentagrama]` (`linea`, `pentagrama`).
+  - `Duracion.figuraYPuntillos` da un `FiguraConPuntillos` (`figura`, `puntillos`).
+  - `Polirritmia.ataques(ciclo:)` da `Polirritmia.Ataques` (`primera`, `segunda`).
+  - `SerieDodecafonica.formas` da `[SerieDodecafonica.FormaConSerie]` (`forma`, `serie`), y
+    `SerieDodecafonica.hexacordos`, `SerieDodecafonica.Hexacordos` (`primero`, `segundo`).
+  - `EjeDeInversion.extremos` da los dos puntos en un `[Double]`: `[0.5, 6.5]` para T1I.
+  - En `ArmoniaPresentacion`, `PresentacionDeContrapunto.ejemplo(_:)` da un `PresentacionDeContrapunto.Ejemplo`
+    (`cantus`, `contrapunto`).
+- **Cambio incompatible:** `Polirritmia.voces(compas:compases:alturas:)` es ahora
+  `voces(compas:compases:arriba:abajo:)`, con una altura para cada pulsación.
+
 ### El ritmo armónico, cada acorde con lo que dura
 
 - **`RitmoArmonico`**: una progresión con lo que dura cada acorde (`AcordeConDuracion`), su compás y su tempo.

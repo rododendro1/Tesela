@@ -150,8 +150,22 @@ public struct Partitura: Hashable, Sendable {
     public var instrumento: Int { encabezado.instrumento ?? 0 }
 
     /// Todas las voces, de arriba abajo, con el número de su pentagrama (desde 1).
-    public var lineas: [(linea: Linea, pentagrama: Int)] {
-        pentagramas.enumerated().flatMap { p, pentagrama in pentagrama.voces.map { ($0, p + 1) } }
+    public var lineas: [LineaEnPentagrama] {
+        pentagramas.enumerated().flatMap { p, pentagrama in
+            pentagrama.voces.map { LineaEnPentagrama(linea: $0, pentagrama: p + 1) }
+        }
+    }
+
+    /// Una voz de la partitura y el número de su pentagrama (desde 1): lo que da ``lineas``.
+    public struct LineaEnPentagrama: Hashable, Sendable {
+        public let linea: Linea
+        /// El número del pentagrama, desde 1 (el de arriba).
+        public let pentagrama: Int
+
+        public init(linea: Linea, pentagrama: Int) {
+            self.linea = linea
+            self.pentagrama = pentagrama
+        }
     }
 }
 

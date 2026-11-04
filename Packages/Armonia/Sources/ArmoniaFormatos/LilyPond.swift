@@ -185,7 +185,8 @@ package struct EscritorLilyPond: EscritorDePartitura {
 
     /// Una duración: con su figura (`4.`, `\breve`) si la tiene; si no, como fracción de redonda (`1*5/16`).
     package static func duracion(_ duracion: Duracion) -> String {
-        if let (figura, puntillos) = duracion.figuraYPuntillos {
+        if let escrita = duracion.figuraYPuntillos {
+            let (figura, puntillos) = (escrita.figura, escrita.puntillos)
             return self.figura(figura) + String(repeating: ".", count: puntillos)
         }
         return "1*\(duracion.numerador)/\(duracion.denominador)"
@@ -227,7 +228,8 @@ package struct EscritorLilyPond: EscritorDePartitura {
 
     /// `\tempo 4. = 60`, con la figura del pulso; en negras si no tiene figura.
     private static func indicacion(_ tempo: Tempo) -> String {
-        if let (figura, puntillos) = tempo.unidad.figuraYPuntillos {
+        if let escrita = tempo.unidad.figuraYPuntillos {
+            let (figura, puntillos) = (escrita.figura, escrita.puntillos)
             let unidad = self.figura(figura) + String(repeating: ".", count: puntillos)
             return "\\tempo \(unidad) = \(Int(tempo.pulsosPorMinuto.rounded()))"
         }

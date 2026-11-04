@@ -8,17 +8,17 @@ import Testing
 @Suite struct PresentacionDeContrapuntoTests {
     @Test func losEjemplosSeLeen() throws {
         for especie in Contrapunto.Especie.allCases {
-            let (cantus, contrapunto) = PresentacionDeContrapunto.ejemplo(especie)
+            let ejemplo = PresentacionDeContrapunto.ejemplo(especie)
             let presentado = try PresentacionDeContrapunto.presentar(
-                cantus: cantus, contrapunto: contrapunto, especie: especie, notacion: .espanolCompacto)
-            #expect(presentado.filas.count == cantus.split(separator: " ").count, "especie \(especie.rawValue)")
+                cantus: ejemplo.cantus, contrapunto: ejemplo.contrapunto, especie: especie, notacion: .espanolCompacto)
+            #expect(presentado.filas.count == ejemplo.cantus.split(separator: " ").count, "especie \(especie.rawValue)")
             #expect(presentado.ficheros.count == 6)
         }
         // Los de la documentación del motor, que se sabe que no tienen faltas.
         for especie in [Contrapunto.Especie.primera, .segunda, .cuarta] {
-            let (cantus, contrapunto) = PresentacionDeContrapunto.ejemplo(especie)
+            let ejemplo = PresentacionDeContrapunto.ejemplo(especie)
             let presentado = try PresentacionDeContrapunto.presentar(
-                cantus: cantus, contrapunto: contrapunto, especie: especie, notacion: .espanolCompacto)
+                cantus: ejemplo.cantus, contrapunto: ejemplo.contrapunto, especie: especie, notacion: .espanolCompacto)
             #expect(presentado.esCorrecto, "especie \(especie.rawValue)")
             #expect(presentado.informe == ["Sin faltas."])
         }
@@ -43,17 +43,17 @@ import Testing
     }
 
     @Test func losSilenciosYLasLigaduras() throws {
-        let (cantus, contrapunto) = PresentacionDeContrapunto.ejemplo(.cuarta)
+        let ejemplo = PresentacionDeContrapunto.ejemplo(.cuarta)
         let presentado = try PresentacionDeContrapunto.presentar(
-            cantus: cantus, contrapunto: contrapunto, especie: .cuarta, notacion: .espanolCompacto)
+            cantus: ejemplo.cantus, contrapunto: ejemplo.contrapunto, especie: .cuarta, notacion: .espanolCompacto)
         #expect(presentado.filas[0].contrapunto == "– Re₅~")
         #expect(presentado.filas[0].intervalos == "– 8")
     }
 
     @Test func elCompasQueSuena() throws {
-        let (cantus, contrapunto) = PresentacionDeContrapunto.ejemplo(.segunda)
+        let ejemplo = PresentacionDeContrapunto.ejemplo(.segunda)
         let presentado = try PresentacionDeContrapunto.presentar(
-            cantus: cantus, contrapunto: contrapunto, especie: .segunda, notacion: .espanolCompacto)
+            cantus: ejemplo.cantus, contrapunto: ejemplo.contrapunto, especie: .segunda, notacion: .espanolCompacto)
         // Pasos: el cantus en el 0 y el contrapunto en la segunda blanca, luego dos por compás y el final.
         #expect(presentado.compas(enElPaso: 0) == 0)
         #expect(presentado.compas(enElPaso: 1) == 0)

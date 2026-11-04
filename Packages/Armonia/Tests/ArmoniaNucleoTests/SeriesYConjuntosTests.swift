@@ -231,9 +231,9 @@ import Testing
         #expect(ConjuntoDeClases([0, 3, 6, 9]).ejesDeSimetria.map(\.indice) == [0, 3, 6, 9])
         #expect(ConjuntoDeClases([0, 1]).ejesDeSimetria.map(\.description) == ["0½–6½"])
         let eje = EjeDeInversion(indice: 13)
-        #expect(eje.indice == 1 && eje.clasesFijas.isEmpty && eje.extremos == (0.5, 6.5))
+        #expect(eje.indice == 1 && eje.clasesFijas.isEmpty && eje.extremos == [0.5, 6.5])
         #expect(EjeDeInversion(indice: 4).clasesFijas == [2, 8])
-        #expect(EjeDeInversion(indice: 11).extremos == (5.5, 11.5))
+        #expect(EjeDeInversion(indice: 11).extremos == [5.5, 11.5])
         #expect(EjeDeInversion(indice: 2) < EjeDeInversion(indice: 3))
         for clases in [[0, 4, 8], [0, 2, 4, 6, 8, 10], [0, 1, 3, 7], [0, 1, 2, 3]] {
             let conjunto = ConjuntoDeClases(clases)

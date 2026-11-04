@@ -93,29 +93,41 @@ public struct Polirritmia: Hashable, Sendable, Codable {
     }
 
     /// Los ataques de cada pulsación en un tramo de `ciclo`, desde 0.
-    public func ataques(ciclo: Duracion = .redonda) -> (primera: [Duracion], segunda: [Duracion]) {
-        ((0..<primera).map { ciclo * $0 / primera }, (0..<segunda).map { ciclo * $0 / segunda })
+    public func ataques(ciclo: Duracion = .redonda) -> Ataques {
+        Ataques(
+            primera: (0..<primera).map { ciclo * $0 / primera }, segunda: (0..<segunda).map { ciclo * $0 / segunda })
+    }
+
+    /// Los ataques de cada pulsación de una polirritmia, desde 0: lo que da ``Polirritmia/ataques(ciclo:)``.
+    public struct Ataques: Hashable, Sendable {
+        public let primera: [Duracion]
+        public let segunda: [Duracion]
+
+        public init(primera: [Duracion], segunda: [Duracion]) {
+            self.primera = primera
+            self.segunda = segunda
+        }
     }
 
     /// El ritmo de las dos juntas: lo que va de cada ataque, de una u otra, al siguiente.
     public func resultante(ciclo: Duracion = .redonda) -> [Duracion] {
-        let (a, b) = ataques(ciclo: ciclo)
-        let todos = Set(a + b).sorted()
+        let golpes = ataques(ciclo: ciclo)
+        let todos = Set(golpes.primera + golpes.segunda).sorted()
         return todos.indices.map { i in (i + 1 < todos.count ? todos[i + 1] : ciclo) - todos[i] }
     }
 
-    /// Las dos voces que la tocan durante `compases` compases de `compas`, cada una en su altura: la primera
-    /// pulsación arriba y la segunda abajo.
+    /// Las dos voces que la tocan durante `compases` compases de `compas`: la primera pulsación en `arriba` y la
+    /// segunda en `abajo`.
     ///
     ///     let voces = Polirritmia(3, contra: 2)!.voces()
     ///     voces[0].ritmo == [Duracion(1, 3), Duracion(1, 3), Duracion(1, 3)]   // true
     public func voces(
-        compas: Compas = .compasillo, compases: Int = 1, alturas: (Altura, Altura) = ("Do5", "Do4")
+        compas: Compas = .compasillo, compases: Int = 1, arriba: Altura = "Do5", abajo: Altura = "Do4"
     ) -> [Voz] {
         let ciclo = compas.duracion
         let veces = max(1, compases)
-        let arriba = (0..<(primera * veces)).map { _ in Evento(alturas.0, ciclo / primera) }
-        let abajo = (0..<(segunda * veces)).map { _ in Evento(alturas.1, ciclo / segunda) }
-        return [Voz(arriba, compas: compas), Voz(abajo, compas: compas)]
+        let deArriba = (0..<(primera * veces)).map { _ in Evento(arriba, ciclo / primera) }
+        let deAbajo = (0..<(segunda * veces)).map { _ in Evento(abajo, ciclo / segunda) }
+        return [Voz(deArriba, compas: compas), Voz(deAbajo, compas: compas)]
     }
 }
