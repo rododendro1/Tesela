@@ -160,10 +160,11 @@ import Testing
     /// Un canal que ya tiene la inflexión y el instrumento se vuelve a usar, sin mandarlos otra vez; si no, el que
     /// lleva más tiempo callado.
     @Test func losCanalesSeVuelvenAUsar() {
-        let pistas: [[ArchivoMIDI.NotaMIDI]] = [[
+        let notas: [ArchivoMIDI.NotaMIDI] = [
             (60, 0, 480, 0, 80), (64, 0, 480, -14, 80), (62, 480, 960, 0, 80), (65, 480, 960, -14, 80),
             (67, 960, 1440, 20, 80), (71, 960, 1440, 30, 80),
-        ]]
+        ]
+        let pistas = [notas]
         let mensajes = ArchivoMIDI.mensajes(de: pistas, instrumentos: [0])[0]
         // El Fa vuelve al 1, que ya está a −14 cents; el Si, que se aparta distinto, va al que lleva más callado.
         #expect(canales(mensajes) == [0, 1, 0, 1, 0, 2])
