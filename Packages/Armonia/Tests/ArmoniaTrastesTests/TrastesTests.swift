@@ -246,9 +246,10 @@ extension DigitacionTests {
     }
 
     @Test func unNombreDesconocidoNoEsNingunInstrumento() {
+        let opciones = Encordado.todos.map(\.nombre)
         #expect(
             throws: ErrorDeLecturaDeTeoria(
-                texto: "arpa", posicion: nil, motivo: .nombreNoReconocido("arpa", opciones: Encordado.todos.map(\.nombre)))
+                texto: "arpa", posicion: nil, motivo: .nombreNoReconocido("arpa", opciones: opciones))
         ) { try Encordado(leyendo: "arpa") }
         #expect(throws: ErrorDeLecturaDeTeoria.self) { try Encordado(leyendo: "") }
     }

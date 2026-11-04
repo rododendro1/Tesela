@@ -344,7 +344,7 @@ try formato.teclado().semitonos(hacia: .qMasSMenos) == 2                  // tru
 try FormatoUIL(leyendo: "M2,P5,P4;R30M").descripcion == "2,7,5;R30M"      // true
 try TecladoIsomorfico.conUIL("3,7,4;R0").semitonos(hacia: .sMasRMenos) == 7   // true
 TecladoIsomorfico.wickiHayden.uil?.descripcion == "2,7,5;R30M"            // true
-TecladoIsomorfico.wickiHayden.rotado(grados: -30)?.uil?.descripcion == "2,7,5;R0M"   // true
+try TecladoIsomorfico.wickiHayden.rotado(grados: -30).uil?.descripcion == "2,7,5;R0M"   // true
 TecladoIsomorfico.wickiHayden.reflejado.uil?.descripcion == "2,7,5;R330"  // true
 FormatoUIL.conocidos.count == 8                                           // true
 ```
@@ -368,7 +368,7 @@ V, los que sube un paso hacia arriba; las diagonales suben H + V y V − H. Trae
 disposición por defecto del LinnStrument y la «4ths» del Launchpad y del Push), en terceras mayores (1, 4), en quintas
 (1, 7, como las cuerdas del violín), Wicki-Hayden en cuadrícula (2, 5, con la quinta en la diagonal), de tonos enteros
 (2, 1, como Jankó) y el Tonnetz de Euler (7, 4: quintas en horizontal y terceras mayores en vertical). Una casilla es
-una ``CasillaCuadrada``, con su columna y su fila; `girado()` le da un cuarto de vuelta y `reflejado`, la vuelve del
+una ``CasillaCuadrada``, con su columna y su fila; `rotado()` le da un cuarto de vuelta y `reflejado`, la vuelve del
 revés, como en un espejo.
 
 ```swift
@@ -376,7 +376,7 @@ let cuartas = TecladoCuadrado.cuartas
 cuartas.midi(en: CasillaCuadrada(columna: 2, fila: 1)) == 67              // true
 cuartas.semitonosEnDiagonal == 6                                          // true
 TecladoCuadrado.wickiHaydenCuadrado.semitonosEnDiagonal == 7              // true
-cuartas.girado().semitonosEnH == 5                                        // true
+cuartas.rotado().semitonosEnH == 5                                        // true
 cuartas.reflejado.semitonosEnH == -1                                      // true
 TecladoCuadrado(nombre: "Tonos", semitonosEnH: 2, semitonosEnV: 4).esCompleto == false   // true
 let ventana = CasillaCuadrada.rectangulo(columnas: 0...11, filas: 0...3)

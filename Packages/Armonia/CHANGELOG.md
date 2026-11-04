@@ -1,5 +1,34 @@
 # Cambios
 
+## Sin publicar
+
+### Los últimos lectores que daban `nil` dicen por qué fallan
+
+- **Cambio incompatible:** `Tonalidad.acorde(romano:)` y `acordes(romanos:)` lanzan en lugar de devolver `nil`:
+  `ErrorDeLectura` (`.textoVacio`) si no hay nada que leer, y `ErrorDeLecturaDeTeoria` en el carácter donde empieza
+  lo que no se lee, con dos motivos nuevos: `.cifradoRomanoNoValido` y `.destinoNoTonicalizable`, si lo que va tras la
+  barra no es una tríada mayor o menor en estado fundamental («V/vii°»).
+- **Cambio incompatible:** `Tonalidad.acorde(sobre:cifras:)` y `acordes(bajoCifrado:)` también lanzan:
+  `.cifrasNoValidas` en el carácter que no es una cifra (o en la segunda de dos alteraciones seguidas),
+  `.cifrasSinAcorde` si las cifras no forman acorde sobre el bajo, y el error de la nota si el bajo no se lee.
+  `Coral.realizar(bajoCifrado:en:soprano:)` lanza lo mismo, y sigue dando `nil` si no hay realización sin faltas.
+- **Cambio incompatible:** `TipoDeEscala.buscar(nombre:)`, `Encordado(nombre:)` e `Idioma(nombre:)` son ahora
+  `init(leyendo:)` y lanzan: `.tipoDeEscalaNoReconocido`, `.nombreNoReconocido` con los nombres de
+  `Encordado.todos`, y `ErrorDeLectura.Motivo.idiomaNoReconocido` (nuevo) con los códigos de los quince idiomas.
+  Donde se escribía `TipoDeEscala.buscar(nombre: texto)`, ahora `try? TipoDeEscala(leyendo: texto)`.
+- Los cinco motivos nuevos tienen su explicación en los quince idiomas.
+- `Idioma(codigo:)` y `ColorRGB(hexadecimal:)` siguen dando `nil`: buscan un código o leen un formato fijo, sin
+  más motivo que dar.
+
+### Girar y reflejar un teclado, igual en todos
+
+- **Cambio incompatible:** `TecladoIsomorfico.rotado(grados:nombre:)` lanza `ErrorDeUIL.rotacionNoValida` si los
+  grados no son un múltiplo de 30, como ya hacía `FormatoUIL.rotado(grados:)`, en lugar de devolver `nil`.
+- **Cambio incompatible:** `FormatoUIL.reflejado` ya no es opcional: el reflejo de un formato válido siempre lo es.
+- **Cambio incompatible:** `TecladoCuadrado.girado(nombre:)` y `girado(cuartos:)` son ahora
+  `rotado(cuartos:nombre:)`, con un cuarto de vuelta si no se dice otra cosa, como `TecladoIsomorfico` y
+  `MapaHexagonal`, que ya decían `rotado`. `cuartas.girado()` es `cuartas.rotado()`.
+
 ## 0.3.4 (2026-11-04)
 
 ### Valores escritos a mano, sin opcionales

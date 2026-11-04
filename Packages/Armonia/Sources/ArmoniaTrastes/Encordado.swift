@@ -148,8 +148,9 @@ extension Encordado {
                     ([encordado.nombre] + (encordado.traduccion?.todos ?? [])).contains { $0.claveDeBusqueda == clave }
                 })
         else {
+            let opciones = Encordado.todos.map(\.nombre)
             throw ErrorDeLecturaDeTeoria(
-                texto: texto, posicion: nil, motivo: .nombreNoReconocido(texto, opciones: Encordado.todos.map(\.nombre)))
+                texto: texto, posicion: nil, motivo: .nombreNoReconocido(texto, opciones: opciones))
         }
         self = encontrado
     }

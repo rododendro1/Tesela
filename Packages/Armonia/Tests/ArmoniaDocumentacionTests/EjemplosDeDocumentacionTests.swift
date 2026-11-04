@@ -252,7 +252,7 @@ import Hexagonos
         comprobar(try FormatoUIL(leyendo: "M2,P5,P4;R30M").descripcion == "2,7,5;R30M", #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 344)
         comprobar(try TecladoIsomorfico.conUIL("3,7,4;R0").semitonos(hacia: .sMasRMenos) == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 345)
         comprobar(TecladoIsomorfico.wickiHayden.uil?.descripcion == "2,7,5;R30M", #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 346)
-        comprobar(TecladoIsomorfico.wickiHayden.rotado(grados: -30)?.uil?.descripcion == "2,7,5;R0M", #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 347)
+        comprobar(try TecladoIsomorfico.wickiHayden.rotado(grados: -30).uil?.descripcion == "2,7,5;R0M", #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 347)
         comprobar(TecladoIsomorfico.wickiHayden.reflejado.uil?.descripcion == "2,7,5;R330", #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 348)
         comprobar(FormatoUIL.conocidos.count == 8, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 349)
     }
@@ -263,7 +263,7 @@ import Hexagonos
         comprobar(cuartas.midi(en: CasillaCuadrada(columna: 2, fila: 1)) == 67, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 376)
         comprobar(cuartas.semitonosEnDiagonal == 6, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 377)
         comprobar(TecladoCuadrado.wickiHaydenCuadrado.semitonosEnDiagonal == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 378)
-        comprobar(cuartas.girado().semitonosEnH == 5, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 379)
+        comprobar(cuartas.rotado().semitonosEnH == 5, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 379)
         comprobar(cuartas.reflejado.semitonosEnH == -1, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 380)
         comprobar(TecladoCuadrado(nombre: "Tonos", semitonosEnH: 2, semitonosEnV: 4).esCompleto == false, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 381)
         let ventana = CasillaCuadrada.rectangulo(columnas: 0...11, filas: 0...3)

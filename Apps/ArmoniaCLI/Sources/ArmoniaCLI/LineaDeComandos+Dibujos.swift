@@ -599,7 +599,7 @@ extension LineaDeComandos {
             notas = vuelta.puntos.map(\.nota)
         }
 
-        teclado = teclado.girado(cuartos: giros)
+        teclado = teclado.rotado(cuartos: giros)
         if espejo { teclado = teclado.reflejado }
         teclado = teclado.conOrigen(origen)
         if enTono, let escala { teclado = teclado.enTono(escala) }

@@ -64,6 +64,16 @@ public struct FormatoUIL: Hashable, Sendable {
         self.tonos = tonos
     }
 
+    /// Las medidas de un formato que ya se comprobaron, con otro giro (múltiplo de 30) y otro espejo.
+    private init(_ formato: FormatoUIL, rotacion: Int, espejo: Bool) {
+        self.menor = formato.menor
+        self.mayor = formato.mayor
+        self.diferencia = formato.diferencia
+        self.rotacion = modulo(rotacion, 360)
+        self.espejo = espejo
+        self.tonos = formato.tonos
+    }
+
     /// El formato de un teclado: la forma `L,G,D;R…` con la que se escribe, o `nil` si no sube ningún intervalo.
     /// Si dos formatos dan el mismo teclado (en los casos especiales), elige el que no está en espejo y gira menos.
     public init?(teclado: TecladoIsomorfico) {
@@ -177,19 +187,15 @@ public struct FormatoUIL: Hashable, Sendable {
         return base[modulo(relativo / 60, 6)]
     }
 
-    /// El mismo formato con otro giro, sumado al actual: `rotado(grados: 30)`.
+    /// El mismo formato con otro giro, sumado al actual: `rotado(grados: 30)`. Lanza `ErrorDeUIL.rotacionNoValida`
+    /// si los grados no son un múltiplo de 30, como ``TecladoIsomorfico/rotado(grados:nombre:)``.
     public func rotado(grados: Int) throws -> FormatoUIL {
-        try FormatoUIL(
-            menor: menor, mayor: mayor, diferencia: diferencia, rotacion: rotacion + grados,
-            espejo: espejo, tonos: tonos)
+        guard grados % 30 == 0 else { throw ErrorDeUIL.rotacionNoValida(grados) }
+        return FormatoUIL(self, rotacion: rotacion + grados, espejo: espejo)
     }
 
     /// El formato reflejado como en un espejo vertical: cambia el espejo y el giro se invierte (`R30M` ↔ `R330`).
-    public var reflejado: FormatoUIL? {
-        try? FormatoUIL(
-            menor: menor, mayor: mayor, diferencia: diferencia, rotacion: -rotacion,
-            espejo: !espejo, tonos: tonos)
-    }
+    public var reflejado: FormatoUIL { FormatoUIL(self, rotacion: -rotacion, espejo: !espejo) }
 
     /// El teclado de 12 notas con este formato, con la casilla `(0, 0)` en `midiDelOrigen`.
     /// Falla con `afinacionNoSoportada` si `T` no es 12.

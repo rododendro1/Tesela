@@ -291,23 +291,18 @@ public struct TecladoCuadrado: Hashable, Sendable {
 
     // MARK: Giros y espejo
 
-    /// El teclado girado un cuarto de vuelta en sentido horario: lo que subía hacia arriba sube hacia la derecha, y lo
-    /// que subía hacia la derecha, hacia abajo (H pasa a ser V, y V, −H). Cuatro giros dan la vuelta entera.
-    public func girado(nombre: String? = nil) -> TecladoCuadrado {
-        TecladoCuadrado(
-            nombre: nombre ?? "\(self.nombre) ↻90°", semitonosEnH: semitonosEnV, semitonosEnV: -semitonosEnH,
-            midiDelOrigen: midiDelOrigen, grados: grados)
-    }
-
-    /// El teclado girado `cuartos` cuartos de vuelta en sentido horario, en antihorario si son negativos.
-    public func girado(cuartos: Int) -> TecladoCuadrado {
+    /// El teclado girado `cuartos` cuartos de vuelta en sentido horario (uno si no se dice), en antihorario si son
+    /// negativos, como ``TecladoIsomorfico/rotado(doceavos:nombre:)``. En cada cuarto, lo que subía hacia arriba sube
+    /// hacia la derecha, y lo que subía hacia la derecha, hacia abajo (H pasa a ser V, y V, −H). Cuatro dan la vuelta
+    /// entera.
+    public func rotado(cuartos: Int = 1, nombre: String? = nil) -> TecladoCuadrado {
         let vueltas = modulo(cuartos, 4)
-        guard vueltas > 0 else { return self }
-        var teclado = self
-        for _ in 0..<vueltas { teclado = teclado.girado(nombre: teclado.nombre) }
+        if vueltas == 0 && nombre == nil { return self }
+        var (enH, enV) = (semitonosEnH, semitonosEnV)
+        for _ in 0..<vueltas { (enH, enV) = (enV, -enH) }
         return TecladoCuadrado(
-            nombre: "\(nombre) ↻\(vueltas * 90)°", semitonosEnH: teclado.semitonosEnH,
-            semitonosEnV: teclado.semitonosEnV, midiDelOrigen: midiDelOrigen, grados: grados)
+            nombre: nombre ?? "\(self.nombre) ↻\(vueltas * 90)°", semitonosEnH: enH, semitonosEnV: enV,
+            midiDelOrigen: midiDelOrigen, grados: grados)
     }
 
     /// El teclado reflejado como en un espejo vertical: lo que subía hacia la derecha sube hacia la izquierda.

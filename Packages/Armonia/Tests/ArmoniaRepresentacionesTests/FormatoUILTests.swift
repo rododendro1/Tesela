@@ -116,8 +116,8 @@ import Testing
         // Los acordeones de la app son los del artículo girados 90°.
         #expect(TecladoIsomorfico.acordeonC.uil?.descripcion == "1,3,2;R0M")
         #expect(TecladoIsomorfico.acordeonB.uil?.descripcion == "1,3,2;R0")
-        misma(try TecladoIsomorfico.conUIL("1,3,2;R270M").rotado(grados: 90)!, .acordeonC)
-        misma(try TecladoIsomorfico.conUIL("1,3,2;R270").rotado(grados: 90)!, .acordeonB)
+        misma(try TecladoIsomorfico.conUIL("1,3,2;R270M").rotado(grados: 90), .acordeonC)
+        misma(try TecladoIsomorfico.conUIL("1,3,2;R270").rotado(grados: 90), .acordeonB)
     }
 
     @Test func elNombreYElOrigenDelTeclado() throws {
@@ -138,10 +138,10 @@ import Testing
                     let teclado = try formato.teclado()
                     let siguiente = try formato.rotado(grados: 30).teclado()
                     misma(teclado.rotado(doceavos: 1), siguiente, formato.descripcion)
-                    misma(teclado.rotado(grados: 90)!, try formato.rotado(grados: 90).teclado(), formato.descripcion)
+                    misma(try teclado.rotado(grados: 90), try formato.rotado(grados: 90).teclado(), formato.descripcion)
                     // El espejo cambia M y niega el giro (salvo cuando L = D, donde es indiferente).
-                    if let reflejado = formato.reflejado, formato.caso != .igualdad {
-                        misma(teclado.reflejado, try reflejado.teclado(), formato.descripcion)
+                    if formato.caso != .igualdad {
+                        misma(teclado.reflejado, try formato.reflejado.teclado(), formato.descripcion)
                     }
                     // Lo que se escribe se lee igual: el formato del teclado da el mismo teclado.
                     misma(
@@ -166,13 +166,14 @@ import Testing
                 #expect(girado.semitonos(hacia: d) == -girado.semitonos(hacia: d.opuesta))
             }
         }
-        #expect(TecladoIsomorfico.janko.rotado(grados: 45) == nil)
-        #expect(TecladoIsomorfico.janko.rotado(grados: -30) != nil)
+        #expect(throws: ErrorDeUIL.rotacionNoValida(45)) { try TecladoIsomorfico.janko.rotado(grados: 45) }
+        #expect(throws: ErrorDeUIL.rotacionNoValida(45)) { try FormatoUIL(leyendo: "1,2,1").rotado(grados: 45) }
+        #expect(throws: Never.self) { try TecladoIsomorfico.janko.rotado(grados: -30) }
     }
 
     @Test func wickiHaydenGiradoYEnEspejo() throws {
         // Wicki-Hayden (R30M) girado −30° es el plano, R0M; en espejo es el «espejo» de la app.
-        misma(TecladoIsomorfico.wickiHayden.rotado(grados: -30)!, .wickiHaydenPlano)
+        misma(try TecladoIsomorfico.wickiHayden.rotado(grados: -30), .wickiHaydenPlano)
         misma(TecladoIsomorfico.wickiHayden.reflejado, .wickiHaydenEspejo)
         // Los intervalos de cada rumbo del Wicki-Hayden: 30°: quinta, 90°: tono, 330°: cuarta.
         let wh = TecladoIsomorfico.wickiHayden
