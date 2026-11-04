@@ -195,7 +195,7 @@ import Testing
         #expect(Set(pieza.notas.map(\.parte)) == [0])
         #expect(pieza.notas.map(\.altura.midi) == [60, 64, 67, 62])
         let desvios = pieza.notas.map(\.desvio)
-        for (leido, esperado) in zip(desvios, [0, -14, 2, -50]) { #expect(abs(leido - esperado) < 0.05) }
+        for (leido, esperado) in zip(desvios, [0, -14, 2, -50] as [Double]) { #expect(abs(leido - esperado) < 0.05) }
         // Las cuatro voces de un coral siguen siendo cuatro partes.
         let coral = try Coral(leyendo: "Do3 Sol3 Mi4 Do5 | Sol2 Sol3 Re4 Si4")
         #expect(Set(try PiezaImportada(midi: coral.midi()).notas.map(\.parte)) == [0, 1, 2, 3])
