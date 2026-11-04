@@ -230,14 +230,15 @@ package enum Exportacion {
     /// Las voces de un coral repartidas en dos pentagramas, como se escriben: las de la mitad
     /// aguda arriba y las de la grave abajo, de aguda a grave en cada uno. Si comparten
     /// pentagrama, la plica de la de arriba va hacia arriba y la de la de abajo, hacia abajo.
-    /// `indice` es el de la voz en el coral (0, el bajo), y el último acorde se alarga hasta la barra.
-    package static func voces(de coral: Coral, duracion: Duracion, compas: Compas)
+    /// `indice` es el de la voz en el coral (0, el bajo), y el último acorde se alarga hasta la barra si
+    /// `alargarElUltimo`.
+    package static func voces(de coral: Coral, duracion: Duracion, compas: Compas, alargarElUltimo: Bool = true)
         -> [(voz: Voz, pentagrama: Int, plicaArriba: Bool?, indice: Int)]
     {
         let n = coral.numeroDeVoces
         let agudas = Array((n / 2..<n).reversed())
         let graves = Array((0..<n / 2).reversed())
-        let final = hastaLaBarra(duracion, coral.acordes.count, compas)
+        let final = alargarElUltimo ? hastaLaBarra(duracion, coral.acordes.count, compas) : duracion
         var voces: [(voz: Voz, pentagrama: Int, plicaArriba: Bool?, indice: Int)] = []
         for (pentagrama, indices) in [(1, agudas), (2, graves)] {
             for (k, v) in indices.enumerated() {
@@ -346,65 +347,59 @@ package protocol EscritorDePartitura {
 }
 
 extension Exportacion {
-    /// Una voz en un solo pentagrama. Sin `tonalidad`, se estima a partir de las notas; sin `clave`, la de sol
-    /// o la de fa, según el registro.
+    /// La partitura en el formato de `Escritor`: cada pentagrama con su clave (la que pidan sus notas si no lleva
+    /// ninguna), cada voz en el suyo con sus cifrados y su análisis, y la tonalidad del análisis debajo del último.
     package static func documento<Escritor: EscritorDePartitura>(
-        _: Escritor.Type, de voz: Voz, tonalidad: Tonalidad?, clave: Clave?, tempo: Tempo?,
-        titulo: String?, parte: String
+        _: Escritor.Type, de partitura: Partitura
     ) -> String {
-        let armadura = tonalidad ?? Self.tonalidad(de: voz)
-        let laClave = clave ?? Clave.masAdecuada(para: voz.eventos.flatMap(\.alturas)) ?? .sol
+        let encabezado = partitura.encabezado
         var escritor = Escritor(
-            compas: voz.compas, anacrusa: voz.anacrusa, tonalidad: armadura,
-            tempo: tempo, titulo: titulo, parte: parte, claves: [laClave])
-        escritor.anadir(voz, pentagrama: 1, plicaArriba: nil, cifrados: [:], analisis: [:], notacion: .espanolCompacto)
-        return escritor.documento
-    }
-
-    /// Un coral en dos pentagramas (ver `voces(de:duracion:compas:)`), con los cifrados encima de la voz más aguda
-    /// y el análisis debajo de la más grave (ver `anotaciones(de:duracion:tonalidad:cifrados:analisis:)`).
-    package static func documento<Escritor: EscritorDePartitura>(
-        _: Escritor.Type, de coral: Coral, duracion: Duracion, compas: Compas, tonalidad: Tonalidad?,
-        tempo: Tempo?, titulo: String?, parte: String, cifrados: Bool, analisis: Bool, notacion: Notacion
-    ) -> String {
-        let anotado = Self.anotaciones(
-            de: coral, duracion: duracion, tonalidad: tonalidad, cifrados: cifrados, analisis: analisis)
-        var escritor = Escritor(
-            compas: compas, anacrusa: .cero, tonalidad: anotado.tonalidad,
-            tempo: tempo, titulo: titulo, parte: parte, claves: [.sol, .fa])
-        if let rotulo = anotado.tonalidadDelAnalisis { escritor.rotulo = (rotulo.nombre(en: notacion) + ":", 2) }
-        let n = coral.numeroDeVoces
-        for linea in voces(de: coral, duracion: duracion, compas: compas) {
-            // Los cifrados, con la voz más aguda; el análisis, con la más grave (si no es también la más aguda).
-            let esLaMasAguda = linea.indice == n - 1
+            compas: partitura.compas, anacrusa: partitura.anacrusa, tonalidad: encabezado.tonalidad,
+            tempo: encabezado.tempo, titulo: encabezado.titulo, parte: encabezado.parte,
+            claves: partitura.pentagramas.map(\.claveEscrita))
+        if let rotulo = partitura.tonalidadDelAnalisis {
+            escritor.rotulo = (rotulo.nombre(en: partitura.notacion) + ":", partitura.pentagramas.count)
+        }
+        for (linea, pentagrama) in partitura.lineas {
             escritor.anadir(
-                linea.voz, pentagrama: linea.pentagrama, plicaArriba: linea.plicaArriba,
-                cifrados: esLaMasAguda ? anotado.cifrados : [:],
-                analisis: linea.indice == 0 && !esLaMasAguda ? anotado.analisis : [:], notacion: notacion)
+                linea.voz, pentagrama: pentagrama, plicaArriba: linea.plicaArriba, cifrados: linea.cifrados,
+                analisis: linea.analisis, notacion: partitura.notacion)
         }
         return escritor.documento
     }
 
-    /// Una progresión en dos pentagramas: los acordes en posición cerrada, con su cifrado encima, y el bajo, con
-    /// el análisis debajo. El último acorde se alarga hasta la barra.
+    /// Una voz en un solo pentagrama. Sin `tonalidad`, se estima a partir de las notas; sin `clave`, la de sol
+    /// o la de fa, según el registro.
     package static func documento<Escritor: EscritorDePartitura>(
-        _: Escritor.Type, de progresion: AnalisisArmonico, duraciones: [Duracion], compas: Compas, tempo: Tempo?,
-        titulo: String?, parte: String, cifrados: Bool, analisis: Bool, notacion: Notacion
+        _ escritor: Escritor.Type, de voz: Voz, tonalidad: Tonalidad?, clave: Clave?, tempo: Tempo?,
+        titulo: String?, parte: String
     ) -> String {
-        comprobar(duraciones, acordes: progresion.acordes.count)
-        let (superior, grave) = Self.progresion(
-            progresion.acordes.map(\.acorde), duraciones: hastaLaBarra(duraciones, compas))
-        let anotado = Self.anotaciones(de: progresion, duraciones: duraciones, cifrados: cifrados, analisis: analisis)
-        var escritor = Escritor(
-            compas: compas, anacrusa: .cero, tonalidad: progresion.tonalidad, tempo: tempo,
-            titulo: titulo, parte: parte, claves: [.sol, .fa])
-        if let rotulo = anotado.tonalidadDelAnalisis { escritor.rotulo = (rotulo.nombre(en: notacion) + ":", 2) }
-        escritor.anadir(
-            Voz(superior, compas: compas), pentagrama: 1, plicaArriba: nil,
-            cifrados: anotado.cifrados, analisis: [:], notacion: notacion)
-        escritor.anadir(
-            Voz(grave, compas: compas), pentagrama: 2, plicaArriba: nil,
-            cifrados: [:], analisis: anotado.analisis, notacion: notacion)
-        return escritor.documento
+        let encabezado = Encabezado(titulo: titulo, tonalidad: tonalidad, tempo: tempo, parte: parte)
+        return documento(escritor, de: voz.partitura(clave: clave, encabezado: encabezado))
+    }
+
+    /// Un coral en dos pentagramas (ver `Coral.partitura(duracion:compas:encabezado:cifrados:analisis:notacion:)`).
+    package static func documento<Escritor: EscritorDePartitura>(
+        _ escritor: Escritor.Type, de coral: Coral, duracion: Duracion, compas: Compas, tonalidad: Tonalidad?,
+        tempo: Tempo?, titulo: String?, parte: String, cifrados: Bool, analisis: Bool, notacion: Notacion
+    ) -> String {
+        let encabezado = Encabezado(titulo: titulo, tonalidad: tonalidad, tempo: tempo, parte: parte)
+        let partitura = coral.partitura(
+            duracion: duracion, compas: compas, encabezado: encabezado, cifrados: cifrados, analisis: analisis,
+            notacion: notacion)
+        return documento(escritor, de: partitura)
+    }
+
+    /// Una progresión en dos pentagramas (ver
+    /// `AnalisisArmonico.partitura(duraciones:compas:encabezado:cifrados:analisis:notacion:)`).
+    package static func documento<Escritor: EscritorDePartitura>(
+        _ escritor: Escritor.Type, de progresion: AnalisisArmonico, duraciones: [Duracion], compas: Compas,
+        tempo: Tempo?, titulo: String?, parte: String, cifrados: Bool, analisis: Bool, notacion: Notacion
+    ) -> String {
+        let encabezado = Encabezado(titulo: titulo, tempo: tempo, parte: parte)
+        let partitura = progresion.partitura(
+            duraciones: duraciones, compas: compas, encabezado: encabezado, cifrados: cifrados, analisis: analisis,
+            notacion: notacion)
+        return documento(escritor, de: partitura)
     }
 }

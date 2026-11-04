@@ -71,32 +71,17 @@ extension Contrapunto {
         tonalidad: Tonalidad? = nil, tempo: Tempo? = nil, titulo: String? = nil, instrumento: Int = 52,
         afinacion: (any Afinacion)? = nil
     ) -> Data {
-        var archivo = ArchivoMIDI(
-            compas: contrapunto.compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo, afinacion: afinacion)
-        for linea in vocesDeArribaAbajo {
-            archivo.anadir(linea.voz.eventos, nombre: linea.nombre, instrumento: instrumento)
-        }
-        return archivo.datos
+        let encabezado = Encabezado(titulo: titulo, tonalidad: tonalidad, tempo: tempo, instrumento: instrumento)
+        return partitura(encabezado: encabezado).midi(afinacion: afinacion)
     }
 }
 
 extension Exportacion {
-    /// Un contrapunto en dos pentagramas: la voz de arriba en el primero y la de abajo en el segundo, cada una con
-    /// la clave que le vaya mejor.
+    /// Un contrapunto en dos pentagramas (ver `Contrapunto.partitura(encabezado:)`).
     package static func documento<Escritor: EscritorDePartitura>(
-        _: Escritor.Type, de ejercicio: Contrapunto, tonalidad: Tonalidad?, tempo: Tempo?, titulo: String?
+        _ escritor: Escritor.Type, de ejercicio: Contrapunto, tonalidad: Tonalidad?, tempo: Tempo?, titulo: String?
     ) -> String {
-        let lineas = ejercicio.vocesDeArribaAbajo
-        let claves = lineas.map { Clave.masAdecuada(para: $0.voz.eventos.flatMap(\.alturas)) ?? .sol }
-        let parte = lineas.map(\.nombre).joined(separator: " · ")
-        var escritor = Escritor(
-            compas: ejercicio.contrapunto.compas, anacrusa: .cero, tonalidad: tonalidad, tempo: tempo,
-            titulo: titulo, parte: parte, claves: claves)
-        for (n, linea) in lineas.enumerated() {
-            escritor.anadir(
-                linea.voz, pentagrama: n + 1, plicaArriba: nil, cifrados: [:], analisis: [:],
-                notacion: .espanolCompacto)
-        }
-        return escritor.documento
+        let encabezado = Encabezado(titulo: titulo, tonalidad: tonalidad, tempo: tempo)
+        return documento(escritor, de: ejercicio.partitura(encabezado: encabezado))
     }
 }

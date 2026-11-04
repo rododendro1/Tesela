@@ -35,11 +35,9 @@ extension Voz {
         tonalidad: Tonalidad? = nil, tempo: Tempo? = nil, titulo: String? = nil,
         parte: String = "Voz", instrumento: Int = 0, afinacion: (any Afinacion)? = nil
     ) -> Data {
-        let tonalidad = tonalidad ?? Exportacion.tonalidad(de: self)
-        var archivo = ArchivoMIDI(
-            compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo, afinacion: afinacion)
-        archivo.anadir(eventos, nombre: parte, instrumento: instrumento)
-        return archivo.datos
+        let encabezado = Encabezado(
+            titulo: titulo, tonalidad: tonalidad, tempo: tempo, parte: parte, instrumento: instrumento)
+        return partitura(encabezado: encabezado).midi(afinacion: afinacion)
     }
 }
 
@@ -60,16 +58,12 @@ extension Coral {
         tempo: Tempo? = nil, titulo: String? = nil, instrumento: Int = 52,
         notacion: Notacion = .espanolCompacto, afinacion: (any Afinacion)? = nil
     ) -> Data {
-        let tonalidad = tonalidad ?? Tonalidad.identificar(alturas: acordes.flatMap { $0 }).first
-        var archivo = ArchivoMIDI(
-            compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo, afinacion: afinacion)
-        for v in (0..<numeroDeVoces).reversed() {
-            let eventos = Exportacion.eventos(de: voz(v), duracion: duracion, final: duracion)
-            archivo.anadir(
-                eventos, nombre: Coral.nombreDeVoz(v, de: numeroDeVoces, en: notacion),
-                instrumento: instrumento)
-        }
-        return archivo.datos
+        // Sin alargar el último acorde hasta la barra: suena lo que dura.
+        let encabezado = Encabezado(titulo: titulo, tonalidad: tonalidad, tempo: tempo, instrumento: instrumento)
+        let deMIDI = partitura(
+            duracion: duracion, compas: compas, encabezado: encabezado, cifrados: false, analisis: false,
+            notacion: notacion, alargarElUltimo: false)
+        return deMIDI.midi(afinacion: afinacion)
     }
 }
 
@@ -104,16 +98,11 @@ extension AnalisisArmonico {
         titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolCompacto,
         afinacion: (any Afinacion)? = nil
     ) -> Data {
-        Exportacion.comprobar(duraciones, acordes: acordes.count)
-        var archivo = ArchivoMIDI(
-            compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo, afinacion: afinacion)
-        let (superior, grave) = Exportacion.progresion(acordes.map(\.acorde), duraciones: duraciones)
-        let marcas = acordes.map { $0.acorde.cifrado(en: notacion) + " · " + $0.cifrado }
-        let pistaDeAcordes = TextosDeFormatos.en(notacion, \.pistaDeAcordes)
-        let pistaDelBajo = TextosDeFormatos.en(notacion, \.pistaDelBajo)
-        archivo.anadir(superior, nombre: pistaDeAcordes, instrumento: instrumento, marcadores: marcas)
-        archivo.anadir(grave, nombre: pistaDelBajo, instrumento: instrumento)
-        return archivo.datos
+        let encabezado = Encabezado(titulo: titulo, tempo: tempo, instrumento: instrumento)
+        let deMIDI = partitura(
+            duraciones: duraciones, compas: compas, encabezado: encabezado, cifrados: false, analisis: false,
+            notacion: notacion, alargarElUltimo: false)
+        return deMIDI.midi(afinacion: afinacion)
     }
 }
 
