@@ -61,6 +61,36 @@
 - `escala.svgPentagrama()`, `acorde.svgPentagrama()` y `arpegio.svgPentagrama()` siguen: son los dibujos de una
   escala, un acorde o un arpegio solos.
 
+### Opciones del pentagrama por grupos
+
+- **Cambio incompatible:** `OpcionesDePentagrama` ya no repite las opciones de sus grupos. Se quitan las propiedades
+  sueltas (`opciones.clave`, `opciones.nombresDeLasNotas`, `opciones.marcarTonica`, `opciones.color`…) y el `init` con
+  todas planas. Ahora se escribe `opciones.maquetacion.clave`, `opciones.marcas.nombresDeLasNotas`,
+  `opciones.marcas.tonica` y `opciones.colores.dibujo`, y se crean con
+  `OpcionesDePentagrama(armadura:notacion:maquetacion:marcas:colores:)`:
+  `OpcionesDePentagrama(notacion: .inglesASCII, marcas: .init(nombresDeLasNotas: true))`. `Maquetacion`, `Marcas` y
+  `Colores` tienen su `init` con todo por omisión. Los nombres cambian donde el grupo ya lo dice: `marcarSemitonos`
+  es `marcas.semitonos`, `marcarTonica` es `marcas.tonica`, `marcarNotasAjenas` es `marcas.notasAjenas`, `color` es
+  `colores.dibujo` y `colorDeLaTonica` es `colores.tonica`.
+- `OpcionesDePentagrama`, sus grupos, `Disposicion` y `Pentagramas` son `Hashable` y `Sendable`.
+
+### Una partitura entera en JSON
+
+- `Partitura`, `Partitura.Linea` y `Partitura.Pentagrama` son `Codable`, y con ellos `Notacion`, `EscrituraDeNotas`,
+  `EscrituraDeLaOctava`, `Idioma`, `Tipografia`, `Clave`, `AcordeAnalizado` (y su `Categoria`), `FuncionTonal`,
+  `Tablatura` y `Tablatura.Pulsacion`. Una `EscrituraDeNotas` se guarda por su idioma, si va con palabras y su
+  tipografía, y al leerla se busca entre `EscrituraDeNotas.allCases`. Si no está, da un `DecodingError`.
+- `Clave`, `FuncionTonal` y `EscrituraDeLaOctava` tienen ahora `rawValue` (el nombre del caso), que es lo que se
+  guarda.
+
+### Razones de frecuencias
+
+- **Cambio incompatible:** `SistemaMicrotonal.razonesDeLosSruti` es un `[RazonDeFrecuencias]` en lugar de una tupla
+  `[(numerador: Int, denominador: Int)]`. `numerador` y `denominador` siguen ahí, como `Double`, y además están
+  `valor`, `cents` y `description` («256/243»).
+- `RazonDeFrecuencias` pasa de ArmoniaRepresentaciones a ArmoniaNucleo y es `Codable`. Con `import Armonia` no cambia
+  nada.
+
 ## 0.3.4 (2026-11-04)
 
 ### Valores escritos a mano, sin opcionales
