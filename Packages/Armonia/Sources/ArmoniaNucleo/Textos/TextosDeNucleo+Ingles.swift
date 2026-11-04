@@ -56,6 +56,8 @@ extension TextosDeNucleo {
         serieNoDodecafonica: "a twelve-tone row has all twelve pitch classes, each one once",
         faltanEnLaSerie: { clases in "missing \(clases)" },
         repetidasEnLaSerie: { clases in "repeated \(clases)" },
+        // ErrorDeLectura.swift (idiomas)
+        idiomaNoReconocido: { n, o in "\"\(n)\" is none of the fifteen languages: \(o)" },
 
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },

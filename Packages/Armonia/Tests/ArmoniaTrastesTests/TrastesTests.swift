@@ -220,39 +220,42 @@ extension DigitacionTests {
 }
 
 @Suite struct EncordadoNombreTests {
-    @Test func buscarUnInstrumentoPorNombre() {
-        #expect(Encordado(nombre: "Guitarra") == .guitarra)
-        #expect(Encordado(nombre: "UKULELE") == .ukelele)
-        #expect(Encordado(nombre: "bajo de 5 cuerdas") == .bajoDeCincoCuerdas)
-        #expect(Encordado(nombre: "Drop-D") == .guitarraEnReGrave)
-        #expect(Encordado(nombre: "guitarra en re grave") == .guitarraEnReGrave)
-        #expect(Encordado(nombre: "mandolin") == .mandolina)
+    @Test func buscarUnInstrumentoPorNombre() throws {
+        #expect(try Encordado(leyendo: "Guitarra") == .guitarra)
+        #expect(try Encordado(leyendo: "UKULELE") == .ukelele)
+        #expect(try Encordado(leyendo: "bajo de 5 cuerdas") == .bajoDeCincoCuerdas)
+        #expect(try Encordado(leyendo: "Drop-D") == .guitarraEnReGrave)
+        #expect(try Encordado(leyendo: "guitarra en re grave") == .guitarraEnReGrave)
+        #expect(try Encordado(leyendo: "mandolin") == .mandolina)
     }
 
-    @Test func buscarUnInstrumentoEnOtroIdioma() {
-        #expect(Encordado(nombre: "guitare") == .guitarra)
-        #expect(Encordado(nombre: "Gitarre") == .guitarra)
-        #expect(Encordado(nombre: "гитара") == .guitarra)
-        #expect(Encordado(nombre: "bandolim") == .mandolina)
-        #expect(Encordado(nombre: "baix de cinc cordes") == .bajoDeCincoCuerdas)
+    @Test func buscarUnInstrumentoEnOtroIdioma() throws {
+        #expect(try Encordado(leyendo: "guitare") == .guitarra)
+        #expect(try Encordado(leyendo: "Gitarre") == .guitarra)
+        #expect(try Encordado(leyendo: "гитара") == .guitarra)
+        #expect(try Encordado(leyendo: "bandolim") == .mandolina)
+        #expect(try Encordado(leyendo: "baix de cinc cordes") == .bajoDeCincoCuerdas)
     }
 
-    @Test func todosSeEncuentranPorSuNombreEnCadaIdioma() {
+    @Test func todosSeEncuentranPorSuNombreEnCadaIdioma() throws {
         for encordado in Encordado.todos {
             for nombre in encordado.traduccion?.todos ?? [] {
-                #expect(Encordado(nombre: nombre) == encordado, Comment(rawValue: nombre))
+                #expect(try Encordado(leyendo: nombre) == encordado, Comment(rawValue: nombre))
             }
         }
     }
 
     @Test func unNombreDesconocidoNoEsNingunInstrumento() {
-        #expect(Encordado(nombre: "arpa") == nil)
-        #expect(Encordado(nombre: "") == nil)
+        #expect(
+            throws: ErrorDeLecturaDeTeoria(
+                texto: "arpa", posicion: nil, motivo: .nombreNoReconocido("arpa", opciones: Encordado.todos.map(\.nombre)))
+        ) { try Encordado(leyendo: "arpa") }
+        #expect(throws: ErrorDeLecturaDeTeoria.self) { try Encordado(leyendo: "") }
     }
 
-    @Test func todosSeEncuentranPorSuNombre() {
+    @Test func todosSeEncuentranPorSuNombre() throws {
         for encordado in Encordado.todos {
-            #expect(Encordado(nombre: encordado.nombre) == encordado, Comment(rawValue: encordado.nombre))
+            #expect(try Encordado(leyendo: encordado.nombre) == encordado, Comment(rawValue: encordado.nombre))
         }
     }
 }
@@ -675,10 +678,10 @@ extension DigitacionTests {
 
 /// Las afinaciones abiertas.
 @Suite struct AfinacionesAbiertasTests {
-    @Test func seEncuentranYTienenNombre() {
-        #expect(Encordado(nombre: "open D") == .guitarraEnReAbierto)
-        #expect(Encordado(nombre: "sol abierto") == .guitarraEnSolAbierto)
-        #expect(Encordado(nombre: "DADGAD") == .guitarraDADGAD)
+    @Test func seEncuentranYTienenNombre() throws {
+        #expect(try Encordado(leyendo: "open D") == .guitarraEnReAbierto)
+        #expect(try Encordado(leyendo: "sol abierto") == .guitarraEnSolAbierto)
+        #expect(try Encordado(leyendo: "DADGAD") == .guitarraDADGAD)
         #expect(Encordado.guitarraEnReAbierto.nombre(en: .inglesASCII) == "open D guitar")
         #expect(Encordado.guitarraEnSolAbierto.nombre(en: .inglesASCII) == "open G guitar")
         #expect(Encordado.guitarraDADGAD.nombre(en: .inglesASCII) == "DADGAD guitar")

@@ -13,7 +13,7 @@ un acorde: un traste, o ninguno, por cada cuerda.
 import Armonia
 
 let mastil = Mastil(.guitarra)                           // veinticuatro trastes
-let ukelele = Encordado(nombre: "ukulele")               // también «bajo de 5 cuerdas», «drop D»…
+let ukelele = try Encordado(leyendo: "ukulele")          // también «bajo de 5 cuerdas», «drop D»…
 
 let acorde = Acorde("Sol7/Si")
 let formas = mastil.digitaciones(de: acorde, limite: 3)  // las más cómodas primero

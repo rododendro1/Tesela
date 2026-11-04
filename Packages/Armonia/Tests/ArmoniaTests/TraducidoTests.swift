@@ -90,24 +90,28 @@ import Testing
         #expect(Tonalidad.Modo.mayor.nombre(en: .asturianoPalabras) == "mayor")
     }
 
-    @Test func elIdiomaPorSuNombre() {
+    @Test func elIdiomaPorSuNombre() throws {
         for idioma in Idioma.allCases {
-            #expect(Idioma(nombre: idioma.codigo) == idioma, Comment(rawValue: idioma.codigo))
+            #expect(try Idioma(leyendo: idioma.codigo) == idioma, Comment(rawValue: idioma.codigo))
             for nombre in idioma.nombres {
-                #expect(Idioma(nombre: nombre) == idioma, Comment(rawValue: nombre))
+                #expect(try Idioma(leyendo: nombre) == idioma, Comment(rawValue: nombre))
                 #expect(nombre == nombre.lowercased(), Comment(rawValue: nombre))
             }
         }
-        #expect(Idioma(nombre: "Euskara") == .euskera)
-        #expect(Idioma(nombre: "DEUTSCH") == .aleman)
+        #expect(try Idioma(leyendo: "Euskara") == .euskera)
+        #expect(try Idioma(leyendo: "DEUTSCH") == .aleman)
         // Sin tildes ni mayúsculas, aunque la lista solo tenga la forma con tilde.
-        #expect(Idioma(nombre: "aleman") == .aleman)
-        #expect(Idioma(nombre: "FRANCAIS") == .frances)
-        #expect(Idioma(nombre: "ελληνικα") == .griego)
-        #expect(Idioma(nombre: "Português") == .portugues)
-        #expect(Idioma(nombre: "espanol") == .espanol)
-        #expect(Idioma(nombre: "pt-BR") == .portugues)
-        #expect(Idioma(nombre: "japonés") == nil)
+        #expect(try Idioma(leyendo: "aleman") == .aleman)
+        #expect(try Idioma(leyendo: "FRANCAIS") == .frances)
+        #expect(try Idioma(leyendo: "ελληνικα") == .griego)
+        #expect(try Idioma(leyendo: "Português") == .portugues)
+        #expect(try Idioma(leyendo: "espanol") == .espanol)
+        #expect(try Idioma(leyendo: "pt-BR") == .portugues)
+        #expect(
+            throws: ErrorDeLectura(
+                texto: "japonés", posicion: nil,
+                motivo: .idiomaNoReconocido("japonés", opciones: Idioma.allCases.map(\.codigo)))
+        ) { try Idioma(leyendo: "japonés") }
         #expect(Idioma(codigo: "") == nil)
         // La notación habitual de cada idioma: # en inglés, ♯ en español.
         #expect(Notacion.delIdioma(.ingles) == .inglesASCII)

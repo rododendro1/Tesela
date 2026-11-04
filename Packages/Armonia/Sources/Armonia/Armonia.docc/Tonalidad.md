@@ -347,12 +347,14 @@ el numeral en mayúsculas o minúsculas (tríada mayor o menor), la calidad detr
 alteración delante para los grados cromáticos («♭VI», «♭VII») y, tras una barra, el grado del
 que es dominante, sensible o sustituto («V7/V», «vii°7/ii», «subV7/ii»). «N6» es la napolitana, y
 «It+6», «Fr+6» y «Ger+6», las sextas aumentadas. `acordes(romanos:)` lee una progresión entera.
+Si algo no se lee, lanzan `ErrorDeLecturaDeTeoria` en su carácter: `.cifradoRomanoNoValido`, o
+`.destinoNoTonicalizable` si lo que va tras la barra no es una tríada mayor o menor («V/vii°»).
 
 ```swift
-Tonalidad(.do).acorde(romano: "ii65") == Acorde("Rem7/Fa")                       // true
-Tonalidad(.do).acorde(romano: "V7/V") == Acorde("Re7")                           // true
-Tonalidad(.la, .menor).acorde(romano: "vii°7") == Acorde("Sol#°7")               // true
-Tonalidad(.do).acordes(romanos: "I ♭VI ♭VII I") == ["Do", "Lab", "Sib", "Do"]    // true
+try Tonalidad(.do).acorde(romano: "ii65") == Acorde("Rem7/Fa")                       // true
+try Tonalidad(.do).acorde(romano: "V7/V") == Acorde("Re7")                           // true
+try Tonalidad(.la, .menor).acorde(romano: "vii°7") == Acorde("Sol#°7")               // true
+try Tonalidad(.do).acordes(romanos: "I ♭VI ♭VII I") == ["Do", "Lab", "Sib", "Do"]    // true
 ```
 
 ## Bajo cifrado
@@ -362,13 +364,14 @@ intervalos en la armadura de la tonalidad (en menor, la natural: la sensible se 
 alteración). Completa las abreviaturas (nada o «5» es la tríada, «6» y «64» sus inversiones,
 «7», «65», «43» y «42» la séptima y las suyas), y una alteración sola altera la tercera.
 `acordes(bajoCifrado:)` lee una línea entera, con cada nota del bajo y sus cifras tras dos
-puntos, y `Coral.realizar(bajoCifrado:en:soprano:)` la realiza a cuatro voces.
+puntos, y `Coral.realizar(bajoCifrado:en:soprano:)` la realiza a cuatro voces. Unas cifras que no
+se leen lanzan `.cifrasNoValidas`, y unas que no forman acorde, `.cifrasSinAcorde`.
 
 ```swift
-Tonalidad(.do).acorde(sobre: .si, cifras: "65")                    // Sol7/Si
-Tonalidad(.la, .menor).acorde(sobre: .mi, cifras: "#")             // Mi
-Tonalidad(.la, .menor).acordes(bajoCifrado: "La Fa:6 Mi:# La")     // [Lam, Rem/Fa, Mi, Lam]
-let realizado = Coral.realizar(bajoCifrado: "Do Fa Sol:7 Do", en: Tonalidad(.do))!
+try Tonalidad(.do).acorde(sobre: .si, cifras: "65")                    // Sol7/Si
+try Tonalidad(.la, .menor).acorde(sobre: .mi, cifras: "#")             // Mi
+try Tonalidad(.la, .menor).acordes(bajoCifrado: "La Fa:6 Mi:# La")     // [Lam, Rem/Fa, Mi, Lam]
+let realizado = try Coral.realizar(bajoCifrado: "Do Fa Sol:7 Do", en: Tonalidad(.do))!
 realizado.esCorrecta                  // true
 ```
 

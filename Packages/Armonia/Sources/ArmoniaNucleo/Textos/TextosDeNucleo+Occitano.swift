@@ -56,6 +56,8 @@ extension TextosDeNucleo {
         serieNoDodecafonica: "una seria dodecafonica a las dotze classas d'autor, cadua un còp",
         faltanEnLaSerie: { clases in "mancan \(clases)" },
         repetidasEnLaSerie: { clases in "se repetisson \(clases)" },
+        // ErrorDeLectura.swift (idiomas)
+        idiomaNoReconocido: { n, o in "«\(n)» es pas cap de las quinze lengas: \(o)" },
 
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(ordinal) \(calidad)" },

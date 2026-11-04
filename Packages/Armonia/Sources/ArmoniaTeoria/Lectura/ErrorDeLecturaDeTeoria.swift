@@ -1,7 +1,7 @@
 import ArmoniaNucleo
 
-/// Error al leer un cifrado, una escala, una tonalidad, los acordes de un coral, un nombre (un patrón de arpegio, una
-/// aproximación, un ciclo neorriemanniano) o una digitación.
+/// Error al leer un cifrado, un cifrado romano, un bajo cifrado, una escala, una tonalidad, los acordes de un coral, un
+/// nombre (un patrón de arpegio, una aproximación, un ciclo neorriemanniano, un instrumento) o una digitación.
 ///
 /// Como `ErrorDeLectura`, indica el texto, el carácter donde se detuvo la lectura y el motivo, en los quince
 /// idiomas de los textos. Leer un acorde puede lanzar cualquiera de los dos: `ErrorDeLectura` si falla la
@@ -45,6 +45,18 @@ public struct ErrorDeLecturaDeTeoria: ErrorAlLeer {
         case trasteNoValido(String, ultimo: Int)
         /// Una digitación sin un traste por cuerda.
         case cuerdasDistintas(esperadas: Int, leidas: Int)
+        // Cifrado romano y bajo cifrado
+        /// Algo que no es un cifrado romano: ni un numeral del I al VII (o «subV», «N», «It+6»…) con su calidad y
+        /// sus cifras.
+        case cifradoRomanoNoValido(String)
+        /// Lo que va tras la barra de un cifrado romano («V7/vii°») no es una tríada mayor o menor en estado
+        /// fundamental, así que no hay tonalidad hacia la que ir.
+        case destinoNoTonicalizable(String)
+        /// Unas cifras de bajo continuo con algo que no es una cifra ni una alteración, o con dos alteraciones
+        /// seguidas.
+        case cifrasNoValidas(String)
+        /// Unas cifras que se leen, pero cuyas notas sobre el bajo no forman ningún acorde.
+        case cifrasSinAcorde(String)
     }
 
     /// Símbolos de un cifrado que no pueden ir juntos.
@@ -133,6 +145,12 @@ extension ErrorDeLecturaDeTeoria.Motivo {
             return TextosDeTeoria.traduccion { $0.trasteNoValido(traste, ultimo) }
         case .cuerdasDistintas(let esperadas, let leidas):
             return TextosDeTeoria.traduccion { $0.cuerdasDistintas(esperadas, leidas) }
+        case .cifradoRomanoNoValido(let cifrado):
+            return TextosDeTeoria.traduccion { $0.cifradoRomanoNoValido(cifrado) }
+        case .destinoNoTonicalizable(let destino):
+            return TextosDeTeoria.traduccion { $0.destinoNoTonicalizable(destino) }
+        case .cifrasNoValidas(let cifras): return TextosDeTeoria.traduccion { $0.cifrasNoValidas(cifras) }
+        case .cifrasSinAcorde(let cifras): return TextosDeTeoria.traduccion { $0.cifrasSinAcorde(cifras) }
         }
     }
 

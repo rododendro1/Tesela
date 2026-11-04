@@ -56,6 +56,8 @@ extension TextosDeNucleo {
         serieNoDodecafonica: "serie dodekafoniko batek hamabi altuera-klaseak ditu, bakoitza behin",
         faltanEnLaSerie: { clases in "falta dira: \(clases)" },
         repetidasEnLaSerie: { clases in "errepikatuta daude: \(clases)" },
+        // ErrorDeLectura.swift (idiomas)
+        idiomaNoReconocido: { n, o in "«\(n)» ez da hamabost hizkuntzetako bat ere: \(o)" },
 
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(ordinal) \(calidad)" },

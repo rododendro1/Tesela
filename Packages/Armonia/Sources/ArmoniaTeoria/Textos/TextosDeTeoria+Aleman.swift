@@ -176,6 +176,11 @@ extension TextosDeTeoria {
         numeroFueraDeRango: { t, d, h in "„\(t)“ ist keine Zahl von \(d) bis \(h)" },
         trasteNoValido: { t, u in "„\(t)“ ist kein Bund: erlaubt sind x (gedämpfte Saite) oder eine Zahl von 0 bis \(u)" },
         cuerdasDistintas: { e, l in "für jede der \(e) Saiten braucht es einen Bund (oder x), und es sind \(l)" },
+        // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
+        cifradoRomanoNoValido: { cifrado in "„\(cifrado)“ ist keine Stufenbezeichnung: eine römische Zahl von I bis VII mit ihrer Qualität und ihren Ziffern (V7, ii65, ♭VI, vii°7/V)" },
+        destinoNoTonicalizable: { destino in "„\(destino)“ kann nicht nach dem Schrägstrich stehen: Es muss ein Dur- oder Molldreiklang in Grundstellung sein (V/V, vii°7/ii)" },
+        cifrasNoValidas: { cifras in "„\(cifras)“ ist kein Generalbass: Zahlen von 1 bis 9 mit höchstens einem Vorzeichen (6, 64, 7, ♯6, 4+)" },
+        cifrasSinAcorde: { cifras in "die Ziffern „\(cifras)“ ergeben über diesem Bass keinen Akkord" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(tipo) auf \(raiz)" },
         enLaTonalidad: { tonalidad in "in " + tonalidad }

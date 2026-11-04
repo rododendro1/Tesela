@@ -176,6 +176,11 @@ extension TextosDeTeoria {
         numeroFueraDeRango: { t, d, h in "το «\(t)» δεν είναι αριθμός από \(d) έως \(h)" },
         trasteNoValido: { t, u in "το «\(t)» δεν είναι τάστο: πρέπει να είναι x (σβησμένη χορδή) ή αριθμός από 0 έως \(u)" },
         cuerdasDistintas: { e, l in "χρειάζεται ένα τάστο (ή x) για καθεμία από τις \(e) χορδές, και υπάρχουν \(l)" },
+        // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
+        cifradoRomanoNoValido: { cifrado in "το «\(cifrado)» δεν είναι ρωμαϊκό σύμβολο βαθμίδας: ένας αριθμός από το I έως το VII με την ποιότητα και τα ψηφία του (V7, ii65, ♭VI, vii°7/V)" },
+        destinoNoTonicalizable: { destino in "το «\(destino)» δεν μπορεί να ακολουθεί την κάθετο: πρέπει να είναι μείζονα ή ελάσσονα τριφωνία σε θεμελιώδη κατάσταση (V/V, vii°7/ii)" },
+        cifrasNoValidas: { cifras in "το «\(cifras)» δεν είναι αριθμημένο μπάσο: αριθμοί από το 1 έως το 9, ο καθένας με το πολύ μία αλλοίωση (6, 64, 7, ♯6, 4+)" },
+        cifrasSinAcorde: { cifras in "τα ψηφία «\(cifras)» δεν σχηματίζουν καμία συγχορδία πάνω σε αυτό το μπάσο" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(tipo) στο \(raiz)" },
         enLaTonalidad: { tonalidad in "σε " + tonalidad }

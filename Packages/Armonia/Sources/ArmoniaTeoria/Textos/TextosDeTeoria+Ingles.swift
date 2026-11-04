@@ -177,6 +177,11 @@ extension TextosDeTeoria {
         numeroFueraDeRango: { t, d, h in "\"\(t)\" is not a number from \(d) to \(h)" },
         trasteNoValido: { t, u in "\"\(t)\" is not a fret: it must be x (muted string) or a number from 0 to \(u)" },
         cuerdasDistintas: { e, l in "one fret (or x) is needed for each of the \(e) strings, and there are \(l)" },
+        // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
+        cifradoRomanoNoValido: { cifrado in "\"\(cifrado)\" is not a roman numeral: a numeral from I to VII with its quality and figures (V7, ii65, bVI, vii°7/V)" },
+        destinoNoTonicalizable: { destino in "\"\(destino)\" cannot follow the slash: it must be a major or minor triad in root position (V/V, vii°7/ii)" },
+        cifrasNoValidas: { cifras in "\"\(cifras)\" is not figured bass: numbers from 1 to 9, each with at most one accidental (6, 64, 7, #6, 4+)" },
+        cifrasSinAcorde: { cifras in "the figures \"\(cifras)\" do not make any chord over that bass" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in "in " + tonalidad }

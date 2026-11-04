@@ -140,6 +140,6 @@ public enum LineaDeComandos {
 
     /// La notación de `--idioma`: es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu, o el nombre del idioma.
     static func notacionDelIdioma(_ texto: String) -> Notacion? {
-        Idioma(nombre: texto).map(Notacion.delIdioma)
+        (try? Idioma(leyendo: texto)).map(Notacion.delIdioma)
     }
 }

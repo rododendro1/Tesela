@@ -37,8 +37,8 @@ import Testing
         #expect(TipoDeEscala.tradicionales(categoria: .cesni) == TipoDeEscala.cesniler)
         #expect(TipoDeEscala.ajnas.count == 9 && TipoDeEscala.cesniler.count == 12)
         #expect(TipoDeEscala.jinsHijaz.tradicion == .mundoArabe && TipoDeEscala.jinsHijaz.clase == .fragmento)
-        #expect(TipoDeEscala.buscar(nombre: "jins Hijaz") == .jinsHijaz)
-        #expect(TipoDeEscala.buscar(nombre: "Hicaz dörtlüsü")?.categoria == .cesni)
+        #expect((try? TipoDeEscala(leyendo: "jins Hijaz")) == .jinsHijaz)
+        #expect((try? TipoDeEscala(leyendo: "Hicaz dörtlüsü"))?.categoria == .cesni)
         #expect(TipoDeEscala.tradicionales(tradicion: .azerbaiyan) == TipoDeEscala.mugamlar)
         #expect(TipoDeEscala.tradicionales(categoria: .janya).count == TipoDeEscala.janyas.count)
         #expect(TipoDeEscala.tradicionales(categoria: .raga).count == TipoDeEscala.ragasIndostanicos.count)
@@ -60,7 +60,7 @@ import Testing
         #expect(TipoDeEscala.tradicionales(categoria: .hexacordo) == TipoDeEscala.hexacordos)
         #expect(TipoDeEscala.hexacordoBlando.tradicion == .gregoriano)
         #expect(TipoDeEscala.hexacordoBlando.clase == .fragmento)
-        #expect(TipoDeEscala.buscar(nombre: "hexacordo duro") == .hexacordoDuro)
+        #expect((try? TipoDeEscala(leyendo: "hexacordo duro")) == .hexacordoDuro)
         // Las siete afinaciones babilónicas y las equidistantes de África y del sudeste asiático.
         let afinaciones = TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + TipoDeEscala.sudesteAsiaticas
         #expect(TipoDeEscala.tradicionales(categoria: .afinacion) == afinaciones)
@@ -71,7 +71,7 @@ import Testing
         #expect(TipoDeEscala.tradicionales(tradicion: .gregoriano).count == 8 + 3)
         #expect(ModoGregoriano.todos.map(\.tipoDeEscala) == TipoDeEscala.modosGregorianos)
         #expect(ModoGregoriano.todos.allSatisfy { $0.tipoDeEscala.intervalos == $0.maneria.tipo.intervalos })
-        #expect(TipoDeEscala.buscar(nombre: "hipodórico") == .protusPlagalis)
+        #expect((try? TipoDeEscala(leyendo: "hipodórico")) == .protusPlagalis)
         #expect(TipoDeEscala.protusPlagalis.nombre == "protus plagalis" && TipoDeEscala.protusPlagalis.clase == .modo)
         #expect(TipoDeEscala.tradicionales(tradicion: .mesopotamia) == TipoDeEscala.mesopotamicas)
         #expect(TipoDeEscala.mesopotamicas.count == 7)
@@ -236,7 +236,7 @@ import Testing
         #expect(TipoDeEscala.catalogo.map(\.nombre) == todas.map(\.nombre))
         #expect(TipoDeEscala.propio(TipoDeEscala.bilaval.intervalos).nombre == "mayor")
         #expect(TipoDeEscala.propio(TipoDeEscala.hiyaz.intervalos).nombre == TipoDeEscala.frigioDominante.nombre)
-        #expect(TipoDeEscala.buscar(nombre: "Hijaz")?.nombre == TipoDeEscala.hiyaz.nombre)
+        #expect((try? TipoDeEscala(leyendo: "Hijaz"))?.nombre == TipoDeEscala.hiyaz.nombre)
         #expect(TipoDeEscala.bilaval.equivalentes.first?.nombre == "mayor")
     }
 }

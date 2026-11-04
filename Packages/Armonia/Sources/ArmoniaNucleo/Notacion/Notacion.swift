@@ -429,14 +429,20 @@ extension Idioma {
     public var nombrePropio: String { reglas.nombrePropio }
 
     /// El idioma de un código (como `init?(codigo:)`: «eu», «pt-BR») o de uno de sus `nombres` («euskara»,
-    /// «Deutsch»), sin importar las mayúsculas ni las tildes («aleman», «FRANCAIS», «ελληνικα»); `nil` si no es uno
-    /// de los quince.
-    public init?(nombre: String) {
+    /// «Deutsch»), sin importar las mayúsculas ni las tildes («aleman», «FRANCAIS», «ελληνικα»). Si no es uno de los
+    /// quince, lanza `ErrorDeLectura` (`.idiomaNoReconocido`) con sus códigos.
+    ///
+    ///     try Idioma(leyendo: "euskara")   // .euskera
+    public init(leyendo nombre: String) throws {
         if let idioma = Idioma(codigo: nombre) {
             self = idioma
             return
         }
-        guard let encontrado = Idioma.porNombre[nombre.claveDeBusqueda] else { return nil }
+        guard let encontrado = Idioma.porNombre[nombre.claveDeBusqueda] else {
+            throw ErrorDeLectura(
+                texto: nombre, posicion: nil,
+                motivo: .idiomaNoReconocido(nombre, opciones: Idioma.allCases.map(\.codigo)))
+        }
         self = encontrado
     }
 

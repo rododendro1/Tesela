@@ -268,7 +268,7 @@ extension TipoDeEscala {
 }
 
 // El catálogo de búsqueda: `todos` (el orden decide qué escala gana al identificar), `catalogo` (todas, en el orden
-// de prioridad), `buscar(nombre:)` y los índices por nombre. Las escalas de otras tradiciones están en `tradicionales`.
+// de prioridad), `init(leyendo:)` y los índices por nombre. Las escalas de otras tradiciones están en `tradicionales`.
 
 extension TipoDeEscala {
     public static let todos: [TipoDeEscala] = [
@@ -313,14 +313,19 @@ extension TipoDeEscala {
     /// `Escala.identificar` busca solo en `todos`, salvo que se le pasen otros tipos.
     public static let catalogo: [TipoDeEscala] = todos + tradicionales
 
-    /// Busca un tipo por su nombre en español o en inglés, sin distinguir mayúsculas
-    /// ni guiones: "dórico", "dorico", "Dorian", "harmonic minor", "whole-tone". También
-    /// encuentra las escalas de `tradicionales`: "Kafi", "hitzaz", "melakarta 15".
-    public static func buscar(nombre: String) -> TipoDeEscala? {
-        buscar(nombre: nombre, aceptarIngles: true)
+    /// El tipo de un nombre en español o en inglés, sin distinguir mayúsculas ni guiones: "dórico", "dorico",
+    /// "Dorian", "harmonic minor", "whole-tone". También lee las escalas de `tradicionales`: "Kafi", "hitzaz",
+    /// "melakarta 15". Si no es ninguno, lanza `ErrorDeLecturaDeTeoria` (`.tipoDeEscalaNoReconocido`).
+    ///
+    ///     try TipoDeEscala(leyendo: "Dorian").nombre   // "dórico"
+    public init(leyendo nombre: String) throws {
+        guard let tipo = TipoDeEscala.buscar(nombre: nombre, aceptarIngles: true) else {
+            throw ErrorDeLecturaDeTeoria(texto: nombre, posicion: nil, motivo: .tipoDeEscalaNoReconocido(nombre))
+        }
+        self = tipo
     }
 
-    /// Como `buscar(nombre:)`; con `aceptarIngles: false` solo acepta los nombres en español
+    /// Como `init(leyendo:)`, devolviendo `nil`; con `aceptarIngles: false` solo acepta los nombres en español
     /// (y los tradicionales), para no mezclar idiomas: "Re dorian" no es una escala.
     package static func buscar(nombre: String, aceptarIngles: Bool) -> TipoDeEscala? {
         let n = TipoDeEscala.normalizar(nombre)

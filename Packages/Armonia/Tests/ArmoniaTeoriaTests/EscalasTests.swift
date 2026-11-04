@@ -298,9 +298,12 @@ import Testing
             ]))
         #expect(TipoDeEscala.menorMelodica.equivalentes.isEmpty)
         // La búsqueda por índice da lo mismo que antes: los nombres habituales primero.
-        #expect(TipoDeEscala.buscar(nombre: "Dorian")?.nombre == "dórico")
-        #expect(TipoDeEscala.buscar(nombre: "jazz minor")?.nombre == "menor melódica de jazz")
-        #expect(TipoDeEscala.buscar(nombre: "inexistente") == nil)
+        #expect((try? TipoDeEscala(leyendo: "Dorian"))?.nombre == "dórico")
+        #expect((try? TipoDeEscala(leyendo: "jazz minor"))?.nombre == "menor melódica de jazz")
+        #expect(
+            throws: ErrorDeLecturaDeTeoria(
+                texto: "inexistente", posicion: nil, motivo: .tipoDeEscalaNoReconocido("inexistente"))
+        ) { try TipoDeEscala(leyendo: "inexistente") }
     }
 }
 
@@ -389,7 +392,7 @@ import Testing
         #expect(Escala("Re pireotikos") == Escala(.re, .pireotikos))
         // Todas las escalas se vuelven a leer desde su nombre, con diacríticos o sin ellos.
         for tipo in TipoDeEscala.tradicionales {
-            #expect(TipoDeEscala.buscar(nombre: tipo.nombre)?.nombre == tipo.nombre, Comment(rawValue: tipo.nombre))
+            #expect((try? TipoDeEscala(leyendo: tipo.nombre))?.nombre == tipo.nombre, Comment(rawValue: tipo.nombre))
         }
     }
 
@@ -989,7 +992,7 @@ import Testing
             ("isartu", "išartu"), ("ishartu", "išartu"), ("išartum", "išartu"), ("nid qabli", "nīd qabli"),
             ("nis gabari", "nīš tuḫri"), ("nish tuhri", "nīš tuḫri"), ("qablitum", "qablītu"), ("embubu", "embūbu"),
         ] {
-            #expect(TipoDeEscala.buscar(nombre: texto)?.nombre == nombre, Comment(rawValue: texto))
+            #expect((try? TipoDeEscala(leyendo: texto))?.nombre == nombre, Comment(rawValue: texto))
         }
         #expect(Escala(texto: "Re pitu")?.tipo.nombre == "pītu")
         #expect(!(TipoDeEscala.todos.contains { $0.nombre == "išartu" }))
@@ -997,10 +1000,10 @@ import Testing
 
     @Test func gramaMurchanaYGenerosGriegos() {
         // Los grāma y las mūrchanā se encuentran sin diacríticos y en devanagari.
-        #expect(TipoDeEscala.buscar(nombre: "shadja grama")?.nombre == "ṣaḍja-grāma")
-        #expect(TipoDeEscala.buscar(nombre: "Suddhasadja")?.nombre == "Śuddhaṣaḍjā")
-        #expect(TipoDeEscala.buscar(nombre: "सौवीरी")?.nombre == "Sauvīrī")
-        #expect(TipoDeEscala.buscar(nombre: "tetracordo pitagórico")?.nombre == "tetracordo diatónico ditónico")
+        #expect((try? TipoDeEscala(leyendo: "shadja grama"))?.nombre == "ṣaḍja-grāma")
+        #expect((try? TipoDeEscala(leyendo: "Suddhasadja"))?.nombre == "Śuddhaṣaḍjā")
+        #expect((try? TipoDeEscala(leyendo: "सौवीरी"))?.nombre == "Sauvīrī")
+        #expect((try? TipoDeEscala(leyendo: "tetracordo pitagórico"))?.nombre == "tetracordo diatónico ditónico")
     }
 
     @Test func busquedaYNombres() {
@@ -1011,12 +1014,12 @@ import Testing
         #expect(Escala("Do Kafi") == Escala(.do, .kafi))
         #expect(Escala("Do melakarta 15").tipo.nombre == "Māyāmālavagauḷa")
         #expect(Escala("Do mayamalavagowla").tipo == .bhairav)
-        #expect(TipoDeEscala.buscar(nombre: "souzinak")?.nombre == "Nikríz")
+        #expect((try? TipoDeEscala(leyendo: "souzinak"))?.nombre == "Nikríz")
         // Los nombres propios no se traducen…
         #expect(Escala(.re, .hitzaz).nombre(en: .inglesASCII) == "D Hitzáz")
         #expect(Escala(.re, .hitzaz).texto(en: .inglesASCII) == "D Hitzáz")
         // …y las escalas habituales siguen igual: los nombres de siempre van primero.
-        #expect(TipoDeEscala.buscar(nombre: "mayor")?.nombre == "mayor")
+        #expect((try? TipoDeEscala(leyendo: "mayor"))?.nombre == "mayor")
         #expect(TipoDeEscala.frigioDominante.nombre(en: .inglesASCII) == "phrygian dominant")
         #expect(!(TipoDeEscala.todos.contains { $0.nombre == "Hitzáz" }))
     }
@@ -1027,18 +1030,18 @@ import Testing
             ("Χιτζάζ", "Hitzáz"), ("χιτζαζ", "Hitzáz"), ("Χιτζαζκιάρ", "Hitzazkiár"),
             ("Ουσάκ", "Ousák"), ("Ραστ", "Rast"),
         ] {
-            #expect(TipoDeEscala.buscar(nombre: texto)?.nombre == nombre, Comment(rawValue: texto))
+            #expect((try? TipoDeEscala(leyendo: texto))?.nombre == nombre, Comment(rawValue: texto))
         }
         // Las escalas indias, en devanagari. Ahí las marcas cuentan: भैरव y भैरवी son dos rāgas.
-        #expect(TipoDeEscala.buscar(nombre: "भैरव")?.nombre == "Bhairav")
-        #expect(TipoDeEscala.buscar(nombre: "भैरवी")?.nombre == "Bhairavī")
-        #expect(TipoDeEscala.buscar(nombre: "यमन")?.nombre == "Yaman")
+        #expect((try? TipoDeEscala(leyendo: "भैरव"))?.nombre == "Bhairav")
+        #expect((try? TipoDeEscala(leyendo: "भैरवी"))?.nombre == "Bhairavī")
+        #expect((try? TipoDeEscala(leyendo: "यमन"))?.nombre == "Yaman")
         #expect(Escala("Re मोहनम्").tipo.nombre == Escala("Re Mohanam").tipo.nombre)
         // Los 72 mēḷa.
         #expect(TipoDeEscala.nombresDeMelakartaEnDevanagari.count == 72)
         #expect(Set(TipoDeEscala.nombresDeMelakartaEnDevanagari).count == 72)
         for (devanagari, nombre) in zip(TipoDeEscala.nombresDeMelakartaEnDevanagari, TipoDeEscala.nombresDeMelakarta) {
-            #expect(TipoDeEscala.buscar(nombre: devanagari)?.nombre == nombre, Comment(rawValue: devanagari))
+            #expect((try? TipoDeEscala(leyendo: devanagari))?.nombre == nombre, Comment(rawValue: devanagari))
         }
     }
 }

@@ -145,7 +145,7 @@ import Testing
             (.griego, "Ραστ", "Rast"), (.griego, "Μπιλαβάλ", "Bilāval"),
         ] {
             let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
-            let tipo = TipoDeEscala.buscar(nombre: original)
+            let tipo = (try? TipoDeEscala(leyendo: original))
             #expect(tipo?.nombre(en: notacion) == ejemplo, "\(idioma)")
             #expect(NombresDeEscalas.de(idioma).indice[TipoDeEscala.normalizar(ejemplo)] == tipo, "\(idioma)")
         }
@@ -154,7 +154,7 @@ import Testing
             for tipo in TipoDeEscala.melakartas { #expect(tipo.nombre(en: notacion) == tipo.nombre, "\(idioma)") }
         }
         let notacion = Notacion.espanolCompacto.conTextos(en: .griego)
-        #expect(TipoDeEscala.buscar(nombre: "Hitzáz")?.nombre(en: notacion) == "Χιτζάζ")
+        #expect((try? TipoDeEscala(leyendo: "Hitzáz"))?.nombre(en: notacion) == "Χιτζάζ")
     }
 
     /// Āsāvarī es la escala menor natural por sus intervalos (`TipoDeEscala` se compara por ellos): por eso las
@@ -203,10 +203,10 @@ import Testing
                     Comment(rawValue: clave))
             }
         }
-        #expect(TipoDeEscala.buscar(nombre: "dorico b2") == TipoDeEscala.buscar(nombre: "dórico ♭2"))
-        #expect(TipoDeEscala.buscar(nombre: "jonico sin 4") == TipoDeEscala.jonicoSinCuarta)
-        #expect(TipoDeEscala.buscar(nombre: "doble armonica") == TipoDeEscala.dobleArmonica)
-        #expect(TipoDeEscala.buscar(nombre: "Hanumatodi")?.nombre == "Hanumattoḍī")
+        #expect((try? TipoDeEscala(leyendo: "dorico b2")) == (try? TipoDeEscala(leyendo: "dórico ♭2")))
+        #expect((try? TipoDeEscala(leyendo: "jonico sin 4")) == TipoDeEscala.jonicoSinCuarta)
+        #expect((try? TipoDeEscala(leyendo: "doble armonica")) == TipoDeEscala.dobleArmonica)
+        #expect((try? TipoDeEscala(leyendo: "Hanumatodi"))?.nombre == "Hanumattoḍī")
     }
 
     @Test func aliasNormalizadosNoTienenRepetidos() {
@@ -218,7 +218,7 @@ import Testing
     @Test func normalizarPliegaOrdinalesYMenos() {
         #expect(TipoDeEscala.normalizar("jónico sin 4ª") == "jonico sin 4")
         #expect(TipoDeEscala.normalizar("cromática −5…6") == "cromatica 5..6")
-        #expect(TipoDeEscala.buscar(nombre: "cromatica -5..6") == TipoDeEscala.buscar(nombre: "cromática −5…6"))
+        #expect((try? TipoDeEscala(leyendo: "cromatica -5..6")) == (try? TipoDeEscala(leyendo: "cromática −5…6")))
     }
 
     /// Las filas `.tradicional(.miembro, "…")` apuntan al tipo, y las escalas sin fila (los mēḷa) conservan su nombre.

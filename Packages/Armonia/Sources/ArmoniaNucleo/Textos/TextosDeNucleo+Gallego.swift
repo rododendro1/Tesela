@@ -56,6 +56,8 @@ extension TextosDeNucleo {
         serieNoDodecafonica: "unha serie dodecafónica ten as doce clases de altura, cada unha unha vez",
         faltanEnLaSerie: { clases in "faltan \(clases)" },
         repetidasEnLaSerie: { clases in "repítense \(clases)" },
+        // ErrorDeLectura.swift (idiomas)
+        idiomaNoReconocido: { n, o in "«\(n)» non é ningún dos quince idiomas: \(o)" },
 
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(ordinal) \(calidad)" },

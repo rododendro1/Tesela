@@ -56,6 +56,8 @@ extension TextosDeNucleo {
         serieNoDodecafonica: "eine Zwölftonreihe enthält alle zwölf Tonhöhenklassen, jede genau einmal",
         faltanEnLaSerie: { clases in "es fehlen \(clases)" },
         repetidasEnLaSerie: { clases in "wiederholt: \(clases)" },
+        // ErrorDeLectura.swift (idiomas)
+        idiomaNoReconocido: { n, o in "„\(n)“ ist keine der fünfzehn Sprachen: \(o)" },
 
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },

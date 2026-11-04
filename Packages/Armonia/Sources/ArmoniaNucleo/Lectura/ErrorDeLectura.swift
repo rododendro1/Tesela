@@ -1,7 +1,7 @@
 import Foundation
 
-/// Error al leer una nota, una altura, un intervalo, un conjunto de clases o una serie dodecafónica, o un texto vacío
-/// o con caracteres de más.
+/// Error al leer una nota, una altura, un intervalo, un conjunto de clases, una serie dodecafónica o un idioma, o un
+/// texto vacío o con caracteres de más.
 ///
 /// Indica el texto, el carácter donde se detuvo la lectura y el motivo, en los quince idiomas de los
 /// textos (`Traduccion`). Los cifrados, las escalas y la partitura tienen el suyo en su capa
@@ -31,6 +31,8 @@ public struct ErrorDeLectura: ErrorAlLeer {
         case faltaElCierre(String)
         /// Una serie que no tiene las doce clases una vez cada una: las que faltan y las que se repiten.
         case serieNoDodecafonica(faltan: [Int], repetidas: [Int])
+        /// Ni el código ni el nombre de uno de los quince idiomas, con los códigos que sí.
+        case idiomaNoReconocido(String, opciones: [String])
     }
 
     public let texto: String
@@ -86,6 +88,8 @@ extension ErrorDeLectura.Motivo {
                     ? textos.serieNoDodecafonica
                     : textos.serieNoDodecafonica + textos.dosPuntos + partes.joined(separator: "; ")
             }
+        case .idiomaNoReconocido(let nombre, let opciones):
+            return TextosDeNucleo.traduccion { $0.idiomaNoReconocido(nombre, opciones.joined(separator: ", ")) }
         }
     }
 }

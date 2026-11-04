@@ -96,8 +96,8 @@ import Testing
         #expect(Alteracion(1).nombre(en: .hungaroPalabras) == "kereszt")
         #expect(Alteracion(-2).nombre(en: .hungaroPalabras) == "kettős bé")
         #expect(Idioma(codigo: "hu-HU") == .hungaro)
-        #expect(Idioma(nombre: "magyar") == .hungaro)
-        #expect(Idioma(nombre: "húngaro") == .hungaro)
+        #expect(try Idioma(leyendo: "magyar") == .hungaro)
+        #expect(try Idioma(leyendo: "húngaro") == .hungaro)
         #expect(Idioma.hungaro.nombrePropio == "Magyar")
         // Los textos.
         #expect(Intervalo.terceraMayor.nombre(en: .hungaroPalabras) == "nagy terc")

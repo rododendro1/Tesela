@@ -309,7 +309,7 @@ extension LineaDeComandos {
         case .ausente: return nil
         case .sinValor: return .faltaInstrumento
         case .valor(let nombre):
-            guard let encordado = Encordado(nombre: nombre) else { return .instrumentoDesconocido(nombre) }
+            guard let encordado = try? Encordado(leyendo: nombre) else { return .instrumentoDesconocido(nombre) }
             mastil = Mastil(encordado, trastes: 15)
             return nil
         }

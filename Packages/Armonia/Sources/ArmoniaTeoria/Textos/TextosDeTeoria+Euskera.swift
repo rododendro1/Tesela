@@ -180,6 +180,11 @@ extension TextosDeTeoria {
         numeroFueraDeRango: { t, d, h in "«\(t)» ez da \(d) eta \(h) arteko zenbaki bat" },
         trasteNoValido: { t, u in "«\(t)» ez da traste bat: x (soka itzalia) edo 0 eta \(u) arteko zenbaki bat izan behar du" },
         cuerdasDistintas: { e, l in "traste bat (edo x) behar da \(e) soketako bakoitzeko, eta \(l) daude" },
+        // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
+        cifradoRomanoNoValido: { cifrado in "«\(cifrado)» ez da zenbaki erromatar bat: I-etik VII-rako zenbakia, bere kalitatea eta zifrekin (V7, ii65, ♭VI, vii°7/V)" },
+        destinoNoTonicalizable: { destino in "«\(destino)» ezin da barraren ondoren joan: oinarrizko egoeran dagoen hirukote maior edo minor bat izan behar du (V/V, vii°7/ii)" },
+        cifrasNoValidas: { cifras in "«\(cifras)» ez dira baxu jarraituko zifrak: 1etik 9rako zenbakiak, gehienez alterazio batekin (6, 64, 7, ♯6, 4+)" },
+        cifrasSinAcorde: { cifras in "«\(cifras)» zifrek ez dute akorderik osatzen baxu horren gainean" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in Tonalidad.declinar(tonalidad, "ean") }

@@ -56,6 +56,8 @@ extension TextosDeNucleo {
         serieNoDodecafonica: "egy tizenkétfokú sorban mind a tizenkét hangmagasság-osztály megvan, mindegyik egyszer",
         faltanEnLaSerie: { clases in "hiányzik: \(clases)" },
         repetidasEnLaSerie: { clases in "ismétlődik: \(clases)" },
+        // ErrorDeLectura.swift (idiomas)
+        idiomaNoReconocido: { n, o in "„\(n)” egyik sem a tizenöt nyelv közül: \(o)" },
 
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },
