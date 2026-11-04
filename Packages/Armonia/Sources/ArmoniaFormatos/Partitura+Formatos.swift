@@ -38,7 +38,7 @@ extension Partitura {
         var archivo = ArchivoMIDI(
             compas: compas, tonalidad: encabezado.tonalidad, tempo: encabezado.tempo, titulo: encabezado.titulo,
             afinacion: afinacion)
-        for (linea, _) in lineas {
+        for linea in lineas.map(\.linea) {
             var inicio = Duracion.cero
             let marcadores = linea.voz.eventos.map { evento in
                 defer { inicio = inicio + evento.duracion }
