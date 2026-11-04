@@ -20,9 +20,8 @@ import Testing
     @Test func losOrnamentosSeLeen() throws {
         let evento = try Evento(leyendo: "Do5:4{trino,grupeto}")
         #expect(evento.articulaciones == [.trino, .grupeto])
-        #expect(try Evento(leyendo: "Re5:4{trill,prall,mordent,reverseturn}").articulaciones == [
-            .trino, .mordenteSuperior, .mordenteInferior, .grupetoInvertido,
-        ])
+        let alias = try Evento(leyendo: "Re5:4{trill,prall,mordent,reverseturn}")
+        #expect(alias.articulaciones == [.trino, .mordenteSuperior, .mordenteInferior, .grupetoInvertido])
         #expect(evento.texto == "Do5:4{trino,grupeto}")
         #expect(Articulacion.trino.esOrnamento && !Articulacion.calderon.esOrnamento)
         #expect(Articulacion.trino.proporcionQueSuena == Duracion(1, 1))
