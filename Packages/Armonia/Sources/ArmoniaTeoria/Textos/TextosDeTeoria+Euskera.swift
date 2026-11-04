@@ -177,6 +177,7 @@ extension TextosDeTeoria {
         vocesDeDistintaLongitud: "ahots guztiek nota kopuru bera izan behar dute",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
         nombreNoReconocido: { n, o in "«\(n)» ez da hauetako bat ere: \(o)" },
+        numeroFueraDeRango: { t, d, h in "«\(t)» ez da \(d) eta \(h) arteko zenbaki bat" },
         trasteNoValido: { t, u in "«\(t)» ez da traste bat: x (soka itzalia) edo 0 eta \(u) arteko zenbaki bat izan behar du" },
         cuerdasDistintas: { e, l in "traste bat (edo x) behar da \(e) soketako bakoitzeko, eta \(l) daude" },
         // Gramática (Acorde.swift, Tonalidad.swift)

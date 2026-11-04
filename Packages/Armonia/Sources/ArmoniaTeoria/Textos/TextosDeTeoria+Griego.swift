@@ -173,6 +173,7 @@ extension TextosDeTeoria {
         vocesDeDistintaLongitud: "όλες οι φωνές πρέπει να έχουν τον ίδιο αριθμό νοτών",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
         nombreNoReconocido: { n, o in "το «\(n)» δεν είναι κανένα από αυτά: \(o)" },
+        numeroFueraDeRango: { t, d, h in "το «\(t)» δεν είναι αριθμός από \(d) έως \(h)" },
         trasteNoValido: { t, u in "το «\(t)» δεν είναι τάστο: πρέπει να είναι x (σβησμένη χορδή) ή αριθμός από 0 έως \(u)" },
         cuerdasDistintas: { e, l in "χρειάζεται ένα τάστο (ή x) για καθεμία από τις \(e) χορδές, και υπάρχουν \(l)" },
         // Gramática (Acorde.swift, Tonalidad.swift)

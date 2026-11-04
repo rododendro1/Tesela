@@ -228,21 +228,49 @@ public struct Arpegio: Hashable, Sendable {
         return acorde.notasDesdeElBajo.firstIndex { acorde.fundamental.intervalo(hasta: $0).numeroSimple == simple }
     }
 
-    /// Lee un recorrido por grados: «1 5 3 8», «1-5-3-8» o «1, 5, 3, 8». `nil` si está vacío o algo no es un
-    /// número de 1 a 22 (tres octavas).
-    public static func grados(leyendo texto: String) -> [Int]? {
-        let partes = texto.split { $0 == " " || $0 == "," || $0 == "-" }
-        let grados = partes.compactMap { Int($0) }.filter { (1...22).contains($0) }
-        guard !grados.isEmpty, grados.count == partes.count else { return nil }
-        return grados
+    /// Lee un recorrido por grados: «1 5 3 8», «1-5-3-8» o «1, 5, 3, 8». Lanza `ErrorDeLectura` (`.textoVacio`) si
+    /// está vacío y `ErrorDeLecturaDeTeoria` (`.numeroFueraDeRango`, en su carácter) si algo no es un número de 1 a
+    /// 22 (tres octavas).
+    public static func grados(leyendo texto: String) throws -> [Int] {
+        try numeros(leyendo: texto) { parte, posicion in
+            guard let grado = Int(parte), (1...22).contains(grado) else {
+                throw ErrorDeLecturaDeTeoria(
+                    texto: texto, posicion: posicion, motivo: .numeroFueraDeRango(parte, desde: 1, hasta: 22))
+            }
+            return grado
+        }
     }
 
-    /// Lee las tensiones: «9», «9 13», «9,11,13». `nil` si está vacío o algo no es 9, 11 o 13.
-    public static func tensiones(leyendo texto: String) -> [Int]? {
-        let partes = texto.split { $0 == " " || $0 == "," || $0 == "-" }
-        let tensiones = partes.compactMap { Int($0) }.filter { [9, 11, 13].contains($0) }
-        guard !tensiones.isEmpty, tensiones.count == partes.count else { return nil }
-        return tensiones
+    /// Lee las tensiones: «9», «9 13», «9,11,13». Lanza `ErrorDeLectura` (`.textoVacio`) si está vacío y
+    /// `ErrorDeLecturaDeTeoria` (`.nombreNoReconocido`, en su carácter) si algo no es 9, 11 o 13.
+    public static func tensiones(leyendo texto: String) throws -> [Int] {
+        try numeros(leyendo: texto) { parte, posicion in
+            guard let tension = Int(parte), [9, 11, 13].contains(tension) else {
+                throw ErrorDeLecturaDeTeoria(
+                    texto: texto, posicion: posicion, motivo: .nombreNoReconocido(parte, opciones: ["9", "11", "13"]))
+            }
+            return tension
+        }
+    }
+
+    /// Los números de un texto separados por espacios, comas o guiones, cada uno leído por `leer` con el carácter
+    /// donde empieza.
+    private static func numeros(leyendo texto: String, _ leer: (String, Int) throws -> Int) throws -> [Int] {
+        var numeros: [Int] = []
+        var actual = ""
+        var inicio = 0
+        for (i, caracter) in texto.enumerated() {
+            if caracter == " " || caracter == "," || caracter == "-" {
+                if !actual.isEmpty { numeros.append(try leer(actual, inicio)) }
+                actual = ""
+            } else {
+                if actual.isEmpty { inicio = i }
+                actual.append(caracter)
+            }
+        }
+        if !actual.isEmpty { numeros.append(try leer(actual, inicio)) }
+        guard !numeros.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
+        return numeros
     }
 }
 

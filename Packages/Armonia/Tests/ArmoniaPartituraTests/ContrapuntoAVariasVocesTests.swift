@@ -70,9 +70,13 @@ import Testing
     @Test func sinVocesNoHayEjercicio() {
         #expect(throws: (any Error).self) { try ContrapuntoAVariasVoces(cantusFirmus: "Re4 Mi4", voces: []) }
         let cantus = [Altura("Re4"), Altura("Mi4")]
-        #expect(ContrapuntoAVariasVoces(cantusFirmus: cantus, voces: []) == nil)
+        #expect(throws: ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio)) {
+            try ContrapuntoAVariasVoces(cantusFirmus: cantus, voces: [])
+        }
         let corta: [Evento] = [Evento(Altura("La4"), .redonda)]
-        #expect(ContrapuntoAVariasVoces(cantusFirmus: cantus, voces: [(corta, .primera)]) == nil)
+        #expect(
+            throws: ErrorDeLecturaDePartitura(texto: "", posicion: nil, motivo: .contrapuntoDeOtraDuracion(redondas: 2))
+        ) { try ContrapuntoAVariasVoces(cantusFirmus: cantus, voces: [(corta, .primera)]) }
     }
 
     @Test func lasVocesVanOrdenadas() {

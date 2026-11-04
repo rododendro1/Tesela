@@ -2,6 +2,21 @@
 
 ## Sin publicar
 
+### Más lectores que dicen por qué fallan
+
+- **Cambio incompatible:** `Arpegio.grados(leyendo:)`, `Arpegio.tensiones(leyendo:)` y
+  `TransformacionNeorriemanniana.secuencia(leyendo:)` lanzan en lugar de devolver `nil`: `ErrorDeLectura`
+  (`.textoVacio`) si no hay nada que leer, y `ErrorDeLecturaDeTeoria` en el carácter de lo que no se entiende
+  (`.numeroFueraDeRango` para un grado que no va de 1 a 22, y `.nombreNoReconocido` para una tensión o una
+  transformación). `Acorde.transformar(leyendo:)` lanza el mismo error, y sigue dando `nil` si el acorde no es una
+  tríada mayor o menor.
+- **Cambio incompatible:** `NombreDeGrado(_:)`, `PapelEnAcorde(_:)` y `ModoGregoriano(nombre:)` son ahora
+  `init(leyendo:)` y lanzan `.nombreNoReconocido` con los nombres que sí se leen.
+- **Cambio incompatible:** `Contrapunto(cantusFirmus:contrapunto:especie:)` con alturas y eventos y
+  `ContrapuntoAVariasVoces(cantusFirmus:voces:)` con eventos lanzan en lugar de devolver `nil`, como sus versiones
+  que leen texto: `.textoVacio` sin cantus (o sin voces) y `.contrapuntoDeOtraDuracion` si una voz no dura una
+  redonda por nota del cantus.
+
 ### Los lectores que fallan dicen por qué
 
 - **Cambio incompatible:** `Arpegio.Patron(leyendo:)`, `Arpegio.Aproximacion(leyendo:)`,

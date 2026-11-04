@@ -115,7 +115,13 @@ import Testing
         #expect(throws: (any Error).self) {
             try Contrapunto(cantusFirmus: "Re4 Xx", contrapunto: "La4 La4", especie: .primera)
         }
-        #expect(Contrapunto(cantusFirmus: [], contrapunto: [], especie: .primera) == nil)
+        #expect(throws: ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio)) {
+            try Contrapunto(cantusFirmus: [], contrapunto: [], especie: .primera)
+        }
+        #expect(
+            throws: ErrorDeLecturaDePartitura(
+                texto: "La4", posicion: nil, motivo: .contrapuntoDeOtraDuracion(redondas: 2))
+        ) { try Contrapunto(cantusFirmus: "Re4 Mi4", contrapunto: "La4", especie: .primera) }
         // Sin duración, cada nota lleva la figura de su especie.
         #expect(
             try (Contrapunto(cantusFirmus: "Re4", contrapunto: "La4 Re5", especie: .segunda).contrapunto.ritmo) == [

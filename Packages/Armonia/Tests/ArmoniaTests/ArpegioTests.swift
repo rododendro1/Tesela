@@ -54,7 +54,7 @@ import Testing
         #expect(Arpegio.indice(delGrado: 0, en: enDo) == nil)
     }
 
-    @Test func lasTensiones() {
+    @Test func lasTensiones() throws {
         let do7 = Acorde("Do7")
         // La 9 por encima de la séptima, y la octava final, a dos octavas.
         #expect(midis(Arpegio(do7, tensiones: [9])) == [60, 64, 67, 70, 74, 84])
@@ -67,13 +67,18 @@ import Testing
         #expect(Arpegio(do7, tensiones: [9, 9, 10]).tensiones == [9])
         let dosOctavas = [60, 64, 67, 70, 74, 84, 88, 91, 94, 98]
         #expect(midis(Arpegio(do7, octavas: 2, conOctava: false, tensiones: [9])) == dosOctavas)
-        #expect(Arpegio.tensiones(leyendo: "9,13") == [9, 13])
-        #expect(Arpegio.tensiones(leyendo: "9 11") == [9, 11])
-        #expect(Arpegio.tensiones(leyendo: "10") == nil)
-        #expect(Arpegio.tensiones(leyendo: "") == nil)
+        #expect(try Arpegio.tensiones(leyendo: "9,13") == [9, 13])
+        #expect(try Arpegio.tensiones(leyendo: "9 11") == [9, 11])
+        #expect(
+            throws: ErrorDeLecturaDeTeoria(
+                texto: "9 10", posicion: 2, motivo: .nombreNoReconocido("10", opciones: ["9", "11", "13"]))
+        ) { try Arpegio.tensiones(leyendo: "9 10") }
+        #expect(throws: ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio)) {
+            try Arpegio.tensiones(leyendo: "")
+        }
     }
 
-    @Test func unRecorridoPorGrados() {
+    @Test func unRecorridoPorGrados() throws {
         let enDo = Acorde("Do")
         let propio = Arpegio(enDo, grados: [1, 5, 3, 8])
         #expect(midis(propio) == [60, 67, 64, 72])
@@ -84,12 +89,19 @@ import Testing
         #expect(midis(Arpegio(enDo, grados: [1, 3, 5, 9, 10], octavas: 2)) == conNovena)
         #expect(Arpegio(Acorde("Dom"), grados: [1, 3]).alturas()[1].nota == Nota.mi.bemol)
         #expect(Arpegio(enDo, grados: [0, 1]).grados == [1])
-        #expect(Arpegio.grados(leyendo: "1 5 3 8") == [1, 5, 3, 8])
-        #expect(Arpegio.grados(leyendo: "1-5-3-8") == [1, 5, 3, 8])
-        #expect(Arpegio.grados(leyendo: "1, 5, 3, 8") == [1, 5, 3, 8])
-        #expect(Arpegio.grados(leyendo: "1-x") == nil)
-        #expect(Arpegio.grados(leyendo: "23") == nil)
-        #expect(Arpegio.grados(leyendo: "") == nil)
+        #expect(try Arpegio.grados(leyendo: "1 5 3 8") == [1, 5, 3, 8])
+        #expect(try Arpegio.grados(leyendo: "1-5-3-8") == [1, 5, 3, 8])
+        #expect(try Arpegio.grados(leyendo: "1, 5, 3, 8") == [1, 5, 3, 8])
+        func fuera(_ texto: String, _ posicion: Int, _ parte: String) -> ErrorDeLecturaDeTeoria {
+            ErrorDeLecturaDeTeoria(
+                texto: texto, posicion: posicion, motivo: .numeroFueraDeRango(parte, desde: 1, hasta: 22))
+        }
+        #expect(throws: fuera("1-x", 2, "x")) { try Arpegio.grados(leyendo: "1-x") }
+        #expect(throws: fuera("23", 0, "23")) { try Arpegio.grados(leyendo: "23") }
+        #expect(fuera("23", 0, "23").explicacion == "«23» no es un número de 1 a 22")
+        #expect(throws: ErrorDeLectura(texto: ", ", posicion: nil, motivo: .textoVacio)) {
+            try Arpegio.grados(leyendo: ", ")
+        }
     }
 
     @Test func lasNotasDeAproximacion() throws {

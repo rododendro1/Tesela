@@ -247,11 +247,11 @@ extension LineaDeComandos {
             recorrido.octavas = n
         }
         if let tensiones {
-            guard let leidas = Arpegio.tensiones(leyendo: tensiones) else { return .tensionesMalEscritas }
+            guard let leidas = try? Arpegio.tensiones(leyendo: tensiones) else { return .tensionesMalEscritas }
             recorrido.tensiones = leidas
         }
         if let grados {
-            guard let leidos = Arpegio.grados(leyendo: grados) else { return .gradosMalEscritos }
+            guard let leidos = try? Arpegio.grados(leyendo: grados) else { return .gradosMalEscritos }
             recorrido.grados = leidos
         }
         if let aproximacion {

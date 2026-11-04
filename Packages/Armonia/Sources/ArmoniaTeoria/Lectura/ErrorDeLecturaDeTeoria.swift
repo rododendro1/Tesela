@@ -38,6 +38,8 @@ public struct ErrorDeLecturaDeTeoria: ErrorAlLeer {
         /// Un nombre que no es ninguno de los que se leen (un patrón de arpegio, una aproximación, un ciclo), con los
         /// que sí, por su nombre en el código.
         case nombreNoReconocido(String, opciones: [String])
+        /// Algo que no es un número entre `desde` y `hasta` (un grado de arpegio: de 1 a 22).
+        case numeroFueraDeRango(String, desde: Int, hasta: Int)
         // Digitaciones
         /// Un traste que no es `x` ni un número del mástil (de 0 a `ultimo`).
         case trasteNoValido(String, ultimo: Int)
@@ -125,6 +127,8 @@ extension ErrorDeLecturaDeTeoria.Motivo {
         case .vocesDeDistintaLongitud: return TextosDeTeoria.traduccion(\.vocesDeDistintaLongitud)
         case .nombreNoReconocido(let nombre, let opciones):
             return TextosDeTeoria.traduccion { $0.nombreNoReconocido(nombre, opciones.joined(separator: ", ")) }
+        case .numeroFueraDeRango(let texto, let desde, let hasta):
+            return TextosDeTeoria.traduccion { $0.numeroFueraDeRango(texto, desde, hasta) }
         case .trasteNoValido(let traste, let ultimo):
             return TextosDeTeoria.traduccion { $0.trasteNoValido(traste, ultimo) }
         case .cuerdasDistintas(let esperadas, let leidas):

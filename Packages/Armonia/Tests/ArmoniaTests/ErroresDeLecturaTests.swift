@@ -223,6 +223,7 @@ import Testing
             .acordeNoInterpretable(.noEsPorTerceras), .bajoNoValido("x"), .idiomasMezclados("B"),
             .tipoDeEscalaNoReconocido(""), .tipoDeEscalaNoReconocido("x"), .modoNoReconocido("dórico"),
             .vocesDistintas, .vocesDeDistintaLongitud, .nombreNoReconocido("x", opciones: ["up", "down"]),
+            .numeroFueraDeRango("x", desde: 1, hasta: 22),
             .trasteNoValido("x", ultimo: 12), .cuerdasDistintas(esperadas: 6, leidas: 5),
         ]).map { ErrorDeLecturaDeTeoria(texto: "x", posicion: 0, motivo: $0) }
         + [ErrorDeLecturaDePartitura.Motivo]([

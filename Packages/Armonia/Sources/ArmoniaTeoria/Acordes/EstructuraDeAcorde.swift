@@ -97,8 +97,9 @@ public enum PapelEnAcorde: Hashable, Sendable, CustomStringConvertible {
 
     /// Lee el nombre de un papel en español o en inglés, sin distinguir mayúsculas ni tildes.
     /// Acepta también los nombres de la armonía moderna para las tensiones:
-    /// "undécima" u "oncena", "decimotercera" o "trecena", "eleventh", "9ª"…
-    public init?(_ texto: String) {
+    /// "undécima" u "oncena", "decimotercera" o "trecena", "eleventh", "9ª"… Si no es ninguno, lanza
+    /// `ErrorDeLecturaDeTeoria` con sus nombres (`.nombreNoReconocido`).
+    public init(leyendo texto: String) throws {
         let clave = texto.claveDeBusqueda
         let alias: [String: PapelEnAcorde] = [
             "oncena": .tension(11), "trecena": .tension(13),
@@ -117,7 +118,10 @@ public enum PapelEnAcorde: Hashable, Sendable, CustomStringConvertible {
             let papel = todos.first(where: { p in
                 p.nombre.claveDeBusqueda == clave || p.nombre(en: .inglesASCII).claveDeBusqueda == clave
             })
-        else { return nil }
+        else {
+            throw ErrorDeLecturaDeTeoria(
+                texto: texto, posicion: nil, motivo: .nombreNoReconocido(texto, opciones: todos.map(\.nombre)))
+        }
         self = papel
     }
 }

@@ -324,10 +324,10 @@ import Hexagonos
 
     @Test func convenciones4() throws {
         // Sources/Armonia/Armonia.docc/Convenciones.md, línea 91
-        comprobarIgual(NombreDeGrado("submediante"), .superdominante, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 91)
-        _ = (NombreDeGrado("Tónica"), NombreDeGrado("leading tone"))
-        comprobar(PapelEnAcorde("oncena") == PapelEnAcorde("undécima"), #"true"#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 93)
-        comprobar(PapelEnAcorde("trecena") == PapelEnAcorde("decimotercera"), #"true"#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 94)
+        comprobarIgual(try NombreDeGrado(leyendo: "submediante"), .superdominante, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 91)
+        _ = (try NombreDeGrado(leyendo: "Tónica"), try NombreDeGrado(leyendo: "leading tone"))
+        comprobar(try PapelEnAcorde(leyendo: "oncena") == PapelEnAcorde(leyendo: "undécima"), #"true"#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 93)
+        comprobar(try PapelEnAcorde(leyendo: "trecena") == PapelEnAcorde(leyendo: "decimotercera"), #"true"#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 94)
         comprobar(PapelEnAcorde.tension(11).nombre, #""undécima""#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 95)
     }
 
@@ -451,7 +451,7 @@ import Hexagonos
     @Test func escalas9() throws {
         // Sources/Armonia/Armonia.docc/Escalas.md, línea 382
         comprobar(ModoGregoriano(2)!.description, #""modo 2 (protus plagal, hipodórico): final Re, tenor Fa, ámbito La3–La4""#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 382)
-        comprobar(ModoGregoriano(nombre: "hipofrigio")!.tenor, #"La"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 384)
+        comprobar(try ModoGregoriano(leyendo: "hipofrigio").tenor, #"La"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 384)
         comprobar(ModoGregoriano(3)!.escala, #"Mi frigio"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 385)
         comprobar(ModoGregoriano(6)!.ambito.first, #"Do4"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 386)
     }

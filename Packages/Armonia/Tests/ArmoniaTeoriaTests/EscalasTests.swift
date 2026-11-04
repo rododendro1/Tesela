@@ -808,7 +808,7 @@ import Testing
         }
     }
 
-    @Test func modosGregorianos() {
+    @Test func modosGregorianos() throws {
         #expect(
             ModoGregoriano.todos.map(\.nombreGriego) == [
                 "dórico", "hipodórico", "frigio", "hipofrigio", "lidio", "hipolidio", "mixolidio", "hipomixolidio",
@@ -837,11 +837,11 @@ import Testing
             #expect(modo.ambito.contains(Altura(modo.finalis, octava: 4)))
         }
 
-        #expect(ModoGregoriano(nombre: "hipofrigio")?.numero == 4)
-        #expect(ModoGregoriano(nombre: "Tritus Plagal")?.numero == 6)
-        #expect(ModoGregoriano(nombre: "modo 7")?.numero == 7)
-        #expect(ModoGregoriano(nombre: "hipodorico")?.numero == 2)
-        #expect(ModoGregoriano(nombre: "eólico") == nil)
+        #expect(try ModoGregoriano(leyendo: "hipofrigio").numero == 4)
+        #expect(try ModoGregoriano(leyendo: "Tritus Plagal").numero == 6)
+        #expect(try ModoGregoriano(leyendo: "modo 7").numero == 7)
+        #expect(try ModoGregoriano(leyendo: "hipodorico").numero == 2)
+        #expect(throws: ErrorDeLecturaDeTeoria.self) { try ModoGregoriano(leyendo: "eólico") }
     }
 
     @Test func escalasChinas() {

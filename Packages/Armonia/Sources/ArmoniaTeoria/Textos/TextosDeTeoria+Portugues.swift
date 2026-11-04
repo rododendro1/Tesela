@@ -173,6 +173,7 @@ extension TextosDeTeoria {
         vocesDeDistintaLongitud: "todas as vozes têm de ter o mesmo número de notas",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
         nombreNoReconocido: { n, o in "«\(n)» não é nenhum destes: \(o)" },
+        numeroFueraDeRango: { t, d, h in "«\(t)» não é um número de \(d) a \(h)" },
         trasteNoValido: { t, u in "«\(t)» não é um traste: tem de ser x (corda abafada) ou um número de 0 a \(u)" },
         cuerdasDistintas: { e, l in "é preciso um traste (ou x) por cada uma das \(e) cordas, e há \(l)" },
         // Gramática (Acorde.swift, Tonalidad.swift)

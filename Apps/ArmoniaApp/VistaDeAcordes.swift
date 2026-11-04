@@ -59,7 +59,7 @@ struct VistaDeAcordes: View {
     }
 
     private func arpegio(de acorde: Acorde) -> Arpegio {
-        if let grados = Arpegio.grados(leyendo: grados) {
+        if let grados = try? Arpegio.grados(leyendo: grados) {
             return Arpegio(acorde, grados: grados, octavas: octavas, aproximacion: aproximacion)
         }
         return Arpegio(
