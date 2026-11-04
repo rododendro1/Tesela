@@ -270,8 +270,13 @@ import Testing
         #expect(svg.contains(">2</text>"))
         let sinTitulo = teclado.svg()
         #expect(!sinTitulo.contains("<title>") && !sinTitulo.contains("<circle"))
-        // Marcadas sin rótulo: el círculo, sin texto.
-        let sinRotulos = teclado.svg(marcadas: [60, 64])
+        // Marcadas sin rótulo: el círculo, con el nombre de la nota en la notación; sin nombres, sin texto.
+        let conNombres = teclado.svg(marcadas: [60, 61, 64], opciones: .init(notacion: .inglesASCII))
+        #expect(conNombres.contains(">C</text>") && conNombres.contains(">C#</text>"))
+        #expect(conNombres.contains(">E</text>"))
+        let conBemoles = teclado.svg(marcadas: [61], opciones: .init(preferirBemoles: true))
+        #expect(conBemoles.contains(">Re♭</text>"))
+        let sinRotulos = teclado.svg(marcadas: [60, 64], opciones: .init(nombresDeLasNotas: false))
         #expect(sinRotulos.components(separatedBy: "<circle").count - 1 == 2)
         #expect(!sinRotulos.contains("</text>"))
         // La escala agranda el dibujo sin cambiar lo que tiene dentro.
@@ -302,7 +307,12 @@ import Testing
         #expect(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"))
         #expect(svg.components(separatedBy: "<circle").count - 1 == 13)
         #expect(svg.contains("<polygon"))
-        #expect(svg.contains(">Do</text>") && svg.contains(">7</text>"))
+        // Las horas sin rótulo, con el nombre de su nota; sin nombres, con su número.
+        #expect(svg.contains(">Do</text>") && svg.contains(">Sol</text>") && svg.contains(">Fa♯</text>"))
+        let enIngles = reloj.svg(opciones: .init(notacion: .inglesASCII, preferirBemoles: true))
+        #expect(enIngles.contains(">G</text>") && enIngles.contains(">Gb</text>"))
+        let numeros = reloj.svg(rotulos: [0: "Do"], opciones: .init(nombresDeLasNotas: false))
+        #expect(numeros.contains(">Do</text>") && numeros.contains(">7</text>"))
         #expect(svg.contains("<title>Do &amp; Mi</title>"))
         #expect(svg.contains(DibujoSVG.Color.primera))
         // Una sola nota no hace polígono; sin título, no hay texto de cabecera.

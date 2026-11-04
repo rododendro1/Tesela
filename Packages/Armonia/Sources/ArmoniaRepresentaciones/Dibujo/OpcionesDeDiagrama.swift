@@ -6,12 +6,15 @@ import ArmoniaNucleo
 
 /// Las opciones de un diagrama: `Tonnetz(Acorde("Do")).svg(opciones: .init(notacion: .inglesASCII, escala: 1.5))`.
 public struct OpcionesDeDiagrama: Hashable, Sendable {
-    /// Cómo se escriben los nombres de las notas y el título que pone el dibujo. El teclado de piano y el reloj no
-    /// nombran notas por sí solos: sus rótulos llegan escritos.
+    /// Cómo se escriben los nombres de las notas y el título que pone el dibujo.
     public var notacion: Notacion
     /// Si las notas negras del piano se nombran con bemol (Si♭) y no con sostenido (La♯), donde el dibujo no sabe
-    /// cuál es (en los teclados isomórficos y cuadrados).
+    /// cuál es (en los teclados isomórficos y cuadrados, el teclado de piano y el reloj).
     public var preferirBemoles: Bool
+    /// Si el teclado de piano y el reloj nombran, en `notacion`, las notas a las que no se da rótulo: las marcadas
+    /// del piano y las doce horas del reloj. Con `false`, como antes: el piano las marca sin texto y el reloj
+    /// escribe el número de cada clase (0 es Do; 11, Si).
+    public var nombresDeLasNotas: Bool
     /// El título: si es `nil`, el que ponga el dibujo (el acorde o la escala en el Tonnetz y la tabla; ninguno en
     /// los teclados, el piano y el reloj); si es "", ninguno.
     public var titulo: String?
@@ -19,11 +22,12 @@ public struct OpcionesDeDiagrama: Hashable, Sendable {
     public var escala: Double
 
     public init(
-        notacion: Notacion = .espanolCompacto, preferirBemoles: Bool = false, titulo: String? = nil,
-        escala: Double = 1
+        notacion: Notacion = .espanolCompacto, preferirBemoles: Bool = false, nombresDeLasNotas: Bool = true,
+        titulo: String? = nil, escala: Double = 1
     ) {
         self.notacion = notacion
         self.preferirBemoles = preferirBemoles
+        self.nombresDeLasNotas = nombresDeLasNotas
         self.titulo = titulo
         self.escala = escala
     }
@@ -65,4 +69,12 @@ public struct MarcasDeDiagrama: Hashable, Sendable, ExpressibleByArrayLiteral, E
     public func rotulo(de nota: Int) -> String? { rotulos[nota] }
 
     public var isEmpty: Bool { notas.isEmpty }
+}
+
+extension OpcionesDeDiagrama {
+    /// El nombre de la clase de altura de una nota (por su número MIDI), sin octava, en `notacion` y con bemol o con
+    /// sostenido según `preferirBemoles`: el que ponen el piano y el reloj a las notas sin rótulo.
+    func nombre(de midi: Int) -> String {
+        Altura(midi: midi, preferirBemoles: preferirBemoles).nota.nombreCompacto(en: notacion)
+    }
 }

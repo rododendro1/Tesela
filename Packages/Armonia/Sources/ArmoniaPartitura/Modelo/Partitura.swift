@@ -13,16 +13,28 @@ import ArmoniaTeoria
 ///
 ///     let encabezado = Encabezado(titulo: "Escala", tonalidad: Tonalidad(.re), tempo: Tempo(90))
 public struct Encabezado: Hashable, Sendable {
-    /// De qué es una partitura que se nombra por lo que se toca: una escala o un acorde.
+    /// De qué es una partitura que se nombra por lo que se toca: una escala, una secuencia de estudio, un acorde, un
+    /// arpegio o una progresión.
     public enum Tema: Hashable, Sendable, Codable {
         case escala(Escala)
+        /// La escala tocada en una secuencia de estudio (``Escala/secuencia(_:octava:octavas:sentido:)``).
+        case secuencia(SecuenciaDeEscala, de: Escala)
         case acorde(Acorde)
+        case arpegio(Arpegio)
+        /// Unos acordes, uno tras otro.
+        case progresion([Acorde])
 
-        /// Su nombre en una notación: el de la escala («Re dórico», «D Dorian») o el cifrado del acorde.
+        /// Su nombre en una notación: el de la escala («Re dórico», «D Dorian»), con el de la secuencia («Do mayor ·
+        /// terceras»), el cifrado del acorde, el nombre del arpegio o los cifrados de la progresión («Rem7 – Sol7 –
+        /// Do7M»).
         public func nombre(en notacion: Notacion) -> String {
             switch self {
             case .escala(let escala): escala.nombre(en: notacion)
+            case .secuencia(let secuencia, let escala):
+                escala.nombre(en: notacion) + " · " + secuencia.nombre(en: notacion)
             case .acorde(let acorde): acorde.cifrado(en: notacion)
+            case .arpegio(let arpegio): arpegio.nombre(en: notacion)
+            case .progresion(let acordes): acordes.map { $0.cifrado(en: notacion) }.joined(separator: " – ")
             }
         }
     }
@@ -196,13 +208,16 @@ public struct Partitura: Hashable, Sendable, Codable {
     ///     let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
     ///     let svg = Partitura(acordes: voces, titulo: "ii–V–I", cifrados: progresion).svg()
     ///
+    /// Sin `titulo`, el de la partitura son los cifrados («Rem7 – Sol7 – Do7M»: el tema
+    /// ``Encabezado/Tema/progresion(_:)``), en la notación con que se dibuja o se exporta; sin cifrados, ninguno.
+    ///
     /// Lo que se anota va por columna (contada desde 0). Con `cifrados`, cada columna lleva encima su cifrado, y los
     /// intervalos de las notas (`intervalosDeLasNotas`) se cuentan desde la fundamental de su acorde. Con `grados`
     /// (como los de `AnalisisArmonico.cifrados`), debajo, su grado en números romanos; con `digitos`, el dedo de cada
     /// nota encima (de la grave a la aguda), y con `tablatura`, la cuerda y el traste debajo. Con `bajoCifrado` (como
     /// los de `Tonalidad.cifrasDeBajo(de:)`), las cifras del bajo continuo debajo de todo, una encima de otra.
     public init(
-        acordes: [[Altura]], titulo: String, cifrados: [Acorde] = [], grados: [String] = [],
+        acordes: [[Altura]], titulo: String? = nil, cifrados: [Acorde] = [], grados: [String] = [],
         bajoCifrado: [[String]] = [], digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil
     ) {
         let voz = Voz(acordes.map { Evento(alturas: $0, duracion: .redonda) })
@@ -222,7 +237,8 @@ public struct Partitura: Hashable, Sendable, Codable {
             digitos: porInicio(digitos), pulsaciones: porInicio(tablatura?.notas ?? [:]))
         self.init(
             pentagramas: [Pentagrama(voces: [linea], cuerdas: tablatura?.cuerdas)],
-            encabezado: Encabezado(titulo: titulo), ritmo: false)
+            encabezado: Encabezado(titulo: titulo, tema: cifrados.isEmpty ? nil : .progresion(cifrados)),
+            ritmo: false)
     }
 
     /// El nombre de la parte: el del encabezado o «Voz».
@@ -298,13 +314,23 @@ extension Partitura {
     /// índice): con `figura`, con ritmo (la última, una negra si la figura es más corta); sin ella, en redondas y sin
     /// ritmo. Es lo que hacen `Escala.partitura(tocadaEn:…)` y `Acorde.partitura(arpegiadoEn:…)`.
     static func tocada(
-        _ notas: [Evento.Nota], titulo: String?, tema: Encabezado.Tema, figura: Duracion?, digitos: [Int: [Int]],
-        tablatura: Tablatura?, acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
+        _ notas: [Evento.Nota], titulo: String? = nil, tema: Encabezado.Tema, figura: Duracion? = nil,
+        digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil, acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
+    ) -> Partitura {
+        tocada(
+            juntas: notas.map { [$0] }, titulo: titulo, tema: tema, figura: figura, digitos: digitos,
+            tablatura: tablatura, acorde: acorde, tonica: tonica, armadura: armadura)
+    }
+
+    /// Como `tocada(_:…)`, con las notas de cada evento juntas: todas las de un acorde en uno.
+    static func tocada(
+        juntas notas: [[Evento.Nota]], titulo: String? = nil, tema: Encabezado.Tema, figura: Duracion? = nil,
+        digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil, acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
     ) -> Partitura {
         let eventos = notas.indices.map { i in
-            guard let figura else { return Evento(notas: [notas[i]], duracion: .redonda) }
+            guard let figura else { return Evento(notas: notas[i], duracion: .redonda) }
             let ultima = i == notas.count - 1 && notas.count > 1
-            return Evento(notas: [notas[i]], duracion: ultima && figura < .negra ? .negra : figura)
+            return Evento(notas: notas[i], duracion: ultima && figura < .negra ? .negra : figura)
         }
         let voz = Voz(eventos)
         let inicios = voz.inicios

@@ -276,10 +276,10 @@ struct PentagramaSVG {
     }
 
     func svg() -> String {
-        PentagramaSVG.envolver([dibujo()], titulo: titulo, tamano: opciones.maquetacion.tamano)
+        PentagramaSVG.envolver([dibujo()], titulo: titulo, tamano: opciones.pixelesPorEspacio)
     }
 
-    /// Uno o más dibujos, uno debajo de otro, en un SVG.
+    /// Uno o más dibujos, uno debajo de otro, en un SVG; con el título en un `<title>`, si lo tiene.
     static func envolver(_ dibujos: [Dibujo], titulo: String, tamano: Double) -> String {
         let separacion = 1.5
         var y = 0.0
@@ -297,10 +297,11 @@ struct PentagramaSVG {
         let ancho = dibujos.map(\.ancho).max() ?? 0
         let alto = dibujos.map(\.alto).reduce(0, +) + separacion * Double(max(0, dibujos.count - 1))
         let descripcion = dibujos.map(\.descripcion).joined(separator: ", ")
+        let etiquetas = titulo.isEmpty ? "descripcion" : "titulo descripcion"
+        let rotulo = titulo.isEmpty ? "" : "<title id=\"titulo\">" + EscrituraXML.escapar(titulo) + "</title>\n"
         return """
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="\(n(x)) \(n(cima)) \(n(ancho)) \(n(alto))" width="\(n(ancho * tamano))" height="\(n(alto * tamano))" role="img" aria-labelledby="titulo descripcion">
-            <title id="titulo">\(EscrituraXML.escapar(titulo))</title>
-            <desc id="descripcion">\(EscrituraXML.escapar(descripcion))</desc>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="\(n(x)) \(n(cima)) \(n(ancho)) \(n(alto))" width="\(n(ancho * tamano))" height="\(n(alto * tamano))" role="img" aria-labelledby="\(etiquetas)">
+            \(rotulo)<desc id="descripcion">\(EscrituraXML.escapar(descripcion))</desc>
             \(grupos.joined(separator: "\n"))
             </svg>
             """

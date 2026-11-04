@@ -402,4 +402,71 @@ import Testing
             pentagramas: [.init(voces: [.init(Voz([Evento("Mi♭4", .redonda, desvio: 50)]))])], ritmo: false)
         #expect(aMano.svg().contains(GlifosSMuFL.medioBemol.trazado))
     }
+
+    // MARK: La importación, con el sistema
+
+    @Test func laImportacionLeeElSistemaDeSuSigno() throws {
+        // El Mi koron de Šur vuelve de MusicXML y de MEI como koron, no como medio bemol.
+        let sur = Escala(.re, .sur).voz().partitura()
+        let koron = Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)
+        for pieza in [
+            try PiezaImportada(musicXML: Data(sur.musicXML().utf8)), try PiezaImportada(mei: Data(sur.mei().utf8)),
+        ] {
+            let mi = try #require(pieza.notas.sorted { $0.inicio < $1.inicio }.dropFirst().first)
+            #expect(mi.sistema == .persa && mi.ajuste == 1 && mi.nota == koron && mi.nota.signo() == .koron)
+        }
+        // Un medio bemol no dice sistema: sus cents bastan.
+        let maqam = Voz([Evento("Mi♭4", .negra, desvio: 50)]).partitura()
+        let medio = try PiezaImportada(musicXML: Data(maqam.musicXML().utf8)).notas[0]
+        #expect(medio.sistema == nil && medio.desvio == 50 && medio.nota.signo() == .cuartos(-1))
+        // Las comas de un makam, en MusicXML (el `smufl` de `other`) y en MEI («kf»).
+        let rast = Escala(.sol, .rastMakami).voz(sentido: .ascendente).partitura()
+        for pieza in [
+            try PiezaImportada(musicXML: Data(rast.musicXML().utf8)), try PiezaImportada(mei: Data(rast.mei().utf8)),
+        ] {
+            #expect(pieza.notas.contains { $0.sistema == .comas53 })
+        }
+        // Los moria de un echos y las flechas de un śruti, con el signo con que se escribieron.
+        let tipos = TipoDeEscala.tradicionales.filter {
+            [.persa, .moria72, .sruti].contains($0.microtonal?.sistema)
+        }
+        #expect(!tipos.isEmpty)
+        for tipo in tipos {
+            let voz = Escala(.re, tipo).voz()
+            let pieza = try PiezaImportada(musicXML: Data(voz.partitura().musicXML().utf8))
+            let leidas = pieza.notas.sorted { $0.inicio < $1.inicio }
+            let originales = voz.eventos.flatMap(\.notas)
+            #expect(leidas.count == originales.count, Comment(rawValue: tipo.nombre))
+            for (leida, original) in zip(leidas, originales) {
+                guard let signo = original.signo() else { continue }
+                // Los cuartos de tono vuelven sin sistema (el de sus cents); los demás signos, con el suyo.
+                if case .cuartos = signo {
+                    #expect(leida.sistema == nil, Comment(rawValue: tipo.nombre))
+                } else {
+                    #expect(leida.sistema == original.sistema, Comment(rawValue: tipo.nombre))
+                }
+                #expect(leida.nota.signo() == signo, Comment(rawValue: tipo.nombre))
+            }
+        }
+    }
+
+    @Test func losSignosDeVuelta() {
+        for signo in SignoMicrotonal.todos {
+            #expect(SignoMicrotonal(smufl: signo.smufl) == signo)
+            #expect(SignoMicrotonal(musicXML: signo.musicXML.valor, smufl: signo.musicXML.smufl) == signo)
+            if let mei = signo.mei { #expect(SignoMicrotonal(mei: mei) == signo) }
+        }
+        #expect(SignoMicrotonal(smufl: "accidentalSharp") == nil)
+        #expect(SignoMicrotonal(musicXML: "sharp", smufl: nil) == nil)
+        #expect(SignoMicrotonal(musicXML: "other", smufl: nil) == nil && SignoMicrotonal(mei: "s") == nil)
+        // El koron dice el sistema persa; la flecha, el de los śruti; un cuarto de tono, ninguno.
+        let koron = SignoMicrotonal.koron.sistemaYAjuste(altura: "Mi♭4", desvio: 50)
+        #expect(koron?.sistema == .persa && koron?.ajuste == 1)
+        let flecha = SignoMicrotonal.flecha(semitonos: 0, comas: -1).sistemaYAjuste(altura: "Mi4", desvio: -14)
+        #expect(flecha?.sistema == .sruti && flecha?.ajuste == -1)
+        #expect(SignoMicrotonal.cuartos(-1).sistemaYAjuste(altura: "Mi♭4", desvio: 50) == nil)
+        // Una koma bajo el Si pitagórico (a +9,8 cents del temperado): una koma bajo, en las de 53.
+        let koma = SignoMicrotonal.comas(-1).sistemaYAjuste(altura: "Si3", desvio: -12.8)
+        #expect(koma?.sistema == .comas53 && koma?.ajuste == -1)
+    }
 }

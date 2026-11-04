@@ -7,7 +7,7 @@ import ArmoniaNucleo
 // MARK: - Secuencias
 
 /// Una secuencia de estudio: desde cada grado de la escala, un mismo dibujo de grados.
-public enum SecuenciaDeEscala: String, Hashable, Sendable, CaseIterable, CustomStringConvertible {
+public enum SecuenciaDeEscala: String, Hashable, Sendable, CaseIterable, CustomStringConvertible, Codable {
     /// Do Mi, Re Fa, Mi Sol…
     case terceras
     /// Do Fa, Re Sol, Mi La…

@@ -7,19 +7,19 @@ import ArmoniaTeoria
 
 extension Partitura {
     /// La partitura en SVG, en su notación (``notacion``) y con su armadura si las opciones no fijan otras, y con el
-    /// título del encabezado en esa notación (``Encabezado/titulo(en:)``) o, si no lo tiene, el nombre de la parte. Un
-    /// solo pentagrama con una voz lleva lo que se anota en ella: los cifrados encima, los dedos encima de las notas,
-    /// el grado debajo (el de `grados` o, si no, el cifrado romano del análisis), el bajo cifrado más abajo y, si el
-    /// pentagrama tiene `cuerdas`, la tablatura con sus pulsaciones. Con dos voces, las dos en el pentagrama, con los
-    /// cifrados de la primera. Varios pentagramas van en un sistema, unidos por la llave si la lleva; los que no tienen
-    /// voces no se dibujan.
+    /// título de las opciones o, si no lo dan, el del encabezado en esa notación (``Encabezado/titulo(en:)``) o el
+    /// nombre de la parte. Un solo pentagrama con una voz lleva lo que se anota en ella: los cifrados encima, los dedos
+    /// encima de las notas, el grado debajo (el de `grados` o, si no, el cifrado romano del análisis), el bajo cifrado
+    /// más abajo y, si el pentagrama tiene `cuerdas`, la tablatura con sus pulsaciones. Con dos voces, las dos en el
+    /// pentagrama, con los cifrados de la primera. Varios pentagramas van en un sistema, unidos por la llave si la
+    /// lleva; los que no tienen voces no se dibujan.
     ///
     ///     let partitura = try Voz(leyendo: "Do4:4 Mi4:4 Sol4:2").partitura(encabezado: Encabezado(titulo: "Do"))
     ///     let svg = partitura.svg()
     public func svg(opciones: OpcionesDePentagrama = OpcionesDePentagrama()) -> String {
         var suyas = opciones
         if suyas.notacionFijada == nil { suyas.notacionFijada = notacion }
-        let titulo = encabezado.titulo(en: suyas.notacion) ?? parte
+        let titulo = suyas.titulo ?? encabezado.titulo(en: suyas.notacion) ?? parte
         if suyas.armadura == .automatica, let tonalidad = encabezado.tonalidad {
             suyas.armadura = .tonalidad(tonalidad)
         }
@@ -68,7 +68,7 @@ extension Partitura {
         var referencias: [Int: PentagramaSVG.Referencia] = [:]
         if let tonica { referencias[0] = PentagramaSVG.Referencia(tonica) }
         for (columna, acorde) in acordes {
-            cifrados[columna] = acorde.cifrado(en: opciones.notacion)
+            if opciones.marcas.cifrados { cifrados[columna] = acorde.cifrado(en: opciones.notacion) }
             referencias[columna] = PentagramaSVG.Referencia(acorde)
         }
         var dibujo = PentagramaSVG(

@@ -164,7 +164,7 @@ extension Voz {
             }
             return voces
         }
-        return PentagramaSVG.svg(porLinea, titulo: titulo, tamano: opciones.maquetacion.tamano)
+        return PentagramaSVG.svg(porLinea, titulo: titulo, tamano: opciones.pixelesPorEspacio)
     }
 }
 
@@ -448,7 +448,7 @@ extension Voz {
     ) -> String {
         let deDosEnDos = pentagramas.map { Array($0.prefix(2)) }.filter { !$0.isEmpty }
         guard let primera = deDosEnDos.first?.first else {
-            return PentagramaSVG.envolver([], titulo: titulo, tamano: opciones.maquetacion.tamano)
+            return PentagramaSVG.envolver([], titulo: titulo, tamano: opciones.pixelesPorEspacio)
         }
         var base = opciones
         base.maquetacion.marcaDeOctava = false
@@ -477,6 +477,6 @@ extension Voz {
         let porLinea = (0..<lineas).map { l in
             porPentagrama.map { voces in voces.compactMap { $0.indices.contains(l) ? $0[l] : nil } }
         }
-        return PentagramaSVG.svgDelSistema(porLinea, titulo: titulo, llave: llave, tamano: opciones.maquetacion.tamano)
+        return PentagramaSVG.svgDelSistema(porLinea, titulo: titulo, llave: llave, tamano: opciones.pixelesPorEspacio)
     }
 }

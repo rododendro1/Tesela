@@ -74,8 +74,6 @@ public struct OpcionesDePentagrama: Hashable, Sendable {
         /// En una voz, cuántos compases van en cada línea (sin contar la anacrusa): con más, la voz se parte en
         /// líneas del mismo ancho, una debajo de otra, cada una con su clave y su armadura. `nil`, todo en una línea.
         public var compasesPorLinea: Int?
-        /// Píxeles por espacio de pentagrama: el pentagrama mide cuatro veces esto de alto.
-        public var tamano = 10.0
         /// Lo que se multiplica la medida estimada del texto (cifrado y nombres), que sale de una tabla de anchos de
         /// Helvetica y Arial: 1 es lo normal. Sube si la tipografía es más ancha. El texto se escribe con
         /// `textLength`, así que nunca se sale del sitio que se le ha dado, sea cual sea la tipografía.
@@ -85,7 +83,7 @@ public struct OpcionesDePentagrama: Hashable, Sendable {
         public init(
             clave: Clave? = nil, pentagramas: Pentagramas = .automatico, cambiosDeClave: Bool = false,
             marcaDeOctava: Bool = true, disposicionDelAcorde: Disposicion = .automatica, compasesPorLinea: Int? = nil,
-            tamano: Double = 10, anchoDeLosCaracteres: Double = 1
+            anchoDeLosCaracteres: Double = 1
         ) {
             self.clave = clave
             self.pentagramas = pentagramas
@@ -93,7 +91,6 @@ public struct OpcionesDePentagrama: Hashable, Sendable {
             self.marcaDeOctava = marcaDeOctava
             self.disposicionDelAcorde = disposicionDelAcorde
             self.compasesPorLinea = compasesPorLinea
-            self.tamano = tamano
             self.anchoDeLosCaracteres = anchoDeLosCaracteres
         }
     }
@@ -116,11 +113,14 @@ public struct OpcionesDePentagrama: Hashable, Sendable {
         public var notasAjenas = false
         /// La columna (contada desde 0) que se pinta en `Colores.resaltado`: la nota o el acorde que está sonando.
         public var resaltada: Int?
+        /// Los cifrados de los acordes, encima (los de la partitura, ``Partitura/Linea/cifrados``). Sin ellos, los
+        /// acordes siguen contando para los intervalos y las notas ajenas.
+        public var cifrados = true
 
         /// Las marcas que se pidan; ninguna, por omisión.
         public init(
             nombresDeLasNotas: Bool = false, intervalosDeLasNotas: Bool = false, semitonos: Bool = false,
-            tonica: Bool = false, notasAjenas: Bool = false, resaltada: Int? = nil
+            tonica: Bool = false, notasAjenas: Bool = false, resaltada: Int? = nil, cifrados: Bool = true
         ) {
             self.nombresDeLasNotas = nombresDeLasNotas
             self.intervalosDeLasNotas = intervalosDeLasNotas
@@ -128,6 +128,7 @@ public struct OpcionesDePentagrama: Hashable, Sendable {
             self.tonica = tonica
             self.notasAjenas = notasAjenas
             self.resaltada = resaltada
+            self.cifrados = cifrados
         }
     }
 
@@ -169,16 +170,27 @@ public struct OpcionesDePentagrama: Hashable, Sendable {
         get { notacionFijada ?? .espanolCompacto }
         set { notacionFijada = newValue }
     }
+    /// El título: si es `nil`, el de lo que se dibuja (el de la partitura, el nombre de la escala, el cifrado del
+    /// acorde); si es "", ninguno.
+    public var titulo: String?
+    /// El tamaño, como factor del de siempre (10 píxeles por espacio de pentagrama, así que el pentagrama mide 40 de
+    /// alto): 2 lo dibuja el doble de grande.
+    public var escala: Double
+
+    /// Píxeles por espacio de pentagrama.
+    var pixelesPorEspacio: Double { 10 * escala }
 
     /// Las opciones, por grupos:
     /// `OpcionesDePentagrama(notacion: .inglesASCII, marcas: .init(nombresDeLasNotas: true))`. Sin `notacion`, la de
     /// la partitura que se dibuja (``Partitura/notacion``).
     public init(
-        armadura: Armadura = .automatica, notacion: Notacion? = nil, maquetacion: Maquetacion = .init(),
-        marcas: Marcas = .init(), colores: Colores = .init()
+        armadura: Armadura = .automatica, notacion: Notacion? = nil, titulo: String? = nil, escala: Double = 1,
+        maquetacion: Maquetacion = .init(), marcas: Marcas = .init(), colores: Colores = .init()
     ) {
         self.armadura = armadura
         self.notacionFijada = notacion
+        self.titulo = titulo
+        self.escala = escala
         self.maquetacion = maquetacion
         self.marcas = marcas
         self.colores = colores

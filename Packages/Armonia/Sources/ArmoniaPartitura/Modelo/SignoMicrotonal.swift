@@ -184,6 +184,69 @@ package enum SignoMicrotonal: Hashable, Sendable {
     }
 }
 
+// MARK: - De vuelta: del signo al sistema
+
+extension SignoMicrotonal {
+    /// Todos los signos.
+    static let todos: [SignoMicrotonal] = {
+        var todos: [SignoMicrotonal] = [.koron, .sori]
+        for n in [-3, -1, 1, 3] { todos.append(.cuartos(n)) }
+        for n in [-8, -5, -4, -1, 1, 4, 5, 8] { todos.append(.comas(n)) }
+        for n in moriaConSigno.sorted() { todos.append(.moria(n)) }
+        for semitonos in -1...1 {
+            for comas in [-1, 1] { todos.append(.flecha(semitonos: semitonos, comas: comas)) }
+        }
+        return todos
+    }()
+
+    /// El signo de un nombre SMuFL («accidentalKoron», «accidentalKomaFlat»); `nil` si no es de ninguno.
+    package init?(smufl nombre: String) {
+        guard let signo = SignoMicrotonal.todos.first(where: { $0.smufl == nombre }) else { return nil }
+        self = signo
+    }
+
+    /// El signo de un `<accidental>` de MusicXML: por su atributo `smufl`, si es de uno, o por su valor («koron»,
+    /// «quarter-flat»).
+    package init?(musicXML valor: String, smufl: String?) {
+        if let smufl, let signo = SignoMicrotonal(smufl: smufl) {
+            self = signo
+            return
+        }
+        guard valor != "other", let signo = SignoMicrotonal.todos.first(where: { $0.musicXML.valor == valor })
+        else { return nil }
+        self = signo
+    }
+
+    /// El signo de un `accid` de MEI («koron», «kf», «1qs»).
+    package init?(mei valor: String) {
+        guard let signo = SignoMicrotonal.todos.first(where: { $0.mei == valor }) else { return nil }
+        self = signo
+    }
+
+    /// El sistema que dice el signo y cuántos pasos de él se aparta una nota escrita en `altura` que suena `desvio`
+    /// cents más alta (``NotaMicrotonal/ajuste``): el koron y el sori son persas; las comas, de Arel-Ezgi-Uzdilek
+    /// (contadas desde la nota pitagórica); los moria, de un echos, y las flechas, de un śruti. `nil` para los
+    /// cuartos de tono, cuyo signo ya dan los cents.
+    package func sistemaYAjuste(altura: Altura, desvio: Double) -> (sistema: SistemaMicrotonal, ajuste: Int)? {
+        switch self {
+        case .cuartos: return nil
+        case .koron, .sori: return (.persa, Int((desvio / 50).rounded()))
+        case .moria: return (.moria72, Int((desvio * 72 / 1200).rounded()))
+        case .flecha(_, let comas): return (.sruti, comas)
+        case .comas:
+            // Las comas desde Do de la nota que suena y las de la nota pitagórica, a 31 comas por quinta de Do.
+            let nota = altura.nota
+            let cents = Double(modulo(altura.midi, 12) * 100) + desvio
+            let pasos = modulo(Int((cents * 53 / 1200).rounded()), 53)
+            let quintas = nota.natural.pasosDeQuintaBase + nota.alteracion.pasosDeQuinta
+            var ajuste = pasos - modulo(quintas * 31, 53)
+            if ajuste > 26 { ajuste -= 53 }
+            if ajuste < -26 { ajuste += 53 }
+            return (.comas53, ajuste)
+        }
+    }
+}
+
 /// Una altura de una escala, con lo que se aparta de su nota temperada (en cents) y su nota microtonal.
 package typealias AlturaMicrotonal = (altura: Altura, desvio: Double, nota: NotaMicrotonal?)
 

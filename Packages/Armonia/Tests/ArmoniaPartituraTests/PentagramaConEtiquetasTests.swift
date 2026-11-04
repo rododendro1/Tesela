@@ -303,4 +303,97 @@ import Testing
         #expect(contar("fill=\"#2F9E44\"", en: sinColorCromatico) == 2)
         #expect(!voz.svgPentagrama(titulo: "Do", opciones: sinTonalidad).contains("#2F9E44"))
     }
+
+    // MARK: Todo sale de una partitura
+
+    /// La escala, la secuencia, el acorde y el arpegio se dibujan desde su partitura, que es la que se exporta.
+    @Test func losDibujosSalenDeSuPartitura() {
+        let dorico = Escala("Re dórico")
+        #expect(dorico.svgPentagrama() == dorico.partitura().svg())
+        let digitada = dorico.partitura(octavas: 2, digitacion: .derecha)
+        #expect(dorico.svgPentagrama(octavas: 2, digitacion: .derecha) == digitada.svg())
+        let partitura = dorico.partitura()
+        #expect(!partitura.ritmo && partitura.pentagramas[0].voces[0].tonica == Nota.re)
+        #expect(partitura.encabezado.titulo == nil && partitura.encabezado.tema == .escala(dorico))
+        // La secuencia, con su ritmo y su título en la notación con que se dibuja.
+        let terceras = Escala(.do).partitura(secuencia: .terceras)
+        #expect(Escala(.do).svgPentagrama(secuencia: .terceras) == terceras.svg())
+        #expect(terceras.ritmo && terceras.encabezado.tema == .secuencia(.terceras, de: Escala(.do)))
+        let enIngles =
+            Escala(.do).nombre(en: .inglesPalabras) + " · " + SecuenciaDeEscala.terceras.nombre(en: .inglesPalabras)
+        #expect(terceras.svg(opciones: .init(notacion: .inglesPalabras)).contains(">\(enIngles)</title>"))
+        // El acorde, en una redonda con su cifrado; sin él, si se pide, pero contando desde su fundamental.
+        let sol7 = Acorde("Sol7/Si")
+        #expect(sol7.svgPentagrama() == sol7.partitura().svg())
+        #expect(sol7.partitura().pentagramas[0].voces[0].voz.eventos.count == 1)
+        let sinCifrado = sol7.svgPentagrama(cifrado: false)
+        #expect(sinCifrado == sol7.partitura().svg(opciones: .init(marcas: .init(cifrados: false))))
+        #expect(contar(">Sol7/Si</text>", en: sol7.svgPentagrama()) == 1 && !sinCifrado.contains(">Sol7/Si</text>"))
+        let extenso = Acorde("Do13♯11")
+        #expect(extenso.svgPentagrama() == extenso.partitura().svg())
+        let cerrada = OpcionesDePentagrama(maquetacion: .init(disposicionDelAcorde: .cerrada))
+        let enCerrada = extenso.partitura(disposicion: .cerrada).svg(opciones: cerrada)
+        #expect(extenso.svgPentagrama(opciones: cerrada) == enCerrada)
+        // El arpegio, sin cifrado salvo que se pida; la partitura lo lleva.
+        let alberti = Arpegio(Acorde("Do"), patron: .alberti)
+        #expect(alberti.svgPentagrama() == alberti.partitura().svg(opciones: .init(marcas: .init(cifrados: false))))
+        #expect(alberti.svgPentagrama(cifrado: true) == alberti.partitura().svg())
+        #expect(alberti.partitura().encabezado.tema == .arpegio(alberti))
+        #expect(alberti.partitura().pentagramas[0].voces[0].cifrados == [.cero: Acorde("Do")])
+        #expect(alberti.svgPentagrama().contains(">\(alberti.nombre(en: .espanolCompacto))</title>"))
+    }
+
+    /// El título y el tamaño, en las opciones, como en los diagramas.
+    @Test func elTituloYElTamanoDeLasOpciones() throws {
+        let escala = Escala(.do)
+        #expect(escala.svgPentagrama().contains("<title id=\"titulo\">Do mayor</title>"))
+        let propio = escala.svgPentagrama(opciones: .init(titulo: "Mi <escala>"))
+        #expect(propio.contains("<title id=\"titulo\">Mi &lt;escala&gt;</title>"))
+        #expect(!propio.contains("Do mayor</title>"))
+        let ninguno = escala.svgPentagrama(opciones: .init(titulo: ""))
+        #expect(!ninguno.contains("id=\"titulo\"") && ninguno.contains("aria-labelledby=\"descripcion\""))
+        func medida(_ atributo: String, _ svg: String) -> Double? {
+            svg.components(separatedBy: " \(atributo)=\"").dropFirst().first?.split(separator: "\"").first
+                .flatMap { Double(String($0)) }
+        }
+        let normal = escala.svgPentagrama()
+        let doble = escala.svgPentagrama(opciones: .init(escala: 2))
+        let ancho = try #require(medida("width", normal))
+        let alto = try #require(medida("height", normal))
+        #expect(medida("width", doble) == 2 * ancho && medida("height", doble) == 2 * alto)
+        // Lo de dentro no cambia: solo el tamaño con que se muestra.
+        func caja(_ svg: String) -> String? {
+            svg.components(separatedBy: "viewBox=\"").dropFirst().first?.split(separator: "\"").first.map(String.init)
+        }
+        #expect(caja(doble) != nil && caja(doble) == caja(normal))
+    }
+
+    /// Sin título, una progresión se titula con sus cifrados, en la notación con que se dibuja.
+    @Test func laProgresionSeTitulaConSusCifrados() throws {
+        let acordes = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
+        let voces = DisposicionDeAcorde.drop2.conducir(acordes) ?? []
+        let progresion = Partitura(acordes: voces, cifrados: acordes)
+        #expect(progresion.encabezado.titulo == nil && progresion.encabezado.tema == .progresion(acordes))
+        for notacion in [Notacion.espanolCompacto, .inglesASCII] {
+            let titulo = acordes.map { $0.cifrado(en: notacion) }.joined(separator: " – ")
+            #expect(progresion.encabezado.titulo(en: notacion) == titulo)
+            #expect(progresion.svg(opciones: .init(notacion: notacion)).contains(">\(titulo)</title>"))
+        }
+        // Con título, el suyo; sin título ni cifrados, ninguno (el de la parte).
+        let titulada = Partitura(acordes: voces, titulo: "ii–V–I", cifrados: acordes)
+        #expect(titulada.encabezado.titulo(en: .inglesASCII) == "ii–V–I")
+        #expect(Partitura(acordes: voces).encabezado.titulo(en: .espanolCompacto) == nil)
+        // Los temas se guardan con lo que nombran.
+        let temas: [Encabezado.Tema] = [
+            .progresion(acordes), .arpegio(Arpegio(Acorde("Do7"), patron: .alberti)),
+            .secuencia(.terceras, de: Escala(.do)),
+        ]
+        for tema in temas {
+            let encabezado = Encabezado(tema: tema)
+            #expect(try JSONDecoder().decode(Encabezado.self, from: JSONEncoder().encode(encabezado)) == encabezado)
+        }
+        // Los cifrados pueden callarse en el dibujo.
+        let callados = progresion.svg(opciones: .init(marcas: .init(cifrados: false)))
+        #expect(!callados.contains(">Rem7</text>") && progresion.svg().contains(">Rem7</text>"))
+    }
 }
