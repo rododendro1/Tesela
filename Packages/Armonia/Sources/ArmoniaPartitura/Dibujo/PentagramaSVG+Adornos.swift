@@ -152,7 +152,7 @@ extension PentagramaSVG {
         var dedosSVG: [String] = []
         let base = lienzo.minimoY - 0.4
         var arribaDeLosDedos = base
-        for (columna, dedos) in digitos where centros.indices.contains(columna) {
+        for (columna, dedos) in digitos.sorted(by: { $0.key < $1.key }) where centros.indices.contains(columna) {
             let pares = zip(columnas[columna], dedos).sorted { $0.0.midi < $1.0.midi }
             for (i, par) in pares.filter({ $0.1 > 0 }).enumerated() {
                 let y = base - 1.1 * Double(i)
@@ -186,7 +186,9 @@ extension PentagramaSVG {
         var colocada = TablaturaColocada(
             lineas: (0..<tablatura.cuerdas).map { (arriba + separacion * Double($0), []) }, arriba: arriba,
             abajo: abajo)
-        for (columna, pulsaciones) in tablatura.notas where centros.indices.contains(columna) {
+        for (columna, pulsaciones) in tablatura.notas.sorted(by: { $0.key < $1.key })
+            where centros.indices.contains(columna)
+        {
             for pulsacion in pulsaciones where (0..<tablatura.cuerdas).contains(pulsacion.cuerda) {
                 let texto = String(pulsacion.traste)
                 let mitad =
