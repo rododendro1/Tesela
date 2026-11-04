@@ -17,7 +17,7 @@ import Foundation
 ///     Escala("Re dórico").arpegio(grado: 1, cuatriada: true)           // el arpegio de Rem7
 public struct Arpegio: Hashable, Sendable {
     /// El orden en que se recorren las notas.
-    public enum Patron: String, CaseIterable, Hashable, Sendable {
+    public enum Patron: String, CaseIterable, Hashable, Sendable, Codable {
         /// De la más grave a la más aguda.
         case ascendente
         /// De la más aguda a la más grave.
@@ -35,7 +35,7 @@ public struct Arpegio: Hashable, Sendable {
     }
 
     /// Las notas cromáticas que llevan a cada nota del arpegio, como en las líneas de bebop.
-    public enum Aproximacion: String, CaseIterable, Hashable, Sendable {
+    public enum Aproximacion: String, CaseIterable, Hashable, Sendable, Codable {
         /// Un semitono por debajo: Re♯–Mi.
         case desdeAbajo
         /// Un semitono por encima: Fa–Mi.
@@ -336,6 +336,10 @@ extension Acorde {
 // Nombres de los arpegios y de sus patrones en los quince idiomas, en `TextosDeTeoria`.
 
 // MARK: - Arpegio
+
+/// Se codifica con sus campos: el acorde, el patrón, las octavas, el inicio, las tensiones, los grados y la
+/// aproximación.
+extension Arpegio: Codable {}
 
 extension Arpegio: Nombrable {
     /// «Arpegio de Do mayor», «C major arpeggio», «Arpège de Do majeur», «C-Dur-Arpeggio», «Арпеджио до мажор».

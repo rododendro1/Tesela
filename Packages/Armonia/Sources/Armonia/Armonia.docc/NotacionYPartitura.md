@@ -229,6 +229,19 @@ Acorde("Sol7").svgPentagrama(cifrado: false).contains("<text")     // false
 Escala("Do mayor").svgPentagrama(opciones: OpcionesDePentagrama(notacion: .inglesASCII)).contains("<title>C4</title>")   // true
 ```
 
+Cada uno de estos dibujos sale de su ``Partitura``, la misma que se exporta: `Escala.partitura(octava:octavas:sentido:digitacion:)`,
+`Escala.partitura(secuencia:…)`, `Acorde.partitura(octava:disposicion:)` y `Arpegio.partitura(octava:)`, y
+`svgPentagrama(…)` es `partitura(…).svg(opciones:)`. Su título es lo que se toca (``Encabezado/Tema``), en la notación
+con que se dibuja o se exporta. Como en los diagramas, las opciones pueden cambiar el título (`titulo: ""` lo quita)
+y el tamaño (`escala: 2`, el doble de grande), y `marcas.cifrados` quita los cifrados de encima.
+
+```swift
+Escala("Re mayor").svgPentagrama() == Escala("Re mayor").partitura().svg()   // true
+Acorde("Sol7").partitura().pentagramas[0].voces[0].cifrados == [.cero: Acorde("Sol7")]   // true
+Escala("Re mayor").svgPentagrama(opciones: OpcionesDePentagrama(titulo: "")).contains("id=\"titulo\"")   // false
+Escala("Re mayor").svgPentagrama(opciones: OpcionesDePentagrama(titulo: "Escala")).contains("<title id=\"titulo\">Escala</title>")   // true
+```
+
 - La escala sube y, si baja con otras notas (la menor melódica, muchos rāgas), también baja, con los becuadros que
   hagan falta. Con `sentido:` se dibuja solo la subida o la bajada.
 - Con la clave sin fijar, se elige la de sol o la de fa. Si el rango pasa a los dos lados del Do central y haría
@@ -331,7 +344,8 @@ motor como Verovio.
 Alrededor de las notas se puede escribir lo que ayuda a estudiarlas:
 
 - **Cifrado de cada acorde.** Los `cifrados` de `Partitura(acordes:titulo:cifrados:)` van encima de la columna de
-  cada acorde; los `cifrados` de una ``Partitura/Linea``, encima de la nota en que empieza cada acorde;
+  cada acorde (y, sin `titulo`, la partitura se titula con ellos, «Rem7 – Sol7 – Do7M», en la notación con que se
+  dibuja o se exporta); los `cifrados` de una ``Partitura/Linea``, encima de la nota en que empieza cada acorde;
   `Arpegio.svgPentagrama(cifrado: true)`, encima de la primera nota.
 - **Intervalos** (`marcas.intervalosDeLasNotas`). Debajo de cada nota, su intervalo desde la tónica de la escala o desde la
   fundamental del acorde que suena (con 9, 11 y 13 si el acorde tiene séptima).

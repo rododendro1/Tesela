@@ -20,7 +20,10 @@ import Foundation
 /// Una nota de una pieza importada: su altura, cuándo empieza y cuánto dura, contado en redondas
 /// desde el principio de la pieza, y la parte (pista o pentagrama) de la que viene. Un microtono lleva además su
 /// `desvio`: cuántos cents se aparta de su altura temperada (`<alter>-0.5</alter>` en MusicXML, una inflexión de
-/// tono en MIDI). De MusicXML, MEI y ABC se leen además la dinámica que se marca en la nota y sus articulaciones.
+/// tono en MIDI) y, si su signo lo dice, su `sistema`: el koron y el sori persas, las comas de Arel-Ezgi-Uzdilek,
+/// los moria de Wyschnegradsky o las flechas de Helmholtz-Ellis (en MusicXML, el `<accidental>` y su atributo
+/// `smufl`; en MEI, `accid`). De MusicXML, MEI y ABC se leen además la dinámica que se marca en la nota y sus
+/// articulaciones.
 public struct NotaDeLaPieza: Hashable, Sendable {
     public let altura: Altura
     public let inicio: Duracion
@@ -29,22 +32,32 @@ public struct NotaDeLaPieza: Hashable, Sendable {
     public let parte: Int
     /// Cents sobre (o bajo) `altura`; 0 si es una nota temperada.
     public let desvio: Double
+    /// La teoría en que se escribe el microtono, si la dice su signo (``Evento/Nota/sistema``); `nil` si no se
+    /// aparta, o si su signo (un medio bemol) o la falta de él no la dicen.
+    public let sistema: SistemaMicrotonal?
+    /// Los pasos de `sistema` que se aparta (``NotaMicrotonal/ajuste``); 0 si no hay sistema.
+    public let ajuste: Int
     /// La dinámica que se marca al empezar la nota, si se marca alguna.
     public let dinamica: Dinamica?
     /// Sus articulaciones, sin repetir y en el orden de `Articulacion.allCases`.
     public let articulaciones: [Articulacion]
 
-    /// Una nota; `desvio` se redondea a la centésima de cent y las articulaciones se ordenan sin repetir.
+    /// Una nota; `desvio` se redondea a la centésima de cent y las articulaciones se ordenan sin repetir. Como en
+    /// `Evento.Nota`, una nota que no se aparta no tiene sistema.
     public init(
         altura: Altura, inicio: Duracion, duracion: Duracion, parte: Int = 0, desvio: Double = 0,
-        dinamica: Dinamica? = nil, articulaciones: [Articulacion] = []
+        sistema: SistemaMicrotonal? = nil, ajuste: Int = 0, dinamica: Dinamica? = nil,
+        articulaciones: [Articulacion] = []
     ) {
+        let nota = Evento.Nota(altura, desvio: desvio, sistema: sistema, ajuste: ajuste)
         self.altura = altura
         self.inicio = inicio
         self.duracion = duracion
         self.parte = parte
         // Redondeado a la centésima de cent, como `Evento.Nota.desvio`.
-        self.desvio = (desvio * 100).rounded() / 100
+        self.desvio = nota.desvio
+        self.sistema = nota.sistema
+        self.ajuste = nota.ajuste
         self.dinamica = dinamica
         self.articulaciones = Articulacion.allCases.filter(articulaciones.contains)
     }
@@ -52,19 +65,25 @@ public struct NotaDeLaPieza: Hashable, Sendable {
     /// La misma nota con otra dinámica: la de una marca que se lee después de la nota (`<dynam>` en MEI).
     func con(dinamica: Dinamica?) -> NotaDeLaPieza {
         NotaDeLaPieza(
-            altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: desvio, dinamica: dinamica,
-            articulaciones: articulaciones)
+            altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: desvio, sistema: sistema,
+            ajuste: ajuste, dinamica: dinamica, articulaciones: articulaciones)
     }
 
     /// La misma nota con otra duración: la de una nota ligada a la siguiente, que se alarga con ella.
     func con(duracion: Duracion) -> NotaDeLaPieza {
         NotaDeLaPieza(
-            altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: desvio, dinamica: dinamica,
-            articulaciones: articulaciones)
+            altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: desvio, sistema: sistema,
+            ajuste: ajuste, dinamica: dinamica, articulaciones: articulaciones)
     }
 
     /// Cuándo termina.
     public var fin: Duracion { inicio + duracion }
+
+    /// La nota como la de un evento, con su microtono y su sistema: la que se escribe en una voz.
+    ///
+    ///     let pieza = try PiezaImportada(leyendo: Data(Escala(.re, .sur).partitura().musicXML().utf8))
+    ///     pieza.notas[1].nota   // Mi♭4(50¢,persa,1): el Mi koron
+    public var nota: Evento.Nota { Evento.Nota(altura, desvio: desvio, sistema: sistema, ajuste: ajuste) }
 }
 
 /// Una pieza leída de un fichero MIDI, MusicXML, MEI o ABC.

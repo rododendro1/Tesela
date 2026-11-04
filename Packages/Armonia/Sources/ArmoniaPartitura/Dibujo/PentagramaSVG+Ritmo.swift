@@ -547,7 +547,7 @@ extension Voz {
             microtonos: microtonos)
         let lineas = dibujosPorLinea(
             titulo: titulo, anotaciones: anotaciones, tonica: tonica, armadura: armadura, opciones: opciones)
-        return PentagramaSVG.svg(lineas.map { [$0] }, titulo: titulo, tamano: opciones.maquetacion.tamano)
+        return PentagramaSVG.svg(lineas.map { [$0] }, titulo: titulo, tamano: opciones.pixelesPorEspacio)
     }
 
     /// El dibujo de la voz en una línea.
@@ -567,7 +567,7 @@ extension Voz {
         }
         if let vigente = anotaciones.acordeVigente { referencias[0] = PentagramaSVG.Referencia(vigente) }
         for (columna, acorde) in porColumna.acordes {
-            cifrados[columna] = acorde.cifrado(en: opciones.notacion)
+            if opciones.marcas.cifrados { cifrados[columna] = acorde.cifrado(en: opciones.notacion) }
             referencias[columna] = PentagramaSVG.Referencia(acorde)
         }
         var dibujo = PentagramaSVG(

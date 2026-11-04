@@ -301,6 +301,15 @@ pieza.notas.map(\.parte) == [0, 0, 0]                                     // tru
 abs(400 + pieza.notas[1].desvio - pieza.notas[0].desvio - 386.31) < 0.05   // true: la tercera, pura
 ```
 
+Al importar MusicXML o MEI, el signo de cada microtono dice además su sistema (``NotaDeLaPieza/sistema``): el koron
+y el sori persas, las comas de Arel-Ezgi-Uzdilek, los moria de Wyschnegradsky y las flechas de Helmholtz-Ellis
+(en MusicXML, el `<accidental>` con su atributo `smufl`). Un medio bemol no dice ninguno: lo dicen sus cents.
+
+```swift
+let sur = try PiezaImportada(musicXML: Data(Escala(.re, .sur).partitura().musicXML().utf8))
+sur.notas[1].sistema == .persa && sur.notas[1].ajuste == 1   // true: el Mi koron
+```
+
 ## Todos los formatos a la vez
 
 ``FormatoDePartitura`` reúne los seis formatos (MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI), y

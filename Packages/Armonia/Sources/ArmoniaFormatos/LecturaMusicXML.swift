@@ -120,6 +120,9 @@ final class LectorMusicXML: LectorDeElementosXML {
         var alteracion = 0
         /// Lo que `<alter>` tiene de más sobre `alteracion`, en cents: 50 en Fa𝄲 (`<alter>0.5</alter>`).
         var desvio = 0.0
+        /// El signo de `<accidental>`, si es microtonal (el koron, una koma), y su atributo `smufl` mientras se lee.
+        var signo: SignoMicrotonal?
+        var smuflDelSigno: String?
         var octava: Int?
         var pulsos: Int?
         var ligaduraQueEmpieza = false
@@ -187,6 +190,8 @@ final class LectorMusicXML: LectorDeElementosXML {
             nota.sinTiempo = true
         case "rest" where padre == "note", "cue" where padre == "note", "unpitched" where padre == "note":
             nota.muda = true
+        case "accidental" where padre == "note":
+            nota.smuflDelSigno = atributos["smufl"]
         case "tie" where padre == "note":
             if atributos["type"] == "start" { nota.ligaduraQueEmpieza = true }
             if atributos["type"] == "stop" { nota.ligaduraQueAcaba = true }
@@ -244,6 +249,8 @@ final class LectorMusicXML: LectorDeElementosXML {
             }
         case "octave" where padre == "pitch":
             nota.octava = numero
+        case "accidental" where padre == "note":
+            nota.signo = SignoMicrotonal(musicXML: valor, smufl: nota.smuflDelSigno)
         case "duration":
             switch padre {
             case "note": nota.pulsos = numero
@@ -323,9 +330,11 @@ final class LectorMusicXML: LectorDeElementosXML {
         if nota.sinTiempo {
             // Una nota de adorno: empieza donde empezará la nota a la que adorna.
             if !nota.muda, let altura = alturaQueSuena() {
+                let microtono = nota.signo?.sistemaYAjuste(altura: altura, desvio: nota.desvio)
                 adornos.append(
                     NotaDeLaPieza(
                         altura: altura, inicio: posicion, duracion: .cero, parte: parte, desvio: nota.desvio,
+                        sistema: microtono?.sistema, ajuste: microtono?.ajuste ?? 0,
                         articulaciones: nota.articulaciones))
             }
             return
@@ -349,10 +358,12 @@ final class LectorMusicXML: LectorDeElementosXML {
             notas[i] = notas[i].con(duracion: notas[i].duracion + duracion)
             if !nota.ligaduraQueEmpieza { ligadas[clave] = nil }
         } else {
+            let microtono = nota.signo?.sistemaYAjuste(altura: altura, desvio: nota.desvio)
             notas.append(
                 NotaDeLaPieza(
                     altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: nota.desvio,
-                    dinamica: marcasDelAcorde.dinamica, articulaciones: marcasDelAcorde.articulaciones))
+                    sistema: microtono?.sistema, ajuste: microtono?.ajuste ?? 0, dinamica: marcasDelAcorde.dinamica,
+                    articulaciones: marcasDelAcorde.articulaciones))
             if nota.ligaduraQueEmpieza { ligadas[clave] = notas.count - 1 }
         }
     }

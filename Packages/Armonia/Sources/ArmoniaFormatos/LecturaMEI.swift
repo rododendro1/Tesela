@@ -130,8 +130,9 @@ final class LectorMEI: LectorDeElementosXML {
     private var pentagrama: Pentagrama?
     private var nombreDelPentagrama = "1"
     private var posicion = 0
-    /// Las alteraciones escritas en el compás, por pentagrama y lugar (octava y nota natural), en cents.
-    private var vigentes: [String: Double] = [:]
+    /// Las alteraciones escritas en el compás, por pentagrama y lugar (octava y nota natural), en cents y con su
+    /// signo, si es microtonal.
+    private var vigentes: [String: (cents: Double, signo: SignoMicrotonal?)] = [:]
     /// Los grupos irregulares abiertos: lo que dura cada figura, en proporción.
     private var irregulares: [(normales: Int, reales: Int)] = []
 
@@ -154,6 +155,9 @@ final class LectorMEI: LectorDeElementosXML {
         var octava: Int?
         var escrita: Double?
         var sonora: Double?
+        /// Los signos microtonales de `escrita` y de `sonora` (el koron, una koma), si lo son.
+        var signoEscrito: SignoMicrotonal?
+        var signoSonoro: SignoMicrotonal?
         var ligaduraQueEmpieza = false
         var ligaduraQueAcaba = false
         var id: String?
@@ -393,9 +397,21 @@ final class LectorMEI: LectorDeElementosXML {
         return evento
     }
 
+    /// `accid` y `accid.ges`, en cents y con su signo; y el glifo SMuFL que se dé (`glyph.name`), que manda sobre el
+    /// signo de `accid`.
     private func alteraciones(_ atributos: [String: String]) {
-        if let escrita = atributos["accid"].flatMap(centsDeAlteracionMEI) { nota.escrita = escrita }
-        if let sonora = atributos["accid.ges"].flatMap(centsDeAlteracionMEI) { nota.sonora = sonora }
+        if let accid = atributos["accid"], let escrita = centsDeAlteracionMEI(accid) {
+            nota.escrita = escrita
+            nota.signoEscrito = SignoMicrotonal(mei: accid)
+        }
+        if let accid = atributos["accid.ges"], let sonora = centsDeAlteracionMEI(accid) {
+            nota.sonora = sonora
+            nota.signoSonoro = SignoMicrotonal(mei: accid)
+        }
+        if let glifo = atributos["glyph.name"].flatMap({ SignoMicrotonal(smufl: $0) }) {
+            if nota.escrita != nil { nota.signoEscrito = glifo }
+            if nota.sonora != nil { nota.signoSonoro = glifo }
+        }
     }
 
     /// Lo que dura un evento, en pulsos: el exacto o el de su figura, en su grupo irregular.
@@ -425,8 +441,9 @@ final class LectorMEI: LectorDeElementosXML {
             let octava = nota.octava, let pentagrama
         else { return }
         let lugar = "\(nombreDelPentagrama) \(octava * 7 + paso.rawValue)"
-        if let escrita = nota.escrita { vigentes[lugar] = escrita }
-        let cents = nota.sonora ?? nota.escrita ?? vigentes[lugar] ?? 100 * Double(armadura[paso] ?? 0)
+        if let escrita = nota.escrita { vigentes[lugar] = (escrita, nota.signoEscrito) }
+        let cents = nota.sonora ?? vigentes[lugar]?.cents ?? 100 * Double(armadura[paso] ?? 0)
+        let signo = nota.sonora != nil ? nota.signoSonoro : vigentes[lugar]?.signo
         let (semitonos, desvio) = alteracionYDesvio(cents: cents)
         var altura = Altura(Nota(paso, Alteracion(semitonos)), octava: octava)
         if let transposicion = pentagrama.transposicion {
@@ -435,10 +452,13 @@ final class LectorMEI: LectorDeElementosXML {
         let parte = pentagrama.parte
         let desde = PulsosDeLectura.duracion(inicio)
         let duracion = PulsosDeLectura.duracion(pulsos)
+        let microtono = signo?.sistemaYAjuste(altura: altura, desvio: desvio)
         if deAdorno {
             // Empieza donde empezará la nota a la que adorna.
             adornos.append(
-                NotaDeLaPieza(altura: altura, inicio: desde, duracion: .cero, parte: parte, desvio: desvio))
+                NotaDeLaPieza(
+                    altura: altura, inicio: desde, duracion: .cero, parte: parte, desvio: desvio,
+                    sistema: microtono?.sistema, ajuste: microtono?.ajuste ?? 0))
             return
         }
         let clave = parte * 1024 + altura.midi + 512
@@ -450,6 +470,7 @@ final class LectorMEI: LectorDeElementosXML {
             notas.append(
                 NotaDeLaPieza(
                     altura: altura, inicio: desde, duracion: duracion, parte: parte, desvio: desvio,
+                    sistema: microtono?.sistema, ajuste: microtono?.ajuste ?? 0,
                     articulaciones: suyo.articulaciones + nota.articulaciones))
             if nota.ligaduraQueEmpieza { ligadas[clave] = notas.count - 1 }
             for id in [suyo.id, nota.id].compactMap({ $0 }) { notasPorId[id, default: []].append(notas.count - 1) }

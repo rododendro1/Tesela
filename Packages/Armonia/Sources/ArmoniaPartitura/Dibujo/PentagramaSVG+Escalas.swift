@@ -4,10 +4,11 @@ import ArmoniaTeoria
 // Lo que dibuja un pentagrama en SVG: escalas, acordes y arpegios. El dibujo está en `PentagramaSVG.swift`.
 
 extension Escala {
-    /// La escala en un pentagrama, como SVG: `Escala("Re dórico").svgPentagrama()`. Si la escala tiene microtonos
-    /// (`TipoDeEscala.microtonal`), sus notas llevan los signos de Bravura: el medio bemol de un maqam, el koron de un
-    /// dastgāh, las comas de Arel-Ezgi-Uzdilek de un makam, los moria de un echos bizantino (con los signos de
-    /// Wyschnegradsky) o la flecha de Helmholtz-Ellis de un śruti.
+    /// La escala en un pentagrama, como SVG: `Escala("Re dórico").svgPentagrama()`, que es
+    /// `partitura(octava:…).svg(opciones:)`. Si la escala tiene microtonos (`TipoDeEscala.microtonal`), sus notas
+    /// llevan los signos de Bravura: el medio bemol de un maqam, el koron de un dastgāh, las comas de
+    /// Arel-Ezgi-Uzdilek de un makam, los moria de un echos bizantino (con los signos de Wyschnegradsky) o la flecha
+    /// de Helmholtz-Ellis de un śruti.
     ///
     /// - Parameters:
     ///   - octava: la octava de la tónica.
@@ -17,21 +18,26 @@ extension Escala {
     ///     otras notas (la menor melódica), también la bajada.
     ///   - digitacion: si se da una mano, el dedo de cada nota al piano encima (`digitacionDePiano(_:)`; al bajar, los
     ///     mismos dedos al revés).
-    ///   - opciones: clave, armadura, notación, tamaño y color.
+    ///   - opciones: clave, armadura, notación, título, tamaño y color.
     public func svgPentagrama(
         octava: Int = 4, octavas: Int = 1, sentido: SentidoDelIntervalo? = nil, digitacion: Mano? = nil,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
+        partitura(octava: octava, octavas: octavas, sentido: sentido, digitacion: digitacion).svg(opciones: opciones)
+    }
+
+    /// La partitura de la escala, en redondas y sin ritmo (``Partitura/ritmo``), la que dibuja
+    /// `svgPentagrama(octava:…)`: con su armadura (``Partitura/Pentagrama/armadura``), los intervalos contados desde
+    /// su tónica (``Partitura/Linea/tonica``), los microtonos de una escala microtonal con su sistema
+    /// (``Evento/Nota/sistema``) y, con `digitacion`, el dedo de cada nota al piano. Su título es el nombre de la
+    /// escala (``Encabezado/tema``), en la notación con que se dibuja o se exporta.
+    ///
+    ///     Escala("Re dórico").partitura().musicXML()   // en ArmoniaFormatos
+    public func partitura(
+        octava: Int = 4, octavas: Int = 1, sentido: SentidoDelIntervalo? = nil, digitacion: Mano? = nil
+    ) -> Partitura {
         let alturas = alturasMicrotonales(octava: octava, octavas: octavas, sentido: sentido)
-        let armadura = opciones.armadura.notas(propia: notasDeLaArmadura)
-        // Los microtonos, con su signo: el medio bemol de un maqam, el koron de un dastgāh, las comas de un makam, los
-        // moria de un echos, la flecha de un śruti.
-        let microtonos = alturas.map { [PentagramaSVG.Microtono.de(Evento.Nota($0), notacion: opciones.notacion)] }
-        var dibujo = PentagramaSVG(
-            columnas: alturas.map { [$0.altura] }, armadura: armadura, cifrado: nil,
-            titulo: nombre(en: opciones.notacion), opciones: opciones, microtonos: microtonos,
-            referencias: [0: PentagramaSVG.Referencia(tonica)]
-        )
+        var digitos: [Int: [Int]] = [:]
         if let digitacion {
             let subida = digitacionDePiano(digitacion, octava: octava, octavas: octavas).dedos
             let dedos: [Int]
@@ -40,25 +46,36 @@ extension Escala {
             case .descendente: dedos = subida.reversed()
             case nil: dedos = alturas.count > subida.count ? subida + subida.reversed().dropFirst() : subida
             }
-            for (columna, dedo) in zip(alturas.indices, dedos) { dibujo.digitos[columna] = [dedo] }
+            for (columna, dedo) in zip(alturas.indices, dedos) { digitos[columna] = [dedo] }
         }
-        return dibujo.svg()
+        return Partitura.tocada(
+            alturas.map { Evento.Nota($0) }, tema: .escala(self), digitos: digitos, acorde: nil, tonica: tonica,
+            armadura: notasDeLaArmadura)
     }
 
     /// La escala tocada en una secuencia de estudio (`secuencia(_:octava:octavas:sentido:)`), con ritmo: de dos en
     /// dos, en corcheas; de tres en tres, en tresillos de corcheas; de cuatro en cuatro, en semicorcheas. Así cada
-    /// grupo dura un pulso y va unido por su barra. La última nota, la tónica, es una negra.
+    /// grupo dura un pulso y va unido por su barra. La última nota, la tónica, es una negra. Es
+    /// `partitura(secuencia:…).svg(opciones:)`.
     ///
     ///     Escala(.do).svgPentagrama(secuencia: .terceras)   // Do Mi, Re Fa, Mi Sol… en corcheas
     public func svgPentagrama(
         secuencia: SecuenciaDeEscala, octava: Int = 4, octavas: Int = 1, sentido: SentidoDelIntervalo = .ascendente,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
-        tocada(
-            en: self.secuencia(secuencia, octava: octava, octavas: octavas, sentido: sentido),
-            titulo: nombre(en: opciones.notacion) + " · " + secuencia.nombre(en: opciones.notacion),
-            figura: Escala.figura(deGruposDe: secuencia.pasos.count), digitos: [:], tablatura: nil,
-            opciones: opciones, sentido: sentido)
+        partitura(secuencia: secuencia, octava: octava, octavas: octavas, sentido: sentido).svg(opciones: opciones)
+    }
+
+    /// La partitura de la escala tocada en una secuencia de estudio, con el ritmo de `svgPentagrama(secuencia:…)` y,
+    /// de título, el nombre de la escala y el de la secuencia («Do mayor · por terceras»:
+    /// ``Encabezado/Tema/secuencia(_:de:)``), en la notación con que se dibuja o se exporta.
+    public func partitura(
+        secuencia: SecuenciaDeEscala, octava: Int = 4, octavas: Int = 1, sentido: SentidoDelIntervalo = .ascendente
+    ) -> Partitura {
+        partitura(
+            tocadaEn: self.secuencia(secuencia, octava: octava, octavas: octavas, sentido: sentido), titulo: nil,
+            tema: .secuencia(secuencia, de: self), figura: Escala.figura(deGruposDe: secuencia.pasos.count),
+            digitos: [:], tablatura: nil, sentido: sentido)
     }
 
     /// La partitura de la escala tocada en unas alturas cualesquiera (las de una posición del mástil, una
@@ -77,18 +94,19 @@ extension Escala {
         tablatura: Tablatura? = nil
     ) -> Partitura {
         partitura(
-            tocadaEn: alturas, titulo: titulo, figura: figura, digitos: digitos, tablatura: tablatura, sentido: nil)
+            tocadaEn: alturas, titulo: titulo, tema: .escala(self), figura: figura, digitos: digitos,
+            tablatura: tablatura, sentido: nil)
     }
 
     /// Como `partitura(tocadaEn:…)`, con los microtonos de la subida o de la bajada, según `sentido`; si es `nil`,
     /// los de la subida y, los de las notas que solo están al bajar, los de la bajada.
     private func partitura(
-        tocadaEn alturas: [Altura], titulo: String?, figura: Duracion?, digitos: [Int: [Int]], tablatura: Tablatura?,
-        sentido: SentidoDelIntervalo?
+        tocadaEn alturas: [Altura], titulo: String?, tema: Encabezado.Tema, figura: Duracion?, digitos: [Int: [Int]],
+        tablatura: Tablatura?, sentido: SentidoDelIntervalo?
     ) -> Partitura {
         Partitura.tocada(
             notasTocadas(en: Altura.reescritas(alturas, con: notas), sentido: sentido),
-            titulo: titulo, tema: .escala(self), figura: figura, digitos: digitos, tablatura: tablatura, acorde: nil,
+            titulo: titulo, tema: tema, figura: figura, digitos: digitos, tablatura: tablatura, acorde: nil,
             tonica: tonica, armadura: notasDeLaArmadura)
     }
 
@@ -100,19 +118,8 @@ extension Escala {
         tocadaEn alturas: [Altura], titulo: String? = nil, figura: Duracion? = nil, digitos: [Int: [Int]] = [:],
         tablatura: Tablatura? = nil, opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
-        tocada(
-            en: alturas, titulo: titulo, figura: figura, digitos: digitos, tablatura: tablatura, opciones: opciones,
-            sentido: nil)
-    }
-
-    /// Como `svgPentagrama(tocadaEn:…)`, con los microtonos de la subida o de la bajada, según `sentido`.
-    private func tocada(
-        en alturas: [Altura], titulo: String?, figura: Duracion?, digitos: [Int: [Int]], tablatura: Tablatura?,
-        opciones: OpcionesDePentagrama, sentido: SentidoDelIntervalo?
-    ) -> String {
-        partitura(
-            tocadaEn: alturas, titulo: titulo, figura: figura, digitos: digitos, tablatura: tablatura, sentido: sentido
-        ).svg(opciones: opciones)
+        partitura(tocadaEn: alturas, titulo: titulo, figura: figura, digitos: digitos, tablatura: tablatura)
+            .svg(opciones: opciones)
     }
 
     /// Cada altura como nota de la escala: con el microtono y el sistema que tiene esa nota en la escala, si lo
@@ -140,18 +147,30 @@ extension Escala {
 }
 
 extension Acorde {
-    /// El acorde en un pentagrama, como SVG: `Acorde("Sol7").svgPentagrama()`. Las notas van apiladas desde el bajo, en
-    /// posición cerrada y a partir de `octava` (el bajo, en la primera octava en que su nota alcanza el Do de esa
-    /// octava), con el cifrado encima. Los acordes muy extensos y `maquetacion.disposicionDelAcorde = .abierta` ponen
-    /// el bajo una octava más grave y el resto encima, y con eso suelen pasar al pentagrama doble. Sin armadura, salvo
-    /// la de `.tonalidad`.
+    /// El acorde en un pentagrama, como SVG: `Acorde("Sol7").svgPentagrama()`, que es
+    /// `partitura(octava:disposicion:).svg(opciones:)` con la disposición de `maquetacion.disposicionDelAcorde` y,
+    /// si `cifrado` es `false`, sin el cifrado encima (`marcas.cifrados`).
     public func svgPentagrama(
         octava: Int = 4, cifrado conCifrado: Bool = true,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
+        var suyas = opciones
+        suyas.marcas.cifrados = opciones.marcas.cifrados && conCifrado
+        return partitura(octava: octava, disposicion: opciones.maquetacion.disposicionDelAcorde).svg(opciones: suyas)
+    }
+
+    /// La partitura del acorde, en una redonda y sin ritmo (``Partitura/ritmo``): las notas apiladas desde el bajo,
+    /// en posición cerrada y a partir de `octava` (el bajo, en la primera octava en que su nota alcanza el Do de esa
+    /// octava), con el cifrado encima. Los acordes muy extensos y la disposición `.abierta` ponen el bajo una octava
+    /// más grave y el resto encima, y con eso suelen pasar al pentagrama doble. Sin armadura, salvo la de
+    /// `.tonalidad` en las opciones. Su título es el cifrado (``Encabezado/tema``), en la notación con que se dibuja
+    /// o se exporta.
+    ///
+    ///     Acorde("Sol7").partitura().musicXML()   // en ArmoniaFormatos
+    public func partitura(octava: Int = 4, disposicion: OpcionesDePentagrama.Disposicion = .automatica) -> Partitura {
         let cerrada = Altura.posicionCerrada(notasDesdeElBajo, desde: Altura(.do, octava: octava).midi)
         let abierta: Bool
-        switch opciones.maquetacion.disposicionDelAcorde {
+        switch disposicion {
         case .cerrada: abierta = false
         case .abierta: abierta = true
         case .automatica:
@@ -165,28 +184,34 @@ extension Acorde {
                 + Altura.posicionCerrada(
                     Array(notasDesdeElBajo.dropFirst()), desde: Altura(.do, octava: octava).midi)
         }
-        let texto = cifrado(en: opciones.notacion)
-        return PentagramaSVG(
-            columnas: [alturas], armadura: opciones.armadura.notas(), cifrado: conCifrado ? texto : nil,
-            titulo: texto, opciones: opciones, referencias: [0: PentagramaSVG.Referencia(self)]
-        ).svg()
+        return Partitura.tocada(
+            juntas: [alturas.map { Evento.Nota($0) }], tema: .acorde(self), acorde: self, tonica: nil, armadura: nil)
     }
 }
 
 extension Arpegio {
-    /// El arpegio en un pentagrama, como SVG: `Arpegio("Do7").svgPentagrama()`. Cada nota, en el orden del patrón y
-    /// a partir de `octava` (la del bajo), va en su columna, con las alteraciones que le hagan falta (sin armadura,
-    /// salvo la de una tonalidad: `OpcionesDePentagrama(armadura: .tonalidad(…))`) y su nombre en un `<title>`; el
-    /// título de la imagen es el nombre del arpegio. Con `cifrado`, el del acorde va encima de la primera nota.
+    /// El arpegio en un pentagrama, como SVG: `Arpegio("Do7").svgPentagrama()`, que es
+    /// `partitura(octava:).svg(opciones:)` con el cifrado del acorde solo si `cifrado` es `true`
+    /// (`marcas.cifrados`).
     public func svgPentagrama(
         octava: Int = 4, cifrado conCifrado: Bool = false, opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
-        PentagramaSVG(
-            columnas: alturas(octava: octava).map { [$0] }, armadura: opciones.armadura.notas(),
-            cifrado: conCifrado ? acorde.cifrado(en: opciones.notacion) : nil,
-            titulo: nombre(en: opciones.notacion), opciones: opciones,
-            referencias: [0: PentagramaSVG.Referencia(acorde)]
-        ).svg()
+        var suyas = opciones
+        suyas.marcas.cifrados = opciones.marcas.cifrados && conCifrado
+        return partitura(octava: octava).svg(opciones: suyas)
+    }
+
+    /// La partitura del arpegio, en redondas y sin ritmo (``Partitura/ritmo``): cada nota, en el orden del patrón y
+    /// a partir de `octava` (la del bajo), en su columna, con las alteraciones que le hagan falta (sin armadura,
+    /// salvo la de una tonalidad: `OpcionesDePentagrama(armadura: .tonalidad(…))`) y el cifrado del acorde encima de
+    /// la primera. Su título es el nombre del arpegio (``Encabezado/tema``), en la notación con que se dibuja o se
+    /// exporta.
+    ///
+    ///     Arpegio(Acorde("Do7")).partitura().musicXML()   // en ArmoniaFormatos
+    public func partitura(octava: Int = 4) -> Partitura {
+        Partitura.tocada(
+            alturas(octava: octava).map { Evento.Nota($0) }, tema: .arpegio(self), acorde: acorde, tonica: nil,
+            armadura: nil)
     }
 }
 

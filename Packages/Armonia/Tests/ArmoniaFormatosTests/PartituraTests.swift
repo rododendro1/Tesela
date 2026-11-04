@@ -118,4 +118,19 @@ import Testing
         #expect(partitura.musicXML().contains("<work-title>\(escala.nombre(en: .inglesASCII))</work-title>"))
         #expect(!partitura.musicXML().contains(enEspanol))
     }
+
+    /// Lo que se dibuja se exporta: la escala, el acorde, el arpegio y la progresión tienen su partitura.
+    @Test func loQueSeDibujaSeExporta() {
+        let acorde = Acorde("Sol7").partitura().musicXML()
+        #expect(acorde.contains("<work-title>Sol7</work-title>") && acorde.contains("<chord/>"))
+        #expect(acorde.contains("<harmony"))
+        let escala = Escala("Re dórico").partitura().mei()
+        #expect(escala.contains("Re dórico"))
+        let arpegio = Arpegio(Acorde("Do7")).partitura()
+        #expect(arpegio.musicXML().contains("<work-title>\(Arpegio(Acorde("Do7")).nombre(en: .espanolCompacto))"))
+        let acordes = [Acorde("Do"), Acorde("Sol7")]
+        var progresion = Partitura(acordes: DisposicionDeAcorde.cerrada.conducir(acordes) ?? [], cifrados: acordes)
+        progresion.notacion = .inglesASCII
+        #expect(progresion.musicXML().contains("<work-title>C – G7</work-title>"))
+    }
 }

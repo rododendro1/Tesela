@@ -156,6 +156,47 @@
   `Tablatura(cuerdas:desdeLaGrave:)` convierten de una cuenta a la otra, para pasar a la tablatura las posiciones
   del mástil sin darles la vuelta a mano.
 
+### Todo lo que se dibuja en un pentagrama sale de una partitura
+
+- `Escala.partitura(octava:octavas:sentido:digitacion:)`, `Escala.partitura(secuencia:octava:octavas:sentido:)`,
+  `Acorde.partitura(octava:disposicion:)` y `Arpegio.partitura(octava:)` dan la `Partitura` de lo que dibuja su
+  `svgPentagrama(…)`, que ahora es `partitura(…).svg(opciones:)`. Así lo que se ve se exporta igual:
+  `Acorde("Sol7").partitura().musicXML()`. Los dibujos no cambian.
+- `Encabezado.Tema` tiene tres casos nuevos: `.secuencia(_:de:)` («Do mayor · por terceras»), `.arpegio(_:)` y
+  `.progresion(_:)` («Rem7 – Sol7 – Do7M»), con su nombre en la notación con que se dibuja o se exporta.
+  `Arpegio` (con `Arpegio.Patron` y `Arpegio.Aproximacion`) y `SecuenciaDeEscala` son `Codable`.
+- `OpcionesDePentagrama.Marcas.cifrados` (`true` por omisión) quita los cifrados de encima en cualquier partitura;
+  los acordes siguen contando para los intervalos y las notas ajenas. Es lo que hacen
+  `Acorde.svgPentagrama(cifrado: false)` y `Arpegio.svgPentagrama()`.
+
+### Título opcional en las progresiones
+
+- `Partitura(acordes:titulo:cifrados:…)` ya no pide el título: sin él, la partitura se titula con sus cifrados
+  (`Encabezado.Tema.progresion`), en la notación con que se dibuja o se exporta.
+
+### El título y el tamaño del pentagrama, como en los diagramas
+
+- **Cambio incompatible:** `OpcionesDePentagrama.Maquetacion.tamano` ya no existe. Su lugar lo ocupa
+  `OpcionesDePentagrama.escala`, un factor del tamaño de siempre (10 píxeles por espacio): donde se escribía
+  `maquetacion: .init(tamano: 20)`, ahora `escala: 2`.
+- `OpcionesDePentagrama.titulo` cambia el título de lo que se dibuja; con `""`, el SVG va sin `<title>` y con
+  `aria-labelledby="descripcion"`.
+
+### El piano y el reloj nombran las notas
+
+- El teclado de piano escribe en las teclas marcadas sin rótulo el nombre de su nota, y el reloj de clases, en las
+  horas sin rótulo, el de su clase, en `OpcionesDeDiagrama.notacion` y con bemoles si `preferirBemoles`.
+  `OpcionesDeDiagrama.nombresDeLasNotas: false` vuelve a lo de antes: el piano las marca sin texto y el reloj escribe
+  los números del 0 al 11.
+
+### La importación guarda el sistema de cada microtono
+
+- `NotaDeLaPieza.sistema` y `ajuste` dicen en qué sistema se escribe un microtono importado, como
+  `Evento.Nota.sistema`: el koron y el sori persas, las comas de Arel-Ezgi-Uzdilek, los moria de Wyschnegradsky y
+  las flechas de Helmholtz-Ellis. Se leen de `<accidental>` en MusicXML (con su atributo `smufl`) y de `accid` y
+  `glyph.name` en MEI. Un medio bemol no dice sistema: sus cents bastan. `NotaDeLaPieza.nota` da la nota como la
+  de un evento, con su microtono y su sistema.
+
 ## 0.3.4 (2026-11-04)
 
 ### Valores escritos a mano, sin opcionales

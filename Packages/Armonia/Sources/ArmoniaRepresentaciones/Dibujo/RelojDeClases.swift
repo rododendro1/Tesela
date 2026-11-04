@@ -8,7 +8,7 @@ import Foundation
 ///
 ///     let reloj = RelojDeClases(clases: [0, 2, 4, 5, 7, 9, 11], tonica: 0, orden: .quintas)
 ///     reloj.horas   // [0, 1, 2, 3, 4, 5, 11]: de Fa a Si, seguidas
-///     let svg = reloj.svg(rotulos: [0: "Do", 7: "Sol"], opciones: .init(titulo: "Do mayor"))
+///     let svg = reloj.svg(opciones: .init(titulo: "Do mayor"))   // las doce horas, con su nombre: Do, Do♯, Re…
 public struct RelojDeClases: Hashable, Sendable {
     /// Cómo se reparten las doce clases por las horas del reloj.
     public enum Orden: String, Hashable, Sendable, CaseIterable {
@@ -52,8 +52,9 @@ public struct RelojDeClases: Hashable, Sendable {
         return (centro.x + radio * cos(angulo), centro.y + radio * sin(angulo))
     }
 
-    /// El reloj en SVG: las doce horas con su rótulo (el nombre de la nota, o su número si no se da), el polígono de
-    /// las notas del conjunto y, encima, el título de `opciones`, si lo hay; `opciones.escala` cambia el tamaño.
+    /// El reloj en SVG: las doce horas con su rótulo (si no se da, el nombre de la nota en `opciones.notacion`, o su
+    /// número con `nombresDeLasNotas` en `false`), el polígono de las notas del conjunto y, encima, el título de
+    /// `opciones`, si lo hay; `opciones.escala` cambia el tamaño.
     public func svg(rotulos: [Int: String] = [:], opciones: OpcionesDeDiagrama = OpcionesDeDiagrama()) -> String {
         let titulo = opciones.titulo ?? ""
         let arriba = titulo.isEmpty ? 0 : RelojDeClases.altoDelTitulo
@@ -86,6 +87,9 @@ public struct RelojDeClases: Hashable, Sendable {
                 .con("fill-opacity", "0.18").con("stroke", DibujoSVG.Color.nota).con("stroke-width", 2.0).vacio
                 + "\n"
         }
+        func nombre(de clase: Int) -> String {
+            opciones.nombresDeLasNotas ? opciones.nombre(de: 60 + clase) : String(clase)
+        }
         for clase in 0..<12 {
             let hora = RelojDeClases.hora(de: clase, en: orden)
             let punto = RelojDeClases.punto(hora: hora, radio: RelojDeClases.radio, centro: centro)
@@ -103,7 +107,7 @@ public struct RelojDeClases: Hashable, Sendable {
                 + ElementoSVG("text").con("x", rotulo.x).con("y", rotulo.y).con("text-anchor", "middle")
                 .con("dominant-baseline", "central").con("font-size", 12.0)
                 .con("font-weight", dentro ? "600" : "400").con("fill", dentro ? "#222222" : "#999999")
-                .conTexto(rotulos[clase] ?? String(clase)) + "\n"
+                .conTexto(rotulos[clase] ?? nombre(de: clase)) + "\n"
         }
         return svg + "</svg>\n"
     }
