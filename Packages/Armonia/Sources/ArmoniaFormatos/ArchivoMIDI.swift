@@ -10,6 +10,10 @@ import Foundation
 // una voz con su nombre. Las notas ligadas suenan como una sola. Las alturas fuera del rango
 // MIDI (0…127) se omiten. Los textos van en Latin-1, que es lo que esperan casi todos los
 // programas, con las alteraciones en ASCII (Mib, F#).
+//
+// Los microtonos (los desvíos de cada evento y, si se pide, los de una afinación) suenan como inflexiones de tono
+// (pitch bend). Como la inflexión mueve todo un canal, las notas que suenan a la vez y se apartan distinto van cada
+// una a su canal, con el mismo instrumento: los que no son de ninguna voz, sin el 10.
 
 extension Voz {
     /// La voz como fichero MIDI estándar.
@@ -24,12 +28,16 @@ extension Voz {
     ///   - titulo: el nombre de la secuencia.
     ///   - parte: el nombre de la pista.
     ///   - instrumento: el programa General MIDI (0 = piano de cola … 127).
+    ///   - afinacion: en la que suenan las notas, con inflexiones de tono
+    ///     (`TemperamentoRegular.mesotonicoCuartoDeComa`, `AfinacionHistorica.werckmeisterIII.afinacion()`…); si es
+    ///     `nil`, el temperamento igual.
     public func midi(
         tonalidad: Tonalidad? = nil, tempo: Tempo? = nil, titulo: String? = nil,
-        parte: String = "Voz", instrumento: Int = 0
+        parte: String = "Voz", instrumento: Int = 0, afinacion: (any Afinacion)? = nil
     ) -> Data {
         let tonalidad = tonalidad ?? Exportacion.tonalidad(de: self)
-        var archivo = ArchivoMIDI(compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo)
+        var archivo = ArchivoMIDI(
+            compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo, afinacion: afinacion)
         archivo.anadir(eventos, nombre: parte, instrumento: instrumento)
         return archivo.datos
     }
@@ -46,13 +54,15 @@ extension Coral {
     ///   - duracion: lo que dura cada acorde.
     ///   - tonalidad: la armadura que se escribe en el fichero; si es `nil`, se estima.
     ///   - instrumento: el programa General MIDI de todas las voces (52 = coro «aahs»).
+    ///   - afinacion: en la que suenan las notas; si es `nil`, el temperamento igual.
     public func midi(
         duracion: Duracion = .negra, compas: Compas = .compasillo, tonalidad: Tonalidad? = nil,
         tempo: Tempo? = nil, titulo: String? = nil, instrumento: Int = 52,
-        notacion: Notacion = .espanolCompacto
+        notacion: Notacion = .espanolCompacto, afinacion: (any Afinacion)? = nil
     ) -> Data {
         let tonalidad = tonalidad ?? Tonalidad.identificar(alturas: acordes.flatMap { $0 }).first
-        var archivo = ArchivoMIDI(compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo)
+        var archivo = ArchivoMIDI(
+            compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo, afinacion: afinacion)
         for v in (0..<numeroDeVoces).reversed() {
             let eventos = Exportacion.eventos(de: voz(v), duracion: duracion, final: duracion)
             archivo.anadir(
@@ -75,13 +85,15 @@ extension AnalisisArmonico {
     ///   - duracion: lo que dura cada acorde.
     ///   - instrumento: el programa General MIDI (0 = piano de cola).
     ///   - notacion: la de los cifrados americanos de los marcadores.
+    ///   - afinacion: en la que suenan las notas; si es `nil`, el temperamento igual.
     public func midi(
         duracion: Duracion = .blanca, compas: Compas = .compasillo, tempo: Tempo? = nil,
-        titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolCompacto
+        titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolCompacto,
+        afinacion: (any Afinacion)? = nil
     ) -> Data {
         midi(
             duraciones: Array(repeating: duracion, count: acordes.count), compas: compas, tempo: tempo,
-            titulo: titulo, instrumento: instrumento, notacion: notacion)
+            titulo: titulo, instrumento: instrumento, notacion: notacion, afinacion: afinacion)
     }
 
     /// Lo mismo, con lo que dura cada acorde (el ritmo armónico de una pieza importada, por ejemplo).
@@ -89,10 +101,12 @@ extension AnalisisArmonico {
     /// Detiene el programa si no hay una duración positiva por acorde.
     public func midi(
         duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil,
-        titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolCompacto
+        titulo: String? = nil, instrumento: Int = 0, notacion: Notacion = .espanolCompacto,
+        afinacion: (any Afinacion)? = nil
     ) -> Data {
         Exportacion.comprobar(duraciones, acordes: acordes.count)
-        var archivo = ArchivoMIDI(compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo)
+        var archivo = ArchivoMIDI(
+            compas: compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo, afinacion: afinacion)
         let (superior, grave) = Exportacion.progresion(acordes.map(\.acorde), duraciones: duraciones)
         let marcas = acordes.map { $0.acorde.cifrado(en: notacion) + " · " + $0.cifrado }
         let pistaDeAcordes = TextosDeFormatos.en(notacion, \.pistaDeAcordes)
@@ -111,16 +125,22 @@ package struct ArchivoMIDI {
     package let tonalidad: Tonalidad?
     package let tempo: Tempo?
     package let titulo: String?
+    /// La afinación en que suenan las notas; si es `nil`, el temperamento igual (con los desvíos de cada evento).
+    package let afinacion: (any Afinacion)?
     private var pistas: [(eventos: [Evento], nombre: String, instrumento: Int, marcadores: [String])] = []
 
-    package init(compas: Compas, tonalidad: Tonalidad?, tempo: Tempo?, titulo: String?) {
+    package init(
+        compas: Compas, tonalidad: Tonalidad?, tempo: Tempo?, titulo: String?, afinacion: (any Afinacion)? = nil
+    ) {
         self.compas = compas
         self.tonalidad = tonalidad
         self.tempo = tempo
         self.titulo = titulo
+        self.afinacion = afinacion
     }
 
-    /// Una pista con los eventos, en el canal siguiente (sin usar el 10, el de percusión).
+    /// Una pista con los eventos, en el canal siguiente (sin usar el 10, el de percusión; los que sobran, para las
+    /// notas que se apartan distinto de las que suenan a la vez).
     /// `marcadores`, si se dan, uno por evento.
     package mutating func anadir(_ eventos: [Evento], nombre: String, instrumento: Int, marcadores: [String] = []) {
         precondition((0...127).contains(instrumento), "el instrumento General MIDI va de 0 a 127")
@@ -180,8 +200,10 @@ package struct ArchivoMIDI {
         }
         bytes += ArchivoMIDI.pista(control)
 
+        var mensajesDeLasPistas: [[(Int, [UInt8])]] = []
+        var notasDeLasPistas: [[NotaMIDI]] = []
         for (i, pista) in pistas.enumerated() {
-            let canal = UInt8(i < 9 ? i : (i + 1) % 16)
+            let canal = ArchivoMIDI.canal(dePista: i)
             var mensajes: [(Int, [UInt8])] = [
                 (0, ArchivoMIDI.meta(0x03, ArchivoMIDI.texto(pista.nombre))),
                 (0, [0xC0 | canal, UInt8(pista.instrumento)]),
@@ -192,16 +214,19 @@ package struct ArchivoMIDI {
             var inicio = 0
             // Altura MIDI → cuándo empezó, sus cents, su velocidad y cuándo deja de sonar si se acorta.
             var sonando: [Int: (desde: Int, desvio: Double, velocidad: Int, corte: Int?)] = [:]
-            var notas: [(clave: Int, desde: Int, hasta: Int, desvio: Double, velocidad: Int)] = []
+            var notas: [NotaMIDI] = []
             var ligadas: Set<Int> = []
             var dinamica = Dinamica.mf
             for (k, evento) in pista.eventos.enumerated() {
-                let claves = Set(evento.alturas.map(\.midi).filter { (0...127).contains($0) })
-                // Lo que se aparta cada nota de la temperada, en cents.
+                // La tecla de cada nota y lo que se aparta de ella, en cents.
                 var desvios: [Int: Double] = [:]
-                for (i, altura) in evento.alturas.enumerated() where desvios[altura.midi] == nil {
-                    desvios[altura.midi] = evento.desvio(i)
+                for (i, altura) in evento.alturas.enumerated() {
+                    let sonido = ArchivoMIDI.sonido(altura, desvio: evento.desvio(i), afinacion: afinacion)
+                    if (0...127).contains(sonido.clave), desvios[sonido.clave] == nil {
+                        desvios[sonido.clave] = sonido.desvio
+                    }
                 }
+                let claves = Set(desvios.keys)
                 // Las que venían ligadas y no siguen, terminan aquí.
                 let terminan = sonando.filter { !(ligadas.contains($0.key) && claves.contains($0.key)) }
                 for (clave, nota) in terminan.sorted(by: { $0.key < $1.key }) {
@@ -226,14 +251,96 @@ package struct ArchivoMIDI {
             for (clave, nota) in sonando.sorted(by: { $0.key < $1.key }) {
                 notas.append((clave, nota.desde, min(inicio, nota.corte ?? inicio), nota.desvio, nota.velocidad))
             }
-            mensajes += ArchivoMIDI.inflexiones(de: notas.map { ($0.desde, $0.desvio) }, canal: canal)
-            for nota in notas {
-                mensajes.append((nota.desde, [0x90 | canal, UInt8(nota.clave), UInt8(nota.velocidad)]))
-                mensajes.append((nota.hasta, [0x80 | canal, UInt8(nota.clave), 64]))
-            }
-            bytes += ArchivoMIDI.pista(mensajes)
+            mensajesDeLasPistas.append(mensajes)
+            notasDeLasPistas.append(notas)
         }
+        let deLasNotas = ArchivoMIDI.mensajes(de: notasDeLasPistas, instrumentos: pistas.map(\.instrumento))
+        for (mensajes, suyos) in zip(mensajesDeLasPistas, deLasNotas) { bytes += ArchivoMIDI.pista(mensajes + suyos) }
         return Data(bytes)
+    }
+
+    /// Una nota ya medida: su tecla, cuándo empieza y acaba (en pulsos), cuántos cents se aparta de la tecla y su
+    /// velocidad.
+    package typealias NotaMIDI = (clave: Int, desde: Int, hasta: Int, desvio: Double, velocidad: Int)
+
+    /// El canal propio de la pista `i` (contando las de las voces desde 0): del 1 al 9 y del 11 en adelante.
+    package static func canal(dePista i: Int) -> UInt8 { UInt8(i < 9 ? i : (i + 1) % 16) }
+
+    /// La tecla en que suena una altura y lo que se aparta de ella, en cents: en temperamento igual, la suya y su
+    /// desvío; en una afinación, la temperada más cercana sin pasar de un semitono, con lo que falte.
+    package static func sonido(
+        _ altura: Altura, desvio: Double, afinacion: (any Afinacion)?
+    ) -> (clave: Int, desvio: Double) {
+        guard let afinacion else { return (altura.midi, desvio) }
+        let total = desvio + afinacion.desviacion(de: altura)
+        let semitonos = Int((total / 100).rounded(.towardZero))
+        return (altura.midi + semitonos, total - Double(semitonos * 100))
+    }
+
+    /// El valor de la inflexión de tono (pitch bend) que aparta una nota `desvio` cents, en el ámbito de ±2
+    /// semitonos de General MIDI: 8192 es el centro.
+    package static func inflexion(_ desvio: Double) -> Int {
+        max(0, min(16_383, 8192 + Int((desvio / 200 * 8192).rounded())))
+    }
+
+    /// Los mensajes de las notas de cada pista, con los microtonos como inflexiones de tono. La inflexión afecta a
+    /// todo un canal, así que cada nota va al de su pista si lo que suena en él se aparta lo mismo que ella; si no, a
+    /// uno de los que no son de ninguna pista (sin el 10), con el instrumento de la suya: uno en que suene ya algo de
+    /// su pista que se aparte igual, si no, uno que ya tenga su inflexión y su instrumento, y si no, el que lleve
+    /// más tiempo callado. Si no queda ninguno, va al de su pista con la inflexión que ya tenga. Cada canal que se
+    /// inflexiona fija antes el ámbito (RPN 0 = 2 semitonos). Sin microtonos, todo va al canal de la pista, sin
+    /// inflexiones.
+    package static func mensajes(de pistas: [[NotaMIDI]], instrumentos: [Int]) -> [[(Int, [UInt8])]] {
+        let propios = pistas.indices.map { canal(dePista: $0) }
+        let libres = (0..<16).map { UInt8($0) }.filter { $0 != 9 && !propios.contains($0) }
+        // Por canal: su inflexión, lo que suena en él (hasta cuándo, con qué inflexión y de qué pista), su
+        // instrumento y cuándo calla.
+        var inflexiones = [Int](repeating: 8192, count: 16)
+        var sonando = [[(hasta: Int, inflexion: Int, pista: Int)]](repeating: [], count: 16)
+        var instrumento = [Int?](repeating: nil, count: 16)
+        var calla = [Int](repeating: 0, count: 16)
+        for (p, c) in propios.enumerated() { instrumento[Int(c)] = instrumentos[p] }
+        var mensajes = [[(Int, [UInt8])]](repeating: [], count: pistas.count)
+        var conAmbito: Set<Int> = []
+        let todas = pistas.enumerated().flatMap { p, notas in notas.map { (pista: p, nota: $0) } }.sorted {
+            ($0.nota.desde, $0.pista, $0.nota.clave) < ($1.nota.desde, $1.pista, $1.nota.clave)
+        }
+        for (p, nota) in todas {
+            let valor = inflexion(nota.desvio)
+            for c in 0..<16 { sonando[c].removeAll { $0.hasta <= nota.desde } }
+            func cabe(_ c: UInt8, deOtra: Bool) -> Bool {
+                sonando[Int(c)].allSatisfy { $0.inflexion == valor && (!deOtra || $0.pista == p) }
+            }
+            var elegido = propios[p]
+            if !cabe(elegido, deOtra: false) {
+                let candidatos = libres.filter { cabe($0, deOtra: true) }
+                let acompanado = candidatos.first { !sonando[Int($0)].isEmpty }
+                let preparado = candidatos.first {
+                    inflexiones[Int($0)] == valor && instrumento[Int($0)] == instrumentos[p]
+                }
+                let callado = candidatos.min { calla[Int($0)] < calla[Int($1)] }
+                elegido = acompanado ?? preparado ?? callado ?? elegido
+            }
+            let c = Int(elegido)
+            if instrumento[c] != instrumentos[p] {
+                mensajes[p].append((nota.desde, [0xC0 | elegido, UInt8(instrumentos[p])]))
+                instrumento[c] = instrumentos[p]
+            }
+            if sonando[c].isEmpty && inflexiones[c] != valor {
+                if conAmbito.insert(p * 16 + c).inserted {
+                    // RPN 0 (ámbito de la inflexión) = 2 semitonos.
+                    let ambito: [(UInt8, UInt8)] = [(101, 0), (100, 0), (6, 2), (38, 0)]
+                    mensajes[p] += ambito.map { (0, [0xB0 | elegido, $0.0, $0.1]) }
+                }
+                mensajes[p].append((nota.desde, [0xE0 | elegido, UInt8(valor & 0x7F), UInt8(valor >> 7)]))
+                inflexiones[c] = valor
+            }
+            sonando[c].append((nota.hasta, inflexiones[c], p))
+            calla[c] = max(calla[c], nota.hasta)
+            mensajes[p].append((nota.desde, [0x90 | elegido, UInt8(nota.clave), UInt8(nota.velocidad)]))
+            mensajes[p].append((nota.hasta, [0x80 | elegido, UInt8(nota.clave), 64]))
+        }
+        return mensajes
     }
 
     /// Una pista: los mensajes ordenados por tiempo (a igual tiempo, los finales de nota
@@ -264,26 +371,6 @@ package struct ArchivoMIDI {
         }
         cuerpo += [0x00, 0xFF, 0x2F, 0x00]
         return Array("MTrk".utf8) + entero(cuerpo.count, bytes: 4) + cuerpo
-    }
-
-    /// Los microtonos de una pista (`Evento.desvios`), como inflexiones de tono (pitch bend) en el
-    /// ámbito de ±2 semitonos de General MIDI, que se fija al principio. La inflexión afecta a todo el canal:
-    /// cuando empiezan a la vez notas que se apartan distinto, manda la primera que se aparta. Sin microtonos, nada.
-    package static func inflexiones(de notas: [(desde: Int, desvio: Double)], canal: UInt8) -> [(Int, [UInt8])] {
-        guard notas.contains(where: { $0.desvio != 0 }) else { return [] }
-        // RPN 0 (ámbito de la inflexión) = 2 semitonos.
-        let ambito: [(UInt8, UInt8)] = [(101, 0), (100, 0), (6, 2), (38, 0)]
-        var mensajes: [(Int, [UInt8])] = ambito.map { (0, [0xB0 | canal, $0.0, $0.1]) }
-        var actual = 8192
-        for desde in Set(notas.map { $0.desde }).sorted() {
-            let empiezan = notas.filter { $0.desde == desde }
-            let desvio = empiezan.first(where: { $0.desvio != 0 })?.desvio ?? 0
-            let valor = max(0, min(16_383, 8192 + Int((desvio / 200 * 8192).rounded())))
-            guard valor != actual else { continue }
-            mensajes.append((desde, [0xE0 | canal, UInt8(valor & 0x7F), UInt8(valor >> 7)]))
-            actual = valor
-        }
-        return mensajes
     }
 
     /// Un texto en Latin-1, con las alteraciones en ASCII ("Mi♭ · ♭VI" → "Mib · bVI") y "?" en

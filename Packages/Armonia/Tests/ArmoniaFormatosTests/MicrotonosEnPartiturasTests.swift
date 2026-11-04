@@ -120,10 +120,112 @@ import Testing
         // Sin microtonos, ni inflexiones ni RPN.
         let mayor = [UInt8](Escala(.do, .mayor).voz().midi())
         #expect(!contiene(mayor, [0xB0, 101, 0]))
-        #expect(ArchivoMIDI.inflexiones(de: [(0, 0), (480, 0)], canal: 0).isEmpty)
-        let inflexiones = ArchivoMIDI.inflexiones(de: [(0, 0), (480, -50), (960, -50), (1440, 0)], canal: 1)
-        #expect(inflexiones.map { $0.0 } == [0, 0, 0, 0, 480, 1440])
-        #expect(inflexiones[4].1 == [0xE1, 0x00, 0x30])
+        let temperadas = ArchivoMIDI.mensajes(de: [[(60, 0, 480, 0, 80), (64, 0, 480, 0, 80)]], instrumentos: [0])
+        #expect(temperadas[0].allSatisfy { [0x90, 0x80].contains($0.1[0]) })
+        // Una tras otra, en el canal de la pista: la inflexión, antes de cada una que cambia.
+        let seguidas = ArchivoMIDI.mensajes(
+            de: [[(60, 0, 480, 0, 80), (62, 480, 960, -50, 80), (64, 960, 1440, -50, 80), (65, 1440, 1920, 0, 80)]],
+            instrumentos: [0])[0]
+        let inflexiones = seguidas.filter { $0.1[0] & 0xF0 == 0xE0 }
+        #expect(inflexiones.map { $0.0 } == [480, 1440])
+        #expect(inflexiones[0].1 == [0xE0, 0x00, 0x30])
+        #expect(seguidas.allSatisfy { $0.1[0] & 0x0F == 0 })
+    }
+
+    // MARK: Un canal por inflexión
+
+    /// Los canales de las notas que empiezan (los mensajes 0x9n) de una pista.
+    private func canales(_ mensajes: [(Int, [UInt8])]) -> [UInt8] {
+        mensajes.filter { $0.1[0] & 0xF0 == 0x90 }.map { $0.1[0] & 0x0F }
+    }
+
+    /// Un acorde con una tercera pura y una quinta pura: cada nota que se aparta distinto, en su canal, con el
+    /// instrumento de su pista; la otra pista no se entera.
+    @Test func lasNotasQueSeApartanDistintoVanACanalesDistintos() {
+        let pistas: [[ArchivoMIDI.NotaMIDI]] = [
+            [(60, 0, 960, 0, 80), (64, 0, 960, -13.69, 80), (67, 0, 960, 1.96, 80)],
+            [(48, 0, 960, 0, 80)],
+        ]
+        let mensajes = ArchivoMIDI.mensajes(de: pistas, instrumentos: [52, 0])
+        #expect(canales(mensajes[0]) == [0, 2, 3])
+        #expect(canales(mensajes[1]) == [1])
+        #expect(mensajes[0].contains { $0.1 == [0xC2, 52] } && mensajes[0].contains { $0.1 == [0xC3, 52] })
+        #expect(mensajes[0].contains { $0.1 == [0xB2, 6, 2] })
+        let inflexiones = mensajes[0].filter { $0.1[0] & 0xF0 == 0xE0 }
+        #expect(inflexiones.map { $0.1[0] } == [0xE2, 0xE3])
+        #expect(ArchivoMIDI.inflexion(-13.69) == 7631 && ArchivoMIDI.inflexion(1.96) == 8272)
+        #expect(mensajes[1].allSatisfy { $0.1[0] & 0x0F == 1 })
+    }
+
+    /// Un canal que ya tiene la inflexión y el instrumento se vuelve a usar, sin mandarlos otra vez; si no, el que
+    /// lleva más tiempo callado.
+    @Test func losCanalesSeVuelvenAUsar() {
+        let notas: [ArchivoMIDI.NotaMIDI] = [
+            (60, 0, 480, 0, 80), (64, 0, 480, -14, 80), (62, 480, 960, 0, 80), (65, 480, 960, -14, 80),
+            (67, 960, 1440, 20, 80), (71, 960, 1440, 30, 80),
+        ]
+        let pistas = [notas]
+        let mensajes = ArchivoMIDI.mensajes(de: pistas, instrumentos: [0])[0]
+        // El Fa vuelve al 1, que ya está a −14 cents; el Si, que se aparta distinto, va al que lleva más callado.
+        #expect(canales(mensajes) == [0, 1, 0, 1, 0, 2])
+        #expect(mensajes.filter { $0.1[0] == 0xE1 }.map { $0.0 } == [0])
+        #expect(mensajes.filter { $0.1[0] == 0xE0 }.map { $0.0 } == [960])
+        #expect(mensajes.filter { $0.1[0] == 0xE2 }.map { $0.0 } == [960])
+        #expect(mensajes.filter { $0.1[0] == 0xC1 }.count == 1)
+        // Con dos pistas, la segunda usa el siguiente que no es de ninguna.
+        let dos = ArchivoMIDI.mensajes(
+            de: [[(60, 0, 480, 0, 80)], [(48, 0, 480, 0, 80), (52, 0, 480, -14, 80)]], instrumentos: [0, 0])
+        #expect(canales(dos[1]) == [1, 2])
+    }
+
+    /// Sin canales libres, la nota va al de su pista con la inflexión que tenga; nunca al 10.
+    @Test func sinCanalesLibres() {
+        let acorde: [ArchivoMIDI.NotaMIDI] = (0..<16).map { (60 + $0, 0, 480, Double($0) + 1, 80) }
+        let mensajes = ArchivoMIDI.mensajes(de: [acorde], instrumentos: [0])[0]
+        let usados = canales(mensajes)
+        #expect(Set(usados).count == 15 && !usados.contains(9))
+        #expect(usados.last == 0)
+        #expect(mensajes.filter { $0.1[0] & 0xF0 == 0xE0 }.count == 15)
+    }
+
+    /// Un acorde con microtonos sale por varios canales y vuelve como una sola parte, con sus desvíos.
+    @Test func unAcordeMicrotonalVaYVuelve() throws {
+        let voz = try Voz(leyendo: "Do4+Mi4(-14¢)+Sol4(2¢):2 Re4(-50¢):2")
+        let pieza = try PiezaImportada(midi: voz.midi())
+        #expect(Set(pieza.notas.map(\.parte)) == [0])
+        #expect(pieza.notas.map(\.altura.midi) == [60, 64, 67, 62])
+        let desvios = pieza.notas.map(\.desvio)
+        for (leido, esperado) in zip(desvios, [0, -14, 2, -50] as [Double]) { #expect(abs(leido - esperado) < 0.05) }
+        // Las cuatro voces de un coral siguen siendo cuatro partes.
+        let coral = try Coral(leyendo: "Do3 Sol3 Mi4 Do5 | Sol2 Sol3 Re4 Si4")
+        #expect(Set(try PiezaImportada(midi: coral.midi()).notas.map(\.parte)) == [0, 1, 2, 3])
+    }
+
+    // MARK: En una afinación
+
+    /// Una afinación que lo sube todo lo mismo.
+    private struct Subida: Afinacion {
+        let cents: Double
+        func frecuencia(de nota: Altura) -> Double { nota.frecuencia() * pow(2, cents / 1200) }
+    }
+
+    /// En una afinación, cada nota suena en la tecla temperada más cercana, sin pasar de un semitono, con la
+    /// inflexión de lo que falte.
+    @Test func elMIDIEnUnaAfinacion() throws {
+        let temperado = ArchivoMIDI.sonido("Do4", desvio: 30, afinacion: nil)
+        #expect(temperado.clave == 60 && temperado.desvio == 30)
+        let alto = ArchivoMIDI.sonido("Do4", desvio: 0, afinacion: Subida(cents: 150))
+        #expect(alto.clave == 61 && abs(alto.desvio - 50) < 1e-6)
+        let bajo = ArchivoMIDI.sonido("Do4", desvio: 10, afinacion: Subida(cents: -130))
+        #expect(bajo.clave == 59 && abs(bajo.desvio + 20) < 1e-6)
+        let voz = try Voz(leyendo: "Do4:4 Mi4:4 Sol4:2")
+        let pieza = try PiezaImportada(midi: voz.midi(afinacion: Subida(cents: 25)))
+        #expect(pieza.notas.map(\.altura.midi) == [60, 64, 67])
+        #expect(pieza.notas.allSatisfy { abs($0.desvio - 25) < 0.05 })
+        // Sin afinación, como siempre.
+        #expect(voz.midi(afinacion: nil) == voz.midi())
+        let coral = try Coral(leyendo: "Do3 Sol3 Mi4 Do5")
+        #expect(coral.midi(afinacion: Subida(cents: 10)) != coral.midi())
     }
 
     @Test func pentagrama() {

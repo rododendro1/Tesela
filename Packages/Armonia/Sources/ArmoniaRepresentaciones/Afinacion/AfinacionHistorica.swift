@@ -1,4 +1,5 @@
 import ArmoniaNucleo
+import ArmoniaTeoria
 
 /// Las afinaciones históricas más conocidas, para elegir con cuál suenan las notas (en las apps,
 /// el botón «Escuchar»). Cada una da su `Afinacion`; la justa se construye sobre una tónica.

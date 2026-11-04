@@ -240,7 +240,7 @@ abc.contains("c2 d/2e/2 | f g2 |]")                   // true
 
 ## Exportar a MIDI
 
-`midi(tonalidad:tempo:titulo:parte:instrumento:)` da la voz como fichero MIDI estándar
+`midi(tonalidad:tempo:titulo:parte:instrumento:afinacion:)` da la voz como fichero MIDI estándar
 (formato 1), para oírla en cualquier reproductor o secuenciador. La primera pista lleva el
 título, el tempo, el compás y la armadura; la segunda, las notas. Las ligadas suenan como una
 sola nota y los grupos irregulares quedan exactos (480 pulsos por negra, o los que hagan falta).
@@ -261,6 +261,23 @@ datos.prefix(4) == Data("MThd".utf8)   // true
 - Desde la terminal: `armonia midi melodia …`, `armonia midi coral …` y
   `armonia midi acordes Do Lam Re7 Sol7 Do > progresion.mid`, con las mismas opciones que
   `musicxml` salvo `--clave` y los cifrados, y con `--instrumento 0…127`.
+
+### Microtonos y afinaciones en MIDI
+
+Los microtonos de una voz (los desvíos de cada nota, como en `Mi♭4(50¢):4`) suenan en MIDI con inflexiones de tono
+(*pitch bend*). Con `afinacion`, además, todas las notas suenan en la que se pida: un temperamento regular, uno
+circular o la afinación justa (``AfinacionHistorica``). La inflexión mueve todo un canal, así que las notas que suenan
+a la vez y se apartan distinto (la tercera pura de un acorde, por ejemplo) van cada una a un canal, con el mismo
+instrumento: los que no son de ninguna voz, sin el 10, el de percusión. Al importar el fichero, los canales de una
+pista con el mismo instrumento vuelven a ser una sola parte.
+
+```swift
+let acorde = try Voz(leyendo: "Do4+Mi4+Sol4:1")
+let datos = acorde.midi(afinacion: TemperamentoRegular.mesotonicoCuartoDeComa)
+let pieza = try PiezaImportada(midi: datos)
+pieza.notas.map(\.parte) == [0, 0, 0]                                     // true
+abs(400 + pieza.notas[1].desvio - pieza.notas[0].desvio - 386.31) < 0.05   // true: la tercera, pura
+```
 
 ## Todos los formatos a la vez
 
