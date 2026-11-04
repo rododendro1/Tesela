@@ -523,13 +523,13 @@ extension Voz {
             tablatura: tablatura, tonica: nil, armadura: nil, opciones: opciones)
     }
 
-    /// El microtono de cada altura de cada evento que se aparta de la temperada (`Evento.desvios`), por evento.
+    /// El microtono de cada altura de cada evento que se aparta de la temperada (`Evento.Nota.desvio`), por evento.
     func microtonosDeLosEventos(en notacion: Notacion) -> [Int: [PentagramaSVG.Microtono?]] {
         var microtonos: [Int: [PentagramaSVG.Microtono?]] = [:]
         for (i, evento) in eventos.enumerated() where evento.esMicrotonal {
             microtonos[i] = evento.alturas.indices.map {
                 PentagramaSVG.Microtono.de(
-                    evento.alturas[$0], desvio: evento.desvio($0), nota: nil, notacion: notacion)
+                    evento.alturas[$0], desvio: evento.notas[$0].desvio, nota: nil, notacion: notacion)
             }
         }
         return microtonos

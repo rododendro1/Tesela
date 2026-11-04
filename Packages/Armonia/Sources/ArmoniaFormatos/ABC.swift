@@ -121,7 +121,7 @@ package struct EscritorABC: EscritorDePartitura {
                     let lugar = octava * 7 + natural.rawValue
                     // Un cuarto de tono se escribe `_/` o `^/`; las comas, temperadas.
                     let propia =
-                        SignoMicrotonal(semitonos: semitonos, desvio: evento.desvio(k))?.abc ?? simbolo(semitonos)
+                        SignoMicrotonal(semitonos: semitonos, desvio: evento.notas[k].desvio)?.abc ?? simbolo(semitonos)
                     var escrita = ""
                     if propia != vigentes[lugar] ?? simbolo(armadura[natural] ?? 0) {
                         escrita = propia

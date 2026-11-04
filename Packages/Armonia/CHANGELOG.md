@@ -2,6 +2,18 @@
 
 ## Sin publicar
 
+### Cada nota con su desvío
+
+- **`Evento.Nota`**: una nota que suena, con su `altura` y su `desvio` en cents (redondeado a la centésima), que se
+  escribe como en un evento: `Mi♭4(50¢)`. `Evento.notas` las da en orden, y `Evento(notas:duracion:…)` hace un evento
+  con ellas.
+- **Cambio incompatible:** `Evento.desvios`, `Evento.desvio(_:)` y el parámetro `desvios:` de
+  `Evento(alturas:duracion:…)` desaparecen: cada desvío va con su nota, y no en una lista aparte que tenía que
+  casar con `alturas`. `evento.desvio(1)` es ahora `evento.notas[1].desvio`, y
+  `Evento(alturas: ["Do4", "Mi♭4"], duracion: .negra, desvios: [0, 50])`,
+  `Evento(notas: [Evento.Nota("Do4"), Evento.Nota("Mi♭4", desvio: 50)], duracion: .negra)`.
+  `Evento(alturas:duracion:…)` sigue para las alturas temperadas, y `Evento.alturas`, igual.
+
 ### Errores en vez de paradas con datos de fuera, y negras por defecto
 
 - **`ErrorDePartitura`**: lo que lanzan una voz o una partitura con datos que no casan, con su `motivo`

@@ -144,9 +144,9 @@ package struct EscritorLilyPond: EscritorDePartitura {
         let ligadura = evento.ligada ? "~" : ""
         switch evento.alturas.count {
         case 0: return "r" + figura
-        case 1: return altura(evento.alturas[0], desvio: evento.desvio(0)) + figura + ligadura
+        case 1: return altura(evento.alturas[0], desvio: evento.notas[0].desvio) + figura + ligadura
         default:
-            let notas = evento.alturas.indices.map { altura(evento.alturas[$0], desvio: evento.desvio($0)) }
+            let notas = evento.alturas.indices.map { altura(evento.alturas[$0], desvio: evento.notas[$0].desvio) }
             return "<" + notas.joined(separator: " ") + ">" + figura + ligadura
         }
     }

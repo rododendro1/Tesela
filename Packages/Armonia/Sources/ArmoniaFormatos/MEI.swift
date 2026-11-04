@@ -349,7 +349,7 @@ package struct EscritorMEI: EscritorDePartitura {
                     let lugar = altura.octava * 7 + altura.nota.natural.rawValue
                     let vigente = vigentes[lugar] ?? EscritorMEI.accid(armadura[altura.nota.natural] ?? 0)
                     // Un microtono se escribe con su signo (1qf, kf, koron…); solo los cuartos de tono suenan sin él.
-                    let signo = SignoMicrotonal(semitonos: semitonos, desvio: evento.desvio(k))
+                    let signo = SignoMicrotonal(semitonos: semitonos, desvio: evento.notas[k].desvio)
                     let propia = signo?.mei ?? EscritorMEI.accid(semitonos)
                     let sonora: String?
                     switch signo {

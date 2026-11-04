@@ -228,7 +228,7 @@ public struct Escucha: Hashable, Sendable {
     public static let tempo = Tempo(72)
 
     /// Una voz con su ritmo: los silencios callan, las notas ligadas suenan como una sola y los microtonos
-    /// (`Evento.desvios`) suenan con sus cents.
+    /// (`Evento.Nota.desvio`) suenan con sus cents.
     ///
     ///     Escucha.voz(try Voz(leyendo: "Do4:4 Re4:8 -:8 Mi4:2")).notas.map(\.inicio)   // [0, 0.83, 1.67]
     public static func voz(_ voz: Voz, tempo: Tempo = Escucha.tempo) -> Escucha {
@@ -237,7 +237,7 @@ public struct Escucha: Hashable, Sendable {
                 nota.evento.alturas.indices.map {
                     NotaMIDI(
                         altura: nota.evento.alturas[$0], inicio: nota.inicio, duracion: nota.duracion * 0.95,
-                        microtono: nota.evento.desvio($0))
+                        microtono: nota.evento.notas[$0].desvio)
                 }
             })
     }
