@@ -166,7 +166,7 @@ extension Evento {
         public init(_ altura: Altura, desvio: Double = 0) {
             self.altura = altura
             let redondeado = (desvio * 100).rounded() / 100
-            self.desvio = redondeado == 0 ? 0 : redondeado  // sin -0
+            self.desvio = redondeado == 0 ? 0 : redondeado // sin -0
         }
 
         /// La altura con sus cents, si se aparta de la temperada: «Mi♭4(50¢)», «Mib4(50c)» en ASCII.
