@@ -710,7 +710,7 @@ import Hexagonos
         comprobar(pieza.notas.count, #"12"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 380)
         comprobar(pieza.acordes().map(\.cifrado), #"["Do", "Sol", "Do"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 381)
         comprobar(pieza.analisis()?.cifrados, #"["I", "V", "I"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 382)
-        comprobar(pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 383)
+        comprobar(pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .redonda], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 383)
     }
 
     @Test func melodiaYRitmo19() throws {

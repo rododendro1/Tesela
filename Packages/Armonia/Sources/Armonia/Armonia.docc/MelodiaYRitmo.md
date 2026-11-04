@@ -380,7 +380,7 @@ pieza.tonalidad                  // Do mayor
 pieza.notas.count                // 12
 pieza.acordes().map(\.cifrado)   // ["Do", "Sol", "Do"]
 pieza.analisis()?.cifrados       // ["I", "V", "I"]
-pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca]   // true
+pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .redonda]  // true
 ```
 
 - MIDI solo da números de nota: la ortografía sale de la armadura del fichero o, si no la
