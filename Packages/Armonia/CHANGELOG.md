@@ -16,7 +16,6 @@
   figura (antes, blancas), como el coral; `armonia musicxml acordes` también.
 - En MIDI, un instrumento fuera de los de General MIDI (0…127) se lleva al más cercano en vez de detener el
   programa.
-- `Duracion(leyendo:)` no acepta una fracción con numerador 0 («0/4»).
 
 ### El pentagrama con ritmo, solo desde la partitura
 
