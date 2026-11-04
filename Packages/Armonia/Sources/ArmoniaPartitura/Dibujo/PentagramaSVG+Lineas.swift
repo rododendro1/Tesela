@@ -81,19 +81,11 @@ extension Voz {
             let locales = linea.inicios
             var indiceLocal: [Duracion: Int] = [:]
             for (j, momento) in locales.enumerated() where indiceLocal[momento] == nil { indiceLocal[momento] = j }
-            /// Lo de cada evento que empieza en la línea, en el evento de la línea que empieza con él.
-            func enLaLinea<T>(_ porEvento: [Int: T]) -> [Int: T] {
-                var resultado: [Int: T] = [:]
-                for (i, valor) in porEvento where inicios.indices.contains(i) {
-                    guard inicios[i] >= linea.inicio, inicios[i] < fin else { continue }
-                    if let j = indiceLocal[inicios[i]] { resultado[j] = valor }
-                }
-                return resultado
+            // Lo de cada evento que empieza en la línea, en el evento de la línea que empieza con él.
+            var suyas = anotaciones.reasignadas { i in
+                guard inicios.indices.contains(i), inicios[i] >= linea.inicio, inicios[i] < fin else { return nil }
+                return indiceLocal[inicios[i]]
             }
-            var suyas = AnotacionesDelPentagrama(
-                acordes: enLaLinea(anotaciones.acordes), grados: enLaLinea(anotaciones.grados),
-                bajoCifrado: enLaLinea(anotaciones.bajoCifrado), digitos: enLaLinea(anotaciones.digitos),
-                tablatura: anotaciones.tablatura.map { Tablatura(cuerdas: $0.cuerdas, notas: enLaLinea($0.notas)) })
             // Los microtonos, en todos los eventos de la línea, también en la parte ligada de una nota que viene de
             // la anterior.
             var microtonosDeLaLinea: [Int: [PentagramaSVG.Microtono?]] = [:]
@@ -136,7 +128,8 @@ extension Voz {
     /// que suenan a la vez en la misma vertical y los silencios de cada una encima o debajo. `otra` se mide con el
     /// compás y la anacrusa de esta. Los acordes (por evento de esta voz) van encima; los nombres de las notas y lo
     /// que marca `opciones.resaltada`, solo en esta. Con `opciones.compasesPorLinea`, las dos se parten en las mismas
-    /// líneas. No hay marca de octava ni cambios de clave: las claves son las que piden las dos voces juntas.
+    /// líneas. No hay marca de octava ni cambios de clave: las claves son las que piden las dos voces juntas. Si
+    /// las dos suenan a una segunda o al unísono, la cabeza de `otra` se aparta a la derecha.
     ///
     ///     let soprano = try Voz(leyendo: "Mi5:4 Re5:4 Do5:2")
     ///     let contralto = try Voz(leyendo: "Do5:4 Si4:4 Sol4:2")
@@ -229,12 +222,24 @@ extension PentagramaSVG {
     /// Lleva cada columna, cada barra de compás y el final de las voces a donde está el más lejano de todas.
     /// Devuelve si algo se mueve.
     static func alinear(_ voces: inout [PentagramaSVG], _ dibujos: [Dibujo]) -> Bool {
+        // Las cabezas de las otras voces que chocarían con las de la primera (a una segunda o al unísono) se apartan
+        // a la derecha lo que mide la cabeza de la primera.
+        var deLaPrimera: [Duracion: ColumnaColocada] = [:]
+        for (inicio, colocada) in zip(voces[0].ritmo?.inicios ?? [], dibujos[0].colocadas) {
+            deLaPrimera[inicio] = colocada
+        }
+        for k in voces.indices {
+            voces[k].apartes = zip(voces[k].ritmo?.inicios ?? [], dibujos[k].colocadas).map { inicio, colocada in
+                guard k > 0, let suya = deLaPrimera[inicio], chocan(suya, colocada) else { return 0 }
+                return suya.anchoDeLaCabeza + 0.1
+            }
+        }
         var columnas: [Duracion: Double] = [:]
         var barras: [Double] = []
         var final = 0.0
         for (voz, dibujo) in zip(voces, dibujos) {
-            for (inicio, x) in zip(voz.ritmo?.inicios ?? [], dibujo.columnasX) {
-                columnas[inicio] = max(columnas[inicio] ?? -.infinity, x + dibujo.desplazamiento)
+            for (inicio, (x, aparte)) in zip(voz.ritmo?.inicios ?? [], zip(dibujo.columnasX, voz.apartes)) {
+                columnas[inicio] = max(columnas[inicio] ?? -.infinity, x + dibujo.desplazamiento - aparte)
             }
             for (i, x) in dibujo.barras.enumerated() {
                 let suya = x + dibujo.desplazamiento
@@ -246,7 +251,9 @@ extension PentagramaSVG {
         for (k, dibujo) in dibujos.enumerated() {
             let corrimiento = dibujo.desplazamiento
             let inicios = voces[k].ritmo?.inicios ?? []
-            let xMinimas = zip(inicios, dibujo.columnasX).map { (columnas[$0] ?? $1 + corrimiento) - corrimiento }
+            let xMinimas = zip(inicios, zip(dibujo.columnasX, voces[k].apartes)).map { inicio, columna in
+                (columnas[inicio].map { $0 + columna.1 } ?? columna.0 + corrimiento) - corrimiento
+            }
             let barrasMinimas = barras.prefix(dibujo.barras.count).map { $0 - corrimiento }
             let lejos = zip(xMinimas + barrasMinimas, dibujo.columnasX + dibujo.barras).contains { $0 > $1 + 0.001 }
             if lejos || final > dibujo.final + 0.001 { seMueve = true }
@@ -255,6 +262,13 @@ extension PentagramaSVG {
             voces[k].finalMinimo = final
         }
         return seMueve
+    }
+
+    /// Si dos columnas que suenan a la vez tienen cabezas a una segunda o al unísono en el mismo pentagrama.
+    static func chocan(_ una: ColumnaColocada, _ otra: ColumnaColocada) -> Bool {
+        zip(una.lugares, otra.lugares).contains { estas, esas in
+            estas.contains { lugar in esas.contains { abs($0 - lugar) <= 1 } }
+        }
     }
 
     /// Estira las voces de una línea, ya alineadas, hasta que midan `falta` más: las columnas y las barras se
@@ -267,7 +281,8 @@ extension PentagramaSVG {
         for (k, dibujo) in dibujos.enumerated() {
             let corrimiento = dibujo.desplazamiento
             func estirada(_ x: Double) -> Double { origen + (x + corrimiento - origen) * factor - corrimiento }
-            voces[k].xMinimas = dibujo.columnasX.map(estirada)
+            let apartes = voces[k].apartes + Array(repeating: 0, count: dibujo.colocadas.count)
+            voces[k].xMinimas = zip(dibujo.columnasX, apartes).map { estirada($0 - $1) + $1 }
             voces[k].barrasMinimas = dibujo.barras.map(estirada)
             voces[k].finalMinimo = final + falta
         }

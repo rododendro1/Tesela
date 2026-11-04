@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+### Opciones del pentagrama agrupadas
+
+- `OpcionesDePentagrama` reúne sus opciones en tres grupos: **`maquetacion`** (clave, pentagramas, cambios de clave,
+  marca de octava, disposición del acorde, compases por línea, tamaño y ancho de los caracteres), **`marcas`**
+  (nombres, intervalos, semitonos, tónica, notas ajenas y la nota resaltada) y **`colores`**. Las propiedades sueltas
+  de antes siguen funcionando y cambian las de su grupo.
+- Con dos voces en un pentagrama (`Voz.svgPentagrama(junto:…)`), la cabeza de la de abajo se aparta a la derecha
+  cuando suena a una segunda o al unísono de la de arriba, en vez de pisarla.
+
 ### Líneas y dos voces en el pentagrama
 
 - **`OpcionesDePentagrama.compasesPorLinea`**: `Voz.svgPentagrama(titulo:…)` parte una voz larga en líneas del mismo
