@@ -57,7 +57,7 @@ extension Partitura {
             opciones: suyas)
     }
 
-    /// La voz sin ritmo: cada evento en su columna, con lo que se anota en ella.
+    /// La voz sin ritmo: cada evento en su columna, con sus microtonos y lo que se anota en ella.
     private func columnas(
         _ voz: Voz, titulo: String, acordes: [Int: Acorde], grados: [Int: String], bajoCifrado: [Int: [String]],
         digitos: [Int: [Int]], tablatura: Tablatura?, tonica: Nota?, armadura: [Nota], opciones: OpcionesDePentagrama
@@ -76,6 +76,9 @@ extension Partitura {
         dibujo.bajosCifrados = bajoCifrado
         dibujo.digitos = digitos
         dibujo.tablatura = tablatura
+        dibujo.microtonos = voz.eventos.map { evento in
+            evento.notas.map { PentagramaSVG.Microtono.de($0, notacion: opciones.notacion) }
+        }
         return dibujo.svg()
     }
 }

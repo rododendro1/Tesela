@@ -26,13 +26,7 @@ extension Escala {
         let armadura = opciones.armadura.notas(propia: notasDeLaArmadura)
         // Los microtonos, con su signo: el medio bemol de un maqam, el koron de un dastgāh, las comas de un makam, los
         // moria de un echos, la flecha de un śruti.
-        let microtonos = alturas.map { altura -> [PentagramaSVG.Microtono?] in
-            guard let nota = altura.nota else { return [nil] }
-            return [
-                PentagramaSVG.Microtono.de(
-                    altura.altura, desvio: altura.desvio, nota: nota, notacion: opciones.notacion)
-            ]
-        }
+        let microtonos = alturas.map { [PentagramaSVG.Microtono.de(Evento.Nota($0), notacion: opciones.notacion)] }
         var dibujo = PentagramaSVG(
             columnas: alturas.map { [$0.altura] }, armadura: armadura, cifrado: nil,
             titulo: nombre(en: opciones.notacion), opciones: opciones, microtonos: microtonos,
@@ -72,7 +66,8 @@ extension Escala {
     /// armadura (``Partitura/Pentagrama/armadura``) y los intervalos contados desde su tónica
     /// (``Partitura/Linea/tonica``). Con `figura`, con ritmo (la última nota, una negra si la figura es más corta);
     /// sin ella, en redondas y sin ritmo (``Partitura/ritmo``). `digitos` y `tablatura` van por nota, contando desde
-    /// 0. Si no se da `titulo`, el nombre de la escala.
+    /// 0. Si no se da `titulo`, el nombre de la escala. Las notas de una escala microtonal llevan su microtono, con
+    /// su sistema (``Evento/Nota/sistema``): el de la subida y, las que solo están al bajar, el de la bajada.
     ///
     ///     let posicion = [Altura("La2"), Altura("Do3"), Altura("Re3"), Altura("Mi3")]
     ///     Escala(.la, .pentatonicaMenor).partitura(tocadaEn: posicion, figura: .corchea).musicXML()
@@ -80,15 +75,26 @@ extension Escala {
         tocadaEn alturas: [Altura], titulo: String? = nil, figura: Duracion? = nil, digitos: [Int: [Int]] = [:],
         tablatura: Tablatura? = nil
     ) -> Partitura {
+        partitura(
+            tocadaEn: alturas, titulo: titulo, figura: figura, digitos: digitos, tablatura: tablatura, sentido: nil)
+    }
+
+    /// Como `partitura(tocadaEn:…)`, con los microtonos de la subida o de la bajada, según `sentido`; si es `nil`,
+    /// los de la subida y, los de las notas que solo están al bajar, los de la bajada.
+    private func partitura(
+        tocadaEn alturas: [Altura], titulo: String?, figura: Duracion?, digitos: [Int: [Int]], tablatura: Tablatura?,
+        sentido: SentidoDelIntervalo?
+    ) -> Partitura {
         Partitura.tocada(
-            Altura.reescritas(alturas, con: notas), titulo: titulo ?? nombre(en: .espanolCompacto), figura: figura,
-            digitos: digitos, tablatura: tablatura, acorde: nil, tonica: tonica, armadura: notasDeLaArmadura)
+            notasTocadas(en: Altura.reescritas(alturas, con: notas), sentido: sentido),
+            titulo: titulo ?? nombre(en: .espanolCompacto), figura: figura, digitos: digitos, tablatura: tablatura,
+            acorde: nil, tonica: tonica, armadura: notasDeLaArmadura)
     }
 
     /// La escala tocada en unas alturas cualesquiera (las de una posición del mástil, una secuencia…), con su
     /// armadura, escritas con sus notas (el La♯ que da el mástil, como Si♭ si la escala lo tiene) y los intervalos
     /// contados desde su tónica: `partitura(tocadaEn:…).svg(opciones:)`, con el nombre de la escala en
-    /// `opciones.notacion`. Las notas de una escala microtonal llevan además su microtono.
+    /// `opciones.notacion`. Las notas de una escala microtonal llevan además su microtono, con el signo de su sistema.
     public func svgPentagrama(
         tocadaEn alturas: [Altura], titulo: String? = nil, figura: Duracion? = nil, digitos: [Int: [Int]] = [:],
         tablatura: Tablatura? = nil, opciones: OpcionesDePentagrama = OpcionesDePentagrama()
@@ -98,44 +104,29 @@ extension Escala {
             sentido: nil)
     }
 
-    /// Como `svgPentagrama(tocadaEn:…)`. Las notas de una escala microtonal llevan su microtono: el de la subida o
-    /// el de la bajada, según `sentido`; si es `nil`, el de la subida y, las que solo están al bajar, el de la
-    /// bajada.
+    /// Como `svgPentagrama(tocadaEn:…)`, con los microtonos de la subida o de la bajada, según `sentido`.
     private func tocada(
         en alturas: [Altura], titulo: String?, figura: Duracion?, digitos: [Int: [Int]], tablatura: Tablatura?,
         opciones: OpcionesDePentagrama, sentido: SentidoDelIntervalo?
     ) -> String {
-        guard tipo.microtonal != nil else {
-            return partitura(
-                tocadaEn: alturas, titulo: titulo ?? nombre(en: opciones.notacion), figura: figura, digitos: digitos,
-                tablatura: tablatura
-            ).svg(opciones: opciones)
-        }
-        let escritas = Altura.reescritas(alturas, con: notas)
-        return PentagramaSVG.tocadas(
-            escritas, titulo: titulo ?? nombre(en: opciones.notacion),
-            armadura: opciones.armadura.notas(propia: notasDeLaArmadura), referencia: PentagramaSVG.Referencia(tonica),
-            acorde: nil, figura: figura, digitos: digitos, tablatura: tablatura, opciones: opciones,
-            microtonos: microtonos(de: escritas, sentido: sentido, notacion: opciones.notacion))
+        partitura(
+            tocadaEn: alturas, titulo: titulo ?? nombre(en: opciones.notacion), figura: figura, digitos: digitos,
+            tablatura: tablatura, sentido: sentido
+        ).svg(opciones: opciones)
     }
 
-    /// El microtono de cada altura, por su nota: el que tiene esa nota en la escala. Vacío si la escala no tiene
-    /// microtonos.
-    private func microtonos(
-        de alturas: [Altura], sentido: SentidoDelIntervalo?, notacion: Notacion
-    ) -> [PentagramaSVG.Microtono?] {
-        guard tipo.microtonal != nil else { return [] }
-        var porNota: [Nota: (desvio: Double, nota: NotaMicrotonal?)] = [:]
+    /// Cada altura como nota de la escala: con el microtono y el sistema que tiene esa nota en la escala, si lo
+    /// tiene (el de la subida o el de la bajada, según `sentido`; si es `nil`, el de la subida y, las que solo están
+    /// al bajar, el de la bajada), y si no, temperada.
+    private func notasTocadas(en alturas: [Altura], sentido: SentidoDelIntervalo?) -> [Evento.Nota] {
+        guard tipo.microtonal != nil else { return alturas.map { Evento.Nota($0) } }
+        var porNota: [Nota: Evento.Nota] = [:]
         for tramo in sentido.map({ [$0] }) ?? [.ascendente, .descendente] {
             for altura in alturasMicrotonales(octava: 4, sentido: tramo) where porNota[altura.altura.nota] == nil {
-                porNota[altura.altura.nota] = (altura.desvio, altura.nota)
+                porNota[altura.altura.nota] = Evento.Nota(altura)
             }
         }
-        return alturas.map { altura in
-            porNota[altura.nota].flatMap {
-                PentagramaSVG.Microtono.de(altura, desvio: $0.desvio, nota: $0.nota, notacion: notacion)
-            }
-        }
+        return alturas.map { porNota[$0.nota]?.con(altura: $0) ?? Evento.Nota($0) }
     }
 
     /// La figura con que un grupo de `notas` dura un pulso de negra: corcheas, tresillos de corcheas o semicorcheas.
@@ -209,8 +200,9 @@ extension Acorde {
         tablatura: Tablatura? = nil
     ) -> Partitura {
         Partitura.tocada(
-            Altura.reescritas(alturas, con: notas), titulo: titulo ?? cifrado(en: .espanolCompacto), figura: figura,
-            digitos: digitos, tablatura: tablatura, acorde: self, tonica: nil, armadura: nil)
+            Altura.reescritas(alturas, con: notas).map { Evento.Nota($0) },
+            titulo: titulo ?? cifrado(en: .espanolCompacto), figura: figura, digitos: digitos, tablatura: tablatura,
+            acorde: self, tonica: nil, armadura: nil)
     }
 
     /// El acorde arpegiado en unas alturas cualesquiera, en un pentagrama:
@@ -237,34 +229,5 @@ extension Altura {
             let octavas = (altura.octava - 1)...(altura.octava + 1)
             return octavas.map { Altura(nota, octava: $0) }.first { $0.midi == altura.midi } ?? altura
         }
-    }
-}
-
-extension PentagramaSVG {
-    /// Unas alturas tocadas una detrás de otra: en redondas o, con `figura`, con ritmo (la última, una negra si la
-    /// figura es más corta). Con `acorde`, su cifrado encima de la primera.
-    static func tocadas(
-        _ alturas: [Altura], titulo: String, armadura: [Nota], referencia: Referencia, acorde: Acorde?,
-        figura: Duracion?, digitos: [Int: [Int]], tablatura: Tablatura?, opciones: OpcionesDePentagrama,
-        microtonos: [Microtono?] = []
-    ) -> String {
-        if let figura {
-            let eventos = alturas.indices.map { i in
-                Evento(alturas[i], i == alturas.count - 1 && alturas.count > 1 && figura < .negra ? .negra : figura)
-            }
-            var porEvento: [Int: [Microtono?]] = [:]
-            for (i, microtono) in microtonos.enumerated() where microtono != nil { porEvento[i] = [microtono] }
-            return Voz(eventos).svgPentagrama(
-                titulo: titulo, acordes: acorde.map { [0: $0] } ?? [:], grados: [:], bajoCifrado: [:], digitos: digitos,
-                tablatura: tablatura, tonica: referencia.nota, armadura: armadura, opciones: opciones,
-                microtonos: porEvento)
-        }
-        var dibujo = PentagramaSVG(
-            columnas: alturas.map { [$0] }, armadura: armadura, cifrado: nil, titulo: titulo, opciones: opciones,
-            cifrados: acorde.map { [0: $0.cifrado(en: opciones.notacion)] } ?? [:], referencias: [0: referencia])
-        dibujo.digitos = digitos
-        dibujo.tablatura = tablatura
-        dibujo.microtonos = microtonos.map { [$0] }
-        return dibujo.svg()
     }
 }

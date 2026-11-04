@@ -268,16 +268,17 @@ extension Partitura {
 extension Encabezado: Codable {}
 
 extension Partitura {
-    /// Unas alturas tocadas una tras otra, con lo que se anota en cada una (por su índice): con `figura`, con ritmo
-    /// (la última, una negra si la figura es más corta); sin ella, en redondas y sin ritmo. Es lo que hacen
-    /// `Escala.partitura(tocadaEn:…)` y `Acorde.partitura(arpegiadoEn:…)`.
+    /// Unas notas tocadas una tras otra (con sus microtonos, si los tienen), con lo que se anota en cada una (por su
+    /// índice): con `figura`, con ritmo (la última, una negra si la figura es más corta); sin ella, en redondas y sin
+    /// ritmo. Es lo que hacen `Escala.partitura(tocadaEn:…)` y `Acorde.partitura(arpegiadoEn:…)`.
     static func tocada(
-        _ alturas: [Altura], titulo: String, figura: Duracion?, digitos: [Int: [Int]], tablatura: Tablatura?,
+        _ notas: [Evento.Nota], titulo: String, figura: Duracion?, digitos: [Int: [Int]], tablatura: Tablatura?,
         acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
     ) -> Partitura {
-        let eventos = alturas.indices.map { i in
-            guard let figura else { return Evento(alturas[i], .redonda) }
-            return Evento(alturas[i], i == alturas.count - 1 && alturas.count > 1 && figura < .negra ? .negra : figura)
+        let eventos = notas.indices.map { i in
+            guard let figura else { return Evento(notas: [notas[i]], duracion: .redonda) }
+            let ultima = i == notas.count - 1 && notas.count > 1
+            return Evento(notas: [notas[i]], duracion: ultima && figura < .negra ? .negra : figura)
         }
         let voz = Voz(eventos)
         let inicios = voz.inicios

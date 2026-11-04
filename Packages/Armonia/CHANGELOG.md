@@ -103,6 +103,21 @@
 - `RazonDeFrecuencias` pasa de ArmoniaRepresentaciones a ArmoniaNucleo y es `Codable`. Con `import Armonia` no cambia
   nada.
 
+### Cada nota microtonal sabe en qué sistema se escribe
+
+- `Evento.Nota` tiene `sistema` (`SistemaMicrotonal?`) y `ajuste`, los pasos de ese sistema que se aparta, como
+  `NotaMicrotonal.ajuste`: `Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)` es el Mi koron de un
+  dastgāh. En texto va tras los cents, `Mi♭4(50¢,persa,1):4`, y así se guarda en JSON. Una nota que no se aparta no
+  tiene sistema, y una sin sistema (las escritas a mano) lleva, como antes, el signo que dan sus cents.
+- `Escala.voz()` da sus notas con su sistema, así que el *koron* y el *sori* de un dastgāh salen como tales en
+  MusicXML (`<accidental>koron</accidental>`) y en MEI (`accid="koron"`), y la flecha de Helmholtz-Ellis de un
+  śruti, en MusicXML (con su glifo SMuFL) y en el pentagrama de cualquier voz. MEI, que no tiene la flecha, escribe
+  la koma que dan los cents, como antes.
+- `Escala.partitura(tocadaEn:)` también sirve para las escalas microtonales: sus notas llevan su microtono y su
+  sistema, y `svgPentagrama(tocadaEn:)` y `svgPentagrama(secuencia:)` dibujan esa partitura en todas las escalas, sin
+  un camino aparte para las microtonales.
+- Una `Partitura` sin ritmo (`ritmo: false`) dibuja los microtonos de sus notas, que antes se quedaban sin signo.
+
 ## 0.3.4 (2026-11-04)
 
 ### Valores escritos a mano, sin opcionales

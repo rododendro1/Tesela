@@ -13,6 +13,7 @@ import ArmoniaTeoria
 ///     Evento("-:8")                       // silencio de corchea
 ///     Evento("Re4:2~")                    // ligada a la siguiente
 ///     Evento("Mi♭4(50¢):4")               // Mi♭4 cincuenta cents más alto: el Mi𝄳 de un maqam
+///     Evento("Mi♭4(50¢,persa,1):4")       // el mismo, escrito con el koron de un dastgāh
 ///     Evento("Sol4:8{f,staccato}")        // forte y picada
 public struct Evento: Hashable, Sendable {
     /// Las notas que suenan, cada una con su altura y lo que se aparta de la temperada; vacío si es un silencio.
@@ -82,10 +83,11 @@ public struct Evento: Hashable, Sendable {
     /// las lleva solo en la primera.
     package var sinExpresion: Evento { con(dinamica: nil, articulaciones: []) }
 
-    /// Lee "notas:duración", con las notas de un acorde unidas por "+", "-" (o "silencio")
-    /// para un silencio y "~" al final si está ligada: "Do4:4", "C4+E4:2.", "-:8", "Re4:2~". Una nota que se aparta
-    /// de la temperada lleva los cents entre paréntesis: "Mi♭4(50¢):4", "Si4(-22.64c):4". La dinámica y las
-    /// articulaciones van al final, entre llaves: "Do4:4{mf}", "Re4:2~{acento,tenuto}" (`Expresion.swift`).
+    /// Lee "notas:duración", con las notas de un acorde unidas por "+", "-" (o "silencio") para un silencio y "~" al
+    /// final si está ligada: "Do4:4", "C4+E4:2.", "-:8", "Re4:2~". Una nota que se aparta de la temperada lleva los
+    /// cents entre paréntesis: "Mi♭4(50¢):4", "Si4(-22.64c):4"; y, si se sabe, su sistema y los pasos que se aparta en
+    /// él (`Evento.Nota.sistema`): "Mi♭4(50¢,persa,1):4". La dinámica y las articulaciones van al final, entre llaves:
+    /// "Do4:4{mf}", "Re4:2~{acento,tenuto}" (`Expresion.swift`).
     public init(leyendo texto: String) throws {
         let caracteres = Array(texto)
         guard let dosPuntos = caracteres.lastIndex(of: ":") else {
@@ -128,18 +130,30 @@ public struct Evento: Hashable, Sendable {
         for trozo in parteNotas.split(separator: "+", omittingEmptySubsequences: false) {
             var nota = String(trozo)
             var desvio = 0.0
+            var sistema: SistemaMicrotonal?
+            var ajuste = 0
             if let parentesis = nota.firstIndex(of: "("), nota.trimmingEspacios().hasSuffix(")") {
                 let dentro = String(String(nota[nota.index(after: parentesis)...]).trimmingEspacios().dropLast())
-                    .replacingOccurrences(of: "¢", with: "").replacingOccurrences(of: "c", with: "")
-                guard let cents = Double(dentro.trimmingEspacios()), cents.isFinite else {
+                    .split(separator: ",", omittingEmptySubsequences: false).map { String($0).trimmingEspacios() }
+                let cifra = dentro[0].replacingOccurrences(of: "¢", with: "").replacingOccurrences(of: "c", with: "")
+                // Los cents y, si los hay, el sistema y los pasos que se aparta en él: «50¢,persa,1».
+                let leidos: (SistemaMicrotonal?, Int?) =
+                    dentro.count == 3 ? (SistemaMicrotonal(rawValue: dentro[1]), Int(dentro[2])) : (nil, nil)
+                guard let cents = Double(cifra.trimmingEspacios()), cents.isFinite,
+                    dentro.count == 1 || (leidos.0 != nil && leidos.1 != nil)
+                else {
                     throw ErrorDeLectura(
                         texto: texto, posicion: inicio + nota.distance(from: nota.startIndex, to: parentesis),
                         motivo: .caracteresSobrantes(String(nota[parentesis...])))
                 }
                 desvio = cents
+                sistema = leidos.0
+                ajuste = leidos.1 ?? 0
                 nota = String(nota[..<parentesis])
             }
-            do { notas.append(Nota(try Altura(leyendo: nota), desvio: desvio)) } catch let e as any ErrorAlLeer {
+            do {
+                notas.append(Nota(try Altura(leyendo: nota), desvio: desvio, sistema: sistema, ajuste: ajuste))
+            } catch let e as any ErrorAlLeer {
                 throw e.situado(en: texto, posicion: inicio + (e.posicion ?? 0))
             }
             inicio += trozo.count + 1
@@ -152,33 +166,63 @@ public struct Evento: Hashable, Sendable {
 
     public func transponer(_ intervalo: Intervalo) -> Evento {
         Evento(
-            notas: notas.map { Nota($0.altura.transponer(intervalo), desvio: $0.desvio) }, duracion: duracion,
+            notas: notas.map { $0.con(altura: $0.altura.transponer(intervalo)) }, duracion: duracion,
             ligada: ligada, dinamica: dinamica, articulaciones: articulaciones)
     }
 }
 
 extension Evento {
     /// Una nota que suena: su altura y cuántos cents se aparta de su nota temperada (los microtonos de un maqam o un
-    /// makam), redondeados a la centésima de cent.
+    /// makam), redondeados a la centésima de cent. Si se da, `sistema` es la teoría en que se escribe ese microtono
+    /// y `ajuste`, cuántos pasos de ella se aparta (como ``NotaMicrotonal/ajuste``): con ellos, el Mi koron de un
+    /// dastgāh se escribe con el koron, y no con el medio bemol de un maqam, en el pentagrama y en los formatos.
     ///
     ///     Evento.Nota("Mi♭4", desvio: 50).description   // "Mi♭4(50¢)": el Mi𝄳 de un maqam
+    ///     Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1).description   // "Mi♭4(50¢,persa,1)": el koron
     public struct Nota: Hashable, Sendable {
         public let altura: Altura
         public let desvio: Double
+        /// La teoría en que se escribe el microtono; `nil` si no se aparta de la temperada o si no se sabe (su signo
+        /// se deduce entonces de los cents).
+        public let sistema: SistemaMicrotonal?
+        /// Los pasos de `sistema` que se aparta (``NotaMicrotonal/ajuste``); 0 si no hay sistema.
+        public let ajuste: Int
 
-        /// La altura apartada `desvio` cents de la temperada, redondeado a la centésima.
-        public init(_ altura: Altura, desvio: Double = 0) {
+        /// La altura apartada `desvio` cents de la temperada, redondeado a la centésima, y escrita en `sistema`,
+        /// `ajuste` pasos apartada. Una nota que no se aparta no tiene sistema.
+        public init(_ altura: Altura, desvio: Double = 0, sistema: SistemaMicrotonal? = nil, ajuste: Int = 0) {
             self.altura = altura
             let redondeado = (desvio * 100).rounded() / 100
             self.desvio = redondeado == 0 ? 0 : redondeado // sin -0
+            self.sistema = self.desvio == 0 ? nil : sistema
+            self.ajuste = self.sistema == nil ? 0 : ajuste
         }
 
-        /// La altura con sus cents, si se aparta de la temperada: «Mi♭4(50¢)», «Mib4(50c)» en ASCII.
+        /// La nota de una escala, con su microtono y su sistema.
+        package init(_ altura: AlturaMicrotonal) {
+            self.init(
+                altura.altura, desvio: altura.desvio, sistema: altura.nota?.sistema, ajuste: altura.nota?.ajuste ?? 0)
+        }
+
+        /// La misma nota en otra altura, con el mismo desvío y el mismo sistema.
+        package func con(altura: Altura) -> Nota { Nota(altura, desvio: desvio, sistema: sistema, ajuste: ajuste) }
+
+        /// El signo del microtono, escrito con `semitonos` de alteración (los de la altura, si no se dan): el de su
+        /// sistema o, sin él, el que dan los cents. `nil` si no se aparta o si lo que se aparta no tiene signo.
+        package func signo(semitonos: Int? = nil) -> SignoMicrotonal? {
+            let semitonos = semitonos ?? altura.nota.alteracion.semitonos
+            guard let sistema else { return SignoMicrotonal(semitonos: semitonos, desvio: desvio) }
+            return SignoMicrotonal(sistema: sistema, ajuste: ajuste, semitonos: semitonos, desvio: desvio)
+        }
+
+        /// La altura con sus cents, si se aparta de la temperada, y su sistema, si lo tiene: «Mi♭4(50¢)»,
+        /// «Mi♭4(50¢,persa,1)», «Mib4(50c)» en ASCII.
         public func texto(en notacion: Notacion) -> String {
             let nota = altura.texto(en: notacion)
             guard desvio != 0 else { return nota }
             let cifra = desvio == desvio.rounded() ? String(Int(desvio)) : String(desvio)
-            return nota + "(" + cifra + (notacion.usaASCII ? "c" : "¢") + ")"
+            let enSistema = sistema.map { ",\($0.rawValue),\(ajuste)" } ?? ""
+            return nota + "(" + cifra + (notacion.usaASCII ? "c" : "¢") + enSistema + ")"
         }
     }
 }

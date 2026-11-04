@@ -326,11 +326,17 @@ dibuja sus signos con los glifos de Bravura: los cuartos de tono de Stein-Zimmer
 Arel-Ezgi-Uzdilek, el *koron* y el *sori*, los moria de Wyschnegradsky y, en los śruti, la flecha de
 Helmholtz-Ellis. Los dibuja también con ritmo: en las secuencias de estudio de la escala
 (`svgPentagrama(secuencia:)`), al tocarla en unas alturas cualesquiera (`svgPentagrama(tocadaEn:)`) y en cualquier
-``Voz`` con desvíos (`Partitura.svg(opciones:)`), que lleva en el nombre de cada nota sus cents.
+``Voz`` con desvíos (`Partitura.svg(opciones:)`), que lleva en el nombre de cada nota sus cents. Las notas de una
+escala saben además en qué sistema se escriben y cuántos pasos de él se apartan (`Evento.Nota.sistema` y
+`Evento.Nota.ajuste`; en texto, `Mi♭4(50¢,persa,1):4`): con eso, el *koron* de un dastgāh y la flecha de un śruti
+llegan igual al pentagrama y a los formatos (`<accidental>koron</accidental>` en MusicXML, `accid="koron"` en MEI),
+también en la partitura de la escala tocada en unas alturas cualesquiera (`Escala.partitura(tocadaEn:)`). Una nota
+sin sistema, como las escritas a mano, lleva el signo que dan sus cents.
 
 ```swift
 let voz = Escala(.re, .bayati).voz()
-voz.eventos[1]                                   // Mi♭4(50¢):4
+voz.eventos[1]                                   // Mi♭4(50¢,cuartosDeTono,1):4
+Escala(.re, .sur).voz().eventos[1]               // Mi♭4(50¢,persa,1):4: el Mi koron
 voz.partitura().musicXML().contains("<alter>-0.5</alter>")   // true
 Evento("Si4(-15.09¢):4").notas                   // [Si4(-15.09¢)]
 Escala(.re, .bayati).svgPentagrama(secuencia: .terceras).contains("<title>Mi𝄳</title>")   // true
