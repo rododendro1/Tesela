@@ -1,6 +1,8 @@
+import ArmoniaNucleo
+
 // Lo que se escribe sobre las notas además de su altura y su duración: la dinámica (p, mf, f…) y las articulaciones
-// (staccato, acento, calderón…) y los ornamentos (trino, mordentes, grupeto). Van en cada `Evento` y los formatos de partitura las escriben y las leen; el MIDI
-// toca la dinámica como velocidad.
+// (staccato, acento, calderón…) y los ornamentos (trino, mordentes, grupeto). Van en cada `Evento` y los formatos de
+// partitura las escriben y las leen; el MIDI toca la dinámica como velocidad.
 //
 // En el texto de un evento van al final, entre llaves y separadas por comas, sin espacios: «Do4:4{f,staccato}»,
 // «Re4:2~{acento}», «-:4{calderon}». Los nombres son los mismos en todos los idiomas.
@@ -89,4 +91,11 @@ public enum Articulacion: String, CaseIterable, Hashable, Sendable, Codable {
         "trill": .trino, "tr": .trino, "prall": .mordenteSuperior, "mordent": .mordenteInferior,
         "turn": .grupeto, "reverseturn": .grupetoInvertido, "invertedturn": .grupetoInvertido,
     ]
+
+    /// La articulación de una clave de búsqueda (en minúsculas y sin tildes): su nombre o uno de sus alias.
+    init?(clave: String) {
+        let porNombre = Articulacion.allCases.first { $0.rawValue.claveDeBusqueda == clave }
+        guard let leida = porNombre ?? Articulacion.alias[clave] else { return nil }
+        self = leida
+    }
 }
