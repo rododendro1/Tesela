@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+### Valores escritos a mano, sin opcionales
+
+- **Cambio incompatible:** `Polirritmia(_:contra:)`, `Swing(unidad:largo:corto:)`,
+  `RejillaDeControlador(columnas:filas:)` y `BaseDeHewlett(base:)` ya no devuelven un opcional: como `Duracion(_:_:)`
+  o `Compas(_:_:)`, detienen el programa con un valor imposible (un error de quien llama), y `Polirritmia(3,
+  contra: 2)` ya no necesita `!`. Para valores que vienen de fuera, `Polirritmia(comprobando:contra:)`,
+  `Swing(comprobando:largo:corto:)`, `RejillaDeControlador(comprobando:filas:)` y `BaseDeHewlett(comprobando:)`
+  devuelven `nil`.
+
 ### Más lectores que dicen por qué fallan
 
 - **Cambio incompatible:** `Arpegio.grados(leyendo:)`, `Arpegio.tensiones(leyendo:)` y

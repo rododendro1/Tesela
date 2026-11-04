@@ -20,10 +20,11 @@ import Testing
         let voz = try Voz(leyendo: "Do4:8 Re4:8 Mi4:4")
         #expect(voz.conSwing(.conPuntillo).ritmo == [Duracion(3, 16), .semicorchea, .negra])
         #expect(voz.conSwing(.recto) == voz)
-        let semicorcheas = try #require(Swing(unidad: .semicorchea, largo: 2, corto: 1))
+        let semicorcheas = Swing(unidad: .semicorchea, largo: 2, corto: 1)
+        #expect(Swing(comprobando: .semicorchea, largo: 2, corto: 1) == semicorcheas)
         #expect(voz.conSwing(semicorcheas).ritmo == voz.ritmo)
-        #expect(Swing(largo: 0, corto: 1) == nil)
-        #expect(Swing(unidad: .cero, largo: 2, corto: 1) == nil)
+        #expect(Swing(comprobando: .corchea, largo: 0, corto: 1) == nil)
+        #expect(Swing(comprobando: .cero, largo: 2, corto: 1) == nil)
     }
 
     @Test func swingConAnacrusa() throws {
@@ -33,7 +34,7 @@ import Testing
     }
 
     @Test func tresContraDos() throws {
-        let polirritmia = try #require(Polirritmia(3, contra: 2))
+        let polirritmia = Polirritmia(3, contra: 2)
         let ataques = polirritmia.ataques()
         #expect(ataques.primera == [.cero, Duracion(1, 3), Duracion(2, 3)])
         #expect(ataques.segunda == [.cero, .blanca])
@@ -44,11 +45,12 @@ import Testing
         #expect(voces[0].ritmo == Array(repeating: Duracion(1, 3), count: 6))
         #expect(voces[1].ritmo == Array(repeating: .blanca, count: 4))
         #expect(voces[0].melodia.alturas.allSatisfy { $0 == Altura("Do5") })
-        #expect(Polirritmia(0, contra: 2) == nil)
+        #expect(Polirritmia(comprobando: 0, contra: 2) == nil)
+        #expect(Polirritmia(comprobando: 3, contra: 2) == polirritmia)
     }
 
     @Test func cuatroContraTres() throws {
-        let polirritmia = try #require(Polirritmia(4, contra: 3))
+        let polirritmia = Polirritmia(4, contra: 3)
         // 0, 1/4, 1/3, 1/2, 2/3, 3/4.
         #expect(
             polirritmia.resultante() == [

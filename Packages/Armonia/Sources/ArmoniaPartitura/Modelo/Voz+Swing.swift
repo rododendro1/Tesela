@@ -20,12 +20,23 @@ public struct Swing: Hashable, Sendable, Codable {
     public let largo: Int
     public let corto: Int
 
-    /// `nil` si la unidad no es positiva o alguna parte no está entre 1 y 64.
-    public init?(unidad: Duracion = .corchea, largo: Int, corto: Int) {
-        guard unidad > .cero, (1...64).contains(largo), (1...64).contains(corto) else { return nil }
+    /// Detiene el programa si la unidad no es positiva o alguna parte no está entre 1 y 64 (un error de quien
+    /// llama). Si los valores vienen de fuera, `init?(comprobando:largo:corto:)` devuelve `nil`.
+    public init(unidad: Duracion = .corchea, largo: Int, corto: Int) {
+        precondition(Self.esValido(unidad, largo, corto), "La unidad tiene que ser positiva y las partes, de 1 a 64")
         self.unidad = unidad
         self.largo = largo
         self.corto = corto
+    }
+
+    /// `nil` si la unidad no es positiva o alguna parte no está entre 1 y 64.
+    public init?(comprobando unidad: Duracion, largo: Int, corto: Int) {
+        guard Self.esValido(unidad, largo, corto) else { return nil }
+        self.init(unidad: unidad, largo: largo, corto: corto)
+    }
+
+    private static func esValido(_ unidad: Duracion, _ largo: Int, _ corto: Int) -> Bool {
+        unidad > .cero && (1...64).contains(largo) && (1...64).contains(corto)
     }
 
     private init(_ largo: Int, _ corto: Int) {
@@ -79,17 +90,24 @@ extension Voz {
 /// Dos pulsaciones que reparten el mismo tramo (un compás, si no se pide otro): `primera` partes iguales contra
 /// `segunda`.
 ///
-///     let tresContraDos = Polirritmia(3, contra: 2)!
+///     let tresContraDos = Polirritmia(3, contra: 2)
 ///     tresContraDos.resultante() == [Duracion(1, 3), Duracion(1, 6), Duracion(1, 6), Duracion(1, 3)]   // true
 public struct Polirritmia: Hashable, Sendable, Codable {
     public let primera: Int
     public let segunda: Int
 
-    /// `nil` si alguna pulsación no está entre 1 y 64.
-    public init?(_ primera: Int, contra segunda: Int) {
-        guard (1...64).contains(primera), (1...64).contains(segunda) else { return nil }
+    /// Detiene el programa si alguna pulsación no está entre 1 y 64 (un error de quien llama). Si vienen de fuera,
+    /// `init?(comprobando:contra:)` devuelve `nil`.
+    public init(_ primera: Int, contra segunda: Int) {
+        precondition((1...64).contains(primera) && (1...64).contains(segunda), "Las pulsaciones van de 1 a 64")
         self.primera = primera
         self.segunda = segunda
+    }
+
+    /// `nil` si alguna pulsación no está entre 1 y 64.
+    public init?(comprobando primera: Int, contra segunda: Int) {
+        guard (1...64).contains(primera), (1...64).contains(segunda) else { return nil }
+        self.init(primera, contra: segunda)
     }
 
     /// Los ataques de cada pulsación en un tramo de `ciclo`, desde 0.
@@ -119,7 +137,7 @@ public struct Polirritmia: Hashable, Sendable, Codable {
     /// Las dos voces que la tocan durante `compases` compases de `compas`: la primera pulsación en `arriba` y la
     /// segunda en `abajo`.
     ///
-    ///     let voces = Polirritmia(3, contra: 2)!.voces()
+    ///     let voces = Polirritmia(3, contra: 2).voces()
     ///     voces[0].ritmo == [Duracion(1, 3), Duracion(1, 3), Duracion(1, 3)]   // true
     public func voces(
         compas: Compas = .compasillo, compases: Int = 1, arriba: Altura = "Do5", abajo: Altura = "Do4"

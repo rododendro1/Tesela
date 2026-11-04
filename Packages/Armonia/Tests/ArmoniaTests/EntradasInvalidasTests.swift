@@ -79,6 +79,6 @@ import Testing
         #expect(BaseDeHewlett(alteracionMaxima: -3).alteracionMaxima == 0)
         #expect(BaseDeHewlett(alteracionMaxima: 0).alteracionMaxima == 0)
         #expect(BaseDeHewlett(alteracionMaxima: 2) == BaseDeHewlett.base40)
-        #expect(BaseDeHewlett(base: 54)?.alteracionMaxima == 3)
+        #expect(BaseDeHewlett(base: 54).alteracionMaxima == 3)
     }
 }

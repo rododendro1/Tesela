@@ -159,11 +159,12 @@ import Testing
         #expect(Set(RejillaDeControlador.todas.map(\.id)).count == 4)
         #expect(RejillaDeControlador(columnas: 8, filas: 8) == .launchpad)
         #expect(RejillaDeControlador(columnas: 12, filas: 7) == .ventana)
-        let otra = try #require(RejillaDeControlador(columnas: 4, filas: 2))
+        let otra = RejillaDeControlador(columnas: 4, filas: 2)
         #expect(otra.nombre == "4 × 2")
         #expect(otra.casillas.count == 8)
-        #expect(RejillaDeControlador(columnas: 0, filas: 8) == nil)
-        #expect(RejillaDeControlador(columnas: 8, filas: 33) == nil)
+        #expect(RejillaDeControlador(comprobando: 0, filas: 8) == nil)
+        #expect(RejillaDeControlador(comprobando: 8, filas: 33) == nil)
+        #expect(RejillaDeControlador(comprobando: 8, filas: 8) == .launchpad)
     }
 
     @Test func elContornoYLaPrimeraNota() {

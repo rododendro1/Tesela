@@ -626,6 +626,6 @@ extension LineaDeComandos {
     private static func leerRejilla(_ texto: String) -> RejillaDeControlador? {
         let medidas = texto.lowercased().split(whereSeparator: { $0 == "x" || $0 == "×" }).compactMap { Int($0) }
         guard medidas.count == 2 else { return nil }
-        return RejillaDeControlador(columnas: medidas[0], filas: medidas[1])
+        return RejillaDeControlador(comprobando: medidas[0], filas: medidas[1])
     }
 }
