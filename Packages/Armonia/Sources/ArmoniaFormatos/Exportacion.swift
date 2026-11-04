@@ -230,15 +230,14 @@ package enum Exportacion {
     /// Las voces de un coral repartidas en dos pentagramas, como se escriben: las de la mitad
     /// aguda arriba y las de la grave abajo, de aguda a grave en cada uno. Si comparten
     /// pentagrama, la plica de la de arriba va hacia arriba y la de la de abajo, hacia abajo.
-    /// `indice` es el de la voz en el coral (0, el bajo), y el último acorde se alarga hasta la barra si
-    /// `alargarElUltimo`.
-    package static func voces(de coral: Coral, duracion: Duracion, compas: Compas, alargarElUltimo: Bool = true)
+    /// `indice` es el de la voz en el coral (0, el bajo), y el último acorde se alarga hasta la barra.
+    package static func voces(de coral: Coral, duracion: Duracion, compas: Compas)
         -> [(voz: Voz, pentagrama: Int, plicaArriba: Bool?, indice: Int)]
     {
         let n = coral.numeroDeVoces
         let agudas = Array((n / 2..<n).reversed())
         let graves = Array((0..<n / 2).reversed())
-        let final = alargarElUltimo ? hastaLaBarra(duracion, coral.acordes.count, compas) : duracion
+        let final = hastaLaBarra(duracion, coral.acordes.count, compas)
         var voces: [(voz: Voz, pentagrama: Int, plicaArriba: Bool?, indice: Int)] = []
         for (pentagrama, indices) in [(1, agudas), (2, graves)] {
             for (k, v) in indices.enumerated() {
