@@ -285,7 +285,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
                 if ligadaDesde.contains(altura) { ligadura.append("stop") }
                 if evento.ligada { ligadura.append("start") }
                 for tipo in ligadura { xml += "        <tie type=\"\(tipo)\"/>\n" }
-                let signo = SignoMicrotonal(semitonos: nota.alteracion.semitonos, desvio: desvio)
+                let signo = evento.notas[i].signo()
                 xml += comun(incluirFigura: true, plica: i == 0, barra: i == 0 ? barra : nil, signo: signo)
                 xml += notaciones(
                     ligadura: ligadura, grupo: i == 0 ? grupo : [], articulaciones: i == 0 ? articulaciones : [])

@@ -183,6 +183,13 @@ public struct NotaMicrotonal: Hashable, Sendable {
     /// «Mi↓» (una coma sintónica bajo el Mi pitagórico), «Fa(−37¢)» (37 cents bajo Fa). En ASCII, «Miqb», «Siq#»,
     /// «Si(-1)», «Mi(-2)», «Mi(-1)» y «Fa(-37c)».
     public func nombre(en notacion: Notacion = .espanolCompacto) -> String {
+        NotaMicrotonal.nombre(temperada, sistema: sistema, ajuste: ajuste, en: notacion)
+    }
+
+    /// El nombre de la nota temperada que se aparta `ajuste` pasos de `sistema`, como `nombre(en:)`.
+    package static func nombre(
+        _ temperada: Nota, sistema: SistemaMicrotonal, ajuste: Int, en notacion: Notacion
+    ) -> String {
         switch sistema {
         case .cuartosDeTono, .persa:
             let base = temperada.natural.nombre(en: notacion)

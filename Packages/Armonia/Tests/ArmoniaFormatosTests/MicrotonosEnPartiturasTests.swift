@@ -343,4 +343,63 @@ import Testing
         let pieza = try PiezaImportada(midi: Data(datos))
         #expect(pieza.notas.map(\.desvio) == [600, 0])
     }
+
+    // MARK: El sistema de cada nota
+
+    @Test func elSistemaDeUnaNota() throws {
+        // El Mi koron de un dastgāh: los mismos cents que el Mi𝄳 de un maqam, con otro signo.
+        let koron: Evento = "Mi♭4(50¢,persa,1):4"
+        #expect(koron.notas == [Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)])
+        #expect(koron.texto == "Mi♭4(50¢,persa,1):4" && koron.texto(en: .inglesASCII) == "Eb4(50c,persa,1):4")
+        #expect(koron.notas[0].signo() == .koron && Evento.Nota("Mi♭4", desvio: 50).signo() == .cuartos(-1))
+        #expect(koron != "Mi♭4(50¢):4")
+        #expect(koron.transponer("2M").notas[0] == Evento.Nota("Fa4", desvio: 50, sistema: .persa, ajuste: 1))
+        // Una nota que no se aparta no tiene sistema; un sistema que no existe, o sin sus pasos, no se lee.
+        #expect(Evento.Nota("Mi4", desvio: 0, sistema: .persa, ajuste: 1) == Evento.Nota("Mi4"))
+        #expect(throws: (any Error).self) { try Evento(leyendo: "Mi♭4(50¢,vaziri,1):4") }
+        #expect(throws: (any Error).self) { try Evento(leyendo: "Mi♭4(50¢,persa):4") }
+        // Las notas de una escala saben su sistema, y se guardan con él.
+        let sur = Escala(.re, .sur).voz()
+        #expect(sur.eventos[1].notas == [Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)])
+        #expect(Escala(.do, .bilaval).voz().eventos[2].notas[0].sistema == .sruti)
+        #expect(try JSONDecoder().decode(Voz.self, from: JSONEncoder().encode(sur)) == sur)
+        #expect(try Evento(leyendo: sur.eventos[1].texto) == sur.eventos[1])
+    }
+
+    @Test func losFormatosEscribenElSignoDeSuSistema() {
+        // El koron, en MusicXML y en MEI; en LilyPond y en ABC, como el medio bemol.
+        let sur = Escala(.re, .sur).voz().partitura()
+        #expect(sur.musicXML().contains("<accidental>koron</accidental>"))
+        #expect(!sur.musicXML().contains("quarter-flat"))
+        #expect(sur.mei().contains("accid=\"koron\""))
+        #expect(sur.lilyPond().contains("eeh'") && sur.abc().contains("_/E"))
+        // La flecha de un śruti, en MusicXML; MEI no la tiene y escribe la koma que dan los cents.
+        let bilaval = Escala(.do, .bilaval).voz().partitura()
+        #expect(bilaval.musicXML().contains("smufl=\"accidentalNaturalOneArrowDown\""))
+        #expect(bilaval.mei().contains("accid=\"kf\""))
+        // Una nota escrita a mano, sin sistema, con el signo de sus cents.
+        let maqam = Voz([Evento("Mi♭4", .negra, desvio: 50)]).partitura()
+        #expect(maqam.musicXML().contains("<accidental>quarter-flat</accidental>"))
+    }
+
+    @Test func laEscalaTocadaLlevaSusMicrotonos() {
+        // En el mástil, el Mi♭ de Šur es el Mi koron: la partitura lo lleva, y el dibujo es el de la partitura.
+        let sur = Escala(.re, .sur)
+        let alturas: [Altura] = ["Re4", "Re♯4", "Fa4"]
+        let partitura = sur.partitura(tocadaEn: alturas)
+        let eventos = partitura.pentagramas[0].voces[0].voz.eventos
+        #expect(eventos[1].notas == [Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)])
+        #expect(eventos[0].notas == [Evento.Nota("Re4")] && !eventos[2].esMicrotonal)
+        #expect(partitura.musicXML().contains("<accidental>koron</accidental>"))
+        let svg = sur.svgPentagrama(tocadaEn: alturas)
+        #expect(svg == partitura.svg() && svg.contains(GlifosSMuFL.koron.trazado))
+        // Con ritmo, también.
+        let conRitmo = sur.svgPentagrama(tocadaEn: alturas, figura: .corchea)
+        #expect(conRitmo == sur.partitura(tocadaEn: alturas, figura: .corchea).svg())
+        #expect(conRitmo.contains(GlifosSMuFL.koron.trazado))
+        // Una partitura sin ritmo dibuja los microtonos de sus notas, también los escritos a mano.
+        let aMano = Partitura(
+            pentagramas: [.init(voces: [.init(Voz([Evento("Mi♭4", .redonda, desvio: 50)]))])], ritmo: false)
+        #expect(aMano.svg().contains(GlifosSMuFL.medioBemol.trazado))
+    }
 }

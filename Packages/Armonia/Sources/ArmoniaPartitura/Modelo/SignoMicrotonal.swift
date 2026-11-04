@@ -6,8 +6,9 @@ import ArmoniaTeoria
 // Cómo se escribe una nota que se aparta de su nota temperada (`Evento.Nota.desvio`): el signo que lleva en cada formato
 // y en el pentagrama SVG. Se deduce de los cents: un cuarto de tono es un medio bemol o un medio sostenido (o el
 // koron y el sori, en una escala persa); un número exacto de moria (72 por octava), un signo de doceavos de tono de
-// Wyschnegradsky; lo demás se aproxima a las comas de 53 por octava de Arel-Ezgi-Uzdilek. En el pentagrama de una
-// escala, que sabe en qué sistema está cada nota, los śruti llevan además la flecha de Helmholtz-Ellis.
+// Wyschnegradsky; lo demás se aproxima a las comas de 53 por octava de Arel-Ezgi-Uzdilek. Una nota que sabe en qué
+// sistema está (`Evento.Nota.sistema`, como las de una escala microtonal) lleva el signo de su sistema: el koron y
+// el sori de un dastgāh, los moria de un echos, la flecha de Helmholtz-Ellis de un śruti.
 
 /// El signo de una nota que se aparta de su nota temperada.
 package enum SignoMicrotonal: Hashable, Sendable {
@@ -61,16 +62,17 @@ package enum SignoMicrotonal: Hashable, Sendable {
         self = .comas(comas)
     }
 
-    /// El signo de una nota de una escala microtonal, por su sistema: el koron de un dastgāh, los moria de un echos
-    /// bizantino, la flecha de un śruti; en los demás, por los cents, como `init(semitonos:desvio:)`.
-    package init?(nota: NotaMicrotonal, semitonos: Int, desvio: Double) {
-        switch nota.sistema {
+    /// El signo de una nota escrita en un sistema microtonal, `ajuste` pasos apartada (``NotaMicrotonal/ajuste``):
+    /// el koron de un dastgāh, los moria de un echos bizantino, la flecha de un śruti; en los demás, por los cents,
+    /// como `init(semitonos:desvio:)`.
+    package init?(sistema: SistemaMicrotonal, ajuste: Int, semitonos: Int, desvio: Double) {
+        switch sistema {
         case .sruti:
-            guard nota.ajuste != 0, abs(nota.ajuste) == 1, (-1...1).contains(semitonos) else { return nil }
-            self = .flecha(semitonos: semitonos, comas: nota.ajuste)
+            guard ajuste != 0, abs(ajuste) == 1, (-1...1).contains(semitonos) else { return nil }
+            self = .flecha(semitonos: semitonos, comas: ajuste)
         case .moria72:
-            guard SignoMicrotonal.moriaConSigno.contains(6 * semitonos + nota.ajuste) else { return nil }
-            self = .moria(6 * semitonos + nota.ajuste)
+            guard SignoMicrotonal.moriaConSigno.contains(6 * semitonos + ajuste) else { return nil }
+            self = .moria(6 * semitonos + ajuste)
         case .persa: self.init(semitonos: semitonos, desvio: desvio, persa: true)
         case .cuartosDeTono, .comas53, .razones: self.init(semitonos: semitonos, desvio: desvio)
         }
@@ -244,6 +246,6 @@ extension Escala {
         octava: Int = 4, octavas: Int = 1, sentido: SentidoDelIntervalo? = nil, duracion: Duracion = .negra
     ) -> Voz {
         let alturas = alturasMicrotonales(octava: octava, octavas: octavas, sentido: sentido)
-        return Voz(alturas.map { Evento($0.altura, duracion, desvio: $0.desvio) })
+        return Voz(alturas.map { Evento(notas: [Evento.Nota($0)], duracion: duracion) })
     }
 }

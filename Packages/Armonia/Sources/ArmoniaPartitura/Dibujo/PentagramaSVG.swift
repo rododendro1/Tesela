@@ -106,22 +106,20 @@ struct PentagramaSVG {
         let signo: SignoMicrotonal?
         let nombre: String
 
-        /// El de una altura que suena `desvio` cents más alta. Con su nota microtonal (la de una escala), el signo de
-        /// su sistema y su nombre (Mi𝄳); sin ella, el signo que dan los cents y la altura con sus cents («Mi♭₄
-        /// (+50¢)»). `nil` si no se aparta de la temperada.
-        static func de(_ altura: Altura, desvio: Double, nota: NotaMicrotonal?, notacion: Notacion) -> Microtono? {
-            guard desvio != 0 else { return nil }
-            let semitonos = altura.nota.alteracion.semitonos
-            if let nota {
+        /// El de una nota que se aparta de la temperada (`Evento.Nota.desvio`). Si sabe su sistema, el signo de su
+        /// sistema y su nombre (Mi𝄳); si no, el signo que dan los cents y la altura con sus cents («Mi♭₄ (+50¢)»).
+        /// `nil` si no se aparta de la temperada.
+        static func de(_ nota: Evento.Nota, notacion: Notacion) -> Microtono? {
+            guard nota.desvio != 0 else { return nil }
+            if let sistema = nota.sistema {
                 return Microtono(
-                    signo: SignoMicrotonal(nota: nota, semitonos: semitonos, desvio: desvio),
-                    nombre: nota.nombre(en: notacion))
+                    signo: nota.signo(),
+                    nombre: NotaMicrotonal.nombre(
+                        nota.altura.nota, sistema: sistema, ajuste: nota.ajuste, en: notacion))
             }
-            let cifra = desvio == desvio.rounded() ? String(Int(desvio)) : String(desvio)
-            let cents = (desvio > 0 ? "+" : "") + cifra + (notacion.usaASCII ? "c" : "¢")
-            return Microtono(
-                signo: SignoMicrotonal(semitonos: semitonos, desvio: desvio),
-                nombre: altura.nombre(en: notacion) + " (" + cents + ")")
+            let cifra = nota.desvio == nota.desvio.rounded() ? String(Int(nota.desvio)) : String(nota.desvio)
+            let cents = (nota.desvio > 0 ? "+" : "") + cifra + (notacion.usaASCII ? "c" : "¢")
+            return Microtono(signo: nota.signo(), nombre: nota.altura.nombre(en: notacion) + " (" + cents + ")")
         }
     }
 
