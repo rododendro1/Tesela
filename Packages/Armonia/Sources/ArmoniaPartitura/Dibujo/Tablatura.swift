@@ -1,4 +1,4 @@
-// La tablatura que puede ir debajo de un pentagrama (`Voz.svgPentagrama(…, tablatura:)`): el número de cuerdas y,
+// La tablatura que puede ir debajo de un pentagrama (`Partitura.Pentagrama.cuerdas`): el número de cuerdas y,
 // por nota, la cuerda y el traste. Las posiciones las da el mástil (`ArmoniaTrastes`); aquí solo se dibujan.
 
 /// Una tablatura alineada con las notas de un pentagrama.

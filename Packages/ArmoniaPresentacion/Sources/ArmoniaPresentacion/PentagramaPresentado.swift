@@ -71,7 +71,7 @@ public struct PentagramaPresentado: Hashable, Sendable {
         var opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)
         if let tonalidad { opciones.armadura = .tonalidad(tonalidad) }
         opciones.resaltada = resaltada
-        let dibujo = voz.svgPentagrama(titulo: titulo, opciones: opciones)
+        let dibujo = Partitura(.init(voz), encabezado: Encabezado(titulo: titulo)).svg(opciones: opciones)
         let notas = voz.melodia.alturas.map { $0.nombre(en: notacion) }.joined(separator: ", ")
         self.init(svg: dibujo, descripcion: titulo + ": " + notas, nombre: "Pentagrama " + titulo)
     }

@@ -97,7 +97,7 @@ public struct OpcionesDePentagrama {
         public var semitonos = false
         /// Las tónicas de la escala (o las fundamentales del acorde), en `Colores.tonica`.
         public var tonica = false
-        /// Con un acorde que suena (el de una progresión o el de `Voz.svgPentagrama(…, acordes:)`), las notas que no
+        /// Con un acorde que suena (el de una progresión o los cifrados de una `Partitura.Linea`), las notas que no
         /// son suyas en color: las de la tonalidad (notas de paso, bordaduras, apoyaturas…) en `Colores.notasDePaso`
         /// y las demás (cromáticas, con la armadura de una tonalidad) en `Colores.cromaticas`.
         public var notasAjenas = false

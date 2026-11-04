@@ -513,7 +513,7 @@ extension Voz {
     ///
     /// Con `opciones.compasesPorLinea`, una voz larga va en varias líneas del mismo ancho; con
     /// `svgPentagrama(junto:titulo:acordes:opciones:)`, junto a otra voz en el mismo pentagrama.
-    public func svgPentagrama(
+    func svgPentagrama(
         titulo: String, acordes: [Int: Acorde] = [:], grados: [Int: String] = [:],
         bajoCifrado: [Int: [String]] = [:], digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()

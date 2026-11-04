@@ -51,6 +51,23 @@ import Testing
         #expect(partitura.lineas.count == 2 && partitura.encabezado.titulo == "Fux")
     }
 
+    /// Un coral a cuatro voces en SVG: soprano y contralto en el de sol, tenor y bajo en el de fa.
+    @Test func elCoralEnDosPentagramas() throws {
+        func veces(_ glifo: Glifo, en svg: String) -> Int { svg.components(separatedBy: glifo.trazado).count - 1 }
+        func contar(_ texto: String, en svg: String) -> Int { svg.components(separatedBy: texto).count - 1 }
+        let coral = try Coral(leyendo: "Do3 Sol3 Mi4 Do5 | Sol2 Sol3 Re4 Si4 | Do3 Sol3 Mi4 Do5")
+        let svg = coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia")).svg()
+        // El último acorde, alargado hasta la barra: una redonda en cada voz.
+        #expect(veces(GlifosSMuFL.blanca, en: svg) == 8 && veces(GlifosSMuFL.redonda, en: svg) == 4)
+        #expect(veces(GlifosSMuFL.claveDeSol, en: svg) == 1 && veces(GlifosSMuFL.claveDeFa, en: svg) == 1)
+        #expect(contar("stroke-width=\"0.13\"", en: svg) == 10)
+        #expect(svg.contains("<title>Sol₂</title>") && svg.contains("<title>Si₄</title>"))
+        var lineas = OpcionesDePentagrama()
+        lineas.compasesPorLinea = 1
+        let partido = coral.partitura(duracion: .redonda).svg(opciones: lineas)
+        #expect(contar("stroke-width=\"0.13\"", en: partido) == 30)
+    }
+
     /// El último acorde de un coral se alarga hasta la barra también en MIDI: cuatro negras en 3/4 suenan seis.
     @Test func elUltimoAcordeLlegaALaBarra() throws {
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")

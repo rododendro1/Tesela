@@ -49,4 +49,30 @@ import Testing
         let conGrado = Partitura(pentagramas: [.init(voces: [.init(izquierda, analisis: [.blanca: analizado])])])
         #expect(conGrado.svg() == izquierda.svgPentagrama(titulo: "Voz", grados: [1: analizado.cifrado]))
     }
+
+    /// Lo que se anota en una voz sola: grados, bajo cifrado, dedos y, con cuerdas, la tablatura.
+    @Test func loQueSeAnotaEnUnaVoz() throws {
+        let voz = try Voz(leyendo: "Do3:4 Mi3:4 Sol3:2")
+        let pulsaciones: [Int: [Tablatura.Pulsacion]] = [
+            0: [.init(cuerda: 4, traste: 3)], 2: [.init(cuerda: 3, traste: 0)],
+        ]
+        let linea = Partitura.Linea(
+            voz, grados: [.cero: "I"], bajoCifrado: [.negra: ["6"]], digitos: [.blanca: [1]],
+            pulsaciones: voz.porInicio(pulsaciones))
+        let partitura = Partitura(linea, cuerdas: 6, encabezado: Encabezado(titulo: "Do"))
+        let aMano = voz.svgPentagrama(
+            titulo: "Do", grados: [0: "I"], bajoCifrado: [1: ["6"]], digitos: [2: [1]],
+            tablatura: Tablatura(cuerdas: 6, notas: pulsaciones))
+        #expect(partitura.svg() == aMano)
+        #expect(partitura.pentagramas[0].cuerdas == 6 && partitura.compas == voz.compas)
+        // Sin cuerdas, no hay tablatura, aunque la voz tenga pulsaciones.
+        let sinCuerdas = voz.svgPentagrama(titulo: "Voz", grados: [0: "I"], bajoCifrado: [1: ["6"]], digitos: [2: [1]])
+        #expect(Partitura(linea).svg() == sinCuerdas)
+    }
+
+    @Test func losIniciosDeLosEventos() throws {
+        let voz = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2")
+        #expect(voz.inicios == [.cero, .negra, Duracion(3, 8), .blanca])
+        #expect(voz.porInicio([1: "Re", 3: "Fa", 9: "nada"]) == [.negra: "Re", .blanca: "Fa"])
+    }
 }

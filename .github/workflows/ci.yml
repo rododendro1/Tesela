@@ -476,7 +476,7 @@ jobs:
         run: |
           cambiados=$(git diff --name-only "$BASE"...HEAD)
           echo "$cambiados"
-          if echo "$cambiados" | grep -qE '^(Apps/ArmoniaApp/|Apps/TonnetzApp/|Packages/ArmoniaUI/|Packages/ArmoniaPresentacion/|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
+          if echo "$cambiados" | grep -qE '^(Apps/ArmoniaApp/|Apps/TonnetzApp/|Apps/PruebasDeInterfaz/|Packages/ArmoniaUI/|Packages/ArmoniaPresentacion/|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
             echo "apps=true" >> "$GITHUB_OUTPUT"
           else
             echo "apps=false" >> "$GITHUB_OUTPUT"

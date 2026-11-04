@@ -2,6 +2,20 @@
 
 ## Sin publicar
 
+### El pentagrama con ritmo, solo desde la partitura
+
+- **Cambio incompatible:** `Voz.svgPentagrama(titulo:acordes:grados:bajoCifrado:digitos:tablatura:opciones:)`,
+  `Voz.svgPentagrama(junto:titulo:acordes:opciones:)`, `Voz.svgSistema(_:titulo:claves:llave:opciones:)` y
+  `Coral.svgPentagrama(titulo:figura:compas:opciones:)` dejan de ser públicas: una voz, dos en un pentagrama, un
+  sistema y un coral se dibujan con `Partitura.svg(opciones:)`. Los dibujos de escalas, acordes, arpegios y
+  disposiciones (`Escala.svgPentagrama`, `Acorde.svgPentagrama`…) siguen como estaban.
+- `Partitura.Linea` lleva también `grados`, `bajoCifrado`, `digitos` y `pulsaciones`, y `Partitura.Pentagrama`,
+  `cuerdas` (la tablatura de debajo). Por ahora solo cuentan en SVG.
+- `Partitura(_:clave:cuerdas:encabezado:)` pone una voz sola en un pentagrama, sin estimar la tonalidad, y
+  `Voz.inicios` y `Voz.porInicio(_:)` pasan lo que se tenía por evento a los puntos en que empieza cada uno.
+- El coral en SVG sale de `coral.partitura(…)`: con negras si no se pide otra figura (antes, blancas) y con el último
+  acorde alargado hasta la barra.
+
 ### Una sola partitura para todos los formatos
 
 - **`Partitura`**: los pentagramas, de arriba abajo, con su clave y sus voces (`Partitura.Linea`: la voz, su nombre,
