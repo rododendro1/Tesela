@@ -292,7 +292,8 @@ extension LineaDeComandos {
             inicio = inicio + evento.duracion
         }
         let titulo = acordes.map { $0.cifrado(en: notacion) }.joined(separator: " – ")
-        let svg = voz.svgPentagrama(titulo: titulo, acordes: porEvento, opciones: opciones)
+        let linea = Partitura.Linea(voz, cifrados: voz.porInicio(porEvento))
+        let svg = Partitura(linea, encabezado: Encabezado(titulo: titulo)).svg(opciones: opciones)
         return bien(svg.trimmingCharacters(in: "\n"))
     }
 
@@ -529,8 +530,11 @@ extension LineaDeComandos {
                 }
             }
             let titulo = arpegios.map { $0.nombre(en: notacion) }.joined(separator: " – ")
-            svg = Voz(eventos).svgPentagrama(
-                titulo: titulo, acordes: acordes, grados: grados, bajoCifrado: cifrasDelBajo, opciones: opciones)
+            let voz = Voz(eventos)
+            let linea = Partitura.Linea(
+                voz, cifrados: voz.porInicio(acordes), grados: voz.porInicio(grados),
+                bajoCifrado: voz.porInicio(cifrasDelBajo))
+            svg = Partitura(linea, encabezado: Encabezado(titulo: titulo)).svg(opciones: opciones)
         }
         return bien(svg.trimmingCharacters(in: "\n"))
     }

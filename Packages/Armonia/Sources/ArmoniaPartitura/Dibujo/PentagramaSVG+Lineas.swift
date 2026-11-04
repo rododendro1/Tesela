@@ -134,7 +134,7 @@ extension Voz {
     ///     let soprano = try Voz(leyendo: "Mi5:4 Re5:4 Do5:2")
     ///     let contralto = try Voz(leyendo: "Do5:4 Si4:4 Sol4:2")
     ///     let svg = soprano.svgPentagrama(junto: contralto, titulo: "Dos voces")
-    public func svgPentagrama(
+    func svgPentagrama(
         junto otra: Voz, titulo: String, acordes: [Int: Acorde] = [:],
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
@@ -441,7 +441,7 @@ extension Voz {
     ///     let derecha = try Voz(leyendo: "Mi5:4 Re5:4 Do5:2")
     ///     let izquierda = try Voz(leyendo: "Do3:2 Sol2:2")
     ///     let svg = Voz.svgSistema([[derecha], [izquierda]], titulo: "Piano", claves: [.sol, .fa], llave: true)
-    public static func svgSistema(
+    static func svgSistema(
         _ pentagramas: [[Voz]], titulo: String, claves: [Clave?] = [], llave: Bool = false,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
@@ -477,26 +477,5 @@ extension Voz {
             porPentagrama.map { voces in voces.compactMap { $0.indices.contains(l) ? $0[l] : nil } }
         }
         return PentagramaSVG.svgDelSistema(porLinea, titulo: titulo, llave: llave, tamano: opciones.tamano)
-    }
-}
-
-extension Coral {
-    /// El coral en un sistema de dos pentagramas, cada acorde en una `figura` (blancas, si no se pide otra): las
-    /// voces de arriba (la soprano y la contralto, a cuatro voces) en el de sol y las de abajo (el tenor y el bajo)
-    /// en el de fa, dos en cada uno, con las plicas de la de arriba hacia arriba.
-    ///
-    ///     let coral = try Coral(leyendo: "Do3 Sol3 Mi4 Do5 | Sol2 Sol3 Re4 Si4 | Do3 Sol3 Mi4 Do5")
-    ///     let svg = coral.svgPentagrama(titulo: "Cadencia")
-    public func svgPentagrama(
-        titulo: String, figura: Duracion = .blanca, compas: Compas = .compasillo,
-        opciones: OpcionesDePentagrama = OpcionesDePentagrama()
-    ) -> String {
-        let numero = acordes.first?.count ?? 0
-        // De la más aguda a la más grave.
-        let voces = (0..<numero).reversed().map { i in Voz(acordes.map { Evento($0[i], figura) }, compas: compas) }
-        let arriba = (numero + 1) / 2
-        let sol = Array(voces.prefix(min(2, arriba)))
-        let fa = Array(voces.dropFirst(arriba).prefix(2))
-        return Voz.svgSistema([sol, fa], titulo: titulo, claves: [.sol, .fa], opciones: opciones)
     }
 }

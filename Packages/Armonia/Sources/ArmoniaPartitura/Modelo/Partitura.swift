@@ -64,10 +64,22 @@ public struct Partitura: Hashable, Sendable {
         public var analisis: [Duracion: AcordeAnalizado]
         /// Los marcadores de MIDI (los que los secuenciadores muestran al sonar), por el punto en que empiezan.
         public var marcadores: [Duracion: String]
+        /// El grado en números romanos («V7/V») que se escribe debajo de la nota que empieza en cada punto, si no lo
+        /// da `analisis`. Solo cuenta en SVG.
+        public var grados: [Duracion: String]
+        /// Las cifras del bajo continuo («6», «4») que van debajo del grado. Solo cuenta en SVG.
+        public var bajoCifrado: [Duracion: [String]]
+        /// El dedo de cada nota (de la grave a la aguda; 0, ninguno), encima. Solo cuenta en SVG.
+        public var digitos: [Duracion: [Int]]
+        /// La cuerda y el traste de cada nota, en la tablatura del pentagrama (`Pentagrama.cuerdas`). Solo cuenta en
+        /// SVG.
+        public var pulsaciones: [Duracion: [Tablatura.Pulsacion]]
 
         public init(
             _ voz: Voz, nombre: String? = nil, plicaArriba: Bool? = nil, cifrados: [Duracion: Acorde] = [:],
-            analisis: [Duracion: AcordeAnalizado] = [:], marcadores: [Duracion: String] = [:]
+            analisis: [Duracion: AcordeAnalizado] = [:], marcadores: [Duracion: String] = [:],
+            grados: [Duracion: String] = [:], bajoCifrado: [Duracion: [String]] = [:], digitos: [Duracion: [Int]] = [:],
+            pulsaciones: [Duracion: [Tablatura.Pulsacion]] = [:]
         ) {
             self.voz = voz
             self.nombre = nombre
@@ -75,6 +87,10 @@ public struct Partitura: Hashable, Sendable {
             self.cifrados = cifrados
             self.analisis = analisis
             self.marcadores = marcadores
+            self.grados = grados
+            self.bajoCifrado = bajoCifrado
+            self.digitos = digitos
+            self.pulsaciones = pulsaciones
         }
     }
 
@@ -83,10 +99,14 @@ public struct Partitura: Hashable, Sendable {
         /// Si es `nil`, la de sol o la de fa, la que pidan sus notas.
         public var clave: Clave?
         public var voces: [Linea]
+        /// Las cuerdas de la tablatura que va debajo, con las `pulsaciones` de su primera voz; `nil`, sin
+        /// tablatura. Solo cuenta en SVG.
+        public var cuerdas: Int?
 
-        public init(clave: Clave? = nil, voces: [Linea]) {
+        public init(clave: Clave? = nil, voces: [Linea], cuerdas: Int? = nil) {
             self.clave = clave
             self.voces = voces
+            self.cuerdas = cuerdas
         }
 
         /// La clave con que se escribe: la suya o la que pidan sus notas.
@@ -132,5 +152,43 @@ public struct Partitura: Hashable, Sendable {
     /// Todas las voces, de arriba abajo, con el número de su pentagrama (desde 1).
     public var lineas: [(linea: Linea, pentagrama: Int)] {
         pentagramas.enumerated().flatMap { p, pentagrama in pentagrama.voces.map { ($0, p + 1) } }
+    }
+}
+
+// MARK: - De los eventos a los puntos en que empiezan
+
+extension Voz {
+    /// Dónde empieza cada evento, contado desde el principio de la voz (sin la anacrusa).
+    ///
+    ///     try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2").inicios   // [0, 1/4, 3/8, 1/2]
+    public var inicios: [Duracion] {
+        var momento = Duracion.cero
+        return eventos.map { evento in
+            defer { momento = momento + evento.duracion }
+            return momento
+        }
+    }
+
+    /// Lo que se tenía por evento (por su índice, desde 0), por el punto en que empieza cada uno, como lo anota una
+    /// `Partitura.Linea`. Los índices que no son de ningún evento se descartan.
+    ///
+    ///     let voz = try Voz(leyendo: "Do4:4 Mi4:4 Sol4:2")
+    ///     voz.porInicio([0: Acorde("Do"), 2: Acorde("Sol")])   // [0: Do, 1/2: Sol]
+    public func porInicio<Valor>(_ porEvento: [Int: Valor]) -> [Duracion: Valor] {
+        let inicios = self.inicios
+        var resultado: [Duracion: Valor] = [:]
+        for (i, valor) in porEvento where inicios.indices.contains(i) { resultado[inicios[i]] = valor }
+        return resultado
+    }
+}
+
+extension Partitura {
+    /// Una voz sola en un pentagrama, con lo que se anota en ella, tal cual: sin la tonalidad que no dé el
+    /// encabezado (`voz.partitura(…)`, en ArmoniaFormatos, la estima).
+    ///
+    ///     let voz = try Voz(leyendo: "Do4:4 Mi4:4 Sol4:2")
+    ///     let svg = Partitura(.init(voz, cifrados: [.cero: Acorde("Do")]), encabezado: Encabezado(titulo: "Do")).svg()
+    public init(_ linea: Linea, clave: Clave? = nil, cuerdas: Int? = nil, encabezado: Encabezado = Encabezado()) {
+        self.init(pentagramas: [Pentagrama(clave: clave, voces: [linea], cuerdas: cuerdas)], encabezado: encabezado)
     }
 }

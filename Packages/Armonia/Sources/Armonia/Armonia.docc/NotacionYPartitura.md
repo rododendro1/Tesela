@@ -267,14 +267,14 @@ Arpegio(Acorde("Mi7")).svgPentagrama(opciones: enLaMenor).contains("<title>Sol�
 
 ### Ritmo
 
-Una ``Voz`` se dibuja con su ritmo: cabezas negras, blancas y redondas, plicas, corchetes, barras de unión
+Una ``Voz`` se dibuja con su ritmo en su ``Partitura`` (`Partitura.svg(opciones:)`): cabezas negras, blancas y redondas, plicas, corchetes, barras de unión
 (las de cada pulso, como en `barrasDeAgrupacion`), puntillos, silencios, ligaduras, tresillos, la cifra del compás y
 las barras de compás. Las notas que cruzan un pulso o una barra se dividen y se ligan como en `grafia`. Con eso se
 dibuja un arpegio en corcheas, en semicorcheas o en tresillos, o una progresión arpegiada.
 
 ```swift
 let voz = Voz(Arpegio(Acorde("Do7"), patron: .idaYVuelta), figura: .semicorchea)
-voz.svgPentagrama(titulo: "Do7").contains("<title>Si♭₄</title>")   // true
+Partitura(.init(voz), encabezado: Encabezado(titulo: "Do7")).svg().contains("<title>Si♭₄</title>")   // true
 ```
 
 - La plica sube si la nota más alejada de la 3.ª línea está debajo, y baja si no; las notas unidas por una barra
@@ -290,7 +290,7 @@ tocan (la primera, también la anacrusa), su clave y su armadura; la cifra del c
 final, en la última. Todas miden lo que la más ancha (la última no, si es mucho más corta), y una nota que pasa de una
 línea a otra se divide y se liga. Los acordes, los grados, los dedos y la tablatura van con su nota.
 
-`Voz.svgPentagrama(junto:titulo:acordes:opciones:)` pone dos voces en el mismo pentagrama: la primera con las plicas
+Un pentagrama de la partitura con dos voces las pone juntas: la primera con las plicas
 hacia arriba y la otra hacia abajo, lo que suena a la vez en la misma vertical y los silencios de cada una encima o
 debajo. Las dos se parten igual en líneas.
 
@@ -298,23 +298,26 @@ debajo. Las dos se parten igual en líneas.
 var porLineas = OpcionesDePentagrama()
 porLineas.compasesPorLinea = 4
 let larga = try Voz(leyendo: Array(repeating: "Do4:4 Mi4:4 Sol4:2", count: 8).joined(separator: " "))
-larga.svgPentagrama(titulo: "Ocho compases", opciones: porLineas) != larga.svgPentagrama(titulo: "Ocho compases")   // true
+let ocho = Partitura(.init(larga), encabezado: Encabezado(titulo: "Ocho compases"))
+ocho.svg(opciones: porLineas) != ocho.svg()   // true
 let soprano = try Voz(leyendo: "Mi5:4 Re5:4 Do5:2")
 let contralto = try Voz(leyendo: "Do5:4 Si4:4 Sol4:2")
-soprano.svgPentagrama(junto: contralto, titulo: "Dos voces").contains("<title>Sol₄</title>")   // true
+let juntas = Partitura(pentagramas: [.init(voces: [.init(soprano), .init(contralto)])], encabezado: Encabezado(titulo: "Dos voces"))
+juntas.svg().contains("<title>Sol₄</title>")   // true
 ```
 
-`Voz.svgSistema(_:titulo:claves:llave:opciones:)` dibuja varios pentagramas, uno debajo de otro, alineados por lo
+Una partitura con varios pentagramas se dibuja como un sistema, uno debajo de otro, alineados por lo
 que suena a la vez y con las barras de compás atravesándolos: el piano con sus dos manos (con `llave`) o un coro
-(con corchete), con una o dos voces en cada pentagrama. `Coral.svgPentagrama(titulo:figura:compas:opciones:)` pone
-un coral a cuatro voces en dos pentagramas, la soprano y la contralto en el de sol y el tenor y el bajo en el de fa.
+(con corchete), con una o dos voces en cada pentagrama. La de un coral (`Coral.partitura(…)`) lo pone en dos
+pentagramas, la soprano y la contralto en el de sol y el tenor y el bajo en el de fa.
 
 ```swift
 let derecha = try Voz(leyendo: "Mi5:4 Re5:4 Do5:2")
 let izquierda = try Voz(leyendo: "Do3:2 Sol2:2")
-Voz.svgSistema([[derecha], [izquierda]], titulo: "Piano", claves: [.sol, .fa], llave: true).contains("<title>Sol₂</title>")   // true
+let manos: [Partitura.Pentagrama] = [.init(clave: .sol, voces: [.init(derecha)]), .init(clave: .fa, voces: [.init(izquierda)])]
+Partitura(pentagramas: manos, encabezado: Encabezado(titulo: "Piano"), llave: true).svg().contains("<title>Sol₂</title>")   // true
 let coral = try Coral(leyendo: "Do3 Sol3 Mi4 Do5 | Sol2 Sol3 Re4 Si4 | Do3 Sol3 Mi4 Do5")
-coral.svgPentagrama(titulo: "Cadencia").contains("<title>Si₄</title>")   // true
+coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia")).svg().contains("<title>Si₄</title>")   // true
 ```
 
 Los grupos irregulares llevan su cifra: el tresillo, el cinquillo, el seisillo, el septillo y los demás (5 en 4,
@@ -328,7 +331,7 @@ motor como Verovio.
 Alrededor de las notas se puede escribir lo que ayuda a estudiarlas:
 
 - **Cifrado de cada acorde.** `DisposicionDeAcorde.svgPentagrama(_:titulo:cifrados:)` pone el de cada acorde encima
-  de su columna; `Voz.svgPentagrama(titulo:acordes:)`, encima de la primera nota de cada arpegio de una progresión;
+  de su columna; los `cifrados` de una ``Partitura/Linea``, encima de la nota en que empieza cada acorde;
   `Arpegio.svgPentagrama(cifrado: true)`, encima de la primera nota.
 - **Intervalos** (`intervalosDeLasNotas`). Debajo de cada nota, su intervalo desde la tónica de la escala o desde la
   fundamental del acorde que suena (con 9, 11 y 13 si el acorde tiene séptima).
@@ -345,9 +348,10 @@ Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<ti
 ### Para estudiar: grados, dedos, secuencias y tablatura
 
 - **Grados en números romanos.** `DisposicionDeAcorde.svgPentagrama(_:titulo:cifrados:grados:)` y
-  `Voz.svgPentagrama(titulo:grados:)` escriben debajo de cada acorde su grado (los de `AnalisisArmonico.cifrados`).
+  los `grados` (o el `analisis`) de una ``Partitura/Linea`` escriben debajo de cada acorde su grado (los de
+  `AnalisisArmonico.cifrados`), y su `bajoCifrado`, las cifras del bajo continuo.
 - **Dedos.** `Escala.svgPentagrama(digitacion:)` pone encima los dedos del piano de `digitacionDePiano(_:)`, y el
-  parámetro `digitos` de los demás dibujos, los que se le den (los de la guitarra, por ejemplo).
+  parámetro `digitos` de los demás dibujos (y los de una ``Partitura/Linea``), los que se le den (los de la guitarra, por ejemplo).
 - **Secuencias con ritmo.** `Escala.svgPentagrama(secuencia:)` toca la escala por terceras o en grupos, cada grupo en
   un pulso: corcheas, tresillos o semicorcheas.
 - **Tablatura.** Una ``Tablatura`` (la cuerda y el traste de cada nota) va debajo del pentagrama, alineada nota a

@@ -108,22 +108,6 @@ import Testing
         #expect(contar("stroke-width=\"0.5\"", en: coro) >= 2)
     }
 
-    /// Un coral a cuatro voces: soprano y contralto en el de sol, tenor y bajo en el de fa.
-    @Test func elCoralEnDosPentagramas() throws {
-        let coral = try Coral(leyendo: "Do3 Sol3 Mi4 Do5 | Sol2 Sol3 Re4 Si4 | Do3 Sol3 Mi4 Do5")
-        let svg = coral.svgPentagrama(titulo: "Cadencia")
-        #expect(veces(GlifosSMuFL.blanca, en: svg) == 12)
-        #expect(veces(GlifosSMuFL.claveDeSol, en: svg) == 1)
-        #expect(veces(GlifosSMuFL.claveDeFa, en: svg) == 1)
-        #expect(contar("stroke-width=\"0.13\"", en: svg) == 10)
-        #expect(svg.contains("<title>Sol₂</title>") && svg.contains("<title>Si₄</title>"))
-        var lineas = OpcionesDePentagrama()
-        lineas.compasesPorLinea = 1
-        let partido = coral.svgPentagrama(titulo: "Cadencia", figura: .redonda, opciones: lineas)
-        #expect(contar("stroke-width=\"0.13\"", en: partido) == 30)
-        #expect(veces(GlifosSMuFL.cifraDeCompas4, en: partido) == 4)
-    }
-
     /// Sin pentagramas no hay nada roto, y un pentagrama vacío se salta.
     @Test func losSistemasRaros() throws {
         #expect(Voz.svgSistema([], titulo: "Nada").contains("viewBox=\"0 0 0 0\""))

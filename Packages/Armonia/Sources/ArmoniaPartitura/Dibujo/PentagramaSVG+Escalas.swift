@@ -70,7 +70,7 @@ extension Escala {
     /// La escala tocada en unas alturas cualesquiera (las de una posición del mástil, una secuencia…), con su
     /// armadura, escritas con sus notas (el La♯ que da el mástil, como Si♭ si la escala lo tiene) y los intervalos
     /// contados desde su tónica. Con `figura`, con ritmo (la última nota, una negra si la figura es más corta); sin
-    /// ella, en redondas. `digitos` y `tablatura` van por nota, como en `Voz.svgPentagrama(…)`.
+    /// ella, en redondas. `digitos` y `tablatura` van por nota, como en una `Partitura.Linea`.
     public func svgPentagrama(
         tocadaEn alturas: [Altura], titulo: String? = nil, figura: Duracion? = nil, digitos: [Int: [Int]] = [:],
         tablatura: Tablatura? = nil, opciones: OpcionesDePentagrama = OpcionesDePentagrama()
@@ -178,7 +178,7 @@ extension Arpegio {
 extension Acorde {
     /// El acorde arpegiado en unas alturas cualesquiera (las de una posición del mástil), escritas con sus notas
     /// (Si♭, no La♯, en Do7) y con el cifrado encima de la primera. Con `figura`, con ritmo; sin ella, en redondas.
-    /// `digitos` y `tablatura` van por nota, como en `Voz.svgPentagrama(…)`.
+    /// `digitos` y `tablatura` van por nota, como en una `Partitura.Linea`.
     public func svgPentagrama(
         arpegiadoEn alturas: [Altura], figura: Duracion? = nil, digitos: [Int: [Int]] = [:],
         tablatura: Tablatura? = nil, opciones: OpcionesDePentagrama = OpcionesDePentagrama()
