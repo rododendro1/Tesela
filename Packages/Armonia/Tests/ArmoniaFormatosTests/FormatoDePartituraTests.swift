@@ -98,7 +98,8 @@ import Testing
     @Test func unaProgresionEnCadaFormatoEsLoQueDaSuFuncion() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
         let duraciones: [Duracion] = [.negra, .negra, .blanca, .blanca, .redonda]
-        let partitura = try analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P"))
+        let ritmo = RitmoArmonico(zip(analisis.acordes, duraciones).map { AcordeConDuracion($0.acorde, $1) })
+        let partitura = ritmo.partitura(encabezado: Encabezado(titulo: "P"))
         func esperado(_ formato: FormatoDePartitura) -> Data {
             switch formato {
             case .musicXML: return Data(partitura.musicXML().utf8)
@@ -109,7 +110,7 @@ import Testing
             case .midi: return partitura.midi()
             }
         }
-        let negras = try analisis.partitura(duraciones: Array(repeating: .negra, count: 5))
+        let negras = ritmo.con(duracion: .negra).partitura()
         for formato in FormatoDePartitura.allCases {
             #expect(partitura.exportar(como: formato) == esperado(formato))
             // Con una sola duración, la misma para todos los acordes.

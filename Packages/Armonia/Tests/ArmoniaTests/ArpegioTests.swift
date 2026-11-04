@@ -262,8 +262,8 @@ import Testing
         let llenos = Voz(arpegiando: [Acorde("Do"), Acorde("Fa")], porAcorde: .blanca, enlazados: true)
         #expect(llenos.eventos[4].alturas.first?.midi == 60)
         // Las tensiones y las aproximaciones valen para todos los acordes, también con su ritmo.
-        let conRitmo = try Voz(
-            arpegiando: [Acorde("Do")], duraciones: [.blanca], tensiones: [9], aproximacion: .desdeAbajo,
+        let conRitmo = Voz(
+            arpegiando: RitmoArmonico([AcordeConDuracion("Do", .blanca)]), tensiones: [9], aproximacion: .desdeAbajo,
             enlazados: true)
         #expect(conRitmo.eventos.flatMap(\.alturas).map(\.midi) == [47, 48, 51, 52])
     }

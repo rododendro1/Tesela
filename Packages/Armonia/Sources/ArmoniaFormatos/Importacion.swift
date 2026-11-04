@@ -153,7 +153,7 @@ public struct PiezaImportada: Hashable, Sendable {
     }
 
     /// Igual que `acordes(ventana:)`, con el momento en que empieza cada acorde.
-    public func acordesConInicio(ventana: Duracion? = nil) -> [(acorde: Acorde, inicio: Duracion)] {
+    public func acordesConInicio(ventana: Duracion? = nil) -> [AcordeConInicio] {
         var paso = ventana ?? compas?.pulso ?? .negra
         guard paso > .cero, !notas.isEmpty else { return [] }
         // Como mucho 100 000 ventanas, aunque una nota dure horas (un fichero dañado, por ejemplo). La ventana se
@@ -163,7 +163,7 @@ public struct PiezaImportada: Hashable, Sendable {
         let ventanas = (duracion.enRedondas / paso.enRedondas).rounded(.up)
         if ventanas > Double(maximo) { paso = paso * Int((ventanas / Double(maximo)).rounded(.up)) }
         let tonalidad = tonalidadEstimada
-        var resultado: [(acorde: Acorde, inicio: Duracion)] = []
+        var resultado: [AcordeConInicio] = []
         // Hasta dónde llega lo que ha empezado: las notas anteriores a `primera` ya no suenan.
         var finales: [Duracion] = []
         for nota in notas { finales.append(max(finales.last ?? .cero, nota.fin)) }
@@ -189,26 +189,27 @@ public struct PiezaImportada: Hashable, Sendable {
                 identificados[ventana] = leido
             }
             if let acorde = leido, resultado.last?.acorde != acorde {
-                resultado.append((acorde, desde))
+                resultado.append(AcordeConInicio(acorde, inicio: desde))
             }
             desde = hasta
         }
         return resultado
     }
 
-    /// Los acordes con lo que dura cada uno, su ritmo armónico: hasta que empieza el siguiente y, el
-    /// último, hasta que acaba la pieza. Lo que suena antes del primer acorde no cuenta.
+    /// Su ritmo armónico: los acordes con lo que dura cada uno (hasta que empieza el siguiente y, el último, hasta
+    /// que acaba la pieza), en su compás (o en 4/4, si no lo dice) y a su tempo. Lo que suena antes del primer
+    /// acorde no cuenta.
     ///
     ///     let pieza = try PiezaImportada(leyendo: datos)
-    ///     let leidos = pieza.acordesConDuracion()
-    ///     let xml = try AnalisisArmonico.analizar(leidos.map(\.acorde))?.partitura(duraciones: leidos.map(\.duracion)).musicXML()
-    public func acordesConDuracion(ventana: Duracion? = nil) -> [(acorde: Acorde, duracion: Duracion)] {
+    ///     let xml = pieza.ritmoArmonico().partitura().musicXML()
+    public func ritmoArmonico(ventana: Duracion? = nil) -> RitmoArmonico {
         let leidos = acordesConInicio(ventana: ventana)
         let fin = duracion
-        return leidos.indices.map { i in
+        let conDuracion = leidos.indices.map { i in
             let hasta = i + 1 < leidos.count ? leidos[i + 1].inicio : fin
-            return (leidos[i].acorde, hasta - leidos[i].inicio)
+            return AcordeConDuracion(leidos[i].acorde, hasta - leidos[i].inicio)
         }
+        return RitmoArmonico(conDuracion, compas: compas ?? .compasillo, tempo: tempo)
     }
 
     /// Lo que cuenta de una ventana para leer su acorde: el bajo y cuánto suena cada clase de altura.

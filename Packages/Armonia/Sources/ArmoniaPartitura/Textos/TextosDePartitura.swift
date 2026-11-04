@@ -90,11 +90,6 @@ struct TextosDePartitura: TextosTraducidos {
     let compasNoValido: @Sendable (String) -> String
     let contrapuntoDeOtraDuracion: @Sendable (Int) -> String
 
-    // MARK: ErrorDePartitura.swift
-    let figuraSinDuracion: String
-    let duracionesPorAcorde: @Sendable (Int, Int) -> String
-    let duracionNoPositiva: @Sendable (Int) -> String
-
     /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDePartitura>(

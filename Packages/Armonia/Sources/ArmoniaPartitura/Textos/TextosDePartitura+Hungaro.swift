@@ -81,9 +81,6 @@ extension TextosDePartitura {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: { texto in "„\(texto)” nem időtartam: hangérték (1, 2, 4, 8, 16…, pontozva: 4.) vagy az egész hang törtrésze (3/8, 1/12) várható" },
         compasNoValido: { texto in "„\(texto)” nem ütemmutató: számláló/nevező várható, a nevező kettő hatványa (4/4, 6/8, 7/8), vagy C, illetve ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "az ellenpontnak ugyanolyan hosszúnak kell lennie, mint a cantus firmusnak: \(redondas) egész hang, hangonként egy" },
-        figuraSinDuracion: "az arpeggio ritmusértékének tartania kell valameddig",
-        duracionesPorAcorde: { acordes, duraciones in "akkordonként egy időtartam kell: \(acordes) akkord és \(duraciones) időtartam van" },
-        duracionNoPositiva: { n in "a(z) \(n). akkord időtartamának pozitívnak kell lennie" }
+        contrapuntoDeOtraDuracion: { redondas in "az ellenpontnak ugyanolyan hosszúnak kell lennie, mint a cantus firmusnak: \(redondas) egész hang, hangonként egy" }
     )
 }

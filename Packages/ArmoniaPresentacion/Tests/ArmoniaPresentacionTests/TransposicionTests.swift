@@ -48,12 +48,12 @@ import Testing
     }
 
     @Test func unaProgresionAbierta() {
-        let abierta = ProgresionImportada(
-            acordes: [Acorde("Do"), Acorde("Sol")], ritmo: RitmoArmonico(duraciones: [.blanca, .blanca]),
-            titulo: "Pieza")
+        let ritmo = RitmoArmonico(
+            [AcordeConDuracion("Do", .blanca), AcordeConDuracion("Sol", .negra)], tempo: Tempo(90))
+        let abierta = ProgresionImportada(ritmo: ritmo, titulo: "Pieza")
         let enRe = PresentacionDeTransposicion.transponer(abierta, .segundaMayor)
         #expect(enRe.acordes == [Acorde("Re"), Acorde("La")])
-        #expect(enRe.ritmo == abierta.ritmo)
+        #expect(enRe.ritmo.duraciones == abierta.ritmo.duraciones && enRe.ritmo.tempo == abierta.ritmo.tempo)
         #expect(enRe.titulo == "Pieza")
     }
 

@@ -30,8 +30,8 @@ public enum PresentacionDeArpegios {
     }
 
     /// Una progresión arpegiada en corcheas (o en la figura que se diga): cada acorde dura una blanca o, si se da
-    /// su ritmo armónico (el de una pieza importada), lo que dice; el patrón se repite hasta llenarlo. La
-    /// tonalidad, si se da, pone la armadura de las partituras.
+    /// su ritmo armónico (el de una pieza importada, con estos mismos acordes), lo que dice; el patrón se repite
+    /// hasta llenarlo. La tonalidad, si se da, pone la armadura de las partituras.
     ///
     /// Con `enlazados`, cada arpegio empieza por la nota de su acorde más cercana a la última del anterior. El
     /// tempo, si se da, manda sobre el de la pieza.
@@ -41,15 +41,10 @@ public enum PresentacionDeArpegios {
         swing: Bool = false, notacion: Notacion
     ) -> ArpegioPresentado? {
         guard !acordes.isEmpty else { return nil }
-        // Con el ritmo, si da una duración por acorde; si no, cada acorde en una blanca.
-        let conRitmo = ritmo.flatMap {
-            try? Voz(
-                arpegiando: acordes, duraciones: $0.duraciones, patron: patron, figura: figura, compas: $0.compas,
-                enlazados: enlazados)
-        }
+        // Con el ritmo, si es el de estos acordes; si no, cada acorde en una blanca.
         let voz: Voz
-        if let conRitmo {
-            voz = conRitmo
+        if let ritmo, ritmo.acordes.map(\.acorde) == acordes {
+            voz = Voz(arpegiando: ritmo, patron: patron, figura: figura, enlazados: enlazados)
         } else {
             voz = Voz(arpegiando: acordes, patron: patron, figura: figura, porAcorde: .blanca, enlazados: enlazados)
         }

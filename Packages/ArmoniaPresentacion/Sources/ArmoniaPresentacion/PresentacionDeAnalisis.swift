@@ -25,7 +25,8 @@ public struct AnalisisPresentado: Hashable, Sendable {
     /// Los acordes analizados y la tonalidad de la partitura, para arpegiarlos.
     public internal(set) var acordes: [Acorde] = []
     public internal(set) var tonalidad: Tonalidad?
-    /// Lo que dura cada acorde, si viene de una pieza importada; si no, `nil` (una blanca cada uno).
+    /// El ritmo armónico, si viene de una pieza importada; si no, `nil` (una negra cada uno, y una blanca al
+    /// arpegiarlos).
     public internal(set) var ritmo: RitmoArmonico?
 
     /// La progresión arpegiada con un patrón, en la tonalidad de la partitura y con su ritmo armónico; las notas,
@@ -36,20 +37,6 @@ public struct AnalisisPresentado: Hashable, Sendable {
         PresentacionDeArpegios.progresion(
             acordes, patron: patron, tonalidad: tonalidad, ritmo: ritmo, figura: figura, enlazados: enlazados,
             notacion: notacion)
-    }
-}
-
-/// El ritmo armónico de una progresión: lo que dura cada acorde, en el compás y el tempo de la pieza de la que
-/// sale (un fichero MIDI, MusicXML, MEI o ABC).
-public struct RitmoArmonico: Hashable, Sendable {
-    public let duraciones: [Duracion]
-    public let compas: Compas
-    public let tempo: Tempo?
-
-    public init(duraciones: [Duracion], compas: Compas = .compasillo, tempo: Tempo? = nil) {
-        self.duraciones = duraciones
-        self.compas = compas
-        self.tempo = tempo
     }
 }
 
@@ -80,16 +67,14 @@ public enum PresentacionDeAnalisis {
     }
 
     /// Igual, con los acordes ya leídos (los de un fichero MIDI o MEI, por ejemplo). `nil` si no hay ninguno.
-    /// Con su ritmo armónico (una duración por acorde), la partitura, el MIDI, «Escuchar» y la progresión
-    /// arpegiada lo siguen; si no, cada acorde dura una blanca.
+    /// Con su ritmo armónico (si es el de estos mismos acordes), la partitura, el MIDI, «Escuchar» y la progresión
+    /// arpegiada lo siguen; si no, cada acorde dura una negra.
     public static func analizar(
         _ acordes: [Acorde], ritmo: RitmoArmonico? = nil, en tonalidad: Tonalidad? = nil,
         notacion: Notacion
     ) -> AnalisisPresentado? {
         guard !acordes.isEmpty else { return nil }
-        let ritmo = ritmo.flatMap { r in
-            r.duraciones.count == acordes.count && r.duraciones.allSatisfy { $0 > .cero } ? r : nil
-        }
+        let ritmo = ritmo.flatMap { $0.acordes.map(\.acorde) == acordes ? $0 : nil }
         if let tonalidad { return presentar(tonalidad.analizar(acordes), recorrido: nil, ritmo: ritmo, notacion) }
         guard let analisis = AnalisisArmonico.analizar(acordes), let recorrido = RecorridoTonal(acordes) else {
             return nil
@@ -131,15 +116,11 @@ public enum PresentacionDeAnalisis {
         }
         let nombre = "Progresión"
         let acordes = analisis.acordes.map(\.acorde)
-        // El análisis da un acorde por cada uno leído; si no, no se puede seguir el ritmo.
         let partitura: Partitura
         let sonido: Escucha
-        if let ritmo,
-            let conRitmo = try? analisis.partitura(
-                duraciones: ritmo.duraciones, compas: ritmo.compas,
-                encabezado: Encabezado(titulo: nombre, tempo: ritmo.tempo), notacion: notacion)
-        {
-            partitura = conRitmo
+        if let ritmo {
+            partitura = ritmo.partitura(
+                en: analisis.tonalidad, encabezado: Encabezado(titulo: nombre), notacion: notacion)
             sonido = Escucha.acordes(acordes, duraciones: ritmo.duraciones, tempo: ritmo.tempo ?? Escucha.tempo)
         } else {
             partitura = analisis.partitura(encabezado: Encabezado(titulo: nombre), notacion: notacion)

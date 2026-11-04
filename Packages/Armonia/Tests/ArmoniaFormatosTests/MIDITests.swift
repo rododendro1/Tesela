@@ -185,4 +185,13 @@ import Testing
         #expect(ArchivoMIDI.cantidadVariable(0x3FFF) == [0xFF, 0x7F])
         #expect(ArchivoMIDI.cantidadVariable(0x200000) == [0x81, 0x80, 0x80, 0x00])
     }
+
+    /// Un instrumento fuera de los de General MIDI se lleva al más cercano, en vez de detener el programa.
+    @Test func unInstrumentoFueraDeGeneralMIDI() throws {
+        let voz = try Voz(leyendo: "Do4:4 Re4:4")
+        func midi(_ instrumento: Int) -> Data { voz.partitura(encabezado: Encabezado(instrumento: instrumento)).midi() }
+        #expect(midi(200) == midi(127))
+        #expect(midi(-3) == midi(0))
+        #expect(midi(200) != midi(0))
+    }
 }
