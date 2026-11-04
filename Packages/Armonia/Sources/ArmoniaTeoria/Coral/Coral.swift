@@ -10,6 +10,7 @@ import ArmoniaNucleo
 /// soprano. `acorde` es el índice del acorde donde está la falta o, si es un movimiento, del
 /// acorde de partida (el movimiento va de `acorde` a `acorde + 1`).
 public struct FaltaDeConduccion: Hashable, Sendable, CustomStringConvertible {
+    /// Qué regla de la conducción de voces se rompe.
     public enum Tipo: Hashable, Sendable, CaseIterable {
         /// Dos voces a distancia de quinta justa que se mueven a otra quinta justa.
         case quintasParalelas
@@ -288,5 +289,24 @@ extension Coral: Transponible {
     /// Los acordes como se leen con `init(leyendo:)`: las alturas de grave a agudo, separados por barras.
     public func texto(en notacion: Notacion) -> String {
         acordes.map { $0.map { $0.nombre(en: notacion) }.joined(separator: " ") }.joined(separator: " | ")
+    }
+}
+
+extension Coral: Codable {
+    /// Se codifica como sus acordes, cada uno con sus alturas de grave a agudo: `[["Do3", "Sol3", "Mi4", "Do5"], …]`.
+    /// Al leerlo se comprueba, como en `init(_:)`, que todos tengan las mismas voces, y al menos dos.
+    public init(from decoder: Decoder) throws {
+        let contenedor = try decoder.singleValueContainer()
+        let acordes = try contenedor.decode([[Altura]].self)
+        let coral: Coral
+        do { coral = try Coral(acordes) } catch let error as ErrorDeLecturaDeTeoria {
+            throw DecodingError.dataCorruptedError(in: contenedor, debugDescription: error.description)
+        }
+        self = coral
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var contenedor = encoder.singleValueContainer()
+        try contenedor.encode(acordes)
     }
 }
