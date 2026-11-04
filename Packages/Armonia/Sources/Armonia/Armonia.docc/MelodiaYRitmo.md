@@ -310,6 +310,16 @@ let sur = try PiezaImportada(musicXML: Data(Escala(.re, .sur).partitura().musicX
 sur.notas[1].sistema == .persa && sur.notas[1].ajuste == 1   // true: el Mi koron
 ```
 
+`partitura()` vuelve a hacer de la pieza una ``Partitura``, para dibujarla o exportarla otra vez: un pentagrama por
+parte, las notas que empiezan y acaban a la vez en un acorde, las que se solapan de otra forma en otra voz y
+silencios en los huecos.
+
+```swift
+let leida = try PiezaImportada(musicXML: Data(Voz(leyendo: "Do4:4 -:4 Mi4+Sol4:2").partitura().musicXML().utf8))
+leida.partitura().pentagramas[0].voces[0].voz.eventos.count == 3   // true
+leida.partitura().svg().hasPrefix("<svg")                           // true
+```
+
 ## Todos los formatos a la vez
 
 ``FormatoDePartitura`` reúne los seis formatos (MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI), y

@@ -8,14 +8,15 @@ La biblioteca se reparte en seis módulos, más `Armonia`, que los reexporta:
     ArmoniaRepresentaciones  Afinacion, Color, Dibujo, Redes (con Neorriemanniana)
     ArmoniaPartitura         Modelo, Dibujo, Contrapunto
     ArmoniaFormatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond (sobre Partitura)
-    ArmoniaTrastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes)
+    ArmoniaTrastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes, sobre Partitura)
     Armonia                  solo reexporta los seis (no Hexagonos: quien lo use, lo importa)
 
 Fuera del paquete, Representaciones usa `Hexagonos` (la geometría de las rejillas hexagonales), que no depende
 de nada; `Armonia` no lo reexporta.
 
-Un módulo solo puede usar los de su izquierda: Teoría usa Núcleo; Representaciones, Partitura y Trastes
-usan Teoría y Núcleo, y no se usan entre sí; Formatos usa además Partitura. SwiftPM no impide por sí solo importar un módulo que no está
+Un módulo solo puede usar los de su izquierda: Teoría usa Núcleo; Representaciones y Partitura usan Teoría y
+Núcleo, y no se usan entre sí; Formatos y Trastes usan además Partitura (lo que se toca en el mástil se escribe en
+una partitura, con su tablatura), y no se usan entre sí. SwiftPM no impide por sí solo importar un módulo que no está
 declarado como dependencia si otra ruta lo compila antes, así que se comprueba aquí:
 
   1. las dependencias declaradas en Package.swift son exactamente las permitidas;
@@ -40,7 +41,7 @@ PERMITIDO = {
     "ArmoniaRepresentaciones": {"ArmoniaNucleo", "ArmoniaTeoria", "Hexagonos"},
     "ArmoniaPartitura": {"ArmoniaNucleo", "ArmoniaTeoria"},
     "ArmoniaFormatos": {"ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura"},
-    "ArmoniaTrastes": {"ArmoniaNucleo", "ArmoniaTeoria"},
+    "ArmoniaTrastes": {"ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura"},
 }
 PARAGUAS = "Armonia"
 # Lo que comparten las pruebas (Tests/ApoyoDePruebas): no es parte de la biblioteca.

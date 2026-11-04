@@ -341,6 +341,13 @@ import Testing
         #expect(alberti.partitura().encabezado.tema == .arpegio(alberti))
         #expect(alberti.partitura().pentagramas[0].voces[0].cifrados == [.cero: Acorde("Do")])
         #expect(alberti.svgPentagrama().contains(">\(alberti.nombre(en: .espanolCompacto))</title>"))
+        // Con figura, con ritmo: la escala y el arpegio en corcheas, la última nota en negra.
+        let enCorcheas = dorico.partitura(figura: .corchea)
+        let eventos = enCorcheas.pentagramas[0].voces[0].voz.eventos
+        #expect(enCorcheas.ritmo && eventos.dropLast().allSatisfy { $0.duracion == .corchea })
+        #expect(eventos.last?.duracion == .negra && enCorcheas.encabezado.tema == .escala(dorico))
+        let arpegio = Arpegio(Acorde("Do7")).partitura(figura: .semicorchea)
+        #expect(arpegio.ritmo && arpegio.pentagramas[0].voces[0].voz.eventos.first?.duracion == .semicorchea)
     }
 
     /// El título y el tamaño, en las opciones, como en los diagramas.

@@ -139,7 +139,9 @@ todos los dibujos que no son un pentagrama: el Tonnetz, la tabla armónica, los 
 teclado de piano y el reloj de clases. Las notas marcadas de los teclados son unas ``MarcasDeDiagrama``: `[60, 64, 67]`
 las marca y `[60: "1", 64: "3"]` las marca con un rótulo, que se escribe en lugar del nombre de la nota. El teclado
 de piano y el reloj también nombran en la notación las notas sin rótulo; con `nombresDeLasNotas: false`, el piano las
-marca sin texto y el reloj escribe el número de cada clase (0 es Do).
+marca sin texto y el reloj escribe el número de cada clase (0 es Do). Marcadas con sus alturas
+(`MarcasDeDiagrama(Escala("Fa mayor").alturas(octava: 4))`), o un reloj hecho con notas
+(`RelojDeClases(notas:tonica:orden:)`), las notas se nombran como se escriben: Si♭, y no La♯, en Fa mayor.
 
 ```swift
 let dibujo = Tonnetz(Escala(.re, .dorico)).svg()          // con el título «Re dórico» y su leyenda
@@ -148,6 +150,8 @@ let ingles = Tonnetz(Acorde("Fa#m7")).svg(opciones: .init(notacion: .inglesASCII
 let toro = Tonnetz(ConjuntoDeClases([0, 4, 7, 11])).svg(margen: 3)
 RelojDeClases(clases: [0, 4, 7]).svg(opciones: .init(notacion: .inglesASCII)).contains(">G</text>")   // true
 TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: [61], opciones: .init(preferirBemoles: true)).contains(">Re♭</text>")   // true
+TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: MarcasDeDiagrama(Escala("Fa mayor").alturas(octava: 4))).contains(">Si♭</text>")   // true
+RelojDeClases(notas: Escala("Fa mayor").notas).svg().contains(">Si♭</text>")   // true
 ```
 
 ### Transformaciones neorriemannianas

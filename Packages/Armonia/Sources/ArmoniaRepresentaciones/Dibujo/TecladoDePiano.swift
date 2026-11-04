@@ -55,9 +55,9 @@ public struct TecladoDePiano: Hashable, Sendable {
 
     // MARK: Dibujo
 
-    /// El teclado en SVG. Las teclas `marcadas` llevan un círculo azul, con su rótulo (el dedo, el grado) o, si no
-    /// lo tiene, el nombre de la nota en `opciones.notacion` (sin él con `nombresDeLasNotas` en `false`); las de
-    /// `primeras` (la tónica, la fundamental), con el borde naranja. Encima, el título de `opciones`, si lo hay;
+    /// El teclado en SVG. Las teclas `marcadas` llevan un círculo azul, con su rótulo (el dedo, el grado) o, si no lo
+    /// tiene, el nombre de la nota en `opciones.notacion`, como se marcó (sin él con `nombresDeLasNotas` en `false`);
+    /// las de `primeras` (la tónica, la fundamental), con el borde naranja. Encima, el título de `opciones`, si lo hay;
     /// `opciones.escala` cambia el tamaño.
     public func svg(
         marcadas: MarcasDeDiagrama = [], primeras: Set<Int> = [], opciones: OpcionesDeDiagrama = OpcionesDeDiagrama()
@@ -104,7 +104,7 @@ public struct TecladoDePiano: Hashable, Sendable {
                 .con("stroke-width", primera ? 2.5 : 1).vacio + "\n"
             guard
                 let rotulo = marcadas.rotulo(de: midi)
-                    ?? (opciones.nombresDeLasNotas ? opciones.nombre(de: midi) : nil)
+                    ?? (opciones.nombresDeLasNotas ? opciones.nombre(de: midi, en: marcadas) : nil)
             else { continue }
             svg +=
                 "  "

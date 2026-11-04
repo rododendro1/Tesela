@@ -10,7 +10,7 @@ import PackageDescription
 //     ArmoniaRepresentaciones  Afinacion, Color, Dibujo, Redes
 //     ArmoniaPartitura         Modelo, Dibujo, Contrapunto
 //     ArmoniaFormatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond: exportar e importar
-//     ArmoniaTrastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes)
+//     ArmoniaTrastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes), sobre Partitura
 //
 // La geometría de las rejillas hexagonales (el Tonnetz, la tabla armónica, los teclados isomórficos) viene
 // del paquete `Hexagonos`, que no depende de nada. `ArmoniaRepresentaciones` lo usa; `Armonia` no lo reexporta,
@@ -53,7 +53,7 @@ let package = Package(
             dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", .product(name: "Hexagonos", package: "Hexagonos")]),
         .target(name: "ArmoniaPartitura", dependencies: ["ArmoniaNucleo", "ArmoniaTeoria"]),
         .target(name: "ArmoniaFormatos", dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura"]),
-        .target(name: "ArmoniaTrastes", dependencies: ["ArmoniaNucleo", "ArmoniaTeoria"]),
+        .target(name: "ArmoniaTrastes", dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura"]),
         // El módulo paraguas: reexporta los seis y guarda la documentación (DocC).
         .target(
             name: "Armonia",
@@ -74,7 +74,9 @@ let package = Package(
         .testTarget(
             name: "ArmoniaFormatosTests",
             dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura", "ArmoniaFormatos", "ApoyoDePruebas"]),
-        .testTarget(name: "ArmoniaTrastesTests", dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaTrastes"]),
+        .testTarget(
+            name: "ArmoniaTrastesTests",
+            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura", "ArmoniaTrastes"]),
         // Las que cruzan capas: entradas no válidas y propiedades de todo el motor, la API poco usada, y los dibujos
         // guardados en `Referencias` con que se comparan los de ahora (ReferenciasSVGTests).
         .testTarget(name: "ArmoniaTests", dependencies: modulos + ["ApoyoDePruebas"], exclude: ["Referencias"]),

@@ -192,8 +192,8 @@ Lo interno que se usa entre capas es `package`, no público. Un módulo solo usa
 `Scripts/comprobaciones/comprobar_modulos.py`, en la raíz del repositorio, lo vigila:
 
     ArmoniaNucleo ◄── ArmoniaTeoria ◄──┬── ArmoniaRepresentaciones
-                                       ├── ArmoniaPartitura ◄── ArmoniaFormatos
-                                       └── ArmoniaTrastes
+                                       └── ArmoniaPartitura ◄──┬── ArmoniaFormatos
+                                                               └── ArmoniaTrastes
 
 Un fichero por concepto: el tipo principal junto con sus tipos auxiliares y sus extensiones
 (`Intervalo.swift` contiene también `SentidoDelIntervalo`, `CalidadDeIntervalo` y `Consonancia`). Solo se separa en
@@ -284,10 +284,11 @@ línea de comandos están con ella, en `Apps/ArmoniaCLI/Tests/`.
 
 La biblioteca se reparte en seis módulos que siguen unas capas: **ArmoniaNucleo** (Fundamentos,
 Texto, Postonal), **ArmoniaTeoria** (Acordes, Escalas, Tonalidad, que se necesitan entre sí) y
-tres ramas que usan las anteriores y no se usan entre sí: **ArmoniaRepresentaciones** (afinación,
-color, dibujo y redes, con la teoría neorriemanniana), **ArmoniaPartitura** (el modelo, el pentagrama en SVG y el
-contrapunto), con **ArmoniaFormatos** encima (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond),
-y **ArmoniaTrastes** (instrumentos de cuerda con trastes). `Armonia` los reexporta
+dos ramas que usan las anteriores y no se usan entre sí: **ArmoniaRepresentaciones** (afinación,
+color, dibujo y redes, con la teoría neorriemanniana) y **ArmoniaPartitura** (el modelo, el pentagrama en SVG y el
+contrapunto). Sobre Partitura van **ArmoniaFormatos** (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond)
+y **ArmoniaTrastes** (instrumentos de cuerda con trastes, que escriben lo que se toca en una partitura con su
+tablatura), que tampoco se usan entre sí. `Armonia` los reexporta
 todos; `Hexagonos`, que usan las Representaciones, se importa aparte. `python3
 Scripts/comprobaciones/comprobar_modulos.py`, que ejecuta el CI, comprueba que las dependencias declaradas y los
 `import` respetan esas capas.

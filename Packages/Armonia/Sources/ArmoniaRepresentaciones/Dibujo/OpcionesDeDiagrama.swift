@@ -34,12 +34,15 @@ public struct OpcionesDeDiagrama: Hashable, Sendable {
 }
 
 /// Las notas que se marcan en un diagrama, por su número MIDI, cada una con su rótulo si lo lleva (un dedo, un
-/// grado): `[60, 64, 67]` las marca sin rótulo; `[60: "1", 62: "2"]`, con él.
+/// grado): `[60, 64, 67]` las marca sin rótulo; `[60: "1", 62: "2"]`, con él. Marcadas con sus alturas, se nombran
+/// como se escriben: `MarcasDeDiagrama(Escala("Fa mayor").alturas(octava: 4))` pone Si♭ y no La♯.
 public struct MarcasDeDiagrama: Hashable, Sendable, ExpressibleByArrayLiteral, ExpressibleByDictionaryLiteral {
     /// Las notas marcadas.
     public private(set) var notas: Set<Int>
     /// El rótulo de las que lo llevan.
     public private(set) var rotulos: [Int: String]
+    /// Cómo se escriben las que se marcaron con su altura, por su número MIDI.
+    public private(set) var alturas: [Int: Altura]
 
     /// Ninguna nota.
     public init() { self.init([Int]()) }
@@ -48,12 +51,22 @@ public struct MarcasDeDiagrama: Hashable, Sendable, ExpressibleByArrayLiteral, E
     public init(_ notas: some Sequence<Int>) {
         self.notas = Set(notas)
         self.rotulos = [:]
+        self.alturas = [:]
+    }
+
+    /// Esas alturas, sin rótulo, nombradas como se escriben (la primera, si dos suenan igual).
+    public init(_ alturas: some Sequence<Altura>) {
+        let alturas = Array(alturas)
+        self.notas = Set(alturas.map(\.midi))
+        self.rotulos = [:]
+        self.alturas = Dictionary(alturas.map { ($0.midi, $0) }) { primera, _ in primera }
     }
 
     /// Esas notas, cada una con su rótulo.
     public init(rotulos: [Int: String]) {
         self.notas = Set(rotulos.keys)
         self.rotulos = rotulos
+        self.alturas = [:]
     }
 
     public init(arrayLiteral notas: Int...) { self.init(notas) }
@@ -68,13 +81,21 @@ public struct MarcasDeDiagrama: Hashable, Sendable, ExpressibleByArrayLiteral, E
     /// El rótulo de esa nota, si se marca con uno.
     public func rotulo(de nota: Int) -> String? { rotulos[nota] }
 
+    /// La altura con que se marcó esa nota, si se marcó con la suya.
+    public func altura(de nota: Int) -> Altura? { alturas[nota] }
+
     public var isEmpty: Bool { notas.isEmpty }
 }
 
 extension OpcionesDeDiagrama {
-    /// El nombre de la clase de altura de una nota (por su número MIDI), sin octava, en `notacion` y con bemol o con
-    /// sostenido según `preferirBemoles`: el que ponen el piano y el reloj a las notas sin rótulo.
-    func nombre(de midi: Int) -> String {
-        Altura(midi: midi, preferirBemoles: preferirBemoles).nota.nombreCompacto(en: notacion)
+    /// La altura con que se nombra una nota (por su número MIDI): la de `marcas`, si se marcó con la suya, o la que
+    /// dé `preferirBemoles`.
+    func altura(de midi: Int, en marcas: MarcasDeDiagrama = []) -> Altura {
+        marcas.altura(de: midi) ?? Altura(midi: midi, preferirBemoles: preferirBemoles)
+    }
+
+    /// El nombre de la nota sin octava, en `notacion`: el que ponen el piano y el reloj a las notas sin rótulo.
+    func nombre(de midi: Int, en marcas: MarcasDeDiagrama = []) -> String {
+        altura(de: midi, en: marcas).nota.nombreCompacto(en: notacion)
     }
 }

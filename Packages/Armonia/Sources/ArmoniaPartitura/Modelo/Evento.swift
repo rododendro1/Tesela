@@ -209,7 +209,7 @@ extension Evento {
 
         /// El signo del microtono, escrito con `semitonos` de alteración (los de la altura, si no se dan): el de su
         /// sistema o, sin él, el que dan los cents. `nil` si no se aparta o si lo que se aparta no tiene signo.
-        package func signo(semitonos: Int? = nil) -> SignoMicrotonal? {
+        public func signo(semitonos: Int? = nil) -> SignoMicrotonal? {
             let semitonos = semitonos ?? altura.nota.alteracion.semitonos
             guard let sistema else { return SignoMicrotonal(semitonos: semitonos, desvio: desvio) }
             return SignoMicrotonal(sistema: sistema, ajuste: ajuste, semitonos: semitonos, desvio: desvio)
