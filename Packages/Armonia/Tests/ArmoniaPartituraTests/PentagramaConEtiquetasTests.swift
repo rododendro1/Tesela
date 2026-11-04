@@ -175,6 +175,26 @@ import Testing
         let tocada = Escala("Fa mayor").svgPentagrama(tocadaEn: [Altura("La♯4")], digitos: [0: [2]])
         #expect(tocada.contains("<title>Si♭₄</title>") && tocada.contains(">2</text>"))
     }
+
+    /// Lo que se toca en el mástil es una partitura: con su armadura, su tónica y lo de cada nota por su inicio.
+    @Test func loTocadoEsUnaPartitura() {
+        let alturas = [Altura("Re4"), Altura("Mi4"), Altura("Fa♯4")]
+        let escala = Escala("Re dórico")
+        let partitura = escala.partitura(tocadaEn: alturas, digitos: [1: [3]])
+        #expect(!partitura.ritmo)
+        #expect(partitura.encabezado.titulo == escala.nombre(en: .espanolCompacto))
+        #expect(partitura.pentagramas[0].armadura == escala.notasDeLaArmadura)
+        let linea = partitura.pentagramas[0].voces[0]
+        #expect(linea.tonica == escala.tonica)
+        #expect(linea.digitos == [.redonda: [3]])
+        #expect(partitura.svg() == escala.svgPentagrama(tocadaEn: alturas, digitos: [1: [3]]))
+        let conRitmo = escala.partitura(tocadaEn: alturas, figura: .corchea)
+        #expect(conRitmo.ritmo)
+        #expect(conRitmo.pentagramas[0].voces[0].voz.eventos.map(\.duracion) == [.corchea, .corchea, .negra])
+        let arpegio = Acorde("Re7").partitura(arpegiadoEn: alturas)
+        #expect(arpegio.pentagramas[0].voces[0].cifrados == [.cero: Acorde("Re7")])
+        #expect(arpegio.svg() == Acorde("Re7").svgPentagrama(arpegiadoEn: alturas))
+    }
 }
 
 /// El bajo cifrado, los cambios de clave y las notas ajenas al acorde.
