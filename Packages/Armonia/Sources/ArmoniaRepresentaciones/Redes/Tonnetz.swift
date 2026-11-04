@@ -357,18 +357,17 @@ public struct Tonnetz: Hashable, Sendable {
     /// acorde, la escala, las notas o el recorrido) y debajo, una leyenda de lo que aparece.
     ///
     /// - Parameters:
-    ///   - notacion: la de los nombres de las notas.
+    ///   - opciones: la notación de los nombres de las notas, el título (si es `nil`, el que corresponda, y si es
+    ///     "", ninguno) y la escala: con 1, 64 píxeles entre dos notas vecinas, o 88 en un recorrido, para que
+    ///     quepan las flechas.
     ///   - margen: cuántas filas y columnas de red se dibujan alrededor de las notas; si es `nil`,
     ///     una con ortografía y dos con clases de altura, para que se vean sus repeticiones.
-    ///   - paso: la distancia entre dos notas vecinas, en píxeles; si es `nil`, 64, o 88 en un
-    ///     recorrido, para que quepan las flechas.
-    ///   - titulo: el título; si es `nil`, el que corresponda, y si es "", ninguno.
     ///   - leyenda: si se dibuja la leyenda.
     public func svg(
-        notacion: Notacion = .espanolCompacto, margen: Int? = nil, paso: Double? = nil,
-        titulo: String? = nil, leyenda: Bool = true
+        opciones: OpcionesDeDiagrama = OpcionesDeDiagrama(), margen: Int? = nil, leyenda: Bool = true
     ) -> String {
-        let paso = paso ?? (recorrido.isEmpty ? 64 : 88)
+        let notacion = opciones.notacion
+        let paso = (recorrido.isEmpty ? 64 : 88) * opciones.escala
         let margen = margen ?? (tieneOrtografia ? 1 : 2)
         let altura = paso * 0.8660254037844386 // √3/2, entre dos filas
         let trazado = Tonnetz.trazado(paso: paso)
@@ -466,7 +465,7 @@ public struct Tonnetz: Hashable, Sendable {
             }
             if !recorrido.isEmpty { entrada(.flecha, .pasoDelRecorrido) }
         }
-        let titulo = titulo ?? (pie.isEmpty ? (origen?.titulo(notacion) ?? "") : pie)
+        let titulo = opciones.titulo ?? (pie.isEmpty ? (origen?.titulo(notacion) ?? "") : pie)
         return DibujoSVG.componer(
             caja: (origenX, arriba, ancho, alto), cuerpo: svg, titulo: titulo,
             leyenda: entradas, paso: paso)

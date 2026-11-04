@@ -330,15 +330,21 @@ public struct TecladoCuadrado: Hashable, Sendable {
     /// piano en gris y, si se dan, las `marcadas` en el azul de las notas del Tonnetz.
     ///
     /// - Parameters:
-    ///   - marcadas: los números MIDI que se marcan (todas las octavas que se quieran ver).
+    ///   - marcadas: los números MIDI que se marcan (todas las octavas que se quieran ver); las que llevan rótulo
+    ///     lo escriben en lugar del nombre de la nota.
     ///   - primeras: los de la primera nota (la tónica de una escala o la fundamental de un acorde), que llevan
     ///     además el borde naranja de la tabla armónica.
     ///   - contorno: si se dibuja en trazo grueso el contorno de las marcadas: los lados entre una casilla marcada y
     ///     una que no lo está (o que queda fuera del dibujo).
+    ///   - margen: el blanco alrededor de las casillas, en píxeles (antes de la escala).
+    ///   - opciones: la notación de los nombres, si se prefieren bemoles, el título (ninguno, si no se da) y la
+    ///     escala: con 1, cada casilla tiene 40 píxeles de lado (``centro(de:lado:)``).
     public func svg(
-        _ casillas: [CasillaCuadrada], marcadas: Set<Int> = [], primeras: Set<Int> = [], contorno: Bool = false,
-        lado: Double = 40, margen: Double = 4, notacion: Notacion = .espanolCompacto, preferirBemoles: Bool = false
+        _ casillas: [CasillaCuadrada], marcadas: MarcasDeDiagrama = [], primeras: Set<Int> = [],
+        contorno: Bool = false, margen: Double = 4, opciones: OpcionesDeDiagrama = OpcionesDeDiagrama()
     ) -> String {
+        let lado = 40 * opciones.escala
+        let margen = margen * opciones.escala
         guard !casillas.isEmpty else {
             return #"<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0"></svg>"#
         }
@@ -361,11 +367,16 @@ public struct TecladoCuadrado: Hashable, Sendable {
             let rectangulo = ElementoSVG("rect", numeros: .hastaTresDecimales).con("class", "casilla")
             let cuadrado = rectangulo.con("x", centro.x - lado / 2).con("y", centro.y - lado / 2)
             lineas.append(cuadrado.con("width", lado).con("height", lado).con("fill", color).vacio)
-            let rotulo = altura(en: casilla, preferirBemoles: preferirBemoles).nombreCompacto(en: notacion)
+            let rotulo =
+                marcadas.rotulo(de: midi)
+                ?? altura(en: casilla, preferirBemoles: opciones.preferirBemoles).nombreCompacto(en: opciones.notacion)
             let texto = ElementoSVG("text", numeros: .hastaTresDecimales).con("x", centro.x).con("y", centro.y)
             lineas.append(texto.conTexto(rotulo))
         }
-        if contorno { lineas += lineasDelContorno(casillas, marcadas: marcadas, lado: lado) }
+        if let titulo = opciones.titulo, !titulo.isEmpty {
+            lineas.insert(ElementoSVG("title").conTexto(titulo), at: 1)
+        }
+        if contorno { lineas += lineasDelContorno(casillas, marcadas: marcadas.notas, lado: lado) }
         // La primera nota, con borde naranja, encima del contorno.
         for (casilla, centro) in zip(casillas, centros) where primeras.contains(midi(en: casilla)) {
             let borde = ElementoSVG("rect", numeros: .hastaTresDecimales).con("class", "primera")

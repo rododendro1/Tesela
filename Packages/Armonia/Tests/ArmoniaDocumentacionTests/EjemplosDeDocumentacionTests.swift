@@ -163,122 +163,122 @@ import Hexagonos
     }
 
     @Test func afinacionYRepresentaciones7() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 139
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 143
         let dibujo = Tonnetz(Escala(.re, .dorico)).svg()
-        let sinLeyenda = Tonnetz(Acorde("Do")).svg(titulo: "Tónica", leyenda: false)
-        let ingles = Tonnetz(Acorde("Fa#m7")).svg(notacion: .inglesASCII, margen: 2)
+        let sinLeyenda = Tonnetz(Acorde("Do")).svg(opciones: .init(titulo: "Tónica"), leyenda: false)
+        let ingles = Tonnetz(Acorde("Fa#m7")).svg(opciones: .init(notacion: .inglesASCII), margen: 2)
         let toro = Tonnetz(ConjuntoDeClases([0, 4, 7, 11])).svg(margen: 3)
         _ = (dibujo, sinLeyenda, ingles, toro)
     }
 
     @Test func afinacionYRepresentaciones8() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 161
-        comprobar(Acorde("Do").transformar(.r) == Acorde("Lam"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 161)
-        comprobar(Acorde("Mib").transformar(.r) == Acorde("Dom"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 162)
-        comprobar(try Acorde("Do").transformar(leyendo: "PLR") == Acorde("Fam"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 163)
-        comprobar(Acorde("Do").transformar(TransformacionNeorriemanniana.s) == Acorde("Do#m"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 164)
-        comprobar(Acorde("Sol7").transformar(.p) == nil, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 165)
-        comprobar(TransformacionNeorriemanniana.entre("Do", "Mim") == .l, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 166)
-        comprobar(Tonnetz.camino(desde: "Do", hasta: "Mibm") == [.p, .r, .p], #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 167)
-        comprobar(Tonnetz.camino(desde: "Do", hasta: "Sol#", enarmonico: true) == [.p, .l], #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 168)
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 165
+        comprobar(Acorde("Do").transformar(.r) == Acorde("Lam"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 165)
+        comprobar(Acorde("Mib").transformar(.r) == Acorde("Dom"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 166)
+        comprobar(try Acorde("Do").transformar(leyendo: "PLR") == Acorde("Fam"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 167)
+        comprobar(Acorde("Do").transformar(TransformacionNeorriemanniana.s) == Acorde("Do#m"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 168)
+        comprobar(Acorde("Sol7").transformar(.p) == nil, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 169)
+        comprobar(TransformacionNeorriemanniana.entre("Do", "Mim") == .l, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 170)
+        comprobar(Tonnetz.camino(desde: "Do", hasta: "Mibm") == [.p, .r, .p], #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 171)
+        comprobar(Tonnetz.camino(desde: "Do", hasta: "Sol#", enarmonico: true) == [.p, .l], #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 172)
     }
 
     @Test func afinacionYRepresentaciones9() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 184
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 188
         let recorrido = Tonnetz(recorrido: ["Do", "Lam", "Fa", "Rem"])
-        comprobar(recorrido?.recorrido.count == 4, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 185)
+        comprobar(recorrido?.recorrido.count == 4, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 189)
         let bomba = Tonnetz(recorrido: ["Do", "Lam", "Rem", "Sol", "Do"])!
-        comprobar(bomba.recorrido.first == bomba.recorrido.last, #"false"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 187)
+        comprobar(bomba.recorrido.first == bomba.recorrido.last, #"false"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 191)
         let dibujo = Tonnetz(caminoDesde: "Do", hasta: "Fa#")?.svg()
         _ = dibujo
     }
 
     @Test func afinacionYRepresentaciones10() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 205
-        comprobar(Acorde("Do").ciclo(.hexatonico)?.map(\.cifrado) == ["Do", "Dom", "La♭", "La♭m", "Mi", "Mim", "Do"], #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 205)
-        comprobar(Acorde("Do").ciclo(.octatonico)?.map(\.cifrado) == ["Do", "Dom", "Mi♭", "Mi♭m", "Sol♭", "Fa♯m", "La", "Lam", "Do"], #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 206)
-        comprobar(Acorde("Do").ciclo(.lr)?.count == 25, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 207)
-        comprobar(Tonnetz(ciclo: .hexatonico, desde: "Do")?.recorrido.count == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 208)
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 209
+        comprobar(Acorde("Do").ciclo(.hexatonico)?.map(\.cifrado) == ["Do", "Dom", "La♭", "La♭m", "Mi", "Mim", "Do"], #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 209)
+        comprobar(Acorde("Do").ciclo(.octatonico)?.map(\.cifrado) == ["Do", "Dom", "Mi♭", "Mi♭m", "Sol♭", "Fa♯m", "La", "Lam", "Do"], #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 210)
+        comprobar(Acorde("Do").ciclo(.lr)?.count == 25, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 211)
+        comprobar(Tonnetz(ciclo: .hexatonico, desde: "Do")?.recorrido.count == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 212)
     }
 
     @Test func afinacionYRepresentaciones11() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 249
-        comprobar(TablaArmonica.midi(de: PuntoDeLaRed(quintas: 1, terceras: 0)) == 67, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 249)
-        comprobar(TablaArmonica(Acorde("Domaj7")).triadas.map(\.acorde) == [Acorde("Do"), Acorde("Mim")], #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 250)
-        comprobar(TablaArmonica([Altura("Do4"), Altura("Mi4"), Altura("Sol4")]).triadas.count == 1, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 251)
-        comprobar(TablaArmonica([Altura("Do3"), Altura("Mi4"), Altura("Sol4")]).triadas.count == 0, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 252)
-        comprobar("\(TablaArmonica([Altura("Do4"), Altura("Sol4")]))", #""Do4 (0, 0) · Sol4 (1, 0)""#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 253)
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 253
+        comprobar(TablaArmonica.midi(de: PuntoDeLaRed(quintas: 1, terceras: 0)) == 67, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 253)
+        comprobar(TablaArmonica(Acorde("Domaj7")).triadas.map(\.acorde) == [Acorde("Do"), Acorde("Mim")], #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 254)
+        comprobar(TablaArmonica([Altura("Do4"), Altura("Mi4"), Altura("Sol4")]).triadas.count == 1, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 255)
+        comprobar(TablaArmonica([Altura("Do3"), Altura("Mi4"), Altura("Sol4")]).triadas.count == 0, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 256)
+        comprobar("\(TablaArmonica([Altura("Do4"), Altura("Sol4")]))", #""Do4 (0, 0) · Sol4 (1, 0)""#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 257)
         let dibujo = TablaArmonica(Escala(.re, .dorico)).svg()
         _ = dibujo
     }
 
     @Test func afinacionYRepresentaciones12() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 277
-        comprobar(TablaArmonica(recorrido: ["Do", "Lam", "Fa"])?.recorrido.count == 3, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 277)
-        comprobar(TablaArmonica(caminoDesde: "Do", hasta: "Sol7") == nil, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 278)
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 281
+        comprobar(TablaArmonica(recorrido: ["Do", "Lam", "Fa"])?.recorrido.count == 3, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 281)
+        comprobar(TablaArmonica(caminoDesde: "Do", hasta: "Sol7") == nil, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 282)
     }
 
     @Test func afinacionYRepresentaciones13() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 293
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 297
         let mi = PuntoDeLaRed(quintas: 0, terceras: 1)
-        comprobar(mi.coordenada == CoordenadaAxial(q: 0, r: 1), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 296)
-        comprobar(PuntoDeLaRed(CoordenadaAxial(q: 1, r: 0)).nota == .sol, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 297)
-        comprobar(Tonnetz.punto(en: Punto(x: 60, y: 3), paso: 64) == PuntoDeLaRed(quintas: 1, terceras: 0), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 298)
-        comprobar(TablaArmonica.coordenada(de: mi) == CoordenadaAxial(q: 1, r: -1), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 299)
+        comprobar(mi.coordenada == CoordenadaAxial(q: 0, r: 1), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 300)
+        comprobar(PuntoDeLaRed(CoordenadaAxial(q: 1, r: 0)).nota == .sol, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 301)
+        comprobar(Tonnetz.punto(en: Punto(x: 60, y: 3), paso: 64) == PuntoDeLaRed(quintas: 1, terceras: 0), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 302)
+        comprobar(TablaArmonica.coordenada(de: mi) == CoordenadaAxial(q: 1, r: -1), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 303)
     }
 
     @Test func afinacionYRepresentaciones14() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 315
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 319
         let teclado = TecladoIsomorfico.wickiHayden
-        comprobar(teclado.midi(en: CoordenadaAxial(q: 1, r: -1)) == 67, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 318)
-        comprobar(teclado.semitonos(hacia: DireccionHexagonal(.noreste, .puntiaguda)!) == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 319)
-        comprobar(TecladoIsomorfico.tablaArmonica.semitonos(hacia: .sMasRMenos) == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 320)
-        comprobar(TecladoIsomorfico.acordeonC.semitonos(hacia: DireccionHexagonal(.norte, .plana)!) == 3, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 321)
-        comprobar(TecladoIsomorfico.acordeonB.semitonos(hacia: DireccionHexagonal(.noreste, .plana)!) == 2, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 322)
-        comprobar(TecladoIsomorfico.wickiHaydenPlano.semitonos(hacia: DireccionHexagonal(.norte, .plana)!) == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 323)
-        comprobar(TecladoIsomorfico.gerhard.semitonos(hacia: DireccionHexagonal(.norte, .plana)!) == 1, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 324)
-        comprobar(TecladoIsomorfico.park.semitonos(hacia: DireccionHexagonal(.este, .puntiaguda)!) == 5, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 325)
+        comprobar(teclado.midi(en: CoordenadaAxial(q: 1, r: -1)) == 67, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 322)
+        comprobar(teclado.semitonos(hacia: DireccionHexagonal(.noreste, .puntiaguda)!) == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 323)
+        comprobar(TecladoIsomorfico.tablaArmonica.semitonos(hacia: .sMasRMenos) == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 324)
+        comprobar(TecladoIsomorfico.acordeonC.semitonos(hacia: DireccionHexagonal(.norte, .plana)!) == 3, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 325)
+        comprobar(TecladoIsomorfico.acordeonB.semitonos(hacia: DireccionHexagonal(.noreste, .plana)!) == 2, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 326)
+        comprobar(TecladoIsomorfico.wickiHaydenPlano.semitonos(hacia: DireccionHexagonal(.norte, .plana)!) == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 327)
+        comprobar(TecladoIsomorfico.gerhard.semitonos(hacia: DireccionHexagonal(.norte, .plana)!) == 1, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 328)
+        comprobar(TecladoIsomorfico.park.semitonos(hacia: DireccionHexagonal(.este, .puntiaguda)!) == 5, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 329)
         let mapa = FormasDeMapa.rectangulo(columnas: 12, filas: 4, .filasImpares)
         let dibujo = TecladoIsomorfico.janko.svg(mapa, marcadas: [60, 64, 67])
         _ = dibujo
     }
 
     @Test func afinacionYRepresentaciones15() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 340
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 344
         let formato = try FormatoUIL(leyendo: "2,7,5;R30M")
-        comprobar(formato.esCompleto == true, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 341)
-        comprobar(formato.orientacion == .puntiaguda, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 342)
-        comprobar(try formato.teclado().semitonos(hacia: .qMasSMenos) == 2, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 343)
-        comprobar(try FormatoUIL(leyendo: "M2,P5,P4;R30M").descripcion == "2,7,5;R30M", #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 344)
-        comprobar(try TecladoIsomorfico.conUIL("3,7,4;R0").semitonos(hacia: .sMasRMenos) == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 345)
-        comprobar(TecladoIsomorfico.wickiHayden.uil?.descripcion == "2,7,5;R30M", #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 346)
-        comprobar(try TecladoIsomorfico.wickiHayden.rotado(grados: -30).uil?.descripcion == "2,7,5;R0M", #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 347)
-        comprobar(TecladoIsomorfico.wickiHayden.reflejado.uil?.descripcion == "2,7,5;R330", #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 348)
-        comprobar(FormatoUIL.conocidos.count == 8, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 349)
+        comprobar(formato.esCompleto == true, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 345)
+        comprobar(formato.orientacion == .puntiaguda, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 346)
+        comprobar(try formato.teclado().semitonos(hacia: .qMasSMenos) == 2, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 347)
+        comprobar(try FormatoUIL(leyendo: "M2,P5,P4;R30M").descripcion == "2,7,5;R30M", #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 348)
+        comprobar(try TecladoIsomorfico.conUIL("3,7,4;R0").semitonos(hacia: .sMasRMenos) == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 349)
+        comprobar(TecladoIsomorfico.wickiHayden.uil?.descripcion == "2,7,5;R30M", #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 350)
+        comprobar(try TecladoIsomorfico.wickiHayden.rotado(grados: -30).uil?.descripcion == "2,7,5;R0M", #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 351)
+        comprobar(TecladoIsomorfico.wickiHayden.reflejado.uil?.descripcion == "2,7,5;R330", #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 352)
+        comprobar(FormatoUIL.conocidos.count == 8, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 353)
     }
 
     @Test func afinacionYRepresentaciones16() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 375
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 379
         let cuartas = TecladoCuadrado.cuartas
-        comprobar(cuartas.midi(en: CasillaCuadrada(columna: 2, fila: 1)) == 67, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 376)
-        comprobar(cuartas.semitonosEnDiagonal == 6, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 377)
-        comprobar(TecladoCuadrado.wickiHaydenCuadrado.semitonosEnDiagonal == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 378)
-        comprobar(cuartas.rotado().semitonosEnH == 5, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 379)
-        comprobar(cuartas.reflejado.semitonosEnH == -1, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 380)
-        comprobar(TecladoCuadrado(nombre: "Tonos", semitonosEnH: 2, semitonosEnV: 4).esCompleto == false, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 381)
+        comprobar(cuartas.midi(en: CasillaCuadrada(columna: 2, fila: 1)) == 67, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 380)
+        comprobar(cuartas.semitonosEnDiagonal == 6, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 381)
+        comprobar(TecladoCuadrado.wickiHaydenCuadrado.semitonosEnDiagonal == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 382)
+        comprobar(cuartas.rotado().semitonosEnH == 5, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 383)
+        comprobar(cuartas.reflejado.semitonosEnH == -1, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 384)
+        comprobar(TecladoCuadrado(nombre: "Tonos", semitonosEnH: 2, semitonosEnV: 4).esCompleto == false, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 385)
         let ventana = CasillaCuadrada.rectangulo(columnas: 0...11, filas: 0...3)
         let dibujo = cuartas.svg(ventana, marcadas: [60, 64, 67])
         _ = dibujo
     }
 
     @Test func afinacionYRepresentaciones17() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 398
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 402
         let enTono = TecladoCuadrado.cuartas.enTono(Escala(.re, .dorico))
-        comprobar(enTono.semitonosEnV == 3, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 399)
-        comprobar(enTono.midi(en: .origen) == 62, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 400)
-        comprobar(TecladoCuadrado.conEjes("2,7")?.semitonosEnV == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 401)
-        comprobar(TecladoCuadrado.secuencial.conOrigen(36).midi(en: CasillaCuadrada(columna: 0, fila: 1)) == 44, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 402)
-        comprobar(RejillaDeControlador.launchpad.casillas.count == 64, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 403)
+        comprobar(enTono.semitonosEnV == 3, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 403)
+        comprobar(enTono.midi(en: .origen) == 62, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 404)
+        comprobar(TecladoCuadrado.conEjes("2,7")?.semitonosEnV == 7, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 405)
+        comprobar(TecladoCuadrado.secuencial.conOrigen(36).midi(en: CasillaCuadrada(columna: 0, fila: 1)) == 44, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 406)
+        comprobar(RejillaDeControlador.launchpad.casillas.count == 64, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 407)
         let pads = enTono.conOrigen(36).svg(RejillaDeControlador.launchpad.casillas, marcadas: [62], primeras: [62], contorno: true)
         _ = pads
     }
@@ -875,30 +875,30 @@ import Hexagonos
     }
 
     @Test func notacionYPartitura15() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 364
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 369
         let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
         let grados = Tonalidad(.do).analizar(progresion).cifrados
-        comprobar(Partitura(acordes: voces, titulo: "ii–V–I", grados: grados).svg().contains(">V7</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 367)
-        comprobar(Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 368)
-        comprobar(Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 369)
+        comprobar(Partitura(acordes: voces, titulo: "ii–V–I", grados: grados).svg().contains(">V7</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 372)
+        comprobar(Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 373)
+        comprobar(Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 374)
     }
 
     @Test func notacionYPartitura16() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 383
-        comprobar(Tonalidad(.do).cifrasDeBajo(de: Acorde("Sol7/Si")), #"["6", "5"]"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 383)
-        comprobar(Tonalidad(.la, .menor).cifrasDeBajo(de: Acorde("Mi")), #"["♯"]"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 384)
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 388
+        comprobar(Tonalidad(.do).cifrasDeBajo(de: Acorde("Sol7/Si")), #"["6", "5"]"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 388)
+        comprobar(Tonalidad(.la, .menor).cifrasDeBajo(de: Acorde("Mi")), #"["♯"]"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 389)
     }
 
     @Test func notacionYPartitura17() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 411
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 416
         do {
             let acorde = try Acorde(leyendo: "Do7(b3)")
             print(acorde)
         } catch let error as ErrorDeLecturaDeTeoria {
             print(error)
-            comprobarIgual(error.motivo, .tensionNoValida("b3"), #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 418)
-            comprobar(error.posicion, #"4"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 419)
+            comprobarIgual(error.motivo, .tensionNoValida("b3"), #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 423)
+            comprobar(error.posicion, #"4"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 424)
             print(error.descripcion(en: .inglesASCII))
         }
         do { _ = try TipoDeAcorde(comprobandoPasosDeQuinta: [0, -3, 4]) } catch { print(error) }

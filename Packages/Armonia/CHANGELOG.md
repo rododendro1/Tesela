@@ -118,6 +118,44 @@
   un camino aparte para las microtonales.
 - Una `Partitura` sin ritmo (`ritmo: false`) dibuja los microtonos de sus notas, que antes se quedaban sin signo.
 
+### Una sola notación por partitura, y títulos que la siguen
+
+- `Partitura.notacion` vale también al dibujarla: `svg()` escribe en ella los cifrados, los nombres de las notas y
+  el título, salvo que las opciones fijen otra. `OpcionesDePentagrama` tiene `notacionFijada` (`nil` si no se da):
+  `OpcionesDePentagrama(notacion:)` la fija, y sin ella cada dibujo usa la de lo que dibuja, o la española compacta
+  fuera de una partitura. `opciones.notacion` sigue dando la que se usa.
+- `Encabezado` tiene `tema` (`.escala(_:)` o `.acorde(_:)`) y `titulo(en:)`: sin `titulo`, el título es el nombre del
+  tema en la notación con que se dibuja o se exporta. `Escala.partitura(tocadaEn:)` y
+  `Acorde.partitura(arpegiadoEn:)` ya no fijan un título en español: ponen su tema. Un título escrito a mano se
+  queda como está.
+- MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI escriben el título con `titulo(en: partitura.notacion)`.
+
+### Las mismas opciones en todos los diagramas
+
+- **Cambio incompatible:** `OpcionesDeDiagrama` (la notación, si se prefieren bemoles, el título y la escala) es la
+  misma en el Tonnetz, la tabla armónica, los teclados isomórficos y cuadrados, el teclado de piano y el reloj de
+  clases, y sustituye a sus parámetros sueltos:
+  - `Tonnetz.svg` y `TablaArmonica.svg` son `svg(opciones:margen:leyenda:)`; `paso` es ahora `opciones.escala`
+    (1, el de siempre).
+  - `TecladoCuadrado.svg` es `svg(_:marcadas:primeras:contorno:margen:opciones:)`, sin `lado`, `notacion` ni
+    `preferirBemoles`; `TecladoIsomorfico.svg` es `svg(_:marcadas:opciones:)`, sin `tamano`.
+  - `TecladoDePiano.svg` es `svg(marcadas:primeras:opciones:)` y `RelojDeClases.svg`, `svg(rotulos:opciones:)`: el
+    título va en `opciones.titulo`.
+- **Cambio incompatible:** las notas marcadas de los teclados son unas `MarcasDeDiagrama`: `[60, 64, 67]` las marca
+  y `[60: "1", 64: "3"]`, con un rótulo. En los teclados isomórficos y cuadrados el rótulo se escribe en lugar del
+  nombre de la nota; en el de piano, una nota se puede marcar sin rótulo. Un `Set<Int>` se pasa como
+  `MarcasDeDiagrama(notas)` y un `[Int: String]`, como `MarcasDeDiagrama(rotulos:)`.
+- Los teclados isomórficos y cuadrados pueden llevar título (`opciones.titulo`); por defecto, ninguno, como antes.
+
+### La tablatura y el mástil cuentan las cuerdas al revés, y ahora se dice
+
+- `Tablatura.Pulsacion.cuerda` se cuenta desde la más aguda (la línea de arriba), como hacía ya el dibujo; el
+  comentario de `init(cuerda:traste:)` decía lo contrario. El mástil (`PosicionEnElMastil.cuerda`) las cuenta desde
+  la más grave.
+- `Tablatura.Pulsacion(cuerdaDesdeLaGrave:de:traste:)`, `cuerdaDesdeLaGrave(de:)` y
+  `Tablatura(cuerdas:desdeLaGrave:)` convierten de una cuenta a la otra, para pasar a la tablatura las posiciones
+  del mástil sin darles la vuelta a mano.
+
 ## 0.3.4 (2026-11-04)
 
 ### Valores escritos a mano, sin opcionales

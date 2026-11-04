@@ -94,6 +94,13 @@ import Testing
             #expect(TecladoCuadrado.casilla(en: TecladoCuadrado.centro(de: c, lado: 40), lado: 40) == c)
         }
         #expect(TecladoCuadrado.cuartas.svg([]).contains(#"width="0""#))
+        // Las opciones comunes: la escala, el título, los bemoles y los rótulos de las marcadas.
+        let grande = TecladoCuadrado.cuartas.svg(ventana, opciones: .init(titulo: "Cuartas", escala: 2))
+        #expect(grande.contains(#"width="80""#) && grande.contains("<title>Cuartas</title>"))
+        #expect(!svg.contains("<title>"))
+        #expect(TecladoCuadrado.cuartas.svg(ventana, opciones: .init(preferirBemoles: true)).contains(">Re♭₄<"))
+        let conRotulo = TecladoCuadrado.cuartas.svg(ventana, marcadas: [60: "1"])
+        #expect(conRotulo.contains(">1<") && !conRotulo.contains(">Do₄<"))
     }
 
     @Test func seEscribenConSusEjes() throws {

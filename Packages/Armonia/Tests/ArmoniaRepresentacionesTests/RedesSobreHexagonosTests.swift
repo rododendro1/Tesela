@@ -224,7 +224,7 @@ import Testing
         #expect(svg.contains(">Do₄<"))
         #expect(svg.contains(DibujoSVG.Color.nota))
         #expect(svg.contains("#bbbbbb"))
-        #expect(teclado.svg(casillas, notacion: .inglesASCII).contains(">C4<"))
+        #expect(teclado.svg(casillas, opciones: .init(notacion: .inglesASCII)).contains(">C4<"))
     }
 
     @Test func elCatalogoDeTecladosYSusNombres() {

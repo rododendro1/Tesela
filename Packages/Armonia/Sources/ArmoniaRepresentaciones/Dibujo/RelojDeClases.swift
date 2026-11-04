@@ -8,7 +8,7 @@ import Foundation
 ///
 ///     let reloj = RelojDeClases(clases: [0, 2, 4, 5, 7, 9, 11], tonica: 0, orden: .quintas)
 ///     reloj.horas   // [0, 1, 2, 3, 4, 5, 11]: de Fa a Si, seguidas
-///     let svg = reloj.svg(rotulos: [0: "Do", 7: "Sol"], titulo: "Do mayor")
+///     let svg = reloj.svg(rotulos: [0: "Do", 7: "Sol"], opciones: .init(titulo: "Do mayor"))
 public struct RelojDeClases: Hashable, Sendable {
     /// Cómo se reparten las doce clases por las horas del reloj.
     public enum Orden: String, Hashable, Sendable, CaseIterable {
@@ -53,8 +53,9 @@ public struct RelojDeClases: Hashable, Sendable {
     }
 
     /// El reloj en SVG: las doce horas con su rótulo (el nombre de la nota, o su número si no se da), el polígono de
-    /// las notas del conjunto y, encima, el título, si lo hay.
-    public func svg(rotulos: [Int: String] = [:], titulo: String = "") -> String {
+    /// las notas del conjunto y, encima, el título de `opciones`, si lo hay; `opciones.escala` cambia el tamaño.
+    public func svg(rotulos: [Int: String] = [:], opciones: OpcionesDeDiagrama = OpcionesDeDiagrama()) -> String {
+        let titulo = opciones.titulo ?? ""
         let arriba = titulo.isEmpty ? 0 : RelojDeClases.altoDelTitulo
         let ancho = RelojDeClases.lado
         let alto = RelojDeClases.lado + arriba
@@ -62,7 +63,8 @@ public struct RelojDeClases: Hashable, Sendable {
         var svg =
             ElementoSVG("svg").con("xmlns", "http://www.w3.org/2000/svg")
             .con("viewBox", "0 0 \(NumerosSVG.unDecimal.texto(ancho)) \(NumerosSVG.unDecimal.texto(alto))")
-            .con("width", ancho).con("height", alto).con("font-family", "sans-serif").apertura + "\n"
+            .con("width", ancho * opciones.escala).con("height", alto * opciones.escala)
+            .con("font-family", "sans-serif").apertura + "\n"
         if !titulo.isEmpty { svg += "  " + ElementoSVG("title").conTexto(titulo) + "\n" }
         svg += "  " + ElementoSVG("rect").con("width", ancho).con("height", alto).con("fill", "#ffffff").vacio + "\n"
         if !titulo.isEmpty {

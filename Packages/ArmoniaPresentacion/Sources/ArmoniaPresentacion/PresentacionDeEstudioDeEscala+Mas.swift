@@ -224,6 +224,7 @@ extension PresentacionDeEstudioDeEscala {
         }
         let tonica = escala.tonica.claseDeAltura
         let primeras = Set(alturas.map(\.midi).filter { (($0 % 12) + 12) % 12 == tonica })
-        return TecladoDePiano(cubriendo: alturas).svg(marcadas: rotulos, primeras: primeras, titulo: titulo)
+        return TecladoDePiano(cubriendo: alturas).svg(
+            marcadas: MarcasDeDiagrama(rotulos: rotulos), primeras: primeras, opciones: .init(titulo: titulo))
     }
 }

@@ -258,7 +258,8 @@ import Testing
 
     @Test func dibujo() {
         let teclado = TecladoDePiano(desde: 60, hasta: 72)
-        let svg = teclado.svg(marcadas: [60: "1", 61: "2", 64: "3"], primeras: [60], titulo: "Do & Re")
+        let svg = teclado.svg(
+            marcadas: [60: "1", 61: "2", 64: "3"], primeras: [60], opciones: .init(titulo: "Do & Re"))
         #expect(svg.hasPrefix("<svg xmlns=\"http://www.w3.org/2000/svg\""))
         #expect(svg.hasSuffix("</svg>\n"))
         #expect(svg.contains("<title>Do &amp; Re</title>"))
@@ -269,6 +270,17 @@ import Testing
         #expect(svg.contains(">2</text>"))
         let sinTitulo = teclado.svg()
         #expect(!sinTitulo.contains("<title>") && !sinTitulo.contains("<circle"))
+        // Marcadas sin rótulo: el círculo, sin texto.
+        let sinRotulos = teclado.svg(marcadas: [60, 64])
+        #expect(sinRotulos.components(separatedBy: "<circle").count - 1 == 2)
+        #expect(!sinRotulos.contains("</text>"))
+        // La escala agranda el dibujo sin cambiar lo que tiene dentro.
+        func ancho(_ svg: String) -> Double? {
+            svg.components(separatedBy: #"width=""#).dropFirst().first?.split(separator: "\"").first
+                .flatMap { Double(String($0)) }
+        }
+        #expect(ancho(teclado.svg()) == 208)
+        #expect(ancho(teclado.svg(opciones: .init(escala: 2))) == 416)
     }
 }
 
@@ -286,7 +298,7 @@ import Testing
 
     @Test func dibujo() {
         let reloj = RelojDeClases(clases: [0, 4, 7], tonica: 0)
-        let svg = reloj.svg(rotulos: [0: "Do", 4: "Mi"], titulo: "Do & Mi")
+        let svg = reloj.svg(rotulos: [0: "Do", 4: "Mi"], opciones: .init(titulo: "Do & Mi"))
         #expect(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"))
         #expect(svg.components(separatedBy: "<circle").count - 1 == 13)
         #expect(svg.contains("<polygon"))

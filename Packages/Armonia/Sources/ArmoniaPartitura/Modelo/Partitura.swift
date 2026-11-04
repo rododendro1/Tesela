@@ -13,8 +13,25 @@ import ArmoniaTeoria
 ///
 ///     let encabezado = Encabezado(titulo: "Escala", tonalidad: Tonalidad(.re), tempo: Tempo(90))
 public struct Encabezado: Hashable, Sendable {
-    /// El título de la obra.
+    /// De qué es una partitura que se nombra por lo que se toca: una escala o un acorde.
+    public enum Tema: Hashable, Sendable, Codable {
+        case escala(Escala)
+        case acorde(Acorde)
+
+        /// Su nombre en una notación: el de la escala («Re dórico», «D Dorian») o el cifrado del acorde.
+        public func nombre(en notacion: Notacion) -> String {
+            switch self {
+            case .escala(let escala): escala.nombre(en: notacion)
+            case .acorde(let acorde): acorde.cifrado(en: notacion)
+            }
+        }
+    }
+
+    /// El título de la obra, tal cual.
     public var titulo: String?
+    /// De qué es, si se nombra por lo que se toca: sin `titulo`, el título es su nombre en la notación con que se
+    /// dibuja o se exporta (`titulo(en:)`).
+    public var tema: Tema?
     /// La de la armadura; `nil`, ninguna. Las funciones que hacen la partitura la estiman si no se da.
     public var tonalidad: Tonalidad?
     /// La indicación metronómica; si es `nil`, no se escribe (en MIDI, negra = 120).
@@ -28,15 +45,22 @@ public struct Encabezado: Hashable, Sendable {
 
     /// Un encabezado con lo que se dé; lo que no, lo pone quien hace la partitura.
     public init(
-        titulo: String? = nil, tonalidad: Tonalidad? = nil, tempo: Tempo? = nil, parte: String? = nil,
-        instrumento: Int? = nil
+        titulo: String? = nil, tema: Tema? = nil, tonalidad: Tonalidad? = nil, tempo: Tempo? = nil,
+        parte: String? = nil, instrumento: Int? = nil
     ) {
         self.titulo = titulo
+        self.tema = tema
         self.tonalidad = tonalidad
         self.tempo = tempo
         self.parte = parte
         self.instrumento = instrumento
     }
+
+    /// El título en una notación: `titulo` si se da; si no, el nombre del tema en esa notación.
+    ///
+    ///     let encabezado = Encabezado(tema: .escala(Escala("Re dórico")))
+    ///     encabezado.titulo(en: .espanolCompacto)   // "Re dórico"; en otra notación, en esa
+    public func titulo(en notacion: Notacion) -> String? { titulo ?? tema?.nombre(en: notacion) }
 }
 
 // MARK: - Partitura
@@ -136,7 +160,9 @@ public struct Partitura: Hashable, Sendable, Codable {
     public var anacrusa: Duracion
     /// La tonalidad que se escribe al principio, debajo del último pentagrama, si se analiza («Do:»).
     public var tonalidadDelAnalisis: Tonalidad?
-    /// La de los cifrados y de la tonalidad del análisis.
+    /// La notación de la partitura: la de los cifrados, la tonalidad del análisis y el título que se nombra por su
+    /// tema (``Encabezado/tema``), al exportarla y al dibujarla; en SVG, también la de los nombres de las notas.
+    /// `OpcionesDePentagrama(notacion:)` dibuja con otra.
     public var notacion: Notacion
     /// Si los pentagramas se unen con una llave, como el piano; si no, con un corchete. Solo cuenta en SVG.
     public var llave: Bool
@@ -272,8 +298,8 @@ extension Partitura {
     /// índice): con `figura`, con ritmo (la última, una negra si la figura es más corta); sin ella, en redondas y sin
     /// ritmo. Es lo que hacen `Escala.partitura(tocadaEn:…)` y `Acorde.partitura(arpegiadoEn:…)`.
     static func tocada(
-        _ notas: [Evento.Nota], titulo: String, figura: Duracion?, digitos: [Int: [Int]], tablatura: Tablatura?,
-        acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
+        _ notas: [Evento.Nota], titulo: String?, tema: Encabezado.Tema, figura: Duracion?, digitos: [Int: [Int]],
+        tablatura: Tablatura?, acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
     ) -> Partitura {
         let eventos = notas.indices.map { i in
             guard let figura else { return Evento(notas: [notas[i]], duracion: .redonda) }
@@ -292,6 +318,6 @@ extension Partitura {
             pulsaciones: porInicio(tablatura?.notas ?? [:]), tonica: tonica)
         return Partitura(
             pentagramas: [Pentagrama(voces: [linea], cuerdas: tablatura?.cuerdas, armadura: armadura)],
-            encabezado: Encabezado(titulo: titulo), ritmo: figura != nil)
+            encabezado: Encabezado(titulo: titulo, tema: tema), ritmo: figura != nil)
     }
 }
