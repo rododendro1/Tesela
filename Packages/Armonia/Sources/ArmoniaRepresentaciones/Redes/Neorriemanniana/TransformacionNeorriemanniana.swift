@@ -16,7 +16,7 @@ import Foundation
 /// P, L o R: el paso de una tríada mayor o menor a una vecina en el Tonnetz.
 ///
 ///     Acorde("Do").transformar(.r)                 // Lam
-///     Acorde("Do").transformar(leyendo: "LP")      // Mi
+///     try Acorde("Do").transformar(leyendo: "LP")  // Mi
 ///     Tonnetz.camino(desde: "Do", hasta: "Mibm")   // [.p, .r, .p]
 public enum TransformacionNeorriemanniana: String, CaseIterable, Hashable, Sendable, CustomStringConvertible {
     /// Paralela: la tercera sube o baja un semitono (Do ↔ Dom).

@@ -160,7 +160,7 @@ conserva: H de Do es Sol♯ menor, no La♭ menor.
 ```swift
 Acorde("Do").transformar(.r) == Acorde("Lam")                     // true
 Acorde("Mib").transformar(.r) == Acorde("Dom")                    // true
-Acorde("Do").transformar(leyendo: "PLR") == Acorde("Fam")         // true
+try Acorde("Do").transformar(leyendo: "PLR") == Acorde("Fam")     // true
 Acorde("Do").transformar(TransformacionNeorriemanniana.s) == Acorde("Do#m")   // true
 Acorde("Sol7").transformar(.p) == nil                             // true
 TransformacionNeorriemanniana.entre("Do", "Mim") == .l            // true
