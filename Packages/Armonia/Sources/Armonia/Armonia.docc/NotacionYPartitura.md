@@ -232,16 +232,16 @@ Escala("Do mayor").svgPentagrama(opciones: OpcionesDePentagrama(notacion: .ingle
 - La escala sube y, si baja con otras notas (la menor melódica, muchos rāgas), también baja, con los becuadros que
   hagan falta. Con `sentido:` se dibuja solo la subida o la bajada.
 - Con la clave sin fijar, se elige la de sol o la de fa. Si el rango pasa a los dos lados del Do central y haría
-  falta más de tres líneas adicionales, se usan los dos pentagramas (`OpcionesDePentagrama.pentagramas`:
+  falta más de tres líneas adicionales, se usan los dos pentagramas (`OpcionesDePentagrama.maquetacion.pentagramas`:
   `.automatico`, `.simple` o `.doble`); si todo es agudo o grave, se escribe una octava más cerca con la marca 8va u 8vb
-  (`marcaDeOctava`), y en el pentagrama doble cada uno la lleva por su cuenta (8va el de arriba, 8vb el de abajo).
+  (`maquetacion.marcaDeOctava`), y en el pentagrama doble cada uno la lleva por su cuenta (8va el de arriba, 8vb el de abajo).
 - Las alteraciones de un acorde se reparten en columnas escalonadas, según lo que sube y baja cada glifo: un bemol
   baja menos que un sostenido y caben más juntos.
 - El pentagrama doble lleva una llave (la de Bravura) a la izquierda.
 - Los acordes se apilan en posición cerrada; los muy extensos (novenas, oncenas y trecenas) y
-  `disposicionDelAcorde: .abierta` ponen el bajo una octava más grave y el resto encima, como la mano izquierda y la
-  derecha del piano, y con eso suelen pasar al pentagrama doble.
-- `nombresDeLasNotas` escribe el nombre de cada nota debajo; las etiquetas no se pisan. La medida del texto sale de
+  `maquetacion.disposicionDelAcorde = .abierta` ponen el bajo una octava más grave y el resto encima, como la mano
+  izquierda y la derecha del piano, y con eso suelen pasar al pentagrama doble.
+- `marcas.nombresDeLasNotas` escribe el nombre de cada nota debajo; las etiquetas no se pisan. La medida del texto sale de
   una tabla de anchos de Helvetica y Arial (`anchoDeLosCaracteres` la multiplica si la tipografía es más ancha), y el
   texto lleva `textLength`, así que no se sale de su sitio con ninguna tipografía.
 - Una voz o varias voces en un pentagrama, saltos de línea y letra quedan fuera: para partituras completas, MusicXML o
@@ -250,7 +250,7 @@ Escala("Do mayor").svgPentagrama(opciones: OpcionesDePentagrama(notacion: .ingle
 ```swift
 Acorde("Do13").svgPentagrama().contains("<title>Do₃</title>")      // true
 Escala("Do mayor").svgPentagrama(octava: 6).contains("8va")        // true
-Escala("Do mayor").svgPentagrama(octava: 3, opciones: OpcionesDePentagrama(pentagramas: .doble)).contains("<title>Do₃</title>")   // true
+Escala("Do mayor").svgPentagrama(octava: 3, opciones: OpcionesDePentagrama(maquetacion: .init(pentagramas: .doble))).contains("<title>Do₃</title>")   // true
 ```
 
 ### Armadura de una tonalidad
@@ -280,12 +280,12 @@ Partitura(.init(voz), encabezado: Encabezado(titulo: "Do7")).svg().contains("<ti
 - La plica sube si la nota más alejada de la 3.ª línea está debajo, y baja si no; las notas unidas por una barra
   van todas hacia el mismo lado, con la barra un poco inclinada.
 - Un tresillo lleva el 3 del lado de las plicas, con corchete si sus notas no van unidas por una barra.
-- `OpcionesDePentagrama.resaltada` cuenta las notas que se oyen (sin silencios ni notas ligadas a la anterior), como
+- `OpcionesDePentagrama.marcas.resaltada` cuenta las notas que se oyen (sin silencios ni notas ligadas a la anterior), como
   los pasos de lo que suena.
 
 ### Líneas y dos voces
 
-Una voz larga se parte en líneas con `OpcionesDePentagrama.compasesPorLinea`: cada línea lleva los compases que le
+Una voz larga se parte en líneas con `OpcionesDePentagrama.maquetacion.compasesPorLinea`: cada línea lleva los compases que le
 tocan (la primera, también la anacrusa), su clave y su armadura; la cifra del compás va solo en la primera y la barra
 final, en la última. Todas miden lo que la más ancha (la última no, si es mucho más corta), y una nota que pasa de una
 línea a otra se divide y se liga. Los acordes, los grados, los dedos y la tablatura van con su nota.
@@ -296,7 +296,7 @@ debajo. Las dos se parten igual en líneas.
 
 ```swift
 var porLineas = OpcionesDePentagrama()
-porLineas.compasesPorLinea = 4
+porLineas.maquetacion.compasesPorLinea = 4
 let larga = try Voz(leyendo: Array(repeating: "Do4:4 Mi4:4 Sol4:2", count: 8).joined(separator: " "))
 let ocho = Partitura(.init(larga), encabezado: Encabezado(titulo: "Ocho compases"))
 ocho.svg(opciones: porLineas) != ocho.svg()   // true
@@ -333,14 +333,14 @@ Alrededor de las notas se puede escribir lo que ayuda a estudiarlas:
 - **Cifrado de cada acorde.** Los `cifrados` de `Partitura(acordes:titulo:cifrados:)` van encima de la columna de
   cada acorde; los `cifrados` de una ``Partitura/Linea``, encima de la nota en que empieza cada acorde;
   `Arpegio.svgPentagrama(cifrado: true)`, encima de la primera nota.
-- **Intervalos** (`intervalosDeLasNotas`). Debajo de cada nota, su intervalo desde la tónica de la escala o desde la
+- **Intervalos** (`marcas.intervalosDeLasNotas`). Debajo de cada nota, su intervalo desde la tónica de la escala o desde la
   fundamental del acorde que suena (con 9, 11 y 13 si el acorde tiene séptima).
-- **Semitonos** (`marcarSemitonos`). Un arco une dos notas seguidas a un semitono.
-- **Tónica** (`marcarTonica`). La tónica va en color (`colorDeLaTonica`) en cada octava.
+- **Semitonos** (`marcas.semitonos`). Un arco une dos notas seguidas a un semitono.
+- **Tónica** (`marcas.tonica`). La tónica va en color (`colores.tonica`) en cada octava.
 - **Varias octavas.** `Escala.svgPentagrama(octavas:)` sube (y baja) dos, tres o cuatro octavas.
 
 ```swift
-let opciones = OpcionesDePentagrama(intervalosDeLasNotas: true, marcarSemitonos: true, marcarTonica: true)
+let opciones = OpcionesDePentagrama(marcas: .init(intervalosDeLasNotas: true, semitonos: true, tonica: true))
 Acorde("Sol9").svgPentagrama(opciones: opciones).contains(">1 3 5 ♭7 9</text>")   // true
 Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<title>Re₆</title>")   // true
 ```
@@ -372,10 +372,10 @@ Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras") 
 - **Bajo cifrado.** `Tonalidad.cifrasDeBajo(de:)` da las cifras del bajo continuo de un acorde (lo contrario de
   `acorde(sobre:cifras:)`): «6», «6 4», «6 5», «4 3», «4 2», con la alteración de las notas que la armadura no da.
   El parámetro `bajoCifrado` de las disposiciones y las voces las escribe debajo, una encima de otra.
-- **Cambios de clave.** Con `OpcionesDePentagrama.cambiosDeClave`, un solo pentagrama pasa de la clave de fa a la de
+- **Cambios de clave.** Con `OpcionesDePentagrama.maquetacion.cambiosDeClave`, un solo pentagrama pasa de la clave de fa a la de
   sol (y vuelve) cuando las notas se van a tres líneas adicionales, con la clave nueva más pequeña delante.
-- **Notas ajenas al acorde.** Con `marcarNotasAjenas`, las notas que no son del acorde que suena van en color: las de
-  la tonalidad (notas de paso, bordaduras…) en `colorDeLasNotasDePaso`, las cromáticas en `colorDeLasCromaticas`.
+- **Notas ajenas al acorde.** Con `marcas.notasAjenas`, las notas que no son del acorde que suena van en color: las de
+  la tonalidad (notas de paso, bordaduras…) en `colores.notasDePaso`, las cromáticas en `colores.cromaticas`.
 
 ```swift
 Tonalidad(.do).cifrasDeBajo(de: Acorde("Sol7/Si"))          // ["6", "5"]

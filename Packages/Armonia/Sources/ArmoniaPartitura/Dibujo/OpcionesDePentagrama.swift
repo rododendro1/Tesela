@@ -4,13 +4,12 @@ import ArmoniaTeoria
 // Las opciones del pentagrama en SVG (`PentagramaSVG`). El dibujo está en `PentagramaSVG.swift`.
 //
 // Van en tres grupos: `maquetacion` (claves, pentagramas, líneas, medidas), `marcas` (lo que se escribe o se pinta
-// además de las notas) y `colores`. La armadura y la notación van sueltas. Las propiedades sueltas de antes
-// (`opciones.color`, `opciones.marcarTonica`…) siguen valiendo: leen y cambian las de su grupo.
+// además de las notas) y `colores`. La armadura y la notación van sueltas.
 
 /// Cómo se dibuja un pentagrama.
-public struct OpcionesDePentagrama {
+public struct OpcionesDePentagrama: Hashable, Sendable {
     /// Cómo se escriben las notas de un acorde.
-    public enum Disposicion {
+    public enum Disposicion: Hashable, Sendable {
         /// Cerrada, salvo en los acordes que abarcan más de una octava y media (novenas, oncenas y trecenas), que van
         /// en la abierta.
         case automatica
@@ -22,7 +21,7 @@ public struct OpcionesDePentagrama {
     }
 
     /// Cuántos pentagramas se usan.
-    public enum Pentagramas {
+    public enum Pentagramas: Hashable, Sendable {
         /// Uno; pero dos (el de sol y el de fa, unidos) si la clave no se fija, las notas pasan a los dos lados del
         /// Do central y con uno harían falta más de tres líneas adicionales.
         case automatico
@@ -57,7 +56,7 @@ public struct OpcionesDePentagrama {
     }
 
     /// Dónde y cómo se colocan las notas: las claves, los pentagramas, las líneas y las medidas.
-    public struct Maquetacion {
+    public struct Maquetacion: Hashable, Sendable {
         /// La clave; si es `nil`, la de sol o la de fa, la que necesite menos líneas adicionales (con `pentagramas`
         /// en `.doble`, la clave no cuenta: van las dos).
         public var clave: Clave?
@@ -82,11 +81,25 @@ public struct OpcionesDePentagrama {
         /// `textLength`, así que nunca se sale del sitio que se le ha dado, sea cual sea la tipografía.
         public var anchoDeLosCaracteres = 1.0
 
-        public init() {}
+        /// La maquetación con lo que se dé; lo demás, por omisión.
+        public init(
+            clave: Clave? = nil, pentagramas: Pentagramas = .automatico, cambiosDeClave: Bool = false,
+            marcaDeOctava: Bool = true, disposicionDelAcorde: Disposicion = .automatica, compasesPorLinea: Int? = nil,
+            tamano: Double = 10, anchoDeLosCaracteres: Double = 1
+        ) {
+            self.clave = clave
+            self.pentagramas = pentagramas
+            self.cambiosDeClave = cambiosDeClave
+            self.marcaDeOctava = marcaDeOctava
+            self.disposicionDelAcorde = disposicionDelAcorde
+            self.compasesPorLinea = compasesPorLinea
+            self.tamano = tamano
+            self.anchoDeLosCaracteres = anchoDeLosCaracteres
+        }
     }
 
     /// Lo que se escribe o se pinta además de las notas.
-    public struct Marcas {
+    public struct Marcas: Hashable, Sendable {
         /// El nombre de cada nota, debajo del pentagrama.
         public var nombresDeLasNotas = false
         /// Debajo de cada nota (y del nombre, si lo lleva), su intervalo desde la tónica de la escala o la
@@ -104,11 +117,22 @@ public struct OpcionesDePentagrama {
         /// La columna (contada desde 0) que se pinta en `Colores.resaltado`: la nota o el acorde que está sonando.
         public var resaltada: Int?
 
-        public init() {}
+        /// Las marcas que se pidan; ninguna, por omisión.
+        public init(
+            nombresDeLasNotas: Bool = false, intervalosDeLasNotas: Bool = false, semitonos: Bool = false,
+            tonica: Bool = false, notasAjenas: Bool = false, resaltada: Int? = nil
+        ) {
+            self.nombresDeLasNotas = nombresDeLasNotas
+            self.intervalosDeLasNotas = intervalosDeLasNotas
+            self.semitonos = semitonos
+            self.tonica = tonica
+            self.notasAjenas = notasAjenas
+            self.resaltada = resaltada
+        }
     }
 
     /// Los colores (cualquier color CSS).
-    public struct Colores {
+    public struct Colores: Hashable, Sendable {
         /// El del dibujo; `currentColor` toma el del texto que lo rodea.
         public var dibujo = "currentColor"
         public var tonica = "#1971C2"
@@ -117,156 +141,38 @@ public struct OpcionesDePentagrama {
         /// El de la nota resaltada.
         public var resaltado = "#E8590C"
 
-        public init() {}
+        /// Los colores que se den; los demás, los de siempre.
+        public init(
+            dibujo: String = "currentColor", tonica: String = "#1971C2", notasDePaso: String = "#2F9E44",
+            cromaticas: String = "#C2255C", resaltado: String = "#E8590C"
+        ) {
+            self.dibujo = dibujo
+            self.tonica = tonica
+            self.notasDePaso = notasDePaso
+            self.cromaticas = cromaticas
+            self.resaltado = resaltado
+        }
     }
 
-    public var maquetacion = Maquetacion()
-    public var marcas = Marcas()
-    public var colores = Colores()
+    public var maquetacion: Maquetacion
+    public var marcas: Marcas
+    public var colores: Colores
     /// Qué armadura se escribe: por defecto, la de la escala si es diatónica; con `.tonalidad`, la de esa tonalidad
     /// también en los acordes, los arpegios y las voces.
     public var armadura: Armadura
     /// Cómo se escriben los nombres (en el título y en las etiquetas) y el cifrado.
     public var notacion: Notacion
 
-    /// Las opciones más usadas de una vez; las demás se cambian después en `maquetacion`, `marcas` y `colores`.
+    /// Las opciones, por grupos:
+    /// `OpcionesDePentagrama(notacion: .inglesASCII, marcas: .init(nombresDeLasNotas: true))`.
     public init(
-        clave: Clave? = nil, armadura: Armadura = .automatica, pentagramas: Pentagramas = .automatico,
-        notacion: Notacion = .espanolCompacto,
-        nombresDeLasNotas: Bool = false, tamano: Double = 10, color: String = "currentColor",
-        marcaDeOctava: Bool = true, anchoDeLosCaracteres: Double = 1,
-        disposicionDelAcorde: Disposicion = .automatica, intervalosDeLasNotas: Bool = false,
-        marcarSemitonos: Bool = false, marcarTonica: Bool = false
+        armadura: Armadura = .automatica, notacion: Notacion = .espanolCompacto, maquetacion: Maquetacion = .init(),
+        marcas: Marcas = .init(), colores: Colores = .init()
     ) {
         self.armadura = armadura
         self.notacion = notacion
-        maquetacion.clave = clave
-        maquetacion.pentagramas = pentagramas
-        maquetacion.tamano = tamano
-        maquetacion.marcaDeOctava = marcaDeOctava
-        maquetacion.anchoDeLosCaracteres = anchoDeLosCaracteres
-        maquetacion.disposicionDelAcorde = disposicionDelAcorde
-        marcas.nombresDeLasNotas = nombresDeLasNotas
-        marcas.intervalosDeLasNotas = intervalosDeLasNotas
-        marcas.semitonos = marcarSemitonos
-        marcas.tonica = marcarTonica
-        colores.dibujo = color
-    }
-}
-
-// Las propiedades sueltas de antes, que leen y cambian las de su grupo.
-extension OpcionesDePentagrama {
-    /// `maquetacion.clave`.
-    public var clave: Clave? {
-        get { maquetacion.clave }
-        set { maquetacion.clave = newValue }
-    }
-
-    /// `maquetacion.pentagramas`.
-    public var pentagramas: Pentagramas {
-        get { maquetacion.pentagramas }
-        set { maquetacion.pentagramas = newValue }
-    }
-
-    /// `maquetacion.cambiosDeClave`.
-    public var cambiosDeClave: Bool {
-        get { maquetacion.cambiosDeClave }
-        set { maquetacion.cambiosDeClave = newValue }
-    }
-
-    /// `maquetacion.marcaDeOctava`.
-    public var marcaDeOctava: Bool {
-        get { maquetacion.marcaDeOctava }
-        set { maquetacion.marcaDeOctava = newValue }
-    }
-
-    /// `maquetacion.disposicionDelAcorde`.
-    public var disposicionDelAcorde: Disposicion {
-        get { maquetacion.disposicionDelAcorde }
-        set { maquetacion.disposicionDelAcorde = newValue }
-    }
-
-    /// `maquetacion.compasesPorLinea`.
-    public var compasesPorLinea: Int? {
-        get { maquetacion.compasesPorLinea }
-        set { maquetacion.compasesPorLinea = newValue }
-    }
-
-    /// `maquetacion.tamano`.
-    public var tamano: Double {
-        get { maquetacion.tamano }
-        set { maquetacion.tamano = newValue }
-    }
-
-    /// `maquetacion.anchoDeLosCaracteres`.
-    public var anchoDeLosCaracteres: Double {
-        get { maquetacion.anchoDeLosCaracteres }
-        set { maquetacion.anchoDeLosCaracteres = newValue }
-    }
-
-    /// `marcas.nombresDeLasNotas`.
-    public var nombresDeLasNotas: Bool {
-        get { marcas.nombresDeLasNotas }
-        set { marcas.nombresDeLasNotas = newValue }
-    }
-
-    /// `marcas.intervalosDeLasNotas`.
-    public var intervalosDeLasNotas: Bool {
-        get { marcas.intervalosDeLasNotas }
-        set { marcas.intervalosDeLasNotas = newValue }
-    }
-
-    /// `marcas.semitonos`.
-    public var marcarSemitonos: Bool {
-        get { marcas.semitonos }
-        set { marcas.semitonos = newValue }
-    }
-
-    /// `marcas.tonica`.
-    public var marcarTonica: Bool {
-        get { marcas.tonica }
-        set { marcas.tonica = newValue }
-    }
-
-    /// `marcas.notasAjenas`.
-    public var marcarNotasAjenas: Bool {
-        get { marcas.notasAjenas }
-        set { marcas.notasAjenas = newValue }
-    }
-
-    /// `marcas.resaltada`.
-    public var resaltada: Int? {
-        get { marcas.resaltada }
-        set { marcas.resaltada = newValue }
-    }
-
-    /// `colores.dibujo`.
-    public var color: String {
-        get { colores.dibujo }
-        set { colores.dibujo = newValue }
-    }
-
-    /// `colores.tonica`.
-    public var colorDeLaTonica: String {
-        get { colores.tonica }
-        set { colores.tonica = newValue }
-    }
-
-    /// `colores.notasDePaso`.
-    public var colorDeLasNotasDePaso: String {
-        get { colores.notasDePaso }
-        set { colores.notasDePaso = newValue }
-    }
-
-    /// `colores.cromaticas`.
-    public var colorDeLasCromaticas: String {
-        get { colores.cromaticas }
-        set { colores.cromaticas = newValue }
-    }
-
-    /// `colores.resaltado`.
-    public var colorResaltado: String {
-        get { colores.resaltado }
-        set { colores.resaltado = newValue }
+        self.maquetacion = maquetacion
+        self.marcas = marcas
+        self.colores = colores
     }
 }

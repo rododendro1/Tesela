@@ -24,8 +24,8 @@ public struct PentagramaPresentado: Hashable, Sendable {
         _ escala: Escala, octava: Int = 4, sentido: SentidoDelIntervalo? = nil,
         notacion: Notacion = .espanolCompacto, nombresDeLasNotas: Bool = true, resaltada: Int? = nil
     ) {
-        var opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)
-        opciones.resaltada = resaltada
+        var opciones = OpcionesDePentagrama(notacion: notacion, marcas: .init(nombresDeLasNotas: nombresDeLasNotas))
+        opciones.marcas.resaltada = resaltada
         let dibujo = escala.svgPentagrama(octava: octava, sentido: sentido, opciones: opciones)
         let nombre = escala.nombre(en: notacion)
         let notas = escala.alturas(octava: octava).map { $0.nombre(en: notacion) }.joined(separator: ", ")
@@ -37,7 +37,7 @@ public struct PentagramaPresentado: Hashable, Sendable {
         _ acorde: Acorde, octava: Int = 4, notacion: Notacion = .espanolCompacto,
         nombresDeLasNotas: Bool = false
     ) {
-        let opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)
+        let opciones = OpcionesDePentagrama(notacion: notacion, marcas: .init(nombresDeLasNotas: nombresDeLasNotas))
         let dibujo = acorde.svgPentagrama(octava: octava, opciones: opciones)
         let cifrado = acorde.cifrado(en: notacion)
         let notas = acorde.notasDesdeElBajo.map { $0.nombre(en: notacion) }.joined(separator: ", ")
@@ -50,8 +50,8 @@ public struct PentagramaPresentado: Hashable, Sendable {
         _ arpegio: Arpegio, octava: Int = 4, notacion: Notacion = .espanolCompacto,
         nombresDeLasNotas: Bool = true, resaltada: Int? = nil
     ) {
-        var opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)
-        opciones.resaltada = resaltada
+        var opciones = OpcionesDePentagrama(notacion: notacion, marcas: .init(nombresDeLasNotas: nombresDeLasNotas))
+        opciones.marcas.resaltada = resaltada
         let dibujo = arpegio.svgPentagrama(octava: octava, opciones: opciones)
         let nombre = arpegio.nombre(en: notacion)
         let notas = arpegio.alturas(octava: octava).map { $0.nombre(en: notacion) }.joined(separator: ", ")
@@ -69,9 +69,9 @@ public struct PentagramaPresentado: Hashable, Sendable {
         _ voz: Voz, titulo: String, tonalidad: Tonalidad? = nil, notacion: Notacion = .espanolCompacto,
         nombresDeLasNotas: Bool = true, resaltada: Int? = nil
     ) {
-        var opciones = OpcionesDePentagrama(notacion: notacion, nombresDeLasNotas: nombresDeLasNotas)
+        var opciones = OpcionesDePentagrama(notacion: notacion, marcas: .init(nombresDeLasNotas: nombresDeLasNotas))
         if let tonalidad { opciones.armadura = .tonalidad(tonalidad) }
-        opciones.resaltada = resaltada
+        opciones.marcas.resaltada = resaltada
         let dibujo = Partitura(.init(voz), encabezado: Encabezado(titulo: titulo)).svg(opciones: opciones)
         let notas = voz.melodia.alturas.map { $0.nombre(en: notacion) }.joined(separator: ", ")
         self.init(svg: dibujo, descripcion: titulo + ": " + notas, nombre: "Pentagrama " + titulo)

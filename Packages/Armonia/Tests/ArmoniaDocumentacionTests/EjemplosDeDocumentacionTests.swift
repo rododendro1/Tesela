@@ -828,7 +828,7 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 251
         comprobar(Acorde("Do13").svgPentagrama().contains("<title>Do₃</title>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 251)
         comprobar(Escala("Do mayor").svgPentagrama(octava: 6).contains("8va"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 252)
-        comprobar(Escala("Do mayor").svgPentagrama(octava: 3, opciones: OpcionesDePentagrama(pentagramas: .doble)).contains("<title>Do₃</title>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 253)
+        comprobar(Escala("Do mayor").svgPentagrama(octava: 3, opciones: OpcionesDePentagrama(maquetacion: .init(pentagramas: .doble))).contains("<title>Do₃</title>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 253)
     }
 
     @Test func notacionYPartitura10() throws {
@@ -846,7 +846,7 @@ import Hexagonos
     @Test func notacionYPartitura12() throws {
         // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 298
         var porLineas = OpcionesDePentagrama()
-        _ = porLineas.compasesPorLinea = 4
+        _ = porLineas.maquetacion.compasesPorLinea = 4
         let larga = try Voz(leyendo: Array(repeating: "Do4:4 Mi4:4 Sol4:2", count: 8).joined(separator: " "))
         let ocho = Partitura(.init(larga), encabezado: Encabezado(titulo: "Ocho compases"))
         comprobar(ocho.svg(opciones: porLineas) != ocho.svg(), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 302)
@@ -868,7 +868,7 @@ import Hexagonos
 
     @Test func notacionYPartitura14() throws {
         // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 343
-        let opciones = OpcionesDePentagrama(intervalosDeLasNotas: true, marcarSemitonos: true, marcarTonica: true)
+        let opciones = OpcionesDePentagrama(marcas: .init(intervalosDeLasNotas: true, semitonos: true, tonica: true))
         comprobar(Acorde("Sol9").svgPentagrama(opciones: opciones).contains(">1 3 5 ♭7 9</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 344)
         comprobar(Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<title>Re₆</title>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 345)
     }

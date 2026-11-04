@@ -1,7 +1,7 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
 
-// Una voz larga en varias líneas, una debajo de otra, con `OpcionesDePentagrama.compasesPorLinea`.
+// Una voz larga en varias líneas, una debajo de otra, con `OpcionesDePentagrama.maquetacion.compasesPorLinea`.
 //
 // Cada línea lleva los compases que le tocan (la primera, también la anacrusa) y empieza con su clave y su armadura;
 // la cifra del compás solo va en la primera y la barra doble, en la última. Una nota que pasa de una línea a la
@@ -49,12 +49,13 @@ extension Voz {
         return resultado
     }
 
-    /// El dibujo de cada línea de la voz: una sola si no hay `opciones.compasesPorLinea` o la voz cabe en una.
+    /// El dibujo de cada línea de la voz: una sola si no hay `opciones.maquetacion.compasesPorLinea` o la voz cabe en
+    /// una.
     func dibujosPorLinea(
         titulo: String, anotaciones: AnotacionesDelPentagrama, tonica: Nota?, armadura: [Nota]?,
         opciones: OpcionesDePentagrama
     ) -> [PentagramaSVG] {
-        let tramos = opciones.compasesPorLinea.map { lineas(de: $0) } ?? []
+        let tramos = opciones.maquetacion.compasesPorLinea.map { lineas(de: $0) } ?? []
         guard tramos.count > 1 else {
             return [
                 pentagrama(
@@ -62,8 +63,8 @@ extension Voz {
             ]
         }
         var deUnaLinea = opciones
-        deUnaLinea.compasesPorLinea = nil
-        deUnaLinea.resaltada = nil
+        deUnaLinea.maquetacion.compasesPorLinea = nil
+        deUnaLinea.marcas.resaltada = nil
         let inicios = LineaDeLaVoz(eventos: eventos, inicio: .cero).inicios
         // Los momentos en que empieza una nota que se oye (no un silencio ni una nota a la que se liga la anterior),
         // para contar la resaltada.
@@ -101,8 +102,8 @@ extension Voz {
                 suyas.acordeVigente = anteriores.max { $0.key < $1.key }?.value
             }
             var opcionesDeLaLinea = deUnaLinea
-            if let resaltada = opciones.resaltada {
-                opcionesDeLaLinea.resaltada = Voz.resaltada(
+            if let resaltada = opciones.marcas.resaltada {
+                opcionesDeLaLinea.marcas.resaltada = Voz.resaltada(
                     resaltada, en: linea, comienzosDeNota: comienzosDeNota)
             }
             let voz = Voz(linea.eventos, compas: compas, anacrusa: l == 0 ? anacrusa : .cero)
@@ -126,10 +127,10 @@ extension Voz {
 extension Voz {
     /// Esta voz y `otra` en el mismo pentagrama: esta con las plicas hacia arriba y `otra` hacia abajo, con las notas
     /// que suenan a la vez en la misma vertical y los silencios de cada una encima o debajo. `otra` se mide con el
-    /// compás y la anacrusa de esta. Los acordes (por evento de esta voz) van encima; los nombres de las notas y lo
-    /// que marca `opciones.resaltada`, solo en esta. Con `opciones.compasesPorLinea`, las dos se parten en las mismas
-    /// líneas. No hay marca de octava ni cambios de clave: las claves son las que piden las dos voces juntas. Si
-    /// las dos suenan a una segunda o al unísono, la cabeza de `otra` se aparta a la derecha.
+    /// compás y la anacrusa de esta. Los acordes (por evento de esta voz) van encima; los nombres de las notas y lo que
+    /// marca `opciones.marcas.resaltada`, solo en esta. Con `opciones.maquetacion.compasesPorLinea`, las dos se parten
+    /// en las mismas líneas. No hay marca de octava ni cambios de clave: las claves son las que piden las dos voces
+    /// juntas. Si las dos suenan a una segunda o al unísono, la cabeza de `otra` se aparta a la derecha.
     ///
     ///     let soprano = try Voz(leyendo: "Mi5:4 Re5:4 Do5:2")
     ///     let contralto = try Voz(leyendo: "Do5:4 Si4:4 Sol4:2")
@@ -139,12 +140,12 @@ extension Voz {
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
         var deArriba = opciones
-        deArriba.marcaDeOctava = false
-        deArriba.cambiosDeClave = false
+        deArriba.maquetacion.marcaDeOctava = false
+        deArriba.maquetacion.cambiosDeClave = false
         var deAbajo = deArriba
-        deAbajo.nombresDeLasNotas = false
-        deAbajo.intervalosDeLasNotas = false
-        deAbajo.resaltada = nil
+        deAbajo.marcas.nombresDeLasNotas = false
+        deAbajo.marcas.intervalosDeLasNotas = false
+        deAbajo.marcas.resaltada = nil
         let arriba = dibujosPorLinea(
             titulo: titulo, anotaciones: AnotacionesDelPentagrama(acordes: acordes), tonica: nil, armadura: nil,
             opciones: deArriba)
@@ -163,7 +164,7 @@ extension Voz {
             }
             return voces
         }
-        return PentagramaSVG.svg(porLinea, titulo: titulo, tamano: opciones.tamano)
+        return PentagramaSVG.svg(porLinea, titulo: titulo, tamano: opciones.maquetacion.tamano)
     }
 }
 
@@ -278,7 +279,7 @@ extension PentagramaSVG {
             superpuestos(grupo.filter(dibujos.indices.contains).map { dibujos[$0] })
         }
         guard porPentagrama.count > 1 else { return porPentagrama[0] }
-        return apilados(porPentagrama, barras: dibujos[0], llave: llave, color: voces[0].opciones.color)
+        return apilados(porPentagrama, barras: dibujos[0], llave: llave, color: voces[0].opciones.colores.dibujo)
     }
 
     /// Los dibujos de las voces de un pentagrama, uno encima de otro.
@@ -431,12 +432,12 @@ extension PentagramaSVG {
 extension Voz {
     /// Varias voces en un sistema de pentagramas, uno debajo de otro, con lo que suena a la vez en la misma vertical
     /// y las barras de compás atravesándolos: un coral a cuatro voces en dos pentagramas, el piano con sus dos
-    /// manos, un cuarteto. `pentagramas` lleva, de arriba abajo, las voces de cada pentagrama (una o dos; con dos,
-    /// la primera con las plicas hacia arriba). `claves` fija la de cada uno (la que falte o sea `nil`, la que
-    /// pidan sus notas). Con `llave`, los une una llave, como en el piano; si no, un corchete, como en un coro.
-    /// Todas las voces se miden con el compás y la anacrusa de la primera; con `opciones.compasesPorLinea`, el
-    /// sistema se parte en líneas. Los nombres de las notas van solo en la primera voz de cada pentagrama, y la
-    /// resaltada, en la primera del primero.
+    /// manos, un cuarteto. `pentagramas` lleva, de arriba abajo, las voces de cada pentagrama (una o dos; con dos, la
+    /// primera con las plicas hacia arriba). `claves` fija la de cada uno (la que falte o sea `nil`, la que pidan sus
+    /// notas). Con `llave`, los une una llave, como en el piano; si no, un corchete, como en un coro. Todas las voces
+    /// se miden con el compás y la anacrusa de la primera; con `opciones.maquetacion.compasesPorLinea`, el sistema se
+    /// parte en líneas. Los nombres de las notas van solo en la primera voz de cada pentagrama, y la resaltada, en la
+    /// primera del primero.
     ///
     ///     let derecha = try Voz(leyendo: "Mi5:4 Re5:4 Do5:2")
     ///     let izquierda = try Voz(leyendo: "Do3:2 Sol2:2")
@@ -447,25 +448,25 @@ extension Voz {
     ) -> String {
         let deDosEnDos = pentagramas.map { Array($0.prefix(2)) }.filter { !$0.isEmpty }
         guard let primera = deDosEnDos.first?.first else {
-            return PentagramaSVG.envolver([], titulo: titulo, tamano: opciones.tamano)
+            return PentagramaSVG.envolver([], titulo: titulo, tamano: opciones.maquetacion.tamano)
         }
         var base = opciones
-        base.marcaDeOctava = false
-        base.cambiosDeClave = false
-        base.pentagramas = .simple
+        base.maquetacion.marcaDeOctava = false
+        base.maquetacion.cambiosDeClave = false
+        base.maquetacion.pentagramas = .simple
         // De cada pentagrama, cada voz partida en líneas.
         var porPentagrama: [[[PentagramaSVG]]] = []
         for (p, voces) in deDosEnDos.enumerated() {
             var delPentagrama = base
-            if claves.indices.contains(p), let clave = claves[p] { delPentagrama.clave = clave }
-            if p > 0 { delPentagrama.resaltada = nil }
+            if claves.indices.contains(p), let clave = claves[p] { delPentagrama.maquetacion.clave = clave }
+            if p > 0 { delPentagrama.marcas.resaltada = nil }
             porPentagrama.append(
                 voces.enumerated().map { v, voz in
                     var suyas = delPentagrama
                     if v > 0 {
-                        suyas.nombresDeLasNotas = false
-                        suyas.intervalosDeLasNotas = false
-                        suyas.resaltada = nil
+                        suyas.marcas.nombresDeLasNotas = false
+                        suyas.marcas.intervalosDeLasNotas = false
+                        suyas.marcas.resaltada = nil
                     }
                     return Voz(voz.eventos, compas: primera.compas, anacrusa: primera.anacrusa).dibujosPorLinea(
                         titulo: titulo, anotaciones: AnotacionesDelPentagrama(), tonica: nil, armadura: nil,
@@ -476,6 +477,6 @@ extension Voz {
         let porLinea = (0..<lineas).map { l in
             porPentagrama.map { voces in voces.compactMap { $0.indices.contains(l) ? $0[l] : nil } }
         }
-        return PentagramaSVG.svgDelSistema(porLinea, titulo: titulo, llave: llave, tamano: opciones.tamano)
+        return PentagramaSVG.svgDelSistema(porLinea, titulo: titulo, llave: llave, tamano: opciones.maquetacion.tamano)
     }
 }

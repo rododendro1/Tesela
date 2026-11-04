@@ -80,11 +80,12 @@ import Testing
 
     /// Con `.doble` se dibujan los dos pentagramas y las notas se reparten por el Do central.
     @Test func elPentagramaDobleSeFuerza() {
-        let svg = Escala(.do).svgPentagrama(octava: 3, opciones: OpcionesDePentagrama(pentagramas: .doble))
+        let doble = OpcionesDePentagrama(maquetacion: .init(pentagramas: .doble))
+        let svg = Escala(.do).svgPentagrama(octava: 3, opciones: doble)
         #expect(pentagramasDibujados(svg) == 2)
         #expect(contar("<g><title>", en: svg) == 8)
-        #expect(
-            pentagramasDibujados(Escala(.do).svgPentagrama(opciones: OpcionesDePentagrama(pentagramas: .simple))) == 1)
+        let simple = OpcionesDePentagrama(maquetacion: .init(pentagramas: .simple))
+        #expect(pentagramasDibujados(Escala(.do).svgPentagrama(opciones: simple)) == 1)
     }
 
     /// Un rango muy ancho, a los dos lados del Do central, pasa solo al pentagrama doble; con la clave fija, no.
@@ -95,7 +96,8 @@ import Testing
         ).svg()
         #expect(pentagramasDibujados(automatico) == 2)
         let conClave = PentagramaSVG(
-            columnas: [notas], armadura: [], cifrado: nil, titulo: "", opciones: OpcionesDePentagrama(clave: .sol)
+            columnas: [notas], armadura: [], cifrado: nil, titulo: "",
+            opciones: OpcionesDePentagrama(maquetacion: .init(clave: .sol))
         ).svg()
         #expect(pentagramasDibujados(conClave) == 1)
         let solo = PentagramaSVG(
@@ -114,10 +116,10 @@ import Testing
         #expect(Escala(.do).svgPentagrama(octava: 1).contains(">8vb<"))
         // Los nombres son los de las notas que suenan, no los de las escritas.
         #expect(Escala(.do).svgPentagrama(octava: 6).contains("<title>Do₆</title>"))
-        #expect(
-            !(Escala(.do).svgPentagrama(octava: 6, opciones: OpcionesDePentagrama(marcaDeOctava: false)).contains(">8v"))
-        )
-        #expect(!(Escala(.do).svgPentagrama(octava: 6, opciones: OpcionesDePentagrama(clave: .sol)).contains(">8v")))
+        let sinMarca = OpcionesDePentagrama(maquetacion: .init(marcaDeOctava: false))
+        #expect(!(Escala(.do).svgPentagrama(octava: 6, opciones: sinMarca).contains(">8v")))
+        let enSol = OpcionesDePentagrama(maquetacion: .init(clave: .sol))
+        #expect(!(Escala(.do).svgPentagrama(octava: 6, opciones: enSol).contains(">8v")))
     }
 
     private func etiquetas(_ svg: String) -> [(x: Double, texto: String)] {
@@ -132,7 +134,7 @@ import Testing
     /// Los nombres de las notas no se pisan: entre dos centros cabe la mitad de cada nombre y un hueco.
     @Test func lasEtiquetasNoSePisan() {
         let lista = etiquetas(
-            Escala("Si♭ mayor").svgPentagrama(opciones: OpcionesDePentagrama(nombresDeLasNotas: true)))
+            Escala("Si♭ mayor").svgPentagrama(opciones: OpcionesDePentagrama(marcas: .init(nombresDeLasNotas: true))))
         #expect(lista.count == 8)
         for (a, b) in zip(lista, lista.dropFirst()) {
             let anchoA = PentagramaSVG.anchoEstimado(a.texto, cuerpoDeLetra: 1.2, proporcion: 1)
@@ -155,7 +157,7 @@ import Testing
 
     /// El cifrado y las etiquetas llevan `textLength`: no se salen de su sitio con otra tipografía.
     @Test func elTextoLlevaSuLongitud() {
-        let svg = Acorde("Do7b9").svgPentagrama(opciones: OpcionesDePentagrama(nombresDeLasNotas: true))
+        let svg = Acorde("Do7b9").svgPentagrama(opciones: OpcionesDePentagrama(marcas: .init(nombresDeLasNotas: true)))
         #expect(contar("textLength=", en: svg) == 2)
     }
 
@@ -166,7 +168,8 @@ import Testing
             return Double(resto.components(separatedBy: "\"")[0].split(separator: " ")[1])!
         }
         let normal = Acorde("Do7b9").svgPentagrama()
-        let ancho2 = Acorde("Do7b9").svgPentagrama(opciones: OpcionesDePentagrama(anchoDeLosCaracteres: 1.4))
+        let masAncho = OpcionesDePentagrama(maquetacion: .init(anchoDeLosCaracteres: 1.4))
+        let ancho2 = Acorde("Do7b9").svgPentagrama(opciones: masAncho)
         #expect(ancho(ancho2) > ancho(normal))
     }
 
@@ -174,7 +177,8 @@ import Testing
 
     /// El pentagrama doble lleva una llave a la izquierda, en el margen que se añade al `viewBox`.
     @Test func elPentagramaDobleLlevaLlave() {
-        let doble = Escala(.do).svgPentagrama(octava: 3, opciones: OpcionesDePentagrama(pentagramas: .doble))
+        let enDos = OpcionesDePentagrama(maquetacion: .init(pentagramas: .doble))
+        let doble = Escala(.do).svgPentagrama(octava: 3, opciones: enDos)
         #expect(doble.contains("viewBox=\"-1.9 "))
         #expect(doble.contains("scale(3.5)"))
         let simple = Escala(.do).svgPentagrama()
@@ -185,13 +189,11 @@ import Testing
     /// Los acordes muy extensos (la trecena) ponen el bajo una octava más grave; los demás, en posición cerrada.
     @Test func laPosicionAbierta() {
         #expect(!(Acorde("Sol7").svgPentagrama().contains("<title>Sol₃</title>")))
-        #expect(
-            Acorde("Sol7").svgPentagrama(opciones: OpcionesDePentagrama(disposicionDelAcorde: .abierta)).contains(
-                "<title>Sol₃</title>"))
+        let abierta = OpcionesDePentagrama(maquetacion: .init(disposicionDelAcorde: .abierta))
+        #expect(Acorde("Sol7").svgPentagrama(opciones: abierta).contains("<title>Sol₃</title>"))
         #expect(Acorde("Do13").svgPentagrama().contains("<title>Do₃</title>"))
-        #expect(
-            !(Acorde("Do13").svgPentagrama(opciones: OpcionesDePentagrama(disposicionDelAcorde: .cerrada)).contains(
-                "<title>Do₃</title>")))
+        let cerrada = OpcionesDePentagrama(maquetacion: .init(disposicionDelAcorde: .cerrada))
+        #expect(!(Acorde("Do13").svgPentagrama(opciones: cerrada).contains("<title>Do₃</title>")))
         // Con el bajo tan grave y lo demás tan agudo, pasa al pentagrama doble.
         #expect(pentagramasDibujados(Acorde("Do13").svgPentagrama()) == 2)
     }

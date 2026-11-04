@@ -125,18 +125,18 @@ extension Escala {
 }
 
 extension Acorde {
-    /// El acorde en un pentagrama, como SVG: `Acorde("Sol7").svgPentagrama()`. Las notas van apiladas desde el bajo,
-    /// en posición cerrada y a partir de `octava` (el bajo, en la primera octava en que su nota alcanza el Do de esa
-    /// octava), con el cifrado encima. Los acordes muy extensos y `disposicionDelAcorde: .abierta` ponen el bajo una
-    /// octava más grave y el resto encima, y con eso suelen pasar al pentagrama doble. Sin armadura, salvo la de
-    /// `.tonalidad`.
+    /// El acorde en un pentagrama, como SVG: `Acorde("Sol7").svgPentagrama()`. Las notas van apiladas desde el bajo, en
+    /// posición cerrada y a partir de `octava` (el bajo, en la primera octava en que su nota alcanza el Do de esa
+    /// octava), con el cifrado encima. Los acordes muy extensos y `maquetacion.disposicionDelAcorde = .abierta` ponen
+    /// el bajo una octava más grave y el resto encima, y con eso suelen pasar al pentagrama doble. Sin armadura, salvo
+    /// la de `.tonalidad`.
     public func svgPentagrama(
         octava: Int = 4, cifrado conCifrado: Bool = true,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
         let cerrada = Altura.posicionCerrada(notasDesdeElBajo, desde: Altura(.do, octava: octava).midi)
         let abierta: Bool
-        switch opciones.disposicionDelAcorde {
+        switch opciones.maquetacion.disposicionDelAcorde {
         case .cerrada: abierta = false
         case .abierta: abierta = true
         case .automatica:

@@ -197,22 +197,22 @@ extension LineaDeComandos {
         guard let tonalidad = try argumentos.quitarTonalidad() else { return uso(.faltaValor("en"), notacion) }
         var opciones = OpcionesDePentagrama(notacion: notacion)
         if let tonalidad { opciones.armadura = .tonalidad(tonalidad) }
-        opciones.nombresDeLasNotas = argumentos.quitarMarca("--nombres", "--names")
-        opciones.intervalosDeLasNotas = argumentos.quitarMarca("--intervalos", "--intervals")
-        opciones.marcarSemitonos = argumentos.quitarMarca("--semitonos", "--semitones")
-        opciones.marcarTonica = argumentos.quitarMarca("--tonica", "--tónica", "--tonic")
-        opciones.marcarNotasAjenas = argumentos.quitarMarca("--ajenas", "--non-chord")
-        if argumentos.quitarMarca("--doble", "--grand-staff") { opciones.pentagramas = .doble }
+        opciones.marcas.nombresDeLasNotas = argumentos.quitarMarca("--nombres", "--names")
+        opciones.marcas.intervalosDeLasNotas = argumentos.quitarMarca("--intervalos", "--intervals")
+        opciones.marcas.semitonos = argumentos.quitarMarca("--semitonos", "--semitones")
+        opciones.marcas.tonica = argumentos.quitarMarca("--tonica", "--tónica", "--tonic")
+        opciones.marcas.notasAjenas = argumentos.quitarMarca("--ajenas", "--non-chord")
+        if argumentos.quitarMarca("--doble", "--grand-staff") { opciones.maquetacion.pentagramas = .doble }
         // Los cambios de clave son en un solo pentagrama.
-        opciones.cambiosDeClave = argumentos.quitarMarca("--cambiar-clave", "--clef-changes")
-        if opciones.cambiosDeClave { opciones.pentagramas = .simple }
+        opciones.maquetacion.cambiosDeClave = argumentos.quitarMarca("--cambiar-clave", "--clef-changes")
+        if opciones.maquetacion.cambiosDeClave { opciones.maquetacion.pentagramas = .simple }
         switch argumentos.quitarOpcion("--clave", "--clef") {
         case .ausente: break
         case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
         case .valor(let texto):
             guard let clave = leerClave(texto) else { return uso(.claveDesconocida(texto), notacion) }
-            opciones.clave = clave
-            opciones.pentagramas = .simple
+            opciones.maquetacion.clave = clave
+            opciones.maquetacion.pentagramas = .simple
         }
         guard let octava = argumentos.quitarNumero("--octava", "--octave", en: 0...7, porDefecto: 4) else {
             return uso(.octavaFueraDeRango, notacion)
@@ -276,7 +276,7 @@ extension LineaDeComandos {
         case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
         case .valor(let texto):
             acordes = try texto.split(separator: " ").map { try Acorde(leyendo: String($0)) }
-            opciones.marcarNotasAjenas = true
+            opciones.marcas.notasAjenas = true
         }
         if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
         guard !argumentos.restantes.isEmpty else { return uso(.faltaLoQueDibujaElPentagrama, notacion) }

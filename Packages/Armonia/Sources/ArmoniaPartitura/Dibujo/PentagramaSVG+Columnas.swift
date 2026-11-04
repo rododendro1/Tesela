@@ -47,7 +47,7 @@ extension PentagramaSVG {
         // Altura diatónica (letra y octava) → alteración vigente: «s1» (un sostenido) o el glifo SMuFL de un microtono.
         var enVigor: [Int: String] = [:]
         var ultimaEtiqueta: (centro: Double, mitad: Double)?
-        let resaltadas = ritmo?.resaltadas ?? Set(opciones.resaltada.map { [$0] } ?? [])
+        let resaltadas = ritmo?.resaltadas ?? Set(opciones.marcas.resaltada.map { [$0] } ?? [])
         for (columna, alturas) in columnas.enumerated() {
             // Un cambio de clave: la nueva, más pequeña, delante de la columna.
             if sistema.conCambios, columna > 0, sistema.clave(columna, 0) != sistema.clave(columna - 1, 0) {
@@ -91,7 +91,8 @@ extension PentagramaSVG {
             let mitadDelCifrado =
                 (cifradoDeLaColumna.map {
                     PentagramaSVG.anchoEstimado(
-                        $0, cuerpoDeLetra: PentagramaSVG.letraDelCifrado, proporcion: opciones.anchoDeLosCaracteres)
+                        $0, cuerpoDeLetra: PentagramaSVG.letraDelCifrado,
+                        proporcion: opciones.maquetacion.anchoDeLosCaracteres)
                 } ?? 0) / 2
             if cifradoDeLaColumna != nil, let anterior = maquetacion.cifrados.last {
                 let centroMinimo = anterior.x + anterior.mitad + mitadDelCifrado + 0.8
@@ -130,12 +131,12 @@ extension PentagramaSVG {
                     }
                     let nombre = nota.microtono?.nombre ?? nota.altura.nombre(en: opciones.notacion)
                     let esTonica =
-                        opciones.marcarTonica
+                        opciones.marcas.tonica
                         && referencia(columna).map { $0.nota.claseDeAltura == nota.altura.nota.claseDeAltura } == true
                     let relleno: String? =
                         resaltadas.contains(columna)
-                        ? opciones.colorResaltado
-                        : colorDeNotaAjena(nota.altura.nota, columna) ?? (esTonica ? opciones.colorDeLaTonica : nil)
+                        ? opciones.colores.resaltado
+                        : colorDeNotaAjena(nota.altura.nota, columna) ?? (esTonica ? opciones.colores.tonica : nil)
                     lienzo.notas.append(
                         elemento("g").con("fill", relleno ?? "", si: relleno != nil)
                             .conHijos(elemento("title").conTexto(nombre) + partes.joined()))
@@ -289,14 +290,14 @@ extension PentagramaSVG {
     func textosDeLaColumna(_ columna: Int) -> TextosDeLaColumna {
         let alturas = columnas[columna]
         let etiqueta: String? =
-            opciones.nombresDeLasNotas && !alturas.isEmpty
+            opciones.marcas.nombresDeLasNotas && !alturas.isEmpty
             ? (columnas.count == 1
                 ? alturas.indices.map { nombreDeLaAltura(columna, $0) }.joined(separator: " ")
                 : nombreDeLaAltura(columna, 0))
             : nil
         // El intervalo desde la tónica o la fundamental, debajo del nombre (todas las notas, si es un acorde).
         let intervalo: String? =
-            opciones.intervalosDeLasNotas && !alturas.isEmpty
+            opciones.marcas.intervalosDeLasNotas && !alturas.isEmpty
             ? referencia(columna).map { referencia in
                 (alturas.count > 1 ? alturas : [alturas[0]]).map { referencia.cifra(de: $0.nota) }
                     .joined(separator: " ")
@@ -306,15 +307,18 @@ extension PentagramaSVG {
         let anchos =
             [etiqueta, intervalo].compactMap { $0 }.map {
                 PentagramaSVG.anchoEstimado(
-                    $0, cuerpoDeLetra: PentagramaSVG.letraDeLasEtiquetas, proporcion: opciones.anchoDeLosCaracteres)
+                    $0, cuerpoDeLetra: PentagramaSVG.letraDeLasEtiquetas,
+                    proporcion: opciones.maquetacion.anchoDeLosCaracteres)
             }
             + [grado].compactMap { $0 }.map {
                 PentagramaSVG.anchoEstimado(
-                    $0, cuerpoDeLetra: PentagramaSVG.letraDeLosGrados, proporcion: opciones.anchoDeLosCaracteres)
+                    $0, cuerpoDeLetra: PentagramaSVG.letraDeLosGrados,
+                    proporcion: opciones.maquetacion.anchoDeLosCaracteres)
             }
             + cifrasDelBajo.map {
                 PentagramaSVG.anchoEstimado(
-                    $0, cuerpoDeLetra: PentagramaSVG.letraDelBajoCifrado, proporcion: opciones.anchoDeLosCaracteres)
+                    $0, cuerpoDeLetra: PentagramaSVG.letraDelBajoCifrado,
+                    proporcion: opciones.maquetacion.anchoDeLosCaracteres)
             }
         return TextosDeLaColumna(
             etiqueta: etiqueta, intervalo: intervalo, grado: grado, cifrasDelBajo: cifrasDelBajo,

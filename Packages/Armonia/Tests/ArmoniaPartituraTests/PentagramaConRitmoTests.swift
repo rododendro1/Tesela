@@ -136,7 +136,7 @@ import Testing
         #expect(PentagramaSVG.Ritmo.de(voz, resaltada: 1).ritmo.resaltadas == [2, 3])
         #expect(PentagramaSVG.Ritmo.de(voz, resaltada: 2).ritmo.resaltadas == [4])
         var opciones = OpcionesDePentagrama()
-        opciones.resaltada = 1
+        opciones.marcas.resaltada = 1
         #expect(contar("fill=\"#E8590C\"", en: voz.svgPentagrama(titulo: "Re", opciones: opciones)) == 2)
     }
 

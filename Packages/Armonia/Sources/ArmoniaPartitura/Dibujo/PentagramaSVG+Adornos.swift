@@ -99,7 +99,7 @@ extension PentagramaSVG {
                 "M\(n(a.x + 0.2)) \(n(a.y - 0.8))"
                 + "Q\(n((a.x + b.x) / 2)) \(n(curva)) \(n(b.x - 0.2)) \(n(b.y - 0.8))"
             lienzo.notas.append(
-                elemento("path").con("d", trazado).con("fill", "none").con("stroke", opciones.color)
+                elemento("path").con("d", trazado).con("fill", "none").con("stroke", opciones.colores.dibujo)
                     .con("stroke-width", "0.12").vacio)
             lienzo.minimoY = min(lienzo.minimoY, (alto + curva) / 2 - 0.1)
         }
@@ -120,12 +120,14 @@ extension PentagramaSVG {
             let rotulo = arriba ? "8va" : "8vb"
             let finDelRotulo =
                 inicio - 0.3
-                + PentagramaSVG.anchoEstimado(rotulo, cuerpoDeLetra: 1.4, proporcion: opciones.anchoDeLosCaracteres)
+                + PentagramaSVG.anchoEstimado(
+                    rotulo, cuerpoDeLetra: 1.4, proporcion: opciones.maquetacion.anchoDeLosCaracteres)
             let yDeLaLinea = y - 0.45
             let gancho = arriba ? yDeLaLinea + 1.0 : yDeLaLinea - 1.0
             marcas.append(
                 elemento("text").con("x", inicio - 0.3).con("y", y).con("font-size", "1.4").con("font-style", "italic")
-                    .con("font-family", "sans-serif").con("fill", opciones.color).con("stroke", "none").conTexto(rotulo)
+                    .con("font-family", "sans-serif").con("fill", opciones.colores.dibujo).con("stroke", "none")
+                    .conTexto(rotulo)
             )
             // Con una sola columna (un acorde) no hay línea de puntos: solo el rótulo.
             if maquetacion.ultimaX[k] - (finDelRotulo + 0.3) > 1.0 {
@@ -193,7 +195,7 @@ extension PentagramaSVG {
                 let mitad =
                     PentagramaSVG.anchoEstimado(
                         texto, cuerpoDeLetra: PentagramaSVG.letraDeLaTablatura,
-                        proporcion: opciones.anchoDeLosCaracteres) / 2
+                        proporcion: opciones.maquetacion.anchoDeLosCaracteres) / 2
                 let y = colocada.lineas[pulsacion.cuerda].y
                 colocada.lineas[pulsacion.cuerda].huecos.append(
                     (centros[columna] - mitad - 0.15, centros[columna] + mitad + 0.15))

@@ -71,7 +71,7 @@ import Testing
     /// tiene séptima) o desde la del acorde que suena.
     @Test func losIntervalosDeLasNotas() {
         var opciones = OpcionesDePentagrama()
-        opciones.intervalosDeLasNotas = true
+        opciones.marcas.intervalosDeLasNotas = true
         let dorico = Escala("Re dórico").svgPentagrama(opciones: opciones)
         for intervalo in ["1", "2", "♭3", "4", "5", "6", "♭7"] {
             #expect(dorico.contains(">\(intervalo)</text>"), Comment(rawValue: intervalo))
@@ -86,7 +86,7 @@ import Testing
     @Test func losSemitonosLlevanUnArco() {
         var opciones = OpcionesDePentagrama()
         let sinArcos = Escala(.do).svgPentagrama(opciones: opciones)
-        opciones.marcarSemitonos = true
+        opciones.marcas.semitonos = true
         let arcos = contar("Q", en: Escala(.do).svgPentagrama(opciones: opciones)) - contar("Q", en: sinArcos)
         #expect(arcos == 2)
         let dos = Escala(.do).svgPentagrama(octavas: 2, opciones: opciones)
@@ -96,10 +96,10 @@ import Testing
     /// La tónica, en color en cada octava; la nota resaltada (la que suena) manda sobre ella.
     @Test func laTonicaEnColor() {
         var opciones = OpcionesDePentagrama()
-        opciones.marcarTonica = true
+        opciones.marcas.tonica = true
         #expect(contar("fill=\"#1971C2\"", en: Escala(.do).svgPentagrama(opciones: opciones)) == 2)
         #expect(contar("fill=\"#1971C2\"", en: Escala(.do).svgPentagrama()) == 0)
-        opciones.resaltada = 0
+        opciones.marcas.resaltada = 0
         let resaltada = Escala(.do).svgPentagrama(opciones: opciones)
         #expect(contar("fill=\"#1971C2\"", en: resaltada) == 1)
         #expect(contar("fill=\"#E8590C\"", en: resaltada) == 1)
@@ -205,18 +205,18 @@ import Testing
     /// Do mayor en tres octavas desde Do2, en un solo pentagrama: empieza en clave de fa y pasa a la de sol, más
     /// pequeña, delante de la nota; sin cambios de clave, lleva la marca de octava.
     @Test func losCambiosDeClave() {
-        var opciones = OpcionesDePentagrama(pentagramas: .simple)
-        opciones.cambiosDeClave = true
+        var opciones = OpcionesDePentagrama(maquetacion: .init(pentagramas: .simple))
+        opciones.maquetacion.cambiosDeClave = true
         let svg = Escala(.do).svgPentagrama(octava: 2, octavas: 3, sentido: .ascendente, opciones: opciones)
         #expect(contar("d=\"\(GlifosSMuFL.claveDeFa.trazado)\"", en: svg) == 1)
         #expect(contar("d=\"\(GlifosSMuFL.claveDeSol.trazado)\"", en: svg) == 1)
         #expect(svg.contains("scale(0.75)"))
         #expect(!svg.contains("8va") && !svg.contains("8vb"))
-        let sinCambios = Escala(.do).svgPentagrama(
-            octava: 2, octavas: 3, sentido: .ascendente, opciones: OpcionesDePentagrama(pentagramas: .simple))
+        let simple = OpcionesDePentagrama(maquetacion: .init(pentagramas: .simple))
+        let sinCambios = Escala(.do).svgPentagrama(octava: 2, octavas: 3, sentido: .ascendente, opciones: simple)
         #expect(!sinCambios.contains("scale(0.75)"))
         // En el pentagrama doble no hay cambios.
-        opciones.pentagramas = .doble
+        opciones.maquetacion.pentagramas = .doble
         #expect(!Escala(.do).svgPentagrama(octava: 2, octavas: 3, opciones: opciones).contains("scale(0.75)"))
         #expect(PentagramaSVG.clavesPorRegistro([[Altura("Do2")], [Altura("Do6")]], desde: .fa) == [.fa, .sol])
     }
@@ -225,13 +225,13 @@ import Testing
     @Test func lasNotasAjenasAlAcorde() throws {
         let voz = try Voz(leyendo: "Mi4:8 Re4:8 Do4:8 Re♯4:8 Mi4:2")
         var opciones = OpcionesDePentagrama(armadura: .tonalidad(Tonalidad(.do)))
-        opciones.marcarNotasAjenas = true
+        opciones.marcas.notasAjenas = true
         let svg = voz.svgPentagrama(titulo: "Do", acordes: [0: Acorde("Do")], opciones: opciones)
         #expect(contar("fill=\"#2F9E44\"", en: svg) == 1)
         #expect(contar("fill=\"#C2255C\"", en: svg) == 1)
         // Sin tonalidad, todas las ajenas son de paso; sin acorde, ninguna.
         var sinTonalidad = OpcionesDePentagrama()
-        sinTonalidad.marcarNotasAjenas = true
+        sinTonalidad.marcas.notasAjenas = true
         let sinColorCromatico = voz.svgPentagrama(titulo: "Do", acordes: [0: Acorde("Do")], opciones: sinTonalidad)
         #expect(contar("fill=\"#2F9E44\"", en: sinColorCromatico) == 2)
         #expect(!voz.svgPentagrama(titulo: "Do", opciones: sinTonalidad).contains("#2F9E44"))

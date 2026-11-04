@@ -28,7 +28,7 @@ extension Partitura {
                 opciones: suyas)
         }
         let pentagrama = llenos[0]
-        if let clave = pentagrama.clave { suyas.clave = clave }
+        if let clave = pentagrama.clave { suyas.maquetacion.clave = clave }
         let primera = pentagrama.voces[0]
         let inicios = primera.voz.inicios
         func porEvento<Valor>(_ porInicio: [Duracion: Valor]) -> [Int: Valor] {

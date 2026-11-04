@@ -123,7 +123,7 @@ import Testing
         let contralto = try Voz(leyendo: "Do5:1 Si4:1 Do5:1")
         let bajo = try Voz(leyendo: "Do3:1")
         var opciones = OpcionesDePentagrama()
-        opciones.compasesPorLinea = 1
+        opciones.maquetacion.compasesPorLinea = 1
         let svg = Voz.svgSistema([[soprano, contralto], [bajo]], titulo: "Desigual", opciones: opciones)
         #expect(veces(GlifosSMuFL.redonda, en: svg) == 7)
         #expect(contar("stroke-width=\"0.13\"", en: svg) == 20)
