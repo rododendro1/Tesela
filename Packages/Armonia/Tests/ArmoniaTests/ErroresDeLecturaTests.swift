@@ -213,6 +213,7 @@ import Testing
             .intervaloInexistente(numero: 3, calidad: .justa), .alteracionNoReconocida("?"),
             .claseDeAlturaNoValida("x"), .numeroDeForteDesconocido("3-13"), .faltaElCierre("]"),
             .serieNoDodecafonica(faltan: [2], repetidas: [1]), .serieNoDodecafonica(faltan: [], repetidas: []),
+            .idiomaNoReconocido("x", opciones: ["es", "en"]),
         ]).map { ErrorDeLectura(texto: "x", posicion: 0, motivo: $0) }
         + [ErrorDeLecturaDeTeoria.Motivo]([
             .simboloNoReconocido("x"), .tensionNoValida("b3"), .numeroDeAcordeNoValido(8), .numeroRepetido(9),
@@ -225,6 +226,8 @@ import Testing
             .vocesDistintas, .vocesDeDistintaLongitud, .nombreNoReconocido("x", opciones: ["up", "down"]),
             .numeroFueraDeRango("x", desde: 1, hasta: 22),
             .trasteNoValido("x", ultimo: 12), .cuerdasDistintas(esperadas: 6, leidas: 5),
+            .cifradoRomanoNoValido("x"), .destinoNoTonicalizable("vii°"), .cifrasNoValidas("x"),
+            .cifrasSinAcorde("x"),
         ]).map { ErrorDeLecturaDeTeoria(texto: "x", posicion: 0, motivo: $0) }
         + [ErrorDeLecturaDePartitura.Motivo]([
             .duracionNoValida("x"), .compasNoValido("x"), .contrapuntoDeOtraDuracion(redondas: 8),

@@ -215,7 +215,7 @@ import Testing
         #expect(Escala(texto: "re dóricu") == Escala(.re, .dorico))
         #expect(Tonalidad(.do).lugar(en: .asturianoPalabras) == "en do mayor")
         #expect(InstrumentoDePartitura.violonchelo.nombre(en: .asturianoPalabras) == "violonchelu")
-        #expect(Encordado(nombre: "baxu") == .bajoElectrico)
+        #expect(try Encordado(leyendo: "baxu") == .bajoElectrico)
         #expect(
             ErrorDeLectura(texto: "", posicion: 0, motivo: .textoVacio).explicacion(en: .asturianoPalabras)
                 == "el testu ta baleru")

@@ -60,6 +60,9 @@ struct TextosDeNucleo: TextosTraducidos {
     let faltanEnLaSerie: @Sendable (String) -> String
     let repetidasEnLaSerie: @Sendable (String) -> String
 
+    // MARK: ErrorDeLectura.swift (idiomas)
+    let idiomaNoReconocido: @Sendable (_ nombre: String, _ opciones: String) -> String
+
     // MARK: Gramática (Intervalo.swift, ErrorDeLectura.swift)
     /// El nombre de un intervalo con su calidad y su número: «3ª mayor», «major third».
     let nombreDeIntervalo: @Sendable (_ calidad: String, _ ordinal: String) -> String

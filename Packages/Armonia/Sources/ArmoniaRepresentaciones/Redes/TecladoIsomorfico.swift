@@ -157,9 +157,11 @@ public struct TecladoIsomorfico: Hashable, Sendable {
         }
     }
 
-    /// El teclado girado esos grados en sentido horario, o `nil` si no son un múltiplo de 30.
-    public func rotado(grados: Int, nombre: String? = nil) -> TecladoIsomorfico? {
-        grados % 30 == 0 ? rotado(doceavos: grados / 30, nombre: nombre) : nil
+    /// El teclado girado esos grados en sentido horario. Lanza `ErrorDeUIL.rotacionNoValida` si no son un múltiplo
+    /// de 30, como ``FormatoUIL/rotado(grados:)``.
+    public func rotado(grados: Int, nombre: String? = nil) throws -> TecladoIsomorfico {
+        guard grados % 30 == 0 else { throw ErrorDeUIL.rotacionNoValida(grados) }
+        return rotado(doceavos: grados / 30, nombre: nombre)
     }
 
     /// El teclado reflejado como en un espejo vertical: lo que subía a la derecha sube a la izquierda.

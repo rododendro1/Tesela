@@ -134,17 +134,24 @@ public struct Encordado: Hashable, Sendable {
 }
 
 extension Encordado {
-    /// Busca un instrumento por su nombre, sin distinguir mayúsculas ni tildes: «guitarra», «bajo de cinco
-    /// cuerdas», «ukulele», «drop D»… En cualquiera de los quince idiomas de los textos: «bass»,
-    /// «seven-string guitar», «guitare», «bandolim», «гитара». `nil` si no se conoce.
-    public init?(nombre texto: String) {
+    /// El instrumento de un nombre, sin distinguir mayúsculas ni tildes: «guitarra», «bajo de cinco cuerdas»,
+    /// «ukulele», «drop D»… En cualquiera de los quince idiomas de los textos: «bass», «seven-string guitar»,
+    /// «guitare», «bandolim», «гитара». Si no es ninguno, lanza `ErrorDeLecturaDeTeoria` (`.nombreNoReconocido`) con
+    /// los nombres de `todos`.
+    ///
+    ///     try Encordado(leyendo: "ukulele") == .ukelele   // true
+    public init(leyendo texto: String) throws {
         let clave = texto.claveDeBusqueda
         guard
             let encontrado = Encordado.alias[clave]
                 ?? Encordado.todos.first(where: { encordado in
                     ([encordado.nombre] + (encordado.traduccion?.todos ?? [])).contains { $0.claveDeBusqueda == clave }
                 })
-        else { return nil }
+        else {
+            let opciones = Encordado.todos.map(\.nombre)
+            throw ErrorDeLecturaDeTeoria(
+                texto: texto, posicion: nil, motivo: .nombreNoReconocido(texto, opciones: opciones))
+        }
         self = encontrado
     }
 

@@ -15,13 +15,14 @@ extension Tonalidad {
     /// - Las cifras se escriben juntas («64») o separadas por `/` («6/4»); «8» no añade nada y «9» es la novena,
     ///   que, a diferencia del «2», no quita la tercera.
     ///
-    /// `nil` si las cifras no se pueden leer o sus notas no forman un acorde.
+    /// Lanza `ErrorDeLecturaDeTeoria` con las cifras como texto: `.cifrasNoValidas` si no se pueden leer (en el
+    /// carácter que no se entiende) y `.cifrasSinAcorde` si sus notas no forman un acorde.
     ///
-    ///     Tonalidad(.do).acorde(sobre: .si, cifras: "65")             // Sol7/Si
-    ///     Tonalidad(.la, .menor).acorde(sobre: .mi, cifras: "#")      // Mi
-    ///     Tonalidad(.la, .menor).acorde(sobre: .fa, cifras: "6")      // Rem/Fa
-    public func acorde(sobre bajo: Nota, cifras: String) -> Acorde? {
-        guard let leidas = Tonalidad.leerCifras(cifras) else { return nil }
+    ///     try Tonalidad(.do).acorde(sobre: .si, cifras: "65")             // Sol7/Si
+    ///     try Tonalidad(.la, .menor).acorde(sobre: .mi, cifras: "#")      // Mi
+    ///     try Tonalidad(.la, .menor).acorde(sobre: .fa, cifras: "6")      // Rem/Fa
+    public func acorde(sobre bajo: Nota, cifras: String) throws -> Acorde {
+        let leidas = try Tonalidad.leerCifras(cifras)
         let numeros = Tonalidad.completarCifras(Set(leidas.map(\.numero)))
         let notas = numeros.sorted().map { numero in
             var nota = notaDiatonica(numero, sobre: bajo)
@@ -33,26 +34,48 @@ extension Tonalidad {
         let todas = [bajo] + notas
         let candidatos = Acorde.identificar(todas)
         let exacto = candidatos.first { $0.bajo == bajo && Set($0.notas + [$0.bajo]) == Set(todas) }
-        return exacto ?? candidatos.first { $0.bajo == bajo }
+        guard let acorde = exacto ?? candidatos.first(where: { $0.bajo == bajo }) else {
+            throw ErrorDeLecturaDeTeoria(texto: cifras, posicion: nil, motivo: .cifrasSinAcorde(cifras))
+        }
+        return acorde
     }
 
     /// Los acordes de un bajo cifrado escrito como notas del bajo separadas por espacios, cada una con sus cifras
-    /// detrás de dos puntos: «Do Fa:6 Sol:7 Do», «La Re:6 Mi:# La». `nil` si alguna nota o alguna cifra no se
-    /// puede leer o no forma acorde.
+    /// detrás de dos puntos: «Do Fa:6 Sol:7 Do», «La Re:6 Mi:# La». Lanza `ErrorDeLectura` (`.textoVacio`) si no
+    /// hay nada que leer, el error de la nota si una no se lee y el de ``acorde(sobre:cifras:)`` si unas cifras no se
+    /// leen o no forman acorde, en su carácter del texto entero.
     ///
-    ///     Tonalidad(.do).acordes(bajoCifrado: "Do Fa Sol:7 Do")         // [Do, Fa, Sol7, Do]
-    ///     Tonalidad(.do).acordes(bajoCifrado: "Do Re:43 Mi:6 Fa Sol")   // [Do, Sol7/Re, Do/Mi, Fa, Sol]
-    public func acordes(bajoCifrado texto: String) -> [Acorde]? {
-        let partes = texto.split(whereSeparator: \.isWhitespace)
-        guard !partes.isEmpty else { return nil }
+    ///     try Tonalidad(.do).acordes(bajoCifrado: "Do Fa Sol:7 Do")         // [Do, Fa, Sol7, Do]
+    ///     try Tonalidad(.do).acordes(bajoCifrado: "Do Re:43 Mi:6 Fa Sol")   // [Do, Sol7/Re, Do/Mi, Fa, Sol]
+    public func acordes(bajoCifrado texto: String) throws -> [Acorde] {
         var acordes: [Acorde] = []
-        for parte in partes {
-            let campos = parte.split(separator: ":", maxSplits: 1, omittingEmptySubsequences: false)
-            guard let bajo = try? Nota(leyendo: String(campos[0])),
-                let acorde = acorde(sobre: bajo, cifras: campos.count > 1 ? String(campos[1]) : "")
-            else { return nil }
-            acordes.append(acorde)
+        var actual = ""
+        var posicion = 0
+        func cerrar() throws {
+            defer { actual = "" }
+            guard !actual.isEmpty else { return }
+            let inicio = posicion - actual.count
+            let campos = actual.split(separator: ":", maxSplits: 1, omittingEmptySubsequences: false)
+            let bajo: Nota
+            do { bajo = try Nota(leyendo: String(campos[0])) } catch let error as any ErrorAlLeer {
+                throw error.situado(en: texto, posicion: inicio + (error.posicion ?? 0))
+            }
+            let cifras = campos.count > 1 ? String(campos[1]) : ""
+            do { acordes.append(try acorde(sobre: bajo, cifras: cifras)) } catch let error as any ErrorAlLeer {
+                let inicioDeLasCifras = inicio + campos[0].count + 1
+                throw error.situado(en: texto, posicion: inicioDeLasCifras + (error.posicion ?? 0))
+            }
         }
+        for caracter in texto {
+            if caracter.isWhitespace {
+                try cerrar()
+            } else {
+                actual.append(caracter)
+            }
+            posicion += 1
+        }
+        try cerrar()
+        guard !acordes.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
         return acordes
     }
 
@@ -114,15 +137,16 @@ extension Tonalidad {
         var alteracion: Int?
     }
 
-    /// Las cifras de un texto como «64», «6/4», «#6», «6+» o «b»; `nil` si tiene algo que no es una cifra. Una
-    /// alteración sola es la de la tercera.
-    private static func leerCifras(_ texto: String) -> [Cifra]? {
+    /// Las cifras de un texto como «64», «6/4», «#6», «6+» o «b». Una alteración sola es la de la tercera. Lanza
+    /// `.cifrasNoValidas` en el carácter que no es una cifra, o en la segunda de dos alteraciones seguidas.
+    private static func leerCifras(_ texto: String) throws -> [Cifra] {
         var cifras: [Cifra] = []
         var pendiente: Int?
         var anteriorSinAlterar = false
-        for caracter in texto where !caracter.isWhitespace && caracter != "/" {
+        for (posicion, caracter) in texto.enumerated() where !caracter.isWhitespace && caracter != "/" {
+            let error = ErrorDeLecturaDeTeoria(texto: texto, posicion: posicion, motivo: .cifrasNoValidas(texto))
             if let digito = caracter.wholeNumberValue {
-                guard (1...9).contains(digito) else { return nil }
+                guard (1...9).contains(digito) else { throw error }
                 cifras.append(Cifra(numero: digito, alteracion: pendiente))
                 anteriorSinAlterar = pendiente == nil
                 pendiente = nil
@@ -133,7 +157,7 @@ extension Tonalidad {
             case "#", "♯", "+": alteracion = 1
             case "b", "♭": alteracion = -1
             case "♮", "n": alteracion = 0
-            default: return nil
+            default: throw error
             }
             // Detrás de una cifra sin alterar, es la suya («6+», «6#»), salvo que venga otra cifra pegada.
             if anteriorSinAlterar, caracter == "+" || pendiente == nil {
@@ -142,7 +166,7 @@ extension Tonalidad {
             } else if pendiente == nil {
                 pendiente = alteracion
             } else {
-                return nil
+                throw error
             }
         }
         if let pendiente { cifras.append(Cifra(numero: 3, alteracion: pendiente)) }
@@ -170,13 +194,16 @@ extension Tonalidad {
 extension Coral {
     /// Realiza un bajo cifrado a cuatro voces (ver ``Tonalidad/acordes(bajoCifrado:)`` y
     /// ``realizar(_:soprano:en:)``): el bajo lleva las notas dadas, en la octava que mejor conduzca las voces.
-    /// `nil` si el bajo cifrado no se puede leer o no hay realización sin faltas.
+    /// Lanza como ``Tonalidad/acordes(bajoCifrado:)`` si el bajo cifrado no se puede leer, y da `nil` si se lee pero
+    /// no hay realización sin faltas.
     ///
-    ///     let coral = Coral.realizar(bajoCifrado: "Do La:6 Sol:7 Do", en: Tonalidad(.do))!
+    ///     let coral = try Coral.realizar(bajoCifrado: "Do La:6 Sol:7 Do", en: Tonalidad(.do))!
     ///     coral.voz(0).map(\.nota)   // [Do, La, Sol, Do]
     ///     coral.esCorrecta           // true
-    public static func realizar(bajoCifrado: String, en tonalidad: Tonalidad, soprano: [Altura]? = nil) -> Coral? {
-        guard let acordes = tonalidad.acordes(bajoCifrado: bajoCifrado) else { return nil }
+    public static func realizar(bajoCifrado: String, en tonalidad: Tonalidad, soprano: [Altura]? = nil) throws
+        -> Coral?
+    {
+        let acordes = try tonalidad.acordes(bajoCifrado: bajoCifrado)
         return realizar(acordes, soprano: soprano, en: tonalidad)
     }
 }

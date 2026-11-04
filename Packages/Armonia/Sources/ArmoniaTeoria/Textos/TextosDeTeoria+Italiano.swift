@@ -176,6 +176,11 @@ extension TextosDeTeoria {
         numeroFueraDeRango: { t, d, h in "«\(t)» non è un numero da \(d) a \(h)" },
         trasteNoValido: { t, u in "«\(t)» non è un tasto: dev'essere x (corda smorzata) o un numero da 0 a \(u)" },
         cuerdasDistintas: { e, l in "serve un tasto (o x) per ciascuna delle \(e) corde, e ce ne sono \(l)" },
+        // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
+        cifradoRomanoNoValido: { cifrado in "«\(cifrado)» non è una sigla romana: un numerale da I a VII con la sua qualità e le sue cifre (V7, ii65, ♭VI, vii°7/V)" },
+        destinoNoTonicalizable: { destino in "«\(destino)» non può seguire la barra: deve essere una triade maggiore o minore allo stato fondamentale (V/V, vii°7/ii)" },
+        cifrasNoValidas: { cifras in "«\(cifras)» non è un basso numerato: numeri da 1 a 9, ciascuno con al massimo un'alterazione (6, 64, 7, ♯6, 4+)" },
+        cifrasSinAcorde: { cifras in "le cifre «\(cifras)» non formano alcun accordo su quel basso" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in "in " + tonalidad }

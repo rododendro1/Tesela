@@ -309,7 +309,7 @@ extension LineaDeComandos {
         case .ausente: return nil
         case .sinValor: return .faltaInstrumento
         case .valor(let nombre):
-            guard let encordado = Encordado(nombre: nombre) else { return .instrumentoDesconocido(nombre) }
+            guard let encordado = try? Encordado(leyendo: nombre) else { return .instrumentoDesconocido(nombre) }
             mastil = Mastil(encordado, trastes: 15)
             return nil
         }
@@ -599,7 +599,7 @@ extension LineaDeComandos {
             notas = vuelta.puntos.map(\.nota)
         }
 
-        teclado = teclado.girado(cuartos: giros)
+        teclado = teclado.rotado(cuartos: giros)
         if espejo { teclado = teclado.reflejado }
         teclado = teclado.conOrigen(origen)
         if enTono, let escala { teclado = teclado.enTono(escala) }

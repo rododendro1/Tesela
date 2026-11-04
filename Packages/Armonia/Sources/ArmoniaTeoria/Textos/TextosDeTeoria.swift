@@ -194,6 +194,12 @@ struct TextosDeTeoria: TextosTraducidos {
     let trasteNoValido: @Sendable (_ traste: String, _ ultimo: Int) -> String
     let cuerdasDistintas: @Sendable (_ esperadas: Int, _ leidas: Int) -> String
 
+    // MARK: ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
+    let cifradoRomanoNoValido: @Sendable (String) -> String
+    let destinoNoTonicalizable: @Sendable (String) -> String
+    let cifrasNoValidas: @Sendable (String) -> String
+    let cifrasSinAcorde: @Sendable (String) -> String
+
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».
     let acordeSobre: @Sendable (_ tipo: String, _ raiz: String) -> String

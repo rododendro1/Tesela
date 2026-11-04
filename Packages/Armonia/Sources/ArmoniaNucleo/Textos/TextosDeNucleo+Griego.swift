@@ -56,6 +56,8 @@ extension TextosDeNucleo {
         serieNoDodecafonica: "μια δωδεκάφθογγη σειρά έχει και τις δώδεκα τονικές κλάσεις, την καθεμία μία φορά",
         faltanEnLaSerie: { clases in "λείπουν \(clases)" },
         repetidasEnLaSerie: { clases in "επαναλαμβάνονται \(clases)" },
+        // ErrorDeLectura.swift (idiomas)
+        idiomaNoReconocido: { n, o in "το «\(n)» δεν είναι καμία από τις δεκαπέντε γλώσσες: \(o)" },
 
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },

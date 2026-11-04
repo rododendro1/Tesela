@@ -177,6 +177,11 @@ extension TextosDeTeoria {
         numeroFueraDeRango: { t, d, h in "„\(t)” nem \(d) és \(h) közötti szám" },
         trasteNoValido: { t, u in "„\(t)” nem bund: x (tompított húr) vagy 0 és \(u) közötti szám kell" },
         cuerdasDistintas: { e, l in "mind a \(e) húrhoz kell egy bund (vagy x), és \(l) van" },
+        // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
+        cifradoRomanoNoValido: { cifrado in "„\(cifrado)” nem fokjelzés: egy római szám I-től VII-ig, a minőségével és a számaival (V7, ii65, ♭VI, vii°7/V)" },
+        destinoNoTonicalizable: { destino in "„\(destino)” nem állhat a perjel után: dúr vagy moll alaphelyzetű hármashangzatnak kell lennie (V/V, vii°7/ii)" },
+        cifrasNoValidas: { cifras in "„\(cifras)” nem számozott basszus: számok 1-től 9-ig, mindegyik legfeljebb egy módosítójellel (6, 64, 7, ♯6, 4+)" },
+        cifrasSinAcorde: { cifras in "a(z) „\(cifras)” számok ezen a basszuson nem adnak akkordot" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         // Con el inesivo: «C-dúrban», «a-mollban» (dúr y moll piden -ban).

@@ -13,7 +13,7 @@ import ArmoniaNucleo
 // transliteración habitual sin ellos (Mayamalavagowla, Hijaz…) se acepta como alias.
 //
 // No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales,
-// pero `buscar(nombre:)` y `Escala("Re hitzaz")` las encuentran.
+// pero `TipoDeEscala(leyendo:)` y `Escala("Re hitzaz")` las encuentran.
 //
 // `categoria` y `tradicion` (en `CategoriaTradicional.swift`) dicen de cada una si es un rāga, un mēḷa, un dromos,
 // un maqam, un makam, un mugam…; salen de las fichas. Sus nombres en cada idioma están en `Escalas/Nombres/`.

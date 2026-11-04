@@ -18,50 +18,81 @@ extension Tonalidad {
     /// - «N» y «N6» son la sexta napolitana; «It+6», «Fr+6» y «Ger+6», las sextas aumentadas sobre el 6.º
     ///   rebajado.
     ///
-    /// `nil` si el cifrado no se puede leer.
+    /// Lanza `ErrorDeLectura` (`.textoVacio`) si no hay nada que leer y `ErrorDeLecturaDeTeoria` si el cifrado no se
+    /// lee (`.cifradoRomanoNoValido`) o lo que va tras la barra no es una tríada mayor o menor en estado fundamental
+    /// (`.destinoNoTonicalizable`), en el carácter donde empieza lo que falla (sin contar los espacios).
     ///
-    ///     Tonalidad(.do).acorde(romano: "ii65")          // Rem7/Fa
-    ///     Tonalidad(.do).acorde(romano: "V7/V")          // Re7
-    ///     Tonalidad(.la, .menor).acorde(romano: "vii°7") // Sol♯°7
-    public func acorde(romano texto: String) -> Acorde? {
+    ///     try Tonalidad(.do).acorde(romano: "ii65")          // Rem7/Fa
+    ///     try Tonalidad(.do).acorde(romano: "V7/V")          // Re7
+    ///     try Tonalidad(.la, .menor).acorde(romano: "vii°7") // Sol♯°7
+    public func acorde(romano texto: String) throws -> Acorde {
         let cifrado = String(texto.filter { !$0.isWhitespace })
-        guard !cifrado.isEmpty else { return nil }
-        // Lo que va tras la primera barra es el grado de destino: el acorde se lee en su tonalidad.
-        if let barra = cifrado.firstIndex(of: "/") {
-            let izquierda = String(cifrado[..<barra])
-            guard let destino = acorde(romano: String(cifrado[cifrado.index(after: barra)...])),
-                destino.inversion == 0
-            else { return nil }
-            let calidad = destino.tipo.estructura.calidadDeTriada
-            guard calidad == .mayor || calidad == .menor else { return nil }
-            return Tonalidad(destino.fundamental, calidad == .menor ? .menor : .mayor).acorde(romano: izquierda)
-        }
-        switch cifrado {
-        case "N": return Acorde(tonica + .segundaMenor, .mayor)
-        case "N6": return Acorde(tonica + .segundaMenor, .mayor, inversion: 1)
-        case "It+6", "It6": return sextaAumentada("(#6,omit5)")
-        case "Fr+6", "Fr6": return sextaAumentada("(#6,#11,omit5)")
-        case "Ger+6", "Ger6", "Al+6": return sextaAumentada("(#6)")
-        default: return leerRomano(cifrado)
-        }
+        guard !cifrado.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
+        return try leerCifradoRomano(cifrado, desde: 0, en: cifrado)
     }
 
     /// Los acordes de una sucesión de cifrados romanos separados por espacios (o por `-`, `–` o `|`):
-    /// «I vi ii65 V7 I». `nil` si alguno no se puede leer.
+    /// «I vi ii65 V7 I». Lanza como ``acorde(romano:)``, con el error en su carácter del texto entero.
     ///
-    ///     Tonalidad(.do).acordes(romanos: "I V7/V V7 I")   // [Do, Re7, Sol7, Do]
-    public func acordes(romanos texto: String) -> [Acorde]? {
-        let partes = texto.split { $0.isWhitespace || "-–—|".contains($0) }
-        guard !partes.isEmpty else { return nil }
+    ///     try Tonalidad(.do).acordes(romanos: "I V7/V V7 I")   // [Do, Re7, Sol7, Do]
+    public func acordes(romanos texto: String) throws -> [Acorde] {
         var acordes: [Acorde] = []
-        for parte in partes {
-            guard let acorde = acorde(romano: String(parte)) else { return nil }
-            acordes.append(acorde)
+        var actual = ""
+        var posicion = 0
+        func cerrar() throws {
+            defer { actual = "" }
+            guard !actual.isEmpty else { return }
+            acordes.append(try leerCifradoRomano(actual, desde: posicion - actual.count, en: texto))
         }
+        for caracter in texto {
+            if caracter.isWhitespace || "-–—|".contains(caracter) {
+                try cerrar()
+            } else {
+                actual.append(caracter)
+            }
+            posicion += 1
+        }
+        try cerrar()
+        guard !acordes.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
         return acordes
     }
 
     // MARK: Lectura
+
+    /// Un cifrado sin espacios que es un trozo de `completo` y empieza en su carácter `inicio`: los errores se sitúan
+    /// en `completo`. Lo que va tras la primera barra es el grado de destino, y el resto se lee en su tonalidad.
+    private func leerCifradoRomano(_ cifrado: String, desde inicio: Int, en completo: String) throws -> Acorde {
+        if let barra = cifrado.firstIndex(of: "/") {
+            let izquierda = String(cifrado[..<barra])
+            let derecha = String(cifrado[cifrado.index(after: barra)...])
+            guard !izquierda.isEmpty, !derecha.isEmpty else {
+                throw ErrorDeLecturaDeTeoria(
+                    texto: completo, posicion: inicio + izquierda.count, motivo: .cifradoRomanoNoValido(cifrado))
+            }
+            let inicioDelDestino = inicio + izquierda.count + 1
+            let destino = try leerCifradoRomano(derecha, desde: inicioDelDestino, en: completo)
+            let calidad = destino.tipo.estructura.calidadDeTriada
+            guard destino.inversion == 0, calidad == .mayor || calidad == .menor else {
+                throw ErrorDeLecturaDeTeoria(
+                    texto: completo, posicion: inicioDelDestino, motivo: .destinoNoTonicalizable(derecha))
+            }
+            return try Tonalidad(destino.fundamental, calidad == .menor ? .menor : .mayor)
+                .leerCifradoRomano(izquierda, desde: inicio, en: completo)
+        }
+        let posible: Acorde?
+        switch cifrado {
+        case "N": posible = Acorde(tonica + .segundaMenor, .mayor)
+        case "N6": posible = Acorde(tonica + .segundaMenor, .mayor, inversion: 1)
+        case "It+6", "It6": posible = sextaAumentada("(#6,omit5)")
+        case "Fr+6", "Fr6": posible = sextaAumentada("(#6,#11,omit5)")
+        case "Ger+6", "Ger6", "Al+6": posible = sextaAumentada("(#6)")
+        default: posible = leerRomano(cifrado)
+        }
+        guard let leido = posible else {
+            throw ErrorDeLecturaDeTeoria(texto: completo, posicion: inicio, motivo: .cifradoRomanoNoValido(cifrado))
+        }
+        return leido
+    }
 
     /// Un cifrado sin barra: alteraciones, numeral (o «subV»), calidad y cifras de la inversión.
     private func leerRomano(_ cifrado: String) -> Acorde? {

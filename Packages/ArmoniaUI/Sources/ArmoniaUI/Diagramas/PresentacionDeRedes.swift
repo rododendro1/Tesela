@@ -147,7 +147,7 @@ public struct AjusteCuadrado: Hashable, Sendable {
         let elegido =
             red == .cuadriculaPersonalizada ? TecladoCuadrado.conEjes(texto, nombre: red.rawValue) : red.tecladoCuadrado
         guard let base = elegido else { return nil }
-        let girado = base.girado(cuartos: giros)
+        let girado = base.rotado(cuartos: giros)
         let colocado = (espejo ? girado.reflejado : girado).conOrigen(midiDelOrigen)
         if enTono, let escala { return colocado.enTono(escala) }
         return colocado

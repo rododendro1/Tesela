@@ -24,7 +24,7 @@ extension LineaDeComandos {
         case .sinValor:
             return uso(.faltaInstrumento, notacion)
         case .valor(let nombre):
-            guard let encontrado = Encordado(nombre: nombre) else {
+            guard let encontrado = try? Encordado(leyendo: nombre) else {
                 return uso(.instrumentoDesconocido(nombre), notacion)
             }
             encordado = encontrado
@@ -167,7 +167,7 @@ extension LineaDeComandos {
         case .ausente: break
         case .sinValor: return uso(.faltaInstrumento, notacion)
         case .valor(let nombre):
-            guard let encontrado = Encordado(nombre: nombre) else {
+            guard let encontrado = try? Encordado(leyendo: nombre) else {
                 return uso(.instrumentoDesconocido(nombre), notacion)
             }
             encordado = encontrado

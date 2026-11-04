@@ -56,6 +56,8 @@ extension TextosDeNucleo {
         serieNoDodecafonica: "в двенадцатитоновой серии есть все двенадцать звуковысотных классов, каждый по одному разу",
         faltanEnLaSerie: { clases in "не хватает \(clases)" },
         repetidasEnLaSerie: { clases in "повторяются \(clases)" },
+        // ErrorDeLectura.swift (idiomas)
+        idiomaNoReconocido: { n, o in "«\(n)» — ни один из пятнадцати языков: \(o)" },
 
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },

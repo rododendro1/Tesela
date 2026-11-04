@@ -176,6 +176,11 @@ extension TextosDeTeoria {
         numeroFueraDeRango: { t, d, h in "«\(t)» — не число от \(d) до \(h)" },
         trasteNoValido: { t, u in "«\(t)» — не лад: нужен x (заглушённая струна) или число от 0 до \(u)" },
         cuerdasDistintas: { e, l in "нужен один лад (или x) на каждую из \(e) струн, а их \(l)" },
+        // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
+        cifradoRomanoNoValido: { cifrado in "«\(cifrado)» — не обозначение ступени: римская цифра от I до VII с её качеством и цифровкой (V7, ii65, ♭VI, vii°7/V)" },
+        destinoNoTonicalizable: { destino in "«\(destino)» не может стоять после косой черты: нужно мажорное или минорное трезвучие в основном виде (V/V, vii°7/ii)" },
+        cifrasNoValidas: { cifras in "«\(cifras)» — не генерал-бас: цифры от 1 до 9, каждая не более чем с одним знаком альтерации (6, 64, 7, ♯6, 4+)" },
+        cifrasSinAcorde: { cifras in "цифры «\(cifras)» не образуют над этим басом никакого аккорда" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(tipo) от \(raiz)" },
         enLaTonalidad: { tonalidad in "в " + (tonalidad.hasSuffix("мажор") || tonalidad.hasSuffix("минор") ? tonalidad + "е" : tonalidad) }

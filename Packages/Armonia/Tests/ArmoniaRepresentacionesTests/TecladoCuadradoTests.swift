@@ -60,7 +60,7 @@ import Testing
 
     @Test func seGiraYSeRefleja() {
         let cuartas = TecladoCuadrado.cuartas
-        let girado = cuartas.girado()
+        let girado = cuartas.rotado()
         #expect(girado.semitonosEnH == 5)
         #expect(girado.semitonosEnV == -1)
         #expect(girado.nombre == "Cuadrícula en cuartas ↻90°")
@@ -69,10 +69,10 @@ import Testing
             let movida = casilla(c.fila, -c.columna) // un cuarto de vuelta en sentido horario
             #expect(girado.midi(en: movida) == cuartas.midi(en: c))
         }
-        #expect(cuartas.girado(cuartos: 4) == cuartas)
-        #expect(cuartas.girado(cuartos: 2).semitonosEnH == -1)
-        #expect(cuartas.girado(cuartos: -1).semitonosEnH == -5)
-        #expect(cuartas.girado(cuartos: -1).nombre == "Cuadrícula en cuartas ↻270°")
+        #expect(cuartas.rotado(cuartos: 4) == cuartas)
+        #expect(cuartas.rotado(cuartos: 2).semitonosEnH == -1)
+        #expect(cuartas.rotado(cuartos: -1).semitonosEnH == -5)
+        #expect(cuartas.rotado(cuartos: -1).nombre == "Cuadrícula en cuartas ↻270°")
         #expect(cuartas.reflejado.semitonosEnH == -1)
         #expect(cuartas.reflejado.semitonosEnV == 5)
         #expect(cuartas.reflejado.reflejado.semitonosEnH == 1)
@@ -140,7 +140,7 @@ import Testing
         #expect(TecladoCuadrado.octavas.enTono(doMayor).semitonosEnV == 7)
         #expect(TecladoCuadrado.cuartas.reflejado.enTono(doMayor).semitonosEnH == -1)
         // Girar y reflejar no la pierden.
-        #expect(teclado.girado().grados == teclado.grados)
+        #expect(teclado.rotado().grados == teclado.grados)
         #expect(teclado.reflejado.grados == teclado.grados)
         #expect(teclado.conOrigen(50).grados == teclado.grados)
         // Los grados se limpian: de 0 a 11, sin repetir y ordenados.

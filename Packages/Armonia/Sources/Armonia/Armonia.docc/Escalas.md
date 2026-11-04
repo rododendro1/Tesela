@@ -343,7 +343,7 @@ Partitura(.init(bayati), encabezado: Encabezado(titulo: "Bayātī")).svg().conta
 El nombre de cada tipo de escala en cada idioma, y las otras formas con que se lee (sus alias), están en un
 fichero por idioma: `Escalas/Nombres/NombresDeEscalas+Catalan.swift`, `+Gallego`, `+Ruso`… (el español sale
 del propio catálogo). `TipoDeEscala.nombre(en:)` usa el fichero del idioma de la notación, y
-`buscar(nombre:)` y `Escala("Re dòric")` leen los de todos. Cada fichero da todos los tipos de
+`TipoDeEscala(leyendo:)` y `Escala("Re dòric")` leen los de todos. Cada fichero da todos los tipos de
 `TipoDeEscala.todos`, el nombre de cada `CategoriaTradicional` (`.categoria`) y las escalas de otras tradiciones
 que se traducen en ese idioma (`.tradicional(.andina, "…")`, que apunta al miembro de `TipoDeEscala` y no compila si
 deja de existir); las demás, sin fila, conservan su nombre original (Kāfī, Hitzáz).
@@ -354,9 +354,9 @@ deja de existir); las demás, sin fila, conservan su nombre original (Kāfī, Hi
 #/b, sin ♮ ni ordinales), con lo que se encuentran igual.
 
 ```swift
-TipoDeEscala.buscar(nombre: "dorico b2") == TipoDeEscala.buscar(nombre: "dórico ♭2")   // true
+try TipoDeEscala(leyendo: "dorico b2") == TipoDeEscala(leyendo: "dórico ♭2")        // true
 TipoDeEscala.dobleArmonica.aliasNormalizados.contains("doble armonica")                 // true
-TipoDeEscala.buscar(nombre: "jonico sin 4") == TipoDeEscala.jonicoSinCuarta             // true
+try TipoDeEscala(leyendo: "jonico sin 4") == TipoDeEscala.jonicoSinCuarta              // true
 ```
 
 ## Modos gregorianos
@@ -394,7 +394,7 @@ Los ocho están también en el catálogo de escalas, en `TipoDeEscala.modosGrego
 
 ```swift
 ModoGregoriano(2)!.tipoDeEscala.nombre           // "protus plagalis"
-TipoDeEscala.buscar(nombre: "hipodórico")?.nombre  // "protus plagalis"
+try TipoDeEscala(leyendo: "hipodórico").nombre    // "protus plagalis"
 ```
 
 ## Escalas que suben y bajan distinto
@@ -455,7 +455,7 @@ nombre gana siempre a un alias:
 ```swift
 TipoDeEscala.propio(TipoDeEscala.kafi.intervalos).nombre   // "dórico"
 TipoDeEscala.kafi.equivalentes.first?.nombre               // "dórico"
-TipoDeEscala.buscar(nombre: "Hijaz")?.nombre               // "Ḥijāz" (el maqam; el dromos Hitzáz lo tiene de alias)
+try TipoDeEscala(leyendo: "Hijaz").nombre                 // "Ḥijāz" (el maqam; el dromos Hitzáz lo tiene de alias)
 ```
 
 ## Arpegios
