@@ -105,11 +105,14 @@ public struct Contrapunto: Hashable, Sendable {
     public let contrapunto: Voz
     public let especie: Especie
 
-    /// `nil` si el cantus está vacío o si el contrapunto no dura una redonda por cada nota del cantus.
-    public init?(cantusFirmus: [Altura], contrapunto: [Evento], especie: Especie) {
-        guard !cantusFirmus.isEmpty,
-            contrapunto.map(\.duracion).sumar() == Duracion(cantusFirmus.count)
-        else { return nil }
+    /// Lanza `ErrorDeLectura` (`.textoVacio`) si el cantus está vacío y `ErrorDeLecturaDePartitura`
+    /// (`.contrapuntoDeOtraDuracion`) si el contrapunto no dura una redonda por cada nota del cantus.
+    public init(cantusFirmus: [Altura], contrapunto: [Evento], especie: Especie) throws {
+        guard !cantusFirmus.isEmpty else { throw ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio) }
+        guard contrapunto.map(\.duracion).sumar() == Duracion(cantusFirmus.count) else {
+            throw ErrorDeLecturaDePartitura(
+                texto: "", posicion: nil, motivo: .contrapuntoDeOtraDuracion(redondas: cantusFirmus.count))
+        }
         self.cantusFirmus = cantusFirmus
         self.contrapunto = Voz(contrapunto, compas: Compas(4, 4))
         self.especie = especie
@@ -134,11 +137,11 @@ public struct Contrapunto: Hashable, Sendable {
             $0.contains(":") ? String($0) : String($0) + ":" + figura
         }
         let voz = try Voz(leyendo: eventos.joined(separator: " "))
-        guard let leido = Contrapunto(cantusFirmus: cantus, contrapunto: voz.eventos, especie: especie) else {
-            throw ErrorDeLecturaDePartitura(
-                texto: contrapunto, posicion: nil, motivo: .contrapuntoDeOtraDuracion(redondas: cantus.count))
+        do {
+            self = try Contrapunto(cantusFirmus: cantus, contrapunto: voz.eventos, especie: especie)
+        } catch let error as ErrorDeLecturaDePartitura {
+            throw error.situado(en: contrapunto, posicion: nil)
         }
-        self = leido
     }
 
     /// `true` si el contrapunto va, de media, por encima del cantus.

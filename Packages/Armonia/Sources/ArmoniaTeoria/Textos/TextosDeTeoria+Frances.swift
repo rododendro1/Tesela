@@ -173,6 +173,7 @@ extension TextosDeTeoria {
         vocesDeDistintaLongitud: "toutes les voix doivent avoir le même nombre de notes",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
         nombreNoReconocido: { n, o in "« \(n) » n'est aucun de ceux-ci : \(o)" },
+        numeroFueraDeRango: { t, d, h in "« \(t) » n'est pas un nombre de \(d) à \(h)" },
         trasteNoValido: { t, u in "« \(t) » n'est pas une case : il faut x (corde étouffée) ou un nombre de 0 à \(u)" },
         cuerdasDistintas: { e, l in "il faut une case (ou x) pour chacune des \(e) cordes, et il y en a \(l)" },
         // Gramática (Acorde.swift, Tonalidad.swift)

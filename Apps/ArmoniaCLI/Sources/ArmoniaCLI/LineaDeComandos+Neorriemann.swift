@@ -55,7 +55,7 @@ extension LineaDeComandos {
         guard Tonnetz.Triada(origen) != nil else { return uso(.plrSoloTriadas(camino: false), notacion) }
         let resto = argumentos.dropFirst().joined(separator: " ")
         let pasos: [TransformacionNeorriemanniana]
-        if let secuencia = TransformacionNeorriemanniana.secuencia(leyendo: resto) {
+        if let secuencia = try? TransformacionNeorriemanniana.secuencia(leyendo: resto) {
             pasos = secuencia
         } else if let ciclo = try? CicloNeorriemanniano(leyendo: resto) {
             // Do –P→ Dom –L→ La♭ … –L→ Do, con la ortografía más sencilla.

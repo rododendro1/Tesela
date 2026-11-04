@@ -381,7 +381,7 @@ final a una 5ª por encima.
 ```swift
 ModoGregoriano(2)!.description
 // "modo 2 (protus plagal, hipodórico): final Re, tenor Fa, ámbito La3–La4"
-ModoGregoriano(nombre: "hipofrigio")!.tenor      // La
+try ModoGregoriano(leyendo: "hipofrigio").tenor   // La
 ModoGregoriano(3)!.escala                        // Mi frigio
 ModoGregoriano(6)!.ambito.first                  // Do4
 ```

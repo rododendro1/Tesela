@@ -293,8 +293,9 @@ public enum NombreDeGrado: Hashable, Sendable, CustomStringConvertible {
     public var description: String { nombre }
 
     /// Lee el nombre de una función en español o en inglés, sin distinguir mayúsculas ni tildes:
-    /// "Dominante", "superdominante", "submediante", "sensible", "leading tone"…
-    public init?(_ texto: String) {
+    /// "Dominante", "superdominante", "submediante", "sensible", "leading tone"… Si no es ninguna, lanza
+    /// `ErrorDeLecturaDeTeoria` con sus nombres (`.nombreNoReconocido`).
+    public init(leyendo texto: String) throws {
         let clave = texto.claveDeBusqueda
         let alias: [String: NombreDeGrado] = [
             "submediante": .superdominante, "sub mediante": .superdominante,
@@ -312,7 +313,10 @@ public enum NombreDeGrado: Hashable, Sendable, CustomStringConvertible {
             let funcion = todas.first(where: { f in
                 f.nombre.claveDeBusqueda == clave || f.nombre(en: .inglesASCII).claveDeBusqueda == clave
             })
-        else { return nil }
+        else {
+            throw ErrorDeLecturaDeTeoria(
+                texto: texto, posicion: nil, motivo: .nombreNoReconocido(texto, opciones: todas.map(\.nombre)))
+        }
         self = funcion
     }
 }

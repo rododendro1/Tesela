@@ -173,6 +173,7 @@ extension TextosDeTeoria {
         vocesDeDistintaLongitud: "totas las voses devon aver lo meteis nombre de nòtas",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
         nombreNoReconocido: { n, o in "«\(n)» es pas cap d'aquestes: \(o)" },
+        numeroFueraDeRango: { t, d, h in "«\(t)» es pas un nombre de \(d) a \(h)" },
         trasteNoValido: { t, u in "«\(t)» es pas un trast: cal x (còrda amudida) o un nombre de 0 a \(u)" },
         cuerdasDistintas: { e, l in "cal un trast (o x) per caduna de las \(e) còrdas, e n'i a \(l)" },
         // Gramática (Acorde.swift, Tonalidad.swift)

@@ -175,7 +175,7 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, línea 161
         comprobar(Acorde("Do").transformar(.r) == Acorde("Lam"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 161)
         comprobar(Acorde("Mib").transformar(.r) == Acorde("Dom"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 162)
-        comprobar(Acorde("Do").transformar(leyendo: "PLR") == Acorde("Fam"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 163)
+        comprobar(try Acorde("Do").transformar(leyendo: "PLR") == Acorde("Fam"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 163)
         comprobar(Acorde("Do").transformar(TransformacionNeorriemanniana.s) == Acorde("Do#m"), #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 164)
         comprobar(Acorde("Sol7").transformar(.p) == nil, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 165)
         comprobar(TransformacionNeorriemanniana.entre("Do", "Mim") == .l, #"true"#, #"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 166)
@@ -324,10 +324,10 @@ import Hexagonos
 
     @Test func convenciones4() throws {
         // Sources/Armonia/Armonia.docc/Convenciones.md, línea 91
-        comprobarIgual(NombreDeGrado("submediante"), .superdominante, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 91)
-        _ = (NombreDeGrado("Tónica"), NombreDeGrado("leading tone"))
-        comprobar(PapelEnAcorde("oncena") == PapelEnAcorde("undécima"), #"true"#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 93)
-        comprobar(PapelEnAcorde("trecena") == PapelEnAcorde("decimotercera"), #"true"#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 94)
+        comprobarIgual(try NombreDeGrado(leyendo: "submediante"), .superdominante, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 91)
+        _ = (try NombreDeGrado(leyendo: "Tónica"), try NombreDeGrado(leyendo: "leading tone"))
+        comprobar(try PapelEnAcorde(leyendo: "oncena") == PapelEnAcorde(leyendo: "undécima"), #"true"#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 93)
+        comprobar(try PapelEnAcorde(leyendo: "trecena") == PapelEnAcorde(leyendo: "decimotercera"), #"true"#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 94)
         comprobar(PapelEnAcorde.tension(11).nombre, #""undécima""#, #"Sources/Armonia/Armonia.docc/Convenciones.md"#, 95)
     }
 
@@ -451,7 +451,7 @@ import Hexagonos
     @Test func escalas9() throws {
         // Sources/Armonia/Armonia.docc/Escalas.md, línea 382
         comprobar(ModoGregoriano(2)!.description, #""modo 2 (protus plagal, hipodórico): final Re, tenor Fa, ámbito La3–La4""#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 382)
-        comprobar(ModoGregoriano(nombre: "hipofrigio")!.tenor, #"La"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 384)
+        comprobar(try ModoGregoriano(leyendo: "hipofrigio").tenor, #"La"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 384)
         comprobar(ModoGregoriano(3)!.escala, #"Mi frigio"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 385)
         comprobar(ModoGregoriano(6)!.ambito.first, #"Do4"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 386)
     }

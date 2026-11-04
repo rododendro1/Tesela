@@ -174,6 +174,7 @@ extension TextosDeTeoria {
         vocesDeDistintaLongitud: "minden szólamnak ugyanannyi hangból kell állnia",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
         nombreNoReconocido: { n, o in "„\(n)” egyik sem ezek közül: \(o)" },
+        numeroFueraDeRango: { t, d, h in "„\(t)” nem \(d) és \(h) közötti szám" },
         trasteNoValido: { t, u in "„\(t)” nem bund: x (tompított húr) vagy 0 és \(u) közötti szám kell" },
         cuerdasDistintas: { e, l in "mind a \(e) húrhoz kell egy bund (vagy x), és \(l) van" },
         // Gramática (Acorde.swift, Tonalidad.swift)

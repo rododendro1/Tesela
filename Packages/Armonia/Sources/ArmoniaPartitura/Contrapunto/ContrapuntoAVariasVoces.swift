@@ -38,12 +38,13 @@ public struct ContrapuntoAVariasVoces: Hashable, Sendable {
     /// Cada voz que se añade, con su especie, contra el cantus.
     public let voces: [Contrapunto]
 
-    /// `nil` si no hay ninguna voz o alguna no dura una redonda por cada nota del cantus.
-    public init?(cantusFirmus: [Altura], voces: [(eventos: [Evento], especie: Contrapunto.Especie)]) {
-        let leidas = voces.compactMap {
-            Contrapunto(cantusFirmus: cantusFirmus, contrapunto: $0.eventos, especie: $0.especie)
+    /// Lanza el error de `Contrapunto(cantusFirmus:contrapunto:especie:)` si alguna voz no dura una redonda por
+    /// cada nota del cantus, y `ErrorDeLectura` (`.textoVacio`) si no hay ninguna voz.
+    public init(cantusFirmus: [Altura], voces: [(eventos: [Evento], especie: Contrapunto.Especie)]) throws {
+        let leidas = try voces.map {
+            try Contrapunto(cantusFirmus: cantusFirmus, contrapunto: $0.eventos, especie: $0.especie)
         }
-        guard !leidas.isEmpty, leidas.count == voces.count else { return nil }
+        guard !leidas.isEmpty else { throw ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio) }
         self.cantusFirmus = cantusFirmus
         self.voces = leidas
     }

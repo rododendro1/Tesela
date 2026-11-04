@@ -174,6 +174,7 @@ extension TextosDeTeoria {
         vocesDeDistintaLongitud: "every voice must have the same number of notes",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
         nombreNoReconocido: { n, o in "\"\(n)\" is none of these: \(o)" },
+        numeroFueraDeRango: { t, d, h in "\"\(t)\" is not a number from \(d) to \(h)" },
         trasteNoValido: { t, u in "\"\(t)\" is not a fret: it must be x (muted string) or a number from 0 to \(u)" },
         cuerdasDistintas: { e, l in "one fret (or x) is needed for each of the \(e) strings, and there are \(l)" },
         // Gramática (Acorde.swift, Tonalidad.swift)

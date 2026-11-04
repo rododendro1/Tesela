@@ -11,7 +11,7 @@ import ArmoniaNucleo
 /// ```swift
 /// ModoGregoriano.todos[1].nombre               // "protus plagal"
 /// ModoGregoriano(2)!.tenor                     // Fa
-/// ModoGregoriano(nombre: "hipofrigio")!.numero // 4
+/// try ModoGregoriano(leyendo: "hipofrigio").numero // 4
 /// ```
 public struct ModoGregoriano: Hashable, Sendable, CustomStringConvertible {
     /// Las cuatro finales.
@@ -37,8 +37,9 @@ public struct ModoGregoriano: Hashable, Sendable, CustomStringConvertible {
         self.numero = numero
     }
 
-    /// Lee "modo 2", "protus plagal", "hipodórico" o "hipodorico".
-    public init?(nombre: String) {
+    /// Lee "modo 2", "protus plagal", "hipodórico" o "hipodorico". Si no es ninguno, lanza `ErrorDeLecturaDeTeoria`
+    /// con sus nombres (`.nombreNoReconocido`).
+    public init(leyendo nombre: String) throws {
         let texto = TipoDeEscala.normalizar(nombre)
         guard
             let modo = ModoGregoriano.todos.first(where: { modo in
@@ -46,7 +47,11 @@ public struct ModoGregoriano: Hashable, Sendable, CustomStringConvertible {
                     TipoDeEscala.normalizar($0) == texto
                 }
             })
-        else { return nil }
+        else {
+            throw ErrorDeLecturaDeTeoria(
+                texto: nombre, posicion: nil,
+                motivo: .nombreNoReconocido(nombre, opciones: ModoGregoriano.todos.map(\.nombre)))
+        }
         self = modo
     }
 

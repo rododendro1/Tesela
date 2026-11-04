@@ -173,6 +173,7 @@ extension TextosDeTeoria {
         vocesDeDistintaLongitud: "во всех голосах должно быть одинаковое число нот",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
         nombreNoReconocido: { n, o in "«\(n)» — ни одно из этих: \(o)" },
+        numeroFueraDeRango: { t, d, h in "«\(t)» — не число от \(d) до \(h)" },
         trasteNoValido: { t, u in "«\(t)» — не лад: нужен x (заглушённая струна) или число от 0 до \(u)" },
         cuerdasDistintas: { e, l in "нужен один лад (или x) на каждую из \(e) струн, а их \(l)" },
         // Gramática (Acorde.swift, Tonalidad.swift)

@@ -190,6 +190,7 @@ struct TextosDeTeoria: TextosTraducidos {
 
     // MARK: ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
     let nombreNoReconocido: @Sendable (_ nombre: String, _ opciones: String) -> String
+    let numeroFueraDeRango: @Sendable (_ texto: String, _ desde: Int, _ hasta: Int) -> String
     let trasteNoValido: @Sendable (_ traste: String, _ ultimo: Int) -> String
     let cuerdasDistintas: @Sendable (_ esperadas: Int, _ leidas: Int) -> String
 

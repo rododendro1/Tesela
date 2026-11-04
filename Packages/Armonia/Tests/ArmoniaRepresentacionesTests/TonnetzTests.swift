@@ -144,7 +144,7 @@ import Testing
         #expect(clases.todos("text").filter { $0.atributos["font-weight"] == "bold" }.count > 3)
     }
 
-    @Test func transformaciones() {
+    @Test func transformaciones() throws {
         #expect(Acorde("Do").transformar(.p) == Acorde("Dom"))
         #expect(Acorde("Do").transformar(.l) == Acorde("Mim"))
         #expect(Acorde("Do").transformar(.r) == Acorde("Lam"))
@@ -157,10 +157,16 @@ import Testing
         #expect(Acorde("Do").transformar(TransformacionNeorriemanniana.n) == Acorde("Fam"))
         #expect(Acorde("Do").transformar(TransformacionNeorriemanniana.s) == Acorde("Do#m"))
         #expect(Acorde("Do").transformar(TransformacionNeorriemanniana.h) == Acorde("Sol#m"))
-        #expect(Acorde("Do").transformar(leyendo: "P L R") == Acorde("Fam"))
-        #expect(Acorde("Do").transformar(leyendo: "n") == Acorde("Fam"))
-        #expect(Acorde("Do").transformar(leyendo: "PX") == nil)
-        #expect(Acorde("Do").transformar(leyendo: "") == nil)
+        #expect(try Acorde("Do").transformar(leyendo: "P L R") == Acorde("Fam"))
+        #expect(try Acorde("Do").transformar(leyendo: "n") == Acorde("Fam"))
+        #expect(try Acorde("Sol7").transformar(leyendo: "P") == nil)
+        #expect(
+            throws: ErrorDeLecturaDeTeoria(
+                texto: "PX", posicion: 1, motivo: .nombreNoReconocido("X", opciones: ["P", "L", "R", "N", "S", "H"]))
+        ) { try Acorde("Do").transformar(leyendo: "PX") }
+        #expect(throws: ErrorDeLectura(texto: " · ", posicion: nil, motivo: .textoVacio)) {
+            try Acorde("Do").transformar(leyendo: " · ")
+        }
         // Solo tríadas mayores y menores; la inversión se ignora.
         #expect(Acorde("Sol7").transformar(.p) == nil)
         #expect(Acorde("Sidim").transformar(.r) == nil)

@@ -88,10 +88,10 @@ Donde España e Hispanoamérica, o la armonía moderna y la académica, usan nom
 el motor acepta los dos:
 
 ```swift
-NombreDeGrado("submediante")                        // .superdominante
-NombreDeGrado("Tónica"), NombreDeGrado("leading tone")
-PapelEnAcorde("oncena") == PapelEnAcorde("undécima")         // true: los dos son .tension(11)
-PapelEnAcorde("trecena") == PapelEnAcorde("decimotercera")   // true: los dos son .tension(13)
+try NombreDeGrado(leyendo: "submediante")                     // .superdominante
+(try NombreDeGrado(leyendo: "Tónica"), try NombreDeGrado(leyendo: "leading tone"))
+try PapelEnAcorde(leyendo: "oncena") == PapelEnAcorde(leyendo: "undécima")         // true: .tension(11)
+try PapelEnAcorde(leyendo: "trecena") == PapelEnAcorde(leyendo: "decimotercera")   // true: .tension(13)
 PapelEnAcorde.tension(11).nombre                             // "undécima"
 ```
 

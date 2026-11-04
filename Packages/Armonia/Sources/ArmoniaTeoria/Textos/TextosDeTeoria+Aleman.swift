@@ -173,6 +173,7 @@ extension TextosDeTeoria {
         vocesDeDistintaLongitud: "alle Stimmen müssen gleich viele Töne haben",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
         nombreNoReconocido: { n, o in "„\(n)“ ist keiner von diesen: \(o)" },
+        numeroFueraDeRango: { t, d, h in "„\(t)“ ist keine Zahl von \(d) bis \(h)" },
         trasteNoValido: { t, u in "„\(t)“ ist kein Bund: erlaubt sind x (gedämpfte Saite) oder eine Zahl von 0 bis \(u)" },
         cuerdasDistintas: { e, l in "für jede der \(e) Saiten braucht es einen Bund (oder x), und es sind \(l)" },
         // Gramática (Acorde.swift, Tonalidad.swift)

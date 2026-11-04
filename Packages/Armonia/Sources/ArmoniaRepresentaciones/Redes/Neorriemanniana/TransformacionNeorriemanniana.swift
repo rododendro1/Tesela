@@ -16,7 +16,7 @@ import Foundation
 /// P, L o R: el paso de una tríada mayor o menor a una vecina en el Tonnetz.
 ///
 ///     Acorde("Do").transformar(.r)                 // Lam
-///     Acorde("Do").transformar(leyendo: "LP")      // Mi
+///     try Acorde("Do").transformar(leyendo: "LP")  // Mi
 ///     Tonnetz.camino(desde: "Do", hasta: "Mibm")   // [.p, .r, .p]
 public enum TransformacionNeorriemanniana: String, CaseIterable, Hashable, Sendable, CustomStringConvertible {
     /// Paralela: la tercera sube o baja un semitono (Do ↔ Dom).
@@ -47,11 +47,12 @@ public enum TransformacionNeorriemanniana: String, CaseIterable, Hashable, Senda
     public static let h: [TransformacionNeorriemanniana] = [.l, .p, .l]
 
     /// Lee una secuencia como "PLR", "P L R", "R·L·P" o "LP-R", que se aplica de izquierda a
-    /// derecha; N, S y H se desarrollan en sus tres pasos. `nil` si hay otra cosa.
-    public static func secuencia(leyendo texto: String) -> [TransformacionNeorriemanniana]? {
+    /// derecha; N, S y H se desarrollan en sus tres pasos. Lanza `ErrorDeLecturaDeTeoria` (`.nombreNoReconocido`,
+    /// en su carácter) si hay otra cosa, y `ErrorDeLectura` (`.textoVacio`) si no hay ninguna.
+    public static func secuencia(leyendo texto: String) throws -> [TransformacionNeorriemanniana] {
         var resultado: [TransformacionNeorriemanniana] = []
-        for caracter in texto.uppercased() {
-            switch caracter {
+        for (posicion, original) in texto.enumerated() {
+            switch original.uppercased() {
             case "P": resultado.append(.p)
             case "L": resultado.append(.l)
             case "R": resultado.append(.r)
@@ -59,10 +60,14 @@ public enum TransformacionNeorriemanniana: String, CaseIterable, Hashable, Senda
             case "S": resultado += s
             case "H": resultado += h
             case " ", "·", "-", ",", ".", "*", "∘": continue
-            default: return nil
+            default:
+                throw ErrorDeLecturaDeTeoria(
+                    texto: texto, posicion: posicion,
+                    motivo: .nombreNoReconocido(String(original), opciones: ["P", "L", "R", "N", "S", "H"]))
             }
         }
-        return resultado.isEmpty ? nil : resultado
+        guard !resultado.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
+        return resultado
     }
 
     /// La que lleva de una tríada a otra vecina, si la hay: `entre("Do", "Lam")` → `.r`.
@@ -124,9 +129,11 @@ extension Acorde {
         Tonnetz.Triada(self)?.transformar(secuencia).acorde
     }
 
-    /// La tríada tras una secuencia escrita: `transformar(leyendo: "PLR")`, `transformar(leyendo: "N")`.
-    public func transformar(leyendo secuencia: String) -> Acorde? {
-        TransformacionNeorriemanniana.secuencia(leyendo: secuencia).flatMap(transformar)
+    /// La tríada tras una secuencia escrita: `transformar(leyendo: "PLR")`, `transformar(leyendo: "N")`. Lanza el
+    /// error de `TransformacionNeorriemanniana.secuencia(leyendo:)` si la secuencia no se lee, y da `nil` si el
+    /// acorde no es una tríada mayor o menor.
+    public func transformar(leyendo secuencia: String) throws -> Acorde? {
+        transformar(try TransformacionNeorriemanniana.secuencia(leyendo: secuencia))
     }
 }
 

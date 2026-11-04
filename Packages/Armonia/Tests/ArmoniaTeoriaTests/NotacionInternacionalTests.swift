@@ -216,27 +216,27 @@ import Testing
         }
     }
 
-    @Test func sinonimosAlLeer() {
+    @Test func sinonimosAlLeer() throws {
         // Undécima y decimotercera, y también oncena y trecena.
-        #expect(PapelEnAcorde("undécima") == .tension(11))
-        #expect(PapelEnAcorde("Oncena") == .tension(11))
-        #expect(PapelEnAcorde("decimotercera") == .tension(13))
-        #expect(PapelEnAcorde("trecena") == .tension(13))
-        #expect(PapelEnAcorde("séptima") == .septima)
-        #expect(PapelEnAcorde("suspension") == .suspension)
-        #expect(PapelEnAcorde("thirteenth") == .tension(13))
-        #expect(PapelEnAcorde("root") == .fundamental)
-        #expect(PapelEnAcorde("duodécima") == nil)
+        #expect(try PapelEnAcorde(leyendo: "undécima") == .tension(11))
+        #expect(try PapelEnAcorde(leyendo: "Oncena") == .tension(11))
+        #expect(try PapelEnAcorde(leyendo: "decimotercera") == .tension(13))
+        #expect(try PapelEnAcorde(leyendo: "trecena") == .tension(13))
+        #expect(try PapelEnAcorde(leyendo: "séptima") == .septima)
+        #expect(try PapelEnAcorde(leyendo: "suspension") == .suspension)
+        #expect(try PapelEnAcorde(leyendo: "thirteenth") == .tension(13))
+        #expect(try PapelEnAcorde(leyendo: "root") == .fundamental)
+        #expect(throws: ErrorDeLecturaDeTeoria.self) { try PapelEnAcorde(leyendo: "duodécima") }
         #expect(Intervalo.decimoterceraMayor == Intervalo("13M"))
         #expect(Intervalo.undecimaAumentada.semitonos == 18)
         // Submediante junto a superdominante.
-        #expect(NombreDeGrado("submediante") == .superdominante)
-        #expect(NombreDeGrado("Superdominante") == .superdominante)
-        #expect(NombreDeGrado("submediant") == .superdominante)
-        #expect(NombreDeGrado("tónica") == .tonica)
-        #expect(NombreDeGrado("TONICA") == .tonica)
-        #expect(NombreDeGrado("leading tone") == .sensible)
-        #expect(NombreDeGrado("dominantísima") == nil)
+        #expect(try NombreDeGrado(leyendo: "submediante") == .superdominante)
+        #expect(try NombreDeGrado(leyendo: "Superdominante") == .superdominante)
+        #expect(try NombreDeGrado(leyendo: "submediant") == .superdominante)
+        #expect(try NombreDeGrado(leyendo: "tónica") == .tonica)
+        #expect(try NombreDeGrado(leyendo: "TONICA") == .tonica)
+        #expect(try NombreDeGrado(leyendo: "leading tone") == .sensible)
+        #expect(throws: ErrorDeLecturaDeTeoria.self) { try NombreDeGrado(leyendo: "dominantísima") }
         #expect(Escala(.la, .menorNatural).nombreDeGrado(de: .fa) == .superdominante)
     }
 }
