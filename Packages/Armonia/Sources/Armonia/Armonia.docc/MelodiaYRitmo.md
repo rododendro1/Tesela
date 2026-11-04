@@ -163,39 +163,61 @@ try Voz(leyendo: "Do4:2..", compas: "3+2+2/8").grafia         // [[Do4:4.~, Do4:
 un mismo pulso: las tres corcheas de cada pulso en 6/8) y `acentos`, el acento métrico de cada
 evento de la grafía.
 
+## La partitura
+
+Todos los formatos y el dibujo salen de un mismo valor, ``Partitura``: los pentagramas de arriba abajo, cada uno con
+su clave y sus voces (una ``Partitura/Linea`` con su nombre, la dirección de sus plicas, los cifrados de encima, el
+análisis de debajo y los marcadores de MIDI), y un ``Encabezado`` con lo que vale para toda ella: el título, la
+armadura, el tempo, el nombre de la parte y el instrumento de MIDI. Una ``Voz``, un ``Coral``, un
+``AnalisisArmonico`` y un ``Contrapunto`` hacen la suya con `partitura(…)`, y de ella salen `musicXML()`, `mei()`,
+`lilyPond()`, `guido()`, `abc()`, `midi(afinacion:)`, `exportar(como:)` y `svg(opciones:)`. Con la partitura se
+puede, además, cambiar algo antes de escribirla o montar una a mano.
+
+```swift
+let escala = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2", compas: "3/4")
+let partitura = escala.partitura(encabezado: Encabezado(titulo: "Escala", tempo: Tempo(90)))
+partitura.musicXML().contains("<work-title>Escala</work-title>")             // true
+partitura.pentagramas.count                                                  // 1
+let bajo = try Voz(leyendo: "Do3:2. Fa2:4", compas: "3/4")
+let manos: [Partitura.Pentagrama] = [.init(clave: .sol, voces: [.init(escala)]), .init(clave: .fa, voces: [.init(bajo)])]
+let dos = Partitura(pentagramas: manos, encabezado: Encabezado(titulo: "Dos manos"), llave: true)
+dos.lilyPond().contains("PianoStaff")                                        // true
+dos.svg().contains("<svg")                                                   // true
+```
+
 ## Exportar a MusicXML
 
-`musicXML(tonalidad:clave:tempo:titulo:parte:)` escribe una voz como partitura MusicXML 4.0,
+`musicXML()` escribe la partitura de una voz (`partitura(clave:encabezado:)`) en MusicXML 4.0,
 que se abre en MuseScore, Finale, Sibelius o Dorico. Se escribe la grafía: las notas ya
 divididas y ligadas según el compás, con barras, tresillos (y demás grupos irregulares),
 anacrusa y doble barra final.
 
 ```swift
 let escala = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2 Sol4:1/12 La4:1/12 Si4:1/12 Do5:2.", compas: "3/4")
-let xml = escala.musicXML(tonalidad: Tonalidad(.do), tempo: Tempo(90), titulo: "Escala")
+let xml = escala.partitura(encabezado: Encabezado(titulo: "Escala", tonalidad: Tonalidad(.do), tempo: Tempo(90))).musicXML()
 xml.contains("<fifths>0</fifths>")             // true
 xml.contains("<actual-notes>3</actual-notes>") // true
 ```
 
 - La ortografía se conserva: un Sol♯ se escribe como sol con sostenido, nunca como la bemol.
-- La armadura es la de la tonalidad (`Tonalidad.armadura`); si no se da, se estima a partir de
-  las notas. La clave, si no se da, es la de sol o la de fa según el registro.
+- La armadura es la de la tonalidad del encabezado (`Tonalidad.armadura`); si no se da, se
+  estima a partir de las notas. La clave, si no se da, es la de sol o la de fa según el registro.
 - MusicXML solo admite las octavas de 0 a 9.
-- Un coral a cuatro voces se exporta en dos pentagramas con `Coral.musicXML`, y
-  una progresión con sus cifrados y su análisis con `AnalisisArmonico.musicXML` (ver
+- Un coral a cuatro voces se escribe en dos pentagramas con `Coral.partitura(…)`, y
+  una progresión con sus cifrados y su análisis con `AnalisisArmonico.partitura(…)` (ver
   <doc:Tonalidad>).
 - Desde la terminal: `armonia musicxml melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4 > escala.musicxml`.
 
 ## Exportar a MEI
 
-`mei(tonalidad:clave:tempo:titulo:parte:)` escribe la misma partitura en MEI 5 (Music Encoding
+`mei()` escribe la misma partitura en MEI 5 (Music Encoding
 Initiative), el formato de las ediciones críticas y de la musicología, que abren Verovio,
 mei-friend o MuseScore 4. Lleva lo mismo que la de MusicXML: grafía, barras, grupos
 irregulares, ligaduras, anacrusa, tempo y doble barra final.
 
 ```swift
 let escala = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2 Sol4:1/12 La4:1/12 Si4:1/12 Do5:2.", compas: "3/4")
-let mei = escala.mei(tonalidad: Tonalidad(.do), tempo: Tempo(90), titulo: "Escala")
+let mei = escala.partitura(encabezado: Encabezado(titulo: "Escala", tonalidad: Tonalidad(.do), tempo: Tempo(90))).mei()
 mei.contains("keysig=\"0\"")                       // true
 mei.contains("<tuplet num=\"3\" numbase=\"2\">") // true
 ```
@@ -203,24 +225,24 @@ mei.contains("<tuplet num=\"3\" numbase=\"2\">") // true
 - MEI no deduce qué alteraciones se ven, así que se escriben como en una partitura: una
   alteración vale hasta la barra en su pentagrama y en su octava, la de la armadura no se
   escribe y el becuadro sí. La que suena sin escribirse va en `accid.ges`.
-- `Coral.mei` y `AnalisisArmonico.mei` escriben el coral y la progresión en dos pentagramas,
+- Las partituras de un coral y de una progresión van en dos pentagramas,
   con los cifrados en `<harm>` y el análisis como letra debajo del bajo.
 - Desde la terminal: `armonia mei melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4 > escala.mei`.
 
 ## Exportar a LilyPond y ABC
 
-`lilyPond(tonalidad:clave:tempo:titulo:parte:)` escribe la voz como fuente de LilyPond 2.24,
+`lilyPond()` escribe la partitura como fuente de LilyPond 2.24,
 para grabarla en PDF con calidad de imprenta (`lilypond escala.ly`), y
-`abc(tonalidad:clave:tempo:titulo:parte:)`, en notación ABC, el texto de las colecciones de
+`abc()`, en notación ABC, el texto de las colecciones de
 música tradicional que leen abcm2ps, abcjs o EasyABC. Llevan lo mismo que el MusicXML: grafía,
 barras, grupos irregulares, ligaduras, anacrusa, tempo y doble barra final.
 
 ```swift
 let tema = try Voz(leyendo: "Sol4:4 Do5:2 Re5:8 Mi5:8 Fa#5:4 Sol5:2", compas: "3/4", anacrusa: .negra)
-let ly = tema.lilyPond(tonalidad: Tonalidad(.sol), titulo: "Tema")
+let ly = tema.partitura(encabezado: Encabezado(titulo: "Tema", tonalidad: Tonalidad(.sol))).lilyPond()
 ly.contains("\\key g \\major \\time 3/4 \\partial 4")   // true
 ly.contains("fis''4 g''2")                            // true
-let abc = tema.abc(tonalidad: Tonalidad(.sol), titulo: "Tema")
+let abc = tema.partitura(encabezado: Encabezado(titulo: "Tema", tonalidad: Tonalidad(.sol))).abc()
 abc.contains("K:G")                                   // true
 abc.contains("c2 d/2e/2 | f g2 |]")                   // true
 ```
@@ -229,32 +251,32 @@ abc.contains("c2 d/2e/2 | f g2 |]")                   // true
   (`fis`, `bes`); una nota que no cabe en el compás se parte con `~`.
 - ABC, como MEI, escribe las alteraciones que se ven: la de la armadura no, y el becuadro
   sí, hasta la barra. Las corcheas de un mismo pulso van juntas, con su viga.
-- `Coral` y `AnalisisArmonico` tienen las dos también: el coral en dos pentagramas, con los
-  cifrados encima y el análisis debajo del bajo.
-- `guido(tonalidad:clave:tempo:titulo:parte:)` escribe lo mismo en GUIDO Music Notation
+- Las de un coral y de una progresión van en dos pentagramas, con los cifrados encima y el
+  análisis debajo del bajo.
+- `guido()` escribe lo mismo en GUIDO Music Notation
   (`.gmn`), la entrada de Guido Engine (`guido2svg escala.gmn`): la octava 1 es la del Do central
   (`c1` es Do4), las alteraciones son `#` y `&`, y cada duración va como fracción de redonda
-  (`/4`, `*3/8`). `Coral` y `AnalisisArmonico` la tienen también.
+  (`/4`, `*3/8`).
 - Desde la terminal: `armonia lilypond melodia Do4:4 Re4:8 Mi4:8 Fa4:2 > escala.ly`,
   `armonia guido melodia … > escala.gmn` y `armonia abc melodia … > escala.abc`.
 
 ## Exportar a MIDI
 
-`midi(tonalidad:tempo:titulo:parte:instrumento:afinacion:)` da la voz como fichero MIDI estándar
+`midi(afinacion:)` da la partitura como fichero MIDI estándar
 (formato 1), para oírla en cualquier reproductor o secuenciador. La primera pista lleva el
 título, el tempo, el compás y la armadura; la segunda, las notas. Las ligadas suenan como una
 sola nota y los grupos irregulares quedan exactos (480 pulsos por negra, o los que hagan falta).
 
 ```swift
 let melodia = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8~ Mi4:4 Sol4+Si4:2", compas: "3/4")
-let datos = melodia.midi(tempo: Tempo(90), titulo: "Escala", instrumento: 40)   // violín
+let datos = melodia.partitura(encabezado: Encabezado(titulo: "Escala", tempo: Tempo(90), instrumento: 40)).midi()   // violín
 datos.prefix(4) == Data("MThd".utf8)   // true
 ```
 
 - Para guardarlo: `try datos.write(to: URL(fileURLWithPath: "escala.mid"))`.
-- `instrumento` es el programa General MIDI (0 = piano de cola, 40 = violín, 52 = coro…).
-- `Coral.midi` escribe una pista por voz (soprano, contralto, tenor y bajo), con el
-  coro como instrumento; `AnalisisArmonico.midi`, los acordes en posición cerrada y el bajo, con
+- El `instrumento` del encabezado es el programa General MIDI (0 = piano de cola, 40 = violín, 52 = coro…).
+- La de un coral lleva una pista por voz (soprano, contralto, tenor y bajo), con el
+  coro como instrumento; la de una progresión, los acordes en posición cerrada y el bajo, con
   un marcador por acorde («Re7 · V7/V») que los secuenciadores muestran al sonar.
 - Las alturas fuera del rango MIDI (0…127) se omiten. Los textos van en Latin-1, con las
   alteraciones en ASCII («Mib · bVI»), porque es lo que leen casi todos los programas.
@@ -273,47 +295,24 @@ pista con el mismo instrumento vuelven a ser una sola parte.
 
 ```swift
 let acorde = try Voz(leyendo: "Do4+Mi4+Sol4:1")
-let datos = acorde.midi(afinacion: TemperamentoRegular.mesotonicoCuartoDeComa)
+let datos = acorde.partitura().midi(afinacion: TemperamentoRegular.mesotonicoCuartoDeComa)
 let pieza = try PiezaImportada(midi: datos)
 pieza.notas.map(\.parte) == [0, 0, 0]                                     // true
 abs(400 + pieza.notas[1].desvio - pieza.notas[0].desvio - 386.31) < 0.05   // true: la tercera, pura
 ```
 
-## La partitura
-
-Todos los formatos y el dibujo salen de un mismo valor, ``Partitura``: los pentagramas de arriba abajo, cada uno con
-su clave y sus voces (una ``Partitura/Linea`` con su nombre, la dirección de sus plicas, los cifrados de encima, el
-análisis de debajo y los marcadores de MIDI), y un ``Encabezado`` con lo que vale para toda ella: el título, la
-armadura, el tempo, el nombre de la parte y el instrumento de MIDI. Una ``Voz``, un ``Coral``, un
-``AnalisisArmonico`` y un ``Contrapunto`` hacen la suya con `partitura(…)`, y de ella salen `musicXML()`, `mei()`,
-`lilyPond()`, `guido()`, `abc()`, `midi(afinacion:)`, `exportar(como:)` y `svg(opciones:)`. Las funciones de cada
-formato de las secciones de arriba son atajos de lo mismo; con la partitura se puede, además, cambiar algo antes de
-escribirla o montar una a mano.
-
-```swift
-let escala = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2", compas: "3/4")
-let partitura = escala.partitura(encabezado: Encabezado(titulo: "Escala", tempo: Tempo(90)))
-partitura.musicXML() == escala.musicXML(tempo: Tempo(90), titulo: "Escala")   // true
-partitura.pentagramas.count                                                  // 1
-let bajo = try Voz(leyendo: "Do3:2. Fa2:4", compas: "3/4")
-let manos: [Partitura.Pentagrama] = [.init(clave: .sol, voces: [.init(escala)]), .init(clave: .fa, voces: [.init(bajo)])]
-let dos = Partitura(pentagramas: manos, encabezado: Encabezado(titulo: "Dos manos"), llave: true)
-dos.lilyPond().contains("PianoStaff")                                        // true
-dos.svg().contains("<svg")                                                   // true
-```
-
 ## Todos los formatos a la vez
 
 ``FormatoDePartitura`` reúne los seis formatos (MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI), y
-`exportar(como:…)` escribe una ``Voz``, un ``Coral``, un ``AnalisisArmonico`` o un ``Contrapunto`` en
-el que se pida, con las mismas opciones que la función de cada formato. Los formatos de texto salen en
+`exportar(como:afinacion:)` escribe una ``Partitura`` en el que se pida. Los formatos de texto salen en
 UTF-8, así que todos dan `Data`, listos para guardar con `extensionDeFichero`.
 
 ```swift
 let tema = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2", compas: "3/4")
 FormatoDePartitura.allCases.map(\.extensionDeFichero) == ["musicxml", "mei", "ly", "gmn", "abc", "mid"]   // true
-tema.exportar(como: .lilyPond, titulo: "Tema") == Data(tema.lilyPond(titulo: "Tema").utf8)   // true
-tema.exportar(como: .midi, titulo: "Tema") == tema.midi(titulo: "Tema")                       // true
+let delTema = tema.partitura(encabezado: Encabezado(titulo: "Tema"))
+delTema.exportar(como: .lilyPond) == Data(delTema.lilyPond().utf8)   // true
+delTema.exportar(como: .midi) == delTema.midi()                       // true
 ```
 
 - La clave no cuenta en MIDI, ni el instrumento en los demás; el MIDI de un coral o de una
@@ -337,7 +336,7 @@ let acordes = [Acorde("Do"), Acorde("Lam"), Acorde("Fa"), Acorde("Sol7")]
 let alberti = Voz(arpegiando: acordes, patron: .alberti, porAcorde: .blanca)
 alberti.eventos.count   // 16
 alberti.eventos.prefix(4).flatMap(\.alturas).map(\.midi) == [48, 55, 52, 55]   // true
-let datos = alberti.midi(titulo: "Bajo de Alberti")
+let datos = alberti.partitura(encabezado: Encabezado(titulo: "Bajo de Alberti")).midi()
 ```
 
 - Desde la terminal: `armonia musicxml arpegios Do Lam Fa Sol7 --patron alberti --duracion 2`, y lo mismo
@@ -353,12 +352,12 @@ los analiza.
 
 ```swift
 let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-let pieza = try PiezaImportada(leyendo: coral.midi(duracion: .blanca, tonalidad: Tonalidad(.do)))
+let pieza = try PiezaImportada(leyendo: coral.partitura(duracion: .blanca, encabezado: Encabezado(tonalidad: Tonalidad(.do))).midi())
 pieza.tonalidad                  // Do mayor
 pieza.notas.count                // 12
 pieza.acordes().map(\.cifrado)   // ["Do", "Sol", "Do"]
 pieza.analisis()?.cifrados       // ["I", "V", "I"]
-pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca]   // true
+pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .redonda]  // true
 ```
 
 - MIDI solo da números de nota: la ortografía sale de la armadura del fichero o, si no la
@@ -372,9 +371,8 @@ pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .blanca]   // t
   canal 10 de MIDI. Las notas de adorno de MusicXML, MEI y ABC van aparte, en `notasDeAdorno`:
   empiezan donde empieza la nota a la que adornan y no duran.
 - `acordesConDuracion(ventana:)` da además lo que dura cada acorde, el ritmo armónico de la pieza:
-  hasta que empieza el siguiente y, el último, hasta el final. Las exportaciones de una progresión
-  analizada lo aceptan con `duraciones:` (`musicXML(duraciones:)`, `mei(duraciones:)` y
-  `midi(duraciones:)`), y `Voz(arpegiando:duraciones:)` la arpegia con ese ritmo.
+  hasta que empieza el siguiente y, el último, hasta el final. La partitura de una progresión
+  analizada lo acepta con `partitura(duraciones:)`, y `Voz(arpegiando:duraciones:)` la arpegia con ese ritmo.
 - Las repeticiones de MusicXML, MEI y ABC (con sus casillas de primera y segunda vez) y los saltos
   (da capo, dal segno, fine, coda) se despliegan: `notas` las da en el orden en que se tocan. Tras
   un da capo o un dal segno no se repite nada y se toman las últimas casillas. Del .mxl se lee la partitura que señala

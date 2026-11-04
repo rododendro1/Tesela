@@ -57,7 +57,7 @@ import Testing
     @Test func melodia() throws {
         let voz = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2. Sol4:4 -:2.", compas: "3/4")
         // Sin Si ni Si♭, Do mayor y Fa mayor empatan al estimar la tonalidad: se da.
-        let raiz = leer(voz.mei(tonalidad: Tonalidad(.do), titulo: "Escala"))
+        let raiz = leer(voz.partitura(encabezado: Encabezado(titulo: "Escala", tonalidad: Tonalidad(.do))).mei())
         #expect(raiz.buscar("title").first?.texto == "Escala")
         let definicion = try #require(raiz.buscar("scoreDef").first)
         #expect(definicion.atributos["meter.count"] == "3")
@@ -87,16 +87,17 @@ import Testing
         // En Do mayor: el sostenido vale hasta la barra, el becuadro se escribe y vuelve a hacer falta.
         let raiz = leer(
             try Voz(leyendo: "Fa#4:4 Fa#4:4 Fa4:4 Fa#4:4 Fa#4:4 Fa#5:4 Fa4:4 Sib3:4")
-                .mei(tonalidad: Tonalidad(.do)))
+                .partitura(encabezado: Encabezado(tonalidad: Tonalidad(.do))).mei())
         #expect(notas(raiz).map { $0.atributos["accid"] } == ["s", nil, "n", "s", "s", "s", "n", "f"])
         #expect(notas(raiz).map { $0.atributos["accid.ges"] } == [nil, "s", nil, nil, nil, nil, nil, nil])
         // En Sol mayor, el fa sostenido de la armadura no se escribe, pero suena.
-        let sol = leer(try Voz(leyendo: "Fa#4:2 Fa4:2").mei(tonalidad: Tonalidad(.sol)))
+        let sol = leer(
+            try Voz(leyendo: "Fa#4:2 Fa4:2").partitura(encabezado: Encabezado(tonalidad: Tonalidad(.sol))).mei())
         #expect(sol.buscar("scoreDef").first?.atributos["keysig"] == "1s")
         #expect(notas(sol).map { $0.atributos["accid"] } == [nil, "n"])
         #expect(notas(sol).map { $0.atributos["accid.ges"] } == ["s", nil])
         #expect(
-            try leer(Voz(leyendo: "Mib4:1").mei(tonalidad: Tonalidad(armadura: -3)))
+            try leer(Voz(leyendo: "Mib4:1").partitura(encabezado: Encabezado(tonalidad: Tonalidad(armadura: -3))).mei())
                 .buscar("scoreDef").first?.atributos["keysig"] == "3f")
     }
 
@@ -104,21 +105,28 @@ import Testing
         // El contralto lleva Fa♯4 en el primer acorde. En el segundo, el Fa♯5 del soprano, en otra
         // octava, lo escribe; el Fa♯4 ya no, aunque esté en otra voz (y antes en el documento). El
         // segundo acorde dura hasta la barra, negra ligada a blanca: la blanca no cuenta.
-        let raiz = leer(try Coral(leyendo: "Re3 La3 Fa#4 Re5, Re3 La3 Re4 Fa#5").mei(tonalidad: Tonalidad(.do)))
+        let raiz = leer(
+            try Coral(leyendo: "Re3 La3 Fa#4 Re5, Re3 La3 Re4 Fa#5").partitura(
+                encabezado: Encabezado(tonalidad: Tonalidad(.do))
+            ).mei())
         let fas = notas(raiz).filter { $0.atributos["pname"] == "f" && $0.atributos["tie"] != "t" }
         #expect(fas.map { $0.atributos["oct"] } == ["5", "4"]) // el soprano va primero
         #expect(fas.map { $0.atributos["accid"] } == ["s", "s"])
-        let mismaOctava = leer(try Coral(leyendo: "Re3 La3 Fa#4 Re5, Re3 La3 Re4 Fa#4").mei(tonalidad: Tonalidad(.do)))
+        let mismaOctava = leer(
+            try Coral(leyendo: "Re3 La3 Fa#4 Re5, Re3 La3 Re4 Fa#4").partitura(
+                encabezado: Encabezado(tonalidad: Tonalidad(.do))
+            ).mei())
         let fasEnCuatro = notas(mismaOctava).filter { $0.atributos["pname"] == "f" && $0.atributos["tie"] != "t" }
         #expect(fasEnCuatro.map { $0.atributos["accid"] } == [nil, "s"])
         #expect(fasEnCuatro.map { $0.atributos["accid.ges"] } == ["s", nil])
     }
 
     @Test func ligadurasYGruposIrregulares() throws {
-        let cruzada = leer(try Voz(leyendo: "Do4:2 Re4:2 Mi4:2", compas: "3/4").mei())
+        let cruzada = leer(try Voz(leyendo: "Do4:2 Re4:2 Mi4:2", compas: "3/4").partitura().mei())
         #expect(notas(cruzada).map { $0.atributos["tie"] } == [nil, "i", "t", nil])
         let raiz = leer(
-            try Voz(leyendo: "Do4:8. Re4:16 Mi4:1/12 Fa4:1/12 Sol4:1/12 La4:1/6 Si4:1/12", compas: "3/4").mei())
+            try Voz(leyendo: "Do4:8. Re4:16 Mi4:1/12 Fa4:1/12 Sol4:1/12 La4:1/6 Si4:1/12", compas: "3/4").partitura()
+                .mei())
         #expect(notas(raiz).map { $0.atributos["dots"] } == ["1", nil, nil, nil, nil, nil, nil])
         let grupos = raiz.buscar("tuplet")
         #expect(grupos.map { $0.atributos["num"] } == ["3", "3"])
@@ -128,12 +136,15 @@ import Testing
     }
 
     @Test func acordesAnacrusaYTempo() throws {
-        let acordes = leer(try Voz(leyendo: "Do4+Mi4+Sol4:2 -:4 Re4+Fa4:4").mei(tonalidad: Tonalidad(.do)))
+        let acordes = leer(
+            try Voz(leyendo: "Do4+Mi4+Sol4:2 -:4 Re4+Fa4:4").partitura(
+                encabezado: Encabezado(tonalidad: Tonalidad(.do))
+            ).mei())
         #expect(acordes.buscar("chord").map { $0.todos("note").count } == [3, 2])
         #expect(acordes.buscar("rest").first?.atributos["dur"] == "4")
         let anacrusa = leer(
             try Voz(leyendo: "Sol4:4 Do5:2 Re5:4 Mi5:2", compas: "3/4", anacrusa: .negra)
-                .mei(tempo: Tempo(60, unidad: Duracion(.negra, puntillos: 1))))
+                .partitura(encabezado: Encabezado(tempo: Tempo(60, unidad: Duracion(.negra, puntillos: 1)))).mei())
         let primero = try #require(anacrusa.buscar("measure").first)
         #expect(primero.atributos["n"] == "0")
         #expect(primero.atributos["metcon"] == "false")
@@ -143,18 +154,26 @@ import Testing
         #expect(tempo.atributos["mm.dots"] == "1")
         #expect(tempo.atributos["midi.bpm"] == "90")
         #expect(tempo.atributos["startid"] == ("#" + (anacrusa.buscar("note").first?.atributos["xml:id"] ?? "")))
-        #expect(try leer(Voz(leyendo: "Do4:1").mei()).buscar("scoreDef").first?.atributos["meter.sym"] == "common")
         #expect(
-            try leer(Voz(leyendo: "Do4:8 Re4:8 Mi4:8 Fa4:8 Sol4:4.", compas: "3+2+2/8").mei())
+            try leer(Voz(leyendo: "Do4:1").partitura().mei()).buscar("scoreDef").first?.atributos["meter.sym"]
+                == "common")
+        #expect(
+            try leer(Voz(leyendo: "Do4:8 Re4:8 Mi4:8 Fa4:8 Sol4:4.", compas: "3+2+2/8").partitura().mei())
                 .buscar("scoreDef").first?.atributos["meter.count"] == "3+2+2")
-        let escapado = leer(try Voz(leyendo: "Do4:1").mei(titulo: "Do & Re <\"1\">", parte: "Flauta & voz"))
+        let escapado = leer(
+            try Voz(leyendo: "Do4:1").partitura(
+                encabezado: Encabezado(titulo: "Do & Re <\"1\">", parte: "Flauta & voz")
+            ).mei())
         #expect(escapado.buscar("title").first?.texto == "Do & Re <\"1\">")
         #expect(escapado.buscar("label").first?.texto == "Flauta & voz")
     }
 
     @Test func coral() throws {
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa3 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-        let raiz = leer(coral.mei(duracion: .blanca, titulo: "Cadencia", cifrados: true, analisis: true))
+        let raiz = leer(
+            coral.partitura(
+                duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia"), cifrados: true, analisis: true
+            ).mei())
         #expect(raiz.buscar("staffGrp").first?.atributos["symbol"] == "brace")
         #expect(raiz.buscar("staffDef").map { $0.atributos["clef.shape"] } == ["G", "F"])
         let compases = raiz.buscar("measure")
@@ -189,12 +208,12 @@ import Testing
 
     @Test func progresion() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7/Si Do")
-        let raiz = leer(analisis.mei(titulo: "Progresión", notacion: .inglesASCII))
+        let raiz = leer(analisis.partitura(encabezado: Encabezado(titulo: "Progresión"), notacion: .inglesASCII).mei())
         #expect(raiz.buscar("harm").map(\.texto) == ["C", "Am", "D7", "G7/B", "C"])
         #expect(raiz.buscar("dir").first?.texto == "C major:")
         #expect(raiz.buscar("chord").count == 5)
         #expect(raiz.buscar("verse").count == analisis.acordes.flatMap(Exportacion.letras).filter { !$0.isEmpty }.count)
-        let sinAnotar = leer(analisis.mei(cifrados: false, analisis: false))
+        let sinAnotar = leer(analisis.partitura(cifrados: false, analisis: false).mei())
         #expect(sinAnotar.buscar("harm").isEmpty)
         #expect(sinAnotar.buscar("verse").isEmpty)
         #expect(sinAnotar.buscar("dir").isEmpty)
@@ -224,7 +243,7 @@ import Testing
             let anacrusa = Bool.random(using: &azar) ? Duracion(1, compas.denominador) : .cero
             let voz = Voz(eventos, compas: compas, anacrusa: anacrusa)
             let tonalidad = Tonalidad(armadura: Int.random(in: -7...7, using: &azar), modo: .mayor)
-            let raiz = leer(voz.mei(tonalidad: tonalidad))
+            let raiz = leer(voz.partitura(encabezado: Encabezado(tonalidad: tonalidad)).mei())
             let contexto = voz.eventos.map(\.description).joined(separator: " ") + " en \(compas), \(tonalidad)"
             let ppq = try #require(
                 raiz.buscar("staffDef").first?.atributos["ppq"].flatMap { Int($0) }, Comment(rawValue: contexto))

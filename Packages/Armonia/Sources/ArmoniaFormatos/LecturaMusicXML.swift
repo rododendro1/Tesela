@@ -19,7 +19,7 @@ import Foundation
 extension PiezaImportada {
     /// Lee una partitura MusicXML por partes.
     ///
-    ///     let xml = coral.musicXML(duracion: .blanca)
+    ///     let xml = coral.partitura(duracion: .blanca).musicXML()
     ///     let pieza = try PiezaImportada(musicXML: Data(xml.utf8))
     public init(musicXML datos: Data) throws {
         let lector = LectorMusicXML()

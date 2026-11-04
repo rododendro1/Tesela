@@ -45,11 +45,11 @@ public enum LecturaAlAzar {
         texto("recorrido tonal") { _ = try RecorridoTonal(leyendo: $0).tramos },
         texto("coral") { texto in
             let coral = try Coral(leyendo: texto)
-            _ = coral.musicXML()
+            _ = coral.partitura().musicXML()
         },
         texto("voz") { texto in
             let voz = try Voz(leyendo: texto, compas: "3/4")
-            _ = voz.musicXML()
+            _ = voz.partitura().musicXML()
         },
         texto("evento") { _ = try Evento(leyendo: $0) },
         texto("duración") { _ = try Duracion(leyendo: $0) },
@@ -96,22 +96,32 @@ public enum LecturaAlAzar {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
         let voz = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8~ Mi4:4 Sol4+Si4:2", compas: "3/4")
         let ficheros: [Data] = [
-            coral.midi(duracion: .blanca, compas: Compas(3, 2), tonalidad: Tonalidad(.do), tempo: Tempo(72)),
-            analisis.midi(),
-            Data(coral.musicXML(duracion: .blanca, compas: Compas(3, 2), tonalidad: Tonalidad(.do)).utf8),
-            Data(analisis.musicXML().utf8),
-            Data(voz.musicXML().utf8),
+            coral.partitura(
+                duracion: .blanca, compas: Compas(3, 2),
+                encabezado: Encabezado(tonalidad: Tonalidad(.do), tempo: Tempo(72))
+            ).midi(),
+            analisis.partitura().midi(),
+            Data(
+                coral.partitura(
+                    duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(tonalidad: Tonalidad(.do))
+                ).musicXML().utf8),
+            Data(analisis.partitura().musicXML().utf8),
+            Data(voz.partitura().musicXML().utf8),
             mxl,
-            Data(coral.mei(duracion: .blanca, compas: Compas(3, 2), tonalidad: Tonalidad(.do)).utf8),
-            Data(voz.abc().utf8),
+            Data(
+                coral.partitura(
+                    duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(tonalidad: Tonalidad(.do))
+                ).mei().utf8),
+            Data(voz.partitura().abc().utf8),
         ]
         let partituras: [String: [Data]] = [
             "MEI": [
-                Data(analisis.mei().utf8), Data(voz.mei().utf8),
-                Data(try Escala(leyendo: "Re bayati").voz().mei().utf8),
+                Data(analisis.partitura().mei().utf8), Data(voz.partitura().mei().utf8),
+                Data(try Escala(leyendo: "Re bayati").voz().partitura().mei().utf8),
             ],
             "ABC": [
-                Data(analisis.abc().utf8), Data(try Escala(leyendo: "Re bayati").voz().abc().utf8),
+                Data(analisis.partitura().abc().utf8),
+                Data(try Escala(leyendo: "Re bayati").voz().partitura().abc().utf8),
                 Data(Self.abcDeCancionero.utf8),
             ],
         ]

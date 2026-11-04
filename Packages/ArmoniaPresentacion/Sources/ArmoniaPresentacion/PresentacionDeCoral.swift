@@ -217,9 +217,10 @@ public enum PresentacionDeCoral {
         nombre: String
     ) -> [FicheroParaExportar] {
         FicheroParaExportar.partituras(nombre: nombre) { formato in
-            coral.exportar(
-                como: formato, tonalidad: tonalidad, titulo: nombre, cifrados: true, analisis: true,
-                notacion: notacion)
+            coral.partitura(
+                encabezado: Encabezado(titulo: nombre, tonalidad: tonalidad), cifrados: true, analisis: true,
+                notacion: notacion
+            ).exportar(como: formato)
         }
     }
 }

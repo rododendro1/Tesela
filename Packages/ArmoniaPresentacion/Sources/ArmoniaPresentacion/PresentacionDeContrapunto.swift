@@ -101,7 +101,7 @@ public enum PresentacionDeContrapunto {
             cabecera: lineas.first ?? "", filas: filas, informe: Array(lineas.dropFirst()),
             esCorrecto: faltas.isEmpty,
             ficheros: FicheroParaExportar.partituras(nombre: nombre) { formato in
-                ejercicio.exportar(como: formato, tempo: tempo, titulo: nombre)
+                ejercicio.partitura(encabezado: Encabezado(titulo: nombre, tempo: tempo)).exportar(como: formato)
             },
             sonido: sonido,
             compasDePaso: sonido.inicios.map { Int(($0 / redonda + 1e-6).rounded(.down)) })

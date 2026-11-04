@@ -49,13 +49,15 @@ import Testing
         #expect(FicheroParaExportar.Formato.svg.partitura == nil)
         // `partituras` da una por formato, en su orden, con lo que escribe `exportar(como:…)`.
         let voz = try Voz(leyendo: "Do4:4 Re4:4 Mi4:2")
-        let ficheros = FicheroParaExportar.partituras(nombre: "Tema") { voz.exportar(como: $0, titulo: "Tema") }
+        let ficheros = FicheroParaExportar.partituras(nombre: "Tema") {
+            voz.partitura(encabezado: Encabezado(titulo: "Tema")).exportar(como: $0)
+        }
         #expect(ficheros.compactMap(\.formato.partitura) == FormatoDePartitura.allCases)
         #expect(
             ficheros.map(\.nombreDeFichero) == [
                 "Tema.musicxml", "Tema.mei", "Tema.ly", "Tema.gmn", "Tema.abc", "Tema.mid",
             ])
-        #expect(ficheros[3].datos == Data(voz.guido(titulo: "Tema").utf8))
+        #expect(ficheros[3].datos == Data(voz.partitura(encabezado: Encabezado(titulo: "Tema")).guido().utf8))
     }
 
     @Test func elIdentificadorEsElNombreDelFichero() {

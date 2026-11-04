@@ -58,7 +58,8 @@ import Testing
 
     @Test func unZipSinContenedorUsaLaPrimeraPartitura() throws {
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-        let xml = [UInt8](coral.musicXML(duracion: .blanca, titulo: "Guardado").utf8)
+        let xml = [UInt8](
+            coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "Guardado")).musicXML().utf8)
         let datos = ImportacionMXLTests.zip([("META-INF/otro.xml", [UInt8]("<x/>".utf8)), ("coral.musicxml", xml)])
         let pieza = try PiezaImportada(leyendo: datos)
         #expect(try pieza == (PiezaImportada(musicXML: Data(xml))))
@@ -114,7 +115,10 @@ import Testing
     @Test func losAcordesConLoQueDuran() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
         let duraciones: [Duracion] = [.blanca, .negra, .negra, .redonda]
-        for datos in [analisis.midi(duraciones: duraciones), Data(analisis.musicXML(duraciones: duraciones).utf8)] {
+        for datos in [
+            analisis.partitura(duraciones: duraciones).midi(),
+            Data(analisis.partitura(duraciones: duraciones).musicXML().utf8),
+        ] {
             let pieza = try PiezaImportada(leyendo: datos)
             let leidos = pieza.acordesConDuracion()
             #expect(leidos.map(\.acorde.cifrado) == ["Do", "Fa", "Sol7", "Do"])
@@ -125,15 +129,20 @@ import Testing
     @Test func laProgresionSeExportaConSuRitmo() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
         let duraciones: [Duracion] = [.blanca, .negra, .negra, .blanca]
-        let xml = analisis.musicXML(duraciones: duraciones)
+        let xml = analisis.partitura(duraciones: duraciones).musicXML()
         // Seis negras, y el último acorde se alarga hasta la barra: dos compases de 4/4.
         #expect((xml.components(separatedBy: "<measure ").count - 1) == 2)
         #expect(xml.contains("<type>quarter</type>"))
-        #expect(analisis.musicXML(duraciones: Array(repeating: .blanca, count: 4)) == analisis.musicXML())
-        #expect(analisis.mei(duraciones: Array(repeating: .negra, count: 4)) == analisis.mei(duracion: .negra))
-        #expect(analisis.midi(duraciones: Array(repeating: .blanca, count: 4)) == analisis.midi())
+        #expect(
+            analisis.partitura(duraciones: Array(repeating: .blanca, count: 4)).musicXML()
+                == analisis.partitura().musicXML())
+        #expect(
+            analisis.partitura(duraciones: Array(repeating: .negra, count: 4)).mei()
+                == analisis.partitura(duracion: .negra).mei())
+        #expect(
+            analisis.partitura(duraciones: Array(repeating: .blanca, count: 4)).midi() == analisis.partitura().midi())
         // Con menos de un compás, uno.
-        let corto = analisis.musicXML(duraciones: [.negra, .negra, .negra, .corchea])
+        let corto = analisis.partitura(duraciones: [.negra, .negra, .negra, .corchea]).musicXML()
         #expect((corto.components(separatedBy: "<measure ").count - 1) == 1)
     }
 

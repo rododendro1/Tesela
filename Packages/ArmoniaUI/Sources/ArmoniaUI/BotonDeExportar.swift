@@ -7,7 +7,7 @@
     /// (guardar en Archivos, AirDrop, Mail…):
     ///
     ///     .toolbar {
-    ///         ToolbarItem { BotonDeExportar([.midi(analisis.midi(), nombre: "Progresión")]) }
+    ///         ToolbarItem { BotonDeExportar([.midi(analisis.partitura().midi(), nombre: "Progresión")]) }
     ///     }
     ///
     /// Los ficheros se escriben en la carpeta temporal cada vez que cambian, no al pulsar.

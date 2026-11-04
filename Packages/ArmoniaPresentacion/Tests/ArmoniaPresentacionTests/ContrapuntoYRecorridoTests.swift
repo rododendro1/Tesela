@@ -87,7 +87,7 @@ import Testing
     private func recorrido(_ texto: String) throws -> RecorridoDePartitura {
         let analisis = try AnalisisArmonico.analizar(leyendo: texto)
         // En MusicXML, que guarda la ortografía (un MIDI la estima).
-        return try RecorridoDePartitura.leer(Data(analisis.musicXML().utf8), notacion: .espanolCompacto)
+        return try RecorridoDePartitura.leer(Data(analisis.partitura().musicXML().utf8), notacion: .espanolCompacto)
     }
 
     @Test func lasTransformacionesEntreTriadas() throws {
@@ -128,7 +128,7 @@ import Testing
     }
 
     @Test func unFicheroSinAcordesEsUnError() throws {
-        let melodia = try Voz(leyendo: "Do4:4 Re4:4 Mi4:4").midi()
+        let melodia = try Voz(leyendo: "Do4:4 Re4:4 Mi4:4").partitura().midi()
         #expect(throws: ErrorDeImportacion.sinAcordes) {
             try RecorridoDePartitura.leer(melodia, notacion: .espanolCompacto)
         }

@@ -23,7 +23,7 @@ import Foundation
 extension PiezaImportada {
     /// Lee una partitura MEI.
     ///
-    ///     let mei = coral.mei(duracion: .blanca)
+    ///     let mei = coral.partitura(duracion: .blanca).mei()
     ///     let pieza = try PiezaImportada(mei: Data(mei.utf8))
     public init(mei datos: Data) throws {
         let lector = LectorMEI()

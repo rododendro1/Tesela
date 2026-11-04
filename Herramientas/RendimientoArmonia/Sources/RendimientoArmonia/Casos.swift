@@ -112,10 +112,10 @@ enum Casos {
                 TablaArmonica(sol7).svg().count
             },
             Caso(grupo: "Partituras", nombre: "MusicXML de 64 acordes analizados") {
-                analisisLargo?.musicXML().count ?? 0
+                analisisLargo?.partitura().musicXML().count ?? 0
             },
             Caso(grupo: "Partituras", nombre: "MIDI de 64 acordes analizados") {
-                analisisLargo?.midi().count ?? 0
+                analisisLargo?.partitura().midi().count ?? 0
             },
         ]
         return casos

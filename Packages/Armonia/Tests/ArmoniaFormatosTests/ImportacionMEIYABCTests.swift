@@ -43,7 +43,8 @@ private func f(_ duracion: Duracion) -> String {
         for (texto, compas) in voces {
             let voz = try Voz(leyendo: texto, compas: Compas(leyendo: compas))
             try porTodosLosFormatos(
-                musicXML: voz.musicXML(), mei: voz.mei(titulo: "Voz"), abc: voz.abc(titulo: "Voz"),
+                musicXML: voz.partitura().musicXML(), mei: voz.partitura(encabezado: Encabezado(titulo: "Voz")).mei(),
+                abc: voz.partitura(encabezado: Encabezado(titulo: "Voz")).abc(),
                 Comment(rawValue: texto))
         }
     }
@@ -51,19 +52,30 @@ private func f(_ duracion: Duracion) -> String {
     @Test func losCoralesYLosAnalisisSalenIgual() throws {
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa2 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
         try porTodosLosFormatos(
-            musicXML: coral.musicXML(duracion: .blanca, compas: Compas(3, 2), tonalidad: Tonalidad(.do)),
-            mei: coral.mei(duracion: .blanca, compas: Compas(3, 2), tonalidad: Tonalidad(.do), titulo: "Cadencia"),
-            abc: coral.abc(duracion: .blanca, compas: Compas(3, 2), tonalidad: Tonalidad(.do), titulo: "Cadencia"),
+            musicXML: coral.partitura(
+                duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(tonalidad: Tonalidad(.do))
+            ).musicXML(),
+            mei: coral.partitura(
+                duracion: .blanca, compas: Compas(3, 2),
+                encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do))
+            ).mei(),
+            abc: coral.partitura(
+                duracion: .blanca, compas: Compas(3, 2),
+                encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do))
+            ).abc(),
             "coral")
         let analisis = try AnalisisArmonico.analizar(leyendo: "Sib Mib/Sol Fa7/La Sib")
         try porTodosLosFormatos(
-            musicXML: analisis.musicXML(), mei: analisis.mei(), abc: analisis.abc(), "análisis")
+            musicXML: analisis.partitura().musicXML(), mei: analisis.partitura().mei(), abc: analisis.partitura().abc(),
+            "análisis")
 
-        let pieza = try PiezaImportada(leyendo: Data(analisis.mei(titulo: "Cadencia").utf8))
+        let pieza = try PiezaImportada(
+            leyendo: Data(analisis.partitura(encabezado: Encabezado(titulo: "Cadencia")).mei().utf8))
         #expect(pieza.titulo == "Cadencia")
         #expect(pieza.tonalidad?.armadura == -2)
         #expect(pieza.acordes().map(\.cifrado) == ["Si♭", "Mi♭/Sol", "Fa7/La", "Si♭"])
-        let porABC = try PiezaImportada(leyendo: Data(analisis.abc(titulo: "Cadencia").utf8))
+        let porABC = try PiezaImportada(
+            leyendo: Data(analisis.partitura(encabezado: Encabezado(titulo: "Cadencia")).abc().utf8))
         #expect(porABC.titulo == "Cadencia")
         #expect(porABC.tonalidad?.armadura == -2)
         #expect(porABC.acordes().map(\.cifrado) == ["Si♭", "Mi♭/Sol", "Fa7/La", "Si♭"])
@@ -71,7 +83,10 @@ private func f(_ duracion: Duracion) -> String {
 
     @Test func elCompasYElTempo() throws {
         let voz = try Voz(leyendo: "Do4:4 Re4:4 Mi4:4", compas: "3/4")
-        for texto in [voz.mei(tempo: Tempo(90)), voz.abc(tempo: Tempo(90))] {
+        for texto in [
+            voz.partitura(encabezado: Encabezado(tempo: Tempo(90))).mei(),
+            voz.partitura(encabezado: Encabezado(tempo: Tempo(90))).abc(),
+        ] {
             let pieza = try PiezaImportada(leyendo: Data(texto.utf8))
             #expect(pieza.compas == Compas(3, 4))
             #expect(pieza.tempo.map { abs($0.negrasPorMinuto - 90) < 0.01 } == true)
@@ -95,7 +110,7 @@ private func f(_ duracion: Duracion) -> String {
             }
             for formato in ["MEI", "ABC"] {
                 let pieza = try PiezaImportada(
-                    leyendo: Data((formato == "MEI" ? voz.mei() : voz.abc()).utf8))
+                    leyendo: Data((formato == "MEI" ? voz.partitura().mei() : voz.partitura().abc()).utf8))
                 let leidos = pieza.notas.sorted { $0.inicio < $1.inicio }
                 #expect(leidos.count == esperados.count, Comment(rawValue: "\(tipo.nombre) \(formato)"))
                 for (leido, esperado) in zip(leidos, esperados) {

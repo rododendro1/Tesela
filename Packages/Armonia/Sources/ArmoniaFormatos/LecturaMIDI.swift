@@ -20,7 +20,7 @@ import Foundation
 extension PiezaImportada {
     /// Lee un fichero MIDI estándar.
     ///
-    ///     let datos = coral.midi()
+    ///     let datos = coral.partitura().midi()
     ///     let pieza = try PiezaImportada(midi: datos)
     ///     pieza.notas.count   // las mismas notas que el coral
     public init(midi datos: Data) throws {

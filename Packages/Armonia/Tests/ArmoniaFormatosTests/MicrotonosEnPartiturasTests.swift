@@ -51,7 +51,7 @@ import Testing
         // Sīkāh empieza y acaba en Mi𝄳: las dos tónicas se apartan.
         let sikah = Escala(.mi, .sikah).voz()
         #expect(sikah.eventos.first?.desvio(0) == -50 && sikah.eventos.last?.desvio(0) == -50)
-        #expect(sikah.musicXML().contains("<alter>-0.5</alter>"))
+        #expect(sikah.partitura().musicXML().contains("<alter>-0.5</alter>"))
         // Sin microtonos, sin desvíos.
         #expect(Escala(.do, .mayor).voz().eventos.allSatisfy { !$0.esMicrotonal })
     }
@@ -85,40 +85,40 @@ import Testing
 
     @Test func formatos() {
         let bayati = Escala(.re, .bayati).voz()
-        let musicXML = bayati.musicXML()
+        let musicXML = bayati.partitura().musicXML()
         #expect(musicXML.contains("<alter>-0.5</alter>"))
         #expect(musicXML.contains("<accidental>quarter-flat</accidental>"))
-        #expect(bayati.mei().contains("accid=\"1qf\""))
-        #expect(bayati.lilyPond().contains("eeh'"))
-        #expect(bayati.abc().contains("_/E"))
+        #expect(bayati.partitura().mei().contains("accid=\"1qf\""))
+        #expect(bayati.partitura().lilyPond().contains("eeh'"))
+        #expect(bayati.partitura().abc().contains("_/E"))
         // Las comas: el `alter` exacto y el glifo SMuFL en MusicXML; los signos de Arel-Ezgi-Uzdilek en MEI.
         let rast = Escala(.sol, .rastMakami).voz(sentido: .ascendente)
-        #expect(rast.musicXML().contains("<alter>-0.1509</alter>"))
-        #expect(rast.musicXML().contains("<accidental smufl=\"accidentalKomaFlat\">other</accidental>"))
-        #expect(rast.mei().contains("accid=\"kf\"") && rast.mei().contains("accid=\"bs\""))
+        #expect(rast.partitura().musicXML().contains("<alter>-0.1509</alter>"))
+        #expect(rast.partitura().musicXML().contains("<accidental smufl=\"accidentalKomaFlat\">other</accidental>"))
+        #expect(rast.partitura().mei().contains("accid=\"kf\"") && rast.partitura().mei().contains("accid=\"bs\""))
         // Los moria de un echos: el `alter` exacto y el signo de Wyschnegradsky.
-        let protos = Escala(.re, .echosProtos).voz(sentido: .ascendente).musicXML()
+        let protos = Escala(.re, .echosProtos).voz(sentido: .ascendente).partitura().musicXML()
         #expect(protos.contains("<alter>-0.3333</alter>"))
         #expect(protos.contains("smufl=\"accidentalWyschnegradsky2TwelfthsFlat\""))
         // LilyPond no tiene nombres para las comas: la nota temperada.
-        #expect(rast.lilyPond().contains("fis'"))
+        #expect(rast.partitura().lilyPond().contains("fis'"))
         // Sin microtonos, como antes.
         let mayor = Escala(.do, .mayor).voz()
-        #expect(!mayor.musicXML().contains("<accidental"))
+        #expect(!mayor.partitura().musicXML().contains("<accidental"))
     }
 
     @Test func midiConInflexiones() {
         func contiene(_ bytes: [UInt8], _ trozo: [UInt8]) -> Bool {
             bytes.indices.dropLast(trozo.count - 1).contains { bytes[$0..<($0 + trozo.count)].elementsEqual(trozo) }
         }
-        let bytes = [UInt8](Escala(.re, .bayati).voz().midi())
+        let bytes = [UInt8](Escala(.re, .bayati).voz().partitura().midi())
         func tiene(_ trozo: [UInt8]) -> Bool { contiene(bytes, trozo) }
         // El ámbito de la inflexión (RPN 0 = 2 semitonos), +50 cents antes del Mi𝄳 y la vuelta a 0 en el Fa.
         #expect(tiene([0xB0, 101, 0]) && tiene([0xB0, 6, 2]))
         #expect(tiene([0xE0, 0x00, 0x50]))
         #expect(tiene([0xE0, 0x00, 0x40]))
         // Sin microtonos, ni inflexiones ni RPN.
-        let mayor = [UInt8](Escala(.do, .mayor).voz().midi())
+        let mayor = [UInt8](Escala(.do, .mayor).voz().partitura().midi())
         #expect(!contiene(mayor, [0xB0, 101, 0]))
         let temperadas = ArchivoMIDI.mensajes(de: [[(60, 0, 480, 0, 80), (64, 0, 480, 0, 80)]], instrumentos: [0])
         #expect(temperadas[0].allSatisfy { [0x90, 0x80].contains($0.1[0]) })
@@ -191,14 +191,14 @@ import Testing
     /// Un acorde con microtonos sale por varios canales y vuelve como una sola parte, con sus desvíos.
     @Test func unAcordeMicrotonalVaYVuelve() throws {
         let voz = try Voz(leyendo: "Do4+Mi4(-14¢)+Sol4(2¢):2 Re4(-50¢):2")
-        let pieza = try PiezaImportada(midi: voz.midi())
+        let pieza = try PiezaImportada(midi: voz.partitura().midi())
         #expect(Set(pieza.notas.map(\.parte)) == [0])
         #expect(pieza.notas.map(\.altura.midi) == [60, 64, 67, 62])
         let desvios = pieza.notas.map(\.desvio)
         for (leido, esperado) in zip(desvios, [0, -14, 2, -50] as [Double]) { #expect(abs(leido - esperado) < 0.05) }
         // Las cuatro voces de un coral siguen siendo cuatro partes.
         let coral = try Coral(leyendo: "Do3 Sol3 Mi4 Do5 | Sol2 Sol3 Re4 Si4")
-        #expect(Set(try PiezaImportada(midi: coral.midi()).notas.map(\.parte)) == [0, 1, 2, 3])
+        #expect(Set(try PiezaImportada(midi: coral.partitura().midi()).notas.map(\.parte)) == [0, 1, 2, 3])
     }
 
     // MARK: En una afinación
@@ -219,13 +219,13 @@ import Testing
         let bajo = ArchivoMIDI.sonido("Do4", desvio: 10, afinacion: Subida(cents: -130))
         #expect(bajo.clave == 59 && abs(bajo.desvio + 20) < 1e-6)
         let voz = try Voz(leyendo: "Do4:4 Mi4:4 Sol4:2")
-        let pieza = try PiezaImportada(midi: voz.midi(afinacion: Subida(cents: 25)))
+        let pieza = try PiezaImportada(midi: voz.partitura().midi(afinacion: Subida(cents: 25)))
         #expect(pieza.notas.map(\.altura.midi) == [60, 64, 67])
         #expect(pieza.notas.allSatisfy { abs($0.desvio - 25) < 0.05 })
         // Sin afinación, como siempre.
-        #expect(voz.midi(afinacion: nil) == voz.midi())
+        #expect(voz.partitura().midi(afinacion: nil) == voz.partitura().midi())
         let coral = try Coral(leyendo: "Do3 Sol3 Mi4 Do5")
-        #expect(coral.midi(afinacion: Subida(cents: 10)) != coral.midi())
+        #expect(coral.partitura().midi(afinacion: Subida(cents: 10)) != coral.partitura().midi())
     }
 
     @Test func pentagrama() {
@@ -291,12 +291,13 @@ import Testing
     }
 
     @Test func elAlterConDecimalesEsUnMicrotono() throws {
-        let xml = Escala(.mi, .sikah).voz().musicXML()
+        let xml = Escala(.mi, .sikah).voz().partitura().musicXML()
         let pieza = try PiezaImportada(musicXML: Data(xml.utf8))
         // Mi𝄳 (`<alter>-0.5</alter>` sobre E) se lee como Mi♭ y 50 cents: suena igual y conserva la letra.
         #expect(pieza.notas[0].altura == "Mi♭4" && pieza.notas[0].desvio == 50)
         #expect(pieza.notas[1].altura == "Fa4" && pieza.notas[1].desvio == 0)
-        let fa = try PiezaImportada(musicXML: Data(Voz(leyendo: "Fa4(50¢):4 Re4(-22.64¢):4").musicXML().utf8))
+        let fa = try PiezaImportada(
+            musicXML: Data(Voz(leyendo: "Fa4(50¢):4 Re4(-22.64¢):4").partitura().musicXML().utf8))
         #expect(fa.notas.map(\.altura) == ["Fa4", "Re4"])
         #expect(fa.notas.map(\.desvio) == [50, -22.64])
     }
@@ -311,7 +312,8 @@ import Testing
             let voz = Escala(.re, tipo).voz()
             let pieza =
                 musicXML
-                ? try PiezaImportada(musicXML: Data(voz.musicXML().utf8)) : try PiezaImportada(midi: voz.midi())
+                ? try PiezaImportada(musicXML: Data(voz.partitura().musicXML().utf8))
+                : try PiezaImportada(midi: voz.partitura().midi())
             let esperados = sonidos(voz)
             let leidos = sonidos(pieza)
             #expect(leidos.count == esperados.count, Comment(rawValue: tipo.nombre))
@@ -324,7 +326,7 @@ import Testing
 
     @Test func laInflexionDeTonoEnMIDI() throws {
         // Sin microtonos, sin desvíos.
-        let temperada = try PiezaImportada(midi: Voz(leyendo: "Do4:4 Mi4:4").midi())
+        let temperada = try PiezaImportada(midi: Voz(leyendo: "Do4:4 Mi4:4").partitura().midi())
         #expect(temperada.notas.allSatisfy { $0.desvio == 0 })
         // Con un ámbito de 12 semitonos (RPN 0 = 12), la inflexión máxima es una octava.
         let cabecera: [UInt8] = Array("MThd".utf8) + [0, 0, 0, 6, 0, 0, 0, 1, 1, 224]

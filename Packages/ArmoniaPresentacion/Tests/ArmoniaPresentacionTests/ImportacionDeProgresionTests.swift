@@ -9,13 +9,16 @@ import Testing
 @Suite struct ImportacionDeProgresionTests {
     @Test func unFicheroDaSuProgresion() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
-        #expect(try (ImportacionDeProgresion.progresion(de: analisis.midi())) == "Do Lam Re7 Sol7 Do")
-        #expect(try (ImportacionDeProgresion.progresion(de: Data(analisis.musicXML().utf8))) == "Do Lam Re7 Sol7 Do")
+        #expect(try (ImportacionDeProgresion.progresion(de: analisis.partitura().midi())) == "Do Lam Re7 Sol7 Do")
+        #expect(
+            try (ImportacionDeProgresion.progresion(de: Data(analisis.partitura().musicXML().utf8)))
+                == "Do Lam Re7 Sol7 Do")
     }
 
     @Test func laProgresionSeAnalizaComoLaEscrita() throws {
         let texto = "Do Fa Sol7 Do Lam Re7 Sol"
-        let progresion = try ImportacionDeProgresion.progresion(de: AnalisisArmonico.analizar(leyendo: texto).midi())
+        let progresion = try ImportacionDeProgresion.progresion(
+            de: AnalisisArmonico.analizar(leyendo: texto).partitura().midi())
         #expect(progresion == texto)
         #expect(
             try (PresentacionDeAnalisis.analizar(progresion, notacion: .espanolCompacto))
@@ -23,7 +26,7 @@ import Testing
     }
 
     @Test func unaMelodiaSolaNoTieneAcordes() throws {
-        let melodia = try Voz(leyendo: "Do4:4 Re4:4 Mi4:4").midi()
+        let melodia = try Voz(leyendo: "Do4:4 Re4:4 Mi4:4").partitura().midi()
         do {
             _ = try ImportacionDeProgresion.progresion(de: melodia)
             Issue.record("Se esperaba un error")
@@ -51,7 +54,9 @@ import Testing
 
     private func importada() throws -> ProgresionImportada {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
-        let datos = analisis.midi(duraciones: duraciones, tempo: Tempo(90), titulo: "Coral")
+        let datos = analisis.partitura(
+            duraciones: duraciones, encabezado: Encabezado(titulo: "Coral", tempo: Tempo(90))
+        ).midi()
         return try ImportacionDeProgresion.leer(datos)
     }
 

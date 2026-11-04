@@ -202,9 +202,11 @@ import Testing
 
     @Test func musicXMLConUnBajoAlteradoYUnTempoSinFigura() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Lab Lab/Mib Mib7 Lab")
-        #expect(analisis.musicXML().contains("<bass-alter>-1</bass-alter>"))
+        #expect(analisis.partitura().musicXML().contains("<bass-alter>-1</bass-alter>"))
         let voz = try Voz(leyendo: "Do4:4 Re4:4")
-        #expect(voz.musicXML(tempo: Tempo(60, unidad: Duracion(1, 3))).contains(#"<sound tempo="80"/>"#))
+        #expect(
+            voz.partitura(encabezado: Encabezado(tempo: Tempo(60, unidad: Duracion(1, 3)))).musicXML().contains(
+                #"<sound tempo="80"/>"#))
     }
 
     @Test func unTransporteConCambioDeOctava() throws {

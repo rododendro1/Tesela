@@ -9,7 +9,7 @@ extension Voz {
     ///
     ///     let voz = Voz(Arpegio(Acorde("Do7"), patron: .idaYVuelta), figura: .semicorchea)
     ///     voz.eventos.count             // 9: Do Mi Sol Si♭ Do Si♭ Sol Mi Do
-    ///     let datos = voz.midi(titulo: "Arpegio de Do7")
+    ///     let datos = voz.partitura(encabezado: Encabezado(titulo: "Arpegio de Do7")).midi()
     ///
     /// Detiene el programa si `figura` no es positiva.
     public init(_ arpegio: Arpegio, figura: Duracion = .corchea, octava: Int = 4, compas: Compas = .compasillo) {

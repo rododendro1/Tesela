@@ -6,7 +6,7 @@ import Foundation
 /// No usa SwiftUI, así que se prueba en Linux; `BotonDeExportar` lo escribe y lo comparte.
 ///
 ///     let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
-///     let fichero = FicheroParaExportar.midi(analisis.midi(), nombre: "Progresión")
+///     let fichero = FicheroParaExportar.midi(analisis.partitura().midi(), nombre: "Progresión")
 ///     fichero.nombreDeFichero   // "Progresión.mid"
 public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
     public enum Formato: String, Hashable, Sendable, CaseIterable {
@@ -94,7 +94,7 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
     /// Una partitura en todos los formatos, en el orden de `FormatoDePartitura.allCases`, para el menú de exportar:
     ///
     ///     let ficheros = FicheroParaExportar.partituras(nombre: "Coral") { formato in
-    ///         coral.exportar(como: formato, titulo: "Coral")
+    ///         coral.partitura(encabezado: Encabezado(titulo: "Coral")).exportar(como: formato)
     ///     }
     ///     ficheros.map(\.nombreDeFichero)   // ["Coral.musicxml", "Coral.mei", "Coral.ly", "Coral.gmn", …]
     public static func partituras(
