@@ -81,19 +81,11 @@ extension Voz {
             let locales = linea.inicios
             var indiceLocal: [Duracion: Int] = [:]
             for (j, momento) in locales.enumerated() where indiceLocal[momento] == nil { indiceLocal[momento] = j }
-            /// Lo de cada evento que empieza en la línea, en el evento de la línea que empieza con él.
-            func enLaLinea<T>(_ porEvento: [Int: T]) -> [Int: T] {
-                var resultado: [Int: T] = [:]
-                for (i, valor) in porEvento where inicios.indices.contains(i) {
-                    guard inicios[i] >= linea.inicio, inicios[i] < fin else { continue }
-                    if let j = indiceLocal[inicios[i]] { resultado[j] = valor }
-                }
-                return resultado
+            // Lo de cada evento que empieza en la línea, en el evento de la línea que empieza con él.
+            var suyas = anotaciones.reasignadas { i in
+                guard inicios.indices.contains(i), inicios[i] >= linea.inicio, inicios[i] < fin else { return nil }
+                return indiceLocal[inicios[i]]
             }
-            var suyas = AnotacionesDelPentagrama(
-                acordes: enLaLinea(anotaciones.acordes), grados: enLaLinea(anotaciones.grados),
-                bajoCifrado: enLaLinea(anotaciones.bajoCifrado), digitos: enLaLinea(anotaciones.digitos),
-                tablatura: anotaciones.tablatura.map { Tablatura(cuerdas: $0.cuerdas, notas: enLaLinea($0.notas)) })
             // Los microtonos, en todos los eventos de la línea, también en la parte ligada de una nota que viene de
             // la anterior.
             var microtonosDeLaLinea: [Int: [PentagramaSVG.Microtono?]] = [:]

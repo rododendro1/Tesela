@@ -502,27 +502,14 @@ extension Voz {
         return PentagramaSVG.svg(lineas.map { [$0] }, titulo: titulo, tamano: opciones.tamano)
     }
 
-    /// Lo que se escribe con las notas de una voz, por evento: los acordes, los grados, el bajo cifrado, los dedos,
-    /// la tablatura y los microtonos (si son `nil`, los de los eventos).
-    struct AnotacionesDelPentagrama {
-        var acordes: [Int: Acorde] = [:]
-        var grados: [Int: String] = [:]
-        var bajoCifrado: [Int: [String]] = [:]
-        var digitos: [Int: [Int]] = [:]
-        var tablatura: Tablatura?
-        var microtonos: [Int: [PentagramaSVG.Microtono?]]?
-        /// El acorde que suena al empezar, si no hay ninguno en el primer evento (en una línea de una voz larga).
-        var acordeVigente: Acorde?
-    }
-
     /// El dibujo de la voz en una línea.
     func pentagrama(
         titulo: String, anotaciones: AnotacionesDelPentagrama, tonica: Nota?, armadura: [Nota]?,
         opciones: OpcionesDePentagrama
     ) -> PentagramaSVG {
-        let (acordes, grados, bajoCifrado) = (anotaciones.acordes, anotaciones.grados, anotaciones.bajoCifrado)
-        let (digitos, tablatura, microtonos) = (anotaciones.digitos, anotaciones.tablatura, anotaciones.microtonos)
         let (ritmo, columnas, primeras) = PentagramaSVG.Ritmo.de(self, resaltada: opciones.resaltada)
+        // Lo de cada evento, en la primera columna en que se escribe.
+        let porColumna = anotaciones.reasignadas { primeras.indices.contains($0) ? primeras[$0] : nil }
         var cifrados: [Int: String] = [:]
         var referencias: [Int: PentagramaSVG.Referencia] = [:]
         if let tonica {
@@ -531,26 +518,20 @@ extension Voz {
             referencias[0] = PentagramaSVG.Referencia(tonalidad.tonica)
         }
         if let vigente = anotaciones.acordeVigente { referencias[0] = PentagramaSVG.Referencia(vigente) }
-        for (evento, acorde) in acordes where primeras.indices.contains(evento) {
-            cifrados[primeras[evento]] = acorde.cifrado(en: opciones.notacion)
-            referencias[primeras[evento]] = PentagramaSVG.Referencia(acorde)
-        }
-        /// Lo de cada evento, en la primera columna en que se escribe.
-        func porColumna<T>(_ porEvento: [Int: T]) -> [Int: T] {
-            Dictionary(
-                porEvento.compactMap { primeras.indices.contains($0.key) ? (primeras[$0.key], $0.value) : nil },
-                uniquingKeysWith: { a, _ in a })
+        for (columna, acorde) in porColumna.acordes {
+            cifrados[columna] = acorde.cifrado(en: opciones.notacion)
+            referencias[columna] = PentagramaSVG.Referencia(acorde)
         }
         var dibujo = PentagramaSVG(
             columnas: columnas, armadura: armadura ?? opciones.armadura.notas(), cifrado: nil, titulo: titulo,
             opciones: opciones, ritmo: ritmo, cifrados: cifrados, referencias: referencias
         )
-        dibujo.grados = porColumna(grados)
-        dibujo.bajosCifrados = porColumna(bajoCifrado)
-        dibujo.digitos = porColumna(digitos)
-        dibujo.tablatura = tablatura.map { Tablatura(cuerdas: $0.cuerdas, notas: porColumna($0.notas)) }
+        dibujo.grados = porColumna.grados
+        dibujo.bajosCifrados = porColumna.bajoCifrado
+        dibujo.digitos = porColumna.digitos
+        dibujo.tablatura = porColumna.tablatura
         // Los microtonos de cada evento, en todas sus columnas (las partes de una nota que se liga, también).
-        let porEvento = microtonos ?? microtonosDeLosEventos(en: opciones.notacion)
+        let porEvento = anotaciones.microtonos ?? microtonosDeLosEventos(en: opciones.notacion)
         if !porEvento.isEmpty {
             dibujo.microtonos = columnas.indices.map { columna in
                 let evento = primeras.lastIndex { $0 <= columna } ?? 0
