@@ -139,7 +139,8 @@ import Testing
             try analisis.partitura(duraciones: Array(repeating: .blanca, count: 4)).mei()
                 == analisis.partitura(duracion: .blanca).mei())
         #expect(
-            try analisis.partitura(duraciones: Array(repeating: .negra, count: 4)).midi() == analisis.partitura().midi())
+            try analisis.partitura(duraciones: Array(repeating: .negra, count: 4)).midi()
+                == analisis.partitura().midi())
         // Con menos de un compás, uno.
         let corto = try analisis.partitura(duraciones: [.negra, .negra, .negra, .corchea]).musicXML()
         #expect((corto.components(separatedBy: "<measure ").count - 1) == 1)

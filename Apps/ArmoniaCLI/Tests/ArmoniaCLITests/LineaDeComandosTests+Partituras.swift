@@ -247,8 +247,8 @@ extension LineaDeComandosTests {
         let esperado = conTempo.trimmingCharacters(in: .newlines) + "\n"
         #expect(salida("musicxml acordes --archivo " + midi) == esperado)
         #expect(salida("musicxml chords --file " + midi) == esperado)
-        let sinTempo = try analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "Coral")).musicXML()
-            .trimmingCharacters(in: .newlines)
+        let sinTempo = try analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "Coral"))
+            .musicXML().trimmingCharacters(in: .newlines)
         #expect(salida("musicxml acordes --archivo \(xml) --titulo Coral") == (sinTempo + "\n"))
         // `--duracion` manda sobre el ritmo del fichero.
         #expect(
