@@ -146,7 +146,8 @@ import Testing
         // Sol4 se repite en el contralto: tres notas, no una ligada.
         #expect(leido.pistas[2].notas.count == 3)
         #expect(leido.pistas[4].notas.map(\.clave) == [48, 43, 48])
-        #expect(leido.pistas[4].notas.last?.hasta == (3 * 2 * leido.divisiones))
+        // El último acorde se alarga hasta la barra: dos compases de 4/4.
+        #expect(leido.pistas[4].notas.last?.hasta == (2 * 4 * leido.divisiones))
         #expect(Set(leido.pistas.dropFirst().compactMap(\.programa)) == [52])
         // Cada voz, en su canal.
         #expect(leido.pistas.dropFirst().map { $0.notas.first?.canal } == [0, 1, 2, 3])
