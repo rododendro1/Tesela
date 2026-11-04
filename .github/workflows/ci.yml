@@ -2,8 +2,9 @@ name: CI
 
 # `push` solo en la rama principal: en una rama con pull request ya corre el de `pull_request`, y con los
 # dos se ejecutaba todo dos veces. Si tu rama principal no se llama main ni master, cámbialo aquí.
-# Los jobs de macOS solo corren a mano (workflow_dispatch) y una vez por semana (`schedule`), salvo `apps`, que compila
-# las dos apps en los pull requests que las tocan, e `interfaz`, que en esos mismos pasa sus pruebas de interfaz.
+# Los jobs de macOS solo corren a mano (workflow_dispatch) y una vez por semana (`schedule`), salvo `interfaz`, que en
+# los pull requests que tocan las apps las compila y pasa sus pruebas de interfaz. Si una máquina de macOS se pierde a
+# mitad, `reintentar.yml` repite los jobs que fallaron (una vez).
 on:
   push:
     branches: [main, master]
@@ -456,9 +457,10 @@ jobs:
             .build
           key: ${{ steps.cache.outputs.clave }}
 
-  # Un pull request que cambia las apps, sus vistas (ArmoniaUI) o el proyecto de Xcode compila las dos apps en macOS,
-  # sin pruebas ni simulador de iOS: es lo que Linux no puede compilar. Lo demás de macOS sigue en el job `macos`.
-  # `cambios-en-las-apps` corre en Linux y solo mira los ficheros, para no ocupar un runner de macOS en los demás.
+  # Un pull request que cambia las apps, sus vistas (ArmoniaUI) o el proyecto de Xcode pasa `interfaz`, que compila
+  # las dos apps en macOS y en el simulador de iOS antes de probarlas: es lo que Linux no puede compilar. Lo demás de
+  # macOS sigue en el job `macos`. `cambios-en-las-apps` corre en Linux y solo mira los ficheros, para no ocupar un
+  # runner de macOS en los demás.
   cambios-en-las-apps:
     name: ¿Toca las apps?
     if: github.event_name == 'pull_request'
@@ -482,33 +484,9 @@ jobs:
             echo "apps=false" >> "$GITHUB_OUTPUT"
           fi
 
-  apps:
-    name: Apps · macOS
-    needs: cambios-en-las-apps
-    if: needs.cambios-en-las-apps.outputs.apps == 'true'
-    runs-on: macos-15
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v7
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: ${{ env.XCODE }}
-      - name: Instalar XcodeGen
-        run: brew install xcodegen
-      - name: Generar el proyecto
-        run: ./Scripts/generadores/generar_proyecto.sh
-      - name: Armonía (macOS)
-        run: >
-          xcodebuild build -project Tesela.xcodeproj -scheme ArmoniaApp
-          -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
-      - name: Tonnetz (macOS)
-        run: >
-          xcodebuild build -project Tesela.xcodeproj -scheme TonnetzApp
-          -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
-
   # Los jobs de macOS (este, las pruebas de interfaz y DocC) son los que más tardan: corren a mano desde la
   # pestaña Actions y los lunes, no en cada push ni en cada pull request. Un pull request que toque las apps ya las
-  # compila en `apps` y pasa sus pruebas de interfaz en `interfaz`; para las pruebas de los paquetes en macOS, la
+  # compila y pasa sus pruebas de interfaz en `interfaz`; para las pruebas de los paquetes en macOS, la
   # compilación para el simulador de iOS o la documentación, se lanzan a mano en su rama.
   macos:
     name: macOS · paquetes y apps
@@ -579,8 +557,9 @@ jobs:
             test "$idiomas" -eq 15 && test "$carpetas" -ge 15 || { echo "::error::$app no declara los quince idiomas"; exit 1; }
           done
 
-  # Las pruebas de interfaz corren también en los pull requests que cambian las apps (los mismos que compila `apps`),
-  # para que una vista nueva o cambiada no espere al lunes. `!cancelled()` hace falta porque fuera de los pull
+  # Las pruebas de interfaz corren también en los pull requests que cambian las apps, para que una vista nueva o
+  # cambiada no espere al lunes. `xcodebuild test` compila antes cada app (en macOS y para el simulador de iOS), así
+  # que un fallo de compilación también lo da este job: no hace falta otra máquina de macOS solo para compilar. `!cancelled()` hace falta porque fuera de los pull
   # requests `cambios-en-las-apps` no corre, y sin él este job se saltaría también a mano y los lunes.
   interfaz:
     name: Pruebas de interfaz · ${{ matrix.plataforma }}

@@ -1,0 +1,42 @@
+name: Reintentar macOS
+
+# Las máquinas de macOS de GitHub a veces se pierden a mitad de un job («The runner has received a shutdown signal»,
+# «lost communication with the server»): el job falla sin que falle ninguno de sus pasos. Cuando una ejecución del CI
+# termina en fallo, esto mira sus jobs de macOS y, si alguno falló así, repite los jobs que fallaron, una sola vez
+# (solo en el primer intento). Un fallo de verdad tiene un paso en rojo y no se repite; una ejecución cancelada por un
+# push nuevo tampoco, porque no termina en fallo.
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions:
+  actions: write
+
+jobs:
+  reintentar:
+    name: Repetir los jobs de macOS sin máquina
+    if: github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN: ${{ github.event.workflow_run.id }}
+        run: |
+          # Jobs de macOS que fallaron (o se cancelaron) sin ningún paso en fallo: la máquina se perdió.
+          perdidos=$(gh api --paginate "repos/$REPO/actions/runs/$RUN/attempts/1/jobs" --jq '
+            .jobs[]
+            | select(any(.labels[]; startswith("macos")))
+            | select(.conclusion == "failure" or .conclusion == "cancelled")
+            | select(all(.steps[]?; .conclusion != "failure"))
+            | .name')
+          if [ -z "$perdidos" ]; then
+            echo "Ningún job de macOS se quedó sin máquina: no se repite nada."
+            exit 0
+          fi
+          echo "Jobs de macOS sin máquina:"
+          echo "$perdidos"
+          echo "::notice::Se repiten los jobs que fallaron: $(echo "$perdidos" | paste -sd ',' - | sed 's/,/, /g')"
+          gh run rerun "$RUN" --failed --repo "$REPO"
