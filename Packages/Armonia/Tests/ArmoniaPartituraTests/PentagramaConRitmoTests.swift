@@ -49,9 +49,9 @@ import Testing
     @Test func lasDisposicionesLlevanLaArmaduraQueSeLesDe() {
         let acordes = [[Altura("Re4"), Altura("Fa♯4"), Altura("La4")]]
         let enSol = OpcionesDePentagrama(armadura: .tonalidad(Tonalidad(.sol, .mayor)))
-        let svg = DisposicionDeAcorde.svgPentagrama(acordes, titulo: "Re", opciones: enSol)
+        let svg = Partitura(acordes: acordes, titulo: "Re").svg(opciones: enSol)
         #expect(veces(GlifosSMuFL.sostenido, en: svg) == 1)
-        #expect(veces(GlifosSMuFL.sostenido, en: DisposicionDeAcorde.svgPentagrama(acordes, titulo: "Re")) == 1)
+        #expect(veces(GlifosSMuFL.sostenido, en: Partitura(acordes: acordes, titulo: "Re").svg()) == 1)
     }
 
     // MARK: Ritmo

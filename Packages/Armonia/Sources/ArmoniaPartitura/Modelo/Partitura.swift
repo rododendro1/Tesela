@@ -131,12 +131,15 @@ public struct Partitura: Hashable, Sendable {
     public var notacion: Notacion
     /// Si los pentagramas se unen con una llave, como el piano; si no, con un corchete. Solo cuenta en SVG.
     public var llave: Bool
+    /// Si se dibuja el ritmo. Con `false`, un pentagrama de una voz va con cada evento en su columna, sin plicas,
+    /// cifra de compás ni barras, como los acordes de `init(acordes:titulo:…)`. Solo cuenta en SVG.
+    public var ritmo: Bool
 
     /// Una partitura con esos pentagramas. Si no se dan `compas` y `anacrusa`, los de la primera voz.
     public init(
         pentagramas: [Pentagrama], encabezado: Encabezado = Encabezado(), compas: Compas? = nil,
         anacrusa: Duracion? = nil, tonalidadDelAnalisis: Tonalidad? = nil, notacion: Notacion = .espanolCompacto,
-        llave: Bool = false
+        llave: Bool = false, ritmo: Bool = true
     ) {
         let primera = pentagramas.lazy.flatMap(\.voces).first?.voz
         self.pentagramas = pentagramas
@@ -146,6 +149,45 @@ public struct Partitura: Hashable, Sendable {
         self.tonalidadDelAnalisis = tonalidadDelAnalisis
         self.notacion = notacion
         self.llave = llave
+        self.ritmo = ritmo
+    }
+
+    /// Acordes con sus alturas escritas (las disposiciones de `Acorde.disposiciones(_:en:)` o de
+    /// `DisposicionDeAcorde.conducir(_:en:)`), uno por columna y sin ritmo (``ritmo``), sin armadura (salvo la de
+    /// `.tonalidad` en las opciones): en dos pentagramas si las notas pasan a los dos lados del Do central y con uno
+    /// harían falta más de tres líneas adicionales. En MusicXML, MIDI y los demás formatos, cada acorde es una redonda.
+    ///
+    ///     let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
+    ///     let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
+    ///     let svg = Partitura(acordes: voces, titulo: "ii–V–I", cifrados: progresion).svg()
+    ///
+    /// Lo que se anota va por columna (contada desde 0). Con `cifrados`, cada columna lleva encima su cifrado, y los
+    /// intervalos de las notas (`intervalosDeLasNotas`) se cuentan desde la fundamental de su acorde. Con `grados`
+    /// (como los de `AnalisisArmonico.cifrados`), debajo, su grado en números romanos; con `digitos`, el dedo de cada
+    /// nota encima (de la grave a la aguda), y con `tablatura`, la cuerda y el traste debajo. Con `bajoCifrado` (como
+    /// los de `Tonalidad.cifrasDeBajo(de:)`), las cifras del bajo continuo debajo de todo, una encima de otra.
+    public init(
+        acordes: [[Altura]], titulo: String, cifrados: [Acorde] = [], grados: [String] = [],
+        bajoCifrado: [[String]] = [], digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil
+    ) {
+        let voz = Voz(acordes.map { Evento(alturas: $0, duracion: .redonda) })
+        let inicios = voz.inicios
+        func porInicio<Valor>(_ porColumna: [Int: Valor]) -> [Duracion: Valor] {
+            var resultado: [Duracion: Valor] = [:]
+            for (columna, valor) in porColumna where inicios.indices.contains(columna) {
+                resultado[inicios[columna]] = valor
+            }
+            return resultado
+        }
+        func enOrden<Valor>(_ lista: [Valor]) -> [Duracion: Valor] {
+            porInicio(Dictionary(uniqueKeysWithValues: lista.enumerated().map { ($0.offset, $0.element) }))
+        }
+        let linea = Linea(
+            voz, cifrados: enOrden(cifrados), grados: enOrden(grados), bajoCifrado: enOrden(bajoCifrado),
+            digitos: porInicio(digitos), pulsaciones: porInicio(tablatura?.notas ?? [:]))
+        self.init(
+            pentagramas: [Pentagrama(voces: [linea], cuerdas: tablatura?.cuerdas)],
+            encabezado: Encabezado(titulo: titulo), ritmo: false)
     }
 
     /// El nombre de la parte: el del encabezado o «Voz».

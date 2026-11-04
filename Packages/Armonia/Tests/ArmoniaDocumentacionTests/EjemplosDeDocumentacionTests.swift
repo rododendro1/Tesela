@@ -878,7 +878,7 @@ import Hexagonos
         let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
         let grados = Tonalidad(.do).analizar(progresion).cifrados
-        comprobar(DisposicionDeAcorde.svgPentagrama(voces, titulo: "ii–V–I", grados: grados).contains(">V7</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 365)
+        comprobar(Partitura(acordes: voces, titulo: "ii–V–I", grados: grados).svg().contains(">V7</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 365)
         comprobar(Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 366)
         comprobar(Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 367)
     }
