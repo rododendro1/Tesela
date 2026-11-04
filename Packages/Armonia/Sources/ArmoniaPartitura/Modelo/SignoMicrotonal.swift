@@ -3,7 +3,7 @@ import ArmoniaTeoria
 
 // MARK: - Signos microtonales
 //
-// Cómo se escribe una nota que se aparta de su nota temperada (`Evento.desvios`): el signo que lleva en cada formato
+// Cómo se escribe una nota que se aparta de su nota temperada (`Evento.Nota.desvio`): el signo que lleva en cada formato
 // y en el pentagrama SVG. Se deduce de los cents: un cuarto de tono es un medio bemol o un medio sostenido (o el
 // koron y el sori, en una escala persa); un número exacto de moria (72 por octava), un signo de doceavos de tono de
 // Wyschnegradsky; lo demás se aproxima a las comas de 53 por octava de Arel-Ezgi-Uzdilek. En el pentagrama de una
@@ -35,7 +35,7 @@ package enum SignoMicrotonal: Hashable, Sendable {
     /// bemol y el medio sostenido se escriben como koron y sori.
     package init?(semitonos: Int, desvio: Double, persa: Bool = false) {
         guard abs(desvio) >= 0.5 else { return nil }
-        // Redondeado a la centésima, como `Evento.desvios`, para que el pentagrama y los formatos den el mismo signo:
+        // Redondeado a la centésima, como `Evento.Nota.desvio`, para que el pentagrama y los formatos den el mismo signo:
         // en Segâh, el Fa♯ una koma bajo cae justo entre 3 y 4 comas sobre Fa.
         let total = 100 * Double(semitonos) + (desvio * 100).rounded() / 100
         let cuartos = (total / 50).rounded()

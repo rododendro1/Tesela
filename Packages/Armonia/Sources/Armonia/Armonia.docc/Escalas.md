@@ -317,7 +317,7 @@ TipoDeEscala.frigio.microtonal                                   // nil
 ```
 
 Los microtonos llegan también a las partituras. `Escala.voz(octava:sentido:duracion:)` da la escala en negras, y
-cada nota lleva lo que se aparta de su nota temperada, en cents (`Evento.desvios`; en texto, `Mi♭4(50¢):4`). Los
+cada nota lleva lo que se aparta de su nota temperada, en cents (`Evento.Nota.desvio`; en texto, `Mi♭4(50¢):4`). Los
 formatos la escriben así: MusicXML, con el `alter` en decimales (−0.5) y su `<accidental>`; MEI, con `accid`
 (`1qf`, el *koron* o las comas de Arel-Ezgi-Uzdilek: `kf`, `bs`…); LilyPond y ABC, con sus cuartos de tono (`eeh`,
 `_/E`), y las comas y los moria como la nota temperada; y MIDI, con una inflexión de tono (*pitch bend*) antes de
@@ -332,7 +332,7 @@ Helmholtz-Ellis. Los dibuja también con ritmo: en las secuencias de estudio de 
 let voz = Escala(.re, .bayati).voz()
 voz.eventos[1]                                   // Mi♭4(50¢):4
 voz.partitura().musicXML().contains("<alter>-0.5</alter>")   // true
-Evento("Si4(-15.09¢):4").desvios                 // [-15.09]
+Evento("Si4(-15.09¢):4").notas                   // [Si4(-15.09¢)]
 Escala(.re, .bayati).svgPentagrama(secuencia: .terceras).contains("<title>Mi𝄳</title>")   // true
 let bayati = try Voz(leyendo: "Mi♭4(50¢):4 Re4:2.")
 Partitura(.init(bayati), encabezado: Encabezado(titulo: "Bayātī")).svg().contains("(+50¢)</title>")   // true

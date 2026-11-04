@@ -101,10 +101,11 @@ private func f(_ duracion: Duracion) -> String {
             let esperados = voz.eventos.flatMap { evento in
                 evento.alturas.indices.map { i in
                     (
-                        cents: Double(evento.alturas[i].midi * 100) + evento.desvio(i), desvio: evento.desvio(i),
+                        cents: Double(evento.alturas[i].midi * 100) + evento.notas[i].desvio,
+                        desvio: evento.notas[i].desvio,
                         natural: evento.alturas[i].nota.natural,
                         signo: SignoMicrotonal(
-                            semitonos: evento.alturas[i].nota.alteracion.semitonos, desvio: evento.desvio(i))
+                            semitonos: evento.alturas[i].nota.alteracion.semitonos, desvio: evento.notas[i].desvio)
                     )
                 }
             }

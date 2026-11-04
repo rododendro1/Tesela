@@ -435,7 +435,7 @@ import Hexagonos
         let voz = Escala(.re, .bayati).voz()
         comprobar(voz.eventos[1], #"Mi♭4(50¢):4"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 333)
         comprobar(voz.partitura().musicXML().contains("<alter>-0.5</alter>"), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 334)
-        comprobar(Evento("Si4(-15.09¢):4").desvios, #"[-15.09]"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 335)
+        comprobar(Evento("Si4(-15.09¢):4").notas, #"[Si4(-15.09¢)]"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 335)
         comprobar(Escala(.re, .bayati).svgPentagrama(secuencia: .terceras).contains("<title>Mi𝄳</title>"), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 336)
         let bayati = try Voz(leyendo: "Mi♭4(50¢):4 Re4:2.")
         comprobar(Partitura(.init(bayati), encabezado: Encabezado(titulo: "Bayātī")).svg().contains("(+50¢)</title>"), #"true"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 338)

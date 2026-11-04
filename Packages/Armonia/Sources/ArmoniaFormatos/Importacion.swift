@@ -42,7 +42,7 @@ public struct NotaDeLaPieza: Hashable, Sendable {
         self.inicio = inicio
         self.duracion = duracion
         self.parte = parte
-        // Redondeado a la centésima de cent, como `Evento.desvios`.
+        // Redondeado a la centésima de cent, como `Evento.Nota.desvio`.
         self.desvio = (desvio * 100).rounded() / 100
         self.dinamica = dinamica
         self.articulaciones = Articulacion.allCases.filter(articulaciones.contains)

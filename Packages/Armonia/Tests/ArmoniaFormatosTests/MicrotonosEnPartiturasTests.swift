@@ -13,28 +13,29 @@ import Testing
     @Test func desviosDeUnEvento() throws {
         let mi: Evento = "Mi♭4(50¢):4"
         #expect(mi.alturas == ["Mi♭4"])
-        #expect(mi.desvios == [50])
+        #expect(mi.notas == [Evento.Nota("Mi♭4", desvio: 50)])
+        #expect(mi.notas[0].texto(en: .inglesASCII) == "Eb4(50c)" && mi.notas[0].description == "Mi♭4(50¢)")
         #expect(mi.esMicrotonal)
         #expect(mi.texto == "Mi♭4(50¢):4")
         #expect(Evento("Mib4(50c):4") == mi)
         #expect(mi.texto(en: .inglesASCII) == "Eb4(50c):4")
         // En un acorde, cada nota con el suyo; se redondean a la centésima de cent.
         let acorde: Evento = "Do4+Si4(-15.094¢):2"
-        #expect(acorde.desvios == [0, -15.09])
-        #expect(acorde.desvio(0) == 0 && acorde.desvio(1) == -15.09)
+        #expect(acorde.notas.map(\.desvio) == [0, -15.09])
+        #expect(acorde.notas[0].desvio == 0 && acorde.notas[1].desvio == -15.09)
         #expect(acorde.texto == "Do4+Si4(-15.09¢):2")
         // Sin desvíos, nada cambia.
-        #expect(Evento(alturas: ["Do4"], duracion: .negra, desvios: [0]).desvios == [])
-        #expect(Evento("Do4:4").desvios == [])
+        #expect(Evento(notas: [Evento.Nota("Do4", desvio: -0.001)], duracion: .negra) == Evento("Do4:4"))
+        #expect(Evento("Do4:4").notas == [Evento.Nota("Do4")])
         #expect(!Evento("Do4:4").esMicrotonal)
         #expect(throws: ErrorDeLectura.self) { try Evento(leyendo: "Mi4(mucho¢):4") }
         // Se conservan al transportar, al partir en compases y al cambiar de duración.
-        #expect(mi.transponer(.segundaMayor).desvios == [50])
+        #expect(mi.transponer(.segundaMayor).notas == [Evento.Nota("Fa4", desvio: 50)])
         let voz = try Voz(leyendo: "Do4:2 Mi♭4(50¢):1", compas: "3/4")
-        #expect(voz.compases.flatMap { $0 }.dropFirst().allSatisfy { $0.desvios == [50] })
-        #expect(voz.grafia.flatMap { $0 }.dropFirst().allSatisfy { $0.desvios == [50] })
-        #expect(voz.aumentar(2).eventos[1].desvios == [50])
-        #expect(voz.retrogradar().eventos[0].desvios == [50])
+        #expect(voz.compases.flatMap { $0 }.dropFirst().allSatisfy { $0.notas.map(\.desvio) == [50] })
+        #expect(voz.grafia.flatMap { $0 }.dropFirst().allSatisfy { $0.notas.map(\.desvio) == [50] })
+        #expect(voz.aumentar(2).eventos[1].notas.map(\.desvio) == [50])
+        #expect(voz.retrogradar().eventos[0].notas.map(\.desvio) == [50])
     }
 
     @Test func escalaComoVoz() {
@@ -42,15 +43,15 @@ import Testing
         #expect(voz.eventos.count == 8)
         #expect(voz.eventos.map(\.duracion).allSatisfy { $0 == .negra })
         #expect(voz.eventos[1].alturas == ["Mi♭4"])
-        #expect(voz.eventos.map { $0.desvio(0) } == [0, 50, 0, 0, 0, 0, 0, 0])
+        #expect(voz.eventos.map { $0.notas[0].desvio } == [0, 50, 0, 0, 0, 0, 0, 0])
         // Rāst baja con Si♭: la voz sube con Si𝄳 y baja con Si♭.
         let rast = Escala(.do, .maqamRast).voz()
         #expect(rast.eventos.count == 15)
-        #expect(rast.eventos[6].desvio(0) == -50 && rast.eventos[8].desvio(0) == 0)
+        #expect(rast.eventos[6].notas[0].desvio == -50 && rast.eventos[8].notas[0].desvio == 0)
         #expect(Escala(.do, .maqamRast).voz(sentido: .descendente).eventos.first?.alturas == ["Do5"])
         // Sīkāh empieza y acaba en Mi𝄳: las dos tónicas se apartan.
         let sikah = Escala(.mi, .sikah).voz()
-        #expect(sikah.eventos.first?.desvio(0) == -50 && sikah.eventos.last?.desvio(0) == -50)
+        #expect(sikah.eventos.first?.notas[0].desvio == -50 && sikah.eventos.last?.notas[0].desvio == -50)
         #expect(sikah.partitura().musicXML().contains("<alter>-0.5</alter>"))
         // Sin microtonos, sin desvíos.
         #expect(Escala(.do, .mayor).voz().eventos.allSatisfy { !$0.esMicrotonal })
@@ -279,7 +280,7 @@ import Testing
     private func sonidos(_ voz: Voz) -> [(cents: Double, letra: NotaNatural)] {
         voz.eventos.flatMap { evento in
             evento.alturas.indices.map { i in
-                (Double(evento.alturas[i].midi * 100) + evento.desvio(i), evento.alturas[i].nota.natural)
+                (Double(evento.alturas[i].midi * 100) + evento.notas[i].desvio, evento.alturas[i].nota.natural)
             }
         }
     }

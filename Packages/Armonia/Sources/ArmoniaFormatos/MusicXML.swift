@@ -274,7 +274,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
                 let nota = altura.nota
                 xml += "        <pitch>\n          <step>\(EscritorMusicXML.paso(nota.natural))</step>\n"
                 // Un microtono va en `alter` con decimales (Mi𝄳 = Mi con −0.5) y con su signo en `<accidental>`.
-                let desvio = evento.desvio(i)
+                let desvio = evento.notas[i].desvio
                 if nota.alteracion.semitonos != 0 || desvio != 0 {
                     xml += "          <alter>\(NotaEscrita.alter(nota.alteracion.semitonos, desvio))</alter>\n"
                 }

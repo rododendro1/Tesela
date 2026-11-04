@@ -119,7 +119,7 @@ package struct ArchivoMIDI {
                 // La tecla de cada nota y lo que se aparta de ella, en cents.
                 var desvios: [Int: Double] = [:]
                 for (i, altura) in evento.alturas.enumerated() {
-                    let sonido = ArchivoMIDI.sonido(altura, desvio: evento.desvio(i), afinacion: afinacion)
+                    let sonido = ArchivoMIDI.sonido(altura, desvio: evento.notas[i].desvio, afinacion: afinacion)
                     if (0...127).contains(sonido.clave), desvios[sonido.clave] == nil {
                         desvios[sonido.clave] = sonido.desvio
                     }
