@@ -23,7 +23,7 @@ import Testing
         let enRe = Partitura(
             pentagramas: [.init(clave: .fa, voces: [.init(voz)])],
             encabezado: Encabezado(tonalidad: Tonalidad(.re), parte: "Bajo"))
-        var opciones = OpcionesDePentagrama(clave: .fa)
+        var opciones = OpcionesDePentagrama(maquetacion: .init(clave: .fa))
         opciones.armadura = .tonalidad(Tonalidad(.re))
         #expect(enRe.svg() == voz.svgPentagrama(titulo: "Bajo", opciones: opciones))
     }

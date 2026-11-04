@@ -15,7 +15,7 @@ import Testing
 
     private func opciones(_ compases: Int?) -> OpcionesDePentagrama {
         var opciones = OpcionesDePentagrama()
-        opciones.compasesPorLinea = compases
+        opciones.maquetacion.compasesPorLinea = compases
         return opciones
     }
 
@@ -89,15 +89,15 @@ import Testing
     @Test func laResaltadaVaEnSuLinea() throws {
         let voz = try Voz(leyendo: "Do4:2 Re4:1 Mi4:2")
         var opciones = opciones(1)
-        opciones.resaltada = 2
+        opciones.marcas.resaltada = 2
         let mi = voz.svgPentagrama(titulo: "Mi", opciones: opciones)
-        #expect(contar("fill=\"\(opciones.colorResaltado)\"", en: mi) == 1)
-        opciones.resaltada = 1
+        #expect(contar("fill=\"\(opciones.colores.resaltado)\"", en: mi) == 1)
+        opciones.marcas.resaltada = 1
         let re = voz.svgPentagrama(titulo: "Re", opciones: opciones)
-        #expect(contar("fill=\"\(opciones.colorResaltado)\"", en: re) == 2)
-        opciones.resaltada = 0
+        #expect(contar("fill=\"\(opciones.colores.resaltado)\"", en: re) == 2)
+        opciones.marcas.resaltada = 0
         let silencio = try Voz(leyendo: "Do4:1 -:1 Mi4:1").svgPentagrama(titulo: "Do", opciones: opciones)
-        #expect(contar("fill=\"\(opciones.colorResaltado)\"", en: silencio) == 1)
+        #expect(contar("fill=\"\(opciones.colores.resaltado)\"", en: silencio) == 1)
     }
 
     /// Los acordes, los grados, los dedos y la tablatura pasan a la línea de su evento, y la anacrusa va en la
@@ -105,7 +105,7 @@ import Testing
     @Test func loDeCadaEventoPasaASuLinea() throws {
         let voz = try Voz(leyendo: "Sol3:4 Do4:1 Re4:1 Mi4:1", anacrusa: .negra)
         var opciones = opciones(1)
-        opciones.intervalosDeLasNotas = true
+        opciones.marcas.intervalosDeLasNotas = true
         let tablatura = Tablatura(cuerdas: 6, notas: [3: [Tablatura.Pulsacion(cuerda: 2, traste: 5)]])
         let svg = voz.svgPentagrama(
             titulo: "Anotada", acordes: [1: Acorde("Do"), 3: Acorde("Sol")], grados: [1: "I", 3: "V"],
@@ -177,7 +177,7 @@ import Testing
         let separadas = try Voz(leyendo: "Mi5:2 Re5:2").svgPentagrama(junto: abajo, titulo: "Separadas")
         #expect(Set(xDeLasNegras(separadas, glifo: GlifosSMuFL.blanca)).count == 3)
         var lineas = OpcionesDePentagrama()
-        lineas.compasesPorLinea = 1
+        lineas.maquetacion.compasesPorLinea = 1
         let estiradas = try Voz(leyendo: "Re5:2 Do5:2 Mi5:1").svgPentagrama(
             junto: try Voz(leyendo: "Do5:2 Do5:2 Do5:1"), titulo: "Estiradas", opciones: lineas)
         #expect(Set(xDeLasNegras(estiradas, glifo: GlifosSMuFL.blanca)).count == 4)
@@ -204,15 +204,15 @@ import Testing
     @Test func dosVocesConAcordesYNombres() throws {
         let arriba = try Voz(leyendo: "Mi5:2 Re5:2")
         let abajo = try Voz(leyendo: "Do5:2 Si4:2")
-        var opciones = OpcionesDePentagrama(nombresDeLasNotas: true)
-        opciones.resaltada = 1
+        var opciones = OpcionesDePentagrama(marcas: .init(nombresDeLasNotas: true))
+        opciones.marcas.resaltada = 1
         let svg = arriba.svgPentagrama(
             junto: abajo, titulo: "Cifrada", acordes: [0: Acorde("Do")], opciones: opciones)
         let sinNombres = arriba.svgPentagrama(junto: abajo, titulo: "Cifrada", acordes: [0: Acorde("Do")])
         #expect(svg.contains(">Do</text>"))
         // Dos nombres más (los de la voz de arriba), no cuatro.
         #expect(contar("</text>", en: svg) == contar("</text>", en: sinNombres) + 2)
-        #expect(contar("fill=\"\(opciones.colorResaltado)\"", en: svg) == 1)
+        #expect(contar("fill=\"\(opciones.colores.resaltado)\"", en: svg) == 1)
     }
 
     /// El dibujo de varias líneas sin ninguna no da nada roto.

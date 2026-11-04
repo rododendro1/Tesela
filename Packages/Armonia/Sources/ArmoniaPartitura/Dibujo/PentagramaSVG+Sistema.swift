@@ -31,12 +31,12 @@ extension PentagramaSVG {
         let doCentral = PentagramaSVG.doCentral
         // Con cambios de clave (una sola clave, sin elegir), cada columna lleva la de sol o la de fa según su registro, y
         // no hace falta la marca de octava.
-        let conCambios = opciones.cambiosDeClave && !doble && opciones.clave == nil
+        let conCambios = opciones.maquetacion.cambiosDeClave && !doble && opciones.maquetacion.clave == nil
         let clavesDeLasColumnas = conCambios ? PentagramaSVG.clavesPorRegistro(columnas, desde: claves[0]) : []
         // Una octava más cerca del pentagrama, con la marca 8va u 8vb, si con la clave elegida harían falta demasiadas
         // líneas adicionales.
         var octavas = [Int](repeating: 0, count: claves.count)
-        if opciones.marcaDeOctava, opciones.clave == nil || doble, !conCambios {
+        if opciones.maquetacion.marcaDeOctava, opciones.maquetacion.clave == nil || doble, !conCambios {
             for k in claves.indices {
                 let suyas = columnas.flatMap { $0 }.filter { !doble || ($0.midi >= doCentral) == (k == 0) }
                 func lineas(_ octavas: Int) -> Int {

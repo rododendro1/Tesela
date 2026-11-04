@@ -50,9 +50,9 @@ public struct Encabezado: Hashable, Sendable {
 ///         pentagramas: [.init(clave: .sol, voces: [.init(soprano)]), .init(clave: .fa, voces: [.init(bajo)])],
 ///         encabezado: Encabezado(titulo: "Dos voces"))
 ///     partitura.musicXML()   // en ArmoniaFormatos, con mei(), lilyPond(), guido(), abc() y midi(); svg(), aquí
-public struct Partitura: Hashable, Sendable {
+public struct Partitura: Hashable, Sendable, Codable {
     /// Una voz de la partitura con lo que se anota en ella.
-    public struct Linea: Hashable, Sendable {
+    public struct Linea: Hashable, Sendable, Codable {
         public var voz: Voz
         /// El nombre de su pista en MIDI; si es `nil`, el de la parte.
         public var nombre: String?
@@ -97,7 +97,7 @@ public struct Partitura: Hashable, Sendable {
     }
 
     /// Un pentagrama con sus voces y su clave.
-    public struct Pentagrama: Hashable, Sendable {
+    public struct Pentagrama: Hashable, Sendable, Codable {
         /// Si es `nil`, la de sol o la de fa, la que pidan sus notas.
         public var clave: Clave?
         public var voces: [Linea]

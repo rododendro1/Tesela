@@ -6,7 +6,7 @@ import ArmoniaNucleo
 
 /// Función de un acorde en la tonalidad, en el sentido de la armonía funcional: reposo
 /// (tónica), alejamiento (subdominante) o tensión que pide resolver (dominante).
-public enum FuncionTonal: Hashable, Sendable, CaseIterable, CustomStringConvertible {
+public enum FuncionTonal: String, Hashable, Sendable, CaseIterable, CustomStringConvertible, Codable {
     case tonica, subdominante, dominante
 
     /// Función de cada grado: I, iii y vi son de tónica; ii y IV, de subdominante; V y vii°, de dominante.
@@ -50,9 +50,9 @@ extension FuncionTonal: Nombrable {}
 ///     a.cifrado     // "V7/V"
 ///     a.funcion     // .dominante
 ///     a.categoria   // .dominanteSecundaria(de: 5)
-public struct AcordeAnalizado: Hashable, Sendable, CustomStringConvertible {
+public struct AcordeAnalizado: Hashable, Sendable, CustomStringConvertible, Codable {
     /// De dónde sale un acorde respecto a la tonalidad.
-    public enum Categoria: Hashable, Sendable {
+    public enum Categoria: Hashable, Sendable, Codable {
         /// Con las notas de la tonalidad (en menor, también el 6.º y el 7.º elevados).
         case diatonico
         /// Dominante (V o V7) de otro grado: V7/V. El grado es el de destino.

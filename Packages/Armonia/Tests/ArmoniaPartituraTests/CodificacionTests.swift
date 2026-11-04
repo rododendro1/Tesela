@@ -66,4 +66,39 @@ import Testing
                 #"{"cantusFirmus": \#(cantusLargo), "contrapunto": \#(eventosCortos), "especie": 1}"#)
         }
     }
+
+    @Test func partitura() throws {
+        let soprano = try Voz(leyendo: "Mi5:2 Re5:2")
+        let bajo = try Voz(leyendo: "Do3:2 Sol2:2")
+        let analisis = Tonalidad(.do).analizar([Acorde("Do"), Acorde("Sol7")]).acordes
+        let arriba = Partitura.Linea(
+            soprano, nombre: "Soprano", plicaArriba: true, cifrados: [.cero: Acorde("Do"), .blanca: Acorde("Sol7")],
+            analisis: [.cero: analisis[0], .blanca: analisis[1]], digitos: [.cero: [5]])
+        let partitura = Partitura(
+            pentagramas: [.init(clave: .sol, voces: [arriba]), .init(clave: .fa, voces: [.init(bajo)], cuerdas: 6)],
+            encabezado: Encabezado(titulo: "Dos voces", tempo: Tempo(80)), tonalidadDelAnalisis: Tonalidad(.do),
+            notacion: .inglesASCII.conTextos(en: .catalan), llave: true)
+        #expect(try idaYVuelta(partitura) == partitura)
+        let tablatura = Tablatura(cuerdas: 6, notas: [0: [.init(cuerda: 4, traste: 3)]])
+        let acordes = Partitura(acordes: [[Altura("Do3"), Altura("Mi3")]], titulo: "Do", tablatura: tablatura)
+        let leida = try idaYVuelta(acordes)
+        #expect(leida == acordes)
+        #expect(!leida.ritmo)
+    }
+
+    @Test func razonDeFrecuencias() throws {
+        #expect(try idaYVuelta(RazonDeFrecuencias(3, 2)) == RazonDeFrecuencias(3, 2))
+    }
+
+    @Test func notacion() throws {
+        for notacion in Notacion.allCases {
+            #expect(try idaYVuelta(notacion) == notacion)
+        }
+        let combinada = Notacion.rusoPalabras.conTextos(en: .espanol).conOctavas(.cifras)
+        #expect(try idaYVuelta(combinada) == combinada)
+        // Una escritura que no está entre las que hay no se lee.
+        #expect(throws: DecodingError.self) {
+            try leer(EscrituraDeNotas.self, #"{"idioma": "aleman", "conPalabras": false, "tipografia": "conDobles"}"#)
+        }
+    }
 }

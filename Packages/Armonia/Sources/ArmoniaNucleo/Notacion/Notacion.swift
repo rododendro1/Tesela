@@ -51,7 +51,7 @@
 /// La octava de las alturas se escribe con cifras (La4) o como subíndice (La₄). Las notaciones compactas
 /// (`.espanolCompacto`, `.alemanCompacto`, `.francesCompacto`…) la escriben como subíndice y las demás con cifras;
 /// `conOctavas(_:)` la cambia.
-public struct Notacion: Hashable, Sendable, CaseIterable {
+public struct Notacion: Hashable, Sendable, CaseIterable, Codable {
     /// Cómo se escriben los nombres de nota.
     public let escritura: EscrituraDeNotas
     /// El idioma de los textos (intervalos, acordes, mensajes…).
@@ -190,7 +190,7 @@ public struct Notacion: Hashable, Sendable, CaseIterable {
 // MARK: - Escritura de la octava
 
 /// Cómo se escribe la octava de una altura (científica: Do4 es el Do central) en una `Notacion`.
-public enum EscrituraDeLaOctava: Hashable, Sendable, CaseIterable {
+public enum EscrituraDeLaOctava: String, Hashable, Sendable, CaseIterable, Codable {
     /// Con cifras: La4, Fa♯3, Si♭-1.
     case cifras
     /// Como subíndice: La₄, Fa♯₃, Si♭₋₁.
@@ -390,7 +390,7 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
 /// Los nombres de nota y los datos del idioma no tienen más `switch` sobre `Idioma` que el de las reglas y el de
 /// `Traducido`. Ninguno tiene `default`, así que el compilador señala lo que falta, y cada `TextosDeX` sin el idioma
 /// nuevo deja de compilar.
-public enum Idioma: String, Hashable, Sendable, CaseIterable {
+public enum Idioma: String, Hashable, Sendable, CaseIterable, Codable {
     case espanol
     case ingles
     case catalan
@@ -450,4 +450,32 @@ extension Idioma {
     private static let porNombre: [String: Idioma] = Dictionary(
         Idioma.allCases.flatMap { idioma in idioma.nombres.map { ($0.claveDeBusqueda, idioma) } },
         uniquingKeysWith: { primero, _ in primero })
+}
+
+extension EscrituraDeNotas: Codable {
+    // Se codifica con sus tres campos, y al leerla se busca entre `allCases`: solo hay esas.
+    private enum Claves: String, CodingKey { case idioma, conPalabras, tipografia }
+
+    public init(from decoder: Decoder) throws {
+        let contenedor = try decoder.container(keyedBy: Claves.self)
+        let idioma = try contenedor.decode(Idioma.self, forKey: .idioma)
+        let conPalabras = try contenedor.decode(Bool.self, forKey: .conPalabras)
+        let tipografia = try contenedor.decode(Tipografia.self, forKey: .tipografia)
+        guard
+            let escritura = EscrituraDeNotas.allCases.first(where: {
+                $0.idioma == idioma && $0.conPalabras == conPalabras && $0.tipografia == tipografia
+            })
+        else {
+            throw DecodingError.dataCorruptedError(
+                forKey: .tipografia, in: contenedor, debugDescription: "no hay esa escritura de las notas")
+        }
+        self = escritura
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var contenedor = encoder.container(keyedBy: Claves.self)
+        try contenedor.encode(idioma, forKey: .idioma)
+        try contenedor.encode(conPalabras, forKey: .conPalabras)
+        try contenedor.encode(tipografia, forKey: .tipografia)
+    }
 }

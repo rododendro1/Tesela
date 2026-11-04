@@ -21,7 +21,7 @@ import ArmoniaTeoria
 // alteración (♯, ♭) no cambia la posición: Fa4 y Fa♯4 se escriben en el mismo sitio.
 
 /// Una clave: dónde se escribe cada altura en el pentagrama.
-public enum Clave: Hashable, Sendable, CaseIterable, CustomStringConvertible {
+public enum Clave: String, Hashable, Sendable, CaseIterable, CustomStringConvertible, Codable {
     /// Clave de sol en 2.ª línea (violín).
     case sol
     /// Clave de sol que suena una octava más grave (tenor, guitarra).

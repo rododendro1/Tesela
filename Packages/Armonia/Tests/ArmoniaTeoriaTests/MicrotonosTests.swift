@@ -178,6 +178,8 @@ import Testing
     @Test func thaatEnSruti() {
         // Los 22 śruti: razones justas, con un limma, una coma o un semitono menor entre dos seguidos.
         #expect(SistemaMicrotonal.razonesDeLosSruti.count == 22)
+        #expect(SistemaMicrotonal.razonesDeLosSruti[1] == RazonDeFrecuencias(256, 243))
+        #expect(SistemaMicrotonal.razonesDeLosSruti[7].description == "5/4")
         #expect(abs(SistemaMicrotonal.sruti.cents(de: 7) - 386.31) < 0.01)
         #expect(abs(SistemaMicrotonal.sruti.cents(de: 22 + 13) - 1901.96) < 0.01)
         #expect(abs(SistemaMicrotonal.sruti.cents(de: -9) - (-498.04)) < 0.01)

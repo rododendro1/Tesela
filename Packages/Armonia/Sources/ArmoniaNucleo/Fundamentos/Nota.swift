@@ -140,7 +140,7 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
 ///
 /// Un natural no lleva signo en `unicode` ni en `ascii` (la nota se escribe sola) y se escribe "♮" en
 /// `conDobles`. Las tres se leen igual con `Alteracion(leyendo:)`.
-public enum Tipografia: String, Hashable, Sendable, CaseIterable {
+public enum Tipografia: String, Hashable, Sendable, CaseIterable, Codable {
     /// Un signo por semitono, ♯ y ♭: Fa♯, Si♭♭.
     case conSimples
     /// Un signo por semitono, # y b, como se escribe en un teclado: F#, Bbb.

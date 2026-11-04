@@ -65,7 +65,7 @@ extension PentagramaSVG {
             .con(
                 "textLength",
                 PentagramaSVG.anchoEstimado(
-                    texto, cuerpoDeLetra: cuerpoDeLetra, proporcion: opciones.anchoDeLosCaracteres)
+                    texto, cuerpoDeLetra: cuerpoDeLetra, proporcion: opciones.maquetacion.anchoDeLosCaracteres)
             )
             .con("font-family", "sans-serif").conTexto(texto)
     }
@@ -87,7 +87,7 @@ extension PentagramaSVG {
             let letra = PentagramaSVG.letraDeLasEtiquetas
             textos.append(textoCentrado(etiqueta.texto, x: etiqueta.x, y: maximoY + 1.6, cuerpoDeLetra: letra))
         }
-        let yDeLosIntervalos = maximoY + 1.6 + (opciones.nombresDeLasNotas ? 1.5 : 0)
+        let yDeLosIntervalos = maximoY + 1.6 + (opciones.marcas.nombresDeLasNotas ? 1.5 : 0)
         for intervalo in maquetacion.intervalos {
             let letra = PentagramaSVG.letraDeLasEtiquetas
             textos.append(textoCentrado(intervalo.texto, x: intervalo.x, y: yDeLosIntervalos, cuerpoDeLetra: letra))

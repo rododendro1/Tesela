@@ -203,12 +203,12 @@ struct PentagramaSVG {
     /// Las claves que se usan: una, o sol y fa si el pentagrama es doble.
     func clavesDelPentagrama() -> [Clave] {
         if let claves { return claves }
-        switch opciones.pentagramas {
+        switch opciones.maquetacion.pentagramas {
         case .doble: return [.sol, .fa]
-        case .simple: return [opciones.clave ?? Clave.masAdecuada(para: columnas.flatMap { $0 }) ?? .sol]
+        case .simple: return [opciones.maquetacion.clave ?? Clave.masAdecuada(para: columnas.flatMap { $0 }) ?? .sol]
         case .automatico:
-            let elegida = opciones.clave ?? Clave.masAdecuada(para: columnas.flatMap { $0 }) ?? .sol
-            guard opciones.clave == nil else { return [elegida] }
+            let elegida = opciones.maquetacion.clave ?? Clave.masAdecuada(para: columnas.flatMap { $0 }) ?? .sol
+            guard opciones.maquetacion.clave == nil else { return [elegida] }
             // Solo si el rango pasa a los dos lados del Do central: si todo está en un lado, el otro pentagrama iría vacío.
             let todas = columnas.flatMap { $0 }
             let doCentral = Altura(.do, octava: 4).midi
@@ -239,18 +239,18 @@ struct PentagramaSVG {
         }
     }
 
-    /// El color de una nota ajena al acorde que suena (`marcarNotasAjenas`): el de las notas de paso si es de la
+    /// El color de una nota ajena al acorde que suena (`marcas.notasAjenas`): el de las notas de paso si es de la
     /// tonalidad (o si no hay tonalidad), el de las cromáticas si no; `nil` si es del acorde o no hay acorde.
     func colorDeNotaAjena(_ nota: Nota, _ columna: Int) -> String? {
-        guard opciones.marcarNotasAjenas, let clases = referencia(columna)?.clasesDelAcorde,
+        guard opciones.marcas.notasAjenas, let clases = referencia(columna)?.clasesDelAcorde,
             !clases.contains(nota.claseDeAltura)
         else { return nil }
         if case .tonalidad(let tonalidad) = opciones.armadura,
             !tonalidad.notasPropias.map(\.claseDeAltura).contains(nota.claseDeAltura)
         {
-            return opciones.colorDeLasCromaticas
+            return opciones.colores.cromaticas
         }
-        return opciones.colorDeLasNotasDePaso
+        return opciones.colores.notasDePaso
     }
 
     // El dibujo se hace en pasadas: primero se decide el sistema (las claves y la marca de octava), después se dibuja
@@ -278,7 +278,7 @@ struct PentagramaSVG {
     }
 
     func svg() -> String {
-        PentagramaSVG.envolver([dibujo()], titulo: titulo, tamano: opciones.tamano)
+        PentagramaSVG.envolver([dibujo()], titulo: titulo, tamano: opciones.maquetacion.tamano)
     }
 
     /// Uno o más dibujos, uno debajo de otro, en un SVG.
@@ -317,7 +317,7 @@ struct PentagramaSVG {
         let vigentes = dibujarElPrincipio(sistema, en: &lienzo)
         let maquetacion = colocarLasColumnas(sistema, vigentes: vigentes, en: &lienzo)
         var final = lienzo.x - maquetacion.ultimaSeparacion + (ritmo == nil ? 0.9 : conBarraFinal ? 2.0 : 1.2)
-        if opciones.marcarSemitonos { dibujarLosSemitonos(maquetacion.notasSueltas, en: &lienzo) }
+        if opciones.marcas.semitonos { dibujarLosSemitonos(maquetacion.notasSueltas, en: &lienzo) }
         // Un cifrado de una progresión puede sobresalir por la derecha.
         if let ultimo = maquetacion.cifrados.last { final = max(final, ultimo.x + ultimo.mitad + 0.6) }
         // Las plicas, las barras de unión, las ligaduras y los tresillos.
@@ -336,7 +336,7 @@ struct PentagramaSVG {
 
         // Un cifrado o los nombres de un acorde pueden ser más anchos que el acorde: el pentagrama se alarga a la derecha
         // y, si el texto sobresale por la izquierda, las notas se desplazan.
-        let proporcion = opciones.anchoDeLosCaracteres
+        let proporcion = opciones.maquetacion.anchoDeLosCaracteres
         let anchoDelTexto = max(
             cifrado.map {
                 PentagramaSVG.anchoEstimado($0, cuerpoDeLetra: PentagramaSVG.letraDelCifrado, proporcion: proporcion)
@@ -358,7 +358,7 @@ struct PentagramaSVG {
         let maximoY = lienzo.maximoY
         let cima = cifrado == nil && maquetacion.cifrados.isEmpty ? minimoY - 0.4 : minimoY - 2.6
         // Debajo, una fila por cada clase de etiqueta: los nombres, los intervalos y los grados.
-        let filas = (opciones.nombresDeLasNotas ? 1 : 0) + (maquetacion.intervalos.isEmpty ? 0 : 1)
+        let filas = (opciones.marcas.nombresDeLasNotas ? 1 : 0) + (maquetacion.intervalos.isEmpty ? 0 : 1)
         let yDeLosGrados = maximoY + (filas == 0 ? 2.0 : 2.0 + 1.5 * Double(filas))
         // El bajo cifrado, debajo de los grados (o donde irían), con las cifras una encima de otra.
         let yDelBajoCifrado = maquetacion.grados.isEmpty ? yDeLosGrados - 0.2 : yDeLosGrados + 1.6
@@ -403,7 +403,7 @@ struct PentagramaSVG {
             yDelBajoCifrado: yDelBajoCifrado)
         if let tablaturaColocada { lienzo.cuerpo += rotuloDeLaTablatura(tablaturaColocada) }
 
-        let color = EscrituraXML.escapar(opciones.color)
+        let color = EscrituraXML.escapar(opciones.colores.dibujo)
         let descripcion = columnas.flatMap { $0 }.map { $0.nombre(en: opciones.notacion) }.joined(separator: ", ")
         let fondoDelSistema = """
             <g stroke="\(color)" fill="none">
