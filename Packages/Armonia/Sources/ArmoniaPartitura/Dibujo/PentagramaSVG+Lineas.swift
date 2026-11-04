@@ -188,49 +188,189 @@ extension PentagramaSVG {
         }
         var dibujos: [Dibujo] = []
         for l in lineas.indices { dibujos.append(componer(&lineas[l])) }
-        let ancho = dibujos.map(\.ancho).max() ?? 0
-        for l in lineas.indices where lineas.count > 1 && dibujos[l].ancho < ancho - 0.01 {
-            let corta = l == lineas.count - 1 && dibujos[l].ancho < ancho * 0.75
-            if !corta { dibujos[l] = componer(&lineas[l], ancho: ancho) }
-        }
-        return envolver(dibujos, titulo: titulo, tamano: tamano)
+        return envolver(
+            igualadas(dibujos) { l, ancho in componer(&lineas[l], ancho: ancho) }, titulo: titulo, tamano: tamano)
     }
 
-    /// Las voces de una línea, una encima de otra, con lo que suena a la vez en la misma vertical; y, con `ancho`,
-    /// estiradas hasta medirlo.
-    static func componer(_ voces: inout [PentagramaSVG], ancho: Double? = nil) -> Dibujo {
+    /// Las líneas, estiradas (con `estirar`, que vuelve a componer la línea `l` con un ancho) hasta lo que mide la
+    /// más ancha; la última no, si mide menos de tres cuartos.
+    static func igualadas(_ dibujos: [Dibujo], estirar: (_ l: Int, _ ancho: Double) -> Dibujo) -> [Dibujo] {
+        var resultado = dibujos
+        let ancho = dibujos.map(\.ancho).max() ?? 0
+        for l in dibujos.indices where dibujos.count > 1 && dibujos[l].ancho < ancho - 0.01 {
+            let corta = l == dibujos.count - 1 && dibujos[l].ancho < ancho * 0.75
+            if !corta { resultado[l] = estirar(l, ancho) }
+        }
+        return resultado
+    }
+
+    /// Un sistema de pentagramas, línea a línea: `porLinea[l][p]` son las voces (una o dos) del pentagrama `p` en
+    /// la línea `l`. Cada pentagrama lleva las claves que piden sus voces en todas las líneas.
+    static func svgDelSistema(
+        _ porLinea: [[[PentagramaSVG]]], titulo: String, llave: Bool, tamano: Double
+    ) -> String {
+        let pentagramas = porLinea.map(\.count).max() ?? 0
+        var claves: [[Clave]] = []
+        for p in 0..<pentagramas {
+            let suyas = porLinea.flatMap { $0.indices.contains(p) ? $0[p] : [] }
+            guard let primera = suyas.first else {
+                claves.append([.sol])
+                continue
+            }
+            claves.append(
+                PentagramaSVG(
+                    columnas: suyas.flatMap(\.columnas), armadura: primera.armadura, cifrado: nil, titulo: titulo,
+                    opciones: primera.opciones
+                ).clavesDelPentagrama())
+        }
+        var lineas: [(voces: [PentagramaSVG], grupos: [[Int]])] = []
+        for (l, linea) in porLinea.enumerated() {
+            var voces: [PentagramaSVG] = []
+            var grupos: [[Int]] = []
+            for (p, suyas) in linea.enumerated() where !suyas.isEmpty {
+                var grupo: [Int] = []
+                for (v, var voz) in suyas.enumerated() {
+                    voz.claves = claves[p]
+                    voz.conCifraDeCompas = l == 0
+                    voz.conBarraFinal = l == porLinea.count - 1
+                    voz.soloLasNotas = v > 0
+                    if suyas.count > 1 { voz.plicasHaciaArriba = v == 0 }
+                    grupo.append(voces.count)
+                    voces.append(voz)
+                }
+                grupos.append(grupo)
+            }
+            if !voces.isEmpty { lineas.append((voces, grupos)) }
+        }
+        var dibujos: [Dibujo] = []
+        for l in lineas.indices {
+            dibujos.append(componer(&lineas[l].voces, pentagramas: lineas[l].grupos, llave: llave))
+        }
+        let igualados = igualadas(dibujos) { l, ancho in
+            componer(&lineas[l].voces, pentagramas: lineas[l].grupos, llave: llave, ancho: ancho)
+        }
+        return envolver(igualados, titulo: titulo, tamano: tamano)
+    }
+
+    /// Las voces de una línea, con lo que suena a la vez en la misma vertical; y, con `ancho`, estiradas hasta
+    /// medirlo. `pentagramas` dice qué voces van en cada pentagrama (por su índice; si es `nil`, todas en uno): las
+    /// de un pentagrama se dibujan una encima de otra y los pentagramas, uno debajo de otro, unidos por las barras
+    /// de compás y, con `llave`, por una llave.
+    static func componer(
+        _ voces: inout [PentagramaSVG], pentagramas: [[Int]]? = nil, llave: Bool = false, ancho: Double? = nil
+    ) -> Dibujo {
+        let grupos = pentagramas ?? [Array(voces.indices)]
+        // La voz con la que cada una comparte pentagrama y cuyas cabezas no debe pisar: la primera de su pentagrama.
+        var companeras = [Int?](repeating: nil, count: voces.count)
+        for grupo in grupos {
+            for v in grupo.dropFirst() where voces.indices.contains(v) { companeras[v] = grupo.first }
+        }
         var dibujos = voces.map { $0.dibujo() }
         // Cada vez, las columnas, las barras y el final van donde la voz que más lejos los lleva; cuando ya no se
         // mueve nada, están alineadas.
         for _ in 0..<8 where voces.count > 1 {
-            guard alinear(&voces, dibujos) else { break }
+            guard alinear(&voces, dibujos, companeras: companeras) else { break }
             dibujos = voces.map { $0.dibujo() }
         }
         if let ancho, let actual = dibujos.map(\.ancho).max(), actual < ancho - 0.01 {
             estirar(&voces, dibujos, en: ancho - actual)
             dibujos = voces.map { $0.dibujo() }
         }
+        let porPentagrama = grupos.map { grupo in
+            superpuestos(grupo.filter(dibujos.indices.contains).map { dibujos[$0] })
+        }
+        guard porPentagrama.count > 1 else { return porPentagrama[0] }
+        return apilados(porPentagrama, barras: dibujos[0], llave: llave, color: voces[0].opciones.color)
+    }
+
+    /// Los dibujos de las voces de un pentagrama, uno encima de otro.
+    static func superpuestos(_ dibujos: [Dibujo]) -> Dibujo {
         guard dibujos.count > 1 else { return dibujos[0] }
         let y = dibujos.map(\.y).min() ?? 0
         let abajo = dibujos.map { $0.y + $0.alto }.max() ?? 0
         return Dibujo(
             x: dibujos.map(\.x).min() ?? 0, y: y, ancho: dibujos.map(\.ancho).max() ?? 0, alto: abajo - y,
             descripcion: dibujos.map(\.descripcion).joined(separator: "; "),
-            contenido: dibujos.map(\.contenido).joined(separator: "\n"))
+            contenido: dibujos.map(\.contenido).joined(separator: "\n"), colocadas: dibujos[0].colocadas,
+            barras: dibujos[0].barras, desplazamiento: dibujos[0].desplazamiento,
+            final: dibujos.map(\.final).max() ?? 0)
+    }
+
+    /// Lo que se deja entre un pentagrama y el siguiente de un sistema, además de lo que suben y bajan.
+    static let separacionEntrePentagramas = 2.5
+
+    /// Los pentagramas de un sistema, uno debajo de otro, con las barras de compás de `barras` (las de la primera
+    /// voz, ya alineadas), la del principio y la del final atravesándolos todos, y, con `llave`, una llave delante.
+    static func apilados(_ pentagramas: [Dibujo], barras: Dibujo, llave: Bool, color: String) -> Dibujo {
+        let n = PentagramaSVG.n
+        var y = 0.0
+        var grupos: [String] = []
+        // Dónde queda la línea de arriba de cada pentagrama.
+        var lineasDeArriba: [Double] = []
+        for pentagrama in pentagramas {
+            grupos.append("<g transform=\"translate(0 \(n(y - pentagrama.y)))\">\n\(pentagrama.contenido)\n</g>")
+            lineasDeArriba.append(y - pentagrama.y)
+            y += pentagrama.alto + separacionEntrePentagramas
+        }
+        let alto = y - separacionEntrePentagramas
+        let final = pentagramas.map(\.final).max() ?? 0
+        let arriba = lineasDeArriba.first ?? 0
+        let abajo = (lineasDeArriba.last ?? 0) + 4
+        // Las barras, entre un pentagrama y el siguiente (dentro de cada uno ya las dibuja él).
+        let xs = [0, final] + barras.barras.map { $0 + barras.desplazamiento }
+        var lineas: [String] = []
+        for x in xs {
+            for (de, a) in zip(lineasDeArriba, lineasDeArriba.dropFirst()) {
+                lineas.append(
+                    ElementoSVG("line", numeros: .hastaTresDecimales).con("x1", x).con("y1", de + 4).con("x2", x)
+                        .con("y2", a).con("stroke-width", "0.16").vacio)
+            }
+        }
+        var x = pentagramas.map(\.x).min() ?? 0
+        var ancho = pentagramas.map(\.ancho).max() ?? 0
+        if llave {
+            // La llave de Bravura, estirada de sus 4 espacios a lo que mide el sistema.
+            let margen = PentagramaSVG.margenDeLaLlave
+            let escala = (abajo - arriba) / 4
+            lineas.append(
+                ElementoSVG("path", numeros: .hastaTresDecimales)
+                    .con("transform", "translate(\(n(x - margen + 0.3)) \(n(abajo))) scale(\(n(escala)))")
+                    .con("d", GlifosSMuFL.llave.trazado).con("stroke", "none").con("fill", color).vacio)
+            x -= margen
+            ancho += margen
+        } else {
+            // Un corchete: una barra gruesa delante, de arriba abajo.
+            lineas.append(
+                ElementoSVG("line", numeros: .hastaTresDecimales).con("x1", x - 0.5).con("y1", arriba - 0.3)
+                    .con("x2", x - 0.5).con("y2", abajo + 0.3).con("stroke-width", "0.5").vacio)
+            x -= 0.9
+            ancho += 0.9
+        }
+        let contenido =
+            grupos.joined(separator: "\n") + "\n<g stroke=\"\(EscrituraXML.escapar(color))\">\n"
+            + lineas.joined(separator: "\n") + "\n</g>"
+        return Dibujo(
+            x: x, y: 0, ancho: ancho, alto: alto,
+            descripcion: pentagramas.map(\.descripcion).joined(separator: " | "), contenido: contenido,
+            colocadas: barras.colocadas, barras: barras.barras, desplazamiento: barras.desplazamiento, final: final)
     }
 
     /// Lleva cada columna, cada barra de compás y el final de las voces a donde está el más lejano de todas.
-    /// Devuelve si algo se mueve.
-    static func alinear(_ voces: inout [PentagramaSVG], _ dibujos: [Dibujo]) -> Bool {
-        // Las cabezas de las otras voces que chocarían con las de la primera (a una segunda o al unísono) se apartan
-        // a la derecha lo que mide la cabeza de la primera.
-        var deLaPrimera: [Duracion: ColumnaColocada] = [:]
-        for (inicio, colocada) in zip(voces[0].ritmo?.inicios ?? [], dibujos[0].colocadas) {
-            deLaPrimera[inicio] = colocada
-        }
+    /// Devuelve si algo se mueve. `companeras` dice con qué voz comparte pentagrama cada una (la primera del suyo).
+    static func alinear(_ voces: inout [PentagramaSVG], _ dibujos: [Dibujo], companeras: [Int?]) -> Bool {
+        // Las cabezas que chocarían con las de la primera voz de su pentagrama (a una segunda o al unísono) se
+        // apartan a la derecha lo que mide la cabeza de esa.
         for k in voces.indices {
+            guard let companera = companeras.indices.contains(k) ? companeras[k] : nil else {
+                voces[k].apartes = [Double](repeating: 0, count: dibujos[k].colocadas.count)
+                continue
+            }
+            var suyas: [Duracion: ColumnaColocada] = [:]
+            for (inicio, colocada) in zip(voces[companera].ritmo?.inicios ?? [], dibujos[companera].colocadas) {
+                suyas[inicio] = colocada
+            }
             voces[k].apartes = zip(voces[k].ritmo?.inicios ?? [], dibujos[k].colocadas).map { inicio, colocada in
-                guard k > 0, let suya = deLaPrimera[inicio], chocan(suya, colocada) else { return 0 }
+                guard let suya = suyas[inicio], chocan(suya, colocada) else { return 0 }
                 return suya.anchoDeLaCabeza + 0.1
             }
         }
@@ -286,5 +426,78 @@ extension PentagramaSVG {
             voces[k].barrasMinimas = dibujo.barras.map(estirada)
             voces[k].finalMinimo = final + falta
         }
+    }
+}
+
+extension Voz {
+    /// Varias voces en un sistema de pentagramas, uno debajo de otro, con lo que suena a la vez en la misma vertical
+    /// y las barras de compás atravesándolos: un coral a cuatro voces en dos pentagramas, el piano con sus dos
+    /// manos, un cuarteto. `pentagramas` lleva, de arriba abajo, las voces de cada pentagrama (una o dos; con dos,
+    /// la primera con las plicas hacia arriba). `claves` fija la de cada uno (la que falte o sea `nil`, la que
+    /// pidan sus notas). Con `llave`, los une una llave, como en el piano; si no, un corchete, como en un coro.
+    /// Todas las voces se miden con el compás y la anacrusa de la primera; con `opciones.compasesPorLinea`, el
+    /// sistema se parte en líneas. Los nombres de las notas van solo en la primera voz de cada pentagrama, y la
+    /// resaltada, en la primera del primero.
+    ///
+    ///     let derecha = try Voz(leyendo: "Mi5:4 Re5:4 Do5:2")
+    ///     let izquierda = try Voz(leyendo: "Do3:2 Sol2:2")
+    ///     let svg = Voz.svgSistema([[derecha], [izquierda]], titulo: "Piano", claves: [.sol, .fa], llave: true)
+    public static func svgSistema(
+        _ pentagramas: [[Voz]], titulo: String, claves: [Clave?] = [], llave: Bool = false,
+        opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+    ) -> String {
+        let deDosEnDos = pentagramas.map { Array($0.prefix(2)) }.filter { !$0.isEmpty }
+        guard let primera = deDosEnDos.first?.first else {
+            return PentagramaSVG.envolver([], titulo: titulo, tamano: opciones.tamano)
+        }
+        var base = opciones
+        base.marcaDeOctava = false
+        base.cambiosDeClave = false
+        base.pentagramas = .simple
+        // De cada pentagrama, cada voz partida en líneas.
+        var porPentagrama: [[[PentagramaSVG]]] = []
+        for (p, voces) in deDosEnDos.enumerated() {
+            var delPentagrama = base
+            if claves.indices.contains(p), let clave = claves[p] { delPentagrama.clave = clave }
+            if p > 0 { delPentagrama.resaltada = nil }
+            porPentagrama.append(
+                voces.enumerated().map { v, voz in
+                    var suyas = delPentagrama
+                    if v > 0 {
+                        suyas.nombresDeLasNotas = false
+                        suyas.intervalosDeLasNotas = false
+                        suyas.resaltada = nil
+                    }
+                    return Voz(voz.eventos, compas: primera.compas, anacrusa: primera.anacrusa).dibujosPorLinea(
+                        titulo: titulo, anotaciones: AnotacionesDelPentagrama(), tonica: nil, armadura: nil,
+                        opciones: suyas)
+                })
+        }
+        let lineas = porPentagrama.flatMap { $0.map(\.count) }.max() ?? 0
+        let porLinea = (0..<lineas).map { l in
+            porPentagrama.map { voces in voces.compactMap { $0.indices.contains(l) ? $0[l] : nil } }
+        }
+        return PentagramaSVG.svgDelSistema(porLinea, titulo: titulo, llave: llave, tamano: opciones.tamano)
+    }
+}
+
+extension Coral {
+    /// El coral en un sistema de dos pentagramas, cada acorde en una `figura` (blancas, si no se pide otra): las
+    /// voces de arriba (la soprano y la contralto, a cuatro voces) en el de sol y las de abajo (el tenor y el bajo)
+    /// en el de fa, dos en cada uno, con las plicas de la de arriba hacia arriba.
+    ///
+    ///     let coral = try Coral(leyendo: "Do3 Sol3 Mi4 Do5 | Sol2 Sol3 Re4 Si4 | Do3 Sol3 Mi4 Do5")
+    ///     let svg = coral.svgPentagrama(titulo: "Cadencia")
+    public func svgPentagrama(
+        titulo: String, figura: Duracion = .blanca, compas: Compas = .compasillo,
+        opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+    ) -> String {
+        let numero = acordes.first?.count ?? 0
+        // De la más aguda a la más grave.
+        let voces = (0..<numero).reversed().map { i in Voz(acordes.map { Evento($0[i], figura) }, compas: compas) }
+        let arriba = (numero + 1) / 2
+        let sol = Array(voces.prefix(min(2, arriba)))
+        let fa = Array(voces.dropFirst(arriba).prefix(2))
+        return Voz.svgSistema([sol, fa], titulo: titulo, claves: [.sol, .fa], opciones: opciones)
     }
 }

@@ -6,6 +6,86 @@ import Foundation
 // tablatura.
 
 extension PentagramaSVG {
+    /// Las articulaciones de cada columna, del lado de la cabeza (encima si la plica va hacia abajo o no hay plica,
+    /// debajo si va hacia arriba), en los espacios del pentagrama; y los ornamentos y el calderón, encima de todo.
+    /// Con dos voces, las de la de arriba van encima y las de la de abajo, debajo.
+    func dibujarLasArticulaciones(_ colocadas: [ColumnaColocada], plicasArriba: [Bool?], en lienzo: inout Lienzo) {
+        let porColumna = articulaciones.sorted { $0.key < $1.key }
+        for (columna, suyas) in porColumna where colocadas.indices.contains(columna) {
+            let colocada = colocadas[columna]
+            let k = colocada.lugares.indices.first { !colocada.lugares[$0].isEmpty } ?? 0
+            let lugares = colocada.lugares.indices.contains(k) ? colocada.lugares[k] : []
+            let centro = colocada.x + colocada.anchoDeLaCabeza / 2
+            let plicaArriba = plicasArriba.indices.contains(columna) ? plicasArriba[columna] : nil
+            func y(_ lugar: Int) -> Double { PentagramaSVG.y(deLugar: lugar, pentagrama: k) }
+            func poner(_ glifo: Glifo, base: Double) {
+                let x = PentagramaSVG.n(centro - glifo.ancho / 2)
+                lienzo.notas.append(
+                    elemento("path").con("transform", "translate(\(x) \(PentagramaSVG.n(base)))")
+                        .con("d", glifo.trazado).vacio)
+                lienzo.minimoY = min(lienzo.minimoY, base + glifo.arriba)
+                lienzo.maximoY = max(lienzo.maximoY, base + glifo.abajo)
+            }
+
+            // Las de la cabeza, cada una en un espacio (dentro del pentagrama) y la siguiente, un espacio más allá.
+            let encima = plicasHaciaArriba ?? !(plicaArriba ?? false)
+            var lugar = encima ? (lugares.max() ?? 4) + 2 : (lugares.min() ?? 4) - 2
+            var arriba = lugares.max().map { y($0) - 0.5 } ?? y(8)
+            var abajo = lugares.min().map { y($0) + 0.5 } ?? y(0)
+            let deLaCabeza = lugares.isEmpty ? [] : suyas.filter { !$0.esOrnamento && $0 != .calderon }
+            for articulacion in deLaCabeza {
+                if lugar % 2 == 0, (0...8).contains(lugar) { lugar += encima ? 1 : -1 }
+                let glifo = PentagramaSVG.glifo(de: articulacion, encima: encima)
+                let base = y(lugar) - (glifo.arriba + glifo.abajo) / 2
+                poner(glifo, base: base)
+                arriba = min(arriba, base + glifo.arriba)
+                abajo = max(abajo, base + glifo.abajo)
+                lugar += encima ? 2 : -2
+            }
+
+            // Los ornamentos y el calderón, fuera del pentagrama y de la plica.
+            let fuera = suyas.filter { $0.esOrnamento || $0 == .calderon }
+            guard !fuera.isEmpty else { continue }
+            let largo = PentagramaSVG.largoDeLaPlica + 0.5
+            if plicasHaciaArriba ?? true {
+                var tope = min(arriba, y(8))
+                if plicaArriba == true, let alto = lugares.max() { tope = min(tope, y(alto) - largo) }
+                tope -= 0.5
+                for articulacion in fuera {
+                    let glifo = PentagramaSVG.glifo(de: articulacion, encima: true)
+                    poner(glifo, base: tope - glifo.abajo)
+                    tope += glifo.arriba - glifo.abajo - 0.3
+                }
+            } else {
+                var piso = max(abajo, y(0))
+                if plicaArriba == false, let bajo = lugares.min() { piso = max(piso, y(bajo) + largo) }
+                piso += 0.5
+                for articulacion in fuera {
+                    let glifo = PentagramaSVG.glifo(de: articulacion, encima: false)
+                    poner(glifo, base: piso - glifo.arriba)
+                    piso += glifo.abajo - glifo.arriba + 0.3
+                }
+            }
+        }
+    }
+
+    /// El glifo de una articulación, encima o debajo de la nota.
+    static func glifo(de articulacion: Articulacion, encima: Bool) -> Glifo {
+        switch articulacion {
+        case .staccato: return GlifosSMuFL.staccatoArriba
+        case .staccatissimo: return encima ? GlifosSMuFL.staccatissimoArriba : GlifosSMuFL.staccatissimoAbajo
+        case .tenuto: return GlifosSMuFL.tenuto
+        case .acento: return GlifosSMuFL.acento
+        case .marcato: return encima ? GlifosSMuFL.marcatoArriba : GlifosSMuFL.marcatoAbajo
+        case .calderon: return encima ? GlifosSMuFL.calderonArriba : GlifosSMuFL.calderonAbajo
+        case .trino: return GlifosSMuFL.trino
+        case .mordenteSuperior: return GlifosSMuFL.mordenteSuperior
+        case .mordenteInferior: return GlifosSMuFL.mordenteInferior
+        case .grupeto: return GlifosSMuFL.grupeto
+        case .grupetoInvertido: return GlifosSMuFL.grupetoInvertido
+        }
+    }
+
     /// Los semitonos: un arco fino encima de cada par de notas seguidas a un semitono.
     func dibujarLosSemitonos(_ notasSueltas: [(x: Double, y: Double, midi: Int)?], en lienzo: inout Lienzo) {
         let n = PentagramaSVG.n

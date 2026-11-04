@@ -93,7 +93,9 @@ struct LectorABC {
     /// Las decoraciones que son articulaciones.
     private static let decoraciones: [String: Articulacion] = [
         "staccato": .staccato, "wedge": .staccatissimo, "tenuto": .tenuto, ">": .acento, "accent": .acento,
-        "emphasis": .acento, "marcato": .marcato, "fermata": .calderon,
+        "emphasis": .acento, "marcato": .marcato, "fermata": .calderon, "trill": .trino,
+        "uppermordent": .mordenteSuperior, "pralltriller": .mordenteSuperior, "lowermordent": .mordenteInferior,
+        "mordent": .mordenteInferior, "turn": .grupeto, "invertedturn": .grupetoInvertido,
     ]
 
     /// Una decoración (`!mf!`, `!fermata!`): si es una dinámica o una articulación, para la nota siguiente.

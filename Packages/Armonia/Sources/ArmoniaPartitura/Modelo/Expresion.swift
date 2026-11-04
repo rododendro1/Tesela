@@ -1,5 +1,5 @@
 // Lo que se escribe sobre las notas además de su altura y su duración: la dinámica (p, mf, f…) y las articulaciones
-// (staccato, acento, calderón…). Van en cada `Evento` y los formatos de partitura las escriben y las leen; el MIDI
+// (staccato, acento, calderón…) y los ornamentos (trino, mordentes, grupeto). Van en cada `Evento` y los formatos de partitura las escriben y las leen; el MIDI
 // toca la dinámica como velocidad.
 //
 // En el texto de un evento van al final, entre llaves y separadas por comas, sin espacios: «Do4:4{f,staccato}»,
@@ -55,6 +55,24 @@ public enum Articulacion: String, CaseIterable, Hashable, Sendable, Codable {
     case marcato
     /// Calderón: se sostiene más de lo que se escribe.
     case calderon
+    /// Trino (tr): la nota alterna rápido con la de encima, en la escala, todo lo que dura.
+    case trino
+    /// Mordente superior (semitrino): la nota, la de encima y otra vez la nota, muy rápido, al empezar.
+    case mordenteSuperior
+    /// Mordente inferior: la nota, la de debajo y otra vez la nota.
+    case mordenteInferior
+    /// Grupeto: la de encima, la nota, la de debajo y la nota.
+    case grupeto
+    /// Grupeto invertido: la de debajo, la nota, la de encima y la nota.
+    case grupetoInvertido
+
+    /// Si es un ornamento (trino, mordentes, grupetos), que se escribe encima de la nota con su signo.
+    public var esOrnamento: Bool {
+        switch self {
+        case .trino, .mordenteSuperior, .mordenteInferior, .grupeto, .grupetoInvertido: return true
+        default: return false
+        }
+    }
 
     /// Lo que suena de su duración escrita en MIDI: la mitad el staccato y un cuarto el staccatissimo.
     public var proporcionQueSuena: Duracion {
@@ -68,5 +86,7 @@ public enum Articulacion: String, CaseIterable, Hashable, Sendable, Codable {
     /// Los otros nombres con que se lee, sin tildes: los ingleses y los que llevan tilde.
     static let alias: [String: Articulacion] = [
         "accent": .acento, "fermata": .calderon, "ten": .tenuto, "stacc": .staccato, "marc": .marcato,
+        "trill": .trino, "tr": .trino, "prall": .mordenteSuperior, "mordent": .mordenteInferior,
+        "turn": .grupeto, "reverseturn": .grupetoInvertido, "invertedturn": .grupetoInvertido,
     ]
 }

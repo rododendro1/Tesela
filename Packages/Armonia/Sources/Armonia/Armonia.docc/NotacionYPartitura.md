@@ -304,8 +304,24 @@ let contralto = try Voz(leyendo: "Do5:4 Si4:4 Sol4:2")
 soprano.svgPentagrama(junto: contralto, titulo: "Dos voces").contains("<title>Sol₄</title>")   // true
 ```
 
-Para más voces o varios pentagramas a la vez, una partitura en MEI o MusicXML (``FormatoDePartitura``) y un motor como
-Verovio.
+`Voz.svgSistema(_:titulo:claves:llave:opciones:)` dibuja varios pentagramas, uno debajo de otro, alineados por lo
+que suena a la vez y con las barras de compás atravesándolos: el piano con sus dos manos (con `llave`) o un coro
+(con corchete), con una o dos voces en cada pentagrama. `Coral.svgPentagrama(titulo:figura:compas:opciones:)` pone
+un coral a cuatro voces en dos pentagramas, la soprano y la contralto en el de sol y el tenor y el bajo en el de fa.
+
+```swift
+let derecha = try Voz(leyendo: "Mi5:4 Re5:4 Do5:2")
+let izquierda = try Voz(leyendo: "Do3:2 Sol2:2")
+Voz.svgSistema([[derecha], [izquierda]], titulo: "Piano", claves: [.sol, .fa], llave: true).contains("<title>Sol₂</title>")   // true
+let coral = try Coral(leyendo: "Do3 Sol3 Mi4 Do5 | Sol2 Sol3 Re4 Si4 | Do3 Sol3 Mi4 Do5")
+coral.svgPentagrama(titulo: "Cadencia").contains("<title>Si₄</title>")   // true
+```
+
+Los grupos irregulares llevan su cifra: el tresillo, el cinquillo, el seisillo, el septillo y los demás (5 en 4,
+7 en 4 u 8, 9 en 8, 11 y 13 en 8…), con corchete si sus notas no van unidas por una barra.
+
+Para partituras con más pentagramas o una maquetación completa, el MEI o el MusicXML (``FormatoDePartitura``) y un
+motor como Verovio.
 
 ### Cifrados, intervalos, semitonos y tónica
 

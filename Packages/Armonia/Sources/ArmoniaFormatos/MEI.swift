@@ -335,8 +335,12 @@ package struct EscritorMEI: EscritorDePartitura {
         duracion += " dur.ppq=\"\(Int(((evento.duracion / .negra).enRedondas * Double(ppq)).rounded()))\""
         let plica = plicaArriba.map { " stem.dir=\"\($0 ? "up" : "down")\"" } ?? ""
         let fuera = sangria(nivel)
-        // El calderón es un atributo de la nota, el acorde o el silencio; las demás articulaciones, `<artic>`.
-        let calderon = articulaciones.contains(.calderon) ? " fermata=\"above\"" : ""
+        // El calderón es un atributo de la nota, el acorde o el silencio, y los ornamentos van en `@ornam`; las
+        // demás articulaciones, en `<artic>`.
+        let ornamentos = articulaciones.compactMap(ornam).joined()
+        let calderon =
+            (articulaciones.contains(.calderon) ? " fermata=\"above\"" : "")
+            + (ornamentos.isEmpty || evento.esSilencio ? "" : " ornam=\"\(ornamentos)\"")
         guard !evento.esSilencio else {
             return compasEntero
                 ? fuera + "<mRest xml:id=\"\(id)\"\(calderon)/>\n"
@@ -378,7 +382,19 @@ package struct EscritorMEI: EscritorDePartitura {
         case .tenuto: return "ten"
         case .acento: return "acc"
         case .marcato: return "marc"
-        case .calderon: return nil
+        case .calderon, .trino, .mordenteSuperior, .mordenteInferior, .grupeto, .grupetoInvertido: return nil
+        }
+    }
+
+    /// La letra de `@ornam` de un ornamento: T (trino), M y m (mordentes), S y s (grupetos).
+    package static func ornam(_ articulacion: Articulacion) -> String? {
+        switch articulacion {
+        case .trino: return "T"
+        case .mordenteSuperior: return "M"
+        case .mordenteInferior: return "m"
+        case .grupeto: return "S"
+        case .grupetoInvertido: return "s"
+        default: return nil
         }
     }
 

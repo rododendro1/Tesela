@@ -54,7 +54,8 @@ en dos silencios. Las indicaciones de tempo son aproximadas: sus márgenes varí
 ### Dinámica y articulaciones
 
 Cada evento puede llevar una dinámica (`Dinamica`: de *ppp* a *fff*, *sfz* y *fp*) y sus
-articulaciones (`Articulacion`: staccato, staccatissimo, tenuto, acento, marcato y calderón).
+articulaciones (`Articulacion`: staccato, staccatissimo, tenuto, acento, marcato y calderón) y
+ornamentos (trino, mordente superior e inferior, grupeto y grupeto invertido).
 En el texto van al final, entre llaves y separadas por comas, sin espacios; los nombres son los
 mismos en todos los idiomas:
 
@@ -64,13 +65,15 @@ frase.eventos[0].dinamica                         // .p
 frase.eventos[2].articulaciones == [.acento]      // true
 frase.eventos[2].description                      // "Mi4:2{f,acento}"
 Dinamica.f.velocidadMIDI                          // 96
+try Evento(leyendo: "Sol4:2{trino}").articulaciones == [.trino]   // true
 ```
 
 MusicXML, MEI, LilyPond, ABC y GUIDO las escriben, y MusicXML, MEI y ABC las leen al importar
 (`NotaDeLaPieza.dinamica` y `articulaciones`). En MIDI, la dinámica es la velocidad de cada nota
 (*mf* si no se marca ninguna), el acento y el marcato la refuerzan y el staccato acorta la nota.
-Una nota partida en varias ligadas las lleva solo en la primera. El pentagrama SVG todavía no
-las dibuja.
+Una nota partida en varias ligadas las lleva solo en la primera. Los ornamentos no cambian lo que
+suena en MIDI. El pentagrama SVG dibuja las articulaciones del lado de la cabeza (en los espacios,
+contrarias a la plica) y los ornamentos y el calderón encima, con los glifos de Bravura.
 
 ## Frases, forma y motivos
 
