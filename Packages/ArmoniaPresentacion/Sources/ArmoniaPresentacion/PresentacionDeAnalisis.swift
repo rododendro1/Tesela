@@ -3,6 +3,7 @@ import Armonia
 /// El análisis de una progresión tal como lo enseñan la app y la línea de comandos: en tramos (uno por
 /// tonalidad, con la modulación que lo abre), las cadencias y los ficheros para exportar.
 public struct AnalisisPresentado: Hashable, Sendable {
+    /// Un acorde del análisis, como se enseña en una fila.
     public struct Fila: Hashable, Sendable {
         /// El cifrado americano («Re7»).
         public let cifrado: String

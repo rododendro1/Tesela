@@ -12,6 +12,7 @@ import ArmoniaNucleo
 ///         error.motivo   // .duracionNoValida("3")
 ///     }
 public struct ErrorDeLecturaDePartitura: ErrorAlLeer {
+    /// Por qué no se pudo leer, con lo que hace falta para explicarlo en cada idioma (`explicacion(en:)`).
     public enum Motivo: MotivoDeLectura {
         case duracionNoValida(String)
         case compasNoValido(String)
@@ -23,6 +24,7 @@ public struct ErrorDeLecturaDePartitura: ErrorAlLeer {
     public let posicion: Int?
     public let motivo: Motivo
 
+    /// El error de leer `texto`, detenido en el carácter `posicion` (desde 0; `nil` si no es en un punto).
     public init(texto: String, posicion: Int?, motivo: Motivo) {
         self.texto = texto
         self.posicion = posicion

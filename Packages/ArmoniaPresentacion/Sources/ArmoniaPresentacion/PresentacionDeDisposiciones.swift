@@ -4,6 +4,7 @@ import Foundation
 /// Unos acordes con sus alturas escritas, dispuestos como en el piano o el jazz (drop 2, shell…): una fila por acorde,
 /// el pentagrama, lo que suena y los ficheros para exportar.
 public struct DisposicionesPresentadas: Hashable, Sendable {
+    /// Un acorde con sus disposiciones, como se enseña en una fila.
     public struct Fila: Hashable, Sendable {
         /// El cifrado del acorde, o «» si son las disposiciones de un solo acorde.
         public let cifrado: String

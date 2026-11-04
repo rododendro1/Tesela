@@ -121,6 +121,7 @@ public struct Polirritmia: Hashable, Sendable, Codable {
         public let primera: [Duracion]
         public let segunda: [Duracion]
 
+        /// Los ataques de las dos pulsaciones, desde el principio del ciclo.
         public init(primera: [Duracion], segunda: [Duracion]) {
             self.primera = primera
             self.segunda = segunda

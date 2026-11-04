@@ -79,6 +79,7 @@ public struct AjusteUIL: Hashable, Sendable {
     /// Si se refleja el teclado después de girarlo.
     public var espejo: Bool
 
+    /// Un teclado hexagonal escrito en UIL, girado `giros` doceavos de vuelta y en espejo si se pide.
     public init(texto: String = "2,7,5;R30M", giros: Int = 0, espejo: Bool = false) {
         self.texto = texto
         self.giros = giros
@@ -126,6 +127,7 @@ public struct AjusteCuadrado: Hashable, Sendable {
     /// `TecladoCuadrado.enTono(_:)`). Sin escala, no cambia nada.
     public var enTono: Bool
 
+    /// Un ajuste; por defecto, el teclado «1,5» sin girar ni reflejar, en la rejilla `.ventana`.
     public init(
         texto: String = "1,5", giros: Int = 0, espejo: Bool = false, rejilla: RejillaDeControlador = .ventana,
         origen: Int? = nil, enTono: Bool = false
@@ -179,6 +181,7 @@ public enum ContenidoDeRed: Hashable, Sendable {
     }
 }
 
+/// Lo que comparten los dibujos de las redes y los teclados, sin SwiftUI: las casillas y los SVG.
 public enum PresentacionDeRedes {
     /// Las casillas de los teclados: 12 columnas por 7 filas, con el Do4 hacia el centro.
     public static let casillasDelTeclado: [CoordenadaAxial] =

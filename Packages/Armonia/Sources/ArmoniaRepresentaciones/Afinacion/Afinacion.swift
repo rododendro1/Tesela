@@ -25,6 +25,7 @@ public struct TemperamentoRegular: Afinacion, Hashable {
     /// Frecuencia del La4 de referencia.
     public let frecuenciaDelLa4: Double
 
+    /// Un temperamento con todas las quintas de `quinta` cents y el La4 a esa frecuencia.
     public init(nombre: String, quinta: Double, frecuenciaDelLa4: Double = 440) {
         self.nombre = nombre
         self.quinta = quinta
@@ -203,6 +204,7 @@ public struct AfinacionJusta: Afinacion, Hashable {
         self.frecuenciaDeLaTonica = Altura(tonica, octava: 4).frecuencia(frecuenciaDelLa4: frecuenciaDelLa4)
     }
 
+    /// La afinación justa sobre esa tónica, con su altura en la octava 4 a esa frecuencia.
     public init(tonica: Nota, frecuenciaDeLaTonica: Double) {
         self.tonica = tonica
         self.frecuenciaDeLaTonica = frecuenciaDeLaTonica
@@ -223,6 +225,7 @@ public struct RazonDeFrecuencias: Hashable, Sendable, CustomStringConvertible {
     public let numerador: Double
     public let denominador: Double
 
+    /// La razón `numerador/denominador`: `RazonDeFrecuencias(3, 2)` es la quinta justa.
     public init(_ numerador: Double, _ denominador: Double) {
         self.numerador = numerador
         self.denominador = denominador

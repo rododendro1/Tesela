@@ -45,6 +45,8 @@ public struct FormatoUIL: Hashable, Sendable {
         case general, cero, igualdad
     }
 
+    /// El formato `L,G,D;R…` con esas medidas. Lanza `ErrorDeUIL` si los intervalos no cumplen `0 < L ≤ D` y
+    /// `G = L + D` (salvo el caso cero, `0,1,1`), si el giro no es un múltiplo de 30 o si `tonos` no es positivo.
     public init(menor: Int, mayor: Int, diferencia: Int, rotacion: Int = 0, espejo: Bool = false, tonos: Int = 12)
         throws
     {

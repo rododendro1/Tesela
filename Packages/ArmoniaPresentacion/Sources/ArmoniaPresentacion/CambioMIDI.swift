@@ -6,6 +6,7 @@ public struct CambioMIDI: Hashable, Sendable {
     public let midi: Int
     public let pulsada: Bool
 
+    /// Una tecla MIDI que se pulsa o se suelta.
     public init(midi: Int, pulsada: Bool) {
         self.midi = midi
         self.pulsada = pulsada

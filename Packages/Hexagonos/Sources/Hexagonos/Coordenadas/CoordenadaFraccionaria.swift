@@ -9,6 +9,7 @@ public struct CoordenadaFraccionaria: Hashable, Sendable, Codable {
     public var q: Double
     public var r: Double
 
+    /// El punto `(q, r)`, entre casillas.
     public init(q: Double, r: Double) {
         self.q = q
         self.r = r

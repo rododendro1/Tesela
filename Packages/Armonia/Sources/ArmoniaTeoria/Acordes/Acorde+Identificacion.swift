@@ -91,6 +91,7 @@ extension Acorde {
         candidatos(notas.sorted().map(\.nota))
     }
 
+    /// Los acordes que pueden formar esas alturas, de más a menos probable: los valores de ``candidatos(_:)``.
     public static func identificar(_ notas: [Altura]) -> [Acorde] {
         candidatos(notas).map(\.valor)
     }
@@ -234,18 +235,24 @@ extension Acorde {
         candidatos(clasesDeAltura: midi.sorted(), escala: escala)
     }
 
+    /// Los acordes que pueden formar esas clases de altura, de más a menos probable, escritos en la tonalidad si se da.
     public static func identificar(clasesDeAltura alturas: [Int], tonalidad: Tonalidad? = nil) -> [Acorde] {
         candidatos(clasesDeAltura: alturas, tonalidad: tonalidad).map(\.valor)
     }
 
+    /// Los acordes que pueden formar esas clases de altura, de más a menos probable, escritos en la escala.
     public static func identificar(clasesDeAltura alturas: [Int], escala: Escala) -> [Acorde] {
         candidatos(clasesDeAltura: alturas, escala: escala).map(\.valor)
     }
 
+    /// Los acordes que pueden formar esas notas MIDI (el bajo es la más grave), de más a menos probable, escritos en la
+    /// tonalidad si se da.
     public static func identificar(midi: [Int], tonalidad: Tonalidad? = nil) -> [Acorde] {
         candidatos(midi: midi, tonalidad: tonalidad).map(\.valor)
     }
 
+    /// Los acordes que pueden formar esas notas MIDI (el bajo es la más grave), de más a menos probable, escritos en la
+    /// escala.
     public static func identificar(midi: [Int], escala: Escala) -> [Acorde] {
         candidatos(midi: midi, escala: escala).map(\.valor)
     }

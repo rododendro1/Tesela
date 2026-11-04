@@ -55,6 +55,7 @@ public struct Escucha: Hashable, Sendable {
     /// sobre ella.
     public let tonica: Nota?
 
+    /// Lo que suena: esas notas, sin las que no son MIDI (0…127) ni duran algo, y la tónica si se sabe.
     public init(notas: [NotaMIDI], tonica: Nota? = nil) {
         self.notas = notas.filter { (0...127).contains($0.midi) && $0.duracion > 0 }
         self.tonica = tonica

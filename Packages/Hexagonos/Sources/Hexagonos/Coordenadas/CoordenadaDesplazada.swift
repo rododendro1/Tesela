@@ -44,6 +44,7 @@ public struct CoordenadaDesplazada: Hashable, Sendable, Codable {
     public var columna: Int
     public var fila: Int
 
+    /// La casilla de esa columna y esa fila.
     public init(columna: Int, fila: Int) {
         self.columna = columna
         self.fila = fila

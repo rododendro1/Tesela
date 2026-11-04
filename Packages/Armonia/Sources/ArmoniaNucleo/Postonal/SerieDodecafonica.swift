@@ -32,6 +32,8 @@ public struct FormaDeSerie: Hashable, Sendable, CustomStringConvertible, Codable
     /// 0…11. En P e I, la primera clase; en R y RI, la última (la primera de la P o la I que se lee al revés).
     public let indice: Int
 
+    /// La forma de ese tipo transportada `indice` semitonos (reducido módulo 12):
+    /// `FormaDeSerie(.retrogradoInversion, 3)` es RI3.
     public init(_ tipo: TipoDeFormaDeSerie, _ indice: Int) {
         self.tipo = tipo
         self.indice = modulo(indice, 12)
@@ -141,6 +143,7 @@ public struct SerieDodecafonica: Hashable, Sendable, CustomStringConvertible {
         public let forma: FormaDeSerie
         public let serie: SerieDodecafonica
 
+        /// Una forma con la serie que da.
         public init(forma: FormaDeSerie, serie: SerieDodecafonica) {
             self.forma = forma
             self.serie = serie
@@ -189,6 +192,7 @@ public struct SerieDodecafonica: Hashable, Sendable, CustomStringConvertible {
         public let primero: ConjuntoDeClases
         public let segundo: ConjuntoDeClases
 
+        /// Los dos hexacordos, el de las seis primeras clases y el de las seis últimas.
         public init(primero: ConjuntoDeClases, segundo: ConjuntoDeClases) {
             self.primero = primero
             self.segundo = segundo

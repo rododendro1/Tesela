@@ -22,6 +22,7 @@ public struct CoordenadaAxial: Hashable, Sendable, Codable {
     /// La fila (el eje r).
     public var r: Int
 
+    /// La casilla `(q, r)`; la tercera coordenada es `s = −q − r`.
     public init(q: Int, r: Int) {
         self.q = q
         self.r = r

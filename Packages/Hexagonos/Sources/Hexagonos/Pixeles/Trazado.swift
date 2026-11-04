@@ -8,6 +8,7 @@ public struct Punto: Hashable, Sendable, Codable {
     public var x: Double
     public var y: Double
 
+    /// El punto `(x, y)`.
     public init(x: Double, y: Double) {
         self.x = x
         self.y = y
@@ -31,6 +32,7 @@ public struct Rectangulo: Hashable, Sendable, Codable {
     public var minimo: Punto
     public var maximo: Punto
 
+    /// El rectángulo de `minimo` a `maximo`.
     public init(minimo: Punto, maximo: Punto) {
         self.minimo = minimo
         self.maximo = maximo
@@ -100,6 +102,8 @@ public struct Trazado: Hashable, Sendable, Codable {
     /// Dónde cae el centro de la casilla `(0, 0)`.
     public var origen: Punto
 
+    /// Un trazado con hexágonos de esa orientación, de `tamano.x` por `tamano.y` del centro a un vértice, y la casilla
+    /// `(0, 0)` en `origen`.
     public init(orientacion: Orientacion, tamano: Punto, origen: Punto = .cero) {
         self.orientacion = orientacion
         self.tamano = tamano

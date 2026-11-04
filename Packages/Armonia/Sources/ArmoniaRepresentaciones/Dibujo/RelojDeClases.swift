@@ -24,6 +24,8 @@ public struct RelojDeClases: Hashable, Sendable {
     public let tonica: Int?
     public let orden: Orden
 
+    /// Un reloj con esas clases de altura marcadas (reducidas módulo 12), la tónica resaltada si se da y las doce
+    /// clases en ese orden.
     public init(clases: [Int], tonica: Int? = nil, orden: Orden = .cromatico) {
         self.clases = Set(clases.map { modulo($0, 12) })
         self.tonica = tonica.map { modulo($0, 12) }

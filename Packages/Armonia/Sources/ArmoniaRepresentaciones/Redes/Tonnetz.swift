@@ -27,6 +27,7 @@ public struct PuntoDeLaRed: Hashable, Sendable, CustomStringConvertible {
     public let quintas: Int
     public let terceras: Int
 
+    /// El punto de la red a `quintas` quintas justas y `terceras` terceras mayores del origen.
     public init(quintas: Int, terceras: Int) {
         self.quintas = quintas
         self.terceras = terceras
@@ -75,6 +76,7 @@ public struct Tonnetz: Hashable, Sendable {
         /// Triángulo hacia arriba (mayor) o hacia abajo (menor).
         public let mayor: Bool
 
+        /// El triángulo de la tríada mayor (o menor, si `mayor` es `false`) sobre esa fundamental.
         public init(fundamental: PuntoDeLaRed, mayor: Bool) {
             self.fundamental = fundamental
             self.mayor = mayor
@@ -151,10 +153,12 @@ public struct Tonnetz: Hashable, Sendable {
         origen = .conjunto(conjunto)
     }
 
+    /// Las notas del acorde en el Tonnetz.
     public init(_ acorde: Acorde) {
         self.init(acorde.notas)
         origen = .acorde(acorde)
     }
+    /// Las notas de la escala en el Tonnetz.
     public init(_ escala: Escala) {
         self.init(escala.notas)
         origen = .escala(escala)

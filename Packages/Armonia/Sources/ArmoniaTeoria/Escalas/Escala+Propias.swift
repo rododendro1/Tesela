@@ -91,6 +91,7 @@ public struct EscalaVecina: Hashable, Sendable {
     /// A dónde va, como se escribe en la vecina.
     public let a: Nota
 
+    /// La escala vecina a la que se llega moviendo la nota `de` a `a`.
     public init(escala: Escala, de: Nota, a: Nota) {
         self.escala = escala
         self.de = de

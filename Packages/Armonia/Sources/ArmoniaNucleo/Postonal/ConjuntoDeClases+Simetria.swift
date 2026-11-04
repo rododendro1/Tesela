@@ -12,6 +12,7 @@ public struct EjeDeInversion: Hashable, Sendable, CustomStringConvertible, Compa
     /// La n de TnI, de 0 a 11.
     public let indice: Int
 
+    /// El eje de la inversión TnI con `n = indice` (de 0 a 11; los demás se reducen módulo 12).
     public init(indice: Int) { self.indice = modulo(indice, 12) }
 
     /// Los dos puntos por donde pasa, en semitonos desde Do: 0 y 6 para T0I, 0.5 y 6.5 para T1I, 5.5 y 11.5 para T11I.

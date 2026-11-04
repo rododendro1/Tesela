@@ -31,6 +31,7 @@ public struct ProgresionImportada: Hashable, Sendable {
     public let ritmo: RitmoArmonico
     public let titulo: String?
 
+    /// Una progresión importada con su ritmo armónico y, si lo tiene, el título de la pieza.
     public init(ritmo: RitmoArmonico, titulo: String? = nil) {
         self.ritmo = ritmo
         self.titulo = titulo

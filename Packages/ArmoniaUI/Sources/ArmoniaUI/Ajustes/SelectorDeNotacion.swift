@@ -14,6 +14,7 @@
         private let temperamento: Binding<String>?
         private let octavasEnSubindice: Binding<Bool>?
 
+        /// El selector que guarda la notación en `clave` y, si se dan, el temperamento y los subíndices.
         public init(
             clave: Binding<String>, temperamento: Binding<String>? = nil, octavasEnSubindice: Binding<Bool>? = nil
         ) {

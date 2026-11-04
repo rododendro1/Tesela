@@ -9,6 +9,7 @@ import Foundation
 ///     let fichero = FicheroParaExportar.midi(analisis.partitura().midi(), nombre: "Progresión")
 ///     fichero.nombreDeFichero   // "Progresión.mid"
 public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
+    /// Los formatos en que se exporta, cada uno con su extensión y su tipo.
     public enum Formato: String, Hashable, Sendable, CaseIterable {
         case musicXML
         case mei
@@ -78,6 +79,7 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
     public let formato: Formato
     public let datos: Data
 
+    /// Un fichero con ese nombre (sin extensión), en ese formato y con esos datos.
     public init(nombre: String, formato: Formato, datos: Data) {
         self.nombre = nombre
         self.formato = formato
@@ -103,26 +105,32 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
         FormatoDePartitura.allCases.map { partitura(exportar($0), formato: $0, nombre: nombre) }
     }
 
+    /// Un fichero MusicXML con ese texto.
     public static func musicXML(_ xml: String, nombre: String) -> FicheroParaExportar {
         FicheroParaExportar(nombre: nombre, formato: .musicXML, datos: Data(xml.utf8))
     }
 
+    /// Un fichero MEI con ese texto.
     public static func mei(_ mei: String, nombre: String) -> FicheroParaExportar {
         FicheroParaExportar(nombre: nombre, formato: .mei, datos: Data(mei.utf8))
     }
 
+    /// Un fichero de LilyPond con ese texto.
     public static func lilyPond(_ ly: String, nombre: String) -> FicheroParaExportar {
         FicheroParaExportar(nombre: nombre, formato: .lilyPond, datos: Data(ly.utf8))
     }
 
+    /// Un fichero ABC con ese texto.
     public static func abc(_ abc: String, nombre: String) -> FicheroParaExportar {
         FicheroParaExportar(nombre: nombre, formato: .abc, datos: Data(abc.utf8))
     }
 
+    /// Un fichero MIDI con esos datos.
     public static func midi(_ datos: Data, nombre: String) -> FicheroParaExportar {
         FicheroParaExportar(nombre: nombre, formato: .midi, datos: datos)
     }
 
+    /// Un dibujo SVG con ese texto.
     public static func svg(_ svg: String, nombre: String) -> FicheroParaExportar {
         FicheroParaExportar(nombre: nombre, formato: .svg, datos: Data(svg.utf8))
     }

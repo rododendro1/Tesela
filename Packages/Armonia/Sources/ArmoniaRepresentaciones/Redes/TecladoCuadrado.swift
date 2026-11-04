@@ -27,6 +27,7 @@ public struct CasillaCuadrada: Hashable, Sendable, CustomStringConvertible {
     public let columna: Int
     public let fila: Int
 
+    /// La casilla de esa columna (hacia la derecha) y esa fila (hacia arriba), contando desde el origen.
     public init(columna: Int, fila: Int) {
         self.columna = columna
         self.fila = fila

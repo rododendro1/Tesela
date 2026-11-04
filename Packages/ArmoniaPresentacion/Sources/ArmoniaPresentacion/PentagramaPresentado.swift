@@ -32,6 +32,7 @@ public struct PentagramaPresentado: Hashable, Sendable {
         self.init(svg: dibujo, descripcion: nombre + ": " + notas, nombre: "Pentagrama " + nombre)
     }
 
+    /// El pentagrama de un acorde en esa octava, con el nombre de cada nota debajo si `nombresDeLasNotas`.
     public init(
         _ acorde: Acorde, octava: Int = 4, notacion: Notacion = .espanolCompacto,
         nombresDeLasNotas: Bool = false

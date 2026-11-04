@@ -14,6 +14,7 @@ import ArmoniaNucleo
 /// forma de una cadencia: V–I es auténtica también en mitad de la progresión. La semicadencia, que
 /// es solo llegar a la dominante, se reconoce únicamente al final.
 public struct Cadencia: Hashable, Sendable, CustomStringConvertible {
+    /// Los tipos de cadencia que se reconocen.
     public enum Tipo: Hashable, Sendable, CaseIterable {
         /// De la dominante (V, V7, vii°, vii°7) a la tónica.
         case autentica

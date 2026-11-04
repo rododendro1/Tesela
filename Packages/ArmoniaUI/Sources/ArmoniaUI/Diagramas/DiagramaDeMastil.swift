@@ -25,6 +25,7 @@
         /// La marca que está sonando, que se pinta de otro color (ver `resaltando(_:)`).
         public private(set) var resaltada: PosicionEnElMastil?
 
+        /// Un mástil con esas marcas en `rango`, escritas con `ortografia` donde la haya.
         public init(
             mastil: Mastil, marcas: [PosicionEnElMastil] = [], rango: ClosedRange<Int> = 0...12, etiquetas: Bool = true,
             apagadas: Set<Int> = [], ortografia: [Int: Nota] = [:], notacion: Notacion = .espanolCompacto

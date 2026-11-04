@@ -49,10 +49,13 @@ public struct Evento: Hashable, Sendable {
             articulaciones: articulaciones)
     }
 
+    /// Una nota sola con esa duración, ligada a la siguiente si `ligada`, y apartada `desvio` cents de su altura
+    /// temperada.
     public init(_ nota: Altura, _ duracion: Duracion, ligada: Bool = false, desvio: Double = 0) {
         self.init(notas: [Nota(nota, desvio: desvio)], duracion: duracion, ligada: ligada)
     }
 
+    /// Un silencio de esa duración: `Evento.silencio(.negra)`.
     public static func silencio(_ duracion: Duracion) -> Evento { Evento(notas: [], duracion: duracion) }
 
     /// ¿Se aparta alguna nota de su nota temperada?
@@ -163,6 +166,7 @@ extension Evento {
         public let altura: Altura
         public let desvio: Double
 
+        /// La altura apartada `desvio` cents de la temperada, redondeado a la centésima.
         public init(_ altura: Altura, desvio: Double = 0) {
             self.altura = altura
             let redondeado = (desvio * 100).rounded() / 100

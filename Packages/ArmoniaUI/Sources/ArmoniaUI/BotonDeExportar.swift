@@ -22,6 +22,7 @@
             var id: String { fichero.id }
         }
 
+        /// Un botón que comparte esos ficheros.
         public init(_ ficheros: [FicheroParaExportar]) {
             self.ficheros = ficheros
         }

@@ -14,6 +14,7 @@ import ArmoniaNucleo
 ///         print(error)   // No se puede leer «Do7(b3)» (carácter 4): «b3» no es una tensión válida…
 ///     }
 public struct ErrorDeLecturaDeTeoria: ErrorAlLeer {
+    /// Por qué no se pudo leer, con lo que hace falta para explicarlo en cada idioma (`explicacion(en:)`).
     public enum Motivo: MotivoDeLectura {
         // Cifrados
         case simboloNoReconocido(String)
@@ -82,6 +83,7 @@ public struct ErrorDeLecturaDeTeoria: ErrorAlLeer {
     public let posicion: Int?
     public let motivo: Motivo
 
+    /// El error de leer `texto`, detenido en el carácter `posicion` (desde 0; `nil` si no es en un punto).
     public init(texto: String, posicion: Int?, motivo: Motivo) {
         self.texto = texto
         self.posicion = posicion

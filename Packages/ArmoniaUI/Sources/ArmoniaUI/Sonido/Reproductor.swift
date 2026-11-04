@@ -44,10 +44,12 @@
                 ?? .igual
         }
 
+        /// Toca lo que suena en el temperamento guardado en los ajustes, y para lo que sonaba.
         public func tocar(_ sonido: Escucha) {
             tocar(sonido, en: Reproductor.temperamentoGuardado)
         }
 
+        /// Toca lo que suena en ese temperamento, y para lo que sonaba.
         public func tocar(_ sonido: Escucha, en temperamento: AfinacionHistorica) {
             detener()
             guard !sonido.notas.isEmpty, preparar() else { return }
@@ -142,6 +144,7 @@
         @Environment(\.notacion) private var notacion
         @ObservedObject private var reproductor = Reproductor.compartido
 
+        /// Un botón que toca ese sonido, o lo para si ya suena.
         public init(_ sonido: Escucha) {
             self.sonido = sonido
         }

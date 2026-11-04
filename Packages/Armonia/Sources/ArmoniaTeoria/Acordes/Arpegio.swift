@@ -63,6 +63,7 @@ public struct Arpegio: Hashable, Sendable {
     /// Las notas cromáticas que llevan a cada nota, o `nil` si no las hay.
     public let aproximacion: Aproximacion?
 
+    /// El arpegio de un acorde con ese patrón, empezando por la nota `inicio` y abarcando `octavas`.
     public init(
         _ acorde: Acorde, patron: Patron = .ascendente, octavas: Int = 1, conOctava: Bool = true,
         inicio: Int = 0, tensiones: [Int] = [], aproximacion: Aproximacion? = nil

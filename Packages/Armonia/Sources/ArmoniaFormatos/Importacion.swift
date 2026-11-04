@@ -34,6 +34,7 @@ public struct NotaDeLaPieza: Hashable, Sendable {
     /// Sus articulaciones, sin repetir y en el orden de `Articulacion.allCases`.
     public let articulaciones: [Articulacion]
 
+    /// Una nota; `desvio` se redondea a la centésima de cent y las articulaciones se ordenan sin repetir.
     public init(
         altura: Altura, inicio: Duracion, duracion: Duracion, parte: Int = 0, desvio: Double = 0,
         dinamica: Dinamica? = nil, articulaciones: [Articulacion] = []
@@ -86,6 +87,7 @@ public struct PiezaImportada: Hashable, Sendable {
     /// cuentan para los acordes.
     public let notasDeAdorno: [NotaDeLaPieza]
 
+    /// Una pieza con esas notas, que se ordenan por su comienzo y, a igual comienzo, de grave a agudo.
     public init(
         titulo: String? = nil, tonalidad: Tonalidad? = nil, compas: Compas? = nil, tempo: Tempo? = nil,
         notas: [NotaDeLaPieza], notasDeAdorno: [NotaDeLaPieza] = []

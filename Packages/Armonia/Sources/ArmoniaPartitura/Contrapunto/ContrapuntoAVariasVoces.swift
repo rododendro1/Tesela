@@ -19,6 +19,7 @@ public struct FaltaEntreVoces: Hashable, Sendable, CustomStringConvertible {
     /// 0 es el cantus firmus; 1, 2… las demás voces, en el orden de `ContrapuntoAVariasVoces.voces`.
     public let voces: [Int]
 
+    /// Una falta entre esas voces (contadas desde 0, de la más grave a la más aguda), que se guardan ordenadas.
     public init(falta: FaltaDeContrapunto, voces: [Int]) {
         self.falta = falta
         self.voces = voces.sorted()

@@ -22,6 +22,7 @@ public struct Compas: Hashable, Sendable, CustomStringConvertible {
     /// [2, 2, 3] en 7/8. Suman `numerador`.
     public let agrupacion: [Int]
 
+    /// Cómo se dividen los pulsos del compás.
     public enum Tipo: Hashable, Sendable {
         /// Pulsos de una unidad, divisibles en dos (2/4, 3/4, 4/4, 2/2).
         case simple
