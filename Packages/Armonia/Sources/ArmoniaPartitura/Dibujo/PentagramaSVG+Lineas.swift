@@ -209,14 +209,12 @@ extension PentagramaSVG {
     static func svgDelSistema(
         _ porLinea: [[[PentagramaSVG]]], titulo: String, llave: Bool, tamano: Double
     ) -> String {
-        let pentagramas = porLinea.map(\.count).max() ?? 0
+        let pentagramas = porLinea.map(\.count).reduce(0, max)
         var claves: [[Clave]] = []
         for p in 0..<pentagramas {
-            let suyas = porLinea.flatMap { $0.indices.contains(p) ? $0[p] : [] }
-            guard let primera = suyas.first else {
-                claves.append([.sol])
-                continue
-            }
+            // Todas las líneas llevan todos los pentagramas, y la primera, una voz al menos en cada uno.
+            let suyas = porLinea.flatMap { $0[p] }
+            let primera = suyas[0]
             claves.append(
                 PentagramaSVG(
                     columnas: suyas.flatMap(\.columnas), armadura: primera.armadura, cifrado: nil, titulo: titulo,
@@ -286,14 +284,15 @@ extension PentagramaSVG {
     /// Los dibujos de las voces de un pentagrama, uno encima de otro.
     static func superpuestos(_ dibujos: [Dibujo]) -> Dibujo {
         guard dibujos.count > 1 else { return dibujos[0] }
-        let y = dibujos.map(\.y).min() ?? 0
-        let abajo = dibujos.map { $0.y + $0.alto }.max() ?? 0
+        let y = dibujos.map(\.y).reduce(.infinity, min)
+        let abajo = dibujos.map { $0.y + $0.alto }.reduce(-.infinity, max)
         return Dibujo(
-            x: dibujos.map(\.x).min() ?? 0, y: y, ancho: dibujos.map(\.ancho).max() ?? 0, alto: abajo - y,
+            x: dibujos.map(\.x).reduce(.infinity, min), y: y, ancho: dibujos.map(\.ancho).reduce(0, max),
+            alto: abajo - y,
             descripcion: dibujos.map(\.descripcion).joined(separator: "; "),
             contenido: dibujos.map(\.contenido).joined(separator: "\n"), colocadas: dibujos[0].colocadas,
             barras: dibujos[0].barras, desplazamiento: dibujos[0].desplazamiento,
-            final: dibujos.map(\.final).max() ?? 0)
+            final: dibujos.map(\.final).reduce(0, max))
     }
 
     /// Lo que se deja entre un pentagrama y el siguiente de un sistema, además de lo que suben y bajan.
@@ -313,9 +312,9 @@ extension PentagramaSVG {
             y += pentagrama.alto + separacionEntrePentagramas
         }
         let alto = y - separacionEntrePentagramas
-        let final = pentagramas.map(\.final).max() ?? 0
-        let arriba = lineasDeArriba.first ?? 0
-        let abajo = (lineasDeArriba.last ?? 0) + 4
+        let final = pentagramas.map(\.final).reduce(0, max)
+        let arriba = lineasDeArriba[0]
+        let abajo = lineasDeArriba[lineasDeArriba.count - 1] + 4
         // Las barras, entre un pentagrama y el siguiente (dentro de cada uno ya las dibuja él).
         let xs = [0, final] + barras.barras.map { $0 + barras.desplazamiento }
         var lineas: [String] = []
@@ -326,8 +325,8 @@ extension PentagramaSVG {
                         .con("y2", a).con("stroke-width", "0.16").vacio)
             }
         }
-        var x = pentagramas.map(\.x).min() ?? 0
-        var ancho = pentagramas.map(\.ancho).max() ?? 0
+        var x = pentagramas.map(\.x).reduce(.infinity, min)
+        var ancho = pentagramas.map(\.ancho).reduce(0, max)
         if llave {
             // La llave de Bravura, estirada de sus 4 espacios a lo que mide el sistema.
             let margen = PentagramaSVG.margenDeLaLlave
@@ -473,7 +472,7 @@ extension Voz {
                         opciones: suyas)
                 })
         }
-        let lineas = porPentagrama.flatMap { $0.map(\.count) }.max() ?? 0
+        let lineas = porPentagrama.flatMap { $0.map(\.count) }.reduce(0, max)
         let porLinea = (0..<lineas).map { l in
             porPentagrama.map { voces in voces.compactMap { $0.indices.contains(l) ? $0[l] : nil } }
         }

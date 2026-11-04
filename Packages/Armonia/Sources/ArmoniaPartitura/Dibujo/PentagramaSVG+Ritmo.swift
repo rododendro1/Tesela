@@ -454,8 +454,8 @@ extension PentagramaSVG {
             let digitos = String(numero).compactMap(\.wholeNumberValue).map { PentagramaSVG.cifrasDeGrupo[$0] }
             // Lo que miden juntas las cifras.
             let glifo = Glifo(
-                ancho: digitos.map(\.ancho).reduce(0, +), arriba: digitos.map(\.arriba).min() ?? 0,
-                abajo: digitos.map(\.abajo).max() ?? 0, trazado: "")
+                ancho: digitos.map(\.ancho).reduce(0, +), arriba: digitos.map(\.arriba).reduce(.infinity, min),
+                abajo: digitos.map(\.abajo).reduce(-.infinity, max), trazado: "")
             let baseDelNumero =
                 arribaElNumero
                 ? (extremos.min() ?? 0) - 0.6 - (PentagramaSVG.grosorDeLaBarra / 2)

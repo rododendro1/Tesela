@@ -131,4 +131,17 @@ import Testing
         let sola = Voz.svgSistema([[una], []], titulo: "Sola")
         #expect(contar("stroke-width=\"0.13\"", en: sola) == 5)
     }
+
+    /// Dos voces en el pentagrama de arriba y una más corta en el de abajo, partido en líneas: la de abajo se
+    /// acaba antes y las líneas que le faltan solo llevan el de arriba.
+    @Test func unSistemaConDosVocesYLineasDesiguales() throws {
+        let soprano = try Voz(leyendo: "Mi5:1 Re5:1 Do5:1")
+        let contralto = try Voz(leyendo: "Do5:1 Si4:1 Do5:1")
+        let bajo = try Voz(leyendo: "Do3:1")
+        var opciones = OpcionesDePentagrama()
+        opciones.compasesPorLinea = 1
+        let svg = Voz.svgSistema([[soprano, contralto], [bajo]], titulo: "Desigual", opciones: opciones)
+        #expect(veces(GlifosSMuFL.redonda, en: svg) == 7)
+        #expect(contar("stroke-width=\"0.13\"", en: svg) == 20)
+    }
 }
