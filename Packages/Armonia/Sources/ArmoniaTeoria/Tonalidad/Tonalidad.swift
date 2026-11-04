@@ -7,7 +7,10 @@ import ArmoniaNucleo
 // `Tonalidad` es el marco tonal. La diferencia importa sobre todo en menor: La menor tiene la
 // armadura de la menor natural, pero escribe y armoniza con la sensible Sol♯ (V mayor, vii°).
 
+/// Una tonalidad: una tónica y un modo, mayor o menor (Re mayor, Fa♯ menor), con su armadura, sus grados, sus
+/// funciones y su armonía.
 public struct Tonalidad: Hashable, Sendable {
+    /// Mayor o menor. Para los demás modos (dórico, frigio…), ``Escala``.
     public enum Modo: Hashable, Sendable, CaseIterable {
         case mayor
         case menor
@@ -16,6 +19,7 @@ public struct Tonalidad: Hashable, Sendable {
     public let tonica: Nota
     public let modo: Modo
 
+    /// La tonalidad de esa tónica y ese modo: `Tonalidad(.fa, .menor)`.
     public init(_ tonica: Nota, _ modo: Modo = .mayor) {
         self.tonica = tonica
         self.modo = modo
@@ -130,6 +134,7 @@ public struct Tonalidad: Hashable, Sendable {
         return base.acorde(grado: grado, cuatriada: cuatriada) ?? Acorde(base.grado(grado), .mayor)
     }
 
+    /// Los acordes de los siete grados, en tríadas o, con `cuatriadas`, con séptima: en Do, Do Rem Mim Fa Sol Lam Si°.
     public func armonizar(cuatriadas: Bool = false) -> [Acorde] {
         (1...7).map { acorde(grado: $0, cuatriada: cuatriadas) }
     }
@@ -143,6 +148,7 @@ public struct Tonalidad: Hashable, Sendable {
         return (delGrado.tipo.esMenor ? numeral.lowercased() : numeral) + delGrado.tipo.sufijoRomano
     }
 
+    /// Los cifrados romanos de los siete grados, en tríadas o con séptima: en Do, I ii iii IV V vi vii°.
     public func cifradosRomanos(cuatriadas: Bool = false) -> [String] {
         (1...7).map { cifradoRomano(grado: $0, cuatriada: cuatriadas) }
     }
@@ -205,12 +211,6 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
             }
         }
         return nil
-    }
-
-    /// Como `init(leyendo:)`, devolviendo `nil` en lugar de un error.
-    public init?(texto: String) {
-        guard let tonalidad = try? Tonalidad(leyendo: texto) else { return nil }
-        self = tonalidad
     }
 
     public func texto(en notacion: Notacion) -> String { nombre(en: notacion) }

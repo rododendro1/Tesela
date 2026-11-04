@@ -6,7 +6,7 @@ import Foundation
 // cada idioma, transposición, clases de altura) se declara aquí una sola vez:
 //
 //  · RepresentableComoTexto: se lee con `init(leyendo:)` y se escribe con `texto(en:)`.
-//    A cambio recibe `init?(_:)`, el literal de texto y Codable.
+//    A cambio recibe `init?(texto:)`, el literal de texto y Codable.
 //  · Nombrable: nombre para personas en la notación que se pida (`nombre(en:)`).
 //  · Transponible: `transponer(_:)`, y con ello los operadores + y − y las secuencias.
 //  · ConClasesDeAltura: `conjuntoDeClases`, y con ello número de Forte y vector interválico.
