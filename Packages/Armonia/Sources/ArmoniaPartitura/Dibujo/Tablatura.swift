@@ -7,10 +7,10 @@
 ///     let tablatura = Tablatura(cuerdas: 6, notas: [
 ///         0: [.init(cuerda: 4, traste: 3)], 1: [.init(cuerda: 3, traste: 2)], 2: [.init(cuerda: 2, traste: 0)],
 ///     ])
-public struct Tablatura: Hashable, Sendable {
+public struct Tablatura: Hashable, Sendable, Codable {
     /// Una nota en la tablatura: la cuerda, contada desde la línea de arriba (la cuerda más aguda, la 1.ª de la
     /// guitarra, es la 0), y el traste (0, al aire).
-    public struct Pulsacion: Hashable, Sendable {
+    public struct Pulsacion: Hashable, Sendable, Codable {
         public let cuerda: Int
         public let traste: Int
 
