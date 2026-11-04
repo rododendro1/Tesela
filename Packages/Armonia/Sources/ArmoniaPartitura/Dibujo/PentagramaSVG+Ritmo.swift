@@ -22,6 +22,8 @@ extension PentagramaSVG {
         let tresillos: [[Int]]
         /// Las columnas de la nota que está sonando (más de una si se divide en notas ligadas).
         let resaltadas: Set<Int>
+        /// Dónde empieza cada columna, desde el principio de la voz.
+        var inicios: [Duracion] = []
 
         /// El ritmo de una voz y sus columnas (las alturas de cada evento de su grafía; un silencio, ninguna).
         /// `resaltada` cuenta las notas que se oyen: sin los silencios ni las notas a las que se liga otra.
@@ -111,9 +113,14 @@ extension PentagramaSVG {
                 }
             }
 
-            let ritmo = Ritmo(
+            var ritmo = Ritmo(
                 figuras: figuras, ligadas: eventos.map(\.ligada), compas: voz.compas, finesDeCompas: finesDeCompas,
                 vigas: vigas, tresillos: tresillos, resaltadas: resaltadas)
+            var momento = Duracion.cero
+            for evento in eventos {
+                ritmo.inicios.append(momento)
+                momento = momento + evento.duracion
+            }
             // La primera columna de cada evento de la voz: la que empieza cuando él.
             var primeras: [Int] = []
             var inicioDelEvento = Duracion.cero
@@ -232,6 +239,7 @@ extension PentagramaSVG {
         }
         var plicas = [[Plica?]](repeating: [Plica?](repeating: nil, count: pentagramas), count: colocadas.count)
         func haciaArriba(_ lugares: [Int]) -> Bool {
+            if let plicasHaciaArriba { return plicasHaciaArriba }
             guard let maximo = lugares.max(), let minimo = lugares.min() else { return true }
             return maximo - 4 < 4 - minimo
         }
@@ -360,17 +368,22 @@ extension PentagramaSVG {
         }
         trazos += barrasSVG
 
-        // Las ligaduras: de cada nota a la misma de la columna siguiente, del lado contrario a la plica.
-        for columna in colocadas.indices.dropLast() where ritmo.ligadas[columna] {
-            let siguiente = colocadas[columna + 1]
+        // Las ligaduras: de cada nota a la misma de la columna siguiente, del lado contrario a la plica. La última
+        // columna de una línea que sigue en la siguiente lleva media ligadura, hasta el final.
+        let ultimaLigada = !conBarraFinal && ritmo.ligadas.last == true ? colocadas.indices.last : nil
+        for columna in colocadas.indices where ritmo.ligadas[columna] {
+            let siguiente = colocadas.indices.contains(columna + 1) ? colocadas[columna + 1] : nil
+            guard siguiente != nil || columna == ultimaLigada else { continue }
             for k in 0..<pentagramas {
                 let actual = colocadas[columna]
                 let arribaLaPlica = plicas[columna][k]?.arriba ?? haciaArriba(actual.lugares[k])
-                for (lugar, midi) in zip(actual.lugares[k], actual.midis[k]) where siguiente.midis[k].contains(midi) {
+                for (lugar, midi) in zip(actual.lugares[k], actual.midis[k])
+                where siguiente.map({ $0.midis[k].contains(midi) }) ?? true {
                     let lado = arribaLaPlica ? 1.0 : -1.0
                     let y0 = y(lugar, k) + lado * 0.45
                     let x1 = actual.x + actual.anchoDeLaCabeza * 0.75
-                    let x2 = siguiente.x + siguiente.anchoDeLaCabeza * 0.25
+                    let hastaElFinal = actual.x + actual.anchoDeLaCabeza + 1.6
+                    let x2 = siguiente.map { $0.x + $0.anchoDeLaCabeza * 0.25 } ?? hastaElFinal
                     let medio = (x1 + x2) / 2
                     let curva = lado * min(1.0, 0.35 + (x2 - x1) * 0.08)
                     trazos.append(
@@ -448,6 +461,9 @@ extension Voz {
     /// las cifras del bajo continuo («6», «4»); `digitos`, encima, el dedo
     /// de cada nota (de la grave a la aguda; 0, ninguno), y `tablatura`, debajo del pentagrama, la cuerda y el traste.
     /// Una nota que se parte y se liga lleva todo eso solo en su primera parte.
+    ///
+    /// Con `opciones.compasesPorLinea`, una voz larga va en varias líneas del mismo ancho; con
+    /// `svgPentagrama(junto:titulo:acordes:opciones:)`, junto a otra voz en el mismo pentagrama.
     public func svgPentagrama(
         titulo: String, acordes: [Int: Acorde] = [:], grados: [Int: String] = [:],
         bajoCifrado: [Int: [String]] = [:], digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil,
@@ -472,12 +488,40 @@ extension Voz {
 
     /// Como el público, y con `tonica`, la nota desde la que se cuentan los intervalos si no hay acordes (la de la
     /// escala de una secuencia); si es `nil`, la de la armadura `.tonalidad`. `armadura`, si se da, manda sobre la de
-    /// `opciones`.
+    /// `opciones`. Con `opciones.compasesPorLinea`, en varias líneas (`PentagramaSVG+Lineas.swift`).
     func svgPentagrama(
         titulo: String, acordes: [Int: Acorde], grados: [Int: String], bajoCifrado: [Int: [String]],
         digitos: [Int: [Int]], tablatura: Tablatura?, tonica: Nota?, armadura: [Nota]?,
         opciones: OpcionesDePentagrama, microtonos: [Int: [PentagramaSVG.Microtono?]]? = nil
     ) -> String {
+        let anotaciones = AnotacionesDelPentagrama(
+            acordes: acordes, grados: grados, bajoCifrado: bajoCifrado, digitos: digitos, tablatura: tablatura,
+            microtonos: microtonos)
+        let lineas = dibujosPorLinea(
+            titulo: titulo, anotaciones: anotaciones, tonica: tonica, armadura: armadura, opciones: opciones)
+        return PentagramaSVG.svg(lineas.map { [$0] }, titulo: titulo, tamano: opciones.tamano)
+    }
+
+    /// Lo que se escribe con las notas de una voz, por evento: los acordes, los grados, el bajo cifrado, los dedos,
+    /// la tablatura y los microtonos (si son `nil`, los de los eventos).
+    struct AnotacionesDelPentagrama {
+        var acordes: [Int: Acorde] = [:]
+        var grados: [Int: String] = [:]
+        var bajoCifrado: [Int: [String]] = [:]
+        var digitos: [Int: [Int]] = [:]
+        var tablatura: Tablatura?
+        var microtonos: [Int: [PentagramaSVG.Microtono?]]?
+        /// El acorde que suena al empezar, si no hay ninguno en el primer evento (en una línea de una voz larga).
+        var acordeVigente: Acorde?
+    }
+
+    /// El dibujo de la voz en una línea.
+    func pentagrama(
+        titulo: String, anotaciones: AnotacionesDelPentagrama, tonica: Nota?, armadura: [Nota]?,
+        opciones: OpcionesDePentagrama
+    ) -> PentagramaSVG {
+        let (acordes, grados, bajoCifrado) = (anotaciones.acordes, anotaciones.grados, anotaciones.bajoCifrado)
+        let (digitos, tablatura, microtonos) = (anotaciones.digitos, anotaciones.tablatura, anotaciones.microtonos)
         let (ritmo, columnas, primeras) = PentagramaSVG.Ritmo.de(self, resaltada: opciones.resaltada)
         var cifrados: [Int: String] = [:]
         var referencias: [Int: PentagramaSVG.Referencia] = [:]
@@ -486,6 +530,7 @@ extension Voz {
         } else if case .tonalidad(let tonalidad) = opciones.armadura {
             referencias[0] = PentagramaSVG.Referencia(tonalidad.tonica)
         }
+        if let vigente = anotaciones.acordeVigente { referencias[0] = PentagramaSVG.Referencia(vigente) }
         for (evento, acorde) in acordes where primeras.indices.contains(evento) {
             cifrados[primeras[evento]] = acorde.cifrado(en: opciones.notacion)
             referencias[primeras[evento]] = PentagramaSVG.Referencia(acorde)
@@ -512,6 +557,6 @@ extension Voz {
                 return porEvento[evento] ?? []
             }
         }
-        return dibujo.svg()
+        return dibujo
     }
 }

@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+### Líneas y dos voces en el pentagrama
+
+- **`OpcionesDePentagrama.compasesPorLinea`**: `Voz.svgPentagrama(titulo:…)` parte una voz larga en líneas del mismo
+  ancho, una debajo de otra, cada una con su clave y su armadura, la cifra del compás en la primera y la barra final
+  en la última. Las notas que pasan de una línea a otra se ligan, y los acordes, grados, dedos, tablatura, microtonos
+  y la nota resaltada van en la línea de su evento.
+- **`Voz.svgPentagrama(junto:titulo:acordes:opciones:)`**: dos voces en el mismo pentagrama, la primera con las
+  plicas hacia arriba y la otra hacia abajo, alineadas por lo que suena a la vez, con los silencios de cada una por
+  encima o por debajo. También en líneas.
+
 ### Microtonos en el pentagrama con ritmo
 
 - `Voz.svgPentagrama(titulo:…)` dibuja los microtonos de los eventos (`Evento.desvios`) con los glifos de Bravura,

@@ -283,6 +283,30 @@ voz.svgPentagrama(titulo: "Do7").contains("<title>Si♭₄</title>")   // true
 - `OpcionesDePentagrama.resaltada` cuenta las notas que se oyen (sin silencios ni notas ligadas a la anterior), como
   los pasos de lo que suena.
 
+### Líneas y dos voces
+
+Una voz larga se parte en líneas con `OpcionesDePentagrama.compasesPorLinea`: cada línea lleva los compases que le
+tocan (la primera, también la anacrusa), su clave y su armadura; la cifra del compás va solo en la primera y la barra
+final, en la última. Todas miden lo que la más ancha (la última no, si es mucho más corta), y una nota que pasa de una
+línea a otra se divide y se liga. Los acordes, los grados, los dedos y la tablatura van con su nota.
+
+`Voz.svgPentagrama(junto:titulo:acordes:opciones:)` pone dos voces en el mismo pentagrama: la primera con las plicas
+hacia arriba y la otra hacia abajo, lo que suena a la vez en la misma vertical y los silencios de cada una encima o
+debajo. Las dos se parten igual en líneas.
+
+```swift
+var porLineas = OpcionesDePentagrama()
+porLineas.compasesPorLinea = 4
+let larga = try Voz(leyendo: Array(repeating: "Do4:4 Mi4:4 Sol4:2", count: 8).joined(separator: " "))
+larga.svgPentagrama(titulo: "Ocho compases", opciones: porLineas) != larga.svgPentagrama(titulo: "Ocho compases")   // true
+let soprano = try Voz(leyendo: "Mi5:4 Re5:4 Do5:2")
+let contralto = try Voz(leyendo: "Do5:4 Si4:4 Sol4:2")
+soprano.svgPentagrama(junto: contralto, titulo: "Dos voces").contains("<title>Sol₄</title>")   // true
+```
+
+Para más voces o varios pentagramas a la vez, una partitura en MEI o MusicXML (``FormatoDePartitura``) y un motor como
+Verovio.
+
 ### Cifrados, intervalos, semitonos y tónica
 
 Alrededor de las notas se puede escribir lo que ayuda a estudiarlas:

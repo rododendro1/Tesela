@@ -100,6 +100,9 @@ public struct OpcionesDePentagrama {
     public var resaltada: Int?
     /// El color de la columna resaltada (cualquier color CSS).
     public var colorResaltado = "#E8590C"
+    /// En una voz, cuántos compases van en cada línea (sin contar la anacrusa): con más, la voz se parte en líneas
+    /// del mismo ancho, una debajo de otra, cada una con su clave y su armadura. `nil`, todo en una línea.
+    public var compasesPorLinea: Int?
 
     public init(
         clave: Clave? = nil, armadura: Armadura = .automatica, pentagramas: Pentagramas = .automatico,
