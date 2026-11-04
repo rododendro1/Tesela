@@ -81,6 +81,9 @@ extension TextosDePartitura {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: { texto in "«\(texto)» — не длительность: ожидалась нота (1, 2, 4, 8, 16…, с точкой: 4.) или доля целой (3/8, 1/12)" },
         compasNoValido: { texto in "«\(texto)» — не размер: ожидалось числитель/знаменатель, где знаменатель — степень двойки (4/4, 6/8, 7/8), C или ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "контрапункт должен длиться столько же, сколько cantus firmus: \(redondas) целых, по одной на ноту" }
+        contrapuntoDeOtraDuracion: { redondas in "контрапункт должен длиться столько же, сколько cantus firmus: \(redondas) целых, по одной на ноту" },
+        figuraSinDuracion: "длительность арпеджио должна быть больше нуля",
+        duracionesPorAcorde: { acordes, duraciones in "нужна одна длительность на аккорд: аккордов \(acordes), длительностей \(duraciones)" },
+        duracionNoPositiva: { n in "длительность аккорда \(n) должна быть положительной" }
     )
 }

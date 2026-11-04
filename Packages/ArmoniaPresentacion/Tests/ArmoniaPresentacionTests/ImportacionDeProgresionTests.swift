@@ -54,7 +54,7 @@ import Testing
 
     private func importada() throws -> ProgresionImportada {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
-        let datos = analisis.partitura(
+        let datos = try analisis.partitura(
             duraciones: duraciones, encabezado: Encabezado(titulo: "Coral", tempo: Tempo(90))
         ).midi()
         return try ImportacionDeProgresion.leer(datos)

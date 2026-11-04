@@ -41,11 +41,15 @@ public enum PresentacionDeArpegios {
         swing: Bool = false, notacion: Notacion
     ) -> ArpegioPresentado? {
         guard !acordes.isEmpty else { return nil }
+        // Con el ritmo, si da una duración por acorde; si no, cada acorde en una blanca.
+        let conRitmo = ritmo.flatMap {
+            try? Voz(
+                arpegiando: acordes, duraciones: $0.duraciones, patron: patron, figura: figura, compas: $0.compas,
+                enlazados: enlazados)
+        }
         let voz: Voz
-        if let ritmo, ritmo.duraciones.count == acordes.count {
-            voz = Voz(
-                arpegiando: acordes, duraciones: ritmo.duraciones, patron: patron, figura: figura,
-                compas: ritmo.compas, enlazados: enlazados)
+        if let conRitmo {
+            voz = conRitmo
         } else {
             voz = Voz(arpegiando: acordes, patron: patron, figura: figura, porAcorde: .blanca, enlazados: enlazados)
         }

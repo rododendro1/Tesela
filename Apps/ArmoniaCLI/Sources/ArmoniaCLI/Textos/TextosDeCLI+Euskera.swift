@@ -90,7 +90,7 @@ extension TextosDeCLI {
         descripcionMusicxmlCoral: "lau ahotseko korala MusicXMLn",
         sintaxisMusicxmlAcordes: "musicxml acordes <zifratuak> [aukerak]",
         descripcionMusicxmlAcordes: "progresioa zifratu eta analisiarekin",
-        notasMusicxmlAcordes: "aukerak: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (edo --tempo 60 4.), --titulo Nire\nkorala, --duracion 2 (akorde bakoitzaren iraupena; bestela\nbeltza koralean eta zuria akordeetan), --cifrados eta --analisis\n(koralean: zifratu amerikarra goian, erromatarra eta funtzioa\nbehean)",
+        notasMusicxmlAcordes: "aukerak: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (edo --tempo 60 4.), --titulo Nire\nkorala, --duracion 2 (akorde bakoitzaren iraupena; bestela\nbeltza), --cifrados eta --analisis (koralean: zifratu amerikarra\ngoian, erromatarra eta funtzioa behean)",
         sintaxisMusicxmlArpegios: "musicxml arpegios <zifratuak> [aukerak]",
         descripcionMusicxmlArpegios: "akordeak arpegiatuta, notaz nota",
         notasMusicxmlArpegios: "aukerak: --patron alberti (edo ascendente, descendente, ida y\nvuelta), --figura 16 (nota bakoitzaren iraupena; bestela\nkortxea), --duracion 1 (akorde bakoitzaren iraupena: eredua\nerrepikatzen da bete arte) eta «acordes»en gainerakoak\n--enlazar: arpegio bakoitza aurrekoaren azken notatik\nhurbilen dagoen notan hasten da",

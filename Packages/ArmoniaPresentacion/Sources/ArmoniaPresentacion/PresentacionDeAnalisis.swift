@@ -132,26 +132,20 @@ public enum PresentacionDeAnalisis {
         let nombre = "Progresión"
         let acordes = analisis.acordes.map(\.acorde)
         // El análisis da un acorde por cada uno leído; si no, no se puede seguir el ritmo.
-        let ritmo = ritmo.flatMap { $0.duraciones.count == acordes.count ? $0 : nil }
-        let ficheros: [FicheroParaExportar]
+        let partitura: Partitura
         let sonido: Escucha
-        if let ritmo {
-            let d = ritmo.duraciones
-            let compas = ritmo.compas
-            let tempo = ritmo.tempo
-            ficheros = FicheroParaExportar.partituras(nombre: nombre) { formato in
-                analisis.partitura(
-                    duraciones: d, compas: compas, encabezado: Encabezado(titulo: nombre, tempo: tempo),
-                    notacion: notacion
-                ).exportar(como: formato)
-            }
-            sonido = Escucha.acordes(acordes, duraciones: d, tempo: tempo ?? Escucha.tempo)
+        if let ritmo,
+            let conRitmo = try? analisis.partitura(
+                duraciones: ritmo.duraciones, compas: ritmo.compas,
+                encabezado: Encabezado(titulo: nombre, tempo: ritmo.tempo), notacion: notacion)
+        {
+            partitura = conRitmo
+            sonido = Escucha.acordes(acordes, duraciones: ritmo.duraciones, tempo: ritmo.tempo ?? Escucha.tempo)
         } else {
-            ficheros = FicheroParaExportar.partituras(nombre: nombre) { formato in
-                analisis.partitura(encabezado: Encabezado(titulo: nombre), notacion: notacion).exportar(como: formato)
-            }
+            partitura = analisis.partitura(encabezado: Encabezado(titulo: nombre), notacion: notacion)
             sonido = Escucha.acordes(acordes)
         }
+        let ficheros = FicheroParaExportar.partituras(nombre: nombre) { partitura.exportar(como: $0) }
         return AnalisisPresentado(
             titulo: titulo,
             tramos: tramos,

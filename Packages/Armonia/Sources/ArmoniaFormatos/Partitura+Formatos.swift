@@ -128,7 +128,7 @@ extension Coral {
 }
 
 extension AnalisisArmonico {
-    /// La progresión en dos pentagramas, cada acorde de `duracion` (blancas, si no se pide otra; el último,
+    /// La progresión en dos pentagramas, cada acorde de `duracion` (negras, si no se pide otra; el último,
     /// alargado hasta la barra): los acordes en posición cerrada en clave de sol, con su cifrado americano encima si
     /// `cifrados`, y el bajo en clave de fa, con el cifrado romano y la función debajo si `analisis`, y la tonalidad
     /// al principio. La armadura es la de la tonalidad del análisis; la parte se llama «Piano» si el encabezado no
@@ -137,23 +137,37 @@ extension AnalisisArmonico {
     ///
     ///     let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
     ///     let xml = analisis.partitura(encabezado: Encabezado(titulo: "Progresión")).musicXML()
+    ///
+    /// Detiene el programa si `duracion` no es positiva, como `Duracion(_:_:)` con un denominador 0: con duraciones
+    /// de fuera, `partitura(duraciones:…)`, que lanza un error.
     public func partitura(
-        duracion: Duracion = .blanca, compas: Compas = .compasillo, encabezado: Encabezado = Encabezado(),
+        duracion: Duracion = .negra, compas: Compas = .compasillo, encabezado: Encabezado = Encabezado(),
         cifrados: Bool = true, analisis: Bool = true, notacion: Notacion = .espanolCompacto
     ) -> Partitura {
-        partitura(
-            duraciones: Array(repeating: duracion, count: acordes.count), compas: compas, encabezado: encabezado,
+        precondition(duracion > .cero, "cada acorde tiene que durar algo")
+        return conDuraciones(
+            Array(repeating: duracion, count: acordes.count), compas: compas, encabezado: encabezado,
             cifrados: cifrados, analisis: analisis, notacion: notacion)
     }
 
-    /// Lo mismo, con lo que dura cada acorde (el ritmo armónico de una pieza importada, por ejemplo).
-    ///
-    /// Detiene el programa si no hay una duración positiva por acorde.
+    /// Lo mismo, con lo que dura cada acorde (el ritmo armónico de una pieza importada, por ejemplo). Lanza
+    /// `ErrorDePartitura` si no hay una duración por acorde (`.duracionesPorAcorde`) o si alguna no es positiva
+    /// (`.duracionNoPositiva`).
     public func partitura(
         duraciones: [Duracion], compas: Compas = .compasillo, encabezado: Encabezado = Encabezado(),
         cifrados: Bool = true, analisis: Bool = true, notacion: Notacion = .espanolCompacto
+    ) throws(ErrorDePartitura) -> Partitura {
+        try ErrorDePartitura.comprobar(duraciones, acordes: acordes.count)
+        return conDuraciones(
+            duraciones, compas: compas, encabezado: encabezado, cifrados: cifrados, analisis: analisis,
+            notacion: notacion)
+    }
+
+    /// La partitura, con duraciones ya comprobadas.
+    private func conDuraciones(
+        _ duraciones: [Duracion], compas: Compas, encabezado: Encabezado, cifrados: Bool, analisis: Bool,
+        notacion: Notacion
     ) -> Partitura {
-        Exportacion.comprobar(duraciones, acordes: acordes.count)
         let (superior, grave) = Exportacion.progresion(
             acordes.map(\.acorde), duraciones: Exportacion.hastaLaBarra(duraciones, compas))
         let anotado = Exportacion.anotaciones(

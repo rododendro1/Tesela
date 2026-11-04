@@ -146,7 +146,7 @@ extension LineaDeComandos {
                 return uso(.soloParaMelodia(opcion), notacion)
             }
             if !marcas.isEmpty { return uso(.acordesConCifradosYAnalisis, notacion) }
-            let duracion = try opciones["duracion"].map { try Duracion(leyendo: $0) } ?? .blanca
+            let duracion = try opciones["duracion"].map { try Duracion(leyendo: $0) } ?? .negra
             guard let leida = try progresion() else {
                 return uso(.faltanAcordesDeLaProgresion(orden: orden), notacion)
             }
@@ -154,7 +154,7 @@ extension LineaDeComandos {
             let duraciones = ritmo ?? Array(repeating: duracion, count: analisis.acordes.count)
             return salida(
                 formato,
-                analisis.partitura(
+                try analisis.partitura(
                     duraciones: duraciones, compas: compas,
                     encabezado: Encabezado(titulo: titulo, tempo: tempo, instrumento: instrumento), notacion: notacion
                 ).exportar(como: formato))
@@ -169,9 +169,6 @@ extension LineaDeComandos {
                 patron = elegido
             }
             let figura = try opciones["figura"].map { try Duracion(leyendo: $0) } ?? .corchea
-            if figura <= .cero, let texto = opciones["figura"] { // "0/4"
-                throw ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .duracionNoValida(texto))
-            }
             let porAcorde = try opciones["duracion"].map { try Duracion(leyendo: $0) }
             // La tonalidad, la dada o la que mejor explica los acordes, pone la armadura.
             guard let leida = try progresion() else {
@@ -180,7 +177,7 @@ extension LineaDeComandos {
             let (analisis, ritmo) = leida
             let voz: Voz
             if let ritmo {
-                voz = Voz(
+                voz = try Voz(
                     arpegiando: analisis.acordes.map(\.acorde), duraciones: ritmo, patron: patron, figura: figura,
                     compas: compas, enlazados: enlazados)
             } else {

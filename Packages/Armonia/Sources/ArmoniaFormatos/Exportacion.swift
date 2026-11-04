@@ -75,12 +75,6 @@ package enum Exportacion {
         }
     }
 
-    /// Comprueba que hay una duración positiva por acorde.
-    package static func comprobar(_ duraciones: [Duracion], acordes: Int) {
-        precondition(duraciones.count == acordes, "hace falta una duración por acorde")
-        precondition(duraciones.allSatisfy { $0 > .cero }, "cada acorde tiene que durar algo")
-    }
-
     /// La figura con que se escribe una duración y, si es de un grupo irregular, la proporción:
     /// 1/12 → corchea de tresillo (3 en el tiempo de 2). Sin figura si no se puede escribir así.
     package static func figura(de duracion: Duracion) -> (

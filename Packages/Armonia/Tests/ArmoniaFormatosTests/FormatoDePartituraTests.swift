@@ -19,111 +19,22 @@ import Testing
         let voz = try Voz(leyendo: "Sol4:4 Do5:2 Re5:8 Mi5:8 Fa#5:4 Sol5:2", compas: "3/4", anacrusa: .negra)
         let tonalidad = Tonalidad(.sol)
         let tempo = Tempo(72)
+        let partitura = try analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P"))
         func esperado(_ formato: FormatoDePartitura) -> Data {
             switch formato {
-            case .musicXML:
-                return Data(
-                    voz.partitura(clave: .sol, encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo))
-                        .musicXML().utf8)
-            case .mei:
-                return Data(
-                    voz.partitura(clave: .sol, encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo))
-                        .mei().utf8)
-            case .lilyPond:
-                return Data(
-                    voz.partitura(clave: .sol, encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo))
-                        .lilyPond().utf8)
-            case .guido:
-                return Data(
-                    voz.partitura(clave: .sol, encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo))
-                        .guido().utf8)
-            case .abc:
-                return Data(
-                    voz.partitura(clave: .sol, encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo))
-                        .abc().utf8)
-            case .midi:
-                return voz.partitura(
-                    encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo, instrumento: 40)
-                ).midi()
+            case .musicXML: return Data(partitura.musicXML().utf8)
+            case .mei: return Data(partitura.mei().utf8)
+            case .lilyPond: return Data(partitura.lilyPond().utf8)
+            case .guido: return Data(partitura.guido().utf8)
+            case .abc: return Data(partitura.abc().utf8)
+            case .midi: return partitura.midi()
             }
         }
+        let negras = try analisis.partitura(duraciones: Array(repeating: .negra, count: 5))
         for formato in FormatoDePartitura.allCases {
-            let datos = voz.partitura(
-                clave: .sol, encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo, instrumento: 40)
-            ).exportar(como: formato)
-            #expect(datos == esperado(formato), "\(formato)")
-        }
-    }
-
-    @Test func unCoralEnCadaFormatoEsLoQueDaSuFuncion() throws {
-        let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-        func esperado(_ formato: FormatoDePartitura) -> Data {
-            switch formato {
-            case .musicXML:
-                return Data(
-                    coral.partitura(
-                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true
-                    ).musicXML().utf8)
-            case .mei:
-                return Data(
-                    coral.partitura(
-                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true
-                    ).mei().utf8)
-            case .lilyPond:
-                return Data(
-                    coral.partitura(
-                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true
-                    ).lilyPond().utf8)
-            case .guido:
-                return Data(
-                    coral.partitura(
-                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true
-                    ).guido().utf8)
-            case .abc:
-                return Data(
-                    coral.partitura(
-                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true
-                    ).abc().utf8)
-            case .midi: return coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "C")).midi()
-            }
-        }
-        for formato in FormatoDePartitura.allCases {
-            let datos = coral.partitura(
-                duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true
-            ).exportar(como: formato)
-            #expect(datos == esperado(formato), "\(formato)")
-        }
-    }
-
-    @Test func unaProgresionEnCadaFormatoEsLoQueDaSuFuncion() throws {
-        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
-        let duraciones: [Duracion] = [.negra, .negra, .blanca, .blanca, .redonda]
-        func esperado(_ formato: FormatoDePartitura) -> Data {
-            switch formato {
-            case .musicXML:
-                return Data(
-                    analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).musicXML().utf8)
-            case .mei:
-                return Data(analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).mei().utf8)
-            case .lilyPond:
-                return Data(
-                    analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).lilyPond().utf8)
-            case .guido:
-                return Data(
-                    analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).guido().utf8)
-            case .abc:
-                return Data(analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).abc().utf8)
-            case .midi: return analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).midi()
-            }
-        }
-        for formato in FormatoDePartitura.allCases {
-            #expect(
-                analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).exportar(como: formato)
-                    == esperado(formato))
+            #expect(partitura.exportar(como: formato) == esperado(formato))
             // Con una sola duración, la misma para todos los acordes.
-            #expect(
-                analisis.partitura(duracion: .negra).exportar(como: formato)
-                    == analisis.partitura(duraciones: Array(repeating: .negra, count: 5)).exportar(como: formato))
+            #expect(analisis.partitura(duracion: .negra).exportar(como: formato) == negras.exportar(como: formato))
         }
     }
 

@@ -77,7 +77,7 @@ public struct Duracion: Hashable, Sendable, Comparable {
         let error = ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .duracionNoValida(limpio))
         if let barra = limpio.firstIndex(of: "/") {
             guard let numerador = Int(limpio[..<barra]), let denominador = Int(limpio[limpio.index(after: barra)...]),
-                numerador >= 0, denominador > 0
+                numerador > 0, denominador > 0
             else { throw error }
             self.init(numerador, denominador)
             return

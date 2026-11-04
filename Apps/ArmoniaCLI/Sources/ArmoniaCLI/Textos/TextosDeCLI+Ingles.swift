@@ -90,7 +90,7 @@ extension TextosDeCLI {
         descripcionMusicxmlCoral: "four-part chorale in MusicXML",
         sintaxisMusicxmlAcordes: "musicxml chords <symbols> [options]",
         descripcionMusicxmlAcordes: "progression with symbols and analysis",
-        notasMusicxmlAcordes: "options: --compas 6/8 (time signature), --anacrusa 8 (pickup),\n--tonalidad G major (key), --clave fa (clef), --tempo 90 (or\n--tempo 60 4.), --titulo My chorale (title), --duracion 2 (how\nlong each chord lasts; a quarter note in the chorale and a half\nnote in the chords by default), --cifrados and --analisis (in\nthe chorale: chord symbols above, roman numerals and function below)",
+        notasMusicxmlAcordes: "options: --compas 6/8 (time signature), --anacrusa 8 (pickup),\n--tonalidad G major (key), --clave fa (clef), --tempo 90 (or --tempo\n60 4.), --titulo My chorale (title), --duracion 2 (how long each\nchord lasts; a quarter note by default), --cifrados and --analisis\n(in the chorale: chord symbols above, roman numerals and function\nbelow)",
         sintaxisMusicxmlArpegios: "musicxml arpeggios <symbols> [options]",
         descripcionMusicxmlArpegios: "the chords arpeggiated, note by note",
         notasMusicxmlArpegios: "options: --patron alberti (or up, down, up-down), --figura 16\n(how long each note lasts; an eighth note by default),\n--duracion 1 (how long each chord lasts: the pattern repeats\nto fill it) and the other options of \"chords\"\n--connect: each arpeggio starts on the note nearest to the\nlast one of the previous chord",

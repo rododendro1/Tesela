@@ -81,6 +81,9 @@ extension TextosDePartitura {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: { texto in "το «\(texto)» δεν είναι διάρκεια: αναμενόταν αξία νότας (1, 2, 4, 8, 16…, με τελεία: 4.) ή κλάσμα ολόκληρου (3/8, 1/12)" },
         compasNoValido: { texto in "το «\(texto)» δεν είναι μέτρο: αναμενόταν αριθμητής/παρονομαστής με παρονομαστή δύναμη του 2 (4/4, 6/8, 7/8), C ή ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "η αντίστιξη πρέπει να διαρκεί όσο το cantus firmus: \(redondas) ολόκληρα, ένα ανά νότα" }
+        contrapuntoDeOtraDuracion: { redondas in "η αντίστιξη πρέπει να διαρκεί όσο το cantus firmus: \(redondas) ολόκληρα, ένα ανά νότα" },
+        figuraSinDuracion: "η αξία ενός αρπίσματος πρέπει να έχει διάρκεια",
+        duracionesPorAcorde: { acordes, duraciones in "χρειάζεται μία διάρκεια ανά συγχορδία: υπάρχουν \(acordes) συγχορδίες και \(duraciones) διάρκειες" },
+        duracionNoPositiva: { n in "η διάρκεια της συγχορδίας \(n) πρέπει να είναι θετική" }
     )
 }

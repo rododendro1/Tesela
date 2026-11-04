@@ -90,7 +90,7 @@ extension TextosDeCLI {
         descripcionMusicxmlCoral: "coral a catro voces en MusicXML",
         sintaxisMusicxmlAcordes: "musicxml acordes <cifrados> [opcións]",
         descripcionMusicxmlAcordes: "progresión con cifrados e análise",
-        notasMusicxmlAcordes: "opcións: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (ou --tempo 60 4.), --titulo O meu coral,\n--duracion 2 (o que dura cada acorde; negra no coral e branca\nnos acordes se non), --cifrados e --analisis (no coral: cifrado\namericano enriba, romano e función debaixo)",
+        notasMusicxmlAcordes: "opcións: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (ou --tempo 60 4.), --titulo O meu coral,\n--duracion 2 (o que dura cada acorde; negra se non), --cifrados\ne --analisis (no coral: cifrado americano enriba, romano e\nfunción debaixo)",
         sintaxisMusicxmlArpegios: "musicxml arpegios <cifrados> [opcións]",
         descripcionMusicxmlArpegios: "os acordes arpexados, nota a nota",
         notasMusicxmlArpegios: "opcións: --patron alberti (ou ascendente, descendente, ida y\nvuelta), --figura 16 (o que dura cada nota; corchea se non),\n--duracion 1 (o que dura cada acorde: o patrón repítese ata\nenchelo) e as demais de «acordes»\n--enlazar: cada arpexo empeza pola nota máis próxima á\núltima do anterior",

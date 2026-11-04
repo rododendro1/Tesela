@@ -81,6 +81,9 @@ extension TextosDePartitura {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: { texto in "«\(texto)» no es una duración: se esperaba una figura (1, 2, 4, 8, 16…, con puntillos: 4.) o una fracción de redonda (3/8, 1/12)" },
         compasNoValido: { texto in "«\(texto)» no es un compás: se esperaba numerador/denominador con el denominador potencia de 2 (4/4, 6/8, 7/8), C o ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "el contrapunto tiene que durar lo mismo que el cantus firmus: \(redondas) redondas, una por nota" }
+        contrapuntoDeOtraDuracion: { redondas in "el contrapunto tiene que durar lo mismo que el cantus firmus: \(redondas) redondas, una por nota" },
+        figuraSinDuracion: "la figura de un arpegio tiene que durar algo",
+        duracionesPorAcorde: { acordes, duraciones in "hace falta una duración por acorde: hay \(acordes) acordes y \(duraciones) duraciones" },
+        duracionNoPositiva: { n in "la duración del acorde \(n) tiene que ser positiva" }
     )
 }
