@@ -66,10 +66,13 @@ extension Contrapunto {
     ///   - tonalidad: la armadura que se escribe en el fichero; si es `nil`, ninguna.
     ///   - tempo: si es `nil`, negra = 120 (el de MIDI por omisión).
     ///   - instrumento: el programa General MIDI de las dos voces (52 = coro «aahs»).
+    ///   - afinacion: en la que suenan las notas; si es `nil`, el temperamento igual.
     public func midi(
-        tonalidad: Tonalidad? = nil, tempo: Tempo? = nil, titulo: String? = nil, instrumento: Int = 52
+        tonalidad: Tonalidad? = nil, tempo: Tempo? = nil, titulo: String? = nil, instrumento: Int = 52,
+        afinacion: (any Afinacion)? = nil
     ) -> Data {
-        var archivo = ArchivoMIDI(compas: contrapunto.compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo)
+        var archivo = ArchivoMIDI(
+            compas: contrapunto.compas, tonalidad: tonalidad, tempo: tempo, titulo: titulo, afinacion: afinacion)
         for linea in vocesDeArribaAbajo {
             archivo.anadir(linea.voz.eventos, nombre: linea.nombre, instrumento: instrumento)
         }

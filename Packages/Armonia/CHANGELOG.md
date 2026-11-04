@@ -2,6 +2,21 @@
 
 ## Sin publicar
 
+### Microtonos y afinaciones en MIDI
+
+- **Un canal por inflexión**: las notas que suenan a la vez y se apartan distinto de la temperada van cada una a su
+  canal MIDI, con el instrumento de su voz, en vez de compartir la inflexión de tono (*pitch bend*) de la primera. Se
+  usan los canales que no son de ninguna voz (nunca el 10) y se reutilizan los que ya tienen la inflexión que hace
+  falta.
+- **`midi(…, afinacion:)`** en `Voz`, `Coral`, `AnalisisArmonico` y `Contrapunto`: el fichero suena en la afinación
+  que se pida (`TemperamentoRegular.mesotonicoCuartoDeComa`, `AfinacionHistorica.werckmeisterIII.afinacion()`…),
+  cada nota en la tecla temperada más cercana con la inflexión de lo que falte.
+- El protocolo **`Afinacion`** pasa de `ArmoniaRepresentaciones` a `ArmoniaNucleo`, para que lo usen los formatos; los
+  temperamentos siguen donde estaban. Quien importe solo `ArmoniaRepresentaciones` y nombre `Afinacion` necesita
+  también `import ArmoniaNucleo`.
+- Al **importar MIDI**, los canales de una misma pista con el mismo programa son una sola parte (en los formatos 1 y
+  2); en el formato 0 cada canal sigue siendo una parte.
+
 ### Ornamentos, grupos irregulares y sistemas de pentagramas
 
 - **Ornamentos** en `Articulacion`: `trino`, `mordenteSuperior`, `mordenteInferior`, `grupeto` y
