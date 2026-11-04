@@ -90,7 +90,7 @@ extension TextosDeCLI {
         descripcionMusicxmlCoral: "четырёхголосный хорал в MusicXML",
         sintaxisMusicxmlAcordes: "musicxml chords <обозначения> [параметры]",
         descripcionMusicxmlAcordes: "последовательность с обозначениями и\nанализом",
-        notasMusicxmlAcordes: "параметры: --compas 6/8 (размер), --anacrusa 8 (затакт),\n--tonalidad G major (тональность), --clave fa (ключ), --tempo 90\n(или --tempo 60 4.), --titulo Мой хорал (название), --duracion 2\n(длительность каждого аккорда; по умолчанию четверть в хорале и\nполовинная в аккордах), --cifrados и --analisis (в хорале:\nобозначения сверху, ступени и функции снизу)",
+        notasMusicxmlAcordes: "параметры: --compas 6/8 (размер), --anacrusa 8 (затакт),\n--tonalidad G major (тональность), --clave fa (ключ), --tempo 90\n(или --tempo 60 4.), --titulo Мой хорал (название), --duracion 2\n(длительность каждого аккорда; по умолчанию четверть),\n--cifrados и --analisis (в хорале: обозначения сверху, ступени и\nфункции снизу)",
         sintaxisMusicxmlArpegios: "musicxml arpeggios <обозначения> [параметры]",
         descripcionMusicxmlArpegios: "аккорды арпеджио, нота за нотой",
         notasMusicxmlArpegios: "параметры: --patron alberti (или up, down, up-down), --figura 16\n(длительность каждой ноты; по умолчанию восьмая), --duracion 1\n(длительность каждого аккорда: рисунок повторяется, пока не\nзаполнит его) и остальные параметры «chords»\n--connect: каждое арпеджио начинается с ноты, ближайшей к\nпоследней ноте предыдущего",

@@ -201,7 +201,7 @@ public struct PiezaImportada: Hashable, Sendable {
     ///
     ///     let pieza = try PiezaImportada(leyendo: datos)
     ///     let leidos = pieza.acordesConDuracion()
-    ///     let xml = AnalisisArmonico.analizar(leidos.map(\.acorde))?.partitura(duraciones: leidos.map(\.duracion)).musicXML()
+    ///     let xml = try AnalisisArmonico.analizar(leidos.map(\.acorde))?.partitura(duraciones: leidos.map(\.duracion)).musicXML()
     public func acordesConDuracion(ventana: Duracion? = nil) -> [(acorde: Acorde, duracion: Duracion)] {
         let leidos = acordesConInicio(ventana: ventana)
         let fin = duracion

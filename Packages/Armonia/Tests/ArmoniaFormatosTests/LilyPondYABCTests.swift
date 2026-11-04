@@ -186,7 +186,9 @@ import Testing
 
     @Test func lilyPondDeUnaProgresionEnAmalgama() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
-        let ly = analisis.partitura(compas: Compas(7, 8, agrupacion: [2, 2, 3]), notacion: .inglesCompacto).lilyPond()
+        let ly = analisis.partitura(
+            duracion: .blanca, compas: Compas(7, 8, agrupacion: [2, 2, 3]), notacion: .inglesCompacto
+        ).lilyPond()
         #expect(ly.contains(#"\time 2,2,3 7/8"#))
         #expect(ly.contains(#"<d' fis' a' c''>8~^\markup "D7""#))
         #expect(ly.contains(#"\new PianoStaff \with { instrumentName = "Piano" }"#))
@@ -248,7 +250,7 @@ import Testing
 
     @Test func abcDeUnaProgresionYDelCompas() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
-        let abc = analisis.partitura(compas: Compas(7, 8, agrupacion: [2, 2, 3])).abc()
+        let abc = analisis.partitura(duracion: .blanca, compas: Compas(7, 8, agrupacion: [2, 2, 3])).abc()
         #expect(abc.contains("M:(2+2+3)/8\n"))
         #expect(abc.contains("%%score {1 | 2}\n"))
         #expect(abc.contains("[D^FAc]/2-"))

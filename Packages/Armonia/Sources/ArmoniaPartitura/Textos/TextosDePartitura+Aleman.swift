@@ -81,6 +81,9 @@ extension TextosDePartitura {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: { texto in "„\(texto)“ ist keine Dauer: erwartet wurde ein Notenwert (1, 2, 4, 8, 16…, punktiert: 4.) oder ein Bruchteil der Ganzen (3/8, 1/12)" },
         compasNoValido: { texto in "„\(texto)“ ist keine Taktart: erwartet wurde Zähler/Nenner mit einer Zweierpotenz als Nenner (4/4, 6/8, 7/8), C oder ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "der Kontrapunkt muss so lange dauern wie der Cantus firmus: \(redondas) ganze Noten, eine pro Note" }
+        contrapuntoDeOtraDuracion: { redondas in "der Kontrapunkt muss so lange dauern wie der Cantus firmus: \(redondas) ganze Noten, eine pro Note" },
+        figuraSinDuracion: "der Notenwert eines Arpeggios muss eine Dauer haben",
+        duracionesPorAcorde: { acordes, duraciones in "pro Akkord ist eine Dauer nötig: es gibt \(acordes) Akkorde und \(duraciones) Dauern" },
+        duracionNoPositiva: { n in "die Dauer von Akkord \(n) muss positiv sein" }
     )
 }

@@ -39,10 +39,10 @@ package struct ArchivoMIDI {
 
     /// Una pista con los eventos, en el canal siguiente (sin usar el 10, el de percusión; los que sobran, para las
     /// notas que se apartan distinto de las que suenan a la vez).
-    /// `marcadores`, si se dan, uno por evento.
+    /// `marcadores`, si se dan, uno por evento. Un instrumento fuera de los de General MIDI (0…127) se lleva al más
+    /// cercano.
     package mutating func anadir(_ eventos: [Evento], nombre: String, instrumento: Int, marcadores: [String] = []) {
-        precondition((0...127).contains(instrumento), "el instrumento General MIDI va de 0 a 127")
-        pistas.append((eventos, nombre, instrumento, marcadores))
+        pistas.append((eventos, nombre, min(max(instrumento, 0), 127), marcadores))
     }
 
     /// Pulsos de reloj por negra: 480 o 960, como es habitual, si con ellos todas las duraciones

@@ -90,7 +90,7 @@ extension TextosDeCLI {
         descripcionMusicxmlCoral: "τετράφωνο χορικό σε MusicXML",
         sintaxisMusicxmlAcordes: "musicxml chords <σύμβολα> [επιλογές]",
         descripcionMusicxmlAcordes: "αλληλουχία με σύμβολα και ανάλυση",
-        notasMusicxmlAcordes: "επιλογές: --compas 6/8 (μέτρο), --anacrusa 8 (άρση), --tonalidad\nG major (τονικότητα), --clave fa (κλειδί), --tempo 90 (ή --tempo\n60 4.), --titulo Το χορικό μου (τίτλος), --duracion 2 (πόσο\nδιαρκεί κάθε συγχορδία· από προεπιλογή τέταρτο στο χορικό και\nμισό στις συγχορδίες), --cifrados και --analisis (στο χορικό:\nσύμβολα από πάνω, βαθμίδες και λειτουργία από κάτω)",
+        notasMusicxmlAcordes: "επιλογές: --compas 6/8 (μέτρο), --anacrusa 8 (άρση), --tonalidad\nG major (τονικότητα), --clave fa (κλειδί), --tempo 90 (ή --tempo\n60 4.), --titulo Το χορικό μου (τίτλος), --duracion 2 (πόσο\nδιαρκεί κάθε συγχορδία· από προεπιλογή τέταρτο), --cifrados και\n--analisis (στο χορικό: σύμβολα από πάνω, βαθμίδες και\nλειτουργία από κάτω)",
         sintaxisMusicxmlArpegios: "musicxml arpeggios <σύμβολα> [επιλογές]",
         descripcionMusicxmlArpegios: "οι συγχορδίες σε αρπίσματα, νότα νότα",
         notasMusicxmlArpegios: "επιλογές: --patron alberti (ή up, down, up-down), --figura 16\n(πόσο διαρκεί κάθε νότα· από προεπιλογή όγδοο), --duracion 1\n(πόσο διαρκεί κάθε συγχορδία: το σχήμα επαναλαμβάνεται ώσπου\nνα τη γεμίσει) και οι υπόλοιπες των «chords»\n--connect: κάθε αρπέζ ξεκινά από τη νότα που βρίσκεται πιο\nκοντά στην τελευταία του προηγούμενου",

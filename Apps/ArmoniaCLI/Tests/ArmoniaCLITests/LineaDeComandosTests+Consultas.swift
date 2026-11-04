@@ -288,9 +288,9 @@ extension LineaDeComandosTests {
         let esperado = salida("analizar Do Lam Re7 Sol7 Do")
         let midi = try fichero(analisis.partitura().midi(), extension: "mid")
         #expect(salida("analizar --archivo " + midi) == esperado)
-        let xml = try fichero(Data(analisis.partitura().musicXML().utf8), extension: "musicxml")
+        let xml = try fichero(Data(analisis.partitura(duracion: .blanca).musicXML().utf8), extension: "musicxml")
         #expect(salida("analyze --file " + xml) == esperado)
-        // Cada acorde dura una blanca: con una ventana de una blanca, sale lo mismo.
+        // Aquí cada acorde dura una blanca: con una ventana de una blanca, sale lo mismo.
         #expect(salida("analizar --archivo \(xml) --ventana 2") == esperado)
         #expect(salida("analizar --archivo \(midi) --en Do mayor").hasPrefix("I–vi–V7/V–V7–I en Do mayor\n"))
     }

@@ -90,7 +90,7 @@ extension TextosDeCLI {
         descripcionMusicxmlCoral: "vierstimmiger Satz in MusicXML",
         sintaxisMusicxmlAcordes: "musicxml chords <Symbole> [Optionen]",
         descripcionMusicxmlAcordes: "Akkordfolge mit Symbolen und Analyse",
-        notasMusicxmlAcordes: "Optionen: --compas 6/8 (Taktart), --anacrusa 8 (Auftakt),\n--tonalidad G major (Tonart), --clave fa (Schlüssel), --tempo 90\n(oder --tempo 60 4.), --titulo Mein Choral (Titel), --duracion 2\n(Dauer jedes Akkords; standardmäßig eine Viertel im Choral und\neine Halbe bei den Akkorden), --cifrados und --analisis (im\nChoral: Akkordsymbole oben, Stufen und Funktion unten)",
+        notasMusicxmlAcordes: "Optionen: --compas 6/8 (Taktart), --anacrusa 8 (Auftakt),\n--tonalidad G major (Tonart), --clave fa (Schlüssel), --tempo 90\n(oder --tempo 60 4.), --titulo Mein Choral (Titel), --duracion 2\n(Dauer jedes Akkords; standardmäßig eine Viertel), --cifrados\nund --analisis (im Choral: Akkordsymbole oben, Stufen und\nFunktion unten)",
         sintaxisMusicxmlArpegios: "musicxml arpeggios <Symbole> [Optionen]",
         descripcionMusicxmlArpegios: "die Akkorde arpeggiert, Ton für Ton",
         notasMusicxmlArpegios: "Optionen: --patron alberti (oder up, down, up-down), --figura 16\n(Dauer jedes Tons; standardmäßig eine Achtel), --duracion 1\n(Dauer jedes Akkords: das Muster wiederholt sich, bis er voll\nist) und die übrigen von „chords“\n--connect: jedes Arpeggio beginnt mit dem Ton, der dem letzten\ndes vorigen am nächsten liegt",

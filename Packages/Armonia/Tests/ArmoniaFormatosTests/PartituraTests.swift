@@ -33,9 +33,9 @@ import Testing
         #expect(piano.parte == "Piano" && piano.instrumento == 0 && piano.tonalidadDelAnalisis == nil)
     }
 
-    @Test func laDeUnaProgresion() {
+    @Test func laDeUnaProgresion() throws {
         let duraciones = Array(repeating: Duracion.blanca, count: 5)
-        let partitura = progresion.partitura(duraciones: duraciones)
+        let partitura = try progresion.partitura(duraciones: duraciones)
         #expect(partitura.llave && partitura.parte == "Piano" && partitura.instrumento == 0)
         #expect(partitura.encabezado.tonalidad == progresion.tonalidad)
         #expect(progresion.partitura().lineas.allSatisfy { !$0.linea.marcadores.isEmpty || $0.pentagrama == 2 })

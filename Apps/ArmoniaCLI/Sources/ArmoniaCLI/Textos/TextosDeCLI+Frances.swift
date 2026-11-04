@@ -90,7 +90,7 @@ extension TextosDeCLI {
         descripcionMusicxmlCoral: "choral à quatre voix en MusicXML",
         sintaxisMusicxmlAcordes: "musicxml acordes <chiffrages> [options]",
         descripcionMusicxmlAcordes: "progression avec chiffrages et\nanalyse",
-        notasMusicxmlAcordes: "options : --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (ou --tempo 60 4.), --titulo Mon choral,\n--duracion 2 (la durée de chaque accord ; noire dans le choral\net blanche dans les accords sinon), --cifrados et --analisis\n(dans le choral : chiffrage américain au-dessus, romain et\nfonction au-dessous)",
+        notasMusicxmlAcordes: "options : --compas 6/8, --anacrusa 8, --tonalidad Sol mayor,\n--clave fa, --tempo 90 (ou --tempo 60 4.), --titulo Mon choral,\n--duracion 2 (la durée de chaque accord ; noire sinon),\n--cifrados et --analisis (dans le choral : chiffrage américain\nau-dessus, romain et fonction au-dessous)",
         sintaxisMusicxmlArpegios: "musicxml arpegios <chiffrages> [options]",
         descripcionMusicxmlArpegios: "les accords arpégés, note par note",
         notasMusicxmlArpegios: "options : --patron alberti (ou ascendente, descendente, ida y\nvuelta), --figura 16 (la durée de chaque note ; croche sinon),\n--duracion 1 (la durée de chaque accord : le motif se répète\njusqu'à le remplir) et les autres de « acordes »\n--enlazar : chaque arpège commence par la note la plus proche\nde la dernière du précédent",

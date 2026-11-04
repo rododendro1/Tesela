@@ -2,6 +2,21 @@
 
 ## Sin publicar
 
+### Errores en vez de paradas con datos de fuera, y negras por defecto
+
+- **`ErrorDePartitura`**: lo que lanzan una voz o una partitura con datos que no casan, con su `motivo`
+  (`.figuraSinDuracion`, `.duracionesPorAcorde(acordes:duraciones:)`, `.duracionNoPositiva(indice:)`) y su mensaje
+  en los quince idiomas.
+- **Cambio incompatible:** `AnalisisArmonico.partitura(duraciones:…)` y `Voz(arpegiando:duraciones:…)`, las que
+  reciben el ritmo armónico de una pieza importada, lanzan `ErrorDePartitura` en vez de detener el programa si no hay
+  una duración por acorde, si alguna no es positiva o si la figura no dura. Las que reciben una figura o una duración
+  escrita a mano (`Voz(_:figura:…)`, `Voz(arpegiando:…porAcorde:…)`, `partitura(duracion:…)`) siguen deteniéndolo,
+  como `Duracion(_:_:)` con un denominador 0.
+- **Cambio incompatible:** `AnalisisArmonico.partitura(duracion:…)` pone los acordes en negras si no se pide otra
+  figura (antes, blancas), como el coral; `armonia musicxml acordes` también.
+- En MIDI, un instrumento fuera de los de General MIDI (0…127) se lleva al más cercano en vez de detener el
+  programa.
+
 ### El pentagrama con ritmo, solo desde la partitura
 
 - **Cambio incompatible:** `Voz.svgPentagrama(titulo:acordes:grados:bajoCifrado:digitos:tablatura:opciones:)`,

@@ -251,7 +251,7 @@ import Testing
         #expect(Voz(arpegiando: []).eventos.isEmpty)
     }
 
-    @Test func unaProgresionEnlazada() {
+    @Test func unaProgresionEnlazada() throws {
         // Tras Do3 Mi3 Sol3 Do4, el Sol7 empieza por Si3, a un semitono, en vez de bajar a Sol2.
         let sol7 = Voz(arpegiando: [Acorde("Do"), Acorde("Sol7")], enlazados: true)
         #expect(sol7.eventos.flatMap(\.alturas).map(\.midi) == [48, 52, 55, 60, 59, 62, 65, 67, 71])
@@ -262,7 +262,7 @@ import Testing
         let llenos = Voz(arpegiando: [Acorde("Do"), Acorde("Fa")], porAcorde: .blanca, enlazados: true)
         #expect(llenos.eventos[4].alturas.first?.midi == 60)
         // Las tensiones y las aproximaciones valen para todos los acordes, también con su ritmo.
-        let conRitmo = Voz(
+        let conRitmo = try Voz(
             arpegiando: [Acorde("Do")], duraciones: [.blanca], tensiones: [9], aproximacion: .desdeAbajo,
             enlazados: true)
         #expect(conRitmo.eventos.flatMap(\.alturas).map(\.midi) == [47, 48, 51, 52])

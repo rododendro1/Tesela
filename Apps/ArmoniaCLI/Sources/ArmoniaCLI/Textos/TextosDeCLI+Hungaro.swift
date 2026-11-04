@@ -90,7 +90,7 @@ extension TextosDeCLI {
         descripcionMusicxmlCoral: "négyszólamú korál MusicXML-ben",
         sintaxisMusicxmlAcordes: "musicxml chords <jelzések> [opciók]",
         descripcionMusicxmlAcordes: "akkordmenet jelzésekkel és elemzéssel",
-        notasMusicxmlAcordes: "opciók: --compas 6/8 (ütemmutató), --anacrusa 8 (felütés),\n--tonalidad G major (hangnem), --clave fa (kulcs), --tempo 90\n(vagy --tempo 60 4.), --titulo Korálom (cím), --duracion 2 (az\nakkordok hossza; alapból negyed a korálban és fél az\nakkordoknál), --cifrados és --analisis (a korálban: fölül\nakkordjelzések, alul fokszámok és funkció)",
+        notasMusicxmlAcordes: "opciók: --compas 6/8 (ütemmutató), --anacrusa 8 (felütés),\n--tonalidad G major (hangnem), --clave fa (kulcs), --tempo 90\n(vagy --tempo 60 4.), --titulo Korálom (cím), --duracion 2 (az\nakkordok hossza; alapból negyed), --cifrados és --analisis (a\nkorálban: fölül akkordjelzések, alul fokszámok és funkció)",
         sintaxisMusicxmlArpegios: "musicxml arpeggios <jelzések> [opciók]",
         descripcionMusicxmlArpegios: "az akkordok felbontva, hangról hangra",
         notasMusicxmlArpegios: "opciók: --patron alberti (vagy up, down, up-down), --figura 16\n(a hangok hossza; alapból nyolcad), --duracion 1 (az akkordok\nhossza: a minta ismétlődik, amíg ki nem tölti) és a \"chords\"\ntöbbi opciója\n--connect: minden felbontás az előző utolsó hangjához\nlegközelebbi hanggal kezdődik",
