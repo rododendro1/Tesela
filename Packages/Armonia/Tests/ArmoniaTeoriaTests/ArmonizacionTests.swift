@@ -146,11 +146,11 @@ import Testing
         #expect(Coral.realizar(["Do7(9,13)"]) == nil)
     }
 
-    @Test func disposicionesSinFaltas() {
+    @Test func disposicionesSinFaltas() throws {
         let disposiciones = Coral.disposiciones(de: "Sol7", soprano: nil, sensible: .si)
         #expect(!disposiciones.isEmpty)
         for d in disposiciones {
-            #expect(Coral([d.alturas])!.esCorrecta)
+            #expect(try Coral([d.alturas]).esCorrecta)
             #expect(d.alturas[0].nota == .sol)
             #expect(d.alturas.filter { $0.nota == .si }.count <= 1)
         }

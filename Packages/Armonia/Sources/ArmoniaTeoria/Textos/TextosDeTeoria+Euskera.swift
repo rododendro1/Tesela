@@ -174,6 +174,11 @@ extension TextosDeTeoria {
         tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» ez da eskala-mota ezagun bat" },
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "akorde guztiek ahots kopuru bera izan behar dute, eta gutxienez bi",
+        vocesDeDistintaLongitud: "ahots guztiek nota kopuru bera izan behar dute",
+        // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
+        nombreNoReconocido: { n, o in "«\(n)» ez da hauetako bat ere: \(o)" },
+        trasteNoValido: { t, u in "«\(t)» ez da traste bat: x (soka itzalia) edo 0 eta \(u) arteko zenbaki bat izan behar du" },
+        cuerdasDistintas: { e, l in "traste bat (edo x) behar da \(e) soketako bakoitzeko, eta \(l) daude" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in Tonalidad.declinar(tonalidad, "ean") }

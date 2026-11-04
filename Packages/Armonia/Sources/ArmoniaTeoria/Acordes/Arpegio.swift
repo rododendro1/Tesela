@@ -334,8 +334,9 @@ extension Arpegio: Nombrable {
 extension Arpegio.Patron {
     /// Lee un patrón por su nombre en el código (`alberti`, `idaYVuelta`), con guiones o guiones bajos
     /// (`ida-y-vuelta`), en inglés abreviado (`up`, `down`, `up-down`, `down-up`, `broken`) o como lo escribe
-    /// cualquiera de los quince idiomas («bajo de Alberti», «aller-retour»), sin mirar mayúsculas ni tildes.
-    public init?(leyendo texto: String) {
+    /// cualquiera de los quince idiomas («bajo de Alberti», «aller-retour»), sin mirar mayúsculas ni tildes. Si no
+    /// es ninguno, lanza `ErrorDeLecturaDeTeoria` con los que sí (`.nombreNoReconocido`).
+    public init(leyendo texto: String) throws {
         func clave(_ texto: String) -> String { texto.replacingOccurrences(of: "_", with: " ").claveDeBusqueda }
         let buscado = clave(texto)
         let abreviados: [String: Arpegio.Patron] = [
@@ -346,7 +347,11 @@ extension Arpegio.Patron {
             clave(patron.rawValue) == buscado
                 || Idioma.allCases.contains { clave(patron.nombre(en: .delIdioma($0))) == buscado }
         }
-        guard let leido = abreviados[buscado] ?? Self.allCases.first(where: esElBuscado) else { return nil }
+        guard let leido = abreviados[buscado] ?? Self.allCases.first(where: esElBuscado) else {
+            let opciones = Self.allCases.map(\.rawValue)
+            throw ErrorDeLecturaDeTeoria(
+                texto: texto, posicion: nil, motivo: .nombreNoReconocido(texto, opciones: opciones))
+        }
         self = leido
     }
 }
@@ -377,8 +382,8 @@ extension Arpegio.Patron: Nombrable {
 extension Arpegio.Aproximacion {
     /// Lee una aproximación por su nombre en el código (`desdeAbajo`, `desde-abajo`), abreviada (`abajo`,
     /// `arriba`, `below`, `above`, `enclosure`) o como la escribe cualquiera de los quince idiomas, sin mirar
-    /// mayúsculas ni tildes.
-    public init?(leyendo texto: String) {
+    /// mayúsculas ni tildes. Si no es ninguna, lanza `ErrorDeLecturaDeTeoria` con las que sí (`.nombreNoReconocido`).
+    public init(leyendo texto: String) throws {
         func clave(_ texto: String) -> String {
             texto.replacingOccurrences(of: "_", with: " ").replacingOccurrences(of: "-", with: " ").claveDeBusqueda
         }
@@ -391,7 +396,11 @@ extension Arpegio.Aproximacion {
             clave(aproximacion.rawValue) == buscado
                 || Idioma.allCases.contains { clave(aproximacion.nombre(en: .delIdioma($0))) == buscado }
         }
-        guard let leida = abreviados[buscado] ?? Self.allCases.first(where: esElBuscado) else { return nil }
+        guard let leida = abreviados[buscado] ?? Self.allCases.first(where: esElBuscado) else {
+            let opciones = Self.allCases.map(\.rawValue)
+            throw ErrorDeLecturaDeTeoria(
+                texto: texto, posicion: nil, motivo: .nombreNoReconocido(texto, opciones: opciones))
+        }
         self = leida
     }
 }

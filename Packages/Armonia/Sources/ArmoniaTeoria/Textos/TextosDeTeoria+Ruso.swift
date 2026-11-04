@@ -170,6 +170,11 @@ extension TextosDeTeoria {
         tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» — неизвестный тип гаммы" },
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "во всех аккордах должно быть одинаковое число голосов, не меньше двух",
+        vocesDeDistintaLongitud: "во всех голосах должно быть одинаковое число нот",
+        // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
+        nombreNoReconocido: { n, o in "«\(n)» — ни одно из этих: \(o)" },
+        trasteNoValido: { t, u in "«\(t)» — не лад: нужен x (заглушённая струна) или число от 0 до \(u)" },
+        cuerdasDistintas: { e, l in "нужен один лад (или x) на каждую из \(e) струн, а их \(l)" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(tipo) от \(raiz)" },
         enLaTonalidad: { tonalidad in "в " + (tonalidad.hasSuffix("мажор") || tonalidad.hasSuffix("минор") ? tonalidad + "е" : tonalidad) }

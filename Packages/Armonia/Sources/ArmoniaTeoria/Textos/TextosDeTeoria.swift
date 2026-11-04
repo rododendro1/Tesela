@@ -186,6 +186,12 @@ struct TextosDeTeoria: TextosTraducidos {
 
     // MARK: ErrorDeLecturaDeTeoria.swift (coral)
     let vocesDistintas: String
+    let vocesDeDistintaLongitud: String
+
+    // MARK: ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
+    let nombreNoReconocido: @Sendable (_ nombre: String, _ opciones: String) -> String
+    let trasteNoValido: @Sendable (_ traste: String, _ ultimo: Int) -> String
+    let cuerdasDistintas: @Sendable (_ esperadas: Int, _ leidas: Int) -> String
 
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».

@@ -2,6 +2,18 @@
 
 ## Sin publicar
 
+### Los lectores que fallan dicen por qué
+
+- **Cambio incompatible:** `Arpegio.Patron(leyendo:)`, `Arpegio.Aproximacion(leyendo:)`,
+  `CicloNeorriemanniano(leyendo:)` y `Digitacion(leyendo:en:)` lanzan `ErrorDeLecturaDeTeoria` en lugar de devolver
+  `nil`, con el motivo en los quince idiomas: un nombre que no es ninguno de los que se leen da
+  `.nombreNoReconocido`, con los que sí; una tablatura con un traste que no se entiende o no está en el mástil,
+  `.trasteNoValido`, en su carácter, y una sin un traste por cuerda, `.cuerdasDistintas`. Donde se escribía
+  `if let p = Arpegio.Patron(leyendo: texto)`, ahora `if let p = try? Arpegio.Patron(leyendo: texto)`.
+- **Cambio incompatible:** `Coral(_:)` y `Coral(voces:)` también lanzan: `.vocesDistintas` si no hay al menos dos
+  voces o los acordes no tienen todos las mismas, y `.vocesDeDistintaLongitud` si las voces, dadas voz por voz, no
+  tienen todas las mismas notas.
+
 ### Tipos con nombre en lugar de tuplas
 
 - **Cambio incompatible:** lo que antes era una tupla es ahora un tipo con nombre, `Hashable` y `Sendable`, con los

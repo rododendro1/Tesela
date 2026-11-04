@@ -225,7 +225,7 @@ extension Tonalidad {
             voces.insert(estado.alturas, at: 0)
             indice = previos[i][indice]
         }
-        guard let conduccion = Coral(voces) else { return nil }
+        guard let conduccion = try? Coral(voces) else { return nil }
         return CoralArmonizado(
             armonizacion: Armonizacion(tonalidad: self, melodia: notas, acordes: elegidos), coral: conduccion)
     }

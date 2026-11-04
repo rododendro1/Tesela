@@ -79,7 +79,8 @@ public enum CicloNeorriemanniano: String, CaseIterable, Hashable, Sendable, Cust
 
     /// Lee "hexatónico", "hexatonico", "hexatonic", "octatónico", "octatonic", "LR"… o el ciclo
     /// por sus transformaciones ("PL", "PR", "LR").
-    public init?(leyendo texto: String) {
+    /// Si no es ninguno, lanza `ErrorDeLecturaDeTeoria` con los que sí (`.nombreNoReconocido`).
+    public init(leyendo texto: String) throws {
         let limpio = texto.claveDeBusqueda
             .replacingOccurrences(of: "ciclo ", with: "").replacingOccurrences(of: " cycle", with: "")
             .trimmingCharacters(in: .whitespaces)
@@ -87,7 +88,10 @@ public enum CicloNeorriemanniano: String, CaseIterable, Hashable, Sendable, Cust
         case "hexatonico", "hexatonic", "pl", "lp": self = .hexatonico
         case "octatonico", "octatonic", "pr", "rp": self = .octatonico
         case "lr", "rl": self = .lr
-        default: return nil
+        default:
+            let opciones = Self.allCases.map(\.rawValue)
+            throw ErrorDeLecturaDeTeoria(
+                texto: texto, posicion: nil, motivo: .nombreNoReconocido(texto, opciones: opciones))
         }
     }
 }

@@ -27,23 +27,35 @@ public struct Digitacion: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// Lee la tablatura que escribe `tablatura`: «x32010», o con guiones si algún traste pasa de 9 («x-10-12-12-11-10»).
-    /// `nil` si no se entiende o no encaja en el mástil.
-    public init?(leyendo tablatura: String, en mastil: Mastil) {
+    /// Lanza `ErrorDeLecturaDeTeoria` si un traste no se entiende o no está en el mástil (`.trasteNoValido`, en
+    /// su carácter) o si no hay uno por cuerda (`.cuerdasDistintas`).
+    public init(leyendo tablatura: String, en mastil: Mastil) throws {
+        let conGuiones = tablatura.contains("-")
         let partes =
-            tablatura.contains("-")
+            conGuiones
             ? tablatura.split(separator: "-", omittingEmptySubsequences: false).map(String.init)
             : tablatura.map { String($0) }
         var trastes: [Int?] = []
+        var posicion = 0
         for parte in partes {
             if parte == "x" || parte == "X" {
                 trastes.append(nil)
-            } else if !parte.isEmpty, parte.allSatisfy({ $0.isASCII && $0.isNumber }), let traste = Int(parte) {
+            } else if !parte.isEmpty, parte.allSatisfy({ $0.isASCII && $0.isNumber }), let traste = Int(parte),
+                traste <= mastil.trastes
+            {
                 trastes.append(traste)
             } else {
-                return nil
+                throw ErrorDeLecturaDeTeoria(
+                    texto: tablatura, posicion: posicion, motivo: .trasteNoValido(parte, ultimo: mastil.trastes))
             }
+            posicion += parte.count + (conGuiones ? 1 : 0)
         }
-        self.init(comprobando: trastes, en: mastil)
+        let cuerdas = mastil.encordado.numeroDeCuerdas
+        guard trastes.count == cuerdas else {
+            throw ErrorDeLecturaDeTeoria(
+                texto: tablatura, posicion: nil, motivo: .cuerdasDistintas(esperadas: cuerdas, leidas: trastes.count))
+        }
+        self.init(mastil: mastil, trastes: trastes)
     }
 
     /// Las posiciones que suenan, de la cuerda más grave a la más aguda.

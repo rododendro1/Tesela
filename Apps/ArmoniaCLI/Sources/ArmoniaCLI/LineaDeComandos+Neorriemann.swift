@@ -57,7 +57,7 @@ extension LineaDeComandos {
         let pasos: [TransformacionNeorriemanniana]
         if let secuencia = TransformacionNeorriemanniana.secuencia(leyendo: resto) {
             pasos = secuencia
-        } else if let ciclo = CicloNeorriemanniano(leyendo: resto) {
+        } else if let ciclo = try? CicloNeorriemanniano(leyendo: resto) {
             // Do –P→ Dom –L→ La♭ … –L→ Do, con la ortografía más sencilla.
             let acordes = origen.ciclo(ciclo)!
             var texto = acordes[0].cifrado(en: notacion)

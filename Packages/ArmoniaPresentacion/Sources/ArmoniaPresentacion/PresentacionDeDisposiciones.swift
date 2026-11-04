@@ -35,7 +35,7 @@ public enum PresentacionDeDisposiciones {
         _ acorde: Acorde, _ disposicion: DisposicionDeAcorde, notacion: Notacion
     ) -> DisposicionesPresentadas? {
         let todas = acorde.disposiciones(disposicion)
-        guard let coral = Coral(todas) else { return nil }
+        guard let coral = try? Coral(todas) else { return nil }
         let titulo = acorde.cifrado(en: notacion) + " · " + disposicion.nombre(en: notacion)
         return presentar(
             todas, cifrados: nil, titulo: titulo,
@@ -47,7 +47,9 @@ public enum PresentacionDeDisposiciones {
     public static func progresion(
         _ acordes: [Acorde], _ disposicion: DisposicionDeAcorde, notacion: Notacion
     ) -> DisposicionesPresentadas? {
-        guard !acordes.isEmpty, let voces = disposicion.conducir(acordes), let coral = Coral(voces) else { return nil }
+        guard !acordes.isEmpty, let voces = disposicion.conducir(acordes), let coral = try? Coral(voces) else {
+            return nil
+        }
         let nombre = disposicion.nombre(en: notacion)
         let cifrados = acordes.map { $0.cifrado(en: notacion) }
         return presentar(

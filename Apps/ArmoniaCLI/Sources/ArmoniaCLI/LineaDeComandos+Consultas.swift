@@ -255,7 +255,7 @@ extension LineaDeComandos {
             recorrido.grados = leidos
         }
         if let aproximacion {
-            guard let leida = Arpegio.Aproximacion(leyendo: aproximacion) else {
+            guard let leida = try? Arpegio.Aproximacion(leyendo: aproximacion) else {
                 return .aproximacionDesconocida(aproximacion)
             }
             recorrido.aproximacion = leida
@@ -285,7 +285,7 @@ extension LineaDeComandos {
 
     /// El patrón de `--patron`, como lo lee `Arpegio.Patron(leyendo:)`: `alberti`, `ida-y-vuelta`, `up-down` o su
     /// nombre en cualquiera de los quince idiomas («bajo de Alberti»).
-    static func patronDeArpegio(_ texto: String) -> Arpegio.Patron? { Arpegio.Patron(leyendo: texto) }
+    static func patronDeArpegio(_ texto: String) -> Arpegio.Patron? { try? Arpegio.Patron(leyendo: texto) }
 
     static func intervalo(_ a: String, _ b: String, _ notacion: Notacion) throws -> String {
         let intervalo: Intervalo

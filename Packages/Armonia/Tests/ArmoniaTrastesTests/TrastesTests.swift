@@ -171,22 +171,40 @@ extension DigitacionTests {
         #expect(Digitacion(comprobando: [nil, 3, 2, 0, 1, 25], en: guitarra) == nil) // más allá del último (24)
     }
 
-    @Test func leyendoLaCifra() {
+    @Test func leyendoLaCifra() throws {
         let guitarra = Mastil(.guitarra)
-        #expect(Digitacion(leyendo: "x32010", en: guitarra)?.tablatura == "x32010")
-        #expect(Digitacion(leyendo: "X32010", en: guitarra)?.tablatura == "x32010")
-        #expect(Digitacion(leyendo: "x-10-12-12-11-10", en: guitarra)?.tablatura == "x-10-12-12-11-10")
-        #expect(Digitacion(leyendo: "x3201", en: guitarra) == nil) // faltan cuerdas
-        #expect(Digitacion(leyendo: "x32a10", en: guitarra) == nil) // «a» no es un traste
-        #expect(Digitacion(leyendo: "x-10--12-12-11-10", en: guitarra) == nil) // hueco vacío
-        #expect(Digitacion(leyendo: "", en: guitarra) == nil)
+        #expect(try Digitacion(leyendo: "x32010", en: guitarra).tablatura == "x32010")
+        #expect(try Digitacion(leyendo: "X32010", en: guitarra).tablatura == "x32010")
+        #expect(try Digitacion(leyendo: "x-10-12-12-11-10", en: guitarra).tablatura == "x-10-12-12-11-10")
+        typealias Motivo = ErrorDeLecturaDeTeoria.Motivo
+        func error(_ texto: String, _ posicion: Int?, _ motivo: Motivo) -> ErrorDeLecturaDeTeoria {
+            ErrorDeLecturaDeTeoria(texto: texto, posicion: posicion, motivo: motivo)
+        }
+        // Faltan cuerdas.
+        #expect(throws: error("x3201", nil, .cuerdasDistintas(esperadas: 6, leidas: 5))) {
+            try Digitacion(leyendo: "x3201", en: guitarra)
+        }
+        #expect(throws: error("", nil, .cuerdasDistintas(esperadas: 6, leidas: 0))) {
+            try Digitacion(leyendo: "", en: guitarra)
+        }
+        // «a» no es un traste, el 30 no está en el mástil y entre los dos guiones no hay nada.
+        #expect(throws: error("x32a10", 3, .trasteNoValido("a", ultimo: 24))) {
+            try Digitacion(leyendo: "x32a10", en: guitarra)
+        }
+        #expect(throws: error("x-30-12-12-11-10", 2, .trasteNoValido("30", ultimo: 24))) {
+            try Digitacion(leyendo: "x-30-12-12-11-10", en: guitarra)
+        }
+        #expect(throws: error("x-10--12-12-11-10", 5, .trasteNoValido("", ultimo: 24))) {
+            try Digitacion(leyendo: "x-10--12-12-11-10", en: guitarra)
+        }
     }
 
     @Test func laCifraVuelveALaMismaDigitacion() throws {
         let guitarra = Mastil(.guitarra)
         for cifrado in ["Do", "Sol7/Si", "Rem7", "Fa"] {
             for forma in guitarra.digitaciones(de: try Acorde(leyendo: cifrado), limite: 20) {
-                #expect(Digitacion(leyendo: forma.tablatura, en: guitarra) == forma, Comment(rawValue: forma.tablatura))
+                let leida = try Digitacion(leyendo: forma.tablatura, en: guitarra)
+                #expect(leida == forma, Comment(rawValue: forma.tablatura))
             }
         }
     }
@@ -246,7 +264,7 @@ extension DigitacionTests {
     private let ukelele = Mastil(.ukelele)
 
     private func forma(_ cifra: String) throws -> Digitacion {
-        try #require(Digitacion(leyendo: cifra, en: guitarra), Comment(rawValue: cifra))
+        try Digitacion(leyendo: cifra, en: guitarra)
     }
 
     // MARK: Dedos y cejilla

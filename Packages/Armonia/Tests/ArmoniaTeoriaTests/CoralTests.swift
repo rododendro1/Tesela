@@ -91,12 +91,18 @@ import Testing
     @Test func construccion() throws {
         let acordes: [[Altura]] = [["Do3", "Mi4", "Sol4", "Do5"], ["Sol2", "Re4", "Sol4", "Si4"]]
         let porVoces: [[Altura]] = [["Do3", "Sol2"], ["Mi4", "Re4"], ["Sol4", "Sol4"], ["Do5", "Si4"]]
-        #expect(Coral(acordes) == Coral(voces: porVoces))
-        #expect(try (Coral(leyendo: "C3 E4 G4 C5, G2 D4 G4 B4")) == Coral(acordes))
-        #expect(Coral([]) == nil)
-        #expect(Coral([["Do4"]]) == nil)
-        #expect(Coral([["Do4", "Mi4"], ["Do4"]]) == nil)
-        #expect(Coral(voces: [["Do4", "Re4"], ["Mi4"]]) == nil)
+        #expect(try Coral(acordes) == Coral(voces: porVoces))
+        #expect(try Coral(leyendo: "C3 E4 G4 C5, G2 D4 G4 B4") == Coral(acordes))
+        let distintas = ErrorDeLecturaDeTeoria(texto: "", posicion: nil, motivo: .vocesDistintas)
+        #expect(throws: distintas) { try Coral([]) }
+        #expect(throws: distintas) { try Coral([["Do4"]]) }
+        #expect(throws: distintas) { try Coral([["Do4", "Mi4"], ["Do4"]]) }
+        #expect(throws: distintas) { try Coral(voces: []) }
+        #expect(throws: distintas) { try Coral(voces: [["Do4"]]) }
+        let longitudes = ErrorDeLecturaDeTeoria(texto: "", posicion: nil, motivo: .vocesDeDistintaLongitud)
+        #expect(throws: longitudes) { try Coral(voces: [["Do4", "Re4"], ["Mi4"]]) }
+        #expect(
+            longitudes.description == "Valor no válido: todas las voces tienen que tener el mismo número de notas")
     }
 
     @Test func errores() throws {

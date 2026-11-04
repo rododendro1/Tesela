@@ -170,6 +170,11 @@ extension TextosDeTeoria {
         tipoDeEscalaNoReconocido: { nombre in "„\(nombre)“ ist keine bekannte Skalenart" },
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "alle Akkorde müssen gleich viele Stimmen haben, mindestens zwei",
+        vocesDeDistintaLongitud: "alle Stimmen müssen gleich viele Töne haben",
+        // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
+        nombreNoReconocido: { n, o in "„\(n)“ ist keiner von diesen: \(o)" },
+        trasteNoValido: { t, u in "„\(t)“ ist kein Bund: erlaubt sind x (gedämpfte Saite) oder eine Zahl von 0 bis \(u)" },
+        cuerdasDistintas: { e, l in "für jede der \(e) Saiten braucht es einen Bund (oder x), und es sind \(l)" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(tipo) auf \(raiz)" },
         enLaTonalidad: { tonalidad in "in " + tonalidad }

@@ -171,6 +171,11 @@ extension TextosDeTeoria {
         tipoDeEscalaNoReconocido: { nombre in "„\(nombre)” nem ismert skálatípus" },
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "minden akkordnak ugyanannyi szólamból kell állnia, legalább kettőből",
+        vocesDeDistintaLongitud: "minden szólamnak ugyanannyi hangból kell állnia",
+        // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
+        nombreNoReconocido: { n, o in "„\(n)” egyik sem ezek közül: \(o)" },
+        trasteNoValido: { t, u in "„\(t)” nem bund: x (tompított húr) vagy 0 és \(u) közötti szám kell" },
+        cuerdasDistintas: { e, l in "mind a \(e) húrhoz kell egy bund (vagy x), és \(l) van" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         // Con el inesivo: «C-dúrban», «a-mollban» (dúr y moll piden -ban).

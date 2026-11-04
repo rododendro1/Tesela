@@ -102,19 +102,24 @@ public struct Coral: Hashable, Sendable {
     /// Los acordes, cada uno con sus alturas de la voz más grave a la más aguda.
     public let acordes: [[Altura]]
 
-    /// `nil` si no hay acordes, si hay menos de dos voces o si no todos tienen las mismas.
-    public init?(_ acordes: [[Altura]]) {
+    /// Lanza `ErrorDeLecturaDeTeoria` (`.vocesDistintas`) si no hay acordes, si hay menos de dos voces o si no
+    /// todos tienen las mismas.
+    public init(_ acordes: [[Altura]]) throws {
         guard let voces = acordes.first?.count, voces >= 2,
             acordes.allSatisfy({ $0.count == voces })
-        else { return nil }
+        else { throw ErrorDeLecturaDeTeoria(texto: "", posicion: nil, motivo: .vocesDistintas) }
         self.acordes = acordes
     }
 
     /// Las mismas alturas dadas voz por voz, de grave a agudo: `[bajo, tenor, contralto, soprano]`,
-    /// cada una con sus notas en orden. `nil` si las voces no tienen todas las mismas notas.
-    public init?(voces: [[Altura]]) {
-        guard let longitud = voces.first?.count, voces.allSatisfy({ $0.count == longitud }) else { return nil }
-        self.init((0..<longitud).map { i in voces.map { $0[i] } })
+    /// cada una con sus notas en orden. Lanza `ErrorDeLecturaDeTeoria` si las voces no tienen todas el mismo número
+    /// de notas (`.vocesDeDistintaLongitud`) o si no hay al menos dos con alguna nota (`.vocesDistintas`).
+    public init(voces: [[Altura]]) throws {
+        let longitud = voces.first?.count ?? 0
+        guard voces.allSatisfy({ $0.count == longitud }) else {
+            throw ErrorDeLecturaDeTeoria(texto: "", posicion: nil, motivo: .vocesDeDistintaLongitud)
+        }
+        try self.init((0..<longitud).map { i in voces.map { $0[i] } })
     }
 
     /// Lee los acordes separados por barras o comas, y en cada uno las alturas de grave a agudo:
@@ -147,10 +152,9 @@ public struct Coral: Hashable, Sendable {
         try cerrarAltura()
         acordes.removeAll { $0.isEmpty }
         guard !acordes.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
-        guard let conduccion = Coral(acordes) else {
-            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .vocesDistintas)
+        do { self = try Coral(acordes) } catch let error as ErrorDeLecturaDeTeoria {
+            throw error.situado(en: texto, posicion: nil)
         }
-        self = conduccion
     }
 
     public var numeroDeVoces: Int { acordes[0].count }
@@ -278,7 +282,7 @@ extension Coral: Transponible {
     /// El mismo coral, con todas las voces movidas el mismo intervalo.
     public func transponer(_ intervalo: Intervalo) -> Coral {
         // Las voces siguen siendo las mismas, así que el coral sigue siendo válido.
-        Coral(acordes.map { $0.map { $0.transponer(intervalo) } }) ?? self
+        (try? Coral(acordes.map { $0.map { $0.transponer(intervalo) } })) ?? self
     }
 
     /// Los acordes como se leen con `init(leyendo:)`: las alturas de grave a agudo, separados por barras.

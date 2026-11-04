@@ -221,7 +221,7 @@ c.faltas[0].description            // "Quintas paralelas entre bajo y tenor (aco
 c.faltas[0].descripcion(en: .inglesASCII)   // "Parallel fifths between bass and tenor (chords 1 → 2)"
 
 try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa3 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5").esCorrecta   // true
-Coral(voces: [["Do3", "Sol2"], ["Mi4", "Re4"], ["Sol4", "Sol4"], ["Do5", "Si4"]])?.esCorrecta          // true
+try Coral(voces: [["Do3", "Sol2"], ["Mi4", "Re4"], ["Sol4", "Sol4"], ["Do5", "Si4"]]).esCorrecta       // true
 ```
 
 Las faltas que encuentra (`FaltaDeConduccion.Tipo`):

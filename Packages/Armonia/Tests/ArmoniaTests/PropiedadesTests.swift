@@ -44,7 +44,7 @@ import Testing
         let acordes = (0..<Int.random(in: 1...8, using: &azar)).map { _ in
             (2...5).map { Altura(nota(&azar, quintas: -5...6), octava: $0) }
         }
-        return Coral(acordes)!
+        return try! Coral(acordes)
     }
 
     static func repetir(semilla: UInt64, _ comprobar: (inout GeneradorConSemilla) throws -> Void) rethrows {

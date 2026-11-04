@@ -41,7 +41,7 @@ extension PresentacionDeEstudioDeEscala {
         }
         let voces = tonalidades.flatMap { $0.acordes.map { Escucha.cerrada($0.notasDesdeElBajo, desde: 48) } }
         guard grados.count == escala.notas.count, tonalidades.allSatisfy({ $0.acordes.count == grados.count }),
-            let coral = Coral(voces)
+            let coral = try? Coral(voces)
         else { return nil }
         let titulo = escala.nombre(en: notacion) + " · " + notacion.texto(\.acordesEnLasDoceTonalidades)
         let filas = tonalidades.map { tonalidad in
