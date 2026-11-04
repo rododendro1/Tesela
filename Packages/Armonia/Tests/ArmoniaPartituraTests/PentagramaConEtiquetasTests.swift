@@ -155,11 +155,11 @@ import Testing
     /// La tablatura va debajo, con una línea por cuerda (cortada alrededor de cada número), «TAB» y el traste de
     /// cada nota; las notas que da el mástil se escriben con las de la escala o el acorde.
     @Test func laTablatura() {
-        // Do Mi Sol en la guitarra: 5.ª cuerda, traste 3; 4.ª, 2; 3.ª, al aire.
+        // Do Mi Sol en la guitarra: 5.ª cuerda (la 1 desde la grave), traste 3; 4.ª, 2; 3.ª, al aire.
         let tablatura = Tablatura(
             cuerdas: 6,
             notas: [
-                0: [.init(cuerda: 4, traste: 3)], 1: [.init(cuerda: 3, traste: 2)], 2: [.init(cuerda: 2, traste: 0)],
+                0: [.init(cuerda: 1, traste: 3)], 1: [.init(cuerda: 2, traste: 2)], 2: [.init(cuerda: 3, traste: 0)],
             ])
         let alturas = [Altura("Do4"), Altura("Mi4"), Altura("Sol4")]
         let svg = Acorde("Do").svgPentagrama(arpegiadoEn: alturas, tablatura: tablatura)
@@ -169,7 +169,7 @@ import Testing
         #expect(contar("stroke-width=\"0.13\"", en: svg) == 5 + 6 + 3)
         #expect(svg.contains(">Do</text>"))
         // La♯3 del mástil se escribe Si♭3 en Do7.
-        let do7 = Acorde("Do7").svgPentagrama(arpegiadoEn: [Altura("Do3"), Altura("La♯3")], figura: .corchea)
+        let do7 = Acorde("Do7").svgPentagrama(arpegiadoEn: [Altura("Do3"), Altura("La♯3")], ritmo: .figura(.corchea))
         #expect(do7.contains("<title>Si♭₃</title>") && !do7.contains("La♯"))
         #expect(Altura.reescritas([Altura("Re♯4")], con: Escala("Do menor").notas) == [Altura("Mi♭4")])
         let tocada = Escala("Fa mayor").svgPentagrama(tocadaEn: [Altura("La♯4")], digitos: [0: [2]])
@@ -189,7 +189,7 @@ import Testing
         #expect(linea.tonica == escala.tonica)
         #expect(linea.digitos == [.redonda: [3]])
         #expect(partitura.svg() == escala.svgPentagrama(tocadaEn: alturas, digitos: [1: [3]]))
-        let conRitmo = escala.partitura(tocadaEn: alturas, figura: .corchea)
+        let conRitmo = escala.partitura(tocadaEn: alturas, ritmo: .figura(.corchea))
         #expect(conRitmo.ritmo)
         #expect(conRitmo.pentagramas[0].voces[0].voz.eventos.map(\.duracion) == [.corchea, .corchea, .negra])
         let arpegio = Acorde("Re7").partitura(arpegiadoEn: alturas)
@@ -228,19 +228,51 @@ import Testing
         #expect(arpegio.encabezado.titulo(en: arpegio.notacion) == Acorde("Re7").cifrado(en: .inglesASCII))
     }
 
-    /// La tablatura cuenta las cuerdas desde la más aguda; el mástil, desde la más grave.
+    /// La tablatura cuenta las cuerdas como el mástil, desde la más grave, y al dibujarla pone la más aguda arriba.
     @Test func lasCuerdasDeLaTablaturaYDelMastil() {
-        // El Do3 de la guitarra: la cuerda 1 del mástil (La2), traste 3, es la 5.ª: la línea 4 desde arriba.
-        let pulsacion = Tablatura.Pulsacion(cuerdaDesdeLaGrave: 1, de: 6, traste: 3)
-        #expect(pulsacion == Tablatura.Pulsacion(cuerda: 4, traste: 3))
-        #expect(pulsacion.cuerdaDesdeLaGrave(de: 6) == 1)
-        let tablatura = Tablatura(cuerdas: 6, desdeLaGrave: [0: [(1, 3)], 1: [(2, 2)], 2: [(3, 0)]])
-        let aMano = Tablatura(
-            cuerdas: 6,
-            notas: [
-                0: [.init(cuerda: 4, traste: 3)], 1: [.init(cuerda: 3, traste: 2)], 2: [.init(cuerda: 2, traste: 0)],
-            ])
-        #expect(tablatura == aMano)
+        // El Do3 de la guitarra: la cuerda 1 desde la grave (la 5.ª), traste 3, en la línea 4 desde arriba.
+        let pulsacion = Tablatura.Pulsacion(cuerda: 1, traste: 3)
+        #expect(pulsacion.linea(de: 6) == 4)
+        let grave = Tablatura(cuerdas: 6, notas: [0: [.init(cuerda: 0, traste: 3)]])
+        let aguda = Tablatura(cuerdas: 6, notas: [0: [.init(cuerda: 5, traste: 3)]])
+        let alturas = [Altura("Sol2")]
+        let abajo = Acorde("Sol").svgPentagrama(arpegiadoEn: alturas, tablatura: grave)
+        let arriba = Acorde("Sol").svgPentagrama(arpegiadoEn: alturas, tablatura: aguda)
+        // El traste de la cuerda grave va más abajo que el de la aguda.
+        func yDelTraste(_ svg: String) -> Double? {
+            guard let fin = svg.range(of: ">3</text>") else { return nil }
+            let antes = svg[..<fin.lowerBound]
+            guard let y = antes.range(of: " y=\"", options: .backwards) else { return nil }
+            return Double(antes[y.upperBound...].prefix { $0 != "\"" })
+        }
+        let (yAbajo, yArriba) = (yDelTraste(abajo), yDelTraste(arriba))
+        #expect(yAbajo != nil && yArriba != nil)
+        if let yAbajo, let yArriba { #expect(yAbajo > yArriba) }
+    }
+
+    /// El ritmo de unas notas tocadas una tras otra: redondas sin él, la figura con él y una negra al final.
+    @Test func elRitmoDeLasNotasTocadas() {
+        #expect(Partitura.Ritmo.libre.figura == nil && Partitura.Ritmo.figura(.corchea).figura == .corchea)
+        #expect((0..<3).map { Partitura.Ritmo.libre.duracion(de: $0, entre: 3) } == [.redonda, .redonda, .redonda])
+        let corcheas = (0..<3).map { Partitura.Ritmo.figura(.corchea).duracion(de: $0, entre: 3) }
+        #expect(corcheas == [.corchea, .corchea, .negra])
+        #expect(Partitura.Ritmo.figura(.blanca).duracion(de: 1, entre: 2) == .blanca)
+        #expect(Partitura.Ritmo.figura(.corchea).duracion(de: 0, entre: 1) == .corchea)
+    }
+
+    /// Lo que se anota nota a nota pasa a los inicios de la línea y vuelve igual.
+    @Test func loQueSeAnotaNotaANota() throws {
+        let voz = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2")
+        let porNota = Partitura.AnotacionesPorNota(
+            cifrados: [0: Acorde("Do"), 3: Acorde("Fa")], grados: [3: "IV"], bajoCifrado: [1: ["6"]],
+            digitos: [2: [3]], pulsaciones: [0: [.init(cuerda: 1, traste: 3)]])
+        let linea = Partitura.Linea(voz, porNota: porNota)
+        #expect(linea.cifrados == [.cero: Acorde("Do"), .blanca: Acorde("Fa")])
+        #expect(linea.digitos == [Duracion(3, 8): [3]] && linea.bajoCifrado == [.negra: ["6"]])
+        #expect(linea.porNota == porNota)
+        // Lo que no es de ninguna nota se descarta.
+        #expect(Partitura.Linea(voz, porNota: .init(grados: [9: "V"])).grados.isEmpty)
+        #expect(voz.porEvento(voz.porInicio([1: "a", 3: "b"])) == [1: "a", 3: "b"])
     }
 }
 
@@ -341,12 +373,12 @@ import Testing
         #expect(alberti.partitura().encabezado.tema == .arpegio(alberti))
         #expect(alberti.partitura().pentagramas[0].voces[0].cifrados == [.cero: Acorde("Do")])
         #expect(alberti.svgPentagrama().contains(">\(alberti.nombre(en: .espanolCompacto))</title>"))
-        // Con figura, con ritmo: la escala y el arpegio en corcheas, la última nota en negra.
-        let enCorcheas = dorico.partitura(figura: .corchea)
+        // Con una figura, con ritmo: la escala y el arpegio en corcheas, la última nota en negra.
+        let enCorcheas = dorico.partitura(ritmo: .figura(.corchea))
         let eventos = enCorcheas.pentagramas[0].voces[0].voz.eventos
         #expect(enCorcheas.ritmo && eventos.dropLast().allSatisfy { $0.duracion == .corchea })
         #expect(eventos.last?.duracion == .negra && enCorcheas.encabezado.tema == .escala(dorico))
-        let arpegio = Arpegio(Acorde("Do7")).partitura(figura: .semicorchea)
+        let arpegio = Arpegio(Acorde("Do7")).partitura(ritmo: .figura(.semicorchea))
         #expect(arpegio.ritmo && arpegio.pentagramas[0].voces[0].voz.eventos.first?.duracion == .semicorchea)
     }
 

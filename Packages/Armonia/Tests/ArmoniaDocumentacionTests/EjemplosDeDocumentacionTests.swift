@@ -900,30 +900,30 @@ import Hexagonos
     }
 
     @Test func notacionYPartitura16() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 383
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 388
         let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
         let grados = Tonalidad(.do).analizar(progresion).cifrados
-        comprobar(Partitura(acordes: voces, titulo: "ii–V–I", grados: grados).svg().contains(">V7</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 386)
-        comprobar(Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 387)
-        comprobar(Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 388)
+        comprobar(Partitura(acordes: voces, titulo: "ii–V–I", grados: grados).svg().contains(">V7</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 391)
+        comprobar(Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 392)
+        comprobar(Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 393)
     }
 
     @Test func notacionYPartitura17() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 402
-        comprobar(Tonalidad(.do).cifrasDeBajo(de: Acorde("Sol7/Si")), #"["6", "5"]"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 402)
-        comprobar(Tonalidad(.la, .menor).cifrasDeBajo(de: Acorde("Mi")), #"["♯"]"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 403)
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 407
+        comprobar(Tonalidad(.do).cifrasDeBajo(de: Acorde("Sol7/Si")), #"["6", "5"]"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 407)
+        comprobar(Tonalidad(.la, .menor).cifrasDeBajo(de: Acorde("Mi")), #"["♯"]"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 408)
     }
 
     @Test func notacionYPartitura18() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 430
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 435
         do {
             let acorde = try Acorde(leyendo: "Do7(b3)")
             print(acorde)
         } catch let error as ErrorDeLecturaDeTeoria {
             print(error)
-            comprobarIgual(error.motivo, .tensionNoValida("b3"), #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 437)
-            comprobar(error.posicion, #"4"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 438)
+            comprobarIgual(error.motivo, .tensionNoValida("b3"), #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 442)
+            comprobar(error.posicion, #"4"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 443)
             print(error.descripcion(en: .inglesASCII))
         }
         do { _ = try TipoDeAcorde(comprobandoPasosDeQuinta: [0, -3, 4]) } catch { print(error) }
@@ -1252,7 +1252,18 @@ import Hexagonos
     }
 
     @Test func trastes4() throws {
-        // Sources/Armonia/Armonia.docc/Trastes.md, línea 96
+        // Sources/Armonia/Armonia.docc/Trastes.md, línea 97
+        let mastil = Mastil(.guitarra, trastes: 15)
+        let posicion = mastil.posicionesCAGED(de: Escala(.sol, .mayor))[0]
+        comprobar(posicion.escala == Escala(.sol, .mayor), #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 99)
+        let enCorcheas = posicion.partitura(ritmo: .figura(.corchea))
+        comprobar(enCorcheas.ritmo && enCorcheas.pentagramas[0].cuerdas == 6, #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 101)
+        let doMayor = mastil.digitaciones(de: Acorde("Do"))[0]
+        comprobar(doMayor.partitura().encabezado.tema == .progresion([Acorde("Do")]), #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 103)
+    }
+
+    @Test func trastes5() throws {
+        // Sources/Armonia/Armonia.docc/Trastes.md, línea 113
         let mastil = Mastil(.guitarra)
         let leida = try Digitacion(leyendo: "x32010", en: mastil)
         let comprobada = Digitacion(comprobando: [nil, 3, 2, 0, 1, 0], en: mastil)

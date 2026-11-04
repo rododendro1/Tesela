@@ -8,16 +8,34 @@ import Testing
 @Suite struct MastilYPartituraTests {
     let guitarra = Mastil(.guitarra)
 
-    @Test func laTablaturaCuentaLasCuerdasDesdeArriba() {
+    @Test func laTablaturaCuentaLasCuerdasComoElMastil() {
         let doDe5 = PosicionEnElMastil(cuerda: 1, traste: 3)
         let tablatura = Tablatura(guitarra, posiciones: [0: [doDe5]])
         #expect(tablatura.cuerdas == 6)
-        #expect(tablatura.notas[0] == [Tablatura.Pulsacion(cuerda: 4, traste: 3)])
+        #expect(tablatura.notas[0] == [Tablatura.Pulsacion(cuerda: 1, traste: 3)])
+    }
+
+    @Test func lasPosicionesRecuerdanSuEscalaYSuAcorde() throws {
+        let escala = Escala(.do, .mayor)
+        #expect(guitarra.posicionesCAGED(de: escala).allSatisfy { $0.escala == escala })
+        #expect(guitarra.posicionesPorCuerda(de: escala).allSatisfy { $0.escala == escala })
+        let acorde = Acorde("Lam")
+        #expect(guitarra.arpegios(de: acorde).allSatisfy { $0.acorde == acorde })
+        #expect(guitarra.arpegiosCAGED(de: acorde).allSatisfy { $0.acorde == acorde })
+        #expect(guitarra.arpegiosDeUnaNotaPorCuerda(de: acorde).allSatisfy { $0.acorde == acorde })
+        let formas = guitarra.digitaciones(de: Acorde("Do"))
+        #expect(!formas.isEmpty && formas.allSatisfy { $0.acorde == Acorde("Do") })
+        let drop2 = guitarra.disposiciones(de: Acorde("Do7M"), .drop2, cuerdas: [1, 2, 3, 4])
+        #expect(!drop2.isEmpty && drop2.allSatisfy { $0.acorde == Acorde("Do7M") })
+        // Una digitación es la misma aunque una sepa de qué acorde es y la otra no.
+        let leida = try Digitacion(leyendo: "x32010", en: guitarra)
+        #expect(leida.acorde == nil && formas.contains(leida))
     }
 
     @Test func unaDigitacionConSuCifradoYSuTablatura() throws {
-        let digitacion = try Digitacion(leyendo: "x32010", en: guitarra)
-        let partitura = digitacion.partitura(de: Acorde("Do"))
+        let digitacion = try #require(guitarra.digitaciones(de: Acorde("Do")).first)
+        #expect(digitacion.tablatura == "x32010")
+        let partitura = digitacion.partitura()
         #expect(partitura.pentagramas.count == 1)
         let pentagrama = partitura.pentagramas[0]
         #expect(pentagrama.cuerdas == 6)
@@ -25,10 +43,14 @@ import Testing
         #expect(linea.cifrados == [.cero: Acorde("Do")])
         #expect(linea.voz.eventos.count == 1 && linea.voz.eventos[0].duracion == .redonda)
         #expect(linea.voz.eventos[0].alturas == digitacion.alturas)
-        // El Do3 de la 5.ª cuerda, en la línea 4 desde arriba.
-        #expect(linea.pulsaciones[.cero]?.first == Tablatura.Pulsacion(cuerda: 4, traste: 3))
+        // El Do3 de la 5.ª cuerda: la 1 desde la grave.
+        #expect(linea.pulsaciones[.cero]?.first == Tablatura.Pulsacion(cuerda: 1, traste: 3))
         #expect(linea.pulsaciones[.cero]?.count == 5)
         #expect(partitura.encabezado.tema == .progresion([Acorde("Do")]))
+        // La leída no sabe de qué acorde es: sin cifrado, salvo que se le dé.
+        let leida = try Digitacion(leyendo: "x32010", en: guitarra)
+        #expect(leida.partitura().pentagramas[0].voces[0].cifrados.isEmpty)
+        #expect(leida.partitura(de: Acorde("Do")) == partitura)
     }
 
     @Test func variasDigitacionesUnaDetrasDeOtra() throws {
@@ -39,8 +61,10 @@ import Testing
         let linea = partitura.pentagramas[0].voces[0]
         #expect(linea.voz.eventos.count == 2 && linea.pulsaciones.count == 2)
         #expect(linea.cifrados.count == 2 && partitura.encabezado.titulo == "I–V")
-        // Sin acordes, sin cifrados.
+        // Sin acordes, sin cifrados; con los suyos, los de cada una.
         #expect(Digitacion.partitura(digitaciones).pentagramas[0].voces[0].cifrados.isEmpty)
+        let suyas = [Acorde("Do"), Acorde("Sol")].compactMap { guitarra.digitaciones(de: $0).first }
+        #expect(Digitacion.partitura(suyas).pentagramas[0].voces[0].cifrados.count == 2)
     }
 
     @Test func lasNotasSeEscribenComoEnElAcorde() throws {
@@ -55,22 +79,32 @@ import Testing
     @Test func unaPosicionDeLaEscalaConRitmo() throws {
         let escala = Escala(.do, .mayor)
         let posicion = try #require(guitarra.posicionesCAGED(de: escala).first)
-        let partitura = posicion.partitura(de: escala, figura: .corchea)
+        let partitura = posicion.partitura(ritmo: .figura(.corchea))
         #expect(partitura.ritmo && partitura.encabezado.tema == .escala(escala))
         let linea = partitura.pentagramas[0].voces[0]
         #expect(partitura.pentagramas[0].cuerdas == 6)
         #expect(linea.voz.eventos.count == posicion.posiciones.count)
         #expect(linea.pulsaciones.count == posicion.posiciones.count)
-        #expect(!posicion.partitura(de: escala).ritmo)
+        #expect(!posicion.partitura().ritmo)
+        #expect(posicion.partitura(de: escala) == posicion.partitura())
+        // Sin escala, las notas como las da el mástil, con su tablatura.
+        let suelta = EscalaEnElMastil(mastil: guitarra, trastes: posicion.trastes, posiciones: posicion.posiciones)
+        let sinEscala = suelta.partitura(ritmo: .figura(.corchea))
+        #expect(sinEscala.ritmo && sinEscala.encabezado.tema == nil)
+        #expect(sinEscala.pentagramas[0].voces[0].voz.eventos.map(\.alturas) == posicion.alturas.map { [$0] })
+        #expect(sinEscala.pentagramas[0].voces[0].pulsaciones.count == posicion.posiciones.count)
     }
 
     @Test func unArpegioConSusDedos() throws {
         let acorde = Acorde("Do")
         let arpegio = try #require(guitarra.arpegiosCAGED(de: acorde).first)
-        let partitura = arpegio.partitura(de: acorde, figura: .corchea)
+        let partitura = arpegio.partitura(ritmo: .figura(.corchea))
         #expect(partitura.ritmo && partitura.encabezado.tema == .acorde(acorde))
         let linea = partitura.pentagramas[0].voces[0]
         #expect(linea.pulsaciones.count == arpegio.posiciones.count)
         #expect(linea.digitos.count == arpegio.dedos.filter { $0 > 0 }.count)
+        let suelto = ArpegioEnElMastil(mastil: guitarra, trastes: arpegio.trastes, posiciones: arpegio.posiciones)
+        #expect(suelto.partitura().pentagramas[0].voces[0].cifrados.isEmpty)
+        #expect(suelto.partitura(de: acorde) == arpegio.partitura())
     }
 }

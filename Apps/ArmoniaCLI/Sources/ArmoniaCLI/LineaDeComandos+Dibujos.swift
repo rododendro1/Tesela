@@ -328,11 +328,9 @@ extension LineaDeComandos {
             let suena = mastil.altura(en: posicion)
             return Altura(suena.nota, octava: suena.octava + octavas)
         }
-        var notas: [Int: [Tablatura.Pulsacion]] = [:]
-        for (i, posicion) in posiciones.enumerated() {
-            notas[i] = [Tablatura.Pulsacion(cuerda: cuerdas.count - 1 - posicion.cuerda, traste: posicion.traste)]
-        }
-        return (alturas, Tablatura(cuerdas: cuerdas.count, notas: notas))
+        var porNota: [Int: [PosicionEnElMastil]] = [:]
+        for (i, posicion) in posiciones.enumerated() { porNota[i] = [posicion] }
+        return (alturas, Tablatura(mastil, posiciones: porNota))
     }
 
     /// Los dedos de la mano izquierda en unas posiciones: 0 al aire, 1 en el traste más bajo que se pisa y uno por
@@ -411,8 +409,9 @@ extension LineaDeComandos {
                 if bajando { posiciones.reverse() }
             }
             let (alturas, tablatura) = enTablatura(posiciones, en: mastil)
+            let ritmo = secuencia.map { Partitura.Ritmo.figura(figuraDeLaSecuencia($0)) } ?? .libre
             svg = escala.svgPentagrama(
-                tocadaEn: alturas, titulo: titulo, figura: secuencia.map(figuraDeLaSecuencia),
+                tocadaEn: alturas, titulo: titulo, ritmo: ritmo,
                 digitos: conDedos ? dedosEnElMastil(posiciones) : [:], tablatura: tablatura, opciones: opciones)
         } else if let secuencia {
             svg = escala.svgPentagrama(
@@ -483,7 +482,8 @@ extension LineaDeComandos {
             var digitos: [Int: [Int]] = [:]
             if conDedos { for (i, dedo) in enElMastil.dedos.enumerated() { digitos[i] = [dedo] } }
             let svg = acorde.svgPentagrama(
-                arpegiadoEn: alturas, figura: figura, digitos: digitos, tablatura: tablatura, opciones: opciones)
+                arpegiadoEn: alturas, ritmo: figura.map { Partitura.Ritmo.figura($0) } ?? .libre, digitos: digitos,
+                tablatura: tablatura, opciones: opciones)
             return bien(svg.trimmingCharacters(in: "\n"))
         }
         var arpegios: [Arpegio] = []

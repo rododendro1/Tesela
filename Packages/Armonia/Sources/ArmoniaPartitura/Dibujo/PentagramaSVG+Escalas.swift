@@ -27,17 +27,17 @@ extension Escala {
     }
 
     /// La partitura de la escala, la que dibuja `svgPentagrama(octava:…)`: en redondas y sin ritmo
-    /// (``Partitura/ritmo``) o, con `figura`, con ritmo (la última nota, una negra si la figura es más corta). Con
+    /// (``Partitura/ritmo``) o, con `ritmo: .figura(…)`, con ritmo (``Partitura/Ritmo``). Con
     /// su armadura (``Partitura/Pentagrama/armadura``), los intervalos contados desde su tónica
     /// (``Partitura/Linea/tonica``), los microtonos de una escala microtonal con su sistema (``Evento/Nota/sistema``)
     /// y, con `digitacion`, el dedo de cada nota al piano. Su título es el nombre de la escala (``Encabezado/tema``),
     /// en la notación con que se dibuja o se exporta.
     ///
     ///     Escala("Re dórico").partitura().musicXML()                 // en ArmoniaFormatos
-    ///     Escala("Re dórico").partitura(figura: .corchea).svg()      // en corcheas
+    ///     Escala("Re dórico").partitura(ritmo: .figura(.corchea)).svg()   // en corcheas
     public func partitura(
         octava: Int = 4, octavas: Int = 1, sentido: SentidoDelIntervalo? = nil, digitacion: Mano? = nil,
-        figura: Duracion? = nil
+        ritmo: Partitura.Ritmo = .libre
     ) -> Partitura {
         let alturas = alturasMicrotonales(octava: octava, octavas: octavas, sentido: sentido)
         var digitos: [Int: [Int]] = [:]
@@ -52,7 +52,7 @@ extension Escala {
             for (columna, dedo) in zip(alturas.indices, dedos) { digitos[columna] = [dedo] }
         }
         return Partitura.tocada(
-            alturas.map { Evento.Nota($0) }, tema: .escala(self), figura: figura, digitos: digitos, acorde: nil,
+            alturas.map { Evento.Nota($0) }, tema: .escala(self), ritmo: ritmo, digitos: digitos, acorde: nil,
             tonica: tonica, armadura: notasDeLaArmadura)
     }
 
@@ -77,39 +77,39 @@ extension Escala {
     ) -> Partitura {
         partitura(
             tocadaEn: self.secuencia(secuencia, octava: octava, octavas: octavas, sentido: sentido), titulo: nil,
-            tema: .secuencia(secuencia, de: self), figura: Escala.figura(deGruposDe: secuencia.pasos.count),
+            tema: .secuencia(secuencia, de: self), ritmo: .figura(Escala.figura(deGruposDe: secuencia.pasos.count)),
             digitos: [:], tablatura: nil, sentido: sentido)
     }
 
     /// La partitura de la escala tocada en unas alturas cualesquiera (las de una posición del mástil, una
     /// secuencia…): escritas con sus notas (el La♯ que da el mástil, como Si♭ si la escala lo tiene), con su
     /// armadura (``Partitura/Pentagrama/armadura``) y los intervalos contados desde su tónica
-    /// (``Partitura/Linea/tonica``). Con `figura`, con ritmo (la última nota, una negra si la figura es más corta);
-    /// sin ella, en redondas y sin ritmo (``Partitura/ritmo``). `digitos` y `tablatura` van por nota, contando desde
+    /// (``Partitura/Linea/tonica``). Con `ritmo: .figura(…)`, con ritmo (``Partitura/Ritmo``);
+    /// sin él, en redondas y sin ritmo (``Partitura/ritmo``). `digitos` y `tablatura` van por nota, contando desde
     /// 0. Si no se da `titulo`, el de la partitura es el nombre de la escala (``Encabezado/tema``), en la notación
     /// con que se dibuja o se exporta. Las notas de una escala microtonal llevan su microtono, con
     /// su sistema (``Evento/Nota/sistema``): el de la subida y, las que solo están al bajar, el de la bajada.
     ///
     ///     let posicion = [Altura("La2"), Altura("Do3"), Altura("Re3"), Altura("Mi3")]
-    ///     Escala(.la, .pentatonicaMenor).partitura(tocadaEn: posicion, figura: .corchea).musicXML()
+    ///     Escala(.la, .pentatonicaMenor).partitura(tocadaEn: posicion, ritmo: .figura(.corchea)).musicXML()
     public func partitura(
-        tocadaEn alturas: [Altura], titulo: String? = nil, figura: Duracion? = nil, digitos: [Int: [Int]] = [:],
-        tablatura: Tablatura? = nil
+        tocadaEn alturas: [Altura], titulo: String? = nil, ritmo: Partitura.Ritmo = .libre,
+        digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil
     ) -> Partitura {
         partitura(
-            tocadaEn: alturas, titulo: titulo, tema: .escala(self), figura: figura, digitos: digitos,
+            tocadaEn: alturas, titulo: titulo, tema: .escala(self), ritmo: ritmo, digitos: digitos,
             tablatura: tablatura, sentido: nil)
     }
 
     /// Como `partitura(tocadaEn:…)`, con los microtonos de la subida o de la bajada, según `sentido`; si es `nil`,
     /// los de la subida y, los de las notas que solo están al bajar, los de la bajada.
     private func partitura(
-        tocadaEn alturas: [Altura], titulo: String?, tema: Encabezado.Tema, figura: Duracion?, digitos: [Int: [Int]],
-        tablatura: Tablatura?, sentido: SentidoDelIntervalo?
+        tocadaEn alturas: [Altura], titulo: String?, tema: Encabezado.Tema, ritmo: Partitura.Ritmo,
+        digitos: [Int: [Int]], tablatura: Tablatura?, sentido: SentidoDelIntervalo?
     ) -> Partitura {
         Partitura.tocada(
             notasTocadas(en: Altura.reescritas(alturas, con: notas), sentido: sentido),
-            titulo: titulo, tema: tema, figura: figura, digitos: digitos, tablatura: tablatura, acorde: nil,
+            titulo: titulo, tema: tema, ritmo: ritmo, digitos: digitos, tablatura: tablatura, acorde: nil,
             tonica: tonica, armadura: notasDeLaArmadura)
     }
 
@@ -118,10 +118,11 @@ extension Escala {
     /// contados desde su tónica: `partitura(tocadaEn:…).svg(opciones:)`, con el nombre de la escala en
     /// `opciones.notacion`. Las notas de una escala microtonal llevan además su microtono, con el signo de su sistema.
     public func svgPentagrama(
-        tocadaEn alturas: [Altura], titulo: String? = nil, figura: Duracion? = nil, digitos: [Int: [Int]] = [:],
-        tablatura: Tablatura? = nil, opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+        tocadaEn alturas: [Altura], titulo: String? = nil, ritmo: Partitura.Ritmo = .libre,
+        digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil,
+        opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
-        partitura(tocadaEn: alturas, titulo: titulo, figura: figura, digitos: digitos, tablatura: tablatura)
+        partitura(tocadaEn: alturas, titulo: titulo, ritmo: ritmo, digitos: digitos, tablatura: tablatura)
             .svg(opciones: opciones)
     }
 
@@ -204,44 +205,45 @@ extension Arpegio {
         return partitura(octava: octava).svg(opciones: suyas)
     }
 
-    /// La partitura del arpegio, en redondas y sin ritmo (``Partitura/ritmo``) o, con `figura`, con ritmo (la
-    /// última nota, una negra si la figura es más corta): cada nota, en el orden del patrón y a partir de `octava`
+    /// La partitura del arpegio, en redondas y sin ritmo (``Partitura/ritmo``) o, con `ritmo: .figura(…)`, con ritmo
+    /// (``Partitura/Ritmo``): cada nota, en el orden del patrón y a partir de `octava`
     /// (la del bajo), con las alteraciones que le hagan falta (sin armadura, salvo la de una tonalidad:
     /// `OpcionesDePentagrama(armadura: .tonalidad(…))`) y el cifrado del acorde encima de la primera. Su título es
     /// el nombre del arpegio (``Encabezado/tema``), en la notación con que se dibuja o se exporta.
     ///
-    ///     Arpegio(Acorde("Do7")).partitura().musicXML()            // en ArmoniaFormatos
-    ///     Arpegio(Acorde("Do7")).partitura(figura: .corchea).svg() // en corcheas
-    public func partitura(octava: Int = 4, figura: Duracion? = nil) -> Partitura {
+    ///     Arpegio(Acorde("Do7")).partitura().musicXML()                         // en ArmoniaFormatos
+    ///     Arpegio(Acorde("Do7")).partitura(ritmo: .figura(.corchea)).svg()   // en corcheas
+    public func partitura(octava: Int = 4, ritmo: Partitura.Ritmo = .libre) -> Partitura {
         Partitura.tocada(
-            alturas(octava: octava).map { Evento.Nota($0) }, tema: .arpegio(self), figura: figura, acorde: acorde,
+            alturas(octava: octava).map { Evento.Nota($0) }, tema: .arpegio(self), ritmo: ritmo, acorde: acorde,
             tonica: nil, armadura: nil)
     }
 }
 
 extension Acorde {
     /// La partitura del acorde arpegiado en unas alturas cualesquiera (las de una posición del mástil), escritas con
-    /// sus notas (Si♭, no La♯, en Do7) y con el cifrado encima de la primera. Con `figura`, con ritmo (la última
-    /// nota, una negra si la figura es más corta); sin ella, en redondas y sin ritmo (``Partitura/ritmo``).
+    /// sus notas (Si♭, no La♯, en Do7) y con el cifrado encima de la primera. Con `ritmo: .figura(…)`, con ritmo
+    /// (``Partitura/Ritmo``); sin él, en redondas y sin ritmo (``Partitura/ritmo``).
     /// `digitos` y `tablatura` van por nota, contando desde 0. Si no se da `titulo`, el de la partitura es el cifrado
     /// (``Encabezado/tema``), en la notación con que se dibuja o se exporta.
     public func partitura(
-        arpegiadoEn alturas: [Altura], titulo: String? = nil, figura: Duracion? = nil, digitos: [Int: [Int]] = [:],
+        arpegiadoEn alturas: [Altura], titulo: String? = nil, ritmo: Partitura.Ritmo = .libre,
+        digitos: [Int: [Int]] = [:],
         tablatura: Tablatura? = nil
     ) -> Partitura {
         Partitura.tocada(
             Altura.reescritas(alturas, con: notas).map { Evento.Nota($0) },
-            titulo: titulo, tema: .acorde(self), figura: figura, digitos: digitos, tablatura: tablatura, acorde: self,
+            titulo: titulo, tema: .acorde(self), ritmo: ritmo, digitos: digitos, tablatura: tablatura, acorde: self,
             tonica: nil, armadura: nil)
     }
 
     /// El acorde arpegiado en unas alturas cualesquiera, en un pentagrama:
     /// `partitura(arpegiadoEn:…).svg(opciones:)`, con el cifrado (y el título) en `opciones.notacion`.
     public func svgPentagrama(
-        arpegiadoEn alturas: [Altura], figura: Duracion? = nil, digitos: [Int: [Int]] = [:],
+        arpegiadoEn alturas: [Altura], ritmo: Partitura.Ritmo = .libre, digitos: [Int: [Int]] = [:],
         tablatura: Tablatura? = nil, opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
-        partitura(arpegiadoEn: alturas, figura: figura, digitos: digitos, tablatura: tablatura).svg(opciones: opciones)
+        partitura(arpegiadoEn: alturas, ritmo: ritmo, digitos: digitos, tablatura: tablatura).svg(opciones: opciones)
     }
 }
 

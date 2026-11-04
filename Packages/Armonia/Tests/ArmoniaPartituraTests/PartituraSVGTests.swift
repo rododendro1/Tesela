@@ -54,7 +54,7 @@ import Testing
     @Test func loQueSeAnotaEnUnaVoz() throws {
         let voz = try Voz(leyendo: "Do3:4 Mi3:4 Sol3:2")
         let pulsaciones: [Int: [Tablatura.Pulsacion]] = [
-            0: [.init(cuerda: 4, traste: 3)], 2: [.init(cuerda: 3, traste: 0)],
+            0: [.init(cuerda: 1, traste: 3)], 2: [.init(cuerda: 3, traste: 0)],
         ]
         let linea = Partitura.Linea(
             voz, grados: [.cero: "I"], bajoCifrado: [.negra: ["6"]], digitos: [.blanca: [1]],
