@@ -86,6 +86,10 @@ import Testing
         #expect(!leida.ritmo)
     }
 
+    @Test func razonDeFrecuencias() throws {
+        #expect(try idaYVuelta(RazonDeFrecuencias(3, 2)) == RazonDeFrecuencias(3, 2))
+    }
+
     @Test func notacion() throws {
         for notacion in Notacion.allCases {
             #expect(try idaYVuelta(notacion) == notacion)

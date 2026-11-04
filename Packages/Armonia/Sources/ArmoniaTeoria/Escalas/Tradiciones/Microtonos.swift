@@ -59,14 +59,13 @@ public enum SistemaMicrotonal: String, Sendable, Codable, CaseIterable {
 
     /// Las razones de los 22 śruti desde Sa: entre dos seguidos hay un limma (256/243), una coma sintónica (81/80)
     /// o un semitono menor (25/24).
-    public static let razonesDeLosSruti: [(numerador: Int, denominador: Int)] = [
-        (1, 1), (256, 243), (16, 15), (10, 9), (9, 8), (32, 27), (6, 5), (5, 4), (81, 64), (4, 3), (27, 20),
-        (45, 32), (729, 512), (3, 2), (128, 81), (8, 5), (5, 3), (27, 16), (16, 9), (9, 5), (15, 8), (243, 128),
+    public static let razonesDeLosSruti: [RazonDeFrecuencias] = [
+        .init(1, 1), .init(256, 243), .init(16, 15), .init(10, 9), .init(9, 8), .init(32, 27), .init(6, 5), .init(5, 4),
+        .init(81, 64), .init(4, 3), .init(27, 20), .init(45, 32), .init(729, 512), .init(3, 2), .init(128, 81),
+        .init(8, 5), .init(5, 3), .init(27, 16), .init(16, 9), .init(9, 5), .init(15, 8), .init(243, 128),
     ]
 
-    static let centsDeLosSruti: [Double] = razonesDeLosSruti.map {
-        1200 * log2(Double($0.numerador) / Double($0.denominador))
-    }
+    static let centsDeLosSruti: [Double] = razonesDeLosSruti.map(\.cents)
 }
 
 /// Una escala con microtonos: su aproximación de doce notas (`temperada`) y la posición de cada grado en los
