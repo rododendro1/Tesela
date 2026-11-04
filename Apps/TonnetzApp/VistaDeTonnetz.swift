@@ -395,7 +395,7 @@ struct VistaDeTonnetz: View {
         #if DEBUG
             guard partitura == nil, let texto = UserDefaults.standard.string(forKey: "partituraDePrueba"),
                 let analisis = try? AnalisisArmonico.analizar(leyendo: texto),
-                let leida = try? ImportacionDeProgresion.leer(Data(analisis.musicXML().utf8))
+                let leida = try? ImportacionDeProgresion.leer(Data(analisis.partitura().musicXML().utf8))
             else { return }
             importada = leida
             partitura = RecorridoDePartitura(leida, notacion: notacion)

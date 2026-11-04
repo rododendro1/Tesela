@@ -286,9 +286,9 @@ extension LineaDeComandosTests {
     @Test func analizarUnArchivo() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
         let esperado = salida("analizar Do Lam Re7 Sol7 Do")
-        let midi = try fichero(analisis.midi(), extension: "mid")
+        let midi = try fichero(analisis.partitura().midi(), extension: "mid")
         #expect(salida("analizar --archivo " + midi) == esperado)
-        let xml = try fichero(Data(analisis.musicXML().utf8), extension: "musicxml")
+        let xml = try fichero(Data(analisis.partitura().musicXML().utf8), extension: "musicxml")
         #expect(salida("analyze --file " + xml) == esperado)
         // Cada acorde dura una blanca: con una ventana de una blanca, sale lo mismo.
         #expect(salida("analizar --archivo \(xml) --ventana 2") == esperado)
@@ -310,7 +310,7 @@ extension LineaDeComandosTests {
             resultado("analizar --archivo \(texto) --ingles").error == "The file is not MIDI, MusicXML, MEI or ABC.\n")
         #expect(resultado("analizar Do Sol --archivo " + texto).codigo == 2)
         #expect(resultado("analizar --archivo \(texto) --ventana 3").codigo == 1)
-        let melodia = try fichero(Voz(leyendo: "Do4:4 Re4:4 Mi4:4").midi(), extension: "mid")
+        let melodia = try fichero(Voz(leyendo: "Do4:4 Re4:4 Mi4:4").partitura().midi(), extension: "mid")
         #expect(
             resultado("analizar --archivo " + melodia).error.hasPrefix("armonia: el fichero no tiene ningún acorde\n"))
     }
@@ -388,7 +388,7 @@ extension LineaDeComandosTests {
         // Sin --escalas, los acordes de siempre.
         #expect(salida("identificar Do Mi Sol") == salida("identify C E G"))
         let melodia = try fichero(
-            Voz(leyendo: "Re4:4 Mi4:4 Fa4:4 Sol4:4 La4:4 Si4:4 Do5:4 Re5:4").midi(), extension: "mid")
+            Voz(leyendo: "Re4:4 Mi4:4 Fa4:4 Sol4:4 La4:4 Si4:4 Do5:4 Re5:4").partitura().midi(), extension: "mid")
         let deLaMelodia = salida("identificar --archivo " + melodia)
         #expect(!deLaMelodia.split(separator: "\n")[0].contains("además"), Comment(rawValue: deLaMelodia))
         #expect(deLaMelodia.split(separator: "\n").count == 10)

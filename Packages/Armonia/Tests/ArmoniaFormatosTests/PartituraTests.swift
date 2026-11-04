@@ -13,46 +13,49 @@ import Testing
     private let coral = try! Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
     private let progresion = try! AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
 
-    @Test(arguments: FormatoDePartitura.allCases)
-    func laDeUnaVozEsLaDeSiempre(_ formato: FormatoDePartitura) {
-        let encabezado = Encabezado(titulo: "Escala", tempo: Tempo(90), parte: "Flauta", instrumento: 73)
-        #expect(
-            voz.partitura(encabezado: encabezado).exportar(como: formato)
-                == voz.exportar(como: formato, tempo: Tempo(90), titulo: "Escala", parte: "Flauta", instrumento: 73))
-        #expect(voz.partitura(clave: .fa).exportar(como: formato) == voz.exportar(como: formato, clave: .fa))
+    @Test func laDeUnaVoz() {
+        let partitura = voz.partitura(encabezado: Encabezado(titulo: "Escala", tempo: Tempo(90)))
+        #expect(partitura.parte == "Voz" && partitura.instrumento == 0)
+        #expect(partitura.encabezado.tonalidad != nil && partitura.compas == voz.compas)
+        #expect(voz.partitura(clave: .fa).pentagramas[0].claveEscrita == .fa)
+        let flauta = voz.partitura(encabezado: Encabezado(parte: "Flauta", instrumento: 73))
+        #expect(flauta.parte == "Flauta" && flauta.instrumento == 73)
+        #expect(flauta.musicXML().contains("<part-name>Flauta</part-name>"))
     }
 
-    @Test(arguments: FormatoDePartitura.allCases)
-    func laDeUnCoralEsLaDeSiempre(_ formato: FormatoDePartitura) {
-        let encabezado = Encabezado(titulo: "Cadencia", parte: "Coro", instrumento: 52)
-        let partitura = coral.partitura(duracion: .blanca, encabezado: encabezado, cifrados: true, analisis: true)
-        let deSiempre = coral.exportar(
-            como: formato, duracion: .blanca, titulo: "Cadencia", cifrados: true, analisis: true)
-        if formato == .midi {
-            // En MIDI, el último acorde suena lo que dura, sin alargarlo hasta la barra.
-            #expect(coral.midi(duracion: .blanca, titulo: "Cadencia") == deSiempre)
-        } else {
-            #expect(partitura.exportar(como: formato) == deSiempre)
-        }
+    @Test func laDeUnCoral() {
+        let partitura = coral.partitura(duracion: .blanca, cifrados: true, analisis: true)
+        #expect(partitura.parte == "Coro" && partitura.instrumento == 52)
+        #expect(partitura.pentagramas.map(\.claveEscrita) == [.sol, .fa])
+        #expect(partitura.lineas.count == 4 && partitura.tonalidadDelAnalisis != nil)
+        #expect(!partitura.lineas[0].linea.cifrados.isEmpty && !partitura.lineas[3].linea.analisis.isEmpty)
+        let piano = coral.partitura(encabezado: Encabezado(parte: "Piano", instrumento: 0))
+        #expect(piano.parte == "Piano" && piano.instrumento == 0 && piano.tonalidadDelAnalisis == nil)
     }
 
-    @Test(arguments: FormatoDePartitura.allCases)
-    func laDeUnaProgresionEsLaDeSiempre(_ formato: FormatoDePartitura) {
+    @Test func laDeUnaProgresion() {
         let duraciones = Array(repeating: Duracion.blanca, count: 5)
-        let encabezado = Encabezado(titulo: "P", parte: "Piano")
-        let partitura = progresion.partitura(duraciones: duraciones, encabezado: encabezado)
-        let deSiempre = progresion.exportar(como: formato, duraciones: duraciones, titulo: "P")
-        if formato != .midi { #expect(partitura.exportar(como: formato) == deSiempre) }
-        #expect(progresion.partitura(duraciones: duraciones).llave)
+        let partitura = progresion.partitura(duraciones: duraciones)
+        #expect(partitura.llave && partitura.parte == "Piano" && partitura.instrumento == 0)
+        #expect(partitura.encabezado.tonalidad == progresion.tonalidad)
+        #expect(progresion.partitura().lineas.allSatisfy { !$0.linea.marcadores.isEmpty || $0.pentagrama == 2 })
+        let sinNada = progresion.partitura(cifrados: false, analisis: false)
+        #expect(sinNada.tonalidadDelAnalisis == nil)
     }
 
-    @Test(arguments: FormatoDePartitura.allCases)
-    func laDeUnContrapuntoEsLaDeSiempre(_ formato: FormatoDePartitura) throws {
+    @Test func laDeUnContrapunto() throws {
         let ejercicio = try Contrapunto(
             cantusFirmus: "Re4 Fa4 Mi4 Re4", contrapunto: "La4 La4 Sol4 Fa4", especie: .primera)
-        let partitura = ejercicio.partitura(encabezado: Encabezado(titulo: "Fux", instrumento: 52))
-        #expect(partitura.exportar(como: formato) == ejercicio.exportar(como: formato, titulo: "Fux"))
-        #expect(partitura.encabezado.parte == "Contrapunctus · Cantus firmus")
+        let partitura = ejercicio.partitura(encabezado: Encabezado(titulo: "Fux"))
+        #expect(partitura.encabezado.parte == "Contrapunctus · Cantus firmus" && partitura.instrumento == 52)
+        #expect(partitura.lineas.count == 2 && partitura.encabezado.titulo == "Fux")
+    }
+
+    /// El último acorde de un coral se alarga hasta la barra también en MIDI: cuatro negras en 3/4 suenan seis.
+    @Test func elUltimoAcordeLlegaALaBarra() throws {
+        let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
+        let pieza = try PiezaImportada(midi: coral.partitura(compas: "3/4").midi())
+        #expect(pieza.duracion == .blanca * 3)
     }
 
     /// Una partitura hecha a mano: dos pentagramas, el de arriba con dos voces, en todos los formatos.

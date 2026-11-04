@@ -270,10 +270,10 @@ import Testing
 
     @Test func unaProgresionArpegiadaSeExporta() throws {
         let voz = Voz(arpegiando: [Acorde("Do"), Acorde("Sol7")], patron: .descendente, porAcorde: .blanca)
-        let xml = voz.musicXML(titulo: "Arpegios")
+        let xml = voz.partitura(encabezado: Encabezado(titulo: "Arpegios")).musicXML()
         #expect((xml.components(separatedBy: "<pitch>").count - 1) == 8)
-        #expect(voz.mei().contains("<mei"))
-        let pieza = try PiezaImportada(midi: voz.midi())
+        #expect(voz.partitura().mei().contains("<mei"))
+        let pieza = try PiezaImportada(midi: voz.partitura().midi())
         #expect(pieza.notas.map(\.altura.midi) == voz.eventos.flatMap(\.alturas).map(\.midi))
     }
 }

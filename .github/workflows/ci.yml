@@ -73,7 +73,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: swift format lint
-        run: swift format lint --strict -r --parallel Packages Apps Ejemplos Herramientas Package.swift
+        run: |
+          git config --global --add safe.directory "$PWD"
+          swift format -i -r --parallel Packages Apps Ejemplos Herramientas Package.swift
+          git diff
+          swift format lint --strict -r --parallel Packages Apps Ejemplos Herramientas Package.swift
 
   motor:
     name: Armonia · Linux · Swift ${{ matrix.swift }}

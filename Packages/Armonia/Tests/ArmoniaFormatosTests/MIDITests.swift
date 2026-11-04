@@ -93,7 +93,7 @@ import Testing
 
     @Test func melodia() throws {
         let voz = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8~ Mi4:4 -:4 Sol4+Si4:2", compas: "3/4")
-        let leido = try leer(voz.midi(tonalidad: Tonalidad(.do), tempo: Tempo(90), titulo: "Prueba"))
+        let leido = try leer(voz.partitura(encabezado: Encabezado(titulo: "Prueba", tonalidad: Tonalidad(.do), tempo: Tempo(90))).midi())
         #expect(leido.formato == 1)
         #expect(leido.divisiones == 480)
         #expect(leido.pistas.count == 2)
@@ -115,7 +115,7 @@ import Testing
     @Test func tresillosYCompuestos() throws {
         // Tresillos y quintillos: divisiones que los hacen enteros.
         let voz = try Voz(leyendo: "Do4:1/12 Re4:1/12 Mi4:1/12 Fa4:1/20 Sol4:1/20 La4:1/20 Si4:1/20 Do5:1/20 Re5:2")
-        let leido = try leer(voz.midi())
+        let leido = try leer(voz.partitura().midi())
         #expect((leido.divisiones % 15) == 0)
         let notas = leido.pistas[1].notas.sorted { $0.desde < $1.desde }
         #expect(notas.count == 9)
@@ -123,18 +123,18 @@ import Testing
         #expect(notas.last?.desde == (2 * leido.divisiones))
         for (una, otra) in zip(notas, notas.dropFirst()) { #expect(una.hasta == otra.desde) }
         // Sin tempo, negra = 120; en 6/8, el pulso es la negra con puntillo (36 relojes).
-        let seis = try leer(Voz(leyendo: "Do4:4. Re4:4.", compas: "6/8").midi(tonalidad: Tonalidad(.mi, .menor)))
+        let seis = try leer(Voz(leyendo: "Do4:4. Re4:4.", compas: "6/8").partitura(encabezado: Encabezado(tonalidad: Tonalidad(.mi, .menor))).midi())
         #expect(seis.pistas[0].metas.first { $0.tipo == 0x51 }?.datos == [0x07, 0xA1, 0x20])
         #expect(seis.pistas[0].metas.first { $0.tipo == 0x58 }?.datos == [6, 3, 36, 8])
         #expect(seis.pistas[0].metas.first { $0.tipo == 0x59 }?.datos == [1, 1]) // un sostenido, menor
         // Fuera del rango MIDI, se omite.
-        let grave = try leer(Voz(leyendo: "La9:4 Do4:4").midi())
+        let grave = try leer(Voz(leyendo: "La9:4 Do4:4").partitura().midi())
         #expect(grave.pistas[1].notas.map(\.clave) == [60])
     }
 
     @Test func coral() throws {
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-        let leido = try leer(coral.midi(duracion: .blanca, tempo: Tempo(60), titulo: "Cadencia"))
+        let leido = try leer(coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia", tempo: Tempo(60))).midi())
         #expect(leido.pistas.count == 5)
         #expect(leido.pistas.dropFirst().map { $0.texto(0x03).first } == ["soprano", "contralto", "tenor", "bajo"])
         #expect(leido.pistas[1].notas.map(\.clave) == [72, 71, 72])
@@ -145,23 +145,23 @@ import Testing
         #expect(Set(leido.pistas.dropFirst().compactMap(\.programa)) == [52])
         // Cada voz, en su canal.
         #expect(leido.pistas.dropFirst().map { $0.notas.first?.canal } == [0, 1, 2, 3])
-        let ingles = try leer(coral.midi(notacion: .inglesASCII))
+        let ingles = try leer(coral.partitura(notacion: .inglesASCII).midi())
         #expect(ingles.pistas[1].texto(0x03) == ["soprano"])
         #expect(ingles.pistas[4].texto(0x03) == ["bass"])
     }
 
     @Test func progresion() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
-        let leido = try leer(analisis.midi(tempo: Tempo(80)))
+        let leido = try leer(analisis.partitura(encabezado: Encabezado(tempo: Tempo(80))).midi())
         #expect(leido.pistas.count == 3)
         #expect(leido.pistas[1].texto(0x06) == ["Do · I", "Lam · vi", "Re7 · V7/V", "Sol7 · V7", "Do · I"])
         let primero = leido.pistas[1].notas.filter { $0.desde == 0 }.map(\.clave).sorted()
         #expect(primero == [60, 64, 67])
         #expect(leido.pistas[2].notas.map(\.clave) == [48, 45, 50, 43, 48])
         #expect(leido.pistas[1].notas.count == (3 + 3 + 4 + 4 + 3))
-        #expect(try (leer(analisis.midi(notacion: .inglesASCII)).pistas[1].texto(0x06).first) == "C · I")
+        #expect(try (leer(analisis.partitura(notacion: .inglesASCII).midi()).pistas[1].texto(0x06).first) == "C · I")
         // En Latin-1, con las alteraciones en ASCII.
-        let prestado = try leer(AnalisisArmonico.analizar(leyendo: "Do Lab Sib Do").midi(titulo: "Préstamo"))
+        let prestado = try leer(AnalisisArmonico.analizar(leyendo: "Do Lab Sib Do").partitura(encabezado: Encabezado(titulo: "Préstamo")).midi())
         #expect(prestado.pistas[1].texto(0x06) == ["Do · I", "Lab · bVI", "Sib · bVII", "Do · I"])
         #expect(
             prestado.pistas[0].metas.first { $0.tipo == 0x03 }?.datos == [

@@ -15,9 +15,7 @@ import Testing
 
     @Test func unCoralEnMIDISeLeeIgual() throws {
         let coral = try Coral(leyendo: cadencia)
-        let datos = coral.midi(
-            duracion: .blanca, compas: Compas(3, 2), tonalidad: Tonalidad(.do), tempo: Tempo(72),
-            titulo: "Cadencia")
+        let datos = coral.partitura(duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do), tempo: Tempo(72))).midi()
         let pieza = try PiezaImportada(leyendo: datos)
         #expect(pieza.titulo == "Cadencia")
         #expect(pieza.tonalidad == Tonalidad(.do))
@@ -34,13 +32,10 @@ import Testing
 
     @Test func unCoralEnMusicXMLSeLeeIgualQueEnMIDI() throws {
         let coral = try Coral(leyendo: cadencia)
-        let midi = try PiezaImportada(leyendo: coral.midi(duracion: .blanca, tonalidad: Tonalidad(.do)))
+        let midi = try PiezaImportada(leyendo: coral.partitura(duracion: .blanca, encabezado: Encabezado(tonalidad: Tonalidad(.do))).midi())
         let xml = try PiezaImportada(
             leyendo: Data(
-                coral.musicXML(
-                    duracion: .blanca, compas: Compas(3, 2),
-                    tonalidad: Tonalidad(.do), titulo: "Cadencia"
-                ).utf8))
+                coral.partitura(duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do))).musicXML().utf8))
         #expect(xml.titulo == "Cadencia")
         #expect(xml.tonalidad == Tonalidad(.do))
         #expect(xml.compas == Compas(3, 2))
@@ -51,7 +46,7 @@ import Testing
 
     @Test func unaProgresionExportadaDaSusAcordes() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
-        for datos in [analisis.midi(), Data(analisis.musicXML().utf8)] {
+        for datos in [analisis.partitura().midi(), Data(analisis.partitura().musicXML().utf8)] {
             let pieza = try PiezaImportada(leyendo: datos)
             #expect(pieza.acordes().map(\.cifrado) == ["Do", "Lam", "Re7", "Sol7", "Do"])
             #expect(pieza.analisis()?.cifrados == ["I", "vi", "V7/V", "V7", "I"])
@@ -68,9 +63,9 @@ import Testing
             NotaDeLaPieza(altura: try Altura(leyendo: "Sol4"), inicio: Duracion(3, 4), duracion: .blanca),
             NotaDeLaPieza(altura: try Altura(leyendo: "Si4"), inicio: Duracion(3, 4), duracion: .blanca),
         ]
-        let xml = try PiezaImportada(musicXML: Data(voz.musicXML(tonalidad: Tonalidad(.do)).utf8))
+        let xml = try PiezaImportada(musicXML: Data(voz.partitura(encabezado: Encabezado(tonalidad: Tonalidad(.do))).musicXML().utf8))
         #expect(xml.notas == esperadas)
-        let midi = try PiezaImportada(midi: voz.midi(tonalidad: Tonalidad(.do)))
+        let midi = try PiezaImportada(midi: voz.partitura(encabezado: Encabezado(tonalidad: Tonalidad(.do))).midi())
         #expect(midi.notas.map(\.altura) == esperadas.map(\.altura))
         #expect(midi.notas.map(\.inicio) == esperadas.map(\.inicio))
         #expect(midi.notas.map(\.duracion) == esperadas.map(\.duracion))
@@ -193,7 +188,7 @@ import Testing
     }
 
     @Test func losErroresDicenPorQue() throws {
-        let coral = try Coral(leyendo: cadencia).midi()
+        let coral = try Coral(leyendo: cadencia).partitura().midi()
         #expect(error(Data("hola".utf8)) == .formatoDesconocido)
         #expect(error(Data([0x50, 0x4B, 0x03, 0x04, 0, 0])) == .comprimido)
         #expect(error(coral.prefix(40)) == .midiDanado)

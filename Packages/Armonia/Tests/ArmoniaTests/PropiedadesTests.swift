@@ -146,7 +146,7 @@ import Testing
     @Test func musicXMLIdaYVuelta() throws {
         try Self.repetir(semilla: 7) { azar in
             let coral = Self.coral(&azar)
-            let pieza = try PiezaImportada(musicXML: Data(coral.musicXML().utf8))
+            let pieza = try PiezaImportada(musicXML: Data(coral.partitura().musicXML().utf8))
             #expect(Self.porAcorde(pieza) == coral.acordes.map { $0.sorted(by: Self.orden) }, "\(coral)")
         }
     }
@@ -155,7 +155,7 @@ import Testing
     @Test func midiIdaYVuelta() throws {
         try Self.repetir(semilla: 8) { azar in
             let coral = Self.coral(&azar)
-            let pieza = try PiezaImportada(midi: coral.midi())
+            let pieza = try PiezaImportada(midi: coral.partitura().midi())
             #expect(
                 Self.porAcorde(pieza).map { $0.map(\.midi) } == coral.acordes.map { $0.map(\.midi).sorted() },
                 "\(coral)")

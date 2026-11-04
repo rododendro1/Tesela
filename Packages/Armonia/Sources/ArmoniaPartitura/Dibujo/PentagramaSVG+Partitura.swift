@@ -14,7 +14,7 @@ extension Partitura {
     ///     let partitura = try Voz(leyendo: "Do4:4 Mi4:4 Sol4:2").partitura(encabezado: Encabezado(titulo: "Do"))
     ///     let svg = partitura.svg()
     public func svg(opciones: OpcionesDePentagrama = OpcionesDePentagrama()) -> String {
-        let titulo = encabezado.titulo ?? encabezado.parte
+        let titulo = encabezado.titulo ?? parte
         var suyas = opciones
         if suyas.armadura == .automatica, let tonalidad = encabezado.tonalidad {
             suyas.armadura = .tonalidad(tonalidad)

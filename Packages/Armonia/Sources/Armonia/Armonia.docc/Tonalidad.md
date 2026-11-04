@@ -105,26 +105,26 @@ Las funciones siguen los grados: I, iii y vi son de tónica; ii y IV, de subdomi
 vii°, de dominante. La alteración delante del numeral (♭VI) se mide respecto a la escala de
 la armadura, y en menor no se escribe para el 6.º y el 7.º elevados (vii°, no ♯vii°).
 
-`musicXML(duracion:compas:tempo:titulo:parte:cifrados:analisis:notacion:)` escribe el análisis
-como partitura MusicXML en dos pentagramas: los acordes en posición cerrada en clave de sol,
+`partitura(duracion:compas:encabezado:cifrados:analisis:notacion:)` pone el análisis en una
+partitura de dos pentagramas, que `musicXML()` escribe: los acordes en posición cerrada en clave de sol,
 con su cifrado americano encima (como símbolo de acorde, que el editor reconoce y puede
 transportar), y el bajo en clave de fa, con el cifrado romano y la función debajo:
 
 ```swift
 let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
-let partituraAnalizada = analisis.musicXML(titulo: "Progresión")
+let partituraAnalizada = analisis.partitura(encabezado: Encabezado(titulo: "Progresión")).musicXML()
 partituraAnalizada.contains("<kind text=\"7\">dominant</kind>")   // true
 partituraAnalizada.contains("<text>V7/V</text>")               // true
-analisis.musicXML(notacion: .inglesASCII).contains("C major:")      // true
+analisis.partitura(notacion: .inglesASCII).musicXML().contains("C major:")      // true
 ```
 
-`mei(duracion:compas:tempo:titulo:parte:cifrados:analisis:notacion:)` escribe lo mismo en MEI,
+`mei()` escribe lo mismo en MEI,
 con el cifrado como texto en `<harm>` (en la notación que se pida) y el análisis como letra:
 
 ```swift
 let progresion = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
-progresion.mei(notacion: .inglesASCII).contains(">D7</harm>")        // true
-progresion.mei().contains("<syl>V7/V</syl>")                   // true
+progresion.partitura(notacion: .inglesASCII).mei().contains(">D7</harm>")        // true
+progresion.partitura().mei().contains("<syl>V7/V</syl>")                   // true
 ```
 
 ## Cadencias
@@ -238,14 +238,14 @@ Las faltas que encuentra (`FaltaDeConduccion.Tipo`):
 - **Fuera de tesitura**, a cuatro voces: bajo Mi2–Do4, tenor Do3–Sol4, contralto Sol3–Re5 y
   soprano Do4–Sol5.
 
-`musicXML(duracion:compas:tonalidad:tempo:titulo:parte:)` escribe los acordes como coral en
-MusicXML: soprano y contralto en clave de sol, tenor y bajo en clave de fa, cada voz con sus
+`partitura(duracion:compas:encabezado:cifrados:analisis:notacion:)` pone los acordes en una
+partitura de coral: soprano y contralto en clave de sol, tenor y bajo en clave de fa, cada voz con sus
 plicas. Todos los acordes duran lo mismo (negras si no se dice otra cosa) y el último se
 alarga hasta la barra:
 
 ```swift
 let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa3 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-let partitura = coral.musicXML(duracion: .blanca, titulo: "Cadencia")
+let partitura = coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia")).musicXML()
 partitura.contains("<staves>2</staves>")        // true
 ```
 
@@ -256,15 +256,14 @@ se quedan sin cifrar:
 
 ```swift
 let cadencia = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-cadencia.musicXML(cifrados: true, analisis: true).contains("<text>V</text>")   // true
+cadencia.partitura(cifrados: true, analisis: true).musicXML().contains("<text>V</text>")   // true
 ```
 
-`mei(duracion:compas:tonalidad:tempo:titulo:parte:cifrados:analisis:notacion:)` da el mismo coral
-en MEI, con cada pareja de voces en dos capas del pentagrama:
+`mei()` da el mismo coral en MEI, con cada pareja de voces en dos capas del pentagrama:
 
 ```swift
 let cierre = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-cierre.mei(cifrados: true, analisis: true).contains("<syl>V</syl>")           // true
+cierre.partitura(cifrados: true, analisis: true).mei().contains("<syl>V</syl>")           // true
 ```
 
 ## Realización a cuatro voces
@@ -432,10 +431,8 @@ try Contrapunto(cantusFirmus: "Re4 Fa4 Mi4 Re4", contrapunto: "-:2 La4 Re5 La4 S
 try Contrapunto(cantusFirmus: "Re4 Mi4 Re4", contrapunto: "-:2 Re5:1 Do#5 Re5:1", especie: .cuarta).esCorrecto                // true
 ```
 
-Las dos voces se exportan como las de un coral, cada una en su pentagrama y con su clave:
-``Contrapunto/musicXML(tonalidad:tempo:titulo:)``, ``Contrapunto/mei(tonalidad:tempo:titulo:)``,
-``Contrapunto/lilyPond(tonalidad:tempo:titulo:)``, ``Contrapunto/abc(tonalidad:tempo:titulo:)`` y
-``Contrapunto/midi(tonalidad:tempo:titulo:instrumento:)``. Sin tonalidad no llevan armadura, como los ejemplos
+Las dos voces se exportan como las de un coral, cada una en su pentagrama y con su clave, con
+``Contrapunto/partitura(encabezado:)`` y cualquiera de los formatos de la ``Partitura``. Sin tonalidad no llevan armadura, como los ejemplos
 modales de Fux, y las voces se llaman en latín: *Cantus firmus* y *Contrapunctus*.
 
 Las faltas que encuentra (`FaltaDeContrapunto.Tipo`), con los compases contados desde 0 (en la

@@ -64,7 +64,7 @@ public enum PresentacionDeArpegios {
             sonido: (swing ? suena.conSwing(pulso: (tempo ?? Escucha.tempo).segundos(de: .negra)) : suena)
                 .conTonica(tonica),
             ficheros: FicheroParaExportar.partituras(nombre: nombre) { formato in
-                voz.exportar(como: formato, tonalidad: tonalidad, tempo: tempo, titulo: nombre)
+                voz.partitura(encabezado: Encabezado(titulo: nombre, tonalidad: tonalidad, tempo: tempo)).exportar(como: formato)
             })
     }
 }

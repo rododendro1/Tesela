@@ -12,7 +12,17 @@
 - `Voz.partitura(clave:encabezado:)`, `Coral.partitura(duracion:compas:encabezado:cifrados:analisis:notacion:)`,
   `AnalisisArmonico.partitura(duraciones:compas:encabezado:cifrados:analisis:notacion:)` y
   `Contrapunto.partitura(encabezado:)` hacen la de cada uno. Los escritores de los seis formatos leen solo la
-  partitura, y las funciones de siempre (`voz.musicXML(…)`, `coral.midi(…)`…) son atajos que dan lo mismo.
+  partitura.
+- **Cambio incompatible:** las funciones de cada formato en `Voz`, `Coral`, `AnalisisArmonico` y `Contrapunto`
+  (`musicXML(…)`, `mei(…)`, `lilyPond(…)`, `guido(…)`, `abc(…)`, `midi(…)` y `exportar(como:…)`) desaparecen: se
+  pasa por la partitura. `voz.musicXML(titulo: "Escala", tempo: Tempo(90))` es ahora
+  `voz.partitura(encabezado: Encabezado(titulo: "Escala", tempo: Tempo(90))).musicXML()`, y
+  `coral.midi(duracion: .blanca)`, `coral.partitura(duracion: .blanca).midi()`. La línea de comandos, las apps,
+  `ArmoniaPresentacion` y `ArmoniaUI` ya la usan.
+- La parte y el instrumento del `Encabezado` son opcionales: si no se dan, cada partitura pone los suyos («Voz» y el
+  piano; «Coro» y el coro; «Piano»).
+- En MIDI, el último acorde de un coral o de una progresión se alarga también hasta la barra, como en los demás
+  formatos.
 
 ### Microtonos y afinaciones en MIDI
 

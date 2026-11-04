@@ -3,8 +3,8 @@ import ArmoniaTeoria
 
 // La partitura: lo que se escribe en cualquier formato (MusicXML, MEI, LilyPond, GUIDO, ABC, MIDI) y se dibuja en
 // SVG. Una voz, un coral, una progresión analizada y un contrapunto saben hacer la suya (`voz.partitura(…)`,
-// `coral.partitura(…)`…, en ArmoniaFormatos), y cada formato tiene un solo escritor, que la lee entera: las funciones
-// de antes (`voz.musicXML(…)`, `coral.midi(…)`…) siguen, como atajos de `partitura(…)` y el formato.
+// `coral.partitura(…)`…, en ArmoniaFormatos), y cada formato tiene un solo escritor, que la lee entera:
+// `voz.partitura().musicXML()`, `coral.partitura(duracion: .blanca).midi()`.
 
 // MARK: - Encabezado
 
@@ -19,14 +19,16 @@ public struct Encabezado: Hashable, Sendable {
     public var tonalidad: Tonalidad?
     /// La indicación metronómica; si es `nil`, no se escribe (en MIDI, negra = 120).
     public var tempo: Tempo?
-    /// El nombre de la parte (o del pentagrama, si es uno).
-    public var parte: String
-    /// El programa General MIDI con que suena (0 = piano de cola … 127); solo cuenta en MIDI.
-    public var instrumento: Int
+    /// El nombre de la parte (o del pentagrama, si es uno); si es `nil`, el que le dé quien hace la partitura
+    /// («Voz», «Coro», «Piano»…).
+    public var parte: String?
+    /// El programa General MIDI con que suena (0 = piano de cola … 127); si es `nil`, el que le dé quien hace la
+    /// partitura (el piano, o el coro en un coral y en un contrapunto). Solo cuenta en MIDI.
+    public var instrumento: Int?
 
     public init(
-        titulo: String? = nil, tonalidad: Tonalidad? = nil, tempo: Tempo? = nil, parte: String = "Voz",
-        instrumento: Int = 0
+        titulo: String? = nil, tonalidad: Tonalidad? = nil, tempo: Tempo? = nil, parte: String? = nil,
+        instrumento: Int? = nil
     ) {
         self.titulo = titulo
         self.tonalidad = tonalidad
@@ -46,7 +48,7 @@ public struct Encabezado: Hashable, Sendable {
 ///     let partitura = Partitura(
 ///         pentagramas: [.init(clave: .sol, voces: [.init(soprano)]), .init(clave: .fa, voces: [.init(bajo)])],
 ///         encabezado: Encabezado(titulo: "Dos voces"))
-///     partitura.musicXML()   // en ArmoniaFormatos; también mei(), lilyPond(), guido(), abc(), midi() y svg()
+///     partitura.musicXML()   // en ArmoniaFormatos, con mei(), lilyPond(), guido(), abc() y midi(); svg(), aquí
 public struct Partitura: Hashable, Sendable {
     /// Una voz de la partitura con lo que se anota en ella.
     public struct Linea: Hashable, Sendable {
@@ -120,6 +122,12 @@ public struct Partitura: Hashable, Sendable {
         self.notacion = notacion
         self.llave = llave
     }
+
+    /// El nombre de la parte: el del encabezado o «Voz».
+    public var parte: String { encabezado.parte ?? "Voz" }
+
+    /// El programa General MIDI: el del encabezado o el piano (0).
+    public var instrumento: Int { encabezado.instrumento ?? 0 }
 
     /// Todas las voces, de arriba abajo, con el número de su pentagrama (desde 1).
     public var lineas: [(linea: Linea, pentagrama: Int)] {

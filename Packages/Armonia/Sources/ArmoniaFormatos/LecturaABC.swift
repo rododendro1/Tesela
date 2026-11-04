@@ -20,7 +20,7 @@ import Foundation
 extension PiezaImportada {
     /// Lee la primera melodía de un texto en ABC.
     ///
-    ///     let abc = voz.abc(titulo: "Escala")
+    ///     let abc = voz.partitura(encabezado: Encabezado(titulo: "Escala")).abc()
     ///     let pieza = try PiezaImportada(abc: abc)
     public init(abc texto: String) throws {
         var lector = LectorABC()

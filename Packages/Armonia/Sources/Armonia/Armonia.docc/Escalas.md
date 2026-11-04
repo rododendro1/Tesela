@@ -331,7 +331,7 @@ Helmholtz-Ellis. Los dibuja también con ritmo: en las secuencias de estudio de 
 ```swift
 let voz = Escala(.re, .bayati).voz()
 voz.eventos[1]                                   // Mi♭4(50¢):4
-voz.musicXML().contains("<alter>-0.5</alter>")   // true
+voz.partitura().musicXML().contains("<alter>-0.5</alter>")   // true
 Evento("Si4(-15.09¢):4").desvios                 // [-15.09]
 Escala(.re, .bayati).svgPentagrama(secuencia: .terceras).contains("<title>Mi𝄳</title>")   // true
 try Voz(leyendo: "Mi♭4(50¢):4 Re4:2.").svgPentagrama(titulo: "Bayātī").contains("(+50¢)</title>")   // true

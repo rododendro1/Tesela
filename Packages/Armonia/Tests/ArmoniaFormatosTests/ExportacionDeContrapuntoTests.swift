@@ -45,10 +45,10 @@ import Testing
         for ejercicio in [primera, segunda] {
             let datos: Data
             switch formato {
-            case "musicXML": datos = Data(ejercicio.musicXML(titulo: "Contrapunto").utf8)
-            case "mei": datos = Data(ejercicio.mei(titulo: "Contrapunto").utf8)
-            case "abc": datos = Data(ejercicio.abc(titulo: "Contrapunto").utf8)
-            default: datos = ejercicio.midi(titulo: "Contrapunto")
+            case "musicXML": datos = Data(ejercicio.partitura(encabezado: Encabezado(titulo: "Contrapunto")).musicXML().utf8)
+            case "mei": datos = Data(ejercicio.partitura(encabezado: Encabezado(titulo: "Contrapunto")).mei().utf8)
+            case "abc": datos = Data(ejercicio.partitura(encabezado: Encabezado(titulo: "Contrapunto")).abc().utf8)
+            default: datos = ejercicio.partitura(encabezado: Encabezado(titulo: "Contrapunto")).midi()
             }
             let pieza = try PiezaImportada(leyendo: datos)
             #expect(notas(pieza) == esperadas(ejercicio), "\(formato)")
@@ -56,7 +56,7 @@ import Testing
     }
 
     @Test func musicXMLEnDosPentagramasConSuClave() {
-        let xml = segunda.musicXML()
+        let xml = segunda.partitura().musicXML()
         #expect(xml.contains("<staves>2</staves>"))
         // El cantus, arriba, en clave de sol; el contrapunto, abajo, en clave de fa.
         #expect(xml.contains("<clef number=\"1\">\n          <sign>G</sign>"))
@@ -66,7 +66,7 @@ import Testing
     }
 
     @Test func lilyPondConLasDosVoces() {
-        let ly = primera.lilyPond(titulo: "Fux")
+        let ly = primera.partitura(encabezado: Encabezado(titulo: "Fux")).lilyPond()
         #expect(ly.contains("Fux"))
         #expect(ly.components(separatedBy: "\\clef").count == 3)
     }

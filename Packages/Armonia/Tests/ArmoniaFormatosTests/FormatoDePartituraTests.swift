@@ -21,17 +21,16 @@ import Testing
         let tempo = Tempo(72)
         func esperado(_ formato: FormatoDePartitura) -> Data {
             switch formato {
-            case .musicXML: return Data(voz.musicXML(tonalidad: tonalidad, clave: .sol, tempo: tempo, titulo: "T").utf8)
-            case .mei: return Data(voz.mei(tonalidad: tonalidad, clave: .sol, tempo: tempo, titulo: "T").utf8)
-            case .lilyPond: return Data(voz.lilyPond(tonalidad: tonalidad, clave: .sol, tempo: tempo, titulo: "T").utf8)
-            case .guido: return Data(voz.guido(tonalidad: tonalidad, clave: .sol, tempo: tempo, titulo: "T").utf8)
-            case .abc: return Data(voz.abc(tonalidad: tonalidad, clave: .sol, tempo: tempo, titulo: "T").utf8)
-            case .midi: return voz.midi(tonalidad: tonalidad, tempo: tempo, titulo: "T", instrumento: 40)
+            case .musicXML: return Data(voz.partitura(clave: .sol, encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo)).musicXML().utf8)
+            case .mei: return Data(voz.partitura(clave: .sol, encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo)).mei().utf8)
+            case .lilyPond: return Data(voz.partitura(clave: .sol, encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo)).lilyPond().utf8)
+            case .guido: return Data(voz.partitura(clave: .sol, encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo)).guido().utf8)
+            case .abc: return Data(voz.partitura(clave: .sol, encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo)).abc().utf8)
+            case .midi: return voz.partitura(encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo, instrumento: 40)).midi()
             }
         }
         for formato in FormatoDePartitura.allCases {
-            let datos = voz.exportar(
-                como: formato, tonalidad: tonalidad, clave: .sol, tempo: tempo, titulo: "T", instrumento: 40)
+            let datos = voz.partitura(clave: .sol, encabezado: Encabezado(titulo: "T", tonalidad: tonalidad, tempo: tempo, instrumento: 40)).exportar(como: formato)
             #expect(datos == esperado(formato), "\(formato)")
         }
     }
@@ -41,17 +40,17 @@ import Testing
         func esperado(_ formato: FormatoDePartitura) -> Data {
             switch formato {
             case .musicXML:
-                return Data(coral.musicXML(duracion: .blanca, titulo: "C", cifrados: true, analisis: true).utf8)
-            case .mei: return Data(coral.mei(duracion: .blanca, titulo: "C", cifrados: true, analisis: true).utf8)
+                return Data(coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true).musicXML().utf8)
+            case .mei: return Data(coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true).mei().utf8)
             case .lilyPond:
-                return Data(coral.lilyPond(duracion: .blanca, titulo: "C", cifrados: true, analisis: true).utf8)
-            case .guido: return Data(coral.guido(duracion: .blanca, titulo: "C", cifrados: true, analisis: true).utf8)
-            case .abc: return Data(coral.abc(duracion: .blanca, titulo: "C", cifrados: true, analisis: true).utf8)
-            case .midi: return coral.midi(duracion: .blanca, titulo: "C")
+                return Data(coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true).lilyPond().utf8)
+            case .guido: return Data(coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true).guido().utf8)
+            case .abc: return Data(coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true).abc().utf8)
+            case .midi: return coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "C")).midi()
             }
         }
         for formato in FormatoDePartitura.allCases {
-            let datos = coral.exportar(como: formato, duracion: .blanca, titulo: "C", cifrados: true, analisis: true)
+            let datos = coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true).exportar(como: formato)
             #expect(datos == esperado(formato), "\(formato)")
         }
     }
@@ -61,32 +60,32 @@ import Testing
         let duraciones: [Duracion] = [.negra, .negra, .blanca, .blanca, .redonda]
         func esperado(_ formato: FormatoDePartitura) -> Data {
             switch formato {
-            case .musicXML: return Data(analisis.musicXML(duraciones: duraciones, titulo: "P").utf8)
-            case .mei: return Data(analisis.mei(duraciones: duraciones, titulo: "P").utf8)
-            case .lilyPond: return Data(analisis.lilyPond(duraciones: duraciones, titulo: "P").utf8)
-            case .guido: return Data(analisis.guido(duraciones: duraciones, titulo: "P").utf8)
-            case .abc: return Data(analisis.abc(duraciones: duraciones, titulo: "P").utf8)
-            case .midi: return analisis.midi(duraciones: duraciones, titulo: "P")
+            case .musicXML: return Data(analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).musicXML().utf8)
+            case .mei: return Data(analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).mei().utf8)
+            case .lilyPond: return Data(analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).lilyPond().utf8)
+            case .guido: return Data(analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).guido().utf8)
+            case .abc: return Data(analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).abc().utf8)
+            case .midi: return analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).midi()
             }
         }
         for formato in FormatoDePartitura.allCases {
-            #expect(analisis.exportar(como: formato, duraciones: duraciones, titulo: "P") == esperado(formato))
+            #expect(analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "P")).exportar(como: formato) == esperado(formato))
             // Con una sola duración, la misma para todos los acordes.
             #expect(
-                analisis.exportar(como: formato, duracion: .negra)
-                    == analisis.exportar(como: formato, duraciones: Array(repeating: .negra, count: 5)))
+                analisis.partitura(duracion: .negra).exportar(como: formato)
+                    == analisis.partitura(duraciones: Array(repeating: .negra, count: 5)).exportar(como: formato))
         }
     }
 
     @Test func unContrapuntoEnCadaFormato() throws {
         let ejercicio = try Contrapunto(
             cantusFirmus: "Re4 Fa4 Mi4 Re4", contrapunto: "La4 La4 Sol4 La4", especie: .primera)
-        #expect(ejercicio.exportar(como: .musicXML, titulo: "F") == Data(ejercicio.musicXML(titulo: "F").utf8))
-        #expect(ejercicio.exportar(como: .abc, titulo: "F") == Data(ejercicio.abc(titulo: "F").utf8))
-        #expect(ejercicio.exportar(como: .midi, titulo: "F") == ejercicio.midi(titulo: "F"))
+        #expect(ejercicio.partitura(encabezado: Encabezado(titulo: "F")).exportar(como: .musicXML) == Data(ejercicio.partitura(encabezado: Encabezado(titulo: "F")).musicXML().utf8))
+        #expect(ejercicio.partitura(encabezado: Encabezado(titulo: "F")).exportar(como: .abc) == Data(ejercicio.partitura(encabezado: Encabezado(titulo: "F")).abc().utf8))
+        #expect(ejercicio.partitura(encabezado: Encabezado(titulo: "F")).exportar(como: .midi) == ejercicio.partitura(encabezado: Encabezado(titulo: "F")).midi())
         // GUIDO, como los demás: cada voz en su pentagrama, con su nombre.
-        let gmn = ejercicio.guido(titulo: "F")
-        #expect(ejercicio.exportar(como: .guido, titulo: "F") == Data(gmn.utf8))
+        let gmn = ejercicio.partitura(encabezado: Encabezado(titulo: "F")).guido()
+        #expect(ejercicio.partitura(encabezado: Encabezado(titulo: "F")).exportar(como: .guido) == Data(gmn.utf8))
         #expect(gmn.contains(#"\title<"F">"#))
         #expect(gmn.contains("\\staff<1>") && gmn.contains("\\staff<2>"))
         #expect(gmn.contains(#"\instr<"Contrapunctus · Cantus firmus">"#))

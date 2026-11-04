@@ -235,15 +235,15 @@ extension LineaDeComandosTests {
     @Test func partituraDeUnArchivo() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
         let duraciones: [Duracion] = [.blanca, .negra, .negra, .redonda]
-        let midi = try fichero(analisis.midi(duraciones: duraciones, titulo: "Coral"), extension: "mid")
-        let xml = try fichero(Data(analisis.musicXML(duraciones: duraciones).utf8), extension: "musicxml")
+        let midi = try fichero(analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "Coral")).midi(), extension: "mid")
+        let xml = try fichero(Data(analisis.partitura(duraciones: duraciones).musicXML().utf8), extension: "musicxml")
         // El ritmo armónico del fichero pasa a la partitura, y su título y su tempo (el MIDI lo lleva siempre)
         // también.
-        let conTempo = analisis.musicXML(duraciones: duraciones, tempo: Tempo(120), titulo: "Coral")
+        let conTempo = analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "Coral", tempo: Tempo(120))).musicXML()
         let esperado = conTempo.trimmingCharacters(in: .newlines) + "\n"
         #expect(salida("musicxml acordes --archivo " + midi) == esperado)
         #expect(salida("musicxml chords --file " + midi) == esperado)
-        let sinTempo = analisis.musicXML(duraciones: duraciones, titulo: "Coral").trimmingCharacters(in: .newlines)
+        let sinTempo = analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "Coral")).musicXML().trimmingCharacters(in: .newlines)
         #expect(salida("musicxml acordes --archivo \(xml) --titulo Coral") == (sinTempo + "\n"))
         // `--duracion` manda sobre el ritmo del fichero.
         #expect(
@@ -252,7 +252,7 @@ extension LineaDeComandosTests {
         #expect(salida("mei acordes --archivo " + xml).hasSuffix("</mei>\n"))
         let datos = LineaDeComandos.ejecutar(["midi", "acordes", "--archivo", xml])
         #expect(datos.codigo == 0, Comment(rawValue: datos.error))
-        #expect(datos.datos == analisis.midi(duraciones: duraciones))
+        #expect(datos.datos == analisis.partitura(duraciones: duraciones).midi())
         // Arpegiados: Do (blanca, 4 corcheas), Fa y Sol7 (negra, 2 cada uno) y Do (redonda, 8).
         let arpegios = salida("musicxml arpegios --archivo " + midi)
         #expect((arpegios.components(separatedBy: "<pitch>").count - 1) == 16)
@@ -270,7 +270,7 @@ extension LineaDeComandosTests {
         #expect(
             resultado("musicxml acordes Do --ventana 1").error
                 == "armonia: --ventana va con --archivo\nPrueba «armonia ayuda».\n")
-        let melodia = try fichero(Voz(leyendo: "Do4:4 Re4:4 Mi4:4").midi(), extension: "mid")
+        let melodia = try fichero(Voz(leyendo: "Do4:4 Re4:4 Mi4:4").partitura().midi(), extension: "mid")
         #expect(resultado("musicxml acordes --archivo " + melodia).codigo == 2)
         let texto = try fichero(Data("hola".utf8), extension: "mid")
         #expect(resultado("musicxml acordes --archivo " + texto).codigo == 1)
