@@ -61,6 +61,18 @@
 - `escala.svgPentagrama()`, `acorde.svgPentagrama()` y `arpegio.svgPentagrama()` siguen: son los dibujos de una
   escala, un acorde o un arpegio solos.
 
+### Lo que se toca en el mástil, también en una `Partitura`
+
+- `Escala.partitura(tocadaEn:titulo:figura:digitos:tablatura:)` y
+  `Acorde.partitura(arpegiadoEn:titulo:figura:digitos:tablatura:)` (nuevos) hacen la partitura de unas alturas
+  tocadas, que se puede escribir en MusicXML, MIDI y los demás formatos. `svgPentagrama(tocadaEn:)` y
+  `svgPentagrama(arpegiadoEn:)` la dibujan como antes. Las escalas microtonales siguen con su propio dibujo, que
+  lleva el signo de cada nota de su sistema.
+- `Partitura.Pentagrama.armadura` (nuevo): una armadura propia, como la de una escala (Re dórico, con la de Do
+  mayor), que se escribe si las opciones dejan la armadura en `.automatica`.
+- `Partitura.Linea.tonica` (nuevo): la nota desde la que se cuentan los intervalos de las notas donde no suena ningún
+  acorde.
+
 ### Opciones del pentagrama por grupos
 
 - **Cambio incompatible:** `OpcionesDePentagrama` ya no repite las opciones de sus grupos. Se quitan las propiedades

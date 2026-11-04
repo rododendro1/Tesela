@@ -44,30 +44,33 @@ extension Partitura {
         var grados = porEvento(primera.analisis.mapValues(\.cifrado))
         grados.merge(porEvento(primera.grados)) { _, propio in propio }
         let tablatura = pentagrama.cuerdas.map { Tablatura(cuerdas: $0, notas: porEvento(primera.pulsaciones)) }
+        let armadura = pentagrama.armadura.map { suyas.armadura.notas(propia: $0) }
         if !ritmo {
             return columnas(
                 primera.voz, titulo: titulo, acordes: acordes, grados: grados,
                 bajoCifrado: porEvento(primera.bajoCifrado), digitos: porEvento(primera.digitos), tablatura: tablatura,
-                opciones: suyas)
+                tonica: primera.tonica, armadura: armadura ?? suyas.armadura.notas(), opciones: suyas)
         }
         return primera.voz.svgPentagrama(
             titulo: titulo, acordes: acordes, grados: grados, bajoCifrado: porEvento(primera.bajoCifrado),
-            digitos: porEvento(primera.digitos), tablatura: tablatura, tonica: nil, armadura: nil, opciones: suyas)
+            digitos: porEvento(primera.digitos), tablatura: tablatura, tonica: primera.tonica, armadura: armadura,
+            opciones: suyas)
     }
 
     /// La voz sin ritmo: cada evento en su columna, con lo que se anota en ella.
     private func columnas(
         _ voz: Voz, titulo: String, acordes: [Int: Acorde], grados: [Int: String], bajoCifrado: [Int: [String]],
-        digitos: [Int: [Int]], tablatura: Tablatura?, opciones: OpcionesDePentagrama
+        digitos: [Int: [Int]], tablatura: Tablatura?, tonica: Nota?, armadura: [Nota], opciones: OpcionesDePentagrama
     ) -> String {
         var cifrados: [Int: String] = [:]
         var referencias: [Int: PentagramaSVG.Referencia] = [:]
+        if let tonica { referencias[0] = PentagramaSVG.Referencia(tonica) }
         for (columna, acorde) in acordes {
             cifrados[columna] = acorde.cifrado(en: opciones.notacion)
             referencias[columna] = PentagramaSVG.Referencia(acorde)
         }
         var dibujo = PentagramaSVG(
-            columnas: voz.eventos.map(\.alturas), armadura: opciones.armadura.notas(), cifrado: nil, titulo: titulo,
+            columnas: voz.eventos.map(\.alturas), armadura: armadura, cifrado: nil, titulo: titulo,
             opciones: opciones, cifrados: cifrados, referencias: referencias)
         dibujo.grados = grados
         dibujo.bajosCifrados = bajoCifrado

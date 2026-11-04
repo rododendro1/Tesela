@@ -75,13 +75,16 @@ public struct Partitura: Hashable, Sendable, Codable {
         /// La cuerda y el traste de cada nota, en la tablatura del pentagrama (`Pentagrama.cuerdas`). Solo cuenta en
         /// SVG.
         public var pulsaciones: [Duracion: [Tablatura.Pulsacion]]
+        /// La nota desde la que se cuentan los intervalos de las notas (`marcas.intervalosDeLasNotas`) donde no suena
+        /// ningún acorde: la tónica de una escala. Si es `nil`, la de la armadura `.tonalidad`. Solo cuenta en SVG.
+        public var tonica: Nota?
 
         /// La voz con lo que se anota en ella, cada cosa por el punto de la voz en que empieza.
         public init(
             _ voz: Voz, nombre: String? = nil, plicaArriba: Bool? = nil, cifrados: [Duracion: Acorde] = [:],
             analisis: [Duracion: AcordeAnalizado] = [:], marcadores: [Duracion: String] = [:],
             grados: [Duracion: String] = [:], bajoCifrado: [Duracion: [String]] = [:], digitos: [Duracion: [Int]] = [:],
-            pulsaciones: [Duracion: [Tablatura.Pulsacion]] = [:]
+            pulsaciones: [Duracion: [Tablatura.Pulsacion]] = [:], tonica: Nota? = nil
         ) {
             self.voz = voz
             self.nombre = nombre
@@ -93,6 +96,7 @@ public struct Partitura: Hashable, Sendable, Codable {
             self.bajoCifrado = bajoCifrado
             self.digitos = digitos
             self.pulsaciones = pulsaciones
+            self.tonica = tonica
         }
     }
 
@@ -104,13 +108,18 @@ public struct Partitura: Hashable, Sendable, Codable {
         /// Las cuerdas de la tablatura que va debajo, con las `pulsaciones` de su primera voz; `nil`, sin
         /// tablatura. Solo cuenta en SVG.
         public var cuerdas: Int?
+        /// Las notas de una armadura propia (la de Re dórico, con Do mayor), que se escribe si las opciones dejan la
+        /// armadura en `.automatica` y el encabezado no da tonalidad, como en `Escala.svgPentagrama()`. Solo cuenta
+        /// en SVG, con una voz en el pentagrama.
+        public var armadura: [Nota]?
 
         /// Un pentagrama con esas voces, en esa clave (si no se da, la que mejor va a sus alturas: `claveEscrita`) y,
         /// con `cuerdas`, con una tablatura de esas cuerdas debajo.
-        public init(clave: Clave? = nil, voces: [Linea], cuerdas: Int? = nil) {
+        public init(clave: Clave? = nil, voces: [Linea], cuerdas: Int? = nil, armadura: [Nota]? = nil) {
             self.clave = clave
             self.voces = voces
             self.cuerdas = cuerdas
+            self.armadura = armadura
         }
 
         /// La clave con que se escribe: la suya o la que pidan sus notas.
@@ -257,3 +266,31 @@ extension Partitura {
 
 /// Se codifica con los campos que tiene, y sin los que faltan.
 extension Encabezado: Codable {}
+
+extension Partitura {
+    /// Unas alturas tocadas una tras otra, con lo que se anota en cada una (por su índice): con `figura`, con ritmo
+    /// (la última, una negra si la figura es más corta); sin ella, en redondas y sin ritmo. Es lo que hacen
+    /// `Escala.partitura(tocadaEn:…)` y `Acorde.partitura(arpegiadoEn:…)`.
+    static func tocada(
+        _ alturas: [Altura], titulo: String, figura: Duracion?, digitos: [Int: [Int]], tablatura: Tablatura?,
+        acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
+    ) -> Partitura {
+        let eventos = alturas.indices.map { i in
+            guard let figura else { return Evento(alturas[i], .redonda) }
+            return Evento(alturas[i], i == alturas.count - 1 && alturas.count > 1 && figura < .negra ? .negra : figura)
+        }
+        let voz = Voz(eventos)
+        let inicios = voz.inicios
+        func porInicio<Valor>(_ porIndice: [Int: Valor]) -> [Duracion: Valor] {
+            var resultado: [Duracion: Valor] = [:]
+            for (i, valor) in porIndice where inicios.indices.contains(i) { resultado[inicios[i]] = valor }
+            return resultado
+        }
+        let linea = Linea(
+            voz, cifrados: acorde.map { [.cero: $0] } ?? [:], digitos: porInicio(digitos),
+            pulsaciones: porInicio(tablatura?.notas ?? [:]), tonica: tonica)
+        return Partitura(
+            pentagramas: [Pentagrama(voces: [linea], cuerdas: tablatura?.cuerdas, armadura: armadura)],
+            encabezado: Encabezado(titulo: titulo), ritmo: figura != nil)
+    }
+}

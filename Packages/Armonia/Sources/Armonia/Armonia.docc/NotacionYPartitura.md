@@ -355,8 +355,10 @@ Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<ti
 - **Secuencias con ritmo.** `Escala.svgPentagrama(secuencia:)` toca la escala por terceras o en grupos, cada grupo en
   un pulso: corcheas, tresillos o semicorcheas.
 - **Tablatura.** Una ``Tablatura`` (la cuerda y el traste de cada nota) va debajo del pentagrama, alineada nota a
-  nota. `Escala.svgPentagrama(tocadaEn:)` y `Acorde.svgPentagrama(arpegiadoEn:)` dibujan las alturas de una posición
-  del mástil escritas con las notas de la escala o del acorde (Si♭, no La♯, en Do7).
+  nota. `Escala.partitura(tocadaEn:)` y `Acorde.partitura(arpegiadoEn:)` hacen la partitura de las alturas de una
+  posición del mástil, escritas con las notas de la escala o del acorde (Si♭, no La♯, en Do7), con la armadura de la
+  escala (``Partitura/Pentagrama/armadura``) y los intervalos contados desde su tónica (``Partitura/Linea/tonica``);
+  `svgPentagrama(tocadaEn:)` y `svgPentagrama(arpegiadoEn:)` la dibujan.
 
 ```swift
 let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
