@@ -61,7 +61,8 @@ extension LineaDeComandos {
             dibujo = .camino(acordes[0], acordes[1])
         case "--ciclo", "--cycle":
             let partes = Array(argumentos.dropFirst())
-            guard partes.count >= 2, let ciclo = CicloNeorriemanniano(leyendo: partes.dropLast().joined(separator: " "))
+            guard partes.count >= 2,
+                let ciclo = try? CicloNeorriemanniano(leyendo: partes.dropLast().joined(separator: " "))
             else {
                 return .error(uso(.cicloMalEscrito(orden: orden), notacion))
             }

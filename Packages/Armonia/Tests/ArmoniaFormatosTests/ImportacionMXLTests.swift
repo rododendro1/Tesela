@@ -112,43 +112,48 @@ import Testing
 
     // MARK: Ritmo armónico
 
+    private let ritmo = RitmoArmonico([
+        AcordeConDuracion("Do", .blanca), AcordeConDuracion("Fa", .negra), AcordeConDuracion("Sol7", .negra),
+        AcordeConDuracion("Do", .redonda),
+    ])
+
     @Test func losAcordesConLoQueDuran() throws {
-        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
-        let duraciones: [Duracion] = [.blanca, .negra, .negra, .redonda]
-        let partitura = try analisis.partitura(duraciones: duraciones)
+        let partitura = ritmo.partitura()
         for datos in [partitura.midi(), Data(partitura.musicXML().utf8)] {
             let pieza = try PiezaImportada(leyendo: datos)
-            let leidos = pieza.acordesConDuracion()
-            #expect(leidos.map(\.acorde.cifrado) == ["Do", "Fa", "Sol7", "Do"])
-            #expect(leidos.map(\.duracion) == duraciones)
+            let leido = pieza.ritmoArmonico()
+            #expect(leido.acordes.map(\.acorde.cifrado) == ["Do", "Fa", "Sol7", "Do"])
+            #expect(leido.duraciones == ritmo.duraciones)
+            #expect(pieza.acordesConInicio().map(\.inicio) == [.cero, .blanca, Duracion(3, 4), .redonda])
         }
     }
 
     @Test func laProgresionSeExportaConSuRitmo() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
-        let duraciones: [Duracion] = [.blanca, .negra, .negra, .blanca]
-        let xml = try analisis.partitura(duraciones: duraciones).musicXML()
-        // Seis negras, y el último acorde se alarga hasta la barra: dos compases de 4/4.
-        #expect((xml.components(separatedBy: "<measure ").count - 1) == 2)
-        #expect(xml.contains("<type>quarter</type>"))
-        // Sin duraciones, cada acorde en una negra, como en el coral.
-        #expect(
-            try analisis.partitura(duraciones: Array(repeating: .negra, count: 4)).musicXML()
-                == analisis.partitura().musicXML())
-        #expect(
-            try analisis.partitura(duraciones: Array(repeating: .blanca, count: 4)).mei()
-                == analisis.partitura(duracion: .blanca).mei())
-        #expect(
-            try analisis.partitura(duraciones: Array(repeating: .negra, count: 4)).midi()
-                == analisis.partitura().midi())
+        let xml = ritmo.con(duracion: .negra).partitura().musicXML()
+        #expect(xml == analisis.partitura().musicXML())
+        // Una blanca, dos negras y el último acorde alargado hasta la barra: dos compases de 4/4.
+        let conBlanca = RitmoArmonico(Array(ritmo.acordes.dropLast()) + [AcordeConDuracion("Do", .blanca)])
+        let dos = conBlanca.partitura().musicXML()
+        #expect((dos.components(separatedBy: "<measure ").count - 1) == 2)
+        #expect(dos.contains("<type>quarter</type>"))
+        #expect(ritmo.con(duracion: .blanca).partitura().mei() == analisis.partitura(duracion: .blanca).mei())
+        // En la tonalidad que se pida, en su compás y a su tempo, si el encabezado no da otro.
+        let enFa = RitmoArmonico(ritmo.acordes, compas: "3/4", tempo: Tempo(80)).partitura(en: Tonalidad(.fa))
+        #expect(enFa.encabezado.tonalidad == Tonalidad(.fa) && enFa.compas == "3/4")
+        #expect(enFa.encabezado.tempo == Tempo(80))
         // Con menos de un compás, uno.
-        let corto = try analisis.partitura(duraciones: [.negra, .negra, .negra, .corchea]).musicXML()
+        let corto = RitmoArmonico(["Do", "Fa", "Sol7"], duracion: .negra).partitura().musicXML()
         #expect((corto.components(separatedBy: "<measure ").count - 1) == 1)
+        // Sin acordes, una partitura vacía, en Do mayor.
+        #expect(RitmoArmonico([AcordeConDuracion]()).partitura().encabezado.tonalidad == Tonalidad(.do))
+        #expect(ritmo.transponer(.segundaMayor).acordes.map(\.acorde) == ["Re", "Sol", "La7", "Re"])
     }
 
-    @Test func unaProgresionArpegiadaConSuRitmo() throws {
-        let voz = try Voz(arpegiando: [Acorde("Do"), Acorde("Sol")], duraciones: [.blanca, .negra])
+    @Test func unaProgresionArpegiadaConSuRitmo() {
+        let voz = Voz(arpegiando: RitmoArmonico([AcordeConDuracion("Do", .blanca), AcordeConDuracion("Sol", .negra)]))
         #expect(voz.eventos.count == 6)
         #expect(voz.eventos.map(\.duracion).reduce(.cero, +) == Duracion(3, 4))
+        #expect(Voz(arpegiando: RitmoArmonico(ritmo.acordes, compas: "3/4")).compas == "3/4")
     }
 }

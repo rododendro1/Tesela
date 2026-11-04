@@ -698,15 +698,15 @@ import Hexagonos
         comprobar(pieza.notas.count, #"12"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 357)
         comprobar(pieza.acordes().map(\.cifrado), #"["Do", "Sol", "Do"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 358)
         comprobar(pieza.analisis()?.cifrados, #"["I", "V", "I"]"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 359)
-        comprobar(pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .redonda], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 360)
+        comprobar(pieza.ritmoArmonico().duraciones == [.blanca, .blanca, .redonda], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 360)
     }
 
     @Test func melodiaYRitmo18() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 386
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, línea 388
         let repetida = try PiezaImportada(abc: "X:1\nM:4/4\nL:1/4\nK:C\n|: {B}c4 |1 d4 :|2 e4 |]\n")
-        comprobar(repetida.notas.map(\.inicio) == [.cero, Duracion(1), Duracion(2), Duracion(3)], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 387)
-        comprobar(repetida.notas[3].altura, #"Mi5"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 388)
-        comprobar(repetida.notasDeAdorno.count, #"2"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 389)
+        comprobar(repetida.notas.map(\.inicio) == [.cero, Duracion(1), Duracion(2), Duracion(3)], #"true"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 389)
+        comprobar(repetida.notas[3].altura, #"Mi5"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 390)
+        comprobar(repetida.notasDeAdorno.count, #"2"#, #"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 391)
     }
 
     @Test func notacionYPartitura1() throws {
@@ -1071,7 +1071,7 @@ import Hexagonos
         comprobar(c.faltas[0].description, #""Quintas paralelas entre bajo y tenor (acordes 1 → 2)""#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 220)
         comprobar(c.faltas[0].descripcion(en: .inglesASCII), #""Parallel fifths between bass and tenor (chords 1 → 2)""#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 221)
         comprobar(try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa3 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5").esCorrecta, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 223)
-        comprobar(Coral(voces: [["Do3", "Sol2"], ["Mi4", "Re4"], ["Sol4", "Sol4"], ["Do5", "Si4"]])?.esCorrecta, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 224)
+        comprobar(try Coral(voces: [["Do3", "Sol2"], ["Mi4", "Re4"], ["Sol4", "Sol4"], ["Do5", "Si4"]]).esCorrecta, #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 224)
     }
 
     @Test func tonalidad13() throws {
@@ -1228,7 +1228,7 @@ import Hexagonos
     @Test func trastes4() throws {
         // Sources/Armonia/Armonia.docc/Trastes.md, línea 96
         let mastil = Mastil(.guitarra)
-        let leida = Digitacion(leyendo: "x32010", en: mastil)
+        let leida = try Digitacion(leyendo: "x32010", en: mastil)
         let comprobada = Digitacion(comprobando: [nil, 3, 2, 0, 1, 0], en: mastil)
         let sonido = mastil.midiSiExiste(en: PosicionEnElMastil(cuerda: 9, traste: 0))
         _ = (leida, comprobada, sonido)

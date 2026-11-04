@@ -150,12 +150,12 @@ public struct DatosDeSerie: Hashable, Sendable, Codable {
 
     public init(_ serie: SerieDodecafonica, notacion: Notacion) {
         let nombres = ConjuntoDeClases.nombresDeLasClases(en: notacion)
-        let (primero, segundo) = serie.hexacordos
+        let mitades = serie.hexacordos
         clases = serie.clases
         notas = serie.clases.map { nombres[$0] }
         intervalos = serie.intervalos
         deTodosLosIntervalos = serie.esDeTodosLosIntervalos
-        hexacordos = [primero, segundo].map { $0.numeroDeForte ?? $0.description }
+        hexacordos = [mitades.primero, mitades.segundo].map { $0.numeroDeForte ?? $0.description }
         formasCombinatorias = serie.formasCombinatorias.map(\.description)
         formasDistintas = serie.numeroDeFormasDistintas
         matriz = serie.matriz

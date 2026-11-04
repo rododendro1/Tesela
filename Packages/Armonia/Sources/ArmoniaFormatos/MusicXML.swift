@@ -221,7 +221,8 @@ package struct EscritorMusicXML: EscritorDePartitura {
         guard let tempo else { return "" }
         let porMinuto = Exportacion.formatear(tempo.pulsosPorMinuto)
         var unidad = ""
-        if let (figura, puntillos) = tempo.unidad.figuraYPuntillos {
+        if let escrita = tempo.unidad.figuraYPuntillos {
+            let (figura, puntillos) = (escrita.figura, escrita.puntillos)
             unidad =
                 "            <beat-unit>\(EscritorMusicXML.tipo(figura))</beat-unit>\n"
                 + String(repeating: "            <beat-unit-dot/>\n", count: puntillos)

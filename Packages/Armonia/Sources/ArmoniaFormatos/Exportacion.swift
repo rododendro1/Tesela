@@ -80,14 +80,14 @@ package enum Exportacion {
     package static func figura(de duracion: Duracion) -> (
         figura: Figura?, puntillos: Int, irregular: (reales: Int, normales: Int)?
     ) {
-        if let (figura, puntillos) = duracion.figuraYPuntillos { return (figura, puntillos, nil) }
+        if let escrita = duracion.figuraYPuntillos { return (escrita.figura, escrita.puntillos, nil) }
         var impar = duracion.denominador
         while impar % 2 == 0 { impar /= 2 }
         guard impar > 1 else { return (nil, 0, nil) }
         var normales = 1
         while normales * 2 < impar { normales *= 2 }
-        if let (figura, puntillos) = (duracion * Duracion(impar, normales)).figuraYPuntillos {
-            return (figura, puntillos, (impar, normales))
+        if let escrita = (duracion * Duracion(impar, normales)).figuraYPuntillos {
+            return (escrita.figura, escrita.puntillos, (impar, normales))
         }
         return (nil, 0, nil)
     }
@@ -353,7 +353,7 @@ extension Exportacion {
         if let rotulo = partitura.tonalidadDelAnalisis {
             escritor.rotulo = (rotulo.nombre(en: partitura.notacion) + ":", partitura.pentagramas.count)
         }
-        for (linea, pentagrama) in partitura.lineas {
+        for (linea, pentagrama) in partitura.lineas.map({ ($0.linea, $0.pentagrama) }) {
             escritor.anadir(
                 linea.voz, pentagrama: pentagrama, plicaArriba: linea.plicaArriba, cifrados: linea.cifrados,
                 analisis: linea.analisis, notacion: partitura.notacion)

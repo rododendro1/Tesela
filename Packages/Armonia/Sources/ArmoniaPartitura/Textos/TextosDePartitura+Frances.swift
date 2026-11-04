@@ -81,9 +81,6 @@ extension TextosDePartitura {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: { texto in "« \(texto) » n'est pas une durée : une figure était attendue (1, 2, 4, 8, 16…, pointée : 4.) ou une fraction de ronde (3/8, 1/12)" },
         compasNoValido: { texto in "« \(texto) » n'est pas une mesure : numérateur/dénominateur attendu, avec un dénominateur puissance de 2 (4/4, 6/8, 7/8), C ou ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "le contrepoint doit durer autant que le cantus firmus : \(redondas) rondes, une par note" },
-        figuraSinDuracion: "la figure d'un arpège doit avoir une durée",
-        duracionesPorAcorde: { acordes, duraciones in "il faut une durée par accord : il y a \(acordes) accords et \(duraciones) durées" },
-        duracionNoPositiva: { n in "la durée de l'accord \(n) doit être positive" }
+        contrapuntoDeOtraDuracion: { redondas in "le contrepoint doit durer autant que le cantus firmus : \(redondas) rondes, une par note" }
     )
 }

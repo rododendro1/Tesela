@@ -70,7 +70,7 @@ extension LineaDeComandos {
         if !arpegios.contains(tipo) && enlazados { return uso(.soloParaArpegios("enlazar"), notacion) }
         // `--archivo`: los acordes de un fichero MIDI, MusicXML, MEI o ABC, con su ritmo armónico (lo que dura cada
         // uno), y su compás, su tempo y su título si no se dan otros.
-        var leidos: (acordes: [Acorde], duraciones: [Duracion])?
+        var leido: RitmoArmonico?
         if let archivo = opciones["archivo"] {
             guard acordes.contains(tipo) || arpegios.contains(tipo) else {
                 return uso(.archivoSoloParaAcordes, notacion)
@@ -81,23 +81,23 @@ extension LineaDeComandos {
             }
             let pieza = try PiezaImportada(leyendo: datos)
             let ventana = try opciones["ventana"].map { try Duracion(leyendo: $0) }
-            let conDuracion = pieza.acordesConDuracion(ventana: ventana)
-            guard !conDuracion.isEmpty else { return uso(.archivoSinAcordes, notacion) }
-            leidos = (conDuracion.map(\.acorde), conDuracion.map(\.duracion))
-            if opciones["compas"] == nil, let suyo = pieza.compas { compas = suyo }
+            let suyo = pieza.ritmoArmonico(ventana: ventana)
+            guard !suyo.acordes.isEmpty else { return uso(.archivoSinAcordes, notacion) }
+            if opciones["compas"] == nil, let delFichero = pieza.compas { compas = delFichero }
             tempo = tempo ?? pieza.tempo
             titulo = titulo ?? pieza.titulo
+            leido = RitmoArmonico(suyo.acordes, compas: compas, tempo: tempo)
         } else if opciones["ventana"] != nil {
             return uso(.ventanaSinArchivo, notacion)
         }
-        // Los acordes analizados, del fichero o escritos, y lo que dura cada uno (`nil`: lo de `--duracion`).
-        func progresion() throws -> (analisis: AnalisisArmonico, duraciones: [Duracion]?)? {
-            if let leidos {
-                let enSuTonalidad = tonalidad.map { $0.analizar(leidos.acordes) }
-                guard let analisis = enSuTonalidad ?? AnalisisArmonico.analizar(leidos.acordes) else { return nil }
+        // Los acordes analizados, del fichero o escritos, y su ritmo (`nil`: el de `--duracion`).
+        func progresion() throws -> (analisis: AnalisisArmonico, ritmo: RitmoArmonico?)? {
+            if let leido {
+                let acordes = leido.acordes.map(\.acorde)
+                let enSuTonalidad = tonalidad.map { $0.analizar(acordes) }
+                guard let analisis = enSuTonalidad ?? AnalisisArmonico.analizar(acordes) else { return nil }
                 // `--duracion` manda sobre el ritmo del fichero.
-                let duraciones: [Duracion]? = opciones["duracion"] == nil ? leidos.duraciones : nil
-                return (analisis, duraciones)
+                return (analisis, opciones["duracion"] == nil ? leido : nil)
             }
             guard !musica.isEmpty else { return nil }
             return (try AnalisisArmonico.analizar(leyendo: musica.joined(separator: " "), en: tonalidad), nil)
@@ -150,12 +150,12 @@ extension LineaDeComandos {
             guard let leida = try progresion() else {
                 return uso(.faltanAcordesDeLaProgresion(orden: orden), notacion)
             }
-            let (analisis, ritmo) = leida
-            let duraciones = ritmo ?? Array(repeating: duracion, count: analisis.acordes.count)
+            let (analisis, suyo) = leida
+            let ritmo = suyo ?? RitmoArmonico(analisis.acordes.map(\.acorde), duracion: duracion, compas: compas)
             return salida(
                 formato,
-                try analisis.partitura(
-                    duraciones: duraciones, compas: compas,
+                ritmo.partitura(
+                    en: analisis.tonalidad,
                     encabezado: Encabezado(titulo: titulo, tempo: tempo, instrumento: instrumento), notacion: notacion
                 ).exportar(como: formato))
         case _ where arpegios.contains(tipo):
@@ -180,9 +180,7 @@ extension LineaDeComandos {
             let (analisis, ritmo) = leida
             let voz: Voz
             if let ritmo {
-                voz = try Voz(
-                    arpegiando: analisis.acordes.map(\.acorde), duraciones: ritmo, patron: patron, figura: figura,
-                    compas: compas, enlazados: enlazados)
+                voz = Voz(arpegiando: ritmo, patron: patron, figura: figura, enlazados: enlazados)
             } else {
                 voz = Voz(
                     arpegiando: analisis.acordes.map(\.acorde), patron: patron, figura: figura,

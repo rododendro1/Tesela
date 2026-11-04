@@ -93,8 +93,6 @@ import Testing
                 textos.duracionNoValida("x"),
                 textos.compasNoValido("x"),
                 textos.contrapuntoDeOtraDuracion(3),
-                textos.duracionesPorAcorde(3, 2),
-                textos.duracionNoPositiva(3),
             ]
             for (i, texto) in resultados.enumerated() {
                 #expect(!texto.isEmpty, "TextosDePartitura, texto \(i) en \(idioma)")

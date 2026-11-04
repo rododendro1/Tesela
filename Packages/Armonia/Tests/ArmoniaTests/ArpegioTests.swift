@@ -92,7 +92,7 @@ import Testing
         #expect(Arpegio.grados(leyendo: "") == nil)
     }
 
-    @Test func lasNotasDeAproximacion() {
+    @Test func lasNotasDeAproximacion() throws {
         let enDo = Acorde("Do")
         #expect(midis(Arpegio(enDo, conOctava: false, aproximacion: .desdeAbajo)) == [59, 60, 63, 64, 66, 67])
         #expect(midis(Arpegio(enDo, conOctava: false, aproximacion: .desdeArriba)) == [61, 60, 65, 64, 68, 67])
@@ -102,18 +102,22 @@ import Testing
         // La ortografía: Re♯ lleva a Mi y Fa♯ a Sol.
         #expect(Arpegio(enDo, aproximacion: .desdeAbajo).alturas()[2].nota == Nota.re.sostenido)
 
-        #expect(Arpegio.Aproximacion(leyendo: "abajo") == .desdeAbajo)
-        #expect(Arpegio.Aproximacion(leyendo: "Above") == .desdeArriba)
-        #expect(Arpegio.Aproximacion(leyendo: "desde-abajo") == .desdeAbajo)
-        #expect(Arpegio.Aproximacion(leyendo: "desdeArriba") == .desdeArriba)
-        #expect(Arpegio.Aproximacion(leyendo: "enclosure") == .encierro)
-        #expect(Arpegio.Aproximacion(leyendo: "lejos") == nil)
+        #expect(try Arpegio.Aproximacion(leyendo: "abajo") == .desdeAbajo)
+        #expect(try Arpegio.Aproximacion(leyendo: "Above") == .desdeArriba)
+        #expect(try Arpegio.Aproximacion(leyendo: "desde-abajo") == .desdeAbajo)
+        #expect(try Arpegio.Aproximacion(leyendo: "desdeArriba") == .desdeArriba)
+        #expect(try Arpegio.Aproximacion(leyendo: "enclosure") == .encierro)
+        #expect(
+            throws: ErrorDeLecturaDeTeoria(
+                texto: "lejos", posicion: nil,
+                motivo: .nombreNoReconocido("lejos", opciones: ["desdeAbajo", "desdeArriba", "encierro"]))
+        ) { try Arpegio.Aproximacion(leyendo: "lejos") }
         for idioma in Idioma.allCases {
             let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
             for aproximacion in Arpegio.Aproximacion.allCases {
                 let nombre = aproximacion.nombre(en: notacion)
                 #expect(!nombre.isEmpty, "\(aproximacion) en \(idioma)")
-                #expect(Arpegio.Aproximacion(leyendo: nombre) == aproximacion, "\(nombre) (\(idioma))")
+                #expect(try Arpegio.Aproximacion(leyendo: nombre) == aproximacion, "\(nombre) (\(idioma))")
             }
         }
     }
@@ -167,18 +171,24 @@ import Testing
         #expect(Set(Arpegio.Patron.allCases.map(\.nombre)).count == Arpegio.Patron.allCases.count)
     }
 
-    @Test func leerUnPatron() {
-        #expect(Arpegio.Patron(leyendo: "idaYVuelta") == .idaYVuelta)
-        #expect(Arpegio.Patron(leyendo: "ida_y_vuelta") == .idaYVuelta)
-        #expect(Arpegio.Patron(leyendo: "down-up") == .bajaYSube)
-        #expect(Arpegio.Patron(leyendo: "Aller-retour") == .idaYVuelta)
-        #expect(Arpegio.Patron(leyendo: "aufwarts") == .ascendente)
-        #expect(Arpegio.Patron(leyendo: "ВОСХОДЯЩИЙ") == .ascendente)
-        #expect(Arpegio.Patron(leyendo: "zigzag") == nil)
+    @Test func leerUnPatron() throws {
+        #expect(try Arpegio.Patron(leyendo: "idaYVuelta") == .idaYVuelta)
+        #expect(try Arpegio.Patron(leyendo: "ida_y_vuelta") == .idaYVuelta)
+        #expect(try Arpegio.Patron(leyendo: "down-up") == .bajaYSube)
+        #expect(try Arpegio.Patron(leyendo: "Aller-retour") == .idaYVuelta)
+        #expect(try Arpegio.Patron(leyendo: "aufwarts") == .ascendente)
+        #expect(try Arpegio.Patron(leyendo: "ВОСХОДЯЩИЙ") == .ascendente)
+        let opciones = ["ascendente", "descendente", "idaYVuelta", "alberti", "quebrado", "bajaYSube"]
+        let error = ErrorDeLecturaDeTeoria(
+            texto: "zigzag", posicion: nil, motivo: .nombreNoReconocido("zigzag", opciones: opciones))
+        #expect(throws: error) { try Arpegio.Patron(leyendo: "zigzag") }
+        #expect(
+            error.explicacion
+                == "«zigzag» no es ninguno de estos: ascendente, descendente, idaYVuelta, alberti, quebrado, bajaYSube")
         for idioma in Idioma.allCases {
             for patron in Arpegio.Patron.allCases {
                 let nombre = patron.nombre(en: Notacion.espanolCompacto.conTextos(en: idioma))
-                #expect(Arpegio.Patron(leyendo: nombre) == patron, "\(nombre) (\(idioma))")
+                #expect(try Arpegio.Patron(leyendo: nombre) == patron, "\(nombre) (\(idioma))")
             }
         }
     }
@@ -262,8 +272,8 @@ import Testing
         let llenos = Voz(arpegiando: [Acorde("Do"), Acorde("Fa")], porAcorde: .blanca, enlazados: true)
         #expect(llenos.eventos[4].alturas.first?.midi == 60)
         // Las tensiones y las aproximaciones valen para todos los acordes, también con su ritmo.
-        let conRitmo = try Voz(
-            arpegiando: [Acorde("Do")], duraciones: [.blanca], tensiones: [9], aproximacion: .desdeAbajo,
+        let conRitmo = Voz(
+            arpegiando: RitmoArmonico([AcordeConDuracion("Do", .blanca)]), tensiones: [9], aproximacion: .desdeAbajo,
             enlazados: true)
         #expect(conRitmo.eventos.flatMap(\.alturas).map(\.midi) == [47, 48, 51, 52])
     }

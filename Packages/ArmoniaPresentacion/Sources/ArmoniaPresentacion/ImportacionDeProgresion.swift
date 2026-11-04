@@ -20,25 +20,24 @@ public enum ImportacionDeProgresion {
     /// Lanza `ErrorDeImportacion` si no se puede leer o no suena ningún acorde.
     public static func leer(_ datos: Data, ventana: Duracion? = nil) throws -> ProgresionImportada {
         let pieza = try PiezaImportada(leyendo: datos)
-        let leidos = pieza.acordesConDuracion(ventana: ventana)
-        guard !leidos.isEmpty else { throw ErrorDeImportacion.sinAcordes }
-        let ritmo = RitmoArmonico(
-            duraciones: leidos.map(\.duracion), compas: pieza.compas ?? .compasillo, tempo: pieza.tempo)
-        return ProgresionImportada(acordes: leidos.map(\.acorde), ritmo: ritmo, titulo: pieza.titulo)
+        let ritmo = pieza.ritmoArmonico(ventana: ventana)
+        guard !ritmo.acordes.isEmpty else { throw ErrorDeImportacion.sinAcordes }
+        return ProgresionImportada(ritmo: ritmo, titulo: pieza.titulo)
     }
 }
 
-/// Una progresión leída de un fichero: sus acordes, lo que dura cada uno y el título de la pieza.
+/// Una progresión leída de un fichero: sus acordes con lo que dura cada uno, y el título de la pieza.
 public struct ProgresionImportada: Hashable, Sendable {
-    public let acordes: [Acorde]
     public let ritmo: RitmoArmonico
     public let titulo: String?
 
-    public init(acordes: [Acorde], ritmo: RitmoArmonico, titulo: String? = nil) {
-        self.acordes = acordes
+    public init(ritmo: RitmoArmonico, titulo: String? = nil) {
         self.ritmo = ritmo
         self.titulo = titulo
     }
+
+    /// Los acordes, sin lo que duran.
+    public var acordes: [Acorde] { ritmo.acordes.map(\.acorde) }
 
     /// Los acordes como se escriben en el campo de la progresión: «Do Sol/Si Lam Mi7».
     public var texto: String { acordes.map { $0.cifrado(en: .espanolCompacto) }.joined(separator: " ") }

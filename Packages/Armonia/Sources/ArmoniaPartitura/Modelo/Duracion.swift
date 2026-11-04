@@ -28,6 +28,18 @@ extension Figura: Nombrable {}
 
 // MARK: - Duración
 
+/// Una figura con sus puntillos: cómo se escribe una duración con una sola figura (``Duracion/figuraYPuntillos``).
+public struct FiguraConPuntillos: Hashable, Sendable {
+    public let figura: Figura
+    /// De 0 a 4.
+    public let puntillos: Int
+
+    public init(figura: Figura, puntillos: Int) {
+        self.figura = figura
+        self.puntillos = puntillos
+    }
+}
+
 /// Duración exacta, como fracción de redonda (siempre reducida).
 ///
 ///     Duracion.negra                       // 1/4
@@ -111,11 +123,13 @@ public struct Duracion: Hashable, Sendable, Comparable {
     public var esCero: Bool { numerador == 0 }
 
     /// La figura y los puntillos con que se escribe, si se puede escribir con una sola figura
-    /// (hasta cuatro puntillos): 3/8 → (negra, 1). `nil` para 5/8 o 1/12.
-    public var figuraYPuntillos: (figura: Figura, puntillos: Int)? {
+    /// (hasta cuatro puntillos): 3/8 → negra con un puntillo. `nil` para 5/8 o 1/12.
+    ///
+    ///     Duracion(3, 8).figuraYPuntillos == FiguraConPuntillos(figura: .negra, puntillos: 1)   // true
+    public var figuraYPuntillos: FiguraConPuntillos? {
         for puntillos in 0...4 {
             for figura in Figura.allCases where Duracion(figura, puntillos: puntillos) == self {
-                return (figura, puntillos)
+                return FiguraConPuntillos(figura: figura, puntillos: puntillos)
             }
         }
         return nil

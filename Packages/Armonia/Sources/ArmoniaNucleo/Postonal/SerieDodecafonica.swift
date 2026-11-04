@@ -131,9 +131,20 @@ public struct SerieDodecafonica: Hashable, Sendable, CustomStringConvertible {
         forma(FormaDeSerie(.retrogradoDeLaInversion, n))
     }
 
-    /// Las 48 formas, en el orden de `FormaDeSerie/todas`.
-    public var formas: [(forma: FormaDeSerie, serie: SerieDodecafonica)] {
-        FormaDeSerie.todas.map { ($0, forma($0)) }
+    /// Las 48 formas, en el orden de `FormaDeSerie/todas`, cada una con la serie que da.
+    public var formas: [FormaConSerie] {
+        FormaDeSerie.todas.map { FormaConSerie(forma: $0, serie: forma($0)) }
+    }
+
+    /// Una de las 48 formas de una serie y la serie que da: P0 y la propia serie, R0 y la serie al revés.
+    public struct FormaConSerie: Hashable, Sendable {
+        public let forma: FormaDeSerie
+        public let serie: SerieDodecafonica
+
+        public init(forma: FormaDeSerie, serie: SerieDodecafonica) {
+            self.forma = forma
+            self.serie = serie
+        }
     }
 
     /// Las formas de esta serie que son `otra`: [P0] para la propia serie, [] si `otra` no es ninguna de sus 48
@@ -169,8 +180,19 @@ public struct SerieDodecafonica: Hashable, Sendable, CustomStringConvertible {
     // MARK: Hexacordos y combinatoriedad
 
     /// Las seis primeras clases y las seis últimas, como conjuntos.
-    public var hexacordos: (primero: ConjuntoDeClases, segundo: ConjuntoDeClases) {
-        (ConjuntoDeClases(clases[..<6]), ConjuntoDeClases(clases[6...]))
+    public var hexacordos: Hexacordos {
+        Hexacordos(primero: ConjuntoDeClases(clases[..<6]), segundo: ConjuntoDeClases(clases[6...]))
+    }
+
+    /// Las dos mitades de una serie, como conjuntos de seis clases.
+    public struct Hexacordos: Hashable, Sendable {
+        public let primero: ConjuntoDeClases
+        public let segundo: ConjuntoDeClases
+
+        public init(primero: ConjuntoDeClases, segundo: ConjuntoDeClases) {
+            self.primero = primero
+            self.segundo = segundo
+        }
     }
 
     /// Las formas cuyo primer hexacordo es el segundo de esta serie: tocadas a la vez que ella, cada mitad completa

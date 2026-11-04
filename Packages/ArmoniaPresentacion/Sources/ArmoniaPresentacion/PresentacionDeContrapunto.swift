@@ -52,20 +52,35 @@ public enum PresentacionDeContrapunto {
     public static let tempo = Tempo(120)
 
     /// Un ejercicio de ejemplo de cada especie, sin faltas, sobre el cantus en re de Fux (el primero, el suyo).
-    public static func ejemplo(_ especie: Contrapunto.Especie) -> (cantus: String, contrapunto: String) {
+    public static func ejemplo(_ especie: Contrapunto.Especie) -> Ejemplo {
         switch especie {
         case .primera:
-            return (
-                "Re4 Fa4 Mi4 Re4 Sol4 Fa4 La4 Sol4 Fa4 Mi4 Re4", "La4 La4 Sol4 La4 Si4 Do5 Do5 Si4 Re5 Do#5 Re5"
-            )
+            return Ejemplo(
+                cantus: "Re4 Fa4 Mi4 Re4 Sol4 Fa4 La4 Sol4 Fa4 Mi4 Re4",
+                contrapunto: "La4 La4 Sol4 La4 Si4 Do5 Do5 Si4 Re5 Do#5 Re5")
         case .segunda:
-            return ("Re4 Fa4 Mi4 Re4", "-:2 La4 Re5 La4 Si4 Do#5 Re5:1")
+            return Ejemplo(cantus: "Re4 Fa4 Mi4 Re4", contrapunto: "-:2 La4 Re5 La4 Si4 Do#5 Re5:1")
         case .tercera:
-            return ("Re4 Fa4 Mi4 Re4", "Re5 Do5 Si4 Do5 Re5 Do5 Si4 La4 Sol4 La4 Si4 Do#5 Re5:1")
+            return Ejemplo(
+                cantus: "Re4 Fa4 Mi4 Re4", contrapunto: "Re5 Do5 Si4 Do5 Re5 Do5 Si4 La4 Sol4 La4 Si4 Do#5 Re5:1")
         case .cuarta:
-            return ("Re4 Mi4 Re4", "-:2 Re5:1 Do#5 Re5:1")
+            return Ejemplo(cantus: "Re4 Mi4 Re4", contrapunto: "-:2 Re5:1 Do#5 Re5:1")
         case .quinta:
-            return ("Re4 Fa4 Mi4 Re4", "-:2 La4:2 Re5:2 Do5:4 Re5:4 Sol4:4 La4:4 Si4:4 Do#5:4 Re5:1")
+            return Ejemplo(
+                cantus: "Re4 Fa4 Mi4 Re4",
+                contrapunto: "-:2 La4:2 Re5:2 Do5:4 Re5:4 Sol4:4 La4:4 Si4:4 Do#5:4 Re5:1")
+        }
+    }
+
+    /// Un ejercicio de ejemplo: el cantus firmus y el contrapunto, en el texto que lee
+    /// ``presentar(cantus:contrapunto:especie:notacion:)``.
+    public struct Ejemplo: Hashable, Sendable {
+        public let cantus: String
+        public let contrapunto: String
+
+        public init(cantus: String, contrapunto: String) {
+            self.cantus = cantus
+            self.contrapunto = contrapunto
         }
     }
 

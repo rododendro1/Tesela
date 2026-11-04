@@ -71,7 +71,7 @@ extension Coral {
             resultado.insert(opciones[i][indice].alturas, at: 0)
             indice = previos[i][indice]
         }
-        return Coral(resultado)
+        return try? Coral(resultado)
     }
 
     // MARK: Auxiliares

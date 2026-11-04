@@ -222,7 +222,8 @@ import Testing
             .acordeNoInterpretable(.variasSeptimas), .acordeNoInterpretable(.septimaDisminuidaFueraDelDisminuido),
             .acordeNoInterpretable(.noEsPorTerceras), .bajoNoValido("x"), .idiomasMezclados("B"),
             .tipoDeEscalaNoReconocido(""), .tipoDeEscalaNoReconocido("x"), .modoNoReconocido("dórico"),
-            .vocesDistintas,
+            .vocesDistintas, .vocesDeDistintaLongitud, .nombreNoReconocido("x", opciones: ["up", "down"]),
+            .trasteNoValido("x", ultimo: 12), .cuerdasDistintas(esperadas: 6, leidas: 5),
         ]).map { ErrorDeLecturaDeTeoria(texto: "x", posicion: 0, motivo: $0) }
         + [ErrorDeLecturaDePartitura.Motivo]([
             .duracionNoValida("x"), .compasNoValido("x"), .contrapuntoDeOtraDuracion(redondas: 8),

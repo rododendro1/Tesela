@@ -170,6 +170,11 @@ extension TextosDeTeoria {
         tipoDeEscalaNoReconocido: { nombre in "το «\(nombre)» δεν είναι γνωστό είδος κλίμακας" },
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "όλες οι συγχορδίες πρέπει να έχουν τον ίδιο αριθμό φωνών, και τουλάχιστον δύο",
+        vocesDeDistintaLongitud: "όλες οι φωνές πρέπει να έχουν τον ίδιο αριθμό νοτών",
+        // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
+        nombreNoReconocido: { n, o in "το «\(n)» δεν είναι κανένα από αυτά: \(o)" },
+        trasteNoValido: { t, u in "το «\(t)» δεν είναι τάστο: πρέπει να είναι x (σβησμένη χορδή) ή αριθμός από 0 έως \(u)" },
+        cuerdasDistintas: { e, l in "χρειάζεται ένα τάστο (ή x) για καθεμία από τις \(e) χορδές, και υπάρχουν \(l)" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(tipo) στο \(raiz)" },
         enLaTonalidad: { tonalidad in "σε " + tonalidad }

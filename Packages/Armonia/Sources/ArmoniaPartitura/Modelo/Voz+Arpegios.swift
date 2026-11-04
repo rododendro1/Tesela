@@ -11,8 +11,7 @@ extension Voz {
     ///     voz.eventos.count             // 9: Do Mi Sol Si♭ Do Si♭ Sol Mi Do
     ///     let datos = voz.partitura(encabezado: Encabezado(titulo: "Arpegio de Do7")).midi()
     ///
-    /// Detiene el programa si `figura` no es positiva, como una figura escrita a mano; la que llega de fuera se
-    /// comprueba antes, o se arpegia con `Voz(arpegiando:duraciones:)`, que lanza el error.
+    /// Detiene el programa si `figura` no es positiva, como `Duracion(_:_:)` con un denominador 0.
     public init(_ arpegio: Arpegio, figura: Duracion = .corchea, octava: Int = 4, compas: Compas = .compasillo) {
         precondition(figura > .cero, "la figura de un arpegio tiene que durar algo")
         self.init(arpegio.alturas(octava: octava).map { Evento($0, figura) }, compas: compas)
@@ -50,25 +49,25 @@ extension Voz {
         self.init(eventos, compas: compas)
     }
 
-    /// Lo mismo, con lo que dura cada acorde (el ritmo armónico de una pieza importada, por ejemplo): el patrón se
-    /// repite hasta llenarlo.
+    /// Lo mismo, siguiendo un ritmo armónico (el de una pieza importada, por ejemplo): el patrón de cada acorde se
+    /// repite hasta llenar lo que dura, y la voz va en el compás del ritmo.
     ///
-    /// Una duración que no es positiva es el patrón entero, como sin `porAcorde`. Lanza `ErrorDePartitura` si
-    /// `figura` no es positiva (`.figuraSinDuracion`) o si no hay una duración por acorde (`.duracionesPorAcorde`).
+    ///     let ritmo = RitmoArmonico([AcordeConDuracion("Do", .blanca), AcordeConDuracion("Sol", .negra)])
+    ///     let voz = Voz(arpegiando: ritmo)
+    ///     voz.eventos.count   // 6: cuatro corcheas y dos
+    ///
+    /// Detiene el programa si `figura` no es positiva.
     public init(
-        arpegiando acordes: [Acorde], duraciones: [Duracion], patron: Arpegio.Patron = .ascendente,
-        octavas: Int = 1, conOctava: Bool = true, figura: Duracion = .corchea, octava: Int = 3,
-        compas: Compas = .compasillo, tensiones: [Int] = [], aproximacion: Arpegio.Aproximacion? = nil,
-        enlazados: Bool = false
-    ) throws(ErrorDePartitura) {
-        guard figura > .cero else { throw ErrorDePartitura(.figuraSinDuracion) }
-        guard duraciones.count == acordes.count else {
-            throw ErrorDePartitura(.duracionesPorAcorde(acordes: acordes.count, duraciones: duraciones.count))
-        }
+        arpegiando ritmo: RitmoArmonico, patron: Arpegio.Patron = .ascendente, octavas: Int = 1,
+        conOctava: Bool = true, figura: Duracion = .corchea, octava: Int = 3, tensiones: [Int] = [],
+        aproximacion: Arpegio.Aproximacion? = nil, enlazados: Bool = false
+    ) {
+        precondition(figura > .cero, "la figura de un arpegio tiene que durar algo")
         let eventos = Voz.arpegiar(
-            acordes, duraciones: duraciones, como: Recorrido(patron, octavas, conOctava, tensiones, aproximacion),
-            figura: figura, octava: octava, enlazados: enlazados)
-        self.init(eventos, compas: compas)
+            ritmo.acordes.map(\.acorde), duraciones: ritmo.duraciones,
+            como: Recorrido(patron, octavas, conOctava, tensiones, aproximacion), figura: figura, octava: octava,
+            enlazados: enlazados)
+        self.init(eventos, compas: ritmo.compas)
     }
 
     /// Cómo se recorre cada acorde de una progresión arpegiada.

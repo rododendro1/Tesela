@@ -170,6 +170,11 @@ extension TextosDeTeoria {
         tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» nun ye un tipu d\'escala conocíu" },
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "tolos acordes tienen que tener el mesmu númberu de voces, y polo menos dos",
+        vocesDeDistintaLongitud: "toles voces tienen que tener el mesmu númberu de notes",
+        // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
+        nombreNoReconocido: { n, o in "«\(n)» nun ye nengún d'estos: \(o)" },
+        trasteNoValido: { t, u in "«\(t)» nun ye un traste: tien que ser x (cuerda apagada) o un númberu de 0 a \(u)" },
+        cuerdasDistintas: { e, l in "fai falta un traste (o x) por cada una de les \(e) cuerdes, y hai \(l)" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in "en " + tonalidad }

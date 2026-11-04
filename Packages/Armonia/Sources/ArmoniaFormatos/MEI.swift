@@ -412,7 +412,8 @@ package struct EscritorMEI: EscritorDePartitura {
         let porMinuto = Exportacion.formatear(tempo.pulsosPorMinuto)
         var atributos = "staff=\"\(pentagrama)\" place=\"above\" startid=\"#\(id)\""
         var texto = "♩ = " + Exportacion.formatear(tempo.negrasPorMinuto)
-        if let (figura, puntillos) = tempo.unidad.figuraYPuntillos {
+        if let escrita = tempo.unidad.figuraYPuntillos {
+            let (figura, puntillos) = (escrita.figura, escrita.puntillos)
             atributos += " mm=\"\(porMinuto)\" mm.unit=\"\(dur(figura))\""
             if puntillos > 0 { atributos += " mm.dots=\"\(puntillos)\"" }
             if let simbolo = simbolos[figura] {

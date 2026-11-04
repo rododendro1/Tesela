@@ -306,7 +306,7 @@ import Testing
         #expect(try leyenda(#require(ElementoXML.leer(Tonnetz([]).svg()))).isEmpty)
     }
 
-    @Test func ciclos() {
+    @Test func ciclos() throws {
         func cifrados(_ acorde: Acorde, _ ciclo: CicloNeorriemanniano) -> [String] {
             acorde.ciclo(ciclo)?.map(\.cifrado) ?? []
         }
@@ -342,10 +342,14 @@ import Testing
             }
         }
         #expect(Acorde("Sol7").ciclo(.hexatonico) == nil)
-        #expect(CicloNeorriemanniano(leyendo: "Hexatónico") == .hexatonico)
-        #expect(CicloNeorriemanniano(leyendo: "octatonic cycle") == .octatonico)
-        #expect(CicloNeorriemanniano(leyendo: "ciclo LR") == .lr)
-        #expect(CicloNeorriemanniano(leyendo: "pentatónico") == nil)
+        #expect(try CicloNeorriemanniano(leyendo: "Hexatónico") == .hexatonico)
+        #expect(try CicloNeorriemanniano(leyendo: "octatonic cycle") == .octatonico)
+        #expect(try CicloNeorriemanniano(leyendo: "ciclo LR") == .lr)
+        #expect(
+            throws: ErrorDeLecturaDeTeoria(
+                texto: "pentatónico", posicion: nil,
+                motivo: .nombreNoReconocido("pentatónico", opciones: ["hexatonico", "octatonico", "lr"]))
+        ) { try CicloNeorriemanniano(leyendo: "pentatónico") }
     }
 
     @Test func dibujoDeCiclos() throws {

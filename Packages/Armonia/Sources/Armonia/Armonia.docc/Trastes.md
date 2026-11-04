@@ -90,13 +90,13 @@ salen), y CAGED, la guitarra afinada como siempre. Desde la terminal: `armonia p
 
 Un traste o una posición que escribe una persona puede no existir. Los inicializadores y los
 métodos que se detienen ante un error del programador (como salirse de un array) tienen un
-equivalente que devuelve `nil`.
+equivalente que devuelve `nil`, o que lanza `ErrorDeLecturaDeTeoria`, con el motivo, si lee un texto.
 
 ```swift
 import Armonia
 
 let mastil = Mastil(.guitarra)
-let leida = Digitacion(leyendo: "x32010", en: mastil)            // nil si no se entiende o no cabe
+let leida = try Digitacion(leyendo: "x32010", en: mastil)        // lanza si no se entiende o no cabe
 let comprobada = Digitacion(comprobando: [nil, 3, 2, 0, 1, 0], en: mastil)
 let sonido = mastil.midiSiExiste(en: PosicionEnElMastil(cuerda: 9, traste: 0))   // nil: no hay décima cuerda
 ```

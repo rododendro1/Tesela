@@ -164,9 +164,23 @@ extension NotaDeLaMelodia {
     }
 }
 
+/// Una nota extraña de una melodía y su posición en ella: lo que da `notasExtranas`.
+public struct NotaExtranaEnLaMelodia: Hashable, Sendable {
+    /// Su posición en la melodía, desde 0.
+    public let indice: Int
+    public let nota: NotaDeLaMelodia
+
+    public init(indice: Int, nota: NotaDeLaMelodia) {
+        self.indice = indice
+        self.nota = nota
+    }
+}
+
 extension Array where Element == NotaDeLaMelodia {
     /// Solo las notas extrañas, con su posición en la melodía.
-    public var notasExtranas: [(indice: Int, nota: NotaDeLaMelodia)] {
-        enumerated().filter { !$0.element.esDelAcorde }.map { (indice: $0.offset, nota: $0.element) }
+    public var notasExtranas: [NotaExtranaEnLaMelodia] {
+        enumerated().filter { !$0.element.esDelAcorde }.map {
+            NotaExtranaEnLaMelodia(indice: $0.offset, nota: $0.element)
+        }
     }
 }

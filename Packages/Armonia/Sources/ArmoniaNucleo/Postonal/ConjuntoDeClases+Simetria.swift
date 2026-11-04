@@ -15,9 +15,9 @@ public struct EjeDeInversion: Hashable, Sendable, CustomStringConvertible, Compa
     public init(indice: Int) { self.indice = modulo(indice, 12) }
 
     /// Los dos puntos por donde pasa, en semitonos desde Do: 0 y 6 para T0I, 0.5 y 6.5 para T1I, 5.5 y 11.5 para T11I.
-    public var extremos: (Double, Double) {
+    public var extremos: [Double] {
         let mitad = Double(indice) / 2
-        return (mitad, mitad + 6)
+        return [mitad, mitad + 6]
     }
 
     /// Las clases que la inversión deja en su sitio: las dos por donde pasa el eje con n par, ninguna con n impar.

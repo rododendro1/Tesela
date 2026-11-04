@@ -38,7 +38,6 @@ el selector de notación cambia la app entera.
 - ``PresentacionDeAnalisis``
 - ``AnalisisPresentado``
 - ``TramoPresentado``
-- ``RitmoArmonico``
 
 ### Abrir ficheros
 

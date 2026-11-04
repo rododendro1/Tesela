@@ -2,6 +2,49 @@
 
 ## Sin publicar
 
+### Los lectores que fallan dicen por qué
+
+- **Cambio incompatible:** `Arpegio.Patron(leyendo:)`, `Arpegio.Aproximacion(leyendo:)`,
+  `CicloNeorriemanniano(leyendo:)` y `Digitacion(leyendo:en:)` lanzan `ErrorDeLecturaDeTeoria` en lugar de devolver
+  `nil`, con el motivo en los quince idiomas: un nombre que no es ninguno de los que se leen da
+  `.nombreNoReconocido`, con los que sí; una tablatura con un traste que no se entiende o no está en el mástil,
+  `.trasteNoValido`, en su carácter, y una sin un traste por cuerda, `.cuerdasDistintas`. Donde se escribía
+  `if let p = Arpegio.Patron(leyendo: texto)`, ahora `if let p = try? Arpegio.Patron(leyendo: texto)`.
+- **Cambio incompatible:** `Coral(_:)` y `Coral(voces:)` también lanzan: `.vocesDistintas` si no hay al menos dos
+  voces o los acordes no tienen todos las mismas, y `.vocesDeDistintaLongitud` si las voces, dadas voz por voz, no
+  tienen todas las mismas notas.
+
+### Tipos con nombre en lugar de tuplas
+
+- **Cambio incompatible:** lo que antes era una tupla es ahora un tipo con nombre, `Hashable` y `Sendable`, con los
+  mismos campos, así que `x.campo` sigue igual y solo cambia lo que desestructura (`let (a, b) = …`) o compara:
+  - `Tonalidad.armonizarACuatroVoces(_:)` da un `CoralArmonizado` (`armonizacion`, `coral`).
+  - `[NotaDeLaMelodia].notasExtranas` da `[NotaExtranaEnLaMelodia]` (`indice`, `nota`).
+  - `Partitura.lineas` da `[Partitura.LineaEnPentagrama]` (`linea`, `pentagrama`).
+  - `Duracion.figuraYPuntillos` da un `FiguraConPuntillos` (`figura`, `puntillos`).
+  - `Polirritmia.ataques(ciclo:)` da `Polirritmia.Ataques` (`primera`, `segunda`).
+  - `SerieDodecafonica.formas` da `[SerieDodecafonica.FormaConSerie]` (`forma`, `serie`), y
+    `SerieDodecafonica.hexacordos`, `SerieDodecafonica.Hexacordos` (`primero`, `segundo`).
+  - `EjeDeInversion.extremos` da los dos puntos en un `[Double]`: `[0.5, 6.5]` para T1I.
+  - En `ArmoniaPresentacion`, `PresentacionDeContrapunto.ejemplo(_:)` da un `PresentacionDeContrapunto.Ejemplo`
+    (`cantus`, `contrapunto`).
+- **Cambio incompatible:** `Polirritmia.voces(compas:compases:alturas:)` es ahora
+  `voces(compas:compases:arriba:abajo:)`, con una altura para cada pulsación.
+
+### El ritmo armónico, cada acorde con lo que dura
+
+- **`RitmoArmonico`**: una progresión con lo que dura cada acorde (`AcordeConDuracion`), su compás y su tempo.
+  `RitmoArmonico.partitura(en:encabezado:cifrados:analisis:notacion:)` la escribe analizada (en la tonalidad que se
+  pida o en la que mejor la explica), y `Voz(arpegiando:patron:…)` la arpegia. `con(duracion:)` da todos los
+  acordes con la misma duración, y `transponer(_:)`, el mismo ritmo en otra tonalidad.
+- **Cambio incompatible:** `PiezaImportada.acordesConDuracion(ventana:)` es ahora `ritmoArmonico(ventana:)`, que da
+  además el compás y el tempo de la pieza, y `acordesConInicio(ventana:)` da `[AcordeConInicio]`.
+- **Cambio incompatible:** `AnalisisArmonico.partitura(duraciones:…)` y `Voz(arpegiando:duraciones:…)`
+  desaparecen: con los acordes y sus duraciones en dos listas, tenían que comprobar que casaban. Con un
+  `RitmoArmonico` no hace falta, y `analisis.partitura(duraciones: d)` es `ritmo.partitura(en: analisis.tonalidad)`.
+- En `ArmoniaPresentacion`, `RitmoArmonico` es el de la biblioteca: `ProgresionImportada` lleva solo el ritmo y el
+  título, y el análisis y los arpegios siguen el ritmo de la pieza abierta solo si sus acordes son los mismos.
+
 ### Cada nota con su desvío
 
 - **`Evento.Nota`**: una nota que suena, con su `altura` y su `desvio` en cents (redondeado a la centésima), que se
@@ -14,16 +57,8 @@
   `Evento(notas: [Evento.Nota("Do4"), Evento.Nota("Mi♭4", desvio: 50)], duracion: .negra)`.
   `Evento(alturas:duracion:…)` sigue para las alturas temperadas, y `Evento.alturas`, igual.
 
-### Errores en vez de paradas con datos de fuera, y negras por defecto
+### Negras por defecto, y el instrumento MIDI sin paradas
 
-- **`ErrorDePartitura`**: lo que lanzan una voz o una partitura con datos que no casan, con su `motivo`
-  (`.figuraSinDuracion`, `.duracionesPorAcorde(acordes:duraciones:)`, `.duracionNoPositiva(indice:)`) y su mensaje
-  en los quince idiomas.
-- **Cambio incompatible:** `AnalisisArmonico.partitura(duraciones:…)` y `Voz(arpegiando:duraciones:…)`, las que
-  reciben el ritmo armónico de una pieza importada, lanzan `ErrorDePartitura` en vez de detener el programa si no hay
-  una duración por acorde, si alguna no es positiva o si la figura no dura. Las que reciben una figura o una duración
-  escrita a mano (`Voz(_:figura:…)`, `Voz(arpegiando:…porAcorde:…)`, `partitura(duracion:…)`) siguen deteniéndolo,
-  como `Duracion(_:_:)` con un denominador 0.
 - **Cambio incompatible:** `AnalisisArmonico.partitura(duracion:…)` pone los acordes en negras si no se pide otra
   figura (antes, blancas), como el coral; `armonia musicxml acordes` también.
 - En MIDI, un instrumento fuera de los de General MIDI (0…127) se lleva al más cercano en vez de detener el

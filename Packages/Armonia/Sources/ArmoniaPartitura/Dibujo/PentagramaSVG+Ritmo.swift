@@ -10,7 +10,7 @@ extension PentagramaSVG {
     /// `Voz.grafia`).
     struct Ritmo {
         /// La figura con que se escribe cada columna, con sus puntillos.
-        let figuras: [(figura: Figura, puntillos: Int)]
+        let figuras: [FiguraConPuntillos]
         /// Si la columna se liga a la siguiente.
         let ligadas: [Bool]
         let compas: Compas
@@ -38,7 +38,7 @@ extension PentagramaSVG {
             let irregular = voz.eventos.contains { $0.duracion.figuraYPuntillos == nil }
             let compases = irregular ? voz.compases : voz.grafia
             let eventos = compases.flatMap { $0 }
-            var figuras: [(figura: Figura, puntillos: Int)] = []
+            var figuras: [FiguraConPuntillos] = []
             // La proporción del grupo irregular de cada columna (3:2 en un tresillo, 5:4 en un cinquillo), o `nil`.
             var deGrupo: [(numero: Int, en: Int)?] = []
             for evento in eventos {
@@ -51,7 +51,7 @@ extension PentagramaSVG {
                 } else {
                     // Los demás: la figura más larga que no la pasa, sin cifra.
                     let figura = Figura.allCases.first { $0.duracion <= evento.duracion } ?? .garrapatea
-                    figuras.append((figura, 0))
+                    figuras.append(FiguraConPuntillos(figura: figura, puntillos: 0))
                     deGrupo.append(nil)
                 }
             }
@@ -162,7 +162,7 @@ extension PentagramaSVG {
         /// La proporción de un grupo irregular en que `duracion` es una figura, y esa figura; `nil` si no hay.
         static func grupoIrregular(
             _ duracion: Duracion
-        ) -> (proporcion: (numero: Int, en: Int), figura: (figura: Figura, puntillos: Int))? {
+        ) -> (proporcion: (numero: Int, en: Int), figura: FiguraConPuntillos)? {
             for proporcion in proporcionesDeGrupo {
                 if let escrita = (duracion * Duracion(proporcion.numero, proporcion.en)).figuraYPuntillos {
                     return (proporcion, escrita)
@@ -206,8 +206,8 @@ extension PentagramaSVG {
 
         /// Lo que se deja detrás de una columna, según lo que dura: más cuanto más larga, pero no en proporción.
         func separacion(_ columna: Int) -> Double {
-            let (figura, puntillos) = figuras[columna]
-            let duracion = Duracion(figura, puntillos: puntillos).enRedondas
+            let escrita = figuras[columna]
+            let duracion = Duracion(escrita.figura, puntillos: escrita.puntillos).enRedondas
             return 0.9 + 2.0 * (duracion * 4).squareRoot() + (llevaCorchete(columna) ? 0.5 : 0)
         }
 

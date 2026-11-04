@@ -170,6 +170,11 @@ extension TextosDeTeoria {
         tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» es pas un tipe de gama conegut" },
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "totes los acòrds devon aver lo meteis nombre de voses, e almens doas",
+        vocesDeDistintaLongitud: "totas las voses devon aver lo meteis nombre de nòtas",
+        // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
+        nombreNoReconocido: { n, o in "«\(n)» es pas cap d'aquestes: \(o)" },
+        trasteNoValido: { t, u in "«\(t)» es pas un trast: cal x (còrda amudida) o un nombre de 0 a \(u)" },
+        cuerdasDistintas: { e, l in "cal un trast (o x) per caduna de las \(e) còrdas, e n'i a \(l)" },
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in "en " + tonalidad }

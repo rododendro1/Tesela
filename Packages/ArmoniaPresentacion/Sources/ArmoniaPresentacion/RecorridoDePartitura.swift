@@ -30,13 +30,12 @@ public struct RecorridoDePartitura: Hashable, Sendable {
     public init(_ progresion: ProgresionImportada, notacion: Notacion) {
         titulo = progresion.titulo
         let acordes = progresion.acordes
-        let duraciones = progresion.ritmo.duraciones
-        let pasos = acordes.indices.map { i in
+        let pasos = progresion.ritmo.acordes.enumerated().map { i, conDuracion in
             let transformacion =
                 i == 0 ? "" : RecorridoDePartitura.transformacion(desde: acordes[i - 1], hasta: acordes[i])
             return Paso(
                 acorde: acordes[i], cifrado: acordes[i].cifrado(en: notacion), transformacion: transformacion,
-                duracion: duraciones.indices.contains(i) ? duraciones[i] : .negra)
+                duracion: conDuracion.duracion)
         }
         self.pasos = pasos
         sonido = Escucha.acordes(

@@ -38,6 +38,19 @@ public struct Armonizacion: Hashable, Sendable, CustomStringConvertible {
 
 // MARK: - Armonizar
 
+/// Una melodía armonizada y escrita a cuatro voces: lo que da ``Tonalidad/armonizarACuatroVoces(_:)``.
+public struct CoralArmonizado: Hashable, Sendable {
+    /// Los acordes elegidos para cada nota.
+    public let armonizacion: Armonizacion
+    /// Las cuatro voces, con la melodía en el soprano.
+    public let coral: Coral
+
+    public init(armonizacion: Armonizacion, coral: Coral) {
+        self.armonizacion = armonizacion
+        self.coral = coral
+    }
+}
+
 extension Tonalidad {
     /// Los acordes de la tonalidad que tienen una nota, del más al menos habitual para
     /// armonizarla: los tres principales (I, IV, V) primero, y antes si la nota es su fundamental.
@@ -145,7 +158,7 @@ extension Tonalidad {
     /// de acordes obliga a una falta con esa melodía, se queda con otra.
     ///
     /// `nil` si no hay ninguna (por ejemplo, si la melodía se sale de la tesitura del soprano, Do4–Sol5).
-    public func armonizarACuatroVoces(_ melodia: [Altura]) -> (armonizacion: Armonizacion, coral: Coral)? {
+    public func armonizarACuatroVoces(_ melodia: [Altura]) -> CoralArmonizado? {
         guard !melodia.isEmpty else { return nil }
         let notas = melodia.map(\.nota)
         let opciones = notas.map { acordes(para: $0) }
@@ -212,8 +225,9 @@ extension Tonalidad {
             voces.insert(estado.alturas, at: 0)
             indice = previos[i][indice]
         }
-        guard let conduccion = Coral(voces) else { return nil }
-        return (Armonizacion(tonalidad: self, melodia: notas, acordes: elegidos), conduccion)
+        guard let conduccion = try? Coral(voces) else { return nil }
+        return CoralArmonizado(
+            armonizacion: Armonizacion(tonalidad: self, melodia: notas, acordes: elegidos), coral: conduccion)
     }
 
     // MARK: Auxiliares

@@ -83,9 +83,7 @@ public enum PresentacionDeTransposicion {
 
     /// Una progresión abierta de un fichero, con su ritmo armónico y su título, en otra tonalidad.
     public static func transponer(_ progresion: ProgresionImportada, _ intervalo: Intervalo) -> ProgresionImportada {
-        ProgresionImportada(
-            acordes: progresion.acordes.map { $0.transponer(intervalo) }, ritmo: progresion.ritmo,
-            titulo: progresion.titulo)
+        ProgresionImportada(ritmo: progresion.ritmo.transponer(intervalo), titulo: progresion.titulo)
     }
 
     /// Una palabra: un acorde (Sol7/Si) o, en las notas, un evento con duración (Do4:8, Do4+Mi4:2, -:4), una

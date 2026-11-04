@@ -53,10 +53,9 @@ import Testing
     private let duraciones: [Duracion] = [.blanca, .negra, .negra, .redonda]
 
     private func importada() throws -> ProgresionImportada {
-        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
-        let datos = try analisis.partitura(
-            duraciones: duraciones, encabezado: Encabezado(titulo: "Coral", tempo: Tempo(90))
-        ).midi()
+        let acordes = [Acorde("Do"), Acorde("Fa"), Acorde("Sol7"), Acorde("Do")]
+        let ritmo = RitmoArmonico(zip(acordes, duraciones).map { AcordeConDuracion($0, $1) })
+        let datos = ritmo.partitura(encabezado: Encabezado(titulo: "Coral", tempo: Tempo(90))).midi()
         return try ImportacionDeProgresion.leer(datos)
     }
 
@@ -91,15 +90,20 @@ import Testing
         #expect(arpegiada.voz.eventos.reduce(Duracion.cero) { $0 + $1.duracion } == Duracion(2))
     }
 
-    @Test func unRitmoQueNoCuadraNoSeUsa() {
+    /// El ritmo de otros acordes (los de la pieza abierta, si se ha retocado la progresión) no se usa.
+    @Test func unRitmoQueNoCuadraNoSeUsa() throws {
         let acordes = [Acorde("Do"), Acorde("Sol")]
-        let cojo = RitmoArmonico(duraciones: [.blanca])
+        let cojo = RitmoArmonico([AcordeConDuracion("Do", .blanca)])
         #expect(PresentacionDeAnalisis.analizar(acordes, ritmo: cojo, notacion: .espanolCompacto)?.ritmo == nil)
-        let nulo = RitmoArmonico(duraciones: [.blanca, .cero])
-        #expect(PresentacionDeAnalisis.analizar(acordes, ritmo: nulo, notacion: .espanolCompacto)?.ritmo == nil)
+        let otro = RitmoArmonico([AcordeConDuracion("Do", .blanca), AcordeConDuracion("Fa", .blanca)])
+        #expect(PresentacionDeAnalisis.analizar(acordes, ritmo: otro, notacion: .espanolCompacto)?.ritmo == nil)
         #expect(
             PresentacionDeAnalisis.analizar(acordes, notacion: .espanolCompacto)
                 == PresentacionDeAnalisis.analizar(acordes, ritmo: cojo, notacion: .espanolCompacto))
+        let arpegiada = try #require(
+            PresentacionDeArpegios.progresion(
+                acordes, patron: .ascendente, tonalidad: nil, ritmo: otro, notacion: .espanolCompacto))
+        #expect(arpegiada.voz.eventos.count == 8) // una blanca de corcheas por acorde
     }
 
     @Test func sonidoConDuraciones() {

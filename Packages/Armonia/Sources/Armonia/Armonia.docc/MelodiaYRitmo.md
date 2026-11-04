@@ -357,7 +357,7 @@ pieza.tonalidad                  // Do mayor
 pieza.notas.count                // 12
 pieza.acordes().map(\.cifrado)   // ["Do", "Sol", "Do"]
 pieza.analisis()?.cifrados       // ["I", "V", "I"]
-pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .redonda]  // true
+pieza.ritmoArmonico().duraciones == [.blanca, .blanca, .redonda]  // true
 ```
 
 - MIDI solo da números de nota: la ortografía sale de la armadura del fichero o, si no la
@@ -370,9 +370,11 @@ pieza.acordesConDuracion().map(\.duracion) == [.blanca, .blanca, .redonda]  // t
   transpositores (se lee lo que suena). No cuentan las notas guía ni la percusión, y tampoco el
   canal 10 de MIDI. Las notas de adorno de MusicXML, MEI y ABC van aparte, en `notasDeAdorno`:
   empiezan donde empieza la nota a la que adornan y no duran.
-- `acordesConDuracion(ventana:)` da además lo que dura cada acorde, el ritmo armónico de la pieza:
-  hasta que empieza el siguiente y, el último, hasta el final. La partitura de una progresión
-  analizada lo acepta con `partitura(duraciones:)`, y `Voz(arpegiando:duraciones:)` la arpegia con ese ritmo.
+- `ritmoArmonico(ventana:)` da además lo que dura cada acorde, el ritmo armónico de la pieza: un
+  ``RitmoArmonico`` con cada acorde y su duración (hasta que empieza el siguiente y, el último, hasta el
+  final), en el compás y al tempo del fichero. `RitmoArmonico.partitura(en:encabezado:cifrados:analisis:notacion:)`
+  lo escribe analizado, y `Voz(arpegiando:patron:octavas:conOctava:figura:octava:tensiones:aproximacion:enlazados:)`
+  lo arpegia. `acordesConInicio(ventana:)` da en cambio dónde empieza cada acorde.
 - Las repeticiones de MusicXML, MEI y ABC (con sus casillas de primera y segunda vez) y los saltos
   (da capo, dal segno, fine, coda) se despliegan: `notas` las da en el orden en que se tocan. Tras
   un da capo o un dal segno no se repite nada y se toman las últimas casillas. Del .mxl se lee la partitura que señala

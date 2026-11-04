@@ -96,7 +96,7 @@ import Testing
         #expect(Nota.do.intervaloMasCorto(hasta: .la).semitonosConSigno == -3)
         #expect(Nota.do.intervaloMasCorto(hasta: Nota.fa.sostenido).semitonosConSigno == 6)
         #expect((Nota.do + Nota.do.intervaloMasCorto(hasta: .la)) == .la)
-        let coral = Coral([[Altura(.do, octava: 3), Altura(.mi, octava: 4)]])
+        let coral = try? Coral([[Altura(.do, octava: 3), Altura(.mi, octava: 4)]])
         #expect(coral?.transponer(.segundaMayor).acordes.first?.map(\.midi) == [50, 66])
         #expect(coral?.texto(en: .espanolCompacto) == "Do₃ Mi₄")
     }
