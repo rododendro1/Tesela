@@ -296,9 +296,8 @@ let partitura = escala.partitura(encabezado: Encabezado(titulo: "Escala", tempo:
 partitura.musicXML() == escala.musicXML(tempo: Tempo(90), titulo: "Escala")   // true
 partitura.pentagramas.count                                                  // 1
 let bajo = try Voz(leyendo: "Do3:2. Fa2:4", compas: "3/4")
-let dos = Partitura(
-    pentagramas: [.init(clave: .sol, voces: [.init(escala)]), .init(clave: .fa, voces: [.init(bajo)])],
-    encabezado: Encabezado(titulo: "Dos manos"), llave: true)
+let manos: [Partitura.Pentagrama] = [.init(clave: .sol, voces: [.init(escala)]), .init(clave: .fa, voces: [.init(bajo)])]
+let dos = Partitura(pentagramas: manos, encabezado: Encabezado(titulo: "Dos manos"), llave: true)
 dos.lilyPond().contains("PianoStaff")                                        // true
 dos.svg().contains("<svg")                                                   // true
 ```
