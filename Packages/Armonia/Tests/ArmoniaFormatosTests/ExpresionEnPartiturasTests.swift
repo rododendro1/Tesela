@@ -81,7 +81,9 @@ import Testing
 
     @Test func sinMarcasNoCambiaNada() throws {
         let sencilla = try Voz(leyendo: "Do4:4 Re4:4 Mi4:2")
-        #expect(!sencilla.partitura().musicXML().contains("<dynamics>") && !sencilla.partitura().musicXML().contains("<articulations>"))
+        #expect(
+            !sencilla.partitura().musicXML().contains("<dynamics>")
+                && !sencilla.partitura().musicXML().contains("<articulations>"))
         #expect(!sencilla.partitura().mei().contains("<dynam") && !sencilla.partitura().abc().contains("!"))
         let leida = try PiezaImportada(musicXML: Data(sencilla.partitura().musicXML().utf8))
         #expect(marcas(leida).allSatisfy { $0.hasSuffix(" -") })

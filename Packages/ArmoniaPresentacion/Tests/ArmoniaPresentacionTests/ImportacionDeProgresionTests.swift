@@ -10,12 +10,15 @@ import Testing
     @Test func unFicheroDaSuProgresion() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
         #expect(try (ImportacionDeProgresion.progresion(de: analisis.partitura().midi())) == "Do Lam Re7 Sol7 Do")
-        #expect(try (ImportacionDeProgresion.progresion(de: Data(analisis.partitura().musicXML().utf8))) == "Do Lam Re7 Sol7 Do")
+        #expect(
+            try (ImportacionDeProgresion.progresion(de: Data(analisis.partitura().musicXML().utf8)))
+                == "Do Lam Re7 Sol7 Do")
     }
 
     @Test func laProgresionSeAnalizaComoLaEscrita() throws {
         let texto = "Do Fa Sol7 Do Lam Re7 Sol"
-        let progresion = try ImportacionDeProgresion.progresion(de: AnalisisArmonico.analizar(leyendo: texto).partitura().midi())
+        let progresion = try ImportacionDeProgresion.progresion(
+            de: AnalisisArmonico.analizar(leyendo: texto).partitura().midi())
         #expect(progresion == texto)
         #expect(
             try (PresentacionDeAnalisis.analizar(progresion, notacion: .espanolCompacto))
@@ -51,7 +54,9 @@ import Testing
 
     private func importada() throws -> ProgresionImportada {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
-        let datos = analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "Coral", tempo: Tempo(90))).midi()
+        let datos = analisis.partitura(
+            duraciones: duraciones, encabezado: Encabezado(titulo: "Coral", tempo: Tempo(90))
+        ).midi()
         return try ImportacionDeProgresion.leer(datos)
     }
 

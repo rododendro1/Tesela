@@ -28,7 +28,10 @@ import Testing
         let voz = try Voz(
             leyendo: "Sol4:4 Do5:2 Re5:8 Mi5:8 Fa#5:4 Sol5:2. Do5:1/12 Re5:1/12 Mi5:1/12 Fa5:4 -:4", compas: "3/4",
             anacrusa: .negra)
-        let gmn = voz.partitura(encabezado: Encabezado(titulo: #"Mi "canción""#, tonalidad: Tonalidad(.sol), tempo: Tempo(60, unidad: Duracion(3, 8)))).guido()
+        let gmn = voz.partitura(
+            encabezado: Encabezado(
+                titulo: #"Mi "canción""#, tonalidad: Tonalidad(.sol), tempo: Tempo(60, unidad: Duracion(3, 8)))
+        ).guido()
         #expect(
             gmn.hasPrefix(
                 #"{\#n  [ \title<"Mi \"canción\""> \staff<1> \instr<"Voz"> \clef<"g2"> \key<1> "#
@@ -44,7 +47,9 @@ import Testing
 
     @Test func deUnCoralConCifradosYAnalisis() throws {
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa2 La3 Fa4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-        let gmn = coral.partitura(duracion: .blanca, compas: "3/2", encabezado: Encabezado(titulo: "Cadencia"), cifrados: true, analisis: true).guido()
+        let gmn = coral.partitura(
+            duracion: .blanca, compas: "3/2", encabezado: Encabezado(titulo: "Cadencia"), cifrados: true, analisis: true
+        ).guido()
         #expect(gmn.contains(#"\title<"Cadencia"> \accol<id=1, range="1-2"> \staff<1> \instr<"Coro">"#))
         #expect(gmn.components(separatedBy: "\\staff<").count == 5)
         #expect(gmn.components(separatedBy: "\\stemsUp").count == 3)

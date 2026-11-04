@@ -43,7 +43,8 @@ private func f(_ duracion: Duracion) -> String {
         for (texto, compas) in voces {
             let voz = try Voz(leyendo: texto, compas: Compas(leyendo: compas))
             try porTodosLosFormatos(
-                musicXML: voz.partitura().musicXML(), mei: voz.partitura(encabezado: Encabezado(titulo: "Voz")).mei(), abc: voz.partitura(encabezado: Encabezado(titulo: "Voz")).abc(),
+                musicXML: voz.partitura().musicXML(), mei: voz.partitura(encabezado: Encabezado(titulo: "Voz")).mei(),
+                abc: voz.partitura(encabezado: Encabezado(titulo: "Voz")).abc(),
                 Comment(rawValue: texto))
         }
     }
@@ -51,19 +52,30 @@ private func f(_ duracion: Duracion) -> String {
     @Test func losCoralesYLosAnalisisSalenIgual() throws {
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa2 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
         try porTodosLosFormatos(
-            musicXML: coral.partitura(duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(tonalidad: Tonalidad(.do))).musicXML(),
-            mei: coral.partitura(duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do))).mei(),
-            abc: coral.partitura(duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do))).abc(),
+            musicXML: coral.partitura(
+                duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(tonalidad: Tonalidad(.do))
+            ).musicXML(),
+            mei: coral.partitura(
+                duracion: .blanca, compas: Compas(3, 2),
+                encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do))
+            ).mei(),
+            abc: coral.partitura(
+                duracion: .blanca, compas: Compas(3, 2),
+                encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do))
+            ).abc(),
             "coral")
         let analisis = try AnalisisArmonico.analizar(leyendo: "Sib Mib/Sol Fa7/La Sib")
         try porTodosLosFormatos(
-            musicXML: analisis.partitura().musicXML(), mei: analisis.partitura().mei(), abc: analisis.partitura().abc(), "análisis")
+            musicXML: analisis.partitura().musicXML(), mei: analisis.partitura().mei(), abc: analisis.partitura().abc(),
+            "análisis")
 
-        let pieza = try PiezaImportada(leyendo: Data(analisis.partitura(encabezado: Encabezado(titulo: "Cadencia")).mei().utf8))
+        let pieza = try PiezaImportada(
+            leyendo: Data(analisis.partitura(encabezado: Encabezado(titulo: "Cadencia")).mei().utf8))
         #expect(pieza.titulo == "Cadencia")
         #expect(pieza.tonalidad?.armadura == -2)
         #expect(pieza.acordes().map(\.cifrado) == ["Si♭", "Mi♭/Sol", "Fa7/La", "Si♭"])
-        let porABC = try PiezaImportada(leyendo: Data(analisis.partitura(encabezado: Encabezado(titulo: "Cadencia")).abc().utf8))
+        let porABC = try PiezaImportada(
+            leyendo: Data(analisis.partitura(encabezado: Encabezado(titulo: "Cadencia")).abc().utf8))
         #expect(porABC.titulo == "Cadencia")
         #expect(porABC.tonalidad?.armadura == -2)
         #expect(porABC.acordes().map(\.cifrado) == ["Si♭", "Mi♭/Sol", "Fa7/La", "Si♭"])
@@ -71,7 +83,10 @@ private func f(_ duracion: Duracion) -> String {
 
     @Test func elCompasYElTempo() throws {
         let voz = try Voz(leyendo: "Do4:4 Re4:4 Mi4:4", compas: "3/4")
-        for texto in [voz.partitura(encabezado: Encabezado(tempo: Tempo(90))).mei(), voz.partitura(encabezado: Encabezado(tempo: Tempo(90))).abc()] {
+        for texto in [
+            voz.partitura(encabezado: Encabezado(tempo: Tempo(90))).mei(),
+            voz.partitura(encabezado: Encabezado(tempo: Tempo(90))).abc(),
+        ] {
             let pieza = try PiezaImportada(leyendo: Data(texto.utf8))
             #expect(pieza.compas == Compas(3, 4))
             #expect(pieza.tempo.map { abs($0.negrasPorMinuto - 90) < 0.01 } == true)

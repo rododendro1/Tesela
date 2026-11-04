@@ -235,15 +235,20 @@ extension LineaDeComandosTests {
     @Test func partituraDeUnArchivo() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
         let duraciones: [Duracion] = [.blanca, .negra, .negra, .redonda]
-        let midi = try fichero(analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "Coral")).midi(), extension: "mid")
+        let midi = try fichero(
+            analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "Coral")).midi(), extension: "mid"
+        )
         let xml = try fichero(Data(analisis.partitura(duraciones: duraciones).musicXML().utf8), extension: "musicxml")
         // El ritmo armónico del fichero pasa a la partitura, y su título y su tempo (el MIDI lo lleva siempre)
         // también.
-        let conTempo = analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "Coral", tempo: Tempo(120))).musicXML()
+        let conTempo = analisis.partitura(
+            duraciones: duraciones, encabezado: Encabezado(titulo: "Coral", tempo: Tempo(120))
+        ).musicXML()
         let esperado = conTempo.trimmingCharacters(in: .newlines) + "\n"
         #expect(salida("musicxml acordes --archivo " + midi) == esperado)
         #expect(salida("musicxml chords --file " + midi) == esperado)
-        let sinTempo = analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "Coral")).musicXML().trimmingCharacters(in: .newlines)
+        let sinTempo = analisis.partitura(duraciones: duraciones, encabezado: Encabezado(titulo: "Coral")).musicXML()
+            .trimmingCharacters(in: .newlines)
         #expect(salida("musicxml acordes --archivo \(xml) --titulo Coral") == (sinTempo + "\n"))
         // `--duracion` manda sobre el ritmo del fichero.
         #expect(

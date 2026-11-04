@@ -80,7 +80,10 @@ import Testing
     }
 
     @Test func acordesYSilencios() throws {
-        let raiz = leer(try Voz(leyendo: "Do4+Mi4+Sol4:2 -:4 Re4+Fa4:4").partitura(encabezado: Encabezado(tonalidad: Tonalidad(.do))).musicXML())
+        let raiz = leer(
+            try Voz(leyendo: "Do4+Mi4+Sol4:2 -:4 Re4+Fa4:4").partitura(
+                encabezado: Encabezado(tonalidad: Tonalidad(.do))
+            ).musicXML())
         let notas = raiz.buscar("note")
         #expect(notas.count == 6)
         #expect(notas.map { $0["chord"] != nil } == [false, true, true, false, false, true])
@@ -118,7 +121,8 @@ import Testing
     }
 
     @Test func anacrusa() throws {
-        let raiz = leer(try Voz(leyendo: "Sol4:4 Do5:2 Re5:4 Mi5:2", compas: "3/4", anacrusa: .negra).partitura().musicXML())
+        let raiz = leer(
+            try Voz(leyendo: "Sol4:4 Do5:2 Re5:4 Mi5:2", compas: "3/4", anacrusa: .negra).partitura().musicXML())
         let compases = raiz.buscar("measure")
         #expect(compases.map { $0.atributos["number"] } == ["0", "1", "2"])
         #expect(compases.map { $0.atributos["implicit"] } == ["yes", nil, nil])
@@ -129,8 +133,13 @@ import Testing
         let voz = try Voz(leyendo: "Re4:4 Mi4:4 Fa#4:4 Sol4:4 La4:4 Si4:4 Do#5:4 Re5:4")
         let raiz = leer(voz.partitura().musicXML())
         #expect(raiz.buscar("fifths").first?.entero == 2) // estimada: Re mayor
-        #expect(leer(voz.partitura(encabezado: Encabezado(tonalidad: Tonalidad(.si, .menor))).musicXML()).buscar("mode").first?.texto == "minor")
-        #expect(leer(voz.partitura(encabezado: Encabezado(tonalidad: Tonalidad(Nota(.mi, .bemol)))).musicXML()).buscar("fifths").first?.entero == -3)
+        #expect(
+            leer(voz.partitura(encabezado: Encabezado(tonalidad: Tonalidad(.si, .menor))).musicXML()).buscar("mode")
+                .first?.texto == "minor")
+        #expect(
+            leer(voz.partitura(encabezado: Encabezado(tonalidad: Tonalidad(Nota(.mi, .bemol)))).musicXML()).buscar(
+                "fifths"
+            ).first?.entero == -3)
 
         let grave = try Voz(leyendo: "Do2:4 Sol2:4 Mi3:2")
         #expect(leer(grave.partitura().musicXML()).buscar("sign").first?.texto == "F")
@@ -150,16 +159,20 @@ import Testing
 
     @Test func compasesYTempo() throws {
         let voz = try Voz(leyendo: "Do4:4. Re4:4.", compas: "6/8")
-        let raiz = leer(voz.partitura(encabezado: Encabezado(tempo: Tempo(60, unidad: Duracion(.negra, puntillos: 1)))).musicXML())
+        let raiz = leer(
+            voz.partitura(encabezado: Encabezado(tempo: Tempo(60, unidad: Duracion(.negra, puntillos: 1)))).musicXML())
         #expect(raiz.buscar("beats").first?.texto == "6")
         #expect(raiz.buscar("time").first?.atributos["symbol"] == nil)
         #expect(raiz.buscar("beat-unit").first?.texto == "quarter")
         #expect(raiz.buscar("beat-unit-dot").count == 1)
         #expect(raiz.buscar("per-minute").first?.texto == "60")
         #expect(raiz.buscar("sound").first?.atributos["tempo"] == "90")
-        #expect(try leer(Voz(leyendo: "Do4:1").partitura().musicXML()).buscar("time").first?.atributos["symbol"] == "common")
         #expect(
-            try leer(Voz(leyendo: "Do4:1", compas: "2/2").partitura().musicXML()).buscar("time").first?.atributos["symbol"] == "cut"
+            try leer(Voz(leyendo: "Do4:1").partitura().musicXML()).buscar("time").first?.atributos["symbol"] == "common"
+        )
+        #expect(
+            try leer(Voz(leyendo: "Do4:1", compas: "2/2").partitura().musicXML()).buscar("time").first?.atributos[
+                "symbol"] == "cut"
         )
         #expect(
             try leer(Voz(leyendo: "Do4:8 Re4:8 Mi4:8 Fa4:8 Sol4:4.", compas: "3+2+2/8").partitura().musicXML())
@@ -167,7 +180,10 @@ import Testing
     }
 
     @Test func textoEscapado() throws {
-        let raiz = leer(try Voz(leyendo: "Do4:1").partitura(encabezado: Encabezado(titulo: "Do & Re <\"1\">", parte: "Flauta & voz")).musicXML())
+        let raiz = leer(
+            try Voz(leyendo: "Do4:1").partitura(
+                encabezado: Encabezado(titulo: "Do & Re <\"1\">", parte: "Flauta & voz")
+            ).musicXML())
         #expect(raiz["work"]?["work-title"]?.texto == "Do & Re <\"1\">")
         #expect(raiz.buscar("part-name").first?.texto == "Flauta & voz")
     }
@@ -367,7 +383,9 @@ import Testing
         let orden = primerCompas.hijos.map(\.nombre).filter { $0 == "harmony" || $0 == "note" || $0 == "backup" }
         #expect(Array(orden.prefix(8)) == ["harmony", "note", "harmony", "note", "harmony", "note", "note", "backup"])
         #expect(
-            leer(coral.partitura(encabezado: Encabezado(tonalidad: Tonalidad(.sol)), analisis: true).musicXML()).buscar("lyric").first?["text"]?.texto
+            leer(coral.partitura(encabezado: Encabezado(tonalidad: Tonalidad(.sol)), analisis: true).musicXML()).buscar(
+                "lyric"
+            ).first?["text"]?.texto
                 == "IV")
     }
 

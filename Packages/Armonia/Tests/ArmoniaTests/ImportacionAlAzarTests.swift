@@ -25,10 +25,16 @@ import Testing
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
         let voz = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8~ Mi4:4 Sol4+Si4:2", compas: "3/4")
         return [
-            coral.partitura(duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do), tempo: Tempo(72))).midi(),
+            coral.partitura(
+                duracion: .blanca, compas: Compas(3, 2),
+                encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do), tempo: Tempo(72))
+            ).midi(),
             analisis.partitura().midi(),
             Data(
-                coral.partitura(duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do))).musicXML().utf8),
+                coral.partitura(
+                    duracion: .blanca, compas: Compas(3, 2),
+                    encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do))
+                ).musicXML().utf8),
             Data(analisis.partitura().musicXML().utf8),
             Data(voz.partitura().musicXML().utf8),
         ]

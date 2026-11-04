@@ -119,7 +119,10 @@ extension LineaDeComandos {
             let voz = try Voz(leyendo: musica.joined(separator: " "), compas: compas, anacrusa: anacrusa)
             return salida(
                 formato,
-                voz.partitura(clave: clave, encabezado: Encabezado(titulo: titulo, tonalidad: tonalidad, tempo: tempo, instrumento: instrumento)).exportar(como: formato))
+                voz.partitura(
+                    clave: clave,
+                    encabezado: Encabezado(titulo: titulo, tonalidad: tonalidad, tempo: tempo, instrumento: instrumento)
+                ).exportar(como: formato))
         case "coral", "chorale":
             guard !musica.isEmpty else {
                 return uso(.faltanAcordesDelCoral(orden: orden), notacion)
@@ -132,7 +135,12 @@ extension LineaDeComandos {
             // En MIDI no hay marcas: ya se ha comprobado.
             return salida(
                 formato,
-                coral.partitura(duracion: duracion, compas: compas, encabezado: Encabezado(titulo: titulo, tonalidad: tonalidad, tempo: tempo, instrumento: instrumento), cifrados: marcas.contains("cifrados"), analisis: marcas.contains("analisis"), notacion: notacion).exportar(como: formato))
+                coral.partitura(
+                    duracion: duracion, compas: compas,
+                    encabezado: Encabezado(
+                        titulo: titulo, tonalidad: tonalidad, tempo: tempo, instrumento: instrumento),
+                    cifrados: marcas.contains("cifrados"), analisis: marcas.contains("analisis"), notacion: notacion
+                ).exportar(como: formato))
         case _ where acordes.contains(tipo):
             for opcion in ["clave", "anacrusa"] where opciones[opcion] != nil {
                 return uso(.soloParaMelodia(opcion), notacion)
@@ -146,7 +154,10 @@ extension LineaDeComandos {
             let duraciones = ritmo ?? Array(repeating: duracion, count: analisis.acordes.count)
             return salida(
                 formato,
-                analisis.partitura(duraciones: duraciones, compas: compas, encabezado: Encabezado(titulo: titulo, tempo: tempo, instrumento: instrumento), notacion: notacion).exportar(como: formato))
+                analisis.partitura(
+                    duraciones: duraciones, compas: compas,
+                    encabezado: Encabezado(titulo: titulo, tempo: tempo, instrumento: instrumento), notacion: notacion
+                ).exportar(como: formato))
         case _ where arpegios.contains(tipo):
             for opcion in ["clave", "anacrusa"] where opciones[opcion] != nil {
                 return uso(.soloParaMelodia(opcion), notacion)
@@ -179,7 +190,10 @@ extension LineaDeComandos {
             }
             return salida(
                 formato,
-                voz.partitura(encabezado: Encabezado(titulo: titulo, tonalidad: analisis.tonalidad, tempo: tempo, instrumento: instrumento)).exportar(como: formato))
+                voz.partitura(
+                    encabezado: Encabezado(
+                        titulo: titulo, tonalidad: analisis.tonalidad, tempo: tempo, instrumento: instrumento)
+                ).exportar(como: formato))
         case "escala", "scale":
             // Una escala en negras (o en lo que diga `--duracion`), con sus microtonos si los tiene.
             guard !musica.isEmpty else { return uso(.faltaEscala, notacion) }
@@ -197,7 +211,10 @@ extension LineaDeComandos {
             let titulo = titulo ?? escala.nombre(en: notacion)
             return salida(
                 formato,
-                voz.partitura(clave: clave, encabezado: Encabezado(titulo: titulo, tonalidad: tonalidad, tempo: tempo, instrumento: instrumento)).exportar(como: formato))
+                voz.partitura(
+                    clave: clave,
+                    encabezado: Encabezado(titulo: titulo, tonalidad: tonalidad, tempo: tempo, instrumento: instrumento)
+                ).exportar(como: formato))
         default:
             return uso(.tipoDePartituraDesconocido(tipo), notacion)
         }

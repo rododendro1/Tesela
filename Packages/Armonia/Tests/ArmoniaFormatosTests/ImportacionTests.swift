@@ -15,7 +15,10 @@ import Testing
 
     @Test func unCoralEnMIDISeLeeIgual() throws {
         let coral = try Coral(leyendo: cadencia)
-        let datos = coral.partitura(duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do), tempo: Tempo(72))).midi()
+        let datos = coral.partitura(
+            duracion: .blanca, compas: Compas(3, 2),
+            encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do), tempo: Tempo(72))
+        ).midi()
         let pieza = try PiezaImportada(leyendo: datos)
         #expect(pieza.titulo == "Cadencia")
         #expect(pieza.tonalidad == Tonalidad(.do))
@@ -32,10 +35,14 @@ import Testing
 
     @Test func unCoralEnMusicXMLSeLeeIgualQueEnMIDI() throws {
         let coral = try Coral(leyendo: cadencia)
-        let midi = try PiezaImportada(leyendo: coral.partitura(duracion: .blanca, encabezado: Encabezado(tonalidad: Tonalidad(.do))).midi())
+        let midi = try PiezaImportada(
+            leyendo: coral.partitura(duracion: .blanca, encabezado: Encabezado(tonalidad: Tonalidad(.do))).midi())
         let xml = try PiezaImportada(
             leyendo: Data(
-                coral.partitura(duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do))).musicXML().utf8))
+                coral.partitura(
+                    duracion: .blanca, compas: Compas(3, 2),
+                    encabezado: Encabezado(titulo: "Cadencia", tonalidad: Tonalidad(.do))
+                ).musicXML().utf8))
         #expect(xml.titulo == "Cadencia")
         #expect(xml.tonalidad == Tonalidad(.do))
         #expect(xml.compas == Compas(3, 2))
@@ -63,7 +70,8 @@ import Testing
             NotaDeLaPieza(altura: try Altura(leyendo: "Sol4"), inicio: Duracion(3, 4), duracion: .blanca),
             NotaDeLaPieza(altura: try Altura(leyendo: "Si4"), inicio: Duracion(3, 4), duracion: .blanca),
         ]
-        let xml = try PiezaImportada(musicXML: Data(voz.partitura(encabezado: Encabezado(tonalidad: Tonalidad(.do))).musicXML().utf8))
+        let xml = try PiezaImportada(
+            musicXML: Data(voz.partitura(encabezado: Encabezado(tonalidad: Tonalidad(.do))).musicXML().utf8))
         #expect(xml.notas == esperadas)
         let midi = try PiezaImportada(midi: voz.partitura(encabezado: Encabezado(tonalidad: Tonalidad(.do))).midi())
         #expect(midi.notas.map(\.altura) == esperadas.map(\.altura))

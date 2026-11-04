@@ -45,7 +45,8 @@ import Testing
         for ejercicio in [primera, segunda] {
             let datos: Data
             switch formato {
-            case "musicXML": datos = Data(ejercicio.partitura(encabezado: Encabezado(titulo: "Contrapunto")).musicXML().utf8)
+            case "musicXML":
+                datos = Data(ejercicio.partitura(encabezado: Encabezado(titulo: "Contrapunto")).musicXML().utf8)
             case "mei": datos = Data(ejercicio.partitura(encabezado: Encabezado(titulo: "Contrapunto")).mei().utf8)
             case "abc": datos = Data(ejercicio.partitura(encabezado: Encabezado(titulo: "Contrapunto")).abc().utf8)
             default: datos = ejercicio.partitura(encabezado: Encabezado(titulo: "Contrapunto")).midi()

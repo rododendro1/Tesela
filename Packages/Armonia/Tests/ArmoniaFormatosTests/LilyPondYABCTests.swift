@@ -156,7 +156,10 @@ import Testing
         let voz = try Voz(
             leyendo: "Sol4:4 Do5:2 Re5:8 Mi5:8 Fa#5:4 Sol5:2. Do5:1/12 Re5:1/12 Mi5:1/12 Fa5:4 -:4", compas: "3/4",
             anacrusa: .negra)
-        let ly = voz.partitura(encabezado: Encabezado(titulo: #"Mi "canción""#, tonalidad: Tonalidad(.sol), tempo: Tempo(60, unidad: Duracion(3, 8)))).lilyPond()
+        let ly = voz.partitura(
+            encabezado: Encabezado(
+                titulo: #"Mi "canción""#, tonalidad: Tonalidad(.sol), tempo: Tempo(60, unidad: Duracion(3, 8)))
+        ).lilyPond()
         #expect(ly.hasPrefix("\\version \"2.24.0\"\n"))
         #expect(ly.contains(#"title = "Mi \"canción\"""#))
         #expect(ly.contains(#"\new Staff \with { instrumentName = "Voz" }"#))
@@ -169,7 +172,9 @@ import Testing
 
     @Test func lilyPondDeUnCoralConCifradosYAnalisis() throws {
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa2 La3 Fa4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-        let ly = coral.partitura(duracion: .blanca, compas: "3/2", encabezado: Encabezado(titulo: "Cadencia"), cifrados: true, analisis: true).lilyPond()
+        let ly = coral.partitura(
+            duracion: .blanca, compas: "3/2", encabezado: Encabezado(titulo: "Cadencia"), cifrados: true, analisis: true
+        ).lilyPond()
         #expect(ly.contains(#"\new PianoStaff \with { instrumentName = "Coro" } <<"#))
         #expect(ly.components(separatedBy: "\\new Staff <<").count == 3)
         #expect(ly.components(separatedBy: "\\voiceOne").count == 3)
@@ -206,7 +211,10 @@ import Testing
         let voz = try Voz(
             leyendo: "Sol4:4 Do5:2 Re5:8 Mi5:8 Fa#5:4 Sol5:2. Do5:1/12 Re5:1/12 Mi5:1/12 Fa5:4 Sib4:4 Si4:4 La4:2",
             compas: "3/4", anacrusa: .negra)
-        let abc = voz.partitura(encabezado: Encabezado(titulo: "Escala", tonalidad: Tonalidad(.sol), tempo: Tempo(60, unidad: Duracion(3, 8)))).abc()
+        let abc = voz.partitura(
+            encabezado: Encabezado(
+                titulo: "Escala", tonalidad: Tonalidad(.sol), tempo: Tempo(60, unidad: Duracion(3, 8)))
+        ).abc()
         #expect(abc.hasPrefix("X:1\nT:Escala\nM:3/4\nL:1/4\nQ:3/8=60\nV:1 clef=treble name=\"Voz\"\nK:G\n"))
         // Las corcheas de un pulso van juntas; el Fa♯ es de la armadura y el Fa♮, no.
         #expect(abc.contains("c2 d/2e/2 | f g2- | g (3:2:3c/2d/2e/2 =f |"))
@@ -232,7 +240,9 @@ import Testing
         #expect(abc.contains("K:Eb\n"))
         #expect(abc.contains("=E _E =e =E | =E ^^F ^A2 |]"))
         #expect(alturasABC(abc) == alturas(voz))
-        let menor = try Voz(leyendo: "Do#4:1", compas: "4/4").partitura(encabezado: Encabezado(tonalidad: Tonalidad(Nota(.do, .sostenido), .menor))).abc()
+        let menor = try Voz(leyendo: "Do#4:1", compas: "4/4").partitura(
+            encabezado: Encabezado(tonalidad: Tonalidad(Nota(.do, .sostenido), .menor))
+        ).abc()
         #expect(menor.contains("K:C#m\n"))
     }
 
@@ -278,7 +288,11 @@ import Testing
         let tonalidad = Tonalidad(armadura: Int.random(in: -6...6, using: &azar), modo: .mayor)
         let contexto = Comment(rawValue: voz.eventos.map(\.description).joined(separator: " ") + " en \(compas)")
         let esperadas = alturas(voz).sorted()
-        #expect(alturasLilyPond(voz.partitura(encabezado: Encabezado(tonalidad: tonalidad)).lilyPond()).sorted() == esperadas, contexto)
-        #expect(alturasABC(voz.partitura(encabezado: Encabezado(tonalidad: tonalidad)).abc()).sorted() == esperadas, contexto)
+        #expect(
+            alturasLilyPond(voz.partitura(encabezado: Encabezado(tonalidad: tonalidad)).lilyPond()).sorted()
+                == esperadas, contexto)
+        #expect(
+            alturasABC(voz.partitura(encabezado: Encabezado(tonalidad: tonalidad)).abc()).sorted() == esperadas,
+            contexto)
     }
 }

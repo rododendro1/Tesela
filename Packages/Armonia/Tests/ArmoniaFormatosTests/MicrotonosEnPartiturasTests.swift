@@ -296,7 +296,8 @@ import Testing
         // Mi𝄳 (`<alter>-0.5</alter>` sobre E) se lee como Mi♭ y 50 cents: suena igual y conserva la letra.
         #expect(pieza.notas[0].altura == "Mi♭4" && pieza.notas[0].desvio == 50)
         #expect(pieza.notas[1].altura == "Fa4" && pieza.notas[1].desvio == 0)
-        let fa = try PiezaImportada(musicXML: Data(Voz(leyendo: "Fa4(50¢):4 Re4(-22.64¢):4").partitura().musicXML().utf8))
+        let fa = try PiezaImportada(
+            musicXML: Data(Voz(leyendo: "Fa4(50¢):4 Re4(-22.64¢):4").partitura().musicXML().utf8))
         #expect(fa.notas.map(\.altura) == ["Fa4", "Re4"])
         #expect(fa.notas.map(\.desvio) == [50, -22.64])
     }
@@ -311,7 +312,8 @@ import Testing
             let voz = Escala(.re, tipo).voz()
             let pieza =
                 musicXML
-                ? try PiezaImportada(musicXML: Data(voz.partitura().musicXML().utf8)) : try PiezaImportada(midi: voz.partitura().midi())
+                ? try PiezaImportada(musicXML: Data(voz.partitura().musicXML().utf8))
+                : try PiezaImportada(midi: voz.partitura().midi())
             let esperados = sonidos(voz)
             let leidos = sonidos(pieza)
             #expect(leidos.count == esperados.count, Comment(rawValue: tipo.nombre))

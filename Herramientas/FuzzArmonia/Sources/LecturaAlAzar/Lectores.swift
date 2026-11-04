@@ -96,13 +96,22 @@ public enum LecturaAlAzar {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
         let voz = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8~ Mi4:4 Sol4+Si4:2", compas: "3/4")
         let ficheros: [Data] = [
-            coral.partitura(duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(tonalidad: Tonalidad(.do), tempo: Tempo(72))).midi(),
+            coral.partitura(
+                duracion: .blanca, compas: Compas(3, 2),
+                encabezado: Encabezado(tonalidad: Tonalidad(.do), tempo: Tempo(72))
+            ).midi(),
             analisis.partitura().midi(),
-            Data(coral.partitura(duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(tonalidad: Tonalidad(.do))).musicXML().utf8),
+            Data(
+                coral.partitura(
+                    duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(tonalidad: Tonalidad(.do))
+                ).musicXML().utf8),
             Data(analisis.partitura().musicXML().utf8),
             Data(voz.partitura().musicXML().utf8),
             mxl,
-            Data(coral.partitura(duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(tonalidad: Tonalidad(.do))).mei().utf8),
+            Data(
+                coral.partitura(
+                    duracion: .blanca, compas: Compas(3, 2), encabezado: Encabezado(tonalidad: Tonalidad(.do))
+                ).mei().utf8),
             Data(voz.partitura().abc().utf8),
         ]
         let partituras: [String: [Data]] = [
@@ -111,7 +120,8 @@ public enum LecturaAlAzar {
                 Data(try Escala(leyendo: "Re bayati").voz().partitura().mei().utf8),
             ],
             "ABC": [
-                Data(analisis.partitura().abc().utf8), Data(try Escala(leyendo: "Re bayati").voz().partitura().abc().utf8),
+                Data(analisis.partitura().abc().utf8),
+                Data(try Escala(leyendo: "Re bayati").voz().partitura().abc().utf8),
                 Data(Self.abcDeCancionero.utf8),
             ],
         ]

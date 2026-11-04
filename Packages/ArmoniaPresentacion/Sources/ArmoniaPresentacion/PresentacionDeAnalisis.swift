@@ -140,7 +140,10 @@ public enum PresentacionDeAnalisis {
             let compas = ritmo.compas
             let tempo = ritmo.tempo
             ficheros = FicheroParaExportar.partituras(nombre: nombre) { formato in
-                analisis.partitura(duraciones: d, compas: compas, encabezado: Encabezado(titulo: nombre, tempo: tempo), notacion: notacion).exportar(como: formato)
+                analisis.partitura(
+                    duraciones: d, compas: compas, encabezado: Encabezado(titulo: nombre, tempo: tempo),
+                    notacion: notacion
+                ).exportar(como: formato)
             }
             sonido = Escucha.acordes(acordes, duraciones: d, tempo: tempo ?? Escucha.tempo)
         } else {

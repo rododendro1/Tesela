@@ -109,7 +109,8 @@ public enum PresentacionDeSerie {
             pentagrama: PentagramaPresentado(alturas.map { [$0] }, titulo: forma.description, notacion: notacion),
             sonido: Escucha.voz(voz, tempo: tempo),
             ficheros: FicheroParaExportar.partituras(nombre: titulo) { formato in
-                voz.partitura(encabezado: Encabezado(titulo: titulo, tonalidad: sinArmadura, tempo: tempo)).exportar(como: formato)
+                voz.partitura(encabezado: Encabezado(titulo: titulo, tonalidad: sinArmadura, tempo: tempo)).exportar(
+                    como: formato)
             })
     }
 
