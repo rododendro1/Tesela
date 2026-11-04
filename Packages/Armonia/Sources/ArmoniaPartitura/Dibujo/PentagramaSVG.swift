@@ -52,6 +52,9 @@ struct PentagramaSVG {
     var barrasMinimas: [Double] = []
     /// Dónde acaba, como pronto, el pentagrama.
     var finalMinimo = 0.0
+    /// Lo que se aparta a la derecha cada columna de la segunda de dos voces para no pisar las cabezas de la primera
+    /// (si están a una segunda o al unísono).
+    var apartes: [Double] = []
     /// Solo las notas y lo que va con ellas, sin las líneas, las claves ni las barras: la segunda voz de un
     /// pentagrama, que se dibuja encima de la primera.
     var soloLasNotas = false
@@ -263,10 +266,13 @@ struct PentagramaSVG {
         let alto: Double
         let descripcion: String
         let contenido: String
-        var columnasX: [Double] = []
+        var colocadas: [ColumnaColocada] = []
         var barras: [Double] = []
         var desplazamiento = 0.0
         var final = 0.0
+
+        /// Dónde empieza la cabeza de cada columna.
+        var columnasX: [Double] { colocadas.map(\.x) }
     }
 
     func svg() -> String {
@@ -422,7 +428,7 @@ struct PentagramaSVG {
             """
         return Dibujo(
             x: -margen, y: cima, ancho: ancho, alto: alto, descripcion: descripcion, contenido: contenido,
-            columnasX: maquetacion.colocadas.map(\.x), barras: maquetacion.barrasDeCompas,
+            colocadas: maquetacion.colocadas, barras: maquetacion.barrasDeCompas,
             desplazamiento: desplazamiento, final: final)
     }
 

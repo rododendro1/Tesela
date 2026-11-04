@@ -28,12 +28,10 @@ import Testing
         }
     }
 
-    /// Las x de las cabezas negras.
-    private func xDeLasNegras(_ svg: String) -> [String] {
+    /// Las x de las cabezas negras (o de otro glifo).
+    private func xDeLasNegras(_ svg: String, glifo: Glifo = GlifosSMuFL.negra) -> [String] {
         svg.components(separatedBy: "<path transform=\"translate(").dropFirst().compactMap { resto in
-            guard resto.contains("d=\"\(GlifosSMuFL.negra.trazado)\""),
-                let fin = resto.firstIndex(of: ")"),
-                resto[fin...].hasPrefix(")\" d=\"\(GlifosSMuFL.negra.trazado)\"")
+            guard let fin = resto.firstIndex(of: ")"), resto[fin...].hasPrefix(")\" d=\"\(glifo.trazado)\"")
             else { return nil }
             return String(resto[..<fin].prefix { $0 != " " })
         }
@@ -166,6 +164,23 @@ import Testing
         // arriba y la primera corchea, al principio.
         let xs = xDeLasNegras(svg)
         #expect(xs.count == 5)
+    }
+
+    /// Si las dos voces suenan a una segunda o al unísono, la cabeza de la de abajo se aparta a la derecha.
+    @Test func lasCabezasQueChocanSeApartan() throws {
+        let arriba = try Voz(leyendo: "Re5:2 Do5:2")
+        let abajo = try Voz(leyendo: "Do5:2 Do5:2")
+        let svg = arriba.svgPentagrama(junto: abajo, titulo: "Juntas")
+        let xs = xDeLasNegras(svg, glifo: GlifosSMuFL.blanca)
+        #expect(xs.count == 4)
+        #expect(Set(xs).count == 4)
+        let separadas = try Voz(leyendo: "Mi5:2 Re5:2").svgPentagrama(junto: abajo, titulo: "Separadas")
+        #expect(Set(xDeLasNegras(separadas, glifo: GlifosSMuFL.blanca)).count == 3)
+        var lineas = OpcionesDePentagrama()
+        lineas.compasesPorLinea = 1
+        let estiradas = try Voz(leyendo: "Re5:2 Do5:2 Mi5:1").svgPentagrama(
+            junto: try Voz(leyendo: "Do5:2 Do5:2 Do5:1"), titulo: "Estiradas", opciones: lineas)
+        #expect(Set(xDeLasNegras(estiradas, glifo: GlifosSMuFL.blanca)).count == 4)
     }
 
     /// Dos voces en varias líneas: las dos se parten igual, y si una es más larga sigue sola.
