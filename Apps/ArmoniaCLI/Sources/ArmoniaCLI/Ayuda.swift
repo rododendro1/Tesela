@@ -37,6 +37,11 @@ extension LineaDeComandos {
             .joined(separator: "\n")
     }
 
+    /// La ayuda de una orden: sus entradas, como en la ayuda completa (`armonia ayuda acorde`, `armonia acorde --help`).
+    static func ayuda(de orden: Orden, en notacion: Notacion) -> String {
+        orden.ayuda.flatMap { lineas(de: $0, en: notacion.textos) }.joined(separator: "\n")
+    }
+
     static func lineas(de entrada: EntradaDeAyuda, en idioma: Idioma) -> [String] {
         func columna(_ n: Int) -> String { String(repeating: " ", count: n) }
         func rellenar(_ texto: String, hasta ancho: Int) -> String {
@@ -83,11 +88,22 @@ extension LineaDeComandos {
     /// Las entradas de todas las órdenes, en el orden de `ordenes`.
     static let ordenesDeLaAyuda: [EntradaDeAyuda] = ordenes.flatMap(\.ayuda)
 
-    /// La propia ayuda; las demás órdenes están en los archivos Ayuda+*.swift.
+    /// La propia ayuda y la versión; las demás órdenes están en los archivos Ayuda+*.swift. `ayuda <orden>` no llega
+    /// aquí: la escribe `ejecutar`, con la de la orden.
     static let ordenesDeAyuda: [Orden] = [
         Orden(nombres: ["ayuda", "help", "-h", "--help", "--ayuda"], ayuda: ayudaDeLaAyuda) { _, notacion in
             bien(ayuda(en: notacion))
-        }
+        },
+        Orden(nombres: ["--version", "version", "versión"], ayuda: ayudaDeLaVersion) { _, _ in
+            bien("armonia " + version)
+        },
+    ]
+
+    static let ayudaDeLaVersion: [EntradaDeAyuda] = [
+        // --version
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisVersion),
+            descripcion: TextosDeCLI.traduccion(\.descripcionVersion))
     ]
 
     static let ayudaDeLaAyuda: [EntradaDeAyuda] = [

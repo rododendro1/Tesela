@@ -305,9 +305,11 @@ extension LineaDeComandosTests {
         #expect(inexistente.error.hasPrefix("armonia: no se puede leer el fichero «/no/existe.mid»\n"))
         let texto = try fichero(Data("hola".utf8), extension: "mid")
         #expect(resultado("analizar --archivo " + texto).codigo == 1)
-        #expect(resultado("analizar --archivo " + texto).error == "El fichero no es MIDI, MusicXML, MEI ni ABC.\n")
         #expect(
-            resultado("analizar --archivo \(texto) --ingles").error == "The file is not MIDI, MusicXML, MEI or ABC.\n")
+            resultado("analizar --archivo " + texto).error == "armonia: El fichero no es MIDI, MusicXML, MEI ni ABC.\n")
+        #expect(
+            resultado("analizar --archivo \(texto) --ingles").error
+                == "armonia: The file is not MIDI, MusicXML, MEI or ABC.\n")
         #expect(resultado("analizar Do Sol --archivo " + texto).codigo == 2)
         #expect(resultado("analizar --archivo \(texto) --ventana 3").codigo == 1)
         let melodia = try fichero(Voz(leyendo: "Do4:4 Re4:4 Mi4:4").partitura().midi(), extension: "mid")

@@ -46,7 +46,7 @@ extension LineaDeComandosTests {
         #expect(salida("ayuda").contains("posiciones <escala> [--caged]"))
         #expect(
             resultado("posiciones").error
-                == "armonia: falta la escala: armonia posiciones Sol mayor\nPrueba «armonia ayuda».\n")
+                == "armonia: falta la escala: armonia posiciones Sol mayor\nPrueba «armonia ayuda posiciones».\n")
         #expect(resultado("posiciones", "Sol", "chungo").codigo == 1)
     }
 

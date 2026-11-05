@@ -156,10 +156,11 @@ extension TextosDeCLI {
         fa dièse or Fa♯, F Kreuz or Fis.
         In compact writings the octave is a subscript (A₄) and in the others, digits (A4);
         --subscripts or --digits choose one (both forms are read).
-        With --json, chord, identify, scale, analyze, set and row give their data as JSON.
+        With --json, chord, identify, arpeggio, interval, scale, key, analyze, set, row and fingerings
+        give their data as JSON.
         """,
-        sintaxisAyuda: "help",
-        descripcionAyuda: "this help",
+        sintaxisAyuda: "help [<command>]",
+        descripcionAyuda: "this help, or a command's help\n(also <command> --help)",
         sintaxisCompletado: "completion bash|zsh|fish",
         descripcionCompletado: "completion of commands and options\nfor the shell",
         sintaxisManual: "manual",
@@ -316,6 +317,13 @@ extension TextosDeCLI {
         mensajeDeTodosLosIntervalos: "all-interval",
         mensajeFormasDistintas: { n in "\(n) distinct forms" },
         mensajeHexacordos: "hexachords",
-        mensajeFormasCombinatorias: "combinatorial forms"
+        mensajeFormasCombinatorias: "combinatorial forms",
+
+        // LineaDeComandos.swift (versión, erratas y salida binaria)
+        sintaxisVersion: "--version",
+        descripcionVersion: "the armonia version",
+        quisoDecir: { x in "Did you mean \"\(x)\"?" },
+        pruebaLaAyudaDe: { o in "Try \"armonia help \(o)\"." },
+        salidaBinaria: "the output is a binary file (MIDI, PDF or PNG); save it with > file"
     )
 }

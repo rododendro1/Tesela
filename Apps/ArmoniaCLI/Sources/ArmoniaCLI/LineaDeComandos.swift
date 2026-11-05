@@ -23,7 +23,19 @@ public struct ResultadoDeOrden: Equatable, Sendable {
 
 public enum LineaDeComandos {
     /// Ejecuta una orden con sus argumentos (sin el nombre del programa).
-    public static func ejecutar(_ argumentos: [String]) -> ResultadoDeOrden {
+    ///
+    /// - Parameters:
+    ///   - entrada: lee la entrada estándar entera. Con `-` entre los argumentos (`armonia identificar -`), sus
+    ///     palabras van en su lugar; si la orden no lleva ningún argumento y la entrada no es la terminal
+    ///     (`echo "Do Mi Sol" | armonia identificar`), van detrás del nombre de la orden. Sin ella, `-` se queda como
+    ///     está.
+    ///   - entradaEsTerminal: si la entrada estándar es la terminal: entonces solo se lee con `-`.
+    ///   - salidaEsTerminal: si la salida estándar es la terminal: entonces una orden que da un fichero binario
+    ///     (MIDI, PDF, PNG) no lo escribe y lo dice.
+    public static func ejecutar(
+        _ argumentos: [String], entrada: (() -> String)? = nil, entradaEsTerminal: Bool = true,
+        salidaEsTerminal: Bool = false
+    ) -> ResultadoDeOrden {
         var opciones = Argumentos(argumentos)
         var notacion: Notacion = opciones.quitarMarca("--ingles", "--english") ? .inglesASCII : .espanolCompacto
         switch opciones.quitarOpcion("--idioma", "--language") {
@@ -71,20 +83,79 @@ public enum LineaDeComandos {
         let argumentos = opciones.restantes
 
         guard let nombre = argumentos.first?.lowercased() else { return bien(ayuda(en: notacion)) }
-        guard let orden = ordenes.first(where: { $0.nombres.contains(nombre) }) else {
-            return uso(.ordenDesconocida(nombre), notacion)
+        guard let orden = orden(llamada: nombre) else { return uso(.ordenDesconocida(nombre), notacion) }
+        var resto = Array(argumentos.dropFirst())
+
+        // La ayuda de una orden: `armonia ayuda acorde`, `armonia acorde --help`.
+        if orden.nombres.contains("ayuda"), let pedida = resto.first?.lowercased() {
+            guard let otra = self.orden(llamada: pedida) else { return uso(.ordenDesconocida(pedida), notacion) }
+            return bien(ayuda(de: otra, en: notacion))
         }
-        do {
-            guard json else { return try orden.ejecutar(Array(argumentos.dropFirst()), notacion) }
-            guard let salida = salidasJSON[orden.nombres[0]] else { return uso(.sinSalidaJSON(nombre), notacion) }
-            return bien(try textoJSON(salida(Array(argumentos.dropFirst()), notacion)))
-        } catch let fallo as FalloDeUso {
-            return uso(fallo.error, notacion)
-        } catch let error as any ErrorDeArmonia {
-            return ResultadoDeOrden(salida: "", error: error.descripcion(en: notacion) + "\n", codigo: 1)
-        } catch {
-            return ResultadoDeOrden(salida: "", error: "\(error)\n", codigo: 1)
+        if resto.contains(where: marcasDeAyuda.contains) { return bien(ayuda(de: orden, en: notacion)) }
+
+        if let entrada {
+            resto = conLaEntrada(resto, de: orden, entrada, entradaEsTerminal: entradaEsTerminal)
         }
+
+        // Los errores de uso de la orden remiten a su ayuda y proponen sus opciones (ErrorDeUso.texto(en:)).
+        let enCurso = OrdenEnCurso(orden: orden, nombre: nombre)
+        let resultado = OrdenEnCurso.$actual.withValue(orden.nombres.contains("ayuda") ? nil : enCurso) {
+            do {
+                guard json else { return try orden.ejecutar(resto, notacion) }
+                guard let salida = salidasJSON[orden.nombres[0]] else { return uso(.sinSalidaJSON(nombre), notacion) }
+                return bien(try textoJSON(salida(resto, notacion)))
+            } catch let fallo as FalloDeUso {
+                return uso(fallo.error, notacion)
+            } catch let error as any ErrorDeArmonia {
+                return ResultadoDeOrden(
+                    salida: "", error: "armonia: " + error.descripcion(en: notacion) + "\n", codigo: 1)
+            } catch {
+                return ResultadoDeOrden(salida: "", error: "armonia: \(error)\n", codigo: 1)
+            }
+        }
+        // Un fichero binario no se escribe en la terminal.
+        if resultado.datos != nil, salidaEsTerminal {
+            return ResultadoDeOrden(
+                salida: "", error: "armonia: " + TextosDeCLI.en(notacion, \.salidaBinaria) + "\n", codigo: 2)
+        }
+        return resultado
+    }
+
+    /// La orden que se llama así (en minúsculas), con cualquiera de sus nombres.
+    static func orden(llamada nombre: String) -> Orden? {
+        ordenes.first { $0.nombres.contains(nombre) }
+    }
+
+    /// Lo que pide la ayuda de una orden en lugar de ejecutarla: `armonia acorde --help`.
+    static let marcasDeAyuda: Set = ["--help", "-h", "--ayuda"]
+
+    /// Las órdenes que no leen nada: sin argumentos, no esperan a la entrada estándar.
+    static let ordenesSinEntrada: Set = ["ayuda", "version", "motores", "completado", "manual"]
+
+    /// Los argumentos de una orden con las palabras de la entrada estándar: en lugar de `-`, o detrás del nombre de
+    /// la orden si no lleva ningún argumento y la entrada no es la terminal. Las líneas son palabras como las demás:
+    /// «Do Mi Sol» en una línea o en tres es lo mismo.
+    static func conLaEntrada(
+        _ argumentos: [String], de orden: Orden, _ entrada: () -> String, entradaEsTerminal: Bool
+    ) -> [String] {
+        func palabras() -> [String] { entrada().split(whereSeparator: \.isWhitespace).map(String.init) }
+        if let i = argumentos.firstIndex(of: "-") {
+            var conEntrada = argumentos
+            conEntrada.replaceSubrange(i...i, with: palabras())
+            return conEntrada
+        }
+        guard argumentos.isEmpty, !entradaEsTerminal, ordenesSinEntrada.isDisjoint(with: orden.nombres) else {
+            return argumentos
+        }
+        return palabras()
+    }
+
+    /// La orden que se está ejecutando y el nombre con que se ha llamado, para que sus errores de uso remitan a su
+    /// ayuda (`armonia ayuda acorde`) y propongan sus opciones.
+    struct OrdenEnCurso: Sendable {
+        let orden: Orden
+        let nombre: String
+        @TaskLocal static var actual: OrdenEnCurso?
     }
 
     // MARK: Órdenes

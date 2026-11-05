@@ -19,8 +19,15 @@ struct Argumentos {
     /// Lo que queda, separado por espacios: «Do Fa Sol7 Do».
     var unidos: String { restantes.joined(separator: " ") }
 
-    /// La primera opción (`--algo`) que queda sin leer, que ninguna lectura ha reconocido.
-    var opcionDesconocida: String? { restantes.first { $0.hasPrefix("--") } }
+    /// La primera opción (`--algo`, o `-o`) que queda sin leer, que ninguna lectura ha reconocido. Un guion con una
+    /// letra que es un intervalo descendente (`-m3`, `-P5`) no es una opción.
+    var opcionDesconocida: String? { restantes.first(where: Self.pareceUnaOpcion) }
+
+    static func pareceUnaOpcion(_ texto: String) -> Bool {
+        if texto.hasPrefix("--") { return true }
+        guard texto.hasPrefix("-"), texto.dropFirst().first?.isLetter == true else { return false }
+        return (try? Intervalo(leyendo: texto)) == nil
+    }
 
     /// Una opción con valor, tal como se ha encontrado.
     enum Opcion: Equatable {
