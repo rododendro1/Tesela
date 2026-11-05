@@ -39,7 +39,6 @@ enum ErrorDeUso {
     case faltaSerie
     case faltanAcordesDelAnalisis
     /// `analizar --archivo` con un fichero que no existe o no se puede abrir.
-    case archivoIlegible(String)
     /// `analizar --archivo` y además acordes escritos.
     case archivoConAcordes
     /// `analizar --archivo` con un fichero que tiene notas pero ningún acorde (una sola voz, por ejemplo).
@@ -234,7 +233,6 @@ enum ErrorDeUso {
         case .faltanAcordesDelAnalisis:
             let ejemplo = "armonia analizar Do Fa Sol7 Do"
             return TextosDeCLI.traduccion { $0.faltanAcordesDelAnalisis(ejemplo) }
-        case .archivoIlegible(let nombre): return TextosDeCLI.traduccion { $0.archivoIlegible(nombre) }
         case .archivoConAcordes: return TextosDeCLI.traduccion(\.archivoConAcordes)
         case .archivoSinAcordes: return TextosDeCLI.traduccion(\.archivoSinAcordes)
         case .faltaTransporte:

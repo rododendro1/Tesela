@@ -35,6 +35,7 @@ echo "Do Mi Sol Sib" | armonia identificar                     # también de la 
 armonia revisar Do3 Mi4 Sol4 Do5, Re3 Fa4 La4 Re5 || echo mal  # con faltas, sale con código 3
 armonia ayuda                                                # las órdenes (ayuda acorde: esa; ayuda --todo: todo)
 armonia                                                      # en la terminal, una sesión: una orden por línea
+armonia < ejercicios.txt                                     # una orden por línea; sale con el peor código
 ```
 
 Lee los nombres en español o en inglés (Do, C, Sib, Bb) y responde en el idioma de `--idioma`, o en el de

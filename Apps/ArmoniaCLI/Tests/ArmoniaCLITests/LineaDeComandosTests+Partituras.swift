@@ -266,7 +266,7 @@ extension LineaDeComandosTests {
             LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
         }
         #expect(resultado("musicxml acordes Do --archivo " + midi).codigo == 2)
-        #expect(resultado("musicxml acordes --archivo /no/existe.mid").codigo == 2)
+        #expect(resultado("musicxml acordes --archivo /no/existe.mid").codigo == 1)
         #expect(
             resultado("musicxml coral --archivo " + midi).error
                 == "armonia: --archivo es solo para «acordes» y «arpegios»\nPrueba «armonia ayuda musicxml».\n")

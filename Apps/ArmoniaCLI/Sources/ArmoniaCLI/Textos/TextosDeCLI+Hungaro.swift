@@ -164,6 +164,8 @@ extension TextosDeCLI {
         Kilépési kódok: 0 rendben, 1 olvashatatlan szöveg, 2 hibásan írt parancs és 3 hibák (check,
         counterpoint).
         Argumentumok nélkül, terminálban az armonia munkamenetet nyit: soronként egy parancs.
+        Ha a bemenet fájlból jön (armonia < gyakorlatok.txt), a sorait ugyanígy futtatja; a csak
+        kapcsolókat tartalmazó sor (--idioma eu) a következő sorokra is érvényes marad.
         """,
         sintaxisAyuda: "help [<parancs>]",
         descripcionAyuda: "ez a súgó, vagy egy parancs súgója\n(<parancs> --help is)",
@@ -173,6 +175,11 @@ extension TextosDeCLI {
         descripcionManual: "ez a súgó kézikönyvoldalként",
         manualNombre: "NÉV",
         manualNotas: "MEGJEGYZÉSEK",
+        manualEntorno: "KÖRNYEZET",
+        manualEstadoDeSalida: "KILÉPÉSI ÁLLAPOT",
+        manualIdiomaDelEntorno: "A nyelv, mint a --idioma (amely felülírja): es, en, eu…; a system értékkel a LC_ALL, LC_MESSAGES vagy LANG szerinti.",
+        manualRutaDelPrograma: { p in "A(z) \(p) elérési útja, ha nincs a PATH-ban." },
+        manualCodigosDeSalida: ["Minden rendben ment.", "Olvashatatlan szöveg vagy fájl, vagy nincs mit kiadni.", "A parancs hibásan van megírva.", "A check vagy a counterpoint hibát talált."],
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "hiányoznak az akkordok: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },

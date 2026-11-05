@@ -164,6 +164,8 @@ extension TextosDeCLI {
         Códigos de saída: 0 ben, 1 texto que non se le, 2 orde mal escrita e 3 faltas (revisar,
         contrapunto).
         Sen argumentos e no terminal, armonia abre unha sesión: unha orde por liña.
+        Coa entrada nun ficheiro (armonia < exercicios.txt), executa as súas liñas igual; unha liña
+        só con opcións (--idioma eu) déixaas postas para as seguintes.
         """,
         sintaxisAyuda: "ayuda [<orde>]",
         descripcionAyuda: "esta axuda, ou a dunha orde\n(tamén <orde> --help)",
@@ -173,6 +175,11 @@ extension TextosDeCLI {
         descripcionManual: "esta axuda como páxina de manual",
         manualNombre: "NOME",
         manualNotas: "NOTAS",
+        manualEntorno: "CONTORNO",
+        manualEstadoDeSalida: "ESTADO DE SAÍDA",
+        manualIdiomaDelEntorno: "O idioma, como --idioma (que a anula): es, en, eu…; con sistema, o de LC_ALL, LC_MESSAGES ou LANG.",
+        manualRutaDelPrograma: { p in "A ruta de \(p), se non está no PATH." },
+        manualCodigosDeSalida: ["Todo foi ben.", "Un texto ou un ficheiro que non se pode ler, ou nada que dar.", "A orde está mal escrita.", "revisar ou contrapunto atoparon faltas."],
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "faltan os acordes: " + ejemplo },

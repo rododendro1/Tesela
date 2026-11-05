@@ -155,6 +155,13 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionManual: String
     let manualNombre: String
     let manualNotas: String
+    /// Los apartados ENTORNO y ESTADO DE SALIDA del manual: sus títulos, lo que hace `ARMONIA_IDIOMA`, lo que da la
+    /// variable de un programa de grabado y qué quiere decir cada código de salida, del 0 al 3.
+    let manualEntorno: String
+    let manualEstadoDeSalida: String
+    let manualIdiomaDelEntorno: String
+    let manualRutaDelPrograma: @Sendable (String) -> String
+    let manualCodigosDeSalida: [String]
 
     // MARK: ErrorDeUso.swift (armonización)
     let faltanAcordesDeLasVoces: @Sendable (String) -> String

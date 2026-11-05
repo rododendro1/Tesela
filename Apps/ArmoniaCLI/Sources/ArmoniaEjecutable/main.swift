@@ -28,6 +28,13 @@ if argumentos.isEmpty, entradaEsTerminal, salidaEsTerminal {
     exit(0)
 }
 
+// Sin argumentos y con la entrada en un fichero o una tubería, sus órdenes, una por línea.
+if argumentos.isEmpty, !entradaEsTerminal {
+    let codigo = LineaDeComandos.lote(
+        entorno: entorno, salidaEsTerminal: salidaEsTerminal, leerLinea: { readLine() }, escribir: escribir)
+    exit(codigo)
+}
+
 let resultado = LineaDeComandos.ejecutar(
     argumentos,
     entrada: { FileHandle.standardInput.readDataToEndOfFile() },

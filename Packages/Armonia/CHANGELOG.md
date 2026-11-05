@@ -2,6 +2,19 @@
 
 ## Sin publicar
 
+### `armonia`: órdenes de un fichero, el manual completo y las escalas al completar
+
+- `armonia < ejercicios.txt` ejecuta una orden por línea, como la sesión, y sale con el mayor código de todas: sirve
+  para corregir muchos ejercicios con `revisar`. Las líneas que empiezan por `#` no cuentan. En la sesión y en un
+  fichero, una línea con solo opciones generales (`--idioma eu`, `--json`) las deja puestas para las siguientes.
+  `LineaDeComandos.lote(entorno:salidaEsTerminal:leerLinea:escribir:)` lo ejecuta.
+- Un fichero de `--archivo` que no se puede leer sale con código 1, el de lo que no se lee, y ya no remite a la
+  ayuda como si la orden estuviera mal escrita (era el 2).
+- El manual tiene los apartados ENTORNO (`ARMONIA_IDIOMA` y las variables de los programas de grabado) y ESTADO DE
+  SALIDA (los códigos del 0 al 3), en los quince idiomas.
+- El autocompletado propone los nombres de las escalas del catálogo tras `escala`, `posiciones`, `teclado` y `reloj`,
+  sin tildes y con guiones (`menor-armonica`, `harmonic-minor`), que se leen igual.
+
 ### Las afinaciones de las escalas occidentales
 
 - `UsoDeEscala.afinacionSugerida`: Werckmeister III en la música clásica y el temperamento igual en el jazz, el

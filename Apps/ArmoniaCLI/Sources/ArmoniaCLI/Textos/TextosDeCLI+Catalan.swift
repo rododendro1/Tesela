@@ -164,6 +164,8 @@ extension TextosDeCLI {
         Codis de sortida: 0 bé, 1 text que no es pot llegir, 2 ordre mal escrita i 3 errors (revisar,
         contrapunto).
         Sense arguments i al terminal, armonia obre una sessió: una ordre per línia.
+        Amb l'entrada en un fitxer (armonia < exercicis.txt), n'executa les línies igual; una línia
+        només amb opcions (--idioma eu) les deixa posades per a les següents.
         """,
         sintaxisAyuda: "ayuda [<ordre>]",
         descripcionAyuda: "aquesta ajuda, o la d'una ordre\n(també <ordre> --help)",
@@ -173,6 +175,11 @@ extension TextosDeCLI {
         descripcionManual: "aquesta ajuda com a pàgina de manual",
         manualNombre: "NOM",
         manualNotas: "NOTES",
+        manualEntorno: "ENTORN",
+        manualEstadoDeSalida: "ESTAT DE SORTIDA",
+        manualIdiomaDelEntorno: "L'idioma, com --idioma (que l'anul·la): es, en, eu…; amb sistema, el de LC_ALL, LC_MESSAGES o LANG.",
+        manualRutaDelPrograma: { p in "El camí de \(p), si no és al PATH." },
+        manualCodigosDeSalida: ["Tot ha anat bé.", "Un text o un fitxer que no es pot llegir, o res a donar.", "L'ordre està mal escrita.", "revisar o contrapunto han trobat errors."],
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "falten els acords: " + ejemplo },

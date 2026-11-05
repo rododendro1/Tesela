@@ -166,6 +166,8 @@ extension TextosDeCLI {
         Exit codes: 0 fine, 1 unreadable text, 2 badly written command and 3 mistakes found (check,
         counterpoint).
         With no arguments in a terminal, armonia opens a session: one command per line.
+        With input from a file (armonia < exercises.txt), it runs its lines the same way; a line with
+        only options (--language eu) keeps them for the following ones.
         """,
         sintaxisAyuda: "help [<command>]",
         descripcionAyuda: "this help, or a command's help\n(also <command> --help)",
@@ -175,6 +177,11 @@ extension TextosDeCLI {
         descripcionManual: "this help as a manual page",
         manualNombre: "NAME",
         manualNotas: "NOTES",
+        manualEntorno: "ENVIRONMENT",
+        manualEstadoDeSalida: "EXIT STATUS",
+        manualIdiomaDelEntorno: "The language, like --language (which overrides it): es, en, eu…; with system, the one in LC_ALL, LC_MESSAGES or LANG.",
+        manualRutaDelPrograma: { p in "The path to \(p), if it is not in the PATH." },
+        manualCodigosDeSalida: ["Everything went well.", "A text or file that cannot be read, or nothing to give.", "The command is badly written.", "check or counterpoint found mistakes."],
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "missing the chords: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },

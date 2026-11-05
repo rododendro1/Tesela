@@ -164,6 +164,8 @@ extension TextosDeCLI {
         Còdis de sortida: 0 plan, 1 tèxte que se pòt pas legir, 2 òrdre mal escrich e 3 fautas (revisar,
         contrapunto).
         Sens arguments e dins lo terminal, armonia dobrís una sesilha: un òrdre per linha.
+        Amb l'entrada dins un fichièr (armonia < exercicis.txt), n'executa las linhas parièr; una linha
+        sonque amb d'opcions (--idioma eu) las daissa per las seguentas.
         """,
         sintaxisAyuda: "ayuda [<òrdre>]",
         descripcionAyuda: "aquesta ajuda, o la d'un òrdre\n(tanben <òrdre> --help)",
@@ -173,6 +175,11 @@ extension TextosDeCLI {
         descripcionManual: "aquesta ajuda coma pagina de manual",
         manualNombre: "NOM",
         manualNotas: "NÒTAS",
+        manualEntorno: "ENVIRONAMENT",
+        manualEstadoDeSalida: "ESTAT DE SORTIDA",
+        manualIdiomaDelEntorno: "La lenga, coma --idioma (que l'anulla): es, en, eu…; amb sistema, la de LC_ALL, LC_MESSAGES o LANG.",
+        manualRutaDelPrograma: { p in "Lo camin de \(p), se es pas dins lo PATH." },
+        manualCodigosDeSalida: ["Tot es anat plan.", "Un tèxte o un fichièr que se pòt pas legir, o res a donar.", "L'òrdre es mal escrich.", "revisar o contrapunto an trobat de fautas."],
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "mancan los acòrds: " + ejemplo },
