@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+### `armonia`: la ayuda se ajusta sola
+
+- Las descripciones y las notas de la ayuda se cortan solas, por palabras, a la columna de los ejemplos, igual en los
+  quince idiomas (antes cada idioma las cortaba a mano, y algunos pasaban de las cien columnas). En los textos, cada
+  salto de línea abre un párrafo («--escalas: …», «opciones: …»), y una descripción nueva se escribe en una línea.
+
 ### La identidad de una escala
 
 - Las tablas del catálogo que dicen algo de una escala concreta (su tradición y su categoría, el mēḷa de un janya, sus
