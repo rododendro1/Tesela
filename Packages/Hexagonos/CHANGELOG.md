@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.5 (2026-11-05)
 
 - **Cambio incompatible:** `CoordenadaCubica(validando:_:_:)` es ahora `CoordenadaCubica(comprobando:r:s:)`, como los
   `init?(comprobando:)` de Armonía: `nil` si las tres no suman cero, para coordenadas que vienen de fuera.
