@@ -375,12 +375,16 @@ Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<ti
   `svgPentagrama(tocadaEn:)` y `svgPentagrama(arpegiadoEn:)` la dibujan. Su título es el nombre de la escala o el
   cifrado del acorde (``Encabezado/tema``), escrito en la notación con que se dibuja o se exporta. La tablatura
   cuenta las cuerdas como el mástil, desde la más grave (la 0), y al dibujarla pone la más aguda arriba:
-  `Tablatura(_:posiciones:)` toma las posiciones del mástil tal cual.
+  `Tablatura(_:posiciones:)` toma las posiciones del mástil tal cual, con la afinación y el capo. Con la afinación de
+  la guitarra, el pentagrama va en clave de sol octava baja (``Partitura/Pentagrama/claveDelInstrumento``). En
+  MusicXML, la tablatura va en un pentagrama de tablatura debajo, con la cuerda y el traste de cada nota.
 - **Ritmo.** Las escalas, los arpegios y las posiciones del mástil van en redondas y sin ritmo; con
   `ritmo: .figura(.corchea)` (``Partitura/Ritmo``), en corcheas, con la última nota en negra.
 - **Nota a nota.** Lo que dan las escalas, los arpegios y el mástil va por el índice de cada nota; una
   ``Partitura/Linea`` lo guarda por el punto en que empieza cada evento. ``Partitura/AnotacionesPorNota``, con
-  `Partitura.Linea(_:porNota:)` y `linea.porNota`, pasa de una forma a la otra.
+  `Partitura.Linea(_:porNota:)` y `linea.porNota`, pasa de una forma a la otra. `Partitura(acordes:porNota:)`,
+  `partitura(tocadaEn:porNota:)` y `partitura(arpegiadoEn:porNota:)` la toman entera, con lo que sus atajos
+  (`cifrados:`, `grados:`, `digitos:`) no tienen: el análisis, los marcadores, los grados de una escala.
 - **Notación.** La de la partitura (``Partitura/notacion``) vale al exportarla y al dibujarla: `svg()` escribe en ella
   los cifrados, los nombres de las notas y el título, salvo que `OpcionesDePentagrama(notacion:)` fije otra.
 

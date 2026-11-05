@@ -166,6 +166,6 @@ extension NotaDeLaPieza {
     func con(inicio: Duracion) -> NotaDeLaPieza {
         NotaDeLaPieza(
             altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: desvio, sistema: sistema,
-            ajuste: ajuste, dinamica: dinamica, articulaciones: articulaciones)
+            ajuste: ajuste, dinamica: dinamica, articulaciones: articulaciones, pentagrama: pentagrama, voz: voz)
     }
 }

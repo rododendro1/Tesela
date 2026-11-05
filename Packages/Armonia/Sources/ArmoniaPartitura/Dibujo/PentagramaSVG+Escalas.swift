@@ -52,8 +52,9 @@ extension Escala {
             for (columna, dedo) in zip(alturas.indices, dedos) { digitos[columna] = [dedo] }
         }
         return Partitura.tocada(
-            alturas.map { Evento.Nota($0) }, tema: .escala(self), ritmo: ritmo, digitos: digitos, acorde: nil,
-            tonica: tonica, armadura: notasDeLaArmadura)
+            alturas.map { Evento.Nota($0) }, tema: .escala(self), ritmo: ritmo,
+            porNota: Partitura.AnotacionesPorNota(digitos: digitos), acorde: nil, tonica: tonica,
+            armadura: notasDeLaArmadura)
     }
 
     /// La escala tocada en una secuencia de estudio (`secuencia(_:octava:octavas:sentido:)`), con ritmo: de dos en
@@ -78,7 +79,7 @@ extension Escala {
         partitura(
             tocadaEn: self.secuencia(secuencia, octava: octava, octavas: octavas, sentido: sentido), titulo: nil,
             tema: .secuencia(secuencia, de: self), ritmo: .figura(Escala.figura(deGruposDe: secuencia.pasos.count)),
-            digitos: [:], tablatura: nil, sentido: sentido)
+            porNota: Partitura.AnotacionesPorNota(), tablatura: nil, sentido: sentido)
     }
 
     /// La partitura de la escala tocada en unas alturas cualesquiera (las de una posición del mástil, una
@@ -97,7 +98,22 @@ extension Escala {
         digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil
     ) -> Partitura {
         partitura(
-            tocadaEn: alturas, titulo: titulo, tema: .escala(self), ritmo: ritmo, digitos: digitos,
+            tocadaEn: alturas, titulo: titulo, ritmo: ritmo, porNota: Partitura.AnotacionesPorNota(digitos: digitos),
+            tablatura: tablatura)
+    }
+
+    /// Como `partitura(tocadaEn:titulo:ritmo:digitos:tablatura:)`, con todo lo que se anota en cada nota en
+    /// `porNota` (por su índice, desde 0): los dedos, y también los cifrados, el análisis o los grados. Las
+    /// pulsaciones son las de `tablatura`, si `porNota` no trae las suyas.
+    ///
+    ///     let porNota = Partitura.AnotacionesPorNota(digitos: [0: [1], 1: [3]], grados: [0: "I"])
+    ///     Escala(.do).partitura(tocadaEn: ["Do4", "Re4"], porNota: porNota).svg()
+    public func partitura(
+        tocadaEn alturas: [Altura], titulo: String? = nil, ritmo: Partitura.Ritmo = .libre,
+        porNota: Partitura.AnotacionesPorNota, tablatura: Tablatura? = nil
+    ) -> Partitura {
+        partitura(
+            tocadaEn: alturas, titulo: titulo, tema: .escala(self), ritmo: ritmo, porNota: porNota,
             tablatura: tablatura, sentido: nil)
     }
 
@@ -105,11 +121,11 @@ extension Escala {
     /// los de la subida y, los de las notas que solo están al bajar, los de la bajada.
     private func partitura(
         tocadaEn alturas: [Altura], titulo: String?, tema: Encabezado.Tema, ritmo: Partitura.Ritmo,
-        digitos: [Int: [Int]], tablatura: Tablatura?, sentido: SentidoDelIntervalo?
+        porNota: Partitura.AnotacionesPorNota, tablatura: Tablatura?, sentido: SentidoDelIntervalo?
     ) -> Partitura {
         Partitura.tocada(
             notasTocadas(en: Altura.reescritas(alturas, con: notas), sentido: sentido),
-            titulo: titulo, tema: tema, ritmo: ritmo, digitos: digitos, tablatura: tablatura, acorde: nil,
+            titulo: titulo, tema: tema, ritmo: ritmo, porNota: porNota, tablatura: tablatura, acorde: nil,
             tonica: tonica, armadura: notasDeLaArmadura)
     }
 
@@ -123,6 +139,17 @@ extension Escala {
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
         partitura(tocadaEn: alturas, titulo: titulo, ritmo: ritmo, digitos: digitos, tablatura: tablatura)
+            .svg(opciones: opciones)
+    }
+
+    /// Como `svgPentagrama(tocadaEn:titulo:ritmo:digitos:tablatura:opciones:)`, con todo lo que se anota en cada
+    /// nota en `porNota`: `partitura(tocadaEn:titulo:ritmo:porNota:tablatura:).svg(opciones:)`.
+    public func svgPentagrama(
+        tocadaEn alturas: [Altura], titulo: String? = nil, ritmo: Partitura.Ritmo = .libre,
+        porNota: Partitura.AnotacionesPorNota, tablatura: Tablatura? = nil,
+        opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+    ) -> String {
+        partitura(tocadaEn: alturas, titulo: titulo, ritmo: ritmo, porNota: porNota, tablatura: tablatura)
             .svg(opciones: opciones)
     }
 
@@ -231,9 +258,24 @@ extension Acorde {
         digitos: [Int: [Int]] = [:],
         tablatura: Tablatura? = nil
     ) -> Partitura {
+        partitura(
+            arpegiadoEn: alturas, titulo: titulo, ritmo: ritmo, porNota: Partitura.AnotacionesPorNota(digitos: digitos),
+            tablatura: tablatura)
+    }
+
+    /// Como `partitura(arpegiadoEn:titulo:ritmo:digitos:tablatura:)`, con todo lo que se anota en cada nota en
+    /// `porNota` (por su índice, desde 0). El cifrado del acorde va encima de la primera, si `porNota` no le da otro,
+    /// y las pulsaciones son las de `tablatura`, si `porNota` no trae las suyas.
+    ///
+    ///     let porNota = Partitura.AnotacionesPorNota(digitos: [0: [2], 1: [1], 2: [3]])
+    ///     Acorde("Do").partitura(arpegiadoEn: ["Do3", "Mi3", "Sol3"], porNota: porNota).svg()
+    public func partitura(
+        arpegiadoEn alturas: [Altura], titulo: String? = nil, ritmo: Partitura.Ritmo = .libre,
+        porNota: Partitura.AnotacionesPorNota, tablatura: Tablatura? = nil
+    ) -> Partitura {
         Partitura.tocada(
             Altura.reescritas(alturas, con: notas).map { Evento.Nota($0) },
-            titulo: titulo, tema: .acorde(self), ritmo: ritmo, digitos: digitos, tablatura: tablatura, acorde: self,
+            titulo: titulo, tema: .acorde(self), ritmo: ritmo, porNota: porNota, tablatura: tablatura, acorde: self,
             tonica: nil, armadura: nil)
     }
 
@@ -245,12 +287,24 @@ extension Acorde {
     ) -> String {
         partitura(arpegiadoEn: alturas, ritmo: ritmo, digitos: digitos, tablatura: tablatura).svg(opciones: opciones)
     }
+
+    /// Como `svgPentagrama(arpegiadoEn:ritmo:digitos:tablatura:opciones:)`, con todo lo que se anota en cada nota en
+    /// `porNota`: `partitura(arpegiadoEn:ritmo:porNota:tablatura:).svg(opciones:)`.
+    public func svgPentagrama(
+        arpegiadoEn alturas: [Altura], ritmo: Partitura.Ritmo = .libre, porNota: Partitura.AnotacionesPorNota,
+        tablatura: Tablatura? = nil, opciones: OpcionesDePentagrama = OpcionesDePentagrama()
+    ) -> String {
+        partitura(arpegiadoEn: alturas, ritmo: ritmo, porNota: porNota, tablatura: tablatura).svg(opciones: opciones)
+    }
 }
 
 extension Altura {
     /// Las alturas escritas con las notas dadas cuando suenan igual: el La♯3 del mástil, como Si♭3 en Do7. Las que no
-    /// están entre las notas se quedan como estaban.
-    static func reescritas(_ alturas: [Altura], con notas: [Nota]) -> [Altura] {
+    /// están entre las notas se quedan como estaban. Si dos notas suenan igual, la primera. El número MIDI no cambia:
+    /// el Do4, con Si♯, es el Si♯3.
+    ///
+    ///     Altura.reescritas(["Do4", "La#3"], con: Acorde("Do7").notas)   // [Do4, Si♭3]
+    public static func reescritas(_ alturas: [Altura], con notas: [Nota]) -> [Altura] {
         alturas.map { altura in
             guard let nota = notas.first(where: { $0.claseDeAltura == altura.nota.claseDeAltura }) else {
                 return altura

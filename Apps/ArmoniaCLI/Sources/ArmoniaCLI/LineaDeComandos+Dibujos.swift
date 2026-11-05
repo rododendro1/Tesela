@@ -316,18 +316,12 @@ extension LineaDeComandos {
         }
     }
 
-    /// Las notas de unas posiciones del mástil como se escriben (la guitarra y el bajo, una octava más agudas de lo
-    /// que suenan) y su tablatura, con la cuerda más aguda arriba.
+    /// Las notas de unas posiciones del mástil y su tablatura, con la afinación del instrumento: la guitarra va en
+    /// clave de sol octava baja, una octava más aguda de lo que suena (`Partitura.Pentagrama.claveDelInstrumento`).
     private static func enTablatura(_ posiciones: [PosicionEnElMastil], en mastil: Mastil)
         -> (alturas: [Altura], tablatura: Tablatura)
     {
-        let cuerdas = mastil.encordado.cuerdas
-        let grave = cuerdas.map(\.midi).min() ?? 60
-        let octavas = grave < Altura(.do, octava: 3).midi ? 1 : 0
-        let alturas = posiciones.map { posicion -> Altura in
-            let suena = mastil.altura(en: posicion)
-            return Altura(suena.nota, octava: suena.octava + octavas)
-        }
+        let alturas = posiciones.map { mastil.altura(en: $0) }
         var porNota: [Int: [PosicionEnElMastil]] = [:]
         for (i, posicion) in posiciones.enumerated() { porNota[i] = [posicion] }
         return (alturas, Tablatura(mastil, posiciones: porNota))
@@ -478,13 +472,10 @@ extension LineaDeComandos {
             guard let enElMastil = mastil.arpegios(de: acorde).first else {
                 return uso(.faltaLoQueDibujaElPentagrama, notacion)
             }
-            let (alturas, tablatura) = enTablatura(enElMastil.posiciones, en: mastil)
-            var digitos: [Int: [Int]] = [:]
-            if conDedos { for (i, dedo) in enElMastil.dedos.enumerated() { digitos[i] = [dedo] } }
-            let svg = acorde.svgPentagrama(
-                arpegiadoEn: alturas, ritmo: figura.map { Partitura.Ritmo.figura($0) } ?? .libre, digitos: digitos,
-                tablatura: tablatura, opciones: opciones)
-            return bien(svg.trimmingCharacters(in: "\n"))
+            // La partitura del arpegio en el mástil, con sus dedos (`ArpegioEnElMastil.dedos`) si se piden.
+            var partitura = enElMastil.partitura(de: acorde, ritmo: figura.map { Partitura.Ritmo.figura($0) } ?? .libre)
+            if !conDedos { partitura.pentagramas[0].voces[0].digitos = [:] }
+            return bien(partitura.svg(opciones: opciones).trimmingCharacters(in: "\n"))
         }
         var arpegios: [Arpegio] = []
         for texto in argumentos.restantes {

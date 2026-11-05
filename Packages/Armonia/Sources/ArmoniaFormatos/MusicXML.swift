@@ -27,6 +27,16 @@ package struct EscritorMusicXML: EscritorDePartitura {
         /// Lo que se escribe con la nota que empieza en cada punto de la voz (contado desde su
         /// comienzo): un cifrado encima y textos debajo.
         package let anotaciones: [Duracion: Anotacion]
+        /// En una línea de un pentagrama de tablatura, sus cuerdas y lo que se pulsa en la nota que empieza en cada
+        /// punto de la voz; en las demás, `nil`.
+        package var tablatura: (cuerdas: Int, pulsaciones: [Duracion: [Tablatura.Pulsacion]])? = nil
+    }
+
+    /// Un pentagrama de tablatura, después de los de la partitura: sus cuerdas, su afinación y su capo.
+    package struct PentagramaDeTablatura {
+        package let cuerdas: Int
+        package let afinacion: [Altura]?
+        package let capo: Int?
     }
 
     package struct Anotacion {
@@ -44,6 +54,10 @@ package struct EscritorMusicXML: EscritorDePartitura {
     package let parte: String
     package let claves: [Clave]
     package var lineas: [Linea] = []
+    package var tablaturas: [PentagramaDeTablatura] = []
+
+    /// Los pentagramas de la parte: los de las claves y, debajo, los de tablatura.
+    private var numeroDePentagramas: Int { claves.count + tablaturas.count }
 
     package init(
         compas: Compas, anacrusa: Duracion, tonalidad: Tonalidad?, tempo: Tempo?,
@@ -84,6 +98,19 @@ package struct EscritorMusicXML: EscritorDePartitura {
             anotaciones: anotaciones)
     }
 
+    /// La voz otra vez, en un pentagrama de tablatura debajo de los demás, con la cuerda y el traste de cada nota
+    /// (`<technical>`), y el pentagrama con sus líneas, su afinación y su capo (`<staff-details>`).
+    package mutating func anadirTablatura(
+        _ voz: Voz, pulsaciones: [Duracion: [Tablatura.Pulsacion]], cuerdas: Int, afinacion: [Altura]?, capo: Int?
+    ) {
+        tablaturas.append(PentagramaDeTablatura(cuerdas: cuerdas, afinacion: afinacion, capo: capo))
+        var linea = Linea(
+            voz: voz, pentagrama: claves.count + tablaturas.count, numero: lineas.count + 1, plica: nil,
+            anotaciones: [:])
+        linea.tablatura = (cuerdas, pulsaciones)
+        lineas.append(linea)
+    }
+
     package var documento: String {
         let grafias = lineas.map(\.voz.grafia)
         let barras = lineas.map(\.voz.barrasDeAgrupacion)
@@ -117,6 +144,8 @@ package struct EscritorMusicXML: EscritorDePartitura {
         var ligadaDesde: [[Altura]] = Array(repeating: [], count: lineas.count)
         // Dónde va cada línea, desde su comienzo, para colocar las anotaciones.
         var posiciones = Array(repeating: Duracion.cero, count: lineas.count)
+        // Lo que se pulsa en el evento en curso de cada línea de tablatura, también en sus notas ligadas.
+        var pulsadas: [[Tablatura.Pulsacion]] = Array(repeating: [], count: lineas.count)
         for c in 0..<max(numeroDeCompases, 1) {
             let esAnacrusa = c == 0 && anacrusa > .cero
             let numero = anacrusa > .cero ? c : c + 1
@@ -152,19 +181,25 @@ package struct EscritorMusicXML: EscritorDePartitura {
                             irregular = .cero
                         }
                     }
-                    let nota = NotaEscrita(
-                        evento: evento, figura: figura, divisiones: divisiones, linea: linea,
-                        variosPentagramas: claves.count > 1,
-                        medidaCompleta: compasEntero, barra: haciaBarra[i], grupo: grupo,
-                        ligadaDesde: ligadaDesde[l])
                     // Las anotaciones van con la primera nota escrita de cada evento, no con sus ligadas. La
                     // dinámica y las articulaciones de una nota partida en varias ligadas ya van solo en la primera.
                     let nuevo = ligadaDesde[l].isEmpty || evento.alturas != ligadaDesde[l]
+                    if let tablatura = linea.tablatura, nuevo {
+                        pulsadas[l] = tablatura.pulsaciones[posiciones[l]] ?? []
+                    }
+                    var nota = NotaEscrita(
+                        evento: evento, figura: figura, divisiones: divisiones, linea: linea,
+                        variosPentagramas: numeroDePentagramas > 1,
+                        medidaCompleta: compasEntero, barra: haciaBarra[i], grupo: grupo,
+                        ligadaDesde: ligadaDesde[l])
+                    if let tablatura = linea.tablatura {
+                        nota.cuerdasYTrastes = pulsadas[l].map { (tablatura.cuerdas - $0.cuerda, $0.traste) }
+                    }
                     let anotacion = nuevo ? linea.anotaciones[posiciones[l]] : nil
                     if let armonia = anotacion?.armonia { xml += armonia }
-                    if let dinamica = evento.dinamica {
+                    if let dinamica = evento.dinamica, linea.tablatura == nil {
                         xml += EscritorMusicXML.dinamica(
-                            dinamica, voz: linea.numero, pentagrama: claves.count > 1 ? linea.pentagrama : nil)
+                            dinamica, voz: linea.numero, pentagrama: numeroDePentagramas > 1 ? linea.pentagrama : nil)
                     }
                     xml += nota.xml(letras: anotacion?.letras ?? [])
                     ligadaDesde[l] = evento.ligada ? evento.alturas : []
@@ -193,13 +228,31 @@ package struct EscritorMusicXML: EscritorDePartitura {
             ? compas.agrupacion.map(String.init).joined(separator: "+") : "\(compas.numerador)"
         xml +=
             "        <time\(simbolo)>\n          <beats>\(beats)</beats>\n          <beat-type>\(compas.denominador)</beat-type>\n        </time>\n"
-        if claves.count > 1 { xml += "        <staves>\(claves.count)</staves>\n" }
+        let varios = numeroDePentagramas > 1
+        if varios { xml += "        <staves>\(numeroDePentagramas)</staves>\n" }
         for (i, clave) in claves.enumerated() {
             let (signo, linea, cambio) = EscritorMusicXML.signo(de: clave)
-            let numero = claves.count > 1 ? " number=\"\(i + 1)\"" : ""
+            let numero = varios ? " number=\"\(i + 1)\"" : ""
             xml += "        <clef\(numero)>\n          <sign>\(signo)</sign>\n          <line>\(linea)</line>\n"
             if cambio != 0 { xml += "          <clef-octave-change>\(cambio)</clef-octave-change>\n" }
             xml += "        </clef>\n"
+        }
+        for (i, tablatura) in tablaturas.enumerated() {
+            let numero = " number=\"\(claves.count + i + 1)\""
+            xml += "        <clef\(numero)>\n          <sign>TAB</sign>\n          <line>5</line>\n        </clef>\n"
+            xml += "        <staff-details\(numero)>\n"
+            xml += "          <staff-lines>\(tablatura.cuerdas)</staff-lines>\n"
+            // La línea 1 es la de abajo: la cuerda 0, la más grave del mástil.
+            for (linea, cuerda) in (tablatura.afinacion ?? []).enumerated() where linea < tablatura.cuerdas {
+                xml += "          <staff-tuning line=\"\(linea + 1)\">"
+                xml += "<tuning-step>\(EscritorMusicXML.paso(cuerda.nota.natural))</tuning-step>"
+                if cuerda.nota.alteracion.semitonos != 0 {
+                    xml += "<tuning-alter>\(cuerda.nota.alteracion.semitonos)</tuning-alter>"
+                }
+                xml += "<tuning-octave>\(cuerda.octava)</tuning-octave></staff-tuning>\n"
+            }
+            if let capo = tablatura.capo, capo > 0 { xml += "          <capo>\(capo)</capo>\n" }
+            xml += "        </staff-details>\n"
         }
         return xml + "      </attributes>\n"
     }
@@ -256,6 +309,9 @@ package struct EscritorMusicXML: EscritorDePartitura {
         package let barra: String?
         package let grupo: [String]
         package let ligadaDesde: [Altura]
+        /// En un pentagrama de tablatura, la cuerda (la 1 es la más aguda, como en MusicXML) y el traste de cada
+        /// nota del evento, en el orden de sus alturas.
+        package var cuerdasYTrastes: [(cuerda: Int, traste: Int)] = []
 
         package func xml(letras: [String]) -> String {
             let duracion = ticks(evento.duracion, divisiones)
@@ -288,7 +344,8 @@ package struct EscritorMusicXML: EscritorDePartitura {
                 let signo = evento.notas[i].signo()
                 xml += comun(incluirFigura: true, plica: i == 0, barra: i == 0 ? barra : nil, signo: signo)
                 xml += notaciones(
-                    ligadura: ligadura, grupo: i == 0 ? grupo : [], articulaciones: i == 0 ? articulaciones : [])
+                    ligadura: ligadura, grupo: i == 0 ? grupo : [], articulaciones: i == 0 ? articulaciones : [],
+                    tecnica: cuerdasYTrastes.indices.contains(i) ? cuerdasYTrastes[i] : nil)
                 if i == 0 {
                     for (k, letra) in letras.enumerated() where !letra.isEmpty {
                         xml += "        <lyric number=\"\(k + 1)\" placement=\"below\">\n"
@@ -328,9 +385,10 @@ package struct EscritorMusicXML: EscritorDePartitura {
         }
 
         private func notaciones(
-            ligadura: [String], grupo: [String] = [], articulaciones: [Articulacion] = []
+            ligadura: [String], grupo: [String] = [], articulaciones: [Articulacion] = [],
+            tecnica: (cuerda: Int, traste: Int)? = nil
         ) -> String {
-            guard !ligadura.isEmpty || !grupo.isEmpty || !articulaciones.isEmpty else { return "" }
+            guard !ligadura.isEmpty || !grupo.isEmpty || !articulaciones.isEmpty || tecnica != nil else { return "" }
             var xml = "        <notations>\n"
             for tipo in ligadura { xml += "          <tied type=\"\(tipo)\"/>\n" }
             for tipo in grupo {
@@ -352,6 +410,10 @@ package struct EscritorMusicXML: EscritorDePartitura {
                 xml += "          </ornaments>\n"
             }
             if articulaciones.contains(.calderon) { xml += "          <fermata type=\"upright\"/>\n" }
+            if let tecnica {
+                xml += "          <technical>\n            <string>\(tecnica.cuerda)</string>\n"
+                xml += "            <fret>\(tecnica.traste)</fret>\n          </technical>\n"
+            }
             return xml + "        </notations>\n"
         }
     }

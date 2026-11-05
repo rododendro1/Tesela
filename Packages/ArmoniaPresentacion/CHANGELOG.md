@@ -1,5 +1,13 @@
 # Cambios
 
+## Sin publicar
+
+- **Las tablaturas, desde la partitura del mástil.** `PresentacionDeTablatura.musicXML(…)` hace la partitura del
+  mástil y la exporta con `Partitura.musicXML()`, en lugar de con su propio MusicXML. **Cambio incompatible** en lo
+  que escribe, con la misma API: las notas van en dos pentagramas de la misma parte, el de las notas (en clave de sol
+  octava baja en la guitarra) y debajo el de tablatura; los cifrados de las digitaciones son `<harmony>` en lugar de
+  `<words>`, y un compás vacío es un silencio de compás entero.
+
 ## 0.3.4 (2026-11-04)
 
 - **Los datos de las consultas, en un solo sitio.** `DatosDeAcorde`, `DatosDeCandidato` (con

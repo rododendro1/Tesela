@@ -108,8 +108,8 @@ public struct Partitura: Hashable, Sendable, Codable {
         public var bajoCifrado: [Duracion: [String]]
         /// El dedo de cada nota (de la grave a la aguda; 0, ninguno), encima. Solo cuenta en SVG.
         public var digitos: [Duracion: [Int]]
-        /// La cuerda y el traste de cada nota, en la tablatura del pentagrama (`Pentagrama.cuerdas`). Solo cuenta en
-        /// SVG.
+        /// La cuerda y el traste de cada nota, en la tablatura del pentagrama (`Pentagrama.cuerdas`): debajo en SVG, y
+        /// en un pentagrama de tablatura en MusicXML.
         public var pulsaciones: [Duracion: [Tablatura.Pulsacion]]
         /// La nota desde la que se cuentan los intervalos de las notas (`marcas.intervalosDeLasNotas`) donde no suena
         /// ningún acorde: la tónica de una escala. Si es `nil`, la de la armadura `.tonalidad`. Solo cuenta en SVG.
@@ -142,25 +142,51 @@ public struct Partitura: Hashable, Sendable, Codable {
         public var clave: Clave?
         public var voces: [Linea]
         /// Las cuerdas de la tablatura que va debajo, con las `pulsaciones` de su primera voz; `nil`, sin
-        /// tablatura. Solo cuenta en SVG.
+        /// tablatura. En SVG va debajo del pentagrama; en MusicXML, en un pentagrama de tablatura aparte.
         public var cuerdas: Int?
         /// Las notas de una armadura propia (la de Re dórico, con Do mayor), que se escribe si las opciones dejan la
         /// armadura en `.automatica` y el encabezado no da tonalidad, como en `Escala.svgPentagrama()`. Solo cuenta
         /// en SVG, con una voz en el pentagrama.
         public var armadura: [Nota]?
+        /// Cómo suena cada cuerda de la tablatura al aire, sin el capo, en el orden de sus cuerdas
+        /// (``Tablatura/afinacion``), si se sabe. MusicXML la escribe.
+        public var afinacion: [Altura]?
+        /// El traste del capo de la tablatura (``Tablatura/capo``), si lo hay. MusicXML lo escribe.
+        public var capo: Int?
 
         /// Un pentagrama con esas voces, en esa clave (si no se da, la que mejor va a sus alturas: `claveEscrita`) y,
-        /// con `cuerdas`, con una tablatura de esas cuerdas debajo.
-        public init(clave: Clave? = nil, voces: [Linea], cuerdas: Int? = nil, armadura: [Nota]? = nil) {
+        /// con `cuerdas`, con una tablatura de esas cuerdas debajo, con su afinación y su capo si se saben.
+        public init(
+            clave: Clave? = nil, voces: [Linea], cuerdas: Int? = nil, armadura: [Nota]? = nil,
+            afinacion: [Altura]? = nil, capo: Int? = nil
+        ) {
             self.clave = clave
             self.voces = voces
             self.cuerdas = cuerdas
             self.armadura = armadura
+            self.afinacion = afinacion
+            self.capo = capo
         }
 
-        /// La clave con que se escribe: la suya o la que pidan sus notas.
+        /// Un pentagrama con esas voces y debajo esa tablatura: sus cuerdas, su afinación y su capo.
+        public init(clave: Clave? = nil, voces: [Linea], tablatura: Tablatura?, armadura: [Nota]? = nil) {
+            self.init(
+                clave: clave, voces: voces, cuerdas: tablatura?.cuerdas, armadura: armadura,
+                afinacion: tablatura?.afinacion, capo: tablatura?.capo)
+        }
+
+        /// La clave con que se escribe: la suya, la del instrumento de la tablatura o la que pidan sus notas.
         public var claveEscrita: Clave {
-            clave ?? Clave.masAdecuada(para: voces.flatMap { $0.voz.eventos.flatMap(\.alturas) }) ?? .sol
+            clave ?? claveDelInstrumento
+                ?? Clave.masAdecuada(para: voces.flatMap { $0.voz.eventos.flatMap(\.alturas) }) ?? .sol
+        }
+
+        /// La clave en que se escribe el instrumento de la tablatura: la de sol octava baja si su cuerda más grave
+        /// está entre el Si1 y el Do3, como en la guitarra, que se escribe una octava más aguda de lo que suena;
+        /// si no, o sin afinación, `nil`.
+        public var claveDelInstrumento: Clave? {
+            guard cuerdas != nil, let grave = afinacion?.map(\.midi).min() else { return nil }
+            return (35..<48).contains(grave) ? .solOctavaBaja : nil
         }
     }
 
@@ -220,14 +246,27 @@ public struct Partitura: Hashable, Sendable, Codable {
         acordes: [[Altura]], titulo: String? = nil, cifrados: [Acorde] = [], grados: [String] = [],
         bajoCifrado: [[String]] = [], digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil
     ) {
-        let voz = Voz(acordes.map { Evento(alturas: $0, duracion: .redonda) })
-        let porNota = AnotacionesPorNota(
-            cifrados: AnotacionesPorNota.enOrden(cifrados), grados: AnotacionesPorNota.enOrden(grados),
-            bajoCifrado: AnotacionesPorNota.enOrden(bajoCifrado), digitos: digitos,
-            pulsaciones: tablatura?.notas ?? [:])
-        let linea = Linea(voz, porNota: porNota)
         self.init(
-            pentagramas: [Pentagrama(voces: [linea], cuerdas: tablatura?.cuerdas)],
+            acordes: acordes, titulo: titulo,
+            porNota: AnotacionesPorNota(
+                cifrados: AnotacionesPorNota.enOrden(cifrados), grados: AnotacionesPorNota.enOrden(grados),
+                bajoCifrado: AnotacionesPorNota.enOrden(bajoCifrado), digitos: digitos),
+            tablatura: tablatura)
+    }
+
+    /// Como `init(acordes:titulo:cifrados:…)`, con todo lo que se anota en cada columna en `porNota` (por su
+    /// índice, desde 0): también el análisis y los marcadores. Las pulsaciones son las de `tablatura`, si `porNota`
+    /// no trae las suyas. El título, si no se da, son los cifrados de las columnas, en orden.
+    ///
+    ///     let porNota = Partitura.AnotacionesPorNota(cifrados: [0: Acorde("Do"), 1: Acorde("Sol7")])
+    ///     Partitura(acordes: [["Do4", "Mi4", "Sol4"], ["Si3", "Fa4", "Sol4"]], porNota: porNota).svg()
+    public init(acordes: [[Altura]], titulo: String? = nil, porNota: AnotacionesPorNota, tablatura: Tablatura? = nil) {
+        let voz = Voz(acordes.map { Evento(alturas: $0, duracion: .redonda) })
+        var anotaciones = porNota
+        if anotaciones.pulsaciones.isEmpty { anotaciones.pulsaciones = tablatura?.notas ?? [:] }
+        let cifrados = anotaciones.cifrados.keys.sorted().compactMap { anotaciones.cifrados[$0] }
+        self.init(
+            pentagramas: [Pentagrama(voces: [Linea(voz, porNota: anotaciones)], tablatura: tablatura)],
             encabezado: Encabezado(titulo: titulo, tema: cifrados.isEmpty ? nil : .progresion(cifrados)),
             ritmo: false)
     }
@@ -305,25 +344,30 @@ extension Partitura {
     /// índice), con su ``Ritmo``. Es lo que hacen `Escala.partitura(tocadaEn:…)` y `Acorde.partitura(arpegiadoEn:…)`.
     static func tocada(
         _ notas: [Evento.Nota], titulo: String? = nil, tema: Encabezado.Tema, ritmo: Ritmo = .libre,
-        digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil, acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
+        porNota: AnotacionesPorNota = AnotacionesPorNota(), tablatura: Tablatura? = nil, acorde: Acorde?,
+        tonica: Nota?, armadura: [Nota]?
     ) -> Partitura {
         tocada(
-            juntas: notas.map { [$0] }, titulo: titulo, tema: tema, ritmo: ritmo, digitos: digitos,
+            juntas: notas.map { [$0] }, titulo: titulo, tema: tema, ritmo: ritmo, porNota: porNota,
             tablatura: tablatura, acorde: acorde, tonica: tonica, armadura: armadura)
     }
 
-    /// Como `tocada(_:…)`, con las notas de cada evento juntas: todas las de un acorde en uno.
+    /// Como `tocada(_:…)`, con las notas de cada evento juntas: todas las de un acorde en uno. El cifrado de
+    /// `acorde` va en la primera nota, si `porNota` no le da otro, y las pulsaciones de `tablatura`, si `porNota` no
+    /// trae las suyas.
     static func tocada(
         juntas notas: [[Evento.Nota]], titulo: String? = nil, tema: Encabezado.Tema, ritmo: Ritmo = .libre,
-        digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil, acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
+        porNota anotaciones: AnotacionesPorNota = AnotacionesPorNota(), tablatura: Tablatura? = nil,
+        acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
     ) -> Partitura {
         let voz = Voz(
             notas.indices.map { Evento(notas: notas[$0], duracion: ritmo.duracion(de: $0, entre: notas.count)) })
-        let porNota = AnotacionesPorNota(
-            cifrados: acorde.map { [0: $0] } ?? [:], digitos: digitos, pulsaciones: tablatura?.notas ?? [:])
+        var porNota = anotaciones
+        if let acorde, porNota.cifrados[0] == nil { porNota.cifrados[0] = acorde }
+        if porNota.pulsaciones.isEmpty { porNota.pulsaciones = tablatura?.notas ?? [:] }
         let linea = Linea(voz, porNota: porNota, tonica: tonica)
         return Partitura(
-            pentagramas: [Pentagrama(voces: [linea], cuerdas: tablatura?.cuerdas, armadura: armadura)],
+            pentagramas: [Pentagrama(voces: [linea], tablatura: tablatura, armadura: armadura)],
             encabezado: Encabezado(titulo: titulo, tema: tema), ritmo: ritmo != .libre)
     }
 }

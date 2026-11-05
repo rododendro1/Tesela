@@ -90,8 +90,10 @@ salen), y CAGED, la guitarra afinada como siempre. Desde la terminal: `armonia p
 
 Las posiciones, los arpegios y las digitaciones recuerdan la escala o el acorde de que salieron
 (`EscalaEnElMastil.escala`, `ArpegioEnElMastil.acorde`, `Digitacion.acorde`), y su `partitura()` los escribe con
-sus notas (Si♭, no La♯, en Do7) y con la tablatura debajo, contada como el mástil. Con `ritmo: .figura(.corchea)`,
-con ritmo.
+sus notas (Si♭, no La♯, en Do7, con `Altura.reescritas(_:con:)`) y con la tablatura debajo, contada como el mástil,
+con la afinación y el capo del instrumento. Con `ritmo: .figura(.corchea)`, con ritmo. Las notas son las que suenan:
+la guitarra se escribe en clave de sol octava baja (``Partitura/Pentagrama/claveDelInstrumento``), una octava más
+aguda. En MusicXML, la tablatura va en su propio pentagrama, con la cuerda y el traste de cada nota.
 
 ```swift
 let mastil = Mastil(.guitarra, trastes: 15)
@@ -101,6 +103,7 @@ let enCorcheas = posicion.partitura(ritmo: .figura(.corchea))
 enCorcheas.ritmo && enCorcheas.pentagramas[0].cuerdas == 6   // true
 let doMayor = mastil.digitaciones(de: Acorde("Do"))[0]
 doMayor.partitura().encabezado.tema == .progresion([Acorde("Do")])   // true
+doMayor.partitura().pentagramas[0].claveEscrita == .solOctavaBaja     // true
 ```
 
 ## Datos que vienen de fuera

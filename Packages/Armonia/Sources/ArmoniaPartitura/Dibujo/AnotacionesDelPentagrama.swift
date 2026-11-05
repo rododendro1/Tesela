@@ -30,7 +30,9 @@ extension Voz {
             var resultado = AnotacionesDelPentagrama(
                 acordes: mover(acordes), grados: mover(grados), bajoCifrado: mover(bajoCifrado),
                 digitos: mover(digitos),
-                tablatura: tablatura.map { Tablatura(cuerdas: $0.cuerdas, notas: mover($0.notas)) },
+                tablatura: tablatura.map {
+                    Tablatura(cuerdas: $0.cuerdas, notas: mover($0.notas), afinacion: $0.afinacion, capo: $0.capo)
+                },
                 microtonos: microtonos)
             resultado.acordeVigente = acordeVigente
             return resultado

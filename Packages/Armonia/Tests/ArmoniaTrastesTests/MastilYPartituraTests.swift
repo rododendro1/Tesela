@@ -53,6 +53,26 @@ import Testing
         #expect(leida.partitura(de: Acorde("Do")) == partitura)
     }
 
+    @Test func laGuitarraSeEscribeEnClaveDeSolOctavaBaja() throws {
+        // Las notas son las que suenan; la clave las sube una octava al escribirlas.
+        let digitacion = try Digitacion(leyendo: "x32010", en: guitarra)
+        let pentagrama = digitacion.partitura().pentagramas[0]
+        #expect(pentagrama.afinacion == Encordado.guitarra.cuerdas && pentagrama.capo == nil)
+        #expect(pentagrama.claveDelInstrumento == .solOctavaBaja && pentagrama.claveEscrita == .solOctavaBaja)
+        #expect(pentagrama.voces[0].voz.eventos[0].alturas.first == Altura(.do, octava: 3))
+        // Con capo, la afinación es la de las cuerdas al aire, sin él.
+        let conCapo = Mastil(Encordado.guitarra.conCapo(2))
+        let tablatura = Tablatura(conCapo, posiciones: [0: [PosicionEnElMastil(cuerda: 0, traste: 0)]])
+        #expect(tablatura.afinacion == Encordado.guitarra.cuerdas && tablatura.capo == 2)
+        // El bajo (Mi1) no: la que mejor va a sus notas.
+        let bajo = Tablatura(Mastil(.bajoElectrico), posiciones: [0: [PosicionEnElMastil(cuerda: 0, traste: 0)]])
+        let mi = Partitura.Linea(Voz([Evento(alturas: ["Mi1"], duracion: .redonda)]))
+        let enElBajo = Partitura.Pentagrama(voces: [mi], tablatura: bajo)
+        #expect(enElBajo.claveDelInstrumento == nil && enElBajo.claveEscrita != .solOctavaBaja)
+        // Una clave dada manda.
+        #expect(Partitura.Pentagrama(clave: .sol, voces: pentagrama.voces, tablatura: tablatura).claveEscrita == .sol)
+    }
+
     @Test func variasDigitacionesUnaDetrasDeOtra() throws {
         let digitaciones = [
             try Digitacion(leyendo: "x32010", en: guitarra), try Digitacion(leyendo: "320003", en: guitarra),

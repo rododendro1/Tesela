@@ -257,6 +257,54 @@
   `Linea.porNota` los devuelve; `Voz.porEvento(_:)` (nuevo) es lo contrario de `porInicio(_:)`. Las partituras de
   acordes, de escalas y de arpegios, y su dibujo, pasan por aquí, en lugar de cada una con su conversión.
 
+### La tablatura, también en MusicXML
+
+- `Partitura.musicXML()` escribe la tablatura de un pentagrama con `cuerdas` en un pentagrama de tablatura de la misma
+  parte, debajo de los demás: clave `TAB`, sus líneas, la afinación (`<staff-tuning>`), el capo y la cuerda y el
+  traste de cada nota (`<technical>`). MEI, ABC, LilyPond, GUIDO y MIDI siguen sin ella.
+- `Tablatura.afinacion` y `Tablatura.capo`, y `Partitura.Pentagrama.afinacion` y `capo` (nuevos): cómo suena cada
+  cuerda al aire, sin el capo, y el traste del capo. `Tablatura(_:posiciones:)` los toma del mástil, y
+  `Partitura.Pentagrama(clave:voces:tablatura:armadura:)` (nuevo), de la tablatura.
+- Al importar MusicXML, las notas de un pentagrama de tablatura no se leen otra vez si la parte tiene otros
+  pentagramas: una partitura del mástil vuelve con sus notas una vez.
+
+### La guitarra, en clave de sol octava baja
+
+- `Partitura.Pentagrama.claveDelInstrumento` (nuevo): la clave de sol octava baja si la cuerda más grave de la
+  tablatura está entre el Si1 y el Do3, como en la guitarra; si no, `nil`. `claveEscrita` la usa si el pentagrama no
+  lleva clave, en SVG y en MusicXML, así que las partituras del mástil llevan las notas como suenan y la clave las
+  escribe una octava más aguda. El bajo eléctrico y el ukelele siguen con la que mejor va a sus notas.
+- **Cambio incompatible:** una partitura de la guitarra (las del mástil, o con `Pentagrama(cuerdas:afinacion:)`) se
+  escribe en clave de sol octava baja en lugar de la que mejor iba a sus notas. `armonia pentagrama … --tab` deja de
+  subir las notas una octava para escribirlas en clave de sol.
+
+### Todo lo que se anota, en un solo `porNota`
+
+- `Partitura(acordes:titulo:porNota:tablatura:)`, `Escala.partitura(tocadaEn:titulo:ritmo:porNota:tablatura:)`,
+  `Escala.svgPentagrama(tocadaEn:titulo:ritmo:porNota:tablatura:opciones:)`,
+  `Acorde.partitura(arpegiadoEn:titulo:ritmo:porNota:tablatura:)` y
+  `Acorde.svgPentagrama(arpegiadoEn:ritmo:porNota:tablatura:opciones:)` (nuevos): lo que se anota en cada nota en una
+  `Partitura.AnotacionesPorNota`, también lo que los atajos no tienen (el análisis, los marcadores, los grados de una
+  escala). Los atajos (`cifrados:`, `grados:`, `digitos:`) siguen y son lo mismo. Las pulsaciones son las de la
+  tablatura si `porNota` no trae las suyas, y el cifrado de un arpegio va en su primera nota si `porNota` no le da otro.
+  Las partituras del mástil pasan por aquí.
+
+### La ortografía de unas alturas, pública
+
+- `Altura.reescritas(_:con:)` (ahora pública): las alturas escritas con unas notas cuando suenan igual, sin cambiar el
+  número MIDI (el La♯3 del mástil, como Si♭3 en Do7). Es la que usan las escalas, los arpegios y las digitaciones del
+  mástil, que ya no tienen la suya.
+
+### La importación respeta las voces y los pentagramas del fichero
+
+- `NotaDeLaPieza.pentagrama` y `NotaDeLaPieza.voz` (nuevos): el pentagrama de la parte (`<staff>` en MusicXML) y la
+  voz (`<voice>` en MusicXML, `<layer n>` en MEI), si el fichero los dice. MIDI y ABC no los dicen.
+- `PiezaImportada.partitura()` hace un pentagrama por cada pentagrama de la parte (el piano vuelve en dos, cada uno
+  con su clave) y, si todas las notas de un pentagrama dicen su voz, una voz de la partitura por cada voz del fichero.
+  Sin ellas, como antes: lo que se solapa va en otra voz.
+- **Cambio incompatible:** las notas leídas de MusicXML y de MEI son distintas (`==`) de las mismas hechas a mano sin
+  `voz` ni `pentagrama`.
+
 ## 0.3.4 (2026-11-04)
 
 ### Valores escritos a mano, sin opcionales

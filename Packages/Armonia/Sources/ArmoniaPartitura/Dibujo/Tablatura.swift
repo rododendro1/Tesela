@@ -1,3 +1,5 @@
+import ArmoniaNucleo
+
 // La tablatura que puede ir debajo de un pentagrama (`Partitura.Pentagrama.cuerdas`): el número de cuerdas y,
 // por nota, la cuerda y el traste. Las posiciones las da el mástil (`ArmoniaTrastes`); aquí solo se dibujan.
 
@@ -34,11 +36,20 @@ public struct Tablatura: Hashable, Sendable, Codable {
     /// Lo que se pulsa en cada nota (o acorde), por su índice: el del evento en una voz, el de la columna en unas
     /// disposiciones.
     public let notas: [Int: [Pulsacion]]
+    /// Cómo suena cada cuerda al aire, sin el capo, en el orden de las cuerdas (desde la 0, la más grave, como en
+    /// el mástil), si se sabe: la escriben
+    /// MusicXML y los editores que leen la tablatura, y con ella la partitura de una guitarra va en clave de sol
+    /// octava baja (``Partitura/Pentagrama/claveDelInstrumento``).
+    public let afinacion: [Altura]?
+    /// El traste en que está el capo, si lo hay: los trastes de `notas` se cuentan desde él.
+    public let capo: Int?
 
     /// Una tablatura de `cuerdas` líneas con lo que se pulsa en cada nota, por su índice (ver `notas`), con las
-    /// cuerdas contadas desde la más grave.
-    public init(cuerdas: Int, notas: [Int: [Pulsacion]]) {
+    /// cuerdas contadas desde la más grave y, si se saben, su afinación y el capo.
+    public init(cuerdas: Int, notas: [Int: [Pulsacion]], afinacion: [Altura]? = nil, capo: Int? = nil) {
         self.cuerdas = cuerdas
         self.notas = notas
+        self.afinacion = afinacion
+        self.capo = capo
     }
 }

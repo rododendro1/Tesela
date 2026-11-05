@@ -336,12 +336,24 @@ package protocol EscritorDePartitura {
         _ voz: Voz, pentagrama: Int, plicaArriba: Bool?,
         cifrados: [Duracion: Acorde], analisis: [Duracion: AcordeAnalizado], notacion: Notacion)
 
+    /// Añade la voz otra vez en un pentagrama de tablatura, debajo de los demás, con lo que se pulsa en cada nota.
+    /// Solo lo escribe MusicXML; los demás formatos no tienen tablatura y no hacen nada.
+    mutating func anadirTablatura(
+        _ voz: Voz, pulsaciones: [Duracion: [Tablatura.Pulsacion]], cuerdas: Int, afinacion: [Altura]?, capo: Int?)
+
     var documento: String { get }
+}
+
+extension EscritorDePartitura {
+    package mutating func anadirTablatura(
+        _ voz: Voz, pulsaciones: [Duracion: [Tablatura.Pulsacion]], cuerdas: Int, afinacion: [Altura]?, capo: Int?
+    ) {}
 }
 
 extension Exportacion {
     /// La partitura en el formato de `Escritor`: cada pentagrama con su clave (la que pidan sus notas si no lleva
     /// ninguna), cada voz en el suyo con sus cifrados y su análisis, y la tonalidad del análisis debajo del último.
+    /// En MusicXML, la tablatura de un pentagrama con `cuerdas` va en un pentagrama de tablatura debajo de todos.
     package static func documento<Escritor: EscritorDePartitura>(
         _: Escritor.Type, de partitura: Partitura
     ) -> String {
@@ -357,6 +369,13 @@ extension Exportacion {
             escritor.anadir(
                 linea.voz, pentagrama: pentagrama, plicaArriba: linea.plicaArriba, cifrados: linea.cifrados,
                 analisis: linea.analisis, notacion: partitura.notacion)
+        }
+        // La tablatura de cada pentagrama que la lleva, con lo que se pulsa en su primera voz.
+        for pentagrama in partitura.pentagramas {
+            guard let cuerdas = pentagrama.cuerdas, cuerdas > 0, let primera = pentagrama.voces.first else { continue }
+            escritor.anadirTablatura(
+                primera.voz, pulsaciones: primera.pulsaciones, cuerdas: cuerdas, afinacion: pentagrama.afinacion,
+                capo: pentagrama.capo)
         }
         return escritor.documento
     }

@@ -6,25 +6,38 @@ import ArmoniaTeoria
 
 extension PiezaImportada {
     /// La pieza como partitura, para dibujarla o exportarla otra vez: un pentagrama por parte (en el orden de las
-    /// partes), con el título, la tonalidad, el tempo y el compás del fichero. En cada parte, las notas que empiezan y
-    /// acaban a la vez van juntas, en un acorde; las que se solapan de otra forma, en otra voz del pentagrama, y los
-    /// huecos son silencios. Cada nota lleva su microtono y su sistema (``NotaDeLaPieza/nota``), su dinámica y sus
-    /// articulaciones. Las notas de adorno se quedan fuera.
+    /// partes) y, si el fichero los dice (``NotaDeLaPieza/pentagrama``, como el piano en MusicXML), uno por cada
+    /// pentagrama de la parte, con el título, la tonalidad, el tempo y el compás del fichero. Si todas las notas de
+    /// un pentagrama dicen su voz (``NotaDeLaPieza/voz``), cada voz del fichero es una voz de la partitura. Dentro de
+    /// cada una, las notas que empiezan y acaban a la vez van juntas, en un acorde; las que se solapan de otra forma,
+    /// en otra voz del pentagrama, y los huecos son silencios. Cada nota lleva su microtono y su sistema
+    /// (``NotaDeLaPieza/nota``), su dinámica y sus articulaciones. Las notas de adorno se quedan fuera.
     ///
     ///     let pieza = try PiezaImportada(leyendo: Data(contentsOf: URL(fileURLWithPath: "coral.mid")))
     ///     pieza.partitura().musicXML()   // el mismo coral, en MusicXML
     public func partitura() -> Partitura {
         let compas = self.compas ?? .compasillo
         let partes = Set(notas.map(\.parte)).sorted()
-        let pentagramas = partes.map { parte in
-            Partitura.Pentagrama(
-                voces: PiezaImportada.voces(de: notas.filter { $0.parte == parte }, compas: compas).map {
-                    Partitura.Linea($0)
-                })
+        let pentagramas = partes.flatMap { parte -> [Partitura.Pentagrama] in
+            let porPentagrama = Dictionary(grouping: notas.filter { $0.parte == parte }) { $0.pentagrama ?? 1 }
+            return porPentagrama.keys.sorted().map { pentagrama in
+                Partitura.Pentagrama(
+                    voces: PiezaImportada.voces(deUnPentagrama: porPentagrama[pentagrama] ?? [], compas: compas).map {
+                        Partitura.Linea($0)
+                    })
+            }
         }
         return Partitura(
             pentagramas: pentagramas, encabezado: Encabezado(titulo: titulo, tonalidad: tonalidad, tempo: tempo),
             compas: compas)
+    }
+
+    /// Las voces de un pentagrama: las del fichero, si todas sus notas dicen la suya, en orden; si no, las que salen
+    /// de cómo se solapan las notas.
+    static func voces(deUnPentagrama notas: [NotaDeLaPieza], compas: Compas) -> [Voz] {
+        guard notas.allSatisfy({ $0.voz != nil }) else { return voces(de: notas, compas: compas) }
+        let porVoz = Dictionary(grouping: notas) { $0.voz ?? 0 }
+        return porVoz.keys.sorted().flatMap { voces(de: porVoz[$0] ?? [], compas: compas) }
     }
 
     /// Las voces de una parte: cada una, una sucesión de acordes (las notas que empiezan y acaban a la vez) que no se
