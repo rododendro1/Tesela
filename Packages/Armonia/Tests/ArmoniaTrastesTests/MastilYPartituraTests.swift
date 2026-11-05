@@ -105,7 +105,7 @@ import Testing
         #expect(partitura.pentagramas[0].numeroDeCuerdas == 6)
         #expect(linea.voz.eventos.count == posicion.posiciones.count)
         #expect(linea.pulsaciones.count == posicion.posiciones.count)
-        #expect(!posicion.partitura().ritmo)
+        #expect(!posicion.partitura().dibujaElRitmo)
         #expect(posicion.partitura(de: escala) == posicion.partitura())
         // Sin escala, las notas como las da el mástil, con su tablatura.
         let suelta = EscalaEnElMastil(mastil: guitarra, trastes: posicion.trastes, posiciones: posicion.posiciones)
