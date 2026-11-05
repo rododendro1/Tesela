@@ -200,11 +200,11 @@ usan microtonos):
   Segah y Çahargah, con «muğamı» detrás. Los tres primeros encadenan tres tetracordos y tienen
   una nota distinta por debajo de la tónica y por encima, así que tienen ocho notas (Rast
   muğamı en Do: Do Re Mi Fa Sol La Si♭ Si).
-- **9 echoi bizantinos**, los ocho modos de la salmodia y el légetos: echos prótos (el dórico, sobre Re), plágios
+- **9 echoi bizantinos**, los ocho modos de la salmodia y el légetos: échos prótos (el dórico, sobre Re), plágios
   prótos (el eólico, sobre La), défteros y plágios défteros (la doble armónica, sobre Sol y Re), trítos (la mayor,
   sobre Fa), varýs (el locrio, sobre Si), tétartos (el mixolidio, sobre Sol), plágios tétartos (la mayor, sobre Do)
   y légetos (el frigio, sobre Mi). Cada uno sobre su nota base más habitual, con los nombres en transliteración
-  griega (ήχος πρώτος → echos prótos).
+  griega (ήχος πρώτος → échos prótos).
 - **7 afinaciones babilónicas**, las de la lira y el arpa de los textos cuneiformes (UET VII 74), con el nombre
   del intervalo entre dos cuerdas que las define: išartu (la mayor), kitmu (el mixolidio), embūbu (el dórico),
   pītu (el eólico), nīd qabli (el frigio, la del himno hurrita h.6), nīš tuḫri (el locrio; antes se leía nīš
@@ -309,6 +309,18 @@ TipoDeEscala.mohanam.padre?.numeroDeMelakarta   // 28
 TipoDeEscala.menorNatural.categoria             // nil: las occidentales no tienen categoría
 TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72
 CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .frances))   // "gamme"
+```
+
+`nombreCompleto` pone delante del nombre la palabra de su categoría, si es un préstamo (rāga, mēḷa, thāṭ, maqām,
+drómos…) y el nombre no la lleva ya. Un janya va con «rāga». Las categorías que se traducen (tetracordo, harmonía,
+hexacordo, modo gregoriano, afinación y escala) no se anteponen, y las occidentales se quedan con su nombre.
+
+```swift
+TipoDeEscala.kafi.nombreCompleto                // "thāṭ Kāfī"
+TipoDeEscala.mohanam.nombreCompleto             // "rāga Mohanam"
+TipoDeEscala.bayati.nombreCompleto              // "maqām Bayātī"
+TipoDeEscala.rastMakami.nombreCompleto          // "Rast makamı"
+TipoDeEscala.mayor.nombreCompleto               // "mayor"
 ```
 
 Las categorías se agrupan en cuatro clases (`ClaseDeEscala`), según qué es la escala: un modo que se toca (un rāga,

@@ -143,8 +143,9 @@ import Testing
         #expect(CategoriaTradicional.dromos.nombre(en: griego) == "δρόμος")
         #expect(CategoriaTradicional.escala.nombre(en: frances) == "gamme")
         #expect(CategoriaTradicional.tetracordo.nombre(en: frances) == "tétracorde")
-        #expect(CategoriaTradicional.maqam.nombre(en: frances) == "maqam")
-        #expect(CategoriaTradicional.mugam.nombre == "mugam")
+        #expect(CategoriaTradicional.maqam.nombre(en: frances) == "maqām")
+        #expect(CategoriaTradicional.mugam.nombre == "muğam")
+        #expect(CategoriaTradicional.dromos.nombre == "drómos" && CategoriaTradicional.echos.nombre == "échos")
         #expect(CategoriaTradicional.mugam.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "mugham")
         #expect(CategoriaTradicional.makam.nombre(en: ruso) == "макам")
         #expect(CategoriaTradicional.raga.nombre(en: Notacion.espanolCompacto.conTextos(en: .aleman)) == "Rāga")
@@ -259,6 +260,34 @@ import Testing
         }
         #expect(Tradicion.japon.nombre(en: Notacion.espanolCompacto.conTextos(en: .euskera)) == "Japonia")
         #expect(Tradicion.mundoArabe.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Arab world")
+    }
+
+    /// El nombre con la palabra de la categoría: delante si es un préstamo y no la lleva ya.
+    @Test func nombreCompleto() {
+        #expect(TipoDeEscala.kafi.nombreCompleto == "thāṭ Kāfī")
+        #expect(TipoDeEscala.melakarta(15)?.nombreCompleto == "mēḷa Māyāmālavagauḷa")
+        #expect(TipoDeEscala.mohanam.nombreCompleto == "rāga Mohanam")
+        #expect(TipoDeEscala.hitzaz.nombreCompleto == "drómos Hitzáz")
+        #expect(TipoDeEscala.bayati.nombreCompleto == "maqām Bayātī")
+        // Los que ya la llevan, delante o detrás.
+        #expect(TipoDeEscala.jinsHijaz.nombreCompleto == "jins Ḥijāz")
+        #expect(TipoDeEscala.rastMakami.nombreCompleto == "Rast makamı")
+        #expect(TipoDeEscala.echosProtos.nombreCompleto == TipoDeEscala.echosProtos.nombre)
+        #expect(TipoDeEscala.shaddRast.nombreCompleto == "shadd Rāst")
+        #expect(TipoDeEscala.adwar.allSatisfy { $0.nombreCompleto == $0.nombre })
+        // Las categorías que se traducen y las occidentales, a secas.
+        #expect(TipoDeEscala.tetracordoDiatonico.nombreCompleto == "tetracordo diatónico")
+        #expect(TipoDeEscala.georgiana.nombreCompleto == "georgiana")
+        #expect(TipoDeEscala.mayor.nombreCompleto == "mayor")
+        // Ninguno repite la palabra.
+        for tipo in TipoDeEscala.tradicionales {
+            let palabras = tipo.nombreCompleto.split(separator: " ")
+            #expect(palabras.count < 2 || palabras[0] != palabras[1], Comment(rawValue: tipo.nombreCompleto))
+        }
+        let ingles = Notacion.espanolCompacto.conTextos(en: .ingles)
+        #expect(TipoDeEscala.mohanam.nombreCompleto(en: ingles) == "rāga Mohanam")
+        let griego = Notacion.espanolCompacto.conTextos(en: .griego)
+        #expect(TipoDeEscala.mohanam.nombreCompleto(en: griego).hasPrefix("ράγκα "))
     }
 
     /// Los colores de Aristóxeno, en doceavos de tono, y los adwār de Ṣafī al-Dīn, pitagóricos.

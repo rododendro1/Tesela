@@ -2,6 +2,19 @@
 
 ## Sin publicar
 
+### El nombre completo de una escala
+
+- `TipoDeEscala.nombreCompleto` (y `nombreCompleto(en:)`) antepone al nombre la palabra de su categoría cuando es
+  un préstamo y el nombre no la lleva ya: «thāṭ Kāfī», «mēḷa Māyāmālavagauḷa», «rāga Mohanam» (los janya van con
+  «rāga»), «maqām Bayātī», «drómos Hitzáz». «jins Ḥijāz» y «Rast makamı» se quedan como están, y también las
+  categorías que se traducen (tetracordo, harmonía, afinación, escala…) y las occidentales.
+- Los nombres de las categorías llevan sus diacríticos: «maqām» (ALA-LC), «drómos» y «échos» (con el acento de
+  la palabra griega) y «muğam» (como se escribe en azerbaiyano), en español y en los idiomas de alfabeto latino que
+  los toman prestados; «makam», «jins», «laras» o «pathet» no tienen. El inglés sigue diciendo «mugham». En la
+  línea de comandos se siguen escribiendo sin ellos (`--categoria maqam`).
+- Los echoi bizantinos se llaman «échos prótos», «échos plágios prótos»… (antes «echos»); se siguen
+  encontrando sin el acento.
+
 ### Los colores de Aristóxeno y los adwār de Ṣafī al-Dīn
 
 - Grecia antigua: los colores de Aristóxeno que faltaban (`TipoDeEscala.coloresDeAristoxeno`), en doceavos de
