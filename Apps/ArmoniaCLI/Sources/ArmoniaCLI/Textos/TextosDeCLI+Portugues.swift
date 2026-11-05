@@ -322,6 +322,8 @@ extension TextosDeCLI {
         descripcionVersion: "a versão do armonia",
         quisoDecir: { x in "Queria dizer «\(x)»?" },
         pruebaLaAyudaDe: { o in "Experimente «armonia ayuda \(o)»." },
-        salidaBinaria: "a saída é um ficheiro binário (MIDI, PDF ou PNG); guarde-a com > ficheiro"
+        salidaBinaria: "a saída é um ficheiro binário (MIDI, PDF ou PNG); guarde-a com > ficheiro",
+        escalasPorNotas: { e in "não há nenhuma escala com esse nome; para a procurar pelas notas: \(e)" },
+        grabarUnaPartitura: { o, e in "«armonia \(o)» já escreve a partitura; «grabar» dá-a em PDF, SVG ou PNG: \(e)" }
     )
 }

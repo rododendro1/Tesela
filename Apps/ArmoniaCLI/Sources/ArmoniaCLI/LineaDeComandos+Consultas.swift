@@ -131,9 +131,7 @@ extension LineaDeComandos {
         let encontradas: [EscalaEncontrada]
         if let archivo {
             guard argumentos.restantes.isEmpty else { return uso(.archivoConNotas, notacion) }
-            guard let datos = FileManager.default.contents(atPath: archivo) else {
-                return uso(.archivoIlegible(archivo), notacion)
-            }
+            guard let datos = contenido(deArchivo: archivo) else { return uso(.archivoIlegible(archivo), notacion) }
             let pieza = try PiezaImportada(leyendo: datos)
             encontradas = PresentacionDeEstudioDeEscala.escalas(de: pieza, notacion: notacion)
         } else {
@@ -539,7 +537,21 @@ extension LineaDeComandos {
                 grupos.append((titulo, [tipo]))
             }
         }
-        guard !grupos.isEmpty else { return bien(t(.ningunaEscala)) }
+        guard !grupos.isEmpty else {
+            // `escalas` busca por el nombre: con unas notas, lo que se quería era `identificar --escalas`.
+            let palabras = entrada.restantes
+            let sonNotas = !palabras.isEmpty && palabras.allSatisfy { (try? Nota(leyendo: $0)) != nil }
+            let texto =
+                sonNotas
+                ? TextosDeCLI.en(notacion) {
+                    $0.escalasPorNotas(
+                        ejemplo(
+                            "armonia identificar --escalas " + entrada.unidos,
+                            "armonia identify --scales " + entrada.unidos
+                        ).en(notacion))
+                } : t(.ningunaEscala)
+            return ResultadoDeOrden(salida: "", error: "armonia: " + texto + "\n", codigo: 1)
+        }
         var lineas: [String] = []
         for grupo in grupos {
             if !lineas.isEmpty { lineas.append("") }
@@ -596,9 +608,7 @@ extension LineaDeComandos {
         let analisis: AnalisisPresentado
         if let archivo {
             guard acordes.restantes.isEmpty else { return uso(.archivoConAcordes, notacion) }
-            guard let datos = FileManager.default.contents(atPath: archivo) else {
-                return uso(.archivoIlegible(archivo), notacion)
-            }
+            guard let datos = contenido(deArchivo: archivo) else { return uso(.archivoIlegible(archivo), notacion) }
             let pieza = try PiezaImportada(leyendo: datos)
             guard
                 let leido = PresentacionDeAnalisis.analizar(

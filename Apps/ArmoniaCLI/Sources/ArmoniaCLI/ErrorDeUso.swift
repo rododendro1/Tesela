@@ -124,6 +124,8 @@ enum ErrorDeUso {
     // Grabado
     /// `grabar` sin nada detrás.
     case faltaLoQueSeGraba
+    /// `grabar midi …` (o musicxml, mei, lilypond, guido, abc): esa orden ya escribe la partitura.
+    case grabarUnaPartitura(String)
     /// `grabar … --motor` con un motor que no es lilypond, musescore, verovio, guido ni propio.
     case motorDesconocido(String)
     /// `grabar … --formato` con algo que no es pdf, svg ni png.
@@ -167,6 +169,11 @@ enum ErrorDeUso {
             return LineaDeComandos.propuesta(para: orden, entre: LineaDeComandos.nombresDeLasOrdenes)
         case .opcionDesconocida(let opcion):
             return LineaDeComandos.propuesta(para: opcion, entre: LineaDeComandos.opcionesConocidas)
+        case .idiomaDesconocido(let idioma):
+            let nombres = Idioma.allCases.flatMap { [$0.codigo] + $0.nombres }
+            return LineaDeComandos.propuesta(para: idioma, entre: nombres)
+        case .escrituraNoValida(let escritura):
+            return LineaDeComandos.propuesta(para: escritura, entre: LineaDeComandos.nombresDeLasEscrituras)
         default:
             return nil
         }
@@ -313,6 +320,12 @@ enum ErrorDeUso {
         case .tipoDePartituraDesconocido(let tipo):
             return TextosDeCLI.traduccion { $0.tipoDePartituraDesconocido(tipo) }
         case .faltaLoQueSeGraba: return TextosDeCLI.traduccion(\.faltaLoQueSeGraba)
+        case .grabarUnaPartitura(let orden):
+            let ejemplo = LineaDeComandos.ejemplo(
+                "armonia grabar melodia Do4:4 Re4:4 > melodia.pdf", "armonia engrave melody C4:4 D4:4 > melody.pdf")
+            return Traduccion(cadaIdioma: { notacion in
+                TextosDeCLI.en(notacion) { $0.grabarUnaPartitura(orden, ejemplo.en(notacion)) }
+            })
         case .motorDesconocido(let motor): return TextosDeCLI.traduccion { $0.motorDesconocido(motor) }
         case .formatoDeGrabadoDesconocido(let formato):
             return TextosDeCLI.traduccion { $0.formatoDeGrabadoDesconocido(formato) }

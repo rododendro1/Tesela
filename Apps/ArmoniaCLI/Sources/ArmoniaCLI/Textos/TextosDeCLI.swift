@@ -323,6 +323,10 @@ struct TextosDeCLI: TextosTraducidos {
     let pruebaLaAyudaDe: @Sendable (String) -> String
     /// Una orden que da un fichero binario con la salida en la terminal.
     let salidaBinaria: String
+    /// `escalas` con unas notas, que no son el nombre de ninguna escala: cómo buscarla por sus notas (el ejemplo).
+    let escalasPorNotas: @Sendable (String) -> String
+    /// `grabar midi …` (o musicxml, mei…): esa orden ya escribe la partitura; el ejemplo, cómo grabarla.
+    let grabarUnaPartitura: @Sendable (String, String) -> String
 
     /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.

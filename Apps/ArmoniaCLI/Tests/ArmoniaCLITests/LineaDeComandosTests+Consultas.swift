@@ -190,8 +190,12 @@ extension LineaDeComandosTests {
         #expect(hicaz.contains("Hicaz makamı") && hicaz.contains("Hicazkâr makamı"), Comment(rawValue: hicaz))
         #expect(!hicaz.contains("Bayātī"))
         #expect(salida("escalas bayati").contains("Bayātī"))
-        #expect(salida("escalas zzz") == "no hay ninguna escala así\n")
-        #expect(salida("escalas --tradicion india --categoria maqam") == "no hay ninguna escala así\n")
+        // Sin ninguna, un error de código 1, como lo que no se lee.
+        #expect(resultado("escalas", "zzz").error == "armonia: no hay ninguna escala así\n")
+        #expect(resultado("escalas", "zzz").codigo == 1)
+        #expect(
+            LineaDeComandos.ejecutar(["escalas", "--tradicion", "india", "--categoria", "maqam"]).error
+                == "armonia: no hay ninguna escala así\n")
         for orden in ["escalas --tradicion marte", "escalas --categoria foo", "escalas --tradicion", "escalas --foo"] {
             #expect(LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2)
         }
