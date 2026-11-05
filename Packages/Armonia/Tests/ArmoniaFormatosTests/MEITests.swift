@@ -162,7 +162,7 @@ import Testing
                 .buscar("scoreDef").first?.atributos["meter.count"] == "3+2+2")
         let escapado = leer(
             try Voz(leyendo: "Do4:1").partitura(
-                encabezado: Encabezado(titulo: "Do & Re <\"1\">", parte: "Flauta & voz")
+                encabezado: Encabezado(titulo: "Do & Re <\"1\">", nombreDeLaParte: "Flauta & voz")
             ).mei())
         #expect(escapado.buscar("title").first?.texto == "Do & Re <\"1\">")
         #expect(escapado.buscar("label").first?.texto == "Flauta & voz")

@@ -343,8 +343,8 @@ motor como Verovio.
 
 Alrededor de las notas se puede escribir lo que ayuda a estudiarlas:
 
-- **Cifrado de cada acorde.** Los `cifrados` de `Partitura(acordes:titulo:cifrados:)` van encima de la columna de
-  cada acorde (y, sin `titulo`, la partitura se titula con ellos, «Rem7 – Sol7 – Do7M», en la notación con que se
+- **Cifrado de cada acorde.** Los `cifrados` de `Partitura(acordes:titulo:porEvento:)` (uno por columna:
+  `.init(cifrados: .enOrden(progresion))`) van encima de la columna de cada acorde (y, sin `titulo`, la partitura se titula con ellos, «Rem7 – Sol7 – Do7M», en la notación con que se
   dibuja o se exporta); los `cifrados` de una ``Partitura/Linea``, encima de la nota en que empieza cada acorde;
   `Arpegio.svgPentagrama(cifrado: true)`, encima de la primera nota.
 - **Intervalos** (`marcas.intervalosDeLasNotas`). Debajo de cada nota, su intervalo desde la tónica de la escala o desde la
@@ -361,11 +361,12 @@ Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<ti
 
 ### Para estudiar: grados, dedos, secuencias y tablatura
 
-- **Grados en números romanos.** Los `grados` de `Partitura(acordes:titulo:cifrados:grados:)` y los de una
+- **Grados en números romanos.** Los `grados` del `porEvento` de `Partitura(acordes:titulo:porEvento:)` y los de una
   ``Partitura/Linea`` (o su `analisis`) escriben debajo de cada acorde su grado (los de
   `AnalisisArmonico.cifrados`), y su `bajoCifrado`, las cifras del bajo continuo.
 - **Dedos.** `Escala.svgPentagrama(digitacion:)` pone encima los dedos del piano de `digitacionDePiano(_:)`, y el
-  parámetro `digitos` de los demás dibujos (y los de una ``Partitura/Linea``), los que se le den (los de la guitarra, por ejemplo).
+  `dedos` del `porEvento` de los demás dibujos (y los de una ``Partitura/Linea``), los que se le den (los de la
+  guitarra, por ejemplo).
 - **Secuencias con ritmo.** `Escala.svgPentagrama(secuencia:)` toca la escala por terceras o en grupos, cada grupo en
   un pulso: corcheas, tresillos o semicorcheas.
 - **Tablatura.** Una ``Tablatura`` (la cuerda y el traste de cada nota) va debajo del pentagrama, alineada nota a
@@ -381,10 +382,10 @@ Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<ti
 - **Ritmo.** Las escalas, los arpegios y las posiciones del mástil van en redondas y sin ritmo; con
   `ritmo: .figura(.corchea)` (``Partitura/Ritmo``), en corcheas, con la última nota en negra.
 - **Nota a nota.** Lo que dan las escalas, los arpegios y el mástil va por el índice de cada nota; una
-  ``Partitura/Linea`` lo guarda por el punto en que empieza cada evento. ``Partitura/AnotacionesPorNota``, con
-  `Partitura.Linea(_:porNota:)` y `linea.porNota`, pasa de una forma a la otra. `Partitura(acordes:porNota:)`,
-  `partitura(tocadaEn:porNota:)` y `partitura(arpegiadoEn:porNota:)` la toman entera, con lo que sus atajos
-  (`cifrados:`, `grados:`, `digitos:`) no tienen: el análisis, los marcadores, los grados de una escala.
+  ``Partitura/Linea`` lo guarda por el punto en que empieza cada evento. ``Partitura/AnotacionesPorEvento``, con
+  `Partitura.Linea(_:porEvento:)` y `linea.porEvento`, pasa de una forma a la otra. `Partitura(acordes:porEvento:)`,
+  `partitura(tocadaEn:porEvento:)` y `partitura(arpegiadoEn:porEvento:)` la toman entera: los cifrados, el análisis, los
+  marcadores, los grados, el bajo cifrado, los dedos y las pulsaciones. `.enOrden(_:)` da una lista, uno por nota.
 - **Notación.** La de la partitura (``Partitura/notacion``) vale al exportarla y al dibujarla: `svg()` escribe en ella
   los cifrados, los nombres de las notas y el título, salvo que `OpcionesDePentagrama(notacion:)` fije otra.
 
@@ -392,7 +393,7 @@ Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<ti
 let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
 let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
 let grados = Tonalidad(.do).analizar(progresion).cifrados
-Partitura(acordes: voces, titulo: "ii–V–I", grados: grados).svg().contains(">V7</text>")   // true
+Partitura(acordes: voces, titulo: "ii–V–I", porEvento: .init(grados: .enOrden(grados))).svg().contains(">V7</text>")   // true
 Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>")   // true
 Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras")   // true
 ```

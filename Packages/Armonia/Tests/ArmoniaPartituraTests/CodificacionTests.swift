@@ -73,17 +73,19 @@ import Testing
         let analisis = Tonalidad(.do).analizar([Acorde("Do"), Acorde("Sol7")]).acordes
         let arriba = Partitura.Linea(
             soprano, nombre: "Soprano", plicaArriba: true, cifrados: [.cero: Acorde("Do"), .blanca: Acorde("Sol7")],
-            analisis: [.cero: analisis[0], .blanca: analisis[1]], digitos: [.cero: [5]])
+            analisis: [.cero: analisis[0], .blanca: analisis[1]], dedos: [.cero: [5]])
         let partitura = Partitura(
-            pentagramas: [.init(clave: .sol, voces: [arriba]), .init(clave: .fa, voces: [.init(bajo)], cuerdas: 6)],
+            pentagramas: [
+                .init(clave: .sol, voces: [arriba]), .init(clave: .fa, voces: [.init(bajo)], numeroDeCuerdas: 6),
+            ],
             encabezado: Encabezado(titulo: "Dos voces", tempo: Tempo(80)), tonalidadDelAnalisis: Tonalidad(.do),
             notacion: .inglesASCII.conTextos(en: .catalan), llave: true)
         #expect(try idaYVuelta(partitura) == partitura)
-        let tablatura = Tablatura(cuerdas: 6, notas: [0: [.init(cuerda: 1, traste: 3)]])
+        let tablatura = Tablatura(numeroDeCuerdas: 6, pulsaciones: [0: [.init(cuerda: 1, traste: 3)]])
         let acordes = Partitura(acordes: [[Altura("Do3"), Altura("Mi3")]], titulo: "Do", tablatura: tablatura)
         let leida = try idaYVuelta(acordes)
         #expect(leida == acordes)
-        #expect(!leida.ritmo)
+        #expect(!leida.dibujaElRitmo)
     }
 
     @Test func razonDeFrecuencias() throws {

@@ -262,7 +262,7 @@ final class LectorMusicXML: LectorDeElementosXML {
         case "octave" where padre == "pitch":
             nota.octava = numero
         case "staff" where padre == "note":
-            nota.pentagrama = numero.flatMap { (1...64).contains($0) ? $0 : nil }
+            nota.pentagrama = numero.flatMap { (1...64).contains($0) ? $0 - 1 : nil }
         case "voice" where padre == "note":
             nota.voz = numero.flatMap { (1...64).contains($0) ? $0 : nil }
         case "staves" where padre == "attributes":
@@ -350,7 +350,7 @@ final class LectorMusicXML: LectorDeElementosXML {
 
     private func colocarLaNota() {
         // Una nota de un pentagrama de tablatura, si la parte tiene otros: ya está en ellos.
-        if deTablatura.contains(nota.pentagrama ?? 1), deTablatura.count < pentagramas { nota.muda = true }
+        if deTablatura.contains((nota.pentagrama ?? 0) + 1), deTablatura.count < pentagramas { nota.muda = true }
         if nota.sinTiempo {
             // Una nota de adorno: empieza donde empezará la nota a la que adorna.
             if !nota.muda, let altura = alturaQueSuena() {

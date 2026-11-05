@@ -19,7 +19,7 @@ extension PiezaImportada {
         let compas = self.compas ?? .compasillo
         let partes = Set(notas.map(\.parte)).sorted()
         let pentagramas = partes.flatMap { parte -> [Partitura.Pentagrama] in
-            let porPentagrama = Dictionary(grouping: notas.filter { $0.parte == parte }) { $0.pentagrama ?? 1 }
+            let porPentagrama = Dictionary(grouping: notas.filter { $0.parte == parte }) { $0.pentagrama ?? 0 }
             return porPentagrama.keys.sorted().map { pentagrama in
                 Partitura.Pentagrama(
                     voces: PiezaImportada.voces(deUnPentagrama: porPentagrama[pentagrama] ?? [], compas: compas).map {

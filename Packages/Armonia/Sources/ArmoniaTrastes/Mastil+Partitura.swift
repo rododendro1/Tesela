@@ -9,12 +9,12 @@ extension Tablatura {
     /// con las cuerdas contadas como en el mástil (0 es la más grave), y la afinación y el capo del instrumento.
     ///
     ///     let doDe5 = PosicionEnElMastil(cuerda: 1, traste: 3)   // el Do3, en la 5.ª cuerda
-    ///     Tablatura(Mastil(.guitarra), posiciones: [0: [doDe5]]).notas[0]?.first?.cuerda   // 1
+    ///     Tablatura(Mastil(.guitarra), posiciones: [0: [doDe5]]).pulsaciones[0]?.first?.cuerda   // 1
     public init(_ mastil: Mastil, posiciones: [Int: [PosicionEnElMastil]]) {
         let encordado = mastil.encordado
         self.init(
-            cuerdas: encordado.numeroDeCuerdas,
-            notas: posiciones.mapValues { $0.map { Pulsacion(cuerda: $0.cuerda, traste: $0.traste) } },
+            numeroDeCuerdas: encordado.numeroDeCuerdas,
+            pulsaciones: posiciones.mapValues { $0.map { Pulsacion(cuerda: $0.cuerda, traste: $0.traste) } },
             afinacion: encordado.sinCapo.cuerdas, capo: encordado.capo > 0 ? encordado.capo : nil)
     }
 
@@ -51,16 +51,17 @@ extension Digitacion {
         for (i, digitacion) in digitaciones.enumerated() { posiciones[i] = digitacion.posiciones }
         let tablatura = digitaciones.first.map { Tablatura($0.mastil, posiciones: posiciones) }
         let cifrados = suyos.compactMap { $0 }
-        return Partitura(
-            acordes: columnas, titulo: titulo, cifrados: cifrados.count == suyos.count ? cifrados : [],
-            tablatura: tablatura)
+        // Los cifrados, solo si se saben todos.
+        let todos = cifrados.count == suyos.count
+        let porEvento = Partitura.AnotacionesPorEvento(cifrados: todos ? .enOrden(cifrados) : [:])
+        return Partitura(acordes: columnas, titulo: titulo, porEvento: porEvento, tablatura: tablatura)
     }
 }
 
 extension EscalaEnElMastil {
     /// La posición en una partitura: sus notas en el orden en que se tocan, con la tablatura debajo. Con la escala
     /// (`escala` o, si no se da, ``escala``), escritas con su ortografía y su armadura
-    /// (`Escala.partitura(tocadaEn:titulo:ritmo:porNota:tablatura:)`); sin ella, como las da el mástil. Con
+    /// (`Escala.partitura(tocadaEn:titulo:ritmo:porEvento:tablatura:)`); sin ella, como las da el mástil. Con
     /// `ritmo: .figura(…)`, con ritmo.
     ///
     ///     let posiciones = Mastil(.guitarra).posicionesCAGED(de: Escala("Sol mayor"))
@@ -79,39 +80,39 @@ extension EscalaEnElMastil {
 extension ArpegioEnElMastil {
     /// El arpegio en una partitura: sus notas en el orden en que se tocan, con los dedos (``dedos``) encima y la
     /// tablatura debajo. Con el acorde (`acorde` o, si no se da, ``acorde``), escritas con su ortografía y con el
-    /// cifrado encima (`Acorde.partitura(arpegiadoEn:titulo:ritmo:porNota:tablatura:)`); sin él, como las da el
+    /// cifrado encima (`Acorde.partitura(arpegiadoEn:titulo:ritmo:porEvento:tablatura:)`); sin él, como las da el
     /// mástil. Con `ritmo: .figura(…)`, con ritmo.
     public func partitura(
         de acorde: Acorde? = nil, titulo: String? = nil, ritmo: Partitura.Ritmo = .libre
     ) -> Partitura {
-        var porNota = Partitura.AnotacionesPorNota()
-        for (i, dedo) in dedos.enumerated() where dedo > 0 { porNota.digitos[i] = [dedo] }
+        var porEvento = Partitura.AnotacionesPorEvento()
+        for (i, dedo) in dedos.enumerated() where dedo > 0 { porEvento.dedos[i] = [dedo] }
         let tablatura = Tablatura(mastil, unaPorNota: posiciones)
         guard let acorde = acorde ?? self.acorde else {
             return Partitura.tocadaEnElMastil(
-                alturas, titulo: titulo, ritmo: ritmo, porNota: porNota, tablatura: tablatura)
+                alturas, titulo: titulo, ritmo: ritmo, porEvento: porEvento, tablatura: tablatura)
         }
         return acorde.partitura(
-            arpegiadoEn: alturas, titulo: titulo, ritmo: ritmo, porNota: porNota, tablatura: tablatura)
+            arpegiadoEn: alturas, titulo: titulo, ritmo: ritmo, porEvento: porEvento, tablatura: tablatura)
     }
 }
 
 extension Partitura {
     /// Unas alturas del mástil, una tras otra, sin escala ni acorde que las escriba: con lo que se anota en cada una y
-    /// la tablatura (sus pulsaciones, si `porNota` no trae las suyas).
+    /// la tablatura (sus pulsaciones, si `porEvento` no trae las suyas).
     fileprivate static func tocadaEnElMastil(
-        _ alturas: [Altura], titulo: String?, ritmo: Ritmo, porNota: AnotacionesPorNota = AnotacionesPorNota(),
+        _ alturas: [Altura], titulo: String?, ritmo: Ritmo, porEvento: AnotacionesPorEvento = AnotacionesPorEvento(),
         tablatura: Tablatura
     ) -> Partitura {
         let eventos = alturas.indices.map {
             Evento(alturas: [alturas[$0]], duracion: ritmo.duracion(de: $0, entre: alturas.count))
         }
         let voz = Voz(eventos)
-        var anotaciones = porNota
-        if anotaciones.pulsaciones.isEmpty { anotaciones.pulsaciones = tablatura.notas }
-        let linea = Linea(voz, porNota: anotaciones)
+        var anotaciones = porEvento
+        if anotaciones.pulsaciones.isEmpty { anotaciones.pulsaciones = tablatura.pulsaciones }
+        let linea = Linea(voz, porEvento: anotaciones)
         return Partitura(
             pentagramas: [Pentagrama(voces: [linea], tablatura: tablatura)], encabezado: Encabezado(titulo: titulo),
-            ritmo: ritmo != .libre)
+            dibujaElRitmo: ritmo != .libre)
     }
 }

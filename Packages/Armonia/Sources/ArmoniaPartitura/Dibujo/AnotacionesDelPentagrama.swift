@@ -11,7 +11,7 @@ extension Voz {
         var acordes: [Int: Acorde] = [:]
         var grados: [Int: String] = [:]
         var bajoCifrado: [Int: [String]] = [:]
-        var digitos: [Int: [Int]] = [:]
+        var dedos: [Int: [Int]] = [:]
         var tablatura: Tablatura?
         var microtonos: [Int: [PentagramaSVG.Microtono?]]?
         /// El acorde que suena al empezar, si no hay ninguno en el primer evento (en una línea de una voz larga).
@@ -29,9 +29,11 @@ extension Voz {
             }
             var resultado = AnotacionesDelPentagrama(
                 acordes: mover(acordes), grados: mover(grados), bajoCifrado: mover(bajoCifrado),
-                digitos: mover(digitos),
+                dedos: mover(dedos),
                 tablatura: tablatura.map {
-                    Tablatura(cuerdas: $0.cuerdas, notas: mover($0.notas), afinacion: $0.afinacion, capo: $0.capo)
+                    Tablatura(
+                        numeroDeCuerdas: $0.numeroDeCuerdas, pulsaciones: mover($0.pulsaciones),
+                        afinacion: $0.afinacion, capo: $0.capo)
                 },
                 microtonos: microtonos)
             resultado.acordeVigente = acordeVigente

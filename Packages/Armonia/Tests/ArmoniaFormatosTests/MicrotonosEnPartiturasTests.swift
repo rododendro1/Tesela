@@ -399,7 +399,7 @@ import Testing
         #expect(conRitmo.contains(GlifosSMuFL.koron.trazado))
         // Una partitura sin ritmo dibuja los microtonos de sus notas, también los escritos a mano.
         let aMano = Partitura(
-            pentagramas: [.init(voces: [.init(Voz([Evento("Mi♭4", .redonda, desvio: 50)]))])], ritmo: false)
+            pentagramas: [.init(voces: [.init(Voz([Evento("Mi♭4", .redonda, desvio: 50)]))])], dibujaElRitmo: false)
         #expect(aMano.svg().contains(GlifosSMuFL.medioBemol.trazado))
     }
 

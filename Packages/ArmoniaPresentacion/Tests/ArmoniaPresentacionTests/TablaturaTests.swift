@@ -31,7 +31,7 @@ import Testing
         #expect(pieza.notas.prefix(5).map(\.altura.midi) == [50, 54, 57, 62, 66])
         // Las de la tablatura no se leen otra vez.
         #expect(pieza.notas.count == formas.map { $0.trastes.compactMap { $0 }.count }.reduce(0, +))
-        #expect(pieza.notas.allSatisfy { $0.pentagrama == 1 })
+        #expect(pieza.notas.allSatisfy { $0.pentagrama == 0 })
         #expect(Set(pieza.notas.map(\.duracion)) == [.redonda])
     }
 
@@ -50,14 +50,6 @@ import Testing
         let compases = (posicion.posiciones.count + 7) / 8
         #expect((xml.components(separatedBy: "<measure ").count - 1) == compases)
         #expect(xml.contains("<rest/>") == (posicion.posiciones.count % 8 != 0))
-    }
-
-    @Test func laOrtografiaEscrita() {
-        let siBemol = PresentacionDeTablatura.escrita(Altura(midi: 70), ortografia: [Nota.si.bemol])
-        #expect(siBemol.nota == Nota.si.bemol)
-        #expect(siBemol.midi == 70)
-        #expect(PresentacionDeTablatura.escrita(Altura(midi: 60), ortografia: [Nota.si.sostenido]).octava == 3)
-        #expect(PresentacionDeTablatura.escrita(Altura(midi: 60), ortografia: []).midi == 60)
     }
 
     @Test func unaEscalaEnElMastilYLasFiguras() throws {
@@ -79,7 +71,9 @@ import Testing
             let xml = PresentacionDeTablatura.musicXML(posicion: posicion, figura: figura, titulo: "Figuras")
             #expect(xml.contains("<type>\(tipo)</type>"), "\(figura)")
         }
-        #expect(PresentacionDeTablatura.ticks(.cuadrada) == 32)
+        // La fusa, como semicorchea: cuatro por negra.
+        let fusas = PresentacionDeTablatura.musicXML(posicion: posicion, figura: .fusa, titulo: "Fusas")
+        #expect(fusas.contains("<type>16th</type>") && !fusas.contains("<type>32nd</type>"))
         let arpegio = try #require(mastil.arpegios(de: Acorde("Do")).first)
         let sinAcorde = PresentacionDeTablatura.musicXML(arpegio: arpegio, figura: .negra, titulo: "Do")
         #expect(sinAcorde.contains("<type>quarter</type>"))

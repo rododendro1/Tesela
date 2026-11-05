@@ -36,34 +36,36 @@ extension Partitura {
             suyas.maquetacion.clave = delInstrumento
         }
         let primera = pentagrama.voces[0]
-        let porNota = primera.porNota
-        let acordes = porNota.cifrados
+        let porEvento = primera.porEvento
+        let acordes = porEvento.cifrados
         if pentagrama.voces.count > 1 {
             return primera.voz.svgPentagrama(
                 junto: pentagrama.voces[1].voz, titulo: titulo, acordes: acordes, opciones: suyas)
         }
-        var grados = porNota.analisis.mapValues(\.cifrado)
-        grados.merge(porNota.grados) { _, propio in propio }
-        let tablatura = pentagrama.cuerdas.map {
-            Tablatura(cuerdas: $0, notas: porNota.pulsaciones, afinacion: pentagrama.afinacion, capo: pentagrama.capo)
+        var grados = porEvento.analisis.mapValues(\.cifrado)
+        grados.merge(porEvento.grados) { _, propio in propio }
+        let tablatura = pentagrama.numeroDeCuerdas.map {
+            Tablatura(
+                numeroDeCuerdas: $0, pulsaciones: porEvento.pulsaciones, afinacion: pentagrama.afinacion,
+                capo: pentagrama.capo)
         }
         let armadura = pentagrama.armadura.map { suyas.armadura.notas(propia: $0) }
-        if !ritmo {
+        if !dibujaElRitmo {
             return columnas(
                 primera.voz, titulo: titulo, acordes: acordes, grados: grados,
-                bajoCifrado: porNota.bajoCifrado, digitos: porNota.digitos, tablatura: tablatura,
+                bajoCifrado: porEvento.bajoCifrado, dedos: porEvento.dedos, tablatura: tablatura,
                 tonica: primera.tonica, armadura: armadura ?? suyas.armadura.notas(), opciones: suyas)
         }
         return primera.voz.svgPentagrama(
-            titulo: titulo, acordes: acordes, grados: grados, bajoCifrado: porNota.bajoCifrado,
-            digitos: porNota.digitos, tablatura: tablatura, tonica: primera.tonica, armadura: armadura,
+            titulo: titulo, acordes: acordes, grados: grados, bajoCifrado: porEvento.bajoCifrado,
+            dedos: porEvento.dedos, tablatura: tablatura, tonica: primera.tonica, armadura: armadura,
             opciones: suyas)
     }
 
     /// La voz sin ritmo: cada evento en su columna, con sus microtonos y lo que se anota en ella.
     private func columnas(
         _ voz: Voz, titulo: String, acordes: [Int: Acorde], grados: [Int: String], bajoCifrado: [Int: [String]],
-        digitos: [Int: [Int]], tablatura: Tablatura?, tonica: Nota?, armadura: [Nota], opciones: OpcionesDePentagrama
+        dedos: [Int: [Int]], tablatura: Tablatura?, tonica: Nota?, armadura: [Nota], opciones: OpcionesDePentagrama
     ) -> String {
         var cifrados: [Int: String] = [:]
         var referencias: [Int: PentagramaSVG.Referencia] = [:]
@@ -77,7 +79,7 @@ extension Partitura {
             opciones: opciones, cifrados: cifrados, referencias: referencias)
         dibujo.grados = grados
         dibujo.bajosCifrados = bajoCifrado
-        dibujo.digitos = digitos
+        dibujo.dedos = dedos
         dibujo.tablatura = tablatura
         dibujo.microtonos = voz.eventos.map { evento in
             evento.notas.map { PentagramaSVG.Microtono.de($0, notacion: opciones.notacion) }

@@ -50,21 +50,21 @@
 ### Los acordes que se comparan, también en una `Partitura`
 
 - **Cambio incompatible:** `DisposicionDeAcorde.svgPentagrama(_:titulo:cifrados:grados:bajoCifrado:digitos:tablatura:opciones:)`
-  ya no existe. En su lugar, `Partitura(acordes:titulo:cifrados:grados:bajoCifrado:digitos:tablatura:)` hace la
-  partitura de esos acordes, una redonda por columna, y `svg(opciones:)` la dibuja igual que antes. Donde se
-  escribía `DisposicionDeAcorde.svgPentagrama(voces, titulo: "ii–V–I", cifrados: progresion, opciones: opciones)`,
-  ahora `Partitura(acordes: voces, titulo: "ii–V–I", cifrados: progresion).svg(opciones: opciones)`. Así lo que se
-  anota en un pentagrama (cifrados, grados, bajo cifrado, dedos y tablatura) pasa siempre por una `Partitura`, y la
+  ya no existe. En su lugar, `Partitura(acordes:titulo:porEvento:tablatura:)` hace la partitura de esos acordes, una
+  redonda por columna, y `svg(opciones:)` la dibuja igual que antes. Donde se escribía
+  `DisposicionDeAcorde.svgPentagrama(voces, titulo: "ii–V–I", cifrados: progresion, opciones: opciones)`, ahora
+  `Partitura(acordes: voces, titulo: "ii–V–I", porEvento: .init(cifrados: .enOrden(progresion))).svg(opciones: opciones)`.
+  Así lo que se anota en un pentagrama (cifrados, grados, bajo cifrado, dedos y tablatura) pasa siempre por una `Partitura`, y la
   misma progresión se escribe también en MusicXML, MEI, LilyPond, ABC o MIDI.
-- `Partitura.ritmo` (nuevo, `true` por omisión): con `false`, un pentagrama de una voz se dibuja con cada evento en
+- `Partitura.dibujaElRitmo` (nuevo, `true` por omisión): con `false`, un pentagrama de una voz se dibuja con cada evento en
   su columna, sin plicas, cifra de compás ni barras. Es lo que pone `Partitura(acordes:…)`.
 - `escala.svgPentagrama()`, `acorde.svgPentagrama()` y `arpegio.svgPentagrama()` siguen: son los dibujos de una
   escala, un acorde o un arpegio solos.
 
 ### Lo que se toca en el mástil, también en una `Partitura`
 
-- `Escala.partitura(tocadaEn:titulo:ritmo:digitos:tablatura:)` y
-  `Acorde.partitura(arpegiadoEn:titulo:ritmo:digitos:tablatura:)` (nuevos) hacen la partitura de unas alturas
+- `Escala.partitura(tocadaEn:titulo:ritmo:porEvento:tablatura:)` y
+  `Acorde.partitura(arpegiadoEn:titulo:ritmo:porEvento:tablatura:)` (nuevos) hacen la partitura de unas alturas
   tocadas, que se puede escribir en MusicXML, MIDI y los demás formatos. `svgPentagrama(tocadaEn:)` y
   `svgPentagrama(arpegiadoEn:)` la dibujan como antes. Las escalas microtonales siguen con su propio dibujo, que
   lleva el signo de cada nota de su sistema.
@@ -116,7 +116,7 @@
 - `Escala.partitura(tocadaEn:)` también sirve para las escalas microtonales: sus notas llevan su microtono y su
   sistema, y `svgPentagrama(tocadaEn:)` y `svgPentagrama(secuencia:)` dibujan esa partitura en todas las escalas, sin
   un camino aparte para las microtonales.
-- Una `Partitura` sin ritmo (`ritmo: false`) dibuja los microtonos de sus notas, que antes se quedaban sin signo.
+- Una `Partitura` sin ritmo (`dibujaElRitmo: false`) dibuja los microtonos de sus notas, que antes se quedaban sin signo.
 
 ### Una sola notación por partitura, y títulos que la siguen
 
@@ -170,7 +170,7 @@
 
 ### Título opcional en las progresiones
 
-- `Partitura(acordes:titulo:cifrados:…)` ya no pide el título: sin él, la partitura se titula con sus cifrados
+- `Partitura(acordes:titulo:porEvento:tablatura:)` ya no pide el título: sin él, la partitura se titula con sus cifrados
   (`Encabezado.Tema.progresion`), en la notación con que se dibuja o se exporta.
 
 ### El título y el tamaño del pentagrama, como en los diagramas
@@ -249,17 +249,17 @@
   `Arpegio.partitura(octava:)`, `Acorde.partitura(arpegiadoEn:…)`, `svgPentagrama(arpegiadoEn:…)` y las partituras
   del mástil.
 
-### Lo que se anota, nota a nota
+### Lo que se anota, evento a evento
 
-- `Partitura.AnotacionesPorNota` (nuevo): los cifrados, el análisis, los marcadores, los grados, el bajo cifrado, los
+- `Partitura.AnotacionesPorEvento` (nuevo): los cifrados, el análisis, los marcadores, los grados, el bajo cifrado, los
   dedos y las pulsaciones por el índice de cada nota, la forma en que los dan las escalas, los arpegios y el mástil.
-  `Partitura.Linea(_:porNota:nombre:plicaArriba:tonica:)` los lleva a los inicios con que los guarda la línea, y
-  `Linea.porNota` los devuelve; `Voz.porEvento(_:)` (nuevo) es lo contrario de `porInicio(_:)`. Las partituras de
+  `Partitura.Linea(_:porEvento:nombre:plicaArriba:tonica:)` los lleva a los inicios con que los guarda la línea, y
+  `Linea.porEvento` los devuelve; `Voz.porEvento(_:)` (nuevo) es lo contrario de `porInicio(_:)`. Las partituras de
   acordes, de escalas y de arpegios, y su dibujo, pasan por aquí, en lugar de cada una con su conversión.
 
 ### La tablatura, también en MusicXML
 
-- `Partitura.musicXML()` escribe la tablatura de un pentagrama con `cuerdas` en un pentagrama de tablatura de la misma
+- `Partitura.musicXML()` escribe la tablatura de un pentagrama con `numeroDeCuerdas` en un pentagrama de tablatura de la misma
   parte, debajo de los demás: clave `TAB`, sus líneas, la afinación (`<staff-tuning>`), el capo y la cuerda y el
   traste de cada nota (`<technical>`). MEI, ABC, LilyPond, GUIDO y MIDI siguen sin ella.
 - `Tablatura.afinacion` y `Tablatura.capo`, y `Partitura.Pentagrama.afinacion` y `capo` (nuevos): cómo suena cada
@@ -274,20 +274,25 @@
   tablatura está entre el Si1 y el Do3, como en la guitarra; si no, `nil`. `claveEscrita` la usa si el pentagrama no
   lleva clave, en SVG y en MusicXML, así que las partituras del mástil llevan las notas como suenan y la clave las
   escribe una octava más aguda. El bajo eléctrico y el ukelele siguen con la que mejor va a sus notas.
-- **Cambio incompatible:** una partitura de la guitarra (las del mástil, o con `Pentagrama(cuerdas:afinacion:)`) se
+- **Cambio incompatible:** una partitura de la guitarra (las del mástil, o con `Pentagrama(numeroDeCuerdas:afinacion:)`) se
   escribe en clave de sol octava baja en lugar de la que mejor iba a sus notas. `armonia pentagrama … --tab` deja de
   subir las notas una octava para escribirlas en clave de sol.
 
-### Todo lo que se anota, en un solo `porNota`
+### Todo lo que se anota, en un solo `porEvento`
 
-- `Partitura(acordes:titulo:porNota:tablatura:)`, `Escala.partitura(tocadaEn:titulo:ritmo:porNota:tablatura:)`,
-  `Escala.svgPentagrama(tocadaEn:titulo:ritmo:porNota:tablatura:opciones:)`,
-  `Acorde.partitura(arpegiadoEn:titulo:ritmo:porNota:tablatura:)` y
-  `Acorde.svgPentagrama(arpegiadoEn:ritmo:porNota:tablatura:opciones:)` (nuevos): lo que se anota en cada nota en una
-  `Partitura.AnotacionesPorNota`, también lo que los atajos no tienen (el análisis, los marcadores, los grados de una
-  escala). Los atajos (`cifrados:`, `grados:`, `digitos:`) siguen y son lo mismo. Las pulsaciones son las de la
-  tablatura si `porNota` no trae las suyas, y el cifrado de un arpegio va en su primera nota si `porNota` no le da otro.
-  Las partituras del mástil pasan por aquí.
+- **Cambio incompatible:** `Partitura(acordes:titulo:porEvento:tablatura:)`,
+  `Escala.partitura(tocadaEn:titulo:ritmo:porEvento:tablatura:)`,
+  `Escala.svgPentagrama(tocadaEn:titulo:ritmo:porEvento:tablatura:opciones:)`,
+  `Acorde.partitura(arpegiadoEn:titulo:ritmo:porEvento:tablatura:)` y
+  `Acorde.svgPentagrama(arpegiadoEn:ritmo:porEvento:tablatura:opciones:)` toman todo lo que se anota en cada nota en
+  una `Partitura.AnotacionesPorEvento`, también el análisis y los marcadores, en lugar de los parámetros sueltos
+  `cifrados:`, `grados:`, `bajoCifrado:` y `digitos:`, que ya no existen. Donde se escribía
+  `Partitura(acordes: voces, cifrados: progresion, grados: grados)`, ahora
+  `Partitura(acordes: voces, porEvento: .init(cifrados: .enOrden(progresion), grados: .enOrden(grados)))`; donde
+  `partitura(tocadaEn: alturas, digitos: dedos)`, `partitura(tocadaEn: alturas, porEvento: .init(dedos: dedos))`.
+- `Dictionary.enOrden(_:)` (nuevo, con claves `Int`): una lista, uno por nota (o columna) en orden.
+- Las pulsaciones son las de la tablatura si `porEvento` no trae las suyas, y el cifrado de un arpegio va en su primera
+  nota si `porEvento` no le da otro. Las partituras del mástil pasan por aquí.
 
 ### La ortografía de unas alturas, pública
 
@@ -297,13 +302,29 @@
 
 ### La importación respeta las voces y los pentagramas del fichero
 
-- `NotaDeLaPieza.pentagrama` y `NotaDeLaPieza.voz` (nuevos): el pentagrama de la parte (`<staff>` en MusicXML) y la
+- `NotaDeLaPieza.pentagrama` y `NotaDeLaPieza.voz` (nuevos): el pentagrama de la parte, desde 0 (`<staff>1</staff>`
+  en MusicXML es el 0), y la
   voz (`<voice>` en MusicXML, `<layer n>` en MEI), si el fichero los dice. MIDI y ABC no los dicen.
 - `PiezaImportada.partitura()` hace un pentagrama por cada pentagrama de la parte (el piano vuelve en dos, cada uno
   con su clave) y, si todas las notas de un pentagrama dicen su voz, una voz de la partitura por cada voz del fichero.
   Sin ellas, como antes: lo que se solapa va en otra voz.
 - **Cambio incompatible:** las notas leídas de MusicXML y de MEI son distintas (`==`) de las mismas hechas a mano sin
   `voz` ni `pentagrama`.
+
+### Nombres más claros en la partitura
+
+- **Cambio incompatible:** algunos nombres de la partitura dicen mejor lo que son. Donde se escribía lo de la
+  izquierda, ahora lo de la derecha:
+  - `Partitura.Pentagrama.cuerdas` y `Pentagrama(clave:voces:cuerdas:)`: `numeroDeCuerdas` y
+    `Pentagrama(clave:voces:numeroDeCuerdas:)`; `Partitura(_:clave:cuerdas:encabezado:)`:
+    `Partitura(_:clave:numeroDeCuerdas:encabezado:)`.
+  - `Tablatura(cuerdas:notas:afinacion:capo:)`, `Tablatura.cuerdas` y `Tablatura.notas`:
+    `Tablatura(numeroDeCuerdas:pulsaciones:afinacion:capo:)`, `numeroDeCuerdas` y `pulsaciones`.
+  - `Partitura.Linea.digitos` (y la etiqueta `digitos:` de sus inicializadores): `dedos`.
+  - `Encabezado.parte` y `Partitura.parte`: `nombreDeLaParte`.
+- **Cambio incompatible:** `Partitura.lineas` cuenta los pentagramas desde 0 (el de arriba), como
+  `Partitura.pentagramas` y `NotaDeLaPieza.pentagrama`; antes, desde 1. `partitura.pentagramas[linea.pentagrama]` es
+  el suyo.
 
 ## 0.3.4 (2026-11-04)
 

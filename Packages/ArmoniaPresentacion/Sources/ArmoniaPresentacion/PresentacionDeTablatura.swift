@@ -13,9 +13,6 @@ import Armonia
 /// sol octava baja en la guitarra) y debajo el de tablatura. Los trastes se cuentan desde el capo, como en el mástil
 /// (`Encordado.conCapo(_:)`); las cuerdas se numeran como en MusicXML, desde la más aguda.
 public enum PresentacionDeTablatura {
-    /// Las divisiones de la negra: la semicorchea es la nota más corta que se escribe.
-    static let divisiones = 4
-
     /// Un acorde por compás, en redondas: cada digitación con todas sus cuerdas a la vez. Si se dan los acordes
     /// (uno por digitación), las notas se escriben con su ortografía (Si♭, no La♯) y los cifrados encima.
     public static func musicXML(
@@ -31,15 +28,14 @@ public enum PresentacionDeTablatura {
             digitaciones.map { Digitacion(mastil: $0.mastil, trastes: $0.trastes) }, acordes: [], titulo: titulo)
         // Los cifrados que se dan, y la ortografía de cada uno; las digitaciones sin acorde, como salen.
         var linea = partitura.pentagramas[0].voces[0]
-        var porNota = linea.porNota
+        var porEvento = linea.porEvento
         var eventos = linea.voz.eventos
         for (i, acorde) in acordes.enumerated() {
             guard let acorde, eventos.indices.contains(i) else { continue }
-            porNota.cifrados[i] = acorde
-            eventos[i] = Evento(
-                alturas: eventos[i].alturas.map { escrita($0, ortografia: acorde.notas) }, duracion: .redonda)
+            porEvento.cifrados[i] = acorde
+            eventos[i] = Evento(alturas: Altura.reescritas(eventos[i].alturas, con: acorde.notas), duracion: .redonda)
         }
-        linea = Partitura.Linea(Voz(eventos), porNota: porNota)
+        linea = Partitura.Linea(Voz(eventos), porEvento: porEvento)
         partitura.pentagramas[0].voces = [linea]
         return documento(partitura, mastil: mastil, titulo: titulo, notacion: notacion)
     }
@@ -71,18 +67,18 @@ public enum PresentacionDeTablatura {
         posiciones: [PosicionEnElMastil], en mastil: Mastil, ortografia: [Nota], figura: Figura, titulo: String,
         notacion: Notacion
     ) -> String {
-        // Una figura más larga que la redonda no cabe en un compás de 4/4.
-        let figura = figura == .cuadrada ? .redonda : figura
-        let duracion = Duracion(ticks(figura), 4 * divisiones)
-        var eventos = posiciones.map {
-            Evento(alturas: [escrita(mastil.altura(en: $0), ortografia: ortografia)], duracion: duracion)
-        }
-        let resto = (ticks(.redonda) - (posiciones.count * ticks(figura)) % ticks(.redonda)) % ticks(.redonda)
-        if resto > 0 { eventos.append(.silencio(Duracion(resto, 4 * divisiones))) }
+        // De la redonda (una figura más larga no cabe en un compás de 4/4) a la semicorchea.
+        let duracion = min(max(figura.duracion, .semicorchea), .redonda)
+        let alturas = Altura.reescritas(posiciones.map { mastil.altura(en: $0) }, con: ortografia)
+        var eventos = alturas.map { Evento(alturas: [$0], duracion: duracion) }
+        // Las que caben en un compás: la duración es 1/n de redonda.
+        let porCompas = duracion.denominador / duracion.numerador
+        let faltan = (porCompas - posiciones.count % porCompas) % porCompas
+        if faltan > 0 { eventos.append(.silencio(duracion * faltan)) }
         if eventos.isEmpty { eventos = [.silencio(.redonda)] }
         let tablatura = Tablatura(
             mastil, posiciones: Dictionary(uniqueKeysWithValues: posiciones.enumerated().map { ($0, [$1]) }))
-        let linea = Partitura.Linea(Voz(eventos), porNota: .init(pulsaciones: tablatura.notas))
+        let linea = Partitura.Linea(Voz(eventos), porEvento: .init(pulsaciones: tablatura.pulsaciones))
         let partitura = Partitura(pentagramas: [.init(voces: [linea], tablatura: tablatura)])
         return documento(partitura, mastil: mastil, titulo: titulo, notacion: notacion)
     }
@@ -94,25 +90,8 @@ public enum PresentacionDeTablatura {
         _ partitura: Partitura, mastil: Mastil, titulo: String, notacion: Notacion
     ) -> String {
         var partitura = partitura
-        partitura.encabezado = Encabezado(titulo: titulo, parte: mastil.encordado.titulo(en: notacion))
+        partitura.encabezado = Encabezado(titulo: titulo, nombreDeLaParte: mastil.encordado.titulo(en: notacion))
         partitura.notacion = notacion
         return partitura.musicXML()
-    }
-
-    /// La altura escrita como la escribe el acorde o la escala, si tiene esa nota; si no, como sale
-    /// (`Altura.reescritas(_:con:)`).
-    static func escrita(_ altura: Altura, ortografia: [Nota]) -> Altura {
-        Altura.reescritas([altura], con: ortografia).first ?? altura
-    }
-
-    static func ticks(_ figura: Figura) -> Int {
-        switch figura {
-        case .cuadrada: return 8 * divisiones
-        case .redonda: return 4 * divisiones
-        case .blanca: return 2 * divisiones
-        case .negra: return divisiones
-        case .corchea: return divisiones / 2
-        default: return max(1, divisiones / 4)
-        }
     }
 }

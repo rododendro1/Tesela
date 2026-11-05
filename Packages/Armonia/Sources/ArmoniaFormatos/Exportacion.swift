@@ -353,26 +353,30 @@ extension EscritorDePartitura {
 extension Exportacion {
     /// La partitura en el formato de `Escritor`: cada pentagrama con su clave (la que pidan sus notas si no lleva
     /// ninguna), cada voz en el suyo con sus cifrados y su análisis, y la tonalidad del análisis debajo del último.
-    /// En MusicXML, la tablatura de un pentagrama con `cuerdas` va en un pentagrama de tablatura debajo de todos.
+    /// En MusicXML, la tablatura de un pentagrama con `numeroDeCuerdas` va en un pentagrama de tablatura debajo de todos.
     package static func documento<Escritor: EscritorDePartitura>(
         _: Escritor.Type, de partitura: Partitura
     ) -> String {
         let encabezado = partitura.encabezado
         var escritor = Escritor(
             compas: partitura.compas, anacrusa: partitura.anacrusa, tonalidad: encabezado.tonalidad,
-            tempo: encabezado.tempo, titulo: encabezado.titulo(en: partitura.notacion), parte: partitura.parte,
+            tempo: encabezado.tempo, titulo: encabezado.titulo(en: partitura.notacion),
+            parte: partitura.nombreDeLaParte,
             claves: partitura.pentagramas.map(\.claveEscrita))
         if let rotulo = partitura.tonalidadDelAnalisis {
             escritor.rotulo = (rotulo.nombre(en: partitura.notacion) + ":", partitura.pentagramas.count)
         }
+        // Los escritores cuentan los pentagramas desde 1, como `<staff>` en MusicXML.
         for (linea, pentagrama) in partitura.lineas.map({ ($0.linea, $0.pentagrama) }) {
             escritor.anadir(
-                linea.voz, pentagrama: pentagrama, plicaArriba: linea.plicaArriba, cifrados: linea.cifrados,
+                linea.voz, pentagrama: pentagrama + 1, plicaArriba: linea.plicaArriba, cifrados: linea.cifrados,
                 analisis: linea.analisis, notacion: partitura.notacion)
         }
         // La tablatura de cada pentagrama que la lleva, con lo que se pulsa en su primera voz.
         for pentagrama in partitura.pentagramas {
-            guard let cuerdas = pentagrama.cuerdas, cuerdas > 0, let primera = pentagrama.voces.first else { continue }
+            guard let cuerdas = pentagrama.numeroDeCuerdas, cuerdas > 0, let primera = pentagrama.voces.first else {
+                continue
+            }
             escritor.anadirTablatura(
                 primera.voz, pulsaciones: primera.pulsaciones, cuerdas: cuerdas, afinacion: pentagrama.afinacion,
                 capo: pentagrama.capo)

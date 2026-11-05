@@ -100,7 +100,7 @@ let mastil = Mastil(.guitarra, trastes: 15)
 let posicion = mastil.posicionesCAGED(de: Escala(.sol, .mayor))[0]
 posicion.escala == Escala(.sol, .mayor)                     // true
 let enCorcheas = posicion.partitura(ritmo: .figura(.corchea))
-enCorcheas.ritmo && enCorcheas.pentagramas[0].cuerdas == 6   // true
+enCorcheas.dibujaElRitmo && enCorcheas.pentagramas[0].numeroDeCuerdas == 6   // true
 let doMayor = mastil.digitaciones(de: Acorde("Do"))[0]
 doMayor.partitura().encabezado.tema == .progresion([Acorde("Do")])   // true
 doMayor.partitura().pentagramas[0].claveEscrita == .solOctavaBaja     // true

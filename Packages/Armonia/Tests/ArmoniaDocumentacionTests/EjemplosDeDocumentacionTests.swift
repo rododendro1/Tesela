@@ -900,30 +900,30 @@ import Hexagonos
     }
 
     @Test func notacionYPartitura16() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 392
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 393
         let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
         let grados = Tonalidad(.do).analizar(progresion).cifrados
-        comprobar(Partitura(acordes: voces, titulo: "ii–V–I", grados: grados).svg().contains(">V7</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 395)
-        comprobar(Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 396)
-        comprobar(Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 397)
+        comprobar(Partitura(acordes: voces, titulo: "ii–V–I", porEvento: .init(grados: .enOrden(grados))).svg().contains(">V7</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 396)
+        comprobar(Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 397)
+        comprobar(Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras"), #"true"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 398)
     }
 
     @Test func notacionYPartitura17() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 411
-        comprobar(Tonalidad(.do).cifrasDeBajo(de: Acorde("Sol7/Si")), #"["6", "5"]"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 411)
-        comprobar(Tonalidad(.la, .menor).cifrasDeBajo(de: Acorde("Mi")), #"["♯"]"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 412)
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 412
+        comprobar(Tonalidad(.do).cifrasDeBajo(de: Acorde("Sol7/Si")), #"["6", "5"]"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 412)
+        comprobar(Tonalidad(.la, .menor).cifrasDeBajo(de: Acorde("Mi")), #"["♯"]"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 413)
     }
 
     @Test func notacionYPartitura18() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 439
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, línea 440
         do {
             let acorde = try Acorde(leyendo: "Do7(b3)")
             print(acorde)
         } catch let error as ErrorDeLecturaDeTeoria {
             print(error)
-            comprobarIgual(error.motivo, .tensionNoValida("b3"), #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 446)
-            comprobar(error.posicion, #"4"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 447)
+            comprobarIgual(error.motivo, .tensionNoValida("b3"), #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 447)
+            comprobar(error.posicion, #"4"#, #"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 448)
             print(error.descripcion(en: .inglesASCII))
         }
         do { _ = try TipoDeAcorde(comprobandoPasosDeQuinta: [0, -3, 4]) } catch { print(error) }
@@ -1257,7 +1257,7 @@ import Hexagonos
         let posicion = mastil.posicionesCAGED(de: Escala(.sol, .mayor))[0]
         comprobar(posicion.escala == Escala(.sol, .mayor), #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 101)
         let enCorcheas = posicion.partitura(ritmo: .figura(.corchea))
-        comprobar(enCorcheas.ritmo && enCorcheas.pentagramas[0].cuerdas == 6, #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 103)
+        comprobar(enCorcheas.dibujaElRitmo && enCorcheas.pentagramas[0].numeroDeCuerdas == 6, #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 103)
         let doMayor = mastil.digitaciones(de: Acorde("Do"))[0]
         comprobar(doMayor.partitura().encabezado.tema == .progresion([Acorde("Do")]), #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 105)
         comprobar(doMayor.partitura().pentagramas[0].claveEscrita == .solOctavaBaja, #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 106)
