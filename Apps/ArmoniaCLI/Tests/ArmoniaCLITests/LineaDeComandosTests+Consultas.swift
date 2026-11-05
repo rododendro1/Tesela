@@ -236,7 +236,7 @@ extension LineaDeComandosTests {
         #expect(resultado("hoja").codigo == 2)
         #expect(resultado("hoja").error.contains("armonia hoja Re mayor"))
         // La de una progresión.
-        let progresion = salida("hoja --acordes Rem7 Sol7 Do7M --en Do")
+        let progresion = salida("hoja --acordes Rem7 Sol7 Do7M --en Do mayor")
         #expect(progresion.hasPrefix("<svg "), Comment(rawValue: String(progresion.prefix(200))))
         #expect(progresion.contains(">Rem7 – Sol7 – Do"))
         #expect(salida("sheet --chords Dm7 G7 Cmaj7 --ingles").contains(">Dm7 – G7 – C"))

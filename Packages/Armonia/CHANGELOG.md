@@ -4,8 +4,8 @@
 
 ### La hoja de estudio de una progresión
 
-- `armonia hoja --acordes Rem7 Sol7 Do7M --en Do` (`sheet --chords`) escribe la hoja de estudio de una progresión en
-  SVG: los acordes y su tonalidad, el pentagrama con una disposición de cada uno, el análisis (grado, función y
+- `armonia hoja --acordes Rem7 Sol7 Do7M --en Do mayor` (`sheet --chords`) escribe la hoja de estudio de una
+  progresión en SVG: los acordes y su tonalidad, el pentagrama con una disposición de cada uno, el análisis (grado, función y
   escala), las cadencias y las líneas de notas guía. `armonia grabar hoja --acordes …` la pasa a PDF.
 - `PresentacionDeAnalisis.hojaDeEstudio(_:disposicion:notacion:)`; en la app, la vista de análisis la exporta con la
   disposición elegida.
