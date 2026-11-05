@@ -18,7 +18,7 @@ struct VistaDeIdentificar: View {
     /// Las teclas pulsadas la última vez que cambiaron, para saber si se empieza otro acorde.
     @State private var pulsadasAntes: [Int] = []
 
-    private var mastil: Mastil { Mastil(encordado, trastes: 12) }
+    private var mastil: Mastil { Mastil(encordado, numeroDeTrastes: 12) }
 
     private var posiciones: [PosicionEnElMastil] {
         trastes.map { PosicionEnElMastil(cuerda: $0.key, traste: $0.value) }.sorted()

@@ -46,28 +46,28 @@ extension Partitura {
     }
 
     /// El ritmo de unas notas tocadas una tras otra (una escala, un arpegio, una posición del mástil): sin él, cada
-    /// nota en una redonda y sin ritmo en el dibujo (``Partitura/dibujaElRitmo``); con una figura, todas con ella y la última,
-    /// una negra si la figura es más corta.
+    /// nota en una redonda y sin ritmo en el dibujo (``Partitura/dibujaElRitmo``); uniforme, todas con la misma
+    /// duración y la última, una negra si esa duración es más corta.
     ///
-    ///     Escala(.re, .dorico).partitura(ritmo: .figura(.corchea))   // en corcheas
+    ///     Escala(.re, .dorico).partitura(ritmo: .uniforme(.corchea))   // en corcheas
     public enum Ritmo: Hashable, Sendable {
         /// Sin ritmo: cada nota en su columna, en una redonda.
         case libre
-        /// Todas las notas con esa figura, y la última, una negra si la figura es más corta.
-        case figura(Duracion)
+        /// Todas las notas con esa duración, y la última, una negra si la duración es más corta.
+        case uniforme(Duracion)
 
-        /// La figura, o `nil` sin ritmo.
-        public var figura: Duracion? {
-            guard case .figura(let figura) = self else { return nil }
-            return figura
+        /// La duración de todas las notas, o `nil` sin ritmo.
+        public var uniforme: Duracion? {
+            guard case .uniforme(let duracion) = self else { return nil }
+            return duracion
         }
 
-        /// La duración de la nota `i` (desde 0) de unas `total` tocadas una tras otra: una redonda sin ritmo; con una
-        /// figura, la figura, y una negra en la última si la figura es más corta.
+        /// La duración de la nota `i` (desde 0) de unas `total` tocadas una tras otra: una redonda sin ritmo; con un
+        /// ritmo uniforme, su duración, y una negra en la última si es más corta.
         public func duracion(de i: Int, entre total: Int) -> Duracion {
-            guard let figura else { return .redonda }
+            guard let uniforme else { return .redonda }
             let ultima = i == total - 1 && total > 1
-            return ultima && figura < .negra ? .negra : figura
+            return ultima && uniforme < .negra ? .negra : uniforme
         }
     }
 }

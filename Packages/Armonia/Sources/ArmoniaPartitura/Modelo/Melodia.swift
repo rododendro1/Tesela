@@ -189,7 +189,7 @@ public struct Voz: Hashable, Sendable, Codable {
     // MARK: Propiedades
 
     /// Duración total.
-    public var duracion: Duracion { eventos.map(\.duracion).sumar() }
+    public var duracion: Duracion { eventos.map(\.duracion).total }
 
     /// Duraciones de los eventos, en orden (silencios incluidos).
     public var ritmo: [Duracion] { eventos.map(\.duracion) }

@@ -7,7 +7,7 @@ import Testing
 /// Las tablaturas en MusicXML: cuerda y traste de cada nota, la afinación y el capo.
 @Suite struct TablaturaTests {
     @Test func lasDigitacionesConCapo() throws {
-        let mastil = Mastil(Encordado.guitarra.conCapo(2), trastes: 13)
+        let mastil = Mastil(Encordado.guitarra.conCapo(2), numeroDeTrastes: 13)
         let acordes = [Acorde("Re"), Acorde("La")]
         let formas = acordes.compactMap { mastil.digitaciones(de: $0, limite: 1).first }
         #expect(formas.count == 2)
@@ -36,7 +36,7 @@ import Testing
     }
 
     @Test func unArpegioEnElMastil() throws {
-        let mastil = Mastil(.guitarra, trastes: 12)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
         let acorde = Acorde("Sib")
         let posicion = try #require(mastil.arpegios(de: acorde).first)
         let xml = PresentacionDeTablatura.musicXML(arpegio: posicion, acorde: acorde, titulo: "Arpegio")
@@ -53,7 +53,7 @@ import Testing
     }
 
     @Test func unaEscalaEnElMastilYLasFiguras() throws {
-        let mastil = Mastil(.guitarra, trastes: 12)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
         let escala = Escala(.fa, .mayor)
         let posicion = try #require(mastil.posicionesCAGED(de: escala).first)
         let corcheas = PresentacionDeTablatura.musicXML(posicion: posicion, escala: escala, titulo: "Fa mayor")
@@ -86,8 +86,8 @@ import Testing
         #expect(vacia.contains("Do &amp; &lt;Re&gt; &quot;Mi&quot;"))
         // Una afinación con alteraciones (Fa♯ y Si♭) y una digitación sin cuerdas pisadas.
         let encordado = Encordado(
-            nombre: "rara", cuerdas: [Altura(Nota.fa.sostenido, octava: 2), Altura(Nota.si.bemol, octava: 2)])
-        let mastil = Mastil(encordado, trastes: 12)
+            nombre: "rara", afinacion: [Altura(Nota.fa.sostenido, octava: 2), Altura(Nota.si.bemol, octava: 2)])
+        let mastil = Mastil(encordado, numeroDeTrastes: 12)
         let muda = Digitacion(mastil: mastil, trastes: [nil, nil])
         let tocada = Digitacion(mastil: mastil, trastes: [0, 1])
         let xml = PresentacionDeTablatura.musicXML(digitaciones: [muda, tocada], titulo: "Rara")

@@ -23,7 +23,7 @@ let notas = primera?.notas(para: acorde)                 // escritas como el aco
 let dedos = primera?.dedos                               // cuántos dedos hacen falta, como mínimo
 let cejilla = primera?.cejilla                           // el traste de la cejilla, si la lleva
 
-let pentatonica = mastil.posiciones(de: Escala(.la, .pentatonicaMenor), trastes: 0...12)
+let pentatonica = mastil.posiciones(de: Escala(.la, .pentatonicaMenor), en: 0...12)
 ```
 
 Las digitaciones cumplen unas reglas de comodidad: una abertura de la mano de cuatro trastes como
@@ -46,19 +46,19 @@ Do.
 
 ## Arpegios en el mástil
 
-`Mastil/posiciones(de:trastes:)` da todas las posiciones de las notas de un acorde, y
+`Mastil/posiciones(de:en:)` da todas las posiciones de las notas de un acorde, y
 `Mastil/arpegios(de:ancho:)` el arpegio por posiciones: franjas de cuatro trastes (las que abarca la mano
 sin moverse) que empiezan un traste por debajo de la fundamental en una de las dos cuerdas más graves. Cada
 ``ArpegioEnElMastil`` trae sus notas de la más grave a la más aguda, el orden en que se tocan al subir, con
 los unísonos una sola vez; solo salen las franjas en las que están todas las notas del acorde.
 
 ```swift
-let mastil = Mastil(.guitarra, trastes: 12)
+let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
 let posiciones = mastil.arpegios(de: Acorde("Lam"))
 posiciones.count   // 3
-posiciones[0].trastes == 0...3                                      // true
+posiciones[0].rangoDeTrastes == 0...3                                      // true
 posiciones[0].alturas.map(\.midi) == [40, 45, 48, 52, 57, 60, 64]   // true
-let todas = mastil.posiciones(de: Acorde("Lam"), trastes: 0...5)
+let todas = mastil.posiciones(de: Acorde("Lam"), en: 0...5)
 ```
 
 ## Escalas por posiciones
@@ -72,14 +72,14 @@ cuerda a cuerda y, en CAGED, su forma. Las dos van de la posición más baja a l
 caben en el mástil.
 
 ```swift
-let mastil = Mastil(.guitarra, trastes: 15)
+let mastil = Mastil(.guitarra, numeroDeTrastes: 15)
 let porCuerda = mastil.posicionesPorCuerda(de: Escala(.sol, .mayor))
 porCuerda.count                     // 7
-porCuerda[0].trastes == 0...5       // true
+porCuerda[0].rangoDeTrastes == 0...5       // true
 porCuerda[0].posiciones.count       // 18
 let caged = mastil.posicionesCAGED(de: Escala(.do, .mayor))
 caged.map(\.forma) == [.c, .a, .g, .e, .d]                          // true
-caged.map(\.trastes) == [0...4, 2...6, 5...9, 7...11, 9...13]       // true
+caged.map(\.rangoDeTrastes) == [0...4, 2...6, 5...9, 7...11, 9...13]       // true
 ```
 
 Las de tres notas por cuerda necesitan cuerdas que vayan de grave a aguda (en un ukelele con el Sol agudo no
@@ -91,15 +91,15 @@ salen), y CAGED, la guitarra afinada como siempre. Desde la terminal: `armonia p
 Las posiciones, los arpegios y las digitaciones recuerdan la escala o el acorde de que salieron
 (`EscalaEnElMastil.escala`, `ArpegioEnElMastil.acorde`, `Digitacion.acorde`), y su `partitura()` los escribe con
 sus notas (Si♭, no La♯, en Do7, con `Altura.reescritas(_:con:)`) y con la tablatura debajo, contada como el mástil,
-con la afinación y el capo del instrumento. Con `ritmo: .figura(.corchea)`, con ritmo. Las notas son las que suenan:
+con la afinación y el capo del instrumento. Con `ritmo: .uniforme(.corchea)`, con ritmo. Las notas son las que suenan:
 la guitarra se escribe en clave de sol octava baja (``Partitura/Pentagrama/claveDelInstrumento``), una octava más
 aguda. En MusicXML, la tablatura va en su propio pentagrama, con la cuerda y el traste de cada nota.
 
 ```swift
-let mastil = Mastil(.guitarra, trastes: 15)
+let mastil = Mastil(.guitarra, numeroDeTrastes: 15)
 let posicion = mastil.posicionesCAGED(de: Escala(.sol, .mayor))[0]
 posicion.escala == Escala(.sol, .mayor)                     // true
-let enCorcheas = posicion.partitura(ritmo: .figura(.corchea))
+let enCorcheas = posicion.partitura(ritmo: .uniforme(.corchea))
 enCorcheas.dibujaElRitmo && enCorcheas.pentagramas[0].numeroDeCuerdas == 6   // true
 let doMayor = mastil.digitaciones(de: Acorde("Do"))[0]
 doMayor.partitura().encabezado.tema == .progresion([Acorde("Do")])   // true

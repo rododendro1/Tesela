@@ -19,7 +19,7 @@ extension LineaDeComandos {
         /// Los cifrados, tal como se han escrito.
         var acordes: [String]
 
-        var mastil: Mastil { Mastil(encordado.conCapo(capo), trastes: 24 - capo) }
+        var mastil: Mastil { Mastil(encordado.conCapo(capo), numeroDeTrastes: 24 - capo) }
 
         /// Las formas de un acorde, de la más cómoda a la menos, como mucho `limite`.
         func formas(de acorde: Acorde, limite: Int? = nil) -> [Digitacion] {
@@ -167,7 +167,7 @@ extension LineaDeComandos {
 
     /// La digitación con una línea por cuerda: la más aguda arriba, con su traste (o «x»).
     static func diagrama(de forma: Digitacion, _ notacion: Notacion) -> [String] {
-        let cuerdas = forma.mastil.encordado.cuerdas
+        let cuerdas = forma.mastil.encordado.afinacion
         let nombres = cuerdas.map { $0.nota.nombre(en: notacion) }
         let ancho = nombres.map(\.count).max() ?? 0
         return cuerdas.indices.reversed().map { i in
@@ -216,7 +216,7 @@ extension LineaDeComandos {
         if let desconocida = argumentos.opcionDesconocida {
             return uso(.opcionDesconocida(desconocida), notacion)
         }
-        let mastil = Mastil(encordado.conCapo(capo), trastes: 15)
+        let mastil = Mastil(encordado.conCapo(capo), numeroDeTrastes: 15)
         if arpegio {
             guard !argumentos.restantes.isEmpty else { return uso(.faltaCifradoDelArpegio, notacion) }
             let reparto: FormasDeArpegio = barrido ? .unaNotaPorCuerda : caged ? .caged : .porPosiciones
@@ -233,11 +233,11 @@ extension LineaDeComandos {
         let sistema = caged ? "CAGED" : notacion.texto { $0.notasPorCuerda(porCuerda) }
         var lineas = [escala.nombre(en: notacion) + " · " + sistema + instrumento(de: mastil, notacion)]
         let posiciones = caged ? mastil.posicionesCAGED(de: escala) : mastil.posicionesPorCuerda(de: escala)
-        let cuerdas = mastil.encordado.cuerdas
+        let cuerdas = mastil.encordado.afinacion
         let nombres = cuerdas.map { $0.nota.nombre(en: notacion) }
         let ancho = nombres.map(\.count).max() ?? 0
         for posicion in posiciones {
-            let franja = posicion.trastes
+            let franja = posicion.rangoDeTrastes
             let trastes = notacion.texto { $0.trastes(franja.lowerBound, franja.upperBound) }
             lineas.append("")
             let nombreDeLaForma =

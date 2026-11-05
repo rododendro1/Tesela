@@ -127,15 +127,15 @@ extension PresentacionDeEstudioDeEscala {
     /// Las cinco formas de una pentatónica en la guitarra, desde la tónica, cada una con las notas que comparte con
     /// la siguiente. Vacío si la escala no tiene cinco notas.
     public static func formasPentatonicas(
-        de escala: Escala, mastil: Mastil = Mastil(.guitarra, trastes: 15), notacion: Notacion
+        de escala: Escala, mastil: Mastil = Mastil(.guitarra, numeroDeTrastes: 15), notacion: Notacion
     ) -> [PosicionPresentada] {
         let formas = mastil.formasPentatonicas(de: escala)
         return formas.enumerated().map { i, forma in
             let siguiente = (i + 1) % formas.count
             let comunes = forma.notasComunes(con: formas[siguiente]).map {
-                "\(mastil.encordado.cuerdas.count - $0.cuerda):\($0.traste)"
+                "\(mastil.encordado.numeroDeCuerdas - $0.cuerda):\($0.traste)"
             }
-            let titulo = notacion.texto { $0.formaNumero(i + 1) } + " · " + rotulo(forma.trastes, notacion)
+            let titulo = notacion.texto { $0.formaNumero(i + 1) } + " · " + rotulo(forma.rangoDeTrastes, notacion)
             return presentar(
                 forma, notas: forma.posiciones, titulo: titulo, escala: escala,
                 comunes: notacion.texto { $0.comparteCon(siguiente + 1, comunes.joined(separator: " ")) },
@@ -147,14 +147,15 @@ extension PresentacionDeEstudioDeEscala {
     /// ella, con su tablatura.
     public static func secuenciaEnLasPosiciones(
         _ escala: Escala, _ secuencia: SecuenciaDeEscala, caged: Bool, sentido: SentidoDelIntervalo = .ascendente,
-        mastil: Mastil = Mastil(.guitarra, trastes: 15), notacion: Notacion
+        mastil: Mastil = Mastil(.guitarra, numeroDeTrastes: 15), notacion: Notacion
     ) -> [PosicionPresentada] {
         let posiciones = caged ? mastil.posicionesCAGED(de: escala) : mastil.posicionesPorCuerda(de: escala)
         return posiciones.map { posicion in
             let forma = posicion.forma.map { forma in notacion.texto { $0.forma(forma.rawValue) } + " · " } ?? ""
             return presentar(
                 posicion, notas: posicion.secuencia(secuencia, sentido: sentido),
-                titulo: forma + rotulo(posicion.trastes, notacion), escala: escala, comunes: "", notacion: notacion)
+                titulo: forma + rotulo(posicion.rangoDeTrastes, notacion), escala: escala, comunes: "",
+                notacion: notacion)
         }
     }
 
@@ -186,7 +187,7 @@ extension PresentacionDeEstudioDeEscala {
     public static func tablatura(
         _ notas: [PosicionEnElMastil], en mastil: Mastil, notacion: Notacion
     ) -> [String] {
-        let nombres = mastil.encordado.cuerdas.map { $0.nota.nombre(en: notacion) }
+        let nombres = mastil.encordado.afinacion.map { $0.nota.nombre(en: notacion) }
         let ancho = nombres.map(\.count).reduce(0, max)
         return nombres.indices.reversed().map { cuerda in
             let celdas = notas.map { nota -> String in

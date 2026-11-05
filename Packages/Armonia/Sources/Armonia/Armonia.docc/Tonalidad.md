@@ -105,7 +105,7 @@ Las funciones siguen los grados: I, iii y vi son de tónica; ii y IV, de subdomi
 vii°, de dominante. La alteración delante del numeral (♭VI) se mide respecto a la escala de
 la armadura, y en menor no se escribe para el 6.º y el 7.º elevados (vii°, no ♯vii°).
 
-`partitura(duracion:compas:encabezado:cifrados:analisis:notacion:)` pone el análisis en una
+`partitura(duracion:compas:encabezado:conCifrados:conAnalisis:notacion:)` pone el análisis en una
 partitura de dos pentagramas, que `musicXML()` escribe: los acordes en posición cerrada en clave de sol,
 con su cifrado americano encima (como símbolo de acorde, que el editor reconoce y puede
 transportar), y el bajo en clave de fa, con el cifrado romano y la función debajo:
@@ -238,7 +238,7 @@ Las faltas que encuentra (`FaltaDeConduccion.Tipo`):
 - **Fuera de tesitura**, a cuatro voces: bajo Mi2–Do4, tenor Do3–Sol4, contralto Sol3–Re5 y
   soprano Do4–Sol5.
 
-`partitura(duracion:compas:encabezado:cifrados:analisis:notacion:)` pone los acordes en una
+`partitura(duracion:compas:encabezado:conCifrados:conAnalisis:notacion:)` pone los acordes en una
 partitura de coral: soprano y contralto en clave de sol, tenor y bajo en clave de fa, cada voz con sus
 plicas. Todos los acordes duran lo mismo (negras si no se dice otra cosa) y el último se
 alarga hasta la barra:
@@ -249,21 +249,21 @@ let partitura = coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo
 partitura.contains("<staves>2</staves>")        // true
 ```
 
-Con `cifrados: true` cada acorde lleva su cifrado americano encima del soprano, y con
-`analisis: true`, el cifrado romano y la función debajo del bajo. Los acordes se identifican
+Con `conCifrados: true` cada acorde lleva su cifrado americano encima del soprano, y con
+`conAnalisis: true`, el cifrado romano y la función debajo del bajo. Los acordes se identifican
 por sus notas; los que no son de ningún tipo del catálogo (por una nota de paso, por ejemplo)
 se quedan sin cifrar:
 
 ```swift
 let cadencia = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-cadencia.partitura(cifrados: true, analisis: true).musicXML().contains("<text>V</text>")   // true
+cadencia.partitura(conCifrados: true, conAnalisis: true).musicXML().contains("<text>V</text>")   // true
 ```
 
 `mei()` da el mismo coral en MEI, con cada pareja de voces en dos capas del pentagrama:
 
 ```swift
 let cierre = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-cierre.partitura(cifrados: true, analisis: true).mei().contains("<syl>V</syl>")           // true
+cierre.partitura(conCifrados: true, conAnalisis: true).mei().contains("<syl>V</syl>")           // true
 ```
 
 ## Realización a cuatro voces

@@ -3,7 +3,7 @@ import ArmoniaTeoria
 
 /// Un sitio del mástil: una cuerda y un traste (0 = cuerda al aire).
 public struct PosicionEnElMastil: Hashable, Sendable, Comparable, CustomStringConvertible {
-    /// Índice de la cuerda en `Encordado.cuerdas`: 0 es la de arriba (el Mi grave de la guitarra, la 6.ª). El
+    /// Índice de la cuerda en `Encordado.afinacion`: 0 es la de arriba (el Mi grave de la guitarra, la 6.ª). El
     /// número tradicional, en el que la 1.ª es la de abajo, lo da `Encordado.numeroTradicional(deCuerda:)`.
     public let cuerda: Int
     public let traste: Int
@@ -31,22 +31,23 @@ public struct PosicionEnElMastil: Hashable, Sendable, Comparable, CustomStringCo
 public struct Mastil: Hashable, Sendable {
     public let encordado: Encordado
     /// Cuántos trastes tiene (sin contar la cuerda al aire).
-    public let trastes: Int
+    public let numeroDeTrastes: Int
 
-    /// - Parameter trastes: cuántos trastes tiene. Un número negativo se toma como 0 (solo cuerdas al aire).
-    public init(_ encordado: Encordado = .guitarra, trastes: Int = 24) {
+    /// - Parameter numeroDeTrastes: cuántos trastes tiene. Un número negativo se toma como 0 (solo cuerdas al
+    ///   aire).
+    public init(_ encordado: Encordado = .guitarra, numeroDeTrastes: Int = 24) {
         self.encordado = encordado
-        self.trastes = max(0, trastes)
+        self.numeroDeTrastes = max(0, numeroDeTrastes)
     }
 
     /// ¿Existe esta posición en el mástil?
     public func contiene(_ posicion: PosicionEnElMastil) -> Bool {
-        encordado.cuerdas.indices.contains(posicion.cuerda) && (0...trastes).contains(posicion.traste)
+        encordado.afinacion.indices.contains(posicion.cuerda) && (0...numeroDeTrastes).contains(posicion.traste)
     }
 
     /// Número MIDI de una posición, o `nil` si no está en el mástil.
     public func midiSiExiste(en posicion: PosicionEnElMastil) -> Int? {
-        contiene(posicion) ? encordado.cuerdas[posicion.cuerda].midi + posicion.traste : nil
+        contiene(posicion) ? encordado.afinacion[posicion.cuerda].midi + posicion.traste : nil
     }
 
     /// Número MIDI de una posición. Detiene el programa si la posición no está en el mástil (un error de
@@ -73,9 +74,11 @@ public struct Mastil: Hashable, Sendable {
     /// Todas las posiciones donde suena exactamente esa altura (misma octava).
     public func posiciones(de altura: Altura) -> [PosicionEnElMastil] {
         var resultado: [PosicionEnElMastil] = []
-        for (cuerda, alAire) in encordado.cuerdas.enumerated() {
+        for (cuerda, alAire) in encordado.afinacion.enumerated() {
             let traste = altura.midi - alAire.midi
-            if (0...trastes).contains(traste) { resultado.append(PosicionEnElMastil(cuerda: cuerda, traste: traste)) }
+            if (0...numeroDeTrastes).contains(traste) {
+                resultado.append(PosicionEnElMastil(cuerda: cuerda, traste: traste))
+            }
         }
         return resultado.sorted()
     }
@@ -87,7 +90,7 @@ public struct Mastil: Hashable, Sendable {
     }
 
     /// Las posiciones de todas las notas de una escala, en un rango de trastes si se indica.
-    public func posiciones(de escala: Escala, trastes rango: ClosedRange<Int>? = nil) -> [PosicionEnElMastil] {
+    public func posiciones(de escala: Escala, en rango: ClosedRange<Int>? = nil) -> [PosicionEnElMastil] {
         let todas = posiciones(deClases: Set(escala.notas.map(\.claseDeAltura)))
         guard let rango else { return todas }
         return todas.filter { rango.contains($0.traste) }
@@ -96,8 +99,8 @@ public struct Mastil: Hashable, Sendable {
     /// Las posiciones cuya clase de altura (0…11) está en el conjunto.
     public func posiciones(deClases clases: Set<Int>) -> [PosicionEnElMastil] {
         var resultado: [PosicionEnElMastil] = []
-        for (cuerda, alAire) in encordado.cuerdas.enumerated() {
-            for traste in 0...trastes where clases.contains(Mastil.clase(alAire.midi + traste)) {
+        for (cuerda, alAire) in encordado.afinacion.enumerated() {
+            for traste in 0...numeroDeTrastes where clases.contains(Mastil.clase(alAire.midi + traste)) {
                 resultado.append(PosicionEnElMastil(cuerda: cuerda, traste: traste))
             }
         }

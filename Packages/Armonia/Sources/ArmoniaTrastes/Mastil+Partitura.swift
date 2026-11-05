@@ -15,7 +15,7 @@ extension Tablatura {
         self.init(
             numeroDeCuerdas: encordado.numeroDeCuerdas,
             pulsaciones: posiciones.mapValues { $0.map { Pulsacion(cuerda: $0.cuerda, traste: $0.traste) } },
-            afinacion: encordado.sinCapo.cuerdas, capo: encordado.capo > 0 ? encordado.capo : nil)
+            afinacion: encordado.sinCapo.afinacion, capo: encordado.capo > 0 ? encordado.capo : nil)
     }
 
     /// Una nota por posición, en orden.
@@ -62,10 +62,10 @@ extension EscalaEnElMastil {
     /// La posición en una partitura: sus notas en el orden en que se tocan, con la tablatura debajo. Con la escala
     /// (`escala` o, si no se da, ``escala``), escritas con su ortografía y su armadura
     /// (`Escala.partitura(tocadaEn:titulo:ritmo:porEvento:tablatura:)`); sin ella, como las da el mástil. Con
-    /// `ritmo: .figura(…)`, con ritmo.
+    /// `ritmo: .uniforme(…)`, con ritmo.
     ///
     ///     let posiciones = Mastil(.guitarra).posicionesCAGED(de: Escala("Sol mayor"))
-    ///     posiciones[0].partitura(ritmo: .figura(.corchea)).musicXML()   // en ArmoniaFormatos
+    ///     posiciones[0].partitura(ritmo: .uniforme(.corchea)).musicXML()   // en ArmoniaFormatos
     public func partitura(
         de escala: Escala? = nil, titulo: String? = nil, ritmo: Partitura.Ritmo = .libre
     ) -> Partitura {
@@ -81,7 +81,7 @@ extension ArpegioEnElMastil {
     /// El arpegio en una partitura: sus notas en el orden en que se tocan, con los dedos (``dedos``) encima y la
     /// tablatura debajo. Con el acorde (`acorde` o, si no se da, ``acorde``), escritas con su ortografía y con el
     /// cifrado encima (`Acorde.partitura(arpegiadoEn:titulo:ritmo:porEvento:tablatura:)`); sin él, como las da el
-    /// mástil. Con `ritmo: .figura(…)`, con ritmo.
+    /// mástil. Con `ritmo: .uniforme(…)`, con ritmo.
     public func partitura(
         de acorde: Acorde? = nil, titulo: String? = nil, ritmo: Partitura.Ritmo = .libre
     ) -> Partitura {

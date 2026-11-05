@@ -27,14 +27,14 @@ extension Escala {
     }
 
     /// La partitura de la escala, la que dibuja `svgPentagrama(octava:…)`: en redondas y sin ritmo
-    /// (``Partitura/dibujaElRitmo``) o, con `ritmo: .figura(…)`, con ritmo (``Partitura/Ritmo``). Con
+    /// (``Partitura/dibujaElRitmo``) o, con `ritmo: .uniforme(…)`, con ritmo (``Partitura/Ritmo``). Con
     /// su armadura (``Partitura/Pentagrama/armadura``), los intervalos contados desde su tónica
     /// (``Partitura/Linea/tonica``), los microtonos de una escala microtonal con su sistema (``Evento/Nota/sistema``)
     /// y, con `digitacion`, el dedo de cada nota al piano. Su título es el nombre de la escala (``Encabezado/tema``),
     /// en la notación con que se dibuja o se exporta.
     ///
     ///     Escala("Re dórico").partitura().musicXML()                 // en ArmoniaFormatos
-    ///     Escala("Re dórico").partitura(ritmo: .figura(.corchea)).svg()   // en corcheas
+    ///     Escala("Re dórico").partitura(ritmo: .uniforme(.corchea)).svg()   // en corcheas
     public func partitura(
         octava: Int = 4, octavas: Int = 1, sentido: SentidoDelIntervalo? = nil, digitacion: Mano? = nil,
         ritmo: Partitura.Ritmo = .libre
@@ -78,14 +78,14 @@ extension Escala {
     ) -> Partitura {
         partitura(
             tocadaEn: self.secuencia(secuencia, octava: octava, octavas: octavas, sentido: sentido), titulo: nil,
-            tema: .secuencia(secuencia, de: self), ritmo: .figura(Escala.figura(deGruposDe: secuencia.pasos.count)),
+            tema: .secuencia(secuencia, de: self), ritmo: .uniforme(Escala.figura(deGruposDe: secuencia.pasos.count)),
             porEvento: Partitura.AnotacionesPorEvento(), tablatura: nil, sentido: sentido)
     }
 
     /// La partitura de la escala tocada en unas alturas cualesquiera (las de una posición del mástil, una
     /// secuencia…): escritas con sus notas (el La♯ que da el mástil, como Si♭ si la escala lo tiene), con su
     /// armadura (``Partitura/Pentagrama/armadura``) y los intervalos contados desde su tónica
-    /// (``Partitura/Linea/tonica``). Con `ritmo: .figura(…)`, con ritmo (``Partitura/Ritmo``);
+    /// (``Partitura/Linea/tonica``). Con `ritmo: .uniforme(…)`, con ritmo (``Partitura/Ritmo``);
     /// sin él, en redondas y sin ritmo (``Partitura/dibujaElRitmo``). Lo que se anota en cada nota va en `porEvento`, por su
     /// índice desde 0 (los dedos, los grados, los cifrados…), y las pulsaciones son las de `tablatura` si `porEvento`
     /// no trae las suyas. Si no se da `titulo`, el de la partitura es el nombre de la escala (``Encabezado/tema``),
@@ -93,7 +93,7 @@ extension Escala {
     /// su sistema (``Evento/Nota/sistema``): el de la subida y, las que solo están al bajar, el de la bajada.
     ///
     ///     let posicion = [Altura("La2"), Altura("Do3"), Altura("Re3"), Altura("Mi3")]
-    ///     Escala(.la, .pentatonicaMenor).partitura(tocadaEn: posicion, ritmo: .figura(.corchea)).musicXML()
+    ///     Escala(.la, .pentatonicaMenor).partitura(tocadaEn: posicion, ritmo: .uniforme(.corchea)).musicXML()
     ///     Escala(.do).partitura(tocadaEn: ["Do4", "Re4"], porEvento: .init(dedos: [0: [1], 1: [3]])).svg()
     public func partitura(
         tocadaEn alturas: [Altura], titulo: String? = nil, ritmo: Partitura.Ritmo = .libre,
@@ -208,14 +208,14 @@ extension Arpegio {
         return partitura(octava: octava).svg(opciones: suyas)
     }
 
-    /// La partitura del arpegio, en redondas y sin ritmo (``Partitura/dibujaElRitmo``) o, con `ritmo: .figura(…)`, con ritmo
+    /// La partitura del arpegio, en redondas y sin ritmo (``Partitura/dibujaElRitmo``) o, con `ritmo: .uniforme(…)`, con ritmo
     /// (``Partitura/Ritmo``): cada nota, en el orden del patrón y a partir de `octava`
     /// (la del bajo), con las alteraciones que le hagan falta (sin armadura, salvo la de una tonalidad:
     /// `OpcionesDePentagrama(armadura: .tonalidad(…))`) y el cifrado del acorde encima de la primera. Su título es
     /// el nombre del arpegio (``Encabezado/tema``), en la notación con que se dibuja o se exporta.
     ///
     ///     Arpegio(Acorde("Do7")).partitura().musicXML()                         // en ArmoniaFormatos
-    ///     Arpegio(Acorde("Do7")).partitura(ritmo: .figura(.corchea)).svg()   // en corcheas
+    ///     Arpegio(Acorde("Do7")).partitura(ritmo: .uniforme(.corchea)).svg()   // en corcheas
     public func partitura(octava: Int = 4, ritmo: Partitura.Ritmo = .libre) -> Partitura {
         Partitura.tocada(
             alturas(octava: octava).map { Evento.Nota($0) }, tema: .arpegio(self), ritmo: ritmo, acorde: acorde,
@@ -226,7 +226,7 @@ extension Arpegio {
 extension Acorde {
     /// La partitura del acorde arpegiado en unas alturas cualesquiera (las de una posición del mástil), escritas con
     /// sus notas (Si♭, no La♯, en Do7) y con el cifrado encima de la primera, si `porEvento` no le da otro. Con
-    /// `ritmo: .figura(…)`, con ritmo (``Partitura/Ritmo``); sin él, en redondas y sin ritmo (``Partitura/dibujaElRitmo``).
+    /// `ritmo: .uniforme(…)`, con ritmo (``Partitura/Ritmo``); sin él, en redondas y sin ritmo (``Partitura/dibujaElRitmo``).
     /// Lo que se anota en cada nota va en `porEvento`, por su índice desde 0, y las pulsaciones son las de `tablatura`
     /// si `porEvento` no trae las suyas. Si no se da `titulo`, el de la partitura es el cifrado (``Encabezado/tema``),
     /// en la notación con que se dibuja o se exporta.

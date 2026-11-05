@@ -12,7 +12,7 @@ extension Mastil {
     ///
     ///     Mastil(.guitarra).gruposDeCuerdas(para: .drop2)   // [[0, 1, 2, 3], [1, 2, 3, 4], [2, 3, 4, 5]]
     public func gruposDeCuerdas(para disposicion: DisposicionDeAcorde) -> [[Int]] {
-        let cuerdas = encordado.cuerdas
+        let cuerdas = encordado.afinacion
         guard !encordado.esReentrante else { return [] }
         let orden = cuerdas.indices.sorted { cuerdas[$0].midi < cuerdas[$1].midi }
         let salto = disposicion == .drop3 ? 1 : 0
@@ -34,15 +34,15 @@ extension Mastil {
     public func disposiciones(
         de acorde: Acorde, _ disposicion: DisposicionDeAcorde, cuerdas grupo: [Int], abertura: Int = 4
     ) -> [Digitacion] {
-        let cuerdas = encordado.cuerdas
+        let cuerdas = encordado.afinacion
         guard grupo.count == disposicion.voces, grupo.allSatisfy({ cuerdas.indices.contains($0) }) else { return [] }
         let alAire = grupo.map { cuerdas[$0].midi }
-        let ambito = alAire.reduce(Int.max, min)...(alAire.reduce(Int.min, max) + trastes)
+        let ambito = alAire.reduce(Int.max, min)...(alAire.reduce(Int.min, max) + numeroDeTrastes)
         var resultado: [Digitacion] = []
         for alturas in acorde.disposiciones(disposicion, en: ambito) {
             let forma = zip(alturas, alAire).map { $0.midi - $1 }
             let pisados = forma.filter { $0 > 0 }
-            guard forma.allSatisfy({ (0...trastes).contains($0) }),
+            guard forma.allSatisfy({ (0...numeroDeTrastes).contains($0) }),
                 pisados.allSatisfy({ traste in pisados.allSatisfy { abs(traste - $0) < max(1, abertura) } })
             else { continue }
             var trastesDeLaForma = [Int?](repeating: nil, count: cuerdas.count)

@@ -23,7 +23,7 @@ extension EscalaEnElMastil {
     /// Una secuencia de estudio sin salir de la posición: por terceras, en grupos, en tríadas… desde cada nota de la
     /// posición mientras quepa el dibujo entero, subiendo o bajando, hasta la nota más aguda (o la más grave).
     ///
-    ///     let posicion = Mastil(.guitarra, trastes: 15).posicionesCAGED(de: Escala(.sol))[0]
+    ///     let posicion = Mastil(.guitarra, numeroDeTrastes: 15).posicionesCAGED(de: Escala(.sol))[0]
     ///     posicion.secuencia(.terceras)   // de dos en dos: Sol Si, La Do, Si Re…
     public func secuencia(
         _ secuencia: SecuenciaDeEscala, sentido: SentidoDelIntervalo = .ascendente
@@ -53,8 +53,8 @@ extension Mastil {
     /// notas más agudas son las más graves de la otra). Vacío si la escala no tiene cinco notas o el instrumento no
     /// va de grave a agudo.
     ///
-    ///     let formas = Mastil(.guitarra, trastes: 15).formasPentatonicas(de: Escala(.la, .pentatonicaMenor))
-    ///     formas.map(\.trastes)   // [5...8, 7...10, 9...13, 0...3, 2...5]
+    ///     let formas = Mastil(.guitarra, numeroDeTrastes: 15).formasPentatonicas(de: Escala(.la, .pentatonicaMenor))
+    ///     formas.map(\.rangoDeTrastes)   // [5...8, 7...10, 9...13, 0...3, 2...5]
     public func formasPentatonicas(de escala: Escala) -> [EscalaEnElMastil] {
         guard Set(escala.notas.map(\.claseDeAltura)).count == 5 else { return [] }
         let formas = posicionesPorCuerda(de: escala, notasPorCuerda: 2)

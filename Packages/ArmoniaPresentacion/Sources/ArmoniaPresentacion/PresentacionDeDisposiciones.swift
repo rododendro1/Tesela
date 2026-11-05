@@ -113,7 +113,7 @@ extension PresentacionDeDisposiciones {
     public static func gruposDeCuerdas(
         _ disposicion: DisposicionDeAcorde, mastil: Mastil, notacion: Notacion
     ) -> [(cuerdas: [Int], nombre: String)] {
-        let total = mastil.encordado.cuerdas.count
+        let total = mastil.encordado.numeroDeCuerdas
         return mastil.gruposDeCuerdas(para: disposicion).map { grupo in
             let numeros = grupo.map { String(total - $0) }.joined(separator: "-")
             return (grupo, notacion.texto { $0.cuerdas(numeros) })
