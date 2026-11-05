@@ -97,9 +97,9 @@ extension LineaDeComandos {
             notas: TextosDeCLI.traduccion(\.notasEscala),
             opciones: [
                 "--acordes", "--secuencia", "--bajando", "--octavas", "--piano", "--modos", "--comparar", "--simetria",
-                "--vecinas", "--doce", "--triadas", "--estadisticas", "--escalera", "--chords", "--sequence",
-                "--descending", "--octaves", "--modes", "--compare", "--symmetry", "--neighbors", "--all-keys",
-                "--triads", "--statistics", "--brightness-ladder",
+                "--vecinas", "--doce", "--triadas", "--estadisticas", "--escalera", "--contra", "--chords",
+                "--sequence", "--descending", "--octaves", "--modes", "--compare", "--symmetry", "--neighbors",
+                "--all-keys", "--triads", "--statistics", "--brightness-ladder", "--against",
             ])
     ]
 

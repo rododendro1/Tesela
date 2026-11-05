@@ -141,7 +141,7 @@ struct VistaDeEscalas: View {
                 BotonDeExportar(
                     [pentagrama.fichero, hojaDeEstudio(de: escala), ficheroDelMapaDeBrillo(de: escala)]
                         + secuenciaPresentada(de: escala).ficheros
-                        + svgs(de: escala)
+                        + svgs(de: escala) + ficheroDeLaComparacion(de: escala)
                         + PresentacionDeEstudioDeEscala.enLasDoceTonalidades(escala, notacion: notacion).ficheros)
             }
         }
@@ -458,8 +458,25 @@ struct VistaDeEscalas: View {
                     BotonDeEscuchar(comparacion.sonido).labelStyle(.iconOnly)
                 }
                 .buttonStyle(.borderless)
+                // Nota a nota: los dos pentagramas, la tabla grado a grado y el reloj con las dos encima.
+                // Se exporta con la barra.
+                let hoja = PresentacionDeEstudioDeEscala.comparacionNotaANota(escala, con: otra, notacion: notacion)
+                let tamano = PresentacionDeEstudioDeEscala.tamano(deUnSVG: hoja) ?? (ancho: 595, alto: 842)
+                VistaSVG(svg: hoja)
+                    .aspectRatio(CGSize(width: tamano.ancho, height: tamano.alto), contentMode: .fit)
+                    .accessibilityLabel(Text(escala.nombre(en: notacion) + " → " + otra.nombre(en: notacion)))
             }
         }
+    }
+
+    /// La comparación nota a nota con la escala del campo de comparar, si se lee; si no, ninguna.
+    private func ficheroDeLaComparacion(de escala: Escala) -> [FicheroParaExportar] {
+        guard let otra = try? Escala(leyendo: otraEscala) else { return [] }
+        return [
+            FicheroParaExportar.svg(
+                PresentacionDeEstudioDeEscala.comparacionNotaANota(escala, con: otra, notacion: notacion),
+                nombre: escala.nombre(en: notacion) + " · " + otra.nombre(en: notacion))
+        ]
     }
 
     /// Elige la tónica y el tipo de la escala pedida: el tipo con el mismo nombre o, si no, el primero con las

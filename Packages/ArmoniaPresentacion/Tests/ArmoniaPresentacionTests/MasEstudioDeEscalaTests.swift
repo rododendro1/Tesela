@@ -187,6 +187,28 @@ import Testing
         #expect(hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count)
     }
 
+    @Test func comparacionNotaANota() {
+        let hoja = PresentacionDeEstudioDeEscala.comparacionNotaANota(
+            Escala(.do), con: Escala(.do, .dorico), notacion: notacion)
+        #expect(hoja.hasPrefix("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"595\""))
+        #expect(hoja.hasSuffix("</svg>"))
+        #expect(hoja.contains(">Do mayor → Do dórico</text>"), Comment(rawValue: String(hoja.prefix(800))))
+        #expect(hoja.contains(">3: Mi → Mi♭</text>"))
+        #expect(hoja.contains(">7: Si → Si♭</text>"))
+        #expect(hoja.contains(">Solo en Do mayor: Mi, Si</text>"))
+        #expect(hoja.contains(">Solo en Do dórico: Mi♭, Si♭</text>"))
+        // Los dos pentagramas dentro; sombreados los grados 3 y 7, y el reloj con un polígono por escala.
+        #expect(hoja.components(separatedBy: "<svg").count >= 4)
+        #expect(hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count)
+        #expect(hoja.components(separatedBy: "fill=\"#fdecea\"").count == 3)
+        #expect(hoja.contains("stroke-dasharray=\"5 3\""))
+        // Con tónicas distintas no cambia ningún grado, pero se ven las notas que no comparten.
+        let lejos = PresentacionDeEstudioDeEscala.comparacionNotaANota(
+            Escala(.do), con: Escala(.fa), notacion: notacion)
+        #expect(!lejos.contains("fill=\"#fdecea\""))
+        #expect(lejos.contains(">Solo en Fa mayor: Si♭</text>"))
+    }
+
     @Test func lineasDeNotasGuia() {
         let acordes = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let lineas = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(

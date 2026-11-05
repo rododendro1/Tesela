@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+### Dos escalas comparadas nota a nota
+
+`armonia escala Do mayor --contra Do dórico` dibuja en una hoja SVG las dos escalas comparadas nota a nota: los dos
+pentagramas, una tabla grado a grado con los grados que cambian sombreados, un reloj con las dos escalas encima y la
+leyenda de las notas comunes y de las que solo están en una. Las comunes van en azul; las de la primera, en verde, y
+las de la segunda, en rojo. En la app, la sección de comparar de la vista de escalas la muestra debajo de la
+comparación en texto y la exporta con la barra (`PresentacionDeEstudioDeEscala.comparacionNotaANota`).
+
 ### La hoja de estudio de un acorde
 
 - `armonia hoja --acorde Sol7` (`sheet --chord`) escribe la hoja de estudio de un acorde en SVG: sus notas y otros

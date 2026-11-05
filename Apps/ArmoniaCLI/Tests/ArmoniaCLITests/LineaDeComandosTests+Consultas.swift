@@ -402,6 +402,14 @@ extension LineaDeComandosTests {
         #expect(lejos.contains("Notas comunes: ninguna"), Comment(rawValue: lejos))
         #expect(lejos.contains("Mano derecha"))
         #expect(!lejos.contains("alteraciones de diferencia"))
+        // --contra: la comparación nota a nota en SVG, con los grados que cambian.
+        let dorico = salida("escala Do mayor --contra Do dórico")
+        #expect(dorico.hasPrefix("<svg "), Comment(rawValue: dorico))
+        #expect(dorico.contains(">Do mayor → Do dórico</text>"))
+        #expect(dorico.contains(">3: Mi → Mi♭</text>"))
+        #expect(dorico.contains(">7: Si → Si♭</text>"))
+        #expect(salida("scale C major --against C dorian --ingles").contains(">C major → C dorian</text>"))
+        #expect(resultado("escala", "Do", "mayor", "--contra", "Do", "zzz").codigo != 0)
     }
 
     @Test func bebopYPentatonicasSobreUnAcorde() {
