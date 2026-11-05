@@ -312,7 +312,10 @@ sur.notas[1].sistema == .persa && sur.notas[1].ajuste == 1   // true: el Mi koro
 
 `partitura()` vuelve a hacer de la pieza una ``Partitura``, para dibujarla o exportarla otra vez: un pentagrama por
 parte, las notas que empiezan y acaban a la vez en un acorde, las que se solapan de otra forma en otra voz y
-silencios en los huecos.
+silencios en los huecos. Si el fichero dice el pentagrama y la voz de cada nota (``NotaDeLaPieza/pentagrama`` y
+``NotaDeLaPieza/voz``: `<staff>` y `<voice>` en MusicXML, `<layer>` en MEI), el piano vuelve en sus dos pentagramas y
+cada voz del fichero es una voz de la partitura. Las notas de un pentagrama de tablatura, que repiten las de otro, no
+se leen otra vez.
 
 ```swift
 let leida = try PiezaImportada(musicXML: Data(Voz(leyendo: "Do4:4 -:4 Mi4+Sol4:2").partitura().musicXML().utf8))

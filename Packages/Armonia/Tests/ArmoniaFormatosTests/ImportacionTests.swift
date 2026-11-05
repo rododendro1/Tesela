@@ -64,11 +64,11 @@ import Testing
     @Test func lasLigadurasUnenLasNotas() throws {
         let voz = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8~ Mi4:4 Sol4+Si4:2", compas: "3/4")
         let esperadas = [
-            NotaDeLaPieza(altura: try Altura(leyendo: "Do4"), inicio: .cero, duracion: .negra),
-            NotaDeLaPieza(altura: try Altura(leyendo: "Re4"), inicio: .negra, duracion: .corchea),
-            NotaDeLaPieza(altura: try Altura(leyendo: "Mi4"), inicio: Duracion(3, 8), duracion: Duracion(3, 8)),
-            NotaDeLaPieza(altura: try Altura(leyendo: "Sol4"), inicio: Duracion(3, 4), duracion: .blanca),
-            NotaDeLaPieza(altura: try Altura(leyendo: "Si4"), inicio: Duracion(3, 4), duracion: .blanca),
+            NotaDeLaPieza(altura: try Altura(leyendo: "Do4"), inicio: .cero, duracion: .negra, voz: 1),
+            NotaDeLaPieza(altura: try Altura(leyendo: "Re4"), inicio: .negra, duracion: .corchea, voz: 1),
+            NotaDeLaPieza(altura: try Altura(leyendo: "Mi4"), inicio: Duracion(3, 8), duracion: Duracion(3, 8), voz: 1),
+            NotaDeLaPieza(altura: try Altura(leyendo: "Sol4"), inicio: Duracion(3, 4), duracion: .blanca, voz: 1),
+            NotaDeLaPieza(altura: try Altura(leyendo: "Si4"), inicio: Duracion(3, 4), duracion: .blanca, voz: 1),
         ]
         let xml = try PiezaImportada(
             musicXML: Data(voz.partitura(encabezado: Encabezado(tonalidad: Tonalidad(.do))).musicXML().utf8))

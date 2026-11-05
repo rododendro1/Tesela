@@ -18,14 +18,20 @@ import Testing
         // La afinación es la de las cuerdas al aire, sin el capo: la línea 1 es el Mi2 grave.
         let primeraCuerda = "<staff-tuning line=\"1\"><tuning-step>E</tuning-step><tuning-octave>2</tuning-octave>"
         #expect(xml.contains(primeraCuerda))
-        #expect(xml.contains("<words>Re</words>"))
+        // El cifrado encima, y las notas dos veces: en el pentagrama, en clave de sol octava baja, y en la tablatura.
+        #expect(xml.contains("<root-step>D</root-step>"))
+        #expect(xml.contains("<staves>2</staves>"))
+        #expect(xml.contains("<clef-octave-change>-1</clef-octave-change>"))
         // x32010: la cuerda 5 (La) en el traste 3, desde el capo.
-        #expect(xml.contains("<string>5</string><fret>3</fret>"))
+        #expect(xml.contains("<string>5</string>\n            <fret>3</fret>"))
         #expect((xml.components(separatedBy: "<measure ").count - 1) == 2)
         // Se lee con las notas que suenan.
         let pieza = try PiezaImportada(musicXML: Data(xml.utf8))
         #expect(pieza.titulo == "Con capo")
         #expect(pieza.notas.prefix(5).map(\.altura.midi) == [50, 54, 57, 62, 66])
+        // Las de la tablatura no se leen otra vez.
+        #expect(pieza.notas.count == formas.map { $0.trastes.compactMap { $0 }.count }.reduce(0, +))
+        #expect(pieza.notas.allSatisfy { $0.pentagrama == 1 })
         #expect(Set(pieza.notas.map(\.duracion)) == [.redonda])
     }
 
@@ -82,7 +88,7 @@ import Testing
     @Test func sinDigitacionesSinAcordesYConAlteraciones() throws {
         // Sin digitaciones, un compás de silencio; el título se escapa.
         let vacia = PresentacionDeTablatura.musicXML(digitaciones: [], titulo: "Do & <Re> \"Mi\"")
-        #expect(vacia.contains("<rest/>"))
+        #expect(vacia.contains("<rest"))
         #expect(vacia.contains("Do &amp; &lt;Re&gt; &quot;Mi&quot;"))
         // Una afinación con alteraciones (Fa♯ y Si♭) y una digitación sin cuerdas pisadas.
         let encordado = Encordado(
@@ -93,8 +99,8 @@ import Testing
         let xml = PresentacionDeTablatura.musicXML(digitaciones: [muda, tocada], titulo: "Rara")
         #expect(xml.contains("<tuning-alter>1</tuning-alter>"))
         #expect(xml.contains("<tuning-alter>-1</tuning-alter>"))
-        #expect(xml.contains("<rest/>"))
-        #expect(!xml.contains("<words>"))
+        #expect(xml.contains("<rest"))
+        #expect(!xml.contains("<harmony"))
         #expect(xml.contains("<chord/>"))
         #expect((xml.components(separatedBy: "<measure ").count - 1) == 2)
     }

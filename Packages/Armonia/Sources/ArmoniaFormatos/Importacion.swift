@@ -41,13 +41,17 @@ public struct NotaDeLaPieza: Hashable, Sendable {
     public let dinamica: Dinamica?
     /// Sus articulaciones, sin repetir y en el orden de `Articulacion.allCases`.
     public let articulaciones: [Articulacion]
+    /// El pentagrama de la parte en que se escribe, contando desde 1 (`<staff>` en MusicXML), si el fichero lo dice.
+    public let pentagrama: Int?
+    /// La voz en que se escribe (`<voice>` en MusicXML, `<layer n>` en MEI), si el fichero la dice.
+    public let voz: Int?
 
     /// Una nota; `desvio` se redondea a la centésima de cent y las articulaciones se ordenan sin repetir. Como en
     /// `Evento.Nota`, una nota que no se aparta no tiene sistema.
     public init(
         altura: Altura, inicio: Duracion, duracion: Duracion, parte: Int = 0, desvio: Double = 0,
         sistema: SistemaMicrotonal? = nil, ajuste: Int = 0, dinamica: Dinamica? = nil,
-        articulaciones: [Articulacion] = []
+        articulaciones: [Articulacion] = [], pentagrama: Int? = nil, voz: Int? = nil
     ) {
         let nota = Evento.Nota(altura, desvio: desvio, sistema: sistema, ajuste: ajuste)
         self.altura = altura
@@ -60,20 +64,22 @@ public struct NotaDeLaPieza: Hashable, Sendable {
         self.ajuste = nota.ajuste
         self.dinamica = dinamica
         self.articulaciones = Articulacion.allCases.filter(articulaciones.contains)
+        self.pentagrama = pentagrama
+        self.voz = voz
     }
 
     /// La misma nota con otra dinámica: la de una marca que se lee después de la nota (`<dynam>` en MEI).
     func con(dinamica: Dinamica?) -> NotaDeLaPieza {
         NotaDeLaPieza(
             altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: desvio, sistema: sistema,
-            ajuste: ajuste, dinamica: dinamica, articulaciones: articulaciones)
+            ajuste: ajuste, dinamica: dinamica, articulaciones: articulaciones, pentagrama: pentagrama, voz: voz)
     }
 
     /// La misma nota con otra duración: la de una nota ligada a la siguiente, que se alarga con ella.
     func con(duracion: Duracion) -> NotaDeLaPieza {
         NotaDeLaPieza(
             altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: desvio, sistema: sistema,
-            ajuste: ajuste, dinamica: dinamica, articulaciones: articulaciones)
+            ajuste: ajuste, dinamica: dinamica, articulaciones: articulaciones, pentagrama: pentagrama, voz: voz)
     }
 
     /// Cuándo termina.

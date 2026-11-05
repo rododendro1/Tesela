@@ -30,7 +30,11 @@ extension Partitura {
                 opciones: suyas)
         }
         let pentagrama = llenos[0]
-        if let clave = pentagrama.clave { suyas.maquetacion.clave = clave }
+        if let clave = pentagrama.clave {
+            suyas.maquetacion.clave = clave
+        } else if suyas.maquetacion.clave == nil, let delInstrumento = pentagrama.claveDelInstrumento {
+            suyas.maquetacion.clave = delInstrumento
+        }
         let primera = pentagrama.voces[0]
         let porNota = primera.porNota
         let acordes = porNota.cifrados
@@ -40,7 +44,9 @@ extension Partitura {
         }
         var grados = porNota.analisis.mapValues(\.cifrado)
         grados.merge(porNota.grados) { _, propio in propio }
-        let tablatura = pentagrama.cuerdas.map { Tablatura(cuerdas: $0, notas: porNota.pulsaciones) }
+        let tablatura = pentagrama.cuerdas.map {
+            Tablatura(cuerdas: $0, notas: porNota.pulsaciones, afinacion: pentagrama.afinacion, capo: pentagrama.capo)
+        }
         let armadura = pentagrama.armadura.map { suyas.armadura.notas(propia: $0) }
         if !ritmo {
             return columnas(

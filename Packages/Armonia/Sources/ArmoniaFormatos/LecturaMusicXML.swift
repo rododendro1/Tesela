@@ -105,6 +105,12 @@ final class LectorMusicXML: LectorDeElementosXML {
     private var dinamicaPendiente: Dinamica?
     /// La dinámica y las articulaciones de la primera nota del acorde en curso, para las demás.
     private var marcasDelAcorde: (dinamica: Dinamica?, articulaciones: [Articulacion]) = (nil, [])
+    /// Los pentagramas de la parte (`<staves>`) y los que son de tablatura (`<clef>` con `<sign>TAB</sign>`): sus
+    /// notas repiten las de los otros pentagramas y no se leen otra vez.
+    private var pentagramas = 1
+    private var deTablatura: Set<Int> = []
+    /// La clave en curso: su pentagrama y si es de tablatura.
+    private var clave: (pentagrama: Int, tablatura: Bool) = (1, false)
 
     // Lo que se va leyendo dentro de un elemento.
     private var nota = NotaLeida()
@@ -128,6 +134,8 @@ final class LectorMusicXML: LectorDeElementosXML {
         var ligaduraQueEmpieza = false
         var ligaduraQueAcaba = false
         var articulaciones: [Articulacion] = []
+        var pentagrama: Int?
+        var voz: Int?
     }
 
     /// Las articulaciones de MusicXML (dentro de `<articulations>`).
@@ -160,6 +168,8 @@ final class LectorMusicXML: LectorDeElementosXML {
             transposicion = nil
             indiceDelCompas = -1
             casillas = nil
+            pentagramas = 1
+            deTablatura = []
         case "measure":
             posicion = inicioDelCompas
             finDelCompas = inicioDelCompas
@@ -195,6 +205,8 @@ final class LectorMusicXML: LectorDeElementosXML {
         case "tie" where padre == "note":
             if atributos["type"] == "start" { nota.ligaduraQueEmpieza = true }
             if atributos["type"] == "stop" { nota.ligaduraQueAcaba = true }
+        case "clef":
+            clave = (atributos["number"].flatMap { Int($0) } ?? 1, false)
         case "key":
             armadura = (nil, false)
         case "time":
@@ -249,6 +261,16 @@ final class LectorMusicXML: LectorDeElementosXML {
             }
         case "octave" where padre == "pitch":
             nota.octava = numero
+        case "staff" where padre == "note":
+            nota.pentagrama = numero.flatMap { (1...64).contains($0) ? $0 : nil }
+        case "voice" where padre == "note":
+            nota.voz = numero.flatMap { (1...64).contains($0) ? $0 : nil }
+        case "staves" where padre == "attributes":
+            if let numero, (1...64).contains(numero) { pentagramas = numero }
+        case "sign" where padre == "clef":
+            clave.tablatura = valor == "TAB"
+        case "clef":
+            if clave.tablatura { deTablatura.insert(clave.pentagrama) } else { deTablatura.remove(clave.pentagrama) }
         case "accidental" where padre == "note":
             nota.signo = SignoMicrotonal(musicXML: valor, smufl: nota.smuflDelSigno)
         case "duration":
@@ -327,6 +349,8 @@ final class LectorMusicXML: LectorDeElementosXML {
     }
 
     private func colocarLaNota() {
+        // Una nota de un pentagrama de tablatura, si la parte tiene otros: ya está en ellos.
+        if deTablatura.contains(nota.pentagrama ?? 1), deTablatura.count < pentagramas { nota.muda = true }
         if nota.sinTiempo {
             // Una nota de adorno: empieza donde empezará la nota a la que adorna.
             if !nota.muda, let altura = alturaQueSuena() {
@@ -335,7 +359,7 @@ final class LectorMusicXML: LectorDeElementosXML {
                     NotaDeLaPieza(
                         altura: altura, inicio: posicion, duracion: .cero, parte: parte, desvio: nota.desvio,
                         sistema: microtono?.sistema, ajuste: microtono?.ajuste ?? 0,
-                        articulaciones: nota.articulaciones))
+                        articulaciones: nota.articulaciones, pentagrama: nota.pentagrama, voz: nota.voz))
             }
             return
         }
@@ -363,7 +387,7 @@ final class LectorMusicXML: LectorDeElementosXML {
                 NotaDeLaPieza(
                     altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: nota.desvio,
                     sistema: microtono?.sistema, ajuste: microtono?.ajuste ?? 0, dinamica: marcasDelAcorde.dinamica,
-                    articulaciones: marcasDelAcorde.articulaciones))
+                    articulaciones: marcasDelAcorde.articulaciones, pentagrama: nota.pentagrama, voz: nota.voz))
             if nota.ligaduraQueEmpieza { ligadas[clave] = notas.count - 1 }
         }
     }

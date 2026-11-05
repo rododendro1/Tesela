@@ -274,6 +274,53 @@ import Testing
         #expect(Partitura.Linea(voz, porNota: .init(grados: [9: "V"])).grados.isEmpty)
         #expect(voz.porEvento(voz.porInicio([1: "a", 3: "b"])) == [1: "a", 3: "b"])
     }
+
+    /// Las partituras de acordes, escalas y arpegios toman todo lo que se anota en un solo `porNota`, y los atajos
+    /// (`cifrados:`, `digitos:`) son lo mismo.
+    @Test func porNotaEnLasPartiturasTocadas() throws {
+        let columnas: [[Altura]] = [["Do4", "Mi4", "Sol4"], ["Si3", "Fa4", "Sol4"]]
+        let porNota = Partitura.AnotacionesPorNota(
+            cifrados: [0: Acorde("Do"), 1: Acorde("Sol7")], grados: [0: "I", 1: "V7"], digitos: [1: [1, 3, 5]])
+        let acordes = Partitura(acordes: columnas, porNota: porNota)
+        #expect(
+            acordes
+                == Partitura(
+                    acordes: columnas, cifrados: [Acorde("Do"), Acorde("Sol7")], grados: ["I", "V7"],
+                    digitos: [1: [1, 3, 5]]))
+        #expect(acordes.encabezado.tema == .progresion([Acorde("Do"), Acorde("Sol7")]))
+        // El análisis, que los atajos no tienen.
+        let analisis = try #require(Tonalidad(.do).analizar([Acorde("Do")]).acordes.first)
+        let analizada = Partitura(acordes: [columnas[0]], porNota: .init(analisis: [0: analisis]))
+        #expect(analizada.pentagramas[0].voces[0].analisis == [.cero: analisis])
+        // Una escala con los dedos y el grado de cada nota.
+        let alturas: [Altura] = ["Do4", "Re4", "Mi4"]
+        let escala = Escala(.do).partitura(
+            tocadaEn: alturas, porNota: .init(grados: [0: "I"], digitos: [0: [1], 1: [2], 2: [3]]))
+        #expect(escala.pentagramas[0].voces[0].grados == [.cero: "I"])
+        var conDigitos = Escala(.do).partitura(tocadaEn: alturas, digitos: [0: [1], 1: [2], 2: [3]])
+        conDigitos.pentagramas[0].voces[0].grados = [.cero: "I"]
+        #expect(escala == conDigitos)
+        #expect(
+            Escala(.do).svgPentagrama(tocadaEn: alturas, porNota: .init(digitos: [0: [1]]))
+                == Escala(.do).svgPentagrama(tocadaEn: alturas, digitos: [0: [1]]))
+        // Un arpegio: el cifrado del acorde va en la primera nota, salvo que `porNota` diga otro.
+        let do7 = Acorde("Do7")
+        let arpegio = do7.partitura(arpegiadoEn: ["Do4", "Mi4", "Sol4", "La#4"], porNota: .init(digitos: [3: [4]]))
+        #expect(arpegio.pentagramas[0].voces[0].cifrados == [.cero: do7])
+        #expect(arpegio.pentagramas[0].voces[0].voz.eventos[3].alturas == ["Si♭4"])
+        #expect(arpegio == do7.partitura(arpegiadoEn: ["Do4", "Mi4", "Sol4", "La#4"], digitos: [3: [4]]))
+        let otro = do7.partitura(arpegiadoEn: ["Do4"], porNota: .init(cifrados: [0: Acorde("Do")]))
+        #expect(otro.pentagramas[0].voces[0].cifrados == [.cero: Acorde("Do")])
+        #expect(do7.svgPentagrama(arpegiadoEn: ["Do4"], porNota: .init()) == do7.svgPentagrama(arpegiadoEn: ["Do4"]))
+    }
+
+    /// Las alturas, con la ortografía de unas notas: la primera que suena igual, sin cambiar el número MIDI.
+    @Test func lasAlturasReescritas() {
+        #expect(Altura.reescritas(["Do4", "La#3"], con: Acorde("Do7").notas) == ["Do4", "Si♭3"])
+        let siSostenido = Altura.reescritas(["Do4"], con: [Nota.si.sostenido])
+        #expect(siSostenido == [Altura(Nota.si.sostenido, octava: 3)] && siSostenido[0].midi == 60)
+        #expect(Altura.reescritas(["Re4"], con: [.do]) == ["Re4"])
+    }
 }
 
 /// El bajo cifrado, los cambios de clave y las notas ajenas al acorde.

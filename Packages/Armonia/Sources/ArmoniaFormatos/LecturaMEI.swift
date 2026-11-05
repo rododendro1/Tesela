@@ -130,6 +130,8 @@ final class LectorMEI: LectorDeElementosXML {
     private var pentagrama: Pentagrama?
     private var nombreDelPentagrama = "1"
     private var posicion = 0
+    /// El `n` de la capa en curso: la voz de sus notas.
+    private var capa: Int?
     /// Las alteraciones escritas en el compás, por pentagrama y lugar (octava y nota natural), en cents y con su
     /// signo, si es microtonal.
     private var vigentes: [String: (cents: Double, signo: SignoMicrotonal?)] = [:]
@@ -246,6 +248,7 @@ final class LectorMEI: LectorDeElementosXML {
             pentagrama = pentagramas[nombreDelPentagrama]
         case "layer":
             posicion = inicioDelCompas
+            capa = atributos["n"].flatMap { Int($0) }.flatMap { (1...64).contains($0) ? $0 : nil }
         case "tuplet":
             let reales = atributos["num"].flatMap(Int.init) ?? 3
             let normales = atributos["numbase"].flatMap(Int.init) ?? 2
@@ -458,7 +461,7 @@ final class LectorMEI: LectorDeElementosXML {
             adornos.append(
                 NotaDeLaPieza(
                     altura: altura, inicio: desde, duracion: .cero, parte: parte, desvio: desvio,
-                    sistema: microtono?.sistema, ajuste: microtono?.ajuste ?? 0))
+                    sistema: microtono?.sistema, ajuste: microtono?.ajuste ?? 0, voz: capa))
             return
         }
         let clave = parte * 1024 + altura.midi + 512
@@ -471,7 +474,7 @@ final class LectorMEI: LectorDeElementosXML {
                 NotaDeLaPieza(
                     altura: altura, inicio: desde, duracion: duracion, parte: parte, desvio: desvio,
                     sistema: microtono?.sistema, ajuste: microtono?.ajuste ?? 0,
-                    articulaciones: suyo.articulaciones + nota.articulaciones))
+                    articulaciones: suyo.articulaciones + nota.articulaciones, voz: capa))
             if nota.ligaduraQueEmpieza { ligadas[clave] = notas.count - 1 }
             for id in [suyo.id, nota.id].compactMap({ $0 }) { notasPorId[id, default: []].append(notas.count - 1) }
         }

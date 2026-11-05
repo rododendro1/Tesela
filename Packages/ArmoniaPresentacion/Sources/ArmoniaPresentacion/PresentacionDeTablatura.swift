@@ -9,8 +9,9 @@ import Armonia
 ///         digitaciones: mastil.digitaciones(de: Acorde("Do"), limite: 1), titulo: "Re con capo")
 ///     xml.contains("<capo>2</capo>")   // true
 ///
-/// Los trastes se cuentan desde el capo, como en el mástil (`Encordado.conCapo(_:)`); las cuerdas se
-/// numeran como en MusicXML, desde la más aguda. Las notas que se escriben son las que suenan.
+/// Es la partitura del mástil (`Partitura`, con su `Tablatura`) en MusicXML: un pentagrama con las notas (en clave de
+/// sol octava baja en la guitarra) y debajo el de tablatura. Los trastes se cuentan desde el capo, como en el mástil
+/// (`Encordado.conCapo(_:)`); las cuerdas se numeran como en MusicXML, desde la más aguda.
 public enum PresentacionDeTablatura {
     /// Las divisiones de la negra: la semicorchea es la nota más corta que se escribe.
     static let divisiones = 4
@@ -21,23 +22,26 @@ public enum PresentacionDeTablatura {
         digitaciones: [Digitacion], acordes: [Acorde] = [], titulo: String, notacion: Notacion = .espanolCompacto
     ) -> String {
         guard let mastil = digitaciones.first?.mastil else {
-            return documento(mastil: Mastil(), compases: [], titulo: titulo, notacion: notacion)
+            return documento(
+                Partitura(Partitura.Linea(Voz([.silencio(.redonda)]))), mastil: Mastil(), titulo: titulo,
+                notacion: notacion)
         }
-        let compases = digitaciones.enumerated().map { i, digitacion -> String in
-            let acorde = i < acordes.count ? acordes[i] : nil
-            var xml = ""
-            if let acorde {
-                xml += "      <direction placement=\"above\"><direction-type><words>"
-                xml += EscrituraXML.escapar(acorde.cifrado(en: notacion)) + "</words></direction-type></direction>\n"
-            }
-            for (j, posicion) in digitacion.posiciones.enumerated() {
-                xml += nota(
-                    posicion, en: mastil, ortografia: acorde?.notas ?? [], duracion: .redonda, enAcorde: j > 0)
-            }
-            if digitacion.posiciones.isEmpty { xml += silencio(.redonda) }
-            return xml
+        let acordes = digitaciones.indices.map { i in i < acordes.count ? acordes[i] : nil }
+        var partitura = Digitacion.partitura(
+            digitaciones.map { Digitacion(mastil: $0.mastil, trastes: $0.trastes) }, acordes: [], titulo: titulo)
+        // Los cifrados que se dan, y la ortografía de cada uno; las digitaciones sin acorde, como salen.
+        var linea = partitura.pentagramas[0].voces[0]
+        var porNota = linea.porNota
+        var eventos = linea.voz.eventos
+        for (i, acorde) in acordes.enumerated() {
+            guard let acorde, eventos.indices.contains(i) else { continue }
+            porNota.cifrados[i] = acorde
+            eventos[i] = Evento(
+                alturas: eventos[i].alturas.map { escrita($0, ortografia: acorde.notas) }, duracion: .redonda)
         }
-        return documento(mastil: mastil, compases: compases, titulo: titulo, notacion: notacion)
+        linea = Partitura.Linea(Voz(eventos), porNota: porNota)
+        partitura.pentagramas[0].voces = [linea]
+        return documento(partitura, mastil: mastil, titulo: titulo, notacion: notacion)
     }
 
     /// Las notas de un arpegio en una posición, de grave a agudo, en corcheas (o en la figura que se diga), de
@@ -61,117 +65,44 @@ public enum PresentacionDeTablatura {
             titulo: titulo, notacion: notacion)
     }
 
-    /// Unas posiciones tocadas una detrás de otra.
+    /// Unas posiciones tocadas una detrás de otra, todas con la misma figura, en compases de 4/4; el último se
+    /// completa con un silencio.
     static func musicXML(
         posiciones: [PosicionEnElMastil], en mastil: Mastil, ortografia: [Nota], figura: Figura, titulo: String,
         notacion: Notacion
     ) -> String {
         // Una figura más larga que la redonda no cabe en un compás de 4/4.
         let figura = figura == .cuadrada ? .redonda : figura
-        let porCompas = max(1, ticks(.redonda) / ticks(figura))
-        var compases: [String] = []
-        var inicio = 0
-        while inicio < posiciones.count {
-            let fin = min(inicio + porCompas, posiciones.count)
-            var xml = ""
-            for posicion in posiciones[inicio..<fin] {
-                xml += nota(posicion, en: mastil, ortografia: ortografia, duracion: figura, enAcorde: false)
-            }
-            let resto = ticks(.redonda) - (fin - inicio) * ticks(figura)
-            if resto > 0 { xml += silencio(ticks: resto) }
-            compases.append(xml)
-            inicio = fin
+        let duracion = Duracion(ticks(figura), 4 * divisiones)
+        var eventos = posiciones.map {
+            Evento(alturas: [escrita(mastil.altura(en: $0), ortografia: ortografia)], duracion: duracion)
         }
-        return documento(mastil: mastil, compases: compases, titulo: titulo, notacion: notacion)
+        let resto = (ticks(.redonda) - (posiciones.count * ticks(figura)) % ticks(.redonda)) % ticks(.redonda)
+        if resto > 0 { eventos.append(.silencio(Duracion(resto, 4 * divisiones))) }
+        if eventos.isEmpty { eventos = [.silencio(.redonda)] }
+        let tablatura = Tablatura(
+            mastil, posiciones: Dictionary(uniqueKeysWithValues: posiciones.enumerated().map { ($0, [$1]) }))
+        let linea = Partitura.Linea(Voz(eventos), porNota: .init(pulsaciones: tablatura.notas))
+        let partitura = Partitura(pentagramas: [.init(voces: [linea], tablatura: tablatura)])
+        return documento(partitura, mastil: mastil, titulo: titulo, notacion: notacion)
     }
 
     // MARK: El documento
 
-    private static func documento(mastil: Mastil, compases: [String], titulo: String, notacion: Notacion) -> String {
-        let encordado = mastil.encordado
-        let alAire = encordado.sinCapo.cuerdas
-        var xml = """
-            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-            <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 4.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
-            <score-partwise version="4.0">
-              <work>
-                <work-title>\(EscrituraXML.escapar(titulo))</work-title>
-              </work>
-              <identification>
-                <encoding>
-                  <software>Armonia</software>
-                </encoding>
-              </identification>
-              <part-list>
-                <score-part id="P1">
-                  <part-name>\(EscrituraXML.escapar(encordado.titulo(en: notacion)))</part-name>
-                </score-part>
-              </part-list>
-              <part id="P1">
-
-            """
-        for (i, compas) in (compases.isEmpty ? [silencio(.redonda)] : compases).enumerated() {
-            xml += "    <measure number=\"\(i + 1)\">\n"
-            if i == 0 {
-                xml += "      <attributes>\n        <divisions>\(divisiones)</divisions>\n"
-                xml += "        <key><fifths>0</fifths></key>\n"
-                xml += "        <time><beats>4</beats><beat-type>4</beat-type></time>\n"
-                xml += "        <clef><sign>TAB</sign><line>5</line></clef>\n"
-                xml += "        <staff-details>\n          <staff-lines>\(alAire.count)</staff-lines>\n"
-                for (linea, cuerda) in alAire.enumerated() {
-                    xml += "          <staff-tuning line=\"\(linea + 1)\">"
-                    xml += "<tuning-step>\(paso(cuerda.nota.natural))</tuning-step>"
-                    if cuerda.nota.alteracion.semitonos != 0 {
-                        xml += "<tuning-alter>\(cuerda.nota.alteracion.semitonos)</tuning-alter>"
-                    }
-                    xml += "<tuning-octave>\(cuerda.octava)</tuning-octave></staff-tuning>\n"
-                }
-                if encordado.capo > 0 { xml += "          <capo>\(encordado.capo)</capo>\n" }
-                xml += "        </staff-details>\n      </attributes>\n"
-            }
-            xml += compas
-            xml += "    </measure>\n"
-        }
-        xml += "  </part>\n</score-partwise>\n"
-        return xml
-    }
-
-    /// Una nota con su cuerda y su traste. `enAcorde`: suena a la vez que la anterior.
-    private static func nota(
-        _ posicion: PosicionEnElMastil, en mastil: Mastil, ortografia: [Nota], duracion: Figura, enAcorde: Bool
+    /// La partitura en MusicXML, con el título y, como nombre de la parte, el del instrumento.
+    private static func documento(
+        _ partitura: Partitura, mastil: Mastil, titulo: String, notacion: Notacion
     ) -> String {
-        let altura = escrita(mastil.altura(en: posicion), ortografia: ortografia)
-        // En MusicXML la cuerda 1 es la más aguda; en el mástil, la 0 es la más grave.
-        let cuerda = mastil.encordado.numeroDeCuerdas - posicion.cuerda
-        var xml = "      <note>\n"
-        if enAcorde { xml += "        <chord/>\n" }
-        xml += "        <pitch><step>\(paso(altura.nota.natural))</step>"
-        if altura.nota.alteracion.semitonos != 0 { xml += "<alter>\(altura.nota.alteracion.semitonos)</alter>" }
-        xml += "<octave>\(altura.octava)</octave></pitch>\n"
-        xml += "        <duration>\(ticks(duracion))</duration>\n        <voice>1</voice>\n"
-        xml += "        <type>\(tipo(duracion))</type>\n"
-        xml += "        <notations><technical><string>\(cuerda)</string><fret>\(posicion.traste)</fret>"
-        xml += "</technical></notations>\n      </note>\n"
-        return xml
+        var partitura = partitura
+        partitura.encabezado = Encabezado(titulo: titulo, parte: mastil.encordado.titulo(en: notacion))
+        partitura.notacion = notacion
+        return partitura.musicXML()
     }
 
-    private static func silencio(_ figura: Figura) -> String {
-        silencio(ticks: ticks(figura))
-    }
-
-    private static func silencio(ticks: Int) -> String {
-        "      <note>\n        <rest/>\n        <duration>\(ticks)</duration>\n"
-            + "        <voice>1</voice>\n      </note>\n"
-    }
-
-    /// La altura escrita como la escribe el acorde o la escala, si tiene esa nota; si no, como sale.
+    /// La altura escrita como la escribe el acorde o la escala, si tiene esa nota; si no, como sale
+    /// (`Altura.reescritas(_:con:)`).
     static func escrita(_ altura: Altura, ortografia: [Nota]) -> Altura {
-        guard let nota = ortografia.first(where: { $0.claseDeAltura == altura.nota.claseDeAltura }),
-            nota != altura.nota
-        else { return altura }
-        // La octava de la nota escrita es la que deja su número MIDI igual: Si♯3 suena como Do4.
-        let enLaMismaOctava = Altura(nota, octava: altura.octava)
-        return Altura(nota, octava: altura.octava + (altura.midi - enLaMismaOctava.midi) / 12)
+        Altura.reescritas([altura], con: ortografia).first ?? altura
     }
 
     static func ticks(_ figura: Figura) -> Int {
@@ -183,20 +114,5 @@ public enum PresentacionDeTablatura {
         case .corchea: return divisiones / 2
         default: return max(1, divisiones / 4)
         }
-    }
-
-    private static func tipo(_ figura: Figura) -> String {
-        switch figura {
-        case .cuadrada: return "breve"
-        case .redonda: return "whole"
-        case .blanca: return "half"
-        case .negra: return "quarter"
-        case .corchea: return "eighth"
-        default: return "16th"
-        }
-    }
-
-    private static func paso(_ natural: NotaNatural) -> String {
-        ["C", "D", "E", "F", "G", "A", "B"][natural.rawValue]
     }
 }
