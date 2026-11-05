@@ -85,13 +85,10 @@ public struct Altura: Hashable, Sendable {
     }
 
     /// Altura a partir de un número MIDI, eligiendo la ortografía más habitual:
-    /// con sostenidos de Fa a La♯, o con bemoles de Sol♭ a Si.
+    /// con sostenidos de Fa a La♯, o con bemoles de Sol♭ a Si (``VentanaDeQuintas/sostenidos`` y
+    /// ``VentanaDeQuintas/bemoles``). Con otra ventana, `Altura(midi:ventana:)`.
     public init(midi: Int, preferirBemoles: Bool = false) {
-        let clase = modulo(midi, 12)
-        let quintasBase = modulo(clase * 7, 12) // 7 es su propio inverso módulo 12
-        let inicio = preferirBemoles ? -6 : -1
-        let quintas = inicio + modulo(quintasBase - inicio, 12)
-        self.init(pasosDeQuinta: quintas, pasosDeOctava: (midi - 60 - 7 * quintas) / 12)
+        self.init(midi: midi, ventana: preferirBemoles ? .bemoles : .sostenidos)
     }
 
     // MARK: Propiedades

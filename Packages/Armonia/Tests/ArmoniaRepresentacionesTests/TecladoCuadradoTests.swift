@@ -56,6 +56,20 @@ import Testing
         #expect(
             TecladoCuadrado.quintas.altura(en: casilla(1, 0), preferirBemoles: true).nota.nombre(en: .espanolCompacto)
                 == "Re♭")
+        #expect(TecladoCuadrado.quintas.altura(en: casilla(1, 0), ventana: .sostenidos).nota == Nota(.do, 1))
+    }
+
+    @Test func lasOpcionesEligenUnaVentanaDeQuintas() {
+        var opciones = OpcionesDeDiagrama(preferirBemoles: true)
+        #expect(opciones.ventana == .bemoles && opciones.preferirBemoles)
+        opciones.preferirBemoles = false
+        #expect(opciones.ventana == .sostenidos && !opciones.preferirBemoles)
+        // `ventana` manda sobre `preferirBemoles`.
+        opciones = OpcionesDeDiagrama(preferirBemoles: true, ventana: .centrada(en: "Re"))
+        #expect(opciones.ventana == .centrada(en: "Re") && !opciones.preferirBemoles)
+        #expect(OpcionesDeDiagrama() == OpcionesDeDiagrama(ventana: .sostenidos))
+        let svg = TecladoCuadrado.quintas.svg([casilla(1, 0)], opciones: .init(ventana: .bemoles))
+        #expect(svg.contains(">Re♭₄</text>"))
     }
 
     @Test func seGiraYSeRefleja() {

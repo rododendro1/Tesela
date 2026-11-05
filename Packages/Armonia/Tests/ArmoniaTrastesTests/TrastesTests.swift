@@ -27,6 +27,15 @@ import Testing
         #expect(mastil.altura(en: posicion).nota.nombre == "La♯")
     }
 
+    @Test func alturaConUnaVentanaDeQuintas() {
+        let mastil = Mastil(.guitarra)
+        let segundo = PosicionEnElMastil(cuerda: 0, traste: 2) // Fa♯2 / Sol♭2
+        #expect(mastil.altura(en: segundo, ventana: .centrada(en: "Fa")) == Altura(Nota(.sol, -1), octava: 2))
+        #expect(mastil.altura(en: segundo, ventana: .sostenidos) == mastil.altura(en: segundo))
+        #expect(mastil.alturaSiExiste(en: segundo, ventana: .bemoles)?.nota.nombre == "Sol♭")
+        #expect(mastil.alturaSiExiste(en: PosicionEnElMastil(cuerda: 9, traste: 0), ventana: .bemoles) == nil)
+    }
+
     @Test func posicionesDeUnaAltura() {
         let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
         // El Mi4 suena al aire en la cuerda aguda, en el traste 5 de la Si y en el 9 de la Sol;
