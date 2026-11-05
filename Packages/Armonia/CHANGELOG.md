@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### Escalas: cardinal y estadísticas
+
+- `CardinalDeEscala` nombra las escalas por su número de notas (de monotónica a dodecatónica), en los quince
+  idiomas, y `TipoDeEscala` tiene `numeroDeNotas`, `cardinal` y `todos(numeroDeNotas:)`.
+- `EstadisticasDeEscala` (`escala.estadisticas`) reúne el número de notas y su cardinal, el brillo de los modos de
+  siete notas, `brilloPorQuintas` (la posición media en el círculo de quintas respecto a la tónica, que sirve para
+  cualquier número de notas: 2 en la mayor y en la pentatónica mayor, 3 en la lidia, −3 en la locria), los pasos en
+  semitonos, el vector interválico, si es anhemitónica o cohemitónica, las transposiciones distintas, el número de
+  Forte, si es máximamente regular y si se ha medido aproximando notas microtonales.
+- `armonia escalas --notas 5` (`--notes`) deja solo las escalas de ese número de notas.
+
 ### `armonia escala --json`, con las opciones del texto
 
 - `escala … --json` admite las mismas opciones que el texto, y cada una añade su clave a las de siempre:

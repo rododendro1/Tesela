@@ -147,6 +147,19 @@ extension LineaDeComandosTests {
         #expect(resultado("escalas", "--uso").codigo == 2)
     }
 
+    /// `escalas --notas 5`: solo las de cinco notas, de las habituales y de las otras tradiciones.
+    @Test func escalasPorNumeroDeNotas() {
+        let pentatonicas = salida("escalas --notas 5")
+        #expect(pentatonicas.contains("  pentatónica mayor: Do Re Mi Sol La"), Comment(rawValue: pentatonicas))
+        #expect(!pentatonicas.contains("  mayor: "), Comment(rawValue: pentatonicas))
+        #expect(salida("escalas --notes 5") == pentatonicas)
+        #expect(salida("escalas --notas 8 --uso jazz").contains("  bebop dominante: "))
+        #expect(resultado("escalas", "--notas", "0").codigo == 2)
+        #expect(resultado("escalas", "--notas", "cinco").codigo == 2)
+        #expect(resultado("escalas", "--notas").codigo == 2)
+        #expect(resultado("escalas", "--notas").error.contains("--notas 5"))
+    }
+
     @Test func catalogoDeEscalas() {
         let todas = salida("escalas")
         #expect(todas.hasPrefix("habituales ("), Comment(rawValue: todas))
