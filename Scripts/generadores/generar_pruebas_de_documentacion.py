@@ -15,6 +15,10 @@ Un nombre que empieza por minúscula se compara si va entre comillas latinas:
 Para que un comentario sea solo una explicación y no se compare, empieza por una minúscula
 que no sea un valor (`// baja con Sol♮ y Fa♮`) o con `…`.
 
+Las pruebas no llevan números de línea: cada una nombra su bloque (el fichero y su número de bloque) y cada
+comprobación, su renglón dentro del bloque, así que cambiar el texto que rodea a un ejemplo no cambia sus pruebas.
+La línea del fichero se calcula al fallar (`BloqueDeDocumentacion`, en `Comprobar.swift`).
+
 Uso:
     python3 Scripts/generadores/generar_pruebas_de_documentacion.py              # regenera las pruebas
     python3 Scripts/generadores/generar_pruebas_de_documentacion.py --comprobar  # falla si están desfasadas
@@ -123,13 +127,14 @@ def literal_swift(texto):
     return f'{almohadillas}"{texto}"{almohadillas}'
 
 
-def comprobacion(expresion, esperado, fichero, linea):
-    """`// .mayor` y `// == .menorNatural` se comparan como valores de Swift; lo demás, como texto."""
+def comprobacion(expresion, esperado, renglon):
+    """`// .mayor` y `// == .menorNatural` se comparan como valores de Swift; lo demás, como texto. `renglon` es el
+    del bloque (desde 0); el bloque es la constante `doc` de la prueba."""
     if esperado.startswith("== "):
         esperado = esperado[3:]
     if esperado.startswith("."):
-        return f"comprobarIgual({expresion}, {esperado}, {literal_swift(fichero)}, {linea})"
-    return f"comprobar({expresion}, {literal_swift(esperado)}, {literal_swift(fichero)}, {linea})"
+        return f"comprobarIgual({expresion}, {esperado}, doc, {renglon})"
+    return f"comprobar({expresion}, {literal_swift(esperado)}, doc, {renglon})"
 
 
 def generar():
@@ -137,23 +142,23 @@ def generar():
     for ruta in FUENTES:
         nombre_fichero = ruta.relative_to(RAIZ).as_posix()
         base = re.sub(r"\W", "", ruta.stem if ruta.suffix == ".md" else "Tutorial" + ruta.stem.title())
-        for indice, (inicio, lineas) in enumerate(bloques(ruta), start=1):
+        for indice, (_, lineas) in enumerate(bloques(ruta), start=1):
             texto = "\n".join(lineas)
             # Solo el código, sin comentarios ni cadenas, para buscar qué nombres se usan.
             codigo_solo = "\n".join(re.sub(r'"[^"]*"', '""', separar_comentario(l)[0]) for l in lineas)
-            cuerpo = [f"        // {nombre_fichero}, línea {inicio}"]
+            cuerpo = [f"        // {nombre_fichero}, bloque {indice}"]
             for variable, declaracion in PRELUDIOS.items():
                 if usos(variable, codigo_solo) and not re.search(rf"\blet {variable}\b", texto):
                     cuerpo.append(f"        {declaracion}")
             pendiente = None  # expresión cuyo valor está en la línea siguiente (`// [...]`)
             for desplazamiento, linea in enumerate(lineas):
-                numero = inicio + desplazamiento
+                numero = desplazamiento
                 sangria = linea[: len(linea) - len(linea.lstrip())]
                 codigo, comentario = separar_comentario(linea.strip())
                 if not codigo:
                     if comentario and pendiente and valor_esperado(comentario):
                         expresion, n = pendiente
-                        cuerpo[-1] = f"        {sangria}{comprobacion(expresion, valor_esperado(comentario), nombre_fichero, n)}"
+                        cuerpo[-1] = f"        {sangria}{comprobacion(expresion, valor_esperado(comentario), n)}"
                     pendiente = None
                     continue
                 pendiente = None
@@ -169,7 +174,7 @@ def generar():
                     continue
                 esperado = valor_esperado(comentario)
                 if esperado is not None:
-                    cuerpo.append(f"        {sangria}{comprobacion(codigo, esperado, nombre_fichero, numero)}")
+                    cuerpo.append(f"        {sangria}{comprobacion(codigo, esperado, numero)}")
                 else:
                     cuerpo.append(f"        {sangria}_ = {codigo}")
                     pendiente = (codigo, numero)
@@ -180,6 +185,9 @@ def generar():
                         if usos(v, codigo_solo) == 1]
             if sin_usar:
                 cuerpo.append(f"        _ = {sin_usar[0]}" if len(sin_usar) == 1 else f"        _ = ({', '.join(sin_usar)})")
+            # El bloque, si alguna comprobación lo nombra.
+            if any(re.search(r"\bdoc, \d+\)$", l) for l in cuerpo):
+                cuerpo.insert(1, f"        let doc = BloqueDeDocumentacion({literal_swift(nombre_fichero)}, {indice})")
             # «README» → «readme», «Acordes» → «acordes».
             nombre = re.sub(r"^[A-Z]+?(?=[A-Z][a-z]|\d|$)|^[A-Z]", lambda m: m.group(0).lower(), base) + str(indice)
             funciones.append(f"    @Test func {nombre}() throws {{\n" + "\n".join(cuerpo) + "\n    }")

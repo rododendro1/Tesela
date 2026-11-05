@@ -1,6 +1,41 @@
 import Foundation
 import Testing
 
+/// Un bloque ```swift de la documentación: su fichero (desde `Packages/Armonia`) y su número en él, desde 1. Un
+/// fichero .swift de los tutoriales es un solo bloque. Las pruebas generadas no guardan números de línea: la línea
+/// de un renglón del bloque se busca en el fichero cuando una comprobación falla.
+struct BloqueDeDocumentacion: Sendable {
+    let fichero: String
+    let numero: Int
+
+    init(_ fichero: String, _ numero: Int) {
+        self.fichero = fichero
+        self.numero = numero
+    }
+
+    /// La línea del fichero en que está el renglón `renglon` del bloque (desde 0); `nil` si no se puede leer.
+    func linea(_ renglon: Int) -> Int? {
+        let raiz = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .deletingLastPathComponent()
+        guard let texto = try? String(contentsOf: raiz.appendingPathComponent(fichero), encoding: .utf8) else {
+            return nil
+        }
+        if fichero.hasSuffix(".swift") { return 1 + renglon }
+        var vistos = 0
+        for (indice, linea) in texto.components(separatedBy: "\n").enumerated()
+        where linea.trimmingCharacters(in: .whitespaces) == "```swift" {
+            vistos += 1
+            if vistos == numero { return indice + 2 + renglon }
+        }
+        return nil
+    }
+
+    /// «fichero:línea», o «fichero, bloque N, renglón M» si no se encuentra la línea.
+    func ubicacion(_ renglon: Int) -> String {
+        linea(renglon).map { "\(fichero):\($0)" } ?? "\(fichero), bloque \(numero), renglón \(renglon + 1)"
+    }
+}
+
 /// Comprueba que el valor de un ejemplo coincide con el texto de su comentario.
 ///
 /// Se compara el texto del valor (`description`) sin espacios; las cadenas, con o sin comillas
@@ -9,22 +44,22 @@ import Testing
 /// espacios. Un número se compara con los decimales que tenga el comentario (`−13,69`), y `…`
 /// en el comentario vale por cualquier tramo (`La4 … Sol♯5 La5`).
 func comprobar<T>(
-    _ valor: T, _ esperado: String, _ fichero: String, _ linea: Int,
+    _ valor: T, _ esperado: String, _ bloque: BloqueDeDocumentacion, _ renglon: Int,
     sourceLocation: SourceLocation = #_sourceLocation
 ) {
     let candidatos = descripciones(de: valor)
     if candidatos.contains(where: { coincide($0, con: esperado) }) { return }
     Issue.record(
-        "\(fichero):\(linea): el ejemplo da «\(candidatos[0])» y el comentario dice «\(esperado)»",
+        "\(bloque.ubicacion(renglon)): el ejemplo da «\(candidatos[0])» y el comentario dice «\(esperado)»",
         sourceLocation: sourceLocation)
 }
 
 /// Comprueba un valor contra otro escrito en Swift en el comentario (`// .mayor`).
 func comprobarIgual<T: Equatable>(
-    _ valor: T, _ esperado: T, _ fichero: String, _ linea: Int,
+    _ valor: T, _ esperado: T, _ bloque: BloqueDeDocumentacion, _ renglon: Int,
     sourceLocation: SourceLocation = #_sourceLocation
 ) {
-    #expect(valor == esperado, "\(fichero):\(linea)", sourceLocation: sourceLocation)
+    #expect(valor == esperado, "\(bloque.ubicacion(renglon))", sourceLocation: sourceLocation)
 }
 
 private func descripcion(_ valor: Any) -> String {
