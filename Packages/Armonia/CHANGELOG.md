@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### Ventanas de quintas para nombrar una altura sin contexto
+
+- `VentanaDeQuintas`: doce quintas seguidas de la línea de quintas, una escritura para cada clase de altura.
+  `.sostenidos` (Fa–La♯) y `.bemoles` (Sol♭–Si) son las de `preferirBemoles`; `.centrada(en:)` pone la tónica casi en
+  medio (Re♭–Fa♯ alrededor de Do), y `VentanaDeQuintas(desde:)` empieza en cualquier nota.
+- `Altura(midi:ventana:)`; `Altura(midi:preferirBemoles:)` usa ahora `.sostenidos` o `.bemoles`, con el mismo resultado.
+- `OpcionesDeDiagrama.ventana` elige cómo se nombran las notas en los teclados, el piano y el reloj;
+  `preferirBemoles` sigue funcionando y equivale a `ventana == .bemoles`.
+- `TecladoCuadrado.altura(en:ventana:)`, `TecladoIsomorfico.altura(en:ventana:)`, `Mastil.altura(en:ventana:)` y
+  `Mastil.alturaSiExiste(en:ventana:)`.
+
 ### La hoja de estudio de una progresión
 
 - `armonia hoja --acordes Rem7 Sol7 Do7M --en Do mayor` (`sheet --chords`) escribe la hoja de estudio de una

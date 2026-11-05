@@ -280,6 +280,11 @@ public struct TecladoCuadrado: Hashable, Sendable {
         Altura(midi: midi(en: casilla), preferirBemoles: preferirBemoles)
     }
 
+    /// La altura de una casilla, escrita con la nota de su clase que hay en la ventana.
+    public func altura(en casilla: CasillaCuadrada, ventana: VentanaDeQuintas) -> Altura {
+        Altura(midi: midi(en: casilla), ventana: ventana)
+    }
+
     /// Las casillas de `region` que suenan a ese número MIDI.
     public func casillas(de midi: Int, en region: some Sequence<CasillaCuadrada>) -> [CasillaCuadrada] {
         region.filter { self.midi(en: $0) == midi }
@@ -337,7 +342,7 @@ public struct TecladoCuadrado: Hashable, Sendable {
     ///   - contorno: si se dibuja en trazo grueso el contorno de las marcadas: los lados entre una casilla marcada y
     ///     una que no lo está (o que queda fuera del dibujo).
     ///   - margen: el blanco alrededor de las casillas, en píxeles (antes de la escala).
-    ///   - opciones: la notación de los nombres, si se prefieren bemoles, el título (ninguno, si no se da) y la
+    ///   - opciones: la notación de los nombres, la ventana de quintas, el título (ninguno, si no se da) y la
     ///     escala: con 1, cada casilla tiene 40 píxeles de lado (``centro(de:lado:)``).
     public func svg(
         _ casillas: [CasillaCuadrada], marcadas: MarcasDeDiagrama = [], primeras: Set<Int> = [],
@@ -369,7 +374,7 @@ public struct TecladoCuadrado: Hashable, Sendable {
             lineas.append(cuadrado.con("width", lado).con("height", lado).con("fill", color).vacio)
             let rotulo =
                 marcadas.rotulo(de: midi)
-                ?? (marcadas.altura(de: midi) ?? altura(en: casilla, preferirBemoles: opciones.preferirBemoles))
+                ?? (marcadas.altura(de: midi) ?? altura(en: casilla, ventana: opciones.ventana))
                 .nombreCompacto(en: opciones.notacion)
             let texto = ElementoSVG("text", numeros: .hastaTresDecimales).con("x", centro.x).con("y", centro.y)
             lineas.append(texto.conTexto(rotulo))
