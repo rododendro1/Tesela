@@ -197,7 +197,7 @@ extension Mastil {
         limite: Int = 12
     ) -> [Digitacion] {
         let cuerdas = encordado.afinacion
-        let ultimoTraste = min(maximoTraste, trastes)
+        let ultimoTraste = min(maximoTraste, numeroDeTrastes)
         let notas = acorde.notas
         let clases = Set(notas.map(\.claseDeAltura))
         let claseDelBajo = acorde.bajo.claseDeAltura
