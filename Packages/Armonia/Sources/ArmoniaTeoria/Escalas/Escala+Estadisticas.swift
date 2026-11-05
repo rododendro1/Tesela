@@ -50,9 +50,10 @@ public struct EstadisticasDeEscala: Hashable, Sendable {
         brilloPorQuintas = quintas.isEmpty ? 0 : Double(quintas.reduce(0, +)) / Double(quintas.count)
         let conjunto = escala.conjuntoDeClases
         let desdeLaTonica = conjunto.clases.map { modulo($0 - escala.tonica.claseDeAltura, 12) }.sorted()
-        pasos = zip(desdeLaTonica, desdeLaTonica.dropFirst() + [12]).map { $1 - $0 }
+        let pasos = zip(desdeLaTonica, desdeLaTonica.dropFirst() + [12]).map { $1 - $0 }
+        self.pasos = pasos
         vectorIntervalico = conjunto.vectorIntervalico
-        anhemitonica = vectorIntervalico.first == 0
+        anhemitonica = conjunto.vectorIntervalico.first == 0
         cohemitonica = pasos.indices.contains { pasos[$0] == 1 && pasos[($0 + 1) % pasos.count] == 1 }
         transposicionesDistintas = escala.transposicionesDistintas
         numeroDeForte = conjunto.numeroDeForte
