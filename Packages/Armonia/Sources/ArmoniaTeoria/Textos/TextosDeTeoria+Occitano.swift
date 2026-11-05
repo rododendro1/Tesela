@@ -5,6 +5,16 @@
 
 extension TextosDeTeoria {
     static let occitano = TextosDeTeoria(
+        // AfinacionHistorica.swift
+        temperamentoIgual: "temperament egal",
+        pitagorico: "acordatge pitagoric",
+        mesotonico: "mesotonic d'¼ de coma",
+        werckmeisterIII: "Werckmeister III",
+        kirnbergerIII: "Kirnberger III",
+        vallotti: "Vallotti",
+        young: "Young",
+        afinacionJusta: "acordatge just",
+
         // Acorde.swift
         conBajoEn: { acorde, bajo in "\(acorde), amb la bassa en \(bajo)" },
         nombresDeLasInversiones: ["estat fondamental", "primièra inversion", "segonda inversion", "tresena inversion",

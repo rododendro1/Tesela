@@ -5,6 +5,16 @@
 
 extension TextosDeTeoria {
     static let ruso = TextosDeTeoria(
+        // AfinacionHistorica.swift
+        temperamentoIgual: "равномерная темперация",
+        pitagorico: "пифагоров строй",
+        mesotonico: "среднетоновый строй в ¼ коммы",
+        werckmeisterIII: "Веркмейстер III",
+        kirnbergerIII: "Кирнбергер III",
+        vallotti: "Валлотти",
+        young: "Юнг",
+        afinacionJusta: "чистый строй",
+
         // Acorde.swift
         conBajoEn: { acorde, bajo in "\(acorde), с басом \(bajo)" },
         nombresDeLasInversiones: ["основной вид", "первое обращение", "второе обращение", "третье обращение",

@@ -1,5 +1,4 @@
 import ArmoniaNucleo
-import ArmoniaTeoria
 
 // MARK: - Representación en base 40 (y sus generalizaciones)
 //

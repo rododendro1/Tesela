@@ -1,5 +1,4 @@
 import ArmoniaNucleo
-import ArmoniaTeoria
 
 /// Las afinaciones históricas más conocidas, para elegir con cuál suenan las notas (en las apps,
 /// el botón «Escuchar»). Cada una da su `Afinacion`; la justa se construye sobre una tónica.
@@ -54,21 +53,21 @@ extension AfinacionHistorica {
     public func nombre(en notacion: Notacion) -> String {
         switch self {
         case .igual:
-            return TextosDeRepresentaciones.en(notacion, \.temperamentoIgual)
+            return TextosDeTeoria.en(notacion, \.temperamentoIgual)
         case .pitagorico:
-            return TextosDeRepresentaciones.en(notacion, \.pitagorico)
+            return TextosDeTeoria.en(notacion, \.pitagorico)
         case .mesotonico:
-            return TextosDeRepresentaciones.en(notacion, \.mesotonico)
+            return TextosDeTeoria.en(notacion, \.mesotonico)
         case .werckmeisterIII:
-            return TextosDeRepresentaciones.en(notacion, \.werckmeisterIII)
+            return TextosDeTeoria.en(notacion, \.werckmeisterIII)
         case .kirnbergerIII:
-            return TextosDeRepresentaciones.en(notacion, \.kirnbergerIII)
+            return TextosDeTeoria.en(notacion, \.kirnbergerIII)
         case .vallotti:
-            return TextosDeRepresentaciones.en(notacion, \.vallotti)
+            return TextosDeTeoria.en(notacion, \.vallotti)
         case .young:
-            return TextosDeRepresentaciones.en(notacion, \.young)
+            return TextosDeTeoria.en(notacion, \.young)
         case .justa:
-            return TextosDeRepresentaciones.en(notacion, \.afinacionJusta)
+            return TextosDeTeoria.en(notacion, \.afinacionJusta)
         }
     }
 }

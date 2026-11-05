@@ -6,16 +6,6 @@ import ArmoniaNucleo
 
 extension TextosDeRepresentaciones {
     static let aragones = TextosDeRepresentaciones(
-        // AfinacionHistorica.swift
-        temperamentoIgual: "temperamento igual",
-        pitagorico: "afinación pitagorica",
-        mesotonico: "mesotonico de ¼ de coma",
-        werckmeisterIII: "Werckmeister III",
-        kirnbergerIII: "Kirnberger III",
-        vallotti: "Vallotti",
-        young: "Young",
-        afinacionJusta: "afinación chusta",
-
         // CorrespondenciaDeColores.swift
         circuloDeQuintas: "cerclo de quintas",
 

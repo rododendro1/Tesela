@@ -6,8 +6,8 @@ import PackageDescription
 // `package`: visible dentro de este paquete y no en la API pública.
 //
 //     ArmoniaNucleo            Fundamentos, Texto, Postonal
-//     ArmoniaTeoria            Acordes, Escalas, Tonalidad
-//     ArmoniaRepresentaciones  Afinacion, Color, Dibujo, Redes
+//     ArmoniaTeoria            Acordes, Escalas, Tonalidad, Afinacion
+//     ArmoniaRepresentaciones  Color, Dibujo, Redes
 //     ArmoniaPartitura         Modelo, Dibujo, Contrapunto
 //     ArmoniaFormatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond: exportar e importar
 //     ArmoniaTrastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes), sobre Partitura

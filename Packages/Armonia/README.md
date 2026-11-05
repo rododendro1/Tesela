@@ -226,10 +226,10 @@ Sources/
 │   │                      Microtonos (SistemaMicrotonal, TipoDeEscalaMicrotonal)
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
 │   │                      FuncionTonal y AcordeAnalizado)
-│   └── Coral/             Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion
+│   ├── Coral/             Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion
+│   └── Afinacion/         Afinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica
+│                          (el catálogo), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett (números)
 ├── ArmoniaRepresentaciones/
-│   ├── Afinacion/     Afinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica (el catálogo),
-│   │                  BaseDeHewlett (números)
 │   ├── Color/         CorrespondenciaDeColores (colores)
 │   ├── Redes/         Tonnetz (la red de quintas y terceras, en SVG),
 │   │   │              TablaArmonica (hexágonos de teclado isomórfico, en SVG), FormatoUIL
@@ -283,10 +283,9 @@ línea de comandos están con ella, en `Apps/ArmoniaCLI/Tests/`.
 ### Capas
 
 La biblioteca se reparte en seis módulos que siguen unas capas: **ArmoniaNucleo** (Fundamentos,
-Texto, Postonal), **ArmoniaTeoria** (Acordes, Escalas, Tonalidad, que se necesitan entre sí) y
-dos ramas que usan las anteriores y no se usan entre sí: **ArmoniaRepresentaciones** (afinación,
-color, dibujo y redes, con la teoría neorriemanniana) y **ArmoniaPartitura** (el modelo, el pentagrama en SVG y el
-contrapunto). Sobre Partitura van **ArmoniaFormatos** (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond)
+Texto, Postonal), **ArmoniaTeoria** (Acordes, Escalas, Tonalidad, que se necesitan entre sí, y la afinación) y
+dos ramas que usan las anteriores y no se usan entre sí: **ArmoniaRepresentaciones** (color, dibujo y redes, con
+la teoría neorriemanniana) y **ArmoniaPartitura** (el modelo, el pentagrama en SVG y el contrapunto). Sobre Partitura van **ArmoniaFormatos** (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond)
 y **ArmoniaTrastes** (instrumentos de cuerda con trastes, que escriben lo que se toca en una partitura con su
 tablatura), que tampoco se usan entre sí. `Armonia` los reexporta
 todos; `Hexagonos`, que usan las Representaciones, se importa aparte. `python3

@@ -6,16 +6,6 @@ import ArmoniaNucleo
 
 extension TextosDeRepresentaciones {
     static let asturiano = TextosDeRepresentaciones(
-        // AfinacionHistorica.swift
-        temperamentoIgual: "temperamentu igual",
-        pitagorico: "afinación pitagórica",
-        mesotonico: "mesotónicu de ¼ de coma",
-        werckmeisterIII: "Werckmeister III",
-        kirnbergerIII: "Kirnberger III",
-        vallotti: "Vallotti",
-        young: "Young",
-        afinacionJusta: "afinación xusta",
-
         // CorrespondenciaDeColores.swift
         circuloDeQuintas: "círculu de quintes",
 

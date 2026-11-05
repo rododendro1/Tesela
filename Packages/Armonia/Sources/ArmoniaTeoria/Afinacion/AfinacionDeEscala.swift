@@ -1,5 +1,4 @@
 import ArmoniaNucleo
-import ArmoniaTeoria
 import Foundation
 
 // Las escalas y sus afinaciones.
