@@ -8,18 +8,18 @@ extension LineaDeComandos {
     static func vecinos(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
         guard let voces = argumentos.quitarNumero("--voces", "--voices", en: 1...2, porDefecto: 1) else {
-            return uso(.vocesFueraDeRango, notacion)
+            throw ErrorDeUso.vocesFueraDeRango
         }
         // `--ampliada`: la familia de las séptimas con los maj7, para un acorde de las séptimas.
         let tipos = argumentos.quitarMarca("--ampliada", "--extended") ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
         let acordes = argumentos.restantes
-        guard acordes.count == 1 else { return uso(.unAcordeDeVecinos, notacion) }
+        guard acordes.count == 1 else { throw ErrorDeUso.unAcordeDeVecinos }
         let acorde = try Acorde(leyendo: acordes[0])
         let pasos =
             tipos.map { $0.contains(acorde.tipo) ? acorde.vecinosParsimoniosos(voces: voces, tipos: $0) : [] }
             ?? acorde.vecinosParsimoniosos(voces: voces)
         guard !pasos.isEmpty else {
-            return uso(.vecinosSinFamilia, notacion)
+            throw ErrorDeUso.vecinosSinFamilia
         }
         return bien(pasos.map { $0.texto(en: notacion) }.joined(separator: "\n"))
     }
@@ -28,16 +28,16 @@ extension LineaDeComandos {
     static func caminoParsimonioso(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
         guard let voces = argumentos.quitarNumero("--voces", "--voices", en: 1...2, porDefecto: 1) else {
-            return uso(.vocesFueraDeRango, notacion)
+            throw ErrorDeUso.vocesFueraDeRango
         }
         // `--ampliada`: la familia de las séptimas con los maj7, para un acorde de las séptimas.
         let tipos = argumentos.quitarMarca("--ampliada", "--extended") ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
         let acordes = argumentos.restantes
-        guard acordes.count == 2 else { return uso(.dosAcordesDeCamino, notacion) }
+        guard acordes.count == 2 else { throw ErrorDeUso.dosAcordesDeCamino }
         let origen = try Acorde(leyendo: acordes[0])
         let destino = try Acorde(leyendo: acordes[1])
         guard let camino = Tonnetz.caminoParsimonioso(desde: origen, hasta: destino, voces: voces, tipos: tipos) else {
-            return uso(.caminoSinConexion, notacion)
+            throw ErrorDeUso.caminoSinConexion
         }
         var texto = Acorde(origen.fundamental, origen.tipo).cifrado(en: notacion)
         for paso in camino {
@@ -50,9 +50,9 @@ extension LineaDeComandos {
 
     /// `plr Do PLR`: la tríada tras cada paso. `plr Do Mibm`: el camino más corto.
     static func plr(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        guard argumentos.count >= 2 else { return uso(.faltanPasosDePLR, notacion) }
+        guard argumentos.count >= 2 else { throw ErrorDeUso.faltanPasosDePLR }
         let origen = try Acorde(leyendo: argumentos[0])
-        guard Tonnetz.Triada(origen) != nil else { return uso(.plrSoloTriadas(camino: false), notacion) }
+        guard Tonnetz.Triada(origen) != nil else { throw ErrorDeUso.plrSoloTriadas(camino: false) }
         let resto = argumentos.dropFirst().joined(separator: " ")
         let pasos: [TransformacionNeorriemanniana]
         if let secuencia = try? TransformacionNeorriemanniana.secuencia(leyendo: resto) {
@@ -70,7 +70,7 @@ extension LineaDeComandos {
         } else {
             let destino = try Acorde(leyendo: resto)
             guard let camino = Tonnetz.camino(desde: origen, hasta: destino) else {
-                return uso(.plrSoloTriadas(camino: true), notacion)
+                throw ErrorDeUso.plrSoloTriadas(camino: true)
             }
             pasos = camino
         }

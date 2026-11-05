@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### `armonia`: un solo camino para los errores de uso
+
+- `ErrorDeUso` es un `Error`, y las órdenes lo lanzan (`throw ErrorDeUso.faltaEscala`) en lugar de devolver el
+  resultado de `uso(_:_:)`; `ejecutar` lo recoge y lo escribe, como antes hacía con `FalloDeUso`, que desaparece. Así
+  una lectura puede servir igual para el texto y para `--json`. `leerDibujo` lanza también sus errores. Nada cambia
+  en lo que se acepta ni en los mensajes.
+
 ### `armonia`: las opciones con valor, en una línea
 
 - Las órdenes leen cada opción con valor con `Argumentos.valor(_:siFalta:)` (y `valorConPalabras`), que da el valor

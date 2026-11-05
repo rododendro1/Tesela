@@ -16,83 +16,56 @@ extension LineaDeComandos {
         case ciclo(CicloNeorriemanniano, Acorde)
     }
 
-    /// Lo leído: qué se dibuja y con qué margen, o el error que se responde.
-    enum Lectura {
-        case dibujo(Dibujo, margen: Int?)
-        case error(ResultadoDeOrden)
-    }
-
     /// Lee los argumentos comunes de `tonnetz` y `tabla`: `--margen N` y lo que se dibuja
     /// (notas, `--acorde`, `--escala`, `--clases`, `--recorrido`, `--camino` o `--ciclo`).
-    static func leerDibujo(_ argumentos: [String], orden: String, _ notacion: Notacion) throws -> Lectura {
+    static func leerDibujo(_ argumentos: [String], orden: String) throws -> (dibujo: Dibujo, margen: Int?) {
         var lectura = Argumentos(argumentos)
         var margen: Int?
-        switch lectura.quitarOpcion("--margen") {
-        case .ausente:
-            break
-        case .sinValor:
-            return .error(uso(.margenFueraDeRango, notacion))
-        case .valor(let texto):
-            guard let n = Int(texto), (0...6).contains(n) else { return .error(uso(.margenFueraDeRango, notacion)) }
+        if let texto = try lectura.valor("--margen", siFalta: .margenFueraDeRango) {
+            guard let n = Int(texto), (0...6).contains(n) else { throw ErrorDeUso.margenFueraDeRango }
             margen = n
         }
         let argumentos = lectura.restantes
-        guard let primero = argumentos.first else { return .error(uso(.faltanNotasDelDibujo(orden: orden), notacion)) }
+        guard let primero = argumentos.first else { throw ErrorDeUso.faltanNotasDelDibujo(orden: orden) }
         let resto = argumentos.dropFirst().joined(separator: " ")
         let dibujo: Dibujo
         switch primero {
         case "--acorde", "--chord":
-            guard !resto.isEmpty else { return .error(uso(.faltaAcordeDelDibujo(orden: orden), notacion)) }
+            guard !resto.isEmpty else { throw ErrorDeUso.faltaAcordeDelDibujo(orden: orden) }
             dibujo = .acorde(try Acorde(leyendo: resto))
         case "--escala", "--scale":
-            guard !resto.isEmpty else { return .error(uso(.faltaEscalaDelDibujo(orden: orden), notacion)) }
+            guard !resto.isEmpty else { throw ErrorDeUso.faltaEscalaDelDibujo(orden: orden) }
             dibujo = .escala(try Escala(leyendo: resto))
         case "--clases", "--pcs":
             // Como `armonia conjunto`: «0 4 7», «047», «01t», «Do Mi Sol» o «3-11».
-            guard !resto.isEmpty else { return .error(uso(.faltanClasesDelDibujo(orden: orden), notacion)) }
+            guard !resto.isEmpty else { throw ErrorDeUso.faltanClasesDelDibujo(orden: orden) }
             dibujo = .clases(try ConjuntoDeClases(leyendo: resto))
         case "--recorrido", "--sequence":
             let acordes = try argumentos.dropFirst().map { try Acorde(leyendo: $0) }
-            guard !acordes.isEmpty else { return .error(uso(.faltanTriadasDelRecorrido(orden: orden), notacion)) }
+            guard !acordes.isEmpty else { throw ErrorDeUso.faltanTriadasDelRecorrido(orden: orden) }
             dibujo = .recorrido(acordes)
         case "--camino", "--shortest":
             let acordes = try argumentos.dropFirst().map { try Acorde(leyendo: $0) }
-            guard acordes.count == 2 else { return .error(errorDeCamino(orden, notacion)) }
+            guard acordes.count == 2 else { throw ErrorDeUso.caminoSoloTriadas(orden: orden) }
             dibujo = .camino(acordes[0], acordes[1])
         case "--ciclo", "--cycle":
             let partes = Array(argumentos.dropFirst())
             guard partes.count >= 2,
                 let ciclo = try? CicloNeorriemanniano(leyendo: partes.dropLast().joined(separator: " "))
             else {
-                return .error(uso(.cicloMalEscrito(orden: orden), notacion))
+                throw ErrorDeUso.cicloMalEscrito(orden: orden)
             }
             dibujo = .ciclo(ciclo, try Acorde(leyendo: partes.last!))
         default:
-            if primero.hasPrefix("--") { return .error(uso(.opcionDesconocida(primero), notacion)) }
+            if primero.hasPrefix("--") { throw ErrorDeUso.opcionDesconocida(primero) }
             dibujo = .notas(argumentos)
         }
-        return .dibujo(dibujo, margen: margen)
-    }
-
-    static func errorDeRecorrido(_ orden: String, _ notacion: Notacion) -> ResultadoDeOrden {
-        uso(.recorridoSoloTriadas(orden: orden), notacion)
-    }
-
-    static func errorDeCamino(_ orden: String, _ notacion: Notacion) -> ResultadoDeOrden {
-        uso(.caminoSoloTriadas(orden: orden), notacion)
-    }
-
-    static func errorDeCiclo(_ orden: String, _ notacion: Notacion) -> ResultadoDeOrden {
-        uso(.cicloSoloTriadas(orden: orden), notacion)
+        return (dibujo, margen)
     }
 
     /// `tonnetz Do Mi Sol`, `tonnetz --acorde Domaj7`, `tonnetz --ciclo hexatonico Do`…
     static func tonnetz(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        let (dibujo, margen): (Dibujo, Int?)
-        switch try leerDibujo(argumentos, orden: "tonnetz", notacion) {
-        case .error(let error): return error
-        case .dibujo(let leido, let n): (dibujo, margen) = (leido, n)
-        }
+        let (dibujo, margen) = try leerDibujo(argumentos, orden: "tonnetz")
         let tonnetz: Tonnetz
         switch dibujo {
         case .notas(let textos): tonnetz = Tonnetz(try textos.map { try Nota(leyendo: $0) })
@@ -100,15 +73,19 @@ extension LineaDeComandos {
         case .escala(let escala): tonnetz = Tonnetz(escala)
         case .clases(let conjunto): tonnetz = Tonnetz(conjunto)
         case .recorrido(let acordes):
-            guard let recorrido = Tonnetz(recorrido: acordes) else { return errorDeRecorrido("tonnetz", notacion) }
+            guard let recorrido = Tonnetz(recorrido: acordes) else {
+                throw ErrorDeUso.recorridoSoloTriadas(orden: "tonnetz")
+            }
             tonnetz = recorrido
         case .camino(let origen, let destino):
             guard let camino = Tonnetz(caminoDesde: origen, hasta: destino) else {
-                return errorDeCamino("tonnetz", notacion)
+                throw ErrorDeUso.caminoSoloTriadas(orden: "tonnetz")
             }
             tonnetz = camino
         case .ciclo(let ciclo, let acorde):
-            guard let dibujo = Tonnetz(ciclo: ciclo, desde: acorde) else { return errorDeCiclo("tonnetz", notacion) }
+            guard let dibujo = Tonnetz(ciclo: ciclo, desde: acorde) else {
+                throw ErrorDeUso.cicloSoloTriadas(orden: "tonnetz")
+            }
             tonnetz = dibujo
         }
         return bien(tonnetz.svg(opciones: .init(notacion: notacion), margen: margen).trimmingCharacters(in: "\n"))
@@ -117,11 +94,7 @@ extension LineaDeComandos {
     /// `tabla Do Mi Sol`, `tabla Do3 Sol3 Mi4` (con octava, alturas), `tabla --acorde Domaj7`,
     /// `tabla --ciclo octatonico Do`…
     static func tablaArmonica(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        let (dibujo, margen): (Dibujo, Int?)
-        switch try leerDibujo(argumentos, orden: "tabla", notacion) {
-        case .error(let error): return error
-        case .dibujo(let leido, let n): (dibujo, margen) = (leido, n)
-        }
+        let (dibujo, margen) = try leerDibujo(argumentos, orden: "tabla")
         let tabla: TablaArmonica
         switch dibujo {
         case .notas(let textos):
@@ -135,16 +108,18 @@ extension LineaDeComandos {
         case .escala(let escala): tabla = TablaArmonica(escala)
         case .clases(let conjunto): tabla = TablaArmonica(conjunto)
         case .recorrido(let acordes):
-            guard let recorrido = TablaArmonica(recorrido: acordes) else { return errorDeRecorrido("tabla", notacion) }
+            guard let recorrido = TablaArmonica(recorrido: acordes) else {
+                throw ErrorDeUso.recorridoSoloTriadas(orden: "tabla")
+            }
             tabla = recorrido
         case .camino(let origen, let destino):
             guard let camino = TablaArmonica(caminoDesde: origen, hasta: destino) else {
-                return errorDeCamino("tabla", notacion)
+                throw ErrorDeUso.caminoSoloTriadas(orden: "tabla")
             }
             tabla = camino
         case .ciclo(let ciclo, let acorde):
             guard let dibujo = TablaArmonica(ciclo: ciclo, desde: acorde) else {
-                return errorDeCiclo("tabla", notacion)
+                throw ErrorDeUso.cicloSoloTriadas(orden: "tabla")
             }
             tabla = dibujo
         }
@@ -156,15 +131,15 @@ extension LineaDeComandos {
     static func teclado(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
         guard let octavas = argumentos.quitarNumero("--octavas", "--octaves", en: 1...4, porDefecto: 1) else {
-            return uso(.octavasFueraDeRango, notacion)
+            throw ErrorDeUso.octavasFueraDeRango
         }
         var mano: Mano?
         if let texto = try argumentos.valor("--mano", "--hand") {
-            guard let elegida = manoDePiano(texto) else { return uso(.manoDesconocida(texto), notacion) }
+            guard let elegida = manoDePiano(texto) else { throw ErrorDeUso.manoDesconocida(texto) }
             mano = elegida
         }
-        if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
-        guard !argumentos.restantes.isEmpty else { return uso(.faltaEscalaDelTeclado, notacion) }
+        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDelTeclado }
         let escala = try Escala(leyendo: argumentos.unidos)
         let svg = PresentacionDeEstudioDeEscala.teclado(de: escala, mano: mano, octavas: octavas, notacion: notacion)
         return bien(svg.trimmingCharacters(in: "\n"))
@@ -174,8 +149,8 @@ extension LineaDeComandos {
     static func reloj(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
         let quintas = argumentos.quitarMarca("--quintas", "--fifths")
-        if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
-        guard !argumentos.restantes.isEmpty else { return uso(.faltaEscalaDelReloj, notacion) }
+        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDelReloj }
         let escala = try Escala(leyendo: argumentos.unidos)
         let svg = PresentacionDeEstudioDeEscala.reloj(
             de: escala, orden: quintas ? .quintas : .cromatico, notacion: notacion)
@@ -191,7 +166,7 @@ extension LineaDeComandos {
     /// `--en <tonalidad>` (al final), la armadura de esa tonalidad.
     static func pentagrama(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(textos)
-        guard let tonalidad = try argumentos.quitarTonalidad() else { return uso(.faltaValor("en"), notacion) }
+        guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaValor("en") }
         var opciones = OpcionesDePentagrama(notacion: notacion)
         if let tonalidad { opciones.armadura = .tonalidad(tonalidad) }
         opciones.marcas.nombresDeLasNotas = argumentos.quitarMarca("--nombres", "--names")
@@ -204,12 +179,12 @@ extension LineaDeComandos {
         opciones.maquetacion.cambiosDeClave = argumentos.quitarMarca("--cambiar-clave", "--clef-changes")
         if opciones.maquetacion.cambiosDeClave { opciones.maquetacion.pentagramas = .simple }
         if let texto = try argumentos.valor("--clave", "--clef") {
-            guard let clave = leerClave(texto) else { return uso(.claveDesconocida(texto), notacion) }
+            guard let clave = leerClave(texto) else { throw ErrorDeUso.claveDesconocida(texto) }
             opciones.maquetacion.clave = clave
             opciones.maquetacion.pentagramas = .simple
         }
         guard let octava = argumentos.quitarNumero("--octava", "--octave", en: 0...7, porDefecto: 4) else {
-            return uso(.octavaFueraDeRango, notacion)
+            throw ErrorDeUso.octavaFueraDeRango
         }
         let tipos = [
             "escala": "escala", "scale": "escala", "acorde": "acorde", "chord": "acorde", "arpegio": "arpegio",
@@ -217,7 +192,7 @@ extension LineaDeComandos {
             "melodía": "melodia", "melody": "melodia",
         ]
         guard let primera = argumentos.restantes.first, let tipo = tipos[primera.lowercased()] else {
-            return uso(.faltaLoQueDibujaElPentagrama, notacion)
+            throw ErrorDeUso.faltaLoQueDibujaElPentagrama
         }
         argumentos = Argumentos(Array(argumentos.restantes.dropFirst()))
         let svg: String
@@ -225,14 +200,14 @@ extension LineaDeComandos {
         case "escala":
             return try pentagramaDeEscala(&argumentos, opciones, octava, notacion)
         case "acorde":
-            if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
-            guard !argumentos.restantes.isEmpty else { return uso(.faltaLoQueDibujaElPentagrama, notacion) }
+            if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+            guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
             svg = try Acorde(leyendo: argumentos.unidos).svgPentagrama(octava: octava, opciones: opciones)
         case "acordes":
             let romanos = argumentos.quitarMarca("--romanos", "--roman")
             let conBajoCifrado = argumentos.quitarMarca("--bajo-cifrado", "--figured-bass")
-            if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
-            guard !argumentos.restantes.isEmpty else { return uso(.faltaLoQueDibujaElPentagrama, notacion) }
+            if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+            guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
             let acordes = try argumentos.restantes.map { try Acorde(leyendo: $0) }
             // En posición cerrada, desde el Do de la octava (el central, si no se da), en dos octavas.
             let desde = Altura(.do, octava: octava).midi
@@ -270,8 +245,8 @@ extension LineaDeComandos {
             acordes = try texto.split(separator: " ").map { try Acorde(leyendo: String($0)) }
             opciones.marcas.notasAjenas = true
         }
-        if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
-        guard !argumentos.restantes.isEmpty else { return uso(.faltaLoQueDibujaElPentagrama, notacion) }
+        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
         let voz = try Voz(leyendo: argumentos.unidos)
         // El primer evento que empieza en cada compás lleva el acorde de ese compás.
         var porEvento: [Int: Acorde] = [:]
@@ -296,13 +271,13 @@ extension LineaDeComandos {
         (tonalidad.map { $0.analizar(acordes) } ?? AnalisisArmonico.analizar(acordes))?.cifrados ?? []
     }
 
-    /// Lee el mástil de `--instrumento` (la guitarra, si no se da), o lanza `FalloDeUso` con lo que está mal escrito.
+    /// Lee el mástil de `--instrumento` (la guitarra, si no se da), o lanza el `ErrorDeUso` de lo que está mal escrito.
     private static func leerMastil(_ argumentos: inout Argumentos, en mastil: inout Mastil) throws {
         guard let nombre = try argumentos.valor("--instrumento", "--instrument", siFalta: .faltaInstrumento) else {
             return
         }
         guard let encordado = try? Encordado(leyendo: nombre) else {
-            throw FalloDeUso(error: .instrumentoDesconocido(nombre))
+            throw ErrorDeUso.instrumentoDesconocido(nombre)
         }
         mastil = Mastil(encordado, numeroDeTrastes: 15)
     }
@@ -336,7 +311,7 @@ extension LineaDeComandos {
         _ argumentos: inout Argumentos, _ opciones: OpcionesDePentagrama, _ octava: Int, _ notacion: Notacion
     ) throws -> ResultadoDeOrden {
         guard let octavas = argumentos.quitarNumero("--octavas", "--octaves", en: 1...4, porDefecto: 1) else {
-            return uso(.octavasFueraDeRango, notacion)
+            throw ErrorDeUso.octavasFueraDeRango
         }
         let bajando = argumentos.quitarMarca("--bajando", "--descending")
         let tab = argumentos.quitarMarca("--tab")
@@ -344,18 +319,18 @@ extension LineaDeComandos {
         let conDedos = argumentos.quitarMarca("--dedos", "--fingers")
         var secuencia: SecuenciaDeEscala?
         if let texto = try argumentos.valor("--secuencia", "--sequence") {
-            guard let elegida = secuenciaDeEscala(texto) else { return uso(.secuenciaDesconocida(texto), notacion) }
+            guard let elegida = secuenciaDeEscala(texto) else { throw ErrorDeUso.secuenciaDesconocida(texto) }
             secuencia = elegida
         }
         var mano: Mano?
         if let texto = try argumentos.valor("--mano", "--hand") {
-            guard let elegida = manoDePiano(texto) else { return uso(.manoDesconocida(texto), notacion) }
+            guard let elegida = manoDePiano(texto) else { throw ErrorDeUso.manoDesconocida(texto) }
             mano = elegida
         }
         var mastil = Mastil(.guitarra, numeroDeTrastes: 15)
         try leerMastil(&argumentos, en: &mastil)
-        if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
-        guard !argumentos.restantes.isEmpty else { return uso(.faltaLoQueDibujaElPentagrama, notacion) }
+        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
         let escala = try Escala(leyendo: argumentos.unidos)
         let sentido: SentidoDelIntervalo = bajando ? .descendente : .ascendente
         let svg: String
@@ -422,7 +397,7 @@ extension LineaDeComandos {
     ) throws -> ResultadoDeOrden {
         var patron = Arpegio.Patron.ascendente
         if let texto = try argumentos.valor("--patron", "--patrón", "--pattern") {
-            guard let elegido = patronDeArpegio(texto) else { return uso(.patronDesconocido(texto), notacion) }
+            guard let elegido = patronDeArpegio(texto) else { throw ErrorDeUso.patronDesconocido(texto) }
             patron = elegido
         }
         var figura: Duracion?
@@ -444,13 +419,13 @@ extension LineaDeComandos {
         try leerMastil(&argumentos, en: &mastil)
         var recorrido = RecorridoDeArpegio()
         try leerRecorrido(&argumentos, en: &recorrido)
-        if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
-        guard !argumentos.restantes.isEmpty else { return uso(.faltaLoQueDibujaElPentagrama, notacion) }
+        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
         if tab {
             // En el mástil: el arpegio del acorde en su primera posición, de la nota más grave a la más aguda.
             let acorde = try Acorde(leyendo: argumentos.restantes[0])
             guard let enElMastil = mastil.arpegios(de: acorde).first else {
-                return uso(.faltaLoQueDibujaElPentagrama, notacion)
+                throw ErrorDeUso.faltaLoQueDibujaElPentagrama
             }
             // La partitura del arpegio en el mástil, con sus dedos (`ArpegioEnElMastil.dedos`) si se piden.
             let ritmo = figura.map { Partitura.Ritmo.uniforme($0) } ?? .libre
@@ -465,7 +440,7 @@ extension LineaDeComandos {
             if let desde = recorrido.desde {
                 let delGrado = Int(desde).flatMap { Arpegio.indice(delGrado: $0, en: acorde) }
                 let deLaNota = (try? Nota(leyendo: desde)).flatMap { Arpegio.indice(de: $0, en: acorde) }
-                guard let indice = delGrado ?? deLaNota else { return uso(.desdeNoValido(desde), notacion) }
+                guard let indice = delGrado ?? deLaNota else { throw ErrorDeUso.desdeNoValido(desde) }
                 inicio = indice
             }
             if let grados = recorrido.grados {
@@ -537,15 +512,11 @@ extension LineaDeComandos {
             var teclado = TecladoCuadrado.conEjes(ejes),
             let rejilla = leerRejilla(rejillaEscrita)
         else {
-            return uso(.opcionesDeCuadricula, notacion)
+            throw ErrorDeUso.opcionesDeCuadricula
         }
         let origen = try origenEscrito.isEmpty ? rejilla.origenPorDefecto : Altura(leyendo: origenEscrito).midi
 
-        let dibujo: Dibujo
-        switch try leerDibujo(lectura.restantes, orden: "cuadricula", notacion) {
-        case .error(let error): return error
-        case .dibujo(let leido, _): dibujo = leido
-        }
+        let dibujo = try leerDibujo(lectura.restantes, orden: "cuadricula").dibujo
         var escala: Escala?
         let notas: [Nota]
         switch dibujo {
@@ -564,11 +535,13 @@ extension LineaDeComandos {
         case .recorrido(let acordes): notas = acordes.flatMap(\.notas)
         case .camino(let desde, let hasta):
             guard let camino = Tonnetz(caminoDesde: desde, hasta: hasta) else {
-                return errorDeCamino("cuadricula", notacion)
+                throw ErrorDeUso.caminoSoloTriadas(orden: "cuadricula")
             }
             notas = camino.puntos.map(\.nota)
         case .ciclo(let ciclo, let acorde):
-            guard let vuelta = Tonnetz(ciclo: ciclo, desde: acorde) else { return errorDeCiclo("cuadricula", notacion) }
+            guard let vuelta = Tonnetz(ciclo: ciclo, desde: acorde) else {
+                throw ErrorDeUso.cicloSoloTriadas(orden: "cuadricula")
+            }
             notas = vuelta.puntos.map(\.nota)
         }
 

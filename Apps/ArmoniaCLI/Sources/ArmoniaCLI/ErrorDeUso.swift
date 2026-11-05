@@ -8,8 +8,9 @@ import ArmoniaPresentacion
 // ErrorDeUso+Consultas, +Armonizacion, +Trastes, +Neorriemann, +Partituras y +Dibujos, como su ayuda
 // (Ayuda+…) y su código (LineaDeComandos+…).
 
-/// Una orden mal escrita: lo que falta o sobra, con un ejemplo de cómo se escribe.
-enum ErrorDeUso {
+/// Una orden mal escrita: lo que falta o sobra, con un ejemplo de cómo se escribe. Las órdenes lo lanzan, y
+/// `ejecutar` lo escribe con `uso(_:_:)`.
+enum ErrorDeUso: Error {
     // Generales
     case ordenDesconocida(String)
     case opcionDesconocida(String)

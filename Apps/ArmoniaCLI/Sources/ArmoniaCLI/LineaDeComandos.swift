@@ -46,8 +46,8 @@ public enum LineaDeComandos {
         switch notacionDelEntorno(entorno) {
         case .success(let delEntorno):
             notacion = delEntorno
-        case .failure(let fallo):
-            return uso(fallo.error, .espanolCompacto)
+        case .failure(let error):
+            return uso(error, .espanolCompacto)
         }
         if opciones.quitarMarca("--ingles", "--english") { notacion = .inglesASCII }
         switch opciones.quitarOpcion("--idioma", "--language") {
@@ -155,8 +155,8 @@ public enum LineaDeComandos {
             let texto = try textoJSON(datos, enUnaLinea: !salidaEsTerminal)
             let conFaltas = (datos as? any ConFaltas)?.hayFaltas ?? false
             return ResultadoDeOrden(salida: texto + "\n", error: "", codigo: conFaltas ? 3 : 0)
-        } catch let fallo as FalloDeUso {
-            return uso(fallo.error, notacion)
+        } catch let error as ErrorDeUso {
+            return uso(error, notacion)
         } catch let error as any ErrorDeArmonia {
             return ResultadoDeOrden(
                 salida: "", error: "armonia: " + error.descripcion(en: notacion) + "\n", codigo: 1)
@@ -340,7 +340,7 @@ public enum LineaDeComandos {
     /// La notación de `ARMONIA_IDIOMA`: la de su idioma, como `--idioma`; con `sistema` (o `system`), la del idioma
     /// de `LC_ALL`, `LC_MESSAGES` o `LANG` (el primero que haya), o la española si no es ninguno de los quince
     /// (`C`, `POSIX`); sin la variable, la española. Un idioma que no se conoce es un error de uso.
-    static func notacionDelEntorno(_ entorno: [String: String]) -> Result<Notacion, FalloDeUso> {
+    static func notacionDelEntorno(_ entorno: [String: String]) -> Result<Notacion, ErrorDeUso> {
         guard let valor = entorno["ARMONIA_IDIOMA"]?.trimmingCharacters(in: .whitespaces), !valor.isEmpty else {
             return .success(.espanolCompacto)
         }
@@ -349,7 +349,7 @@ public enum LineaDeComandos {
             return .success(local.flatMap(Idioma.init(codigo:)).map(Notacion.delIdioma) ?? .espanolCompacto)
         }
         guard let notacion = notacionDelIdioma(valor) else {
-            return .failure(FalloDeUso(error: .idiomaDesconocido("ARMONIA_IDIOMA=" + valor)))
+            return .failure(ErrorDeUso.idiomaDesconocido("ARMONIA_IDIOMA=" + valor))
         }
         return .success(notacion)
     }

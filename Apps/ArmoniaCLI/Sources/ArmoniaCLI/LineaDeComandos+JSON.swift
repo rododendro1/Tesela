@@ -15,11 +15,6 @@ import Foundation
 // cambian: van en texto a la salida de errores, con el mismo código de salida.
 
 extension LineaDeComandos {
-    /// Un error de uso dentro de una salida en JSON: `ejecutar` lo escribe como cualquier otro (`uso(_:_:)`).
-    struct FalloDeUso: Error {
-        let error: ErrorDeUso
-    }
-
     /// Lo que hace una orden con `--json` (`Orden.json`): sus datos, a partir del resto de los argumentos.
     typealias SalidaJSON = @Sendable (_ argumentos: [String], _ notacion: Notacion) throws -> any Encodable
 
@@ -39,11 +34,11 @@ extension LineaDeComandos {
         var hayFaltas: Bool { get }
     }
 
-    /// Las palabras de la orden, sin opciones: lanza `FalloDeUso` si queda alguna opción sin leer o si no hay
+    /// Las palabras de la orden, sin opciones: lanza el `ErrorDeUso` si queda alguna opción sin leer o si no hay
     /// ninguna palabra.
     private static func palabras(_ argumentos: Argumentos, siFaltan error: ErrorDeUso) throws -> [String] {
-        if let desconocida = argumentos.opcionDesconocida { throw FalloDeUso(error: .opcionDesconocida(desconocida)) }
-        guard !argumentos.restantes.isEmpty else { throw FalloDeUso(error: error) }
+        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        guard !argumentos.restantes.isEmpty else { throw error }
         return argumentos.restantes
     }
 
@@ -116,7 +111,7 @@ extension LineaDeComandos {
     /// `intervalo Do4 Mi5 --json`.
     static func intervaloJSON(_ textos: [String], _ notacion: Notacion) throws -> IntervaloJSON {
         let palabras = try palabras(Argumentos(textos), siFaltan: .dosNotas)
-        guard palabras.count == 2 else { throw FalloDeUso(error: .dosNotas) }
+        guard palabras.count == 2 else { throw ErrorDeUso.dosNotas }
         let intervalo = try intervalo(palabras[0], palabras[1])
         return IntervaloJSON(
             nombre: intervalo.nombre(en: notacion), abreviatura: intervalo.texto(en: notacion),
@@ -225,9 +220,9 @@ extension LineaDeComandos {
     /// tradición (`tradiciones japon`) no dan JSON, como `escalas`.
     static func tradicionesJSON(_ textos: [String], _ notacion: Notacion) throws -> [TradicionJSON] {
         if let primera = textos.first, !Argumentos.pareceUnaOpcion(primera) {
-            throw FalloDeUso(error: .sinSalidaJSON("tradiciones " + primera))
+            throw ErrorDeUso.sinSalidaJSON("tradiciones " + primera)
         }
-        if let opcion = Argumentos(textos).opcionDesconocida { throw FalloDeUso(error: .opcionDesconocida(opcion)) }
+        if let opcion = Argumentos(textos).opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
         return catalogoDeTradiciones().map { ficha in
             TradicionJSON(
                 clave: ficha.claves.espanol, nombre: ficha.tradicion.nombre(en: notacion),
@@ -261,7 +256,7 @@ extension LineaDeComandos {
     /// `analizar Do Fa Sol7 Do [--en Do mayor] --json`: el análisis por tramos, como en el texto.
     static func analizarJSON(_ textos: [String], _ notacion: Notacion) throws -> AnalisisJSON {
         var argumentos = Argumentos(textos)
-        guard let tonalidad = try argumentos.quitarTonalidad() else { throw FalloDeUso(error: .faltaTonalidadTrasEn) }
+        guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
         let acordes = try palabras(argumentos, siFaltan: .faltanAcordesDelAnalisis)
         let analisis = try PresentacionDeAnalisis.analizar(
             acordes.joined(separator: " "), en: tonalidad, notacion: notacion)

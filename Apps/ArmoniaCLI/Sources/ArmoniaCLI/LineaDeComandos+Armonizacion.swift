@@ -32,10 +32,10 @@ extension LineaDeComandos {
     static func coralArmonizado(_ argumentos: [String], _ notacion: Notacion) throws -> CoralPresentado {
         var argumentos = Argumentos(argumentos)
         guard let propuestas = argumentos.quitarNumero("--propuestas", "--proposals", en: 1...20, porDefecto: 3) else {
-            throw FalloDeUso(error: .propuestasFueraDeRango)
+            throw ErrorDeUso.propuestasFueraDeRango
         }
-        guard let dada = try argumentos.quitarTonalidad() else { throw FalloDeUso(error: .faltaTonalidadTrasEn) }
-        guard !argumentos.restantes.isEmpty else { throw FalloDeUso(error: .faltanNotasDeLaArmonizacion) }
+        guard let dada = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
+        guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanNotasDeLaArmonizacion }
         return try PresentacionDeCoral.armonizar(
             argumentos.unidos, en: dada, propuestas: propuestas, notacion: notacion)
     }
@@ -52,8 +52,8 @@ extension LineaDeComandos {
     /// La realización de `realizar`, para el texto y para `--json`.
     static func coralRealizado(_ argumentos: [String], _ notacion: Notacion) throws -> CoralPresentado {
         var argumentos = Argumentos(argumentos)
-        guard let tonalidad = try argumentos.quitarTonalidad() else { throw FalloDeUso(error: .faltaTonalidadTrasEn) }
-        guard !argumentos.restantes.isEmpty else { throw FalloDeUso(error: .faltanAcordesDeLaRealizacion) }
+        guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
+        guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanAcordesDeLaRealizacion }
         return try PresentacionDeCoral.realizar(argumentos.unidos, en: tonalidad, notacion: notacion)
     }
 
@@ -67,7 +67,7 @@ extension LineaDeComandos {
 
     /// El coral de `revisar`, con sus faltas en los avisos.
     static func coralRevisado(_ argumentos: [String], _ notacion: Notacion) throws -> CoralPresentado {
-        guard !argumentos.isEmpty else { throw FalloDeUso(error: .faltanAcordesDeLasVoces) }
+        guard !argumentos.isEmpty else { throw ErrorDeUso.faltanAcordesDeLasVoces }
         return try PresentacionDeCoral.revisar(argumentos.joined(separator: " "), notacion: notacion)
     }
 
@@ -93,13 +93,13 @@ extension LineaDeComandos {
         guard let numero = argumentos.quitarNumero("--especie", "--species", en: 1...5, porDefecto: 1),
             let especie = Contrapunto.Especie(rawValue: numero)
         else {
-            throw FalloDeUso(error: .especieFueraDeRango)
+            throw ErrorDeUso.especieFueraDeRango
         }
-        if let desconocida = argumentos.opcionDesconocida { throw FalloDeUso(error: .opcionDesconocida(desconocida)) }
+        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         let partes = argumentos.unidos.split(separator: "/", omittingEmptySubsequences: false)
             .map { $0.trimmingCharacters(in: .whitespaces) }
         guard partes.count == 2, !partes[0].isEmpty, !partes[1].isEmpty else {
-            throw FalloDeUso(error: .faltanVocesDelContrapunto)
+            throw ErrorDeUso.faltanVocesDelContrapunto
         }
         return try Contrapunto(cantusFirmus: partes[0], contrapunto: partes[1], especie: especie)
     }
@@ -116,8 +116,8 @@ extension LineaDeComandos {
         _ argumentos: [String], _ notacion: Notacion
     ) throws -> (intervalo: Intervalo, contenido: PresentacionDeTransposicion.Contenido, texto: String) {
         let argumentos = Argumentos(argumentos)
-        if let desconocida = argumentos.opcionDesconocida { throw FalloDeUso(error: .opcionDesconocida(desconocida)) }
-        guard argumentos.restantes.count >= 2 else { throw FalloDeUso(error: .faltaTransporte) }
+        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        guard argumentos.restantes.count >= 2 else { throw ErrorDeUso.faltaTransporte }
         let texto = argumentos.restantes.dropFirst().joined(separator: " ")
         let comoAcordes = try? PresentacionDeTransposicion.transponer(texto, .unisono, notacion: notacion)
         let contenido: PresentacionDeTransposicion.Contenido = comoAcordes == nil ? .notas : .acordes
@@ -139,12 +139,12 @@ extension LineaDeComandos {
     /// acorde, con su número en la progresión.
     static func rearmonizar(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var acordes = Argumentos(argumentos)
-        guard let tonalidad = try acordes.quitarTonalidad() else { return uso(.faltaTonalidadTrasEn, notacion) }
-        if let desconocida = acordes.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
-        guard !acordes.restantes.isEmpty else { return uso(.faltanAcordesDeLaRearmonizacion, notacion) }
+        guard let tonalidad = try acordes.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
+        if let desconocida = acordes.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        guard !acordes.restantes.isEmpty else { throw ErrorDeUso.faltanAcordesDeLaRearmonizacion }
         let leidos = try acordes.restantes.map { try Acorde(leyendo: $0) }
         guard let resultado = PresentacionDeRearmonizacion.proponer(leidos, en: tonalidad, notacion: notacion) else {
-            return uso(.faltanAcordesDeLaRearmonizacion, notacion)
+            throw ErrorDeUso.faltanAcordesDeLaRearmonizacion
         }
         let lineas = resultado.propuestas.map { "  \($0.rearmonizacion.posicion + 1). \($0.descripcion)" }
         return bien(([resultado.tonalidad.nombre(en: notacion)] + lineas).joined(separator: "\n"))

@@ -155,21 +155,21 @@ extension LineaDeComandos {
         var entrada = Argumentos(argumentos)
         var motor: MotorDeGrabado?
         if let texto = try entrada.valor("--motor", "--engine") {
-            guard let elegido = MotorDeGrabado(nombre: texto) else { return uso(.motorDesconocido(texto), notacion) }
+            guard let elegido = MotorDeGrabado(nombre: texto) else { throw ErrorDeUso.motorDesconocido(texto) }
             motor = elegido
         }
         var formato = FormatoDeGrabado.pdf
         if let texto = try entrada.valor("--formato", "--format") {
             guard let elegido = FormatoDeGrabado(rawValue: texto.lowercased()) else {
-                return uso(.formatoDeGrabadoDesconocido(texto), notacion)
+                throw ErrorDeUso.formatoDeGrabadoDesconocido(texto)
             }
             formato = elegido
         }
         let resto = entrada.restantes
-        guard let primera = resto.first?.lowercased() else { return uso(.faltaLoQueSeGraba, notacion) }
+        guard let primera = resto.first?.lowercased() else { throw ErrorDeUso.faltaLoQueSeGraba }
         // `grabar midi …`: `midi` (como musicxml, mei…) ya escribe la partitura; se graba lo que va detrás de ella.
         if ordenesDePartituras.contains(where: { $0.nombres.contains(primera) }) {
-            return uso(.grabarUnaPartitura(primera), notacion)
+            throw ErrorDeUso.grabarUnaPartitura(primera)
         }
         let elegido = motor ?? (tiposDePartitura.contains(primera) ? .lilypond : .propio)
 
@@ -180,12 +180,12 @@ extension LineaDeComandos {
         } else {
             guard primera != "grabar" && primera != "engrave",
                 let orden = ordenes.first(where: { $0.nombres.contains(primera) })
-            else { return uso(.nadaQueGrabar(primera), notacion) }
+            else { throw ErrorDeUso.nadaQueGrabar(primera) }
             fuente = try orden.ejecutar(Array(resto.dropFirst()), notacion)
             guard fuente.codigo == 0 else { return fuente }
             // Solo un dibujo: el MusicXML de `armonia musicxml` también es XML, pero no es SVG.
             guard fuente.datos == nil, fuente.salida.hasPrefix("<svg") else {
-                return uso(.nadaQueGrabar(primera), notacion)
+                throw ErrorDeUso.nadaQueGrabar(primera)
             }
         }
         guard fuente.codigo == 0 else { return fuente }
@@ -246,7 +246,7 @@ extension LineaDeComandos {
     /// `armonia motores`: cada motor de `grabar`, con la ruta de su programa y su versión, o cómo darle la ruta si
     /// no se encuentra.
     static func motores(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        if let sobrante = argumentos.first { return uso(.opcionDesconocida(sobrante), notacion) }
+        if let sobrante = argumentos.first { throw ErrorDeUso.opcionDesconocida(sobrante) }
         let ejecutor = Self.ejecutor
         var filas: [(nombre: String, dicho: String)] = []
         for motor in MotorDeGrabado.allCases {

@@ -49,7 +49,7 @@ struct Argumentos {
     mutating func quitarOpcion(_ nombres: String...) -> Opcion { quitarOpcion(nombres) }
 
     /// Quita una opción con valor (`--limite 5`) y da su valor, o `nil` si no está. Si está sin valor, lanza
-    /// `FalloDeUso` con `siFalta`, o con `faltaValor` y el nombre que se escribió.
+    /// `siFalta`, o `faltaValor` con el nombre que se escribió.
     ///
     ///     if let texto = try argumentos.valor("--secuencia", "--sequence") { … }
     mutating func valor(_ nombres: String..., siFalta: ErrorDeUso? = nil) throws -> String? {
@@ -64,7 +64,7 @@ struct Argumentos {
     private static func leer(_ opcion: Opcion, siFalta: ErrorDeUso?) throws -> String? {
         switch opcion {
         case .ausente: return nil
-        case .sinValor(let nombre): throw LineaDeComandos.FalloDeUso(error: siFalta ?? .faltaValor(nombre))
+        case .sinValor(let nombre): throw siFalta ?? .faltaValor(nombre)
         case .valor(let texto): return texto
         }
     }
