@@ -274,7 +274,7 @@ import Testing
         #expect((try? TipoDeEscala(leyendo: "Rast de Safi al-Din"))?.nombre == "shadd Rāst")
     }
 
- tres escalas populares, dos instrumentos de afinación natural y el canto georgiano, con
+    /// El folklore europeo: tres escalas populares, dos instrumentos de afinación natural y el canto georgiano, con
     /// sus cents.
     @Test func elFolkloreEuropeo() throws {
         #expect(TipoDeEscala.tradicionales(tradicion: .europa) == TipoDeEscala.europeas)
