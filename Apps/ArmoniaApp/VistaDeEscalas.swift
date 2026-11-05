@@ -124,6 +124,7 @@ struct VistaDeEscalas: View {
             mapaDeBrillo(de: escala)
             reloj(de: escala)
             vecinas(de: escala)
+            parecidas(a: escala)
             doceTonalidades(de: escala)
             acordesEnLasDoceTonalidades(de: escala)
             modos(de: escala)
@@ -553,12 +554,26 @@ struct VistaDeEscalas: View {
     }
 
     /// Las escalas que salen de esta moviendo una nota un semitono, con el cambio; cada una se abre al tocarla.
-    @ViewBuilder
     private func vecinas(de escala: Escala) -> some View {
-        let vecinas = PresentacionDeEstudioDeEscala.vecinas(de: escala, notacion: notacion)
-        if !vecinas.isEmpty {
-            Section(notacion.texto(\.escalasVecinas)) {
-                ForEach(vecinas, id: \.self) { vecina in
+        listaDeEscalas(
+            PresentacionDeEstudioDeEscala.vecinas(de: escala, notacion: notacion),
+            titulo: notacion.texto(\.escalasVecinas))
+    }
+
+    /// Las escalas que comparten más notas con esta, con las que se van y las que llegan; cada una se abre al
+    /// tocarla.
+    private func parecidas(a escala: Escala) -> some View {
+        listaDeEscalas(
+            PresentacionDeEstudioDeEscala.parecidas(a: escala, notacion: notacion),
+            titulo: notacion.texto(\.escalasParecidas))
+    }
+
+    /// Una sección de escalas con su detalle debajo, que se abren al tocarlas, y «Escuchar»; nada si no hay ninguna.
+    @ViewBuilder
+    private func listaDeEscalas(_ escalas: [EscalaSobreElAcordePresentada], titulo: String) -> some View {
+        if !escalas.isEmpty {
+            Section(titulo) {
+                ForEach(escalas, id: \.self) { vecina in
                     HStack {
                         Button {
                             propia = ""

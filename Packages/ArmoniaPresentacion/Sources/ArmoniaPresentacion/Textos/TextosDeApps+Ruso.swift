@@ -212,6 +212,11 @@ extension TextosDeApps {
         escaleraDeBrillo: "Лестница яркости",
         hojaDeEstudio: "Учебный лист",
         mapaDeBrillo: "Карта яркости",
+        escalasParecidas: "Похожие гаммы",
+        modulaciones: "Модуляции",
+        modulacionPorAcordeComun: "общий аккорд",
+        modulacionPorDisminuida: "энгармонический уменьшённый септаккорд",
+        modulacionDirecta: "прямая",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Напряжения",
         notasAEvitar: "Избегать",
