@@ -178,7 +178,7 @@ package struct ArchivoMIDI {
     /// El valor de la inflexión de tono (pitch bend) que aparta una nota `desvio` cents, en el ámbito de ±2
     /// semitonos de General MIDI: 8192 es el centro.
     package static func inflexion(_ desvio: Double) -> Int {
-        max(0, min(16_383, 8192 + Int((desvio / 200 * 8192).rounded())))
+        Int(max(0, min(16_383, 8192 + (desvio / 200 * 8192).rounded())))
     }
 
     /// Los mensajes de las notas de cada pista, con los microtonos como inflexiones de tono. La inflexión afecta a
