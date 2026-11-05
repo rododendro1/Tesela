@@ -381,7 +381,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
         /// La alteración en semitonos con el microtono en decimales: −1 y 50 cents → «-0.5».
         package static func alter(_ semitonos: Int, _ desvio: Double) -> String {
             let valor = (Double(semitonos) * 10_000 + desvio * 100).rounded() / 10_000
-            return valor == valor.rounded() ? String(Int(valor)) : String(valor)
+            return Int(exactly: valor).map(String.init) ?? String(valor)
         }
 
         private func notaciones(

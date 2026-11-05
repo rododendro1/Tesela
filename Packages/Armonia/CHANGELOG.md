@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+### Cents de un evento, como mucho un semitono
+
+- `Evento(leyendo:)` ya no acepta más de 100 cents arriba o abajo en una nota (`Mi4(150¢):4` da un `ErrorDeLectura`).
+  Unos cents enormes (el fuzzer de los lectores encontró `Mi4(5033…3¢)`, con 115 cifras) detenían el programa al
+  escribir la voz en MusicXML.
+- MusicXML, la `description` de `Evento.Nota`, el pentagrama en SVG y la inflexión de MIDI ya no se detienen con una
+  nota escrita desde código con un desvío que no cabe en un `Int`.
+
 ### Modulaciones desde una tonalidad y escalas parecidas
 
 - `armonia tonalidad Do mayor --modulaciones` da, para cada tono vecino, la manera más suave de llegar (por acorde

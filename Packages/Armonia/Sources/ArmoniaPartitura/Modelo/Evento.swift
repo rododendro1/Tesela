@@ -136,10 +136,11 @@ public struct Evento: Hashable, Sendable {
                 let dentro = String(String(nota[nota.index(after: parentesis)...]).trimmingEspacios().dropLast())
                     .split(separator: ",", omittingEmptySubsequences: false).map { String($0).trimmingEspacios() }
                 let cifra = dentro[0].replacingOccurrences(of: "¢", with: "").replacingOccurrences(of: "c", with: "")
-                // Los cents y, si los hay, el sistema y los pasos que se aparta en él: «50¢,persa,1».
+                // Los cents (como mucho un semitono arriba o abajo) y, si los hay, el sistema y los pasos que se
+                // aparta en él: «50¢,persa,1».
                 let leidos: (SistemaMicrotonal?, Int?) =
                     dentro.count == 3 ? (SistemaMicrotonal(rawValue: dentro[1]), Int(dentro[2])) : (nil, nil)
-                guard let cents = Double(cifra.trimmingEspacios()), cents.isFinite,
+                guard let cents = Double(cifra.trimmingEspacios()), cents.isFinite, abs(cents) <= 100,
                     dentro.count == 1 || (leidos.0 != nil && leidos.1 != nil)
                 else {
                     throw ErrorDeLectura(
@@ -220,7 +221,7 @@ extension Evento {
         public func texto(en notacion: Notacion) -> String {
             let nota = altura.texto(en: notacion)
             guard desvio != 0 else { return nota }
-            let cifra = desvio == desvio.rounded() ? String(Int(desvio)) : String(desvio)
+            let cifra = Int(exactly: desvio).map(String.init) ?? String(desvio)
             let enSistema = sistema.map { ",\($0.rawValue),\(ajuste)" } ?? ""
             return nota + "(" + cifra + (notacion.usaASCII ? "c" : "¢") + enSistema + ")"
         }
