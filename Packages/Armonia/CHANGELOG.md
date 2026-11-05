@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### `armonia`: las opciones con valor, en una línea
+
+- Las órdenes leen cada opción con valor con `Argumentos.valor(_:siFalta:)` (y `valorConPalabras`), que da el valor
+  o `nil` y lanza el error de uso si a la opción le falta el valor, en lugar de repetir en cada orden los tres casos
+  de `quitarOpcion`. `leerRecorrido` y `leerMastil` lanzan su error como las demás lecturas. Nada cambia en lo que
+  se acepta ni en los mensajes.
+
 ### Las pruebas de la documentación, sin números de línea
 
 - Las pruebas que salen de los ejemplos del README y de DocC (`EjemplosDeDocumentacionTests.swift`) nombran cada

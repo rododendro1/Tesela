@@ -46,7 +46,30 @@ struct Argumentos {
     }
 
     /// Quita una opción con valor (`--limite 5`) y su valor.
-    mutating func quitarOpcion(_ nombres: String...) -> Opcion {
+    mutating func quitarOpcion(_ nombres: String...) -> Opcion { quitarOpcion(nombres) }
+
+    /// Quita una opción con valor (`--limite 5`) y da su valor, o `nil` si no está. Si está sin valor, lanza
+    /// `FalloDeUso` con `siFalta`, o con `faltaValor` y el nombre que se escribió.
+    ///
+    ///     if let texto = try argumentos.valor("--secuencia", "--sequence") { … }
+    mutating func valor(_ nombres: String..., siFalta: ErrorDeUso? = nil) throws -> String? {
+        try Self.leer(quitarOpcion(nombres), siFalta: siFalta)
+    }
+
+    /// Como `valor(_:siFalta:)`, con todas las palabras que siguen a la opción (`quitarOpcionConPalabras`).
+    mutating func valorConPalabras(_ nombres: String..., siFalta: ErrorDeUso? = nil) throws -> String? {
+        try Self.leer(quitarOpcionConPalabras(nombres), siFalta: siFalta)
+    }
+
+    private static func leer(_ opcion: Opcion, siFalta: ErrorDeUso?) throws -> String? {
+        switch opcion {
+        case .ausente: return nil
+        case .sinValor(let nombre): throw LineaDeComandos.FalloDeUso(error: siFalta ?? .faltaValor(nombre))
+        case .valor(let texto): return texto
+        }
+    }
+
+    private mutating func quitarOpcion(_ nombres: [String]) -> Opcion {
         guard let i = restantes.firstIndex(where: { nombres.contains($0) }) else { return .ausente }
         guard i + 1 < restantes.count, !restantes[i + 1].hasPrefix("--") else {
             return .sinValor(nombre: String(restantes.remove(at: i).dropFirst(2)))
@@ -58,7 +81,9 @@ struct Argumentos {
 
     /// Quita una opción seguida de varias palabras, hasta la siguiente opción (`--comparar Do lidio`), y da las
     /// palabras unidas por espacios.
-    mutating func quitarOpcionConPalabras(_ nombres: String...) -> Opcion {
+    mutating func quitarOpcionConPalabras(_ nombres: String...) -> Opcion { quitarOpcionConPalabras(nombres) }
+
+    private mutating func quitarOpcionConPalabras(_ nombres: [String]) -> Opcion {
         guard let i = restantes.firstIndex(where: { nombres.contains($0) }) else { return .ausente }
         let fin = restantes[(i + 1)...].firstIndex { $0.hasPrefix("--") } ?? restantes.endIndex
         let palabras = restantes[(i + 1)..<fin]
