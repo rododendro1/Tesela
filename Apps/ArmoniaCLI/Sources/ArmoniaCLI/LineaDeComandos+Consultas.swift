@@ -472,6 +472,13 @@ extension LineaDeComandos {
         (.europa, "europa", "europe"),
     ]
 
+    /// Cómo se escribe cada uso en `--uso`, en español y en inglés (se aceptan los dos en cualquier idioma):
+    /// `--uso siglo-xx`, `--use 20th-century`.
+    static let nombresDeLosUsos: [(uso: UsoDeEscala, espanol: String, ingles: String)] = [
+        (.clasica, "clasica", "classical"), (.jazz, "jazz", "jazz"), (.blues, "blues", "blues"),
+        (.sigloXX, "siglo-xx", "20th-century"), (.popular, "popular", "folk"), (.sintetica, "sintetica", "synthetic"),
+    ]
+
     /// Un texto para comparar nombres: sin mayúsculas, tildes, guiones ni espacios («Mundo árabe» → «mundoarabe»).
     private static func claveDeBusqueda(_ texto: String) -> String {
         texto.replacingOccurrences(of: "ı", with: "i")
@@ -520,9 +527,10 @@ extension LineaDeComandos {
         }
     }
 
-    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>]`: el catálogo de escalas, las habituales
-    /// y las de otras tradiciones agrupadas por tradición y categoría, cada una con sus notas desde Do (y la marca de
-    /// los microtonos, si los tiene). Un texto suelto busca en los nombres.
+    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>] [--uso <uso>]`: el catálogo de escalas,
+    /// las habituales y las de otras tradiciones agrupadas por tradición y categoría, cada una con sus notas desde Do
+    /// (y la marca de los microtonos, si los tiene). Un texto suelto busca en los nombres. `--uso jazz` deja solo las
+    /// habituales de ese uso (las de otras tradiciones no tienen).
     static func escalas(_ argumentos: [String], _ notacion: Notacion) -> ResultadoDeOrden {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         var entrada = Argumentos(argumentos)
@@ -553,6 +561,21 @@ extension LineaDeComandos {
             }
             categoria = encontrada
         }
+        var usoPedido: UsoDeEscala?
+        switch entrada.quitarOpcion("--uso", "--use") {
+        case .ausente: break
+        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            let clave = claveDeBusqueda(texto)
+            let nombres = { (candidato: UsoDeEscala) -> [String] in
+                let claves = nombresDeLosUsos.first { $0.uso == candidato }.map { [$0.espanol, $0.ingles] } ?? []
+                return (claves + [candidato.nombre, candidato.nombre(en: notacion)]).map(claveDeBusqueda)
+            }
+            guard let encontrado = UsoDeEscala.allCases.first(where: { nombres($0).contains(clave) }) else {
+                return uso(.usoDesconocido(texto), notacion)
+            }
+            usoPedido = encontrado
+        }
         if let opcion = entrada.opcionDesconocida { return uso(.opcionDesconocida(opcion), notacion) }
         let buscado = claveDeBusqueda(entrada.unidos)
         func cumple(_ tipo: TipoDeEscala) -> Bool {
@@ -564,10 +587,15 @@ extension LineaDeComandos {
         // después, cada tradición con su categoría.
         var grupos: [(titulo: String, tipos: [TipoDeEscala])] = []
         if tradicion == nil && categoria == nil {
-            let habituales = TipoDeEscala.todos.filter(cumple)
-            if !habituales.isEmpty { grupos.append((t(.habituales), habituales)) }
+            if let usoPedido {
+                let delUso = TipoDeEscala.todos(uso: usoPedido).filter(cumple)
+                if !delUso.isEmpty { grupos.append((t(.habituales) + " · " + usoPedido.nombre(en: notacion), delUso)) }
+            } else {
+                let habituales = TipoDeEscala.todos.filter(cumple)
+                if !habituales.isEmpty { grupos.append((t(.habituales), habituales)) }
+            }
         }
-        for tipo in TipoDeEscala.tradicionales where cumple(tipo) {
+        for tipo in TipoDeEscala.tradicionales where usoPedido == nil && cumple(tipo) {
             guard let suya = tipo.tradicion, let deTipo = tipo.categoria else { continue }
             guard tradicion == nil || tradicion == suya, categoria == nil || categoria == deTipo else { continue }
             let titulo = suya.nombre(en: notacion) + " · " + deTipo.nombre(en: notacion)

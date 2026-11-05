@@ -181,6 +181,13 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: { destino in "«\(destino)» не может стоять после косой черты: нужно мажорное или минорное трезвучие в основном виде (V/V, vii°7/ii)" },
         cifrasNoValidas: { cifras in "«\(cifras)» — не генерал-бас: цифры от 1 до 9, каждая не более чем с одним знаком альтерации (6, 64, 7, ♯6, 4+)" },
         cifrasSinAcorde: { cifras in "цифры «\(cifras)» не образуют над этим басом никакого аккорда" },
+        // UsoDeEscala.swift
+        usoClasica: "классическая",
+        usoJazz: "джаз",
+        usoBlues: "блюз",
+        usoSigloXX: "XX век",
+        usoPopular: "народная",
+        usoSintetica: "синтетическая",
         // Tradicion+Nombre.swift
         tradicionIndia: "Индия",
         tradicionGrecia: "Греция",

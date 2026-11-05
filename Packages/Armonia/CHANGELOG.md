@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### Clásica, jazz, blues: el uso de cada escala
+
+- `UsoDeEscala` (clásica, jazz, blues, siglo XX, popular y sintética, con su nombre en los quince idiomas) y
+  `TipoDeEscala.usos`: en qué música se usa cada escala de `todos`, una o varias (el dórico es clásico y de jazz; la
+  disminuida, de jazz y del siglo XX). Las de otras tradiciones no tienen. `TipoDeEscala.todos(uso:)` da las de un uso.
+- `armonia escalas --uso jazz` (o `--use`, con `clasica`, `blues`, `siglo-xx`, `popular`, `sintetica` o sus nombres
+  ingleses) lista solo las habituales de ese uso, y propone el más parecido si no lo encuentra.
 ### El folklore europeo, y la menor bachiana
 
 - **Tradición nueva, `Tradicion.europa`** («Folklore europeo», con su nombre en los quince idiomas y

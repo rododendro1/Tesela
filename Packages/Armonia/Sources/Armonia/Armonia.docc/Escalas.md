@@ -103,6 +103,33 @@ Escala("Do cromatica -6..5").tipo.nombre                    // "cromática con c
 Escala(.do, .cromaticaConCincoSostenidos).nombre(claseDeAltura: 10)   // La♯
 ```
 
+## Clásica, jazz, blues: el uso de una escala
+
+Las notas no dicen de qué música es una escala: la menor melódica de jazz es la «bachiana» de los conservatorios, y
+el lidio dominante es la acústica de Bartók. Lo dice el uso, y `TipoDeEscala.usos` lo da para cada escala de
+`todos`, con uno o varios `UsoDeEscala`:
+
+- **clásica**: la escala da la tonalidad y de ella sale la armonía (la mayor, las menores, los modos, las
+  napolitanas, la cromática, el hexacordo).
+- **jazz**: la escala se elige acorde a acorde (los modos de la menor melódica, las bebop, las disminuidas, las
+  pentatónicas del jazz y las de dos tríadas, y los siete modos de la mayor).
+- **blues**: las blues y las pentatónicas de las que salen.
+- **siglo XX**: las simétricas y las de compositor (tonos enteros, disminuidas, Messiaen, Prometeo, Petrushka, la
+  acústica, la cromática).
+- **popular**: las que vienen de una música popular (flamenca, mayor rumana, menor húngara, pentatónicas, gaélicas).
+- **sintética**: las que salen de rotar o alterar otra, sin repertorio propio (casi todos los modos de la menor y la
+  mayor armónicas, de la doble armónica y de las napolitanas).
+
+`TipoDeEscala.todos(uso:)` da las de un uso, en el orden de `todos`, y en la línea de comandos `armonia escalas --uso
+jazz` las lista. Las escalas de otras tradiciones no tienen uso: se clasifican por su tradición.
+
+```swift
+TipoDeEscala.dorico.usos == [.clasica, .jazz]    // true
+TipoDeEscala.todos(uso: .blues).count            // 6
+UsoDeEscala.sigloXX.nombre                       // "siglo XX"
+TipoDeEscala.kafi.usos.isEmpty                   // true
+```
+
 ## Escalas de otras tradiciones
 
 Escalas de otras tradiciones, en su versión temperada (en la práctica, sobre todo los dromoi
