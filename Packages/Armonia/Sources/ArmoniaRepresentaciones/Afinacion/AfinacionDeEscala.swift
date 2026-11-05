@@ -124,10 +124,11 @@ extension TipoDeEscala {
     ///     TipoDeEscala.tonosEnteros.afinacionSugerida   // .igual
     public var afinacionSugerida: AfinacionHistorica? {
         if let tradicion { return tradicion.afinacionSugerida }
-        if TipoDeEscala.renacentistas.contains(where: { $0.nombre == nombre }) { return .mesotonico }
+        if TipoDeEscala.renacentistas.contains(identidad) { return .mesotonico }
         return usos.first?.afinacionSugerida
     }
 
     /// Los modos de la polifonía del Renacimiento y el hexacordo de la solmisación.
-    private static let renacentistas: [TipoDeEscala] = [.dorico, .frigio, .lidio, .mixolidio, .hexacordo]
+    private static let renacentistas: Set<IdentidadDeEscala> = Set(
+        [TipoDeEscala.dorico, .frigio, .lidio, .mixolidio, .hexacordo].map(\.identidad))
 }

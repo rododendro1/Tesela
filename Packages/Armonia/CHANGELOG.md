@@ -1,5 +1,15 @@
 # Cambios
 
+## Sin publicar
+
+### La identidad de una escala
+
+- Las tablas del catálogo que dicen algo de una escala concreta (su tradición y su categoría, el mēḷa de un janya, sus
+  usos, sus afinaciones microtonales, el temperamento sugerido y sus nombres en otros idiomas) se buscan ahora por
+  `TipoDeEscala.identidad` (el nombre y los intervalos juntos), en lugar de buscar por el nombre y comprobar después
+  los intervalos en cada sitio. `esIdentico(a:)` la compara. Nada cambia en lo público: `==` sigue comparando solo el
+  contenido.
+
 ## 0.3.5 (2026-11-05)
 
 ### `armonia`: `-o fichero` y las notas en el idioma elegido

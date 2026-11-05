@@ -253,15 +253,15 @@ extension Escala {
 // MARK: - Catálogo
 
 extension TipoDeEscala {
-    /// La versión microtonal de una escala de otra tradición (`nil` si no tiene). Como `categoria`, se busca por el
-    /// nombre y solo vale si los intervalos coinciden: Bayātī la tiene; el frigio, con los mismos intervalos, no.
+    /// La versión microtonal de una escala de otra tradición (`nil` si no tiene). Como `categoria`, se busca por su
+    /// `identidad`: Bayātī la tiene; el frigio, con los mismos intervalos, no.
     public var microtonal: TipoDeEscalaMicrotonal? { afinaciones.first }
 
     /// Todas las versiones microtonales de la escala: la de su teoría de hoy (`microtonal`) y las de otros autores,
     /// cada una con su `fuente`. Los echoi diatónicos tienen dos: en los 72 moria de la Comisión Patriarcal (1881) y
     /// en los 68 de Chrysanthos (1832). Vacío si no tiene ninguna.
     public var afinaciones: [TipoDeEscalaMicrotonal] {
-        (TipoDeEscalaMicrotonal.porNombre[nombre] ?? []).filter { $0.temperada == self }
+        TipoDeEscalaMicrotonal.porIdentidad[identidad] ?? []
     }
 }
 
@@ -287,6 +287,7 @@ extension TipoDeEscalaMicrotonal {
         TipoDeEscalaMicrotonal(.blues, .razones, pasos: [0, 350, 498, 600, 702, 969])
     ]
 
-    /// Nombre de la escala temperada → sus versiones microtonales, en el orden del catálogo.
-    static let porNombre: [String: [TipoDeEscalaMicrotonal]] = Dictionary(grouping: catalogo, by: \.temperada.nombre)
+    /// Identidad de la escala temperada → sus versiones microtonales, en el orden del catálogo.
+    static let porIdentidad: [IdentidadDeEscala: [TipoDeEscalaMicrotonal]] = Dictionary(
+        grouping: catalogo, by: \.temperada.identidad)
 }

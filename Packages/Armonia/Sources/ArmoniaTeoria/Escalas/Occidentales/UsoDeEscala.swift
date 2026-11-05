@@ -32,8 +32,8 @@ public enum UsoDeEscala: String, Sendable, Codable, CaseIterable {
 
     /// Las escalas de `todos` de este uso, en su orden.
     public var tipos: [TipoDeEscala] {
-        let suyos = UsoDeEscala.tabla[self] ?? []
-        return TipoDeEscala.todos.filter { tipo in suyos.contains { $0.nombre == tipo.nombre } }
+        let suyos = Set((UsoDeEscala.tabla[self] ?? []).map(\.identidad))
+        return TipoDeEscala.todos.filter { suyos.contains($0.identidad) }
     }
 
     /// El reparto: cada uso y sus escalas. Se nombran por su miembro de `TipoDeEscala`, así que una escala que se
@@ -99,13 +99,17 @@ extension UsoDeEscala: Nombrable {}
 
 extension TipoDeEscala {
     /// En qué música se usa la escala, en el orden de `UsoDeEscala.allCases`; vacío en las de otras tradiciones y en
-    /// las propias. Se busca por el nombre, como `tradicion`: Kāfī tiene las notas del dórico, pero no sus usos.
-    public var usos: [UsoDeEscala] {
-        guard let occidental = TipoDeEscala.todos.first(where: { $0.nombre == nombre }), occidental == self else {
-            return []
+    /// las propias. Se busca por su `identidad`, como `tradicion`: Kāfī tiene las notas del dórico, pero no sus usos.
+    public var usos: [UsoDeEscala] { TipoDeEscala.usosPorIdentidad[identidad] ?? [] }
+
+    /// Identidad de cada escala de `todos` → sus usos, en el orden de `UsoDeEscala.allCases`.
+    private static let usosPorIdentidad: [IdentidadDeEscala: [UsoDeEscala]] = {
+        var tabla: [IdentidadDeEscala: [UsoDeEscala]] = [:]
+        for uso in UsoDeEscala.allCases {
+            for tipo in uso.tipos { tabla[tipo.identidad, default: []].append(uso) }
         }
-        return UsoDeEscala.allCases.filter { uso in uso.tipos.contains { $0.nombre == nombre } }
-    }
+        return tabla
+    }()
 
     /// Las escalas de `todos` de un uso: `todos(uso: .jazz)` da los modos, las bebop, la alterada…
     public static func todos(uso: UsoDeEscala) -> [TipoDeEscala] { uso.tipos }
