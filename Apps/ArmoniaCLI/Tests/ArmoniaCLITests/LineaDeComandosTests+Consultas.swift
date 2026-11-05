@@ -160,6 +160,17 @@ extension LineaDeComandosTests {
         #expect(resultado("escalas", "--notas").error.contains("--notas 5"))
     }
 
+    /// `escala … --estadisticas`: lo que se mide de la escala, un dato por línea.
+    @Test func estadisticasDeEscala() {
+        let mayor = salida("escala Do mayor --estadisticas")
+        #expect(mayor.contains("\nEstadísticas:\n  Número de notas: 7 (heptatónica)\n"), Comment(rawValue: mayor))
+        #expect(mayor.contains("\n  Brillo por quintas: +2\n"), Comment(rawValue: mayor))
+        #expect(mayor.contains("\n  Vector interválico: [2, 5, 4, 3, 6, 1]\n"), Comment(rawValue: mayor))
+        #expect(mayor.hasSuffix("\n  Rasgos: máximamente regular\n"), Comment(rawValue: mayor))
+        let ingles = salida("scale C lydian --statistics --ingles")
+        #expect(ingles.contains("  Brightness by fifths: +3"), Comment(rawValue: ingles))
+    }
+
     @Test func catalogoDeEscalas() {
         let todas = salida("escalas")
         #expect(todas.hasPrefix("habituales ("), Comment(rawValue: todas))

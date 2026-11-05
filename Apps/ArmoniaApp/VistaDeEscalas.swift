@@ -117,6 +117,7 @@ struct VistaDeEscalas: View {
             secuenciaEnLasPosiciones(de: escala)
             digitacionDePiano(de: escala)
             simetria(de: escala)
+            estadisticas(de: escala)
             reloj(de: escala)
             vecinas(de: escala)
             doceTonalidades(de: escala)
@@ -241,6 +242,15 @@ struct VistaDeEscalas: View {
                     }
                     .buttonStyle(.borderless)
                 }
+            }
+        }
+    }
+
+    /// Lo que se mide de la escala: el número de notas con su cardinal, el brillo, los pasos, el vector interválico…
+    private func estadisticas(de escala: Escala) -> some View {
+        Section(notacion.texto(\.estadisticas)) {
+            ForEach(PresentacionDeEstudioDeEscala.estadisticas(de: escala, notacion: notacion), id: \.self) { dato in
+                LabeledContent(dato.nombre, value: dato.valor)
             }
         }
     }

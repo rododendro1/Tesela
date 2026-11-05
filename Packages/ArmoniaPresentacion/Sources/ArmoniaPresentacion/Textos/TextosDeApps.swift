@@ -212,6 +212,18 @@ public struct TextosDeApps: TextosTraducidos {
     public let conSeptima: String
     public let subirYBajar: String
 
+    // MARK: PresentacionDeEstudioDeEscala+Estadisticas.swift
+    public let estadisticas: String
+    public let numeroDeNotas: String
+    public let brillo: String
+    public let brilloPorQuintas: String
+    public let transposicionesDistintas: String
+    public let rasgos: String
+    public let anhemitonica: String
+    public let cohemitonica: String
+    public let maximamenteRegular: String
+    public let medidaAproximada: String
+
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String
     public let notasAEvitar: String

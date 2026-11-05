@@ -44,6 +44,36 @@ import Testing
         #expect(PresentacionDeEstudioDeEscala.simetria(de: Escala(.do, .cromatica), notacion: notacion) == nil)
     }
 
+    @Test func estadisticas() {
+        let mayor = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do), notacion: notacion)
+        #expect(
+            mayor.map(\.nombre) == [
+                "Número de notas", "Brillo", "Brillo por quintas", "Pasos en semitonos", "Vector interválico",
+                "Número de Forte", "Transposiciones distintas", "Rasgos",
+            ])
+        #expect(
+            mayor.map(\.valor) == [
+                "7 (heptatónica)", "0", "+2", "2 2 1 2 2 2 1", "[2, 5, 4, 3, 6, 1]", "7-35", "12",
+                "máximamente regular",
+            ])
+        // La pentatónica menor: sin brillo de siete notas, más oscura que la mayor y sin semitonos.
+        let pentatonica = PresentacionDeEstudioDeEscala.estadisticas(
+            de: Escala(.la, .pentatonicaMenor), notacion: notacion)
+        #expect(!pentatonica.map(\.nombre).contains("Brillo"))
+        #expect(pentatonica.first?.valor == "5 (pentatónica)")
+        #expect(pentatonica.contains { $0.nombre == "Brillo por quintas" && $0.valor == "-1" })
+        #expect(pentatonica.last?.valor == "anhemitónica (sin semitonos) · máximamente regular")
+        let tonosEnteros = PresentacionDeEstudioDeEscala.estadisticas(
+            de: Escala(.do, .tonosEnteros), notacion: notacion)
+        #expect(tonosEnteros.contains { $0.nombre == "Transposiciones distintas" && $0.valor == "2" })
+        let ingles = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do), notacion: .inglesASCII)
+        #expect(ingles.first == DatoDeEscalaPresentado(nombre: "Number of notes", valor: "7 (heptatonic)"))
+        #expect(PresentacionDeEstudioDeEscala.conSigno(3) == "+3")
+        #expect(PresentacionDeEstudioDeEscala.conSigno(-3) == "-3")
+        #expect(PresentacionDeEstudioDeEscala.conSigno(0.4286) == "+0.43")
+        #expect(PresentacionDeEstudioDeEscala.conSigno(-0.001) == "0")
+    }
+
     @Test func lineasDeNotasGuia() {
         let acordes = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let lineas = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(
