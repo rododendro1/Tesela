@@ -41,7 +41,7 @@ public struct Digitacion: Hashable, Sendable, CustomStringConvertible {
     /// Una digitación con esos trastes, o `nil` si no hay uno por cada cuerda o alguno no está en el mástil.
     public init?(comprobando trastes: [Int?], en mastil: Mastil) {
         guard trastes.count == mastil.encordado.numeroDeCuerdas,
-            trastes.allSatisfy({ $0.map { (0...mastil.trastes).contains($0) } ?? true })
+            trastes.allSatisfy({ $0.map { (0...mastil.numeroDeTrastes).contains($0) } ?? true })
         else { return nil }
         self.init(mastil: mastil, trastes: trastes)
     }
@@ -61,12 +61,13 @@ public struct Digitacion: Hashable, Sendable, CustomStringConvertible {
             if parte == "x" || parte == "X" {
                 trastes.append(nil)
             } else if !parte.isEmpty, parte.allSatisfy({ $0.isASCII && $0.isNumber }), let traste = Int(parte),
-                traste <= mastil.trastes
+                traste <= mastil.numeroDeTrastes
             {
                 trastes.append(traste)
             } else {
                 throw ErrorDeLecturaDeTeoria(
-                    texto: tablatura, posicion: posicion, motivo: .trasteNoValido(parte, ultimo: mastil.trastes))
+                    texto: tablatura, posicion: posicion,
+                    motivo: .trasteNoValido(parte, ultimo: mastil.numeroDeTrastes))
             }
             posicion += parte.count + (conGuiones ? 1 : 0)
         }
@@ -195,8 +196,8 @@ extension Mastil {
         cuerdasMinimas: Int = 4, exigirQuinta: Bool = true,
         limite: Int = 12
     ) -> [Digitacion] {
-        let cuerdas = encordado.cuerdas
-        let ultimoTraste = min(maximoTraste, trastes)
+        let cuerdas = encordado.afinacion
+        let ultimoTraste = min(maximoTraste, numeroDeTrastes)
         let notas = acorde.notas
         let clases = Set(notas.map(\.claseDeAltura))
         let claseDelBajo = acorde.bajo.claseDeAltura

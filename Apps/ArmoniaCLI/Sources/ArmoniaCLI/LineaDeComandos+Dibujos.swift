@@ -312,7 +312,7 @@ extension LineaDeComandos {
         case .sinValor: return .faltaInstrumento
         case .valor(let nombre):
             guard let encordado = try? Encordado(leyendo: nombre) else { return .instrumentoDesconocido(nombre) }
-            mastil = Mastil(encordado, trastes: 15)
+            mastil = Mastil(encordado, numeroDeTrastes: 15)
             return nil
         }
     }
@@ -368,7 +368,7 @@ extension LineaDeComandos {
             guard let elegida = manoDePiano(texto) else { return uso(.manoDesconocida(texto), notacion) }
             mano = elegida
         }
-        var mastil = Mastil(.guitarra, trastes: 15)
+        var mastil = Mastil(.guitarra, numeroDeTrastes: 15)
         if let error = leerMastil(&argumentos, en: &mastil) { return uso(error, notacion) }
         if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
         guard !argumentos.restantes.isEmpty else { return uso(.faltaLoQueDibujaElPentagrama, notacion) }
@@ -383,7 +383,7 @@ extension LineaDeComandos {
             let posicion =
                 formas.first
                 ?? EscalaEnElMastil(
-                    mastil: mastil, trastes: 0...4,
+                    mastil: mastil, rangoDeTrastes: 0...4,
                     posiciones: mastil.posiciones(deClases: clases).filter { $0.traste <= 4 }.sorted {
                         (mastil.altura(en: $0).midi, $0.traste) < (mastil.altura(en: $1).midi, $1.traste)
                     })
@@ -404,7 +404,7 @@ extension LineaDeComandos {
                 if bajando { posiciones.reverse() }
             }
             let (alturas, tablatura) = enTablatura(posiciones, en: mastil)
-            let ritmo = secuencia.map { Partitura.Ritmo.figura(figuraDeLaSecuencia($0)) } ?? .libre
+            let ritmo = secuencia.map { Partitura.Ritmo.uniforme(figuraDeLaSecuencia($0)) } ?? .libre
             svg = escala.svgPentagrama(
                 tocadaEn: alturas, titulo: titulo, ritmo: ritmo,
                 porEvento: .init(dedos: conDedos ? dedosEnElMastil(posiciones) : [:]), tablatura: tablatura,
@@ -462,7 +462,7 @@ extension LineaDeComandos {
         let conBajoCifrado = argumentos.quitarMarca("--bajo-cifrado", "--figured-bass")
         let tab = argumentos.quitarMarca("--tab")
         let conDedos = argumentos.quitarMarca("--dedos", "--fingers")
-        var mastil = Mastil(.guitarra, trastes: 15)
+        var mastil = Mastil(.guitarra, numeroDeTrastes: 15)
         if let error = leerMastil(&argumentos, en: &mastil) { return uso(error, notacion) }
         var recorrido = RecorridoDeArpegio()
         if let error = leerRecorrido(&argumentos, en: &recorrido) { return uso(error, notacion) }
@@ -475,7 +475,8 @@ extension LineaDeComandos {
                 return uso(.faltaLoQueDibujaElPentagrama, notacion)
             }
             // La partitura del arpegio en el mástil, con sus dedos (`ArpegioEnElMastil.dedos`) si se piden.
-            var partitura = enElMastil.partitura(de: acorde, ritmo: figura.map { Partitura.Ritmo.figura($0) } ?? .libre)
+            let ritmo = figura.map { Partitura.Ritmo.uniforme($0) } ?? .libre
+            var partitura = enElMastil.partitura(de: acorde, ritmo: ritmo)
             if !conDedos { partitura.pentagramas[0].voces[0].dedos = [:] }
             return bien(partitura.svg(opciones: opciones).trimmingCharacters(in: "\n"))
         }

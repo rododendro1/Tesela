@@ -11,19 +11,19 @@ public struct Encordado: Hashable, Sendable {
     /// Altura al aire de cada cuerda, en el orden en que están en el mástil: primero la de arriba (la más grave
     /// en la guitarra, que es la sexta en la numeración tradicional) y al final la de abajo (la primera). Con
     /// capo, la que suena con el capo puesto: el traste 0 es el del capo.
-    public let cuerdas: [Altura]
+    public let afinacion: [Altura]
     /// El traste en que va el capo (la cejilla móvil que se pinza en el mástil), o 0 si no lleva.
     public let capo: Int
 
     /// Un instrumento con ese nombre y esas cuerdas al aire, de la 0 (la más grave en el mástil) en adelante, sin
     /// cejilla.
-    public init(nombre: String, cuerdas: [Altura]) {
-        self.init(nombre: nombre, cuerdas: cuerdas, capo: 0)
+    public init(nombre: String, afinacion: [Altura]) {
+        self.init(nombre: nombre, afinacion: afinacion, capo: 0)
     }
 
-    private init(nombre: String, cuerdas: [Altura], capo: Int) {
+    private init(nombre: String, afinacion: [Altura], capo: Int) {
         self.nombre = nombre
-        self.cuerdas = cuerdas
+        self.afinacion = afinacion
         self.capo = capo
     }
 
@@ -31,12 +31,12 @@ public struct Encordado: Hashable, Sendable {
     /// trastes se cuentan desde el capo, como los cuenta quien toca. `Encordado.guitarra.conCapo(2)` toca la
     /// forma de Do (`x32010`) y suena Re. Con 0, o un número negativo, sin capo.
     ///
-    ///     Encordado.guitarra.conCapo(2).cuerdas.first?.midi   // 42: Fa♯2
+    ///     Encordado.guitarra.conCapo(2).afinacion.first?.midi   // 42: Fa♯2
     public func conCapo(_ traste: Int) -> Encordado {
         let base = sinCapo
         let traste = max(0, traste)
-        let cuerdas = base.cuerdas.map { Altura(midi: $0.midi + traste) }
-        return Encordado(nombre: base.nombre, cuerdas: cuerdas, capo: traste)
+        let afinacion = base.afinacion.map { Altura(midi: $0.midi + traste) }
+        return Encordado(nombre: base.nombre, afinacion: afinacion, capo: traste)
     }
 
     /// El instrumento sin capo, con sus cuerdas al aire.
@@ -44,14 +44,14 @@ public struct Encordado: Hashable, Sendable {
         guard capo > 0 else { return self }
         // Las cuerdas de un instrumento conocido, con su ortografía; las demás, a partir de su número MIDI.
         let alAire =
-            Encordado.todos.first { $0.nombre == nombre && $0.numeroDeCuerdas == numeroDeCuerdas }?.cuerdas
-            ?? cuerdas.map { Altura(midi: $0.midi - capo) }
-        return Encordado(nombre: nombre, cuerdas: alAire, capo: 0)
+            Encordado.todos.first { $0.nombre == nombre && $0.numeroDeCuerdas == numeroDeCuerdas }?.afinacion
+            ?? afinacion.map { Altura(midi: $0.midi - capo) }
+        return Encordado(nombre: nombre, afinacion: alAire, capo: 0)
     }
 
-    public var numeroDeCuerdas: Int { cuerdas.count }
+    public var numeroDeCuerdas: Int { afinacion.count }
 
-    /// El número tradicional de la cuerda con ese índice en `cuerdas`: la 1.ª es la de abajo (el Mi agudo de la
+    /// El número tradicional de la cuerda con ese índice en `afinacion`: la 1.ª es la de abajo (el Mi agudo de la
     /// guitarra) y la última, la de arriba.
     ///
     ///     Encordado.guitarra.numeroTradicional(deCuerda: 0)   // 6: el Mi grave
@@ -62,7 +62,7 @@ public struct Encordado: Hashable, Sendable {
     /// (la de arriba, la 4.ª) es más aguda que la de Do (la 3.ª). En estos instrumentos la nota más grave de un
     /// acorde no tiene por qué ser su raíz.
     public var esReentrante: Bool {
-        zip(cuerdas, cuerdas.dropFirst()).contains { $0.midi > $1.midi }
+        zip(afinacion, afinacion.dropFirst()).contains { $0.midi > $1.midi }
     }
 
     // MARK: Afinaciones habituales
@@ -70,7 +70,7 @@ public struct Encordado: Hashable, Sendable {
     /// Guitarra estándar: Mi2 La2 Re3 Sol3 Si3 Mi4.
     public static let guitarra = Encordado(
         nombre: "guitarra",
-        cuerdas: [
+        afinacion: [
             Altura(.mi, octava: 2), Altura(.la, octava: 2), Altura(.re, octava: 3),
             Altura(.sol, octava: 3), Altura(.si, octava: 3), Altura(.mi, octava: 4),
         ])
@@ -78,17 +78,17 @@ public struct Encordado: Hashable, Sendable {
     /// Guitarra de siete cuerdas, con el Si1 grave.
     public static let guitarraDeSieteCuerdas = Encordado(
         nombre: "guitarra de siete cuerdas",
-        cuerdas: [Altura(.si, octava: 1)] + Encordado.guitarra.cuerdas)
+        afinacion: [Altura(.si, octava: 1)] + Encordado.guitarra.afinacion)
 
     /// Guitarra en Re (drop D): Re2 La2 Re3 Sol3 Si3 Mi4.
     public static let guitarraEnReGrave = Encordado(
         nombre: "guitarra en re grave",
-        cuerdas: [Altura(.re, octava: 2)] + Encordado.guitarra.cuerdas.dropFirst())
+        afinacion: [Altura(.re, octava: 2)] + Encordado.guitarra.afinacion.dropFirst())
 
     /// Guitarra en re abierto (open D): Re2 La2 Re3 Fa♯3 La3 Re4, un acorde de Re al aire.
     public static let guitarraEnReAbierto = Encordado(
         nombre: "guitarra en re abierto",
-        cuerdas: [
+        afinacion: [
             Altura(.re, octava: 2), Altura(.la, octava: 2), Altura(.re, octava: 3),
             Altura(Nota(.fa, .sostenido), octava: 3), Altura(.la, octava: 3), Altura(.re, octava: 4),
         ])
@@ -96,7 +96,7 @@ public struct Encordado: Hashable, Sendable {
     /// Guitarra en sol abierto (open G): Re2 Sol2 Re3 Sol3 Si3 Re4, un acorde de Sol al aire.
     public static let guitarraEnSolAbierto = Encordado(
         nombre: "guitarra en sol abierto",
-        cuerdas: [
+        afinacion: [
             Altura(.re, octava: 2), Altura(.sol, octava: 2), Altura(.re, octava: 3),
             Altura(.sol, octava: 3), Altura(.si, octava: 3), Altura(.re, octava: 4),
         ])
@@ -104,7 +104,7 @@ public struct Encordado: Hashable, Sendable {
     /// Guitarra en DADGAD: Re2 La2 Re3 Sol3 La3 Re4, un Re con cuarta suspendida al aire.
     public static let guitarraDADGAD = Encordado(
         nombre: "guitarra en DADGAD",
-        cuerdas: [
+        afinacion: [
             Altura(.re, octava: 2), Altura(.la, octava: 2), Altura(.re, octava: 3),
             Altura(.sol, octava: 3), Altura(.la, octava: 3), Altura(.re, octava: 4),
         ])
@@ -112,22 +112,22 @@ public struct Encordado: Hashable, Sendable {
     /// Bajo de cuatro cuerdas: Mi1 La1 Re2 Sol2.
     public static let bajoElectrico = Encordado(
         nombre: "bajo",
-        cuerdas: [Altura(.mi, octava: 1), Altura(.la, octava: 1), Altura(.re, octava: 2), Altura(.sol, octava: 2)])
+        afinacion: [Altura(.mi, octava: 1), Altura(.la, octava: 1), Altura(.re, octava: 2), Altura(.sol, octava: 2)])
 
     /// Bajo de cinco cuerdas: Si0 Mi1 La1 Re2 Sol2.
     public static let bajoDeCincoCuerdas = Encordado(
         nombre: "bajo de cinco cuerdas",
-        cuerdas: [Altura(.si, octava: 0)] + Encordado.bajoElectrico.cuerdas)
+        afinacion: [Altura(.si, octava: 0)] + Encordado.bajoElectrico.afinacion)
 
     /// Ukelele soprano: Sol4 Do4 Mi4 La4 (cuerda reentrante).
     public static let ukelele = Encordado(
         nombre: "ukelele",
-        cuerdas: [Altura(.sol, octava: 4), Altura(.do, octava: 4), Altura(.mi, octava: 4), Altura(.la, octava: 4)])
+        afinacion: [Altura(.sol, octava: 4), Altura(.do, octava: 4), Altura(.mi, octava: 4), Altura(.la, octava: 4)])
 
     /// Mandolina, afinada en quintas: Sol3 Re4 La4 Mi5.
     public static let mandolina = Encordado(
         nombre: "mandolina",
-        cuerdas: [Altura(.sol, octava: 3), Altura(.re, octava: 4), Altura(.la, octava: 4), Altura(.mi, octava: 5)])
+        afinacion: [Altura(.sol, octava: 3), Altura(.re, octava: 4), Altura(.la, octava: 4), Altura(.mi, octava: 5)])
 
     public static let todos: [Encordado] = [
         .guitarra, .guitarraEnReGrave, .guitarraEnReAbierto, .guitarraEnSolAbierto, .guitarraDADGAD,

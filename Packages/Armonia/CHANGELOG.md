@@ -213,7 +213,7 @@
 ### Ritmo en la partitura de una escala o de un arpegio
 
 - `Escala.partitura(octava:octavas:sentido:digitacion:ritmo:)` y `Arpegio.partitura(octava:ritmo:)` admiten un
-  ritmo, como `partitura(tocadaEn:ritmo:)`: con `.figura(.corchea)`, la escala o el arpegio en corcheas, con la
+  ritmo, como `partitura(tocadaEn:ritmo:)`: con `.uniforme(.corchea)`, la escala o el arpegio en corcheas, con la
   última nota en negra.
 
 ### El signo de un microtono, público
@@ -243,8 +243,8 @@
 
 ### El ritmo, aparte de la figura
 
-- `Partitura.Ritmo` (nuevo): `.libre` (redondas, sin ritmo) o `.figura(.corchea)` (todas con esa figura, y la
-  última, una negra si la figura es más corta). Sustituye al `figura: Duracion?` que decidía a la vez si había ritmo
+- `Partitura.Ritmo` (nuevo): `.libre` (redondas, sin ritmo) o `.uniforme(.corchea)` (todas con esa duración, y la
+  última, una negra si es más corta). Sustituye al `figura: Duracion?` que decidía a la vez si había ritmo
   y cuál en `Escala.partitura(octava:…)`, `partitura(tocadaEn:…)`, `svgPentagrama(tocadaEn:…)`,
   `Arpegio.partitura(octava:)`, `Acorde.partitura(arpegiadoEn:…)`, `svgPentagrama(arpegiadoEn:…)` y las partituras
   del mástil.
@@ -325,6 +325,21 @@
 - **Cambio incompatible:** `Partitura.lineas` cuenta los pentagramas desde 0 (el de arriba), como
   `Partitura.pentagramas` y `NotaDeLaPieza.pentagrama`; antes, desde 1. `partitura.pentagramas[linea.pentagrama]` es
   el suyo.
+
+### Cada nombre, una sola cosa
+
+- **Cambio incompatible:** `trastes` ya no nombra tres cosas distintas. `Mastil.trastes` (cuántos tiene) es
+  `Mastil.numeroDeTrastes`, y `Mastil(_:trastes:)`, `Mastil(_:numeroDeTrastes:)`, como `numeroDeCuerdas`. Los trastes
+  que abarca la mano en `EscalaEnElMastil` y `ArpegioEnElMastil` son `rangoDeTrastes`, también en sus
+  inicializadores. `Digitacion.trastes` (uno por cuerda) sigue igual. `Mastil.posiciones(de:trastes:)`, de una
+  escala o de un acorde, es `posiciones(de:en:)`: `mastil.posiciones(de: escala, en: 0...12)`.
+- **Cambio incompatible:** `Encordado.cuerdas` es `Encordado.afinacion`, y `Encordado(nombre:cuerdas:)`,
+  `Encordado(nombre:afinacion:)`: las alturas al aire, como `Tablatura.afinacion` y `Partitura.Pentagrama.afinacion`.
+- **Cambio incompatible:** `sumar()` de unas duraciones es la propiedad `total`:
+  `[Duracion.negra, .corchea, .corchea].total == .blanca`.
+- **Cambio incompatible:** `Coral.partitura(…)`, `AnalisisArmonico.partitura(…)` y `RitmoArmonico.partitura(en:…)`
+  piden los cifrados y el análisis con `conCifrados:` y `conAnalisis:`, en lugar de `cifrados:` y `analisis:`, que
+  en `Partitura.Linea` son lo que se escribe.
 
 ## 0.3.4 (2026-11-04)
 

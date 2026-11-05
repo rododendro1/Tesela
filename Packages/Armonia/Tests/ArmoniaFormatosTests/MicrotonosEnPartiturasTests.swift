@@ -394,8 +394,8 @@ import Testing
         let svg = sur.svgPentagrama(tocadaEn: alturas)
         #expect(svg == partitura.svg() && svg.contains(GlifosSMuFL.koron.trazado))
         // Con ritmo, también.
-        let conRitmo = sur.svgPentagrama(tocadaEn: alturas, ritmo: .figura(.corchea))
-        #expect(conRitmo == sur.partitura(tocadaEn: alturas, ritmo: .figura(.corchea)).svg())
+        let conRitmo = sur.svgPentagrama(tocadaEn: alturas, ritmo: .uniforme(.corchea))
+        #expect(conRitmo == sur.partitura(tocadaEn: alturas, ritmo: .uniforme(.corchea)).svg())
         #expect(conRitmo.contains(GlifosSMuFL.koron.trazado))
         // Una partitura sin ritmo dibuja los microtonos de sus notas, también los escritos a mano.
         let aMano = Partitura(

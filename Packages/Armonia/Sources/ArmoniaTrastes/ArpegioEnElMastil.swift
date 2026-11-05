@@ -7,13 +7,13 @@ import ArmoniaTeoria
 /// Un arpegio tocado en una posición del mástil: las notas del acorde dentro de una franja de trastes, de la más
 /// grave a la más aguda, que es el orden en que se tocan al subir.
 ///
-///     let posiciones = Mastil(.guitarra, trastes: 12).arpegios(de: Acorde("Lam"))
-///     posiciones.map(\.trastes)        // [0...3, 4...7, 9...12]
+///     let posiciones = Mastil(.guitarra, numeroDeTrastes: 12).arpegios(de: Acorde("Lam"))
+///     posiciones.map(\.rangoDeTrastes)        // [0...3, 4...7, 9...12]
 ///     posiciones[0].alturas            // Mi2 La2 Do3 Mi3 La3 Do4 Mi4
 public struct ArpegioEnElMastil: Hashable, Sendable {
     public let mastil: Mastil
     /// Los trastes que abarca la mano (el 0 es la cuerda al aire).
-    public let trastes: ClosedRange<Int>
+    public let rangoDeTrastes: ClosedRange<Int>
     /// Las notas, de la más grave a la más aguda; las que suenan igual en dos cuerdas (un unísono), una vez.
     public let posiciones: [PosicionEnElMastil]
     /// La forma CAGED de la posición, si es una de ``Mastil/arpegiosCAGED(de:ancho:)``.
@@ -25,11 +25,11 @@ public struct ArpegioEnElMastil: Hashable, Sendable {
 
     /// Un arpegio en esa franja de trastes, con sus notas de la más grave a la más aguda.
     public init(
-        mastil: Mastil, trastes: ClosedRange<Int>, posiciones: [PosicionEnElMastil], forma: FormaCAGED? = nil,
+        mastil: Mastil, rangoDeTrastes: ClosedRange<Int>, posiciones: [PosicionEnElMastil], forma: FormaCAGED? = nil,
         acorde: Acorde? = nil
     ) {
         self.mastil = mastil
-        self.trastes = trastes
+        self.rangoDeTrastes = rangoDeTrastes
         self.posiciones = posiciones
         self.forma = forma
         self.acorde = acorde
@@ -49,7 +49,7 @@ public struct ArpegioEnElMastil: Hashable, Sendable {
 
 extension Mastil {
     /// Todas las posiciones de las notas de un acorde, en un rango de trastes si se indica.
-    public func posiciones(de acorde: Acorde, trastes rango: ClosedRange<Int>? = nil) -> [PosicionEnElMastil] {
+    public func posiciones(de acorde: Acorde, en rango: ClosedRange<Int>? = nil) -> [PosicionEnElMastil] {
         let todas = posiciones(deClases: Set(acorde.notas.map(\.claseDeAltura)))
         guard let rango else { return todas }
         return todas.filter { rango.contains($0.traste) }
@@ -65,14 +65,14 @@ extension Mastil {
         let fundamental = acorde.fundamental.claseDeAltura
         var inicios: [Int] = []
         // Las dos cuerdas más graves, que no siempre son las primeras (el Sol agudo del ukelele).
-        for alAire in encordado.cuerdas.sorted(by: { $0.midi < $1.midi }).prefix(2) {
-            for traste in 0...trastes where Mastil.clase(alAire.midi + traste) == fundamental {
-                let inicio = max(0, min(traste - 1, trastes - (ancho - 1)))
+        for alAire in encordado.afinacion.sorted(by: { $0.midi < $1.midi }).prefix(2) {
+            for traste in 0...numeroDeTrastes where Mastil.clase(alAire.midi + traste) == fundamental {
+                let inicio = max(0, min(traste - 1, numeroDeTrastes - (ancho - 1)))
                 if !inicios.contains(inicio) { inicios.append(inicio) }
             }
         }
         return inicios.sorted().compactMap { inicio in
-            arpegio(de: acorde, en: inicio...min(trastes, inicio + ancho - 1), forma: nil)
+            arpegio(de: acorde, en: inicio...min(numeroDeTrastes, inicio + ancho - 1), forma: nil)
         }
     }
 
@@ -80,10 +80,10 @@ extension Mastil {
     /// las notas del acorde dentro de la franja de la escala mayor de su fundamental en esa forma
     /// (``posicionesCAGED(de:ancho:)``). Solo para la guitarra afinada como siempre; en otro instrumento, vacío.
     ///
-    ///     Mastil(.guitarra, trastes: 15).arpegiosCAGED(de: Acorde("Do")).map(\.forma)   // [C, A, G, E, D]
+    ///     Mastil(.guitarra, numeroDeTrastes: 15).arpegiosCAGED(de: Acorde("Do")).map(\.forma)   // [C, A, G, E, D]
     public func arpegiosCAGED(de acorde: Acorde, ancho: Int = 5) -> [ArpegioEnElMastil] {
         posicionesCAGED(de: Escala(acorde.fundamental, .mayor), ancho: ancho).compactMap {
-            arpegio(de: acorde, en: $0.trastes, forma: $0.forma)
+            arpegio(de: acorde, en: $0.rangoDeTrastes, forma: $0.forma)
         }
     }
 
@@ -91,16 +91,16 @@ extension Mastil {
     /// (*sweep picking*): uno por cada nota del acorde en la cuerda más grave, de la más baja a la más alta, si las
     /// cuerdas siguientes encuentran nota sin que la mano tenga que abrirse más de `alcance` trastes.
     ///
-    ///     Mastil(.guitarra, trastes: 15).arpegiosDeUnaNotaPorCuerda(de: Acorde("Lam"))[0].alturas
+    ///     Mastil(.guitarra, numeroDeTrastes: 15).arpegiosDeUnaNotaPorCuerda(de: Acorde("Lam"))[0].alturas
     ///     // Mi2 La2 Mi3 La3 Do4 Mi4: el La menor al aire, de la 6.ª cuerda a la 1.ª
     ///
     /// Vacío si las cuerdas no van de grave a aguda (un ukelele con el Sol agudo, por ejemplo).
     public func arpegiosDeUnaNotaPorCuerda(de acorde: Acorde, alcance: Int = 5) -> [ArpegioEnElMastil] {
         let clases = Set(acorde.notas.map(\.claseDeAltura))
-        let cuerdas = encordado.cuerdas.map(\.midi)
+        let cuerdas = encordado.afinacion.map(\.midi)
         guard !clases.isEmpty, !encordado.esReentrante, let grave = cuerdas.first else { return [] }
         var resultado: [ArpegioEnElMastil] = []
-        for inicio in 0...trastes where clases.contains(Mastil.clase(grave + inicio)) {
+        for inicio in 0...numeroDeTrastes where clases.contains(Mastil.clase(grave + inicio)) {
             var posiciones = [PosicionEnElMastil(cuerda: 0, traste: inicio)]
             var altura = grave + inicio
             for (cuerda, alAire) in cuerdas.enumerated().dropFirst() {
@@ -111,11 +111,12 @@ extension Mastil {
             }
             let usados = posiciones.map(\.traste)
             // La mano abarca de la nota pisada más baja a la más alta; las cuerdas al aire no cuentan.
-            guard let menor = usados.min(), let mayor = usados.max(), mayor <= trastes,
+            guard let menor = usados.min(), let mayor = usados.max(), mayor <= numeroDeTrastes,
                 usados.allSatisfy({ $0 == 0 || mayor - $0 < max(1, alcance) })
             else { continue }
             resultado.append(
-                ArpegioEnElMastil(mastil: self, trastes: menor...mayor, posiciones: posiciones, acorde: acorde))
+                ArpegioEnElMastil(
+                    mastil: self, rangoDeTrastes: menor...mayor, posiciones: posiciones, acorde: acorde))
         }
         return resultado
     }
@@ -131,6 +132,7 @@ extension Mastil {
             unicas.append(posicion)
         }
         guard Set(unicas.map { Mastil.clase(midi(en: $0)) }) == clases else { return nil }
-        return ArpegioEnElMastil(mastil: self, trastes: franja, posiciones: unicas, forma: forma, acorde: acorde)
+        return ArpegioEnElMastil(
+            mastil: self, rangoDeTrastes: franja, posiciones: unicas, forma: forma, acorde: acorde)
     }
 }

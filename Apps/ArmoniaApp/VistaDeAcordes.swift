@@ -55,7 +55,7 @@ struct VistaDeAcordes: View {
 
     /// El mástil del instrumento elegido, con el capo si lo lleva.
     private func mastil(trastes: Int) -> Mastil {
-        Mastil(encordado.conCapo(capo), trastes: trastes)
+        Mastil(encordado.conCapo(capo), numeroDeTrastes: trastes)
     }
 
     private func arpegio(de acorde: Acorde) -> Arpegio {

@@ -100,13 +100,14 @@ extension Coral {
     /// «Coro» si no le da nombre, y suena con el coro (52) si no da instrumento.
     ///
     ///     let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-    ///     let xml = coral.partitura(duracion: .blanca, compas: "3/2", analisis: true).musicXML()
+    ///     let xml = coral.partitura(duracion: .blanca, compas: "3/2", conAnalisis: true).musicXML()
     public func partitura(
         duracion: Duracion = .negra, compas: Compas = .compasillo, encabezado: Encabezado = Encabezado(),
-        cifrados: Bool = false, analisis: Bool = false, notacion: Notacion = .espanolCompacto
+        conCifrados: Bool = false, conAnalisis: Bool = false, notacion: Notacion = .espanolCompacto
     ) -> Partitura {
         let anotado = Exportacion.anotaciones(
-            de: self, duracion: duracion, tonalidad: encabezado.tonalidad, cifrados: cifrados, analisis: analisis)
+            de: self, duracion: duracion, tonalidad: encabezado.tonalidad, cifrados: conCifrados,
+            analisis: conAnalisis)
         var cabecera = encabezado
         cabecera.tonalidad = anotado.tonalidad
         cabecera.nombreDeLaParte = encabezado.nombreDeLaParte ?? "Coro"
@@ -143,23 +144,24 @@ extension AnalisisArmonico {
     /// dura cada acorde (el ritmo de una pieza importada), `RitmoArmonico.partitura(en:…)`.
     public func partitura(
         duracion: Duracion = .negra, compas: Compas = .compasillo, encabezado: Encabezado = Encabezado(),
-        cifrados: Bool = true, analisis: Bool = true, notacion: Notacion = .espanolCompacto
+        conCifrados: Bool = true, conAnalisis: Bool = true, notacion: Notacion = .espanolCompacto
     ) -> Partitura {
         precondition(duracion > .cero, "cada acorde tiene que durar algo")
         return conDuraciones(
             Array(repeating: duracion, count: acordes.count), compas: compas, encabezado: encabezado,
-            cifrados: cifrados, analisis: analisis, notacion: notacion)
+            conCifrados: conCifrados, conAnalisis: conAnalisis, notacion: notacion)
     }
 
     /// La partitura, con una duración positiva por acorde.
     fileprivate func conDuraciones(
-        _ duraciones: [Duracion], compas: Compas, encabezado: Encabezado, cifrados: Bool, analisis: Bool,
+        _ duraciones: [Duracion], compas: Compas, encabezado: Encabezado, conCifrados: Bool,
+        conAnalisis: Bool,
         notacion: Notacion
     ) -> Partitura {
         let (superior, grave) = Exportacion.progresion(
             acordes.map(\.acorde), duraciones: Exportacion.hastaLaBarra(duraciones, compas))
         let anotado = Exportacion.anotaciones(
-            de: self, duraciones: duraciones, cifrados: cifrados, analisis: analisis)
+            de: self, duraciones: duraciones, cifrados: conCifrados, analisis: conAnalisis)
         var marcadores: [Duracion: String] = [:]
         for (inicio, analizado) in zip(Exportacion.inicios(duraciones), acordes) {
             marcadores[inicio] = analizado.acorde.cifrado(en: notacion) + " · " + analizado.cifrado
@@ -188,8 +190,8 @@ extension RitmoArmonico {
     ///     let ritmo = RitmoArmonico([AcordeConDuracion("Do", .blanca), AcordeConDuracion("Sol7", .negra)])
     ///     let datos = ritmo.partitura(encabezado: Encabezado(titulo: "Cadencia")).midi()
     public func partitura(
-        en tonalidad: Tonalidad? = nil, encabezado: Encabezado = Encabezado(), cifrados: Bool = true,
-        analisis: Bool = true, notacion: Notacion = .espanolCompacto
+        en tonalidad: Tonalidad? = nil, encabezado: Encabezado = Encabezado(), conCifrados: Bool = true,
+        conAnalisis: Bool = true, notacion: Notacion = .espanolCompacto
     ) -> Partitura {
         let acordes = self.acordes.map(\.acorde)
         // Sin acordes no hay tonalidad que los explique: el análisis, vacío, en Do mayor.
@@ -198,7 +200,8 @@ extension RitmoArmonico {
         var cabecera = encabezado
         cabecera.tempo = encabezado.tempo ?? tempo
         return analizado.conDuraciones(
-            duraciones, compas: compas, encabezado: cabecera, cifrados: cifrados, analisis: analisis,
+            duraciones, compas: compas, encabezado: cabecera, conCifrados: conCifrados,
+            conAnalisis: conAnalisis,
             notacion: notacion)
     }
 }

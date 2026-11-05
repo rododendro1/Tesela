@@ -111,7 +111,7 @@ public struct Contrapunto: Hashable, Sendable {
     /// (`.contrapuntoDeOtraDuracion`) si el contrapunto no dura una redonda por cada nota del cantus.
     public init(cantusFirmus: [Altura], contrapunto: [Evento], especie: Especie) throws {
         guard !cantusFirmus.isEmpty else { throw ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio) }
-        guard contrapunto.map(\.duracion).sumar() == Duracion(cantusFirmus.count) else {
+        guard contrapunto.map(\.duracion).total == Duracion(cantusFirmus.count) else {
             throw ErrorDeLecturaDePartitura(
                 texto: "", posicion: nil, motivo: .contrapuntoDeOtraDuracion(redondas: cantusFirmus.count))
         }

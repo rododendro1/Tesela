@@ -1110,13 +1110,13 @@ import Hexagonos
     @Test func tonalidad14() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, línea 258
         let cadencia = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-        comprobar(cadencia.partitura(cifrados: true, analisis: true).musicXML().contains("<text>V</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 259)
+        comprobar(cadencia.partitura(conCifrados: true, conAnalisis: true).musicXML().contains("<text>V</text>"), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 259)
     }
 
     @Test func tonalidad15() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, línea 265
         let cierre = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-        comprobar(cierre.partitura(cifrados: true, analisis: true).mei().contains("<syl>V</syl>"), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 266)
+        comprobar(cierre.partitura(conCifrados: true, conAnalisis: true).mei().contains("<syl>V</syl>"), #"true"#, #"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 266)
     }
 
     @Test func tonalidad16() throws {
@@ -1224,39 +1224,39 @@ import Hexagonos
         let notas = primera?.notas(para: acorde)
         let dedos = primera?.dedos
         let cejilla = primera?.cejilla
-        let pentatonica = mastil.posiciones(de: Escala(.la, .pentatonicaMenor), trastes: 0...12)
+        let pentatonica = mastil.posiciones(de: Escala(.la, .pentatonicaMenor), en: 0...12)
         _ = (ukelele, tablatura, notas, dedos, cejilla, pentatonica)
     }
 
     @Test func trastes2() throws {
         // Sources/Armonia/Armonia.docc/Trastes.md, línea 56
-        let mastil = Mastil(.guitarra, trastes: 12)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
         let posiciones = mastil.arpegios(de: Acorde("Lam"))
         comprobar(posiciones.count, #"3"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 58)
-        comprobar(posiciones[0].trastes == 0...3, #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 59)
+        comprobar(posiciones[0].rangoDeTrastes == 0...3, #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 59)
         comprobar(posiciones[0].alturas.map(\.midi) == [40, 45, 48, 52, 57, 60, 64], #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 60)
-        let todas = mastil.posiciones(de: Acorde("Lam"), trastes: 0...5)
+        let todas = mastil.posiciones(de: Acorde("Lam"), en: 0...5)
         _ = todas
     }
 
     @Test func trastes3() throws {
         // Sources/Armonia/Armonia.docc/Trastes.md, línea 75
-        let mastil = Mastil(.guitarra, trastes: 15)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 15)
         let porCuerda = mastil.posicionesPorCuerda(de: Escala(.sol, .mayor))
         comprobar(porCuerda.count, #"7"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 77)
-        comprobar(porCuerda[0].trastes == 0...5, #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 78)
+        comprobar(porCuerda[0].rangoDeTrastes == 0...5, #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 78)
         comprobar(porCuerda[0].posiciones.count, #"18"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 79)
         let caged = mastil.posicionesCAGED(de: Escala(.do, .mayor))
         comprobar(caged.map(\.forma) == [.c, .a, .g, .e, .d], #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 81)
-        comprobar(caged.map(\.trastes) == [0...4, 2...6, 5...9, 7...11, 9...13], #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 82)
+        comprobar(caged.map(\.rangoDeTrastes) == [0...4, 2...6, 5...9, 7...11, 9...13], #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 82)
     }
 
     @Test func trastes4() throws {
         // Sources/Armonia/Armonia.docc/Trastes.md, línea 99
-        let mastil = Mastil(.guitarra, trastes: 15)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 15)
         let posicion = mastil.posicionesCAGED(de: Escala(.sol, .mayor))[0]
         comprobar(posicion.escala == Escala(.sol, .mayor), #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 101)
-        let enCorcheas = posicion.partitura(ritmo: .figura(.corchea))
+        let enCorcheas = posicion.partitura(ritmo: .uniforme(.corchea))
         comprobar(enCorcheas.dibujaElRitmo && enCorcheas.pentagramas[0].numeroDeCuerdas == 6, #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 103)
         let doMayor = mastil.digitaciones(de: Acorde("Do"))[0]
         comprobar(doMayor.partitura().encabezado.tema == .progresion([Acorde("Do")]), #"true"#, #"Sources/Armonia/Armonia.docc/Trastes.md"#, 105)

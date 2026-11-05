@@ -154,7 +154,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
             for (l, linea) in lineas.enumerated() where c < grafias[l].count {
                 let eventos = grafias[l][c]
                 if l > 0, c < grafias[l - 1].count {
-                    let anterior = grafias[l - 1][c].map(\.duracion).sumar()
+                    let anterior = grafias[l - 1][c].map(\.duracion).total
                     if !anterior.esCero {
                         xml += "      <backup><duration>\(ticks(anterior, divisiones))</duration></backup>\n"
                     }

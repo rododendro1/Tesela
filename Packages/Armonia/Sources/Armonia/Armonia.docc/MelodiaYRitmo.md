@@ -394,7 +394,7 @@ pieza.ritmoArmonico().duraciones == [.blanca, .blanca, .redonda]  // true
   empiezan donde empieza la nota a la que adornan y no duran.
 - `ritmoArmonico(ventana:)` da además lo que dura cada acorde, el ritmo armónico de la pieza: un
   ``RitmoArmonico`` con cada acorde y su duración (hasta que empieza el siguiente y, el último, hasta el
-  final), en el compás y al tempo del fichero. `RitmoArmonico.partitura(en:encabezado:cifrados:analisis:notacion:)`
+  final), en el compás y al tempo del fichero. `RitmoArmonico.partitura(en:encabezado:conCifrados:conAnalisis:notacion:)`
   lo escribe analizado, y `Voz(arpegiando:patron:octavas:conOctava:figura:octava:tensiones:aproximacion:enlazados:)`
   lo arpegia. `acordesConInicio(ventana:)` da en cambio dónde empieza cada acorde.
 - Las repeticiones de MusicXML, MEI y ABC (con sus casillas de primera y segunda vez) y los saltos

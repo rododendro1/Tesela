@@ -28,7 +28,7 @@ import Testing
     }
 
     @Test func posicionesDeUnaAltura() {
-        let mastil = Mastil(.guitarra, trastes: 12)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
         // El Mi4 suena al aire en la cuerda aguda, en el traste 5 de la Si y en el 9 de la Sol;
         // en las demás cuerdas está más allá del traste 12.
         let posiciones = mastil.posiciones(de: Altura(.mi, octava: 4))
@@ -40,7 +40,7 @@ import Testing
     }
 
     @Test func posicionesDeUnaNotaEnCualquierOctava() {
-        let mastil = Mastil(.guitarra, trastes: 12)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
         // Mi: 0 y 12 en las dos cuerdas de Mi, 7 en La, 2 en Re, 9 en Sol y 5 en Si.
         #expect(mastil.posiciones(de: Nota.mi).count == 8)
     }
@@ -51,7 +51,7 @@ import Testing
     }
 
     @Test func posicionesFueraDelMastilNoExisten() {
-        let mastil = Mastil(.guitarra, trastes: 12)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
         #expect(!mastil.contiene(PosicionEnElMastil(cuerda: 6, traste: 0)))
         #expect(!mastil.contiene(PosicionEnElMastil(cuerda: 0, traste: 13)))
         #expect(mastil.contiene(PosicionEnElMastil(cuerda: 0, traste: 12)))
@@ -60,7 +60,7 @@ import Testing
     @Test func escalaEnUnRangoDeTrastes() {
         let mastil = Mastil(.guitarra)
         let doMayor = Escala(.do, .mayor)
-        let primera = mastil.posiciones(de: doMayor, trastes: 0...4)
+        let primera = mastil.posiciones(de: doMayor, en: 0...4)
         #expect(!primera.isEmpty)
         #expect(primera.allSatisfy { (0...4).contains($0.traste) })
         // Todas suenan una nota de la escala.
@@ -71,13 +71,13 @@ import Testing
     @Test func otrosEncordados() {
         #expect(Encordado.bajoElectrico.numeroDeCuerdas == 4)
         #expect(Encordado.guitarraDeSieteCuerdas.numeroDeCuerdas == 7)
-        #expect(Encordado.guitarraEnReGrave.cuerdas.first == Altura(.re, octava: 2))
+        #expect(Encordado.guitarraEnReGrave.afinacion.first == Altura(.re, octava: 2))
         // El ukelele es reentrante: la primera cuerda (Sol4) está más aguda que la segunda (Do4).
-        #expect(Encordado.ukelele.cuerdas[0].midi > Encordado.ukelele.cuerdas[1].midi)
+        #expect(Encordado.ukelele.afinacion[0].midi > Encordado.ukelele.afinacion[1].midi)
     }
 
     @Test func posicionesFueraDelMastilSinDetenerElPrograma() {
-        let mastil = Mastil(.guitarra, trastes: 12)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
         #expect(mastil.midiSiExiste(en: PosicionEnElMastil(cuerda: 0, traste: 13)) == nil)
         #expect(mastil.midiSiExiste(en: PosicionEnElMastil(cuerda: 6, traste: 0)) == nil)
         #expect(mastil.midiSiExiste(en: PosicionEnElMastil(cuerda: -1, traste: 0)) == nil)
@@ -89,8 +89,8 @@ import Testing
     }
 
     @Test func unNumeroNegativoDeTrastesSeTomaComoCero() {
-        let mastil = Mastil(.guitarra, trastes: -5)
-        #expect(mastil.trastes == 0)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: -5)
+        #expect(mastil.numeroDeTrastes == 0)
         // Solo cuerdas al aire: el Mi está en la primera cuerda (Mi2) y en la última (Mi4).
         #expect(mastil.posiciones(de: Nota.mi).map(\.cuerda) == [0, 5])
     }
@@ -155,7 +155,7 @@ import Testing
 
     @Test func ukeleleDoMayor() throws {
         // Do mayor en el ukelele soprano: 0003.
-        let ukelele = Mastil(.ukelele, trastes: 12)
+        let ukelele = Mastil(.ukelele, numeroDeTrastes: 12)
         let formas = ukelele.digitaciones(de: try Acorde(leyendo: "Do"), limite: 100)
         #expect(
             formas.map(\.tablatura).contains("0003"), Comment(rawValue: formas.map(\.tablatura).joined(separator: " ")))
@@ -420,28 +420,28 @@ extension DigitacionTests {
         #expect(Encordado.todos.map { $0.nombre(en: .espanolCompacto) } == Encordado.todos.map(\.nombre))
         #expect(Encordado.guitarraDeSieteCuerdas.titulo(en: .inglesASCII) == "Seven-string guitar")
         #expect(Encordado.mandolina.nombre(en: .portuguesPalabras) == "bandolim")
-        let propio = Encordado(nombre: "laúd", cuerdas: Encordado.guitarra.cuerdas)
+        let propio = Encordado(nombre: "laúd", afinacion: Encordado.guitarra.afinacion)
         #expect(propio.nombre(en: .alemanPalabras) == "laúd")
     }
 }
 
 @Suite struct ArpegioEnElMastilTests {
     @Test func lasPosicionesDeUnAcorde() {
-        let mastil = Mastil(.guitarra, trastes: 12)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
         let todas = mastil.posiciones(de: Acorde("Do"))
         #expect(!todas.isEmpty)
         #expect(todas.allSatisfy { [0, 4, 7].contains(Mastil.clase(mastil.midi(en: $0))) })
-        let primeras = mastil.posiciones(de: Acorde("Do"), trastes: 0...3)
+        let primeras = mastil.posiciones(de: Acorde("Do"), en: 0...3)
         #expect(primeras.allSatisfy { (0...3).contains($0.traste) })
         #expect(primeras.count == todas.filter { $0.traste <= 3 }.count)
     }
 
     @Test func elArpegioPorPosiciones() {
-        let mastil = Mastil(.guitarra, trastes: 12)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
         let lam = mastil.arpegios(de: Acorde("Lam"))
         // Desde La al aire (5.ª cuerda), desde el La del traste 5 de la 6.ª y desde el del 12 de la 5.ª, que
         // se queda dentro del mástil.
-        #expect(lam.map(\.trastes) == [0...3, 4...7, 9...12])
+        #expect(lam.map(\.rangoDeTrastes) == [0...3, 4...7, 9...12])
         #expect(lam[0].alturas.map(\.midi) == [40, 45, 48, 52, 57, 60, 64])
         #expect(lam[1].alturas.map(\.midi) == [45, 52, 57, 60, 64, 69])
         #expect(lam[0].posiciones.first == PosicionEnElMastil(cuerda: 0, traste: 0))
@@ -449,28 +449,28 @@ extension DigitacionTests {
             // De grave a agudo, sin unísonos y dentro de la franja.
             #expect(arpegio.alturas.map(\.midi) == arpegio.alturas.map(\.midi).sorted())
             #expect(Set(arpegio.alturas.map(\.midi)).count == arpegio.alturas.count)
-            #expect(arpegio.posiciones.allSatisfy { arpegio.trastes.contains($0.traste) })
+            #expect(arpegio.posiciones.allSatisfy { arpegio.rangoDeTrastes.contains($0.traste) })
         }
-        #expect(mastil.arpegios(de: Acorde("Do")).map(\.trastes) == [2...5, 7...10])
+        #expect(mastil.arpegios(de: Acorde("Do")).map(\.rangoDeTrastes) == [2...5, 7...10])
         // En un solo traste no caben las tres notas.
         #expect(mastil.arpegios(de: Acorde("Do"), ancho: 1).isEmpty)
         #expect(lam.allSatisfy { $0.forma == nil })
     }
 
     @Test func losArpegiosCAGED() {
-        let mastil = Mastil(.guitarra, trastes: 15)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 15)
         let enDo = mastil.arpegiosCAGED(de: Acorde("Do"))
         #expect(enDo.map(\.forma) == [.c, .a, .g, .e, .d])
-        #expect(enDo.map(\.trastes) == [0...4, 2...6, 5...9, 7...11, 9...13])
+        #expect(enDo.map(\.rangoDeTrastes) == [0...4, 2...6, 5...9, 7...11, 9...13])
         for arpegio in enDo {
             #expect(Set(arpegio.alturas.map { $0.midi % 12 }) == [0, 4, 7])
-            #expect(arpegio.posiciones.allSatisfy { arpegio.trastes.contains($0.traste) })
+            #expect(arpegio.posiciones.allSatisfy { arpegio.rangoDeTrastes.contains($0.traste) })
         }
         #expect(Mastil(.bajoElectrico).arpegiosCAGED(de: Acorde("Do")).isEmpty)
     }
 
     @Test func unaNotaPorCuerda() {
-        let mastil = Mastil(.guitarra, trastes: 15)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 15)
         let lam = mastil.arpegiosDeUnaNotaPorCuerda(de: Acorde("Lam"))
         #expect(!lam.isEmpty)
         // El La menor al aire, de la 6.ª cuerda a la 1.ª: Mi2 La2 Mi3 La3 Do4 Mi4.
@@ -489,12 +489,12 @@ extension DigitacionTests {
     }
 
     @Test func losDedosSugeridos() {
-        let mastil = Mastil(.guitarra, trastes: 12)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
         let alAire = ArpegioEnElMastil(
-            mastil: mastil, trastes: 0...0, posiciones: [PosicionEnElMastil(cuerda: 0, traste: 0)])
+            mastil: mastil, rangoDeTrastes: 0...0, posiciones: [PosicionEnElMastil(cuerda: 0, traste: 0)])
         #expect(alAire.dedos == [0])
         let estirado = ArpegioEnElMastil(
-            mastil: mastil, trastes: 5...10,
+            mastil: mastil, rangoDeTrastes: 5...10,
             posiciones: [
                 PosicionEnElMastil(cuerda: 0, traste: 5), PosicionEnElMastil(cuerda: 1, traste: 7),
                 PosicionEnElMastil(cuerda: 2, traste: 10),
@@ -506,7 +506,7 @@ extension DigitacionTests {
 
 @Suite struct DisposicionEnElMastilTests {
     @Test func losGruposDeCuerdas() {
-        let mastil = Mastil(.guitarra, trastes: 15)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 15)
         #expect(mastil.gruposDeCuerdas(para: .drop2) == [[0, 1, 2, 3], [1, 2, 3, 4], [2, 3, 4, 5]])
         // El drop 3 salta la cuerda que sigue al bajo.
         #expect(mastil.gruposDeCuerdas(para: .drop3) == [[0, 2, 3, 4], [1, 3, 4, 5]])
@@ -516,7 +516,7 @@ extension DigitacionTests {
     }
 
     @Test func elDrop2EnLasCuerdasCentrales() {
-        let mastil = Mastil(.guitarra, trastes: 15)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 15)
         let formas = mastil.disposiciones(de: Acorde("Do7M"), .drop2, cuerdas: [1, 2, 3, 4])
         // Si Mi Sol Do y Do Sol Si Mi, de las más graves.
         #expect(formas.prefix(2).map(\.tablatura) == ["x2201x", "x3545x"])
@@ -545,11 +545,11 @@ extension DigitacionTests {
 
 @Suite struct EscalaEnElMastilTests {
     @Test func tresNotasPorCuerda() {
-        let mastil = Mastil(.guitarra, trastes: 15)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 15)
         let posiciones = mastil.posicionesPorCuerda(de: Escala(.sol, .mayor))
         #expect(posiciones.count == 7)
         let primera = posiciones[0]
-        #expect(primera.trastes == (0...5))
+        #expect(primera.rangoDeTrastes == (0...5))
         #expect(primera.forma == nil)
         #expect(primera.posiciones.count == 18)
         #expect(primera.posiciones.filter { $0.cuerda == 0 }.map(\.traste) == [0, 2, 3])
@@ -561,36 +561,37 @@ extension DigitacionTests {
         let clases = Set(Escala(.sol, .mayor).notas.map(\.claseDeAltura))
         for posicion in posiciones {
             #expect(posicion.alturas.allSatisfy { clases.contains($0.nota.claseDeAltura) })
-            #expect(posicion.trastes.upperBound <= 15)
+            #expect(posicion.rangoDeTrastes.upperBound <= 15)
         }
         // Las posiciones van de la más baja a la más alta.
-        #expect(posiciones.map(\.trastes.lowerBound) == posiciones.map(\.trastes.lowerBound).sorted())
+        #expect(posiciones.map(\.rangoDeTrastes.lowerBound) == posiciones.map(\.rangoDeTrastes.lowerBound).sorted())
     }
 
     @Test func dosNotasPorCuerdaEnLasPentatonicas() {
-        let posiciones = Mastil(.guitarra, trastes: 15).posicionesPorCuerda(de: Escala(.la, .pentatonicaMenor))
+        let posiciones = Mastil(.guitarra, numeroDeTrastes: 15)
+            .posicionesPorCuerda(de: Escala(.la, .pentatonicaMenor))
         #expect(posiciones.count == 5)
         #expect(posiciones.allSatisfy { $0.posiciones.count == 12 })
-        let dosPorCuerda = Mastil(.guitarra, trastes: 15).posicionesPorCuerda(
+        let dosPorCuerda = Mastil(.guitarra, numeroDeTrastes: 15).posicionesPorCuerda(
             de: Escala(.sol, .mayor), notasPorCuerda: 2)
         #expect(dosPorCuerda.first?.posiciones.count == 12)
     }
 
     @Test func cAGED() {
-        let mastil = Mastil(.guitarra, trastes: 15)
+        let mastil = Mastil(.guitarra, numeroDeTrastes: 15)
         let enDo = mastil.posicionesCAGED(de: Escala(.do, .mayor))
         #expect(enDo.map(\.forma) == [.c, .a, .g, .e, .d])
-        #expect(enDo.map(\.trastes) == [0...4, 2...6, 5...9, 7...11, 9...13])
+        #expect(enDo.map(\.rangoDeTrastes) == [0...4, 2...6, 5...9, 7...11, 9...13])
         let enSol = mastil.posicionesCAGED(de: Escala(.sol, .mayor))
         #expect(enSol.map(\.forma) == [.g, .e, .d, .c, .a])
-        #expect(enSol.map(\.trastes) == [0...4, 2...6, 4...8, 7...11, 9...13])
+        #expect(enSol.map(\.rangoDeTrastes) == [0...4, 2...6, 4...8, 7...11, 9...13])
         // Cada forma lleva las notas de la escala de su franja, y la tónica.
         for posicion in enDo {
-            #expect(posicion.posiciones.allSatisfy { posicion.trastes.contains($0.traste) })
+            #expect(posicion.posiciones.allSatisfy { posicion.rangoDeTrastes.contains($0.traste) })
             #expect(posicion.alturas.contains { $0.nota.claseDeAltura == Nota.do.claseDeAltura })
         }
         // En un mástil corto no caben todas.
-        #expect(Mastil(.guitarra, trastes: 9).posicionesCAGED(de: Escala(.do, .mayor)).count == 3)
+        #expect(Mastil(.guitarra, numeroDeTrastes: 9).posicionesCAGED(de: Escala(.do, .mayor)).count == 3)
     }
 
     @Test func fueraDeLaGuitarraNoHayPosiciones() {
@@ -605,9 +606,9 @@ extension DigitacionTests {
     @Test func elCapoSubeLasCuerdas() {
         let conCapo = Encordado.guitarra.conCapo(2)
         #expect(conCapo.capo == 2)
-        #expect(conCapo.cuerdas.map(\.midi) == [42, 47, 52, 57, 61, 66])
+        #expect(conCapo.afinacion.map(\.midi) == [42, 47, 52, 57, 61, 66])
         #expect(conCapo.sinCapo == .guitarra)
-        #expect(conCapo.conCapo(3).cuerdas.map(\.midi) == [43, 48, 53, 58, 62, 67])
+        #expect(conCapo.conCapo(3).afinacion.map(\.midi) == [43, 48, 53, 58, 62, 67])
         #expect(Encordado.guitarra.conCapo(0) == .guitarra)
         #expect(Encordado.guitarra.conCapo(-1) == .guitarra)
         // El nombre sigue siendo el del instrumento.
@@ -616,7 +617,7 @@ extension DigitacionTests {
 
     @Test func lasFormasConCapo() throws {
         // Con el capo en el 2, la forma de Do suena Re.
-        let mastil = Mastil(Encordado.guitarra.conCapo(2), trastes: 13)
+        let mastil = Mastil(Encordado.guitarra.conCapo(2), numeroDeTrastes: 13)
         let re = mastil.digitaciones(de: Acorde("Re"))
         #expect(re.first?.tablatura == "x32010")
         #expect(try (#require(re.first).alturas.map(\.midi)) == [50, 54, 57, 62, 66])
@@ -629,7 +630,7 @@ extension DigitacionTests {
 
 /// Las secuencias dentro de una posición y las cinco formas de la pentatónica.
 @Suite struct EstudioEnElMastilTests {
-    let mastil = Mastil(.guitarra, trastes: 15)
+    let mastil = Mastil(.guitarra, numeroDeTrastes: 15)
 
     @Test func recorridoSinNotasRepetidas() {
         let posiciones = mastil.posicionesCAGED(de: Escala(.do))
@@ -656,14 +657,14 @@ extension DigitacionTests {
         #expect(bajando.last == notas.first)
         // Si el dibujo no cabe en la posición, nada.
         let corta = EscalaEnElMastil(
-            mastil: mastil, trastes: 0...2,
+            mastil: mastil, rangoDeTrastes: 0...2,
             posiciones: [PosicionEnElMastil(cuerda: 0, traste: 0), PosicionEnElMastil(cuerda: 0, traste: 2)])
         #expect(corta.secuencia(.triadas).isEmpty)
     }
 
     @Test func formasDeLaPentatonica() {
         let formas = mastil.formasPentatonicas(de: Escala(.la, .pentatonicaMenor))
-        #expect(formas.map(\.trastes) == [5...8, 7...10, 9...13, 0...3, 2...5])
+        #expect(formas.map(\.rangoDeTrastes) == [5...8, 7...10, 9...13, 0...3, 2...5])
         #expect(formas.allSatisfy { $0.posiciones.count == 12 })
         // Cada forma comparte una nota por cuerda con la siguiente, y la última con la primera.
         for (forma, siguiente) in zip(formas, formas.dropFirst() + formas.prefix(1)) {
@@ -672,8 +673,8 @@ extension DigitacionTests {
         #expect(formas[0].notasComunes(con: formas[1]).map(\.traste) == [8, 7, 7, 7, 8, 8])
         #expect(mastil.formasPentatonicas(de: Escala(.do)).isEmpty)
         // En un mástil corto no cabe la de la tónica: las que caben, como salen.
-        let corto = Mastil(.guitarra, trastes: 4).formasPentatonicas(de: Escala(.la, .pentatonicaMenor))
-        #expect(corto.map(\.trastes) == [0...3])
+        let corto = Mastil(.guitarra, numeroDeTrastes: 4).formasPentatonicas(de: Escala(.la, .pentatonicaMenor))
+        #expect(corto.map(\.rangoDeTrastes) == [0...3])
     }
 }
 
@@ -686,13 +687,13 @@ extension DigitacionTests {
         #expect(Encordado.guitarraEnReAbierto.nombre(en: .inglesASCII) == "open D guitar")
         #expect(Encordado.guitarraEnSolAbierto.nombre(en: .inglesASCII) == "open G guitar")
         #expect(Encordado.guitarraDADGAD.nombre(en: .inglesASCII) == "DADGAD guitar")
-        #expect(Encordado.guitarraEnReAbierto.cuerdas.map(\.midi) == [38, 45, 50, 54, 57, 62])
-        #expect(Encordado.guitarraEnSolAbierto.cuerdas.map(\.midi) == [38, 43, 50, 55, 59, 62])
+        #expect(Encordado.guitarraEnReAbierto.afinacion.map(\.midi) == [38, 45, 50, 54, 57, 62])
+        #expect(Encordado.guitarraEnSolAbierto.afinacion.map(\.midi) == [38, 43, 50, 55, 59, 62])
         #expect(Encordado.guitarraDADGAD.conCapo(2).sinCapo == .guitarraDADGAD)
     }
 
     @Test func lasEscalasPorPosicionesEnOtrasAfinaciones() {
-        let dadgad = Mastil(.guitarraDADGAD, trastes: 15)
+        let dadgad = Mastil(.guitarraDADGAD, numeroDeTrastes: 15)
         let posiciones = dadgad.posicionesPorCuerda(de: Escala(.re))
         #expect(!posiciones.isEmpty)
         #expect(posiciones.allSatisfy { $0.posiciones.count == 18 })

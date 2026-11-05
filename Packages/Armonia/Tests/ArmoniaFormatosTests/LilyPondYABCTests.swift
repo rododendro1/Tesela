@@ -173,7 +173,8 @@ import Testing
     @Test func lilyPondDeUnCoralConCifradosYAnalisis() throws {
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa2 La3 Fa4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
         let ly = coral.partitura(
-            duracion: .blanca, compas: "3/2", encabezado: Encabezado(titulo: "Cadencia"), cifrados: true, analisis: true
+            duracion: .blanca, compas: "3/2", encabezado: Encabezado(titulo: "Cadencia"), conCifrados: true,
+            conAnalisis: true
         ).lilyPond()
         #expect(ly.contains(#"\new PianoStaff \with { instrumentName = "Coro" } <<"#))
         #expect(ly.components(separatedBy: "\\new Staff <<").count == 3)
@@ -227,7 +228,7 @@ import Testing
 
     @Test func abcDeUnCoralConCifradosYAnalisis() throws {
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa2 La3 Fa4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-        let abc = coral.partitura(duracion: .blanca, compas: "3/2", cifrados: true, analisis: true).abc()
+        let abc = coral.partitura(duracion: .blanca, compas: "3/2", conCifrados: true, conAnalisis: true).abc()
         #expect(abc.contains("%%score {(1 2) | (3 4)}\n"))
         #expect(abc.contains("V:1 clef=treble name=\"Coro\" stem=up\nV:2 clef=treble stem=down\n"))
         #expect(abc.contains("V:4 clef=bass stem=down\nK:C\n"))

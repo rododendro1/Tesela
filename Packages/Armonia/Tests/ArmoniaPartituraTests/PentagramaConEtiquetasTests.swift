@@ -171,7 +171,8 @@ import Testing
         #expect(contar("stroke-width=\"0.13\"", en: svg) == 5 + 6 + 3)
         #expect(svg.contains(">Do</text>"))
         // La♯3 del mástil se escribe Si♭3 en Do7.
-        let do7 = Acorde("Do7").svgPentagrama(arpegiadoEn: [Altura("Do3"), Altura("La♯3")], ritmo: .figura(.corchea))
+        let do7 = Acorde("Do7").svgPentagrama(
+            arpegiadoEn: [Altura("Do3"), Altura("La♯3")], ritmo: .uniforme(.corchea))
         #expect(do7.contains("<title>Si♭₃</title>") && !do7.contains("La♯"))
         #expect(Altura.reescritas([Altura("Re♯4")], con: Escala("Do menor").notas) == [Altura("Mi♭4")])
         let tocada = Escala("Fa mayor").svgPentagrama(tocadaEn: [Altura("La♯4")], porEvento: .init(dedos: [0: [2]]))
@@ -191,7 +192,7 @@ import Testing
         #expect(linea.tonica == escala.tonica)
         #expect(linea.dedos == [.redonda: [3]])
         #expect(partitura.svg() == escala.svgPentagrama(tocadaEn: alturas, porEvento: .init(dedos: [1: [3]])))
-        let conRitmo = escala.partitura(tocadaEn: alturas, ritmo: .figura(.corchea))
+        let conRitmo = escala.partitura(tocadaEn: alturas, ritmo: .uniforme(.corchea))
         #expect(conRitmo.dibujaElRitmo)
         #expect(conRitmo.pentagramas[0].voces[0].voz.eventos.map(\.duracion) == [.corchea, .corchea, .negra])
         let arpegio = Acorde("Re7").partitura(arpegiadoEn: alturas)
@@ -254,12 +255,12 @@ import Testing
 
     /// El ritmo de unas notas tocadas una tras otra: redondas sin él, la figura con él y una negra al final.
     @Test func elRitmoDeLasNotasTocadas() {
-        #expect(Partitura.Ritmo.libre.figura == nil && Partitura.Ritmo.figura(.corchea).figura == .corchea)
+        #expect(Partitura.Ritmo.libre.uniforme == nil && Partitura.Ritmo.uniforme(.corchea).uniforme == .corchea)
         #expect((0..<3).map { Partitura.Ritmo.libre.duracion(de: $0, entre: 3) } == [.redonda, .redonda, .redonda])
-        let corcheas = (0..<3).map { Partitura.Ritmo.figura(.corchea).duracion(de: $0, entre: 3) }
+        let corcheas = (0..<3).map { Partitura.Ritmo.uniforme(.corchea).duracion(de: $0, entre: 3) }
         #expect(corcheas == [.corchea, .corchea, .negra])
-        #expect(Partitura.Ritmo.figura(.blanca).duracion(de: 1, entre: 2) == .blanca)
-        #expect(Partitura.Ritmo.figura(.corchea).duracion(de: 0, entre: 1) == .corchea)
+        #expect(Partitura.Ritmo.uniforme(.blanca).duracion(de: 1, entre: 2) == .blanca)
+        #expect(Partitura.Ritmo.uniforme(.corchea).duracion(de: 0, entre: 1) == .corchea)
     }
 
     /// Lo que se anota nota a nota pasa a los inicios de la línea y vuelve igual.
@@ -421,11 +422,11 @@ import Testing
         #expect(alberti.partitura().pentagramas[0].voces[0].cifrados == [.cero: Acorde("Do")])
         #expect(alberti.svgPentagrama().contains(">\(alberti.nombre(en: .espanolCompacto))</title>"))
         // Con una figura, con ritmo: la escala y el arpegio en corcheas, la última nota en negra.
-        let enCorcheas = dorico.partitura(ritmo: .figura(.corchea))
+        let enCorcheas = dorico.partitura(ritmo: .uniforme(.corchea))
         let eventos = enCorcheas.pentagramas[0].voces[0].voz.eventos
         #expect(enCorcheas.dibujaElRitmo && eventos.dropLast().allSatisfy { $0.duracion == .corchea })
         #expect(eventos.last?.duracion == .negra && enCorcheas.encabezado.tema == .escala(dorico))
-        let arpegio = Arpegio(Acorde("Do7")).partitura(ritmo: .figura(.semicorchea))
+        let arpegio = Arpegio(Acorde("Do7")).partitura(ritmo: .uniforme(.semicorchea))
         #expect(arpegio.dibujaElRitmo && arpegio.pentagramas[0].voces[0].voz.eventos.first?.duracion == .semicorchea)
     }
 

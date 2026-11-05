@@ -38,7 +38,7 @@ extension PresentacionDeArpegios {
     ///     barrido[0].dedos   // "0 0 2 2 1 0": el La menor al aire, de la 6.ª cuerda a la 1.ª
     public static func enElMastil(
         _ acorde: Acorde, formas: FormasDeArpegio = .porPosiciones, idaYVuelta: Bool = false,
-        mastil: Mastil = Mastil(.guitarra, trastes: 15), notacion: Notacion
+        mastil: Mastil = Mastil(.guitarra, numeroDeTrastes: 15), notacion: Notacion
     ) -> [ArpegioEnElMastilPresentado] {
         let arpegios: [ArpegioEnElMastil]
         switch formas {
@@ -52,7 +52,8 @@ extension PresentacionDeArpegios {
             let notas = orden.map { arpegio.posiciones[$0] }
             let forma = arpegio.forma.map { forma in notacion.texto { $0.forma(forma.rawValue) } + " · " } ?? ""
             let titulo =
-                forma + notacion.texto { $0.trastes(arpegio.trastes.lowerBound, arpegio.trastes.upperBound) }
+                forma
+                + notacion.texto { $0.trastes(arpegio.rangoDeTrastes.lowerBound, arpegio.rangoDeTrastes.upperBound) }
             let voz = Voz(notas.map { Evento(arpegio.mastil.altura(en: $0), .corchea) })
             let xml = PresentacionDeTablatura.musicXML(
                 posiciones: notas, en: arpegio.mastil, ortografia: acorde.notas, figura: .corchea,
