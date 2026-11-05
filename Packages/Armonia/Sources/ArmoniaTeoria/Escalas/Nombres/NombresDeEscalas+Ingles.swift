@@ -22,7 +22,7 @@ extension NombresDeEscalas {
         .init(.mayorArmonica, "harmonic major"),
         .init(.locrioSextaNatural, "locrian natural 6", alias: ["locrian #6"]),
         .init(.jonicoAumentado, "ionian augmented", alias: ["ionian #5"]),
-        .init(.doricoCuartaAumentada, "dorian #4", alias: ["ukrainian dorian", "Romanian minor"]),
+        .init(.doricoCuartaAumentada, "dorian #4", alias: ["Romanian minor"]),
         .init(.frigioDominante, "phrygian dominant", alias: ["spanish phrygian", "dominant b9 b13"]),
         .init(.lidioSegundaAumentada, "lydian #2"),
         .init(.ultralocrio, "ultralocrian", alias: ["superlocrian bb7", "altered diminished"]),
@@ -169,6 +169,10 @@ extension NombresDeEscalas {
         .tradicional(.harmoniaIastiaDeAristides, "Aristides' Iastian harmonia"),
         .tradicional(.harmoniaMixolidiaDeAristides, "Aristides' Mixolydian harmonia"),
         .tradicional(.harmoniaSintonolidiaDeAristides, "Aristides' Syntonolydian harmonia"),
+        .tradicional(.doricoUcraniano, "Ukrainian Dorian"),
+        .tradicional(.pentatonicaHungara, "Hungarian pentatonic"),
+        .tradicional(.cuernoAlpino, "Alpine horn"),
+        .tradicional(.gaitaEscocesa, "Great Highland bagpipe"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

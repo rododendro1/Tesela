@@ -42,7 +42,7 @@ extension TextosDeCLI {
         notasEscala: "aukerak: --secuencia terceras (edo cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(1etik 4ra), --piano (hatzkera), --modos (paraleloak eta erlatiboak)\neta --comparar Do lidio (amaieran); --simetria (zenbatero\nerrepikatzen den eta bere akordeak);\n--vecinas (nota bat mugituta ateratzen\ndirenak) eta --doce (hamabi tonalitateetan);\n--doce --acordes (gradu bakoitzeko\nakordeak; --triadas, zazpigarrenik gabe)",
         sintaxisEscalas: "escalas [<testua>] [aukerak]",
         descripcionEscalas: "eskalen katalogoa: ohikoak eta beste\ntradizio batzuetakoak, kategoriaka,\nDo-tik hasitako notekin",
-        notasEscalas: "aukerak: --tradicion turquia (edo india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio, mesopotamia, africa,\nsudeste-asiatico, gregoriano) eta --categoria maqam (edo rāga, makam,\ndastgah, dromos…); testu batek izenetan bilatzen du",
+        notasEscalas: "aukerak: --tradicion turquia (edo india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio, mesopotamia, africa,\nsudeste-asiatico, gregoriano, europa) eta --categoria maqam (edo rāga, makam,\ndastgah, dromos…); testu batek izenetan bilatzen du",
         sintaxisTradiciones: "tradiciones [<tradizioa>]",
         descripcionTradiciones: "katalogoko tradizioak, beren\nkategoriekin eta bakoitzean zenbat\neskala dauden; batekin, haren eskalak",
         sintaxisTonalidad: "tonalidad <tonalitatea>",

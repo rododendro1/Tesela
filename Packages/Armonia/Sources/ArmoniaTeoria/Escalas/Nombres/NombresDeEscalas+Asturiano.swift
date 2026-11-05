@@ -68,7 +68,7 @@ extension NombresDeEscalas {
         .init(.messiaen7, "mou 7 de Messiaen", alias: ["Messiaen 7"]),
         .init(.locrioSextaNatural, "locriu ♮6", alias: ["locriu natural 6", "locriu ♯6"]),
         .init(.jonicoAumentado, "xónicu ♯5", alias: ["xónicu aumentáu"]),
-        .init(.doricoCuartaAumentada, "dóricu ♯4", alias: ["dóricu ucranianu", "menor rumana", "rumana"]),
+        .init(.doricoCuartaAumentada, "dóricu ♯4", alias: ["menor rumana", "rumana"]),
         .init(.frigioDominante, "frixiu dominante", alias: ["frixiu mayor", "frixiu ♯3", "frixiu ♮3", "española", "frixiu español", "dominante ♭9 ♭13"]),
         .init(.lidioSegundaAumentada, "lidiu ♯2"),
         .init(.ultralocrio, "ultralocriu", alias: ["superlocriu ♭♭7", "alterada menguada"]),
@@ -133,6 +133,8 @@ extension NombresDeEscalas {
         .tradicional(.tetracordoDiatonicoDitonico, "tetracordu diatónicu ditónicu"),
         .tradicional(.tetracordoDiatonicoTenso, "tetracordu diatónicu tensu"),
         .tradicional(.tetracordoDiatonicoIgual, "tetracordu diatónicu igual"),
+        .tradicional(.doricoUcraniano, "dóricu ucranianu"),
+        .tradicional(.cuernoAlpino, "cuernu alpín"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

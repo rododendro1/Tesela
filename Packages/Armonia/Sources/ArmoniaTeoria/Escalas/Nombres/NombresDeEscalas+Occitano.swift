@@ -68,7 +68,7 @@ extension NombresDeEscalas {
         .init(.messiaen7, "mòde 7 de Messiaen", alias: ["Messiaen 7"]),
         .init(.locrioSextaNatural, "locrian ♮6", alias: ["locrian natural 6", "locrian ♯6"]),
         .init(.jonicoAumentado, "ionian ♯5", alias: ["ionian aumentat"]),
-        .init(.doricoCuartaAumentada, "dorian ♯4", alias: ["dorian ucraínian", "menor romanesa", "romanesa"]),
+        .init(.doricoCuartaAumentada, "dorian ♯4", alias: ["menor romanesa", "romanesa"]),
         .init(.frigioDominante, "frigian dominant", alias: ["frigian major", "frigian ♯3", "frigian ♮3", "espanhòla", "frigian espanhòl", "dominant ♭9 ♭13"]),
         .init(.lidioSegundaAumentada, "lidian ♯2"),
         .init(.ultralocrio, "ultralocrian", alias: ["superlocrian ♭♭7", "alterada disminuida"]),
@@ -167,6 +167,10 @@ extension NombresDeEscalas {
         .tradicional(.harmoniaIastiaDeAristides, "armonia iastiana d'Aristides"),
         .tradicional(.harmoniaMixolidiaDeAristides, "armonia mixolidiana d'Aristides"),
         .tradicional(.harmoniaSintonolidiaDeAristides, "armonia sintonolidiana d'Aristides"),
+        .tradicional(.doricoUcraniano, "dorian ucraínian"),
+        .tradicional(.pentatonicaHungara, "pentatonica ongaresa"),
+        .tradicional(.cuernoAlpino, "còrn dels Alps"),
+        .tradicional(.gaitaEscocesa, "cornamusa escocesa"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

@@ -42,7 +42,7 @@ extension TextosDeCLI {
         notasEscala: "opcions: --secuencia terceras (o cuartas, grupos-de-3,\ngrupos-de-4, triadas, cuatriadas), --bajando, --octavas 2\n(d'1 a 4), --piano (digitació), --modos (paral·lels i relatius)\ni --comparar Do lidio (al final); --simetria (cada quant\nes repeteix i els seus acords);\n--vecinas (les que surten de moure una\nnota) i --doce (en les dotze tonalitats);\n--doce --acordes (els acords de cada\ngrau; --triadas, sense setena)",
         sintaxisEscalas: "escalas [<text>] [opcions]",
         descripcionEscalas: "el catàleg d'escales: les habituals i\nles d'altres tradicions, per\ncategories, amb les notes des de Do",
-        notasEscalas: "opcions: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio, mesopotamia, africa,\nsudeste-asiatico, gregoriano) i --categoria maqam (o rāga, makam,\ndastgah, dromos…); un text cerca en els noms",
+        notasEscalas: "opcions: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio, mesopotamia, africa,\nsudeste-asiatico, gregoriano, europa) i --categoria maqam (o rāga, makam,\ndastgah, dromos…); un text cerca en els noms",
         sintaxisTradiciones: "tradiciones [<tradició>]",
         descripcionTradiciones: "les tradicions del catàleg, amb\nles categories i quantes escales\nhi ha en cadascuna; amb una,\nles seves escales",
         sintaxisTonalidad: "tonalidad <tonalitat>",

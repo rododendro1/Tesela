@@ -202,6 +202,7 @@ extension TextosDeTeoria {
         tradicionAfrica: "Afrika",
         tradicionSudesteAsiatico: "Délkelet-Ázsia",
         tradicionGregoriano: "Gregorián ének",
+        tradicionEuropa: "Európai népzene",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         // Con el inesivo: «C-dúrban», «a-mollban» (dúr y moll piden -ban).

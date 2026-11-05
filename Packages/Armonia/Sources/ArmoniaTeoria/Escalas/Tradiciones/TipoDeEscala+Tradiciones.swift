@@ -19,23 +19,24 @@ import ArmoniaNucleo
 // un maqam, un makam, un mugam…; salen de las fichas. Sus nombres en cada idioma están en `Escalas/Nombres/`.
 //
 // Cada tradición tiene su fichero, `TipoDeEscala+Nombre.swift` (el nombre del caso de `Tradicion`, con mayúscula):
-// Africa, Andes, Azerbaiyan (mugam), Bizancio (echoi), China, Corea, Etiopia, Gregoriano (modos y hexacordos), Grecia
-// (dromoi), GreciaAntigua (tetracordos, géneros y harmoniai), India, Indonesia, Japon, Klezmer, Mesopotamia
-// (afinaciones babilónicas), MundoArabe (maqamat y ajnas), Persia (dastgāh), SudesteAsiatico y Turquia (makamlar y
-// çeşni). Cada uno acaba con su ficha (`FichaDeTradicion`): la categoría de cada lista, las versiones microtonales y,
-// en la India, el mēḷa de cada janya. Una escala nueva se declara en el fichero de su tradición, en una de sus listas,
-// y, si la tiene, con su versión microtonal en la ficha.
+// Africa, Andes, Azerbaiyan (mugam), Bizancio (echoi), China, Corea, Etiopia, Europa (folklore europeo), Gregoriano
+// (modos y hexacordos), Grecia (dromoi), GreciaAntigua (tetracordos, géneros y harmoniai), India, Indonesia, Japon,
+// Klezmer, Mesopotamia (afinaciones babilónicas), MundoArabe (maqamat y ajnas), Persia (dastgāh), SudesteAsiatico y
+// Turquia (makamlar y çeşni). Cada uno acaba con su ficha (`FichaDeTradicion`): la categoría de cada lista, las
+// versiones microtonales y, en la India, el mēḷa de cada janya. Una escala nueva se declara en el fichero de su
+// tradición, en una de sus listas, y, si la tiene, con su versión microtonal en la ficha.
 
 extension TipoDeEscala {
     /// Escalas de otras tradiciones: thāṭ, dromoi, mēḷa, janya, chinas, japonesas, etíopes, maqamat, de Indonesia
     /// (laras y pathet), klezmer, rāgas indostánicos, dastgāh, coreanas, andinas, de la Grecia antigua, makamlar
     /// turcos, mugam azerbaiyanos, echoi bizantinos, afinaciones babilónicas, los ajnas árabes y los çeşni turcos,
     /// afinaciones de África y del sudeste asiático, los modos gregorianos, más géneros y harmoniai griegos y los
-    /// hexacordos de Guido. El orden de las listas decide qué nombre gana en la búsqueda: las nuevas van al final.
+    /// hexacordos de Guido, y las escalas populares de Europa. El orden de las listas decide qué nombre gana en la
+    /// búsqueda: las nuevas van al final.
     public static let tradicionales: [TipoDeEscala] = [
         thaats, dromoi, melakartas, janyas, gramas, murchanas, chinas, japonesas, etiopes, maqamat, indonesias, pathets,
         klezmer, ragasIndostanicos, dastgah, coreanas, andinas, griegasAntiguas, makamlar, mugamlar, echoi,
         mesopotamicas, ajnas, cesniler, africanas, sudesteAsiaticas, modosGregorianos, generosDeDidimoYEratostenes,
-        harmoniaiCromaticas, harmoniaiEnarmonicas, harmoniaiDeAristides, hexacordos,
+        harmoniaiCromaticas, harmoniaiEnarmonicas, harmoniaiDeAristides, hexacordos, europeas,
     ].flatMap { $0 }
 }

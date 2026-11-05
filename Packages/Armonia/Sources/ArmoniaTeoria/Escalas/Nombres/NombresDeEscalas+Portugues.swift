@@ -68,7 +68,7 @@ extension NombresDeEscalas {
         .init(.messiaen7, "modo 7 de Messiaen", alias: ["Messiaen 7"]),
         .init(.locrioSextaNatural, "lócrio ♮6", alias: ["lócrio natural 6", "lócrio ♯6"]),
         .init(.jonicoAumentado, "jónio ♯5", alias: ["jónio aumentado"]),
-        .init(.doricoCuartaAumentada, "dórico ♯4", alias: ["dórico ucraniano", "menor romena", "romena"]),
+        .init(.doricoCuartaAumentada, "dórico ♯4", alias: ["menor romena", "romena"]),
         .init(.frigioDominante, "frígio dominante", alias: ["frígio maior", "frígio ♯3", "frígio ♮3", "espanhola", "frígio espanhol", "dominante ♭9 ♭13"]),
         .init(.lidioSegundaAumentada, "lídio ♯2"),
         .init(.ultralocrio, "ultralócrio", alias: ["superlócrio ♭♭7", "alterada diminuta"]),
@@ -164,6 +164,8 @@ extension NombresDeEscalas {
         .tradicional(.harmoniaIastiaDeAristides, "harmonia iástia de Aristides"),
         .tradicional(.harmoniaMixolidiaDeAristides, "harmonia mixolídia de Aristides"),
         .tradicional(.harmoniaSintonolidiaDeAristides, "harmonia sintonolídia de Aristides"),
+        .tradicional(.cuernoAlpino, "trompa alpina"),
+        .tradicional(.gaitaEscocesa, "gaita de foles escocesa"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

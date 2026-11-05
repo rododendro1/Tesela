@@ -68,7 +68,7 @@ extension NombresDeEscalas {
         .init(.messiaen7, "Messiaen 7. modusa", alias: ["Messiaen 7"]),
         .init(.locrioSextaNatural, "lokriszi ♮6", alias: ["lokriszi természetes 6", "lokriszi ♯6"]),
         .init(.jonicoAumentado, "ión ♯5", alias: ["bővített ión"]),
-        .init(.doricoCuartaAumentada, "dór ♯4", alias: ["ukrán dór", "román moll", "román"]),
+        .init(.doricoCuartaAumentada, "dór ♯4", alias: ["román moll", "román"]),
         .init(.frigioDominante, "fríg domináns", alias: ["fríg dúr", "fríg ♯3", "fríg ♮3", "spanyol", "spanyol fríg", "domináns ♭9 ♭13"]),
         .init(.lidioSegundaAumentada, "líd ♯2"),
         .init(.ultralocrio, "ultralokriszi", alias: ["szuperlokriszi ♭♭7", "szűkített alterált"]),
@@ -169,6 +169,10 @@ extension NombresDeEscalas {
         .tradicional(.harmoniaIastiaDeAristides, "Ariszteidész iaszti harmoniája"),
         .tradicional(.harmoniaMixolidiaDeAristides, "Ariszteidész mixolíd harmoniája"),
         .tradicional(.harmoniaSintonolidiaDeAristides, "Ariszteidész szintonolíd harmoniája"),
+        .tradicional(.doricoUcraniano, "ukrán dór"),
+        .tradicional(.pentatonicaHungara, "magyar pentaton"),
+        .tradicional(.cuernoAlpino, "alpesi kürt"),
+        .tradicional(.gaitaEscocesa, "skót duda"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "Rāga"),

@@ -201,6 +201,7 @@ extension TextosDeTeoria {
         tradicionAfrica: "Africa",
         tradicionSudesteAsiatico: "Sud-èst asiatic",
         tradicionGregoriano: "Cant gregorian",
+        tradicionEuropa: "Folclòre europèu",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in "en " + tonalidad }

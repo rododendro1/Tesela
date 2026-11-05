@@ -32,6 +32,7 @@ extension Tradicion {
         case .africa: TextosDeTeoria.traduccion(\.tradicionAfrica)
         case .sudesteAsiatico: TextosDeTeoria.traduccion(\.tradicionSudesteAsiatico)
         case .gregoriano: TextosDeTeoria.traduccion(\.tradicionGregoriano)
+        case .europa: TextosDeTeoria.traduccion(\.tradicionEuropa)
         }
     }
 }

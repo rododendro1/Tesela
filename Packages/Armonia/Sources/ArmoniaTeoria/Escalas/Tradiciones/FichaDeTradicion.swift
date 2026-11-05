@@ -72,6 +72,7 @@ extension Tradicion {
         case .africa: .africa
         case .sudesteAsiatico: .sudesteAsiatico
         case .gregoriano: .gregoriano
+        case .europa: .europa
         }
     }
 }

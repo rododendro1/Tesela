@@ -469,6 +469,7 @@ extension LineaDeComandos {
         (.klezmer, "klezmer", "klezmer"), (.andes, "andes", "andes"), (.bizancio, "bizancio", "byzantium"),
         (.mesopotamia, "mesopotamia", "mesopotamia"), (.africa, "africa", "africa"),
         (.sudesteAsiatico, "sudeste-asiatico", "southeast-asia"), (.gregoriano, "gregoriano", "gregorian"),
+        (.europa, "europa", "europe"),
     ]
 
     /// Un texto para comparar nombres: sin mayúsculas, tildes, guiones ni espacios («Mundo árabe» → «mundoarabe»).

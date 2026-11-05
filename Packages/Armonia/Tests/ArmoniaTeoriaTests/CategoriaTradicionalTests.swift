@@ -253,4 +253,37 @@ import Testing
         #expect(Tradicion.japon.nombre(en: Notacion.espanolCompacto.conTextos(en: .euskera)) == "Japonia")
         #expect(Tradicion.mundoArabe.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Arab world")
     }
+
+    /// El folklore europeo: tres escalas populares y dos instrumentos de afinación natural, con sus cents.
+    @Test func elFolkloreEuropeo() throws {
+        #expect(TipoDeEscala.tradicionales(tradicion: .europa) == TipoDeEscala.europeas)
+        #expect(TipoDeEscala.europeas.allSatisfy { $0.categoria == .escala })
+        #expect(TipoDeEscala.doricoUcraniano == .doricoCuartaAumentada)
+        #expect(TipoDeEscala.podhalanska == .lidioDominante)
+        #expect(TipoDeEscala.pentatonicaHungara == .pentatonicaMenor)
+        #expect(TipoDeEscala.gaitaEscocesa == .mixolidio)
+        // El nombre gana al alias: «dórico ucraniano» es ya la escala europea, igual que el dórico ♯4.
+        let ucraniano = try TipoDeEscala(leyendo: "dórico ucraniano")
+        #expect(ucraniano.nombre == "dórico ucraniano" && ucraniano.tradicion == .europa)
+        #expect((try? TipoDeEscala(leyendo: "Podhale"))?.nombre == "podhalańska")
+        #expect((try? TipoDeEscala(leyendo: "Alphorn"))?.nombre == "cuerno alpino")
+        let alpino = Escala("Do cuerno alpino").notas.map(\.nombre)
+        #expect(alpino == ["Do", "Re", "Mi", "Fa♯", "Sol", "La♭", "Si♭", "Si"])
+        // El 11.º armónico, 49 cents bajo Fa♯; la 7ª natural de la gaita, 31 bajo Si♭.
+        #expect(TipoDeEscala.cuernoAlpino.microtonal?.desvios[3] == -49)
+        #expect(TipoDeEscala.gaitaEscocesa.microtonal?.desvios[6] == -31)
+        #expect(TipoDeEscala.mixolidio.microtonal == nil)
+        #expect(Tradicion.europa.nombre == "Folklore europeo")
+        #expect(Tradicion.europa.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "European folk")
+    }
+
+    /// Los nombres de la menor de los conservatorios españoles: bachiana, dórica y antigua.
+    @Test func losNombresDeConservatorioDeLaMenor() {
+        #expect((try? TipoDeEscala(leyendo: "menor bachiana"))?.nombre == "menor melódica de jazz")
+        #expect((try? TipoDeEscala(leyendo: "bachiana"))?.nombre == "menor melódica de jazz")
+        #expect((try? TipoDeEscala(leyendo: "de Bach"))?.nombre == "menor melódica de jazz")
+        #expect((try? TipoDeEscala(leyendo: "menor dórica"))?.nombre == "dórico")
+        #expect((try? TipoDeEscala(leyendo: "menor antigua"))?.nombre == "menor natural")
+        #expect(Escala("La bachiana").tipo == .menorMelodicaJazz)
+    }
 }
