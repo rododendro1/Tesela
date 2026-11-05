@@ -42,7 +42,7 @@ extension TextosDeCLI {
         notasEscala: "параметры: --sequence thirds (или fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(от 1 до 4), --piano (аппликатура), --modes (параллельные и относительные)\nи --compare C lydian (в конце); --symmetry (через сколько\nповторяется и её аккорды);\n--neighbors (сдвинув одну ноту) и\n--all-keys (во всех двенадцати тональностях);\n--all-keys --chords (аккорды каждой\nступени; --triads — без септимы)",
         sintaxisEscalas: "scales [<текст>] [параметры]",
         descripcionEscalas: "каталог гамм: обычные и гаммы других\nтрадиций, по категориям, с нотами\nот до",
-        notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia, africa,\nsoutheast-asia, gregorian, europe) и --category maqam (или rāga, makam,\ndastgah, dromos…);\n--use jazz (или classical, blues, 20th-century, folk, synthetic)\nотбирает обычные; текст ищет в названиях",
+        notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia, africa,\nsoutheast-asia, gregorian, europe,\nvietnam, brazil) и --category maqam (или rāga, makam,\ndastgah, dromos…);\n--use jazz (или classical, blues, 20th-century, folk, synthetic)\nотбирает обычные; текст ищет в названиях",
         sintaxisTradiciones: "traditions [<традиция>]",
         descripcionTradiciones: "традиции каталога с их\nкатегориями и числом гамм\nв каждой; с одной — её гаммы",
         sintaxisTonalidad: "key <тональность>",

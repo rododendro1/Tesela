@@ -209,6 +209,8 @@ extension TextosDeTeoria {
         tradicionSudesteAsiatico: "Νοτιοανατολική Ασία",
         tradicionGregoriano: "Γρηγοριανό μέλος",
         tradicionEuropa: "Ευρωπαϊκή λαϊκή μουσική",
+        tradicionVietnam: "Βιετνάμ",
+        tradicionBrasil: "Βραζιλία",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(tipo) στο \(raiz)" },
         enLaTonalidad: { tonalidad in "σε " + tonalidad }

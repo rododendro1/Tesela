@@ -209,6 +209,8 @@ extension TextosDeTeoria {
         tradicionSudesteAsiatico: "Юго-Восточная Азия",
         tradicionGregoriano: "Григорианский хорал",
         tradicionEuropa: "Европейский фольклор",
+        tradicionVietnam: "Вьетнам",
+        tradicionBrasil: "Бразилия",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(tipo) от \(raiz)" },
         enLaTonalidad: { tonalidad in "в " + (tonalidad.hasSuffix("мажор") || tonalidad.hasSuffix("минор") ? tonalidad + "е" : tonalidad) }

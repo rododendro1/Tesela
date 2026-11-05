@@ -64,11 +64,17 @@ import Testing
         // Las siete afinaciones babilónicas y las equidistantes de África y del sudeste asiático.
         let afinaciones = TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + TipoDeEscala.sudesteAsiaticas
         #expect(TipoDeEscala.tradicionales(categoria: .afinacion) == afinaciones)
-        #expect(TipoDeEscala.tradicionales(tradicion: .africa) == [.amadinda, .timbila])
+        #expect(TipoDeEscala.tradicionales(tradicion: .africa).map(\.nombre) == TipoDeEscala.africanas.map(\.nombre))
+        #expect(TipoDeEscala.africanas.count == 7 && TipoDeEscala.sauta == .lidio)
+        #expect(TipoDeEscala.tomoraMesengo.microtonal?.desvios == [0, 30, 25, 0, 0, 30, 25])
         #expect(TipoDeEscala.piphat.tradicion == .sudesteAsiatico && TipoDeEscala.piphat.clase == .afinacion)
         // Los ocho modos gregorianos (y los tres hexacordos), desde su final, enlazados con `ModoGregoriano`.
         #expect(TipoDeEscala.tradicionales(categoria: .modoGregoriano) == TipoDeEscala.modosGregorianos)
-        #expect(TipoDeEscala.tradicionales(tradicion: .gregoriano).count == 8 + 3)
+        #expect(TipoDeEscala.tradicionales(tradicion: .gregoriano).count == 8 + 3 + 4)
+        // Los modos 9 a 12 de Glareano, desde su final.
+        #expect(TipoDeEscala.modosDeGlareano.map(\.nombre) == ["aeolius", "hypoaeolius", "ionicus", "hypoionicus"])
+        #expect((try? TipoDeEscala(leyendo: "hipojónico"))?.nombre == "hypoionicus")
+        #expect(TipoDeEscala.aeolius == .menorNatural && TipoDeEscala.aeolius.categoria == .escala)
         #expect(ModoGregoriano.todos.map(\.tipoDeEscala) == TipoDeEscala.modosGregorianos)
         #expect(ModoGregoriano.todos.allSatisfy { $0.tipoDeEscala.intervalos == $0.maneria.tipo.intervalos })
         #expect((try? TipoDeEscala(leyendo: "hipodórico")) == .protusPlagalis)
@@ -285,5 +291,19 @@ import Testing
         #expect((try? TipoDeEscala(leyendo: "menor dórica"))?.nombre == "dórico")
         #expect((try? TipoDeEscala(leyendo: "menor antigua"))?.nombre == "menor natural")
         #expect(Escala("La bachiana").tipo == .menorMelodicaJazz)
+    }
+
+    /// Vietnam, Brasil y el arpa birmana.
+    @Test func vietnamBrasilYMyanmar() {
+        #expect(TipoDeEscala.tradicionales(tradicion: .vietnam).map(\.nombre) == ["Bắc", "Vọng cổ"])
+        #expect(TipoDeEscala.bac.microtonal?.cents == [0, 189, 501, 698, 891])
+        #expect((try? TipoDeEscala(leyendo: "hoi oan"))?.nombre == "Vọng cổ")
+        #expect(TipoDeEscala.tradicionales(tradicion: .brasil).count == 3)
+        #expect(TipoDeEscala.lidioNordestino == .lidioDominante)
+        #expect((try? TipoDeEscala(leyendo: "nordestina"))?.nombre == "lidio dominante")
+        #expect(TipoDeEscala.saung.tradicion == .sudesteAsiatico && TipoDeEscala.saung.clase == .afinacion)
+        #expect(TipoDeEscala.saung.microtonal?.desvios == [0, -18, -36, -9, -27])
+        #expect(Tradicion.vietnam.nombre(en: Notacion.espanolCompacto.conTextos(en: .portugues)) == "Vietname")
+        #expect(Tradicion.brasil.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Brazil")
     }
 }

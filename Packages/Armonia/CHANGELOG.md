@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### Glareano, la kora, la mbira, el arpa birmana, Vietnam y Brasil
+
+- Los modos 9 a 12 de Glareano (`TipoDeEscala.modosDeGlareano`: aeolius, hypoaeolius, ionicus e hypoionicus), en
+  la tradición del canto gregoriano, como escalas.
+- África: las cuatro afinaciones de la kora (hardino, sauta, tomora ba y tomora mesengo), con los cents que midió
+  Roderic Knight, y la nyamaropa de la mbira, cercana al mixolidio.
+- El sudeste asiático: el saung, el arpa birmana, con los pasos medios de 182 y 327 cents que da Jay Rahn.
+- **Tradiciones nuevas:** `Tradicion.vietnam` (Bắc y vọng cổ, con los cents de Keefe, Burns y Nguyen) y
+  `Tradicion.brasil` (mixolídio, lídio y dórico nordestinos), con su nombre en los quince idiomas y
+  `--tradicion vietnam` y `--tradicion brasil` en la línea de comandos.
+
 ### Clásica, jazz, blues: el uso de cada escala
 
 - `UsoDeEscala` (clásica, jazz, blues, siglo XX, popular y sintética, con su nombre en los quince idiomas) y

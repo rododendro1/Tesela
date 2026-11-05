@@ -28,7 +28,19 @@ extension TipoDeEscala {
         ],
         alias: ["camboyana", "jemer", "ពិណពាទ្យ"])
 
-    public static let sudesteAsiaticas: [TipoDeEscala] = [.piphat, .pinpeat]
+    // MARK: El arpa birmana
+    //
+    // Las afinaciones del saung gauk de Myanmar (hnyìn, myin, palè y auk) son pentatónicas con dos pasos: uno
+    // pequeño, de unos 182 cents, y uno grande, de unos 327, en el orden pequeño, pequeño, grande, pequeño, grande
+    // o en una de sus rotaciones. Aquí va ese orden, con los pasos medios que da Jay Rahn («Reformulating Burmese
+    // Harp Tunings», York University, 2019): Do Re Mi Sol La en doce notas, con un Mi entre Mi♭ y Mi.
+
+    /// Saung (arpa birmana): Do Re Mi Sol La en doce notas.
+    public static let saung = TipoDeEscala(
+        nombre: "Saung", intervalos: TipoDeEscala.pentatonicaMayor.intervalos,
+        alias: ["saung gauk", "arpa birmana", "birmana"])
+
+    public static let sudesteAsiaticas: [TipoDeEscala] = [.piphat, .pinpeat, .saung]
 }
 
 // MARK: Ficha
@@ -41,5 +53,7 @@ extension FichaDeTradicion {
             // En cents: siete partes de 171,4 (redondeados).
             TipoDeEscalaMicrotonal(.piphat, .razones, pasos: [0, 171, 343, 514, 686, 857, 1029]),
             TipoDeEscalaMicrotonal(.pinpeat, .razones, pasos: [0, 171, 343, 514, 686, 857, 1029]),
+            // En cents: 182, 182, 327, 182 y 327.
+            TipoDeEscalaMicrotonal(.saung, .razones, pasos: [0, 182, 364, 691, 873]),
         ])
 }

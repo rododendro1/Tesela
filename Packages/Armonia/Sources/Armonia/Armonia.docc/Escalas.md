@@ -210,13 +210,21 @@ usan microtonos):
   ascendente de 1971 cada nombre era otra especie de octava (išartu, la doria griega).
 - **2 escalas coreanas**: P'yŏngjo y Kyemyŏnjo.
 - **África**: dos afinaciones de xilófono casi equidistantes, el amadinda de Buganda (cinco partes iguales de
-  240 cents, Do Re Fa Sol Si♭ en doce notas) y el timbila de los chopi (siete de 171 cents, el dórico).
+  240 cents, Do Re Fa Sol Si♭ en doce notas) y el timbila de los chopi (siete de 171 cents, el dórico). Las
+  cuatro afinaciones de la kora mandinga, con los cents que midió Roderic Knight: hardino y tomora ba (mayores),
+  sauta (lidia) y tomora mesengo (dórica). Y la nyamaropa de la mbira shona, cercana al mixolidio.
 - **El sudeste asiático**: las siete partes iguales de la música clásica de Tailandia (piphat) y de Camboya
-  (pinpeat), escritas como el timbila.
+  (pinpeat), escritas como el timbila, y el saung, el arpa de Myanmar: una pentatónica de pasos de 182 y 327
+  cents (Do Re Mi Sol La en doce notas).
 - **Los 8 modos gregorianos**, con sus nombres latinos (protus authenticus, protus plagalis…), cada uno desde su
   final. Ver «Modos gregorianos», más abajo. Y los tres hexacordos de Guido de Arezzo (hexachordum naturale,
-  durum y molle: Ut Re Mi Fa Sol La desde Do, Sol y Fa).
+  durum y molle: Ut Re Mi Fa Sol La desde Do, Sol y Fa). Y los cuatro que añadió Glareano en el Dodecachordon
+  (1547): aeolius e hypoaeolius (9 y 10, en La) e ionicus e hypoionicus (11 y 12, en Do).
 - **Los Andes**: la pentatónica andina (menor) y la tritónica andina (Do Mi♭ Sol).
+- **Brasil**: los tres modos del Nordeste (el baião, el forró, los repentistas): mixolídio, lídio y dórico
+  nordestinos.
+- **Vietnam**: dos pentatónicas de la cítara đàn tranh, con los cents que midieron Keefe, Burns y Nguyen: la del
+  modo Bắc (Do Re Fa Sol La) y la del vọng cổ, del modo Oán (Do Mi Fa Sol La, con el Mi y el La bajos).
 - **El folklore europeo**: el dórico ucraniano (Do Re Mi♭ Fa♯ Sol La Si♭), la escala podhalańska de los górales
   de los Tatras (Do Re Mi Fa♯ Sol La Si♭), la pentatónica húngara de Bartók y Kodály (la–do–re–mi–sol) y dos
   instrumentos de afinación natural, con su versión en cents: el cuerno alpino (los armónicos del 8.º al 15.º, con
@@ -270,7 +278,7 @@ No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escal
 están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `chinas`, `japonesas`,
 `ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `mesopotamicas`, `gramas`, `murchanas`, `generosDeArquitasYPtolomeo`, `ajnas`, `cesniler`, `africanas`,
 `sudesteAsiaticas`, `modosGregorianos`, `generosDeDidimoYEratostenes`, `harmoniaiCromaticas`, `harmoniaiEnarmonicas`,
-`harmoniaiDeAristides`, `hexacordos`, `europeas`,
+`harmoniaiDeAristides`, `hexacordos`, `europeas`, `modosDeGlareano`, `vietnamitas`, `brasilenas`,
 `pathets`…). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, las europeas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de

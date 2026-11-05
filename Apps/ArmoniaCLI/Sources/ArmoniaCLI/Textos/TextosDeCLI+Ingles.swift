@@ -42,7 +42,7 @@ extension TextosDeCLI {
         notasEscala: "options: --sequence thirds (or fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(from 1 to 4), --piano (fingering), --modes (parallel and relative)\nand --compare C lydian (at the end); --symmetry (how often it\nrepeats and its chords);\n--neighbors (moving one note) and\n--all-keys (in all twelve keys);\n--all-keys --chords (the chords of each\ndegree; --triads, without sevenths)",
         sintaxisEscalas: "scales [<text>] [options]",
         descripcionEscalas: "the catalog of scales: the common ones\nand those of other traditions, by\ncategory, with their notes from C",
-        notasEscalas: "options: --tradition turkey (or india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia, africa,\nsoutheast-asia, gregorian, europe) and --category maqam (or rāga, makam,\ndastgah, dromos…);\n--use jazz (or classical, blues, 20th-century, folk, synthetic)\nfilters the common ones; a text searches the names",
+        notasEscalas: "options: --tradition turkey (or india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia, africa,\nsoutheast-asia, gregorian, europe,\nvietnam, brazil) and --category maqam (or rāga, makam,\ndastgah, dromos…);\n--use jazz (or classical, blues, 20th-century, folk, synthetic)\nfilters the common ones; a text searches the names",
         sintaxisTradiciones: "traditions [<tradition>]",
         descripcionTradiciones: "the catalog's traditions, with\ntheir categories and how many\nscales each has; with one, its scales",
         sintaxisTonalidad: "key <key>",

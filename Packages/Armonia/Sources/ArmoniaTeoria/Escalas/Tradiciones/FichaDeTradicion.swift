@@ -73,6 +73,8 @@ extension Tradicion {
         case .sudesteAsiatico: .sudesteAsiatico
         case .gregoriano: .gregoriano
         case .europa: .europa
+        case .vietnam: .vietnam
+        case .brasil: .brasil
         }
     }
 }

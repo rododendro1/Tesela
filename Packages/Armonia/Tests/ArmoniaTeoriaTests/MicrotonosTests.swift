@@ -17,7 +17,7 @@ import Testing
             #expect(microtonal.temperada.microtonal == microtonal, Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(TipoDeEscalaMicrotonal.catalogo.count == 148)
+        #expect(TipoDeEscalaMicrotonal.catalogo.count == 155)
     }
 
     /// Se busca por el nombre: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.

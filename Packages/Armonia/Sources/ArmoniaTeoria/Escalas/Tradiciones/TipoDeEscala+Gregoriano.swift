@@ -50,6 +50,32 @@ extension TipoDeEscala {
         .tritusPlagalis, .tetrardusAuthenticus, .tetrardusPlagalis,
     ]
 
+    // MARK: Modos de Glareano
+    //
+    // Los cuatro que Heinrich Glareano añadió a los ocho en el Dodecachordon (1547), con sus nombres latinos y sus
+    // números: el 9 y el 10 en La (el eólico y su plagal) y el 11 y el 12 en Do (el jónico y su plagal). Como los
+    // gregorianos, cada uno va desde su final, y el plagal solo cambia el ámbito.
+
+    /// Modo 9, en La: el eólico.
+    public static let aeolius = TipoDeEscala(
+        nombre: "aeolius", intervalos: TipoDeEscala.menorNatural.intervalos,
+        alias: ["modus aeolius", "modo de Glareano 9", "modo 9"])
+    /// Modo 10, en La: el eólico, con el ámbito una 4ª más abajo.
+    public static let hypoaeolius = TipoDeEscala(
+        nombre: "hypoaeolius", intervalos: TipoDeEscala.menorNatural.intervalos,
+        alias: ["modus hypoaeolius", "hipoeólico", "modo de Glareano 10", "modo 10"])
+    /// Modo 11, en Do: el jónico.
+    public static let ionicus = TipoDeEscala(
+        nombre: "ionicus", intervalos: TipoDeEscala.mayor.intervalos,
+        alias: ["modus ionicus", "modo de Glareano 11", "modo 11"])
+    /// Modo 12, en Do: el jónico, con el ámbito una 4ª más abajo.
+    public static let hypoionicus = TipoDeEscala(
+        nombre: "hypoionicus", intervalos: TipoDeEscala.mayor.intervalos,
+        alias: ["modus hypoionicus", "hipojónico", "modo de Glareano 12", "modo 12"])
+
+    /// Los cuatro, del 9 al 12.
+    public static let modosDeGlareano: [TipoDeEscala] = [.aeolius, .hypoaeolius, .ionicus, .hypoionicus]
+
     // MARK: Hexacordos de Guido de Arezzo
     //
     // Los tres hexacordos de la solmisación medieval (ut re mi fa sol la), con el semitono mi–fa en medio: el natural
@@ -82,5 +108,8 @@ extension TipoDeEscala {
 extension FichaDeTradicion {
     static let gregoriano = FichaDeTradicion(
         .gregoriano,
-        [.init(.modoGregoriano, TipoDeEscala.modosGregorianos), .init(.hexacordo, TipoDeEscala.hexacordos)])
+        [
+            .init(.modoGregoriano, TipoDeEscala.modosGregorianos), .init(.hexacordo, TipoDeEscala.hexacordos),
+            .init(.escala, TipoDeEscala.modosDeGlareano),
+        ])
 }

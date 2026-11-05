@@ -210,6 +210,8 @@ extension TextosDeTeoria {
         tradicionSudesteAsiatico: "Délkelet-Ázsia",
         tradicionGregoriano: "Gregorián ének",
         tradicionEuropa: "Európai népzene",
+        tradicionVietnam: "Vietnám",
+        tradicionBrasil: "Brazília",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         // Con el inesivo: «C-dúrban», «a-mollban» (dúr y moll piden -ban).

@@ -213,6 +213,8 @@ extension TextosDeTeoria {
         tradicionSudesteAsiatico: "Asia hego-ekialdea",
         tradicionGregoriano: "Kantu gregorianoa",
         tradicionEuropa: "Europako folklorea",
+        tradicionVietnam: "Vietnam",
+        tradicionBrasil: "Brasil",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in Tonalidad.declinar(tonalidad, "ean") }
