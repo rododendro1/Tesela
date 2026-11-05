@@ -301,16 +301,16 @@ import Testing
 @Suite struct RelojDeClasesTests {
     @Test func horas() {
         let diatonica = [0, 2, 4, 5, 7, 9, 11]
-        #expect(RelojDeClases(clases: diatonica).horas == diatonica)
+        #expect(RelojDeClasesDeAltura(clases: diatonica).horas == diatonica)
         // En el de quintas, la diatónica son siete horas seguidas, de Fa (las 11) a Si (las 5).
-        #expect(RelojDeClases(clases: diatonica, orden: .quintas).horas == [0, 1, 2, 3, 4, 5, 11])
-        #expect(RelojDeClases.hora(de: 7, en: .quintas) == 1)
-        #expect(RelojDeClases(clases: [12, -1], tonica: 12).clases == [0, 11])
-        #expect(RelojDeClases(clases: [12, -1], tonica: 12).tonica == 0)
+        #expect(RelojDeClasesDeAltura(clases: diatonica, orden: .quintas).horas == [0, 1, 2, 3, 4, 5, 11])
+        #expect(RelojDeClasesDeAltura.hora(de: 7, en: .quintas) == 1)
+        #expect(RelojDeClasesDeAltura(clases: [12, -1], tonica: 12).clases == [0, 11])
+        #expect(RelojDeClasesDeAltura(clases: [12, -1], tonica: 12).tonica == 0)
     }
 
     @Test func dibujo() {
-        let reloj = RelojDeClases(clases: [0, 4, 7], tonica: 0)
+        let reloj = RelojDeClasesDeAltura(clases: [0, 4, 7], tonica: 0)
         let svg = reloj.svg(rotulos: [0: "Do", 4: "Mi"], opciones: .init(titulo: "Do & Mi"))
         #expect(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"))
         #expect(svg.components(separatedBy: "<circle").count - 1 == 13)
@@ -321,7 +321,7 @@ import Testing
         #expect(enIngles.contains(">G</text>") && enIngles.contains(">Gb</text>"))
         // Hecho con notas, cada hora se nombra como la escribe la escala.
         let fa = Escala("Fa mayor")
-        let relojDeFa = RelojDeClases(notas: fa.notas, tonica: fa.tonica)
+        let relojDeFa = RelojDeClasesDeAltura(notas: fa.notas, tonica: fa.tonica)
         #expect(relojDeFa.clases == Set(fa.notas.map(\.claseDeAltura)) && relojDeFa.tonica == 5)
         #expect(relojDeFa.ortografia[10] == Nota("Si♭") && relojDeFa.svg().contains(">Si♭</text>"))
         #expect(!relojDeFa.svg().contains(">La♯</text>") && reloj.svg().contains(">La♯</text>"))
@@ -330,7 +330,7 @@ import Testing
         #expect(svg.contains("<title>Do &amp; Mi</title>"))
         #expect(svg.contains(DibujoSVG.Color.primera))
         // Una sola nota no hace polígono; sin título, no hay texto de cabecera.
-        let sola = RelojDeClases(clases: [0]).svg()
+        let sola = RelojDeClasesDeAltura(clases: [0]).svg()
         #expect(!sola.contains("<polygon") && !sola.contains("<title>"))
     }
 }

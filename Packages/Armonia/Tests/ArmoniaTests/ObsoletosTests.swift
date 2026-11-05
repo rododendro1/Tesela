@@ -47,5 +47,6 @@ import Testing
         #expect(acorde.partitura(disposicion: .abierta) == acorde.partitura(posicion: .abierta))
 
         #expect(Escala(.re, .dorico).escalaMadre?.modo == 2)
+        #expect(Acorde("Sol7").conjuntoDeClases == Acorde("Sol7").conjuntoDeClasesDeAltura)
     }
 }

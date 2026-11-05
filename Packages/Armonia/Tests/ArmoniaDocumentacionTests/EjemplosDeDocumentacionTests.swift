@@ -213,10 +213,10 @@ import Hexagonos
         let sinLeyenda = Tonnetz(Acorde("Do")).svg(opciones: .init(titulo: "Tónica"), leyenda: false)
         let ingles = Tonnetz(Acorde("Fa#m7")).svg(opciones: .init(notacion: .inglesASCII), margen: 2)
         let toro = Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7, 11])).svg(margen: 3)
-        comprobar(RelojDeClases(clases: [0, 4, 7]).svg(opciones: .init(notacion: .inglesASCII)).contains(">G</text>"), #"true"#, doc, 4)
+        comprobar(RelojDeClasesDeAltura(clases: [0, 4, 7]).svg(opciones: .init(notacion: .inglesASCII)).contains(">G</text>"), #"true"#, doc, 4)
         comprobar(TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: [61], opciones: .init(ventana: .bemoles)).contains(">Re♭</text>"), #"true"#, doc, 5)
         comprobar(TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: MarcasDeDiagrama(Escala("Fa mayor").alturas(octava: 4))).contains(">Si♭</text>"), #"true"#, doc, 6)
-        comprobar(RelojDeClases(notas: Escala("Fa mayor").notas).svg().contains(">Si♭</text>"), #"true"#, doc, 7)
+        comprobar(RelojDeClasesDeAltura(notas: Escala("Fa mayor").notas).svg().contains(">Si♭</text>"), #"true"#, doc, 7)
         _ = (dibujo, sinLeyenda, ingles, toro)
     }
 
@@ -1075,7 +1075,7 @@ import Hexagonos
         comprobar(c.vectorIntervalico, #"[0, 0, 1, 1, 1, 0]"#, doc, 3)
         comprobar(c.nombreComun, #""tríada mayor o menor""#, doc, 4)
         comprobar(ConjuntoDeClasesDeAltura([0, 1, 4, 6]).estaEnRelacionZ(con: [0, 1, 3, 7]), #"true"#, doc, 5)
-        comprobar(Escala(.re).conjuntoDeClases.numeroDeForte, #""7-35""#, doc, 6)
+        comprobar(Escala(.re).conjuntoDeClasesDeAltura.numeroDeForte, #""7-35""#, doc, 6)
     }
 
     @Test func postonal2() throws {

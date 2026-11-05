@@ -11,7 +11,7 @@ Lo que comparten varios tipos se declara una sola vez, en `Protocolos.swift`:
 | `RepresentableComoTexto` | `init(leyendo:)`, `texto(en:)` | `init?(texto:)`, literal de texto, `Codable`, `texto` | `Alteracion`, `Nota`, `Altura`, `Intervalo`, `TipoDeAcorde`, `Acorde`, `Escala`, `Tonalidad`, `Duracion`, `Compas`, `Evento` |
 | `Nombrable` | `nombre(en:)` | el mismo nombre en cualquier `Notacion` | los anteriores salvo `Compas` y `Evento`, y casi todo lo que tiene nombre: `NotaNatural`, `CalidadDeIntervalo`, `Consonancia`, `TipoDeEscala`, `NombreDeGrado`, `Clave`, `Figura`, `InstrumentoDePartitura`, `PapelEnAcorde`, `CalidadDeTriada`, `Encordado`, `Arpegio`… |
 | `Transponible` | `transponer(_:)` | operadores `+` y `−`, `transponer(_:veces:)`, `secuencia(_:veces:)` | `Nota`, `Altura`, `Acorde`, `Escala`, `Tonalidad`, `Melodia`, `Evento`, `Voz`, `Coral`, `RitmoArmonico`, `ConjuntoDeClasesDeAltura`, `SerieDodecafonica` |
-| `ConClasesDeAltura` | `conjuntoDeClases` | `numeroDeForte`, `vectorIntervalico`, `esDeLaMismaClase(que:)` | `Acorde`, `Escala`, `Tonalidad`, `Melodia`, `ConjuntoDeClasesDeAltura` |
+| `ConClasesDeAltura` | `conjuntoDeClasesDeAltura` | `numeroDeForte`, `vectorIntervalico`, `esDeLaMismaClase(que:)` | `Acorde`, `Escala`, `Tonalidad`, `Melodia`, `ConjuntoDeClasesDeAltura` |
 
 ```swift
 func subirQuinta<T: Transponible>(_ x: T) -> T { x + .quintaJusta }

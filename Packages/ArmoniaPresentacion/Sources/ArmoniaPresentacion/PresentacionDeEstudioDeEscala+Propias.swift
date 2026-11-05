@@ -55,14 +55,14 @@ extension PresentacionDeEstudioDeEscala {
     /// La escala en un reloj de doce horas (SVG), en el círculo cromático o en el de quintas, con el nombre de
     /// cada nota; las que no son de la escala, con el nombre más sencillo. La tónica lleva el borde naranja.
     public static func reloj(
-        de escala: Escala, orden: RelojDeClases.Orden = .cromatico, notacion: Notacion
+        de escala: Escala, orden: RelojDeClasesDeAltura.Orden = .cromatico, notacion: Notacion
     ) -> String {
         // Las doce clases con el nombre más sencillo; encima, las de la escala como las escribe ella.
         let doce = ConjuntoDeClasesDeAltura.nombresDeLasClases(en: notacion)
         var rotulos = Dictionary(uniqueKeysWithValues: doce.enumerated().map { ($0.offset, $0.element) })
         for nota in escala.notas { rotulos[nota.claseDeAltura] = nota.nombre(en: notacion) }
         let circulo = notacion.texto { orden == .cromatico ? $0.circuloCromatico : $0.circuloDeQuintas }
-        let reloj = RelojDeClases(
+        let reloj = RelojDeClasesDeAltura(
             clases: escala.notas.map(\.claseDeAltura), tonica: escala.tonica.claseDeAltura, orden: orden)
         return reloj.svg(rotulos: rotulos, opciones: .init(titulo: escala.nombre(en: notacion) + " · " + circulo))
     }

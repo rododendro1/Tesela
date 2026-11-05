@@ -498,7 +498,7 @@ cada uno: `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
   en ella el Sol no se escribe como nota cromática. Con `sentido:` se mira solo una:
   `contiene(.sol, sentido: .ascendente)` → `false`.
 - **Solo la subida:** `notas`, los grados (`grado(_:)`, `grado(de: _:)`, `nombreDeGrado(_:)`), la
-  armonización, la armadura y `conjuntoDeClases` (la menor melódica es 7-34).
+  armonización, la armadura y `conjuntoDeClasesDeAltura` (la menor melódica es 7-34).
 - `notasEnAmbasDirecciones` y `notas(sentido:)` dan las notas de cada caso.
 
 ### Menor melódica clásica y de jazz

@@ -9,7 +9,7 @@ import Foundation
 //    A cambio recibe `init?(texto:)`, el literal de texto y Codable.
 //  · Nombrable: nombre para personas en la notación que se pida (`nombre(en:)`).
 //  · Transponible: `transponer(_:)`, y con ello los operadores + y − y las secuencias.
-//  · ConClasesDeAltura: `conjuntoDeClases`, y con ello número de Forte y vector interválico.
+//  · ConClasesDeAltura: `conjuntoDeClasesDeAltura`, y con ello número de Forte y vector interválico.
 
 // MARK: - RepresentableComoTexto
 
@@ -106,18 +106,18 @@ extension Transponible {
 
 /// Un valor que ocupa un conjunto de clases de altura (acordes, escalas, melodías…).
 public protocol ConClasesDeAltura {
-    var conjuntoDeClases: ConjuntoDeClasesDeAltura { get }
+    var conjuntoDeClasesDeAltura: ConjuntoDeClasesDeAltura { get }
 }
 
 extension ConClasesDeAltura {
     /// Número de Forte de sus clases de altura: Sol7 → "4-27", cualquier escala mayor → "7-35".
-    public var numeroDeForte: String? { conjuntoDeClases.numeroDeForte }
+    public var numeroDeForte: String? { conjuntoDeClasesDeAltura.numeroDeForte }
 
-    public var vectorIntervalico: [Int] { conjuntoDeClases.vectorIntervalico }
+    public var vectorIntervalico: [Int] { conjuntoDeClasesDeAltura.vectorIntervalico }
 
     /// Mismo número de Forte (uno es transposición o inversión del otro), aunque sean de tipos
     /// distintos: `Acorde("Do").esDeLaMismaClase(que: Acorde("Lam"))` → `true` (3-11).
     public func esDeLaMismaClase(que otro: some ConClasesDeAltura) -> Bool {
-        conjuntoDeClases.formaPrima == otro.conjuntoDeClases.formaPrima
+        conjuntoDeClasesDeAltura.formaPrima == otro.conjuntoDeClasesDeAltura.formaPrima
     }
 }

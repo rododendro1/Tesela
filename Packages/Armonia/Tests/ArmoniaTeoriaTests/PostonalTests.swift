@@ -27,7 +27,7 @@ import Testing
         #expect(mayor.transponer(2) == [2, 6, 9])
         #expect(mayor.invertir() == [0, 5, 8])
         #expect(mayor.esDeLaMismaClase(que: mayor.invertir(3)))
-        #expect(Escala(.do).conjuntoDeClases.complemento.numeroDeForte == "5-35")
+        #expect(Escala(.do).conjuntoDeClasesDeAltura.complemento.numeroDeForte == "5-35")
         #expect(ConjuntoDeClasesDeAltura([0, 4]).esSubconjunto(de: mayor))
         #expect(mayor.unir(con: [2]) == [0, 2, 4, 7])
         #expect(mayor.intersecar(con: [4, 5, 7]) == [4, 7])
@@ -48,11 +48,11 @@ import Testing
     }
 
     @Test func integracion() {
-        #expect(Escala(.re).conjuntoDeClases.numeroDeForte == "7-35")
-        #expect(Escala(.do, .menorMelodica).conjuntoDeClases.numeroDeForte == "7-34")
-        #expect(Escala(.do, .disminuida).conjuntoDeClases.numeroDeForte == "8-28")
-        #expect(Acorde("Sol7").conjuntoDeClases.numeroDeForte == "4-27")
-        #expect(Acorde("Sim7b5").conjuntoDeClases.numeroDeForte == "4-27")
-        #expect(Acorde("Do°7").conjuntoDeClases.nombreComun == "séptima disminuida")
+        #expect(Escala(.re).conjuntoDeClasesDeAltura.numeroDeForte == "7-35")
+        #expect(Escala(.do, .menorMelodica).conjuntoDeClasesDeAltura.numeroDeForte == "7-34")
+        #expect(Escala(.do, .disminuida).conjuntoDeClasesDeAltura.numeroDeForte == "8-28")
+        #expect(Acorde("Sol7").conjuntoDeClasesDeAltura.numeroDeForte == "4-27")
+        #expect(Acorde("Sim7b5").conjuntoDeClasesDeAltura.numeroDeForte == "4-27")
+        #expect(Acorde("Do°7").conjuntoDeClasesDeAltura.nombreComun == "séptima disminuida")
     }
 }

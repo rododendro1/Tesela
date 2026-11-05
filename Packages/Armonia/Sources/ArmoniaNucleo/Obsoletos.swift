@@ -3,3 +3,9 @@
 /// El nombre de antes de ``ConjuntoDeClasesDeAltura``.
 @available(*, deprecated, renamed: "ConjuntoDeClasesDeAltura")
 public typealias ConjuntoDeClases = ConjuntoDeClasesDeAltura
+
+extension ConClasesDeAltura {
+    /// El nombre de antes de `conjuntoDeClasesDeAltura`.
+    @available(*, deprecated, renamed: "conjuntoDeClasesDeAltura")
+    public var conjuntoDeClases: ConjuntoDeClasesDeAltura { conjuntoDeClasesDeAltura }
+}

@@ -43,3 +43,7 @@ extension TecladoIsomorfico {
         altura(en: casilla, ventana: preferirBemoles ? .bemoles : .sostenidos)
     }
 }
+
+/// El nombre de antes de `RelojDeClasesDeAltura`.
+@available(*, deprecated, renamed: "RelojDeClasesDeAltura")
+public typealias RelojDeClases = RelojDeClasesDeAltura

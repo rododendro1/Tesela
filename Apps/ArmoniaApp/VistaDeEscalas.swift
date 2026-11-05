@@ -21,7 +21,7 @@ struct VistaDeEscalas: View {
     @State private var encordado = Encordado.guitarra
     @State private var capo = 0
     /// El reloj de la escala: el círculo cromático o el de quintas.
-    @State private var ordenDelReloj = RelojDeClases.Orden.cromatico
+    @State private var ordenDelReloj = RelojDeClasesDeAltura.Orden.cromatico
     /// Las secciones que lleva la hoja de estudio, para verla y exportarla.
     @State private var seccionesDeLaHoja = Set(SeccionDeLaHoja.allCases)
     /// Si los acordes de las doce tonalidades llevan séptima.
@@ -544,8 +544,8 @@ struct VistaDeEscalas: View {
     private func reloj(de escala: Escala) -> some View {
         Section(notacion.texto(\.relojDeLaEscala)) {
             Picker(notacion.texto(\.relojDeLaEscala), selection: $ordenDelReloj) {
-                Text(notacion.texto(\.circuloCromatico)).tag(RelojDeClases.Orden.cromatico)
-                Text(notacion.texto(\.circuloDeQuintas)).tag(RelojDeClases.Orden.quintas)
+                Text(notacion.texto(\.circuloCromatico)).tag(RelojDeClasesDeAltura.Orden.cromatico)
+                Text(notacion.texto(\.circuloDeQuintas)).tag(RelojDeClasesDeAltura.Orden.quintas)
             }
             .pickerStyle(.segmented)
             VistaSVG(svg: PresentacionDeEstudioDeEscala.reloj(de: escala, orden: ordenDelReloj, notacion: notacion))

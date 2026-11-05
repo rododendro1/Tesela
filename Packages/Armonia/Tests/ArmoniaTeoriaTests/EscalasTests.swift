@@ -240,7 +240,7 @@ import Testing
         // Lo que depende de los grados sigue usando la forma ascendente.
         #expect(melodica.grado(de: "Sol#") == 7)
         #expect(melodica.grado(de: .sol) == nil)
-        #expect(melodica.conjuntoDeClases.numeroDeForte == "7-34")
+        #expect(melodica.conjuntoDeClasesDeAltura.numeroDeForte == "7-34")
         // La búsqueda de escalas tiene en cuenta las dos direcciones…
         #expect(Escala.identificar([.la, .sol, "Sol#"], tipos: [.menorMelodica]).contains(melodica))
         #expect(

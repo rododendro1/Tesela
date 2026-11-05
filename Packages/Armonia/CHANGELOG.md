@@ -9,6 +9,9 @@ Los nombres de antes siguen compilando, obsoletos, en el `Obsoletos.swift` de ca
 - `OpcionesDePentagrama.Disposicion` pasa a ser `OpcionesDePentagrama.Posicion` (cerrada, abierta o automática), para
   no confundirla con `DisposicionDeAcorde`. Con ella, `Maquetacion.disposicionDelAcorde` es `posicionDelAcorde` y
   `Acorde.partitura(octava:disposicion:)` es `partitura(octava:posicion:)`.
+- `RelojDeClases` es `RelojDeClasesDeAltura`, y la propiedad `conjuntoDeClases` de `ConClasesDeAltura`,
+  `conjuntoDeClasesDeAltura`, como `ConjuntoDeClasesDeAltura`. Un tipo propio que cumpla `ConClasesDeAltura` tiene que
+  dar ahora `conjuntoDeClasesDeAltura`.
 - `ModoDeEscala.modo` es `ModoDeEscala.grado`: el grado de la madre en que empieza el modo.
 - `Evento.Nota` es `Evento.NotaDelEvento`, que ya no tapa a `Nota` dentro de `Evento`.
 - `PosicionEnPentagrama` es `PosicionEnElPentagrama`, y `Partitura.LineaEnPentagrama`, `Partitura.LineaEnElPentagrama`,

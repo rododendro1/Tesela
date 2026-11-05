@@ -172,7 +172,7 @@ extension ConjuntoDeClasesDeAltura: Codable {
 }
 
 extension ConjuntoDeClasesDeAltura: Transponible, ConClasesDeAltura {
-    public var conjuntoDeClases: ConjuntoDeClasesDeAltura { self }
+    public var conjuntoDeClasesDeAltura: ConjuntoDeClasesDeAltura { self }
 
     /// Transpone por los semitonos del intervalo (la ortografía no cuenta en un conjunto de clases).
     public func transponer(_ intervalo: Intervalo) -> ConjuntoDeClasesDeAltura {

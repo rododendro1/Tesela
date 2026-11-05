@@ -11,7 +11,7 @@ c.numeroDeForte         // "3-11"
 c.vectorIntervalico     // [0, 0, 1, 1, 1, 0]
 c.nombreComun           // "tríada mayor o menor"
 ConjuntoDeClasesDeAltura([0, 1, 4, 6]).estaEnRelacionZ(con: [0, 1, 3, 7])   // true (4-Z15 y 4-Z29)
-Escala(.re).conjuntoDeClases.numeroDeForte                          // "7-35"
+Escala(.re).conjuntoDeClasesDeAltura.numeroDeForte                          // "7-35"
 ```
 
 Incluye forma normal, forma prima de Forte y de Rahn (difieren en seis clases), complemento,
