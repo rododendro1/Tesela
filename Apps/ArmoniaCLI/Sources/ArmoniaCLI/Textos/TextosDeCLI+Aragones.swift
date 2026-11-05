@@ -166,6 +166,8 @@ extension TextosDeCLI {
         Sin argumentos y en a terminal, armonia ubre una sesión: una orden per linia.
         Con a dentrada en un fichero (armonia < exercicios.txt), executa as suyas linias igual; una linia
         nomás con opcions (--idioma eu) las deixa puestas ta las siguients.
+        Con -o fichero, lo que da a orden s'escribe en ixe fichero, tamién en a sesión.
+        Con --idioma, as notas se leyen tamién en ixe idioma: H7 y Fis en alemán, ré en francés.
         """,
         sintaxisAyuda: "ayuda [<orden>]",
         descripcionAyuda: "esta aduya, u a d'una orden\n(tamién <orden> --help)",
@@ -206,6 +208,7 @@ extension TextosDeCLI {
         faltaSerie: "falta a serie: armonia serie 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "faltan os acordes: " + ejemplo },
         archivoIlegible: { nombre in "no se puede leyer o fichero «\(nombre)»" },
+        archivoNoEscrito: { nombre in "no se puede escribir o fichero «\(nombre)»" },
         archivoConAcordes: "con --archivo no s'escriben acordes",
         archivoSinAcordes: "o fichero no tiene garra acorde",
         faltaTransporte: { ejemplo in "faltan l'intervalo (u a nueva tonica) y o que se transposa: " + ejemplo },

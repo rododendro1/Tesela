@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+### `armonia`: `-o fichero` y las notas en el idioma elegido
+
+- `-o fichero` (`--salida`, `--output`) escribe en ese fichero lo que da cualquier orden, también un MIDI, un PDF o un
+  PNG, y sirve en la sesión y con `armonia < ejercicios.txt`, donde no hay `>`. Con `-o -`, va a la salida estándar
+  aunque sea la terminal. Si la orden falla, el fichero no se toca; si no se puede escribir, sale con código 1.
+- Con `--idioma`, las notas se leen también en ese idioma: `armonia acorde H7 --idioma de` es Si7, `Fis7` es Fa♯7 y
+  `B` es Si♭; `ré7 --idioma fr` y `ре7 --idioma ru`, Re7. Lo que ya se leía sigue igual (`Do7 --idioma de` es Do7).
+
 ### `armonia`: órdenes de un fichero, el manual completo y las escalas al completar
 
 - `armonia < ejercicios.txt` ejecuta una orden por línea, como la sesión, y sale con el mayor código de todas: sirve

@@ -14,7 +14,7 @@ extension LineaDeComandos {
     /// Las opciones que valen en cualquier orden (`LineaDeComandos.ejecutar`).
     static let opcionesGenerales = [
         "--ingles", "--english", "--idioma", "--language", "--textos", "--texts", "--escritura", "--writing",
-        "--subindices", "--subscripts", "--cifras", "--digits", "--json",
+        "--subindices", "--subscripts", "--cifras", "--digits", "--json", "-o", "--salida", "--output",
     ]
 
     /// Las opciones que no llevan valor detrás; las demás, sí.

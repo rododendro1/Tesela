@@ -35,6 +35,8 @@ armonia check C3 E4 G4 C5, D3 F4 A4 D5 || echo bad  # exits with code 3 when the
 armonia help --ingles                             # the commands (help chord: that one; help --all: everything)
 armonia                                           # in a terminal, a session: one command per line
 armonia < exercises.txt                           # one command per line; exits with the worst code
+armonia midi chords C F G C -o cadence.mid         # -o: to a file, also in the session
+armonia chord H7 --language de                     # notes also in the chosen language
 ```
 
 Commands and note names are accepted in Spanish or English (Do, C, Sib, Bb). `--ingles` answers in English notation

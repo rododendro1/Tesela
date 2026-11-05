@@ -166,6 +166,8 @@ extension TextosDeCLI {
         Argumentumok nélkül, terminálban az armonia munkamenetet nyit: soronként egy parancs.
         Ha a bemenet fájlból jön (armonia < gyakorlatok.txt), a sorait ugyanígy futtatja; a csak
         kapcsolókat tartalmazó sor (--idioma eu) a következő sorokra is érvényes marad.
+        A -o fájl a parancs kimenetét ebbe a fájlba írja, a munkamenetben is.
+        A --idioma mellett a hangok azon a nyelven is olvashatók: H7 és Fis németül, ré franciául.
         """,
         sintaxisAyuda: "help [<parancs>]",
         descripcionAyuda: "ez a súgó, vagy egy parancs súgója\n(<parancs> --help is)",
@@ -206,6 +208,7 @@ extension TextosDeCLI {
         faltaSerie: "hiányzik a sor: armonia row 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "hiányoznak az akkordok: armonia analyze C F G7 C" },
         archivoIlegible: { nombre in "nem olvasható a fájl: „\(nombre)”" },
+        archivoNoEscrito: { nombre in "nem írható a fájl: „\(nombre)”" },
         archivoConAcordes: "a --file mellett ne írj akkordokat",
         archivoSinAcordes: "a fájlban nincsenek akkordok",
         faltaTransporte: { ejemplo in "hiányzik a hangköz (vagy az új alaphang) és az, amit transzponálni kell: armonia transpose M2 C Am F G7" },

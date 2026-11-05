@@ -168,6 +168,8 @@ extension TextosDeCLI {
         With no arguments in a terminal, armonia opens a session: one command per line.
         With input from a file (armonia < exercises.txt), it runs its lines the same way; a line with
         only options (--language eu) keeps them for the following ones.
+        With -o file, the output of the command is written to that file, also in the session.
+        With --language, notes are also read in that language: H7 and Fis in German, ré in French.
         """,
         sintaxisAyuda: "help [<command>]",
         descripcionAyuda: "this help, or a command's help\n(also <command> --help)",
@@ -208,6 +210,7 @@ extension TextosDeCLI {
         faltaSerie: "missing the row: armonia row 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "missing the chords: armonia analyze C F G7 C" },
         archivoIlegible: { nombre in "cannot read the file \"\(nombre)\"" },
+        archivoNoEscrito: { nombre in "cannot write the file \"\(nombre)\"" },
         archivoConAcordes: "with --file, do not write chords",
         archivoSinAcordes: "the file has no chords",
         faltaTransporte: { ejemplo in "missing the interval (or the new tonic) and what to transpose: armonia transpose M2 C Am F G7" },
