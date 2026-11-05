@@ -9,7 +9,7 @@ import ArmoniaNucleo
 ///     let mayor = Escala(.do, .mayor).estadisticas
 ///     mayor.cardinal              // .heptatonica
 ///     mayor.brilloPorQuintas      // 2.0 (lidio 3, locrio −3)
-///     mayor.semitonos             // 2
+///     mayor.vectorIntervalico     // [2, 5, 4, 3, 6, 1]
 ///     mayor.maximamenteRegular    // true
 public struct EstadisticasDeEscala: Hashable, Sendable {
     /// Las notas por octava, en la forma ascendente.
