@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### `armonia`: las opciones de cada orden, declaradas
+
+- Cada entrada de la ayuda declara las opciones que explica (`EntradaDeAyuda.opciones`), y cada orden, lo que da con
+  `--json` (`Orden.json`). El autocompletado y la propuesta ante una opción mal escrita salen de ahí, y no de leer
+  los textos de la ayuda; las partituras y `grabar` dicen en su declaración qué opciones comparten. Una prueba
+  comprueba que lo declarado y lo que explica la ayuda coinciden. Nada cambia en lo que se completa ni se propone.
+
 ### `armonia`: la ayuda se ajusta sola
 
 - Las descripciones y las notas de la ayuda se cortan solas, por palabras, a la columna de los ejemplos, igual en los

@@ -4,7 +4,11 @@ extension LineaDeComandos {
     /// La partitura o el dibujo en PDF, SVG o PNG con un programa externo (LilyPond, MuseScore, Verovio, Guido,
     /// rsvg-convert), y cuáles de ellos están instalados.
     static let ordenesDeGrabado: [Orden] = [
-        Orden(nombres: ["grabar", "engrave"], ayuda: ayudaDeGrabar) { try grabar($0, $1) },
+        // `grabar` acepta también las opciones de la partitura que graba.
+        Orden(
+            nombres: ["grabar", "engrave"], ayuda: ayudaDeGrabar,
+            opciones: ayudaDeGrabar.flatMap(\.opciones) + opcionesDePartitura
+        ) { try grabar($0, $1) },
         Orden(nombres: ["motores", "engines"], ayuda: ayudaDeMotores) { try motores($0, $1) },
     ]
 
@@ -16,7 +20,8 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia grabar coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 > coral.pdf",
                 "armonia engrave chorale C3 E4 G4 C5, G2 D4 G4 B4 > chorale.pdf"),
-            notas: TextosDeCLI.traduccion(\.notasGrabar))
+            notas: TextosDeCLI.traduccion(\.notasGrabar),
+            opciones: ["--motor", "--formato", "--engine", "--format"])
     ]
 
     static let ayudaDeMotores: [EntradaDeAyuda] = [

@@ -5,8 +5,9 @@ extension LineaDeComandos {
     static let ordenesDeTrastes: [Orden] = [
         Orden(
             nombres: ["digitaciones", "digitacion", "digitación", "fingerings"],
-            ayuda: ayudaDeDigitaciones
-        ) { try digitaciones($0, $1) },
+            ayuda: ayudaDeDigitaciones,
+            json: { try digitacionesJSON($0, $1) },
+            ejecutar: { try digitaciones($0, $1) }),
         Orden(nombres: ["posiciones", "positions"], ayuda: ayudaDePosiciones) { try posiciones($0, $1) },
     ]
 
@@ -17,7 +18,11 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionDigitaciones),
             ejemplo: ejemplo(
                 "armonia digitaciones Sol7/Si --instrumento ukelele",
-                "armonia fingerings G7/B --instrument ukulele"))
+                "armonia fingerings G7/B --instrument ukulele"),
+            opciones: [
+                "--instrumento", "--limite", "--traste", "--dedos", "--completo", "--diagrama", "--capo", "--musicxml",
+                "--instrument", "--limit", "--fret", "--fingers", "--complete", "--diagram",
+            ])
     ]
 
     static let ayudaDePosiciones: [EntradaDeAyuda] = [
@@ -26,12 +31,19 @@ extension LineaDeComandos {
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPosiciones),
             descripcion: TextosDeCLI.traduccion(\.descripcionPosiciones),
             ejemplo: ejemplo("armonia posiciones Sol mayor --caged", "armonia positions G major --caged"),
-            notas: TextosDeCLI.traduccion(\.notasPosiciones)),
+            notas: TextosDeCLI.traduccion(\.notasPosiciones),
+            opciones: [
+                "--caged", "--secuencia", "--bajando", "--formas", "--instrumento", "--capo", "--sequence",
+                "--descending", "--shapes", "--instrument",
+            ]),
         // posiciones --arpegio <cifrado> [--caged|--barrido]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPosicionesArpegio),
             descripcion: TextosDeCLI.traduccion(\.descripcionPosicionesArpegio),
             ejemplo: ejemplo(
-                "armonia posiciones --arpegio Lam --barrido", "armonia positions --arpeggio Am --sweep")),
+                "armonia posiciones --arpegio Lam --barrido", "armonia positions --arpeggio Am --sweep"),
+            opciones: [
+                "--arpegio", "--caged", "--barrido", "--ida-y-vuelta", "--arpeggio", "--sweep", "--up-and-down",
+            ]),
     ]
 }
