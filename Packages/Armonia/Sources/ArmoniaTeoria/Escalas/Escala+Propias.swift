@@ -268,3 +268,56 @@ extension Escala {
         return MapaDeBrillo(escalas: ordenadas.map(\.escala), enlaces: enlaces)
     }
 }
+
+// MARK: - Las escalas más parecidas
+
+/// Una escala cercana a otra: las notas que comparten, las que se van y las que llegan.
+public struct EscalaParecida: Hashable, Sendable {
+    public let escala: Escala
+    /// Las notas de la escala de partida que también están en esta, como las escribe la de partida.
+    public let comunes: [Nota]
+    /// Las notas de la escala de partida que no están en esta.
+    public let quitadas: [Nota]
+    /// Las notas de esta que no están en la de partida.
+    public let anadidas: [Nota]
+
+    /// Cuántas notas hay que cambiar, quitar o añadir para pasar de una a otra.
+    public var diferencia: Int { quitadas.count + anadidas.count }
+}
+
+extension Escala {
+    /// Las escalas del catálogo, en cualquier tónica y con cualquier número de notas, que comparten más notas con
+    /// esta, de la que menos cambia a la que más: primero las que quitan o añaden una sola nota, luego las que
+    /// cambian una, y así. Sin las que tienen las mismas notas (sus modos). Para cada juego de notas, la escala con la
+    /// misma tónica si la hay; si no, la más habitual (en el orden de `tipos`) con la tónica más fácil de escribir.
+    ///
+    ///     let parecidas = Escala(.do).masParecidas()
+    ///     parecidas.contains { $0.escala == Escala(.do, .lidio) }   // true
+    public func masParecidas(tipos: [TipoDeEscala] = TipoDeEscala.todos, limite: Int = 16) -> [EscalaParecida] {
+        let propias = Set(notas.map(\.claseDeAltura))
+        let candidatas = tipos.filter { !$0.esDireccional }.flatMap { Escala(tonica, $0).enLasDoceTonalidades }
+        // Primero las de la misma tónica, para que ganen a sus modos en otras tónicas.
+        let ordenadas =
+            candidatas.filter { $0.tonica.claseDeAltura == tonica.claseDeAltura }
+            + candidatas.filter { $0.tonica.claseDeAltura != tonica.claseDeAltura }
+        var vistas: Set<Set<Int>> = [propias]
+        var resultado: [EscalaParecida] = []
+        for escala in ordenadas {
+            let suyas = Set(escala.notas.map(\.claseDeAltura))
+            guard !vistas.contains(suyas), !propias.isDisjoint(with: suyas) else { continue }
+            vistas.insert(suyas)
+            resultado.append(
+                EscalaParecida(
+                    escala: escala, comunes: notas.filter { suyas.contains($0.claseDeAltura) },
+                    quitadas: notas.filter { !suyas.contains($0.claseDeAltura) },
+                    anadidas: escala.notas.filter { !propias.contains($0.claseDeAltura) }))
+        }
+        let posicion = Dictionary(resultado.enumerated().map { ($0.element.escala, $0.offset) }) { a, _ in a }
+        return Array(
+            resultado.sorted {
+                ($0.diferencia, -$0.comunes.count, posicion[$0.escala] ?? 0)
+                    < ($1.diferencia, -$1.comunes.count, posicion[$1.escala] ?? 0)
+            }
+            .prefix(limite))
+    }
+}

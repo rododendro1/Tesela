@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### Modulaciones desde una tonalidad y escalas parecidas
+
+- `armonia tonalidad Do mayor --modulaciones` da, para cada tono vecino, la manera más suave de llegar (por acorde
+  común, por una séptima disminuida enarmónica o directa), con el acorde pivote y una progresión de ejemplo;
+  `--modulaciones Sol mayor` da todas las maneras de llegar a esa. La vista de análisis las muestra para la
+  tonalidad de la progresión, para escucharlas (`PresentacionDeModulaciones`).
+- `Escala.masParecidas(tipos:limite:)`: las escalas del catálogo, en cualquier tónica y con cualquier número de
+  notas, que comparten más notas con una dada, de la que menos cambia a la que más y sin sus modos.
+  `armonia escala Do mayor --parecidas` las lista con las notas que se van y las que llegan («Do lidio: Notas
+  comunes: 6 · −Fa · +Fa♯»), y la vista de escalas tiene su sección (`PresentacionDeEstudioDeEscala.parecidas`).
+
 ### Dos escalas comparadas nota a nota
 
 `armonia escala Do mayor --contra Do dórico` dibuja en una hoja SVG las dos escalas comparadas nota a nota: los dos

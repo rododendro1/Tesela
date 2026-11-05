@@ -226,6 +226,13 @@ public struct TextosDeApps: TextosTraducidos {
     public let escaleraDeBrillo: String
     public let hojaDeEstudio: String
     public let mapaDeBrillo: String
+    /// Las escalas con más notas en común con una dada, de la más cercana a la más lejana.
+    public let escalasParecidas: String
+    /// Las maneras de modular desde una tonalidad.
+    public let modulaciones: String
+    public let modulacionPorAcordeComun: String
+    public let modulacionPorDisminuida: String
+    public let modulacionDirecta: String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String

@@ -28,6 +28,28 @@ extension PresentacionDeEstudioDeEscala {
         }
     }
 
+    // MARK: Escalas parecidas
+
+    /// Las escalas que comparten más notas con esta, de la que menos cambia a la que más, cada una con cuántas
+    /// comparte, las que se van (−) y las que llegan (+): «Notas comunes: 6 · −Fa · +Fa♯».
+    ///
+    ///     PresentacionDeEstudioDeEscala.parecidas(a: Escala(.do), notacion: .espanolCompacto)
+    ///         .first { $0.nombre == "Do lidio" }?.detalle   // "Notas comunes: 6 · −Fa · +Fa♯"
+    public static func parecidas(a escala: Escala, notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
+        escala.masParecidas().map { parecida in
+            func lista(_ signo: String, _ notas: [Nota]) -> String? {
+                notas.isEmpty ? nil : signo + notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
+            }
+            let partes = [
+                notacion.texto(\.notasComunes) + ": \(parecida.comunes.count)", lista("−", parecida.quitadas),
+                lista("+", parecida.anadidas),
+            ]
+            return EscalaSobreElAcordePresentada(
+                escala: parecida.escala, nombre: parecida.escala.nombre(en: notacion),
+                detalle: partes.compactMap { $0 }.joined(separator: " · "), sonido: .escala(parecida.escala))
+        }
+    }
+
     // MARK: El reloj
 
     /// La escala en un reloj de doce horas (SVG), en el círculo cromático o en el de quintas, con el nombre de

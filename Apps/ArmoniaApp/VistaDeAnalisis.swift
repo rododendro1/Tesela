@@ -83,6 +83,7 @@ struct VistaDeAnalisis: View {
                     }
                 }
                 lineasDeNotasGuia(analisis)
+                modulaciones(analisis)
                 arpegiar(analisis)
                 disponer(analisis)
                 rearmonizar(analisis)
@@ -186,6 +187,33 @@ struct VistaDeAnalisis: View {
                         }
                         Text(linea.notas).font(.system(.footnote, design: .monospaced))
                         DiagramaDePentagrama(linea.pentagrama)
+                    }
+                }
+            }
+        }
+    }
+
+    /// Cómo llegar desde la tonalidad de la progresión a cada tono vecino: la técnica, el acorde pivote y una
+    /// progresión de ejemplo, para escucharla.
+    @ViewBuilder
+    private func modulaciones(_ analisis: AnalisisPresentado) -> some View {
+        if let tonalidad = analisis.tonalidad {
+            Section(notacion.texto(\.modulaciones)) {
+                ForEach(
+                    PresentacionDeModulaciones.modulaciones(desde: tonalidad, notacion: notacion), id: \.self
+                ) { modulacion in
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Text(modulacion.destino).bold()
+                            Text(modulacion.tecnica).foregroundColor(.secondary)
+                            Spacer()
+                            BotonDeEscuchar(modulacion.sonido).labelStyle(.iconOnly)
+                        }
+                        .buttonStyle(.borderless)
+                        Text(modulacion.acordes).font(.system(.footnote, design: .monospaced))
+                        if let pivote = modulacion.pivote {
+                            Text(pivote).font(.footnote).foregroundColor(.secondary)
+                        }
                     }
                 }
             }

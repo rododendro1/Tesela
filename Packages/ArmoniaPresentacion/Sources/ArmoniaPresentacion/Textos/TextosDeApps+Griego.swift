@@ -212,6 +212,11 @@ extension TextosDeApps {
         escaleraDeBrillo: "Σκάλα φωτεινότητας",
         hojaDeEstudio: "Φύλλο μελέτης",
         mapaDeBrillo: "Χάρτης φωτεινότητας",
+        escalasParecidas: "Πιο κοντινές κλίμακες",
+        modulaciones: "Μετατροπίες",
+        modulacionPorAcordeComun: "κοινή συγχορδία",
+        modulacionPorDisminuida: "εναρμόνια ελαττωμένη έβδομη",
+        modulacionDirecta: "άμεση",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Εντάσεις",
         notasAEvitar: "Προς αποφυγή",
