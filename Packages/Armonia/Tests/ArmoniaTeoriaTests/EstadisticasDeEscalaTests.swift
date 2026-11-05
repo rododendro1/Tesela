@@ -99,6 +99,30 @@ import Testing
         #expect(Escala(.do, .cromatica).estadisticas.pasos == Array(repeating: 1, count: 12))
     }
 
+    /// Desde Do mayor, bajando una nota cada vez, los modos de la mayor hasta el locrio; subiendo, el lidio.
+    @Test func escaleraDeBrillo() throws {
+        let escalera = Escala(.do).escaleraDeBrillo()
+        let i = escalera.posicion
+        #expect(escalera.peldanos[i] == Escala(.do))
+        try #require(i >= 5 && i + 1 < escalera.peldanos.count, Comment(rawValue: "\(escalera.peldanos)"))
+        let modos = escalera.peldanos[(i - 5)...(i + 1)]
+        #expect(
+            modos.map(\.tipo.nombre) == ["locrio", "frigio", "menor natural", "dórico", "mixolidio", "mayor", "lidio"])
+        #expect(modos.allSatisfy { $0.tonica == .do })
+        let brillos = modos.map(\.estadisticas.brilloPorQuintas)
+        #expect(brillos == brillos.sorted() && Set(brillos).count == brillos.count, Comment(rawValue: "\(brillos)"))
+        // Una subida por peldaño: de mayor a lidio, el Fa sube a Fa♯; de mixolidio a mayor, el Si♭ a Si.
+        #expect(escalera.subidas.count == escalera.peldanos.count - 1)
+        #expect(escalera.subidas[i].de == .fa && escalera.subidas[i].a == Nota(.fa, .sostenido))
+        #expect(escalera.subidas[i - 1].de == Nota(.si, .bemol) && escalera.subidas[i - 1].a == .si)
+        #expect(escalera.subidas.indices.allSatisfy { escalera.subidas[$0].escala == escalera.peldanos[$0 + 1] })
+        // Las vecinas por brillo: el lidio, la más habitual de las más brillantes; el mixolidio, de las más oscuras.
+        let vecinas = Escala(.do).vecinasPorBrillo()
+        #expect(vecinas.masBrillantes.first?.escala == Escala(.do, .lidio))
+        #expect(vecinas.masOscuras.first?.escala == Escala(.do, .mixolidio))
+        #expect(Escala(.do).escaleraDeBrillo(maximo: 1).peldanos.count == 3)
+    }
+
     /// Sin intervalos, la escala se queda en la tónica: una sola nota, monotónica, con un paso de una octava.
     @Test func escalaDeUnaNota() {
         let sola = Escala(.do, TipoDeEscala(nombre: "vacía", intervalos: [])).estadisticas

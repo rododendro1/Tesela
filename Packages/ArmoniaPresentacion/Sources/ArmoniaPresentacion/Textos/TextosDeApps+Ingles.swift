@@ -209,6 +209,7 @@ extension TextosDeApps {
         cohemitonica: "cohemitonic (two semitones in a row)",
         maximamenteRegular: "maximally even",
         medidaAproximada: "measured in semitones, approximating the microtones",
+        escaleraDeBrillo: "Brightness ladder",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "Avoid",

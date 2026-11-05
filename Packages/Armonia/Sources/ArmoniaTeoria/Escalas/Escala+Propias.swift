@@ -127,3 +127,75 @@ extension Escala {
         return resultado
     }
 }
+
+// MARK: - La escalera de brillo
+
+/// Las escalas con la misma tónica ordenadas de la más oscura a la más brillante, cada una a una nota de la
+/// siguiente: subir una nota un semitono la hace más brillante y bajarla, más oscura. Desde Do mayor, bajando, Do
+/// mixolidio, Do dórico, Do menor natural, Do frigio, Do locrio…; subiendo, Do lidio…
+///
+///     let escalera = Escala(.do).escaleraDeBrillo()
+///     escalera.peldanos[escalera.posicion]   // Do mayor
+///     escalera.subidas.first?.de             // la nota que sube del primer peldaño al segundo
+public struct EscaleraDeBrillo: Hashable, Sendable {
+    /// De la más oscura a la más brillante.
+    public let peldanos: [Escala]
+    /// Dónde está, en `peldanos`, la escala de partida.
+    public let posicion: Int
+    /// `subidas[i]` va de `peldanos[i]` a `peldanos[i + 1]`: su escala es la de llegada y sus notas, la que sube
+    /// (`de`, como se escribe en `peldanos[i]`) y a dónde (`a`).
+    public let subidas: [EscalaVecina]
+}
+
+extension Escala {
+    /// Las vecinas con la misma tónica que suben una nota un semitono (más brillantes) o la bajan (más oscuras),
+    /// de las más habituales a las menos (en el orden de `tipos`).
+    public func vecinasPorBrillo(
+        tipos: [TipoDeEscala] = TipoDeEscala.todos
+    ) -> (masOscuras: [EscalaVecina], masBrillantes: [EscalaVecina]) {
+        let indice = Dictionary(tipos.enumerated().map { ($0.element.nombre, $0.offset) }, uniquingKeysWith: min)
+        let propias = vecinas(tipos: tipos).filter { $0.escala.tonica.claseDeAltura == tonica.claseDeAltura }
+            .sorted { (indice[$0.escala.tipo.nombre] ?? .max) < (indice[$1.escala.tipo.nombre] ?? .max) }
+        let sube = { (vecina: EscalaVecina) in modulo(vecina.a.claseDeAltura - vecina.de.claseDeAltura, 12) == 1 }
+        return (propias.filter { !sube($0) }, propias.filter(sube))
+    }
+
+    /// Desde esta escala, la más habitual de las vecinas más oscuras, y de esa la suya, hasta que no queda ninguna
+    /// nueva; y lo mismo hacia las más brillantes. Como mucho `maximo` peldaños a cada lado.
+    public func escaleraDeBrillo(tipos: [TipoDeEscala] = TipoDeEscala.todos, maximo: Int = 12) -> EscaleraDeBrillo {
+        func clases(_ escala: Escala) -> Set<Int> { Set(escala.notas.map(\.claseDeAltura)) }
+        var vistas: Set<Set<Int>> = [clases(self)]
+        // Hacia abajo: cada peldaño, con la bajada que lleva a él.
+        var abajo: [(escala: Escala, bajada: EscalaVecina)] = []
+        var actual = self
+        while abajo.count < maximo,
+            let siguiente = actual.vecinasPorBrillo(tipos: tipos).masOscuras.first(where: {
+                !vistas.contains(clases($0.escala))
+            })
+        {
+            vistas.insert(clases(siguiente.escala))
+            abajo.append((siguiente.escala, siguiente))
+            actual = siguiente.escala
+        }
+        var arriba: [EscalaVecina] = []
+        actual = self
+        while arriba.count < maximo,
+            let siguiente = actual.vecinasPorBrillo(tipos: tipos).masBrillantes.first(where: {
+                !vistas.contains(clases($0.escala))
+            })
+        {
+            vistas.insert(clases(siguiente.escala))
+            arriba.append(siguiente)
+            actual = siguiente.escala
+        }
+        // De la más oscura a esta: cada bajada, vuelta del revés, es una subida.
+        let oscuras = abajo.reversed().map(\.escala)
+        var subidas: [EscalaVecina] = []
+        for (i, peldano) in abajo.enumerated().reversed() {
+            let llegada = i == 0 ? self : abajo[i - 1].escala
+            subidas.append(EscalaVecina(escala: llegada, de: peldano.bajada.a, a: peldano.bajada.de))
+        }
+        return EscaleraDeBrillo(
+            peldanos: oscuras + [self] + arriba.map(\.escala), posicion: oscuras.count, subidas: subidas + arriba)
+    }
+}

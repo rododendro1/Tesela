@@ -90,6 +90,12 @@ extension LineaDeComandosTests {
         #expect(medidas["anhemitonica"] as? Bool == true)
         #expect(medidas["numeroDeForte"] as? String == "5-35")
         #expect(medidas["brillo"] == nil)
+        let escalera = try #require(
+            (try json("escala Do mayor --escalera") as? [String: Any])?["escaleraDeBrillo"] as? [[String: Any]])
+        let dePartida = try #require(escalera.firstIndex { $0["dePartida"] as? Bool == true })
+        #expect(escalera[dePartida]["nombre"] as? String == "Do mayor")
+        #expect(escalera[dePartida]["brilloPorQuintas"] as? Double == 2)
+        #expect(escalera.first?["cambio"] == nil)
         // Lo mal escrito sigue siendo un error de uso.
         #expect(LineaDeComandos.ejecutar(["escala", "Do", "mayor", "--secuencia", "foo", "--json"]).codigo == 2)
     }

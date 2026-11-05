@@ -223,6 +223,7 @@ public struct TextosDeApps: TextosTraducidos {
     public let cohemitonica: String
     public let maximamenteRegular: String
     public let medidaAproximada: String
+    public let escaleraDeBrillo: String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String

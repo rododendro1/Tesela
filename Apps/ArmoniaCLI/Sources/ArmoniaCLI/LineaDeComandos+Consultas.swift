@@ -320,6 +320,8 @@ extension LineaDeComandos {
         let vecinas: Bool
         /// `--estadisticas`.
         let estadisticas: Bool
+        /// `--escalera`.
+        let escalera: Bool
         let doce: Bool
         /// `--triadas`: con `--doce` y `--acordes`, tríadas en lugar de cuatríadas.
         let triadas: Bool
@@ -339,6 +341,7 @@ extension LineaDeComandos {
         let simetria = argumentos.quitarMarca("--simetria", "--symmetry")
         let vecinas = argumentos.quitarMarca("--vecinas", "--neighbors")
         let estadisticas = argumentos.quitarMarca("--estadisticas", "--statistics")
+        let escalera = argumentos.quitarMarca("--escalera", "--brightness-ladder")
         let doce = argumentos.quitarMarca("--doce", "--all-keys")
         let triadas = argumentos.quitarMarca("--triadas", "--triads")
         guard let octavas = argumentos.quitarNumero("--octavas", "--octaves", en: 1...4, porDefecto: 1) else {
@@ -356,13 +359,13 @@ extension LineaDeComandos {
         return PedidoDeEscala(
             escala: try Escala(leyendo: argumentos.unidos), conAcordes: conAcordes, secuencia: secuencia,
             octavas: octavas, bajando: bajando, piano: piano, modos: modos, simetria: simetria, vecinas: vecinas,
-            estadisticas: estadisticas, doce: doce, triadas: triadas, otra: otra)
+            estadisticas: estadisticas, escalera: escalera, doce: doce, triadas: triadas, otra: otra)
     }
 
     /// `escala Do mayor [--acordes] [--secuencia terceras] [--bajando] [--octavas 2] [--piano] [--modos]
-    /// [--estadisticas] [--comparar Do lidio]`: la escala y, si se piden, todos los acordes que caben en cada grado,
-    /// una secuencia de estudio, la digitación de piano, los modos paralelos y relativos, lo que se mide de ella y la
-    /// comparación con otra escala.
+    /// [--estadisticas] [--escalera] [--comparar Do lidio]`: la escala y, si se piden, todos los acordes que caben en
+    /// cada grado, una secuencia de estudio, la digitación de piano, los modos paralelos y relativos, lo que se mide de
+    /// ella, su escalera de brillo y la comparación con otra escala.
     static func escala(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let pedido = try pedidoDeEscala(textos)
         let escala = pedido.escala
@@ -402,6 +405,14 @@ extension LineaDeComandos {
             lineas.append(notacion.texto(\.estadisticas) + ":")
             lineas += PresentacionDeEstudioDeEscala.estadisticas(de: escala, notacion: notacion).map {
                 "  " + $0.nombre + ": " + $0.valor
+            }
+        }
+        // `--escalera`: de la más oscura a la más brillante, «  +3  Do lidio · Fa → Fa♯», con «←» en la de partida.
+        if pedido.escalera {
+            lineas.append(notacion.texto(\.escaleraDeBrillo) + ":")
+            lineas += PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, notacion: notacion).map { peldano in
+                let cambio = peldano.cambio.isEmpty ? "" : " · " + peldano.cambio
+                return "  " + peldano.brillo + "  " + peldano.nombre + cambio + (peldano.esLaDePartida ? " ←" : "")
             }
         }
         if pedido.doce {

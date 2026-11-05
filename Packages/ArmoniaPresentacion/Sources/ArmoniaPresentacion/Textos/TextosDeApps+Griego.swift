@@ -209,6 +209,7 @@ extension TextosDeApps {
         cohemitonica: "συνημιτονική (δύο διαδοχικά ημιτόνια)",
         maximamenteRegular: "μέγιστα ομοιόμορφη",
         medidaAproximada: "μετρημένη σε ημιτόνια, με προσέγγιση των μικροδιαστημάτων",
+        escaleraDeBrillo: "Σκάλα φωτεινότητας",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Εντάσεις",
         notasAEvitar: "Προς αποφυγή",

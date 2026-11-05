@@ -6,6 +6,20 @@ public struct DatoDeEscalaPresentado: Hashable, Sendable {
     public let valor: String
 }
 
+/// Un peldaño de la escalera de brillo: la escala, su brillo por quintas y la nota que sube desde el anterior.
+public struct PeldanoDeBrilloPresentado: Hashable, Sendable {
+    public let escala: Escala
+    /// «Do lidio».
+    public let nombre: String
+    /// Su brillo por quintas: «+3».
+    public let brillo: String
+    /// La nota que sube desde el peldaño anterior: «Fa → Fa♯»; vacío en el primero.
+    public let cambio: String
+    /// Es la escala de la que se parte.
+    public let esLaDePartida: Bool
+    public let sonido: Escucha
+}
+
 extension PresentacionDeEstudioDeEscala {
     // MARK: Estadísticas
 
@@ -48,5 +62,24 @@ extension PresentacionDeEstudioDeEscala {
         if redondeado > 0 { return "+" + cifras }
         if redondeado < 0 { return "-" + cifras }
         return "0"
+    }
+
+    // MARK: La escalera de brillo
+
+    /// Las escalas con la misma tónica de la más oscura a la más brillante, a una nota cada una de la siguiente
+    /// (`Escala.escaleraDeBrillo`), con su brillo por quintas y la nota que sube.
+    ///
+    ///     PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: Escala(.do), notacion: .espanolCompacto)
+    ///         .first { $0.nombre == "Do lidio" }?.cambio   // "Fa → Fa♯"
+    public static func escaleraDeBrillo(de escala: Escala, notacion: Notacion) -> [PeldanoDeBrilloPresentado] {
+        let escalera = escala.escaleraDeBrillo()
+        return escalera.peldanos.enumerated().map { i, peldano in
+            let subida = i == 0 ? nil : escalera.subidas[i - 1]
+            return PeldanoDeBrilloPresentado(
+                escala: peldano, nombre: peldano.nombre(en: notacion),
+                brillo: conSigno(peldano.estadisticas.brilloPorQuintas),
+                cambio: subida.map { $0.de.nombre(en: notacion) + " → " + $0.a.nombre(en: notacion) } ?? "",
+                esLaDePartida: i == escalera.posicion, sonido: .escala(peldano))
+        }
     }
 }

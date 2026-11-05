@@ -209,6 +209,7 @@ extension TextosDeApps {
         cohemitonica: "когемитонная (два полутона подряд)",
         maximamenteRegular: "максимально равномерная",
         medidaAproximada: "в полутонах, с округлением микротонов",
+        escaleraDeBrillo: "Лестница яркости",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Напряжения",
         notasAEvitar: "Избегать",
