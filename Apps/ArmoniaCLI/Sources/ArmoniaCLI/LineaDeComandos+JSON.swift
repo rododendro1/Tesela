@@ -60,10 +60,163 @@ extension LineaDeComandos {
         try DatosDeCandidato.identificar(palabras(Argumentos(textos), siFaltan: .faltanNotas), notacion: notacion)
     }
 
-    /// `escala Re dórico --json`: la escala con sus notas y los acordes de sus grados.
-    static func escalaJSON(_ textos: [String], _ notacion: Notacion) throws -> DatosDeEscala {
-        let texto = try palabras(Argumentos(textos), siFaltan: .faltaEscala).joined(separator: " ")
-        return DatosDeEscala(try Escala(leyendo: texto), notacion: notacion)
+    /// `escala Re dórico --json`: la escala con sus notas y los acordes de sus grados (las claves de
+    /// `DatosDeEscala`) y, con las opciones del texto, lo que añaden: cada una, su clave.
+    struct EscalaJSON: Encodable {
+        struct Grado: Encodable {
+            let grado: String
+            let acordes: [String]
+        }
+        struct Secuencia: Encodable {
+            let nombre: String
+            /// Desde la octava 4, con su octava: «Do4».
+            let notas: [String]
+            let midi: [Int]
+        }
+        struct ManoDelPiano: Encodable {
+            let mano: String
+            let notas: [String]
+            let dedos: [Int]
+        }
+        struct Modo: Encodable {
+            let nombre: String
+            let brillo: String
+            /// Lo que cambia respecto a la escala; vacío en la suya.
+            let cambios: String
+        }
+        struct Detalle: Encodable {
+            let nombre: String
+            let detalle: String
+        }
+        struct Simetria: Encodable {
+            let resumen: String
+            /// Las tónicas desde las que empieza igual; no está si la escala solo se repite a la octava.
+            let tonicas: String?
+            let ciclos: [Detalle]
+        }
+        struct Tonalidad: Encodable {
+            let tonalidad: String
+            let notas: String
+        }
+        struct AcordesEnLasDoce: Encodable {
+            let grados: [String]
+            let filas: [Fila]
+            struct Fila: Encodable {
+                let tonalidad: String
+                let acordes: [String]
+            }
+        }
+        struct Comparacion: Encodable {
+            let con: String
+            let comunes: String
+            let soloEnOrigen: String
+            let soloEnDestino: String
+            let cambios: [String]
+            let distancia: String?
+        }
+
+        // Las de `DatosDeEscala`, como sin opciones.
+        let nombre: String
+        let notas: [String]
+        let clases: [Int]
+        let modo: String?
+        let acordes: [DatosDeEscala.AcordeDelGrado]?
+        /// `--acordes`.
+        var acordesQueCaben: [Grado]?
+        /// `--secuencia`.
+        var secuencia: Secuencia?
+        /// `--piano`: la mano derecha primero.
+        var piano: [ManoDelPiano]?
+        /// `--modos`.
+        var modosParalelos: [Modo]?
+        var modosRelativos: [String]?
+        /// `--simetria`.
+        var simetria: Simetria?
+        /// `--vecinas`.
+        var vecinas: [Detalle]?
+        /// `--doce`, con la secuencia de `--secuencia` si se da; con `--acordes`, también los acordes de cada grado.
+        var doceTonalidades: [Tonalidad]?
+        var acordesEnLasDoceTonalidades: AcordesEnLasDoce?
+        /// `--comparar`.
+        var comparacion: Comparacion?
+
+        init(_ datos: DatosDeEscala) {
+            nombre = datos.nombre
+            notas = datos.notas
+            clases = datos.clases
+            modo = datos.modo
+            acordes = datos.acordes
+        }
+    }
+
+    /// `escala Re dórico --json`, con las mismas opciones que el texto (`pedidoDeEscala`).
+    static func escalaJSON(_ textos: [String], _ notacion: Notacion) throws -> EscalaJSON {
+        let pedido = try pedidoDeEscala(textos)
+        let escala = pedido.escala
+        var datos = EscalaJSON(DatosDeEscala(escala, notacion: notacion))
+        if pedido.conAcordes {
+            datos.acordesQueCaben = PresentacionDeEscalaYAcorde.acordesQueCaben(escala, notacion: notacion).map {
+                EscalaJSON.Grado(grado: $0.grado, acordes: $0.acordes.map { $0.cifrado(en: notacion) })
+            }
+        }
+        if let secuencia = pedido.secuencia {
+            let alturas = escala.secuencia(secuencia, octavas: pedido.octavas, sentido: pedido.sentido)
+            datos.secuencia = EscalaJSON.Secuencia(
+                nombre: secuencia.nombre(en: notacion), notas: alturas.map { $0.nombre(en: notacion) },
+                midi: alturas.map(\.midi))
+        }
+        if pedido.piano {
+            datos.piano = Mano.allCases.map { mano in
+                let digitacion = escala.digitacionDePiano(mano, octavas: pedido.octavas)
+                return EscalaJSON.ManoDelPiano(
+                    mano: notacion.texto { mano == .derecha ? $0.manoDerecha : $0.manoIzquierda },
+                    notas: digitacion.alturas.map { $0.nota.nombre(en: notacion) }, dedos: digitacion.dedos)
+            }
+        }
+        if pedido.modos {
+            datos.modosParalelos = PresentacionDeEstudioDeEscala.modosParalelos(de: escala, notacion: notacion).map {
+                EscalaJSON.Modo(nombre: $0.nombre, brillo: $0.brillo, cambios: $0.cambios)
+            }
+            datos.modosRelativos = PresentacionDeEstudioDeEscala.modosRelativos(de: escala, notacion: notacion)
+                .map(\.nombre)
+        }
+        if pedido.simetria {
+            if let simetria = PresentacionDeEstudioDeEscala.simetria(de: escala, notacion: notacion) {
+                datos.simetria = EscalaJSON.Simetria(
+                    resumen: simetria.resumen, tonicas: simetria.tonicas,
+                    ciclos: simetria.ciclos.map { EscalaJSON.Detalle(nombre: $0.nombre, detalle: $0.detalle) })
+            } else {
+                let veces = escala.transposicionesDistintas
+                datos.simetria = EscalaJSON.Simetria(
+                    resumen: notacion.texto { $0.repiteCada(veces, veces) }, tonicas: nil, ciclos: [])
+            }
+        }
+        if pedido.vecinas {
+            datos.vecinas = PresentacionDeEstudioDeEscala.vecinas(de: escala, notacion: notacion).map {
+                EscalaJSON.Detalle(nombre: $0.nombre, detalle: $0.detalle)
+            }
+        }
+        if pedido.doce {
+            let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(
+                escala, secuencia: pedido.secuencia, notacion: notacion)
+            datos.doceTonalidades = hoja.tonalidades.map { EscalaJSON.Tonalidad(tonalidad: $0.titulo, notas: $0.notas) }
+            if pedido.conAcordes,
+                let tabla = PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
+                    escala, cuatriadas: !pedido.triadas, notacion: notacion)
+            {
+                datos.acordesEnLasDoceTonalidades = EscalaJSON.AcordesEnLasDoce(
+                    grados: tabla.grados,
+                    filas: tabla.filas.map { .init(tonalidad: $0.tonalidad, acordes: $0.acordes) })
+            }
+        }
+        if let otra = pedido.otra {
+            let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, notacion: notacion)
+            datos.comparacion = EscalaJSON.Comparacion(
+                con: otra.nombre(en: notacion), comunes: comparacion.comunes, soloEnOrigen: comparacion.soloEnOrigen,
+                soloEnDestino: comparacion.soloEnDestino, cambios: comparacion.cambios,
+                distancia: comparacion.distancia)
+        }
+        return datos
     }
 
     // MARK: Arpegios, intervalos y tonalidades
