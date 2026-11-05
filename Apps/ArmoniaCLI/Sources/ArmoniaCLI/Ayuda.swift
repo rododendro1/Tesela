@@ -37,6 +37,88 @@ extension LineaDeComandos {
             .joined(separator: "\n")
     }
 
+    /// El índice de la ayuda (`armonia ayuda`, o `armonia` a secas): la cabecera, una línea por orden con lo que hace,
+    /// por grupos, y cómo pedir más. Las descripciones se juntan en una línea y se cortan a `anchoDelIndice`.
+    static func indiceDeAyuda(en idioma: Idioma) -> String {
+        let titulos = TextosDeCLI.traduccion(\.gruposDeLaAyuda).texto(en: idioma)
+        var lineas = [cabeceraDeLaAyuda.texto(en: idioma)]
+        for (titulo, grupo) in zip(titulos, gruposDeOrdenes) {
+            lineas += ["", titulo + ":"]
+            var vistas: Set<String> = []
+            for orden in grupo {
+                guard let primera = orden.ayuda.first, let nombre = nombreEnLaAyuda(primera, en: idioma),
+                    vistas.insert(nombre).inserted
+                else { continue }
+                lineas += lineasDelIndice(nombre, resumen(primera.descripcion.texto(en: idioma)))
+            }
+        }
+        return (lineas + ["", TextosDeCLI.traduccion(\.pieDelIndice).texto(en: idioma)]).joined(separator: "\n")
+    }
+
+    static let anchoDelIndice = 80
+    static let columnaDelResumen = 27
+
+    /// El nombre de la orden como sale en la ayuda en ese idioma: la primera palabra de su sintaxis.
+    static func nombreEnLaAyuda(_ entrada: EntradaDeAyuda, en idioma: Idioma) -> String? {
+        entrada.sintaxis.texto(en: idioma).split(whereSeparator: { $0 == " " || $0 == "\n" }).first.map(String.init)
+    }
+
+    /// La descripción en una línea y sin lo que es de la ayuda completa: sin las líneas de opciones ni paréntesis, y
+    /// hasta el primer «;», «:» u opción («--acordes»).
+    static func resumen(_ descripcion: String) -> String {
+        // Las líneas que explican opciones («--acordes: …», «opciones: …») son de la ayuda completa.
+        let propias = descripcion.components(separatedBy: "\n").prefix {
+            let linea = $0.trimmingCharacters(in: .whitespaces)
+            return !linea.hasPrefix("--") && !(linea.split(separator: " ").first?.hasSuffix(":") ?? false)
+        }
+        var texto = ""
+        var profundidad = 0
+        for caracter in propias.joined(separator: " ") {
+            if caracter == "(" {
+                profundidad += 1
+            } else if caracter == ")" {
+                profundidad = max(0, profundidad - 1)
+            } else if profundidad == 0 {
+                texto.append(caracter)
+            }
+        }
+        for corte in [";", ":", " --"] {
+            if let rango = texto.range(of: corte) { texto = String(texto[..<rango.lowerBound]) }
+        }
+        let palabras = texto.split(separator: " ").joined(separator: " ")
+            .replacingOccurrences(of: " ,", with: ",").replacingOccurrences(of: " .", with: ".")
+        return palabras.isEmpty ? enUnaLinea(descripcion) : palabras
+    }
+
+    /// Las líneas cortadas a mano, en una.
+    static func enUnaLinea(_ texto: String) -> String {
+        texto.split(whereSeparator: { $0 == " " || $0 == "\n" }).joined(separator: " ")
+    }
+
+    /// El nombre en la columna 2 y el resumen en `columnaDelResumen`, cortado por palabras a `anchoDelIndice`.
+    static func lineasDelIndice(_ nombre: String, _ resumen: String) -> [String] {
+        let sangria = String(repeating: " ", count: columnaDelResumen)
+        var lineas: [String] = []
+        var actual = "  " + nombre
+        if actual.count >= columnaDelResumen - 1 {
+            lineas.append(actual)
+            actual = sangria
+        } else {
+            actual += String(repeating: " ", count: columnaDelResumen - actual.count)
+        }
+        var vacia = true
+        for palabra in resumen.split(separator: " ") {
+            if !vacia, actual.count + 1 + palabra.count > anchoDelIndice {
+                lineas.append(actual)
+                actual = sangria
+                vacia = true
+            }
+            actual += (vacia ? "" : " ") + palabra
+            vacia = false
+        }
+        return lineas + [actual]
+    }
+
     /// La ayuda de una orden: sus entradas, como en la ayuda completa (`armonia ayuda acorde`, `armonia acorde --help`).
     static func ayuda(de orden: Orden, en notacion: Notacion) -> String {
         orden.ayuda.flatMap { lineas(de: $0, en: notacion.textos) }.joined(separator: "\n")
@@ -88,11 +170,11 @@ extension LineaDeComandos {
     /// Las entradas de todas las órdenes, en el orden de `ordenes`.
     static let ordenesDeLaAyuda: [EntradaDeAyuda] = ordenes.flatMap(\.ayuda)
 
-    /// La propia ayuda y la versión; las demás órdenes están en los archivos Ayuda+*.swift. `ayuda <orden>` no llega
-    /// aquí: la escribe `ejecutar`, con la de la orden.
+    /// La propia ayuda y la versión; las demás órdenes están en los archivos Ayuda+*.swift. `ayuda <orden>` y
+    /// `ayuda --todo` no llegan aquí: las escribe `ejecutar`.
     static let ordenesDeAyuda: [Orden] = [
         Orden(nombres: ["ayuda", "help", "-h", "--help", "--ayuda"], ayuda: ayudaDeLaAyuda) { _, notacion in
-            bien(ayuda(en: notacion))
+            bien(indiceDeAyuda(en: notacion.textos))
         },
         Orden(nombres: ["--version", "version", "versión"], ayuda: ayudaDeLaVersion) { _, _ in
             bien("armonia " + version)

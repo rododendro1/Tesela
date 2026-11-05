@@ -43,7 +43,7 @@ extension LineaDeComandosTests {
         }
         #expect(salida("posiciones La pentatónica menor").contains(" · 2 notas por cuerda\n"))
         #expect(salida("positions G major --caged --ingles").contains(" · CAGED\n\n  G shape · Frets 0–4\n"))
-        #expect(salida("ayuda").contains("posiciones <escala> [--caged]"))
+        #expect(salida("ayuda --todo").contains("posiciones <escala> [--caged]"))
         #expect(
             resultado("posiciones").error
                 == "armonia: falta la escala: armonia posiciones Sol mayor\nPrueba «armonia ayuda posiciones».\n")
@@ -154,7 +154,7 @@ extension LineaDeComandosTests {
     }
 
     @Test func laAyudaHablaDeLasDigitaciones() {
-        #expect(salida("ayuda").contains("digitaciones <cifrado>"))
+        #expect(salida("ayuda --todo").contains("digitaciones <cifrado>"))
     }
 
     @Test func formasDeLaPentatonicaYSecuenciasEnLasPosiciones() {
@@ -208,6 +208,6 @@ extension LineaDeComandosTests {
             porPosiciones.hasPrefix("Sol7 · Arpegio en el mástil · Por posiciones · bajo · Capo en el traste 2\n"),
             Comment(rawValue: porPosiciones))
         #expect(salida("positions --arpeggio Am --sweep --ingles").contains("\n    Fingers: 0 0 2 2 1 0\n"))
-        #expect(salida("ayuda").contains("posiciones --arpegio <cifrado> [--caged|--barrido]"))
+        #expect(salida("ayuda --todo").contains("posiciones --arpegio <cifrado> [--caged|--barrido]"))
     }
 }

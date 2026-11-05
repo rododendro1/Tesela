@@ -2,6 +2,19 @@
 
 ## Sin publicar
 
+### `armonia`: una ayuda corta, sesiones, el idioma del entorno y códigos para las faltas
+
+- `armonia ayuda` (y `armonia` a secas fuera de la terminal) da un índice: una línea por orden, por grupos, y cómo
+  pedir más. La ayuda completa de antes es `armonia ayuda --todo` (o `--all`), y la de una orden,
+  `armonia ayuda <orden>`.
+- `revisar` y `contrapunto` salen con código 3 si encuentran faltas, para usarlos en un script o en un hook.
+- `--json` también en `armonizar`, `realizar`, `revisar`, `contrapunto` y `transponer`. Cada falta lleva su tipo como
+  clave fija (`quintasParalelas`, `notaRepetida`…). Si la salida no es la terminal, el JSON va en una sola línea.
+- `ARMONIA_IDIOMA` da el idioma como `--idioma` (que la anula); con `ARMONIA_IDIOMA=sistema`, el de `LC_ALL`,
+  `LC_MESSAGES` o `LANG`. Un idioma que no se conoce es un error de uso.
+- `armonia` sin argumentos y en la terminal abre una sesión: una orden por línea, sin «armonia», hasta `salir`.
+  `LineaDeComandos.sesion(entorno:leerLinea:escribir:)` la ejecuta, y `ejecutar` recibe el `entorno`.
+
 ### Los últimos lectores que daban `nil` dicen por qué fallan
 
 - **Cambio incompatible:** `Tonalidad.acorde(romano:)` y `acordes(romanos:)` lanzan en lugar de devolver `nil`:

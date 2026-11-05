@@ -134,7 +134,7 @@ extension LineaDeComandosTests {
         #expect(quintas.contains("Círculo de quintas</title>"), Comment(rawValue: quintas))
         #expect(quintas != salida("reloj Do disminuida semitono-tono"))
         #expect(salida("clock C major --fifths --ingles").contains("<title>C major · Circle of fifths</title>"))
-        #expect(salida("ayuda").contains("reloj <escala> [--quintas]"))
+        #expect(salida("ayuda --todo").contains("reloj <escala> [--quintas]"))
     }
 
     @Test func pentagrama() {
@@ -163,8 +163,8 @@ extension LineaDeComandosTests {
         // Con la armadura de Fa mayor, el Si♭ de Do7 no lleva bemol delante.
         #expect(salida("pentagrama arpegio Do7 --en Fa mayor") != salida("pentagrama arpegio Do7"))
         #expect(salida("pentagrama acordes Rem7 Sol7 Do7M").contains(">Rem7</text>"))
-        #expect(salida("ayuda").contains("pentagrama escala|acorde|arpegio|acordes <…>"))
-        #expect(salida("ayuda").contains("pentagrama <qué> --romanos|--mano|--secuencia|--tab"))
+        #expect(salida("ayuda --todo").contains("pentagrama escala|acorde|arpegio|acordes <…>"))
+        #expect(salida("ayuda --todo").contains("pentagrama <qué> --romanos|--mano|--secuencia|--tab"))
     }
 
     @Test func pentagramaParaEstudiar() {

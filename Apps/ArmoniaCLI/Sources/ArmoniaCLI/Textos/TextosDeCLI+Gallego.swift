@@ -158,6 +158,12 @@ extension TextosDeCLI {
         --subindices ou --cifras fíxana (lense as dúas formas).
         Con --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
         serie, digitaciones e tradiciones dan os seus datos en JSON.
+        Con --json tamén armonizar, realizar, revisar, contrapunto e transponer. Se a saída non é
+        o terminal, o JSON vai nunha soa liña.
+        ARMONIA_IDIOMA=eu fixa o idioma sen --idioma; con ARMONIA_IDIOMA=sistema, o de LANG.
+        Códigos de saída: 0 ben, 1 texto que non se le, 2 orde mal escrita e 3 faltas (revisar,
+        contrapunto).
+        Sen argumentos e no terminal, armonia abre unha sesión: unha orde por liña.
         """,
         sintaxisAyuda: "ayuda [<orde>]",
         descripcionAyuda: "esta axuda, ou a dunha orde\n(tamén <orde> --help)",
@@ -326,6 +332,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Proba «armonia ayuda \(o)»." },
         salidaBinaria: "a saída é un ficheiro binario (MIDI, PDF ou PNG); gárdaa con > ficheiro",
         escalasPorNotas: { e in "non hai ningunha escala con ese nome; para buscala polas súas notas: \(e)" },
-        grabarUnaPartitura: { o, e in "«armonia \(o)» xa escribe a partitura; «grabar» dáa en PDF, SVG ou PNG: \(e)" }
+        grabarUnaPartitura: { o, e in "«armonia \(o)» xa escribe a partitura; «grabar» dáa en PDF, SVG ou PNG: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Consultas", "Harmonía e voces", "Partituras e gravado", "Debuxos (SVG)", "Neorriemanniana", "Instrumentos de trastes", "O terminal e a axuda"],
+        pieDelIndice: """
+        A axuda dunha orde: armonia ayuda <orde> (ou armonia <orde> --help).
+        Toda a axuda, coas opcións de cada orde: armonia ayuda --todo.
+        Para todas as ordes: --ingles, --idioma, --textos, --escritura, --subindices, --cifras e --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Escribe unha orde por liña, sen «armonia» (ayuda: as ordes; salir: rematar)." }
     )
 }

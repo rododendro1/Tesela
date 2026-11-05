@@ -158,6 +158,13 @@ extension TextosDeCLI {
         --subindices edo --cifras erabiliz finkatzen da (biak irakurtzen dira).
         --json aukerarekin, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar,
         conjunto, serie, digitaciones eta tradiciones aginduek JSONez ematen dituzte datuak.
+        --json aukerarekin, armonizar, realizar, revisar, contrapunto eta transponer ere bai. Irteera
+        terminala ez bada, JSONa lerro bakarrean doa.
+        ARMONIA_IDIOMA=eu aldagaiak hizkuntza finkatzen du --idioma gabe; ARMONIA_IDIOMA=sistema
+        bada, LANG aldagaiarena.
+        Irteera-kodeak: 0 ondo, 1 irakurri ezin den testua, 2 gaizki idatzitako agindua eta 3 akatsak
+        (revisar, contrapunto).
+        Argumenturik gabe eta terminalean, armonia saio bat irekitzen du: agindu bat lerro bakoitzeko.
         """,
         sintaxisAyuda: "ayuda [<agindua>]",
         descripcionAyuda: "laguntza hau, edo agindu batena\n(baita <agindua> --help ere)",
@@ -326,6 +333,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Probatu «armonia ayuda \(o)»." },
         salidaBinaria: "irteera fitxategi bitar bat da (MIDI, PDF edo PNG); gorde ezazu > fitxategia erabiliz",
         escalasPorNotas: { e in "ez dago izen hori duen eskalarik; noten bidez bilatzeko: \(e)" },
-        grabarUnaPartitura: { o, e in "«armonia \(o)» aginduak partitura idazten du jada; «grabar» aginduak PDF, SVG edo PNG formatuan ematen du: \(e)" }
+        grabarUnaPartitura: { o, e in "«armonia \(o)» aginduak partitura idazten du jada; «grabar» aginduak PDF, SVG edo PNG formatuan ematen du: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Kontsultak", "Harmonia eta ahotsak", "Partiturak eta grabatua", "Marrazkiak (SVG)", "Neorriemanniarra", "Trasteak dituzten tresnak", "Terminala eta laguntza"],
+        pieDelIndice: """
+        Agindu baten laguntza: armonia ayuda <agindua> (edo armonia <agindua> --help).
+        Laguntza osoa, agindu bakoitzaren aukerekin: armonia ayuda --todo.
+        Agindu guztietarako: --ingles, --idioma, --textos, --escritura, --subindices, --cifras eta --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Idatzi agindu bat lerro bakoitzeko, «armonia» gabe (ayuda: aginduak; salir: amaitu)." }
     )
 }

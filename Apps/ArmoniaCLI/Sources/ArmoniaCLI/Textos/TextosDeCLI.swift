@@ -330,6 +330,14 @@ struct TextosDeCLI: TextosTraducidos {
     /// `grabar midi …` (o musicxml, mei…): esa orden ya escribe la partitura; el ejemplo, cómo grabarla.
     let grabarUnaPartitura: @Sendable (String, String) -> String
 
+    // MARK: Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+    /// Los títulos de los grupos del índice de `armonia ayuda`, uno por cada lista de `gruposDeOrdenes`.
+    let gruposDeLaAyuda: [String]
+    /// Lo que sigue al índice: cómo ver la ayuda de una orden y toda la ayuda, y las opciones de todas las órdenes.
+    let pieDelIndice: String
+    /// La primera línea de la sesión (`armonia` sin argumentos en la terminal), con la versión.
+    let bienvenidaDeLaSesion: @Sendable (String) -> String
+
     /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeCLI>(
