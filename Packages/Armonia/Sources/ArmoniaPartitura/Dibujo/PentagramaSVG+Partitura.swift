@@ -32,30 +32,25 @@ extension Partitura {
         let pentagrama = llenos[0]
         if let clave = pentagrama.clave { suyas.maquetacion.clave = clave }
         let primera = pentagrama.voces[0]
-        let inicios = primera.voz.inicios
-        func porEvento<Valor>(_ porInicio: [Duracion: Valor]) -> [Int: Valor] {
-            var resultado: [Int: Valor] = [:]
-            for (i, inicio) in inicios.enumerated() { resultado[i] = porInicio[inicio] }
-            return resultado
-        }
-        let acordes = porEvento(primera.cifrados)
+        let porNota = primera.porNota
+        let acordes = porNota.cifrados
         if pentagrama.voces.count > 1 {
             return primera.voz.svgPentagrama(
                 junto: pentagrama.voces[1].voz, titulo: titulo, acordes: acordes, opciones: suyas)
         }
-        var grados = porEvento(primera.analisis.mapValues(\.cifrado))
-        grados.merge(porEvento(primera.grados)) { _, propio in propio }
-        let tablatura = pentagrama.cuerdas.map { Tablatura(cuerdas: $0, notas: porEvento(primera.pulsaciones)) }
+        var grados = porNota.analisis.mapValues(\.cifrado)
+        grados.merge(porNota.grados) { _, propio in propio }
+        let tablatura = pentagrama.cuerdas.map { Tablatura(cuerdas: $0, notas: porNota.pulsaciones) }
         let armadura = pentagrama.armadura.map { suyas.armadura.notas(propia: $0) }
         if !ritmo {
             return columnas(
                 primera.voz, titulo: titulo, acordes: acordes, grados: grados,
-                bajoCifrado: porEvento(primera.bajoCifrado), digitos: porEvento(primera.digitos), tablatura: tablatura,
+                bajoCifrado: porNota.bajoCifrado, digitos: porNota.digitos, tablatura: tablatura,
                 tonica: primera.tonica, armadura: armadura ?? suyas.armadura.notas(), opciones: suyas)
         }
         return primera.voz.svgPentagrama(
-            titulo: titulo, acordes: acordes, grados: grados, bajoCifrado: porEvento(primera.bajoCifrado),
-            digitos: porEvento(primera.digitos), tablatura: tablatura, tonica: primera.tonica, armadura: armadura,
+            titulo: titulo, acordes: acordes, grados: grados, bajoCifrado: porNota.bajoCifrado,
+            digitos: porNota.digitos, tablatura: tablatura, tonica: primera.tonica, armadura: armadura,
             opciones: suyas)
     }
 

@@ -79,7 +79,7 @@ import Testing
             encabezado: Encabezado(titulo: "Dos voces", tempo: Tempo(80)), tonalidadDelAnalisis: Tonalidad(.do),
             notacion: .inglesASCII.conTextos(en: .catalan), llave: true)
         #expect(try idaYVuelta(partitura) == partitura)
-        let tablatura = Tablatura(cuerdas: 6, notas: [0: [.init(cuerda: 4, traste: 3)]])
+        let tablatura = Tablatura(cuerdas: 6, notas: [0: [.init(cuerda: 1, traste: 3)]])
         let acordes = Partitura(acordes: [[Altura("Do3"), Altura("Mi3")]], titulo: "Do", tablatura: tablatura)
         let leida = try idaYVuelta(acordes)
         #expect(leida == acordes)

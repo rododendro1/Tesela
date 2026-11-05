@@ -39,12 +39,19 @@ public struct EscalaEnElMastil: Hashable, Sendable {
     public let posiciones: [PosicionEnElMastil]
     /// La forma CAGED de la posición; `nil` en las de tres (o dos) notas por cuerda.
     public let forma: FormaCAGED?
+    /// La escala que se toca, si se sabe: la que se dio a ``Mastil/posicionesCAGED(de:ancho:)`` o a
+    /// ``Mastil/posicionesPorCuerda(de:notasPorCuerda:)``. Con ella, ``partitura(de:titulo:ritmo:)`` escribe sus notas.
+    public let escala: Escala?
 
-    public init(mastil: Mastil, trastes: ClosedRange<Int>, posiciones: [PosicionEnElMastil], forma: FormaCAGED? = nil) {
+    public init(
+        mastil: Mastil, trastes: ClosedRange<Int>, posiciones: [PosicionEnElMastil], forma: FormaCAGED? = nil,
+        escala: Escala? = nil
+    ) {
         self.mastil = mastil
         self.trastes = trastes
         self.posiciones = posiciones
         self.forma = forma
+        self.escala = escala
     }
 
     /// Las alturas en el orden en que se tocan al subir.
@@ -81,7 +88,8 @@ extension Mastil {
             }
             let usados = posiciones.map(\.traste)
             guard let menor = usados.min(), let mayor = usados.max(), menor >= 0, mayor <= trastes else { continue }
-            resultado.append(EscalaEnElMastil(mastil: self, trastes: menor...mayor, posiciones: posiciones))
+            resultado.append(
+                EscalaEnElMastil(mastil: self, trastes: menor...mayor, posiciones: posiciones, escala: escala))
         }
         return resultado
     }
@@ -106,7 +114,9 @@ extension Mastil {
                 franja.filter { clases.contains(Mastil.clase(encordado.cuerdas[cuerda].midi + $0)) }
                     .map { PosicionEnElMastil(cuerda: cuerda, traste: $0) }
             }
-            resultado.append(EscalaEnElMastil(mastil: self, trastes: franja, posiciones: posiciones, forma: forma))
+            resultado.append(
+                EscalaEnElMastil(
+                    mastil: self, trastes: franja, posiciones: posiciones, forma: forma, escala: escala))
         }
         return resultado.sorted { $0.trastes.lowerBound < $1.trastes.lowerBound }
     }

@@ -86,6 +86,23 @@ Las de tres notas por cuerda necesitan cuerdas que vayan de grave a aguda (en un
 salen), y CAGED, la guitarra afinada como siempre. Desde la terminal: `armonia posiciones Sol mayor`, o con
 `--caged`.
 
+## Del mástil a la partitura
+
+Las posiciones, los arpegios y las digitaciones recuerdan la escala o el acorde de que salieron
+(`EscalaEnElMastil.escala`, `ArpegioEnElMastil.acorde`, `Digitacion.acorde`), y su `partitura()` los escribe con
+sus notas (Si♭, no La♯, en Do7) y con la tablatura debajo, contada como el mástil. Con `ritmo: .figura(.corchea)`,
+con ritmo.
+
+```swift
+let mastil = Mastil(.guitarra, trastes: 15)
+let posicion = mastil.posicionesCAGED(de: Escala(.sol, .mayor))[0]
+posicion.escala == Escala(.sol, .mayor)                     // true
+let enCorcheas = posicion.partitura(ritmo: .figura(.corchea))
+enCorcheas.ritmo && enCorcheas.pentagramas[0].cuerdas == 6   // true
+let doMayor = mastil.digitaciones(de: Acorde("Do"))[0]
+doMayor.partitura().encabezado.tema == .progresion([Acorde("Do")])   // true
+```
+
 ## Datos que vienen de fuera
 
 Un traste o una posición que escribe una persona puede no existir. Los inicializadores y los

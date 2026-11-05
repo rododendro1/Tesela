@@ -106,7 +106,7 @@ import Testing
         let voz = try Voz(leyendo: "Sol3:4 Do4:1 Re4:1 Mi4:1", anacrusa: .negra)
         var opciones = opciones(1)
         opciones.marcas.intervalosDeLasNotas = true
-        let tablatura = Tablatura(cuerdas: 6, notas: [3: [Tablatura.Pulsacion(cuerda: 2, traste: 5)]])
+        let tablatura = Tablatura(cuerdas: 6, notas: [3: [Tablatura.Pulsacion(cuerda: 3, traste: 5)]])
         let svg = voz.svgPentagrama(
             titulo: "Anotada", acordes: [1: Acorde("Do"), 3: Acorde("Sol")], grados: [1: "I", 3: "V"],
             bajoCifrado: [2: ["6"]], digitos: [2: [3]], tablatura: tablatura, opciones: opciones)

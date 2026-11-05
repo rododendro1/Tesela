@@ -63,8 +63,8 @@
 
 ### Lo que se toca en el mástil, también en una `Partitura`
 
-- `Escala.partitura(tocadaEn:titulo:figura:digitos:tablatura:)` y
-  `Acorde.partitura(arpegiadoEn:titulo:figura:digitos:tablatura:)` (nuevos) hacen la partitura de unas alturas
+- `Escala.partitura(tocadaEn:titulo:ritmo:digitos:tablatura:)` y
+  `Acorde.partitura(arpegiadoEn:titulo:ritmo:digitos:tablatura:)` (nuevos) hacen la partitura de unas alturas
   tocadas, que se puede escribir en MusicXML, MIDI y los demás formatos. `svgPentagrama(tocadaEn:)` y
   `svgPentagrama(arpegiadoEn:)` la dibujan como antes. Las escalas microtonales siguen con su propio dibujo, que
   lleva el signo de cada nota de su sistema.
@@ -147,14 +147,13 @@
   `MarcasDeDiagrama(notas)` y un `[Int: String]`, como `MarcasDeDiagrama(rotulos:)`.
 - Los teclados isomórficos y cuadrados pueden llevar título (`opciones.titulo`); por defecto, ninguno, como antes.
 
-### La tablatura y el mástil cuentan las cuerdas al revés, y ahora se dice
+### La tablatura cuenta las cuerdas como el mástil
 
-- `Tablatura.Pulsacion.cuerda` se cuenta desde la más aguda (la línea de arriba), como hacía ya el dibujo; el
-  comentario de `init(cuerda:traste:)` decía lo contrario. El mástil (`PosicionEnElMastil.cuerda`) las cuenta desde
-  la más grave.
-- `Tablatura.Pulsacion(cuerdaDesdeLaGrave:de:traste:)`, `cuerdaDesdeLaGrave(de:)` y
-  `Tablatura(cuerdas:desdeLaGrave:)` convierten de una cuenta a la otra, para pasar a la tablatura las posiciones
-  del mástil sin darles la vuelta a mano.
+- **Cambio incompatible:** `Tablatura.Pulsacion.cuerda` se cuenta ahora desde la más grave (la 0), como
+  `PosicionEnElMastil.cuerda`; antes se contaba desde la más aguda, la línea de arriba del dibujo, que sigue
+  poniendo la más aguda arriba. Una pulsación escrita a mano (o guardada en JSON) en la cuenta de antes cambia de
+  cuerda: la cuerda `c` de antes es la `cuerdas - 1 - c` de ahora. Ya no hay una cuenta que convertir:
+  `Tablatura(_:posiciones:)` toma las posiciones del mástil tal cual.
 
 ### Todo lo que se dibuja en un pentagrama sale de una partitura
 
@@ -213,8 +212,9 @@
 
 ### Ritmo en la partitura de una escala o de un arpegio
 
-- `Escala.partitura(octava:octavas:sentido:digitacion:figura:)` y `Arpegio.partitura(octava:figura:)` admiten una
-  figura, como `partitura(tocadaEn:figura:)`: la escala o el arpegio en corcheas, con la última nota en negra.
+- `Escala.partitura(octava:octavas:sentido:digitacion:ritmo:)` y `Arpegio.partitura(octava:ritmo:)` admiten un
+  ritmo, como `partitura(tocadaEn:ritmo:)`: con `.figura(.corchea)`, la escala o el arpegio en corcheas, con la
+  última nota en negra.
 
 ### El signo de un microtono, público
 
@@ -228,9 +228,34 @@
   toca en el mástil sale en una `Partitura` con la tablatura debajo:
   - `Digitacion.partitura(de:titulo:)` y `Digitacion.partitura(_:acordes:titulo:)` (nuevos): una o varias
     digitaciones, en redondas, escritas con la ortografía de su acorde y con el cifrado encima.
-  - `EscalaEnElMastil.partitura(de:titulo:figura:)` y `ArpegioEnElMastil.partitura(de:titulo:figura:)` (nuevos): la
-    posición o el arpegio en el orden en que se tocan, con sus dedos en el arpegio y, con `figura`, con ritmo.
+  - `EscalaEnElMastil.partitura(de:titulo:ritmo:)` y `ArpegioEnElMastil.partitura(de:titulo:ritmo:)` (nuevos): la
+    posición o el arpegio en el orden en que se tocan, con sus dedos en el arpegio y, con `ritmo`, con ritmo. Sin
+    escala ni acorde, las notas van como las da el mástil.
   - `Tablatura(_:posiciones:)` (nuevo): la tablatura con las posiciones del mástil.
+
+### Lo que se toca en el mástil sabe qué es
+
+- `EscalaEnElMastil.escala`, `ArpegioEnElMastil.acorde` y `Digitacion.acorde` (nuevos): la escala o el acorde de
+  que salieron (`posicionesCAGED(de:)`, `posicionesPorCuerda(de:)`, `arpegios(de:)`, `arpegiosCAGED(de:)`,
+  `arpegiosDeUnaNotaPorCuerda(de:)`, `digitaciones(de:)` y `disposiciones(de:_:cuerdas:)`), o `nil` si se hicieron
+  a mano. Sus `partitura()` los usan si no se da otro: `posicion.partitura()` basta.
+- Dos digitaciones siguen siendo iguales si se tocan igual, aunque solo una sepa de qué acorde es.
+
+### El ritmo, aparte de la figura
+
+- `Partitura.Ritmo` (nuevo): `.libre` (redondas, sin ritmo) o `.figura(.corchea)` (todas con esa figura, y la
+  última, una negra si la figura es más corta). Sustituye al `figura: Duracion?` que decidía a la vez si había ritmo
+  y cuál en `Escala.partitura(octava:…)`, `partitura(tocadaEn:…)`, `svgPentagrama(tocadaEn:…)`,
+  `Arpegio.partitura(octava:)`, `Acorde.partitura(arpegiadoEn:…)`, `svgPentagrama(arpegiadoEn:…)` y las partituras
+  del mástil.
+
+### Lo que se anota, nota a nota
+
+- `Partitura.AnotacionesPorNota` (nuevo): los cifrados, el análisis, los marcadores, los grados, el bajo cifrado, los
+  dedos y las pulsaciones por el índice de cada nota, la forma en que los dan las escalas, los arpegios y el mástil.
+  `Partitura.Linea(_:porNota:nombre:plicaArriba:tonica:)` los lleva a los inicios con que los guarda la línea, y
+  `Linea.porNota` los devuelve; `Voz.porEvento(_:)` (nuevo) es lo contrario de `porInicio(_:)`. Las partituras de
+  acordes, de escalas y de arpegios, y su dibujo, pasan por aquí, en lugar de cada una con su conversión.
 
 ## 0.3.4 (2026-11-04)
 

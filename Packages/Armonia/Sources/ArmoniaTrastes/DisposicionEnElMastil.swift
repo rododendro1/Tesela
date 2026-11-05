@@ -47,7 +47,7 @@ extension Mastil {
             else { continue }
             var trastesDeLaForma = [Int?](repeating: nil, count: cuerdas.count)
             for (cuerda, traste) in zip(grupo, forma) { trastesDeLaForma[cuerda] = traste }
-            resultado.append(Digitacion(mastil: self, trastes: trastesDeLaForma))
+            resultado.append(Digitacion(mastil: self, trastes: trastesDeLaForma, acorde: acorde))
         }
         return resultado
     }

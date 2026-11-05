@@ -5,17 +5,37 @@ import ArmoniaTeoria
 ///
 ///     // Do mayor en la guitarra
 ///     digitacion.tablatura     // "x32010"
+///
+/// Dos digitaciones son iguales si se tocan igual (el mismo mástil y los mismos trastes), aunque solo una sepa de qué
+/// acorde es (``acorde``).
 public struct Digitacion: Hashable, Sendable, CustomStringConvertible {
     public let mastil: Mastil
     /// Un elemento por cuerda, de la primera a la última: el traste, o `nil` si la cuerda se apaga.
     public let trastes: [Int?]
+    /// El acorde que se toca, si se sabe: el que se dio a `Mastil.digitaciones(de:…)` o a
+    /// ``Mastil/disposiciones(de:_:cuerdas:abertura:)``. Con él, ``partitura(de:titulo:)`` escribe sus notas y lo
+    /// cifra.
+    public let acorde: Acorde?
 
     /// Detiene el programa si no hay un traste (o `nil`) por cada cuerda. Si los trastes vienen de fuera,
     /// usa `init?(comprobando:en:)` o `init?(leyendo:en:)`, que devuelven `nil` en vez de detenerse.
-    public init(mastil: Mastil, trastes: [Int?]) {
+    public init(mastil: Mastil, trastes: [Int?], acorde: Acorde? = nil) {
         precondition(trastes.count == mastil.encordado.numeroDeCuerdas, "Un traste (o nil) por cada cuerda")
         self.mastil = mastil
         self.trastes = trastes
+        self.acorde = acorde
+    }
+
+    /// La misma digitación, sabiendo de qué acorde es.
+    fileprivate func conAcorde(_ acorde: Acorde) -> Digitacion {
+        Digitacion(mastil: mastil, trastes: trastes, acorde: acorde)
+    }
+
+    public static func == (a: Digitacion, b: Digitacion) -> Bool { a.mastil == b.mastil && a.trastes == b.trastes }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(mastil)
+        hasher.combine(trastes)
     }
 
     /// Una digitación con esos trastes, o `nil` si no hay uno por cada cuerda o alguno no está en el mástil.
@@ -248,7 +268,7 @@ extension Mastil {
         let ordenadas = conClave.sorted { a, b in
             a.clave != b.clave ? a.clave.lexicographicallyPrecedes(b.clave) : a.forma.tablatura < b.forma.tablatura
         }
-        return ordenadas.prefix(limite).map { $0.forma }
+        return ordenadas.prefix(limite).map { $0.forma.conAcorde(acorde) }
     }
 }
 

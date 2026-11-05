@@ -18,15 +18,21 @@ public struct ArpegioEnElMastil: Hashable, Sendable {
     public let posiciones: [PosicionEnElMastil]
     /// La forma CAGED de la posición, si es una de ``Mastil/arpegiosCAGED(de:ancho:)``.
     public let forma: FormaCAGED?
+    /// El acorde que se arpegia, si se sabe: el que se dio a ``Mastil/arpegios(de:ancho:)``,
+    /// ``Mastil/arpegiosCAGED(de:ancho:)`` o ``Mastil/arpegiosDeUnaNotaPorCuerda(de:alcance:)``. Con él,
+    /// ``partitura(de:titulo:ritmo:)`` escribe sus notas y lo cifra.
+    public let acorde: Acorde?
 
     /// Un arpegio en esa franja de trastes, con sus notas de la más grave a la más aguda.
     public init(
-        mastil: Mastil, trastes: ClosedRange<Int>, posiciones: [PosicionEnElMastil], forma: FormaCAGED? = nil
+        mastil: Mastil, trastes: ClosedRange<Int>, posiciones: [PosicionEnElMastil], forma: FormaCAGED? = nil,
+        acorde: Acorde? = nil
     ) {
         self.mastil = mastil
         self.trastes = trastes
         self.posiciones = posiciones
         self.forma = forma
+        self.acorde = acorde
     }
 
     /// Las alturas en el orden en que se tocan.
@@ -56,7 +62,6 @@ extension Mastil {
     /// las franjas en las que están todas las notas del acorde.
     public func arpegios(de acorde: Acorde, ancho: Int = 4) -> [ArpegioEnElMastil] {
         let ancho = max(1, ancho)
-        let clases = Set(acorde.notas.map(\.claseDeAltura))
         let fundamental = acorde.fundamental.claseDeAltura
         var inicios: [Int] = []
         // Las dos cuerdas más graves, que no siempre son las primeras (el Sol agudo del ukelele).
@@ -67,7 +72,7 @@ extension Mastil {
             }
         }
         return inicios.sorted().compactMap { inicio in
-            arpegio(de: clases, en: inicio...min(trastes, inicio + ancho - 1), forma: nil)
+            arpegio(de: acorde, en: inicio...min(trastes, inicio + ancho - 1), forma: nil)
         }
     }
 
@@ -77,9 +82,8 @@ extension Mastil {
     ///
     ///     Mastil(.guitarra, trastes: 15).arpegiosCAGED(de: Acorde("Do")).map(\.forma)   // [C, A, G, E, D]
     public func arpegiosCAGED(de acorde: Acorde, ancho: Int = 5) -> [ArpegioEnElMastil] {
-        let clases = Set(acorde.notas.map(\.claseDeAltura))
-        return posicionesCAGED(de: Escala(acorde.fundamental, .mayor), ancho: ancho).compactMap {
-            arpegio(de: clases, en: $0.trastes, forma: $0.forma)
+        posicionesCAGED(de: Escala(acorde.fundamental, .mayor), ancho: ancho).compactMap {
+            arpegio(de: acorde, en: $0.trastes, forma: $0.forma)
         }
     }
 
@@ -110,14 +114,16 @@ extension Mastil {
             guard let menor = usados.min(), let mayor = usados.max(), mayor <= trastes,
                 usados.allSatisfy({ $0 == 0 || mayor - $0 < max(1, alcance) })
             else { continue }
-            resultado.append(ArpegioEnElMastil(mastil: self, trastes: menor...mayor, posiciones: posiciones))
+            resultado.append(
+                ArpegioEnElMastil(mastil: self, trastes: menor...mayor, posiciones: posiciones, acorde: acorde))
         }
         return resultado
     }
 
-    /// Las notas de unas clases de altura dentro de una franja, de la más grave a la más aguda y sin unísonos, o
-    /// `nil` si falta alguna.
-    private func arpegio(de clases: Set<Int>, en franja: ClosedRange<Int>, forma: FormaCAGED?) -> ArpegioEnElMastil? {
+    /// Las notas del acorde dentro de una franja, de la más grave a la más aguda y sin unísonos, o `nil` si falta
+    /// alguna.
+    private func arpegio(de acorde: Acorde, en franja: ClosedRange<Int>, forma: FormaCAGED?) -> ArpegioEnElMastil? {
+        let clases = Set(acorde.notas.map(\.claseDeAltura))
         let ordenadas = posiciones(deClases: clases).filter { franja.contains($0.traste) }
             .sorted { (midi(en: $0), $0.cuerda) < (midi(en: $1), $1.cuerda) }
         var unicas: [PosicionEnElMastil] = []
@@ -125,6 +131,6 @@ extension Mastil {
             unicas.append(posicion)
         }
         guard Set(unicas.map { Mastil.clase(midi(en: $0)) }) == clases else { return nil }
-        return ArpegioEnElMastil(mastil: self, trastes: franja, posiciones: unicas, forma: forma)
+        return ArpegioEnElMastil(mastil: self, trastes: franja, posiciones: unicas, forma: forma, acorde: acorde)
     }
 }

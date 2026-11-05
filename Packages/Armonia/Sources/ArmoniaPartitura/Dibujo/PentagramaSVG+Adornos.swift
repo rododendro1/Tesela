@@ -191,13 +191,14 @@ extension PentagramaSVG {
         let porColumna = tablatura.notas.sorted { $0.key < $1.key }
         for (columna, pulsaciones) in porColumna where centros.indices.contains(columna) {
             for pulsacion in pulsaciones where (0..<tablatura.cuerdas).contains(pulsacion.cuerda) {
+                let linea = pulsacion.linea(de: tablatura.cuerdas)
                 let texto = String(pulsacion.traste)
                 let mitad =
                     PentagramaSVG.anchoEstimado(
                         texto, cuerpoDeLetra: PentagramaSVG.letraDeLaTablatura,
                         proporcion: opciones.maquetacion.anchoDeLosCaracteres) / 2
-                let y = colocada.lineas[pulsacion.cuerda].y
-                colocada.lineas[pulsacion.cuerda].huecos.append(
+                let y = colocada.lineas[linea].y
+                colocada.lineas[linea].huecos.append(
                     (centros[columna] - mitad - 0.15, centros[columna] + mitad + 0.15))
                 colocada.textos.append(
                     elemento("text").con("x", centros[columna]).con("y", y + 0.42).con("text-anchor", "middle")

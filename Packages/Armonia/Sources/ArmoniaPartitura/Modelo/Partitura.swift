@@ -221,20 +221,11 @@ public struct Partitura: Hashable, Sendable, Codable {
         bajoCifrado: [[String]] = [], digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil
     ) {
         let voz = Voz(acordes.map { Evento(alturas: $0, duracion: .redonda) })
-        let inicios = voz.inicios
-        func porInicio<Valor>(_ porColumna: [Int: Valor]) -> [Duracion: Valor] {
-            var resultado: [Duracion: Valor] = [:]
-            for (columna, valor) in porColumna where inicios.indices.contains(columna) {
-                resultado[inicios[columna]] = valor
-            }
-            return resultado
-        }
-        func enOrden<Valor>(_ lista: [Valor]) -> [Duracion: Valor] {
-            porInicio(Dictionary(uniqueKeysWithValues: lista.enumerated().map { ($0.offset, $0.element) }))
-        }
-        let linea = Linea(
-            voz, cifrados: enOrden(cifrados), grados: enOrden(grados), bajoCifrado: enOrden(bajoCifrado),
-            digitos: porInicio(digitos), pulsaciones: porInicio(tablatura?.notas ?? [:]))
+        let porNota = AnotacionesPorNota(
+            cifrados: AnotacionesPorNota.enOrden(cifrados), grados: AnotacionesPorNota.enOrden(grados),
+            bajoCifrado: AnotacionesPorNota.enOrden(bajoCifrado), digitos: digitos,
+            pulsaciones: tablatura?.notas ?? [:])
+        let linea = Linea(voz, porNota: porNota)
         self.init(
             pentagramas: [Pentagrama(voces: [linea], cuerdas: tablatura?.cuerdas)],
             encabezado: Encabezado(titulo: titulo, tema: cifrados.isEmpty ? nil : .progresion(cifrados)),
@@ -311,39 +302,28 @@ extension Encabezado: Codable {}
 
 extension Partitura {
     /// Unas notas tocadas una tras otra (con sus microtonos, si los tienen), con lo que se anota en cada una (por su
-    /// índice): con `figura`, con ritmo (la última, una negra si la figura es más corta); sin ella, en redondas y sin
-    /// ritmo. Es lo que hacen `Escala.partitura(tocadaEn:…)` y `Acorde.partitura(arpegiadoEn:…)`.
+    /// índice), con su ``Ritmo``. Es lo que hacen `Escala.partitura(tocadaEn:…)` y `Acorde.partitura(arpegiadoEn:…)`.
     static func tocada(
-        _ notas: [Evento.Nota], titulo: String? = nil, tema: Encabezado.Tema, figura: Duracion? = nil,
+        _ notas: [Evento.Nota], titulo: String? = nil, tema: Encabezado.Tema, ritmo: Ritmo = .libre,
         digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil, acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
     ) -> Partitura {
         tocada(
-            juntas: notas.map { [$0] }, titulo: titulo, tema: tema, figura: figura, digitos: digitos,
+            juntas: notas.map { [$0] }, titulo: titulo, tema: tema, ritmo: ritmo, digitos: digitos,
             tablatura: tablatura, acorde: acorde, tonica: tonica, armadura: armadura)
     }
 
     /// Como `tocada(_:…)`, con las notas de cada evento juntas: todas las de un acorde en uno.
     static func tocada(
-        juntas notas: [[Evento.Nota]], titulo: String? = nil, tema: Encabezado.Tema, figura: Duracion? = nil,
+        juntas notas: [[Evento.Nota]], titulo: String? = nil, tema: Encabezado.Tema, ritmo: Ritmo = .libre,
         digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil, acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
     ) -> Partitura {
-        let eventos = notas.indices.map { i in
-            guard let figura else { return Evento(notas: notas[i], duracion: .redonda) }
-            let ultima = i == notas.count - 1 && notas.count > 1
-            return Evento(notas: notas[i], duracion: ultima && figura < .negra ? .negra : figura)
-        }
-        let voz = Voz(eventos)
-        let inicios = voz.inicios
-        func porInicio<Valor>(_ porIndice: [Int: Valor]) -> [Duracion: Valor] {
-            var resultado: [Duracion: Valor] = [:]
-            for (i, valor) in porIndice where inicios.indices.contains(i) { resultado[inicios[i]] = valor }
-            return resultado
-        }
-        let linea = Linea(
-            voz, cifrados: acorde.map { [.cero: $0] } ?? [:], digitos: porInicio(digitos),
-            pulsaciones: porInicio(tablatura?.notas ?? [:]), tonica: tonica)
+        let voz = Voz(
+            notas.indices.map { Evento(notas: notas[$0], duracion: ritmo.duracion(de: $0, entre: notas.count)) })
+        let porNota = AnotacionesPorNota(
+            cifrados: acorde.map { [0: $0] } ?? [:], digitos: digitos, pulsaciones: tablatura?.notas ?? [:])
+        let linea = Linea(voz, porNota: porNota, tonica: tonica)
         return Partitura(
             pentagramas: [Pentagrama(voces: [linea], cuerdas: tablatura?.cuerdas, armadura: armadura)],
-            encabezado: Encabezado(titulo: titulo, tema: tema), ritmo: figura != nil)
+            encabezado: Encabezado(titulo: titulo, tema: tema), ritmo: ritmo != .libre)
     }
 }

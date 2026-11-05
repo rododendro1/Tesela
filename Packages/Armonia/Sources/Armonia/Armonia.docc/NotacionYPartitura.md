@@ -374,8 +374,13 @@ Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<ti
   escala (``Partitura/Pentagrama/armadura``) y los intervalos contados desde su tónica (``Partitura/Linea/tonica``);
   `svgPentagrama(tocadaEn:)` y `svgPentagrama(arpegiadoEn:)` la dibujan. Su título es el nombre de la escala o el
   cifrado del acorde (``Encabezado/tema``), escrito en la notación con que se dibuja o se exporta. La tablatura
-  cuenta las cuerdas desde la más aguda, al revés que el mástil: `Tablatura(cuerdas:desdeLaGrave:)` toma las
-  posiciones del mástil tal cual.
+  cuenta las cuerdas como el mástil, desde la más grave (la 0), y al dibujarla pone la más aguda arriba:
+  `Tablatura(_:posiciones:)` toma las posiciones del mástil tal cual.
+- **Ritmo.** Las escalas, los arpegios y las posiciones del mástil van en redondas y sin ritmo; con
+  `ritmo: .figura(.corchea)` (``Partitura/Ritmo``), en corcheas, con la última nota en negra.
+- **Nota a nota.** Lo que dan las escalas, los arpegios y el mástil va por el índice de cada nota; una
+  ``Partitura/Linea`` lo guarda por el punto en que empieza cada evento. ``Partitura/AnotacionesPorNota``, con
+  `Partitura.Linea(_:porNota:)` y `linea.porNota`, pasa de una forma a la otra.
 - **Notación.** La de la partitura (``Partitura/notacion``) vale al exportarla y al dibujarla: `svg()` escribe en ella
   los cifrados, los nombres de las notas y el título, salvo que `OpcionesDePentagrama(notacion:)` fije otra.
 
