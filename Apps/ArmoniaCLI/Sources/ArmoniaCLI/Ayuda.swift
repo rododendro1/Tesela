@@ -7,15 +7,16 @@ import Armonia
 // en los quince idiomas (`Traduccion` no compila si falta alguno). Las columnas se calculan: la
 // sintaxis va en la columna 2, la descripción en la 31 y el ejemplo en la 69. Una sintaxis que no
 // cabe en su columna deja la descripción en la línea siguiente, y un ejemplo que no cabe al final
-// de la descripción va en una línea propia.
+// de la descripción va en una línea propia. La descripción y las notas se cortan solas, por palabras, a
+// `anchoDeLaDescripcion`: en los textos, cada "\n" empieza un párrafo («--escalas: …», «opciones: …»).
 //
 // Cada orden (`Orden`, en LineaDeComandos.swift) lleva sus entradas de la ayuda. Las órdenes están en
 // Ayuda+Consultas.swift, Ayuda+Armonizacion.swift y los demás Ayuda+*.swift, uno por cada LineaDeComandos+*.swift,
 // con sus nombres, lo que hacen y su ayuda; aquí quedan la cabecera, el pie y la propia ayuda.
 
 extension LineaDeComandos {
-    /// Una orden de la ayuda. Cada texto puede tener varias líneas (separadas por "\n"), cortadas
-    /// a mano en cada idioma.
+    /// Una orden de la ayuda. La sintaxis lleva una línea por cada forma de escribir la orden; la descripción y
+    /// las notas, un párrafo por línea (separados por "\n"), que `ajustar` corta a `anchoDeLaDescripcion`.
     struct EntradaDeAyuda: Sendable {
         /// Una línea por cada forma de escribir la orden.
         let sintaxis: Traduccion
@@ -29,6 +30,27 @@ extension LineaDeComandos {
     static let columnaDeLaSintaxis = 2
     static let columnaDeLaDescripcion = 31
     static let columnaDelEjemplo = 69
+    /// Lo que ocupa una línea de la descripción o de las notas: hasta la columna anterior a la del ejemplo, para que
+    /// quepa detrás.
+    static let anchoDeLaDescripcion = columnaDelEjemplo - columnaDeLaDescripcion - 1
+
+    /// Los párrafos del texto (uno por línea) cortados por palabras a `ancho`. Una palabra más larga que `ancho` va
+    /// sola en su línea; un párrafo vacío, una línea vacía.
+    static func ajustar(_ texto: String, ancho: Int = anchoDeLaDescripcion) -> [String] {
+        var lineas: [String] = []
+        for parrafo in texto.components(separatedBy: "\n") {
+            var actual = ""
+            for palabra in parrafo.split(separator: " ") {
+                if !actual.isEmpty, actual.count + 1 + palabra.count > ancho {
+                    lineas.append(actual)
+                    actual = ""
+                }
+                actual += (actual.isEmpty ? "" : " ") + palabra
+            }
+            lineas.append(actual)
+        }
+        return lineas
+    }
 
     /// La ayuda completa en un idioma.
     static func textoDeAyuda(en idioma: Idioma) -> String {
@@ -90,7 +112,7 @@ extension LineaDeComandos {
         return palabras.isEmpty ? enUnaLinea(descripcion) : palabras
     }
 
-    /// Las líneas cortadas a mano, en una.
+    /// Los párrafos, en una línea.
     static func enUnaLinea(_ texto: String) -> String {
         texto.split(whereSeparator: { $0 == " " || $0 == "\n" }).joined(separator: " ")
     }
@@ -130,7 +152,7 @@ extension LineaDeComandos {
             texto + columna(max(0, ancho - texto.count))
         }
         let sintaxis = entrada.sintaxis.texto(en: idioma).components(separatedBy: "\n")
-        var descripcion = entrada.descripcion.texto(en: idioma).components(separatedBy: "\n")[...]
+        var descripcion = ajustar(entrada.descripcion.texto(en: idioma))[...]
         var lineas = sintaxis.map { columna(columnaDeLaSintaxis) + $0 }
         // La primera línea de la descripción va junto a la sintaxis si queda al menos un espacio.
         if let primera = descripcion.first, let ultima = lineas.last, ultima.count < columnaDeLaDescripcion {
@@ -146,7 +168,7 @@ extension LineaDeComandos {
             }
         }
         if let notas = entrada.notas?.texto(en: idioma), !notas.isEmpty {
-            lineas += notas.components(separatedBy: "\n").map { columna(columnaDeLaDescripcion) + $0 }
+            lineas += ajustar(notas).map { columna(columnaDeLaDescripcion) + $0 }
         }
         return lineas
     }
