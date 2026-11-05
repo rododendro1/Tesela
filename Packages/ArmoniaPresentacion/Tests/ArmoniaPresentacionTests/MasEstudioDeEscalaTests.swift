@@ -140,6 +140,36 @@ import Testing
         #expect(PresentacionDeEstudioDeEscala.tamano(deUnSVG: "<svg/>") == nil)
     }
 
+    /// El mapa de brillo en SVG: el título con la tónica, una caja por escala y la resaltada en otro color.
+    @Test func mapaDeBrillo() {
+        let mapa = PresentacionDeEstudioDeEscala.mapaDeBrillo(notacion: notacion)
+        #expect(mapa.hasPrefix("<svg xmlns="))
+        #expect(mapa.contains(">Mapa de brillo · Do</text>"))
+        #expect(mapa.contains(">lidio</text>"), Comment(rawValue: String(mapa.prefix(600))))
+        #expect(mapa.contains(">+3</text>") && mapa.contains(">-3</text>"))
+        #expect(mapa.contains("<title>Fa → Fa♯</title>"))
+        #expect(!mapa.contains("#ffe8a3"))
+        let cajas = mapa.components(separatedBy: "<rect x=").count - 1
+        #expect(cajas == Escala.mapaDeBrillo().escalas.count)
+        let dorico = PresentacionDeEstudioDeEscala.mapaDeBrillo(resaltada: Escala(.re, .dorico), notacion: notacion)
+        #expect(dorico.contains(">Mapa de brillo · Re</text>"))
+        #expect(dorico.components(separatedBy: "#ffe8a3").count - 1 == 1)
+    }
+
+    /// La hoja de estudio de una progresión: los acordes, el análisis, las cadencias y las notas guía.
+    @Test func hojaDeEstudioDeUnaProgresion() throws {
+        let analisis = try PresentacionDeAnalisis.analizar("Rem7 Sol7 Do7M", en: Tonalidad(.do), notacion: notacion)
+        let hoja = PresentacionDeAnalisis.hojaDeEstudio(analisis, notacion: notacion)
+        #expect(hoja.hasPrefix("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"595\""))
+        #expect(hoja.contains(">Rem7 – Sol7 – Do"), Comment(rawValue: String(hoja.prefix(800))))
+        #expect(hoja.contains(">Análisis</text>"))
+        #expect(hoja.contains(">Líneas de notas guía</text>"))
+        #expect(hoja.contains(">V7</text>"))
+        // El pentagrama de los acordes y uno por cada línea de notas guía.
+        #expect(hoja.components(separatedBy: "<svg x=").count - 1 == 3)
+        #expect(hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count)
+    }
+
     @Test func lineasDeNotasGuia() {
         let acordes = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let lineas = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(

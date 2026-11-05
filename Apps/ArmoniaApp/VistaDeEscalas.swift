@@ -121,6 +121,7 @@ struct VistaDeEscalas: View {
             simetria(de: escala)
             estadisticas(de: escala)
             escaleraDeBrillo(de: escala)
+            mapaDeBrillo(de: escala)
             reloj(de: escala)
             vecinas(de: escala)
             doceTonalidades(de: escala)
@@ -138,7 +139,8 @@ struct VistaDeEscalas: View {
         .toolbar {
             ToolbarItem {
                 BotonDeExportar(
-                    [pentagrama.fichero, hojaDeEstudio(de: escala)] + secuenciaPresentada(de: escala).ficheros
+                    [pentagrama.fichero, hojaDeEstudio(de: escala), ficheroDelMapaDeBrillo(de: escala)]
+                        + secuenciaPresentada(de: escala).ficheros
                         + svgs(de: escala)
                         + PresentacionDeEstudioDeEscala.enLasDoceTonalidades(escala, notacion: notacion).ficheros)
             }
@@ -219,6 +221,33 @@ struct VistaDeEscalas: View {
         FicheroParaExportar.svg(
             PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, notacion: notacion, secciones: seccionesDeLaHoja),
             nombre: notacion.texto(\.hojaDeEstudio) + " " + escala.nombre(en: notacion))
+    }
+
+    /// El mapa de brillo de las escalas con tantas notas como esta y su tónica, con esta resaltada.
+    private func svgDelMapaDeBrillo(de escala: Escala) -> String {
+        PresentacionDeEstudioDeEscala.mapaDeBrillo(
+            numeroDeNotas: escala.tipo.numeroDeNotas, resaltada: escala, notacion: notacion)
+    }
+
+    private func ficheroDelMapaDeBrillo(de escala: Escala) -> FicheroParaExportar {
+        FicheroParaExportar.svg(
+            svgDelMapaDeBrillo(de: escala),
+            nombre: notacion.texto(\.mapaDeBrillo) + " " + escala.tonica.nombre(en: notacion))
+    }
+
+    /// El mapa de brillo, de su tamaño, para recorrerlo de lado; se exporta con la barra.
+    @ViewBuilder
+    private func mapaDeBrillo(de escala: Escala) -> some View {
+        let svg = svgDelMapaDeBrillo(de: escala)
+        if let tamano = PresentacionDeEstudioDeEscala.tamano(deUnSVG: svg), tamano.alto > 120 {
+            Section(notacion.texto(\.mapaDeBrillo)) {
+                ScrollView(.horizontal) {
+                    VistaSVG(svg: svg)
+                        .frame(width: tamano.ancho, height: tamano.alto)
+                        .accessibilityLabel(Text(notacion.texto(\.mapaDeBrillo)))
+                }
+            }
+        }
     }
 
     /// Si la hoja de estudio lleva una sección, para su interruptor.

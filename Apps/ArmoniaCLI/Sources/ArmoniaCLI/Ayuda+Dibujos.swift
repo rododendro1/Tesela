@@ -31,7 +31,15 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionHoja),
             ejemplo: ejemplo(
                 "armonia hoja Re dórico > dorico.svg",
-                "armonia sheet D dorian > dorian.svg"))
+                "armonia sheet D dorian > dorian.svg")),
+        // hoja --acordes <acordes> [--en <tonalidad>]
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisHojaDeAcordes),
+            descripcion: TextosDeCLI.traduccion(\.descripcionHojaDeAcordes),
+            ejemplo: ejemplo(
+                "armonia hoja --acordes Rem7 Sol7 Do7M --en Do mayor > ii-V-I.svg",
+                "armonia sheet --chords Dm7 G7 Cmaj7 --in C major > ii-V-I.svg"),
+            opciones: ["--acordes", "--en", "--chords", "--in"]),
     ]
 
     static let ayudaDeReloj: [EntradaDeAyuda] = [

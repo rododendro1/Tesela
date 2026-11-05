@@ -129,7 +129,7 @@ extension PresentacionDeEstudioDeEscala {
         }
     }
 
-    private static func texto(
+    static func texto(
         _ contenido: String, x: Double, y: Double, tamano: Double, negrita: Bool = false, color: String = "#222222"
     ) -> String {
         "<text x=\"\(numero(x))\" y=\"\(numero(y))\" font-size=\"\(numero(tamano))\" fill=\"\(color)\""
@@ -171,7 +171,7 @@ extension PresentacionDeEstudioDeEscala {
     }
 
     /// Con un decimal como mucho: «40», «12.5».
-    private static func numero(_ valor: Double) -> String {
+    static func numero(_ valor: Double) -> String {
         let redondeado = (valor * 10).rounded() / 10
         return redondeado == redondeado.rounded() ? String(Int(redondeado)) : String(redondeado)
     }

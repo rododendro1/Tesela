@@ -199,3 +199,72 @@ extension Escala {
             peldanos: oscuras + [self] + arriba.map(\.escala), posicion: oscuras.count, subidas: subidas + arriba)
     }
 }
+
+/// Las escalas del catálogo con el mismo número de notas, de la más oscura a la más brillante, y qué pares están a
+/// una nota de distancia: la de `oscura` sube una nota un semitono y es la de `brillante`.
+///
+///     let mapa = Escala.mapaDeBrillo()
+///     mapa.escalas.first?.tipo.nombre   // la más oscura de las de siete notas
+public struct MapaDeBrillo: Hashable, Sendable {
+    /// Un par de escalas vecinas: sus posiciones en `escalas` y la nota que sube de una a la otra.
+    public struct Enlace: Hashable, Sendable {
+        public let oscura: Int
+        public let brillante: Int
+        /// La nota que sube, como se escribe en la oscura.
+        public let de: Nota
+        /// A dónde, como se escribe en la brillante.
+        public let a: Nota
+    }
+
+    /// De la más oscura a la más brillante (por `brilloPorQuintas`), sin dos con las mismas notas.
+    public let escalas: [Escala]
+    public let enlaces: [Enlace]
+}
+
+extension Escala {
+    /// El mapa de brillo de las escalas de `numeroDeNotas` notas del catálogo sobre `tonica`: ordenadas por su brillo
+    /// por quintas y enlazadas cuando una sale de la otra subiendo una nota un semitono. Deja fuera las que tienen
+    /// microtonos y, de las que tienen las mismas notas, todas menos la primera de `tipos`.
+    public static func mapaDeBrillo(
+        tonica: Nota = .do, numeroDeNotas: Int = 7, tipos: [TipoDeEscala] = TipoDeEscala.todos
+    ) -> MapaDeBrillo {
+        var elegidas: [(escala: Escala, clases: Set<Int>, brillo: Double)] = []
+        var vistas: Set<Set<Int>> = []
+        for tipo in tipos where tipo.numeroDeNotas == numeroDeNotas {
+            let escala = Escala(tonica, tipo)
+            let estadisticas = escala.estadisticas
+            let clases = Set(escala.notas.map(\.claseDeAltura))
+            guard !estadisticas.aproximada, clases.count == numeroDeNotas, vistas.insert(clases).inserted else {
+                continue
+            }
+            elegidas.append((escala, clases, estadisticas.brilloPorQuintas))
+        }
+        // De la más oscura a la más brillante; a igual brillo, en el orden del catálogo.
+        let ordenadas = elegidas.enumerated().sorted {
+            $0.element.brillo != $1.element.brillo ? $0.element.brillo < $1.element.brillo : $0.offset < $1.offset
+        }.map(\.element)
+        var enlaces: [MapaDeBrillo.Enlace] = []
+        for i in ordenadas.indices {
+            for j in ordenadas.indices where j > i {
+                let soloEnI = ordenadas[i].clases.subtracting(ordenadas[j].clases)
+                let soloEnJ = ordenadas[j].clases.subtracting(ordenadas[i].clases)
+                guard soloEnI.count == 1, soloEnJ.count == 1, let a = soloEnI.first, let b = soloEnJ.first else {
+                    continue
+                }
+                let (oscura, brillante): (Int, Int)
+                switch modulo(b - a, 12) {
+                case 1: (oscura, brillante) = (i, j)
+                case 11: (oscura, brillante) = (j, i)
+                default: continue
+                }
+                let baja = ordenadas[oscura]
+                let sube = ordenadas[brillante]
+                guard let de = baja.escala.notas.first(where: { !sube.clases.contains($0.claseDeAltura) }),
+                    let hasta = sube.escala.notas.first(where: { !baja.clases.contains($0.claseDeAltura) })
+                else { continue }
+                enlaces.append(MapaDeBrillo.Enlace(oscura: oscura, brillante: brillante, de: de, a: hasta))
+            }
+        }
+        return MapaDeBrillo(escalas: ordenadas.map(\.escala), enlaces: enlaces)
+    }
+}

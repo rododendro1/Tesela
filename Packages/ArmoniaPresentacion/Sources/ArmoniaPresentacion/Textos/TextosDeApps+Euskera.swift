@@ -211,6 +211,7 @@ extension TextosDeApps {
         medidaAproximada: "tonuerditan neurtua, mikrotonoak hurbilduz",
         escaleraDeBrillo: "Distira-eskailera",
         hojaDeEstudio: "Ikasketa-orria",
+        mapaDeBrillo: "Distira-mapa",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tentsioak",
         notasAEvitar: "Saihesteko",

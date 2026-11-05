@@ -225,6 +225,7 @@ public struct TextosDeApps: TextosTraducidos {
     public let medidaAproximada: String
     public let escaleraDeBrillo: String
     public let hojaDeEstudio: String
+    public let mapaDeBrillo: String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String

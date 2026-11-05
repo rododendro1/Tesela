@@ -211,6 +211,7 @@ extension TextosDeApps {
         medidaAproximada: "in Halbtönen gemessen, Mikrotöne angenähert",
         escaleraDeBrillo: "Helligkeitsleiter",
         hojaDeEstudio: "Übungsblatt",
+        mapaDeBrillo: "Helligkeitskarte",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Spannungstöne",
         notasAEvitar: "Avoid-Töne",

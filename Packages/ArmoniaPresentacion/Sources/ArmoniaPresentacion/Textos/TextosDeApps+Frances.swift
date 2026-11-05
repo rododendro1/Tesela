@@ -211,6 +211,7 @@ extension TextosDeApps {
         medidaAproximada: "mesurée en demi-tons, en approchant les micro-intervalles",
         escaleraDeBrillo: "Échelle de brillance",
         hojaDeEstudio: "Fiche d'étude",
+        mapaDeBrillo: "Carte de brillance",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "À éviter",
