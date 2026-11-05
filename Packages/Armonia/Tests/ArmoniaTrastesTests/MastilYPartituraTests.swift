@@ -110,7 +110,7 @@ import Testing
         // Sin escala, las notas como las da el mástil, con su tablatura.
         let suelta = EscalaEnElMastil(mastil: guitarra, trastes: posicion.trastes, posiciones: posicion.posiciones)
         let sinEscala = suelta.partitura(ritmo: .figura(.corchea))
-        #expect(sinEscala.ritmo && sinEscala.encabezado.tema == nil)
+        #expect(sinEscala.dibujaElRitmo && sinEscala.encabezado.tema == nil)
         #expect(sinEscala.pentagramas[0].voces[0].voz.eventos.map(\.alturas) == posicion.alturas.map { [$0] })
         #expect(sinEscala.pentagramas[0].voces[0].pulsaciones.count == posicion.posiciones.count)
     }
