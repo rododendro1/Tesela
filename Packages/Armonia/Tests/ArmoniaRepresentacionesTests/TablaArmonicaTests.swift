@@ -70,8 +70,8 @@ import Testing
         let alturas = try #require(ElementoXML.leer(TablaArmonica([Altura("Do4"), Altura("Mib4")]).svg()))
         #expect(alturas.todos("text").contains { $0.texto == "Mi♭₄" && $0.atributos["font-weight"] == "bold" })
         // Los demás hexágonos, como en la ventana de las alturas dadas: con Do, Mi y Sol, La♭ y no Sol♯.
-        let triada = try #require(ElementoXML.leer(TablaArmonica([Altura("Do4"), Altura("Mi4"), Altura("Sol4")]).svg()))
-        let textos = triada.todos("text").map(\.texto)
+        let triada = TablaArmonica([Altura("Do4"), Altura("Mi4"), Altura("Sol4")])
+        let textos = try #require(ElementoXML.leer(triada.svg())).todos("text").map(\.texto)
         #expect(textos.contains("La♭₃"))
         #expect(!textos.contains("Sol♯₃"))
         let ingles = try #require(
