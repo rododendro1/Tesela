@@ -129,7 +129,7 @@ import Testing
 
     @Test func unFicheroSinAcordesEsUnError() throws {
         let melodia = try Voz(leyendo: "Do4:4 Re4:4 Mi4:4").partitura().midi()
-        #expect(throws: ErrorDeImportacion.sinAcordes) {
+        #expect(throws: ErrorDeLecturaDeFichero.sinAcordes) {
             try RecorridoDePartitura.leer(melodia, notacion: .espanolCompacto)
         }
     }

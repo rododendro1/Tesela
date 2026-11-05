@@ -10,7 +10,7 @@
 ///     VentanaDeQuintas.centrada(en: "Re").nota(claseDeAltura: 1)  // Do♯
 ///     Altura(midi: 66, ventana: .centrada(en: "Fa"))             // Sol♭4
 ///
-/// `Altura(midi:preferirBemoles:)` usa ``sostenidos`` o ``bemoles``.
+/// `Altura(midi:)` usa ``sostenidos``.
 public struct VentanaDeQuintas: Hashable, Sendable {
     /// La posición en la línea de quintas de la primera nota (la más bemol): −1 es Fa.
     public let inicio: Int
@@ -28,7 +28,7 @@ public struct VentanaDeQuintas: Hashable, Sendable {
     /// Con sostenidos, de Fa a La♯: la escritura de `Altura(midi:)`.
     public static let sostenidos = VentanaDeQuintas(inicio: -1)
 
-    /// Con bemoles, de Sol♭ a Si: la de `Altura(midi:preferirBemoles:)` con `true`.
+    /// Con bemoles, de Sol♭ a Si: la de los dibujos que piden bemoles.
     public static let bemoles = VentanaDeQuintas(inicio: -6)
 
     /// Con las menos alteraciones posibles, de Re♭ a Fa♯: cinco naturales y siete con un sostenido o un bemol como

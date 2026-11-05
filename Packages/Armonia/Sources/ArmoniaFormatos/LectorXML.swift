@@ -18,7 +18,7 @@ protocol LectorDeElementosXML: AnyObject {
 }
 
 enum LectorXML {
-    /// Recorre el documento. Lanza `ErrorDeImportacion.xmlDanado` con la línea del primer error.
+    /// Recorre el documento. Lanza `ErrorDeLecturaDeFichero.xmlDanado` con la línea del primer error.
     static func leer(_ datos: Data, con lector: LectorDeElementosXML) throws {
         let bytes = try utf8(datos)
         var analizador = Analizador(bytes: bytes, lector: lector)
@@ -49,7 +49,7 @@ enum LectorXML {
         if bytes.starts(with: [0xFE, 0xFF]) || bytes.starts(with: [0xFF, 0xFE]) {
             let codificacion: String.Encoding = bytes[0] == 0xFE ? .utf16BigEndian : .utf16LittleEndian
             guard let texto = String(data: Data(bytes.dropFirst(2)), encoding: codificacion) else {
-                throw ErrorDeImportacion.xmlDanado(linea: 1)
+                throw ErrorDeLecturaDeFichero.xmlDanado(linea: 1)
             }
             return Array(texto.utf8)
         }
@@ -63,7 +63,7 @@ enum LectorXML {
             return Array((texto ?? String(String.UnicodeScalarView(bytes.map { Unicode.Scalar($0) }))).utf8)
         }
         if let linea = PiezaImportada.lineaConUTF8NoValido(Data(bytes)) {
-            throw ErrorDeImportacion.xmlDanado(linea: linea)
+            throw ErrorDeLecturaDeFichero.xmlDanado(linea: linea)
         }
         return bytes
     }
@@ -102,7 +102,7 @@ enum LectorXML {
                 try recorrer()
             } catch let fallo as Fallo {
                 let hasta = min(fallo.posicion, bytes.count)
-                throw ErrorDeImportacion.xmlDanado(linea: 1 + bytes[..<hasta].lazy.filter { $0 == 0x0A }.count)
+                throw ErrorDeLecturaDeFichero.xmlDanado(linea: 1 + bytes[..<hasta].lazy.filter { $0 == 0x0A }.count)
             }
         }
 

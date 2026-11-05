@@ -275,9 +275,10 @@ public struct TecladoCuadrado: Hashable, Sendable {
         return midiDelOrigen + 12 * octavas + grados[grado]
     }
 
-    /// La altura de una casilla (en afinación igual, sin ortografía: con sostenidos o con bemoles).
-    public func altura(en casilla: CasillaCuadrada, preferirBemoles: Bool = false) -> Altura {
-        Altura(midi: midi(en: casilla), preferirBemoles: preferirBemoles)
+    /// La altura de una casilla (en afinación igual, sin ortografía: con sostenidos). Con bemoles o con otra ventana,
+    /// `altura(en:ventana:)`.
+    public func altura(en casilla: CasillaCuadrada) -> Altura {
+        Altura(midi: midi(en: casilla))
     }
 
     /// La altura de una casilla, escrita con la nota de su clase que hay en la ventana.

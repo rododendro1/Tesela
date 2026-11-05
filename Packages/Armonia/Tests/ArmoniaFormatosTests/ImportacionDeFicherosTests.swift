@@ -156,7 +156,7 @@ import Testing
             _ = try PiezaImportada(midi: Data(datos))
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeImportacion) == .midiDanado)
+            #expect((error as? ErrorDeLecturaDeFichero) == .midiDanado)
 
         }
     }

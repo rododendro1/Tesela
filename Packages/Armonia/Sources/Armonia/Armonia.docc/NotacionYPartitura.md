@@ -191,7 +191,7 @@ Los signos se escriben en una de las tres `Tipografia`: `.conSimples` (♯ y ♭
 cada notación: las compactas (`.espanolCompacto`, `.inglesCompacto`, `.francesCompacto`…) usan `.conDobles`
 (Fa𝄪, B𝄫).
 
-También la usan `PosicionEnPentagrama.alteracion` y `Clave.altura(lugar:alteracion:)`.
+También la usan `PosicionEnElPentagrama.alteracion` y `Clave.altura(lugar:alteracion:)`.
 
 ## Intervalos, pentagrama e instrumentos
 
@@ -230,7 +230,7 @@ Escala("Do mayor").svgPentagrama(opciones: OpcionesDePentagrama(notacion: .ingle
 ```
 
 Cada uno de estos dibujos sale de su ``Partitura``, la misma que se exporta: `Escala.partitura(octava:octavas:sentido:digitacion:)`,
-`Escala.partitura(secuencia:…)`, `Acorde.partitura(octava:disposicion:)` y `Arpegio.partitura(octava:)`, y
+`Escala.partitura(secuencia:…)`, `Acorde.partitura(octava:posicion:)` y `Arpegio.partitura(octava:)`, y
 `svgPentagrama(…)` es `partitura(…).svg(opciones:)`. Su título es lo que se toca (``Encabezado/Tema``), en la notación
 con que se dibuja o se exporta. Como en los diagramas, las opciones pueden cambiar el título (`titulo: ""` lo quita)
 y el tamaño (`escala: 2`, el doble de grande), y `marcas.cifrados` quita los cifrados de encima.
@@ -252,7 +252,7 @@ Escala("Re mayor").svgPentagrama(opciones: OpcionesDePentagrama(titulo: "Escala"
   baja menos que un sostenido y caben más juntos.
 - El pentagrama doble lleva una llave (la de Bravura) a la izquierda.
 - Los acordes se apilan en posición cerrada; los muy extensos (novenas, oncenas y trecenas) y
-  `maquetacion.disposicionDelAcorde = .abierta` ponen el bajo una octava más grave y el resto encima, como la mano
+  `maquetacion.posicionDelAcorde = .abierta` ponen el bajo una octava más grave y el resto encima, como la mano
   izquierda y la derecha del piano, y con eso suelen pasar al pentagrama doble.
 - `marcas.nombresDeLasNotas` escribe el nombre de cada nota debajo; las etiquetas no se pisan. La medida del texto sale de
   una tabla de anchos de Helvetica y Arial (`anchoDeLosCaracteres` la multiplica si la tipografía es más ancha), y el
@@ -428,7 +428,7 @@ y `ErrorDeLecturaDePartitura` para las duraciones, los compases y el contrapunto
 lanzar los dos primeros (si falla la fundamental o si falla el cifrado); los tres cumplen
 `ErrorAlLeer`. Los inicializadores opcionales (`Acorde(texto: …)`) siguen existiendo y devuelven `nil`.
 
-Todos los errores del motor, también `ErrorDeImportacion` y `ErrorDeUIL`, cumplen `ErrorDeArmonia`:
+Todos los errores del motor, también `ErrorDeLecturaDeFichero` y `ErrorDeLecturaDeUIL`, cumplen `ErrorDeArmonia`:
 para mostrar cualquiera basta `catch let error as any ErrorDeArmonia` y `error.descripcion(en:)`.
 
 El mensaje está en español (`description`, `explicacion`) y también en inglés, catalán, gallego,

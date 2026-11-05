@@ -189,10 +189,10 @@ import Testing
     /// Los acordes muy extensos (la trecena) ponen el bajo una octava más grave; los demás, en posición cerrada.
     @Test func laPosicionAbierta() {
         #expect(!(Acorde("Sol7").svgPentagrama().contains("<title>Sol₃</title>")))
-        let abierta = OpcionesDePentagrama(maquetacion: .init(disposicionDelAcorde: .abierta))
+        let abierta = OpcionesDePentagrama(maquetacion: .init(posicionDelAcorde: .abierta))
         #expect(Acorde("Sol7").svgPentagrama(opciones: abierta).contains("<title>Sol₃</title>"))
         #expect(Acorde("Do13").svgPentagrama().contains("<title>Do₃</title>"))
-        let cerrada = OpcionesDePentagrama(maquetacion: .init(disposicionDelAcorde: .cerrada))
+        let cerrada = OpcionesDePentagrama(maquetacion: .init(posicionDelAcorde: .cerrada))
         #expect(!(Acorde("Do13").svgPentagrama(opciones: cerrada).contains("<title>Do₃</title>")))
         // Con el bajo tan grave y lo demás tan agudo, pasa al pentagrama doble.
         #expect(pentagramasDibujados(Acorde("Do13").svgPentagrama()) == 2)

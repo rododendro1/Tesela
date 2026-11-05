@@ -186,12 +186,12 @@ import Testing
 
     // MARK: Errores
 
-    private func error(_ datos: Data) -> ErrorDeImportacion? {
+    private func error(_ datos: Data) -> ErrorDeLecturaDeFichero? {
         do {
             _ = try PiezaImportada(leyendo: datos)
             return nil
         } catch {
-            return error as? ErrorDeImportacion
+            return error as? ErrorDeLecturaDeFichero
         }
     }
 
@@ -215,10 +215,10 @@ import Testing
     }
 
     @Test func losErroresSeExplicanEnCadaIdioma() {
-        #expect(ErrorDeImportacion.sinNotas.descripcion(en: .inglesASCII) == "The file has no notes.")
-        #expect(ErrorDeImportacion.sinNotas.description == "El fichero no tiene ninguna nota.")
+        #expect(ErrorDeLecturaDeFichero.sinNotas.descripcion(en: .inglesASCII) == "The file has no notes.")
+        #expect(ErrorDeLecturaDeFichero.sinNotas.description == "El fichero no tiene ninguna nota.")
         #expect(
-            ErrorDeImportacion.xmlDanado(linea: 3).descripcion(en: .francesPalabras)
+            ErrorDeLecturaDeFichero.xmlDanado(linea: 3).descripcion(en: .francesPalabras)
                 == "Le fichier XML est endommagé (ligne 3).")
     }
 

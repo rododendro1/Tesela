@@ -252,11 +252,11 @@ import Testing
 
     @Test func unNombreQueNoEsUTF8EsUnXMLDanado() throws {
         // En Linux, XMLParser detenía el programa con un byte suelto en el nombre de un elemento o de un atributo.
-        let error = { (bytes: [UInt8]) -> ErrorDeImportacion? in
+        let error = { (bytes: [UInt8]) -> ErrorDeLecturaDeFichero? in
             do {
                 _ = try PiezaImportada(leyendo: Data(bytes))
                 return nil
-            } catch { return error as? ErrorDeImportacion }
+            } catch { return error as? ErrorDeLecturaDeFichero }
         }
         #expect(
             error(Array("<score-partwise>\n<pa".utf8) + [0xCB] + Array("rt/></score-partwise>".utf8))

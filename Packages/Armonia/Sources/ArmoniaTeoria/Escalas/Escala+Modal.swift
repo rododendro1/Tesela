@@ -8,7 +8,7 @@ extension Escala {
     /// locrio), cuál: de 1 a 7. `nil` si no lo es.
     public var modoDeLaMayor: Int? {
         guard let madre = escalaMadre, madre.madre.tipo == .mayor else { return nil }
-        return madre.modo
+        return madre.grado
     }
 
     /// La nota que distingue al modo del mayor o del menor más parecido: la sensible en jónico, la 6.ª mayor en

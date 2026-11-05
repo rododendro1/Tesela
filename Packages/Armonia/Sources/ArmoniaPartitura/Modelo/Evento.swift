@@ -17,7 +17,7 @@ import ArmoniaTeoria
 ///     Evento("Sol4:8{f,staccato}")        // forte y picada
 public struct Evento: Hashable, Sendable {
     /// Las notas que suenan, cada una con su altura y lo que se aparta de la temperada; vacío si es un silencio.
-    public let notas: [Nota]
+    public let notas: [NotaDelEvento]
     /// Las alturas de `notas`, en el mismo orden.
     public let alturas: [Altura]
     public let duracion: Duracion
@@ -27,9 +27,10 @@ public struct Evento: Hashable, Sendable {
     /// Sus articulaciones, sin repetir y en el orden de `Articulacion.allCases`.
     public let articulaciones: [Articulacion]
 
-    /// Un evento con sus notas, cada una con su desvío: `[Evento.Nota("Do4"), Evento.Nota("Mi♭4", desvio: 50)]`.
+    /// Un evento con sus notas, cada una con su desvío: `[Evento.NotaDelEvento("Do4"), Evento.NotaDelEvento("Mi♭4",
+    /// desvio: 50)]`.
     public init(
-        notas: [Nota], duracion: Duracion, ligada: Bool = false, dinamica: Dinamica? = nil,
+        notas: [NotaDelEvento], duracion: Duracion, ligada: Bool = false, dinamica: Dinamica? = nil,
         articulaciones: [Articulacion] = []
     ) {
         self.notas = notas
@@ -46,14 +47,14 @@ public struct Evento: Hashable, Sendable {
         articulaciones: [Articulacion] = []
     ) {
         self.init(
-            notas: alturas.map { Nota($0) }, duracion: duracion, ligada: ligada, dinamica: dinamica,
+            notas: alturas.map { NotaDelEvento($0) }, duracion: duracion, ligada: ligada, dinamica: dinamica,
             articulaciones: articulaciones)
     }
 
     /// Una nota sola con esa duración, ligada a la siguiente si `ligada`, y apartada `desvio` cents de su altura
     /// temperada.
     public init(_ nota: Altura, _ duracion: Duracion, ligada: Bool = false, desvio: Double = 0) {
-        self.init(notas: [Nota(nota, desvio: desvio)], duracion: duracion, ligada: ligada)
+        self.init(notas: [NotaDelEvento(nota, desvio: desvio)], duracion: duracion, ligada: ligada)
     }
 
     /// Un silencio de esa duración: `Evento.silencio(.negra)`.
@@ -86,8 +87,8 @@ public struct Evento: Hashable, Sendable {
     /// Lee "notas:duración", con las notas de un acorde unidas por "+", "-" (o "silencio") para un silencio y "~" al
     /// final si está ligada: "Do4:4", "C4+E4:2.", "-:8", "Re4:2~". Una nota que se aparta de la temperada lleva los
     /// cents entre paréntesis: "Mi♭4(50¢):4", "Si4(-22.64c):4"; y, si se sabe, su sistema y los pasos que se aparta en
-    /// él (`Evento.Nota.sistema`): "Mi♭4(50¢,persa,1):4". La dinámica y las articulaciones van al final, entre llaves:
-    /// "Do4:4{mf}", "Re4:2~{acento,tenuto}" (`Expresion.swift`).
+    /// él (`Evento.NotaDelEvento.sistema`): "Mi♭4(50¢,persa,1):4". La dinámica y las articulaciones van al final, entre
+    /// llaves: "Do4:4{mf}", "Re4:2~{acento,tenuto}" (`Expresion.swift`).
     public init(leyendo texto: String) throws {
         let caracteres = Array(texto)
         guard let dosPuntos = caracteres.lastIndex(of: ":") else {
@@ -125,7 +126,7 @@ public struct Evento: Hashable, Sendable {
             self.init(notas: [], duracion: duracion, dinamica: dinamica, articulaciones: articulaciones)
             return
         }
-        var notas: [Nota] = []
+        var notas: [NotaDelEvento] = []
         var inicio = 0
         for trozo in parteNotas.split(separator: "+", omittingEmptySubsequences: false) {
             var nota = String(trozo)
@@ -152,7 +153,7 @@ public struct Evento: Hashable, Sendable {
                 nota = String(nota[..<parentesis])
             }
             do {
-                notas.append(Nota(try Altura(leyendo: nota), desvio: desvio, sistema: sistema, ajuste: ajuste))
+                notas.append(NotaDelEvento(try Altura(leyendo: nota), desvio: desvio, sistema: sistema, ajuste: ajuste))
             } catch let e as any ErrorAlLeer {
                 throw e.situado(en: texto, posicion: inicio + (e.posicion ?? 0))
             }
@@ -177,9 +178,10 @@ extension Evento {
     /// y `ajuste`, cuántos pasos de ella se aparta (como ``NotaMicrotonal/ajuste``): con ellos, el Mi koron de un
     /// dastgāh se escribe con el koron, y no con el medio bemol de un maqam, en el pentagrama y en los formatos.
     ///
-    ///     Evento.Nota("Mi♭4", desvio: 50).description   // "Mi♭4(50¢)": el Mi𝄳 de un maqam
-    ///     Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1).description   // "Mi♭4(50¢,persa,1)": el koron
-    public struct Nota: Hashable, Sendable {
+    ///     Evento.NotaDelEvento("Mi♭4", desvio: 50).description   // "Mi♭4(50¢)": el Mi𝄳 de un maqam
+    ///     Evento.NotaDelEvento("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1).description
+    ///     // "Mi♭4(50¢,persa,1)": el koron
+    public struct NotaDelEvento: Hashable, Sendable {
         public let altura: Altura
         public let desvio: Double
         /// La teoría en que se escribe el microtono; `nil` si no se aparta de la temperada o si no se sabe (su signo
@@ -205,7 +207,9 @@ extension Evento {
         }
 
         /// La misma nota en otra altura, con el mismo desvío y el mismo sistema.
-        package func con(altura: Altura) -> Nota { Nota(altura, desvio: desvio, sistema: sistema, ajuste: ajuste) }
+        package func con(altura: Altura) -> NotaDelEvento {
+            NotaDelEvento(altura, desvio: desvio, sistema: sistema, ajuste: ajuste)
+        }
 
         /// El signo del microtono, escrito con `semitonos` de alteración (los de la altura, si no se dan): el de su
         /// sistema o, sin él, el que dan los cents. `nil` si no se aparta o si lo que se aparta no tiene signo.
@@ -227,7 +231,7 @@ extension Evento {
     }
 }
 
-extension Evento.Nota: CustomStringConvertible {
+extension Evento.NotaDelEvento: CustomStringConvertible {
     public var description: String { texto(en: .deCodificacion) }
 }
 

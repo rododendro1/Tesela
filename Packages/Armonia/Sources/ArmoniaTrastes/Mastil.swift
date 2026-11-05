@@ -59,16 +59,16 @@ public struct Mastil: Hashable, Sendable {
         return midi
     }
 
-    /// La altura de una posición, o `nil` si no está en el mástil. La ortografía es la habitual de
-    /// `Altura(midi:)`, con sostenidos o, con `preferirBemoles`, con bemoles.
-    public func alturaSiExiste(en posicion: PosicionEnElMastil, preferirBemoles: Bool = false) -> Altura? {
-        midiSiExiste(en: posicion).map { Altura(midi: $0, preferirBemoles: preferirBemoles) }
+    /// La altura de una posición, o `nil` si no está en el mástil. La ortografía es la de `Altura(midi:)`, con
+    /// sostenidos; con bemoles o con otra ventana, `alturaSiExiste(en:ventana:)`.
+    public func alturaSiExiste(en posicion: PosicionEnElMastil) -> Altura? {
+        midiSiExiste(en: posicion).map { Altura(midi: $0) }
     }
 
     /// La altura de una posición (con la misma ortografía que `alturaSiExiste(en:)`). Detiene el programa si
     /// la posición no está en el mástil: si viene de fuera, usa `alturaSiExiste(en:)`.
-    public func altura(en posicion: PosicionEnElMastil, preferirBemoles: Bool = false) -> Altura {
-        Altura(midi: midi(en: posicion), preferirBemoles: preferirBemoles)
+    public func altura(en posicion: PosicionEnElMastil) -> Altura {
+        Altura(midi: midi(en: posicion))
     }
 
     /// La altura de una posición, o `nil` si no está en el mástil, escrita con la nota de su clase que hay en la

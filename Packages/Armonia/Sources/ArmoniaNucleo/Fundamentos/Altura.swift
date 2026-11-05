@@ -84,10 +84,15 @@ public struct Altura: Hashable, Sendable {
         }
     }
 
-    /// Altura a partir de un número MIDI, eligiendo la ortografía más habitual:
-    /// con sostenidos de Fa a La♯, o con bemoles de Sol♭ a Si (``VentanaDeQuintas/sostenidos`` y
-    /// ``VentanaDeQuintas/bemoles``). Con otra ventana, `Altura(midi:ventana:)`.
-    public init(midi: Int, preferirBemoles: Bool = false) {
+    /// Altura a partir de un número MIDI, con sostenidos de Fa a La♯ (``VentanaDeQuintas/sostenidos``): 70 es La♯4.
+    /// Con otra ventana, `Altura(midi:ventana:)`: `Altura(midi: 70, ventana: .bemoles)` es Si♭4.
+    public init(midi: Int) {
+        self.init(midi: midi, ventana: .sostenidos)
+    }
+
+    /// Con sostenidos, o con bemoles si `preferirBemoles`: lo de antes de `Altura(midi:ventana:)`.
+    @available(*, deprecated, message: "usa Altura(midi:ventana:) con .bemoles o .sostenidos")
+    public init(midi: Int, preferirBemoles: Bool) {
         self.init(midi: midi, ventana: preferirBemoles ? .bemoles : .sostenidos)
     }
 

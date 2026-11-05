@@ -45,7 +45,7 @@ public struct FormatoUIL: Hashable, Sendable {
         case general, cero, igualdad
     }
 
-    /// El formato `L,G,D;R…` con esas medidas. Lanza `ErrorDeUIL` si los intervalos no cumplen `0 < L ≤ D` y
+    /// El formato `L,G,D;R…` con esas medidas. Lanza `ErrorDeLecturaDeUIL` si los intervalos no cumplen `0 < L ≤ D` y
     /// `G = L + D` (salvo el caso cero, `0,1,1`), si el giro no es un múltiplo de 30 o si `tonos` no es positivo.
     public init(menor: Int, mayor: Int, diferencia: Int, rotacion: Int = 0, espejo: Bool = false, tonos: Int = 12)
         throws
@@ -54,10 +54,10 @@ public struct FormatoUIL: Hashable, Sendable {
         // Un intervalo de más de un millón de pasos no es un teclado (y sumarlo podría desbordar).
         let razonables = [menor, mayor, diferencia].allSatisfy { (-Self.maximo...Self.maximo).contains($0) }
         guard esCero || (razonables && menor >= 1 && menor <= diferencia && mayor == menor + diferencia) else {
-            throw ErrorDeUIL.intervalosIncoherentes(menor: menor, mayor: mayor, diferencia: diferencia)
+            throw ErrorDeLecturaDeUIL.intervalosIncoherentes(menor: menor, mayor: mayor, diferencia: diferencia)
         }
-        guard rotacion % 30 == 0 else { throw ErrorDeUIL.rotacionNoValida(rotacion) }
-        guard tonos >= 1, tonos <= Self.maximo else { throw ErrorDeUIL.formatoNoValido("T\(tonos)") }
+        guard rotacion % 30 == 0 else { throw ErrorDeLecturaDeUIL.rotacionNoValida(rotacion) }
+        guard tonos >= 1, tonos <= Self.maximo else { throw ErrorDeLecturaDeUIL.formatoNoValido("T\(tonos)") }
         self.menor = menor
         self.mayor = mayor
         self.diferencia = diferencia
@@ -81,7 +81,8 @@ public struct FormatoUIL: Hashable, Sendable {
     public init?(teclado: TecladoIsomorfico) {
         let a = teclado.semitonosEnQ
         let b = teclado.semitonosEnR
-        // Los tres pasos independientes son a, b − a y −b, que suman 0: el mayor en valor absoluto es la suma de los otros.
+        // Los tres pasos independientes son a, b − a y −b, que suman 0: el mayor en valor absoluto es la suma de los
+        // otros.
         let tamanos = [abs(a), abs(b - a), abs(b)]
         guard let mayor = tamanos.max(), let menor = tamanos.min(), mayor > 0 else { return nil }
         let primerGiro = teclado.orientacion == .plana ? 0 : 30
@@ -107,43 +108,45 @@ public struct FormatoUIL: Hashable, Sendable {
     public init(leyendo texto: String) throws {
         let partes = texto.split(separator: ";", omittingEmptySubsequences: false)
             .map { $0.trimmingCharacters(in: .whitespaces) }
-        guard let intervalos = partes.first, !intervalos.isEmpty else { throw ErrorDeUIL.formatoNoValido(texto) }
+        guard let intervalos = partes.first, !intervalos.isEmpty else {
+            throw ErrorDeLecturaDeUIL.formatoNoValido(texto)
+        }
 
         var rotacion = 0
         var espejo = false
         var tonos = 12
         for parte in partes.dropFirst() {
             let mayusculas = parte.uppercased()
-            guard let letra = mayusculas.first else { throw ErrorDeUIL.formatoNoValido(texto) }
+            guard let letra = mayusculas.first else { throw ErrorDeLecturaDeUIL.formatoNoValido(texto) }
             let resto = String(mayusculas.dropFirst()).trimmingCharacters(in: .whitespaces)
             switch letra {
             case "R":
                 let numero = String(resto.prefix { $0 == "-" || ($0.isASCII && $0.isNumber) })
                 let sufijo = String(resto.dropFirst(numero.count)).trimmingCharacters(in: .whitespaces)
                 guard let grados = Int(numero), sufijo.isEmpty || sufijo == "M" else {
-                    throw ErrorDeUIL.formatoNoValido(texto)
+                    throw ErrorDeLecturaDeUIL.formatoNoValido(texto)
                 }
                 rotacion = grados
                 espejo = espejo || sufijo == "M"
             case "M" where resto.isEmpty:
                 espejo = true
             case "S":
-                guard let cizalla = Int(resto) else { throw ErrorDeUIL.formatoNoValido(texto) }
-                if cizalla != 0 { throw ErrorDeUIL.cizallaNoSoportada(cizalla) }
+                guard let cizalla = Int(resto) else { throw ErrorDeLecturaDeUIL.formatoNoValido(texto) }
+                if cizalla != 0 { throw ErrorDeLecturaDeUIL.cizallaNoSoportada(cizalla) }
             case "T":
                 guard let notas = Int(resto.replacingOccurrences(of: "TET", with: "")) else {
-                    throw ErrorDeUIL.formatoNoValido(texto)
+                    throw ErrorDeLecturaDeUIL.formatoNoValido(texto)
                 }
                 tonos = notas
             default:
-                throw ErrorDeUIL.formatoNoValido(texto)
+                throw ErrorDeLecturaDeUIL.formatoNoValido(texto)
             }
         }
 
         let fichas = intervalos.split(separator: ",", omittingEmptySubsequences: false)
             .map { $0.trimmingCharacters(in: .whitespaces) }
         let valores = fichas.compactMap { Self.semitonos(de: $0, tonos: tonos) }
-        guard fichas.count == 3, valores.count == 3 else { throw ErrorDeUIL.formatoNoValido(texto) }
+        guard fichas.count == 3, valores.count == 3 else { throw ErrorDeLecturaDeUIL.formatoNoValido(texto) }
         try self.init(
             menor: valores[0], mayor: valores[1], diferencia: valores[2], rotacion: rotacion,
             espejo: espejo, tonos: tonos)
@@ -189,10 +192,11 @@ public struct FormatoUIL: Hashable, Sendable {
         return base[modulo(relativo / 60, 6)]
     }
 
-    /// El mismo formato con otro giro, sumado al actual: `rotado(grados: 30)`. Lanza `ErrorDeUIL.rotacionNoValida`
-    /// si los grados no son un múltiplo de 30, como ``TecladoIsomorfico/rotado(grados:nombre:)``.
+    /// El mismo formato con otro giro, sumado al actual: `rotado(grados: 30)`. Lanza
+    /// `ErrorDeLecturaDeUIL.rotacionNoValida` si los grados no son un múltiplo de 30, como
+    /// ``TecladoIsomorfico/rotado(grados:nombre:)``.
     public func rotado(grados: Int) throws -> FormatoUIL {
-        guard grados % 30 == 0 else { throw ErrorDeUIL.rotacionNoValida(grados) }
+        guard grados % 30 == 0 else { throw ErrorDeLecturaDeUIL.rotacionNoValida(grados) }
         return FormatoUIL(self, rotacion: rotacion + grados, espejo: espejo)
     }
 
@@ -202,11 +206,11 @@ public struct FormatoUIL: Hashable, Sendable {
     /// El teclado de 12 notas con este formato, con la casilla `(0, 0)` en `midiDelOrigen`.
     /// Falla con `afinacionNoSoportada` si `T` no es 12.
     public func teclado(nombre: String? = nil, midiDelOrigen: Int = 60) throws -> TecladoIsomorfico {
-        guard tonos == 12 else { throw ErrorDeUIL.afinacionNoSoportada(tonos: tonos) }
+        guard tonos == 12 else { throw ErrorDeLecturaDeUIL.afinacionNoSoportada(tonos: tonos) }
         let orientacion = self.orientacion
         guard let enQ = semitonos(rumbo: DireccionHexagonal.qMasSMenos.rumbo(orientacion)),
             let enR = semitonos(rumbo: DireccionHexagonal.rMasSMenos.rumbo(orientacion))
-        else { throw ErrorDeUIL.formatoNoValido(descripcion) }
+        else { throw ErrorDeLecturaDeUIL.formatoNoValido(descripcion) }
         return TecladoIsomorfico(
             nombre: nombre ?? descripcion, orientacion: orientacion,
             semitonosEnQ: enQ, semitonosEnR: enR, midiDelOrigen: midiDelOrigen)
@@ -223,8 +227,8 @@ public struct FormatoUIL: Hashable, Sendable {
     /// Los grados de la escala mayor en cifras romanas (12 notas).
     private static let romanas: [String: Int] = ["I": 0, "II": 2, "III": 4, "IV": 5, "V": 7, "VI": 9, "VII": 11]
 
-    /// Los semitonos de un intervalo escrito como número, abreviatura (`P5`), cifra romana (`V`, `♭III`) o razón (`3:2`).
-    /// Las tres últimas solo valen con 12 notas.
+    /// Los semitonos de un intervalo escrito como número, abreviatura (`P5`), cifra romana (`V`, `♭III`) o razón
+    /// (`3:2`). Las tres últimas solo valen con 12 notas.
     private static func semitonos(de ficha: String, tonos: Int) -> Int? {
         if let numero = Int(ficha) { return numero }
         guard tonos == 12 else { return nil }
@@ -265,7 +269,7 @@ extension FormatoUIL: CustomStringConvertible {
 }
 
 /// Por qué no se puede leer o usar un texto UIL.
-public enum ErrorDeUIL: ErrorDeArmonia, Hashable {
+public enum ErrorDeLecturaDeUIL: ErrorDeArmonia, Hashable {
     /// El texto no tiene la forma `L,G,D;R…`.
     case formatoNoValido(String)
     /// Los intervalos no cumplen `0 < L ≤ D` y `G = L + D` (ni son el caso cero `0,1,1`).
@@ -306,7 +310,8 @@ public struct DisposicionConocida: Hashable, Sendable {
 extension FormatoUIL {
     /// Los teclados de la Tabla 1 del artículo. Wicki-Hayden, la tabla armónica y Jankó son los mismos que
     /// `TecladoIsomorfico.wickiHayden`, `.tablaArmonica` y `.janko`; los acordeones de aquí están girados 90°
-    /// respecto a `.acordeonC` y `.acordeonB`, y el bayan es el espejo del sistema C girado 180°. El artículo escribe «Bajan».
+    /// respecto a `.acordeonC` y `.acordeonB`, y el bayan es el espejo del sistema C girado 180°. El artículo escribe
+    /// «Bajan».
     public static let conocidos: [DisposicionConocida] = {
         let tabla: [(nombre: String, texto: String)] = [
             ("Wicki-Hayden", "2,7,5;R30M"),

@@ -3,8 +3,8 @@ import Foundation
 /// Un error del motor con su mensaje en los quince idiomas de los textos.
 ///
 /// Lo cumplen los errores de lectura de cada capa (`ErrorDeLectura`, `ErrorDeLecturaDeTeoria`,
-/// `ErrorDeLecturaDePartitura`), el de importar una partitura (`ErrorDeImportacion`) y el de las disposiciones de
-/// teclado (`ErrorDeUIL`). Para mostrar cualquiera de ellos basta un solo `catch`:
+/// `ErrorDeLecturaDePartitura`), el de importar una partitura (`ErrorDeLecturaDeFichero`) y el de las disposiciones de
+/// teclado (`ErrorDeLecturaDeUIL`). Para mostrar cualquiera de ellos basta un solo `catch`:
 ///
 ///     do {
 ///         let acorde = try Acorde(leyendo: entrada)

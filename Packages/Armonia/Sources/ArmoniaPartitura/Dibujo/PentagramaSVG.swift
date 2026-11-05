@@ -106,10 +106,10 @@ struct PentagramaSVG {
         let signo: SignoMicrotonal?
         let nombre: String
 
-        /// El de una nota que se aparta de la temperada (`Evento.Nota.desvio`). Si sabe su sistema, el signo de su
-        /// sistema y su nombre (Mi𝄳); si no, el signo que dan los cents y la altura con sus cents («Mi♭₄ (+50¢)»).
-        /// `nil` si no se aparta de la temperada.
-        static func de(_ nota: Evento.Nota, notacion: Notacion) -> Microtono? {
+        /// El de una nota que se aparta de la temperada (`Evento.NotaDelEvento.desvio`). Si sabe su sistema, el signo
+        /// de su sistema y su nombre (Mi𝄳); si no, el signo que dan los cents y la altura con sus cents («Mi♭₄
+        /// (+50¢)»). `nil` si no se aparta de la temperada.
+        static func de(_ nota: Evento.NotaDelEvento, notacion: Notacion) -> Microtono? {
             guard nota.desvio != 0 else { return nil }
             if let sistema = nota.sistema {
                 return Microtono(
@@ -148,8 +148,8 @@ struct PentagramaSVG {
         return tabla
     }()
 
-    /// Lo que mide un texto: la suma de sus caracteres (sin tildes; lo que no está en la tabla, el cirílico y el griego,
-    /// vale 0,55, o 0,72 si es mayúscula) por el cuerpo de la letra y por `proporcion`.
+    /// Lo que mide un texto: la suma de sus caracteres (sin tildes; lo que no está en la tabla, el cirílico y el
+    /// griego, vale 0,55, o 0,72 si es mayúscula) por el cuerpo de la letra y por `proporcion`.
     static func anchoEstimado(_ texto: String, cuerpoDeLetra: Double, proporcion: Double) -> Double {
         let base = texto.folding(options: .diacriticInsensitive, locale: nil)
         let suma = base.reduce(0.0) { $0 + (anchosDeLosCaracteres[$1] ?? ($1.isUppercase ? 0.72 : 0.55)) }
@@ -207,7 +207,8 @@ struct PentagramaSVG {
         case .automatico:
             let elegida = opciones.maquetacion.clave ?? Clave.masAdecuada(para: columnas.flatMap { $0 }) ?? .sol
             guard opciones.maquetacion.clave == nil else { return [elegida] }
-            // Solo si el rango pasa a los dos lados del Do central: si todo está en un lado, el otro pentagrama iría vacío.
+            // Solo si el rango pasa a los dos lados del Do central: si todo está en un lado, el otro pentagrama iría
+            // vacío.
             let todas = columnas.flatMap { $0 }
             let doCentral = Altura(.do, octava: 4).midi
             let enLosDosLados = todas.contains { $0.midi < doCentral } && todas.contains { $0.midi >= doCentral }
@@ -333,8 +334,8 @@ struct PentagramaSVG {
         let tablaturaColocada = colocarLaTablatura(maquetacion.centros, en: &lienzo)
         lienzo.notas += textosDeLosDedos + (tablaturaColocada?.textos ?? [])
 
-        // Un cifrado o los nombres de un acorde pueden ser más anchos que el acorde: el pentagrama se alarga a la derecha
-        // y, si el texto sobresale por la izquierda, las notas se desplazan.
+        // Un cifrado o los nombres de un acorde pueden ser más anchos que el acorde: el pentagrama se alarga a la
+        // derecha y, si el texto sobresale por la izquierda, las notas se desplazan.
         let proporcion = opciones.maquetacion.anchoDeLosCaracteres
         let anchoDelTexto = max(
             cifrado.map {

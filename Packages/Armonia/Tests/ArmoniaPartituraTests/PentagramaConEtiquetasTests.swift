@@ -411,8 +411,8 @@ import Testing
         #expect(contar(">Sol7/Si</text>", en: sol7.svgPentagrama()) == 1 && !sinCifrado.contains(">Sol7/Si</text>"))
         let extenso = Acorde("Do13♯11")
         #expect(extenso.svgPentagrama() == extenso.partitura().svg())
-        let cerrada = OpcionesDePentagrama(maquetacion: .init(disposicionDelAcorde: .cerrada))
-        let enCerrada = extenso.partitura(disposicion: .cerrada).svg(opciones: cerrada)
+        let cerrada = OpcionesDePentagrama(maquetacion: .init(posicionDelAcorde: .cerrada))
+        let enCerrada = extenso.partitura(posicion: .cerrada).svg(opciones: cerrada)
         #expect(extenso.svgPentagrama(opciones: cerrada) == enCerrada)
         // El arpegio, sin cifrado salvo que se pida; la partitura lo lleva.
         let alberti = Arpegio(Acorde("Do"), patron: .alberti)

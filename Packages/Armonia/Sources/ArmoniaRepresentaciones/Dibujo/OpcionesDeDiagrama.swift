@@ -12,12 +12,6 @@ public struct OpcionesDeDiagrama: Hashable, Sendable {
     /// el teclado de piano y el reloj): con ``VentanaDeQuintas/sostenidos`` (La♯), con ``VentanaDeQuintas/bemoles``
     /// (Si♭) o con cualquier otra ventana, como `.centrada(en: "Fa")`.
     public var ventana: VentanaDeQuintas
-    /// Si las notas negras del piano se nombran con bemol (Si♭) y no con sostenido (La♯): `ventana == .bemoles`.
-    /// Ponerlo a `true` elige ``VentanaDeQuintas/bemoles``; a `false`, ``VentanaDeQuintas/sostenidos``.
-    public var preferirBemoles: Bool {
-        get { ventana == .bemoles }
-        set { ventana = newValue ? .bemoles : .sostenidos }
-    }
     /// Si el teclado de piano y el reloj nombran, en `notacion`, las notas a las que no se da rótulo: las marcadas
     /// del piano y las doce horas del reloj. Con `false`, como antes: el piano las marca sin texto y el reloj
     /// escribe el número de cada clase (0 es Do; 11, Si).
@@ -28,13 +22,12 @@ public struct OpcionesDeDiagrama: Hashable, Sendable {
     /// El tamaño, como factor del de siempre: 2 lo dibuja el doble de grande.
     public var escala: Double
 
-    /// Con `ventana`, se usa esa y no cuenta `preferirBemoles`.
     public init(
-        notacion: Notacion = .espanolCompacto, preferirBemoles: Bool = false, ventana: VentanaDeQuintas? = nil,
-        nombresDeLasNotas: Bool = true, titulo: String? = nil, escala: Double = 1
+        notacion: Notacion = .espanolCompacto, ventana: VentanaDeQuintas = .sostenidos, nombresDeLasNotas: Bool = true,
+        titulo: String? = nil, escala: Double = 1
     ) {
         self.notacion = notacion
-        self.ventana = ventana ?? (preferirBemoles ? .bemoles : .sostenidos)
+        self.ventana = ventana
         self.nombresDeLasNotas = nombresDeLasNotas
         self.titulo = titulo
         self.escala = escala

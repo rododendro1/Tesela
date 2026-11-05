@@ -274,7 +274,7 @@ import Testing
         let conNombres = teclado.svg(marcadas: [60, 61, 64], opciones: .init(notacion: .inglesASCII))
         #expect(conNombres.contains(">C</text>") && conNombres.contains(">C#</text>"))
         #expect(conNombres.contains(">E</text>"))
-        let conBemoles = teclado.svg(marcadas: [61], opciones: .init(preferirBemoles: true))
+        let conBemoles = teclado.svg(marcadas: [61], opciones: .init(ventana: .bemoles))
         #expect(conBemoles.contains(">Re♭</text>"))
         // Con una ventana de quintas: alrededor de Re, Do♯ y Mi♭.
         let enRe = teclado.svg(marcadas: [61, 63], opciones: .init(ventana: .centrada(en: "Re")))
@@ -317,7 +317,7 @@ import Testing
         #expect(svg.contains("<polygon"))
         // Las horas sin rótulo, con el nombre de su nota; sin nombres, con su número.
         #expect(svg.contains(">Do</text>") && svg.contains(">Sol</text>") && svg.contains(">Fa♯</text>"))
-        let enIngles = reloj.svg(opciones: .init(notacion: .inglesASCII, preferirBemoles: true))
+        let enIngles = reloj.svg(opciones: .init(notacion: .inglesASCII, ventana: .bemoles))
         #expect(enIngles.contains(">G</text>") && enIngles.contains(">Gb</text>"))
         // Hecho con notas, cada hora se nombra como la escribe la escala.
         let fa = Escala("Fa mayor")

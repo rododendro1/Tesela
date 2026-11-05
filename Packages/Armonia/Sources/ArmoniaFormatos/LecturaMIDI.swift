@@ -26,7 +26,7 @@ extension PiezaImportada {
     public init(midi datos: Data) throws {
         var lector = LectorMIDI(bytes: [UInt8](datos))
         try lector.leer()
-        guard !lector.notas.isEmpty else { throw ErrorDeImportacion.sinNotas }
+        guard !lector.notas.isEmpty else { throw ErrorDeLecturaDeFichero.sinNotas }
         let redonda = 4 * lector.divisiones
         let tonalidad =
             lector.tonalidad
@@ -50,7 +50,7 @@ extension PiezaImportada {
     }
 }
 
-/// Lee los bytes de un fichero MIDI. Cualquier lectura fuera de los datos es `ErrorDeImportacion.midiDanado`.
+/// Lee los bytes de un fichero MIDI. Cualquier lectura fuera de los datos es `ErrorDeLecturaDeFichero.midiDanado`.
 struct LectorMIDI {
     let bytes: [UInt8]
     var posicion = 0
@@ -69,14 +69,14 @@ struct LectorMIDI {
     init(bytes: [UInt8]) { self.bytes = bytes }
 
     mutating func leer() throws {
-        guard try etiqueta() == "MThd" else { throw ErrorDeImportacion.midiDanado }
+        guard try etiqueta() == "MThd" else { throw ErrorDeLecturaDeFichero.midiDanado }
         let largo = try entero(4)
-        guard largo >= 6 else { throw ErrorDeImportacion.midiDanado }
+        guard largo >= 6 else { throw ErrorDeLecturaDeFichero.midiDanado }
         formato = try entero(2)
         let pistas = try entero(2)
         let division = try entero(2)
-        guard division & 0x8000 == 0 else { throw ErrorDeImportacion.midiConTiempoSMPTE }
-        guard division > 0 else { throw ErrorDeImportacion.midiDanado }
+        guard division & 0x8000 == 0 else { throw ErrorDeLecturaDeFichero.midiConTiempoSMPTE }
+        guard division > 0 else { throw ErrorDeLecturaDeFichero.midiDanado }
         divisiones = division
         posicion += largo - 6
 
@@ -84,7 +84,7 @@ struct LectorMIDI {
         while pista < pistas, posicion < bytes.count {
             let tipo = try etiqueta()
             let largo = try entero(4)
-            guard largo <= bytes.count - posicion else { throw ErrorDeImportacion.midiDanado }
+            guard largo <= bytes.count - posicion else { throw ErrorDeLecturaDeFichero.midiDanado }
             if tipo == "MTrk" {
                 try leerPista(hasta: posicion + largo, numero: pista)
                 pista += 1
@@ -116,13 +116,13 @@ struct LectorMIDI {
         }
         while posicion < fin {
             ahora += try cantidadVariable()
-            guard ahora < 1 << 36 else { throw ErrorDeImportacion.midiDanado } // años de música: está dañado
+            guard ahora < 1 << 36 else { throw ErrorDeLecturaDeFichero.midiDanado } // años de música: está dañado
             var primero = try byte()
             if primero & 0x80 != 0 {
                 estado = primero
                 if primero < 0xF0 { primero = try byte() }
             } else {
-                guard estado & 0x80 != 0, estado < 0xF0 else { throw ErrorDeImportacion.midiDanado }
+                guard estado & 0x80 != 0, estado < 0xF0 else { throw ErrorDeLecturaDeFichero.midiDanado }
             }
             switch estado {
             case 0xFF:
@@ -167,7 +167,7 @@ struct LectorMIDI {
                 case 0xD0:
                     break // un solo byte de datos, ya leído
                 default:
-                    throw ErrorDeImportacion.midiDanado
+                    throw ErrorDeLecturaDeFichero.midiDanado
                 }
             }
         }
@@ -206,13 +206,13 @@ struct LectorMIDI {
     // MARK: Bytes
 
     private mutating func byte() throws -> UInt8 {
-        guard posicion < bytes.count else { throw ErrorDeImportacion.midiDanado }
+        guard posicion < bytes.count else { throw ErrorDeLecturaDeFichero.midiDanado }
         defer { posicion += 1 }
         return bytes[posicion]
     }
 
     private mutating func trozo(_ largo: Int) throws -> [UInt8] {
-        guard largo >= 0, largo <= bytes.count - posicion else { throw ErrorDeImportacion.midiDanado }
+        guard largo >= 0, largo <= bytes.count - posicion else { throw ErrorDeLecturaDeFichero.midiDanado }
         defer { posicion += largo }
         return Array(bytes[posicion..<posicion + largo])
     }
@@ -233,6 +233,6 @@ struct LectorMIDI {
             valor = valor << 7 | Int(x & 0x7F)
             if x & 0x80 == 0 { return valor }
         }
-        throw ErrorDeImportacion.midiDanado
+        throw ErrorDeLecturaDeFichero.midiDanado
     }
 }

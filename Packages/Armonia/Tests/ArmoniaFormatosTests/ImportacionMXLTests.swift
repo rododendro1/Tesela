@@ -94,12 +94,12 @@ import Testing
     }
 
     @Test func losZipsQueNoSeLeen() throws {
-        func error(_ datos: Data) -> ErrorDeImportacion? {
+        func error(_ datos: Data) -> ErrorDeLecturaDeFichero? {
             do {
                 _ = try PiezaImportada(leyendo: datos)
                 return nil
             } catch {
-                return error as? ErrorDeImportacion
+                return error as? ErrorDeLecturaDeFichero
             }
         }
         #expect(error(ImportacionMXLTests.zip([("hola.txt", [UInt8]("hola".utf8))])) == .comprimido)

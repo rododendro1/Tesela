@@ -54,19 +54,16 @@ import Testing
         #expect(TecladoCuadrado.cuartas.casillas(de: 69, en: ventana) == [casilla(4, 1)])
         #expect(TecladoCuadrado.cuartas.casillas(de: try Altura(leyendo: "Fa4"), en: ventana) == [casilla(0, 1)])
         #expect(
-            TecladoCuadrado.quintas.altura(en: casilla(1, 0), preferirBemoles: true).nota.nombre(en: .espanolCompacto)
+            TecladoCuadrado.quintas.altura(en: casilla(1, 0), ventana: .bemoles).nota.nombre(en: .espanolCompacto)
                 == "Re♭")
         #expect(TecladoCuadrado.quintas.altura(en: casilla(1, 0), ventana: .sostenidos).nota == Nota(.do, 1))
     }
 
     @Test func lasOpcionesEligenUnaVentanaDeQuintas() {
-        var opciones = OpcionesDeDiagrama(preferirBemoles: true)
-        #expect(opciones.ventana == .bemoles && opciones.preferirBemoles)
-        opciones.preferirBemoles = false
-        #expect(opciones.ventana == .sostenidos && !opciones.preferirBemoles)
-        // `ventana` manda sobre `preferirBemoles`.
-        opciones = OpcionesDeDiagrama(preferirBemoles: true, ventana: .centrada(en: "Re"))
-        #expect(opciones.ventana == .centrada(en: "Re") && !opciones.preferirBemoles)
+        var opciones = OpcionesDeDiagrama(ventana: .bemoles)
+        #expect(opciones.ventana == .bemoles)
+        opciones.ventana = .centrada(en: "Re")
+        #expect(opciones.ventana == .centrada(en: "Re"))
         #expect(OpcionesDeDiagrama() == OpcionesDeDiagrama(ventana: .sostenidos))
         let svg = TecladoCuadrado.quintas.svg([casilla(1, 0)], opciones: .init(ventana: .bemoles))
         #expect(svg.contains(">Re♭₄</text>"))
@@ -112,7 +109,7 @@ import Testing
         let grande = TecladoCuadrado.cuartas.svg(ventana, opciones: .init(titulo: "Cuartas", escala: 2))
         #expect(grande.contains(#"width="80""#) && grande.contains("<title>Cuartas</title>"))
         #expect(!svg.contains("<title>"))
-        #expect(TecladoCuadrado.cuartas.svg(ventana, opciones: .init(preferirBemoles: true)).contains(">Re♭₄<"))
+        #expect(TecladoCuadrado.cuartas.svg(ventana, opciones: .init(ventana: .bemoles)).contains(">Re♭₄<"))
         let conRotulo = TecladoCuadrado.cuartas.svg(ventana, marcadas: [60: "1"])
         #expect(conRotulo.contains(">1<") && !conRotulo.contains(">Do₄<"))
     }

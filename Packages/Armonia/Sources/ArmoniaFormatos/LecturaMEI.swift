@@ -28,8 +28,8 @@ extension PiezaImportada {
     public init(mei datos: Data) throws {
         let lector = LectorMEI()
         try LectorXML.leer(datos, con: lector)
-        guard lector.raiz == "mei" else { throw ErrorDeImportacion.noEsMusicXMLPorPartes }
-        guard !lector.notas.isEmpty else { throw ErrorDeImportacion.sinNotas }
+        guard lector.raiz == "mei" else { throw ErrorDeLecturaDeFichero.noEsMusicXMLPorPartes }
+        guard !lector.notas.isEmpty else { throw ErrorDeLecturaDeFichero.sinNotas }
         let fin = PulsosDeLectura.duracion(lector.finDeLaPieza)
         self.init(
             titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas, tempo: lector.tempo,

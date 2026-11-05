@@ -194,7 +194,7 @@ let sinLeyenda = Tonnetz(Acorde("Do")).svg(opciones: .init(titulo: "Tónica"), l
 let ingles = Tonnetz(Acorde("Fa#m7")).svg(opciones: .init(notacion: .inglesASCII), margen: 2)
 let toro = Tonnetz(ConjuntoDeClases([0, 4, 7, 11])).svg(margen: 3)
 RelojDeClases(clases: [0, 4, 7]).svg(opciones: .init(notacion: .inglesASCII)).contains(">G</text>")   // true
-TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: [61], opciones: .init(preferirBemoles: true)).contains(">Re♭</text>")   // true
+TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: [61], opciones: .init(ventana: .bemoles)).contains(">Re♭</text>")   // true
 TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: MarcasDeDiagrama(Escala("Fa mayor").alturas(octava: 4))).contains(">Si♭</text>")   // true
 RelojDeClases(notas: Escala("Fa mayor").notas).svg().contains(">Si♭</text>")   // true
 ```

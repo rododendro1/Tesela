@@ -580,7 +580,7 @@ extension LineaDeComandos {
         let bemoles = notas.contains { $0.pasosDeQuinta < -1 }
         let svg = teclado.svg(
             rejilla.casillas, marcadas: MarcasDeDiagrama(marcadas), primeras: primeras, contorno: true,
-            opciones: .init(notacion: notacion, preferirBemoles: bemoles))
+            opciones: .init(notacion: notacion, ventana: bemoles ? .bemoles : .sostenidos))
         return bien(svg)
     }
 

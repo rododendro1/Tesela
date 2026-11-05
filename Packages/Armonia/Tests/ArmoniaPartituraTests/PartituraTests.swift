@@ -387,7 +387,7 @@ import Testing
                     let nota = clave.altura(lugar: lugar, alteracion: Alteracion(alteracion))
                     #expect(
                         clave.posicion(de: nota)
-                            == PosicionEnPentagrama(lugar: lugar, alteracion: Alteracion(alteracion)),
+                            == PosicionEnElPentagrama(lugar: lugar, alteracion: Alteracion(alteracion)),
                         "\(clave) \(lugar)")
                 }
             }

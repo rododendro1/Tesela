@@ -31,20 +31,20 @@ import Testing
             _ = try ImportacionDeProgresion.progresion(de: melodia)
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeImportacion) == .sinAcordes)
+            #expect((error as? ErrorDeLecturaDeFichero) == .sinAcordes)
 
         }
         do {
             _ = try ImportacionDeProgresion.progresion(de: Data("hola".utf8))
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeImportacion) == .formatoDesconocido)
+            #expect((error as? ErrorDeLecturaDeFichero) == .formatoDesconocido)
 
         }
     }
 
     @Test func losErroresSeExplicanEnLaNotacion() {
-        #expect(ErrorDeImportacion.sinAcordes.descripcion(en: .inglesASCII) == "No chords sound in the file.")
+        #expect(ErrorDeLecturaDeFichero.sinAcordes.descripcion(en: .inglesASCII) == "No chords sound in the file.")
     }
 }
 

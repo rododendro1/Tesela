@@ -44,11 +44,11 @@ import Testing
     }
 
     @Test func rechazaLoQueNoEsUIL() throws {
-        func fallo(_ texto: String) -> ErrorDeUIL? {
+        func fallo(_ texto: String) -> ErrorDeLecturaDeUIL? {
             do {
                 _ = try FormatoUIL(leyendo: texto)
                 return nil
-            } catch { return error as? ErrorDeUIL }
+            } catch { return error as? ErrorDeLecturaDeUIL }
         }
         #expect(fallo("") == .formatoNoValido(""))
         #expect(fallo("2,7") == .formatoNoValido("2,7"))
@@ -66,7 +66,7 @@ import Testing
         #expect(fallo("2,7,5;R30;S2") == .cizallaNoSoportada(2))
         // Las abreviaturas y las razones solo valen con 12 notas.
         #expect(fallo("M2,P5,P4;T7") == .formatoNoValido("M2,P5,P4;T7"))
-        #expect(!(ErrorDeUIL.formatoNoValido("x").description.isEmpty))
+        #expect(!(ErrorDeLecturaDeUIL.formatoNoValido("x").description.isEmpty))
     }
 
     // MARK: La Tabla 1 del artículo
@@ -166,8 +166,10 @@ import Testing
                 #expect(girado.semitonos(hacia: d) == -girado.semitonos(hacia: d.opuesta))
             }
         }
-        #expect(throws: ErrorDeUIL.rotacionNoValida(45)) { try TecladoIsomorfico.janko.rotado(grados: 45) }
-        #expect(throws: ErrorDeUIL.rotacionNoValida(45)) { try FormatoUIL(leyendo: "1,2,1").rotado(grados: 45) }
+        #expect(throws: ErrorDeLecturaDeUIL.rotacionNoValida(45)) { try TecladoIsomorfico.janko.rotado(grados: 45) }
+        #expect(throws: ErrorDeLecturaDeUIL.rotacionNoValida(45)) {
+            try FormatoUIL(leyendo: "1,2,1").rotado(grados: 45)
+        }
         #expect(throws: Never.self) { try TecladoIsomorfico.janko.rotado(grados: -30) }
     }
 
@@ -241,7 +243,7 @@ import Testing
             _ = try sieteNotas.teclado()
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeUIL) == .afinacionNoSoportada(tonos: 7))
+            #expect((error as? ErrorDeLecturaDeUIL) == .afinacionNoSoportada(tonos: 7))
 
         }
     }
