@@ -5,6 +5,16 @@
 
 extension TextosDeTeoria {
     static let aleman = TextosDeTeoria(
+        // AfinacionHistorica.swift
+        temperamentoIgual: "gleichstufige Stimmung",
+        pitagorico: "pythagoreische Stimmung",
+        mesotonico: "Viertelkomma-Mitteltönigkeit",
+        werckmeisterIII: "Werckmeister III",
+        kirnbergerIII: "Kirnberger III",
+        vallotti: "Vallotti",
+        young: "Young",
+        afinacionJusta: "reine Stimmung",
+
         // Acorde.swift
         conBajoEn: { acorde, bajo in "\(acorde), mit \(bajo) im Bass" },
         nombresDeLasInversiones: ["Grundstellung", "erste Umkehrung", "zweite Umkehrung", "dritte Umkehrung",

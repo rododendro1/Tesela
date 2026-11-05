@@ -5,6 +5,16 @@
 
 extension TextosDeTeoria {
     static let griego = TextosDeTeoria(
+        // AfinacionHistorica.swift
+        temperamentoIgual: "ίσος συγκερασμός",
+        pitagorico: "πυθαγόρειο κούρδισμα",
+        mesotonico: "μεσοτονικό ¼ κόμματος",
+        werckmeisterIII: "Βέρκμαϊστερ III",
+        kirnbergerIII: "Κίρνμπεργκερ III",
+        vallotti: "Βαλλόττι",
+        young: "Γιανγκ",
+        afinacionJusta: "φυσικό κούρδισμα",
+
         // Acorde.swift
         conBajoEn: { acorde, bajo in "\(acorde), με μπάσο το \(bajo)" },
         nombresDeLasInversiones: ["θεμελιώδης κατάσταση", "πρώτη αναστροφή", "δεύτερη αναστροφή", "τρίτη αναστροφή",

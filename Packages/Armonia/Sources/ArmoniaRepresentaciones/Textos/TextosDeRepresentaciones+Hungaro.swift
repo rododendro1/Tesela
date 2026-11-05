@@ -6,16 +6,6 @@ import ArmoniaNucleo
 
 extension TextosDeRepresentaciones {
     static let hungaro = TextosDeRepresentaciones(
-        // AfinacionHistorica.swift
-        temperamentoIgual: "kiegyenlített temperálás",
-        pitagorico: "püthagoraszi hangolás",
-        mesotonico: "negyedkommás középhangos hangolás",
-        werckmeisterIII: "Werckmeister III",
-        kirnbergerIII: "Kirnberger III",
-        vallotti: "Vallotti",
-        young: "Young",
-        afinacionJusta: "tiszta hangolás",
-
         // CorrespondenciaDeColores.swift
         circuloDeQuintas: "kvintkör",
 

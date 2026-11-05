@@ -6,16 +6,6 @@ import ArmoniaNucleo
 
 extension TextosDeRepresentaciones {
     static let catalan = TextosDeRepresentaciones(
-        // AfinacionHistorica.swift
-        temperamentoIgual: "temperament igual",
-        pitagorico: "afinació pitagòrica",
-        mesotonico: "mesotònic d'¼ de coma",
-        werckmeisterIII: "Werckmeister III",
-        kirnbergerIII: "Kirnberger III",
-        vallotti: "Vallotti",
-        young: "Young",
-        afinacionJusta: "afinació justa",
-
         // CorrespondenciaDeColores.swift
         circuloDeQuintas: "cercle de quintes",
 

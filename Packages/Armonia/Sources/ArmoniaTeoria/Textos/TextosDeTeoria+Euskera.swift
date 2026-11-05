@@ -6,6 +6,16 @@ import ArmoniaNucleo
 
 extension TextosDeTeoria {
     static let euskera = TextosDeTeoria(
+        // AfinacionHistorica.swift
+        temperamentoIgual: "tenperamentu berdina",
+        pitagorico: "afinazio pitagorikoa",
+        mesotonico: "¼ komako mesotonikoa",
+        werckmeisterIII: "Werckmeister III",
+        kirnbergerIII: "Kirnberger III",
+        vallotti: "Vallotti",
+        young: "Young",
+        afinacionJusta: "afinazio justua",
+
         // Acorde.swift
         conBajoEn: { acorde, bajo in "\(acorde), baxua \(bajo) dela" },
         nombresDeLasInversiones: ["oinarrizko egoera", "lehen inbertsioa", "bigarren inbertsioa", "hirugarren inbertsioa",

@@ -21,6 +21,17 @@ Los nombres de antes siguen compilando, obsoletos, en el `Obsoletos.swift` de ca
   `OpcionesDeDiagrama(ventana:)`, `TecladoCuadrado.altura(en:ventana:)`, `TecladoIsomorfico.altura(en:ventana:)` y
   `Mastil.altura(en:ventana:)` eligen la ventana de quintas (`.bemoles` para lo de antes).
 
+### Los temperamentos pasan a ArmoniaTeoria
+
+- `TemperamentoRegular`, `TemperamentoCircular`, `AfinacionJusta`, `AfinacionHistorica`, `AfinacionDeEscala`,
+  `BaseDeHewlett` y lo que añaden a `Intervalo`, `Escala`, `Tradicion`, `UsoDeEscala` y `TipoDeEscala`
+  (`razonJusta`, `afinacion()`, `afinacionSugerida`…) pasan de `ArmoniaRepresentaciones/Afinacion/` a
+  `ArmoniaTeoria/Afinacion/`. Solo usaban el Núcleo y la Teoría; desde ahí los ven también la Partitura, los
+  Formatos y los Trastes, que no dependen de las Representaciones. Con `import Armonia` no cambia nada; quien
+  importe solo `ArmoniaRepresentaciones` para los temperamentos tiene que importar `ArmoniaTeoria`.
+- Los nombres de los temperamentos en los quince idiomas pasan de `TextosDeRepresentaciones` a `TextosDeTeoria`.
+- Las afinaciones de los instrumentos (`Encordado`) siguen en ArmoniaTrastes.
+
 ### Cents de un evento, como mucho un semitono
 
 - `Evento(leyendo:)` ya no acepta más de 100 cents arriba o abajo en una nota (`Mi4(150¢):4` da un `ErrorDeLectura`).

@@ -4,8 +4,8 @@
 La biblioteca se reparte en seis módulos, más `Armonia`, que los reexporta:
 
     ArmoniaNucleo            Fundamentos, Texto, Postonal
-    ArmoniaTeoria            Acordes, Escalas, Tonalidad   (se necesitan entre sí: van juntas)
-    ArmoniaRepresentaciones  Afinacion, Color, Dibujo, Redes (con Neorriemanniana)
+    ArmoniaTeoria            Acordes, Escalas, Tonalidad   (se necesitan entre sí: van juntas), Afinacion
+    ArmoniaRepresentaciones  Color, Dibujo, Redes (con Neorriemanniana)
     ArmoniaPartitura         Modelo, Dibujo, Contrapunto
     ArmoniaFormatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond (sobre Partitura)
     ArmoniaTrastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes, sobre Partitura)
