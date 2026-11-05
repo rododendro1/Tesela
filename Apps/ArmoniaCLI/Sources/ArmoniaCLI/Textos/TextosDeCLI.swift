@@ -46,6 +46,8 @@ struct TextosDeCLI: TextosTraducidos {
     let sintaxisEscalas: String
     let descripcionEscalas: String
     let notasEscalas: String
+    let sintaxisTradiciones: String
+    let descripcionTradiciones: String
     let sintaxisTonalidad: String
     let descripcionTonalidad: String
     let sintaxisConjunto: String

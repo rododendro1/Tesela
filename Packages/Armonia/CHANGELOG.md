@@ -370,6 +370,17 @@
 - Los valores de `--idioma`, `--textos` y `--escritura` mal escritos también proponen el más parecido: `--idioma eus`,
   «¿Querías decir «eu»?».
 
+### Las tradiciones, con su nombre y en la línea de comandos
+
+- **`Tradicion.nombre(en:)`**: el nombre de cada tradición en los quince idiomas («Japón», «Japan», «Japonia»,
+  «Япония»), y `Tradicion` es `Nombrable` (`Tradicion.mundoArabe.nombre` es «Mundo árabe»).
+- **`armonia tradiciones`** (en inglés, `traditions`): cada tradición con cómo se escribe en `--tradicion` y cuántas
+  escalas tiene de cada categoría («Japón (japon): escala 13»), también con `--json`. `armonia tradiciones japon`
+  es `armonia escalas --tradicion japon`, con `--categoria`.
+- `armonia escalas` titula cada grupo con el nombre de la tradición en el idioma de los textos («Mundo árabe ·
+  maqam»), en lugar de con lo que se escribe en `--tradicion` («mundo-arabe · maqam»), y una tradición o una categoría
+  mal escritas proponen la más parecida.
+
 ## 0.3.4 (2026-11-04)
 
 ### Valores escritos a mano, sin opcionales

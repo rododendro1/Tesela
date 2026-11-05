@@ -43,6 +43,8 @@ extension TextosDeCLI {
         sintaxisEscalas: "escalas [<testo>] [opzioni]",
         descripcionEscalas: "il catalogo delle scale: le consuete e\nquelle di altre tradizioni, per\ncategorie, con le note a partire da Do",
         notasEscalas: "opzioni: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio, mesopotamia, africa,\nsudeste-asiatico, gregoriano) e --categoria maqam (o rāga, makam,\ndastgah, dromos…); un testo cerca nei nomi",
+        sintaxisTradiciones: "tradiciones [<tradizione>]",
+        descripcionTradiciones: "le tradizioni del catalogo, con\nle loro categorie e quante scale\nha ognuna; con una, le sue scale",
         sintaxisTonalidad: "tonalidad <tonalità>",
         descripcionTonalidad: "armatura, relative e gradi",
         sintaxisConjunto: "conjunto <classi>",
@@ -155,7 +157,7 @@ extension TextosDeCLI {
         Nelle scritture compatte l'ottava va in pedice (La₄) e nelle altre in cifre (La4);
         --subindices o --cifras la fissano (si leggono entrambe le forme).
         Con --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
-        serie e digitaciones danno i loro dati in JSON.
+        serie, digitaciones e tradiciones danno i loro dati in JSON.
         """,
         sintaxisAyuda: "ayuda [<comando>]",
         descripcionAyuda: "questo aiuto, o quello di un comando\n(anche <comando> --help)",

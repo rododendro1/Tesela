@@ -183,6 +183,41 @@ extension LineaDeComandosTests {
         #expect(!resultado("acorde", "Do", "--idioma", "xyzzy").error.contains("¿Querías"))
     }
 
+    /// `tradiciones` da cada tradición con sus categorías; con una, sus escalas.
+    @Test func tradiciones() throws {
+        let todas = salida("tradiciones")
+        let lineas = todas.split(separator: "\n")
+        #expect(lineas.count == Tradicion.allCases.count)
+        #expect(lineas.contains("Japón (japon): escala 13"))
+        #expect(lineas.contains("Turquía (turquia): makam 27 · çeşni 12"))
+        #expect(salida("traditions --ingles").contains("Japan (japan): scale 13"))
+        #expect(salida("tradiciones --idioma eu").contains("Japonia (japon)"))
+        // Lo que dice cada línea suma lo que da `escalas --tradicion`.
+        #expect(salida("tradiciones japon") == salida("escalas --tradicion japon"))
+        #expect(salida("tradiciones india --categoria thaat") == salida("escalas --tradicion india --categoria thaat"))
+        #expect(salida("tradiciones japon").hasPrefix("Japón · escala (13)\n"))
+        // Una errata en la tradición o en la categoría propone la más parecida.
+        #expect(resultado("tradiciones", "japn").error.contains("¿Querías decir «japon»?"))
+        #expect(resultado("escalas", "--categoria", "maqm").error.contains("«maqam»"))
+        #expect(resultado("tradiciones", "--foo").codigo == 2)
+        // En JSON, las claves de --tradicion y --categoria y los números.
+        let json = try #require(try json("tradiciones") as? [[String: Any]])
+        let japon = try #require(json.first { $0["clave"] as? String == "japon" })
+        #expect(japon["nombre"] as? String == "Japón")
+        #expect(japon["escalas"] as? Int == 13)
+        let india = try #require(json.first { $0["clave"] as? String == "india" })
+        let categorias = try #require(india["categorias"] as? [[String: Any]])
+        #expect(categorias.contains { $0["clave"] as? String == "melakarta" && $0["escalas"] as? Int == 72 })
+        #expect(LineaDeComandos.ejecutar(["tradiciones", "japon", "--json"]).codigo == 2)
+        // El nombre de cada tradición, en los quince idiomas.
+        for tradicion in Tradicion.allCases {
+            let nombres = Idioma.allCases.map { tradicion.nombre(en: .delIdioma($0)) }
+            #expect(nombres.allSatisfy { !$0.isEmpty })
+        }
+        #expect(Tradicion.mundoArabe.nombre == "Mundo árabe")
+        #expect(Tradicion.japon.nombre(en: .delIdioma(.ruso)) == "Япония")
+    }
+
     @Test func arpegioEnJSON() throws {
         let arpegios = try #require(try json("arpegio Do7 Lam --patron alberti") as? [[String: Any]])
         #expect(arpegios.count == 2)

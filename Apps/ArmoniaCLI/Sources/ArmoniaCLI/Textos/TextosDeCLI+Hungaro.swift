@@ -43,6 +43,8 @@ extension TextosDeCLI {
         sintaxisEscalas: "scales [<szöveg>] [opciók]",
         descripcionEscalas: "a skálák katalógusa: a szokásosak és\nmás hagyományokéi, kategóriánként,\nC-től induló hangjaikkal",
         notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia, africa,\nsoutheast-asia, gregorian) és --category maqam (vagy rāga, makam,\ndastgah, dromos…); a szöveg a nevekben keres",
+        sintaxisTradiciones: "traditions [<hagyomány>]",
+        descripcionTradiciones: "a katalógus hagyományai a\nkategóriáikkal és skáláik számával;\neggyel: annak skálái",
         sintaxisTonalidad: "key <hangnem>",
         descripcionTonalidad: "előjegyzés, rokon hangnemek és fokok",
         sintaxisConjunto: "set <osztályok>",
@@ -154,8 +156,8 @@ extension TextosDeCLI {
         fa dièse vagy Fa♯, F Kreuz vagy Fis.
         A tömör írásmódokban az oktáv alsó indexbe kerül (La₄), a többiben számjeggyel (La4);
         a --subindices vagy a --cifras rögzíti (mindkettőt olvassa).
-        A --json kapcsolóval a chord, identify, arpeggio, interval, scale, key, analyze, set, row és
-        fingerings JSON-ban adja az adatait.
+        A --json kapcsolóval a chord, identify, arpeggio, interval, scale, key, analyze, set, row,
+        fingerings és traditions JSON-ban adja az adatait.
         """,
         sintaxisAyuda: "help [<parancs>]",
         descripcionAyuda: "ez a súgó, vagy egy parancs súgója\n(<parancs> --help is)",

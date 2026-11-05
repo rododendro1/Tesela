@@ -43,6 +43,8 @@ extension TextosDeCLI {
         sintaxisEscalas: "scales [<Text>] [Optionen]",
         descripcionEscalas: "der Skalenkatalog: die gängigen und\ndie anderer Traditionen, nach\nKategorien, mit ihren Tönen ab C",
         notasEscalas: "Optionen: --tradition turkey (oder india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia, africa,\nsoutheast-asia, gregorian) und --category maqam (oder rāga, makam,\ndastgah, dromos…); ein Text sucht in den Namen",
+        sintaxisTradiciones: "traditions [<Tradition>]",
+        descripcionTradiciones: "die Traditionen des Katalogs mit\nihren Kategorien und der Zahl\nihrer Skalen; mit einer, ihre Skalen",
         sintaxisTonalidad: "key <Tonart>",
         descripcionTonalidad: "Vorzeichen, verwandte Tonarten und\nStufen",
         sintaxisConjunto: "set <Klassen>",
@@ -154,8 +156,8 @@ extension TextosDeCLI {
         fa dièse oder Fa♯, F Kreuz oder Fis.
         In den kompakten Schreibweisen steht die Oktave als Index (La₄), sonst als Ziffer (La4);
         --subindices oder --cifras legen sie fest (gelesen wird beides).
-        Mit --json geben chord, identify, arpeggio, interval, scale, key, analyze, set, row und
-        fingerings ihre Daten als JSON aus.
+        Mit --json geben chord, identify, arpeggio, interval, scale, key, analyze, set, row,
+        fingerings und traditions ihre Daten als JSON aus.
         """,
         sintaxisAyuda: "help [<Befehl>]",
         descripcionAyuda: "diese Hilfe oder die eines Befehls\n(auch <Befehl> --help)",

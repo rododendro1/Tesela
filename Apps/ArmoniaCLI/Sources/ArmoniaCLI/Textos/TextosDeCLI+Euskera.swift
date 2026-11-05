@@ -43,6 +43,8 @@ extension TextosDeCLI {
         sintaxisEscalas: "escalas [<testua>] [aukerak]",
         descripcionEscalas: "eskalen katalogoa: ohikoak eta beste\ntradizio batzuetakoak, kategoriaka,\nDo-tik hasitako notekin",
         notasEscalas: "aukerak: --tradicion turquia (edo india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio, mesopotamia, africa,\nsudeste-asiatico, gregoriano) eta --categoria maqam (edo rāga, makam,\ndastgah, dromos…); testu batek izenetan bilatzen du",
+        sintaxisTradiciones: "tradiciones [<tradizioa>]",
+        descripcionTradiciones: "katalogoko tradizioak, beren\nkategoriekin eta bakoitzean zenbat\neskala dauden; batekin, haren eskalak",
         sintaxisTonalidad: "tonalidad <tonalitatea>",
         descripcionTonalidad: "armadura, erlatiboak eta graduak",
         sintaxisConjunto: "conjunto <klaseak>",
@@ -155,7 +157,7 @@ extension TextosDeCLI {
         Idazkera trinkoetan zortziduna azpiindize gisa doa (La₄), eta besteetan zenbakiz (La4);
         --subindices edo --cifras erabiliz finkatzen da (biak irakurtzen dira).
         --json aukerarekin, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar,
-        conjunto, serie eta digitaciones aginduek JSONez ematen dituzte datuak.
+        conjunto, serie, digitaciones eta tradiciones aginduek JSONez ematen dituzte datuak.
         """,
         sintaxisAyuda: "ayuda [<agindua>]",
         descripcionAyuda: "laguntza hau, edo agindu batena\n(baita <agindua> --help ere)",
