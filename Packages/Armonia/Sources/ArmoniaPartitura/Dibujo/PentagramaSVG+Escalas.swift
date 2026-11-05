@@ -30,8 +30,8 @@ extension Escala {
     /// (``Partitura/dibujaElRitmo``) o, con `ritmo: .uniforme(…)`, con ritmo (``Partitura/Ritmo``). Con
     /// su armadura (``Partitura/Pentagrama/armadura``), los intervalos contados desde su tónica
     /// (``Partitura/Linea/tonica``), los microtonos de una escala microtonal con su sistema
-    /// (``Evento/NotaDelEvento/sistema``) y, con `digitacion`, el dedo de cada nota al piano. Su título es el nombre de la escala (``Encabezado/tema``),
-    /// en la notación con que se dibuja o se exporta.
+    /// (``Evento/NotaDelEvento/sistema``) y, con `digitacion`, el dedo de cada nota al piano. Su título es el nombre de
+    /// la escala (``Encabezado/tema``), en la notación con que se dibuja o se exporta.
     ///
     ///     Escala("Re dórico").partitura().musicXML()                 // en ArmoniaFormatos
     ///     Escala("Re dórico").partitura(ritmo: .uniforme(.corchea)).svg()   // en corcheas
