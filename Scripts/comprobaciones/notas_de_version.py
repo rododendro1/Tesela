@@ -8,9 +8,11 @@ Cada `Packages/<Paquete>/CHANGELOG.md` tiene, de lo más nuevo a lo más viejo, 
                    paquete. Falla si ninguno la tiene o si no coincide con `MARKETING_VERSION` de `project.yml` (la
                    de las apps). Lo usa `.github/workflows/version.yml` al subir una etiqueta.
   --comprobar      Comprueba los CHANGELOG (títulos bien escritos, «Sin publicar» solo arriba, versiones de más nueva
-                   a más vieja) y que la versión de `project.yml` tiene notas. Lo usa el CI.
-  --publicar 0.2.0 Prepara una versión: las secciones «Sin publicar» pasan a «0.2.0 (fecha de hoy)» y
-                   `MARKETING_VERSION` a 0.2.0. Falla si ningún paquete tiene nada sin publicar.
+                   a más vieja), que la versión de `project.yml` tiene notas y que es la de `armonia --version`
+                   (`Apps/ArmoniaCLI/Sources/ArmoniaCLI/Version.swift`). Lo usa el CI.
+  --publicar 0.2.0 Prepara una versión: las secciones «Sin publicar» pasan a «0.2.0 (fecha de hoy)», y
+                   `MARKETING_VERSION` y la de `armonia --version`, a 0.2.0. Falla si ningún paquete tiene nada sin
+                   publicar.
 
 Uso: python3 Scripts/comprobaciones/notas_de_version.py 0.2.0 | --actual | --comprobar | --publicar 0.2.0
      (--actual es la versión de project.yml)
@@ -22,6 +24,9 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
 PROYECTO = RAIZ / "project.yml"
+# La versión de `armonia --version`: `public static let version = "0.2.0"`.
+VERSION_DE_LA_CLI = RAIZ / "Apps/ArmoniaCLI/Sources/ArmoniaCLI/Version.swift"
+DECLARACION_DE_LA_CLI = re.compile(r'(static let version = )"([^"]*)"')
 SIN_PUBLICAR = "Sin publicar"
 # GitHub no admite notas de más de 125 000 caracteres: por encima de este límite se cortan y se enlazan los CHANGELOG.
 LIMITE = 120_000
@@ -37,6 +42,11 @@ def changelogs():
 def version_de_las_apps():
     m = re.search(r'MARKETING_VERSION:\s*"?([^"\s]+)"?', PROYECTO.read_text(encoding="utf-8"))
     return m.group(1) if m else None
+
+
+def version_de_la_cli():
+    m = DECLARACION_DE_LA_CLI.search(VERSION_DE_LA_CLI.read_text(encoding="utf-8"))
+    return m.group(2) if m else None
 
 
 def es_version(texto):
@@ -117,6 +127,10 @@ def comprobar():
     apps = version_de_las_apps()
     if not notas(apps or ""):
         errores.append(f"Ningún CHANGELOG tiene la sección de la versión de project.yml ({apps})")
+    cli = version_de_la_cli()
+    if cli != apps:
+        errores.append(f"{VERSION_DE_LA_CLI.relative_to(RAIZ)}: la versión de armonia ({cli}) no es la de project.yml "
+                       f"({apps})")
     for error in errores:
         print(error, file=sys.stderr)
     return 1 if errores else 0
@@ -147,7 +161,9 @@ def publicar(version, hoy=None):
     proyecto = PROYECTO.read_text(encoding="utf-8")
     PROYECTO.write_text(re.sub(r'(MARKETING_VERSION:\s*)"?[^"\s]+"?', rf'\g<1>"{version}"', proyecto, count=1),
                         encoding="utf-8")
-    print(f"Versión {version} ({fecha}): {', '.join(cambiados)}, y MARKETING_VERSION en project.yml.")
+    cli = VERSION_DE_LA_CLI.read_text(encoding="utf-8")
+    VERSION_DE_LA_CLI.write_text(DECLARACION_DE_LA_CLI.sub(rf'\g<1>"{version}"', cli, count=1), encoding="utf-8")
+    print(f"Versión {version} ({fecha}): {', '.join(cambiados)}, MARKETING_VERSION en project.yml y la de armonia.")
     print(f"Fusiona el cambio en main y etiqueta ese commit: git tag {version} && git push origin {version}")
     return 0
 

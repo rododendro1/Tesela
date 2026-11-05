@@ -88,10 +88,10 @@ extension LineaDeComandosTests {
 
     /// Los errores siguen en texto, en la salida de errores, con su código.
     @Test func erroresConJSON() {
-        let sinJSON = LineaDeComandos.ejecutar(["tonalidad", "Do", "mayor", "--json"])
+        let sinJSON = LineaDeComandos.ejecutar(["tonnetz", "Do", "Mi", "Sol", "--json"])
         #expect(sinJSON.codigo == 2)
         #expect(sinJSON.salida.isEmpty)
-        #expect(sinJSON.error.contains("«tonalidad» no da salida en JSON"))
+        #expect(sinJSON.error.contains("«tonnetz» no da salida en JSON"))
         #expect(LineaDeComandos.ejecutar(["acorde", "--json"]).codigo == 2)
         #expect(LineaDeComandos.ejecutar(["acorde", "Sol7", "--disposiciones", "--json"]).codigo == 2)
         let ilegible = LineaDeComandos.ejecutar(["acorde", "Xyz", "--json"])

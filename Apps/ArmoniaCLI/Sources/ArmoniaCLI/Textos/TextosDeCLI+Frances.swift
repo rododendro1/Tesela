@@ -154,11 +154,11 @@ extension TextosDeCLI {
         fa dièse ou Fa♯, F Kreuz ou Fis.
         Dans les écritures compactes, l'octave s'écrit en indice (La₄), et dans les autres en chiffres (La4) ;
         --subindices ou --cifras la fixent (les deux se lisent).
-        Avec --json, acorde, identificar, escala, analizar, conjunto et serie donnent leurs données
-        en JSON.
+        Avec --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
+        serie et digitaciones donnent leurs données en JSON.
         """,
-        sintaxisAyuda: "ayuda",
-        descripcionAyuda: "cette aide",
+        sintaxisAyuda: "ayuda [<commande>]",
+        descripcionAyuda: "cette aide, ou celle d'une commande\n(aussi <commande> --help)",
         sintaxisCompletado: "completado bash|zsh|fish",
         descripcionCompletado: "la complétion des commandes et\noptions pour le terminal",
         sintaxisManual: "manual",
@@ -315,6 +315,13 @@ extension TextosDeCLI {
         mensajeDeTodosLosIntervalos: "tous intervalles",
         mensajeFormasDistintas: { n in "\(n) formes distinctes" },
         mensajeHexacordos: "hexacordes",
-        mensajeFormasCombinatorias: "formes combinatoires"
+        mensajeFormasCombinatorias: "formes combinatoires",
+
+        // LineaDeComandos.swift (versión, erratas y salida binaria)
+        sintaxisVersion: "--version",
+        descripcionVersion: "la version d'armonia",
+        quisoDecir: { x in "Vouliez-vous dire « \(x) » ?" },
+        pruebaLaAyudaDe: { o in "Essayez « armonia ayuda \(o) »." },
+        salidaBinaria: "la sortie est un fichier binaire (MIDI, PDF ou PNG) ; enregistrez-la avec > fichier"
     )
 }

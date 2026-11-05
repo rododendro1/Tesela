@@ -341,6 +341,23 @@
   piden los cifrados y el análisis con `conCifrados:` y `conAnalisis:`, en lugar de `cifrados:` y `analisis:`, que
   en `Partitura.Linea` son lo que se escribe.
 
+### La línea de comandos: la ayuda de cada orden, la versión, las erratas, la entrada estándar y más JSON
+
+- **`armonia ayuda <orden>`** y **`armonia <orden> --help`** (o `-h`) dan solo la ayuda de esa orden, en el idioma de
+  los textos, y los errores de uso de una orden remiten a ella: «Prueba «armonia ayuda digitaciones».».
+- **`armonia --version`** (o `version`) dice la versión: `armonia 0.3.4`.
+- **Lo que se quiso escribir:** ante una orden o una opción desconocida, la que más se le parece, en los quince
+  idiomas: `armonia acordee Do` responde «¿Querías decir «acorde»?», y `armonia digitaciones Sol7 --limte 3`,
+  «--limite» (entre las opciones de esa orden).
+- **La entrada estándar:** `-` toma sus palabras (`armonia analizar - --en Do mayor < progresion.txt`), y una orden
+  sin argumentos las lee si la entrada no es la terminal (`echo "Do Mi Sol" | armonia identificar`).
+- **`--json`** también en `arpegio` (con las notas en MIDI y las escalas del acorde), `intervalo`, `tonalidad` (con
+  la armadura en números) y `digitaciones` (con el traste de cada cuerda).
+- Los errores de lectura empiezan por «armonia:», como los de uso; el aviso de la salida binaria en la terminal sale
+  en el idioma de los textos, y una opción de un guion (`-o`) es una opción desconocida en lugar de una nota que no se
+  lee. `-m3` y `-P5` siguen siendo intervalos descendentes.
+- `tonalidad`, `intervalo`, `conjunto` y `serie` dicen «opción desconocida» ante una opción que no tienen.
+
 ## 0.3.4 (2026-11-04)
 
 ### Valores escritos a mano, sin opcionales

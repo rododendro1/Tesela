@@ -154,10 +154,11 @@ extension TextosDeCLI {
         fa dièse ή Fa♯, F Kreuz ή Fis.
         Στις συμπαγείς γραφές η οκτάβα γράφεται ως δείκτης (La₄) και στις άλλες με ψηφία (La4)·
         το --subindices ή το --cifras την ορίζει (διαβάζονται και τα δύο).
-        Με --json, οι chord, identify, scale, analyze, set και row δίνουν τα δεδομένα τους σε JSON.
+        Με --json, οι chord, identify, arpeggio, interval, scale, key, analyze, set, row και
+        fingerings δίνουν τα δεδομένα τους σε JSON.
         """,
-        sintaxisAyuda: "help",
-        descripcionAyuda: "αυτή η βοήθεια",
+        sintaxisAyuda: "help [<εντολή>]",
+        descripcionAyuda: "αυτή η βοήθεια, ή μιας εντολής\n(και <εντολή> --help)",
         sintaxisCompletado: "completion bash|zsh|fish",
         descripcionCompletado: "η αυτόματη συμπλήρωση εντολών και\nεπιλογών για το τερματικό",
         sintaxisManual: "manual",
@@ -314,6 +315,13 @@ extension TextosDeCLI {
         mensajeDeTodosLosIntervalos: "όλων των διαστημάτων",
         mensajeFormasDistintas: { n in "\(n) διαφορετικές μορφές" },
         mensajeHexacordos: "εξάχορδα",
-        mensajeFormasCombinatorias: "συνδυαστικές μορφές"
+        mensajeFormasCombinatorias: "συνδυαστικές μορφές",
+
+        // LineaDeComandos.swift (versión, erratas y salida binaria)
+        sintaxisVersion: "--version",
+        descripcionVersion: "η έκδοση του armonia",
+        quisoDecir: { x in "Μήπως εννοούσες «\(x)»;" },
+        pruebaLaAyudaDe: { o in "Δοκίμασε «armonia help \(o)»." },
+        salidaBinaria: "η έξοδος είναι δυαδικό αρχείο (MIDI, PDF ή PNG)· αποθήκευσέ την με > αρχείο"
     )
 }

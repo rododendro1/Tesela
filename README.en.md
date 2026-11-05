@@ -30,7 +30,8 @@ armonia scale D dorian --chords --ingles          # notes and the chord on each 
 armonia analyze C Am D7 G7 C --ingles             # degrees, functions and cadences
 armonia engrave chorale C3 E4 G4 C5 > chorale.pdf # needs LilyPond
 armonia chord G7/B --ingles --json | jq '.[0].notas'
-armonia help --ingles                             # every command
+echo "C E G Bb" | armonia identify --ingles        # also from standard input
+armonia help --ingles                             # every command (help chord: just that one)
 ```
 
 Commands and note names are accepted in Spanish or English (Do, C, Sib, Bb). `--ingles` answers in English notation

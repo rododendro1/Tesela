@@ -154,11 +154,11 @@ extension TextosDeCLI {
         fa dièse edo Fa♯, F Kreuz edo Fis.
         Idazkera trinkoetan zortziduna azpiindize gisa doa (La₄), eta besteetan zenbakiz (La4);
         --subindices edo --cifras erabiliz finkatzen da (biak irakurtzen dira).
-        --json aukerarekin, acorde, identificar, escala, analizar, conjunto eta serie aginduek JSONez
-        ematen dituzte datuak.
+        --json aukerarekin, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar,
+        conjunto, serie eta digitaciones aginduek JSONez ematen dituzte datuak.
         """,
-        sintaxisAyuda: "ayuda",
-        descripcionAyuda: "laguntza hau",
+        sintaxisAyuda: "ayuda [<agindua>]",
+        descripcionAyuda: "laguntza hau, edo agindu batena\n(baita <agindua> --help ere)",
         sintaxisCompletado: "completado bash|zsh|fish",
         descripcionCompletado: "aginduen eta aukeren osatze\nautomatikoa terminalerako",
         sintaxisManual: "manual",
@@ -315,6 +315,13 @@ extension TextosDeCLI {
         mensajeDeTodosLosIntervalos: "tarte guztietakoa",
         mensajeFormasDistintas: { n in "\(n) forma desberdin" },
         mensajeHexacordos: "hexakordoak",
-        mensajeFormasCombinatorias: "forma konbinatorioak"
+        mensajeFormasCombinatorias: "forma konbinatorioak",
+
+        // LineaDeComandos.swift (versión, erratas y salida binaria)
+        sintaxisVersion: "--version",
+        descripcionVersion: "armoniaren bertsioa",
+        quisoDecir: { x in "«\(x)» esan nahi zenuen?" },
+        pruebaLaAyudaDe: { o in "Probatu «armonia ayuda \(o)»." },
+        salidaBinaria: "irteera fitxategi bitar bat da (MIDI, PDF edo PNG); gorde ezazu > fitxategia erabiliz"
     )
 }

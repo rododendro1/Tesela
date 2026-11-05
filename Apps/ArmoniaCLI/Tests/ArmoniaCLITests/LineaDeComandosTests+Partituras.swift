@@ -269,10 +269,10 @@ extension LineaDeComandosTests {
         #expect(resultado("musicxml acordes --archivo /no/existe.mid").codigo == 2)
         #expect(
             resultado("musicxml coral --archivo " + midi).error
-                == "armonia: --archivo es solo para «acordes» y «arpegios»\nPrueba «armonia ayuda».\n")
+                == "armonia: --archivo es solo para «acordes» y «arpegios»\nPrueba «armonia ayuda musicxml».\n")
         #expect(
             resultado("musicxml acordes Do --ventana 1").error
-                == "armonia: --ventana va con --archivo\nPrueba «armonia ayuda».\n")
+                == "armonia: --ventana va con --archivo\nPrueba «armonia ayuda musicxml».\n")
         let melodia = try fichero(Voz(leyendo: "Do4:4 Re4:4 Mi4:4").partitura().midi(), extension: "mid")
         #expect(resultado("musicxml acordes --archivo " + melodia).codigo == 2)
         let texto = try fichero(Data("hola".utf8), extension: "mid")

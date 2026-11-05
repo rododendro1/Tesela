@@ -27,7 +27,11 @@ extension LineaDeComandos {
     static let salidasJSON: [String: SalidaJSON] = [
         "acorde": { try acordeJSON($0, $1) },
         "identificar": { try identificarJSON($0, $1) },
+        "arpegio": { try arpegioJSON($0, $1) },
+        "intervalo": { try intervaloJSON($0, $1) },
         "escala": { try escalaJSON($0, $1) },
+        "tonalidad": { try tonalidadJSON($0, $1) },
+        "digitaciones": { try digitacionesJSON($0, $1) },
         "analizar": { try analizarJSON($0, $1) },
         "conjunto": { try conjuntoJSON($0, $1) },
         "serie": { try serieJSON($0, $1) },
@@ -71,6 +75,140 @@ extension LineaDeComandos {
     static func escalaJSON(_ textos: [String], _ notacion: Notacion) throws -> DatosDeEscala {
         let texto = try palabras(Argumentos(textos), siFaltan: .faltaEscala).joined(separator: " ")
         return DatosDeEscala(try Escala(leyendo: texto), notacion: notacion)
+    }
+
+    // MARK: Arpegios, intervalos y tonalidades
+
+    struct ArpegioJSON: Encodable {
+        /// «Do7 arpegiado», como en el texto.
+        let nombre: String
+        let acorde: String
+        /// El nombre del patrón, o los grados del recorrido propio («1-5-3-8»).
+        let recorrido: String
+        /// Desde la octava 4, con su octava: «Do4».
+        let notas: [String]
+        /// Las mismas, en números MIDI (60 = Do4).
+        let midi: [Int]
+        /// Las escalas que encajan con el acorde, de las que tienen menos notas a evitar a las que más.
+        let escalas: [String]
+    }
+
+    /// `arpegio Do7 --patron alberti --json`: cada arpegio con sus notas, una lista aunque sea uno solo. Admite las
+    /// mismas opciones que el texto.
+    static func arpegioJSON(_ textos: [String], _ notacion: Notacion) throws -> [ArpegioJSON] {
+        try arpegios(textos).map { arpegio in
+            let alturas = arpegio.alturas(octava: 4)
+            return ArpegioJSON(
+                nombre: arpegio.nombre(en: notacion),
+                acorde: arpegio.acorde.cifrado(en: notacion),
+                recorrido: arpegio.grados.isEmpty
+                    ? arpegio.patron.nombre(en: notacion) : arpegio.grados.map(String.init).joined(separator: "-"),
+                notas: alturas.map { $0.nombre(en: notacion) },
+                midi: alturas.map(\.midi),
+                escalas: arpegio.acorde.escalasCompatibles().map { $0.nombre(en: notacion) })
+        }
+    }
+
+    struct IntervaloJSON: Encodable {
+        let nombre: String
+        /// «3M», en la notación.
+        let abreviatura: String
+        let semitonos: Int
+        /// 3 en una tercera, 10 en una décima.
+        let numero: Int
+        let descendente: Bool
+    }
+
+    /// `intervalo Do4 Mi5 --json`.
+    static func intervaloJSON(_ textos: [String], _ notacion: Notacion) throws -> IntervaloJSON {
+        let palabras = try palabras(Argumentos(textos), siFaltan: .dosNotas)
+        guard palabras.count == 2 else { throw FalloDeUso(error: .dosNotas) }
+        let intervalo = try intervalo(palabras[0], palabras[1])
+        return IntervaloJSON(
+            nombre: intervalo.nombre(en: notacion), abreviatura: intervalo.texto(en: notacion),
+            semitonos: intervalo.semitonos, numero: intervalo.numero, descendente: intervalo.sentido == .descendente)
+    }
+
+    struct TonalidadJSON: Encodable {
+        let nombre: String
+        let tonica: String
+        /// «mayor» o «menor», siempre en español: es un dato, no un texto.
+        let modo: String
+        /// Las alteraciones de la armadura: positivas los sostenidos y negativas los bemoles.
+        let armadura: Int
+        let alteraciones: [String]
+        let notas: [String]
+        let clases: [Int]
+        let relativa: String
+        let homonima: String
+        /// Las cuatríadas de cada grado, con su cifrado romano.
+        let acordes: [AcordeDelGrado]
+    }
+
+    /// Como `DatosDeEscala.AcordeDelGrado`: «ii» «Rem7».
+    struct AcordeDelGrado: Encodable {
+        let grado: String
+        let cifrado: String
+    }
+
+    /// `tonalidad La menor --json`.
+    static func tonalidadJSON(_ textos: [String], _ notacion: Notacion) throws -> TonalidadJSON {
+        let texto = try palabras(Argumentos(textos), siFaltan: .faltaTonalidad).joined(separator: " ")
+        let tonalidad = try Tonalidad(leyendo: texto)
+        let notas = tonalidad.escala.notas
+        return TonalidadJSON(
+            nombre: tonalidad.nombre(en: notacion),
+            tonica: tonalidad.tonica.nombre(en: notacion),
+            modo: tonalidad.modo == .mayor ? "mayor" : "menor",
+            armadura: tonalidad.armadura,
+            alteraciones: tonalidad.notasDeLaArmadura.map { $0.nombre(en: notacion) },
+            notas: notas.map { $0.nombre(en: notacion) },
+            clases: notas.map(\.claseDeAltura),
+            relativa: tonalidad.relativa.nombre(en: notacion),
+            homonima: tonalidad.homonima.nombre(en: notacion),
+            acordes: zip(tonalidad.cifradosRomanos(cuatriadas: true), tonalidad.armonizar(cuatriadas: true)).map {
+                AcordeDelGrado(grado: $0, cifrado: $1.cifrado(en: notacion))
+            })
+    }
+
+    // MARK: Digitaciones
+
+    struct DigitacionesJSON: Encodable {
+        struct Forma: Encodable {
+            /// «x32010», de la cuerda más grave a la más aguda.
+            let tablatura: String
+            /// El traste de cada cuerda, de la más grave a la más aguda: 0 al aire y `null` si no se toca.
+            let trastes: [Int?]
+            /// Las notas que suenan, de la cuerda más grave a la más aguda.
+            let notas: [String]
+            let dedos: Int
+            /// El traste de la cejilla, si la hay.
+            let cejilla: Int?
+        }
+        let cifrado: String
+        let instrumento: String
+        /// El traste del capo; 0 sin capo. Los trastes de las formas se cuentan desde él.
+        let capo: Int
+        /// De la más cómoda a la menos; vacía si no hay ninguna.
+        let formas: [Forma]
+    }
+
+    /// `digitaciones Sol7/Si --instrumento ukelele --json`: las formas de cada acorde, una lista aunque sea uno solo.
+    /// Admite las mismas opciones que el texto, salvo `--diagrama` y `--musicxml`, que no cambian nada.
+    static func digitacionesJSON(_ textos: [String], _ notacion: Notacion) throws -> [DigitacionesJSON] {
+        let pedido = try pedidoDeDigitaciones(textos)
+        let instrumento = Mensaje.instrumento(pedido.encordado).texto(en: notacion)
+        return try pedido.acordes.map { texto in
+            let acorde = try Acorde(leyendo: texto)
+            return DigitacionesJSON(
+                cifrado: acorde.cifrado(en: notacion), instrumento: instrumento, capo: pedido.capo,
+                formas: pedido.formas(de: acorde).map { forma in
+                    DigitacionesJSON.Forma(
+                        tablatura: forma.tablatura, trastes: forma.trastes,
+                        notas: forma.notas(para: acorde).map { $0.nombre(en: notacion) }, dedos: forma.dedos,
+                        cejilla: forma.cejilla)
+                })
+        }
     }
 
     // MARK: Análisis

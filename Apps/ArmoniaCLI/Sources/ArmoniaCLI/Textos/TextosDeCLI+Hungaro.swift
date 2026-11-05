@@ -154,10 +154,11 @@ extension TextosDeCLI {
         fa dièse vagy Fa♯, F Kreuz vagy Fis.
         A tömör írásmódokban az oktáv alsó indexbe kerül (La₄), a többiben számjeggyel (La4);
         a --subindices vagy a --cifras rögzíti (mindkettőt olvassa).
-        A --json kapcsolóval a chord, identify, scale, analyze, set és row JSON-ban adja az adatait.
+        A --json kapcsolóval a chord, identify, arpeggio, interval, scale, key, analyze, set, row és
+        fingerings JSON-ban adja az adatait.
         """,
-        sintaxisAyuda: "help",
-        descripcionAyuda: "ez a súgó",
+        sintaxisAyuda: "help [<parancs>]",
+        descripcionAyuda: "ez a súgó, vagy egy parancs súgója\n(<parancs> --help is)",
         sintaxisCompletado: "completion bash|zsh|fish",
         descripcionCompletado: "a parancsok és az opciók kiegészítése\na parancsértelmezőben",
         sintaxisManual: "manual",
@@ -314,6 +315,13 @@ extension TextosDeCLI {
         mensajeDeTodosLosIntervalos: "minden hangközös",
         mensajeFormasDistintas: { n in "\(n) különböző forma" },
         mensajeHexacordos: "hexachordok",
-        mensajeFormasCombinatorias: "kombinatorikus formák"
+        mensajeFormasCombinatorias: "kombinatorikus formák",
+
+        // LineaDeComandos.swift (versión, erratas y salida binaria)
+        sintaxisVersion: "--version",
+        descripcionVersion: "az armonia verziója",
+        quisoDecir: { x in "Erre gondoltál: „\(x)”?" },
+        pruebaLaAyudaDe: { o in "Próbáld ki: „armonia help \(o)”." },
+        salidaBinaria: "a kimenet bináris fájl (MIDI, PDF vagy PNG); mentsd el így: > fájl"
     )
 }

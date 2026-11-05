@@ -7,20 +7,24 @@ extension LineaDeComandos {
         Orden(nombres: ["identificar", "identify"], ayuda: ayudaDeIdentificar) { try identificarConOpciones($0, $1) },
         Orden(nombres: ["arpegio", "arpeggio"], ayuda: ayudaDeArpegio) { try arpegio($0, $1) },
         Orden(nombres: ["intervalo", "interval"], ayuda: ayudaDeIntervalo) { resto, notacion in
+            if let opcion = Argumentos(resto).opcionDesconocida { return uso(.opcionDesconocida(opcion), notacion) }
             guard resto.count == 2 else { return uso(.dosNotas, notacion) }
             return bien(try intervalo(resto[0], resto[1], notacion))
         },
         Orden(nombres: ["escala", "scale"], ayuda: ayudaDeEscala) { try escala($0, $1) },
         Orden(nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas) { escalas($0, $1) },
         Orden(nombres: ["tonalidad", "key"], ayuda: ayudaDeTonalidad) { resto, notacion in
+            if let opcion = Argumentos(resto).opcionDesconocida { return uso(.opcionDesconocida(opcion), notacion) }
             guard !resto.isEmpty else { return uso(.faltaTonalidad, notacion) }
             return bien(describir(tonalidad: try Tonalidad(leyendo: resto.joined(separator: " ")), notacion))
         },
         Orden(nombres: ["conjunto", "set"], ayuda: ayudaDeConjunto) { resto, notacion in
+            if let opcion = Argumentos(resto).opcionDesconocida { return uso(.opcionDesconocida(opcion), notacion) }
             guard !resto.isEmpty else { return uso(.faltaConjunto, notacion) }
             return bien(describir(conjunto: try ConjuntoDeClases(leyendo: resto.joined(separator: " ")), notacion))
         },
         Orden(nombres: ["serie", "row"], ayuda: ayudaDeSerie) { resto, notacion in
+            if let opcion = Argumentos(resto).opcionDesconocida { return uso(.opcionDesconocida(opcion), notacion) }
             guard !resto.isEmpty else { return uso(.faltaSerie, notacion) }
             return bien(describir(serie: try SerieDodecafonica(leyendo: resto.joined(separator: " ")), notacion))
         },

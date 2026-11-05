@@ -154,10 +154,11 @@ extension TextosDeCLI {
         fa dièse или Fa♯, F Kreuz или Fis.
         В компактных написаниях октава пишется нижним индексом (La₄), в остальных — цифрами (La4);
         --subindices или --cifras задают её (читаются обе формы).
-        С --json команды chord, identify, scale, analyze, set и row выводят данные в JSON.
+        С --json команды chord, identify, arpeggio, interval, scale, key, analyze, set, row и
+        fingerings выводят данные в JSON.
         """,
-        sintaxisAyuda: "help",
-        descripcionAyuda: "эта справка",
+        sintaxisAyuda: "help [<команда>]",
+        descripcionAyuda: "эта справка или справка по команде\n(также <команда> --help)",
         sintaxisCompletado: "completion bash|zsh|fish",
         descripcionCompletado: "автодополнение команд и параметров\nдля оболочки",
         sintaxisManual: "manual",
@@ -314,6 +315,13 @@ extension TextosDeCLI {
         mensajeDeTodosLosIntervalos: "всеинтервальная",
         mensajeFormasDistintas: { n in "различных форм: \(n)" },
         mensajeHexacordos: "гексахорды",
-        mensajeFormasCombinatorias: "комбинаторные формы"
+        mensajeFormasCombinatorias: "комбинаторные формы",
+
+        // LineaDeComandos.swift (versión, erratas y salida binaria)
+        sintaxisVersion: "--version",
+        descripcionVersion: "версия armonia",
+        quisoDecir: { x in "Возможно, имелось в виду «\(x)»?" },
+        pruebaLaAyudaDe: { o in "Попробуй «armonia help \(o)»." },
+        salidaBinaria: "вывод — двоичный файл (MIDI, PDF или PNG); сохрани его с помощью > файл"
     )
 }

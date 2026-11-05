@@ -31,7 +31,8 @@ armonia analizar Do Lam Re7 Sol7 Do                          # grados, funciones
 armonia digitaciones Sol7/Si --instrumento ukelele --diagrama
 armonia grabar coral Do3 Mi4 Sol4 Do5 > coral.pdf            # con LilyPond instalado
 armonia acorde Sol7/Si --json | jq '.[0].notas'              # los datos en JSON, para scripts
-armonia ayuda                                                # todas las órdenes
+echo "Do Mi Sol Sib" | armonia identificar                     # también de la entrada estándar
+armonia ayuda                                                # todas las órdenes (ayuda acorde: solo esa)
 ```
 
 Lee los nombres en español o en inglés (Do, C, Sib, Bb) y responde en el idioma de `--idioma`.

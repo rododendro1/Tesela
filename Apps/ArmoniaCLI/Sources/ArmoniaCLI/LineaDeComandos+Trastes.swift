@@ -5,9 +5,34 @@ import Foundation
 // MARK: - Digitaciones: cómo tocar un acorde en un instrumento de cuerda con trastes
 
 extension LineaDeComandos {
-    /// `digitaciones Sol7/Si --instrumento ukelele`: formas de tocar el acorde, de la más cómoda a la menos.
-    static func digitaciones(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+    /// Lo que pide `digitaciones`: el instrumento, los límites de las formas y los acordes, para el texto y para
+    /// `--json`.
+    struct PedidoDeDigitaciones {
+        var conDiagrama: Bool
+        var completo: Bool
+        var comoMusicXML: Bool
+        var encordado: Encordado
+        var limite: Int
+        var maximoDeDedos: Int
+        var maximoTraste: Int
+        var capo: Int
+        /// Los cifrados, tal como se han escrito.
+        var acordes: [String]
+
+        var mastil: Mastil { Mastil(encordado.conCapo(capo), numeroDeTrastes: 24 - capo) }
+
+        /// Las formas de un acorde, de la más cómoda a la menos, como mucho `limite`.
+        func formas(de acorde: Acorde, limite: Int? = nil) -> [Digitacion] {
+            mastil.digitaciones(
+                de: acorde, maximoDeDedos: maximoDeDedos, maximoTraste: maximoTraste, exigirQuinta: completo,
+                limite: limite ?? self.limite)
+        }
+    }
+
+    /// Lee las opciones y los acordes de `digitaciones`, o lanza `FalloDeUso` con lo que está mal escrito.
+    static func pedidoDeDigitaciones(_ argumentos: [String]) throws -> PedidoDeDigitaciones {
         var argumentos = Argumentos(argumentos)
+        func fallo(_ error: ErrorDeUso) -> FalloDeUso { FalloDeUso(error: error) }
 
         // `--tab` era el nombre anterior de `--diagrama`.
         let conDiagrama = argumentos.quitarMarca("--diagrama", "--diagram", "--tab")
@@ -22,10 +47,10 @@ extension LineaDeComandos {
         case .ausente:
             break
         case .sinValor:
-            return uso(.faltaInstrumento, notacion)
+            throw fallo(.faltaInstrumento)
         case .valor(let nombre):
             guard let encontrado = try? Encordado(leyendo: nombre) else {
-                return uso(.instrumentoDesconocido(nombre), notacion)
+                throw fallo(.instrumentoDesconocido(nombre))
             }
             encordado = encontrado
         }
@@ -35,10 +60,10 @@ extension LineaDeComandos {
         case .ausente:
             break
         case .sinValor:
-            return uso(.faltaLimite, notacion)
+            throw fallo(.faltaLimite)
         case .valor(let texto):
             guard let n = Int(texto), (1...200).contains(n) else {
-                return uso(.limiteFueraDeRango, notacion)
+                throw fallo(.limiteFueraDeRango)
             }
             limite = n
         }
@@ -48,10 +73,10 @@ extension LineaDeComandos {
         case .ausente:
             break
         case .sinValor:
-            return uso(.faltanDedos, notacion)
+            throw fallo(.faltanDedos)
         case .valor(let texto):
             guard let n = Int(texto), (1...4).contains(n) else {
-                return uso(.dedosFueraDeRango, notacion)
+                throw fallo(.dedosFueraDeRango)
             }
             maximoDeDedos = n
         }
@@ -61,10 +86,10 @@ extension LineaDeComandos {
         case .ausente:
             break
         case .sinValor:
-            return uso(.faltaTraste, notacion)
+            throw fallo(.faltaTraste)
         case .valor(let texto):
             guard let n = Int(texto), (0...24).contains(n) else {
-                return uso(.trasteFueraDeRango, notacion)
+                throw fallo(.trasteFueraDeRango)
             }
             maximoTraste = n
         }
@@ -75,29 +100,32 @@ extension LineaDeComandos {
         case .ausente:
             break
         case .sinValor:
-            return uso(.capoFueraDeRango, notacion)
+            throw fallo(.capoFueraDeRango)
         case .valor(let texto):
-            guard let n = Int(texto), (0...12).contains(n) else { return uso(.capoFueraDeRango, notacion) }
+            guard let n = Int(texto), (0...12).contains(n) else { throw fallo(.capoFueraDeRango) }
             capo = n
         }
 
         if let desconocida = argumentos.opcionDesconocida {
-            return uso(.opcionDesconocida(desconocida), notacion)
+            throw fallo(.opcionDesconocida(desconocida))
         }
-        guard !argumentos.restantes.isEmpty else { return uso(.faltaCifradoDeDigitaciones, notacion) }
+        guard !argumentos.restantes.isEmpty else { throw fallo(.faltaCifradoDeDigitaciones) }
 
-        let mastil = Mastil(encordado.conCapo(capo), numeroDeTrastes: 24 - capo)
-        if comoMusicXML {
-            let acordes = try argumentos.restantes.map { try Acorde(leyendo: $0) }
+        return PedidoDeDigitaciones(
+            conDiagrama: conDiagrama, completo: completo, comoMusicXML: comoMusicXML, encordado: encordado,
+            limite: limite, maximoDeDedos: maximoDeDedos, maximoTraste: maximoTraste, capo: capo,
+            acordes: argumentos.restantes)
+    }
+
+    /// `digitaciones Sol7/Si --instrumento ukelele`: formas de tocar el acorde, de la más cómoda a la menos.
+    static func digitaciones(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        let pedido = try pedidoDeDigitaciones(argumentos)
+        let acordes = try pedido.acordes.map { try Acorde(leyendo: $0) }
+        if pedido.comoMusicXML {
             var formas: [Digitacion] = []
             var conForma: [Acorde] = []
             for acorde in acordes {
-                guard
-                    let forma = mastil.digitaciones(
-                        de: acorde, maximoDeDedos: maximoDeDedos, maximoTraste: maximoTraste,
-                        exigirQuinta: completo, limite: 1
-                    ).first
-                else { continue }
+                guard let forma = pedido.formas(de: acorde, limite: 1).first else { continue }
                 formas.append(forma)
                 conForma.append(acorde)
             }
@@ -107,14 +135,11 @@ extension LineaDeComandos {
             return bien(xml.trimmingCharacters(in: "\n"))
         }
         // «Do · guitarra», y con capo, «Do · guitarra · Capo en el traste 2».
-        var instrumento = Mensaje.instrumento(encordado).texto(en: notacion)
-        if capo > 0 { instrumento += " · " + notacion.texto { $0.capo(capo) } }
-        let bloques = try argumentos.restantes.map { texto -> String in
-            let acorde = try Acorde(leyendo: texto)
+        var instrumento = Mensaje.instrumento(pedido.encordado).texto(en: notacion)
+        if pedido.capo > 0 { instrumento += " · " + notacion.texto { $0.capo(pedido.capo) } }
+        let bloques = acordes.map { acorde -> String in
             var lineas = ["\(acorde.cifrado(en: notacion)) · \(instrumento)"]
-            let formas = mastil.digitaciones(
-                de: acorde, maximoDeDedos: maximoDeDedos, maximoTraste: maximoTraste,
-                exigirQuinta: completo, limite: limite)
+            let formas = pedido.formas(de: acorde)
             guard !formas.isEmpty else {
                 lineas.append("  " + Mensaje.sinDigitaciones.texto(en: notacion))
                 return lineas.joined(separator: "\n")
@@ -124,7 +149,7 @@ extension LineaDeComandos {
                 lineas.append(
                     "  " + forma.tablatura.padding(hasta: 17) + notas.padding(hasta: 18)
                         + descripcion(de: forma, notacion))
-                if conDiagrama { lineas += diagrama(de: forma, notacion) }
+                if pedido.conDiagrama { lineas += diagrama(de: forma, notacion) }
             }
             return lineas.joined(separator: "\n")
         }

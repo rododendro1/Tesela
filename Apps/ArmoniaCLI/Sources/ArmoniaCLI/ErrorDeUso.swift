@@ -145,10 +145,31 @@ enum ErrorDeUso {
     /// `cuadricula` con una opción sin valor o con uno que no se lee: unos ejes, una rejilla, una altura o un giro.
     case opcionesDeCuadricula
 
-    /// El mensaje completo, con la línea que remite a la ayuda.
+    /// El mensaje completo: el error, lo que se quiso escribir si se parece a una orden o una opción conocida, y la
+    /// línea que remite a la ayuda, la de la orden si se está ejecutando una (`LineaDeComandos.OrdenEnCurso`).
     func texto(en notacion: Notacion) -> String {
-        "armonia: " + traduccion.en(notacion) + "\n"
-            + TextosDeCLI.en(notacion, \.pruebaLaAyuda) + "\n"
+        var lineas = ["armonia: " + traduccion.en(notacion)]
+        if let propuesta {
+            lineas.append(TextosDeCLI.traduccion { $0.quisoDecir(propuesta) }.en(notacion))
+        }
+        if let enCurso = LineaDeComandos.OrdenEnCurso.actual {
+            lineas.append(TextosDeCLI.traduccion { $0.pruebaLaAyudaDe(enCurso.nombre) }.en(notacion))
+        } else {
+            lineas.append(TextosDeCLI.en(notacion, \.pruebaLaAyuda))
+        }
+        return lineas.joined(separator: "\n") + "\n"
+    }
+
+    /// La orden o la opción conocida que más se parece a la desconocida (Sugerencias.swift).
+    private var propuesta: String? {
+        switch self {
+        case .ordenDesconocida(let orden):
+            return LineaDeComandos.propuesta(para: orden, entre: LineaDeComandos.nombresDeLasOrdenes)
+        case .opcionDesconocida(let opcion):
+            return LineaDeComandos.propuesta(para: opcion, entre: LineaDeComandos.opcionesConocidas)
+        default:
+            return nil
+        }
     }
 
     /// La orden de ejemplo de los errores de las digitaciones: en español y en inglés.

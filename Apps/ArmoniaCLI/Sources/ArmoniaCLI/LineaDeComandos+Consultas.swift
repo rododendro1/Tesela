@@ -167,31 +167,38 @@ extension LineaDeComandos {
     /// `arpegio Do7 --patron alberti`: las notas del arpegio desde la octava 4 y las escalas que encajan con el
     /// acorde (Do7 → Do mixolidio…).
     static func arpegio(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        bien(try arpegios(textos).map { describir(arpegio: $0, notacion) }.joined(separator: "\n\n"))
+    }
+
+    /// Los arpegios de `arpegio`, uno por acorde, para el texto y para `--json`. Lanza `FalloDeUso` si una opción
+    /// está mal escrita.
+    static func arpegios(_ textos: [String]) throws -> [Arpegio] {
+        func fallo(_ error: ErrorDeUso) -> FalloDeUso { FalloDeUso(error: error) }
         var argumentos = Argumentos(textos)
         var patron = Arpegio.Patron.ascendente
         switch argumentos.quitarOpcion("--patron", "--patrón", "--pattern") {
         case .ausente:
             break
         case .sinValor(let nombre):
-            return uso(.faltaValor(nombre), notacion)
+            throw fallo(.faltaValor(nombre))
         case .valor(let texto):
-            guard let elegido = patronDeArpegio(texto) else { return uso(.patronDesconocido(texto), notacion) }
+            guard let elegido = patronDeArpegio(texto) else { throw fallo(.patronDesconocido(texto)) }
             patron = elegido
         }
         var recorrido = RecorridoDeArpegio()
-        if let error = leerRecorrido(&argumentos, en: &recorrido) { return uso(error, notacion) }
+        if let error = leerRecorrido(&argumentos, en: &recorrido) { throw fallo(error) }
         if let desconocida = argumentos.opcionDesconocida {
-            return uso(.opcionDesconocida(desconocida), notacion)
+            throw fallo(.opcionDesconocida(desconocida))
         }
-        guard !argumentos.restantes.isEmpty else { return uso(.faltaCifradoDelArpegio, notacion) }
-        var bloques: [String] = []
+        guard !argumentos.restantes.isEmpty else { throw fallo(.faltaCifradoDelArpegio) }
+        var arpegios: [Arpegio] = []
         for texto in argumentos.restantes {
             let acorde = try Acorde(leyendo: texto)
             var inicio = 0
             if let desde = recorrido.desde {
                 let delGrado = Int(desde).flatMap { Arpegio.indice(delGrado: $0, en: acorde) }
                 let deLaNota = (try? Nota(leyendo: desde)).flatMap { Arpegio.indice(de: $0, en: acorde) }
-                guard let indice = delGrado ?? deLaNota else { return uso(.desdeNoValido(desde), notacion) }
+                guard let indice = delGrado ?? deLaNota else { throw fallo(.desdeNoValido(desde)) }
                 inicio = indice
             }
             let arpegio: Arpegio
@@ -203,9 +210,9 @@ extension LineaDeComandos {
                     acorde, patron: patron, octavas: recorrido.octavas, conOctava: recorrido.conOctava, inicio: inicio,
                     tensiones: recorrido.tensiones, aproximacion: recorrido.aproximacion)
             }
-            bloques.append(describir(arpegio: arpegio, notacion))
+            arpegios.append(arpegio)
         }
-        return bien(bloques.joined(separator: "\n\n"))
+        return arpegios
     }
 
     /// Lo que cambia el recorrido de `arpegio`, además del patrón.
@@ -288,14 +295,16 @@ extension LineaDeComandos {
     static func patronDeArpegio(_ texto: String) -> Arpegio.Patron? { try? Arpegio.Patron(leyendo: texto) }
 
     static func intervalo(_ a: String, _ b: String, _ notacion: Notacion) throws -> String {
-        let intervalo: Intervalo
-        if let grave = try? Altura(leyendo: a), let aguda = try? Altura(leyendo: b) {
-            intervalo = aguda - grave
-        } else {
-            intervalo = try Nota(leyendo: a).intervalo(hasta: try Nota(leyendo: b))
-        }
+        let intervalo = try intervalo(a, b)
         let semitonos = Mensaje.semitonos(intervalo.semitonos).texto(en: notacion)
         return "\(intervalo.nombre(en: notacion)) (\(intervalo.texto(en: notacion)), \(semitonos))"
+    }
+
+    /// El intervalo de una nota a otra: entre las alturas si las dos llevan octava (Do4 Mi5 es una décima), y si no,
+    /// el ascendente entre las notas.
+    static func intervalo(_ a: String, _ b: String) throws -> Intervalo {
+        if let grave = try? Altura(leyendo: a), let aguda = try? Altura(leyendo: b) { return aguda - grave }
+        return try Nota(leyendo: a).intervalo(hasta: try Nota(leyendo: b))
     }
 
     /// Con `conTodosSusAcordes` (`--acordes`), también los acordes que caben sobre cada grado, no solo los de

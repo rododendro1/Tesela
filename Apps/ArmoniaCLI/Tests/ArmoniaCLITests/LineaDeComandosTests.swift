@@ -115,9 +115,18 @@ import Testing
         #expect(Set(nombres).count == nombres.count)
         for nombre in nombres { #expect(nombre == nombre.lowercased(), Comment(rawValue: nombre)) }
         for orden in LineaDeComandos.ordenes { #expect(!orden.ayuda.isEmpty, Comment(rawValue: orden.nombres[0])) }
-        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 56)
+        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 57)
         // Los nombres no distinguen mayúsculas.
         #expect(salida("ACORDE Do") == salida("acorde Do"))
+    }
+
+    /// Lo que sigue a «armonia ayuda» en la línea que remite a la ayuda de un error de uso: « acorde» con la orden
+    /// `acorde`, y nada si la orden no existe o el error es de una opción general.
+    static func ayudaDe(_ orden: String) -> String {
+        // Las opciones generales se leen antes que la orden: sus errores remiten a la ayuda completa.
+        if orden.contains("--escritura") { return "" }
+        let nombre = String(orden.split(separator: " ")[0])
+        return LineaDeComandos.orden(llamada: nombre) == nil ? "" : " " + nombre
     }
 
     /// Órdenes que terminan en un error de uso.
@@ -204,7 +213,9 @@ import Testing
         for orden in Self.ordenesMalEscritas {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
             #expect(resultado.codigo == 2, Comment(rawValue: orden))
-            #expect(resultado.error.hasSuffix("Try \"armonia help\".\n"), "\(orden): \(resultado.error)")
+            #expect(
+                resultado.error.hasSuffix("Try \"armonia help\(Self.ayudaDe(orden))\".\n"),
+                "\(orden): \(resultado.error)")
             comprobar(resultado.error, orden)
         }
     }
@@ -262,10 +273,11 @@ import Testing
         #expect(salida("acorde Sol7/Si --idioma ca").hasPrefix("Sol7/Si: sèptima de dominant\n"))
         #expect(salida("escala Re dórico --idioma eu").hasPrefix("re doriarra"))
         // Los errores de lectura los traduce el motor.
-        #expect(resultado("acorde", "Do7(b3)", "--idioma", "eu").error.hasPrefix("Ezin da «Do7(b3)» irakurri"))
+        #expect(resultado("acorde", "Do7(b3)", "--idioma", "eu").error.hasPrefix("armonia: Ezin da «Do7(b3)» irakurri"))
         #expect(
             resultado("digitaciones", "C", "--limite", "0", "--idioma", "eu").error
-                == "armonia: muga 1etik 200era bitarteko zenbaki bat da: --limite 5\nProbatu «armonia ayuda».\n")
+                == "armonia: muga 1etik 200era bitarteko zenbaki bat da: --limite 5\nProbatu «armonia ayuda digitaciones».\n"
+        )
         #expect(resultado("acorde", "Do", "--idioma", "xx").codigo == 2)
         #expect(
             resultado("acorde", "Do", "--idioma", "xx").error
@@ -334,14 +346,15 @@ import Testing
     /// occitano no entra: también dice «las» y «los»).
     @Test func erroresEnCatalanGallegoEuskera() {
         let enEspanol = ["Prueba", "hace falta", "hacen falta", "desconocid", " es un", " sin ", " las ", " los "]
-        for (idioma, ayuda) in [
-            ("ca", "Prova «armonia ayuda».\n"), ("gl", "Proba «armonia ayuda».\n"),
-            ("eu", "Probatu «armonia ayuda».\n"), ("pt", "Experimente «armonia ayuda».\n"),
-            ("fr", "Essayez « armonia ayuda ».\n"), ("it", "Prova «armonia ayuda».\n"),
-            ("de", "Versuche „armonia help“.\n"), ("ru", "Попробуй «armonia help».\n"),
-            ("el", "Δοκίμασε «armonia help».\n"),
+        for (idioma, antes, despues) in [
+            ("ca", "Prova «armonia ayuda", "».\n"), ("gl", "Proba «armonia ayuda", "».\n"),
+            ("eu", "Probatu «armonia ayuda", "».\n"), ("pt", "Experimente «armonia ayuda", "».\n"),
+            ("fr", "Essayez « armonia ayuda", " ».\n"), ("it", "Prova «armonia ayuda", "».\n"),
+            ("de", "Versuche „armonia help", "“.\n"), ("ru", "Попробуй «armonia help", "».\n"),
+            ("el", "Δοκίμασε «armonia help", "».\n"),
         ] {
             for orden in Self.ordenesMalEscritas {
+                let ayuda = antes + Self.ayudaDe(orden) + despues
                 let resultado = LineaDeComandos.ejecutar(
                     (orden + " --idioma " + idioma).split(separator: " ").map(String.init))
                 #expect(resultado.codigo == 2, "\(orden) \(idioma)")
@@ -355,10 +368,11 @@ import Testing
 
     @Test func erroresEnIngles() {
         let error = resultado("digitaciones", "C", "--limite", "0", "--ingles").error
-        #expect(error == "armonia: the limit is a number from 1 to 200: --limit 5\nTry \"armonia help\".\n")
+        #expect(
+            error == "armonia: the limit is a number from 1 to 200: --limit 5\nTry \"armonia help digitaciones\".\n")
         #expect(
             resultado("digitaciones", "C", "--limite", "0").error
-                == "armonia: el límite es un número de 1 a 200: --limite 5\nPrueba «armonia ayuda».\n")
+                == "armonia: el límite es un número de 1 a 200: --limite 5\nPrueba «armonia ayuda digitaciones».\n")
         #expect(salida("digitaciones C --limite 1 --ingles").hasPrefix("C · guitar\n"))
         #expect(salida("tonalidad F major --ingles").contains("(1 flat)"))
         #expect(salida("tonalidad Fa mayor").contains("(1 bemol)"))
@@ -369,15 +383,16 @@ import Testing
         let lectura = LineaDeComandos.ejecutar(["acorde", "Hm"])
         #expect(lectura.codigo == 1)
         #expect(lectura.salida == "")
-        #expect(lectura.error.hasPrefix("No se puede leer «Hm»"))
-        #expect(LineaDeComandos.ejecutar(["acorde", "Hm", "--ingles"]).error.hasPrefix("Cannot read"))
+        #expect(lectura.error.hasPrefix("armonia: No se puede leer «Hm»"))
+        #expect(LineaDeComandos.ejecutar(["acorde", "Hm", "--ingles"]).error.hasPrefix("armonia: Cannot read"))
 
         for orden in [
             ["foo"], ["intervalo", "Do"], ["acorde"], ["analizar"], ["analizar", "Do", "--en"], ["revisar"],
         ] {
             let resultado = LineaDeComandos.ejecutar(orden)
             #expect(resultado.codigo == 2, "\(orden)")
-            #expect(resultado.error.hasSuffix("Prueba «armonia ayuda».\n"), "\(orden)")
+            let ayuda = orden == ["foo"] ? "" : " " + orden[0]
+            #expect(resultado.error.hasSuffix("Prueba «armonia ayuda\(ayuda)».\n"), "\(orden): \(resultado.error)")
         }
         #expect(LineaDeComandos.ejecutar(["revisar", "Do3", "Mi4,", "Sol2"]).codigo == 1)
     }

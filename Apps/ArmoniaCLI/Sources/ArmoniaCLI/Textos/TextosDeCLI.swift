@@ -314,6 +314,16 @@ struct TextosDeCLI: TextosTraducidos {
     let mensajeHexacordos: String
     let mensajeFormasCombinatorias: String
 
+    // MARK: LineaDeComandos.swift (versión, erratas y salida binaria)
+    let sintaxisVersion: String
+    let descripcionVersion: String
+    /// La propuesta tras una orden o una opción mal escrita: «¿Querías decir «acorde»?».
+    let quisoDecir: @Sendable (String) -> String
+    /// Como `pruebaLaAyuda`, con la ayuda de la orden: «Prueba «armonia ayuda acorde».».
+    let pruebaLaAyudaDe: @Sendable (String) -> String
+    /// Una orden que da un fichero binario con la salida en la terminal.
+    let salidaBinaria: String
+
     /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeCLI>(
