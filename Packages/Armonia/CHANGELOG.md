@@ -2,6 +2,20 @@
 
 ## Sin publicar
 
+### Ventanas de quintas a partir de unas notas
+
+- `VentanaDeQuintas(conteniendo:)`: las doce quintas que contienen unas notas, con las siete naturales si caben y lo
+  más centradas posible en ellas. Do, Mi y Sol dan La♭–Do♯; Do y Mi♭, Sol♭–Si.
+- `Acorde.ventanaDeQuintas`, y `Acorde.ortografiar(midi:)` escribe con ella las notas que no son del acorde, en vez
+  de siempre con sostenidos: un 61 es Re♭ en Do7 (y sigue siendo Do♯ en Do).
+- `TablaArmonica` con alturas nombra los demás hexágonos con la ventana de las alturas dadas, en vez de con bemoles
+  si alguna lleva un bemol y con sostenidos si no: con Do, Mi y Sol, el 56 es La♭3.
+- `TipoDeEscala.cromatica(ventana:)`, con la ventana leída desde Do (`.bemoles`, `.masSimple`, `.sostenidos`…).
+  `cromatica(desdeLaQuinta:)` queda obsoleto.
+- `VentanaDeQuintas.reescrita(_:)` también reescribe una `Altura`, que sigue sonando igual: Si♭4 es La♯4 en
+  `.sostenidos`.
+- `VentanaDeQuintas` es `Codable`.
+
 ### Nombres más claros en la API
 
 Los nombres de antes siguen compilando, obsoletos, en el `Obsoletos.swift` de cada módulo, y Xcode propone el cambio.

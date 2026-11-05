@@ -402,12 +402,15 @@ import Hexagonos
         comprobar(Intervalo.terceraMayor.inversion, #"6ª menor"#, doc, 4)
         comprobar(Altura("La4").frecuencia(), #"440.0"#, doc, 5)
         comprobar(Altura(midi: 63, ventana: .bemoles), #"Mi♭4"#, doc, 6)
-        comprobar(Acorde("Sol7/Si").posicionCerrada(octava: 3), #"[Si3, Re4, Fa4, Sol4]"#, doc, 8)
-        comprobar(Acorde.identificar([.mi, .sol, .do]).first, #"Do/Mi"#, doc, 9)
+        comprobar(VentanaDeQuintas(conteniendo: ["Do", "Mi", "Sol", "Si♭"]), #"Re♭–Fa♯"#, doc, 7)
+        comprobar(VentanaDeQuintas.sostenidos.reescrita(Altura("Si♭4")), #"La♯4"#, doc, 8)
+        comprobar(Acorde("Do7").ortografiar(midi: [61]), #"[Re♭4]"#, doc, 9)
+        comprobar(Acorde("Sol7/Si").posicionCerrada(octava: 3), #"[Si3, Re4, Fa4, Sol4]"#, doc, 11)
+        comprobar(Acorde.identificar([.mi, .sol, .do]).first, #"Do/Mi"#, doc, 12)
         let menor = Escala("La menor armónica")
-        comprobar(menor.cifradosRomanos(cuatriadas: true), #"["i(maj7)", "iiø7", "♭III+maj7", "iv7", "V7", "♭VImaj7", "vii°7"]"#, doc, 12)
-        comprobar(Escala("Mib mayor").armadura, #"-3"#, doc, 14)
-        comprobar(Escala(.do).rotacion(2), #"Re dórico"#, doc, 15)
+        comprobar(menor.cifradosRomanos(cuatriadas: true), #"["i(maj7)", "iiø7", "♭III+maj7", "iv7", "V7", "♭VImaj7", "vii°7"]"#, doc, 15)
+        comprobar(Escala("Mib mayor").armadura, #"-3"#, doc, 17)
+        comprobar(Escala(.do).rotacion(2), #"Re dórico"#, doc, 18)
         _ = i
     }
 
@@ -434,7 +437,7 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/Escalas.md, bloque 2
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 2)
         comprobar(TipoDeEscala.cromaticasPorQuintas.count, #"6"#, doc, 0)
-        comprobar(TipoDeEscala.cromatica(desdeLaQuinta: -5) == TipoDeEscala.cromatica, #"true"#, doc, 1)
+        comprobar(TipoDeEscala.cromatica(ventana: .masSimple) == TipoDeEscala.cromatica, #"true"#, doc, 1)
         comprobar(Escala(.re, .cromaticaConCincoSostenidos).notas, #"Re Re♯ Mi Mi♯ Fa♯ Sol Sol♯ La La♯ Si Si♯ Do♯"#, doc, 2)
         comprobar(Escala("Do cromática con dos bemoles").notas, #"Do Do♯ Re Mi♭ Mi Fa Fa♯ Sol Sol♯ La Si♭ Si"#, doc, 3)
         comprobar(Escala("Do cromatica -6..5").tipo.nombre, #""cromática con cinco bemoles""#, doc, 4)

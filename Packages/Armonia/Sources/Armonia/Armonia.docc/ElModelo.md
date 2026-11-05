@@ -43,6 +43,9 @@ Nota.si.intervalo(hasta: .fa)        // 5ª disminuida
 Intervalo.terceraMayor.inversion           // 6ª menor
 Altura("La4").frecuencia()                  // 440.0
 Altura(midi: 63, ventana: .bemoles)      // Mi♭4
+VentanaDeQuintas(conteniendo: ["Do", "Mi", "Sol", "Si♭"])   // Re♭–Fa♯
+VentanaDeQuintas.sostenidos.reescrita(Altura("Si♭4"))       // La♯4
+Acorde("Do7").ortografiar(midi: [61])                       // [Re♭4]
 
 Acorde("Sol7/Si").posicionCerrada(octava: 3)   // [Si3, Re4, Fa4, Sol4]
 Acorde.identificar([.mi, .sol, .do]).first         // Do/Mi
