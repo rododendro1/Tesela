@@ -182,6 +182,8 @@ struct TextosDeCLI: TextosTraducidos {
     let categoriaDesconocida: @Sendable (String) -> String
     let usoDesconocido: @Sendable (String) -> String
     let ordenDeEscalasDesconocido: @Sendable (String) -> String
+    let intervaloDeEscalasDesconocido: @Sendable (String) -> String
+    let pasoFueraDeRango: String
     let faltanNotas: String
     let dosNotas: String
     let faltaEscala: String

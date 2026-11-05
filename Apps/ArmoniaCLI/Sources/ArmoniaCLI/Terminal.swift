@@ -72,6 +72,13 @@ extension LineaDeComandos {
         (["--categoria", "--category"], CategoriaTradicional.allCases.map(\.rawValue)),
         (["--uso", "--use"], LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }),
         (["--orden", "--sort"], ["brillo", "notas", "brightness", "notes"]),
+        (
+            ["--con-intervalo", "--sin-intervalo", "--with-interval", "--without-interval"],
+            [
+                "semitono", "tono", "tercera-menor", "tercera-mayor", "cuarta", "tritono", "semitone", "tone",
+                "minor-third", "major-third", "fourth", "tritone",
+            ]
+        ),
     ]
 
     /// Lo que va tras el nombre de algunas órdenes.

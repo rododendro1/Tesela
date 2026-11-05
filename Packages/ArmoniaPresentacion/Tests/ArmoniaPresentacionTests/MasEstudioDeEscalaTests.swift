@@ -74,6 +74,18 @@ import Testing
         #expect(PresentacionDeEstudioDeEscala.conSigno(-0.001) == "0")
     }
 
+    @Test func tablaDeEstadisticas() {
+        let tabla = PresentacionDeEstudioDeEscala.tablaDeEstadisticas(
+            [Escala(.do), Escala(.do, .lidio)], notacion: notacion)
+        #expect(tabla.encabezados.count == 7)
+        #expect(tabla.filas.count == 2)
+        #expect(tabla.filas[0][0] == "Do mayor")
+        #expect(tabla.filas[0][2] == "+2")
+        #expect(tabla.filas[1][2] == "+3")
+        #expect(tabla.filas[0][5] == "7-35")
+        #expect(tabla.filas.allSatisfy { $0.count == tabla.encabezados.count })
+    }
+
     @Test func escaleraDeBrillo() throws {
         let escalera = PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: Escala(.do), notacion: notacion)
         let mayor = try #require(escalera.firstIndex { $0.esLaDePartida })
