@@ -469,7 +469,7 @@ extension LineaDeComandos {
         (.klezmer, "klezmer", "klezmer"), (.andes, "andes", "andes"), (.bizancio, "bizancio", "byzantium"),
         (.mesopotamia, "mesopotamia", "mesopotamia"), (.africa, "africa", "africa"),
         (.sudesteAsiatico, "sudeste-asiatico", "southeast-asia"), (.gregoriano, "gregoriano", "gregorian"),
-        (.europa, "europa", "europe"),
+        (.europa, "europa", "europe"), (.vietnam, "vietnam", "vietnam"), (.brasil, "brasil", "brazil"),
     ]
 
     /// Cómo se escribe cada uso en `--uso`, en español y en inglés (se aceptan los dos en cualquier idioma):

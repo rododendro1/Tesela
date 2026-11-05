@@ -39,6 +39,7 @@ EXCEPCIONES = {
     "own",      # el nombre de `--engine own`
     "Japan",    # alemán: el nombre del país
     "Korea",    # alemán: el nombre del país
+    "Vietnam",  # alemán: el nombre del país
 }
 
 _TEXTO = r'"((?:[^"\\]|\\.)*)"'

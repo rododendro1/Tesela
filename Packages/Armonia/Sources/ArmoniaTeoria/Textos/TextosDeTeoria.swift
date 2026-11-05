@@ -229,6 +229,8 @@ struct TextosDeTeoria: TextosTraducidos {
     let tradicionSudesteAsiatico: String
     let tradicionGregoriano: String
     let tradicionEuropa: String
+    let tradicionVietnam: String
+    let tradicionBrasil: String
 
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».
