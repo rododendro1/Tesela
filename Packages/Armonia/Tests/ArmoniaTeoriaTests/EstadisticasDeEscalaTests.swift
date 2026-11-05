@@ -99,11 +99,12 @@ import Testing
         #expect(Escala(.do, .cromatica).estadisticas.pasos == Array(repeating: 1, count: 12))
     }
 
-    @Test func escalaVacia() {
-        let vacia = Escala(.do, TipoDeEscala(nombre: "vacía", intervalos: [])).estadisticas
-        #expect(vacia.numeroDeNotas == 0)
-        #expect(vacia.cardinal == nil)
-        #expect(vacia.brilloPorQuintas == 0)
-        #expect(vacia.pasos.isEmpty)
+    /// Sin intervalos, la escala se queda en la tónica: una sola nota, monotónica, con un paso de una octava.
+    @Test func escalaDeUnaNota() {
+        let sola = Escala(.do, TipoDeEscala(nombre: "vacía", intervalos: [])).estadisticas
+        #expect(sola.numeroDeNotas == 1)
+        #expect(sola.cardinal == .monotonica)
+        #expect(sola.brilloPorQuintas == 0)
+        #expect(sola.pasos == [12])
     }
 }
