@@ -82,6 +82,19 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         }
     }
 
+    /// La palabra que va delante del nombre en `nombreCompleto`: la de la categoría, salvo en los janya, que son
+    /// rāgas, y `nil` en las que se traducen (tetracordo, hexacordo, harmonía, modo gregoriano, afinación y escala).
+    /// El `switch` no tiene `default`: una categoría nueva no compila sin decidir la suya.
+    var palabraDelNombre: CategoriaTradicional? {
+        switch self {
+        case .janya: .raga
+        case .tetracordo, .hexacordo, .harmonia, .modoGregoriano, .afinacion, .escala: nil
+        case .raga, .melakarta, .thaat, .grama, .murchana, .dromos, .maqam, .dastgah, .makam, .mugam, .echos,
+            .shteyger, .qenet, .laras, .pathet, .diao, .jo, .jins, .cesni:
+            self
+        }
+    }
+
     /// ¿Es un rāga? Lo son los rāgas indostánicos, los mēḷa y los janya; el thāṭ no.
     public var esRaga: Bool { self == .raga || self == .melakarta || self == .janya }
 
@@ -147,6 +160,26 @@ extension TipoDeEscala {
     public var padre: TipoDeEscala? {
         guard categoria == .janya, let numero = TipoDeEscala.padresDeLosJanya[nombre] else { return nil }
         return TipoDeEscala.melakarta(numero)
+    }
+
+    /// El nombre con la palabra de su categoría delante: «thāṭ Kāfī», «mēḷa Māyāmālavagauḷa», «rāga Mohanam» (un
+    /// janya es un rāga), «maqam Bayātī», «dromos Hitzáz». Es el nombre a secas si ya la lleva («jins Ḥijāz»,
+    /// «Rast makamı», «echos prótos», «shadd Rāst»), si la categoría es una palabra que se traduce y no se antepone
+    /// en todos los idiomas (tetracordo, harmonía, hexacordo, modo gregoriano, afinación, escala) o si la escala no
+    /// es de otra tradición.
+    public var nombreCompleto: String { nombreCompleto(en: .espanolCompacto) }
+
+    /// `nombreCompleto` en el idioma de los textos de la notación, con la palabra de la categoría en ese idioma (en
+    /// ruso y en griego, transcrita: «рага», «ράγκα»).
+    public func nombreCompleto(en notacion: Notacion) -> String {
+        let suyo = nombre(en: notacion)
+        guard let palabra = categoria?.palabraDelNombre else { return suyo }
+        let clave = TipoDeEscala.normalizar(palabra.nombre)
+        let palabras = TipoDeEscala.normalizar(nombre).split(separator: " ")
+        // «makamı» y «muğamı» empiezan por la palabra; los jo coreanos la llevan al final (P'yŏngjo).
+        let laLleva = palabras.contains { $0.hasPrefix(clave) || (palabra == .jo && $0.hasSuffix(clave)) }
+        if laLleva || palabras.first == "shadd" { return suyo }
+        return "\(palabra.nombre(en: notacion)) \(suyo)"
     }
 
     /// ¿Es un rāga (indostánico, mēḷa o janya)?

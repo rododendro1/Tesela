@@ -311,6 +311,18 @@ TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72
 CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .frances))   // "gamme"
 ```
 
+`nombreCompleto` pone delante del nombre la palabra de su categoría, si es un préstamo (rāga, mēḷa, thāṭ, maqam,
+dromos…) y el nombre no la lleva ya. Un janya va con «rāga». Las categorías que se traducen (tetracordo, harmonía,
+hexacordo, modo gregoriano, afinación y escala) no se anteponen, y las occidentales se quedan con su nombre.
+
+```swift
+TipoDeEscala.kafi.nombreCompleto                // "thāṭ Kāfī"
+TipoDeEscala.mohanam.nombreCompleto             // "rāga Mohanam"
+TipoDeEscala.bayati.nombreCompleto              // "maqam Bayātī"
+TipoDeEscala.rastMakami.nombreCompleto          // "Rast makamı"
+TipoDeEscala.mayor.nombreCompleto               // "mayor"
+```
+
 Las categorías se agrupan en cuatro clases (`ClaseDeEscala`), según qué es la escala: un modo que se toca (un rāga,
 un maqam, un dromos…), una escala madre de la que salen otras (los mēḷa, los thāṭ, los grāma y los laras), un
 fragmento de menos de una octava (los tetracordos y los géneros griegos, los ajnas árabes, los çeşni turcos y los

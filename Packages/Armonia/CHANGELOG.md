@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### El nombre completo de una escala
+
+- `TipoDeEscala.nombreCompleto` (y `nombreCompleto(en:)`) antepone al nombre la palabra de su categoría cuando es
+  un préstamo y el nombre no la lleva ya: «thāṭ Kāfī», «mēḷa Māyāmālavagauḷa», «rāga Mohanam» (los janya van con
+  «rāga»), «maqam Bayātī», «dromos Hitzáz». «jins Ḥijāz» y «Rast makamı» se quedan como están, y también las
+  categorías que se traducen (tetracordo, harmonía, afinación, escala…) y las occidentales.
+
 ### Los colores de Aristóxeno y los adwār de Ṣafī al-Dīn
 
 - Grecia antigua: los colores de Aristóxeno que faltaban (`TipoDeEscala.coloresDeAristoxeno`), en doceavos de
