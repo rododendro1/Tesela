@@ -41,7 +41,8 @@ public struct NotaDeLaPieza: Hashable, Sendable {
     public let dinamica: Dinamica?
     /// Sus articulaciones, sin repetir y en el orden de `Articulacion.allCases`.
     public let articulaciones: [Articulacion]
-    /// El pentagrama de la parte en que se escribe, contando desde 1 (`<staff>` en MusicXML), si el fichero lo dice.
+    /// El pentagrama de la parte en que se escribe, contando desde 0 (`<staff>1</staff>` en MusicXML es el 0), si el
+    /// fichero lo dice.
     public let pentagrama: Int?
     /// La voz en que se escribe (`<voice>` en MusicXML, `<layer n>` en MEI), si el fichero la dice.
     public let voz: Int?

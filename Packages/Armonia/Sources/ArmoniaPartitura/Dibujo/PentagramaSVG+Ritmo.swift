@@ -452,18 +452,18 @@ extension PentagramaSVG {
                 suyas.map(\.hasta)
                 + grupo.flatMap { colocadas[$0].lugares[k].map { y($0, k) } } + [y(arribaElNumero ? 8 : 0, k)]
             let numero = ritmo.cifrasDeLosGrupos.indices.contains(g) ? ritmo.cifrasDeLosGrupos[g] : 3
-            let digitos = String(numero).compactMap(\.wholeNumberValue).map { PentagramaSVG.cifrasDeGrupo[$0] }
+            let cifras = String(numero).compactMap(\.wholeNumberValue).map { PentagramaSVG.cifrasDeGrupo[$0] }
             // Lo que miden juntas las cifras.
             let glifo = Glifo(
-                ancho: digitos.map(\.ancho).reduce(0, +), arriba: digitos.map(\.arriba).reduce(.infinity, min),
-                abajo: digitos.map(\.abajo).reduce(-.infinity, max), trazado: "")
+                ancho: cifras.map(\.ancho).reduce(0, +), arriba: cifras.map(\.arriba).reduce(.infinity, min),
+                abajo: cifras.map(\.abajo).reduce(-.infinity, max), trazado: "")
             let baseDelNumero =
                 arribaElNumero
                 ? (extremos.min() ?? 0) - 0.6 - (PentagramaSVG.grosorDeLaBarra / 2)
                 : (extremos.max() ?? 4) + 0.6 - glifo.arriba + PentagramaSVG.grosorDeLaBarra / 2
             let centro = (inicio + fin) / 2
             var xDelNumero = centro - glifo.ancho / 2
-            for digito in digitos {
+            for digito in cifras {
                 trazos.append(
                     elemento("path").con("transform", "translate(\(n(xDelNumero)) \(n(baseDelNumero)))")
                         .con("d", digito.trazado).vacio)
@@ -508,7 +508,7 @@ extension Voz {
     /// cuentan desde la fundamental del acorde que suena o, sin acordes, desde la tónica de la armadura `.tonalidad`.
     ///
     /// También por evento: `grados` escribe debajo el grado en números romanos (I, V7/V) y `bajoCifrado`, más abajo,
-    /// las cifras del bajo continuo («6», «4»); `digitos`, encima, el dedo
+    /// las cifras del bajo continuo («6», «4»); `dedos`, encima, el dedo
     /// de cada nota (de la grave a la aguda; 0, ninguno), y `tablatura`, debajo del pentagrama, la cuerda y el traste.
     /// Una nota que se parte y se liga lleva todo eso solo en su primera parte.
     ///
@@ -516,11 +516,11 @@ extension Voz {
     /// `svgPentagrama(junto:titulo:acordes:opciones:)`, junto a otra voz en el mismo pentagrama.
     func svgPentagrama(
         titulo: String, acordes: [Int: Acorde] = [:], grados: [Int: String] = [:],
-        bajoCifrado: [Int: [String]] = [:], digitos: [Int: [Int]] = [:], tablatura: Tablatura? = nil,
+        bajoCifrado: [Int: [String]] = [:], dedos: [Int: [Int]] = [:], tablatura: Tablatura? = nil,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
         svgPentagrama(
-            titulo: titulo, acordes: acordes, grados: grados, bajoCifrado: bajoCifrado, digitos: digitos,
+            titulo: titulo, acordes: acordes, grados: grados, bajoCifrado: bajoCifrado, dedos: dedos,
             tablatura: tablatura, tonica: nil, armadura: nil, opciones: opciones)
     }
 
@@ -539,11 +539,11 @@ extension Voz {
     /// `opciones`. Con `opciones.maquetacion.compasesPorLinea`, en varias líneas (`PentagramaSVG+Lineas.swift`).
     func svgPentagrama(
         titulo: String, acordes: [Int: Acorde], grados: [Int: String], bajoCifrado: [Int: [String]],
-        digitos: [Int: [Int]], tablatura: Tablatura?, tonica: Nota?, armadura: [Nota]?,
+        dedos: [Int: [Int]], tablatura: Tablatura?, tonica: Nota?, armadura: [Nota]?,
         opciones: OpcionesDePentagrama, microtonos: [Int: [PentagramaSVG.Microtono?]]? = nil
     ) -> String {
         let anotaciones = AnotacionesDelPentagrama(
-            acordes: acordes, grados: grados, bajoCifrado: bajoCifrado, digitos: digitos, tablatura: tablatura,
+            acordes: acordes, grados: grados, bajoCifrado: bajoCifrado, dedos: dedos, tablatura: tablatura,
             microtonos: microtonos)
         let lineas = dibujosPorLinea(
             titulo: titulo, anotaciones: anotaciones, tonica: tonica, armadura: armadura, opciones: opciones)
@@ -576,7 +576,7 @@ extension Voz {
         )
         dibujo.grados = porColumna.grados
         dibujo.bajosCifrados = porColumna.bajoCifrado
-        dibujo.digitos = porColumna.digitos
+        dibujo.dedos = porColumna.dedos
         for (evento, primera) in zip(eventos, primeras) where !evento.articulaciones.isEmpty {
             dibujo.articulaciones[primera] = evento.articulaciones
         }

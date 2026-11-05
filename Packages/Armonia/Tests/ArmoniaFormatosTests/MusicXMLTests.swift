@@ -182,7 +182,7 @@ import Testing
     @Test func textoEscapado() throws {
         let raiz = leer(
             try Voz(leyendo: "Do4:1").partitura(
-                encabezado: Encabezado(titulo: "Do & Re <\"1\">", parte: "Flauta & voz")
+                encabezado: Encabezado(titulo: "Do & Re <\"1\">", nombreDeLaParte: "Flauta & voz")
             ).musicXML())
         #expect(raiz["work"]?["work-title"]?.texto == "Do & Re <\"1\">")
         #expect(raiz.buscar("part-name").first?.texto == "Flauta & voz")

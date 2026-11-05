@@ -46,7 +46,7 @@ extension Partitura {
                 return linea.marcadores[inicio] ?? ""
             }
             archivo.anadir(
-                linea.voz.eventos, nombre: linea.nombre ?? parte, instrumento: instrumento,
+                linea.voz.eventos, nombre: linea.nombre ?? nombreDeLaParte, instrumento: instrumento,
                 marcadores: linea.marcadores.isEmpty ? [] : marcadores)
         }
         return archivo.datos
@@ -109,7 +109,7 @@ extension Coral {
             de: self, duracion: duracion, tonalidad: encabezado.tonalidad, cifrados: cifrados, analisis: analisis)
         var cabecera = encabezado
         cabecera.tonalidad = anotado.tonalidad
-        cabecera.parte = encabezado.parte ?? "Coro"
+        cabecera.nombreDeLaParte = encabezado.nombreDeLaParte ?? "Coro"
         cabecera.instrumento = encabezado.instrumento ?? 52
         var pentagramas = [Partitura.Pentagrama(clave: .sol, voces: []), Partitura.Pentagrama(clave: .fa, voces: [])]
         let n = numeroDeVoces
@@ -166,7 +166,7 @@ extension AnalisisArmonico {
         }
         var cabecera = encabezado
         cabecera.tonalidad = tonalidad
-        cabecera.parte = encabezado.parte ?? "Piano"
+        cabecera.nombreDeLaParte = encabezado.nombreDeLaParte ?? "Piano"
         let deLosAcordes = Partitura.Linea(
             Voz(superior, compas: compas), nombre: TextosDeFormatos.en(notacion, \.pistaDeAcordes),
             cifrados: anotado.cifrados, marcadores: marcadores)
@@ -215,7 +215,7 @@ extension Contrapunto {
     public func partitura(encabezado: Encabezado = Encabezado()) -> Partitura {
         let lineas = vocesDeArribaAbajo
         var cabecera = encabezado
-        cabecera.parte = lineas.map(\.nombre).joined(separator: " · ")
+        cabecera.nombreDeLaParte = lineas.map(\.nombre).joined(separator: " · ")
         cabecera.instrumento = encabezado.instrumento ?? 52
         return Partitura(
             pentagramas: lineas.map { Partitura.Pentagrama(voces: [Partitura.Linea($0.voz, nombre: $0.nombre)]) },

@@ -15,29 +15,29 @@ import Testing
 
     @Test func laDeUnaVoz() {
         let partitura = voz.partitura(encabezado: Encabezado(titulo: "Escala", tempo: Tempo(90)))
-        #expect(partitura.parte == "Voz" && partitura.instrumento == 0)
+        #expect(partitura.nombreDeLaParte == "Voz" && partitura.instrumento == 0)
         #expect(partitura.encabezado.tonalidad != nil && partitura.compas == voz.compas)
         #expect(voz.partitura(clave: .fa).pentagramas[0].claveEscrita == .fa)
-        let flauta = voz.partitura(encabezado: Encabezado(parte: "Flauta", instrumento: 73))
-        #expect(flauta.parte == "Flauta" && flauta.instrumento == 73)
+        let flauta = voz.partitura(encabezado: Encabezado(nombreDeLaParte: "Flauta", instrumento: 73))
+        #expect(flauta.nombreDeLaParte == "Flauta" && flauta.instrumento == 73)
         #expect(flauta.musicXML().contains("<part-name>Flauta</part-name>"))
     }
 
     @Test func laDeUnCoral() {
         let partitura = coral.partitura(duracion: .blanca, cifrados: true, analisis: true)
-        #expect(partitura.parte == "Coro" && partitura.instrumento == 52)
+        #expect(partitura.nombreDeLaParte == "Coro" && partitura.instrumento == 52)
         #expect(partitura.pentagramas.map(\.claveEscrita) == [.sol, .fa])
         #expect(partitura.lineas.count == 4 && partitura.tonalidadDelAnalisis != nil)
         #expect(!partitura.lineas[0].linea.cifrados.isEmpty && !partitura.lineas[3].linea.analisis.isEmpty)
-        let piano = coral.partitura(encabezado: Encabezado(parte: "Piano", instrumento: 0))
-        #expect(piano.parte == "Piano" && piano.instrumento == 0 && piano.tonalidadDelAnalisis == nil)
+        let piano = coral.partitura(encabezado: Encabezado(nombreDeLaParte: "Piano", instrumento: 0))
+        #expect(piano.nombreDeLaParte == "Piano" && piano.instrumento == 0 && piano.tonalidadDelAnalisis == nil)
     }
 
     @Test func laDeUnaProgresion() throws {
         let partitura = progresion.partitura(duracion: .blanca)
-        #expect(partitura.llave && partitura.parte == "Piano" && partitura.instrumento == 0)
+        #expect(partitura.llave && partitura.nombreDeLaParte == "Piano" && partitura.instrumento == 0)
         #expect(partitura.encabezado.tonalidad == progresion.tonalidad)
-        #expect(progresion.partitura().lineas.allSatisfy { !$0.linea.marcadores.isEmpty || $0.pentagrama == 2 })
+        #expect(progresion.partitura().lineas.allSatisfy { !$0.linea.marcadores.isEmpty || $0.pentagrama == 1 })
         let sinNada = progresion.partitura(cifrados: false, analisis: false)
         #expect(sinNada.tonalidadDelAnalisis == nil)
     }
@@ -46,7 +46,8 @@ import Testing
         let ejercicio = try Contrapunto(
             cantusFirmus: "Re4 Fa4 Mi4 Re4", contrapunto: "La4 La4 Sol4 Fa4", especie: .primera)
         let partitura = ejercicio.partitura(encabezado: Encabezado(titulo: "Fux"))
-        #expect(partitura.encabezado.parte == "Contrapunctus · Cantus firmus" && partitura.instrumento == 52)
+        #expect(partitura.encabezado.nombreDeLaParte == "Contrapunctus · Cantus firmus")
+        #expect(partitura.instrumento == 52)
         #expect(partitura.lineas.count == 2 && partitura.encabezado.titulo == "Fux")
     }
 
@@ -91,7 +92,7 @@ import Testing
             ],
             encabezado: Encabezado(titulo: "Tres voces", tonalidad: Tonalidad(.do), tempo: Tempo(60)))
         #expect(partitura.compas == .compasillo && partitura.anacrusa == .cero)
-        #expect(partitura.lineas.map(\.pentagrama) == [1, 1, 2])
+        #expect(partitura.lineas.map(\.pentagrama) == [0, 0, 1])
         #expect(partitura.pentagramas[1].claveEscrita == .fa)
         let xml = partitura.musicXML()
         #expect(xml.contains("<staves>2</staves>") && xml.contains("<work-title>Tres voces</work-title>"))
@@ -129,7 +130,9 @@ import Testing
         let arpegio = Arpegio(Acorde("Do7")).partitura()
         #expect(arpegio.musicXML().contains("<work-title>\(Arpegio(Acorde("Do7")).nombre(en: .espanolCompacto))"))
         let acordes = [Acorde("Do"), Acorde("Sol7")]
-        var progresion = Partitura(acordes: DisposicionDeAcorde.cerrada.conducir(acordes) ?? [], cifrados: acordes)
+        var progresion = Partitura(
+            acordes: DisposicionDeAcorde.cerrada.conducir(acordes) ?? [],
+            porEvento: .init(cifrados: .enOrden(acordes)))
         progresion.notacion = .inglesASCII
         #expect(progresion.musicXML().contains("<work-title>C – G7</work-title>"))
     }

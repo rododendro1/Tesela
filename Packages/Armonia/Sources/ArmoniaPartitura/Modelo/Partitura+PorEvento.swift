@@ -1,19 +1,19 @@
 import ArmoniaNucleo
 import ArmoniaTeoria
 
-// Lo que se anota nota a nota y el ritmo de unas notas tocadas una tras otra: la forma en que lo dan las escalas, los
+// Lo que se anota evento a evento y el ritmo de unas notas tocadas una tras otra: la forma en que lo dan las escalas, los
 // arpegios, las disposiciones y las digitaciones del mástil, que cuentan las notas y no los puntos de la voz.
 
 extension Partitura {
-    /// Lo que se anota en una voz, nota a nota: cada cosa por el índice de su evento, contando desde 0. Es la forma en
+    /// Lo que se anota en una voz, evento a evento: cada cosa por el índice de su evento, contando desde 0. Es la forma en
     /// que lo dan las escalas, los arpegios y el mástil; una ``Linea`` lo guarda por el punto en que empieza cada
-    /// evento, y ``Linea/init(_:porNota:nombre:plicaArriba:tonica:)`` y ``Linea/porNota`` pasan de una forma a la
+    /// evento, y ``Linea/init(_:porEvento:nombre:plicaArriba:tonica:)`` y ``Linea/porEvento`` pasan de una forma a la
     /// otra.
     ///
     ///     let voz = try Voz(leyendo: "Do4:4 Mi4:4 Sol4:2")
-    ///     let linea = Partitura.Linea(voz, porNota: .init(cifrados: [0: Acorde("Do")], digitos: [2: [5]]))
-    ///     linea.digitos   // [1/2: [5]]: el dedo de la tercera nota, por donde empieza
-    public struct AnotacionesPorNota: Hashable, Sendable {
+    ///     let linea = Partitura.Linea(voz, porEvento: .init(cifrados: [0: Acorde("Do")], dedos: [2: [5]]))
+    ///     linea.dedos   // [1/2: [5]]: el dedo de la tercera nota, por donde empieza
+    public struct AnotacionesPorEvento: Hashable, Sendable {
         /// El acorde que se cifra encima de cada nota.
         public var cifrados: [Int: Acorde]
         /// El análisis (cifrado romano y función) que se escribe debajo.
@@ -25,14 +25,14 @@ extension Partitura {
         /// Las cifras del bajo continuo, de arriba abajo.
         public var bajoCifrado: [Int: [String]]
         /// Los dedos, de la nota más grave a la más aguda.
-        public var digitos: [Int: [Int]]
+        public var dedos: [Int: [Int]]
         /// La cuerda y el traste de cada nota, en la tablatura (``Tablatura/notas``).
         public var pulsaciones: [Int: [Tablatura.Pulsacion]]
 
         /// Lo que se anota en cada nota, por su índice.
         public init(
             cifrados: [Int: Acorde] = [:], analisis: [Int: AcordeAnalizado] = [:], marcadores: [Int: String] = [:],
-            grados: [Int: String] = [:], bajoCifrado: [Int: [String]] = [:], digitos: [Int: [Int]] = [:],
+            grados: [Int: String] = [:], bajoCifrado: [Int: [String]] = [:], dedos: [Int: [Int]] = [:],
             pulsaciones: [Int: [Tablatura.Pulsacion]] = [:]
         ) {
             self.cifrados = cifrados
@@ -40,18 +40,13 @@ extension Partitura {
             self.marcadores = marcadores
             self.grados = grados
             self.bajoCifrado = bajoCifrado
-            self.digitos = digitos
+            self.dedos = dedos
             self.pulsaciones = pulsaciones
-        }
-
-        /// Uno por nota, en orden: el primero para la nota 0, el segundo para la 1…
-        static func enOrden<Valor>(_ lista: [Valor]) -> [Int: Valor] {
-            Dictionary(uniqueKeysWithValues: lista.enumerated().map { ($0.offset, $0.element) })
         }
     }
 
     /// El ritmo de unas notas tocadas una tras otra (una escala, un arpegio, una posición del mástil): sin él, cada
-    /// nota en una redonda y sin ritmo en el dibujo (``Partitura/ritmo``); con una figura, todas con ella y la última,
+    /// nota en una redonda y sin ritmo en el dibujo (``Partitura/dibujaElRitmo``); con una figura, todas con ella y la última,
     /// una negra si la figura es más corta.
     ///
     ///     Escala(.re, .dorico).partitura(ritmo: .figura(.corchea))   // en corcheas
@@ -78,28 +73,38 @@ extension Partitura {
 }
 
 extension Partitura.Linea {
-    /// La voz con lo que se anota en cada nota, por su índice (``Partitura/AnotacionesPorNota``), llevado al punto en
+    /// La voz con lo que se anota en cada nota, por su índice (``Partitura/AnotacionesPorEvento``), llevado al punto en
     /// que empieza cada evento. Los índices que no son de ningún evento se descartan.
     public init(
-        _ voz: Voz, porNota anotaciones: Partitura.AnotacionesPorNota, nombre: String? = nil,
+        _ voz: Voz, porEvento anotaciones: Partitura.AnotacionesPorEvento, nombre: String? = nil,
         plicaArriba: Bool? = nil, tonica: Nota? = nil
     ) {
         self.init(
             voz, nombre: nombre, plicaArriba: plicaArriba, cifrados: voz.porInicio(anotaciones.cifrados),
             analisis: voz.porInicio(anotaciones.analisis), marcadores: voz.porInicio(anotaciones.marcadores),
             grados: voz.porInicio(anotaciones.grados), bajoCifrado: voz.porInicio(anotaciones.bajoCifrado),
-            digitos: voz.porInicio(anotaciones.digitos), pulsaciones: voz.porInicio(anotaciones.pulsaciones),
+            dedos: voz.porInicio(anotaciones.dedos), pulsaciones: voz.porInicio(anotaciones.pulsaciones),
             tonica: tonica)
     }
 
-    /// Lo que se anota en la voz, nota a nota (por el índice de cada evento): lo que no empieza con ningún evento
+    /// Lo que se anota en la voz, evento a evento (por el índice de cada evento): lo que no empieza con ningún evento
     /// no está.
-    public var porNota: Partitura.AnotacionesPorNota {
-        Partitura.AnotacionesPorNota(
+    public var porEvento: Partitura.AnotacionesPorEvento {
+        Partitura.AnotacionesPorEvento(
             cifrados: voz.porEvento(cifrados), analisis: voz.porEvento(analisis),
             marcadores: voz.porEvento(marcadores), grados: voz.porEvento(grados),
-            bajoCifrado: voz.porEvento(bajoCifrado), digitos: voz.porEvento(digitos),
+            bajoCifrado: voz.porEvento(bajoCifrado), dedos: voz.porEvento(dedos),
             pulsaciones: voz.porEvento(pulsaciones))
+    }
+}
+
+extension Dictionary where Key == Int {
+    /// Uno por nota (o por columna), en orden: el primero para la 0, el segundo para la 1… Es la forma de dar en
+    /// ``Partitura/AnotacionesPorEvento`` una lista con algo para cada nota.
+    ///
+    ///     Partitura.AnotacionesPorEvento(cifrados: .enOrden([Acorde("Do"), Acorde("Sol7")]))   // [0: Do, 1: Sol7]
+    public static func enOrden(_ valores: [Value]) -> [Int: Value] {
+        Dictionary(uniqueKeysWithValues: valores.enumerated().map { ($0.offset, $0.element) })
     }
 }
 

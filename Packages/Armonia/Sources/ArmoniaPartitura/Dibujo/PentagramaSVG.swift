@@ -32,7 +32,7 @@ struct PentagramaSVG {
     /// Los grados de una progresión en números romanos (I, V7/V), debajo de su columna, en la última fila.
     var grados: [Int: String] = [:]
     /// Los dedos de cada columna, encima de las notas, uno por nota de la grave a la aguda (0, sin dedo).
-    var digitos: [Int: [Int]] = [:]
+    var dedos: [Int: [Int]] = [:]
     /// La tablatura debajo del pentagrama, alineada columna a columna.
     var tablatura: Tablatura?
     /// Las cifras del bajo continuo de cada columna, de arriba abajo («6», «4»), debajo de todo.
@@ -329,9 +329,9 @@ struct PentagramaSVG {
             dibujarLasArticulaciones(maquetacion.colocadas, plicasArriba: plicasArriba, en: &lienzo)
         }
         let marcasDeOctava = dibujarLasMarcasDeOctava(sistema, maquetacion, en: &lienzo)
-        let dedos = dibujarLosDedos(maquetacion.centros, en: &lienzo)
+        let textosDeLosDedos = dibujarLosDedos(maquetacion.centros, en: &lienzo)
         let tablaturaColocada = colocarLaTablatura(maquetacion.centros, en: &lienzo)
-        lienzo.notas += dedos + (tablaturaColocada?.textos ?? [])
+        lienzo.notas += textosDeLosDedos + (tablaturaColocada?.textos ?? [])
 
         // Un cifrado o los nombres de un acorde pueden ser más anchos que el acorde: el pentagrama se alarga a la derecha
         // y, si el texto sobresale por la izquierda, las notas se desplazan.

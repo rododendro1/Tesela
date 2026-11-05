@@ -11,8 +11,8 @@ import Testing
     @Test func laTablaturaCuentaLasCuerdasComoElMastil() {
         let doDe5 = PosicionEnElMastil(cuerda: 1, traste: 3)
         let tablatura = Tablatura(guitarra, posiciones: [0: [doDe5]])
-        #expect(tablatura.cuerdas == 6)
-        #expect(tablatura.notas[0] == [Tablatura.Pulsacion(cuerda: 1, traste: 3)])
+        #expect(tablatura.numeroDeCuerdas == 6)
+        #expect(tablatura.pulsaciones[0] == [Tablatura.Pulsacion(cuerda: 1, traste: 3)])
     }
 
     @Test func lasPosicionesRecuerdanSuEscalaYSuAcorde() throws {
@@ -38,7 +38,7 @@ import Testing
         let partitura = digitacion.partitura()
         #expect(partitura.pentagramas.count == 1)
         let pentagrama = partitura.pentagramas[0]
-        #expect(pentagrama.cuerdas == 6)
+        #expect(pentagrama.numeroDeCuerdas == 6)
         let linea = pentagrama.voces[0]
         #expect(linea.cifrados == [.cero: Acorde("Do")])
         #expect(linea.voz.eventos.count == 1 && linea.voz.eventos[0].duracion == .redonda)
@@ -100,17 +100,17 @@ import Testing
         let escala = Escala(.do, .mayor)
         let posicion = try #require(guitarra.posicionesCAGED(de: escala).first)
         let partitura = posicion.partitura(ritmo: .figura(.corchea))
-        #expect(partitura.ritmo && partitura.encabezado.tema == .escala(escala))
+        #expect(partitura.dibujaElRitmo && partitura.encabezado.tema == .escala(escala))
         let linea = partitura.pentagramas[0].voces[0]
-        #expect(partitura.pentagramas[0].cuerdas == 6)
+        #expect(partitura.pentagramas[0].numeroDeCuerdas == 6)
         #expect(linea.voz.eventos.count == posicion.posiciones.count)
         #expect(linea.pulsaciones.count == posicion.posiciones.count)
-        #expect(!posicion.partitura().ritmo)
+        #expect(!posicion.partitura().dibujaElRitmo)
         #expect(posicion.partitura(de: escala) == posicion.partitura())
         // Sin escala, las notas como las da el mástil, con su tablatura.
         let suelta = EscalaEnElMastil(mastil: guitarra, trastes: posicion.trastes, posiciones: posicion.posiciones)
         let sinEscala = suelta.partitura(ritmo: .figura(.corchea))
-        #expect(sinEscala.ritmo && sinEscala.encabezado.tema == nil)
+        #expect(sinEscala.dibujaElRitmo && sinEscala.encabezado.tema == nil)
         #expect(sinEscala.pentagramas[0].voces[0].voz.eventos.map(\.alturas) == posicion.alturas.map { [$0] })
         #expect(sinEscala.pentagramas[0].voces[0].pulsaciones.count == posicion.posiciones.count)
     }
@@ -119,10 +119,10 @@ import Testing
         let acorde = Acorde("Do")
         let arpegio = try #require(guitarra.arpegiosCAGED(de: acorde).first)
         let partitura = arpegio.partitura(ritmo: .figura(.corchea))
-        #expect(partitura.ritmo && partitura.encabezado.tema == .acorde(acorde))
+        #expect(partitura.dibujaElRitmo && partitura.encabezado.tema == .acorde(acorde))
         let linea = partitura.pentagramas[0].voces[0]
         #expect(linea.pulsaciones.count == arpegio.posiciones.count)
-        #expect(linea.digitos.count == arpegio.dedos.filter { $0 > 0 }.count)
+        #expect(linea.dedos.count == arpegio.dedos.filter { $0 > 0 }.count)
         let suelto = ArpegioEnElMastil(mastil: guitarra, trastes: arpegio.trastes, posiciones: arpegio.posiciones)
         #expect(suelto.partitura().pentagramas[0].voces[0].cifrados.isEmpty)
         #expect(suelto.partitura(de: acorde) == arpegio.partitura())

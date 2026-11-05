@@ -19,7 +19,8 @@ import Testing
         ]
         let afinacion: [Altura] = ["Mi2", "La2", "Re3", "Sol3", "Si3", "Mi4"]
         let pentagrama = Partitura.Pentagrama(
-            voces: [Partitura.Linea(voz, pulsaciones: pulsaciones)], cuerdas: 6, afinacion: afinacion, capo: 2)
+            voces: [Partitura.Linea(voz, pulsaciones: pulsaciones)], numeroDeCuerdas: 6, afinacion: afinacion,
+            capo: 2)
         return Partitura(pentagramas: [pentagrama], encabezado: Encabezado(titulo: "Con capo"))
     }
 
@@ -41,7 +42,7 @@ import Testing
         #expect(xml.contains("<staff>2</staff>") && xml.contains("<backup>"))
         // Sin tablatura, ni el pentagrama ni la técnica.
         var sinTablatura = conTablatura
-        sinTablatura.pentagramas[0].cuerdas = nil
+        sinTablatura.pentagramas[0].numeroDeCuerdas = nil
         let sola = sinTablatura.musicXML()
         #expect(!sola.contains("<staves>") && !sola.contains("TAB") && !sola.contains("<technical>"))
         // MEI no la escribe.
@@ -51,7 +52,7 @@ import Testing
     @Test func laTablaturaNoDuplicaLasNotasAlLeerla() throws {
         let pieza = try PiezaImportada(musicXML: Data(conTablatura.musicXML().utf8))
         #expect(pieza.notas.map(\.altura) == ["Re3", "Fa#3"])
-        #expect(pieza.notas.allSatisfy { $0.pentagrama == 1 && $0.voz == 1 })
+        #expect(pieza.notas.allSatisfy { $0.pentagrama == 0 && $0.voz == 1 })
         let vuelta = pieza.partitura()
         #expect(vuelta.pentagramas.count == 1 && vuelta.pentagramas[0].voces.count == 1)
     }
@@ -116,7 +117,7 @@ import Testing
             """
         let pieza = try PiezaImportada(musicXML: Data(xml.utf8))
         #expect(Set(pieza.notas.compactMap(\.voz)) == [1, 2, 5])
-        #expect(Set(pieza.notas.compactMap(\.pentagrama)) == [1, 2])
+        #expect(Set(pieza.notas.compactMap(\.pentagrama)) == [0, 1])
         let partitura = pieza.partitura()
         #expect(partitura.pentagramas.count == 2)
         let derecha = partitura.pentagramas[0].voces.map { $0.voz.eventos.map(\.alturas) }

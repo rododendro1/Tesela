@@ -150,12 +150,12 @@ extension PentagramaSVG {
     /// Los dedos, en una fila encima de todo lo demás (debajo del cifrado): en un acorde, el de la nota más aguda
     /// arriba.
     func dibujarLosDedos(_ centros: [Double], en lienzo: inout Lienzo) -> [String] {
-        guard !digitos.isEmpty else { return [] }
+        guard !dedos.isEmpty else { return [] }
         var dedosSVG: [String] = []
         let base = lienzo.minimoY - 0.4
         var arribaDeLosDedos = base
-        for (columna, dedos) in digitos.sorted(by: { $0.key < $1.key }) where centros.indices.contains(columna) {
-            let pares = zip(columnas[columna], dedos).sorted { $0.0.midi < $1.0.midi }
+        for (columna, deLaColumna) in dedos.sorted(by: { $0.key < $1.key }) where centros.indices.contains(columna) {
+            let pares = zip(columnas[columna], deLaColumna).sorted { $0.0.midi < $1.0.midi }
             for (i, par) in pares.filter({ $0.1 > 0 }).enumerated() {
                 let y = base - 1.1 * Double(i)
                 arribaDeLosDedos = min(arribaDeLosDedos, y)
@@ -181,17 +181,17 @@ extension PentagramaSVG {
     /// La tablatura, debajo del pentagrama: una línea por cuerda (la más aguda arriba) y el traste de cada nota en su
     /// cuerda, con la línea cortada alrededor del número.
     func colocarLaTablatura(_ centros: [Double], en lienzo: inout Lienzo) -> TablaturaColocada? {
-        guard let tablatura, tablatura.cuerdas > 0 else { return nil }
+        guard let tablatura, tablatura.numeroDeCuerdas > 0 else { return nil }
         let arriba = lienzo.maximoY + 2.0
         let separacion = PentagramaSVG.separacionDeLaTablatura
-        let abajo = arriba + separacion * Double(tablatura.cuerdas - 1)
+        let abajo = arriba + separacion * Double(tablatura.numeroDeCuerdas - 1)
         var colocada = TablaturaColocada(
-            lineas: (0..<tablatura.cuerdas).map { (arriba + separacion * Double($0), []) }, arriba: arriba,
+            lineas: (0..<tablatura.numeroDeCuerdas).map { (arriba + separacion * Double($0), []) }, arriba: arriba,
             abajo: abajo)
-        let porColumna = tablatura.notas.sorted { $0.key < $1.key }
+        let porColumna = tablatura.pulsaciones.sorted { $0.key < $1.key }
         for (columna, pulsaciones) in porColumna where centros.indices.contains(columna) {
-            for pulsacion in pulsaciones where (0..<tablatura.cuerdas).contains(pulsacion.cuerda) {
-                let linea = pulsacion.linea(de: tablatura.cuerdas)
+            for pulsacion in pulsaciones where (0..<tablatura.numeroDeCuerdas).contains(pulsacion.cuerda) {
+                let linea = pulsacion.linea(de: tablatura.numeroDeCuerdas)
                 let texto = String(pulsacion.traste)
                 let mitad =
                     PentagramaSVG.anchoEstimado(

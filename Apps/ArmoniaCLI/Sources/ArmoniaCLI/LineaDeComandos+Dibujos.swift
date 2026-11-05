@@ -244,10 +244,11 @@ extension LineaDeComandos {
             let desde = Altura(.do, octava: octava).midi
             let voces = DisposicionDeAcorde.cerrada.conducir(acordes, en: desde...(desde + 24)) ?? []
             let titulo = acordes.map { $0.cifrado(en: notacion) }.joined(separator: " – ")
-            let partitura = Partitura(
-                acordes: voces, titulo: titulo, cifrados: acordes,
-                grados: romanos ? gradosRomanos(de: acordes, en: tonalidad) : [],
-                bajoCifrado: conBajoCifrado ? bajoCifrado(de: acordes, en: tonalidad) : [])
+            let grados = romanos ? gradosRomanos(de: acordes, en: tonalidad) : []
+            let cifras = conBajoCifrado ? bajoCifrado(de: acordes, en: tonalidad) : []
+            let porEvento = Partitura.AnotacionesPorEvento(
+                cifrados: .enOrden(acordes), grados: .enOrden(grados), bajoCifrado: .enOrden(cifras))
+            let partitura = Partitura(acordes: voces, titulo: titulo, porEvento: porEvento)
             svg = partitura.svg(opciones: opciones)
         case "melodia":
             return try pentagramaDeMelodia(&argumentos, opciones, notacion)
@@ -322,9 +323,9 @@ extension LineaDeComandos {
         -> (alturas: [Altura], tablatura: Tablatura)
     {
         let alturas = posiciones.map { mastil.altura(en: $0) }
-        var porNota: [Int: [PosicionEnElMastil]] = [:]
-        for (i, posicion) in posiciones.enumerated() { porNota[i] = [posicion] }
-        return (alturas, Tablatura(mastil, posiciones: porNota))
+        var porEvento: [Int: [PosicionEnElMastil]] = [:]
+        for (i, posicion) in posiciones.enumerated() { porEvento[i] = [posicion] }
+        return (alturas, Tablatura(mastil, posiciones: porEvento))
     }
 
     /// Los dedos de la mano izquierda en unas posiciones: 0 al aire, 1 en el traste más bajo que se pisa y uno por
@@ -406,7 +407,8 @@ extension LineaDeComandos {
             let ritmo = secuencia.map { Partitura.Ritmo.figura(figuraDeLaSecuencia($0)) } ?? .libre
             svg = escala.svgPentagrama(
                 tocadaEn: alturas, titulo: titulo, ritmo: ritmo,
-                digitos: conDedos ? dedosEnElMastil(posiciones) : [:], tablatura: tablatura, opciones: opciones)
+                porEvento: .init(dedos: conDedos ? dedosEnElMastil(posiciones) : [:]), tablatura: tablatura,
+                opciones: opciones)
         } else if let secuencia {
             svg = escala.svgPentagrama(
                 secuencia: secuencia, octava: octava, octavas: octavas, sentido: sentido, opciones: opciones)
@@ -474,7 +476,7 @@ extension LineaDeComandos {
             }
             // La partitura del arpegio en el mástil, con sus dedos (`ArpegioEnElMastil.dedos`) si se piden.
             var partitura = enElMastil.partitura(de: acorde, ritmo: figura.map { Partitura.Ritmo.figura($0) } ?? .libre)
-            if !conDedos { partitura.pentagramas[0].voces[0].digitos = [:] }
+            if !conDedos { partitura.pentagramas[0].voces[0].dedos = [:] }
             return bien(partitura.svg(opciones: opciones).trimmingCharacters(in: "\n"))
         }
         var arpegios: [Arpegio] = []
