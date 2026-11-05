@@ -429,7 +429,7 @@ import Hexagonos
         comprobarIgual(TipoDeEscala.jinsHijaz.categoria, .jins, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 319)
         comprobar(TipoDeEscala.menorNatural.clase, #"nil"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 320)
         comprobar(TipoDeEscala.tradicionales(clase: .fragmento).count, #"42"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 321)
-        comprobar(TipoDeEscala.tradicionales(clase: .afinacion).count, #"11"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 322)
+        comprobar(TipoDeEscala.tradicionales(clase: .afinacion).count, #"17"#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 322)
     }
 
     @Test func escalas7() throws {

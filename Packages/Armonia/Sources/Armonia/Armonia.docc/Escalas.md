@@ -319,7 +319,7 @@ TipoDeEscala.tetracordoDiatonico.clase            // .fragmento
 TipoDeEscala.jinsHijaz.categoria                  // .jins
 TipoDeEscala.menorNatural.clase                   // nil
 TipoDeEscala.tradicionales(clase: .fragmento).count   // 42
-TipoDeEscala.tradicionales(clase: .afinacion).count   // 11
+TipoDeEscala.tradicionales(clase: .afinacion).count   // 17
 ```
 
 ### Microtonos
