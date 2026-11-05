@@ -164,6 +164,8 @@ extension TextosDeCLI {
         Κωδικοί εξόδου: 0 εντάξει, 1 κείμενο που δεν διαβάζεται, 2 λάθος εντολή και 3 σφάλματα (check,
         counterpoint).
         Χωρίς ορίσματα σε τερματικό, το armonia ανοίγει μια συνεδρία: μία εντολή ανά γραμμή.
+        Με είσοδο από αρχείο (armonia < askiseis.txt), εκτελεί τις γραμμές του με τον ίδιο τρόπο· μια
+        γραμμή μόνο με επιλογές (--idioma eu) τις κρατά για τις επόμενες.
         """,
         sintaxisAyuda: "help [<εντολή>]",
         descripcionAyuda: "αυτή η βοήθεια, ή μιας εντολής\n(και <εντολή> --help)",
@@ -173,6 +175,11 @@ extension TextosDeCLI {
         descripcionManual: "αυτή η βοήθεια ως σελίδα εγχειριδίου",
         manualNombre: "ΟΝΟΜΑ",
         manualNotas: "ΣΗΜΕΙΩΣΕΙΣ",
+        manualEntorno: "ΠΕΡΙΒΑΛΛΟΝ",
+        manualEstadoDeSalida: "ΚΑΤΑΣΤΑΣΗ ΕΞΟΔΟΥ",
+        manualIdiomaDelEntorno: "Η γλώσσα, όπως το --idioma (που την παρακάμπτει): es, en, eu…· με system, αυτή του LC_ALL, LC_MESSAGES ή LANG.",
+        manualRutaDelPrograma: { p in "Η διαδρομή του \(p), αν δεν είναι στο PATH." },
+        manualCodigosDeSalida: ["Όλα πήγαν καλά.", "Κείμενο ή αρχείο που δεν διαβάζεται, ή τίποτα για έξοδο.", "Η εντολή είναι γραμμένη λάθος.", "Οι check ή counterpoint βρήκαν σφάλματα."],
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "λείπουν οι συγχορδίες: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },

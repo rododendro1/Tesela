@@ -131,7 +131,7 @@ extension LineaDeComandos {
         let encontradas: [EscalaEncontrada]
         if let archivo {
             guard argumentos.restantes.isEmpty else { return uso(.archivoConNotas, notacion) }
-            guard let datos = contenido(deArchivo: archivo) else { return uso(.archivoIlegible(archivo), notacion) }
+            guard let datos = contenido(deArchivo: archivo) else { return archivoIlegible(archivo, notacion) }
             let pieza = try PiezaImportada(leyendo: datos)
             encontradas = PresentacionDeEstudioDeEscala.escalas(de: pieza, notacion: notacion)
         } else {
@@ -676,7 +676,7 @@ extension LineaDeComandos {
         let analisis: AnalisisPresentado
         if let archivo {
             guard acordes.restantes.isEmpty else { return uso(.archivoConAcordes, notacion) }
-            guard let datos = contenido(deArchivo: archivo) else { return uso(.archivoIlegible(archivo), notacion) }
+            guard let datos = contenido(deArchivo: archivo) else { return archivoIlegible(archivo, notacion) }
             let pieza = try PiezaImportada(leyendo: datos)
             guard
                 let leido = PresentacionDeAnalisis.analizar(

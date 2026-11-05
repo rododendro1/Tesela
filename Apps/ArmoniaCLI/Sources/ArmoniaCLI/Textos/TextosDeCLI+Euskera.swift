@@ -165,6 +165,8 @@ extension TextosDeCLI {
         Irteera-kodeak: 0 ondo, 1 irakurri ezin den testua, 2 gaizki idatzitako agindua eta 3 akatsak
         (revisar, contrapunto).
         Argumenturik gabe eta terminalean, armonia saio bat irekitzen du: agindu bat lerro bakoitzeko.
+        Sarrera fitxategi batean badago (armonia < ariketak.txt), haren lerroak berdin exekutatzen ditu;
+        aukerak bakarrik dituen lerro batek (--idioma eu) hurrengoetarako uzten ditu.
         """,
         sintaxisAyuda: "ayuda [<agindua>]",
         descripcionAyuda: "laguntza hau, edo agindu batena\n(baita <agindua> --help ere)",
@@ -174,6 +176,11 @@ extension TextosDeCLI {
         descripcionManual: "laguntza hau eskuliburu-orri gisa",
         manualNombre: "IZENA",
         manualNotas: "OHARRAK",
+        manualEntorno: "INGURUNEA",
+        manualEstadoDeSalida: "IRTEERA-EGOERA",
+        manualIdiomaDelEntorno: "Hizkuntza, --idioma bezala (hark baliogabetzen du): es, en, eu…; sistema balioarekin, LC_ALL, LC_MESSAGES edo LANG aldagaiena.",
+        manualRutaDelPrograma: { p in "\(p) programaren bidea, PATHean ez badago." },
+        manualCodigosDeSalida: ["Dena ondo joan da.", "Irakurri ezin den testu edo fitxategi bat, edo emateko ezer ez.", "Agindua gaizki idatzita dago.", "revisar edo contrapunto aginduek akatsak aurkitu dituzte."],
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "akordeak falta dira: " + ejemplo },

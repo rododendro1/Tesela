@@ -325,8 +325,10 @@ extension LineaDeComandosTests {
         }
         #expect(resultado("analizar --archivo").codigo == 2)
         let inexistente = resultado("analizar --archivo /no/existe.mid")
-        #expect(inexistente.codigo == 2)
-        #expect(inexistente.error.hasPrefix("armonia: no se puede leer el fichero «/no/existe.mid»\n"))
+        // Un fichero que no se puede leer es un error de lectura, sin remitir a la ayuda.
+        #expect(inexistente.codigo == 1)
+        #expect(inexistente.error == "armonia: no se puede leer el fichero «/no/existe.mid»\n")
+        #expect(resultado("identificar --escalas --archivo /no/existe.mid").codigo == 1)
         let texto = try fichero(Data("hola".utf8), extension: "mid")
         #expect(resultado("analizar --archivo " + texto).codigo == 1)
         #expect(
@@ -423,7 +425,7 @@ extension LineaDeComandosTests {
         let conNotas = LineaDeComandos.ejecutar(["identificar", "--archivo", melodia, "Do"])
         #expect(conNotas.error.hasPrefix("armonia: con --archivo no se escriben notas\n"))
         let inexistente = LineaDeComandos.ejecutar(["identificar", "--archivo", "/no/existe.mid"])
-        #expect(inexistente.codigo == 2)
+        #expect(inexistente.codigo == 1)
     }
 
     @Test func escalaSimetrica() {

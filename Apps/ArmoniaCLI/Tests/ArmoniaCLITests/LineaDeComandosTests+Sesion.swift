@@ -194,4 +194,85 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.palabras(deLaLinea: "a 'b c'd \"\"") == ["a", "b cd", ""])
         #expect(LineaDeComandos.palabras(deLaLinea: "") == [])
     }
+
+    /// Las órdenes de un fichero: una por línea, sin bienvenida, con el mayor código de salida.
+    @Test func ordenesDeUnFichero() {
+        func lote(_ texto: String, entorno: [String: String] = [:]) -> (escritos: [ResultadoDeOrden], codigo: Int32) {
+            var lineas = texto.split(separator: "\n", omittingEmptySubsequences: false).map(String.init)[...]
+            var escritos: [ResultadoDeOrden] = []
+            let codigo = LineaDeComandos.lote(
+                entorno: entorno, leerLinea: { lineas.popFirst() }, escribir: { escritos.append($0) })
+            return (escritos, codigo)
+        }
+        let bien = lote("# comentario\nacorde Do\n\nintervalo Do Mi")
+        #expect(bien.codigo == 0)
+        #expect(bien.escritos.count == 2)
+        #expect(bien.escritos[0].salida.hasPrefix("Do: mayor"))
+        let conFaltas = lote("revisar Do3 Mi4 Sol4 Do5, Re3 Fa4 La4 Re5\nacorde Xyz\nacorde Do")
+        #expect(conFaltas.codigo == 3)
+        #expect(conFaltas.escritos.map(\.codigo) == [3, 1, 0])
+        #expect(lote("acorde --nada\nacorde Do").codigo == 2)
+        // Sin órdenes, el índice de la ayuda, como `armonia` a secas.
+        let vacio = lote("\n# nada\n")
+        #expect(vacio.codigo == 0)
+        #expect(vacio.escritos.count == 1 && vacio.escritos[0].salida.contains("armonia ayuda --todo"))
+        #expect(lote("acorde Do\nsalir\nacorde Xyz").codigo == 0)
+        #expect(lote("acorde Sol7", entorno: ["ARMONIA_IDIOMA": "eu"]).escritos[0].salida.contains("dominanteko"))
+    }
+
+    /// Una línea con solo opciones generales las deja puestas para las siguientes.
+    @Test func opcionesQueSeQuedan() {
+        var lineas = [
+            "--idioma eu", "acorde Do", "acorde Do --ingles", "--json", "intervalo Do Sol", "--idioma xx",
+            "acorde Do", "--idioma es", "acorde Do",
+        ][...]
+        var escritos: [ResultadoDeOrden] = []
+        let codigo = LineaDeComandos.lote(leerLinea: { lineas.popFirst() }, escribir: { escritos.append($0) })
+        #expect(codigo == 2)
+        #expect(escritos.count == 6)
+        #expect(escritos[0].salida.hasPrefix("Do: maiorra"))
+        // Las de la línea mandan sobre las puestas del mismo grupo.
+        #expect(escritos[1].salida.hasPrefix("C: major"))
+        // `--json` sustituye a `--idioma eu`: las puestas son las de la última línea de opciones.
+        #expect(escritos[2].salida.hasPrefix("{"))
+        #expect(escritos[3].codigo == 2 && escritos[3].error.contains("«xx»"))
+        // Una línea de opciones que no vale no cambia las puestas: sigue el JSON.
+        #expect(escritos[4].salida.hasPrefix("[{"))
+        #expect(escritos[5].salida.hasPrefix("Do: mayor"))
+        #expect(LineaDeComandos.soloOpcionesGenerales(["--idioma", "eu", "--json"]) != nil)
+        #expect(LineaDeComandos.soloOpcionesGenerales(["--idioma", "eu", "acorde"]) == nil)
+        #expect(LineaDeComandos.soloOpcionesGenerales(["acorde", "Do"]) == nil)
+        #expect(
+            LineaDeComandos.opciones(["--idioma", "eu", "--json"], queNoEstanEn: ["acorde", "Do", "--ingles"])
+                == ["--json"])
+    }
+
+    /// El manual tiene sus apartados de entorno y de estado de salida, en cada idioma.
+    @Test func entornoYEstadoDeSalidaEnElManual() {
+        let manual = salida("manual")
+        #expect(manual.contains(".SH ENTORNO\n.TP\n.B ARMONIA_IDIOMA\n"))
+        #expect(manual.contains(".B ARMONIA_LILYPOND\n"))
+        #expect(manual.contains(".B ARMONIA_RSVG_CONVERT\n"))
+        #expect(manual.contains(".SH ESTADO DE SALIDA\n.TP\n.B 0\n"))
+        #expect(manual.contains(".B 3\nrevisar o contrapunto"))
+        #expect(salida("manual --ingles").contains(".SH EXIT STATUS\n"))
+        for idioma in Idioma.allCases {
+            #expect(TextosDeCLI.en(idioma: idioma, \.manualCodigosDeSalida).count == 4, Comment(rawValue: "\(idioma)"))
+        }
+    }
+
+    /// Los nombres de escalas que se completan se leen todos como escalas, en su idioma.
+    @Test func nombresDeEscalasQueSeCompletan() throws {
+        let nombres = LineaDeComandos.nombresDeLasEscalas
+        #expect(nombres.contains("dorico") && nombres.contains("dorian") && nombres.contains("menor-armonica"))
+        #expect(nombres.count > 100)
+        for nombre in nombres {
+            // Los nombres españoles se leen tras «Do» y los ingleses, tras «C».
+            let leida = (try? Escala(leyendo: "Do " + nombre)) ?? (try? Escala(leyendo: "C " + nombre))
+            #expect(leida != nil, Comment(rawValue: nombre))
+        }
+        let bash = salida("completado bash")
+        #expect(bash.contains("dorico") && bash.contains("harmonic-minor"))
+        #expect(salida("completado fish").contains("menor-armonica"))
+    }
 }

@@ -164,6 +164,8 @@ extension TextosDeCLI {
         Коды выхода: 0 — успех, 1 — текст не читается, 2 — команда написана неверно, 3 — найдены ошибки
         (check, counterpoint).
         Без аргументов в терминале armonia открывает сеанс: по одной команде в строке.
+        Если ввод идёт из файла (armonia < uprazhneniya.txt), его строки выполняются так же; строка
+        только с параметрами (--idioma eu) сохраняет их для следующих.
         """,
         sintaxisAyuda: "help [<команда>]",
         descripcionAyuda: "эта справка или справка по команде\n(также <команда> --help)",
@@ -173,6 +175,11 @@ extension TextosDeCLI {
         descripcionManual: "эта справка в виде страницы man",
         manualNombre: "ИМЯ",
         manualNotas: "ПРИМЕЧАНИЯ",
+        manualEntorno: "ОКРУЖЕНИЕ",
+        manualEstadoDeSalida: "КОД ВОЗВРАТА",
+        manualIdiomaDelEntorno: "Язык, как --idioma (который её переопределяет): es, en, eu…; со значением system — язык из LC_ALL, LC_MESSAGES или LANG.",
+        manualRutaDelPrograma: { p in "Путь к \(p), если его нет в PATH." },
+        manualCodigosDeSalida: ["Всё прошло успешно.", "Текст или файл не читается, или нечего выводить.", "Команда написана неверно.", "check или counterpoint нашли ошибки."],
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "не указаны аккорды: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },

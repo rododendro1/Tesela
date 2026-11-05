@@ -34,6 +34,7 @@ echo "C E G Bb" | armonia identify --ingles        # also from standard input
 armonia check C3 E4 G4 C5, D3 F4 A4 D5 || echo bad  # exits with code 3 when there are mistakes
 armonia help --ingles                             # the commands (help chord: that one; help --all: everything)
 armonia                                           # in a terminal, a session: one command per line
+armonia < exercises.txt                           # one command per line; exits with the worst code
 ```
 
 Commands and note names are accepted in Spanish or English (Do, C, Sib, Bb). `--ingles` answers in English notation

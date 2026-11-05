@@ -86,8 +86,31 @@ extension LineaDeComandos {
             return tipos(de: ordenesDePartituras[0]) + ordenesDeDibujos.flatMap(nombres(de:))
         }
         if orden.nombres.contains("completado") { return ["bash", "zsh", "fish"] }
+        if ordenesConEscala.contains(where: orden.nombres.contains) { return nombresDeLasEscalas }
         return []
     }
+
+    /// Las órdenes que leen una escala (`escala Re dórico`): tras ellas se completan los nombres de las escalas.
+    static let ordenesConEscala = ["escala", "posiciones", "teclado", "reloj"]
+
+    /// Los nombres de las escalas del catálogo, en español y en inglés, como se completan: en minúsculas, sin tildes
+    /// y con guiones en lugar de espacios («menor-armonica», «harmonic-minor»), que se leen igual. Los que llevan
+    /// otros caracteres (paréntesis, apóstrofos) no se proponen: la terminal los partiría.
+    static let nombresDeLasEscalas: [String] = {
+        var nombres: [String] = []
+        var vistos: Set<String> = []
+        let permitidos = Set("abcdefghijklmnopqrstuvwxyz0123456789-")
+        for tipo in TipoDeEscala.catalogo {
+            for nombre in [tipo.nombre, tipo.nombre(en: .inglesASCII)] {
+                let palabra = nombre.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: nil)
+                    .lowercased().split(separator: " ").joined(separator: "-")
+                guard !palabra.isEmpty, palabra.allSatisfy(permitidos.contains), vistos.insert(palabra).inserted
+                else { continue }
+                nombres.append(palabra)
+            }
+        }
+        return nombres
+    }()
 
     /// Las opciones de una orden: las que nombra su ayuda, en español y en inglés, sin las generales. Las partituras
     /// comparten las de `musicxml`, que es la que las explica; MIDI, sin la clave ni las marcas y con el programa.
@@ -280,11 +303,36 @@ extension LineaDeComandos {
                 roff += [".sp", ".RS 4", ".EX", escapar(ejemplo), ".EE", ".RE"]
             }
         }
+        let textos = TextosDeCLI.traducidos.texto(en: idioma)
+        roff += [
+            ".SH " + escapar(textos.manualEntorno), ".TP", ".B ARMONIA_IDIOMA", escapar(textos.manualIdiomaDelEntorno),
+        ]
+        for programa in programasDeGrabado {
+            roff += [
+                ".TP", ".B " + escapar(EjecutorDelSistema.variable(de: programa)),
+                escapar(textos.manualRutaDelPrograma(programa)),
+            ]
+        }
+        roff.append(".SH " + escapar(textos.manualEstadoDeSalida))
+        for (codigo, texto) in textos.manualCodigosDeSalida.enumerated() {
+            roff += [".TP", ".B \(codigo)", escapar(texto)]
+        }
         roff.append(".SH " + escapar(TextosDeCLI.traduccion(\.manualNotas).texto(en: idioma)))
         for parrafo in pieDeLaAyuda.texto(en: idioma).components(separatedBy: "\n\n") {
             roff += [".PP", escapar(unaLinea(parrafo))]
         }
         return roff.joined(separator: "\n")
+    }
+
+    /// Los programas de los motores de `armonia grabar`, sin repetir, cada uno con su variable de entorno
+    /// (`ARMONIA_LILYPOND`): el primero de los nombres de cada motor y `rsvg-convert`.
+    static var programasDeGrabado: [String] {
+        var programas: [String] = []
+        for motor in MotorDeGrabado.allCases where !programas.contains(motor.programas[0]) {
+            programas.append(motor.programas[0])
+        }
+        if !programas.contains("rsvg-convert") { programas.append("rsvg-convert") }
+        return programas
     }
 
     /// Las líneas cortadas a mano para la columna de la ayuda, juntas: el lector de man las corta solo.

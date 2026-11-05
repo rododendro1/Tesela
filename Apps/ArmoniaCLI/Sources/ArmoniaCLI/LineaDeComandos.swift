@@ -245,6 +245,12 @@ public enum LineaDeComandos {
         ResultadoDeOrden(salida: texto + "\n", error: "", codigo: 0)
     }
 
+    /// Un fichero de `--archivo` que no se puede leer: no es un error de uso, sino de lectura (código 1).
+    static func archivoIlegible(_ ruta: String, _ notacion: Notacion) -> ResultadoDeOrden {
+        let texto = TextosDeCLI.en(notacion) { $0.archivoIlegible(ruta) }
+        return ResultadoDeOrden(salida: "", error: "armonia: " + texto + "\n", codigo: 1)
+    }
+
     static func uso(_ error: ErrorDeUso, _ notacion: Notacion) -> ResultadoDeOrden {
         ResultadoDeOrden(salida: "", error: error.texto(en: notacion), codigo: 2)
     }

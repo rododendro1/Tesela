@@ -164,6 +164,8 @@ extension TextosDeCLI {
         Codici di uscita: 0 bene, 1 testo illeggibile, 2 comando scritto male e 3 errori (revisar,
         contrapunto).
         Senza argomenti e nel terminale, armonia apre una sessione: un comando per riga.
+        Con l'ingresso da un file (armonia < esercizi.txt), ne esegue le righe allo stesso modo; una riga
+        con sole opzioni (--idioma eu) le mantiene per le successive.
         """,
         sintaxisAyuda: "ayuda [<comando>]",
         descripcionAyuda: "questo aiuto, o quello di un comando\n(anche <comando> --help)",
@@ -173,6 +175,11 @@ extension TextosDeCLI {
         descripcionManual: "questo aiuto come pagina di manuale",
         manualNombre: "NOME",
         manualNotas: "NOTE",
+        manualEntorno: "AMBIENTE",
+        manualEstadoDeSalida: "STATO DI USCITA",
+        manualIdiomaDelEntorno: "La lingua, come --idioma (che la annulla): es, en, eu…; con sistema, quella di LC_ALL, LC_MESSAGES o LANG.",
+        manualRutaDelPrograma: { p in "Il percorso di \(p), se non è nel PATH." },
+        manualCodigosDeSalida: ["È andato tutto bene.", "Un testo o un file illeggibile, o niente da dare.", "Il comando è scritto male.", "revisar o contrapunto hanno trovato errori."],
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "mancano gli accordi: " + ejemplo },

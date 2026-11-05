@@ -164,6 +164,8 @@ extension TextosDeCLI {
         Exit-Codes: 0 gut, 1 unlesbarer Text, 2 falsch geschriebener Befehl und 3 Fehler gefunden (check,
         counterpoint).
         Ohne Argumente im Terminal öffnet armonia eine Sitzung: ein Befehl pro Zeile.
+        Mit der Eingabe aus einer Datei (armonia < uebungen.txt) führt es deren Zeilen genauso aus; eine
+        Zeile nur mit Optionen (--idioma eu) gilt für die folgenden weiter.
         """,
         sintaxisAyuda: "help [<Befehl>]",
         descripcionAyuda: "diese Hilfe oder die eines Befehls\n(auch <Befehl> --help)",
@@ -173,6 +175,11 @@ extension TextosDeCLI {
         descripcionManual: "diese Hilfe als Manpage",
         manualNombre: "BEZEICHNUNG",
         manualNotas: "HINWEISE",
+        manualEntorno: "UMGEBUNG",
+        manualEstadoDeSalida: "EXIT-STATUS",
+        manualIdiomaDelEntorno: "Die Sprache, wie --idioma (das sie überschreibt): es, en, eu…; mit system die aus LC_ALL, LC_MESSAGES oder LANG.",
+        manualRutaDelPrograma: { p in "Der Pfad zu \(p), falls es nicht im PATH ist." },
+        manualCodigosDeSalida: ["Alles ist gut gegangen.", "Ein Text oder eine Datei, die sich nicht lesen lässt, oder nichts auszugeben.", "Der Befehl ist falsch geschrieben.", "check oder counterpoint haben Fehler gefunden."],
 
         // ErrorDeUso.swift (armonización)
         faltanAcordesDeLasVoces: { ejemplo in "die Akkorde fehlen: armonia check C3 E4 G4 C5, G2 D4 G4 B4" },
