@@ -158,6 +158,12 @@ extension TextosDeCLI {
         --subindices o --cifras la fixen (es llegeixen totes dues maneres).
         Amb --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
         serie, digitaciones i tradiciones donen les dades en JSON.
+        Amb --json també armonizar, realizar, revisar, contrapunto i transponer. Si la sortida no és
+        el terminal, el JSON va en una sola línia.
+        ARMONIA_IDIOMA=eu fixa l'idioma sense --idioma; amb ARMONIA_IDIOMA=sistema, el de LANG.
+        Codis de sortida: 0 bé, 1 text que no es pot llegir, 2 ordre mal escrita i 3 errors (revisar,
+        contrapunto).
+        Sense arguments i al terminal, armonia obre una sessió: una ordre per línia.
         """,
         sintaxisAyuda: "ayuda [<ordre>]",
         descripcionAyuda: "aquesta ajuda, o la d'una ordre\n(també <ordre> --help)",
@@ -326,6 +332,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Prova «armonia ayuda \(o)»." },
         salidaBinaria: "la sortida és un fitxer binari (MIDI, PDF o PNG); desa-la amb > fitxer",
         escalasPorNotas: { e in "no hi ha cap escala amb aquest nom; per cercar-la per les notes: \(e)" },
-        grabarUnaPartitura: { o, e in "«armonia \(o)» ja escriu la partitura; «grabar» la dona en PDF, SVG o PNG: \(e)" }
+        grabarUnaPartitura: { o, e in "«armonia \(o)» ja escriu la partitura; «grabar» la dona en PDF, SVG o PNG: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Consultes", "Harmonia i veus", "Partitures i gravat", "Dibuixos (SVG)", "Neoriemanniana", "Instruments de trasts", "El terminal i l'ajuda"],
+        pieDelIndice: """
+        L'ajuda d'una ordre: armonia ayuda <ordre> (o armonia <ordre> --help).
+        Tota l'ajuda, amb les opcions de cada ordre: armonia ayuda --todo.
+        Per a totes les ordres: --ingles, --idioma, --textos, --escritura, --subindices, --cifras i --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Escriu una ordre per línia, sense «armonia» (ayuda: les ordres; salir: acabar)." }
     )
 }

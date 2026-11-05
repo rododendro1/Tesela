@@ -31,11 +31,14 @@ armonia analyze C Am D7 G7 C --ingles             # degrees, functions and caden
 armonia engrave chorale C3 E4 G4 C5 > chorale.pdf # needs LilyPond
 armonia chord G7/B --ingles --json | jq '.[0].notas'
 echo "C E G Bb" | armonia identify --ingles        # also from standard input
-armonia help --ingles                             # every command (help chord: just that one)
+armonia check C3 E4 G4 C5, D3 F4 A4 D5 || echo bad  # exits with code 3 when there are mistakes
+armonia help --ingles                             # the commands (help chord: that one; help --all: everything)
+armonia                                           # in a terminal, a session: one command per line
 ```
 
 Commands and note names are accepted in Spanish or English (Do, C, Sib, Bb). `--ingles` answers in English notation
-and language; `--language` picks any of the fifteen languages. With `--json`, the keys are always the same (in
+and language; `--language` picks any of the fifteen languages, and so does the `ARMONIA_IDIOMA` variable
+(`export ARMONIA_IDIOMA=en`; `system` takes it from `LANG`). With `--json`, the keys are always the same (in
 Spanish) whatever the language.
 
 ## Using the packages

@@ -158,6 +158,12 @@ extension TextosDeCLI {
         --subindices ou --cifras la fixent (les deux se lisent).
         Avec --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
         serie, digitaciones et tradiciones donnent leurs données en JSON.
+        Avec --json aussi armonizar, realizar, revisar, contrapunto et transponer. Si la sortie n'est
+        pas le terminal, le JSON tient sur une seule ligne.
+        ARMONIA_IDIOMA=eu fixe la langue sans --idioma ; avec ARMONIA_IDIOMA=sistema, celle de LANG.
+        Codes de sortie : 0 bien, 1 texte illisible, 2 commande mal écrite et 3 fautes (revisar,
+        contrapunto).
+        Sans arguments et dans le terminal, armonia ouvre une session : une commande par ligne.
         """,
         sintaxisAyuda: "ayuda [<commande>]",
         descripcionAyuda: "cette aide, ou celle d'une commande\n(aussi <commande> --help)",
@@ -326,6 +332,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Essayez « armonia ayuda \(o) »." },
         salidaBinaria: "la sortie est un fichier binaire (MIDI, PDF ou PNG) ; enregistrez-la avec > fichier",
         escalasPorNotas: { e in "aucune gamme ne porte ce nom ; pour la chercher par ses notes : \(e)" },
-        grabarUnaPartitura: { o, e in "« armonia \(o) » écrit déjà la partition ; « grabar » la donne en PDF, SVG ou PNG : \(e)" }
+        grabarUnaPartitura: { o, e in "« armonia \(o) » écrit déjà la partition ; « grabar » la donne en PDF, SVG ou PNG : \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Consultations", "Harmonie et voix", "Partitions et gravure", "Dessins (SVG)", "Néo-riemannienne", "Instruments à frettes", "Le terminal et l'aide"],
+        pieDelIndice: """
+        L'aide d'une commande : armonia ayuda <commande> (ou armonia <commande> --help).
+        Toute l'aide, avec les options de chaque commande : armonia ayuda --todo.
+        Pour toutes les commandes : --ingles, --idioma, --textos, --escritura, --subindices, --cifras et --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Écrivez une commande par ligne, sans « armonia » (ayuda : les commandes ; salir : terminer)." }
     )
 }

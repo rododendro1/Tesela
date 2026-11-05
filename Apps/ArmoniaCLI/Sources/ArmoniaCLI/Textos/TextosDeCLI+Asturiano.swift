@@ -158,6 +158,12 @@ extension TextosDeCLI {
         --subindices o --cifras fíxenla (lléense les dos maneres).
         Con --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
         serie, digitaciones y tradiciones dan los sos datos en JSON.
+        Con --json tamién armonizar, realizar, revisar, contrapunto y transponer. Si la salida nun ye
+        la terminal, el JSON va nuna sola llinia.
+        ARMONIA_IDIOMA=eu fixa la llingua ensin --idioma; con ARMONIA_IDIOMA=sistema, la de LANG.
+        Códigos de salida: 0 bien, 1 testu que nun se llee, 2 orde mal escrita y 3 faltes (revisar,
+        contrapunto).
+        Ensin argumentos y na terminal, armonia abre una sesión: una orde per llinia.
         """,
         sintaxisAyuda: "ayuda [<orde>]",
         descripcionAyuda: "esta ayuda, o la d'una orde\n(tamién <orde> --help)",
@@ -326,6 +332,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Prueba «armonia ayuda \(o)»." },
         salidaBinaria: "la salida ye un ficheru binariu (MIDI, PDF o PNG); guárdala con > ficheru",
         escalasPorNotas: { e in "nun hai nenguna escala con esi nome; pa buscala poles sos notes: \(e)" },
-        grabarUnaPartitura: { o, e in "«armonia \(o)» yá escribe la partitura; «grabar» dala en PDF, SVG o PNG: \(e)" }
+        grabarUnaPartitura: { o, e in "«armonia \(o)» yá escribe la partitura; «grabar» dala en PDF, SVG o PNG: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Consultes", "Harmonía y voces", "Partitures y grabáu", "Dibuxos (SVG)", "Neorriemanniana", "Instrumentos de trastes", "La terminal y l'aida"],
+        pieDelIndice: """
+        L'aida d'una orde: armonia ayuda <orde> (o armonia <orde> --help).
+        Toa l'aida, coles opciones de cada orde: armonia ayuda --todo.
+        Pa toles ordes: --ingles, --idioma, --textos, --escritura, --subindices, --cifras y --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Escribi una orde per llinia, ensin «armonia» (ayuda: les ordes; salir: acabar)." }
     )
 }

@@ -158,6 +158,12 @@ extension TextosDeCLI {
         --subindices oder --cifras legen sie fest (gelesen wird beides).
         Mit --json geben chord, identify, arpeggio, interval, scale, key, analyze, set, row,
         fingerings und traditions ihre Daten als JSON aus.
+        Mit --json auch harmonize, realize, check, counterpoint und transpose. Ist die Ausgabe kein
+        Terminal, steht das JSON in einer einzigen Zeile.
+        ARMONIA_IDIOMA=eu legt die Sprache ohne --idioma fest; ARMONIA_IDIOMA=system nimmt die von LANG.
+        Exit-Codes: 0 gut, 1 unlesbarer Text, 2 falsch geschriebener Befehl und 3 Fehler gefunden (check,
+        counterpoint).
+        Ohne Argumente im Terminal öffnet armonia eine Sitzung: ein Befehl pro Zeile.
         """,
         sintaxisAyuda: "help [<Befehl>]",
         descripcionAyuda: "diese Hilfe oder die eines Befehls\n(auch <Befehl> --help)",
@@ -326,6 +332,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Versuche „armonia help \(o)“." },
         salidaBinaria: "die Ausgabe ist eine Binärdatei (MIDI, PDF oder PNG); speichere sie mit > Datei",
         escalasPorNotas: { e in "keine Skala heißt so; um eine nach ihren Tönen zu suchen: \(e)" },
-        grabarUnaPartitura: { o, e in "„armonia \(o)“ schreibt die Partitur schon; „engrave“ setzt sie als PDF, SVG oder PNG: \(e)" }
+        grabarUnaPartitura: { o, e in "„armonia \(o)“ schreibt die Partitur schon; „engrave“ setzt sie als PDF, SVG oder PNG: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Abfragen", "Harmonik und Stimmen", "Partituren und Notensatz", "Zeichnungen (SVG)", "Neo-Riemann-Theorie", "Bundinstrumente", "Terminal und Hilfe"],
+        pieDelIndice: """
+        Die Hilfe zu einem Befehl: armonia help <Befehl> (oder armonia <Befehl> --help).
+        Die ganze Hilfe, mit den Optionen jedes Befehls: armonia help --all.
+        Für alle Befehle: --ingles, --idioma, --textos, --escritura, --subindices, --cifras und --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Ein Befehl pro Zeile, ohne „armonia“ (help: die Befehle; exit: beenden)." }
     )
 }

@@ -160,6 +160,12 @@ extension TextosDeCLI {
         --subscripts or --digits choose one (both forms are read).
         With --json, chord, identify, arpeggio, interval, scale, key, analyze, set, row, fingerings and traditions
         give their data as JSON.
+        With --json also harmonize, realize, check, counterpoint and transpose. When the output is not
+        a terminal, the JSON goes on a single line.
+        ARMONIA_IDIOMA=eu sets the language without --language; ARMONIA_IDIOMA=system takes it from LANG.
+        Exit codes: 0 fine, 1 unreadable text, 2 badly written command and 3 mistakes found (check,
+        counterpoint).
+        With no arguments in a terminal, armonia opens a session: one command per line.
         """,
         sintaxisAyuda: "help [<command>]",
         descripcionAyuda: "this help, or a command's help\n(also <command> --help)",
@@ -328,6 +334,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Try \"armonia help \(o)\"." },
         salidaBinaria: "the output is a binary file (MIDI, PDF or PNG); save it with > file",
         escalasPorNotas: { e in "no scale has that name; to find one by its notes: \(e)" },
-        grabarUnaPartitura: { o, e in "\"armonia \(o)\" already writes the score; \"engrave\" gives it as PDF, SVG or PNG: \(e)" }
+        grabarUnaPartitura: { o, e in "\"armonia \(o)\" already writes the score; \"engrave\" gives it as PDF, SVG or PNG: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Lookups", "Harmony and voices", "Scores and engraving", "Drawings (SVG)", "Neo-Riemannian", "Fretted instruments", "Terminal and help"],
+        pieDelIndice: """
+        The help for one command: armonia help <command> (or armonia <command> --help).
+        All the help, with each command's options: armonia help --all.
+        For every command: --ingles, --language, --texts, --writing, --subscripts, --digits and --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Type one command per line, without \"armonia\" (help: the commands; exit: quit)." }
     )
 }

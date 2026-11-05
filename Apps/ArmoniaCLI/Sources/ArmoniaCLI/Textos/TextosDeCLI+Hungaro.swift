@@ -158,6 +158,12 @@ extension TextosDeCLI {
         a --subindices vagy a --cifras rögzíti (mindkettőt olvassa).
         A --json kapcsolóval a chord, identify, arpeggio, interval, scale, key, analyze, set, row,
         fingerings és traditions JSON-ban adja az adatait.
+        A --json kapcsolóval a harmonize, realize, check, counterpoint és transpose is. Ha a kimenet
+        nem terminál, a JSON egyetlen sorban jelenik meg.
+        Az ARMONIA_IDIOMA=eu --idioma nélkül állítja be a nyelvet; az ARMONIA_IDIOMA=system a LANG-ét veszi.
+        Kilépési kódok: 0 rendben, 1 olvashatatlan szöveg, 2 hibásan írt parancs és 3 hibák (check,
+        counterpoint).
+        Argumentumok nélkül, terminálban az armonia munkamenetet nyit: soronként egy parancs.
         """,
         sintaxisAyuda: "help [<parancs>]",
         descripcionAyuda: "ez a súgó, vagy egy parancs súgója\n(<parancs> --help is)",
@@ -326,6 +332,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Próbáld ki: „armonia help \(o)”." },
         salidaBinaria: "a kimenet bináris fájl (MIDI, PDF vagy PNG); mentsd el így: > fájl",
         escalasPorNotas: { e in "nincs ilyen nevű skála; hangok alapján így keresheted: \(e)" },
-        grabarUnaPartitura: { o, e in "az „armonia \(o)” már megírja a kottát; az „engrave” PDF-be, SVG-be vagy PNG-be szedi: \(e)" }
+        grabarUnaPartitura: { o, e in "az „armonia \(o)” már megírja a kottát; az „engrave” PDF-be, SVG-be vagy PNG-be szedi: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Lekérdezések", "Harmónia és szólamok", "Kották és kottaszedés", "Rajzok (SVG)", "Neo-riemanni elmélet", "Bundozott hangszerek", "Terminál és súgó"],
+        pieDelIndice: """
+        Egy parancs súgója: armonia help <parancs> (vagy armonia <parancs> --help).
+        A teljes súgó, minden parancs kapcsolóival: armonia help --all.
+        Minden parancshoz: --ingles, --idioma, --textos, --escritura, --subindices, --cifras és --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Soronként egy parancs, „armonia” nélkül (help: a parancsok; exit: kilépés)." }
     )
 }

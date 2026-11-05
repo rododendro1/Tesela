@@ -158,6 +158,12 @@ extension TextosDeCLI {
         --subindices или --cifras задают её (читаются обе формы).
         С --json команды chord, identify, arpeggio, interval, scale, key, analyze, set, row,
         fingerings и traditions выводят данные в JSON.
+        С --json также harmonize, realize, check, counterpoint и transpose. Если вывод идёт не в
+        терминал, JSON выводится одной строкой.
+        ARMONIA_IDIOMA=eu задаёт язык без --idioma; ARMONIA_IDIOMA=system берёт язык из LANG.
+        Коды выхода: 0 — успех, 1 — текст не читается, 2 — команда написана неверно, 3 — найдены ошибки
+        (check, counterpoint).
+        Без аргументов в терминале armonia открывает сеанс: по одной команде в строке.
         """,
         sintaxisAyuda: "help [<команда>]",
         descripcionAyuda: "эта справка или справка по команде\n(также <команда> --help)",
@@ -326,6 +332,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Попробуй «armonia help \(o)»." },
         salidaBinaria: "вывод — двоичный файл (MIDI, PDF или PNG); сохрани его с помощью > файл",
         escalasPorNotas: { e in "нет гаммы с таким названием; чтобы найти её по нотам: \(e)" },
-        grabarUnaPartitura: { o, e in "«armonia \(o)» уже записывает партитуру; «engrave» набирает её в PDF, SVG или PNG: \(e)" }
+        grabarUnaPartitura: { o, e in "«armonia \(o)» уже записывает партитуру; «engrave» набирает её в PDF, SVG или PNG: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Справки", "Гармония и голоса", "Партитуры и нотный набор", "Рисунки (SVG)", "Неоримановская теория", "Ладовые инструменты", "Терминал и справка"],
+        pieDelIndice: """
+        Справка по команде: armonia help <команда> (или armonia <команда> --help).
+        Вся справка, с параметрами каждой команды: armonia help --all.
+        Для всех команд: --ingles, --idioma, --textos, --escritura, --subindices, --cifras и --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Вводите по одной команде в строке, без «armonia» (help — команды; exit — выход)." }
     )
 }

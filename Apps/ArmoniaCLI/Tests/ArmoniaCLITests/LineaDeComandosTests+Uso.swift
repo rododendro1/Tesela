@@ -13,7 +13,7 @@ extension LineaDeComandosTests {
             #expect(salida(orden) == "armonia \(LineaDeComandos.version)\n", Comment(rawValue: orden))
         }
         #expect(LineaDeComandos.version.split(separator: ".").count == 3)
-        #expect(salida("ayuda").contains("--version"))
+        #expect(salida("ayuda --todo").contains("--version"))
     }
 
     /// `ayuda <orden>` y `<orden> --help` dan solo las entradas de esa orden, en el idioma de los textos.
@@ -33,7 +33,7 @@ extension LineaDeComandosTests {
         #expect(salida("ayuda ayuda").hasPrefix("  ayuda [<orden>]"))
         #expect(salida("ayuda --version").contains("la versión de armonia"))
         // Cada entrada de la ayuda completa está en la de su orden.
-        let completa = salida("ayuda")
+        let completa = salida("ayuda --todo")
         for orden in LineaDeComandos.ordenes {
             #expect(completa.contains(salida("ayuda " + orden.nombres[0])), Comment(rawValue: orden.nombres[0]))
         }

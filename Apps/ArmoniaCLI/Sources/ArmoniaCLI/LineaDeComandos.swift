@@ -11,7 +11,8 @@ import Armonia
 import Foundation
 
 /// Lo que produce una orden: el texto de la salida estándar, el de la salida de errores y el
-/// código de salida (0 bien, 1 texto que no se puede leer o nada que dar, 2 orden mal escrita). Una orden que
+/// código de salida (0 bien, 1 texto que no se puede leer o nada que dar, 2 orden mal escrita, 3 faltas en lo que
+/// `revisar` o `contrapunto` comprueban). Una orden que
 /// produce un fichero binario (MIDI) lo deja en `datos`, que va a la salida estándar en lugar
 /// del texto.
 public struct ResultadoDeOrden: Equatable, Sendable {
@@ -32,13 +33,23 @@ public enum LineaDeComandos {
     ///     está.
     ///   - entradaEsTerminal: si la entrada estándar es la terminal: entonces solo se lee con `-`.
     ///   - salidaEsTerminal: si la salida estándar es la terminal: entonces una orden que da un fichero binario
-    ///     (MIDI, PDF, PNG) no lo escribe y lo dice.
+    ///     (MIDI, PDF, PNG) no lo escribe y lo dice, y el JSON de `--json` va con sangría (fuera de la terminal, en
+    ///     una sola línea).
+    ///   - entorno: las variables de entorno. `ARMONIA_IDIOMA` da el idioma como `--idioma` (que, con `--ingles` y
+    ///     `--textos`, la anula); `ARMONIA_IDIOMA=sistema` toma el de `LC_ALL`, `LC_MESSAGES` o `LANG`.
     public static func ejecutar(
         _ argumentos: [String], entrada: (@Sendable () -> Data)? = nil, entradaEsTerminal: Bool = true,
-        salidaEsTerminal: Bool = false
+        salidaEsTerminal: Bool = false, entorno: [String: String] = [:]
     ) -> ResultadoDeOrden {
         var opciones = Argumentos(argumentos)
-        var notacion: Notacion = opciones.quitarMarca("--ingles", "--english") ? .inglesASCII : .espanolCompacto
+        var notacion: Notacion
+        switch notacionDelEntorno(entorno) {
+        case .success(let delEntorno):
+            notacion = delEntorno
+        case .failure(let fallo):
+            return uso(fallo.error, .espanolCompacto)
+        }
+        if opciones.quitarMarca("--ingles", "--english") { notacion = .inglesASCII }
         switch opciones.quitarOpcion("--idioma", "--language") {
         case .ausente:
             break
@@ -83,12 +94,13 @@ public enum LineaDeComandos {
         let json = opciones.quitarMarca("--json")
         let argumentos = opciones.restantes
 
-        guard let nombre = argumentos.first?.lowercased() else { return bien(ayuda(en: notacion)) }
+        guard let nombre = argumentos.first?.lowercased() else { return bien(indiceDeAyuda(en: notacion.textos)) }
         guard let orden = orden(llamada: nombre) else { return uso(.ordenDesconocida(nombre), notacion) }
         var resto = Array(argumentos.dropFirst())
 
-        // La ayuda de una orden: `armonia ayuda acorde`, `armonia acorde --help`.
+        // Toda la ayuda (`armonia ayuda --todo`) y la de una orden: `armonia ayuda acorde`, `armonia acorde --help`.
         if orden.nombres.contains("ayuda"), let pedida = resto.first?.lowercased() {
+            if marcasDeToda.contains(pedida) { return bien(ayuda(en: notacion)) }
             guard let otra = self.orden(llamada: pedida) else { return uso(.ordenDesconocida(pedida), notacion) }
             return bien(ayuda(de: otra, en: notacion))
         }
@@ -108,7 +120,10 @@ public enum LineaDeComandos {
                     guard let salida = salidasJSON[orden.nombres[0]] else {
                         return uso(.sinSalidaJSON(nombre), notacion)
                     }
-                    return bien(try textoJSON(salida(resto, notacion)))
+                    let datos = try salida(resto, notacion)
+                    let texto = try textoJSON(datos, enUnaLinea: !salidaEsTerminal)
+                    let conFaltas = (datos as? any ConFaltas)?.hayFaltas ?? false
+                    return ResultadoDeOrden(salida: texto + "\n", error: "", codigo: conFaltas ? 3 : 0)
                 } catch let fallo as FalloDeUso {
                     return uso(fallo.error, notacion)
                 } catch let error as any ErrorDeArmonia {
@@ -131,6 +146,9 @@ public enum LineaDeComandos {
     static func orden(llamada nombre: String) -> Orden? {
         ordenes.first { $0.nombres.contains(nombre) }
     }
+
+    /// Lo que pide toda la ayuda tras `ayuda`, en lugar del índice: `armonia ayuda --todo`.
+    static let marcasDeToda: Set = ["--todo", "--all", "todo", "all"]
 
     /// Lo que pide la ayuda de una orden en lugar de ejecutarla: `armonia acorde --help`.
     static let marcasDeAyuda: Set = ["--help", "-h", "--ayuda"]
@@ -207,10 +225,15 @@ public enum LineaDeComandos {
         let ejecutar: @Sendable (_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden
     }
 
+    /// Las órdenes por grupos, como salen en el índice de la ayuda; los títulos están en
+    /// `TextosDeCLI.gruposDeLaAyuda`, en el mismo orden.
+    static let gruposDeOrdenes: [[Orden]] = [
+        ordenesDeConsultas, ordenesDeArmonizacion, ordenesDePartituras + ordenesDeGrabado, ordenesDeDibujos,
+        ordenesDeNeorriemann, ordenesDeTrastes, ordenesDeLaTerminal + ordenesDeAyuda,
+    ]
+
     /// Todas las órdenes, en el orden en que salen en la ayuda.
-    static let ordenes: [Orden] =
-        ordenesDeConsultas + ordenesDeArmonizacion + ordenesDePartituras + ordenesDeGrabado
-        + ordenesDeDibujos + ordenesDeNeorriemann + ordenesDeTrastes + ordenesDeLaTerminal + ordenesDeAyuda
+    static let ordenes: [Orden] = gruposDeOrdenes.flatMap { $0 }
 
     // MARK: Auxiliares
 
@@ -251,6 +274,23 @@ public enum LineaDeComandos {
     static let escriturasCompactas = ["compacto", "compact", "unicode", "kompakt", "tomor"]
     /// Lo que se puede escribir tras `--escritura`, para proponerlo ante una errata.
     static var nombresDeLasEscrituras: [String] { escriturasConPalabras + escriturasCompactas + ["ascii"] }
+
+    /// La notación de `ARMONIA_IDIOMA`: la de su idioma, como `--idioma`; con `sistema` (o `system`), la del idioma
+    /// de `LC_ALL`, `LC_MESSAGES` o `LANG` (el primero que haya), o la española si no es ninguno de los quince
+    /// (`C`, `POSIX`); sin la variable, la española. Un idioma que no se conoce es un error de uso.
+    static func notacionDelEntorno(_ entorno: [String: String]) -> Result<Notacion, FalloDeUso> {
+        guard let valor = entorno["ARMONIA_IDIOMA"]?.trimmingCharacters(in: .whitespaces), !valor.isEmpty else {
+            return .success(.espanolCompacto)
+        }
+        if ["sistema", "system"].contains(valor.lowercased()) {
+            let local = ["LC_ALL", "LC_MESSAGES", "LANG"].lazy.compactMap { entorno[$0] }.first { !$0.isEmpty }
+            return .success(local.flatMap(Idioma.init(codigo:)).map(Notacion.delIdioma) ?? .espanolCompacto)
+        }
+        guard let notacion = notacionDelIdioma(valor) else {
+            return .failure(FalloDeUso(error: .idiomaDesconocido("ARMONIA_IDIOMA=" + valor)))
+        }
+        return .success(notacion)
+    }
 
     /// La notación de `--idioma`: es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu, o el nombre del idioma.
     static func notacionDelIdioma(_ texto: String) -> Notacion? {
