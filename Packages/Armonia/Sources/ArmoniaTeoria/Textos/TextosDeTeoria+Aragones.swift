@@ -188,6 +188,16 @@ extension TextosDeTeoria {
         usoSigloXX: "sieglo XX",
         usoPopular: "popular",
         usoSintetica: "sintetica",
+        // CardinalDeEscala.swift
+        cardinalTetratonica: "tetratónica",
+        cardinalPentatonica: "pentatónica",
+        cardinalHexatonica: "hexatónica",
+        cardinalHeptatonica: "heptatónica",
+        cardinalOctatonica: "octatónica",
+        cardinalNonatonica: "nonatónica",
+        cardinalDecatonica: "decatónica",
+        cardinalEndecatonica: "endecatónica",
+        cardinalDodecatonica: "dodecatónica",
         // Tradicion+Nombre.swift
         tradicionIndia: "India",
         tradicionGrecia: "Grecia",

@@ -188,6 +188,16 @@ extension TextosDeTeoria {
         usoSigloXX: "20. Jahrhundert",
         usoPopular: "Volksmusik",
         usoSintetica: "synthetisch",
+        // CardinalDeEscala.swift
+        cardinalTetratonica: "Tetratonik",
+        cardinalPentatonica: "Pentatonik",
+        cardinalHexatonica: "Hexatonik",
+        cardinalHeptatonica: "Heptatonik",
+        cardinalOctatonica: "Oktatonik",
+        cardinalNonatonica: "Nonatonik",
+        cardinalDecatonica: "Dekatonik",
+        cardinalEndecatonica: "Hendekatonik",
+        cardinalDodecatonica: "Dodekatonik",
         // Tradicion+Nombre.swift
         tradicionIndia: "Indien",
         tradicionGrecia: "Griechenland",

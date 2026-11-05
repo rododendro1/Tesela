@@ -272,6 +272,7 @@ struct TextosDeCLI: TextosTraducidos {
     let faltaLoQueDibujaElPentagrama: String
     let capoFueraDeRango: String
     let octavasFueraDeRango: String
+    let notasFueraDeRango: String
     let octavaFueraDeRango: String
     let desdeNoValido: @Sendable (String) -> String
     let tensionesMalEscritas: String

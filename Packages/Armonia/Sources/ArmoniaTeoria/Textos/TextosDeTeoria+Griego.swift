@@ -188,6 +188,16 @@ extension TextosDeTeoria {
         usoSigloXX: "20ός αιώνας",
         usoPopular: "λαϊκή",
         usoSintetica: "συνθετική",
+        // CardinalDeEscala.swift
+        cardinalTetratonica: "τετρατονική",
+        cardinalPentatonica: "πεντατονική",
+        cardinalHexatonica: "εξατονική",
+        cardinalHeptatonica: "επτατονική",
+        cardinalOctatonica: "οκτατονική",
+        cardinalNonatonica: "εννεατονική",
+        cardinalDecatonica: "δεκατονική",
+        cardinalEndecatonica: "ενδεκατονική",
+        cardinalDodecatonica: "δωδεκατονική",
         // Tradicion+Nombre.swift
         tradicionIndia: "Ινδία",
         tradicionGrecia: "Ελλάδα",

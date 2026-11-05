@@ -119,7 +119,9 @@ extension LineaDeComandos {
                 "armonia escalas --tradicion turquia",
                 "armonia scales --tradition turkey"),
             notas: TextosDeCLI.traduccion(\.notasEscalas),
-            opciones: ["--tradicion", "--categoria", "--uso", "--tradition", "--category", "--use"])
+            opciones: [
+                "--tradicion", "--categoria", "--uso", "--notas", "--tradition", "--category", "--use", "--notes",
+            ])
     ]
 
     static let ayudaDeTonalidad: [EntradaDeAyuda] = [

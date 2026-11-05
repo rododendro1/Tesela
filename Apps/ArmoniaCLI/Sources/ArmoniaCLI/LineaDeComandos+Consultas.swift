@@ -551,10 +551,11 @@ extension LineaDeComandos {
         }
     }
 
-    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>] [--uso <uso>]`: el catálogo de escalas,
-    /// las habituales y las de otras tradiciones agrupadas por tradición y categoría, cada una con sus notas desde Do
-    /// (y la marca de los microtonos, si los tiene). Un texto suelto busca en los nombres. `--uso jazz` deja solo las
-    /// habituales de ese uso (las de otras tradiciones no tienen).
+    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>] [--uso <uso>] [--notas <n>]`: el
+    /// catálogo de escalas, las habituales y las de otras tradiciones agrupadas por tradición y categoría, cada una
+    /// con sus notas desde Do (y la marca de los microtonos, si los tiene). Un texto suelto busca en los nombres.
+    /// `--uso jazz` deja solo las habituales de ese uso (las de otras tradiciones no tienen), y `--notas 5`, las de
+    /// cinco notas.
     static func escalas(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         var entrada = Argumentos(argumentos)
@@ -591,10 +592,17 @@ extension LineaDeComandos {
             }
             usoPedido = encontrado
         }
+        // `--notas 5`: solo las de cinco notas (las pentatónicas).
+        var numeroDeNotas: Int?
+        if let texto = try entrada.valor("--notas", "--notes", siFalta: .notasFueraDeRango) {
+            guard let n = Int(texto), (1...24).contains(n) else { throw ErrorDeUso.notasFueraDeRango }
+            numeroDeNotas = n
+        }
         if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
         let buscado = claveDeBusqueda(entrada.unidos)
         func cumple(_ tipo: TipoDeEscala) -> Bool {
-            buscado.isEmpty || claveDeBusqueda(tipo.nombre(en: notacion)).contains(buscado)
+            guard numeroDeNotas == nil || tipo.numeroDeNotas == numeroDeNotas else { return false }
+            return buscado.isEmpty || claveDeBusqueda(tipo.nombre(en: notacion)).contains(buscado)
                 || claveDeBusqueda(tipo.nombre).contains(buscado)
         }
 

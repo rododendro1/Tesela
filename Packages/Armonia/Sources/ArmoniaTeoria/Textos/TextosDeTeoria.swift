@@ -208,6 +208,17 @@ struct TextosDeTeoria: TextosTraducidos {
     let usoPopular: String
     let usoSintetica: String
 
+    // MARK: CardinalDeEscala.swift
+    let cardinalTetratonica: String
+    let cardinalPentatonica: String
+    let cardinalHexatonica: String
+    let cardinalHeptatonica: String
+    let cardinalOctatonica: String
+    let cardinalNonatonica: String
+    let cardinalDecatonica: String
+    let cardinalEndecatonica: String
+    let cardinalDodecatonica: String
+
     // MARK: Tradicion+Nombre.swift
     let tradicionIndia: String
     let tradicionGrecia: String

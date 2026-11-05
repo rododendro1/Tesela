@@ -189,6 +189,16 @@ extension TextosDeTeoria {
         usoSigloXX: "20. század",
         usoPopular: "népi",
         usoSintetica: "szintetikus",
+        // CardinalDeEscala.swift
+        cardinalTetratonica: "tetraton",
+        cardinalPentatonica: "pentaton",
+        cardinalHexatonica: "hexaton",
+        cardinalHeptatonica: "heptaton",
+        cardinalOctatonica: "oktaton",
+        cardinalNonatonica: "nonaton",
+        cardinalDecatonica: "dekaton",
+        cardinalEndecatonica: "hendekaton",
+        cardinalDodecatonica: "dodekaton",
         // Tradicion+Nombre.swift
         tradicionIndia: "India",
         tradicionGrecia: "Görögország",

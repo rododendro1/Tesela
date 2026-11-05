@@ -192,6 +192,16 @@ extension TextosDeTeoria {
         usoSigloXX: "XX. mendea",
         usoPopular: "herrikoia",
         usoSintetica: "sintetikoa",
+        // CardinalDeEscala.swift
+        cardinalTetratonica: "tetratonikoa",
+        cardinalPentatonica: "pentatonikoa",
+        cardinalHexatonica: "hexatonikoa",
+        cardinalHeptatonica: "heptatonikoa",
+        cardinalOctatonica: "oktatonikoa",
+        cardinalNonatonica: "nonatonikoa",
+        cardinalDecatonica: "dekatonikoa",
+        cardinalEndecatonica: "hendekatonikoa",
+        cardinalDodecatonica: "dodekatonikoa",
         // Tradicion+Nombre.swift
         tradicionIndia: "India",
         tradicionGrecia: "Grezia",
