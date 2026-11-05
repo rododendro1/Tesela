@@ -141,14 +141,16 @@ struct VistaDeAnalisis: View {
         let hoja = FicheroParaExportar.svg(
             PresentacionDeAnalisis.hojaDeEstudio(analisis, disposicion: disposicion, notacion: notacion),
             nombre: notacion.texto(\.hojaDeEstudio))
-        let doce = tonalidadDeLasDoce(analisis).map { tonalidad in
-            FicheroParaExportar.svg(
-                PresentacionDeAnalisis.hojaEnLasDoceTonalidades(
-                    analisis.acordes, tonalidad: tonalidad, disposicion: disposicion, notacion: notacion),
-                nombre: notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.enLasDoceTonalidades))
+        var todos: [FicheroParaExportar] = analisis.ficheros + [hoja]
+        if let tonalidad = tonalidadDeLasDoce(analisis) {
+            let svg = PresentacionDeAnalisis.hojaEnLasDoceTonalidades(
+                analisis.acordes, tonalidad: tonalidad, disposicion: disposicion, notacion: notacion)
+            let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.enLasDoceTonalidades)
+            todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
         }
-        return analisis.ficheros + [hoja] + (doce.map { [$0] } ?? []) + (arpegiada?.ficheros ?? [])
-            + (dispuesta?.ficheros ?? []) + guias
+        todos += arpegiada?.ficheros ?? []
+        todos += dispuesta?.ficheros ?? []
+        return todos + guias
     }
 
     /// La tonalidad desde la que se lleva la progresión a las doce: la del análisis o, si modula, la del primer
