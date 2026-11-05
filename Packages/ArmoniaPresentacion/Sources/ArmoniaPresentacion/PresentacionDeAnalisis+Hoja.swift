@@ -6,8 +6,9 @@ extension PresentacionDeAnalisis {
 
     /// Una hoja de estudio de la progresión, para imprimir: un SVG del ancho de un A4 con los acordes y su
     /// tonalidad, el pentagrama con una disposición de cada uno (la `disposicion`, o cerrada si no se puede), el
-    /// análisis (grado, función y escala de cada acorde, con las modulaciones), las cadencias y las líneas de notas
-    /// guía con su pentagrama. El alto es el que ocupa. `armonia grabar hoja --acordes …` la pasa a PDF.
+    /// análisis (grado, función y escala de cada acorde, con las modulaciones), la conducción de las voces, las
+    /// cadencias y las líneas de notas guía con su pentagrama. El alto es el que ocupa. `armonia grabar hoja
+    /// --acordes …` la pasa a PDF.
     ///
     ///     let analisis = try PresentacionDeAnalisis.analizar("Rem7 Sol7 Do7M", notacion: .espanolCompacto)
     ///     let hoja = PresentacionDeAnalisis.hojaDeEstudio(analisis, notacion: .espanolCompacto)
@@ -56,6 +57,22 @@ extension PresentacionDeAnalisis {
             }
         }
         y += 8
+
+        // La conducción de las voces, paso a paso, en la misma disposición que el pentagrama.
+        if let voces = conduccion(analisis.acordes, disposicion: disposicion, notacion: notacion) {
+            let titulo = notacion.texto(\.conduccionDeVoces) + " · " + voces.disposicion
+            cuerpo.append(Hoja.texto(titulo, x: margen, y: y + 12, tamano: 14, negrita: true))
+            y += 32
+            for paso in voces.pasos {
+                let encabezado = paso.titulo + " · " + paso.comunes
+                cuerpo.append(Hoja.texto(encabezado, x: margen, y: y, tamano: 11, negrita: true))
+                y += 15
+                cuerpo.append(Hoja.texto(paso.voces.joined(separator: " · "), x: margen + 12, y: y, tamano: 10))
+                y += 17
+            }
+            cuerpo.append(Hoja.texto(voces.movimientoTotal, x: margen, y: y, tamano: 11, color: "#555555"))
+            y += 24
+        }
 
         // Las cadencias, si las hay.
         if !analisis.cadencias.isEmpty {

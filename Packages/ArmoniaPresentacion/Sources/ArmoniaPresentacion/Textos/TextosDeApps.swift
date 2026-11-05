@@ -233,6 +233,8 @@ public struct TextosDeApps: TextosTraducidos {
     public let modulacionPorAcordeComun: String
     public let modulacionPorDisminuida: String
     public let modulacionDirecta: String
+    /// Cómo va cada voz de un acorde al siguiente en una progresión.
+    public let conduccionDeVoces: String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String

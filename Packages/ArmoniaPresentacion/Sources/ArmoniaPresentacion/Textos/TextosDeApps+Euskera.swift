@@ -217,6 +217,7 @@ extension TextosDeApps {
         modulacionPorAcordeComun: "akorde komuna",
         modulacionPorDisminuida: "zazpigarren txikitu enarmonikoa",
         modulacionDirecta: "zuzena",
+        conduccionDeVoces: "Ahotsen gidaketa",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tentsioak",
         notasAEvitar: "Saihesteko",
