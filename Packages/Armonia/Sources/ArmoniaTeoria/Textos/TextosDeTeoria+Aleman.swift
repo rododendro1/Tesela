@@ -189,6 +189,9 @@ extension TextosDeTeoria {
         usoPopular: "Volksmusik",
         usoSintetica: "synthetisch",
         // CardinalDeEscala.swift
+        cardinalMonotonica: "Monotonik",
+        cardinalDitonica: "Ditonik",
+        cardinalTritonica: "Tritonik",
         cardinalTetratonica: "Tetratonik",
         cardinalPentatonica: "Pentatonik",
         cardinalHexatonica: "Hexatonik",

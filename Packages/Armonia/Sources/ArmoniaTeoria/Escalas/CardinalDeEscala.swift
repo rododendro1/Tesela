@@ -2,14 +2,17 @@ import ArmoniaNucleo
 
 // MARK: - Cuántas notas tiene una escala
 
-/// El nombre de una escala por sus notas por octava: tetratónica (4), pentatónica (5), hexatónica (6), heptatónica
-/// (7), octatónica (8)… hasta dodecatónica (12). Fuera de ahí no tiene nombre: las de microtonos de 17, 22 o 24
-/// notas se cuentan, pero no se nombran.
+/// El nombre de una escala por sus notas por octava: monotónica (1), ditónica (2), tritónica (3), tetratónica (4),
+/// pentatónica (5), hexatónica (6), heptatónica (7), octatónica (8)… hasta dodecatónica (12). Fuera de ahí no tiene
+/// nombre: las de microtonos de 17, 22 o 24 notas se cuentan, pero no se nombran.
 ///
 ///     TipoDeEscala.pentatonicaMayor.cardinal              // .pentatonica
 ///     TipoDeEscala.disminuida.cardinal?.nombre            // "octatónica"
 ///     TipoDeEscala.todos(numeroDeNotas: 6)                // tonos enteros, hexacordo, aumentada…
 public enum CardinalDeEscala: Int, Sendable, Codable, CaseIterable, Comparable {
+    case monotonica = 1
+    case ditonica = 2
+    case tritonica = 3
     case tetratonica = 4
     case pentatonica = 5
     case hexatonica = 6
@@ -20,8 +23,8 @@ public enum CardinalDeEscala: Int, Sendable, Codable, CaseIterable, Comparable {
     case endecatonica = 11
     case dodecatonica = 12
 
-    /// El cardinal de una escala de `numeroDeNotas` notas por octava, o `nil` si no tiene nombre (menos de cuatro
-    /// o más de doce).
+    /// El cardinal de una escala de `numeroDeNotas` notas por octava, o `nil` si no tiene nombre (ninguna o más de
+    /// doce).
     public init?(numeroDeNotas: Int) { self.init(rawValue: numeroDeNotas) }
 
     public var numeroDeNotas: Int { rawValue }
@@ -36,6 +39,9 @@ public enum CardinalDeEscala: Int, Sendable, Codable, CaseIterable, Comparable {
     /// no compila sin el suyo.
     private var traduccion: Traduccion {
         switch self {
+        case .monotonica: TextosDeTeoria.traduccion(\.cardinalMonotonica)
+        case .ditonica: TextosDeTeoria.traduccion(\.cardinalDitonica)
+        case .tritonica: TextosDeTeoria.traduccion(\.cardinalTritonica)
         case .tetratonica: TextosDeTeoria.traduccion(\.cardinalTetratonica)
         case .pentatonica: TextosDeTeoria.traduccion(\.cardinalPentatonica)
         case .hexatonica: TextosDeTeoria.traduccion(\.cardinalHexatonica)

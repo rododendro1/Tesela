@@ -189,6 +189,9 @@ extension TextosDeTeoria {
         usoPopular: "populaire",
         usoSintetica: "synthétique",
         // CardinalDeEscala.swift
+        cardinalMonotonica: "monotonique",
+        cardinalDitonica: "ditonique",
+        cardinalTritonica: "tritonique",
         cardinalTetratonica: "tétratonique",
         cardinalPentatonica: "pentatonique",
         cardinalHexatonica: "hexatonique",

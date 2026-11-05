@@ -4,7 +4,7 @@
 
 ### Escalas: cardinal y estadísticas
 
-- `CardinalDeEscala` nombra las escalas por su número de notas (de tetratónica a dodecatónica), en los quince
+- `CardinalDeEscala` nombra las escalas por su número de notas (de monotónica a dodecatónica), en los quince
   idiomas, y `TipoDeEscala` tiene `numeroDeNotas`, `cardinal` y `todos(numeroDeNotas:)`.
 - `EstadisticasDeEscala` (`escala.estadisticas`) reúne el número de notas y su cardinal, el brillo de los modos de
   siete notas, `brilloPorQuintas` (la posición media en el círculo de quintas respecto a la tónica, que sirve para

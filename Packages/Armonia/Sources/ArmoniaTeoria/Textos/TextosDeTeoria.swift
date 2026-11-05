@@ -209,6 +209,9 @@ struct TextosDeTeoria: TextosTraducidos {
     let usoSintetica: String
 
     // MARK: CardinalDeEscala.swift
+    let cardinalMonotonica: String
+    let cardinalDitonica: String
+    let cardinalTritonica: String
     let cardinalTetratonica: String
     let cardinalPentatonica: String
     let cardinalHexatonica: String

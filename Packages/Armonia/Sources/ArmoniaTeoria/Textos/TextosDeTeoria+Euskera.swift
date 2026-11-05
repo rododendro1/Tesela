@@ -193,6 +193,9 @@ extension TextosDeTeoria {
         usoPopular: "herrikoia",
         usoSintetica: "sintetikoa",
         // CardinalDeEscala.swift
+        cardinalMonotonica: "monotonikoa",
+        cardinalDitonica: "ditonikoa",
+        cardinalTritonica: "tritonikoa",
         cardinalTetratonica: "tetratonikoa",
         cardinalPentatonica: "pentatonikoa",
         cardinalHexatonica: "hexatonikoa",

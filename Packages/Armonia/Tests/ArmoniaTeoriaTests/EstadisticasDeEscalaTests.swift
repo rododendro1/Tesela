@@ -13,15 +13,18 @@ import Testing
         #expect(TipoDeEscala.disminuida.cardinal == .octatonica)
         #expect(TipoDeEscala.bebopDominante.cardinal == .octatonica)
         #expect(TipoDeEscala.cromatica.cardinal == .dodecatonica)
-        #expect(CardinalDeEscala(numeroDeNotas: 3) == nil)
+        #expect(CardinalDeEscala(numeroDeNotas: 3) == .tritonica)
+        #expect(CardinalDeEscala(numeroDeNotas: 1) == .monotonica)
+        #expect(CardinalDeEscala(numeroDeNotas: 0) == nil)
         #expect(CardinalDeEscala(numeroDeNotas: 22) == nil)
-        #expect(CardinalDeEscala.allCases.map(\.numeroDeNotas) == Array(4...12))
+        #expect(CardinalDeEscala.allCases.map(\.numeroDeNotas) == Array(1...12))
         #expect(CardinalDeEscala.pentatonica < .heptatonica)
     }
 
     @Test func nombresDelCardinal() {
         #expect(CardinalDeEscala.pentatonica.nombre == "pentatónica")
         #expect(CardinalDeEscala.octatonica.nombre(en: .inglesASCII) == "octatonic")
+        #expect(CardinalDeEscala.tritonica.nombre == "tritónica")
         #expect(CardinalDeEscala.hexatonica.nombre(en: .delIdioma(.aleman)) == "Hexatonik")
         // Todos tienen nombre, distinto, en cada idioma.
         for idioma in Idioma.allCases {

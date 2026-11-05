@@ -190,6 +190,9 @@ extension TextosDeTeoria {
         usoPopular: "népi",
         usoSintetica: "szintetikus",
         // CardinalDeEscala.swift
+        cardinalMonotonica: "monoton",
+        cardinalDitonica: "diton",
+        cardinalTritonica: "triton",
         cardinalTetratonica: "tetraton",
         cardinalPentatonica: "pentaton",
         cardinalHexatonica: "hexaton",
