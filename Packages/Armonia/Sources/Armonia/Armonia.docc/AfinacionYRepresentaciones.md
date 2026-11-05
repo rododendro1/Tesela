@@ -47,6 +47,42 @@ AfinacionHistorica.mesotonico.distingueEnarmonicas                      // true
 AfinacionHistorica.vallotti.nombre(en: .rusoPalabras)                           // "Валлотти"
 ```
 
+### Escalas y afinaciones
+
+Una escala con microtonos (``TipoDeEscalaMicrotonal``, en <doc:Escalas>) se puede oír como es:
+`Escala.afinacion(la4:microtonal:sentido:)` da una ``AfinacionDeEscala``, que afina cada nota de la escala con lo
+que se aparta de su nota temperada y deja las demás en temperamento igual. La nota se busca por su nombre y, si no
+está, por su altura (Re♯ suena como el Mi♭ de la escala). Una escala puede tener varias afinaciones, cada una de un
+autor (`TipoDeEscala.afinaciones`, con su `fuente`): los echoi diatónicos, en los 72 moria de la Comisión
+Patriarcal (1881) y en los 68 de Chrysanthos (1832).
+
+```swift
+let bayati = Escala(.re, .bayati).afinacion()!
+bayati.desviacion(de: "Mib4")                              // 50: el Mi𝄳
+bayati.desviacion(de: "Mi4")                               // 0: no es de la escala
+Escala(.re, .bayati).afinacion(la4: 442)?.frecuencia(de: "La4")   // 442
+TipoDeEscala.echosProtos.afinaciones.count                 // 2
+TipoDeEscala.echosProtos.afinaciones[1].fuente             // "Chrysanthos, 1832"
+let chrysanthos = TipoDeEscala.echosProtos.afinaciones[1]
+Escala(.re, .echosProtos).afinacion(microtonal: chrysanthos)?.desviacion(de: "Mi4")   // −29
+Escala(.do, .mayor).afinacion()                            // nil: no tiene microtonos
+```
+
+Una escala de doce notas se mide en cualquier ``AfinacionHistorica`` con `Escala.cents(en:sentido:)`: los cents de
+cada grado desde la tónica. Como en los temperamentos circulares cada tonalidad suena distinta, depende de la
+tónica, y la afinación justa se construye sobre ella. Cada tradición sugiere la suya (`Tradicion.afinacionSugerida`,
+también en `TipoDeEscala`): la pitagórica en el canto gregoriano, la Grecia antigua, Mesopotamia y China, que
+afinan por quintas puras, y la justa en la India; las demás tienen sus microtonos o no se ajustan a ninguna.
+
+```swift
+Escala(.do, .mayor).cents(en: .justa)[2]                       // 386,31: la tercera pura
+Escala(.do, .mayor).cents(en: .werckmeisterIII)[2]             // 390,22
+Escala(Nota(.re, .bemol), .mayor).cents(en: .werckmeisterIII)[2]   // 407,82: más abierta
+TipoDeEscala.protusAuthenticus.afinacionSugerida               // .pitagorico
+Escala(.re, .protusAuthenticus).cents(en: .pitagorico)[2]      // 294,13: la tercera menor de 32/27
+Tradicion.india.afinacionSugerida                              // .justa
+```
+
 ## Base 40, base 54 y base 600
 
 La numeración de Walter Hewlett da a cada altura un número que conserva la ortografía

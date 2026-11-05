@@ -87,5 +87,20 @@ extension FichaDeTradicion {
             TipoDeEscalaMicrotonal(.echosTetartos, .moria72, pasos: [0, 12, 22, 30, 42, 52, 60]),
             TipoDeEscalaMicrotonal(.echosPlagiosTetartos, .moria72, pasos: [0, 12, 22, 30, 42, 54, 64]),
             TipoDeEscalaMicrotonal(.echosLegetos, .moria72, pasos: [-2, 6, 18, 30, 40, 48, 60]),
+            // Los diatónicos en los 68 moria de Chrysanthos de Madytos (Θεωρητικόν μέγα, 1832), la teoría anterior:
+            // Ni 0, Pa 12, Vou 21, Ga 28, Di 40, Ke 52, Zo 61 (tonos de 12, 9 y 7 moria), en cents desde Ni = Do.
+            TipoDeEscalaMicrotonal(
+                .echosProtos, .razones, pasos: [12, 171, 294, 506, 718, 876, 1000], fuente: "Chrysanthos, 1832"),
+            TipoDeEscalaMicrotonal(
+                .echosPlagiosProtos, .razones, pasos: [18, 176, 300, 512, 671, 794, 1006], fuente: "Chrysanthos, 1832"),
+            TipoDeEscalaMicrotonal(
+                .echosVarys, .razones, pasos: [-24, 100, 312, 471, 594, 806, 1018], fuente: "Chrysanthos, 1832"),
+            TipoDeEscalaMicrotonal(
+                .echosTetartos, .razones, pasos: [6, 218, 376, 500, 712, 871, 994], fuente: "Chrysanthos, 1832"),
+            TipoDeEscalaMicrotonal(
+                .echosPlagiosTetartos, .razones, pasos: [0, 212, 371, 494, 706, 918, 1076],
+                fuente: "Chrysanthos, 1832"),
+            TipoDeEscalaMicrotonal(
+                .echosLegetos, .razones, pasos: [-29, 94, 306, 518, 676, 800, 1012], fuente: "Chrysanthos, 1832"),
         ])
 }

@@ -83,15 +83,20 @@ public struct TipoDeEscalaMicrotonal: Hashable, Sendable {
     public let pasos: [Int]
     /// Lo mismo al bajar, si la escala baja con otras notas; `nil` si baja como sube.
     public let pasosDescendentes: [Int]?
+    /// De quién es esta afinación, cuando la escala tiene más de una: el autor y el año («Chrysanthos, 1832»), que
+    /// no se traducen. `nil` en la primera, la de su teoría de hoy, que dice ya su `sistema`.
+    public let fuente: String?
 
     /// Una escala con microtonos; si `pasosDescendentes` es igual que `pasos`, se guarda `nil`.
     public init(
-        _ temperada: TipoDeEscala, _ sistema: SistemaMicrotonal, pasos: [Int], pasosDescendentes: [Int]? = nil
+        _ temperada: TipoDeEscala, _ sistema: SistemaMicrotonal, pasos: [Int], pasosDescendentes: [Int]? = nil,
+        fuente: String? = nil
     ) {
         self.temperada = temperada
         self.sistema = sistema
         self.pasos = pasos
         self.pasosDescendentes = pasosDescendentes == pasos ? nil : pasosDescendentes
+        self.fuente = fuente
     }
 
     /// Los pasos en un sentido.
@@ -229,9 +234,12 @@ extension NotaMicrotonal: CustomStringConvertible {
 }
 
 extension Escala {
-    /// La versión microtonal de la escala, si su tipo la tiene: Re Bayātī → Re Mi𝄳 Fa Sol La Si♭ Do.
-    public func notasMicrotonales(sentido: SentidoDelIntervalo = .ascendente) -> [NotaMicrotonal]? {
-        guard let microtonal = tipo.microtonal else { return nil }
+    /// La versión microtonal de la escala, si su tipo la tiene: Re Bayātī → Re Mi𝄳 Fa Sol La Si♭ Do. Con
+    /// `afinacion`, en otra de las de `tipo.afinaciones` (o en una cualquiera de su misma escala temperada).
+    public func notasMicrotonales(
+        sentido: SentidoDelIntervalo = .ascendente, afinacion: TipoDeEscalaMicrotonal? = nil
+    ) -> [NotaMicrotonal]? {
+        guard let microtonal = afinacion ?? tipo.microtonal, microtonal.temperada == tipo else { return nil }
         let intervalos = microtonal.intervalos(sentido: sentido)
         let ajustes = microtonal.ajustes(sentido: sentido)
         let cents = microtonal.cents(sentido: sentido)
@@ -247,9 +255,13 @@ extension Escala {
 extension TipoDeEscala {
     /// La versión microtonal de una escala de otra tradición (`nil` si no tiene). Como `categoria`, se busca por el
     /// nombre y solo vale si los intervalos coinciden: Bayātī la tiene; el frigio, con los mismos intervalos, no.
-    public var microtonal: TipoDeEscalaMicrotonal? {
-        guard let entrada = TipoDeEscalaMicrotonal.porNombre[nombre], entrada.temperada == self else { return nil }
-        return entrada
+    public var microtonal: TipoDeEscalaMicrotonal? { afinaciones.first }
+
+    /// Todas las versiones microtonales de la escala: la de su teoría de hoy (`microtonal`) y las de otros autores,
+    /// cada una con su `fuente`. Los echoi diatónicos tienen dos: en los 72 moria de la Comisión Patriarcal (1881) y
+    /// en los 68 de Chrysanthos (1832). Vacío si no tiene ninguna.
+    public var afinaciones: [TipoDeEscalaMicrotonal] {
+        (TipoDeEscalaMicrotonal.porNombre[nombre] ?? []).filter { $0.temperada == self }
     }
 }
 
@@ -267,7 +279,6 @@ extension TipoDeEscalaMicrotonal {
     /// el orden de `FichaDeTradicion.todas`.
     public static let catalogo: [TipoDeEscalaMicrotonal] = FichaDeTradicion.todas.flatMap(\.microtonales)
 
-    /// Nombre de la escala temperada → su versión microtonal.
-    static let porNombre: [String: TipoDeEscalaMicrotonal] = Dictionary(
-        catalogo.map { ($0.temperada.nombre, $0) }, uniquingKeysWith: { primera, _ in primera })
+    /// Nombre de la escala temperada → sus versiones microtonales, en el orden del catálogo.
+    static let porNombre: [String: [TipoDeEscalaMicrotonal]] = Dictionary(grouping: catalogo, by: \.temperada.nombre)
 }
