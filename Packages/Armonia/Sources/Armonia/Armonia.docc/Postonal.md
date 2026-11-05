@@ -5,12 +5,12 @@ Conjuntos de clases de altura, formas primas y números de Forte.
 ## Conjuntos de clases de altura
 
 ```swift
-let c: ConjuntoDeClases = [0, 4, 7]
+let c: ConjuntoDeClasesDeAltura = [0, 4, 7]
 c.formaPrima            // [0, 3, 7]
 c.numeroDeForte         // "3-11"
 c.vectorIntervalico     // [0, 0, 1, 1, 1, 0]
 c.nombreComun           // "tríada mayor o menor"
-ConjuntoDeClases([0, 1, 4, 6]).estaEnRelacionZ(con: [0, 1, 3, 7])   // true (4-Z15 y 4-Z29)
+ConjuntoDeClasesDeAltura([0, 1, 4, 6]).estaEnRelacionZ(con: [0, 1, 3, 7])   // true (4-Z15 y 4-Z29)
 Escala(.re).conjuntoDeClases.numeroDeForte                          // "7-35"
 ```
 
@@ -20,16 +20,16 @@ partir de las tablas de music21 y comprobada sobre los 4096 subconjuntos posible
 
 ## Conjuntos escritos a mano
 
-``ConjuntoDeClases/init(leyendo:)`` lee las formas habituales de los manuales: la lista con corchetes, llaves,
+``ConjuntoDeClasesDeAltura/init(leyendo:)`` lee las formas habituales de los manuales: la lista con corchetes, llaves,
 paréntesis o sin nada; una cifra por clase con `t` y `e` para el 10 y el 11; nombres de nota; o el número de Forte,
 que da la forma prima.
 
 ```swift
-let triada = try ConjuntoDeClases(leyendo: "{0 4 7}")
+let triada = try ConjuntoDeClasesDeAltura(leyendo: "{0 4 7}")
 triada.numeroDeForte                                   // "3-11"
-try ConjuntoDeClases(leyendo: "01t").clases            // [0, 1, 10]
-try ConjuntoDeClases(leyendo: "Re Fa La").clases       // [2, 5, 9]
-try ConjuntoDeClases(leyendo: "4-Z15").clases          // [0, 1, 4, 6]
+try ConjuntoDeClasesDeAltura(leyendo: "01t").clases            // [0, 1, 10]
+try ConjuntoDeClasesDeAltura(leyendo: "Re Fa La").clases       // [2, 5, 9]
+try ConjuntoDeClasesDeAltura(leyendo: "4-Z15").clases          // [0, 1, 4, 6]
 ```
 
 Un texto se lee entero como clases o entero como notas: «C E G» es Do, Mi y Sol, y «0 4 E», 0, 4 y 11.
@@ -57,24 +57,24 @@ las formas cuyo primer hexacordo completa el total cromático con el primero de 
 
 ## Simetrías y notas comunes
 
-``ConjuntoDeClases/vectorDeIndice`` cuenta, para cada TnI, cuántas clases del conjunto caen sobre otra del conjunto,
-y ``ConjuntoDeClases/vectorDeTransposicion``, lo mismo para cada Tn. Las inversiones que lo dejan igual tienen cada
+``ConjuntoDeClasesDeAltura/vectorDeIndice`` cuenta, para cada TnI, cuántas clases del conjunto caen sobre otra del conjunto,
+y ``ConjuntoDeClasesDeAltura/vectorDeTransposicion``, lo mismo para cada Tn. Las inversiones que lo dejan igual tienen cada
 una su ``EjeDeInversion``: la recta del círculo de las clases que pasa por n/2 y n/2 + 6.
 
 ```swift
-let menorConSeptima: ConjuntoDeClases = [0, 3, 7, 10]
+let menorConSeptima: ConjuntoDeClasesDeAltura = [0, 3, 7, 10]
 menorConSeptima.vectorDeIndice                 // [1, 2, 1, 2, 0, 2, 1, 2, 1, 0, 4, 0]
 menorConSeptima.notasComunes(invirtiendo: 10)  // 4
 menorConSeptima.ejesDeSimetria                 // [5–11]
-ConjuntoDeClases([0, 1]).ejesDeSimetria        // [0½–6½]
+ConjuntoDeClasesDeAltura([0, 1]).ejesDeSimetria        // [0½–6½]
 ```
 
 ## Escribir un conjunto con notas
 
-``ConjuntoDeClases/notas(con:)`` escribe cada clase con la nota más sencilla: busca el tramo más corto de la línea
+``ConjuntoDeClasesDeAltura/notas(con:)`` escribe cada clase con la nota más sencilla: busca el tramo más corto de la línea
 de quintas con una nota de cada clase, así que lo que cabe en una escala diatónica sale sin repetir letra.
 
 ```swift
-ConjuntoDeClases([1, 5, 8]).notas()                        // [Re♭, Fa, La♭]
-ConjuntoDeClases([1, 5, 8]).notas(con: Nota(.do, .sostenido))   // [Do♯, Mi♯, Sol♯]
+ConjuntoDeClasesDeAltura([1, 5, 8]).notas()                        // [Re♭, Fa, La♭]
+ConjuntoDeClasesDeAltura([1, 5, 8]).notas(con: Nota(.do, .sostenido))   // [Do♯, Mi♯, Sol♯]
 ```

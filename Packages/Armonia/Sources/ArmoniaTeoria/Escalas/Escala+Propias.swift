@@ -21,7 +21,7 @@ extension TipoDeEscala {
     /// hasta la octava.
     static func nombrePropio(_ semitonos: [Int]) -> String {
         let pasos = zip(semitonos, semitonos.dropFirst() + [12]).map { String($1 - $0) }.joined(separator: "-")
-        let forte = ConjuntoDeClases(semitonos).numeroDeForte
+        let forte = ConjuntoDeClasesDeAltura(semitonos).numeroDeForte
         return [forte, "(" + pasos + ")"].compactMap { $0 }.joined(separator: " ")
     }
 }
@@ -52,7 +52,7 @@ extension Escala {
         if semitonos.last == 12 { semitonos.removeLast() }
         guard semitonos.allSatisfy({ $0 < 12 }) else { return nil }
         let clases = semitonos.map { modulo(tonica.claseDeAltura + $0, 12) }
-        let escritas = ConjuntoDeClases(clases).notas(con: tonica)
+        let escritas = ConjuntoDeClasesDeAltura(clases).notas(con: tonica)
         let notas = clases.compactMap { clase in escritas.first { $0.claseDeAltura == clase } }
         return propia([tonica] + notas.dropFirst())
     }
@@ -65,7 +65,7 @@ extension Escala {
     }
 
     /// El número de Forte del conjunto de notas de la escala: «7-35» en las diatónicas, «5-35» en las pentatónicas.
-    public var numeroDeForte: String? { ConjuntoDeClases(notas: notas).numeroDeForte }
+    public var numeroDeForte: String? { ConjuntoDeClasesDeAltura(notas: notas).numeroDeForte }
 
     /// Lee una escala propia: unas notas («Do Re Mi♭ Fa♯ Sol La Si») o una tónica y sus pasos («Do 2-1-3-1-2-2-1»).
     static func leerPropia(_ texto: String) -> Escala? {

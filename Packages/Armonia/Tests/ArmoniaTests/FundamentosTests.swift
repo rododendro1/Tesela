@@ -213,7 +213,7 @@ import Testing
         #expect(subirQuinta(Acorde("Do7")).cifrado == "Sol7")
         #expect(subirQuinta(Escala(.do)) == Escala(.sol))
         #expect(subirQuinta(Melodia(["Do4", "Mi4"])).description == "Sol4 Si4")
-        #expect(subirQuinta(ConjuntoDeClases([0, 4, 7])) == [7, 11, 2])
+        #expect(subirQuinta(ConjuntoDeClasesDeAltura([0, 4, 7])) == [7, 11, 2])
 
         #expect(Nota.do.secuencia(.quintaJusta, veces: 3) == [.do, .sol, .re, .la])
         #expect(Nota.do.transponer(.quintaJusta, veces: 12) == Nota("Si#"))
@@ -230,7 +230,7 @@ import Testing
         #expect(Acorde("Do").esDeLaMismaClase(que: Melodia(["La3", "Do4", "Mi4"])))
         #expect(!(Acorde("Do").esDeLaMismaClase(que: Acorde("Do+"))))
         #expect(Escala(.do).esDeLaMismaClase(que: Escala(.la, .menorNatural)))
-        #expect(ConjuntoDeClases([0, 4, 7]).esDeLaMismaClase(que: Acorde("Rem")))
+        #expect(ConjuntoDeClasesDeAltura([0, 4, 7]).esDeLaMismaClase(que: Acorde("Rem")))
     }
 
     @Test func losExtremosYElMenor() {

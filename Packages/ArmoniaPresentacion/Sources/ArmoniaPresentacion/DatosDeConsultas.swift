@@ -112,7 +112,7 @@ public struct DatosDeEscala: Hashable, Sendable, Codable {
 
 /// Un conjunto de clases de altura: sus notas, sus formas y sus vectores.
 ///
-///     let datos = DatosDeConjunto(ConjuntoDeClases([0, 4, 7]), notacion: .espanolCompacto)
+///     let datos = DatosDeConjunto(ConjuntoDeClasesDeAltura([0, 4, 7]), notacion: .espanolCompacto)
 ///     datos.forte        // "3-11"
 ///     datos.formaPrima   // [0, 3, 7]
 public struct DatosDeConjunto: Hashable, Sendable, Codable {
@@ -126,7 +126,7 @@ public struct DatosDeConjunto: Hashable, Sendable, Codable {
     public let vectorDeIndice: [Int]
 
     /// Los datos del conjunto de clases, con las notas escritas en la notación.
-    public init(_ conjunto: ConjuntoDeClases, notacion: Notacion) {
+    public init(_ conjunto: ConjuntoDeClasesDeAltura, notacion: Notacion) {
         clases = conjunto.clases
         notas = conjunto.notas().map { $0.nombre(en: notacion) }
         forte = conjunto.numeroDeForte
@@ -140,7 +140,8 @@ public struct DatosDeConjunto: Hashable, Sendable, Codable {
 /// Una serie dodecafónica: sus notas, sus intervalos, sus hexacordos, sus formas y su matriz.
 public struct DatosDeSerie: Hashable, Sendable, Codable {
     public let clases: [Int]
-    /// Una nota por clase, escritas todas a la vez para que ninguna se repita (`ConjuntoDeClases.nombresDeLasClases`).
+    /// Una nota por clase, escritas todas a la vez para que ninguna se repita
+    /// (`ConjuntoDeClasesDeAltura.nombresDeLasClases`).
     public let notas: [String]
     public let intervalos: [Int]
     public let deTodosLosIntervalos: Bool
@@ -153,7 +154,7 @@ public struct DatosDeSerie: Hashable, Sendable, Codable {
 
     /// Los datos de la serie, con las notas escritas en la notación.
     public init(_ serie: SerieDodecafonica, notacion: Notacion) {
-        let nombres = ConjuntoDeClases.nombresDeLasClases(en: notacion)
+        let nombres = ConjuntoDeClasesDeAltura.nombresDeLasClases(en: notacion)
         let mitades = serie.hexacordos
         clases = serie.clases
         notas = serie.clases.map { nombres[$0] }

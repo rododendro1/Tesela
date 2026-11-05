@@ -111,7 +111,7 @@ import Testing
     @Test func invariantesPostonales() {
         Self.repetir(semilla: 5) { azar in
             let clases = (0..<Int.random(in: 1...9, using: &azar)).map { _ in Int.random(in: 0...11, using: &azar) }
-            let conjunto = ConjuntoDeClases(clases)
+            let conjunto = ConjuntoDeClasesDeAltura(clases)
             let n = Int.random(in: 0...11, using: &azar)
             for otro in [conjunto.transponer(n), conjunto.invertir(n)] {
                 #expect(otro.formaPrima == conjunto.formaPrima, "\(clases), n = \(n)")

@@ -10,7 +10,7 @@ extension LineaDeComandos {
         case notas([String])
         case acorde(Acorde)
         case escala(Escala)
-        case clases(ConjuntoDeClases)
+        case clases(ConjuntoDeClasesDeAltura)
         case recorrido([Acorde])
         case camino(Acorde, Acorde)
         case ciclo(CicloNeorriemanniano, Acorde)
@@ -39,7 +39,7 @@ extension LineaDeComandos {
         case "--clases", "--pcs":
             // Como `armonia conjunto`: «0 4 7», «047», «01t», «Do Mi Sol» o «3-11».
             guard !resto.isEmpty else { throw ErrorDeUso.faltanClasesDelDibujo(orden: orden) }
-            dibujo = .clases(try ConjuntoDeClases(leyendo: resto))
+            dibujo = .clases(try ConjuntoDeClasesDeAltura(leyendo: resto))
         case "--recorrido", "--sequence":
             let acordes = try argumentos.dropFirst().map { try Acorde(leyendo: $0) }
             guard !acordes.isEmpty else { throw ErrorDeUso.faltanTriadasDelRecorrido(orden: orden) }

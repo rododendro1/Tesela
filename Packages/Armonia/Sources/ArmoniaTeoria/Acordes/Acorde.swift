@@ -187,7 +187,7 @@ extension Acorde: RepresentableComoTexto, Nombrable, Transponible, ConClasesDeAl
     public func texto(en notacion: Notacion) -> String { cifrado(en: notacion) }
 
     /// Clases de altura del acorde (incluye un bajo ajeno): Do7 → [0, 4, 7, 10], clase 4-27.
-    public var conjuntoDeClases: ConjuntoDeClases { ConjuntoDeClases(notas: notas + [bajo]) }
+    public var conjuntoDeClases: ConjuntoDeClasesDeAltura { ConjuntoDeClasesDeAltura(notas: notas + [bajo]) }
 }
 
 extension Acorde {

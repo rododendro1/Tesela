@@ -74,7 +74,7 @@ public enum PresentacionDeSerie {
         let t = { (campo: (TextosDeApps) -> String) in notacion.texto(campo) }
         // Lo mismo que da `armonia serie` (y su `--json`), escrito para la vista.
         let enDatos = DatosDeSerie(serie, notacion: notacion)
-        let nombres = ConjuntoDeClases.nombresDeLasClases(en: notacion)
+        let nombres = ConjuntoDeClasesDeAltura.nombresDeLasClases(en: notacion)
         let lista = { (clases: [Int]) in clases.map { nombres[$0] }.joined(separator: " ") }
 
         var intervalos = enDatos.intervalos.map(String.init).joined(separator: " ")
@@ -88,7 +88,7 @@ public enum PresentacionDeSerie {
         ]
 
         // Las notas de cada clase, para el pentagrama.
-        let total = ConjuntoDeClases(0..<12)
+        let total = ConjuntoDeClasesDeAltura(0..<12)
         let notaDeCada = Dictionary(uniqueKeysWithValues: zip(total.clases, total.notas()))
         let matriz = enDatos.matriz
         let clases = serie.forma(forma).clases

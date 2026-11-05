@@ -218,7 +218,7 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
     public func transponer(_ intervalo: Intervalo) -> Tonalidad { Tonalidad(tonica + intervalo, modo) }
 
     /// Las clases de altura de la escala que da la armadura (7-35 para toda tonalidad).
-    public var conjuntoDeClases: ConjuntoDeClases { escala.conjuntoDeClases }
+    public var conjuntoDeClases: ConjuntoDeClasesDeAltura { escala.conjuntoDeClases }
 }
 
 // MARK: - Idiomas

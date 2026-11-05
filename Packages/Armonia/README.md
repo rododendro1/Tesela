@@ -209,7 +209,7 @@ Sources/
 │   ├── Notacion/          Notacion (con EscrituraDeNotas e Idioma), ReglasDeIdioma, EstiloDeCifrado, Traduccion
 │   ├── Lectura/           Lector, ErrorDeArmonia (con ErrorAlLeer y MotivoDeLectura), ErrorDeLectura
 │   ├── Textos/            TextosDeNucleo y un fichero por idioma
-│   └── Postonal/          ConjuntoDeClases, TablaForte
+│   └── Postonal/          ConjuntoDeClasesDeAltura, TablaForte
 ├── ArmoniaTeoria/
 │   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
@@ -304,7 +304,7 @@ los dos programas y graba partituras y dibujos de verdad con `armonia grabar`, y
 ### Pruebas exhaustivas
 
 El objetivo `ArmoniaExhaustivasTests` reúne las pruebas que recorren espacios completos:
-`ConjuntoDeClasesExhaustivoTests` (los 4.096 subconjuntos de las doce clases y sus 223
+`ConjuntoDeClasesDeAlturaExhaustivoTests` (los 4.096 subconjuntos de las doce clases y sus 223
 nombres de Forte), `IdentificacionPorAlturaExhaustivaTests` (cada tipo predefinido sobre las
 12 fundamentales, identificado desde MIDI) e `IdaYVueltaTests`, que recorre espacios completos en lugar de ejemplos sueltos: los 2¹⁵
 subconjuntos de notas de acorde (9.344 interpretables) en siete estilos de cifrado, cada acorde predefinido con varias

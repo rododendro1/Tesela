@@ -11,7 +11,7 @@ package enum OrigenDelDibujo: Hashable, Sendable {
     case notas([Nota])
     case acorde(Acorde)
     case escala(Escala)
-    case conjunto(ConjuntoDeClases)
+    case conjunto(ConjuntoDeClasesDeAltura)
     case alturas([Altura])
     case ciclo(CicloNeorriemanniano, Acorde)
 

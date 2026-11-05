@@ -106,7 +106,7 @@ extension Transponible {
 
 /// Un valor que ocupa un conjunto de clases de altura (acordes, escalas, melodías…).
 public protocol ConClasesDeAltura {
-    var conjuntoDeClases: ConjuntoDeClases { get }
+    var conjuntoDeClases: ConjuntoDeClasesDeAltura { get }
 }
 
 extension ConClasesDeAltura {

@@ -7,13 +7,13 @@
 // después, el más cerca de Re (el centro de las notas naturales, Fa–Do–Sol–Re–La–Mi–Si); y al final, el de bemoles.
 // Sin una nota fija, solo se usan notas con un sostenido o un bemol como mucho.
 
-extension ConjuntoDeClases {
+extension ConjuntoDeClasesDeAltura {
     /// Las notas del conjunto con la escritura más sencilla, en el orden de `clases`:
     ///
-    ///     ConjuntoDeClases([0, 3, 7]).notas()           // [Do, Mi♭, Sol]
-    ///     ConjuntoDeClases([0, 1]).notas()              // [Do, Re♭]
-    ///     ConjuntoDeClases([2, 6, 9]).notas()           // [Re, Fa♯, La]
-    ///     ConjuntoDeClases([1, 5, 8]).notas()           // [Re♭, Fa, La♭]
+    ///     ConjuntoDeClasesDeAltura([0, 3, 7]).notas()           // [Do, Mi♭, Sol]
+    ///     ConjuntoDeClasesDeAltura([0, 1]).notas()              // [Do, Re♭]
+    ///     ConjuntoDeClasesDeAltura([2, 6, 9]).notas()           // [Re, Fa♯, La]
+    ///     ConjuntoDeClasesDeAltura([1, 5, 8]).notas()           // [Re♭, Fa, La♭]
     ///
     /// Con `fija`, esa nota se escribe así y las demás alrededor de ella: con Do♯, {1, 5, 8} es Do♯–Mi♯–Sol♯.
     /// Si la clase de `fija` no está en el conjunto, se añade a la búsqueda pero no al resultado.
@@ -42,11 +42,11 @@ extension ConjuntoDeClases {
     }
 }
 
-extension ConjuntoDeClases {
+extension ConjuntoDeClasesDeAltura {
     /// El nombre de cada clase de altura, de 0 (Do) a 11 (Si), escritas todas a la vez con `notas(con:)` para que no
     /// se repita ninguna letra: la escritura con que se nombran las clases de una serie o de una matriz.
     public static func nombresDeLasClases(en notacion: Notacion) -> [String] {
-        let total = ConjuntoDeClases(0..<12)
+        let total = ConjuntoDeClasesDeAltura(0..<12)
         let notas = Dictionary(uniqueKeysWithValues: zip(total.clases, total.notas()))
         return (0..<12).map { notas[$0]?.nombre(en: notacion) ?? String($0) }
     }

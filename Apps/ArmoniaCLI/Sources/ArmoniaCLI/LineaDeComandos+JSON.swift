@@ -475,7 +475,7 @@ extension LineaDeComandos {
     /// `conjunto 0 4 7 --json`: el conjunto con sus formas y sus vectores.
     static func conjuntoJSON(_ textos: [String], _ notacion: Notacion) throws -> DatosDeConjunto {
         let texto = try palabras(Argumentos(textos), siFaltan: .faltaConjunto).joined(separator: " ")
-        return DatosDeConjunto(try ConjuntoDeClases(leyendo: texto), notacion: notacion)
+        return DatosDeConjunto(try ConjuntoDeClasesDeAltura(leyendo: texto), notacion: notacion)
     }
 
     /// `serie 0 e 7 4 2 9 3 8 t 1 5 6 --json`: la serie con sus intervalos, sus hexacordos, sus formas y la matriz.

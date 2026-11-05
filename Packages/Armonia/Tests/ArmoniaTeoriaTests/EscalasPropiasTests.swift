@@ -11,7 +11,7 @@ import Testing
         #expect(dorica.tonica == .re)
         // Unas notas que no están en el catálogo: el nombre lleva su número de Forte y sus pasos.
         let rara = try #require(Escala.propia([.do, Nota(.re, .bemol), .re, .mi, .sol]))
-        let forte = try #require(ConjuntoDeClases([0, 1, 2, 4, 7]).numeroDeForte)
+        let forte = try #require(ConjuntoDeClasesDeAltura([0, 1, 2, 4, 7]).numeroDeForte)
         #expect(rara.tipo.nombre == forte + " (1-1-2-3-5)")
         #expect(rara.nombre(en: .inglesASCII).hasSuffix("(1-1-2-3-5)"))
         #expect(rara.numeroDeForte == forte)

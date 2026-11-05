@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+### `ConjuntoDeClases` pasa a llamarse `ConjuntoDeClasesDeAltura`
+
+- `ConjuntoDeClasesDeAltura` es el nuevo nombre de `ConjuntoDeClases`, para que diga de qué clases es. El nombre de
+  antes sigue compilando, obsoleto, en `ArmoniaNucleo/Obsoletos.swift`, y Xcode propone el cambio. La propiedad
+  `conjuntoDeClases` de `ConClasesDeAltura` no cambia.
+
 ### Dos escalas comparadas nota a nota
 
 `armonia escala Do mayor --contra Do dórico` dibuja en una hoja SVG las dos escalas comparadas nota a nota: los dos
