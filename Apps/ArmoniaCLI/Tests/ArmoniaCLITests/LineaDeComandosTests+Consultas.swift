@@ -235,6 +235,15 @@ extension LineaDeComandosTests {
         #expect(salida("sheet D dorian --ingles").contains(">D dorian</text>"))
         #expect(resultado("hoja").codigo == 2)
         #expect(resultado("hoja").error.contains("armonia hoja Re mayor"))
+        // La de un acorde.
+        let sol7 = salida("hoja --acorde Sol7")
+        #expect(sol7.hasPrefix("<svg "), Comment(rawValue: String(sol7.prefix(200))))
+        #expect(sol7.contains(">Sol7</text>"))
+        #expect(sol7.contains(">Digitaciones</text>"))
+        #expect(salida("sheet --chord G7 --ingles").contains(">G7</text>"))
+        #expect(resultado("hoja", "--acorde").codigo == 2)
+        #expect(resultado("hoja", "--acorde").error.contains("armonia hoja --acorde Sol7"))
+        #expect(resultado("hoja", "--acorde", "Sol7", "Do").codigo == 2)
         // La de una progresión.
         let progresion = salida("hoja --acordes Rem7 Sol7 Do7M --en Do mayor")
         #expect(progresion.hasPrefix("<svg "), Comment(rawValue: String(progresion.prefix(200))))

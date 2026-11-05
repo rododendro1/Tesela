@@ -97,6 +97,8 @@ enum ErrorDeUso: Error {
     case faltaEscalaDeLaHoja
     /// `hoja --acordes` sin acordes.
     case faltanLosAcordesDeLaHoja
+    /// `hoja --acorde` sin acorde, o con más de uno.
+    case faltaElAcordeDeLaHoja
     /// `pentagrama` sin escala, acorde ni arpegio.
     case faltaLoQueDibujaElPentagrama
 
@@ -306,6 +308,7 @@ enum ErrorDeUso: Error {
         case .faltaEscalaDelReloj: return TextosDeCLI.traduccion(\.faltaEscalaDelReloj)
         case .faltaEscalaDeLaHoja: return TextosDeCLI.traduccion(\.faltaEscalaDeLaHoja)
         case .faltanLosAcordesDeLaHoja: return TextosDeCLI.traduccion(\.faltanLosAcordesDeLaHoja)
+        case .faltaElAcordeDeLaHoja: return TextosDeCLI.traduccion(\.faltaElAcordeDeLaHoja)
         case .faltaLoQueDibujaElPentagrama: return TextosDeCLI.traduccion(\.faltaLoQueDibujaElPentagrama)
         case .vocesFueraDeRango: return TextosDeCLI.traduccion(\.vocesFueraDeRango)
         case .unAcordeDeVecinos:

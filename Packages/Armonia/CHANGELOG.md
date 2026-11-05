@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+### La hoja de estudio de un acorde
+
+- `armonia hoja --acorde Sol7` (`sheet --chord`) escribe la hoja de estudio de un acorde en SVG: sus notas y otros
+  nombres, el pentagrama, las disposiciones cerrada, drop 2 y de fundamental, tercera y séptima, las digitaciones de
+  guitarra más cómodas en diagramas, las escalas compatibles con sus tensiones y las sustituciones.
+  `armonia grabar hoja --acorde …` la pasa a PDF.
+- `PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de:notacion:)`; en la app, la pestaña de acordes la exporta.
+
 ### La hoja de estudio de una progresión
 
 - `armonia hoja --acordes Rem7 Sol7 Do7M --en Do mayor` (`sheet --chords`) escribe la hoja de estudio de una

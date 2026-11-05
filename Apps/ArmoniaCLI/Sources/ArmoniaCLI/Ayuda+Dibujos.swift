@@ -32,6 +32,14 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia hoja Re dórico > dorico.svg",
                 "armonia sheet D dorian > dorian.svg")),
+        // hoja --acorde <cifrado>
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisHojaDeAcorde),
+            descripcion: TextosDeCLI.traduccion(\.descripcionHojaDeAcorde),
+            ejemplo: ejemplo(
+                "armonia hoja --acorde Sol7 > sol7.svg",
+                "armonia sheet --chord G7 > g7.svg"),
+            opciones: ["--acorde", "--chord"]),
         // hoja --acordes <acordes> [--en <tonalidad>]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisHojaDeAcordes),

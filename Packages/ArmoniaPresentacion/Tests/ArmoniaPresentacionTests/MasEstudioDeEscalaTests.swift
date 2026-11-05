@@ -170,6 +170,23 @@ import Testing
         #expect(hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count)
     }
 
+    /// La hoja de estudio de un acorde: el cifrado, las disposiciones, las digitaciones, las escalas y las
+    /// sustituciones.
+    @Test func hojaDeEstudioDeUnAcorde() {
+        let hoja = PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: Acorde("Sol7"), notacion: notacion)
+        #expect(hoja.hasPrefix("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"595\""))
+        #expect(hoja.hasSuffix("</svg>"))
+        #expect(hoja.contains(">Sol7</text>"), Comment(rawValue: String(hoja.prefix(800))))
+        #expect(hoja.contains(">Sol Si Re Fa</text>"))
+        #expect(hoja.contains(">Disposición</text>"))
+        #expect(hoja.contains(">Digitaciones</text>"))
+        #expect(hoja.contains(">Escalas compatibles</text>"))
+        #expect(hoja.contains(">Sustituciones · "))
+        // Un punto por nota pisada en los diagramas, y al menos uno.
+        #expect(hoja.contains("<circle "))
+        #expect(hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count)
+    }
+
     @Test func lineasDeNotasGuia() {
         let acordes = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let lineas = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(

@@ -135,6 +135,9 @@ struct VistaDeAcordes: View {
         var ficheros = [
             PentagramaPresentado(acorde, notacion: notacion).fichero,
             pentagrama(de: arpegio).fichero,
+            FicheroParaExportar.svg(
+                PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, notacion: notacion),
+                nombre: notacion.texto(\.hojaDeEstudio) + " " + acorde.cifrado(en: notacion)),
         ]
         if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, notacion: notacion) {
             ficheros.append(presentadas.pentagrama.fichero)
