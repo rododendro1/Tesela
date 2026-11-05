@@ -239,4 +239,18 @@ import Testing
         #expect((try? TipoDeEscala(leyendo: "Hijaz"))?.nombre == TipoDeEscala.hiyaz.nombre)
         #expect(TipoDeEscala.bilaval.equivalentes.first?.nombre == "mayor")
     }
+
+    /// Cada tradición tiene nombre en los quince idiomas, y en español es también su `nombre`.
+    @Test func losNombresDeLasTradicionesSeTraducen() {
+        for tradicion in Tradicion.allCases {
+            #expect(tradicion.nombre(en: .espanolCompacto) == tradicion.nombre)
+            for idioma in Idioma.allCases {
+                #expect(
+                    !tradicion.nombre(en: Notacion.espanolCompacto.conTextos(en: idioma)).isEmpty,
+                    Comment(rawValue: "\(tradicion) en \(idioma)"))
+            }
+        }
+        #expect(Tradicion.japon.nombre(en: Notacion.espanolCompacto.conTextos(en: .euskera)) == "Japonia")
+        #expect(Tradicion.mundoArabe.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Arab world")
+    }
 }
