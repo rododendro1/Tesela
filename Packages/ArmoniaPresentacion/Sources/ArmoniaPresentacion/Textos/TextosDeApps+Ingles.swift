@@ -211,6 +211,7 @@ extension TextosDeApps {
         medidaAproximada: "measured in semitones, approximating the microtones",
         escaleraDeBrillo: "Brightness ladder",
         hojaDeEstudio: "Study sheet",
+        mapaDeBrillo: "Brightness map",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "Avoid",

@@ -211,6 +211,7 @@ extension TextosDeApps {
         medidaAproximada: "μετρημένη σε ημιτόνια, με προσέγγιση των μικροδιαστημάτων",
         escaleraDeBrillo: "Σκάλα φωτεινότητας",
         hojaDeEstudio: "Φύλλο μελέτης",
+        mapaDeBrillo: "Χάρτης φωτεινότητας",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Εντάσεις",
         notasAEvitar: "Προς αποφυγή",

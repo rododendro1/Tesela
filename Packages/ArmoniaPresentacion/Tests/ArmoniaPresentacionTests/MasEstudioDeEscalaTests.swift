@@ -140,6 +140,22 @@ import Testing
         #expect(PresentacionDeEstudioDeEscala.tamano(deUnSVG: "<svg/>") == nil)
     }
 
+    /// El mapa de brillo en SVG: el título con la tónica, una caja por escala y la resaltada en otro color.
+    @Test func mapaDeBrillo() {
+        let mapa = PresentacionDeEstudioDeEscala.mapaDeBrillo(notacion: notacion)
+        #expect(mapa.hasPrefix("<svg xmlns="))
+        #expect(mapa.contains(">Mapa de brillo · Do</text>"))
+        #expect(mapa.contains(">lidio</text>"), Comment(rawValue: String(mapa.prefix(600))))
+        #expect(mapa.contains(">+3</text>") && mapa.contains(">-3</text>"))
+        #expect(mapa.contains("<title>Fa → Fa♯</title>"))
+        #expect(!mapa.contains("#ffe8a3"))
+        let cajas = mapa.components(separatedBy: "<rect x=").count - 1
+        #expect(cajas == Escala.mapaDeBrillo().escalas.count)
+        let dorico = PresentacionDeEstudioDeEscala.mapaDeBrillo(resaltada: Escala(.re, .dorico), notacion: notacion)
+        #expect(dorico.contains(">Mapa de brillo · Re</text>"))
+        #expect(dorico.components(separatedBy: "#ffe8a3").count - 1 == 1)
+    }
+
     @Test func lineasDeNotasGuia() {
         let acordes = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let lineas = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(

@@ -615,7 +615,8 @@ extension LineaDeComandos {
     /// catálogo de escalas, las habituales y las de otras tradiciones agrupadas por tradición y categoría, cada una
     /// con sus notas desde Do (y la marca de los microtonos, si los tiene). Un texto suelto busca en los nombres.
     /// `--uso jazz` deja solo las habituales de ese uso (las de otras tradiciones no tienen), y `--notas 5`, las de
-    /// cinco notas. `--comparar` deja el catálogo y pone las escalas que se le dan en una tabla, una por fila.
+    /// cinco notas. `--comparar` deja el catálogo y pone las escalas que se le dan en una tabla, una por fila, y
+    /// `--mapa` lo dibuja en un mapa de brillo (SVG).
     static func escalas(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         var entrada = Argumentos(argumentos)
@@ -628,6 +629,19 @@ extension LineaDeComandos {
             let escalas = try nombres.map { try Escala(leyendo: $0) }
             let tabla = PresentacionDeEstudioDeEscala.tablaDeEstadisticas(escalas, notacion: notacion)
             return bien(columnas([tabla.encabezados] + tabla.filas))
+        }
+        // `--mapa [Re dórico] [--notas 7]`: el mapa de brillo en SVG, resaltando la escala que se dé.
+        if entrada.quitarMarca("--mapa", "--map") {
+            var numeroDeNotas = 7
+            if let texto = try entrada.valor("--notas", "--notes", siFalta: .notasFueraDeRango) {
+                guard let n = Int(texto), (1...24).contains(n) else { throw ErrorDeUso.notasFueraDeRango }
+                numeroDeNotas = n
+            }
+            if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+            let resaltada = entrada.restantes.isEmpty ? nil : try Escala(leyendo: entrada.unidos)
+            return bien(
+                PresentacionDeEstudioDeEscala.mapaDeBrillo(
+                    numeroDeNotas: numeroDeNotas, resaltada: resaltada, notacion: notacion))
         }
         var tradicion: Tradicion?
         if let texto = try entrada.valor("--tradicion", "--tradición", "--tradition") {

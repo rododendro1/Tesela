@@ -211,6 +211,7 @@ extension TextosDeApps {
         medidaAproximada: "medida en semitóns, aproximando os microtons",
         escaleraDeBrillo: "Escaleira de brillo",
         hojaDeEstudio: "Folla de estudo",
+        mapaDeBrillo: "Mapa de brillo",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensións",
         notasAEvitar: "Que evitar",

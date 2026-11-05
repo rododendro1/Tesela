@@ -123,6 +123,31 @@ import Testing
         #expect(Escala(.do).escaleraDeBrillo(maximo: 1).peldanos.count == 3)
     }
 
+    /// El mapa de brillo de las de siete notas: ordenado de la más oscura a la más brillante, sin repetidas, y con
+    /// el mayor enlazado al lidio (el Fa sube a Fa♯) y al mixolidio (el Si♭ sube a Si).
+    @Test func mapaDeBrillo() throws {
+        let mapa = Escala.mapaDeBrillo()
+        let brillos = mapa.escalas.map(\.estadisticas.brilloPorQuintas)
+        #expect(brillos == brillos.sorted(), Comment(rawValue: "\(brillos)"))
+        #expect(mapa.escalas.allSatisfy { $0.tipo.numeroDeNotas == 7 && $0.tonica == .do })
+        let conjuntos = mapa.escalas.map { Set($0.notas.map(\.claseDeAltura)) }
+        #expect(Set(conjuntos).count == conjuntos.count)
+        let mayor = try #require(mapa.escalas.firstIndex(of: Escala(.do)))
+        let lidio = try #require(mapa.escalas.firstIndex(of: Escala(.do, .lidio)))
+        let mixolidio = try #require(mapa.escalas.firstIndex(of: Escala(.do, .mixolidio)))
+        let haciaElLidio = mapa.enlaces.first { $0.oscura == mayor && $0.brillante == lidio }
+        #expect(haciaElLidio?.de == .fa && haciaElLidio?.a == Nota(.fa, .sostenido))
+        let desdeElMixolidio = mapa.enlaces.first { $0.oscura == mixolidio && $0.brillante == mayor }
+        #expect(desdeElMixolidio?.de == Nota(.si, .bemol) && desdeElMixolidio?.a == .si)
+        // Nunca entre una escala y sí misma, y la nota que sube lo hace un semitono.
+        #expect(mapa.enlaces.allSatisfy { $0.oscura != $0.brillante })
+        #expect(mapa.enlaces.allSatisfy { ($0.a.claseDeAltura - $0.de.claseDeAltura + 12) % 12 == 1 })
+        // Las de cinco notas, sobre Re.
+        let pentatonicas = Escala.mapaDeBrillo(tonica: .re, numeroDeNotas: 5)
+        #expect(pentatonicas.escalas.contains(Escala(.re, .pentatonicaMayor)))
+        #expect(pentatonicas.escalas.allSatisfy { $0.tipo.numeroDeNotas == 5 })
+    }
+
     /// Sin intervalos, la escala se queda en la tónica: una sola nota, monotónica, con un paso de una octava.
     @Test func escalaDeUnaNota() {
         let sola = Escala(.do, TipoDeEscala(nombre: "vacía", intervalos: [])).estadisticas

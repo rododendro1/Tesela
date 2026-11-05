@@ -211,6 +211,7 @@ extension TextosDeApps {
         medidaAproximada: "félhangokban mérve, a mikrohangokat közelítve",
         escaleraDeBrillo: "Fényességlétra",
         hojaDeEstudio: "Gyakorlólap",
+        mapaDeBrillo: "Fényességtérkép",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Feszültségek",
         notasAEvitar: "Kerülendő",

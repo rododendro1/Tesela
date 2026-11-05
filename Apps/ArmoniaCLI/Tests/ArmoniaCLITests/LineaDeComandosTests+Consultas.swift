@@ -216,6 +216,17 @@ extension LineaDeComandosTests {
         #expect(resultado("escalas", "--con-paso", "20").codigo == 2)
     }
 
+    /// `escalas --mapa`: el mapa de brillo en SVG, con la escala que se dé resaltada.
+    @Test func mapaDeBrillo() {
+        let mapa = salida("escalas --mapa")
+        #expect(mapa.hasPrefix("<svg "), Comment(rawValue: String(mapa.prefix(200))))
+        #expect(mapa.contains(">Mapa de brillo · Do</text>"))
+        #expect(salida("escalas --mapa Re dórico").contains(">Mapa de brillo · Re</text>"))
+        #expect(salida("escalas --map --notes 5 --ingles").contains(">Brightness map · C</text>"))
+        #expect(resultado("escalas", "--mapa", "--orden", "brillo").codigo == 2)
+        #expect(resultado("escalas", "--mapa", "--notas", "0").codigo == 2)
+    }
+
     /// `hoja Re dórico`: la hoja de estudio en SVG; sin escala, un error de uso.
     @Test func hojaDeEstudio() {
         let hoja = salida("hoja Re dórico")

@@ -211,6 +211,7 @@ extension TextosDeApps {
         medidaAproximada: "в полутонах, с округлением микротонов",
         escaleraDeBrillo: "Лестница яркости",
         hojaDeEstudio: "Учебный лист",
+        mapaDeBrillo: "Карта яркости",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Напряжения",
         notasAEvitar: "Избегать",
