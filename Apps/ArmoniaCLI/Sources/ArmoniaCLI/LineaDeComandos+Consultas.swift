@@ -844,6 +844,7 @@ extension LineaDeComandos {
         // la tonalidad, que se lleva todo lo que va detrás de --en.
         let conEscalas = acordes.quitarMarca("--escalas", "--scales")
         let conNotasGuia = acordes.quitarMarca("--notas-guia", "--guide-tones")
+        let conConduccion = acordes.quitarMarca("--conduccion", "--voice-leading")
         guard let tonalidad = try acordes.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
         let archivo = try acordes.valor("--archivo", "--file")
         let ventana = try acordes.valor("--ventana", "--window").map { try Duracion(leyendo: $0) }
@@ -899,6 +900,15 @@ extension LineaDeComandos {
             lineas += PresentacionDeEstudioDeEscala.lineasDeNotasGuia(
                 analisis.acordes, tonalidad: analisis.tonalidad, notacion: notacion
             ).map { "  " + $0.titulo + ": " + $0.notas }
+        }
+        // Con --conduccion, cada paso con sus notas comunes y lo que se mueve cada voz, en drop 2.
+        if conConduccion, let conduccion = PresentacionDeAnalisis.conduccion(analisis.acordes, notacion: notacion) {
+            lineas.append(notacion.texto(\.conduccionDeVoces) + " (" + conduccion.disposicion + "):")
+            for paso in conduccion.pasos {
+                lineas.append("  " + paso.titulo + " · " + paso.comunes)
+                lineas.append("    " + paso.voces.joined(separator: " · "))
+            }
+            lineas.append("  " + conduccion.movimientoTotal)
         }
         return bien(lineas.joined(separator: "\n"))
     }

@@ -217,6 +217,7 @@ extension TextosDeApps {
         modulacionPorAcordeComun: "κοινή συγχορδία",
         modulacionPorDisminuida: "εναρμόνια ελαττωμένη έβδομη",
         modulacionDirecta: "άμεση",
+        conduccionDeVoces: "Οδήγηση φωνών",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Εντάσεις",
         notasAEvitar: "Προς αποφυγή",
