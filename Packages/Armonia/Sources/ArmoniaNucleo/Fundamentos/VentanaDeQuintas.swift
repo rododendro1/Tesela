@@ -31,6 +31,20 @@ public struct VentanaDeQuintas: Hashable, Sendable {
     /// Con bemoles, de Sol♭ a Si: la de `Altura(midi:preferirBemoles:)` con `true`.
     public static let bemoles = VentanaDeQuintas(inicio: -6)
 
+    /// Con las menos alteraciones posibles, de Re♭ a Fa♯: cinco naturales y siete con un sostenido o un bemol como
+    /// mucho, sin Mi♯, Si♯, Fa♭ ni Do♭. Las notas de `Nota.enarmonicaMasSimple`, y `.centrada(en: "Do")`.
+    public static let masSimple = VentanaDeQuintas(inicio: -5)
+
+    /// La de muchos cifrados y teclados, de Mi♭ a Sol♯: las negras del piano son Do♯, Mi♭, Fa♯, Sol♯ y Si♭.
+    public static let habitual = VentanaDeQuintas(inicio: -3)
+
+    /// La de la tonalidad mayor con esa armadura (+ sostenidos, − bemoles): sus siete notas, dos quintas por debajo y
+    /// tres por encima. Sin alteraciones, de La♭ a Do♯ (Do♯, Mi♭, Fa♯, La♭ y Si♭, como escribe Do mayor sus
+    /// cromatismos); con dos sostenidos, de Si♭ a Re♯; con tres bemoles, de Fa♭ a Mi.
+    public static func armadura(_ alteraciones: Int) -> VentanaDeQuintas {
+        VentanaDeQuintas(inicio: alteraciones - 4)
+    }
+
     /// La ventana con la tónica casi en medio, de cinco quintas por debajo a seis por encima: alrededor de Do, de Re♭
     /// a Fa♯ (las notas de `Nota.enarmonicaMasSimple`); alrededor de Re, de Mi♭ a Sol♯.
     public static func centrada(en tonica: Nota) -> VentanaDeQuintas {
