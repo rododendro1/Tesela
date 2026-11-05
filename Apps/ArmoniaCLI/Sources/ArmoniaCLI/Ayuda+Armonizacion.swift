@@ -4,27 +4,27 @@ extension LineaDeComandos {
     /// El análisis, la armonización y el contrapunto, en el orden en que salen en la ayuda.
     static let ordenesDeArmonizacion: [Orden] = [
         Orden(
-            nombres: ["analizar", "analyze", "analyse"], ayuda: ayudaDeAnalizar, json: { try analizarJSON($0, $1) }
-        ) { try analizar($0, $1) },
+            nombres: ["analizar", "analyze", "analyse"], ayuda: ayudaDeAnalizar, json: { try analizarJSON($0, $1) },
+            ejecutar: { try analizar($0, $1) }),
         Orden(
             nombres: ["armonizar", "harmonize", "harmonise"],
             ayuda: ayudaDeArmonizar,
-            json: { try armonizarJSON($0, $1) }
-        ) { try armonizar($0, $1) },
+            json: { try armonizarJSON($0, $1) },
+            ejecutar: { try armonizar($0, $1) }),
         Orden(
-            nombres: ["realizar", "realize", "realise"], ayuda: ayudaDeRealizar, json: { try realizarJSON($0, $1) }
-        ) { try realizar($0, $1) },
+            nombres: ["realizar", "realize", "realise"], ayuda: ayudaDeRealizar, json: { try realizarJSON($0, $1) },
+            ejecutar: { try realizar($0, $1) }),
         Orden(
-            nombres: ["revisar", "check"], ayuda: ayudaDeRevisar, json: { try revisarJSON($0, $1) }
-        ) { try revisar($0, $1) },
+            nombres: ["revisar", "check"], ayuda: ayudaDeRevisar, json: { try revisarJSON($0, $1) },
+            ejecutar: { try revisar($0, $1) }),
         Orden(
-            nombres: ["contrapunto", "counterpoint"], ayuda: ayudaDeContrapunto, json: { try contrapuntoJSON($0, $1) }
-        ) { try contrapunto($0, $1) },
+            nombres: ["contrapunto", "counterpoint"], ayuda: ayudaDeContrapunto, json: { try contrapuntoJSON($0, $1) },
+            ejecutar: { try contrapunto($0, $1) }),
         Orden(
             nombres: ["transponer", "transportar", "transpose"],
             ayuda: ayudaDeTransponer,
-            json: { try transponerJSON($0, $1) }
-        ) { try transponer($0, $1) },
+            json: { try transponerJSON($0, $1) },
+            ejecutar: { try transponer($0, $1) }),
         Orden(
             nombres: ["rearmonizar", "reharmonize", "reharmonise"],
             ayuda: ayudaDeRearmonizar

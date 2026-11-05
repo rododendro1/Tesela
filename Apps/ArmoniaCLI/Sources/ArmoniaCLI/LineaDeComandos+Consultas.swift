@@ -5,6 +5,34 @@ import Foundation
 // MARK: - Consultas: acordes, notas, escalas, tonalidades y análisis
 
 extension LineaDeComandos {
+    /// `intervalo <nota> <nota>`: el intervalo entre dos notas.
+    static func consultarIntervalo(_ resto: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        if let opcion = Argumentos(resto).opcionDesconocida { return uso(.opcionDesconocida(opcion), notacion) }
+        guard resto.count == 2 else { return uso(.dosNotas, notacion) }
+        return bien(try intervalo(resto[0], resto[1], notacion))
+    }
+
+    /// `tonalidad <tonalidad>`: su armadura, sus acordes y sus relativas.
+    static func consultarTonalidad(_ resto: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        if let opcion = Argumentos(resto).opcionDesconocida { return uso(.opcionDesconocida(opcion), notacion) }
+        guard !resto.isEmpty else { return uso(.faltaTonalidad, notacion) }
+        return bien(describir(tonalidad: try Tonalidad(leyendo: resto.joined(separator: " ")), notacion))
+    }
+
+    /// `conjunto <clases>`: el conjunto de clases de altura, con su forma prima y su vector.
+    static func consultarConjunto(_ resto: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        if let opcion = Argumentos(resto).opcionDesconocida { return uso(.opcionDesconocida(opcion), notacion) }
+        guard !resto.isEmpty else { return uso(.faltaConjunto, notacion) }
+        return bien(describir(conjunto: try ConjuntoDeClases(leyendo: resto.joined(separator: " ")), notacion))
+    }
+
+    /// `serie <doce notas>`: la serie dodecafónica y su matriz.
+    static func consultarSerie(_ resto: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        if let opcion = Argumentos(resto).opcionDesconocida { return uso(.opcionDesconocida(opcion), notacion) }
+        guard !resto.isEmpty else { return uso(.faltaSerie, notacion) }
+        return bien(describir(serie: try SerieDodecafonica(leyendo: resto.joined(separator: " ")), notacion))
+    }
+
     /// `acorde Sol7 [--disposiciones] [--nombres] [--tonalidades] [--sustituciones] [--comparar Do] [--en Do mayor]`:
     /// cada acorde con sus notas y, si se piden, sus disposiciones, sus otros nombres, las tonalidades en que está,
     /// sus sustituciones (en la tonalidad de `--en` o en la suya) y la conducción hasta otro acorde.

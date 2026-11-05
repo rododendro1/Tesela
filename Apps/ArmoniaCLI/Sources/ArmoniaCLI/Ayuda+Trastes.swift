@@ -6,8 +6,8 @@ extension LineaDeComandos {
         Orden(
             nombres: ["digitaciones", "digitacion", "digitación", "fingerings"],
             ayuda: ayudaDeDigitaciones,
-            json: { try digitacionesJSON($0, $1) }
-        ) { try digitaciones($0, $1) },
+            json: { try digitacionesJSON($0, $1) },
+            ejecutar: { try digitaciones($0, $1) }),
         Orden(nombres: ["posiciones", "positions"], ayuda: ayudaDePosiciones) { try posiciones($0, $1) },
     ]
 
