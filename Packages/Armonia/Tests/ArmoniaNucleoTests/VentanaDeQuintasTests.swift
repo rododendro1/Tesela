@@ -10,6 +10,22 @@ import Testing
         #expect(VentanaDeQuintas.bemoles.nota(claseDeAltura: 10) == Nota(.si, -1))
     }
 
+    @Test func losAtajos() {
+        #expect(VentanaDeQuintas.masSimple == .centrada(en: "Do"))
+        #expect(VentanaDeQuintas.masSimple.description == "Re♭–Fa♯")
+        #expect(VentanaDeQuintas.habitual.description == "Mi♭–Sol♯")
+        let negras = [1, 3, 6, 8, 10].map { VentanaDeQuintas.habitual.nota(claseDeAltura: $0).nombre }
+        #expect(negras == ["Do♯", "Mi♭", "Fa♯", "Sol♯", "Si♭"])
+        #expect(VentanaDeQuintas.armadura(0).description == "La♭–Do♯")
+        #expect(VentanaDeQuintas.armadura(2).description == "Si♭–Re♯")
+        #expect(VentanaDeQuintas.armadura(-3).description == "Do♭–Mi")
+        // Las siete notas de la armadura están dentro.
+        for alteraciones in -7...7 {
+            let ventana = VentanaDeQuintas.armadura(alteraciones)
+            #expect(((alteraciones - 1)...(alteraciones + 5)).allSatisfy { ventana.contiene(Nota(pasosDeQuinta: $0)) })
+        }
+    }
+
     @Test func centradaEnUnaTonica() {
         #expect(VentanaDeQuintas.centrada(en: "Do").description == "Re♭–Fa♯")
         #expect(VentanaDeQuintas.centrada(en: "Re").description == "Mi♭–Sol♯")
