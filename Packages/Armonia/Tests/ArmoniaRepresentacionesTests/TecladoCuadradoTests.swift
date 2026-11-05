@@ -69,7 +69,7 @@ import Testing
         #expect(opciones.ventana == .centrada(en: "Re") && !opciones.preferirBemoles)
         #expect(OpcionesDeDiagrama() == OpcionesDeDiagrama(ventana: .sostenidos))
         let svg = TecladoCuadrado.quintas.svg([casilla(1, 0)], opciones: .init(ventana: .bemoles))
-        #expect(svg.contains(">Re♭</text>"))
+        #expect(svg.contains(">Re♭₄</text>"))
     }
 
     @Test func seGiraYSeRefleja() {
