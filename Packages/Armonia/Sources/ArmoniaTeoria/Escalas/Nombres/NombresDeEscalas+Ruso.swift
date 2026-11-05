@@ -408,6 +408,7 @@ extension NombresDeEscalas {
         .tradicional(.pentatonicaHungara, "венгерская пентатоника"),
         .tradicional(.cuernoAlpino, "альпийский рог"),
         .tradicional(.gaitaEscocesa, "шотландская волынка"),
+        .tradicional(.georgiana, "грузинская"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "рага"),

@@ -173,6 +173,7 @@ extension NombresDeEscalas {
         .tradicional(.pentatonicaHungara, "pentatonique hongroise"),
         .tradicional(.cuernoAlpino, "cor des Alpes"),
         .tradicional(.gaitaEscocesa, "cornemuse écossaise"),
+        .tradicional(.georgiana, "géorgienne"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

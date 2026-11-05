@@ -260,7 +260,8 @@ import Testing
         #expect(Tradicion.mundoArabe.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Arab world")
     }
 
-    /// El folklore europeo: tres escalas populares y dos instrumentos de afinación natural, con sus cents.
+    /// El folklore europeo: tres escalas populares, dos instrumentos de afinación natural y el canto georgiano, con
+    /// sus cents.
     @Test func elFolkloreEuropeo() throws {
         #expect(TipoDeEscala.tradicionales(tradicion: .europa) == TipoDeEscala.europeas)
         #expect(TipoDeEscala.europeas.allSatisfy { $0.categoria == .escala })
@@ -279,6 +280,11 @@ import Testing
         #expect(TipoDeEscala.cuernoAlpino.microtonal?.desvios[3] == -49)
         #expect(TipoDeEscala.gaitaEscocesa.microtonal?.desvios[6] == -31)
         #expect(TipoDeEscala.mixolidio.microtonal == nil)
+        // El canto georgiano: la segunda, 37 cents baja; la tercera, neutra, 32 sobre Mi♭.
+        #expect(TipoDeEscala.georgiana == .dorico)
+        #expect(TipoDeEscala.georgiana.microtonal?.desvios == [0, -37, 32, 9, -7, -32, 18])
+        #expect((try? TipoDeEscala(leyendo: "Svaneti"))?.nombre == "georgiana")
+        #expect(TipoDeEscala.georgiana.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Georgian")
         #expect(Tradicion.europa.nombre == "Folklore europeo")
         #expect(Tradicion.europa.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "European folk")
     }
