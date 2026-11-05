@@ -424,7 +424,7 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/Escalas.md, línea 319
         comprobar(TipoDeEscala.kafi.nombreCompleto, #""thāṭ Kāfī""#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 319)
         comprobar(TipoDeEscala.mohanam.nombreCompleto, #""rāga Mohanam""#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 320)
-        comprobar(TipoDeEscala.bayati.nombreCompleto, #""maqam Bayātī""#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 321)
+        comprobar(TipoDeEscala.bayati.nombreCompleto, #""maqām Bayātī""#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 321)
         comprobar(TipoDeEscala.rastMakami.nombreCompleto, #""Rast makamı""#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 322)
         comprobar(TipoDeEscala.mayor.nombreCompleto, #""mayor""#, #"Sources/Armonia/Armonia.docc/Escalas.md"#, 323)
     }

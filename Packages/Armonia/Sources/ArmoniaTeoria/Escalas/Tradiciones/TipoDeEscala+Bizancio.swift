@@ -15,50 +15,50 @@ extension TipoDeEscala {
 
     /// El primero (Re Mi Fa Sol La Si Do, sobre Pa): diatónico, con Vou y Zo dos moria bajo Mi y Si.
     public static let echosProtos = TipoDeEscala(
-        nombre: "echos prótos",
+        nombre: "échos prótos",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         alias: ["Ήχος πρώτος", "ichos protos"])
     /// El plagal del primero (La Si Do Re Mi Fa Sol, sobre Ke): diatónico.
     public static let echosPlagiosProtos = TipoDeEscala(
-        nombre: "echos plágios prótos",
+        nombre: "échos plágios prótos",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
         alias: ["Ήχος πλάγιος του πρώτου", "plagal protos"])
     /// El segundo (Sol La♭ Si Do Re Mi♭ Fa♯, sobre Di): cromático blando, aproximado a la doble armónica.
     public static let echosDefteros = TipoDeEscala(
-        nombre: "echos défteros",
+        nombre: "échos défteros",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
         alias: ["Ήχος δεύτερος", "echos deuteros", "ichos defteros"])
     /// El plagal del segundo (Re Mi♭ Fa♯ Sol La Si♭ Do♯, sobre Pa): cromático duro, la doble armónica.
     public static let echosPlagiosDefteros = TipoDeEscala(
-        nombre: "echos plágios défteros",
+        nombre: "échos plágios défteros",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
         alias: ["Ήχος πλάγιος του δευτέρου", "echos plagios deuteros", "plagal defteros"])
     /// El tercero (Fa Sol La Si♭ Do Re Mi, sobre Ga): enarmónico, que en la teoría de 1881 ya es la escala mayor.
     public static let echosTritos = TipoDeEscala(
-        nombre: "echos trítos",
+        nombre: "échos trítos",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
         alias: ["Ήχος τρίτος", "ichos tritos"])
     /// El grave, el plagal del tercero (Si Do Re Mi Fa Sol La, sobre Zo): diatónico, con la tónica dos moria bajo Si.
     public static let echosVarys = TipoDeEscala(
-        nombre: "echos varýs",
+        nombre: "échos varýs",
         intervalos: [
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
         alias: ["Ήχος βαρύς", "echos barys", "grave"])
     /// El cuarto (Sol La Si Do Re Mi Fa, sobre Di): diatónico.
     public static let echosTetartos = TipoDeEscala(
-        nombre: "echos tétartos",
+        nombre: "échos tétartos",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         alias: ["Ήχος τέταρτος", "ichos tetartos"])
     /// El plagal del cuarto (Do Re Mi Fa Sol La Si, sobre Ni): diatónico.
     public static let echosPlagiosTetartos = TipoDeEscala(
-        nombre: "echos plágios tétartos",
+        nombre: "échos plágios tétartos",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
         alias: ["Ήχος πλάγιος του τετάρτου", "plagal tetartos"])
     /// El légetos (Mi Fa Sol La Si Do Re, sobre Vou): el cuarto en su forma de los himnos breves, con la tónica dos
     /// moria bajo Mi.
     public static let echosLegetos = TipoDeEscala(
-        nombre: "echos légetos",
+        nombre: "échos légetos",
         intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
         alias: ["Λέγετος", "legetos"])
 

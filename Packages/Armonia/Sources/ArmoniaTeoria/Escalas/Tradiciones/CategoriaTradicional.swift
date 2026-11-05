@@ -107,12 +107,12 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         case .thaat: "thāṭ"
         case .grama: "grāma"
         case .murchana: "mūrchanā"
-        case .dromos: "dromos"
-        case .maqam: "maqam"
+        case .dromos: "drómos"
+        case .maqam: "maqām"
         case .dastgah: "dastgāh"
         case .makam: "makam"
-        case .mugam: "mugam"
-        case .echos: "echos"
+        case .mugam: "muğam"
+        case .echos: "échos"
         case .shteyger: "shteyger"
         case .qenet: "qenet"
         case .laras: "laras"
@@ -163,8 +163,8 @@ extension TipoDeEscala {
     }
 
     /// El nombre con la palabra de su categoría delante: «thāṭ Kāfī», «mēḷa Māyāmālavagauḷa», «rāga Mohanam» (un
-    /// janya es un rāga), «maqam Bayātī», «dromos Hitzáz». Es el nombre a secas si ya la lleva («jins Ḥijāz»,
-    /// «Rast makamı», «echos prótos», «shadd Rāst»), si la categoría es una palabra que se traduce y no se antepone
+    /// janya es un rāga), «maqām Bayātī», «drómos Hitzáz». Es el nombre a secas si ya la lleva («jins Ḥijāz»,
+    /// «Rast makamı», «échos prótos», «shadd Rāst»), si la categoría es una palabra que se traduce y no se antepone
     /// en todos los idiomas (tetracordo, harmonía, hexacordo, modo gregoriano, afinación, escala) o si la escala no
     /// es de otra tradición.
     public var nombreCompleto: String { nombreCompleto(en: .espanolCompacto) }
