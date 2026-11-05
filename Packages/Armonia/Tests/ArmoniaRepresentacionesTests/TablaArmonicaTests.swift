@@ -16,7 +16,7 @@ import Testing
         #expect(tabla.triadas.map(\.acorde) == [Acorde("Do")])
         #expect("\(tabla)" == "Do (0, 0) · Mi (0, 1) · Sol (1, 0)")
         #expect(TablaArmonica(Escala(.re, .dorico)).esConexo)
-        #expect(TablaArmonica(ConjuntoDeClases([0, 3, 7])).colocacion == .clasesDeAltura)
+        #expect(TablaArmonica(ConjuntoDeClasesDeAltura([0, 3, 7])).colocacion == .clasesDeAltura)
         // La forma es la misma en todas las tonalidades: transportar es desplazar los hexágonos.
         let forma = { (tabla: TablaArmonica) -> [PuntoDeLaRed] in
             tabla.puntos.map {
@@ -52,7 +52,7 @@ import Testing
 
     @Test func sVG() throws {
         for tabla in [
-            TablaArmonica(Escala(.re, .dorico)), TablaArmonica(ConjuntoDeClases([0, 4, 7])),
+            TablaArmonica(Escala(.re, .dorico)), TablaArmonica(ConjuntoDeClasesDeAltura([0, 4, 7])),
             TablaArmonica([Altura("Do3"), Altura("Sol3"), Altura("Mi4")]), TablaArmonica([Nota]()),
         ] {
             let raiz = try #require(ElementoXML.leer(tabla.svg()))

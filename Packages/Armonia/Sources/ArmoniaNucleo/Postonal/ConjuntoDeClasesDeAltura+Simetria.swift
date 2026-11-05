@@ -33,7 +33,7 @@ public struct EjeDeInversion: Hashable, Sendable, CustomStringConvertible, Compa
     public static func < (a: EjeDeInversion, b: EjeDeInversion) -> Bool { a.indice < b.indice }
 }
 
-extension ConjuntoDeClases {
+extension ConjuntoDeClasesDeAltura {
     /// Cuántas clases quedan en el conjunto al transponerlo `n` semitonos: 3 con n = 0 en una tríada, 1 con n = 5
     /// (Do–Mi–Sol y Fa–La–Do tienen el Do).
     public func notasComunes(transponiendo n: Int) -> Int { transponer(n).intersecar(con: self).cardinalidad }
@@ -48,7 +48,7 @@ extension ConjuntoDeClases {
     /// El vector de índice: las notas comunes de cada TnI, de T0I a T11I. Es, para cada n, cuántas parejas
     /// ordenadas de clases del conjunto suman n (una clase consigo misma también cuenta).
     ///
-    ///     ConjuntoDeClases([0, 4, 7]).vectorDeIndice   // [1, 0, 1, 0, 2, 0, 0, 2, 1, 0, 0, 2]
+    ///     ConjuntoDeClasesDeAltura([0, 4, 7]).vectorDeIndice   // [1, 0, 1, 0, 2, 0, 0, 2, 1, 0, 0, 2]
     public var vectorDeIndice: [Int] {
         var vector = [Int](repeating: 0, count: 12)
         for a in clases {

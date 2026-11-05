@@ -217,6 +217,7 @@ extension TextosDeApps {
         modulacionPorAcordeComun: "gemeinsamer Akkord",
         modulacionPorDisminuida: "enharmonischer verminderter Septakkord",
         modulacionDirecta: "direkt",
+        conduccionDeVoces: "Stimmführung",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Spannungstöne",
         notasAEvitar: "Avoid-Töne",

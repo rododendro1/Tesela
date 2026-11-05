@@ -38,7 +38,7 @@ extension LineaDeComandos {
     static func consultarConjunto(_ resto: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         if let opcion = Argumentos(resto).opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
         guard !resto.isEmpty else { throw ErrorDeUso.faltaConjunto }
-        return bien(describir(conjunto: try ConjuntoDeClases(leyendo: resto.joined(separator: " ")), notacion))
+        return bien(describir(conjunto: try ConjuntoDeClasesDeAltura(leyendo: resto.joined(separator: " ")), notacion))
     }
 
     /// `serie <doce notas>`: la serie dodecafónica y su matriz.
@@ -844,6 +844,7 @@ extension LineaDeComandos {
         // la tonalidad, que se lleva todo lo que va detrás de --en.
         let conEscalas = acordes.quitarMarca("--escalas", "--scales")
         let conNotasGuia = acordes.quitarMarca("--notas-guia", "--guide-tones")
+        let conConduccion = acordes.quitarMarca("--conduccion", "--voice-leading")
         guard let tonalidad = try acordes.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
         let archivo = try acordes.valor("--archivo", "--file")
         let ventana = try acordes.valor("--ventana", "--window").map { try Duracion(leyendo: $0) }
@@ -900,13 +901,22 @@ extension LineaDeComandos {
                 analisis.acordes, tonalidad: analisis.tonalidad, notacion: notacion
             ).map { "  " + $0.titulo + ": " + $0.notas }
         }
+        // Con --conduccion, cada paso con sus notas comunes y lo que se mueve cada voz, en drop 2.
+        if conConduccion, let conduccion = PresentacionDeAnalisis.conduccion(analisis.acordes, notacion: notacion) {
+            lineas.append(notacion.texto(\.conduccionDeVoces) + " (" + conduccion.disposicion + "):")
+            for paso in conduccion.pasos {
+                lineas.append("  " + paso.titulo + " · " + paso.comunes)
+                lineas.append("    " + paso.voces.joined(separator: " · "))
+            }
+            lineas.append("  " + conduccion.movimientoTotal)
+        }
         return bien(lineas.joined(separator: "\n"))
     }
 
     // MARK: Teoría postonal
 
     /// `conjunto 0 4 7`: el conjunto con sus notas, sus formas, sus vectores y sus ejes de simetría.
-    static func describir(conjunto: ConjuntoDeClases, _ notacion: Notacion) -> String {
+    static func describir(conjunto: ConjuntoDeClasesDeAltura, _ notacion: Notacion) -> String {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let datos = DatosDeConjunto(conjunto, notacion: notacion)
         func lista(_ numeros: [Int]) -> String { "[" + numeros.map(String.init).joined(separator: ", ") + "]" }

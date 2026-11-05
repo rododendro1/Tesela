@@ -58,7 +58,7 @@ extension PresentacionDeEstudioDeEscala {
         de escala: Escala, orden: RelojDeClases.Orden = .cromatico, notacion: Notacion
     ) -> String {
         // Las doce clases con el nombre más sencillo; encima, las de la escala como las escribe ella.
-        let doce = ConjuntoDeClases.nombresDeLasClases(en: notacion)
+        let doce = ConjuntoDeClasesDeAltura.nombresDeLasClases(en: notacion)
         var rotulos = Dictionary(uniqueKeysWithValues: doce.enumerated().map { ($0.offset, $0.element) })
         for nota in escala.notas { rotulos[nota.claseDeAltura] = nota.nombre(en: notacion) }
         let circulo = notacion.texto { orden == .cromatico ? $0.circuloCromatico : $0.circuloDeQuintas }

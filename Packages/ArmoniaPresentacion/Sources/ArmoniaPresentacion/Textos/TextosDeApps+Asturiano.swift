@@ -217,6 +217,7 @@ extension TextosDeApps {
         modulacionPorAcordeComun: "acorde común",
         modulacionPorDisminuida: "séptima diminuida enarmónica",
         modulacionDirecta: "directa",
+        conduccionDeVoces: "Conducción de voces",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensiones",
         notasAEvitar: "A evitar",

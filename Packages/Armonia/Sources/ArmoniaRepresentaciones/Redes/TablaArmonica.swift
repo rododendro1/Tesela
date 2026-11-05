@@ -112,7 +112,7 @@ public struct TablaArmonica: Hashable, Sendable {
     }
 
     /// Coloca las clases de altura en la tabla de doce notas, como `Tonnetz(_:)`.
-    public init(_ conjunto: ConjuntoDeClases) {
+    public init(_ conjunto: ConjuntoDeClasesDeAltura) {
         puntos = Tonnetz(conjunto).puntos
         colocacion = .clasesDeAltura
         alturas = []

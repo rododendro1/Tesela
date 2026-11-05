@@ -7,8 +7,8 @@
 
 /// Un conjunto de clases de altura: las clases (0 = Do … 11 = Si) sin ortografía, octava ni orden.
 ///
-///     ConjuntoDeClases([0, 4, 7]).formaPrima   // [0, 3, 7]
-public struct ConjuntoDeClases: Hashable, Sendable, CustomStringConvertible {
+///     ConjuntoDeClasesDeAltura([0, 4, 7]).formaPrima   // [0, 3, 7]
+public struct ConjuntoDeClasesDeAltura: Hashable, Sendable, CustomStringConvertible {
     /// Clases de altura (0 = Do … 11 = Si), sin repetir y ordenadas.
     public let clases: [Int]
 
@@ -31,25 +31,27 @@ public struct ConjuntoDeClases: Hashable, Sendable, CustomStringConvertible {
     // MARK: Operaciones
 
     /// Tn: suma `n` semitonos a cada clase.
-    public func transponer(_ n: Int) -> ConjuntoDeClases { ConjuntoDeClases(clases.map { $0 + n }) }
+    public func transponer(_ n: Int) -> ConjuntoDeClasesDeAltura { ConjuntoDeClasesDeAltura(clases.map { $0 + n }) }
 
     /// TnI: invierte (x → −x) y después transpone `n` semitonos.
-    public func invertir(_ n: Int = 0) -> ConjuntoDeClases { ConjuntoDeClases(clases.map { n - $0 }) }
+    public func invertir(_ n: Int = 0) -> ConjuntoDeClasesDeAltura { ConjuntoDeClasesDeAltura(clases.map { n - $0 }) }
 
     /// Las clases que faltan para completar las doce.
-    public var complemento: ConjuntoDeClases {
-        ConjuntoDeClases((0..<12).filter { !clases.contains($0) })
+    public var complemento: ConjuntoDeClasesDeAltura {
+        ConjuntoDeClasesDeAltura((0..<12).filter { !clases.contains($0) })
     }
 
     /// Unión: las clases que están en alguno de los dos.
-    public func unir(con otro: ConjuntoDeClases) -> ConjuntoDeClases { ConjuntoDeClases(clases + otro.clases) }
+    public func unir(con otro: ConjuntoDeClasesDeAltura) -> ConjuntoDeClasesDeAltura {
+        ConjuntoDeClasesDeAltura(clases + otro.clases)
+    }
     /// Intersección: las clases que están en los dos.
-    public func intersecar(con otro: ConjuntoDeClases) -> ConjuntoDeClases {
-        ConjuntoDeClases(clases.filter(otro.contiene))
+    public func intersecar(con otro: ConjuntoDeClasesDeAltura) -> ConjuntoDeClasesDeAltura {
+        ConjuntoDeClasesDeAltura(clases.filter(otro.contiene))
     }
 
     /// `true` si todas sus clases están en `otro`.
-    public func esSubconjunto(de otro: ConjuntoDeClases) -> Bool { clases.allSatisfy(otro.contiene) }
+    public func esSubconjunto(de otro: ConjuntoDeClasesDeAltura) -> Bool { clases.allSatisfy(otro.contiene) }
 
     // MARK: Vector interválico
 
@@ -99,20 +101,20 @@ public struct ConjuntoDeClases: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// Forma normal (orden más compacto, criterio de Rahn): {7, 0, 4} → [0, 4, 7]; {11, 2, 7} → [7, 11, 2].
-    public var formaNormal: [Int] { ConjuntoDeClases.ordenNormal(clases, .rahn) }
+    public var formaNormal: [Int] { ConjuntoDeClasesDeAltura.ordenNormal(clases, .rahn) }
 
     /// Forma prima según Forte (la que usan los números de Forte): Do–Mi–Sol → [0, 3, 7].
-    public var formaPrima: [Int] { ConjuntoDeClases.prima(clases, .forte) }
+    public var formaPrima: [Int] { ConjuntoDeClasesDeAltura.prima(clases, .forte) }
 
     /// Forma prima según Rahn (la de Straus y la mayoría de manuales actuales). Solo difiere de la
     /// de Forte en seis clases: 5-20, 6-Z29, 6-31, 7-Z18, 7-20 y 8-26.
-    public var formaPrimaRahn: [Int] { ConjuntoDeClases.prima(clases, .rahn) }
+    public var formaPrimaRahn: [Int] { ConjuntoDeClasesDeAltura.prima(clases, .rahn) }
 
     /// Número de Forte: "3-11", "4-Z15", "7-35". `nil` para el conjunto vacío.
-    public var numeroDeForte: String? { ConjuntoDeClases.tablaForte[formaPrima] }
+    public var numeroDeForte: String? { ConjuntoDeClasesDeAltura.tablaForte[formaPrima] }
 
     /// Relación Z: mismo vector interválico sin ser de la misma clase (4-Z15 y 4-Z29).
-    public func estaEnRelacionZ(con otro: ConjuntoDeClases) -> Bool {
+    public func estaEnRelacionZ(con otro: ConjuntoDeClasesDeAltura) -> Bool {
         cardinalidad == otro.cardinalidad && vectorIntervalico == otro.vectorIntervalico
             && !esDeLaMismaClase(que: otro)
     }
@@ -126,7 +128,7 @@ public struct ConjuntoDeClases: Hashable, Sendable, CustomStringConvertible {
 
     /// Nombre habitual de algunas clases conocidas: "tríada mayor o menor", "escala diatónica"…
     public var nombreComun: String? {
-        numeroDeForte.flatMap { ConjuntoDeClases.nombresComunes[$0] }
+        numeroDeForte.flatMap { ConjuntoDeClasesDeAltura.nombresComunes[$0] }
     }
 
     package static let nombresComunes: [String: String] = [
@@ -152,12 +154,12 @@ public struct ConjuntoDeClases: Hashable, Sendable, CustomStringConvertible {
     ]
 }
 
-extension ConjuntoDeClases: ExpressibleByArrayLiteral {
-    /// `let c: ConjuntoDeClases = [0, 4, 7]`.
+extension ConjuntoDeClasesDeAltura: ExpressibleByArrayLiteral {
+    /// `let c: ConjuntoDeClasesDeAltura = [0, 4, 7]`.
     public init(arrayLiteral clases: Int...) { self.init(clases) }
 }
 
-extension ConjuntoDeClases: Codable {
+extension ConjuntoDeClasesDeAltura: Codable {
     public init(from decoder: Decoder) throws {
         let clases = try decoder.singleValueContainer().decode([Int].self)
         self.init(clases)
@@ -169,9 +171,11 @@ extension ConjuntoDeClases: Codable {
     }
 }
 
-extension ConjuntoDeClases: Transponible, ConClasesDeAltura {
-    public var conjuntoDeClases: ConjuntoDeClases { self }
+extension ConjuntoDeClasesDeAltura: Transponible, ConClasesDeAltura {
+    public var conjuntoDeClases: ConjuntoDeClasesDeAltura { self }
 
     /// Transpone por los semitonos del intervalo (la ortografía no cuenta en un conjunto de clases).
-    public func transponer(_ intervalo: Intervalo) -> ConjuntoDeClases { transponer(intervalo.semitonosConSigno) }
+    public func transponer(_ intervalo: Intervalo) -> ConjuntoDeClasesDeAltura {
+        transponer(intervalo.semitonosConSigno)
+    }
 }

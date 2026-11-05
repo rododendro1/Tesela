@@ -69,7 +69,7 @@ public struct SerieDodecafonica: Hashable, Sendable, CustomStringConvertible {
     /// La serie de las clases de altura de las notas, o `nil` si no son las doce una vez cada una.
     public init?(notas: [Nota]) { self.init(notas.map(\.claseDeAltura)) }
 
-    /// Lee una serie escrita a mano, como los conjuntos (`ConjuntoDeClases/init(leyendo:)`) pero sin ordenar:
+    /// Lee una serie escrita a mano, como los conjuntos (`ConjuntoDeClasesDeAltura/init(leyendo:)`) pero sin ordenar:
     /// «0 e 7 4 2 9 3 8 t 1 5 6», «[0, 11, 7, 4, …]», «0e742 938t156», «Fa Mi Do La Sol Re La♭ Re♭ Mi♭ Sol♭ Si♭ Si».
     ///
     /// Lanza `ErrorDeLectura`; si las clases se leen pero no son las doce, con
@@ -184,16 +184,16 @@ public struct SerieDodecafonica: Hashable, Sendable, CustomStringConvertible {
 
     /// Las seis primeras clases y las seis últimas, como conjuntos.
     public var hexacordos: Hexacordos {
-        Hexacordos(primero: ConjuntoDeClases(clases[..<6]), segundo: ConjuntoDeClases(clases[6...]))
+        Hexacordos(primero: ConjuntoDeClasesDeAltura(clases[..<6]), segundo: ConjuntoDeClasesDeAltura(clases[6...]))
     }
 
     /// Las dos mitades de una serie, como conjuntos de seis clases.
     public struct Hexacordos: Hashable, Sendable {
-        public let primero: ConjuntoDeClases
-        public let segundo: ConjuntoDeClases
+        public let primero: ConjuntoDeClasesDeAltura
+        public let segundo: ConjuntoDeClasesDeAltura
 
         /// Los dos hexacordos, el de las seis primeras clases y el de las seis últimas.
-        public init(primero: ConjuntoDeClases, segundo: ConjuntoDeClases) {
+        public init(primero: ConjuntoDeClasesDeAltura, segundo: ConjuntoDeClasesDeAltura) {
             self.primero = primero
             self.segundo = segundo
         }

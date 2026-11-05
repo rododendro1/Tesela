@@ -58,8 +58,8 @@ import Testing
         #expect(TipoDeAcorde.dominanteSeptima.anadir(.novenaMenor)?.cifrado == "7(♭9)")
         #expect(TipoDeAcorde.dominanteNovena.quitar(.quintaJusta)?.cifrado == "9(omit5)")
         #expect(abs(TemperamentoRegular.igual.afinar(frecuenciaDelLa4: 415).frecuencia(de: "La4") - (415)) <= 1e-9)
-        #expect(ConjuntoDeClases([0, 4]).unir(con: [7]) == [0, 4, 7])
-        #expect(ConjuntoDeClases([0, 4, 7]).intersecar(con: [4, 5]) == [4])
+        #expect(ConjuntoDeClasesDeAltura([0, 4]).unir(con: [7]) == [0, 4, 7])
+        #expect(ConjuntoDeClasesDeAltura([0, 4, 7]).intersecar(con: [4, 5]) == [4])
         // Valores derivados con nombre propio: sustantivo o adjetivo.
         #expect(Intervalo.terceraMayor.inversion == .sextaMenor)
         #expect(Nota("Dob").enarmonicaMasSimple == .si)
@@ -73,7 +73,7 @@ import Testing
         #expect(Acorde.candidatos([.do, .mi, .sol]).first?.coste == 0)
         // Número de Forte, aunque el valor sea texto.
         #expect(Acorde("Do°7").numeroDeForte == "4-28")
-        #expect(ConjuntoDeClases([0, 1, 4, 6]).numeroDeForte == "4-Z15")
+        #expect(ConjuntoDeClasesDeAltura([0, 1, 4, 6]).numeroDeForte == "4-Z15")
         // Temperamentos iguales con cualquier número de divisiones; 12 es `.igual`.
         #expect(abs(TemperamentoRegular.igual(divisiones: 12).quinta - (TemperamentoRegular.igual.quinta)) <= 1e-9)
         #expect(

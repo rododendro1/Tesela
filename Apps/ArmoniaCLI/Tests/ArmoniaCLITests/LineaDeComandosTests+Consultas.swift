@@ -251,6 +251,12 @@ extension LineaDeComandosTests {
         #expect(salida("sheet --chords Dm7 G7 Cmaj7 --ingles").contains(">Dm7 – G7 – C"))
         #expect(resultado("hoja", "--acordes").codigo == 2)
         #expect(resultado("hoja", "--acordes").error.contains("armonia hoja --acordes Rem7 Sol7 Do7M"))
+        // Con la conducción de las voces y, con --doce, en las doce tonalidades.
+        #expect(progresion.contains(">Conducción de voces · Drop 2</text>"))
+        let doce = salida("hoja --acordes Rem7 Sol7 Do7M --doce --en Do mayor")
+        #expect(doce.contains(">Lam7 Re7 Solmaj7</text>"), Comment(rawValue: String(doce.prefix(800))))
+        #expect(salida("hoja --acordes Rem7 Sol7 Do7M --doce").contains(">Sol mayor</text>"))
+        #expect(salida("sheet --chords Dm7 G7 Cmaj7 --all-keys --ingles").contains(">G major</text>"))
     }
 
     /// `escala … --escalera`: de la más oscura a la más brillante, con la de partida señalada.
@@ -414,6 +420,15 @@ extension LineaDeComandosTests {
         let parecidas = salida("escala Do mayor --parecidas")
         #expect(parecidas.contains("\nEscalas parecidas:\n  "), Comment(rawValue: parecidas))
         #expect(parecidas.contains("\n  Do lidio: Notas comunes: 6 · −Fa · +Fa♯\n"))
+    }
+
+    @Test func conduccionDeUnaProgresion() {
+        let conduccion = salida("analizar Rem7 Sol7 Do7M --conduccion")
+        #expect(conduccion.contains("\nConducción de voces (Drop 2):\n  Rem7 → Sol7 · Notas comunes: Re, Fa\n    "))
+        #expect(conduccion.contains("\n  Sol7 → Domaj7 · Notas comunes: "), Comment(rawValue: conduccion))
+        #expect(conduccion.contains("\n  Movimiento total: "))
+        #expect(!salida("analizar Rem7 Sol7 Do7M").contains("Conducción"))
+        #expect(salida("analyze Dm7 G7 Cmaj7 --voice-leading --ingles").contains("\nVoice leading (Drop 2):\n"))
     }
 
     @Test func modulacionesDesdeUnaTonalidad() {

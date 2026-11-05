@@ -18,6 +18,23 @@ Los nombres de antes siguen compilando, obsoletos, en el `Obsoletos.swift` de ca
   `OpcionesDeDiagrama(ventana:)`, `TecladoCuadrado.altura(en:ventana:)`, `TecladoIsomorfico.altura(en:ventana:)` y
   `Mastil.altura(en:ventana:)` eligen la ventana de quintas (`.bemoles` para lo de antes).
 
+### `ConjuntoDeClases` pasa a llamarse `ConjuntoDeClasesDeAltura`
+
+- `ConjuntoDeClasesDeAltura` es el nuevo nombre de `ConjuntoDeClases`, para que diga de qué clases es. El nombre de
+  antes sigue compilando, obsoleto, en `ArmoniaNucleo/Obsoletos.swift`, y Xcode propone el cambio. La propiedad
+  `conjuntoDeClases` de `ConClasesDeAltura` no cambia.
+
+### La conducción de las voces y una progresión en las doce tonalidades
+
+- `PresentacionDeAnalisis.conduccion(_:disposicion:notacion:)`: cómo va cada voz de un acorde al siguiente en
+  toda la progresión, con las notas comunes de cada paso, lo que se mueve cada voz y el movimiento total.
+  `armonia analizar Rem7 Sol7 Do7M --conduccion` la escribe en drop 2; la hoja de estudio de la progresión tiene su
+  sección, y la vista de análisis la muestra bajo la disposición elegida.
+- `PresentacionDeAnalisis.enLasDoceTonalidades(_:tonalidad:notacion:)` y `hojaEnLasDoceTonalidades`: la
+  progresión de quinta en quinta por las doce tonalidades, cada una con su pentagrama, en una hoja para practicar.
+  `armonia hoja --acordes Rem7 Sol7 Do7M --doce` la da en SVG; en la app, la vista de análisis tiene una sección
+  para escucharla en cada tonalidad, y la hoja se exporta con la barra.
+
 ### Modulaciones desde una tonalidad y escalas parecidas
 
 - `armonia tonalidad Do mayor --modulaciones` da, para cada tono vecino, la manera más suave de llegar (por acorde
