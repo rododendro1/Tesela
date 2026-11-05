@@ -3,7 +3,7 @@ import Foundation
 
 let resultado = LineaDeComandos.ejecutar(
     Array(CommandLine.arguments.dropFirst()),
-    entrada: { String(decoding: FileHandle.standardInput.readDataToEndOfFile(), as: UTF8.self) },
+    entrada: { FileHandle.standardInput.readDataToEndOfFile() },
     entradaEsTerminal: isatty(STDIN_FILENO) != 0,
     salidaEsTerminal: isatty(STDOUT_FILENO) != 0)
 if let datos = resultado.datos {

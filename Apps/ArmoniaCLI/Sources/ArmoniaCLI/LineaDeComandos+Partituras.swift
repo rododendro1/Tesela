@@ -76,9 +76,7 @@ extension LineaDeComandos {
                 return uso(.archivoSoloParaAcordes, notacion)
             }
             guard musica.isEmpty else { return uso(.archivoConAcordes, notacion) }
-            guard let datos = FileManager.default.contents(atPath: archivo) else {
-                return uso(.archivoIlegible(archivo), notacion)
-            }
+            guard let datos = contenido(deArchivo: archivo) else { return uso(.archivoIlegible(archivo), notacion) }
             let pieza = try PiezaImportada(leyendo: datos)
             let ventana = try opciones["ventana"].map { try Duracion(leyendo: $0) }
             let suyo = pieza.ritmoArmonico(ventana: ventana)

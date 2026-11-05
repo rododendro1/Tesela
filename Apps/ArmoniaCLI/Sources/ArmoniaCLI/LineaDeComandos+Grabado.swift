@@ -173,6 +173,10 @@ extension LineaDeComandos {
         }
         let resto = entrada.restantes
         guard let primera = resto.first?.lowercased() else { return uso(.faltaLoQueSeGraba, notacion) }
+        // `grabar midi …`: `midi` (como musicxml, mei…) ya escribe la partitura; se graba lo que va detrás de ella.
+        if ordenesDePartituras.contains(where: { $0.nombres.contains(primera) }) {
+            return uso(.grabarUnaPartitura(primera), notacion)
+        }
         let elegido = motor ?? (tiposDePartitura.contains(primera) ? .lilypond : .propio)
 
         // Lo que Tesela escribe para el motor: la partitura en su formato, o el SVG del dibujo.

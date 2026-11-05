@@ -322,6 +322,8 @@ extension TextosDeCLI {
         descripcionVersion: "az armonia verziója",
         quisoDecir: { x in "Erre gondoltál: „\(x)”?" },
         pruebaLaAyudaDe: { o in "Próbáld ki: „armonia help \(o)”." },
-        salidaBinaria: "a kimenet bináris fájl (MIDI, PDF vagy PNG); mentsd el így: > fájl"
+        salidaBinaria: "a kimenet bináris fájl (MIDI, PDF vagy PNG); mentsd el így: > fájl",
+        escalasPorNotas: { e in "nincs ilyen nevű skála; hangok alapján így keresheted: \(e)" },
+        grabarUnaPartitura: { o, e in "az „armonia \(o)” már megírja a kottát; az „engrave” PDF-be, SVG-be vagy PNG-be szedi: \(e)" }
     )
 }

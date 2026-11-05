@@ -322,6 +322,8 @@ extension TextosDeCLI {
         descripcionVersion: "η έκδοση του armonia",
         quisoDecir: { x in "Μήπως εννοούσες «\(x)»;" },
         pruebaLaAyudaDe: { o in "Δοκίμασε «armonia help \(o)»." },
-        salidaBinaria: "η έξοδος είναι δυαδικό αρχείο (MIDI, PDF ή PNG)· αποθήκευσέ την με > αρχείο"
+        salidaBinaria: "η έξοδος είναι δυαδικό αρχείο (MIDI, PDF ή PNG)· αποθήκευσέ την με > αρχείο",
+        escalasPorNotas: { e in "καμία κλίμακα δεν έχει αυτό το όνομα· για αναζήτηση με τις νότες: \(e)" },
+        grabarUnaPartitura: { o, e in "η «armonia \(o)» γράφει ήδη την παρτιτούρα· η «engrave» τη χαράσσει σε PDF, SVG ή PNG: \(e)" }
     )
 }

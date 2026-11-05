@@ -107,7 +107,7 @@ extension LineaDeComandosTests {
     /// `-` toma las palabras de la entrada estándar; sin argumentos y sin la terminal, también.
     @Test func entradaEstandar() {
         func con(_ entrada: String, _ argumentos: [String], terminal: Bool = false) -> ResultadoDeOrden {
-            LineaDeComandos.ejecutar(argumentos, entrada: { entrada }, entradaEsTerminal: terminal)
+            LineaDeComandos.ejecutar(argumentos, entrada: { Data(entrada.utf8) }, entradaEsTerminal: terminal)
         }
         let identificar = salida("identificar Do Mi Sol")
         #expect(con("Do Mi Sol\n", ["identificar"]).salida == identificar)
@@ -124,14 +124,63 @@ extension LineaDeComandosTests {
         #expect(con("Fa La Do", ["identificar", "Do", "Mi", "Sol"]).salida == identificar)
         // Las órdenes que no leen nada no esperan a la entrada.
         let leida = LockIsolatedFlag()
-        let entrada = {
+        let entrada: @Sendable () -> Data = {
             leida.marcar()
-            return ""
+            return Data()
         }
         _ = LineaDeComandos.ejecutar(["motores"], entrada: entrada, entradaEsTerminal: false)
         #expect(!leida.marcada)
         // Una entrada vacía es como no escribir nada.
         #expect(con("", ["identificar"]).codigo == 2)
+    }
+
+    /// `escalas` busca por el nombre: con unas notas, remite a `identificar --escalas`.
+    @Test func escalasConNotas() {
+        let conNotas = resultado("escalas", "Do", "Mi", "Sol", "La")
+        #expect(conNotas.codigo == 1)
+        #expect(
+            conNotas.error
+                == "armonia: no hay ninguna escala con ese nombre; para buscarla por sus notas: "
+                + "armonia identificar --escalas Do Mi Sol La\n")
+        #expect(resultado("escalas", "C", "E", "G", "--ingles").error.contains("armonia identify --scales C E G"))
+        #expect(salida("identificar --escalas Do Mi Sol La").contains("pentatónica"))
+    }
+
+    /// `grabar midi …` explica que midi ya escribe la partitura y cómo se graba.
+    @Test func grabarUnaPartitura() {
+        for orden in ["midi", "musicxml", "lilypond"] {
+            let error = resultado("grabar", orden, "Do", "Re").error
+            #expect(error.hasPrefix("armonia: «armonia \(orden)» ya escribe la partitura"), Comment(rawValue: error))
+            #expect(error.contains("armonia grabar melodia Do4:4 Re4:4 > melodia.pdf"))
+        }
+        #expect(resultado("engrave", "midi", "C", "--ingles").error.contains("armonia engrave melody C4:4 D4:4"))
+    }
+
+    /// `--archivo -` lee el fichero de la entrada estándar.
+    @Test func archivoDeLaEntrada() throws {
+        let midi = try Voz(leyendo: "Do4:4 Re4:4 Mi4:4").partitura().midi()
+        let ruta = try fichero(midi, extension: "mid")
+        for orden in [["identificar", "--archivo"], ["musicxml", "melodia", "--archivo"], ["analizar", "--archivo"]] {
+            let conEntrada = LineaDeComandos.ejecutar(orden + ["-"], entrada: { midi }, entradaEsTerminal: false)
+            #expect(conEntrada == LineaDeComandos.ejecutar(orden + [ruta]), "\(orden)")
+        }
+        let acordes = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do").partitura().midi()
+        let analisis = LineaDeComandos.ejecutar(
+            ["analizar", "--file", "-"], entrada: { acordes }, entradaEsTerminal: false)
+        #expect(analisis.salida.hasPrefix("I–IV–V7–I en Do mayor"), Comment(rawValue: analisis.error))
+        // Sin entrada estándar, `-` es un fichero que no se puede leer.
+        #expect(resultado("analizar", "--archivo", "-").error.hasPrefix("armonia: no se puede leer el fichero «-»"))
+    }
+
+    /// Los valores de `--idioma`, `--textos` y `--escritura` también proponen el más parecido.
+    @Test func idiomaYEscrituraParecidos() {
+        #expect(resultado("acorde", "Do", "--idioma", "eus").error.contains("¿Querías decir «eu»?"))
+        #expect(resultado("acorde", "Do", "--idioma", "deutch").error.contains("«deutsch»"))
+        #expect(resultado("acorde", "Do", "--textos", "catalam").error.contains("«catalán»"))
+        #expect(resultado("acorde", "Do", "--escritura", "palabra").error.contains("«palabras»"))
+        #expect(
+            resultado("acorde", "Do", "--escritura", "unicod", "--ingles").error.contains("Did you mean \"unicode\"?"))
+        #expect(!resultado("acorde", "Do", "--idioma", "xyzzy").error.contains("¿Querías"))
     }
 
     @Test func arpegioEnJSON() throws {

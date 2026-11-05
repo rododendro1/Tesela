@@ -358,6 +358,18 @@
   lee. `-m3` y `-P5` siguen siendo intervalos descendentes.
 - `tonalidad`, `intervalo`, `conjunto` y `serie` dicen «opción desconocida» ante una opción que no tienen.
 
+### La línea de comandos: escalas que no se encuentran, `grabar midi`, `--archivo -` y más propuestas
+
+- **`armonia escalas`** sin ninguna escala que dar termina con código 1 y lo dice en la salida de errores, en lugar de
+  en la salida con código 0. Si lo buscado son notas (`armonia escalas Do Mi Sol La`), recuerda que `escalas` busca
+  por el nombre y que por las notas se busca con `armonia identificar --escalas Do Mi Sol La`.
+- **`armonia grabar midi …`** (o `musicxml`, `mei`, `lilypond`, `guido`, `abc`) explica que esa orden ya escribe la
+  partitura y cómo se graba en PDF, SVG o PNG, en lugar de «se exporta una melodia…».
+- **`--archivo -`** lee el fichero de la entrada estándar en `analizar`, `identificar` y las partituras:
+  `armonia analizar --archivo - < coral.mid`.
+- Los valores de `--idioma`, `--textos` y `--escritura` mal escritos también proponen el más parecido: `--idioma eus`,
+  «¿Querías decir «eu»?».
+
 ## 0.3.4 (2026-11-04)
 
 ### Valores escritos a mano, sin opcionales

@@ -3,7 +3,7 @@
 // Ante una orden o una opción desconocida, la conocida que más se le parece: `armonia acordee Do` propone «acorde» y
 // `armonia digitaciones Sol7 --limte 3`, «--limite». Se propone una sola, y solo si está cerca: a una o dos letras
 // cambiadas, quitadas, añadidas o cambiadas de sitio (una en las de cuatro letras o menos), o si lo escrito es el
-// principio de una sola de ellas.
+// principio de una sola de ellas. Valen también para los valores de `--idioma` y `--escritura`.
 
 extension LineaDeComandos {
     /// Los nombres de todas las órdenes, sin los de la ayuda que empiezan por `-`.
@@ -25,10 +25,16 @@ extension LineaDeComandos {
         guard !candidatos.contains(escrito) else { return nil }
         let largo = escrito.trimmingPrefix("--").count
         let maximo = largo <= 4 ? 1 : 2
-        var mejor: (candidato: String, distancia: Int)?
+        // A igual distancia, la que empieza como lo escrito o con la que empieza lo escrito: «eus» → «eu», no «es».
+        var mejor: (candidato: String, distancia: Int, prefijo: Bool)?
         for candidato in candidatos {
             let d = distancia(escrito, candidato)
-            if d <= maximo, d < (mejor?.distancia ?? .max) { mejor = (candidato, d) }
+            guard d <= maximo else { continue }
+            let prefijo = candidato.hasPrefix(escrito) || escrito.hasPrefix(candidato)
+            if let actual = mejor, d > actual.distancia || (d == actual.distancia && (actual.prefijo || !prefijo)) {
+                continue
+            }
+            mejor = (candidato, d, prefijo)
         }
         if let mejor { return mejor.candidato }
         // «tonal» → «tonalidad», si no empieza así ninguna otra.
