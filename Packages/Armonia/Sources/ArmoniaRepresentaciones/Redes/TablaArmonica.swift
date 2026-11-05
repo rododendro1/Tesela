@@ -220,7 +220,7 @@ public struct TablaArmonica: Hashable, Sendable {
             case .alturas:
                 let midi = TablaArmonica.midi(de: p)
                 if let nombre = nombres[midi] { return nombre }
-                let altura = Altura(midi: midi, preferirBemoles: bemoles)
+                let altura = Altura(midi: midi, ventana: bemoles ? .bemoles : .sostenidos)
                 return altura.nombreCompacto(en: notacion)
             }
         }

@@ -146,7 +146,7 @@ public struct ModoDeEscala: Hashable, Sendable, CustomStringConvertible {
     /// La escala de la que sale el modo, sobre su propia tónica.
     public let madre: Escala
     /// El grado de la madre en el que empieza el modo (1 = la propia madre).
-    public let modo: Int
+    public let grado: Int
 
     public var description: String { nombre }
 }
@@ -155,7 +155,7 @@ extension ModoDeEscala: Nombrable {
     /// «modo 2 de Do mayor», «mode 2 of C major», «Do maiorraren 2. modua».
     public func nombre(en notacion: Notacion) -> String {
         let madre = self.madre.nombre(en: notacion)
-        return TextosDeTeoria.en(notacion) { $0.modoDe(modo, madre) }
+        return TextosDeTeoria.en(notacion) { $0.modoDe(grado, madre) }
     }
 }
 
@@ -174,7 +174,7 @@ extension Escala {
         guard !tipo.esDireccional else { return nil }
         for familia in TipoDeEscala.familiasDeModos where familia.intervalos.count == tipo.intervalos.count {
             for grado in 1...familia.intervalos.count where familia.rotacion(grado) == tipo {
-                return ModoDeEscala(madre: Escala(tonica - familia.intervalos[grado - 1], familia), modo: grado)
+                return ModoDeEscala(madre: Escala(tonica - familia.intervalos[grado - 1], familia), grado: grado)
             }
         }
         return nil

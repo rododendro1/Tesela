@@ -69,14 +69,14 @@ import Testing
     // MARK: Escala madre
 
     @Test func escalaMadre() {
-        #expect(Escala(.re, .dorico).escalaMadre == ModoDeEscala(madre: Escala(.do, .mayor), modo: 2))
-        #expect(Escala(.do, .mayor).escalaMadre?.modo == 1)
-        #expect(Escala(.la, .menorNatural).escalaMadre == ModoDeEscala(madre: Escala(.do, .mayor), modo: 6))
+        #expect(Escala(.re, .dorico).escalaMadre == ModoDeEscala(madre: Escala(.do, .mayor), grado: 2))
+        #expect(Escala(.do, .mayor).escalaMadre?.grado == 1)
+        #expect(Escala(.la, .menorNatural).escalaMadre == ModoDeEscala(madre: Escala(.do, .mayor), grado: 6))
         #expect(
             Escala(.do, .alterada).escalaMadre
-                == ModoDeEscala(madre: Escala(Nota(.re, .bemol), .menorMelodicaJazz), modo: 7))
+                == ModoDeEscala(madre: Escala(Nota(.re, .bemol), .menorMelodicaJazz), grado: 7))
         #expect(
-            Escala(.sol, .frigioDominante).escalaMadre == ModoDeEscala(madre: Escala(.do, .menorArmonica), modo: 5))
+            Escala(.sol, .frigioDominante).escalaMadre == ModoDeEscala(madre: Escala(.do, .menorArmonica), grado: 5))
         #expect(Escala(.re, .lidioDominante).escalaMadre?.madre == Escala(.la, .menorMelodicaJazz))
         // Ni la de tonos enteros ni la menor melódica clásica, que baja como la natural.
         #expect(Escala(.do, .tonosEnteros).escalaMadre == nil)

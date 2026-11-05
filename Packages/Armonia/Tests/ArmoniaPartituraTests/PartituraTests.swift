@@ -16,7 +16,7 @@ import Testing
         #expect(arpegio.ambito == .quintaJusta)
         #expect(arpegio.alturaMasGrave == Altura("Do4"))
         #expect(arpegio.midi == [60, 64, 67])
-        #expect(arpegio.conjuntoDeClases.numeroDeForte == "3-11")
+        #expect(arpegio.conjuntoDeClasesDeAltura.numeroDeForte == "3-11")
         #expect(Melodia([]).ambito == nil)
     }
 
@@ -387,7 +387,7 @@ import Testing
                     let nota = clave.altura(lugar: lugar, alteracion: Alteracion(alteracion))
                     #expect(
                         clave.posicion(de: nota)
-                            == PosicionEnPentagrama(lugar: lugar, alteracion: Alteracion(alteracion)),
+                            == PosicionEnElPentagrama(lugar: lugar, alteracion: Alteracion(alteracion)),
                         "\(clave) \(lugar)")
                 }
             }

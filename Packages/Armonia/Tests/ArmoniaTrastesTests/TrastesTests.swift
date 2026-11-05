@@ -23,7 +23,7 @@ import Testing
     @Test func bemolesSiSePide() {
         let mastil = Mastil(.guitarra)
         let posicion = PosicionEnElMastil(cuerda: 1, traste: 1) // Si♭2 / La♯2
-        #expect(mastil.altura(en: posicion, preferirBemoles: true).nota.nombre == "Si♭")
+        #expect(mastil.altura(en: posicion, ventana: .bemoles).nota.nombre == "Si♭")
         #expect(mastil.altura(en: posicion).nota.nombre == "La♯")
     }
 

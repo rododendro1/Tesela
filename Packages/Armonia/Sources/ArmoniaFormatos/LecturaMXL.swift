@@ -8,7 +8,7 @@ import Foundation
 // descomprime aquí mismo para no depender de zlib en Linux ni de Compression en Apple.
 //
 // Cualquier cosa que no encaje (un zip cortado, otro método de compresión, un zip sin partitura) es
-// `ErrorDeImportacion.comprimido`.
+// `ErrorDeLecturaDeFichero.comprimido`.
 
 extension PiezaImportada {
     /// Lee una partitura MusicXML comprimida (.mxl).
@@ -16,7 +16,7 @@ extension PiezaImportada {
     ///     let pieza = try PiezaImportada(mxl: Data(contentsOf: URL(fileURLWithPath: "coral.mxl")))
     public init(mxl datos: Data) throws {
         let zip = try ArchivoZip(bytes: [UInt8](datos))
-        guard let partitura = try zip.partitura() else { throw ErrorDeImportacion.comprimido }
+        guard let partitura = try zip.partitura() else { throw ErrorDeLecturaDeFichero.comprimido }
         try self.init(musicXML: Data(partitura))
     }
 }
@@ -41,22 +41,22 @@ struct ArchivoZip {
     init(bytes: [UInt8]) throws {
         self.bytes = bytes
         // El final del directorio central: 22 bytes y un comentario de hasta 65 535 al final del fichero.
-        guard bytes.count >= 22 else { throw ErrorDeImportacion.comprimido }
+        guard bytes.count >= 22 else { throw ErrorDeLecturaDeFichero.comprimido }
         var fin = bytes.count - 22
         let limite = max(0, bytes.count - 22 - 65_535)
         while fin >= limite, ArchivoZip.entero(bytes, fin, 4) != 0x0605_4B50 { fin -= 1 }
-        guard fin >= limite else { throw ErrorDeImportacion.comprimido }
+        guard fin >= limite else { throw ErrorDeLecturaDeFichero.comprimido }
         let cuantas = ArchivoZip.entero(bytes, fin + 10, 2)
         var posicion = ArchivoZip.entero(bytes, fin + 16, 4)
         var entradas: [Entrada] = []
         for _ in 0..<cuantas {
             guard posicion + 46 <= bytes.count, ArchivoZip.entero(bytes, posicion, 4) == 0x0201_4B50 else {
-                throw ErrorDeImportacion.comprimido
+                throw ErrorDeLecturaDeFichero.comprimido
             }
             let largoDelNombre = ArchivoZip.entero(bytes, posicion + 28, 2)
             let largoExtra = ArchivoZip.entero(bytes, posicion + 30, 2)
             let largoDelComentario = ArchivoZip.entero(bytes, posicion + 32, 2)
-            guard posicion + 46 + largoDelNombre <= bytes.count else { throw ErrorDeImportacion.comprimido }
+            guard posicion + 46 + largoDelNombre <= bytes.count else { throw ErrorDeLecturaDeFichero.comprimido }
             let nombre = String(decoding: bytes[(posicion + 46)..<(posicion + 46 + largoDelNombre)], as: UTF8.self)
             entradas.append(
                 Entrada(
@@ -92,11 +92,11 @@ struct ArchivoZip {
         guard entrada.comprimido != 0xFFFF_FFFF, entrada.descomprimido <= ArchivoZip.maximo,
             entrada.cabecera + 30 <= bytes.count,
             ArchivoZip.entero(bytes, entrada.cabecera, 4) == 0x0403_4B50
-        else { throw ErrorDeImportacion.comprimido }
+        else { throw ErrorDeLecturaDeFichero.comprimido }
         let inicio =
             entrada.cabecera + 30 + ArchivoZip.entero(bytes, entrada.cabecera + 26, 2)
             + ArchivoZip.entero(bytes, entrada.cabecera + 28, 2)
-        guard inicio + entrada.comprimido <= bytes.count else { throw ErrorDeImportacion.comprimido }
+        guard inicio + entrada.comprimido <= bytes.count else { throw ErrorDeLecturaDeFichero.comprimido }
         let datos = Array(bytes[inicio..<(inicio + entrada.comprimido)])
         switch entrada.metodo {
         case 0:
@@ -104,10 +104,10 @@ struct ArchivoZip {
         case 8:
             var inflado = Inflado(datos, maximo: ArchivoZip.maximo)
             try inflado.descomprimir()
-            guard inflado.salida.count == entrada.descomprimido else { throw ErrorDeImportacion.comprimido }
+            guard inflado.salida.count == entrada.descomprimido else { throw ErrorDeLecturaDeFichero.comprimido }
             return inflado.salida
         default:
-            throw ErrorDeImportacion.comprimido
+            throw ErrorDeLecturaDeFichero.comprimido
         }
     }
 
@@ -199,14 +199,14 @@ struct Inflado {
             case 0: try guardado()
             case 1: try codigos(Inflado.literalesFijos, Inflado.distanciasFijas)
             case 2: try dinamico()
-            default: throw ErrorDeImportacion.comprimido
+            default: throw ErrorDeLecturaDeFichero.comprimido
             }
         } while final == 0
     }
 
     private mutating func leer(_ n: Int) throws -> Int {
         while cuantos < n {
-            guard posicion < entrada.count else { throw ErrorDeImportacion.comprimido }
+            guard posicion < entrada.count else { throw ErrorDeLecturaDeFichero.comprimido }
             bits |= Int(entrada[posicion]) << cuantos
             posicion += 1
             cuantos += 8
@@ -229,19 +229,19 @@ struct Inflado {
             primero = (primero + cuenta) << 1
             valor <<= 1
         }
-        throw ErrorDeImportacion.comprimido
+        throw ErrorDeLecturaDeFichero.comprimido
     }
 
     /// Un bloque sin comprimir: empieza en el byte siguiente, con su largo y su complemento.
     private mutating func guardado() throws {
         bits = 0
         cuantos = 0
-        guard posicion + 4 <= entrada.count else { throw ErrorDeImportacion.comprimido }
+        guard posicion + 4 <= entrada.count else { throw ErrorDeLecturaDeFichero.comprimido }
         let largo = Int(entrada[posicion]) | Int(entrada[posicion + 1]) << 8
         let complemento = Int(entrada[posicion + 2]) | Int(entrada[posicion + 3]) << 8
         posicion += 4
         guard largo == ~complemento & 0xFFFF, posicion + largo <= entrada.count, salida.count + largo <= maximo
-        else { throw ErrorDeImportacion.comprimido }
+        else { throw ErrorDeLecturaDeFichero.comprimido }
         salida += entrada[posicion..<(posicion + largo)]
         posicion += largo
     }
@@ -251,7 +251,7 @@ struct Inflado {
         let literales = try leer(5) + 257
         let distancias = try leer(5) + 1
         let delCodigo = try leer(4) + 4
-        guard literales <= 286, distancias <= 30 else { throw ErrorDeImportacion.comprimido }
+        guard literales <= 286, distancias <= 30 else { throw ErrorDeLecturaDeFichero.comprimido }
         var longitudes = [Int](repeating: 0, count: 19)
         for i in 0..<delCodigo { longitudes[Inflado.orden[i]] = try leer(3) }
         let codigoDeLongitudes = Huffman(longitudes: longitudes)
@@ -262,7 +262,7 @@ struct Inflado {
             case 0..<16:
                 todas.append(s)
             case 16:
-                guard let anterior = todas.last else { throw ErrorDeImportacion.comprimido }
+                guard let anterior = todas.last else { throw ErrorDeLecturaDeFichero.comprimido }
                 let veces = try leer(2) + 3
                 todas += [Int](repeating: anterior, count: veces)
             case 17:
@@ -273,7 +273,7 @@ struct Inflado {
                 todas += [Int](repeating: 0, count: veces)
             }
         }
-        guard todas.count == literales + distancias else { throw ErrorDeImportacion.comprimido }
+        guard todas.count == literales + distancias else { throw ErrorDeLecturaDeFichero.comprimido }
         try codigos(Huffman(longitudes: Array(todas[..<literales])), Huffman(longitudes: Array(todas[literales...])))
     }
 
@@ -282,19 +282,19 @@ struct Inflado {
         while true {
             var s = try simbolo(literales)
             if s < 256 {
-                guard salida.count < maximo else { throw ErrorDeImportacion.comprimido }
+                guard salida.count < maximo else { throw ErrorDeLecturaDeFichero.comprimido }
                 salida.append(UInt8(s))
             } else if s == 256 {
                 return
             } else {
                 s -= 257
-                guard s < 29 else { throw ErrorDeImportacion.comprimido }
+                guard s < 29 else { throw ErrorDeLecturaDeFichero.comprimido }
                 let largo = try leer(Inflado.extrasDeLongitud[s]) + Inflado.basesDeLongitud[s]
                 let d = try simbolo(distancias)
-                guard d < 30 else { throw ErrorDeImportacion.comprimido }
+                guard d < 30 else { throw ErrorDeLecturaDeFichero.comprimido }
                 let distancia = try leer(Inflado.extrasDeDistancia[d]) + Inflado.basesDeDistancia[d]
                 guard distancia <= salida.count, salida.count + largo <= maximo else {
-                    throw ErrorDeImportacion.comprimido
+                    throw ErrorDeLecturaDeFichero.comprimido
                 }
                 for _ in 0..<largo { salida.append(salida[salida.count - distancia]) }
             }

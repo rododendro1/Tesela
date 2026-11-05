@@ -204,10 +204,10 @@ import Testing
             teclado.casillas(de: Altura("Sol4"), en: FormasDeMapa.hexagono(radio: 3)) == [CoordenadaAxial(q: 1, r: -1)])
         #expect(teclado.altura(en: CoordenadaAxial(q: 0, r: -1)).midi == 65)
         #expect(
-            teclado.altura(en: CoordenadaAxial(q: 1, r: 0), preferirBemoles: true).nota.nombre(en: .espanolCompacto)
+            teclado.altura(en: CoordenadaAxial(q: 1, r: 0), ventana: .bemoles).nota.nombre(en: .espanolCompacto)
                 == "Re")
         #expect(
-            teclado.altura(en: CoordenadaAxial(q: 0, r: 1), preferirBemoles: true).nota.nombre(en: .espanolCompacto)
+            teclado.altura(en: CoordenadaAxial(q: 0, r: 1), ventana: .bemoles).nota.nombre(en: .espanolCompacto)
                 == "Sol")
         #expect("\(teclado)" == "Wicki-Hayden: q +2, r -5")
         let otro = TecladoIsomorfico(

@@ -11,7 +11,7 @@ Lo que comparten varios tipos se declara una sola vez, en `Protocolos.swift`:
 | `RepresentableComoTexto` | `init(leyendo:)`, `texto(en:)` | `init?(texto:)`, literal de texto, `Codable`, `texto` | `Alteracion`, `Nota`, `Altura`, `Intervalo`, `TipoDeAcorde`, `Acorde`, `Escala`, `Tonalidad`, `Duracion`, `Compas`, `Evento` |
 | `Nombrable` | `nombre(en:)` | el mismo nombre en cualquier `Notacion` | los anteriores salvo `Compas` y `Evento`, y casi todo lo que tiene nombre: `NotaNatural`, `CalidadDeIntervalo`, `Consonancia`, `TipoDeEscala`, `NombreDeGrado`, `Clave`, `Figura`, `InstrumentoDePartitura`, `PapelEnAcorde`, `CalidadDeTriada`, `Encordado`, `Arpegio`… |
 | `Transponible` | `transponer(_:)` | operadores `+` y `−`, `transponer(_:veces:)`, `secuencia(_:veces:)` | `Nota`, `Altura`, `Acorde`, `Escala`, `Tonalidad`, `Melodia`, `Evento`, `Voz`, `Coral`, `RitmoArmonico`, `ConjuntoDeClasesDeAltura`, `SerieDodecafonica` |
-| `ConClasesDeAltura` | `conjuntoDeClases` | `numeroDeForte`, `vectorIntervalico`, `esDeLaMismaClase(que:)` | `Acorde`, `Escala`, `Tonalidad`, `Melodia`, `ConjuntoDeClasesDeAltura` |
+| `ConClasesDeAltura` | `conjuntoDeClasesDeAltura` | `numeroDeForte`, `vectorIntervalico`, `esDeLaMismaClase(que:)` | `Acorde`, `Escala`, `Tonalidad`, `Melodia`, `ConjuntoDeClasesDeAltura` |
 
 ```swift
 func subirQuinta<T: Transponible>(_ x: T) -> T { x + .quintaJusta }
@@ -71,14 +71,14 @@ El texto se acepta en español (`Do`, `Sib`, `Fa#`, `Solx`, `Mi♭♭`) o con le
 - **Movimientos de una figura en el plano: participio.** Los teclados y los mapas se giran, se reflejan y se mueven
   como dibujos, y se nombran como el resultado: `rotado(…)`, `reflejado`, `desplazado(por:)`, y `rotada(sextos:)` y
   `reflejada` en las direcciones. Siempre `rotado`, nunca `girado`, y un giro que no es posible lanza
-  `ErrorDeUIL.rotacionNoValida`, en todos los teclados.
+  `ErrorDeLecturaDeUIL.rotacionNoValida`, en todos los teclados.
 - Fuera de esos dos casos, nunca participios, gerundios ni preposiciones como nombre (`invertido`, `anadiendo`,
   `conBajo`): las operaciones musicales van en infinitivo (`invertir`, `transponer`).
 - **Leer texto que viene de fuera: `init(leyendo:)`, que lanza.** El error dice el texto, el carácter y el motivo en
   los quince idiomas (`ErrorAlLeer`). Lo que se escribe a mano en el código es un literal o un inicializador que
   detiene el programa con un valor imposible, y `init?(comprobando:)` es su versión para valores de fuera, con `nil`.
 - **Tipos: sustantivo con su complemento, siempre con preposición.** `TipoDeAcorde`,
-  `Nota`, `CalidadDeIntervalo`, `EstiloDeCifrado`, `PapelEnAcorde`, `PosicionEnPentagrama`.
+  `Nota`, `CalidadDeIntervalo`, `EstiloDeCifrado`, `PapelEnAcorde`, `PosicionEnElPentagrama`.
 - **Búsquedas: `candidatos` e `identificar`.** `candidatos(…)` devuelve las lecturas posibles
   con su coste (`[Candidato<…>]`) e `identificar(…)`, solo los valores, de más a menos probable:
   `Acorde.candidatos(_:)`, `Tonalidad.candidatos(midi:)`, `Escala.candidatos(_:)`.

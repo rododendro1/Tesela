@@ -84,7 +84,7 @@ import Testing
         #expect(Escala.identificar([.do, .mi, .sol, .si, "Fa#"]).contains(Escala(.sol)))
         // Lugar en el pentagrama.
         #expect(Clave.doEnTercera.posicion(de: "Do4").lugar == 4)
-        #expect(PosicionEnPentagrama(lugar: 9).descripcion == "encima de la 5.ª línea")
+        #expect(PosicionEnElPentagrama(lugar: 9).descripcion == "encima de la 5.ª línea")
     }
 
     @Test func candidatoGenerico() {

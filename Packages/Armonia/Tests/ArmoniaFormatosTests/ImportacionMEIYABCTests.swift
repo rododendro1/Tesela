@@ -197,15 +197,15 @@ private func f(_ duracion: Duracion) -> String {
     }
 
     @Test func unMEIQueNoEsPartitura() throws {
-        let error = { (texto: String) -> ErrorDeImportacion? in
+        let error = { (texto: String) -> ErrorDeLecturaDeFichero? in
             do {
                 _ = try PiezaImportada(leyendo: Data(texto.utf8))
                 return nil
-            } catch { return error as? ErrorDeImportacion }
+            } catch { return error as? ErrorDeLecturaDeFichero }
         }
         #expect(error("<mei><music/></mei>") == .sinNotas)
         #expect(error("<mei><music><note pname=\"c\" oct=\"4\" dur=\"4\"></mei>") == .xmlDanado(linea: 1))
-        #expect(throws: ErrorDeImportacion.noEsMusicXMLPorPartes) {
+        #expect(throws: ErrorDeLecturaDeFichero.noEsMusicXMLPorPartes) {
             try PiezaImportada(mei: Data("<score-partwise/>".utf8))
         }
         // Valores que no son de MEI: la nota no se lee, pero no se detiene nada.
@@ -290,8 +290,12 @@ private func f(_ duracion: Duracion) -> String {
         #expect(partes[0] == ["Do5 0", "Re5 1/4", "Mi5 1/2", "Fa5 3/4", "Sol5 1"])
         #expect(partes[1] == ["Do4 0", "Sol3 1/2", "Do3 1", "Mi3 1", "Sol3 1"])
         // Sin `X:` no es ABC, y sin notas no hay pieza.
-        #expect(throws: ErrorDeImportacion.formatoDesconocido) { try PiezaImportada(leyendo: Data("c d e f".utf8)) }
-        #expect(throws: ErrorDeImportacion.sinNotas) { try PiezaImportada(leyendo: Data("X:1\nT:Nada\nK:C\n".utf8)) }
+        #expect(throws: ErrorDeLecturaDeFichero.formatoDesconocido) {
+            try PiezaImportada(leyendo: Data("c d e f".utf8))
+        }
+        #expect(throws: ErrorDeLecturaDeFichero.sinNotas) {
+            try PiezaImportada(leyendo: Data("X:1\nT:Nada\nK:C\n".utf8))
+        }
     }
 
     @Test func losModosYLasUnidadesDeABC() throws {
@@ -342,7 +346,7 @@ private func f(_ duracion: Duracion) -> String {
         do {
             _ = try leer(texto)
             return nil
-        } catch ErrorDeImportacion.xmlDanado(let linea) {
+        } catch ErrorDeLecturaDeFichero.xmlDanado(let linea) {
             return linea
         } catch { return -1 }
     }

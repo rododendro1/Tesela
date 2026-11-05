@@ -167,7 +167,7 @@ print(
     Escala(.do).ortografiar(midi: Array((60...72).reversed())).map(\.nota.nombre).joined(separator: " "))
 
 titulo("Afinaciones")
-let afinaciones: [(String, any Afinacion)] = [
+let afinaciones: [(String, any SistemaDeAfinacion)] = [
     ("igual", TemperamentoRegular.igual), ("pitagórico", TemperamentoRegular.pitagorico),
     ("mesotónico ¼", TemperamentoRegular.mesotonicoCuartoDeComa),
     ("31 divisiones", TemperamentoRegular.igual(divisiones: 31)),
@@ -279,8 +279,8 @@ print("  Figuras:", Figura.allCases.map { "\($0.nombre) (\($0.duracion.texto))" 
 
 titulo("Conjuntos de clases de altura")
 for (nombre, conjunto) in [
-    ("Do mayor", Acorde("Do").conjuntoDeClases), ("Sol7", Acorde("Sol7").conjuntoDeClases),
-    ("diatónica", Escala(.re).conjuntoDeClases), ("[0,1,4,6]", ConjuntoDeClasesDeAltura([0, 1, 4, 6])),
+    ("Do mayor", Acorde("Do").conjuntoDeClasesDeAltura), ("Sol7", Acorde("Sol7").conjuntoDeClasesDeAltura),
+    ("diatónica", Escala(.re).conjuntoDeClasesDeAltura), ("[0,1,4,6]", ConjuntoDeClasesDeAltura([0, 1, 4, 6])),
 ] {
     print(
         "  \(nombre): forma prima \(conjunto.formaPrima), \(conjunto.numeroDeForte ?? "—"),",

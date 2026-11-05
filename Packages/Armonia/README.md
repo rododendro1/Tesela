@@ -14,7 +14,7 @@ let i = Altura("Re5") - Altura("Do4")       // 9ª mayor, (2, 0)
 Nota.si.intervalo(hasta: .fa)        // 5ª disminuida
 Intervalo.terceraMayor.inversion           // 6ª menor
 Altura("La4").frecuencia()                  // 440.0
-Altura(midi: 63, preferirBemoles: true)      // Mi♭4
+Altura(midi: 63, ventana: .bemoles)      // Mi♭4
 
 Acorde("Sol7/Si").posicionCerrada(octava: 3)   // [Si3, Re4, Fa4, Sol4]
 Acorde.identificar([.mi, .sol, .do]).first         // Do/Mi
@@ -227,7 +227,7 @@ Sources/
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
 │   │                      FuncionTonal y AcordeAnalizado)
 │   ├── Coral/             Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion
-│   └── Afinacion/         Afinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica
+│   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica
 │                          (el catálogo), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett (números)
 ├── ArmoniaRepresentaciones/
 │   ├── Color/         CorrespondenciaDeColores (colores)
@@ -239,12 +239,12 @@ Sources/
 │   └── Dibujo/        DibujoSVG (título, leyenda y colores comunes de los dibujos)
 ├── ArmoniaPartitura/
 │   ├── Modelo/        Duracion (con Figura y Tempo), Compas, Evento, Melodia (con Voz), ErrorDeLecturaDePartitura,
-│   │                  Pentagrama (Clave, PosicionEnPentagrama, InstrumentoDePartitura), SignoMicrotonal
+│   │                  Pentagrama (Clave, PosicionEnElPentagrama, InstrumentoDePartitura), SignoMicrotonal
 │   ├── Dibujo/        PentagramaSVG (con sus opciones y los glifos SMuFL)
 │   └── Contrapunto/   Contrapunto (contrapunto de especies a dos voces, con sus faltas)
 ├── ArmoniaFormatos/   MusicXML, MEI, LilyPond, GUIDO y ABC (exportación de voces, corales y progresiones),
 │                      ArchivoMIDI (ficheros MIDI estándar), la importación de MusicXML, MXL, MEI, ABC y MIDI
-│                      (Importacion, con ErrorDeImportacion) y el lector de XML propio (LectorXML)
+│                      (Importacion, con ErrorDeLecturaDeFichero) y el lector de XML propio (LectorXML)
 ├── ArmoniaTrastes/    Encordado (afinaciones del instrumento), Mastil (con PosicionEnElMastil: dónde suena cada nota),
 │                      Digitacion (formas de tocar un acorde en el mástil)
 └── Armonia/           el módulo paraguas, sin código propio: Exportaciones (reexporta los seis)

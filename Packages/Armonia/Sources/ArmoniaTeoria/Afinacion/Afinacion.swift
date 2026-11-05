@@ -12,14 +12,14 @@ import Foundation
 // Con quinta = 700 sale el temperamento igual; con 701,955, el pitagórico; con
 // 696,578 (¼ de coma), el mesotónico, cuyas terceras mayores son puras.
 //
-// El protocolo `Afinacion` está en el Núcleo (Fundamentos/Afinacion.swift). Los temperamentos están en la Teoría, y no
-// en las Representaciones, porque solo necesitan las notas y las escalas: así los ven también la Partitura, los
-// Formatos y los Trastes.
+// El protocolo `SistemaDeAfinacion` está en el Núcleo (Fundamentos/SistemaDeAfinacion.swift). Los temperamentos
+// están en la Teoría, y no en las Representaciones, porque solo necesitan las notas y las escalas: así los ven también
+// la Partitura, los Formatos y los Trastes.
 
 // MARK: - Temperamentos regulares
 
 /// Temperamento regular: octava pura y todas las quintas del mismo tamaño.
-public struct TemperamentoRegular: Afinacion, Hashable {
+public struct TemperamentoRegular: SistemaDeAfinacion, Hashable {
     public let nombre: String
     /// Tamaño de la quinta en cents.
     public let quinta: Double
@@ -95,7 +95,7 @@ public struct TemperamentoRegular: Afinacion, Hashable {
 ///     TemperamentoCircular.werckmeisterIII.cents(de: "Sol4")    // 696,09: Do–Sol, ¼ de coma más estrecha
 ///     TemperamentoCircular.werckmeisterIII.desviaciones[4]       // −9,78: Mi, más grave que en el igual
 ///     Altura("La4").frecuencia(en: TemperamentoCircular.vallotti)   // 440
-public struct TemperamentoCircular: Afinacion, Hashable {
+public struct TemperamentoCircular: SistemaDeAfinacion, Hashable {
     public let nombre: String
     /// Las doce quintas en cents, en el orden del círculo desde Do: Do–Sol, Sol–Re, Re–La, La–Mi,
     /// Mi–Si, Si–Fa♯, Fa♯–Do♯, Do♯–Sol♯, Sol♯–Mi♭, Mi♭–Si♭, Si♭–Fa y Fa–Do. Suman siete octavas.
@@ -194,7 +194,7 @@ public struct TemperamentoCircular: Afinacion, Hashable {
 /// Do). Aquí, cada nota a `q` quintas de la tónica sustituye ⌊(q + 1) / 4⌋ grupos de cuatro
 /// quintas por terceras puras, que es la afinación de Ptolomeo de la escala mayor:
 /// 1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8.
-public struct AfinacionJusta: Afinacion, Hashable {
+public struct AfinacionJusta: SistemaDeAfinacion, Hashable {
     public let tonica: Nota
     /// Frecuencia de la tónica en la octava 4.
     public let frecuenciaDeLaTonica: Double

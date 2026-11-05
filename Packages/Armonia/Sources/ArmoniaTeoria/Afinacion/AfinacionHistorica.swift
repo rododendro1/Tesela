@@ -1,7 +1,7 @@
 import ArmoniaNucleo
 
 /// Las afinaciones históricas más conocidas, para elegir con cuál suenan las notas (en las apps,
-/// el botón «Escuchar»). Cada una da su `Afinacion`; la justa se construye sobre una tónica.
+/// el botón «Escuchar»). Cada una da su `SistemaDeAfinacion`; la justa se construye sobre una tónica.
 ///
 ///     AfinacionHistorica.mesotonico.afinacion().frecuencia(de: "Sol#4") < AfinacionHistorica.mesotonico.afinacion().frecuencia(de: "Lab4")   // true
 ///     AfinacionHistorica.justa.afinacion(tonica: .re).desviacion(de: "Fa#4")   // −13,69: la tercera pura sobre Re
@@ -23,7 +23,7 @@ public enum AfinacionHistorica: String, Hashable, Sendable, CaseIterable, Custom
     public var description: String { nombre }
 
     /// La afinación, con el La4 dado. Solo la justa usa la tónica; las demás no dependen de ella.
-    public func afinacion(tonica: Nota = .do, frecuenciaDelLa4: Double = 440) -> any Afinacion {
+    public func afinacion(tonica: Nota = .do, frecuenciaDelLa4: Double = 440) -> any SistemaDeAfinacion {
         switch self {
         case .igual: return TemperamentoRegular.igual.afinar(frecuenciaDelLa4: frecuenciaDelLa4)
         case .pitagorico: return TemperamentoRegular.pitagorico.afinar(frecuenciaDelLa4: frecuenciaDelLa4)

@@ -3,18 +3,18 @@ import ArmoniaTeoria
 
 // MARK: - Signos microtonales
 //
-// Cómo se escribe una nota que se aparta de su nota temperada (`Evento.Nota.desvio`): el signo que lleva en cada formato
-// y en el pentagrama SVG. Se deduce de los cents: un cuarto de tono es un medio bemol o un medio sostenido (o el
-// koron y el sori, en una escala persa); un número exacto de moria (72 por octava), un signo de doceavos de tono de
-// Wyschnegradsky; lo demás se aproxima a las comas de 53 por octava de Arel-Ezgi-Uzdilek. Una nota que sabe en qué
-// sistema está (`Evento.Nota.sistema`, como las de una escala microtonal) lleva el signo de su sistema: el koron y
-// el sori de un dastgāh, los moria de un echos, la flecha de Helmholtz-Ellis de un śruti.
+// Cómo se escribe una nota que se aparta de su nota temperada (`Evento.NotaDelEvento.desvio`): el signo que lleva en
+// cada formato y en el pentagrama SVG. Se deduce de los cents: un cuarto de tono es un medio bemol o un medio sostenido
+// (o el koron y el sori, en una escala persa); un número exacto de moria (72 por octava), un signo de doceavos de tono
+// de Wyschnegradsky; lo demás se aproxima a las comas de 53 por octava de Arel-Ezgi-Uzdilek. Una nota que sabe en qué
+// sistema está (`Evento.NotaDelEvento.sistema`, como las de una escala microtonal) lleva el signo de su sistema: el
+// koron y el sori de un dastgāh, los moria de un echos, la flecha de Helmholtz-Ellis de un śruti.
 
 /// El signo de una nota que se aparta de su nota temperada.
 ///
 /// Es el que escriben los formatos (MusicXML, MEI, LilyPond, ABC) y el pentagrama, y el que se lee al importar:
 ///
-///     Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1).signo()   // .koron
+///     Evento.NotaDelEvento("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1).signo()   // .koron
 ///     SignoMicrotonal.koron.smufl                                          // "accidentalKoron"
 public enum SignoMicrotonal: Hashable, Sendable {
     /// Cuartos de tono desde la nota natural, impares: −3 (tres cuartos de bemol), −1 (medio bemol), 1 y 3.
@@ -41,8 +41,8 @@ public enum SignoMicrotonal: Hashable, Sendable {
     /// bemol y el medio sostenido se escriben como koron y sori.
     public init?(semitonos: Int, desvio: Double, persa: Bool = false) {
         guard abs(desvio) >= 0.5 else { return nil }
-        // Redondeado a la centésima, como `Evento.Nota.desvio`, para que el pentagrama y los formatos den el mismo signo:
-        // en Segâh, el Fa♯ una koma bajo cae justo entre 3 y 4 comas sobre Fa.
+        // Redondeado a la centésima, como `Evento.NotaDelEvento.desvio`, para que el pentagrama y los formatos den el
+        // mismo signo: en Segâh, el Fa♯ una koma bajo cae justo entre 3 y 4 comas sobre Fa.
         let total = 100 * Double(semitonos) + (desvio * 100).rounded() / 100
         let cuartos = (total / 50).rounded()
         if abs(total / 50 - cuartos) < 0.1 {
@@ -314,6 +314,6 @@ extension Escala {
         octava: Int = 4, octavas: Int = 1, sentido: SentidoDelIntervalo? = nil, duracion: Duracion = .negra
     ) -> Voz {
         let alturas = alturasMicrotonales(octava: octava, octavas: octavas, sentido: sentido)
-        return Voz(alturas.map { Evento(notas: [Evento.Nota($0)], duracion: duracion) })
+        return Voz(alturas.map { Evento(notas: [Evento.NotaDelEvento($0)], duracion: duracion) })
     }
 }

@@ -8,8 +8,8 @@ import ArmoniaTeoria
 
 /// Cómo se dibuja un pentagrama.
 public struct OpcionesDePentagrama: Hashable, Sendable {
-    /// Cómo se escriben las notas de un acorde.
-    public enum Disposicion: Hashable, Sendable {
+    /// En qué posición se escriben las notas de un acorde: cerrada o abierta.
+    public enum Posicion: Hashable, Sendable {
         /// Cerrada, salvo en los acordes que abarcan más de una octava y media (novenas, oncenas y trecenas), que van
         /// en la abierta.
         case automatica
@@ -70,7 +70,7 @@ public struct OpcionesDePentagrama: Hashable, Sendable {
         /// sin fijar y un pentagrama.
         public var marcaDeOctava = true
         /// Cómo se apilan las notas de un acorde.
-        public var disposicionDelAcorde: Disposicion = .automatica
+        public var posicionDelAcorde: Posicion = .automatica
         /// En una voz, cuántos compases van en cada línea (sin contar la anacrusa): con más, la voz se parte en
         /// líneas del mismo ancho, una debajo de otra, cada una con su clave y su armadura. `nil`, todo en una línea.
         public var compasesPorLinea: Int?
@@ -82,14 +82,14 @@ public struct OpcionesDePentagrama: Hashable, Sendable {
         /// La maquetación con lo que se dé; lo demás, por omisión.
         public init(
             clave: Clave? = nil, pentagramas: Pentagramas = .automatico, cambiosDeClave: Bool = false,
-            marcaDeOctava: Bool = true, disposicionDelAcorde: Disposicion = .automatica, compasesPorLinea: Int? = nil,
+            marcaDeOctava: Bool = true, posicionDelAcorde: Posicion = .automatica, compasesPorLinea: Int? = nil,
             anchoDeLosCaracteres: Double = 1
         ) {
             self.clave = clave
             self.pentagramas = pentagramas
             self.cambiosDeClave = cambiosDeClave
             self.marcaDeOctava = marcaDeOctava
-            self.disposicionDelAcorde = disposicionDelAcorde
+            self.posicionDelAcorde = posicionDelAcorde
             self.compasesPorLinea = compasesPorLinea
             self.anchoDeLosCaracteres = anchoDeLosCaracteres
         }

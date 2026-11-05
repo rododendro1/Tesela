@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### Nombres más claros en la API
+
+Los nombres de antes siguen compilando, obsoletos, en el `Obsoletos.swift` de cada módulo, y Xcode propone el cambio.
+
+- `OpcionesDePentagrama.Disposicion` pasa a ser `OpcionesDePentagrama.Posicion` (cerrada, abierta o automática), para
+  no confundirla con `DisposicionDeAcorde`. Con ella, `Maquetacion.disposicionDelAcorde` es `posicionDelAcorde` y
+  `Acorde.partitura(octava:disposicion:)` es `partitura(octava:posicion:)`.
+- `RelojDeClases` es `RelojDeClasesDeAltura`, y la propiedad `conjuntoDeClases` de `ConClasesDeAltura`,
+  `conjuntoDeClasesDeAltura`, como `ConjuntoDeClasesDeAltura`. Un tipo propio que cumpla `ConClasesDeAltura` tiene que
+  dar ahora `conjuntoDeClasesDeAltura`.
+- El protocolo `Afinacion` es `SistemaDeAfinacion` (lo cumplen los temperamentos, la afinación justa y la de una
+  escala), para que «afinación» quede para la de las cuerdas (`Encordado.afinacion`).
+- `ModoDeEscala.modo` es `ModoDeEscala.grado`: el grado de la madre en que empieza el modo.
+- `Evento.Nota` es `Evento.NotaDelEvento`, que ya no tapa a `Nota` dentro de `Evento`.
+- `PosicionEnPentagrama` es `PosicionEnElPentagrama`, y `Partitura.LineaEnPentagrama`, `Partitura.LineaEnElPentagrama`,
+  como `PosicionEnElMastil`.
+- `ErrorDeImportacion` es `ErrorDeLecturaDeFichero`, y `ErrorDeUIL`, `ErrorDeLecturaDeUIL`, como `ErrorDeLectura`.
+- `preferirBemoles` queda obsoleto: `Altura(midi:)` escribe con sostenidos, y `Altura(midi:ventana:)`,
+  `OpcionesDeDiagrama(ventana:)`, `TecladoCuadrado.altura(en:ventana:)`, `TecladoIsomorfico.altura(en:ventana:)` y
+  `Mastil.altura(en:ventana:)` eligen la ventana de quintas (`.bemoles` para lo de antes).
+
 ### Los temperamentos pasan a ArmoniaTeoria
 
 - `TemperamentoRegular`, `TemperamentoCircular`, `AfinacionJusta`, `AfinacionHistorica`, `AfinacionDeEscala`,

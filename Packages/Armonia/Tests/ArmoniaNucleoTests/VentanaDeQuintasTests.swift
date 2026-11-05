@@ -72,7 +72,6 @@ import Testing
         #expect(Altura(midi: 60, ventana: VentanaDeQuintas(desde: "Re")).description == "Si♯3")
         for midi in 0...127 {
             #expect(Altura(midi: midi, ventana: .sostenidos) == Altura(midi: midi))
-            #expect(Altura(midi: midi, ventana: .bemoles) == Altura(midi: midi, preferirBemoles: true))
             for inicio in -12...12 {
                 let altura = Altura(midi: midi, ventana: VentanaDeQuintas(inicio: inicio))
                 #expect(altura.midi == midi)

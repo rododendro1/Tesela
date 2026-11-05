@@ -48,7 +48,7 @@ public struct EstadisticasDeEscala: Hashable, Sendable {
         brillo = escala.brillo
         let quintas = escala.notas.map { $0.pasosDeQuinta - escala.tonica.pasosDeQuinta }
         brilloPorQuintas = quintas.isEmpty ? 0 : Double(quintas.reduce(0, +)) / Double(quintas.count)
-        let conjunto = escala.conjuntoDeClases
+        let conjunto = escala.conjuntoDeClasesDeAltura
         let desdeLaTonica = conjunto.clases.map { modulo($0 - escala.tonica.claseDeAltura, 12) }.sorted()
         let pasos = zip(desdeLaTonica, desdeLaTonica.dropFirst() + [12]).map { $1 - $0 }
         self.pasos = pasos

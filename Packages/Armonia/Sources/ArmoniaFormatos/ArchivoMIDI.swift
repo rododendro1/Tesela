@@ -24,11 +24,12 @@ package struct ArchivoMIDI {
     package let tempo: Tempo?
     package let titulo: String?
     /// La afinación en que suenan las notas; si es `nil`, el temperamento igual (con los desvíos de cada evento).
-    package let afinacion: (any Afinacion)?
+    package let afinacion: (any SistemaDeAfinacion)?
     private var pistas: [(eventos: [Evento], nombre: String, instrumento: Int, marcadores: [String])] = []
 
     package init(
-        compas: Compas, tonalidad: Tonalidad?, tempo: Tempo?, titulo: String?, afinacion: (any Afinacion)? = nil
+        compas: Compas, tonalidad: Tonalidad?, tempo: Tempo?, titulo: String?,
+        afinacion: (any SistemaDeAfinacion)? = nil
     ) {
         self.compas = compas
         self.tonalidad = tonalidad
@@ -167,7 +168,7 @@ package struct ArchivoMIDI {
     /// La tecla en que suena una altura y lo que se aparta de ella, en cents: en temperamento igual, la suya y su
     /// desvío; en una afinación, la temperada más cercana sin pasar de un semitono, con lo que falte.
     package static func sonido(
-        _ altura: Altura, desvio: Double, afinacion: (any Afinacion)?
+        _ altura: Altura, desvio: Double, afinacion: (any SistemaDeAfinacion)?
     ) -> (clave: Int, desvio: Double) {
         guard let afinacion else { return (altura.midi, desvio) }
         let total = desvio + afinacion.desviacion(de: altura)

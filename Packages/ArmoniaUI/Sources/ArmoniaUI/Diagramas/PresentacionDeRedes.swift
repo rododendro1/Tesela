@@ -244,7 +244,7 @@ public enum PresentacionDeRedes {
         if let teclado = Self.teclado(de: red, uil: uil) {
             return teclado.svg(
                 casillasDelTeclado(teclado), marcadas: MarcasDeDiagrama(marcadas),
-                opciones: .init(notacion: notacion, preferirBemoles: bemoles))
+                opciones: .init(notacion: notacion, ventana: bemoles ? .bemoles : .sostenidos))
         }
         switch (red, contenido) {
         case (.tablaArmonica, .acorde(let acorde)):
@@ -290,7 +290,7 @@ public enum PresentacionDeRedes {
         let bemoles = notas.contains { $0.pasosDeQuinta < -1 }
         return teclado.svg(
             cuadrado.rejilla.casillas, marcadas: MarcasDeDiagrama(marcadas), primeras: primeras, contorno: true,
-            opciones: .init(notacion: notacion, preferirBemoles: bemoles))
+            opciones: .init(notacion: notacion, ventana: bemoles ? .bemoles : .sostenidos))
     }
 
     /// Pone una clase de altura entre las elegidas para identificar un acorde, al final, o la quita si ya estaba,

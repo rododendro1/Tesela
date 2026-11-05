@@ -11,17 +11,17 @@ public enum ImportacionDeProgresion {
     public static let extensiones = ["mid", "midi", "musicxml", "xml", "mxl", "mei", "abc"]
 
     /// La progresión de un fichero, con un acorde por pulso (`ventana`, como en `PiezaImportada.acordes`).
-    /// Lanza `ErrorDeImportacion` si no se puede leer o no suena ningún acorde.
+    /// Lanza `ErrorDeLecturaDeFichero` si no se puede leer o no suena ningún acorde.
     public static func progresion(de datos: Data, ventana: Duracion? = nil) throws -> String {
         try leer(datos, ventana: ventana).texto
     }
 
     /// La progresión de un fichero con su ritmo armónico, su compás, su tempo y su título.
-    /// Lanza `ErrorDeImportacion` si no se puede leer o no suena ningún acorde.
+    /// Lanza `ErrorDeLecturaDeFichero` si no se puede leer o no suena ningún acorde.
     public static func leer(_ datos: Data, ventana: Duracion? = nil) throws -> ProgresionImportada {
         let pieza = try PiezaImportada(leyendo: datos)
         let ritmo = pieza.ritmoArmonico(ventana: ventana)
-        guard !ritmo.acordes.isEmpty else { throw ErrorDeImportacion.sinAcordes }
+        guard !ritmo.acordes.isEmpty else { throw ErrorDeLecturaDeFichero.sinAcordes }
         return ProgresionImportada(ritmo: ritmo, titulo: pieza.titulo)
     }
 }

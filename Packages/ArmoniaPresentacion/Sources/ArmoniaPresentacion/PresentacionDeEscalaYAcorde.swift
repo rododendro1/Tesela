@@ -78,7 +78,7 @@ public enum PresentacionDeEscalaYAcorde {
 
     /// «modo 2 de Do mayor»; `nil` si la escala no es modo de otra o si es la propia madre.
     public static func modo(de escala: Escala, notacion: Notacion) -> String? {
-        guard let modo = escala.escalaMadre, modo.modo > 1 else { return nil }
+        guard let modo = escala.escalaMadre, modo.grado > 1 else { return nil }
         return modo.nombre(en: notacion)
     }
 

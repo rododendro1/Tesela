@@ -13,7 +13,7 @@ import Testing
     @Test func desviosDeUnEvento() throws {
         let mi: Evento = "Mi♭4(50¢):4"
         #expect(mi.alturas == ["Mi♭4"])
-        #expect(mi.notas == [Evento.Nota("Mi♭4", desvio: 50)])
+        #expect(mi.notas == [Evento.NotaDelEvento("Mi♭4", desvio: 50)])
         #expect(mi.notas[0].texto(en: .inglesASCII) == "Eb4(50c)" && mi.notas[0].description == "Mi♭4(50¢)")
         #expect(mi.esMicrotonal)
         #expect(mi.texto == "Mi♭4(50¢):4")
@@ -25,8 +25,8 @@ import Testing
         #expect(acorde.notas[0].desvio == 0 && acorde.notas[1].desvio == -15.09)
         #expect(acorde.texto == "Do4+Si4(-15.09¢):2")
         // Sin desvíos, nada cambia.
-        #expect(Evento(notas: [Evento.Nota("Do4", desvio: -0.001)], duracion: .negra) == Evento("Do4:4"))
-        #expect(Evento("Do4:4").notas == [Evento.Nota("Do4")])
+        #expect(Evento(notas: [Evento.NotaDelEvento("Do4", desvio: -0.001)], duracion: .negra) == Evento("Do4:4"))
+        #expect(Evento("Do4:4").notas == [Evento.NotaDelEvento("Do4")])
         #expect(!Evento("Do4:4").esMicrotonal)
         #expect(throws: ErrorDeLectura.self) { try Evento(leyendo: "Mi4(mucho¢):4") }
         // Como mucho un semitono arriba o abajo: unos cents enormes no cabían en un Int al escribirlos (lo encontró
@@ -36,11 +36,11 @@ import Testing
         let enorme = "Mi4(50" + String(repeating: "3", count: 114) + "¢):4"
         #expect(throws: ErrorDeLectura.self) { try Evento(leyendo: enorme) }
         // Escrita desde código, una nota así no detiene el programa.
-        let absurda = Evento(notas: [Evento.Nota("Mi4", desvio: 1e300)], duracion: .negra)
+        let absurda = Evento(notas: [Evento.NotaDelEvento("Mi4", desvio: 1e300)], duracion: .negra)
         #expect(!absurda.description.isEmpty)
         #expect(EscritorMusicXML.NotaEscrita.alter(0, 1e300).contains("e+"))
         // Se conservan al transportar, al partir en compases y al cambiar de duración.
-        #expect(mi.transponer(.segundaMayor).notas == [Evento.Nota("Fa4", desvio: 50)])
+        #expect(mi.transponer(.segundaMayor).notas == [Evento.NotaDelEvento("Fa4", desvio: 50)])
         let voz = try Voz(leyendo: "Do4:2 Mi♭4(50¢):1", compas: "3/4")
         #expect(voz.compases.flatMap { $0 }.dropFirst().allSatisfy { $0.notas.map(\.desvio) == [50] })
         #expect(voz.grafia.flatMap { $0 }.dropFirst().allSatisfy { $0.notas.map(\.desvio) == [50] })
@@ -215,7 +215,7 @@ import Testing
     // MARK: En una afinación
 
     /// Una afinación que lo sube todo lo mismo.
-    private struct Subida: Afinacion {
+    private struct Subida: SistemaDeAfinacion {
         let cents: Double
         func frecuencia(de nota: Altura) -> Double { nota.frecuencia() * pow(2, cents / 1200) }
     }
@@ -359,18 +359,18 @@ import Testing
     @Test func elSistemaDeUnaNota() throws {
         // El Mi koron de un dastgāh: los mismos cents que el Mi𝄳 de un maqam, con otro signo.
         let koron: Evento = "Mi♭4(50¢,persa,1):4"
-        #expect(koron.notas == [Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)])
+        #expect(koron.notas == [Evento.NotaDelEvento("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)])
         #expect(koron.texto == "Mi♭4(50¢,persa,1):4" && koron.texto(en: .inglesASCII) == "Eb4(50c,persa,1):4")
-        #expect(koron.notas[0].signo() == .koron && Evento.Nota("Mi♭4", desvio: 50).signo() == .cuartos(-1))
+        #expect(koron.notas[0].signo() == .koron && Evento.NotaDelEvento("Mi♭4", desvio: 50).signo() == .cuartos(-1))
         #expect(koron != "Mi♭4(50¢):4")
-        #expect(koron.transponer("2M").notas[0] == Evento.Nota("Fa4", desvio: 50, sistema: .persa, ajuste: 1))
+        #expect(koron.transponer("2M").notas[0] == Evento.NotaDelEvento("Fa4", desvio: 50, sistema: .persa, ajuste: 1))
         // Una nota que no se aparta no tiene sistema; un sistema que no existe, o sin sus pasos, no se lee.
-        #expect(Evento.Nota("Mi4", desvio: 0, sistema: .persa, ajuste: 1) == Evento.Nota("Mi4"))
+        #expect(Evento.NotaDelEvento("Mi4", desvio: 0, sistema: .persa, ajuste: 1) == Evento.NotaDelEvento("Mi4"))
         #expect(throws: (any Error).self) { try Evento(leyendo: "Mi♭4(50¢,vaziri,1):4") }
         #expect(throws: (any Error).self) { try Evento(leyendo: "Mi♭4(50¢,persa):4") }
         // Las notas de una escala saben su sistema, y se guardan con él.
         let sur = Escala(.re, .sur).voz()
-        #expect(sur.eventos[1].notas == [Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)])
+        #expect(sur.eventos[1].notas == [Evento.NotaDelEvento("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)])
         #expect(Escala(.do, .bilaval).voz().eventos[2].notas[0].sistema == .sruti)
         #expect(try JSONDecoder().decode(Voz.self, from: JSONEncoder().encode(sur)) == sur)
         #expect(try Evento(leyendo: sur.eventos[1].texto) == sur.eventos[1])
@@ -398,8 +398,8 @@ import Testing
         let alturas: [Altura] = ["Re4", "Re♯4", "Fa4"]
         let partitura = sur.partitura(tocadaEn: alturas)
         let eventos = partitura.pentagramas[0].voces[0].voz.eventos
-        #expect(eventos[1].notas == [Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)])
-        #expect(eventos[0].notas == [Evento.Nota("Re4")] && !eventos[2].esMicrotonal)
+        #expect(eventos[1].notas == [Evento.NotaDelEvento("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)])
+        #expect(eventos[0].notas == [Evento.NotaDelEvento("Re4")] && !eventos[2].esMicrotonal)
         #expect(partitura.musicXML().contains("<accidental>koron</accidental>"))
         let svg = sur.svgPentagrama(tocadaEn: alturas)
         #expect(svg == partitura.svg() && svg.contains(GlifosSMuFL.koron.trazado))
@@ -418,7 +418,7 @@ import Testing
     @Test func laImportacionLeeElSistemaDeSuSigno() throws {
         // El Mi koron de Šur vuelve de MusicXML y de MEI como koron, no como medio bemol.
         let sur = Escala(.re, .sur).voz().partitura()
-        let koron = Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)
+        let koron = Evento.NotaDelEvento("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)
         for pieza in [
             try PiezaImportada(musicXML: Data(sur.musicXML().utf8)), try PiezaImportada(mei: Data(sur.mei().utf8)),
         ] {

@@ -24,8 +24,8 @@ extension PiezaImportada {
     public init(musicXML datos: Data) throws {
         let lector = LectorMusicXML()
         try LectorXML.leer(datos, con: lector)
-        guard lector.raiz == "score-partwise" else { throw ErrorDeImportacion.noEsMusicXMLPorPartes }
-        guard !lector.notas.isEmpty else { throw ErrorDeImportacion.sinNotas }
+        guard lector.raiz == "score-partwise" else { throw ErrorDeLecturaDeFichero.noEsMusicXMLPorPartes }
+        guard !lector.notas.isEmpty else { throw ErrorDeLecturaDeFichero.sinNotas }
         let fin = lector.finDeLaPieza
         self.init(
             titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas, tempo: lector.tempo,

@@ -75,7 +75,7 @@ enum DibujoDeReferencia: String, CaseIterable, CustomTestStringConvertible {
         case .tecladoAcordeonC:
             return TecladoIsomorfico.acordeonC.svg(
                 FormasDeMapa.rectangulo(columnas: 6, filas: 6, .columnasImpares), marcadas: [50, 53, 57],
-                opciones: .init(preferirBemoles: true))
+                opciones: .init(ventana: .bemoles))
         }
     }
 }

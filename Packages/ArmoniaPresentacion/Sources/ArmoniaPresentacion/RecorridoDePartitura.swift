@@ -43,7 +43,7 @@ public struct RecorridoDePartitura: Hashable, Sendable {
             acordes, duraciones: pasos.map(\.duracion), tempo: progresion.ritmo.tempo ?? Escucha.tempo)
     }
 
-    /// Lee un fichero. Lanza `ErrorDeImportacion` si no se puede leer o no suena ningún acorde.
+    /// Lee un fichero. Lanza `ErrorDeLecturaDeFichero` si no se puede leer o no suena ningún acorde.
     public static func leer(_ datos: Data, notacion: Notacion) throws -> RecorridoDePartitura {
         RecorridoDePartitura(try ImportacionDeProgresion.leer(datos), notacion: notacion)
     }

@@ -59,8 +59,8 @@ public enum Clave: String, Hashable, Sendable, CaseIterable, CustomStringConvert
     public var description: String { nombre }
 
     /// Dónde se escribe una nota: `Clave.sol.posicion(de: "Do4")` → 1.ª línea adicional inferior.
-    public func posicion(de nota: Altura) -> PosicionEnPentagrama {
-        PosicionEnPentagrama(lugar: nota.pasos - alturaDeLaPrimeraLinea.pasos, alteracion: nota.nota.alteracion)
+    public func posicion(de nota: Altura) -> PosicionEnElPentagrama {
+        PosicionEnElPentagrama(lugar: nota.pasos - alturaDeLaPrimeraLinea.pasos, alteracion: nota.nota.alteracion)
     }
 
     /// La nota escrita en una posición, con la alteración indicada:
@@ -88,7 +88,7 @@ public enum Clave: String, Hashable, Sendable, CaseIterable, CustomStringConvert
 extension Clave: Nombrable {}
 
 /// Lugar de una nota en el pentagrama.
-public struct PosicionEnPentagrama: Hashable, Sendable, CustomStringConvertible {
+public struct PosicionEnElPentagrama: Hashable, Sendable, CustomStringConvertible {
     /// 0 = primera línea, 1 = primer espacio … 8 = quinta línea. Negativo por debajo,
     /// mayor que 8 por encima.
     public let lugar: Int

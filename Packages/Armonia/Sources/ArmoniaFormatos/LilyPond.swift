@@ -175,11 +175,11 @@ package struct EscritorLilyPond: EscritorDePartitura {
     /// un cuarto de tono (en cents), con los nombres de los cuartos de tono: Mi♭4 + 50 → `eeh'`; las comas no
     /// tienen nombre y se escribe la nota temperada.
     package static func altura(_ altura: Altura, desvio: Double = 0) -> String {
-        self.altura(Evento.Nota(altura, desvio: desvio))
+        self.altura(Evento.NotaDelEvento(altura, desvio: desvio))
     }
 
     /// La altura de una nota, con el nombre de su microtono si lo tiene (el koron, `eh`, como el medio bemol).
-    package static func altura(_ nota: Evento.Nota) -> String {
+    package static func altura(_ nota: Evento.NotaDelEvento) -> String {
         let (natural, semitonos, octava) = Exportacion.sinTriples(nota.altura)
         let nombre = ["c", "d", "e", "f", "g", "a", "b"][natural.rawValue]
         let temperada = [-2: "eses", -1: "es", 0: "", 1: "is", 2: "isis"][semitonos] ?? ""

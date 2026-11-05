@@ -46,7 +46,7 @@ import Testing
         let sur = Escala(.re, .sur).partitura(ritmo: .uniforme(.negra))
         let partitura = try PiezaImportada(musicXML: Data(sur.musicXML().utf8)).partitura()
         let mi = partitura.pentagramas[0].voces[0].voz.eventos[1].notas
-        #expect(mi == [Evento.Nota("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)])
+        #expect(mi == [Evento.NotaDelEvento("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)])
         #expect(partitura.musicXML().contains("<accidental>koron</accidental>"))
     }
 }

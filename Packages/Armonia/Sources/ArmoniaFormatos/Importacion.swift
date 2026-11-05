@@ -32,7 +32,7 @@ public struct NotaDeLaPieza: Hashable, Sendable {
     public let parte: Int
     /// Cents sobre (o bajo) `altura`; 0 si es una nota temperada.
     public let desvio: Double
-    /// La teoría en que se escribe el microtono, si la dice su signo (``Evento/Nota/sistema``); `nil` si no se
+    /// La teoría en que se escribe el microtono, si la dice su signo (``Evento/NotaDelEvento/sistema``); `nil` si no se
     /// aparta, o si su signo (un medio bemol) o la falta de él no la dicen.
     public let sistema: SistemaMicrotonal?
     /// Los pasos de `sistema` que se aparta (``NotaMicrotonal/ajuste``); 0 si no hay sistema.
@@ -48,18 +48,18 @@ public struct NotaDeLaPieza: Hashable, Sendable {
     public let voz: Int?
 
     /// Una nota; `desvio` se redondea a la centésima de cent y las articulaciones se ordenan sin repetir. Como en
-    /// `Evento.Nota`, una nota que no se aparta no tiene sistema.
+    /// `Evento.NotaDelEvento`, una nota que no se aparta no tiene sistema.
     public init(
         altura: Altura, inicio: Duracion, duracion: Duracion, parte: Int = 0, desvio: Double = 0,
         sistema: SistemaMicrotonal? = nil, ajuste: Int = 0, dinamica: Dinamica? = nil,
         articulaciones: [Articulacion] = [], pentagrama: Int? = nil, voz: Int? = nil
     ) {
-        let nota = Evento.Nota(altura, desvio: desvio, sistema: sistema, ajuste: ajuste)
+        let nota = Evento.NotaDelEvento(altura, desvio: desvio, sistema: sistema, ajuste: ajuste)
         self.altura = altura
         self.inicio = inicio
         self.duracion = duracion
         self.parte = parte
-        // Redondeado a la centésima de cent, como `Evento.Nota.desvio`.
+        // Redondeado a la centésima de cent, como `Evento.NotaDelEvento.desvio`.
         self.desvio = nota.desvio
         self.sistema = nota.sistema
         self.ajuste = nota.ajuste
@@ -90,7 +90,9 @@ public struct NotaDeLaPieza: Hashable, Sendable {
     ///
     ///     let pieza = try PiezaImportada(leyendo: Data(Escala(.re, .sur).partitura().musicXML().utf8))
     ///     pieza.notas[1].nota   // Mi♭4(50¢,persa,1): el Mi koron
-    public var nota: Evento.Nota { Evento.Nota(altura, desvio: desvio, sistema: sistema, ajuste: ajuste) }
+    public var nota: Evento.NotaDelEvento {
+        Evento.NotaDelEvento(altura, desvio: desvio, sistema: sistema, ajuste: ajuste)
+    }
 }
 
 /// Una pieza leída de un fichero MIDI, MusicXML, MEI o ABC.
@@ -130,7 +132,7 @@ public struct PiezaImportada: Hashable, Sendable {
     }
 
     /// Lee un fichero MIDI estándar, MusicXML (comprimido o no), MEI o ABC, según lo que contenga (no según su
-    /// extensión). Lanza `ErrorDeImportacion` si no es ninguno de ellos, está dañado o no tiene notas.
+    /// extensión). Lanza `ErrorDeLecturaDeFichero` si no es ninguno de ellos, está dañado o no tiene notas.
     public init(leyendo datos: Data) throws {
         let inicio = [UInt8](datos.prefix(4))
         if inicio == Array("MThd".utf8) {
@@ -147,7 +149,7 @@ public struct PiezaImportada: Hashable, Sendable {
                 try self.init(musicXML: datos)
             }
         } else {
-            throw ErrorDeImportacion.formatoDesconocido
+            throw ErrorDeLecturaDeFichero.formatoDesconocido
         }
     }
 
@@ -299,7 +301,7 @@ public struct PiezaImportada: Hashable, Sendable {
 // MARK: - Errores
 
 /// Por qué no se puede importar un fichero.
-public enum ErrorDeImportacion: ErrorDeArmonia, Hashable {
+public enum ErrorDeLecturaDeFichero: ErrorDeArmonia, Hashable {
     /// No es MIDI ni MusicXML.
     case formatoDesconocido
     /// Es un zip, como el MusicXML comprimido (.mxl), pero está dañado, no tiene partitura o usa una compresión

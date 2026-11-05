@@ -161,11 +161,13 @@ import Testing
 
     @Test func erroresDeUIL() throws {
         #expect(
-            "\(ErrorDeUIL.intervalosIncoherentes(menor: 1, mayor: 2, diferencia: 3))"
+            "\(ErrorDeLecturaDeUIL.intervalosIncoherentes(menor: 1, mayor: 2, diferencia: 3))"
                 == "Intervalos incoherentes: 1,2,3. Deben cumplir 0 < L ≤ D y G = L + D.")
-        #expect("\(ErrorDeUIL.rotacionNoValida(45))" == "El giro de 45° no es múltiplo de 30°.")
-        #expect("\(ErrorDeUIL.afinacionNoSoportada(tonos: 19))" == "Solo se dibujan teclados de 12 notas, no de 19.")
-        #expect("\(ErrorDeUIL.cizallaNoSoportada(2))" == "La cizalla S2 no está soportada.")
+        #expect("\(ErrorDeLecturaDeUIL.rotacionNoValida(45))" == "El giro de 45° no es múltiplo de 30°.")
+        #expect(
+            "\(ErrorDeLecturaDeUIL.afinacionNoSoportada(tonos: 19))"
+                == "Solo se dibujan teclados de 12 notas, no de 19.")
+        #expect("\(ErrorDeLecturaDeUIL.cizallaNoSoportada(2))" == "La cizalla S2 no está soportada.")
         #expect(throws: (any Error).self) { try FormatoUIL(leyendo: "2,7,5;R0Tx") }
         #expect(try (FormatoUIL(leyendo: "2,7,5;R30;M").descripcion) == "2,7,5;R30M")
     }
@@ -189,7 +191,7 @@ import Testing
         #expect("\(InstrumentoDePartitura.flauta)" == "flauta")
         #expect("\(FaltaDeContrapunto.Tipo.allCases[0])" == "Ritmo ajeno a la especie")
         #expect(FaltaDeContrapunto.Tipo.allCases[0].nombre == "Ritmo ajeno a la especie")
-        #expect(ErrorDeImportacion.sinAcordes.errorDescription == "En el fichero no suena ningún acorde.")
+        #expect(ErrorDeLecturaDeFichero.sinAcordes.errorDescription == "En el fichero no suena ningún acorde.")
     }
 
     @Test func duracionesYPentagrama() {

@@ -18,7 +18,7 @@ import Foundation
 ///     bayati.desviacion(de: "Mi4")    // 0: no es de la escala
 ///
 /// Una nota se busca primero por su nombre (Mi♭) y después por su altura (Re♯, la misma tecla), en cualquier octava.
-public struct AfinacionDeEscala: Afinacion, Hashable {
+public struct AfinacionDeEscala: SistemaDeAfinacion, Hashable {
     public let escala: Escala
     /// La versión microtonal con que suena: `escala.tipo.microtonal` u otra de `escala.tipo.afinaciones`.
     public let microtonal: TipoDeEscalaMicrotonal

@@ -6,10 +6,10 @@ import Foundation
 /// unen en un polígono, que deja ver la forma de la escala: una escala simétrica da un polígono que gira sobre sí
 /// mismo, y la diatónica, siete horas seguidas en el de quintas.
 ///
-///     let reloj = RelojDeClases(clases: [0, 2, 4, 5, 7, 9, 11], tonica: 0, orden: .quintas)
+///     let reloj = RelojDeClasesDeAltura(clases: [0, 2, 4, 5, 7, 9, 11], tonica: 0, orden: .quintas)
 ///     reloj.horas   // [0, 1, 2, 3, 4, 5, 11]: de Fa a Si, seguidas
 ///     let svg = reloj.svg(opciones: .init(titulo: "Do mayor"))   // las doce horas, con su nombre: Do, Do♯, Re…
-public struct RelojDeClases: Hashable, Sendable {
+public struct RelojDeClasesDeAltura: Hashable, Sendable {
     /// Cómo se reparten las doce clases por las horas del reloj.
     public enum Orden: String, Hashable, Sendable, CaseIterable {
         /// De semitono en semitono: Do, Do♯, Re…
@@ -43,7 +43,7 @@ public struct RelojDeClases: Hashable, Sendable {
     /// Un reloj con las clases de esas notas, que se nombran como se escriben (la primera, si dos suenan igual).
     ///
     ///     let fa = Escala("Fa mayor")
-    ///     RelojDeClases(notas: fa.notas, tonica: fa.tonica).svg()   // con Si♭ a las diez
+    ///     RelojDeClasesDeAltura(notas: fa.notas, tonica: fa.tonica).svg()   // con Si♭ a las diez
     public init(notas: [Nota], tonica: Nota? = nil, orden: Orden = .cromatico) {
         self.init(
             clases: notas.map(\.claseDeAltura), tonica: tonica?.claseDeAltura, orden: orden,
@@ -56,7 +56,7 @@ public struct RelojDeClases: Hashable, Sendable {
     }
 
     /// Las horas de las notas del conjunto, ordenadas.
-    public var horas: [Int] { clases.map { RelojDeClases.hora(de: $0, en: orden) }.sorted() }
+    public var horas: [Int] { clases.map { RelojDeClasesDeAltura.hora(de: $0, en: orden) }.sorted() }
 
     // MARK: Dibujo
 
@@ -75,10 +75,10 @@ public struct RelojDeClases: Hashable, Sendable {
     /// conjunto y, encima, el título de `opciones`, si lo hay; `opciones.escala` cambia el tamaño.
     public func svg(rotulos: [Int: String] = [:], opciones: OpcionesDeDiagrama = OpcionesDeDiagrama()) -> String {
         let titulo = opciones.titulo ?? ""
-        let arriba = titulo.isEmpty ? 0 : RelojDeClases.altoDelTitulo
-        let ancho = RelojDeClases.lado
-        let alto = RelojDeClases.lado + arriba
-        let centro = (x: ancho / 2, y: arriba + RelojDeClases.lado / 2)
+        let arriba = titulo.isEmpty ? 0 : RelojDeClasesDeAltura.altoDelTitulo
+        let ancho = RelojDeClasesDeAltura.lado
+        let alto = RelojDeClasesDeAltura.lado + arriba
+        let centro = (x: ancho / 2, y: arriba + RelojDeClasesDeAltura.lado / 2)
         var svg =
             ElementoSVG("svg").con("xmlns", "http://www.w3.org/2000/svg")
             .con("viewBox", "0 0 \(NumerosSVG.unDecimal.texto(ancho)) \(NumerosSVG.unDecimal.texto(alto))")
@@ -94,10 +94,10 @@ public struct RelojDeClases: Hashable, Sendable {
         }
         svg +=
             "  "
-            + ElementoSVG("circle").con("cx", centro.x).con("cy", centro.y).con("r", RelojDeClases.radio)
+            + ElementoSVG("circle").con("cx", centro.x).con("cy", centro.y).con("r", RelojDeClasesDeAltura.radio)
             .con("fill", "none").con("stroke", "#cccccc").vacio + "\n"
         // El polígono, de hora en hora, debajo de los puntos.
-        let vertices = horas.map { RelojDeClases.punto(hora: $0, radio: RelojDeClases.radio, centro: centro) }
+        let vertices = horas.map { Self.punto(hora: $0, radio: Self.radio, centro: centro) }
         if vertices.count >= 2 {
             svg +=
                 "  "
@@ -110,8 +110,8 @@ public struct RelojDeClases: Hashable, Sendable {
             return ortografia[clase]?.nombreCompacto(en: opciones.notacion) ?? opciones.nombre(de: 60 + clase)
         }
         for clase in 0..<12 {
-            let hora = RelojDeClases.hora(de: clase, en: orden)
-            let punto = RelojDeClases.punto(hora: hora, radio: RelojDeClases.radio, centro: centro)
+            let hora = RelojDeClasesDeAltura.hora(de: clase, en: orden)
+            let punto = RelojDeClasesDeAltura.punto(hora: hora, radio: RelojDeClasesDeAltura.radio, centro: centro)
             let dentro = clases.contains(clase)
             let primera = tonica == clase
             svg +=
@@ -120,7 +120,7 @@ public struct RelojDeClases: Hashable, Sendable {
                 .con("fill", dentro ? DibujoSVG.Color.nota : "#bbbbbb")
                 .con("stroke", primera ? DibujoSVG.Color.primera : "#ffffff").con("stroke-width", primera ? 3.0 : 1.0)
                 .vacio + "\n"
-            let rotulo = RelojDeClases.punto(hora: hora, radio: RelojDeClases.radio + 22, centro: centro)
+            let rotulo = Self.punto(hora: hora, radio: Self.radio + 22, centro: centro)
             svg +=
                 "  "
                 + ElementoSVG("text").con("x", rotulo.x).con("y", rotulo.y).con("text-anchor", "middle")

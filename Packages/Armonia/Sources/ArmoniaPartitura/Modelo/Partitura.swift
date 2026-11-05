@@ -265,14 +265,14 @@ public struct Partitura: Hashable, Sendable, Codable {
     public var instrumento: Int { encabezado.instrumento ?? 0 }
 
     /// Todas las voces, de arriba abajo, con el índice de su pentagrama (desde 0, el de arriba).
-    public var lineas: [LineaEnPentagrama] {
+    public var lineas: [LineaEnElPentagrama] {
         pentagramas.enumerated().flatMap { p, pentagrama in
-            pentagrama.voces.map { LineaEnPentagrama(linea: $0, pentagrama: p) }
+            pentagrama.voces.map { LineaEnElPentagrama(linea: $0, pentagrama: p) }
         }
     }
 
     /// Una voz de la partitura y el índice de su pentagrama (desde 0): lo que da ``lineas``.
-    public struct LineaEnPentagrama: Hashable, Sendable {
+    public struct LineaEnElPentagrama: Hashable, Sendable {
         public let linea: Linea
         /// El índice del pentagrama, desde 0 (el de arriba).
         public let pentagrama: Int
@@ -334,7 +334,7 @@ extension Partitura {
     /// Unas notas tocadas una tras otra (con sus microtonos, si los tienen), con lo que se anota en cada una (por su
     /// índice), con su ``Ritmo``. Es lo que hacen `Escala.partitura(tocadaEn:…)` y `Acorde.partitura(arpegiadoEn:…)`.
     static func tocada(
-        _ notas: [Evento.Nota], titulo: String? = nil, tema: Encabezado.Tema, ritmo: Ritmo = .libre,
+        _ notas: [Evento.NotaDelEvento], titulo: String? = nil, tema: Encabezado.Tema, ritmo: Ritmo = .libre,
         porEvento: AnotacionesPorEvento = AnotacionesPorEvento(), tablatura: Tablatura? = nil, acorde: Acorde?,
         tonica: Nota?, armadura: [Nota]?
     ) -> Partitura {
@@ -347,7 +347,7 @@ extension Partitura {
     /// `acorde` va en la primera nota, si `porEvento` no le da otro, y las pulsaciones de `tablatura`, si `porEvento` no
     /// trae las suyas.
     static func tocada(
-        juntas notas: [[Evento.Nota]], titulo: String? = nil, tema: Encabezado.Tema, ritmo: Ritmo = .libre,
+        juntas notas: [[Evento.NotaDelEvento]], titulo: String? = nil, tema: Encabezado.Tema, ritmo: Ritmo = .libre,
         porEvento anotaciones: AnotacionesPorEvento = AnotacionesPorEvento(), tablatura: Tablatura? = nil,
         acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
     ) -> Partitura {

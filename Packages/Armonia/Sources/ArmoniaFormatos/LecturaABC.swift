@@ -25,7 +25,7 @@ extension PiezaImportada {
     public init(abc texto: String) throws {
         var lector = LectorABC()
         lector.leer(texto)
-        guard !lector.notas.isEmpty else { throw ErrorDeImportacion.sinNotas }
+        guard !lector.notas.isEmpty else { throw ErrorDeLecturaDeFichero.sinNotas }
         let fin = PulsosDeLectura.duracion(lector.finDeLaPieza)
         self.init(
             titulo: lector.titulo, tonalidad: lector.tonalidad, compas: lector.compas, tempo: lector.tempo,

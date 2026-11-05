@@ -102,12 +102,12 @@ import Testing
 
     @Test func desdeMidi() {
         #expect(Altura(midi: 61).description == "Do♯4")
-        #expect(Altura(midi: 61, preferirBemoles: true).description == "Re♭4")
+        #expect(Altura(midi: 61, ventana: .bemoles).description == "Re♭4")
         #expect(Altura(midi: 65).description == "Fa4")
-        #expect(Altura(midi: 71, preferirBemoles: true).description == "Si4")
+        #expect(Altura(midi: 71, ventana: .bemoles).description == "Si4")
         for midi in 0...127 {
             #expect(Altura(midi: midi).midi == midi)
-            #expect(Altura(midi: midi, preferirBemoles: true).midi == midi)
+            #expect(Altura(midi: midi, ventana: .bemoles).midi == midi)
         }
     }
 

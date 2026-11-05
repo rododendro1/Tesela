@@ -158,10 +158,10 @@ public struct TecladoIsomorfico: Hashable, Sendable {
         }
     }
 
-    /// El teclado girado esos grados en sentido horario. Lanza `ErrorDeUIL.rotacionNoValida` si no son un múltiplo
-    /// de 30, como ``FormatoUIL/rotado(grados:)``.
+    /// El teclado girado esos grados en sentido horario. Lanza `ErrorDeLecturaDeUIL.rotacionNoValida` si no son un
+    /// múltiplo de 30, como ``FormatoUIL/rotado(grados:)``.
     public func rotado(grados: Int, nombre: String? = nil) throws -> TecladoIsomorfico {
-        guard grados % 30 == 0 else { throw ErrorDeUIL.rotacionNoValida(grados) }
+        guard grados % 30 == 0 else { throw ErrorDeLecturaDeUIL.rotacionNoValida(grados) }
         return rotado(doceavos: grados / 30, nombre: nombre)
     }
 
@@ -179,9 +179,10 @@ public struct TecladoIsomorfico: Hashable, Sendable {
             midiDelOrigen: midiDelOrigen)
     }
 
-    /// La altura de una casilla (en afinación igual, sin ortografía: con sostenidos o con bemoles).
-    public func altura(en casilla: CoordenadaAxial, preferirBemoles: Bool = false) -> Altura {
-        Altura(midi: midi(en: casilla), preferirBemoles: preferirBemoles)
+    /// La altura de una casilla (en afinación igual, sin ortografía: con sostenidos). Con bemoles o con otra ventana,
+    /// `altura(en:ventana:)`.
+    public func altura(en casilla: CoordenadaAxial) -> Altura {
+        Altura(midi: midi(en: casilla))
     }
 
     /// La altura de una casilla, escrita con la nota de su clase que hay en la ventana.
