@@ -13,7 +13,7 @@ extension LineaDeComandos {
     ) throws -> ResultadoDeOrden {
         let orden = formato.rawValue
         guard let tipo = argumentos.first?.lowercased() else {
-            return uso(.faltaTipoDePartitura(orden: orden), notacion)
+            throw ErrorDeUso.faltaTipoDePartitura(orden: orden)
         }
         // Los argumentos hasta la primera opción son la música; cada opción toma lo que la sigue.
         // `--program` es `--programa` en inglés (solo en MIDI); `--patrón` y `--pattern` son `--patron`, y `--file`
@@ -38,18 +38,18 @@ extension LineaDeComandos {
                 "archivo", "ventana",
             ]
         if let desconocida = opciones.keys.sorted().first(where: { !conocidas.contains($0) }) {
-            return uso(.opcionDesconocida("--" + desconocida), notacion)
+            throw ErrorDeUso.opcionDesconocida("--" + desconocida)
         }
         var instrumento: Int?
         if let texto = opciones["programa"] {
             guard let n = Int(texto), (0...127).contains(n) else {
-                return uso(.instrumentoMIDI, notacion)
+                throw ErrorDeUso.instrumentoMIDI
             }
             instrumento = n
         }
-        if formato == .midi && !marcas.isEmpty { return uso(.marcasSoloMusicXML, notacion) }
+        if formato == .midi && !marcas.isEmpty { throw ErrorDeUso.marcasSoloMusicXML }
         if let vacia = opciones.sorted(by: { $0.key < $1.key }).first(where: { $0.value.isEmpty })?.key {
-            return uso(.faltaValor(vacia), notacion)
+            throw ErrorDeUso.faltaValor(vacia)
         }
         var compas = try opciones["compas"].map { try Compas(leyendo: $0) } ?? .compasillo
         let tonalidad = try opciones["tonalidad"].map { try Tonalidad(leyendo: $0) }
@@ -57,7 +57,7 @@ extension LineaDeComandos {
         if let texto = opciones["tempo"] {
             let partes = texto.split(separator: " ").map(String.init)
             guard let bpm = Double(partes[0].replacingComa()), bpm > 0, partes.count <= 2 else {
-                return uso(.tempoMalEscrito, notacion)
+                throw ErrorDeUso.tempoMalEscrito
             }
             tempo = Tempo(bpm, unidad: try partes.dropFirst().first.map { try Duracion(leyendo: $0) } ?? .negra)
         }
@@ -65,28 +65,28 @@ extension LineaDeComandos {
         let arpegios: Set = ["arpegios", "arpegio", "arpeggios", "arpeggio"]
         let acordes: Set = ["acordes", "progresion", "progresión", "chords"]
         if !arpegios.contains(tipo), let opcion = ["figura", "patron"].first(where: { opciones[$0] != nil }) {
-            return uso(.soloParaArpegios(opcion), notacion)
+            throw ErrorDeUso.soloParaArpegios(opcion)
         }
-        if !arpegios.contains(tipo) && enlazados { return uso(.soloParaArpegios("enlazar"), notacion) }
+        if !arpegios.contains(tipo) && enlazados { throw ErrorDeUso.soloParaArpegios("enlazar") }
         // `--archivo`: los acordes de un fichero MIDI, MusicXML, MEI o ABC, con su ritmo armónico (lo que dura cada
         // uno), y su compás, su tempo y su título si no se dan otros.
         var leido: RitmoArmonico?
         if let archivo = opciones["archivo"] {
             guard acordes.contains(tipo) || arpegios.contains(tipo) else {
-                return uso(.archivoSoloParaAcordes, notacion)
+                throw ErrorDeUso.archivoSoloParaAcordes
             }
-            guard musica.isEmpty else { return uso(.archivoConAcordes, notacion) }
+            guard musica.isEmpty else { throw ErrorDeUso.archivoConAcordes }
             guard let datos = contenido(deArchivo: archivo) else { return archivoIlegible(archivo, notacion) }
             let pieza = try PiezaImportada(leyendo: datos)
             let ventana = try opciones["ventana"].map { try Duracion(leyendo: $0) }
             let suyo = pieza.ritmoArmonico(ventana: ventana)
-            guard !suyo.acordes.isEmpty else { return uso(.archivoSinAcordes, notacion) }
+            guard !suyo.acordes.isEmpty else { throw ErrorDeUso.archivoSinAcordes }
             if opciones["compas"] == nil, let delFichero = pieza.compas { compas = delFichero }
             tempo = tempo ?? pieza.tempo
             titulo = titulo ?? pieza.titulo
             leido = RitmoArmonico(suyo.acordes, compas: compas, tempo: tempo)
         } else if opciones["ventana"] != nil {
-            return uso(.ventanaSinArchivo, notacion)
+            throw ErrorDeUso.ventanaSinArchivo
         }
         // Los acordes analizados, del fichero o escritos, y su ritmo (`nil`: el de `--duracion`).
         func progresion() throws -> (analisis: AnalisisArmonico, ritmo: RitmoArmonico?)? {
@@ -103,13 +103,13 @@ extension LineaDeComandos {
 
         switch tipo {
         case "melodia", "melodía", "melody":
-            guard !musica.isEmpty else { return uso(.faltanNotasDeLaMelodia(orden: orden), notacion) }
-            if !marcas.isEmpty { return uso(.marcasSoloCoral, notacion) }
-            if opciones["duracion"] != nil { return uso(.duracionSoloCoral, notacion) }
+            guard !musica.isEmpty else { throw ErrorDeUso.faltanNotasDeLaMelodia(orden: orden) }
+            if !marcas.isEmpty { throw ErrorDeUso.marcasSoloCoral }
+            if opciones["duracion"] != nil { throw ErrorDeUso.duracionSoloCoral }
             var clave: Clave?
             if let texto = opciones["clave"] {
                 guard let leida = leerClave(texto) else {
-                    return uso(.claveDesconocida(texto), notacion)
+                    throw ErrorDeUso.claveDesconocida(texto)
                 }
                 clave = leida
             }
@@ -123,10 +123,10 @@ extension LineaDeComandos {
                 ).exportar(como: formato))
         case "coral", "chorale":
             guard !musica.isEmpty else {
-                return uso(.faltanAcordesDelCoral(orden: orden), notacion)
+                throw ErrorDeUso.faltanAcordesDelCoral(orden: orden)
             }
             for opcion in ["clave", "anacrusa"] where opciones[opcion] != nil {
-                return uso(.soloParaMelodia(opcion), notacion)
+                throw ErrorDeUso.soloParaMelodia(opcion)
             }
             let duracion = try opciones["duracion"].map { try Duracion(leyendo: $0) } ?? .negra
             let coral = try Coral(leyendo: musica.joined(separator: " "))
@@ -142,12 +142,12 @@ extension LineaDeComandos {
                 ).exportar(como: formato))
         case _ where acordes.contains(tipo):
             for opcion in ["clave", "anacrusa"] where opciones[opcion] != nil {
-                return uso(.soloParaMelodia(opcion), notacion)
+                throw ErrorDeUso.soloParaMelodia(opcion)
             }
-            if !marcas.isEmpty { return uso(.acordesConCifradosYAnalisis, notacion) }
+            if !marcas.isEmpty { throw ErrorDeUso.acordesConCifradosYAnalisis }
             let duracion = try opciones["duracion"].map { try Duracion(leyendo: $0) } ?? .negra
             guard let leida = try progresion() else {
-                return uso(.faltanAcordesDeLaProgresion(orden: orden), notacion)
+                throw ErrorDeUso.faltanAcordesDeLaProgresion(orden: orden)
             }
             let (analisis, suyo) = leida
             let ritmo = suyo ?? RitmoArmonico(analisis.acordes.map(\.acorde), duracion: duracion, compas: compas)
@@ -159,12 +159,12 @@ extension LineaDeComandos {
                 ).exportar(como: formato))
         case _ where arpegios.contains(tipo):
             for opcion in ["clave", "anacrusa"] where opciones[opcion] != nil {
-                return uso(.soloParaMelodia(opcion), notacion)
+                throw ErrorDeUso.soloParaMelodia(opcion)
             }
-            if !marcas.isEmpty { return uso(.acordesConCifradosYAnalisis, notacion) }
+            if !marcas.isEmpty { throw ErrorDeUso.acordesConCifradosYAnalisis }
             var patron = Arpegio.Patron.ascendente
             if let texto = opciones["patron"] {
-                guard let elegido = patronDeArpegio(texto) else { return uso(.patronDesconocido(texto), notacion) }
+                guard let elegido = patronDeArpegio(texto) else { throw ErrorDeUso.patronDesconocido(texto) }
                 patron = elegido
             }
             let figura = try opciones["figura"].map { try Duracion(leyendo: $0) } ?? .corchea
@@ -174,7 +174,7 @@ extension LineaDeComandos {
             let porAcorde = try opciones["duracion"].map { try Duracion(leyendo: $0) }
             // La tonalidad, la dada o la que mejor explica los acordes, pone la armadura.
             guard let leida = try progresion() else {
-                return uso(.faltanAcordesDeLaProgresion(orden: orden), notacion)
+                throw ErrorDeUso.faltanAcordesDeLaProgresion(orden: orden)
             }
             let (analisis, ritmo) = leida
             let voz: Voz
@@ -193,12 +193,12 @@ extension LineaDeComandos {
                 ).exportar(como: formato))
         case "escala", "scale":
             // Una escala en negras (o en lo que diga `--duracion`), con sus microtonos si los tiene.
-            guard !musica.isEmpty else { return uso(.faltaEscala, notacion) }
-            if !marcas.isEmpty { return uso(.marcasSoloCoral, notacion) }
-            if opciones["anacrusa"] != nil { return uso(.soloParaMelodia("anacrusa"), notacion) }
+            guard !musica.isEmpty else { throw ErrorDeUso.faltaEscala }
+            if !marcas.isEmpty { throw ErrorDeUso.marcasSoloCoral }
+            if opciones["anacrusa"] != nil { throw ErrorDeUso.soloParaMelodia("anacrusa") }
             var clave: Clave?
             if let texto = opciones["clave"] {
-                guard let leida = leerClave(texto) else { return uso(.claveDesconocida(texto), notacion) }
+                guard let leida = leerClave(texto) else { throw ErrorDeUso.claveDesconocida(texto) }
                 clave = leida
             }
             let escala = try Escala(leyendo: musica.joined(separator: " "))
@@ -213,7 +213,7 @@ extension LineaDeComandos {
                     encabezado: Encabezado(titulo: titulo, tonalidad: tonalidad, tempo: tempo, instrumento: instrumento)
                 ).exportar(como: formato))
         default:
-            return uso(.tipoDePartituraDesconocido(tipo), notacion)
+            throw ErrorDeUso.tipoDePartituraDesconocido(tipo)
         }
     }
 

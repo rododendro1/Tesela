@@ -29,10 +29,9 @@ extension LineaDeComandos {
         }
     }
 
-    /// Lee las opciones y los acordes de `digitaciones`, o lanza `FalloDeUso` con lo que está mal escrito.
+    /// Lee las opciones y los acordes de `digitaciones`, o lanza el `ErrorDeUso` de lo que está mal escrito.
     static func pedidoDeDigitaciones(_ argumentos: [String]) throws -> PedidoDeDigitaciones {
         var argumentos = Argumentos(argumentos)
-        func fallo(_ error: ErrorDeUso) -> FalloDeUso { FalloDeUso(error: error) }
 
         // `--tab` era el nombre anterior de `--diagrama`.
         let conDiagrama = argumentos.quitarMarca("--diagrama", "--diagram", "--tab")
@@ -45,7 +44,7 @@ extension LineaDeComandos {
         var encordado = Encordado.guitarra
         if let nombre = try argumentos.valor("--instrumento", "--instrument", siFalta: .faltaInstrumento) {
             guard let encontrado = try? Encordado(leyendo: nombre) else {
-                throw fallo(.instrumentoDesconocido(nombre))
+                throw ErrorDeUso.instrumentoDesconocido(nombre)
             }
             encordado = encontrado
         }
@@ -53,7 +52,7 @@ extension LineaDeComandos {
         var limite = 5
         if let texto = try argumentos.valor("--limite", "--limit", siFalta: .faltaLimite) {
             guard let n = Int(texto), (1...200).contains(n) else {
-                throw fallo(.limiteFueraDeRango)
+                throw ErrorDeUso.limiteFueraDeRango
             }
             limite = n
         }
@@ -61,7 +60,7 @@ extension LineaDeComandos {
         var maximoDeDedos = 4
         if let texto = try argumentos.valor("--dedos", "--fingers", siFalta: .faltanDedos) {
             guard let n = Int(texto), (1...4).contains(n) else {
-                throw fallo(.dedosFueraDeRango)
+                throw ErrorDeUso.dedosFueraDeRango
             }
             maximoDeDedos = n
         }
@@ -69,7 +68,7 @@ extension LineaDeComandos {
         var maximoTraste = 12
         if let texto = try argumentos.valor("--traste", "--fret", siFalta: .faltaTraste) {
             guard let n = Int(texto), (0...24).contains(n) else {
-                throw fallo(.trasteFueraDeRango)
+                throw ErrorDeUso.trasteFueraDeRango
             }
             maximoTraste = n
         }
@@ -77,14 +76,14 @@ extension LineaDeComandos {
         // Con capo, los trastes se cuentan desde él.
         var capo = 0
         if let texto = try argumentos.valor("--capo", siFalta: .capoFueraDeRango) {
-            guard let n = Int(texto), (0...12).contains(n) else { throw fallo(.capoFueraDeRango) }
+            guard let n = Int(texto), (0...12).contains(n) else { throw ErrorDeUso.capoFueraDeRango }
             capo = n
         }
 
         if let desconocida = argumentos.opcionDesconocida {
-            throw fallo(.opcionDesconocida(desconocida))
+            throw ErrorDeUso.opcionDesconocida(desconocida)
         }
-        guard !argumentos.restantes.isEmpty else { throw fallo(.faltaCifradoDeDigitaciones) }
+        guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifradoDeDigitaciones }
 
         return PedidoDeDigitaciones(
             conDiagrama: conDiagrama, completo: completo, comoMusicXML: comoMusicXML, encordado: encordado,
@@ -165,33 +164,33 @@ extension LineaDeComandos {
         var encordado = Encordado.guitarra
         if let nombre = try argumentos.valor("--instrumento", "--instrument", siFalta: .faltaInstrumento) {
             guard let encontrado = try? Encordado(leyendo: nombre) else {
-                return uso(.instrumentoDesconocido(nombre), notacion)
+                throw ErrorDeUso.instrumentoDesconocido(nombre)
             }
             encordado = encontrado
         }
         var capo = 0
         if let texto = try argumentos.valor("--capo", siFalta: .capoFueraDeRango) {
-            guard let n = Int(texto), (0...12).contains(n) else { return uso(.capoFueraDeRango, notacion) }
+            guard let n = Int(texto), (0...12).contains(n) else { throw ErrorDeUso.capoFueraDeRango }
             capo = n
         }
         var secuencia: SecuenciaDeEscala?
         if let texto = try argumentos.valor("--secuencia", "--sequence") {
-            guard let elegida = secuenciaDeEscala(texto) else { return uso(.secuenciaDesconocida(texto), notacion) }
+            guard let elegida = secuenciaDeEscala(texto) else { throw ErrorDeUso.secuenciaDesconocida(texto) }
             secuencia = elegida
         }
         if let desconocida = argumentos.opcionDesconocida {
-            return uso(.opcionDesconocida(desconocida), notacion)
+            throw ErrorDeUso.opcionDesconocida(desconocida)
         }
         let mastil = Mastil(encordado.conCapo(capo), numeroDeTrastes: 15)
         if arpegio {
-            guard !argumentos.restantes.isEmpty else { return uso(.faltaCifradoDelArpegio, notacion) }
+            guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifradoDelArpegio }
             let reparto: FormasDeArpegio = barrido ? .unaNotaPorCuerda : caged ? .caged : .porPosiciones
             return arpegioEnElMastil(
                 try Acorde(leyendo: argumentos.unidos), formas: reparto, idaYVuelta: idaYVuelta, en: mastil, notacion)
         }
-        guard !argumentos.restantes.isEmpty else { return uso(.faltaEscalaDePosiciones, notacion) }
+        guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDePosiciones }
         let escala = try Escala(leyendo: argumentos.unidos)
-        if formas { return formasPentatonicas(de: escala, en: mastil, notacion) }
+        if formas { return try formasPentatonicas(de: escala, en: mastil, notacion) }
         if let secuencia {
             return secuenciaEnLasPosiciones(escala, secuencia, caged: caged, bajando: bajando, en: mastil, notacion)
         }
@@ -223,9 +222,11 @@ extension LineaDeComandos {
 
     /// `posiciones La pentatónica menor --formas`: las cinco formas, cada una con su tablatura y las notas que
     /// comparte con la siguiente.
-    static func formasPentatonicas(de escala: Escala, en mastil: Mastil, _ notacion: Notacion) -> ResultadoDeOrden {
+    static func formasPentatonicas(de escala: Escala, en mastil: Mastil, _ notacion: Notacion)
+        throws -> ResultadoDeOrden
+    {
         let formas = PresentacionDeEstudioDeEscala.formasPentatonicas(de: escala, mastil: mastil, notacion: notacion)
-        guard !formas.isEmpty else { return uso(.noEsPentatonica, notacion) }
+        guard !formas.isEmpty else { throw ErrorDeUso.noEsPentatonica }
         let titulo = notacion.texto(\.formasDeLaPentatonica) + instrumento(de: mastil, notacion)
         var lineas = [escala.nombre(en: notacion) + " · " + titulo]
         for forma in formas {

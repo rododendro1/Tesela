@@ -50,8 +50,6 @@ import Testing
         do {
             try leer()
             return nil
-        } catch let fallo as LineaDeComandos.FalloDeUso {
-            return "\(fallo.error)"
         } catch {
             return "\(error)"
         }

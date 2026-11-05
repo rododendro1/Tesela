@@ -324,12 +324,12 @@ extension LineaDeComandos {
             guard let nombre = argumentos.first?.lowercased(), argumentos.count == 1,
                 let terminal = Terminal(rawValue: nombre)
             else {
-                return uso(.terminalDesconocida(argumentos.first ?? ""), notacion)
+                throw ErrorDeUso.terminalDesconocida(argumentos.first ?? "")
             }
             return bien(completado(para: terminal))
         },
         Orden(nombres: ["manual", "man"], ayuda: ayudaDelManual) { argumentos, notacion in
-            if let sobra = argumentos.first { return uso(.opcionDesconocida(sobra), notacion) }
+            if let sobra = argumentos.first { throw ErrorDeUso.opcionDesconocida(sobra) }
             return bien(manual(en: notacion.textos))
         },
     ]

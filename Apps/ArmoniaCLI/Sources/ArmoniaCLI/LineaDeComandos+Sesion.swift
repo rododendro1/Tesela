@@ -34,8 +34,8 @@ extension LineaDeComandos {
         switch notacionDelEntorno(entorno) {
         case .success(let notacion):
             escribir(bien(TextosDeCLI.en(notacion) { $0.bienvenidaDeLaSesion(version) }))
-        case .failure(let fallo):
-            escribir(uso(fallo.error, .espanolCompacto))
+        case .failure(let error):
+            escribir(uso(error, .espanolCompacto))
             return
         }
         _ = ejecutarLineas(entorno: entorno, salidaEsTerminal: true, leerLinea: leerLinea, escribir: escribir)
