@@ -19,7 +19,7 @@ import Testing
         #expect(partitura.encabezado.tonalidad != nil && partitura.compas == voz.compas)
         #expect(voz.partitura(clave: .fa).pentagramas[0].claveEscrita == .fa)
         let flauta = voz.partitura(encabezado: Encabezado(nombreDeLaParte: "Flauta", instrumento: 73))
-        #expect(flauta.parte == "Flauta" && flauta.instrumento == 73)
+        #expect(flauta.nombreDeLaParte == "Flauta" && flauta.instrumento == 73)
         #expect(flauta.musicXML().contains("<part-name>Flauta</part-name>"))
     }
 
@@ -30,7 +30,7 @@ import Testing
         #expect(partitura.lineas.count == 4 && partitura.tonalidadDelAnalisis != nil)
         #expect(!partitura.lineas[0].linea.cifrados.isEmpty && !partitura.lineas[3].linea.analisis.isEmpty)
         let piano = coral.partitura(encabezado: Encabezado(nombreDeLaParte: "Piano", instrumento: 0))
-        #expect(piano.parte == "Piano" && piano.instrumento == 0 && piano.tonalidadDelAnalisis == nil)
+        #expect(piano.nombreDeLaParte == "Piano" && piano.instrumento == 0 && piano.tonalidadDelAnalisis == nil)
     }
 
     @Test func laDeUnaProgresion() throws {
