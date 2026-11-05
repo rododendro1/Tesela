@@ -157,10 +157,16 @@ extension LineaDeComandos {
         return bien(svg.trimmingCharacters(in: "\n"))
     }
 
-    /// `hoja Re dórico`: la escala en una hoja de estudio para imprimir, en SVG; `hoja --acordes Rem7 Sol7 Do7M
-    /// [--en Do]`, la de una progresión. `grabar hoja …` la pasa a PDF.
+    /// `hoja Re dórico`: la escala en una hoja de estudio para imprimir, en SVG; `hoja --acorde Sol7`, la de un
+    /// acorde, y `hoja --acordes Rem7 Sol7 Do7M [--en Do mayor]`, la de una progresión. `grabar hoja …` la pasa a PDF.
     static func hoja(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
+        if let cifrado = try argumentos.valor("--acorde", "--chord", siFalta: .faltaElAcordeDeLaHoja) {
+            if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+            guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaElAcordeDeLaHoja }
+            let acorde = try Acorde(leyendo: cifrado)
+            return bien(PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, notacion: notacion))
+        }
         if argumentos.quitarMarca("--acordes", "--chords") {
             guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaValor("--en") }
             if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
