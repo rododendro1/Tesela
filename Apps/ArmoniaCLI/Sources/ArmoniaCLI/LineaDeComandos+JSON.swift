@@ -32,6 +32,7 @@ extension LineaDeComandos {
         "escala": { try escalaJSON($0, $1) },
         "tonalidad": { try tonalidadJSON($0, $1) },
         "digitaciones": { try digitacionesJSON($0, $1) },
+        "tradiciones": { try tradicionesJSON($0, $1) },
         "analizar": { try analizarJSON($0, $1) },
         "conjunto": { try conjuntoJSON($0, $1) },
         "serie": { try serieJSON($0, $1) },
@@ -207,6 +208,40 @@ extension LineaDeComandos {
                         tablatura: forma.tablatura, trastes: forma.trastes,
                         notas: forma.notas(para: acorde).map { $0.nombre(en: notacion) }, dedos: forma.dedos,
                         cejilla: forma.cejilla)
+                })
+        }
+    }
+
+    // MARK: Tradiciones
+
+    struct TradicionJSON: Encodable {
+        struct Categoria: Encodable {
+            /// «maqam», «raga»…: como se escribe en `--categoria`, siempre igual.
+            let clave: String
+            let nombre: String
+            let escalas: Int
+        }
+        /// Como se escribe en `--tradicion`, en español: «japon», «mundo-arabe».
+        let clave: String
+        let nombre: String
+        let escalas: Int
+        let categorias: [Categoria]
+    }
+
+    /// `tradiciones --json`: cada tradición con sus categorías y cuántas escalas tiene de cada una. Las escalas de una
+    /// tradición (`tradiciones japon`) no dan JSON, como `escalas`.
+    static func tradicionesJSON(_ textos: [String], _ notacion: Notacion) throws -> [TradicionJSON] {
+        if let primera = textos.first, !Argumentos.pareceUnaOpcion(primera) {
+            throw FalloDeUso(error: .sinSalidaJSON("tradiciones " + primera))
+        }
+        if let opcion = Argumentos(textos).opcionDesconocida { throw FalloDeUso(error: .opcionDesconocida(opcion)) }
+        return catalogoDeTradiciones().map { ficha in
+            TradicionJSON(
+                clave: ficha.claves.espanol, nombre: ficha.tradicion.nombre(en: notacion),
+                escalas: ficha.categorias.map(\.escalas).reduce(0, +),
+                categorias: ficha.categorias.map {
+                    TradicionJSON.Categoria(
+                        clave: $0.categoria.rawValue, nombre: $0.categoria.nombre(en: notacion), escalas: $0.escalas)
                 })
         }
     }

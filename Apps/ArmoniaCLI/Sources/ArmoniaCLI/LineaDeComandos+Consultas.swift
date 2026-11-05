@@ -478,6 +478,47 @@ extension LineaDeComandos {
             .filter { $0.isLetter || $0.isNumber }
     }
 
+    /// `tradiciones`: cada tradición del catálogo, con cómo se escribe en `--tradicion` y cuántas escalas tiene de cada
+    /// categoría: «Japón (japon): escala 13». `tradiciones japon [--categoria …]` es `escalas --tradicion japon`.
+    static func tradiciones(_ argumentos: [String], _ notacion: Notacion) -> ResultadoDeOrden {
+        if let primera = argumentos.first, !Argumentos.pareceUnaOpcion(primera) {
+            return escalas(["--tradicion"] + argumentos, notacion)
+        }
+        if let opcion = Argumentos(argumentos).opcionDesconocida { return uso(.opcionDesconocida(opcion), notacion) }
+        let lineas = catalogoDeTradiciones().map { ficha in
+            let clave = ejemplo(ficha.claves.espanol, ficha.claves.ingles).en(notacion)
+            let categorias = ficha.categorias.map { "\($0.categoria.nombre(en: notacion)) \($0.escalas)" }
+            return "\(ficha.tradicion.nombre(en: notacion)) (\(clave)): " + categorias.joined(separator: " · ")
+        }
+        return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// Una tradición del catálogo: cómo se escribe en `--tradicion` y cuántas escalas tiene de cada categoría, en el
+    /// orden del catálogo.
+    struct TradicionDelCatalogo {
+        let tradicion: Tradicion
+        let claves: (espanol: String, ingles: String)
+        let categorias: [(categoria: CategoriaTradicional, escalas: Int)]
+    }
+
+    /// Las tradiciones, en el orden de `Tradicion.allCases`, con sus categorías en el de `TipoDeEscala.tradicionales`.
+    static func catalogoDeTradiciones() -> [TradicionDelCatalogo] {
+        Tradicion.allCases.compactMap { tradicion in
+            guard let claves = nombresDeLasTradiciones.first(where: { $0.tradicion == tradicion }) else { return nil }
+            var categorias: [(categoria: CategoriaTradicional, escalas: Int)] = []
+            for tipo in TipoDeEscala.tradicionales where tipo.tradicion == tradicion {
+                guard let categoria = tipo.categoria else { continue }
+                if let i = categorias.firstIndex(where: { $0.categoria == categoria }) {
+                    categorias[i].escalas += 1
+                } else {
+                    categorias.append((categoria, 1))
+                }
+            }
+            return TradicionDelCatalogo(
+                tradicion: tradicion, claves: (claves.espanol, claves.ingles), categorias: categorias)
+        }
+    }
+
     /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>]`: el catálogo de escalas, las habituales
     /// y las de otras tradiciones agrupadas por tradición y categoría, cada una con sus notas desde Do (y la marca de
     /// los microtonos, si los tiene). Un texto suelto busca en los nombres.
@@ -528,9 +569,7 @@ extension LineaDeComandos {
         for tipo in TipoDeEscala.tradicionales where cumple(tipo) {
             guard let suya = tipo.tradicion, let deTipo = tipo.categoria else { continue }
             guard tradicion == nil || tradicion == suya, categoria == nil || categoria == deTipo else { continue }
-            let nombres = nombresDeLasTradiciones.first(where: { $0.tradicion == suya })
-            let nombre = nombres.map { ejemplo($0.espanol, $0.ingles).en(notacion) } ?? suya.rawValue
-            let titulo = nombre + " · " + deTipo.nombre(en: notacion)
+            let titulo = suya.nombre(en: notacion) + " · " + deTipo.nombre(en: notacion)
             if let i = grupos.firstIndex(where: { $0.titulo == titulo }) {
                 grupos[i].tipos.append(tipo)
             } else {

@@ -172,6 +172,11 @@ enum ErrorDeUso {
         case .idiomaDesconocido(let idioma):
             let nombres = Idioma.allCases.flatMap { [$0.codigo] + $0.nombres }
             return LineaDeComandos.propuesta(para: idioma, entre: nombres)
+        case .tradicionDesconocida(let tradicion):
+            let claves = LineaDeComandos.nombresDeLasTradiciones.flatMap { [$0.espanol, $0.ingles] }
+            return LineaDeComandos.propuesta(para: tradicion, entre: claves)
+        case .categoriaDesconocida(let categoria):
+            return LineaDeComandos.propuesta(para: categoria, entre: CategoriaTradicional.allCases.map(\.rawValue))
         case .escrituraNoValida(let escritura):
             return LineaDeComandos.propuesta(para: escritura, entre: LineaDeComandos.nombresDeLasEscrituras)
         default:

@@ -43,6 +43,8 @@ extension TextosDeCLI {
         sintaxisEscalas: "escalas [<texto>] [opciones]",
         descripcionEscalas: "el catálogo de escalas: las habituales\ny las de otras tradiciones, por\ncategorías, con sus notas desde Do",
         notasEscalas: "opciones: --tradicion turquia (o india, grecia, grecia-antigua,\nmundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia,\nindonesia, klezmer, andes,\nbizancio, mesopotamia, africa,\nsudeste-asiatico, gregoriano) y --categoria maqam (o rāga, makam,\ndastgah, dromos…); un texto busca en los nombres",
+        sintaxisTradiciones: "tradiciones [<tradición>]",
+        descripcionTradiciones: "las tradiciones del catálogo, con\nsus categorías y cuántas escalas\nhay en cada una; con una, sus escalas",
         sintaxisTonalidad: "tonalidad <tonalidad>",
         descripcionTonalidad: "armadura, relativas y grados",
         sintaxisConjunto: "conjunto <clases>",
@@ -156,7 +158,7 @@ extension TextosDeCLI {
         En las escrituras compactas la octava va en subíndice (La₄) y en las demás, con cifras (La4);
         --subindices o --cifras la fijan (se leen las dos formas).
         Con --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
-        serie y digitaciones dan sus datos en JSON.
+        serie, digitaciones y tradiciones dan sus datos en JSON.
         """,
         sintaxisAyuda: "ayuda [<orden>]",
         descripcionAyuda: "esta ayuda, o la de una orden\n(también <orden> --help)",

@@ -43,6 +43,8 @@ extension TextosDeCLI {
         sintaxisEscalas: "scales [<текст>] [параметры]",
         descripcionEscalas: "каталог гамм: обычные и гаммы других\nтрадиций, по категориям, с нотами\nот до",
         notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia, africa,\nsoutheast-asia, gregorian) и --category maqam (или rāga, makam,\ndastgah, dromos…); текст ищет в названиях",
+        sintaxisTradiciones: "traditions [<традиция>]",
+        descripcionTradiciones: "традиции каталога с их\nкатегориями и числом гамм\nв каждой; с одной — её гаммы",
         sintaxisTonalidad: "key <тональность>",
         descripcionTonalidad: "ключевые знаки, родственные\nтональности и ступени",
         sintaxisConjunto: "set <классы>",
@@ -154,8 +156,8 @@ extension TextosDeCLI {
         fa dièse или Fa♯, F Kreuz или Fis.
         В компактных написаниях октава пишется нижним индексом (La₄), в остальных — цифрами (La4);
         --subindices или --cifras задают её (читаются обе формы).
-        С --json команды chord, identify, arpeggio, interval, scale, key, analyze, set, row и
-        fingerings выводят данные в JSON.
+        С --json команды chord, identify, arpeggio, interval, scale, key, analyze, set, row,
+        fingerings и traditions выводят данные в JSON.
         """,
         sintaxisAyuda: "help [<команда>]",
         descripcionAyuda: "эта справка или справка по команде\n(также <команда> --help)",

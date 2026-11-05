@@ -43,6 +43,8 @@ extension TextosDeCLI {
         sintaxisEscalas: "scales [<κείμενο>] [επιλογές]",
         descripcionEscalas: "ο κατάλογος των κλιμάκων: οι συνήθεις\nκαι όσες άλλων παραδόσεων, ανά\nκατηγορία, με τις νότες τους από το Ντο",
         notasEscalas: "επιλογές: --tradition turkey (ή india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia, africa,\nsoutheast-asia, gregorian) και --category maqam (ή rāga, makam,\ndastgah, dromos…)· ένα κείμενο ψάχνει στα ονόματα",
+        sintaxisTradiciones: "traditions [<παράδοση>]",
+        descripcionTradiciones: "οι παραδόσεις του καταλόγου, με\nτις κατηγορίες τους και πόσες\nκλίμακες έχει η καθεμία· με μία,\nοι κλίμακές της",
         sintaxisTonalidad: "key <τονικότητα>",
         descripcionTonalidad: "οπλισμός, σχετικές τονικότητες και\nβαθμίδες",
         sintaxisConjunto: "set <κλάσεις>",
@@ -154,8 +156,8 @@ extension TextosDeCLI {
         fa dièse ή Fa♯, F Kreuz ή Fis.
         Στις συμπαγείς γραφές η οκτάβα γράφεται ως δείκτης (La₄) και στις άλλες με ψηφία (La4)·
         το --subindices ή το --cifras την ορίζει (διαβάζονται και τα δύο).
-        Με --json, οι chord, identify, arpeggio, interval, scale, key, analyze, set, row και
-        fingerings δίνουν τα δεδομένα τους σε JSON.
+        Με --json, οι chord, identify, arpeggio, interval, scale, key, analyze, set, row,
+        fingerings και traditions δίνουν τα δεδομένα τους σε JSON.
         """,
         sintaxisAyuda: "help [<εντολή>]",
         descripcionAyuda: "αυτή η βοήθεια, ή μιας εντολής\n(και <εντολή> --help)",

@@ -43,6 +43,8 @@ extension TextosDeCLI {
         sintaxisEscalas: "scales [<text>] [options]",
         descripcionEscalas: "the catalog of scales: the common ones\nand those of other traditions, by\ncategory, with their notes from C",
         notasEscalas: "options: --tradition turkey (or india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia, africa,\nsoutheast-asia, gregorian) and --category maqam (or rāga, makam,\ndastgah, dromos…); a text searches the names",
+        sintaxisTradiciones: "traditions [<tradition>]",
+        descripcionTradiciones: "the catalog's traditions, with\ntheir categories and how many\nscales each has; with one, its scales",
         sintaxisTonalidad: "key <key>",
         descripcionTonalidad: "key signature, relatives and degrees",
         sintaxisConjunto: "set <pcs>",
@@ -156,7 +158,7 @@ extension TextosDeCLI {
         fa dièse or Fa♯, F Kreuz or Fis.
         In compact writings the octave is a subscript (A₄) and in the others, digits (A4);
         --subscripts or --digits choose one (both forms are read).
-        With --json, chord, identify, arpeggio, interval, scale, key, analyze, set, row and fingerings
+        With --json, chord, identify, arpeggio, interval, scale, key, analyze, set, row, fingerings and traditions
         give their data as JSON.
         """,
         sintaxisAyuda: "help [<command>]",
