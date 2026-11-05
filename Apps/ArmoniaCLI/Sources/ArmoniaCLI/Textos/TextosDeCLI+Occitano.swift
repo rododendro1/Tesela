@@ -158,6 +158,12 @@ extension TextosDeCLI {
         --subindices o --cifras la fixan (se legisson las doas formas).
         Amb --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
         serie, digitaciones e tradiciones donan lors donadas en JSON.
+        Amb --json tanben armonizar, realizar, revisar, contrapunto e transponer. Se la sortida es pas
+        lo terminal, lo JSON va sus una sola linha.
+        ARMONIA_IDIOMA=eu fixa la lenga sens --idioma; amb ARMONIA_IDIOMA=sistema, la de LANG.
+        Còdis de sortida: 0 plan, 1 tèxte que se pòt pas legir, 2 òrdre mal escrich e 3 fautas (revisar,
+        contrapunto).
+        Sens arguments e dins lo terminal, armonia dobrís una sesilha: un òrdre per linha.
         """,
         sintaxisAyuda: "ayuda [<òrdre>]",
         descripcionAyuda: "aquesta ajuda, o la d'un òrdre\n(tanben <òrdre> --help)",
@@ -326,6 +332,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Ensaja «armonia ayuda \(o)»." },
         salidaBinaria: "la sortida es un fichièr binari (MIDI, PDF o PNG); enregistratz-la amb > fichièr",
         escalasPorNotas: { e in "i a pas cap de gama amb aqueste nom; per la cercar per sas nòtas: \(e)" },
-        grabarUnaPartitura: { o, e in "«armonia \(o)» escriu ja la partitura; «grabar» la dona en PDF, SVG o PNG: \(e)" }
+        grabarUnaPartitura: { o, e in "«armonia \(o)» escriu ja la partitura; «grabar» la dona en PDF, SVG o PNG: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Consultas", "Armonia e voses", "Particions e gravadura", "Dessenhs (SVG)", "Neoriemanniana", "Instruments de tòcas", "Lo terminal e l'ajuda"],
+        pieDelIndice: """
+        L'ajuda d'un òrdre: armonia ayuda <òrdre> (o armonia <òrdre> --help).
+        Tota l'ajuda, amb las opcions de cada òrdre: armonia ayuda --todo.
+        Per totes los òrdres: --ingles, --idioma, --textos, --escritura, --subindices, --cifras e --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Escrivètz un òrdre per linha, sens «armonia» (ayuda: los òrdres; salir: acabar)." }
     )
 }

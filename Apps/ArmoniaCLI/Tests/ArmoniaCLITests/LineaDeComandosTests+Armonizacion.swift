@@ -56,7 +56,7 @@ extension LineaDeComandosTests {
 
     @Test func voces() {
         #expect(
-            salida("revisar Do3 Sol3 Mi4 Do5, Re3 La3 Fa4 Re5") == """
+            conFaltas("revisar Do3 Sol3 Mi4 Do5, Re3 La3 Fa4 Re5") == """
                 Quintas paralelas entre bajo y tenor (acordes 1 → 2)
                 Octavas paralelas entre bajo y soprano (acordes 1 → 2)
 
@@ -77,9 +77,9 @@ extension LineaDeComandosTests {
             salida("contrapunto Re4 Fa4 Mi4 Re4 / -:2 La4 Re5 La4 Si4 Do#5 Re5:1 --especie 2").hasSuffix(
                 "Sin faltas.\n"))
         #expect(
-            salida("contrapunto Do4 Re4 Mi4 Do4 / Sol4 La4 Sol4 Do5").contains("Quintas paralelas (compases 1 → 2)"))
+            conFaltas("contrapunto Do4 Re4 Mi4 Do4 / Sol4 La4 Sol4 Do5").contains("Quintas paralelas (compases 1 → 2)"))
         // Lo que no dura lo mismo que el cantus es un error de lectura, no de uso.
         #expect(LineaDeComandos.ejecutar(["contrapunto", "Re4", "Fa4", "/", "La4"]).codigo == 1)
-        #expect(salida("ayuda").contains("contrapunto <cantus> / <contrapunto> [--especie 1]"))
+        #expect(salida("ayuda --todo").contains("contrapunto <cantus> / <contrapunto> [--especie 1]"))
     }
 }

@@ -158,6 +158,12 @@ extension TextosDeCLI {
         το --subindices ή το --cifras την ορίζει (διαβάζονται και τα δύο).
         Με --json, οι chord, identify, arpeggio, interval, scale, key, analyze, set, row,
         fingerings και traditions δίνουν τα δεδομένα τους σε JSON.
+        Με --json επίσης οι harmonize, realize, check, counterpoint και transpose. Αν η έξοδος δεν
+        είναι τερματικό, το JSON γράφεται σε μία γραμμή.
+        Το ARMONIA_IDIOMA=eu ορίζει τη γλώσσα χωρίς --idioma· το ARMONIA_IDIOMA=system παίρνει αυτήν του LANG.
+        Κωδικοί εξόδου: 0 εντάξει, 1 κείμενο που δεν διαβάζεται, 2 λάθος εντολή και 3 σφάλματα (check,
+        counterpoint).
+        Χωρίς ορίσματα σε τερματικό, το armonia ανοίγει μια συνεδρία: μία εντολή ανά γραμμή.
         """,
         sintaxisAyuda: "help [<εντολή>]",
         descripcionAyuda: "αυτή η βοήθεια, ή μιας εντολής\n(και <εντολή> --help)",
@@ -326,6 +332,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Δοκίμασε «armonia help \(o)»." },
         salidaBinaria: "η έξοδος είναι δυαδικό αρχείο (MIDI, PDF ή PNG)· αποθήκευσέ την με > αρχείο",
         escalasPorNotas: { e in "καμία κλίμακα δεν έχει αυτό το όνομα· για αναζήτηση με τις νότες: \(e)" },
-        grabarUnaPartitura: { o, e in "η «armonia \(o)» γράφει ήδη την παρτιτούρα· η «engrave» τη χαράσσει σε PDF, SVG ή PNG: \(e)" }
+        grabarUnaPartitura: { o, e in "η «armonia \(o)» γράφει ήδη την παρτιτούρα· η «engrave» τη χαράσσει σε PDF, SVG ή PNG: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Ερωτήματα", "Αρμονία και φωνές", "Παρτιτούρες και χάραξη", "Σχέδια (SVG)", "Νεο-ριμανική θεωρία", "Όργανα με τάστα", "Τερματικό και βοήθεια"],
+        pieDelIndice: """
+        Η βοήθεια μιας εντολής: armonia help <εντολή> (ή armonia <εντολή> --help).
+        Όλη η βοήθεια, με τις επιλογές κάθε εντολής: armonia help --all.
+        Για όλες τις εντολές: --ingles, --idioma, --textos, --escritura, --subindices, --cifras και --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Γράψτε μία εντολή ανά γραμμή, χωρίς «armonia» (help: οι εντολές· exit: τέλος)." }
     )
 }

@@ -158,6 +158,12 @@ extension TextosDeCLI {
         --subindices u --cifras la fixan (se leyen as dos trazas).
         Con --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
         serie, digitaciones y tradiciones dan os suyos datos en JSON.
+        Con --json tamién armonizar, realizar, revisar, contrapunto y transponer. Si a salida no ye
+        a terminal, o JSON va en una sola linia.
+        ARMONIA_IDIOMA=eu fixa a luenga sin --idioma; con ARMONIA_IDIOMA=sistema, a de LANG.
+        Codigos de salida: 0 bien, 1 texto que no se leye, 2 orden mal escrita y 3 faltas (revisar,
+        contrapunto).
+        Sin argumentos y en a terminal, armonia ubre una sesión: una orden per linia.
         """,
         sintaxisAyuda: "ayuda [<orden>]",
         descripcionAyuda: "esta aduya, u a d'una orden\n(tamién <orden> --help)",
@@ -326,6 +332,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Preba «armonia ayuda \(o)»." },
         salidaBinaria: "a salida ye un fichero binario (MIDI, PDF u PNG); alza-la con > fichero",
         escalasPorNotas: { e in "no bi ha garra escala con ixe nombre; ta buscar-la por as suyas notas: \(e)" },
-        grabarUnaPartitura: { o, e in "«armonia \(o)» ya escribe a partitura; «grabar» la da en PDF, SVG u PNG: \(e)" }
+        grabarUnaPartitura: { o, e in "«armonia \(o)» ya escribe a partitura; «grabar» la da en PDF, SVG u PNG: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Consultas", "Harmonía y voces", "Partituras y grabau", "Dibuixos (SVG)", "Neorriemanniana", "Instrumentos de trastes", "A terminal y l'aduya"],
+        pieDelIndice: """
+        L'aduya d'una orden: armonia ayuda <orden> (u armonia <orden> --help).
+        Toda l'aduya, con as opcions de cada orden: armonia ayuda --todo.
+        Ta todas as ordens: --ingles, --idioma, --textos, --escritura, --subindices, --cifras y --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Escribe una orden per linia, sin «armonia» (ayuda: as ordens; salir: rematar)." }
     )
 }

@@ -159,6 +159,12 @@ extension TextosDeCLI {
         --subindices o --cifras la fijan (se leen las dos formas).
         Con --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
         serie, digitaciones y tradiciones dan sus datos en JSON.
+        Con --json también armonizar, realizar, revisar, contrapunto y transponer. Si la salida no es
+        la terminal, el JSON va en una sola línea.
+        ARMONIA_IDIOMA=eu fija el idioma sin --idioma; con ARMONIA_IDIOMA=sistema, el de LANG.
+        Códigos de salida: 0 bien, 1 texto que no se lee, 2 orden mal escrita y 3 faltas (revisar,
+        contrapunto).
+        Sin argumentos y en la terminal, armonia abre una sesión: una orden por línea.
         """,
         sintaxisAyuda: "ayuda [<orden>]",
         descripcionAyuda: "esta ayuda, o la de una orden\n(también <orden> --help)",
@@ -327,6 +333,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Prueba «armonia ayuda \(o)»." },
         salidaBinaria: "la salida es un fichero binario (MIDI, PDF o PNG); guárdala con > fichero",
         escalasPorNotas: { e in "no hay ninguna escala con ese nombre; para buscarla por sus notas: \(e)" },
-        grabarUnaPartitura: { o, e in "«armonia \(o)» ya escribe la partitura; «grabar» la da en PDF, SVG o PNG: \(e)" }
+        grabarUnaPartitura: { o, e in "«armonia \(o)» ya escribe la partitura; «grabar» la da en PDF, SVG o PNG: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Consultas", "Armonía y voces", "Partituras y grabado", "Dibujos (SVG)", "Neorriemanniana", "Instrumentos de trastes", "La terminal y la ayuda"],
+        pieDelIndice: """
+        La ayuda de una orden: armonia ayuda <orden> (o armonia <orden> --help).
+        Toda la ayuda, con las opciones de cada orden: armonia ayuda --todo.
+        Para todas las órdenes: --ingles, --idioma, --textos, --escritura, --subindices, --cifras y --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Escribe una orden por línea, sin «armonia» (ayuda: las órdenes; salir: terminar)." }
     )
 }

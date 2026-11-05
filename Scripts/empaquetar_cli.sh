@@ -33,6 +33,8 @@ mkdir -p "$CARPETA/share/man/man1" "$CARPETA/share/man/en/man1" "$CARPETA/comple
 
 cp "$BINARIO" "$CARPETA/armonia"
 chmod 755 "$CARPETA/armonia"
+# Sin ARMONIA_IDIOMA, para que el manual y el completado no dependan del idioma de quien empaqueta.
+unset ARMONIA_IDIOMA
 "$GENERADOR" manual > "$CARPETA/share/man/man1/armonia.1"
 "$GENERADOR" manual --ingles > "$CARPETA/share/man/en/man1/armonia.1"
 "$GENERADOR" completado bash > "$CARPETA/completado/armonia.bash"

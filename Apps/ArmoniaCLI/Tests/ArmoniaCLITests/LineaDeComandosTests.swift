@@ -24,6 +24,14 @@ import Testing
         return resultado.salida
     }
 
+    /// La salida de una orden que comprueba algo (`revisar`, `contrapunto`) y encuentra faltas: sale con código 3.
+    func conFaltas(_ orden: String, sourceLocation: SourceLocation = #_sourceLocation) -> String {
+        let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+        #expect(resultado.codigo == 3, Comment(rawValue: resultado.error), sourceLocation: sourceLocation)
+        #expect(resultado.error == "", sourceLocation: sourceLocation)
+        return resultado.salida
+    }
+
     /// Un fichero temporal con esos datos, que se borra al terminar la prueba.
     func fichero(_ datos: Data, extension sufijo: String) throws -> String {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent(
@@ -52,7 +60,7 @@ import Testing
     /// Los nombres de órdenes y opciones, en español y en inglés; los de antes ya no se aceptan.
     @Test func nombresDeOrdenesYOpciones() {
         let coral = "Do3 Sol3 Mi4 Do5, Re3 La3 Fa4 Re5"
-        #expect(salida("revisar " + coral) == salida("check " + coral))
+        #expect(conFaltas("revisar " + coral) == conFaltas("check " + coral))
         #expect(salida("conduccion-parsimoniosa Sol7 Rem7") == salida("smooth-path Sol7 Rem7"))
         for orden in ["tonnetz", "tabla"] {
             #expect(salida(orden + " --sequence Do Lam Fa Rem") == salida(orden + " --recorrido Do Lam Fa Rem"))
@@ -69,8 +77,8 @@ import Testing
         #expect(LineaDeComandos.ejecutar(["musicxml", "melodia", "Do4:4", "--programa", "40"]).codigo == 2)
         #expect(LineaDeComandos.ejecutar(["midi", "melodia", "Do4:4", "--programa", "200"]).codigo == 2)
 
-        let ayuda = salida("ayuda")
-        let help = salida("help --ingles")
+        let ayuda = salida("ayuda --todo")
+        let help = salida("help --all --ingles")
         for nombre in ["revisar <acordes>", "conduccion-parsimoniosa <acorde>", "--programa 0…127"] {
             #expect(ayuda.contains(nombre), Comment(rawValue: nombre))
         }
@@ -92,10 +100,10 @@ import Testing
         #expect(salida("transponer 2M Do3 --ingles") == "D3\n")
         #expect(salida("transponer 2M Do3 --ingles --subindices") == "D₃\n")
         #expect(salida("transponer 2M Do3 --digits") == salida("transponer 2M Do3 --cifras"))
-        #expect(salida("ayuda").contains("--cifras"))
+        #expect(salida("ayuda --todo").contains("--cifras"))
         #expect(salida("intervalo Do₄ Mi₅") == salida("intervalo Do4 Mi5"))
-        #expect(salida("ayuda").contains("--subindices"))
-        #expect(salida("help --english").contains("--subscripts"))
+        #expect(salida("ayuda --todo").contains("--subindices"))
+        #expect(salida("help --all --english").contains("--subscripts"))
     }
 
     @Test func ingles() {
@@ -207,7 +215,8 @@ import Testing
             "positions --arpeggio C7 --caged --instrument bass --capo 1", "engines",
         ] {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
-            #expect(resultado.codigo == 0, "\(orden): \(resultado.error)")
+            // 3: `check` y `counterpoint` encuentran faltas.
+            #expect(resultado.codigo == 0 || resultado.codigo == 3, "\(orden): \(resultado.error)")
             comprobar(resultado.salida, orden)
         }
         for orden in Self.ordenesMalEscritas {
@@ -224,7 +233,7 @@ import Testing
         for orden in ["--ingles", "ayuda --ingles", "help --english"] {
             #expect(salida(orden).hasPrefix("armonia: music theory"), Comment(rawValue: orden))
         }
-        #expect(salida("help --ingles").contains("fingerings <symbol>"))
+        #expect(salida("help --all --ingles").contains("fingerings <symbol>"))
         #expect(LineaDeComandos.ayuda(en: .espanolCompacto).hasPrefix("armonia: teoría musical"))
     }
 
@@ -242,22 +251,22 @@ import Testing
         #expect(salida("--idioma en acorde C/G") == salida("acorde C/G --ingles"))
         #expect(salida("acorde Do --language es") == salida("acorde Do"))
         // La ayuda, en los quince idiomas.
-        #expect(salida("ayuda --idioma ca").hasPrefix("armonia: "))
-        #expect(salida("ayuda --idioma ca") == (ayudaEn(.catalan) + "\n"))
-        #expect(salida("ayuda --idioma gl") == (ayudaEn(.gallego) + "\n"))
-        #expect(salida("ayuda --idioma eu") == (ayudaEn(.euskera) + "\n"))
-        #expect(salida("ayuda --idioma pt") == (ayudaEn(.portugues) + "\n"))
-        #expect(salida("ayuda --idioma fr") == (ayudaEn(.frances) + "\n"))
-        #expect(salida("ayuda --idioma italiano") == (ayudaEn(.italiano) + "\n"))
-        #expect(salida("ayuda --idioma de") == (ayudaEn(.aleman) + "\n"))
-        #expect(salida("ayuda --idioma oc") == (ayudaEn(.occitano) + "\n"))
-        #expect(salida("ayuda --idioma ru") == (ayudaEn(.ruso) + "\n"))
-        #expect(salida("ayuda --idioma hu") == (ayudaEn(.hungaro) + "\n"))
-        #expect(salida("ayuda --idioma magyar").hasPrefix("armonia: zeneelmélet a parancssorban."))
+        #expect(salida("ayuda --todo --idioma ca").hasPrefix("armonia: "))
+        #expect(salida("ayuda --todo --idioma ca") == (ayudaEn(.catalan) + "\n"))
+        #expect(salida("ayuda --todo --idioma gl") == (ayudaEn(.gallego) + "\n"))
+        #expect(salida("ayuda --todo --idioma eu") == (ayudaEn(.euskera) + "\n"))
+        #expect(salida("ayuda --todo --idioma pt") == (ayudaEn(.portugues) + "\n"))
+        #expect(salida("ayuda --todo --idioma fr") == (ayudaEn(.frances) + "\n"))
+        #expect(salida("ayuda --todo --idioma italiano") == (ayudaEn(.italiano) + "\n"))
+        #expect(salida("ayuda --todo --idioma de") == (ayudaEn(.aleman) + "\n"))
+        #expect(salida("ayuda --todo --idioma oc") == (ayudaEn(.occitano) + "\n"))
+        #expect(salida("ayuda --todo --idioma ru") == (ayudaEn(.ruso) + "\n"))
+        #expect(salida("ayuda --todo --idioma hu") == (ayudaEn(.hungaro) + "\n"))
+        #expect(salida("ayuda --todo --idioma magyar").hasPrefix("armonia: zeneelmélet a parancssorban."))
         #expect(salida("tonalidad Mib mayor --idioma hu").contains("Esz-dúr"))
-        #expect(salida("ayuda --idioma el") == (ayudaEn(.griego) + "\n"))
-        #expect(salida("ayuda --idioma an") == (ayudaEn(.aragones) + "\n"))
-        #expect(salida("ayuda --idioma asturianu") == (ayudaEn(.asturiano) + "\n"))
+        #expect(salida("ayuda --todo --idioma el") == (ayudaEn(.griego) + "\n"))
+        #expect(salida("ayuda --todo --idioma an") == (ayudaEn(.aragones) + "\n"))
+        #expect(salida("ayuda --todo --idioma asturianu") == (ayudaEn(.asturiano) + "\n"))
         #expect(ayudaEn(.asturiano).hasPrefix("armonia: teoría musical dende la llinia"))
         #expect(ayudaEn(.aleman).hasPrefix("armonia: Musiktheorie"))
         #expect(ayudaEn(.ruso).contains("armonia chord G7/B"))
@@ -295,7 +304,7 @@ import Testing
         // Notas y textos por separado.
         #expect(salida("acorde Sol7/Si --idioma en --textos es").hasPrefix("G7/B: séptima de dominante\n"))
         #expect(salida("acorde Sol7/Si --textos fr").hasPrefix("Sol7/Si: septième de dominante\n"))
-        #expect(salida("ayuda --idioma fr --textos es").contains("--textos"))
+        #expect(salida("ayuda --todo --idioma fr --textos es").contains("--textos"))
         #expect(resultado("acorde", "Do", "--textos", "xx").codigo == 2)
         #expect(resultado("acorde", "Do", "--textos").codigo == 2)
     }
@@ -338,8 +347,8 @@ import Testing
         #expect(salida("acorde Do --idioma ca --escritura palabras") == salida("acorde Do --idioma ca"))
         #expect(resultado("acorde", "Do", "--idioma", "ca", "--escritura", "ascii").codigo == 2)
         #expect(resultado("acorde", "Do", "--escritura").codigo == 2)
-        #expect(salida("ayuda").contains("--escritura"))
-        #expect(salida("help --ingles").contains("--writing"))
+        #expect(salida("ayuda --todo").contains("--escritura"))
+        #expect(salida("help --all --ingles").contains("--writing"))
     }
 
     /// Con --idioma ca, gl, eu, pt, fr, it, de, el o ru, los errores de uso no dejan nada en español (el

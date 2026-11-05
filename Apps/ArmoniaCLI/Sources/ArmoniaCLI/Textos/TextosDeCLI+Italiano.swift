@@ -158,6 +158,12 @@ extension TextosDeCLI {
         --subindices o --cifras la fissano (si leggono entrambe le forme).
         Con --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
         serie, digitaciones e tradiciones danno i loro dati in JSON.
+        Con --json anche armonizar, realizar, revisar, contrapunto e transponer. Se l'uscita non è
+        il terminale, il JSON sta su una sola riga.
+        ARMONIA_IDIOMA=eu fissa la lingua senza --idioma; con ARMONIA_IDIOMA=sistema, quella di LANG.
+        Codici di uscita: 0 bene, 1 testo illeggibile, 2 comando scritto male e 3 errori (revisar,
+        contrapunto).
+        Senza argomenti e nel terminale, armonia apre una sessione: un comando per riga.
         """,
         sintaxisAyuda: "ayuda [<comando>]",
         descripcionAyuda: "questo aiuto, o quello di un comando\n(anche <comando> --help)",
@@ -326,6 +332,15 @@ extension TextosDeCLI {
         pruebaLaAyudaDe: { o in "Prova «armonia ayuda \(o)»." },
         salidaBinaria: "l'uscita è un file binario (MIDI, PDF o PNG); salvala con > file",
         escalasPorNotas: { e in "nessuna scala ha questo nome; per cercarla dalle note: \(e)" },
-        grabarUnaPartitura: { o, e in "«armonia \(o)» scrive già la partitura; «grabar» la dà in PDF, SVG o PNG: \(e)" }
+        grabarUnaPartitura: { o, e in "«armonia \(o)» scrive già la partitura; «grabar» la dà in PDF, SVG o PNG: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Consultazioni", "Armonia e voci", "Partiture e incisione", "Disegni (SVG)", "Neoriemanniana", "Strumenti con tasti", "Il terminale e l'aiuto"],
+        pieDelIndice: """
+        L'aiuto di un comando: armonia ayuda <comando> (o armonia <comando> --help).
+        Tutto l'aiuto, con le opzioni di ogni comando: armonia ayuda --todo.
+        Per tutti i comandi: --ingles, --idioma, --textos, --escritura, --subindices, --cifras e --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Scrivi un comando per riga, senza «armonia» (ayuda: i comandi; salir: uscire)." }
     )
 }
