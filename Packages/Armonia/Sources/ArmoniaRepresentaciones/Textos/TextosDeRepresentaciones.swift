@@ -9,16 +9,6 @@ import ArmoniaNucleo
 
 /// Los textos de ArmoniaRepresentaciones en un idioma.
 struct TextosDeRepresentaciones: TextosTraducidos {
-    // MARK: AfinacionHistorica.swift
-    let temperamentoIgual: String
-    let pitagorico: String
-    let mesotonico: String
-    let werckmeisterIII: String
-    let kirnbergerIII: String
-    let vallotti: String
-    let young: String
-    let afinacionJusta: String
-
     // MARK: CorrespondenciaDeColores.swift
     let circuloDeQuintas: String
 

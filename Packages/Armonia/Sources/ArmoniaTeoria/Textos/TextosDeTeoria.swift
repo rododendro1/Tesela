@@ -9,6 +9,16 @@ import ArmoniaNucleo
 
 /// Los textos de ArmoniaTeoria en un idioma.
 struct TextosDeTeoria: TextosTraducidos {
+    // MARK: AfinacionHistorica.swift
+    let temperamentoIgual: String
+    let pitagorico: String
+    let mesotonico: String
+    let werckmeisterIII: String
+    let kirnbergerIII: String
+    let vallotti: String
+    let young: String
+    let afinacionJusta: String
+
     // MARK: Acorde.swift
     /// Un acorde en estado fundamental con otro bajo: «Do mayor, con bajo en Re», «C major over D».
     let conBajoEn: @Sendable (_ acorde: String, _ bajo: String) -> String

@@ -5,6 +5,16 @@
 
 extension TextosDeTeoria {
     static let espanol = TextosDeTeoria(
+        // AfinacionHistorica.swift
+        temperamentoIgual: "temperamento igual",
+        pitagorico: "afinación pitagórica",
+        mesotonico: "mesotónico de ¼ de coma",
+        werckmeisterIII: "Werckmeister III",
+        kirnbergerIII: "Kirnberger III",
+        vallotti: "Vallotti",
+        young: "Young",
+        afinacionJusta: "afinación justa",
+
         // Acorde.swift
         conBajoEn: { acorde, bajo in "\(acorde), con bajo en \(bajo)" },
         nombresDeLasInversiones: ["estado fundamental", "primera inversión", "segunda inversión", "tercera inversión",

@@ -2,7 +2,6 @@ import Foundation
 import Testing
 
 @testable import ArmoniaNucleo
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaTeoria
 
 @Suite struct AfinacionDeEscalaTests {

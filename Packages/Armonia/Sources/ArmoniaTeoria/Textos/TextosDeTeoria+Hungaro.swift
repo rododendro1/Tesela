@@ -6,6 +6,16 @@ import ArmoniaNucleo
 
 extension TextosDeTeoria {
     static let hungaro = TextosDeTeoria(
+        // AfinacionHistorica.swift
+        temperamentoIgual: "kiegyenlített temperálás",
+        pitagorico: "püthagoraszi hangolás",
+        mesotonico: "negyedkommás középhangos hangolás",
+        werckmeisterIII: "Werckmeister III",
+        kirnbergerIII: "Kirnberger III",
+        vallotti: "Vallotti",
+        young: "Young",
+        afinacionJusta: "tiszta hangolás",
+
         // Acorde.swift
         conBajoEn: { acorde, bajo in "\(acorde), \(bajo) a basszusban" },
         nombresDeLasInversiones: ["alaphelyzet", "első fordítás", "második fordítás", "harmadik fordítás",

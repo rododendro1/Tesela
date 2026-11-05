@@ -5,16 +5,6 @@
 
 extension TextosDeRepresentaciones {
     static let euskera = TextosDeRepresentaciones(
-        // AfinacionHistorica.swift
-        temperamentoIgual: "tenperamentu berdina",
-        pitagorico: "afinazio pitagorikoa",
-        mesotonico: "¼ komako mesotonikoa",
-        werckmeisterIII: "Werckmeister III",
-        kirnbergerIII: "Kirnberger III",
-        vallotti: "Vallotti",
-        young: "Young",
-        afinacionJusta: "afinazio justua",
-
         // CorrespondenciaDeColores.swift
         circuloDeQuintas: "bosgarrenen zirkulua",
 
