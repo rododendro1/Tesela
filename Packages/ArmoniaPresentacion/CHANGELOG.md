@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.5 (2026-11-05)
 
 - **Las tablaturas, desde la partitura del mástil.** `PresentacionDeTablatura.musicXML(…)` hace la partitura del
   mástil y la exporta con `Partitura.musicXML()`, en lugar de con su propio MusicXML. **Cambio incompatible** en lo

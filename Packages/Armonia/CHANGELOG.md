@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.5 (2026-11-05)
 
 ### `armonia`: `-o fichero` y las notas en el idioma elegido
 
