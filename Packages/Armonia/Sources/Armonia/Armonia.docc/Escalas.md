@@ -367,6 +367,9 @@ moria bajo Mi); y en los śruti, con la flecha de Helmholtz-Ellis de una coma si
 pitagórica (Mi↓ es 5/4; Re♭↑, 16/15); y en cents, con los que se aparta de la nota temperada (Fa(−37¢); en
 ASCII, Fa(-37c)). Son las afinaciones teóricas: cada escuela afina un poco distinto. Se
 buscan por el nombre, como `categoria`: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
+Algunas tienen más de una (`TipoDeEscala.afinaciones`, cada una con su `fuente`): los echoi diatónicos también en
+los 68 moria de Chrysanthos (1832), que `notasMicrotonales(sentido:afinacion:)` escribe en cents. Para oírlas, y
+para medir una escala en un temperamento histórico, véase <doc:AfinacionYRepresentaciones>.
 
 ```swift
 Escala(.re, .bayati).notas                                       // Re Mi♭ Fa Sol La Si♭ Do
@@ -377,6 +380,7 @@ TipoDeEscala.rastMakami.microtonal?.sistema                      // .comas53
 Escala(.re, .echosProtos).notasMicrotonales()                    // Re Mi⁻² Fa Sol La Si⁻² Do
 Escala(.do, .bilaval).notasMicrotonales()                        // Do Re↓ Mi↓ Fa Sol La↓ Si↓
 TipoDeEscala.frigio.microtonal                                   // nil
+TipoDeEscala.echosProtos.afinaciones.count                       // 2
 ```
 
 Los microtonos llegan también a las partituras. `Escala.voz(octava:sentido:duracion:)` da la escala en negras, y

@@ -2,6 +2,19 @@
 
 ## Sin publicar
 
+### Las escalas y sus afinaciones
+
+- Una escala puede tener varias versiones microtonales: `TipoDeEscala.afinaciones`, cada una con su `fuente`
+  (`TipoDeEscalaMicrotonal.fuente`; `microtonal` sigue siendo la primera, la de su teoría de hoy). Los echoi
+  diatónicos tienen además la de Chrysanthos de Madytos (1832), en los 68 moria de su teoría, en cents.
+  `Escala.notasMicrotonales(sentido:afinacion:)` escribe la escala en cualquiera de ellas.
+- `Escala.afinacion(la4:microtonal:sentido:)` da una `AfinacionDeEscala`: la escala suena con sus microtonos (el
+  Mi𝄳 de Bayātī, 50 cents sobre Mi♭) y las notas que no son suyas, en temperamento igual.
+- `Escala.cents(en:sentido:)` da los cents de cada grado en una `AfinacionHistorica`, que dependen de la tónica
+  en los temperamentos circulares (la tercera de Do mayor mide 390 cents en Werckmeister III; la de Re♭ mayor, 408).
+- `Tradicion.afinacionSugerida` (y `TipoDeEscala.afinacionSugerida`): la pitagórica en el canto gregoriano, la
+  Grecia antigua, Mesopotamia y China; la justa en la India.
+
 ### El nombre completo de una escala
 
 - `TipoDeEscala.nombreCompleto` (y `nombreCompleto(en:)`) antepone al nombre la palabra de su categoría cuando es
