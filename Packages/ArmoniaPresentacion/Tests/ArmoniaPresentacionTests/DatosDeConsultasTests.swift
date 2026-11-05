@@ -35,7 +35,7 @@ import Testing
     }
 
     @Test func unConjunto() {
-        let datos = DatosDeConjunto(ConjuntoDeClases([0, 4, 7]), notacion: .espanolCompacto)
+        let datos = DatosDeConjunto(ConjuntoDeClasesDeAltura([0, 4, 7]), notacion: .espanolCompacto)
         #expect(datos.forte == "3-11")
         #expect(datos.formaPrima == [0, 3, 7])
         // El análisis postonal de las apps sale de los mismos datos.
@@ -53,7 +53,7 @@ import Testing
             "5 4 0 9 7 2 8 1 3 6 t e", forma: FormaDeSerie(.original, 5), notacion: .espanolCompacto)
         #expect(presentada.matriz == datos.matriz)
         #expect(presentada.datos.first?.valor == datos.notas.joined(separator: " "))
-        #expect(presentada.nombresDeLasClases == ConjuntoDeClases.nombresDeLasClases(en: .espanolCompacto))
+        #expect(presentada.nombresDeLasClases == ConjuntoDeClasesDeAltura.nombresDeLasClases(en: .espanolCompacto))
     }
 
     @Test func seLeenComoSeEscriben() throws {

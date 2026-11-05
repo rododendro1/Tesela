@@ -67,7 +67,7 @@ public struct PuntoDeLaRed: Hashable, Sendable, CustomStringConvertible {
 ///     t.svg()           // el dibujo
 ///
 /// Se puede construir con notas (`Tonnetz([.do, .mi, .sol])`), un acorde, una escala o un
-/// `ConjuntoDeClases`; este último, sin ortografía, en el Tonnetz de doce notas.
+/// `ConjuntoDeClasesDeAltura`; este último, sin ortografía, en el Tonnetz de doce notas.
 public struct Tonnetz: Hashable, Sendable {
     /// Una tríada completa: los tres vértices de un triángulo.
     public struct Triada: Hashable, Sendable, CustomStringConvertible {
@@ -138,7 +138,7 @@ public struct Tonnetz: Hashable, Sendable {
     }
 
     /// Coloca las clases de altura en el Tonnetz de doce notas, de la forma más compacta.
-    public init(_ conjunto: ConjuntoDeClases) {
+    public init(_ conjunto: ConjuntoDeClasesDeAltura) {
         puntos = Tonnetz.colocar(conjunto.clases) { clase, cerca in
             // Los puntos con 7 · quintas + 4 · terceras ≡ clase (mod 12): para cada fila de terceras,
             // las quintas de 12 en 12 cerca de 0.

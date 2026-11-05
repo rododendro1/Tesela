@@ -167,13 +167,13 @@ import Testing
     }
 }
 
-@Suite struct ConjuntoDeClasesExhaustivoTests {
+@Suite struct ConjuntoDeClasesDeAlturaExhaustivoTests {
     /// Los 4096 subconjuntos de las doce clases caen en 224 clases (223 con nombre más el
     /// vacío), y transponer o invertir nunca cambia la clase ni el vector interválico.
     @Test func todosLosSubconjuntos() {
         var nombres = Set<String>()
         for mascara in 0..<(1 << 12) {
-            let conjunto = ConjuntoDeClases((0..<12).filter { mascara & (1 << $0) != 0 })
+            let conjunto = ConjuntoDeClasesDeAltura((0..<12).filter { mascara & (1 << $0) != 0 })
             guard !conjunto.clases.isEmpty else { continue }
             guard let nombre = conjunto.numeroDeForte else {
                 Issue.record("Sin nombre de Forte: \(conjunto) → \(conjunto.formaPrima)")
@@ -184,7 +184,7 @@ import Testing
             let otro = conjunto.transponer(mascara % 12).invertir(mascara % 7)
             #expect(otro.formaPrima == conjunto.formaPrima)
             #expect(otro.vectorIntervalico == conjunto.vectorIntervalico)
-            #expect(ConjuntoDeClases(conjunto.formaPrima).formaPrima == conjunto.formaPrima)
+            #expect(ConjuntoDeClasesDeAltura(conjunto.formaPrima).formaPrima == conjunto.formaPrima)
         }
         #expect(nombres.count == 223)
         #expect(nombres.filter { $0.contains("Z") }.count == 46)

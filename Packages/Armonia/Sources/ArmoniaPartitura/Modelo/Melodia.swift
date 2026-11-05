@@ -61,7 +61,7 @@ public struct Melodia: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// Clases de altura que usa la melodía.
-    public var conjuntoDeClases: ConjuntoDeClases { ConjuntoDeClases(alturas: alturas) }
+    public var conjuntoDeClases: ConjuntoDeClasesDeAltura { ConjuntoDeClasesDeAltura(alturas: alturas) }
 
     /// Tonalidades más probables (Krumhansl-Schmuckler, con la ortografía de las notas).
     public var candidatosDeTonalidad: [Candidato<Tonalidad>] { Tonalidad.candidatos(alturas: alturas) }

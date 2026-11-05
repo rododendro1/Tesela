@@ -66,7 +66,7 @@ public enum LecturaAlAzar {
             _ = pieza.analisis()
         },
         texto("conjunto de clases") { texto in
-            let conjunto = try ConjuntoDeClases(leyendo: texto)
+            let conjunto = try ConjuntoDeClasesDeAltura(leyendo: texto)
             _ = conjunto.numeroDeForte
         },
         texto("serie dodecafónica") { texto in

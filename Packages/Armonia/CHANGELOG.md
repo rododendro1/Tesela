@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+### `ConjuntoDeClases` pasa a llamarse `ConjuntoDeClasesDeAltura`
+
+- `ConjuntoDeClasesDeAltura` es el nuevo nombre de `ConjuntoDeClases`, para que diga de qué clases es. El nombre de
+  antes sigue compilando, obsoleto, en `ArmoniaNucleo/Obsoletos.swift`, y Xcode propone el cambio. La propiedad
+  `conjuntoDeClases` de `ConClasesDeAltura` no cambia.
+
 ### La conducción de las voces y una progresión en las doce tonalidades
 
 - `PresentacionDeAnalisis.conduccion(_:disposicion:notacion:)`: cómo va cada voz de un acorde al siguiente en

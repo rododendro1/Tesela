@@ -265,9 +265,9 @@ public enum PresentacionDeRedes {
                 ?? Tonnetz(primero).svg(opciones: opciones)
         // Para identificar: con margen de sobra para tocar más notas, aunque aún no haya ninguna, y sin título.
         case (.tablaArmonica, .clases(let clases)):
-            return TablaArmonica(ConjuntoDeClases(clases)).svg(opciones: sinTitulo, margen: 3)
+            return TablaArmonica(ConjuntoDeClasesDeAltura(clases)).svg(opciones: sinTitulo, margen: 3)
         case (_, .clases(let clases)):
-            return Tonnetz(ConjuntoDeClases(clases)).svg(opciones: sinTitulo, margen: 3)
+            return Tonnetz(ConjuntoDeClasesDeAltura(clases)).svg(opciones: sinTitulo, margen: 3)
         }
     }
 

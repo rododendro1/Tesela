@@ -226,7 +226,7 @@ extension Escala: RepresentableComoTexto, Nombrable, Transponible, ConClasesDeAl
 
     /// Clases de altura de la escala: cualquier escala mayor → 7-35.
     /// Clases de altura de la forma ascendente (la menor melódica es 7-34, como la de jazz).
-    public var conjuntoDeClases: ConjuntoDeClases { ConjuntoDeClases(notas: notas) }
+    public var conjuntoDeClases: ConjuntoDeClasesDeAltura { ConjuntoDeClasesDeAltura(notas: notas) }
 }
 
 // MARK: - Armaduras y círculo de quintas

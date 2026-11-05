@@ -38,7 +38,7 @@ extension LineaDeComandos {
     static func consultarConjunto(_ resto: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         if let opcion = Argumentos(resto).opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
         guard !resto.isEmpty else { throw ErrorDeUso.faltaConjunto }
-        return bien(describir(conjunto: try ConjuntoDeClases(leyendo: resto.joined(separator: " ")), notacion))
+        return bien(describir(conjunto: try ConjuntoDeClasesDeAltura(leyendo: resto.joined(separator: " ")), notacion))
     }
 
     /// `serie <doce notas>`: la serie dodecafónica y su matriz.
@@ -916,7 +916,7 @@ extension LineaDeComandos {
     // MARK: Teoría postonal
 
     /// `conjunto 0 4 7`: el conjunto con sus notas, sus formas, sus vectores y sus ejes de simetría.
-    static func describir(conjunto: ConjuntoDeClases, _ notacion: Notacion) -> String {
+    static func describir(conjunto: ConjuntoDeClasesDeAltura, _ notacion: Notacion) -> String {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let datos = DatosDeConjunto(conjunto, notacion: notacion)
         func lista(_ numeros: [Int]) -> String { "[" + numeros.map(String.init).joined(separator: ", ") + "]" }
