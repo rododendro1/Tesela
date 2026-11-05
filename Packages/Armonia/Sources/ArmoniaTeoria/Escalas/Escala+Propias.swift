@@ -312,7 +312,7 @@ extension Escala {
                     quitadas: notas.filter { !suyas.contains($0.claseDeAltura) },
                     anadidas: escala.notas.filter { !propias.contains($0.claseDeAltura) }))
         }
-        let posicion = Dictionary(resultado.enumerated().map { ($0.element.escala, $0.offset) }) { a, _ in a }
+        let posicion = Dictionary(uniqueKeysWithValues: resultado.enumerated().map { ($0.element.escala, $0.offset) })
         return Array(
             resultado.sorted {
                 ($0.diferencia, -$0.comunes.count, posicion[$0.escala] ?? 0)
