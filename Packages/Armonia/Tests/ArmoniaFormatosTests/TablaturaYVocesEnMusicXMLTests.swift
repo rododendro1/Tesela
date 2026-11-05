@@ -115,7 +115,8 @@ import Testing
             </score-partwise>
             """
         let pieza = try PiezaImportada(musicXML: Data(xml.utf8))
-        #expect(Set(pieza.notas.compactMap(\.voz)) == [1, 2, 5] && Set(pieza.notas.compactMap(\.pentagrama)) == [1, 2])
+        #expect(Set(pieza.notas.compactMap(\.voz)) == [1, 2, 5])
+        #expect(Set(pieza.notas.compactMap(\.pentagrama)) == [1, 2])
         let partitura = pieza.partitura()
         #expect(partitura.pentagramas.count == 2)
         let derecha = partitura.pentagramas[0].voces.map { $0.voz.eventos.map(\.alturas) }
