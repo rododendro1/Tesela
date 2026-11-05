@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### La hoja de estudio en la app, con las secciones que se elijan
+
+- En la app, la pestaña de escalas muestra la hoja de estudio antes de exportarla, con un interruptor para cada
+  sección (pentagrama, estadísticas, reloj, teclados, acordes y escalera de brillo); se exporta con las elegidas.
+- `PresentacionDeEstudioDeEscala.hojaDeEstudio(de:notacion:secciones:)` y `SeccionDeLaHoja` eligen las secciones, y
+  `tamano(deUnSVG:)` da su ancho y su alto para verla con su proporción.
+
 ### `armonia escalas`: comparar en una tabla y buscar por intervalos
 
 - `armonia escalas --comparar Do mayor, Do lidio, Do dórico` (`--compare`) pone varias escalas en una tabla, una por

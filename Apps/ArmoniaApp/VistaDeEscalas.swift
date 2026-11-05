@@ -22,6 +22,8 @@ struct VistaDeEscalas: View {
     @State private var capo = 0
     /// El reloj de la escala: el círculo cromático o el de quintas.
     @State private var ordenDelReloj = RelojDeClases.Orden.cromatico
+    /// Las secciones que lleva la hoja de estudio, para verla y exportarla.
+    @State private var seccionesDeLaHoja = Set(SeccionDeLaHoja.allCases)
     /// Si los acordes de las doce tonalidades llevan séptima.
     @State private var conSeptima = true
     /// La escala con que se compara la elegida, o vacío.
@@ -125,6 +127,7 @@ struct VistaDeEscalas: View {
             acordesEnLasDoceTonalidades(de: escala)
             modos(de: escala)
             comparacion(de: escala)
+            seccionDeLaHoja(de: escala)
         }
         .navigationTitle(notacion.texto(\.escalas))
         .selectorDeNotacionEnLaBarra()
@@ -210,11 +213,39 @@ struct VistaDeEscalas: View {
         }
     }
 
-    /// La hoja de estudio de la escala, para imprimirla: pentagrama, teclados, reloj, estadísticas, acordes y escalera.
+    /// La hoja de estudio de la escala, para imprimirla, con las secciones elegidas: pentagrama, teclados, reloj,
+    /// estadísticas, acordes y escalera.
     private func hojaDeEstudio(de escala: Escala) -> FicheroParaExportar {
         FicheroParaExportar.svg(
-            PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, notacion: notacion),
+            PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, notacion: notacion, secciones: seccionesDeLaHoja),
             nombre: notacion.texto(\.hojaDeEstudio) + " " + escala.nombre(en: notacion))
+    }
+
+    /// Si la hoja de estudio lleva una sección, para su interruptor.
+    private func incluye(_ seccion: SeccionDeLaHoja) -> Binding<Bool> {
+        Binding(
+            get: { seccionesDeLaHoja.contains(seccion) },
+            set: { incluida in
+                if incluida { seccionesDeLaHoja.insert(seccion) } else { seccionesDeLaHoja.remove(seccion) }
+            })
+    }
+
+    /// La hoja de estudio vista antes de exportarla, con un interruptor para cada sección; se exporta con la barra.
+    @ViewBuilder
+    private func seccionDeLaHoja(de escala: Escala) -> some View {
+        let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudio(
+            de: escala, notacion: notacion, secciones: seccionesDeLaHoja)
+        let tamano = PresentacionDeEstudioDeEscala.tamano(deUnSVG: hoja) ?? (ancho: 595, alto: 842)
+        Section(notacion.texto(\.hojaDeEstudio)) {
+            DisclosureGroup(notacion.texto(\.hojaDeEstudio) + " (\(seccionesDeLaHoja.count))") {
+                ForEach(SeccionDeLaHoja.allCases, id: \.self) { seccion in
+                    Toggle(seccion.nombre(en: notacion), isOn: incluye(seccion))
+                }
+            }
+            VistaSVG(svg: hoja)
+                .aspectRatio(CGSize(width: tamano.ancho, height: tamano.alto), contentMode: .fit)
+                .accessibilityLabel(Text(notacion.texto(\.hojaDeEstudio) + " " + escala.nombre(en: notacion)))
+        }
     }
 
     /// Los teclados de cada mano, para exportarlos en SVG.
