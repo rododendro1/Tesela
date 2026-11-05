@@ -118,6 +118,28 @@ import Testing
         #expect(cuerpo.isEmpty)
     }
 
+    /// La hoja con solo algunas secciones: sin las que no se piden, y más corta.
+    @Test func hojaDeEstudioConSecciones() throws {
+        let entera = PresentacionDeEstudioDeEscala.hojaDeEstudio(de: Escala(.do), notacion: notacion)
+        let corta = PresentacionDeEstudioDeEscala.hojaDeEstudio(
+            de: Escala(.do), notacion: notacion, secciones: [.reloj, .acordes])
+        #expect(corta.contains(">Do mayor</text>"))
+        #expect(!corta.contains(">Estadísticas</text>"))
+        #expect(!corta.contains(">Escalera de brillo</text>"))
+        #expect(corta.contains(">Acordes de la escala</text>"))
+        // Solo el reloj, dentro, y a la izquierda.
+        #expect(corta.components(separatedBy: "<svg x=").count - 1 == 1)
+        #expect(corta.contains("<svg x=\"40\" y="))
+        let altoEntera = try #require(PresentacionDeEstudioDeEscala.tamano(deUnSVG: entera)?.alto)
+        let altoCorta = try #require(PresentacionDeEstudioDeEscala.tamano(deUnSVG: corta)?.alto)
+        #expect(altoCorta < altoEntera)
+        let soloElNombre = PresentacionDeEstudioDeEscala.hojaDeEstudio(
+            de: Escala(.do), notacion: notacion, secciones: [])
+        #expect(!soloElNombre.contains("<svg x="))
+        #expect(SeccionDeLaHoja.teclados.nombre(en: notacion) == "Digitación de piano")
+        #expect(PresentacionDeEstudioDeEscala.tamano(deUnSVG: "<svg/>") == nil)
+    }
+
     @Test func lineasDeNotasGuia() {
         let acordes = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let lineas = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(

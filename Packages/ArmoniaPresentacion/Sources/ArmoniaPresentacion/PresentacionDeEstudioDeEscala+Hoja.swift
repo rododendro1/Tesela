@@ -1,6 +1,23 @@
 import Armonia
 import Foundation
 
+/// Una parte de la hoja de estudio de una escala, para elegir cuáles lleva: el nombre y las notas van siempre.
+public enum SeccionDeLaHoja: String, CaseIterable, Hashable, Sendable {
+    case pentagrama, estadisticas, reloj, teclados, acordes, escalera
+
+    /// Su título, en la notación: «Pentagrama», «Reloj de la escala», «Digitación de piano»…
+    public func nombre(en notacion: Notacion) -> String {
+        switch self {
+        case .pentagrama: notacion.texto(\.pentagrama)
+        case .estadisticas: notacion.texto(\.estadisticas)
+        case .reloj: notacion.texto(\.relojDeLaEscala)
+        case .teclados: notacion.texto(\.digitacionDePiano)
+        case .acordes: notacion.texto(\.acordesDeLaEscala)
+        case .escalera: notacion.texto(\.escaleraDeBrillo)
+        }
+    }
+}
+
 extension PresentacionDeEstudioDeEscala {
     // MARK: La hoja de estudio
 
@@ -10,12 +27,15 @@ extension PresentacionDeEstudioDeEscala {
 
     /// Una hoja de estudio de la escala, para imprimir: un SVG del ancho de un A4 con el nombre y las notas, el
     /// pentagrama, el teclado de piano con los dedos de cada mano, el reloj, las estadísticas, los acordes de sus
-    /// grados y la escalera de brillo. El alto es el que ocupa. `armonia grabar hoja Do mayor` la pasa a PDF.
+    /// grados y la escalera de brillo, o solo las `secciones` que se pidan. El alto es el que ocupa.
+    /// `armonia grabar hoja Do mayor` la pasa a PDF.
     ///
     ///     let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudio(
     ///         de: Escala(.re, .dorico), notacion: .espanolCompacto)
     ///     hoja.hasPrefix("<svg")   // true
-    public static func hojaDeEstudio(de escala: Escala, notacion: Notacion) -> String {
+    public static func hojaDeEstudio(
+        de escala: Escala, notacion: Notacion, secciones: Set<SeccionDeLaHoja> = Set(SeccionDeLaHoja.allCases)
+    ) -> String {
         let ancho = anchoDeLaHoja
         let margen = margenDeLaHoja
         let util = ancho - 2 * margen
@@ -31,36 +51,49 @@ extension PresentacionDeEstudioDeEscala {
         y += 16
 
         // El pentagrama, de lado a lado.
-        let pentagrama = PentagramaPresentado(escala, notacion: notacion).svg
-        y += incrustar(pentagrama, x: margen, y: y, ancho: util, en: &cuerpo) + 12
-
-        // Las estadísticas, a la izquierda, y el reloj, a la derecha.
-        let ladoDelReloj = 170.0
-        y += 4
-        cuerpo.append(texto(notacion.texto(\.estadisticas), x: margen, y: y + 12, tamano: 14, negrita: true))
-        var lineas = y + 32
-        for dato in estadisticas(de: escala, notacion: notacion) {
-            cuerpo.append(texto(dato.nombre + ": " + dato.valor, x: margen, y: lineas, tamano: 11))
-            lineas += 16
+        if secciones.contains(.pentagrama) {
+            let pentagrama = PentagramaPresentado(escala, notacion: notacion).svg
+            y += incrustar(pentagrama, x: margen, y: y, ancho: util, en: &cuerpo) + 12
         }
-        let reloj = self.reloj(de: escala, notacion: notacion)
-        let altoDelReloj = incrustar(reloj, x: ancho - margen - ladoDelReloj, y: y, ancho: ladoDelReloj, en: &cuerpo)
-        y = max(lineas, y + altoDelReloj) + 12
+
+        // Las estadísticas, a la izquierda, y el reloj, a la derecha (o solo uno de los dos).
+        if secciones.contains(.estadisticas) || secciones.contains(.reloj) {
+            let ladoDelReloj = 170.0
+            y += 4
+            var lineas = y
+            if secciones.contains(.estadisticas) {
+                cuerpo.append(texto(notacion.texto(\.estadisticas), x: margen, y: y + 12, tamano: 14, negrita: true))
+                lineas += 32
+                for dato in estadisticas(de: escala, notacion: notacion) {
+                    cuerpo.append(texto(dato.nombre + ": " + dato.valor, x: margen, y: lineas, tamano: 11))
+                    lineas += 16
+                }
+            }
+            var altoDelReloj = 0.0
+            if secciones.contains(.reloj) {
+                let reloj = self.reloj(de: escala, notacion: notacion)
+                let x = secciones.contains(.estadisticas) ? ancho - margen - ladoDelReloj : margen
+                altoDelReloj = incrustar(reloj, x: x, y: y, ancho: ladoDelReloj, en: &cuerpo)
+            }
+            y = max(lineas, y + altoDelReloj) + 12
+        }
 
         // El teclado de cada mano, uno al lado del otro.
-        let separacion = 15.0
-        let anchoDelTeclado = (util - separacion) / 2
-        var altoDeLosTeclados = 0.0
-        for (i, mano) in Mano.allCases.enumerated() {
-            let teclado = self.teclado(de: escala, mano: mano, notacion: notacion)
-            let x = margen + Double(i) * (anchoDelTeclado + separacion)
-            let alto = incrustar(teclado, x: x, y: y, ancho: anchoDelTeclado, en: &cuerpo)
-            altoDeLosTeclados = max(altoDeLosTeclados, alto)
+        if secciones.contains(.teclados) {
+            let separacion = 15.0
+            let anchoDelTeclado = (util - separacion) / 2
+            var altoDeLosTeclados = 0.0
+            for (i, mano) in Mano.allCases.enumerated() {
+                let teclado = self.teclado(de: escala, mano: mano, notacion: notacion)
+                let x = margen + Double(i) * (anchoDelTeclado + separacion)
+                let alto = incrustar(teclado, x: x, y: y, ancho: anchoDelTeclado, en: &cuerpo)
+                altoDeLosTeclados = max(altoDeLosTeclados, alto)
+            }
+            y += altoDeLosTeclados + 16
         }
-        y += altoDeLosTeclados + 16
 
         // Los acordes de cada grado, si los forma.
-        if let acordes = DatosDeEscala(escala, notacion: notacion).acordes {
+        if secciones.contains(.acordes), let acordes = DatosDeEscala(escala, notacion: notacion).acordes {
             cuerpo.append(texto(notacion.texto(\.acordesDeLaEscala), x: margen, y: y + 12, tamano: 14, negrita: true))
             y += 32
             for fila in filas(acordes.map { $0.grado + " " + $0.cifrado }, porFila: 4) {
@@ -71,7 +104,7 @@ extension PresentacionDeEstudioDeEscala {
         }
 
         // La escalera de brillo, de la más oscura a la más brillante.
-        let peldanos = escaleraDeBrillo(de: escala, notacion: notacion)
+        let peldanos = secciones.contains(.escalera) ? escaleraDeBrillo(de: escala, notacion: notacion) : []
         if peldanos.count > 1 {
             cuerpo.append(texto(notacion.texto(\.escaleraDeBrillo), x: margen, y: y + 12, tamano: 14, negrita: true))
             y += 32
@@ -117,6 +150,13 @@ extension PresentacionDeEstudioDeEscala {
             "<svg x=\"\(numero(x))\" y=\"\(numero(y))\" width=\"\(numero(ancho))\" height=\"\(numero(alto))\" "
                 + "viewBox=\"\(caja.texto)\">" + dentro + "</svg>")
         return alto
+    }
+
+    /// El ancho y el alto de un SVG por su `viewBox`, para mostrar la hoja con su proporción; `nil` si no lo tiene.
+    ///
+    ///     PresentacionDeEstudioDeEscala.tamano(deUnSVG: "<svg viewBox=\"0 0 595 800\"></svg>")?.alto   // 800
+    public static func tamano(deUnSVG svg: String) -> (ancho: Double, alto: Double)? {
+        cajaDeVision(svg).map { ($0.ancho, $0.alto) }
     }
 
     /// El `viewBox` de un SVG: su texto, su ancho y su alto.
