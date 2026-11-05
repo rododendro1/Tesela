@@ -212,6 +212,11 @@ extension TextosDeApps {
         escaleraDeBrillo: "Distira-eskailera",
         hojaDeEstudio: "Ikasketa-orria",
         mapaDeBrillo: "Distira-mapa",
+        escalasParecidas: "Antzeko eskalak",
+        modulaciones: "Modulazioak",
+        modulacionPorAcordeComun: "akorde komuna",
+        modulacionPorDisminuida: "zazpigarren txikitu enarmonikoa",
+        modulacionDirecta: "zuzena",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tentsioak",
         notasAEvitar: "Saihesteko",

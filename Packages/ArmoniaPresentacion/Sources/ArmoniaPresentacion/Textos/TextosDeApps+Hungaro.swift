@@ -212,6 +212,11 @@ extension TextosDeApps {
         escaleraDeBrillo: "Fényességlétra",
         hojaDeEstudio: "Gyakorlólap",
         mapaDeBrillo: "Fényességtérkép",
+        escalasParecidas: "Legközelebbi skálák",
+        modulaciones: "Modulációk",
+        modulacionPorAcordeComun: "közös akkord",
+        modulacionPorDisminuida: "enharmonikus szűkített szeptim",
+        modulacionDirecta: "közvetlen",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Feszültségek",
         notasAEvitar: "Kerülendő",

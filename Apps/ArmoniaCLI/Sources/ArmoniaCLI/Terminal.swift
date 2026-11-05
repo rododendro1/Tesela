@@ -30,7 +30,7 @@ extension LineaDeComandos {
         "--tonic", "--tresillos", "--triplets", "--romanos", "--roman", "--dedos", "--fingers",
         "--ajenas", "--non-chord", "--doble", "--grand-staff", "--cambiar-clave", "--clef-changes", "--bajo-cifrado",
         "--figured-bass", "--estadisticas", "--statistics", "--sin-semitonos", "--anhemitonic", "--regulares",
-        "--maximally-even", "--escalera", "--brightness-ladder", "--json",
+        "--maximally-even", "--escalera", "--brightness-ladder", "--parecidas", "--closest", "--json",
     ]
 
     /// Los valores que se proponen tras una opción.

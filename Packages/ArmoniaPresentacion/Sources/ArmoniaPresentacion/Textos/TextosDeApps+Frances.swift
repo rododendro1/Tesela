@@ -212,6 +212,11 @@ extension TextosDeApps {
         escaleraDeBrillo: "Échelle de brillance",
         hojaDeEstudio: "Fiche d'étude",
         mapaDeBrillo: "Carte de brillance",
+        escalasParecidas: "Gammes proches",
+        modulaciones: "Modulations",
+        modulacionPorAcordeComun: "accord commun",
+        modulacionPorDisminuida: "septième diminuée enharmonique",
+        modulacionDirecta: "directe",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "À éviter",

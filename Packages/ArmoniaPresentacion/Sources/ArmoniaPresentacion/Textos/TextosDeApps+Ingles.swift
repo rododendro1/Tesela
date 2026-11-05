@@ -212,6 +212,11 @@ extension TextosDeApps {
         escaleraDeBrillo: "Brightness ladder",
         hojaDeEstudio: "Study sheet",
         mapaDeBrillo: "Brightness map",
+        escalasParecidas: "Closest scales",
+        modulaciones: "Modulations",
+        modulacionPorAcordeComun: "common chord",
+        modulacionPorDisminuida: "enharmonic diminished seventh",
+        modulacionDirecta: "direct",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "Avoid",
