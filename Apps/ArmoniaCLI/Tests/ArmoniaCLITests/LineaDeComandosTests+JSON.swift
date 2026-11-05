@@ -57,6 +57,32 @@ extension LineaDeComandosTests {
         let acordes = try #require(dorico["acordes"] as? [[String: String]])
         #expect(acordes.count == 7)
         #expect(acordes.first?["cifrado"] == "Rem7")
+        // Sin opciones, solo esas claves.
+        #expect(Set(dorico.keys) == ["nombre", "notas", "clases", "modo", "acordes"])
+    }
+
+    /// Las opciones del texto valen también con `--json`, y cada una añade su clave.
+    @Test func escalaConOpcionesEnJSON() throws {
+        let orden =
+            "escala Do mayor --acordes --secuencia terceras --piano --modos --simetria --vecinas --comparar Do lidio"
+        let mayor = try #require(try json(orden) as? [String: Any])
+        #expect(mayor["notas"] as? [String] == ["Do", "Re", "Mi", "Fa", "Sol", "La", "Si"])
+        #expect((mayor["acordesQueCaben"] as? [[String: Any]])?.count == 7)
+        let secuencia = try #require(mayor["secuencia"] as? [String: Any])
+        #expect((secuencia["midi"] as? [Int])?.prefix(2) == [60, 64])
+        let piano = try #require(mayor["piano"] as? [[String: Any]])
+        #expect(piano.count == 2)
+        #expect((piano[0]["dedos"] as? [Int])?.count == (piano[0]["notas"] as? [String])?.count)
+        #expect((mayor["modosParalelos"] as? [[String: String]])?.count == 7)
+        #expect((mayor["modosRelativos"] as? [String])?.isEmpty == false)
+        #expect((mayor["simetria"] as? [String: Any])?["resumen"] is String)
+        #expect(mayor["vecinas"] is [[String: String]])
+        #expect((mayor["comparacion"] as? [String: Any])?["comunes"] is String)
+        let doce = try #require(try json("escala Do mayor --doce --acordes") as? [String: Any])
+        #expect((doce["doceTonalidades"] as? [[String: String]])?.count == 12)
+        #expect(doce["acordesEnLasDoceTonalidades"] is [String: Any])
+        // Lo mal escrito sigue siendo un error de uso.
+        #expect(LineaDeComandos.ejecutar(["escala", "Do", "mayor", "--secuencia", "foo", "--json"]).codigo == 2)
     }
 
     @Test func analizarEnJSON() throws {

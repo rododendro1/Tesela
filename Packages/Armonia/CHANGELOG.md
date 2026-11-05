@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+### `armonia escala --json`, con las opciones del texto
+
+- `escala … --json` admite las mismas opciones que el texto, y cada una añade su clave a las de siempre:
+  `--acordes` (`acordesQueCaben` y, con `--doce`, `acordesEnLasDoceTonalidades`), `--secuencia` (`secuencia`, con
+  sus notas y sus números MIDI, a lo largo de `--octavas` y hacia abajo con `--bajando`), `--piano` (`piano`, cada
+  mano con sus notas y sus dedos), `--modos` (`modosParalelos` y `modosRelativos`), `--simetria`, `--vecinas`,
+  `--doce` (`doceTonalidades`) y `--comparar` (`comparacion`). Antes daban «opción desconocida». Sin opciones, el
+  JSON no cambia. El texto y el JSON leen las opciones con la misma función (`pedidoDeEscala`).
+
 ### `armonia`: un solo camino para los errores de uso
 
 - `ErrorDeUso` es un `Error`, y las órdenes lo lanzan (`throw ErrorDeUso.faltaEscala`) en lugar de devolver el
