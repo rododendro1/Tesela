@@ -19,7 +19,7 @@ extension Partitura {
     public func svg(opciones: OpcionesDePentagrama = OpcionesDePentagrama()) -> String {
         var suyas = opciones
         if suyas.notacionFijada == nil { suyas.notacionFijada = notacion }
-        let titulo = suyas.titulo ?? encabezado.titulo(en: suyas.notacion) ?? parte
+        let titulo = suyas.titulo ?? encabezado.titulo(en: suyas.notacion) ?? nombreDeLaParte
         if suyas.armadura == .automatica, let tonalidad = encabezado.tonalidad {
             suyas.armadura = .tonalidad(tonalidad)
         }

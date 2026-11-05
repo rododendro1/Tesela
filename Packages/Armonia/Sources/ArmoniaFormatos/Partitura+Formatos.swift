@@ -46,7 +46,7 @@ extension Partitura {
                 return linea.marcadores[inicio] ?? ""
             }
             archivo.anadir(
-                linea.voz.eventos, nombre: linea.nombre ?? parte, instrumento: instrumento,
+                linea.voz.eventos, nombre: linea.nombre ?? nombreDeLaParte, instrumento: instrumento,
                 marcadores: linea.marcadores.isEmpty ? [] : marcadores)
         }
         return archivo.datos
