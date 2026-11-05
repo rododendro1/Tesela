@@ -168,11 +168,19 @@ extension LineaDeComandos {
             return bien(PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, notacion: notacion))
         }
         if argumentos.quitarMarca("--acordes", "--chords") {
+            // --doce se quita antes que la tonalidad, que se lleva todo lo que va detrás de --en.
+            let doce = argumentos.quitarMarca("--doce", "--all-keys")
             guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaValor("--en") }
             if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanLosAcordesDeLaHoja }
             let analisis = try PresentacionDeAnalisis.analizar(
                 argumentos.restantes.joined(separator: " "), en: tonalidad, notacion: notacion)
+            // Con --doce, la progresión en las doce tonalidades, desde la dada o la del análisis.
+            if doce, let propia = tonalidad ?? analisis.tonalidad ?? analisis.acordes.first?.tonalidadPropia {
+                return bien(
+                    PresentacionDeAnalisis.hojaEnLasDoceTonalidades(
+                        analisis.acordes, tonalidad: propia, notacion: notacion))
+            }
             return bien(PresentacionDeAnalisis.hojaDeEstudio(analisis, notacion: notacion))
         }
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }

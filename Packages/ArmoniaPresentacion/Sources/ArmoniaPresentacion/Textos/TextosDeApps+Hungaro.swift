@@ -217,6 +217,7 @@ extension TextosDeApps {
         modulacionPorAcordeComun: "közös akkord",
         modulacionPorDisminuida: "enharmonikus szűkített szeptim",
         modulacionDirecta: "közvetlen",
+        conduccionDeVoces: "Szólamvezetés",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Feszültségek",
         notasAEvitar: "Kerülendő",

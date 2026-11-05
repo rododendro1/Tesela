@@ -84,6 +84,7 @@ struct VistaDeAnalisis: View {
                 }
                 lineasDeNotasGuia(analisis)
                 modulaciones(analisis)
+                doceTonalidades(analisis)
                 arpegiar(analisis)
                 disponer(analisis)
                 rearmonizar(analisis)
@@ -140,7 +141,45 @@ struct VistaDeAnalisis: View {
         let hoja = FicheroParaExportar.svg(
             PresentacionDeAnalisis.hojaDeEstudio(analisis, disposicion: disposicion, notacion: notacion),
             nombre: notacion.texto(\.hojaDeEstudio))
-        return analisis.ficheros + [hoja] + (arpegiada?.ficheros ?? []) + (dispuesta?.ficheros ?? []) + guias
+        let doce = tonalidadDeLasDoce(analisis).map { tonalidad in
+            FicheroParaExportar.svg(
+                PresentacionDeAnalisis.hojaEnLasDoceTonalidades(
+                    analisis.acordes, tonalidad: tonalidad, disposicion: disposicion, notacion: notacion),
+                nombre: notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.enLasDoceTonalidades))
+        }
+        return analisis.ficheros + [hoja] + (doce.map { [$0] } ?? []) + (arpegiada?.ficheros ?? [])
+            + (dispuesta?.ficheros ?? []) + guias
+    }
+
+    /// La tonalidad desde la que se lleva la progresión a las doce: la del análisis o, si modula, la del primer
+    /// acorde.
+    private func tonalidadDeLasDoce(_ analisis: AnalisisPresentado) -> Tonalidad? {
+        analisis.tonalidad ?? analisis.acordes.first?.tonalidadPropia
+    }
+
+    /// La progresión en las doce tonalidades, de quinta en quinta, para escucharla en cada una; la hoja para
+    /// practicarla se exporta con la barra.
+    @ViewBuilder
+    private func doceTonalidades(_ analisis: AnalisisPresentado) -> some View {
+        if let tonalidad = tonalidadDeLasDoce(analisis), !analisis.acordes.isEmpty {
+            Section(notacion.texto(\.enLasDoceTonalidades)) {
+                ForEach(
+                    PresentacionDeAnalisis.enLasDoceTonalidades(
+                        analisis.acordes, tonalidad: tonalidad, notacion: notacion),
+                    id: \.self
+                ) { progresion in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(progresion.titulo).bold()
+                            Text(progresion.cifrados).font(.system(.footnote, design: .monospaced))
+                        }
+                        Spacer()
+                        BotonDeEscuchar(progresion.sonido).labelStyle(.iconOnly)
+                    }
+                    .buttonStyle(.borderless)
+                }
+            }
+        }
     }
 
     /// «Transponer»: las demás tonalidades del mismo modo. Lo abierto de un fichero conserva su ritmo armónico.
@@ -301,9 +340,28 @@ struct VistaDeAnalisis: View {
                     }
                     .listRowBackground(sonando == i ? TemaDeLasApps.resaltado.opacity(0.25) : nil)
                 }
+                conduccion(analisis)
             } else {
                 Text(notacion.texto(\.noSeDibuja)).foregroundColor(.secondary)
             }
+        }
+    }
+
+    /// Paso a paso, las notas comunes y lo que se mueve cada voz en la disposición elegida, y el movimiento total.
+    @ViewBuilder
+    private func conduccion(_ analisis: AnalisisPresentado) -> some View {
+        if let voces = PresentacionDeAnalisis.conduccion(
+            analisis.acordes, disposicion: disposicion, notacion: notacion)
+        {
+            Text(notacion.texto(\.conduccionDeVoces) + " · " + voces.disposicion).bold()
+            ForEach(Array(voces.pasos.enumerated()), id: \.offset) { _, paso in
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(paso.titulo + " · " + paso.comunes)
+                    Text(paso.voces.joined(separator: " · "))
+                        .font(.system(.footnote, design: .monospaced)).foregroundColor(.secondary)
+                }
+            }
+            Text(voces.movimientoTotal).foregroundColor(.secondary)
         }
     }
 
