@@ -163,7 +163,7 @@ PuntoDeLaRed(quintas: 4, terceras: -1).claseDeAltura  // 0
 Tonnetz(Acorde("Domaj7")).triadas.map(\.acorde) == [Acorde("Do"), Acorde("Mim")]   // true
 Tonnetz(Escala(.do)).esConexo                            // true
 Tonnetz(Escala(.do, .tonosEnteros)).esConexo             // false
-"\(Tonnetz(ConjuntoDeClases([0, 4, 7])))"                // "0 (0, 0) · 4 (0, 1) · 7 (1, 0)"
+"\(Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7])))"                // "0 (0, 0) · 4 (0, 1) · 7 (1, 0)"
 ```
 
 Las notas se colocan en la disposición más compacta: la que deja menos grupos sueltos y, entre
@@ -192,7 +192,7 @@ marca sin texto y el reloj escribe el número de cada clase (0 es Do). Marcadas 
 let dibujo = Tonnetz(Escala(.re, .dorico)).svg()          // con el título «Re dórico» y su leyenda
 let sinLeyenda = Tonnetz(Acorde("Do")).svg(opciones: .init(titulo: "Tónica"), leyenda: false)
 let ingles = Tonnetz(Acorde("Fa#m7")).svg(opciones: .init(notacion: .inglesASCII), margen: 2)
-let toro = Tonnetz(ConjuntoDeClases([0, 4, 7, 11])).svg(margen: 3)
+let toro = Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7, 11])).svg(margen: 3)
 RelojDeClases(clases: [0, 4, 7]).svg(opciones: .init(notacion: .inglesASCII)).contains(">G</text>")   // true
 TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: [61], opciones: .init(preferirBemoles: true)).contains(">Re♭</text>")   // true
 TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: MarcasDeDiagrama(Escala("Fa mayor").alturas(octava: 4))).contains(">Si♭</text>")   // true

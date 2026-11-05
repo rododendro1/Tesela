@@ -2,7 +2,7 @@
 // Generada a partir de las tablas de music21 (cuthbertLab/music21, chord/tables.py), con las
 // relaciones Z recalculadas a partir de los vectores interválicos. 223 clases (de 1 a 12 notas).
 
-extension ConjuntoDeClases {
+extension ConjuntoDeClasesDeAltura {
     package static let tablaForte: [[Int]: String] = [
         [0]: "1-1",
         [0, 1]: "2-1",

@@ -94,18 +94,18 @@ import Testing
     }
 
     @Test func clasesDeAltura() {
-        let triada = Tonnetz(ConjuntoDeClases([0, 4, 7]))
+        let triada = Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7]))
         #expect(!triada.tieneOrtografia)
         #expect(triada.puntos.map(\.claseDeAltura) == [0, 4, 7])
         #expect(triada.triadas.count == 1)
         // Sin ortografía, el acorde de séptima disminuida es una línea de terceras menores.
-        let disminuido = Tonnetz(ConjuntoDeClases([0, 3, 6, 9]))
+        let disminuido = Tonnetz(ConjuntoDeClasesDeAltura([0, 3, 6, 9]))
         #expect(disminuido.esConexo)
         #expect(Set(disminuido.aristas.map(\.eje)) == [.terceraMenor])
         // Toda tríada mayor o menor, transportada, sigue siendo un triángulo.
         for n in 0..<12 {
-            #expect(Tonnetz(ConjuntoDeClases([0, 4, 7]).transponer(n)).triadas.count == 1, "\(n)")
-            #expect(Tonnetz(ConjuntoDeClases([0, 3, 7]).transponer(n)).triadas.count == 1, "\(n)")
+            #expect(Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7]).transponer(n)).triadas.count == 1, "\(n)")
+            #expect(Tonnetz(ConjuntoDeClasesDeAltura([0, 3, 7]).transponer(n)).triadas.count == 1, "\(n)")
         }
         #expect("\(triada)" == "0 (0, 0) · 4 (0, 1) · 7 (1, 0)")
         #expect("\(Tonnetz(Acorde("Do")))" == "Do (0, 0) · Mi (0, 1) · Sol (1, 0)")
@@ -125,7 +125,7 @@ import Testing
     }
 
     @Test func sVG() throws {
-        for tonnetz in [Tonnetz(Escala(.re, .dorico)), Tonnetz(ConjuntoDeClases([0, 4, 7, 11])), Tonnetz([])] {
+        for tonnetz in [Tonnetz(Escala(.re, .dorico)), Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7, 11])), Tonnetz([])] {
             let svg = tonnetz.svg()
             let raiz = try #require(ElementoXML.leer(svg))
             #expect(raiz.nombre == "svg")
@@ -140,7 +140,7 @@ import Testing
         // En inglés, y con clases de altura, todas las repeticiones de cada clase.
         let ingles = try #require(ElementoXML.leer(Tonnetz(Acorde("Fa#")).svg(opciones: .init(notacion: .inglesASCII))))
         #expect(ingles.todos("text").contains { $0.texto == "F#" })
-        let clases = try #require(ElementoXML.leer(Tonnetz(ConjuntoDeClases([0, 4, 7])).svg(margen: 3)))
+        let clases = try #require(ElementoXML.leer(Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7])).svg(margen: 3)))
         #expect(clases.todos("text").filter { $0.atributos["font-weight"] == "bold" }.count > 3)
     }
 
@@ -271,7 +271,8 @@ import Testing
         // El título: el acorde, la escala, las notas, el conjunto o el recorrido.
         for (tonnetz, titulo) in [
             (Tonnetz(Acorde("Domaj7")), "Domaj7"), (Tonnetz(Escala(.re, .dorico)), "Re dórico"),
-            (Tonnetz([.do, .mi, .sol]), "Do · Mi · Sol"), (Tonnetz(ConjuntoDeClases([0, 4, 7])), "Conjunto [0, 4, 7]"),
+            (Tonnetz([.do, .mi, .sol]), "Do · Mi · Sol"),
+            (Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7])), "Conjunto [0, 4, 7]"),
             (Tonnetz(recorrido: ["Do", "Lam"])!, "Do –R→ Lam"),
         ] {
             let raiz = try #require(ElementoXML.leer(tonnetz.svg()))
@@ -300,7 +301,7 @@ import Testing
             try leyenda(#require(ElementoXML.leer(Tonnetz(recorrido: ["Do", "Lam"])!.svg()))).last
                 == "paso del recorrido (P, L, R)")
         #expect(
-            try leyenda(#require(ElementoXML.leer(Tonnetz(ConjuntoDeClases([0])).svg()))) == [
+            try leyenda(#require(ElementoXML.leer(Tonnetz(ConjuntoDeClasesDeAltura([0])).svg()))) == [
                 "clase de altura (todas sus copias)"
             ])
         #expect(

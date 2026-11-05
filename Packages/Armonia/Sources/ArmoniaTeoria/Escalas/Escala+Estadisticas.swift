@@ -24,8 +24,8 @@ public struct EstadisticasDeEscala: Hashable, Sendable {
     public let brilloPorQuintas: Double
     /// Los semitonos de cada paso, de la tónica a la octava: 2 2 1 2 2 2 1 en la mayor.
     public let pasos: [Int]
-    /// Cuántas veces aparece cada clase interválica, del semitono al tritono (`ConjuntoDeClases.vectorIntervalico`):
-    /// 2 5 4 3 6 1 en la mayor.
+    /// Cuántas veces aparece cada clase interválica, del semitono al tritono
+    /// (`ConjuntoDeClasesDeAltura.vectorIntervalico`): 2 5 4 3 6 1 en la mayor.
     public let vectorIntervalico: [Int]
     /// Sin semitonos entre ninguna de sus notas, como las pentatónicas y la de tonos enteros.
     public let anhemitonica: Bool

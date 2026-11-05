@@ -40,14 +40,14 @@ extension LineaDeComandos {
                 "armonia hoja --acorde Sol7 > sol7.svg",
                 "armonia sheet --chord G7 > g7.svg"),
             opciones: ["--acorde", "--chord"]),
-        // hoja --acordes <acordes> [--en <tonalidad>]
+        // hoja --acordes <acordes> [--en <tonalidad>] [--doce]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisHojaDeAcordes),
             descripcion: TextosDeCLI.traduccion(\.descripcionHojaDeAcordes),
             ejemplo: ejemplo(
                 "armonia hoja --acordes Rem7 Sol7 Do7M --en Do mayor > ii-V-I.svg",
                 "armonia sheet --chords Dm7 G7 Cmaj7 --in C major > ii-V-I.svg"),
-            opciones: ["--acordes", "--en", "--chords", "--in"]),
+            opciones: ["--acordes", "--en", "--doce", "--chords", "--in", "--all-keys"]),
     ]
 
     static let ayudaDeReloj: [EntradaDeAyuda] = [

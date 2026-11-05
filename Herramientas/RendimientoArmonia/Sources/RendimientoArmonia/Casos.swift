@@ -58,7 +58,7 @@ enum Casos {
             },
             Caso(grupo: "Conjuntos", nombre: "Forma prima de los 4096 conjuntos") {
                 (0..<4096).reduce(0) { suma, mascara in
-                    suma + ConjuntoDeClases((0..<12).filter { mascara & (1 << $0) != 0 }).formaPrima.count
+                    suma + ConjuntoDeClasesDeAltura((0..<12).filter { mascara & (1 << $0) != 0 }).formaPrima.count
                 }
             },
         ]

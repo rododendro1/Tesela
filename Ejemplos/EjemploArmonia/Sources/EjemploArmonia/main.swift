@@ -280,7 +280,7 @@ print("  Figuras:", Figura.allCases.map { "\($0.nombre) (\($0.duracion.texto))" 
 titulo("Conjuntos de clases de altura")
 for (nombre, conjunto) in [
     ("Do mayor", Acorde("Do").conjuntoDeClases), ("Sol7", Acorde("Sol7").conjuntoDeClases),
-    ("diatónica", Escala(.re).conjuntoDeClases), ("[0,1,4,6]", ConjuntoDeClases([0, 1, 4, 6])),
+    ("diatónica", Escala(.re).conjuntoDeClases), ("[0,1,4,6]", ConjuntoDeClasesDeAltura([0, 1, 4, 6])),
 ] {
     print(
         "  \(nombre): forma prima \(conjunto.formaPrima), \(conjunto.numeroDeForte ?? "—"),",

@@ -90,23 +90,23 @@ package enum LecturaDeClases {
     }
 }
 
-extension ConjuntoDeClases {
+extension ConjuntoDeClasesDeAltura {
     /// Lee un conjunto escrito a mano: «[0, 4, 7]», «{0 4 7}», «047», «01t», «Do Mi Sol», «C E G», o su número de
     /// Forte («3-11», «4-Z15»; la Z puede faltar), que da la forma prima.
     ///
     /// En las cifras seguidas, `t` es 10 y `e` es 11; un número de 0 a 11 sin ceros delante es esa clase («10 11»).
     /// Las repeticiones no cuentan: «0 4 7 0» es [0, 4, 7]. «[]» es el conjunto vacío.
     ///
-    ///     try ConjuntoDeClases(leyendo: "[0, 4, 7]")   // [0, 4, 7]
-    ///     try ConjuntoDeClases(leyendo: "01t")         // [0, 1, 10]
-    ///     try ConjuntoDeClases(leyendo: "Re Fa La")    // [2, 5, 9]
-    ///     try ConjuntoDeClases(leyendo: "4-Z15")       // [0, 1, 4, 6]
+    ///     try ConjuntoDeClasesDeAltura(leyendo: "[0, 4, 7]")   // [0, 4, 7]
+    ///     try ConjuntoDeClasesDeAltura(leyendo: "01t")         // [0, 1, 10]
+    ///     try ConjuntoDeClasesDeAltura(leyendo: "Re Fa La")    // [2, 5, 9]
+    ///     try ConjuntoDeClasesDeAltura(leyendo: "4-Z15")       // [0, 1, 4, 6]
     ///
     /// Lanza `ErrorDeLectura` con el carácter donde no se pudo seguir.
     public init(leyendo texto: String) throws {
         let limpio = texto.trimmingEspacios()
-        if let forte = ConjuntoDeClases.numeroConFormaDeForte(limpio) {
-            guard let prima = ConjuntoDeClases.primasPorNumeroDeForte[forte] else {
+        if let forte = ConjuntoDeClasesDeAltura.numeroConFormaDeForte(limpio) {
+            guard let prima = ConjuntoDeClasesDeAltura.primasPorNumeroDeForte[forte] else {
                 throw ErrorDeLectura(
                     texto: texto, posicion: texto.count - texto.drop(while: { $0 == " " }).count,
                     motivo: .numeroDeForteDesconocido(limpio))

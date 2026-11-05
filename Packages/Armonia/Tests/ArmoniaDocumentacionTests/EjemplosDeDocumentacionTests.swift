@@ -203,7 +203,7 @@ import Hexagonos
         comprobar(Tonnetz(Acorde("Domaj7")).triadas.map(\.acorde) == [Acorde("Do"), Acorde("Mim")], #"true"#, doc, 4)
         comprobar(Tonnetz(Escala(.do)).esConexo, #"true"#, doc, 5)
         comprobar(Tonnetz(Escala(.do, .tonosEnteros)).esConexo, #"false"#, doc, 6)
-        comprobar("\(Tonnetz(ConjuntoDeClases([0, 4, 7])))", #""0 (0, 0) · 4 (0, 1) · 7 (1, 0)""#, doc, 7)
+        comprobar("\(Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7])))", #""0 (0, 0) · 4 (0, 1) · 7 (1, 0)""#, doc, 7)
     }
 
     @Test func afinacionYRepresentaciones9() throws {
@@ -212,7 +212,7 @@ import Hexagonos
         let dibujo = Tonnetz(Escala(.re, .dorico)).svg()
         let sinLeyenda = Tonnetz(Acorde("Do")).svg(opciones: .init(titulo: "Tónica"), leyenda: false)
         let ingles = Tonnetz(Acorde("Fa#m7")).svg(opciones: .init(notacion: .inglesASCII), margen: 2)
-        let toro = Tonnetz(ConjuntoDeClases([0, 4, 7, 11])).svg(margen: 3)
+        let toro = Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7, 11])).svg(margen: 3)
         comprobar(RelojDeClases(clases: [0, 4, 7]).svg(opciones: .init(notacion: .inglesASCII)).contains(">G</text>"), #"true"#, doc, 4)
         comprobar(TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: [61], opciones: .init(preferirBemoles: true)).contains(">Re♭</text>"), #"true"#, doc, 5)
         comprobar(TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: MarcasDeDiagrama(Escala("Fa mayor").alturas(octava: 4))).contains(">Si♭</text>"), #"true"#, doc, 6)
@@ -1069,23 +1069,23 @@ import Hexagonos
     @Test func postonal1() throws {
         // Sources/Armonia/Armonia.docc/Postonal.md, bloque 1
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Postonal.md"#, 1)
-        let c: ConjuntoDeClases = [0, 4, 7]
+        let c: ConjuntoDeClasesDeAltura = [0, 4, 7]
         comprobar(c.formaPrima, #"[0, 3, 7]"#, doc, 1)
         comprobar(c.numeroDeForte, #""3-11""#, doc, 2)
         comprobar(c.vectorIntervalico, #"[0, 0, 1, 1, 1, 0]"#, doc, 3)
         comprobar(c.nombreComun, #""tríada mayor o menor""#, doc, 4)
-        comprobar(ConjuntoDeClases([0, 1, 4, 6]).estaEnRelacionZ(con: [0, 1, 3, 7]), #"true"#, doc, 5)
+        comprobar(ConjuntoDeClasesDeAltura([0, 1, 4, 6]).estaEnRelacionZ(con: [0, 1, 3, 7]), #"true"#, doc, 5)
         comprobar(Escala(.re).conjuntoDeClases.numeroDeForte, #""7-35""#, doc, 6)
     }
 
     @Test func postonal2() throws {
         // Sources/Armonia/Armonia.docc/Postonal.md, bloque 2
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Postonal.md"#, 2)
-        let triada = try ConjuntoDeClases(leyendo: "{0 4 7}")
+        let triada = try ConjuntoDeClasesDeAltura(leyendo: "{0 4 7}")
         comprobar(triada.numeroDeForte, #""3-11""#, doc, 1)
-        comprobar(try ConjuntoDeClases(leyendo: "01t").clases, #"[0, 1, 10]"#, doc, 2)
-        comprobar(try ConjuntoDeClases(leyendo: "Re Fa La").clases, #"[2, 5, 9]"#, doc, 3)
-        comprobar(try ConjuntoDeClases(leyendo: "4-Z15").clases, #"[0, 1, 4, 6]"#, doc, 4)
+        comprobar(try ConjuntoDeClasesDeAltura(leyendo: "01t").clases, #"[0, 1, 10]"#, doc, 2)
+        comprobar(try ConjuntoDeClasesDeAltura(leyendo: "Re Fa La").clases, #"[2, 5, 9]"#, doc, 3)
+        comprobar(try ConjuntoDeClasesDeAltura(leyendo: "4-Z15").clases, #"[0, 1, 4, 6]"#, doc, 4)
     }
 
     @Test func postonal3() throws {
@@ -1105,18 +1105,18 @@ import Hexagonos
     @Test func postonal4() throws {
         // Sources/Armonia/Armonia.docc/Postonal.md, bloque 4
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Postonal.md"#, 4)
-        let menorConSeptima: ConjuntoDeClases = [0, 3, 7, 10]
+        let menorConSeptima: ConjuntoDeClasesDeAltura = [0, 3, 7, 10]
         comprobar(menorConSeptima.vectorDeIndice, #"[1, 2, 1, 2, 0, 2, 1, 2, 1, 0, 4, 0]"#, doc, 1)
         comprobar(menorConSeptima.notasComunes(invirtiendo: 10), #"4"#, doc, 2)
         comprobar(menorConSeptima.ejesDeSimetria, #"[5–11]"#, doc, 3)
-        comprobar(ConjuntoDeClases([0, 1]).ejesDeSimetria, #"[0½–6½]"#, doc, 4)
+        comprobar(ConjuntoDeClasesDeAltura([0, 1]).ejesDeSimetria, #"[0½–6½]"#, doc, 4)
     }
 
     @Test func postonal5() throws {
         // Sources/Armonia/Armonia.docc/Postonal.md, bloque 5
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Postonal.md"#, 5)
-        comprobar(ConjuntoDeClases([1, 5, 8]).notas(), #"[Re♭, Fa, La♭]"#, doc, 0)
-        comprobar(ConjuntoDeClases([1, 5, 8]).notas(con: Nota(.do, .sostenido)), #"[Do♯, Mi♯, Sol♯]"#, doc, 1)
+        comprobar(ConjuntoDeClasesDeAltura([1, 5, 8]).notas(), #"[Re♭, Fa, La♭]"#, doc, 0)
+        comprobar(ConjuntoDeClasesDeAltura([1, 5, 8]).notas(con: Nota(.do, .sostenido)), #"[Do♯, Mi♯, Sol♯]"#, doc, 1)
     }
 
     @Test func tonalidad1() throws {

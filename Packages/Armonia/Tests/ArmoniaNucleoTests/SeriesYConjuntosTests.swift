@@ -4,10 +4,12 @@ import Testing
 @testable import ArmoniaNucleo
 
 @Suite struct LecturaDeConjuntosTests {
-    private func leer(_ texto: String) throws -> ConjuntoDeClases { try ConjuntoDeClases(leyendo: texto) }
+    private func leer(_ texto: String) throws -> ConjuntoDeClasesDeAltura {
+        try ConjuntoDeClasesDeAltura(leyendo: texto)
+    }
 
     @Test func formasDeEscribirlos() throws {
-        let mayor: ConjuntoDeClases = [0, 4, 7]
+        let mayor: ConjuntoDeClasesDeAltura = [0, 4, 7]
         for texto in ["[0, 4, 7]", "{0 4 7}", "(0,4,7)", "0 4 7", "0,4,7", " [ 7 , 4 , 0 ] ", "047", "740", "0 4 7 0"] {
             #expect(try leer(texto) == mayor, "\(texto)")
         }
@@ -19,7 +21,7 @@ import Testing
         // Con ceros delante o de más de 11, una cifra por clase.
         #expect(try leer("012") == [0, 1, 2])
         #expect(try leer("12") == [1, 2])
-        #expect(try leer("[]") == ConjuntoDeClases([Int]()))
+        #expect(try leer("[]") == ConjuntoDeClasesDeAltura([Int]()))
     }
 
     @Test func conNotas() throws {
@@ -37,7 +39,7 @@ import Testing
         #expect(try leer(" 7-35 ").numeroDeForte == "7-35")
         #expect(try leer("12-1").cardinalidad == 12)
         // Todos los de la tabla se leen y dan su número.
-        for (prima, numero) in ConjuntoDeClases.tablaForte {
+        for (prima, numero) in ConjuntoDeClasesDeAltura.tablaForte {
             #expect(try leer(numero).formaPrima == prima, "\(numero)")
         }
     }
@@ -204,7 +206,7 @@ import Testing
 
 @Suite struct SimetriaDeConjuntosTests {
     @Test func notasComunes() {
-        let mayor: ConjuntoDeClases = [0, 4, 7]
+        let mayor: ConjuntoDeClasesDeAltura = [0, 4, 7]
         #expect(mayor.notasComunes(transponiendo: 0) == 3)
         #expect(mayor.notasComunes(transponiendo: 5) == 1)
         #expect(mayor.notasComunes(invirtiendo: 7) == 2)
@@ -212,7 +214,7 @@ import Testing
         #expect(mayor.vectorDeIndice == [1, 0, 1, 0, 2, 0, 0, 2, 1, 0, 0, 2])
         // El vector de índice da las notas comunes de cada TnI, y el de transposición sale del interválico.
         for clases in [[0, 1, 4, 6], [0, 2, 4, 5, 7, 9, 11], [0, 3, 6, 9], [0, 1, 6, 7], [5]] {
-            let conjunto = ConjuntoDeClases(clases)
+            let conjunto = ConjuntoDeClasesDeAltura(clases)
             #expect(conjunto.vectorDeIndice == (0..<12).map { conjunto.notasComunes(invirtiendo: $0) })
             let iv = conjunto.vectorIntervalico
             for n in 1...5 {
@@ -224,29 +226,29 @@ import Testing
     }
 
     @Test func ejes() {
-        #expect(ConjuntoDeClases([0, 4, 7]).ejesDeSimetria.isEmpty)
-        #expect(ConjuntoDeClases([0, 4, 7, 10]).ejesDeSimetria.isEmpty)
-        #expect(ConjuntoDeClases([0, 3, 7, 10]).ejesDeSimetria == [EjeDeInversion(indice: 10)])
-        #expect(ConjuntoDeClases([0, 3, 7, 10]).ejesDeSimetria.map(\.description) == ["5–11"])
-        #expect(ConjuntoDeClases([0, 3, 6, 9]).ejesDeSimetria.map(\.indice) == [0, 3, 6, 9])
-        #expect(ConjuntoDeClases([0, 1]).ejesDeSimetria.map(\.description) == ["0½–6½"])
+        #expect(ConjuntoDeClasesDeAltura([0, 4, 7]).ejesDeSimetria.isEmpty)
+        #expect(ConjuntoDeClasesDeAltura([0, 4, 7, 10]).ejesDeSimetria.isEmpty)
+        #expect(ConjuntoDeClasesDeAltura([0, 3, 7, 10]).ejesDeSimetria == [EjeDeInversion(indice: 10)])
+        #expect(ConjuntoDeClasesDeAltura([0, 3, 7, 10]).ejesDeSimetria.map(\.description) == ["5–11"])
+        #expect(ConjuntoDeClasesDeAltura([0, 3, 6, 9]).ejesDeSimetria.map(\.indice) == [0, 3, 6, 9])
+        #expect(ConjuntoDeClasesDeAltura([0, 1]).ejesDeSimetria.map(\.description) == ["0½–6½"])
         let eje = EjeDeInversion(indice: 13)
         #expect(eje.indice == 1 && eje.clasesFijas.isEmpty && eje.extremos == [0.5, 6.5])
         #expect(EjeDeInversion(indice: 4).clasesFijas == [2, 8])
         #expect(EjeDeInversion(indice: 11).extremos == [5.5, 11.5])
         #expect(EjeDeInversion(indice: 2) < EjeDeInversion(indice: 3))
         for clases in [[0, 4, 8], [0, 2, 4, 6, 8, 10], [0, 1, 3, 7], [0, 1, 2, 3]] {
-            let conjunto = ConjuntoDeClases(clases)
+            let conjunto = ConjuntoDeClasesDeAltura(clases)
             #expect(conjunto.ejesDeSimetria.count == conjunto.simetriasPorInversion)
             #expect(conjunto.transposicionesQueLoDejanIgual.count == conjunto.simetriasPorTransposicion)
         }
-        #expect(ConjuntoDeClases([0, 4, 8]).transposicionesQueLoDejanIgual == [0, 4, 8])
+        #expect(ConjuntoDeClasesDeAltura([0, 4, 8]).transposicionesQueLoDejanIgual == [0, 4, 8])
     }
 }
 
 @Suite struct OrtografiaDeConjuntosTests {
     private func escribir(_ clases: [Int], con fija: Nota? = nil) -> String {
-        ConjuntoDeClases(clases).notas(con: fija).map(\.nombre).joined(separator: " ")
+        ConjuntoDeClasesDeAltura(clases).notas(con: fija).map(\.nombre).joined(separator: " ")
     }
 
     @Test func laEscrituraMasSencilla() {
@@ -262,14 +264,14 @@ import Testing
         #expect(escribir([6]) == "Fa♯")
         #expect(escribir([10]) == "Si♭")
         #expect(escribir([]) == "")
-        #expect(ConjuntoDeClases(0..<12).notas().count == 12)
+        #expect(ConjuntoDeClasesDeAltura(0..<12).notas().count == 12)
     }
 
     @Test func sinRepetirLetra() {
         // Las escalas mayores y sus subconjuntos salen siempre con letras distintas y sin dobles alteraciones.
         let mayor = [0, 2, 4, 5, 7, 9, 11]
         for t in 0..<12 {
-            let escala = ConjuntoDeClases(mayor.map { $0 + t })
+            let escala = ConjuntoDeClasesDeAltura(mayor.map { $0 + t })
             let notas = escala.notas()
             #expect(Set(notas.map(\.natural)).count == 7, "\(notas)")
             #expect(notas.allSatisfy { abs($0.alteracion.semitonos) <= 1 }, "\(notas)")
@@ -289,12 +291,12 @@ import Testing
 
 @Suite struct NombresDeLasClasesTests {
     @Test func unNombreDistintoPorClase() {
-        let nombres = ConjuntoDeClases.nombresDeLasClases(en: .espanolCompacto)
+        let nombres = ConjuntoDeClasesDeAltura.nombresDeLasClases(en: .espanolCompacto)
         #expect(nombres.count == 12)
         #expect(Set(nombres).count == 12)
         #expect(nombres[0] == "Do")
         #expect(nombres[7] == "Sol")
-        #expect(ConjuntoDeClases.nombresDeLasClases(en: .inglesASCII)[0] == "C")
+        #expect(ConjuntoDeClasesDeAltura.nombresDeLasClases(en: .inglesASCII)[0] == "C")
     }
 
     @Test func lasCifrasDeUnaSerie() {

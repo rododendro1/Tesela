@@ -161,7 +161,7 @@ extension PresentacionDeEstudioDeEscala {
                 "<polygon points=\"\(puntos.joined(separator: " "))\" fill=\"\(color)\" fill-opacity=\"0.1\" "
                     + "stroke=\"\(color)\" stroke-width=\"2\"\(trazo)/>")
         }
-        let sencillos = ConjuntoDeClases.nombresDeLasClases(en: notacion)
+        let sencillos = ConjuntoDeClasesDeAltura.nombresDeLasClases(en: notacion)
         var rotulos = Dictionary(uniqueKeysWithValues: sencillos.enumerated().map { ($0.offset, $0.element) })
         for nota in destino + origen { rotulos[nota.claseDeAltura] = nota.nombre(en: notacion) }
         for clase in 0..<12 {
