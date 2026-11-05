@@ -68,7 +68,7 @@ extension NombresDeEscalas {
         .init(.messiaen7, "Messiaenen 7. modua", alias: ["Messiaen 7"]),
         .init(.locrioSextaNatural, "lokriarra ♮6", alias: ["lokria naturala 6", "lokriarra ♯6"]),
         .init(.jonicoAumentado, "joniarra ♯5", alias: ["jonia gehitua"]),
-        .init(.doricoCuartaAumentada, "doriarra ♯4", alias: ["doria ukrainarra", "minorra errumaniarra", "errumaniarra"]),
+        .init(.doricoCuartaAumentada, "doriarra ♯4", alias: ["minorra errumaniarra", "errumaniarra"]),
         .init(.frigioDominante, "frigiar dominantea", alias: ["frigia maiorra", "frigiarra ♯3", "frigiarra ♮3", "espainiarra", "frigia espainiarra", "dominantea ♭9 ♭13", "frigiar maiorra"]),
         .init(.lidioSegundaAumentada, "lidiarra ♯2"),
         .init(.ultralocrio, "ultralokriarra", alias: ["superlokriarra ♭♭7", "alteratua gutxitua"]),
@@ -169,6 +169,10 @@ extension NombresDeEscalas {
         .tradicional(.harmoniaIastiaDeAristides, "Aristidesen harmonia iastiarra"),
         .tradicional(.harmoniaMixolidiaDeAristides, "Aristidesen harmonia mixolidiarra"),
         .tradicional(.harmoniaSintonolidiaDeAristides, "Aristidesen harmonia sintonolidiarra"),
+        .tradicional(.doricoUcraniano, "doria ukrainarra"),
+        .tradicional(.pentatonicaHungara, "pentatoniko hungariarra"),
+        .tradicional(.cuernoAlpino, "Alpeetako adarra"),
+        .tradicional(.gaitaEscocesa, "Eskoziako gaita"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

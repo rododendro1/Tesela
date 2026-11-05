@@ -2,6 +2,19 @@
 
 ## Sin publicar
 
+### El folklore europeo, y la menor bachiana
+
+- **Tradición nueva, `Tradicion.europa`** («Folklore europeo», con su nombre en los quince idiomas y
+  `--tradicion europa` en la línea de comandos), con `TipoDeEscala.europeas`: el dórico ucraniano (Do Re Mi♭ Fa♯
+  Sol La Si♭), la escala podhalańska de los górales de los Tatras (Do Re Mi Fa♯ Sol La Si♭), la pentatónica húngara
+  de Bartók y Kodály (la–do–re–mi–sol), el cuerno alpino (los armónicos del 8.º al 15.º) y la gaita escocesa (un
+  mixolidio). Las dos últimas tienen versión microtonal en cents: el «fa del cuerno» (11/8, 551 cents) y la 7ª
+  natural de la gaita (7/4, 969 cents).
+- «dórico ucraniano» deja de ser un alias del dórico ♯4 (en español y en los otros idiomas) y pasa a ser el nombre
+  de la escala europea, con las mismas notas. «menor rumana» sigue siendo el dórico ♯4.
+- Alias nuevos con los nombres de los conservatorios españoles: «bachiana», «menor bachiana» y «de Bach» (la menor
+  melódica de jazz, que sube y baja igual), «menor dórica» (el dórico) y «menor antigua» (la menor natural).
+
 ### `armonia`: una ayuda corta, sesiones, el idioma del entorno y códigos para las faltas
 
 - `armonia ayuda` (y `armonia` a secas fuera de la terminal) da un índice: una línea por orden, por grupos, y cómo

@@ -42,7 +42,7 @@ extension TextosDeCLI {
         notasEscala: "opciók: --sequence thirds (vagy fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1-től 4-ig), --piano (ujjrend), --modes (párhuzamos és rokon)\nés --compare C lydian (a végén); --symmetry (milyen gyakran\nismétlődik, és az akkordjai);\n--neighbors (egy hang elmozdításával) és\n--all-keys (mind a tizenkét hangnemben);\n--all-keys --chords (minden fok\nakkordjai; --triads, szeptim nélkül)",
         sintaxisEscalas: "scales [<szöveg>] [opciók]",
         descripcionEscalas: "a skálák katalógusa: a szokásosak és\nmás hagyományokéi, kategóriánként,\nC-től induló hangjaikkal",
-        notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia, africa,\nsoutheast-asia, gregorian) és --category maqam (vagy rāga, makam,\ndastgah, dromos…); a szöveg a nevekben keres",
+        notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia, africa,\nsoutheast-asia, gregorian, europe) és --category maqam (vagy rāga, makam,\ndastgah, dromos…); a szöveg a nevekben keres",
         sintaxisTradiciones: "traditions [<hagyomány>]",
         descripcionTradiciones: "a katalógus hagyományai a\nkategóriáikkal és skáláik számával;\neggyel: annak skálái",
         sintaxisTonalidad: "key <hangnem>",

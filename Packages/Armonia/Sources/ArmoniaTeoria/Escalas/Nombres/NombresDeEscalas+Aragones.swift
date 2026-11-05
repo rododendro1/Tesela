@@ -68,7 +68,7 @@ extension NombresDeEscalas {
         .init(.messiaen7, "modo 7 de Messiaen", alias: ["Messiaen 7"]),
         .init(.locrioSextaNatural, "locrio ♮6", alias: ["locrio natural 6", "locrio ♯6"]),
         .init(.jonicoAumentado, "jónico ♯5", alias: ["jónico aumentau"]),
-        .init(.doricoCuartaAumentada, "dórico ♯4", alias: ["dórico ucrainiano", "menor rumana", "rumana"]),
+        .init(.doricoCuartaAumentada, "dórico ♯4", alias: ["menor rumana", "rumana"]),
         .init(.frigioDominante, "frichio dominant", alias: ["frichio mayor", "frichio ♯3", "frichio ♮3", "espanyola", "frichio espanyol", "dominant ♭9 ♭13"]),
         .init(.lidioSegundaAumentada, "lidio ♯2"),
         .init(.ultralocrio, "ultralocrio", alias: ["superlocrio ♭♭7", "alterada disminuyida"]),
@@ -120,6 +120,7 @@ extension NombresDeEscalas {
         // Grecia antigua: géneros de Arquitas y de Ptolomeo
         .tradicional(.tetracordoCromaticoDeArquitas, "tetracordo cromático d'Arquitas"),
         .tradicional(.tetracordoDiatonicoDeArquitas, "tetracordo diatónico d'Arquitas"),
+        .tradicional(.doricoUcraniano, "dórico ucrainiano"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

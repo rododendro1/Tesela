@@ -68,7 +68,7 @@ extension NombresDeEscalas {
         .init(.messiaen7, "Messiaen-Modus 7", alias: ["Messiaen 7"]),
         .init(.locrioSextaNatural, "lokrisch ♮6", alias: ["lokrisch natürlich 6", "lokrisch ♯6"]),
         .init(.jonicoAumentado, "ionisch ♯5", alias: ["ionisch übermäßig"]),
-        .init(.doricoCuartaAumentada, "dorisch ♯4", alias: ["ukrainisch dorisch", "rumänisch Moll", "rumänisch"]),
+        .init(.doricoCuartaAumentada, "dorisch ♯4", alias: ["rumänisch Moll", "rumänisch"]),
         .init(.frigioDominante, "phrygisch dominant", alias: ["phrygisch Dur", "phrygisch ♯3", "phrygisch ♮3", "spanisch", "spanisch phrygisch", "dominant ♭9 ♭13"]),
         .init(.lidioSegundaAumentada, "lydisch ♯2"),
         .init(.ultralocrio, "ultralokrisch", alias: ["superlokrisch ♭♭7", "alteriert vermindert"]),
@@ -169,6 +169,10 @@ extension NombresDeEscalas {
         .tradicional(.harmoniaIastiaDeAristides, "iastische Harmonie des Aristides"),
         .tradicional(.harmoniaMixolidiaDeAristides, "mixolydische Harmonie des Aristides"),
         .tradicional(.harmoniaSintonolidiaDeAristides, "syntonolydische Harmonie des Aristides"),
+        .tradicional(.doricoUcraniano, "ukrainisch dorisch"),
+        .tradicional(.pentatonicaHungara, "ungarische Pentatonik"),
+        .tradicional(.cuernoAlpino, "Alphorn"),
+        .tradicional(.gaitaEscocesa, "schottischer Dudelsack"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "Rāga"),

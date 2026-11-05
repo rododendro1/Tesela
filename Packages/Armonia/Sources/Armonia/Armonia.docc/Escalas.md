@@ -44,7 +44,9 @@ los Andes y el klezmer.
   semitono-tono, de Debussy = tonos enteros, de Weitzmann = aumentada) y las
   auxiliares de la cromática lidia de George Russell (aumentada auxiliar = tonos enteros,
   disminuida auxiliar = disminuida, disminuida auxiliar blues = semitono-tono). La cromática
-  lidia en sí tiene las doce notas: es la cromática ordenada por quintas.
+  lidia en sí tiene las doce notas: es la cromática ordenada por quintas. Y los de los conservatorios
+  españoles: menor bachiana o de Bach (menor melódica de jazz, la que sube y baja igual), menor dórica
+  (dórico) y menor antigua (menor natural).
 - Todas se leen también en inglés ("E phrygian dominant", "G altered", "A hungarian minor").
 
 ```swift
@@ -61,6 +63,7 @@ Escala.hexacordoBlando.notas                     // Fa Sol La Si♭ Do Re
 TipoDeEscala.mayorHungara.rotacion(4).nombre     // "superlocrio ♮6"
 Escala("Do pentatónica escocesa").notas          // Do Re Fa Sol La
 Escala("La de Liszt").tipo.nombre                // "menor húngara"
+Escala("Do menor bachiana").notas                // Do Re Mi♭ Fa Sol La Si
 ```
 - `Escala.candidatos(_:)` y `candidatos(clasesDeAltura:)`: qué escalas contienen unas notas, de más a menos
   probable (menos notas sobrantes y menos alteraciones); `identificar` da solo las escalas.
@@ -187,6 +190,12 @@ usan microtonos):
   final. Ver «Modos gregorianos», más abajo. Y los tres hexacordos de Guido de Arezzo (hexachordum naturale,
   durum y molle: Ut Re Mi Fa Sol La desde Do, Sol y Fa).
 - **Los Andes**: la pentatónica andina (menor) y la tritónica andina (Do Mi♭ Sol).
+- **El folklore europeo**: el dórico ucraniano (Do Re Mi♭ Fa♯ Sol La Si♭), la escala podhalańska de los górales
+  de los Tatras (Do Re Mi Fa♯ Sol La Si♭), la pentatónica húngara de Bartók y Kodály (la–do–re–mi–sol) y dos
+  instrumentos de afinación natural, con su versión en cents: el cuerno alpino (los armónicos del 8.º al 15.º, con
+  el «fa del cuerno» de 551 cents) y la gaita escocesa (un mixolidio con la 3ª y la 6ª justas y la 7ª natural de
+  7/4). Otras escalas populares de Europa ya están entre las occidentales: la mayor rumana, la menor húngara, la
+  flamenca, la pentatónica escocesa y las hexatónicas gaélicas.
 - **La Grecia antigua**: los tetracordos diatónico, cromático y enarmónico de Aristóxeno; los géneros de
   Arquitas (cromático y diatónico) y los de Ptolomeo (enarmónico, cromático blando y tenso, diatónico blando,
   ditónico, tenso e igual), con sus razones justas; el enarmónico de Arquitas y los de Dídimo (cromático, diatónico
@@ -227,16 +236,17 @@ Escala("Do भैरवी").tipo.nombre                // "Bhairavī"
 TipoDeEscala.gong == .pentatonicaMayor       // true
 Escala("Do Rast muğamı").notas               // Do Re Mi Fa Sol La Si♭ Si
 Escala("La hicaz makami").notas              // La Si♭ Do♯ Re Mi Fa♯ Sol
+Escala("Do podhalańska").notas               // Do Re Mi Fa♯ Sol La Si♭
 ```
 
 No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales;
 están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `chinas`, `japonesas`,
 `ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `mesopotamicas`, `gramas`, `murchanas`, `generosDeArquitasYPtolomeo`, `ajnas`, `cesniler`, `africanas`,
 `sudesteAsiaticas`, `modosGregorianos`, `generosDeDidimoYEratostenes`, `harmoniaiCromaticas`, `harmoniaiEnarmonicas`,
-`harmoniaiDeAristides`, `hexacordos`,
+`harmoniaiDeAristides`, `hexacordos`, `europeas`,
 `pathets`…). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
-traducen los descriptivos (las andinas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
+traducen los descriptivos (las andinas, las europeas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
 las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 mēḷa,
 que siguen en IAST; la forma latina se sigue leyendo.
 

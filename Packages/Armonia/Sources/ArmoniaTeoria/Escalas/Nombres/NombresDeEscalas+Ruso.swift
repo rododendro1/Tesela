@@ -68,7 +68,7 @@ extension NombresDeEscalas {
         .init(.messiaen7, "7-й лад Мессиана", alias: ["Мессиан 7"]),
         .init(.locrioSextaNatural, "локрийский ♮6", alias: ["локрийский ♯6"]),
         .init(.jonicoAumentado, "ионийский ♯5", alias: ["ионийский увеличенный"]),
-        .init(.doricoCuartaAumentada, "дорийский ♯4", alias: ["украинский дорийский", "румынский минор"]),
+        .init(.doricoCuartaAumentada, "дорийский ♯4", alias: ["румынский минор"]),
         .init(.frigioDominante, "фригийский доминантовый", alias: ["фригийский ♯3", "фригийский ♮3", "испанская", "испанский фригийский", "фригийский мажор"]),
         .init(.lidioSegundaAumentada, "лидийский ♯2"),
         .init(.ultralocrio, "ультралокрийский", alias: ["суперлокрийский ♭♭7", "альтерированная уменьшённая"]),
@@ -404,6 +404,10 @@ extension NombresDeEscalas {
         .tradicional(.harmoniaIastiaDeAristides, "ястийская гармония Аристида"),
         .tradicional(.harmoniaMixolidiaDeAristides, "миксолидийская гармония Аристида"),
         .tradicional(.harmoniaSintonolidiaDeAristides, "синтонолидийская гармония Аристида"),
+        .tradicional(.doricoUcraniano, "украинский дорийский"),
+        .tradicional(.pentatonicaHungara, "венгерская пентатоника"),
+        .tradicional(.cuernoAlpino, "альпийский рог"),
+        .tradicional(.gaitaEscocesa, "шотландская волынка"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "рага"),

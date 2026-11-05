@@ -42,7 +42,7 @@ extension TextosDeCLI {
         notasEscala: "Optionen: --sequence thirds (oder fourths, groups-of-3,\ngroups-of-4, triads, sevenths), --descending, --octaves 2\n(1 bis 4), --piano (Fingersatz), --modes (parallel und relativ)\nund --compare C lydian (am Ende); --symmetry (wie oft sie sich\nwiederholt, und ihre Akkorde);\n--neighbors (einen Ton verschoben) und\n--all-keys (in allen zwölf Tonarten);\n--all-keys --chords (die Akkorde jeder\nStufe; --triads, ohne Septime)",
         sintaxisEscalas: "scales [<Text>] [Optionen]",
         descripcionEscalas: "der Skalenkatalog: die gängigen und\ndie anderer Traditionen, nach\nKategorien, mit ihren Tönen ab C",
-        notasEscalas: "Optionen: --tradition turkey (oder india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia, africa,\nsoutheast-asia, gregorian) und --category maqam (oder rāga, makam,\ndastgah, dromos…); ein Text sucht in den Namen",
+        notasEscalas: "Optionen: --tradition turkey (oder india, greece, ancient-greece,\narab-world, persia, azerbaijan, china, japan, korea, ethiopia,\nindonesia, klezmer, andes,\nbyzantium, mesopotamia, africa,\nsoutheast-asia, gregorian, europe) und --category maqam (oder rāga, makam,\ndastgah, dromos…); ein Text sucht in den Namen",
         sintaxisTradiciones: "traditions [<Tradition>]",
         descripcionTradiciones: "die Traditionen des Katalogs mit\nihren Kategorien und der Zahl\nihrer Skalen; mit einer, ihre Skalen",
         sintaxisTonalidad: "key <Tonart>",

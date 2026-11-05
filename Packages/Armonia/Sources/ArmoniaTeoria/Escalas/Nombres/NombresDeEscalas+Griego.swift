@@ -68,7 +68,7 @@ extension NombresDeEscalas {
         .init(.messiaen7, "7ος τρόπος του Μεσιάν", alias: ["Μεσιάν 7"]),
         .init(.locrioSextaNatural, "λόκριος ♮6", alias: ["λόκριος ♯6"]),
         .init(.jonicoAumentado, "ιωνικός ♯5", alias: ["ιωνικός αυξημένος"]),
-        .init(.doricoCuartaAumentada, "δώριος ♯4", alias: ["ουκρανικός δώριος", "ρουμανική ελάσσονα"]),
+        .init(.doricoCuartaAumentada, "δώριος ♯4", alias: ["ρουμανική ελάσσονα"]),
         .init(.frigioDominante, "φρύγιος δεσπόζουσας", alias: ["φρύγιος ♯3", "φρύγιος ♮3", "ισπανική", "ισπανικός φρύγιος", "φρύγιος μείζονα"]),
         .init(.lidioSegundaAumentada, "λύδιος ♯2"),
         .init(.ultralocrio, "ουλτραλόκριος", alias: ["υπερλόκριος ♭♭7", "αλλοιωμένη ελαττωμένη"]),
@@ -399,6 +399,10 @@ extension NombresDeEscalas {
         .tradicional(.harmoniaIastiaDeAristides, "ιαστική αρμονία του Αριστείδη"),
         .tradicional(.harmoniaMixolidiaDeAristides, "μιξολυδική αρμονία του Αριστείδη"),
         .tradicional(.harmoniaSintonolidiaDeAristides, "συντονολυδική αρμονία του Αριστείδη"),
+        .tradicional(.doricoUcraniano, "ουκρανικός δώριος"),
+        .tradicional(.pentatonicaHungara, "ουγγρική πεντατονική"),
+        .tradicional(.cuernoAlpino, "αλπικό κέρας"),
+        .tradicional(.gaitaEscocesa, "σκωτσέζικη γκάιντα"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "ράγκα"),
