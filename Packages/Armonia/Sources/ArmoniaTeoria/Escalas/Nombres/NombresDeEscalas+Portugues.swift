@@ -166,6 +166,7 @@ extension NombresDeEscalas {
         .tradicional(.harmoniaSintonolidiaDeAristides, "harmonia sintonolídia de Aristides"),
         .tradicional(.cuernoAlpino, "trompa alpina"),
         .tradicional(.gaitaEscocesa, "gaita de foles escocesa"),
+        .tradicional(.georgiana, "georgiana"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

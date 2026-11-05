@@ -62,8 +62,26 @@ extension TipoDeEscala {
         ],
         alias: ["Great Highland Bagpipe", "gaita de las Highlands", "píob mhór"])
 
+    // MARK: Canto georgiano
+    //
+    // La polifonía tradicional de Georgia no usa la escala temperada ni la justa: las cuartas y las quintas son casi
+    // puras, pero los pasos son de unos 165 a 185 cents, entre el semitono y el tono, y la tercera es neutra. Los
+    // grados son los medidos en los cantos de Svaneti (Scherbaum, Mzhavanadze, Rosenzweig y Müller, «Tuning systems of
+    // traditional Georgian singing determined from a new corpus of field recordings», Musicologist, 2022): en el
+    // canto melódico, del 1.º al 6.º, y el 7.º en el armónico. En doce notas, cada uno va a la nota más cercana.
+
+    /// La escala del canto polifónico georgiano, como se mide en Svaneti (Do Re Mi♭ Fa Sol La Si♭ en doce notas):
+    /// pasos casi iguales, con la tercera neutra y la segunda y la sexta bajas.
+    public static let georgiana = TipoDeEscala(
+        nombre: "georgiana",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["escala georgiana", "svana", "Svaneti", "canto georgiano"])
+
     public static let europeas: [TipoDeEscala] = [
-        .doricoUcraniano, .podhalanska, .pentatonicaHungara, .cuernoAlpino, .gaitaEscocesa,
+        .doricoUcraniano, .podhalanska, .pentatonicaHungara, .cuernoAlpino, .gaitaEscocesa, .georgiana,
     ]
 }
 
@@ -75,8 +93,9 @@ extension FichaDeTradicion {
         [.init(.escala, TipoDeEscala.europeas)],
         microtonales: [
             // En cents: los armónicos 8 a 15 (9/8, 5/4, 11/8, 3/2, 13/8, 7/4 y 15/8, redondeados) y las razones de la
-            // gaita (9/8, 5/4, 4/3, 3/2, 5/3 y 7/4).
+            // gaita (9/8, 5/4, 4/3, 3/2, 5/3 y 7/4); los grados medidos en Svaneti.
             TipoDeEscalaMicrotonal(.cuernoAlpino, .razones, pasos: [0, 204, 386, 551, 702, 841, 969, 1088]),
             TipoDeEscalaMicrotonal(.gaitaEscocesa, .razones, pasos: [0, 204, 386, 498, 702, 884, 969]),
+            TipoDeEscalaMicrotonal(.georgiana, .razones, pasos: [0, 163, 332, 509, 693, 868, 1018]),
         ])
 }

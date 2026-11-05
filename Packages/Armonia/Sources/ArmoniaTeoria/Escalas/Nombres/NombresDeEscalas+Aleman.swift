@@ -173,6 +173,7 @@ extension NombresDeEscalas {
         .tradicional(.pentatonicaHungara, "ungarische Pentatonik"),
         .tradicional(.cuernoAlpino, "Alphorn"),
         .tradicional(.gaitaEscocesa, "schottischer Dudelsack"),
+        .tradicional(.georgiana, "georgisch"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "Rāga"),

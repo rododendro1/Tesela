@@ -229,7 +229,8 @@ usan microtonos):
   de los Tatras (Do Re Mi Fa♯ Sol La Si♭), la pentatónica húngara de Bartók y Kodály (la–do–re–mi–sol) y dos
   instrumentos de afinación natural, con su versión en cents: el cuerno alpino (los armónicos del 8.º al 15.º, con
   el «fa del cuerno» de 551 cents) y la gaita escocesa (un mixolidio con la 3ª y la 6ª justas y la 7ª natural de
-  7/4). Otras escalas populares de Europa ya están entre las occidentales: la mayor rumana, la menor húngara, la
+  7/4). También la escala del canto georgiano, con los grados medidos en Svaneti: pasos casi iguales, de unos 170
+  cents, y una tercera neutra. Otras escalas populares de Europa ya están entre las occidentales: la mayor rumana, la menor húngara, la
   flamenca, la pentatónica escocesa y las hexatónicas gaélicas.
 - **La Grecia antigua**: los tetracordos diatónico, cromático y enarmónico de Aristóxeno; los géneros de
   Arquitas (cromático y diatónico) y los de Ptolomeo (enarmónico, cromático blando y tenso, diatónico blando,

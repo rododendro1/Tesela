@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+### El canto georgiano
+
+- Folklore europeo: la escala del canto polifónico de Georgia (`TipoDeEscala.georgiana`, Do Re Mi♭ Fa Sol La Si♭
+  en doce notas), con los cents medidos en Svaneti por Scherbaum, Mzhavanadze, Rosenzweig y Müller: pasos de 163 a
+  185 cents, cuartas y quintas casi puras y una tercera neutra de 332.
+
 ### Glareano, la kora, la mbira, el arpa birmana, Vietnam y Brasil
 
 - Los modos 9 a 12 de Glareano (`TipoDeEscala.modosDeGlareano`: aeolius, hypoaeolius, ionicus e hypoionicus), en
