@@ -55,6 +55,34 @@ extension PresentacionDeEstudioDeEscala {
         return datos
     }
 
+    /// Varias escalas en una tabla, una por fila: el nombre, las notas, el brillo por quintas, los pasos, el vector
+    /// interválico, el número de Forte y los rasgos, para compararlas de un vistazo.
+    ///
+    ///     let tabla = PresentacionDeEstudioDeEscala.tablaDeEstadisticas(
+    ///         [Escala(.do), Escala(.do, .lidio)], notacion: .espanolCompacto)
+    ///     tabla.filas[1][2]   // "+3"
+    public static func tablaDeEstadisticas(
+        _ escalas: [Escala], notacion: Notacion
+    ) -> (encabezados: [String], filas: [[String]]) {
+        let encabezados = [
+            notacion.texto(\.escala), notacion.texto(\.notas), notacion.texto(\.brilloPorQuintas),
+            notacion.texto(\.pasosEnSemitonos), notacion.texto(\.vectorIntervalico), notacion.texto(\.numeroDeForte),
+            notacion.texto(\.rasgos),
+        ]
+        let filas = escalas.map { escala -> [String] in
+            let datos = estadisticas(de: escala, notacion: notacion)
+            func valor(_ campo: (TextosDeApps) -> String) -> String {
+                datos.first { $0.nombre == notacion.texto(campo) }?.valor ?? "—"
+            }
+            return [
+                escala.nombre(en: notacion), escala.notas.map { $0.nombre(en: notacion) }.joined(separator: " "),
+                valor(\.brilloPorQuintas), valor(\.pasosEnSemitonos), valor(\.vectorIntervalico),
+                valor(\.numeroDeForte), valor(\.rasgos),
+            ]
+        }
+        return (encabezados, filas)
+    }
+
     /// «+2», «0», «-1», «+0.43»: con signo, sin decimales si es entero y con dos como mucho si no.
     public static func conSigno(_ valor: Double) -> String {
         let redondeado = (valor * 100).rounded() / 100

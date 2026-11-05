@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+### `armonia escalas`: comparar en una tabla y buscar por intervalos
+
+- `armonia escalas --comparar Do mayor, Do lidio, Do dórico` (`--compare`) pone varias escalas en una tabla, una por
+  fila: las notas, el brillo por quintas, los pasos, el vector interválico, el número de Forte y los rasgos.
+- `--con-intervalo tritono` y `--sin-intervalo semitono` (`--with-interval`, `--without-interval`; también un número
+  del 1 al 6) filtran el catálogo por las clases de intervalo que forman sus notas, y `--con-paso 3` (`--with-step`)
+  por los pasos entre notas vecinas.
+- `PresentacionDeEstudioDeEscala.tablaDeEstadisticas(_:notacion:)` da la tabla con sus encabezados.
+
 ### La hoja de estudio de una escala
 
 - `armonia hoja Re dórico` (`sheet`) escribe una hoja de estudio para imprimir, en SVG del ancho de un A4: el nombre y

@@ -572,11 +572,6 @@ extension LineaDeComandos {
         }
     }
 
-    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>] [--uso <uso>] [--notas <n>]`: el
-    /// catálogo de escalas, las habituales y las de otras tradiciones agrupadas por tradición y categoría, cada una
-    /// con sus notas desde Do (y la marca de los microtonos, si los tiene). Un texto suelto busca en los nombres.
-    /// `--uso jazz` deja solo las habituales de ese uso (las de otras tradiciones no tienen), y `--notas 5`, las de
-    /// cinco notas.
     /// Cómo ordena `escalas --orden`: de la más brillante a la más oscura (por `brilloPorQuintas`) o de menos a más
     /// notas.
     enum OrdenDeEscalas { case brillo, notas }
@@ -586,9 +581,54 @@ extension LineaDeComandos {
         "brillo": .brillo, "brightness": .brillo, "notas": .notas, "notes": .notas,
     ]
 
+    /// Unas filas de texto en columnas alineadas, separadas por dos espacios, sin espacios al final.
+    static func columnas(_ filas: [[String]]) -> String {
+        let anchos = filas.reduce(into: [Int]()) { anchos, fila in
+            for (i, celda) in fila.enumerated() {
+                if i < anchos.count { anchos[i] = max(anchos[i], celda.count) } else { anchos.append(celda.count) }
+            }
+        }
+        return filas.map { fila in
+            fila.enumerated().map { i, celda in celda + String(repeating: " ", count: anchos[i] - celda.count) }
+                .joined(separator: "  ").replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression)
+        }.joined(separator: "\n")
+    }
+
+    /// Las clases interválicas de `escalas --con-intervalo` y `--sin-intervalo`, por su nombre en español y en inglés
+    /// (también valen sus números, del 1 al 6).
+    static let clasesIntervalicasPorNombre: [String: Int] = [
+        "semitono": 1, "semitone": 1, "tono": 2, "tone": 2, "terceramenor": 3, "minorthird": 3, "terceramayor": 4,
+        "majorthird": 4, "cuarta": 5, "fourth": 5, "tritono": 6, "tritone": 6,
+    ]
+
+    /// La clase interválica (1…6) de un número o un nombre, o el error de uso.
+    static func claseIntervalica(_ texto: String) throws -> Int {
+        if let n = Int(texto), (1...6).contains(n) { return n }
+        guard let clase = clasesIntervalicasPorNombre[claveDeBusqueda(texto)] else {
+            throw ErrorDeUso.intervaloDeEscalasDesconocido(texto)
+        }
+        return clase
+    }
+
+    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>] [--uso <uso>] [--notas <n>]
+    /// [--orden brillo] [--con-intervalo tritono] [--comparar Do mayor, Do lidio]`: el
+    /// catálogo de escalas, las habituales y las de otras tradiciones agrupadas por tradición y categoría, cada una
+    /// con sus notas desde Do (y la marca de los microtonos, si los tiene). Un texto suelto busca en los nombres.
+    /// `--uso jazz` deja solo las habituales de ese uso (las de otras tradiciones no tienen), y `--notas 5`, las de
+    /// cinco notas. `--comparar` deja el catálogo y pone las escalas que se le dan en una tabla, una por fila.
     static func escalas(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         var entrada = Argumentos(argumentos)
+        // `--comparar Do mayor, Do dórico, Do lidio`: las escalas en una tabla, con lo que se mide de cada una.
+        if let texto = try entrada.valorConPalabras("--comparar", "--compare") {
+            if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+            let nombres = texto.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+                .filter { !$0.isEmpty }
+            guard !nombres.isEmpty else { throw ErrorDeUso.faltaValor("--comparar") }
+            let escalas = try nombres.map { try Escala(leyendo: $0) }
+            let tabla = PresentacionDeEstudioDeEscala.tablaDeEstadisticas(escalas, notacion: notacion)
+            return bien(columnas([tabla.encabezados] + tabla.filas))
+        }
         var tradicion: Tradicion?
         if let texto = try entrada.valor("--tradicion", "--tradición", "--tradition") {
             let clave = claveDeBusqueda(texto)
@@ -637,6 +677,20 @@ extension LineaDeComandos {
             orden = elegido
         }
         let sinSemitonos = entrada.quitarMarca("--sin-semitonos", "--anhemitonic")
+        // `--con-intervalo tritono`, `--sin-intervalo 1`, `--con-paso 3`: por el vector interválico y los pasos.
+        var conIntervalo: Int?
+        if let texto = try entrada.valor("--con-intervalo", "--with-interval") {
+            conIntervalo = try claseIntervalica(texto)
+        }
+        var sinIntervalo: Int?
+        if let texto = try entrada.valor("--sin-intervalo", "--without-interval") {
+            sinIntervalo = try claseIntervalica(texto)
+        }
+        var conPaso: Int?
+        if let texto = try entrada.valor("--con-paso", "--with-step", siFalta: .pasoFueraDeRango) {
+            guard let n = Int(texto), (1...11).contains(n) else { throw ErrorDeUso.pasoFueraDeRango }
+            conPaso = n
+        }
         let regulares = entrada.quitarMarca("--regulares", "--maximally-even")
         if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
         let buscado = claveDeBusqueda(entrada.unidos)
@@ -645,6 +699,12 @@ extension LineaDeComandos {
             guard numeroDeNotas == nil || tipo.numeroDeNotas == numeroDeNotas else { return false }
             guard !sinSemitonos || estadisticas(tipo).anhemitonica else { return false }
             guard !regulares || estadisticas(tipo).maximamenteRegular else { return false }
+            if conIntervalo != nil || sinIntervalo != nil || conPaso != nil {
+                let medidas = estadisticas(tipo)
+                if let conIntervalo, medidas.vectorIntervalico[conIntervalo - 1] == 0 { return false }
+                if let sinIntervalo, medidas.vectorIntervalico[sinIntervalo - 1] > 0 { return false }
+                if let conPaso, !medidas.pasos.contains(conPaso) { return false }
+            }
             return buscado.isEmpty || claveDeBusqueda(tipo.nombre(en: notacion)).contains(buscado)
                 || claveDeBusqueda(tipo.nombre).contains(buscado)
         }

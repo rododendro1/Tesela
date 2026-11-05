@@ -30,6 +30,8 @@ enum ErrorDeUso: Error {
     case categoriaDesconocida(String)
     case usoDesconocido(String)
     case ordenDeEscalasDesconocido(String)
+    case intervaloDeEscalasDesconocido(String)
+    case pasoFueraDeRango
     case faltanNotas
     case dosNotas
     case faltaEscala
@@ -185,6 +187,9 @@ enum ErrorDeUso: Error {
         case .usoDesconocido(let uso):
             let claves = LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }
             return LineaDeComandos.propuesta(para: uso, entre: claves)
+        case .intervaloDeEscalasDesconocido(let intervalo):
+            return LineaDeComandos.propuesta(
+                para: intervalo, entre: Array(LineaDeComandos.clasesIntervalicasPorNombre.keys))
         case .ordenDeEscalasDesconocido(let orden):
             return LineaDeComandos.propuesta(para: orden, entre: Array(LineaDeComandos.ordenesDeEscalas.keys))
         case .escrituraNoValida(let escritura):
@@ -226,6 +231,9 @@ enum ErrorDeUso: Error {
             return TextosDeCLI.traduccion { $0.usoDesconocido(uso) }
         case .ordenDeEscalasDesconocido(let orden):
             return TextosDeCLI.traduccion { $0.ordenDeEscalasDesconocido(orden) }
+        case .intervaloDeEscalasDesconocido(let intervalo):
+            return TextosDeCLI.traduccion { $0.intervaloDeEscalasDesconocido(intervalo) }
+        case .pasoFueraDeRango: return TextosDeCLI.traduccion(\.pasoFueraDeRango)
         case .faltanNotas: return TextosDeCLI.traduccion(\.faltanNotas)
         case .dosNotas: return TextosDeCLI.traduccion(\.dosNotas)
         case .faltaEscala: return TextosDeCLI.traduccion(\.faltaEscala)

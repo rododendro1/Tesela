@@ -122,7 +122,9 @@ extension LineaDeComandos {
             notas: TextosDeCLI.traduccion(\.notasEscalas),
             opciones: [
                 "--tradicion", "--categoria", "--uso", "--notas", "--orden", "--sin-semitonos", "--regulares",
-                "--tradition", "--category", "--use", "--notes", "--sort", "--anhemitonic", "--maximally-even",
+                "--con-intervalo", "--sin-intervalo", "--con-paso", "--comparar", "--tradition", "--category", "--use",
+                "--notes", "--sort", "--anhemitonic", "--maximally-even", "--with-interval", "--without-interval",
+                "--with-step", "--compare",
             ])
     ]
 

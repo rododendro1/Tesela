@@ -183,6 +183,39 @@ extension LineaDeComandosTests {
         #expect(resultado("escalas", "--orden", "color").error.contains("--orden brillo"))
     }
 
+    /// `escalas --comparar`: varias escalas en una tabla, una por fila, con las columnas alineadas.
+    @Test func compararEscalas() throws {
+        let tabla = salida("escalas --comparar Do mayor, Do lidio")
+        let lineas = tabla.split(separator: "\n").map(String.init)
+        #expect(lineas.count == 3, Comment(rawValue: tabla))
+        let lidio = try #require(lineas.last)
+        #expect(lidio.hasPrefix("Do lidio  "), Comment(rawValue: tabla))
+        #expect(lidio.contains("  +3  "))
+        #expect(lineas[1].contains("  +2  "))
+        #expect(lineas[1].contains("7-35"))
+        #expect(salida("escalas --compare Do mayor, Do lidio") == tabla)
+        #expect(resultado("escalas", "--comparar").codigo == 2)
+        #expect(resultado("escalas", "--comparar", "Do", "zzz").codigo != 0)
+    }
+
+    /// `escalas --con-intervalo`, `--sin-intervalo`, `--con-paso`: por los intervalos que forman sus notas.
+    @Test func escalasPorIntervalos() {
+        let conTritono = salida("escalas --con-intervalo tritono")
+        #expect(conTritono.contains("  mayor: "), Comment(rawValue: conTritono))
+        #expect(!conTritono.contains("  pentatónica mayor: "))
+        #expect(salida("escalas --con-intervalo 6") == conTritono)
+        let sinTritono = salida("escalas --sin-intervalo tritono")
+        #expect(sinTritono.contains("  pentatónica mayor: "), Comment(rawValue: sinTritono))
+        #expect(!sinTritono.contains("  mayor: "))
+        #expect(salida("escalas --without-interval tritone") == sinTritono)
+        let conPaso = salida("escalas --con-paso 3 --notas 7")
+        #expect(conPaso.contains("  menor armónica: "), Comment(rawValue: conPaso))
+        #expect(!conPaso.contains("  mayor: "))
+        #expect(resultado("escalas", "--con-intervalo", "foo").codigo == 2)
+        #expect(resultado("escalas", "--con-intervalo", "foo").error.contains("--con-intervalo tritono"))
+        #expect(resultado("escalas", "--con-paso", "20").codigo == 2)
+    }
+
     /// `hoja Re dórico`: la hoja de estudio en SVG; sin escala, un error de uso.
     @Test func hojaDeEstudio() {
         let hoja = salida("hoja Re dórico")
