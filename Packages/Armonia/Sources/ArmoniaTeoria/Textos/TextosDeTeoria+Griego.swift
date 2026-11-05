@@ -181,6 +181,13 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: { destino in "το «\(destino)» δεν μπορεί να ακολουθεί την κάθετο: πρέπει να είναι μείζονα ή ελάσσονα τριφωνία σε θεμελιώδη κατάσταση (V/V, vii°7/ii)" },
         cifrasNoValidas: { cifras in "το «\(cifras)» δεν είναι αριθμημένο μπάσο: αριθμοί από το 1 έως το 9, ο καθένας με το πολύ μία αλλοίωση (6, 64, 7, ♯6, 4+)" },
         cifrasSinAcorde: { cifras in "τα ψηφία «\(cifras)» δεν σχηματίζουν καμία συγχορδία πάνω σε αυτό το μπάσο" },
+        // UsoDeEscala.swift
+        usoClasica: "κλασική",
+        usoJazz: "τζαζ",
+        usoBlues: "μπλουζ",
+        usoSigloXX: "20ός αιώνας",
+        usoPopular: "λαϊκή",
+        usoSintetica: "συνθετική",
         // Tradicion+Nombre.swift
         tradicionIndia: "Ινδία",
         tradicionGrecia: "Ελλάδα",

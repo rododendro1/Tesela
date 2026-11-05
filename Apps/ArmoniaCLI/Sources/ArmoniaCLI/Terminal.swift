@@ -70,6 +70,7 @@ extension LineaDeComandos {
             }
         ),
         (["--categoria", "--category"], CategoriaTradicional.allCases.map(\.rawValue)),
+        (["--uso", "--use"], LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }),
     ]
 
     /// Lo que va tras el nombre de algunas órdenes.

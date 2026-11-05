@@ -181,6 +181,13 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: { destino in "«\(destino)» nun pue dir tres la barra: tien de ser una tríada mayor o menor n'estáu fundamental (V/V, vii°7/ii)" },
         cifrasNoValidas: { cifras in "«\(cifras)» nun son cifres de baxu continuu: númberos del 1 al 9 con, como muncho, una alteración (6, 64, 7, ♯6, 4+)" },
         cifrasSinAcorde: { cifras in "les cifres «\(cifras)» nun formen nengún acorde sobre esi baxu" },
+        // UsoDeEscala.swift
+        usoClasica: "clásica",
+        usoJazz: "jazz",
+        usoBlues: "blues",
+        usoSigloXX: "sieglu XX",
+        usoPopular: "popular",
+        usoSintetica: "sintética",
         // Tradicion+Nombre.swift
         tradicionIndia: "India",
         tradicionGrecia: "Grecia",

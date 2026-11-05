@@ -181,6 +181,13 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: { destino in "„\(destino)“ kann nicht nach dem Schrägstrich stehen: Es muss ein Dur- oder Molldreiklang in Grundstellung sein (V/V, vii°7/ii)" },
         cifrasNoValidas: { cifras in "„\(cifras)“ ist kein Generalbass: Zahlen von 1 bis 9 mit höchstens einem Vorzeichen (6, 64, 7, ♯6, 4+)" },
         cifrasSinAcorde: { cifras in "die Ziffern „\(cifras)“ ergeben über diesem Bass keinen Akkord" },
+        // UsoDeEscala.swift
+        usoClasica: "klassisch",
+        usoJazz: "Jazz",
+        usoBlues: "Blues",
+        usoSigloXX: "20. Jahrhundert",
+        usoPopular: "Volksmusik",
+        usoSintetica: "synthetisch",
         // Tradicion+Nombre.swift
         tradicionIndia: "Indien",
         tradicionGrecia: "Griechenland",

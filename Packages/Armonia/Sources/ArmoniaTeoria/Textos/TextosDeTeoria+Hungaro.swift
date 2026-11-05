@@ -182,6 +182,13 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: { destino in "„\(destino)” nem állhat a perjel után: dúr vagy moll alaphelyzetű hármashangzatnak kell lennie (V/V, vii°7/ii)" },
         cifrasNoValidas: { cifras in "„\(cifras)” nem számozott basszus: számok 1-től 9-ig, mindegyik legfeljebb egy módosítójellel (6, 64, 7, ♯6, 4+)" },
         cifrasSinAcorde: { cifras in "a(z) „\(cifras)” számok ezen a basszuson nem adnak akkordot" },
+        // UsoDeEscala.swift
+        usoClasica: "klasszikus",
+        usoJazz: "jazz",
+        usoBlues: "blues",
+        usoSigloXX: "20. század",
+        usoPopular: "népi",
+        usoSintetica: "szintetikus",
         // Tradicion+Nombre.swift
         tradicionIndia: "India",
         tradicionGrecia: "Görögország",

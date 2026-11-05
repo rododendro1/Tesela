@@ -185,6 +185,13 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: { destino in "«\(destino)» ezin da barraren ondoren joan: oinarrizko egoeran dagoen hirukote maior edo minor bat izan behar du (V/V, vii°7/ii)" },
         cifrasNoValidas: { cifras in "«\(cifras)» ez dira baxu jarraituko zifrak: 1etik 9rako zenbakiak, gehienez alterazio batekin (6, 64, 7, ♯6, 4+)" },
         cifrasSinAcorde: { cifras in "«\(cifras)» zifrek ez dute akorderik osatzen baxu horren gainean" },
+        // UsoDeEscala.swift
+        usoClasica: "klasikoa",
+        usoJazz: "jazza",
+        usoBlues: "bluesa",
+        usoSigloXX: "XX. mendea",
+        usoPopular: "herrikoia",
+        usoSintetica: "sintetikoa",
         // Tradicion+Nombre.swift
         tradicionIndia: "India",
         tradicionGrecia: "Grezia",

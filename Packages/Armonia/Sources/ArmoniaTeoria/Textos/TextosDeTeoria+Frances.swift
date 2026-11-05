@@ -181,6 +181,13 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: { destino in "« \(destino) » ne peut pas suivre la barre : il faut un accord parfait majeur ou mineur à l'état fondamental (V/V, vii°7/ii)" },
         cifrasNoValidas: { cifras in "« \(cifras) » n'est pas une basse chiffrée : des chiffres de 1 à 9, chacun avec au plus une altération (6, 64, 7, ♯6, 4+)" },
         cifrasSinAcorde: { cifras in "les chiffres « \(cifras) » ne forment aucun accord sur cette basse" },
+        // UsoDeEscala.swift
+        usoClasica: "classique",
+        usoJazz: "jazz",
+        usoBlues: "blues",
+        usoSigloXX: "XXe siècle",
+        usoPopular: "populaire",
+        usoSintetica: "synthétique",
         // Tradicion+Nombre.swift
         tradicionIndia: "Inde",
         tradicionGrecia: "Grèce",

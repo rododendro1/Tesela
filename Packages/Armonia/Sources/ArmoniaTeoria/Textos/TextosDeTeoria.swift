@@ -200,6 +200,14 @@ struct TextosDeTeoria: TextosTraducidos {
     let cifrasNoValidas: @Sendable (String) -> String
     let cifrasSinAcorde: @Sendable (String) -> String
 
+    // MARK: UsoDeEscala.swift
+    let usoClasica: String
+    let usoJazz: String
+    let usoBlues: String
+    let usoSigloXX: String
+    let usoPopular: String
+    let usoSintetica: String
+
     // MARK: Tradicion+Nombre.swift
     let tradicionIndia: String
     let tradicionGrecia: String

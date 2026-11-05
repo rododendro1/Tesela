@@ -181,6 +181,13 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: { destino in "«\(destino)» não pode vir depois da barra: tem de ser uma tríade maior ou menor no estado fundamental (V/V, vii°7/ii)" },
         cifrasNoValidas: { cifras in "«\(cifras)» não são cifras de baixo contínuo: números de 1 a 9 com, no máximo, uma alteração (6, 64, 7, ♯6, 4+)" },
         cifrasSinAcorde: { cifras in "as cifras «\(cifras)» não formam nenhum acorde sobre esse baixo" },
+        // UsoDeEscala.swift
+        usoClasica: "clássica",
+        usoJazz: "jazz",
+        usoBlues: "blues",
+        usoSigloXX: "século XX",
+        usoPopular: "popular",
+        usoSintetica: "sintética",
         // Tradicion+Nombre.swift
         tradicionIndia: "Índia",
         tradicionGrecia: "Grécia",

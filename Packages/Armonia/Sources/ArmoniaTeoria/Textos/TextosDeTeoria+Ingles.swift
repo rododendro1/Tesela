@@ -182,6 +182,13 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: { destino in "\"\(destino)\" cannot follow the slash: it must be a major or minor triad in root position (V/V, vii°7/ii)" },
         cifrasNoValidas: { cifras in "\"\(cifras)\" is not figured bass: numbers from 1 to 9, each with at most one accidental (6, 64, 7, #6, 4+)" },
         cifrasSinAcorde: { cifras in "the figures \"\(cifras)\" do not make any chord over that bass" },
+        // UsoDeEscala.swift
+        usoClasica: "classical",
+        usoJazz: "jazz",
+        usoBlues: "blues",
+        usoSigloXX: "20th century",
+        usoPopular: "folk",
+        usoSintetica: "synthetic",
         // Tradicion+Nombre.swift
         tradicionIndia: "India",
         tradicionGrecia: "Greece",
