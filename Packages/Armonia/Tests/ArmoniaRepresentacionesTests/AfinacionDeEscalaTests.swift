@@ -8,6 +8,13 @@ import Testing
 @Suite struct AfinacionDeEscalaTests {
     private func redondear(_ valores: [Double]) -> [Double] { valores.map { ($0 * 100).rounded() / 100 } }
 
+    /// La escala de blues suena con sus blue notes.
+    @Test func elBluesConSusBlueNotes() throws {
+        let blues = try #require(Escala(.la, .blues).afinacion())
+        #expect(abs(blues.desviacion(de: "Do5") - 50) <= 1e-9)
+        #expect(abs(blues.desviacion(de: "Sol4") + 31) <= 1e-9)
+    }
+
     /// Bayātī suena con su Mi𝄳; las notas que no son de la escala, en temperamento igual.
     @Test func unaEscalaMicrotonalComoAfinacion() throws {
         let bayati = try #require(Escala(.re, .bayati).afinacion())
@@ -59,6 +66,14 @@ import Testing
         #expect(TipoDeEscala.protusAuthenticus.afinacionSugerida == .pitagorico)
         #expect(Tradicion.india.afinacionSugerida == .justa)
         #expect(Tradicion.mundoArabe.afinacionSugerida == nil)
-        #expect(TipoDeEscala.mayor.afinacionSugerida == nil)
+        // Las occidentales, por su uso: los modos del Renacimiento, en mesotónico; la tonalidad, en un buen
+        // temperamento; lo demás, en el igual.
+        #expect(TipoDeEscala.dorico.afinacionSugerida == .mesotonico)
+        #expect(TipoDeEscala.mayor.afinacionSugerida == .werckmeisterIII)
+        #expect(TipoDeEscala.menorArmonica.afinacionSugerida == .werckmeisterIII)
+        #expect(TipoDeEscala.alterada.afinacionSugerida == .igual)
+        #expect(TipoDeEscala.tonosEnteros.afinacionSugerida == .igual)
+        #expect(UsoDeEscala.blues.afinacionSugerida == .igual)
+        #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .segundaMayor]).afinacionSugerida == nil)
     }
 }

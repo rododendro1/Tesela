@@ -276,8 +276,16 @@ extension TipoDeEscalaMicrotonal {
     /// por ejemplo, suena más baja que una coma).
     ///
     /// Cada una se declara en el fichero de su tradición, en su ficha (`FichaDeTradicion.microtonales`); aquí van en
-    /// el orden de `FichaDeTradicion.todas`.
-    public static let catalogo: [TipoDeEscalaMicrotonal] = FichaDeTradicion.todas.flatMap(\.microtonales)
+    /// el orden de `FichaDeTradicion.todas`, y después las occidentales (`occidentales`).
+    public static let catalogo: [TipoDeEscalaMicrotonal] = FichaDeTradicion.todas.flatMap(\.microtonales) + occidentales
+
+    /// Las versiones microtonales de escalas occidentales, que no son de ninguna tradición: la de blues, con sus
+    /// blue notes, como se suelen describir: la tercera neutra, entre la menor y la mayor (350 cents, el Mi𝄳 sobre
+    /// Do), y la séptima armónica (7/4, 969 cents, 31 bajo Si♭), con la cuarta y la quinta puras. La ♭5 queda
+    /// temperada. Son una aproximación: cada intérprete las entona a su manera, y las desliza.
+    public static let occidentales: [TipoDeEscalaMicrotonal] = [
+        TipoDeEscalaMicrotonal(.blues, .razones, pasos: [0, 350, 498, 600, 702, 969])
+    ]
 
     /// Nombre de la escala temperada → sus versiones microtonales, en el orden del catálogo.
     static let porNombre: [String: [TipoDeEscalaMicrotonal]] = Dictionary(grouping: catalogo, by: \.temperada.nombre)
