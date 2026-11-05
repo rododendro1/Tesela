@@ -209,6 +209,7 @@ extension TextosDeApps {
         cohemitonica: "kohemitonikoa (bi tonuerdi jarraian)",
         maximamenteRegular: "ahalik eta erregularrena",
         medidaAproximada: "tonuerditan neurtua, mikrotonoak hurbilduz",
+        escaleraDeBrillo: "Distira-eskailera",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tentsioak",
         notasAEvitar: "Saihesteko",

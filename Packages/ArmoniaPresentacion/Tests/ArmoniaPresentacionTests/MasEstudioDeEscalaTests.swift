@@ -74,6 +74,19 @@ import Testing
         #expect(PresentacionDeEstudioDeEscala.conSigno(-0.001) == "0")
     }
 
+    @Test func escaleraDeBrillo() throws {
+        let escalera = PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: Escala(.do), notacion: notacion)
+        let mayor = try #require(escalera.firstIndex { $0.esLaDePartida })
+        #expect(escalera[mayor].nombre == "Do mayor")
+        #expect(escalera[mayor].brillo == "+2")
+        #expect(escalera[mayor + 1].nombre == "Do lidio")
+        #expect(escalera[mayor + 1].cambio == "Fa → Fa♯")
+        #expect(escalera[mayor - 1].nombre == "Do mixolidio")
+        #expect(escalera[mayor].cambio == "Si♭ → Si")
+        #expect(escalera.first?.cambio == "")
+        #expect(escalera.filter(\.esLaDePartida).count == 1)
+    }
+
     @Test func lineasDeNotasGuia() {
         let acordes = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let lineas = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(

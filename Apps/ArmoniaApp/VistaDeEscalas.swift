@@ -118,6 +118,7 @@ struct VistaDeEscalas: View {
             digitacionDePiano(de: escala)
             simetria(de: escala)
             estadisticas(de: escala)
+            escaleraDeBrillo(de: escala)
             reloj(de: escala)
             vecinas(de: escala)
             doceTonalidades(de: escala)
@@ -251,6 +252,34 @@ struct VistaDeEscalas: View {
         Section(notacion.texto(\.estadisticas)) {
             ForEach(PresentacionDeEstudioDeEscala.estadisticas(de: escala, notacion: notacion), id: \.self) { dato in
                 LabeledContent(dato.nombre, value: dato.valor)
+            }
+        }
+    }
+
+    /// Las escalas con la misma tónica, de la más oscura a la más brillante, subiendo una nota cada vez; la de partida,
+    /// en negrita, y cada una se abre al tocarla.
+    @ViewBuilder
+    private func escaleraDeBrillo(de escala: Escala) -> some View {
+        let peldanos = PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, notacion: notacion)
+        if peldanos.count > 1 {
+            Section(notacion.texto(\.escaleraDeBrillo)) {
+                ForEach(peldanos, id: \.self) { peldano in
+                    HStack {
+                        Button {
+                            propia = ""
+                            navegacion.ver(peldano.escala)
+                        } label: {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(peldano.nombre).bold(peldano.esLaDePartida)
+                                Text([peldano.brillo, peldano.cambio].filter { !$0.isEmpty }.joined(separator: " · "))
+                                    .font(.caption).foregroundColor(.secondary)
+                            }
+                        }
+                        Spacer()
+                        BotonDeEscuchar(peldano.sonido).labelStyle(.iconOnly)
+                    }
+                    .buttonStyle(.borderless)
+                }
             }
         }
     }

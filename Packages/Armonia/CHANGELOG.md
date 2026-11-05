@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+### La escalera de brillo
+
+- `Escala.escaleraDeBrillo()` (`EscaleraDeBrillo`) da las escalas con la misma tónica de la más oscura a la más
+  brillante, cada una a una nota de la siguiente: desde Do mayor, bajando, Do mixolidio, Do dórico, Do menor natural,
+  Do frigio, Do locrio…, y subiendo, Do lidio…; en cada paso, la vecina más habitual (`vecinasPorBrillo()`, las que
+  suben o bajan una nota sin cambiar de tónica). `subidas` dice qué nota sube en cada peldaño.
+- `armonia escala Do mayor --escalera` (`--brightness-ladder`) la escribe, con el brillo por quintas, la nota que sube
+  y «←» en la de partida; con `--json`, la clave `escaleraDeBrillo`. La pestaña de escalas de la app la muestra en la
+  sección «Escalera de brillo», y cada peldaño se abre al tocarlo.
+
 ### `armonia escalas`: ordenar y filtrar por las estadísticas
 
 - `escalas --orden brillo` (`--sort brightness`) ordena cada grupo de la más brillante a la más oscura, por el brillo

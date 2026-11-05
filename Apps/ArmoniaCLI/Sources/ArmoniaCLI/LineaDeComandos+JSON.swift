@@ -109,6 +109,13 @@ extension LineaDeComandos {
             let maximamenteRegular: Bool
             let aproximada: Bool
         }
+        struct Peldano: Encodable {
+            let nombre: String
+            let brilloPorQuintas: Double
+            /// La nota que sube desde el peldaño anterior; no está en el primero.
+            let cambio: String?
+            let dePartida: Bool
+        }
         struct Tonalidad: Encodable {
             let tonalidad: String
             let notas: String
@@ -151,6 +158,8 @@ extension LineaDeComandos {
         var vecinas: [Detalle]?
         /// `--estadisticas`.
         var estadisticas: Estadisticas?
+        /// `--escalera`: de la más oscura a la más brillante.
+        var escaleraDeBrillo: [Peldano]?
         /// `--doce`, con la secuencia de `--secuencia` si se da; con `--acordes`, también los acordes de cada grado.
         var doceTonalidades: [Tonalidad]?
         var acordesEnLasDoceTonalidades: AcordesEnLasDoce?
@@ -222,6 +231,15 @@ extension LineaDeComandos {
                 cohemitonica: medidas.cohemitonica, transposicionesDistintas: medidas.transposicionesDistintas,
                 numeroDeForte: medidas.numeroDeForte, maximamenteRegular: medidas.maximamenteRegular,
                 aproximada: medidas.aproximada)
+        }
+        if pedido.escalera {
+            let peldanos = PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, notacion: notacion)
+            datos.escaleraDeBrillo = peldanos.map {
+                let brillo = ($0.escala.estadisticas.brilloPorQuintas * 100).rounded() / 100
+                return EscalaJSON.Peldano(
+                    nombre: $0.nombre, brilloPorQuintas: brillo, cambio: $0.cambio.isEmpty ? nil : $0.cambio,
+                    dePartida: $0.esLaDePartida)
+            }
         }
         if pedido.doce {
             let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(

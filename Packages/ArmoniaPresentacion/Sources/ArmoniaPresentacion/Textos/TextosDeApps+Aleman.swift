@@ -209,6 +209,7 @@ extension TextosDeApps {
         cohemitonica: "kohemitonisch (zwei Halbtöne nacheinander)",
         maximamenteRegular: "maximal gleichmäßig",
         medidaAproximada: "in Halbtönen gemessen, Mikrotöne angenähert",
+        escaleraDeBrillo: "Helligkeitsleiter",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Spannungstöne",
         notasAEvitar: "Avoid-Töne",

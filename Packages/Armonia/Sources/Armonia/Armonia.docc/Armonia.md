@@ -61,6 +61,9 @@ Tonalidad.identificar(midi: [69, 71, 72, 74, 76, 77, 80, 81]).first   // La meno
 - ``CicloSimetrico``
 - ``InicioDeNotasGuia``
 - ``EscalaVecina``
+- ``EscaleraDeBrillo``
+- ``CardinalDeEscala``
+- ``EstadisticasDeEscala``
 - ``Tonalidad``
 - ``AnalisisArmonico``
 - ``Cadencia``

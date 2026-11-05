@@ -183,6 +183,16 @@ extension LineaDeComandosTests {
         #expect(resultado("escalas", "--orden", "color").error.contains("--orden brillo"))
     }
 
+    /// `escala … --escalera`: de la más oscura a la más brillante, con la de partida señalada.
+    @Test func escaleraDeBrillo() {
+        let mayor = salida("escala Do mayor --escalera")
+        #expect(mayor.contains("\nEscalera de brillo:\n"), Comment(rawValue: mayor))
+        let tramo = "\n  +1  Do mixolidio · Mi♭ → Mi\n  +2  Do mayor · Si♭ → Si ←\n  +3  Do lidio · Fa → Fa♯\n"
+        #expect(mayor.contains(tramo), Comment(rawValue: mayor))
+        let ingles = salida("scale C major --brightness-ladder --ingles")
+        #expect(ingles.contains("  +3  C lydian · F → F#"), Comment(rawValue: ingles))
+    }
+
     /// `escala … --estadisticas`: lo que se mide de la escala, un dato por línea.
     @Test func estadisticasDeEscala() {
         let mayor = salida("escala Do mayor --estadisticas")

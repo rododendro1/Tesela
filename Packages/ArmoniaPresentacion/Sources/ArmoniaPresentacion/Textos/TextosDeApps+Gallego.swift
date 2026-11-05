@@ -209,6 +209,7 @@ extension TextosDeApps {
         cohemitonica: "cohemitónica (dous semitóns seguidos)",
         maximamenteRegular: "maximamente regular",
         medidaAproximada: "medida en semitóns, aproximando os microtons",
+        escaleraDeBrillo: "Escaleira de brillo",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensións",
         notasAEvitar: "Que evitar",

@@ -209,6 +209,7 @@ extension TextosDeApps {
         cohemitonica: "cohémitonique (deux demi-tons de suite)",
         maximamenteRegular: "maximalement régulière",
         medidaAproximada: "mesurée en demi-tons, en approchant les micro-intervalles",
+        escaleraDeBrillo: "Échelle de brillance",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "À éviter",
