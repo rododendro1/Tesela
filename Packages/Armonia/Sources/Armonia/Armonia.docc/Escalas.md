@@ -369,7 +369,8 @@ ASCII, Fa(-37c)). Son las afinaciones teóricas: cada escuela afina un poco dist
 buscan por el nombre, como `categoria`: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
 Algunas tienen más de una (`TipoDeEscala.afinaciones`, cada una con su `fuente`): los echoi diatónicos también en
 los 68 moria de Chrysanthos (1832), que `notasMicrotonales(sentido:afinacion:)` escribe en cents. Para oírlas, y
-para medir una escala en un temperamento histórico, véase <doc:AfinacionYRepresentaciones>.
+para medir una escala en un temperamento histórico, véase <doc:AfinacionYRepresentaciones>. De las occidentales,
+solo la de blues tiene versión microtonal, con sus blue notes (Do Mi♭(+50¢) Fa(−2¢) Fa♯ Sol(+2¢) Si♭(−31¢)).
 
 ```swift
 Escala(.re, .bayati).notas                                       // Re Mi♭ Fa Sol La Si♭ Do

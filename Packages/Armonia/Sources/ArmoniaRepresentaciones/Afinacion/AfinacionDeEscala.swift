@@ -6,7 +6,8 @@ import Foundation
 //
 // Una escala de otra tradición suena con sus microtonos (`AfinacionDeEscala`, de `TipoDeEscala.afinaciones`); una
 // escala de doce notas se puede medir en un temperamento histórico (`Escala.cents(en:)`), que depende de la tónica
-// cuando el temperamento es circular o justo. Cada tradición sugiere el suyo (`Tradicion.afinacionSugerida`).
+// cuando el temperamento es circular o justo. Cada tradición sugiere el suyo (`Tradicion.afinacionSugerida`), y
+// cada uso de una escala occidental, también (`UsoDeEscala.afinacionSugerida`).
 
 // MARK: - Una escala microtonal como afinación
 
@@ -101,7 +102,32 @@ extension Tradicion {
     }
 }
 
+extension UsoDeEscala {
+    /// El temperamento que mejor le va al uso: en la música clásica, un buen temperamento (Werckmeister III), en el
+    /// que cada tonalidad suena con su color; en las demás, el igual, porque modulan a cualquier tonalidad o, como
+    /// las escalas simétricas, lo necesitan para repetirse.
+    public var afinacionSugerida: AfinacionHistorica {
+        switch self {
+        case .clasica: return .werckmeisterIII
+        case .jazz, .blues, .sigloXX, .popular, .sintetica: return .igual
+        }
+    }
+}
+
 extension TipoDeEscala {
-    /// El temperamento sugerido por su tradición (`Tradicion.afinacionSugerida`); `nil` en las escalas occidentales.
-    public var afinacionSugerida: AfinacionHistorica? { tradicion?.afinacionSugerida }
+    /// El temperamento sugerido: el de su tradición (`Tradicion.afinacionSugerida`); en las occidentales, el
+    /// mesotónico en los modos y el hexacordo, los de la polifonía del Renacimiento, y si no, el de su primer uso
+    /// (`UsoDeEscala.afinacionSugerida`). `nil` si no tiene tradición ni uso.
+    ///
+    ///     TipoDeEscala.dorico.afinacionSugerida     // .mesotonico
+    ///     TipoDeEscala.mayor.afinacionSugerida      // .werckmeisterIII
+    ///     TipoDeEscala.tonosEnteros.afinacionSugerida   // .igual
+    public var afinacionSugerida: AfinacionHistorica? {
+        if let tradicion { return tradicion.afinacionSugerida }
+        if TipoDeEscala.renacentistas.contains(where: { $0.nombre == nombre }) { return .mesotonico }
+        return usos.first?.afinacionSugerida
+    }
+
+    /// Los modos de la polifonía del Renacimiento y el hexacordo de la solmisación.
+    private static let renacentistas: [TipoDeEscala] = [.dorico, .frigio, .lidio, .mixolidio, .hexacordo]
 }

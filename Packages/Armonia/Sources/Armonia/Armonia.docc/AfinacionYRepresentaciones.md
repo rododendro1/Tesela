@@ -73,6 +73,11 @@ cada grado desde la tónica. Como en los temperamentos circulares cada tonalidad
 tónica, y la afinación justa se construye sobre ella. Cada tradición sugiere la suya (`Tradicion.afinacionSugerida`,
 también en `TipoDeEscala`): la pitagórica en el canto gregoriano, la Grecia antigua, Mesopotamia y China, que
 afinan por quintas puras, y la justa en la India; las demás tienen sus microtonos o no se ajustan a ninguna.
+Las escalas occidentales la toman de su uso (`UsoDeEscala.afinacionSugerida`): Werckmeister III en la música
+clásica, donde cada tonalidad tiene su color, y el temperamento igual en el jazz, el blues, el siglo XX (las escalas
+simétricas lo necesitan), la música popular y las sintéticas. Los modos y el hexacordo, los de la polifonía del
+Renacimiento, van en mesotónico. La escala de blues tiene además sus blue notes
+(`TipoDeEscalaMicrotonal.occidentales`): la tercera neutra, de 350 cents, y la séptima armónica, de 969.
 
 ```swift
 Escala(.do, .mayor).cents(en: .justa)[2]                       // 386,31: la tercera pura
@@ -81,6 +86,10 @@ Escala(Nota(.re, .bemol), .mayor).cents(en: .werckmeisterIII)[2]   // 407,82: m�
 TipoDeEscala.protusAuthenticus.afinacionSugerida               // .pitagorico
 Escala(.re, .protusAuthenticus).cents(en: .pitagorico)[2]      // 294,13: la tercera menor de 32/27
 Tradicion.india.afinacionSugerida                              // .justa
+TipoDeEscala.dorico.afinacionSugerida                          // .mesotonico
+TipoDeEscala.mayor.afinacionSugerida                           // .werckmeisterIII
+TipoDeEscala.alterada.afinacionSugerida                        // .igual
+Escala(.la, .blues).afinacion()?.desviacion(de: "Sol4")        // −31: la séptima armónica
 ```
 
 ## Base 40, base 54 y base 600

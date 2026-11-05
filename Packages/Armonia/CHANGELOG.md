@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+### Las afinaciones de las escalas occidentales
+
+- `UsoDeEscala.afinacionSugerida`: Werckmeister III en la música clásica y el temperamento igual en el jazz, el
+  blues, el siglo XX, la música popular y las sintéticas. `TipoDeEscala.afinacionSugerida` la usa en las escalas
+  occidentales, salvo en los modos y el hexacordo, que van en mesotónico, como en la polifonía del Renacimiento.
+- La escala de blues tiene versión microtonal (`TipoDeEscalaMicrotonal.occidentales`), con sus blue notes: la
+  tercera neutra (350 cents) y la séptima armónica (7/4, 969 cents), con la cuarta y la quinta puras.
+
 ### Las escalas y sus afinaciones
 
 - Una escala puede tener varias versiones microtonales: `TipoDeEscala.afinaciones`, cada una con su `fuente`

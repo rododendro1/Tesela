@@ -131,7 +131,7 @@ extension LineaDeComandosTests {
     @Test func escalasPorUso() {
         let blues = salida("escalas --uso blues")
         #expect(blues.hasPrefix("habituales · blues (6)\n"), Comment(rawValue: blues))
-        #expect(blues.contains("  blues: Do Mi♭ Fa Fa♯ Sol Si♭\n"), Comment(rawValue: blues))
+        #expect(blues.contains("  blues: Do Mi♭ Fa Fa♯ Sol Si♭ · microtonos\n"), Comment(rawValue: blues))
         #expect(!blues.contains("Turquía"))
         #expect(salida("escalas --use blues") == blues)
         let jazz = salida("escalas --uso jazz")

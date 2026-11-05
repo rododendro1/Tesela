@@ -20,7 +20,7 @@ import Testing
                 microtonal.temperada.afinaciones.contains(microtonal), Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(TipoDeEscalaMicrotonal.catalogo.count == 169)
+        #expect(TipoDeEscalaMicrotonal.catalogo.count == 170)
         // La primera de cada escala es la de su teoría de hoy, sin fuente.
         #expect(TipoDeEscala.catalogo.allSatisfy { $0.microtonal?.fuente == nil })
     }
@@ -49,6 +49,16 @@ import Testing
         #expect(chrysanthos == "Re(+12¢) Mi(−29¢) Fa(−6¢) Sol(+6¢) La(+18¢) Si(−24¢) Do")
         // Una afinación de otra escala no vale.
         #expect(Escala(.re, .echosProtos).notasMicrotonales(afinacion: TipoDeEscala.bayati.microtonal) == nil)
+    }
+
+    /// La escala de blues, la única occidental: la tercera neutra y la séptima armónica.
+    @Test func lasBlueNotes() throws {
+        let blues = try #require(TipoDeEscala.blues.microtonal)
+        #expect(TipoDeEscalaMicrotonal.occidentales == [blues])
+        #expect(blues.desvios == [0, 50, -2, 0, 2, -31])
+        let texto = try #require(nombres(Escala(.do, .blues)))
+        #expect(texto == "Do Mi♭(+50¢) Fa(−2¢) Fa♯ Sol(+2¢) Si♭(−31¢)")
+        #expect(TipoDeEscala.bluesMayor.microtonal == nil)
     }
 
     @Test func maqamatEnCuartosDeTono() {
