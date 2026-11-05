@@ -109,7 +109,7 @@ struct VistaDeEscalas: View {
                 }
             }
             Section(notacion.texto(\.mastilDeGuitarra)) {
-                DiagramaDeMastil(mastil: Mastil(.guitarra, trastes: 12), escala: escala, notacion: notacion)
+                DiagramaDeMastil(mastil: Mastil(.guitarra, numeroDeTrastes: 12), escala: escala, notacion: notacion)
             }
             posiciones(de: escala)
             formasPentatonicas(de: escala)
@@ -412,7 +412,7 @@ struct VistaDeEscalas: View {
     }
 
     /// El mástil de las posiciones: el instrumento elegido, con su capo.
-    private var mastil: Mastil { Mastil(encordado.conCapo(capo), trastes: 15) }
+    private var mastil: Mastil { Mastil(encordado.conCapo(capo), numeroDeTrastes: 15) }
 
     /// La escala en un reloj de doce horas, en el círculo cromático o en el de quintas, para ver su forma.
     @ViewBuilder
@@ -504,7 +504,7 @@ struct VistaDeEscalas: View {
 
     /// Los trastes que abarca una posición: «Trastes 2–6».
     private func rotulo(de posicion: EscalaEnElMastil) -> String {
-        notacion.texto { $0.trastes(posicion.trastes.lowerBound, posicion.trastes.upperBound) }
+        notacion.texto { $0.trastes(posicion.rangoDeTrastes.lowerBound, posicion.rangoDeTrastes.upperBound) }
     }
 
     /// Una posición nota a nota, cuerda a cuerda, como se estudia.

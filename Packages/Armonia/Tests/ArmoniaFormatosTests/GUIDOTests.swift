@@ -48,7 +48,8 @@ import Testing
     @Test func deUnCoralConCifradosYAnalisis() throws {
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa2 La3 Fa4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
         let gmn = coral.partitura(
-            duracion: .blanca, compas: "3/2", encabezado: Encabezado(titulo: "Cadencia"), cifrados: true, analisis: true
+            duracion: .blanca, compas: "3/2", encabezado: Encabezado(titulo: "Cadencia"), conCifrados: true,
+            conAnalisis: true
         ).guido()
         #expect(gmn.contains(#"\title<"Cadencia"> \accol<id=1, range="1-2"> \staff<1> \instr<"Coro">"#))
         #expect(gmn.components(separatedBy: "\\staff<").count == 5)

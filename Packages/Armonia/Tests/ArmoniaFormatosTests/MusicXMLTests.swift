@@ -310,7 +310,7 @@ import Testing
             ])
         #expect(duraciones(raiz, voz: "1") == [4, 4, 4]) // el último, redonda
         // Sin cifrados ni análisis, en inglés.
-        let simple = leer(analisis.partitura(cifrados: false, analisis: false).musicXML())
+        let simple = leer(analisis.partitura(conCifrados: false, conAnalisis: false).musicXML())
         #expect(simple.buscar("harmony").isEmpty)
         #expect(simple.buscar("lyric").isEmpty)
         #expect(simple.buscar("words").isEmpty)
@@ -368,7 +368,7 @@ import Testing
         let coral = try Coral(
             leyendo: "Do3 Mi4 Sol4 Do5 | Fa3 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Reb4 Re4 Mib4 | Do3 Mi4 Sol4 Do5")
         #expect(leer(coral.partitura().musicXML()).buscar("harmony").isEmpty)
-        let raiz = leer(coral.partitura(cifrados: true, analisis: true).musicXML())
+        let raiz = leer(coral.partitura(conCifrados: true, conAnalisis: true).musicXML())
         // Do Re♭ Re Mi♭ no es un acorde conocido: se queda sin cifrar.
         let armonias = raiz.buscar("harmony")
         #expect(armonias.map { $0["root"]?["root-step"]?.texto } == ["C", "F", "G", "C"])
@@ -382,11 +382,8 @@ import Testing
         let primerCompas = try #require(raiz.buscar("measure").first)
         let orden = primerCompas.hijos.map(\.nombre).filter { $0 == "harmony" || $0 == "note" || $0 == "backup" }
         #expect(Array(orden.prefix(8)) == ["harmony", "note", "harmony", "note", "harmony", "note", "note", "backup"])
-        #expect(
-            leer(coral.partitura(encabezado: Encabezado(tonalidad: Tonalidad(.sol)), analisis: true).musicXML()).buscar(
-                "lyric"
-            ).first?["text"]?.texto
-                == "IV")
+        let enSol = coral.partitura(encabezado: Encabezado(tonalidad: Tonalidad(.sol)), conAnalisis: true)
+        #expect(leer(enSol.musicXML()).buscar("lyric").first?["text"]?.texto == "IV")
     }
 
     @Test func divisiones() {

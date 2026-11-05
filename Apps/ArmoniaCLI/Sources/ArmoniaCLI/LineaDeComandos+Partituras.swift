@@ -139,7 +139,8 @@ extension LineaDeComandos {
                     duracion: duracion, compas: compas,
                     encabezado: Encabezado(
                         titulo: titulo, tonalidad: tonalidad, tempo: tempo, instrumento: instrumento),
-                    cifrados: marcas.contains("cifrados"), analisis: marcas.contains("analisis"), notacion: notacion
+                    conCifrados: marcas.contains("cifrados"), conAnalisis: marcas.contains("analisis"),
+                    notacion: notacion
                 ).exportar(como: formato))
         case _ where acordes.contains(tipo):
             for opcion in ["clave", "anacrusa"] where opciones[opcion] != nil {

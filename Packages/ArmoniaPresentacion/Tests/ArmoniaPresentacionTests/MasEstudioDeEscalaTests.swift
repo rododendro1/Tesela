@@ -196,7 +196,7 @@ import Testing
         #expect(!posiciones.isEmpty)
         #expect(posiciones.allSatisfy { $0.titulo.hasPrefix("Trastes ") && $0.arpegio.forma == nil })
         let bajo = PresentacionDeArpegios.enElMastil(
-            Acorde("Do"), mastil: Mastil(.bajoElectrico, trastes: 12), notacion: notacion)
+            Acorde("Do"), mastil: Mastil(.bajoElectrico, numeroDeTrastes: 12), notacion: notacion)
         #expect(bajo.allSatisfy { $0.tablatura.count == 4 })
         #expect(FormasDeArpegio.allCases.count == 3)
     }

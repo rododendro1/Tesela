@@ -75,7 +75,7 @@ import Testing
         #expect((Duracion.blanca - .corchea) == Duracion(3, 8))
         #expect((Duracion.negra * 3) == Duracion(3, 4))
         #expect((Duracion.blanca / .negra) == Duracion(2))
-        #expect([Duracion.negra, .corchea, .corchea].sumar() == .blanca)
+        #expect([Duracion.negra, .corchea, .corchea].total == .blanca)
         #expect(Duracion.negra < .blanca)
         #expect(Duracion.negra.enRedondas == 0.25)
     }

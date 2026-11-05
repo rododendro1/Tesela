@@ -62,34 +62,34 @@ import Testing
             case .musicXML:
                 return Data(
                     coral.partitura(
-                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true
+                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), conCifrados: true, conAnalisis: true
                     ).musicXML().utf8)
             case .mei:
                 return Data(
                     coral.partitura(
-                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true
+                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), conCifrados: true, conAnalisis: true
                     ).mei().utf8)
             case .lilyPond:
                 return Data(
                     coral.partitura(
-                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true
+                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), conCifrados: true, conAnalisis: true
                     ).lilyPond().utf8)
             case .guido:
                 return Data(
                     coral.partitura(
-                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true
+                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), conCifrados: true, conAnalisis: true
                     ).guido().utf8)
             case .abc:
                 return Data(
                     coral.partitura(
-                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true
+                        duracion: .blanca, encabezado: Encabezado(titulo: "C"), conCifrados: true, conAnalisis: true
                     ).abc().utf8)
             case .midi: return coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "C")).midi()
             }
         }
         for formato in FormatoDePartitura.allCases {
             let datos = coral.partitura(
-                duracion: .blanca, encabezado: Encabezado(titulo: "C"), cifrados: true, analisis: true
+                duracion: .blanca, encabezado: Encabezado(titulo: "C"), conCifrados: true, conAnalisis: true
             ).exportar(como: formato)
             #expect(datos == esperado(formato), "\(formato)")
         }

@@ -24,7 +24,7 @@ import Testing
     }
 
     @Test func laDeUnCoral() {
-        let partitura = coral.partitura(duracion: .blanca, cifrados: true, analisis: true)
+        let partitura = coral.partitura(duracion: .blanca, conCifrados: true, conAnalisis: true)
         #expect(partitura.nombreDeLaParte == "Coro" && partitura.instrumento == 52)
         #expect(partitura.pentagramas.map(\.claveEscrita) == [.sol, .fa])
         #expect(partitura.lineas.count == 4 && partitura.tonalidadDelAnalisis != nil)
@@ -38,7 +38,7 @@ import Testing
         #expect(partitura.llave && partitura.nombreDeLaParte == "Piano" && partitura.instrumento == 0)
         #expect(partitura.encabezado.tonalidad == progresion.tonalidad)
         #expect(progresion.partitura().lineas.allSatisfy { !$0.linea.marcadores.isEmpty || $0.pentagrama == 1 })
-        let sinNada = progresion.partitura(cifrados: false, analisis: false)
+        let sinNada = progresion.partitura(conCifrados: false, conAnalisis: false)
         #expect(sinNada.tonalidadDelAnalisis == nil)
     }
 

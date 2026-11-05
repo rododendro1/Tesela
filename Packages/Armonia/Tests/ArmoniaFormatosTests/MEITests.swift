@@ -172,7 +172,7 @@ import Testing
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa3 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
         let raiz = leer(
             coral.partitura(
-                duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia"), cifrados: true, analisis: true
+                duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia"), conCifrados: true, conAnalisis: true
             ).mei())
         #expect(raiz.buscar("staffGrp").first?.atributos["symbol"] == "brace")
         #expect(raiz.buscar("staffDef").map { $0.atributos["clef.shape"] } == ["G", "F"])
@@ -213,7 +213,7 @@ import Testing
         #expect(raiz.buscar("dir").first?.texto == "C major:")
         #expect(raiz.buscar("chord").count == 5)
         #expect(raiz.buscar("verse").count == analisis.acordes.flatMap(Exportacion.letras).filter { !$0.isEmpty }.count)
-        let sinAnotar = leer(analisis.partitura(cifrados: false, analisis: false).mei())
+        let sinAnotar = leer(analisis.partitura(conCifrados: false, conAnalisis: false).mei())
         #expect(sinAnotar.buscar("harm").isEmpty)
         #expect(sinAnotar.buscar("verse").isEmpty)
         #expect(sinAnotar.buscar("dir").isEmpty)

@@ -45,7 +45,7 @@
             notacion: Notacion = .espanolCompacto
         ) {
             self.init(
-                mastil: mastil, marcas: mastil.posiciones(de: escala, trastes: rango), rango: rango,
+                mastil: mastil, marcas: mastil.posiciones(de: escala, en: rango), rango: rango,
                 etiquetas: etiquetas, ortografia: PresentacionDeMastil.ortografia(de: escala.notas),
                 notacion: notacion)
         }
@@ -56,7 +56,7 @@
             notacion: Notacion = .espanolCompacto
         ) {
             self.init(
-                mastil: mastil, marcas: mastil.posiciones(de: acorde, trastes: rango), rango: rango,
+                mastil: mastil, marcas: mastil.posiciones(de: acorde, en: rango), rango: rango,
                 etiquetas: etiquetas, ortografia: PresentacionDeMastil.ortografia(de: acorde.notas),
                 notacion: notacion)
         }
@@ -68,7 +68,8 @@
             notacion: Notacion = .espanolCompacto
         ) {
             self.init(
-                mastil: arpegio.mastil, marcas: arpegio.posiciones, rango: arpegio.trastes, etiquetas: etiquetas,
+                mastil: arpegio.mastil, marcas: arpegio.posiciones, rango: arpegio.rangoDeTrastes,
+                etiquetas: etiquetas,
                 ortografia: PresentacionDeMastil.ortografia(de: acorde?.notas ?? []), notacion: notacion)
         }
 
@@ -79,7 +80,8 @@
             notacion: Notacion = .espanolCompacto
         ) {
             self.init(
-                mastil: posicion.mastil, marcas: posicion.posiciones, rango: posicion.trastes, etiquetas: etiquetas,
+                mastil: posicion.mastil, marcas: posicion.posiciones, rango: posicion.rangoDeTrastes,
+                etiquetas: etiquetas,
                 ortografia: PresentacionDeMastil.ortografia(de: escala?.notas ?? []), notacion: notacion)
         }
 

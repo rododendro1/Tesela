@@ -250,7 +250,7 @@ import Testing
         #expect(Encordado.mandolina.nombre(en: .portuguesPalabras) == "bandolim")
         #expect(TransformacionNeorriemanniana.l.nombre(en: .inglesASCII) == "leading-tone exchange")
         // Un instrumento propio conserva su nombre.
-        let laud = Encordado(nombre: "laúd", cuerdas: Encordado.mandolina.cuerdas)
+        let laud = Encordado(nombre: "laúd", afinacion: Encordado.mandolina.afinacion)
         #expect(laud.nombre(en: .inglesASCII) == "laúd")
     }
 

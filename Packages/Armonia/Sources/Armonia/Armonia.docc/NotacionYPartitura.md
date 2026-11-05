@@ -380,7 +380,7 @@ Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<ti
   la guitarra, el pentagrama va en clave de sol octava baja (``Partitura/Pentagrama/claveDelInstrumento``). En
   MusicXML, la tablatura va en un pentagrama de tablatura debajo, con la cuerda y el traste de cada nota.
 - **Ritmo.** Las escalas, los arpegios y las posiciones del mástil van en redondas y sin ritmo; con
-  `ritmo: .figura(.corchea)` (``Partitura/Ritmo``), en corcheas, con la última nota en negra.
+  `ritmo: .uniforme(.corchea)` (``Partitura/Ritmo``), en corcheas, con la última nota en negra.
 - **Nota a nota.** Lo que dan las escalas, los arpegios y el mástil va por el índice de cada nota; una
   ``Partitura/Linea`` lo guarda por el punto en que empieza cada evento. ``Partitura/AnotacionesPorEvento``, con
   `Partitura.Linea(_:porEvento:)` y `linea.porEvento`, pasa de una forma a la otra. `Partitura(acordes:porEvento:)`,

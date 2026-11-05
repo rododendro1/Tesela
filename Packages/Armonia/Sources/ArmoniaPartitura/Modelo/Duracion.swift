@@ -207,7 +207,7 @@ extension Duracion: RepresentableComoTexto, Nombrable {
 
 extension Sequence where Element == Duracion {
     /// Suma de las duraciones.
-    public func sumar() -> Duracion { reduce(.cero, +) }
+    public var total: Duracion { reduce(.cero, +) }
 }
 
 // MARK: - Tempo
