@@ -29,7 +29,8 @@ extension LineaDeComandos {
         "--ida-y-vuelta", "--up-and-down", "--intervalos", "--intervals", "--semitonos", "--semitones", "--tonica",
         "--tonic", "--tresillos", "--triplets", "--romanos", "--roman", "--dedos", "--fingers",
         "--ajenas", "--non-chord", "--doble", "--grand-staff", "--cambiar-clave", "--clef-changes", "--bajo-cifrado",
-        "--figured-bass", "--estadisticas", "--statistics", "--json",
+        "--figured-bass", "--estadisticas", "--statistics", "--sin-semitonos", "--anhemitonic", "--regulares",
+        "--maximally-even", "--json",
     ]
 
     /// Los valores que se proponen tras una opción.
@@ -70,6 +71,7 @@ extension LineaDeComandos {
         ),
         (["--categoria", "--category"], CategoriaTradicional.allCases.map(\.rawValue)),
         (["--uso", "--use"], LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }),
+        (["--orden", "--sort"], ["brillo", "notas", "brightness", "notes"]),
     ]
 
     /// Lo que va tras el nombre de algunas órdenes.

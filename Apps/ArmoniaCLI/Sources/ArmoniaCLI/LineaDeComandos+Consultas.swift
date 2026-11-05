@@ -566,6 +566,15 @@ extension LineaDeComandos {
     /// con sus notas desde Do (y la marca de los microtonos, si los tiene). Un texto suelto busca en los nombres.
     /// `--uso jazz` deja solo las habituales de ese uso (las de otras tradiciones no tienen), y `--notas 5`, las de
     /// cinco notas.
+    /// Cómo ordena `escalas --orden`: de la más brillante a la más oscura (por `brilloPorQuintas`) o de menos a más
+    /// notas.
+    enum OrdenDeEscalas { case brillo, notas }
+
+    /// Los valores de `escalas --orden`, en español y en inglés.
+    static let ordenesDeEscalas: [String: OrdenDeEscalas] = [
+        "brillo": .brillo, "brightness": .brillo, "notas": .notas, "notes": .notas,
+    ]
+
     static func escalas(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         var entrada = Argumentos(argumentos)
@@ -608,10 +617,23 @@ extension LineaDeComandos {
             guard let n = Int(texto), (1...24).contains(n) else { throw ErrorDeUso.notasFueraDeRango }
             numeroDeNotas = n
         }
+        // `--orden brillo`, `--sin-semitonos`, `--regulares`: por lo que se mide de cada escala.
+        var orden: OrdenDeEscalas?
+        if let texto = try entrada.valor("--orden", "--sort") {
+            guard let elegido = ordenesDeEscalas[claveDeBusqueda(texto)] else {
+                throw ErrorDeUso.ordenDeEscalasDesconocido(texto)
+            }
+            orden = elegido
+        }
+        let sinSemitonos = entrada.quitarMarca("--sin-semitonos", "--anhemitonic")
+        let regulares = entrada.quitarMarca("--regulares", "--maximally-even")
         if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
         let buscado = claveDeBusqueda(entrada.unidos)
+        func estadisticas(_ tipo: TipoDeEscala) -> EstadisticasDeEscala { Escala(.do, tipo).estadisticas }
         func cumple(_ tipo: TipoDeEscala) -> Bool {
             guard numeroDeNotas == nil || tipo.numeroDeNotas == numeroDeNotas else { return false }
+            guard !sinSemitonos || estadisticas(tipo).anhemitonica else { return false }
+            guard !regulares || estadisticas(tipo).maximamenteRegular else { return false }
             return buscado.isEmpty || claveDeBusqueda(tipo.nombre(en: notacion)).contains(buscado)
                 || claveDeBusqueda(tipo.nombre).contains(buscado)
         }
@@ -653,14 +675,26 @@ extension LineaDeComandos {
                 } : t(.ningunaEscala)
             return ResultadoDeOrden(salida: "", error: "armonia: " + texto + "\n", codigo: 1)
         }
+        // Con `--orden`, cada grupo de la más brillante a la más oscura, o de menos a más notas; a igualdad, en el
+        // orden del catálogo.
+        func ordenados(_ tipos: [TipoDeEscala]) -> [TipoDeEscala] {
+            guard let orden else { return tipos }
+            // La clave de cada una, de menor a mayor: el brillo, cambiado de signo, o el número de notas.
+            let claves = tipos.map { orden == .brillo ? -estadisticas($0).brilloPorQuintas : Double($0.numeroDeNotas) }
+            return tipos.indices.sorted { (claves[$0], $0) < (claves[$1], $1) }.map { tipos[$0] }
+        }
         var lineas: [String] = []
         for grupo in grupos {
             if !lineas.isEmpty { lineas.append("") }
             lineas.append("\(grupo.titulo) (\(grupo.tipos.count))")
-            for tipo in grupo.tipos {
+            for tipo in ordenados(grupo.tipos) {
                 let notas = Escala(.do, tipo).notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
                 let microtonos = tipo.microtonal == nil ? "" : " · " + t(.microtonos)
-                lineas.append("  \(tipo.nombre(en: notacion)): \(notas)\(microtonos)")
+                // Ordenadas por brillo, con su brillo por quintas: «lidio: Do Re Mi Fa♯ Sol La Si · +3».
+                let brillo =
+                    orden == .brillo
+                    ? " · " + PresentacionDeEstudioDeEscala.conSigno(estadisticas(tipo).brilloPorQuintas) : ""
+                lineas.append("  \(tipo.nombre(en: notacion)): \(notas)\(microtonos)\(brillo)")
             }
         }
         return bien(lineas.joined(separator: "\n"))
