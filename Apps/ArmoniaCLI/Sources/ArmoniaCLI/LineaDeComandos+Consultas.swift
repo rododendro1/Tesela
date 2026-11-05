@@ -327,6 +327,8 @@ extension LineaDeComandos {
         let triadas: Bool
         /// `--comparar`.
         let otra: Escala?
+        /// `--contra`: la comparación nota a nota, en SVG.
+        let contra: Escala?
 
         var sentido: SentidoDelIntervalo { bajando ? .descendente : .ascendente }
     }
@@ -354,21 +356,28 @@ extension LineaDeComandos {
         }
         var otra: Escala?
         if let texto = try argumentos.valorConPalabras("--comparar", "--compare") { otra = try Escala(leyendo: texto) }
+        var contra: Escala?
+        if let texto = try argumentos.valorConPalabras("--contra", "--against") { contra = try Escala(leyendo: texto) }
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscala }
         return PedidoDeEscala(
             escala: try Escala(leyendo: argumentos.unidos), conAcordes: conAcordes, secuencia: secuencia,
             octavas: octavas, bajando: bajando, piano: piano, modos: modos, simetria: simetria, vecinas: vecinas,
-            estadisticas: estadisticas, escalera: escalera, doce: doce, triadas: triadas, otra: otra)
+            estadisticas: estadisticas, escalera: escalera, doce: doce, triadas: triadas, otra: otra,
+            contra: contra)
     }
 
     /// `escala Do mayor [--acordes] [--secuencia terceras] [--bajando] [--octavas 2] [--piano] [--modos]
     /// [--estadisticas] [--escalera] [--comparar Do lidio]`: la escala y, si se piden, todos los acordes que caben en
     /// cada grado, una secuencia de estudio, la digitación de piano, los modos paralelos y relativos, lo que se mide de
-    /// ella, su escalera de brillo y la comparación con otra escala.
+    /// ella, su escalera de brillo y la comparación con otra escala. Con `--contra Do dórico`, solo la comparación
+    /// nota a nota, en SVG.
     static func escala(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let pedido = try pedidoDeEscala(textos)
         let escala = pedido.escala
+        if let contra = pedido.contra {
+            return bien(PresentacionDeEstudioDeEscala.comparacionNotaANota(escala, con: contra, notacion: notacion))
+        }
         var lineas = [describir(escala: escala, conTodosSusAcordes: pedido.conAcordes, notacion)]
         if let secuencia = pedido.secuencia {
             let presentada = PresentacionDeEstudioDeEscala.secuencia(

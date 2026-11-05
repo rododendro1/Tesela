@@ -159,6 +159,7 @@ import Testing
         "acorde Do --comparar", "acorde Do --en", "acorde Do --foo", "acorde --nombres",
         "escalas --tradicion marte", "escalas --categoria foo", "musicxml escala", "midi escala Re bayati --clave fa",
         "escala Do mayor --secuencia foo", "escala Do mayor --secuencia", "escala Do mayor --comparar",
+        "escala Do mayor --contra",
         "escala Do mayor --octavas 9", "escala Do mayor --foo", "escala --piano",
         "teclado", "teclado Do mayor --mano foo", "teclado Do mayor --mano", "teclado Do mayor --octavas 9",
         "teclado Do mayor --foo", "identificar --archivo coral.mid Do", "identificar --archivo", "identificar --foo Do",
