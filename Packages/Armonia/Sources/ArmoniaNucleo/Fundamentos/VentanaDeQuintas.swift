@@ -40,7 +40,7 @@ public struct VentanaDeQuintas: Hashable, Sendable {
 
     /// La de la tonalidad mayor con esa armadura (+ sostenidos, − bemoles): sus siete notas, dos quintas por debajo y
     /// tres por encima. Sin alteraciones, de La♭ a Do♯ (Do♯, Mi♭, Fa♯, La♭ y Si♭, como escribe Do mayor sus
-    /// cromatismos); con dos sostenidos, de Si♭ a Re♯; con tres bemoles, de Fa♭ a Mi.
+    /// cromatismos); con dos sostenidos, de Si♭ a Re♯; con tres bemoles, de Do♭ a Mi.
     public static func armadura(_ alteraciones: Int) -> VentanaDeQuintas {
         VentanaDeQuintas(inicio: alteraciones - 4)
     }

@@ -18,7 +18,7 @@ import Testing
         #expect(negras == ["Do♯", "Mi♭", "Fa♯", "Sol♯", "Si♭"])
         #expect(VentanaDeQuintas.armadura(0).description == "La♭–Do♯")
         #expect(VentanaDeQuintas.armadura(2).description == "Si♭–Re♯")
-        #expect(VentanaDeQuintas.armadura(-3).description == "Fa♭–Mi")
+        #expect(VentanaDeQuintas.armadura(-3).description == "Do♭–Mi")
         // Las siete notas de la armadura están dentro.
         for alteraciones in -7...7 {
             let ventana = VentanaDeQuintas.armadura(alteraciones)
