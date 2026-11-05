@@ -9,3 +9,7 @@ extension ConClasesDeAltura {
     @available(*, deprecated, renamed: "conjuntoDeClasesDeAltura")
     public var conjuntoDeClases: ConjuntoDeClasesDeAltura { conjuntoDeClasesDeAltura }
 }
+
+/// El nombre de antes de `SistemaDeAfinacion`.
+@available(*, deprecated, renamed: "SistemaDeAfinacion")
+public typealias Afinacion = SistemaDeAfinacion

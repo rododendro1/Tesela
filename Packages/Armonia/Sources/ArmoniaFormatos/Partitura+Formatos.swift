@@ -34,7 +34,7 @@ extension Partitura {
     ///
     ///     let datos = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2").partitura().midi()
     ///     try datos.write(to: URL(fileURLWithPath: "escala.mid"))
-    public func midi(afinacion: (any Afinacion)? = nil) -> Data {
+    public func midi(afinacion: (any SistemaDeAfinacion)? = nil) -> Data {
         var archivo = ArchivoMIDI(
             compas: compas, tonalidad: encabezado.tonalidad, tempo: encabezado.tempo,
             titulo: encabezado.titulo(en: notacion),
@@ -59,7 +59,7 @@ extension Partitura {
     ///         let datos = partitura.exportar(como: formato)
     ///         // …se guarda con `formato.extensionDeFichero`
     ///     }
-    public func exportar(como formato: FormatoDePartitura, afinacion: (any Afinacion)? = nil) -> Data {
+    public func exportar(como formato: FormatoDePartitura, afinacion: (any SistemaDeAfinacion)? = nil) -> Data {
         switch formato {
         case .musicXML: return Data(musicXML().utf8)
         case .mei: return Data(mei().utf8)

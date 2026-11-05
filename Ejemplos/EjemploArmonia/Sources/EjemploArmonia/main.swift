@@ -167,7 +167,7 @@ print(
     Escala(.do).ortografiar(midi: Array((60...72).reversed())).map(\.nota.nombre).joined(separator: " "))
 
 titulo("Afinaciones")
-let afinaciones: [(String, any Afinacion)] = [
+let afinaciones: [(String, any SistemaDeAfinacion)] = [
     ("igual", TemperamentoRegular.igual), ("pitagórico", TemperamentoRegular.pitagorico),
     ("mesotónico ¼", TemperamentoRegular.mesotonicoCuartoDeComa),
     ("31 divisiones", TemperamentoRegular.igual(divisiones: 31)),

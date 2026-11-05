@@ -215,7 +215,7 @@ import Testing
     // MARK: En una afinación
 
     /// Una afinación que lo sube todo lo mismo.
-    private struct Subida: Afinacion {
+    private struct Subida: SistemaDeAfinacion {
         let cents: Double
         func frecuencia(de nota: Altura) -> Double { nota.frecuencia() * pow(2, cents / 1200) }
     }

@@ -227,7 +227,7 @@ Sources/
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
 │   │                      FuncionTonal y AcordeAnalizado)
 │   ├── Coral/             Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion
-│   └── Afinacion/         Afinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica
+│   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica
 │                          (el catálogo), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett (números)
 ├── ArmoniaRepresentaciones/
 │   ├── Color/         CorrespondenciaDeColores (colores)
