@@ -28,7 +28,8 @@ import Testing
         #expect(TipoDeEscala.tradicionales(categoria: .melakarta).count == 72)
         #expect(TipoDeEscala.tradicionales(categoria: .thaat).count == TipoDeEscala.thaats.count)
         #expect(TipoDeEscala.tradicionales(categoria: .dromos).count == TipoDeEscala.dromoi.count)
-        #expect(TipoDeEscala.tradicionales(categoria: .maqam).count == TipoDeEscala.maqamat.count)
+        let maqamat = TipoDeEscala.tradicionales(categoria: .maqam)
+        #expect(maqamat.count == TipoDeEscala.maqamat.count + TipoDeEscala.adwar.count)
         #expect(TipoDeEscala.tradicionales(categoria: .dastgah).count == TipoDeEscala.dastgah.count)
         #expect(TipoDeEscala.tradicionales(categoria: .makam).count == TipoDeEscala.makamlar.count)
         #expect(TipoDeEscala.tradicionales(categoria: .mugam).count == TipoDeEscala.mugamlar.count)
@@ -46,12 +47,12 @@ import Testing
         let harmoniai = TipoDeEscala.tradicionales(categoria: .harmonia)
         let nuevas =
             TipoDeEscala.generosDeDidimoYEratostenes + TipoDeEscala.harmoniaiCromaticas
-            + TipoDeEscala.harmoniaiEnarmonicas + TipoDeEscala.harmoniaiDeAristides
+            + TipoDeEscala.harmoniaiEnarmonicas + TipoDeEscala.harmoniaiDeAristides + TipoDeEscala.coloresDeAristoxeno
         #expect((tetracordos.count + harmoniai.count) == TipoDeEscala.griegasAntiguas.count + nuevas.count)
         #expect(
             tetracordos
                 == TipoDeEscala.tetracordosGriegos + TipoDeEscala.generosDeArquitasYPtolomeo
-                + TipoDeEscala.generosDeDidimoYEratostenes)
+                + TipoDeEscala.generosDeDidimoYEratostenes + TipoDeEscala.coloresDeAristoxeno)
         #expect(
             harmoniai
                 == TipoDeEscala.harmoniai + TipoDeEscala.harmoniaiCromaticas + TipoDeEscala.harmoniaiEnarmonicas
@@ -221,7 +222,7 @@ import Testing
         #expect(
             fragmentos
                 == griegos + TipoDeEscala.ajnas + TipoDeEscala.cesniler + TipoDeEscala.generosDeDidimoYEratostenes
-                + TipoDeEscala.hexacordos)
+                + TipoDeEscala.hexacordos + TipoDeEscala.coloresDeAristoxeno)
         #expect(fragmentos.allSatisfy { (3...6).contains($0.intervalos.count) })
         let afinaciones = TipoDeEscala.tradicionales(clase: .afinacion)
         #expect(afinaciones == TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + TipoDeEscala.sudesteAsiaticas)
@@ -258,6 +259,19 @@ import Testing
         }
         #expect(Tradicion.japon.nombre(en: Notacion.espanolCompacto.conTextos(en: .euskera)) == "Japonia")
         #expect(Tradicion.mundoArabe.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Arab world")
+    }
+
+    /// Los colores de Aristóxeno, en doceavos de tono, y los adwār de Ṣafī al-Dīn, pitagóricos.
+    @Test func aristoxenoYSafiAlDin() throws {
+        #expect(TipoDeEscala.coloresDeAristoxeno.allSatisfy { $0.tradicion == .greciaAntigua })
+        #expect(TipoDeEscala.coloresDeAristoxeno.allSatisfy { $0.categoria == .tetracordo })
+        #expect(TipoDeEscala.tetracordoCromaticoBlandoDeAristoxeno.microtonal?.desvios == [0, -33, 33, 0])
+        #expect(TipoDeEscala.tetracordoCromaticoHemiolico.microtonal?.desvios == [0, -25, -50, 0])
+        #expect(try TipoDeEscala(leyendo: "cromático tónico") == .tetracordoCromatico)
+        #expect(TipoDeEscala.adwar.allSatisfy { $0.tradicion == .mundoArabe && $0.categoria == .maqam })
+        #expect(TipoDeEscala.shaddNawa == .menorNatural)
+        #expect(TipoDeEscala.shaddRast.microtonal?.desvios == [0, 4, -16, -2, 2, -18, -4])
+        #expect((try? TipoDeEscala(leyendo: "Rast de Safi al-Din"))?.nombre == "shadd Rāst")
     }
 
     /// El folklore europeo: tres escalas populares, dos instrumentos de afinación natural y el canto georgiano, con

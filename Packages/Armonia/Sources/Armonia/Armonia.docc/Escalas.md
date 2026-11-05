@@ -166,6 +166,9 @@ usan microtonos):
 - **9 ajnas árabes**, los fragmentos de los que se hacen los maqamat, con «jins» delante para no confundirse
   con su maqam: Rāst, Bayātī, Ṣabā y Sīkāh (con cuartos de tono, aproximados como sus maqamat), Ḥijāz y Kurd,
   tetracordos; Sīkāh es un tricordo, y Nahāwand, ʿAjam y Nikrīz, pentacordos.
+- **4 adwār de Ṣafī al-Dīn al-Urmawī** (siglo XIII), los modos de su sistema de diecisiete notas pitagóricas, con
+  «shadd» delante: ʿUshshāq, Nawā, Abū Salīk y Rāst (con la tercera y la sexta neutras), con sus cents. Los otros
+  ocho de sus doce shudūd faltan, porque las fuentes no coinciden en sus grados.
 - **Indonesia**: Pélog selisir (también «balinesa») y Sléndro, y los pathet de Java y los modos de Bali. Siguen
   los modelos de las medidas de Surjodiningrat: el pélog en nueve partes iguales de la octava y el sléndro en
   cinco; en doce notas cada grado va al semitono más cercano desde su tónica (el sléndro, Do Re Fa Sol Si♭), y
@@ -238,7 +241,8 @@ usan microtonos):
   y enarmónico) y Eratóstenes (cromático y enarmónico); las siete harmoniai, de la mixolidia a la hipodoria, y la
   doria cromática; las otras seis harmoniai cromáticas y las siete enarmónicas, en la escala de Mi a Mi de cada
   género; y las seis harmoniai de Arístides Quintiliano (lidia, doria, frigia, iastia, mixolidia y sintonolidia),
-  que da como las de Platón, de cinco a ocho notas.
+  que da como las de Platón, de cinco a ocho notas. Y los colores de Aristóxeno que no son sus tres tetracordos,
+  en doceavos de tono: el cromático blando (Mi Mi♯ Fa La, a 67 y 133 cents), el hemiólico y el diatónico blando.
 - **4 modos del klezmer**: Freygish (Ahavah Rabbah), Misheberakh, Adonai Malakh (mixolidio con
   la 3ª menor de paso) y Magen Avot (menor natural).
 
@@ -280,6 +284,7 @@ están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `
 `ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `mesopotamicas`, `gramas`, `murchanas`, `generosDeArquitasYPtolomeo`, `ajnas`, `cesniler`, `africanas`,
 `sudesteAsiaticas`, `modosGregorianos`, `generosDeDidimoYEratostenes`, `harmoniaiCromaticas`, `harmoniaiEnarmonicas`,
 `harmoniaiDeAristides`, `hexacordos`, `europeas`, `modosDeGlareano`, `vietnamitas`, `brasilenas`,
+`coloresDeAristoxeno`, `adwar`,
 `pathets`…). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, las europeas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
@@ -319,7 +324,7 @@ TipoDeEscala.melakarta(15)?.clase                 // .escalaMadre
 TipoDeEscala.tetracordoDiatonico.clase            // .fragmento
 TipoDeEscala.jinsHijaz.categoria                  // .jins
 TipoDeEscala.menorNatural.clase                   // nil
-TipoDeEscala.tradicionales(clase: .fragmento).count   // 42
+TipoDeEscala.tradicionales(clase: .fragmento).count   // 45
 TipoDeEscala.tradicionales(clase: .afinacion).count   // 17
 ```
 
@@ -334,7 +339,7 @@ makamlar, salvo los seis pitagóricos (Nihâvend, Kürdî, Bûselik, Çârgâh, 
 los 72 moria de la Comisión Patriarcal de 1881 (`.moria72`); y los diez thāṭ y Yaman, en los 22 śruti indios
 (`.sruti`), cada uno una razón justa, como los grāma y las mūrchanā; el tetracordo enarmónico griego, en cuartos de
 tono (Mi Fa𝄳 Fa La), con las harmoniai enarmónicas y las de Arístides; el gamelan, los xilófonos africanos y el piphat y el pinpeat, en cents, con la octava en
-partes iguales; y los géneros de Arquitas, Ptolomeo, Dídimo y Eratóstenes, en cents (`.razones`), igual que las mūrchanā con
+partes iguales; y los géneros de Arquitas, Ptolomeo, Dídimo y Eratóstenes, los colores de Aristóxeno y los adwār de Ṣafī al-Dīn, en cents (`.razones`), igual que las mūrchanā con
 el Pa de 40/27, que no es uno de los 22 śruti. Los thāṭ siguen el ṣaḍja-grāma de Bharata como lo reconstruye E. J. Arnold
 (Kāfī: Sa, Re 10/9, ga 32/27, ma 4/3, Pa, Dha 5/3, ni 16/9), con el re y el dha pitagóricos (256/243, 128/81) en
 Bhairav, Bhairavī y Toḍī, y Toḍī como lo miden Bel y otros. Los que en su propia teoría no tienen microtonos (Ḥijāz,

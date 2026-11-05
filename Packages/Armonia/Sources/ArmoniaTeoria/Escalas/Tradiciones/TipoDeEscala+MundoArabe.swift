@@ -251,6 +251,52 @@ extension TipoDeEscala {
     public static let ajnas: [TipoDeEscala] = [
         .jinsRast, .jinsBayati, .jinsSaba, .jinsSikah, .jinsHijaz, .jinsKurd, .jinsNahawand, .jinsAjam, .jinsNikriz,
     ]
+
+    // MARK: Los adwār de Ṣafī al-Dīn
+    //
+    // Ṣafī al-Dīn al-Urmawī (siglo XIII), en el Kitāb al-adwār, parte la octava en diecisiete notas pitagóricas, con
+    // dos tamaños de paso: el limma (256/243, 90 cents) y la coma (531441/524288, 24 cents). Con ellos el tono
+    // (9/8, 204) es limma, limma y coma, y la segunda neutra, dos limmas (180). De sus doce modos (shudūd), estos son
+    // los cuatro de siete notas que se describen igual en las fuentes; Rāst tiene la tercera y la sexta neutras.
+    // Los demás (ʿIrāq, Iṣfahān, Zīrafkand, Buzurg, Rāhawī, Zankūla, Ḥusaynī y Ḥijāzī) faltan: o tienen ocho notas o
+    // las fuentes no coinciden en sus grados. Se llaman «shadd» para no confundirse con los maqamat de hoy.
+
+    /// شد عشاق (Do Re Mi Fa Sol La Si♭, pitagórico): tono, tono, limma, tono, tono, limma y tono.
+    public static let shaddUshshaq = TipoDeEscala(
+        nombre: "shadd ʿUshshāq",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["ʿUshshāq de Ṣafī al-Dīn"])
+    /// شد نوى (Do Re Mi♭ Fa Sol La♭ Si♭, pitagórico): tono, limma, tono, tono, limma, tono y tono.
+    public static let shaddNawa = TipoDeEscala(
+        nombre: "shadd Nawā",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Nawā de Ṣafī al-Dīn"])
+    /// شد أبو سليك (Do Re♭ Mi♭ Fa Sol♭ La♭ Si♭, pitagórico): limma, tono, tono, limma, tono, tono y tono.
+    public static let shaddAbuSalik = TipoDeEscala(
+        nombre: "shadd Abū Salīk",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Abū Salīk de Ṣafī al-Dīn", "shadd Būsalīk"])
+    /// شد راست (Do Re Mi Fa Sol La Si♭, con el Mi y el La neutros): tono, dos limmas, limma y coma, tono, dos limmas,
+    /// limma y coma, y tono.
+    public static let shaddRast = TipoDeEscala(
+        nombre: "shadd Rāst",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["Rāst de Ṣafī al-Dīn"])
+
+    /// Los cuatro shudūd de Ṣafī al-Dīn que están: ʿUshshāq, Nawā, Abū Salīk y Rāst.
+    public static let adwar: [TipoDeEscala] = [.shaddUshshaq, .shaddNawa, .shaddAbuSalik, .shaddRast]
 }
 
 // MARK: Ficha
@@ -258,7 +304,10 @@ extension TipoDeEscala {
 extension FichaDeTradicion {
     static let mundoArabe = FichaDeTradicion(
         .mundoArabe,
-        [.init(.maqam, TipoDeEscala.maqamat), .init(.jins, TipoDeEscala.ajnas)],
+        [
+            .init(.maqam, TipoDeEscala.maqamat), .init(.jins, TipoDeEscala.ajnas),
+            .init(.maqam, TipoDeEscala.adwar),
+        ],
         microtonales: [
             // Maqamat (cuartos de tono).
             TipoDeEscalaMicrotonal(
@@ -281,5 +330,10 @@ extension FichaDeTradicion {
             TipoDeEscalaMicrotonal(.jinsBayati, .cuartosDeTono, pasos: [0, 3, 6, 10]),
             TipoDeEscalaMicrotonal(.jinsSaba, .cuartosDeTono, pasos: [0, 3, 6, 8]),
             TipoDeEscalaMicrotonal(.jinsSikah, .cuartosDeTono, pasos: [-1, 2, 6]),
+            // Los shudūd de Ṣafī al-Dīn, en cents de sus razones pitagóricas.
+            TipoDeEscalaMicrotonal(.shaddUshshaq, .razones, pasos: [0, 204, 408, 498, 702, 906, 996]),
+            TipoDeEscalaMicrotonal(.shaddNawa, .razones, pasos: [0, 204, 294, 498, 702, 792, 996]),
+            TipoDeEscalaMicrotonal(.shaddAbuSalik, .razones, pasos: [0, 90, 294, 498, 588, 792, 996]),
+            TipoDeEscalaMicrotonal(.shaddRast, .razones, pasos: [0, 204, 384, 498, 702, 882, 996]),
         ])
 }

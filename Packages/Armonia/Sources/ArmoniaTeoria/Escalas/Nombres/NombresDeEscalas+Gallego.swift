@@ -128,6 +128,8 @@ extension NombresDeEscalas {
         .tradicional(.tetracordoEnarmonicoDePtolomeo, "tetracordo enharmónico de Ptolomeo"),
         .tradicional(.tetracordoCromaticoBlando, "tetracordo cromático brando"),
         .tradicional(.tetracordoDiatonicoBlando, "tetracordo diatónico brando"),
+        .tradicional(.tetracordoCromaticoBlandoDeAristoxeno, "tetracordo cromático brando de Aristóxeno"),
+        .tradicional(.tetracordoDiatonicoBlandoDeAristoxeno, "tetracordo diatónico brando de Aristóxeno"),
         .tradicional(.doricoUcraniano, "dórico ucraíno"),
         .tradicional(.cuernoAlpino, "corno alpino"),
 
