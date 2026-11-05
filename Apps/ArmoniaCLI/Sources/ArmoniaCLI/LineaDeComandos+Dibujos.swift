@@ -157,9 +157,18 @@ extension LineaDeComandos {
         return bien(svg.trimmingCharacters(in: "\n"))
     }
 
-    /// `hoja Re dórico`: la escala en una hoja de estudio para imprimir, en SVG; `grabar hoja …` la pasa a PDF.
+    /// `hoja Re dórico`: la escala en una hoja de estudio para imprimir, en SVG; `hoja --acordes Rem7 Sol7 Do7M
+    /// [--en Do]`, la de una progresión. `grabar hoja …` la pasa a PDF.
     static func hoja(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        let argumentos = Argumentos(argumentos)
+        var argumentos = Argumentos(argumentos)
+        if argumentos.quitarMarca("--acordes", "--chords") {
+            guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaValor("--en") }
+            if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+            guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanLosAcordesDeLaHoja }
+            let analisis = try PresentacionDeAnalisis.analizar(
+                argumentos.restantes.joined(separator: " "), en: tonalidad, notacion: notacion)
+            return bien(PresentacionDeAnalisis.hojaDeEstudio(analisis, notacion: notacion))
+        }
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDeLaHoja }
         let escala = try Escala(leyendo: argumentos.unidos)

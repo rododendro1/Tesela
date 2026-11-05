@@ -133,6 +133,8 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionReloj: String
     let sintaxisHoja: String
     let descripcionHoja: String
+    let sintaxisHojaDeAcordes: String
+    let descripcionHojaDeAcordes: String
     let sintaxisPentagrama: String
     let descripcionPentagrama: String
     let sintaxisPentagramaEstudio: String
@@ -275,6 +277,7 @@ struct TextosDeCLI: TextosTraducidos {
     let noEsPentatonica: String
     let faltaEscalaDelReloj: String
     let faltaEscalaDeLaHoja: String
+    let faltanLosAcordesDeLaHoja: String
     let faltaLoQueDibujaElPentagrama: String
     let capoFueraDeRango: String
     let octavasFueraDeRango: String

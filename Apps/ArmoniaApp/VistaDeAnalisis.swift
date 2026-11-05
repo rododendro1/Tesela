@@ -126,7 +126,8 @@ struct VistaDeAnalisis: View {
         }
     }
 
-    /// Las partituras y el MIDI de la progresión y de la progresión arpegiada con el patrón elegido.
+    /// Las partituras y el MIDI de la progresión y de la progresión arpegiada con el patrón elegido, y la hoja de
+    /// estudio de la progresión, con la disposición elegida.
     private var ficheros: [FicheroParaExportar] {
         guard let analisis = try? resultado?.get() else { return [] }
         let arpegiada = analisis.arpegiada(patron, figura: figura.duracion, enlazados: enlazados, notacion: notacion)
@@ -135,7 +136,10 @@ struct VistaDeAnalisis: View {
         let guias = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(
             analisis.acordes, tonalidad: analisis.tonalidad, notacion: notacion
         ).flatMap(\.ficheros)
-        return analisis.ficheros + (arpegiada?.ficheros ?? []) + (dispuesta?.ficheros ?? []) + guias
+        let hoja = FicheroParaExportar.svg(
+            PresentacionDeAnalisis.hojaDeEstudio(analisis, disposicion: disposicion, notacion: notacion),
+            nombre: notacion.texto(\.hojaDeEstudio))
+        return analisis.ficheros + [hoja] + (arpegiada?.ficheros ?? []) + (dispuesta?.ficheros ?? []) + guias
     }
 
     /// «Transponer»: las demás tonalidades del mismo modo. Lo abierto de un fichero conserva su ritmo armónico.
