@@ -20,28 +20,8 @@ extension LineaDeComandos {
         let error: ErrorDeUso
     }
 
-    /// Lo que hace una orden con `--json`: sus datos, a partir del resto de los argumentos.
+    /// Lo que hace una orden con `--json` (`Orden.json`): sus datos, a partir del resto de los argumentos.
     typealias SalidaJSON = @Sendable (_ argumentos: [String], _ notacion: Notacion) throws -> any Encodable
-
-    /// Lo que da cada orden con `--json`, por el primero de sus nombres (`Orden.nombres`).
-    static let salidasJSON: [String: SalidaJSON] = [
-        "acorde": { try acordeJSON($0, $1) },
-        "identificar": { try identificarJSON($0, $1) },
-        "arpegio": { try arpegioJSON($0, $1) },
-        "intervalo": { try intervaloJSON($0, $1) },
-        "escala": { try escalaJSON($0, $1) },
-        "tonalidad": { try tonalidadJSON($0, $1) },
-        "digitaciones": { try digitacionesJSON($0, $1) },
-        "tradiciones": { try tradicionesJSON($0, $1) },
-        "analizar": { try analizarJSON($0, $1) },
-        "conjunto": { try conjuntoJSON($0, $1) },
-        "serie": { try serieJSON($0, $1) },
-        "armonizar": { try armonizarJSON($0, $1) },
-        "realizar": { try realizarJSON($0, $1) },
-        "revisar": { try revisarJSON($0, $1) },
-        "contrapunto": { try contrapuntoJSON($0, $1) },
-        "transponer": { try transponerJSON($0, $1) },
-    ]
 
     /// Los datos en JSON con las claves ordenadas, para que la salida no cambie de una vez a otra: con sangría para
     /// leerlos en la terminal, o en una sola línea para un programa (`enUnaLinea`).

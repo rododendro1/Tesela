@@ -4,9 +4,8 @@ import Foundation
 // MARK: - El autocompletado y la página de manual
 //
 // `armonia completado bash|zsh|fish` escribe el autocompletado para la terminal y `armonia manual`, la ayuda como
-// página de manual (roff). Los dos salen de la tabla de órdenes (`ordenes`) y de su ayuda: los nombres de cada orden,
-// y las opciones que nombra su ayuda en español y en inglés. Una orden o una opción nueva aparece en los dos sin
-// tocar nada aquí.
+// página de manual (roff). Los dos salen de la tabla de órdenes (`ordenes`): los nombres de cada orden, su ayuda y
+// las opciones que declara (`Orden.opciones`). Una orden o una opción nueva aparece en los dos sin tocar nada aquí.
 
 extension LineaDeComandos {
     // MARK: Lo que se completa
@@ -112,50 +111,8 @@ extension LineaDeComandos {
         return nombres
     }()
 
-    /// Las opciones de una orden: las que nombra su ayuda, en español y en inglés, sin las generales. Las partituras
-    /// comparten las de `musicxml`, que es la que las explica; MIDI, sin la clave ni las marcas y con el programa.
-    static func opciones(de orden: Orden) -> [String] {
-        if let partitura = ordenesDePartituras.first(where: { $0.nombres == orden.nombres }) {
-            var comunes = opcionesDeLaAyuda(de: ordenesDePartituras[0])
-            comunes += ["--pattern", "--ventana", "--window"].filter { !comunes.contains($0) }
-            guard partitura.nombres.contains("midi") else { return comunes }
-            return comunes.filter { !["--clave", "--cifrados", "--analisis"].contains($0) } + [
-                "--programa", "--program",
-            ]
-        }
-        // `grabar` acepta también las opciones de la partitura que graba.
-        if orden.nombres.contains("grabar") {
-            let propias = opcionesDeLaAyuda(de: orden)
-            return propias + opciones(de: ordenesDePartituras[0]).filter { !propias.contains($0) }
-        }
-        return opcionesDeLaAyuda(de: orden)
-    }
-
-    private static func opcionesDeLaAyuda(de orden: Orden) -> [String] {
-        var vistas: [String] = []
-        for entrada in orden.ayuda {
-            for idioma in [Idioma.espanol, .ingles] {
-                let texto = [entrada.sintaxis, entrada.descripcion, entrada.notas ?? entrada.descripcion]
-                    .map { $0.texto(en: idioma) }.joined(separator: " ")
-                var actual = ""
-                // `--` seguido de letras y guiones: «--patron», «--ida-y-vuelta» no (es un valor, sin `--`).
-                for caracter in texto + " " {
-                    if caracter.isLetter || caracter == "-" {
-                        actual.append(caracter)
-                        continue
-                    }
-                    let opcion = actual.hasSuffix("-") ? String(actual.dropLast()) : actual
-                    if opcion.hasPrefix("--"), opcion.count > 2, opcion.dropFirst(2).first?.isLetter == true,
-                        !vistas.contains(opcion), !opcionesGenerales.contains(opcion)
-                    {
-                        vistas.append(opcion)
-                    }
-                    actual = ""
-                }
-            }
-        }
-        return vistas
-    }
+    /// Las opciones de una orden, en español y en inglés, sin las generales: las que declara (`Orden.opciones`).
+    static func opciones(de orden: Orden) -> [String] { orden.opciones }
 
     /// Los nombres que se completan de una orden: sin `-h` ni `--help`, que son de la ayuda.
     static func nombres(de orden: Orden) -> [String] { orden.nombres.filter { !$0.hasPrefix("-") } }

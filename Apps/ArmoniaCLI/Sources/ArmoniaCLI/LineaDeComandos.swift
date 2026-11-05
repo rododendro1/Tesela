@@ -148,7 +148,7 @@ public enum LineaDeComandos {
     ) -> ResultadoDeOrden {
         do {
             guard json else { return try orden.ejecutar(resto, notacion) }
-            guard let salida = salidasJSON[orden.nombres[0]] else {
+            guard let salida = orden.json else {
                 return uso(.sinSalidaJSON(nombre), notacion)
             }
             let datos = try salida(resto, notacion)
@@ -253,13 +253,32 @@ public enum LineaDeComandos {
 
     // MARK: Órdenes
 
-    /// Una orden de `armonia`: los nombres con que se escribe (en minúsculas), sus entradas de la ayuda y lo que
-    /// hace con el resto de los argumentos. Una orden nueva es una entrada más en uno de los `ordenesDe…`, y de
-    /// ahí salen a la vez su ejecución y su ayuda.
+    /// Una orden de `armonia`: los nombres con que se escribe (en minúsculas), sus entradas de la ayuda, sus opciones,
+    /// lo que da con `--json` y lo que hace con el resto de los argumentos. Una orden nueva es una entrada más en uno
+    /// de los `ordenesDe…`, y de ahí salen a la vez su ejecución, su ayuda, su autocompletado y las propuestas ante
+    /// una opción mal escrita.
     struct Orden: Sendable {
         let nombres: [String]
         let ayuda: [EntradaDeAyuda]
+        /// Sus opciones, en español y en inglés, sin las generales (`opcionesGenerales`): las de sus entradas de la
+        /// ayuda (`EntradaDeAyuda.opciones`), salvo que se den otras.
+        let opciones: [String]
+        /// Lo que da con `--json`; `nil` si no lo admite.
+        let json: SalidaJSON?
         let ejecutar: @Sendable (_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden
+
+        init(
+            nombres: [String], ayuda: [EntradaDeAyuda], opciones: [String]? = nil, json: SalidaJSON? = nil,
+            ejecutar: @escaping @Sendable (_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden
+        ) {
+            self.nombres = nombres
+            self.ayuda = ayuda
+            var unicas: [String] = []
+            for opcion in opciones ?? ayuda.flatMap(\.opciones) where !unicas.contains(opcion) { unicas.append(opcion) }
+            self.opciones = unicas
+            self.json = json
+            self.ejecutar = ejecutar
+        }
     }
 
     /// Las órdenes por grupos, como salen en el índice de la ayuda; los títulos están en

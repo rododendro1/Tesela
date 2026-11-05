@@ -3,12 +3,28 @@ import Armonia
 extension LineaDeComandos {
     /// El análisis, la armonización y el contrapunto, en el orden en que salen en la ayuda.
     static let ordenesDeArmonizacion: [Orden] = [
-        Orden(nombres: ["analizar", "analyze", "analyse"], ayuda: ayudaDeAnalizar) { try analizar($0, $1) },
-        Orden(nombres: ["armonizar", "harmonize", "harmonise"], ayuda: ayudaDeArmonizar) { try armonizar($0, $1) },
-        Orden(nombres: ["realizar", "realize", "realise"], ayuda: ayudaDeRealizar) { try realizar($0, $1) },
-        Orden(nombres: ["revisar", "check"], ayuda: ayudaDeRevisar) { try revisar($0, $1) },
-        Orden(nombres: ["contrapunto", "counterpoint"], ayuda: ayudaDeContrapunto) { try contrapunto($0, $1) },
-        Orden(nombres: ["transponer", "transportar", "transpose"], ayuda: ayudaDeTransponer) { try transponer($0, $1) },
+        Orden(
+            nombres: ["analizar", "analyze", "analyse"], ayuda: ayudaDeAnalizar, json: { try analizarJSON($0, $1) }
+        ) { try analizar($0, $1) },
+        Orden(
+            nombres: ["armonizar", "harmonize", "harmonise"],
+            ayuda: ayudaDeArmonizar,
+            json: { try armonizarJSON($0, $1) }
+        ) { try armonizar($0, $1) },
+        Orden(
+            nombres: ["realizar", "realize", "realise"], ayuda: ayudaDeRealizar, json: { try realizarJSON($0, $1) }
+        ) { try realizar($0, $1) },
+        Orden(
+            nombres: ["revisar", "check"], ayuda: ayudaDeRevisar, json: { try revisarJSON($0, $1) }
+        ) { try revisar($0, $1) },
+        Orden(
+            nombres: ["contrapunto", "counterpoint"], ayuda: ayudaDeContrapunto, json: { try contrapuntoJSON($0, $1) }
+        ) { try contrapunto($0, $1) },
+        Orden(
+            nombres: ["transponer", "transportar", "transpose"],
+            ayuda: ayudaDeTransponer,
+            json: { try transponerJSON($0, $1) }
+        ) { try transponer($0, $1) },
         Orden(
             nombres: ["rearmonizar", "reharmonize", "reharmonise"],
             ayuda: ayudaDeRearmonizar
@@ -23,14 +39,16 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia analizar Do Fa Sol7 Do Lam Re7 Sol",
                 "armonia analyze C F G7 C Am D7 G"),
-            notas: TextosDeCLI.traduccion(\.notasAnalizar)),
+            notas: TextosDeCLI.traduccion(\.notasAnalizar),
+            opciones: ["--en", "--escalas", "--notas-guia", "--in", "--scales", "--guide-tones"]),
         // analizar --archivo <fichero> [--ventana <duración>]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisAnalizarArchivo),
             descripcion: TextosDeCLI.traduccion(\.descripcionAnalizarArchivo),
             ejemplo: ejemplo(
                 "armonia analizar --archivo coral.mid",
-                "armonia analyze --file chorale.musicxml")),
+                "armonia analyze --file chorale.musicxml"),
+            opciones: ["--archivo", "--ventana", "--file", "--window"]),
     ]
 
     static let ayudaDeArmonizar: [EntradaDeAyuda] = [
@@ -40,7 +58,8 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionArmonizar),
             ejemplo: ejemplo(
                 "armonia armonizar Mi4 Fa4 Re4 Do4",
-                "armonia harmonize E4 F4 D4 C4"))
+                "armonia harmonize E4 F4 D4 C4"),
+            opciones: ["--en", "--propuestas", "--in", "--proposals"])
     ]
 
     static let ayudaDeRealizar: [EntradaDeAyuda] = [
@@ -50,7 +69,8 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionRealizar),
             ejemplo: ejemplo(
                 "armonia realizar Do Fa Sol7 Do",
-                "armonia realize C F G7 C"))
+                "armonia realize C F G7 C"),
+            opciones: ["--en", "--in"])
     ]
 
     static let ayudaDeRevisar: [EntradaDeAyuda] = [
@@ -70,7 +90,8 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionContrapunto),
             ejemplo: ejemplo(
                 "armonia contrapunto Re4 Fa4 Mi4 Re4 / -:2 La4 Re5 La4 Si4 Do#5 Re5:1 --especie 2",
-                "armonia counterpoint D4 F4 E4 D4 / -:2 A4 D5 A4 B4 C#5 D5:1 --species 2"))
+                "armonia counterpoint D4 F4 E4 D4 / -:2 A4 D5 A4 B4 C#5 D5:1 --species 2"),
+            opciones: ["--especie", "--species"])
     ]
 
     static let ayudaDeTransponer: [EntradaDeAyuda] = [
@@ -90,6 +111,7 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionRearmonizar),
             ejemplo: ejemplo(
                 "armonia rearmonizar Do Lam Rem7 Sol7 Do",
-                "armonia reharmonize C Am Dm7 G7 C"))
+                "armonia reharmonize C Am Dm7 G7 C"),
+            opciones: ["--en", "--in"])
     ]
 }
