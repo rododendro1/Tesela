@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+### Más ventanas de quintas
+
+- `VentanaDeQuintas.masSimple` (Re♭–Fa♯, las de `enarmonicaMasSimple`), `.habitual` (Mi♭–Sol♯: Do♯, Mi♭, Fa♯, Sol♯
+  y Si♭) y `.armadura(_:)`, la de la tonalidad mayor con esa armadura (La♭–Do♯ sin alteraciones).
+- `Escala.ventanaDeQuintas` y `Tonalidad.ventanaDeQuintas`: la ventana que contiene las notas de la escala y nombra
+  las demás como ella (`Escala("La menor armónica").ventanaDeQuintas` va de Si♭ a Re♯), para pasarla a
+  `OpcionesDeDiagrama(ventana:)` o a `Altura(midi:ventana:)`.
+
 ### Dos escalas comparadas nota a nota
 
 `armonia escala Do mayor --contra Do dórico` dibuja en una hoja SVG las dos escalas comparadas nota a nota: los dos
