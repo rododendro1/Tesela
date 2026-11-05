@@ -10,6 +10,17 @@ leyenda de las notas comunes y de las que solo están en una. Las comunes van en
 las de la segunda, en rojo. En la app, la sección de comparar de la vista de escalas la muestra debajo de la
 comparación en texto y la exporta con la barra (`PresentacionDeEstudioDeEscala.comparacionNotaANota`).
 
+### Ventanas de quintas para nombrar una altura sin contexto
+
+- `VentanaDeQuintas`: doce quintas seguidas de la línea de quintas, una escritura para cada clase de altura.
+  `.sostenidos` (Fa–La♯) y `.bemoles` (Sol♭–Si) son las de `preferirBemoles`; `.centrada(en:)` pone la tónica casi en
+  medio (Re♭–Fa♯ alrededor de Do), y `VentanaDeQuintas(desde:)` empieza en cualquier nota.
+- `Altura(midi:ventana:)`; `Altura(midi:preferirBemoles:)` usa ahora `.sostenidos` o `.bemoles`, con el mismo resultado.
+- `OpcionesDeDiagrama.ventana` elige cómo se nombran las notas en los teclados, el piano y el reloj;
+  `preferirBemoles` sigue funcionando y equivale a `ventana == .bemoles`.
+- `TecladoCuadrado.altura(en:ventana:)`, `TecladoIsomorfico.altura(en:ventana:)`, `Mastil.altura(en:ventana:)` y
+  `Mastil.alturaSiExiste(en:ventana:)`.
+
 ### La hoja de estudio de un acorde
 
 - `armonia hoja --acorde Sol7` (`sheet --chord`) escribe la hoja de estudio de un acorde en SVG: sus notas y otros

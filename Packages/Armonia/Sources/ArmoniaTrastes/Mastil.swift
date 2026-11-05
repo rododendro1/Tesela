@@ -71,6 +71,18 @@ public struct Mastil: Hashable, Sendable {
         Altura(midi: midi(en: posicion), preferirBemoles: preferirBemoles)
     }
 
+    /// La altura de una posición, o `nil` si no está en el mástil, escrita con la nota de su clase que hay en la
+    /// ventana: con `.centrada(en: "Fa")`, en la cuerda más grave de la guitarra el traste 1 es Fa y el 2, Sol♭.
+    public func alturaSiExiste(en posicion: PosicionEnElMastil, ventana: VentanaDeQuintas) -> Altura? {
+        midiSiExiste(en: posicion).map { Altura(midi: $0, ventana: ventana) }
+    }
+
+    /// La altura de una posición, escrita con la nota de su clase que hay en la ventana. Detiene el programa si la
+    /// posición no está en el mástil: si viene de fuera, usa `alturaSiExiste(en:ventana:)`.
+    public func altura(en posicion: PosicionEnElMastil, ventana: VentanaDeQuintas) -> Altura {
+        Altura(midi: midi(en: posicion), ventana: ventana)
+    }
+
     /// Todas las posiciones donde suena exactamente esa altura (misma octava).
     public func posiciones(de altura: Altura) -> [PosicionEnElMastil] {
         var resultado: [PosicionEnElMastil] = []

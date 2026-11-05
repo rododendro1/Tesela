@@ -276,6 +276,9 @@ import Testing
         #expect(conNombres.contains(">E</text>"))
         let conBemoles = teclado.svg(marcadas: [61], opciones: .init(preferirBemoles: true))
         #expect(conBemoles.contains(">Re♭</text>"))
+        // Con una ventana de quintas: alrededor de Re, Do♯ y Mi♭.
+        let enRe = teclado.svg(marcadas: [61, 63], opciones: .init(ventana: .centrada(en: "Re")))
+        #expect(enRe.contains(">Do♯</text>") && enRe.contains(">Mi♭</text>"))
         // Marcadas con sus alturas, se nombran como se escriben: el Si♭ de Fa mayor, no La♯.
         let fa = MarcasDeDiagrama(Escala("Fa mayor").alturas(octava: 4))
         #expect(fa.contains(70) && fa.altura(de: 70) == Altura("Si♭4") && fa.rotulo(de: 70) == nil)

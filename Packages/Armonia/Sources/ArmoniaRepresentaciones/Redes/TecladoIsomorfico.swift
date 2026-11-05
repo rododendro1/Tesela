@@ -184,6 +184,11 @@ public struct TecladoIsomorfico: Hashable, Sendable {
         Altura(midi: midi(en: casilla), preferirBemoles: preferirBemoles)
     }
 
+    /// La altura de una casilla, escrita con la nota de su clase que hay en la ventana.
+    public func altura(en casilla: CoordenadaAxial, ventana: VentanaDeQuintas) -> Altura {
+        Altura(midi: midi(en: casilla), ventana: ventana)
+    }
+
     /// Los semitonos que sube un paso en esa dirección (negativos si baja).
     public func semitonos(hacia direccion: DireccionHexagonal) -> Int {
         semitonosEnQ * direccion.paso.q + semitonosEnR * direccion.paso.r
@@ -201,7 +206,7 @@ public struct TecladoIsomorfico: Hashable, Sendable {
 
     /// El teclado dibujado en SVG: un hexágono por casilla con el nombre de su nota y su octava, las teclas
     /// negras del piano en gris y, si se dan, las `marcadas` en el azul de las notas del Tonnetz (con su rótulo en
-    /// lugar del nombre, las que lo llevan). En `opciones`, la notación de los nombres, si se prefieren bemoles, el
+    /// lugar del nombre, las que lo llevan). En `opciones`, la notación de los nombres, la ventana de quintas, el
     /// título (ninguno, si no se da) y la escala: con 1, 24 píxeles del centro de un hexágono a un vértice.
     public func svg(
         _ casillas: [CoordenadaAxial], marcadas: MarcasDeDiagrama = [],
@@ -219,7 +224,7 @@ public struct TecladoIsomorfico: Hashable, Sendable {
                 let midi = self.midi(en: casilla)
                 if let rotulo = marcadas.rotulo(de: midi) { return rotulo }
                 let altura =
-                    marcadas.altura(de: midi) ?? self.altura(en: casilla, preferirBemoles: opciones.preferirBemoles)
+                    marcadas.altura(de: midi) ?? self.altura(en: casilla, ventana: opciones.ventana)
                 return altura.nombreCompacto(en: opciones.notacion)
             })
         guard let titulo = opciones.titulo, !titulo.isEmpty, let fin = svg.firstIndex(of: ">") else { return svg }

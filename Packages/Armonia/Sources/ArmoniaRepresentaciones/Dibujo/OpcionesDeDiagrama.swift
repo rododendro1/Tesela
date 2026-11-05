@@ -8,9 +8,16 @@ import ArmoniaNucleo
 public struct OpcionesDeDiagrama: Hashable, Sendable {
     /// Cómo se escriben los nombres de las notas y el título que pone el dibujo.
     public var notacion: Notacion
-    /// Si las notas negras del piano se nombran con bemol (Si♭) y no con sostenido (La♯), donde el dibujo no sabe
-    /// cuál es (en los teclados isomórficos y cuadrados, el teclado de piano y el reloj).
-    public var preferirBemoles: Bool
+    /// Cómo se nombran las notas donde el dibujo no sabe cómo se escriben (en los teclados isomórficos y cuadrados,
+    /// el teclado de piano y el reloj): con ``VentanaDeQuintas/sostenidos`` (La♯), con ``VentanaDeQuintas/bemoles``
+    /// (Si♭) o con cualquier otra ventana, como `.centrada(en: "Fa")`.
+    public var ventana: VentanaDeQuintas
+    /// Si las notas negras del piano se nombran con bemol (Si♭) y no con sostenido (La♯): `ventana == .bemoles`.
+    /// Ponerlo a `true` elige ``VentanaDeQuintas/bemoles``; a `false`, ``VentanaDeQuintas/sostenidos``.
+    public var preferirBemoles: Bool {
+        get { ventana == .bemoles }
+        set { ventana = newValue ? .bemoles : .sostenidos }
+    }
     /// Si el teclado de piano y el reloj nombran, en `notacion`, las notas a las que no se da rótulo: las marcadas
     /// del piano y las doce horas del reloj. Con `false`, como antes: el piano las marca sin texto y el reloj
     /// escribe el número de cada clase (0 es Do; 11, Si).
@@ -21,12 +28,13 @@ public struct OpcionesDeDiagrama: Hashable, Sendable {
     /// El tamaño, como factor del de siempre: 2 lo dibuja el doble de grande.
     public var escala: Double
 
+    /// Con `ventana`, se usa esa y no cuenta `preferirBemoles`.
     public init(
-        notacion: Notacion = .espanolCompacto, preferirBemoles: Bool = false, nombresDeLasNotas: Bool = true,
-        titulo: String? = nil, escala: Double = 1
+        notacion: Notacion = .espanolCompacto, preferirBemoles: Bool = false, ventana: VentanaDeQuintas? = nil,
+        nombresDeLasNotas: Bool = true, titulo: String? = nil, escala: Double = 1
     ) {
         self.notacion = notacion
-        self.preferirBemoles = preferirBemoles
+        self.ventana = ventana ?? (preferirBemoles ? .bemoles : .sostenidos)
         self.nombresDeLasNotas = nombresDeLasNotas
         self.titulo = titulo
         self.escala = escala
@@ -89,9 +97,9 @@ public struct MarcasDeDiagrama: Hashable, Sendable, ExpressibleByArrayLiteral, E
 
 extension OpcionesDeDiagrama {
     /// La altura con que se nombra una nota (por su número MIDI): la de `marcas`, si se marcó con la suya, o la que
-    /// dé `preferirBemoles`.
+    /// dé `ventana`.
     func altura(de midi: Int, en marcas: MarcasDeDiagrama = []) -> Altura {
-        marcas.altura(de: midi) ?? Altura(midi: midi, preferirBemoles: preferirBemoles)
+        marcas.altura(de: midi) ?? Altura(midi: midi, ventana: ventana)
     }
 
     /// El nombre de la nota sin octava, en `notacion`: el que ponen el piano y el reloj a las notas sin rótulo.
