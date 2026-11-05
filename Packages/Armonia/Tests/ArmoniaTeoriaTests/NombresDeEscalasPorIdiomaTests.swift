@@ -96,7 +96,7 @@ import Testing
         for idioma in Idioma.allCases {
             let nombres = NombresDeEscalas.de(idioma)
             for tipo in TipoDeEscala.tradicionales {
-                #expect(nombres.tradicionales[tipo.nombre] != nil, "\(idioma): \(tipo.nombre)")
+                #expect(nombres.tradicionales[tipo.identidad] != nil, "\(idioma): \(tipo.nombre)")
                 #expect(nombres.nombre(de: tipo) != nil, "\(idioma): \(tipo.nombre)")
             }
         }

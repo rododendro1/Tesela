@@ -87,7 +87,13 @@ public struct TipoDeEscala: Sendable, Codable {
     // MARK: Identidad
 
     /// Mismo contenido y mismo nombre: Kāfī y dórico son iguales (`==`), pero no idénticos.
-    public func esIdentico(a otro: TipoDeEscala) -> Bool { self == otro && nombre == otro.nombre }
+    public func esIdentico(a otro: TipoDeEscala) -> Bool { identidad == otro.identidad }
+
+    /// Qué escala es, y no solo qué notas tiene: con ella se buscan su tradición, su categoría, sus usos, sus
+    /// afinaciones y sus nombres en otros idiomas. Kāfī y el dórico tienen el mismo contenido y distinta identidad.
+    package var identidad: IdentidadDeEscala {
+        IdentidadDeEscala(nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes)
+    }
 
     /// Otras escalas del catálogo (`catalogo`, en su orden) con el mismo contenido y otro
     /// nombre: para la mayor, Bilāval, Dhīraśaṅkarābharaṇam y Qīngyuè.
@@ -109,6 +115,16 @@ public struct TipoDeEscala: Sendable, Codable {
         return TipoDeEscala.todos.first { $0 == candidato }
             ?? TipoDeEscala.todos.first { $0.intervalos == candidato.intervalos } ?? candidato
     }
+}
+
+/// La identidad de un `TipoDeEscala` (`TipoDeEscala.identidad`): su nombre y su contenido. Dos tipos con los mismos
+/// intervalos son iguales (`==`); solo son la misma escala si además se llaman igual. Es la clave de las tablas que
+/// dicen algo de una escala concreta: una escala propia que se llame «Kafi» pero suene distinto no es el thāṭ, y
+/// Āsāvarī no es la escala menor natural.
+package struct IdentidadDeEscala: Hashable, Sendable {
+    let nombre: String
+    let intervalos: [Intervalo]
+    let intervalosDescendentes: [Intervalo]?
 }
 
 extension TipoDeEscala: Hashable {
