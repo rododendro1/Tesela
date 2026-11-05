@@ -212,6 +212,11 @@ extension TextosDeApps {
         escaleraDeBrillo: "Helligkeitsleiter",
         hojaDeEstudio: "Übungsblatt",
         mapaDeBrillo: "Helligkeitskarte",
+        escalasParecidas: "Ähnlichste Tonleitern",
+        modulaciones: "Modulationen",
+        modulacionPorAcordeComun: "gemeinsamer Akkord",
+        modulacionPorDisminuida: "enharmonischer verminderter Septakkord",
+        modulacionDirecta: "direkt",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Spannungstöne",
         notasAEvitar: "Avoid-Töne",

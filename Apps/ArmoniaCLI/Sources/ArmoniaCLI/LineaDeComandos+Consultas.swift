@@ -14,9 +14,24 @@ extension LineaDeComandos {
 
     /// `tonalidad <tonalidad>`: su armadura, sus acordes y sus relativas.
     static func consultarTonalidad(_ resto: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        if let opcion = Argumentos(resto).opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
-        guard !resto.isEmpty else { throw ErrorDeUso.faltaTonalidad }
-        return bien(describir(tonalidad: try Tonalidad(leyendo: resto.joined(separator: " ")), notacion))
+        var argumentos = Argumentos(resto)
+        let modulaciones = argumentos.quitarOpcionConPalabras("--modulaciones", "--modulations")
+        if let opcion = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+        guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaTonalidad }
+        let tonalidad = try Tonalidad(leyendo: argumentos.unidos)
+        var lineas = [describir(tonalidad: tonalidad, notacion)]
+        // `--modulaciones [Sol mayor]`: a los tonos vecinos o, si se da, a esa tonalidad de todas las maneras.
+        var destino: Tonalidad?
+        switch modulaciones {
+        case .ausente: return bien(lineas[0])
+        case .sinValor: destino = nil
+        case .valor(let texto): destino = try Tonalidad(leyendo: texto)
+        }
+        lineas.append(notacion.texto(\.modulaciones) + ":")
+        lineas += PresentacionDeModulaciones.modulaciones(desde: tonalidad, hasta: destino, notacion: notacion).map {
+            "  " + $0.destino + " · " + $0.tecnica + ": " + $0.plan.descripcion(en: notacion)
+        }
+        return bien(lineas.joined(separator: "\n"))
     }
 
     /// `conjunto <clases>`: el conjunto de clases de altura, con su forma prima y su vector.
@@ -329,6 +344,8 @@ extension LineaDeComandos {
         let otra: Escala?
         /// `--contra`: la comparación nota a nota, en SVG.
         let contra: Escala?
+        /// `--parecidas`: las escalas con más notas en común.
+        let parecidas: Bool
 
         var sentido: SentidoDelIntervalo { bajando ? .descendente : .ascendente }
     }
@@ -342,6 +359,7 @@ extension LineaDeComandos {
         let modos = argumentos.quitarMarca("--modos", "--modes")
         let simetria = argumentos.quitarMarca("--simetria", "--symmetry")
         let vecinas = argumentos.quitarMarca("--vecinas", "--neighbors")
+        let parecidas = argumentos.quitarMarca("--parecidas", "--closest")
         let estadisticas = argumentos.quitarMarca("--estadisticas", "--statistics")
         let escalera = argumentos.quitarMarca("--escalera", "--brightness-ladder")
         let doce = argumentos.quitarMarca("--doce", "--all-keys")
@@ -364,7 +382,7 @@ extension LineaDeComandos {
             escala: try Escala(leyendo: argumentos.unidos), conAcordes: conAcordes, secuencia: secuencia,
             octavas: octavas, bajando: bajando, piano: piano, modos: modos, simetria: simetria, vecinas: vecinas,
             estadisticas: estadisticas, escalera: escalera, doce: doce, triadas: triadas, otra: otra,
-            contra: contra)
+            contra: contra, parecidas: parecidas)
     }
 
     /// `escala Do mayor [--acordes] [--secuencia terceras] [--bajando] [--octavas 2] [--piano] [--modos]
@@ -407,6 +425,12 @@ extension LineaDeComandos {
         if pedido.vecinas {
             lineas.append(notacion.texto(\.escalasVecinas) + ":")
             lineas += PresentacionDeEstudioDeEscala.vecinas(de: escala, notacion: notacion).map {
+                "  " + $0.nombre + ": " + $0.detalle
+            }
+        }
+        if pedido.parecidas {
+            lineas.append(notacion.texto(\.escalasParecidas) + ":")
+            lineas += PresentacionDeEstudioDeEscala.parecidas(a: escala, notacion: notacion).map {
                 "  " + $0.nombre + ": " + $0.detalle
             }
         }

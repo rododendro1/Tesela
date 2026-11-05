@@ -63,4 +63,21 @@ import Testing
         #expect(!menores.map(\.tonica.nombre).contains("Re♭"))
         #expect(menores.allSatisfy { $0.tipo == .menorNatural })
     }
+
+    @Test func masParecidas() {
+        let parecidas = Escala(.do).masParecidas()
+        #expect(parecidas.count == 16)
+        #expect(parecidas.map(\.diferencia) == parecidas.map(\.diferencia).sorted())
+        // Ninguna con las mismas notas, y el juego de Sol mayor como Do lidio, con la misma tónica.
+        #expect(parecidas.allSatisfy { $0.diferencia > 0 })
+        #expect(!parecidas.contains { $0.escala == Escala(.sol) })
+        let lidio = parecidas.first { $0.escala == Escala(.do, .lidio) }
+        #expect(lidio?.quitadas == [Nota.fa])
+        #expect(lidio?.anadidas == [Nota.fa.sostenido])
+        #expect(lidio?.comunes.count == 6)
+        // Con pocos tipos y un límite: de Do mayor a Do pentatónica mayor solo se quitan dos notas.
+        let pocas = Escala(.do).masParecidas(tipos: [.mayor, .pentatonicaMayor], limite: 3)
+        #expect(pocas.count == 3)
+        #expect(pocas.contains { $0.escala == Escala(.do, .pentatonicaMayor) && $0.anadidas.isEmpty })
+    }
 }

@@ -97,9 +97,10 @@ extension LineaDeComandos {
             notas: TextosDeCLI.traduccion(\.notasEscala),
             opciones: [
                 "--acordes", "--secuencia", "--bajando", "--octavas", "--piano", "--modos", "--comparar", "--simetria",
-                "--vecinas", "--doce", "--triadas", "--estadisticas", "--escalera", "--contra", "--chords",
-                "--sequence", "--descending", "--octaves", "--modes", "--compare", "--symmetry", "--neighbors",
-                "--all-keys", "--triads", "--statistics", "--brightness-ladder", "--against",
+                "--vecinas", "--doce", "--triadas", "--estadisticas", "--escalera", "--contra", "--parecidas",
+                "--chords", "--sequence", "--descending", "--octaves", "--modes", "--compare", "--symmetry",
+                "--neighbors", "--all-keys", "--triads", "--statistics", "--brightness-ladder", "--against",
+                "--closest",
             ])
     ]
 
@@ -134,8 +135,9 @@ extension LineaDeComandos {
             sintaxis: TextosDeCLI.traduccion(\.sintaxisTonalidad),
             descripcion: TextosDeCLI.traduccion(\.descripcionTonalidad),
             ejemplo: ejemplo(
-                "armonia tonalidad La menor",
-                "armonia key A minor"))
+                "armonia tonalidad La menor --modulaciones",
+                "armonia key A minor --modulations"),
+            opciones: ["--modulaciones", "--modulations"])
     ]
 
     static let ayudaDeConjunto: [EntradaDeAyuda] = [

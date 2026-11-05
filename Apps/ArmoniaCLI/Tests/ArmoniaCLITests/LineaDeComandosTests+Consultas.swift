@@ -410,6 +410,26 @@ extension LineaDeComandosTests {
         #expect(dorico.contains(">7: Si → Si♭</text>"))
         #expect(salida("scale C major --against C dorian --ingles").contains(">C major → C dorian</text>"))
         #expect(resultado("escala", "Do", "mayor", "--contra", "Do", "zzz").codigo != 0)
+        // --parecidas: las que comparten más notas, con las que se van y las que llegan.
+        let parecidas = salida("escala Do mayor --parecidas")
+        #expect(parecidas.contains("\nEscalas parecidas:\n  "), Comment(rawValue: parecidas))
+        #expect(parecidas.contains("\n  Do lidio: Notas comunes: 6 · −Fa · +Fa♯\n"))
+    }
+
+    @Test func modulacionesDesdeUnaTonalidad() {
+        let vecinas = salida("tonalidad Do mayor --modulaciones")
+        #expect(vecinas.contains("\nModulaciones:\n  La menor · "), Comment(rawValue: vecinas))
+        let aSol =
+            "\n  Sol mayor · acorde común: Do Fa Sol7 Do Lam Re7 Sol (pivote: Lam = vi en Do mayor = ii en Sol mayor)"
+        #expect(vecinas.contains(aSol))
+        // Con una tonalidad, todas las maneras de llegar a ella; la directa, al final.
+        let aLab = salida("tonalidad Do mayor --modulaciones Lab mayor")
+        #expect(aLab.contains("\n  La♭ mayor · séptima disminuida enarmónica: "), Comment(rawValue: aLab))
+        #expect(aLab.contains("\n  La♭ mayor · directa: "))
+        #expect(salida("key C major --modulations --ingles").contains("\nModulations:\n  A minor · "))
+        #expect(!salida("tonalidad Do mayor").contains("Modulaciones"))
+        #expect(resultado("tonalidad", "--modulaciones").codigo == 2)
+        #expect(resultado("tonalidad", "Do", "mayor", "--modulaciones", "zzz").codigo != 0)
     }
 
     @Test func bebopYPentatonicasSobreUnAcorde() {
