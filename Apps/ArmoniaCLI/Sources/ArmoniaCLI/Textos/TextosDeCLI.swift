@@ -179,6 +179,7 @@ struct TextosDeCLI: TextosTraducidos {
     let tradicionDesconocida: @Sendable (String) -> String
     let categoriaDesconocida: @Sendable (String) -> String
     let usoDesconocido: @Sendable (String) -> String
+    let ordenDeEscalasDesconocido: @Sendable (String) -> String
     let faltanNotas: String
     let dosNotas: String
     let faltaEscala: String

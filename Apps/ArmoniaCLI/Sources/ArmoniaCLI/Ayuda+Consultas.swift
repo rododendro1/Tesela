@@ -121,7 +121,8 @@ extension LineaDeComandos {
                 "armonia scales --tradition turkey"),
             notas: TextosDeCLI.traduccion(\.notasEscalas),
             opciones: [
-                "--tradicion", "--categoria", "--uso", "--notas", "--tradition", "--category", "--use", "--notes",
+                "--tradicion", "--categoria", "--uso", "--notas", "--orden", "--sin-semitonos", "--regulares",
+                "--tradition", "--category", "--use", "--notes", "--sort", "--anhemitonic", "--maximally-even",
             ])
     ]
 

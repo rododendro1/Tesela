@@ -160,6 +160,29 @@ extension LineaDeComandosTests {
         #expect(resultado("escalas", "--notas").error.contains("--notas 5"))
     }
 
+    /// `escalas --orden brillo`, `--sin-semitonos`, `--regulares`: por lo que se mide de cada escala.
+    @Test func escalasPorSusEstadisticas() throws {
+        let porBrillo = salida("escalas --notas 7 --orden brillo")
+        let lidio = try #require(
+            porBrillo.range(of: "\n  lidio: Do Re Mi Fa♯ Sol La Si · +3\n"), Comment(rawValue: porBrillo))
+        let mayor = try #require(porBrillo.range(of: "\n  mayor: Do Re Mi Fa Sol La Si · +2\n"))
+        let locrio = try #require(porBrillo.range(of: "\n  locrio: Do Re♭ Mi♭ Fa Sol♭ La♭ Si♭ · -3\n"))
+        #expect(lidio.lowerBound < mayor.lowerBound && mayor.lowerBound < locrio.lowerBound)
+        #expect(salida("escalas --notes 7 --sort brightness") == porBrillo)
+        // Por notas, de menos a más: las pentatónicas antes que las de siete.
+        let porNotas = salida("escalas --orden notas")
+        let pentatonica = try #require(porNotas.range(of: "\n  pentatónica mayor: "), Comment(rawValue: porNotas))
+        #expect(pentatonica.lowerBound < (porNotas.range(of: "\n  mayor: ")?.lowerBound ?? porNotas.startIndex))
+        let sinSemitonos = salida("escalas --sin-semitonos")
+        #expect(sinSemitonos.contains("  pentatónica mayor: "), Comment(rawValue: sinSemitonos))
+        #expect(!sinSemitonos.contains("  mayor: "))
+        let regulares = salida("escalas --regulares --notas 7")
+        #expect(regulares.contains("  mayor: "), Comment(rawValue: regulares))
+        #expect(!regulares.contains("  menor armónica: "))
+        #expect(resultado("escalas", "--orden", "color").codigo == 2)
+        #expect(resultado("escalas", "--orden", "color").error.contains("--orden brillo"))
+    }
+
     /// `escala … --estadisticas`: lo que se mide de la escala, un dato por línea.
     @Test func estadisticasDeEscala() {
         let mayor = salida("escala Do mayor --estadisticas")

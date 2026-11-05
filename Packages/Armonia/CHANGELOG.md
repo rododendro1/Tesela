@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### `armonia escalas`: ordenar y filtrar por las estadísticas
+
+- `escalas --orden brillo` (`--sort brightness`) ordena cada grupo de la más brillante a la más oscura, por el brillo
+  por quintas, y lo escribe al final de cada línea («lidio: Do Re Mi Fa♯ Sol La Si · +3»); `--orden notas`, de menos
+  a más notas. `--sin-semitonos` (`--anhemitonic`) deja solo las anhemitónicas y `--regulares` (`--maximally-even`),
+  las máximamente regulares. Se combinan con `--notas`, `--uso`, `--tradicion` y la búsqueda por el nombre.
+
 ### `armonia escala --estadisticas`, y las estadísticas en la app
 
 - `escala Do mayor --estadisticas` (`--statistics`) escribe lo que se mide de la escala (`EstadisticasDeEscala`), un
