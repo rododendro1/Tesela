@@ -29,6 +29,16 @@ import Testing
         #expect(Evento("Do4:4").notas == [Evento.NotaDelEvento("Do4")])
         #expect(!Evento("Do4:4").esMicrotonal)
         #expect(throws: ErrorDeLectura.self) { try Evento(leyendo: "Mi4(mucho¢):4") }
+        // Como mucho un semitono arriba o abajo: unos cents enormes no cabían en un Int al escribirlos (lo encontró
+        // el fuzzer de los lectores).
+        #expect(try Evento(leyendo: "Mi4(-100¢):4").notas.map(\.desvio) == [-100])
+        #expect(throws: ErrorDeLectura.self) { try Evento(leyendo: "Mi4(100.5¢):4") }
+        let enorme = "Mi4(50" + String(repeating: "3", count: 114) + "¢):4"
+        #expect(throws: ErrorDeLectura.self) { try Evento(leyendo: enorme) }
+        // Escrita desde código, una nota así no detiene el programa.
+        let absurda = Evento(notas: [Evento.NotaDelEvento("Mi4", desvio: 1e300)], duracion: .negra)
+        #expect(!absurda.description.isEmpty)
+        #expect(EscritorMusicXML.NotaEscrita.alter(0, 1e300).contains("e+"))
         // Se conservan al transportar, al partir en compases y al cambiar de duración.
         #expect(mi.transponer(.segundaMayor).notas == [Evento.NotaDelEvento("Fa4", desvio: 50)])
         let voz = try Voz(leyendo: "Do4:2 Mi♭4(50¢):1", compas: "3/4")

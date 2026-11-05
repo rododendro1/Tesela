@@ -117,7 +117,7 @@ struct PentagramaSVG {
                     nombre: NotaMicrotonal.nombre(
                         nota.altura.nota, sistema: sistema, ajuste: nota.ajuste, en: notacion))
             }
-            let cifra = nota.desvio == nota.desvio.rounded() ? String(Int(nota.desvio)) : String(nota.desvio)
+            let cifra = Int(exactly: nota.desvio).map(String.init) ?? String(nota.desvio)
             let cents = (nota.desvio > 0 ? "+" : "") + cifra + (notacion.usaASCII ? "c" : "¢")
             return Microtono(signo: nota.signo(), nombre: nota.altura.nombre(en: notacion) + " (" + cents + ")")
         }

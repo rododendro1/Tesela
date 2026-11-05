@@ -21,6 +21,14 @@ Los nombres de antes siguen compilando, obsoletos, en el `Obsoletos.swift` de ca
   `OpcionesDeDiagrama(ventana:)`, `TecladoCuadrado.altura(en:ventana:)`, `TecladoIsomorfico.altura(en:ventana:)` y
   `Mastil.altura(en:ventana:)` eligen la ventana de quintas (`.bemoles` para lo de antes).
 
+### Cents de un evento, como mucho un semitono
+
+- `Evento(leyendo:)` ya no acepta más de 100 cents arriba o abajo en una nota (`Mi4(150¢):4` da un `ErrorDeLectura`).
+  Unos cents enormes (el fuzzer de los lectores encontró `Mi4(5033…3¢)`, con 115 cifras) detenían el programa al
+  escribir la voz en MusicXML.
+- MusicXML, la `description` de `Evento.Nota`, el pentagrama en SVG y la inflexión de MIDI ya no se detienen con una
+  nota escrita desde código con un desvío que no cabe en un `Int`.
+
 ### `ConjuntoDeClases` pasa a llamarse `ConjuntoDeClasesDeAltura`
 
 - `ConjuntoDeClasesDeAltura` es el nuevo nombre de `ConjuntoDeClases`, para que diga de qué clases es. El nombre de
