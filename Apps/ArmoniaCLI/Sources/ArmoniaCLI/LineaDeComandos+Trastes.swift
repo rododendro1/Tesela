@@ -43,12 +43,7 @@ extension LineaDeComandos {
         let comoMusicXML = argumentos.quitarMarca("--musicxml")
 
         var encordado = Encordado.guitarra
-        switch argumentos.quitarOpcion("--instrumento", "--instrument") {
-        case .ausente:
-            break
-        case .sinValor:
-            throw fallo(.faltaInstrumento)
-        case .valor(let nombre):
+        if let nombre = try argumentos.valor("--instrumento", "--instrument", siFalta: .faltaInstrumento) {
             guard let encontrado = try? Encordado(leyendo: nombre) else {
                 throw fallo(.instrumentoDesconocido(nombre))
             }
@@ -56,12 +51,7 @@ extension LineaDeComandos {
         }
 
         var limite = 5
-        switch argumentos.quitarOpcion("--limite", "--limit") {
-        case .ausente:
-            break
-        case .sinValor:
-            throw fallo(.faltaLimite)
-        case .valor(let texto):
+        if let texto = try argumentos.valor("--limite", "--limit", siFalta: .faltaLimite) {
             guard let n = Int(texto), (1...200).contains(n) else {
                 throw fallo(.limiteFueraDeRango)
             }
@@ -69,12 +59,7 @@ extension LineaDeComandos {
         }
 
         var maximoDeDedos = 4
-        switch argumentos.quitarOpcion("--dedos", "--fingers") {
-        case .ausente:
-            break
-        case .sinValor:
-            throw fallo(.faltanDedos)
-        case .valor(let texto):
+        if let texto = try argumentos.valor("--dedos", "--fingers", siFalta: .faltanDedos) {
             guard let n = Int(texto), (1...4).contains(n) else {
                 throw fallo(.dedosFueraDeRango)
             }
@@ -82,12 +67,7 @@ extension LineaDeComandos {
         }
 
         var maximoTraste = 12
-        switch argumentos.quitarOpcion("--traste", "--fret") {
-        case .ausente:
-            break
-        case .sinValor:
-            throw fallo(.faltaTraste)
-        case .valor(let texto):
+        if let texto = try argumentos.valor("--traste", "--fret", siFalta: .faltaTraste) {
             guard let n = Int(texto), (0...24).contains(n) else {
                 throw fallo(.trasteFueraDeRango)
             }
@@ -96,12 +76,7 @@ extension LineaDeComandos {
 
         // Con capo, los trastes se cuentan desde él.
         var capo = 0
-        switch argumentos.quitarOpcion("--capo") {
-        case .ausente:
-            break
-        case .sinValor:
-            throw fallo(.capoFueraDeRango)
-        case .valor(let texto):
+        if let texto = try argumentos.valor("--capo", siFalta: .capoFueraDeRango) {
             guard let n = Int(texto), (0...12).contains(n) else { throw fallo(.capoFueraDeRango) }
             capo = n
         }
@@ -188,28 +163,19 @@ extension LineaDeComandos {
         let barrido = argumentos.quitarMarca("--barrido", "--sweep")
         let idaYVuelta = argumentos.quitarMarca("--ida-y-vuelta", "--up-and-down")
         var encordado = Encordado.guitarra
-        switch argumentos.quitarOpcion("--instrumento", "--instrument") {
-        case .ausente: break
-        case .sinValor: return uso(.faltaInstrumento, notacion)
-        case .valor(let nombre):
+        if let nombre = try argumentos.valor("--instrumento", "--instrument", siFalta: .faltaInstrumento) {
             guard let encontrado = try? Encordado(leyendo: nombre) else {
                 return uso(.instrumentoDesconocido(nombre), notacion)
             }
             encordado = encontrado
         }
         var capo = 0
-        switch argumentos.quitarOpcion("--capo") {
-        case .ausente: break
-        case .sinValor: return uso(.capoFueraDeRango, notacion)
-        case .valor(let texto):
+        if let texto = try argumentos.valor("--capo", siFalta: .capoFueraDeRango) {
             guard let n = Int(texto), (0...12).contains(n) else { return uso(.capoFueraDeRango, notacion) }
             capo = n
         }
         var secuencia: SecuenciaDeEscala?
-        switch argumentos.quitarOpcion("--secuencia", "--sequence") {
-        case .ausente: break
-        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
+        if let texto = try argumentos.valor("--secuencia", "--sequence") {
             guard let elegida = secuenciaDeEscala(texto) else { return uso(.secuenciaDesconocida(texto), notacion) }
             secuencia = elegida
         }

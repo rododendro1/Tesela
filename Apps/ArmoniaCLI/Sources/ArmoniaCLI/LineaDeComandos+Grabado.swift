@@ -154,18 +154,12 @@ extension LineaDeComandos {
     static func grabar(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var entrada = Argumentos(argumentos)
         var motor: MotorDeGrabado?
-        switch entrada.quitarOpcion("--motor", "--engine") {
-        case .ausente: break
-        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
+        if let texto = try entrada.valor("--motor", "--engine") {
             guard let elegido = MotorDeGrabado(nombre: texto) else { return uso(.motorDesconocido(texto), notacion) }
             motor = elegido
         }
         var formato = FormatoDeGrabado.pdf
-        switch entrada.quitarOpcion("--formato", "--format") {
-        case .ausente: break
-        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
+        if let texto = try entrada.valor("--formato", "--format") {
             guard let elegido = FormatoDeGrabado(rawValue: texto.lowercased()) else {
                 return uso(.formatoDeGrabadoDesconocido(texto), notacion)
             }

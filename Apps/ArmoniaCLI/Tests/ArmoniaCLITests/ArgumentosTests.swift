@@ -26,6 +26,37 @@ import Testing
         #expect(seguidas.opcionDesconocida == "--textos")
     }
 
+    @Test func valores() throws {
+        var argumentos = Argumentos(["Sol7", "--instrument", "ukelele", "--comparar", "Do", "lidio", "--limite"])
+        #expect(try argumentos.valor("--instrumento", "--instrument") == "ukelele")
+        #expect(try argumentos.valor("--dedos") == nil)
+        #expect(try argumentos.valorConPalabras("--comparar", "--compare") == "Do lidio")
+        #expect(argumentos.restantes == ["Sol7", "--limite"])
+        // Sin valor, `faltaValor` con el nombre que se escribió, o el error que se pida.
+        var copia = argumentos
+        let sinNada = fallo { _ = try copia.valor("--limite", "--limit") }
+        #expect(sinNada == "faltaValor(\"limite\")")
+        copia = argumentos
+        let elPedido = fallo { _ = try copia.valor("--limite", "--limit", siFalta: .faltaLimite) }
+        #expect(elPedido == "faltaLimite")
+        copia = argumentos
+        let sinPalabras = fallo { _ = try copia.valorConPalabras("--limite") }
+        #expect(sinPalabras == "faltaValor(\"limite\")")
+        #expect(copia.restantes == ["Sol7"])
+    }
+
+    /// El error de uso que lanza `leer`, escrito como su caso, o `nil` si no lanza ninguno.
+    private func fallo(_ leer: () throws -> Void) -> String? {
+        do {
+            try leer()
+            return nil
+        } catch let fallo as LineaDeComandos.FalloDeUso {
+            return "\(fallo.error)"
+        } catch {
+            return "\(error)"
+        }
+    }
+
     @Test func numeros() {
         var argumentos = Argumentos(["Sol7", "--voces", "2"])
         #expect(argumentos.quitarNumero("--voces", "--voices", en: 1...2, porDefecto: 1) == 2)

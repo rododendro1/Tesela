@@ -159,10 +159,7 @@ extension LineaDeComandos {
             return uso(.octavasFueraDeRango, notacion)
         }
         var mano: Mano?
-        switch argumentos.quitarOpcion("--mano", "--hand") {
-        case .ausente: break
-        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
+        if let texto = try argumentos.valor("--mano", "--hand") {
             guard let elegida = manoDePiano(texto) else { return uso(.manoDesconocida(texto), notacion) }
             mano = elegida
         }
@@ -206,10 +203,7 @@ extension LineaDeComandos {
         // Los cambios de clave son en un solo pentagrama.
         opciones.maquetacion.cambiosDeClave = argumentos.quitarMarca("--cambiar-clave", "--clef-changes")
         if opciones.maquetacion.cambiosDeClave { opciones.maquetacion.pentagramas = .simple }
-        switch argumentos.quitarOpcion("--clave", "--clef") {
-        case .ausente: break
-        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
+        if let texto = try argumentos.valor("--clave", "--clef") {
             guard let clave = leerClave(texto) else { return uso(.claveDesconocida(texto), notacion) }
             opciones.maquetacion.clave = clave
             opciones.maquetacion.pentagramas = .simple
@@ -272,10 +266,7 @@ extension LineaDeComandos {
     ) throws -> ResultadoDeOrden {
         var opciones = opciones
         var acordes: [Acorde] = []
-        switch argumentos.quitarOpcionConPalabras("--sobre", "--over") {
-        case .ausente: break
-        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
+        if let texto = try argumentos.valorConPalabras("--sobre", "--over") {
             acordes = try texto.split(separator: " ").map { try Acorde(leyendo: String($0)) }
             opciones.marcas.notasAjenas = true
         }
@@ -305,16 +296,15 @@ extension LineaDeComandos {
         (tonalidad.map { $0.analizar(acordes) } ?? AnalisisArmonico.analizar(acordes))?.cifrados ?? []
     }
 
-    /// Lee el mástil de `--instrumento` (la guitarra, si no se da), o dice qué está mal escrito.
-    private static func leerMastil(_ argumentos: inout Argumentos, en mastil: inout Mastil) -> ErrorDeUso? {
-        switch argumentos.quitarOpcion("--instrumento", "--instrument") {
-        case .ausente: return nil
-        case .sinValor: return .faltaInstrumento
-        case .valor(let nombre):
-            guard let encordado = try? Encordado(leyendo: nombre) else { return .instrumentoDesconocido(nombre) }
-            mastil = Mastil(encordado, numeroDeTrastes: 15)
-            return nil
+    /// Lee el mástil de `--instrumento` (la guitarra, si no se da), o lanza `FalloDeUso` con lo que está mal escrito.
+    private static func leerMastil(_ argumentos: inout Argumentos, en mastil: inout Mastil) throws {
+        guard let nombre = try argumentos.valor("--instrumento", "--instrument", siFalta: .faltaInstrumento) else {
+            return
         }
+        guard let encordado = try? Encordado(leyendo: nombre) else {
+            throw FalloDeUso(error: .instrumentoDesconocido(nombre))
+        }
+        mastil = Mastil(encordado, numeroDeTrastes: 15)
     }
 
     /// Las notas de unas posiciones del mástil y su tablatura, con la afinación del instrumento: la guitarra va en
@@ -353,23 +343,17 @@ extension LineaDeComandos {
         let caged = argumentos.quitarMarca("--caged")
         let conDedos = argumentos.quitarMarca("--dedos", "--fingers")
         var secuencia: SecuenciaDeEscala?
-        switch argumentos.quitarOpcion("--secuencia", "--sequence") {
-        case .ausente: break
-        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
+        if let texto = try argumentos.valor("--secuencia", "--sequence") {
             guard let elegida = secuenciaDeEscala(texto) else { return uso(.secuenciaDesconocida(texto), notacion) }
             secuencia = elegida
         }
         var mano: Mano?
-        switch argumentos.quitarOpcion("--mano", "--hand") {
-        case .ausente: break
-        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
+        if let texto = try argumentos.valor("--mano", "--hand") {
             guard let elegida = manoDePiano(texto) else { return uso(.manoDesconocida(texto), notacion) }
             mano = elegida
         }
         var mastil = Mastil(.guitarra, numeroDeTrastes: 15)
-        if let error = leerMastil(&argumentos, en: &mastil) { return uso(error, notacion) }
+        try leerMastil(&argumentos, en: &mastil)
         if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
         guard !argumentos.restantes.isEmpty else { return uso(.faltaLoQueDibujaElPentagrama, notacion) }
         let escala = try Escala(leyendo: argumentos.unidos)
@@ -437,18 +421,12 @@ extension LineaDeComandos {
         _ notacion: Notacion
     ) throws -> ResultadoDeOrden {
         var patron = Arpegio.Patron.ascendente
-        switch argumentos.quitarOpcion("--patron", "--patrón", "--pattern") {
-        case .ausente: break
-        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
+        if let texto = try argumentos.valor("--patron", "--patrón", "--pattern") {
             guard let elegido = patronDeArpegio(texto) else { return uso(.patronDesconocido(texto), notacion) }
             patron = elegido
         }
         var figura: Duracion?
-        switch argumentos.quitarOpcion("--figura", "--figure") {
-        case .ausente: break
-        case .sinValor(let nombre): return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
+        if let texto = try argumentos.valor("--figura", "--figure") {
             let leida = try Duracion(leyendo: texto)
             guard leida > .cero else {
                 throw ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .duracionNoValida(texto))
@@ -463,9 +441,9 @@ extension LineaDeComandos {
         let tab = argumentos.quitarMarca("--tab")
         let conDedos = argumentos.quitarMarca("--dedos", "--fingers")
         var mastil = Mastil(.guitarra, numeroDeTrastes: 15)
-        if let error = leerMastil(&argumentos, en: &mastil) { return uso(error, notacion) }
+        try leerMastil(&argumentos, en: &mastil)
         var recorrido = RecorridoDeArpegio()
-        if let error = leerRecorrido(&argumentos, en: &recorrido) { return uso(error, notacion) }
+        try leerRecorrido(&argumentos, en: &recorrido)
         if let desconocida = argumentos.opcionDesconocida { return uso(.opcionDesconocida(desconocida), notacion) }
         guard !argumentos.restantes.isEmpty else { return uso(.faltaLoQueDibujaElPentagrama, notacion) }
         if tab {

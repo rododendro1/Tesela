@@ -18,10 +18,10 @@ extension LineaDeComandos {
         Orden(
             nombres: ["escala", "scale"], ayuda: ayudaDeEscala, json: { try escalaJSON($0, $1) },
             ejecutar: { try escala($0, $1) }),
-        Orden(nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas) { escalas($0, $1) },
+        Orden(nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas) { try escalas($0, $1) },
         Orden(
             nombres: ["tradiciones", "traditions"], ayuda: ayudaDeTradiciones, json: { try tradicionesJSON($0, $1) },
-            ejecutar: { tradiciones($0, $1) }),
+            ejecutar: { try tradiciones($0, $1) }),
         Orden(
             nombres: ["tonalidad", "key"], ayuda: ayudaDeTonalidad, json: { try tonalidadJSON($0, $1) },
             ejecutar: { try consultarTonalidad($0, $1) }),
