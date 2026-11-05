@@ -200,6 +200,27 @@ struct TextosDeTeoria: TextosTraducidos {
     let cifrasNoValidas: @Sendable (String) -> String
     let cifrasSinAcorde: @Sendable (String) -> String
 
+    // MARK: Tradicion+Nombre.swift
+    let tradicionIndia: String
+    let tradicionGrecia: String
+    let tradicionGreciaAntigua: String
+    let tradicionMundoArabe: String
+    let tradicionPersia: String
+    let tradicionTurquia: String
+    let tradicionAzerbaiyan: String
+    let tradicionChina: String
+    let tradicionJapon: String
+    let tradicionCorea: String
+    let tradicionEtiopia: String
+    let tradicionIndonesia: String
+    let tradicionKlezmer: String
+    let tradicionAndes: String
+    let tradicionBizancio: String
+    let tradicionMesopotamia: String
+    let tradicionAfrica: String
+    let tradicionSudesteAsiatico: String
+    let tradicionGregoriano: String
+
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».
     let acordeSobre: @Sendable (_ tipo: String, _ raiz: String) -> String
