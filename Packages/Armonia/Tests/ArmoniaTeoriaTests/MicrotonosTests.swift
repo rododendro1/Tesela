@@ -5,19 +5,24 @@ import Testing
 
 @Suite struct MicrotonosTests {
     private func nombres(
-        _ escala: Escala, _ sentido: SentidoDelIntervalo = .ascendente, en notacion: Notacion = .espanolCompacto
+        _ escala: Escala, _ sentido: SentidoDelIntervalo = .ascendente, en notacion: Notacion = .espanolCompacto,
+        afinacion: TipoDeEscalaMicrotonal? = nil
     ) -> String? {
-        escala.notasMicrotonales(sentido: sentido)?.map { $0.nombre(en: notacion) }.joined(separator: " ")
+        escala.notasMicrotonales(sentido: sentido, afinacion: afinacion)?.map { $0.nombre(en: notacion) }
+            .joined(separator: " ")
     }
 
     /// Cada versión microtonal tiene un paso por grado y ningún grado se aparta más de medio semitono.
     @Test func elCatalogoEsCoherente() {
         for microtonal in TipoDeEscalaMicrotonal.catalogo {
             #expect(microtonal.esCoherente, Comment(rawValue: microtonal.temperada.nombre))
-            #expect(microtonal.temperada.microtonal == microtonal, Comment(rawValue: microtonal.temperada.nombre))
+            #expect(
+                microtonal.temperada.afinaciones.contains(microtonal), Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(TipoDeEscalaMicrotonal.catalogo.count == 163)
+        #expect(TipoDeEscalaMicrotonal.catalogo.count == 169)
+        // La primera de cada escala es la de su teoría de hoy, sin fuente.
+        #expect(TipoDeEscala.catalogo.allSatisfy { $0.microtonal?.fuente == nil })
     }
 
     /// Se busca por el nombre: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
@@ -29,6 +34,21 @@ import Testing
         #expect(Escala(.do, .mayor).notasMicrotonales() == nil)
         let propia = TipoDeEscala(nombre: "Bayātī", intervalos: [.unisono, .quintaJusta])
         #expect(propia.microtonal == nil)
+    }
+
+    /// Los echoi diatónicos tienen dos afinaciones: la de la Comisión Patriarcal y la de Chrysanthos.
+    @Test func variasAfinacionesPorEscala() throws {
+        let afinaciones = TipoDeEscala.echosProtos.afinaciones
+        #expect(afinaciones.map(\.sistema) == [.moria72, .razones])
+        #expect(afinaciones.map(\.fuente) == [nil, "Chrysanthos, 1832"])
+        #expect(TipoDeEscala.echosProtos.microtonal == afinaciones.first)
+        #expect(afinaciones[1].desvios == [12, -29, -6, 6, 18, -24, 0])
+        #expect(TipoDeEscala.echosDefteros.afinaciones.count == 1)
+        #expect(TipoDeEscala.mayor.afinaciones.isEmpty)
+        let chrysanthos = try #require(nombres(Escala(.re, .echosProtos), afinacion: afinaciones[1]))
+        #expect(chrysanthos == "Re(+12¢) Mi(−29¢) Fa(−6¢) Sol(+6¢) La(+18¢) Si(−24¢) Do")
+        // Una afinación de otra escala no vale.
+        #expect(Escala(.re, .echosProtos).notasMicrotonales(afinacion: TipoDeEscala.bayati.microtonal) == nil)
     }
 
     @Test func maqamatEnCuartosDeTono() {
