@@ -29,7 +29,7 @@ extension LineaDeComandos {
         "--ida-y-vuelta", "--up-and-down", "--intervalos", "--intervals", "--semitonos", "--semitones", "--tonica",
         "--tonic", "--tresillos", "--triplets", "--romanos", "--roman", "--dedos", "--fingers",
         "--ajenas", "--non-chord", "--doble", "--grand-staff", "--cambiar-clave", "--clef-changes", "--bajo-cifrado",
-        "--figured-bass", "--json",
+        "--figured-bass", "--estadisticas", "--statistics", "--json",
     ]
 
     /// Los valores que se proponen tras una opción.

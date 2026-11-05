@@ -94,6 +94,21 @@ extension LineaDeComandos {
             let tonicas: String?
             let ciclos: [Detalle]
         }
+        /// `EstadisticasDeEscala`, con el cardinal por su nombre.
+        struct Estadisticas: Encodable {
+            let numeroDeNotas: Int
+            let cardinal: String?
+            let brillo: Int?
+            let brilloPorQuintas: Double
+            let pasos: [Int]
+            let vectorIntervalico: [Int]
+            let anhemitonica: Bool
+            let cohemitonica: Bool
+            let transposicionesDistintas: Int
+            let numeroDeForte: String?
+            let maximamenteRegular: Bool
+            let aproximada: Bool
+        }
         struct Tonalidad: Encodable {
             let tonalidad: String
             let notas: String
@@ -134,6 +149,8 @@ extension LineaDeComandos {
         var simetria: Simetria?
         /// `--vecinas`.
         var vecinas: [Detalle]?
+        /// `--estadisticas`.
+        var estadisticas: Estadisticas?
         /// `--doce`, con la secuencia de `--secuencia` si se da; con `--acordes`, también los acordes de cada grado.
         var doceTonalidades: [Tonalidad]?
         var acordesEnLasDoceTonalidades: AcordesEnLasDoce?
@@ -195,6 +212,16 @@ extension LineaDeComandos {
             datos.vecinas = PresentacionDeEstudioDeEscala.vecinas(de: escala, notacion: notacion).map {
                 EscalaJSON.Detalle(nombre: $0.nombre, detalle: $0.detalle)
             }
+        }
+        if pedido.estadisticas {
+            let medidas = escala.estadisticas
+            datos.estadisticas = EscalaJSON.Estadisticas(
+                numeroDeNotas: medidas.numeroDeNotas, cardinal: medidas.cardinal?.nombre(en: notacion),
+                brillo: medidas.brillo, brilloPorQuintas: (medidas.brilloPorQuintas * 100).rounded() / 100,
+                pasos: medidas.pasos, vectorIntervalico: medidas.vectorIntervalico, anhemitonica: medidas.anhemitonica,
+                cohemitonica: medidas.cohemitonica, transposicionesDistintas: medidas.transposicionesDistintas,
+                numeroDeForte: medidas.numeroDeForte, maximamenteRegular: medidas.maximamenteRegular,
+                aproximada: medidas.aproximada)
         }
         if pedido.doce {
             let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(

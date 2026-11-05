@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+### `armonia escala --estadisticas`, y las estadísticas en la app
+
+- `escala Do mayor --estadisticas` (`--statistics`) escribe lo que se mide de la escala (`EstadisticasDeEscala`), un
+  dato por línea: el número de notas con su cardinal, el brillo (en las de siete notas), el brillo por quintas, los
+  pasos, el vector interválico, el número de Forte, las transposiciones distintas y sus rasgos (anhemitónica,
+  cohemitónica, máximamente regular, medida aproximando los microtonos). Con `--json`, la clave `estadisticas`, con
+  los valores sin escribir (números y booleanos) y el cardinal por su nombre.
+- `PresentacionDeEstudioDeEscala.estadisticas(de:notacion:)` da esos datos con su nombre (`DatoDeEscalaPresentado`),
+  en los quince idiomas, y la pestaña de escalas de la app los muestra en la sección «Estadísticas».
+
 ### Escalas: cardinal y estadísticas
 
 - `CardinalDeEscala` nombra las escalas por su número de notas (de monotónica a dodecatónica), en los quince

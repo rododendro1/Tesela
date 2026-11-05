@@ -210,7 +210,7 @@ import Testing
             "positions C major --sequence thirds --caged --descending", "keyboard D major --hand right --octaves 2",
             "scale C major --neighbors --all-keys --sequence thirds", "clock C diminished --fifths",
             "positions C major --instrument bass --capo 2", "positions D major --instrument dadgad",
-            "scale C 2-2-3-2-3",
+            "scale C 2-2-3-2-3", "scale C lydian --statistics",
             "scale A harmonic minor --all-keys --chords --triads", "positions --arpeggio Am --sweep --up-and-down",
             "positions --arpeggio C7 --caged --instrument bass --capo 1", "engines",
         ] {

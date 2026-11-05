@@ -81,6 +81,15 @@ extension LineaDeComandosTests {
         let doce = try #require(try json("escala Do mayor --doce --acordes") as? [String: Any])
         #expect((doce["doceTonalidades"] as? [[String: String]])?.count == 12)
         #expect(doce["acordesEnLasDoceTonalidades"] is [String: Any])
+        let pentatonica = try #require(try json("escala La pentatónica menor --estadisticas") as? [String: Any])
+        let medidas = try #require(pentatonica["estadisticas"] as? [String: Any])
+        #expect(medidas["numeroDeNotas"] as? Int == 5)
+        #expect(medidas["cardinal"] as? String == "pentatónica")
+        #expect(medidas["brilloPorQuintas"] as? Double == -1)
+        #expect(medidas["pasos"] as? [Int] == [3, 2, 2, 3, 2])
+        #expect(medidas["anhemitonica"] as? Bool == true)
+        #expect(medidas["numeroDeForte"] as? String == "5-35")
+        #expect(medidas["brillo"] == nil)
         // Lo mal escrito sigue siendo un error de uso.
         #expect(LineaDeComandos.ejecutar(["escala", "Do", "mayor", "--secuencia", "foo", "--json"]).codigo == 2)
     }
