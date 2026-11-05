@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### Las pruebas de la documentación, sin números de línea
+
+- Las pruebas que salen de los ejemplos del README y de DocC (`EjemplosDeDocumentacionTests.swift`) nombran cada
+  ejemplo por su fichero, su bloque y su renglón dentro del bloque, y ya no por su línea: cambiar el texto de un
+  artículo no cambia sus pruebas, y el diff de un pull request muestra solo los ejemplos que cambian. Al fallar, la
+  línea se busca en el fichero (`BloqueDeDocumentacion`).
+
 ### `armonia`: las opciones de cada orden, declaradas
 
 - Cada entrada de la ayuda declara las opciones que explica (`EntradaDeAyuda.opciones`), y cada orden, lo que da con
