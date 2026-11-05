@@ -9,6 +9,7 @@ extension LineaDeComandos {
         Orden(nombres: ["teclado", "keyboard"], ayuda: ayudaDeTeclado) { try teclado($0, $1) },
         Orden(nombres: ["cuadricula", "grid"], ayuda: ayudaDeCuadricula) { try cuadricula($0, $1) },
         Orden(nombres: ["reloj", "clock"], ayuda: ayudaDeReloj) { try reloj($0, $1) },
+        Orden(nombres: ["hoja", "sheet"], ayuda: ayudaDeHoja) { try hoja($0, $1) },
         Orden(nombres: ["pentagrama", "staff"], ayuda: ayudaDePentagrama) { try pentagrama($0, $1) },
     ]
 
@@ -21,6 +22,16 @@ extension LineaDeComandos {
                 "armonia teclado Re mayor --mano derecha > re.svg",
                 "armonia keyboard D major --hand right > d.svg"),
             opciones: ["--mano", "--octavas", "--hand", "--octaves"])
+    ]
+
+    static let ayudaDeHoja: [EntradaDeAyuda] = [
+        // hoja <escala>
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisHoja),
+            descripcion: TextosDeCLI.traduccion(\.descripcionHoja),
+            ejemplo: ejemplo(
+                "armonia hoja Re dórico > dorico.svg",
+                "armonia sheet D dorian > dorian.svg"))
     ]
 
     static let ayudaDeReloj: [EntradaDeAyuda] = [

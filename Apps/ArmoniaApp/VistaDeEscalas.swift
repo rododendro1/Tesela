@@ -135,7 +135,8 @@ struct VistaDeEscalas: View {
         .toolbar {
             ToolbarItem {
                 BotonDeExportar(
-                    [pentagrama.fichero] + secuenciaPresentada(de: escala).ficheros + svgs(de: escala)
+                    [pentagrama.fichero, hojaDeEstudio(de: escala)] + secuenciaPresentada(de: escala).ficheros
+                        + svgs(de: escala)
                         + PresentacionDeEstudioDeEscala.enLasDoceTonalidades(escala, notacion: notacion).ficheros)
             }
         }
@@ -207,6 +208,13 @@ struct VistaDeEscalas: View {
                 }
             }
         }
+    }
+
+    /// La hoja de estudio de la escala, para imprimirla: pentagrama, teclados, reloj, estadísticas, acordes y escalera.
+    private func hojaDeEstudio(de escala: Escala) -> FicheroParaExportar {
+        FicheroParaExportar.svg(
+            PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, notacion: notacion),
+            nombre: notacion.texto(\.hojaDeEstudio) + " " + escala.nombre(en: notacion))
     }
 
     /// Los teclados de cada mano, para exportarlos en SVG.
