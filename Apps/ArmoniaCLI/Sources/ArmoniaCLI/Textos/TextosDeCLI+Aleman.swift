@@ -166,6 +166,8 @@ extension TextosDeCLI {
         Ohne Argumente im Terminal öffnet armonia eine Sitzung: ein Befehl pro Zeile.
         Mit der Eingabe aus einer Datei (armonia < uebungen.txt) führt es deren Zeilen genauso aus; eine
         Zeile nur mit Optionen (--idioma eu) gilt für die folgenden weiter.
+        Mit -o Datei wird die Ausgabe des Befehls in diese Datei geschrieben, auch in der Sitzung.
+        Mit --idioma werden Noten auch in dieser Sprache gelesen: H7 und Fis auf Deutsch, ré auf Französisch.
         """,
         sintaxisAyuda: "help [<Befehl>]",
         descripcionAyuda: "diese Hilfe oder die eines Befehls\n(auch <Befehl> --help)",
@@ -206,6 +208,7 @@ extension TextosDeCLI {
         faltaSerie: "die Reihe fehlt: armonia row 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "die Akkorde fehlen: armonia analyze C F G7 C" },
         archivoIlegible: { nombre in "die Datei „\(nombre)“ kann nicht gelesen werden" },
+        archivoNoEscrito: { nombre in "die Datei „\(nombre)“ kann nicht geschrieben werden" },
         archivoConAcordes: "mit --file keine Akkorde angeben",
         archivoSinAcordes: "die Datei enthält keine Akkorde",
         faltaTransporte: { ejemplo in "Intervall (oder neuer Grundton) und das zu Versetzende fehlen: armonia transpose M2 C Am F G7" },

@@ -166,6 +166,8 @@ extension TextosDeCLI {
         Без аргументов в терминале armonia открывает сеанс: по одной команде в строке.
         Если ввод идёт из файла (armonia < uprazhneniya.txt), его строки выполняются так же; строка
         только с параметрами (--idioma eu) сохраняет их для следующих.
+        С -o файл вывод команды записывается в этот файл, в том числе в сеансе.
+        С --idioma ноты читаются и на этом языке: H7 и Fis по-немецки, ré по-французски.
         """,
         sintaxisAyuda: "help [<команда>]",
         descripcionAyuda: "эта справка или справка по команде\n(также <команда> --help)",
@@ -206,6 +208,7 @@ extension TextosDeCLI {
         faltaSerie: "не указана серия: armonia row 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "не указаны аккорды: armonia analyze C F G7 C" },
         archivoIlegible: { nombre in "не удаётся прочитать файл «\(nombre)»" },
+        archivoNoEscrito: { nombre in "не удаётся записать файл «\(nombre)»" },
         archivoConAcordes: "с --file аккорды не указываются",
         archivoSinAcordes: "в файле нет аккордов",
         faltaTransporte: { ejemplo in "не указаны интервал (или новая тоника) и что транспонировать: armonia transpose M2 C Am F G7" },

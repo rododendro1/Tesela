@@ -166,6 +166,8 @@ extension TextosDeCLI {
         Sense arguments i al terminal, armonia obre una sessió: una ordre per línia.
         Amb l'entrada en un fitxer (armonia < exercicis.txt), n'executa les línies igual; una línia
         només amb opcions (--idioma eu) les deixa posades per a les següents.
+        Amb -o fitxer, el que dona l'ordre s'escriu en aquest fitxer, també a la sessió.
+        Amb --idioma, les notes es llegeixen també en aquest idioma: H7 i Fis en alemany, ré en francès.
         """,
         sintaxisAyuda: "ayuda [<ordre>]",
         descripcionAyuda: "aquesta ajuda, o la d'una ordre\n(també <ordre> --help)",
@@ -206,6 +208,7 @@ extension TextosDeCLI {
         faltaSerie: "falta la sèrie: armonia serie 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "falten els acords: " + ejemplo },
         archivoIlegible: { nombre in "no es pot llegir el fitxer «\(nombre)»" },
+        archivoNoEscrito: { nombre in "no es pot escriure el fitxer «\(nombre)»" },
         archivoConAcordes: "amb --archivo no s'escriuen acords",
         archivoSinAcordes: "el fitxer no té cap acord",
         faltaTransporte: { ejemplo in "falten l'interval (o la nova tònica) i el que es transporta: " + ejemplo },

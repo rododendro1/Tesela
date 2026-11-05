@@ -166,6 +166,8 @@ extension TextosDeCLI {
         Sens arguments e dins lo terminal, armonia dobrís una sesilha: un òrdre per linha.
         Amb l'entrada dins un fichièr (armonia < exercicis.txt), n'executa las linhas parièr; una linha
         sonque amb d'opcions (--idioma eu) las daissa per las seguentas.
+        Amb -o fichièr, çò que dona l'òrdre s'escriu dins aquel fichièr, tanben dins la sesilha.
+        Amb --idioma, las nòtas se legisson tanben dins aquela lenga: H7 e Fis en alemand, ré en francés.
         """,
         sintaxisAyuda: "ayuda [<òrdre>]",
         descripcionAyuda: "aquesta ajuda, o la d'un òrdre\n(tanben <òrdre> --help)",
@@ -206,6 +208,7 @@ extension TextosDeCLI {
         faltaSerie: "manca la seria: armonia serie 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "mancan los acòrds: " + ejemplo },
         archivoIlegible: { nombre in "se pòt pas legir lo fichièr « \(nombre) »" },
+        archivoNoEscrito: { nombre in "se pòt pas escriure lo fichièr « \(nombre) »" },
         archivoConAcordes: "amb --archivo, escrivètz pas d'acòrds",
         archivoSinAcordes: "lo fichièr a pas cap d'acòrd",
         faltaTransporte: { ejemplo in "mancan l'interval (o la tonica novèla) e çò que se transpausa: " + ejemplo },

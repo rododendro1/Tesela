@@ -188,6 +188,8 @@ struct TextosDeCLI: TextosTraducidos {
     let faltaSerie: String
     let faltanAcordesDelAnalisis: @Sendable (String) -> String
     let archivoIlegible: @Sendable (String) -> String
+    /// Un fichero de `-o` que no se puede escribir.
+    let archivoNoEscrito: @Sendable (String) -> String
     let archivoConAcordes: String
     let archivoSinAcordes: String
     let faltaTransporte: @Sendable (String) -> String

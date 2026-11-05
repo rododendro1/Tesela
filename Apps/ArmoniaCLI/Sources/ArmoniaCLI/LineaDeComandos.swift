@@ -92,6 +92,17 @@ public enum LineaDeComandos {
         }
         // Con --json, las órdenes que lo admiten dan sus datos en JSON (LineaDeComandos+JSON.swift).
         let json = opciones.quitarMarca("--json")
+        // Con -o, lo que da la orden va a ese fichero (`-o -`, a la salida estándar, aunque sea un fichero binario).
+        var destino: String?
+        switch opciones.quitarOpcion("-o", "--salida", "--output") {
+        case .ausente:
+            break
+        case .sinValor(let nombre):
+            // «-o» a secas, con su nombre largo.
+            return uso(.faltaValor(nombre.isEmpty ? "salida" : nombre), notacion)
+        case .valor(let ruta):
+            destino = ruta
+        }
         let argumentos = opciones.restantes
 
         guard let nombre = argumentos.first?.lowercased() else { return bien(indiceDeAyuda(en: notacion.textos)) }
@@ -115,31 +126,57 @@ public enum LineaDeComandos {
         let enCurso = OrdenEnCurso(orden: orden, nombre: nombre)
         let resultado = OrdenEnCurso.$actual.withValue(orden.nombres.contains("ayuda") ? nil : enCurso) {
             EntradaEstandar.$actual.withValue(estandar) {
-                do {
-                    guard json else { return try orden.ejecutar(resto, notacion) }
-                    guard let salida = salidasJSON[orden.nombres[0]] else {
-                        return uso(.sinSalidaJSON(nombre), notacion)
-                    }
-                    let datos = try salida(resto, notacion)
-                    let texto = try textoJSON(datos, enUnaLinea: !salidaEsTerminal)
-                    let conFaltas = (datos as? any ConFaltas)?.hayFaltas ?? false
-                    return ResultadoDeOrden(salida: texto + "\n", error: "", codigo: conFaltas ? 3 : 0)
-                } catch let fallo as FalloDeUso {
-                    return uso(fallo.error, notacion)
-                } catch let error as any ErrorDeArmonia {
-                    return ResultadoDeOrden(
-                        salida: "", error: "armonia: " + error.descripcion(en: notacion) + "\n", codigo: 1)
-                } catch {
-                    return ResultadoDeOrden(salida: "", error: "armonia: \(error)\n", codigo: 1)
+                conLasNotasDelIdioma(resto, en: notacion) { resto in
+                    ejecutar(orden, nombre: nombre, resto, json: json, salidaEsTerminal: salidaEsTerminal, notacion)
                 }
             }
         }
+        if let destino, destino != "-", resultado.codigo == 0 || resultado.codigo == 3 {
+            return escribir(resultado, en: destino, notacion)
+        }
         // Un fichero binario no se escribe en la terminal.
-        if resultado.datos != nil, salidaEsTerminal {
+        if resultado.datos != nil, salidaEsTerminal, destino == nil {
             return ResultadoDeOrden(
                 salida: "", error: "armonia: " + TextosDeCLI.en(notacion, \.salidaBinaria) + "\n", codigo: 2)
         }
         return resultado
+    }
+
+    /// Ejecuta la orden ya elegida, con sus argumentos, y recoge sus errores.
+    static func ejecutar(
+        _ orden: Orden, nombre: String, _ resto: [String], json: Bool, salidaEsTerminal: Bool, _ notacion: Notacion
+    ) -> ResultadoDeOrden {
+        do {
+            guard json else { return try orden.ejecutar(resto, notacion) }
+            guard let salida = salidasJSON[orden.nombres[0]] else {
+                return uso(.sinSalidaJSON(nombre), notacion)
+            }
+            let datos = try salida(resto, notacion)
+            let texto = try textoJSON(datos, enUnaLinea: !salidaEsTerminal)
+            let conFaltas = (datos as? any ConFaltas)?.hayFaltas ?? false
+            return ResultadoDeOrden(salida: texto + "\n", error: "", codigo: conFaltas ? 3 : 0)
+        } catch let fallo as FalloDeUso {
+            return uso(fallo.error, notacion)
+        } catch let error as any ErrorDeArmonia {
+            return ResultadoDeOrden(
+                salida: "", error: "armonia: " + error.descripcion(en: notacion) + "\n", codigo: 1)
+        } catch {
+            return ResultadoDeOrden(salida: "", error: "armonia: \(error)\n", codigo: 1)
+        }
+    }
+
+    /// Escribe lo que ha dado una orden en el fichero de `-o` (`~` es la carpeta personal) y no da nada más que
+    /// sus avisos; si no se puede escribir, da el error con el código 1.
+    static func escribir(_ resultado: ResultadoDeOrden, en ruta: String, _ notacion: Notacion) -> ResultadoDeOrden {
+        let datos = resultado.datos ?? Data(resultado.salida.utf8)
+        let url = URL(fileURLWithPath: (ruta as NSString).expandingTildeInPath)
+        do {
+            try datos.write(to: url)
+        } catch {
+            let texto = TextosDeCLI.en(notacion) { $0.archivoNoEscrito(ruta) }
+            return ResultadoDeOrden(salida: "", error: resultado.error + "armonia: " + texto + "\n", codigo: 1)
+        }
+        return ResultadoDeOrden(salida: "", error: resultado.error, codigo: resultado.codigo)
     }
 
     /// La orden que se llama así (en minúsculas), con cualquiera de sus nombres.

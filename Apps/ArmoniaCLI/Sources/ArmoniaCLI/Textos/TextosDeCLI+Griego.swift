@@ -166,6 +166,8 @@ extension TextosDeCLI {
         Χωρίς ορίσματα σε τερματικό, το armonia ανοίγει μια συνεδρία: μία εντολή ανά γραμμή.
         Με είσοδο από αρχείο (armonia < askiseis.txt), εκτελεί τις γραμμές του με τον ίδιο τρόπο· μια
         γραμμή μόνο με επιλογές (--idioma eu) τις κρατά για τις επόμενες.
+        Με -o αρχείο, ό,τι δίνει η εντολή γράφεται σε εκείνο το αρχείο, και στη συνεδρία.
+        Με --idioma, οι νότες διαβάζονται και σε εκείνη τη γλώσσα: H7 και Fis στα γερμανικά, ré στα γαλλικά.
         """,
         sintaxisAyuda: "help [<εντολή>]",
         descripcionAyuda: "αυτή η βοήθεια, ή μιας εντολής\n(και <εντολή> --help)",
@@ -206,6 +208,7 @@ extension TextosDeCLI {
         faltaSerie: "λείπει η σειρά: armonia row 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "λείπουν οι συγχορδίες: armonia analyze C F G7 C" },
         archivoIlegible: { nombre in "δεν είναι δυνατή η ανάγνωση του αρχείου «\(nombre)»" },
+        archivoNoEscrito: { nombre in "δεν είναι δυνατή η εγγραφή του αρχείου «\(nombre)»" },
         archivoConAcordes: "με το --file δεν γράφονται συγχορδίες",
         archivoSinAcordes: "το αρχείο δεν έχει συγχορδίες",
         faltaTransporte: { ejemplo in "λείπουν το διάστημα (ή η νέα τονική) και ό,τι μεταφέρεται: armonia transpose M2 C Am F G7" },

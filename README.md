@@ -36,6 +36,8 @@ armonia revisar Do3 Mi4 Sol4 Do5, Re3 Fa4 La4 Re5 || echo mal  # con faltas, sal
 armonia ayuda                                                # las órdenes (ayuda acorde: esa; ayuda --todo: todo)
 armonia                                                      # en la terminal, una sesión: una orden por línea
 armonia < ejercicios.txt                                     # una orden por línea; sale con el peor código
+armonia midi acordes Do Fa Sol Do -o cadencia.mid           # -o: al fichero, también en la sesión
+armonia acorde H7 --idioma de                                # las notas, también en el idioma elegido
 ```
 
 Lee los nombres en español o en inglés (Do, C, Sib, Bb) y responde en el idioma de `--idioma`, o en el de

@@ -167,6 +167,8 @@ extension TextosDeCLI {
         Argumenturik gabe eta terminalean, armonia saio bat irekitzen du: agindu bat lerro bakoitzeko.
         Sarrera fitxategi batean badago (armonia < ariketak.txt), haren lerroak berdin exekutatzen ditu;
         aukerak bakarrik dituen lerro batek (--idioma eu) hurrengoetarako uzten ditu.
+        -o fitxategia erabiliz, aginduak ematen duena fitxategi horretan idazten da, saioan ere bai.
+        --idioma erabiliz, notak hizkuntza horretan ere irakurtzen dira: H7 eta Fis alemanez, ré frantsesez.
         """,
         sintaxisAyuda: "ayuda [<agindua>]",
         descripcionAyuda: "laguntza hau, edo agindu batena\n(baita <agindua> --help ere)",
@@ -207,6 +209,7 @@ extension TextosDeCLI {
         faltaSerie: "seriea falta da: armonia serie 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "akordeak falta dira: " + ejemplo },
         archivoIlegible: { nombre in "ezin da «\(nombre)» fitxategia irakurri" },
+        archivoNoEscrito: { nombre in "ezin da «\(nombre)» fitxategia idatzi" },
         archivoConAcordes: "--archivo erabiltzean ez idatzi akorderik",
         archivoSinAcordes: "fitxategiak ez du akorderik",
         faltaTransporte: { ejemplo in "tartea (edo tonika berria) eta transposatzen dena falta dira: " + ejemplo },

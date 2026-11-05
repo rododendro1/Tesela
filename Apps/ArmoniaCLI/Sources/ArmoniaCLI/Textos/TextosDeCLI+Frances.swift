@@ -166,6 +166,8 @@ extension TextosDeCLI {
         Sans arguments et dans le terminal, armonia ouvre une session : une commande par ligne.
         Avec l'entrée dans un fichier (armonia < exercices.txt), il exécute ses lignes de même ; une ligne
         faite seulement d'options (--idioma eu) les garde pour les suivantes.
+        Avec -o fichier, ce que donne la commande s'écrit dans ce fichier, aussi dans la session.
+        Avec --idioma, les notes se lisent aussi dans cette langue : H7 et Fis en allemand, ré en français.
         """,
         sintaxisAyuda: "ayuda [<commande>]",
         descripcionAyuda: "cette aide, ou celle d'une commande\n(aussi <commande> --help)",
@@ -206,6 +208,7 @@ extension TextosDeCLI {
         faltaSerie: "il manque la série : armonia serie 0 e 7 4 2 9 3 8 t 1 5 6",
         faltanAcordesDelAnalisis: { ejemplo in "il manque les accords : " + ejemplo },
         archivoIlegible: { nombre in "impossible de lire le fichier « \(nombre) »" },
+        archivoNoEscrito: { nombre in "impossible d’écrire le fichier « \(nombre) »" },
         archivoConAcordes: "avec --archivo, n'écrivez pas d'accords",
         archivoSinAcordes: "le fichier ne contient aucun accord",
         faltaTransporte: { ejemplo in "il manque l'intervalle (ou la nouvelle tonique) et ce qu'on transpose : " + ejemplo },
