@@ -210,6 +210,7 @@ extension TextosDeApps {
         maximamenteRegular: "maximálisan egyenletes",
         medidaAproximada: "félhangokban mérve, a mikrohangokat közelítve",
         escaleraDeBrillo: "Fényességlétra",
+        hojaDeEstudio: "Gyakorlólap",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Feszültségek",
         notasAEvitar: "Kerülendő",

@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+### La hoja de estudio de una escala
+
+- `armonia hoja Re dórico` (`sheet`) escribe una hoja de estudio para imprimir, en SVG del ancho de un A4: el nombre y
+  las notas, el pentagrama, el reloj, las estadísticas, el teclado de piano con los dedos de cada mano, los acordes de
+  los grados y la escalera de brillo. `armonia grabar hoja Re dórico > dorico.pdf` la pasa a PDF con `rsvg-convert`.
+- `PresentacionDeEstudioDeEscala.hojaDeEstudio(de:notacion:)` la da, y la app la exporta desde la barra de la pestaña
+  de escalas («Hoja de estudio Re dórico.svg»).
+
 ### La escalera de brillo
 
 - `Escala.escaleraDeBrillo()` (`EscaleraDeBrillo`) da las escalas con la misma tónica de la más oscura a la más

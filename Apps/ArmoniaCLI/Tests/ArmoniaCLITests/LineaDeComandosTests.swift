@@ -123,7 +123,7 @@ import Testing
         #expect(Set(nombres).count == nombres.count)
         for nombre in nombres { #expect(nombre == nombre.lowercased(), Comment(rawValue: nombre)) }
         for orden in LineaDeComandos.ordenes { #expect(!orden.ayuda.isEmpty, Comment(rawValue: orden.nombres[0])) }
-        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 58)
+        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 59)
         // Los nombres no distinguen mayúsculas.
         #expect(salida("ACORDE Do") == salida("acorde Do"))
     }
@@ -163,7 +163,8 @@ import Testing
         "teclado", "teclado Do mayor --mano foo", "teclado Do mayor --mano", "teclado Do mayor --octavas 9",
         "teclado Do mayor --foo", "identificar --archivo coral.mid Do", "identificar --archivo", "identificar --foo Do",
         "identificar --escalas", "posiciones Do mayor --secuencia foo", "posiciones Do mayor --secuencia",
-        "posiciones Do mayor --formas", "reloj", "reloj Do mayor --foo", "posiciones Do mayor --instrumento arpa",
+        "posiciones Do mayor --formas", "reloj", "reloj Do mayor --foo", "hoja", "hoja Do mayor --foo",
+        "posiciones Do mayor --instrumento arpa",
         "posiciones Do mayor --instrumento", "posiciones Do mayor --capo 13", "posiciones Do mayor --capo",
         "posiciones --arpegio", "posiciones --arpegio Do --foo", "pentagrama", "pentagrama nube Do",
         "pentagrama escala", "pentagrama escala Do mayor --octavas 9", "pentagrama acorde Do --foo",

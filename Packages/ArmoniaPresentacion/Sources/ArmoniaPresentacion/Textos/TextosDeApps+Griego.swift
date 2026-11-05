@@ -210,6 +210,7 @@ extension TextosDeApps {
         maximamenteRegular: "μέγιστα ομοιόμορφη",
         medidaAproximada: "μετρημένη σε ημιτόνια, με προσέγγιση των μικροδιαστημάτων",
         escaleraDeBrillo: "Σκάλα φωτεινότητας",
+        hojaDeEstudio: "Φύλλο μελέτης",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Εντάσεις",
         notasAEvitar: "Προς αποφυγή",

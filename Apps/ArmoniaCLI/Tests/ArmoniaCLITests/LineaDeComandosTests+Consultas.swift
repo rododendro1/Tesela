@@ -183,6 +183,16 @@ extension LineaDeComandosTests {
         #expect(resultado("escalas", "--orden", "color").error.contains("--orden brillo"))
     }
 
+    /// `hoja Re dórico`: la hoja de estudio en SVG; sin escala, un error de uso.
+    @Test func hojaDeEstudio() {
+        let hoja = salida("hoja Re dórico")
+        #expect(hoja.hasPrefix("<svg "), Comment(rawValue: String(hoja.prefix(200))))
+        #expect(hoja.contains(">Re dórico</text>"))
+        #expect(salida("sheet D dorian --ingles").contains(">D dorian</text>"))
+        #expect(resultado("hoja").codigo == 2)
+        #expect(resultado("hoja").error.contains("armonia hoja Re mayor"))
+    }
+
     /// `escala … --escalera`: de la más oscura a la más brillante, con la de partida señalada.
     @Test func escaleraDeBrillo() {
         let mayor = salida("escala Do mayor --escalera")

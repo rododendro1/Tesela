@@ -210,6 +210,7 @@ extension TextosDeApps {
         maximamenteRegular: "maximally even",
         medidaAproximada: "measured in semitones, approximating the microtones",
         escaleraDeBrillo: "Brightness ladder",
+        hojaDeEstudio: "Study sheet",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "Avoid",

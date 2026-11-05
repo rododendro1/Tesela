@@ -87,6 +87,25 @@ import Testing
         #expect(escalera.filter(\.esLaDePartida).count == 1)
     }
 
+    @Test func hojaDeEstudio() {
+        let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudio(de: Escala(.re, .dorico), notacion: notacion)
+        #expect(hoja.hasPrefix("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"595\""))
+        #expect(hoja.hasSuffix("</svg>"))
+        #expect(hoja.contains(">Re dórico</text>"))
+        #expect(hoja.contains(">Estadísticas</text>"))
+        #expect(hoja.contains(">Escalera de brillo</text>"))
+        #expect(hoja.contains(">Brillo por quintas: 0</text>"))
+        // El pentagrama, el reloj y los dos teclados, dentro, cada uno con su viewBox.
+        #expect(hoja.components(separatedBy: "<svg x=").count - 1 == 4)
+        #expect(hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count)
+        // Sin acordes de los grados si la escala no los forma.
+        let cromatica = PresentacionDeEstudioDeEscala.hojaDeEstudio(de: Escala(.do, .cromatica), notacion: notacion)
+        #expect(!cromatica.contains(">Acordes de la escala</text>"))
+        var cuerpo: [String] = []
+        #expect(PresentacionDeEstudioDeEscala.incrustar("<svg/>", x: 0, y: 0, ancho: 10, en: &cuerpo) == 0)
+        #expect(cuerpo.isEmpty)
+    }
+
     @Test func lineasDeNotasGuia() {
         let acordes = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let lineas = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(

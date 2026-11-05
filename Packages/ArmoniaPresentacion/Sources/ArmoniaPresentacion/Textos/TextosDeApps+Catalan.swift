@@ -210,6 +210,7 @@ extension TextosDeApps {
         maximamenteRegular: "màximament regular",
         medidaAproximada: "mesurada en semitons, aproximant els microtons",
         escaleraDeBrillo: "Escaleta de brillantor",
+        hojaDeEstudio: "Full d'estudi",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "A evitar",

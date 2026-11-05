@@ -36,6 +36,7 @@ EXCEPCIONES = {
     "completion bash|zsh|fish",  # la sintaxis de la orden, con los nombres de las terminales
     "manual",   # el nombre de la orden
     "engines",  # el nombre de la orden
+    "sheet <scale>",  # la sintaxis de la orden, sin opciones
     "own",      # el nombre de `--engine own`
     "Japan",    # alemán: el nombre del país
     "Korea",    # alemán: el nombre del país

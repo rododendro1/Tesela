@@ -157,6 +157,15 @@ extension LineaDeComandos {
         return bien(svg.trimmingCharacters(in: "\n"))
     }
 
+    /// `hoja Re dórico`: la escala en una hoja de estudio para imprimir, en SVG; `grabar hoja …` la pasa a PDF.
+    static func hoja(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        let argumentos = Argumentos(argumentos)
+        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDeLaHoja }
+        let escala = try Escala(leyendo: argumentos.unidos)
+        return bien(PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, notacion: notacion))
+    }
+
     /// `pentagrama escala Re dórico [--octavas 2] [--bajando] [--secuencia terceras] [--mano derecha] [--tab]`,
     /// `pentagrama acorde Sol7`, `pentagrama arpegio Do Lam [--patron alberti] [--figura 16] [--tresillos] [--tab]`,
     /// `pentagrama acordes Rem7 Sol7 Do7M [--romanos] [--bajo-cifrado]`, `pentagrama melodia Do4:8 Re4:8 … --sobre Do

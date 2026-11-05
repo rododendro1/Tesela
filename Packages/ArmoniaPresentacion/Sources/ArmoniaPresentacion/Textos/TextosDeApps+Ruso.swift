@@ -210,6 +210,7 @@ extension TextosDeApps {
         maximamenteRegular: "максимально равномерная",
         medidaAproximada: "в полутонах, с округлением микротонов",
         escaleraDeBrillo: "Лестница яркости",
+        hojaDeEstudio: "Учебный лист",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Напряжения",
         notasAEvitar: "Избегать",

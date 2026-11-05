@@ -210,6 +210,7 @@ extension TextosDeApps {
         maximamenteRegular: "maximal gleichmäßig",
         medidaAproximada: "in Halbtönen gemessen, Mikrotöne angenähert",
         escaleraDeBrillo: "Helligkeitsleiter",
+        hojaDeEstudio: "Übungsblatt",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Spannungstöne",
         notasAEvitar: "Avoid-Töne",

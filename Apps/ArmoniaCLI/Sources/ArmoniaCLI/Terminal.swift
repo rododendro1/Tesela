@@ -92,7 +92,7 @@ extension LineaDeComandos {
     }
 
     /// Las órdenes que leen una escala (`escala Re dórico`): tras ellas se completan los nombres de las escalas.
-    static let ordenesConEscala = ["escala", "posiciones", "teclado", "reloj"]
+    static let ordenesConEscala = ["escala", "posiciones", "teclado", "reloj", "hoja"]
 
     /// Los nombres de las escalas del catálogo, en español y en inglés, como se completan: en minúsculas, sin tildes
     /// y con guiones en lugar de espacios («menor-armonica», «harmonic-minor»), que se leen igual. Los que llevan

@@ -210,6 +210,7 @@ extension TextosDeApps {
         maximamenteRegular: "ahalik eta erregularrena",
         medidaAproximada: "tonuerditan neurtua, mikrotonoak hurbilduz",
         escaleraDeBrillo: "Distira-eskailera",
+        hojaDeEstudio: "Ikasketa-orria",
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tentsioak",
         notasAEvitar: "Saihesteko",
