@@ -192,7 +192,7 @@ extension LineaDeComandosTests {
             murchanas.contains("  Uttaramandrā: Do Re Mi♭ Fa Sol La Si♭ · microtonos"), Comment(rawValue: murchanas))
         #expect(salida("escalas --categoria grama").hasPrefix("India · grāma (2)\n"))
         let griegas = salida("escalas --tradicion grecia-antigua --categoria tetracordo")
-        #expect(griegas.hasPrefix("Grecia antigua · tetracordo (18)\n"), Comment(rawValue: griegas))
+        #expect(griegas.hasPrefix("Grecia antigua · tetracordo (21)\n"), Comment(rawValue: griegas))
         let arquitas = "  tetracordo diatónico de Arquitas: Do Re♭ Mi♭ Fa · microtonos"
         #expect(griegas.contains(arquitas), Comment(rawValue: griegas))
         let thats = salida("escalas --tradicion india --categoria thaat")

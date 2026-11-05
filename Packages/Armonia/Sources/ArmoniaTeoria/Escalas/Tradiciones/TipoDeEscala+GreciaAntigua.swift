@@ -15,10 +15,11 @@ extension TipoDeEscala {
     /// Mi Fa Sol La.
     public static let tetracordoDiatonico = TipoDeEscala(
         nombre: "tetracordo diatónico", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
-        alias: ["tetracordo dorio"])
+        alias: ["tetracordo dorio", "diatónico tenso de Aristóxeno"])
     /// Mi Fa Sol♭ La: la lichanós baja medio tono.
     public static let tetracordoCromatico = TipoDeEscala(
-        nombre: "tetracordo cromático", intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta])
+        nombre: "tetracordo cromático", intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta],
+        alias: ["cromático tónico", "chroma toniaion"])
     /// Mi Fa♭ Fa La: dos cuartos de tono y un dítono (Mi Fa𝄳 Fa La en su versión microtonal).
     public static let tetracordoEnarmonico = TipoDeEscala(
         nombre: "tetracordo enarmónico", intervalos: [.unisono, .segundaDisminuida, .segundaMenor, .cuartaJusta])
@@ -196,6 +197,36 @@ extension TipoDeEscala {
         .tetracordoEnarmonicoDeDidimo, .tetracordoCromaticoDeEratostenes, .tetracordoEnarmonicoDeEratostenes,
     ]
 
+    // MARK: Los colores de Aristóxeno
+    //
+    // Aristóxeno no mide con razones: parte el tono en doce partes y la cuarta en treinta, y da a cada género sus
+    // «colores» (chroai), cuánto se separan sus dos notas móviles. El cromático tónico (6 + 6 + 18) y el diatónico
+    // tenso (6 + 12 + 12) son los tetracordos cromático y diatónico de arriba, y el enarmónico (3 + 3 + 24), el
+    // enarmónico; aquí van los otros tres. Una parte son 16⅔ cents. En doce notas, el cromático blando, con sus dos
+    // notas a 67 y 133 cents, se escribe Mi Mi♯ Fa La, como los enarmónicos de Arquitas y de Dídimo.
+
+    /// El cromático blando de Aristóxeno (4 + 4 + 22 doceavos de tono): Mi Mi♯ Fa La, a 67 y 133 cents.
+    public static let tetracordoCromaticoBlandoDeAristoxeno = TipoDeEscala(
+        nombre: "tetracordo cromático blando de Aristóxeno",
+        intervalos: [.unisono, .unisonoAumentado, .segundaMenor, .cuartaJusta],
+        alias: ["cromático blando de Aristóxeno", "chroma malakon"])
+    /// El cromático hemiólico de Aristóxeno (4½ + 4½ + 21 doceavos de tono): Mi Fa Sol♭ La, a 75 y 150 cents.
+    public static let tetracordoCromaticoHemiolico = TipoDeEscala(
+        nombre: "tetracordo cromático hemiólico",
+        intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta],
+        alias: ["cromático hemiólico", "chroma hemiolion"])
+    /// El diatónico blando de Aristóxeno (6 + 9 + 15 doceavos de tono): Mi Fa Sol La, a 100 y 250 cents.
+    public static let tetracordoDiatonicoBlandoDeAristoxeno = TipoDeEscala(
+        nombre: "tetracordo diatónico blando de Aristóxeno",
+        intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
+        alias: ["diatónico blando de Aristóxeno", "diatonon malakon"])
+
+    /// Los colores de Aristóxeno que no son ya sus tres tetracordos: el cromático blando, el hemiólico y el diatónico
+    /// blando.
+    public static let coloresDeAristoxeno: [TipoDeEscala] = [
+        .tetracordoCromaticoBlandoDeAristoxeno, .tetracordoCromaticoHemiolico, .tetracordoDiatonicoBlandoDeAristoxeno,
+    ]
+
     // MARK: Las harmoniai en los géneros cromático y enarmónico
     //
     // Las especies de octava de Cleónides en la escala de Mi a Mi de los otros dos géneros, cada una desde su nota:
@@ -361,6 +392,7 @@ extension FichaDeTradicion {
             .init(.harmonia, TipoDeEscala.harmoniaiCromaticas),
             .init(.harmonia, TipoDeEscala.harmoniaiEnarmonicas),
             .init(.harmonia, TipoDeEscala.harmoniaiDeAristides),
+            .init(.tetracordo, TipoDeEscala.coloresDeAristoxeno),
         ],
         microtonales: [
             // El tetracordo enarmónico de Aristóxeno, en cuartos de tono: Mi Fa𝄳 Fa La (la parhýpate, un cuarto de tono
@@ -383,6 +415,10 @@ extension FichaDeTradicion {
             TipoDeEscalaMicrotonal(.tetracordoEnarmonicoDeDidimo, .razones, pasos: [0, 55, 112, 498]),
             TipoDeEscalaMicrotonal(.tetracordoCromaticoDeEratostenes, .razones, pasos: [0, 89, 182, 498]),
             TipoDeEscalaMicrotonal(.tetracordoEnarmonicoDeEratostenes, .razones, pasos: [0, 44, 89, 498]),
+            // Los colores de Aristóxeno, en doceavos de tono de 16⅔ cents (la cuarta, de 500).
+            TipoDeEscalaMicrotonal(.tetracordoCromaticoBlandoDeAristoxeno, .razones, pasos: [0, 67, 133, 500]),
+            TipoDeEscalaMicrotonal(.tetracordoCromaticoHemiolico, .razones, pasos: [0, 75, 150, 500]),
+            TipoDeEscalaMicrotonal(.tetracordoDiatonicoBlandoDeAristoxeno, .razones, pasos: [0, 100, 250, 500]),
             // Las harmoniai enarmónicas y las de Arístides, en cuartos de tono.
             TipoDeEscalaMicrotonal(.harmoniaMixolidiaEnarmonica, .cuartosDeTono, pasos: [0, 1, 2, 10, 11, 12, 20]),
             TipoDeEscalaMicrotonal(.harmoniaLidiaEnarmonica, .cuartosDeTono, pasos: [0, 1, 9, 10, 11, 19, 23]),

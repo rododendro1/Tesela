@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+### Los colores de Aristóxeno y los adwār de Ṣafī al-Dīn
+
+- Grecia antigua: los colores de Aristóxeno que faltaban (`TipoDeEscala.coloresDeAristoxeno`), en doceavos de
+  tono: el cromático blando (4 + 4 + 22), el hemiólico (4½ + 4½ + 21) y el diatónico blando (6 + 9 + 15), con sus
+  cents. El tetracordo cromático y el diatónico se encuentran también como «cromático tónico» y «diatónico tenso de
+  Aristóxeno».
+- Mundo árabe: cuatro de los doce shudūd de Ṣafī al-Dīn al-Urmawī (`TipoDeEscala.adwar`: shadd ʿUshshāq, Nawā,
+  Abū Salīk y Rāst), en su sistema de diecisiete notas pitagóricas, con sus cents.
+
 ### El canto georgiano
 
 - Folklore europeo: la escala del canto polifónico de Georgia (`TipoDeEscala.georgiana`, Do Re Mi♭ Fa Sol La Si♭

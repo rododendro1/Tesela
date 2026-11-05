@@ -32,13 +32,14 @@ extension TipoDeEscala {
     /// (laras y pathet), klezmer, rāgas indostánicos, dastgāh, coreanas, andinas, de la Grecia antigua, makamlar
     /// turcos, mugam azerbaiyanos, echoi bizantinos, afinaciones babilónicas, los ajnas árabes y los çeşni turcos,
     /// afinaciones de África y del sudeste asiático, los modos gregorianos, más géneros y harmoniai griegos y los
-    /// hexacordos de Guido, las escalas populares de Europa, los modos de Glareano, las de Vietnam y los modos
-    /// nordestinos de Brasil. El orden de las listas decide qué nombre gana en la búsqueda: las nuevas van al final.
+    /// hexacordos de Guido, las escalas populares de Europa, los modos de Glareano, las de Vietnam, los modos
+    /// nordestinos de Brasil, los colores de Aristóxeno y los adwār de Ṣafī al-Dīn. El orden de las listas decide
+    /// qué nombre gana en la búsqueda: las nuevas van al final.
     public static let tradicionales: [TipoDeEscala] = [
         thaats, dromoi, melakartas, janyas, gramas, murchanas, chinas, japonesas, etiopes, maqamat, indonesias, pathets,
         klezmer, ragasIndostanicos, dastgah, coreanas, andinas, griegasAntiguas, makamlar, mugamlar, echoi,
         mesopotamicas, ajnas, cesniler, africanas, sudesteAsiaticas, modosGregorianos, generosDeDidimoYEratostenes,
         harmoniaiCromaticas, harmoniaiEnarmonicas, harmoniaiDeAristides, hexacordos, europeas,
-        modosDeGlareano, vietnamitas, brasilenas,
+        modosDeGlareano, vietnamitas, brasilenas, coloresDeAristoxeno, adwar,
     ].flatMap { $0 }
 }
