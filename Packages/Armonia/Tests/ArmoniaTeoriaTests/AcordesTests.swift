@@ -332,6 +332,9 @@ import Testing
         #expect(
             Acorde("Do°7").ortografiar(midi: [57, 60, 63, 66]).map(\.description) == ["Si𝄫3", "Do4", "Mi♭4", "Sol♭4"])
         #expect(Acorde("Do").ortografiar(midi: [61]).map(\.description) == ["Do♯4"])
+        // Las notas de fuera, como en la ventana de quintas del acorde.
+        #expect(Acorde("Do7").ortografiar(midi: [61, 63, 68]).map(\.description) == ["Re♭4", "Mi♭4", "La♭4"])
+        #expect(Acorde("Mi").ortografiar(midi: [65, 70]).map(\.description) == ["Fa4", "La♯4"])
         #expect(Altura(Nota("Sol#"), midi: 68)?.description == "Sol♯4")
         #expect(Altura(.la, midi: 68) == nil)
     }
@@ -349,5 +352,13 @@ import Testing
                 Acorde.identificar(clasesDeAltura: alturas).first == Acorde.identificar(nombres).first,
                 Comment(rawValue: nombres.map(\.nombre).joined(separator: " ")))
         }
+    }
+
+    @Test func ventanaDeQuintasDelAcorde() {
+        #expect(Acorde("Do").ventanaDeQuintas?.description == "La♭–Do♯")
+        #expect(Acorde("Do7").ventanaDeQuintas?.description == "Re♭–Fa♯")
+        #expect(Acorde("Lam").ventanaDeQuintas?.description == "Mi♭–Sol♯")
+        // El bajo cuenta: Do/Fa♯ no puede escribir el bajo como Sol♭.
+        #expect(Acorde("Do/Fa#").ventanaDeQuintas.map { $0.contiene("Fa♯") } == true)
     }
 }

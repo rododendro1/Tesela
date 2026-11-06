@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 
 @testable import ArmoniaNucleo
@@ -78,5 +79,43 @@ import Testing
                 #expect(VentanaDeQuintas(inicio: inicio).contiene(altura.nota))
             }
         }
+    }
+
+    @Test func laQueContieneUnasNotas() {
+        func ventana(_ notas: [Nota]) -> String? { VentanaDeQuintas(conteniendo: notas)?.description }
+        #expect(ventana(["Do", "Mi", "Sol"]) == "La♭–Do♯")
+        #expect(ventana(["Do", "Mi", "Sol", "Si♭"]) == "Re♭–Fa♯")
+        #expect(ventana(["Do", "Mi♭"]) == "Sol♭–Si")
+        #expect(ventana(["Fa♯", "La♯", "Do♯"]) == "Fa–La♯")
+        // Si las naturales no caben, se queda fuera la menos posible.
+        #expect(ventana(["Do♯", "Mi♯", "Sol♯"]) == "Do–Mi♯")
+        #expect(ventana(["Do♭", "Mi♭", "Sol♭"]) == "Do♭–Mi")
+        #expect(ventana([]) == nil)
+        #expect(ventana(["Re♭", "Do♯"]) == nil)
+        // Una nota sola: la centrada en ella, si tiene las naturales.
+        for nota in ["Fa", "Do", "Re", "La", "Mi"] as [Nota] {
+            #expect(VentanaDeQuintas(conteniendo: [nota]) == .centrada(en: nota))
+        }
+        // Las notas repetidas no cuentan dos veces.
+        #expect(ventana(["Do", "Do", "Do", "Mi♭"]) == ventana(["Do", "Mi♭"]))
+        // Siempre las contiene.
+        let notas: [Nota] = ["Sol♯", "Si", "Re", "Fa"]
+        #expect(VentanaDeQuintas(conteniendo: notas).map { v in notas.allSatisfy(v.contiene) } == true)
+    }
+
+    @Test func reescribeAlturas() {
+        #expect(VentanaDeQuintas.sostenidos.reescrita(Altura("Si♭4")).description == "La♯4")
+        #expect(VentanaDeQuintas.masSimple.reescrita(Altura("Si♯3")).description == "Do4")
+        #expect(VentanaDeQuintas.bemoles.reescrita(Altura("Do4")) == Altura("Do4"))
+        for midi in 40...80 {
+            let altura = Altura(midi: midi)
+            #expect(VentanaDeQuintas.bemoles.reescrita(altura).midi == midi)
+        }
+    }
+
+    @Test func seGuardaEnJSON() throws {
+        let ventana = VentanaDeQuintas.centrada(en: "Re")
+        let datos = try JSONEncoder().encode(ventana)
+        #expect(try JSONDecoder().decode(VentanaDeQuintas.self, from: datos) == ventana)
     }
 }

@@ -458,7 +458,8 @@ import Testing
                 .cromaticaConCincoBemoles, .cromaticaConCuatroBemoles, .cromaticaConTresBemoles,
                 .cromaticaConDosBemoles, .cromaticaConUnBemol, .cromaticaConCincoSostenidos,
             ])
-        #expect(TipoDeEscala.cromatica(desdeLaQuinta: -5) == .cromatica)
+        #expect(TipoDeEscala.cromatica(ventana: .masSimple) == .cromatica)
+        #expect(TipoDeEscala.cromatica(ventana: .bemoles) == .cromaticaConCincoBemoles)
         #expect(TipoDeEscala.cromaticaConCuatroBemoles.nombre == "cromática")
         #expect(notas(.cromaticaConCincoBemoles) == "Do Re♭ Re Mi♭ Mi Fa Sol♭ Sol La♭ La Si♭ Si")
         #expect(notas(.cromaticaConDosBemoles) == "Do Do♯ Re Mi♭ Mi Fa Fa♯ Sol Sol♯ La Si♭ Si")

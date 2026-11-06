@@ -92,11 +92,13 @@ línea de quintas: Sol♭ → Fa♯, Re♭ → Do♯, La♭ → Sol♯, Mi♭ �
 Se nombran por sus bemoles, porque los sostenidos son siempre los que faltan hasta cinco. Se leen
 por el nombre, en cada idioma, o por la ventana («cromática −3…8», «cromatica -3..8»). Como se
 cuentan desde la tónica, en Re la primera empieza Re Mi♭ y la última, Re Re♯. Con una de ellas,
-cada clase de altura se escribe como dice su ventana:
+cada clase de altura se escribe como dice su ventana. `cromatica(ventana:)` da la de una
+`VentanaDeQuintas` leída desde Do: `.bemoles` es la de cinco bemoles; `.masSimple`, `cromatica`, y
+`.sostenidos`, la de cinco sostenidos:
 
 ```swift
 TipoDeEscala.cromaticasPorQuintas.count                     // 6
-TipoDeEscala.cromatica(desdeLaQuinta: -5) == TipoDeEscala.cromatica   // true
+TipoDeEscala.cromatica(ventana: .masSimple) == TipoDeEscala.cromatica   // true
 Escala(.re, .cromaticaConCincoSostenidos).notas             // Re Re♯ Mi Mi♯ Fa♯ Sol Sol♯ La La♯ Si Si♯ Do♯
 Escala("Do cromática con dos bemoles").notas                // Do Do♯ Re Mi♭ Mi Fa Fa♯ Sol Sol♯ La Si♭ Si
 Escala("Do cromatica -6..5").tipo.nombre                    // "cromática con cinco bemoles"

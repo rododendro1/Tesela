@@ -16,16 +16,9 @@ extension Escala {
     ///
     /// `nil` si las notas no caben en doce quintas: si la escala tiene, por ejemplo, Re♭ y Do♯.
     public var ventanaDeQuintas: VentanaDeQuintas? {
-        let propias = notasEnAmbasDirecciones.map(\.pasosDeQuinta)
-        guard let menor = propias.min(), let mayor = propias.max(), mayor - menor <= 11 else { return nil }
-        let centro = centroDeQuintas
-        let dominante = Double(tonica.pasosDeQuinta + 1)
-        func coste(_ inicio: Int) -> [Double] {
-            let medio = Double(inicio) + 5.5
-            return [abs(medio - centro), abs(medio - dominante), Double(-inicio)]
-        }
-        let inicio = ((mayor - 11)...menor).min { coste($0).lexicographicallyPrecedes(coste($1)) } ?? menor
-        return VentanaDeQuintas(inicio: inicio)
+        VentanaDeQuintas(
+            conteniendo: Set(notasEnAmbasDirecciones.map(\.pasosDeQuinta)), centro: centroDeQuintas,
+            desempate: Double(tonica.pasosDeQuinta + 1), conLasNaturales: false)
     }
 }
 

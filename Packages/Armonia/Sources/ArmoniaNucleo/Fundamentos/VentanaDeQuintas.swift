@@ -11,7 +11,7 @@
 ///     Altura(midi: 66, ventana: .centrada(en: "Fa"))             // Sol♭4
 ///
 /// `Altura(midi:)` usa ``sostenidos``.
-public struct VentanaDeQuintas: Hashable, Sendable {
+public struct VentanaDeQuintas: Hashable, Sendable, Codable {
     /// La posición en la línea de quintas de la primera nota (la más bemol): −1 es Fa.
     public let inicio: Int
 
@@ -23,6 +23,38 @@ public struct VentanaDeQuintas: Hashable, Sendable {
     /// La ventana que empieza en esa nota: `VentanaDeQuintas(desde: "Re♭")` va de Re♭ a Fa♯.
     public init(desde primera: Nota) {
         self.init(inicio: primera.pasosDeQuinta)
+    }
+
+    /// Las doce quintas seguidas que contienen esas notas, con su escritura. Si puede ser, también las siete naturales
+    /// (las ventanas de Sol♭–Si a Fa–La♯), para que una nota natural no cambie de nombre, y si no, las más que se
+    /// pueda; entre ellas, la más centrada en las notas (su posición media en la línea de quintas) y, si hay dos igual
+    /// de centradas, la más sostenida. `nil` si no hay notas o no caben en doce quintas, como Re♭ y Do♯.
+    ///
+    ///     VentanaDeQuintas(conteniendo: ["Do", "Mi", "Sol"])         // La♭–Do♯
+    ///     VentanaDeQuintas(conteniendo: ["Do", "Mi", "Sol", "Si♭"])  // Re♭–Fa♯
+    ///     VentanaDeQuintas(conteniendo: ["Do", "Mi♭"])               // Sol♭–Si
+    ///     VentanaDeQuintas(conteniendo: ["Re"])                      // Mi♭–Sol♯, como .centrada(en: "Re")
+    ///     VentanaDeQuintas(conteniendo: ["Fa♯", "La♯", "Do♯"])       // Fa–La♯
+    ///     VentanaDeQuintas(conteniendo: ["Do♯", "Mi♯", "Sol♯"])      // Do–Mi♯: sin Fa, que no cabe
+    public init?(conteniendo notas: some Sequence<Nota>) {
+        let quintas = Set(notas.map(\.pasosDeQuinta))
+        guard !quintas.isEmpty else { return nil }
+        let centro = Double(quintas.reduce(0, +)) / Double(quintas.count)
+        self.init(conteniendo: quintas, centro: centro, desempate: nil, conLasNaturales: true)
+    }
+
+    /// La de ``init(conteniendo:)`` con otro centro (el de una escala) y, antes de la más sostenida, otro desempate:
+    /// la más cercana a esa posición. Sin `conLasNaturales`, no se miran las naturales.
+    package init?(conteniendo quintas: Set<Int>, centro: Double, desempate: Double?, conLasNaturales: Bool) {
+        guard let menor = quintas.min(), let mayor = quintas.max(), mayor - menor <= 11 else { return nil }
+        func coste(_ inicio: Int) -> [Double] {
+            // Cuántas naturales se quedan fuera: las ventanas de −6 a −1 tienen de Fa (−1) a Si (5).
+            let fuera = conLasNaturales ? max(0, -6 - inicio, inicio + 1) : 0
+            let medio = Double(inicio) + 5.5
+            return [Double(fuera), abs(medio - centro), desempate.map { abs(medio - $0) } ?? 0, Double(-inicio)]
+        }
+        let inicio = ((mayor - 11)...menor).min { coste($0).lexicographicallyPrecedes(coste($1)) } ?? menor
+        self.init(inicio: inicio)
     }
 
     /// Con sostenidos, de Fa a La♯: la escritura de `Altura(midi:)`.
@@ -74,6 +106,12 @@ public struct VentanaDeQuintas: Hashable, Sendable {
     /// La misma nota escrita como la escribe la ventana: Si♭ → La♯ en ``sostenidos``.
     public func reescrita(_ nota: Nota) -> Nota {
         self.nota(claseDeAltura: nota.claseDeAltura)
+    }
+
+    /// La misma altura, que suena igual, escrita como la escribe la ventana: Si♭4 → La♯4 en ``sostenidos``; Si♯3 → Do4
+    /// en ``masSimple``.
+    public func reescrita(_ altura: Altura) -> Altura {
+        Altura(midi: altura.midi, ventana: self)
     }
 }
 
