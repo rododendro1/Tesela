@@ -97,7 +97,8 @@ import Testing
         #expect(try leyenda(#require(ElementoXML.leer(TablaArmonica(Acorde("Do")).svg(leyenda: false)))).isEmpty)
         // En catalán, gallego y euskera, el título y la leyenda también.
         let euskera = try #require(
-            ElementoXML.leer(TablaArmonica(Escala(.re, .dorico)).svg(opciones: .init(notacion: .conPalabras(.euskera)))))
+            ElementoXML.leer(TablaArmonica(Escala(.re, .dorico)).svg(opciones: .init(notacion: .conPalabras(.euskera))))
+        )
         #expect(euskera.todos("title").first?.texto == "re doriarra")
         #expect(leyenda(euskera)[1] == "tonika")
         let catalan = try #require(

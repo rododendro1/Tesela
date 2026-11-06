@@ -92,7 +92,8 @@ import Testing
             Tonalidad(.do).analizar(["Do", "Fa", "Sol7", "Do"]).nombre(en: .conPalabras(.euskera))
                 == "I–IV–V7–I do maiorrean")
         #expect(
-            Tonalidad(.la, .menor).analizar(["Lam", "Mi7", "Lam"]).nombre(en: .conPalabras(.catalan)) == "i–V7–i en la menor")
+            Tonalidad(.la, .menor).analizar(["Lam", "Mi7", "Lam"]).nombre(en: .conPalabras(.catalan))
+                == "i–V7–i en la menor")
         // En alemán.
         #expect(Intervalo.terceraMayor.nombre(en: .conPalabras(.aleman)) == "große Terz")
         // Los catálogos también.
@@ -123,7 +124,8 @@ import Testing
         #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.aleman)) == "Dominantseptakkord auf G, erste Umkehrung")
         #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.occitano)) == "sòl setena de dominanta, primièra inversion")
         #expect(
-            Acorde("Sol7/Si").nombre(en: .conPalabras(.griego)) == "συγχορδία έβδομης δεσπόζουσας στο σολ, πρώτη αναστροφή")
+            Acorde("Sol7/Si").nombre(en: .conPalabras(.griego))
+                == "συγχορδία έβδομης δεσπόζουσας στο σολ, πρώτη αναστροφή")
         #expect(Acorde("Do/Re").nombre(en: .conPalabras(.aleman)) == "Durdreiklang auf C, mit D im Bass")
         // Todos los tipos conocidos tienen nombre propio en cada idioma.
         for (_, nombre) in TipoDeAcorde.nombresConocidos {
@@ -174,7 +176,8 @@ import Testing
             #expect(nombre.nombre(en: .conPalabras(.portugues)) == portugues)
             // Se lee sin indicar la notación, con o sin tildes.
             #expect((try? Nota(leyendo: portugues)) == nombre, Comment(rawValue: portugues))
-            #expect(try (Nota(leyendo: portugues, en: .conPalabras(.portugues))) == nombre, Comment(rawValue: portugues))
+            #expect(
+                try (Nota(leyendo: portugues, en: .conPalabras(.portugues))) == nombre, Comment(rawValue: portugues))
         }
         #expect((try? Nota(leyendo: "fa sustenido")) == Nota("Fa#"))
         #expect(Nota("Reb").nombreCompacto(en: .conPalabras(.portugues)) == "Ré♭")

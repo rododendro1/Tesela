@@ -152,7 +152,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         variantes: ["هزام"],
-        categoria: .maqam, llevaLaCategoria: true, afinaciones: [.init(.cuartosDeTono, pasos: [-1, 2, 6, 8, 14, 16, 20])])
+        categoria: .maqam, llevaLaCategoria: true,
+        afinaciones: [.init(.cuartosDeTono, pasos: [-1, 2, 6, 8, 14, 16, 20])])
     /// عراق (Si𝄳 Do Re Mi𝄳 Fa Sol La: un jins Sīkāh y un jins Bayātī en Re), aproximado sobre Si: el locrio.
     public static let iraq = TipoDeEscala(
         nombre: "ʿIrāq",
@@ -321,7 +322,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["Nawā de Ṣafī al-Dīn"],
-        categoria: .maqam, llevaLaCategoria: true, afinaciones: [.init(.razones, pasos: [0, 204, 294, 498, 702, 792, 996])])
+        categoria: .maqam, llevaLaCategoria: true,
+        afinaciones: [.init(.razones, pasos: [0, 204, 294, 498, 702, 792, 996])])
     /// شد أبو سليك (Do Re♭ Mi♭ Fa Sol♭ La♭ Si♭, pitagórico): limma, tono, tono, limma, tono, tono y tono.
     public static let shaddAbuSalik = TipoDeEscala(
         nombre: "shadd Abū Salīk",
@@ -330,7 +332,8 @@ extension TipoDeEscala {
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
         alias: ["Abū Salīk de Ṣafī al-Dīn"], variantes: ["shadd Būsalīk"],
-        categoria: .maqam, llevaLaCategoria: true, afinaciones: [.init(.razones, pasos: [0, 90, 294, 498, 588, 792, 996])])
+        categoria: .maqam, llevaLaCategoria: true,
+        afinaciones: [.init(.razones, pasos: [0, 90, 294, 498, 588, 792, 996])])
     /// شد راست (Do Re Mi Fa Sol La Si♭, con el Mi y el La neutros): tono, dos limmas, limma y coma, tono, dos limmas,
     /// limma y coma, y tono.
     public static let shaddRast = TipoDeEscala(
@@ -340,7 +343,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["Rāst de Ṣafī al-Dīn"],
-        categoria: .maqam, llevaLaCategoria: true, afinaciones: [.init(.razones, pasos: [0, 204, 384, 498, 702, 882, 996])])
+        categoria: .maqam, llevaLaCategoria: true,
+        afinaciones: [.init(.razones, pasos: [0, 204, 384, 498, 702, 882, 996])])
 
     /// Los cuatro shudūd de Ṣafī al-Dīn que están: ʿUshshāq, Nawā, Abū Salīk y Rāst.
     public static let adwar: [TipoDeEscala] = [.shaddUshshaq, .shaddNawa, .shaddAbuSalik, .shaddRast]

@@ -156,13 +156,16 @@ extension Escala {
         let indice = Dictionary(tipos.enumerated().map { ($0.element.nombre, $0.offset) }, uniquingKeysWith: min)
         let propias = vecinas(tipos: tipos).filter { $0.escala.tonica.claseDeAltura == tonica.claseDeAltura }
             .sorted { (indice[$0.escala.tipo.nombre] ?? .max) < (indice[$1.escala.tipo.nombre] ?? .max) }
-        let sube = { (vecina: EscalaVecina) in modulo(vecina.hasta.claseDeAltura - vecina.desde.claseDeAltura, 12) == 1 }
+        let sube = { (vecina: EscalaVecina) in modulo(vecina.hasta.claseDeAltura - vecina.desde.claseDeAltura, 12) == 1
+        }
         return (propias.filter { !sube($0) }, propias.filter(sube))
     }
 
     /// Desde esta escala, la más habitual de las vecinas más oscuras, y de esa la suya, hasta que no queda ninguna
     /// nueva; y lo mismo hacia las más brillantes. Como mucho `maximo` peldaños a cada lado.
-    public func escaleraDeBrillo(tipos: [TipoDeEscala] = TipoDeEscala.occidentales, maximo: Int = 12) -> EscaleraDeBrillo {
+    public func escaleraDeBrillo(tipos: [TipoDeEscala] = TipoDeEscala.occidentales, maximo: Int = 12)
+        -> EscaleraDeBrillo
+    {
         func clases(_ escala: Escala) -> Set<Int> { Set(escala.notas.map(\.claseDeAltura)) }
         var vistas: Set<Set<Int>> = [clases(self)]
         // Hacia abajo: cada peldaño, con la bajada que lleva a él.

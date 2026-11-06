@@ -167,7 +167,8 @@ import Testing
             for notacion in [Notacion.conPalabras(.frances), .conPalabras(.italiano)] {
                 let escala = Escala(Nota("Fa#"), tipo)
                 #expect(
-                    (try? Escala(leyendo: escala.nombre(en: notacion))) == escala, Comment(rawValue: escala.nombre(en: notacion))
+                    (try? Escala(leyendo: escala.nombre(en: notacion))) == escala,
+                    Comment(rawValue: escala.nombre(en: notacion))
                 )
             }
         }
@@ -198,7 +199,8 @@ import Testing
         #expect(Intervalo.terceraMayor.nombre(en: .conPalabras(.aleman)) == "große Terz")
         // Todos los nombres de nota (hasta cuatro alteraciones) vuelven a leerse igual.
         for notacion in [
-            Notacion.conPalabras(.aleman), .conPalabras(.frances), .conPalabras(.italiano), .conPalabras(.catalan), .conPalabras(.gallego),
+            Notacion.conPalabras(.aleman), .conPalabras(.frances), .conPalabras(.italiano), .conPalabras(.catalan),
+            .conPalabras(.gallego),
             .conPalabras(.euskera), .conPalabras(.portugues),
         ] {
             for quintas in -29...33 {

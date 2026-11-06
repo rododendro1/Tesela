@@ -147,7 +147,8 @@ import Testing
                 for sentido in [SentidoDelIntervalo.ascendente, .descendente] {
                     let intervalo = Intervalo(pasosDeQuinta: q, pasosDeOctava: o, sentido: sentido)
                     #expect(
-                        (try? Intervalo(leyendo: intervalo.abreviatura)) == intervalo, Comment(rawValue: intervalo.abreviatura))
+                        (try? Intervalo(leyendo: intervalo.abreviatura)) == intervalo,
+                        Comment(rawValue: intervalo.abreviatura))
                     #expect(
                         (try? Intervalo(leyendo: intervalo.abreviatura(en: .inglesASCII))) == intervalo,
                         Comment(rawValue: intervalo.abreviatura(en: .inglesASCII)))

@@ -126,9 +126,12 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
         for n in -4...4 where n != 0 {
             let a = Alteracion(n)
             for notacion in [
-                Notacion.espanolCompacto, .inglesASCII, .conPalabras(.aleman), .conPalabras(.frances), .conPalabras(.italiano),
-                .conPalabras(.catalan), .conPalabras(.gallego), .conPalabras(.euskera), .conPalabras(.portugues), .conPalabras(.occitano),
-                .conPalabras(.ruso), .conPalabras(.griego), .conPalabras(.aragones), .conPalabras(.asturiano), .conPalabras(.hungaro),
+                Notacion.espanolCompacto, .inglesASCII, .conPalabras(.aleman), .conPalabras(.frances),
+                .conPalabras(.italiano),
+                .conPalabras(.catalan), .conPalabras(.gallego), .conPalabras(.euskera), .conPalabras(.portugues),
+                .conPalabras(.occitano),
+                .conPalabras(.ruso), .conPalabras(.griego), .conPalabras(.aragones), .conPalabras(.asturiano),
+                .conPalabras(.hungaro),
             ] {
                 tabla[a.nombre(en: notacion).claveDeBusqueda] = a
             }
@@ -279,7 +282,9 @@ public struct Nota: Hashable, Sendable {
     /// Nombres de cada notación (hasta cuatro alteraciones) → nombre de nota.
     package static let porNombre: [Notacion: [String: Nota]] = {
         var tablas: [Notacion: [String: Nota]] = [:]
-        let notaciones = [Notacion.conPalabras(.aleman), .conPalabras(.hungaro), .conPalabras(.frances), .conPalabras(.italiano)]
+        let notaciones = [
+            Notacion.conPalabras(.aleman), .conPalabras(.hungaro), .conPalabras(.frances), .conPalabras(.italiano),
+        ]
         for notacion in notaciones + Notacion.deLecturaGenerica + Notacion.conPalabras {
             var tabla: [String: Nota] = [:]
             for quintas in -29...33 {
@@ -350,7 +355,8 @@ extension Notacion {
     /// porque sus nombres no se confunden con los españoles ni con los ingleses.
     package static let deLecturaGenerica: [Notacion] = [
         .conPalabras(.catalan), .conPalabras(.gallego), .conPalabras(.euskera), .conPalabras(.portugues),
-        .conPalabras(.occitano), .conPalabras(.ruso), .conPalabras(.griego), .conPalabras(.aragones), .conPalabras(.asturiano),
+        .conPalabras(.occitano), .conPalabras(.ruso), .conPalabras(.griego), .conPalabras(.aragones),
+        .conPalabras(.asturiano),
     ]
 
     /// El español y el inglés con las alteraciones en palabras («Fa sostenido», «B flat»), que también se leen

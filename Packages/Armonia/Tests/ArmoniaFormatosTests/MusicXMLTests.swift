@@ -358,7 +358,8 @@ import Testing
             ("Lab(#6,omit5)", "Italian"), ("Lab(#6,#11,omit5)", "French"), ("Lab(#6)", "German"),
         ] {
             let armonia = try #require(
-                ElementoXML.leer(EscritorMusicXML.armonia(try! Acorde(leyendo: cifrado), .espanolCompacto, pentagrama: nil)))
+                ElementoXML.leer(
+                    EscritorMusicXML.armonia(try! Acorde(leyendo: cifrado), .espanolCompacto, pentagrama: nil)))
             #expect(armonia["kind"]?.texto == especie)
             #expect(armonia.todos("degree").isEmpty, Comment(rawValue: cifrado))
         }

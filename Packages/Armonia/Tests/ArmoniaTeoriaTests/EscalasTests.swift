@@ -511,7 +511,8 @@ import Testing
                 let notacion = Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false))
                 let escala = Escala(Nota("Fa#"), tipo)
                 #expect(
-                    (try? Escala(leyendo: escala.nombre(en: notacion))) == escala, "\(idioma): \(escala.nombre(en: notacion))")
+                    (try? Escala(leyendo: escala.nombre(en: notacion))) == escala,
+                    "\(idioma): \(escala.nombre(en: notacion))")
             }
         }
         // Las seis tienen nombres distintos en cada idioma.

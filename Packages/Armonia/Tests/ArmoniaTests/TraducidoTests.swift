@@ -26,7 +26,8 @@ import Testing
         #expect(fa.en(.inglesASCII) == "F#")
         #expect(fa.en(.conPalabras(.aleman)) == "Fis")
         #expect(
-            Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) }).en(.conPalabras(.aleman)) == "erste Umkehrung")
+            Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) }).en(.conPalabras(.aleman))
+                == "erste Umkehrung")
     }
 
     /// Las sílabas y la forma de pegar la alteración son datos, no `switch` repartidos.
@@ -182,12 +183,14 @@ import Testing
         // Las tipografías de cada escritura.
         #expect(
             EscrituraDeNotas.allCases.filter(\.usaASCII) == [
-                .espanolASCII, .inglesASCII, .conPalabras(.aleman), .compacta(.aleman), .conPalabras(.hungaro), .compacta(.hungaro),
+                .espanolASCII, .inglesASCII, .conPalabras(.aleman), .compacta(.aleman), .conPalabras(.hungaro),
+                .compacta(.hungaro),
             ])
         #expect(
             EscrituraDeNotas.allCases.filter(\.esCompacta) == [
                 .espanolCompacto, .inglesCompacto, .compacta(.catalan), .compacta(.gallego), .compacta(.asturiano),
-                .compacta(.aragones), .compacta(.euskera), .compacta(.portugues), .compacta(.frances), .compacta(.occitano),
+                .compacta(.aragones), .compacta(.euskera), .compacta(.portugues), .compacta(.frances),
+                .compacta(.occitano),
                 .compacta(.italiano), .compacta(.aleman), .compacta(.griego), .compacta(.ruso), .compacta(.hungaro),
             ])
         for escritura in EscrituraDeNotas.allCases {
@@ -205,11 +208,13 @@ import Testing
             #expect([0, 15].contains(TextosDeNucleo.en(idioma: idioma, \.ordinales).count), "\(idioma)")
         }
         #expect(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .conPalabras(.frances)) == "unisson augmenté")
-        #expect(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .conPalabras(.italiano)) == "unisono aumentato")
+        #expect(
+            Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .conPalabras(.italiano)) == "unisono aumentato")
         #expect(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .conPalabras(.occitano)) == "unisson aumentat")
         #expect((-Intervalo.terceraMayor).nombre(en: .conPalabras(.aragones)) == "3ª mayor descendent")
         #expect((-Intervalo.terceraMayor).nombre(en: .conPalabras(.euskera)) == "beheranzko 3. handia")
-        #expect(Intervalo(numero: 4, calidad: .aumentada(3))!.nombre(en: .conPalabras(.gallego)) == "4ª tripla aumentada")
+        #expect(
+            Intervalo(numero: 4, calidad: .aumentada(3))!.nombre(en: .conPalabras(.gallego)) == "4ª tripla aumentada")
     }
 
     /// Los textos que llevan un número o un nombre dentro, en cada idioma, también con los casos que

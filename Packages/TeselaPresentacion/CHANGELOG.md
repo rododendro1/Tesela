@@ -1,5 +1,12 @@
 # Cambios
 
+## Sin publicar
+
+- **La notación, con `en:`.** Las funciones que recibían la notación como `notacion:` la reciben como `en notacion:`,
+  como en el motor: `modosParalelos(de:en:)`, `bajoCaminante(_:en:)`, `teclados(de:en:)`… Se quedan con `notacion:`
+  las que ya tienen otro `en:`, como `PresentacionDeAnalisis.comparar(_:con:en:notacion:)`. **Cambio incompatible**,
+  sin nombres obsoletos.
+
 ## 0.3.6 (2026-11-06)
 
 - **La escala elegida en la pestaña de escalas.** `EleccionDeEscala`: la tónica y el tipo del catálogo, por su índice,

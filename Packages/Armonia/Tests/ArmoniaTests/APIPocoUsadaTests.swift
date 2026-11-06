@@ -56,7 +56,8 @@ import Testing
         }
         #expect(Intervalo(numero: 1, calidad: .aumentada(1))?.nombre(en: .conPalabras(.occitano)) == "unisson aumentat")
         #expect(
-            Intervalo(numero: 1, calidad: .aumentada(2))?.nombre(en: .conPalabras(.occitano)) == "unisson doblament aumentat")
+            Intervalo(numero: 1, calidad: .aumentada(2))?.nombre(en: .conPalabras(.occitano))
+                == "unisson doblament aumentat")
         #expect(Intervalo(numero: 1, calidad: .disminuida(1)) == nil)
         #expect(Intervalo.ordinalEnCifras(5, en: .griego) == "5η")
         #expect(Intervalo.ordinalEnCifras(5, en: .ruso) == "5-я")

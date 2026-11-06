@@ -23,7 +23,8 @@ import Testing
             #expect(try (Nota(leyendo: aleman, en: .compacta(.aleman))) == nombre, Comment(rawValue: aleman))
             #expect(try (Nota(leyendo: aleman, en: .conPalabras(.aleman))) == nombre, Comment(rawValue: aleman))
             let conPalabras = nombre.nombre(en: .conPalabras(.aleman))
-            #expect(try (Nota(leyendo: conPalabras, en: .conPalabras(.aleman))) == nombre, Comment(rawValue: conPalabras))
+            #expect(
+                try (Nota(leyendo: conPalabras, en: .conPalabras(.aleman))) == nombre, Comment(rawValue: conPalabras))
             #expect(try (Nota(leyendo: conPalabras, en: .compacta(.aleman))) == nombre, Comment(rawValue: conPalabras))
         }
         #expect(try (Nota(leyendo: "fis", en: .compacta(.aleman))) == Nota("Fa#"))
@@ -105,7 +106,8 @@ import Testing
         #expect(Intervalo("-m6").nombre(en: .conPalabras(.hungaro)) == "lefelé kis szext")
         #expect(Acorde("Sol7").nombre(en: .conPalabras(.hungaro)) == "G domináns szeptimakkord, alaphelyzet")
         #expect(
-            Tonalidad(.do).analizar(["Do", "Fa", "Sol7", "Do"]).nombre(en: .conPalabras(.hungaro)) == "I–IV–V7–I C-dúrban")
+            Tonalidad(.do).analizar(["Do", "Fa", "Sol7", "Do"]).nombre(en: .conPalabras(.hungaro))
+                == "I–IV–V7–I C-dúrban")
         // Con un número, el nombre va en singular.
         #expect(Idioma.hungaro.contar(5, "félhang") == "5 félhang")
         #expect(throws: (any Error).self) { try Nota(leyendo: "Xisz", en: .compacta(.hungaro)) }
@@ -186,7 +188,8 @@ import Testing
         #expect(TipoDeAcorde.dominanteSeptima.nombre(en: .conPalabras(.frances)) == "septième de dominante")
         #expect(TipoDeAcorde.dominanteSeptima.nombre(en: .conPalabras(.italiano)) == "settima di dominante")
         #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.portugues)) == "sol sétima de dominante, primeira inversão")
-        #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.frances)) == "sol septième de dominante, premier renversement")
+        #expect(
+            Acorde("Sol7/Si").nombre(en: .conPalabras(.frances)) == "sol septième de dominante, premier renversement")
         #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.italiano)) == "sol settima di dominante, primo rivolto")
         #expect(Acorde("Do/Re").nombre(en: .conPalabras(.italiano)) == "do maggiore, con il basso in re")
         for (_, nombre) in TipoDeAcorde.nombresConocidos {
@@ -239,7 +242,8 @@ import Testing
         for (espanol, occitano, ruso, griego) in casos {
             let nota = try! Nota(leyendo: espanol)
             for (notacion, nombre) in [
-                (Notacion.conPalabras(.occitano), occitano), (.conPalabras(.ruso), ruso), (.conPalabras(.griego), griego),
+                (Notacion.conPalabras(.occitano), occitano), (.conPalabras(.ruso), ruso),
+                (.conPalabras(.griego), griego),
             ] {
                 #expect(nota.nombre(en: notacion) == nombre)
                 #expect(try (Nota(leyendo: nombre, en: notacion)) == nota, Comment(rawValue: nombre))

@@ -44,13 +44,15 @@ extension TipoDeEscala {
         nombre: "Pélog pathet nem",
         intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaMenor],
         alias: ["Pélog nem"], variantes: ["Pelog patet nem"],
-        categoria: .pathet, llevaLaCategoria: true, subtradicion: .java, afinaciones: [.init(.razones, pasos: [0, 133, 533, 667, 800])])
+        categoria: .pathet, llevaLaCategoria: true, subtradicion: .java,
+        afinaciones: [.init(.razones, pasos: [0, 133, 533, 667, 800])])
     /// Pélog pathet barang (6 7 2 3 5 desde 6: La♭ La Re♭ Mi♭ Sol).
     public static let pelogBarang = TipoDeEscala(
         nombre: "Pélog pathet barang",
         intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .septimaMayor],
         alias: ["Pélog barang"], variantes: ["Pelog patet barang"],
-        categoria: .pathet, llevaLaCategoria: true, subtradicion: .java, afinaciones: [.init(.razones, pasos: [0, 133, 533, 667, 1067])])
+        categoria: .pathet, llevaLaCategoria: true, subtradicion: .java,
+        afinaciones: [.init(.razones, pasos: [0, 133, 533, 667, 1067])])
     /// Sléndro pathet nem (desde 2), con los intervalos de `slendro`.
     public static let slendroNem = TipoDeEscala(
         nombre: "Sléndro pathet nem",

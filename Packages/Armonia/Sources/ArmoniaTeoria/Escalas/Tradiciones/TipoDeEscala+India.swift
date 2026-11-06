@@ -487,7 +487,8 @@ extension TipoDeEscala {
         nombre: "madhyama-grāma",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["madhyamagrama", "मध्यमग्राम"],
-        categoria: .grama, llevaLaCategoria: true, afinaciones: [.init(.razones, pasos: [0, 182, 294, 498, 680, 884, 996])])
+        categoria: .grama, llevaLaCategoria: true,
+        afinaciones: [.init(.razones, pasos: [0, 182, 294, 498, 680, 884, 996])])
     /// La mūrchanā del ṣaḍja-grāma desde Sa: el dórico en doce notas.
     public static let uttaramandra = TipoDeEscala(
         nombre: "Uttaramandrā",

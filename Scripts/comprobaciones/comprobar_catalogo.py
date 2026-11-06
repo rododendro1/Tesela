@@ -2,15 +2,15 @@
 """Comprueba que el catálogo de escalas no se ha descuadrado.
 
 Una escala tipo `TipoDeEscala` se declara en un sitio, pero hay que apuntarla en otros dos a mano:
-la lista donde se busca (`todos` o la de su tradición, que `listasTradicionales` reúne) y, para todas,
+la lista donde se busca (`occidentales` o la de su tradición, que `listasTradicionales` reúne) y, para todas,
 su nombre en cada fichero de idioma de `Nombres/` (`NombresDeEscalas+Catalan.swift`…). Si se olvida
 una, el compilador no avisa: la escala existe pero `buscar(nombre:)` no la encuentra, o su nombre en
 un idioma cae al español.
 
 Comprueba:
-  1. toda `public static let x = TipoDeEscala(…)` está en `todos` o en una lista de tradición;
+  1. toda `public static let x = TipoDeEscala(…)` está en `occidentales` o en una lista de tradición;
   2. ninguna lista nombra dos veces la misma escala;
-  3. cada fichero de idioma de `Nombres/` da todas las escalas de `todos` (con `.init`) sin repetir ni nombrar
+  3. cada fichero de idioma de `Nombres/` da todas las escalas de `occidentales` (con `.init`) sin repetir ni nombrar
      escalas que no existen; de las de otras tradiciones solo lista las que traduce o a las que da alias
      (`.tradicional(.miembro, "…")`): una fila `.tradicional(.miembro)` sin más no cambia nada, porque sin fila la
      escala conserva su nombre original;
@@ -56,12 +56,12 @@ for f, texto in TEXTO.items():
             definidas[nombre] = f.name
 
 errores = []
-todos = re.findall(r"\.(\w+)", cuerpo_de_lista("todos") or "")
+todos = re.findall(r"\.(\w+)", cuerpo_de_lista("occidentales") or "")
 if not todos:
-    sys.exit("No encuentro la lista `todos`: ¿cambió el estilo del catálogo?")
+    sys.exit("No encuentro la lista `occidentales`: ¿cambió el estilo del catálogo?")
 
 nombradas = set(todos)
-for lista in sorted(listas - {"todos", "tradicionales"}):
+for lista in sorted(listas - {"occidentales", "tradicionales"}):
     elementos = re.findall(r"\.(\w+)", cuerpo_de_lista(lista) or "")
     nombradas |= set(elementos)
     for n, veces in collections.Counter(elementos).items():
@@ -69,11 +69,11 @@ for lista in sorted(listas - {"todos", "tradicionales"}):
             errores.append(f"`{lista}` nombra {n} {veces} veces")
 for n, veces in collections.Counter(todos).items():
     if veces > 1:
-        errores.append(f"`todos` nombra {n} {veces} veces")
+        errores.append(f"`occidentales` nombra {n} {veces} veces")
 
 for n, fichero in sorted(definidas.items()):
     if n not in nombradas:
-        errores.append(f"{n} ({fichero}) no está en `todos` ni en ninguna lista de tradición: no se podrá buscar")
+        errores.append(f"{n} ({fichero}) no está en `occidentales` ni en ninguna lista de tradición: no se podrá buscar")
 
 # Las listas de tradición, en `listasTradicionales` (`.init(.tradicion, lista)`).
 apuntadas = set()
@@ -153,7 +153,7 @@ for idioma in IDIOMAS_DE_NOMBRES:
         if n not in tipos:
             errores.append(f"{ruta.name}: falta {n} (sin nombre en ese idioma caería al español)")
     for n in sorted(set(tipos) - set(todos)):
-        errores.append(f"{ruta.name}: nombra {n}, que no está en `todos`")
+        errores.append(f"{ruta.name}: nombra {n}, que no está en `occidentales`")
     trad = re.findall(r'^\s*\.tradicional\(\.`?(\w+)`?', texto, re.M)
     for n, veces in collections.Counter(trad).items():
         if veces > 1:
@@ -193,7 +193,7 @@ for f, texto in TEXTO.items():
         for a in alias_redundantes(nombre[-1] if nombre else "", re.findall(CADENA, cuerpo)):
             errores.append(f"{f.name}: el alias «{a}» de «{nombre[-1] if nombre else '?'}» es solo una forma normalizada: se deduce solo")
 
-print(f"{len(definidas)} escalas declaradas, {len(todos)} en `todos`, {len(listas) - 2} listas de tradición")
+print(f"{len(definidas)} escalas declaradas, {len(todos)} en `occidentales`, {len(listas) - 2} listas de tradición")
 if errores:
     print(f"{len(errores)} problema(s):")
     for e in errores:

@@ -262,7 +262,8 @@ import Testing
             let motivo = error.motivo
             let espanol = error.explicacion
             for notacion in [
-                Notacion.conPalabras(.catalan), .conPalabras(.gallego), .conPalabras(.euskera), .conPalabras(.portugues), .conPalabras(.frances),
+                Notacion.conPalabras(.catalan), .conPalabras(.gallego), .conPalabras(.euskera),
+                .conPalabras(.portugues), .conPalabras(.frances),
                 .conPalabras(.italiano),
             ] {
                 let texto = error.explicacion(en: notacion)

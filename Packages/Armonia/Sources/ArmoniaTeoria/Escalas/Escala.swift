@@ -61,7 +61,9 @@ public struct Escala: Hashable, Sendable {
     /// última, en español o inglés con palabras («Fa sostenido dórico», «F sharp dorian»).
     private static func leerTonica(_ texto: String) -> (Nota, Notacion)? {
         let clave = texto.claveDeBusqueda
-        let otras = [Notacion.conPalabras(.frances), .conPalabras(.italiano), .conPalabras(.aleman), .conPalabras(.hungaro)]
+        let otras = [
+            Notacion.conPalabras(.frances), .conPalabras(.italiano), .conPalabras(.aleman), .conPalabras(.hungaro),
+        ]
         for notacion in Notacion.deLecturaGenerica + otras + Notacion.conPalabras {
             if let nombre = Nota.porNombre[notacion]?[clave] { return (nombre, notacion) }
         }
@@ -370,7 +372,9 @@ extension Escala {
     /// en caso de empate, el orden de `tipos` y la armadura más sencilla.
     ///
     ///     Escala.candidatos([.do, .mi, .sol, .si, "Fa#"]).first?.valor   // Do pentatónica lidia
-    public static func candidatos(_ notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [Candidato<Escala>] {
+    public static func candidatos(_ notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [Candidato<
+        Escala
+    >] {
         ordenar(contenedoras(notas, tipos: tipos)) { escala in
             escala.notasEnAmbasDirecciones.filter { !notas.contains($0) }.count
         }

@@ -87,7 +87,8 @@ import Testing
     ) {
         for texto in textos {
             #expect(
-                (try? T(leyendo: texto)) == nil, "«\(texto)» no debería leerse como \(T.self)", sourceLocation: sourceLocation)
+                (try? T(leyendo: texto)) == nil, "«\(texto)» no debería leerse como \(T.self)",
+                sourceLocation: sourceLocation)
             #expect(throws: (any Error).self, "«\(texto)»", sourceLocation: sourceLocation) { try T(leyendo: texto) }
         }
     }

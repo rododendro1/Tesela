@@ -243,7 +243,8 @@ for correspondencia in CorrespondenciaDeColores.allCases {
 
 titulo("Otras lenguas")
 for notacion in [
-    Notacion.compacta(.aleman), .conPalabras(.frances), .conPalabras(.italiano), .conPalabras(.catalan), .conPalabras(.gallego), .conPalabras(.euskera),
+    Notacion.compacta(.aleman), .conPalabras(.frances), .conPalabras(.italiano), .conPalabras(.catalan),
+    .conPalabras(.gallego), .conPalabras(.euskera),
     .conPalabras(.portugues),
 ] {
     let notas = ["Do#", "Mib", "Sib", "Si"].map { try! Nota(leyendo: $0).nombre(en: notacion) }

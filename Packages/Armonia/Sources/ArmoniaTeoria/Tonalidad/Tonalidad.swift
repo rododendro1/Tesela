@@ -198,7 +198,9 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
     /// maggiore") y las demás lenguas de `Notacion` ("фа-диез мажор", "λα ελάσσονα").
     package static func leerEnOtrasNotaciones(_ texto: String) -> Tonalidad? {
         let limpio = texto.trimmingEspacios()
-        let notaciones = [Notacion.conPalabras(.aleman), .conPalabras(.hungaro), .conPalabras(.frances), .conPalabras(.italiano)]
+        let notaciones = [
+            Notacion.conPalabras(.aleman), .conPalabras(.hungaro), .conPalabras(.frances), .conPalabras(.italiano),
+        ]
         for notacion in notaciones + Notacion.deLecturaGenerica {
             for modo in [Modo.mayor, .menor] {
                 let palabra = modo.nombre(en: notacion)
