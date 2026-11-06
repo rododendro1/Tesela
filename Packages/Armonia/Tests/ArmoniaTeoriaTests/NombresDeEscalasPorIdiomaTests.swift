@@ -76,8 +76,8 @@ import Testing
         for tipo in TipoDeEscala.todos where !tipo.alias.isEmpty {
             for idioma in romanicos {
                 let entrada = NombresDeEscalas.de(idioma).porTipo[tipo]
-                #expect(
-                    !((entrada?.alias ?? []) + (entrada?.variantes ?? [])).isEmpty, "\(idioma): \(tipo.nombre)")
+                let otros = (entrada?.alias ?? []) + (entrada?.variantes ?? [])
+                #expect(!otros.isEmpty, "\(idioma): \(tipo.nombre)")
             }
         }
     }
