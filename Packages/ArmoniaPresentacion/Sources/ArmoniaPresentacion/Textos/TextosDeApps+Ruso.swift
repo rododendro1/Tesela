@@ -218,6 +218,12 @@ extension TextosDeApps {
         modulacionPorDisminuida: "энгармонический уменьшённый септаккорд",
         modulacionDirecta: "прямая",
         conduccionDeVoces: "Голосоведение",
+        armadura: "Ключевые знаки",
+        sinAlteraciones: "без знаков",
+        relativa: "Параллельная",
+        homonima: "Одноимённая",
+        cadenciasTipicas: "Типичные каденции",
+        cambianAcordes: { "Меняются \($0) из \($1) аккордов" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Напряжения",
         notasAEvitar: "Избегать",
