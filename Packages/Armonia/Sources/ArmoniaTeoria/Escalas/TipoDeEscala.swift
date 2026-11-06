@@ -19,20 +19,24 @@ public struct TipoDeEscala: Sendable, Codable {
     /// Intervalos de la forma descendente, si es distinta de la ascendente (también ordenados
     /// de grave a agudo); `nil` si la escala baja con las mismas notas con que sube.
     public let intervalosDescendentes: [Intervalo]?
-    /// Otros nombres, escritos correctamente (con diacríticos, ♯/♭…). Las grafías simplificadas
-    /// («dorico», «lidio #5») no se guardan: salen de `aliasNormalizados`.
+    /// Otros nombres de la escala, escritos correctamente (con diacríticos, ♯/♭…): «jónico» para la mayor,
+    /// «bizantina» para la doble armónica. Las grafías simplificadas («dorico», «lidio #5») no se guardan: salen
+    /// de `aliasNormalizados`.
     public let alias: [String]
+    /// Otras formas de escribir el nombre o uno de los alias, que no son otro nombre: otro género («dórica»), otra
+    /// transliteración («Hicaz» por Hitzáz) u otra escritura («Χιτζάζ», «बिलावल»). Se leen igual que los alias.
+    public let variantes: [String]
 
-    /// Nombre y alias en forma normalizada (`normalizar`: sin diacríticos ni mayúsculas, `#`/`b`), sin
+    /// Nombre, alias y variantes en forma normalizada (`normalizar`: sin diacríticos ni mayúsculas, `#`/`b`), sin
     /// repetidos. Es lo que se compara al buscar por nombre.
     public var aliasNormalizados: [String] {
         var vistos = Set<String>()
-        return ([nombre] + alias).map(TipoDeEscala.normalizar).filter { vistos.insert($0).inserted }
+        return ([nombre] + alias + variantes).map(TipoDeEscala.normalizar).filter { vistos.insert($0).inserted }
     }
 
     // «descenso» es el nombre que tenía `intervalosDescendentes`: se conserva al codificar.
     private enum CodingKeys: String, CodingKey {
-        case nombre, intervalos, alias
+        case nombre, intervalos, alias, variantes
         case intervalosDescendentes = "descenso"
     }
 
@@ -40,7 +44,8 @@ public struct TipoDeEscala: Sendable, Codable {
     /// de modo que el mismo contenido da siempre el mismo tipo. `intervalosDescendentes` solo se guarda si
     /// es distinto de `intervalos`.
     public init(
-        nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = []
+        nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
+        variantes: [String] = []
     ) {
         self.nombre = nombre
         let subida = TipoDeEscala.ordenar(intervalos)
@@ -48,6 +53,17 @@ public struct TipoDeEscala: Sendable, Codable {
         self.intervalos = subida
         self.intervalosDescendentes = bajada == subida ? nil : bajada
         self.alias = alias
+        self.variantes = variantes
+    }
+
+    /// Las escalas guardadas antes de que hubiera `variantes` se leen sin ellas.
+    public init(from decoder: any Decoder) throws {
+        let datos = try decoder.container(keyedBy: CodingKeys.self)
+        nombre = try datos.decode(String.self, forKey: .nombre)
+        intervalos = try datos.decode([Intervalo].self, forKey: .intervalos)
+        intervalosDescendentes = try datos.decodeIfPresent([Intervalo].self, forKey: .intervalosDescendentes)
+        alias = try datos.decode([String].self, forKey: .alias)
+        variantes = try datos.decodeIfPresent([String].self, forKey: .variantes) ?? []
     }
 
     package static func ordenar(_ intervalos: [Intervalo]) -> [Intervalo] {
@@ -183,49 +199,49 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        alias: ["jónico", "jónica"])
+        alias: ["jónico"], variantes: ["jónica"])
     public static let dorico = TipoDeEscala(
         nombre: "dórico",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["dórica", "menor dórica"])
+        alias: ["menor dórica"], variantes: ["dórica"])
     public static let frigio = TipoDeEscala(
         nombre: "frigio",
         intervalos: [
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["frigia"])
+        variantes: ["frigia"])
     public static let lidio = TipoDeEscala(
         nombre: "lidio",
         intervalos: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        alias: ["lidia"])
+        variantes: ["lidia"])
     public static let mixolidio = TipoDeEscala(
         nombre: "mixolidio",
         intervalos: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["mixolidia"])
+        variantes: ["mixolidia"])
     public static let menorNatural = TipoDeEscala(
         nombre: "menor natural",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["menor", "eólico", "eólica", "menor antigua"])
+        alias: ["menor", "eólico", "menor antigua"], variantes: ["eólica"])
     public static let locrio = TipoDeEscala(
         nombre: "locrio",
         intervalos: [
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        alias: ["locria"])
+        variantes: ["locria"])
     public static let menorArmonica = TipoDeEscala(
         nombre: "menor armónica",
         intervalos: [
@@ -325,8 +341,9 @@ extension TipoDeEscala {
     /// orden) y después las de otras tradiciones (`tradicionales`, en el suyo).
     ///
     /// Cuando dos escalas comparten algo, gana la primera: al buscar por nombre (aunque un nombre gana siempre a un
-    /// alias: «Hijaz» es el maqam Ḥijāz y no el dromos Hitzáz, que lo tiene de alias), al nombrar una escala por sus
-    /// notas (`propio`: Do Re Mi Fa Sol La Si es la mayor y no Bilāval) y en el orden de `equivalentes`.
+    /// alias o a una variante: «Hijaz» es el maqam Ḥijāz y no el dromos Hitzáz, que lo tiene de variante), al
+    /// nombrar una escala por sus notas (`propio`: Do Re Mi Fa Sol La Si es la mayor y no Bilāval) y en el orden de
+    /// `equivalentes`.
     /// `Escala.identificar` busca solo en `todos`, salvo que se le pasen otros tipos.
     public static let catalogo: [TipoDeEscala] = todos + tradicionales
 
@@ -349,15 +366,15 @@ extension TipoDeEscala {
         return indicePorNombre[n] ?? (aceptarIngles ? indiceInternacional[n] : nil)
     }
 
-    /// Nombres y alias normalizados → tipo. Un nombre gana a un alias (Hijaz es el maqam Ḥijāz,
-    /// no el dromos Hitzáz, que lo tiene de alias); entre nombres o entre alias, gana el primero de `catalogo`.
+    /// Nombres, alias y variantes normalizados → tipo. Un nombre gana a un alias o a una variante (Hijaz es el maqam
+    /// Ḥijāz, no el dromos Hitzáz, que lo tiene de variante); entre los demás, gana el primero de `catalogo`.
     package static let indicePorNombre: [String: TipoDeEscala] = {
         var indice: [String: TipoDeEscala] = [:]
         for tipo in catalogo where indice[normalizar(tipo.nombre)] == nil {
             indice[normalizar(tipo.nombre)] = tipo
         }
         for tipo in catalogo {
-            for nombre in tipo.alias where indice[normalizar(nombre)] == nil {
+            for nombre in tipo.alias + tipo.variantes where indice[normalizar(nombre)] == nil {
                 indice[normalizar(nombre)] = tipo
             }
         }

@@ -19,7 +19,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        alias: ["Mahoor", "ماهور"])
+        variantes: ["Mahoor", "ماهور"])
     /// همایون, aproximado: como el frigio dominante.
     public static let homayun = TipoDeEscala(
         nombre: "Homāyun",
@@ -27,7 +27,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["Homayoun", "همایون"])
+        variantes: ["Homayoun", "همایون"])
     /// چهارگاه, aproximado: como la doble armónica.
     public static let cahargah = TipoDeEscala(
         nombre: "Čahārgāh",
@@ -35,7 +35,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        alias: ["Chahārgāh", "چهارگاه"])
+        variantes: ["Chahārgāh", "چهارگاه"])
 
     /// شور (Re Mi𝄳 Fa Sol La Si♭ Do), aproximado: como el frigio.
     public static let sur = TipoDeEscala(
@@ -44,7 +44,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["Shur", "Shoor", "شور"])
+        variantes: ["Shur", "Shoor", "شور"])
     /// راست پنجگاه: el mixolidio.
     public static let rastPanjgah = TipoDeEscala(
         nombre: "Rāst-Panjgāh",
@@ -52,7 +52,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["راست پنجگاه"])
+        variantes: ["راست پنجگاه"])
     /// سهگاه (Mi𝄳 Fa Sol La𝄳 Si♭ Do Re), con la tónica en un koron, aproximado sobre Mi. Se llama «dastgāh Segāh»
     /// porque «Segah» es también el dromos Sengáh.
     public static let segah = TipoDeEscala(
@@ -61,7 +61,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        alias: ["سه\u{200C}گاه"])
+        variantes: ["سه\u{200C}گاه"])
     /// نوا (Sol La Si♭ Do Re Mi𝄳 Fa), aproximado: la menor natural.
     public static let nava = TipoDeEscala(
         nombre: "Navā",
@@ -69,7 +69,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["نوا"])
+        variantes: ["نوا"])
     /// بیات ترک (Fa Sol La Si♭ Do Re Mi𝄳), un āvāz de Šur, aproximado: el mixolidio.
     public static let bayateTork = TipoDeEscala(
         nombre: "Bayāt-e Tork",
@@ -77,7 +77,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["Bayat-e Turk", "بیات ترک"])
+        variantes: ["Bayat-e Turk", "بیات ترک"])
     /// افشاری (Do Re Mi𝄳 Fa Sol La𝄳 Si♭), un āvāz de Šur, aproximado: la menor natural.
     public static let afshari = TipoDeEscala(
         nombre: "Afšāri",
@@ -85,7 +85,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["Afshari", "افشاری"])
+        variantes: ["Afshari", "افشاری"])
     /// دشتی (Re Mi𝄳 Fa Sol La Si♭ Do), un āvāz de Šur con sus mismas notas y el šāhed en La, aproximado: el frigio.
     public static let dashti = TipoDeEscala(
         nombre: "Dašti",
@@ -93,7 +93,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["Dashti", "دشتی"])
+        variantes: ["Dashti", "دشتی"])
     /// ابوعطا (Re Mi𝄳 Fa Sol La𝄳 Si♭ Do), un āvāz de Šur, aproximado: el locrio.
     public static let abuAta = TipoDeEscala(
         nombre: "Abu ʿAtā",
@@ -101,7 +101,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        alias: ["Abu Ata", "Abuata", "ابوعطا"])
+        alias: ["Abuata"], variantes: ["Abu Ata", "ابوعطا"])
     /// بیات اصفهان (Sol La Si♭ Do Re Mi𝄳 Fa♯), un āvāz de Homāyun, aproximado: la menor armónica.
     public static let bayateEsfahan = TipoDeEscala(
         nombre: "Bayāt-e Esfahān",
@@ -109,7 +109,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        alias: ["Bayat-e Isfahan", "Isfahan", "بیات اصفهان"])
+        alias: ["Isfahan"], variantes: ["Bayat-e Isfahan", "بیات اصفهان"])
 
     /// Los dastgāh y, con ellos, los āvāz que derivan de Šur y de Homāyun.
     public static let dastgah: [TipoDeEscala] = [

@@ -15,8 +15,8 @@ Comprueba:
      (`.tradicional(.miembro, "…")`): una fila `.tradicional(.miembro)` sin más no cambia nada, porque sin fila la
      escala conserva su nombre original;
   4. cada fichero de idioma da el nombre de todas las categorías de `CategoriaTradicional` (con `.categoria`);
-  5. en un idioma, ningún alias se escribe igual que el nombre o el alias de otra escala (el primero taparía
-     al segundo al leer).
+  5. en un idioma, ningún alias ni variante se escribe igual que el nombre, el alias o la variante de otra escala
+     (el primero taparía al segundo al leer).
 
 Uso:  python3 Scripts/comprobaciones/comprobar_catalogo.py      (sale con 1 si hay algún problema)
 Es una lectura del texto, no del compilador: se limita al estilo con que está escrito el catálogo.
@@ -120,7 +120,11 @@ for idioma in IDIOMAS_DE_NOMBRES:
         errores.append(f"falta {ruta.name}")
         continue
     texto = re.sub(r"(?m)^\s*//.*$", "", ruta.read_text(encoding="utf-8"))
-    filas = re.findall(r'^\s*\.init\(\.(\w+), ' + CADENA + r'(?:, alias: \[(.*?)\])?\),$', texto, re.M)
+    filas = [
+        (t, nombre, (alias or "") + ", " + (variantes or ""))
+        for t, nombre, alias, variantes in re.findall(
+            r'^\s*\.init\(\.(\w+), ' + CADENA + r'(?:, alias: \[(.*?)\])?(?:, variantes: \[(.*?)\])?\),$', texto, re.M)
+    ]
     tipos = [t for t, _, _ in filas]
     for n, veces in collections.Counter(tipos).items():
         if veces > 1:
@@ -146,8 +150,8 @@ for idioma in IDIOMAS_DE_NOMBRES:
         errores.append(f"{ruta.name}: nombra la categoría .{c}, que no existe")
     for t, nombre, alias in filas:
         for a in alias_redundantes(nombre, re.findall(CADENA, alias or "")):
-            errores.append(f"{ruta.name}: el alias «{a}» de {t} es solo una forma normalizada: se deduce solo")
-    # Alias que se pisan: el primero que aparece gana al leer, y el otro no se leería nunca.
+            errores.append(f"{ruta.name}: el alias o la variante «{a}» de {t} es solo una forma normalizada: se deduce solo")
+    # Alias y variantes que se pisan: el primero que aparece gana al leer, y el otro no se leería nunca.
     dueño = {}
     for t, nombre, alias in filas:
         dueño.setdefault(normalizar(nombre), t)
@@ -155,16 +159,18 @@ for idioma in IDIOMAS_DE_NOMBRES:
         for a in re.findall(CADENA, alias or ""):
             k = normalizar(a)
             if k in dueño and dueño[k] != t:
-                errores.append(f"{ruta.name}: el alias «{a}» de {t} es también el nombre o alias de {dueño[k]}")
+                errores.append(f"{ruta.name}: el alias o la variante «{a}» de {t} es también un nombre de {dueño[k]}")
             dueño.setdefault(k, t)
 
-# Los alias guardados son los escritos correctamente; las grafías sin diacríticos salen de `aliasNormalizados`.
+# Los alias y las variantes guardados son los escritos correctamente; las grafías sin diacríticos salen de
+# `aliasNormalizados`.
 for f, texto in TEXTO.items():
-    for m in re.finditer(r'alias: \[((?:[^\]\\]|\\.)*)\]', texto):
-        if "\\(" in m.group(1):
+    for m in re.finditer(r'alias: \[((?:[^\]\\]|\\.)*)\](?:,\s*variantes: \[((?:[^\]\\]|\\.)*)\])?|variantes: \[((?:[^\]\\]|\\.)*)\]', texto):
+        cuerpo = ", ".join(g for g in m.groups() if g)
+        if "\\(" in cuerpo:
             continue
         nombre = re.findall(r'nombre: ' + CADENA, texto[:m.start()])
-        for a in alias_redundantes(nombre[-1] if nombre else "", re.findall(CADENA, m.group(1))):
+        for a in alias_redundantes(nombre[-1] if nombre else "", re.findall(CADENA, cuerpo)):
             errores.append(f"{f.name}: el alias «{a}» de «{nombre[-1] if nombre else '?'}» es solo una forma normalizada: se deduce solo")
 
 print(f"{len(definidas)} escalas declaradas, {len(todos)} en `todos`, {len(listas) - 2} listas de tradición")

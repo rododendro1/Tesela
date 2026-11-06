@@ -27,37 +27,37 @@ extension TipoDeEscala {
     /// Sléndro, de cinco notas equidistantes (Do Re Fa Sol Si♭ en doce notas).
     public static let slendro = TipoDeEscala(
         nombre: "Sléndro", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        alias: ["Saléndro"])
+        variantes: ["Saléndro"])
 
     /// Pélog pathet lima (1 2 3 5 6 desde 1: Do Re♭ Mi♭ Sol La♭), con las notas de selisir.
     public static let pelogLima = TipoDeEscala(
         nombre: "Pélog pathet lima", intervalos: [.unisono, .segundaMenor, .terceraMenor, .quintaJusta, .sextaMenor],
-        alias: ["Pélog lima", "Pelog patet lima"])
+        alias: ["Pélog lima"], variantes: ["Pelog patet lima"])
     /// Pélog pathet nem (5 6 1 2 3 desde 5: Sol La♭ Do Re Mi♭).
     public static let pelogNem = TipoDeEscala(
         nombre: "Pélog pathet nem",
         intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaMenor],
-        alias: ["Pélog nem", "Pelog patet nem"])
+        alias: ["Pélog nem"], variantes: ["Pelog patet nem"])
     /// Pélog pathet barang (6 7 2 3 5 desde 6: La♭ La Re♭ Mi♭ Sol).
     public static let pelogBarang = TipoDeEscala(
         nombre: "Pélog pathet barang",
         intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .septimaMayor],
-        alias: ["Pélog barang", "Pelog patet barang"])
+        alias: ["Pélog barang"], variantes: ["Pelog patet barang"])
     /// Sléndro pathet nem (desde 2), con los intervalos de `slendro`.
     public static let slendroNem = TipoDeEscala(
         nombre: "Sléndro pathet nem",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        alias: ["Sléndro nem", "Slendro patet nem"])
+        alias: ["Sléndro nem"], variantes: ["Slendro patet nem"])
     /// Sléndro pathet sanga (desde 5), con los intervalos de `slendro`.
     public static let slendroSanga = TipoDeEscala(
         nombre: "Sléndro pathet sanga",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        alias: ["Sléndro sanga", "Slendro patet sanga"])
+        alias: ["Sléndro sanga"], variantes: ["Slendro patet sanga"])
     /// Sléndro pathet manyura (desde 6), con los intervalos de `slendro`.
     public static let slendroManyura = TipoDeEscala(
         nombre: "Sléndro pathet manyura",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        alias: ["Sléndro manyura", "Slendro patet manyura"])
+        alias: ["Sléndro manyura"], variantes: ["Slendro patet manyura"])
     /// Tembung, el modo de Bali sobre el 4 (4 5 6 1 2), con los intervalos de selisir en el modelo de nueve partes.
     public static let pelogTembung = TipoDeEscala(
         nombre: "Pélog tembung",

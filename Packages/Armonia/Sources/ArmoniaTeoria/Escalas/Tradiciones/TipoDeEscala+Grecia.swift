@@ -10,75 +10,75 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
-        ], alias: ["Usak", "Oussak", "Ουσάκ"])
+        ], variantes: ["Usak", "Oussak", "Ουσάκ"])
     public static let hitzaz = TipoDeEscala(
         nombre: "Hitzáz",
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
-        ], alias: ["Hijaz", "Hicaz", "Χιτζάζ"])
+        ], variantes: ["Hijaz", "Hicaz", "Χιτζάζ"])
     public static let hitzazkiar = TipoDeEscala(
         nombre: "Hitzazkiár",
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
-        ], alias: ["Hijazkiar", "Hicazkar", "Χιτζαζκιάρ"])
+        ], variantes: ["Hijazkiar", "Hicazkar", "Χιτζαζκιάρ"])
     public static let pireotikos = TipoDeEscala(
         nombre: "Pireótikos",
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMayor,
-        ], alias: ["Piraiotikos", "Pireaiotikos", "Πειραιώτικος"])
+        ], variantes: ["Piraiotikos", "Pireaiotikos", "Πειραιώτικος"])
     public static let tabahaniotikos = TipoDeEscala(
         nombre: "Tabahaniótikos",
         intervalos: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        alias: ["Ταμπαχανιώτικος"])
+        variantes: ["Ταμπαχανιώτικος"])
     public static let niavent = TipoDeEscala(
         nombre: "Niavént",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMayor,
-        ], alias: ["Nihavent", "Νιαβέντ"])
+        ], variantes: ["Nihavent", "Νιαβέντ"])
     public static let nikriz = TipoDeEscala(
         nombre: "Nikríz",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMenor,
-        ], alias: ["Souzinak", "Susinak", "Poimeniko", "Νικρίζ"])
+        ], alias: ["Souzinak", "Poimeniko"], variantes: ["Susinak", "Νικρίζ"])
     public static let kartzigar = TipoDeEscala(
         nombre: "Kartzigár",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMayor, .septimaMenor,
-        ], alias: ["Kartsigar", "Karcigar", "Καρτσιγάρ"])
+        ], variantes: ["Kartsigar", "Karcigar", "Καρτσιγάρ"])
     public static let sabah = TipoDeEscala(
         nombre: "Sabáh",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaDisminuida,
             .quintaJusta, .sextaMenor, .septimaMenor,
-        ], alias: ["Sabach", "Sampah", "Σαμπάχ"])
+        ], variantes: ["Sabach", "Sampah", "Σαμπάχ"])
     public static let houzam = TipoDeEscala(
         nombre: "Houzám",
         intervalos: [
             .unisono, .segundaAumentada, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMayor,
-        ], alias: ["Huzam", "Χουζάμ"])
+        ], variantes: ["Huzam", "Χουζάμ"])
     public static let sengah = TipoDeEscala(
         nombre: "Sengáh",
         intervalos: [
             .unisono, .segundaAumentada, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
-        ], alias: ["Segah", "Sengiach", "Σεγκιάχ"])
+        ], variantes: ["Segah", "Sengiach", "Σεγκιάχ"])
     public static let tsinganikos = TipoDeEscala(
         nombre: "Tsingánikos",
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaDisminuida, .sextaMayor, .septimaMenor,
         ],
-        alias: ["Τσιγγάνικος"])
+        variantes: ["Τσιγγάνικος"])
 
     // Dromoi que suben y bajan distinto.
 
@@ -89,7 +89,7 @@ extension TipoDeEscala {
         intervalosDescendentes: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["Ραστ"])
+        variantes: ["Ραστ"])
     /// Sube como Kartzigár y baja como la menor natural.
     public static let kiourdi = TipoDeEscala(
         nombre: "Kiourdí",
@@ -99,7 +99,7 @@ extension TipoDeEscala {
         intervalosDescendentes: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["Kurdi", "Kioúrdi", "Κιουρντί"])
+        variantes: ["Kurdi", "Kioúrdi", "Κιουρντί"])
     /// Sube como el mixolidio y baja como la menor natural.
     public static let houseini = TipoDeEscala(
         nombre: "Houseïní",
@@ -107,7 +107,7 @@ extension TipoDeEscala {
         intervalosDescendentes: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["Huseyni", "Houséïni", "Χουσεϊνί"])
+        variantes: ["Huseyni", "Houséïni", "Χουσεϊνί"])
 
     /// Los dromoi más habituales, en su versión temperada.
     public static let dromoi: [TipoDeEscala] = [
