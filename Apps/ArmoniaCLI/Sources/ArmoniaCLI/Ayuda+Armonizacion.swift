@@ -41,8 +41,8 @@ extension LineaDeComandos {
                 "armonia analyze C F G7 C Am D7 G"),
             notas: TextosDeCLI.traduccion(\.notasAnalizar),
             opciones: [
-                "--en", "--escalas", "--notas-guia", "--conduccion", "--in", "--scales", "--guide-tones",
-                "--voice-leading",
+                "--en", "--escalas", "--notas-guia", "--conduccion", "--contra", "--in", "--scales", "--guide-tones",
+                "--voice-leading", "--against",
             ]),
         // analizar --archivo <fichero> [--ventana <duración>]
         EntradaDeAyuda(

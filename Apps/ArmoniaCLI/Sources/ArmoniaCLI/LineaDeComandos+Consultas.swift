@@ -845,6 +845,7 @@ extension LineaDeComandos {
         let conEscalas = acordes.quitarMarca("--escalas", "--scales")
         let conNotasGuia = acordes.quitarMarca("--notas-guia", "--guide-tones")
         let conConduccion = acordes.quitarMarca("--conduccion", "--voice-leading")
+        let contra = try acordes.valorConPalabras("--contra", "--against")
         guard let tonalidad = try acordes.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
         let archivo = try acordes.valor("--archivo", "--file")
         let ventana = try acordes.valor("--ventana", "--window").map { try Duracion(leyendo: $0) }
@@ -909,6 +910,22 @@ extension LineaDeComandos {
                 lineas.append("    " + paso.voces.joined(separator: " · "))
             }
             lineas.append("  " + conduccion.movimientoTotal)
+        }
+        // Con --contra, la otra versión acorde a acorde: lo que cambia, sus grados y sus notas comunes.
+        if let contra {
+            let otra = try contra.split(separator: " ").map { try Acorde(leyendo: String($0)) }
+            if let comparacion = PresentacionDeAnalisis.comparar(
+                analisis.acordes, con: otra, en: tonalidad, notacion: notacion)
+            {
+                let cifrados = otra.map { $0.cifrado(en: notacion) }.joined(separator: " ")
+                lineas.append(notacion.texto(\.compararCon) + " " + cifrados + " (" + comparacion.tonalidad + "):")
+                for fila in comparacion.filas {
+                    let acordesDeLaFila = fila.cambia ? fila.original + " → " + fila.nueva : fila.original
+                    let comunes = fila.comunes.isEmpty ? "" : " · " + fila.comunes
+                    lineas.append("  \(fila.posicion). " + acordesDeLaFila + " · " + fila.grados + comunes)
+                }
+                lineas.append("  " + comparacion.resumen)
+            }
         }
         return bien(lineas.joined(separator: "\n"))
     }

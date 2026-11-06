@@ -257,6 +257,21 @@ extension LineaDeComandosTests {
         #expect(doce.contains(">Lam7 Re7 Solmaj7</text>"), Comment(rawValue: String(doce.prefix(800))))
         #expect(salida("hoja --acordes Rem7 Sol7 Do7M --doce").contains(">Sol mayor</text>"))
         #expect(salida("sheet --chords Dm7 G7 Cmaj7 --all-keys --ingles").contains(">G major</text>"))
+        // Con --contra, comparada con otra versión.
+        let contra = salida("hoja --acordes Do Lam Rem Sol7 --contra Do La7 Rem7 Sol7")
+        #expect(contra.contains(">Cambian 2 de 4 acordes</text>"), Comment(rawValue: String(contra.prefix(800))))
+        #expect(contra.contains(">Do – La7 – Rem7 – Sol7</text>"))
+        let against = salida("sheet --chords C Am Dm G7 --against C A7 Dm7 G7 --ingles")
+        #expect(against.contains(">C – A7 – Dm7 – G7</text>"))
+        #expect(resultado("hoja", "--acordes", "Do", "--contra").codigo == 2)
+        // La de una tonalidad.
+        let re = salida("hoja --tonalidad Re mayor")
+        #expect(re.hasPrefix("<svg "), Comment(rawValue: String(re.prefix(200))))
+        #expect(re.contains(">Re mayor</text>"))
+        #expect(re.contains(">Cadencias típicas</text>"))
+        #expect(salida("sheet --key D major --ingles").contains(">D major</text>"))
+        #expect(resultado("hoja", "--tonalidad").codigo == 2)
+        #expect(resultado("hoja", "--tonalidad", "Re", "mayor", "--raro").codigo == 2)
     }
 
     /// `escala … --escalera`: de la más oscura a la más brillante, con la de partida señalada.
@@ -429,6 +444,18 @@ extension LineaDeComandosTests {
         #expect(conduccion.contains("\n  Movimiento total: "))
         #expect(!salida("analizar Rem7 Sol7 Do7M").contains("Conducción"))
         #expect(salida("analyze Dm7 G7 Cmaj7 --voice-leading --ingles").contains("\nVoice leading (Drop 2):\n"))
+    }
+
+    @Test func compararDosProgresiones() {
+        let comparacion = salida("analizar Do Lam Rem Sol7 --contra Do La7 Rem7 Sol7")
+        let cabecera = "\nComparar con Do La7 Rem7 Sol7 (Do mayor):\n  1. Do · I\n"
+        #expect(comparacion.contains(cabecera), Comment(rawValue: comparacion))
+        #expect(comparacion.contains("\n  2. Lam → La7 · vi → "))
+        #expect(comparacion.contains(" · Notas comunes: La, Mi\n"))
+        #expect(comparacion.hasSuffix("\n  Cambian 2 de 4 acordes"))
+        #expect(!salida("analizar Do Lam Rem Sol7").contains("Comparar con"))
+        #expect(resultado("analizar", "Do", "--contra").codigo == 2)
+        #expect(resultado("analizar", "Do", "--contra", "Xx").codigo != 0)
     }
 
     @Test func modulacionesDesdeUnaTonalidad() {

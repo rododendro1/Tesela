@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### La hoja de una tonalidad y dos progresiones comparadas
+
+- `PresentacionDeTonalidad.hojaDeEstudio(de:notacion:)`: la hoja de una tonalidad (SVG del ancho de un A4), con la
+  armadura, la relativa y la homónima, la escala en el pentagrama, los acordes de cada grado con su función, las
+  cadencias típicas (`cadenciasTipicas(de:notacion:)`) y las modulaciones a los tonos vecinos. En la CLI,
+  `armonia hoja --tonalidad Re mayor`; en la app, se exporta desde el análisis.
+- `PresentacionDeAnalisis.comparar(_:con:en:notacion:)`: dos progresiones acorde a acorde en la misma tonalidad, con
+  lo que cambia, el grado de cada una y las notas comunes, y `hojaDeLaComparacion`, las dos en una hoja con los
+  pentagramas y lo que cambia en rojo. En la CLI, `armonia analizar … --contra …` y `armonia hoja --acordes … --contra
+  …`; en la app, una sección del análisis para escribir la otra versión.
+
 ### Nombres más claros en la API
 
 Los nombres de antes siguen compilando, obsoletos, en el `Obsoletos.swift` de cada módulo, y Xcode propone el cambio.

@@ -158,7 +158,9 @@ extension LineaDeComandos {
     }
 
     /// `hoja Re dórico`: la escala en una hoja de estudio para imprimir, en SVG; `hoja --acorde Sol7`, la de un
-    /// acorde, y `hoja --acordes Rem7 Sol7 Do7M [--en Do mayor]`, la de una progresión. `grabar hoja …` la pasa a PDF.
+    /// acorde; `hoja --tonalidad Do mayor`, la de una tonalidad, y `hoja --acordes Rem7 Sol7 Do7M [--en Do mayor]
+    /// [--doce] [--contra …]`, la de una progresión, en las doce tonalidades o comparada con otra. `grabar hoja …` la
+    /// pasa a PDF.
     static func hoja(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
         if let cifrado = try argumentos.valor("--acorde", "--chord", siFalta: .faltaElAcordeDeLaHoja) {
@@ -167,14 +169,30 @@ extension LineaDeComandos {
             let acorde = try Acorde(leyendo: cifrado)
             return bien(PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, notacion: notacion))
         }
+        if let texto = try argumentos.valorConPalabras("--tonalidad", "--key", siFalta: .faltaTonalidad) {
+            if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+            guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaTonalidad }
+            let tonalidad = try Tonalidad(leyendo: texto)
+            return bien(PresentacionDeTonalidad.hojaDeEstudio(de: tonalidad, notacion: notacion))
+        }
         if argumentos.quitarMarca("--acordes", "--chords") {
-            // --doce se quita antes que la tonalidad, que se lleva todo lo que va detrás de --en.
+            // --doce y --contra se quitan antes que la tonalidad, que se lleva todo lo que va detrás de --en.
             let doce = argumentos.quitarMarca("--doce", "--all-keys")
+            let contra = try argumentos.valorConPalabras("--contra", "--against")
             guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaValor("--en") }
             if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanLosAcordesDeLaHoja }
             let analisis = try PresentacionDeAnalisis.analizar(
                 argumentos.restantes.joined(separator: " "), en: tonalidad, notacion: notacion)
+            // Con --contra, las dos progresiones comparadas acorde a acorde.
+            if let contra {
+                let otra = try contra.split(separator: " ").map { try Acorde(leyendo: String($0)) }
+                if let hoja = PresentacionDeAnalisis.hojaDeLaComparacion(
+                    analisis.acordes, con: otra, en: tonalidad, notacion: notacion)
+                {
+                    return bien(hoja)
+                }
+            }
             // Con --doce, la progresión en las doce tonalidades, desde la dada o la del análisis.
             if doce, let propia = tonalidad ?? analisis.tonalidad ?? analisis.acordes.first?.tonalidadPropia {
                 return bien(

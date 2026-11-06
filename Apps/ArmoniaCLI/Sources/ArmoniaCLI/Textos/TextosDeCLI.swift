@@ -137,6 +137,8 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionHojaDeAcorde: String
     let sintaxisHojaDeAcordes: String
     let descripcionHojaDeAcordes: String
+    let sintaxisHojaDeTonalidad: String
+    let descripcionHojaDeTonalidad: String
     let sintaxisPentagrama: String
     let descripcionPentagrama: String
     let sintaxisPentagramaEstudio: String

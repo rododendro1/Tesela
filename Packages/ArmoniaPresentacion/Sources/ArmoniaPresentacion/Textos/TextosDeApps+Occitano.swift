@@ -218,6 +218,12 @@ extension TextosDeApps {
         modulacionPorDisminuida: "setena diminuida enarmonica",
         modulacionDirecta: "dirècta",
         conduccionDeVoces: "Conducha de las votz",
+        armadura: "Armadura",
+        sinAlteraciones: "sens alteracions",
+        relativa: "Relativa",
+        homonima: "Omonima",
+        cadenciasTipicas: "Cadéncias tipicas",
+        cambianAcordes: { "Càmbian \($0) de \($1) acòrds" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "D'evitar",
