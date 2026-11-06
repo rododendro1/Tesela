@@ -16,24 +16,24 @@ public struct CadenciaPresentada: Hashable, Sendable {
 /// relativas, los acordes de cada grado con su función, las cadencias típicas y las modulaciones a los tonos
 /// vecinos. No usa SwiftUI, así que se prueba en Linux.
 ///
-///     let cadencias = PresentacionDeTonalidad.cadenciasTipicas(de: Tonalidad(.do), notacion: .espanolCompacto)
+///     let cadencias = PresentacionDeTonalidad.cadenciasTipicas(de: Tonalidad(.do), en: .espanolCompacto)
 ///     cadencias.first?.acordes   // "Sol7 – Do"
 public enum PresentacionDeTonalidad {
     /// «Armadura: Si♭ Mi♭ La♭», o «Armadura: sin alteraciones».
-    public static func armadura(de tonalidad: Tonalidad, notacion: Notacion) -> String {
+    public static func armadura(de tonalidad: Tonalidad, en notacion: Notacion) -> String {
         let signos = tonalidad.notasDeLaArmadura.map { $0.nombre(en: notacion) }.joined(separator: " ")
         return notacion.texto(\.armadura) + ": " + (signos.isEmpty ? notacion.texto(\.sinAlteraciones) : signos)
     }
 
     /// «Relativa: La menor · Homónima: Do menor».
-    public static func relativas(de tonalidad: Tonalidad, notacion: Notacion) -> String {
+    public static func relativas(de tonalidad: Tonalidad, en notacion: Notacion) -> String {
         notacion.texto(\.relativa) + ": " + tonalidad.relativa.nombre(en: notacion) + " · "
             + notacion.texto(\.homonima) + ": " + tonalidad.homonima.nombre(en: notacion)
     }
 
     /// Las cuatro cadencias de manual en la tonalidad: auténtica (V7–I), plagal (IV–I), rota (V7–vi) y
     /// semicadencia (ii–V; en menor, iv–V), con el nombre que les da el análisis.
-    public static func cadenciasTipicas(de tonalidad: Tonalidad, notacion: Notacion) -> [CadenciaPresentada] {
+    public static func cadenciasTipicas(de tonalidad: Tonalidad, en notacion: Notacion) -> [CadenciaPresentada] {
         let romanos =
             tonalidad.modo == .mayor
             ? ["V7 I", "IV I", "V7 vi", "ii V"] : ["V7 i", "iv i", "V7 VI", "iv V"]
@@ -53,9 +53,9 @@ public enum PresentacionDeTonalidad {
     /// el pentagrama de su escala, los acordes de cada grado (cuatríadas) con su función, las cadencias típicas y
     /// las modulaciones a los tonos vecinos.
     ///
-    ///     let hoja = PresentacionDeTonalidad.hojaDeEstudio(de: Tonalidad(.re), notacion: .espanolCompacto)
+    ///     let hoja = PresentacionDeTonalidad.hojaDeEstudio(de: Tonalidad(.re), en: .espanolCompacto)
     ///     hoja.contains(">Re mayor</text>")   // true
-    public static func hojaDeEstudio(de tonalidad: Tonalidad, notacion: Notacion) -> String {
+    public static func hojaDeEstudio(de tonalidad: Tonalidad, en notacion: Notacion) -> String {
         typealias Hoja = PresentacionDeEstudioDeEscala
         let ancho = Hoja.anchoDeLaHoja
         let margen = Hoja.margenDeLaHoja
@@ -64,10 +64,10 @@ public enum PresentacionDeTonalidad {
         var y = margen + 22
         cuerpo.append(Hoja.texto(tonalidad.nombre(en: notacion), x: margen, y: y, tamano: 22, negrita: true))
         y += 22
-        cuerpo.append(Hoja.texto(armadura(de: tonalidad, notacion: notacion), x: margen, y: y, tamano: 12))
+        cuerpo.append(Hoja.texto(armadura(de: tonalidad, en: notacion), x: margen, y: y, tamano: 12))
         y += 18
         cuerpo.append(
-            Hoja.texto(relativas(de: tonalidad, notacion: notacion), x: margen, y: y, tamano: 12, color: "#555555"))
+            Hoja.texto(relativas(de: tonalidad, en: notacion), x: margen, y: y, tamano: 12, color: "#555555"))
         y += 12
 
         // La escala de la tonalidad en el pentagrama.
@@ -95,7 +95,7 @@ public enum PresentacionDeTonalidad {
 
         // Las cadencias típicas.
         seccion(notacion.texto(\.cadenciasTipicas))
-        for cadencia in cadenciasTipicas(de: tonalidad, notacion: notacion) {
+        for cadencia in cadenciasTipicas(de: tonalidad, en: notacion) {
             cuerpo.append(Hoja.texto(cadencia.nombre, x: margen, y: y, tamano: 11, negrita: true))
             cuerpo.append(Hoja.texto(cadencia.grados, x: margen + 190, y: y, tamano: 11))
             cuerpo.append(Hoja.texto(cadencia.acordes, x: margen + 270, y: y, tamano: 11))
@@ -105,7 +105,7 @@ public enum PresentacionDeTonalidad {
 
         // Las modulaciones a los tonos vecinos, cada una con la progresión y el pivote.
         seccion(notacion.texto(\.modulaciones))
-        for modulacion in PresentacionDeModulaciones.modulaciones(desde: tonalidad, notacion: notacion) {
+        for modulacion in PresentacionDeModulaciones.modulaciones(desde: tonalidad, en: notacion) {
             let titulo = modulacion.destino + " · " + modulacion.tecnica
             cuerpo.append(Hoja.texto(titulo, x: margen, y: y, tamano: 11, negrita: true))
             y += 15

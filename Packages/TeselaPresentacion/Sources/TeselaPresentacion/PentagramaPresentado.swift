@@ -63,7 +63,7 @@ public struct PentagramaPresentado: Hashable, Sendable {
     /// los pasos de su sonido.
     ///
     ///     let arpegio = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Do7")), figura: .semicorchea,
-    ///                                                 notacion: .espanolCompacto)
+    ///                                                 en: .espanolCompacto)
     ///     PentagramaPresentado(arpegio.voz, titulo: "Do7").fichero.nombreDeFichero   // "Pentagrama Do7.svg"
     public init(
         _ voz: Voz, titulo: String, tonalidad: Tonalidad? = nil, notacion: Notacion = .espanolCompacto,

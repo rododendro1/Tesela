@@ -38,10 +38,10 @@ struct SeccionDeLaDigitacionDePiano: View {
     @Environment(\.notacion) private var notacion
 
     var body: some View {
-        let teclados = PresentacionDeEstudioDeEscala.teclados(de: escala, notacion: notacion)
+        let teclados = PresentacionDeEstudioDeEscala.teclados(de: escala, en: notacion)
         Section(notacion.texto(\.digitacionDePiano)) {
             ForEach(
-                Array(PresentacionDeEstudioDeEscala.digitaciones(escala, notacion: notacion).enumerated()),
+                Array(PresentacionDeEstudioDeEscala.digitaciones(escala, en: notacion).enumerated()),
                 id: \.offset
             ) { i, mano in
                 VStack(alignment: .leading, spacing: 4) {
@@ -67,7 +67,7 @@ struct SeccionDeLaSimetria: View {
     @Environment(\.notacion) private var notacion
 
     var body: some View {
-        if let simetria = PresentacionDeEstudioDeEscala.simetria(de: escala, notacion: notacion) {
+        if let simetria = PresentacionDeEstudioDeEscala.simetria(de: escala, en: notacion) {
             Section(notacion.texto(\.simetria)) {
                 Text(simetria.resumen)
                 LabeledContent(notacion.texto(\.tonicasEquivalentes), value: simetria.tonicas)
@@ -94,7 +94,7 @@ struct SeccionDeLasEstadisticas: View {
 
     var body: some View {
         Section(notacion.texto(\.estadisticas)) {
-            ForEach(PresentacionDeEstudioDeEscala.estadisticas(de: escala, notacion: notacion), id: \.self) { dato in
+            ForEach(PresentacionDeEstudioDeEscala.estadisticas(de: escala, en: notacion), id: \.self) { dato in
                 LabeledContent(dato.nombre, value: dato.valor)
             }
         }
@@ -107,7 +107,7 @@ struct SeccionDelMapaDeBrillo: View {
     @Environment(\.notacion) private var notacion
 
     var body: some View {
-        let svg = PresentacionDeEstudioDeEscala.mapaDeBrillo(de: escala, notacion: notacion)
+        let svg = PresentacionDeEstudioDeEscala.mapaDeBrillo(de: escala, en: notacion)
         if let tamano = PresentacionDeEstudioDeEscala.tamano(deUnSVG: svg), tamano.alto > 120 {
             Section(notacion.texto(\.mapaDeBrillo)) {
                 ScrollView(.horizontal) {
@@ -134,7 +134,7 @@ struct SeccionDelReloj: View {
                 Text(notacion.texto(\.circuloDeQuintas)).tag(RelojDeClasesDeAltura.Orden.quintas)
             }
             .pickerStyle(.segmented)
-            VistaSVG(svg: PresentacionDeEstudioDeEscala.reloj(de: escala, orden: orden, notacion: notacion))
+            VistaSVG(svg: PresentacionDeEstudioDeEscala.reloj(de: escala, orden: orden, en: notacion))
                 .frame(height: 300)
         }
     }
@@ -147,7 +147,7 @@ struct SeccionDeLaHojaDeEstudio: View {
     @Environment(\.notacion) private var notacion
 
     var body: some View {
-        let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, notacion: notacion, secciones: secciones)
+        let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, en: notacion, secciones: secciones)
         let tamano = PresentacionDeEstudioDeEscala.tamano(deUnSVG: hoja) ?? (ancho: 595, alto: 842)
         Section(notacion.texto(\.hojaDeEstudio)) {
             DisclosureGroup(notacion.texto(\.hojaDeEstudio) + " (\(secciones.count))") {

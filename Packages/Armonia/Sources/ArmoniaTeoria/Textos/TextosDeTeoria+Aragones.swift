@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         fundamentalNoOmitible: "no se puede omitir a fundamental",
         gradoNoOmitible: { grado in "«omit\(grado)» no ye válido (se pueden omitir 3, 5, 7, 9, 11 y 13)" },
         faltaLaFundamental: "falta a fundamental",
-        intervaloSinPapel: { intervalo, notacion in "a \(intervalo.nombre(en: .aragonesPalabras)) no tiene papel en un acorde per terceras" },
+        intervaloSinPapel: { intervalo, notacion in "a \(intervalo.nombre(en: .conPalabras(.aragones))) no tiene papel en un acorde per terceras" },
         terceraMayorYMenor: "tiene tercera mayor y menor a l\'ombre (a ♯9 s\'escribe como 9ª aumentada, no como 3ª menor)",
         variasSeptimas: "tiene más d\'una séptima",
         septimaDisminuidaFueraDelDisminuido: "a séptima disminuida nomás amaneix en l\'acorde disminuiu (con 3ª menor y 5ª disminuida)",

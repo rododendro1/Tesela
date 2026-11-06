@@ -46,7 +46,7 @@ public enum PresentacionDeRelacionesDeAcorde {
         let sustituciones = acorde.sustituciones(en: tonalidad).map { rearmonizacion in
             PropuestaDeRearmonizacion(
                 rearmonizacion: rearmonizacion, descripcion: rearmonizacion.descripcion(en: notacion),
-                texto: PresentacionDeTransposicion.texto(de: rearmonizacion.acordes, notacion: notacion),
+                texto: PresentacionDeTransposicion.texto(de: rearmonizacion.acordes, en: notacion),
                 sonido: Escucha.acordes([acorde] + rearmonizacion.acordes).conTonica(tonalidad.tonica))
         }
         return RelacionesPresentadas(
@@ -59,10 +59,10 @@ public enum PresentacionDeRelacionesDeAcorde {
     /// disponer así.
     ///
     ///     let comparacion = PresentacionDeRelacionesDeAcorde.comparar(
-    ///         Acorde("Sol7"), con: Acorde("Do"), notacion: .espanolCompacto)
+    ///         Acorde("Sol7"), con: Acorde("Do"), en: .espanolCompacto)
     ///     comparacion?.comunes   // "Sol"
     public static func comparar(
-        _ acorde: Acorde, con otro: Acorde, disposicion: DisposicionDeAcorde = .cerrada, notacion: Notacion
+        _ acorde: Acorde, con otro: Acorde, disposicion: DisposicionDeAcorde = .cerrada, en notacion: Notacion
     ) -> ComparacionPresentada? {
         guard let comparacion = acorde.comparar(con: otro, disposicion: disposicion) else { return nil }
         let comunes = comparacion.comunes.map { $0.nombre(en: notacion) }

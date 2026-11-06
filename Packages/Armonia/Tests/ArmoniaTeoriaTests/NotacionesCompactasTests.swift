@@ -8,15 +8,15 @@ import Testing
 /// el signo y la octava en subíndice (Fa♯, Ré♭, La₄), con los textos del idioma.
 @Suite struct NotacionesCompactasTests {
     @Test func nombresDeNotas() {
-        #expect(Nota("Reb").nombre(en: .francesCompacto) == "Ré♭")
-        #expect(Nota("Fa#").nombre(en: .catalanCompacto) == "Fa♯")
-        #expect(Nota("Sib").nombre(en: .portuguesCompacto) == "Si♭")
-        #expect(Nota("Fa#").nombre(en: .rusoCompacto) == "Фа♯")
-        #expect(Nota("Fa#").nombre(en: .griegoCompacto) == "Φα♯")
-        #expect(Nota("Do##").nombre(en: .italianoCompacto) == "Do𝄪")
-        #expect(Nota("Mi").nombre(en: .euskeraCompacto) == "Mi")
+        #expect(Nota("Reb").nombre(en: .compacta(.frances)) == "Ré♭")
+        #expect(Nota("Fa#").nombre(en: .compacta(.catalan)) == "Fa♯")
+        #expect(Nota("Sib").nombre(en: .compacta(.portugues)) == "Si♭")
+        #expect(Nota("Fa#").nombre(en: .compacta(.ruso)) == "Фа♯")
+        #expect(Nota("Fa#").nombre(en: .compacta(.griego)) == "Φα♯")
+        #expect(Nota("Do##").nombre(en: .compacta(.italiano)) == "Do𝄪")
+        #expect(Nota("Mi").nombre(en: .compacta(.euskera)) == "Mi")
         // Las de palabras no cambian.
-        #expect(Nota("Reb").nombre(en: .francesPalabras) == "ré bémol")
+        #expect(Nota("Reb").nombre(en: .conPalabras(.frances)) == "ré bémol")
     }
 
     @Test func lasCompactasEscribenLasDoblesConDobles() throws {
@@ -27,8 +27,8 @@ import Testing
         #expect(conSignos.count == 13)
         #expect(Set(conSignos.map(\.tipografia)) == [.conDobles])
         #expect(Nota("Sibb").nombre(en: .espanolCompacto) == "Si𝄫")
-        #expect(Nota("Do###").nombre(en: .francesCompacto) == "Do𝄪♯")
-        #expect(Nota("Fa##").nombre(en: .rusoCompacto) == "Фа𝄪")
+        #expect(Nota("Do###").nombre(en: .compacta(.frances)) == "Do𝄪♯")
+        #expect(Nota("Fa##").nombre(en: .compacta(.ruso)) == "Фа𝄪")
         #expect(Nota("Re").nombre(en: .espanolCompacto) == "Re")
         #expect(Nota("Sibb").nombre(en: .inglesCompacto) == "B𝄫")
         #expect(Notacion.delIdioma(.espanol) == .espanolCompacto)
@@ -39,19 +39,19 @@ import Testing
     }
 
     @Test func alturasConSubindice() {
-        #expect(Altura("Fa#4").nombre(en: .catalanCompacto) == "Fa♯₄")
-        #expect(Altura("Sib3").nombre(en: .gallegoCompacto) == "Si♭₃")
-        #expect(Notacion.occitanoCompacto.octavas == .subindices)
-        #expect(Notacion.occitanoPalabras.octavas == .cifras)
+        #expect(Altura("Fa#4").nombre(en: .compacta(.catalan)) == "Fa♯₄")
+        #expect(Altura("Sib3").nombre(en: .compacta(.gallego)) == "Si♭₃")
+        #expect(Notacion.compacta(.occitano).octavas == .subindices)
+        #expect(Notacion.conPalabras(.occitano).octavas == .cifras)
     }
 
     @Test func leerEnCompacto() throws {
-        #expect(try Nota(leyendo: "Ré♭", en: .francesCompacto) == Nota("Reb"))
-        #expect(try Nota(leyendo: "ré bémol", en: .francesCompacto) == Nota("Reb"))
-        #expect(try Nota(leyendo: "Ré♭", en: .francesPalabras) == Nota("Reb"))
-        #expect(try Nota(leyendo: "Фа♯", en: .rusoCompacto) == Nota("Fa#"))
-        #expect(try Altura(leyendo: "Fa♯₄", en: .catalanCompacto) == Altura("Fa#4"))
-        #expect(throws: ErrorDeLectura.self) { try Nota(leyendo: "F#", en: .italianoCompacto) }
+        #expect(try Nota(leyendo: "Ré♭", en: .compacta(.frances)) == Nota("Reb"))
+        #expect(try Nota(leyendo: "ré bémol", en: .compacta(.frances)) == Nota("Reb"))
+        #expect(try Nota(leyendo: "Ré♭", en: .conPalabras(.frances)) == Nota("Reb"))
+        #expect(try Nota(leyendo: "Фа♯", en: .compacta(.ruso)) == Nota("Fa#"))
+        #expect(try Altura(leyendo: "Fa♯₄", en: .compacta(.catalan)) == Altura("Fa#4"))
+        #expect(throws: ErrorDeLectura.self) { try Nota(leyendo: "F#", en: .compacta(.italiano)) }
     }
 
     @Test func cadaIdiomaTieneSuCompacta() {
@@ -64,11 +64,11 @@ import Testing
         }
         #expect(EscrituraDeNotas.allCases.count == 32)
         // La notación de cada idioma sigue siendo la de siempre.
-        #expect(Notacion.delIdioma(.catalan) == .catalanPalabras)
-        #expect(Notacion.delIdioma(.frances) == .francesPalabras)
+        #expect(Notacion.delIdioma(.catalan) == .conPalabras(.catalan))
+        #expect(Notacion.delIdioma(.frances) == .conPalabras(.frances))
         #expect(Notacion.delIdioma(.espanol) == .espanolCompacto)
         // Los textos son los del idioma.
-        #expect(Intervalo.terceraMayor.nombre(en: .francesCompacto) == "tierce majeure")
-        #expect(Acorde("Sol7").nombre(en: .italianoCompacto).hasPrefix("Sol"))
+        #expect(Intervalo.terceraMayor.nombre(en: .compacta(.frances)) == "tierce majeure")
+        #expect(Acorde("Sol7").nombre(en: .compacta(.italiano)).hasPrefix("Sol"))
     }
 }

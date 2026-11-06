@@ -193,7 +193,7 @@ import Testing
 
     @Test func lasEscalasParaAcordes() {
         #expect(TipoDeEscala.paraAcordes.count == Set(TipoDeEscala.paraAcordes).count)
-        #expect(TipoDeEscala.paraAcordes.allSatisfy { TipoDeEscala.todos.contains($0) })
+        #expect(TipoDeEscala.paraAcordes.allSatisfy { TipoDeEscala.occidentales.contains($0) })
         #expect(TipoDeEscala.familiasDeModos.first == .mayor)
         #expect(TipoDeEscala.deJazz.starts(with: TipoDeEscala.paraAcordes))
         #expect(TipoDeEscala.deJazz.count == Set(TipoDeEscala.deJazz).count)

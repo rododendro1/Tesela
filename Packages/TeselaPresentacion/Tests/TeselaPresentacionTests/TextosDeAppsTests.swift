@@ -185,12 +185,12 @@ import Testing
             }
         }
         #expect(Notacion.inglesASCII.texto(\.digitaciones) == "Fingerings")
-        #expect(Notacion.euskeraPalabras.texto(\.acordes) == "Akordeak")
-        #expect(Notacion.alemanPalabras.texto(\.escalas) == "Skalen")
-        #expect(Notacion.occitanoPalabras.texto(\.digitaciones) == "Digitacions")
-        #expect(Notacion.rusoPalabras.texto { $0.dedosYCejilla(3, 5) } == "3 пальца, барре на 5-м ладу")
-        #expect(Notacion.rusoPalabras.texto { $0.marcas(11) } == "11 отметок")
-        #expect(Notacion.griegoPalabras.texto(\.acordes) == "Συγχορδίες")
+        #expect(Notacion.conPalabras(.euskera).texto(\.acordes) == "Akordeak")
+        #expect(Notacion.conPalabras(.aleman).texto(\.escalas) == "Skalen")
+        #expect(Notacion.conPalabras(.occitano).texto(\.digitaciones) == "Digitacions")
+        #expect(Notacion.conPalabras(.ruso).texto { $0.dedosYCejilla(3, 5) } == "3 пальца, барре на 5-м ладу")
+        #expect(Notacion.conPalabras(.ruso).texto { $0.marcas(11) } == "11 отметок")
+        #expect(Notacion.conPalabras(.griego).texto(\.acordes) == "Συγχορδίες")
     }
 
     /// Todos los textos caben en la pila de un hilo secundario de macOS (512 KB), también sin optimizar. Con un
@@ -249,7 +249,7 @@ import Testing
         // En español, los del motor: es lo que se escribe en `--instrumento`.
         #expect(Encordado.todos.map { $0.nombre(en: .espanolCompacto) } == Encordado.todos.map(\.nombre))
         #expect(Encordado.guitarraDeSieteCuerdas.titulo(en: .inglesASCII) == "Seven-string guitar")
-        #expect(Encordado.mandolina.nombre(en: .portuguesPalabras) == "bandolim")
+        #expect(Encordado.mandolina.nombre(en: .conPalabras(.portugues)) == "bandolim")
         #expect(TransformacionNeorriemanniana.l.nombre(en: .inglesASCII) == "leading-tone exchange")
         // Un instrumento propio conserva su nombre.
         let laud = Encordado(nombre: "laúd", afinacion: Encordado.mandolina.afinacion)

@@ -22,9 +22,9 @@ extension PresentacionDeEstudioDeEscala {
     /// siete notas; vacío en las demás.
     ///
     ///     let progresiones = PresentacionDeEstudioDeEscala.progresiones(
-    ///         de: Escala(.la, .menorHungara), notacion: .espanolCompacto)
+    ///         de: Escala(.la, .menorHungara), en: .espanolCompacto)
     ///     progresiones.last?.cifrados   // "Lam – Sol♯m – Lam"
-    public static func progresiones(de escala: Escala, notacion: Notacion) -> [ProgresionDeLaEscala] {
+    public static func progresiones(de escala: Escala, en notacion: Notacion) -> [ProgresionDeLaEscala] {
         guard escala.notas.count == 7 else { return [] }
         // Frente a la menor natural si tiene la tercera menor; si no, frente a la mayor.
         let clases = Set(escala.notas.map(\.claseDeAltura))

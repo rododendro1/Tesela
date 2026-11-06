@@ -53,7 +53,7 @@ import Testing
 @Suite struct TerminologiaTests {
     @Test func convencionVerbal() {
         // Operaciones: infinitivo.
-        #expect(Acorde("Do7").invertir(1).cifrado == "Do7/Mi")
+        #expect(Acorde("Do7").cambiarInversion(1).cifrado == "Do7/Mi")
         #expect(Acorde("Do").cambiarBajo(.re).cifrado == "Do/Re")
         #expect(TipoDeAcorde.dominanteSeptima.anadir(.novenaMenor)?.cifrado == "7(♭9)")
         #expect(TipoDeAcorde.dominanteNovena.quitar(.quintaJusta)?.cifrado == "9(omit5)")

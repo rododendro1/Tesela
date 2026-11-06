@@ -24,8 +24,8 @@ Se aceptan, entre otros: `m min -`, `° dim o`, `ø`, `+ aug`, `maj M Δ 7M`, `5
 miles de combinaciones).
 
 La fundamental y el bajo también se pueden escribir con la alteración en palabras, separada de la nota
-por un espacio: `Acorde(texto: "Fa sostenido m7")`, `Acorde(texto: "B flat 7(b9)")` o
-`Acorde(texto: "Sol7/Fa sostenido")`. La palabra va en el idioma de la nota («Fa sharp» no se lee) y tiene
+por un espacio: `Acorde(leyendo: "Fa sostenido m7")`, `Acorde(leyendo: "B flat 7(b9)")` o
+`Acorde(leyendo: "Sol7/Fa sostenido")`. La palabra va en el idioma de la nota («Fa sharp» no se lee) y tiene
 que terminar ahí («Fa sostenidom7» tampoco). Como las melodías, las voces y la línea de comandos separan
 las notas por espacios, allí se escriben con signos.
 

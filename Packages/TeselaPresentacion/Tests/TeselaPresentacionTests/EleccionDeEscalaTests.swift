@@ -38,22 +38,22 @@ import Testing
     @Test func losFicherosDeLaPestana() {
         let escala = Escala(.do, .mayor)
         typealias Estudio = PresentacionDeEstudioDeEscala
-        let teclados = Estudio.teclados(de: escala, notacion: notacion)
+        let teclados = Estudio.teclados(de: escala, en: notacion)
         #expect(teclados.map(\.titulo) == ["Do mayor · Mano derecha", "Do mayor · Mano izquierda"])
         #expect(teclados.allSatisfy { $0.svg.hasPrefix("<svg") })
-        #expect(Estudio.ficherosDeLosTeclados(de: escala, notacion: notacion).map(\.nombre) == teclados.map(\.titulo))
-        #expect(Estudio.ficheroDeLaHoja(de: escala, notacion: notacion).nombre == "Hoja de estudio Do mayor")
-        #expect(Estudio.ficheroDelMapaDeBrillo(de: escala, notacion: notacion).nombre == "Mapa de brillo Do")
-        let mapa = Estudio.mapaDeBrillo(numeroDeNotas: 7, resaltada: escala, notacion: notacion)
-        #expect(Estudio.mapaDeBrillo(de: escala, notacion: notacion) == mapa)
-        let comparacion = Estudio.ficheroDeLaComparacion(escala, con: Escala(.do, .lidio), notacion: notacion)
+        #expect(Estudio.ficherosDeLosTeclados(de: escala, en: notacion).map(\.nombre) == teclados.map(\.titulo))
+        #expect(Estudio.ficheroDeLaHoja(de: escala, en: notacion).nombre == "Hoja de estudio Do mayor")
+        #expect(Estudio.ficheroDelMapaDeBrillo(de: escala, en: notacion).nombre == "Mapa de brillo Do")
+        let mapa = Estudio.mapaDeBrillo(numeroDeNotas: 7, resaltada: escala, en: notacion)
+        #expect(Estudio.mapaDeBrillo(de: escala, en: notacion) == mapa)
+        let comparacion = Estudio.ficheroDeLaComparacion(escala, con: Escala(.do, .lidio), en: notacion)
         #expect(comparacion.nombre == "Do mayor · Do lidio")
     }
 
     @Test func lasPosicionesEnElMastil() throws {
         let escala = Escala(.sol, .mayor)
         let posicion = try #require(Mastil(.guitarra, numeroDeTrastes: 15).posicionesCAGED(de: escala).first)
-        let trastes = PresentacionDeEstudioDeEscala.trastes(de: posicion, notacion: notacion)
+        let trastes = PresentacionDeEstudioDeEscala.trastes(de: posicion, en: notacion)
         #expect(trastes.contains("\(posicion.rangoDeTrastes.lowerBound)"))
         let sonido = PresentacionDeEstudioDeEscala.sonido(de: posicion, en: escala)
         #expect(!sonido.notas.isEmpty)

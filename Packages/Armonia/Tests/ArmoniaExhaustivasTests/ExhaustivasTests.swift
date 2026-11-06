@@ -30,7 +30,7 @@ import Testing
             interpretables += 1
 
             let simbolo = tipo.cifrado
-            guard let leido = TipoDeAcorde(texto: simbolo) else {
+            guard let leido = try? TipoDeAcorde(leyendo: simbolo) else {
                 Issue.record("No se puede leer «\(simbolo)», generado desde \(conjunto.sorted())")
                 continue
             }
@@ -68,7 +68,7 @@ import Testing
                 }
                 guard let tipo = TipoDeAcorde(pasosDeQuinta: conjunto) else { continue }
                 let simbolo = tipo.cifrado(estilo: estilo)
-                if TipoDeAcorde(texto: simbolo)?.pasosDeQuinta != conjunto {
+                if (try? TipoDeAcorde(leyendo: simbolo))?.pasosDeQuinta != conjunto {
                     fallos += 1
                     if fallos <= 5 {
                         Issue.record("«\(simbolo)» (\(estilo)) no se vuelve a leer como \(conjunto.sorted())")
@@ -89,7 +89,7 @@ import Testing
                     for inversion in 0..<tipo.intervalos.count {
                         let acorde = Acorde(raiz, tipo, inversion: inversion)
                         let texto = acorde.cifrado(estilo: estilo)
-                        #expect(Acorde(texto: texto) == acorde, "«\(texto)»")
+                        #expect((try? Acorde(leyendo: texto)) == acorde, "«\(texto)»")
                     }
                 }
             }
@@ -106,10 +106,10 @@ import Testing
             for raiz in fundamentales {
                 for inversion in 0..<tipo.intervalos.count {
                     let acorde = Acorde(raiz, tipo, inversion: inversion)
-                    #expect(Acorde(texto: acorde.cifrado) == acorde, Comment(rawValue: acorde.cifrado))
+                    #expect((try? Acorde(leyendo: acorde.cifrado)) == acorde, Comment(rawValue: acorde.cifrado))
                 }
                 let ajeno = Acorde(raiz, tipo, bajo: raiz + .segundaMenor)
-                #expect(Acorde(texto: ajeno.cifrado) == ajeno, Comment(rawValue: ajeno.cifrado))
+                #expect((try? Acorde(leyendo: ajeno.cifrado)) == ajeno, Comment(rawValue: ajeno.cifrado))
             }
         }
     }
@@ -117,13 +117,13 @@ import Testing
     @Test func nombresDeNota() {
         for q in -35...35 {
             let nombre = Nota(pasosDeQuinta: q)
-            #expect(Nota(texto: nombre.nombre) == nombre, Comment(rawValue: nombre.nombre))
-            #expect(Nota(texto: nombre.nombreASCII) == nombre, Comment(rawValue: nombre.nombreASCII))
+            #expect((try? Nota(leyendo: nombre.nombre)) == nombre, Comment(rawValue: nombre.nombre))
+            #expect((try? Nota(leyendo: nombre.nombreASCII)) == nombre, Comment(rawValue: nombre.nombreASCII))
             #expect(
-                Nota(texto: nombre.nombre(en: .inglesASCII)) == nombre,
+                (try? Nota(leyendo: nombre.nombre(en: .inglesASCII))) == nombre,
                 Comment(rawValue: nombre.nombre(en: .inglesASCII)))
             let unicode = nombre.nombre(en: .inglesCompacto)
-            #expect(Nota(texto: unicode) == nombre, Comment(rawValue: unicode))
+            #expect((try? Nota(leyendo: unicode)) == nombre, Comment(rawValue: unicode))
         }
     }
 
@@ -131,11 +131,11 @@ import Testing
         for q in -21...21 {
             for o in -15...15 {
                 let nota = Altura(pasosDeQuinta: q, pasosDeOctava: o)
-                #expect(Altura(texto: nota.nombreCompleto) == nota, Comment(rawValue: nota.nombreCompleto))
+                #expect((try? Altura(leyendo: nota.nombreCompleto)) == nota, Comment(rawValue: nota.nombreCompleto))
                 #expect(
-                    Altura(texto: nota.nombre(en: .inglesASCII)) == nota,
+                    (try? Altura(leyendo: nota.nombre(en: .inglesASCII))) == nota,
                     Comment(rawValue: nota.nombre(en: .inglesASCII)))
-                #expect(Altura(texto: nota.nombre(en: .inglesCompacto)) == nota)
+                #expect((try? Altura(leyendo: nota.nombre(en: .inglesCompacto))) == nota)
                 #expect(Altura(nota.nota, octava: nota.octava) == nota, Comment(rawValue: nota.nombreCompleto))
             }
         }
@@ -147,9 +147,10 @@ import Testing
                 for sentido in [SentidoDelIntervalo.ascendente, .descendente] {
                     let intervalo = Intervalo(pasosDeQuinta: q, pasosDeOctava: o, sentido: sentido)
                     #expect(
-                        Intervalo(texto: intervalo.abreviatura) == intervalo, Comment(rawValue: intervalo.abreviatura))
+                        (try? Intervalo(leyendo: intervalo.abreviatura)) == intervalo,
+                        Comment(rawValue: intervalo.abreviatura))
                     #expect(
-                        Intervalo(texto: intervalo.abreviatura(en: .inglesASCII)) == intervalo,
+                        (try? Intervalo(leyendo: intervalo.abreviatura(en: .inglesASCII))) == intervalo,
                         Comment(rawValue: intervalo.abreviatura(en: .inglesASCII)))
                     #expect(intervalo.pasos >= 0)
                 }
@@ -162,7 +163,7 @@ import Testing
         let decodificador = JSONDecoder()
         let acordes = TipoDeAcorde.todos.map { Acorde("Fa#", $0, inversion: 1) }
         #expect(try (decodificador.decode([Acorde].self, from: codificador.encode(acordes))) == acordes)
-        let escalas = TipoDeEscala.todos.map { Escala("Mib", $0) }
+        let escalas = TipoDeEscala.occidentales.map { Escala("Mib", $0) }
         #expect(try (decodificador.decode([Escala].self, from: codificador.encode(escalas))) == escalas)
     }
 }

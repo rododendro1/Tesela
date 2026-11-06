@@ -69,7 +69,7 @@ struct VistaDeCoral: View {
         // Armonizar a cuatro voces puede tardar: fuera del hilo principal, cuando se deja de escribir.
         .calcularEnSegundoPlano(para: claveActual, esperando: 0.3, en: $resultado) {
             [tarea = self.tarea, texto = self.texto, tonalidad = self.tonalidad, notacion = self.notacion] in
-            Result { try PresentacionDeCoral.presentar(tarea, texto, tonalidad: tonalidad, notacion: notacion) }
+            Result { try PresentacionDeCoral.presentar(tarea, texto, tonalidad: tonalidad, en: notacion) }
         }
     }
 
@@ -91,7 +91,7 @@ struct VistaDeCoral: View {
         let contenido: PresentacionDeTransposicion.Contenido = tarea == .realizar ? .acordes : .notas
         guard
             let nuevo = try? PresentacionDeTransposicion.transponer(
-                texto, intervalo, contenido: contenido, notacion: notacion)
+                texto, intervalo, contenido: contenido, en: notacion)
         else { return }
         textos[tarea] = nuevo
         let dada = tonalidad.trimmingCharacters(in: .whitespaces)

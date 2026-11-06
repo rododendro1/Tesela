@@ -28,7 +28,7 @@ import Testing
         #expect(Nota("Mi♭♭") == Nota(.mi, -2))
         #expect(Nota("Bb") == Nota(.si, -1))
         #expect(Nota("C#") == Nota(.do, 1))
-        #expect(Nota(texto: "Xa") == nil)
+        #expect((try? Nota(leyendo: "Xa")) == nil)
     }
 
     @Test func enarmonia() {
@@ -74,7 +74,7 @@ import Testing
         for (intervalo, semitonos, abreviatura) in esperados {
             #expect(intervalo.semitonos == semitonos, Comment(rawValue: abreviatura))
             #expect(intervalo.abreviatura == abreviatura)
-            #expect(Intervalo(texto: abreviatura) == intervalo)
+            #expect((try? Intervalo(leyendo: abreviatura)) == intervalo)
         }
     }
 
@@ -128,7 +128,7 @@ import Testing
 @Suite struct IntervalosYConsonanciaTests {
     @Test func unisonoDisminuidoNoExiste() throws {
         #expect(Intervalo(numero: 1, calidad: .disminuida(1)) == nil)
-        #expect(Intervalo(texto: "1d") == nil)
+        #expect((try? Intervalo(leyendo: "1d")) == nil)
         #expect(Intervalo(numero: 8, calidad: .disminuida(1)) != nil)
         do {
             _ = try Intervalo(leyendo: "1d")

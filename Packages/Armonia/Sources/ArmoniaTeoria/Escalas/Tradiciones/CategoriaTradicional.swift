@@ -161,19 +161,16 @@ extension TipoDeEscala {
     /// janya es un rāga), «maqām Bayātī», «drómos Hitzáz». Es el nombre a secas si ya la lleva («jins Ḥijāz»,
     /// «Rast makamı», «échos prótos», «shadd Rāst»), si la categoría es una palabra que se traduce y no se antepone
     /// en todos los idiomas (tetracordo, harmonía, hexacordo, modo gregoriano, afinación, escala) o si la escala no
-    /// es de otra tradición.
+    /// es de otra tradición. Que el nombre ya la lleva se escribe en la declaración de cada escala
+    /// (`llevaLaCategoria: true`), no se deduce del texto.
     public var nombreCompleto: String { nombreCompleto(en: .espanolCompacto) }
 
     /// `nombreCompleto` en el idioma de los textos de la notación, con la palabra de la categoría en ese idioma (en
     /// ruso y en griego, transcrita: «рага», «ράγκα»).
     public func nombreCompleto(en notacion: Notacion) -> String {
         let suyo = nombre(en: notacion)
-        guard let palabra = categoria?.palabraDelNombre else { return suyo }
-        let clave = TipoDeEscala.normalizar(palabra.nombre)
-        let palabras = TipoDeEscala.normalizar(nombre).split(separator: " ")
-        // «makamı» y «muğamı» empiezan por la palabra; los jo coreanos la llevan al final (P'yŏngjo).
-        let laLleva = palabras.contains { $0.hasPrefix(clave) || (palabra == .jo && $0.hasSuffix(clave)) }
-        if laLleva || palabras.first == "shadd" { return suyo }
+        let ficha = fichaDelCatalogo
+        guard let palabra = ficha.categoria?.palabraDelNombre, !ficha.llevaLaCategoria else { return suyo }
         return "\(palabra.nombre(en: notacion)) \(suyo)"
     }
 

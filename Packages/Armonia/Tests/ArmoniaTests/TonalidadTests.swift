@@ -82,7 +82,7 @@ import Testing
         for tonalidad in Tonalidad.circuloDeQuintas() + Tonalidad.circuloDeQuintas(.menor) {
             for notacion in Notacion.allCases {
                 #expect(
-                    Tonalidad(texto: tonalidad.texto(en: notacion)) == tonalidad,
+                    (try? Tonalidad(leyendo: tonalidad.texto(en: notacion))) == tonalidad,
                     Comment(rawValue: tonalidad.texto(en: notacion)))
             }
         }

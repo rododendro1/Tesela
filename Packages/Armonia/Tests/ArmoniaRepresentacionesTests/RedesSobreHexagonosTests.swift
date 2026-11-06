@@ -231,10 +231,10 @@ import Testing
         #expect(TecladoIsomorfico.todos.count == 9)
         #expect(Set(TecladoIsomorfico.todos.map(\.nombre)).count == 9)
         #expect(TecladoIsomorfico.tablaArmonica.nombre(en: .inglesASCII) == "Harmonic table")
-        #expect(TecladoIsomorfico.acordeonB.nombre(en: .alemanPalabras) == "Akkordeon B-Griff")
+        #expect(TecladoIsomorfico.acordeonB.nombre(en: .conPalabras(.aleman)) == "Akkordeon B-Griff")
         #expect(TecladoIsomorfico.wickiHaydenEspejo.nombre(en: .espanolCompacto) == "Wicki-Hayden (espejo)")
         // Los nombres propios no se traducen, ni el de un teclado que no es del catálogo.
-        #expect(TecladoIsomorfico.janko.nombre(en: .rusoPalabras) == "Jankó")
+        #expect(TecladoIsomorfico.janko.nombre(en: .conPalabras(.ruso)) == "Jankó")
         #expect(TecladoIsomorfico.gerhard.traduccion == nil)
         let propio = TecladoIsomorfico(nombre: "Mío", orientacion: .plana, semitonosEnQ: 1, semitonosEnR: 2)
         #expect(propio.nombre(en: .inglesASCII) == "Mío")

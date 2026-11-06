@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         fundamentalNoOmitible: "on ne peut pas omettre la fondamentale",
         gradoNoOmitible: { grado in "« omit\(grado) » n'est pas valide (on peut omettre 3, 5, 7, 9, 11 et 13)" },
         faltaLaFundamental: "il manque la fondamentale",
-        intervaloSinPapel: { intervalo, notacion in "l'intervalle de \(intervalo.nombre(en: .francesPalabras)) n'a aucun rôle dans un accord par tierces" },
+        intervaloSinPapel: { intervalo, notacion in "l'intervalle de \(intervalo.nombre(en: .conPalabras(.frances))) n'a aucun rôle dans un accord par tierces" },
         terceraMayorYMenor: "il a à la fois une tierce majeure et une tierce mineure (la ♯9 s'écrit comme neuvième augmentée, pas comme tierce mineure)",
         variasSeptimas: "il a plus d'une septième",
         septimaDisminuidaFueraDelDisminuido: "la septième diminuée n'apparaît que dans l'accord diminué (avec tierce mineure et quinte diminuée)",

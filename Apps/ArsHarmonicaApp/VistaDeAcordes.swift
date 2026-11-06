@@ -69,7 +69,7 @@ struct VistaDeAcordes: View {
 
     private func presentado(_ arpegio: Arpegio) -> ArpegioPresentado {
         PresentacionDeArpegios.arpegio(
-            arpegio, figura: duracion, tempo: Tempo(Double(tempo)), swing: swing, notacion: notacion)
+            arpegio, figura: duracion, tempo: Tempo(Double(tempo)), swing: swing, en: notacion)
     }
 
     /// El arpegio en el pentagrama con el ritmo con que suena: la figura elegida, en tresillos si se piden.
@@ -136,10 +136,10 @@ struct VistaDeAcordes: View {
             PentagramaPresentado(acorde, notacion: notacion).fichero,
             pentagrama(de: arpegio).fichero,
             FicheroParaExportar.svg(
-                PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, notacion: notacion),
+                PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, en: notacion),
                 nombre: notacion.texto(\.hojaDeEstudio) + " " + acorde.cifrado(en: notacion)),
         ]
-        if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, notacion: notacion) {
+        if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, en: notacion) {
             ficheros.append(presentadas.pentagrama.fichero)
             ficheros += presentadas.ficheros
         }
@@ -148,13 +148,13 @@ struct VistaDeAcordes: View {
         if let formas = digitaciones?.valor(para: claveActual), !formas.isEmpty {
             let titulo = "Tablatura " + cifrado
             let xml = PresentacionDeTablatura.musicXML(
-                digitaciones: formas, acordes: formas.map { _ in acorde }, titulo: titulo, notacion: notacion)
+                digitaciones: formas, acordes: formas.map { _ in acorde }, titulo: titulo, en: notacion)
             ficheros.append(.musicXML(xml, nombre: titulo))
         }
         if let posicion = self.mastil(trastes: 12).arpegios(de: acorde).first {
             let titulo = "Tablatura del arpegio " + cifrado
             let xml = PresentacionDeTablatura.musicXML(
-                arpegio: posicion, acorde: acorde, figura: figura, titulo: titulo, notacion: notacion)
+                arpegio: posicion, acorde: acorde, figura: figura, titulo: titulo, en: notacion)
             ficheros.append(.musicXML(xml, nombre: titulo))
         }
         return ficheros
@@ -169,7 +169,7 @@ struct VistaDeAcordes: View {
             Picker(notacion.texto(\.disposicion), selection: $disposicion) {
                 ForEach(DisposicionDeAcorde.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
             }
-            if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, notacion: notacion) {
+            if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, en: notacion) {
                 DiagramaDePentagrama(presentadas.pentagrama)
                 ForEach(Array(presentadas.filas.enumerated()), id: \.offset) { _, fila in
                     HStack {
@@ -190,7 +190,7 @@ struct VistaDeAcordes: View {
     @ViewBuilder
     private func disposicionesEnElMastil(de acorde: Acorde) -> some View {
         let mastil = self.mastil(trastes: 15)
-        let grupos = PresentacionDeDisposiciones.gruposDeCuerdas(disposicion, mastil: mastil, notacion: notacion)
+        let grupos = PresentacionDeDisposiciones.gruposDeCuerdas(disposicion, mastil: mastil, en: notacion)
         if !grupos.isEmpty {
             let elegido = min(grupoDeCuerdas, grupos.count - 1)
             let formas = PresentacionDeDisposiciones.enElMastil(
@@ -249,7 +249,7 @@ struct VistaDeAcordes: View {
             TextField(notacion.campo(.cifrado), text: $otroAcorde)
                 .comoCampoDeCifrado()
             if let otro = try? Acorde(leyendo: otroAcorde),
-                let comparacion = PresentacionDeRelacionesDeAcorde.comparar(acorde, con: otro, notacion: notacion)
+                let comparacion = PresentacionDeRelacionesDeAcorde.comparar(acorde, con: otro, en: notacion)
             {
                 LabeledContent(notacion.texto(\.notasComunes), value: comparacion.comunes)
                 ForEach(comparacion.voces.reversed(), id: \.self) {
@@ -316,7 +316,7 @@ struct VistaDeAcordes: View {
             Section(notacion.texto(\.escalasCompatibles)) {
                 // Cada una se abre en la pestaña de escalas, y lleva debajo sus tensiones y sus notas a evitar.
                 ForEach(Array(escalas.prefix(10).enumerated()), id: \.offset) { _, escala in
-                    let presentada = PresentacionDeEscalaYAcorde.presentar(escala, sobre: acorde, notacion: notacion)
+                    let presentada = PresentacionDeEscalaYAcorde.presentar(escala, sobre: acorde, en: notacion)
                     Button {
                         navegacion.ver(escala)
                     } label: {
@@ -336,8 +336,8 @@ struct VistaDeAcordes: View {
     /// improvisar sobre el acorde, cada una con «Escuchar» y abriéndose en la pestaña de escalas.
     @ViewBuilder
     private func escalasParaImprovisar(sobre acorde: Acorde) -> some View {
-        let bebop = PresentacionDeEstudioDeEscala.bebop(sobre: acorde, notacion: notacion)
-        let pentatonicas = PresentacionDeEstudioDeEscala.pentatonicas(sobre: acorde, notacion: notacion)
+        let bebop = PresentacionDeEstudioDeEscala.bebop(sobre: acorde, en: notacion)
+        let pentatonicas = PresentacionDeEstudioDeEscala.pentatonicas(sobre: acorde, en: notacion)
         if !bebop.isEmpty {
             Section(notacion.texto(\.escalasBebop)) {
                 ForEach(bebop, id: \.self) { filaDeEscala($0) }
@@ -418,7 +418,7 @@ struct VistaDeAcordes: View {
         let mastil = self.mastil(trastes: formas == .porPosiciones ? 12 : 15)
         let instrumento = encordado.titulo(en: notacion) + (capo > 0 ? " · " + notacion.texto { $0.capo(capo) } : "")
         let posiciones = PresentacionDeArpegios.enElMastil(
-            acorde, formas: formas, idaYVuelta: subirYBajar, mastil: mastil, notacion: notacion)
+            acorde, formas: formas, idaYVuelta: subirYBajar, mastil: mastil, en: notacion)
         Section(notacion.texto(\.arpegioEnElMastil)) {
             Text(instrumento)
                 .foregroundColor(.secondary)

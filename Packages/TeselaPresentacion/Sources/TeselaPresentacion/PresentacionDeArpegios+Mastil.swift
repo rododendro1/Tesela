@@ -34,11 +34,11 @@ extension PresentacionDeArpegios {
     /// barrido.
     ///
     ///     let barrido = PresentacionDeArpegios.enElMastil(
-    ///         Acorde("Lam"), formas: .unaNotaPorCuerda, notacion: .espanolCompacto)
+    ///         Acorde("Lam"), formas: .unaNotaPorCuerda, en: .espanolCompacto)
     ///     barrido[0].dedos   // "0 0 2 2 1 0": el La menor al aire, de la 6.ª cuerda a la 1.ª
     public static func enElMastil(
         _ acorde: Acorde, formas: FormasDeArpegio = .porPosiciones, idaYVuelta: Bool = false,
-        mastil: Mastil = Mastil(.guitarra, numeroDeTrastes: 15), notacion: Notacion
+        mastil: Mastil = Mastil(.guitarra, numeroDeTrastes: 15), en notacion: Notacion
     ) -> [ArpegioEnElMastilPresentado] {
         let arpegios: [ArpegioEnElMastil]
         switch formas {

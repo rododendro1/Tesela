@@ -89,9 +89,9 @@ import Testing
     @Test func elAnalisisYElCoralSuenan() throws {
         let analisis = try PresentacionDeAnalisis.analizar("Do Fa Sol7 Do", notacion: .espanolCompacto)
         #expect(Set(analisis.sonido.notas.map(\.inicio)) == [0, 1, 2, 3])
-        let coral = try PresentacionDeCoral.presentar(.realizar, "Do Fa Sol7 Do", notacion: .espanolCompacto)
+        let coral = try PresentacionDeCoral.presentar(.realizar, "Do Fa Sol7 Do", en: .espanolCompacto)
         #expect(coral.sonido.notas.count == 16)
-        let sinOctavas = try PresentacionDeCoral.presentar(.armonizar, "Mi Re Do", notacion: .espanolCompacto)
+        let sinOctavas = try PresentacionDeCoral.presentar(.armonizar, "Mi Re Do", en: .espanolCompacto)
         #expect(sinOctavas.sonido.notas.isEmpty)
     }
 
@@ -125,7 +125,7 @@ import Testing
     @Test func elAnalisisYElCoralSuenanEnSuTonalidad() throws {
         #expect(try (PresentacionDeAnalisis.analizar("Re Sol La7 Re", notacion: .espanolCompacto).sonido.tonica) == .re)
         #expect(
-            try (PresentacionDeCoral.presentar(.realizar, "Re Sol La7 Re", notacion: .espanolCompacto).sonido.tonica)
+            try (PresentacionDeCoral.presentar(.realizar, "Re Sol La7 Re", en: .espanolCompacto).sonido.tonica)
                 == .re)
     }
 
@@ -155,7 +155,7 @@ import Testing
     @Test func unaMelodiaConRitmoSeArmonizaYElCoralSuenaConEse() throws {
         let coral = try PresentacionDeCoral.presentar(
             .armonizar, "Mi4:2 Re4:4 Do4:4", tonalidad: "Do mayor",
-            notacion: .espanolCompacto)
+            en: .espanolCompacto)
         #expect(coral.filas.count == 3)
         #expect(coral.sonido.notas.count == 12)
         let negra = 60 / 72.0
@@ -165,7 +165,7 @@ import Testing
         // Sin ritmo, cada acorde dura lo mismo.
         let sinRitmo = try PresentacionDeCoral.presentar(
             .armonizar, "Mi4 Re4 Do4", tonalidad: "Do mayor",
-            notacion: .espanolCompacto)
+            en: .espanolCompacto)
         #expect(Set(sinRitmo.sonido.notas.map(\.inicio)) == [0, 1, 2])
     }
 

@@ -11,10 +11,10 @@ extension PresentacionDeAnalisis {
     /// --acordes …` la pasa a PDF.
     ///
     ///     let analisis = try PresentacionDeAnalisis.analizar("Rem7 Sol7 Do7M", notacion: .espanolCompacto)
-    ///     let hoja = PresentacionDeAnalisis.hojaDeEstudio(analisis, notacion: .espanolCompacto)
+    ///     let hoja = PresentacionDeAnalisis.hojaDeEstudio(analisis, en: .espanolCompacto)
     ///     hoja.hasPrefix("<svg")   // true
     public static func hojaDeEstudio(
-        _ analisis: AnalisisPresentado, disposicion: DisposicionDeAcorde = .drop2, notacion: Notacion
+        _ analisis: AnalisisPresentado, disposicion: DisposicionDeAcorde = .drop2, en notacion: Notacion
     ) -> String {
         typealias Hoja = PresentacionDeEstudioDeEscala
         let ancho = Hoja.anchoDeLaHoja
@@ -33,8 +33,8 @@ extension PresentacionDeAnalisis {
 
         // El pentagrama con una disposición de cada acorde, la que se pide o, si no se puede, cerrada.
         let dispuesta =
-            PresentacionDeDisposiciones.progresion(analisis.acordes, disposicion, notacion: notacion)
-            ?? PresentacionDeDisposiciones.progresion(analisis.acordes, .cerrada, notacion: notacion)
+            PresentacionDeDisposiciones.progresion(analisis.acordes, disposicion, en: notacion)
+            ?? PresentacionDeDisposiciones.progresion(analisis.acordes, .cerrada, en: notacion)
         if let dispuesta {
             y += Hoja.incrustar(dispuesta.pentagrama.svg, x: margen, y: y, ancho: util, en: &cuerpo) + 12
         }
@@ -59,7 +59,7 @@ extension PresentacionDeAnalisis {
         y += 8
 
         // La conducción de las voces, paso a paso, en la misma disposición que el pentagrama.
-        if let voces = conduccion(analisis.acordes, disposicion: disposicion, notacion: notacion) {
+        if let voces = conduccion(analisis.acordes, disposicion: disposicion, en: notacion) {
             let titulo = notacion.texto(\.conduccionDeVoces) + " · " + voces.disposicion
             cuerpo.append(Hoja.texto(titulo, x: margen, y: y + 12, tamano: 14, negrita: true))
             y += 32
@@ -87,7 +87,7 @@ extension PresentacionDeAnalisis {
 
         // Las líneas de notas guía, cada una con sus notas y su pentagrama.
         let lineas = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(
-            analisis.acordes, tonalidad: analisis.tonalidad, notacion: notacion)
+            analisis.acordes, tonalidad: analisis.tonalidad, en: notacion)
         if !lineas.isEmpty {
             let titulo = notacion.texto(\.lineasDeNotasGuia)
             cuerpo.append(Hoja.texto(titulo, x: margen, y: y + 12, tamano: 14, negrita: true))

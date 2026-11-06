@@ -85,7 +85,7 @@ import Testing
         let inicios = Set(analisis.sonido.notas.map { ($0.inicio * 1000).rounded() / 1000 })
         #expect(inicios == [0, 1.333, 2, 2.667])
         // Los arpegios también: 4 + 2 + 2 + 8 corcheas.
-        let arpegiada = try #require(analisis.arpegiada(.ascendente, notacion: .espanolCompacto))
+        let arpegiada = try #require(analisis.arpegiada(.ascendente, en: .espanolCompacto))
         #expect(arpegiada.voz.eventos.count == 16)
         #expect(arpegiada.voz.eventos.reduce(Duracion.cero) { $0 + $1.duracion } == Duracion(2))
     }
@@ -102,7 +102,7 @@ import Testing
                 == PresentacionDeAnalisis.analizar(acordes, ritmo: cojo, notacion: .espanolCompacto))
         let arpegiada = try #require(
             PresentacionDeArpegios.progresion(
-                acordes, patron: .ascendente, tonalidad: nil, ritmo: otro, notacion: .espanolCompacto))
+                acordes, patron: .ascendente, tonalidad: nil, ritmo: otro, en: .espanolCompacto))
         #expect(arpegiada.voz.eventos.count == 8) // una blanca de corcheas por acorde
     }
 

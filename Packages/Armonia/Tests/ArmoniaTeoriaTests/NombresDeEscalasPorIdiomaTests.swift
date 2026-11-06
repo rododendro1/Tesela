@@ -9,7 +9,7 @@ import Testing
     @Test func todosLosIdiomasCubrenElCatalogoOccidental() {
         for idioma in Idioma.allCases {
             let nombres = NombresDeEscalas.de(idioma)
-            for tipo in TipoDeEscala.todos {
+            for tipo in TipoDeEscala.occidentales {
                 #expect(nombres.porTipo[tipo] != nil, "\(idioma): \(tipo.nombre)")
             }
         }
@@ -18,7 +18,7 @@ import Testing
     @Test func elNombreDeCadaTipoSeLeeEnSuIdioma() {
         for idioma in Idioma.allCases {
             let nombres = NombresDeEscalas.de(idioma)
-            for tipo in TipoDeEscala.todos {
+            for tipo in TipoDeEscala.occidentales {
                 guard let entrada = nombres.porTipo[tipo] else { continue }
                 #expect(nombres.indice[TipoDeEscala.normalizar(entrada.nombre)] != nil, "\(idioma): \(entrada.nombre)")
                 for alias in entrada.alias + entrada.variantes {
@@ -31,7 +31,7 @@ import Testing
     @Test func nombreEnUsaElFicheroDeCadaIdioma() {
         for idioma in Idioma.allCases where idioma != .espanol {
             let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
-            for tipo in TipoDeEscala.todos {
+            for tipo in TipoDeEscala.occidentales {
                 #expect(
                     tipo.nombre(en: notacion) == NombresDeEscalas.de(idioma).porTipo[tipo]?.nombre,
                     "\(idioma): \(tipo.nombre)")
@@ -73,7 +73,7 @@ import Testing
         let romanicos: [Idioma] = [
             .catalan, .gallego, .asturiano, .aragones, .portugues, .frances, .occitano, .italiano,
         ]
-        for tipo in TipoDeEscala.todos where !tipo.alias.isEmpty {
+        for tipo in TipoDeEscala.occidentales where !tipo.alias.isEmpty {
             for idioma in romanicos {
                 let entrada = NombresDeEscalas.de(idioma).porTipo[tipo]
                 let otros = (entrada?.alias ?? []) + (entrada?.variantes ?? [])
@@ -84,7 +84,7 @@ import Testing
 
     /// El español tiene los alias y las variantes del catálogo en el registro.
     @Test func elEspanolTieneLosAliasDelCatalogo() {
-        for tipo in TipoDeEscala.todos {
+        for tipo in TipoDeEscala.occidentales {
             let entrada = NombresDeEscalas.de(.espanol).porTipo[tipo]
             #expect(entrada?.alias == tipo.alias, Comment(rawValue: tipo.nombre))
             #expect(entrada?.variantes == tipo.variantes, Comment(rawValue: tipo.nombre))
@@ -186,7 +186,7 @@ import Testing
     /// `alias` y `variantes` guardan solo grafías correctas; las simplificadas (sin diacríticos, `#`/`b`) las da
     /// `aliasNormalizados`.
     @Test func losAliasGuardadosNoSonSoloFormasNormalizadas() {
-        for tipo in TipoDeEscala.todos + TipoDeEscala.tradicionales {
+        for tipo in TipoDeEscala.occidentales + TipoDeEscala.tradicionales {
             let escritas = [tipo.nombre] + tipo.alias + tipo.variantes
             for alias in tipo.alias + tipo.variantes where alias.unicodeScalars.allSatisfy(\.isASCII) {
                 let redundante = escritas.contains {
@@ -200,7 +200,7 @@ import Testing
 
     /// Las formas normalizadas encuentran el tipo, escritas como se escriban.
     @Test func lasFormasNormalizadasLeenElMismoTipo() {
-        for tipo in TipoDeEscala.todos {
+        for tipo in TipoDeEscala.occidentales {
             for clave in tipo.aliasNormalizados {
                 #expect(
                     TipoDeEscala.buscar(nombre: clave, aceptarIngles: false)?.intervalos == tipo.intervalos,

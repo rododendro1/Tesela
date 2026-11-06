@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         fundamentalNoOmitible: "der Grundton kann nicht weggelassen werden",
         gradoNoOmitible: { grado in "„omit\(grado)“ ist ungültig (weglassen lassen sich 3, 5, 7, 9, 11 und 13)" },
         faltaLaFundamental: "der Grundton fehlt",
-        intervaloSinPapel: { intervalo, notacion in "die \(intervalo.nombre(en: .alemanPalabras)) hat in einem Terzakkord keine Funktion" },
+        intervaloSinPapel: { intervalo, notacion in "die \(intervalo.nombre(en: .conPalabras(.aleman))) hat in einem Terzakkord keine Funktion" },
         terceraMayorYMenor: "er hat zugleich eine große und eine kleine Terz (♯9 wird als übermäßige None geschrieben, nicht als kleine Terz)",
         variasSeptimas: "er hat mehr als eine Septime",
         septimaDisminuidaFueraDelDisminuido: "die verminderte Septime kommt nur im verminderten Akkord vor (mit kleiner Terz und verminderter Quinte)",

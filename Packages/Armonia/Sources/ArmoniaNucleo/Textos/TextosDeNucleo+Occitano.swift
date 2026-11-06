@@ -46,7 +46,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "l'unisson diminuit existís pas: de Do a Do♭ i a un unisson aumentat descendent (escriu-lo -1A)",
         reglaDeLasJustas: "l'unisson, la quarta, la quinta e l'octava son justas, aumentadas o diminuidas",
         reglaDeLasMayores: "la segonda, la tèrça, la sexta e la setena son majoras, menoras, aumentadas o diminuidas",
-        intervaloInexistente: { numero, calidad, notacion, regla in "i a pas de \(Intervalo.ordinal(numero, en: .occitano)) \(calidad.nombre(en: .occitanoPalabras)): \(regla.occitano)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "i a pas de \(Intervalo.ordinal(numero, en: .occitano)) \(calidad.nombre(en: .conPalabras(.occitano))): \(regla.occitano)" },
         alteracionNoReconocida: { signo in "«\(signo)» es pas una alteracion (s'esperava ♯, ♭, 𝄪, 𝄫, #, b, x o ♮)" },
 
         // ErrorDeLectura.swift (conjuntos y series)

@@ -136,24 +136,24 @@ struct VistaDeAnalisis: View {
     /// estudio de la progresión, con la disposición elegida.
     private var ficheros: [FicheroParaExportar] {
         guard let analisis = try? resultado?.get() else { return [] }
-        let arpegiada = analisis.arpegiada(patron, figura: figura.duracion, enlazados: enlazados, notacion: notacion)
+        let arpegiada = analisis.arpegiada(patron, figura: figura.duracion, enlazados: enlazados, en: notacion)
         let dispuesta = PresentacionDeDisposiciones.progresion(
-            analisis.acordes, disposicion, notacion: notacion)
+            analisis.acordes, disposicion, en: notacion)
         let guias = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(
-            analisis.acordes, tonalidad: analisis.tonalidad, notacion: notacion
+            analisis.acordes, tonalidad: analisis.tonalidad, en: notacion
         ).flatMap(\.ficheros)
         let hoja = FicheroParaExportar.svg(
-            PresentacionDeAnalisis.hojaDeEstudio(analisis, disposicion: disposicion, notacion: notacion),
+            PresentacionDeAnalisis.hojaDeEstudio(analisis, disposicion: disposicion, en: notacion),
             nombre: notacion.texto(\.hojaDeEstudio))
         var todos: [FicheroParaExportar] = analisis.ficheros + [hoja]
         if let tonalidad = tonalidadDeLasDoce(analisis) {
             let svg = PresentacionDeAnalisis.hojaEnLasDoceTonalidades(
-                analisis.acordes, tonalidad: tonalidad, disposicion: disposicion, notacion: notacion)
+                analisis.acordes, tonalidad: tonalidad, disposicion: disposicion, en: notacion)
             let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.enLasDoceTonalidades)
             todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
         }
         if let tonalidad = analisis.tonalidad {
-            let svg = PresentacionDeTonalidad.hojaDeEstudio(de: tonalidad, notacion: notacion)
+            let svg = PresentacionDeTonalidad.hojaDeEstudio(de: tonalidad, en: notacion)
             let nombre = notacion.texto(\.hojaDeEstudio) + " · " + tonalidad.nombre(en: notacion)
             todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
         }
@@ -163,7 +163,7 @@ struct VistaDeAnalisis: View {
             let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.compararCon)
             todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
         }
-        todos += PresentacionDeAnalisis.bajoCaminante(analisis.acordes, notacion: notacion)?.ficheros ?? []
+        todos += PresentacionDeAnalisis.bajoCaminante(analisis.acordes, en: notacion)?.ficheros ?? []
         todos += arpegiada?.ficheros ?? []
         todos += dispuesta?.ficheros ?? []
         return todos + guias
@@ -183,7 +183,7 @@ struct VistaDeAnalisis: View {
             Section(notacion.texto(\.enLasDoceTonalidades)) {
                 ForEach(
                     PresentacionDeAnalisis.enLasDoceTonalidades(
-                        analisis.acordes, tonalidad: tonalidad, notacion: notacion),
+                        analisis.acordes, tonalidad: tonalidad, en: notacion),
                     id: \.self
                 ) { progresion in
                     HStack {
@@ -204,7 +204,7 @@ struct VistaDeAnalisis: View {
     /// acordes; sus partituras se exportan con la barra.
     @ViewBuilder
     private func bajoCaminante(_ analisis: AnalisisPresentado) -> some View {
-        if let bajo = PresentacionDeAnalisis.bajoCaminante(analisis.acordes, notacion: notacion) {
+        if let bajo = PresentacionDeAnalisis.bajoCaminante(analisis.acordes, en: notacion) {
             Section(notacion.texto(\.bajoCaminante)) {
                 HStack {
                     Text(bajo.compases.joined(separator: " | ")).font(.system(.footnote, design: .monospaced))
@@ -283,7 +283,7 @@ struct VistaDeAnalisis: View {
             importada = transportada
             texto = transportada.texto
         } else if let nuevo = try? PresentacionDeTransposicion.transponer(
-            texto, de: origen, a: destino, notacion: notacion)
+            texto, de: origen, a: destino, en: notacion)
         {
             texto = nuevo
         }
@@ -294,7 +294,7 @@ struct VistaDeAnalisis: View {
     @ViewBuilder
     private func lineasDeNotasGuia(_ analisis: AnalisisPresentado) -> some View {
         let lineas = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(
-            analisis.acordes, tonalidad: analisis.tonalidad, notacion: notacion)
+            analisis.acordes, tonalidad: analisis.tonalidad, en: notacion)
         if !lineas.isEmpty {
             Section(notacion.texto(\.lineasDeNotasGuia)) {
                 ForEach(lineas, id: \.titulo) { linea in
@@ -319,7 +319,7 @@ struct VistaDeAnalisis: View {
         if let tonalidad = analisis.tonalidad {
             Section(notacion.texto(\.modulaciones)) {
                 ForEach(
-                    PresentacionDeModulaciones.modulaciones(desde: tonalidad, notacion: notacion), id: \.self
+                    PresentacionDeModulaciones.modulaciones(desde: tonalidad, en: notacion), id: \.self
                 ) { modulacion in
                     VStack(alignment: .leading, spacing: 4) {
                         HStack {
@@ -365,7 +365,7 @@ struct VistaDeAnalisis: View {
     @ViewBuilder
     private func arpegiar(_ analisis: AnalisisPresentado) -> some View {
         if let arpegiada = analisis.arpegiada(
-            patron, figura: figura.duracion, enlazados: enlazados, notacion: notacion)
+            patron, figura: figura.duracion, enlazados: enlazados, en: notacion)
         {
             Section(notacion.texto(\.arpegiar)) {
                 Picker(notacion.texto(\.patron), selection: $patron) {
@@ -405,7 +405,7 @@ struct VistaDeAnalisis: View {
                 ForEach(DisposicionDeAcorde.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
             }
             if let dispuesta = PresentacionDeDisposiciones.progresion(
-                analisis.acordes, disposicion, notacion: notacion)
+                analisis.acordes, disposicion, en: notacion)
             {
                 let sonando = reproductor.paso(de: dispuesta.sonido)
                 DiagramaDePentagrama(dispuesta.pentagrama)
@@ -431,7 +431,7 @@ struct VistaDeAnalisis: View {
     @ViewBuilder
     private func conduccion(_ analisis: AnalisisPresentado) -> some View {
         if let voces = PresentacionDeAnalisis.conduccion(
-            analisis.acordes, disposicion: disposicion, notacion: notacion)
+            analisis.acordes, disposicion: disposicion, en: notacion)
         {
             Text(notacion.texto(\.conduccionDeVoces) + " · " + voces.disposicion).bold()
             ForEach(Array(voces.pasos.enumerated()), id: \.offset) { _, paso in

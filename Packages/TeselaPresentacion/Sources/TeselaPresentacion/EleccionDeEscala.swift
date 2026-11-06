@@ -11,11 +11,11 @@ import Armonia
 public struct EleccionDeEscala: Hashable, Sendable {
     /// Las escalas habituales y, después, las de otras tradiciones. Se elige por índice porque dos escalas con las
     /// mismas notas son iguales (`==`) aunque se llamen distinto.
-    public static let catalogo = TipoDeEscala.todos + TipoDeEscala.tradicionales
+    public static let catalogo = TipoDeEscala.occidentales + TipoDeEscala.tradicionales
     /// Los índices del catálogo de las escalas habituales.
-    public static let habituales = 0..<TipoDeEscala.todos.count
+    public static let habituales = 0..<TipoDeEscala.occidentales.count
     /// Los índices del catálogo de las escalas de otras tradiciones.
-    public static let deOtrasTradiciones = TipoDeEscala.todos.count..<catalogo.count
+    public static let deOtrasTradiciones = TipoDeEscala.occidentales.count..<catalogo.count
 
     /// Las doce tónicas, de Do a Si, con la grafía habitual de una tonalidad: Re♭, Mi♭, La♭ y Si♭ con bemoles y Fa♯
     /// con sostenido. (`Altura(midi:)` daría Do♯, Re♯, Sol♯ y La♯, con dobles sostenidos en la escala.) Se indican por

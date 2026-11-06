@@ -42,10 +42,10 @@ extension PresentacionDeEstudioDeEscala {
     /// Las escalas que contienen unas notas, de más a menos probable, con las que añade cada una.
     ///
     ///     let escalas = PresentacionDeEstudioDeEscala.escalas(conLasNotas: [.do, .mi, .sol, .si, Nota("Fa#")],
-    ///         notacion: .espanolCompacto)
+    ///         en: .espanolCompacto)
     ///     escalas.first?.nombre   // "Do pentatónica lidia"
     public static func escalas(
-        conLasNotas notas: [Nota], limite: Int = 10, notacion: Notacion
+        conLasNotas notas: [Nota], limite: Int = 10, en notacion: Notacion
     ) -> [EscalaEncontrada] {
         encontradas(Escala.identificar(notas), clases: Set(notas.map(\.claseDeAltura)), limite, notacion)
     }
@@ -53,7 +53,7 @@ extension PresentacionDeEstudioDeEscala {
     /// Las escalas que contienen unas clases de altura (las de un mástil o un teclado MIDI, sin ortografía), cada
     /// una escrita con la tónica que da menos alteraciones.
     public static func escalas(
-        conLasClases clases: [Int], limite: Int = 10, notacion: Notacion
+        conLasClases clases: [Int], limite: Int = 10, en notacion: Notacion
     ) -> [EscalaEncontrada] {
         let enLaOctava = Set(clases.map { ($0 % 12 + 12) % 12 })
         return encontradas(Escala.identificar(clasesDeAltura: clases), clases: enLaOctava, limite, notacion)
@@ -62,7 +62,7 @@ extension PresentacionDeEstudioDeEscala {
     /// Las escalas que contienen las notas de una pieza (una melodía en MIDI, MusicXML, MEI o ABC), sin las que
     /// apenas suenan, de más a menos probable.
     public static func escalas(
-        de pieza: PiezaImportada, limite: Int = 10, notacion: Notacion
+        de pieza: PiezaImportada, limite: Int = 10, en notacion: Notacion
     ) -> [EscalaEncontrada] {
         encontradas(pieza.escalas(), clases: Set(pieza.clasesDeAltura()), limite, notacion)
     }
@@ -85,9 +85,9 @@ extension PresentacionDeEstudioDeEscala {
     /// repite a la octava (o a cada semitono, como la cromática).
     ///
     ///     let simetria = PresentacionDeEstudioDeEscala.simetria(de: Escala(.do, .tonosEnteros),
-    ///         notacion: .espanolCompacto)
+    ///         en: .espanolCompacto)
     ///     simetria?.resumen   // "Se repite cada 2 semitonos: 2 transposiciones distintas"
-    public static func simetria(de escala: Escala, notacion: Notacion) -> SimetriaPresentada? {
+    public static func simetria(de escala: Escala, en notacion: Notacion) -> SimetriaPresentada? {
         guard let paso = escala.intervaloDeSimetria, paso >= 2 else { return nil }
         let ciclos = escala.ciclosSimetricos.map { ciclo in
             EscalaSobreElAcordePresentada(
@@ -106,7 +106,7 @@ extension PresentacionDeEstudioDeEscala {
     /// Las dos líneas de notas guía de una progresión, una nota por acorde en blancas: desde la tercera del primer
     /// acorde y desde su séptima. Con su pentagrama, su sonido y los ficheros para exportar.
     public static func lineasDeNotasGuia(
-        _ acordes: [Acorde], tonalidad: Tonalidad? = nil, notacion: Notacion
+        _ acordes: [Acorde], tonalidad: Tonalidad? = nil, en notacion: Notacion
     ) -> [SecuenciaPresentada] {
         guard !acordes.isEmpty else { return [] }
         return InicioDeNotasGuia.allCases.map { inicio in
@@ -127,7 +127,7 @@ extension PresentacionDeEstudioDeEscala {
     /// Las cinco formas de una pentatónica en la guitarra, desde la tónica, cada una con las notas que comparte con
     /// la siguiente. Vacío si la escala no tiene cinco notas.
     public static func formasPentatonicas(
-        de escala: Escala, mastil: Mastil = Mastil(.guitarra, numeroDeTrastes: 15), notacion: Notacion
+        de escala: Escala, mastil: Mastil = Mastil(.guitarra, numeroDeTrastes: 15), en notacion: Notacion
     ) -> [PosicionPresentada] {
         let formas = mastil.formasPentatonicas(de: escala)
         return formas.enumerated().map { i, forma in
@@ -147,7 +147,7 @@ extension PresentacionDeEstudioDeEscala {
     /// ella, con su tablatura.
     public static func secuenciaEnLasPosiciones(
         _ escala: Escala, _ secuencia: SecuenciaDeEscala, caged: Bool, sentido: SentidoDelIntervalo = .ascendente,
-        mastil: Mastil = Mastil(.guitarra, numeroDeTrastes: 15), notacion: Notacion
+        mastil: Mastil = Mastil(.guitarra, numeroDeTrastes: 15), en notacion: Notacion
     ) -> [PosicionPresentada] {
         let posiciones = caged ? mastil.posicionesCAGED(de: escala) : mastil.posicionesPorCuerda(de: escala)
         return posiciones.map { posicion in
@@ -206,9 +206,9 @@ extension PresentacionDeEstudioDeEscala {
     /// mano, con el nombre de cada nota. La tónica lleva el borde naranja.
     ///
     ///     let svg = PresentacionDeEstudioDeEscala.teclado(de: Escala(.re), mano: .derecha,
-    ///         notacion: .espanolCompacto)
+    ///         en: .espanolCompacto)
     public static func teclado(
-        de escala: Escala, mano: Mano? = nil, octavas: Int = 1, notacion: Notacion
+        de escala: Escala, mano: Mano? = nil, octavas: Int = 1, en notacion: Notacion
     ) -> String {
         let alturas: [Altura]
         var rotulos: [Int: String] = [:]

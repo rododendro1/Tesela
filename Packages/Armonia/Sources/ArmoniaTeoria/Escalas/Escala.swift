@@ -61,7 +61,9 @@ public struct Escala: Hashable, Sendable {
     /// última, en español o inglés con palabras («Fa sostenido dórico», «F sharp dorian»).
     private static func leerTonica(_ texto: String) -> (Nota, Notacion)? {
         let clave = texto.claveDeBusqueda
-        let otras = [Notacion.francesPalabras, .italianoPalabras, .alemanPalabras, .hungaroPalabras]
+        let otras = [
+            Notacion.conPalabras(.frances), .conPalabras(.italiano), .conPalabras(.aleman), .conPalabras(.hungaro),
+        ]
         for notacion in Notacion.deLecturaGenerica + otras + Notacion.conPalabras {
             if let nombre = Nota.porNombre[notacion]?[clave] { return (nombre, notacion) }
         }
@@ -370,14 +372,16 @@ extension Escala {
     /// en caso de empate, el orden de `tipos` y la armadura más sencilla.
     ///
     ///     Escala.candidatos([.do, .mi, .sol, .si, "Fa#"]).first?.valor   // Do pentatónica lidia
-    public static func candidatos(_ notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.todos) -> [Candidato<Escala>] {
+    public static func candidatos(_ notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [Candidato<
+        Escala
+    >] {
         ordenar(contenedoras(notas, tipos: tipos)) { escala in
             escala.notasEnAmbasDirecciones.filter { !notas.contains($0) }.count
         }
     }
 
     /// Escalas que contienen las notas dadas, de más a menos probable (sin el coste).
-    public static func identificar(_ notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.todos) -> [Escala] {
+    public static func identificar(_ notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [Escala] {
         candidatos(notas, tipos: tipos).map(\.valor)
     }
 
@@ -387,7 +391,7 @@ extension Escala {
     ///     Escala.candidatos(clasesDeAltura: [0, 4, 7, 11, 6]).first?.valor   // Do pentatónica lidia
     public static func candidatos(
         clasesDeAltura alturas: [Int],
-        tipos: [TipoDeEscala] = TipoDeEscala.todos
+        tipos: [TipoDeEscala] = TipoDeEscala.occidentales
     ) -> [Candidato<Escala>] {
         let buscadas = Set(alturas.map { modulo($0, 12) })
         return ordenar(contenedoras(clasesDeAltura: alturas, tipos: tipos)) { escala in
@@ -398,7 +402,7 @@ extension Escala {
     /// Escalas que contienen las clases de altura dadas, de más a menos probable (sin el coste).
     public static func identificar(
         clasesDeAltura alturas: [Int],
-        tipos: [TipoDeEscala] = TipoDeEscala.todos
+        tipos: [TipoDeEscala] = TipoDeEscala.occidentales
     ) -> [Escala] {
         candidatos(clasesDeAltura: alturas, tipos: tipos).map(\.valor)
     }

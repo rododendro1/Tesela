@@ -37,20 +37,26 @@ import Testing
         #expect(try Escala(leyendo: "Re Mi Fa Sol La Si Do").tipo == .dorico)
         #expect(try Escala(leyendo: "Do 2-2-3-2-3").tipo == .pentatonicaMayor)
         #expect(try Escala(leyendo: "C 2-1-2-2-1-2-2").tipo == .menorNatural)
-        #expect(Escala(texto: "Do 2-x-3") == nil)
-        #expect(Escala(texto: "Do Re foo") == nil)
-        #expect(Escala(texto: "foo 2-2-3") == nil)
+        #expect((try? Escala(leyendo: "Do 2-x-3")) == nil)
+        #expect((try? Escala(leyendo: "Do Re foo")) == nil)
+        #expect((try? Escala(leyendo: "foo 2-2-3")) == nil)
         #expect(Escala.leerPropia("Do") == nil)
     }
 
     @Test func vecinas() {
         let vecinas = Escala(.do).vecinas()
-        #expect(vecinas.contains { $0.escala == Escala(.do, .lidio) && $0.de == .fa && $0.a == Nota(.fa, .sostenido) })
-        #expect(vecinas.contains { $0.escala == Escala(.do, .mixolidio) && $0.de == .si && $0.a == Nota(.si, .bemol) })
+        #expect(
+            vecinas.contains {
+                $0.escala == Escala(.do, .lidio) && $0.desde == .fa && $0.hasta == Nota(.fa, .sostenido)
+            })
+        #expect(
+            vecinas.contains {
+                $0.escala == Escala(.do, .mixolidio) && $0.desde == .si && $0.hasta == Nota(.si, .bemol)
+            })
         #expect(vecinas.allSatisfy { $0.escala.notas.count == 7 })
         #expect(Set(vecinas.map(\.escala)).count == vecinas.count)
         // Al mover la tónica, la escala que sale tiene otra.
-        #expect(vecinas.contains { $0.de == .do })
+        #expect(vecinas.contains { $0.desde == .do })
         #expect(Escala(.do, .cromatica).vecinas().isEmpty)
     }
 

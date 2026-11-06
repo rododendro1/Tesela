@@ -21,7 +21,7 @@ import Testing
             let valor = generar(&azar)
             for notacion in Self.notaciones {
                 let texto = valor.texto(en: notacion)
-                #expect(T(texto: texto) == valor, "«\(texto)» (\(notacion))", sourceLocation: sourceLocation)
+                #expect((try? T(leyendo: texto)) == valor, "«\(texto)» (\(notacion))", sourceLocation: sourceLocation)
             }
         }
     }
@@ -58,7 +58,7 @@ import Testing
         comprobar { azar in
             Escala(
                 Nota(pasosDeQuinta: Int.random(in: -7...7, using: &azar)),
-                (TipoDeEscala.todos + TipoDeEscala.tradicionales).randomElement(using: &azar)!)
+                (TipoDeEscala.occidentales + TipoDeEscala.tradicionales).randomElement(using: &azar)!)
         }
         comprobar { azar in
             Tonalidad(
@@ -87,7 +87,8 @@ import Testing
     ) {
         for texto in textos {
             #expect(
-                T(texto: texto) == nil, "«\(texto)» no debería leerse como \(T.self)", sourceLocation: sourceLocation)
+                (try? T(leyendo: texto)) == nil, "«\(texto)» no debería leerse como \(T.self)",
+                sourceLocation: sourceLocation)
             #expect(throws: (any Error).self, "«\(texto)»", sourceLocation: sourceLocation) { try T(leyendo: texto) }
         }
     }
@@ -106,20 +107,20 @@ import Testing
     @Test func noSeMezclanIdiomas() throws {
         rechaza(Escala.self, ["Re dorian", "La harmonic minor", "Fa# lydian"])
         // «Do major» sí vale, como en las tonalidades: es catalán.
-        #expect(Escala(texto: "Do major") == Escala(.do, .mayor))
-        #expect(Escala(texto: "D dorian") == Escala(.re, .dorico))
-        #expect(Escala(texto: "Re dórico") == Escala(.re, .dorico))
-        #expect(Escala(texto: "F# lydian") == Escala(Nota(.fa, .sostenido), .lidio))
+        #expect((try? Escala(leyendo: "Do major")) == Escala(.do, .mayor))
+        #expect((try? Escala(leyendo: "D dorian")) == Escala(.re, .dorico))
+        #expect((try? Escala(leyendo: "Re dórico")) == Escala(.re, .dorico))
+        #expect((try? Escala(leyendo: "F# lydian")) == Escala(Nota(.fa, .sostenido), .lidio))
 
         // Las tonalidades se leen a través de las escalas: la misma regla.
         rechaza(Tonalidad.self, ["Re minor", "Sib minor", "La harmonic minor"]) // «Do major» sí vale: es catalán
-        #expect(Tonalidad(texto: "D minor") == Tonalidad(.re, .menor))
-        #expect(Tonalidad(texto: "Re menor") == Tonalidad(.re, .menor))
+        #expect((try? Tonalidad(leyendo: "D minor")) == Tonalidad(.re, .menor))
+        #expect((try? Tonalidad(leyendo: "Re menor")) == Tonalidad(.re, .menor))
 
         // El bajo de un acorde se escribe como su fundamental.
         rechaza(Acorde.self, ["Sol7/B", "G7/Si", "Re/E", "C/Mi", "Sib7(b9)/D"]) // «Do/E» sí vale: D°/E
-        #expect(Acorde(texto: "G7/B") == Acorde(texto: "Sol7/Si"))
-        #expect(Acorde(texto: "Faug/A") == Acorde(.fa, .aumentado, inversion: 1))
+        #expect((try? Acorde(leyendo: "G7/B")) == (try? Acorde(leyendo: "Sol7/Si")))
+        #expect((try? Acorde(leyendo: "Faug/A")) == Acorde(.fa, .aumentado, inversion: 1))
         do {
             _ = try Acorde(leyendo: "Sol7/B")
             Issue.record("Se esperaba un error")
@@ -136,7 +137,7 @@ import Testing
     /// El init opcional lleva etiqueta: con una variable devuelve `nil`, nunca se detiene.
     @Test func textoDelUsuarioNoDetieneLaEjecucion() {
         let entradas = ["Sol7", "Sol77", "", "🎵", String(repeating: "#", count: 50)]
-        let leidos = entradas.map { Acorde(texto: $0) }
+        let leidos = entradas.map { try? Acorde(leyendo: $0) }
         #expect(leidos.compactMap { $0 } == [Acorde("Sol7")])
     }
 

@@ -22,7 +22,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor, .septimaMayor,
         ],
         alias: ["mugam Rast"], variantes: ["Rast mugham"],
-        categoria: .mugam)
+        categoria: .mugam, llevaLaCategoria: true)
     /// Şur: tres tetracordos tono-semitono-tono encadenados (Re Mi Fa | Sol La Si♭ Do | Re Mi♭ Fa en Sol). Mi
     /// por debajo de la tónica y Mi♭ por encima; el 2.º grado (La) se baja a veces un poco.
     public static let surMugami = TipoDeEscala(
@@ -32,7 +32,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .sextaMayor, .septimaMenor,
         ],
         alias: ["mugam Şur"], variantes: ["Shur mugham"],
-        categoria: .mugam)
+        categoria: .mugam, llevaLaCategoria: true)
     /// Segah: tres tetracordos semitono-tono-tono encadenados (Si Do Re | Mi Fa Sol La | Si♭ Do Re en Mi). Si
     /// por debajo de la tónica y Si♭ por encima.
     public static let segahMugami = TipoDeEscala(
@@ -42,7 +42,7 @@ extension TipoDeEscala {
             .quintaDisminuida, .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["mugam Segah"], variantes: ["Segah mugham"],
-        categoria: .mugam)
+        categoria: .mugam, llevaLaCategoria: true)
     /// Çahargah: tetracordos semitono-segunda aumentada-semitono, los dos de abajo encadenados y el de arriba
     /// tras un tono (Sol La♭ Si | Do Re♭ Mi Fa | Sol La♭ Si Do en Do): la doble armónica.
     public static let cahargahMugami = TipoDeEscala(
@@ -52,7 +52,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         alias: ["mugam Çahargah"], variantes: ["Chahargah mugham"],
-        categoria: .mugam)
+        categoria: .mugam, llevaLaCategoria: true)
 
     /// Los mugam de Hacıbəyov que se escriben en doce notas sin dudas.
     public static let mugamlar: [TipoDeEscala] = [.rastMugami, .surMugami, .segahMugami, .cahargahMugami]

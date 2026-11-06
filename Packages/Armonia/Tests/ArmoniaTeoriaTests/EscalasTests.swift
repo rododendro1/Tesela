@@ -394,7 +394,7 @@ import Testing
         #expect(Escala(.do, .asavari).nombre == "Do Āsāvarī")
         // La búsqueda no distingue diacríticos ni mayúsculas.
         for texto in ["Do Kafi", "Do kāfī", "Do KAFI", "Do Kāfī"] {
-            #expect(Escala(texto: texto)?.tipo.nombre == "Kāfī", Comment(rawValue: texto))
+            #expect((try? Escala(leyendo: texto))?.tipo.nombre == "Kāfī", Comment(rawValue: texto))
         }
         #expect(Escala("Do shanmukhapriya").tipo == TipoDeEscala.melakarta(56))
         #expect(Escala("Do Sanmukhapriya").tipo == TipoDeEscala.melakarta(56))
@@ -453,7 +453,7 @@ import Testing
         #expect(TipoDeEscala.dobleArmonica == .bhairav)
         #expect(TipoDeEscala.menorHungara == .niavent)
         #expect(TipoDeEscala.egipcia == .shang)
-        #expect(TipoDeEscala.todos.count == Set(TipoDeEscala.todos).count) // sin repetidos en el catálogo
+        #expect(TipoDeEscala.occidentales.count == Set(TipoDeEscala.occidentales).count) // sin repetidos en el catálogo
         #expect(
             Escala.identificar(["Do", "Re♭", "Mi", "Fa", "Sol", "La♭", "Si"]).contains(Escala(.do, .dobleArmonica)))
     }
@@ -500,18 +500,19 @@ import Testing
         }
 
         // Se leen por su nombre y por su ventana.
-        #expect(Escala(texto: "Do cromática con dos bemoles") == Escala(.do, .cromaticaConDosBemoles))
-        #expect(Escala(texto: "Re cromatica -1..10") == Escala(.re, .cromaticaConCincoSostenidos))
-        #expect(Escala(texto: "Re cromática −6…5") == Escala(.re, .cromaticaConCincoBemoles))
-        #expect(Escala(texto: "Do cromática con cuatro bemoles") == Escala(.do, .cromatica))
-        #expect(Escala(texto: "C chromatic with one flat") == Escala(.do, .cromaticaConUnBemol))
+        #expect((try? Escala(leyendo: "Do cromática con dos bemoles")) == Escala(.do, .cromaticaConDosBemoles))
+        #expect((try? Escala(leyendo: "Re cromatica -1..10")) == Escala(.re, .cromaticaConCincoSostenidos))
+        #expect((try? Escala(leyendo: "Re cromática −6…5")) == Escala(.re, .cromaticaConCincoBemoles))
+        #expect((try? Escala(leyendo: "Do cromática con cuatro bemoles")) == Escala(.do, .cromatica))
+        #expect((try? Escala(leyendo: "C chromatic with one flat")) == Escala(.do, .cromaticaConUnBemol))
         for tipo in seis {
-            #expect(TipoDeEscala.todos.contains(tipo), Comment(rawValue: tipo.nombre))
+            #expect(TipoDeEscala.occidentales.contains(tipo), Comment(rawValue: tipo.nombre))
             for idioma in Idioma.allCases {
                 let notacion = Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false))
                 let escala = Escala(Nota("Fa#"), tipo)
                 #expect(
-                    Escala(texto: escala.nombre(en: notacion)) == escala, "\(idioma): \(escala.nombre(en: notacion))")
+                    (try? Escala(leyendo: escala.nombre(en: notacion))) == escala,
+                    "\(idioma): \(escala.nombre(en: notacion))")
             }
         }
         // Las seis tienen nombres distintos en cada idioma.
@@ -569,7 +570,7 @@ import Testing
         #expect(Escala("C auxiliary augmented").tipo == .tonosEnteros)
         #expect(Escala(.do, .messiaen3).nombre(en: .inglesASCII) == "C Messiaen mode 3")
         #expect(Escala(.mi, .flamenca).nombre(en: .inglesASCII) == "E flamenco")
-        #expect(TipoDeEscala.todos.count == Set(TipoDeEscala.todos).count)
+        #expect(TipoDeEscala.occidentales.count == Set(TipoDeEscala.occidentales).count)
     }
 
     @Test func modosDeLaDobleArmonicaYDeLasNapolitanas() {
@@ -625,7 +626,7 @@ import Testing
         // Alias de escalas que ya estaban.
         #expect(Escala("Do mayor melódica").tipo == .mixolidioSextaMenor)
         #expect(Escala("Sol dominante b9 b13").tipo == .frigioDominante)
-        #expect(TipoDeEscala.todos.count == Set(TipoDeEscala.todos).count)
+        #expect(TipoDeEscala.occidentales.count == Set(TipoDeEscala.occidentales).count)
     }
 
     @Test func etiopesMaqamatIndonesiaYKlezmer() {
@@ -668,7 +669,7 @@ import Testing
         #expect(Escala("C Algerian").tipo == .argelina)
         #expect(Escala(.re, .nahawand).nombre(en: .inglesASCII) == "D Nahāwand")
         // Las tradicionales no entran en las búsquedas de escalas habituales.
-        #expect(!(TipoDeEscala.todos.contains { $0.nombre == "Ḥijāz" }))
+        #expect(!(TipoDeEscala.occidentales.contains { $0.nombre == "Ḥijāz" }))
     }
 
     @Test func ragasDastgahCoreanasAndinasYGriegas() {
@@ -705,7 +706,7 @@ import Testing
         #expect(notas(.doricoSinSexta) == "Do Re Mi♭ Fa Sol Si♭")
         #expect(notas(.eolicoSinSegunda) == "Do Mi♭ Fa Sol La♭ Si♭")
         #expect(Set(Escala(.do, .hexatonicaDeDosTriadas).notas) == Set(Acorde("Do").notas + Acorde("Re").notas))
-        #expect(TipoDeEscala.todos.count == Set(TipoDeEscala.todos).count)
+        #expect(TipoDeEscala.occidentales.count == Set(TipoDeEscala.occidentales).count)
         // Nombres.
         for (texto, nombre) in [
             ("Do Bhupali", "Bhūpālī"), ("Do malkauns", "Mālkauns"), ("Do Bageshri", "Bāgeśrī"),
@@ -714,7 +715,7 @@ import Testing
             ("Mi harmonia doria cromatica", "harmonía doria cromática"), ("Do jónico sin 4ª", "jónico sin 4ª"),
             ("C triad pair", "hexatónica de dos tríadas"),
         ] {
-            #expect(Escala(texto: texto)?.tipo.nombre == nombre, Comment(rawValue: texto))
+            #expect((try? Escala(leyendo: texto))?.tipo.nombre == nombre, Comment(rawValue: texto))
         }
     }
 
@@ -771,10 +772,10 @@ import Testing
             ("Do maqam rast", "maqām Rāst"), ("Re bayati", "Bayātī"), ("Re Saba", "Ṣabā"), ("Re Šur", "Šur"),
             ("Re shur", "Šur"), ("Do rast panjgah", "Rāst-Panjgāh"),
         ] {
-            #expect(Escala(texto: texto)?.tipo.nombre == nombre, Comment(rawValue: texto))
+            #expect((try? Escala(leyendo: texto))?.tipo.nombre == nombre, Comment(rawValue: texto))
         }
         // «Rast» sola sigue siendo el dromos.
-        #expect(Escala(texto: "Re rast")?.tipo.nombre == "Rast")
+        #expect((try? Escala(leyendo: "Re rast"))?.tipo.nombre == "Rast")
     }
 
     @Test func modosDeLaMayorHungaraPentatonicasYAliasDeCompositor() {
@@ -808,7 +809,7 @@ import Testing
         #expect(notas(Escala(.do, .kalavati)) == "Do Mi Sol La Si♭")
         #expect(notas(Escala(.do, .revati)) == "Do Re♭ Fa Sol Si♭")
         #expect(notas(Escala(.do, .candrakauns)) == "Do Mi♭ Fa La♭ Si")
-        #expect(TipoDeEscala.todos.count == Set(TipoDeEscala.todos).count)
+        #expect(TipoDeEscala.occidentales.count == Set(TipoDeEscala.occidentales).count)
         // Nombres de compositor y otros alias.
         for (texto, nombre) in [
             ("La de Liszt", "menor húngara"), ("Do Rimski-Kórsakov", "disminuida semitono-tono"),
@@ -818,7 +819,7 @@ import Testing
             ("C Romanian major", "mayor rumana"), ("Do Shivaranjani", "Śivarañjanī"),
             ("Do Chandrakauns", "Candrakauns"), ("Do Amritavarshini", "Amṛtavarṣiṇī"),
         ] {
-            #expect(Escala(texto: texto)?.tipo.nombre == nombre, Comment(rawValue: texto))
+            #expect((try? Escala(leyendo: texto))?.tipo.nombre == nombre, Comment(rawValue: texto))
         }
     }
 
@@ -875,7 +876,7 @@ import Testing
         #expect(Escala(.re, .zhi).notas.map(\.description) == ["Re", "Mi", "Sol", "La", "Si"])
         // Se leen con tonos, sin ellos y en caracteres chinos; el nombre no se traduce.
         for texto in ["Do Gōng", "Do gong", "Do GONG", "Do 宫", "Do 宮", "C gong"] {
-            #expect(Escala(texto: texto)?.tipo.nombre == "Gōng", Comment(rawValue: texto))
+            #expect((try? Escala(leyendo: texto))?.tipo.nombre == "Gōng", Comment(rawValue: texto))
         }
         #expect(Escala("Sol zhi").tipo.nombre == "Zhǐ")
         #expect(Escala("Mi jiao").tipo.nombre == "Jué")
@@ -917,10 +918,10 @@ import Testing
             ("Re min'yō", "Min'yō"), ("Re minyo", "Min'yō"), ("Re yo", "Yō"), ("Mi in", "In"),
             ("Mi miyako-bushi", "Miyakobushi"), ("Do kumoi", "Kumoijōshi"), ("Do 岩戸", "Iwato"),
         ] {
-            #expect(Escala(texto: texto)?.tipo.nombre == nombre, Comment(rawValue: texto))
+            #expect((try? Escala(leyendo: texto))?.tipo.nombre == nombre, Comment(rawValue: texto))
         }
         #expect(Escala(.do, .hirajoshi).nombre(en: .inglesASCII) == "C Hirajōshi")
-        #expect(!(TipoDeEscala.todos.contains { $0.nombre == "Hirajōshi" }))
+        #expect(!(TipoDeEscala.occidentales.contains { $0.nombre == "Hirajōshi" }))
     }
 
     @Test func harmoniaiMakamlarMaqamatPathetYRagasNuevos() {
@@ -969,7 +970,7 @@ import Testing
             ("Do Slendro manyura", "Sléndro pathet manyura"), ("Do Mohanakalyani", "Mohanakalyāṇi"),
             ("Do Lalit", "Lalit"), ("Si harmonia mixolidia", "harmonía mixolidia"),
         ] {
-            #expect(Escala(texto: texto)?.tipo.nombre == nombre, Comment(rawValue: texto))
+            #expect((try? Escala(leyendo: texto))?.tipo.nombre == nombre, Comment(rawValue: texto))
         }
         #expect(Escala("Do sexta disminuida").tipo == .bebopMayor)
         #expect(Escala("C minor sixth diminished").tipo == .bebopMenorMelodica)
@@ -1010,8 +1011,8 @@ import Testing
         ] {
             #expect((try? TipoDeEscala(leyendo: texto))?.nombre == nombre, Comment(rawValue: texto))
         }
-        #expect(Escala(texto: "Re pitu")?.tipo.nombre == "pītu")
-        #expect(!(TipoDeEscala.todos.contains { $0.nombre == "išartu" }))
+        #expect((try? Escala(leyendo: "Re pitu"))?.tipo.nombre == "pītu")
+        #expect(!(TipoDeEscala.occidentales.contains { $0.nombre == "išartu" }))
     }
 
     @Test func gramaMurchanaYGenerosGriegos() {
@@ -1037,7 +1038,7 @@ import Testing
         // …y las escalas habituales siguen igual: los nombres de siempre van primero.
         #expect((try? TipoDeEscala(leyendo: "mayor"))?.nombre == "mayor")
         #expect(TipoDeEscala.frigioDominante.nombre(en: .inglesASCII) == "phrygian dominant")
-        #expect(!(TipoDeEscala.todos.contains { $0.nombre == "Hitzáz" }))
+        #expect(!(TipoDeEscala.occidentales.contains { $0.nombre == "Hitzáz" }))
     }
 
     @Test func aliasEnGriegoYEnDevanagari() {

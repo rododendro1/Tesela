@@ -122,12 +122,12 @@ el lidio dominante es la acústica de Bartók. Lo dice el uso, y `TipoDeEscala.u
 - **sintética**: las que salen de rotar o alterar otra, sin repertorio propio (casi todos los modos de la menor y la
   mayor armónicas, de la doble armónica y de las napolitanas).
 
-`TipoDeEscala.todos(uso:)` da las de un uso, en el orden de `todos`, y en la línea de comandos `armonia escalas --uso
+`TipoDeEscala.occidentales(uso:)` da las de un uso, en el orden de `occidentales`, y en la línea de comandos `armonia escalas --uso
 jazz` las lista. Las escalas de otras tradiciones no tienen uso: se clasifican por su tradición.
 
 ```swift
 TipoDeEscala.dorico.usos == [.clasica, .jazz]    // true
-TipoDeEscala.todos(uso: .blues).count            // 6
+TipoDeEscala.occidentales(uso: .blues).count     // 6
 UsoDeEscala.sigloXX.nombre                       // "siglo XX"
 TipoDeEscala.kafi.usos.isEmpty                   // true
 ```
@@ -283,7 +283,7 @@ Escala("La hicaz makami").notas              // La Si♭ Do♯ Re Mi Fa♯ Sol
 Escala("Do podhalańska").notas               // Do Re Mi Fa♯ Sol La Si♭
 ```
 
-No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales;
+No forman parte de `TipoDeEscala.occidentales`, para no cambiar las búsquedas de escalas habituales;
 están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `chinas`, `japonesas`,
 `ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `mesopotamicas`, `gramas`, `murchanas`, `generosDeArquitasYPtolomeo`, `ajnas`, `cesniler`, `africanas`,
 `sudesteAsiaticas`, `modosGregorianos`, `generosDeDidimoYEratostenes`, `harmoniaiCromaticas`, `harmoniaiEnarmonicas`,
@@ -437,7 +437,7 @@ El nombre de cada tipo de escala en cada idioma, y las otras formas con que se l
 fichero por idioma: `Escalas/Nombres/NombresDeEscalas+Catalan.swift`, `+Gallego`, `+Ruso`… (el español sale
 del propio catálogo). `TipoDeEscala.nombre(en:)` usa el fichero del idioma de la notación, y
 `TipoDeEscala(leyendo:)` y `Escala("Re dòric")` leen los de todos. Cada fichero da todos los tipos de
-`TipoDeEscala.todos`, el nombre de cada `CategoriaTradicional` (`.categoria`) y las escalas de otras tradiciones
+`TipoDeEscala.occidentales`, el nombre de cada `CategoriaTradicional` (`.categoria`) y las escalas de otras tradiciones
 que se traducen en ese idioma (`.tradicional(.andina, "…")`, que apunta al miembro de `TipoDeEscala` y no compila si
 deja de existir); las demás, sin fila, conservan su nombre original (Kāfī, Hitzáz).
 `Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno y que no haya filas que no traducen nada. Un idioma nuevo es un fichero más.

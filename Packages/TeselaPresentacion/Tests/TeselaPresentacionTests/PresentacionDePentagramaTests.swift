@@ -58,7 +58,7 @@ import Testing
     @Test func laVozSeDibujaConSuRitmo() {
         let figura = Duracion.corchea.grupoIrregular(3, en: 2)
         let arpegio = PresentacionDeArpegios.arpegio(
-            Arpegio(Acorde("Mi7")), figura: figura, notacion: .espanolCompacto)
+            Arpegio(Acorde("Mi7")), figura: figura, en: .espanolCompacto)
         let pentagrama = PentagramaPresentado(arpegio.voz, titulo: "Mi7", resaltada: 1)
         #expect(pentagrama.descripcion == "Mi7: Mi₄, Sol♯₄, Si₄, Re₅, Mi₅")
         #expect(pentagrama.fichero.nombreDeFichero == "Pentagrama Mi7.svg")

@@ -9,9 +9,9 @@ extension PresentacionDeRelacionesDeAcorde {
     /// las digitaciones de guitarra más cómodas, las escalas compatibles con sus tensiones y las sustituciones. El
     /// alto es el que ocupa. `armonia grabar hoja --acorde Sol7` la pasa a PDF.
     ///
-    ///     let hoja = PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: Acorde("Sol7"), notacion: .espanolCompacto)
+    ///     let hoja = PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: Acorde("Sol7"), en: .espanolCompacto)
     ///     hoja.hasPrefix("<svg")   // true
-    public static func hojaDeEstudio(de acorde: Acorde, notacion: Notacion) -> String {
+    public static func hojaDeEstudio(de acorde: Acorde, en notacion: Notacion) -> String {
         typealias Hoja = PresentacionDeEstudioDeEscala
         let ancho = Hoja.anchoDeLaHoja
         let margen = Hoja.margenDeLaHoja
@@ -50,7 +50,7 @@ extension PresentacionDeRelacionesDeAcorde {
 
         // Las disposiciones: cada una con todas sus inversiones en un pentagrama.
         let disposiciones = [DisposicionDeAcorde.cerrada, .drop2, .shell].compactMap {
-            PresentacionDeDisposiciones.acorde(acorde, $0, notacion: notacion)
+            PresentacionDeDisposiciones.acorde(acorde, $0, en: notacion)
         }
         if !disposiciones.isEmpty {
             titulo(notacion.texto(\.disposicion))
@@ -78,7 +78,7 @@ extension PresentacionDeRelacionesDeAcorde {
         if !escalas.isEmpty {
             titulo(notacion.texto(\.escalasCompatibles))
             for escala in escalas {
-                let presentada = PresentacionDeEscalaYAcorde.presentar(escala, sobre: acorde, notacion: notacion)
+                let presentada = PresentacionDeEscalaYAcorde.presentar(escala, sobre: acorde, en: notacion)
                 linea(presentada.nombre + (presentada.resumen.isEmpty ? "" : " — " + presentada.resumen))
             }
             y += 8

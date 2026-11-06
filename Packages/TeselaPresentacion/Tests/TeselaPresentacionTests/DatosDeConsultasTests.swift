@@ -20,10 +20,10 @@ import Testing
     }
 
     @Test func losAcordesDeUnasNotas() throws {
-        let candidatos = try DatosDeCandidato.identificar(["Do", "Mi", "Sol", "Sib"], notacion: .espanolCompacto)
+        let candidatos = try DatosDeCandidato.identificar(["Do", "Mi", "Sol", "Sib"], en: .espanolCompacto)
         #expect(candidatos.first?.cifrado == "Do7")
         #expect(candidatos.count <= 5)
-        let enIngles = try DatosDeCandidato.identificar(["Do", "Mi", "Sol", "Sib"], limite: 1, notacion: .inglesASCII)
+        let enIngles = try DatosDeCandidato.identificar(["Do", "Mi", "Sol", "Sib"], limite: 1, en: .inglesASCII)
         #expect(enIngles.map(\.cifrado) == ["C7"])
     }
 
@@ -50,7 +50,7 @@ import Testing
         #expect(datos.matriz.count == 12)
         #expect(datos.notas.count == 12)
         let presentada = try PresentacionDeSerie.presentar(
-            "5 4 0 9 7 2 8 1 3 6 t e", forma: FormaDeSerie(.original, 5), notacion: .espanolCompacto)
+            "5 4 0 9 7 2 8 1 3 6 t e", forma: FormaDeSerie(.original, 5), en: .espanolCompacto)
         #expect(presentada.matriz == datos.matriz)
         #expect(presentada.datos.first?.valor == datos.notas.joined(separator: " "))
         #expect(presentada.nombresDeLasClases == ConjuntoDeClasesDeAltura.nombresDeLasClases(en: .espanolCompacto))

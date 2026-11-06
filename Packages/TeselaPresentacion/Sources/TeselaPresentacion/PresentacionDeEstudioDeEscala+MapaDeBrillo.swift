@@ -8,10 +8,10 @@ extension PresentacionDeEstudioDeEscala {
     /// más oscura (a la izquierda) a la más brillante, con una caja por escala y una línea entre las que están a una
     /// nota de distancia. La escala `resaltada`, si es del mapa, va en otro color, y el mapa es el de su tónica.
     ///
-    ///     let mapa = PresentacionDeEstudioDeEscala.mapaDeBrillo(notacion: .espanolCompacto)
+    ///     let mapa = PresentacionDeEstudioDeEscala.mapaDeBrillo(en: .espanolCompacto)
     ///     mapa.hasPrefix("<svg")   // true
     public static func mapaDeBrillo(
-        numeroDeNotas: Int = 7, resaltada: Escala? = nil, notacion: Notacion
+        numeroDeNotas: Int = 7, resaltada: Escala? = nil, en notacion: Notacion
     ) -> String {
         let tonica = resaltada?.tonica ?? .do
         let mapa = Escala.mapaDeBrillo(tonica: tonica, numeroDeNotas: numeroDeNotas)
@@ -50,7 +50,7 @@ extension PresentacionDeEstudioDeEscala {
         for enlace in mapa.enlaces {
             let desde = cajas[enlace.oscura]
             let hasta = cajas[enlace.brillante]
-            let cambio = enlace.de.nombre(en: notacion) + " → " + enlace.a.nombre(en: notacion)
+            let cambio = enlace.desde.nombre(en: notacion) + " → " + enlace.hasta.nombre(en: notacion)
             cuerpo.append(
                 "<line x1=\"\(numero(desde.x + anchoDeCaja))\" y1=\"\(numero(desde.y + altoDeCaja / 2))\" "
                     + "x2=\"\(numero(hasta.x))\" y2=\"\(numero(hasta.y + altoDeCaja / 2))\" stroke=\"#9aa5b1\" "

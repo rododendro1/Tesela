@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         fundamentalNoOmitible: "no es pot ometre la fonamental",
         gradoNoOmitible: { grado in "«omit\(grado)» no és vàlid (es poden ometre 3, 5, 7, 9, 11 i 13)" },
         faltaLaFundamental: "falta la fonamental",
-        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .catalanPalabras)) no té cap paper en un acord per terceres" },
+        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .conPalabras(.catalan))) no té cap paper en un acord per terceres" },
         terceraMayorYMenor: "té tercera major i menor alhora (la ♯9 s'escriu com a 9a augmentada, no com a 3a menor)",
         variasSeptimas: "té més d'una sèptima",
         septimaDisminuidaFueraDelDisminuido: "la sèptima disminuïda només apareix a l'acord disminuït (amb 3a menor i 5a disminuïda)",

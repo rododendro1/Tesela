@@ -104,7 +104,7 @@ extension LineaDeComandos {
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDelTeclado }
         let escala = try Escala(leyendo: argumentos.unidos)
-        let svg = PresentacionDeEstudioDeEscala.teclado(de: escala, mano: mano, octavas: octavas, notacion: notacion)
+        let svg = PresentacionDeEstudioDeEscala.teclado(de: escala, mano: mano, octavas: octavas, en: notacion)
         return bien(svg.trimmingCharacters(in: "\n"))
     }
 
@@ -116,7 +116,7 @@ extension LineaDeComandos {
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDelReloj }
         let escala = try Escala(leyendo: argumentos.unidos)
         let svg = PresentacionDeEstudioDeEscala.reloj(
-            de: escala, orden: quintas ? .quintas : .cromatico, notacion: notacion)
+            de: escala, orden: quintas ? .quintas : .cromatico, en: notacion)
         return bien(svg.trimmingCharacters(in: "\n"))
     }
 
@@ -130,13 +130,13 @@ extension LineaDeComandos {
             if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaElAcordeDeLaHoja }
             let acorde = try Acorde(leyendo: cifrado)
-            return bien(PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, notacion: notacion))
+            return bien(PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, en: notacion))
         }
         if let texto = try argumentos.valorConPalabras(.tonalidad, siFalta: .faltaTonalidad) {
             if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaTonalidad }
             let tonalidad = try Tonalidad(leyendo: texto)
-            return bien(PresentacionDeTonalidad.hojaDeEstudio(de: tonalidad, notacion: notacion))
+            return bien(PresentacionDeTonalidad.hojaDeEstudio(de: tonalidad, en: notacion))
         }
         if argumentos.quitarMarca(.acordes) {
             // --doce y --contra se quitan antes que la tonalidad, que se lleva todo lo que va detrás de --en.
@@ -160,14 +160,14 @@ extension LineaDeComandos {
             if doce, let propia = tonalidad ?? analisis.tonalidad ?? analisis.acordes.first?.tonalidadPropia {
                 return bien(
                     PresentacionDeAnalisis.hojaEnLasDoceTonalidades(
-                        analisis.acordes, tonalidad: propia, notacion: notacion))
+                        analisis.acordes, tonalidad: propia, en: notacion))
             }
-            return bien(PresentacionDeAnalisis.hojaDeEstudio(analisis, notacion: notacion))
+            return bien(PresentacionDeAnalisis.hojaDeEstudio(analisis, en: notacion))
         }
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDeLaHoja }
         let escala = try Escala(leyendo: argumentos.unidos)
-        return bien(PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, notacion: notacion))
+        return bien(PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, en: notacion))
     }
 
     /// `pentagrama escala Re dórico [--octavas 2] [--bajando] [--secuencia terceras] [--mano derecha] [--tab]`,
@@ -239,7 +239,7 @@ extension LineaDeComandos {
             let tab = argumentos.quitarMarca(.tab)
             if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
             let acordes = try argumentos.restantes.map { try Acorde(leyendo: $0) }
-            guard let bajo = PresentacionDeAnalisis.bajoCaminante(acordes, notacion: notacion) else {
+            guard let bajo = PresentacionDeAnalisis.bajoCaminante(acordes, en: notacion) else {
                 throw ErrorDeUso.faltaLoQueDibujaElPentagrama
             }
             var partitura = bajo.partitura

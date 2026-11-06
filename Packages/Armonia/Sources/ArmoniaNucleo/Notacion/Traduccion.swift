@@ -18,7 +18,7 @@
 ///
 ///     let ordinales = Traducido<[String]>(["primera", "segunda"], ["first", "second"],
 ///                                         ca: ["primera", "segona"], …, ru: ["первая", "вторая"])
-///     ordinales.en(.catalanPalabras)[1]    // "segona"
+///     ordinales.en(.conPalabras(.catalan))[1]    // "segona"
 ///
 /// Como en ``Traduccion``, los quince valores son obligatorios y van en el mismo orden, así que una lista por
 /// idioma se revisa junto a las demás en vez de repartida por los `case` de un `switch`.
@@ -66,7 +66,7 @@ public struct Traducido<Valor> {
     /// sabe escribir el motor en cada idioma.
     ///
     ///     let inversion = Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) })
-    ///     inversion.en(.alemanPalabras)    // "erste Umkehrung"
+    ///     inversion.en(.conPalabras(.aleman))    // "erste Umkehrung"
     public init(cadaIdioma valor: (Notacion) -> Valor) {
         self.init(
             valor(.delIdioma(.espanol)), valor(.delIdioma(.ingles)), ca: valor(.delIdioma(.catalan)),
@@ -180,8 +180,8 @@ extension Traducido: Sendable where Valor: Sendable {}
 ///                        fr: "consonance parfaite", oc: "consonància perfiècha", it: "consonanza perfetta",
 ///                        de: "vollkommene Konsonanz", el: "τέλεια συμφωνία", ru: "совершенный консонанс",
 ///                        hu: "tökéletes konszonancia")
-///     t.en(.euskeraPalabras)    // "kontsonantzia perfektua"
-///     t.en(.alemanPalabras)     // "vollkommene Konsonanz"
+///     t.en(.conPalabras(.euskera))    // "kontsonantzia perfektua"
+///     t.en(.conPalabras(.aleman))     // "vollkommene Konsonanz"
 public typealias Traduccion = Traducido<String>
 
 extension String {

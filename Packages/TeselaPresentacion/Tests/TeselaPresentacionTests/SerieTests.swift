@@ -11,7 +11,7 @@ import Testing
 
     @Test func losDatosDeLaSerieDeBerg() throws {
         let presentada = try PresentacionDeSerie.presentar(
-            berg, forma: FormaDeSerie(.original, 5), notacion: .espanolCompacto)
+            berg, forma: FormaDeSerie(.original, 5), en: .espanolCompacto)
         #expect(presentada.serie == "5 4 0 9 7 2 8 1 3 6 t e")
         let datos = Dictionary(uniqueKeysWithValues: presentada.datos.map { ($0.titulo, $0.valor) })
         #expect(datos["Notas"]?.hasPrefix("Fa Mi Do La Sol Re") == true)
@@ -24,7 +24,7 @@ import Testing
 
     @Test func laMatrizConSusFormas() throws {
         let presentada = try PresentacionDeSerie.presentar(
-            berg, forma: FormaDeSerie(.original, 5), notacion: .espanolCompacto)
+            berg, forma: FormaDeSerie(.original, 5), en: .espanolCompacto)
         #expect(presentada.matriz.count == 12)
         #expect(presentada.matriz.allSatisfy { Set($0) == Set(0..<12) })
         #expect(presentada.matriz[0] == [5, 4, 0, 9, 7, 2, 8, 1, 3, 6, 10, 11])
@@ -41,7 +41,7 @@ import Testing
 
     @Test func laFormaElegidaSeResaltaSeEscuchaYSeExporta() throws {
         let original = try PresentacionDeSerie.presentar(
-            berg, forma: FormaDeSerie(.original, 5), notacion: .espanolCompacto)
+            berg, forma: FormaDeSerie(.original, 5), en: .espanolCompacto)
         #expect(original.clasesDeLaForma == [5, 4, 0, 9, 7, 2, 8, 1, 3, 6, 10, 11])
         #expect((0..<12).allSatisfy { original.estaEnLaForma(fila: 0, columna: $0) })
         #expect(!original.estaEnLaForma(fila: 1, columna: 0))
@@ -50,30 +50,30 @@ import Testing
         #expect(original.pentagrama.svg.contains("<svg"))
 
         let inversion = try PresentacionDeSerie.presentar(
-            berg, forma: FormaDeSerie(.inversion, 5), notacion: .espanolCompacto)
+            berg, forma: FormaDeSerie(.inversion, 5), en: .espanolCompacto)
         #expect(inversion.clasesDeLaForma == [5, 6, 10, 1, 3, 8, 2, 9, 7, 4, 0, 11])
         #expect((0..<12).allSatisfy { inversion.estaEnLaForma(fila: $0, columna: 0) })
         #expect(!inversion.estaEnLaForma(fila: 0, columna: 1))
 
         let retrogrado = try PresentacionDeSerie.presentar(
-            berg, forma: FormaDeSerie(.retrogrado, 5), notacion: .espanolCompacto)
+            berg, forma: FormaDeSerie(.retrogrado, 5), en: .espanolCompacto)
         #expect(retrogrado.clasesDeLaForma == original.clasesDeLaForma.reversed())
         #expect(retrogrado.estaEnLaForma(fila: 0, columna: 3))
     }
 
     @Test func unaSerieQueNoEsDodecafonicaNoSeLee() {
         #expect(throws: ErrorDeLectura.self) {
-            try PresentacionDeSerie.presentar("0 1 2", forma: FormaDeSerie(.original, 0), notacion: .espanolCompacto)
+            try PresentacionDeSerie.presentar("0 1 2", forma: FormaDeSerie(.original, 0), en: .espanolCompacto)
         }
         #expect(throws: ErrorDeLectura.self) {
             try PresentacionDeSerie.presentar(
-                "0 1 2 3 4 5 6 7 8 9 t t", forma: FormaDeSerie(.original, 0), notacion: .espanolCompacto)
+                "0 1 2 3 4 5 6 7 8 9 t t", forma: FormaDeSerie(.original, 0), en: .espanolCompacto)
         }
     }
 
     @Test func enOtroIdioma() throws {
         let presentada = try PresentacionDeSerie.presentar(
-            berg, forma: FormaDeSerie(.original, 5), notacion: .inglesASCII)
+            berg, forma: FormaDeSerie(.original, 5), en: .inglesASCII)
         #expect(presentada.datos.map(\.titulo).contains("Hexachords"))
         #expect(presentada.formasDistintas == "24 distinct forms")
         #expect(presentada.nombresDeLasClases[0] == "C")

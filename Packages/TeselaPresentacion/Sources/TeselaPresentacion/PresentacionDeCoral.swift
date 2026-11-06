@@ -104,14 +104,14 @@ public enum PresentacionDeCoral {
     /// Hace la tarea con el texto y, si no está vacía, la tonalidad («La menor»).
     public static func presentar(
         _ tarea: Tarea, _ texto: String, tonalidad: String = "", propuestas: Int = 3,
-        notacion: Notacion
+        en notacion: Notacion
     ) throws -> CoralPresentado {
         let dada = tonalidad.trimmingCharacters(in: .whitespaces)
         let leida: Tonalidad? = try dada.isEmpty ? nil : Tonalidad(leyendo: dada)
         switch tarea {
         case .armonizar: return try armonizar(texto, en: leida, propuestas: propuestas, notacion: notacion)
         case .realizar: return try realizar(texto, en: leida, notacion: notacion)
-        case .revisar: return try revisar(texto, notacion: notacion)
+        case .revisar: return try revisar(texto, en: notacion)
         }
     }
 
@@ -131,7 +131,7 @@ public enum PresentacionDeCoral {
                 Escucha.notas(de: voz, tempo: Escucha.tempo).compactMap { nota in
                     nota.evento.alturas.max { $0.midi < $1.midi }
                 }
-            } ?? partes.compactMap { Altura(texto: $0) }
+            } ?? partes.compactMap { try? Altura(leyendo: $0) }
         guard !alturas.isEmpty || voz == nil else {
             throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio)
         }
@@ -183,7 +183,7 @@ public enum PresentacionDeCoral {
     }
 
     /// Las faltas de conducción (quintas y octavas paralelas, cruzamientos…) de unas voces escritas a mano.
-    public static func revisar(_ texto: String, notacion: Notacion) throws -> CoralPresentado {
+    public static func revisar(_ texto: String, en notacion: Notacion) throws -> CoralPresentado {
         let coral = try Coral(leyendo: texto)
         let filas = coral.acordes.map { alturas in
             CoralPresentado.Fila(

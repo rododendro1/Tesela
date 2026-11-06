@@ -147,7 +147,7 @@ package struct NombresDeEscalas: Sendable {
 
     /// El español sale del catálogo: el nombre de cada tipo, sus alias y sus variantes.
     static let espanol = NombresDeEscalas(
-        TipoDeEscala.todos.map { Fila($0, $0.nombre, alias: $0.alias, variantes: $0.variantes) }
+        TipoDeEscala.occidentales.map { Fila($0, $0.nombre, alias: $0.alias, variantes: $0.variantes) }
             + TipoDeEscala.tradicionales.map { Fila.tradicional($0, alias: $0.alias, variantes: $0.variantes) }
             + CategoriaTradicional.allCases.map { Fila.categoria($0, $0.nombre) })
 }
@@ -191,7 +191,7 @@ extension TipoDeEscala {
     package static func buscar(nombre: String, conTonicaEn notacion: Notacion) -> TipoDeEscala? {
         if notacion == .inglesPalabras { return buscar(nombre: nombre, aceptarIngles: true) }
         let normalizado = normalizar(nombre)
-        if notacion == .rusoPalabras || notacion == .griegoPalabras {
+        if notacion == .conPalabras(.ruso) || notacion == .conPalabras(.griego) {
             return NombresDeEscalas.indiceRusoGriego[normalizado] ?? buscar(nombre: nombre, aceptarIngles: true)
         }
         // En alemán y en húngaro, el suyo o el del otro, que escriben las notas igual (C, H, B): «C dór», «H moll».

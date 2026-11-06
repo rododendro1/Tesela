@@ -18,13 +18,13 @@ extension PresentacionDeEstudioDeEscala {
     /// Las notas comunes van en azul; las que solo están en la primera, en verde; las de la segunda, en rojo.
     ///
     ///     let hoja = PresentacionDeEstudioDeEscala.comparacionNotaANota(
-    ///         Escala(.do), con: Escala(.do, .dorico), notacion: .espanolCompacto)
+    ///         Escala(.do), con: Escala(.do, .dorico), en: .espanolCompacto)
     ///     hoja.contains(">Do mayor → Do dórico</text>")   // true
-    public static func comparacionNotaANota(_ escala: Escala, con otra: Escala, notacion: Notacion) -> String {
+    public static func comparacionNotaANota(_ escala: Escala, con otra: Escala, en notacion: Notacion) -> String {
         let ancho = anchoDeLaHoja
         let margen = margenDeLaHoja
         let util = ancho - 2 * margen
-        let datos = comparar(escala, con: otra, notacion: notacion)
+        let datos = comparar(escala, con: otra, en: notacion)
         let comparacion = datos.comparacion
         let nombre = escala.nombre(en: notacion)
         let nombreDeLaOtra = otra.nombre(en: notacion)

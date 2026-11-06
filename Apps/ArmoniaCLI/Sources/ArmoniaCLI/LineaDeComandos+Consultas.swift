@@ -28,7 +28,7 @@ extension LineaDeComandos {
         case .valor(let texto): destino = try Tonalidad(leyendo: texto)
         }
         lineas.append(notacion.texto(\.modulaciones) + ":")
-        lineas += PresentacionDeModulaciones.modulaciones(desde: tonalidad, hasta: destino, notacion: notacion).map {
+        lineas += PresentacionDeModulaciones.modulaciones(desde: tonalidad, hasta: destino, en: notacion).map {
             "  " + $0.destino + " · " + $0.tecnica + ": " + $0.plan.descripcion(en: notacion)
         }
         return bien(lineas.joined(separator: "\n"))
@@ -143,11 +143,11 @@ extension LineaDeComandos {
         if conNotasGuia {
             lineas.append(notacion.texto(\.lineasDeNotasGuia) + ":")
             lineas += PresentacionDeEstudioDeEscala.lineasDeNotasGuia(
-                analisis.acordes, tonalidad: analisis.tonalidad, notacion: notacion
+                analisis.acordes, tonalidad: analisis.tonalidad, en: notacion
             ).map { "  " + $0.titulo + ": " + $0.notas }
         }
         // Con --conduccion, cada paso con sus notas comunes y lo que se mueve cada voz, en drop 2.
-        if conConduccion, let conduccion = PresentacionDeAnalisis.conduccion(analisis.acordes, notacion: notacion) {
+        if conConduccion, let conduccion = PresentacionDeAnalisis.conduccion(analisis.acordes, en: notacion) {
             lineas.append(notacion.texto(\.conduccionDeVoces) + " (" + conduccion.disposicion + "):")
             for paso in conduccion.pasos {
                 lineas.append("  " + paso.titulo + " · " + paso.comunes)
@@ -156,7 +156,7 @@ extension LineaDeComandos {
             lineas.append("  " + conduccion.movimientoTotal)
         }
         // Con --bajo, un bajo caminante: un compás de negras por acorde.
-        if conBajo, let bajo = PresentacionDeAnalisis.bajoCaminante(analisis.acordes, notacion: notacion) {
+        if conBajo, let bajo = PresentacionDeAnalisis.bajoCaminante(analisis.acordes, en: notacion) {
             lineas.append(notacion.texto(\.bajoCaminante) + ":")
             for (acorde, compas) in zip(analisis.acordes, bajo.compases) {
                 lineas.append("  " + acorde.cifrado(en: notacion) + ": " + compas)

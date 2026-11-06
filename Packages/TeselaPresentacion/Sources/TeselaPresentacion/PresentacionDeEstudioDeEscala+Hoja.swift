@@ -31,10 +31,10 @@ extension PresentacionDeEstudioDeEscala {
     /// `armonia grabar hoja Do mayor` la pasa a PDF.
     ///
     ///     let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudio(
-    ///         de: Escala(.re, .dorico), notacion: .espanolCompacto)
+    ///         de: Escala(.re, .dorico), en: .espanolCompacto)
     ///     hoja.hasPrefix("<svg")   // true
     public static func hojaDeEstudio(
-        de escala: Escala, notacion: Notacion, secciones: Set<SeccionDeLaHoja> = Set(SeccionDeLaHoja.allCases)
+        de escala: Escala, en notacion: Notacion, secciones: Set<SeccionDeLaHoja> = Set(SeccionDeLaHoja.allCases)
     ) -> String {
         let ancho = anchoDeLaHoja
         let margen = margenDeLaHoja
@@ -64,14 +64,14 @@ extension PresentacionDeEstudioDeEscala {
             if secciones.contains(.estadisticas) {
                 cuerpo.append(texto(notacion.texto(\.estadisticas), x: margen, y: y + 12, tamano: 14, negrita: true))
                 lineas += 32
-                for dato in estadisticas(de: escala, notacion: notacion) {
+                for dato in estadisticas(de: escala, en: notacion) {
                     cuerpo.append(texto(dato.nombre + ": " + dato.valor, x: margen, y: lineas, tamano: 11))
                     lineas += 16
                 }
             }
             var altoDelReloj = 0.0
             if secciones.contains(.reloj) {
-                let reloj = self.reloj(de: escala, notacion: notacion)
+                let reloj = self.reloj(de: escala, en: notacion)
                 let x = secciones.contains(.estadisticas) ? ancho - margen - ladoDelReloj : margen
                 altoDelReloj = incrustar(reloj, x: x, y: y, ancho: ladoDelReloj, en: &cuerpo)
             }
@@ -84,7 +84,7 @@ extension PresentacionDeEstudioDeEscala {
             let anchoDelTeclado = (util - separacion) / 2
             var altoDeLosTeclados = 0.0
             for (i, mano) in Mano.allCases.enumerated() {
-                let teclado = self.teclado(de: escala, mano: mano, notacion: notacion)
+                let teclado = self.teclado(de: escala, mano: mano, en: notacion)
                 let x = margen + Double(i) * (anchoDelTeclado + separacion)
                 let alto = incrustar(teclado, x: x, y: y, ancho: anchoDelTeclado, en: &cuerpo)
                 altoDeLosTeclados = max(altoDeLosTeclados, alto)
@@ -104,7 +104,7 @@ extension PresentacionDeEstudioDeEscala {
         }
 
         // La escalera de brillo, de la más oscura a la más brillante.
-        let peldanos = secciones.contains(.escalera) ? escaleraDeBrillo(de: escala, notacion: notacion) : []
+        let peldanos = secciones.contains(.escalera) ? escaleraDeBrillo(de: escala, en: notacion) : []
         if peldanos.count > 1 {
             cuerpo.append(texto(notacion.texto(\.escaleraDeBrillo), x: margen, y: y + 12, tamano: 14, negrita: true))
             y += 32

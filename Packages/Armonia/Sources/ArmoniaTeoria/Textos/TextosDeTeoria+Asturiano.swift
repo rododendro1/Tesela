@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         fundamentalNoOmitible: "nun se pue omitir la fundamental",
         gradoNoOmitible: { grado in "«omit\(grado)» nun ye válidu (puen omitise 3, 5, 7, 9, 11 y 13)" },
         faltaLaFundamental: "falta la fundamental",
-        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .asturianoPalabras)) nun tien papel nun acorde per terceres" },
+        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .conPalabras(.asturiano))) nun tien papel nun acorde per terceres" },
         terceraMayorYMenor: "tien tercera mayor y menor al empar (la ♯9 escríbese como 9ª aumentada, non como 3ª menor)",
         variasSeptimas: "tien más d\'una séptima",
         septimaDisminuidaFueraDelDisminuido: "la séptima menguada namás apaez nel acorde menguáu (con 3ª menor y 5ª menguada)",

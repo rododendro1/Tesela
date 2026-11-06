@@ -8,7 +8,7 @@ Lo que comparten varios tipos se declara una sola vez, en `Protocolos.swift`:
 
 | Protocolo | Requisito | Lo que aporta | Tipos |
 |---|---|---|---|
-| `RepresentableComoTexto` | `init(leyendo:)`, `texto(en:)` | `init?(texto:)`, literal de texto, `Codable`, `texto` | `Alteracion`, `Nota`, `Altura`, `Intervalo`, `TipoDeAcorde`, `Acorde`, `Escala`, `Tonalidad`, `Duracion`, `Compas`, `Evento` |
+| `RepresentableComoTexto` | `init(leyendo:)`, `texto(en:)` | literal de texto, `Codable`, `texto` | `Alteracion`, `Nota`, `Altura`, `Intervalo`, `TipoDeAcorde`, `Acorde`, `Escala`, `Tonalidad`, `Duracion`, `Compas`, `Evento` |
 | `Nombrable` | `nombre(en:)` | el mismo nombre en cualquier `Notacion` | los anteriores salvo `Compas` y `Evento`, y casi todo lo que tiene nombre: `NotaNatural`, `CalidadDeIntervalo`, `Consonancia`, `TipoDeEscala`, `NombreDeGrado`, `Clave`, `Figura`, `InstrumentoDePartitura`, `PapelEnAcorde`, `CalidadDeTriada`, `Encordado`, `Arpegio`… |
 | `Transponible` | `transponer(_:)` | operadores `+` y `−`, `transponer(_:veces:)`, `secuencia(_:veces:)` | `Nota`, `Altura`, `Acorde`, `Escala`, `Tonalidad`, `Melodia`, `Evento`, `Voz`, `Coral`, `RitmoArmonico`, `ConjuntoDeClasesDeAltura`, `SerieDodecafonica` |
 | `ConClasesDeAltura` | `conjuntoDeClasesDeAltura` | `numeroDeForte`, `vectorIntervalico`, `esDeLaMismaClase(que:)` | `Acorde`, `Escala`, `Tonalidad`, `Melodia`, `ConjuntoDeClasesDeAltura` |
@@ -39,18 +39,14 @@ Escala(.la, .menorArmonica).cifradosRomanos(referencia: .menorNatural)
 // ["i", "ii°", "III+", "iv", "V", "VI", "♯vii°"]
 ```
 
-Literales, `Codable` e `init?(texto:)` llegan a través de `RepresentableComoTexto`. Un literal no
-válido detiene la ejecución con el mensaje del error de lectura (es un error de programación).
-Para texto que viene del usuario, usa `init(leyendo:)`, que dice dónde y por qué falla, o
-`init?(texto:)`, que devuelve `nil`.
-
-`Acorde("Sol7")` con un literal es el propio literal, no un opcional: Swift lo trata como
-`"Sol7" as Acorde` (SE-0213). Por eso la versión opcional lleva etiqueta:
+Literales y `Codable` llegan a través de `RepresentableComoTexto`. Un literal no válido detiene la ejecución con el
+mensaje del error de lectura (es un error de programación). Para texto que viene del usuario, usa `init(leyendo:)`,
+que dice dónde y por qué falla, o `try?` si basta con `nil`:
 
 ```swift
-let a = Acorde("Sol7")              // Acorde (literal; se detiene si no es válido)
-let b = Acorde(texto: entrada)      // Acorde? (nil si no se puede leer)
-let c = try Acorde(leyendo: entrada) // Acorde, o un ErrorAlLeer con posición y motivo
+let a = Acorde("Sol7")                // Acorde (literal; se detiene si no es válido)
+let b = try? Acorde(leyendo: entrada) // Acorde? (nil si no se puede leer)
+let c = try Acorde(leyendo: entrada)  // Acorde, o un ErrorAlLeer con posición y motivo
 ```
 
 El texto se acepta en español (`Do`, `Sib`, `Fa#`, `Solx`, `Mi♭♭`) o con letras (`C#`, `Bb`).

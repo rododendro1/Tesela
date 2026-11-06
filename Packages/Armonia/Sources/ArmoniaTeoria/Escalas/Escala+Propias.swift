@@ -87,15 +87,15 @@ extension Escala {
 public struct EscalaVecina: Hashable, Sendable {
     public let escala: Escala
     /// La nota que se mueve, como se escribe en la escala de partida.
-    public let de: Nota
+    public let desde: Nota
     /// A dónde va, como se escribe en la vecina.
-    public let a: Nota
+    public let hasta: Nota
 
-    /// La escala vecina a la que se llega moviendo la nota `de` a `a`.
-    public init(escala: Escala, de: Nota, a: Nota) {
+    /// La escala vecina a la que se llega moviendo la nota `desde` a `hasta`.
+    public init(escala: Escala, desde: Nota, hasta: Nota) {
         self.escala = escala
-        self.de = de
-        self.a = a
+        self.desde = desde
+        self.hasta = hasta
     }
 }
 
@@ -104,7 +104,7 @@ extension Escala {
     /// Do lidio (Fa → Fa♯), Do mixolidio (Si → Si♭), Do menor melódica (Mi → Mi♭), Do mayor armónica (La → La♭)…
     /// Para cada cambio, la escala con la misma tónica si la hay; si no, la más fácil de escribir. En el orden de las
     /// notas, primero bajando.
-    public func vecinas(tipos: [TipoDeEscala] = TipoDeEscala.todos) -> [EscalaVecina] {
+    public func vecinas(tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [EscalaVecina] {
         let clases = Set(notas.map(\.claseDeAltura))
         var resultado: [EscalaVecina] = []
         for nota in notas {
@@ -121,7 +121,7 @@ extension Escala {
                     let a = elegida.notas.first(where: { $0.claseDeAltura == nueva }),
                     !resultado.contains(where: { $0.escala == elegida })
                 else { continue }
-                resultado.append(EscalaVecina(escala: elegida, de: nota, a: a))
+                resultado.append(EscalaVecina(escala: elegida, desde: nota, hasta: a))
             }
         }
         return resultado
@@ -151,18 +151,21 @@ extension Escala {
     /// Las vecinas con la misma tónica que suben una nota un semitono (más brillantes) o la bajan (más oscuras),
     /// de las más habituales a las menos (en el orden de `tipos`).
     public func vecinasPorBrillo(
-        tipos: [TipoDeEscala] = TipoDeEscala.todos
+        tipos: [TipoDeEscala] = TipoDeEscala.occidentales
     ) -> (masOscuras: [EscalaVecina], masBrillantes: [EscalaVecina]) {
         let indice = Dictionary(tipos.enumerated().map { ($0.element.nombre, $0.offset) }, uniquingKeysWith: min)
         let propias = vecinas(tipos: tipos).filter { $0.escala.tonica.claseDeAltura == tonica.claseDeAltura }
             .sorted { (indice[$0.escala.tipo.nombre] ?? .max) < (indice[$1.escala.tipo.nombre] ?? .max) }
-        let sube = { (vecina: EscalaVecina) in modulo(vecina.a.claseDeAltura - vecina.de.claseDeAltura, 12) == 1 }
+        let sube = { (vecina: EscalaVecina) in modulo(vecina.hasta.claseDeAltura - vecina.desde.claseDeAltura, 12) == 1
+        }
         return (propias.filter { !sube($0) }, propias.filter(sube))
     }
 
     /// Desde esta escala, la más habitual de las vecinas más oscuras, y de esa la suya, hasta que no queda ninguna
     /// nueva; y lo mismo hacia las más brillantes. Como mucho `maximo` peldaños a cada lado.
-    public func escaleraDeBrillo(tipos: [TipoDeEscala] = TipoDeEscala.todos, maximo: Int = 12) -> EscaleraDeBrillo {
+    public func escaleraDeBrillo(tipos: [TipoDeEscala] = TipoDeEscala.occidentales, maximo: Int = 12)
+        -> EscaleraDeBrillo
+    {
         func clases(_ escala: Escala) -> Set<Int> { Set(escala.notas.map(\.claseDeAltura)) }
         var vistas: Set<Set<Int>> = [clases(self)]
         // Hacia abajo: cada peldaño, con la bajada que lleva a él.
@@ -193,7 +196,7 @@ extension Escala {
         var subidas: [EscalaVecina] = []
         for (i, peldano) in abajo.enumerated().reversed() {
             let llegada = i == 0 ? self : abajo[i - 1].escala
-            subidas.append(EscalaVecina(escala: llegada, de: peldano.bajada.a, a: peldano.bajada.de))
+            subidas.append(EscalaVecina(escala: llegada, desde: peldano.bajada.hasta, hasta: peldano.bajada.desde))
         }
         return EscaleraDeBrillo(
             peldanos: oscuras + [self] + arriba.map(\.escala), posicion: oscuras.count, subidas: subidas + arriba)
@@ -211,9 +214,9 @@ public struct MapaDeBrillo: Hashable, Sendable {
         public let oscura: Int
         public let brillante: Int
         /// La nota que sube, como se escribe en la oscura.
-        public let de: Nota
+        public let desde: Nota
         /// A dónde, como se escribe en la brillante.
-        public let a: Nota
+        public let hasta: Nota
     }
 
     /// De la más oscura a la más brillante (por `brilloPorQuintas`), sin dos con las mismas notas.
@@ -226,7 +229,7 @@ extension Escala {
     /// por quintas y enlazadas cuando una sale de la otra subiendo una nota un semitono. Deja fuera las que tienen
     /// microtonos y, de las que tienen las mismas notas, todas menos la primera de `tipos`.
     public static func mapaDeBrillo(
-        tonica: Nota = .do, numeroDeNotas: Int = 7, tipos: [TipoDeEscala] = TipoDeEscala.todos
+        tonica: Nota = .do, numeroDeNotas: Int = 7, tipos: [TipoDeEscala] = TipoDeEscala.occidentales
     ) -> MapaDeBrillo {
         var elegidas: [(escala: Escala, clases: Set<Int>, brillo: Double)] = []
         var vistas: Set<Set<Int>> = []
@@ -262,7 +265,7 @@ extension Escala {
                 guard let de = baja.escala.notas.first(where: { !sube.clases.contains($0.claseDeAltura) }),
                     let hasta = sube.escala.notas.first(where: { !baja.clases.contains($0.claseDeAltura) })
                 else { continue }
-                enlaces.append(MapaDeBrillo.Enlace(oscura: oscura, brillante: brillante, de: de, a: hasta))
+                enlaces.append(MapaDeBrillo.Enlace(oscura: oscura, brillante: brillante, desde: de, hasta: hasta))
             }
         }
         return MapaDeBrillo(escalas: ordenadas.map(\.escala), enlaces: enlaces)
@@ -293,7 +296,7 @@ extension Escala {
     ///
     ///     let parecidas = Escala(.do).masParecidas()
     ///     parecidas.contains { $0.escala == Escala(.do, .lidio) }   // true
-    public func masParecidas(tipos: [TipoDeEscala] = TipoDeEscala.todos, limite: Int = 16) -> [EscalaParecida] {
+    public func masParecidas(tipos: [TipoDeEscala] = TipoDeEscala.occidentales, limite: Int = 16) -> [EscalaParecida] {
         let propias = Set(notas.map(\.claseDeAltura))
         let candidatas = tipos.filter { !$0.esDireccional }.flatMap { Escala(tonica, $0).enLasDoceTonalidades }
         // Primero las de la misma tónica, para que ganen a sus modos en otras tónicas.

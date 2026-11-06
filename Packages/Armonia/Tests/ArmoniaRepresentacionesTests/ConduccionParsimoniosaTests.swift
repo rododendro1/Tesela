@@ -7,7 +7,7 @@ import Testing
 
 @Suite struct ConduccionParsimoniosaTests {
     private func vecinos(_ cifrado: String, voces: Int = 1) -> [String] {
-        Acorde(texto: cifrado)!.vecinosParsimoniosos(voces: voces).map(\.description)
+        (try! Acorde(leyendo: cifrado)).vecinosParsimoniosos(voces: voces).map(\.description)
     }
 
     @Test func vecinosDeSeptimas() {
@@ -134,8 +134,9 @@ import Testing
         // Simétrica en el total.
         for (a, b) in [("Sol7", "Do"), ("Rem7", "Solmaj7"), ("Do", "Fa#m"), ("Sio7", "Do")] {
             #expect(
-                Acorde(texto: a)!.conduccionMinima(hasta: Acorde(texto: b)!).semitonosMovidos
-                    == Acorde(texto: b)!.conduccionMinima(hasta: Acorde(texto: a)!).semitonosMovidos, "\(a) \(b)")
+                (try! Acorde(leyendo: a)).conduccionMinima(hasta: (try! Acorde(leyendo: b))).semitonosMovidos
+                    == (try! Acorde(leyendo: b)).conduccionMinima(hasta: (try! Acorde(leyendo: a))).semitonosMovidos,
+                "\(a) \(b)")
         }
         #expect(MovimientoDeVoz(desde: .do, hasta: Nota(.fa, .sostenido)).semitonos == 6)
         #expect(MovimientoDeVoz(desde: .do, hasta: .si).semitonos == -1)

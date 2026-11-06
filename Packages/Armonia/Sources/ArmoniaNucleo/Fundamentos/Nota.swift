@@ -126,9 +126,12 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
         for n in -4...4 where n != 0 {
             let a = Alteracion(n)
             for notacion in [
-                Notacion.espanolCompacto, .inglesASCII, .alemanPalabras, .francesPalabras, .italianoPalabras,
-                .catalanPalabras, .gallegoPalabras, .euskeraPalabras, .portuguesPalabras, .occitanoPalabras,
-                .rusoPalabras, .griegoPalabras, .aragonesPalabras, .asturianoPalabras, .hungaroPalabras,
+                Notacion.espanolCompacto, .inglesASCII, .conPalabras(.aleman), .conPalabras(.frances),
+                .conPalabras(.italiano),
+                .conPalabras(.catalan), .conPalabras(.gallego), .conPalabras(.euskera), .conPalabras(.portugues),
+                .conPalabras(.occitano),
+                .conPalabras(.ruso), .conPalabras(.griego), .conPalabras(.aragones), .conPalabras(.asturiano),
+                .conPalabras(.hungaro),
             ] {
                 tabla[a.nombre(en: notacion).claveDeBusqueda] = a
             }
@@ -158,7 +161,7 @@ public enum Tipografia: String, Hashable, Sendable, CaseIterable, Codable {
     /// Un signo por semitono, # y b, como se escribe en un teclado: F#, Bbb.
     case ascii
     /// 𝄪 y 𝄫 para cada pareja de signos, y ♮ para el natural: Fa𝄪, Si𝄫, Do𝄪♯. La de las notaciones compactas
-    /// (`.espanolCompacto`, `.inglesCompacto`, `.francesCompacto`…).
+    /// (`.espanolCompacto`, `.inglesCompacto`, `.compacta(.frances)`…).
     case conDobles
 }
 
@@ -252,8 +255,8 @@ public struct Nota: Hashable, Sendable {
         return [base - 12, base, base + 12]
     }
 
-    /// Lee un nombre escrito en una notación concreta: `Nota(leyendo: "Fis", en: .alemanCompacto)`,
-    /// `Nota(leyendo: "B", en: .alemanCompacto)` → Si♭, `Nota(leyendo: "ré bémol", en: .francesPalabras)`.
+    /// Lee un nombre escrito en una notación concreta: `Nota(leyendo: "Fis", en: .compacta(.aleman))`,
+    /// `Nota(leyendo: "B", en: .compacta(.aleman))` → Si♭, `Nota(leyendo: "ré bémol", en: .conPalabras(.frances))`.
     /// No distingue mayúsculas ni tildes. En español e inglés, igual que `init(leyendo:)`; en los demás idiomas se
     /// leen las dos formas, con palabras y compacta: «F Kreuz» y «Fis», «ré bémol» y «Ré♭».
     public init(leyendo texto: String, en notacion: Notacion) throws {
@@ -279,7 +282,9 @@ public struct Nota: Hashable, Sendable {
     /// Nombres de cada notación (hasta cuatro alteraciones) → nombre de nota.
     package static let porNombre: [Notacion: [String: Nota]] = {
         var tablas: [Notacion: [String: Nota]] = [:]
-        let notaciones = [Notacion.alemanPalabras, .hungaroPalabras, .francesPalabras, .italianoPalabras]
+        let notaciones = [
+            Notacion.conPalabras(.aleman), .conPalabras(.hungaro), .conPalabras(.frances), .conPalabras(.italiano),
+        ]
         for notacion in notaciones + Notacion.deLecturaGenerica + Notacion.conPalabras {
             var tabla: [String: Nota] = [:]
             for quintas in -29...33 {
@@ -289,8 +294,8 @@ public struct Nota: Hashable, Sendable {
             }
             tablas[notacion] = tabla
         }
-        // «H Be», como se escribía el Si♭ en `.alemanPalabras` (antes `.aleman`) en la 0.3.0, se sigue leyendo.
-        tablas[.alemanPalabras]?["H Be".claveDeBusqueda] = Nota(.si, .bemol)
+        // «H Be», como se escribía el Si♭ en `.conPalabras(.aleman)` (antes `.aleman`) en la 0.3.0, se sigue leyendo.
+        tablas[.conPalabras(.aleman)]?["H Be".claveDeBusqueda] = Nota(.si, .bemol)
         return tablas
     }()
 
@@ -349,8 +354,9 @@ extension Notacion {
     /// Notaciones que también leen `Nota(leyendo:)` y `Altura(leyendo:)` sin indicar el idioma,
     /// porque sus nombres no se confunden con los españoles ni con los ingleses.
     package static let deLecturaGenerica: [Notacion] = [
-        .catalanPalabras, .gallegoPalabras, .euskeraPalabras, .portuguesPalabras,
-        .occitanoPalabras, .rusoPalabras, .griegoPalabras, .aragonesPalabras, .asturianoPalabras,
+        .conPalabras(.catalan), .conPalabras(.gallego), .conPalabras(.euskera), .conPalabras(.portugues),
+        .conPalabras(.occitano), .conPalabras(.ruso), .conPalabras(.griego), .conPalabras(.aragones),
+        .conPalabras(.asturiano),
     ]
 
     /// El español y el inglés con las alteraciones en palabras («Fa sostenido», «B flat»), que también se leen
@@ -427,8 +433,8 @@ extension Nota {
 
     /// Nombre en la notación indicada: `.espanolPalabras` → "Fa sostenido", `.espanolASCII` → "Fa#",
     /// `.espanolCompacto` → "Fa♯", `.inglesPalabras` → "F sharp", `.inglesASCII` → "F#", `.inglesCompacto` → "F♯",
-    /// `.alemanPalabras` → "F Kreuz", `.alemanCompacto` → "Fis", `.francesPalabras` → "fa dièse",
-    /// `.italianoPalabras` → "fa diesis", `.rusoPalabras` → "фа-диез", `.griegoPalabras` → "φα δίεση", `.francesCompacto` → "Fa♯".
+    /// `.conPalabras(.aleman)` → "F Kreuz", `.compacta(.aleman)` → "Fis", `.conPalabras(.frances)` → "fa dièse",
+    /// `.conPalabras(.italiano)` → "fa diesis", `.conPalabras(.ruso)` → "фа-диез", `.conPalabras(.griego)` → "φα δίεση", `.compacta(.frances)` → "Fa♯".
     public func nombre(en notacion: Notacion) -> String {
         let base = natural.nombre(en: notacion)
         switch notacion.escritura.escrituraDeLaAlteracion {

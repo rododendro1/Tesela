@@ -46,7 +46,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "nun esiste l\'unísonu menguáu: de Do a Do♭ hai un unísonu aumentáu descendente (escríbilu -1A)",
         reglaDeLasJustas: "l\'unísonu, la 4ª, la 5ª y la 8ª son xustes, aumentaes o menguaes",
         reglaDeLasMayores: "la 2ª, la 3ª, la 6ª y la 7ª son mayores, menores, aumentaes o menguaes",
-        intervaloInexistente: { numero, calidad, notacion, regla in "nun esiste la \(numero)ª \(calidad.nombre(en: .asturianoPalabras)): \(regla.asturiano)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "nun esiste la \(numero)ª \(calidad.nombre(en: .conPalabras(.asturiano))): \(regla.asturiano)" },
         alteracionNoReconocida: { signo in "«\(signo)» nun ye una alteración (esperábase ♯, ♭, 𝄪, 𝄫, #, b, x o ♮)" },
 
         // ErrorDeLectura.swift (conjuntos y series)

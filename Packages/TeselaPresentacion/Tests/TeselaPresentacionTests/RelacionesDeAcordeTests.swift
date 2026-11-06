@@ -33,7 +33,7 @@ import Testing
 
     @Test func dosAcordesComparados() throws {
         let quintaATonica = try #require(
-            PresentacionDeRelacionesDeAcorde.comparar(Acorde("Sol7"), con: Acorde("Do"), notacion: .espanolCompacto))
+            PresentacionDeRelacionesDeAcorde.comparar(Acorde("Sol7"), con: Acorde("Do"), en: .espanolCompacto))
         #expect(quintaATonica.comunes == "Sol")
         #expect(quintaATonica.voces.count == 4)
         #expect(quintaATonica.voces.allSatisfy { $0.contains(" → ") && $0.hasSuffix(")") })
@@ -44,10 +44,10 @@ import Testing
         #expect(quintaATonica.sonido.notas.count == 8)
 
         let lejos = try #require(
-            PresentacionDeRelacionesDeAcorde.comparar(Acorde("Do"), con: Acorde("Fa#"), notacion: .espanolCompacto))
+            PresentacionDeRelacionesDeAcorde.comparar(Acorde("Do"), con: Acorde("Fa#"), en: .espanolCompacto))
         #expect(lejos.comunes == "ninguna")
         #expect(
             PresentacionDeRelacionesDeAcorde.comparar(
-                Acorde(.do, .potencia), con: Acorde("Sol"), disposicion: .shell, notacion: .espanolCompacto) == nil)
+                Acorde(.do, .potencia), con: Acorde("Sol"), disposicion: .shell, en: .espanolCompacto) == nil)
     }
 }

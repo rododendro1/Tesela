@@ -2,6 +2,29 @@
 
 ## Sin publicar
 
+### Nombres más claros en la API, con los de antes obsoletos
+
+Los nombres de antes siguen compilando, con un aviso, en `Obsoletos.swift` de `ArmoniaNucleo` y `ArmoniaTeoria`.
+
+- `TipoDeEscala.todos` es `TipoDeEscala.occidentales`, y `todos(uso:)`, `occidentales(uso:)`: no eran todas las
+  escalas, sino las occidentales. Todas siguen en `catalogo`.
+- `init?(texto:)` de `RepresentableComoTexto` queda obsoleto: para tener `nil` en lugar del error,
+  `try? Acorde(leyendo: texto)`.
+- `Acorde.invertir(_:)` es `Acorde.cambiarInversion(_:)`, como `cambiarBajo(_:)`: `invertir` es la inversión en
+  espejo de `Melodia` y de `ConjuntoDeClasesDeAltura`.
+- `Notacion` y `EscrituraDeNotas` solo tienen con nombre las de español e inglés (`.espanolCompacto`,
+  `.inglesASCII`…). Las de los otros trece idiomas son `.compacta(.catalan)` y `.conPalabras(.catalan)`
+  (`Notacion.compacta(_:)` y `Notacion.conPalabras(_:)` son nuevas), y las 52 constantes de antes
+  (`.catalanCompacto`, `.alemanPalabras`…) quedan obsoletas. Dan lo mismo.
+- `EscalaVecina.de` y `.a` son `desde` y `hasta` (y `init(escala:desde:hasta:)`), y lo mismo en
+  `MapaDeBrillo.Enlace`, como en `CambioDeGrado` o `Modulacion`.
+
+### Escalas: si el nombre ya lleva la palabra de su categoría, se escribe en su declaración
+
+- `nombreCompleto` ya no deduce del texto si «Rast makamı», «jins Rāst» o «échos prótos» llevan la palabra de su
+  categoría: lo dice `llevaLaCategoria: true` en la declaración de las 67 escalas que la llevan. Una prueba lo
+  comprueba contra el nombre, y otra que la palabra no sale dos veces en ningún idioma. Lo que devuelve no cambia.
+
 ### Escalas: cada una con todos sus datos en su declaración
 
 - Los usos de las escalas occidentales, la categoría de las de otras tradiciones, sus versiones microtonales y el

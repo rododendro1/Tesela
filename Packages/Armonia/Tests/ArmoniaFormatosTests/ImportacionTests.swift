@@ -218,7 +218,7 @@ import Testing
         #expect(ErrorDeLecturaDeFichero.sinNotas.descripcion(en: .inglesASCII) == "The file has no notes.")
         #expect(ErrorDeLecturaDeFichero.sinNotas.description == "El fichero no tiene ninguna nota.")
         #expect(
-            ErrorDeLecturaDeFichero.xmlDanado(linea: 3).descripcion(en: .francesPalabras)
+            ErrorDeLecturaDeFichero.xmlDanado(linea: 3).descripcion(en: .conPalabras(.frances))
                 == "Le fichier XML est endommagé (ligne 3).")
     }
 

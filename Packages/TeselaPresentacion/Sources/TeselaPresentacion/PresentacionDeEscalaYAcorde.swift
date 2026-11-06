@@ -34,13 +34,13 @@ public struct AcordesDelGrado: Hashable, Sendable {
 /// --escalas`. No usa SwiftUI, así que se prueba en Linux.
 ///
 ///     let dorico = PresentacionDeEscalaYAcorde.presentar(
-///         Escala(.re, .dorico), sobre: Acorde("Rem7"), notacion: .espanolCompacto)
+///         Escala(.re, .dorico), sobre: Acorde("Rem7"), en: .espanolCompacto)
 ///     dorico.tensiones   // "Mi 9 · Sol 11 · Si 13"
 ///     dorico.modo        // "modo 2 de Do mayor"
 public enum PresentacionDeEscalaYAcorde {
     /// La escala sobre el acorde, escrita en la notación: sus notas, las del acorde y las que evitar.
     public static func presentar(
-        _ escala: Escala, sobre acorde: Acorde, notacion: Notacion
+        _ escala: Escala, sobre acorde: Acorde, en notacion: Notacion
     ) -> EscalaSobreAcordePresentada {
         let notas = escala.notas(sobre: acorde)
         func lista(_ papel: PapelEnLaEscala?) -> String {
@@ -56,7 +56,7 @@ public enum PresentacionDeEscalaYAcorde {
         return EscalaSobreAcordePresentada(
             escala: escala,
             nombre: escala.nombre(en: notacion),
-            modo: modo(de: escala, notacion: notacion),
+            modo: modo(de: escala, en: notacion),
             notas: lista(nil),
             tensiones: tensiones,
             aEvitar: aEvitar,
@@ -67,7 +67,7 @@ public enum PresentacionDeEscalaYAcorde {
 
     /// Los acordes que caben en la escala, grado a grado (`Escala.acordesQueCaben(grado:)`), sin los grados en los
     /// que no cabe ninguno.
-    public static func acordesQueCaben(_ escala: Escala, notacion: Notacion) -> [AcordesDelGrado] {
+    public static func acordesQueCaben(_ escala: Escala, en notacion: Notacion) -> [AcordesDelGrado] {
         escala.acordesQueCaben.enumerated().compactMap { i, acordes in
             guard !acordes.isEmpty else { return nil }
             return AcordesDelGrado(
@@ -77,7 +77,7 @@ public enum PresentacionDeEscalaYAcorde {
     }
 
     /// «modo 2 de Do mayor»; `nil` si la escala no es modo de otra o si es la propia madre.
-    public static func modo(de escala: Escala, notacion: Notacion) -> String? {
+    public static func modo(de escala: Escala, en notacion: Notacion) -> String? {
         guard let modo = escala.escalaMadre, modo.grado > 1 else { return nil }
         return modo.nombre(en: notacion)
     }
@@ -86,6 +86,6 @@ public enum PresentacionDeEscalaYAcorde {
     public static func escala(
         de analizado: AcordeAnalizado, en tonalidad: Tonalidad, notacion: Notacion
     ) -> EscalaSobreAcordePresentada? {
-        tonalidad.escalaDelAcorde(analizado).map { presentar($0, sobre: analizado.acorde, notacion: notacion) }
+        tonalidad.escalaDelAcorde(analizado).map { presentar($0, sobre: analizado.acorde, en: notacion) }
     }
 }

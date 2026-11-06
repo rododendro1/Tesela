@@ -63,10 +63,10 @@ public struct DatosDeCandidato: Hashable, Sendable, Codable {
     /// Los acordes que pueden formar unas notas escritas, del más probable al menos y como mucho `limite`; ninguno
     /// si no forman ninguno. Si todas llevan octava («Si2 Re4 Sol4»), cuenta cuál es el bajo; si no, solo las notas.
     ///
-    ///     let candidatos = try DatosDeCandidato.identificar(["Do", "Mi", "Sol", "Sib"], notacion: .espanolCompacto)
+    ///     let candidatos = try DatosDeCandidato.identificar(["Do", "Mi", "Sol", "Sib"], en: .espanolCompacto)
     ///     candidatos[0].cifrado   // "Do7"
     public static func identificar(
-        _ textos: [String], limite: Int = 5, notacion: Notacion
+        _ textos: [String], limite: Int = 5, en notacion: Notacion
     ) throws -> [DatosDeCandidato] {
         let candidatos: [Candidato<Acorde>]
         if let alturas = try? textos.map({ try Altura(leyendo: $0) }) {
@@ -99,7 +99,7 @@ public struct DatosDeEscala: Hashable, Sendable, Codable {
         nombre = escala.nombre(en: notacion)
         notas = escala.notas.map { $0.nombre(en: notacion) }
         clases = escala.notas.map(\.claseDeAltura)
-        modo = PresentacionDeEscalaYAcorde.modo(de: escala, notacion: notacion)
+        modo = PresentacionDeEscalaYAcorde.modo(de: escala, en: notacion)
         let cuatriadas = escala.armonizar(cuatriadas: true).compactMap { $0 }
         let romanos = escala.cifradosRomanos(cuatriadas: true).compactMap { $0 }
         if cuatriadas.count == escala.notas.count, romanos.count == cuatriadas.count {

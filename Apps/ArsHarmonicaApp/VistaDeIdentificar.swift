@@ -108,7 +108,7 @@ struct VistaDeIdentificar: View {
     private func escalasQueLasContienen(_ alturas: [Altura]) -> some View {
         if alturas.count >= 2 {
             let escalas = PresentacionDeEstudioDeEscala.escalas(
-                conLasClases: alturas.map(\.midi), limite: 5, notacion: notacion)
+                conLasClases: alturas.map(\.midi), limite: 5, en: notacion)
             Section(notacion.texto(\.escalasQueLasContienen)) {
                 ForEach(escalas, id: \.self) { encontrada in
                     HStack {

@@ -25,52 +25,52 @@ cómo se escribe.
 
 ## Otras lenguas
 
-Además del español y el inglés, `Notacion` tiene `.alemanPalabras` y `.alemanCompacto`, `.francesPalabras`, `.italianoPalabras`,
-`.catalanPalabras`, `.gallegoPalabras`, `.euskeraPalabras`, `.portuguesPalabras`, `.occitanoPalabras`, `.rusoPalabras` y `.griegoPalabras`. El alemán, como el español
-y el inglés, escribe las alteraciones con palabras (`.alemanPalabras`: C Kreuz, E Be, con B para el Si♭) o de forma compacta
-(`.alemanCompacto`: Cis, Es, con la octava en subíndice); en los cifrados y las tonalidades, las dos escriben
+Además del español y el inglés, `Notacion` tiene `.conPalabras(.aleman)` y `.compacta(.aleman)`, `.conPalabras(.frances)`, `.conPalabras(.italiano)`,
+`.conPalabras(.catalan)`, `.conPalabras(.gallego)`, `.conPalabras(.euskera)`, `.conPalabras(.portugues)`, `.conPalabras(.occitano)`, `.conPalabras(.ruso)` y `.conPalabras(.griego)`. El alemán, como el español
+y el inglés, escribe las alteraciones con palabras (`.conPalabras(.aleman)`: C Kreuz, E Be, con B para el Si♭) o de forma compacta
+(`.compacta(.aleman)`: Cis, Es, con la octava en subíndice); en los cifrados y las tonalidades, las dos escriben
 a la alemana (Cis7, Fis-Dur), y se leen las dos formas:
 
 | | Do♯ | Mi♭ | Si♭ | Si | Fa♯ mayor | La menor |
 |---|---|---|---|---|---|---|
-| `.alemanPalabras` | C Kreuz | E Be | B | H | Fis-Dur | a-Moll |
-| `.alemanCompacto` | Cis | Es | B | H | Fis-Dur | a-Moll |
-| `.francesPalabras` | do dièse | mi bémol | si bémol | si | fa dièse majeur | la mineur |
-| `.italianoPalabras` | do diesis | mi bemolle | si bemolle | si | fa diesis maggiore | la minore |
-| `.catalanPalabras` | do sostingut | mi bemoll | si bemoll | si | fa sostingut major | la menor |
-| `.gallegoPalabras` | do sostido | mi bemol | si bemol | si | fa sostido maior | la menor |
-| `.euskeraPalabras` | do diesa | mi bemol | si bemol | si | fa diesa maiorra | la minorra |
-| `.portuguesPalabras` | dó sustenido | mi bemol | si bemol | si | fá sustenido maior | lá menor |
-| `.occitanoPalabras` | do dièsi | mi bemòl | si bemòl | si | fa dièsi major | la menor |
-| `.rusoPalabras` | до-диез | ми-бемоль | си-бемоль | си | фа-диез мажор | ля минор |
-| `.griegoPalabras` | ντο δίεση | μι ύφεση | σι ύφεση | σι | φα δίεση μείζονα | λα ελάσσονα |
-| `.aragonesPalabras` | do sosteniu | mi bemol | si bemol | si | fa sosteniu mayor | la menor |
-| `.asturianoPalabras` | do sosteníu | mi bemol | si bemol | si | fa sosteníu mayor | la menor |
+| `.conPalabras(.aleman)` | C Kreuz | E Be | B | H | Fis-Dur | a-Moll |
+| `.compacta(.aleman)` | Cis | Es | B | H | Fis-Dur | a-Moll |
+| `.conPalabras(.frances)` | do dièse | mi bémol | si bémol | si | fa dièse majeur | la mineur |
+| `.conPalabras(.italiano)` | do diesis | mi bemolle | si bemolle | si | fa diesis maggiore | la minore |
+| `.conPalabras(.catalan)` | do sostingut | mi bemoll | si bemoll | si | fa sostingut major | la menor |
+| `.conPalabras(.gallego)` | do sostido | mi bemol | si bemol | si | fa sostido maior | la menor |
+| `.conPalabras(.euskera)` | do diesa | mi bemol | si bemol | si | fa diesa maiorra | la minorra |
+| `.conPalabras(.portugues)` | dó sustenido | mi bemol | si bemol | si | fá sustenido maior | lá menor |
+| `.conPalabras(.occitano)` | do dièsi | mi bemòl | si bemòl | si | fa dièsi major | la menor |
+| `.conPalabras(.ruso)` | до-диез | ми-бемоль | си-бемоль | си | фа-диез мажор | ля минор |
+| `.conPalabras(.griego)` | ντο δίεση | μι ύφεση | σι ύφεση | σι | φα δίεση μείζονα | λα ελάσσονα |
+| `.conPalabras(.aragones)` | do sosteniu | mi bemol | si bemol | si | fa sosteniu mayor | la menor |
+| `.conPalabras(.asturiano)` | do sosteníu | mi bemol | si bemol | si | fa sosteníu mayor | la menor |
 
 ```swift
-Nota("Sib").nombre(en: .alemanCompacto)    // "B"
-Nota("Mibb").nombre(en: .alemanCompacto)   // "Eses"
-Nota("Fa#").nombre(en: .alemanPalabras)            // "F Kreuz"
-Altura("Fa#3").nombre(en: .alemanCompacto)           // "Fis₃"
-Altura("Fa#3").nombre(en: .francesPalabras)                  // "fa dièse 3"
-Acorde("Sim7").cifrado(en: .alemanPalabras)                // "Hm7"
-Acorde("Rebmaj7").cifrado(en: .francesPalabras)            // "Ré♭maj7"
-try Nota(leyendo: "B", en: .alemanCompacto) // Si♭
-try Nota(leyendo: "F Kreuz", en: .alemanCompacto)   // Fa♯
-try Altura(leyendo: "re diesis 5", en: .italianoPalabras)     // Re♯5
+Nota("Sib").nombre(en: .compacta(.aleman))    // "B"
+Nota("Mibb").nombre(en: .compacta(.aleman))   // "Eses"
+Nota("Fa#").nombre(en: .conPalabras(.aleman))            // "F Kreuz"
+Altura("Fa#3").nombre(en: .compacta(.aleman))           // "Fis₃"
+Altura("Fa#3").nombre(en: .conPalabras(.frances))                  // "fa dièse 3"
+Acorde("Sim7").cifrado(en: .conPalabras(.aleman))                // "Hm7"
+Acorde("Rebmaj7").cifrado(en: .conPalabras(.frances))            // "Ré♭maj7"
+try Nota(leyendo: "B", en: .compacta(.aleman)) // Si♭
+try Nota(leyendo: "F Kreuz", en: .compacta(.aleman))   // Fa♯
+try Altura(leyendo: "re diesis 5", en: .conPalabras(.italiano))     // Re♯5
 Tonalidad("Fis-Dur"), Tonalidad("ré bémol majeur"), Tonalidad("la minore")
-Alteracion(-2).nombre(en: .francesPalabras)                 // "double bémol"
-Nota("Fa#").nombre(en: .portuguesPalabras)                  // "fá sustenido"
-Alteracion(2).nombre(en: .portuguesPalabras)                // "duplo sustenido"
-Acorde("Rebmaj7").cifrado(en: .portuguesPalabras)           // "Ré♭maj7"
+Alteracion(-2).nombre(en: .conPalabras(.frances))                 // "double bémol"
+Nota("Fa#").nombre(en: .conPalabras(.portugues))                  // "fá sustenido"
+Alteracion(2).nombre(en: .conPalabras(.portugues))                // "duplo sustenido"
+Acorde("Rebmaj7").cifrado(en: .conPalabras(.portugues))           // "Ré♭maj7"
 Altura("fá sustenido 3")                            // Fa♯3
 Tonalidad("si bemol maior")                         // Si♭ mayor
 Escala("ré dórico")                                 // Re dórico
-Nota("Fa#").nombre(en: .rusoPalabras)                       // "фа-диез"
-Tonalidad("Re mayor").nombre(en: .griegoPalabras)           // "ρε μείζονα"
-Acorde("Sibm7").cifrado(en: .griegoPalabras)                // "Σι♭m7"
+Nota("Fa#").nombre(en: .conPalabras(.ruso))                       // "фа-диез"
+Tonalidad("Re mayor").nombre(en: .conPalabras(.griego))           // "ρε μείζονα"
+Acorde("Sibm7").cifrado(en: .conPalabras(.griego))                // "Σι♭m7"
 Altura("sòl dièsi 2")                               // Sol♯2
-Nota("Fa#").nombre(en: .asturianoPalabras)                  // "fa sosteníu"
+Nota("Fa#").nombre(en: .conPalabras(.asturiano))                  // "fa sosteníu"
 Altura("fa sosteniu 3")                             // Fa♯3
 Tonalidad("ля минор")                               // La menor
 ```
@@ -80,8 +80,8 @@ Tonalidad("ля минор")                               // La menor
   en minúscula y con las alteraciones en palabras (en euskera, con el adjetivo detrás: diesa
   bikoitza; en ruso, unidas con guion: фа-диез); en los cifrados se usa la forma compacta
   (`nombreCompacto(en:)`: Fa♯, Ré♭, Фа♯, Σι♭).
-  Cada uno tiene también su escritura compacta (`.catalanCompacto`, `.francesCompacto`, `.rusoCompacto`…),
-  que escribe así todas las notas, con la octava en subíndice: `Altura("Reb4").nombre(en: .francesCompacto)`
+  Cada uno tiene también su escritura compacta (`.compacta(.catalan)`, `.compacta(.frances)`, `.compacta(.ruso)`…),
+  que escribe así todas las notas, con la octava en subíndice: `Altura("Reb4").nombre(en: .compacta(.frances))`
   es «Ré♭₄». La notación de cada idioma (`Notacion.delIdioma(_:)`) sigue siendo la de palabras.
 - Las octavas son siempre las científicas (Do4 = do central), también en francés, donde a menudo
   se numera de otra forma.
@@ -104,47 +104,47 @@ Tonalidad("ля минор")                               // La menor
   gallego, euskera, portugués, occitano u alemán (`Escala("re doriarra")`, `Escala("dó maior")`).
 
 ```swift
-Intervalo.terceraMayor.nombre(en: .catalanPalabras)        // "3a major"
-Intervalo.terceraMayor.nombre(en: .gallegoPalabras)        // "3ª maior"
-Intervalo.sextaMenor.nombre(en: .euskeraPalabras)          // "6. txikia"
-Cadencia.Tipo.rota.nombre(en: .catalanPalabras)            // "cadència trencada"
-Escala(.re, .dorico).nombre(en: .euskeraPalabras)          // "re doriarra"
-Acorde("Sol7/Si").nombre(en: .catalanPalabras)           // "sol sèptima de dominant, primera inversió"
-Intervalo.terceraMayor.nombre(en: .francesPalabras)        // "tierce majeure"
-Cadencia.Tipo.rota.nombre(en: .italianoPalabras)           // "cadenza d'inganno"
-Escala(.re, .dorico).nombre(en: .francesPalabras)          // "ré dorien"
-Acorde("Sol7/Si").nombre(en: .portuguesPalabras)         // "sol sétima de dominante, primeira inversão"
-Escala(.re, .dorico).nombre(en: .asturianoPalabras)        // "re dóricu"
-Acorde("Sol7/Si").nombre(en: .asturianoPalabras)         // "sol séptima de dominante, primer inversión"
-Intervalo.terceraMayor.nombre(en: .alemanPalabras)         // "große Terz"
-Cadencia.Tipo.rota.nombre(en: .alemanPalabras)             // "Trugschluss"
-Acorde("Sol7/Si").nombre(en: .alemanPalabras)            // "Dominantseptakkord auf G, erste Umkehrung"
-Intervalo.terceraMayor.nombre(en: .occitanoPalabras)       // "tèrça majora"
-Intervalo.terceraMayor.nombre(en: .rusoPalabras)           // "большая терция"
-Escala(.re, .dorico).nombre(en: .rusoPalabras)             // "ре дорийский"
-Intervalo.terceraMayor.nombre(en: .griegoPalabras)         // "μεγάλη τρίτη"
+Intervalo.terceraMayor.nombre(en: .conPalabras(.catalan))        // "3a major"
+Intervalo.terceraMayor.nombre(en: .conPalabras(.gallego))        // "3ª maior"
+Intervalo.sextaMenor.nombre(en: .conPalabras(.euskera))          // "6. txikia"
+Cadencia.Tipo.rota.nombre(en: .conPalabras(.catalan))            // "cadència trencada"
+Escala(.re, .dorico).nombre(en: .conPalabras(.euskera))          // "re doriarra"
+Acorde("Sol7/Si").nombre(en: .conPalabras(.catalan))           // "sol sèptima de dominant, primera inversió"
+Intervalo.terceraMayor.nombre(en: .conPalabras(.frances))        // "tierce majeure"
+Cadencia.Tipo.rota.nombre(en: .conPalabras(.italiano))           // "cadenza d'inganno"
+Escala(.re, .dorico).nombre(en: .conPalabras(.frances))          // "ré dorien"
+Acorde("Sol7/Si").nombre(en: .conPalabras(.portugues))         // "sol sétima de dominante, primeira inversão"
+Escala(.re, .dorico).nombre(en: .conPalabras(.asturiano))        // "re dóricu"
+Acorde("Sol7/Si").nombre(en: .conPalabras(.asturiano))         // "sol séptima de dominante, primer inversión"
+Intervalo.terceraMayor.nombre(en: .conPalabras(.aleman))         // "große Terz"
+Cadencia.Tipo.rota.nombre(en: .conPalabras(.aleman))             // "Trugschluss"
+Acorde("Sol7/Si").nombre(en: .conPalabras(.aleman))            // "Dominantseptakkord auf G, erste Umkehrung"
+Intervalo.terceraMayor.nombre(en: .conPalabras(.occitano))       // "tèrça majora"
+Intervalo.terceraMayor.nombre(en: .conPalabras(.ruso))           // "большая терция"
+Escala(.re, .dorico).nombre(en: .conPalabras(.ruso))             // "ре дорийский"
+Intervalo.terceraMayor.nombre(en: .conPalabras(.griego))         // "μεγάλη τρίτη"
 ```
 
 ### Notas y textos en idiomas distintos
 
 Una `Notacion` son dos elecciones: `escritura` (``EscrituraDeNotas``, cómo se escriben las notas)
-y `textos` (el ``Idioma`` de los intervalos, acordes y mensajes). Las notaciones con nombre (`.rusoPalabras`…)
+y `textos` (el ``Idioma`` de los intervalos, acordes y mensajes). Las notaciones con nombre (`.conPalabras(.ruso)`…)
 llevan los textos en el idioma de sus notas, y `conTextos(en:)` los cambia; también se puede crear
 directamente con `Notacion(escritura:textos:)`. Las apps lo ofrecen en el selector de notación, y la
 línea de comandos con `--textos` (y la escritura con `--escritura palabras` o `compacto`, y en español e
 inglés también `ascii` o `unicode`).
 
 ```swift
-let notacion = Notacion.rusoPalabras.conTextos(en: .espanol)
+let notacion = Notacion.conPalabras(.ruso).conTextos(en: .espanol)
 Acorde("Sol7/Si").nombre(en: notacion)              // "соль séptima de dominante, primera inversión"
 Escala(.re, .dorico).nombre(en: Notacion.inglesASCII.conTextos(en: .euskera))   // "D doriarra"
-Notacion(escritura: .rusoPalabras, textos: .espanol) == notacion   // true
+Notacion(escritura: .conPalabras(.ruso), textos: .espanol) == notacion   // true
 ```
 
 ### La octava en subíndice
 
 La octava de una ``Altura`` se escribe como subíndice (La₄) en las notaciones compactas (`.espanolCompacto`,
-`.inglesCompacto`, `.alemanCompacto`, `.francesCompacto`…) y con cifras (La4) en las demás; `conOctavas(_:)` elige otra. Al leer se
+`.inglesCompacto`, `.compacta(.aleman)`, `.compacta(.frances)`…) y con cifras (La4) en las demás; `conOctavas(_:)` elige otra. Al leer se
 aceptan siempre las dos formas, también en las melodías y los corales. `description` y la codificación las
 escriben siempre con cifras ("Fa♯3"). La línea de comandos escribe cifras salvo con `--subindices`.
 
@@ -188,7 +188,7 @@ Alteracion.sostenido.pasosDeQuinta        // 7: un sostenido son siete quintas
 
 Los signos se escriben en una de las tres `Tipografia`: `.conSimples` (♯ y ♭, uno por semitono), `.ascii`
 (# y b) y `.conDobles` (𝄪 y 𝄫 por cada pareja, y ♮ para el natural). `Notacion.tipografia` dice cuál usa
-cada notación: las compactas (`.espanolCompacto`, `.inglesCompacto`, `.francesCompacto`…) usan `.conDobles`
+cada notación: las compactas (`.espanolCompacto`, `.inglesCompacto`, `.compacta(.frances)`…) usan `.conDobles`
 (Fa𝄪, B𝄫).
 
 También la usan `PosicionEnElPentagrama.alteracion` y `Clave.altura(lugar:alteracion:)`.
@@ -426,7 +426,7 @@ donde se detuvo y el motivo. Cada capa tiene el suyo: `ErrorDeLectura` para las 
 los intervalos, `ErrorDeLecturaDeTeoria` para los cifrados, las escalas, las tonalidades y los corales,
 y `ErrorDeLecturaDePartitura` para las duraciones, los compases y el contrapunto. Leer un acorde puede
 lanzar los dos primeros (si falla la fundamental o si falla el cifrado); los tres cumplen
-`ErrorAlLeer`. Los inicializadores opcionales (`Acorde(texto: …)`) siguen existiendo y devuelven `nil`.
+`ErrorAlLeer`. Para tener `nil` en lugar del error basta `try?` (`try? Acorde(leyendo: …)`).
 
 Todos los errores del motor, también `ErrorDeLecturaDeFichero` y `ErrorDeLecturaDeUIL`, cumplen `ErrorDeArmonia`:
 para mostrar cualquiera basta `catch let error as any ErrorDeArmonia` y `error.descripcion(en:)`.

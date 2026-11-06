@@ -87,7 +87,7 @@ import Testing
         let analisis = try PresentacionDeAnalisis.analizar("Do Lam Re7 Sol7 Do", notacion: .espanolCompacto)
         #expect(analisis.acordes == [Acorde("Do"), Acorde("Lam"), Acorde("Re7"), Acorde("Sol7"), Acorde("Do")])
         #expect(analisis.tonalidad == Tonalidad(.do))
-        let arpegiada = try #require(analisis.arpegiada(.alberti, notacion: .espanolCompacto))
+        let arpegiada = try #require(analisis.arpegiada(.alberti, en: .espanolCompacto))
         // Una blanca por acorde, en corcheas.
         #expect(arpegiada.voz.eventos.count == 20)
         #expect(arpegiada.ficheros.map(\.formato) == [.musicXML, .mei, .lilyPond, .guido, .abc, .midi])
@@ -97,14 +97,14 @@ import Testing
         let nombres = (analisis.ficheros + arpegiada.ficheros).map(\.nombreDeFichero)
         #expect(Set(nombres).count == nombres.count)
         #expect(
-            PresentacionDeArpegios.progresion([], patron: .ascendente, tonalidad: nil, notacion: .espanolCompacto)
+            PresentacionDeArpegios.progresion([], patron: .ascendente, tonalidad: nil, en: .espanolCompacto)
                 == nil
         )
     }
 
     @Test func unArpegioSeExporta() {
         let arpegio = PresentacionDeArpegios.arpegio(
-            Arpegio(Acorde("Sol7"), patron: .idaYVuelta), notacion: .espanolCompacto)
+            Arpegio(Acorde("Sol7"), patron: .idaYVuelta), en: .espanolCompacto)
         #expect(arpegio.voz.eventos.count == 9)
         #expect(arpegio.ficheros.map(\.formato) == [.musicXML, .mei, .lilyPond, .guido, .abc, .midi])
         #expect(arpegio.sonido.notas.first?.altura.midi == 67)
@@ -113,12 +113,12 @@ import Testing
     @Test func otrasFigurasYOctavas() throws {
         let semicorcheas = PresentacionDeArpegios.arpegio(
             Arpegio(Acorde("Do"), patron: .quebrado, octavas: 2, conOctava: false), figura: .semicorchea,
-            notacion: .espanolCompacto)
+            en: .espanolCompacto)
         #expect(semicorcheas.voz.eventos.allSatisfy { $0.duracion == .semicorchea })
         // Dos octavas sin la final: seis notas, quebradas de dos en dos (cuatro parejas).
         #expect(semicorcheas.voz.eventos.count == 8)
         let analisis = try PresentacionDeAnalisis.analizar("Do Sol7 Do", notacion: .espanolCompacto)
-        let negras = try #require(analisis.arpegiada(.ascendente, figura: .negra, notacion: .espanolCompacto))
+        let negras = try #require(analisis.arpegiada(.ascendente, figura: .negra, en: .espanolCompacto))
         // Una blanca por acorde: dos negras cada uno.
         #expect(negras.voz.eventos.count == 6)
         #expect(negras.voz.eventos.allSatisfy { $0.duracion == .negra })
@@ -127,33 +127,33 @@ import Testing
     @Test func tresillosTempoSwingYEnlace() throws {
         let tresillo = Duracion.corchea.grupoIrregular(3, en: 2)
         let arpegio = PresentacionDeArpegios.arpegio(
-            Arpegio(Acorde("Do"), conOctava: false), figura: tresillo, tempo: Tempo(120), notacion: .espanolCompacto)
+            Arpegio(Acorde("Do"), conOctava: false), figura: tresillo, tempo: Tempo(120), en: .espanolCompacto)
         #expect(arpegio.voz.eventos.allSatisfy { $0.duracion == tresillo })
         // A 120, cada negra dura medio segundo y cada corchea de tresillo, un sexto.
         #expect(arpegio.sonido.inicios.map { ($0 * 6).rounded() } == [0, 1, 2])
         #expect(String(decoding: arpegio.ficheros[0].datos, as: UTF8.self).contains("<per-minute>120"))
         let conSwing = PresentacionDeArpegios.arpegio(
-            Arpegio(Acorde("Do")), swing: true, notacion: .espanolCompacto)
-        let recta = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Do")), notacion: .espanolCompacto)
+            Arpegio(Acorde("Do")), swing: true, en: .espanolCompacto)
+        let recta = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Do")), en: .espanolCompacto)
         #expect(conSwing.sonido != recta.sonido)
         #expect(conSwing.ficheros == recta.ficheros)
         // Enlazados, el Fa empieza por el Do, la nota más cercana al último Do del primero.
         let analisis = try PresentacionDeAnalisis.analizar("Do Fa", notacion: .espanolCompacto)
-        let suelta = try #require(analisis.arpegiada(.ascendente, figura: .semicorchea, notacion: .espanolCompacto))
+        let suelta = try #require(analisis.arpegiada(.ascendente, figura: .semicorchea, en: .espanolCompacto))
         let enlazada = try #require(
-            analisis.arpegiada(.ascendente, figura: .semicorchea, enlazados: true, notacion: .espanolCompacto))
+            analisis.arpegiada(.ascendente, figura: .semicorchea, enlazados: true, en: .espanolCompacto))
         #expect(suelta.voz.eventos[8].alturas.first?.nota == .fa)
         #expect(enlazada.voz.eventos[8].alturas.first?.nota == .do)
         let lenta = try #require(
             PresentacionDeArpegios.progresion(
                 [Acorde("Do")], patron: .ascendente, tonalidad: nil, tempo: Tempo(60), swing: true,
-                notacion: .espanolCompacto))
+                en: .espanolCompacto))
         #expect(lenta.sonido.notas.count == 4)
     }
 
     @Test func losFicherosDelArpegioSeLeenConLasMismasNotas() throws {
         let arpegio = PresentacionDeArpegios.arpegio(
-            Arpegio(Acorde("Fa#m7"), patron: .alberti), notacion: .espanolCompacto)
+            Arpegio(Acorde("Fa#m7"), patron: .alberti), en: .espanolCompacto)
         let sonido = arpegio.sonido.notas
         for fichero in arpegio.ficheros where [.musicXML, .midi].contains(fichero.formato) {
             let pieza = try PiezaImportada(leyendo: fichero.datos)
@@ -172,7 +172,7 @@ import Testing
             PresentacionDeArpegios.progresion(
                 acordes, patron: .ascendente,
                 tonalidad: Tonalidad(.re),
-                notacion: .inglesASCII))
+                en: .inglesASCII))
         let patron = Arpegio.Patron.ascendente.nombre(en: .inglesASCII)
         #expect(arpegiada.ficheros[0].nombre == "Progresión arpegiada (\(patron))")
         for fichero in arpegiada.ficheros where [.musicXML, .midi].contains(fichero.formato) {
@@ -233,7 +233,7 @@ import Testing
 
 @Suite struct PresentacionDeCoralTests {
     @Test func armonizarConOctavasDaElCoral() throws {
-        let coral = try PresentacionDeCoral.presentar(.armonizar, "Mi4 Fa4 Re4 Do4", notacion: .espanolCompacto)
+        let coral = try PresentacionDeCoral.presentar(.armonizar, "Mi4 Fa4 Re4 Do4", en: .espanolCompacto)
         #expect(coral.titulo == "Do mayor")
         #expect(coral.propuestas.first == "Do Fa Sol Do (I–IV–V–I)")
         #expect(coral.filas.map(\.grado) == ["I", "IV", "V", "I"])
@@ -243,7 +243,7 @@ import Testing
     }
 
     @Test func armonizarSinOctavasNoDaCoral() throws {
-        let coral = try PresentacionDeCoral.presentar(.armonizar, "Mi Re Do", propuestas: 1, notacion: .espanolCompacto)
+        let coral = try PresentacionDeCoral.presentar(.armonizar, "Mi Re Do", propuestas: 1, en: .espanolCompacto)
         #expect(coral.propuestas == ["Do Sol Do (I–V–I)"])
         #expect(coral.filas.isEmpty)
         #expect(coral.ficheros.isEmpty)
@@ -259,15 +259,15 @@ import Testing
     @Test func laTonalidadDadaManda() throws {
         let coral = try PresentacionDeCoral.presentar(
             .armonizar, "Do Si La Sol# La", tonalidad: "La menor",
-            notacion: .espanolCompacto)
+            en: .espanolCompacto)
         #expect(coral.titulo == "La menor")
         #expect(throws: (any Error).self) {
-            try PresentacionDeCoral.presentar(.armonizar, "Do", tonalidad: "Xyz", notacion: .espanolCompacto)
+            try PresentacionDeCoral.presentar(.armonizar, "Do", tonalidad: "Xyz", en: .espanolCompacto)
         }
     }
 
     @Test func realizarEscribeCuatroVocesSinFaltas() throws {
-        let coral = try PresentacionDeCoral.presentar(.realizar, "Do Fa Sol7 Do", notacion: .espanolCompacto)
+        let coral = try PresentacionDeCoral.presentar(.realizar, "Do Fa Sol7 Do", en: .espanolCompacto)
         #expect(coral.filas.map(\.cifrado) == ["Do", "Fa", "Sol7", "Do"])
         #expect(coral.filas.allSatisfy { $0.voces.split(separator: " ").count == 4 })
         #expect(coral.avisos.isEmpty, "\(coral.avisos)")
@@ -276,7 +276,7 @@ import Testing
 
     @Test func revisarEncuentraLasParalelas() throws {
         let coral = try PresentacionDeCoral.presentar(
-            .revisar, "Do3 Sol3 Mi4 Do5, Re3 La3 Fa4 Re5", notacion: .espanolCompacto)
+            .revisar, "Do3 Sol3 Mi4 Do5, Re3 La3 Fa4 Re5", en: .espanolCompacto)
         #expect(coral.filas.map(\.voces) == ["Do₃ Sol₃ Mi₄ Do₅", "Re₃ La₃ Fa₄ Re₅"])
         #expect(coral.filas.map(\.cifrado) == ["Do", "Rem"])
         #expect(!coral.avisos.isEmpty)
@@ -286,16 +286,16 @@ import Testing
 
     @Test func revisarUnBuenEnlace() throws {
         let coral = try PresentacionDeCoral.presentar(
-            .revisar, "Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4", notacion: .espanolCompacto)
+            .revisar, "Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4", en: .espanolCompacto)
         #expect(coral.avisos == [.sinFaltasDeConduccion])
         #expect(coral.avisos[0].texto(en: .espanolCompacto) == "Sin faltas de conducción.")
-        #expect(coral.avisos[0].texto(en: .euskeraPalabras) == "Ez dago ahots-eramate akatsik.")
+        #expect(coral.avisos[0].texto(en: .conPalabras(.euskera)) == "Ez dago ahots-eramate akatsik.")
     }
 
     @Test func unTextoVacioEsUnError() throws {
         for tarea in PresentacionDeCoral.Tarea.allCases {
             #expect(throws: (any Error).self, "\(tarea)") {
-                try PresentacionDeCoral.presentar(tarea, "  ", notacion: .espanolCompacto)
+                try PresentacionDeCoral.presentar(tarea, "  ", en: .espanolCompacto)
             }
         }
     }
@@ -303,7 +303,7 @@ import Testing
     @Test func losEjemplosFuncionan() throws {
         for tarea in PresentacionDeCoral.Tarea.allCases {
             #expect(throws: Never.self, "\(tarea)") {
-                try PresentacionDeCoral.presentar(tarea, tarea.ejemplo, notacion: .espanolCompacto)
+                try PresentacionDeCoral.presentar(tarea, tarea.ejemplo, en: .espanolCompacto)
             }
         }
     }

@@ -26,7 +26,7 @@ let pares: [(String, String)] = [
     ("Do4", "Mi4"), ("Fa4", "Si4"), ("Si3", "Fa4"), ("Do4", "Re5"), ("Sol4", "Do4"), ("Do4", "Do#4"),
 ]
 for (a, b) in pares {
-    let i = Altura(texto: b)! - Altura(texto: a)!
+    let i = try! Altura(leyendo: b) - (try! Altura(leyendo: a))
     print("\(a) → \(b):", i, "(\(i.abreviatura), \(i.semitonos) st, coords (\(i.pasosDeQuinta), \(i.pasosDeOctava)))")
 }
 print("Inversión de 3M:", Intervalo.terceraMayor.inversion)
@@ -35,7 +35,7 @@ print("Do + 4A =", Nota.do + .cuartaAumentada, "· Do + 5d =", Nota.do + .quinta
 
 titulo("Acordes")
 for cifrado in ["Do", "Rem7", "Sol7/Si", "Fa#m7b5", "Sibmaj7", "Mi°7"] {
-    let acorde = Acorde(texto: cifrado)!
+    let acorde = try! Acorde(leyendo: cifrado)
     print(
         cifrado.padding(toLength: 9, withPad: " ", startingAt: 0),
         acorde.notasDesdeElBajo.map(\.nombre).joined(separator: " "),
@@ -47,7 +47,7 @@ print("Mi3 Sol3 La3 Do4 →", identificados.map(\.cifrado))
 
 titulo("Cifrado generativo")
 for texto in ["G7(b9,#11)", "Dm11", "Sol13sus4", "Do6/9", "Fa7alt", "Mibmaj7#11", "Do/Re", "La-7"] {
-    let acorde: Acorde = Acorde(texto: texto)!
+    let acorde = try! Acorde(leyendo: texto)
     print(
         texto.padding(toLength: 12, withPad: " ", startingAt: 0), "→",
         acorde.cifrado.padding(toLength: 22, withPad: " ", startingAt: 0),
@@ -122,7 +122,7 @@ print(
 
 titulo("Escalas")
 for texto in ["Do mayor", "Mib mayor", "La menor armónica", "Re dórico", "Fa# lidio", "Do tonos enteros"] {
-    let e = Escala(texto: texto)!
+    let e = try! Escala(leyendo: texto)
     let armadura = e.armadura.map { String($0) } ?? "—"
     print(
         e.nombre.padding(toLength: 20, withPad: " ", startingAt: 0),
@@ -243,10 +243,11 @@ for correspondencia in CorrespondenciaDeColores.allCases {
 
 titulo("Otras lenguas")
 for notacion in [
-    Notacion.alemanCompacto, .francesPalabras, .italianoPalabras, .catalanPalabras, .gallegoPalabras, .euskeraPalabras,
-    .portuguesPalabras,
+    Notacion.compacta(.aleman), .conPalabras(.frances), .conPalabras(.italiano), .conPalabras(.catalan),
+    .conPalabras(.gallego), .conPalabras(.euskera),
+    .conPalabras(.portugues),
 ] {
-    let notas = ["Do#", "Mib", "Sib", "Si"].map { Nota(texto: $0)!.nombre(en: notacion) }
+    let notas = ["Do#", "Mib", "Sib", "Si"].map { try! Nota(leyendo: $0).nombre(en: notacion) }
     print(
         "  \(notacion):", notas.joined(separator: ", "), "·", Tonalidad("Fa# mayor").nombre(en: notacion),
         "·", Acorde("Sim7").cifrado(en: notacion))

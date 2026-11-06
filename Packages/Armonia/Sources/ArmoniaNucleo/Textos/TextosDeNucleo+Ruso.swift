@@ -46,7 +46,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "уменьшённой примы не существует: от до до до-бемоль — нисходящая увеличенная прима (пиши -A1)",
         reglaDeLasJustas: "прима, кварта, квинта и октава бывают чистыми, увеличенными или уменьшёнными",
         reglaDeLasMayores: "секунда, терция, секста и септима бывают большими, малыми, увеличенными или уменьшёнными",
-        intervaloInexistente: { numero, calidad, notacion, regla in "«\(calidad.nombre(en: .rusoPalabras)) \(Intervalo.ordinal(numero, en: .ruso))» не существует: \(regla.ruso)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "«\(calidad.nombre(en: .conPalabras(.ruso))) \(Intervalo.ordinal(numero, en: .ruso))» не существует: \(regla.ruso)" },
         alteracionNoReconocida: { signo in "«\(signo)» — не знак альтерации (ожидалось ♯, ♭, 𝄪, 𝄫, #, b, x или ♮)" },
 
         // ErrorDeLectura.swift (conjuntos y series)

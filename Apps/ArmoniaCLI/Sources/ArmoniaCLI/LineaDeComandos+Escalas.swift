@@ -82,19 +82,19 @@ extension LineaDeComandos {
         let pedido = try pedidoDeEscala(textos)
         let escala = pedido.escala
         if let contra = pedido.contra {
-            return bien(PresentacionDeEstudioDeEscala.comparacionNotaANota(escala, con: contra, notacion: notacion))
+            return bien(PresentacionDeEstudioDeEscala.comparacionNotaANota(escala, con: contra, en: notacion))
         }
         var lineas = [describir(escala: escala, conTodosSusAcordes: pedido.conAcordes, notacion)]
         if let secuencia = pedido.secuencia {
             let presentada = PresentacionDeEstudioDeEscala.secuencia(
-                escala, secuencia, octavas: pedido.octavas, sentido: pedido.sentido, notacion: notacion)
+                escala, secuencia, octavas: pedido.octavas, sentido: pedido.sentido, en: notacion)
             lineas.append(notacion.texto(\.secuencia) + " " + secuencia.nombre(en: notacion) + ":")
             lineas.append("  " + presentada.notas)
         }
         if pedido.piano {
             lineas.append(notacion.texto(\.digitacionDePiano) + ":")
             let digitaciones = PresentacionDeEstudioDeEscala.digitaciones(
-                escala, octavas: pedido.octavas, notacion: notacion)
+                escala, octavas: pedido.octavas, en: notacion)
             for mano in digitaciones {
                 let pares = zip(mano.notas.split(separator: " "), mano.dedos.split(separator: " "))
                 lineas.append("  " + mano.mano + ": " + pares.map { "\($0) \($1)" }.joined(separator: " · "))
@@ -102,56 +102,56 @@ extension LineaDeComandos {
         }
         if pedido.modos {
             lineas.append(notacion.texto(\.modosParalelos) + ":")
-            lineas += PresentacionDeEstudioDeEscala.modosParalelos(de: escala, notacion: notacion).map { modo in
+            lineas += PresentacionDeEstudioDeEscala.modosParalelos(de: escala, en: notacion).map { modo in
                 "  " + modo.nombre + " (" + modo.brillo + ")" + (modo.cambios.isEmpty ? "" : ": " + modo.cambios)
             }
-            let relativos = PresentacionDeEstudioDeEscala.modosRelativos(de: escala, notacion: notacion)
+            let relativos = PresentacionDeEstudioDeEscala.modosRelativos(de: escala, en: notacion)
             lineas.append(notacion.texto(\.modosRelativos) + ":")
             lineas.append("  " + relativos.map(\.nombre).joined(separator: " · "))
         }
         if pedido.simetria { lineas += lineasDeSimetria(de: escala, notacion) }
         if pedido.vecinas {
             lineas.append(notacion.texto(\.escalasVecinas) + ":")
-            lineas += PresentacionDeEstudioDeEscala.vecinas(de: escala, notacion: notacion).map {
+            lineas += PresentacionDeEstudioDeEscala.vecinas(de: escala, en: notacion).map {
                 "  " + $0.nombre + ": " + $0.detalle
             }
         }
         if pedido.parecidas {
             lineas.append(notacion.texto(\.escalasParecidas) + ":")
-            lineas += PresentacionDeEstudioDeEscala.parecidas(a: escala, notacion: notacion).map {
+            lineas += PresentacionDeEstudioDeEscala.parecidas(a: escala, en: notacion).map {
                 "  " + $0.nombre + ": " + $0.detalle
             }
         }
         if pedido.progresiones {
             lineas.append(notacion.texto(\.progresionesEnLaEscala) + ":")
-            for progresion in PresentacionDeEstudioDeEscala.progresiones(de: escala, notacion: notacion) {
+            for progresion in PresentacionDeEstudioDeEscala.progresiones(de: escala, en: notacion) {
                 let fuera = progresion.fuera.isEmpty ? "" : " · " + progresion.fuera
                 lineas.append("  " + progresion.grados + ": " + progresion.cifrados + fuera)
             }
         }
         if pedido.estadisticas {
             lineas.append(notacion.texto(\.estadisticas) + ":")
-            lineas += PresentacionDeEstudioDeEscala.estadisticas(de: escala, notacion: notacion).map {
+            lineas += PresentacionDeEstudioDeEscala.estadisticas(de: escala, en: notacion).map {
                 "  " + $0.nombre + ": " + $0.valor
             }
         }
         // `--escalera`: de la más oscura a la más brillante, «  +3  Do lidio · Fa → Fa♯», con «←» en la de partida.
         if pedido.escalera {
             lineas.append(notacion.texto(\.escaleraDeBrillo) + ":")
-            lineas += PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, notacion: notacion).map { peldano in
+            lineas += PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, en: notacion).map { peldano in
                 let cambio = peldano.cambio.isEmpty ? "" : " · " + peldano.cambio
                 return "  " + peldano.brillo + "  " + peldano.nombre + cambio + (peldano.esLaDePartida ? " ←" : "")
             }
         }
         if pedido.doce {
             let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(
-                escala, secuencia: pedido.secuencia, notacion: notacion)
+                escala, secuencia: pedido.secuencia, en: notacion)
             lineas.append(hoja.titulo + ":")
             lineas += hoja.tonalidades.map { "  " + $0.titulo + ": " + $0.notas }
             // Con --acordes, también los acordes de cada grado en las doce, si la escala los forma.
             if pedido.conAcordes,
                 let tabla = PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
-                    escala, cuatriadas: !pedido.triadas, notacion: notacion)
+                    escala, cuatriadas: !pedido.triadas, en: notacion)
             {
                 lineas.append(tabla.titulo + ":")
                 lineas.append("  " + tabla.grados.joined(separator: " · "))
@@ -159,7 +159,7 @@ extension LineaDeComandos {
             }
         }
         if let otra = pedido.otra {
-            let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, notacion: notacion)
+            let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, en: notacion)
             lineas.append(notacion.texto(\.compararCon) + " " + otra.nombre(en: notacion) + ":")
             lineas.append("  " + notacion.texto(\.notasComunes) + ": " + comparacion.comunes)
             let resto = [comparacion.soloEnOrigen, comparacion.soloEnDestino] + comparacion.cambios
@@ -172,7 +172,7 @@ extension LineaDeComandos {
     /// escala que no es simétrica se repite a la octava, con sus doce transposiciones.
     static func lineasDeSimetria(de escala: Escala, _ notacion: Notacion) -> [String] {
         var lineas = [notacion.texto(\.simetria) + ":"]
-        guard let simetria = PresentacionDeEstudioDeEscala.simetria(de: escala, notacion: notacion) else {
+        guard let simetria = PresentacionDeEstudioDeEscala.simetria(de: escala, en: notacion) else {
             let veces = escala.transposicionesDistintas
             return lineas + ["  " + notacion.texto { $0.repiteCada(veces, veces) }]
         }
@@ -222,7 +222,7 @@ extension LineaDeComandos {
             let pares = acordes.map { "\($0.grado) \($0.cifrado)" }
             lineas.append("  \(t(.acordes)): " + pares.joined(separator: " · "))
         }
-        let grados = conTodosSusAcordes ? PresentacionDeEscalaYAcorde.acordesQueCaben(escala, notacion: notacion) : []
+        let grados = conTodosSusAcordes ? PresentacionDeEscalaYAcorde.acordesQueCaben(escala, en: notacion) : []
         if !grados.isEmpty {
             lineas.append("  " + notacion.texto(\.acordesQueCaben) + ":")
             lineas += grados.map { "    \($0.grado): \($0.cifrados)" }
@@ -355,7 +355,7 @@ extension LineaDeComandos {
                 .filter { !$0.isEmpty }
             guard !nombres.isEmpty else { throw ErrorDeUso.faltaValor("--comparar") }
             let escalas = try nombres.map { try Escala(leyendo: $0) }
-            let tabla = PresentacionDeEstudioDeEscala.tablaDeEstadisticas(escalas, notacion: notacion)
+            let tabla = PresentacionDeEstudioDeEscala.tablaDeEstadisticas(escalas, en: notacion)
             return bien(columnas([tabla.encabezados] + tabla.filas))
         }
         // `--mapa [Re dórico] [--notas 7]`: el mapa de brillo en SVG, resaltando la escala que se dé.
@@ -369,7 +369,7 @@ extension LineaDeComandos {
             let resaltada = entrada.restantes.isEmpty ? nil : try Escala(leyendo: entrada.unidos)
             return bien(
                 PresentacionDeEstudioDeEscala.mapaDeBrillo(
-                    numeroDeNotas: numeroDeNotas, resaltada: resaltada, notacion: notacion))
+                    numeroDeNotas: numeroDeNotas, resaltada: resaltada, en: notacion))
         }
         var tradicion: Tradicion?
         if let texto = try entrada.valor(.tradicion) {
@@ -456,10 +456,10 @@ extension LineaDeComandos {
         var grupos: [(titulo: String, tipos: [TipoDeEscala])] = []
         if tradicion == nil && categoria == nil {
             if let usoPedido {
-                let delUso = TipoDeEscala.todos(uso: usoPedido).filter(cumple)
+                let delUso = TipoDeEscala.occidentales(uso: usoPedido).filter(cumple)
                 if !delUso.isEmpty { grupos.append((t(.habituales) + " · " + usoPedido.nombre(en: notacion), delUso)) }
             } else {
-                let habituales = TipoDeEscala.todos.filter(cumple)
+                let habituales = TipoDeEscala.occidentales.filter(cumple)
                 if !habituales.isEmpty { grupos.append((t(.habituales), habituales)) }
             }
         }

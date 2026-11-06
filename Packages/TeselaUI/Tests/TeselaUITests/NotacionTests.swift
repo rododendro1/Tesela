@@ -31,22 +31,22 @@ import Testing
         #expect(Notacion.inglesPalabras.titulo == "English (F sharp)")
         #expect(Notacion.espanolASCII.titulo == "Español (Fa#)")
         #expect(Notacion.inglesASCII.titulo == "English (F#)")
-        #expect(Notacion.alemanPalabras.titulo == "Deutsch (F Kreuz)")
-        #expect(Notacion.alemanCompacto.titulo == "Deutsch (Fis)")
-        #expect(Notacion.alemanPalabras.clave == "alemanPalabras")
-        #expect(Notacion.desde(clave: "alemanPalabras") == .alemanPalabras)
+        #expect(Notacion.conPalabras(.aleman).titulo == "Deutsch (F Kreuz)")
+        #expect(Notacion.compacta(.aleman).titulo == "Deutsch (Fis)")
+        #expect(Notacion.conPalabras(.aleman).clave == "alemanPalabras")
+        #expect(Notacion.desde(clave: "alemanPalabras") == .conPalabras(.aleman))
         // «aleman» era Fis antes de la 0.3.0, y se sigue leyendo así.
-        #expect(Notacion.desde(clave: "aleman") == .alemanCompacto)
-        #expect(Notacion.desde(clave: "aleman+espanol") == Notacion.alemanCompacto.conTextos(en: .espanol))
-        #expect(Notacion.alemanCompacto.clave == "alemanCompacto")
-        #expect(Notacion.desde(clave: "alemanCompacto") == .alemanCompacto)
+        #expect(Notacion.desde(clave: "aleman") == .compacta(.aleman))
+        #expect(Notacion.desde(clave: "aleman+espanol") == Notacion.compacta(.aleman).conTextos(en: .espanol))
+        #expect(Notacion.compacta(.aleman).clave == "alemanCompacto")
+        #expect(Notacion.desde(clave: "alemanCompacto") == .compacta(.aleman))
         #expect(Notacion.espanolASCII.clave == "espanolASCII")
-        #expect(Notacion.catalanPalabras.clave == "catalan")
-        #expect(Notacion.francesCompacto.clave == "francesCompacto")
-        #expect(Notacion.desde(clave: "rusoCompacto+espanol") == Notacion.rusoCompacto.conTextos(en: .espanol))
-        #expect(Notacion.francesPalabras.titulo == "Français (fa dièse)")
-        #expect(Notacion.francesCompacto.titulo == "Français (Fa♯)")
-        #expect(Notacion.rusoCompacto.titulo == "Русский (Фа♯)")
+        #expect(Notacion.conPalabras(.catalan).clave == "catalan")
+        #expect(Notacion.compacta(.frances).clave == "francesCompacto")
+        #expect(Notacion.desde(clave: "rusoCompacto+espanol") == Notacion.compacta(.ruso).conTextos(en: .espanol))
+        #expect(Notacion.conPalabras(.frances).titulo == "Français (fa dièse)")
+        #expect(Notacion.compacta(.frances).titulo == "Français (Fa♯)")
+        #expect(Notacion.compacta(.ruso).titulo == "Русский (Фа♯)")
     }
 
     @Test func laClaveVuelveALaNotacion() {
@@ -58,7 +58,7 @@ import Testing
     /// La octava en subíndice se guarda aparte: la clave de la notación no cambia.
     @Test func octavasEnSubindice() {
         let conSubindices = Notacion.desde(clave: "ruso+espanol", octavasEnSubindice: true)
-        #expect(conSubindices == Notacion.rusoPalabras.conTextos(en: .espanol).conOctavas(.subindices))
+        #expect(conSubindices == Notacion.conPalabras(.ruso).conTextos(en: .espanol).conOctavas(.subindices))
         #expect(conSubindices.clave == "ruso+espanol")
         // Si se ha tocado, manda el ajuste, también en las compactas.
         #expect(
@@ -70,19 +70,19 @@ import Testing
     }
 
     @Test func notasYTextosPorSeparado() {
-        let rusoEnEspanol = Notacion.rusoPalabras.conTextos(en: .espanol)
+        let rusoEnEspanol = Notacion.conPalabras(.ruso).conTextos(en: .espanol)
         #expect(rusoEnEspanol.clave == "ruso+espanol")
         #expect(Notacion.desde(clave: "ruso+espanol") == rusoEnEspanol)
         #expect(rusoEnEspanol.titulo == "Русский (фа-диез) · Español")
         #expect(rusoEnEspanol.idiomaElegidoParaLosTextos == .espanol)
-        #expect(Notacion.rusoPalabras.idiomaElegidoParaLosTextos == nil)
+        #expect(Notacion.conPalabras(.ruso).idiomaElegidoParaLosTextos == nil)
         // Cambiar las notas conserva los textos, y quitar los textos deja las notas.
-        #expect(rusoEnEspanol.conNotas(.griegoPalabras) == Notacion.griegoPalabras.conTextos(en: .espanol))
-        #expect(Notacion.rusoPalabras.conNotas(.griegoPalabras) == .griegoPalabras)
-        #expect(rusoEnEspanol.conTextosElegidos(nil) == .rusoPalabras)
+        #expect(rusoEnEspanol.conNotas(.conPalabras(.griego)) == Notacion.conPalabras(.griego).conTextos(en: .espanol))
+        #expect(Notacion.conPalabras(.ruso).conNotas(.conPalabras(.griego)) == .conPalabras(.griego))
+        #expect(rusoEnEspanol.conTextosElegidos(nil) == .conPalabras(.ruso))
         #expect(Notacion.inglesASCII.conTextosElegidos(.catalan).clave == "inglesASCII+catalan")
         // Una parte desconocida no rompe nada.
-        #expect(Notacion.desde(clave: "ruso+klingon") == .rusoPalabras)
+        #expect(Notacion.desde(clave: "ruso+klingon") == .conPalabras(.ruso))
         #expect(Notacion.desde(clave: "klingon+espanol") == .espanolCompacto)
         #expect(Set(Idioma.allCases.map(\.clave)).count == Idioma.allCases.count)
     }

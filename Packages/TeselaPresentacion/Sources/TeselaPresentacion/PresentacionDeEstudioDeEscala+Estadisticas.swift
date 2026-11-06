@@ -28,10 +28,10 @@ extension PresentacionDeEstudioDeEscala {
     /// interválico, el número de Forte (si lo tiene), las transposiciones distintas y sus rasgos (si tiene alguno).
     ///
     ///     let datos = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do, .mayor),
-    ///         notacion: .espanolCompacto)
+    ///         en: .espanolCompacto)
     ///     datos.map(\.valor)   // ["7 (heptatónica)", "0", "+2", "2 2 1 2 2 2 1", "[2, 5, 4, 3, 6, 1]", "7-35",
     ///                          //  "12", "máximamente regular"]
-    public static func estadisticas(de escala: Escala, notacion: Notacion) -> [DatoDeEscalaPresentado] {
+    public static func estadisticas(de escala: Escala, en notacion: Notacion) -> [DatoDeEscalaPresentado] {
         let estadisticas = escala.estadisticas
         func dato(_ campo: (TextosDeApps) -> String, _ valor: String) -> DatoDeEscalaPresentado {
             DatoDeEscalaPresentado(nombre: notacion.texto(campo), valor: valor)
@@ -59,10 +59,10 @@ extension PresentacionDeEstudioDeEscala {
     /// interválico, el número de Forte y los rasgos, para compararlas de un vistazo.
     ///
     ///     let tabla = PresentacionDeEstudioDeEscala.tablaDeEstadisticas(
-    ///         [Escala(.do), Escala(.do, .lidio)], notacion: .espanolCompacto)
+    ///         [Escala(.do), Escala(.do, .lidio)], en: .espanolCompacto)
     ///     tabla.filas[1][2]   // "+3"
     public static func tablaDeEstadisticas(
-        _ escalas: [Escala], notacion: Notacion
+        _ escalas: [Escala], en notacion: Notacion
     ) -> (encabezados: [String], filas: [[String]]) {
         let encabezados = [
             notacion.texto(\.escala), notacion.texto(\.notas), notacion.texto(\.brilloPorQuintas),
@@ -70,7 +70,7 @@ extension PresentacionDeEstudioDeEscala {
             notacion.texto(\.rasgos),
         ]
         let filas = escalas.map { escala -> [String] in
-            let datos = estadisticas(de: escala, notacion: notacion)
+            let datos = estadisticas(de: escala, en: notacion)
             func valor(_ campo: (TextosDeApps) -> String) -> String {
                 datos.first { $0.nombre == notacion.texto(campo) }?.valor ?? "—"
             }
@@ -97,16 +97,16 @@ extension PresentacionDeEstudioDeEscala {
     /// Las escalas con la misma tónica de la más oscura a la más brillante, a una nota cada una de la siguiente
     /// (`Escala.escaleraDeBrillo`), con su brillo por quintas y la nota que sube.
     ///
-    ///     PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: Escala(.do), notacion: .espanolCompacto)
+    ///     PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: Escala(.do), en: .espanolCompacto)
     ///         .first { $0.nombre == "Do lidio" }?.cambio   // "Fa → Fa♯"
-    public static func escaleraDeBrillo(de escala: Escala, notacion: Notacion) -> [PeldanoDeBrilloPresentado] {
+    public static func escaleraDeBrillo(de escala: Escala, en notacion: Notacion) -> [PeldanoDeBrilloPresentado] {
         let escalera = escala.escaleraDeBrillo()
         return escalera.peldanos.enumerated().map { i, peldano in
             let subida = i == 0 ? nil : escalera.subidas[i - 1]
             return PeldanoDeBrilloPresentado(
                 escala: peldano, nombre: peldano.nombre(en: notacion),
                 brillo: conSigno(peldano.estadisticas.brilloPorQuintas),
-                cambio: subida.map { $0.de.nombre(en: notacion) + " → " + $0.a.nombre(en: notacion) } ?? "",
+                cambio: subida.map { $0.desde.nombre(en: notacion) + " → " + $0.hasta.nombre(en: notacion) } ?? "",
                 esLaDePartida: i == escalera.posicion, sonido: .escala(peldano))
         }
     }

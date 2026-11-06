@@ -105,7 +105,7 @@ extension LineaDeComandos {
             }
             let titulo = conForma.map { $0.cifrado(en: notacion) }.joined(separator: " ")
             let xml = PresentacionDeTablatura.musicXML(
-                digitaciones: formas, acordes: conForma, titulo: titulo, notacion: notacion)
+                digitaciones: formas, acordes: conForma, titulo: titulo, en: notacion)
             return bien(xml.trimmingCharacters(in: "\n"))
         }
         // «Do · guitarra», y con capo, «Do · guitarra · Capo en el traste 2».
@@ -225,7 +225,7 @@ extension LineaDeComandos {
     static func formasPentatonicas(de escala: Escala, en mastil: Mastil, _ notacion: Notacion)
         throws -> ResultadoDeOrden
     {
-        let formas = PresentacionDeEstudioDeEscala.formasPentatonicas(de: escala, mastil: mastil, notacion: notacion)
+        let formas = PresentacionDeEstudioDeEscala.formasPentatonicas(de: escala, mastil: mastil, en: notacion)
         guard !formas.isEmpty else { throw ErrorDeUso.noEsPentatonica }
         let titulo = notacion.texto(\.formasDeLaPentatonica) + instrumento(de: mastil, notacion)
         var lineas = [escala.nombre(en: notacion) + " · " + titulo]
@@ -243,7 +243,7 @@ extension LineaDeComandos {
     ) -> ResultadoDeOrden {
         let posiciones = PresentacionDeEstudioDeEscala.secuenciaEnLasPosiciones(
             escala, secuencia, caged: caged, sentido: bajando ? .descendente : .ascendente, mastil: mastil,
-            notacion: notacion)
+            en: notacion)
         let titulo = notacion.texto(\.secuencia) + " " + secuencia.nombre(en: notacion)
         var lineas = [escala.nombre(en: notacion) + " · " + titulo + instrumento(de: mastil, notacion)]
         for posicion in posiciones where !posicion.notas.isEmpty {
@@ -258,7 +258,7 @@ extension LineaDeComandos {
         _ acorde: Acorde, formas: FormasDeArpegio, idaYVuelta: Bool, en mastil: Mastil, _ notacion: Notacion
     ) -> ResultadoDeOrden {
         let arpegios = PresentacionDeArpegios.enElMastil(
-            acorde, formas: formas, idaYVuelta: idaYVuelta, mastil: mastil, notacion: notacion)
+            acorde, formas: formas, idaYVuelta: idaYVuelta, mastil: mastil, en: notacion)
         let sistema: String
         switch formas {
         case .porPosiciones: sistema = notacion.texto(\.porPosiciones)
