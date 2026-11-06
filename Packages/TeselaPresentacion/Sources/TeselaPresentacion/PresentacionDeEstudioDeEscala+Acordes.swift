@@ -29,11 +29,11 @@ extension PresentacionDeEstudioDeEscala {
     /// pentatónica, por ejemplo).
     ///
     ///     let tabla = PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(Escala(.do),
-    ///         notacion: .espanolCompacto)
+    ///         en: .espanolCompacto)
     ///     tabla?.grados[4]              // "V7"
     ///     tabla?.filas[1].acordes[4]    // "Re7": el V7 de Sol mayor
     public static func acordesEnLasDoceTonalidades(
-        _ escala: Escala, cuatriadas: Bool = true, notacion: Notacion
+        _ escala: Escala, cuatriadas: Bool = true, en notacion: Notacion
     ) -> TablaDeAcordesPresentada? {
         let grados = escala.cifradosRomanos(cuatriadas: cuatriadas).compactMap { $0 }
         let tonalidades = escala.enLasDoceTonalidades.map { transportada in

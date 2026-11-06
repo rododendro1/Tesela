@@ -20,22 +20,22 @@ public struct ModulacionPresentada: Hashable, Sendable {
 /// prueba en Linux.
 ///
 ///     let aSol = PresentacionDeModulaciones.modulaciones(
-///         desde: Tonalidad(.do), hasta: Tonalidad(.sol), notacion: .espanolCompacto)
+///         desde: Tonalidad(.do), hasta: Tonalidad(.sol), en: .espanolCompacto)
 ///     aSol.first?.pivote   // "Lam = vi en Do mayor = ii en Sol mayor"
 public enum PresentacionDeModulaciones {
     /// Sin `hasta`, la manera más suave de llegar a cada tono vecino (``Tonalidad/vecinas``); con ella, todas las
     /// maneras de llegar a esa, de la más suave a la más brusca.
     public static func modulaciones(
-        desde tonalidad: Tonalidad, hasta destino: Tonalidad? = nil, notacion: Notacion
+        desde tonalidad: Tonalidad, hasta destino: Tonalidad? = nil, en notacion: Notacion
     ) -> [ModulacionPresentada] {
         let planes =
             destino.map { tonalidad.modulaciones(hasta: $0) }
             ?? tonalidad.vecinas.compactMap { tonalidad.modulaciones(hasta: $0).first }
-        return planes.map { presentar($0, notacion: notacion) }
+        return planes.map { presentar($0, en: notacion) }
     }
 
     /// Un plan de modulación, escrito en la notación.
-    public static func presentar(_ plan: PlanDeModulacion, notacion: Notacion) -> ModulacionPresentada {
+    public static func presentar(_ plan: PlanDeModulacion, en notacion: Notacion) -> ModulacionPresentada {
         let tecnica =
             switch plan.tecnica {
             case .acordeComun: notacion.texto(\.modulacionPorAcordeComun)

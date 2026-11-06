@@ -8,28 +8,28 @@ import Testing
     let notacion = Notacion.espanolCompacto
 
     @Test func armaduraYRelativas() {
-        let sinAlteraciones = PresentacionDeTonalidad.armadura(de: Tonalidad(.do), notacion: notacion)
+        let sinAlteraciones = PresentacionDeTonalidad.armadura(de: Tonalidad(.do), en: notacion)
         #expect(sinAlteraciones == "Armadura: sin alteraciones")
-        let fa = PresentacionDeTonalidad.armadura(de: Tonalidad(.fa), notacion: notacion)
+        let fa = PresentacionDeTonalidad.armadura(de: Tonalidad(.fa), en: notacion)
         #expect(fa.hasPrefix("Armadura: Si"), Comment(rawValue: fa))
         #expect(fa.split(separator: " ").count == 2, Comment(rawValue: fa))
         #expect(
-            PresentacionDeTonalidad.relativas(de: Tonalidad(.do), notacion: notacion)
+            PresentacionDeTonalidad.relativas(de: Tonalidad(.do), en: notacion)
                 == "Relativa: La menor · Homónima: Do menor")
     }
 
     @Test func cadenciasTipicas() {
-        let mayor = PresentacionDeTonalidad.cadenciasTipicas(de: Tonalidad(.do), notacion: notacion)
+        let mayor = PresentacionDeTonalidad.cadenciasTipicas(de: Tonalidad(.do), en: notacion)
         #expect(mayor.map(\.grados) == ["V7–I", "IV–I", "V7–vi", "ii–V"])
         #expect(mayor.map(\.acordes) == ["Sol7 – Do", "Fa – Do", "Sol7 – Lam", "Rem – Sol"])
         #expect(mayor.allSatisfy { !$0.nombre.isEmpty })
-        let menor = PresentacionDeTonalidad.cadenciasTipicas(de: Tonalidad(.la, .menor), notacion: notacion)
+        let menor = PresentacionDeTonalidad.cadenciasTipicas(de: Tonalidad(.la, .menor), en: notacion)
         #expect(menor.first?.acordes == "Mi7 – Lam", Comment(rawValue: menor.map(\.acordes).description))
         #expect(menor.first?.grados == "V7–i")
     }
 
     @Test func hojaDeUnaTonalidad() {
-        let hoja = PresentacionDeTonalidad.hojaDeEstudio(de: Tonalidad(.re), notacion: notacion)
+        let hoja = PresentacionDeTonalidad.hojaDeEstudio(de: Tonalidad(.re), en: notacion)
         #expect(hoja.hasPrefix("<svg "))
         #expect(hoja.hasSuffix("</svg>"))
         #expect(hoja.contains(">Re mayor</text>"))
@@ -37,7 +37,7 @@ import Testing
         #expect(hoja.contains(">Cadencias típicas</text>"))
         #expect(hoja.contains(">Modulaciones</text>"))
         #expect(hoja.contains(">La7 – Re</text>"))
-        let menor = PresentacionDeTonalidad.hojaDeEstudio(de: Tonalidad(.la, .menor), notacion: notacion)
+        let menor = PresentacionDeTonalidad.hojaDeEstudio(de: Tonalidad(.la, .menor), en: notacion)
         #expect(menor.contains(">La menor</text>"))
     }
 

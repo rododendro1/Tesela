@@ -63,13 +63,13 @@ public struct EscalaSobreElAcordePresentada: Hashable, Sendable {
 /// La parte de la pestaña de escalas para estudiarlas (secuencias, digitación de piano, modos, comparación) y las
 /// escalas sobre un acorde. No usa SwiftUI, así que se prueba en Linux.
 ///
-///     let terceras = PresentacionDeEstudioDeEscala.secuencia(Escala(.do), .terceras, notacion: .espanolCompacto)
+///     let terceras = PresentacionDeEstudioDeEscala.secuencia(Escala(.do), .terceras, en: .espanolCompacto)
 ///     terceras.titulo   // "Do mayor por terceras"
 public enum PresentacionDeEstudioDeEscala {
     /// La escala en una secuencia desde la octava 4, a lo largo de `octavas` octavas, subiendo o bajando.
     public static func secuencia(
         _ escala: Escala, _ secuencia: SecuenciaDeEscala, octavas: Int = 1,
-        sentido: SentidoDelIntervalo = .ascendente, notacion: Notacion
+        sentido: SentidoDelIntervalo = .ascendente, en notacion: Notacion
     ) -> SecuenciaPresentada {
         let alturas = escala.secuencia(secuencia, octavas: octavas, sentido: sentido)
         let titulo = escala.nombre(en: notacion) + " " + secuencia.nombre(en: notacion)
@@ -84,7 +84,7 @@ public enum PresentacionDeEstudioDeEscala {
 
     /// La digitación de piano de las dos manos, la derecha primero.
     public static func digitaciones(
-        _ escala: Escala, octavas: Int = 1, notacion: Notacion
+        _ escala: Escala, octavas: Int = 1, en notacion: Notacion
     ) -> [DigitacionDePianoPresentada] {
         Mano.allCases.map { mano in
             let digitacion = escala.digitacionDePiano(mano, octavas: octavas)
@@ -97,12 +97,12 @@ public enum PresentacionDeEstudioDeEscala {
 
     /// Los siete modos de la mayor sobre la tónica de la escala, del más brillante al más oscuro, con lo que cambia
     /// cada uno respecto a ella.
-    public static func modosParalelos(de escala: Escala, notacion: Notacion) -> [ModoPresentado] {
+    public static func modosParalelos(de escala: Escala, en notacion: Notacion) -> [ModoPresentado] {
         escala.modosParalelos.map { presentar($0, desde: escala, notacion: notacion) }
     }
 
     /// Las escalas con las mismas notas que empiezan en cada grado.
-    public static func modosRelativos(de escala: Escala, notacion: Notacion) -> [ModoPresentado] {
+    public static func modosRelativos(de escala: Escala, en notacion: Notacion) -> [ModoPresentado] {
         escala.modosRelativos.map { presentar($0, desde: escala, notacion: notacion) }
     }
 
@@ -118,10 +118,10 @@ public enum PresentacionDeEstudioDeEscala {
     /// círculo de quintas.
     ///
     ///     let lidio = PresentacionDeEstudioDeEscala.comparar(
-    ///         Escala(.do), con: Escala(.do, .lidio), notacion: .espanolCompacto)
+    ///         Escala(.do), con: Escala(.do, .lidio), en: .espanolCompacto)
     ///     lidio.cambios   // ["4: Fa → Fa♯"]
     public static func comparar(
-        _ escala: Escala, con otra: Escala, notacion: Notacion
+        _ escala: Escala, con otra: Escala, en notacion: Notacion
     ) -> ComparacionDeEscalasPresentada {
         let comparacion = escala.comparar(con: otra)
         func lista(_ notas: [Nota]) -> String { notas.map { $0.nombre(en: notacion) }.joined(separator: ", ") }
@@ -146,7 +146,7 @@ public enum PresentacionDeEstudioDeEscala {
     }
 
     /// Las escalas bebop que encajan con el acorde, con su nota de paso y el recorrido bajando.
-    public static func bebop(sobre acorde: Acorde, notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
+    public static func bebop(sobre acorde: Acorde, en notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
         acorde.escalasBebop.map { bebop in
             let paso = notacion.texto { $0.notaDePaso(bebop.notaDePaso.nombre(en: notacion)) }
             let recorrido = bebop.recorrido.map { $0.nombre(en: notacion) }.joined(separator: " ")
@@ -157,7 +157,7 @@ public enum PresentacionDeEstudioDeEscala {
     }
 
     /// Las pentatónicas sin notas a evitar sobre el acorde, con las tensiones que suma cada una.
-    public static func pentatonicas(sobre acorde: Acorde, notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
+    public static func pentatonicas(sobre acorde: Acorde, en notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
         acorde.pentatonicas.map { pentatonica in
             EscalaSobreElAcordePresentada(
                 escala: pentatonica.escala, nombre: pentatonica.escala.nombre(en: notacion),

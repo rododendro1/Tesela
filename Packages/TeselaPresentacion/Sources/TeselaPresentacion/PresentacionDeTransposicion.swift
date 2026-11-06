@@ -4,7 +4,7 @@ import Armonia
 /// una melodía («Mi4:4 Re4:8») o un coral («Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4»), palabra a palabra. No usa
 /// SwiftUI, así que se prueba en Linux.
 ///
-///     try PresentacionDeTransposicion.transponer("Do Lam Re7 Sol7", .segundaMayor, notacion: .espanolCompacto)
+///     try PresentacionDeTransposicion.transponer("Do Lam Re7 Sol7", .segundaMayor, en: .espanolCompacto)
 ///     // "Re Sim Mi7 La7"
 public enum PresentacionDeTransposicion {
     /// Lo que hay escrito: acordes (Sol7 es el acorde) o notas (Sol7 es el Sol de la octava 7).
@@ -29,7 +29,7 @@ public enum PresentacionDeTransposicion {
     /// El texto con cada altura, nota, evento o acorde transportado, y lo demás (barras, comas, silencios) tal
     /// cual. Lanza el error de lectura de la primera palabra que no se entiende.
     public static func transponer(
-        _ texto: String, _ intervalo: Intervalo, contenido: Contenido = .acordes, notacion: Notacion
+        _ texto: String, _ intervalo: Intervalo, contenido: Contenido = .acordes, en notacion: Notacion
     ) throws -> String {
         var resultado = ""
         var palabra = ""
@@ -53,10 +53,10 @@ public enum PresentacionDeTransposicion {
     /// El texto llevado de una tonalidad a otra por el camino más corto (de Do a La, una tercera menor abajo).
     public static func transponer(
         _ texto: String, de origen: Tonalidad, a destino: Tonalidad, contenido: Contenido = .acordes,
-        notacion: Notacion
+        en notacion: Notacion
     ) throws -> String {
         let intervalo = origen.tonica.intervaloMasCorto(hasta: destino.tonica)
-        return try transponer(texto, intervalo, contenido: contenido, notacion: notacion)
+        return try transponer(texto, intervalo, contenido: contenido, en: notacion)
     }
 
     /// La tonalidad de lo escrito, para llevarlo a otra tónica: la del análisis de los acordes, o la que mejor
@@ -77,7 +77,7 @@ public enum PresentacionDeTransposicion {
     }
 
     /// Unos acordes como se escriben en el campo de la progresión, en la notación si se vuelven a leer igual.
-    public static func texto(de acordes: [Acorde], notacion: Notacion) -> String {
+    public static func texto(de acordes: [Acorde], en notacion: Notacion) -> String {
         acordes.map { escribir($0, notacion) }.joined(separator: " ")
     }
 

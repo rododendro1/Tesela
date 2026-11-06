@@ -84,10 +84,10 @@ struct VistaDeEscalas: View {
             SeccionDelMapaDeBrillo(escala: escala)
             SeccionDelReloj(escala: escala)
             ListaDeEscalas(
-                PresentacionDeEstudioDeEscala.vecinas(de: escala, notacion: notacion),
+                PresentacionDeEstudioDeEscala.vecinas(de: escala, en: notacion),
                 titulo: notacion.texto(\.escalasVecinas))
             ListaDeEscalas(
-                PresentacionDeEstudioDeEscala.parecidas(a: escala, notacion: notacion),
+                PresentacionDeEstudioDeEscala.parecidas(a: escala, en: notacion),
                 titulo: notacion.texto(\.escalasParecidas))
             SeccionDeProgresiones(escala: escala)
             SeccionDeLasDoceTonalidades(escala: escala)
@@ -114,7 +114,7 @@ struct VistaDeEscalas: View {
         Section(notacion.texto(\.notas)) {
             Text(escala.nombre(en: notacion)).font(.headline)
             // De qué escala es modo (Re dórico → modo 2 de Do mayor); se abre al tocarlo.
-            if let modo = PresentacionDeEscalaYAcorde.modo(de: escala, notacion: notacion),
+            if let modo = PresentacionDeEscalaYAcorde.modo(de: escala, en: notacion),
                 let madre = escala.escalaMadre?.madre
             {
                 Button(modo) { navegacion.ver(madre) }
@@ -145,19 +145,19 @@ struct VistaDeEscalas: View {
         typealias Estudio = PresentacionDeEstudioDeEscala
         var ficheros = [
             pentagrama.fichero,
-            Estudio.ficheroDeLaHoja(de: escala, secciones: seccionesDeLaHoja, notacion: notacion),
-            Estudio.ficheroDelMapaDeBrillo(de: escala, notacion: notacion),
+            Estudio.ficheroDeLaHoja(de: escala, secciones: seccionesDeLaHoja, en: notacion),
+            Estudio.ficheroDelMapaDeBrillo(de: escala, en: notacion),
         ]
-        ficheros += secuencia.ficheros + Estudio.ficherosDeLosTeclados(de: escala, notacion: notacion)
+        ficheros += secuencia.ficheros + Estudio.ficherosDeLosTeclados(de: escala, en: notacion)
         if let otra = try? Escala(leyendo: otraEscala) {
-            ficheros.append(Estudio.ficheroDeLaComparacion(escala, con: otra, notacion: notacion))
+            ficheros.append(Estudio.ficheroDeLaComparacion(escala, con: otra, en: notacion))
         }
-        return ficheros + Estudio.enLasDoceTonalidades(escala, notacion: notacion).ficheros
+        return ficheros + Estudio.enLasDoceTonalidades(escala, en: notacion).ficheros
     }
 
     private func secuenciaPresentada(de escala: Escala) -> SecuenciaPresentada {
         PresentacionDeEstudioDeEscala.secuencia(
-            escala, secuencia, octavas: octavas, sentido: bajando ? .descendente : .ascendente, notacion: notacion)
+            escala, secuencia, octavas: octavas, sentido: bajando ? .descendente : .ascendente, en: notacion)
     }
 
     /// El mástil de las posiciones: el instrumento elegido, con su capo.

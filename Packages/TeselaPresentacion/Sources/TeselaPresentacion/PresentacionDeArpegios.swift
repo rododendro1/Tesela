@@ -14,14 +14,14 @@ public enum PresentacionDeArpegios {
     /// de acordes.
     ///
     ///     let arpegio = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Do"), patron: .alberti),
-    ///                                                 notacion: .espanolCompacto)
+    ///                                                 en: .espanolCompacto)
     ///     arpegio.ficheros.map(\.formato)   // [.musicXML, .mei, .lilyPond, .abc, .midi]
     ///
     /// La figura puede ser de tresillo (`Duracion.corchea.grupoIrregular(3, en: 2)`), que las partituras escriben
     /// como tal. El tempo, si se da, va también en las partituras; el swing solo cambia cómo suena.
     public static func arpegio(
         _ arpegio: Arpegio, figura: Duracion = .corchea, tempo: Tempo? = nil, swing: Bool = false,
-        notacion: Notacion
+        en notacion: Notacion
     ) -> ArpegioPresentado {
         let voz = Voz(arpegio, figura: figura, octava: 4)
         return presentar(
@@ -38,7 +38,7 @@ public enum PresentacionDeArpegios {
     public static func progresion(
         _ acordes: [Acorde], patron: Arpegio.Patron, tonalidad: Tonalidad?,
         ritmo: RitmoArmonico? = nil, figura: Duracion = .corchea, enlazados: Bool = false, tempo: Tempo? = nil,
-        swing: Bool = false, notacion: Notacion
+        swing: Bool = false, en notacion: Notacion
     ) -> ArpegioPresentado? {
         guard !acordes.isEmpty else { return nil }
         // Con el ritmo, si es el de estos acordes; si no, cada acorde en una blanca.

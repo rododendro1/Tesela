@@ -51,20 +51,20 @@ extension LineaDeComandos {
         if pedido.disposiciones {
             lineas.append(notacion.texto(\.disposicion) + ":")
             for disposicion in DisposicionDeAcorde.allCases {
-                if let fila = PresentacionDeDisposiciones.acorde(acorde, disposicion, notacion: notacion)?.filas.first {
+                if let fila = PresentacionDeDisposiciones.acorde(acorde, disposicion, en: notacion)?.filas.first {
                     lineas.append("  " + disposicion.nombre(en: notacion) + ": " + fila.voces)
                 }
             }
         }
         if pedido.bebop {
             lineas.append(notacion.texto(\.escalasBebop) + ":")
-            lineas += PresentacionDeEstudioDeEscala.bebop(sobre: acorde, notacion: notacion).map {
+            lineas += PresentacionDeEstudioDeEscala.bebop(sobre: acorde, en: notacion).map {
                 "  " + $0.nombre + ": " + $0.detalle
             }
         }
         if pedido.pentatonicas {
             lineas.append(notacion.texto(\.pentatonicas) + ":")
-            lineas += PresentacionDeEstudioDeEscala.pentatonicas(sobre: acorde, notacion: notacion).map {
+            lineas += PresentacionDeEstudioDeEscala.pentatonicas(sobre: acorde, en: notacion).map {
                 "  " + $0.nombre + ": " + $0.detalle
             }
         }
@@ -85,7 +85,7 @@ extension LineaDeComandos {
             lineas += relaciones.sustituciones.map { "  " + $0.descripcion }
         }
         if let otro = pedido.otro,
-            let comparacion = PresentacionDeRelacionesDeAcorde.comparar(acorde, con: otro, notacion: notacion)
+            let comparacion = PresentacionDeRelacionesDeAcorde.comparar(acorde, con: otro, en: notacion)
         {
             lineas.append(notacion.texto(\.compararCon) + " " + otro.cifrado(en: notacion) + ":")
             lineas.append("  " + notacion.texto(\.notasComunes) + ": " + comparacion.comunes)
@@ -124,7 +124,7 @@ extension LineaDeComandos {
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.archivoConNotas }
             guard let datos = contenido(deArchivo: archivo) else { return archivoIlegible(archivo, notacion) }
             let pieza = try PiezaImportada(leyendo: datos)
-            encontradas = PresentacionDeEstudioDeEscala.escalas(de: pieza, notacion: notacion)
+            encontradas = PresentacionDeEstudioDeEscala.escalas(de: pieza, en: notacion)
         } else {
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanNotas }
             guard conEscalas else { return bien(try identificar(argumentos.restantes, notacion)) }
@@ -132,7 +132,7 @@ extension LineaDeComandos {
             let notas = try argumentos.restantes.map { texto in
                 try (try? Altura(leyendo: texto))?.nota ?? Nota(leyendo: texto)
             }
-            encontradas = PresentacionDeEstudioDeEscala.escalas(conLasNotas: notas, notacion: notacion)
+            encontradas = PresentacionDeEstudioDeEscala.escalas(conLasNotas: notas, en: notacion)
         }
         // Nunca vacío: la cromática las contiene todas.
         return bien(
@@ -142,7 +142,7 @@ extension LineaDeComandos {
 
     /// Los acordes que pueden formar las notas, como en `--json` (`DatosDeCandidato.identificar`).
     static func identificar(_ textos: [String], _ notacion: Notacion) throws -> String {
-        let candidatos = try DatosDeCandidato.identificar(textos, notacion: notacion)
+        let candidatos = try DatosDeCandidato.identificar(textos, en: notacion)
         guard !candidatos.isEmpty else { return Mensaje.sinAcordes.texto(en: notacion) }
         return candidatos.map { candidato in
             var linea = "\(candidato.cifrado)  \(candidato.nombre)"

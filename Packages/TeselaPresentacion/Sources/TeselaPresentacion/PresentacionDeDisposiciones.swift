@@ -27,13 +27,13 @@ public struct DisposicionesPresentadas: Hashable, Sendable {
 /// se prueba en Linux.
 ///
 ///     let ii_V_I = PresentacionDeDisposiciones.progresion(
-///         [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")], .drop2, notacion: .espanolCompacto)
+///         [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")], .drop2, en: .espanolCompacto)
 ///     ii_V_I?.filas.map(\.voces)   // la séptima de cada acorde baja a la tercera del siguiente
 public enum PresentacionDeDisposiciones {
     /// Todas las disposiciones de un acorde en el ámbito de Do3 a Sol5, de la más grave a la más aguda. `nil` si
     /// no tiene ninguna (la shell de un acorde sin tercera).
     public static func acorde(
-        _ acorde: Acorde, _ disposicion: DisposicionDeAcorde, notacion: Notacion
+        _ acorde: Acorde, _ disposicion: DisposicionDeAcorde, en notacion: Notacion
     ) -> DisposicionesPresentadas? {
         let todas = acorde.disposiciones(disposicion)
         guard let coral = try? Coral(todas) else { return nil }
@@ -46,7 +46,7 @@ public enum PresentacionDeDisposiciones {
     /// Una disposición para cada acorde de la progresión, con el menor movimiento de las voces de uno al siguiente.
     /// `nil` si algún acorde no se puede disponer así.
     public static func progresion(
-        _ acordes: [Acorde], _ disposicion: DisposicionDeAcorde, notacion: Notacion
+        _ acordes: [Acorde], _ disposicion: DisposicionDeAcorde, en notacion: Notacion
     ) -> DisposicionesPresentadas? {
         guard !acordes.isEmpty, let voces = disposicion.conducir(acordes), let coral = try? Coral(voces) else {
             return nil
@@ -111,7 +111,7 @@ extension PresentacionDeDisposiciones {
     /// Los grupos de cuerdas en que se toca la disposición, con su nombre: «Cuerdas 6-5-4-3», numeradas como en la
     /// guitarra, de la más aguda (1) a la más grave.
     public static func gruposDeCuerdas(
-        _ disposicion: DisposicionDeAcorde, mastil: Mastil, notacion: Notacion
+        _ disposicion: DisposicionDeAcorde, mastil: Mastil, en notacion: Notacion
     ) -> [(cuerdas: [Int], nombre: String)] {
         let total = mastil.encordado.numeroDeCuerdas
         return mastil.gruposDeCuerdas(para: disposicion).map { grupo in

@@ -8,10 +8,10 @@ extension PresentacionDeEstudioDeEscala {
     /// más oscura (a la izquierda) a la más brillante, con una caja por escala y una línea entre las que están a una
     /// nota de distancia. La escala `resaltada`, si es del mapa, va en otro color, y el mapa es el de su tónica.
     ///
-    ///     let mapa = PresentacionDeEstudioDeEscala.mapaDeBrillo(notacion: .espanolCompacto)
+    ///     let mapa = PresentacionDeEstudioDeEscala.mapaDeBrillo(en: .espanolCompacto)
     ///     mapa.hasPrefix("<svg")   // true
     public static func mapaDeBrillo(
-        numeroDeNotas: Int = 7, resaltada: Escala? = nil, notacion: Notacion
+        numeroDeNotas: Int = 7, resaltada: Escala? = nil, en notacion: Notacion
     ) -> String {
         let tonica = resaltada?.tonica ?? .do
         let mapa = Escala.mapaDeBrillo(tonica: tonica, numeroDeNotas: numeroDeNotas)

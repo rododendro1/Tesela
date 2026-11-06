@@ -10,7 +10,7 @@ import Testing
         for especie in Contrapunto.Especie.allCases {
             let ejemplo = PresentacionDeContrapunto.ejemplo(especie)
             let presentado = try PresentacionDeContrapunto.presentar(
-                cantus: ejemplo.cantus, contrapunto: ejemplo.contrapunto, especie: especie, notacion: .espanolCompacto)
+                cantus: ejemplo.cantus, contrapunto: ejemplo.contrapunto, especie: especie, en: .espanolCompacto)
             #expect(presentado.filas.count == ejemplo.cantus.split(separator: " ").count, "especie \(especie.rawValue)")
             #expect(presentado.ficheros.count == 6)
         }
@@ -18,7 +18,7 @@ import Testing
         for especie in [Contrapunto.Especie.primera, .segunda, .cuarta] {
             let ejemplo = PresentacionDeContrapunto.ejemplo(especie)
             let presentado = try PresentacionDeContrapunto.presentar(
-                cantus: ejemplo.cantus, contrapunto: ejemplo.contrapunto, especie: especie, notacion: .espanolCompacto)
+                cantus: ejemplo.cantus, contrapunto: ejemplo.contrapunto, especie: especie, en: .espanolCompacto)
             #expect(presentado.esCorrecto, "especie \(especie.rawValue)")
             #expect(presentado.informe == ["Sin faltas."])
         }
@@ -28,7 +28,7 @@ import Testing
         // Quintas paralelas del primer compás al segundo.
         let presentado = try PresentacionDeContrapunto.presentar(
             cantus: "Do4 Re4 Mi4 Do4", contrapunto: "Sol4 La4 Sol4 Do5", especie: .primera,
-            notacion: .espanolCompacto)
+            en: .espanolCompacto)
         #expect(!presentado.esCorrecto)
         #expect(presentado.cabecera == "Especie 1, con el contrapunto encima del cantus firmus")
         #expect(presentado.informe.contains("Quintas paralelas (compases 1 → 2)"))
@@ -45,7 +45,7 @@ import Testing
     @Test func losSilenciosYLasLigaduras() throws {
         let ejemplo = PresentacionDeContrapunto.ejemplo(.cuarta)
         let presentado = try PresentacionDeContrapunto.presentar(
-            cantus: ejemplo.cantus, contrapunto: ejemplo.contrapunto, especie: .cuarta, notacion: .espanolCompacto)
+            cantus: ejemplo.cantus, contrapunto: ejemplo.contrapunto, especie: .cuarta, en: .espanolCompacto)
         #expect(presentado.filas[0].contrapunto == "– Re₅~")
         #expect(presentado.filas[0].intervalos == "– 8")
     }
@@ -53,7 +53,7 @@ import Testing
     @Test func elCompasQueSuena() throws {
         let ejemplo = PresentacionDeContrapunto.ejemplo(.segunda)
         let presentado = try PresentacionDeContrapunto.presentar(
-            cantus: ejemplo.cantus, contrapunto: ejemplo.contrapunto, especie: .segunda, notacion: .espanolCompacto)
+            cantus: ejemplo.cantus, contrapunto: ejemplo.contrapunto, especie: .segunda, en: .espanolCompacto)
         // Pasos: el cantus en el 0 y el contrapunto en la segunda blanca, luego dos por compás y el final.
         #expect(presentado.compas(enElPaso: 0) == 0)
         #expect(presentado.compas(enElPaso: 1) == 0)
@@ -73,11 +73,11 @@ import Testing
     @Test func unTextoQueNoSeLeeEsUnError() {
         #expect(throws: (any Error).self) {
             try PresentacionDeContrapunto.presentar(
-                cantus: "Re4 Fa4", contrapunto: "La4", especie: .primera, notacion: .espanolCompacto)
+                cantus: "Re4 Fa4", contrapunto: "La4", especie: .primera, en: .espanolCompacto)
         }
         #expect(throws: (any Error).self) {
             try PresentacionDeContrapunto.presentar(
-                cantus: "Re4 Xx", contrapunto: "La4 La4", especie: .primera, notacion: .espanolCompacto)
+                cantus: "Re4 Xx", contrapunto: "La4 La4", especie: .primera, en: .espanolCompacto)
         }
     }
 }
@@ -87,7 +87,7 @@ import Testing
     private func recorrido(_ texto: String) throws -> RecorridoDePartitura {
         let analisis = try AnalisisArmonico.analizar(leyendo: texto)
         // En MusicXML, que guarda la ortografía (un MIDI la estima).
-        return try RecorridoDePartitura.leer(Data(analisis.partitura().musicXML().utf8), notacion: .espanolCompacto)
+        return try RecorridoDePartitura.leer(Data(analisis.partitura().musicXML().utf8), en: .espanolCompacto)
     }
 
     @Test func lasTransformacionesEntreTriadas() throws {
@@ -130,7 +130,7 @@ import Testing
     @Test func unFicheroSinAcordesEsUnError() throws {
         let melodia = try Voz(leyendo: "Do4:4 Re4:4 Mi4:4").partitura().midi()
         #expect(throws: ErrorDeLecturaDeFichero.sinAcordes) {
-            try RecorridoDePartitura.leer(melodia, notacion: .espanolCompacto)
+            try RecorridoDePartitura.leer(melodia, en: .espanolCompacto)
         }
     }
 }

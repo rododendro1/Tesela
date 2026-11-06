@@ -71,7 +71,7 @@ struct VistaDeContrapunto: View {
             resultado = Result {
                 try PresentacionDeContrapunto.presentar(
                     cantus: cantus[especie] ?? "", contrapunto: contrapunto[especie] ?? "", especie: especie,
-                    notacion: notacion)
+                    en: notacion)
             }
         }
     }

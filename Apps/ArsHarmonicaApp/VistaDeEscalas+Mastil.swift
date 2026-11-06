@@ -39,7 +39,7 @@ struct SeccionDePosiciones: View {
                         if let forma = posicion.forma {
                             Text(notacion.texto { $0.forma(forma.rawValue) }).bold()
                         }
-                        Text(PresentacionDeEstudioDeEscala.trastes(de: posicion, notacion: notacion))
+                        Text(PresentacionDeEstudioDeEscala.trastes(de: posicion, en: notacion))
                             .foregroundColor(.secondary)
                         Spacer()
                         BotonDeEscuchar(sonido)
@@ -60,7 +60,7 @@ struct SeccionDeFormasPentatonicas: View {
     @Environment(\.notacion) private var notacion
 
     var body: some View {
-        let formas = PresentacionDeEstudioDeEscala.formasPentatonicas(de: escala, mastil: mastil, notacion: notacion)
+        let formas = PresentacionDeEstudioDeEscala.formasPentatonicas(de: escala, mastil: mastil, en: notacion)
         if !formas.isEmpty {
             Section(notacion.texto(\.formasDeLaPentatonica)) {
                 ForEach(formas, id: \.self) { forma in
@@ -92,7 +92,7 @@ struct SeccionDeLaSecuenciaEnLasPosiciones: View {
     var body: some View {
         let posiciones = PresentacionDeEstudioDeEscala.secuenciaEnLasPosiciones(
             escala, secuencia, caged: caged, sentido: bajando ? .descendente : .ascendente, mastil: mastil,
-            notacion: notacion
+            en: notacion
         ).filter { !$0.notas.isEmpty }
         if !posiciones.isEmpty {
             Section(notacion.texto(\.secuenciaEnLasPosiciones)) {

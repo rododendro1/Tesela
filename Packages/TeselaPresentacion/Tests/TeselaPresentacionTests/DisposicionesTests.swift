@@ -8,7 +8,7 @@ import Testing
 @Suite struct PresentacionDeDisposicionesTests {
     @Test func lasDisposicionesDeUnAcorde() throws {
         let presentadas = try #require(
-            PresentacionDeDisposiciones.acorde(Acorde("Do7"), .drop2, notacion: .espanolCompacto))
+            PresentacionDeDisposiciones.acorde(Acorde("Do7"), .drop2, en: .espanolCompacto))
         #expect(presentadas.filas.first?.voces == "Do₃ Sol₃ Si♭₃ Mi₄")
         #expect(presentadas.filas.allSatisfy { $0.cifrado.isEmpty })
         #expect(presentadas.ficheros.count == 6)
@@ -20,19 +20,19 @@ import Testing
     @Test func unaProgresionDispuesta() throws {
         let acordes = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let presentadas = try #require(
-            PresentacionDeDisposiciones.progresion(acordes, .drop2, notacion: .espanolCompacto))
+            PresentacionDeDisposiciones.progresion(acordes, .drop2, en: .espanolCompacto))
         #expect(presentadas.filas.map(\.cifrado) == acordes.map { $0.cifrado(en: .espanolCompacto) })
         #expect(presentadas.filas.allSatisfy { $0.voces.split(separator: " ").count == 4 })
         #expect(presentadas.ficheros.count == 6)
         #expect(presentadas.sonido.notas.count == 12)
         let shells = try #require(
-            PresentacionDeDisposiciones.progresion(acordes, .shell, notacion: .espanolCompacto))
+            PresentacionDeDisposiciones.progresion(acordes, .shell, en: .espanolCompacto))
         #expect(shells.filas.allSatisfy { $0.voces.split(separator: " ").count == 3 })
     }
 
     @Test func sinDisposicion() {
-        #expect(PresentacionDeDisposiciones.acorde(Acorde(.do, .potencia), .shell, notacion: .espanolCompacto) == nil)
-        #expect(PresentacionDeDisposiciones.progresion([], .drop2, notacion: .espanolCompacto) == nil)
+        #expect(PresentacionDeDisposiciones.acorde(Acorde(.do, .potencia), .shell, en: .espanolCompacto) == nil)
+        #expect(PresentacionDeDisposiciones.progresion([], .drop2, en: .espanolCompacto) == nil)
     }
 
     @Test func losNombres() {
@@ -55,7 +55,7 @@ import Testing
 @Suite struct DisposicionesEnElMastilTests {
     @Test func losGruposDeCuerdas() {
         let grupos = PresentacionDeDisposiciones.gruposDeCuerdas(
-            .drop2, mastil: Mastil(.guitarra), notacion: .espanolCompacto)
+            .drop2, mastil: Mastil(.guitarra), en: .espanolCompacto)
         #expect(grupos.map(\.nombre) == ["Cuerdas 6-5-4-3", "Cuerdas 5-4-3-2", "Cuerdas 4-3-2-1"])
         #expect(grupos.first?.cuerdas == [0, 1, 2, 3])
     }

@@ -9,7 +9,7 @@ import Testing
 
     @Test func bajoCaminante() throws {
         let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
-        let bajo = try #require(PresentacionDeAnalisis.bajoCaminante(progresion, notacion: notacion))
+        let bajo = try #require(PresentacionDeAnalisis.bajoCaminante(progresion, en: notacion))
         // Re Fa La La♭ | Sol Fa Re Re♭ | Do: notas del acorde y la cromática que lleva a la siguiente fundamental.
         #expect(bajo.alturas.map(\.midi) == [50, 53, 57, 56, 55, 53, 50, 49, 48])
         #expect(bajo.alturas[3].nota == Nota.la.bemol)
@@ -25,8 +25,8 @@ import Testing
         #expect(bajo.sonido.notas.first?.midi == 38)
         #expect(bajo.sonido.notas.count == 9 + 12)
         #expect(!bajo.ficheros.isEmpty)
-        #expect(PresentacionDeAnalisis.bajoCaminante([], notacion: notacion) == nil)
-        let uno = try #require(PresentacionDeAnalisis.bajoCaminante([Acorde("Do")], notacion: notacion))
+        #expect(PresentacionDeAnalisis.bajoCaminante([], en: notacion) == nil)
+        let uno = try #require(PresentacionDeAnalisis.bajoCaminante([Acorde("Do")], en: notacion))
         #expect(uno.alturas.map(\.midi) == [48])
     }
 
@@ -44,23 +44,23 @@ import Testing
     }
 
     @Test func progresionesDeUnaEscala() {
-        let hungara = PresentacionDeEstudioDeEscala.progresiones(de: Escala(.la, .menorHungara), notacion: notacion)
+        let hungara = PresentacionDeEstudioDeEscala.progresiones(de: Escala(.la, .menorHungara), en: notacion)
         let ultima = hungara.last
         #expect(ultima?.cifrados == "Lam – Sol♯m – Lam", Comment(rawValue: hungara.map(\.cifrados).description))
         #expect(ultima?.grados == "i–♯vii–i")
         #expect(ultima?.fuera.contains("Sol♯") == true, Comment(rawValue: ultima?.fuera ?? ""))
         #expect(ultima?.fuera.contains("Re♯") == true)
-        let doble = PresentacionDeEstudioDeEscala.progresiones(de: Escala(.do, .dobleArmonica), notacion: notacion)
+        let doble = PresentacionDeEstudioDeEscala.progresiones(de: Escala(.do, .dobleArmonica), en: notacion)
         let napolitana = doble.first { $0.cifrados == "Do – Re♭ – Do" }
         #expect(napolitana?.grados == "I–♭II–I", Comment(rawValue: doble.map(\.cifrados).description))
         #expect(napolitana?.fuera.contains("Re♭") == true)
         #expect(napolitana?.sonido.tonica == .do)
         // Con la mayor, todas son de ella.
-        let mayor = PresentacionDeEstudioDeEscala.progresiones(de: Escala(.do), notacion: notacion)
+        let mayor = PresentacionDeEstudioDeEscala.progresiones(de: Escala(.do), en: notacion)
         #expect(mayor.count == 5)
         #expect(mayor.first?.grados == "I–IV–V–I")
         #expect(mayor.allSatisfy { $0.fuera.isEmpty })
         let pentatonica = Escala(.do, .pentatonicaMayor)
-        #expect(PresentacionDeEstudioDeEscala.progresiones(de: pentatonica, notacion: notacion).isEmpty)
+        #expect(PresentacionDeEstudioDeEscala.progresiones(de: pentatonica, en: notacion).isEmpty)
     }
 }

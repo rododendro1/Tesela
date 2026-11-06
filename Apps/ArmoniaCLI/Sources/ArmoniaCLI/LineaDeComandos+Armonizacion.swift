@@ -68,7 +68,7 @@ extension LineaDeComandos {
     /// El coral de `revisar`, con sus faltas en los avisos.
     static func coralRevisado(_ argumentos: [String], _ notacion: Notacion) throws -> CoralPresentado {
         guard !argumentos.isEmpty else { throw ErrorDeUso.faltanAcordesDeLasVoces }
-        return try PresentacionDeCoral.revisar(argumentos.joined(separator: " "), notacion: notacion)
+        return try PresentacionDeCoral.revisar(argumentos.joined(separator: " "), en: notacion)
     }
 
     /// Las faltas de conducción entre los avisos de un coral.
@@ -119,7 +119,7 @@ extension LineaDeComandos {
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard argumentos.restantes.count >= 2 else { throw ErrorDeUso.faltaTransporte }
         let texto = argumentos.restantes.dropFirst().joined(separator: " ")
-        let comoAcordes = try? PresentacionDeTransposicion.transponer(texto, .unisono, notacion: notacion)
+        let comoAcordes = try? PresentacionDeTransposicion.transponer(texto, .unisono, en: notacion)
         let contenido: PresentacionDeTransposicion.Contenido = comoAcordes == nil ? .notas : .acordes
         let primero = argumentos.restantes[0]
         let intervalo: Intervalo
@@ -131,7 +131,7 @@ extension LineaDeComandos {
             intervalo = origen.intervaloMasCorto(hasta: destino)
         }
         let transportado = try PresentacionDeTransposicion.transponer(
-            texto, intervalo, contenido: contenido, notacion: notacion)
+            texto, intervalo, contenido: contenido, en: notacion)
         return (intervalo, contenido, transportado)
     }
 

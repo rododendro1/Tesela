@@ -8,7 +8,7 @@ import Testing
     let notacion = Notacion.espanolCompacto
 
     @Test func modulacionesALosTonosVecinos() {
-        let vecinas = PresentacionDeModulaciones.modulaciones(desde: Tonalidad(.do), notacion: notacion)
+        let vecinas = PresentacionDeModulaciones.modulaciones(desde: Tonalidad(.do), en: notacion)
         #expect(vecinas.map(\.destino) == ["La menor", "Sol mayor", "Mi menor", "Fa mayor", "Re menor"])
         let aSol = vecinas[1]
         #expect(aSol.tecnica == "acorde común")
@@ -19,14 +19,14 @@ import Testing
 
     @Test func modulacionesAUnaTonalidad() {
         let aLab = PresentacionDeModulaciones.modulaciones(
-            desde: Tonalidad(.do), hasta: Tonalidad(Nota.la.bemol), notacion: notacion)
+            desde: Tonalidad(.do), hasta: Tonalidad(Nota.la.bemol), en: notacion)
         #expect(aLab.first?.tecnica == "séptima disminuida enarmónica")
         #expect(aLab.last?.tecnica == "directa")
         #expect(aLab.last?.pivote == nil)
         let aDo = PresentacionDeModulaciones.modulaciones(
-            desde: Tonalidad(.do), hasta: Tonalidad(.do), notacion: notacion)
+            desde: Tonalidad(.do), hasta: Tonalidad(.do), en: notacion)
         #expect(aDo.isEmpty)
-        let ingles = PresentacionDeModulaciones.modulaciones(desde: Tonalidad(.do), notacion: .inglesASCII)
+        let ingles = PresentacionDeModulaciones.modulaciones(desde: Tonalidad(.do), en: .inglesASCII)
         #expect(ingles.first?.destino == "A minor")
     }
 
@@ -42,7 +42,7 @@ import Testing
         #expect(lidio?.comunes.count == 6)
         // El juego de notas de Sol mayor sale como Do lidio, con la misma tónica.
         #expect(!parecidas.contains { $0.escala == Escala(.sol) })
-        let presentadas = PresentacionDeEstudioDeEscala.parecidas(a: Escala(.do), notacion: notacion)
+        let presentadas = PresentacionDeEstudioDeEscala.parecidas(a: Escala(.do), en: notacion)
         #expect(presentadas.contains { $0.nombre == "Do lidio" && $0.detalle == "Notas comunes: 6 · −Fa · +Fa♯" })
     }
 }

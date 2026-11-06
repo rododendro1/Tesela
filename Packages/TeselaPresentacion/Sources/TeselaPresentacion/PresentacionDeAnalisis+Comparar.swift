@@ -34,7 +34,7 @@ extension PresentacionDeAnalisis {
     ///
     ///     let comparacion = PresentacionDeAnalisis.comparar(
     ///         [Acorde("Do"), Acorde("Lam"), Acorde("Rem"), Acorde("Sol7")],
-    ///         con: [Acorde("Do"), Acorde("La7"), Acorde("Rem7"), Acorde("Sol7")], notacion: .espanolCompacto)
+    ///         con: [Acorde("Do"), Acorde("La7"), Acorde("Rem7"), Acorde("Sol7")], en: .espanolCompacto)
     ///     comparacion?.resumen   // "Cambian 2 de 4 acordes"
     public static func comparar(
         _ original: [Acorde], con nueva: [Acorde], en tonalidad: Tonalidad? = nil, notacion: Notacion
@@ -99,8 +99,8 @@ extension PresentacionDeAnalisis {
         // El pentagrama de cada una.
         for acordes in [original, nueva] {
             let dispuesta =
-                PresentacionDeDisposiciones.progresion(acordes, disposicion, notacion: notacion)
-                ?? PresentacionDeDisposiciones.progresion(acordes, .cerrada, notacion: notacion)
+                PresentacionDeDisposiciones.progresion(acordes, disposicion, en: notacion)
+                ?? PresentacionDeDisposiciones.progresion(acordes, .cerrada, en: notacion)
             if let dispuesta {
                 y += Hoja.incrustar(dispuesta.pentagrama.svg, x: margen, y: y, ancho: util, en: &cuerpo) + 6
             }

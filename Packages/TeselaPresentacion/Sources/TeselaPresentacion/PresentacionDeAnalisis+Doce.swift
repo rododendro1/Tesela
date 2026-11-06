@@ -41,10 +41,10 @@ extension PresentacionDeAnalisis {
     /// dada (o, si no se puede, cerrada); `nil` con menos de dos acordes o si no se pueden disponer.
     ///
     ///     let conduccion = PresentacionDeAnalisis.conduccion(
-    ///         [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")], notacion: .espanolCompacto)
+    ///         [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")], en: .espanolCompacto)
     ///     conduccion?.pasos.map(\.titulo)   // ["Rem7 → Sol7", "Sol7 → Domaj7"]
     public static func conduccion(
-        _ acordes: [Acorde], disposicion: DisposicionDeAcorde = .drop2, notacion: Notacion
+        _ acordes: [Acorde], disposicion: DisposicionDeAcorde = .drop2, en notacion: Notacion
     ) -> ConduccionPresentada? {
         guard acordes.count >= 2 else { return nil }
         let elegida = disposicion.conducir(acordes) == nil ? DisposicionDeAcorde.cerrada : disposicion
@@ -90,10 +90,10 @@ extension PresentacionDeAnalisis {
     ///
     ///     let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
     ///     let doce = PresentacionDeAnalisis.enLasDoceTonalidades(
-    ///         progresion, tonalidad: Tonalidad(.do), notacion: .espanolCompacto)
+    ///         progresion, tonalidad: Tonalidad(.do), en: .espanolCompacto)
     ///     doce[1].cifrados   // "Lam7 Re7 Solmaj7"
     public static func enLasDoceTonalidades(
-        _ acordes: [Acorde], tonalidad: Tonalidad, notacion: Notacion
+        _ acordes: [Acorde], tonalidad: Tonalidad, en notacion: Notacion
     ) -> [ProgresionEnUnaTonalidad] {
         (0..<12).map { k in
             let armadura = ((tonalidad.armadura + k + 5) % 12 + 12) % 12 - 5
@@ -110,7 +110,7 @@ extension PresentacionDeAnalisis {
     /// La hoja para practicar la progresión en las doce tonalidades (SVG del ancho de un A4): en cada una, su nombre,
     /// los cifrados y el pentagrama con una disposición de cada acorde (la `disposicion`, o cerrada si no se puede).
     public static func hojaEnLasDoceTonalidades(
-        _ acordes: [Acorde], tonalidad: Tonalidad, disposicion: DisposicionDeAcorde = .drop2, notacion: Notacion
+        _ acordes: [Acorde], tonalidad: Tonalidad, disposicion: DisposicionDeAcorde = .drop2, en notacion: Notacion
     ) -> String {
         typealias Hoja = PresentacionDeEstudioDeEscala
         let ancho = Hoja.anchoDeLaHoja
@@ -123,14 +123,14 @@ extension PresentacionDeAnalisis {
         y += 20
         cuerpo.append(Hoja.texto(notacion.texto(\.enLasDoceTonalidades), x: margen, y: y, tamano: 13, color: "#555555"))
         y += 16
-        for progresion in enLasDoceTonalidades(acordes, tonalidad: tonalidad, notacion: notacion) {
+        for progresion in enLasDoceTonalidades(acordes, tonalidad: tonalidad, en: notacion) {
             y += 18
             cuerpo.append(Hoja.texto(progresion.titulo, x: margen, y: y, tamano: 13, negrita: true))
             cuerpo.append(Hoja.texto(progresion.cifrados, x: margen + 130, y: y, tamano: 13))
             y += 4
             let dispuesta =
-                PresentacionDeDisposiciones.progresion(progresion.acordes, disposicion, notacion: notacion)
-                ?? PresentacionDeDisposiciones.progresion(progresion.acordes, .cerrada, notacion: notacion)
+                PresentacionDeDisposiciones.progresion(progresion.acordes, disposicion, en: notacion)
+                ?? PresentacionDeDisposiciones.progresion(progresion.acordes, .cerrada, en: notacion)
             if let dispuesta {
                 y += Hoja.incrustar(dispuesta.pentagrama.svg, x: margen, y: y, ancho: util, en: &cuerpo)
             }

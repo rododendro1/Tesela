@@ -46,7 +46,7 @@ struct VistaDeSerie: View {
         .task(id: clave) {
             let primera = (try? SerieDodecafonica(leyendo: texto))?.clases.first ?? 0
             let forma = FormaDeSerie(tipo, indice ?? primera)
-            resultado = Result { try PresentacionDeSerie.presentar(texto, forma: forma, notacion: notacion) }
+            resultado = Result { try PresentacionDeSerie.presentar(texto, forma: forma, en: notacion) }
         }
     }
 

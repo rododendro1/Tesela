@@ -45,7 +45,7 @@ public struct ContrapuntoPresentado: Hashable, Sendable {
 ///
 ///     let fux = try PresentacionDeContrapunto.presentar(
 ///         cantus: "Re4 Fa4 Mi4 Re4", contrapunto: "-:2 La4 Re5 La4 Si4 Do#5 Re5:1", especie: .segunda,
-///         notacion: .espanolCompacto)
+///         en: .espanolCompacto)
 ///     fux.esCorrecto   // true
 public enum PresentacionDeContrapunto {
     /// El tempo al que suena: negra a 120, una redonda cada dos segundos.
@@ -73,7 +73,7 @@ public enum PresentacionDeContrapunto {
     }
 
     /// Un ejercicio de ejemplo: el cantus firmus y el contrapunto, en el texto que lee
-    /// ``presentar(cantus:contrapunto:especie:notacion:)``.
+    /// ``presentar(cantus:contrapunto:especie:en:)``.
     public struct Ejemplo: Hashable, Sendable {
         public let cantus: String
         public let contrapunto: String
@@ -88,7 +88,7 @@ public enum PresentacionDeContrapunto {
     /// Comprueba el ejercicio y lo prepara para enseñarlo. Lanza el error de lectura si el cantus o el contrapunto
     /// no se leen, o si el contrapunto no dura una redonda por nota del cantus.
     public static func presentar(
-        cantus: String, contrapunto: String, especie: Contrapunto.Especie, notacion: Notacion
+        cantus: String, contrapunto: String, especie: Contrapunto.Especie, en notacion: Notacion
     ) throws -> ContrapuntoPresentado {
         let ejercicio = try Contrapunto(cantusFirmus: cantus, contrapunto: contrapunto, especie: especie)
         let faltas = ejercicio.faltas

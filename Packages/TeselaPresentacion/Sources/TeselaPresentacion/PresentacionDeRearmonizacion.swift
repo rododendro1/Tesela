@@ -32,7 +32,7 @@ public enum PresentacionDeRearmonizacion {
             return PropuestaDeRearmonizacion(
                 rearmonizacion: rearmonizacion,
                 descripcion: rearmonizacion.descripcion(en: notacion),
-                texto: PresentacionDeTransposicion.texto(de: nuevos, notacion: notacion),
+                texto: PresentacionDeTransposicion.texto(de: nuevos, en: notacion),
                 sonido: Escucha.acordes(Array(nuevos[desde..<hasta])).conTonica(tonalidad.tonica))
         }
         return (tonalidad, propuestas)

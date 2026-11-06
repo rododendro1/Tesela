@@ -14,7 +14,7 @@ struct SeccionDeAcordesQueCaben: View {
     @EnvironmentObject private var navegacion: Navegacion
 
     var body: some View {
-        let grados = PresentacionDeEscalaYAcorde.acordesQueCaben(escala, notacion: notacion)
+        let grados = PresentacionDeEscalaYAcorde.acordesQueCaben(escala, en: notacion)
         if !grados.isEmpty {
             Section(notacion.texto(\.acordesQueCaben)) {
                 ForEach(grados, id: \.self) { grado in
@@ -37,7 +37,7 @@ struct SeccionDeLaEscaleraDeBrillo: View {
     @EnvironmentObject private var navegacion: Navegacion
 
     var body: some View {
-        let peldanos = PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, notacion: notacion)
+        let peldanos = PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, en: notacion)
         if peldanos.count > 1 {
             Section(notacion.texto(\.escaleraDeBrillo)) {
                 ForEach(peldanos, id: \.self) { peldano in
@@ -103,7 +103,7 @@ struct SeccionDeProgresiones: View {
     @Environment(\.notacion) private var notacion
 
     var body: some View {
-        let progresiones = PresentacionDeEstudioDeEscala.progresiones(de: escala, notacion: notacion)
+        let progresiones = PresentacionDeEstudioDeEscala.progresiones(de: escala, en: notacion)
         if !progresiones.isEmpty {
             Section(notacion.texto(\.progresionesEnLaEscala)) {
                 ForEach(progresiones, id: \.self) { progresion in
@@ -131,7 +131,7 @@ struct SeccionDeLasDoceTonalidades: View {
     @Environment(\.notacion) private var notacion
 
     var body: some View {
-        let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(escala, notacion: notacion)
+        let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(escala, en: notacion)
         Section(notacion.texto(\.enLasDoceTonalidades)) {
             BotonDeEscuchar(hoja.sonido)
             ForEach(hoja.tonalidades, id: \.titulo) { tonalidad in
@@ -155,7 +155,7 @@ struct SeccionDeLosAcordesEnLasDoceTonalidades: View {
 
     var body: some View {
         if let tabla = PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
-            escala, cuatriadas: conSeptima, notacion: notacion)
+            escala, cuatriadas: conSeptima, en: notacion)
         {
             Section(notacion.texto(\.acordesEnLasDoceTonalidades)) {
                 Toggle(notacion.texto(\.conSeptima), isOn: $conSeptima)
@@ -191,8 +191,8 @@ struct SeccionDeLosModos: View {
     @EnvironmentObject private var navegacion: Navegacion
 
     var body: some View {
-        let paralelos = PresentacionDeEstudioDeEscala.modosParalelos(de: escala, notacion: notacion)
-        let relativos = PresentacionDeEstudioDeEscala.modosRelativos(de: escala, notacion: notacion)
+        let paralelos = PresentacionDeEstudioDeEscala.modosParalelos(de: escala, en: notacion)
+        let relativos = PresentacionDeEstudioDeEscala.modosRelativos(de: escala, en: notacion)
         Section(notacion.texto(\.modosParalelos)) {
             ForEach(paralelos, id: \.self) { fila(de: $0) }
         }
@@ -234,7 +234,7 @@ struct SeccionDeLaComparacion: View {
             TextField(notacion.campo(.escala), text: $otraEscala)
                 .comoCampoDeCifrado()
             if let otra = try? Escala(leyendo: otraEscala) {
-                let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, notacion: notacion)
+                let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, en: notacion)
                 LabeledContent(notacion.texto(\.notasComunes), value: comparacion.comunes)
                 ForEach([comparacion.soloEnOrigen, comparacion.soloEnDestino].filter { !$0.isEmpty }, id: \.self) {
                     Text($0)
@@ -249,7 +249,7 @@ struct SeccionDeLaComparacion: View {
                 }
                 .buttonStyle(.borderless)
                 // Nota a nota: los dos pentagramas, la tabla grado a grado y el reloj con las dos encima.
-                let hoja = PresentacionDeEstudioDeEscala.comparacionNotaANota(escala, con: otra, notacion: notacion)
+                let hoja = PresentacionDeEstudioDeEscala.comparacionNotaANota(escala, con: otra, en: notacion)
                 let tamano = PresentacionDeEstudioDeEscala.tamano(deUnSVG: hoja) ?? (ancho: 595, alto: 842)
                 VistaSVG(svg: hoja)
                     .aspectRatio(CGSize(width: tamano.ancho, height: tamano.alto), contentMode: .fit)

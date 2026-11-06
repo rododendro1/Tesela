@@ -47,8 +47,8 @@ enum Casos {
             Caso(grupo: "Escalas", nombre: "Identificar las escalas de 5 notas") {
                 Escala.identificar([.do, .mi, .sol, .si, "Fa#"]).count
             },
-            Caso(grupo: "Escalas", nombre: "Las \(TipoDeEscala.todos.count) del catálogo, en Do") {
-                TipoDeEscala.todos.reduce(0) { $0 + Escala(.do, $1).notas.count }
+            Caso(grupo: "Escalas", nombre: "Las \(TipoDeEscala.occidentales.count) occidentales, en Do") {
+                TipoDeEscala.occidentales.reduce(0) { $0 + Escala(.do, $1).notas.count }
             },
             Caso(grupo: "Escalas", nombre: "Ortografiar la escala cromática") {
                 Escala(.do).ortografiar(midi: Array(60...72)).count

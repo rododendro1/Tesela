@@ -57,7 +57,7 @@ extension LineaDeComandos {
     /// `identificar Do Mi Sol Sib --json`: los acordes que pueden formar las notas, del más probable al menos (como
     /// mucho cinco, como en el texto); vacío si no forman ninguno.
     static func identificarJSON(_ textos: [String], _ notacion: Notacion) throws -> [DatosDeCandidato] {
-        try DatosDeCandidato.identificar(palabras(Argumentos(textos), siFaltan: .faltanNotas), notacion: notacion)
+        try DatosDeCandidato.identificar(palabras(Argumentos(textos), siFaltan: .faltanNotas), en: notacion)
     }
 
     /// `escala Re dórico --json`: la escala con sus notas y los acordes de sus grados (las claves de
@@ -181,7 +181,7 @@ extension LineaDeComandos {
         let escala = pedido.escala
         var datos = EscalaJSON(DatosDeEscala(escala, notacion: notacion))
         if pedido.conAcordes {
-            datos.acordesQueCaben = PresentacionDeEscalaYAcorde.acordesQueCaben(escala, notacion: notacion).map {
+            datos.acordesQueCaben = PresentacionDeEscalaYAcorde.acordesQueCaben(escala, en: notacion).map {
                 EscalaJSON.Grado(grado: $0.grado, acordes: $0.acordes.map { $0.cifrado(en: notacion) })
             }
         }
@@ -200,14 +200,14 @@ extension LineaDeComandos {
             }
         }
         if pedido.modos {
-            datos.modosParalelos = PresentacionDeEstudioDeEscala.modosParalelos(de: escala, notacion: notacion).map {
+            datos.modosParalelos = PresentacionDeEstudioDeEscala.modosParalelos(de: escala, en: notacion).map {
                 EscalaJSON.Modo(nombre: $0.nombre, brillo: $0.brillo, cambios: $0.cambios)
             }
-            datos.modosRelativos = PresentacionDeEstudioDeEscala.modosRelativos(de: escala, notacion: notacion)
+            datos.modosRelativos = PresentacionDeEstudioDeEscala.modosRelativos(de: escala, en: notacion)
                 .map(\.nombre)
         }
         if pedido.simetria {
-            if let simetria = PresentacionDeEstudioDeEscala.simetria(de: escala, notacion: notacion) {
+            if let simetria = PresentacionDeEstudioDeEscala.simetria(de: escala, en: notacion) {
                 datos.simetria = EscalaJSON.Simetria(
                     resumen: simetria.resumen, tonicas: simetria.tonicas,
                     ciclos: simetria.ciclos.map { EscalaJSON.Detalle(nombre: $0.nombre, detalle: $0.detalle) })
@@ -218,7 +218,7 @@ extension LineaDeComandos {
             }
         }
         if pedido.vecinas {
-            datos.vecinas = PresentacionDeEstudioDeEscala.vecinas(de: escala, notacion: notacion).map {
+            datos.vecinas = PresentacionDeEstudioDeEscala.vecinas(de: escala, en: notacion).map {
                 EscalaJSON.Detalle(nombre: $0.nombre, detalle: $0.detalle)
             }
         }
@@ -233,7 +233,7 @@ extension LineaDeComandos {
                 aproximada: medidas.aproximada)
         }
         if pedido.escalera {
-            let peldanos = PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, notacion: notacion)
+            let peldanos = PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, en: notacion)
             datos.escaleraDeBrillo = peldanos.map {
                 let brillo = ($0.escala.estadisticas.brilloPorQuintas * 100).rounded() / 100
                 return EscalaJSON.Peldano(
@@ -243,11 +243,11 @@ extension LineaDeComandos {
         }
         if pedido.doce {
             let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(
-                escala, secuencia: pedido.secuencia, notacion: notacion)
+                escala, secuencia: pedido.secuencia, en: notacion)
             datos.doceTonalidades = hoja.tonalidades.map { EscalaJSON.Tonalidad(tonalidad: $0.titulo, notas: $0.notas) }
             if pedido.conAcordes,
                 let tabla = PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
-                    escala, cuatriadas: !pedido.triadas, notacion: notacion)
+                    escala, cuatriadas: !pedido.triadas, en: notacion)
             {
                 datos.acordesEnLasDoceTonalidades = EscalaJSON.AcordesEnLasDoce(
                     grados: tabla.grados,
@@ -255,7 +255,7 @@ extension LineaDeComandos {
             }
         }
         if let otra = pedido.otra {
-            let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, notacion: notacion)
+            let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, en: notacion)
             datos.comparacion = EscalaJSON.Comparacion(
                 con: otra.nombre(en: notacion), comunes: comparacion.comunes, soloEnOrigen: comparacion.soloEnOrigen,
                 soloEnDestino: comparacion.soloEnDestino, cambios: comparacion.cambios,

@@ -17,9 +17,9 @@ extension PresentacionDeEstudioDeEscala {
 
     /// Las escalas que salen de esta moviendo una nota un semitono, cada una con el cambio: «Fa → Fa♯».
     ///
-    ///     PresentacionDeEstudioDeEscala.vecinas(de: Escala(.do), notacion: .espanolCompacto)
+    ///     PresentacionDeEstudioDeEscala.vecinas(de: Escala(.do), en: .espanolCompacto)
     ///         .first { $0.nombre == "Do lidio" }?.detalle   // "Fa → Fa♯"
-    public static func vecinas(de escala: Escala, notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
+    public static func vecinas(de escala: Escala, en notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
         escala.vecinas().map { vecina in
             EscalaSobreElAcordePresentada(
                 escala: vecina.escala, nombre: vecina.escala.nombre(en: notacion),
@@ -33,9 +33,9 @@ extension PresentacionDeEstudioDeEscala {
     /// Las escalas que comparten más notas con esta, de la que menos cambia a la que más, cada una con cuántas
     /// comparte, las que se van (−) y las que llegan (+): «Notas comunes: 6 · −Fa · +Fa♯».
     ///
-    ///     PresentacionDeEstudioDeEscala.parecidas(a: Escala(.do), notacion: .espanolCompacto)
+    ///     PresentacionDeEstudioDeEscala.parecidas(a: Escala(.do), en: .espanolCompacto)
     ///         .first { $0.nombre == "Do lidio" }?.detalle   // "Notas comunes: 6 · −Fa · +Fa♯"
-    public static func parecidas(a escala: Escala, notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
+    public static func parecidas(a escala: Escala, en notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
         escala.masParecidas().map { parecida in
             func lista(_ signo: String, _ notas: [Nota]) -> String? {
                 notas.isEmpty ? nil : signo + notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
@@ -55,7 +55,7 @@ extension PresentacionDeEstudioDeEscala {
     /// La escala en un reloj de doce horas (SVG), en el círculo cromático o en el de quintas, con el nombre de
     /// cada nota; las que no son de la escala, con el nombre más sencillo. La tónica lleva el borde naranja.
     public static func reloj(
-        de escala: Escala, orden: RelojDeClasesDeAltura.Orden = .cromatico, notacion: Notacion
+        de escala: Escala, orden: RelojDeClasesDeAltura.Orden = .cromatico, en notacion: Notacion
     ) -> String {
         // Las doce clases con el nombre más sencillo; encima, las de la escala como las escribe ella.
         let doce = ConjuntoDeClasesDeAltura.nombresDeLasClases(en: notacion)
@@ -72,7 +72,7 @@ extension PresentacionDeEstudioDeEscala {
     /// La escala (o una secuencia de ella) en las doce tonalidades, de quinta en quinta desde la suya, en corcheas:
     /// las que empiezan de Do a Fa♯ desde la octava 4; las demás, desde la 3, para no subir demasiado.
     public static func enLasDoceTonalidades(
-        _ escala: Escala, secuencia: SecuenciaDeEscala? = nil, notacion: Notacion
+        _ escala: Escala, secuencia: SecuenciaDeEscala? = nil, en notacion: Notacion
     ) -> HojaDeEstudioPresentada {
         var titulo = escala.nombre(en: notacion)
         if let secuencia { titulo += " " + secuencia.nombre(en: notacion) }
