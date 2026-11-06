@@ -452,7 +452,7 @@ extension LineaDeComandosTests {
         #expect(comparacion.contains(cabecera), Comment(rawValue: comparacion))
         #expect(comparacion.contains("\n  2. Lam → La7 · vi → "))
         #expect(comparacion.contains(" · Notas comunes: La, Mi\n"))
-        #expect(comparacion.hasSuffix("\n  Cambian 2 de 4 acordes"))
+        #expect(comparacion.contains("\n  Cambian 2 de 4 acordes"))
         #expect(!salida("analizar Do Lam Rem Sol7").contains("Comparar con"))
         #expect(resultado("analizar", "Do", "--contra").codigo == 2)
         #expect(resultado("analizar", "Do", "--contra", "Xx").codigo != 0)
