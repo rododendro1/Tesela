@@ -113,8 +113,8 @@ import Testing
         #expect(brillos == brillos.sorted() && Set(brillos).count == brillos.count, Comment(rawValue: "\(brillos)"))
         // Una subida por peldaño: de mayor a lidio, el Fa sube a Fa♯; de mixolidio a mayor, el Si♭ a Si.
         #expect(escalera.subidas.count == escalera.peldanos.count - 1)
-        #expect(escalera.subidas[i].de == .fa && escalera.subidas[i].a == Nota(.fa, .sostenido))
-        #expect(escalera.subidas[i - 1].de == Nota(.si, .bemol) && escalera.subidas[i - 1].a == .si)
+        #expect(escalera.subidas[i].desde == .fa && escalera.subidas[i].hasta == Nota(.fa, .sostenido))
+        #expect(escalera.subidas[i - 1].desde == Nota(.si, .bemol) && escalera.subidas[i - 1].hasta == .si)
         #expect(escalera.subidas.indices.allSatisfy { escalera.subidas[$0].escala == escalera.peldanos[$0 + 1] })
         // Las vecinas por brillo: el lidio, la más habitual de las más brillantes; el mixolidio, de las más oscuras.
         let vecinas = Escala(.do).vecinasPorBrillo()
@@ -136,12 +136,12 @@ import Testing
         let lidio = try #require(mapa.escalas.firstIndex(of: Escala(.do, .lidio)))
         let mixolidio = try #require(mapa.escalas.firstIndex(of: Escala(.do, .mixolidio)))
         let haciaElLidio = mapa.enlaces.first { $0.oscura == mayor && $0.brillante == lidio }
-        #expect(haciaElLidio?.de == .fa && haciaElLidio?.a == Nota(.fa, .sostenido))
+        #expect(haciaElLidio?.desde == .fa && haciaElLidio?.hasta == Nota(.fa, .sostenido))
         let desdeElMixolidio = mapa.enlaces.first { $0.oscura == mixolidio && $0.brillante == mayor }
-        #expect(desdeElMixolidio?.de == Nota(.si, .bemol) && desdeElMixolidio?.a == .si)
+        #expect(desdeElMixolidio?.desde == Nota(.si, .bemol) && desdeElMixolidio?.hasta == .si)
         // Nunca entre una escala y sí misma, y la nota que sube lo hace un semitono.
         #expect(mapa.enlaces.allSatisfy { $0.oscura != $0.brillante })
-        #expect(mapa.enlaces.allSatisfy { ($0.a.claseDeAltura - $0.de.claseDeAltura + 12) % 12 == 1 })
+        #expect(mapa.enlaces.allSatisfy { ($0.hasta.claseDeAltura - $0.desde.claseDeAltura + 12) % 12 == 1 })
         // Las de cinco notas, sobre Re.
         let pentatonicas = Escala.mapaDeBrillo(tonica: .re, numeroDeNotas: 5)
         #expect(pentatonicas.escalas.contains(Escala(.re, .pentatonicaMayor)))

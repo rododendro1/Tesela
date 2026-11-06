@@ -85,4 +85,13 @@ import Testing
         ]
         for (antes, ahora) in escrituras { #expect(antes == ahora) }
     }
+
+    @available(*, deprecated)
+    @Test func deYAEnLasEscalasVecinas() throws {
+        let vecina = EscalaVecina(escala: Escala(.do, .lidio), de: .fa, a: Nota(.fa, .sostenido))
+        #expect(vecina == EscalaVecina(escala: Escala(.do, .lidio), desde: .fa, hasta: Nota(.fa, .sostenido)))
+        #expect(vecina.de == vecina.desde && vecina.a == vecina.hasta)
+        let enlace = try #require(Escala.mapaDeBrillo().enlaces.first)
+        #expect(enlace.de == enlace.desde && enlace.a == enlace.hasta)
+    }
 }

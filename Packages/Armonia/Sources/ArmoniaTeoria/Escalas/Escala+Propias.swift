@@ -87,15 +87,15 @@ extension Escala {
 public struct EscalaVecina: Hashable, Sendable {
     public let escala: Escala
     /// La nota que se mueve, como se escribe en la escala de partida.
-    public let de: Nota
+    public let desde: Nota
     /// A dónde va, como se escribe en la vecina.
-    public let a: Nota
+    public let hasta: Nota
 
-    /// La escala vecina a la que se llega moviendo la nota `de` a `a`.
-    public init(escala: Escala, de: Nota, a: Nota) {
+    /// La escala vecina a la que se llega moviendo la nota `desde` a `hasta`.
+    public init(escala: Escala, desde: Nota, hasta: Nota) {
         self.escala = escala
-        self.de = de
-        self.a = a
+        self.desde = desde
+        self.hasta = hasta
     }
 }
 
@@ -121,7 +121,7 @@ extension Escala {
                     let a = elegida.notas.first(where: { $0.claseDeAltura == nueva }),
                     !resultado.contains(where: { $0.escala == elegida })
                 else { continue }
-                resultado.append(EscalaVecina(escala: elegida, de: nota, a: a))
+                resultado.append(EscalaVecina(escala: elegida, desde: nota, hasta: a))
             }
         }
         return resultado
@@ -156,7 +156,7 @@ extension Escala {
         let indice = Dictionary(tipos.enumerated().map { ($0.element.nombre, $0.offset) }, uniquingKeysWith: min)
         let propias = vecinas(tipos: tipos).filter { $0.escala.tonica.claseDeAltura == tonica.claseDeAltura }
             .sorted { (indice[$0.escala.tipo.nombre] ?? .max) < (indice[$1.escala.tipo.nombre] ?? .max) }
-        let sube = { (vecina: EscalaVecina) in modulo(vecina.a.claseDeAltura - vecina.de.claseDeAltura, 12) == 1 }
+        let sube = { (vecina: EscalaVecina) in modulo(vecina.hasta.claseDeAltura - vecina.desde.claseDeAltura, 12) == 1 }
         return (propias.filter { !sube($0) }, propias.filter(sube))
     }
 
@@ -193,7 +193,7 @@ extension Escala {
         var subidas: [EscalaVecina] = []
         for (i, peldano) in abajo.enumerated().reversed() {
             let llegada = i == 0 ? self : abajo[i - 1].escala
-            subidas.append(EscalaVecina(escala: llegada, de: peldano.bajada.a, a: peldano.bajada.de))
+            subidas.append(EscalaVecina(escala: llegada, desde: peldano.bajada.hasta, hasta: peldano.bajada.desde))
         }
         return EscaleraDeBrillo(
             peldanos: oscuras + [self] + arriba.map(\.escala), posicion: oscuras.count, subidas: subidas + arriba)
@@ -211,9 +211,9 @@ public struct MapaDeBrillo: Hashable, Sendable {
         public let oscura: Int
         public let brillante: Int
         /// La nota que sube, como se escribe en la oscura.
-        public let de: Nota
+        public let desde: Nota
         /// A dónde, como se escribe en la brillante.
-        public let a: Nota
+        public let hasta: Nota
     }
 
     /// De la más oscura a la más brillante (por `brilloPorQuintas`), sin dos con las mismas notas.
@@ -262,7 +262,7 @@ extension Escala {
                 guard let de = baja.escala.notas.first(where: { !sube.clases.contains($0.claseDeAltura) }),
                     let hasta = sube.escala.notas.first(where: { !baja.clases.contains($0.claseDeAltura) })
                 else { continue }
-                enlaces.append(MapaDeBrillo.Enlace(oscura: oscura, brillante: brillante, de: de, a: hasta))
+                enlaces.append(MapaDeBrillo.Enlace(oscura: oscura, brillante: brillante, desde: de, hasta: hasta))
             }
         }
         return MapaDeBrillo(escalas: ordenadas.map(\.escala), enlaces: enlaces)

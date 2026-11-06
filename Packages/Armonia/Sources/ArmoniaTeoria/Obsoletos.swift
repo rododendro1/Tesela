@@ -19,3 +19,25 @@ extension Acorde {
     @available(*, deprecated, renamed: "cambiarInversion(_:)")
     public func invertir(_ inversion: Int) -> Acorde { cambiarInversion(inversion) }
 }
+
+extension EscalaVecina {
+    /// El nombre de antes de `desde`.
+    @available(*, deprecated, renamed: "desde")
+    public var de: Nota { desde }
+    /// El nombre de antes de `hasta`.
+    @available(*, deprecated, renamed: "hasta")
+    public var a: Nota { hasta }
+
+    /// El inicializador de antes, con `de` y `a` en lugar de `desde` y `hasta`.
+    @available(*, deprecated, renamed: "init(escala:desde:hasta:)")
+    public init(escala: Escala, de: Nota, a: Nota) { self.init(escala: escala, desde: de, hasta: a) }
+}
+
+extension MapaDeBrillo.Enlace {
+    /// El nombre de antes de `desde`.
+    @available(*, deprecated, renamed: "desde")
+    public var de: Nota { desde }
+    /// El nombre de antes de `hasta`.
+    @available(*, deprecated, renamed: "hasta")
+    public var a: Nota { hasta }
+}

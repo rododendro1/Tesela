@@ -106,7 +106,7 @@ extension PresentacionDeEstudioDeEscala {
             return PeldanoDeBrilloPresentado(
                 escala: peldano, nombre: peldano.nombre(en: notacion),
                 brillo: conSigno(peldano.estadisticas.brilloPorQuintas),
-                cambio: subida.map { $0.de.nombre(en: notacion) + " → " + $0.a.nombre(en: notacion) } ?? "",
+                cambio: subida.map { $0.desde.nombre(en: notacion) + " → " + $0.hasta.nombre(en: notacion) } ?? "",
                 esLaDePartida: i == escalera.posicion, sonido: .escala(peldano))
         }
     }

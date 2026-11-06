@@ -50,7 +50,7 @@ extension PresentacionDeEstudioDeEscala {
         for enlace in mapa.enlaces {
             let desde = cajas[enlace.oscura]
             let hasta = cajas[enlace.brillante]
-            let cambio = enlace.de.nombre(en: notacion) + " → " + enlace.a.nombre(en: notacion)
+            let cambio = enlace.desde.nombre(en: notacion) + " → " + enlace.hasta.nombre(en: notacion)
             cuerpo.append(
                 "<line x1=\"\(numero(desde.x + anchoDeCaja))\" y1=\"\(numero(desde.y + altoDeCaja / 2))\" "
                     + "x2=\"\(numero(hasta.x))\" y2=\"\(numero(hasta.y + altoDeCaja / 2))\" stroke=\"#9aa5b1\" "

@@ -23,7 +23,7 @@ extension PresentacionDeEstudioDeEscala {
         escala.vecinas().map { vecina in
             EscalaSobreElAcordePresentada(
                 escala: vecina.escala, nombre: vecina.escala.nombre(en: notacion),
-                detalle: vecina.de.nombre(en: notacion) + " → " + vecina.a.nombre(en: notacion),
+                detalle: vecina.desde.nombre(en: notacion) + " → " + vecina.hasta.nombre(en: notacion),
                 sonido: .escala(vecina.escala))
         }
     }
