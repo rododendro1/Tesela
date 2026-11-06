@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### Alias y variantes de los tipos de escala
+
+- `TipoDeEscala.variantes`: las otras formas de escribir el nombre o un alias, que no son otro nombre: otro género
+  («dórica», «frigia»), otra transliteración («Hicaz» y «Hijaz» por Hitzáz, «Bilawal» por Bilāval) u otra
+  escritura («Χιτζάζ», «बिलावल», «平調子»). `alias` queda para los otros nombres («jónico», «bizantina», «bachiana»).
+  Las dos se leen igual (`aliasNormalizados` y `TipoDeEscala(leyendo:)` incluyen las variantes); 325 de los alias del
+  catálogo pasan a variantes. `TipoDeEscala(nombre:intervalos:intervalosDescendentes:alias:variantes:)` las recibe y
+  una escala guardada sin `variantes` se lee sin ellas.
+- Los ficheros de idioma de `Escalas/Nombres/` también separan las variantes (`.init(.dorico, "dòric",
+  variantes: ["dòrica"])`): el femenino de los modos y otras grafías de Skriabin, Rimski-Kórsakov o Petrushka.
+
 ### Ventanas de quintas a partir de unas notas
 
 - `VentanaDeQuintas(conteniendo:)`: las doce quintas que contienen unas notas, con las siete naturales si caben y lo

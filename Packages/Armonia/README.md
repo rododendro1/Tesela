@@ -262,7 +262,7 @@ las figuras, las duraciones y los colores. Los textos usan `Traduccion`, que pid
 español, inglés, catalán, gallego, asturiano, aragonés, euskera, portugués, francés, occitano, italiano, alemán,
 griego y ruso. Los nombres que son datos de un catálogo (tipos de acorde y de escala, instrumentos)
 siguen junto a su catálogo, en los quince idiomas (los de las escalas en los que no son español ni inglés,
-un fichero por idioma en `ArmoniaTeoria/Escalas/Nombres/`, `NombresDeEscalas+Catalan.swift`…, con los alias con que también se leen;
+un fichero por idioma en `ArmoniaTeoria/Escalas/Nombres/`, `NombresDeEscalas+Catalan.swift`…, con los alias y las variantes con que también se leen;
 `Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno, y `Scripts/generadores/nombres_de_escalas/` tiene las herramientas con que se sembraron).
 
 Para añadir un idioma: un caso en `Idioma`, su fila en `ReglasDeIdioma` (código, nombre, sílabas, alteraciones y

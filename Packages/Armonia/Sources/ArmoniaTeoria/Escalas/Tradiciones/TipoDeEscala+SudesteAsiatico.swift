@@ -18,7 +18,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["tailandesa", "ปี่พาทย์"])
+        alias: ["tailandesa"], variantes: ["ปี่พาทย์"])
     /// Pinpeat (siete partes iguales de 171 cents): Do Re Mi♭ Fa Sol La Si♭ en doce notas.
     public static let pinpeat = TipoDeEscala(
         nombre: "Pinpeat",
@@ -26,7 +26,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["camboyana", "jemer", "ពិណពាទ្យ"])
+        alias: ["camboyana", "jemer"], variantes: ["ពិណពាទ្យ"])
 
     // MARK: El arpa birmana
     //

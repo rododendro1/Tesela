@@ -91,7 +91,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida,
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        alias: ["superlocrio", "superlocria"])
+        alias: ["superlocrio"], variantes: ["superlocria"])
 
     // Otras.
     public static let mayorArmonica = TipoDeEscala(
@@ -131,7 +131,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMayor, .septimaMenor,
         ],
-        alias: ["dórico b5"])
+        variantes: ["dórico b5"])
     public static let frigioCuartaDisminuida = TipoDeEscala(
         nombre: "frigio ♭4",
         intervalos: [

@@ -79,7 +79,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
             .sextaMayor, .septimaMenor,
         ],
-        alias: ["mística", "de Prometeo", "Skriabin", "Scriabin"])
+        alias: ["mística", "de Prometeo", "Skriabin"], variantes: ["Scriabin"])
 
     // Simétricas y otras.
 
@@ -93,8 +93,9 @@ extension TipoDeEscala {
         ],
         alias: [
             "disminuida dominante", "dominante disminuida", "modo 2 de Messiaen", "disminuida auxiliar blues",
-            "de Rimski-Kórsakov", "Rimski-Kórsakov", "Rimsky-Korsakov",
-        ])
+            "de Rimski-Kórsakov", "Rimski-Kórsakov",
+        ],
+        variantes: ["Rimsky-Korsakov"])
     /// Terceras menores y semitonos alternos (Do Mi♭ Mi Sol Sol♯ Si).
     public static let aumentada = TipoDeEscala(
         nombre: "aumentada",
@@ -246,7 +247,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .septimaMenor,
         ],
-        alias: ["de Petrushka", "Petrouchka", "de tritono", "tritono"])
+        alias: ["de Petrushka", "de tritono", "tritono"], variantes: ["Petrouchka"])
 }
 
 // MARK: - Escalas de jazz: bebop menores, pentatónicas del jazz y blues ampliadas.

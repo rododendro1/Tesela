@@ -5,13 +5,14 @@ import ArmoniaNucleo
 // MARK: - Nombres de los tipos de escala
 //
 // Un idioma por fichero: `NombresDeEscalas+Catalan.swift`, `…+Ingles.swift`… Cada uno da el nombre de cada tipo
-// del catálogo occidental y, si los tiene, las otras formas con que se lee (alias). Las escalas de otras
+// del catálogo occidental y, si los tiene, sus otros nombres (alias) y otras formas de escribirlos (variantes: el
+// femenino, otra transliteración); los dos se leen igual. Las escalas de otras
 // tradiciones (Kafi, Hitzaz, Hirajoshi…) llevan casi todas un nombre propio que se escribe igual en todos los
 // idiomas, y no tienen fila: sin ella, una escala conserva su nombre original. Solo la llevan, al final del fichero,
 // las que se traducen o se transcriben en ese idioma (las andinas, los tetracordos y las harmoniai griegas, el mayor
 // y el menor de las etíopes; en ruso y en griego, casi todas), con `.tradicional(.kafi, "…")`, que nombra la
 // escala por su miembro de `TipoDeEscala` (si se renombra o se quita, no compila). El español sale del propio
-// catálogo (`TipoDeEscala.nombre` y `alias`). Un idioma nuevo es un fichero más y su fila en `traducidos`.
+// catálogo (`TipoDeEscala.nombre`, `alias` y `variantes`). Un idioma nuevo es un fichero más y su fila en `traducidos`.
 //
 // Las escalas occidentales se buscan por tipo; las tradicionales, por su identidad (`TipoDeEscala.identidad`, la del
 // tipo al que apunta la fila), porque `TipoDeEscala` se compara por sus intervalos y Āsāvarī sería la escala menor
@@ -19,7 +20,7 @@ import ArmoniaNucleo
 
 /// Los nombres de los tipos de escala en un idioma.
 package struct NombresDeEscalas: Sendable {
-    /// Una fila de un fichero de idioma: el tipo, su nombre y los alias con que también se lee.
+    /// Una fila de un fichero de idioma: el tipo, su nombre y los alias y las variantes con que también se lee.
     package struct Fila: Sendable {
         let tipo: TipoDeEscala?
         /// La escala tradicional de la fila (la `identidad` de su tipo); `nil` en las occidentales.
@@ -28,22 +29,25 @@ package struct NombresDeEscalas: Sendable {
         let categoria: CategoriaTradicional?
         let nombre: String
         let alias: [String]
+        let variantes: [String]
 
         /// Un tipo occidental del catálogo.
-        init(_ tipo: TipoDeEscala, _ nombre: String, alias: [String] = []) {
+        init(_ tipo: TipoDeEscala, _ nombre: String, alias: [String] = [], variantes: [String] = []) {
             self.tipo = tipo
             self.categoria = nil
             self.tradicional = nil
             self.nombre = nombre
             self.alias = alias
+            self.variantes = variantes
         }
 
-        private init(tradicional tipo: TipoDeEscala, nombre: String, alias: [String]) {
+        private init(tradicional tipo: TipoDeEscala, nombre: String, alias: [String], variantes: [String]) {
             self.tipo = tipo
             self.categoria = nil
             self.tradicional = tipo.identidad
             self.nombre = nombre
             self.alias = alias
+            self.variantes = variantes
         }
 
         private init(categoria: CategoriaTradicional, nombre: String) {
@@ -52,6 +56,7 @@ package struct NombresDeEscalas: Sendable {
             self.tradicional = nil
             self.nombre = nombre
             self.alias = []
+            self.variantes = []
         }
 
         /// El nombre de una categoría de escala (`CategoriaTradicional`) en este idioma.
@@ -60,15 +65,18 @@ package struct NombresDeEscalas: Sendable {
         }
 
         /// Una escala de otra tradición; sin segundo nombre se escribe como el original.
-        static func tradicional(_ tipo: TipoDeEscala, _ traducido: String? = nil, alias: [String] = []) -> Fila {
-            Fila(tradicional: tipo, nombre: traducido ?? tipo.nombre, alias: alias)
+        static func tradicional(
+            _ tipo: TipoDeEscala, _ traducido: String? = nil, alias: [String] = [], variantes: [String] = []
+        ) -> Fila {
+            Fila(tradicional: tipo, nombre: traducido ?? tipo.nombre, alias: alias, variantes: variantes)
         }
     }
 
-    /// Nombre y alias de un tipo en este idioma.
+    /// Nombre, alias y variantes de un tipo en este idioma.
     package struct Entrada: Sendable {
         package let nombre: String
         package let alias: [String]
+        package let variantes: [String]
     }
 
     /// Tipo occidental → su nombre y sus alias. Si un tipo está dos veces, vale la primera fila.
@@ -80,8 +88,8 @@ package struct NombresDeEscalas: Sendable {
     /// Clase de escala → su nombre en este idioma.
     package let categorias: [CategoriaTradicional: String]
 
-    /// Nombres y alias normalizados → tipo, para leerlos en este idioma. Un nombre gana a un alias; entre
-    /// nombres o entre alias, gana el primero.
+    /// Nombres, alias y variantes normalizados → tipo, para leerlos en este idioma. Un nombre gana a un alias o a
+    /// una variante; entre nombres o entre los demás, gana el primero.
     package let indice: [String: TipoDeEscala]
 
     init(_ listadas: [Fila]) {
@@ -96,7 +104,7 @@ package struct NombresDeEscalas: Sendable {
         var categorias: [CategoriaTradicional: String] = [:]
         for fila in filas {
             if let categoria = fila.categoria, categorias[categoria] == nil { categorias[categoria] = fila.nombre }
-            let entrada = Entrada(nombre: fila.nombre, alias: fila.alias)
+            let entrada = Entrada(nombre: fila.nombre, alias: fila.alias, variantes: fila.variantes)
             if let tradicional = fila.tradicional {
                 if tradicionales[tradicional] == nil { tradicionales[tradicional] = entrada }
             } else if let tipo = fila.tipo, porTipo[tipo] == nil {
@@ -110,7 +118,7 @@ package struct NombresDeEscalas: Sendable {
         }
         for fila in filas {
             guard let tipo = fila.tipo else { continue }
-            for alias in fila.alias where indice[TipoDeEscala.normalizar(alias)] == nil {
+            for alias in fila.alias + fila.variantes where indice[TipoDeEscala.normalizar(alias)] == nil {
                 indice[TipoDeEscala.normalizar(alias)] = tipo
             }
         }
@@ -137,10 +145,10 @@ package struct NombresDeEscalas: Sendable {
     /// Los nombres en un idioma.
     package static func de(_ idioma: Idioma) -> NombresDeEscalas { traducidos.texto(en: idioma) }
 
-    /// El español sale del catálogo: el nombre de cada tipo y sus alias.
+    /// El español sale del catálogo: el nombre de cada tipo, sus alias y sus variantes.
     static let espanol = NombresDeEscalas(
-        TipoDeEscala.todos.map { Fila($0, $0.nombre, alias: $0.alias) }
-            + TipoDeEscala.tradicionales.map { Fila.tradicional($0, alias: $0.alias) }
+        TipoDeEscala.todos.map { Fila($0, $0.nombre, alias: $0.alias, variantes: $0.variantes) }
+            + TipoDeEscala.tradicionales.map { Fila.tradicional($0, alias: $0.alias, variantes: $0.variantes) }
             + CategoriaTradicional.allCases.map { Fila.categoria($0, $0.nombre) })
 }
 

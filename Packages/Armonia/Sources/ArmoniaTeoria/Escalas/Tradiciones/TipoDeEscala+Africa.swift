@@ -41,10 +41,11 @@ extension TipoDeEscala {
         nombre: "Sauta", intervalos: TipoDeEscala.lidio.intervalos, alias: ["kora sauta"])
     /// Tomora ba o silaba (kora): la mayor, con la 3ª y la 7ª algo bajas.
     public static let tomoraBa = TipoDeEscala(
-        nombre: "Tomora ba", intervalos: TipoDeEscala.mayor.intervalos, alias: ["Silaba", "Tomoraba", "kora silaba"])
+        nombre: "Tomora ba", intervalos: TipoDeEscala.mayor.intervalos, alias: ["Silaba", "kora silaba"],
+        variantes: ["Tomoraba"])
     /// Tomora mesengo (kora): la dórica, con la 2ª, la 3ª, la 6ª y la 7ª algo altas.
     public static let tomoraMesengo = TipoDeEscala(
-        nombre: "Tomora mesengo", intervalos: TipoDeEscala.dorico.intervalos, alias: ["Tomoramesengo"])
+        nombre: "Tomora mesengo", intervalos: TipoDeEscala.dorico.intervalos, variantes: ["Tomoramesengo"])
     /// Nyamaropa (mbira dzavadzimu): cercana al mixolidio.
     public static let nyamaropa = TipoDeEscala(
         nombre: "Nyamaropa", intervalos: TipoDeEscala.mixolidio.intervalos, alias: ["mbira nyamaropa"])

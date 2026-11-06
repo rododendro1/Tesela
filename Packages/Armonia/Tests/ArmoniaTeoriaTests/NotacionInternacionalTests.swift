@@ -171,15 +171,15 @@ import Testing
                 )
             }
         }
-        // Los nombres con otras formas de leerse (alias) en ruso y en griego se leen todos.
+        // Los nombres con otras formas de leerse (alias y variantes) en ruso y en griego se leen todos.
         for tipo in TipoDeEscala.todos {
-            if let entrada = NombresDeEscalas.de(.ruso).porTipo[tipo], !entrada.alias.isEmpty {
-                for nombre in [entrada.nombre] + entrada.alias {
+            if let entrada = NombresDeEscalas.de(.ruso).porTipo[tipo] {
+                for nombre in [entrada.nombre] + entrada.alias + entrada.variantes {
                     #expect(Escala(texto: "ре " + nombre) == Escala(.re, tipo), Comment(rawValue: nombre))
                 }
             }
-            if let entrada = NombresDeEscalas.de(.griego).porTipo[tipo], !entrada.alias.isEmpty {
-                for nombre in [entrada.nombre] + entrada.alias {
+            if let entrada = NombresDeEscalas.de(.griego).porTipo[tipo] {
+                for nombre in [entrada.nombre] + entrada.alias + entrada.variantes {
                     #expect(Escala(texto: "ρε " + nombre) == Escala(.re, tipo), Comment(rawValue: nombre))
                 }
             }

@@ -256,7 +256,7 @@ Encyclopaedia Aethiopica (Təzəta, Ančihoye), los árabes en ALA-LC (Ḥijāz,
 Indonesia con la grafía javanesa (Pélog, Sléndro), los persas en la transliteración de la
 Encyclopædia Iranica (Čahārgāh), los turcos y los azerbaiyanos en su ortografía (Hicazkâr,
 Şur muğamı) y los coreanos en McCune-Reischauer (P'yŏngjo), con la
-romanización oficial y el hangul como alias, y los acadios en su transliteración habitual (išartu, nīš tuḫri). Un nombre gana a un alias: «Hijaz» es el
+romanización oficial y el hangul como variantes, y los acadios en su transliteración habitual (išartu, nīš tuḫri). Un nombre gana a un alias: «Hijaz» es el
 maqam Ḥijāz, y el dromos se busca como Hitzáz o Hicaz. Al buscar no importan los
 diacríticos ni las mayúsculas, y también se aceptan las transliteraciones habituales sin ellos
 (Mayamalavagowla, Shanmukhapriya, Hitzaz, hirajoshi), los nombres en chino y en japonés (宫, 平調子), los de
@@ -415,9 +415,9 @@ let bayati = try Voz(leyendo: "Mi♭4(50¢):4 Re4:2.")
 Partitura(.init(bayati), encabezado: Encabezado(titulo: "Bayātī")).svg().contains("(+50¢)</title>")   // true
 ```
 
-## Nombres en cada idioma y alias
+## Nombres en cada idioma, alias y variantes
 
-El nombre de cada tipo de escala en cada idioma, y las otras formas con que se lee (sus alias), están en un
+El nombre de cada tipo de escala en cada idioma, y las otras formas con que se lee (sus alias y sus variantes), están en un
 fichero por idioma: `Escalas/Nombres/NombresDeEscalas+Catalan.swift`, `+Gallego`, `+Ruso`… (el español sale
 del propio catálogo). `TipoDeEscala.nombre(en:)` usa el fichero del idioma de la notación, y
 `TipoDeEscala(leyendo:)` y `Escala("Re dòric")` leen los de todos. Cada fichero da todos los tipos de
@@ -426,7 +426,18 @@ que se traducen en ese idioma (`.tradicional(.andina, "…")`, que apunta al mie
 deja de existir); las demás, sin fila, conservan su nombre original (Kāfī, Hitzáz).
 `Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno y que no haya filas que no traducen nada. Un idioma nuevo es un fichero más.
 
-`TipoDeEscala.alias` guarda solo las grafías correctas («dórico ♭2», «húngara»). Las simplificadas («dorico b2»,
+Un alias es otro nombre de la escala («jónico» para la mayor, «bizantina» para la doble armónica); una variante es
+otra forma de escribir el nombre o un alias: otro género («dórica»), otra transliteración («Hicaz» por Hitzáz) u
+otra escritura («Χιτζάζ», «बिलावल»). `TipoDeEscala.alias` y `TipoDeEscala.variantes` se leen igual; para enseñar
+los otros nombres de una escala, basta con los alias.
+
+```swift
+TipoDeEscala.dorico.alias        // ["menor dórica"]
+TipoDeEscala.dorico.variantes    // ["dórica"]
+try TipoDeEscala(leyendo: "dórica") == .dorico   // true
+```
+
+`TipoDeEscala.alias` y `variantes` guardan solo las grafías correctas («dórico ♭2», «húngara»). Las simplificadas («dorico b2»,
 «hungara») no se repiten: salen de `aliasNormalizados` y de `normalizar` (minúsculas, sin diacríticos, ♯/♭ como
 #/b, sin ♮ ni ordinales), con lo que se encuentran igual.
 
@@ -527,12 +538,12 @@ TipoDeEscala.rast == .mayor                       // false: baja distinto
 Cuando dos escalas del catálogo coinciden, gana la que va antes en `TipoDeEscala.catalogo`: primero las
 occidentales (`todos`) y después las de otras tradiciones (`tradicionales`), cada una en su orden. Así se
 nombra una escala escrita por sus notas, y así se ordenan los `equivalentes`. Al buscar por nombre, además, un
-nombre gana siempre a un alias:
+nombre gana siempre a un alias o a una variante:
 
 ```swift
 TipoDeEscala.propio(TipoDeEscala.kafi.intervalos).nombre   // "dórico"
 TipoDeEscala.kafi.equivalentes.first?.nombre               // "dórico"
-try TipoDeEscala(leyendo: "Hijaz").nombre                 // "Ḥijāz" (el maqam; el dromos Hitzáz lo tiene de alias)
+try TipoDeEscala(leyendo: "Hijaz").nombre                 // "Ḥijāz" (el maqam; el dromos Hitzáz lo tiene de variante)
 ```
 
 ## Arpegios

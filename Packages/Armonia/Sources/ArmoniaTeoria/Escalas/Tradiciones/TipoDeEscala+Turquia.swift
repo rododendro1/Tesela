@@ -155,7 +155,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        alias: ["makam Nev'eser", "Neveser makamı"])
+        alias: ["makam Nev'eser"], variantes: ["Neveser makamı"])
 
     /// Mâhur (Sol La Si Do Re Mi Fa♯): un pentacordo y un tetracordo Çârgâh, la mayor pitagórica sobre la rast.
     public static let mahurMakami = TipoDeEscala(
@@ -172,7 +172,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        alias: ["makam Acemaşiran", "Acem-aşiran makamı"])
+        alias: ["makam Acemaşiran"], variantes: ["Acem-aşiran makamı"])
     /// Sultânîyegâh (Re Mi Fa Sol La Si♭ Do♯): Bûselik llevado a la yegâh, un pentacordo Bûselik y, en la dügâh, un
     /// tetracordo Hicaz al subir y uno Kürdî al bajar, como Nihâvend.
     public static let sultaniyegahMakami = TipoDeEscala(
@@ -190,7 +190,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        alias: ["makam Şedaraban", "Şedarabân makamı"])
+        alias: ["makam Şedaraban"], variantes: ["Şedarabân makamı"])
     /// Hümâyun (La Si♭ Do♯ Re Mi Fa Sol): un tetracordo Hicaz y un pentacordo Bûselik en la nevâ, el frigio
     /// dominante.
     public static let humayunMakami = TipoDeEscala(
@@ -227,7 +227,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["makam Kürdîlihicazkâr", "Kürdîli Hicazkâr makamı"])
+        alias: ["makam Kürdîlihicazkâr"], variantes: ["Kürdîli Hicazkâr makamı"])
     /// Muhayyer (La Si Do Re Mi Fa♯ Sol, con la segâh y Fa♯ una koma bajo): las notas de Hüseynî, un pentacordo
     /// Hüseynî y un tetracordo Uşşak en la hüseynî, pero bajando desde la muhayyer, la octava aguda.
     public static let muhayyerMakami = TipoDeEscala(
@@ -254,7 +254,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["makam Isfahan", "İsfahan makamı"])
+        alias: ["makam Isfahan"], variantes: ["İsfahan makamı"])
 
     /// Los makamlar: los que el temperamento igual escribe sin cambiarles el carácter y los que solo se oyen bien
     /// con su versión microtonal (Uşşak, Hüseynî y Segâh).
