@@ -77,6 +77,16 @@ import Testing
         let armonica = Escala(.la, .menorArmonica)
         #expect(armonica.cifradosRomanos(referencia: .menorNatural) == ["i", "ii°", "III+", "iv", "V", "VI", "♯vii°"])
     }
+
+    /// Los nombres de la menor de los conservatorios españoles: bachiana, dórica y antigua.
+    @Test func losNombresDeConservatorioDeLaMenor() {
+        #expect((try? TipoDeEscala(leyendo: "menor bachiana"))?.nombre == "menor melódica de jazz")
+        #expect((try? TipoDeEscala(leyendo: "bachiana"))?.nombre == "menor melódica de jazz")
+        #expect((try? TipoDeEscala(leyendo: "de Bach"))?.nombre == "menor melódica de jazz")
+        #expect((try? TipoDeEscala(leyendo: "menor dórica"))?.nombre == "dórico")
+        #expect((try? TipoDeEscala(leyendo: "menor antigua"))?.nombre == "menor natural")
+        #expect(Escala("La bachiana").tipo == .menorMelodicaJazz)
+    }
 }
 
 @Suite struct EscalasAdicionalesTests {
