@@ -79,7 +79,10 @@ import Testing
     @Test func cadaEntradaDeclaraLasOpcionesQueExplica() {
         for orden in L.ordenes {
             for entrada in orden.ayuda {
-                #expect(entrada.opciones == Self.opcionesNombradas(en: entrada), Comment(rawValue: orden.nombres[0]))
+                let declaradas = entrada.opciones.flatMap(\.nombres)
+                let comentario = Comment(rawValue: orden.nombres[0])
+                #expect(Set(declaradas) == Set(Self.opcionesNombradas(en: entrada)), comentario)
+                #expect(Set(declaradas).count == declaradas.count, comentario)
             }
         }
     }

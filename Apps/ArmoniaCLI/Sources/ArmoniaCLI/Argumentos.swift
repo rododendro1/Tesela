@@ -4,11 +4,11 @@ import Armonia
 /// (`restantes`) es lo que procesa la orden: notas, cifrados, una escala…
 ///
 ///     var argumentos = Argumentos(["Sol7", "--instrumento", "ukelele", "--diagrama"])
-///     argumentos.quitarMarca("--diagrama", "--diagram")        // true
-///     argumentos.quitarOpcion("--instrumento", "--instrument") // .valor("ukelele")
+///     argumentos.quitarMarca(.diagrama)                       // true
+///     argumentos.quitarOpcion(.instrumento)                   // .valor("ukelele")
 ///     argumentos.restantes                                    // ["Sol7"]
 ///
-/// Cada opción se acepta con su nombre en español y en inglés; las órdenes solo dicen cuáles.
+/// Cada opción se acepta con su nombre en español y en inglés, como la declara `OpcionDeOrden`.
 struct Argumentos {
     private(set) var restantes: [String]
 
@@ -39,26 +39,28 @@ struct Argumentos {
 
     /// Quita una marca, una opción sin valor (`--diagrama`), con cualquiera de sus nombres y todas las veces
     /// que aparezca. Dice si estaba.
-    mutating func quitarMarca(_ nombres: String...) -> Bool {
+    mutating func quitarMarca(_ marca: OpcionDeOrden) -> Bool { quitarMarca(marca.leidos) }
+
+    private mutating func quitarMarca(_ nombres: [String]) -> Bool {
         let antes = restantes.count
         restantes.removeAll { nombres.contains($0) }
         return restantes.count != antes
     }
 
     /// Quita una opción con valor (`--limite 5`) y su valor.
-    mutating func quitarOpcion(_ nombres: String...) -> Opcion { quitarOpcion(nombres) }
+    mutating func quitarOpcion(_ opcion: OpcionDeOrden) -> Opcion { quitarOpcion(opcion.leidos) }
 
     /// Quita una opción con valor (`--limite 5`) y da su valor, o `nil` si no está. Si está sin valor, lanza
     /// `siFalta`, o `faltaValor` con el nombre que se escribió.
     ///
-    ///     if let texto = try argumentos.valor("--secuencia", "--sequence") { … }
-    mutating func valor(_ nombres: String..., siFalta: ErrorDeUso? = nil) throws -> String? {
-        try Self.leer(quitarOpcion(nombres), siFalta: siFalta)
+    ///     if let texto = try argumentos.valor(.secuencia) { … }
+    mutating func valor(_ opcion: OpcionDeOrden, siFalta: ErrorDeUso? = nil) throws -> String? {
+        try Self.leer(quitarOpcion(opcion.leidos), siFalta: siFalta)
     }
 
     /// Como `valor(_:siFalta:)`, con todas las palabras que siguen a la opción (`quitarOpcionConPalabras`).
-    mutating func valorConPalabras(_ nombres: String..., siFalta: ErrorDeUso? = nil) throws -> String? {
-        try Self.leer(quitarOpcionConPalabras(nombres), siFalta: siFalta)
+    mutating func valorConPalabras(_ opcion: OpcionDeOrden, siFalta: ErrorDeUso? = nil) throws -> String? {
+        try Self.leer(quitarOpcionConPalabras(opcion.leidos), siFalta: siFalta)
     }
 
     private static func leer(_ opcion: Opcion, siFalta: ErrorDeUso?) throws -> String? {
@@ -81,7 +83,9 @@ struct Argumentos {
 
     /// Quita una opción seguida de varias palabras, hasta la siguiente opción (`--comparar Do lidio`), y da las
     /// palabras unidas por espacios.
-    mutating func quitarOpcionConPalabras(_ nombres: String...) -> Opcion { quitarOpcionConPalabras(nombres) }
+    mutating func quitarOpcionConPalabras(_ opcion: OpcionDeOrden) -> Opcion {
+        quitarOpcionConPalabras(opcion.leidos)
+    }
 
     private mutating func quitarOpcionConPalabras(_ nombres: [String]) -> Opcion {
         guard let i = restantes.firstIndex(where: { nombres.contains($0) }) else { return .ausente }
@@ -94,7 +98,8 @@ struct Argumentos {
 
     /// Quita una opción con un número (`--voces 2`): `porDefecto` si no está, y `nil` si le falta el número
     /// o no está en `rango`.
-    mutating func quitarNumero(_ nombres: String..., en rango: ClosedRange<Int>, porDefecto: Int) -> Int? {
+    mutating func quitarNumero(_ opcion: OpcionDeOrden, en rango: ClosedRange<Int>, porDefecto: Int) -> Int? {
+        let nombres = opcion.leidos
         guard let i = restantes.firstIndex(where: { nombres.contains($0) }) else { return porDefecto }
         guard i + 1 < restantes.count, let n = Int(restantes[i + 1]), rango.contains(n) else { return nil }
         restantes.removeSubrange(i...(i + 1))
@@ -144,7 +149,7 @@ struct Argumentos {
     /// `nil` dentro si no está, y `nil` si no lo sigue nada. Lanza un error de lectura si la tonalidad no se
     /// puede leer.
     mutating func quitarTonalidad() throws -> Tonalidad?? {
-        guard let i = restantes.firstIndex(where: { $0 == "--en" || $0 == "--in" }) else { return .some(nil) }
+        guard let i = restantes.firstIndex(where: OpcionDeOrden.en.leidos.contains) else { return .some(nil) }
         guard i + 1 < restantes.count else { return nil }
         let tonalidad = try Tonalidad(leyendo: restantes[(i + 1)...].joined(separator: " "))
         restantes.removeSubrange(i...)

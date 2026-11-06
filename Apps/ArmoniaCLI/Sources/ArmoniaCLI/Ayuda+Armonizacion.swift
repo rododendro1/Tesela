@@ -40,10 +40,7 @@ extension LineaDeComandos {
                 "armonia analizar Do Fa Sol7 Do Lam Re7 Sol",
                 "armonia analyze C F G7 C Am D7 G"),
             notas: TextosDeCLI.traduccion(\.notasAnalizar),
-            opciones: [
-                "--en", "--escalas", "--notas-guia", "--conduccion", "--contra", "--bajo", "--in", "--scales",
-                "--guide-tones", "--voice-leading", "--against", "--walking-bass",
-            ]),
+            opciones: [.en, .escalas, .notasGuia, .conduccion, .contra, .bajo]),
         // analizar --archivo <fichero> [--ventana <duración>]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisAnalizarArchivo),
@@ -51,7 +48,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia analizar --archivo coral.mid",
                 "armonia analyze --file chorale.musicxml"),
-            opciones: ["--archivo", "--ventana", "--file", "--window"]),
+            opciones: [.archivo, .ventana]),
     ]
 
     static let ayudaDeArmonizar: [EntradaDeAyuda] = [
@@ -62,7 +59,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia armonizar Mi4 Fa4 Re4 Do4",
                 "armonia harmonize E4 F4 D4 C4"),
-            opciones: ["--en", "--propuestas", "--in", "--proposals"])
+            opciones: [.en, .propuestas])
     ]
 
     static let ayudaDeRealizar: [EntradaDeAyuda] = [
@@ -73,7 +70,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia realizar Do Fa Sol7 Do",
                 "armonia realize C F G7 C"),
-            opciones: ["--en", "--in"])
+            opciones: [.en])
     ]
 
     static let ayudaDeRevisar: [EntradaDeAyuda] = [
@@ -94,7 +91,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia contrapunto Re4 Fa4 Mi4 Re4 / -:2 La4 Re5 La4 Si4 Do#5 Re5:1 --especie 2",
                 "armonia counterpoint D4 F4 E4 D4 / -:2 A4 D5 A4 B4 C#5 D5:1 --species 2"),
-            opciones: ["--especie", "--species"])
+            opciones: [.especie])
     ]
 
     static let ayudaDeTransponer: [EntradaDeAyuda] = [
@@ -115,6 +112,6 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia rearmonizar Do Lam Rem7 Sol7 Do",
                 "armonia reharmonize C Am Dm7 G7 C"),
-            opciones: ["--en", "--in"])
+            opciones: [.en])
     ]
 }

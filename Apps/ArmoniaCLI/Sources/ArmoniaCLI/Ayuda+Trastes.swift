@@ -19,10 +19,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia digitaciones Sol7/Si --instrumento ukelele",
                 "armonia fingerings G7/B --instrument ukulele"),
-            opciones: [
-                "--instrumento", "--limite", "--traste", "--dedos", "--completo", "--diagrama", "--capo", "--musicxml",
-                "--instrument", "--limit", "--fret", "--fingers", "--complete", "--diagram",
-            ])
+            opciones: [.instrumento, .limite, .traste, .dedosDeLaDigitacion, .completo, .diagrama, .capo, .musicxml])
     ]
 
     static let ayudaDePosiciones: [EntradaDeAyuda] = [
@@ -32,18 +29,13 @@ extension LineaDeComandos {
             descripcion: TextosDeCLI.traduccion(\.descripcionPosiciones),
             ejemplo: ejemplo("armonia posiciones Sol mayor --caged", "armonia positions G major --caged"),
             notas: TextosDeCLI.traduccion(\.notasPosiciones),
-            opciones: [
-                "--caged", "--secuencia", "--bajando", "--formas", "--instrumento", "--capo", "--sequence",
-                "--descending", "--shapes", "--instrument",
-            ]),
+            opciones: [.caged, .secuencia, .bajando, .formas, .instrumento, .capo]),
         // posiciones --arpegio <cifrado> [--caged|--barrido]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPosicionesArpegio),
             descripcion: TextosDeCLI.traduccion(\.descripcionPosicionesArpegio),
             ejemplo: ejemplo(
                 "armonia posiciones --arpegio Lam --barrido", "armonia positions --arpeggio Am --sweep"),
-            opciones: [
-                "--arpegio", "--caged", "--barrido", "--ida-y-vuelta", "--arpeggio", "--sweep", "--up-and-down",
-            ]),
+            opciones: [.arpegio, .caged, .barrido, .idaYVuelta]),
     ]
 }

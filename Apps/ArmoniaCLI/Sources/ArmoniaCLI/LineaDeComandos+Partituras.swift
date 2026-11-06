@@ -23,7 +23,7 @@ extension LineaDeComandos {
             (formato == .midi ? [("program", "programa")] : [])
             + [("patrón", "patron"), ("pattern", "patron"), ("file", "archivo"), ("window", "ventana")]
         // `--enlazar`: cada arpegio empieza cerca de donde acabó el anterior.
-        let enlazados = entrada.quitarMarca("--enlazar", "--connect")
+        let enlazados = entrada.quitarMarca(.enlazar)
         let (opciones, marcas) = entrada.quitarOpcionesConTexto(
             marcas: ["cifrados": "cifrados", "analisis": "analisis", "análisis": "analisis"], alias: alias)
         let musica = entrada.restantes

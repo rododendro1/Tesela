@@ -21,7 +21,7 @@ extension LineaDeComandos {
                 "armonia grabar coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 > coral.pdf",
                 "armonia engrave chorale C3 E4 G4 C5, G2 D4 G4 B4 > chorale.pdf"),
             notas: TextosDeCLI.traduccion(\.notasGrabar),
-            opciones: ["--motor", "--formato", "--engine", "--format"])
+            opciones: [.motor, .formato])
     ]
 
     static let ayudaDeMotores: [EntradaDeAyuda] = [

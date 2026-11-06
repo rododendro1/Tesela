@@ -31,7 +31,7 @@ extension LineaDeComandos {
     /// La armonización de `armonizar`, para el texto y para `--json`.
     static func coralArmonizado(_ argumentos: [String], _ notacion: Notacion) throws -> CoralPresentado {
         var argumentos = Argumentos(argumentos)
-        guard let propuestas = argumentos.quitarNumero("--propuestas", "--proposals", en: 1...20, porDefecto: 3) else {
+        guard let propuestas = argumentos.quitarNumero(.propuestas, en: 1...20, porDefecto: 3) else {
             throw ErrorDeUso.propuestasFueraDeRango
         }
         guard let dada = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
@@ -90,7 +90,7 @@ extension LineaDeComandos {
     /// El ejercicio de `contrapunto`, para el texto y para `--json`.
     static func ejercicioDeContrapunto(_ argumentos: [String]) throws -> Contrapunto {
         var argumentos = Argumentos(argumentos)
-        guard let numero = argumentos.quitarNumero("--especie", "--species", en: 1...5, porDefecto: 1),
+        guard let numero = argumentos.quitarNumero(.especie, en: 1...5, porDefecto: 1),
             let especie = Contrapunto.Especie(rawValue: numero)
         else {
             throw ErrorDeUso.especieFueraDeRango

@@ -27,7 +27,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia vecinos Sol7",
                 "armonia neighbors G7"),
-            opciones: ["--voces", "--ampliada", "--voices", "--extended"])
+            opciones: [.voces, .ampliada])
     ]
 
     static let ayudaDeConduccionParsimoniosa: [EntradaDeAyuda] = [
@@ -38,7 +38,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia conduccion-parsimoniosa Sol7 Rem7",
                 "armonia smooth-path G7 Dm7"),
-            opciones: ["--voces", "--ampliada", "--voices", "--extended"])
+            opciones: [.voces, .ampliada])
     ]
 
     static let ayudaDeConduccionMinima: [EntradaDeAyuda] = [

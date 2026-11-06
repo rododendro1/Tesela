@@ -42,11 +42,7 @@ extension LineaDeComandos {
                 "armonia acorde Sol7/Si",
                 "armonia chord G7/B"),
             notas: TextosDeCLI.traduccion(\.notasAcorde),
-            opciones: [
-                "--disposiciones", "--nombres", "--tonalidades", "--sustituciones", "--en", "--comparar", "--bebop",
-                "--pentatonicas", "--voicings", "--names", "--keys", "--substitutions", "--in", "--compare",
-                "--pentatonics",
-            ])
+            opciones: [.disposiciones, .nombres, .tonalidades, .sustituciones, .en, .comparar, .bebop, .pentatonicas])
     ]
 
     static let ayudaDeIdentificar: [EntradaDeAyuda] = [
@@ -58,7 +54,7 @@ extension LineaDeComandos {
                 "armonia identificar Do Mi Sol Sib",
                 "armonia identify C E G Bb"),
             notas: TextosDeCLI.traduccion(\.notasIdentificar),
-            opciones: ["--escalas", "--archivo", "--scales", "--file"])
+            opciones: [.escalas, .archivo])
     ]
 
     static let ayudaDeArpegio: [EntradaDeAyuda] = [
@@ -70,10 +66,7 @@ extension LineaDeComandos {
                 "armonia arpegio Do7 --patron alberti",
                 "armonia arpeggio C7 --pattern alberti"),
             notas: TextosDeCLI.traduccion(\.notasArpegio),
-            opciones: [
-                "--patron", "--octavas", "--sin-octava", "--desde", "--tensiones", "--grados", "--aproximacion",
-                "--pattern", "--octaves", "--no-octave", "--from", "--tensions", "--degrees", "--approach",
-            ])
+            opciones: [.patron, .octavas, .sinOctava, .desde, .tensiones, .grados, .aproximacion])
     ]
 
     static let ayudaDeIntervalo: [EntradaDeAyuda] = [
@@ -96,11 +89,8 @@ extension LineaDeComandos {
                 "armonia scale D dorian"),
             notas: TextosDeCLI.traduccion(\.notasEscala),
             opciones: [
-                "--acordes", "--secuencia", "--bajando", "--octavas", "--piano", "--modos", "--comparar", "--simetria",
-                "--vecinas", "--doce", "--triadas", "--estadisticas", "--escalera", "--contra", "--parecidas",
-                "--progresiones", "--chords", "--sequence", "--descending", "--octaves", "--modes", "--compare",
-                "--symmetry", "--neighbors", "--all-keys", "--triads", "--statistics", "--brightness-ladder",
-                "--against", "--closest", "--progressions",
+                .acordes, .secuencia, .bajando, .octavas, .piano, .modos, .comparar, .simetria, .vecinas, .doce,
+                .triadas, .estadisticas, .escalera, .contra, .parecidas, .progresiones,
             ])
     ]
 
@@ -122,10 +112,8 @@ extension LineaDeComandos {
                 "armonia scales --tradition turkey"),
             notas: TextosDeCLI.traduccion(\.notasEscalas),
             opciones: [
-                "--tradicion", "--categoria", "--uso", "--notas", "--orden", "--sin-semitonos", "--regulares",
-                "--con-intervalo", "--sin-intervalo", "--con-paso", "--comparar", "--mapa", "--tradition",
-                "--category", "--use", "--notes", "--sort", "--anhemitonic", "--maximally-even", "--with-interval",
-                "--without-interval", "--with-step", "--compare", "--map",
+                .tradicion, .categoria, .uso, .notas, .orden, .sinSemitonos, .regulares, .conIntervalo, .sinIntervalo,
+                .conPaso, .comparar, .mapa,
             ])
     ]
 
@@ -137,7 +125,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia tonalidad La menor --modulaciones",
                 "armonia key A minor --modulations"),
-            opciones: ["--modulaciones", "--modulations"])
+            opciones: [.modulaciones])
     ]
 
     static let ayudaDeConjunto: [EntradaDeAyuda] = [
