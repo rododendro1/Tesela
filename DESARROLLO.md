@@ -27,6 +27,7 @@ Apps/
 └── PruebasDeInterfaz/  Las pruebas de interfaz de las dos apps (XCUITest), con los ejemplos de cada vista
 Ejemplos/
 ├── EjemploArmonia/     Un recorrido por la API del motor, ejecutable (SwiftPM)
+├── EjemploCatalogoDeEscalas/  El catálogo de escalas en un fichero TSV, una fila por escala (SwiftPM)
 └── EjemploHexagonos/   Un recorrido por las rejillas hexagonales, con mapas dibujados en el terminal (SwiftPM)
 Herramientas/
 ├── FuzzArmonia/         Los lectores de ficheros y textos con datos al azar (libFuzzer; el CI lo pasa cada semana)
@@ -62,13 +63,13 @@ Package.swift       Los paquetes juntos, para usarlos desde otro proyecto por UR
 ArsHarmonicaApp ──┬──► TeselaUI ───┬──► TeselaPresentacion ──► Armonia ──► Hexagonos
 TonnetzApp ───────┘               ├──► Armonia
                                   └──► Hexagonos
-ArsHarmonicaApp, TonnetzApp, ArmoniaCLI, EjemploArmonia, RendimientoArmonia, FuzzArmonia ──► Armonia
+ArsHarmonicaApp, TonnetzApp, ArmoniaCLI, EjemploArmonia, EjemploCatalogoDeEscalas, RendimientoArmonia, FuzzArmonia ──► Armonia
 ArmoniaCLI ──► TeselaPresentacion (sin SwiftUI) ──► Armonia
 EjemploHexagonos ──► Hexagonos
 ```
 
 Un paquete solo depende de los que tiene debajo, y nunca de una app. La línea de comandos (`ArmoniaCLI`),
-los ejemplos (`EjemploArmonia` y `EjemploHexagonos`) y la medida del rendimiento (`RendimientoArmonia`) se construyen con SwiftPM; las apps de SwiftUI, con Xcode (`project.yml`).
+los ejemplos (`EjemploArmonia`, `EjemploCatalogoDeEscalas` y `EjemploHexagonos`) y la medida del rendimiento (`RendimientoArmonia`) se construyen con SwiftPM; las apps de SwiftUI, con Xcode (`project.yml`).
 `Scripts/comprobaciones/comprobar_dependencias.py` lo comprueba (también en el CI).
 
 El paquete, su producto principal y su módulo paraguas se llaman `Armonia`: en el código es
@@ -89,6 +90,7 @@ swift run --package-path Apps/ArmoniaCLI armonia motores   # LilyPond, MuseScore
 swift run --package-path Apps/ArmoniaCLI armonia manual > armonia.1   # y `completado bash|zsh|fish`, el autocompletado
 swift run --package-path Ejemplos/EjemploArmonia EjemploArmonia       # el ejemplo del motor
 swift run --package-path Ejemplos/EjemploHexagonos EjemploHexagonos   # el de las rejillas hexagonales
+swift run --package-path Ejemplos/EjemploCatalogoDeEscalas EjemploCatalogoDeEscalas escalas.tsv   # el catálogo en TSV
 swift run -c release --package-path Herramientas/RendimientoArmonia RendimientoArmonia   # los tiempos del motor
 
 # Las apps (macOS, con XcodeGen)

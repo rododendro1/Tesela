@@ -87,6 +87,7 @@ if [ "$MOTOR_COMPILA" = 1 ]; then
     paso "Línea de comandos: compilar" Apps/ArmoniaCLI swift build &&
         paso "Línea de comandos: pruebas" Apps/ArmoniaCLI swift test --parallel
     paso "Ejemplo: ejecutar" Ejemplos/EjemploArmonia swift run EjemploArmonia
+    paso "Ejemplo del catálogo de escalas: ejecutar" Ejemplos/EjemploCatalogoDeEscalas swift run EjemploCatalogoDeEscalas
     paso "Rendimiento: compilar" Herramientas/RendimientoArmonia swift build
     paso "TeselaUI: compilar" Packages/TeselaUI swift build &&
         paso "TeselaUI: pruebas" Packages/TeselaUI swift test --parallel
