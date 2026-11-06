@@ -257,15 +257,24 @@ extension Acorde {
         candidatos(midi: midi, escala: escala).map(\.valor)
     }
 
-    /// Escribe unas notas MIDI con la ortografía del acorde (las que no pertenecen a él
-    /// se escriben con sostenidos de Fa a La♯).
+    /// Las doce quintas seguidas que contienen sus notas y el bajo, lo más centradas posible en ellas (ver
+    /// `VentanaDeQuintas(conteniendo:)`): Do, de La♭ a Do♯; Do7, de Re♭ a Fa♯; La menor, de Mi♭ a Sol♯. `nil` si no
+    /// caben en doce quintas.
+    public var ventanaDeQuintas: VentanaDeQuintas? {
+        VentanaDeQuintas(conteniendo: notas + [bajo])
+    }
+
+    /// Escribe unas notas MIDI con la ortografía del acorde. Las que no pertenecen a él se escriben como en su
+    /// ``ventanaDeQuintas``: un 61 es Do♯ en Do y Re♭ en Do7.
     ///
     ///     let acorde = Acorde.identificar(midi: [60, 64, 68]).first!   // Do+
     ///     acorde.ortografiar(midi: [60, 64, 68])                       // [Do4, Mi4, Sol♯4]
+    ///     Acorde("Do7").ortografiar(midi: [61])                        // [Re♭4]
     public func ortografiar(midi: [Int]) -> [Altura] {
         let nombres = notas + [bajo]
+        let ventana = ventanaDeQuintas ?? .sostenidos
         return midi.map { altura in
-            nombres.lazy.compactMap { Altura($0, midi: altura) }.first ?? Altura(midi: altura)
+            nombres.lazy.compactMap { Altura($0, midi: altura) }.first ?? Altura(midi: altura, ventana: ventana)
         }
     }
 }

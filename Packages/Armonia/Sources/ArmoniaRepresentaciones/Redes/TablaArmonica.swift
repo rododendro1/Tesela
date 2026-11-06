@@ -210,8 +210,8 @@ public struct TablaArmonica: Hashable, Sendable {
         let nombres = Dictionary(
             alturas.map { ($0.midi, $0.nombreCompacto(en: notacion)) },
             uniquingKeysWith: { uno, _ in uno })
-        // Con bemoles en las alturas dadas, los demás hexágonos también los usan.
-        let bemoles = alturas.contains { $0.nota.alteracion.simbolo.contains("♭") }
+        // Los demás hexágonos se escriben como en la ventana de quintas de las alturas dadas.
+        let ventanaDeLasAlturas = VentanaDeQuintas(conteniendo: alturas.map(\.nota)) ?? .sostenidos
         let rotulos = comoTonnetz
         func nombre(_ p: PuntoDeLaRed) -> String {
             switch colocacion {
@@ -220,7 +220,7 @@ public struct TablaArmonica: Hashable, Sendable {
             case .alturas:
                 let midi = TablaArmonica.midi(de: p)
                 if let nombre = nombres[midi] { return nombre }
-                let altura = Altura(midi: midi, ventana: bemoles ? .bemoles : .sostenidos)
+                let altura = Altura(midi: midi, ventana: ventanaDeLasAlturas)
                 return altura.nombreCompacto(en: notacion)
             }
         }

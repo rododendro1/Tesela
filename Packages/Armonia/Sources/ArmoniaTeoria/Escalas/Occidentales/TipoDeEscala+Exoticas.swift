@@ -135,23 +135,24 @@ extension TipoDeEscala {
     // sostenido, por el orden de la línea de quintas (Sol♭ → Fa♯, Re♭ → Do♯, La♭ → Sol♯, Mi♭ → Re♯ y
     // Si♭ → La♯). Se nombran por sus bemoles, porque los sostenidos son los que faltan hasta cinco.
 
-    /// La cromática de las doce quintas seguidas que empiezan en `primera`, en pasos de quinta desde
-    /// la tónica: −6 da cinco bemoles (Do Re♭ Re Mi♭ Mi Fa Sol♭ Sol La♭ La Si♭ Si); −1, cinco
-    /// sostenidos (Do Do♯ Re Re♯ Mi Fa Fa♯ Sol Sol♯ La La♯ Si); −5 es `cromatica`.
+    /// La cromática con las notas de esa ventana de quintas, leída con Do como tónica: en otra tónica, cada nota se
+    /// transporta con ella. `.bemoles` (de −6 a 5) da cinco bemoles (Do Re♭ Re Mi♭ Mi Fa Sol♭ Sol La♭ La Si♭ Si);
+    /// `.sostenidos` (de −1 a 10), cinco sostenidos (Do Do♯ Re Re♯ Mi Fa Fa♯ Sol Sol♯ La La♯ Si); `.masSimple` (de
+    /// −5 a 6) es `cromatica`.
     ///
-    /// - Precondition: `primera` está entre −6 y −1, para que la escala mayor de la tónica quede dentro.
-    public static func cromatica(desdeLaQuinta primera: Int) -> TipoDeEscala {
-        precondition((-6...(-1)).contains(primera), "La ventana de una cromática empieza entre −6 y −1 quintas")
+    /// - Precondition: la ventana empieza entre Sol♭ (−6) y Fa (−1), para que la escala mayor de Do quede dentro.
+    public static func cromatica(ventana: VentanaDeQuintas) -> TipoDeEscala {
+        let primera = ventana.inicio
+        precondition((-6...(-1)).contains(primera), "La ventana de una cromática empieza entre Sol♭ y Fa")
         if primera == -5 { return .cromatica }
         let intervalos = (primera..<(primera + 12)).map { quintas in
             // La octava que deja el intervalo entre 0 y 11 semitonos.
             Intervalo(pasosDeQuinta: quintas, pasosDeOctava: -divisionEntera(7 * quintas, 12))
         }.sorted { $0.semitonos < $1.semitonos }
-        let ventana = (primera, primera + 11)
         return TipoDeEscala(
             nombre: nombresDeLasCromaticas[primera + 6],
             intervalos: intervalos,
-            alias: ["cromática \(signo(ventana.0))…\(signo(ventana.1))"])
+            alias: ["cromática \(signo(primera))…\(signo(primera + 11))"])
     }
 
     /// Los nombres en español, de la ventana −6 a la −1.
@@ -164,20 +165,22 @@ extension TipoDeEscala {
     private static func signo(_ n: Int) -> String { n < 0 ? "−\(-n)" : "\(n)" }
 
     /// −6…5: Do Re♭ Re Mi♭ Mi Fa Sol♭ Sol La♭ La Si♭ Si.
-    public static let cromaticaConCincoBemoles = cromatica(desdeLaQuinta: -6)
+    public static let cromaticaConCincoBemoles = cromatica(ventana: .bemoles)
     /// −5…6, la `cromatica`: Do Re♭ Re Mi♭ Mi Fa Fa♯ Sol La♭ La Si♭ Si.
     public static let cromaticaConCuatroBemoles = cromatica
     /// −4…7: Do Do♯ Re Mi♭ Mi Fa Fa♯ Sol La♭ La Si♭ Si.
-    public static let cromaticaConTresBemoles = cromatica(desdeLaQuinta: -4)
+    public static let cromaticaConTresBemoles = cromatica(ventana: VentanaDeQuintas(inicio: -4))
     /// −3…8: Do Do♯ Re Mi♭ Mi Fa Fa♯ Sol Sol♯ La Si♭ Si.
-    public static let cromaticaConDosBemoles = cromatica(desdeLaQuinta: -3)
+    public static let cromaticaConDosBemoles = cromatica(ventana: .habitual)
     /// −2…9: Do Do♯ Re Re♯ Mi Fa Fa♯ Sol Sol♯ La Si♭ Si.
-    public static let cromaticaConUnBemol = cromatica(desdeLaQuinta: -2)
+    public static let cromaticaConUnBemol = cromatica(ventana: VentanaDeQuintas(inicio: -2))
     /// −1…10: Do Do♯ Re Re♯ Mi Fa Fa♯ Sol Sol♯ La La♯ Si.
-    public static let cromaticaConCincoSostenidos = cromatica(desdeLaQuinta: -1)
+    public static let cromaticaConCincoSostenidos = cromatica(ventana: .sostenidos)
 
     /// Las seis, de la de más bemoles a la de más sostenidos.
-    public static let cromaticasPorQuintas: [TipoDeEscala] = (-6...(-1)).map(cromatica(desdeLaQuinta:))
+    public static let cromaticasPorQuintas: [TipoDeEscala] = (-6...(-1)).map {
+        cromatica(ventana: VentanaDeQuintas(inicio: $0))
+    }
 }
 
 // MARK: - Hexatónicas gaélicas y de dos tríadas, y otras escalas de seis notas.
