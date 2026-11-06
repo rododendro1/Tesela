@@ -224,6 +224,9 @@ extension TextosDeApps {
         homonima: "Varianttonart",
         cadenciasTipicas: "Typische Kadenzen",
         cambianAcordes: { "\($0) von \($1) Akkorden ändern sich" },
+        bajoCaminante: "Walking Bass",
+        progresionesEnLaEscala: "Akkordfolgen in der Tonleiter",
+        notasFueraDe: { "Außerhalb von \($0): \($1)" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Spannungstöne",
         notasAEvitar: "Avoid-Töne",

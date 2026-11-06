@@ -224,6 +224,9 @@ extension TextosDeApps {
         homonima: "Homonimoa",
         cadenciasTipicas: "Kadentzia ohikoak",
         cambianAcordes: { "\($1) akordetatik \($0) aldatzen dira" },
+        bajoCaminante: "Baxu ibiltaria",
+        progresionesEnLaEscala: "Eskalako progresioak",
+        notasFueraDe: { "\($0)-tik kanpo: \($1)" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tentsioak",
         notasAEvitar: "Saihesteko",

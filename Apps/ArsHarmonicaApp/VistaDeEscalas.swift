@@ -125,6 +125,7 @@ struct VistaDeEscalas: View {
             reloj(de: escala)
             vecinas(de: escala)
             parecidas(a: escala)
+            progresiones(de: escala)
             doceTonalidades(de: escala)
             acordesEnLasDoceTonalidades(de: escala)
             modos(de: escala)
@@ -566,6 +567,31 @@ struct VistaDeEscalas: View {
         listaDeEscalas(
             PresentacionDeEstudioDeEscala.parecidas(a: escala, notacion: notacion),
             titulo: notacion.texto(\.escalasParecidas))
+    }
+
+    /// Progresiones con las tríadas de la escala, con sus grados y las notas que no son de la mayor o la menor, para
+    /// escucharlas.
+    @ViewBuilder
+    private func progresiones(de escala: Escala) -> some View {
+        let progresiones = PresentacionDeEstudioDeEscala.progresiones(de: escala, notacion: notacion)
+        if !progresiones.isEmpty {
+            Section(notacion.texto(\.progresionesEnLaEscala)) {
+                ForEach(progresiones, id: \.self) { progresion in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(progresion.grados).bold()
+                            Text(progresion.cifrados).font(.system(.footnote, design: .monospaced))
+                            if !progresion.fuera.isEmpty {
+                                Text(progresion.fuera).font(.caption).foregroundColor(.secondary)
+                            }
+                        }
+                        Spacer()
+                        BotonDeEscuchar(progresion.sonido).labelStyle(.iconOnly)
+                    }
+                    .buttonStyle(.borderless)
+                }
+            }
+        }
     }
 
     /// Una sección de escalas con su detalle debajo, que se abren al tocarlas, y «Escuchar»; nada si no hay ninguna.

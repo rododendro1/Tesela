@@ -147,6 +147,8 @@ struct TextosDeCLI: TextosTraducidos {
     let descripcionPentagramaRegistro: String
     let sintaxisPentagramaMelodia: String
     let descripcionPentagramaMelodia: String
+    let sintaxisPentagramaBajo: String
+    let descripcionPentagramaBajo: String
     let sintaxisPosicionesArpegio: String
     let descripcionPosicionesArpegio: String
 

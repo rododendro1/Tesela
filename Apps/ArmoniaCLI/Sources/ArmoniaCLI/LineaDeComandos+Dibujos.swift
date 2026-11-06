@@ -239,7 +239,7 @@ extension LineaDeComandos {
         let tipos = [
             "escala": "escala", "scale": "escala", "acorde": "acorde", "chord": "acorde", "arpegio": "arpegio",
             "arpeggio": "arpegio", "acordes": "acordes", "chords": "acordes", "melodia": "melodia",
-            "melodía": "melodia", "melody": "melodia",
+            "melodía": "melodia", "melody": "melodia", "bajo": "bajo", "bass": "bajo",
         ]
         guard let primera = argumentos.restantes.first, let tipo = tipos[primera.lowercased()] else {
             throw ErrorDeUso.faltaLoQueDibujaElPentagrama
@@ -271,6 +271,20 @@ extension LineaDeComandos {
             svg = partitura.svg(opciones: opciones)
         case "melodia":
             return try pentagramaDeMelodia(&argumentos, opciones, notacion)
+        case "bajo":
+            // Un bajo caminante en clave de fa; con --tab, con la tablatura del bajo debajo.
+            let tab = argumentos.quitarMarca("--tab")
+            if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+            let acordes = try argumentos.restantes.map { try Acorde(leyendo: $0) }
+            guard let bajo = PresentacionDeAnalisis.bajoCaminante(acordes, notacion: notacion) else {
+                throw ErrorDeUso.faltaLoQueDibujaElPentagrama
+            }
+            var partitura = bajo.partitura
+            if !tab {
+                partitura.pentagramas[0].numeroDeCuerdas = nil
+                partitura.pentagramas[0].voces[0].pulsaciones = [:]
+            }
+            svg = partitura.svg(opciones: opciones)
         default:
             return try pentagramaDeArpegios(&argumentos, opciones, tonalidad, octava, notacion)
         }

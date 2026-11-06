@@ -224,6 +224,9 @@ extension TextosDeApps {
         homonima: "Azonos alaphangú",
         cadenciasTipicas: "Jellegzetes zárlatok",
         cambianAcordes: { "\($1) akkordból \($0) változik" },
+        bajoCaminante: "Walking basszus",
+        progresionesEnLaEscala: "Akkordmenetek a skálában",
+        notasFueraDe: { "\($0) hangjain kívül: \($1)" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Feszültségek",
         notasAEvitar: "Kerülendő",
