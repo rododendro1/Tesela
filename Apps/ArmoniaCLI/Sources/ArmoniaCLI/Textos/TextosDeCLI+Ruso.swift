@@ -9,7 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <аккорды> [--in <тональность>] [--scales]",
         descripcionAnalizar: "римские цифры, функции, кадансы и модуляции (с общим аккордом; без --in)\n--scales: лад каждого аккорда, с напряжениями и избегаемыми звуками",
-        notasAnalizar: "--guide-tones: две линии направляющих нот, от терции и от септимы; --voice-leading: как каждый голос переходит от аккорда к следующему (в drop 2), с общими нотами; --against: другая версия аккорд за аккордом, с тем, что меняется, её ступенями и общими нотами",
+        notasAnalizar: "--guide-tones: две линии направляющих нот, от терции и от септимы; --voice-leading: как каждый голос переходит от аккорда к следующему (в drop 2), с общими нотами; --against: другая версия аккорд за аккордом, с тем, что меняется, её ступенями и общими нотами; --walking-bass: линия шагающего баса четвертями, по такту на аккорд",
         sintaxisAnalizarArchivo: "analyze --file <файл> [--window <длительность>]",
         descripcionAnalizarArchivo: "то же самое с аккордами файла MIDI, MusicXML, MEI или ABC (по одному на долю; --window 2: по одному на половинную)",
         sintaxisArmonizar: "harmonize <мелодия> [--in <тональность>] [--proposals 3]",
@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "интервал между двумя нотами или высотами",
         sintaxisEscala: "scale <гамма> [--chords]",
         descripcionEscala: "ноты и аккорды гаммы\n--chords: все аккорды на каждой ступени, не только терцовые",
-        notasEscala: "параметры: --sequence thirds (или fourths, groups-of-3, groups-of-4, triads, sevenths), --descending, --octaves 2 (от 1 до 4), --piano (аппликатура), --modes (параллельные и относительные) и --compare C lydian (в конце); --symmetry (через сколько повторяется и её аккорды); --neighbors (сдвинув одну ноту) и --all-keys (во всех двенадцати тональностях); --all-keys --chords (аккорды каждой ступени; --triads — без септимы); --statistics (число звуков, яркость, интервальный вектор…); --brightness-ladder (от самой тёмной к самой яркой, повышая по одной ноте); --against C dorian (сравнение нота за нотой, на нотном стане и на циферблате, в SVG); --closest (те, у которых больше всего общих нот с ней, от наименее отличающейся)",
+        notasEscala: "параметры: --sequence thirds (или fourths, groups-of-3, groups-of-4, triads, sevenths), --descending, --octaves 2 (от 1 до 4), --piano (аппликатура), --modes (параллельные и относительные) и --compare C lydian (в конце); --symmetry (через сколько повторяется и её аккорды); --neighbors (сдвинув одну ноту) и --all-keys (во всех двенадцати тональностях); --all-keys --chords (аккорды каждой ступени; --triads — без септимы); --statistics (число звуков, яркость, интервальный вектор…); --brightness-ladder (от самой тёмной к самой яркой, повышая по одной ноте); --against C dorian (сравнение нота за нотой, на нотном стане и на циферблате, в SVG); --closest (те, у которых больше всего общих нот с ней, от наименее отличающейся); --progressions (последовательности из её трезвучий, со ступенями и нотами вне мажора или минора)",
         sintaxisEscalas: "scales [<текст>] [параметры]",
         descripcionEscalas: "каталог гамм: обычные и гаммы других традиций, по категориям, с нотами от до",
         notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece, arab-world, persia, azerbaijan, china, japan, korea, ethiopia, indonesia, klezmer, andes, byzantium, mesopotamia, africa, southeast-asia, gregorian, europe, vietnam, brazil) и --category maqam (или rāga, makam, dastgah, dromos…); --use jazz (или classical, blues, 20th-century, folk, synthetic) отбирает обычные; --notes 5 оставляет только звукоряды из пяти нот; --sort brightness (или notes) сортирует их, а --anhemitonic и --maximally-even оставляют ангемитонные и максимально равномерные; --with-interval tritone и --without-interval semitone (или число от 1 до 6) и --with-step 3 ищут по интервалам; --compare C major, C lydian сводит их в таблицу; --map рисует их на карте яркости (SVG); текст ищет в названиях",
@@ -142,6 +142,8 @@ extension TextosDeCLI {
         descripcionPentagramaRegistro: "октава (--octave 2), ключ (--clef bass), фортепианная система, смена ключа по регистру и цифрованный бас аккордов (6, 6/4, 6/5…)",
         sintaxisPentagramaMelodia: "staff melody <ноты> --over <аккорды>",
         descripcionPentagramaMelodia: "мелодия (C4:8 D4:8…) с аккордом на такт над ней; неаккордовые звуки зелёным (хроматические — красным); --non-chord делает то же в других случаях",
+        sintaxisPentagramaBajo: "staff bass <chords> [--tab]",
+        descripcionPentagramaBajo: "линия шагающего баса четвертями поверх последовательности, в басовом ключе: основной тон на первую долю, звуки аккорда на вторую и третью и хроматическая проходящая нота к следующему аккорду; с --tab — с басовой табулатурой",
         sintaxisPosicionesArpegio: "positions --arpeggio <обозначение> [--caged|--sweep]",
         descripcionPosicionesArpegio: "арпеджио аккорда в каждой позиции на грифе, табулатурой и с пальцами; --up-and-down — вверх и обратно вниз",
 

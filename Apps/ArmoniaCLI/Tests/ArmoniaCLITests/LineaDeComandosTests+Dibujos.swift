@@ -215,4 +215,15 @@ extension LineaDeComandosTests {
         #expect(salida("staff melody E4:8 D4:8 C4:2. --over C --ingles").contains("#2F9E44"))
         #expect(salida("pentagrama arpegio Do --tensiones 9 --ajenas").contains("#2F9E44"))
     }
+
+    @Test func pentagramaDeUnBajoCaminante() {
+        // En clave de fa, con el cifrado de cada compás; con --tab, con la tablatura del bajo.
+        let bajo = salida("pentagrama bajo Rem7 Sol7 Do7M")
+        #expect(bajo.hasPrefix("<svg"), Comment(rawValue: String(bajo.prefix(300))))
+        #expect(bajo.contains(">Rem7</text>") && bajo.contains(">Sol7</text>"))
+        #expect(!bajo.contains(">T</text>"))
+        let conTab = salida("pentagrama bajo Rem7 Sol7 Do7M --tab")
+        #expect(conTab.contains(">T</text>"), Comment(rawValue: conTab))
+        #expect(salida("staff bass Dm7 G7 Cmaj7 --tab --ingles").contains(">Dm7</text>"))
+    }
 }

@@ -224,6 +224,9 @@ extension TextosDeApps {
         homonima: "Одноимённая",
         cadenciasTipicas: "Типичные каденции",
         cambianAcordes: { "Меняются \($0) из \($1) аккордов" },
+        bajoCaminante: "Шагающий бас",
+        progresionesEnLaEscala: "Последовательности в ладу",
+        notasFueraDe: { "Вне \($0): \($1)" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Напряжения",
         notasAEvitar: "Избегать",

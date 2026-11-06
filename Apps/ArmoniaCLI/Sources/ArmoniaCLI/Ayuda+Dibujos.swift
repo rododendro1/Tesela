@@ -113,6 +113,14 @@ extension LineaDeComandos {
                 "armonia pentagrama melodia Mi4:8 Re4:8 Do4:4 Si3:4 Do4:4 --sobre Do > melodia.svg",
                 "armonia staff melody E4:8 D4:8 C4:4 B3:4 C4:4 --over C > melody.svg"),
             opciones: ["--sobre", "--ajenas", "--over", "--non-chord"]),
+        // pentagrama bajo <acordes> [--tab]
+        EntradaDeAyuda(
+            sintaxis: TextosDeCLI.traduccion(\.sintaxisPentagramaBajo),
+            descripcion: TextosDeCLI.traduccion(\.descripcionPentagramaBajo),
+            ejemplo: ejemplo(
+                "armonia pentagrama bajo Rem7 Sol7 Do7M --tab > bajo.svg",
+                "armonia staff bass Dm7 G7 Cmaj7 --tab > bass.svg"),
+            opciones: ["--tab"]),
     ]
 
     static let ayudaDeTonnetz: [EntradaDeAyuda] = [

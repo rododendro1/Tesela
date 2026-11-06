@@ -243,6 +243,12 @@ public struct TextosDeApps: TextosTraducidos {
     public let cadenciasTipicas: String
     /// Dos progresiones comparadas: «Cambian 2 de 4 acordes».
     public let cambianAcordes: @Sendable (Int, Int) -> String
+    /// Una línea de bajo en negras sobre una progresión.
+    public let bajoCaminante: String
+    /// Progresiones con los acordes de una escala.
+    public let progresionesEnLaEscala: String
+    /// «Fuera de La menor: Re♯, Sol♯»: las notas de una progresión que no son de esa escala.
+    public let notasFueraDe: @Sendable (String, String) -> String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String

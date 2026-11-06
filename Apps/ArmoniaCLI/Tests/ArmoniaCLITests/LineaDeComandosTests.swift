@@ -176,7 +176,8 @@ import Testing
         "pentagrama arpegio Do --tab --instrumento", "pentagrama acordes Do Sol --foo",
         "pentagrama escala Do --octava 9",
         "pentagrama escala Do --clave luna", "pentagrama escala Do --clave", "pentagrama melodia",
-        "pentagrama melodia Do4:4 --sobre", "pentagrama melodia Do4:4 --foo",
+        "pentagrama melodia Do4:4 --sobre", "pentagrama melodia Do4:4 --foo", "pentagrama bajo",
+        "pentagrama bajo Do --foo",
         "grabar", "grabar coral C --motor foo", "grabar coral C --formato gif", "grabar acorde C", "grabar nube C",
         "grabar pentagrama acorde C --motor verovio", "motores de mas", "guido", "guido melodia",
     ]

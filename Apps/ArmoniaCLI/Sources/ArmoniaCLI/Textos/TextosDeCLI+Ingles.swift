@@ -9,7 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <chords> [--in <key>] [--scales]",
         descripcionAnalizar: "roman numerals, functions, cadences and modulations (with their pivot chord; without --in)\n--scales: each chord's scale, with its tensions and avoid notes",
-        notasAnalizar: "--guide-tones: two guide-tone lines, from the third and from the seventh; --voice-leading: how each voice moves from one chord to the next (in drop 2), with the common tones; --against: the other version chord by chord, with what changes, its degrees and the common tones",
+        notasAnalizar: "--guide-tones: two guide-tone lines, from the third and from the seventh; --voice-leading: how each voice moves from one chord to the next (in drop 2), with the common tones; --against: the other version chord by chord, with what changes, its degrees and the common tones; --walking-bass: a walking bass line in quarter notes, one bar per chord",
         sintaxisAnalizarArchivo: "analyze --file <file> [--window <duration>]",
         descripcionAnalizarArchivo: "the same, with the chords of a MIDI, MusicXML, MEI or ABC file (one per beat; --window 2: one per half note)",
         sintaxisArmonizar: "harmonize <melody> [--in <key>] [--proposals 3]",
@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "interval between two notes or pitches",
         sintaxisEscala: "scale <scale> [--chords]",
         descripcionEscala: "notes and chords of a scale\n--chords: every chord that fits on each degree, not only stacked thirds",
-        notasEscala: "options: --sequence thirds (or fourths, groups-of-3, groups-of-4, triads, sevenths), --descending, --octaves 2 (from 1 to 4), --piano (fingering), --modes (parallel and relative) and --compare C lydian (at the end); --symmetry (how often it repeats and its chords); --neighbors (moving one note) and --all-keys (in all twelve keys); --all-keys --chords (the chords of each degree; --triads, without sevenths); --statistics (number of notes, brightness, interval vector…); --brightness-ladder (from darkest to brightest, raising one note each time); --against C dorian (the note-by-note comparison, on the staff and the clock, as SVG); --closest (those sharing the most notes with it, from the one that changes least)",
+        notasEscala: "options: --sequence thirds (or fourths, groups-of-3, groups-of-4, triads, sevenths), --descending, --octaves 2 (from 1 to 4), --piano (fingering), --modes (parallel and relative) and --compare C lydian (at the end); --symmetry (how often it repeats and its chords); --neighbors (moving one note) and --all-keys (in all twelve keys); --all-keys --chords (the chords of each degree; --triads, without sevenths); --statistics (number of notes, brightness, interval vector…); --brightness-ladder (from darkest to brightest, raising one note each time); --against C dorian (the note-by-note comparison, on the staff and the clock, as SVG); --closest (those sharing the most notes with it, from the one that changes least); --progressions (progressions with its triads, with the degrees and the notes outside the major or minor)",
         sintaxisEscalas: "scales [<text>] [options]",
         descripcionEscalas: "the catalog of scales: the common ones and those of other traditions, by category, with their notes from C",
         notasEscalas: "options: --tradition turkey (or india, greece, ancient-greece, arab-world, persia, azerbaijan, china, japan, korea, ethiopia, indonesia, klezmer, andes, byzantium, mesopotamia, africa, southeast-asia, gregorian, europe, vietnam, brazil) and --category maqam (or rāga, makam, dastgah, dromos…); --use jazz (or classical, blues, 20th-century, folk, synthetic) filters the common ones; --notes 5 keeps only the five-note ones; --sort brightness (or notes) sorts them, and --anhemitonic and --maximally-even keep the anhemitonic and the maximally even ones; --with-interval tritone and --without-interval semitone (or a number from 1 to 6) and --with-step 3 search by intervals; --compare C major, C lydian puts them in a table; --map draws them on a brightness map (SVG); a text searches the names",
@@ -142,6 +142,8 @@ extension TextosDeCLI {
         descripcionPentagramaRegistro: "the octave (--octave 2), the clef (--clef bass), the grand staff, clef changes by register and the figured bass of the chords (6, 6/4, 6/5…)",
         sintaxisPentagramaMelodia: "staff melody <notes> --over <chords>",
         descripcionPentagramaMelodia: "a melody (C4:8 D4:8…) with one chord per bar above it; notes outside the chord in green (or red if chromatic); --non-chord does the same elsewhere",
+        sintaxisPentagramaBajo: "staff bass <chords> [--tab]",
+        descripcionPentagramaBajo: "a walking bass line in quarter notes over the progression, in bass clef: the root on beat one, chord tones on beats two and three and a chromatic passing note into the next chord; with --tab, with the bass tablature",
         sintaxisPosicionesArpegio: "positions --arpeggio <symbol> [--caged|--sweep]",
         descripcionPosicionesArpegio: "a chord's arpeggio in each position on the neck, in tab with the fingers; --up-and-down, up and back down",
 

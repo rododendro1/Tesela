@@ -224,6 +224,9 @@ extension TextosDeApps {
         homonima: "Omonima",
         cadenciasTipicas: "Cadéncias tipicas",
         cambianAcordes: { "Càmbian \($0) de \($1) acòrds" },
+        bajoCaminante: "Bassa caminanta",
+        progresionesEnLaEscala: "Progressions dins la gama",
+        notasFueraDe: { "Fòra de \($0): \($1)" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "D'evitar",
