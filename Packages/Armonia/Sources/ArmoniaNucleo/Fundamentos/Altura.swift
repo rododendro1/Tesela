@@ -90,12 +90,6 @@ public struct Altura: Hashable, Sendable {
         self.init(midi: midi, ventana: .sostenidos)
     }
 
-    /// Con sostenidos, o con bemoles si `preferirBemoles`: lo de antes de `Altura(midi:ventana:)`.
-    @available(*, deprecated, message: "usa Altura(midi:ventana:) con .bemoles o .sostenidos")
-    public init(midi: Int, preferirBemoles: Bool) {
-        self.init(midi: midi, ventana: preferirBemoles ? .bemoles : .sostenidos)
-    }
-
     // MARK: Propiedades
 
     /// La nota sin octava: Fa♯4 → Fa♯.
