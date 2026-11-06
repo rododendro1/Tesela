@@ -88,8 +88,10 @@ Tonalidad("ля минор")                               // La menor
 - Las lecturas genéricas (`init(leyendo:)`) aceptan español, inglés, catalán, gallego, asturiano,
   aragonés, euskera, portugués, occitano, griego y ruso, que no se confunden entre sí: `Altura("fa sostido 3")`,
   `Escala("re bemoll dòric")`, `Altura("fá sustenido 3")`, `Nota("си-бемоль")`, `Nota("σι ύφεση")`. El
-  alemán, el francés y el italiano se leen con `Nota(leyendo:en:)` y `Altura(leyendo:en:)`,
-  porque «B» no significa lo mismo en inglés que en alemán. `Tonalidad` lee todas.
+  alemán, el francés y el italiano se leen con `leyendo:en:`, porque «B» no significa lo mismo en inglés que
+  en alemán: `Nota(leyendo:en:)`, `Altura(leyendo:en:)`, `Acorde(leyendo:en:)`, `Escala(leyendo:en:)` y
+  `Tonalidad(leyendo:en:)`. Con la notación, lo que escriben `cifrado(en:)` y `nombre(en:)` se lee de vuelta en
+  todos los idiomas: `Acorde(leyendo: "B7/D", en: .compacta(.aleman))` es Si♭7/Re, y `Acorde("B7/D")`, Si7.
 - Un mismo texto no mezcla idiomas: con la tónica en español, el tipo de escala o de tonalidad
   va en español (`Escala("Re dórico")`, `Escala("D dorian")`, pero no «Re dorian»), y el bajo de
   un acorde se escribe como su fundamental (`Acorde("Sol7/Si")`, `Acorde("G7/B")`, pero no

@@ -291,6 +291,8 @@ public struct Nota: Hashable, Sendable {
                 let nombre = Nota(pasosDeQuinta: quintas)
                 tabla[nombre.nombre(en: notacion).claveDeBusqueda] = nombre
                 tabla[nombre.nombreCompacto(en: notacion).claveDeBusqueda] = nombre
+                // Y como lo escribe la notación compacta, con 𝄫 y 𝄪: «Mi𝄫», no solo «Mi♭♭».
+                tabla[nombre.nombre(en: .compacta(notacion.idiomaDeLasNotas)).claveDeBusqueda] = nombre
             }
             tablas[notacion] = tabla
         }
