@@ -516,7 +516,8 @@ TipoDeEscala.bilahari.intervalosEnAmbasDirecciones
 ```
 
 Los rāgas janya incluidos son Mohanam, Hindolam, Haṃsadhvani, Ābhogi, Madhyamāvatī, Revati,
-Amṛtavarṣiṇī (iguales al subir y al bajar), Bilahari, Kāmbhoji, Ārabhi y Kedāragauḷa (distintos). Se dejan fuera los
+Amṛtavarṣiṇī, Śuddha Sāveri, Śuddha Dhanyāsi, Śrīrañjani, Mālayamārutam, Gambhīranāṭa y Haṃsanādam (iguales al
+subir y al bajar), y Bilahari, Kāmbhoji, Ārabhi, Kedāragauḷa, Mohanakalyāṇi, Sāveri y Nāṭa (distintos). Se dejan fuera los
 vakra, que suben o bajan en zigzag. `melakartasCompatibles` dice de qué mēḷa puede derivar
 cada uno: `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 

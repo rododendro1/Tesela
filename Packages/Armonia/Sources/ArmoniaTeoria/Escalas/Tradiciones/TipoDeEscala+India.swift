@@ -218,10 +218,44 @@ extension TipoDeEscala {
         variantes: ["Nattai", "नाट"],
         categoria: .janya, mela: 36)
 
+    /// Śuddha Sāveri, del mēḷa 29 (Dhīraśaṅkarābharaṇam): Sa Ri₂ Ma₁ Pa Dha₂ (Do Re Fa Sol La), la Durgā indostánica.
+    public static let suddhaSaveri = TipoDeEscala(
+        nombre: "Śuddha Sāveri", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
+        variantes: ["Shuddha Saveri", "शुद्ध सावेरि"],
+        categoria: .janya, mela: 29)
+    /// Śuddha Dhanyāsi, del mēḷa 22 (Kharaharapriyā): Sa Ga₂ Ma₁ Pa Ni₂ (Do Mi♭ Fa Sol Si♭), la pentatónica menor.
+    public static let suddhaDhanyasi = TipoDeEscala(
+        nombre: "Śuddha Dhanyāsi", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
+        variantes: ["Shuddha Dhanyasi", "शुद्ध धन्यासि"],
+        categoria: .janya, mela: 22)
+    /// Śrīrañjani, del mēḷa 22 (Kharaharapriyā): Sa Ri₂ Ga₂ Ma₁ Dha₂ Ni₂ (Do Re Mi♭ Fa La Si♭), sin Pa.
+    public static let sriranjani = TipoDeEscala(
+        nombre: "Śrīrañjani",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .sextaMayor, .septimaMenor],
+        variantes: ["Shriranjani", "श्रीरञ्जनि"],
+        categoria: .janya, mela: 22)
+    /// Mālayamārutam, del mēḷa 16 (Cakravākam): Sa Ri₁ Ga₃ Pa Dha₂ Ni₂ (Do Re♭ Mi Sol La Si♭), sin Ma.
+    public static let malayamarutam = TipoDeEscala(
+        nombre: "Mālayamārutam",
+        intervalos: [.unisono, .segundaMenor, .terceraMayor, .quintaJusta, .sextaMayor, .septimaMenor],
+        variantes: ["Malayamarutham", "मलयमारुतम्"],
+        categoria: .janya, mela: 16)
+    /// Gambhīranāṭa, del mēḷa 36 (Calanāṭa): Sa Ga₃ Ma₁ Pa Ni₃ (Do Mi Fa Sol Si).
+    public static let gambhiranata = TipoDeEscala(
+        nombre: "Gambhīranāṭa", intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
+        variantes: ["Gambheera Nattai", "गम्भीरनाट"],
+        categoria: .janya, mela: 36)
+    /// Haṃsanādam, del mēḷa 60 (Nītimati): Sa Ri₂ Ma₂ Pa Ni₃ (Do Re Fa♯ Sol Si).
+    public static let hamsanadam = TipoDeEscala(
+        nombre: "Haṃsanādam", intervalos: [.unisono, .segundaMayor, .cuartaAumentada, .quintaJusta, .septimaMayor],
+        variantes: ["हंसनादम्"],
+        categoria: .janya, mela: 60)
+
     /// Rāgas janya incluidos.
     public static let janyas: [TipoDeEscala] = [
         .mohanam, .hindolam, .hamsadhvani, .abhogi, .madhyamavati, .bilahari, .kambhoji, .arabhi, .kedaragaula,
-        .revati, .amrtavarsini, .mohanakalyani, .saveri, .nata,
+        .revati, .amrtavarsini, .mohanakalyani, .saveri, .nata, .suddhaSaveri, .suddhaDhanyasi, .sriranjani,
+        .malayamarutam, .gambhiranata, .hamsanadam,
     ]
 
     // MARK: Thāṭ (música indostánica)

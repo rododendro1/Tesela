@@ -30,6 +30,12 @@
 - Las siete afinaciones babilónicas (`mesopotamicas`) tienen versión microtonal: en cents pitagóricos, como se
   afinaban por quintas y cuartas (išartu: 0, 204, 408, 498, 702, 906, 1110).
 
+### Escalas: seis rāgas janya más
+
+- Seis janya habituales, con su mēḷa: `suddhaSaveri` (29), `suddhaDhanyasi` y
+  `sriranjani` (22), `malayamarutam` (16), `gambhiranata` (36) y `hamsanadam` (60), todos iguales al subir y al
+  bajar.
+
 ## 0.3.6 (2026-11-06)
 
 ### El Tonnetz y la tabla armónica, con un protocolo común
