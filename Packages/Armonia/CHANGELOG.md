@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.6 (2026-11-06)
 
 ### El Tonnetz y la tabla armónica, con un protocolo común
 
