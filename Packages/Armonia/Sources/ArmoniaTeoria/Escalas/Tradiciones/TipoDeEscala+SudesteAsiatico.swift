@@ -18,7 +18,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["tailandesa"], variantes: ["ปี่พาทย์"])
+        alias: ["tailandesa"], variantes: ["ปี่พาทย์"],
+        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 171, 343, 514, 686, 857, 1029])])
     /// Pinpeat (siete partes iguales de 171 cents): Do Re Mi♭ Fa Sol La Si♭ en doce notas.
     public static let pinpeat = TipoDeEscala(
         nombre: "Pinpeat",
@@ -26,7 +27,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["camboyana", "jemer"], variantes: ["ពិណពាទ្យ"])
+        alias: ["camboyana", "jemer"], variantes: ["ពិណពាទ្យ"],
+        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 171, 343, 514, 686, 857, 1029])])
 
     // MARK: El arpa birmana
     //
@@ -38,7 +40,10 @@ extension TipoDeEscala {
     /// Saung (arpa birmana): Do Re Mi Sol La en doce notas.
     public static let saung = TipoDeEscala(
         nombre: "Saung", intervalos: TipoDeEscala.pentatonicaMayor.intervalos,
-        alias: ["saung gauk", "arpa birmana", "birmana"])
+        alias: ["saung gauk", "arpa birmana", "birmana"],
+        categoria: .afinacion,
+        // En cents: 182, 182, 327, 182 y 327.
+        afinaciones: [.init(.razones, pasos: [0, 182, 364, 691, 873])])
 
     public static let sudesteAsiaticas: [TipoDeEscala] = [.piphat, .pinpeat, .saung]
 }
@@ -46,14 +51,7 @@ extension TipoDeEscala {
 // MARK: Ficha
 
 extension FichaDeTradicion {
-    static let sudesteAsiatico = FichaDeTradicion(
-        .sudesteAsiatico,
-        [.init(.afinacion, TipoDeEscala.sudesteAsiaticas)],
-        microtonales: [
-            // En cents: siete partes de 171,4 (redondeados).
-            TipoDeEscalaMicrotonal(.piphat, .razones, pasos: [0, 171, 343, 514, 686, 857, 1029]),
-            TipoDeEscalaMicrotonal(.pinpeat, .razones, pasos: [0, 171, 343, 514, 686, 857, 1029]),
-            // En cents: 182, 182, 327, 182 y 327.
-            TipoDeEscalaMicrotonal(.saung, .razones, pasos: [0, 182, 364, 691, 873]),
-        ])
+    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). En cents: siete partes
+    // de 171,4 (redondeados).
+    static let sudesteAsiatico = FichaDeTradicion(.sudesteAsiatico, [TipoDeEscala.sudesteAsiaticas])
 }

@@ -13,7 +13,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        alias: ["doble armónica mayor", "bizantina", "gitana mayor"])
+        alias: ["doble armónica mayor", "bizantina", "gitana mayor"],
+        usos: [.popular])
     /// La menor armónica con la 4ª aumentada (Do Re Mi♭ Fa♯ Sol La♭ Si).
     public static let menorHungara = TipoDeEscala(
         nombre: "menor húngara",
@@ -21,42 +22,48 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        alias: ["gitana menor", "doble armónica menor", "de Liszt", "Liszt"])
+        alias: ["gitana menor", "doble armónica menor", "de Liszt", "Liszt"],
+        usos: [.popular])
     /// Do Re♯ Mi Fa♯ Sol La Si♭.
     public static let mayorHungara = TipoDeEscala(
         nombre: "mayor húngara",
         intervalos: [
             .unisono, .segundaAumentada, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMenor,
-        ])
+        ],
+        usos: [.popular])
     /// La menor armónica con la 2ª menor (Do Re♭ Mi♭ Fa Sol La♭ Si).
     public static let napolitanaMenor = TipoDeEscala(
         nombre: "napolitana menor",
         intervalos: [
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
-        ])
+        ],
+        usos: [.clasica])
     /// La menor melódica con la 2ª menor (Do Re♭ Mi♭ Fa Sol La Si).
     public static let napolitanaMayor = TipoDeEscala(
         nombre: "napolitana mayor",
         intervalos: [
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMayor,
-        ])
+        ],
+        usos: [.clasica])
     /// La «escala enigmática» del Ave Maria de Verdi (Do Re♭ Mi Fa♯ Sol♯ La♯ Si).
     public static let enigmatica = TipoDeEscala(
         nombre: "enigmática",
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
             .quintaAumentada, .sextaAumentada, .septimaMayor,
-        ])
+        ],
+        usos: [.clasica])
     /// Do Re♭ Mi Fa Sol♭ La♭ Si.
     public static let persa = TipoDeEscala(
         nombre: "persa",
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .septimaMayor,
-        ])
+        ],
+        usos: [.sintetica])
     /// Do Re Mi Fa Sol♭ La♭ Si♭: la mayor con la mitad superior de tonos enteros.
     public static let mayorLocria = TipoDeEscala(
         nombre: "mayor locria",
@@ -64,14 +71,16 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        alias: ["árabe"])
+        alias: ["árabe"],
+        usos: [.sintetica])
     /// Do Re Mi Fa♯ Sol La♭ Si♭: lidio con la mitad superior menor.
     public static let lidioMenor = TipoDeEscala(
         nombre: "lidio menor",
         intervalos: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMenor,
-        ])
+        ],
+        usos: [.sintetica])
     /// La escala del «acorde místico» de Skriabin (Do Re Mi Fa♯ La Si♭).
     public static let prometeo = TipoDeEscala(
         nombre: "Prometeo",
@@ -79,7 +88,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
             .sextaMayor, .septimaMenor,
         ],
-        alias: ["mística", "de Prometeo", "Skriabin"], variantes: ["Scriabin"])
+        alias: ["mística", "de Prometeo", "Skriabin"], variantes: ["Scriabin"],
+        usos: [.sigloXX])
 
     // Simétricas y otras.
 
@@ -95,7 +105,8 @@ extension TipoDeEscala {
             "disminuida dominante", "dominante disminuida", "modo 2 de Messiaen", "disminuida auxiliar blues",
             "de Rimski-Kórsakov", "Rimski-Kórsakov",
         ],
-        variantes: ["Rimsky-Korsakov"])
+        variantes: ["Rimsky-Korsakov"],
+        usos: [.jazz, .sigloXX])
     /// Terceras menores y semitonos alternos (Do Mi♭ Mi Sol Sol♯ Si).
     public static let aumentada = TipoDeEscala(
         nombre: "aumentada",
@@ -103,19 +114,22 @@ extension TipoDeEscala {
             .unisono, .terceraMenor, .terceraMayor, .quintaJusta,
             .quintaAumentada, .septimaMayor,
         ],
-        alias: ["hexatónica aumentada", "simétrica aumentada", "de Weitzmann", "Weitzmann"])
+        alias: ["hexatónica aumentada", "simétrica aumentada", "de Weitzmann", "Weitzmann"],
+        usos: [.jazz, .sigloXX])
     /// Do Re Mi♭ Mi Sol La: la pentatónica mayor con la 3ª menor de paso.
     public static let bluesMayor = TipoDeEscala(
         nombre: "blues mayor",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .terceraMayor,
             .quintaJusta, .sextaMayor,
-        ])
+        ],
+        usos: [.blues])
     /// La pentatónica suspendida (Do Re Fa Sol Si♭), sin terceras.
     public static let egipcia = TipoDeEscala(
         nombre: "egipcia",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        alias: ["pentatónica suspendida"])
+        alias: ["pentatónica suspendida"],
+        usos: [.popular])
     /// Las doce notas, escritas con sostenidos al subir desde la tónica salvo la 2ª, 3ª, 6ª y 7ª
     /// menores (Do Re♭ Re Mi♭ Mi Fa Fa♯ Sol La♭ La Si♭ Si): la de cuatro bemoles de las seis de
     /// `cromaticasPorQuintas`, la ventana −5…6.
@@ -125,7 +139,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .segundaMayor, .terceraMenor, .terceraMayor, .cuartaJusta,
             .cuartaAumentada, .quintaJusta, .sextaMenor, .sextaMayor, .septimaMenor, .septimaMayor,
         ],
-        alias: ["cromática con cuatro bemoles", "cromática −5…6"])
+        alias: ["cromática con cuatro bemoles", "cromática −5…6"],
+        usos: [.clasica, .sigloXX])
 
     // MARK: Cromáticas por ventana de quintas
 
@@ -166,17 +181,19 @@ extension TipoDeEscala {
     private static func signo(_ n: Int) -> String { n < 0 ? "−\(-n)" : "\(n)" }
 
     /// −6…5: Do Re♭ Re Mi♭ Mi Fa Sol♭ Sol La♭ La Si♭ Si.
-    public static let cromaticaConCincoBemoles = cromatica(ventana: .bemoles)
+    public static let cromaticaConCincoBemoles = cromatica(ventana: .bemoles).con(usos: [.clasica, .sigloXX])
     /// −5…6, la `cromatica`: Do Re♭ Re Mi♭ Mi Fa Fa♯ Sol La♭ La Si♭ Si.
     public static let cromaticaConCuatroBemoles = cromatica
     /// −4…7: Do Do♯ Re Mi♭ Mi Fa Fa♯ Sol La♭ La Si♭ Si.
     public static let cromaticaConTresBemoles = cromatica(ventana: VentanaDeQuintas(inicio: -4))
+        .con(usos: [.clasica, .sigloXX])
     /// −3…8: Do Do♯ Re Mi♭ Mi Fa Fa♯ Sol Sol♯ La Si♭ Si.
-    public static let cromaticaConDosBemoles = cromatica(ventana: .habitual)
+    public static let cromaticaConDosBemoles = cromatica(ventana: .habitual).con(usos: [.clasica, .sigloXX])
     /// −2…9: Do Do♯ Re Re♯ Mi Fa Fa♯ Sol Sol♯ La Si♭ Si.
     public static let cromaticaConUnBemol = cromatica(ventana: VentanaDeQuintas(inicio: -2))
+        .con(usos: [.clasica, .sigloXX])
     /// −1…10: Do Do♯ Re Re♯ Mi Fa Fa♯ Sol Sol♯ La La♯ Si.
-    public static let cromaticaConCincoSostenidos = cromatica(ventana: .sostenidos)
+    public static let cromaticaConCincoSostenidos = cromatica(ventana: .sostenidos).con(usos: [.clasica, .sigloXX])
 
     /// Las seis, de la de más bemoles a la de más sostenidos.
     public static let cromaticasPorQuintas: [TipoDeEscala] = (-6...(-1)).map {
@@ -193,35 +210,41 @@ extension TipoDeEscala {
     public static let jonicoSinCuarta = TipoDeEscala(
         nombre: "jónico sin 4ª",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor, .septimaMayor],
-        alias: ["jónico sin cuarta", "jónica gaélica", "jónico hexatónico"])
+        alias: ["jónico sin cuarta", "jónica gaélica", "jónico hexatónico"],
+        usos: [.popular])
     /// Do Re Fa Sol La Si♭.
     public static let mixolidioSinTercera = TipoDeEscala(
         nombre: "mixolidio sin 3ª",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
-        alias: ["mixolidio sin tercera", "mixolidia gaélica", "mixolidio hexatónico"])
+        alias: ["mixolidio sin tercera", "mixolidia gaélica", "mixolidio hexatónico"],
+        usos: [.popular])
     /// Do Re Mi♭ Fa Sol Si♭.
     public static let doricoSinSexta = TipoDeEscala(
         nombre: "dórico sin 6ª",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        alias: ["dórico sin sexta", "dórica gaélica", "dórico hexatónico"])
+        alias: ["dórico sin sexta", "dórica gaélica", "dórico hexatónico"],
+        usos: [.popular])
     /// Do Mi♭ Fa Sol La♭ Si♭.
     public static let eolicoSinSegunda = TipoDeEscala(
         nombre: "eólico sin 2ª",
         intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
-        alias: ["eólico sin segunda", "eólica gaélica", "eólico hexatónico"])
+        alias: ["eólico sin segunda", "eólica gaélica", "eólico hexatónico"],
+        usos: [.popular])
 
     /// Dos acordes mayores a un tono (Do + Re: Do Re Mi Fa♯ Sol La), para improvisar con pares de
     /// tríadas.
     public static let hexatonicaDeDosTriadas = TipoDeEscala(
         nombre: "hexatónica de dos tríadas",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor],
-        alias: ["dos tríadas", "par de tríadas", "hexatónica mayor de dos tríadas"])
+        alias: ["dos tríadas", "par de tríadas", "hexatónica mayor de dos tríadas"],
+        usos: [.jazz])
     /// Dos acordes menores a un tono (Rem + Mim: Re Mi Fa Sol La Si), la pareja menor de la
     /// anterior.
     public static let hexatonicaMenorDeDosTriadas = TipoDeEscala(
         nombre: "hexatónica menor de dos tríadas",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor],
-        alias: ["par de tríadas menores"])
+        alias: ["par de tríadas menores"],
+        usos: [.jazz])
 
     /// Do Re♭ Mi Fa♯ Sol La Si♭, del folclore rumano y balcánico.
     public static let mayorRumana = TipoDeEscala(
@@ -229,7 +252,8 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMenor,
-        ])
+        ],
+        usos: [.popular])
 
     /// La menor húngara con la 4ª justa además de la aumentada, de ocho notas
     /// (Do Re Mi♭ Fa Fa♯ Sol La♭ Si).
@@ -238,7 +262,8 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMayor,
-        ])
+        ],
+        usos: [.popular])
     /// Dos acordes mayores a distancia de tritono, el «acorde de Petrushka» de Stravinski
     /// (Do Re♭ Mi Fa♯ Sol Si♭).
     public static let petrushka = TipoDeEscala(
@@ -247,7 +272,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .septimaMenor,
         ],
-        alias: ["de Petrushka", "de tritono", "tritono"], variantes: ["Petrouchka"])
+        alias: ["de Petrushka", "de tritono", "tritono"], variantes: ["Petrouchka"],
+        usos: [.sigloXX])
 }
 
 // MARK: - Escalas de jazz: bebop menores, pentatónicas del jazz y blues ampliadas.
@@ -264,7 +290,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .quintaAumentada, .sextaMayor, .septimaMayor,
         ],
-        alias: ["bebop melódica", "sexta menor disminuida", "de sexta menor disminuida"])
+        alias: ["bebop melódica", "sexta menor disminuida", "de sexta menor disminuida"],
+        usos: [.jazz])
     /// La menor armónica con la 7ª menor de paso (Do Re Mi♭ Fa Sol La♭ Si♭ Si).
     public static let bebopMenorArmonica = TipoDeEscala(
         nombre: "bebop menor armónica",
@@ -272,7 +299,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor, .septimaMayor,
         ],
-        alias: ["bebop armónica"])
+        alias: ["bebop armónica"],
+        usos: [.jazz])
 
     /// El frigio con la 3ª mayor y la menor, de ocho notas (Do Re♭ Mi♭ Mi Fa Sol La♭ Si♭): la del
     /// flamenco, sobre la cadencia andaluza.
@@ -282,42 +310,50 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["andaluza", "frigio flamenco", "española de ocho notas", "gitana española"])
+        alias: ["andaluza", "frigio flamenco", "española de ocho notas", "gitana española"],
+        usos: [.popular])
 
     // Pentatónicas del jazz.
 
     /// Do Re Mi Sol Si♭: la de los acordes de séptima de dominante.
     public static let pentatonicaDominante = TipoDeEscala(
         nombre: "pentatónica dominante",
-        intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .septimaMenor])
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .septimaMenor],
+        usos: [.jazz])
     /// Do Mi♭ Fa Sol La: la menor con la 6ª mayor en vez de la 7ª.
     public static let pentatonicaMenorSexta = TipoDeEscala(
         nombre: "pentatónica menor 6",
         intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor],
-        alias: ["pentatónica dórica", "pentatónica menor con sexta"])
+        alias: ["pentatónica dórica", "pentatónica menor con sexta"],
+        usos: [.jazz])
     /// Do Re Mi Sol La♭, también llamada «de Coltrane».
     public static let pentatonicaMayorSextaMenor = TipoDeEscala(
         nombre: "pentatónica mayor ♭6",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMenor],
-        alias: ["pentatónica de Coltrane", "Coltrane"])
+        alias: ["pentatónica de Coltrane", "Coltrane"],
+        usos: [.jazz])
     /// Do Mi♭ Fa Sol♭ Si♭.
     public static let pentatonicaMenorQuintaDisminuida = TipoDeEscala(
         nombre: "pentatónica menor ♭5",
-        intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaDisminuida, .septimaMenor])
+        intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaDisminuida, .septimaMenor],
+        usos: [.jazz])
     /// Do Mi Fa Sol Si♭: la de los acordes de séptima de dominante con 4ª.
     public static let pentatonicaMixolidia = TipoDeEscala(
         nombre: "pentatónica mixolidia",
-        intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMenor])
+        intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
+        usos: [.jazz])
     /// Do Mi Fa♯ Sol Si: la de los acordes de séptima mayor con ♯11.
     public static let pentatonicaLidia = TipoDeEscala(
         nombre: "pentatónica lidia",
-        intervalos: [.unisono, .terceraMayor, .cuartaAumentada, .quintaJusta, .septimaMayor])
+        intervalos: [.unisono, .terceraMayor, .cuartaAumentada, .quintaJusta, .septimaMayor],
+        usos: [.jazz])
     /// Do Re Fa Sol La: la pentatónica mayor desde su 4.º grado, la de las gaitas escocesas (las
     /// mismas notas que Durgā o Zhǐ).
     public static let pentatonicaEscocesa = TipoDeEscala(
         nombre: "pentatónica escocesa",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
-        alias: ["escocesa"])
+        alias: ["escocesa"],
+        usos: [.popular])
 
     // Blues ampliadas.
 
@@ -328,7 +364,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .terceraMayor, .cuartaJusta,
             .quintaDisminuida, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["blues de 9 notas", "blues eneatónica"])
+        alias: ["blues de 9 notas", "blues eneatónica"],
+        usos: [.blues])
     /// Do Re Mi♭ Fa Sol♭ Sol Si♭: la blues con la 2ª.
     public static let bluesMenorConSegunda = TipoDeEscala(
         nombre: "blues menor con 2ª",
@@ -336,14 +373,16 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .quintaJusta, .septimaMenor,
         ],
-        alias: ["blues con segunda", "blues menor con segunda", "blues con 2ª"])
+        alias: ["blues con segunda", "blues menor con segunda", "blues con 2ª"],
+        usos: [.blues])
 
     /// El hexacordo de Guido d'Arezzo: ut re mi fa sol la, tono, tono, semitono, tono, tono.
     /// Natural sobre Do, duro sobre Sol y blando sobre Fa (`Escala.hexacordoNatural`…).
     public static let hexacordo = TipoDeEscala(
         nombre: "hexacordo",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
-        alias: ["hexacordo de Guido", "ut re mi fa sol la"])
+        alias: ["hexacordo de Guido", "ut re mi fa sol la"],
+        usos: [.clasica])
 }
 
 // MARK: - Modos de transposición limitada de Messiaen.
@@ -361,7 +400,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMenor, .septimaMayor,
         ],
-        alias: ["Messiaen 3", "Tcherepnin", "de Tcherepnin", "nueve notas", "de nueve notas"])
+        alias: ["Messiaen 3", "Tcherepnin", "de Tcherepnin", "nueve notas", "de nueve notas"],
+        usos: [.sigloXX])
     /// Semitono, semitono, tercera menor, semitono, dos veces (Do Re♭ Re Fa Fa♯ Sol La♭ Si). Seis
     /// transposiciones.
     public static let messiaen4 = TipoDeEscala(
@@ -370,12 +410,14 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .segundaMayor, .cuartaJusta, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        alias: ["Messiaen 4"])
+        alias: ["Messiaen 4"],
+        usos: [.sigloXX])
     /// Semitono, tercera mayor, semitono, dos veces (Do Re♭ Fa Fa♯ Sol Si). Seis transposiciones.
     public static let messiaen5 = TipoDeEscala(
         nombre: "modo 5 de Messiaen",
         intervalos: [.unisono, .segundaMenor, .cuartaJusta, .cuartaAumentada, .quintaJusta, .septimaMayor],
-        alias: ["Messiaen 5"])
+        alias: ["Messiaen 5"],
+        usos: [.sigloXX])
     /// Tono, tono, semitono, semitono, dos veces (Do Re Mi Fa Fa♯ Sol♯ La♯ Si). Seis transposiciones.
     public static let messiaen6 = TipoDeEscala(
         nombre: "modo 6 de Messiaen",
@@ -383,7 +425,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .cuartaAumentada,
             .quintaAumentada, .sextaAumentada, .septimaMayor,
         ],
-        alias: ["Messiaen 6"])
+        alias: ["Messiaen 6"],
+        usos: [.sigloXX])
     /// Semitono, semitono, semitono, tono, semitono, dos veces (Do Re♭ Re Mi♭ Fa Fa♯ Sol La♭ La Si).
     /// Seis transposiciones.
     public static let messiaen7 = TipoDeEscala(
@@ -392,5 +435,6 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .segundaMayor, .terceraMenor, .cuartaJusta,
             .cuartaAumentada, .quintaJusta, .sextaMenor, .sextaMayor, .septimaMayor,
         ],
-        alias: ["Messiaen 7"])
+        alias: ["Messiaen 7"],
+        usos: [.sigloXX])
 }

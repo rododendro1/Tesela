@@ -13,40 +13,48 @@ extension TipoDeEscala {
     /// 宫: la pentatónica mayor (Do Re Mi Sol La).
     public static let gong = TipoDeEscala(
         nombre: "Gōng", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
-        variantes: ["宫", "宮"])
+        variantes: ["宫", "宮"],
+        categoria: .diao)
     /// 商: desde el 2.º grado (Re Mi Sol La Do).
     public static let shang = TipoDeEscala(
         nombre: "Shāng", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        variantes: ["商"])
+        variantes: ["商"],
+        categoria: .diao)
     /// 角: desde el 3.º grado (Mi Sol La Do Re).
     public static let jue = TipoDeEscala(
         nombre: "Jué", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .sextaMenor, .septimaMenor],
-        variantes: ["Jiao", "角"])
+        variantes: ["Jiao", "角"],
+        categoria: .diao)
     /// 徵: desde el 5.º grado (Sol La Do Re Mi).
     public static let zhi = TipoDeEscala(
         nombre: "Zhǐ", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
-        variantes: ["徵", "徴"])
+        variantes: ["徵", "徴"],
+        categoria: .diao)
     /// 羽: la pentatónica menor (La Do Re Mi Sol).
     public static let yu = TipoDeEscala(
         nombre: "Yǔ", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        variantes: ["羽"])
+        variantes: ["羽"],
+        categoria: .diao)
     /// 清乐, la escala «pura»: gōng con 4.º y 7.º grados (la escala mayor).
     public static let qingyue = TipoDeEscala(
         nombre: "Qīngyuè",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
-        variantes: ["清乐", "清樂"])
+        variantes: ["清乐", "清樂"],
+        categoria: .diao)
     /// 雅乐, la escala «elegante» de la música cortesana: gōng con 4.º aumentado y 7.º (el lidio).
     public static let yayue = TipoDeEscala(
         nombre: "Yǎyuè",
         intervalos: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        variantes: ["雅乐", "雅樂"])
+        variantes: ["雅乐", "雅樂"],
+        categoria: .diao)
     /// 燕乐, la escala de los banquetes: gōng con 4.º y 7.º menor (el mixolidio).
     public static let yanyue = TipoDeEscala(
         nombre: "Yànyuè",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
-        variantes: ["燕乐", "燕樂"])
+        variantes: ["燕乐", "燕樂"],
+        categoria: .diao)
 
     /// Los cinco modos pentatónicos y las tres escalas heptatónicas chinas.
     public static let chinas: [TipoDeEscala] = [.gong, .shang, .jue, .zhi, .yu, .qingyue, .yayue, .yanyue]
@@ -55,5 +63,5 @@ extension TipoDeEscala {
 // MARK: Ficha
 
 extension FichaDeTradicion {
-    static let china = FichaDeTradicion(.china, [.init(.diao, TipoDeEscala.chinas)])
+    static let china = FichaDeTradicion(.china, [TipoDeEscala.chinas])
 }

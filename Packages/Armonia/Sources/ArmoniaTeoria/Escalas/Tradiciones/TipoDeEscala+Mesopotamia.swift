@@ -25,41 +25,48 @@ extension TipoDeEscala {
     public static let isartu = TipoDeEscala(
         nombre: "išartu",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
-        variantes: ["išartum", "ishartu"])
+        variantes: ["išartum", "ishartu"],
+        categoria: .afinacion)
     /// «La cerrada» (kitmu), por las cuerdas 6 y 3: el mixolidio.
     public static let kitmu = TipoDeEscala(
         nombre: "kitmu",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
-        variantes: ["kitmum"])
+        variantes: ["kitmum"],
+        categoria: .afinacion)
     /// «La de la flauta» (embūbu), por las cuerdas 3 y 7: el dórico.
     public static let embubu = TipoDeEscala(
         nombre: "embūbu",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
-        variantes: ["embūbum"])
+        variantes: ["embūbum"],
+        categoria: .afinacion)
     /// «La abierta» (pītu), por las cuerdas 7 y 4: la menor natural.
     public static let pitu = TipoDeEscala(
         nombre: "pītu",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
-        alias: ["pūtu"], variantes: ["pītum"])
+        alias: ["pūtu"], variantes: ["pītum"],
+        categoria: .afinacion)
     /// «La caída del medio» (nīd qabli), por las cuerdas 4 y 1: el frigio. Es la afinación del himno hurrita h.6.
     public static let nidQabli = TipoDeEscala(
         nombre: "nīd qabli",
         intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
-        variantes: ["nīd qablim"])
+        variantes: ["nīd qablim"],
+        categoria: .afinacion)
     /// nīš tuḫri, por las cuerdas 1 y 5: el locrio. Se leía nīš gabarî.
     public static let nisTuhri = TipoDeEscala(
         nombre: "nīš tuḫri",
         intervalos: [
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        alias: ["nīš gabarî"], variantes: ["nīš tuḫrim", "nīš gabarîm", "nish tuhri", "nish gabari"])
+        alias: ["nīš gabarî"], variantes: ["nīš tuḫrim", "nīš gabarîm", "nish tuhri", "nish gabari"],
+        categoria: .afinacion)
     /// «La del medio» (qablītu), por las cuerdas 5 y 2: el lidio.
     public static let qablitu = TipoDeEscala(
         nombre: "qablītu",
         intervalos: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        variantes: ["qablītum"])
+        variantes: ["qablītum"],
+        categoria: .afinacion)
 
     /// Las siete, en el orden de UET VII 74: cada una baja un semitono una nota de la anterior.
     public static let mesopotamicas: [TipoDeEscala] = [
@@ -70,5 +77,5 @@ extension TipoDeEscala {
 // MARK: Ficha
 
 extension FichaDeTradicion {
-    static let mesopotamia = FichaDeTradicion(.mesopotamia, [.init(.afinacion, TipoDeEscala.mesopotamicas)])
+    static let mesopotamia = FichaDeTradicion(.mesopotamia, [TipoDeEscala.mesopotamicas])
 }

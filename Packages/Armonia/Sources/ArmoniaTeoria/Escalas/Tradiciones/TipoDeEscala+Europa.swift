@@ -17,7 +17,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["ucraniana"])
+        alias: ["ucraniana"],
+        categoria: .escala)
     /// La escala de los górales de Podhale, en los Tatras polacos (Do Re Mi Fa♯ Sol La Si♭): mayor con la 4ª
     /// aumentada y la 7ª menor, como la acústica.
     public static let podhalanska = TipoDeEscala(
@@ -26,12 +27,14 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["skala podhalańska", "podhalana", "escala podhalana", "Podhale", "góralska"])
+        alias: ["skala podhalańska", "podhalana", "escala podhalana", "Podhale", "góralska"],
+        categoria: .escala)
     /// La pentatónica de la canción popular húngara, la que estudiaron Bartók y Kodály: la–do–re–mi–sol
     /// (Do Mi♭ Fa Sol Si♭ desde Do), sin semitonos.
     public static let pentatonicaHungara = TipoDeEscala(
         nombre: "pentatónica húngara",
-        intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor])
+        intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
+        categoria: .escala)
 
     // MARK: Instrumentos de afinación natural
     //
@@ -51,7 +54,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMenor, .septimaMayor,
         ],
-        alias: ["Alphorn", "trompa alpina", "cuerno de los Alpes"])
+        alias: ["Alphorn", "trompa alpina", "cuerno de los Alpes"],
+        categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 204, 386, 551, 702, 841, 969, 1088])])
     /// La escala de la gaita escocesa de las Highlands: un mixolidio (Do Re Mi Fa Sol La Si♭ desde Do; en la gaita,
     /// sobre La).
     public static let gaitaEscocesa = TipoDeEscala(
@@ -60,7 +64,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["Great Highland Bagpipe", "gaita de las Highlands", "píob mhór"])
+        alias: ["Great Highland Bagpipe", "gaita de las Highlands", "píob mhór"],
+        categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 204, 386, 498, 702, 884, 969])])
 
     // MARK: Canto georgiano
     //
@@ -78,7 +83,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["escala georgiana", "svana", "Svaneti", "canto georgiano"])
+        alias: ["escala georgiana", "svana", "Svaneti", "canto georgiano"],
+        categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 163, 332, 509, 693, 868, 1018])])
 
     public static let europeas: [TipoDeEscala] = [
         .doricoUcraniano, .podhalanska, .pentatonicaHungara, .cuernoAlpino, .gaitaEscocesa, .georgiana,
@@ -88,14 +94,8 @@ extension TipoDeEscala {
 // MARK: Ficha
 
 extension FichaDeTradicion {
-    static let europa = FichaDeTradicion(
-        .europa,
-        [.init(.escala, TipoDeEscala.europeas)],
-        microtonales: [
-            // En cents: los armónicos 8 a 15 (9/8, 5/4, 11/8, 3/2, 13/8, 7/4 y 15/8, redondeados) y las razones de la
-            // gaita (9/8, 5/4, 4/3, 3/2, 5/3 y 7/4); los grados medidos en Svaneti.
-            TipoDeEscalaMicrotonal(.cuernoAlpino, .razones, pasos: [0, 204, 386, 551, 702, 841, 969, 1088]),
-            TipoDeEscalaMicrotonal(.gaitaEscocesa, .razones, pasos: [0, 204, 386, 498, 702, 884, 969]),
-            TipoDeEscalaMicrotonal(.georgiana, .razones, pasos: [0, 163, 332, 509, 693, 868, 1018]),
-        ])
+    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). En cents: los armónicos
+    // 8 a 15 (9/8, 5/4, 11/8, 3/2, 13/8, 7/4 y 15/8, redondeados) y las razones de la gaita (9/8, 5/4, 4/3, 3/2, 5/3 y
+    // 7/4); los grados medidos en Svaneti.
+    static let europa = FichaDeTradicion(.europa, [TipoDeEscala.europeas])
 }
