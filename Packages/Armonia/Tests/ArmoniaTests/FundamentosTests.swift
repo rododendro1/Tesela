@@ -243,3 +243,13 @@ import Testing
         #expect([Int]().menor(siNoHay: 7) { $0 < $1 } == 7)
     }
 }
+
+/// La letra inglesa de cada nota natural, con la que escriben y leen las notas los formatos de partitura.
+@Suite struct LetraDeLaNotaNaturalTests {
+    @Test func idaYVuelta() {
+        #expect(NotaNatural.allCases.map(\.letra).joined() == "CDEFGAB")
+        for natural in NotaNatural.allCases { #expect(NotaNatural(letra: natural.letra) == natural) }
+        #expect(NotaNatural(letra: "g") == nil)
+        #expect(NotaNatural(letra: "H") == nil)
+    }
+}

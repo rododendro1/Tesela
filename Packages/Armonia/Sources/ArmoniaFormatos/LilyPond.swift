@@ -147,7 +147,7 @@ package struct EscritorLilyPond: EscritorDeTexto {
     /// La altura de una nota, con el nombre de su microtono si lo tiene (el koron, `eh`, como el medio bemol).
     package static func altura(_ nota: Evento.NotaDelEvento) -> String {
         let (natural, semitonos, octava) = Exportacion.sinTriples(nota.altura)
-        let nombre = ["c", "d", "e", "f", "g", "a", "b"][natural.rawValue]
+        let nombre = natural.letra.lowercased()
         let temperada = [-2: "eses", -1: "es", 0: "", 1: "is", 2: "isis"][semitonos] ?? ""
         let alteracion = nota.signo(semitonos: semitonos)?.lilypond ?? temperada
         let marcas = octava >= 3 ? String(repeating: "'", count: octava - 3) : String(repeating: ",", count: 3 - octava)
