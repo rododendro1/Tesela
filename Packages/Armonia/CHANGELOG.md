@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+### Leer en cada notación lo que se escribe en ella
+
+- `Acorde(leyendo:en:)`, `Escala(leyendo:en:)` y `Tonalidad(leyendo:en:)` (nuevos) leen lo que escriben
+  `cifrado(en:)` y `nombre(en:)` en los quince idiomas, como ya hacían `Nota(leyendo:en:)` y `Altura(leyendo:en:)`.
+  Sin la notación, «B7/D» se leía como Si7 aunque en alemán y en húngaro es Si♭7, y «Rém7», «Реm7» o «re dorian»
+  (occitano) no se leían. Una prueba lo comprueba con todas las tónicas de 7 bemoles a 7 sostenidos, todos los
+  tipos de acorde y las escalas occidentales.
+- `Nota(leyendo:en:)` lee las dobles alteraciones con signo en las notaciones compactas («Mi𝄫» en
+  `.compacta(.catalan)`), como las escribe `nombre(en:)`.
+
 ### `armonia`: la misma forma de escribir lo mismo en todas las órdenes
 
 Todas las formas de antes se siguen leyendo; la ayuda enseña las nuevas.
