@@ -291,7 +291,7 @@ import Testing
         #expect(TipoDeEscala.hindolam.melakartasCompatibles == [8, 20])
         #expect(TipoDeEscala.abhogi.melakartasCompatibles == [22, 23])
         #expect(Escala("Do hamsadhwani") == Escala(.do, .hamsadhvani))
-        #expect(TipoDeEscala.janyas.count == 14)
+        #expect(TipoDeEscala.janyas.count == 20)
     }
 
     @Test func identidadYEquivalentes() {
@@ -981,6 +981,11 @@ import Testing
         }
         // En la reconstrucción de Kilmer con escalas descendentes, cada afinación es uno de los siete modos diatónicos.
         #expect(TipoDeEscala.isartu == .mayor)
+        // Su versión microtonal, pitagórica: el tritono del lidio es de 612 cents y el del locrio, de 588.
+        #expect(TipoDeEscala.isartu.microtonal?.cents == [0, 204, 408, 498, 702, 906, 1110])
+        #expect(TipoDeEscala.qablitu.microtonal?.cents == [0, 204, 408, 612, 702, 906, 1110])
+        #expect(TipoDeEscala.nisTuhri.microtonal?.cents == [0, 90, 294, 498, 588, 792, 996])
+        #expect(TipoDeEscala.mesopotamicas.allSatisfy { $0.microtonal?.sistema == .razones })
         #expect(TipoDeEscala.kitmu == .mixolidio)
         #expect(TipoDeEscala.embubu == .dorico)
         #expect(TipoDeEscala.pitu == .menorNatural)

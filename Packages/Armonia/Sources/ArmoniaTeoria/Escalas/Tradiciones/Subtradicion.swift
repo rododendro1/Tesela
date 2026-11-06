@@ -13,8 +13,8 @@ import ArmoniaNucleo
 public enum Subtradicion: String, Sendable, Codable, CaseIterable {
     /// India: la música carnática (del sur), la indostánica (del norte) y la del Nāṭyaśāstra (grāma y mūrchanā).
     case carnatica, indostanica, indiaAntigua
-    /// Indonesia: los gamelan de Java y de Bali.
-    case java, bali
+    /// Indonesia: los gamelan de Java, de Bali y de Sunda (el oeste de Java).
+    case java, bali, sunda
     /// Sudeste asiático: los conjuntos piphat de Tailandia y pinpeat de Camboya, y el arpa de Birmania.
     case tailandia, camboya, birmania
     /// África: el amadinda de Buganda (Uganda), el timbila de los chopi (Mozambique), la kora mandinga y la mbira
@@ -29,7 +29,7 @@ public enum Subtradicion: String, Sendable, Codable, CaseIterable {
     public var tradicion: Tradicion {
         switch self {
         case .carnatica, .indostanica, .indiaAntigua: .india
-        case .java, .bali: .indonesia
+        case .java, .bali, .sunda: .indonesia
         case .tailandia, .camboya, .birmania: .sudesteAsiatico
         case .buganda, .chopi, .mandinga, .shona: .africa
         case .ucrania, .polonia, .hungria, .alpes, .escocia, .georgia: .europa
@@ -60,6 +60,7 @@ public enum Subtradicion: String, Sendable, Codable, CaseIterable {
         case .indiaAntigua: TextosDeTeoria.traduccion(\.subtradicionIndiaAntigua)
         case .java: TextosDeTeoria.traduccion(\.subtradicionJava)
         case .bali: TextosDeTeoria.traduccion(\.subtradicionBali)
+        case .sunda: TextosDeTeoria.traduccion(\.subtradicionSunda)
         case .tailandia: TextosDeTeoria.traduccion(\.subtradicionTailandia)
         case .camboya: TextosDeTeoria.traduccion(\.subtradicionCamboya)
         case .birmania: TextosDeTeoria.traduccion(\.subtradicionBirmania)

@@ -20,7 +20,7 @@ import Testing
                 microtonal.temperada.afinaciones.contains(microtonal), Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(TipoDeEscalaMicrotonal.catalogo.count == 170)
+        #expect(TipoDeEscalaMicrotonal.catalogo.count == 177)
         // La primera de cada escala es la de su teoría de hoy, sin fuente.
         #expect(TipoDeEscala.catalogo.allSatisfy { $0.microtonal?.fuente == nil })
     }
@@ -162,7 +162,7 @@ import Testing
     @Test func afinacionesEquidistantes() {
         #expect(TipoDeEscala.pelog.microtonal?.sistema == .razones)
         #expect(TipoDeEscala.pelogNem.microtonal?.pasos == [0, 133, 533, 667, 800])
-        #expect(TipoDeEscala.indonesias.allSatisfy { $0.microtonal != nil })
+        #expect(TipoDeEscala.indonesias.filter { $0.microtonal == nil } == [.degung])
         #expect(TipoDeEscala.pathets.allSatisfy { $0.microtonal != nil })
         #expect(TipoDeEscala.slendro.microtonal?.pasos == [0, 240, 480, 720, 960])
         #expect(TipoDeEscala.amadinda.microtonal?.pasos == TipoDeEscala.slendro.microtonal?.pasos)

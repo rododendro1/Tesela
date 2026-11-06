@@ -325,7 +325,7 @@ extension LineaDeComandosTests {
         #expect(salida("escalas --tradition byzantium") == bizantinas)
         let babilonicas = salida("escalas --tradicion mesopotamia")
         #expect(babilonicas.hasPrefix("Mesopotamia · afinación (7)\n"), Comment(rawValue: babilonicas))
-        #expect(babilonicas.contains("  išartu: Do Re Mi Fa Sol La Si\n"), Comment(rawValue: babilonicas))
+        #expect(babilonicas.contains("  išartu: Do Re Mi Fa Sol La Si · microtonos\n"), Comment(rawValue: babilonicas))
         #expect(babilonicas.contains("  nīd qabli: Do Re♭ Mi♭ Fa Sol La♭ Si♭"), Comment(rawValue: babilonicas))
         #expect(salida("escalas --categoria afinacion").hasPrefix(babilonicas))
         #expect(salida("escalas --categoria afinacion").contains("África · afinación (7)\n"))

@@ -244,6 +244,7 @@ extension TextosDeTeoria {
         subtradicionIndiaAntigua: "Antzinako India",
         subtradicionJava: "Java",
         subtradicionBali: "Bali",
+        subtradicionSunda: "Sunda",
         subtradicionTailandia: "Thailandia",
         subtradicionCamboya: "Kanbodia",
         subtradicionBirmania: "Birmania",

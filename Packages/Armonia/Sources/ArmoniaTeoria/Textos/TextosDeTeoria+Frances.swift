@@ -240,6 +240,7 @@ extension TextosDeTeoria {
         subtradicionIndiaAntigua: "Inde ancienne",
         subtradicionJava: "Java",
         subtradicionBali: "Bali",
+        subtradicionSunda: "Sunda",
         subtradicionTailandia: "Thaïlande",
         subtradicionCamboya: "Cambodge",
         subtradicionBirmania: "Birmanie",

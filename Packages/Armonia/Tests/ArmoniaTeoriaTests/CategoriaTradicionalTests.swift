@@ -92,7 +92,7 @@ import Testing
         // Los pathet y los laras de Indonesia.
         #expect(TipoDeEscala.tradicionales(categoria: .pathet) == TipoDeEscala.pathets)
         #expect(TipoDeEscala.tradicionales(categoria: .laras) == TipoDeEscala.indonesias)
-        #expect(TipoDeEscala.tradicionales(tradicion: .indonesia).count == 10)
+        #expect(TipoDeEscala.tradicionales(tradicion: .indonesia).count == 11)
         // Todas las escalas de la India son de una de las seis categorías indias.
         let indias = TipoDeEscala.tradicionales(tradicion: .india)
         #expect(indias.allSatisfy { [.thaat, .melakarta, .janya, .raga, .grama, .murchana].contains($0.categoria) })

@@ -174,7 +174,8 @@ usan microtonos):
 - **Indonesia**: Pélog selisir (también «balinesa») y Sléndro, y los pathet de Java y los modos de Bali. Siguen
   los modelos de las medidas de Surjodiningrat: el pélog en nueve partes iguales de la octava y el sléndro en
   cinco; en doce notas cada grado va al semitono más cercano desde su tónica (el sléndro, Do Re Fa Sol Si♭), y
-  en cents en su versión microtonal.
+  en cents en su versión microtonal. Y el degung del gamelan de Sunda, en el oeste de Java (Do Mi Fa Sol Si desde
+  da), que no lleva versión en cents.
 - **15 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
   (el Valaji carnático), Candrakauns y Megh, pentatónicos; Yaman, Lalit, Pūriyā Dhanāśrī y Darbārī
   Kānaḍa (en su forma recta: es vakra, y su ga y su dha ati-komal no caben en doce notas); y Bāgeśrī,
@@ -212,7 +213,8 @@ usan microtonos):
   pītu (el eólico), nīd qabli (el frigio, la del himno hurrita h.6), nīš tuḫri (el locrio; antes se leía nīš
   gabarî) y qablītu (el lidio). Las notas se reconstruyen, y la reconstrucción se discute: aquí va la de Kilmer
   con las escalas descendentes que siguen Gurney y West desde 1994, desde la cuerda más aguda. En la lectura
-  ascendente de 1971 cada nombre era otra especie de octava (išartu, la doria griega).
+  ascendente de 1971 cada nombre era otra especie de octava (išartu, la doria griega). Como se afinaban por
+  quintas y cuartas, su versión microtonal va en cents pitagóricos (tono de 204, semitono de 90).
 - **2 escalas coreanas**: P'yŏngjo y Kyemyŏnjo.
 - **África**: dos afinaciones de xilófono casi equidistantes, el amadinda de Buganda (cinco partes iguales de
   240 cents, Do Re Fa Sol Si♭ en doce notas) y el timbila de los chopi (siete de 171 cents, el dórico). Las
@@ -314,7 +316,7 @@ CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .f
 ```
 
 `subtradicion` dice de dónde es una escala dentro de su tradición: la música carnática o la indostánica en la
-India, Java o Bali en Indonesia, el país o el pueblo de una escala de África, de Europa o del sudeste asiático, el
+India, Java, Bali o Sunda en Indonesia, el país o el pueblo de una escala de África, de Europa o del sudeste asiático, el
 gagaku o las Ryūkyū en Japón. En la India la da la categoría (un mēḷa es carnático, un thāṭ indostánico); en las
 demás se escribe en la declaración de la escala. Vale `nil` donde no hay una clara (el sléndro se toca en Java y
 en Bali) y en las occidentales.
@@ -515,7 +517,8 @@ TipoDeEscala.bilahari.intervalosEnAmbasDirecciones
 ```
 
 Los rāgas janya incluidos son Mohanam, Hindolam, Haṃsadhvani, Ābhogi, Madhyamāvatī, Revati,
-Amṛtavarṣiṇī (iguales al subir y al bajar), Bilahari, Kāmbhoji, Ārabhi y Kedāragauḷa (distintos). Se dejan fuera los
+Amṛtavarṣiṇī, Śuddha Sāveri, Śuddha Dhanyāsi, Śrīrañjani, Mālayamārutam, Gambhīranāṭa y Haṃsanādam (iguales al
+subir y al bajar), y Bilahari, Kāmbhoji, Ārabhi, Kedāragauḷa, Mohanakalyāṇi, Sāveri y Nāṭa (distintos). Se dejan fuera los
 vakra, que suben o bajan en zigzag. `melakartasCompatibles` dice de qué mēḷa puede derivar
 cada uno: `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 
