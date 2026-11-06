@@ -215,9 +215,8 @@ extension TipoDeEscala {
 
     /// جنس راست (Do Re Mi𝄳 Fa), aproximado: Do Re Mi Fa.
     public static let jinsRast = TipoDeEscala(
-        nombre: "jins Rāst", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta], variantes: [
-            "جنس راست",
-        ])
+        nombre: "jins Rāst", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta],
+        variantes: ["جنس راست"])
     /// جنس بياتي (Re Mi𝄳 Fa Sol), aproximado: Re Mi♭ Fa Sol.
     public static let jinsBayati = TipoDeEscala(
         nombre: "jins Bayātī", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
