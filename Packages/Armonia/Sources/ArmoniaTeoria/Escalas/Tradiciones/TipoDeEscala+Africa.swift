@@ -63,7 +63,7 @@ extension TipoDeEscala {
         nombre: "Nyamaropa", intervalos: TipoDeEscala.mixolidio.intervalos, alias: ["mbira nyamaropa"],
         categoria: .afinacion, subtradicion: .shona)
 
-    public static let africanas: [TipoDeEscala] = [
+    package static let africanas: [TipoDeEscala] = [
         .amadinda, .timbila, .hardino, .sauta, .tomoraBa, .tomoraMesengo, .nyamaropa,
     ]
 }

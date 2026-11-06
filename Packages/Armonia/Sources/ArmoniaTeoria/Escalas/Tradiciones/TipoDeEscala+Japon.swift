@@ -77,7 +77,7 @@ extension TipoDeEscala {
         categoria: .escala)
 
     /// Las escalas japonesas: del gagaku, populares y afinaciones del koto.
-    public static let japonesas: [TipoDeEscala] = [
+    package static let japonesas: [TipoDeEscala] = [
         .ritsu, .ryo, .yo, .minyo, .miyakobushi, .in, .insen, .iwato, .hirajoshi, .kumoijoshi, .ryukyu,
         .akebono, .kokinjoshi,
     ]

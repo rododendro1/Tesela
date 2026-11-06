@@ -102,7 +102,7 @@ extension TipoDeEscala {
             .init(.razones, pasos: [-29, 94, 306, 518, 676, 800, 1012], fuente: "Chrysanthos, 1832"),
         ])
 
-    public static let echoi: [TipoDeEscala] = [
+    package static let echoi: [TipoDeEscala] = [
         .echosProtos, .echosPlagiosProtos, .echosDefteros, .echosPlagiosDefteros, .echosTritos, .echosVarys,
         .echosTetartos, .echosPlagiosTetartos, .echosLegetos,
     ]

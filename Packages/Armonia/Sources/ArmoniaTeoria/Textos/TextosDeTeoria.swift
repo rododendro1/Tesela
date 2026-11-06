@@ -279,6 +279,17 @@ struct TextosDeTeoria: TextosTraducidos {
     let subtradicionGagaku: String
     let subtradicionRyukyu: String
 
+    // MARK: FuenteTeorica.swift
+    let fuenteArquitas: String
+    let fuenteAristoxeno: String
+    let fuenteEratostenes: String
+    let fuenteDidimo: String
+    let fuentePtolomeo: String
+    let fuenteAristides: String
+    let fuenteGuido: String
+    let fuenteGlareano: String
+    let fuenteSafiAlDin: String
+
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».
     let acordeSobre: @Sendable (_ tipo: String, _ raiz: String) -> String

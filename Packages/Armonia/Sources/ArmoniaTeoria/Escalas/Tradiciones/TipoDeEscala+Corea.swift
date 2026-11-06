@@ -19,5 +19,5 @@ extension TipoDeEscala {
         variantes: ["Gyemyeonjo", "계면조"],
         categoria: .jo, llevaLaCategoria: true)
 
-    public static let coreanas: [TipoDeEscala] = [.pyongjo, .kyemyonjo]
+    package static let coreanas: [TipoDeEscala] = [.pyongjo, .kyemyonjo]
 }

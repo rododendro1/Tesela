@@ -90,7 +90,7 @@ extension TipoDeEscala {
         categoria: .escala, subtradicion: .georgia,
         afinaciones: [.init(.razones, pasos: [0, 163, 332, 509, 693, 868, 1018])])
 
-    public static let europeas: [TipoDeEscala] = [
+    package static let europeas: [TipoDeEscala] = [
         .doricoUcraniano, .podhalanska, .pentatonicaHungara, .cuernoAlpino, .gaitaEscocesa, .georgiana,
     ]
 }

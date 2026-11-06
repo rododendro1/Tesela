@@ -126,7 +126,7 @@ extension TipoDeEscala {
         categoria: .dastgah, afinaciones: [.init(.persa, pasos: [0, 4, 6, 10, 14, 17, 22])])
 
     /// Los dastgāh y, con ellos, los āvāz que derivan de Šur y de Homāyun.
-    public static let dastgah: [TipoDeEscala] = [
+    package static let dastgah: [TipoDeEscala] = [
         .mahur, .homayun, .cahargah, .sur, .rastPanjgah, .segah, .nava, .bayateTork, .afshari, .dashti, .abuAta,
         .bayateEsfahan,
     ]

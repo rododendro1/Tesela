@@ -42,7 +42,7 @@ extension TipoDeEscala {
         variantes: ["Anchihoye", "Anchihoy", "Anchi hoye", "አንቺሆዬ"],
         categoria: .qenet)
 
-    public static let etiopes: [TipoDeEscala] = [
+    package static let etiopes: [TipoDeEscala] = [
         .tezetaMayor, .tezetaMenor, .batiMayor, .batiMenor, .ambassel, .anchihoye,
     ]
 }

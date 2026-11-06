@@ -26,5 +26,5 @@ extension TipoDeEscala {
         alias: ["modo dórico nordestino"],
         categoria: .escala)
 
-    public static let brasilenas: [TipoDeEscala] = [.mixolidioNordestino, .lidioNordestino, .doricoNordestino]
+    package static let brasilenas: [TipoDeEscala] = [.mixolidioNordestino, .lidioNordestino, .doricoNordestino]
 }

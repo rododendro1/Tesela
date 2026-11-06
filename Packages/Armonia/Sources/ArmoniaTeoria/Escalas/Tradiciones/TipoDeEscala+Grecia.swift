@@ -156,7 +156,7 @@ extension TipoDeEscala {
         ])
 
     /// Los dromoi más habituales, en su versión temperada.
-    public static let dromoi: [TipoDeEscala] = [
+    package static let dromoi: [TipoDeEscala] = [
         .ousak, .hitzaz, .hitzazkiar, .pireotikos, .tabahaniotikos, .niavent, .nikriz,
         .kartzigar, .sabah, .houzam, .sengah, .tsinganikos, .rast, .kiourdi, .houseini,
     ]

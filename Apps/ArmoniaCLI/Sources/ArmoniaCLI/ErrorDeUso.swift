@@ -28,6 +28,7 @@ enum ErrorDeUso: Error {
     case patronDesconocido(String)
     case tradicionDesconocida(String)
     case categoriaDesconocida(String)
+    case fuenteDesconocida(String)
     case usoDesconocido(String)
     case ordenDeEscalasDesconocido(String)
     case intervaloDeEscalasDesconocido(String)
@@ -188,6 +189,8 @@ enum ErrorDeUso: Error {
             return LineaDeComandos.propuesta(para: tradicion, entre: claves)
         case .categoriaDesconocida(let categoria):
             return LineaDeComandos.propuesta(para: categoria, entre: CategoriaTradicional.allCases.map(\.rawValue))
+        case .fuenteDesconocida(let fuente):
+            return LineaDeComandos.propuesta(para: fuente, entre: FuenteTeorica.allCases.map(\.rawValue))
         case .usoDesconocido(let uso):
             let claves = LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }
             return LineaDeComandos.propuesta(para: uso, entre: claves)
@@ -231,6 +234,8 @@ enum ErrorDeUso: Error {
             return TextosDeCLI.traduccion { $0.tradicionDesconocida(tradicion) }
         case .categoriaDesconocida(let categoria):
             return TextosDeCLI.traduccion { $0.categoriaDesconocida(categoria) }
+        case .fuenteDesconocida(let fuente):
+            return TextosDeCLI.traduccion { $0.fuenteDesconocida(fuente) }
         case .usoDesconocido(let uso):
             return TextosDeCLI.traduccion { $0.usoDesconocido(uso) }
         case .ordenDeEscalasDesconocido(let orden):

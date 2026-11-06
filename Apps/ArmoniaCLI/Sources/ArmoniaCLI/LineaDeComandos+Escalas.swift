@@ -338,7 +338,7 @@ extension LineaDeComandos {
         return clase
     }
 
-    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>] [--uso <uso>] [--notas <n>]
+    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>] [--fuente <fuente>] [--uso <uso>] [--notas <n>]
     /// [--orden brillo] [--con-intervalo tritono] [--comparar Do mayor, Do lidio]`: el
     /// catálogo de escalas, las habituales y las de otras tradiciones agrupadas por tradición y categoría, cada una
     /// con sus notas desde Do (y la marca de los microtonos, si los tiene). Un texto suelto busca en los nombres.
@@ -391,6 +391,22 @@ extension LineaDeComandos {
                 throw ErrorDeUso.categoriaDesconocida(texto)
             }
             categoria = encontrada
+        }
+        // `--fuente ptolomeo`, `--source ptolemy`: las escalas de un teórico, por su clave o por su nombre en español,
+        // en inglés o en el idioma de la notación.
+        var fuente: FuenteTeorica?
+        if let texto = try entrada.valor(.fuente) {
+            let clave = claveDeBusqueda(texto)
+            let nombres = { (candidata: FuenteTeorica) in
+                [
+                    candidata.rawValue, candidata.nombre, candidata.nombre(en: .inglesCompacto),
+                    candidata.nombre(en: notacion),
+                ].map(claveDeBusqueda)
+            }
+            guard let encontrada = FuenteTeorica.allCases.first(where: { nombres($0).contains(clave) }) else {
+                throw ErrorDeUso.fuenteDesconocida(texto)
+            }
+            fuente = encontrada
         }
         var usoPedido: UsoDeEscala?
         if let texto = try entrada.valor(.uso) {
@@ -454,7 +470,7 @@ extension LineaDeComandos {
         // Los grupos, en el orden del catálogo: las habituales (si no se filtra por tradición ni por categoría) y,
         // después, cada tradición con su categoría.
         var grupos: [(titulo: String, tipos: [TipoDeEscala])] = []
-        if tradicion == nil && categoria == nil {
+        if tradicion == nil && categoria == nil && fuente == nil {
             if let usoPedido {
                 let delUso = TipoDeEscala.occidentales(uso: usoPedido).filter(cumple)
                 if !delUso.isEmpty { grupos.append((t(.habituales) + " · " + usoPedido.nombre(en: notacion), delUso)) }
@@ -465,7 +481,9 @@ extension LineaDeComandos {
         }
         for tipo in TipoDeEscala.tradicionales where usoPedido == nil && cumple(tipo) {
             guard let suya = tipo.tradicion, let deTipo = tipo.categoria else { continue }
-            guard tradicion == nil || tradicion == suya, categoria == nil || categoria == deTipo else { continue }
+            guard tradicion == nil || tradicion == suya, categoria == nil || categoria == deTipo,
+                fuente == nil || fuente == tipo.fuente
+            else { continue }
             let titulo = suya.nombre(en: notacion) + " · " + deTipo.nombre(en: notacion)
             if let i = grupos.firstIndex(where: { $0.titulo == titulo }) {
                 grupos[i].tipos.append(tipo)

@@ -284,12 +284,9 @@ Escala("Do podhalańska").notas               // Do Re Mi Fa♯ Sol La Si♭
 ```
 
 No forman parte de `TipoDeEscala.occidentales`, para no cambiar las búsquedas de escalas habituales;
-están en `TipoDeEscala.tradicionales` (y en `melakartas`, `thaats`, `dromoi`, `chinas`, `japonesas`,
-`ragasIndostanicos`, `dastgah`, `coreanas`, `andinas`, `griegasAntiguas`, `makamlar`, `mugamlar`, `echoi`, `mesopotamicas`, `gramas`, `murchanas`, `generosDeArquitasYPtolomeo`, `ajnas`, `cesniler`, `africanas`,
-`sudesteAsiaticas`, `modosGregorianos`, `generosDeDidimoYEratostenes`, `harmoniaiCromaticas`, `harmoniaiEnarmonicas`,
-`harmoniaiDeAristides`, `hexacordos`, `europeas`, `modosDeGlareano`, `vietnamitas`, `brasilenas`,
-`coloresDeAristoxeno`, `adwar`,
-`pathets`…). Sus nombres
+están en `TipoDeEscala.tradicionales`, que se filtra por tradición, categoría, subtradición, clase o fuente
+(`tradicionales(tradicion: .india)`, `tradicionales(categoria: .melakarta)`, `tradicionales(fuente: .ptolomeo)`;
+los tetracordos y las harmoniai griegas están además en `tetracordosGriegos` y `harmoniai`). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, las europeas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
 las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 mēḷa,
@@ -327,6 +324,19 @@ TipoDeEscala.pelogTembung.subtradicion                  // .bali
 Subtradicion.bali.tradicion                             // .indonesia
 TipoDeEscala.tradicionales(subtradicion: .java).count   // 6
 Subtradicion.carnatica.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles))   // "Carnatic"
+```
+
+`fuente` dice qué teórico definió una escala: el autor de unas razones (los géneros de Arquitas, Dídimo, Eratóstenes y
+Ptolomeo), de unas partes del tono (los colores de Aristóxeno), de unas especies (las harmoniai de Arístides
+Quintiliano) o de un sistema (los hexacordos de Guido d'Arezzo, los modos que añadió Glareano, los shudūd de Ṣafī
+al-Dīn). Vale `nil` en las que no son de un autor concreto, como las siete harmoniai o los modos gregorianos.
+
+```swift
+TipoDeEscala.tetracordoDiatonicoTenso.fuente            // .ptolomeo
+TipoDeEscala.ionicus.fuente                             // .glareano
+FuenteTeorica.ptolomeo.tradicion                        // .greciaAntigua
+TipoDeEscala.tradicionales(fuente: .ptolomeo).count     // 7
+FuenteTeorica.ptolomeo.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles))   // "Ptolemy"
 ```
 
 `nombreCompleto` pone delante del nombre la palabra de su categoría, si es un préstamo (rāga, mēḷa, thāṭ, maqām,
@@ -493,8 +503,7 @@ ModoGregoriano(6)!.ambito.first                  // Do4
 `ambito` da las notas de la más grave a la más aguda, con la final en la octava 4. Los modos 5 y
 6 se cantaban muchas veces con Si♭, que `escala` no incluye.
 
-Los ocho están también en el catálogo de escalas, en `TipoDeEscala.modosGregorianos` (la categoría
-`.modoGregoriano`), con sus nombres latinos; `tipoDeEscala` lleva del uno al otro.
+Los ocho están también en el catálogo de escalas, en `TipoDeEscala.tradicionales(categoria: .modoGregoriano)`, con sus nombres latinos; `tipoDeEscala` lleva del uno al otro.
 
 ```swift
 ModoGregoriano(2)!.tipoDeEscala.nombre           // "protus plagalis"

@@ -42,6 +42,10 @@ EXCEPCIONES = {
     "Korea",    # alemán: el nombre del país
     "Vietnam",  # alemán: el nombre del país
     "Thailand",  # alemán: el nombre del país
+    "Archytas",  # alemán: el nombre del teórico (FuenteTeorica)
+    "Eratosthenes",  # alemán: el nombre del teórico
+    "Aristides Quintilianus",  # alemán: el nombre del teórico
+    "Glarean",  # alemán: el nombre del teórico
     "Ukraine",  # alemán: el nombre del país
     "Myanmar",  # alemán: el nombre del país
     "Mandinka",  # alemán: el nombre del pueblo

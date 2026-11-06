@@ -53,7 +53,7 @@ extension TipoDeEscala {
         categoria: .modoGregoriano)
 
     /// Los ocho, del 1 al 8.
-    public static let modosGregorianos: [TipoDeEscala] = [
+    package static let modosGregorianos: [TipoDeEscala] = [
         .protusAuthenticus, .protusPlagalis, .deuterusAuthenticus, .deuterusPlagalis, .tritusAuthenticus,
         .tritusPlagalis, .tetrardusAuthenticus, .tetrardusPlagalis,
     ]
@@ -68,25 +68,25 @@ extension TipoDeEscala {
     public static let aeolius = TipoDeEscala(
         nombre: "aeolius", intervalos: TipoDeEscala.menorNatural.intervalos,
         alias: ["modus aeolius", "modo de Glareano 9", "modo 9"],
-        categoria: .escala)
+        categoria: .escala, fuente: .glareano)
     /// Modo 10, en La: el eólico, con el ámbito una 4ª más abajo.
     public static let hypoaeolius = TipoDeEscala(
         nombre: "hypoaeolius", intervalos: TipoDeEscala.menorNatural.intervalos,
         alias: ["modus hypoaeolius", "hipoeólico", "modo de Glareano 10", "modo 10"],
-        categoria: .escala)
+        categoria: .escala, fuente: .glareano)
     /// Modo 11, en Do: el jónico.
     public static let ionicus = TipoDeEscala(
         nombre: "ionicus", intervalos: TipoDeEscala.mayor.intervalos,
         alias: ["modus ionicus", "modo de Glareano 11", "modo 11"],
-        categoria: .escala)
+        categoria: .escala, fuente: .glareano)
     /// Modo 12, en Do: el jónico, con el ámbito una 4ª más abajo.
     public static let hypoionicus = TipoDeEscala(
         nombre: "hypoionicus", intervalos: TipoDeEscala.mayor.intervalos,
         alias: ["modus hypoionicus", "hipojónico", "modo de Glareano 12", "modo 12"],
-        categoria: .escala)
+        categoria: .escala, fuente: .glareano)
 
     /// Los cuatro, del 9 al 12.
-    public static let modosDeGlareano: [TipoDeEscala] = [.aeolius, .hypoaeolius, .ionicus, .hypoionicus]
+    package static let modosDeGlareano: [TipoDeEscala] = [.aeolius, .hypoaeolius, .ionicus, .hypoionicus]
 
     // MARK: Hexacordos de Guido de Arezzo
     //
@@ -100,20 +100,20 @@ extension TipoDeEscala {
         nombre: "hexachordum naturale",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         alias: ["hexacordo natural"],
-        categoria: .hexacordo)
+        categoria: .hexacordo, fuente: .guido)
     /// Sol La Si Do Re Mi.
     public static let hexacordoDuro = TipoDeEscala(
         nombre: "hexachordum durum",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         alias: ["hexacordo duro"],
-        categoria: .hexacordo)
+        categoria: .hexacordo, fuente: .guido)
     /// Fa Sol La Si♭ Do Re.
     public static let hexacordoBlando = TipoDeEscala(
         nombre: "hexachordum molle",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         alias: ["hexacordo blando"],
-        categoria: .hexacordo)
+        categoria: .hexacordo, fuente: .guido)
 
     /// Los tres hexacordos: natural, duro y blando.
-    public static let hexacordos: [TipoDeEscala] = [.hexacordoNatural, .hexacordoDuro, .hexacordoBlando]
+    package static let hexacordos: [TipoDeEscala] = [.hexacordoNatural, .hexacordoDuro, .hexacordoBlando]
 }
