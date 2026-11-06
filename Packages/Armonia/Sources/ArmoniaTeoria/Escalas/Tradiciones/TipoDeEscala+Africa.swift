@@ -19,7 +19,7 @@ extension TipoDeEscala {
     public static let amadinda = TipoDeEscala(
         nombre: "Amadinda", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
         alias: ["Akadinda", "equipentatónica de Uganda"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 240, 480, 720, 960])])
+        categoria: .afinacion, subtradicion: .buganda, afinaciones: [.init(.razones, pasos: [0, 240, 480, 720, 960])])
     /// Timbila (siete partes iguales de 171 cents): Do Re Mi♭ Fa Sol La Si♭ en doce notas, el dórico.
     public static let timbila = TipoDeEscala(
         nombre: "Timbila",
@@ -28,7 +28,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["Chopi", "equiheptatónica chopi"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 171, 343, 514, 686, 857, 1029])])
+        categoria: .afinacion, subtradicion: .chopi,
+        afinaciones: [.init(.razones, pasos: [0, 171, 343, 514, 686, 857, 1029])])
 
     // MARK: Kora y mbira
     //
@@ -41,26 +42,29 @@ extension TipoDeEscala {
     /// Hardino (kora): la mayor, con la 2ª y la 6ª algo bajas.
     public static let hardino = TipoDeEscala(
         nombre: "Hardino", intervalos: TipoDeEscala.mayor.intervalos, alias: ["kora hardino"],
-        categoria: .afinacion,
+        categoria: .afinacion, subtradicion: .mandinga,
         // Las medidas de Knight, en cents.
         afinaciones: [.init(.razones, pasos: [0, 185, 405, 500, 700, 885, 1105])])
     /// Sauta (kora): la lidia, con la 4ª aumentada.
     public static let sauta = TipoDeEscala(
         nombre: "Sauta", intervalos: TipoDeEscala.lidio.intervalos, alias: ["kora sauta"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 185, 405, 605, 700, 885, 1105])])
+        categoria: .afinacion, subtradicion: .mandinga,
+        afinaciones: [.init(.razones, pasos: [0, 185, 405, 605, 700, 885, 1105])])
     /// Tomora ba o silaba (kora): la mayor, con la 3ª y la 7ª algo bajas.
     public static let tomoraBa = TipoDeEscala(
         nombre: "Tomora ba", intervalos: TipoDeEscala.mayor.intervalos, alias: ["Silaba", "kora silaba"],
         variantes: ["Tomoraba"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 200, 385, 500, 700, 900, 1085])])
+        categoria: .afinacion, subtradicion: .mandinga,
+        afinaciones: [.init(.razones, pasos: [0, 200, 385, 500, 700, 900, 1085])])
     /// Tomora mesengo (kora): la dórica, con la 2ª, la 3ª, la 6ª y la 7ª algo altas.
     public static let tomoraMesengo = TipoDeEscala(
         nombre: "Tomora mesengo", intervalos: TipoDeEscala.dorico.intervalos, variantes: ["Tomoramesengo"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 230, 325, 500, 700, 930, 1025])])
+        categoria: .afinacion, subtradicion: .mandinga,
+        afinaciones: [.init(.razones, pasos: [0, 230, 325, 500, 700, 930, 1025])])
     /// Nyamaropa (mbira dzavadzimu): cercana al mixolidio.
     public static let nyamaropa = TipoDeEscala(
         nombre: "Nyamaropa", intervalos: TipoDeEscala.mixolidio.intervalos, alias: ["mbira nyamaropa"],
-        categoria: .afinacion)
+        categoria: .afinacion, subtradicion: .shona)
 
     public static let africanas: [TipoDeEscala] = [
         .amadinda, .timbila, .hardino, .sauta, .tomoraBa, .tomoraMesengo, .nyamaropa,

@@ -41,6 +41,10 @@ EXCEPCIONES = {
     "Japan",    # alemán: el nombre del país
     "Korea",    # alemán: el nombre del país
     "Vietnam",  # alemán: el nombre del país
+    "Thailand",  # alemán: el nombre del país
+    "Ukraine",  # alemán: el nombre del país
+    "Myanmar",  # alemán: el nombre del país
+    "Mandinka",  # alemán: el nombre del pueblo
 }
 
 _TEXTO = r'"((?:[^"\\]|\\.)*)"'

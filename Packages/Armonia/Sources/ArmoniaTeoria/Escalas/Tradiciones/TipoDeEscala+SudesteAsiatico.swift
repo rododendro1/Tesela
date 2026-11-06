@@ -21,7 +21,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["tailandesa"], variantes: ["ปี่พาทย์"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 171, 343, 514, 686, 857, 1029])])
+        categoria: .afinacion, subtradicion: .tailandia,
+        afinaciones: [.init(.razones, pasos: [0, 171, 343, 514, 686, 857, 1029])])
     /// Pinpeat (siete partes iguales de 171 cents): Do Re Mi♭ Fa Sol La Si♭ en doce notas.
     public static let pinpeat = TipoDeEscala(
         nombre: "Pinpeat",
@@ -30,7 +31,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["camboyana", "jemer"], variantes: ["ពិណពាទ្យ"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 171, 343, 514, 686, 857, 1029])])
+        categoria: .afinacion, subtradicion: .camboya,
+        afinaciones: [.init(.razones, pasos: [0, 171, 343, 514, 686, 857, 1029])])
 
     // MARK: El arpa birmana
     //
@@ -43,7 +45,7 @@ extension TipoDeEscala {
     public static let saung = TipoDeEscala(
         nombre: "Saung", intervalos: TipoDeEscala.pentatonicaMayor.intervalos,
         alias: ["saung gauk", "arpa birmana", "birmana"],
-        categoria: .afinacion,
+        categoria: .afinacion, subtradicion: .birmania,
         // En cents: 182, 182, 327, 182 y 327.
         afinaciones: [.init(.razones, pasos: [0, 182, 364, 691, 873])])
 

@@ -16,6 +16,15 @@
   `tradicion`. Desaparecen `FichaDeTradicion` y la ficha al final de cada fichero de `Tradiciones/`, que repetía esas
   listas. `comprobar_catalogo.py` avisa si una lista de `Tradiciones/` no está en `listasTradicionales`.
 
+### Escalas: la subtradición
+
+- `Subtradicion` y `TipoDeEscala.subtradicion`: de dónde es una escala dentro de su tradición (`.carnatica`,
+  `.indostanica` y `.indiaAntigua` en la India; `.java` y `.bali`; `.tailandia`, `.camboya` y `.birmania`;
+  `.buganda`, `.chopi`, `.mandinga` y `.shona`; `.ucrania`, `.polonia`, `.hungria`, `.alpes`, `.escocia` y
+  `.georgia`; `.gagaku` y `.ryukyu`), con su `tradicion` y su nombre en los quince idiomas. En la India la da la
+  categoría (`Subtradicion.de(_:)`); en las demás se escribe en la declaración (`subtradicion: .bali`). `nil` en
+  las que no tienen una clara. `TipoDeEscala.tradicionales(subtradicion:)` da las de una.
+
 ## 0.3.6 (2026-11-06)
 
 ### El Tonnetz y la tabla armónica, con un protocolo común

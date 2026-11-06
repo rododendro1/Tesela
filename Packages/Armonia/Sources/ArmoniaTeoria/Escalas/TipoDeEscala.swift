@@ -26,9 +26,9 @@ public struct TipoDeEscala: Sendable, Codable {
     /// Otras formas de escribir el nombre o uno de los alias, que no son otro nombre: otro género («dórica»), otra
     /// transliteración («Hicaz» por Hitzáz) u otra escritura («Χιτζάζ», «बिलावल»). Se leen igual que los alias.
     public let variantes: [String]
-    /// Lo demás que el catálogo sabe de la escala (usos, categoría, mēḷa, microtonos), escrito en su declaración. No
-    /// se codifica ni cuenta para `==`, y las propiedades públicas no lo leen de aquí sino de la escala del catálogo
-    /// con la misma identidad (`fichaDelCatalogo`).
+    /// Lo demás que el catálogo sabe de la escala (usos, categoría, subtradición, mēḷa, microtonos), escrito en su
+    /// declaración. No se codifica ni cuenta para `==`, y las propiedades públicas no lo leen de aquí sino de la
+    /// escala del catálogo con la misma identidad (`fichaDelCatalogo`).
     package let ficha: FichaDeEscala
 
     /// Nombre, alias y variantes en forma normalizada (`normalizar`: sin diacríticos ni mayúsculas, `#`/`b`), sin
@@ -66,16 +66,19 @@ public struct TipoDeEscala: Sendable, Codable {
             variantes: variantes, ficha: FichaDeEscala(usos: usos, afinaciones: afinaciones))
     }
 
-    /// Una escala de otra tradición, con su categoría y, si los tiene, el número del mēḷa del que deriva (un rāga
-    /// janya) y sus versiones microtonales. La tradición la da su lista en `listasTradicionales`.
+    /// Una escala de otra tradición, con su categoría y, si los tiene, su subtradición (si no la da la categoría), el
+    /// número del mēḷa del que deriva (un rāga janya) y sus versiones microtonales. La tradición la da su lista en
+    /// `listasTradicionales`.
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
-        variantes: [String] = [], categoria: CategoriaTradicional, mela: Int? = nil,
-        afinaciones: [FichaDeEscala.Afinacion] = []
+        variantes: [String] = [], categoria: CategoriaTradicional, subtradicion: Subtradicion? = nil,
+        mela: Int? = nil, afinaciones: [FichaDeEscala.Afinacion] = []
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
-            variantes: variantes, ficha: FichaDeEscala(categoria: categoria, mela: mela, afinaciones: afinaciones))
+            variantes: variantes,
+            ficha: FichaDeEscala(
+                categoria: categoria, subtradicion: subtradicion, mela: mela, afinaciones: afinaciones))
     }
 
     init(

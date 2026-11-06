@@ -22,7 +22,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["ucraniana"],
-        categoria: .escala)
+        categoria: .escala, subtradicion: .ucrania)
     /// La escala de los górales de Podhale, en los Tatras polacos (Do Re Mi Fa♯ Sol La Si♭): mayor con la 4ª
     /// aumentada y la 7ª menor, como la acústica.
     public static let podhalanska = TipoDeEscala(
@@ -32,13 +32,13 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["skala podhalańska", "podhalana", "escala podhalana", "Podhale", "góralska"],
-        categoria: .escala)
+        categoria: .escala, subtradicion: .polonia)
     /// La pentatónica de la canción popular húngara, la que estudiaron Bartók y Kodály: la–do–re–mi–sol
     /// (Do Mi♭ Fa Sol Si♭ desde Do), sin semitonos.
     public static let pentatonicaHungara = TipoDeEscala(
         nombre: "pentatónica húngara",
         intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        categoria: .escala)
+        categoria: .escala, subtradicion: .hungria)
 
     // MARK: Instrumentos de afinación natural
     //
@@ -59,7 +59,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor, .septimaMayor,
         ],
         alias: ["Alphorn", "trompa alpina", "cuerno de los Alpes"],
-        categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 204, 386, 551, 702, 841, 969, 1088])])
+        categoria: .escala, subtradicion: .alpes,
+        afinaciones: [.init(.razones, pasos: [0, 204, 386, 551, 702, 841, 969, 1088])])
     /// La escala de la gaita escocesa de las Highlands: un mixolidio (Do Re Mi Fa Sol La Si♭ desde Do; en la gaita,
     /// sobre La).
     public static let gaitaEscocesa = TipoDeEscala(
@@ -69,7 +70,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["Great Highland Bagpipe", "gaita de las Highlands", "píob mhór"],
-        categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 204, 386, 498, 702, 884, 969])])
+        categoria: .escala, subtradicion: .escocia,
+        afinaciones: [.init(.razones, pasos: [0, 204, 386, 498, 702, 884, 969])])
 
     // MARK: Canto georgiano
     //
@@ -88,7 +90,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["escala georgiana", "svana", "Svaneti", "canto georgiano"],
-        categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 163, 332, 509, 693, 868, 1018])])
+        categoria: .escala, subtradicion: .georgia,
+        afinaciones: [.init(.razones, pasos: [0, 163, 332, 509, 693, 868, 1018])])
 
     public static let europeas: [TipoDeEscala] = [
         .doricoUcraniano, .podhalanska, .pentatonicaHungara, .cuernoAlpino, .gaitaEscocesa, .georgiana,
