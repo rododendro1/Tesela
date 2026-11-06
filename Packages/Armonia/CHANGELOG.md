@@ -25,6 +25,11 @@
   categoría (`Subtradicion.de(_:)`); en las demás se escribe en la declaración (`subtradicion: .bali`). `nil` en
   las que no tienen una clara. `TipoDeEscala.tradicionales(subtradicion:)` da las de una.
 
+### Escalas: las afinaciones babilónicas, en cents pitagóricos
+
+- Las siete afinaciones babilónicas (`mesopotamicas`) tienen versión microtonal: en cents pitagóricos, como se
+  afinaban por quintas y cuartas (išartu: 0, 204, 408, 498, 702, 906, 1110).
+
 ## 0.3.6 (2026-11-06)
 
 ### El Tonnetz y la tabla armónica, con un protocolo común
