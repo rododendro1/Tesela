@@ -123,7 +123,7 @@ import Testing
         #expect(Set(nombres).count == nombres.count)
         for nombre in nombres { #expect(nombre == nombre.lowercased(), Comment(rawValue: nombre)) }
         for orden in LineaDeComandos.ordenes { #expect(!orden.ayuda.isEmpty, Comment(rawValue: orden.nombres[0])) }
-        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 62)
+        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 63)
         // Los nombres no distinguen mayúsculas.
         #expect(salida("ACORDE Do") == salida("acorde Do"))
     }
