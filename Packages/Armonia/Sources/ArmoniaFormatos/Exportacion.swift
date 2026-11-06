@@ -198,7 +198,7 @@ package enum Exportacion {
         return (NotaNatural(rawValue: natural)!, semitonos, octava)
     }
 
-    /// Una voz con lo que se anota en ella, para los escritores de texto (LilyPond y ABC).
+    /// Una voz con lo que se anota en ella, para los escritores de texto (`EscritorDeTexto`: ABC, LilyPond y GUIDO).
     package struct LineaAnotada {
         package let voz: Voz
         package let pentagrama: Int
