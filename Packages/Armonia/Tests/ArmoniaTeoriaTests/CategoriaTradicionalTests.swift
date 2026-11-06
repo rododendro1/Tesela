@@ -191,12 +191,40 @@ import Testing
 
     /// Las listas de `listasTradicionales` reparten todas las escalas de otras tradiciones, cada una en la suya, y
     /// cada una dice en su declaración su categoría, su versión microtonal y, los janya, su mēḷa.
+    @Test func laSubtradicion() {
+        #expect(TipoDeEscala.mohanam.subtradicion == .carnatica)
+        #expect(TipoDeEscala.melakarta(15)?.subtradicion == .carnatica)
+        #expect(TipoDeEscala.kafi.subtradicion == .indostanica)
+        #expect(TipoDeEscala.pelogTembung.subtradicion == .bali)
+        #expect(TipoDeEscala.pelogLima.subtradicion == .java)
+        #expect(TipoDeEscala.gaitaEscocesa.subtradicion == .escocia)
+        #expect(TipoDeEscala.slendro.subtradicion == nil)
+        #expect(TipoDeEscala.hitzaz.subtradicion == nil)
+        #expect(TipoDeEscala.mayor.subtradicion == nil)
+        #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).subtradicion == nil)
+        #expect(TipoDeEscala.tradicionales(subtradicion: .java).count == 6)
+        #expect(TipoDeEscala.tradicionales(subtradicion: .bali).count == 3)
+        // Toda escala de la India tiene subtradición, y cada subtradición tiene alguna escala.
+        for tipo in TipoDeEscala.tradicionales(tradicion: .india) {
+            #expect(tipo.subtradicion != nil, Comment(rawValue: tipo.nombre))
+        }
+        for subtradicion in Subtradicion.allCases {
+            #expect(!TipoDeEscala.tradicionales(subtradicion: subtradicion).isEmpty, "\(subtradicion)")
+        }
+        #expect(Subtradicion.carnatica.nombre == "Carnática")
+        #expect(Subtradicion.carnatica.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Carnatic")
+        #expect(Subtradicion.java.nombre(en: Notacion.espanolCompacto.conTextos(en: .ruso)) == "Ява")
+    }
+
     @Test func lasListasRepartenLasTradicionales() {
         var vistas = Set<String>()
         for lista in TipoDeEscala.listasTradicionales {
             for tipo in lista.tipos {
                 #expect(vistas.insert(tipo.nombre).inserted, "\(tipo.nombre) está en dos listas")
                 #expect(tipo.tradicion == lista.tradicion, Comment(rawValue: tipo.nombre))
+                if let subtradicion = tipo.subtradicion {
+                    #expect(subtradicion.tradicion == lista.tradicion, Comment(rawValue: tipo.nombre))
+                }
                 #expect(tipo.ficha.categoria != nil, Comment(rawValue: tipo.nombre))
                 #expect(tipo.categoria == tipo.ficha.categoria, Comment(rawValue: tipo.nombre))
                 #expect(tipo.ficha.usos.isEmpty, Comment(rawValue: tipo.nombre))
@@ -261,6 +289,22 @@ import Testing
         }
         #expect(Tradicion.japon.nombre(en: Notacion.espanolCompacto.conTextos(en: .euskera)) == "Japonia")
         #expect(Tradicion.mundoArabe.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Arab world")
+    }
+
+    /// Cada subtradición tiene nombre en los quince idiomas y se codifica por su nombre de caso.
+    @Test func lasSubtradicionesSeTraducenYSeCodifican() throws {
+        for subtradicion in Subtradicion.allCases {
+            #expect(subtradicion.nombre(en: .espanolCompacto) == subtradicion.nombre)
+            for idioma in Idioma.allCases {
+                #expect(
+                    !subtradicion.nombre(en: Notacion.espanolCompacto.conTextos(en: idioma)).isEmpty,
+                    Comment(rawValue: "\(subtradicion) en \(idioma)"))
+            }
+            #expect(Subtradicion(rawValue: subtradicion.rawValue) == subtradicion)
+        }
+        let datos = try JSONEncoder().encode(Subtradicion.allCases)
+        #expect(String(decoding: datos, as: UTF8.self).contains("\"indostanica\""))
+        #expect(try JSONDecoder().decode([Subtradicion].self, from: datos) == Subtradicion.allCases)
     }
 
     /// El nombre con la palabra de la categoría: delante si es un préstamo y no la lleva ya.

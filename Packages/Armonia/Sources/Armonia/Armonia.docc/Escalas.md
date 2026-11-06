@@ -313,6 +313,20 @@ TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72
 CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .frances))   // "gamme"
 ```
 
+`subtradicion` dice de dónde es una escala dentro de su tradición: la música carnática o la indostánica en la
+India, Java o Bali en Indonesia, el país o el pueblo de una escala de África, de Europa o del sudeste asiático, el
+gagaku o las Ryūkyū en Japón. En la India la da la categoría (un mēḷa es carnático, un thāṭ indostánico); en las
+demás se escribe en la declaración de la escala. Vale `nil` donde no hay una clara (el sléndro se toca en Java y
+en Bali) y en las occidentales.
+
+```swift
+TipoDeEscala.mohanam.subtradicion                       // .carnatica
+TipoDeEscala.pelogTembung.subtradicion                  // .bali
+Subtradicion.bali.tradicion                             // .indonesia
+TipoDeEscala.tradicionales(subtradicion: .java).count   // 6
+Subtradicion.carnatica.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles))   // "Carnatic"
+```
+
 `nombreCompleto` pone delante del nombre la palabra de su categoría, si es un préstamo (rāga, mēḷa, thāṭ, maqām,
 drómos…) y el nombre no la lleva ya. Un janya va con «rāga». Las categorías que se traducen (tetracordo, harmonía,
 hexacordo, modo gregoriano, afinación y escala) no se anteponen, y las occidentales se quedan con su nombre.

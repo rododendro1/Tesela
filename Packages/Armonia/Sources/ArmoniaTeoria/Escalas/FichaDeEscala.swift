@@ -3,7 +3,8 @@ import ArmoniaNucleo
 // MARK: - Ficha de una escala del catálogo
 
 /// Lo que el catálogo sabe de una escala además de su nombre y sus intervalos: en qué música se usa (las
-/// occidentales), su categoría (las de otras tradiciones), el mēḷa de un rāga janya y sus versiones microtonales.
+/// occidentales), su categoría y su subtradición (las de otras tradiciones), el mēḷa de un rāga janya y sus versiones
+/// microtonales.
 ///
 /// Se escribe en la declaración de la escala, con el resto de sus datos:
 ///
@@ -11,10 +12,13 @@ import ArmoniaNucleo
 ///         nombre: "dórico", intervalos: […], alias: ["menor dórica"], variantes: ["dórica"],
 ///         usos: [.clasica, .jazz])
 ///     public static let mohanam = TipoDeEscala(nombre: "Mohanam", intervalos: […], categoria: .janya, mela: 28)
+///     public static let pelogTembung = TipoDeEscala(nombre: "Pélog tembung", intervalos: […], categoria: .pathet,
+///         subtradicion: .bali, afinaciones: [.init(.razones, pasos: […])])
 ///
-/// De ahí salen `TipoDeEscala.usos`, `categoria`, `padre`, `microtonal` y `afinaciones`, y `UsoDeEscala.tipos` y
-/// `TipoDeEscalaMicrotonal.catalogo`. La tradición no va en la ficha: la da su lista en
-/// `TipoDeEscala.listasTradicionales`. Los nombres en otros idiomas tampoco: están en `Nombres/`.
+/// De ahí salen `TipoDeEscala.usos`, `categoria`, `subtradicion`, `padre`, `microtonal` y `afinaciones`, y
+/// `UsoDeEscala.tipos` y `TipoDeEscalaMicrotonal.catalogo`. La tradición no va en la ficha: la da su lista en
+/// `TipoDeEscala.listasTradicionales`. Los nombres en otros idiomas tampoco: están en `Nombres/`. La subtradición de
+/// las escalas de la India no se escribe: la da su categoría.
 ///
 /// Las propiedades públicas no leen la ficha del valor, sino la de la escala del catálogo con su misma `identidad`:
 /// un tipo leído de un fichero o escrito a mano con el nombre y las notas de Bayātī tiene sus microtonos, y una escala
@@ -42,17 +46,20 @@ package struct FichaDeEscala: Sendable {
     package let usos: [UsoDeEscala]
     /// La categoría en su tradición; `nil` en las occidentales.
     package let categoria: CategoriaTradicional?
+    /// La subtradición: la escrita en la declaración o, si no la hay, la que da la categoría (`Subtradicion.de(_:)`).
+    package let subtradicion: Subtradicion?
     /// El número del mēḷa de un rāga janya; `nil` en las demás escalas y en los janya sin un padre claro.
     package let mela: Int?
     /// Las versiones microtonales: la primera, la de su teoría de hoy; las demás, de otros autores (con `fuente`).
     package let afinaciones: [Afinacion]
 
     package init(
-        usos: [UsoDeEscala] = [], categoria: CategoriaTradicional? = nil, mela: Int? = nil,
-        afinaciones: [Afinacion] = []
+        usos: [UsoDeEscala] = [], categoria: CategoriaTradicional? = nil, subtradicion: Subtradicion? = nil,
+        mela: Int? = nil, afinaciones: [Afinacion] = []
     ) {
         self.usos = UsoDeEscala.allCases.filter { usos.contains($0) }
         self.categoria = categoria
+        self.subtradicion = subtradicion ?? categoria.flatMap(Subtradicion.de)
         self.mela = mela
         self.afinaciones = afinaciones
     }

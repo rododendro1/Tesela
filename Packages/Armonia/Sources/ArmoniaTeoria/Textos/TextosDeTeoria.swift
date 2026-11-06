@@ -256,6 +256,28 @@ struct TextosDeTeoria: TextosTraducidos {
     let tradicionVietnam: String
     let tradicionBrasil: String
 
+    // MARK: Subtradicion.swift
+    let subtradicionCarnatica: String
+    let subtradicionIndostanica: String
+    let subtradicionIndiaAntigua: String
+    let subtradicionJava: String
+    let subtradicionBali: String
+    let subtradicionTailandia: String
+    let subtradicionCamboya: String
+    let subtradicionBirmania: String
+    let subtradicionBuganda: String
+    let subtradicionChopi: String
+    let subtradicionMandinga: String
+    let subtradicionShona: String
+    let subtradicionUcrania: String
+    let subtradicionPolonia: String
+    let subtradicionHungria: String
+    let subtradicionAlpes: String
+    let subtradicionEscocia: String
+    let subtradicionGeorgia: String
+    let subtradicionGagaku: String
+    let subtradicionRyukyu: String
+
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».
     let acordeSobre: @Sendable (_ tipo: String, _ raiz: String) -> String
