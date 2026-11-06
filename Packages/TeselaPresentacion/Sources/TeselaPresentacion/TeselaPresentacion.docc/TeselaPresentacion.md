@@ -78,6 +78,7 @@ el selector de notación cambia la app entera.
 - ``RelacionesPresentadas``
 - ``ComparacionPresentada``
 - ``PresentacionDeEstudioDeEscala``
+- ``EleccionDeEscala``
 - ``SecuenciaPresentada``
 - ``DigitacionDePianoPresentada``
 - ``ModoPresentado``
