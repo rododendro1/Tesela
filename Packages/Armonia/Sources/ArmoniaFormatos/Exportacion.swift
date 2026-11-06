@@ -198,7 +198,8 @@ package enum Exportacion {
         return (NotaNatural(rawValue: natural)!, semitonos, octava)
     }
 
-    /// Una voz con lo que se anota en ella, para los escritores de texto (`EscritorDeTexto`: ABC, LilyPond y GUIDO).
+    /// Una voz con lo que se anota en ella, para los escritores que la guardan así (`EscritorDeLineas`: ABC,
+    /// LilyPond, GUIDO y MEI).
     package struct LineaAnotada {
         package let voz: Voz
         package let pentagrama: Int
@@ -319,9 +320,9 @@ package enum Exportacion {
 
 // MARK: - Escritores
 
-/// Lo que comparten `EscritorMusicXML` y `EscritorMEI`: se crean con la cabecera de la partitura, se les añaden
-/// voces con lo que se anota en ellas y escriben el documento. Con él, una voz, un coral y una progresión se
-/// preparan una sola vez para los dos formatos (`Exportacion.documento`).
+/// Lo que comparten los escritores de MusicXML, MEI, LilyPond, GUIDO y ABC: se crean con la cabecera de la
+/// partitura, se les añaden voces con lo que se anota en ellas y escriben el documento. Con él, una voz, un coral y
+/// una progresión se preparan una sola vez para todos los formatos (`Exportacion.documento`).
 package protocol EscritorDePartitura {
     init(
         compas: Compas, anacrusa: Duracion, tonalidad: Tonalidad?, tempo: Tempo?,

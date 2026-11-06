@@ -18,18 +18,7 @@ import ArmoniaTeoria
 // MARK: - Escritor MEI
 
 /// Reúne varias voces, cada una en un pentagrama (con una capa por voz), y escribe el documento.
-package struct EscritorMEI: EscritorDePartitura {
-    package struct Linea {
-        package let voz: Voz
-        package let pentagrama: Int
-        /// `nil` si la plica va donde toque; si no, hacia arriba o hacia abajo.
-        package let plicaArriba: Bool?
-        /// El cifrado que se escribe encima de la nota que empieza en cada punto de la voz.
-        package let cifrados: [Duracion: String]
-        /// Las líneas de texto que se escriben debajo de la nota que empieza en cada punto.
-        package let letras: [Duracion: [String]]
-    }
-
+package struct EscritorMEI: EscritorDeLineas {
     package let compas: Compas
     package let anacrusa: Duracion
     package let tonalidad: Tonalidad?
@@ -37,7 +26,7 @@ package struct EscritorMEI: EscritorDePartitura {
     package let titulo: String?
     package let parte: String
     package let claves: [Clave]
-    package var lineas: [Linea] = []
+    package var lineas: [Exportacion.LineaAnotada] = []
     /// Un texto debajo de un pentagrama, al principio (la tonalidad del análisis).
     package var rotulo: (texto: String, pentagrama: Int)?
 
@@ -52,26 +41,6 @@ package struct EscritorMEI: EscritorDePartitura {
         self.titulo = titulo
         self.parte = parte
         self.claves = claves
-    }
-
-    package mutating func anadir(
-        _ voz: Voz, pentagrama: Int, plicaArriba: Bool?,
-        cifrados: [Duracion: String] = [:], letras: [Duracion: [String]] = [:]
-    ) {
-        lineas.append(
-            Linea(
-                voz: voz, pentagrama: pentagrama, plicaArriba: plicaArriba,
-                cifrados: cifrados, letras: letras))
-    }
-
-    /// La voz con los cifrados como `<harm>` encima y el análisis como letra debajo.
-    package mutating func anadir(
-        _ voz: Voz, pentagrama: Int, plicaArriba: Bool?,
-        cifrados: [Duracion: Acorde], analisis: [Duracion: AcordeAnalizado], notacion: Notacion
-    ) {
-        anadir(
-            voz, pentagrama: pentagrama, plicaArriba: plicaArriba,
-            cifrados: cifrados.mapValues { $0.cifrado(en: notacion) }, letras: analisis.mapValues(Exportacion.letras))
     }
 
     package var documento: String {

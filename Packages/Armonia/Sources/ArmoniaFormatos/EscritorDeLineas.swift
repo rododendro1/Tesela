@@ -2,22 +2,21 @@ import ArmoniaNucleo
 import ArmoniaPartitura
 import ArmoniaTeoria
 
-// Lo que comparten los escritores de los formatos de texto (ABC, LilyPond y GUIDO): guardan cada voz como una
-// `Exportacion.LineaAnotada`, la recorren compás a compás (`Exportacion.compases(de:)`) y escriben debajo de cada
-// nota su análisis, con el rótulo de la tonalidad delante en la primera nota de su línea. Cada uno escribe solo su
-// sintaxis.
+// Lo que comparten los escritores que guardan cada voz como una `Exportacion.LineaAnotada` (ABC, LilyPond, GUIDO y
+// MEI) y, entre ellos, los de los formatos de texto (ABC, LilyPond y GUIDO): recorren cada voz compás a compás
+// (`Exportacion.compases(de:)`) y escriben debajo de cada nota su análisis, con el rótulo de la tonalidad delante en
+// la primera nota de su línea. Cada uno escribe solo su sintaxis.
 
-// MARK: - Escritor de texto
+// MARK: - Escritor de líneas
 
-/// Un escritor de un formato de texto: ver `EscritorABC`, `EscritorLilyPond` y `EscritorGUIDO`.
-package protocol EscritorDeTexto: EscritorDePartitura {
-    var compas: Compas { get }
-    var anacrusa: Duracion { get }
-    var claves: [Clave] { get }
+/// Un escritor que guarda cada voz como una `Exportacion.LineaAnotada`, con sus cifrados y su análisis ya escritos
+/// en la notación: los de texto y `EscritorMEI`. (`EscritorMusicXML` guarda además el número y la tablatura de cada
+/// línea.)
+package protocol EscritorDeLineas: EscritorDePartitura {
     var lineas: [Exportacion.LineaAnotada] { get set }
 }
 
-extension EscritorDeTexto {
+extension EscritorDeLineas {
     package mutating func anadir(
         _ voz: Voz, pentagrama: Int, plicaArriba: Bool?,
         cifrados: [Duracion: Acorde], analisis: [Duracion: AcordeAnalizado], notacion: Notacion
@@ -27,7 +26,18 @@ extension EscritorDeTexto {
                 voz, pentagrama: pentagrama, plicaArriba: plicaArriba, cifrados: cifrados, analisis: analisis,
                 notacion: notacion))
     }
+}
 
+// MARK: - Escritor de texto
+
+/// Un escritor de un formato de texto: ver `EscritorABC`, `EscritorLilyPond` y `EscritorGUIDO`.
+package protocol EscritorDeTexto: EscritorDeLineas {
+    var compas: Compas { get }
+    var anacrusa: Duracion { get }
+    var claves: [Clave] { get }
+}
+
+extension EscritorDeTexto {
     /// La clave de un pentagrama (contados desde 1); la de sol si no tiene.
     func clave(delPentagrama pentagrama: Int) -> Clave {
         claves.indices.contains(pentagrama - 1) ? claves[pentagrama - 1] : .sol
