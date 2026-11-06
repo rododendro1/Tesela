@@ -86,6 +86,13 @@ public struct PentagramaPresentado: Hashable, Sendable {
         self.init(svg: dibujo, descripcion: titulo + ": " + notas, nombre: "Pentagrama " + titulo)
     }
 
+    /// Una partitura ya hecha (una línea de bajo con su tablatura), con el título del fichero y el texto para los
+    /// lectores de pantalla.
+    public init(_ partitura: Partitura, titulo: String, descripcion: String, notacion: Notacion = .espanolCompacto) {
+        let dibujo = partitura.svg(opciones: OpcionesDePentagrama(notacion: notacion))
+        self.init(svg: dibujo, descripcion: descripcion, nombre: "Pentagrama " + titulo)
+    }
+
     private init(svg: String, descripcion: String, nombre: String) {
         self.svg = svg
         self.descripcion = descripcion

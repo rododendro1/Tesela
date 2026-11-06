@@ -224,6 +224,9 @@ extension TextosDeApps {
         homonima: "Ομώνυμη",
         cadenciasTipicas: "Τυπικές πτώσεις",
         cambianAcordes: { "Αλλάζουν \($0) από \($1) συγχορδίες" },
+        bajoCaminante: "Περπατητό μπάσο",
+        progresionesEnLaEscala: "Αλληλουχίες στην κλίμακα",
+        notasFueraDe: { "Εκτός \($0): \($1)" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Εντάσεις",
         notasAEvitar: "Προς αποφυγή",

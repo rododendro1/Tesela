@@ -9,7 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <acordes> [--en <tonalidá>] [--escalas]",
         descripcionAnalizar: "cifráu romanu, funciones, cadencies y modulaciones (col so acorde pivote; ensin --en)\n--escalas: la escala de cada acorde, coles tensiones y notes a evitar",
-        notasAnalizar: "--notas-guia: dos llinies de notes guía, dende la tercera y dende la séptima; --conduccion: cómo va cada voz d’un acorde al siguiente (en drop 2), coles notes comunes; --contra: la otra versión acorde a acorde, colo que camuda, los sos graos y les notes comunes",
+        notasAnalizar: "--notas-guia: dos llinies de notes guía, dende la tercera y dende la séptima; --conduccion: cómo va cada voz d’un acorde al siguiente (en drop 2), coles notes comunes; --contra: la otra versión acorde a acorde, colo que camuda, los sos graos y les notes comunes; --bajo: un baxu caminante en negres, un compás per acorde",
         sintaxisAnalizarArchivo: "analizar --archivo <ficheru> [--ventana <duración>]",
         descripcionAnalizarArchivo: "lo mesmo, colos acordes d'un ficheru MIDI, MusicXML, MEI o ABC (ún per pulsu; --ventana 2: ún per blanca)",
         sintaxisArmonizar: "armonizar <melodía> [--en <tonalidá>] [--propuestas 3]",
@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "intervalu ente dos notes o altures",
         sintaxisEscala: "escala <escala> [--acordes]",
         descripcionEscala: "notes y acordes d\'una escala\n--acordes: toos los que caben en cada grau, non solo los de terceres",
-        notasEscala: "opciones: --secuencia terceras (o cuartas, grupos-de-3, grupos-de-4, triadas, cuatriadas), --bajando, --octavas 2 (de 1 a 4), --piano (dixitación), --modos (paralelos y relativos) y --comparar Do lidio (al final); --simetria (cada cuánto se repite y los sos acordes); --vecinas (les que salen de mover una nota) y --doce (nes doce tonalidaes); --doce --acordes (los acordes de cada gráu; --triadas, ensin séptima); --estadisticas (númberu de notes, brillu, vector interválicu…); --escalera (de la más escura a la más brillante, xubiendo una nota cada vegada); --contra Do dórico (la comparanza nota a nota, nel pentagrama y nel reló, en SVG); --parecidas (les que comparten más notes con ella, de la que menos camuda a la que más)",
+        notasEscala: "opciones: --secuencia terceras (o cuartas, grupos-de-3, grupos-de-4, triadas, cuatriadas), --bajando, --octavas 2 (de 1 a 4), --piano (dixitación), --modos (paralelos y relativos) y --comparar Do lidio (al final); --simetria (cada cuánto se repite y los sos acordes); --vecinas (les que salen de mover una nota) y --doce (nes doce tonalidaes); --doce --acordes (los acordes de cada gráu; --triadas, ensin séptima); --estadisticas (númberu de notes, brillu, vector interválicu…); --escalera (de la más escura a la más brillante, xubiendo una nota cada vegada); --contra Do dórico (la comparanza nota a nota, nel pentagrama y nel reló, en SVG); --parecidas (les que comparten más notes con ella, de la que menos camuda a la que más); --progresiones (progresiones coles sos tríades, colos graos y les notes que nun son de la mayor o la menor)",
         sintaxisEscalas: "escalas [<testu>] [opciones]",
         descripcionEscalas: "el catálogu d'escales: les habituales y les d'otres tradiciones, per categoríes, coles sos notes dende Do",
         notasEscalas: "opciones: --tradicion turquia (o india, grecia, grecia-antigua, mundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia, indonesia, klezmer, andes, bizancio, mesopotamia, africa, sudeste-asiatico, gregoriano, europa, vietnam, brasil) y --categoria maqam (o rāga, makam, dastgah, dromos…); --uso jazz (o clasica, blues, siglo-xx, popular, sintetica) filtra les habituales; --notas 5 dexa namás les de cinco notes; --orden brillo (o notas) ordénales, y --sin-semitonos y --regulares dexen les anhemitóniques y les máximamente regulares; --con-intervalo tritono y --sin-intervalo semitono (o un númberu del 1 al 6) y --con-paso 3 busquen polos intervalos; --comparar Do mayor, Do lidio ponles nuna tabla; --mapa dibúxales nun mapa de brillu (SVG); un testu busca nos nomes",
@@ -142,6 +142,8 @@ extension TextosDeCLI {
         descripcionPentagramaRegistro: "la octava (--octava 2), la clave (--clave fa), el pentagrama doble, los cambeos de clave según el rexistru y el baxu cifráu de los acordes (6, 6/4, 6/5…)",
         sintaxisPentagramaMelodia: "pentagrama melodia <notes> --sobre <acordes>",
         descripcionPentagramaMelodia: "una melodía (Do4:8 Re4:8…) con un acorde por compás enriba; les notes que nun son del acorde, en verde (o en colloráu si son cromátiques); --ajenas failo nes demás",
+        sintaxisPentagramaBajo: "pentagrama bajo <acordes> [--tab]",
+        descripcionPentagramaBajo: "un baxu caminante en negres sobre la progresión, en clave de fa: la fundamental na primer parte, notes del acorde na segunda y na tercera y una nota de pasu cromática escontra l’acorde siguiente; con --tab, cola tablatura del baxu",
         sintaxisPosicionesArpegio: "posiciones --arpegio <cifráu> [--caged|--barrido]",
         descripcionPosicionesArpegio: "l'arpexu d'un acorde en cada posición del mástil, en tablatura y colos deos; --ida-y-vuelta, xube y baxa",
 

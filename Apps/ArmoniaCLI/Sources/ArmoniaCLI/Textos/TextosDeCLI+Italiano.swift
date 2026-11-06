@@ -9,7 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <accordi> [--en <tonalità>] [--escalas]",
         descripcionAnalizar: "numeri romani, funzioni, cadenze e modulazioni (con l'accordo perno; senza --en)\n--escalas: la scala di ogni accordo, con tensioni e note da evitare",
-        notasAnalizar: "--notas-guia: due linee di note guida, dalla terza e dalla settima; --conduccion: come va ogni voce da un accordo al successivo (in drop 2), con le note comuni; --contra: l’altra versione accordo per accordo, con ciò che cambia, i suoi gradi e le note comuni",
+        notasAnalizar: "--notas-guia: due linee di note guida, dalla terza e dalla settima; --conduccion: come va ogni voce da un accordo al successivo (in drop 2), con le note comuni; --contra: l’altra versione accordo per accordo, con ciò che cambia, i suoi gradi e le note comuni; --bajo: un walking bass in semiminime, una battuta per accordo",
         sintaxisAnalizarArchivo: "analizar --archivo <file> [--ventana <durata>]",
         descripcionAnalizarArchivo: "lo stesso, con gli accordi di un file MIDI, MusicXML, MEI o ABC (uno per pulsazione; --ventana 2: uno per minima)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalità>] [--propuestas 3]",
@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "intervallo tra due note o altezze",
         sintaxisEscala: "escala <scala> [--acordes]",
         descripcionEscala: "note e accordi di una scala\n--acordes: tutti quelli che stanno su ogni grado, non solo per terze",
-        notasEscala: "opzioni: --secuencia terceras (o cuartas, grupos-de-3, grupos-de-4, triadas, cuatriadas), --bajando, --octavas 2 (da 1 a 4), --piano (diteggiatura), --modos (paralleli e relativi) e --comparar Do lidio (alla fine); --simetria (ogni quanto si ripete e i suoi accordi); --vecinas (quelle che si ottengono spostando una nota) e --doce (in tutte le dodici tonalità); --doce --acordes (gli accordi di ogni grado; --triadas, senza settima); --estadisticas (numero di note, brillantezza, vettore intervallare…); --escalera (dalla più scura alla più brillante, alzando una nota alla volta); --contra Do dórico (il confronto nota per nota, sul pentagramma e sull’orologio, in SVG); --parecidas (quelle che condividono più note con lei, da quella che cambia meno)",
+        notasEscala: "opzioni: --secuencia terceras (o cuartas, grupos-de-3, grupos-de-4, triadas, cuatriadas), --bajando, --octavas 2 (da 1 a 4), --piano (diteggiatura), --modos (paralleli e relativi) e --comparar Do lidio (alla fine); --simetria (ogni quanto si ripete e i suoi accordi); --vecinas (quelle che si ottengono spostando una nota) e --doce (in tutte le dodici tonalità); --doce --acordes (gli accordi di ogni grado; --triadas, senza settima); --estadisticas (numero di note, brillantezza, vettore intervallare…); --escalera (dalla più scura alla più brillante, alzando una nota alla volta); --contra Do dórico (il confronto nota per nota, sul pentagramma e sull’orologio, in SVG); --parecidas (quelle che condividono più note con lei, da quella che cambia meno); --progresiones (progressioni con le sue triadi, con i gradi e le note fuori dalla maggiore o dalla minore)",
         sintaxisEscalas: "escalas [<testo>] [opzioni]",
         descripcionEscalas: "il catalogo delle scale: le consuete e quelle di altre tradizioni, per categorie, con le note a partire da Do",
         notasEscalas: "opzioni: --tradicion turquia (o india, grecia, grecia-antigua, mundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia, indonesia, klezmer, andes, bizancio, mesopotamia, africa, sudeste-asiatico, gregoriano, europa, vietnam, brasil) e --categoria maqam (o rāga, makam, dastgah, dromos…); --uso jazz (o clasica, blues, siglo-xx, popular, sintetica) filtra quelle abituali; --notas 5 lascia solo quelle di cinque note; --orden brillo (o notas) le ordina, e --sin-semitonos e --regulares lasciano le anemitoniche e le massimamente regolari; --con-intervalo tritono e --sin-intervalo semitono (o un numero da 1 a 6) e --con-paso 3 cercano per intervalli; --comparar Do mayor, Do lidio le mette in una tabella; --mapa le disegna in una mappa di brillantezza (SVG); un testo cerca nei nomi",
@@ -142,6 +142,8 @@ extension TextosDeCLI {
         descripcionPentagramaRegistro: "l'ottava (--octava 2), la chiave (--clave fa), il doppio pentagramma, i cambi di chiave secondo il registro e il basso cifrato degli accordi (6, 6/4, 6/5…)",
         sintaxisPentagramaMelodia: "pentagrama melodia <note> --sobre <accordi>",
         descripcionPentagramaMelodia: "una melodia (Do4:8 Re4:8…) con un accordo per battuta sopra; le note estranee all'accordo in verde (in rosso se cromatiche); --ajenas lo fa negli altri",
+        sintaxisPentagramaBajo: "pentagrama bajo <acordes> [--tab]",
+        descripcionPentagramaBajo: "un walking bass in semiminime sulla progressione, in chiave di basso: la fondamentale sul primo tempo, note dell’accordo sul secondo e sul terzo e una nota di passaggio cromatica verso l’accordo seguente; con --tab, con l’intavolatura del basso",
         sintaxisPosicionesArpegio: "posiciones --arpegio <sigla> [--caged|--barrido]",
         descripcionPosicionesArpegio: "l'arpeggio di un accordo in ogni posizione del manico, in intavolatura con le dita; --ida-y-vuelta, sale e scende",
 
