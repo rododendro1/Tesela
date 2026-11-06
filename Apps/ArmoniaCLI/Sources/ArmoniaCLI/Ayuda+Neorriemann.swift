@@ -15,7 +15,7 @@ extension LineaDeComandos {
             ayuda: ayudaDeConduccionMinima, json: { try conduccionMinimaJSON($0, $1) },
             ejecutar: { resto, notacion in
                 guard resto.count == 2 else { throw ErrorDeUso.dosAcordesDeConduccion }
-                let conduccion = try Acorde(leyendo: resto[0]).conduccionMinima(hasta: try Acorde(leyendo: resto[1]))
+                let conduccion = try Acorde(leyendoEnLaOrden: resto[0]).conduccionMinima(hasta: try Acorde(leyendoEnLaOrden: resto[1]))
                 return bien(conduccion.texto(en: notacion))
             }),
         Orden(

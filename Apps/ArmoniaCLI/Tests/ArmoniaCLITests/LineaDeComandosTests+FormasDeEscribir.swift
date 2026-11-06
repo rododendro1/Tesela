@@ -100,4 +100,12 @@ extension LineaDeComandosTests {
         #expect(resultado("escalas", "--vecinas", "Re", "dórico", "--foo").codigo == 2)
         #expect(resultado("escalas", "--vecinas").codigo == 2)
     }
+
+    @Test func seLeeEnLaNotacionElegida() {
+        #expect(salida("escala re dorian --idioma oc") == salida("escala Re dórico --idioma oc"))
+        #expect(salida("acorde B7/D --idioma de") == salida("acorde Sib7/Re --idioma de"))
+        #expect(salida("acorde Do7 --idioma de") == salida("acorde C7 --idioma de"))
+        #expect(salida("tonalidad B-Dur --idioma de") == salida("tonalidad Sib mayor --idioma de"))
+        #expect(salida("acorde Rém7 --idioma fr") == salida("acorde Rem7 --idioma fr"))
+    }
 }

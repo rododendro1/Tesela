@@ -151,7 +151,7 @@ struct Argumentos {
     mutating func quitarTonalidad() throws -> Tonalidad?? {
         guard let i = restantes.firstIndex(where: OpcionDeOrden.en.leidos.contains) else { return .some(nil) }
         guard i + 1 < restantes.count else { return nil }
-        let tonalidad = try Tonalidad(leyendo: restantes[(i + 1)...].joined(separator: " "))
+        let tonalidad = try Tonalidad(leyendoEnLaOrden: restantes[(i + 1)...].joined(separator: " "))
         restantes.removeSubrange(i...)
         return .some(tonalidad)
     }

@@ -53,7 +53,7 @@ extension LineaDeComandos {
             throw ErrorDeUso.faltaValor(vacia)
         }
         var compas = try opciones["compas"].map { try Compas(leyendo: $0) } ?? .compasillo
-        let tonalidad = try opciones["tonalidad"].map { try Tonalidad(leyendo: $0) }
+        let tonalidad = try opciones["tonalidad"].map { try Tonalidad(leyendoEnLaOrden: $0) }
         var tempo: Tempo?
         if let texto = opciones["tempo"] {
             let partes = texto.split(separator: " ").map(String.init)
@@ -202,7 +202,7 @@ extension LineaDeComandos {
                 guard let leida = leerClave(texto) else { throw ErrorDeUso.claveDesconocida(texto) }
                 clave = leida
             }
-            let escala = try Escala(leyendo: musica.joined(separator: " "))
+            let escala = try Escala(leyendoEnLaOrden: musica.joined(separator: " "))
             let duracion = try opciones["duracion"].map { try Duracion(leyendo: $0) } ?? .negra
             var voz = escala.voz(duracion: duracion)
             voz.compas = compas

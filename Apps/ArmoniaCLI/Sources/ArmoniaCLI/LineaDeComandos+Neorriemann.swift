@@ -14,7 +14,7 @@ extension LineaDeComandos {
         let tipos = argumentos.quitarMarca(.ampliada) ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
         let acordes = argumentos.restantes
         guard acordes.count == 1 else { throw ErrorDeUso.unAcordeDeVecinos }
-        let acorde = try Acorde(leyendo: acordes[0])
+        let acorde = try Acorde(leyendoEnLaOrden: acordes[0])
         let pasos =
             tipos.map { $0.contains(acorde.tipo) ? acorde.vecinosParsimoniosos(voces: voces, tipos: $0) : [] }
             ?? acorde.vecinosParsimoniosos(voces: voces)
@@ -34,8 +34,8 @@ extension LineaDeComandos {
         let tipos = argumentos.quitarMarca(.ampliada) ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
         let acordes = argumentos.restantes
         guard acordes.count == 2 else { throw ErrorDeUso.dosAcordesDeCamino }
-        let origen = try Acorde(leyendo: acordes[0])
-        let destino = try Acorde(leyendo: acordes[1])
+        let origen = try Acorde(leyendoEnLaOrden: acordes[0])
+        let destino = try Acorde(leyendoEnLaOrden: acordes[1])
         guard let camino = origen.caminoParsimonioso(hasta: destino, voces: voces, tipos: tipos) else {
             throw ErrorDeUso.caminoSinConexion
         }
@@ -51,7 +51,7 @@ extension LineaDeComandos {
     /// `plr Do PLR`: la tríada tras cada paso. `plr Do Mibm`: el camino más corto.
     static func plr(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         guard argumentos.count >= 2 else { throw ErrorDeUso.faltanPasosDePLR }
-        let origen = try Acorde(leyendo: argumentos[0])
+        let origen = try Acorde(leyendoEnLaOrden: argumentos[0])
         guard Tonnetz.Triada(origen) != nil else { throw ErrorDeUso.plrSoloTriadas(camino: false) }
         let resto = argumentos.dropFirst().joined(separator: " ")
         let pasos: [TransformacionNeorriemanniana]
@@ -68,7 +68,7 @@ extension LineaDeComandos {
                 texto + "\n" + Mensaje.ciclo(ciclo).texto(en: notacion) + ", "
                     + Mensaje.triadas(ciclo.longitud).texto(en: notacion))
         } else {
-            let destino = try Acorde(leyendo: resto)
+            let destino = try Acorde(leyendoEnLaOrden: resto)
             guard let camino = origen.caminoNeorriemanniano(hasta: destino) else {
                 throw ErrorDeUso.plrSoloTriadas(camino: true)
             }

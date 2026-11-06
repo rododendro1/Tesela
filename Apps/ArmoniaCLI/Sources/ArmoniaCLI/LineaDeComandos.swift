@@ -126,8 +126,10 @@ public enum LineaDeComandos {
         let enCurso = OrdenEnCurso(orden: orden, nombre: nombre)
         let resultado = OrdenEnCurso.$actual.withValue(orden.nombres.contains("ayuda") ? nil : enCurso) {
             EntradaEstandar.$actual.withValue(estandar) {
-                conLasNotasDelIdioma(resto, en: notacion) { resto in
-                    ejecutar(orden, nombre: nombre, resto, json: json, salidaEsTerminal: salidaEsTerminal, notacion)
+                NotacionDeLectura.$actual.withValue(notacion) {
+                    conLasNotasDelIdioma(resto, en: notacion) { resto in
+                        ejecutar(orden, nombre: nombre, resto, json: json, salidaEsTerminal: salidaEsTerminal, notacion)
+                    }
                 }
             }
         }

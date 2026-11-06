@@ -12,7 +12,7 @@ extension LineaDeComandos {
         var argumentos = Argumentos(textos)
         guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
         var otro: Acorde?
-        if let texto = try argumentos.valor(.comparar) { otro = try Acorde(leyendo: texto) }
+        if let texto = try argumentos.valor(.comparar) { otro = try Acorde(leyendoEnLaOrden: texto) }
         let pedido = RelacionesPedidas(
             bebop: argumentos.quitarMarca(.bebop),
             pentatonicas: argumentos.quitarMarca(.pentatonicas),
@@ -26,7 +26,7 @@ extension LineaDeComandos {
         }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifrado }
         let bloques = try argumentos.restantes.map { texto in
-            let acorde = try Acorde(leyendo: texto)
+            let acorde = try Acorde(leyendoEnLaOrden: texto)
             return ([describir(acorde: acorde, notacion)] + relaciones(de: acorde, pedido, notacion))
                 .joined(separator: "\n")
         }
@@ -130,7 +130,7 @@ extension LineaDeComandos {
             guard conEscalas else { return bien(try identificar(argumentos.restantes, notacion)) }
             // Con octava o sin ella, solo cuentan las notas.
             let notas = try argumentos.restantes.map { texto in
-                try (try? Altura(leyendo: texto))?.nota ?? Nota(leyendo: texto)
+                try (try? Altura(leyendoEnLaOrden: texto))?.nota ?? Nota(leyendoEnLaOrden: texto)
             }
             encontradas = PresentacionDeEstudioDeEscala.escalas(conLasNotas: notas, en: notacion)
         }
@@ -176,11 +176,11 @@ extension LineaDeComandos {
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifradoDelArpegio }
         var arpegios: [Arpegio] = []
         for texto in argumentos.restantes {
-            let acorde = try Acorde(leyendo: texto)
+            let acorde = try Acorde(leyendoEnLaOrden: texto)
             var inicio = 0
             if let desde = recorrido.desde {
                 let delGrado = Int(desde).flatMap { Arpegio.indice(delGrado: $0, en: acorde) }
-                let deLaNota = (try? Nota(leyendo: desde)).flatMap { Arpegio.indice(de: $0, en: acorde) }
+                let deLaNota = (try? Nota(leyendoEnLaOrden: desde)).flatMap { Arpegio.indice(de: $0, en: acorde) }
                 guard let indice = delGrado ?? deLaNota else { throw ErrorDeUso.desdeNoValido(desde) }
                 inicio = indice
             }

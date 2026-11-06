@@ -70,13 +70,13 @@ extension LineaDeComandos {
         }
         // `--contra`, antes que `--comparar`, que también lo lee: la forma de antes de `hoja … --comparar`.
         var contra: Escala?
-        if let texto = try argumentos.valorConPalabras(.contra) { contra = try Escala(leyendo: texto) }
+        if let texto = try argumentos.valorConPalabras(.contra) { contra = try Escala(leyendoEnLaOrden: texto) }
         var otra: Escala?
-        if let texto = try argumentos.valorConPalabras(.comparar) { otra = try Escala(leyendo: texto) }
+        if let texto = try argumentos.valorConPalabras(.comparar) { otra = try Escala(leyendoEnLaOrden: texto) }
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscala }
         return PedidoDeEscala(
-            escala: try Escala(leyendo: argumentos.unidos), conAcordes: conAcordes, secuencia: secuencia,
+            escala: try Escala(leyendoEnLaOrden: argumentos.unidos), conAcordes: conAcordes, secuencia: secuencia,
             octavas: octavas, bajando: bajando, piano: piano, modos: modos, simetria: simetria, vecinas: vecinas,
             estadisticas: estadisticas, escalera: escalera, doce: doce, triadas: triadas, otra: otra,
             contra: contra, parecidas: parecidas, progresiones: progresiones)
@@ -408,7 +408,7 @@ extension LineaDeComandos {
             let nombres = texto.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
                 .filter { !$0.isEmpty }
             guard !nombres.isEmpty else { throw ErrorDeUso.faltaValor("--comparar") }
-            let escalas = try nombres.map { try Escala(leyendo: $0) }
+            let escalas = try nombres.map { try Escala(leyendoEnLaOrden: $0) }
             let tabla = PresentacionDeEstudioDeEscala.tablaDeEstadisticas(escalas, en: notacion)
             return .otraCosa(bien(columnas([tabla.encabezados] + tabla.filas)), opcion: "--comparar")
         }
@@ -423,7 +423,7 @@ extension LineaDeComandos {
             if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
             guard entrada.restantes.isEmpty else { throw ErrorDeUso.opcionDesconocida(entrada.restantes[0]) }
             let lineas = try deUna.flatMap { opcion, texto in
-                try escalasQueSalen(de: Escala(leyendo: texto), opcion, notacion)
+                try escalasQueSalen(de: Escala(leyendoEnLaOrden: texto), opcion, notacion)
             }
             return .otraCosa(bien(lineas.joined(separator: "\n")), opcion: deUna[0].0.nombres[0])
         }
@@ -435,7 +435,7 @@ extension LineaDeComandos {
                 numeroDeNotas = n
             }
             if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
-            let resaltada = entrada.restantes.isEmpty ? nil : try Escala(leyendo: entrada.unidos)
+            let resaltada = entrada.restantes.isEmpty ? nil : try Escala(leyendoEnLaOrden: entrada.unidos)
             let mapa = PresentacionDeEstudioDeEscala.mapaDeBrillo(
                 numeroDeNotas: numeroDeNotas, resaltada: resaltada, en: notacion)
             return .otraCosa(bien(mapa), opcion: "--mapa")
@@ -563,7 +563,7 @@ extension LineaDeComandos {
         guard !grupos.isEmpty else {
             // `escalas` busca por el nombre: con unas notas, lo que se quería era `identificar --escalas`.
             let palabras = entrada.restantes
-            let sonNotas = !palabras.isEmpty && palabras.allSatisfy { (try? Nota(leyendo: $0)) != nil }
+            let sonNotas = !palabras.isEmpty && palabras.allSatisfy { (try? Nota(leyendoEnLaOrden: $0)) != nil }
             let texto =
                 sonNotas
                 ? TextosDeCLI.en(notacion) {
