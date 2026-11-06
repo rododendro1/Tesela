@@ -252,7 +252,7 @@ package enum DibujoSVG {
         let nombres = acordes.count == recorrido.count ? acordes : recorrido.map(\.acorde)
         var titulo = nombres[0].cifrado(en: notacion)
         for (i, (uno, otro)) in zip(recorrido, recorrido.dropFirst()).enumerated() {
-            let pasos = Tonnetz.camino(desde: uno.acorde, hasta: otro.acorde) ?? []
+            let pasos = uno.acorde.caminoNeorriemanniano(hasta: otro.acorde) ?? []
             titulo +=
                 (pasos.isEmpty ? " – " : " –\(pasos.map(\.rawValue).joined())→ ") + nombres[i + 1].cifrado(en: notacion)
         }

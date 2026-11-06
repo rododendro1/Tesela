@@ -1,5 +1,4 @@
 import ArmoniaNucleo
-import ArmoniaTeoria
 import Foundation
 
 // Conducción parsimoniosa: pasar de un acorde a otro moviendo las voces lo menos posible.
@@ -233,23 +232,23 @@ public struct ConduccionMinima: Hashable, Sendable, CustomStringConvertible {
                 : m.texto(en: notacion) + " (" + (m.semitonos > 0 ? "+" : "−") + "\(abs(m.semitonos)))"
         }
         let n = semitonosMovidos
-        let semitonos = TextosDeRepresentaciones.en(notacion) { $0.semitonos(n) }
+        let semitonos = TextosDeTeoria.en(notacion) { $0.semitonos(n) }
         return voces.joined(separator: ", ") + ": " + semitonos
     }
 }
 
-extension Tonnetz {
-    /// El camino más corto entre dos acordes de una familia moviendo `voces` voces un semitono en
+extension Acorde {
+    /// El camino más corto desde este acorde hasta otro de su familia moviendo `voces` voces un semitono en
     /// cada paso: entre séptimas, por las «Power Towers»; entre tríadas, por el «Cube Dance» (que,
     /// a diferencia de P, L y R, pasa por las aumentadas). La meta se compara sin ortografía
     /// (Do♯7 llega a Re♭7). Sin `tipos`, la primera familia conocida que contenga a los dos (Do7 →
     /// Domaj7 va por la ampliada). `nil` si los acordes no son de la misma familia.
     ///
-    ///     Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Rem7")   // Sol7 → Rem7 en dos pasos
-    public static func caminoParsimonioso(
-        desde origen: Acorde, hasta destino: Acorde, voces: Int = 1,
-        tipos: [TipoDeAcorde]? = nil
+    ///     Acorde("Sol7").caminoParsimonioso(hasta: "Rem7")   // Sol7 → Rem7 en dos pasos
+    public func caminoParsimonioso(
+        hasta destino: Acorde, voces: Int = 1, tipos: [TipoDeAcorde]? = nil
     ) -> [PasoParsimonioso]? {
+        let origen = self
         let comun = Acorde.familiasParsimoniosas.first { $0.contains(origen.tipo) && $0.contains(destino.tipo) }
         guard let familia = tipos ?? comun, familia.contains(origen.tipo),
             familia.contains(destino.tipo), (1...2).contains(voces)

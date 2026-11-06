@@ -234,11 +234,11 @@ import Testing
 
     @Test func lasDoblesConDobles() {
         let nota = NotaMicrotonal(temperada: Nota(.si, -2), sistema: .cuartosDeTono, ajuste: -1, cents: 0)
-        #expect(nota.nombre() == "Si𝄫𝄳")
+        #expect(nota.nombre(en: .espanolCompacto) == "Si𝄫𝄳")
         #expect(nota.nombre(en: .inglesCompacto) == "B𝄫𝄳")
         #expect(nota.nombre(en: .inglesASCII) == "Bbbqb")
         let mi = NotaMicrotonal(temperada: .mi, sistema: .cuartosDeTono, ajuste: -1, cents: 0)
-        #expect(mi.nombre() == "Mi𝄳")
+        #expect(mi.nombre(en: .espanolCompacto) == "Mi𝄳")
     }
 
     /// Los makamlar del tetracordo Hicaz en la dügâh y los *şed* de Nihâvend y Hicazkâr en la yegâh, con bakiye.

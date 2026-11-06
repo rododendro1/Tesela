@@ -187,7 +187,7 @@ public struct NotaMicrotonal: Hashable, Sendable {
     /// Nombre con el signo de su sistema: «Mi𝄳», «Si♭𝄳», «Si⁻¹» (una koma bajo Si), «Mi⁻²» (dos moria bajo Mi),
     /// «Mi↓» (una coma sintónica bajo el Mi pitagórico), «Fa(−37¢)» (37 cents bajo Fa). En ASCII, «Miqb», «Siq#»,
     /// «Si(-1)», «Mi(-2)», «Mi(-1)» y «Fa(-37c)».
-    public func nombre(en notacion: Notacion = .espanolCompacto) -> String {
+    public func nombre(en notacion: Notacion) -> String {
         NotaMicrotonal.nombre(temperada, sistema: sistema, ajuste: ajuste, en: notacion)
     }
 
@@ -230,7 +230,7 @@ public struct NotaMicrotonal: Hashable, Sendable {
 }
 
 extension NotaMicrotonal: CustomStringConvertible {
-    public var description: String { nombre() }
+    public var description: String { nombre(en: .espanolCompacto) }
 }
 
 extension Escala {

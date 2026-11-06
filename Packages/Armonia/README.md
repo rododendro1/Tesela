@@ -17,13 +17,13 @@ Altura("La4").frecuencia()                  // 440.0
 Altura(midi: 63, ventana: .bemoles)      // Mi♭4
 
 Acorde("Sol7/Si").posicionCerrada(octava: 3)   // [Si3, Re4, Fa4, Sol4]
-Acorde.identificar([.mi, .sol, .do]).first         // Do/Mi
+Acorde.identificar(notas: [.mi, .sol, .do]).first         // Do/Mi
 
 let menor = Escala("La menor armónica")
 menor.cifradosRomanos(cuatriadas: true)
 // ["i(maj7)", "iiø7", "♭III+maj7", "iv7", "V7", "♭VImaj7", "vii°7"]
 Escala("Mib mayor").armadura              // -3
-Escala(.do).rotacion(2)                    // Re dórico
+Escala(.do).modo(grado: 2)                    // Re dórico
 ```
 
 ## Línea de comandos
@@ -213,7 +213,10 @@ Sources/
 ├── ArmoniaTeoria/
 │   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
-│   │                      PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde
+│   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde
+│   │   └── Neorriemanniana/   TransformacionNeorriemanniana (P, L, R y caminos), CicloNeorriemanniano
+│   │                      (hexatónico, octatónico, LR), ConduccionParsimoniosa (vecinos a un semitono,
+│   │                      conducción mínima)
 │   ├── Escalas/           TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
 │   │   │                  `nombre(en:)`), Escala (con NombreDeGrado, la búsqueda por notas y la ortografía)
 │   │   ├── Nombres/       NombresDeEscalas y un fichero por idioma (`NombresDeEscalas+Catalan.swift`…): el nombre de cada
@@ -232,11 +235,8 @@ Sources/
 │                          (el catálogo), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett (números)
 ├── ArmoniaRepresentaciones/
 │   ├── Color/         CorrespondenciaDeColores (colores)
-│   ├── Redes/         Tonnetz (la red de quintas y terceras, en SVG),
-│   │   │              TablaArmonica (hexágonos de teclado isomórfico, en SVG), FormatoUIL
-│   │   └── Neorriemanniana/   TransformacionNeorriemanniana (P, L, R y caminos), CicloNeorriemanniano
-│   │                  (hexatónico, octatónico, LR), ConduccionParsimoniosa (vecinos a un semitono,
-│   │                  conducción mínima): todo lo que se apoya en el Tonnetz
+│   ├── Redes/         Tonnetz (la red de quintas y terceras, en SVG, con los recorridos y los ciclos
+│   │                  neorriemannianos), TablaArmonica (hexágonos de teclado isomórfico, en SVG), FormatoUIL
 │   └── Dibujo/        DibujoSVG (título, leyenda y colores comunes de los dibujos)
 ├── ArmoniaPartitura/
 │   ├── Modelo/        Duracion (con Figura y Tempo), Compas, Evento, Melodia (con Voz), ErrorDeLecturaDePartitura,
@@ -284,9 +284,10 @@ línea de comandos están con ella, en `Apps/ArmoniaCLI/Tests/`.
 ### Capas
 
 La biblioteca se reparte en seis módulos que siguen unas capas: **ArmoniaNucleo** (Fundamentos,
-Texto, Postonal), **ArmoniaTeoria** (Acordes, Escalas, Tonalidad, que se necesitan entre sí, y la afinación) y
-dos ramas que usan las anteriores y no se usan entre sí: **ArmoniaRepresentaciones** (color, dibujo y redes, con
-la teoría neorriemanniana) y **ArmoniaPartitura** (el modelo, el pentagrama en SVG y el contrapunto). Sobre Partitura van **ArmoniaFormatos** (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond)
+Texto, Postonal), **ArmoniaTeoria** (Acordes, con la teoría neorriemanniana, Escalas, Tonalidad, que se necesitan entre sí, y la
+afinación) y
+dos ramas que usan las anteriores y no se usan entre sí: **ArmoniaRepresentaciones** (color, dibujo y redes, como
+el Tonnetz) y **ArmoniaPartitura** (el modelo, el pentagrama en SVG y el contrapunto). Sobre Partitura van **ArmoniaFormatos** (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond)
 y **ArmoniaTrastes** (instrumentos de cuerda con trastes, que escriben lo que se toca en una partitura con su
 tablatura), que tampoco se usan entre sí. `Armonia` los reexporta
 todos; `Hexagonos`, que usan las Representaciones, se importa aparte. `python3

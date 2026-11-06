@@ -22,6 +22,19 @@ extension TextosDeTeoria {
                                   "negyedik fordítás", "ötödik fordítás", "hatodik fordítás"],
         inversionConNumero: "_. fordítás",
 
+        // CicloNeorriemanniano.swift
+        cicloHexatonico: "hexatonikus ciklus",
+        cicloOctatonico: "oktatonikus ciklus",
+        cicloLR: "LR-ciklus",
+
+        // ConduccionParsimoniosa.swift
+        semitonos: { n in Idioma.hungaro.contar(n, "félhang") },
+
+        // TransformacionNeorriemanniana.swift
+        homonima: "azonos alaphangú",
+        cambioDeSensible: "vezetőhangcsere",
+        relativa: "párhuzamos",
+
         // EstructuraDeAcorde.swift
         papelFundamental: "alaphang",
         papelTercera: "terc",

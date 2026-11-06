@@ -187,7 +187,7 @@ public enum PresentacionDeCoral {
         let coral = try Coral(leyendo: texto)
         let filas = coral.acordes.map { alturas in
             CoralPresentado.Fila(
-                cifrado: Acorde.identificar(alturas).first?.cifrado(en: notacion) ?? "–", grado: "",
+                cifrado: Acorde.identificar(alturas: alturas).first?.cifrado(en: notacion) ?? "–", grado: "",
                 voces: voces(alturas, notacion))
         }
         let faltas = coral.faltas.map(CoralPresentado.Aviso.falta)

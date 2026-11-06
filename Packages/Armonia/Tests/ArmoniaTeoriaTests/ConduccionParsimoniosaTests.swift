@@ -2,7 +2,6 @@ import Foundation
 import Testing
 
 @testable import ArmoniaNucleo
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaTeoria
 
 @Suite struct ConduccionParsimoniosaTests {
@@ -63,9 +62,9 @@ import Testing
         #expect(cuentas[.disminuidoSeptima] == [8])
         #expect(cuentas[.mayorSeptimaMayor] == [2])
         // El camino entre una séptima y un maj7 elige la familia que tiene a los dos.
-        #expect(Tonnetz.caminoParsimonioso(desde: "Do7", hasta: "Domaj7")?.map(\.description) == ["Domaj7 (Si♭→Si)"])
+        #expect(Acorde("Do7").caminoParsimonioso(hasta: "Domaj7")?.map(\.description) == ["Domaj7 (Si♭→Si)"])
         #expect(
-            Tonnetz.caminoParsimonioso(desde: "Domaj7", hasta: "Sol7")?.map(\.description) == [
+            Acorde("Domaj7").caminoParsimonioso(hasta: "Sol7")?.map(\.description) == [
                 "Do♯m7(♭5) (Do→Do♯)", "Mim7 (Do♯→Re)", "Sol7 (Mi→Fa)",
             ])
     }
@@ -95,21 +94,21 @@ import Testing
     }
 
     @Test func camino() throws {
-        let camino = try #require(Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Rem7"))
+        let camino = try #require(Acorde("Sol7").caminoParsimonioso(hasta: "Rem7"))
         #expect(camino.map(\.acorde.cifrado) == ["Sol♯°7", "Sim7(♭5)", "Rem7"])
-        #expect(Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Reb7", voces: 2)?.map(\.acorde) == [Acorde("Reb7")])
-        #expect(Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Sol7") == [])
+        #expect(Acorde("Sol7").caminoParsimonioso(hasta: "Reb7", voces: 2)?.map(\.acorde) == [Acorde("Reb7")])
+        #expect(Acorde("Sol7").caminoParsimonioso(hasta: "Sol7") == [])
         // Sin ortografía en la meta, y el último paso con la del destino.
-        #expect(Tonnetz.caminoParsimonioso(desde: "Do", hasta: "Mibm")?.last?.acorde == Acorde("Mibm"))
-        #expect(Tonnetz.caminoParsimonioso(desde: "Do", hasta: "Mibm")?.count == 4)
-        #expect(Tonnetz.caminoParsimonioso(desde: "Do", hasta: "Sol7") == nil)
-        #expect(Tonnetz.caminoParsimonioso(desde: "Do6", hasta: "Sol7") == nil)
+        #expect(Acorde("Do").caminoParsimonioso(hasta: "Mibm")?.last?.acorde == Acorde("Mibm"))
+        #expect(Acorde("Do").caminoParsimonioso(hasta: "Mibm")?.count == 4)
+        #expect(Acorde("Do").caminoParsimonioso(hasta: "Sol7") == nil)
+        #expect(Acorde("Do6").caminoParsimonioso(hasta: "Sol7") == nil)
         // Las «Power Towers» están conectadas: de Do7 se llega a las 12 × 3 + 3 séptimas.
         for n in -5...6 {
             for tipo in TipoDeAcorde.familiaDeSeptimas {
                 let destino = Acorde(Nota(pasosDeQuinta: n), tipo)
                 let camino = try #require(
-                    Tonnetz.caminoParsimonioso(desde: "Do7", hasta: destino), Comment(rawValue: destino.cifrado))
+                    Acorde("Do7").caminoParsimonioso(hasta: destino), Comment(rawValue: destino.cifrado))
                 #expect(
                     Set(camino.last?.acorde.notas.map(\.claseDeAltura) ?? Acorde("Do7").notas.map(\.claseDeAltura))
                         == Set(destino.notas.map(\.claseDeAltura)))
@@ -140,5 +139,32 @@ import Testing
         }
         #expect(MovimientoDeVoz(desde: .do, hasta: Nota(.fa, .sostenido)).semitonos == 6)
         #expect(MovimientoDeVoz(desde: .do, hasta: .si).semitonos == -1)
+    }
+}
+
+/// P, L y R, sus ciclos y sus caminos están en ArmoniaTeoria, sin el Tonnetz: dan lo mismo que el triángulo de al
+/// lado en la red (`Tonnetz.Triada.transformar(_:)`, en las pruebas de ArmoniaRepresentaciones).
+@Suite struct NeorriemannianaEnLaTeoriaTests {
+    @Test func lasTransformaciones() throws {
+        #expect(Acorde("Do").transformar(.p) == Acorde("Dom"))
+        #expect(Acorde("Do").transformar(.l) == Acorde("Mim"))
+        #expect(Acorde("Do").transformar(.r) == Acorde("Lam"))
+        #expect(Acorde("Lam").transformar(.l) == Acorde("Fa"))
+        #expect(Acorde("Mib").transformar(.r) == Acorde("Dom"))
+        #expect(Acorde("Do/Mi").transformar(.p) == Acorde("Dom"))
+        #expect(Acorde("Sol7").transformar(.p) == nil)
+        #expect(try Acorde("Do").transformar(leyendo: "PLR") == Acorde("Fam"))
+        #expect(TransformacionNeorriemanniana.entre("Do", "Mim") == .l)
+    }
+
+    @Test func losCaminosYLosCiclos() {
+        #expect(Acorde("Do").caminoNeorriemanniano(hasta: "Mibm") == [.p, .r, .p])
+        #expect(Acorde("Do").caminoNeorriemanniano(hasta: "Sol#", enarmonico: true) == [.p, .l])
+        #expect(Acorde("Do").caminoNeorriemanniano(hasta: "Sol7") == nil)
+        #expect(
+            Acorde("Sol7").caminoParsimonioso(hasta: "Rem7")?.map(\.acorde.cifrado) == ["Sol♯°7", "Sim7(♭5)", "Rem7"])
+        #expect(Acorde("Do").ciclo(.hexatonico) == ["Do", "Dom", "Lab", "Labm", "Mi", "Mim", "Do"])
+        #expect(Acorde("Do").ciclo(.octatonico)?.count == 9)
+        #expect(Acorde("Do7").ciclo(.lr) == nil)
     }
 }

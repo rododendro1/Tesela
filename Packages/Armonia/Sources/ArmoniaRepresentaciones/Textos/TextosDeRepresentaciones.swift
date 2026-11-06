@@ -27,19 +27,6 @@ struct TextosDeRepresentaciones: TextosTraducidos {
     let leyendaPasoDelRecorrido: String
     let leyendaFundamentalDelPrimerAcorde: String
 
-    // MARK: CicloNeorriemanniano.swift
-    let cicloHexatonico: String
-    let cicloOctatonico: String
-    let cicloLR: String
-
-    // MARK: ConduccionParsimoniosa.swift
-    let semitonos: @Sendable (Int) -> String
-
-    // MARK: TransformacionNeorriemanniana.swift
-    let homonima: String
-    let cambioDeSensible: String
-    let relativa: String
-
     // MARK: TecladoIsomorfico.swift
     let tablaArmonica: String
     let wickiHaydenEspejo: String

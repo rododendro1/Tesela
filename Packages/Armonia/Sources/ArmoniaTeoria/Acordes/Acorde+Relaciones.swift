@@ -29,7 +29,7 @@ extension Acorde {
     public var sinFundamental: Acorde? {
         let resto = notasDesdeElBajo.filter { $0.claseDeAltura != fundamental.claseDeAltura }
         guard resto.count >= 3 else { return nil }
-        return Acorde.identificar(resto).first
+        return Acorde.identificar(notas: resto).first
     }
 }
 

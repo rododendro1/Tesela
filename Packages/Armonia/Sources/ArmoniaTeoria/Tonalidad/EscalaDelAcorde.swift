@@ -100,7 +100,7 @@ extension Tonalidad {
         madres.compactMap { madre in
             let grado =
                 madre.grado(de: raiz) ?? madre.notas.firstIndex { $0.esEnarmonica(de: raiz) }.map { $0 + 1 }
-            return grado.map { madre.rotacion($0) }
+            return grado.map { madre.modo(grado: $0) }
         }
     }
 }

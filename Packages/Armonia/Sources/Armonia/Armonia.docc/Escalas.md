@@ -53,19 +53,19 @@ los Andes y el klezmer.
 Escala(.do, .dobleArmonica).notas      // Do Re♭ Mi Fa Sol La♭ Si
 Escala("Do enigmática").notas          // Do Re♭ Mi Fa♯ Sol♯ La♯ Si
 Escala("La menor húngara").nombre(en: .inglesASCII)   // "A hungarian minor"
-TipoDeEscala.mayorArmonica.rotacion(4).nombre    // "lidio ♭3"
+TipoDeEscala.mayorArmonica.modo(grado: 4).nombre    // "lidio ♭3"
 TipoDeEscala.dobleArmonica == .hitzazkiar        // true
 Escala("Mi flamenca").notas                      // Mi Fa Sol Sol♯ La Si Do Re
 Escala("Do modo 3 de Messiaen").notas            // Do Re Mi♭ Mi Fa♯ Sol La♭ Si♭ Si
 Escala("Re menor rumana").tipo.nombre            // "dórico ♯4"
-TipoDeEscala.dobleArmonica.rotacion(5).nombre    // "oriental"
+TipoDeEscala.dobleArmonica.modo(grado: 5).nombre    // "oriental"
 Escala.hexacordoBlando.notas                     // Fa Sol La Si♭ Do Re
-TipoDeEscala.mayorHungara.rotacion(4).nombre     // "superlocrio ♮6"
+TipoDeEscala.mayorHungara.modo(grado: 4).nombre     // "superlocrio ♮6"
 Escala("Do pentatónica escocesa").notas          // Do Re Fa Sol La
 Escala("La de Liszt").tipo.nombre                // "menor húngara"
 Escala("Do menor bachiana").notas                // Do Re Mi♭ Fa Sol La Si
 ```
-- `Escala.candidatos(_:)` y `candidatos(clasesDeAltura:)`: qué escalas contienen unas notas, de más a menos
+- `Escala.candidatos(notas:)` y `candidatos(clasesDeAltura:)`: qué escalas contienen unas notas, de más a menos
   probable (menos notas sobrantes y menos alteraciones); `identificar` da solo las escalas.
 - `notasDeLaArmadura` (Mi♭ mayor → Si♭, Mi♭, La♭), `Escala(armadura:tipo:)`,
   `circuloDeQuintas(_:)`, `distancia(hasta:)` y `enarmonicaMasSimple` (Do♯ → Re♭ mayor),
@@ -545,7 +545,7 @@ cada uno: `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 
 `menorMelodica` es la clásica: sube con la 6ª y la 7ª mayores y baja como la natural.
 `menorMelodicaJazz` usa la 6ª y la 7ª mayores también al bajar; es la escala madre de los modos
-de la menor melódica (`TipoDeEscala.alterada.rotacion(2) == .menorMelodicaJazz`) y tiene el mismo
+de la menor melódica (`TipoDeEscala.alterada.modo(grado: 2) == .menorMelodicaJazz`) y tiene el mismo
 contenido que el mēḷa 23, Gaurīmanoharī. En inglés, "melodic minor" es la clásica y
 "jazz minor" o "ascending melodic minor", la de jazz.
 

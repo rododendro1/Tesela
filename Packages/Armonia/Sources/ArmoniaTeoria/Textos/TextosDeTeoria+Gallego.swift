@@ -1,5 +1,6 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaTeoria en gallego. Los campos y lo que significa cada uno están en
 // `TextosDeTeoria.swift`.
 
@@ -20,6 +21,19 @@ extension TextosDeTeoria {
         nombresDeLasInversiones: ["estado fundamental", "primeira inversión", "segunda inversión", "terceira inversión",
                                   "cuarta inversión", "quinta inversión", "sexta inversión"],
         inversionConNumero: "inversión _",
+
+        // CicloNeorriemanniano.swift
+        cicloHexatonico: "ciclo hexatónico",
+        cicloOctatonico: "ciclo octatónico",
+        cicloLR: "ciclo LR",
+
+        // ConduccionParsimoniosa.swift
+        semitonos: { n in Idioma.gallego.contar(n, "semiton", "semitons") },
+
+        // TransformacionNeorriemanniana.swift
+        homonima: "homónima",
+        cambioDeSensible: "cambio de sensible",
+        relativa: "relativa",
 
         // EstructuraDeAcorde.swift
         papelFundamental: "fundamental",

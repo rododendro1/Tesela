@@ -173,7 +173,7 @@ extension Escala {
     public var escalaMadre: ModoDeEscala? {
         guard !tipo.esDireccional else { return nil }
         for familia in TipoDeEscala.familiasDeModos where familia.intervalos.count == tipo.intervalos.count {
-            for grado in 1...familia.intervalos.count where familia.rotacion(grado) == tipo {
+            for grado in 1...familia.intervalos.count where familia.modo(grado: grado) == tipo {
                 return ModoDeEscala(madre: Escala(tonica - familia.intervalos[grado - 1], familia), grado: grado)
             }
         }

@@ -156,10 +156,10 @@ import Testing
     }
 
     @Test func conjuntosQueNoSonAcordes() {
-        #expect(Acorde.identificar([Nota]()).isEmpty)
-        #expect(Acorde.identificar([Nota.do]).isEmpty)
-        #expect(Acorde.identificar([Nota.do, .do]).isEmpty)
-        #expect(Acorde.identificar([Nota.do, Nota(.re, .bemol)]).isEmpty)
+        #expect(Acorde.identificar(notas: [Nota]()).isEmpty)
+        #expect(Acorde.identificar(notas: [Nota.do]).isEmpty)
+        #expect(Acorde.identificar(notas: [Nota.do, .do]).isEmpty)
+        #expect(Acorde.identificar(notas: [Nota.do, Nota(.re, .bemol)]).isEmpty)
         #expect(Acorde.identificar(midi: []).isEmpty)
         #expect(Acorde.identificar(midi: [60, 72, 84]).isEmpty)
         #expect(Acorde.identificar(midi: [60, 61]).isEmpty)

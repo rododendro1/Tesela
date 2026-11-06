@@ -221,11 +221,11 @@ try Acorde("Do").transformar(leyendo: "PLR") == Acorde("Fam")     // true
 Acorde("Do").transformar(TransformacionNeorriemanniana.s) == Acorde("Do#m")   // true
 Acorde("Sol7").transformar(.p) == nil                             // true
 TransformacionNeorriemanniana.entre("Do", "Mim") == .l            // true
-Tonnetz.camino(desde: "Do", hasta: "Mibm") == [.p, .r, .p]        // true
-Tonnetz.camino(desde: "Do", hasta: "Sol#", enarmonico: true) == [.p, .l]   // true
+Acorde("Do").caminoNeorriemanniano(hasta: "Mibm") == [.p, .r, .p]        // true
+Acorde("Do").caminoNeorriemanniano(hasta: "Sol#", enarmonico: true) == [.p, .l]   // true
 ```
 
-`Tonnetz.camino(desde:hasta:)` da la secuencia más corta de P, L y R entre dos tríadas. Para las séptimas, y
+`Acorde.caminoNeorriemanniano(hasta:)` da la secuencia más corta de P, L y R entre dos tríadas. Para las séptimas, y
 para caminos que pasan por tríadas aumentadas, está la conducción parsimoniosa (véase Acordes). Con
 ortografía, Sol♯ y La♭ son destinos distintos; con `enarmonico: true` basta con que suenen igual.
 

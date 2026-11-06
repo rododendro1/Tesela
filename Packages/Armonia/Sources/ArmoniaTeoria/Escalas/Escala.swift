@@ -131,9 +131,9 @@ public struct Escala: Hashable, Sendable {
         return minimo + 1
     }
 
-    /// Rotación que empieza en el grado indicado (el modo de ese grado): `Escala(.do).rotacion(2)` → Re dórico.
-    public func rotacion(_ grado: Int) -> Escala {
-        Escala(self.grado(grado), tipo.rotacion(grado))
+    /// El modo que empieza en el grado indicado (la rotación de la escala): `Escala(.do).modo(grado: 2)` → Re dórico.
+    public func modo(grado: Int) -> Escala {
+        Escala(self.grado(grado), tipo.modo(grado: grado))
     }
 
     public func transponer(_ intervalo: Intervalo) -> Escala {
@@ -371,8 +371,8 @@ extension Escala {
     /// El coste es el número de notas de la escala que sobran más una décima por cada alteración;
     /// en caso de empate, el orden de `tipos` y la armadura más sencilla.
     ///
-    ///     Escala.candidatos([.do, .mi, .sol, .si, "Fa#"]).first?.valor   // Do pentatónica lidia
-    public static func candidatos(_ notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [Candidato<
+    ///     Escala.candidatos(notas: [.do, .mi, .sol, .si, "Fa#"]).first?.valor   // Do pentatónica lidia
+    public static func candidatos(notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [Candidato<
         Escala
     >] {
         ordenar(contenedoras(notas, tipos: tipos)) { escala in
@@ -381,8 +381,20 @@ extension Escala {
     }
 
     /// Escalas que contienen las notas dadas, de más a menos probable (sin el coste).
-    public static func identificar(_ notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [Escala] {
-        candidatos(notas, tipos: tipos).map(\.valor)
+    public static func identificar(notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [Escala] {
+        candidatos(notas: notas, tipos: tipos).map(\.valor)
+    }
+
+    /// Igual, a partir de notas con octava: cuentan sus nombres.
+    public static func candidatos(
+        alturas: [Altura], tipos: [TipoDeEscala] = TipoDeEscala.occidentales
+    ) -> [Candidato<Escala>] {
+        candidatos(notas: alturas.map(\.nota), tipos: tipos)
+    }
+
+    /// Escalas que contienen esas alturas, de más a menos probable (sin el coste).
+    public static func identificar(alturas: [Altura], tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [Escala] {
+        candidatos(alturas: alturas, tipos: tipos).map(\.valor)
     }
 
     /// Escalas que contienen todas las clases de altura dadas (sin importar la ortografía), de más
@@ -405,6 +417,20 @@ extension Escala {
         tipos: [TipoDeEscala] = TipoDeEscala.occidentales
     ) -> [Escala] {
         candidatos(clasesDeAltura: alturas, tipos: tipos).map(\.valor)
+    }
+
+    /// Igual, a partir de notas MIDI: cuentan sus clases de altura.
+    ///
+    ///     Escala.candidatos(midi: [60, 64, 67, 71, 66]).first?.valor   // Do pentatónica lidia
+    public static func candidatos(
+        midi: [Int], tipos: [TipoDeEscala] = TipoDeEscala.occidentales
+    ) -> [Candidato<Escala>] {
+        candidatos(clasesDeAltura: midi, tipos: tipos)
+    }
+
+    /// Escalas que contienen esas notas MIDI, de más a menos probable (sin el coste).
+    public static func identificar(midi: [Int], tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [Escala] {
+        candidatos(midi: midi, tipos: tipos).map(\.valor)
     }
 
     /// Ordena por coste (notas que sobran + 0,1 por alteración) conservando el orden previo en

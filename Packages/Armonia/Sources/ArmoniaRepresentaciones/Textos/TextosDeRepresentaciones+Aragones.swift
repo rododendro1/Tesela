@@ -24,19 +24,6 @@ extension TextosDeRepresentaciones {
         leyendaPasoDelRecorrido: "paso d\'o recorrido (P, L, R)",
         leyendaFundamentalDelPrimerAcorde: "fundamental d\'o primer acorde",
 
-        // CicloNeorriemanniano.swift
-        cicloHexatonico: "ciclo hexatónico",
-        cicloOctatonico: "ciclo octatónico",
-        cicloLR: "ciclo LR",
-
-        // ConduccionParsimoniosa.swift
-        semitonos: { n in Idioma.aragones.contar(n, "semitono", "semitonos") },
-
-        // TransformacionNeorriemanniana.swift
-        homonima: "homónima",
-        cambioDeSensible: "cambio de sensible",
-        relativa: "relativa",
-
         // TecladoIsomorfico.swift
         tablaArmonica: "Tabla armónica",
         wickiHaydenEspejo: "Wicki-Hayden (espello)",

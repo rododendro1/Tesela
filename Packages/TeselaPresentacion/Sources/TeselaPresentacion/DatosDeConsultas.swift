@@ -70,9 +70,9 @@ public struct DatosDeCandidato: Hashable, Sendable, Codable {
     ) throws -> [DatosDeCandidato] {
         let candidatos: [Candidato<Acorde>]
         if let alturas = try? textos.map({ try Altura(leyendo: $0) }) {
-            candidatos = Acorde.candidatos(alturas)
+            candidatos = Acorde.candidatos(alturas: alturas)
         } else {
-            candidatos = Acorde.candidatos(try textos.map { try Nota(leyendo: $0) })
+            candidatos = Acorde.candidatos(notas: try textos.map { try Nota(leyendo: $0) })
         }
         return candidatos.prefix(limite).map { DatosDeCandidato($0, notacion: notacion) }
     }

@@ -1,3 +1,3 @@
 import Armonia
 
-Acorde.identificar([.mi, .sol, .do]).first // Do/Mi
+Acorde.identificar(notas: [.mi, .sol, .do]).first // Do/Mi

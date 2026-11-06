@@ -41,3 +41,54 @@ extension MapaDeBrillo.Enlace {
     @available(*, deprecated, renamed: "hasta")
     public var a: Nota { hasta }
 }
+
+extension Acorde {
+    /// La forma de antes de `candidatos(notas:)`, sin etiqueta: ahora las tres consultas (acordes, escalas y
+    /// tonalidades) se escriben igual, con `notas:`, `alturas:`, `clasesDeAltura:` o `midi:`.
+    @available(*, deprecated, renamed: "candidatos(notas:)")
+    public static func candidatos(_ notas: [Nota]) -> [Candidato<Acorde>] { candidatos(notas: notas) }
+
+    /// La forma de antes de `identificar(notas:)`.
+    @available(*, deprecated, renamed: "identificar(notas:)")
+    public static func identificar(_ notas: [Nota]) -> [Acorde] { identificar(notas: notas) }
+
+    /// La forma de antes de `candidatos(alturas:)`.
+    @available(*, deprecated, renamed: "candidatos(alturas:)")
+    public static func candidatos(_ alturas: [Altura]) -> [Candidato<Acorde>] { candidatos(alturas: alturas) }
+
+    /// La forma de antes de `identificar(alturas:)`.
+    @available(*, deprecated, renamed: "identificar(alturas:)")
+    public static func identificar(_ alturas: [Altura]) -> [Acorde] { identificar(alturas: alturas) }
+}
+
+extension Escala {
+    /// La forma de antes de `candidatos(notas:tipos:)`, sin etiqueta.
+    @available(*, deprecated, renamed: "candidatos(notas:tipos:)")
+    public static func candidatos(
+        _ notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.occidentales
+    ) -> [Candidato<Escala>] { candidatos(notas: notas, tipos: tipos) }
+
+    /// La forma de antes de `identificar(notas:tipos:)`.
+    @available(*, deprecated, renamed: "identificar(notas:tipos:)")
+    public static func identificar(_ notas: [Nota], tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [Escala] {
+        identificar(notas: notas, tipos: tipos)
+    }
+}
+
+extension TipoDeEscala {
+    /// El nombre de antes de `modo(grado:)`: el modo que empieza en ese grado.
+    @available(*, deprecated, renamed: "modo(grado:)")
+    public func rotacion(_ grado: Int) -> TipoDeEscala { modo(grado: grado) }
+}
+
+extension Escala {
+    /// El nombre de antes de `modo(grado:)`: `Escala(.do).modo(grado: 2)` es Re dórico.
+    @available(*, deprecated, renamed: "modo(grado:)")
+    public func rotacion(_ grado: Int) -> Escala { modo(grado: grado) }
+}
+
+extension NotaMicrotonal {
+    /// La forma de antes, con la notación española por omisión: ahora se da siempre, como en el resto de la API.
+    @available(*, deprecated, message: "usa nombre(en: .espanolCompacto)")
+    public func nombre() -> String { nombre(en: .espanolCompacto) }
+}

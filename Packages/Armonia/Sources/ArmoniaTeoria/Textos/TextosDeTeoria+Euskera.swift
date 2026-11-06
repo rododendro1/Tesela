@@ -22,6 +22,19 @@ extension TextosDeTeoria {
                                   "laugarren inbertsioa", "bosgarren inbertsioa", "seigarren inbertsioa"],
         inversionConNumero: "_. inbertsioa",
 
+        // CicloNeorriemanniano.swift
+        cicloHexatonico: "ziklo hexatonikoa",
+        cicloOctatonico: "ziklo oktatonikoa",
+        cicloLR: "LR zikloa",
+
+        // ConduccionParsimoniosa.swift
+        semitonos: { n in "\(n) tonuerdi" },
+
+        // TransformacionNeorriemanniana.swift
+        homonima: "homonimoa",
+        cambioDeSensible: "sentsiblearen aldaketa",
+        relativa: "erlatiboa",
+
         // EstructuraDeAcorde.swift
         papelFundamental: "oinarria",
         papelTercera: "hirugarrena",

@@ -30,6 +30,11 @@ extension Tonalidad {
         estimar(clases: notas.map(\.claseDeAltura), pesos: duraciones, nombres: notas)
     }
 
+    /// Igual, a partir de clases de altura (0 = Do … 11 = Si).
+    public static func candidatos(clasesDeAltura: [Int], duraciones: [Double]? = nil) -> [Candidato<Tonalidad>] {
+        candidatos(midi: clasesDeAltura, duraciones: duraciones)
+    }
+
     /// Tonalidades de más a menos probable, sin el coste: `Tonalidad.identificar(midi: …).first`.
     public static func identificar(midi: [Int], duraciones: [Double]? = nil) -> [Tonalidad] {
         candidatos(midi: midi, duraciones: duraciones).map(\.valor)

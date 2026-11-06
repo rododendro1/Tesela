@@ -444,7 +444,7 @@ extension Contrapunto {
     ///
     ///     Especie 1, con el contrapunto encima del cantus firmus
     ///     Quintas paralelas (compases 1 → 2)
-    public func informe(en notacion: Notacion = .espanolCompacto) -> String {
+    public func informe(en notacion: Notacion) -> String {
         let n = especie.rawValue
         let cabecera =
             contrapuntoArriba

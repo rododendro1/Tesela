@@ -42,7 +42,7 @@ for cifrado in ["Do", "Rem7", "Sol7/Si", "Fa#m7b5", "Sibmaj7", "Mi°7"] {
         "·", acorde.posicionCerrada(octava: 3).map(\.description).joined(separator: " "),
         "·", acorde.nombre)
 }
-let identificados = Acorde.identificar([Altura("Mi3"), Altura("Sol3"), Altura("Do4"), Altura("La3")])
+let identificados = Acorde.identificar(alturas: [Altura("Mi3"), Altura("Sol3"), Altura("Do4"), Altura("La3")])
 print("Mi3 Sol3 La3 Do4 →", identificados.map(\.cifrado))
 
 titulo("Cifrado generativo")
@@ -59,7 +59,7 @@ let conjuntos: [[Nota]] = [
     ["Do", "Mi", "Sib"], ["Do", "Mi", "Sib", "Reb"], ["Re", "Do", "Mi", "Sol"], ["Mi", "Sol", "Do", "Mi"],
 ]
 for notas in conjuntos {
-    let lecturas = Acorde.candidatos(notas).prefix(3).map { c -> String in
+    let lecturas = Acorde.candidatos(notas: notas).prefix(3).map { c -> String in
         let faltan = c.omitidas.isEmpty ? "" : " sin " + c.omitidas.map(\.nombre).joined(separator: ",")
         return "\(c.valor.cifrado) (\(c.coste)\(faltan))"
     }
@@ -137,7 +137,7 @@ for e in [Escala(.do), Escala(.la, .menorArmonica), Escala(.la, .menorMelodica)]
     print("  ", acordes.joined(separator: "  "))
     print("  ", romanos.joined(separator: "  "))
 }
-print("Modos de Do mayor:", (1...7).map { Escala(.do).rotacion($0).nombre })
+print("Modos de Do mayor:", (1...7).map { Escala(.do).modo(grado: $0).nombre })
 print(
     "La menor armónica (ref. menor natural):",
     Escala(.la, .menorArmonica).cifradosRomanos(referencia: .menorNatural).map { $0 ?? "?" })
@@ -189,8 +189,8 @@ print("Círculo de quintas:", Escala.circuloDeQuintas().map(\.tonica.nombre).joi
 print("Armadura de Mi♭ mayor:", Escala("Mib mayor").notasDeLaArmadura!.map(\.nombre))
 print("Vecinas de Do mayor:", Tonalidad(.do).vecinas.map(\.nombre))
 print("Do♯ mayor →", Escala("Do# mayor").enarmonicaMasSimple)
-print("Modos de La menor melódica:", (1...7).map { Escala(.la, .menorMelodica).rotacion($0).nombre })
-print("Escalas con Do Mi Sol Si Fa♯:", Escala.identificar([.do, .mi, .sol, .si, "Fa#"]).prefix(6).map(\.nombre))
+print("Modos de La menor melódica:", (1...7).map { Escala(.la, .menorMelodica).modo(grado: $0).nombre })
+print("Escalas con Do Mi Sol Si Fa♯:", Escala.identificar(notas: [.do, .mi, .sol, .si, "Fa#"]).prefix(6).map(\.nombre))
 print("Nombres de los grados en Do mayor:", (1...7).map { Escala(.do).nombreDeGrado($0)!.nombre })
 
 titulo("Intervalos: clase y consonancia")

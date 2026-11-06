@@ -9,7 +9,7 @@ extension Acorde {
     /// - Se admite la quinta justa omitida (Do–Mi–Si♭ → Do7, con Sol en `omitidas`).
     /// - Se admiten tensiones y alteraciones (Do–Mi–Si♭–Re♭ → Do7(♭9)).
     /// - Con cuatro notas o más se prueba también el bajo como nota ajena (Re–Do–Mi–Sol → Do/Re).
-    public static func candidatos(_ notas: [Nota]) -> [Candidato<Acorde>] {
+    public static func candidatos(notas: [Nota]) -> [Candidato<Acorde>] {
         var unicas: [Nota] = []
         for n in notas where !unicas.contains(n) { unicas.append(n) }
         guard let bajo = unicas.first, unicas.count >= 2 else { return [] }
@@ -81,19 +81,19 @@ extension Acorde {
     }
 
     /// Acordes que forman las notas, del más al menos probable.
-    /// `Acorde.identificar([.mi, .sol, .do]).first` → Do/Mi.
-    public static func identificar(_ notas: [Nota]) -> [Acorde] {
-        candidatos(notas).map(\.valor)
+    /// `Acorde.identificar(notas: [.mi, .sol, .do]).first` → Do/Mi.
+    public static func identificar(notas: [Nota]) -> [Acorde] {
+        candidatos(notas: notas).map(\.valor)
     }
 
     /// Igual, a partir de notas con octava (el bajo es la más grave).
-    public static func candidatos(_ notas: [Altura]) -> [Candidato<Acorde>] {
-        candidatos(notas.sorted().map(\.nota))
+    public static func candidatos(alturas: [Altura]) -> [Candidato<Acorde>] {
+        candidatos(notas: alturas.sorted().map(\.nota))
     }
 
-    /// Los acordes que pueden formar esas alturas, de más a menos probable: los valores de ``candidatos(_:)``.
-    public static func identificar(_ notas: [Altura]) -> [Acorde] {
-        candidatos(notas).map(\.valor)
+    /// Los acordes que pueden formar esas alturas, de más a menos probable: los valores de ``candidatos(alturas:)``.
+    public static func identificar(alturas: [Altura]) -> [Acorde] {
+        candidatos(alturas: alturas).map(\.valor)
     }
 }
 

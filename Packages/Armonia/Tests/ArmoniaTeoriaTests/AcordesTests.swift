@@ -51,18 +51,19 @@ import Testing
     }
 
     @Test func identificacion() {
-        #expect(Acorde.identificar([.mi, .sol, .do]).first == Acorde(.do, .mayor, inversion: 1))
+        #expect(Acorde.identificar(notas: [.mi, .sol, .do]).first == Acorde(.do, .mayor, inversion: 1))
 
-        let ambiguo = Acorde.identificar([Nota.la, .do, .mi, .sol]).map(\.cifrado)
+        let ambiguo = Acorde.identificar(notas: [Nota.la, .do, .mi, .sol]).map(\.cifrado)
         #expect(ambiguo.first == "Lam7")
         #expect(ambiguo.contains("Do6/La"))
 
-        let porAltura = Acorde.identificar([Altura("Fa4"), Altura("Si3"), Altura("Re4"), Altura("Sol3")])
+        let porAltura = Acorde.identificar(alturas: [Altura("Fa4"), Altura("Si3"), Altura("Re4"), Altura("Sol3")])
         #expect(porAltura.first?.cifrado == "Sol7")
 
         // La ortografía importa: Do–Mi–Sol♯ es Do aumentado; Do–Mi–La♭ es La♭ aumentado sobre Do.
-        #expect(Acorde.identificar([.do, .mi, Nota("Sol#")]).first == Acorde(.do, .aumentado))
-        #expect(Acorde.identificar([.do, .mi, Nota("Lab")]).first == Acorde(Nota("Lab"), .aumentado, inversion: 1))
+        #expect(Acorde.identificar(notas: [.do, .mi, Nota("Sol#")]).first == Acorde(.do, .aumentado))
+        #expect(
+            Acorde.identificar(notas: [.do, .mi, Nota("Lab")]).first == Acorde(Nota("Lab"), .aumentado, inversion: 1))
     }
 
     @Test func sextasAumentadas() throws {
@@ -70,37 +71,37 @@ import Testing
         #expect(italiana.notas == ["La♭", "Do", "Fa♯"])
         #expect(italiana.tipo.nombre == "sexta aumentada italiana")
         #expect(italiana.tipo.estructura.papel(de: .sextaAumentada) == .sexta)
-        #expect(Acorde.identificar(["La♭", "Do", "Fa♯"] as [Nota]).first?.description == "La♭(♯6,omit5)")
-        #expect(Acorde.identificar(["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.description == "La♭(♯6)")
+        #expect(Acorde.identificar(notas: ["La♭", "Do", "Fa♯"] as [Nota]).first?.description == "La♭(♯6,omit5)")
+        #expect(Acorde.identificar(notas: ["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.description == "La♭(♯6)")
         #expect(
-            Acorde.identificar(["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.tipo.nombre(en: .inglesASCII)
+            Acorde.identificar(notas: ["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.tipo.nombre(en: .inglesASCII)
                 == "German augmented sixth")
-        let francesa = Acorde.identificar(["La♭", "Do", "Re", "Fa♯"] as [Nota])
+        let francesa = Acorde.identificar(notas: ["La♭", "Do", "Re", "Fa♯"] as [Nota])
         #expect(
             francesa.contains { $0.description == "La♭(♯6,♯11,omit5)" && $0.tipo.nombre == "sexta aumentada francesa" })
     }
 
     @Test func identificacionTolerante() {
         // Quinta omitida.
-        let sinQuinta = Acorde.candidatos([.do, .mi, Nota("Sib")]).first
+        let sinQuinta = Acorde.candidatos(notas: [.do, .mi, Nota("Sib")]).first
         #expect(sinQuinta?.valor.cifrado == "Do7")
         #expect(sinQuinta?.omitidas == [.sol])
 
         // Notas duplicadas.
-        #expect(Acorde.identificar([.do, .mi, .sol, .do, .mi]).first?.cifrado == "Do")
+        #expect(Acorde.identificar(notas: [.do, .mi, .sol, .do, .mi]).first?.cifrado == "Do")
 
         // Tensiones alteradas.
-        #expect(Acorde.identificar([.do, .mi, Nota("Sib"), Nota("Reb")]).first?.cifrado == "Do7(♭9)")
+        #expect(Acorde.identificar(notas: [.do, .mi, Nota("Sib"), Nota("Reb")]).first?.cifrado == "Do7(♭9)")
 
         // Bajo ajeno al acorde.
-        let conBajo = Acorde.identificar([.re, .do, .mi, .sol]).map(\.cifrado)
+        let conBajo = Acorde.identificar(notas: [.re, .do, .mi, .sol]).map(\.cifrado)
         #expect(conBajo.contains("Do/Re"))
 
         // Los costes salen ordenados.
-        let costes = Acorde.candidatos([.re, .do, .mi, .sol]).map(\.coste)
+        let costes = Acorde.candidatos(notas: [.re, .do, .mi, .sol]).map(\.coste)
         #expect(costes == costes.sorted())
 
-        #expect(Acorde.identificar([.do, Nota("Do#")]).isEmpty)
+        #expect(Acorde.identificar(notas: [.do, Nota("Do#")]).isEmpty)
     }
 
     @Test func transposicion() {
@@ -349,7 +350,7 @@ import Testing
         for nombres in ejemplos {
             let alturas = nombres.map(\.claseDeAltura)
             #expect(
-                Acorde.identificar(clasesDeAltura: alturas).first == Acorde.identificar(nombres).first,
+                Acorde.identificar(clasesDeAltura: alturas).first == Acorde.identificar(notas: nombres).first,
                 Comment(rawValue: nombres.map(\.nombre).joined(separator: " ")))
         }
     }

@@ -17,11 +17,11 @@ import Hexagonos
         comprobar(Altura("La4").frecuencia(), #"440.0"#, doc, 5)
         comprobar(Altura(midi: 63, ventana: .bemoles), #"Mi♭4"#, doc, 6)
         comprobar(Acorde("Sol7/Si").posicionCerrada(octava: 3), #"[Si3, Re4, Fa4, Sol4]"#, doc, 8)
-        comprobar(Acorde.identificar([.mi, .sol, .do]).first, #"Do/Mi"#, doc, 9)
+        comprobar(Acorde.identificar(notas: [.mi, .sol, .do]).first, #"Do/Mi"#, doc, 9)
         let menor = Escala("La menor armónica")
         comprobar(menor.cifradosRomanos(cuatriadas: true), #"["i(maj7)", "iiø7", "♭III+maj7", "iv7", "V7", "♭VImaj7", "vii°7"]"#, doc, 12)
         comprobar(Escala("Mib mayor").armadura, #"-3"#, doc, 14)
-        comprobar(Escala(.do).rotacion(2), #"Re dórico"#, doc, 15)
+        comprobar(Escala(.do).modo(grado: 2), #"Re dórico"#, doc, 15)
         _ = i
     }
 
@@ -39,18 +39,18 @@ import Hexagonos
     @Test func acordes2() throws {
         // Sources/Armonia/Armonia.docc/Acordes.md, bloque 2
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 2)
-        let c = Acorde.candidatos([.do, .mi, "Sib"]).first!
+        let c = Acorde.candidatos(notas: [.do, .mi, "Sib"]).first!
         comprobar(c.valor.cifrado, #""Do7""#, doc, 1)
         comprobar(c.omitidas, #"[Sol]"#, doc, 2)
-        comprobar(Acorde.identificar([.do, .mi, "Sib", "Reb"]).first, #"Do7(♭9)"#, doc, 3)
+        comprobar(Acorde.identificar(notas: [.do, .mi, "Sib", "Reb"]).first, #"Do7(♭9)"#, doc, 3)
     }
 
     @Test func acordes3() throws {
         // Sources/Armonia/Armonia.docc/Acordes.md, bloque 3
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 3)
         comprobar(Acorde("Lab(#6,omit5)").tipo.nombre, #""sexta aumentada italiana""#, doc, 0)
-        comprobar(Acorde.identificar(["La♭", "Do", "Fa♯"] as [Nota]).first?.cifrado, #""La♭(♯6,omit5)""#, doc, 1)
-        comprobar(Acorde.identificar(["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.cifrado, #""La♭(♯6)""#, doc, 2)
+        comprobar(Acorde.identificar(notas: ["La♭", "Do", "Fa♯"] as [Nota]).first?.cifrado, #""La♭(♯6,omit5)""#, doc, 1)
+        comprobar(Acorde.identificar(notas: ["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.cifrado, #""La♭(♯6)""#, doc, 2)
     }
 
     @Test func acordes4() throws {
@@ -81,10 +81,10 @@ import Hexagonos
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 6)
         comprobar(Acorde("Sol7").vecinosParsimoniosos().map(\.description) == ["Sol♯°7 (Sol→Sol♯)", "Solm7 (Si→Si♭)", "Mim7 (Fa→Mi)"], #"true"#, doc, 0)
         comprobar(Acorde("Sol7").vecinosParsimoniosos(voces: 2).contains { $0.acorde == Acorde("Reb7") }, #"true"#, doc, 1)
-        comprobar(Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Rem7")?.map(\.acorde.cifrado) == ["Sol♯°7", "Sim7(♭5)", "Rem7"], #"true"#, doc, 2)
-        comprobar(Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Reb7", voces: 2)?.count == 1, #"true"#, doc, 3)
+        comprobar(Acorde("Sol7").caminoParsimonioso(hasta: "Rem7")?.map(\.acorde.cifrado) == ["Sol♯°7", "Sim7(♭5)", "Rem7"], #"true"#, doc, 2)
+        comprobar(Acorde("Sol7").caminoParsimonioso(hasta: "Reb7", voces: 2)?.count == 1, #"true"#, doc, 3)
         comprobar(Acorde("Domaj7").vecinosParsimoniosos().map(\.description) == ["Do♯m7(♭5) (Do→Do♯)", "Do7 (Si→Si♭)"], #"true"#, doc, 4)
-        comprobar(Tonnetz.caminoParsimonioso(desde: "Domaj7", hasta: "Sol7")?.count == 3, #"true"#, doc, 5)
+        comprobar(Acorde("Domaj7").caminoParsimonioso(hasta: "Sol7")?.count == 3, #"true"#, doc, 5)
     }
 
     @Test func acordes7() throws {
@@ -229,8 +229,8 @@ import Hexagonos
         comprobar(Acorde("Do").transformar(TransformacionNeorriemanniana.s) == Acorde("Do#m"), #"true"#, doc, 3)
         comprobar(Acorde("Sol7").transformar(.p) == nil, #"true"#, doc, 4)
         comprobar(TransformacionNeorriemanniana.entre("Do", "Mim") == .l, #"true"#, doc, 5)
-        comprobar(Tonnetz.camino(desde: "Do", hasta: "Mibm") == [.p, .r, .p], #"true"#, doc, 6)
-        comprobar(Tonnetz.camino(desde: "Do", hasta: "Sol#", enarmonico: true) == [.p, .l], #"true"#, doc, 7)
+        comprobar(Acorde("Do").caminoNeorriemanniano(hasta: "Mibm") == [.p, .r, .p], #"true"#, doc, 6)
+        comprobar(Acorde("Do").caminoNeorriemanniano(hasta: "Sol#", enarmonico: true) == [.p, .l], #"true"#, doc, 7)
     }
 
     @Test func afinacionYRepresentaciones11() throws {
@@ -406,11 +406,11 @@ import Hexagonos
         comprobar(VentanaDeQuintas.sostenidos.reescrita(Altura("Si♭4")), #"La♯4"#, doc, 8)
         comprobar(Acorde("Do7").ortografiar(midi: [61]), #"[Re♭4]"#, doc, 9)
         comprobar(Acorde("Sol7/Si").posicionCerrada(octava: 3), #"[Si3, Re4, Fa4, Sol4]"#, doc, 11)
-        comprobar(Acorde.identificar([.mi, .sol, .do]).first, #"Do/Mi"#, doc, 12)
+        comprobar(Acorde.identificar(notas: [.mi, .sol, .do]).first, #"Do/Mi"#, doc, 12)
         let menor = Escala("La menor armónica")
         comprobar(menor.cifradosRomanos(cuatriadas: true), #"["i(maj7)", "iiø7", "♭III+maj7", "iv7", "V7", "♭VImaj7", "vii°7"]"#, doc, 15)
         comprobar(Escala("Mib mayor").armadura, #"-3"#, doc, 17)
-        comprobar(Escala(.do).rotacion(2), #"Re dórico"#, doc, 18)
+        comprobar(Escala(.do).modo(grado: 2), #"Re dórico"#, doc, 18)
         _ = i
     }
 
@@ -420,14 +420,14 @@ import Hexagonos
         comprobar(Escala(.do, .dobleArmonica).notas, #"Do Re♭ Mi Fa Sol La♭ Si"#, doc, 0)
         comprobar(Escala("Do enigmática").notas, #"Do Re♭ Mi Fa♯ Sol♯ La♯ Si"#, doc, 1)
         comprobar(Escala("La menor húngara").nombre(en: .inglesASCII), #""A hungarian minor""#, doc, 2)
-        comprobar(TipoDeEscala.mayorArmonica.rotacion(4).nombre, #""lidio ♭3""#, doc, 3)
+        comprobar(TipoDeEscala.mayorArmonica.modo(grado: 4).nombre, #""lidio ♭3""#, doc, 3)
         comprobar(TipoDeEscala.dobleArmonica == .hitzazkiar, #"true"#, doc, 4)
         comprobar(Escala("Mi flamenca").notas, #"Mi Fa Sol Sol♯ La Si Do Re"#, doc, 5)
         comprobar(Escala("Do modo 3 de Messiaen").notas, #"Do Re Mi♭ Mi Fa♯ Sol La♭ Si♭ Si"#, doc, 6)
         comprobar(Escala("Re menor rumana").tipo.nombre, #""dórico ♯4""#, doc, 7)
-        comprobar(TipoDeEscala.dobleArmonica.rotacion(5).nombre, #""oriental""#, doc, 8)
+        comprobar(TipoDeEscala.dobleArmonica.modo(grado: 5).nombre, #""oriental""#, doc, 8)
         comprobar(Escala.hexacordoBlando.notas, #"Fa Sol La Si♭ Do Re"#, doc, 9)
-        comprobar(TipoDeEscala.mayorHungara.rotacion(4).nombre, #""superlocrio ♮6""#, doc, 10)
+        comprobar(TipoDeEscala.mayorHungara.modo(grado: 4).nombre, #""superlocrio ♮6""#, doc, 10)
         comprobar(Escala("Do pentatónica escocesa").notas, #"Do Re Fa Sol La"#, doc, 11)
         comprobar(Escala("La de Liszt").tipo.nombre, #""menor húngara""#, doc, 12)
         comprobar(Escala("Do menor bachiana").notas, #"Do Re Mi♭ Fa Sol La Si"#, doc, 13)
@@ -1393,8 +1393,8 @@ import Hexagonos
         let fux = try Contrapunto(cantusFirmus: cantus, contrapunto: "La4 La4 Sol4 La4 Si4 Do5 Do5 Si4 Re5 Do#5 Re5", especie: .primera)
         comprobar(fux.esCorrecto, #"true"#, doc, 2)
         comprobar(fux.contrapuntoArriba, #"true"#, doc, 3)
-        comprobar(fux.informe().hasPrefix("Especie 1, con el contrapunto encima del cantus firmus\n"), #"true"#, doc, 4)
-        comprobar(fux.informe().hasSuffix("Sin faltas."), #"true"#, doc, 5)
+        comprobar(fux.informe(en: .espanolCompacto).hasPrefix("Especie 1, con el contrapunto encima del cantus firmus\n"), #"true"#, doc, 4)
+        comprobar(fux.informe(en: .espanolCompacto).hasSuffix("Sin faltas."), #"true"#, doc, 5)
         let quintas = try Contrapunto(cantusFirmus: "Do4 Re4 Mi4 Do4", contrapunto: "Sol4 La4 Sol4 Do5", especie: .primera)
         comprobar(quintas.faltas.contains(FaltaDeContrapunto(tipo: .quintasParalelas, compases: 0...1)), #"true"#, doc, 8)
         comprobar(FaltaDeContrapunto(tipo: .quintasParalelas, compases: 0...1).description, #""Quintas paralelas (compases 1 → 2)""#, doc, 9)
@@ -1501,22 +1501,22 @@ import Hexagonos
     @Test func tutorialAcordes02011() throws {
         // Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-01.swift, bloque 1
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-01.swift"#, 1)
-        comprobar(Acorde.identificar([.mi, .sol, .do]).first, #"Do/Mi"#, doc, 2)
+        comprobar(Acorde.identificar(notas: [.mi, .sol, .do]).first, #"Do/Mi"#, doc, 2)
     }
 
     @Test func tutorialAcordes02021() throws {
         // Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-02.swift, bloque 1
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-02.swift"#, 1)
-        comprobar(Acorde.identificar([.mi, .sol, .do]).first, #"Do/Mi"#, doc, 2)
+        comprobar(Acorde.identificar(notas: [.mi, .sol, .do]).first, #"Do/Mi"#, doc, 2)
         comprobar(Acorde.identificar(midi: [55, 59, 62, 65, 68]).first, #"Sol7(♭9)"#, doc, 3)
     }
 
     @Test func tutorialAcordes02031() throws {
         // Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-03.swift, bloque 1
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-02-03.swift"#, 1)
-        comprobar(Acorde.identificar([.mi, .sol, .do]).first, #"Do/Mi"#, doc, 2)
+        comprobar(Acorde.identificar(notas: [.mi, .sol, .do]).first, #"Do/Mi"#, doc, 2)
         comprobar(Acorde.identificar(midi: [55, 59, 62, 65, 68]).first, #"Sol7(♭9)"#, doc, 3)
-        let candidato = Acorde.candidatos([.do, .mi, "Sib"]).first!
+        let candidato = Acorde.candidatos(notas: [.do, .mi, "Sib"]).first!
         comprobar(candidato.valor.cifrado, #""Do7""#, doc, 6)
         comprobar(candidato.omitidas, #"[Sol]"#, doc, 7)
     }

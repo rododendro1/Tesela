@@ -47,7 +47,7 @@ extension PresentacionDeEstudioDeEscala {
     public static func escalas(
         conLasNotas notas: [Nota], limite: Int = 10, en notacion: Notacion
     ) -> [EscalaEncontrada] {
-        encontradas(Escala.identificar(notas), clases: Set(notas.map(\.claseDeAltura)), limite, notacion)
+        encontradas(Escala.identificar(notas: notas), clases: Set(notas.map(\.claseDeAltura)), limite, notacion)
     }
 
     /// Las escalas que contienen unas clases de altura (las de un mástil o un teclado MIDI, sin ortografía), cada

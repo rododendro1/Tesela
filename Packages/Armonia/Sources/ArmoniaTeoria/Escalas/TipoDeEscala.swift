@@ -160,9 +160,9 @@ public struct TipoDeEscala: Sendable, Codable {
         TipoDeEscala.catalogo.filter { $0 == self && $0.nombre != nombre }
     }
 
-    /// Rotación de la escala empezando en el grado `grado` (1 = la propia escala).
+    /// El modo que empieza en el grado `grado` (1 = la propia escala): la rotación de sus intervalos.
     /// Si la rotación coincide con un tipo conocido, devuelve ese tipo.
-    public func rotacion(_ grado: Int) -> TipoDeEscala {
+    public func modo(grado: Int) -> TipoDeEscala {
         let n = intervalos.count
         let desde = modulo(grado - 1, n)
         let nuevos = (0..<n).map { i in

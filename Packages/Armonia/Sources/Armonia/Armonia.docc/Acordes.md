@@ -33,15 +33,15 @@ las notas por espacios, allí se escriben con signos.
 (`"add2" == "add9"`, `"Δ" == "maj7"`), y dos `TipoDeEscala` si tienen los mismos intervalos,
 sea cual sea su nombre.
 
-**Identificación tolerante.** `Acorde.candidatos(_:)` devuelve todas las lecturas razonables
+**Identificación tolerante.** `Acorde.candidatos(notas:)` devuelve todas las lecturas razonables
 ordenadas por coste (menor = más probable), como `Candidato<Acorde>`. Admite notas duplicadas, quinta omitida,
 tensiones alteradas y bajo ajeno:
 
 ```swift
-let c = Acorde.candidatos([.do, .mi, "Sib"]).first!
+let c = Acorde.candidatos(notas: [.do, .mi, "Sib"]).first!
 c.valor.cifrado    // "Do7"
 c.omitidas         // [Sol]
-Acorde.identificar([.do, .mi, "Sib", "Reb"]).first   // Do7(♭9)
+Acorde.identificar(notas: [.do, .mi, "Sib", "Reb"]).first   // Do7(♭9)
 ```
 
 ## Sextas aumentadas
@@ -53,8 +53,8 @@ incompletas al identificarlas:
 
 ```swift
 Acorde("Lab(#6,omit5)").tipo.nombre                         // "sexta aumentada italiana"
-Acorde.identificar(["La♭", "Do", "Fa♯"] as [Nota]).first?.cifrado             // "La♭(♯6,omit5)"
-Acorde.identificar(["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.cifrado      // "La♭(♯6)"
+Acorde.identificar(notas: ["La♭", "Do", "Fa♯"] as [Nota]).first?.cifrado             // "La♭(♯6,omit5)"
+Acorde.identificar(notas: ["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.cifrado      // "La♭(♯6)"
 ```
 
 La francesa también es `Re7(♭5)/La♭`, que sale antes al identificarla; el análisis en una
@@ -132,10 +132,10 @@ Dos acordes de una familia son vecinos si se pasa de uno a otro moviendo una voz
 ```swift
 Acorde("Sol7").vecinosParsimoniosos().map(\.description) == ["Sol♯°7 (Sol→Sol♯)", "Solm7 (Si→Si♭)", "Mim7 (Fa→Mi)"]   // true
 Acorde("Sol7").vecinosParsimoniosos(voces: 2).contains { $0.acorde == Acorde("Reb7") }   // true
-Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Rem7")?.map(\.acorde.cifrado) == ["Sol♯°7", "Sim7(♭5)", "Rem7"]   // true
-Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Reb7", voces: 2)?.count == 1   // true
+Acorde("Sol7").caminoParsimonioso(hasta: "Rem7")?.map(\.acorde.cifrado) == ["Sol♯°7", "Sim7(♭5)", "Rem7"]   // true
+Acorde("Sol7").caminoParsimonioso(hasta: "Reb7", voces: 2)?.count == 1   // true
 Acorde("Domaj7").vecinosParsimoniosos().map(\.description) == ["Do♯m7(♭5) (Do→Do♯)", "Do7 (Si→Si♭)"]   // true
-Tonnetz.caminoParsimonioso(desde: "Domaj7", hasta: "Sol7")?.count == 3   // true
+Acorde("Domaj7").caminoParsimonioso(hasta: "Sol7")?.count == 3   // true
 ```
 
 Con dos voces, Sol7 llega a Re♭7 en un paso, que es la sustitución tritonal. Con

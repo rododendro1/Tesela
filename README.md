@@ -60,8 +60,8 @@ targets: [
 import Armonia
 
 Acorde("Sol7/Si").posicionCerrada(octava: 3)   // [Si3, Re4, Fa4, Sol4]
-Acorde.identificar([.mi, .sol, .do]).first     // Do/Mi
-Escala(.do).rotacion(2)                        // Re dórico
+Acorde.identificar(notas: [.mi, .sol, .do]).first     // Do/Mi
+Escala(.do).modo(grado: 2)                        // Re dórico
 ```
 
 Los paquetes compilan con Swift 6.0 o posterior en macOS y en Linux. Cada paquete tiene su `CHANGELOG.md`, y la

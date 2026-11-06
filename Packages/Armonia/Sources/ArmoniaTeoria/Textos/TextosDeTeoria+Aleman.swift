@@ -1,5 +1,6 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaTeoria en alemán. Los campos y lo que significa cada uno están en
 // `TextosDeTeoria.swift`.
 
@@ -20,6 +21,19 @@ extension TextosDeTeoria {
         nombresDeLasInversiones: ["Grundstellung", "erste Umkehrung", "zweite Umkehrung", "dritte Umkehrung",
                                   "vierte Umkehrung", "fünfte Umkehrung", "sechste Umkehrung"],
         inversionConNumero: "_. Umkehrung",
+
+        // CicloNeorriemanniano.swift
+        cicloHexatonico: "hexatonischer Zyklus",
+        cicloOctatonico: "oktatonischer Zyklus",
+        cicloLR: "LR-Zyklus",
+
+        // ConduccionParsimoniosa.swift
+        semitonos: { n in Idioma.aleman.contar(n, "Halbton", "Halbtöne") },
+
+        // TransformacionNeorriemanniana.swift
+        homonima: "Variante",
+        cambioDeSensible: "Leittonwechsel",
+        relativa: "Parallele",
 
         // EstructuraDeAcorde.swift
         papelFundamental: "Grundton",

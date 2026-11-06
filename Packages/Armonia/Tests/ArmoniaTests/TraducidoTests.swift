@@ -236,6 +236,8 @@ import Testing
         }
         for textos in TextosDeRepresentaciones.traducidos.todos {
             #expect(textos.cicloDesde("Z", "Y").contains("Z"))
+        }
+        for textos in TextosDeTeoria.traducidos.todos {
             #expect(textos.semitonos(1) != textos.semitonos(2))
         }
     }
