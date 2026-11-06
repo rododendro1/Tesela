@@ -16,7 +16,7 @@ Teoría musical en Swift: un motor de armonía, dos apps para iOS y macOS y una 
   armónica o un teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático…).
 - **`armonia`**, la línea de comandos: lo mismo desde la terminal, en texto o en JSON, y partituras en PDF, SVG o PNG.
 - **Los paquetes**, para usarlos en otro proyecto: `Armonia` (el motor), `Hexagonos` (rejillas hexagonales), y
-  `ArmoniaPresentacion` y `ArmoniaUI` (lo que comparten las apps).
+  `TeselaPresentacion` y `TeselaUI` (lo que comparten las apps).
 
 ## La línea de comandos
 
@@ -51,7 +51,7 @@ dependencies: [
 ],
 targets: [
     .target(name: "MiApp", dependencies: [
-        .product(name: "Armonia", package: "Tesela"),     // o ArmoniaTeoria, Hexagonos, ArmoniaUI…
+        .product(name: "Armonia", package: "Tesela"),     // o ArmoniaTeoria, Hexagonos, TeselaUI…
     ]),
 ]
 ```

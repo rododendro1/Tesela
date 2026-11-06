@@ -45,18 +45,18 @@ jobs:
           # Con un solo producto, el esquema se llama como él (sin «-Package»).
           xcodebuild docbuild -scheme Hexagonos -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-hexagonos" CODE_SIGNING_ALLOWED=NO | tail -n 20
-      - name: ArmoniaPresentacion
-        working-directory: Packages/ArmoniaPresentacion
+      - name: TeselaPresentacion
+        working-directory: Packages/TeselaPresentacion
         run: |
           set -o pipefail
-          xcodebuild docbuild -scheme ArmoniaPresentacion -destination 'generic/platform=macOS' \
-            -derivedDataPath "$RUNNER_TEMP/docc-armoniapresentacion" CODE_SIGNING_ALLOWED=NO | tail -n 20
-      - name: ArmoniaUI
-        working-directory: Packages/ArmoniaUI
+          xcodebuild docbuild -scheme TeselaPresentacion -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/docc-teselapresentacion" CODE_SIGNING_ALLOWED=NO | tail -n 20
+      - name: TeselaUI
+        working-directory: Packages/TeselaUI
         run: |
           set -o pipefail
-          xcodebuild docbuild -scheme ArmoniaUI -destination 'generic/platform=macOS' \
-            -derivedDataPath "$RUNNER_TEMP/docc-armoniaui" CODE_SIGNING_ALLOWED=NO | tail -n 20
+          xcodebuild docbuild -scheme TeselaUI -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/docc-teselaui" CODE_SIGNING_ALLOWED=NO | tail -n 20
       - name: Preparar el sitio
         env:
           REPOSITORIO: ${{ github.event.repository.name }}
@@ -66,9 +66,9 @@ jobs:
           sitio="$RUNNER_TEMP/sitio"
           mkdir -p "$sitio"
           enlaces=""
-          # Un archivo por módulo (Armonia, ArmoniaNucleo…, Hexagonos, ArmoniaUI…), cada uno en su carpeta; los que
-          # salen repetidos (ArmoniaUI construye también los de sus dependencias) se toman una vez.
-          for archivo in $(find "$RUNNER_TEMP/docc" "$RUNNER_TEMP/docc-hexagonos" "$RUNNER_TEMP/docc-armoniapresentacion" "$RUNNER_TEMP/docc-armoniaui" -name "*.doccarchive" -type d -prune | sort); do
+          # Un archivo por módulo (Armonia, ArmoniaNucleo…, Hexagonos, TeselaUI…), cada uno en su carpeta; los que
+          # salen repetidos (TeselaUI construye también los de sus dependencias) se toman una vez.
+          for archivo in $(find "$RUNNER_TEMP/docc" "$RUNNER_TEMP/docc-hexagonos" "$RUNNER_TEMP/docc-teselapresentacion" "$RUNNER_TEMP/docc-teselaui" -name "*.doccarchive" -type d -prune | sort); do
             modulo=$(basename "$archivo" .doccarchive)
             carpeta=$(echo "$modulo" | tr '[:upper:]' '[:lower:]')
             [ -d "$sitio/$carpeta" ] && continue

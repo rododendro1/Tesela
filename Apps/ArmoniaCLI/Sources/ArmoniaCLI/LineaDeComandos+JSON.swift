@@ -1,6 +1,6 @@
 import Armonia
-import ArmoniaPresentacion
 import Foundation
+import TeselaPresentacion
 
 // MARK: - La salida en JSON
 //
@@ -44,7 +44,7 @@ extension LineaDeComandos {
 
     // MARK: Acordes y escalas
     //
-    // Los datos son los de `ArmoniaPresentacion` (DatosDeConsultas.swift), los mismos que da el texto: sus nombres
+    // Los datos son los de `TeselaPresentacion` (DatosDeConsultas.swift), los mismos que da el texto: sus nombres
     // son las claves del JSON.
 
     /// `acorde Sol7 Do --json`: cada acorde con sus notas, una lista aunque sea uno solo.

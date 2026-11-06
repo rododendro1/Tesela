@@ -16,7 +16,7 @@ short English summary.
   isomorphic keyboard (Wicki-Hayden, Jankó, chromatic button accordion…).
 - **`armonia`** (command line): the same from the terminal, as text or JSON, plus engraved scores in PDF, SVG or PNG.
 - **Packages** you can use in your own project: `Armonia` (the engine), `Hexagonos` (hexagonal grids), and
-  `ArmoniaPresentacion` and `ArmoniaUI` (what the apps share).
+  `TeselaPresentacion` and `TeselaUI` (what the apps share).
 
 ## Command line
 

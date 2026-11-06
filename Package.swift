@@ -27,10 +27,10 @@ let package = Package(
         .library(name: "ArmoniaPartitura", targets: ["ArmoniaPartitura"]),
         .library(name: "ArmoniaFormatos", targets: ["ArmoniaFormatos"]),
         .library(name: "ArmoniaTrastes", targets: ["ArmoniaTrastes"]),
-        // Packages/ArmoniaPresentacion
-        .library(name: "ArmoniaPresentacion", targets: ["ArmoniaPresentacion"]),
-        // Packages/ArmoniaUI
-        .library(name: "ArmoniaUI", targets: ["ArmoniaUI"]),
+        // Packages/TeselaPresentacion
+        .library(name: "TeselaPresentacion", targets: ["TeselaPresentacion"]),
+        // Packages/TeselaUI
+        .library(name: "TeselaUI", targets: ["TeselaUI"]),
     ],
     targets: [
         .target(name: "Hexagonos", path: "Packages/Hexagonos/Sources/Hexagonos"),
@@ -62,13 +62,13 @@ let package = Package(
             path: "Packages/Armonia/Sources/Armonia"),
 
         .target(
-            name: "ArmoniaPresentacion",
+            name: "TeselaPresentacion",
             dependencies: ["Armonia"],
-            path: "Packages/ArmoniaPresentacion/Sources/ArmoniaPresentacion"),
+            path: "Packages/TeselaPresentacion/Sources/TeselaPresentacion"),
 
         .target(
-            name: "ArmoniaUI",
-            dependencies: ["ArmoniaPresentacion", "Armonia", "Hexagonos"],
-            path: "Packages/ArmoniaUI/Sources/ArmoniaUI"),
+            name: "TeselaUI",
+            dependencies: ["TeselaPresentacion", "Armonia", "Hexagonos"],
+            path: "Packages/TeselaUI/Sources/TeselaUI"),
     ]
 )

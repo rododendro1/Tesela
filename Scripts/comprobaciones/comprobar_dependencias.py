@@ -26,8 +26,8 @@ PERMITIDO = {
     # El motor usa su geometría para el Tonnetz, la tabla armónica y los teclados isomórficos.
     "Armonia": {"Hexagonos"},
     # Lo que enseñan las apps y la línea de comandos, sin SwiftUI.
-    "ArmoniaPresentacion": {"Armonia"},
-    "ArmoniaUI": {"Armonia", "ArmoniaPresentacion", "Hexagonos"},
+    "TeselaPresentacion": {"Armonia"},
+    "TeselaUI": {"Armonia", "TeselaPresentacion", "Hexagonos"},
 }
 
 errores = []

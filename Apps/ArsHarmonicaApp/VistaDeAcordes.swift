@@ -1,6 +1,6 @@
 import Armonia
-import ArmoniaUI
 import SwiftUI
+import TeselaUI
 
 /// Escribe un cifrado (Sol7/Si, Dom, Fa#m7b5…) y muestra el acorde, su arpegio, las escalas que encajan con él,
 /// sus digitaciones y el arpegio en el mástil.

@@ -1,6 +1,6 @@
 import Armonia
-import ArmoniaUI
 import SwiftUI
+import TeselaUI
 
 /// Una serie dodecafónica: se escribe con cifras («5 4 0 9 7 2 8 1 3 6 t e») o con nombres de notas, y se ven sus
 /// intervalos, sus hexacordos, sus formas combinatorias y la matriz de 12 × 12, con las P a la izquierda, las R a la

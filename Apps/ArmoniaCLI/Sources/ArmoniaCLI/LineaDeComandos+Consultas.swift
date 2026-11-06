@@ -1,6 +1,6 @@
 import Armonia
-import ArmoniaPresentacion
 import Foundation
+import TeselaPresentacion
 
 // MARK: - Consultas: acordes, notas, escalas, tonalidades y análisis
 

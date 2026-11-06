@@ -1,6 +1,6 @@
 import Armonia
-import ArmoniaPresentacion
 import Foundation
+import TeselaPresentacion
 
 // MARK: - Digitaciones: cómo tocar un acorde en un instrumento de cuerda con trastes
 
