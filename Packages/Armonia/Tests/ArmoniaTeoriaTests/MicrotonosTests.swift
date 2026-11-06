@@ -162,7 +162,7 @@ import Testing
     @Test func afinacionesEquidistantes() {
         #expect(TipoDeEscala.pelog.microtonal?.sistema == .razones)
         #expect(TipoDeEscala.pelogNem.microtonal?.pasos == [0, 133, 533, 667, 800])
-        #expect(TipoDeEscala.indonesias.allSatisfy { $0.microtonal != nil })
+        #expect(TipoDeEscala.indonesias.filter { $0.microtonal == nil } == [.degung])
         #expect(TipoDeEscala.pathets.allSatisfy { $0.microtonal != nil })
         #expect(TipoDeEscala.slendro.microtonal?.pasos == [0, 240, 480, 720, 960])
         #expect(TipoDeEscala.amadinda.microtonal?.pasos == TipoDeEscala.slendro.microtonal?.pasos)
