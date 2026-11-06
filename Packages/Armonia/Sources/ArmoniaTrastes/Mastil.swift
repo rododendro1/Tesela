@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 /// Un sitio del mástil: una cuerda y un traste (0 = cuerda al aire).

@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // La escala de cada acorde en su contexto: la que sale de la tonalidad y de lo que hace el acorde en ella
 // (diatónico, dominante secundaria, préstamo…), como en la teoría acorde-escala del jazz.

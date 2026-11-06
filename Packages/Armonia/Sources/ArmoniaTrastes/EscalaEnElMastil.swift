@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // Escalas por posiciones: las digitaciones de una escala en franjas del mástil que la mano recorre sin

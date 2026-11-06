@@ -19,8 +19,8 @@ XcodeGen. Los pasos están en el apartado «Empezar» de [DESARROLLO.md](DESARRO
 ```sh
 cd Packages/Armonia && swift test        # el motor
 cd Packages/Hexagonos && swift test      # las rejillas hexagonales
-cd Packages/TeselaPresentacion && swift test    # lo que enseñan las apps, sin SwiftUI
-cd Packages/TeselaUI && swift test       # la interfaz (en Linux, solo la parte sin SwiftUI)
+cd Packages/TeselaExposicion && swift test    # lo que enseñan las apps, sin SwiftUI
+cd Packages/TeselaInterfaz && swift test       # la interfaz (en Linux, solo la parte sin SwiftUI)
 ./Scripts/compilar_todo.sh               # todo, por capas, como el CI
 ```
 
@@ -84,7 +84,7 @@ python3 Scripts/comprobaciones/notas_de_version.py --comprobar
 ```
 
 En cada pull request corren estas comprobaciones, la del formato y las pruebas en Linux (Swift 6.0 y 6.2). Si el pull
-request cambia las apps, `TeselaPresentacion`, `TeselaUI` o el proyecto de Xcode, las dos apps se compilan además en macOS (el job `apps`). Los
+request cambia las apps, `TeselaExposicion`, `TeselaInterfaz` o el proyecto de Xcode, las dos apps se compilan además en macOS (el job `apps`). Los
 demás jobs de macOS (las pruebas de interfaz, el simulador de iOS y DocC) corren los lunes y a mano desde la pestaña
 Actions; si tu cambio toca las vistas o la documentación, pide en el pull request que se lancen.
 

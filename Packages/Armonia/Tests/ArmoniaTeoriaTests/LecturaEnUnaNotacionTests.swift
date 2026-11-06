@@ -1,6 +1,6 @@
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// Lo que escriben `cifrado(en:)` y `nombre(en:)` se lee de vuelta con `leyendo:en:`, en los quince idiomas.

@@ -3,9 +3,9 @@ import Foundation
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaPartitura
-@testable import ArmoniaRepresentaciones
+@testable import ArmoniaDiagramas
 @testable import ArmoniaTeoria
 
 /// Ida y vuelta al azar: cualquier valor se escribe en cualquier notación y se vuelve a leer igual.

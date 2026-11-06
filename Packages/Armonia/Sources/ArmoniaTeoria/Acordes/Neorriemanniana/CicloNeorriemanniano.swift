@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import Foundation
 
 // Los ciclos neorriemannianos: alternando dos de las transformaciones P, L y R se vuelve a la

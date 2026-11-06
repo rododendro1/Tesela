@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Análisis armónico: grados, funciones y dominantes secundarias de una sucesión de acordes.
 

@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 extension Acorde {
     // MARK: Identificación

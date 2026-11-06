@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import Foundation
 
 // Las transformaciones neorriemannianas: P, L y R cambian una tríada mayor o menor por la que

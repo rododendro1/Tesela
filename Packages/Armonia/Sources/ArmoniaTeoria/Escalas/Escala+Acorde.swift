@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // La relación escala-acorde del jazz: qué es cada nota de una escala sobre un acorde (nota del acorde, tensión
 // disponible o nota a evitar) y de qué escala es modo cada escala (Re dórico, modo 2 de Do mayor).

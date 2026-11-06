@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // Eventos: una nota, un acorde o un silencio con su duración.

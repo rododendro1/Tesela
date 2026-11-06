@@ -5,9 +5,9 @@ import Testing
 
 @testable import Armonia
 @testable import ArmoniaFormatos
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaPartitura
-@testable import ArmoniaRepresentaciones
+@testable import ArmoniaDiagramas
 @testable import ArmoniaTeoria
 
 // Lo que viene de fuera (un fichero MIDI o MusicXML, un teclado en UIL) puede estar dañado o hecho a mala fe. Estas

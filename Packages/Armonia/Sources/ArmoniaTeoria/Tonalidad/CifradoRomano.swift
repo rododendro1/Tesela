@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Lectura del cifrado romano: el camino inverso de `Tonalidad.analizar(_:)`. Lee los cifrados que escribe el
 // análisis («ii65», «V7/V», «♭VI», «♭II6», «subV7/ii», «Ger+6») y da sus acordes en la tonalidad.

@@ -1,6 +1,6 @@
 import Armonia
 import SwiftUI
-import TeselaUI
+import TeselaInterfaz
 
 @main
 struct TonnetzApp: App {

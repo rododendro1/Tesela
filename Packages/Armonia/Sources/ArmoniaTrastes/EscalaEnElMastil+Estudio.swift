@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // Para estudiar una escala en el mástil: las secuencias de estudio dentro de una posición y las cinco formas de la

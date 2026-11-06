@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import Foundation
 
 // Análisis genérico de acordes en coordenadas de quintas.

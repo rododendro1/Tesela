@@ -1,6 +1,6 @@
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// El cardinal de las escalas (pentatónica, heptatónica…) y lo que se mide de ellas (`EstadisticasDeEscala`).

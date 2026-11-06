@@ -4,8 +4,8 @@
 // `import ArmoniaFormatos`, la Partitura con sus formatos de fichero).
 
 @_exported import ArmoniaFormatos
-@_exported import ArmoniaNucleo
+@_exported import ArmoniaElementos
 @_exported import ArmoniaPartitura
-@_exported import ArmoniaRepresentaciones
+@_exported import ArmoniaDiagramas
 @_exported import ArmoniaTeoria
 @_exported import ArmoniaTrastes

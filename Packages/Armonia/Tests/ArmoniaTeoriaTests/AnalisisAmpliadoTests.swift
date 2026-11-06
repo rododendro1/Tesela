@@ -1,6 +1,6 @@
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// El I64 cadencial, el sustituto tritonal y las semicadencias frigias y plagales menores.

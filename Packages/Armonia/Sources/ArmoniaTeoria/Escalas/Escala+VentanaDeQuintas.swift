@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // La ventana de quintas de una escala: las doce quintas seguidas que tienen sus notas y nombran las demás como lo hace
 // la escala con un cromatismo suelto. Es lo que necesita un dibujo que no sabe nada de la escala (un teclado, el

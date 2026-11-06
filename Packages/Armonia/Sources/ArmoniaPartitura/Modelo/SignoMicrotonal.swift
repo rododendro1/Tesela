@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // MARK: - Signos microtonales

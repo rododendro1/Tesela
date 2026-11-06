@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 /// Error al leer un cifrado, un cifrado romano, un bajo cifrado, una escala, una tonalidad, los acordes de un coral, un
 /// nombre (un patrón de arpegio, una aproximación, un ciclo neorriemanniano, un instrumento) o una digitación.

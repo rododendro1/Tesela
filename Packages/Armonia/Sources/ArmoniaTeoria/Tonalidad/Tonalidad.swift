@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Tonalidad: una tónica y un modo (mayor o menor), con lo que eso implica en la práctica
 // común: armadura, relativa y homónima, tonos vecinos, funciones de los grados y armonía.
@@ -232,7 +232,8 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
 extension Tonalidad.Modo {
     public var nombre: String { self == .mayor ? "mayor" : "menor" }
 
-    /// «mayor», «major», «Dur», «maiorra»…: el de las `ReglasDeIdioma` (de ArmoniaNucleo) del idioma de las notas.
+    /// «mayor», «major», «Dur», «maiorra»…: el de las `ReglasDeIdioma` (de ArmoniaElementos) del idioma de las
+    /// notas.
     public func nombre(en notacion: Notacion) -> String {
         let reglas = notacion.idiomaDeLasNotas.reglas
         return self == .mayor ? reglas.mayor : reglas.menor

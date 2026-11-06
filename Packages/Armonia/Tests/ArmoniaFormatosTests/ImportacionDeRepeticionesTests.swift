@@ -2,7 +2,7 @@ import Foundation
 import Testing
 
 @testable import ArmoniaFormatos
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaPartitura
 
 /// Las repeticiones, los saltos y las notas de adorno al importar MusicXML, MEI y ABC.

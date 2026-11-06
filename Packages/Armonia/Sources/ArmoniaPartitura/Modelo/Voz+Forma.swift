@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // La forma de una melodía: sus frases, las letras que dicen cuáles se parecen (A A′ B A) y los motivos que se
 // repiten. Es una estimación con reglas sencillas, como las de agrupamiento de Lerdahl y Jackendoff:

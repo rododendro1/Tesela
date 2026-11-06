@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // Contrapunto de especies a dos voces, como lo enseña Fux en el Gradus ad Parnassum (1725): un

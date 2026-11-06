@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // MARK: - Representación en base 40 (y sus generalizaciones)
 //

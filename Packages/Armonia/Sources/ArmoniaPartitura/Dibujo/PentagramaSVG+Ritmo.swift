@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // El ritmo en el pentagrama en SVG: las cabezas según la figura, plicas, corchetes, barras de unión, puntillos,

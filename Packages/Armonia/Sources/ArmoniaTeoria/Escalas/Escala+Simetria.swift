@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Las escalas simétricas (la disminuida, la de tonos enteros, la aumentada, los modos de Messiaen): las que
 // vuelven a tener las mismas notas al transportarlas menos de una octava. De ahí que tengan pocas transposiciones

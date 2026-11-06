@@ -1,6 +1,6 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
-import ArmoniaNucleo
+import ArmoniaElementos
 // MARK: - Textos de ArmoniaTrastes
 //
 // Un idioma por fichero: `TextosDeTrastes+Espanol.swift`, `TextosDeTrastes+Ingles.swift`… Cada uno da todos los
