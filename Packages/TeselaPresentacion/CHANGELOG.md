@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+- **Las redes de notas, desde `TeselaUI`.** `RedDeNotas`, `ContenidoDeRed`, `PresentacionDeRedes`, `AjusteUIL` y
+  `AjusteCuadrado` vienen de `TeselaUI`, para que las use también la línea de comandos; el paquete depende ahora
+  también de `Hexagonos`. `ContenidoDeRed` suma `.notas`, `.camino` y `.ciclo` (lo que dibujan `armonia tonnetz`,
+  `armonia tabla` y `armonia cuadricula`), `escala` y `red(_:)`, el contenido en el Tonnetz o en la tabla armónica
+  con el protocolo `RedDeTriadas` del motor. `PresentacionDeRedes.svg(_:en:casillas:notacion:)` dibuja en un teclado
+  de cuadrícula ya colocado. Quien recorra `ContenidoDeRed` con un `switch` sin `default` tiene que añadir los casos
+  nuevos.
+
 - **Cambio incompatible:** el paquete, el producto y el módulo se llaman ahora `TeselaPresentacion` (antes
   `ArmoniaPresentacion`), y la carpeta es `Packages/TeselaPresentacion`. No es parte del motor sino lo que comparten
   las apps y la línea de comandos. Quien lo use por SwiftPM cambia `.product(name: "ArmoniaPresentacion", …)` por

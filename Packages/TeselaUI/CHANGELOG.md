@@ -2,6 +2,11 @@
 
 ## Sin publicar
 
+- **Las redes de notas, a `TeselaPresentacion`.** `RedDeNotas`, `ContenidoDeRed`, `PresentacionDeRedes`, `AjusteUIL`
+  y `AjusteCuadrado` no usan SwiftUI y las dibuja también la línea de comandos, así que pasan a `TeselaPresentacion`.
+  `TeselaUI` lo reexporta: con `import TeselaUI` se siguen viendo igual, salvo quien escriba el módulo delante
+  (`TeselaUI.RedDeNotas`).
+
 - **Cambio incompatible:** el paquete, el producto y el módulo se llaman ahora `TeselaUI` (antes `ArmoniaUI`), y la
   carpeta es `Packages/TeselaUI`. No es parte del motor sino lo que comparten las apps. Quien lo use por SwiftPM
   cambia `.product(name: "ArmoniaUI", …)` por `.product(name: "TeselaUI", …)` y `import ArmoniaUI` por

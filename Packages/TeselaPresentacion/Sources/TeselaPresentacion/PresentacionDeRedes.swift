@@ -159,25 +159,53 @@ public struct AjusteCuadrado: Hashable, Sendable {
     public var resultado: String? { teclado(de: .cuadriculaPersonalizada)?.ejes }
 }
 
-/// Lo que se dibuja: un acorde, una escala, un recorrido de tríadas o unas clases de altura sueltas (las que se
-/// tocan para identificar un acorde, de 0 = Do a 11 = Si, en el orden en que se tocaron).
+/// Lo que se dibuja en una red: unas notas, un acorde, una escala, un recorrido de tríadas, el camino más corto por
+/// P, L y R entre dos, un ciclo neorriemanniano o unas clases de altura sueltas (las que se tocan para identificar un
+/// acorde, de 0 = Do a 11 = Si, en el orden en que se tocaron). Lo comparten la app Tonnetz y `armonia tonnetz`,
+/// `armonia tabla` y `armonia cuadricula`.
 public enum ContenidoDeRed: Hashable, Sendable {
+    case notas([Nota])
     case acorde(Acorde)
     case escala(Escala)
     case recorrido([Acorde])
+    case camino(Acorde, Acorde)
+    case ciclo(CicloNeorriemanniano, Acorde)
     case clases([Int])
 
-    /// Las notas, sin repetir, en el orden en que aparecen.
+    /// Las notas, sin repetir, en el orden en que aparecen. En un camino o un ciclo, las de sus tríadas en el
+    /// Tonnetz; ninguna si no empiezan en tríadas mayores o menores.
     public var notas: [Nota] {
         let todas: [Nota]
         switch self {
+        case .notas(let notas): todas = notas
         case .acorde(let acorde): todas = acorde.notas
         case .escala(let escala): todas = escala.notas
         case .recorrido(let acordes): todas = acordes.flatMap(\.notas)
+        case .camino, .ciclo: todas = red(Tonnetz.self)?.puntos.map(\.nota) ?? []
         case .clases(let clases): todas = clases.map { Altura(midi: 60 + $0).nota }
         }
         var vistas = Set<Nota>()
         return todas.filter { vistas.insert($0).inserted }
+    }
+
+    /// La escala, si lo que se dibuja es una escala (para tocar en tono en los teclados de cuadrícula).
+    public var escala: Escala? {
+        if case .escala(let escala) = self { return escala }
+        return nil
+    }
+
+    /// El contenido en el Tonnetz o en la tabla armónica, según el tipo que se pida: `contenido.red(Tonnetz.self)`.
+    /// `nil` si un recorrido, un camino o un ciclo no son de tríadas mayores y menores.
+    public func red<Red: RedDeTriadas>(_: Red.Type) -> Red? {
+        switch self {
+        case .notas(let notas): return Red(notas)
+        case .acorde(let acorde): return Red(acorde)
+        case .escala(let escala): return Red(escala)
+        case .recorrido(let acordes): return Red(recorrido: acordes)
+        case .camino(let origen, let destino): return Red(caminoDesde: origen, hasta: destino)
+        case .ciclo(let ciclo, let acorde): return Red(ciclo: ciclo, desde: acorde)
+        case .clases(let clases): return Red(ConjuntoDeClasesDeAltura(clases))
+        }
     }
 }
 
@@ -218,21 +246,24 @@ public enum PresentacionDeRedes {
     /// La distancia entre dos notas vecinas en el dibujo del Tonnetz o de la tabla: la que usan sus `svg`
     /// por defecto, con más sitio en un recorrido para las flechas. Se fija aquí para saber qué nota se toca.
     static func paso(_ contenido: ContenidoDeRed, en red: RedDeNotas) -> Double {
-        var esRecorrido = false
-        if case .recorrido(let acordes) = contenido { esRecorrido = acordes.count >= 2 }
+        let esRecorrido: Bool
+        switch contenido {
+        case .recorrido(let acordes): esRecorrido = acordes.count >= 2
+        case .camino, .ciclo: esRecorrido = true
+        default: esRecorrido = false
+        }
         switch red {
         case .tablaArmonica: return esRecorrido ? 72 : 56
         default: return esRecorrido ? 88 : 64
         }
     }
 
-    /// El dibujo SVG del contenido en la red; `nil` si un recorrido está vacío.
+    /// El dibujo SVG del contenido en la red; `nil` si un recorrido está vacío, o si un camino o un ciclo no empiezan
+    /// en tríadas mayores o menores.
     public static func svg(
         _ contenido: ContenidoDeRed, en red: RedDeNotas, notacion: Notacion,
         uil: AjusteUIL = AjusteUIL(), cuadrado: AjusteCuadrado = AjusteCuadrado()
     ) -> String? {
-        let opciones = OpcionesDeDiagrama(notacion: notacion)
-        let sinTitulo = OpcionesDeDiagrama(notacion: notacion, titulo: "")
         if red == .uil && uil.teclado == nil { return nil }
         if red.esCuadricula {
             return svgDeCuadricula(contenido, en: red, notacion: notacion, cuadrado: cuadrado)
@@ -246,50 +277,52 @@ public enum PresentacionDeRedes {
                 casillasDelTeclado(teclado), marcadas: MarcasDeDiagrama(marcadas),
                 opciones: .init(notacion: notacion, ventana: bemoles ? .bemoles : .sostenidos))
         }
-        switch (red, contenido) {
-        case (.tablaArmonica, .acorde(let acorde)):
-            return TablaArmonica(acorde).svg(opciones: opciones)
-        case (.tablaArmonica, .escala(let escala)):
-            return TablaArmonica(escala).svg(opciones: opciones)
-        case (.tablaArmonica, .recorrido(let acordes)):
+        return red == .tablaArmonica
+            ? svgDeTriadas(TablaArmonica.self, contenido, notacion: notacion)
+            : svgDeTriadas(Tonnetz.self, contenido, notacion: notacion)
+    }
+
+    /// El dibujo en el Tonnetz o en la tabla armónica. Un recorrido de una sola tríada, o que no es de tríadas, se
+    /// dibuja como el primer acorde; `nil` si está vacío, o si un camino o un ciclo no son de tríadas. Las clases
+    /// tocadas para identificar, con margen de sobra para tocar más notas (aunque aún no haya ninguna) y sin título.
+    static func svgDeTriadas<Red: RedDeTriadas>(_: Red.Type, _ contenido: ContenidoDeRed, notacion: Notacion)
+        -> String?
+    {
+        let opciones = OpcionesDeDiagrama(notacion: notacion)
+        switch contenido {
+        case .recorrido(let acordes):
             guard let primero = acordes.first else { return nil }
-            return (acordes.count >= 2 ? TablaArmonica(recorrido: acordes) : nil)?.svg(opciones: opciones)
-                ?? TablaArmonica(primero).svg(opciones: opciones)
-        case (_, .acorde(let acorde)):
-            return Tonnetz(acorde).svg(opciones: opciones)
-        case (_, .escala(let escala)):
-            return Tonnetz(escala).svg(opciones: opciones)
-        case (_, .recorrido(let acordes)):
-            guard let primero = acordes.first else { return nil }
-            return (acordes.count >= 2 ? Tonnetz(recorrido: acordes) : nil)?.svg(opciones: opciones)
-                ?? Tonnetz(primero).svg(opciones: opciones)
-        // Para identificar: con margen de sobra para tocar más notas, aunque aún no haya ninguna, y sin título.
-        case (.tablaArmonica, .clases(let clases)):
-            return TablaArmonica(ConjuntoDeClasesDeAltura(clases)).svg(opciones: sinTitulo, margen: 3)
-        case (_, .clases(let clases)):
-            return Tonnetz(ConjuntoDeClasesDeAltura(clases)).svg(opciones: sinTitulo, margen: 3)
+            let red = (acordes.count >= 2 ? Red(recorrido: acordes) : nil) ?? Red(primero)
+            return red.svg(opciones: opciones, margen: nil, leyenda: true)
+        case .clases:
+            let sinTitulo = OpcionesDeDiagrama(notacion: notacion, titulo: "")
+            return contenido.red(Red.self)?.svg(opciones: sinTitulo, margen: 3, leyenda: true)
+        default:
+            return contenido.red(Red.self)?.svg(opciones: opciones, margen: nil, leyenda: true)
         }
     }
 
-    /// La escala del contenido, para tocar en tono; `nil` si no es una escala.
-    static func escala(de contenido: ContenidoDeRed) -> Escala? {
-        if case .escala(let escala) = contenido { return escala }
-        return nil
-    }
-
-    /// El dibujo en un teclado de cuadrícula: las notas marcadas en todas las octavas, con su contorno, y la primera
-    /// (la tónica de una escala o la fundamental de un acorde) con el borde naranja.
+    /// El dibujo en un teclado de cuadrícula de la red, con el ajuste; `nil` si el teclado no se puede formar.
     static func svgDeCuadricula(
         _ contenido: ContenidoDeRed, en red: RedDeNotas, notacion: Notacion, cuadrado: AjusteCuadrado
     ) -> String? {
-        guard let teclado = cuadrado.teclado(de: red, escala: escala(de: contenido)) else { return nil }
+        guard let teclado = cuadrado.teclado(de: red, escala: contenido.escala) else { return nil }
+        return svg(contenido, en: teclado, casillas: cuadrado.rejilla.casillas, notacion: notacion)
+    }
+
+    /// El dibujo en un teclado de cuadrícula ya colocado: las notas marcadas en todas las octavas, con su contorno, y
+    /// la primera (la tónica de una escala o la fundamental de un acorde) con el borde naranja. Lo usa también
+    /// `armonia cuadricula`, que forma el teclado con sus opciones.
+    public static func svg(
+        _ contenido: ContenidoDeRed, en teclado: TecladoCuadrado, casillas: [CasillaCuadrada], notacion: Notacion
+    ) -> String {
         let notas = contenido.notas
         let clases = Set(notas.map(\.claseDeAltura))
         let marcadas = Set((0...127).filter { clases.contains($0 % 12) })
         let primeras = Set((0...127).filter { $0 % 12 == notas.first?.claseDeAltura })
         let bemoles = notas.contains { $0.pasosDeQuinta < -1 }
         return teclado.svg(
-            cuadrado.rejilla.casillas, marcadas: MarcasDeDiagrama(marcadas), primeras: primeras, contorno: true,
+            casillas, marcadas: MarcasDeDiagrama(marcadas), primeras: primeras, contorno: true,
             opciones: .init(notacion: notacion, ventana: bemoles ? .bemoles : .sostenidos))
     }
 
@@ -327,7 +360,7 @@ public enum PresentacionDeRedes {
             return (0...127).contains(midi) ? midi : nil
         }
         if red.esCuadricula {
-            guard let teclado = cuadrado.teclado(de: red, escala: escala(de: contenido)) else { return nil }
+            guard let teclado = cuadrado.teclado(de: red, escala: contenido.escala) else { return nil }
             let casilla = TecladoCuadrado.casilla(en: punto, lado: ladoDelTecladoCuadrado)
             guard cuadrado.rejilla.casillas.contains(casilla) else { return nil }
             let midi = teclado.midi(en: casilla)
@@ -356,7 +389,11 @@ public enum PresentacionDeRedes {
         switch contenido {
         case .acorde(let acorde): que = acorde.cifrado(en: notacion)
         case .escala(let escala): que = escala.nombre(en: notacion)
+        case .notas(let notas): que = notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
         case .recorrido(let acordes): que = acordes.map { $0.cifrado(en: notacion) }.joined(separator: " ")
+        case .camino(let origen, let destino):
+            que = origen.cifrado(en: notacion) + " → " + destino.cifrado(en: notacion)
+        case .ciclo(let ciclo, let acorde): que = ciclo.nombre(en: notacion) + " · " + acorde.cifrado(en: notacion)
         case .clases(let clases):
             que =
                 acordes(de: clases).first?.cifrado(en: notacion)

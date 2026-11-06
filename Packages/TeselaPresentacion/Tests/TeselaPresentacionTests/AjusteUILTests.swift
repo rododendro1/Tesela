@@ -3,7 +3,6 @@ import Foundation
 import Testing
 
 @testable import TeselaPresentacion
-@testable import TeselaUI
 
 // El teclado UIL de la app Tonnetz con cada teclado del artículo.
 // No usa SwiftUI: se ejecuta también en Linux.

@@ -25,8 +25,8 @@ PERMITIDO = {
     "Hexagonos": set(),
     # El motor usa su geometría para el Tonnetz, la tabla armónica y los teclados isomórficos.
     "Armonia": {"Hexagonos"},
-    # Lo que enseñan las apps y la línea de comandos, sin SwiftUI.
-    "TeselaPresentacion": {"Armonia"},
+    # Lo que enseñan las apps y la línea de comandos, sin SwiftUI (con las casillas de las redes, de Hexagonos).
+    "TeselaPresentacion": {"Armonia", "Hexagonos"},
     "TeselaUI": {"Armonia", "TeselaPresentacion", "Hexagonos"},
 }
 
