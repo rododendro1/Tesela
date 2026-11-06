@@ -280,10 +280,7 @@ extension TipoDeEscala {
     /// Hüseynî y un tetracordo Uşşak en la hüseynî, pero bajando desde la muhayyer, la octava aguda.
     public static let muhayyerMakami = TipoDeEscala(
         nombre: "Muhayyer makamı",
-        intervalos: [
-            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-            .quintaJusta, .sextaMayor, .septimaMenor,
-        ],
+        intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["makam Muhayyer"],
         categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 31, 39, 44])])
     /// Ferahfezâ (Re Mi Fa Sol La Si♭ Do): las notas de Acemaşiran con un pentacordo Bûselik en la yegâh, donde

@@ -250,10 +250,7 @@ extension TipoDeEscala {
         categoria: .thaat, afinaciones: [.init(.sruti, pasos: [0, 3, 7, 9, 13, 16, 18])])
     public static let kafi = TipoDeEscala(
         nombre: "Kāfī",
-        intervalos: [
-            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-            .quintaJusta, .sextaMayor, .septimaMenor,
-        ],
+        intervalos: TipoDeEscala.dorico.intervalos,
         variantes: ["काफ़ी"],
         categoria: .thaat, afinaciones: [.init(.sruti, pasos: [0, 3, 5, 9, 13, 16, 18])])
     public static let asavari = TipoDeEscala(

@@ -27,18 +27,18 @@ extension TipoDeEscala {
     public static let pelog = TipoDeEscala(
         nombre: "Pélog selisir", intervalos: [.unisono, .segundaMenor, .terceraMenor, .quintaJusta, .sextaMenor],
         alias: ["Pélog", "Selisir", "balinesa", "Bali"],
-        categoria: .laras, subtradicion: .bali, afinaciones: [.init(.razones, pasos: [0, 133, 267, 667, 800])])
+        categoria: .laras, subtradicion: .bali, afinaciones: [.pelogSelisir])
     /// Sléndro, de cinco notas equidistantes (Do Re Fa Sol Si♭ en doce notas).
     public static let slendro = TipoDeEscala(
         nombre: "Sléndro", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
         variantes: ["Saléndro"],
-        categoria: .laras, afinaciones: [.init(.razones, pasos: [0, 240, 480, 720, 960])])
+        categoria: .laras, afinaciones: [.equipentatonica])
 
     /// Pélog pathet lima (1 2 3 5 6 desde 1: Do Re♭ Mi♭ Sol La♭), con las notas de selisir.
     public static let pelogLima = TipoDeEscala(
-        nombre: "Pélog pathet lima", intervalos: [.unisono, .segundaMenor, .terceraMenor, .quintaJusta, .sextaMenor],
+        nombre: "Pélog pathet lima", intervalos: TipoDeEscala.pelog.intervalos,
         alias: ["Pélog lima"], variantes: ["Pelog patet lima"],
-        categoria: .pathet, subtradicion: .java, afinaciones: [.init(.razones, pasos: [0, 133, 267, 667, 800])])
+        categoria: .pathet, subtradicion: .java, afinaciones: [.pelogSelisir])
     /// Pélog pathet nem (5 6 1 2 3 desde 5: Sol La♭ Do Re Mi♭).
     public static let pelogNem = TipoDeEscala(
         nombre: "Pélog pathet nem",
@@ -54,33 +54,33 @@ extension TipoDeEscala {
     /// Sléndro pathet nem (desde 2), con los intervalos de `slendro`.
     public static let slendroNem = TipoDeEscala(
         nombre: "Sléndro pathet nem",
-        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
+        intervalos: TipoDeEscala.slendro.intervalos,
         alias: ["Sléndro nem"], variantes: ["Slendro patet nem"],
-        categoria: .pathet, subtradicion: .java, afinaciones: [.init(.razones, pasos: [0, 240, 480, 720, 960])])
+        categoria: .pathet, subtradicion: .java, afinaciones: [.equipentatonica])
     /// Sléndro pathet sanga (desde 5), con los intervalos de `slendro`.
     public static let slendroSanga = TipoDeEscala(
         nombre: "Sléndro pathet sanga",
-        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
+        intervalos: TipoDeEscala.slendro.intervalos,
         alias: ["Sléndro sanga"], variantes: ["Slendro patet sanga"],
-        categoria: .pathet, subtradicion: .java, afinaciones: [.init(.razones, pasos: [0, 240, 480, 720, 960])])
+        categoria: .pathet, subtradicion: .java, afinaciones: [.equipentatonica])
     /// Sléndro pathet manyura (desde 6), con los intervalos de `slendro`.
     public static let slendroManyura = TipoDeEscala(
         nombre: "Sléndro pathet manyura",
-        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
+        intervalos: TipoDeEscala.slendro.intervalos,
         alias: ["Sléndro manyura"], variantes: ["Slendro patet manyura"],
-        categoria: .pathet, subtradicion: .java, afinaciones: [.init(.razones, pasos: [0, 240, 480, 720, 960])])
+        categoria: .pathet, subtradicion: .java, afinaciones: [.equipentatonica])
     /// Tembung, el modo de Bali sobre el 4 (4 5 6 1 2), con los intervalos de selisir en el modelo de nueve partes.
     public static let pelogTembung = TipoDeEscala(
         nombre: "Pélog tembung",
-        intervalos: [.unisono, .segundaMenor, .terceraMenor, .quintaJusta, .sextaMenor],
+        intervalos: TipoDeEscala.pelog.intervalos,
         alias: ["Tembung"],
-        categoria: .pathet, subtradicion: .bali, afinaciones: [.init(.razones, pasos: [0, 133, 267, 667, 800])])
+        categoria: .pathet, subtradicion: .bali, afinaciones: [.pelogSelisir])
     /// Sunaren, el modo de Bali sobre el 5 (5 6 7 2 3), con los intervalos de selisir en el modelo de nueve partes.
     public static let pelogSunaren = TipoDeEscala(
         nombre: "Pélog sunaren",
-        intervalos: [.unisono, .segundaMenor, .terceraMenor, .quintaJusta, .sextaMenor],
+        intervalos: TipoDeEscala.pelog.intervalos,
         alias: ["Sunaren"],
-        categoria: .pathet, subtradicion: .bali, afinaciones: [.init(.razones, pasos: [0, 133, 267, 667, 800])])
+        categoria: .pathet, subtradicion: .bali, afinaciones: [.pelogSelisir])
 
     public static let indonesias: [TipoDeEscala] = [.pelog, .slendro]
     /// Los pathet de Java y los modos de Bali.

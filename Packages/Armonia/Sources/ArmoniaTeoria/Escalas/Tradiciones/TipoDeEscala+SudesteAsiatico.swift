@@ -16,23 +16,17 @@ extension TipoDeEscala {
     /// Piphat (siete partes iguales de 171 cents): Do Re Mi♭ Fa Sol La Si♭ en doce notas.
     public static let piphat = TipoDeEscala(
         nombre: "Piphat",
-        intervalos: [
-            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-            .quintaJusta, .sextaMayor, .septimaMenor,
-        ],
+        intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["tailandesa"], variantes: ["ปี่พาทย์"],
         categoria: .afinacion, subtradicion: .tailandia,
-        afinaciones: [.init(.razones, pasos: [0, 171, 343, 514, 686, 857, 1029])])
+        afinaciones: [.equiheptatonica])
     /// Pinpeat (siete partes iguales de 171 cents): Do Re Mi♭ Fa Sol La Si♭ en doce notas.
     public static let pinpeat = TipoDeEscala(
         nombre: "Pinpeat",
-        intervalos: [
-            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-            .quintaJusta, .sextaMayor, .septimaMenor,
-        ],
+        intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["camboyana", "jemer"], variantes: ["ពិណពាទ្យ"],
         categoria: .afinacion, subtradicion: .camboya,
-        afinaciones: [.init(.razones, pasos: [0, 171, 343, 514, 686, 857, 1029])])
+        afinaciones: [.equiheptatonica])
 
     // MARK: El arpa birmana
     //

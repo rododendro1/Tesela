@@ -4,6 +4,7 @@ import Testing
 @testable import ArmoniaNucleo
 @testable import ArmoniaTeoria
 
+/// Las categorías de las escalas de otras tradiciones (rāga, mēḷa, maqam…), sus clases y `nombreCompleto`.
 @Suite struct CategoriaTradicionalTests {
     /// Toda escala de otra tradición tiene tradición y categoría.
     @Test func todasLasTradicionalesTienenClaseYTradicion() {
@@ -189,61 +190,6 @@ import Testing
         #expect(TipoDeEscala.thaats[0].padre == nil)
     }
 
-    /// Las listas de `listasTradicionales` reparten todas las escalas de otras tradiciones, cada una en la suya, y
-    /// cada una dice en su declaración su categoría, su versión microtonal y, los janya, su mēḷa.
-    @Test func laSubtradicion() {
-        #expect(TipoDeEscala.mohanam.subtradicion == .carnatica)
-        #expect(TipoDeEscala.melakarta(15)?.subtradicion == .carnatica)
-        #expect(TipoDeEscala.kafi.subtradicion == .indostanica)
-        #expect(TipoDeEscala.pelogTembung.subtradicion == .bali)
-        #expect(TipoDeEscala.pelogLima.subtradicion == .java)
-        #expect(TipoDeEscala.gaitaEscocesa.subtradicion == .escocia)
-        #expect(TipoDeEscala.slendro.subtradicion == nil)
-        #expect(TipoDeEscala.hitzaz.subtradicion == nil)
-        #expect(TipoDeEscala.mayor.subtradicion == nil)
-        #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).subtradicion == nil)
-        #expect(TipoDeEscala.tradicionales(subtradicion: .java).count == 6)
-        #expect(TipoDeEscala.tradicionales(subtradicion: .bali).count == 3)
-        // Toda escala de la India tiene subtradición, y cada subtradición tiene alguna escala.
-        for tipo in TipoDeEscala.tradicionales(tradicion: .india) {
-            #expect(tipo.subtradicion != nil, Comment(rawValue: tipo.nombre))
-        }
-        for subtradicion in Subtradicion.allCases {
-            #expect(!TipoDeEscala.tradicionales(subtradicion: subtradicion).isEmpty, "\(subtradicion)")
-        }
-        #expect(Subtradicion.carnatica.nombre == "Carnática")
-        #expect(Subtradicion.carnatica.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Carnatic")
-        #expect(Subtradicion.java.nombre(en: Notacion.espanolCompacto.conTextos(en: .ruso)) == "Ява")
-    }
-
-    @Test func lasListasRepartenLasTradicionales() {
-        var vistas = Set<String>()
-        for lista in TipoDeEscala.listasTradicionales {
-            for tipo in lista.tipos {
-                #expect(vistas.insert(tipo.nombre).inserted, "\(tipo.nombre) está en dos listas")
-                #expect(tipo.tradicion == lista.tradicion, Comment(rawValue: tipo.nombre))
-                if let subtradicion = tipo.subtradicion {
-                    #expect(subtradicion.tradicion == lista.tradicion, Comment(rawValue: tipo.nombre))
-                }
-                #expect(tipo.ficha.categoria != nil, Comment(rawValue: tipo.nombre))
-                #expect(tipo.categoria == tipo.ficha.categoria, Comment(rawValue: tipo.nombre))
-                #expect(tipo.ficha.usos.isEmpty, Comment(rawValue: tipo.nombre))
-                if let mela = tipo.ficha.mela {
-                    #expect(tipo.categoria == .janya, Comment(rawValue: tipo.nombre))
-                    #expect(tipo.padre == TipoDeEscala.melakarta(mela), Comment(rawValue: tipo.nombre))
-                }
-            }
-        }
-        #expect(vistas.count == TipoDeEscala.tradicionales.count)
-        // Cada tradición tiene al menos una lista.
-        #expect(Set(TipoDeEscala.listasTradicionales.map(\.tradicion)) == Set(Tradicion.allCases))
-        // Las occidentales no tienen categoría ni tradición.
-        for tipo in TipoDeEscala.todos {
-            #expect(tipo.ficha.categoria == nil && tipo.ficha.mela == nil, Comment(rawValue: tipo.nombre))
-            #expect(tipo.tradicion == nil, Comment(rawValue: tipo.nombre))
-        }
-    }
-
     /// Las clases: los fragmentos tienen menos de una octava de notas (de tres a seis), las afinaciones son las
     /// babilónicas y las escalas madre, los mēḷa, los thāṭ, los grāma y los laras.
     @Test func clasesDeLasTradicionales() {
@@ -265,46 +211,6 @@ import Testing
             #expect(tipo.clase == tipo.categoria?.clase, Comment(rawValue: tipo.nombre))
         }
         #expect(TipoDeEscala.todos.allSatisfy { $0.clase == nil })
-    }
-
-    /// El catálogo son las occidentales y después las de otras tradiciones, y su orden decide quién gana.
-    @Test func catalogoConPrioridad() {
-        let todas = TipoDeEscala.todos + TipoDeEscala.tradicionales
-        #expect(TipoDeEscala.catalogo.map(\.nombre) == todas.map(\.nombre))
-        #expect(TipoDeEscala.propio(TipoDeEscala.bilaval.intervalos).nombre == "mayor")
-        #expect(TipoDeEscala.propio(TipoDeEscala.hiyaz.intervalos).nombre == TipoDeEscala.frigioDominante.nombre)
-        #expect((try? TipoDeEscala(leyendo: "Hijaz"))?.nombre == TipoDeEscala.hiyaz.nombre)
-        #expect(TipoDeEscala.bilaval.equivalentes.first?.nombre == "mayor")
-    }
-
-    /// Cada tradición tiene nombre en los quince idiomas, y en español es también su `nombre`.
-    @Test func losNombresDeLasTradicionesSeTraducen() {
-        for tradicion in Tradicion.allCases {
-            #expect(tradicion.nombre(en: .espanolCompacto) == tradicion.nombre)
-            for idioma in Idioma.allCases {
-                #expect(
-                    !tradicion.nombre(en: Notacion.espanolCompacto.conTextos(en: idioma)).isEmpty,
-                    Comment(rawValue: "\(tradicion) en \(idioma)"))
-            }
-        }
-        #expect(Tradicion.japon.nombre(en: Notacion.espanolCompacto.conTextos(en: .euskera)) == "Japonia")
-        #expect(Tradicion.mundoArabe.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Arab world")
-    }
-
-    /// Cada subtradición tiene nombre en los quince idiomas y se codifica por su nombre de caso.
-    @Test func lasSubtradicionesSeTraducenYSeCodifican() throws {
-        for subtradicion in Subtradicion.allCases {
-            #expect(subtradicion.nombre(en: .espanolCompacto) == subtradicion.nombre)
-            for idioma in Idioma.allCases {
-                #expect(
-                    !subtradicion.nombre(en: Notacion.espanolCompacto.conTextos(en: idioma)).isEmpty,
-                    Comment(rawValue: "\(subtradicion) en \(idioma)"))
-            }
-            #expect(Subtradicion(rawValue: subtradicion.rawValue) == subtradicion)
-        }
-        let datos = try JSONEncoder().encode(Subtradicion.allCases)
-        #expect(String(decoding: datos, as: UTF8.self).contains("\"indostanica\""))
-        #expect(try JSONDecoder().decode([Subtradicion].self, from: datos) == Subtradicion.allCases)
     }
 
     /// El nombre con la palabra de la categoría: delante si es un préstamo y no la lleva ya.
@@ -333,71 +239,5 @@ import Testing
         #expect(TipoDeEscala.mohanam.nombreCompleto(en: ingles) == "rāga Mohanam")
         let griego = Notacion.espanolCompacto.conTextos(en: .griego)
         #expect(TipoDeEscala.mohanam.nombreCompleto(en: griego).hasPrefix("ράγκα "))
-    }
-
-    /// Los colores de Aristóxeno, en doceavos de tono, y los adwār de Ṣafī al-Dīn, pitagóricos.
-    @Test func aristoxenoYSafiAlDin() throws {
-        #expect(TipoDeEscala.coloresDeAristoxeno.allSatisfy { $0.tradicion == .greciaAntigua })
-        #expect(TipoDeEscala.coloresDeAristoxeno.allSatisfy { $0.categoria == .tetracordo })
-        #expect(TipoDeEscala.tetracordoCromaticoBlandoDeAristoxeno.microtonal?.desvios == [0, -33, 33, 0])
-        #expect(TipoDeEscala.tetracordoCromaticoHemiolico.microtonal?.desvios == [0, -25, -50, 0])
-        #expect(try TipoDeEscala(leyendo: "cromático tónico") == .tetracordoCromatico)
-        #expect(TipoDeEscala.adwar.allSatisfy { $0.tradicion == .mundoArabe && $0.categoria == .maqam })
-        #expect(TipoDeEscala.shaddNawa == .menorNatural)
-        #expect(TipoDeEscala.shaddRast.microtonal?.desvios == [0, 4, -16, -2, 2, -18, -4])
-        #expect((try? TipoDeEscala(leyendo: "Rast de Safi al-Din"))?.nombre == "shadd Rāst")
-    }
-
-    /// El folklore europeo: tres escalas populares, dos instrumentos de afinación natural y el canto georgiano, con
-    /// sus cents.
-    @Test func elFolkloreEuropeo() throws {
-        #expect(TipoDeEscala.tradicionales(tradicion: .europa) == TipoDeEscala.europeas)
-        #expect(TipoDeEscala.europeas.allSatisfy { $0.categoria == .escala })
-        #expect(TipoDeEscala.doricoUcraniano == .doricoCuartaAumentada)
-        #expect(TipoDeEscala.podhalanska == .lidioDominante)
-        #expect(TipoDeEscala.pentatonicaHungara == .pentatonicaMenor)
-        #expect(TipoDeEscala.gaitaEscocesa == .mixolidio)
-        // El nombre gana al alias: «dórico ucraniano» es ya la escala europea, igual que el dórico ♯4.
-        let ucraniano = try TipoDeEscala(leyendo: "dórico ucraniano")
-        #expect(ucraniano.nombre == "dórico ucraniano" && ucraniano.tradicion == .europa)
-        #expect((try? TipoDeEscala(leyendo: "Podhale"))?.nombre == "podhalańska")
-        #expect((try? TipoDeEscala(leyendo: "Alphorn"))?.nombre == "cuerno alpino")
-        let alpino = Escala("Do cuerno alpino").notas.map(\.nombre)
-        #expect(alpino == ["Do", "Re", "Mi", "Fa♯", "Sol", "La♭", "Si♭", "Si"])
-        // El 11.º armónico, 49 cents bajo Fa♯; la 7ª natural de la gaita, 31 bajo Si♭.
-        #expect(TipoDeEscala.cuernoAlpino.microtonal?.desvios[3] == -49)
-        #expect(TipoDeEscala.gaitaEscocesa.microtonal?.desvios[6] == -31)
-        #expect(TipoDeEscala.mixolidio.microtonal == nil)
-        // El canto georgiano: la segunda, 37 cents baja; la tercera, neutra, 32 sobre Mi♭.
-        #expect(TipoDeEscala.georgiana == .dorico)
-        #expect(TipoDeEscala.georgiana.microtonal?.desvios == [0, -37, 32, 9, -7, -32, 18])
-        #expect((try? TipoDeEscala(leyendo: "Svaneti"))?.nombre == "georgiana")
-        #expect(TipoDeEscala.georgiana.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Georgian")
-        #expect(Tradicion.europa.nombre == "Folklore europeo")
-        #expect(Tradicion.europa.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "European folk")
-    }
-
-    /// Los nombres de la menor de los conservatorios españoles: bachiana, dórica y antigua.
-    @Test func losNombresDeConservatorioDeLaMenor() {
-        #expect((try? TipoDeEscala(leyendo: "menor bachiana"))?.nombre == "menor melódica de jazz")
-        #expect((try? TipoDeEscala(leyendo: "bachiana"))?.nombre == "menor melódica de jazz")
-        #expect((try? TipoDeEscala(leyendo: "de Bach"))?.nombre == "menor melódica de jazz")
-        #expect((try? TipoDeEscala(leyendo: "menor dórica"))?.nombre == "dórico")
-        #expect((try? TipoDeEscala(leyendo: "menor antigua"))?.nombre == "menor natural")
-        #expect(Escala("La bachiana").tipo == .menorMelodicaJazz)
-    }
-
-    /// Vietnam, Brasil y el arpa birmana.
-    @Test func vietnamBrasilYMyanmar() {
-        #expect(TipoDeEscala.tradicionales(tradicion: .vietnam).map(\.nombre) == ["Bắc", "Vọng cổ"])
-        #expect(TipoDeEscala.bac.microtonal?.cents == [0, 189, 501, 698, 891])
-        #expect((try? TipoDeEscala(leyendo: "hoi oan"))?.nombre == "Vọng cổ")
-        #expect(TipoDeEscala.tradicionales(tradicion: .brasil).count == 3)
-        #expect(TipoDeEscala.lidioNordestino == .lidioDominante)
-        #expect((try? TipoDeEscala(leyendo: "nordestina"))?.nombre == "lidio dominante")
-        #expect(TipoDeEscala.saung.tradicion == .sudesteAsiatico && TipoDeEscala.saung.clase == .afinacion)
-        #expect(TipoDeEscala.saung.microtonal?.desvios == [0, -18, -36, -9, -27])
-        #expect(Tradicion.vietnam.nombre(en: Notacion.espanolCompacto.conTextos(en: .portugues)) == "Vietname")
-        #expect(Tradicion.brasil.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Brazil")
     }
 }

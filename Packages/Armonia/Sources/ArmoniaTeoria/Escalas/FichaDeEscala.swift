@@ -68,6 +68,17 @@ package struct FichaDeEscala: Sendable {
     package static let vacia = FichaDeEscala()
 }
 
+// MARK: - Afinaciones que comparten varias escalas
+
+extension FichaDeEscala.Afinacion {
+    /// Cinco partes iguales de 240 cents: el sléndro y sus pathet, y el amadinda de Buganda.
+    static let equipentatonica = Self(.razones, pasos: [0, 240, 480, 720, 960])
+    /// Siete partes iguales de unos 171 cents: el timbila chopi, el piphat tailandés y el pinpeat camboyano.
+    static let equiheptatonica = Self(.razones, pasos: [0, 171, 343, 514, 686, 857, 1029])
+    /// El pélog de nueve partes de 133 cents en las notas 1 2 3 5 6: selisir y los modos y pathet con sus intervalos.
+    static let pelogSelisir = Self(.razones, pasos: [0, 133, 267, 667, 800])
+}
+
 // MARK: - Búsqueda por identidad
 
 extension TipoDeEscala {
