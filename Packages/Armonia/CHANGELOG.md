@@ -32,6 +32,13 @@ Todas las formas de antes se siguen leyendo; la ayuda enseña las nuevas.
   que son de un autor (`fuente: .ptolomeo`); las que no lo son, como las siete harmoniai, tienen `nil`.
 - `armonia escalas --fuente ptolomeo` (`--source ptolemy`) deja las escalas de un teórico.
 
+### Un ejemplo que escribe el catálogo de escalas en TSV
+
+- `Ejemplos/EjemploCatalogoDeEscalas` recorre `TipoDeEscala.catalogo` con la API pública y escribe una fila por
+  escala: nombre, nombre completo y en inglés, alias, tradición, subtradición, categoría, clase, fuente, usos,
+  intervalos (al subir y al bajar), semitonos, notas sobre Do, mēḷa, padre y la afinación microtonal en cents.
+  `swift run EjemploCatalogoDeEscalas [fichero.tsv | -]`.
+
 ### Cambios incompatibles: las listas de escalas por tradición ya no son públicas
 
 - Las 37 listas de `TipoDeEscala` por tradición o autor (`melakartas`, `thaats`, `maqamat`, `modosGregorianos`,

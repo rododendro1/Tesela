@@ -131,6 +131,7 @@ jobs:
         paquete:
           - { nombre: ArmoniaCLI, ruta: Apps/ArmoniaCLI }
           - { nombre: EjemploArmonia, ruta: Ejemplos/EjemploArmonia }
+          - { nombre: EjemploCatalogoDeEscalas, ruta: Ejemplos/EjemploCatalogoDeEscalas }
           - { nombre: EjemploHexagonos, ruta: Ejemplos/EjemploHexagonos }
           - { nombre: RendimientoArmonia, ruta: Herramientas/RendimientoArmonia }
           - { nombre: FuzzArmonia, ruta: Herramientas/FuzzArmonia }
@@ -516,6 +517,7 @@ jobs:
         run: |
           (cd Apps/ArmoniaCLI && swift test --parallel)
           (cd Ejemplos/EjemploArmonia && swift run EjemploArmonia > /dev/null)
+          (cd Ejemplos/EjemploCatalogoDeEscalas && swift run EjemploCatalogoDeEscalas - > /dev/null)
           (cd Ejemplos/EjemploHexagonos && swift run EjemploHexagonos > /dev/null)
       - name: Instalar XcodeGen
         run: brew install xcodegen
