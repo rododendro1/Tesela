@@ -15,7 +15,7 @@ import ArmoniaTeoria
 // MARK: - Escritor ABC
 
 /// Reúne varias voces, cada una en un pentagrama, y escribe la pieza en ABC (una voz `V:` por línea).
-package struct EscritorABC: EscritorDePartitura {
+package struct EscritorABC: EscritorDeTexto {
     package let compas: Compas
     package let anacrusa: Duracion
     package let tonalidad: Tonalidad?
@@ -44,16 +44,6 @@ package struct EscritorABC: EscritorDePartitura {
         self.claves = claves
     }
 
-    package mutating func anadir(
-        _ voz: Voz, pentagrama: Int, plicaArriba: Bool?,
-        cifrados: [Duracion: Acorde], analisis: [Duracion: AcordeAnalizado], notacion: Notacion
-    ) {
-        lineas.append(
-            Exportacion.LineaAnotada(
-                voz, pentagrama: pentagrama, plicaArriba: plicaArriba, cifrados: cifrados, analisis: analisis,
-                notacion: notacion))
-    }
-
     package var documento: String {
         var abc = "X:1\nT:\(EscritorABC.texto(titulo ?? ""))\n"
         abc += "M:\(EscritorABC.compas(compas))\nL:1/4\n"
@@ -67,7 +57,7 @@ package struct EscritorABC: EscritorDePartitura {
             abc += "%%score {" + pentagramas.joined(separator: " | ") + "}\n"
         }
         for (l, linea) in lineas.enumerated() {
-            let clave = claves.indices.contains(linea.pentagrama - 1) ? claves[linea.pentagrama - 1] : .sol
+            let clave = self.clave(delPentagrama: linea.pentagrama)
             abc += "V:\(l + 1) clef=\(EscritorABC.clave(clave))"
             if l == 0 { abc += " name=\"\(EscritorABC.texto(parte))\"" }
             if let arriba = linea.plicaArriba { abc += " stem=\(arriba ? "up" : "down")" }
@@ -88,15 +78,9 @@ package struct EscritorABC: EscritorDePartitura {
         let armadura = Dictionary(
             (tonalidad?.notasDeLaArmadura ?? []).map { ($0.natural, $0.alteracion.semitonos) },
             uniquingKeysWith: { primera, _ in primera })
-        let conRotulo = rotulo.flatMap { r in
-            r.pentagrama == linea.pentagrama && lineaDelRotulo(r.pentagrama) == l ? r.texto : nil
-        }
         var escritos: [String] = []
         for (c, eventos) in compases.enumerated() {
-            let compasEntero =
-                eventos.count == 1 && eventos[0].evento.esSilencio && !(c == 0 && anacrusa > .cero)
-                && eventos[0].evento.duracion == compas.duracion
-            if compasEntero {
+            if esSilencioDeCompas(eventos, compas: c) {
                 escritos.append("Z")
                 continue
             }
@@ -112,8 +96,7 @@ package struct EscritorABC: EscritorDePartitura {
                     texto += "(\(grupo.reales):\(grupo.normales):\(grupo.rango.count)"
                 }
                 if nuevo, let cifrado = linea.cifrados[inicio] { texto += "\"^\(EscritorABC.texto(cifrado))\"" }
-                var debajo = (nuevo ? linea.letras[inicio] ?? [] : []).filter { !$0.isEmpty }
-                if c == 0 && i == 0, let conRotulo { debajo.insert(conRotulo, at: 0) }
+                let debajo = self.debajo(enLaLinea: l, compas: c, evento: i, inicio: inicio, nuevo: nuevo)
                 for linea in debajo { texto += "\"_\(EscritorABC.texto(linea))\"" }
                 texto += EscritorABC.decoraciones(evento)
                 let alturas = evento.alturas.indices.map { k in
@@ -151,12 +134,6 @@ package struct EscritorABC: EscritorDePartitura {
             if !ultimo { abc += (c + 1) % EscritorABC.compasesPorRenglon == 0 ? "\n" : " " }
         }
         return abc
-    }
-
-    /// La línea que lleva el rótulo de un pentagrama: la que tiene el análisis o, si no, la primera.
-    private func lineaDelRotulo(_ pentagrama: Int) -> Int? {
-        let suyas = lineas.indices.filter { lineas[$0].pentagrama == pentagrama }
-        return suyas.first { !lineas[$0].letras.isEmpty } ?? suyas.first
     }
 
     // MARK: Auxiliares

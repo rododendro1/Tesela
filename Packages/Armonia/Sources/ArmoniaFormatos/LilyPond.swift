@@ -13,7 +13,7 @@ import ArmoniaTeoria
 // MARK: - Escritor LilyPond
 
 /// Reúne varias voces, cada una en un pentagrama (con un `Voice` por voz), y escribe el fichero `.ly`.
-package struct EscritorLilyPond: EscritorDePartitura {
+package struct EscritorLilyPond: EscritorDeTexto {
     package let compas: Compas
     package let anacrusa: Duracion
     package let tonalidad: Tonalidad?
@@ -37,16 +37,6 @@ package struct EscritorLilyPond: EscritorDePartitura {
         self.claves = claves
     }
 
-    package mutating func anadir(
-        _ voz: Voz, pentagrama: Int, plicaArriba: Bool?,
-        cifrados: [Duracion: Acorde], analisis: [Duracion: AcordeAnalizado], notacion: Notacion
-    ) {
-        lineas.append(
-            Exportacion.LineaAnotada(
-                voz, pentagrama: pentagrama, plicaArriba: plicaArriba, cifrados: cifrados, analisis: analisis,
-                notacion: notacion))
-    }
-
     package var documento: String {
         var ly = "\\version \"2.24.0\"\n\n\\header {\n"
         if let titulo { ly += "  title = \(EscritorLilyPond.cadena(titulo))\n" }
@@ -68,7 +58,7 @@ package struct EscritorLilyPond: EscritorDePartitura {
     /// Un `\new Voice` con lo que va al principio (clave, armadura, compás…) y un compás por renglón.
     private func voz(_ l: Int, sangria: String) -> String {
         let linea = lineas[l]
-        let clave = claves.indices.contains(linea.pentagrama - 1) ? claves[linea.pentagrama - 1] : .sol
+        let clave = self.clave(delPentagrama: linea.pentagrama)
         var inicio: [String] = []
         if let arriba = linea.plicaArriba { inicio.append(arriba ? "\\voiceOne" : "\\voiceTwo") }
         inicio.append("\\clef \"\(EscritorLilyPond.clave(clave))\"")
@@ -78,58 +68,34 @@ package struct EscritorLilyPond: EscritorDePartitura {
         if anacrusa > .cero { inicio.append("\\partial " + EscritorLilyPond.duracion(anacrusa)) }
         var ly = sangria + "\\new Voice {\n" + sangria + "  " + inicio.joined(separator: " ") + "\n"
         let compases = Exportacion.compases(de: linea.voz)
-        // El rótulo va con la primera nota de la voz del análisis o, si no hay, de la primera de su pentagrama.
-        let conRotulo = rotulo.flatMap { r in
-            r.pentagrama == linea.pentagrama && lineaDelRotulo(r.pentagrama) == l ? r.texto : nil
-        }
         for (c, eventos) in compases.enumerated() {
-            let compasEntero =
-                eventos.count == 1 && eventos[0].evento.esSilencio && !(c == 0 && anacrusa > .cero)
-                && eventos[0].evento.duracion == compas.duracion
+            let compasEntero = esSilencioDeCompas(eventos, compas: c)
+            let irregulares = Exportacion.irregulares(eventos.map(\.evento))
             var piezas: [String] = []
-            var abiertos = Exportacion.irregulares(eventos.map(\.evento))[...]
-            var dentro: (fin: Int, piezas: [String], cabecera: String)?
             for (i, (evento, inicio, nuevo)) in eventos.enumerated() {
-                if dentro == nil, let grupo = abiertos.first, grupo.rango.lowerBound == i {
-                    abiertos.removeFirst()
-                    dentro = (grupo.rango.upperBound, [], "\\tuplet \(grupo.reales)/\(grupo.normales) {")
-                }
+                let irregular = irregulares.contains { $0.rango.contains(i) }
                 var texto =
                     compasEntero
                     ? "R" + EscritorLilyPond.duracion(compas.duracion)
-                    : EscritorLilyPond.evento(evento, irregular: dentro != nil)
+                    : EscritorLilyPond.evento(evento, irregular: irregular)
                 texto += EscritorLilyPond.expresion(evento)
                 if nuevo, let cifrado = linea.cifrados[inicio] {
                     texto += "^\\markup \(EscritorLilyPond.cadena(cifrado))"
                 }
-                var debajo = (nuevo ? linea.letras[inicio] ?? [] : []).filter { !$0.isEmpty }
-                if c == 0 && i == 0, let conRotulo { debajo.insert(conRotulo, at: 0) }
+                let debajo = self.debajo(enLaLinea: l, compas: c, evento: i, inicio: inicio, nuevo: nuevo)
                 if debajo.count == 1 { texto += "_\\markup \(EscritorLilyPond.cadena(debajo[0]))" }
                 if debajo.count > 1 {
                     texto += "_\\markup \\column { " + debajo.map(EscritorLilyPond.cadena).joined(separator: " ") + " }"
                 }
-                if var grupo = dentro {
-                    grupo.piezas.append(texto)
-                    dentro = grupo
-                    if grupo.fin == i {
-                        piezas.append(grupo.cabecera + " " + grupo.piezas.joined(separator: " ") + " }")
-                        dentro = nil
-                    }
-                } else {
-                    piezas.append(texto)
-                }
+                piezas.append(texto)
             }
+            piezas = Exportacion.envolviendo(
+                piezas, grupos: irregulares, abrir: { "\\tuplet \($0)/\($1) {" }, cerrar: "}")
             // Sin barra de comprobación tras el último, que puede estar incompleto (el que cierra una anacrusa).
             ly += sangria + "  " + piezas.joined(separator: " ") + (c == compases.count - 1 ? "\n" : " |\n")
         }
         if compases.isEmpty { ly += sangria + "  R" + EscritorLilyPond.duracion(compas.duracion) + " |\n" }
         return ly + sangria + "  \\bar \"|.\"\n" + sangria + "}\n"
-    }
-
-    /// La línea que lleva el rótulo de un pentagrama: la que tiene el análisis o, si no, la primera.
-    private func lineaDelRotulo(_ pentagrama: Int) -> Int? {
-        let suyas = lineas.indices.filter { lineas[$0].pentagrama == pentagrama }
-        return suyas.first { !lineas[$0].letras.isEmpty } ?? suyas.first
     }
 
     // MARK: Eventos
@@ -239,10 +205,5 @@ package struct EscritorLilyPond: EscritorDePartitura {
             return "\\tempo \(unidad) = \(Int(tempo.pulsosPorMinuto.rounded()))"
         }
         return "\\tempo 4 = \(Int(tempo.negrasPorMinuto.rounded()))"
-    }
-
-    /// Un texto entre comillas, con `"` y `\` escapadas.
-    package static func cadena(_ texto: String) -> String {
-        "\"" + String(texto.flatMap { $0 == "\\" || $0 == "\"" ? "\\\($0)" : "\($0)" }) + "\""
     }
 }
