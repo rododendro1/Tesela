@@ -4,7 +4,6 @@ import Hexagonos
 import Testing
 
 @testable import TeselaPresentacion
-@testable import TeselaUI
 
 // Las presentaciones de las redes (Tonnetz, tabla armónica y teclados). No usan SwiftUI: se ejecutan también en
 // Linux.
@@ -173,5 +172,59 @@ import Testing
             PresentacionDeRedes.nombre(.clases([0, 4, 7]), en: .uil, notacion: n, uil: AjusteUIL(texto: ""))
                 == "UIL  · Do")
         #expect(PresentacionDeRedes.svg(.recorrido([]), en: .tablaArmonica, notacion: n) == nil)
+    }
+
+    @Test func losContenidosDeLaLineaDeComandos() throws {
+        let n = Notacion.espanolCompacto
+        let doMayor = try Acorde(leyendo: "Do")
+        let mibMenor = try Acorde(leyendo: "Mibm")
+        // Lo mismo que los inicializadores de cada red.
+        let notas = ContenidoDeRed.notas([.do, .mi, .sol, .do])
+        #expect(notas.notas == [.do, .mi, .sol])
+        #expect(notas.red(Tonnetz.self) == Tonnetz([.do, .mi, .sol, .do]))
+        let camino = ContenidoDeRed.camino(doMayor, mibMenor)
+        #expect(camino.red(TablaArmonica.self) == TablaArmonica(caminoDesde: doMayor, hasta: mibMenor))
+        let delCamino = try #require(Tonnetz(caminoDesde: doMayor, hasta: mibMenor)).puntos.map(\.nota)
+        #expect(Set(camino.notas) == Set(delCamino))
+        #expect(camino.notas.first == delCamino.first)
+        let ciclo = ContenidoDeRed.ciclo(.hexatonico, doMayor)
+        #expect(ciclo.red(Tonnetz.self) == Tonnetz(ciclo: .hexatonico, desde: doMayor))
+        #expect(ContenidoDeRed.clases([7, 0, 4]).red(Tonnetz.self) == Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7])))
+        // Sin tríadas, ni red ni notas.
+        let septima = try Acorde(leyendo: "Do7")
+        #expect(ContenidoDeRed.camino(septima, mibMenor).red(Tonnetz.self) == nil)
+        #expect(ContenidoDeRed.ciclo(.lr, septima).notas.isEmpty)
+        #expect(PresentacionDeRedes.svg(.ciclo(.lr, septima), en: .tonnetz, notacion: n) == nil)
+        // Se dibujan en todas las redes, y con flechas en el Tonnetz y la tabla.
+        for red in RedDeNotas.allCases {
+            for contenido in [notas, camino, ciclo] {
+                #expect(PresentacionDeRedes.svg(contenido, en: red, notacion: n) != nil, "\(red) \(contenido)")
+            }
+        }
+        #expect(PresentacionDeRedes.paso(camino, en: .tonnetz) == 88)
+        #expect(PresentacionDeRedes.paso(notas, en: .tablaArmonica) == 56)
+        #expect(
+            PresentacionDeRedes.svg(camino, en: .tonnetz, notacion: n)
+                == Tonnetz(caminoDesde: doMayor, hasta: mibMenor)?.svg(opciones: .init(notacion: n)))
+        #expect(PresentacionDeRedes.nombre(notas, en: .tonnetz, notacion: n) == "Tonnetz · Do Mi Sol Do")
+        #expect(
+            PresentacionDeRedes.nombre(camino, en: .tonnetz, notacion: n)
+                == "Tonnetz · Do → " + mibMenor.cifrado(en: n))
+        #expect(
+            PresentacionDeRedes.nombre(ciclo, en: .tablaArmonica, notacion: n)
+                == RedDeNotas.tablaArmonica.nombre(en: n) + " · ciclo hexatónico · Do")
+        // Solo una escala se toca en tono.
+        #expect(try ContenidoDeRed.escala(Escala(leyendo: "Re dórico")).escala != nil)
+        #expect(camino.escala == nil)
+    }
+
+    @Test func enUnTecladoDeCuadriculaYaColocado() throws {
+        let n = Notacion.espanolCompacto
+        let contenido = ContenidoDeRed.acorde(try Acorde(leyendo: "Do"))
+        let ajuste = AjusteCuadrado()
+        let teclado = try #require(ajuste.teclado(de: .cuadriculaEnCuartas))
+        #expect(
+            PresentacionDeRedes.svg(contenido, en: teclado, casillas: ajuste.rejilla.casillas, notacion: n)
+                == PresentacionDeRedes.svg(contenido, en: .cuadriculaEnCuartas, notacion: n))
     }
 }

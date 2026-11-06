@@ -33,8 +33,10 @@ struct VistaDeEscala: View {
 // En la raíz de la app: WindowGroup { VistaDeEscala().notacionGuardada() }
 ```
 
-Las vistas están tras `#if canImport(SwiftUI)`: en Linux el módulo compila solo con lo que no dibuja
-(``RedDeNotas``, ``PresentacionDeRedes``, ``AjusteUIL``…), que es lo que se prueba allí.
+Las vistas están tras `#if canImport(SwiftUI)`: en Linux el módulo compila solo con lo que no dibuja (la notación
+guardada, dónde se toca un mástil o una rejilla), que es lo que se prueba allí. Las redes de notas que dibuja
+``DiagramaDeTonnetz`` (`RedDeNotas`, `ContenidoDeRed`, `PresentacionDeRedes`, `AjusteUIL` y `AjusteCuadrado`) están
+en `TeselaPresentacion`, que este módulo reexporta, porque también las dibuja la línea de comandos.
 
 ## Topics
 
@@ -45,14 +47,6 @@ Las vistas están tras `#if canImport(SwiftUI)`: en Linux el módulo compila sol
 - ``DiagramaDeTonnetz``
 - ``DiagramaDeRejilla``
 - ``VistaSVG``
-
-### Redes de notas
-
-- ``RedDeNotas``
-- ``ContenidoDeRed``
-- ``PresentacionDeRedes``
-- ``AjusteUIL``
-- ``AjusteCuadrado``
 
 ### Sonido y teclados MIDI
 

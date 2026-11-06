@@ -63,7 +63,7 @@ let package = Package(
 
         .target(
             name: "TeselaPresentacion",
-            dependencies: ["Armonia"],
+            dependencies: ["Armonia", "Hexagonos"],
             path: "Packages/TeselaPresentacion/Sources/TeselaPresentacion"),
 
         .target(

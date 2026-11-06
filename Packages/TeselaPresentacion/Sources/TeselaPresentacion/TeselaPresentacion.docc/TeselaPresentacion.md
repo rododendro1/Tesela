@@ -92,6 +92,17 @@ el selector de notación cambia la app entera.
 - ``PosicionPresentada``
 - ``PresentacionDeTablatura``
 
+### Redes de notas
+
+El Tonnetz, la tabla armónica y los teclados isomórficos y de cuadrícula en que la app Tonnetz y `armonia tonnetz`,
+`armonia tabla` y `armonia cuadricula` dibujan unas notas.
+
+- ``RedDeNotas``
+- ``ContenidoDeRed``
+- ``PresentacionDeRedes``
+- ``AjusteUIL``
+- ``AjusteCuadrado``
+
 ### Conjuntos de clases
 
 - ``AnalisisPostonalPresentado``

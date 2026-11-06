@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+### El Tonnetz y la tabla armónica, con un protocolo común
+
+- `RedDeTriadas`: lo que comparten `Tonnetz` y `TablaArmonica`, sus inicializadores (notas, acorde, escala, conjunto,
+  recorrido, camino y ciclo) y su `svg(opciones:margen:leyenda:)`. Quien ofrece las dos redes escribe una sola vez cómo
+  se pasa de lo que se pide a la red, y elige la red con su tipo (`Tonnetz.self`, `TablaArmonica.self`).
+
 ### Bajos caminantes y progresiones en escalas poco habituales
 
 - `PresentacionDeAnalisis.bajoCaminante(_:notacion:)`: un bajo caminante en negras sobre una progresión, un compás por
