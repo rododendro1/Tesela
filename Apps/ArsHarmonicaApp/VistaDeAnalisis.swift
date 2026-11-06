@@ -88,6 +88,7 @@ struct VistaDeAnalisis: View {
                 modulaciones(analisis)
                 doceTonalidades(analisis)
                 comparar(analisis)
+                bajoCaminante(analisis)
                 arpegiar(analisis)
                 disponer(analisis)
                 rearmonizar(analisis)
@@ -162,6 +163,7 @@ struct VistaDeAnalisis: View {
             let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.compararCon)
             todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
         }
+        todos += PresentacionDeAnalisis.bajoCaminante(analisis.acordes, notacion: notacion)?.ficheros ?? []
         todos += arpegiada?.ficheros ?? []
         todos += dispuesta?.ficheros ?? []
         return todos + guias
@@ -194,6 +196,23 @@ struct VistaDeAnalisis: View {
                     }
                     .buttonStyle(.borderless)
                 }
+            }
+        }
+    }
+
+    /// Un bajo caminante en negras sobre la progresión, con su pentagrama y su tablatura, para escucharlo con los
+    /// acordes; sus partituras se exportan con la barra.
+    @ViewBuilder
+    private func bajoCaminante(_ analisis: AnalisisPresentado) -> some View {
+        if let bajo = PresentacionDeAnalisis.bajoCaminante(analisis.acordes, notacion: notacion) {
+            Section(notacion.texto(\.bajoCaminante)) {
+                HStack {
+                    Text(bajo.compases.joined(separator: " | ")).font(.system(.footnote, design: .monospaced))
+                    Spacer()
+                    BotonDeEscuchar(bajo.sonido).labelStyle(.iconOnly)
+                }
+                .buttonStyle(.borderless)
+                DiagramaDePentagrama(bajo.pentagrama)
             }
         }
     }

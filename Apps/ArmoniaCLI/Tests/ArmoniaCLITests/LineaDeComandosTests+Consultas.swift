@@ -446,6 +446,17 @@ extension LineaDeComandosTests {
         #expect(salida("analyze Dm7 G7 Cmaj7 --voice-leading --ingles").contains("\nVoice leading (Drop 2):\n"))
     }
 
+    @Test func bajoCaminanteYProgresionesDeUnaEscala() {
+        let bajo = salida("analizar Rem7 Sol7 Do7M --bajo")
+        #expect(bajo.contains("\nBajo caminante:\n  Rem7: Re"), Comment(rawValue: bajo))
+        #expect(bajo.contains("\n  Domaj7: Do"))
+        #expect(salida("analyze Dm7 G7 Cmaj7 --walking-bass --ingles").contains("\nWalking bass:\n  Dm7: D"))
+        let hungara = salida("escala La menor húngara --progresiones")
+        #expect(hungara.contains("\nProgresiones en la escala:\n  "), Comment(rawValue: hungara))
+        #expect(hungara.contains("\n  i–♯vii–i: Lam – Sol♯m – Lam · Fuera de "))
+        #expect(salida("scale C major --progressions --ingles").contains("\n  I–IV–V–I: C – F – G – C\n"))
+    }
+
     @Test func compararDosProgresiones() {
         let comparacion = salida("analizar Do Lam Rem Sol7 --contra Do La7 Rem7 Sol7")
         let cabecera = "\nComparar con Do La7 Rem7 Sol7 (Do mayor):\n  1. Do · I\n"

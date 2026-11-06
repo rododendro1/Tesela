@@ -9,7 +9,7 @@ extension TextosDeCLI {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <akkordok> [--in <hangnem>] [--scales]",
         descripcionAnalizar: "fokszámok, funkciók, zárlatok és modulációk (közvetítő akkordjukkal; --in nélkül)\n--scales: minden akkord skálája, a feszültségekkel és kerülendő hangokkal",
-        notasAnalizar: "--guide-tones: két vezetőhang-vonal, a terctől és a szeptimtől; --voice-leading: hogyan halad minden szólam egyik akkordról a következőre (drop 2-ben), a közös hangokkal; --against: a másik változat akkordról akkordra, azzal, ami változik, a fokaival és a közös hangokkal",
+        notasAnalizar: "--guide-tones: két vezetőhang-vonal, a terctől és a szeptimtől; --voice-leading: hogyan halad minden szólam egyik akkordról a következőre (drop 2-ben), a közös hangokkal; --against: a másik változat akkordról akkordra, azzal, ami változik, a fokaival és a közös hangokkal; --walking-bass: walking basszus negyedekben, akkordonként egy ütem",
         sintaxisAnalizarArchivo: "analyze --file <fájl> [--window <időtartam>]",
         descripcionAnalizarArchivo: "ugyanez egy MIDI-, MusicXML-, MEI- vagy ABC-fájl akkordjaival (ütésenként egy; --window 2: félhangonként egy)",
         sintaxisArmonizar: "harmonize <dallam> [--in <hangnem>] [--proposals 3]",
@@ -39,7 +39,7 @@ extension TextosDeCLI {
         descripcionIntervalo: "két hang vagy hangmagasság közötti hangköz",
         sintaxisEscala: "scale <skála> [--chords]",
         descripcionEscala: "egy skála hangjai és akkordjai\n--chords: minden fokon minden beleillő akkord, nem csak a terces",
-        notasEscala: "opciók: --sequence thirds (vagy fourths, groups-of-3, groups-of-4, triads, sevenths), --descending, --octaves 2 (1-től 4-ig), --piano (ujjrend), --modes (párhuzamos és rokon) és --compare C lydian (a végén); --symmetry (milyen gyakran ismétlődik, és az akkordjai); --neighbors (egy hang elmozdításával) és --all-keys (mind a tizenkét hangnemben); --all-keys --chords (minden fok akkordjai; --triads, szeptim nélkül); --statistics (hangok száma, fényesség, hangközvektor…); --brightness-ladder (a legsötétebbtől a legfényesebbig, mindig egy hangot emelve); --against C dorian (hangonkénti összehasonlítás, kottán és órán, SVG-ben); --closest (amelyeknek a legtöbb közös hangjuk van vele, a legkevésbé eltérőtől)",
+        notasEscala: "opciók: --sequence thirds (vagy fourths, groups-of-3, groups-of-4, triads, sevenths), --descending, --octaves 2 (1-től 4-ig), --piano (ujjrend), --modes (párhuzamos és rokon) és --compare C lydian (a végén); --symmetry (milyen gyakran ismétlődik, és az akkordjai); --neighbors (egy hang elmozdításával) és --all-keys (mind a tizenkét hangnemben); --all-keys --chords (minden fok akkordjai; --triads, szeptim nélkül); --statistics (hangok száma, fényesség, hangközvektor…); --brightness-ladder (a legsötétebbtől a legfényesebbig, mindig egy hangot emelve); --against C dorian (hangonkénti összehasonlítás, kottán és órán, SVG-ben); --closest (amelyeknek a legtöbb közös hangjuk van vele, a legkevésbé eltérőtől); --progressions (akkordmenetek a hármashangzataival, a fokokkal és a dúron vagy mollon kívüli hangokkal)",
         sintaxisEscalas: "scales [<szöveg>] [opciók]",
         descripcionEscalas: "a skálák katalógusa: a szokásosak és más hagyományokéi, kategóriánként, C-től induló hangjaikkal",
         notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece, arab-world, persia, azerbaijan, china, japan, korea, ethiopia, indonesia, klezmer, andes, byzantium, mesopotamia, africa, southeast-asia, gregorian, europe, vietnam, brazil) és --category maqam (vagy rāga, makam, dastgah, dromos…); --use jazz (vagy classical, blues, 20th-century, folk, synthetic) szűri a szokásosakat; --notes 5 csak az öthangúakat hagyja meg; --sort brightness (vagy notes) rendezi őket, a --anhemitonic és a --maximally-even pedig az anhemiton és a maximálisan egyenletes skálákat hagyja meg; --with-interval tritone és --without-interval semitone (vagy egy szám 1 és 6 között) és --with-step 3 hangközök szerint keres; --compare C major, C lydian táblázatba rendezi őket; --map fényességtérképre rajzolja őket (SVG); a szöveg a nevekben keres",
@@ -142,6 +142,8 @@ extension TextosDeCLI {
         descripcionPentagramaRegistro: "az oktáv (--octave 2), a kulcs (--clef bass), a kettős kottasor, a kulcsváltás a fekvés szerint és az akkordok számozott basszusa (6, 6/4, 6/5…)",
         sintaxisPentagramaMelodia: "staff melody <hangok> --over <akkordok>",
         descripcionPentagramaMelodia: "egy dallam (C4:8 D4:8…) ütemenként egy akkorddal fölötte; az akkordidegen hangok zölddel (kromatikusak pirossal); a --non-chord máshol is ezt teszi",
+        sintaxisPentagramaBajo: "staff bass <chords> [--tab]",
+        descripcionPentagramaBajo: "walking basszus negyedekben az akkordmenet alatt, basszuskulcsban: az alaphang az első ütemrészen, akkordhangok a másodikon és a harmadikon, és kromatikus átmenőhang a következő akkord felé; --tab esetén a basszus tabulatúrájával",
         sintaxisPosicionesArpegio: "positions --arpeggio <akkordjelzés> [--caged|--sweep]",
         descripcionPosicionesArpegio: "egy akkord arpeggiója a fogólap minden fekvésében, tabulatúrával és ujjakkal; --up-and-down, fel és vissza",
 

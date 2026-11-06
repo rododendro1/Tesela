@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### Bajos caminantes y progresiones en escalas poco habituales
+
+- `PresentacionDeAnalisis.bajoCaminante(_:notacion:)`: un bajo caminante en negras sobre una progresión, un compás por
+  acorde (la fundamental, dos notas del acorde y una nota de paso cromática hacia el siguiente), en clave de fa, con
+  la tablatura del bajo, lo que suena con los acordes y sus partituras. En la CLI, `armonia pentagrama bajo Rem7 Sol7
+  Do7M [--tab]` y `armonia analizar … --bajo`; en la app, una sección del análisis.
+- `PresentacionDeEstudioDeEscala.progresiones(de:notacion:)`: progresiones de ejemplo con las tríadas de una escala de
+  siete notas (la menor húngara, la doble armónica…), con los grados frente a la mayor o la menor de su tónica y las
+  notas que no son de ella. En la CLI, `armonia escala La menor húngara --progresiones`; en la app, una sección de
+  las escalas.
+
 ### La hoja de una tonalidad y dos progresiones comparadas
 
 - `PresentacionDeTonalidad.hojaDeEstudio(de:notacion:)`: la hoja de una tonalidad (SVG del ancho de un A4), con la

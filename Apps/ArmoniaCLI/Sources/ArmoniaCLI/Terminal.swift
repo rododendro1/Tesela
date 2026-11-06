@@ -31,7 +31,7 @@ extension LineaDeComandos {
         "--ajenas", "--non-chord", "--doble", "--grand-staff", "--cambiar-clave", "--clef-changes", "--bajo-cifrado",
         "--figured-bass", "--estadisticas", "--statistics", "--sin-semitonos", "--anhemitonic", "--regulares",
         "--maximally-even", "--escalera", "--brightness-ladder", "--parecidas", "--closest", "--conduccion",
-        "--voice-leading", "--json",
+        "--voice-leading", "--bajo", "--walking-bass", "--progresiones", "--progressions", "--json",
     ]
 
     /// Los valores que se proponen tras una opción.

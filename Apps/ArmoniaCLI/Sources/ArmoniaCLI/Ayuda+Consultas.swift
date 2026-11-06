@@ -98,9 +98,9 @@ extension LineaDeComandos {
             opciones: [
                 "--acordes", "--secuencia", "--bajando", "--octavas", "--piano", "--modos", "--comparar", "--simetria",
                 "--vecinas", "--doce", "--triadas", "--estadisticas", "--escalera", "--contra", "--parecidas",
-                "--chords", "--sequence", "--descending", "--octaves", "--modes", "--compare", "--symmetry",
-                "--neighbors", "--all-keys", "--triads", "--statistics", "--brightness-ladder", "--against",
-                "--closest",
+                "--progresiones", "--chords", "--sequence", "--descending", "--octaves", "--modes", "--compare",
+                "--symmetry", "--neighbors", "--all-keys", "--triads", "--statistics", "--brightness-ladder",
+                "--against", "--closest", "--progressions",
             ])
     ]
 

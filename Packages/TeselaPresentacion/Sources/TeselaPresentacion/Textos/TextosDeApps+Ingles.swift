@@ -224,6 +224,9 @@ extension TextosDeApps {
         homonima: "Parallel",
         cadenciasTipicas: "Typical cadences",
         cambianAcordes: { "\($0) of \($1) chords change" },
+        bajoCaminante: "Walking bass",
+        progresionesEnLaEscala: "Progressions in the scale",
+        notasFueraDe: { "Outside \($0): \($1)" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "Avoid",

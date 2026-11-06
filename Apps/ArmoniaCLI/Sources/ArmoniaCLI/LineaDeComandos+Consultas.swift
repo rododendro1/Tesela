@@ -346,6 +346,8 @@ extension LineaDeComandos {
         let contra: Escala?
         /// `--parecidas`: las escalas con más notas en común.
         let parecidas: Bool
+        /// `--progresiones`: progresiones con sus tríadas.
+        let progresiones: Bool
 
         var sentido: SentidoDelIntervalo { bajando ? .descendente : .ascendente }
     }
@@ -360,6 +362,7 @@ extension LineaDeComandos {
         let simetria = argumentos.quitarMarca("--simetria", "--symmetry")
         let vecinas = argumentos.quitarMarca("--vecinas", "--neighbors")
         let parecidas = argumentos.quitarMarca("--parecidas", "--closest")
+        let progresiones = argumentos.quitarMarca("--progresiones", "--progressions")
         let estadisticas = argumentos.quitarMarca("--estadisticas", "--statistics")
         let escalera = argumentos.quitarMarca("--escalera", "--brightness-ladder")
         let doce = argumentos.quitarMarca("--doce", "--all-keys")
@@ -382,7 +385,7 @@ extension LineaDeComandos {
             escala: try Escala(leyendo: argumentos.unidos), conAcordes: conAcordes, secuencia: secuencia,
             octavas: octavas, bajando: bajando, piano: piano, modos: modos, simetria: simetria, vecinas: vecinas,
             estadisticas: estadisticas, escalera: escalera, doce: doce, triadas: triadas, otra: otra,
-            contra: contra, parecidas: parecidas)
+            contra: contra, parecidas: parecidas, progresiones: progresiones)
     }
 
     /// `escala Do mayor [--acordes] [--secuencia terceras] [--bajando] [--octavas 2] [--piano] [--modos]
@@ -432,6 +435,13 @@ extension LineaDeComandos {
             lineas.append(notacion.texto(\.escalasParecidas) + ":")
             lineas += PresentacionDeEstudioDeEscala.parecidas(a: escala, notacion: notacion).map {
                 "  " + $0.nombre + ": " + $0.detalle
+            }
+        }
+        if pedido.progresiones {
+            lineas.append(notacion.texto(\.progresionesEnLaEscala) + ":")
+            for progresion in PresentacionDeEstudioDeEscala.progresiones(de: escala, notacion: notacion) {
+                let fuera = progresion.fuera.isEmpty ? "" : " · " + progresion.fuera
+                lineas.append("  " + progresion.grados + ": " + progresion.cifrados + fuera)
             }
         }
         if pedido.estadisticas {
@@ -845,6 +855,7 @@ extension LineaDeComandos {
         let conEscalas = acordes.quitarMarca("--escalas", "--scales")
         let conNotasGuia = acordes.quitarMarca("--notas-guia", "--guide-tones")
         let conConduccion = acordes.quitarMarca("--conduccion", "--voice-leading")
+        let conBajo = acordes.quitarMarca("--bajo", "--walking-bass")
         let contra = try acordes.valorConPalabras("--contra", "--against")
         guard let tonalidad = try acordes.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
         let archivo = try acordes.valor("--archivo", "--file")
@@ -910,6 +921,13 @@ extension LineaDeComandos {
                 lineas.append("    " + paso.voces.joined(separator: " · "))
             }
             lineas.append("  " + conduccion.movimientoTotal)
+        }
+        // Con --bajo, un bajo caminante: un compás de negras por acorde.
+        if conBajo, let bajo = PresentacionDeAnalisis.bajoCaminante(analisis.acordes, notacion: notacion) {
+            lineas.append(notacion.texto(\.bajoCaminante) + ":")
+            for (acorde, compas) in zip(analisis.acordes, bajo.compases) {
+                lineas.append("  " + acorde.cifrado(en: notacion) + ": " + compas)
+            }
         }
         // Con --contra, la otra versión acorde a acorde: lo que cambia, sus grados y sus notas comunes.
         if let contra {
