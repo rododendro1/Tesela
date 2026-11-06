@@ -228,7 +228,7 @@ jobs:
           comprobar grabados/dorico.png png
           armonia grabar pentagrama acorde Sol7 > grabados/sol7.pdf
           comprobar grabados/sol7.pdf pdf
-          armonia grabar tonnetz --escala Re dórico --formato png > grabados/tonnetz.png
+          armonia grabar tonnetz escala Re dórico --formato png > grabados/tonnetz.png
           comprobar grabados/tonnetz.png png
           # Sin MuseScore: código 1 y el mensaje que dice qué falta.
           if armonia grabar coral Do3 Mi4 Sol4 Do5 --motor musescore > /dev/null 2> error.txt; then

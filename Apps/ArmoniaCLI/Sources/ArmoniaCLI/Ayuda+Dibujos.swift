@@ -25,37 +25,36 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeHoja: [EntradaDeAyuda] = [
-        // hoja <escala>
+        // hoja <escala> [--comparar <escala>]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisHoja),
             descripcion: TextosDeCLI.traduccion(\.descripcionHoja),
             ejemplo: ejemplo(
                 "armonia hoja Re dórico > dorico.svg",
-                "armonia sheet D dorian > dorian.svg")),
-        // hoja --acorde <cifrado>
+                "armonia sheet D dorian > dorian.svg"),
+            opciones: [.comparar]),
+        // hoja acorde <cifrado>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisHojaDeAcorde),
             descripcion: TextosDeCLI.traduccion(\.descripcionHojaDeAcorde),
             ejemplo: ejemplo(
-                "armonia hoja --acorde Sol7 > sol7.svg",
-                "armonia sheet --chord G7 > g7.svg"),
-            opciones: [.acorde]),
-        // hoja --acordes <acordes> [--en <tonalidad>] [--doce] [--contra <acordes>]
+                "armonia hoja acorde Sol7 > sol7.svg",
+                "armonia sheet chord G7 > g7.svg")),
+        // hoja acordes <acordes> [--en <tonalidad>] [--doce] [--comparar <acordes>]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisHojaDeAcordes),
             descripcion: TextosDeCLI.traduccion(\.descripcionHojaDeAcordes),
             ejemplo: ejemplo(
-                "armonia hoja --acordes Rem7 Sol7 Do7M --en Do mayor > ii-V-I.svg",
-                "armonia sheet --chords Dm7 G7 Cmaj7 --in C major > ii-V-I.svg"),
-            opciones: [.acordes, .en, .doce, .contra]),
-        // hoja --tonalidad <tonalidad>
+                "armonia hoja acordes Rem7 Sol7 Do7M --en Do mayor > ii-V-I.svg",
+                "armonia sheet chords Dm7 G7 Cmaj7 --in C major > ii-V-I.svg"),
+            opciones: [.en, .doce, .comparar]),
+        // hoja tonalidad <tonalidad>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisHojaDeTonalidad),
             descripcion: TextosDeCLI.traduccion(\.descripcionHojaDeTonalidad),
             ejemplo: ejemplo(
-                "armonia hoja --tonalidad Re mayor > re.svg",
-                "armonia sheet --key D major > d.svg"),
-            opciones: [.tonalidad]),
+                "armonia hoja tonalidad Re mayor > re.svg",
+                "armonia sheet key D major > d.svg")),
     ]
 
     static let ayudaDeReloj: [EntradaDeAyuda] = [
@@ -83,8 +82,8 @@ extension LineaDeComandos {
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPentagramaEstudio),
             descripcion: TextosDeCLI.traduccion(\.descripcionPentagramaEstudio),
             ejemplo: ejemplo(
-                "armonia pentagrama escala Sol mayor --tab --dedos > sol.svg",
-                "armonia staff scale G major --tab --fingers > g.svg"),
+                "armonia pentagrama escala Sol mayor --dedos guitarra > sol.svg",
+                "armonia staff scale G major --fingers guitar > g.svg"),
             opciones: [.romanos, .mano, .secuencia, .tab, .dedos, .instrumento]),
         // pentagrama <qué> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado
         EntradaDeAyuda(
@@ -120,31 +119,29 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia tonnetz Do Mi Sol Si > tonnetz.svg",
                 "armonia tonnetz C E G B > tonnetz.svg")),
-        // tonnetz --acorde <cifrado> | --escala <escala> | --clases <números>
+        // tonnetz acorde <cifrado> | escala <escala> | clases <números>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisTonnetzAcorde),
             descripcion: TextosDeCLI.traduccion(\.descripcionTonnetzAcorde),
             ejemplo: ejemplo(
-                "armonia tonnetz --escala Re dórico > dorico.svg",
-                "armonia tonnetz --scale D dorian > dorian.svg"),
-            opciones: [.acorde, .escala, .clases]),
-        // tonnetz --recorrido <tríadas> | --camino <tríada> <tríada>
+                "armonia tonnetz escala Re dórico > dorico.svg",
+                "armonia tonnetz scale D dorian > dorian.svg")),
+        // tonnetz recorrido <tríadas> | camino <tríada> <tríada>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisTonnetzRecorrido),
             descripcion: TextosDeCLI.traduccion(\.descripcionTonnetzRecorrido),
             ejemplo: ejemplo(
-                "armonia tonnetz --recorrido Do Lam Fa Rem > recorrido.svg",
-                "armonia tonnetz --sequence C Am F Dm > sequence.svg"),
-            opciones: [.recorrido, .camino]),
-        // tonnetz --ciclo <ciclo> <tríada>
+                "armonia tonnetz recorrido Do Lam Fa Rem > recorrido.svg",
+                "armonia tonnetz sequence C Am F Dm > sequence.svg")),
+        // tonnetz ciclo <ciclo> <tríada>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisTonnetzCiclo),
             descripcion: TextosDeCLI.traduccion(\.descripcionTonnetzCiclo),
             ejemplo: ejemplo(
-                "armonia tonnetz --ciclo hexatonico Do > ciclo.svg",
-                "armonia tonnetz --cycle hexatonic C > cycle.svg"),
+                "armonia tonnetz ciclo hexatonico Do > ciclo.svg",
+                "armonia tonnetz cycle hexatonic C > cycle.svg"),
             notas: TextosDeCLI.traduccion(\.notasTonnetzCiclo),
-            opciones: [.ciclo, .margen]),
+            opciones: [.margen]),
     ]
 
     static let ayudaDeTabla: [EntradaDeAyuda] = [
@@ -155,32 +152,31 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia tabla Do3 Sol3 Mi4 > tabla.svg",
                 "armonia tabla C3 G3 E4 > table.svg")),
-        // tabla --acorde <cifrado> | --escala <escala> | --clases <números>
+        // tabla acorde <cifrado> | escala <escala> | clases <números> | recorrido | camino | ciclo
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisTablaAcorde),
             descripcion: TextosDeCLI.traduccion(\.descripcionTablaAcorde),
             ejemplo: ejemplo(
-                "armonia tabla --acorde Domaj7 > domaj7.svg",
-                "armonia tabla --chord Cmaj7 > cmaj7.svg"),
-            opciones: [.acorde, .escala, .clases, .recorrido, .camino, .ciclo, .margen]),
+                "armonia tabla acorde Domaj7 > domaj7.svg",
+                "armonia tabla chord Cmaj7 > cmaj7.svg"),
+            opciones: [.margen]),
     ]
 
     static let ayudaDeCuadricula: [EntradaDeAyuda] = [
-        // cuadricula <notas o alturas> | --acorde | --escala | --clases
+        // cuadricula <notas o alturas> | acorde | escala | clases
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisCuadricula),
             descripcion: TextosDeCLI.traduccion(\.descripcionCuadricula),
             ejemplo: ejemplo(
-                "armonia cuadricula --ejes 2,5 --acorde Sol7 > sol7.svg",
-                "armonia cuadricula --axes 2,5 --chord G7 > g7.svg"),
-            opciones: [.acorde, .escala, .clases]),
+                "armonia cuadricula acorde Sol7 --ejes 2,5 > sol7.svg",
+                "armonia cuadricula chord G7 --axes 2,5 > g7.svg")),
         // cuadricula --ejes H,V --rejilla CxF --origen <altura> --giro 0-3 --espejo --en-tono
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisCuadriculaOpciones),
             descripcion: TextosDeCLI.traduccion(\.descripcionCuadriculaOpciones),
             ejemplo: ejemplo(
-                "armonia cuadricula --rejilla 8x8 --en-tono --escala Re dórico > pads.svg",
-                "armonia cuadricula --grid 8x8 --in-key --scale D dorian > pads.svg"),
-            opciones: [.ejes, .rejilla, .origen, .giro, .espejo, .enTono, .escala]),
+                "armonia cuadricula escala Re dórico --rejilla 8x8 --en-tono > pads.svg",
+                "armonia cuadricula scale D dorian --grid 8x8 --in-key > pads.svg"),
+            opciones: [.ejes, .rejilla, .origen, .giro, .espejo, .enTono]),
     ]
 }

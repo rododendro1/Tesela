@@ -2,6 +2,26 @@
 
 ## Sin publicar
 
+### `armonia`: la misma forma de escribir lo mismo en todas las órdenes
+
+Todas las formas de antes se siguen leyendo; la ayuda enseña las nuevas.
+
+- `hoja`, `tonnetz`, `tabla` y `cuadricula` eligen lo que dibujan con una suborden, como `pentagrama` y `musicxml`:
+  `hoja acorde Sol7`, `hoja acordes Rem7 Sol7 Do7M`, `hoja tonalidad Re mayor`, `tonnetz escala Re dórico`,
+  `tabla ciclo octatonico Do`, `cuadricula acorde Sol7 --ejes 2,5`. Antes, `--acorde`, `--escala`…
+- La tonalidad se escribe con `--en` o con `--tonalidad` en todas las órdenes: `analizar … --tonalidad La menor` y
+  `musicxml acordes … --en Sol mayor` (o `--in` y `--key`).
+- `--comparar` compara en todas: `analizar … --comparar …` y `hoja acordes … --comparar …` (antes, `--contra`).
+- `escala` siempre da texto: la comparación nota a nota en SVG es `hoja Do mayor --comparar Do dórico` (antes,
+  `escala Do mayor --contra Do dórico`).
+- `escalas --vecinas Re dórico`, `escalas --parecidas Re dórico` y `escalas --escalera Re dórico` dan las escalas que
+  salen de una, como `escala Re dórico --vecinas`.
+- Los dedos se piden con `--dedos`: `escala Do mayor --dedos` (antes, `--piano`), `pentagrama … --dedos piano` (antes,
+  `--mano derecha`), `pentagrama … --dedos guitarra` (antes, `--tab --dedos`) y `teclado … --dedos`.
+- `pentagrama … --registro 3` es el registro (antes, `--octava`, que se confundía con `--octavas`).
+- `--json` también en `escalas`, `rearmonizar`, `vecinos`, `conduccion-parsimoniosa`, `conduccion-minima`, `plr`,
+  `posiciones` y `motores`.
+
 ### Escalas: el teórico que definió cada una
 
 - `FuenteTeorica` (nuevo) es el autor de unas razones, de unas partes del tono, de unas especies o de un sistema:

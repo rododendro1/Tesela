@@ -9,7 +9,9 @@ extension LineaDeComandos {
             nombres: ["grabar", "engrave"], ayuda: ayudaDeGrabar,
             opciones: ayudaDeGrabar.flatMap(\.opciones) + opcionesDePartitura
         ) { try grabar($0, $1) },
-        Orden(nombres: ["motores", "engines"], ayuda: ayudaDeMotores) { try motores($0, $1) },
+        Orden(
+            nombres: ["motores", "engines"], ayuda: ayudaDeMotores, json: { try motoresJSON($0, $1) },
+            ejecutar: { try motores($0, $1) }),
     ]
 
     static let ayudaDeGrabar: [EntradaDeAyuda] = [

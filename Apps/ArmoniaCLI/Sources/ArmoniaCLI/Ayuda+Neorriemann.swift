@@ -3,20 +3,24 @@ import Armonia
 extension LineaDeComandos {
     /// Las transformaciones neorriemannianas y la conducción de voces, en el orden en que salen en la ayuda.
     static let ordenesDeNeorriemann: [Orden] = [
-        Orden(nombres: ["vecinos", "neighbors"], ayuda: ayudaDeVecinos) { try vecinos($0, $1) },
+        Orden(
+            nombres: ["vecinos", "neighbors"], ayuda: ayudaDeVecinos, json: { try vecinosJSON($0, $1) },
+            ejecutar: { try vecinos($0, $1) }),
         Orden(
             nombres: ["conduccion-parsimoniosa", "conducción-parsimoniosa", "smooth-path"],
-            ayuda: ayudaDeConduccionParsimoniosa
-        ) { try caminoParsimonioso($0, $1) },
+            ayuda: ayudaDeConduccionParsimoniosa, json: { try caminoParsimoniosoJSON($0, $1) },
+            ejecutar: { try caminoParsimonioso($0, $1) }),
         Orden(
             nombres: ["conduccion-minima", "conducción-mínima", "minimal-voice-leading"],
-            ayuda: ayudaDeConduccionMinima
-        ) { resto, notacion in
-            guard resto.count == 2 else { throw ErrorDeUso.dosAcordesDeConduccion }
-            let conduccion = try Acorde(leyendo: resto[0]).conduccionMinima(hasta: try Acorde(leyendo: resto[1]))
-            return bien(conduccion.texto(en: notacion))
-        },
-        Orden(nombres: ["plr", "neoriemannian"], ayuda: ayudaDePlr) { try plr($0, $1) },
+            ayuda: ayudaDeConduccionMinima, json: { try conduccionMinimaJSON($0, $1) },
+            ejecutar: { resto, notacion in
+                guard resto.count == 2 else { throw ErrorDeUso.dosAcordesDeConduccion }
+                let conduccion = try Acorde(leyendo: resto[0]).conduccionMinima(hasta: try Acorde(leyendo: resto[1]))
+                return bien(conduccion.texto(en: notacion))
+            }),
+        Orden(
+            nombres: ["plr", "neoriemannian"], ayuda: ayudaDePlr, json: { try plrJSON($0, $1) },
+            ejecutar: { try plr($0, $1) }),
     ]
 
     static let ayudaDeVecinos: [EntradaDeAyuda] = [

@@ -18,7 +18,9 @@ extension LineaDeComandos {
         Orden(
             nombres: ["escala", "scale"], ayuda: ayudaDeEscala, json: { try escalaJSON($0, $1) },
             ejecutar: { try escala($0, $1) }),
-        Orden(nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas) { try escalas($0, $1) },
+        Orden(
+            nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas, json: { try escalasJSON($0, $1) },
+            ejecutar: { try escalas($0, $1) }),
         Orden(
             nombres: ["tradiciones", "traditions"], ayuda: ayudaDeTradiciones, json: { try tradicionesJSON($0, $1) },
             ejecutar: { try tradiciones($0, $1) }),
@@ -90,7 +92,7 @@ extension LineaDeComandos {
             notas: TextosDeCLI.traduccion(\.notasEscala),
             opciones: [
                 .acordes, .secuencia, .bajando, .octavas, .piano, .modos, .comparar, .simetria, .vecinas, .doce,
-                .triadas, .estadisticas, .escalera, .contra, .parecidas, .progresiones,
+                .triadas, .estadisticas, .escalera, .parecidas, .progresiones,
             ])
     ]
 
@@ -114,7 +116,7 @@ extension LineaDeComandos {
             opciones: [
                 .tradicion, .categoria, .fuente, .uso, .notas, .orden, .sinSemitonos, .regulares, .conIntervalo,
                 .sinIntervalo,
-                .conPaso, .comparar, .mapa,
+                .conPaso, .comparar, .vecinasDe, .parecidasA, .escaleraDe, .mapa,
             ])
     ]
 

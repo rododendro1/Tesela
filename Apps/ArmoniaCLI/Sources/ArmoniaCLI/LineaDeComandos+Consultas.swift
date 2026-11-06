@@ -89,7 +89,7 @@ extension LineaDeComandos {
         let conNotasGuia = acordes.quitarMarca(.notasGuia)
         let conConduccion = acordes.quitarMarca(.conduccion)
         let conBajo = acordes.quitarMarca(.bajo)
-        let contra = try acordes.valorConPalabras(.contra)
+        let contra = try acordes.valorConPalabras(.comparar)
         guard let tonalidad = try acordes.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
         let archivo = try acordes.valor(.archivo)
         let ventana = try acordes.valor(.ventana).map { try Duracion(leyendo: $0) }
@@ -162,7 +162,7 @@ extension LineaDeComandos {
                 lineas.append("  " + acorde.cifrado(en: notacion) + ": " + compas)
             }
         }
-        // Con --contra, la otra versión acorde a acorde: lo que cambia, sus grados y sus notas comunes.
+        // Con --comparar (o --contra, como antes), la otra versión acorde a acorde: lo que cambia, sus grados y sus notas comunes.
         if let contra {
             let otra = try contra.split(separator: " ").map { try Acorde(leyendo: String($0)) }
             if let comparacion = PresentacionDeAnalisis.comparar(

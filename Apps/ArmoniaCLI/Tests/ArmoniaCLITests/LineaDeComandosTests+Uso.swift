@@ -28,7 +28,7 @@ extension LineaDeComandosTests {
         }
         #expect(salida("ayuda chord --ingles").hasPrefix("  chord <symbol>…"))
         // Una orden con varias entradas las da todas.
-        #expect(salida("ayuda tonnetz").contains("tonnetz --acorde"))
+        #expect(salida("ayuda tonnetz").contains("tonnetz acorde"))
         // La ayuda de la ayuda y la de la versión.
         #expect(salida("ayuda ayuda").hasPrefix("  ayuda [<orden>]"))
         #expect(salida("ayuda --version").contains("la versión de armonia"))
