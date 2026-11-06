@@ -174,7 +174,8 @@ usan microtonos):
 - **Indonesia**: Pélog selisir (también «balinesa») y Sléndro, y los pathet de Java y los modos de Bali. Siguen
   los modelos de las medidas de Surjodiningrat: el pélog en nueve partes iguales de la octava y el sléndro en
   cinco; en doce notas cada grado va al semitono más cercano desde su tónica (el sléndro, Do Re Fa Sol Si♭), y
-  en cents en su versión microtonal.
+  en cents en su versión microtonal. Y el degung del gamelan de Sunda, en el oeste de Java (Do Mi Fa Sol Si desde
+  da), que no lleva versión en cents.
 - **15 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
   (el Valaji carnático), Candrakauns y Megh, pentatónicos; Yaman, Lalit, Pūriyā Dhanāśrī y Darbārī
   Kānaḍa (en su forma recta: es vakra, y su ga y su dha ati-komal no caben en doce notas); y Bāgeśrī,
@@ -315,7 +316,7 @@ CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .f
 ```
 
 `subtradicion` dice de dónde es una escala dentro de su tradición: la música carnática o la indostánica en la
-India, Java o Bali en Indonesia, el país o el pueblo de una escala de África, de Europa o del sudeste asiático, el
+India, Java, Bali o Sunda en Indonesia, el país o el pueblo de una escala de África, de Europa o del sudeste asiático, el
 gagaku o las Ryūkyū en Japón. En la India la da la categoría (un mēḷa es carnático, un thāṭ indostánico); en las
 demás se escribe en la declaración de la escala. Vale `nil` donde no hay una clara (el sléndro se toca en Java y
 en Bali) y en las occidentales.

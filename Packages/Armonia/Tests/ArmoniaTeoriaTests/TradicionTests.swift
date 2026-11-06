@@ -73,6 +73,7 @@ import Testing
         #expect(TipoDeEscala.mayor.subtradicion == nil)
         #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).subtradicion == nil)
         #expect(TipoDeEscala.tradicionales(subtradicion: .java).count == 6)
+        #expect(TipoDeEscala.degung.subtradicion == .sunda && Subtradicion.sunda.tradicion == .indonesia)
         #expect(TipoDeEscala.tradicionales(subtradicion: .bali).count == 3)
         // Toda escala de la India tiene subtradición, y cada subtradición tiene alguna escala.
         for tipo in TipoDeEscala.tradicionales(tradicion: .india) {

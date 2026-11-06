@@ -19,7 +19,7 @@
 ### Escalas: la subtradición
 
 - `Subtradicion` y `TipoDeEscala.subtradicion`: de dónde es una escala dentro de su tradición (`.carnatica`,
-  `.indostanica` y `.indiaAntigua` en la India; `.java` y `.bali`; `.tailandia`, `.camboya` y `.birmania`;
+  `.indostanica` y `.indiaAntigua` en la India; `.java`, `.bali` y `.sunda`; `.tailandia`, `.camboya` y `.birmania`;
   `.buganda`, `.chopi`, `.mandinga` y `.shona`; `.ucrania`, `.polonia`, `.hungria`, `.alpes`, `.escocia` y
   `.georgia`; `.gagaku` y `.ryukyu`), con su `tradicion` y su nombre en los quince idiomas. En la India la da la
   categoría (`Subtradicion.de(_:)`); en las demás se escribe en la declaración (`subtradicion: .bali`). `nil` en
@@ -35,6 +35,11 @@
 - Seis janya habituales, con su mēḷa: `suddhaSaveri` (29), `suddhaDhanyasi` y
   `sriranjani` (22), `malayamarutam` (16), `gambhiranata` (36) y `hamsanadam` (60), todos iguales al subir y al
   bajar.
+
+### Escalas: el degung de Sunda
+
+- `TipoDeEscala.degung`: el laras del gamelan degung de Sunda (oeste de Java), Do Mi Fa Sol Si desde da, con la
+  subtradición `.sunda`.
 
 ## 0.3.6 (2026-11-06)
 

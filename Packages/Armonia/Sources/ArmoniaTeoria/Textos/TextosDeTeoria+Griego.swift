@@ -240,6 +240,7 @@ extension TextosDeTeoria {
         subtradicionIndiaAntigua: "Αρχαία Ινδία",
         subtradicionJava: "Ιάβα",
         subtradicionBali: "Μπαλί",
+        subtradicionSunda: "Σούντα",
         subtradicionTailandia: "Ταϊλάνδη",
         subtradicionCamboya: "Καμπότζη",
         subtradicionBirmania: "Μιανμάρ",

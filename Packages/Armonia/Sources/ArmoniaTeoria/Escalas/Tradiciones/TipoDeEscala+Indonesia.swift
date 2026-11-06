@@ -82,7 +82,21 @@ extension TipoDeEscala {
         alias: ["Sunaren"],
         categoria: .pathet, subtradicion: .bali, afinaciones: [.pelogSelisir])
 
-    public static let indonesias: [TipoDeEscala] = [.pelog, .slendro]
+    // MARK: Sunda
+    //
+    // El gamelan degung de Sunda, en el oeste de Java, toca un pélog de cinco notas, el laras degung. Sus notas se
+    // numeran de la aguda a la grave (1 da, 2 mi, 3 na, 4 ti, 5 la), y la de referencia es da. Con el suling de 56
+    // cm, en el que da es Sol, son Sol Fa♯ Re Do Si: desde da, Do Mi Fa Sol Si en doce notas, con un paso de unos 240
+    // cents entre na y ti. Las fuentes no coinciden en cómo cambia el madenda (o sorog), así que no está.
+    // Fuente: Wikipedia («Gamelan degung»), e Iwan Gunawan para Ableton («A Guide to the Sundanese Gamelan Tuning»).
+
+    /// Degung, el laras del gamelan degung de Sunda (da la mi ti na desde da: Do Mi Fa Sol Si).
+    public static let degung = TipoDeEscala(
+        nombre: "Degung", intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
+        alias: ["laras degung", "pélog degung"],
+        categoria: .laras, subtradicion: .sunda)
+
+    public static let indonesias: [TipoDeEscala] = [.pelog, .slendro, .degung]
     /// Los pathet de Java y los modos de Bali.
     public static let pathets: [TipoDeEscala] = [
         .pelogLima, .pelogNem, .pelogBarang, .slendroNem, .slendroSanga, .slendroManyura, .pelogTembung,

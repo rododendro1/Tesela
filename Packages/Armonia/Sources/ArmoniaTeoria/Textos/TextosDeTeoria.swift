@@ -262,6 +262,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let subtradicionIndiaAntigua: String
     let subtradicionJava: String
     let subtradicionBali: String
+    let subtradicionSunda: String
     let subtradicionTailandia: String
     let subtradicionCamboya: String
     let subtradicionBirmania: String
