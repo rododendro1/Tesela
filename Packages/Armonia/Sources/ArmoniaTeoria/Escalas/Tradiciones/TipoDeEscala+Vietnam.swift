@@ -14,11 +14,13 @@ extension TipoDeEscala {
     /// Bắc: Do Re Fa Sol La.
     public static let bac = TipoDeEscala(
         nombre: "Bắc", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
-        alias: ["điệu Bắc", "hơi Bắc"])
+        alias: ["điệu Bắc", "hơi Bắc"],
+        categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 189, 501, 698, 891])])
     /// Vọng cổ, del modo Oán: Do Mi Fa Sol La en doce notas, con el Mi y el La bajos.
     public static let vongCo = TipoDeEscala(
         nombre: "Vọng cổ", intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
-        alias: ["Oán", "hơi Oán", "điệu Oán"])
+        alias: ["Oán", "hơi Oán", "điệu Oán"],
+        categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 375, 519, 704, 866])])
 
     public static let vietnamitas: [TipoDeEscala] = [.bac, .vongCo]
 }
@@ -26,12 +28,6 @@ extension TipoDeEscala {
 // MARK: Ficha
 
 extension FichaDeTradicion {
-    static let vietnam = FichaDeTradicion(
-        .vietnam,
-        [.init(.escala, TipoDeEscala.vietnamitas)],
-        microtonales: [
-            // Las medidas en cents.
-            TipoDeEscalaMicrotonal(.bac, .razones, pasos: [0, 189, 501, 698, 891]),
-            TipoDeEscalaMicrotonal(.vongCo, .razones, pasos: [0, 375, 519, 704, 866]),
-        ])
+    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). Las medidas en cents.
+    static let vietnam = FichaDeTradicion(.vietnam, [TipoDeEscala.vietnamitas])
 }

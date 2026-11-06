@@ -1,49 +1,22 @@
 // MARK: - Ficha de una tradición
 
-/// Lo que el catálogo sabe de las escalas de una tradición además de sus intervalos: qué categoría tiene cada una de
-/// sus listas (los thāṭ, los mēḷa…), la versión microtonal de las que la tienen y, de los rāgas janya, su mēḷa.
+/// Las escalas de una tradición, en sus listas (los thāṭ, los mēḷa…) y en el orden en que tienen prioridad.
 ///
-/// Cada fichero de `Tradiciones/` acaba con la ficha de su tradición, junto a sus escalas, y de las fichas salen
-/// `TipoDeEscala.categoria`, `tradicion`, `padre` y `microtonal`, y `TipoDeEscalaMicrotonal.catalogo`. Las escalas
-/// se nombran por su miembro de `TipoDeEscala`: si una se renombra o se quita, no compila.
+/// Cada fichero de `Tradiciones/` acaba con la ficha de su tradición, junto a sus escalas, y de las fichas sale
+/// `TipoDeEscala.tradicion`. Lo demás de cada escala (su categoría, su versión microtonal y, de los rāgas janya, su
+/// mēḷa) va en su declaración (`FichaDeEscala`). Las listas se nombran por su miembro de `TipoDeEscala`: si una se
+/// renombra o se quita, no compila.
 struct FichaDeTradicion: Sendable {
-    /// Una lista de escalas de la tradición y la categoría de todas ellas.
-    struct Lista: Sendable {
-        let categoria: CategoriaTradicional
-        let tipos: [TipoDeEscala]
-
-        init(_ categoria: CategoriaTradicional, _ tipos: [TipoDeEscala]) {
-            self.categoria = categoria
-            self.tipos = tipos
-        }
-    }
-
-    /// Un rāga janya y el número del mēḷa del que deriva.
-    struct Padre: Sendable {
-        let janya: TipoDeEscala
-        let mela: Int
-
-        init(_ janya: TipoDeEscala, mela: Int) {
-            self.janya = janya
-            self.mela = mela
-        }
-    }
-
     let tradicion: Tradicion
-    let listas: [Lista]
-    /// Las versiones microtonales de las escalas de la tradición que la tienen.
-    let microtonales: [TipoDeEscalaMicrotonal]
-    /// El mēḷa de cada janya (solo en la India).
-    let padres: [Padre]
+    let listas: [[TipoDeEscala]]
 
-    init(
-        _ tradicion: Tradicion, _ listas: [Lista], microtonales: [TipoDeEscalaMicrotonal] = [], padres: [Padre] = []
-    ) {
+    init(_ tradicion: Tradicion, _ listas: [[TipoDeEscala]]) {
         self.tradicion = tradicion
         self.listas = listas
-        self.microtonales = microtonales
-        self.padres = padres
     }
+
+    /// Las escalas de la tradición, lista tras lista.
+    var tipos: [TipoDeEscala] { listas.flatMap { $0 } }
 
     /// Las fichas de todas las tradiciones, en el orden de `Tradicion.allCases`.
     static let todas: [FichaDeTradicion] = Tradicion.allCases.map(\.ficha)

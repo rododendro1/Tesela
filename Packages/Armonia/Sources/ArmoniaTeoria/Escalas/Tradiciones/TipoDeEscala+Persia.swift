@@ -19,7 +19,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        variantes: ["Mahoor", "ماهور"])
+        variantes: ["Mahoor", "ماهور"],
+        categoria: .dastgah)
     /// همایون, aproximado: como el frigio dominante.
     public static let homayun = TipoDeEscala(
         nombre: "Homāyun",
@@ -27,7 +28,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["Homayoun", "همایون"])
+        variantes: ["Homayoun", "همایون"],
+        categoria: .dastgah, afinaciones: [.init(.persa, pasos: [0, 3, 8, 10, 14, 16, 20])])
     /// چهارگاه, aproximado: como la doble armónica.
     public static let cahargah = TipoDeEscala(
         nombre: "Čahārgāh",
@@ -35,7 +37,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        variantes: ["Chahārgāh", "چهارگاه"])
+        variantes: ["Chahārgāh", "چهارگاه"],
+        categoria: .dastgah, afinaciones: [.init(.persa, pasos: [0, 3, 8, 10, 14, 17, 22])])
 
     /// شور (Re Mi𝄳 Fa Sol La Si♭ Do), aproximado: como el frigio.
     public static let sur = TipoDeEscala(
@@ -44,7 +47,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["Shur", "Shoor", "شور"])
+        variantes: ["Shur", "Shoor", "شور"],
+        categoria: .dastgah, afinaciones: [.init(.persa, pasos: [0, 3, 6, 10, 14, 16, 20])])
     /// راست پنجگاه: el mixolidio.
     public static let rastPanjgah = TipoDeEscala(
         nombre: "Rāst-Panjgāh",
@@ -52,7 +56,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        variantes: ["راست پنجگاه"])
+        variantes: ["راست پنجگاه"],
+        categoria: .dastgah)
     /// سهگاه (Mi𝄳 Fa Sol La𝄳 Si♭ Do Re), con la tónica en un koron, aproximado sobre Mi. Se llama «dastgāh Segāh»
     /// porque «Segah» es también el dromos Sengáh.
     public static let segah = TipoDeEscala(
@@ -61,7 +66,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["سه\u{200C}گاه"])
+        variantes: ["سه\u{200C}گاه"],
+        categoria: .dastgah, afinaciones: [.init(.persa, pasos: [-1, 2, 6, 9, 12, 16, 20])])
     /// نوا (Sol La Si♭ Do Re Mi𝄳 Fa), aproximado: la menor natural.
     public static let nava = TipoDeEscala(
         nombre: "Navā",
@@ -69,7 +75,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["نوا"])
+        variantes: ["نوا"],
+        categoria: .dastgah, afinaciones: [.init(.persa, pasos: [0, 4, 6, 10, 14, 17, 20])])
     /// بیات ترک (Fa Sol La Si♭ Do Re Mi𝄳), un āvāz de Šur, aproximado: el mixolidio.
     public static let bayateTork = TipoDeEscala(
         nombre: "Bayāt-e Tork",
@@ -77,7 +84,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        variantes: ["Bayat-e Turk", "بیات ترک"])
+        variantes: ["Bayat-e Turk", "بیات ترک"],
+        categoria: .dastgah, afinaciones: [.init(.persa, pasos: [0, 4, 8, 10, 14, 18, 21])])
     /// افشاری (Do Re Mi𝄳 Fa Sol La𝄳 Si♭), un āvāz de Šur, aproximado: la menor natural.
     public static let afshari = TipoDeEscala(
         nombre: "Afšāri",
@@ -85,7 +93,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["Afshari", "افشاری"])
+        variantes: ["Afshari", "افشاری"],
+        categoria: .dastgah, afinaciones: [.init(.persa, pasos: [0, 4, 7, 10, 14, 17, 20])])
     /// دشتی (Re Mi𝄳 Fa Sol La Si♭ Do), un āvāz de Šur con sus mismas notas y el šāhed en La, aproximado: el frigio.
     public static let dashti = TipoDeEscala(
         nombre: "Dašti",
@@ -93,7 +102,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["Dashti", "دشتی"])
+        variantes: ["Dashti", "دشتی"],
+        categoria: .dastgah, afinaciones: [.init(.persa, pasos: [0, 3, 6, 10, 14, 16, 20])])
     /// ابوعطا (Re Mi𝄳 Fa Sol La𝄳 Si♭ Do), un āvāz de Šur, aproximado: el locrio.
     public static let abuAta = TipoDeEscala(
         nombre: "Abu ʿAtā",
@@ -101,7 +111,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        alias: ["Abuata"], variantes: ["Abu Ata", "ابوعطا"])
+        alias: ["Abuata"], variantes: ["Abu Ata", "ابوعطا"],
+        categoria: .dastgah, afinaciones: [.init(.persa, pasos: [0, 3, 6, 10, 13, 16, 20])])
     /// بیات اصفهان (Sol La Si♭ Do Re Mi𝄳 Fa♯), un āvāz de Homāyun, aproximado: la menor armónica.
     public static let bayateEsfahan = TipoDeEscala(
         nombre: "Bayāt-e Esfahān",
@@ -109,7 +120,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        alias: ["Isfahan"], variantes: ["Bayat-e Isfahan", "بیات اصفهان"])
+        alias: ["Isfahan"], variantes: ["Bayat-e Isfahan", "بیات اصفهان"],
+        categoria: .dastgah, afinaciones: [.init(.persa, pasos: [0, 4, 6, 10, 14, 17, 22])])
 
     /// Los dastgāh y, con ellos, los āvāz que derivan de Šur y de Homāyun.
     public static let dastgah: [TipoDeEscala] = [
@@ -121,20 +133,6 @@ extension TipoDeEscala {
 // MARK: Ficha
 
 extension FichaDeTradicion {
-    static let persia = FichaDeTradicion(
-        .persia,
-        [.init(.dastgah, TipoDeEscala.dastgah)],
-        microtonales: [
-            // Dastgāh (koron).
-            TipoDeEscalaMicrotonal(.sur, .persa, pasos: [0, 3, 6, 10, 14, 16, 20]),
-            TipoDeEscalaMicrotonal(.homayun, .persa, pasos: [0, 3, 8, 10, 14, 16, 20]),
-            TipoDeEscalaMicrotonal(.cahargah, .persa, pasos: [0, 3, 8, 10, 14, 17, 22]),
-            TipoDeEscalaMicrotonal(.segah, .persa, pasos: [-1, 2, 6, 9, 12, 16, 20]),
-            TipoDeEscalaMicrotonal(.nava, .persa, pasos: [0, 4, 6, 10, 14, 17, 20]),
-            TipoDeEscalaMicrotonal(.bayateTork, .persa, pasos: [0, 4, 8, 10, 14, 18, 21]),
-            TipoDeEscalaMicrotonal(.afshari, .persa, pasos: [0, 4, 7, 10, 14, 17, 20]),
-            TipoDeEscalaMicrotonal(.dashti, .persa, pasos: [0, 3, 6, 10, 14, 16, 20]),
-            TipoDeEscalaMicrotonal(.abuAta, .persa, pasos: [0, 3, 6, 10, 13, 16, 20]),
-            TipoDeEscalaMicrotonal(.bayateEsfahan, .persa, pasos: [0, 4, 6, 10, 14, 17, 22]),
-        ])
+    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). Dastgāh (koron).
+    static let persia = FichaDeTradicion(.persia, [TipoDeEscala.dastgah])
 }

@@ -26,6 +26,10 @@ public struct TipoDeEscala: Sendable, Codable {
     /// Otras formas de escribir el nombre o uno de los alias, que no son otro nombre: otro género («dórica»), otra
     /// transliteración («Hicaz» por Hitzáz) u otra escritura («Χιτζάζ», «बिलावल»). Se leen igual que los alias.
     public let variantes: [String]
+    /// Lo demás que el catálogo sabe de la escala (usos, categoría, mēḷa, microtonos), escrito en su declaración. No
+    /// se codifica ni cuenta para `==`, y las propiedades públicas no lo leen de aquí sino de la escala del catálogo
+    /// con la misma identidad (`fichaDelCatalogo`).
+    package let ficha: FichaDeEscala
 
     /// Nombre, alias y variantes en forma normalizada (`normalizar`: sin diacríticos ni mayúsculas, `#`/`b`), sin
     /// repetidos. Es lo que se compara al buscar por nombre.
@@ -47,6 +51,37 @@ public struct TipoDeEscala: Sendable, Codable {
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
         variantes: [String] = []
     ) {
+        self.init(
+            nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
+            variantes: variantes, ficha: .vacia)
+    }
+
+    /// Una escala occidental del catálogo, con sus usos y, si las tiene, sus versiones microtonales.
+    package init(
+        nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
+        variantes: [String] = [], usos: [UsoDeEscala], afinaciones: [FichaDeEscala.Afinacion] = []
+    ) {
+        self.init(
+            nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
+            variantes: variantes, ficha: FichaDeEscala(usos: usos, afinaciones: afinaciones))
+    }
+
+    /// Una escala de otra tradición, con su categoría y, si los tiene, el número del mēḷa del que deriva (un rāga
+    /// janya) y sus versiones microtonales. La tradición la da la lista de su `FichaDeTradicion`.
+    package init(
+        nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
+        variantes: [String] = [], categoria: CategoriaTradicional, mela: Int? = nil,
+        afinaciones: [FichaDeEscala.Afinacion] = []
+    ) {
+        self.init(
+            nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
+            variantes: variantes, ficha: FichaDeEscala(categoria: categoria, mela: mela, afinaciones: afinaciones))
+    }
+
+    init(
+        nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]?, alias: [String],
+        variantes: [String], ficha: FichaDeEscala
+    ) {
         self.nombre = nombre
         let subida = TipoDeEscala.ordenar(intervalos)
         let bajada = intervalosDescendentes.map(TipoDeEscala.ordenar)
@@ -54,6 +89,7 @@ public struct TipoDeEscala: Sendable, Codable {
         self.intervalosDescendentes = bajada == subida ? nil : bajada
         self.alias = alias
         self.variantes = variantes
+        self.ficha = ficha
     }
 
     /// Las escalas guardadas antes de que hubiera `variantes` se leen sin ellas.
@@ -64,6 +100,7 @@ public struct TipoDeEscala: Sendable, Codable {
         intervalosDescendentes = try datos.decodeIfPresent([Intervalo].self, forKey: .intervalosDescendentes)
         alias = try datos.decode([String].self, forKey: .alias)
         variantes = try datos.decodeIfPresent([String].self, forKey: .variantes) ?? []
+        ficha = .vacia
     }
 
     package static func ordenar(_ intervalos: [Intervalo]) -> [Intervalo] {
@@ -199,55 +236,63 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        alias: ["jónico"], variantes: ["jónica"])
+        alias: ["jónico"], variantes: ["jónica"],
+        usos: [.clasica, .jazz])
     public static let dorico = TipoDeEscala(
         nombre: "dórico",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["menor dórica"], variantes: ["dórica"])
+        alias: ["menor dórica"], variantes: ["dórica"],
+        usos: [.clasica, .jazz])
     public static let frigio = TipoDeEscala(
         nombre: "frigio",
         intervalos: [
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["frigia"])
+        variantes: ["frigia"],
+        usos: [.clasica, .jazz])
     public static let lidio = TipoDeEscala(
         nombre: "lidio",
         intervalos: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        variantes: ["lidia"])
+        variantes: ["lidia"],
+        usos: [.clasica, .jazz])
     public static let mixolidio = TipoDeEscala(
         nombre: "mixolidio",
         intervalos: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        variantes: ["mixolidia"])
+        variantes: ["mixolidia"],
+        usos: [.clasica, .jazz])
     public static let menorNatural = TipoDeEscala(
         nombre: "menor natural",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["menor", "eólico", "menor antigua"], variantes: ["eólica"])
+        alias: ["menor", "eólico", "menor antigua"], variantes: ["eólica"],
+        usos: [.clasica, .jazz])
     public static let locrio = TipoDeEscala(
         nombre: "locrio",
         intervalos: [
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["locria"])
+        variantes: ["locria"],
+        usos: [.clasica, .jazz])
     public static let menorArmonica = TipoDeEscala(
         nombre: "menor armónica",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
-        ])
+        ],
+        usos: [.clasica])
     /// Sube con la 6ª y la 7ª mayores y baja como la menor natural.
     public static let menorMelodica = TipoDeEscala(
         nombre: "menor melódica",
@@ -259,7 +304,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["menor melódica clásica"])
+        alias: ["menor melódica clásica"],
+        usos: [.clasica])
     /// La menor melódica tal como se usa en el jazz: con la 6ª y la 7ª mayores también al bajar.
     /// En los conservatorios españoles es la «menor bachiana», la que Bach usa al subir y al bajar.
     /// Es el mismo contenido que el mēḷa 23 (Gaurīmanoharī), y la escala madre de los modos
@@ -270,34 +316,40 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        alias: ["menor de jazz", "menor melódica ascendente", "bachiana", "menor bachiana", "de Bach"])
+        alias: ["menor de jazz", "menor melódica ascendente", "bachiana", "menor bachiana", "de Bach"],
+        usos: [.jazz])
     public static let pentatonicaMayor = TipoDeEscala(
         nombre: "pentatónica mayor",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
-        alias: ["pentatónica"])
+        alias: ["pentatónica"],
+        usos: [.blues, .popular])
     public static let pentatonicaMenor = TipoDeEscala(
         nombre: "pentatónica menor",
-        intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor])
+        intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
+        usos: [.blues, .popular])
     public static let blues = TipoDeEscala(
         nombre: "blues",
         intervalos: [
             .unisono, .terceraMenor, .cuartaJusta, .cuartaAumentada,
             .quintaJusta, .septimaMenor,
-        ])
+        ],
+        usos: [.blues], afinaciones: [.init(.razones, pasos: [0, 350, 498, 600, 702, 969])])
     public static let tonosEnteros = TipoDeEscala(
         nombre: "tonos enteros",
         intervalos: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
             .quintaAumentada, .sextaAumentada,
         ],
-        alias: ["hexatónica", "modo 1 de Messiaen", "aumentada auxiliar", "de Debussy", "Debussy"])
+        alias: ["hexatónica", "modo 1 de Messiaen", "aumentada auxiliar", "de Debussy", "Debussy"],
+        usos: [.jazz, .sigloXX])
     public static let disminuida = TipoDeEscala(
         nombre: "disminuida tono-semitono",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .sextaMayor, .septimaMayor,
         ],
-        alias: ["disminuida", "octatónica", "modo 2 de Messiaen inverso", "disminuida auxiliar"])
+        alias: ["disminuida", "octatónica", "modo 2 de Messiaen inverso", "disminuida auxiliar"],
+        usos: [.jazz, .sigloXX])
 }
 
 // El catálogo de búsqueda: `todos` (el orden decide qué escala gana al identificar), `catalogo` (todas, en el orden

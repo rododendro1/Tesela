@@ -143,19 +143,17 @@ extension TipoDeEscala {
     /// La categoría de la escala en su tradición (rāga, mēḷa, dromos, maqam…); `nil` en las occidentales y en
     /// las propias. Se busca por el nombre, no por los intervalos: Āsāvarī (un thāṭ) tiene los de la escala menor
     /// natural.
-    public var categoria: CategoriaTradicional? { clasificada?.categoria }
+    public var categoria: CategoriaTradicional? { fichaDelCatalogo.categoria }
 
-    /// La tradición de la escala; `nil` en las occidentales y en las propias.
-    public var tradicion: Tradicion? { clasificada?.tradicion }
-
-    /// La entrada de la tabla, por la identidad de la escala (`identidad`): una escala propia que se llame «Kafi»
-    /// pero suene distinto no es el thāṭ.
-    private var clasificada: Clasificada? { TipoDeEscala.clasificacion[identidad] }
+    /// La tradición de la escala (la de la `FichaDeTradicion` en cuyas listas está); `nil` en las occidentales y en
+    /// las propias. Como `categoria`, por su identidad: una escala propia que se llame «Kafi» pero suene distinto no
+    /// es el thāṭ.
+    public var tradicion: Tradicion? { TipoDeEscala.delCatalogo[identidad]?.tradicion }
 
     /// El mēḷa del que deriva un rāga janya, por la tradición («Mohanam» → Harikāmbhojī); `nil` en las demás
     /// escalas y en los janya sin un padre claro (Revati). Siempre es uno de los `melakartasCompatibles`.
     public var padre: TipoDeEscala? {
-        guard categoria == .janya, let numero = TipoDeEscala.padresDeLosJanya[identidad] else { return nil }
+        guard categoria == .janya, let numero = fichaDelCatalogo.mela else { return nil }
         return TipoDeEscala.melakarta(numero)
     }
 
@@ -201,25 +199,4 @@ extension TipoDeEscala {
     public static func tradicionales(tradicion: Tradicion) -> [TipoDeEscala] {
         tradicionales.filter { $0.tradicion == tradicion }
     }
-
-    private typealias Clasificada = (tradicion: Tradicion, categoria: CategoriaTradicional)
-
-    /// Identidad → tradición y categoría, de las fichas de cada tradición. Si una escala estuviera en dos, vale la
-    /// primera.
-    private static let clasificacion: [IdentidadDeEscala: Clasificada] = {
-        var tabla: [IdentidadDeEscala: Clasificada] = [:]
-        for ficha in FichaDeTradicion.todas {
-            for lista in ficha.listas {
-                for tipo in lista.tipos where tabla[tipo.identidad] == nil {
-                    tabla[tipo.identidad] = (ficha.tradicion, lista.categoria)
-                }
-            }
-        }
-        return tabla
-    }()
-
-    /// Cada janya incluido → el número de su mēḷa padre (el de uso general; Revati no tiene uno único).
-    private static let padresDeLosJanya: [IdentidadDeEscala: Int] = Dictionary(
-        FichaDeTradicion.todas.flatMap(\.padres).map { ($0.janya.identidad, $0.mela) },
-        uniquingKeysWith: { primero, _ in primero })
 }

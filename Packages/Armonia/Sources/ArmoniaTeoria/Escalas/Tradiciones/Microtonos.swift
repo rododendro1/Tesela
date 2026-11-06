@@ -261,7 +261,7 @@ extension TipoDeEscala {
     /// cada una con su `fuente`. Los echoi diatónicos tienen dos: en los 72 moria de la Comisión Patriarcal (1881) y
     /// en los 68 de Chrysanthos (1832). Vacío si no tiene ninguna.
     public var afinaciones: [TipoDeEscalaMicrotonal] {
-        TipoDeEscalaMicrotonal.porIdentidad[identidad] ?? []
+        TipoDeEscala.delCatalogo[identidad]?.afinaciones ?? []
     }
 }
 
@@ -275,19 +275,14 @@ extension TipoDeEscalaMicrotonal {
     /// afinaciones teóricas: en la práctica cada intérprete y cada escuela afinan un poco distinto (la segah turca,
     /// por ejemplo, suena más baja que una coma).
     ///
-    /// Cada una se declara en el fichero de su tradición, en su ficha (`FichaDeTradicion.microtonales`); aquí van en
-    /// el orden de `FichaDeTradicion.todas`, y después las occidentales (`occidentales`).
-    public static let catalogo: [TipoDeEscalaMicrotonal] = FichaDeTradicion.todas.flatMap(\.microtonales) + occidentales
+    /// Cada una se declara con su escala (`afinaciones:` en su declaración); aquí van en el orden de
+    /// `FichaDeTradicion.todas` y de sus listas, y después las occidentales (`occidentales`).
+    public static let catalogo: [TipoDeEscalaMicrotonal] =
+        FichaDeTradicion.todas.flatMap(\.tipos).flatMap(\.afinaciones) + occidentales
 
     /// Las versiones microtonales de escalas occidentales, que no son de ninguna tradición: la de blues, con sus
     /// blue notes, como se suelen describir: la tercera neutra, entre la menor y la mayor (350 cents, el Mi𝄳 sobre
     /// Do), y la séptima armónica (7/4, 969 cents, 31 bajo Si♭), con la cuarta y la quinta puras. La ♭5 queda
     /// temperada. Son una aproximación: cada intérprete las entona a su manera, y las desliza.
-    public static let occidentales: [TipoDeEscalaMicrotonal] = [
-        TipoDeEscalaMicrotonal(.blues, .razones, pasos: [0, 350, 498, 600, 702, 969])
-    ]
-
-    /// Identidad de la escala temperada → sus versiones microtonales, en el orden del catálogo.
-    static let porIdentidad: [IdentidadDeEscala: [TipoDeEscalaMicrotonal]] = Dictionary(
-        grouping: catalogo, by: \.temperada.identidad)
+    public static let occidentales: [TipoDeEscalaMicrotonal] = TipoDeEscala.todos.flatMap(\.afinaciones)
 }

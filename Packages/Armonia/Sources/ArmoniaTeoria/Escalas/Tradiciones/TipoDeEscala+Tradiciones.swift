@@ -16,16 +16,18 @@ import ArmoniaNucleo
 // pero `TipoDeEscala(leyendo:)` y `Escala("Re hitzaz")` las encuentran.
 //
 // `categoria` y `tradicion` (en `CategoriaTradicional.swift`) dicen de cada una si es un rāga, un mēḷa, un dromos,
-// un maqam, un makam, un mugam…; salen de las fichas. Sus nombres en cada idioma están en `Escalas/Nombres/`.
+// un maqam, un makam, un mugam…: la categoría la dice la declaración de cada escala (`categoria: .raga`) y la
+// tradición, la ficha en cuyas listas está. Sus nombres en cada idioma están en `Escalas/Nombres/`.
 //
 // Cada tradición tiene su fichero, `TipoDeEscala+Nombre.swift` (el nombre del caso de `Tradicion`, con mayúscula):
 // Africa, Andes, Azerbaiyan (mugam), Bizancio (echoi), Brasil (modos nordestinos), China, Corea, Etiopia, Europa
 // (folklore europeo), Gregoriano (modos, hexacordos y modos de Glareano), Grecia (dromoi), GreciaAntigua
 // (tetracordos, géneros y harmoniai), India, Indonesia, Japon, Klezmer, Mesopotamia (afinaciones babilónicas),
 // MundoArabe (maqamat y ajnas), Persia (dastgāh), SudesteAsiatico, Turquia (makamlar y çeşni) y Vietnam. Cada uno
-// acaba con su ficha (`FichaDeTradicion`): la categoría de cada lista, las versiones microtonales y, en la India, el
-// mēḷa de cada janya. Una escala nueva se declara en el fichero de su tradición, en una de sus listas, y, si la
-// tiene, con su versión microtonal en la ficha.
+// acaba con su ficha (`FichaDeTradicion`), que reúne sus listas en orden. Una escala nueva se declara en el fichero
+// de su tradición con todos sus datos (`FichaDeEscala`): su categoría, su versión microtonal si la tiene
+// (`afinaciones: [.init(.cuartosDeTono, pasos: […])]`) y, si es un rāga janya, su mēḷa (`mela: 28`); y se apunta en
+// una de sus listas.
 
 extension TipoDeEscala {
     /// Escalas de otras tradiciones: thāṭ, dromoi, mēḷa, janya, chinas, japonesas, etíopes, maqamat, de Indonesia

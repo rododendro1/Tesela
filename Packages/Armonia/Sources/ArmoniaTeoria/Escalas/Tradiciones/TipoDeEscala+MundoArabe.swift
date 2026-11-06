@@ -24,7 +24,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["maqam Hijaz"], variantes: ["Ḥiŷāz", "Hejaz", "حجاز"])
+        alias: ["maqam Hijaz"], variantes: ["Ḥiŷāz", "Hejaz", "حجاز"],
+        categoria: .maqam)
     /// نهاوند, la menor armónica.
     public static let nahawand = TipoDeEscala(
         nombre: "Nahāwand",
@@ -32,7 +33,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        variantes: ["Nihavend", "Nihavent", "نهاوند"])
+        variantes: ["Nihavend", "Nihavent", "نهاوند"],
+        categoria: .maqam)
     /// كرد, el frigio.
     public static let kurd = TipoDeEscala(
         nombre: "Kurd",
@@ -40,7 +42,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["maqam Kurd"], variantes: ["كرد"])
+        alias: ["maqam Kurd"], variantes: ["كرد"],
+        categoria: .maqam)
     /// عجم, la mayor.
     public static let ajam = TipoDeEscala(
         nombre: "ʿAjam",
@@ -48,7 +51,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        variantes: ["Ajam", "Acem", "عجم"])
+        variantes: ["Ajam", "Acem", "عجم"],
+        categoria: .maqam)
     /// حجازكار, la doble armónica.
     public static let hiyazkar = TipoDeEscala(
         nombre: "Ḥijāzkār",
@@ -56,7 +60,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        variantes: ["Ḥiŷāzkār", "حجازكار"])
+        variantes: ["Ḥiŷāzkār", "حجازكار"],
+        categoria: .maqam)
     /// نوى أثر, la menor húngara.
     public static let nawaAthar = TipoDeEscala(
         nombre: "Nawā Athar",
@@ -64,7 +69,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        variantes: ["Nawathar", "Neveser", "نوى أثر"])
+        variantes: ["Nawathar", "Neveser", "نوى أثر"],
+        categoria: .maqam)
 
     /// راست (Do Re Mi𝄳 Fa Sol La Si𝄳, y Si♭ al bajar), aproximado: sube como la mayor y baja como el
     /// mixolidio, como el dromos Rast.
@@ -74,7 +80,11 @@ extension TipoDeEscala {
         intervalosDescendentes: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        variantes: ["راست"])
+        variantes: ["راست"],
+        categoria: .maqam,
+        afinaciones: [
+            .init(.cuartosDeTono, pasos: [0, 4, 7, 10, 14, 18, 21], pasosDescendentes: [0, 4, 7, 10, 14, 18, 20]),
+        ])
     /// بياتي (Re Mi𝄳 Fa Sol La Si♭ Do), aproximado: como el frigio, igual que el dromos Ousák.
     public static let bayati = TipoDeEscala(
         nombre: "Bayātī",
@@ -82,7 +92,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["maqam Bayati"], variantes: ["Bayyātī", "بياتي"])
+        alias: ["maqam Bayati"], variantes: ["Bayyātī", "بياتي"],
+        categoria: .maqam, afinaciones: [.init(.cuartosDeTono, pasos: [0, 3, 6, 10, 14, 16, 20])])
     /// صبا (Re Mi𝄳 Fa Sol♭ La Si♭ Do), aproximado: Re Mi♭ Fa Sol♭ La Si♭ Do.
     public static let saba = TipoDeEscala(
         nombre: "Ṣabā",
@@ -90,7 +101,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["maqam Saba"], variantes: ["صبا"])
+        alias: ["maqam Saba"], variantes: ["صبا"],
+        categoria: .maqam, afinaciones: [.init(.cuartosDeTono, pasos: [0, 3, 6, 8, 14, 16, 20])])
     /// سوزناك (Do Re Mi𝄳 Fa Sol La♭ Si: un jins Rāst y un jins Ḥijāz), aproximado: la mayor armónica.
     public static let suznak = TipoDeEscala(
         nombre: "Sūznāk",
@@ -98,7 +110,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        alias: ["maqam Suznak"], variantes: ["سوزناك"])
+        alias: ["maqam Suznak"], variantes: ["سوزناك"],
+        categoria: .maqam, afinaciones: [.init(.cuartosDeTono, pasos: [0, 4, 7, 10, 14, 16, 22])])
     /// حسيني (Re Mi𝄳 Fa Sol La Si𝄳 Do: un jins Bayātī y otro en la quinta), aproximado: como Bayātī, con Si♭.
     public static let husayni = TipoDeEscala(
         nombre: "Ḥusaynī",
@@ -106,7 +119,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["maqam Husayni"], variantes: ["Husseini", "حسيني"])
+        alias: ["maqam Husayni"], variantes: ["Husseini", "حسيني"],
+        categoria: .maqam, afinaciones: [.init(.cuartosDeTono, pasos: [0, 3, 6, 10, 14, 17, 20])])
     /// نيروز (Do Re Mi𝄳 Fa Sol La𝄳 Si♭: un jins Rāst y un jins Bayātī en la quinta), aproximado: la menor natural.
     public static let nayruz = TipoDeEscala(
         nombre: "Nayrūz",
@@ -114,7 +128,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["maqam Nairuz"], variantes: ["Nairuz", "نيروز"])
+        alias: ["maqam Nairuz"], variantes: ["Nairuz", "نيروز"],
+        categoria: .maqam, afinaciones: [.init(.cuartosDeTono, pasos: [0, 4, 7, 10, 14, 17, 20])])
     /// سيكاه (Mi𝄳 Fa Sol La Si𝄳 Do Re: un jins Sīkāh y un jins Rāst), aproximado sobre Mi: el frigio.
     public static let sikah = TipoDeEscala(
         nombre: "Sīkāh",
@@ -122,7 +137,12 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["maqam Sikah"], variantes: ["سيكاه"])
+        alias: ["maqam Sikah"], variantes: ["سيكاه"],
+        categoria: .maqam,
+        afinaciones: [
+            // Con la tónica en un cuarto de tono, escritas sobre la nota temperada: Sīkāh en Mi es Mi𝄳 Fa Sol La Si𝄳.
+            .init(.cuartosDeTono, pasos: [-1, 2, 6, 10, 13, 16, 20]),
+        ])
     /// هزام (Mi𝄳 Fa Sol La♭ Si Do Re: un jins Sīkāh y un jins Ḥijāz en Sol), aproximado sobre Mi. Se llama
     /// «maqām Huzām» porque «Huzam» es también el dromos Houzám.
     public static let huzam = TipoDeEscala(
@@ -131,7 +151,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["هزام"])
+        variantes: ["هزام"],
+        categoria: .maqam, afinaciones: [.init(.cuartosDeTono, pasos: [-1, 2, 6, 8, 14, 16, 20])])
     /// عراق (Si𝄳 Do Re Mi𝄳 Fa Sol La: un jins Sīkāh y un jins Bayātī en Re), aproximado sobre Si: el locrio.
     public static let iraq = TipoDeEscala(
         nombre: "ʿIrāq",
@@ -139,7 +160,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        alias: ["maqam Iraq"], variantes: ["Iraq", "عراق"])
+        alias: ["maqam Iraq"], variantes: ["Iraq", "عراق"],
+        categoria: .maqam, afinaciones: [.init(.cuartosDeTono, pasos: [-1, 2, 6, 9, 12, 16, 20])])
     /// راحة الأرواح (Si𝄳 Do Re Mi♭ Fa♯ Sol La: Huzām desde Si𝄳), aproximado sobre Si.
     public static let rahatAlArwah = TipoDeEscala(
         nombre: "Rāḥat al-Arwāḥ",
@@ -147,7 +169,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["راحة الأرواح"])
+        variantes: ["راحة الأرواح"],
+        categoria: .maqam, afinaciones: [.init(.cuartosDeTono, pasos: [-1, 2, 6, 8, 14, 16, 20])])
     /// بياتي شوري (Re Mi𝄳 Fa Sol La♭ Si Do: un jins Bayātī y un jins Ḥijāz en Sol), aproximado: Mi𝄳 a Mi♭.
     public static let bayatiShuri = TipoDeEscala(
         nombre: "Bayātī Shūrī",
@@ -155,7 +178,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMayor, .septimaMenor,
         ],
-        variantes: ["بياتي شوري"])
+        variantes: ["بياتي شوري"],
+        categoria: .maqam, afinaciones: [.init(.cuartosDeTono, pasos: [0, 3, 6, 10, 12, 18, 20])])
     /// جهاركاه (Fa Sol La Si♭ Do Re Mi𝄳: un jins Jiharkāh y un jins Rāst en Do), aproximado: la mayor.
     public static let jiharkah = TipoDeEscala(
         nombre: "Jiharkāh",
@@ -163,7 +187,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        variantes: ["Jaharkah", "جهاركاه"])
+        variantes: ["Jaharkah", "جهاركاه"],
+        categoria: .maqam, afinaciones: [.init(.cuartosDeTono, pasos: [0, 4, 8, 10, 14, 18, 21])])
     /// آثار كرد (Do Re♭ Mi♭ Fa♯ Sol La♭ Si: un jins Āthār Kurd, que es un Kurd con la cuarta de Nikrīz, y un jins
     /// Ḥijāzkār en Sol).
     public static let atharKurd = TipoDeEscala(
@@ -172,7 +197,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        variantes: ["آثار كرد"])
+        variantes: ["آثار كرد"],
+        categoria: .maqam)
     /// نكريز (Do Re Mi♭ Fa♯ Sol La Si♭: un jins Nikrīz y un jins Nahāwand en Sol), como el dromos Nikríz.
     public static let maqamNikriz = TipoDeEscala(
         nombre: "maqām Nikrīz",
@@ -180,7 +206,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["Nakriz"], variantes: ["نكريز"])
+        alias: ["Nakriz"], variantes: ["نكريز"],
+        categoria: .maqam)
     /// لامي (Re Mi♭ Fa Sol La♭ Si♭ Do: un jins Lāmī y un jins Kurd en Sol), el locrio.
     public static let lami = TipoDeEscala(
         nombre: "Lāmī",
@@ -188,7 +215,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["لامي"])
+        variantes: ["لامي"],
+        categoria: .maqam)
     /// صبا زمزم (Re Mi♭ Fa Sol♭ La Si♭ Do: Ṣabā con Mi♭ en lugar de Mi𝄳, un jins Ṣabā Zamzam y un jins Ḥijāz en Fa).
     public static let sabaZamzam = TipoDeEscala(
         nombre: "Ṣabā Zamzam",
@@ -196,7 +224,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["صبا زمزم"])
+        variantes: ["صبا زمزم"],
+        categoria: .maqam)
 
     public static let maqamat: [TipoDeEscala] = [
         .hiyaz, .nahawand, .kurd, .ajam, .hiyazkar, .nawaAthar, .maqamRast, .bayati, .saba, .suznak, .husayni,
@@ -216,38 +245,51 @@ extension TipoDeEscala {
     /// جنس راست (Do Re Mi𝄳 Fa), aproximado: Do Re Mi Fa.
     public static let jinsRast = TipoDeEscala(
         nombre: "jins Rāst", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta],
-        variantes: ["جنس راست"])
+        variantes: ["جنس راست"],
+        categoria: .jins,
+        afinaciones: [
+            // Ajnas.
+            .init(.cuartosDeTono, pasos: [0, 4, 7, 10]),
+        ])
     /// جنس بياتي (Re Mi𝄳 Fa Sol), aproximado: Re Mi♭ Fa Sol.
     public static let jinsBayati = TipoDeEscala(
         nombre: "jins Bayātī", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
-        variantes: ["جنس بياتي"])
+        variantes: ["جنس بياتي"],
+        categoria: .jins, afinaciones: [.init(.cuartosDeTono, pasos: [0, 3, 6, 10])])
     /// جنس صبا (Re Mi𝄳 Fa Sol♭), aproximado: Re Mi♭ Fa Sol♭.
     public static let jinsSaba = TipoDeEscala(
         nombre: "jins Ṣabā", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida],
-        variantes: ["جنس صبا"])
+        variantes: ["جنس صبا"],
+        categoria: .jins, afinaciones: [.init(.cuartosDeTono, pasos: [0, 3, 6, 8])])
     /// جنس سيكاه (Mi𝄳 Fa Sol), aproximado sobre Mi: Mi Fa Sol.
     public static let jinsSikah = TipoDeEscala(
-        nombre: "jins Sīkāh", intervalos: [.unisono, .segundaMenor, .terceraMenor], variantes: ["جنس سيكاه"])
+        nombre: "jins Sīkāh", intervalos: [.unisono, .segundaMenor, .terceraMenor], variantes: ["جنس سيكاه"],
+        categoria: .jins, afinaciones: [.init(.cuartosDeTono, pasos: [-1, 2, 6])])
     /// جنس حجاز (Re Mi♭ Fa♯ Sol): la segunda aumentada en medio.
     public static let jinsHijaz = TipoDeEscala(
         nombre: "jins Ḥijāz", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta],
-        variantes: ["جنس حجاز"])
+        variantes: ["جنس حجاز"],
+        categoria: .jins)
     /// جنس كرد (Re Mi♭ Fa Sol).
     public static let jinsKurd = TipoDeEscala(
-        nombre: "jins Kurd", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta], variantes: ["جنس كرد"])
+        nombre: "jins Kurd", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta], variantes: ["جنس كرد"],
+        categoria: .jins)
     /// جنس نهاوند (Do Re Mi♭ Fa Sol).
     public static let jinsNahawand = TipoDeEscala(
         nombre: "jins Nahāwand", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta],
-        variantes: ["جنس نهاوند"])
+        variantes: ["جنس نهاوند"],
+        categoria: .jins)
     /// جنس عجم (Do Re Mi Fa Sol).
     public static let jinsAjam = TipoDeEscala(
         nombre: "jins ʿAjam", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta],
-        variantes: ["جنس عجم"])
+        variantes: ["جنس عجم"],
+        categoria: .jins)
     /// جنس نكريز (Do Re Mi♭ Fa♯ Sol).
     public static let jinsNikriz = TipoDeEscala(
         nombre: "jins Nikrīz",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaAumentada, .quintaJusta],
-        variantes: ["جنس نكريز"])
+        variantes: ["جنس نكريز"],
+        categoria: .jins)
 
     public static let ajnas: [TipoDeEscala] = [
         .jinsRast, .jinsBayati, .jinsSaba, .jinsSikah, .jinsHijaz, .jinsKurd, .jinsNahawand, .jinsAjam, .jinsNikriz,
@@ -269,7 +311,12 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["ʿUshshāq de Ṣafī al-Dīn"])
+        alias: ["ʿUshshāq de Ṣafī al-Dīn"],
+        categoria: .maqam,
+        afinaciones: [
+            // Los shudūd de Ṣafī al-Dīn, en cents de sus razones pitagóricas.
+            .init(.razones, pasos: [0, 204, 408, 498, 702, 906, 996]),
+        ])
     /// شد نوى (Do Re Mi♭ Fa Sol La♭ Si♭, pitagórico): tono, limma, tono, tono, limma, tono y tono.
     public static let shaddNawa = TipoDeEscala(
         nombre: "shadd Nawā",
@@ -277,7 +324,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["Nawā de Ṣafī al-Dīn"])
+        alias: ["Nawā de Ṣafī al-Dīn"],
+        categoria: .maqam, afinaciones: [.init(.razones, pasos: [0, 204, 294, 498, 702, 792, 996])])
     /// شد أبو سليك (Do Re♭ Mi♭ Fa Sol♭ La♭ Si♭, pitagórico): limma, tono, tono, limma, tono, tono y tono.
     public static let shaddAbuSalik = TipoDeEscala(
         nombre: "shadd Abū Salīk",
@@ -285,7 +333,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        alias: ["Abū Salīk de Ṣafī al-Dīn"], variantes: ["shadd Būsalīk"])
+        alias: ["Abū Salīk de Ṣafī al-Dīn"], variantes: ["shadd Būsalīk"],
+        categoria: .maqam, afinaciones: [.init(.razones, pasos: [0, 90, 294, 498, 588, 792, 996])])
     /// شد راست (Do Re Mi Fa Sol La Si♭, con el Mi y el La neutros): tono, dos limmas, limma y coma, tono, dos limmas,
     /// limma y coma, y tono.
     public static let shaddRast = TipoDeEscala(
@@ -294,7 +343,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["Rāst de Ṣafī al-Dīn"])
+        alias: ["Rāst de Ṣafī al-Dīn"],
+        categoria: .maqam, afinaciones: [.init(.razones, pasos: [0, 204, 384, 498, 702, 882, 996])])
 
     /// Los cuatro shudūd de Ṣafī al-Dīn que están: ʿUshshāq, Nawā, Abū Salīk y Rāst.
     public static let adwar: [TipoDeEscala] = [.shaddUshshaq, .shaddNawa, .shaddAbuSalik, .shaddRast]
@@ -303,38 +353,11 @@ extension TipoDeEscala {
 // MARK: Ficha
 
 extension FichaDeTradicion {
+    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). Maqamat (cuartos de
+    // tono).
     static let mundoArabe = FichaDeTradicion(
         .mundoArabe,
         [
-            .init(.maqam, TipoDeEscala.maqamat), .init(.jins, TipoDeEscala.ajnas),
-            .init(.maqam, TipoDeEscala.adwar),
-        ],
-        microtonales: [
-            // Maqamat (cuartos de tono).
-            TipoDeEscalaMicrotonal(
-                .maqamRast, .cuartosDeTono, pasos: [0, 4, 7, 10, 14, 18, 21],
-                pasosDescendentes: [0, 4, 7, 10, 14, 18, 20]),
-            TipoDeEscalaMicrotonal(.bayati, .cuartosDeTono, pasos: [0, 3, 6, 10, 14, 16, 20]),
-            TipoDeEscalaMicrotonal(.saba, .cuartosDeTono, pasos: [0, 3, 6, 8, 14, 16, 20]),
-            TipoDeEscalaMicrotonal(.suznak, .cuartosDeTono, pasos: [0, 4, 7, 10, 14, 16, 22]),
-            TipoDeEscalaMicrotonal(.husayni, .cuartosDeTono, pasos: [0, 3, 6, 10, 14, 17, 20]),
-            TipoDeEscalaMicrotonal(.nayruz, .cuartosDeTono, pasos: [0, 4, 7, 10, 14, 17, 20]),
-            // Con la tónica en un cuarto de tono, escritas sobre la nota temperada: Sīkāh en Mi es Mi𝄳 Fa Sol La Si𝄳.
-            TipoDeEscalaMicrotonal(.sikah, .cuartosDeTono, pasos: [-1, 2, 6, 10, 13, 16, 20]),
-            TipoDeEscalaMicrotonal(.huzam, .cuartosDeTono, pasos: [-1, 2, 6, 8, 14, 16, 20]),
-            TipoDeEscalaMicrotonal(.iraq, .cuartosDeTono, pasos: [-1, 2, 6, 9, 12, 16, 20]),
-            TipoDeEscalaMicrotonal(.rahatAlArwah, .cuartosDeTono, pasos: [-1, 2, 6, 8, 14, 16, 20]),
-            TipoDeEscalaMicrotonal(.bayatiShuri, .cuartosDeTono, pasos: [0, 3, 6, 10, 12, 18, 20]),
-            TipoDeEscalaMicrotonal(.jiharkah, .cuartosDeTono, pasos: [0, 4, 8, 10, 14, 18, 21]),
-            // Ajnas.
-            TipoDeEscalaMicrotonal(.jinsRast, .cuartosDeTono, pasos: [0, 4, 7, 10]),
-            TipoDeEscalaMicrotonal(.jinsBayati, .cuartosDeTono, pasos: [0, 3, 6, 10]),
-            TipoDeEscalaMicrotonal(.jinsSaba, .cuartosDeTono, pasos: [0, 3, 6, 8]),
-            TipoDeEscalaMicrotonal(.jinsSikah, .cuartosDeTono, pasos: [-1, 2, 6]),
-            // Los shudūd de Ṣafī al-Dīn, en cents de sus razones pitagóricas.
-            TipoDeEscalaMicrotonal(.shaddUshshaq, .razones, pasos: [0, 204, 408, 498, 702, 906, 996]),
-            TipoDeEscalaMicrotonal(.shaddNawa, .razones, pasos: [0, 204, 294, 498, 702, 792, 996]),
-            TipoDeEscalaMicrotonal(.shaddAbuSalik, .razones, pasos: [0, 90, 294, 498, 588, 792, 996]),
-            TipoDeEscalaMicrotonal(.shaddRast, .razones, pasos: [0, 204, 384, 498, 702, 882, 996]),
+            TipoDeEscala.maqamat, TipoDeEscala.ajnas, TipoDeEscala.adwar,
         ])
 }

@@ -1,5 +1,17 @@
 # Cambios
 
+## Sin publicar
+
+### Escalas: cada una con todos sus datos en su declaración
+
+- Los usos de las escalas occidentales, la categoría de las de otras tradiciones, sus versiones microtonales y el
+  mēḷa de los rāgas janya se escriben en la declaración de cada escala (`usos: [.clasica, .jazz]`,
+  `categoria: .maqam`, `afinaciones: [.init(.cuartosDeTono, pasos: […])]`, `mela: 28`), y no en tablas aparte
+  (`UsoDeEscala.tabla` y las listas de categorías, microtonos y padres de cada `FichaDeTradicion`). Se buscan en
+  una sola tabla por identidad (`TipoDeEscala.delCatalogo`). La ficha de cada tradición se queda con sus listas, en
+  orden, y de ella sale la tradición. Los nombres en otros idiomas siguen en `Escalas/Nombres/`. Nada cambia en la
+  API pública ni en lo que devuelve.
+
 ## 0.3.6 (2026-11-06)
 
 ### El Tonnetz y la tabla armónica, con un protocolo común

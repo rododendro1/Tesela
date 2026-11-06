@@ -189,30 +189,30 @@ import Testing
         #expect(TipoDeEscala.thaats[0].padre == nil)
     }
 
-    /// Las fichas reparten todas las escalas de otras tradiciones, cada una en la suya, y su versión microtonal y su
-    /// padre van en la ficha de su tradición.
+    /// Las fichas reparten todas las escalas de otras tradiciones, cada una en la suya, y cada una dice en su
+    /// declaración su categoría, su versión microtonal y, los janya, su mēḷa.
     @Test func lasFichasRepartenLasTradicionales() {
         var tipos: [TipoDeEscala] = []
         for ficha in FichaDeTradicion.todas {
-            for lista in ficha.listas {
-                for tipo in lista.tipos {
-                    #expect(tipo.tradicion == ficha.tradicion, Comment(rawValue: tipo.nombre))
-                    #expect(tipo.categoria == lista.categoria, Comment(rawValue: tipo.nombre))
+            for tipo in ficha.tipos {
+                #expect(tipo.tradicion == ficha.tradicion, Comment(rawValue: tipo.nombre))
+                #expect(tipo.ficha.categoria != nil, Comment(rawValue: tipo.nombre))
+                #expect(tipo.categoria == tipo.ficha.categoria, Comment(rawValue: tipo.nombre))
+                #expect(tipo.ficha.usos.isEmpty, Comment(rawValue: tipo.nombre))
+                if let mela = tipo.ficha.mela {
+                    #expect(tipo.categoria == .janya, Comment(rawValue: tipo.nombre))
+                    #expect(tipo.padre == TipoDeEscala.melakarta(mela), Comment(rawValue: tipo.nombre))
                 }
-                tipos += lista.tipos
             }
-            for microtonal in ficha.microtonales {
-                let nombre = microtonal.temperada.nombre
-                #expect(microtonal.temperada.tradicion == ficha.tradicion, Comment(rawValue: nombre))
-            }
-            for padre in ficha.padres {
-                #expect(padre.janya.categoria == .janya, Comment(rawValue: padre.janya.nombre))
-                #expect(padre.janya.padre == TipoDeEscala.melakarta(padre.mela), Comment(rawValue: padre.janya.nombre))
-            }
+            tipos += ficha.tipos
         }
         #expect(tipos.count == TipoDeEscala.tradicionales.count)
         #expect(Set(tipos.map(\.nombre)) == Set(TipoDeEscala.tradicionales.map(\.nombre)))
         #expect(FichaDeTradicion.todas.map(\.tradicion) == Tradicion.allCases)
+        // Las occidentales no tienen categoría ni tradición.
+        for tipo in TipoDeEscala.todos {
+            #expect(tipo.ficha.categoria == nil && tipo.ficha.mela == nil, Comment(rawValue: tipo.nombre))
+        }
     }
 
     /// Las clases: los fragmentos tienen menos de una octava de notas (de tres a seis), las afinaciones son las

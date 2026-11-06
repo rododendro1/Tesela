@@ -11,11 +11,13 @@ extension TipoDeEscala {
     /// 평조 (Sol La Do Re Mi).
     public static let pyongjo = TipoDeEscala(
         nombre: "P'yŏngjo", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
-        variantes: ["Pyeongjo", "Pyongjo", "평조"])
+        variantes: ["Pyeongjo", "Pyongjo", "평조"],
+        categoria: .jo)
     /// 계면조 (La Do Re Mi Sol).
     public static let kyemyonjo = TipoDeEscala(
         nombre: "Kyemyŏnjo", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        variantes: ["Gyemyeonjo", "계면조"])
+        variantes: ["Gyemyeonjo", "계면조"],
+        categoria: .jo)
 
     public static let coreanas: [TipoDeEscala] = [.pyongjo, .kyemyonjo]
 }
@@ -23,5 +25,5 @@ extension TipoDeEscala {
 // MARK: Ficha
 
 extension FichaDeTradicion {
-    static let corea = FichaDeTradicion(.corea, [.init(.jo, TipoDeEscala.coreanas)])
+    static let corea = FichaDeTradicion(.corea, [TipoDeEscala.coreanas])
 }

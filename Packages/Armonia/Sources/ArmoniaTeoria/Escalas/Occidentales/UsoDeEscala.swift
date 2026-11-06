@@ -30,52 +30,9 @@ public enum UsoDeEscala: String, Sendable, Codable, CaseIterable {
     /// armónica, de la mayor armónica, de la doble armónica y de las napolitanas.
     case sintetica
 
-    /// Las escalas de `todos` de este uso, en su orden.
-    public var tipos: [TipoDeEscala] {
-        let suyos = Set((UsoDeEscala.tabla[self] ?? []).map(\.identidad))
-        return TipoDeEscala.todos.filter { suyos.contains($0.identidad) }
-    }
-
-    /// El reparto: cada uso y sus escalas. Se nombran por su miembro de `TipoDeEscala`, así que una escala que se
-    /// renombra o se quita no compila.
-    private static let tabla: [UsoDeEscala: [TipoDeEscala]] = [
-        .clasica: [
-            .mayor, .dorico, .frigio, .lidio, .mixolidio, .menorNatural, .locrio, .menorArmonica, .menorMelodica,
-            .mayorArmonica, .napolitanaMenor, .napolitanaMayor, .enigmatica, .cromatica, .cromaticaConCincoBemoles,
-            .cromaticaConTresBemoles, .cromaticaConDosBemoles, .cromaticaConUnBemol, .cromaticaConCincoSostenidos,
-            .hexacordo,
-        ],
-        .jazz: [
-            .mayor, .dorico, .frigio, .lidio, .mixolidio, .menorNatural, .locrio, .menorMelodicaJazz, .frigioDominante,
-            .doricoSegundaMenor, .lidioAumentado, .lidioDominante, .mixolidioSextaMenor, .locrioSegundaNatural,
-            .alterada, .tonosEnteros, .disminuida, .disminuidaSemitonoTono, .aumentada, .bebopDominante, .bebopMayor,
-            .bebopDorico, .bebopMenorMelodica, .bebopMenorArmonica, .pentatonicaDominante, .pentatonicaMenorSexta,
-            .pentatonicaMayorSextaMenor, .pentatonicaMenorQuintaDisminuida, .pentatonicaMixolidia, .pentatonicaLidia,
-            .hexatonicaDeDosTriadas, .hexatonicaMenorDeDosTriadas,
-        ],
-        .blues: [.pentatonicaMayor, .pentatonicaMenor, .blues, .bluesMayor, .bluesDeNueveNotas, .bluesMenorConSegunda],
-        .sigloXX: [
-            .lidioDominante, .tonosEnteros, .disminuida, .disminuidaSemitonoTono, .aumentada, .prometeo, .cromatica,
-            .cromaticaConCincoBemoles, .cromaticaConTresBemoles, .cromaticaConDosBemoles, .cromaticaConUnBemol,
-            .cromaticaConCincoSostenidos, .petrushka, .messiaen3, .messiaen4, .messiaen5, .messiaen6, .messiaen7,
-        ],
-        .popular: [
-            .doricoCuartaAumentada, .frigioDominante, .pentatonicaMayor, .pentatonicaMenor, .dobleArmonica,
-            .menorHungara, .mayorHungara, .egipcia, .flamenca, .argelina, .jonicoSinCuarta, .mixolidioSinTercera,
-            .doricoSinSexta, .eolicoSinSegunda, .mayorRumana, .pentatonicaEscocesa,
-        ],
-        .sintetica: [
-            .locrioSextaNatural, .jonicoAumentado, .lidioSegundaAumentada, .ultralocrio, .doricoQuintaDisminuida,
-            .frigioCuartaDisminuida, .lidioTerceraMenor, .mixolidioSegundaMenor, .lidioAumentadoSegundaAumentada,
-            .locrioSeptimaDisminuida, .persa, .mayorLocria, .lidioMenor, .lidioSegundaSextaAumentadas, .ultrafrigio,
-            .oriental, .jonicoSegundaQuintaAumentadas, .locrioTerceraSeptimaDisminuidas, .lidioAumentadoSextaAumentada,
-            .lidioDominanteAumentado, .locrioSegundaNaturalCuartaDisminuida, .superlocrioTerceraDisminuida,
-            .lidioSextaAumentada, .mixolidioAumentado, .eolicoCuartaAumentada, .locrioDominante,
-            .jonicoSegundaAumentada, .ultralocrioTerceraDisminuida, .ultralocrioSextaDisminuida,
-            .menorArmonicaQuintaDisminuida, .superlocrioSextaNatural, .menorMelodicaQuintaAumentada,
-            .doricoSegundaMenorCuartaAumentada, .lidioAumentadoTerceraAumentada,
-        ],
-    ]
+    /// Las escalas de `todos` de este uso, en su orden. Cada escala dice los suyos en su declaración
+    /// (`usos: [.clasica, .jazz]`).
+    public var tipos: [TipoDeEscala] { TipoDeEscala.todos.filter { $0.usos.contains(self) } }
 
     /// El nombre del uso en el idioma de los textos de la notación: «siglo XX», «20th century», «XX. mendea». En
     /// español, también `nombre` (de `Nombrable`).
@@ -100,16 +57,7 @@ extension UsoDeEscala: Nombrable {}
 extension TipoDeEscala {
     /// En qué música se usa la escala, en el orden de `UsoDeEscala.allCases`; vacío en las de otras tradiciones y en
     /// las propias. Se busca por su `identidad`, como `tradicion`: Kāfī tiene las notas del dórico, pero no sus usos.
-    public var usos: [UsoDeEscala] { TipoDeEscala.usosPorIdentidad[identidad] ?? [] }
-
-    /// Identidad de cada escala de `todos` → sus usos, en el orden de `UsoDeEscala.allCases`.
-    private static let usosPorIdentidad: [IdentidadDeEscala: [UsoDeEscala]] = {
-        var tabla: [IdentidadDeEscala: [UsoDeEscala]] = [:]
-        for uso in UsoDeEscala.allCases {
-            for tipo in uso.tipos { tabla[tipo.identidad, default: []].append(uso) }
-        }
-        return tabla
-    }()
+    public var usos: [UsoDeEscala] { fichaDelCatalogo.usos }
 
     /// Las escalas de `todos` de un uso: `todos(uso: .jazz)` da los modos, las bebop, la alterada…
     public static func todos(uso: UsoDeEscala) -> [TipoDeEscala] { uso.tipos }
