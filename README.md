@@ -76,7 +76,7 @@ Necesitan macOS con Xcode y [XcodeGen](https://github.com/yonaskolb/XcodeGen):
 brew install xcodegen
 cp Config/Local.xcconfig.ejemplo Config/Local.xcconfig   # tu equipo de firma y el prefijo de identificadores
 ./Scripts/generadores/generar_proyecto.sh                # crea Tesela.xcodeproj
-open Tesela.xcodeproj                                    # elige el esquema ArmoniaApp o TonnetzApp
+open Tesela.xcodeproj                                    # elige el esquema SolfaApp o TonnetzApp
 ```
 
 ## Más

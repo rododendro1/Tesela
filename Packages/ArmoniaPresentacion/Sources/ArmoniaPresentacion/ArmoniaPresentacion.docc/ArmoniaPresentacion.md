@@ -6,7 +6,7 @@ Lo que las apps y la línea de comandos enseñan del motor, ya preparado para mo
 
 Entre el motor (`Armonia`) y las vistas (`ArmoniaUI`) hay una capa que decide qué se muestra: los tramos y
 cadencias de un análisis, las filas de un coral, el texto de cada aviso en el idioma elegido, lo que suena al
-pulsar «Escuchar» y los ficheros que se comparten. Vive aquí, sin SwiftUI, para que la compartan ArmoniaApp,
+pulsar «Escuchar» y los ficheros que se comparten. Vive aquí, sin SwiftUI, para que la compartan SolfaApp,
 TonnetzApp y la herramienta `armonia`, y para que se pruebe en Linux.
 
 ```swift

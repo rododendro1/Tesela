@@ -7,7 +7,7 @@ el [README](README.md); cómo contribuir, en [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ```
 Apps/
-├── ArmoniaApp/       Acordes (con su arpegio, también en el mástil, sus disposiciones de piano y jazz, las
+├── SolfaApp/         Acordes (con su arpegio, también en el mástil, sus disposiciones de piano y jazz, las
 │                     escalas que encajan, con sus tensiones y notas a evitar, y las digitaciones),
 │                     escalas (con el mástil y sus posiciones, CAGED o de tres notas por cuerda, y de qué escala
 │                     son modo), análisis armónico (con modulaciones y cadencias, la escala de cada acorde en su
@@ -59,10 +59,10 @@ Package.swift       Los paquetes juntos, para usarlos desde otro proyecto por UR
 ## Dependencias
 
 ```
-ArmoniaApp ──┬──► ArmoniaUI ──┬──► ArmoniaPresentacion ──► Armonia ──► Hexagonos
+SolfaApp ────┬──► ArmoniaUI ──┬──► ArmoniaPresentacion ──► Armonia ──► Hexagonos
 TonnetzApp ──┘               ├──► Armonia
                              └──► Hexagonos
-ArmoniaApp, TonnetzApp, ArmoniaCLI, EjemploArmonia, RendimientoArmonia, FuzzArmonia ──► Armonia
+SolfaApp, TonnetzApp, ArmoniaCLI, EjemploArmonia, RendimientoArmonia, FuzzArmonia ──► Armonia
 ArmoniaCLI ──► ArmoniaPresentacion (sin SwiftUI) ──► Armonia
 EjemploHexagonos ──► Hexagonos
 ```
@@ -95,7 +95,7 @@ swift run -c release --package-path Herramientas/RendimientoArmonia RendimientoA
 brew install xcodegen
 cp Config/Local.xcconfig.ejemplo Config/Local.xcconfig   # tu equipo de firma y el prefijo de identificadores
 ./Scripts/generadores/generar_proyecto.sh        # crea Tesela.xcodeproj
-open Tesela.xcodeproj     # elige el esquema ArmoniaApp o TonnetzApp
+open Tesela.xcodeproj     # elige el esquema SolfaApp o TonnetzApp
 ```
 
 Cada release trae también `armonia` ya compilada para Linux (x86_64 y arm64, sin dependencias) y macOS, con su

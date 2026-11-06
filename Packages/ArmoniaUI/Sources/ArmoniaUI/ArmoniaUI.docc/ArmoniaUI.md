@@ -1,6 +1,6 @@
 # ``ArmoniaUI``
 
-Las vistas de SwiftUI que comparten ArmoniaApp y TonnetzApp: pentagramas, mástiles, redes de notas, «Escuchar»,
+Las vistas de SwiftUI que comparten SolfaApp y TonnetzApp: pentagramas, mástiles, redes de notas, «Escuchar»,
 «Exportar» y el selector de notación.
 
 ## Overview

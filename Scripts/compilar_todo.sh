@@ -108,7 +108,7 @@ elif ! command -v xcodegen >/dev/null 2>&1; then
     omitir "Apps de Xcode" "falta XcodeGen (brew install xcodegen)"
 elif [ "$MOTOR_COMPILA" = 1 ]; then
     paso "Apps: generar el proyecto" . ./Scripts/generadores/generar_proyecto.sh &&
-        for esquema in ArmoniaApp TonnetzApp; do
+        for esquema in SolfaApp TonnetzApp; do
             paso "$esquema (macOS)" . xcodebuild build -project Tesela.xcodeproj -scheme "$esquema" \
                 -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
             paso "$esquema (iOS, simulador)" . xcodebuild build -project Tesela.xcodeproj -scheme "$esquema" \

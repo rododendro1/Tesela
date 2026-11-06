@@ -3,7 +3,7 @@ import ArmoniaUI
 import SwiftUI
 
 @main
-struct ArmoniaApp: App {
+struct SolfaApp: App {
     var body: some Scene {
         WindowGroup {
             VistaRaiz()

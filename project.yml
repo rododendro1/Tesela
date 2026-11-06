@@ -53,19 +53,19 @@ packages:
     path: Packages/ArmoniaUI
 
 targets:
-  ArmoniaApp:
+  SolfaApp:
     type: application
     supportedDestinations: [iOS, macOS]
     sources:
-      - path: Apps/ArmoniaApp
+      - path: Apps/SolfaApp
       # El manifiesto de privacidad, el mismo en las dos apps.
       - path: Config/PrivacyInfo.xcprivacy
         buildPhase: resources
     settings:
       base:
-        # El nombre del producto se queda en ASCII (ArmoniaApp.app): el que se ve es CFBundleDisplayName.
+        # El nombre del producto se queda en ASCII (SolfaApp.app): el que se ve es CFBundleDisplayName.
         # El módulo se fija para que no dependa del nombre de la app (y no choque con tipos del motor).
-        PRODUCT_MODULE_NAME: ArmoniaApp
+        PRODUCT_MODULE_NAME: SolfaApp
         # Se une al Info.plist generado: los quince idiomas (CFBundleLocalizations).
         INFOPLIST_FILE: Config/Idiomas.plist
         PRODUCT_BUNDLE_IDENTIFIER: $(BUNDLE_ID_PREFIX).armonia
@@ -111,11 +111,11 @@ targets:
       - package: ArmoniaUI
 
   # Pruebas de interfaz: abren cada app con la notación española y recorren sus vistas con los ejemplos.
-  ArmoniaAppUITests:
+  SolfaAppUITests:
     type: bundle.ui-testing
     supportedDestinations: [iOS, macOS]
     sources:
-      - path: Apps/PruebasDeInterfaz/ArmoniaApp
+      - path: Apps/PruebasDeInterfaz/SolfaApp
       - path: Apps/PruebasDeInterfaz/Comun
     settings:
       base:
@@ -125,7 +125,7 @@ targets:
         "ENABLE_APP_SANDBOX[sdk=macosx*]": NO
         "ENABLE_HARDENED_RUNTIME[sdk=macosx*]": NO
     dependencies:
-      - target: ArmoniaApp
+      - target: SolfaApp
 
   TonnetzAppUITests:
     type: bundle.ui-testing
@@ -142,16 +142,16 @@ targets:
       - target: TonnetzApp
 
 schemes:
-  ArmoniaApp:
+  SolfaApp:
     build:
       targets:
-        ArmoniaApp: all
+        SolfaApp: all
     run:
       config: Debug
     test:
       config: Debug
       targets:
-        - ArmoniaAppUITests
+        - SolfaAppUITests
   TonnetzApp:
     build:
       targets:

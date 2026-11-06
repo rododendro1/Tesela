@@ -3,7 +3,7 @@ import XCTest
 /// Recorre las cinco pestañas de Solfa y las vistas que se abren desde ellas (contrapunto y serie dodecafónica) con
 /// los textos de ejemplo de cada una y comprueba que se ve el resultado.
 @MainActor
-final class ArmoniaAppUITests: XCTestCase {
+final class SolfaAppUITests: XCTestCase {
     func testAcordes() {
         let app = XCUIApplication.enEspanol()
         // El ejemplo, Sol7/Si, con el bajo primero.
