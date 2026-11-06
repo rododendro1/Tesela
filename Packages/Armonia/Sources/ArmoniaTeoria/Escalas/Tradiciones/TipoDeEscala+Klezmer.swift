@@ -44,9 +44,3 @@ extension TipoDeEscala {
 
     public static let klezmer: [TipoDeEscala] = [.freygish, .misheberakh, .adonaiMalakh, .magenAvot]
 }
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    static let klezmer = FichaDeTradicion(.klezmer, [TipoDeEscala.klezmer])
-}

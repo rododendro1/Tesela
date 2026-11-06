@@ -1,6 +1,11 @@
 import ArmoniaNucleo
 
 // MARK: - Bizancio
+//
+// Las versiones microtonales (`afinaciones:` en cada escala). Echoi bizantinos (moria de la Comisión Patriarcal, desde
+// Ni = Do: Pa 12, Vou 22, Ga 30, Di 42, Ke 54, Zo 64). Los diatónicos, con Vou y Zo dos moria bajo Mi y Si; el segundo,
+// cromático blando (8, 14, 8); el plagal del segundo, cromático duro (6, 20, 4). El varýs y el légetos empiezan en Zo y
+// en Vou: su primer paso es −2.
 
 extension TipoDeEscala {
     // MARK: Echoi bizantinos
@@ -9,7 +14,7 @@ extension TipoDeEscala {
     // (1881): la octava en 72 moria y cuatro géneros de tetracordo, el diatónico (12, 10 y 8 moria), el cromático
     // blando (8, 14 y 8), el cromático duro (6, 20 y 4) y el enarmónico (12, 12 y 6). Las notas se llaman Ni, Pa,
     // Vou, Ga, Di, Ke y Zo, de Do a Si. Cada echos va sobre su nota base más habitual (varios tienen más de una), con
-    // las notas de su género en doce notas; su versión microtonal, en moria, está en la ficha, abajo. El tercero,
+    // las notas de su género en doce notas; su versión microtonal, en moria, va en su declaración. El tercero,
     // enarmónico, ya es la escala mayor. Va también el légetos, la variante del cuarto sobre Vou. Fuentes:
     // Wikipedia («Neobyzantine Octoechos») y la tabla de escalas del St Andrew's Greek Orthodox Theological College.
 
@@ -101,14 +106,4 @@ extension TipoDeEscala {
         .echosProtos, .echosPlagiosProtos, .echosDefteros, .echosPlagiosDefteros, .echosTritos, .echosVarys,
         .echosTetartos, .echosPlagiosTetartos, .echosLegetos,
     ]
-}
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). Echoi bizantinos (moria
-    // de la Comisión Patriarcal, desde Ni = Do: Pa 12, Vou 22, Ga 30, Di 42, Ke 54, Zo 64). Los diatónicos, con Vou y
-    // Zo dos moria bajo Mi y Si; el segundo, cromático blando (8, 14, 8); el plagal del segundo, cromático duro (6, 20,
-    // 4). El varýs y el légetos empiezan en Zo y en Vou: su primer paso es −2.
-    static let bizancio = FichaDeTradicion(.bizancio, [TipoDeEscala.echoi])
 }

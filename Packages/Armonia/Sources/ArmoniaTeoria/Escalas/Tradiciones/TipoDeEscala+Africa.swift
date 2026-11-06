@@ -1,6 +1,9 @@
 import ArmoniaNucleo
 
 // MARK: - Africa
+//
+// Las versiones microtonales (`afinaciones:` en cada escala). En cents: cinco partes de 240 y siete de 171,4
+// (redondeados).
 
 extension TipoDeEscala {
     // MARK: Afinaciones equidistantes de África
@@ -62,12 +65,4 @@ extension TipoDeEscala {
     public static let africanas: [TipoDeEscala] = [
         .amadinda, .timbila, .hardino, .sauta, .tomoraBa, .tomoraMesengo, .nyamaropa,
     ]
-}
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). En cents: cinco partes
-    // de 240 y siete de 171,4 (redondeados).
-    static let africa = FichaDeTradicion(.africa, [TipoDeEscala.africanas])
 }

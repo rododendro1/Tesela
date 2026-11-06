@@ -1,6 +1,8 @@
 import ArmoniaNucleo
 
 // MARK: - SudesteAsiatico
+//
+// Las versiones microtonales (`afinaciones:` en cada escala). En cents: siete partes de 171,4 (redondeados).
 
 extension TipoDeEscala {
     // MARK: Afinaciones equidistantes del sudeste asiático
@@ -46,12 +48,4 @@ extension TipoDeEscala {
         afinaciones: [.init(.razones, pasos: [0, 182, 364, 691, 873])])
 
     public static let sudesteAsiaticas: [TipoDeEscala] = [.piphat, .pinpeat, .saung]
-}
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). En cents: siete partes
-    // de 171,4 (redondeados).
-    static let sudesteAsiatico = FichaDeTradicion(.sudesteAsiatico, [TipoDeEscala.sudesteAsiaticas])
 }

@@ -13,8 +13,8 @@ import ArmoniaNucleo
 ///     public static let mohanam = TipoDeEscala(nombre: "Mohanam", intervalos: […], categoria: .janya, mela: 28)
 ///
 /// De ahí salen `TipoDeEscala.usos`, `categoria`, `padre`, `microtonal` y `afinaciones`, y `UsoDeEscala.tipos` y
-/// `TipoDeEscalaMicrotonal.catalogo`. La tradición no va en la ficha: la da la lista de su `FichaDeTradicion`. Los
-/// nombres en otros idiomas tampoco: están en `Nombres/`.
+/// `TipoDeEscalaMicrotonal.catalogo`. La tradición no va en la ficha: la da su lista en
+/// `TipoDeEscala.listasTradicionales`. Los nombres en otros idiomas tampoco: están en `Nombres/`.
 ///
 /// Las propiedades públicas no leen la ficha del valor, sino la de la escala del catálogo con su misma `identidad`:
 /// un tipo leído de un fichero o escrito a mano con el nombre y las notas de Bayātī tiene sus microtonos, y una escala
@@ -73,12 +73,12 @@ extension TipoDeEscala {
     )
 
     /// Identidad → escala del catálogo. Si dos escalas tuvieran la misma identidad, vale la primera de `catalogo`; si
-    /// una estuviera en dos fichas de tradición, vale la primera.
+    /// una estuviera en dos listas de `listasTradicionales`, vale la tradición de la primera.
     package static let delCatalogo: [IdentidadDeEscala: EntradaDelCatalogo] = {
         var tradiciones: [IdentidadDeEscala: Tradicion] = [:]
-        for ficha in FichaDeTradicion.todas {
-            for tipo in ficha.tipos where tradiciones[tipo.identidad] == nil {
-                tradiciones[tipo.identidad] = ficha.tradicion
+        for lista in listasTradicionales {
+            for tipo in lista.tipos where tradiciones[tipo.identidad] == nil {
+                tradiciones[tipo.identidad] = lista.tradicion
             }
         }
         var tabla: [IdentidadDeEscala: EntradaDelCatalogo] = [:]

@@ -28,9 +28,3 @@ extension TipoDeEscala {
 
     public static let brasilenas: [TipoDeEscala] = [.mixolidioNordestino, .lidioNordestino, .doricoNordestino]
 }
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    static let brasil = FichaDeTradicion(.brasil, [TipoDeEscala.brasilenas])
-}

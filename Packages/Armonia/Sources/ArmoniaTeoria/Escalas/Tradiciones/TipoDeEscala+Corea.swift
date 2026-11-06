@@ -21,9 +21,3 @@ extension TipoDeEscala {
 
     public static let coreanas: [TipoDeEscala] = [.pyongjo, .kyemyonjo]
 }
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    static let corea = FichaDeTradicion(.corea, [TipoDeEscala.coreanas])
-}

@@ -1,6 +1,8 @@
 import ArmoniaNucleo
 
 // MARK: - Turquia
+//
+// Las versiones microtonales (`afinaciones:` en cada escala). Makamlar (comas de AEU).
 
 extension TipoDeEscala {
     // MARK: Makamlar turcos (temperados)
@@ -377,11 +379,4 @@ extension TipoDeEscala {
         .cargahDortlusu, .cargahBeslisi, .buselikDortlusu, .buselikBeslisi, .kurdiDortlusu, .kurdiBeslisi,
         .rastDortlusu, .rastBeslisi, .ussakDortlusu, .ussakBeslisi, .hicazDortlusu, .hicazBeslisi,
     ]
-}
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). Makamlar (comas de AEU).
-    static let turquia = FichaDeTradicion(.turquia, [TipoDeEscala.makamlar, TipoDeEscala.cesniler])
 }

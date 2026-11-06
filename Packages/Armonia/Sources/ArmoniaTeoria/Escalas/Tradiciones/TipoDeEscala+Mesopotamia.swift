@@ -73,9 +73,3 @@ extension TipoDeEscala {
         .isartu, .kitmu, .embubu, .pitu, .nidQabli, .nisTuhri, .qablitu,
     ]
 }
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    static let mesopotamia = FichaDeTradicion(.mesopotamia, [TipoDeEscala.mesopotamicas])
-}

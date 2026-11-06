@@ -1,6 +1,8 @@
 import ArmoniaNucleo
 
 // MARK: - Vietnam
+//
+// Las versiones microtonales (`afinaciones:` en cada escala). Las medidas en cents.
 
 extension TipoDeEscala {
     // MARK: Modos de la cítara đàn tranh
@@ -23,11 +25,4 @@ extension TipoDeEscala {
         categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 375, 519, 704, 866])])
 
     public static let vietnamitas: [TipoDeEscala] = [.bac, .vongCo]
-}
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). Las medidas en cents.
-    static let vietnam = FichaDeTradicion(.vietnam, [TipoDeEscala.vietnamitas])
 }

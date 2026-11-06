@@ -1,6 +1,9 @@
 import ArmoniaNucleo
 
 // MARK: - Indonesia
+//
+// Las versiones microtonales (`afinaciones:` en cada escala). Pélog, en nueve partes iguales de 133⅓ cents
+// (redondeados); sléndro, en cinco de 240.
 
 extension TipoDeEscala {
     // MARK: Escalas de Indonesia
@@ -85,12 +88,4 @@ extension TipoDeEscala {
         .pelogLima, .pelogNem, .pelogBarang, .slendroNem, .slendroSanga, .slendroManyura, .pelogTembung,
         .pelogSunaren,
     ]
-}
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). Pélog, en nueve partes
-    // iguales de 133⅓ cents (redondeados); sléndro, en cinco de 240.
-    static let indonesia = FichaDeTradicion(.indonesia, [TipoDeEscala.indonesias, TipoDeEscala.pathets])
 }

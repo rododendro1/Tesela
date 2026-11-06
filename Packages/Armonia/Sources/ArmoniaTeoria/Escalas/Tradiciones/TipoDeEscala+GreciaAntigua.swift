@@ -1,6 +1,9 @@
 import ArmoniaNucleo
 
 // MARK: - GreciaAntigua
+//
+// Las versiones microtonales (`afinaciones:` en cada escala). El tetracordo enarmónico de Aristóxeno, en cuartos de
+// tono: Mi Fa𝄳 Fa La (la parhýpate, un cuarto de tono sobre Mi, se escribe Fa♭ en doce notas).
 
 extension TipoDeEscala {
     // MARK: Grecia antigua
@@ -104,7 +107,7 @@ extension TipoDeEscala {
     // Arquitas de Tarento (el enarmónico de Arquitas, con su parhýpate a 63 cents, va más abajo con los de Dídimo y
     // Eratóstenes) y las suyas, de grave a agudo. El diatónico tónico de Ptolomeo es el de Arquitas. En
     // doce notas son el tetracordo cromático o el diatónico (el igual, con su segunda neutra de 151 cents, sube a Fa♯,
-    // y el enarmónico de Ptolomeo es el de Aristóxeno); su versión microtonal, en cents, está en la ficha, abajo.
+    // y el enarmónico de Ptolomeo es el de Aristóxeno); su versión microtonal, en cents, va en su declaración.
 
     /// El enarmónico de Ptolomeo (46/45, 24/23, 5/4): Mi Fa♭ Fa La, con la parhýpate a 38 cents.
     public static let tetracordoEnarmonicoDePtolomeo = TipoDeEscala(
@@ -437,19 +440,4 @@ extension TipoDeEscala {
         .harmoniaLidiaDeAristides, .harmoniaDoriaDeAristides, .harmoniaFrigiaDeAristides, .harmoniaIastiaDeAristides,
         .harmoniaMixolidiaDeAristides, .harmoniaSintonolidiaDeAristides,
     ]
-}
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). El tetracordo enarmónico
-    // de Aristóxeno, en cuartos de tono: Mi Fa𝄳 Fa La (la parhýpate, un cuarto de tono sobre Mi, se escribe Fa♭ en doce
-    // notas).
-    static let greciaAntigua = FichaDeTradicion(
-        .greciaAntigua,
-        [
-            TipoDeEscala.tetracordosGriegos, TipoDeEscala.generosDeArquitasYPtolomeo, TipoDeEscala.harmoniai,
-            TipoDeEscala.generosDeDidimoYEratostenes, TipoDeEscala.harmoniaiCromaticas,
-            TipoDeEscala.harmoniaiEnarmonicas, TipoDeEscala.harmoniaiDeAristides, TipoDeEscala.coloresDeAristoxeno,
-        ])
 }

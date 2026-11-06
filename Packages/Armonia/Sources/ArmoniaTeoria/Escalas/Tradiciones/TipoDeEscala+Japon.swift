@@ -82,9 +82,3 @@ extension TipoDeEscala {
         .akebono, .kokinjoshi,
     ]
 }
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    static let japon = FichaDeTradicion(.japon, [TipoDeEscala.japonesas])
-}

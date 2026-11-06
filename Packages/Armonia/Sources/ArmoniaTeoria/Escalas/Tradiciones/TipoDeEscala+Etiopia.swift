@@ -46,9 +46,3 @@ extension TipoDeEscala {
         .tezetaMayor, .tezetaMenor, .batiMayor, .batiMenor, .ambassel, .anchihoye,
     ]
 }
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    static let etiopia = FichaDeTradicion(.etiopia, [TipoDeEscala.etiopes])
-}
