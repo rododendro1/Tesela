@@ -58,10 +58,7 @@ extension TipoDeEscala {
     /// De Re a Re (el dórico moderno).
     public static let harmoniaFrigia = TipoDeEscala(
         nombre: "harmonía frigia",
-        intervalos: [
-            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-            .quintaJusta, .sextaMayor, .septimaMenor,
-        ],
+        intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["frigia antigua"],
         categoria: .harmonia)
     /// De Do a Do (la mayor).

@@ -19,17 +19,14 @@ extension TipoDeEscala {
     public static let amadinda = TipoDeEscala(
         nombre: "Amadinda", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
         alias: ["Akadinda", "equipentatónica de Uganda"],
-        categoria: .afinacion, subtradicion: .buganda, afinaciones: [.init(.razones, pasos: [0, 240, 480, 720, 960])])
+        categoria: .afinacion, subtradicion: .buganda, afinaciones: [.equipentatonica])
     /// Timbila (siete partes iguales de 171 cents): Do Re Mi♭ Fa Sol La Si♭ en doce notas, el dórico.
     public static let timbila = TipoDeEscala(
         nombre: "Timbila",
-        intervalos: [
-            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-            .quintaJusta, .sextaMayor, .septimaMenor,
-        ],
+        intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["Chopi", "equiheptatónica chopi"],
         categoria: .afinacion, subtradicion: .chopi,
-        afinaciones: [.init(.razones, pasos: [0, 171, 343, 514, 686, 857, 1029])])
+        afinaciones: [.equiheptatonica])
 
     // MARK: Kora y mbira
     //

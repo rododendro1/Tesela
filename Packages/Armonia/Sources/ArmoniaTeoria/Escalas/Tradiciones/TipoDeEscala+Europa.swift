@@ -85,10 +85,7 @@ extension TipoDeEscala {
     /// pasos casi iguales, con la tercera neutra y la segunda y la sexta bajas.
     public static let georgiana = TipoDeEscala(
         nombre: "georgiana",
-        intervalos: [
-            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
-            .quintaJusta, .sextaMayor, .septimaMenor,
-        ],
+        intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["escala georgiana", "svana", "Svaneti", "canto georgiano"],
         categoria: .escala, subtradicion: .georgia,
         afinaciones: [.init(.razones, pasos: [0, 163, 332, 509, 693, 868, 1018])])
