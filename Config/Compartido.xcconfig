@@ -2,7 +2,7 @@
 // Lo que depende de tu equipo va en Local.xcconfig, que no se guarda en git
 // (copia Local.xcconfig.ejemplo).
 
-// Prefijo de los identificadores de las apps (es.solfa.tesela.armonia, …): el dominio del proyecto,
+// Prefijo de los identificadores de las apps (es.solfa.tesela.arsharmonica, …): el dominio del proyecto,
 // tesela.solfa.es, al revés.
 BUNDLE_ID_PREFIX = es.solfa.tesela
 
