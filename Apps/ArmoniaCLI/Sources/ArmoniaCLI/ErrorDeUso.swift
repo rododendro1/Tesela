@@ -1,5 +1,5 @@
 import Armonia
-import ArmoniaPresentacion
+import TeselaPresentacion
 
 // Los errores de uso de la herramienta, en los quince idiomas de los textos. Lo común a todos los
 // textos de la herramienta está explicado en Mensaje.swift.

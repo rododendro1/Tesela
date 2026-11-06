@@ -35,10 +35,10 @@ Packages/
 ├── Armonia/        El motor de armonía, en seis módulos (Núcleo, Teoría, Representaciones, Partitura, Formatos, Trastes)
 │                   y el paraguas `Armonia`: notas, acordes, escalas, tonalidad, Tonnetz, MusicXML, MEI, LilyPond, ABC, MIDI, pentagramas en SVG,
 │                   y los mástiles, afinaciones, digitaciones de acordes y escalas por posiciones (guitarra, bajo, ukelele…)
-├── ArmoniaUI/      Componentes SwiftUI (DiagramaDeMastil, DiagramaDePentagrama, DiagramaDeTonnetz, DiagramaDeRejilla, VistaSVG, tema) y lo que comparten las apps:
+├── TeselaUI/       Componentes SwiftUI (DiagramaDeMastil, DiagramaDePentagrama, DiagramaDeTonnetz, DiagramaDeRejilla, VistaSVG, tema) y lo que comparten las apps:
 │                   el selector de notación y su ajuste (en el entorno), los textos de la interfaz en quince
 │                   lo que enseña cada vista, el cálculo en segundo plano y el menú para exportar
-├── ArmoniaPresentacion/  Lo que enseñan las apps y la línea de comandos, sin SwiftUI: el análisis, el coral, la
+├── TeselaPresentacion/   Lo que enseñan las apps y la línea de comandos, sin SwiftUI: el análisis, el coral, la
 │                   transposición, la tablatura, la escucha, los ficheros para exportar y los textos de la
 │                   interfaz en quince idiomas
 └── Hexagonos/      Rejillas hexagonales: coordenadas axiales, cúbicas, desplazadas y dobladas, vecinos, distancias,
@@ -59,11 +59,11 @@ Package.swift       Los paquetes juntos, para usarlos desde otro proyecto por UR
 ## Dependencias
 
 ```
-ArsHarmonicaApp ──┬──► ArmoniaUI ──┬──► ArmoniaPresentacion ──► Armonia ──► Hexagonos
+ArsHarmonicaApp ──┬──► TeselaUI ───┬──► TeselaPresentacion ──► Armonia ──► Hexagonos
 TonnetzApp ───────┘               ├──► Armonia
                                   └──► Hexagonos
 ArsHarmonicaApp, TonnetzApp, ArmoniaCLI, EjemploArmonia, RendimientoArmonia, FuzzArmonia ──► Armonia
-ArmoniaCLI ──► ArmoniaPresentacion (sin SwiftUI) ──► Armonia
+ArmoniaCLI ──► TeselaPresentacion (sin SwiftUI) ──► Armonia
 EjemploHexagonos ──► Hexagonos
 ```
 
@@ -101,7 +101,7 @@ open Tesela.xcodeproj     # elige el esquema ArsHarmonicaApp o TonnetzApp
 Cada release trae también `armonia` ya compilada para Linux (x86_64 y arm64, sin dependencias) y macOS, con su
 página de manual y el completado para bash, zsh y fish.
 
-`ArmoniaUI` usa SwiftUI para dibujar, pero su lógica (notación, qué trastes y qué notas enseña el mástil,
+`TeselaUI` usa SwiftUI para dibujar, pero su lógica (notación, qué trastes y qué notas enseña el mástil,
 qué muestran el análisis, el coral y las redes, y los ficheros que se exportan) no: esa parte
 compila y se prueba también en Linux, y la de interfaz queda tras `#if canImport(SwiftUI)`. El dibujo y las apps se
 construyen en macOS.
@@ -160,11 +160,11 @@ arregla con su prueba en `ImportacionAlAzarTests`, con el caso dentro.
 ## Estado
 
 Todo está en Swift 6 (el modo de lenguaje 6, con la concurrencia comprobada al compilar) y pide Swift 6.0 o posterior.
-Todo compila y pasa las pruebas en el CI: el motor en Linux (Swift 6.0 y 6.2) y en macOS, `ArmoniaPresentacion`, `ArmoniaUI`, `Hexagonos`, la línea de
+Todo compila y pasa las pruebas en el CI: el motor en Linux (Swift 6.0 y 6.2) y en macOS, `TeselaPresentacion`, `TeselaUI`, `Hexagonos`, la línea de
 comandos, el ejemplo, las dos apps en macOS y en el simulador de iOS (compiladas y con sus pruebas de interfaz), y la documentación de DocC, sin enlaces sin
 resolver. Los jobs de macOS (paquetes y apps, pruebas de interfaz y DocC) corren a mano desde la pestaña Actions y una vez por
 semana, los lunes; en cada push y en cada pull request corre Linux, y en los pull requests que cambian las apps,
-`ArmoniaPresentacion`, `ArmoniaUI` o el proyecto de Xcode, también las pruebas de interfaz de las dos apps, en macOS y en el simulador de iOS (que antes las compilan). Si una máquina de macOS se pierde a mitad de un job, `.github/workflows/reintentar.yml` repite una vez los jobs que fallaron. La documentación de DocC (Armonia, Hexagonos, ArmoniaUI y ArmoniaPresentacion) se publica en
+`TeselaPresentacion`, `TeselaUI` o el proyecto de Xcode, también las pruebas de interfaz de las dos apps, en macOS y en el simulador de iOS (que antes las compilan). Si una máquina de macOS se pierde a mitad de un job, `.github/workflows/reintentar.yml` repite una vez los jobs que fallaron. La documentación de DocC (Armonia, Hexagonos, TeselaUI y TeselaPresentacion) se publica en
 [GitHub Pages](https://rododendro1.github.io/Tesela/) con cada versión (`.github/workflows/documentacion.yml`), y también se
 puede publicar a mano desde la pestaña Actions. Dependabot mantiene al día las acciones del CI (`.github/dependabot.yml`). El formato del código Swift se comprueba con swift-format (`.swift-format`; los comandos, en `CONTRIBUTING.md`). Los jobs de Linux guardan `.build` en caché y recompilan solo lo que ha cambiado desde la última ejecución en main. `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
 

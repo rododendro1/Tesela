@@ -1,6 +1,6 @@
 import Armonia
-import ArmoniaPresentacion
 import Foundation
+import TeselaPresentacion
 
 // MARK: - Dibujos: Tonnetz, tabla armónica y teclados de cuadrícula
 

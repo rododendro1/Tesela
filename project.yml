@@ -47,10 +47,10 @@ settings:
 packages:
   Armonia:
     path: Packages/Armonia
-  ArmoniaPresentacion:
-    path: Packages/ArmoniaPresentacion
-  ArmoniaUI:
-    path: Packages/ArmoniaUI
+  TeselaPresentacion:
+    path: Packages/TeselaPresentacion
+  TeselaUI:
+    path: Packages/TeselaUI
 
 targets:
   ArsHarmonicaApp:
@@ -79,7 +79,7 @@ targets:
     dependencies:
       - package: Armonia
         product: Armonia
-      - package: ArmoniaUI
+      - package: TeselaUI
 
   TonnetzApp:
     type: application
@@ -108,7 +108,7 @@ targets:
     dependencies:
       - package: Armonia
         product: Armonia
-      - package: ArmoniaUI
+      - package: TeselaUI
 
   # Pruebas de interfaz: abren cada app con la notación española y recorren sus vistas con los ejemplos.
   ArsHarmonicaAppUITests:

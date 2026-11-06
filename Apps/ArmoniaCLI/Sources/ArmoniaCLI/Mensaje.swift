@@ -1,5 +1,5 @@
 import Armonia
-import ArmoniaPresentacion
+import TeselaPresentacion
 
 // MARK: - Textos
 //
@@ -12,7 +12,7 @@ import ArmoniaPresentacion
 // fichero da todos los campos, así que un caso nuevo no compila hasta que tiene su texto en los quince. El idioma es el de la notación (`--ingles`, `--idioma eu`…).
 // La ayuda (`LineaDeComandos.ayuda(en:)`) también está en los quince idiomas.
 // Los avisos del coral (sin armonización, sin faltas…) los comparte con las apps: son
-// `CoralPresentado.Aviso`, en `ArmoniaPresentacion`.
+// `CoralPresentado.Aviso`, en `TeselaPresentacion`.
 
 /// Las piezas de texto de la salida de las órdenes.
 enum Mensaje {

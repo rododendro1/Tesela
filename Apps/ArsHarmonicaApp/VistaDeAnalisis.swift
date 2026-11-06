@@ -1,6 +1,6 @@
 import Armonia
-import ArmoniaUI
 import SwiftUI
+import TeselaUI
 import UniformTypeIdentifiers
 
 /// Escribe una progresión (Do Fa Sol7 Do Lam Re7 Sol), o la saca de un fichero MIDI, MusicXML, MEI o ABC con «Abrir»

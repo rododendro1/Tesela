@@ -1,6 +1,6 @@
 import Armonia
-import ArmoniaUI
 import SwiftUI
+import TeselaUI
 
 /// Armoniza una melodía, escribe unos acordes a cuatro voces o revisa la conducción de unas voces, y
 /// exporta el coral como partitura o MIDI. Arriba, el paso al contrapunto de especies (`VistaDeContrapunto`).
