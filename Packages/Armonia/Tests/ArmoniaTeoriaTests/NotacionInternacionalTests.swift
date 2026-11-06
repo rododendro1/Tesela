@@ -51,12 +51,12 @@ import Testing
             Escala(.do, TipoDeEscala.pentatonicaMayor.rotacion(3)).nombre(en: .inglesASCII)
                 == "C pentatónica mayor, modo 3")
         #expect(Escala(.do, TipoDeEscala.pentatonicaMayor.rotacion(2)).nombre(en: .inglesASCII) == "C Egyptian")
-        for tipo in TipoDeEscala.todos {
+        for tipo in TipoDeEscala.occidentales {
             let escala = Escala("F#", tipo)
             #expect(
-                Escala(texto: escala.nombre(en: .inglesASCII)) == escala,
+                (try? Escala(leyendo: escala.nombre(en: .inglesASCII))) == escala,
                 Comment(rawValue: escala.nombre(en: .inglesASCII)))
-            #expect(Escala(texto: escala.nombre(en: .inglesCompacto)) == escala)
+            #expect((try? Escala(leyendo: escala.nombre(en: .inglesCompacto))) == escala)
         }
     }
 
@@ -148,44 +148,44 @@ import Testing
 
     /// Las escalas se leen también con la tónica y el tipo en francés, italiano, griego o ruso.
     @Test func escalasEnOtrasLenguas() {
-        #expect(Escala(texto: "ré dorien") == Escala(.re, .dorico))
-        #expect(Escala(texto: "fa dièse lydien") == Escala(Nota("Fa#"), .lidio))
-        #expect(Escala(texto: "si bémol mineur harmonique") == Escala(Nota("Sib"), .menorArmonica))
-        #expect(Escala(texto: "fa diesis lidio") == Escala(Nota("Fa#"), .lidio))
-        #expect(Escala(texto: "si bemolle minore melodica") == Escala(Nota("Sib"), .menorMelodica))
-        #expect(Escala(texto: "ре дорийский") == Escala(.re, .dorico))
-        #expect(Escala(texto: "ля гармонический минор") == Escala(.la, .menorArmonica))
-        #expect(Escala(texto: "фа-диез минорная пентатоника") == Escala(Nota("Fa#"), .pentatonicaMenor))
-        #expect(Escala(texto: "λα αρμονική ελάσσονα") == Escala(.la, .menorArmonica))
-        #expect(Escala(texto: "ρε δωριος") == Escala(.re, .dorico))
-        #expect(Escala(texto: "σι ύφεση μιξολύδιος") == Escala(Nota("Sib"), .mixolidio))
+        #expect((try? Escala(leyendo: "ré dorien")) == Escala(.re, .dorico))
+        #expect((try? Escala(leyendo: "fa dièse lydien")) == Escala(Nota("Fa#"), .lidio))
+        #expect((try? Escala(leyendo: "si bémol mineur harmonique")) == Escala(Nota("Sib"), .menorArmonica))
+        #expect((try? Escala(leyendo: "fa diesis lidio")) == Escala(Nota("Fa#"), .lidio))
+        #expect((try? Escala(leyendo: "si bemolle minore melodica")) == Escala(Nota("Sib"), .menorMelodica))
+        #expect((try? Escala(leyendo: "ре дорийский")) == Escala(.re, .dorico))
+        #expect((try? Escala(leyendo: "ля гармонический минор")) == Escala(.la, .menorArmonica))
+        #expect((try? Escala(leyendo: "фа-диез минорная пентатоника")) == Escala(Nota("Fa#"), .pentatonicaMenor))
+        #expect((try? Escala(leyendo: "λα αρμονική ελάσσονα")) == Escala(.la, .menorArmonica))
+        #expect((try? Escala(leyendo: "ρε δωριος")) == Escala(.re, .dorico))
+        #expect((try? Escala(leyendo: "σι ύφεση μιξολύδιος")) == Escala(Nota("Sib"), .mixolidio))
         // Con la tónica en ruso o griego, el tipo puede ir en inglés.
-        #expect(Escala(texto: "до lydian dominant") == Escala(.do, .lidioDominante))
-        #expect(Escala(texto: "ντο altered") == Escala(.do, .alterada))
+        #expect((try? Escala(leyendo: "до lydian dominant")) == Escala(.do, .lidioDominante))
+        #expect((try? Escala(leyendo: "ντο altered")) == Escala(.do, .alterada))
         // Todos los nombres franceses e italianos del catálogo se leen.
-        for tipo in TipoDeEscala.todos {
+        for tipo in TipoDeEscala.occidentales {
             for notacion in [Notacion.francesPalabras, .italianoPalabras] {
                 let escala = Escala(Nota("Fa#"), tipo)
                 #expect(
-                    Escala(texto: escala.nombre(en: notacion)) == escala, Comment(rawValue: escala.nombre(en: notacion))
+                    (try? Escala(leyendo: escala.nombre(en: notacion))) == escala, Comment(rawValue: escala.nombre(en: notacion))
                 )
             }
         }
         // Los nombres con otras formas de leerse (alias y variantes) en ruso y en griego se leen todos.
-        for tipo in TipoDeEscala.todos {
+        for tipo in TipoDeEscala.occidentales {
             if let entrada = NombresDeEscalas.de(.ruso).porTipo[tipo] {
                 for nombre in [entrada.nombre] + entrada.alias + entrada.variantes {
-                    #expect(Escala(texto: "ре " + nombre) == Escala(.re, tipo), Comment(rawValue: nombre))
+                    #expect((try? Escala(leyendo: "ре " + nombre)) == Escala(.re, tipo), Comment(rawValue: nombre))
                 }
             }
             if let entrada = NombresDeEscalas.de(.griego).porTipo[tipo] {
                 for nombre in [entrada.nombre] + entrada.alias + entrada.variantes {
-                    #expect(Escala(texto: "ρε " + nombre) == Escala(.re, tipo), Comment(rawValue: nombre))
+                    #expect((try? Escala(leyendo: "ρε " + nombre)) == Escala(.re, tipo), Comment(rawValue: nombre))
                 }
             }
         }
         // El español no cambia: no se mezclan idiomas.
-        #expect(Escala(texto: "Re dorian") == nil)
+        #expect((try? Escala(leyendo: "Re dorian")) == nil)
     }
 
     @Test func vocabularioEIdas() throws {
@@ -210,7 +210,7 @@ import Testing
             }
             for tonalidad in Tonalidad.circuloDeQuintas() + Tonalidad.circuloDeQuintas(.menor) {
                 #expect(
-                    Tonalidad(texto: tonalidad.nombre(en: notacion)) == tonalidad,
+                    (try? Tonalidad(leyendo: tonalidad.nombre(en: notacion))) == tonalidad,
                     Comment(rawValue: tonalidad.nombre(en: notacion)))
             }
         }

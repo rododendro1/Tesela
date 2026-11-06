@@ -30,7 +30,7 @@ import Testing
         // Cada tradición tiene al menos una lista.
         #expect(Set(TipoDeEscala.listasTradicionales.map(\.tradicion)) == Set(Tradicion.allCases))
         // Las occidentales no tienen categoría ni tradición.
-        for tipo in TipoDeEscala.todos {
+        for tipo in TipoDeEscala.occidentales {
             #expect(tipo.ficha.categoria == nil && tipo.ficha.mela == nil, Comment(rawValue: tipo.nombre))
             #expect(tipo.tradicion == nil, Comment(rawValue: tipo.nombre))
         }
@@ -38,7 +38,7 @@ import Testing
 
     /// El catálogo son las occidentales y después las de otras tradiciones, y su orden decide quién gana.
     @Test func catalogoConPrioridad() {
-        let todas = TipoDeEscala.todos + TipoDeEscala.tradicionales
+        let todas = TipoDeEscala.occidentales + TipoDeEscala.tradicionales
         #expect(TipoDeEscala.catalogo.map(\.nombre) == todas.map(\.nombre))
         #expect(TipoDeEscala.propio(TipoDeEscala.bilaval.intervalos).nombre == "mayor")
         #expect(TipoDeEscala.propio(TipoDeEscala.hiyaz.intervalos).nombre == TipoDeEscala.frigioDominante.nombre)

@@ -37,9 +37,9 @@ import Testing
         #expect(try Escala(leyendo: "Re Mi Fa Sol La Si Do").tipo == .dorico)
         #expect(try Escala(leyendo: "Do 2-2-3-2-3").tipo == .pentatonicaMayor)
         #expect(try Escala(leyendo: "C 2-1-2-2-1-2-2").tipo == .menorNatural)
-        #expect(Escala(texto: "Do 2-x-3") == nil)
-        #expect(Escala(texto: "Do Re foo") == nil)
-        #expect(Escala(texto: "foo 2-2-3") == nil)
+        #expect((try? Escala(leyendo: "Do 2-x-3")) == nil)
+        #expect((try? Escala(leyendo: "Do Re foo")) == nil)
+        #expect((try? Escala(leyendo: "foo 2-2-3")) == nil)
         #expect(Escala.leerPropia("Do") == nil)
     }
 

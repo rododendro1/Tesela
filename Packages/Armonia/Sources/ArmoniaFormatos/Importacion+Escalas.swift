@@ -21,7 +21,7 @@ extension PiezaImportada {
     ///
     ///     let pieza = try PiezaImportada(leyendo: datos)   // una melodía en Re dórico
     ///     pieza.escalas().first                             // Re dórico
-    public func escalas(umbral: Double = 0.02, tipos: [TipoDeEscala] = TipoDeEscala.todos) -> [Escala] {
+    public func escalas(umbral: Double = 0.02, tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [Escala] {
         let candidatos = Escala.candidatos(clasesDeAltura: clasesDeAltura(umbral: umbral), tipos: tipos)
         let tonica = tonalidadEstimada?.tonica.claseDeAltura
         return candidatos.enumerated()

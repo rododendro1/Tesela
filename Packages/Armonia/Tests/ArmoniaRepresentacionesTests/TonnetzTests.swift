@@ -73,7 +73,7 @@ import Testing
             filas.map { PuntoDeLaRed(quintas: pasos - 4 * $0, terceras: $0) }
         }
         var mejoras = 0
-        for tipo in TipoDeEscala.todos {
+        for tipo in TipoDeEscala.occidentales {
             let tonnetz = Tonnetz(Escala(.do, tipo))
             let voraz = Tonnetz.colocarVoraz(tonnetz.notas.map(\.pasosDeQuinta), candidatos: candidatos)
             let optima = (Tonnetz.grupos(tonnetz.puntos), suma(tonnetz.puntos))

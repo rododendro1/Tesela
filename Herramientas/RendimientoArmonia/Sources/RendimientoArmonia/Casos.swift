@@ -26,7 +26,7 @@ enum Casos {
     }
 
     static func todos() -> [Caso] {
-        let acordes = cifrados.compactMap { Acorde(texto: $0) }
+        let acordes = cifrados.compactMap { try? Acorde(leyendo: $0) }
         let doMayor = Tonalidad(.do)
         let sol7: Acorde = "Sol7/Si"
         let guitarra = Mastil(.guitarra)
@@ -36,7 +36,7 @@ enum Casos {
 
         var casos: [Caso] = [
             Caso(grupo: "Acordes", nombre: "Leer \(cifrados.count) cifrados") {
-                cifrados.reduce(0) { $0 + (Acorde(texto: $1)?.notas.count ?? 0) }
+                cifrados.reduce(0) { $0 + ((try? Acorde(leyendo: $1))?.notas.count ?? 0) }
             },
             Caso(grupo: "Acordes", nombre: "Escribir \(acordes.count) cifrados") {
                 acordes.reduce(0) { $0 + $1.cifrado.count }
@@ -85,7 +85,7 @@ enum Casos {
                 })
         }
         for n in longitudes {
-            let sucesion = repetir(progresion, hasta: n).compactMap { Acorde(texto: $0) }
+            let sucesion = repetir(progresion, hasta: n).compactMap { try? Acorde(leyendo: $0) }
             casos.append(
                 Caso(grupo: "Realizar a cuatro voces", nombre: "\(n) acordes") {
                     Coral.realizar(sucesion, en: doMayor)?.acordes.count ?? 0

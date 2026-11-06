@@ -147,7 +147,7 @@ package struct NombresDeEscalas: Sendable {
 
     /// El español sale del catálogo: el nombre de cada tipo, sus alias y sus variantes.
     static let espanol = NombresDeEscalas(
-        TipoDeEscala.todos.map { Fila($0, $0.nombre, alias: $0.alias, variantes: $0.variantes) }
+        TipoDeEscala.occidentales.map { Fila($0, $0.nombre, alias: $0.alias, variantes: $0.variantes) }
             + TipoDeEscala.tradicionales.map { Fila.tradicional($0, alias: $0.alias, variantes: $0.variantes) }
             + CategoriaTradicional.allCases.map { Fila.categoria($0, $0.nombre) })
 }

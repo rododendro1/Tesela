@@ -66,6 +66,6 @@ extension TipoDeEscala {
 
     /// Las escalas de `todos` con ese número de notas, en su orden.
     public static func todos(numeroDeNotas: Int) -> [TipoDeEscala] {
-        todos.filter { $0.numeroDeNotas == numeroDeNotas }
+        occidentales.filter { $0.numeroDeNotas == numeroDeNotas }
     }
 }

@@ -14,6 +14,11 @@ import ArmoniaNucleo
 ///     public static let mohanam = TipoDeEscala(nombre: "Mohanam", intervalos: […], categoria: .janya, mela: 28)
 ///     public static let pelogTembung = TipoDeEscala(nombre: "Pélog tembung", intervalos: […], categoria: .pathet,
 ///         subtradicion: .bali, afinaciones: [.init(.razones, pasos: […])])
+///     public static let rastMakami = TipoDeEscala(nombre: "Rast makamı", intervalos: […], categoria: .makam,
+///         llevaLaCategoria: true)
+///
+/// `llevaLaCategoria` va en las que ya tienen en el nombre la palabra de su categoría, para que `nombreCompleto` no
+/// la repita (una prueba lo comprueba contra el nombre).
 ///
 /// De ahí salen `TipoDeEscala.usos`, `categoria`, `subtradicion`, `padre`, `microtonal` y `afinaciones`, y
 /// `UsoDeEscala.tipos` y `TipoDeEscalaMicrotonal.catalogo`. La tradición no va en la ficha: la da su lista en
@@ -52,16 +57,20 @@ package struct FichaDeEscala: Sendable {
     package let mela: Int?
     /// Las versiones microtonales: la primera, la de su teoría de hoy; las demás, de otros autores (con `fuente`).
     package let afinaciones: [Afinacion]
+    /// ¿Lleva ya el nombre la palabra de su categoría («Rast makamı», «jins Rāst», «échos prótos», «P'yŏngjo»), o
+    /// una que la sustituye («shadd ʿUshshāq»)? Entonces `nombreCompleto` no la antepone.
+    package let llevaLaCategoria: Bool
 
     package init(
         usos: [UsoDeEscala] = [], categoria: CategoriaTradicional? = nil, subtradicion: Subtradicion? = nil,
-        mela: Int? = nil, afinaciones: [Afinacion] = []
+        mela: Int? = nil, afinaciones: [Afinacion] = [], llevaLaCategoria: Bool = false
     ) {
         self.usos = UsoDeEscala.allCases.filter { usos.contains($0) }
         self.categoria = categoria
         self.subtradicion = subtradicion ?? categoria.flatMap(Subtradicion.de)
         self.mela = mela
         self.afinaciones = afinaciones
+        self.llevaLaCategoria = llevaLaCategoria
     }
 
     /// La de un tipo que no es del catálogo (o que no tiene más datos).

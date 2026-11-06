@@ -426,7 +426,7 @@ donde se detuvo y el motivo. Cada capa tiene el suyo: `ErrorDeLectura` para las 
 los intervalos, `ErrorDeLecturaDeTeoria` para los cifrados, las escalas, las tonalidades y los corales,
 y `ErrorDeLecturaDePartitura` para las duraciones, los compases y el contrapunto. Leer un acorde puede
 lanzar los dos primeros (si falla la fundamental o si falla el cifrado); los tres cumplen
-`ErrorAlLeer`. Los inicializadores opcionales (`Acorde(texto: …)`) siguen existiendo y devuelven `nil`.
+`ErrorAlLeer`. Para tener `nil` en lugar del error basta `try?` (`try? Acorde(leyendo: …)`).
 
 Todos los errores del motor, también `ErrorDeLecturaDeFichero` y `ErrorDeLecturaDeUIL`, cumplen `ErrorDeArmonia`:
 para mostrar cualquiera basta `catch let error as any ErrorDeArmonia` y `error.descripcion(en:)`.

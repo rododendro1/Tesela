@@ -16,7 +16,7 @@ import Testing
 
     /// Las occidentales y las escalas propias no tienen categoría.
     @Test func lasOccidentalesYLasPropiasNoTienenClase() {
-        for tipo in TipoDeEscala.todos {
+        for tipo in TipoDeEscala.occidentales {
             #expect(tipo.categoria == nil, Comment(rawValue: tipo.nombre))
             #expect(tipo.tradicion == nil, Comment(rawValue: tipo.nombre))
         }
@@ -210,7 +210,41 @@ import Testing
         for tipo in TipoDeEscala.tradicionales {
             #expect(tipo.clase == tipo.categoria?.clase, Comment(rawValue: tipo.nombre))
         }
-        #expect(TipoDeEscala.todos.allSatisfy { $0.clase == nil })
+        #expect(TipoDeEscala.occidentales.allSatisfy { $0.clase == nil })
+    }
+
+    /// `llevaLaCategoria` se escribe a mano en la declaración: aquí se comprueba contra el texto del nombre, para
+    /// que una escala nueva no se quede sin él (y salga «makam Rast makamı») ni lo lleve de más (y pierda «rāga»).
+    /// La palabra puede ir dentro de otra («makamı», «muğamı», «ṣaḍja-grāma») o, en los jo coreanos, al final
+    /// («P'yŏngjo»); los shadd llevan «shadd» en lugar de «maqām».
+    @Test func llevaLaCategoriaCuandoElNombreLaTiene() {
+        for tipo in TipoDeEscala.tradicionales {
+            guard let palabra = tipo.categoria?.palabraDelNombre else {
+                #expect(!tipo.ficha.llevaLaCategoria, Comment(rawValue: tipo.nombre))
+                continue
+            }
+            let clave = TipoDeEscala.normalizar(palabra.nombre)
+            let palabras = TipoDeEscala.normalizar(tipo.nombre).split(separator: " ")
+            let laTiene =
+                palabras.first == "shadd"
+                || palabras.contains { $0.hasPrefix(clave) || (palabra == .jo && $0.hasSuffix(clave)) }
+            #expect(tipo.ficha.llevaLaCategoria == laTiene, Comment(rawValue: tipo.nombre))
+        }
+        #expect(TipoDeEscala.tradicionales.filter(\.ficha.llevaLaCategoria).count == 67)
+    }
+
+    /// En ningún idioma sale la palabra de la categoría dos veces.
+    @Test func nombreCompletoSinLaPalabraDosVecesEnNingunIdioma() {
+        for idioma in Idioma.allCases {
+            let notacion = Notacion.delIdioma(idioma)
+            for tipo in TipoDeEscala.tradicionales {
+                guard let palabra = tipo.categoria?.palabraDelNombre?.nombre(en: notacion) else { continue }
+                // Por palabras: «рага» está dentro de «Кедарагаула», y no cuenta.
+                let completo = tipo.nombreCompleto(en: notacion)
+                let veces = completo.lowercased().split(separator: " ").filter { $0.hasPrefix(palabra.lowercased()) }
+                #expect(veces.count <= 1, "\(idioma): \(completo)")
+            }
+        }
     }
 
     /// El nombre con la palabra de la categoría: delante si es un préstamo y no la lleva ya.

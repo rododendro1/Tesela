@@ -6,7 +6,7 @@ import Foundation
 // cada idioma, transposición, clases de altura) se declara aquí una sola vez:
 //
 //  · RepresentableComoTexto: se lee con `init(leyendo:)` y se escribe con `texto(en:)`.
-//    A cambio recibe `init?(texto:)`, el literal de texto y Codable.
+//    A cambio recibe el literal de texto y Codable. Sin error, `try? Acorde(leyendo: entrada)`.
 //  · Nombrable: nombre para personas en la notación que se pida (`nombre(en:)`).
 //  · Transponible: `transponer(_:)`, y con ello los operadores + y − y las secuencias.
 //  · ConClasesDeAltura: `conjuntoDeClasesDeAltura`, y con ello número de Forte y vector interválico.
@@ -26,16 +26,6 @@ public protocol RepresentableComoTexto: Codable, ExpressibleByStringLiteral wher
 extension RepresentableComoTexto {
     /// Texto en la notación española, con la octava en cifras (la que se usa al codificar): "Fa♯4".
     public var texto: String { texto(en: .deCodificacion) }
-
-    /// Como `init(leyendo:)`, devolviendo `nil` en lugar de un error: `Acorde(texto: entrada)`.
-    ///
-    /// Lleva etiqueta a propósito. Swift convierte `Acorde("Sol7")` en el literal de texto
-    /// (SE-0213), que no es opcional; sin etiqueta, `Acorde("…")` sería opcional con una
-    /// variable y no con un literal.
-    public init?(texto: String) {
-        guard let valor = try? Self(leyendo: texto) else { return nil }
-        self = valor
-    }
 
     /// Literal de texto: `let a: Acorde = "Sol7/Si"`. Un literal no válido es un error de
     /// programación y detiene la ejecución con el mensaje del error.

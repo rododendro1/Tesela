@@ -68,17 +68,19 @@ public struct TipoDeEscala: Sendable, Codable {
 
     /// Una escala de otra tradición, con su categoría y, si los tiene, su subtradición (si no la da la categoría), el
     /// número del mēḷa del que deriva (un rāga janya) y sus versiones microtonales. La tradición la da su lista en
-    /// `listasTradicionales`.
+    /// `listasTradicionales`. `llevaLaCategoria` va en las que ya tienen la palabra de la categoría en el nombre
+    /// («Rast makamı»), para que `nombreCompleto` no la repita.
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
-        variantes: [String] = [], categoria: CategoriaTradicional, subtradicion: Subtradicion? = nil,
-        mela: Int? = nil, afinaciones: [FichaDeEscala.Afinacion] = []
+        variantes: [String] = [], categoria: CategoriaTradicional, llevaLaCategoria: Bool = false,
+        subtradicion: Subtradicion? = nil, mela: Int? = nil, afinaciones: [FichaDeEscala.Afinacion] = []
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
             variantes: variantes,
             ficha: FichaDeEscala(
-                categoria: categoria, subtradicion: subtradicion, mela: mela, afinaciones: afinaciones))
+                categoria: categoria, subtradicion: subtradicion, mela: mela, afinaciones: afinaciones,
+                llevaLaCategoria: llevaLaCategoria))
     }
 
     init(
@@ -168,8 +170,8 @@ public struct TipoDeEscala: Sendable, Codable {
         }
         if desde == 0 { return self }
         let candidato = TipoDeEscala(nombre: "\(nombre), modo \(desde + 1)", intervalos: nuevos)
-        return TipoDeEscala.todos.first { $0 == candidato }
-            ?? TipoDeEscala.todos.first { $0.intervalos == candidato.intervalos } ?? candidato
+        return TipoDeEscala.occidentales.first { $0 == candidato }
+            ?? TipoDeEscala.occidentales.first { $0.intervalos == candidato.intervalos } ?? candidato
     }
 }
 
@@ -355,11 +357,15 @@ extension TipoDeEscala {
         usos: [.jazz, .sigloXX])
 }
 
-// El catálogo de búsqueda: `todos` (el orden decide qué escala gana al identificar), `catalogo` (todas, en el orden
-// de prioridad), `init(leyendo:)` y los índices por nombre. Las escalas de otras tradiciones están en `tradicionales`.
+// El catálogo de búsqueda: `occidentales` (el orden decide qué escala gana al identificar), `catalogo` (todas, en el
+// orden de prioridad), `init(leyendo:)` y los índices por nombre. Las escalas de otras tradiciones están en
+// `tradicionales`.
 
 extension TipoDeEscala {
-    public static let todos: [TipoDeEscala] = [
+    /// Las escalas occidentales (las de la música clásica, el jazz, el blues, el siglo XX y la popular), en el orden
+    /// en que tienen prioridad al identificar unas notas. Las de otras tradiciones están en `tradicionales`, y todas
+    /// juntas, en `catalogo`.
+    public static let occidentales: [TipoDeEscala] = [
         .mayor, .dorico, .frigio, .lidio, .mixolidio, .menorNatural, .locrio,
         .menorArmonica, .menorMelodica, .menorMelodicaJazz, .mayorArmonica,
         .locrioSextaNatural, .jonicoAumentado, .doricoCuartaAumentada, .frigioDominante,
@@ -392,15 +398,15 @@ extension TipoDeEscala {
         .pentatonicaMixolidia, .pentatonicaLidia, .pentatonicaEscocesa,
     ]
 
-    /// Todas las escalas del catálogo, en el orden en que tienen prioridad: primero las occidentales (`todos`, en su
-    /// orden) y después las de otras tradiciones (`tradicionales`, en el suyo).
+    /// Todas las escalas del catálogo, en el orden en que tienen prioridad: primero las occidentales (`occidentales`,
+    /// en su orden) y después las de otras tradiciones (`tradicionales`, en el suyo).
     ///
     /// Cuando dos escalas comparten algo, gana la primera: al buscar por nombre (aunque un nombre gana siempre a un
     /// alias o a una variante: «Hijaz» es el maqam Ḥijāz y no el dromos Hitzáz, que lo tiene de variante), al
     /// nombrar una escala por sus notas (`propio`: Do Re Mi Fa Sol La Si es la mayor y no Bilāval) y en el orden de
     /// `equivalentes`.
-    /// `Escala.identificar` busca solo en `todos`, salvo que se le pasen otros tipos.
-    public static let catalogo: [TipoDeEscala] = todos + tradicionales
+    /// `Escala.identificar` busca solo en `occidentales`, salvo que se le pasen otros tipos.
+    public static let catalogo: [TipoDeEscala] = occidentales + tradicionales
 
     /// El tipo de un nombre en español o en inglés, sin distinguir mayúsculas ni guiones: "dórico", "dorico",
     /// "Dorian", "harmonic minor", "whole-tone". También lee las escalas de `tradicionales`: "Kafi", "hitzaz",

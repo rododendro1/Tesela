@@ -17,7 +17,7 @@ import Testing
             ("Si#", "His"), ("Rex", "Disis"), ("Solb", "Ges"),
         ]
         for (espanol, aleman) in casos {
-            let nombre = Nota(texto: espanol)!
+            let nombre = try! Nota(leyendo: espanol)
             #expect(nombre.nombre(en: .alemanCompacto) == aleman, Comment(rawValue: espanol))
             #expect(nombre.nombreCompacto(en: .alemanPalabras) == aleman, Comment(rawValue: espanol))
             #expect(try (Nota(leyendo: aleman, en: .alemanCompacto)) == nombre, Comment(rawValue: aleman))
@@ -65,7 +65,7 @@ import Testing
             ("Si#", "Hisz"), ("Rex", "Diszisz"), ("Solb", "Gesz"),
         ]
         for (espanol, hungaro) in casos {
-            let nombre = Nota(texto: espanol)!
+            let nombre = try! Nota(leyendo: espanol)
             #expect(nombre.nombre(en: .hungaroCompacto) == hungaro, Comment(rawValue: espanol))
             #expect(try (Nota(leyendo: hungaro, en: .hungaroCompacto)) == nombre, Comment(rawValue: hungaro))
         }
@@ -200,13 +200,13 @@ import Testing
         #expect(Escala("dó maior") == Escala("Do mayor"))
         #expect(Escala(.re, .hirajoshi).nombre(en: .francesPalabras) == ("ré " + TipoDeEscala.hirajoshi.nombre))
         // Cada escala del catálogo tiene nombre en los tres idiomas; la portuguesa se vuelve a leer igual.
-        for tipo in TipoDeEscala.todos {
+        for tipo in TipoDeEscala.occidentales {
             for idioma in [Idioma.portugues, .frances, .italiano] {
                 #expect(NombresDeEscalas.de(idioma).porTipo[tipo] != nil, "\(idioma): \(tipo.nombre)")
             }
             let escala = Escala(.re, tipo)
             let nombre = escala.nombre(en: .portuguesPalabras)
-            #expect(Escala(texto: nombre) == escala, "\(nombre) (\(tipo.nombre))")
+            #expect((try? Escala(leyendo: nombre)) == escala, "\(nombre) (\(tipo.nombre))")
         }
 
         #expect(InstrumentoDePartitura.clarineteEnSib.nombre(en: .francesPalabras) == "clarinette en si♭")
@@ -237,20 +237,20 @@ import Testing
             ("Mibb", "mi doble bemòl", "ми-дубль-бемоль", "μι διπλή ύφεση"),
         ]
         for (espanol, occitano, ruso, griego) in casos {
-            let nota = Nota(texto: espanol)!
+            let nota = try! Nota(leyendo: espanol)
             for (notacion, nombre) in [
                 (Notacion.occitanoPalabras, occitano), (.rusoPalabras, ruso), (.griegoPalabras, griego),
             ] {
                 #expect(nota.nombre(en: notacion) == nombre)
                 #expect(try (Nota(leyendo: nombre, en: notacion)) == nota, Comment(rawValue: nombre))
-                #expect(Nota(texto: nombre) == nota, Comment(rawValue: nombre))
-                #expect(Nota(texto: nota.nombreCompacto(en: notacion)) == nota, Comment(rawValue: nombre))
+                #expect((try? Nota(leyendo: nombre)) == nota, Comment(rawValue: nombre))
+                #expect((try? Nota(leyendo: nota.nombreCompacto(en: notacion))) == nota, Comment(rawValue: nombre))
             }
         }
         // Sin tildes y con o sin guion.
-        #expect(Nota(texto: "σι υφεση") == Nota("Sib"))
-        #expect(Nota(texto: "фа диез") == Nota("Fa#"))
-        #expect(Nota(texto: "sol diesi") == Nota("Sol#"))
+        #expect((try? Nota(leyendo: "σι υφεση")) == Nota("Sib"))
+        #expect((try? Nota(leyendo: "фа диез")) == Nota("Fa#"))
+        #expect((try? Nota(leyendo: "sol diesi")) == Nota("Sol#"))
         #expect(Nota("Reb").nombreCompacto(en: .rusoPalabras) == "Ре♭")
         #expect(Nota("Reb").nombreCompacto(en: .griegoPalabras) == "Ρε♭")
         #expect(Nota("Sol#").nombreCompacto(en: .occitanoPalabras) == "Sòl♯")

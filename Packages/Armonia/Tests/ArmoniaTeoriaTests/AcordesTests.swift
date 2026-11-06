@@ -23,7 +23,7 @@ import Testing
         #expect(Acorde("Sol7/Si").bajo == .si)
         #expect(Acorde("Sol7/Si").cifrado == "Sol7/Si")
         #expect(Acorde("Do6/9/Mi").cifrado == "Do6/9/Mi")
-        #expect(Acorde(texto: "Doxyz") == nil)
+        #expect((try? Acorde(leyendo: "Doxyz")) == nil)
     }
 
     @Test func nombreDeLaInversion() {
@@ -130,25 +130,25 @@ import Testing
             ("7(omit5)", "7(omit5)"), ("7no3", "7(omit3)"), ("m(omit5)", "m(omit5)"),
         ]
         for (entrada, esperado) in casos {
-            guard let tipo = TipoDeAcorde(texto: entrada) else {
+            guard let tipo = try? TipoDeAcorde(leyendo: entrada) else {
                 Issue.record("No se pudo leer «\(entrada)»")
                 continue
             }
             #expect(tipo.cifrado == esperado, "«\(entrada)»")
             // Lo que se genera se vuelve a leer igual.
-            #expect(TipoDeAcorde(texto: tipo.cifrado) == tipo, "ida y vuelta de «\(entrada)»")
+            #expect((try? TipoDeAcorde(leyendo: tipo.cifrado)) == tipo, "ida y vuelta de «\(entrada)»")
         }
     }
 
     @Test func cifradosNoValidos() {
         for texto in ["xyz", "7(b3)", "dimø", "7 9", "add", "omit"] {
-            #expect(TipoDeAcorde(texto: texto) == nil, Comment(rawValue: texto))
+            #expect((try? TipoDeAcorde(leyendo: texto)) == nil, Comment(rawValue: texto))
         }
     }
 
     @Test func idaYVueltaDeLosPredefinidos() {
         for tipo in TipoDeAcorde.todos {
-            #expect(TipoDeAcorde(texto: tipo.cifrado) == tipo, Comment(rawValue: tipo.nombre))
+            #expect((try? TipoDeAcorde(leyendo: tipo.cifrado)) == tipo, Comment(rawValue: tipo.nombre))
         }
     }
 
@@ -179,7 +179,7 @@ import Testing
             (.menorSeptimaUndecima, "m11"), (.dominanteDecimotercera, "13"),
         ]
         for (tipo, cifrado) in cifrados {
-            #expect(tipo == TipoDeAcorde(texto: cifrado), Comment(rawValue: cifrado))
+            #expect(tipo == (try? TipoDeAcorde(leyendo: cifrado)), Comment(rawValue: cifrado))
             #expect(TipoDeAcorde.todos.contains(tipo), Comment(rawValue: cifrado))
         }
         #expect(TipoDeAcorde.todos.count == Set(TipoDeAcorde.todos).count)

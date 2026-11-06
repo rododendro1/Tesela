@@ -169,7 +169,7 @@ Tonnetz(Escala(.do, .tonosEnteros)).esConexo             // false
 Las notas se colocan en la disposición más compacta: la que deja menos grupos sueltos y, entre
 ellas, la de menor suma de distancias entre cada par de notas. Se prueban todas las disposiciones
 (con ramificación y poda, en milésimas de segundo incluso para la escala cromática): de las 52
-escalas de `TipoDeEscala.todos` en Do, 21 quedan más juntas que colocando las notas una a una. `triadas` da los
+escalas de `TipoDeEscala.occidentales` en Do, 21 quedan más juntas que colocando las notas una a una. `triadas` da los
 triángulos completos y `aristas`, los lados entre notas del conjunto.
 
 `svg(opciones:margen:leyenda:)` dibuja la red alrededor del conjunto: los triángulos mayores en

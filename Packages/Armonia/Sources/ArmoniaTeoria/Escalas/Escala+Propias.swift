@@ -104,7 +104,7 @@ extension Escala {
     /// Do lidio (Fa → Fa♯), Do mixolidio (Si → Si♭), Do menor melódica (Mi → Mi♭), Do mayor armónica (La → La♭)…
     /// Para cada cambio, la escala con la misma tónica si la hay; si no, la más fácil de escribir. En el orden de las
     /// notas, primero bajando.
-    public func vecinas(tipos: [TipoDeEscala] = TipoDeEscala.todos) -> [EscalaVecina] {
+    public func vecinas(tipos: [TipoDeEscala] = TipoDeEscala.occidentales) -> [EscalaVecina] {
         let clases = Set(notas.map(\.claseDeAltura))
         var resultado: [EscalaVecina] = []
         for nota in notas {
@@ -151,7 +151,7 @@ extension Escala {
     /// Las vecinas con la misma tónica que suben una nota un semitono (más brillantes) o la bajan (más oscuras),
     /// de las más habituales a las menos (en el orden de `tipos`).
     public func vecinasPorBrillo(
-        tipos: [TipoDeEscala] = TipoDeEscala.todos
+        tipos: [TipoDeEscala] = TipoDeEscala.occidentales
     ) -> (masOscuras: [EscalaVecina], masBrillantes: [EscalaVecina]) {
         let indice = Dictionary(tipos.enumerated().map { ($0.element.nombre, $0.offset) }, uniquingKeysWith: min)
         let propias = vecinas(tipos: tipos).filter { $0.escala.tonica.claseDeAltura == tonica.claseDeAltura }
@@ -162,7 +162,7 @@ extension Escala {
 
     /// Desde esta escala, la más habitual de las vecinas más oscuras, y de esa la suya, hasta que no queda ninguna
     /// nueva; y lo mismo hacia las más brillantes. Como mucho `maximo` peldaños a cada lado.
-    public func escaleraDeBrillo(tipos: [TipoDeEscala] = TipoDeEscala.todos, maximo: Int = 12) -> EscaleraDeBrillo {
+    public func escaleraDeBrillo(tipos: [TipoDeEscala] = TipoDeEscala.occidentales, maximo: Int = 12) -> EscaleraDeBrillo {
         func clases(_ escala: Escala) -> Set<Int> { Set(escala.notas.map(\.claseDeAltura)) }
         var vistas: Set<Set<Int>> = [clases(self)]
         // Hacia abajo: cada peldaño, con la bajada que lleva a él.
@@ -226,7 +226,7 @@ extension Escala {
     /// por quintas y enlazadas cuando una sale de la otra subiendo una nota un semitono. Deja fuera las que tienen
     /// microtonos y, de las que tienen las mismas notas, todas menos la primera de `tipos`.
     public static func mapaDeBrillo(
-        tonica: Nota = .do, numeroDeNotas: Int = 7, tipos: [TipoDeEscala] = TipoDeEscala.todos
+        tonica: Nota = .do, numeroDeNotas: Int = 7, tipos: [TipoDeEscala] = TipoDeEscala.occidentales
     ) -> MapaDeBrillo {
         var elegidas: [(escala: Escala, clases: Set<Int>, brillo: Double)] = []
         var vistas: Set<Set<Int>> = []
@@ -293,7 +293,7 @@ extension Escala {
     ///
     ///     let parecidas = Escala(.do).masParecidas()
     ///     parecidas.contains { $0.escala == Escala(.do, .lidio) }   // true
-    public func masParecidas(tipos: [TipoDeEscala] = TipoDeEscala.todos, limite: Int = 16) -> [EscalaParecida] {
+    public func masParecidas(tipos: [TipoDeEscala] = TipoDeEscala.occidentales, limite: Int = 16) -> [EscalaParecida] {
         let propias = Set(notas.map(\.claseDeAltura))
         let candidatas = tipos.filter { !$0.esDireccional }.flatMap { Escala(tonica, $0).enLasDoceTonalidades }
         // Primero las de la misma tónica, para que ganen a sus modos en otras tónicas.

@@ -25,7 +25,7 @@ import Testing
     // MARK: Armonizar
 
     private func cifrados(_ tonalidad: Tonalidad, _ melodia: String) -> [String] {
-        let notas = melodia.split(separator: " ").map { Nota(texto: String($0))! }
+        let notas = melodia.split(separator: " ").map { try! Nota(leyendo: String($0)) }
         return tonalidad.armonizar(melodia: notas).first?.valor.cifrados ?? []
     }
 
@@ -50,7 +50,7 @@ import Testing
         // Termina en el I precedido de la dominante, o en la dominante si la nota no es del I.
         for melodia in ["Sol La Si Do", "Mi Fa Sol La Sol Fa Mi Re Do", "Do Mi Re Si Do"] {
             let analisis = Tonalidad(.do).armonizar(
-                melodia: melodia.split(separator: " ").map { Nota(texto: String($0))! })[0].valor.analisis
+                melodia: melodia.split(separator: " ").map { try! Nota(leyendo: String($0)) })[0].valor.analisis
             #expect(analisis.cadencias.last?.tipo == .autentica, Comment(rawValue: melodia))
         }
         let semicadencia = cifrados(Tonalidad(.do), "Do Mi Fa Re")
@@ -82,7 +82,7 @@ import Testing
         _ texto: String, en tonalidad: Tonalidad? = nil,
         sourceLocation: SourceLocation = #_sourceLocation
     ) {
-        let acordes = texto.split(separator: " ").map { Acorde(texto: String($0))! }
+        let acordes = texto.split(separator: " ").map { try! Acorde(leyendo: String($0)) }
         guard let coral = Coral.realizar(acordes, en: tonalidad) else {
             Issue.record("«\(texto)» no se realiza", sourceLocation: sourceLocation)
             return

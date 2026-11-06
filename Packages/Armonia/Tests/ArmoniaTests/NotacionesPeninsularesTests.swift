@@ -19,13 +19,13 @@ import Testing
             ("Re", "re", "re", "re"),
         ]
         for (espanol, catalan, gallego, euskera) in casos {
-            let nombre = Nota(texto: espanol)!
+            let nombre = try! Nota(leyendo: espanol)
             #expect(nombre.nombre(en: .catalanPalabras) == catalan)
             #expect(nombre.nombre(en: .gallegoPalabras) == gallego)
             #expect(nombre.nombre(en: .euskeraPalabras) == euskera)
             // Se leen también sin indicar la notación.
             for texto in [catalan, gallego, euskera] {
-                #expect(Nota(texto: texto) == nombre, Comment(rawValue: texto))
+                #expect((try? Nota(leyendo: texto)) == nombre, Comment(rawValue: texto))
             }
         }
         #expect(Nota("Reb").nombreCompacto(en: .catalanPalabras) == "Re♭")
@@ -53,8 +53,8 @@ import Testing
         #expect(Alteracion("sostingut") == .sostenido)
         #expect(Alteracion("diesa bikoitza") == .dobleSostenido)
         // Los errores de siempre no cambian.
-        #expect(Nota(texto: "Fa#4") == nil)
-        #expect(Altura(texto: "Do") == nil)
+        #expect((try? Nota(leyendo: "Fa#4")) == nil)
+        #expect((try? Altura(leyendo: "Do")) == nil)
     }
 
     /// Los textos del motor que no son nombres de nota, en catalán, gallego y euskera.
@@ -139,14 +139,14 @@ import Testing
         // Los nombres de otras tradiciones son los mismos en todos los idiomas.
         #expect(Escala(.re, .hirajoshi).nombre(en: .euskeraPalabras) == ("re " + TipoDeEscala.hirajoshi.nombre))
         // Cada escala del catálogo tiene nombre en los tres idiomas, y se vuelve a leer igual.
-        for tipo in TipoDeEscala.todos {
+        for tipo in TipoDeEscala.occidentales {
             for idioma in [Idioma.catalan, .gallego, .euskera] {
                 #expect(NombresDeEscalas.de(idioma).porTipo[tipo] != nil, "\(idioma): \(tipo.nombre)")
             }
             let escala = Escala(.re, tipo)
             for notacion in [Notacion.catalanPalabras, .gallegoPalabras, .euskeraPalabras] {
                 let nombre = escala.nombre(en: notacion)
-                #expect(Escala(texto: nombre) == escala, "\(nombre) (\(tipo.nombre))")
+                #expect((try? Escala(leyendo: nombre)) == escala, "\(nombre) (\(tipo.nombre))")
             }
         }
 
@@ -170,13 +170,13 @@ import Testing
             ("Mibb", "mi duplo bemol"), ("Re", "ré"), ("La", "lá"), ("Sol", "sol"),
         ]
         for (espanol, portugues) in casos {
-            let nombre = Nota(texto: espanol)!
+            let nombre = try! Nota(leyendo: espanol)
             #expect(nombre.nombre(en: .portuguesPalabras) == portugues)
             // Se lee sin indicar la notación, con o sin tildes.
-            #expect(Nota(texto: portugues) == nombre, Comment(rawValue: portugues))
+            #expect((try? Nota(leyendo: portugues)) == nombre, Comment(rawValue: portugues))
             #expect(try (Nota(leyendo: portugues, en: .portuguesPalabras)) == nombre, Comment(rawValue: portugues))
         }
-        #expect(Nota(texto: "fa sustenido") == Nota("Fa#"))
+        #expect((try? Nota(leyendo: "fa sustenido")) == Nota("Fa#"))
         #expect(Nota("Reb").nombreCompacto(en: .portuguesPalabras) == "Ré♭")
         #expect(Acorde("Fa#m7").cifrado(en: .portuguesPalabras) == "Fá♯m7")
         #expect(Altura("Fa#3").nombre(en: .portuguesPalabras) == "fá sustenido 3")
@@ -212,7 +212,7 @@ import Testing
         #expect(Acorde("Sol7/Si").nombre(en: .aragonesPalabras) == "sol séptima de dominant, primera inversión")
         #expect(Escala(.re, .dorico).nombre(en: .asturianoPalabras) == "re dóricu")
         #expect(Escala(.mi, .frigio).nombre(en: .aragonesPalabras) == "mi frichio")
-        #expect(Escala(texto: "re dóricu") == Escala(.re, .dorico))
+        #expect((try? Escala(leyendo: "re dóricu")) == Escala(.re, .dorico))
         #expect(Tonalidad(.do).lugar(en: .asturianoPalabras) == "en do mayor")
         #expect(InstrumentoDePartitura.violonchelo.nombre(en: .asturianoPalabras) == "violonchelu")
         #expect(try Encordado(leyendo: "baxu") == .bajoElectrico)
@@ -220,11 +220,11 @@ import Testing
             ErrorDeLectura(texto: "", posicion: 0, motivo: .textoVacio).explicacion(en: .asturianoPalabras)
                 == "el testu ta baleru")
         // Las escalas del catálogo se vuelven a leer con su nombre en los dos idiomas.
-        for tipo in TipoDeEscala.todos where !TipoDeEscala.nombresTradicionales.contains(tipo.nombre) {
+        for tipo in TipoDeEscala.occidentales where !TipoDeEscala.nombresTradicionales.contains(tipo.nombre) {
             let escala = Escala(.re, tipo)
             for notacion in [Notacion.aragonesPalabras, .asturianoPalabras] {
                 let nombre = escala.nombre(en: notacion)
-                #expect(Escala(texto: nombre) == escala, "\(nombre) (\(tipo.nombre))")
+                #expect((try? Escala(leyendo: nombre)) == escala, "\(nombre) (\(tipo.nombre))")
             }
         }
     }

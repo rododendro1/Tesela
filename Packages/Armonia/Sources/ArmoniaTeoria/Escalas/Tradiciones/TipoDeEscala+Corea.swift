@@ -12,12 +12,12 @@ extension TipoDeEscala {
     public static let pyongjo = TipoDeEscala(
         nombre: "P'yŏngjo", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         variantes: ["Pyeongjo", "Pyongjo", "평조"],
-        categoria: .jo)
+        categoria: .jo, llevaLaCategoria: true)
     /// 계면조 (La Do Re Mi Sol).
     public static let kyemyonjo = TipoDeEscala(
         nombre: "Kyemyŏnjo", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
         variantes: ["Gyemyeonjo", "계면조"],
-        categoria: .jo)
+        categoria: .jo, llevaLaCategoria: true)
 
     public static let coreanas: [TipoDeEscala] = [.pyongjo, .kyemyonjo]
 }

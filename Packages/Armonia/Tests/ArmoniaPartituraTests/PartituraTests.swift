@@ -104,11 +104,11 @@ import Testing
             ("2/1", .cuadrada), ("128", .garrapatea),
         ]
         for (texto, duracion) in casos {
-            #expect(Duracion(texto: texto) == duracion, Comment(rawValue: texto))
+            #expect((try? Duracion(leyendo: texto)) == duracion, Comment(rawValue: texto))
             #expect(duracion.texto == texto, Comment(rawValue: texto))
         }
         for malo in ["3", "0", "4.x", "1/0", "", "256", "-4"] {
-            #expect(Duracion(texto: malo) == nil, Comment(rawValue: malo))
+            #expect((try? Duracion(leyendo: malo)) == nil, Comment(rawValue: malo))
         }
         do {
             _ = try Duracion(leyendo: "3")
@@ -132,8 +132,8 @@ import Testing
         #expect(Compas("C") == .compasillo)
         #expect(Compas("¢") == .partido)
         #expect(Compas.compasillo.duracion == .redonda)
-        #expect(Compas(texto: "4/3") == nil)
-        #expect(Compas(texto: "0/4") == nil)
+        #expect((try? Compas(leyendo: "4/3")) == nil)
+        #expect((try? Compas(leyendo: "0/4")) == nil)
         #expect(seisOcho.texto == "6/8")
     }
 
@@ -157,7 +157,7 @@ import Testing
         #expect(Evento("Re4:2~").ligada)
         #expect(!(Evento.silencio(.negra).ligada))
         for texto in ["Do4:4.", "Do4+Mi4+Sol4:2", "-:8", "Re4:2~", "Fa♯3:1/12"] {
-            #expect(Evento(texto: texto)?.texto == texto, Comment(rawValue: texto))
+            #expect((try? Evento(leyendo: texto))?.texto == texto, Comment(rawValue: texto))
         }
         do {
             _ = try Evento(leyendo: "Do4:3")
@@ -167,7 +167,7 @@ import Testing
             #expect((error as? any ErrorAlLeer)?.posicion == 4)
 
         }
-        #expect(Evento(texto: "Do4") == nil)
+        #expect((try? Evento(leyendo: "Do4")) == nil)
         #expect(Evento("Do4:4").transponer(.quintaJusta) == Evento("Sol4:4"))
     }
 
@@ -220,7 +220,7 @@ import Testing
         let d = Duracion(.negra, puntillos: 1)
         #expect("\(d)" == "negra con puntillo")
         #expect(d.texto == "4.")
-        #expect(Duracion(texto: d.texto) == d)
+        #expect((try? Duracion(leyendo: d.texto)) == d)
         #expect("\(Duracion.blanca + .corchea)" == "5/8 de redonda")
         #expect((Duracion.blanca + .corchea).texto == "5/8")
         #expect(Duracion.corchea.nombre(en: .inglesASCII) == "eighth note")
@@ -245,8 +245,8 @@ import Testing
         #expect(siete.duracionesDePulso == [Duracion(.negra, puntillos: 1), .negra, .negra])
         #expect(Compas("7/8").pulso == .corchea)
         #expect(Compas("6/8").iniciosDePulso == [.cero, Duracion(3, 8)])
-        #expect(Compas(texto: "2+0/8") == nil)
-        #expect(Compas(texto: "+/8") == nil)
+        #expect((try? Compas(leyendo: "2+0/8")) == nil)
+        #expect((try? Compas(leyendo: "+/8")) == nil)
     }
 
     @Test func acentos() {

@@ -283,10 +283,10 @@ import Testing
     }
 
     @Test func losFallablesSiguenDevolviendoNil() {
-        #expect(Acorde(texto: "Do7(b3)") == nil)
-        #expect(Nota(texto: "Fa#4") == nil)
-        #expect(Intervalo(texto: "5M") == nil)
-        #expect(Escala(texto: "Re dorian") == nil)
+        #expect((try? Acorde(leyendo: "Do7(b3)")) == nil)
+        #expect((try? Nota(leyendo: "Fa#4")) == nil)
+        #expect((try? Intervalo(leyendo: "5M")) == nil)
+        #expect((try? Escala(leyendo: "Re dorian")) == nil)
     }
 
     @Test func lecturaYErrores() throws {

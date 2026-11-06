@@ -9,7 +9,7 @@ import ArmoniaNucleo
 /// todas las de `todos` tienen al menos uno. Las de otras tradiciones no tienen: se clasifican por su `Tradicion`.
 ///
 ///     TipoDeEscala.alterada.usos          // [.jazz]
-///     TipoDeEscala.todos(uso: .blues)     // pentatónica mayor, pentatónica menor, blues, blues mayor…
+///     TipoDeEscala.occidentales(uso: .blues) // pentatónica mayor, pentatónica menor, blues, blues mayor…
 public enum UsoDeEscala: String, Sendable, Codable, CaseIterable {
     /// La teoría tonal y modal: la escala da la tonalidad y de ella sale la armonía (la mayor, las menores, los modos,
     /// las napolitanas, la cromática, el hexacordo).
@@ -32,7 +32,7 @@ public enum UsoDeEscala: String, Sendable, Codable, CaseIterable {
 
     /// Las escalas de `todos` de este uso, en su orden. Cada escala dice los suyos en su declaración
     /// (`usos: [.clasica, .jazz]`).
-    public var tipos: [TipoDeEscala] { TipoDeEscala.todos.filter { $0.usos.contains(self) } }
+    public var tipos: [TipoDeEscala] { TipoDeEscala.occidentales.filter { $0.usos.contains(self) } }
 
     /// El nombre del uso en el idioma de los textos de la notación: «siglo XX», «20th century», «XX. mendea». En
     /// español, también `nombre` (de `Nombrable`).
@@ -59,6 +59,6 @@ extension TipoDeEscala {
     /// las propias. Se busca por su `identidad`, como `tradicion`: Kāfī tiene las notas del dórico, pero no sus usos.
     public var usos: [UsoDeEscala] { fichaDelCatalogo.usos }
 
-    /// Las escalas de `todos` de un uso: `todos(uso: .jazz)` da los modos, las bebop, la alterada…
-    public static func todos(uso: UsoDeEscala) -> [TipoDeEscala] { uso.tipos }
+    /// Las escalas occidentales de un uso: `occidentales(uso: .jazz)` da los modos, las bebop, la alterada…
+    public static func occidentales(uso: UsoDeEscala) -> [TipoDeEscala] { uso.tipos }
 }

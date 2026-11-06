@@ -51,7 +51,7 @@ import Testing
             ("sostenido", 1), ("doble bemol", -2), ("Triple Sharp", 3), ("natural", 0),
         ]
         for (texto, semitonos) in casos {
-            #expect(Alteracion(texto: texto)?.semitonos == semitonos, Comment(rawValue: texto))
+            #expect((try? Alteracion(leyendo: texto))?.semitonos == semitonos, Comment(rawValue: texto))
         }
         do {
             _ = try Alteracion(leyendo: "#?")
@@ -66,7 +66,7 @@ import Testing
         for n in -4...4 {
             let a = Alteracion(n)
             for notacion in Notacion.allCases {
-                #expect(Alteracion(texto: a.texto(en: notacion)) == a, "\(n) \(notacion)")
+                #expect((try? Alteracion(leyendo: a.texto(en: notacion))) == a, "\(n) \(notacion)")
             }
         }
     }
@@ -155,7 +155,7 @@ import Testing
         comprobarIdaYVuelta([Intervalo.terceraMayor, .quintaDisminuida, -Intervalo.novenaMenor, "4AA", .octava])
         comprobarIdaYVuelta(TipoDeAcorde.todos)
         comprobarIdaYVuelta(["Sol7(b9)/Si", "Fa#m7b5", "Do/Re", "Mib6/9", "Faug", "Sibmaj7#11"] as [Acorde])
-        comprobarIdaYVuelta(TipoDeEscala.todos.map { Escala("Fa#", $0) })
+        comprobarIdaYVuelta(TipoDeEscala.occidentales.map { Escala("Fa#", $0) })
 
         #expect(Acorde("Sib7(b9)/Re").texto(en: .inglesASCII) == "Bb7(b9)/D")
         #expect(Intervalo.terceraMayor.texto(en: .inglesASCII) == "M3")
@@ -166,8 +166,8 @@ import Testing
 
     @Test func loQueAportaElProtocolo() throws {
         // init?(_:) y el literal de texto vienen de RepresentableComoTexto.
-        #expect(Nota(texto: "Xa") == nil)
-        #expect(TipoDeAcorde(texto: "7(b3)") == nil)
+        #expect((try? Nota(leyendo: "Xa")) == nil)
+        #expect((try? TipoDeAcorde(leyendo: "7(b3)")) == nil)
         let nota: Nota = "Sol#"
         #expect(nota == Nota(.sol, 1))
         let tipo: TipoDeAcorde = "m7(b5)"

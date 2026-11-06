@@ -128,7 +128,7 @@ import Testing
 
     @Test func unRecorridoQueModulaSinPivote() throws {
         let recorrido = try #require(
-            RecorridoTonal(["Do", "Fa", "Sol7", "Do", "Fa#", "Si", "Do#7", "Fa#"].map { Acorde(texto: $0)! }))
+            RecorridoTonal(["Do", "Fa", "Sol7", "Do", "Fa#", "Si", "Do#7", "Fa#"].map { try! Acorde(leyendo: $0) }))
         #expect(recorrido.tonalidadDePartida == Tonalidad(.do, .mayor))
         #expect(try recorrido.tonalidadDeLlegada == (Tonalidad(leyendo: "Fa# mayor")))
         #expect(recorrido.modulaciones.map(\.description) == ["De Do mayor a Fa♯ mayor en el acorde 5 (directa)"])

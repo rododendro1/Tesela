@@ -6,7 +6,7 @@ import Testing
 @Suite struct UsoDeEscalaTests {
     /// Toda escala de `todos` tiene al menos un uso; las de otras tradiciones y las propias, ninguno.
     @Test func todasLasHabitualesTienenUso() {
-        for tipo in TipoDeEscala.todos {
+        for tipo in TipoDeEscala.occidentales {
             #expect(!tipo.usos.isEmpty, Comment(rawValue: tipo.nombre))
         }
         for tipo in TipoDeEscala.tradicionales {
@@ -33,12 +33,12 @@ import Testing
         #expect(TipoDeEscala.lidioDominante.usos == [.jazz, .sigloXX])
         #expect(TipoDeEscala.flamenca.usos == [.popular])
         #expect(TipoDeEscala.ultrafrigio.usos == [.sintetica])
-        #expect(TipoDeEscala.todos(uso: .blues).first == .pentatonicaMayor)
-        #expect(TipoDeEscala.todos(uso: .sigloXX).contains(.messiaen3))
+        #expect(TipoDeEscala.occidentales(uso: .blues).first == .pentatonicaMayor)
+        #expect(TipoDeEscala.occidentales(uso: .sigloXX).contains(.messiaen3))
         // En el orden de `todos`, sin repetir.
         for uso in UsoDeEscala.allCases {
-            let nombres = TipoDeEscala.todos(uso: uso).map(\.nombre)
-            #expect(nombres == TipoDeEscala.todos.map(\.nombre).filter { nombres.contains($0) })
+            let nombres = TipoDeEscala.occidentales(uso: uso).map(\.nombre)
+            #expect(nombres == TipoDeEscala.occidentales.map(\.nombre).filter { nombres.contains($0) })
         }
     }
 

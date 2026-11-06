@@ -286,5 +286,5 @@ extension TipoDeEscalaMicrotonal {
     /// blue notes, como se suelen describir: la tercera neutra, entre la menor y la mayor (350 cents, el Mi𝄳 sobre
     /// Do), y la séptima armónica (7/4, 969 cents, 31 bajo Si♭), con la cuarta y la quinta puras. La ♭5 queda
     /// temperada. Son una aproximación: cada intérprete las entona a su manera, y las desliza.
-    public static let occidentales: [TipoDeEscalaMicrotonal] = TipoDeEscala.todos.flatMap(\.afinaciones)
+    public static let occidentales: [TipoDeEscalaMicrotonal] = TipoDeEscala.occidentales.flatMap(\.afinaciones)
 }

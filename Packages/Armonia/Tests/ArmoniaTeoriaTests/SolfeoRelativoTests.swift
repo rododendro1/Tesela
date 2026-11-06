@@ -48,7 +48,7 @@ import Testing
         // En cualquier tonalidad de la misma clase, las mismas sílabas.
         for tonica in ["Do", "Fa#", "Sib", "Dob"] {
             #expect(
-                Escala(Nota(texto: tonica)!, .mayor).solfeoRelativo() == ["do", "re", "mi", "fa", "so", "la", "ti"])
+                Escala(try! Nota(leyendo: tonica), .mayor).solfeoRelativo() == ["do", "re", "mi", "fa", "so", "la", "ti"])
         }
     }
 }

@@ -456,7 +456,7 @@ extension LineaDeComandos {
         var grupos: [(titulo: String, tipos: [TipoDeEscala])] = []
         if tradicion == nil && categoria == nil {
             if let usoPedido {
-                let delUso = TipoDeEscala.todos(uso: usoPedido).filter(cumple)
+                let delUso = TipoDeEscala.occidentales(uso: usoPedido).filter(cumple)
                 if !delUso.isEmpty { grupos.append((t(.habituales) + " · " + usoPedido.nombre(en: notacion), delUso)) }
             } else {
                 let habituales = TipoDeEscala.todos.filter(cumple)
