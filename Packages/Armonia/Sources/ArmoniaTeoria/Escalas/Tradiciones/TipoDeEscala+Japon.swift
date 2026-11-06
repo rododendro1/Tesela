@@ -12,56 +12,56 @@ extension TipoDeEscala {
     /// 律: la pentatónica de la música cortesana gagaku (Re Mi Sol La Si).
     public static let ritsu = TipoDeEscala(
         nombre: "Ritsu", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
-        alias: ["律"])
+        variantes: ["律"])
     /// 呂: la otra pentatónica del gagaku (Re Mi Fa♯ La Si).
     public static let ryo = TipoDeEscala(
         nombre: "Ryo", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
-        alias: ["呂"])
+        variantes: ["呂"])
     /// 陽音階, la escala yō de la música popular, sin semitonos (Re Mi Sol La Si).
     public static let yo = TipoDeEscala(
         nombre: "Yō", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
-        alias: ["Yoo", "Yō onkai", "陽", "陽音階"])
+        alias: ["Yō onkai"], variantes: ["Yoo", "陽", "陽音階"])
     /// 民謡音階, la escala de las canciones populares (Re Fa Sol La Do).
     public static let minyo = TipoDeEscala(
         nombre: "Min'yō", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        alias: ["Minyo", "Min yo", "民謡", "民謡音階"])
+        variantes: ["Minyo", "Min yo", "民謡", "民謡音階"])
     /// 都節, la escala de la música urbana de Edo, con semitonos (Mi Fa La Si Do).
     public static let miyakobushi = TipoDeEscala(
         nombre: "Miyakobushi", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaMenor],
-        alias: ["Miyako-bushi", "Miyako bushi", "都節", "都節音階"])
+        variantes: ["Miyako-bushi", "Miyako bushi", "都節", "都節音階"])
     /// 陰音階, la escala in: la contrapartida con semitonos de la yō (Mi Fa La Si Do).
     public static let `in` = TipoDeEscala(
         nombre: "In", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaMenor],
-        alias: ["In onkai", "陰", "陰音階"])
+        alias: ["In onkai"], variantes: ["陰", "陰音階"])
     /// 陰旋, la in con la 7ª menor (Do Re♭ Fa Sol Si♭).
     public static let insen = TipoDeEscala(
         nombre: "Insen", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        alias: ["In sen", "陰旋"])
+        variantes: ["In sen", "陰旋"])
     /// 岩戸 (Do Re♭ Fa Sol♭ Si♭).
     public static let iwato = TipoDeEscala(
         nombre: "Iwato", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaDisminuida, .septimaMenor],
-        alias: ["岩戸"])
+        variantes: ["岩戸"])
     /// 平調子, la afinación más común del koto (Do Re Mi♭ Sol La♭).
     public static let hirajoshi = TipoDeEscala(
         nombre: "Hirajōshi", intervalos: [.unisono, .segundaMayor, .terceraMenor, .quintaJusta, .sextaMenor],
-        alias: ["Hira-jōshi", "平調子"])
+        variantes: ["Hira-jōshi", "平調子"])
     /// 雲井調子, otra afinación del koto (Do Re Mi♭ Sol La).
     public static let kumoijoshi = TipoDeEscala(
         nombre: "Kumoijōshi", intervalos: [.unisono, .segundaMayor, .terceraMenor, .quintaJusta, .sextaMayor],
-        alias: ["Kumoi", "Kumoi-jōshi", "雲井調子"])
+        alias: ["Kumoi"], variantes: ["Kumoi-jōshi", "雲井調子"])
     /// 琉球音階, la escala de Okinawa (Do Mi Fa Sol Si).
     public static let ryukyu = TipoDeEscala(
         nombre: "Ryūkyū", intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
-        alias: ["Okinawa", "琉球", "琉球音階"])
+        alias: ["Okinawa"], variantes: ["琉球", "琉球音階"])
 
     /// 曙調子, afinación del koto (Do Re Mi♭ Sol La).
     public static let akebono = TipoDeEscala(
         nombre: "Akebono", intervalos: [.unisono, .segundaMayor, .terceraMenor, .quintaJusta, .sextaMayor],
-        alias: ["Akebono-jōshi", "Akebonojoshi", "曙", "曙調子"])
+        alias: ["Akebono-jōshi"], variantes: ["Akebonojoshi", "曙", "曙調子"])
     /// 古今調子, afinación del koto (Do Re♭ Fa Sol Si♭).
     public static let kokinjoshi = TipoDeEscala(
         nombre: "Kokin-jōshi", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        alias: ["Kokinjoshi", "Kokin", "古今調子"])
+        alias: ["Kokin"], variantes: ["Kokinjoshi", "古今調子"])
 
     /// Las escalas japonesas: del gagaku, populares y afinaciones del koto.
     public static let japonesas: [TipoDeEscala] = [

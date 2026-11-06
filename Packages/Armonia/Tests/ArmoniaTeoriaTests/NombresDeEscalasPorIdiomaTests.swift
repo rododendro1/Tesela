@@ -21,7 +21,7 @@ import Testing
             for tipo in TipoDeEscala.todos {
                 guard let entrada = nombres.porTipo[tipo] else { continue }
                 #expect(nombres.indice[TipoDeEscala.normalizar(entrada.nombre)] != nil, "\(idioma): \(entrada.nombre)")
-                for alias in entrada.alias {
+                for alias in entrada.alias + entrada.variantes {
                     #expect(nombres.indice[TipoDeEscala.normalizar(alias)] != nil, "\(idioma): \(alias)")
                 }
             }
@@ -42,13 +42,13 @@ import Testing
         #expect(propio.nombre(en: .espanolCompacto) == "mi modo")
     }
 
-    /// Cada alias se lee como su tipo: ningún alias es el nombre de otro tipo ni el alias de otro de su idioma.
+    /// Cada alias o variante se lee como su tipo: ninguno es el nombre de otro tipo ni el alias de otro de su idioma.
     @Test func cadaAliasSeLeeComoSuTipo() {
         let sinAlias: Set<Idioma> = [.espanol, .ruso, .griego]
         for idioma in Idioma.allCases where !sinAlias.contains(idioma) {
             let nombres = NombresDeEscalas.de(idioma)
             for (tipo, entrada) in nombres.porTipo {
-                for alias in entrada.alias {
+                for alias in entrada.alias + entrada.variantes {
                     #expect(
                         nombres.indice[TipoDeEscala.normalizar(alias)] == tipo,
                         "\(idioma): \(alias) (\(entrada.nombre))")
@@ -67,26 +67,27 @@ import Testing
         }
     }
 
-    /// Un tipo con alias en español (que no sean solo el mismo nombre sin tildes) los tiene en los idiomas
-    /// románicos. Euskera, alemán, ruso y griego tienen menos: algunos alias no se traducen bien a su gramática.
+    /// Un tipo con alias en español tiene alias o variantes en los idiomas románicos («menor dórica» es en catalán
+    /// solo «dòrica»). Euskera, alemán, ruso y griego tienen menos: algunos alias no se traducen bien a su gramática.
     @Test func losTiposConAliasEnEspanolLosTienenEnLosIdiomasRomanicos() {
         let romanicos: [Idioma] = [
             .catalan, .gallego, .asturiano, .aragones, .portugues, .frances, .occitano, .italiano,
         ]
-        for tipo in TipoDeEscala.todos {
-            let nombre = TipoDeEscala.normalizar(tipo.nombre)
-            guard tipo.alias.contains(where: { TipoDeEscala.normalizar($0) != nombre }) else { continue }
+        for tipo in TipoDeEscala.todos where !tipo.alias.isEmpty {
             for idioma in romanicos {
+                let entrada = NombresDeEscalas.de(idioma).porTipo[tipo]
                 #expect(
-                    !(NombresDeEscalas.de(idioma).porTipo[tipo]?.alias.isEmpty ?? true), "\(idioma): \(tipo.nombre)")
+                    !((entrada?.alias ?? []) + (entrada?.variantes ?? [])).isEmpty, "\(idioma): \(tipo.nombre)")
             }
         }
     }
 
-    /// El español tiene los alias del catálogo en el registro.
+    /// El español tiene los alias y las variantes del catálogo en el registro.
     @Test func elEspanolTieneLosAliasDelCatalogo() {
         for tipo in TipoDeEscala.todos {
-            #expect(NombresDeEscalas.de(.espanol).porTipo[tipo]?.alias == tipo.alias, Comment(rawValue: tipo.nombre))
+            let entrada = NombresDeEscalas.de(.espanol).porTipo[tipo]
+            #expect(entrada?.alias == tipo.alias, Comment(rawValue: tipo.nombre))
+            #expect(entrada?.variantes == tipo.variantes, Comment(rawValue: tipo.nombre))
         }
     }
 
@@ -182,11 +183,12 @@ import Testing
 
     // MARK: Alias escritos y alias normalizados
 
-    /// `alias` guarda solo grafías correctas; las simplificadas (sin diacríticos, `#`/`b`) las da `aliasNormalizados`.
+    /// `alias` y `variantes` guardan solo grafías correctas; las simplificadas (sin diacríticos, `#`/`b`) las da
+    /// `aliasNormalizados`.
     @Test func losAliasGuardadosNoSonSoloFormasNormalizadas() {
         for tipo in TipoDeEscala.todos + TipoDeEscala.tradicionales {
-            let escritas = [tipo.nombre] + tipo.alias
-            for alias in tipo.alias where alias.unicodeScalars.allSatisfy(\.isASCII) {
+            let escritas = [tipo.nombre] + tipo.alias + tipo.variantes
+            for alias in tipo.alias + tipo.variantes where alias.unicodeScalars.allSatisfy(\.isASCII) {
                 let redundante = escritas.contains {
                     $0 != alias && TipoDeEscala.normalizar($0) == TipoDeEscala.normalizar(alias)
                         && (!$0.unicodeScalars.allSatisfy(\.isASCII) || $0 == tipo.nombre)
@@ -213,8 +215,43 @@ import Testing
 
     @Test func aliasNormalizadosNoTienenRepetidos() {
         let t = TipoDeEscala(
-            nombre: "Dórico", intervalos: [.unisono, .terceraMenor], alias: ["dórico", "Dorico", "Jónico"])
-        #expect(t.aliasNormalizados == ["dorico", "jonico"])
+            nombre: "Dórico", intervalos: [.unisono, .terceraMenor], alias: ["dórico", "Dorico", "Jónico"],
+            variantes: ["Jonico", "dórica"])
+        #expect(t.aliasNormalizados == ["dorico", "jonico", "dorica"])
+    }
+
+    // MARK: Alias y variantes
+
+    /// Un alias es otro nombre de la escala; otra forma de escribir un nombre que ya está (el femenino de un modo)
+    /// va en `variantes`.
+    @Test func ningunAliasEsSoloOtroGeneroDeUnNombreAnterior() {
+        func sinGenero(_ texto: String) -> String {
+            var palabras: [String] = []
+            for palabra in TipoDeEscala.normalizar(texto).split(separator: " ") {
+                let fin = ["os", "as", "o", "a"].first { palabra.count > $0.count + 2 && palabra.hasSuffix($0) }
+                palabras.append(String(palabra.dropLast(fin?.count ?? 0)))
+            }
+            return palabras.joined(separator: " ")
+        }
+        for tipo in TipoDeEscala.catalogo {
+            var anteriores = [sinGenero(tipo.nombre)]
+            for alias in tipo.alias {
+                #expect(!anteriores.contains(sinGenero(alias)), "\(tipo.nombre): «\(alias)» es una variante")
+                anteriores.append(sinGenero(alias))
+            }
+        }
+    }
+
+    /// Las variantes se leen como los alias, pero no son otro nombre.
+    @Test func lasVariantesSeLeenComoLosAlias() throws {
+        #expect(TipoDeEscala.dorico.alias == ["menor dórica"])
+        #expect(TipoDeEscala.dorico.variantes == ["dórica"])
+        #expect(TipoDeEscala.hitzaz.alias.isEmpty)
+        #expect(TipoDeEscala.hitzaz.variantes == ["Hijaz", "Hicaz", "Χιτζάζ"])
+        #expect(try TipoDeEscala(leyendo: "dórica") == .dorico)
+        #expect(try TipoDeEscala(leyendo: "Χιτζάζ").esIdentico(a: .hitzaz))
+        #expect(NombresDeEscalas.de(.catalan).porTipo[.dorico]?.variantes == ["dòrica"])
+        #expect(NombresDeEscalas.de(.catalan).indice["dorica"] == .dorico)
     }
 
     @Test func normalizarPliegaOrdinalesYMenos() {

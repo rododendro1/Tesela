@@ -13,27 +13,28 @@ extension TipoDeEscala {
     /// ትዝታ, «nostalgia» (Do Re Mi Sol La).
     public static let tezetaMayor = TipoDeEscala(
         nombre: "Təzəta mayor", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
-        alias: ["Tezeta mayor", "Tezeta", "Təzəta", "Tizita", "Tizita mayor", "Tezeta major", "Tizita major", "ትዝታ"])
+        alias: ["Tezeta", "Tezeta major"],
+        variantes: ["Tezeta mayor", "Təzəta", "Tizita", "Tizita mayor", "Tizita major", "ትዝታ"])
     /// Do Re Mi♭ Sol La♭.
     public static let tezetaMenor = TipoDeEscala(
         nombre: "Təzəta menor", intervalos: [.unisono, .segundaMayor, .terceraMenor, .quintaJusta, .sextaMenor],
-        alias: ["Tezeta menor", "Tizita menor", "Tezeta minor", "Tizita minor"])
+        alias: ["Tezeta minor"], variantes: ["Tezeta menor", "Tizita menor", "Tizita minor"])
     /// ባቲ (Do Mi Fa Sol Si).
     public static let batiMayor = TipoDeEscala(
         nombre: "Bati mayor", intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
-        alias: ["Bati", "Batti", "Bati major", "ባቲ"])
+        alias: ["Bati", "Bati major"], variantes: ["Batti", "ባቲ"])
     /// Do Mi♭ Fa Sol Si♭.
     public static let batiMenor = TipoDeEscala(
         nombre: "Bati menor", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        alias: ["Batti menor", "Bati minor"])
+        alias: ["Bati minor"], variantes: ["Batti menor"])
     /// አምባሰል (Do Re♭ Fa Sol La♭).
     public static let ambassel = TipoDeEscala(
         nombre: "Ambassäl", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaMenor],
-        alias: ["Ambassel", "Ambasel", "Ambessel", "አምባሰል"])
+        variantes: ["Ambassel", "Ambasel", "Ambessel", "አምባሰል"])
     /// አንቺሆዬ (Do Re♭ Fa Sol♭ La).
     public static let anchihoye = TipoDeEscala(
         nombre: "Ančihoye", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaDisminuida, .sextaMayor],
-        alias: ["Anchihoye", "Anchihoy", "Anchi hoye", "አንቺሆዬ"])
+        variantes: ["Anchihoye", "Anchihoy", "Anchi hoye", "አንቺሆዬ"])
 
     public static let etiopes: [TipoDeEscala] = [
         .tezetaMayor, .tezetaMenor, .batiMayor, .batiMenor, .ambassel, .anchihoye,

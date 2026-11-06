@@ -4,13 +4,13 @@
 
 extension NombresDeEscalas {
     static let griego = NombresDeEscalas([
-        .init(.mayor, "μείζονα", alias: ["ιωνικός", "ιωνική"]),
-        .init(.dorico, "δώριος", alias: ["δωρική"]),
-        .init(.frigio, "φρύγιος", alias: ["φρυγική"]),
-        .init(.lidio, "λύδιος", alias: ["λυδική"]),
-        .init(.mixolidio, "μιξολύδιος", alias: ["μιξολυδική"]),
-        .init(.menorNatural, "φυσική ελάσσονα", alias: ["ελάσσονα", "αιολικός", "αιολική"]),
-        .init(.locrio, "λόκριος", alias: ["λοκρική"]),
+        .init(.mayor, "μείζονα", alias: ["ιωνικός"], variantes: ["ιωνική"]),
+        .init(.dorico, "δώριος", variantes: ["δωρική"]),
+        .init(.frigio, "φρύγιος", variantes: ["φρυγική"]),
+        .init(.lidio, "λύδιος", variantes: ["λυδική"]),
+        .init(.mixolidio, "μιξολύδιος", variantes: ["μιξολυδική"]),
+        .init(.menorNatural, "φυσική ελάσσονα", alias: ["ελάσσονα", "αιολικός"], variantes: ["αιολική"]),
+        .init(.locrio, "λόκριος", variantes: ["λοκρική"]),
         .init(.menorArmonica, "αρμονική ελάσσονα"),
         .init(.menorMelodica, "μελωδική ελάσσονα", alias: ["κλασική μελωδική ελάσσονα"]),
         .init(.menorMelodicaJazz, "μελωδική ελάσσονα τζαζ", alias: ["μελωδική ελάσσονα ανιούσα"]),

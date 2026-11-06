@@ -20,6 +20,18 @@ import Testing
         #expect(leido.identidad == TipoDeEscala.bayati.identidad)
         #expect(leido.tradicion == .mundoArabe)
         #expect(leido.microtonal == TipoDeEscala.bayati.microtonal)
+        #expect(leido.variantes == TipoDeEscala.bayati.variantes)
+    }
+
+    /// Una escala guardada antes de que hubiera `variantes` se lee sin ellas.
+    @Test func unaEscalaSinVariantesSeLee() throws {
+        let propio = TipoDeEscala(nombre: "mi modo", intervalos: TipoDeEscala.dorico.intervalos, alias: ["otro"])
+        var objeto = try #require(JSONSerialization.jsonObject(with: JSONEncoder().encode(propio)) as? [String: Any])
+        objeto["variantes"] = nil
+        let leido = try JSONDecoder().decode(TipoDeEscala.self, from: JSONSerialization.data(withJSONObject: objeto))
+        #expect(leido == propio)
+        #expect(leido.alias == ["otro"])
+        #expect(leido.variantes.isEmpty)
     }
 
     @Test func cadaTablaDistingueLasEscalasDeMismoContenido() {
