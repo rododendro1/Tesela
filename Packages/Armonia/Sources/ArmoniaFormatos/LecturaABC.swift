@@ -241,8 +241,7 @@ struct LectorABC {
     private mutating func leerTonalidad(_ valor: String) {
         let palabras = valor.split(separator: " ").map(String.init)
         guard let primera = palabras.first, primera != "none", let letra = primera.first,
-            let natural = ["C", "D", "E", "F", "G", "A", "B"].firstIndex(of: String(letra)).flatMap(
-                NotaNatural.init(rawValue:))
+            let natural = NotaNatural(letra: String(letra))
         else {
             if valor.hasPrefix("none") || valor.isEmpty { armadura = [:] }
             return

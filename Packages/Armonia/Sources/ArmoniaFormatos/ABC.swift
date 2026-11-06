@@ -161,7 +161,7 @@ package struct EscritorABC: EscritorDeTexto {
     }
 
     package static func nombre(_ natural: NotaNatural, octava: Int) -> String {
-        let letra = ["C", "D", "E", "F", "G", "A", "B"][natural.rawValue]
+        let letra = natural.letra
         if octava >= 5 { return letra.lowercased() + String(repeating: "'", count: octava - 5) }
         return letra + String(repeating: ",", count: max(0, 4 - octava))
     }
@@ -191,7 +191,7 @@ package struct EscritorABC: EscritorDeTexto {
     private static func armadura(_ tonalidad: Tonalidad?) -> String {
         guard let tonalidad else { return "C" }
         let (natural, semitonos, _) = Exportacion.sinTriples(Altura(tonalidad.tonica, octava: 4))
-        let nombre = ["C", "D", "E", "F", "G", "A", "B"][natural.rawValue]
+        let nombre = natural.letra
         let alteracion =
             semitonos > 0 ? String(repeating: "#", count: semitonos) : String(repeating: "b", count: -semitonos)
         return nombre + alteracion + (tonalidad.modo == .menor ? "m" : "")

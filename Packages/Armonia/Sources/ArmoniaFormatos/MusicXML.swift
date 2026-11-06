@@ -555,7 +555,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
     }
 
     package static func paso(_ natural: NotaNatural) -> String {
-        ["C", "D", "E", "F", "G", "A", "B"][natural.rawValue]
+        natural.letra
     }
 
     package static func signo(de clave: Clave) -> (signo: String, linea: Int, cambioDeOctava: Int) {

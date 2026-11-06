@@ -419,7 +419,7 @@ package struct EscritorMEI: EscritorDeLineas {
     }
 
     package static func paso(_ natural: NotaNatural) -> String {
-        ["c", "d", "e", "f", "g", "a", "b"][natural.rawValue]
+        natural.letra.lowercased()
     }
 }
 

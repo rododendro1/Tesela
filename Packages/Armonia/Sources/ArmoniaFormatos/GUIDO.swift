@@ -151,7 +151,7 @@ package struct EscritorGUIDO: EscritorDeTexto {
     /// La altura absoluta: Do4 → `c1`, Fa♯3 → `f#0`, Si♭1 → `b&-2`, Re𝄪5 → `d##2`.
     package static func altura(_ altura: Altura) -> String {
         let (natural, semitonos, octava) = Exportacion.sinTriples(altura)
-        let nombre = ["c", "d", "e", "f", "g", "a", "b"][natural.rawValue]
+        let nombre = natural.letra.lowercased()
         let alteracion = String(repeating: semitonos >= 0 ? "#" : "&", count: abs(semitonos))
         return nombre + alteracion + String(octava - 3)
     }

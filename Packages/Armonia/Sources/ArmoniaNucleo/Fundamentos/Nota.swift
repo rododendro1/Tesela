@@ -11,6 +11,18 @@ public enum NotaNatural: Int, CaseIterable, Hashable, Sendable, CustomStringConv
     /// Posición de la nota natural en la línea de quintas (Fa = −1, Do = 0 … Si = 5).
     public var pasosDeQuintaBase: Int { [0, 2, 4, -1, 1, 3, 5][rawValue] }
 
+    /// La letra inglesa de la nota, en mayúscula: Do → «C» … Si → «B». Con ella escriben y leen las notas los
+    /// formatos de partitura (en minúscula los que la quieren así).
+    package var letra: String { Self.letras[rawValue] }
+
+    /// La nota de una letra inglesa en mayúscula («G» → Sol); `nil` si no es ninguna.
+    package init?(letra: String) {
+        guard let indice = Self.letras.firstIndex(of: letra) else { return nil }
+        self.init(rawValue: indice)
+    }
+
+    private static let letras = ["C", "D", "E", "F", "G", "A", "B"]
+
     public var description: String { nombre }
 
     /// NotaNatural correspondiente a una posición cualquiera de la línea de quintas.

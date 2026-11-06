@@ -262,9 +262,7 @@ final class LectorMEI: LectorDeElementosXML {
         case "note":
             if acorde == nil { evento = leerEvento(atributos) }
             nota = NotaLeida()
-            nota.paso = atributos["pname"].flatMap {
-                ["c", "d", "e", "f", "g", "a", "b"].firstIndex(of: $0.lowercased()).flatMap(NotaNatural.init(rawValue:))
-            }
+            nota.paso = atributos["pname"].flatMap { NotaNatural(letra: $0.uppercased()) }
             nota.octava = atributos["oct"].flatMap(Int.init).flatMap { abs($0) <= 20 ? $0 : nil }
             alteraciones(atributos)
             let ligadura = atributos["tie"] ?? ""

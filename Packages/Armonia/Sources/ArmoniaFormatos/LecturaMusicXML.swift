@@ -248,7 +248,7 @@ final class LectorMusicXML: LectorDeElementosXML {
         case "divisions":
             if let numero, numero > 0, numero <= 100_000 { divisiones = numero }
         case "step" where padre == "pitch":
-            nota.paso = ["C", "D", "E", "F", "G", "A", "B"].firstIndex(of: valor).flatMap(NotaNatural.init(rawValue:))
+            nota.paso = NotaNatural(letra: valor)
         case "alter" where padre == "pitch":
             // Un microtono es un alter con decimales: −0.5 es Mi𝄳 sobre Mi, que se lee como Mi♭ y 50 cents. El
             // semitono es el más cercano y, a medio camino, el de abajo, como lo escribe la exportación.
