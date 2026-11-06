@@ -50,14 +50,15 @@
 - `TablaArmonica` con alturas nombra los demás hexágonos con la ventana de las alturas dadas, en vez de con bemoles
   si alguna lleva un bemol y con sostenidos si no: con Do, Mi y Sol, el 56 es La♭3.
 - `TipoDeEscala.cromatica(ventana:)`, con la ventana leída desde Do (`.bemoles`, `.masSimple`, `.sostenidos`…).
-  `cromatica(desdeLaQuinta:)` queda obsoleto.
+  `cromatica(desdeLaQuinta:)` ya no existe.
 - `VentanaDeQuintas.reescrita(_:)` también reescribe una `Altura`, que sigue sonando igual: Si♭4 es La♯4 en
   `.sostenidos`.
 - `VentanaDeQuintas` es `Codable`.
 
 ### Nombres más claros en la API
 
-Los nombres de antes siguen compilando, obsoletos, en el `Obsoletos.swift` de cada módulo, y Xcode propone el cambio.
+**Cambio incompatible:** los nombres de antes ya no existen (no llegaron a salir como obsoletos en ninguna versión);
+cada uno tiene aquí su nombre nuevo.
 
 - `OpcionesDePentagrama.Disposicion` pasa a ser `OpcionesDePentagrama.Posicion` (cerrada, abierta o automática), para
   no confundirla con `DisposicionDeAcorde`. Con ella, `Maquetacion.disposicionDelAcorde` es `posicionDelAcorde` y
@@ -72,7 +73,7 @@ Los nombres de antes siguen compilando, obsoletos, en el `Obsoletos.swift` de ca
 - `PosicionEnPentagrama` es `PosicionEnElPentagrama`, y `Partitura.LineaEnPentagrama`, `Partitura.LineaEnElPentagrama`,
   como `PosicionEnElMastil`.
 - `ErrorDeImportacion` es `ErrorDeLecturaDeFichero`, y `ErrorDeUIL`, `ErrorDeLecturaDeUIL`, como `ErrorDeLectura`.
-- `preferirBemoles` queda obsoleto: `Altura(midi:)` escribe con sostenidos, y `Altura(midi:ventana:)`,
+- `preferirBemoles` ya no existe: `Altura(midi:)` escribe con sostenidos, y `Altura(midi:ventana:)`,
   `OpcionesDeDiagrama(ventana:)`, `TecladoCuadrado.altura(en:ventana:)`, `TecladoIsomorfico.altura(en:ventana:)` y
   `Mastil.altura(en:ventana:)` eligen la ventana de quintas (`.bemoles` para lo de antes).
 
@@ -98,8 +99,8 @@ Los nombres de antes siguen compilando, obsoletos, en el `Obsoletos.swift` de ca
 ### `ConjuntoDeClases` pasa a llamarse `ConjuntoDeClasesDeAltura`
 
 - `ConjuntoDeClasesDeAltura` es el nuevo nombre de `ConjuntoDeClases`, para que diga de qué clases es. El nombre de
-  antes sigue compilando, obsoleto, en `ArmoniaNucleo/Obsoletos.swift`, y Xcode propone el cambio. La propiedad
-  `conjuntoDeClases` de `ConClasesDeAltura` no cambia.
+  antes ya no existe (cambio incompatible), y la propiedad `conjuntoDeClases` de `ConClasesDeAltura` pasa a ser
+  `conjuntoDeClasesDeAltura` (ver «Nombres más claros en la API»).
 
 ### La conducción de las voces y una progresión en las doce tonalidades
 
@@ -144,9 +145,9 @@ comparación en texto y la exporta con la barra (`PresentacionDeEstudioDeEscala.
 - `VentanaDeQuintas`: doce quintas seguidas de la línea de quintas, una escritura para cada clase de altura.
   `.sostenidos` (Fa–La♯) y `.bemoles` (Sol♭–Si) son las de `preferirBemoles`; `.centrada(en:)` pone la tónica casi en
   medio (Re♭–Fa♯ alrededor de Do), y `VentanaDeQuintas(desde:)` empieza en cualquier nota.
-- `Altura(midi:ventana:)`; `Altura(midi:preferirBemoles:)` usa ahora `.sostenidos` o `.bemoles`, con el mismo resultado.
+- `Altura(midi:ventana:)`, en lugar de `Altura(midi:preferirBemoles:)`, que ya no existe.
 - `OpcionesDeDiagrama.ventana` elige cómo se nombran las notas en los teclados, el piano y el reloj;
-  `preferirBemoles` sigue funcionando y equivale a `ventana == .bemoles`.
+  sustituye a `preferirBemoles`, que ya no existe.
 - `TecladoCuadrado.altura(en:ventana:)`, `TecladoIsomorfico.altura(en:ventana:)`, `Mastil.altura(en:ventana:)` y
   `Mastil.alturaSiExiste(en:ventana:)`.
 
