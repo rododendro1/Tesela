@@ -218,6 +218,12 @@ extension TextosDeApps {
         modulacionPorDisminuida: "zazpigarren txikitu enarmonikoa",
         modulacionDirecta: "zuzena",
         conduccionDeVoces: "Ahotsen gidaketa",
+        armadura: "Armadura",
+        sinAlteraciones: "alteraziorik gabe",
+        relativa: "Erlatiboa",
+        homonima: "Homonimoa",
+        cadenciasTipicas: "Kadentzia ohikoak",
+        cambianAcordes: { "\($1) akordetatik \($0) aldatzen dira" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tentsioak",
         notasAEvitar: "Saihesteko",

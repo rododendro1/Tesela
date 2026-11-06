@@ -218,6 +218,12 @@ extension TextosDeApps {
         modulacionPorDisminuida: "enharmonic diminished seventh",
         modulacionDirecta: "direct",
         conduccionDeVoces: "Voice leading",
+        armadura: "Key signature",
+        sinAlteraciones: "no sharps or flats",
+        relativa: "Relative",
+        homonima: "Parallel",
+        cadenciasTipicas: "Typical cadences",
+        cambianAcordes: { "\($0) of \($1) chords change" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensions",
         notasAEvitar: "Avoid",

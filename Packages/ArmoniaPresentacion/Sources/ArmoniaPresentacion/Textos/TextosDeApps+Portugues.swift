@@ -218,6 +218,12 @@ extension TextosDeApps {
         modulacionPorDisminuida: "sétima diminuta enarmónica",
         modulacionDirecta: "direta",
         conduccionDeVoces: "Condução de vozes",
+        armadura: "Armadura",
+        sinAlteraciones: "sem alterações",
+        relativa: "Relativa",
+        homonima: "Homónima",
+        cadenciasTipicas: "Cadências típicas",
+        cambianAcordes: { "Mudam \($0) de \($1) acordes" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Tensões",
         notasAEvitar: "A evitar",
