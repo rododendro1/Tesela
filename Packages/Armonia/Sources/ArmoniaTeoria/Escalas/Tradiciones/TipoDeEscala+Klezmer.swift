@@ -42,5 +42,5 @@ extension TipoDeEscala {
         alias: ["Mogen Ovos"],
         categoria: .shteyger)
 
-    public static let klezmer: [TipoDeEscala] = [.freygish, .misheberakh, .adonaiMalakh, .magenAvot]
+    package static let klezmer: [TipoDeEscala] = [.freygish, .misheberakh, .adonaiMalakh, .magenAvot]
 }

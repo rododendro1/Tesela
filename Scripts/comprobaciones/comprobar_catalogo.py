@@ -33,9 +33,9 @@ TEXTO = {f: re.sub(r"//.*", "", f.read_text(encoding="utf-8")) for f in FICHEROS
 
 
 def cuerpo_de_lista(nombre):
-    """Texto entre corchetes de `public static let nombre: [TipoDeEscala] = [ … ]`."""
+    """Texto entre corchetes de `public` o `package static let nombre: [TipoDeEscala] = [ … ]`."""
     for texto in TEXTO.values():
-        m = re.search(r"public static let " + nombre + r"\b[^=\n]*=\s*\[", texto)
+        m = re.search(r"(?:public|package) static let " + nombre + r"\b[^=\n]*=\s*\[", texto)
         if m:
             i, nivel, j = m.end(), 1, m.end()
             while nivel:
@@ -48,7 +48,7 @@ def cuerpo_de_lista(nombre):
 definidas = {}
 listas = set()
 for f, texto in TEXTO.items():
-    for m in re.finditer(r"public static let (`?\w+`?)\s*(?::\s*\[TipoDeEscala\])?\s*=\s*(\[|TipoDeEscala\()", texto):
+    for m in re.finditer(r"(?:public|package) static let (`?\w+`?)\s*(?::\s*\[TipoDeEscala\])?\s*=\s*(\[|TipoDeEscala\()", texto):
         nombre = m.group(1).strip("`")
         if m.group(2) == "[":
             listas.add(nombre)

@@ -256,6 +256,15 @@ extension TextosDeTeoria {
         subtradicionGeorgia: "Georgia",
         subtradicionGagaku: "Gagaku",
         subtradicionRyukyu: "Ryūkyū",
+        fuenteArquitas: "Archita",
+        fuenteAristoxeno: "Aristosseno",
+        fuenteEratostenes: "Eratostene",
+        fuenteDidimo: "Didimo",
+        fuentePtolomeo: "Tolomeo",
+        fuenteAristides: "Aristide Quintiliano",
+        fuenteGuido: "Guido d'Arezzo",
+        fuenteGlareano: "Glareano",
+        fuenteSafiAlDin: "Ṣafī al-Dīn",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in "in " + tonalidad }

@@ -199,6 +199,17 @@ extension LineaDeComandosTests {
         // Una errata en la tradición o en la categoría propone la más parecida.
         #expect(resultado("tradiciones", "japn").error.contains("¿Querías decir «japon»?"))
         #expect(resultado("escalas", "--categoria", "maqm").error.contains("«maqam»"))
+        // `--fuente`: las escalas de un teórico, por su clave o por su nombre en español o en inglés.
+        let dePtolomeo = salida("escalas --fuente ptolomeo")
+        #expect(dePtolomeo.hasPrefix("Grecia antigua · tetracordo (7)\n"))
+        #expect(!dePtolomeo.contains("Habituales"))
+        #expect(salida("escalas --fuente Ptolomeo") == dePtolomeo)
+        #expect(salida("escalas --source ptolemy") == dePtolomeo)
+        #expect(salida("scales --source ptolemy --ingles").hasPrefix("Ancient Greece · tetrachord (7)\n"))
+        #expect(salida("escalas --fuente glareano --tradicion gregoriano").contains("ionicus"))
+        #expect(salida("escalas --fuente guido --categoria hexacordo").hasPrefix("Canto gregoriano · hexacordo (3)\n"))
+        #expect(resultado("escalas", "--fuente", "ptolomeu").error.contains("«ptolomeo»"))
+        #expect(resultado("escalas", "--fuente", "pitagoras").codigo == 2)
         #expect(resultado("tradiciones", "--foo").codigo == 2)
         // En JSON, las claves de --tradicion y --categoria y los números.
         let json = try #require(try json("tradiciones") as? [[String: Any]])

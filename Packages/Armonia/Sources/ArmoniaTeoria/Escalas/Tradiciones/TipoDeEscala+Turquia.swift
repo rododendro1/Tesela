@@ -306,7 +306,7 @@ extension TipoDeEscala {
 
     /// Los makamlar: los que el temperamento igual escribe sin cambiarles el carácter y los que solo se oyen bien
     /// con su versión microtonal (Uşşak, Hüseynî y Segâh).
-    public static let makamlar: [TipoDeEscala] = [
+    package static let makamlar: [TipoDeEscala] = [
         .rastMakami, .hicazMakami, .hicazkarMakami, .nihavendMakami, .kurdiMakami, .buselikMakami, .cargahMakami,
         .ussakMakami, .huseyniMakami, .segahMakami, .huzzamMakami, .sabaMakami, .karcigarMakami, .suzinakMakami,
         .nikrizMakami, .neveserMakami, .mahurMakami, .acemasiranMakami, .sultaniyegahMakami, .sedarabanMakami,
@@ -372,7 +372,7 @@ extension TipoDeEscala {
         nombre: "Hicaz beşlisi", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta],
         categoria: .cesni, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31])])
 
-    public static let cesniler: [TipoDeEscala] = [
+    package static let cesniler: [TipoDeEscala] = [
         .cargahDortlusu, .cargahBeslisi, .buselikDortlusu, .buselikBeslisi, .kurdiDortlusu, .kurdiBeslisi,
         .rastDortlusu, .rastBeslisi, .ussakDortlusu, .ussakBeslisi, .hicazDortlusu, .hicazBeslisi,
     ]

@@ -43,5 +43,5 @@ extension TipoDeEscala {
         // En cents: 182, 182, 327, 182 y 327.
         afinaciones: [.init(.razones, pasos: [0, 182, 364, 691, 873])])
 
-    public static let sudesteAsiaticas: [TipoDeEscala] = [.piphat, .pinpeat, .saung]
+    package static let sudesteAsiaticas: [TipoDeEscala] = [.piphat, .pinpeat, .saung]
 }

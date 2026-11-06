@@ -55,5 +55,5 @@ extension TipoDeEscala {
         categoria: .mugam, llevaLaCategoria: true)
 
     /// Los mugam de Hacıbəyov que se escriben en doce notas sin dudas.
-    public static let mugamlar: [TipoDeEscala] = [.rastMugami, .surMugami, .segahMugami, .cahargahMugami]
+    package static let mugamlar: [TipoDeEscala] = [.rastMugami, .surMugami, .segahMugami, .cahargahMugami]
 }

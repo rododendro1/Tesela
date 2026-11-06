@@ -98,9 +98,9 @@ extension TipoDeEscala {
         alias: ["laras degung", "pélog degung"],
         categoria: .laras, subtradicion: .sunda)
 
-    public static let indonesias: [TipoDeEscala] = [.pelog, .slendro, .degung]
+    package static let indonesias: [TipoDeEscala] = [.pelog, .slendro, .degung]
     /// Los pathet de Java y los modos de Bali.
-    public static let pathets: [TipoDeEscala] = [
+    package static let pathets: [TipoDeEscala] = [
         .pelogLima, .pelogNem, .pelogBarang, .slendroNem, .slendroSanga, .slendroManyura, .pelogTembung,
         .pelogSunaren,
     ]

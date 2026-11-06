@@ -24,5 +24,5 @@ extension TipoDeEscala {
         alias: ["Oán", "hơi Oán", "điệu Oán"],
         categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 375, 519, 704, 866])])
 
-    public static let vietnamitas: [TipoDeEscala] = [.bac, .vongCo]
+    package static let vietnamitas: [TipoDeEscala] = [.bac, .vongCo]
 }

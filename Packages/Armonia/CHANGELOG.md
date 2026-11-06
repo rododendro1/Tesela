@@ -2,6 +2,26 @@
 
 ## Sin publicar
 
+### Escalas: el teórico que definió cada una
+
+- `FuenteTeorica` (nuevo) es el autor de unas razones, de unas partes del tono, de unas especies o de un sistema:
+  Arquitas, Aristóxeno, Eratóstenes, Dídimo, Ptolomeo, Arístides Quintiliano, Guido d'Arezzo, Glareano y Ṣafī
+  al-Dīn, con su `tradicion` y su nombre en los quince idiomas.
+- `TipoDeEscala.fuente` la da (`TipoDeEscala.ionicus.fuente` es `.glareano`), y
+  `TipoDeEscala.tradicionales(fuente:)` da las escalas de cada una. Se escribe en la declaración de las 38 escalas
+  que son de un autor (`fuente: .ptolomeo`); las que no lo son, como las siete harmoniai, tienen `nil`.
+- `armonia escalas --fuente ptolomeo` (`--source ptolemy`) deja las escalas de un teórico.
+
+### Cambios incompatibles: las listas de escalas por tradición ya no son públicas
+
+- Las 37 listas de `TipoDeEscala` por tradición o autor (`melakartas`, `thaats`, `maqamat`, `modosGregorianos`,
+  `generosDeArquitasYPtolomeo`, `harmoniaiDeAristides`, `modosDeGlareano`, `hexacordos`…) pasan a `package`.
+  Lo mismo se consulta en `tradicionales(tradicion:)`, `tradicionales(categoria:)`,
+  `tradicionales(subtradicion:)` y `tradicionales(fuente:)`: `TipoDeEscala.melakartas` es
+  `tradicionales(categoria: .melakarta)`, y `TipoDeEscala.modosDeGlareano`, `tradicionales(fuente: .glareano)`.
+  Siguen públicas `tradicionales`, `tetracordosGriegos` y las de las harmoniai (`harmoniai`,
+  `harmoniaiCromaticas`, `harmoniaiEnarmonicas`), que agrupan por género y no tienen otra consulta.
+
 ### Nombres más claros en la API, con los de antes obsoletos
 
 Los nombres de antes siguen compilando, con un aviso, en `Obsoletos.swift` de `ArmoniaNucleo` y `ArmoniaTeoria`.

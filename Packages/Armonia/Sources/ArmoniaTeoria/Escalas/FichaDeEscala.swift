@@ -60,10 +60,13 @@ package struct FichaDeEscala: Sendable {
     /// ¿Lleva ya el nombre la palabra de su categoría («Rast makamı», «jins Rāst», «échos prótos», «P'yŏngjo»), o
     /// una que la sustituye («shadd ʿUshshāq»)? Entonces `nombreCompleto` no la antepone.
     package let llevaLaCategoria: Bool
+    /// El teórico que definió la escala (los géneros de Ptolomeo, los colores de Aristóxeno…); `nil` en las demás.
+    package let fuente: FuenteTeorica?
 
     package init(
         usos: [UsoDeEscala] = [], categoria: CategoriaTradicional? = nil, subtradicion: Subtradicion? = nil,
-        mela: Int? = nil, afinaciones: [Afinacion] = [], llevaLaCategoria: Bool = false
+        mela: Int? = nil, afinaciones: [Afinacion] = [], llevaLaCategoria: Bool = false,
+        fuente: FuenteTeorica? = nil
     ) {
         self.usos = UsoDeEscala.allCases.filter { usos.contains($0) }
         self.categoria = categoria
@@ -71,6 +74,7 @@ package struct FichaDeEscala: Sendable {
         self.mela = mela
         self.afinaciones = afinaciones
         self.llevaLaCategoria = llevaLaCategoria
+        self.fuente = fuente
     }
 
     /// La de un tipo que no es del catálogo (o que no tiene más datos).

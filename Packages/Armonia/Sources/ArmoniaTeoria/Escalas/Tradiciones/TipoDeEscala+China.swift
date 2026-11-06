@@ -57,5 +57,5 @@ extension TipoDeEscala {
         categoria: .diao)
 
     /// Los cinco modos pentatónicos y las tres escalas heptatónicas chinas.
-    public static let chinas: [TipoDeEscala] = [.gong, .shang, .jue, .zhi, .yu, .qingyue, .yayue, .yanyue]
+    package static let chinas: [TipoDeEscala] = [.gong, .shang, .jue, .zhi, .yu, .qingyue, .yayue, .yanyue]
 }

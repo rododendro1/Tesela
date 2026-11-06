@@ -257,6 +257,15 @@ extension TextosDeTeoria {
         subtradicionGeorgia: "Grúzia",
         subtradicionGagaku: "Gagaku",
         subtradicionRyukyu: "Rjúkjú",
+        fuenteArquitas: "Arkhütasz",
+        fuenteAristoxeno: "Arisztoxenosz",
+        fuenteEratostenes: "Eratoszthenész",
+        fuenteDidimo: "Didümosz",
+        fuentePtolomeo: "Ptolemaiosz",
+        fuenteAristides: "Ariszteidész Quintilianus",
+        fuenteGuido: "Arezzói Guido",
+        fuenteGlareano: "Glareanus",
+        fuenteSafiAlDin: "Szafí ad-Dín",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         // Con el inesivo: «C-dúrban», «a-mollban» (dúr y moll piden -ban).

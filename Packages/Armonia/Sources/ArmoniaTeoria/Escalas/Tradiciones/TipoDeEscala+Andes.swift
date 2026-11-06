@@ -16,5 +16,5 @@ extension TipoDeEscala {
         alias: ["tritónica"],
         categoria: .escala)
 
-    public static let andinas: [TipoDeEscala] = [.andina, .tritonicaAndina]
+    package static let andinas: [TipoDeEscala] = [.andina, .tritonicaAndina]
 }

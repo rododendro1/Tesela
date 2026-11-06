@@ -19,16 +19,16 @@ extension TipoDeEscala {
     public static let tetracordoDiatonico = TipoDeEscala(
         nombre: "tetracordo diatónico", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
         alias: ["tetracordo dorio", "diatónico tenso de Aristóxeno"],
-        categoria: .tetracordo)
+        categoria: .tetracordo, fuente: .aristoxeno)
     /// Mi Fa Sol♭ La: la lichanós baja medio tono.
     public static let tetracordoCromatico = TipoDeEscala(
         nombre: "tetracordo cromático", intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta],
         alias: ["cromático tónico", "chroma toniaion"],
-        categoria: .tetracordo)
+        categoria: .tetracordo, fuente: .aristoxeno)
     /// Mi Fa♭ Fa La: dos cuartos de tono y un dítono (Mi Fa𝄳 Fa La en su versión microtonal).
     public static let tetracordoEnarmonico = TipoDeEscala(
         nombre: "tetracordo enarmónico", intervalos: [.unisono, .segundaDisminuida, .segundaMenor, .cuartaJusta],
-        categoria: .tetracordo, afinaciones: [.init(.cuartosDeTono, pasos: [0, 1, 2, 10])])
+        categoria: .tetracordo, fuente: .aristoxeno, afinaciones: [.init(.cuartosDeTono, pasos: [0, 1, 2, 10])])
     /// De Si a Si (el locrio moderno).
     public static let harmoniaMixolidia = TipoDeEscala(
         nombre: "harmonía mixolidia",
@@ -110,12 +110,12 @@ extension TipoDeEscala {
     public static let tetracordoEnarmonicoDePtolomeo = TipoDeEscala(
         nombre: "tetracordo enarmónico de Ptolomeo",
         intervalos: [.unisono, .segundaDisminuida, .segundaMenor, .cuartaJusta],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 38, 112, 498])])
+        categoria: .tetracordo, fuente: .ptolomeo, afinaciones: [.init(.razones, pasos: [0, 38, 112, 498])])
     /// El cromático de Arquitas (28/27, 243/224, 32/27): Mi Fa Sol♭ La.
     public static let tetracordoCromaticoDeArquitas = TipoDeEscala(
         nombre: "tetracordo cromático de Arquitas",
         intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta],
-        categoria: .tetracordo,
+        categoria: .tetracordo, fuente: .arquitas,
         // Los géneros de Arquitas y de Ptolomeo, con sus razones en cents (Mi a 0, La a 498, la cuarta justa 4/3).
         afinaciones: [.init(.razones, pasos: [0, 63, 204, 498])])
     /// El diatónico de Arquitas (28/27, 8/7, 9/8), que Ptolomeo llama tónico: Mi Fa Sol La.
@@ -123,43 +123,43 @@ extension TipoDeEscala {
         nombre: "tetracordo diatónico de Arquitas",
         intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
         alias: ["tetracordo diatónico tónico"],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 63, 294, 498])])
+        categoria: .tetracordo, fuente: .arquitas, afinaciones: [.init(.razones, pasos: [0, 63, 294, 498])])
     /// El cromático blando de Ptolomeo (28/27, 15/14, 6/5): Mi Fa Sol♭ La.
     public static let tetracordoCromaticoBlando = TipoDeEscala(
         nombre: "tetracordo cromático blando",
         intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta],
         alias: ["cromático blando de Ptolomeo"],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 63, 182, 498])])
+        categoria: .tetracordo, fuente: .ptolomeo, afinaciones: [.init(.razones, pasos: [0, 63, 182, 498])])
     /// El cromático tenso de Ptolomeo (22/21, 12/11, 7/6): Mi Fa Sol♭ La.
     public static let tetracordoCromaticoTenso = TipoDeEscala(
         nombre: "tetracordo cromático tenso",
         intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta],
         alias: ["cromático tenso de Ptolomeo", "tetracordo cromático sintónico"],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 81, 231, 498])])
+        categoria: .tetracordo, fuente: .ptolomeo, afinaciones: [.init(.razones, pasos: [0, 81, 231, 498])])
     /// El diatónico blando de Ptolomeo (21/20, 10/9, 8/7): Mi Fa Sol La.
     public static let tetracordoDiatonicoBlando = TipoDeEscala(
         nombre: "tetracordo diatónico blando",
         intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
         alias: ["diatónico blando de Ptolomeo"],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 84, 267, 498])])
+        categoria: .tetracordo, fuente: .ptolomeo, afinaciones: [.init(.razones, pasos: [0, 84, 267, 498])])
     /// El diatónico ditónico de Ptolomeo (256/243, 9/8, 9/8), el pitagórico: Mi Fa Sol La.
     public static let tetracordoDiatonicoDitonico = TipoDeEscala(
         nombre: "tetracordo diatónico ditónico",
         intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
         alias: ["tetracordo pitagórico", "diatónico ditónico de Ptolomeo"],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 90, 294, 498])])
+        categoria: .tetracordo, fuente: .ptolomeo, afinaciones: [.init(.razones, pasos: [0, 90, 294, 498])])
     /// El diatónico tenso de Ptolomeo (16/15, 9/8, 10/9), el de la entonación justa: Mi Fa Sol La.
     public static let tetracordoDiatonicoTenso = TipoDeEscala(
         nombre: "tetracordo diatónico tenso",
         intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
         alias: ["diatónico tenso de Ptolomeo", "tetracordo diatónico sintónico"],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 112, 316, 498])])
+        categoria: .tetracordo, fuente: .ptolomeo, afinaciones: [.init(.razones, pasos: [0, 112, 316, 498])])
     /// El diatónico igual de Ptolomeo (12/11, 11/10, 10/9): Mi Fa♯ Sol La, con la segunda neutra a 151 cents.
     public static let tetracordoDiatonicoIgual = TipoDeEscala(
         nombre: "tetracordo diatónico igual",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta],
         alias: ["diatónico igual de Ptolomeo", "tetracordo diatónico homalón"],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 151, 316, 498])])
+        categoria: .tetracordo, fuente: .ptolomeo, afinaciones: [.init(.razones, pasos: [0, 151, 316, 498])])
 
     /// Los tres tetracordos de Aristóxeno.
     public static let tetracordosGriegos: [TipoDeEscala] = [
@@ -173,13 +173,13 @@ extension TipoDeEscala {
 
     /// Los géneros de Arquitas y de Ptolomeo, en el orden de las Harmónicas: los de Arquitas y después los de
     /// Ptolomeo, del enarmónico al diatónico.
-    public static let generosDeArquitasYPtolomeo: [TipoDeEscala] = [
+    package static let generosDeArquitasYPtolomeo: [TipoDeEscala] = [
         .tetracordoCromaticoDeArquitas, .tetracordoDiatonicoDeArquitas, .tetracordoEnarmonicoDePtolomeo,
         .tetracordoCromaticoBlando, .tetracordoCromaticoTenso, .tetracordoDiatonicoBlando,
         .tetracordoDiatonicoDitonico, .tetracordoDiatonicoTenso, .tetracordoDiatonicoIgual,
     ]
 
-    public static let griegasAntiguas: [TipoDeEscala] = tetracordosGriegos + generosDeArquitasYPtolomeo + harmoniai
+    package static let griegasAntiguas: [TipoDeEscala] = tetracordosGriegos + generosDeArquitasYPtolomeo + harmoniai
 
     // MARK: Más géneros: el enarmónico de Arquitas, Dídimo y Eratóstenes
     //
@@ -192,37 +192,37 @@ extension TipoDeEscala {
     public static let tetracordoEnarmonicoDeArquitas = TipoDeEscala(
         nombre: "tetracordo enarmónico de Arquitas",
         intervalos: [.unisono, .unisonoAumentado, .segundaMenor, .cuartaJusta],
-        categoria: .tetracordo,
+        categoria: .tetracordo, fuente: .arquitas,
         // El enarmónico de Arquitas y los géneros de Dídimo y de Eratóstenes, en cents.
         afinaciones: [.init(.razones, pasos: [0, 63, 112, 498])])
     /// El cromático de Dídimo (16/15, 25/24, 6/5): Mi Fa Sol♭ La.
     public static let tetracordoCromaticoDeDidimo = TipoDeEscala(
         nombre: "tetracordo cromático de Dídimo",
         intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 112, 182, 498])])
+        categoria: .tetracordo, fuente: .didimo, afinaciones: [.init(.razones, pasos: [0, 112, 182, 498])])
     /// El diatónico de Dídimo (16/15, 10/9, 9/8): Mi Fa Sol La.
     public static let tetracordoDiatonicoDeDidimo = TipoDeEscala(
         nombre: "tetracordo diatónico de Dídimo",
         intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 112, 294, 498])])
+        categoria: .tetracordo, fuente: .didimo, afinaciones: [.init(.razones, pasos: [0, 112, 294, 498])])
     /// El enarmónico de Dídimo (32/31, 31/30, 5/4): Mi Mi♯ Fa La.
     public static let tetracordoEnarmonicoDeDidimo = TipoDeEscala(
         nombre: "tetracordo enarmónico de Dídimo",
         intervalos: [.unisono, .unisonoAumentado, .segundaMenor, .cuartaJusta],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 55, 112, 498])])
+        categoria: .tetracordo, fuente: .didimo, afinaciones: [.init(.razones, pasos: [0, 55, 112, 498])])
     /// El cromático de Eratóstenes (20/19, 19/18, 6/5): Mi Fa Sol♭ La.
     public static let tetracordoCromaticoDeEratostenes = TipoDeEscala(
         nombre: "tetracordo cromático de Eratóstenes",
         intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 89, 182, 498])])
+        categoria: .tetracordo, fuente: .eratostenes, afinaciones: [.init(.razones, pasos: [0, 89, 182, 498])])
     /// El enarmónico de Eratóstenes (40/39, 39/38, 19/15): Mi Fa♭ Fa La.
     public static let tetracordoEnarmonicoDeEratostenes = TipoDeEscala(
         nombre: "tetracordo enarmónico de Eratóstenes",
         intervalos: [.unisono, .segundaDisminuida, .segundaMenor, .cuartaJusta],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 44, 89, 498])])
+        categoria: .tetracordo, fuente: .eratostenes, afinaciones: [.init(.razones, pasos: [0, 44, 89, 498])])
 
     /// El enarmónico de Arquitas y los géneros de Dídimo y de Eratóstenes.
-    public static let generosDeDidimoYEratostenes: [TipoDeEscala] = [
+    package static let generosDeDidimoYEratostenes: [TipoDeEscala] = [
         .tetracordoEnarmonicoDeArquitas, .tetracordoCromaticoDeDidimo, .tetracordoDiatonicoDeDidimo,
         .tetracordoEnarmonicoDeDidimo, .tetracordoCromaticoDeEratostenes, .tetracordoEnarmonicoDeEratostenes,
     ]
@@ -240,7 +240,7 @@ extension TipoDeEscala {
         nombre: "tetracordo cromático blando de Aristóxeno",
         intervalos: [.unisono, .unisonoAumentado, .segundaMenor, .cuartaJusta],
         alias: ["cromático blando de Aristóxeno", "chroma malakon"],
-        categoria: .tetracordo,
+        categoria: .tetracordo, fuente: .aristoxeno,
         // Los colores de Aristóxeno, en doceavos de tono de 16⅔ cents (la cuarta, de 500).
         afinaciones: [.init(.razones, pasos: [0, 67, 133, 500])])
     /// El cromático hemiólico de Aristóxeno (4½ + 4½ + 21 doceavos de tono): Mi Fa Sol♭ La, a 75 y 150 cents.
@@ -248,17 +248,17 @@ extension TipoDeEscala {
         nombre: "tetracordo cromático hemiólico",
         intervalos: [.unisono, .segundaMenor, .terceraDisminuida, .cuartaJusta],
         alias: ["cromático hemiólico", "chroma hemiolion"],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 75, 150, 500])])
+        categoria: .tetracordo, fuente: .aristoxeno, afinaciones: [.init(.razones, pasos: [0, 75, 150, 500])])
     /// El diatónico blando de Aristóxeno (6 + 9 + 15 doceavos de tono): Mi Fa Sol La, a 100 y 250 cents.
     public static let tetracordoDiatonicoBlandoDeAristoxeno = TipoDeEscala(
         nombre: "tetracordo diatónico blando de Aristóxeno",
         intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
         alias: ["diatónico blando de Aristóxeno", "diatonon malakon"],
-        categoria: .tetracordo, afinaciones: [.init(.razones, pasos: [0, 100, 250, 500])])
+        categoria: .tetracordo, fuente: .aristoxeno, afinaciones: [.init(.razones, pasos: [0, 100, 250, 500])])
 
     /// Los colores de Aristóxeno que no son ya sus tres tetracordos: el cromático blando, el hemiólico y el diatónico
     /// blando.
-    public static let coloresDeAristoxeno: [TipoDeEscala] = [
+    package static let coloresDeAristoxeno: [TipoDeEscala] = [
         .tetracordoCromaticoBlandoDeAristoxeno, .tetracordoCromaticoHemiolico, .tetracordoDiatonicoBlandoDeAristoxeno,
     ]
 
@@ -396,7 +396,8 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaDisminuida, .sextaMenor, .septimaMayor,
         ],
-        categoria: .harmonia, afinaciones: [.init(.cuartosDeTono, pasos: [0, 1, 9, 13, 14, 15, 23])])
+        categoria: .harmonia, fuente: .aristides,
+        afinaciones: [.init(.cuartosDeTono, pasos: [0, 1, 9, 13, 14, 15, 23])])
     /// En tonos: 1, ¼, ¼, 2, 1, ¼, ¼ y 2. Abarca una novena: el tono de arriba no cabe en la octava.
     public static let harmoniaDoriaDeAristides = TipoDeEscala(
         nombre: "harmonía doria de Arístides",
@@ -404,7 +405,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraDisminuida, .terceraMenor,
             .quintaJusta, .sextaMayor, .septimaDisminuida, .septimaMenor,
         ],
-        categoria: .harmonia, afinaciones: [.init(.cuartosDeTono, pasos: [0, 4, 5, 6, 14, 18, 19, 20])])
+        categoria: .harmonia, fuente: .aristides,
+        afinaciones: [.init(.cuartosDeTono, pasos: [0, 4, 5, 6, 14, 18, 19, 20])])
     /// En tonos: 1, ¼, ¼, 2, 1, ¼, ¼ y 1: en una octava, las notas de la doria.
     public static let harmoniaFrigiaDeAristides = TipoDeEscala(
         nombre: "harmonía frigia de Arístides",
@@ -412,13 +414,14 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraDisminuida, .terceraMenor,
             .quintaJusta, .sextaMayor, .septimaDisminuida, .septimaMenor,
         ],
-        categoria: .harmonia, afinaciones: [.init(.cuartosDeTono, pasos: [0, 4, 5, 6, 14, 18, 19, 20])])
+        categoria: .harmonia, fuente: .aristides,
+        afinaciones: [.init(.cuartosDeTono, pasos: [0, 4, 5, 6, 14, 18, 19, 20])])
     /// En tonos: ¼, ¼, 2, 1½ y 1. No llega a la octava.
     public static let harmoniaIastiaDeAristides = TipoDeEscala(
         nombre: "harmonía iastia de Arístides",
         intervalos: [.unisono, .segundaDisminuida, .segundaMenor, .cuartaJusta, .sextaMenor, .septimaMenor],
         alias: ["harmonía jonia de Arístides"],
-        categoria: .harmonia, afinaciones: [.init(.cuartosDeTono, pasos: [0, 1, 2, 10, 16, 20])])
+        categoria: .harmonia, fuente: .aristides, afinaciones: [.init(.cuartosDeTono, pasos: [0, 1, 2, 10, 16, 20])])
     /// En tonos: ¼, ¼, 1, 1, ¼, ¼ y 3.
     public static let harmoniaMixolidiaDeAristides = TipoDeEscala(
         nombre: "harmonía mixolidia de Arístides",
@@ -426,14 +429,14 @@ extension TipoDeEscala {
             .unisono, .segundaDisminuida, .segundaMenor, .terceraMenor,
             .cuartaJusta, .cuartaAumentada, .quintaDisminuida,
         ],
-        categoria: .harmonia, afinaciones: [.init(.cuartosDeTono, pasos: [0, 1, 2, 6, 10, 11, 12])])
+        categoria: .harmonia, fuente: .aristides, afinaciones: [.init(.cuartosDeTono, pasos: [0, 1, 2, 6, 10, 11, 12])])
     /// En tonos: ¼, ¼, 2 y 1½: abarca una sexta menor.
     public static let harmoniaSintonolidiaDeAristides = TipoDeEscala(
         nombre: "harmonía sintonolidia de Arístides",
         intervalos: [.unisono, .segundaDisminuida, .segundaMenor, .cuartaJusta, .sextaMenor],
-        categoria: .harmonia, afinaciones: [.init(.cuartosDeTono, pasos: [0, 1, 2, 10, 16])])
+        categoria: .harmonia, fuente: .aristides, afinaciones: [.init(.cuartosDeTono, pasos: [0, 1, 2, 10, 16])])
     /// Las seis harmoniai de Arístides Quintiliano.
-    public static let harmoniaiDeAristides: [TipoDeEscala] = [
+    package static let harmoniaiDeAristides: [TipoDeEscala] = [
         .harmoniaLidiaDeAristides, .harmoniaDoriaDeAristides, .harmoniaFrigiaDeAristides, .harmoniaIastiaDeAristides,
         .harmoniaMixolidiaDeAristides, .harmoniaSintonolidiaDeAristides,
     ]

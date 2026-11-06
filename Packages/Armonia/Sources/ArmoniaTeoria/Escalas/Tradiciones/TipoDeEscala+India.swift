@@ -64,7 +64,7 @@ extension TipoDeEscala {
     /// en los 36 primeros, aumentada en los 36 últimos) y una de las seis parejas Ri–Ga y Dha–Ni.
     /// Ri3 se escribe como 2ª aumentada, Ga1 como 3ª disminuida, Dha3 como 6ª aumentada y Ni1
     /// como 7ª disminuida, que es como los nombra la tradición.
-    public static let melakartas: [TipoDeEscala] = {
+    package static let melakartas: [TipoDeEscala] = {
         let riGa: [(Intervalo, Intervalo)] = [
             (.segundaMenor, .terceraDisminuida), (.segundaMenor, .terceraMenor), (.segundaMenor, .terceraMayor),
             (.segundaMayor, .terceraMenor), (.segundaMayor, .terceraMayor), (.segundaAumentada, .terceraMayor),
@@ -252,7 +252,7 @@ extension TipoDeEscala {
         categoria: .janya, mela: 60)
 
     /// Rāgas janya incluidos.
-    public static let janyas: [TipoDeEscala] = [
+    package static let janyas: [TipoDeEscala] = [
         .mohanam, .hindolam, .hamsadhvani, .abhogi, .madhyamavati, .bilahari, .kambhoji, .arabhi, .kedaragaula,
         .revati, .amrtavarsini, .mohanakalyani, .saveri, .nata, .suddhaSaveri, .suddhaDhanyasi, .sriranjani,
         .malayamarutam, .gambhiranata, .hamsanadam,
@@ -335,7 +335,7 @@ extension TipoDeEscala {
         categoria: .thaat, afinaciones: [.init(.sruti, pasos: [0, 1, 5, 11, 13, 14, 21])])
 
     /// Los diez thāṭ de Bhatkhande.
-    public static let thaats: [TipoDeEscala] = [
+    package static let thaats: [TipoDeEscala] = [
         .bilaval, .kalyan, .khamaj, .kafi, .asavari, .bhairavi, .bhairav, .marva, .purvi, .todi,
     ]
 
@@ -452,7 +452,7 @@ extension TipoDeEscala {
         categoria: .raga)
 
     /// Rāgas indostánicos incluidos.
-    public static let ragasIndostanicos: [TipoDeEscala] = [
+    package static let ragasIndostanicos: [TipoDeEscala] = [
         .bhupali, .malkauns, .durga, .yaman, .bagesri, .des, .sivaranjani, .kalavati, .candrakauns, .megh, .lalit,
         .bhimpalasi, .bihag, .darbariKanada, .puriyaDhanasri,
     ]
@@ -583,9 +583,9 @@ extension TipoDeEscala {
         categoria: .murchana, afinaciones: [.init(.sruti, pasos: [0, 4, 6, 10, 13, 15, 19])])
 
     /// Los dos grāma.
-    public static let gramas: [TipoDeEscala] = [.sadjaGrama, .madhyamaGrama]
+    package static let gramas: [TipoDeEscala] = [.sadjaGrama, .madhyamaGrama]
     /// Las catorce mūrchanā, en el orden del Nāṭyaśāstra: las siete del ṣaḍja-grāma y las siete del madhyama-grāma.
-    public static let murchanas: [TipoDeEscala] = [
+    package static let murchanas: [TipoDeEscala] = [
         .uttaramandra, .rajani, .uttarayata, .suddhasadja, .matsarikrta, .asvakranta, .abhirudgata,
         .sauviri, .harinasva, .kalopanata, .suddhamadhya, .margi, .pauravi, .hrsyaka,
     ]

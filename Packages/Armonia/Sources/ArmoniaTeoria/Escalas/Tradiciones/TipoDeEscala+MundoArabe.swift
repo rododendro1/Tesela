@@ -228,7 +228,7 @@ extension TipoDeEscala {
         variantes: ["صبا زمزم"],
         categoria: .maqam)
 
-    public static let maqamat: [TipoDeEscala] = [
+    package static let maqamat: [TipoDeEscala] = [
         .hiyaz, .nahawand, .kurd, .ajam, .hiyazkar, .nawaAthar, .maqamRast, .bayati, .saba, .suznak, .husayni,
         .nayruz, .sikah, .huzam, .iraq, .rahatAlArwah, .bayatiShuri, .jiharkah, .atharKurd, .maqamNikriz, .lami,
         .sabaZamzam,
@@ -290,7 +290,7 @@ extension TipoDeEscala {
         variantes: ["جنس نكريز"],
         categoria: .jins, llevaLaCategoria: true)
 
-    public static let ajnas: [TipoDeEscala] = [
+    package static let ajnas: [TipoDeEscala] = [
         .jinsRast, .jinsBayati, .jinsSaba, .jinsSikah, .jinsHijaz, .jinsKurd, .jinsNahawand, .jinsAjam, .jinsNikriz,
     ]
 
@@ -311,7 +311,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["ʿUshshāq de Ṣafī al-Dīn"],
-        categoria: .maqam, llevaLaCategoria: true,
+        categoria: .maqam, llevaLaCategoria: true, fuente: .safiAlDin,
         // Los shudūd de Ṣafī al-Dīn, en cents de sus razones pitagóricas.
         afinaciones: [.init(.razones, pasos: [0, 204, 408, 498, 702, 906, 996])])
     /// شد نوى (Do Re Mi♭ Fa Sol La♭ Si♭, pitagórico): tono, limma, tono, tono, limma, tono y tono.
@@ -322,7 +322,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["Nawā de Ṣafī al-Dīn"],
-        categoria: .maqam, llevaLaCategoria: true,
+        categoria: .maqam, llevaLaCategoria: true, fuente: .safiAlDin,
         afinaciones: [.init(.razones, pasos: [0, 204, 294, 498, 702, 792, 996])])
     /// شد أبو سليك (Do Re♭ Mi♭ Fa Sol♭ La♭ Si♭, pitagórico): limma, tono, tono, limma, tono, tono y tono.
     public static let shaddAbuSalik = TipoDeEscala(
@@ -332,7 +332,7 @@ extension TipoDeEscala {
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
         alias: ["Abū Salīk de Ṣafī al-Dīn"], variantes: ["shadd Būsalīk"],
-        categoria: .maqam, llevaLaCategoria: true,
+        categoria: .maqam, llevaLaCategoria: true, fuente: .safiAlDin,
         afinaciones: [.init(.razones, pasos: [0, 90, 294, 498, 588, 792, 996])])
     /// شد راست (Do Re Mi Fa Sol La Si♭, con el Mi y el La neutros): tono, dos limmas, limma y coma, tono, dos limmas,
     /// limma y coma, y tono.
@@ -343,9 +343,9 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["Rāst de Ṣafī al-Dīn"],
-        categoria: .maqam, llevaLaCategoria: true,
+        categoria: .maqam, llevaLaCategoria: true, fuente: .safiAlDin,
         afinaciones: [.init(.razones, pasos: [0, 204, 384, 498, 702, 882, 996])])
 
     /// Los cuatro shudūd de Ṣafī al-Dīn que están: ʿUshshāq, Nawā, Abū Salīk y Rāst.
-    public static let adwar: [TipoDeEscala] = [.shaddUshshaq, .shaddNawa, .shaddAbuSalik, .shaddRast]
+    package static let adwar: [TipoDeEscala] = [.shaddUshshaq, .shaddNawa, .shaddAbuSalik, .shaddRast]
 }

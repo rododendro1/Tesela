@@ -9,7 +9,7 @@ import ArmoniaNucleo
 /// Cada caso sabe de qué tradición es (`tradicion`). Una escala la lleva en su declaración (`subtradicion: .bali`),
 /// salvo las de la India, a las que se la da su categoría (`Subtradicion.de(_:)`). Las que no tienen una clara (el
 /// sléndro, que se toca en Java y en Bali, o las escalas chinas) no la llevan, y los teóricos (Aristóxeno, Ptolomeo,
-/// Glareano) no son subtradiciones: son la `fuente` de una afinación.
+/// Glareano) no son subtradiciones: son la `fuente` de la escala (`FuenteTeorica`).
 public enum Subtradicion: String, Sendable, Codable, CaseIterable {
     /// India: la música carnática (del sur), la indostánica (del norte) y la del Nāṭyaśāstra (grāma y mūrchanā).
     case carnatica, indostanica, indiaAntigua

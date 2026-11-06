@@ -70,7 +70,7 @@ extension TipoDeEscala {
         categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 204, 408, 612, 702, 906, 1110])])
 
     /// Las siete, en el orden de UET VII 74: cada una baja un semitono una nota de la anterior.
-    public static let mesopotamicas: [TipoDeEscala] = [
+    package static let mesopotamicas: [TipoDeEscala] = [
         .isartu, .kitmu, .embubu, .pitu, .nidQabli, .nisTuhri, .qablitu,
     ]
 }
