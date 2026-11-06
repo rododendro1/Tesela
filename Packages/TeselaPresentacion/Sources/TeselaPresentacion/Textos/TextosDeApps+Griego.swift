@@ -218,6 +218,12 @@ extension TextosDeApps {
         modulacionPorDisminuida: "εναρμόνια ελαττωμένη έβδομη",
         modulacionDirecta: "άμεση",
         conduccionDeVoces: "Οδήγηση φωνών",
+        armadura: "Οπλισμός",
+        sinAlteraciones: "χωρίς αλλοιώσεις",
+        relativa: "Σχετική",
+        homonima: "Ομώνυμη",
+        cadenciasTipicas: "Τυπικές πτώσεις",
+        cambianAcordes: { "Αλλάζουν \($0) από \($1) συγχορδίες" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Εντάσεις",
         notasAEvitar: "Προς αποφυγή",

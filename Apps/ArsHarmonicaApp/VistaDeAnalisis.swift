@@ -25,6 +25,8 @@ struct VistaDeAnalisis: View {
     @State private var enlazados = false
     /// La disposición de la progresión dispuesta (drop 2, shell…).
     @State private var disposicion = DisposicionDeAcorde.drop2
+    /// Otra versión de la progresión (rearmonizada…), para compararlas acorde a acorde.
+    @State private var contra = ""
     /// Lo que está sonando, para resaltar el acorde que se oye.
     @ObservedObject private var reproductor = Reproductor.compartido
 
@@ -85,6 +87,7 @@ struct VistaDeAnalisis: View {
                 lineasDeNotasGuia(analisis)
                 modulaciones(analisis)
                 doceTonalidades(analisis)
+                comparar(analisis)
                 arpegiar(analisis)
                 disponer(analisis)
                 rearmonizar(analisis)
@@ -148,6 +151,17 @@ struct VistaDeAnalisis: View {
             let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.enLasDoceTonalidades)
             todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
         }
+        if let tonalidad = analisis.tonalidad {
+            let svg = PresentacionDeTonalidad.hojaDeEstudio(de: tonalidad, notacion: notacion)
+            let nombre = notacion.texto(\.hojaDeEstudio) + " · " + tonalidad.nombre(en: notacion)
+            todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
+        }
+        if let svg = PresentacionDeAnalisis.hojaDeLaComparacion(
+            analisis.acordes, con: otraVersion, en: analisis.tonalidad, disposicion: disposicion, notacion: notacion)
+        {
+            let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.compararCon)
+            todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
+        }
         todos += arpegiada?.ficheros ?? []
         todos += dispuesta?.ficheros ?? []
         return todos + guias
@@ -180,6 +194,51 @@ struct VistaDeAnalisis: View {
                     }
                     .buttonStyle(.borderless)
                 }
+            }
+        }
+    }
+
+    /// Los acordes de la otra versión que se pueden leer.
+    private var otraVersion: [Acorde] {
+        contra.split(separator: " ").compactMap { try? Acorde(leyendo: String($0)) }
+    }
+
+    /// La progresión comparada con otra versión, acorde a acorde: lo que cambia, sus grados y las notas comunes,
+    /// para escuchar las dos seguidas; la hoja de la comparación se exporta con la barra.
+    @ViewBuilder
+    private func comparar(_ analisis: AnalisisPresentado) -> some View {
+        Section(notacion.texto(\.compararCon)) {
+            TextField(notacion.texto(\.campoDeProgresion), text: $contra)
+                .comoCampoDeCifrado()
+            if let comparacion = PresentacionDeAnalisis.comparar(
+                analisis.acordes, con: otraVersion, en: analisis.tonalidad, notacion: notacion)
+            {
+                HStack {
+                    Text(comparacion.resumen).bold()
+                    Spacer()
+                    BotonDeEscuchar(comparacion.sonido).labelStyle(.iconOnly)
+                }
+                .buttonStyle(.borderless)
+                ForEach(comparacion.filas, id: \.posicion) { fila in
+                    filaDeLaComparacion(fila)
+                }
+            }
+        }
+    }
+
+    private func filaDeLaComparacion(_ fila: ComparacionDeProgresiones.Fila) -> some View {
+        let acordes = fila.cambia ? fila.original + " → " + fila.nueva : fila.original
+        return VStack(alignment: .leading, spacing: 2) {
+            HStack {
+                Text(acordes)
+                    .font(.system(.body, design: .monospaced))
+                    .fontWeight(fila.cambia ? .bold : .regular)
+                    .foregroundColor(fila.cambia ? .red : nil)
+                Spacer()
+                Text(fila.grados).foregroundColor(.secondary)
+            }
+            if !fila.comunes.isEmpty {
+                Text(fila.comunes).font(.footnote).foregroundColor(.secondary)
             }
         }
     }

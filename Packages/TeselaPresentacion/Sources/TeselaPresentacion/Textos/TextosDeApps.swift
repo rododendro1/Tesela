@@ -235,6 +235,14 @@ public struct TextosDeApps: TextosTraducidos {
     public let modulacionDirecta: String
     /// Cómo va cada voz de un acorde al siguiente en una progresión.
     public let conduccionDeVoces: String
+    /// La hoja de una tonalidad.
+    public let armadura: String
+    public let sinAlteraciones: String
+    public let relativa: String
+    public let homonima: String
+    public let cadenciasTipicas: String
+    /// Dos progresiones comparadas: «Cambian 2 de 4 acordes».
+    public let cambianAcordes: @Sendable (Int, Int) -> String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String

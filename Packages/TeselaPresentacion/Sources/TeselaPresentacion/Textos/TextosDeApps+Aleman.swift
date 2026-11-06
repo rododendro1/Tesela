@@ -218,6 +218,12 @@ extension TextosDeApps {
         modulacionPorDisminuida: "enharmonischer verminderter Septakkord",
         modulacionDirecta: "direkt",
         conduccionDeVoces: "Stimmführung",
+        armadura: "Vorzeichen",
+        sinAlteraciones: "keine Vorzeichen",
+        relativa: "Paralleltonart",
+        homonima: "Varianttonart",
+        cadenciasTipicas: "Typische Kadenzen",
+        cambianAcordes: { "\($0) von \($1) Akkorden ändern sich" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Spannungstöne",
         notasAEvitar: "Avoid-Töne",

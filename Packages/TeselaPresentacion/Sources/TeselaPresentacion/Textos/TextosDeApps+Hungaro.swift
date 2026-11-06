@@ -218,6 +218,12 @@ extension TextosDeApps {
         modulacionPorDisminuida: "enharmonikus szűkített szeptim",
         modulacionDirecta: "közvetlen",
         conduccionDeVoces: "Szólamvezetés",
+        armadura: "Előjegyzés",
+        sinAlteraciones: "nincs előjegyzés",
+        relativa: "Párhuzamos",
+        homonima: "Azonos alaphangú",
+        cadenciasTipicas: "Jellegzetes zárlatok",
+        cambianAcordes: { "\($1) akkordból \($0) változik" },
         // PresentacionDeEscalaYAcorde.swift
         tensiones: "Feszültségek",
         notasAEvitar: "Kerülendő",
