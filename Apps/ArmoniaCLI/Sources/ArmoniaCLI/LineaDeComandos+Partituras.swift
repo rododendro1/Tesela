@@ -17,12 +17,12 @@ extension LineaDeComandos {
         }
         // Los argumentos hasta la primera opción son la música; cada opción toma lo que la sigue.
         // `--program` es `--programa` en inglés (solo en MIDI); `--patrón` y `--pattern` son `--patron`, y `--file`
-        // y `--window`, `--archivo` y `--ventana`. `--en`, `--in` y `--key` son `--tonalidad`, como en las demás órdenes.
+        // y `--window`, `--archivo` y `--ventana`, y `--in`, `--en`.
         var entrada = Argumentos(Array(argumentos.dropFirst()))
         let alias: [(String, String)] =
             (formato == .midi ? [("program", "programa")] : [])
             + [("patrón", "patron"), ("pattern", "patron"), ("file", "archivo"), ("window", "ventana")]
-            + [("en", "tonalidad"), ("in", "tonalidad"), ("key", "tonalidad")]
+            + [("in", "en")]
         // `--enlazar`: cada arpegio empieza cerca de donde acabó el anterior.
         let enlazados = entrada.quitarMarca(.enlazar)
         let (opciones, marcas) = entrada.quitarOpcionesConTexto(
@@ -31,11 +31,11 @@ extension LineaDeComandos {
         let conocidas: Set =
             formato == .midi
             ? [
-                "compas", "anacrusa", "tonalidad", "tempo", "titulo", "duracion", "programa", "patron", "figura",
+                "compas", "anacrusa", "en", "tempo", "titulo", "duracion", "programa", "patron", "figura",
                 "archivo", "ventana",
             ]
             : [
-                "compas", "anacrusa", "tonalidad", "clave", "tempo", "titulo", "duracion", "patron", "figura",
+                "compas", "anacrusa", "en", "clave", "tempo", "titulo", "duracion", "patron", "figura",
                 "archivo", "ventana",
             ]
         if let desconocida = opciones.keys.sorted().first(where: { !conocidas.contains($0) }) {
@@ -53,7 +53,7 @@ extension LineaDeComandos {
             throw ErrorDeUso.faltaValor(vacia)
         }
         var compas = try opciones["compas"].map { try Compas(leyendo: $0) } ?? .compasillo
-        let tonalidad = try opciones["tonalidad"].map { try Tonalidad(leyendo: $0) }
+        let tonalidad = try opciones["en"].map { try Tonalidad(leyendoEnLaOrden: $0) }
         var tempo: Tempo?
         if let texto = opciones["tempo"] {
             let partes = texto.split(separator: " ").map(String.init)
@@ -202,7 +202,7 @@ extension LineaDeComandos {
                 guard let leida = leerClave(texto) else { throw ErrorDeUso.claveDesconocida(texto) }
                 clave = leida
             }
-            let escala = try Escala(leyendo: musica.joined(separator: " "))
+            let escala = try Escala(leyendoEnLaOrden: musica.joined(separator: " "))
             let duracion = try opciones["duracion"].map { try Duracion(leyendo: $0) } ?? .negra
             var voz = escala.voz(duracion: duracion)
             voz.compas = compas

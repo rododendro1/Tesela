@@ -18,14 +18,14 @@ extension LineaDeComandos {
         let modulaciones = argumentos.quitarOpcionConPalabras(.modulaciones)
         if let opcion = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaTonalidad }
-        let tonalidad = try Tonalidad(leyendo: argumentos.unidos)
+        let tonalidad = try Tonalidad(leyendoEnLaOrden: argumentos.unidos)
         var lineas = [describir(tonalidad: tonalidad, notacion)]
         // `--modulaciones [Sol mayor]`: a los tonos vecinos o, si se da, a esa tonalidad de todas las maneras.
         var destino: Tonalidad?
         switch modulaciones {
         case .ausente: return bien(lineas[0])
         case .sinValor: destino = nil
-        case .valor(let texto): destino = try Tonalidad(leyendo: texto)
+        case .valor(let texto): destino = try Tonalidad(leyendoEnLaOrden: texto)
         }
         lineas.append(notacion.texto(\.modulaciones) + ":")
         lineas += PresentacionDeModulaciones.modulaciones(desde: tonalidad, hasta: destino, en: notacion).map {
@@ -57,8 +57,10 @@ extension LineaDeComandos {
     /// El intervalo de una nota a otra: entre las alturas si las dos llevan octava (Do4 Mi5 es una décima), y si no,
     /// el ascendente entre las notas.
     static func intervalo(_ a: String, _ b: String) throws -> Intervalo {
-        if let grave = try? Altura(leyendo: a), let aguda = try? Altura(leyendo: b) { return aguda - grave }
-        return try Nota(leyendo: a).intervalo(hasta: try Nota(leyendo: b))
+        if let grave = try? Altura(leyendoEnLaOrden: a), let aguda = try? Altura(leyendoEnLaOrden: b) {
+            return aguda - grave
+        }
+        return try Nota(leyendoEnLaOrden: a).intervalo(hasta: try Nota(leyendoEnLaOrden: b))
     }
 
     static func describir(tonalidad: Tonalidad, _ notacion: Notacion) -> String {
@@ -162,9 +164,9 @@ extension LineaDeComandos {
                 lineas.append("  " + acorde.cifrado(en: notacion) + ": " + compas)
             }
         }
-        // Con --comparar (o --contra, como antes), la otra versión acorde a acorde: lo que cambia, sus grados y sus notas comunes.
+        // Con --comparar, la otra versión acorde a acorde: lo que cambia, sus grados y sus notas comunes.
         if let contra {
-            let otra = try contra.split(separator: " ").map { try Acorde(leyendo: String($0)) }
+            let otra = try contra.split(separator: " ").map { try Acorde(leyendoEnLaOrden: String($0)) }
             if let comparacion = PresentacionDeAnalisis.comparar(
                 analisis.acordes, con: otra, en: tonalidad, notacion: notacion)
             {

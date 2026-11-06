@@ -59,7 +59,7 @@ extension LineaDeComandosTests {
 
     @Test func musicXML() {
         let melodia = salida(
-            "musicxml melodia Sol4:4 Do5:2 Re5:4 Mi5:2 --compas 3/4 --anacrusa 4 --tonalidad Sol mayor --tempo 60 4. --titulo Mi canción --clave sol8b"
+            "musicxml melodia Sol4:4 Do5:2 Re5:4 Mi5:2 --compas 3/4 --anacrusa 4 --en Sol mayor --tempo 60 4. --titulo Mi canción --clave sol8b"
         )
         #expect(melodia.hasPrefix("<?xml"))
         #expect(melodia.hasSuffix("</score-partwise>\n"))
@@ -86,7 +86,7 @@ extension LineaDeComandosTests {
             #expect(acordes.contains(fragmento), Comment(rawValue: fragmento))
         }
         #expect(salida("musicxml acordes Am Dm E7 Am --ingles").contains("<words>A minor:</words>"))
-        #expect(salida("musicxml acordes Re Sol La7 Re --tonalidad Sol mayor").contains("<text>V</text>"))
+        #expect(salida("musicxml acordes Re Sol La7 Re --en Sol mayor").contains("<text>V</text>"))
         let analizado = salida("musicxml coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 --cifrados --analisis")
         #expect(analizado.contains("<harmony") && analizado.contains("<lyric"))
         let soloCifrados = salida("musicxml coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 --cifrados")
@@ -121,7 +121,7 @@ extension LineaDeComandosTests {
 
     @Test func mEI() {
         let melodia = salida(
-            "mei melodia Sol4:4 Do5:2 Re5:4 Mi5:2 --compas 3/4 --anacrusa 4 --tonalidad Sol mayor --tempo 60 4. --titulo Mi canción --clave sol8b"
+            "mei melodia Sol4:4 Do5:2 Re5:4 Mi5:2 --compas 3/4 --anacrusa 4 --en Sol mayor --tempo 60 4. --titulo Mi canción --clave sol8b"
         )
         #expect(melodia.hasPrefix("<?xml"))
         #expect(melodia.hasSuffix("</mei>\n"))
@@ -160,7 +160,7 @@ extension LineaDeComandosTests {
 
     @Test func lilyPondYABC() {
         let melodia = salida(
-            "lilypond melodia Sol4:4 Do5:2 Re5:4 Mi5:2 --compas 3/4 --anacrusa 4 --tonalidad Sol mayor --tempo 60 4. --titulo Mi canción --clave sol8b"
+            "lilypond melodia Sol4:4 Do5:2 Re5:4 Mi5:2 --compas 3/4 --anacrusa 4 --en Sol mayor --tempo 60 4. --titulo Mi canción --clave sol8b"
         )
         #expect(melodia.hasPrefix("\\version \"2.24.0\""))
         for fragmento in [

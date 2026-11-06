@@ -5,23 +5,29 @@ import TeselaPresentacion
 // MARK: - Dibujos: Tonnetz, tabla armónica y teclados de cuadrícula
 
 extension LineaDeComandos {
-    /// Una suborden como `acorde` en `tonnetz acorde Sol7` o `hoja acordes Rem7 Sol7`, cambiada por la opción de antes
-    /// (`--acorde`), que se sigue leyendo: los argumentos con la primera palabra cambiada si es el nombre, sin los
-    /// guiones, de una de `opciones`, o sin ella si es una de `sinNada` (`hoja escala Re dórico` es `hoja Re dórico`).
+    /// Una suborden como `acorde` en `tonnetz acorde Sol7` o `hoja acordes Rem7 Sol7`, cambiada por la opción con que
+    /// se lee (`--acorde`): los argumentos con la primera palabra cambiada si es el nombre, sin los guiones, de una de
+    /// `opciones`, o sin ella si es una de `sinNada` (`hoja escala Re dórico` es `hoja Re dórico`). Esas opciones no se
+    /// escriben: `tonnetz --acorde Sol7` es una opción desconocida.
     static func conLaSuborden(
         _ argumentos: [String], entre opciones: [OpcionDeOrden], sinNada: Set<String> = []
-    ) -> [String] {
+    ) throws -> [String] {
+        if let escrita = argumentos.first(where: { texto in opciones.contains { $0.leidos.contains(texto) } }) {
+            throw ErrorDeUso.opcionDesconocida(escrita)
+        }
         guard let primera = argumentos.first?.lowercased(), !primera.hasPrefix("-") else { return argumentos }
         if sinNada.contains(primera) { return Array(argumentos.dropFirst()) }
         guard let opcion = opciones.first(where: { $0.leidos.contains("--" + primera) }) else { return argumentos }
         return [opcion.nombres[0]] + argumentos.dropFirst()
     }
 
-    /// `--dedos piano` y `--dedos guitarra`, cambiados por lo que hacían antes: `--mano derecha` y `--tab --dedos`. Con
-    /// `soloPiano` (en `teclado`), `--dedos` a secas es también `--mano derecha` (y `--dedos izquierda`, `--mano
-    /// izquierda`); si no, se queda como está (en
-    /// `pentagrama`, con `--tab`, los dedos de la guitarra).
-    static func conLosDedos(_ argumentos: [String], soloPiano: Bool) -> [String] {
+    /// `--dedos piano` y `--dedos guitarra`, cambiados por las opciones con que se leen: `--mano derecha` y `--tab
+    /// --dedos`. Con `soloPiano` (en `teclado`), `--dedos` a secas es también `--mano derecha` (y `--dedos izquierda`,
+    /// `--mano izquierda`); si no, `--dedos` lleva detrás el instrumento. `--mano` no se escribe.
+    static func conLosDedos(_ argumentos: [String], soloPiano: Bool) throws -> [String] {
+        if let escrita = argumentos.first(where: OpcionDeOrden.mano.leidos.contains) {
+            throw ErrorDeUso.opcionDesconocida(escrita)
+        }
         let nombres = OpcionDeOrden.dedos.leidos
         guard let i = argumentos.firstIndex(where: nombres.contains) else { return argumentos }
         let siguiente = argumentos.indices.contains(i + 1) ? argumentos[i + 1].lowercased() : nil
@@ -34,6 +40,8 @@ extension LineaDeComandos {
             // `teclado … --dedos izquierda` es `--mano izquierda`; `--dedos` a secas, la derecha.
             cambiados[i] = "--mano"
             if siguiente.flatMap(manoDePiano) == nil { cambiados.insert("derecha", at: i + 1) }
+        } else {
+            throw ErrorDeUso.faltaValor(String(argumentos[i].dropFirst(2)))
         }
         return cambiados
     }
@@ -41,14 +49,14 @@ extension LineaDeComandos {
     /// Lo que puede ir tras `--dedos`.
     static let instrumentosDeLosDedos = (piano: Set(["piano"]), guitarra: Set(["guitarra", "guitar"]))
 
-    /// Las subórdenes de `tonnetz`, `tabla` y `cuadricula`, que son también sus opciones de antes.
+    /// Las subórdenes de `tonnetz`, `tabla` y `cuadricula`.
     static let subordenesDeLosDibujos: [OpcionDeOrden] = [.acorde, .escala, .clases, .recorrido, .camino, .ciclo]
 
     /// Las palabras que dicen que lo que sigue son unas notas: `tonnetz notas Do Mi Sol` es `tonnetz Do Mi Sol`.
     static let subordenDeNotas: Set = ["notas", "notes"]
 
     /// Lee los argumentos comunes de `tonnetz`, `tabla` y `cuadricula`: `--margen N` y lo que se dibuja (notas,
-    /// `--acorde`, `--escala`, `--clases`, `--recorrido`, `--camino` o `--ciclo`), como en la app Tonnetz. Con
+    /// `acorde`, `escala`, `clases`, `recorrido`, `camino` o `ciclo`), como en la app Tonnetz. Con
     /// `conOctavas`, unas notas con número de octava se leen como alturas (`Do3 Sol3 Mi4`), que se dan también aparte.
     static func leerDibujo(_ argumentos: [String], orden: String, conOctavas: Bool = true) throws -> (
         contenido: ContenidoDeRed, alturas: [Altura]?, margen: Int?
@@ -59,7 +67,7 @@ extension LineaDeComandos {
             guard let n = Int(texto), (0...6).contains(n) else { throw ErrorDeUso.margenFueraDeRango }
             margen = n
         }
-        let argumentos = conLaSuborden(lectura.restantes, entre: subordenesDeLosDibujos, sinNada: subordenDeNotas)
+        let argumentos = try conLaSuborden(lectura.restantes, entre: subordenesDeLosDibujos, sinNada: subordenDeNotas)
         guard let primero = argumentos.first else { throw ErrorDeUso.faltanNotasDelDibujo(orden: orden) }
         let resto = argumentos.dropFirst().joined(separator: " ")
         let contenido: ContenidoDeRed
@@ -67,20 +75,20 @@ extension LineaDeComandos {
         switch primero {
         case OpcionDeOrden.acorde:
             guard !resto.isEmpty else { throw ErrorDeUso.faltaAcordeDelDibujo(orden: orden) }
-            contenido = .acorde(try Acorde(leyendo: resto))
+            contenido = .acorde(try Acorde(leyendoEnLaOrden: resto))
         case OpcionDeOrden.escala:
             guard !resto.isEmpty else { throw ErrorDeUso.faltaEscalaDelDibujo(orden: orden) }
-            contenido = .escala(try Escala(leyendo: resto))
+            contenido = .escala(try Escala(leyendoEnLaOrden: resto))
         case OpcionDeOrden.clases:
             // Como `armonia conjunto`: «0 4 7», «047», «01t», «Do Mi Sol» o «3-11».
             guard !resto.isEmpty else { throw ErrorDeUso.faltanClasesDelDibujo(orden: orden) }
             contenido = .clases(try ConjuntoDeClasesDeAltura(leyendo: resto).clases)
         case OpcionDeOrden.recorrido:
-            let acordes = try argumentos.dropFirst().map { try Acorde(leyendo: $0) }
+            let acordes = try argumentos.dropFirst().map { try Acorde(leyendoEnLaOrden: $0) }
             guard !acordes.isEmpty else { throw ErrorDeUso.faltanTriadasDelRecorrido(orden: orden) }
             contenido = .recorrido(acordes)
         case OpcionDeOrden.camino:
-            let acordes = try argumentos.dropFirst().map { try Acorde(leyendo: $0) }
+            let acordes = try argumentos.dropFirst().map { try Acorde(leyendoEnLaOrden: $0) }
             guard acordes.count == 2 else { throw ErrorDeUso.caminoSoloTriadas(orden: orden) }
             contenido = .camino(acordes[0], acordes[1])
         case OpcionDeOrden.ciclo:
@@ -90,15 +98,15 @@ extension LineaDeComandos {
             else {
                 throw ErrorDeUso.cicloMalEscrito(orden: orden)
             }
-            contenido = .ciclo(ciclo, try Acorde(leyendo: partes.last!))
+            contenido = .ciclo(ciclo, try Acorde(leyendoEnLaOrden: partes.last!))
         default:
             if primero.hasPrefix("--") { throw ErrorDeUso.opcionDesconocida(primero) }
             if conOctavas, argumentos.contains(where: { $0.contains(where: \.isNumber) }) {
-                let leidas = try argumentos.map { try Altura(leyendo: $0) }
+                let leidas = try argumentos.map { try Altura(leyendoEnLaOrden: $0) }
                 alturas = leidas
                 contenido = .notas(leidas.map(\.nota))
             } else {
-                contenido = .notas(try argumentos.map { try Nota(leyendo: $0) })
+                contenido = .notas(try argumentos.map { try Nota(leyendoEnLaOrden: $0) })
             }
         }
         return (contenido, alturas, margen)
@@ -115,8 +123,7 @@ extension LineaDeComandos {
         }
     }
 
-    /// `tonnetz Do Mi Sol`, `tonnetz acorde Domaj7`, `tonnetz ciclo hexatonico Do`… (o con las opciones de antes:
-    /// `tonnetz --acorde Domaj7`).
+    /// `tonnetz Do Mi Sol`, `tonnetz acorde Domaj7`, `tonnetz ciclo hexatonico Do`…
     static func tonnetz(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let (contenido, _, margen) = try leerDibujo(argumentos, orden: "tonnetz", conOctavas: false)
         let tonnetz = try red(Tonnetz.self, de: contenido, orden: "tonnetz")
@@ -132,10 +139,10 @@ extension LineaDeComandos {
         return bien(tabla.svg(opciones: .init(notacion: notacion), margen: margen).trimmingCharacters(in: "\n"))
     }
 
-    /// `teclado Re mayor [--mano derecha|izquierda] [--octavas 2]`: la escala en un teclado de piano, en SVG, con
+    /// `teclado Re mayor [--dedos [derecha|izquierda]] [--octavas 2]`: la escala en un teclado de piano, en SVG, con
     /// el nombre de cada nota o, con una mano, sus dedos.
     static func teclado(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        var argumentos = Argumentos(conLosDedos(argumentos, soloPiano: true))
+        var argumentos = Argumentos(try conLosDedos(argumentos, soloPiano: true))
         guard let octavas = argumentos.quitarNumero(.octavas, en: 1...4, porDefecto: 1) else {
             throw ErrorDeUso.octavasFueraDeRango
         }
@@ -146,7 +153,7 @@ extension LineaDeComandos {
         }
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDelTeclado }
-        let escala = try Escala(leyendo: argumentos.unidos)
+        let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
         let svg = PresentacionDeEstudioDeEscala.teclado(de: escala, mano: mano, octavas: octavas, en: notacion)
         return bien(svg.trimmingCharacters(in: "\n"))
     }
@@ -157,7 +164,7 @@ extension LineaDeComandos {
         let quintas = argumentos.quitarMarca(.quintas)
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDelReloj }
-        let escala = try Escala(leyendo: argumentos.unidos)
+        let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
         let svg = PresentacionDeEstudioDeEscala.reloj(
             de: escala, orden: quintas ? .quintas : .cromatico, en: notacion)
         return bien(svg.trimmingCharacters(in: "\n"))
@@ -166,30 +173,29 @@ extension LineaDeComandos {
     /// `hoja Re dórico` (o `hoja escala Re dórico`): la escala en una hoja de estudio para imprimir, en SVG, y, con
     /// `--comparar Do dórico`, comparada nota a nota con otra; `hoja acorde Sol7`, la de un acorde; `hoja tonalidad Do
     /// mayor`, la de una tonalidad, y `hoja acordes Rem7 Sol7 Do7M [--en Do mayor] [--doce] [--comparar …]`, la de una
-    /// progresión, en las doce tonalidades o comparada con otra. Las subórdenes se leen también como las opciones de
-    /// antes (`hoja --acorde Sol7`). `grabar hoja …` la pasa a PDF.
+    /// progresión, en las doce tonalidades o comparada con otra. `grabar hoja …` la pasa a PDF.
     static func hoja(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(
-            conLaSuborden(argumentos, entre: [.acorde, .acordes, .tonalidad], sinNada: ["escala", "scale"]))
+            try conLaSuborden(argumentos, entre: [.acorde, .acordes, .tonalidad], sinNada: ["escala", "scale"]))
         if let cifrado = try argumentos.valor(.acorde, siFalta: .faltaElAcordeDeLaHoja) {
             if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaElAcordeDeLaHoja }
-            let acorde = try Acorde(leyendo: cifrado)
+            let acorde = try Acorde(leyendoEnLaOrden: cifrado)
             return bien(PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, en: notacion))
         }
-        // Los acordes antes que la tonalidad: en `hoja acordes … --tonalidad Do mayor`, es la de los acordes.
+        // Los acordes antes que la tonalidad: en `hoja acordes … --en Do mayor`, es la de los acordes.
         if argumentos.quitarMarca(.acordes) {
             // --doce y --comparar se quitan antes que la tonalidad, que se lleva todo lo que va detrás de --en.
             let doce = argumentos.quitarMarca(.doce)
             let contra = try argumentos.valorConPalabras(.comparar)
-            guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaValor("--en") }
+            guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaValor("en") }
             if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanLosAcordesDeLaHoja }
             let analisis = try PresentacionDeAnalisis.analizar(
                 argumentos.restantes.joined(separator: " "), en: tonalidad, notacion: notacion)
             // Con --comparar, las dos progresiones comparadas acorde a acorde.
             if let contra {
-                let otra = try contra.split(separator: " ").map { try Acorde(leyendo: String($0)) }
+                let otra = try contra.split(separator: " ").map { try Acorde(leyendoEnLaOrden: String($0)) }
                 if let hoja = PresentacionDeAnalisis.hojaDeLaComparacion(
                     analisis.acordes, con: otra, en: tonalidad, notacion: notacion)
                 {
@@ -207,23 +213,24 @@ extension LineaDeComandos {
         if let texto = try argumentos.valorConPalabras(.tonalidad, siFalta: .faltaTonalidad) {
             if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaTonalidad }
-            let tonalidad = try Tonalidad(leyendo: texto)
+            let tonalidad = try Tonalidad(leyendoEnLaOrden: texto)
             return bien(PresentacionDeTonalidad.hojaDeEstudio(de: tonalidad, en: notacion))
         }
         // `hoja Do mayor --comparar Do dórico`: las dos escalas nota a nota, en el pentagrama y en el reloj.
         let otra = try argumentos.valorConPalabras(.comparar)
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDeLaHoja }
-        let escala = try Escala(leyendo: argumentos.unidos)
+        let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
         if let otra {
             return bien(
-                PresentacionDeEstudioDeEscala.comparacionNotaANota(escala, con: try Escala(leyendo: otra), en: notacion)
+                PresentacionDeEstudioDeEscala.comparacionNotaANota(
+                    escala, con: try Escala(leyendoEnLaOrden: otra), en: notacion)
             )
         }
         return bien(PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, en: notacion))
     }
 
-    /// `pentagrama escala Re dórico [--octavas 2] [--bajando] [--secuencia terceras] [--mano derecha] [--tab]`,
+    /// `pentagrama escala Re dórico [--octavas 2] [--bajando] [--secuencia terceras] [--dedos piano] [--tab]`,
     /// `pentagrama acorde Sol7`, `pentagrama arpegio Do Lam [--patron alberti] [--figura 16] [--tresillos] [--tab]`,
     /// `pentagrama acordes Rem7 Sol7 Do7M [--romanos] [--bajo-cifrado]`, `pentagrama melodia Do4:8 Re4:8 … --sobre Do
     /// Sol7`: lo que se pide en un pentagrama, en SVG. Con `--nombres`, `--intervalos`, `--semitonos` y `--tonica`, el
@@ -231,7 +238,7 @@ extension LineaDeComandos {
     /// acorde en color; con `--octava`, `--clave`, `--doble` y `--cambiar-clave`, el registro y las claves; con
     /// `--en <tonalidad>` (al final), la armadura de esa tonalidad.
     static func pentagrama(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        var argumentos = Argumentos(conLosDedos(textos, soloPiano: false))
+        var argumentos = Argumentos(try conLosDedos(textos, soloPiano: false))
         guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaValor("en") }
         var opciones = OpcionesDePentagrama(notacion: notacion)
         if let tonalidad { opciones.armadura = .tonalidad(tonalidad) }
@@ -249,7 +256,7 @@ extension LineaDeComandos {
             opciones.maquetacion.clave = clave
             opciones.maquetacion.pentagramas = .simple
         }
-        guard let octava = argumentos.quitarNumero(.octava, en: 0...7, porDefecto: 4) else {
+        guard let octava = argumentos.quitarNumero(.registro, en: 0...7, porDefecto: 4) else {
             throw ErrorDeUso.octavaFueraDeRango
         }
         let tipos = [
@@ -268,13 +275,13 @@ extension LineaDeComandos {
         case "acorde":
             if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
-            svg = try Acorde(leyendo: argumentos.unidos).svgPentagrama(octava: octava, opciones: opciones)
+            svg = try Acorde(leyendoEnLaOrden: argumentos.unidos).svgPentagrama(octava: octava, opciones: opciones)
         case "acordes":
             let romanos = argumentos.quitarMarca(.romanos)
             let conBajoCifrado = argumentos.quitarMarca(.bajoCifrado)
             if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
-            let acordes = try argumentos.restantes.map { try Acorde(leyendo: $0) }
+            let acordes = try argumentos.restantes.map { try Acorde(leyendoEnLaOrden: $0) }
             // En posición cerrada, desde el Do de la octava (el central, si no se da), en dos octavas.
             let desde = Altura(.do, octava: octava).midi
             let voces = DisposicionDeAcorde.cerrada.conducir(acordes, en: desde...(desde + 24)) ?? []
@@ -291,7 +298,7 @@ extension LineaDeComandos {
             // Un bajo caminante en clave de fa; con --tab, con la tablatura del bajo debajo.
             let tab = argumentos.quitarMarca(.tab)
             if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
-            let acordes = try argumentos.restantes.map { try Acorde(leyendo: $0) }
+            let acordes = try argumentos.restantes.map { try Acorde(leyendoEnLaOrden: $0) }
             guard let bajo = PresentacionDeAnalisis.bajoCaminante(acordes, en: notacion) else {
                 throw ErrorDeUso.faltaLoQueDibujaElPentagrama
             }
@@ -322,7 +329,7 @@ extension LineaDeComandos {
         var opciones = opciones
         var acordes: [Acorde] = []
         if let texto = try argumentos.valorConPalabras(.sobre) {
-            acordes = try texto.split(separator: " ").map { try Acorde(leyendo: String($0)) }
+            acordes = try texto.split(separator: " ").map { try Acorde(leyendoEnLaOrden: String($0)) }
             opciones.marcas.notasAjenas = true
         }
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
@@ -384,7 +391,7 @@ extension LineaDeComandos {
         return dedos
     }
 
-    /// `pentagrama escala`: la escala en redondas o, con `--secuencia`, en una secuencia con ritmo; con `--mano`, con
+    /// `pentagrama escala`: la escala en redondas o, con `--secuencia`, en una secuencia con ritmo; con `--dedos piano`, con
     /// los dedos del piano; con `--tab`, en la primera posición del mástil (`--caged`, en la primera forma CAGED), con
     /// su tablatura y, con `--dedos`, los dedos.
     private static func pentagramaDeEscala(
@@ -411,7 +418,7 @@ extension LineaDeComandos {
         try leerMastil(&argumentos, en: &mastil)
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
-        let escala = try Escala(leyendo: argumentos.unidos)
+        let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
         let sentido: SentidoDelIntervalo = bajando ? .descendente : .ascendente
         let svg: String
         if tab {
@@ -503,7 +510,7 @@ extension LineaDeComandos {
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
         if tab {
             // En el mástil: el arpegio del acorde en su primera posición, de la nota más grave a la más aguda.
-            let acorde = try Acorde(leyendo: argumentos.restantes[0])
+            let acorde = try Acorde(leyendoEnLaOrden: argumentos.restantes[0])
             guard let enElMastil = mastil.arpegios(de: acorde).first else {
                 throw ErrorDeUso.faltaLoQueDibujaElPentagrama
             }
@@ -515,11 +522,11 @@ extension LineaDeComandos {
         }
         var arpegios: [Arpegio] = []
         for texto in argumentos.restantes {
-            let acorde = try Acorde(leyendo: texto)
+            let acorde = try Acorde(leyendoEnLaOrden: texto)
             var inicio = 0
             if let desde = recorrido.desde {
                 let delGrado = Int(desde).flatMap { Arpegio.indice(delGrado: $0, en: acorde) }
-                let deLaNota = (try? Nota(leyendo: desde)).flatMap { Arpegio.indice(de: $0, en: acorde) }
+                let deLaNota = (try? Nota(leyendoEnLaOrden: desde)).flatMap { Arpegio.indice(de: $0, en: acorde) }
                 guard let indice = delGrado ?? deLaNota else { throw ErrorDeUso.desdeNoValido(desde) }
                 inicio = indice
             }
@@ -568,7 +575,7 @@ extension LineaDeComandos {
         return bien(svg.trimmingCharacters(in: "\n"))
     }
 
-    /// La mano de `--mano`, en español o en inglés.
+    /// La mano de `teclado … --dedos`, en español o en inglés.
     static func manoDePiano(_ texto: String) -> Mano? {
         let manos: [String: Mano] = [
             "derecha": .derecha, "right": .derecha, "izquierda": .izquierda, "left": .izquierda,
@@ -576,8 +583,8 @@ extension LineaDeComandos {
         return manos[texto.lowercased()]
     }
 
-    /// `cuadricula Do Mi Sol`, `cuadricula --ejes 2,5 --acorde Sol7`,
-    /// `cuadricula --rejilla 8x8 --origen Do2 --en-tono --escala Re dórico`… Un teclado de cuadrícula con las notas
+    /// `cuadricula Do Mi Sol`, `cuadricula acorde Sol7 --ejes 2,5`,
+    /// `cuadricula escala Re dórico --rejilla 8x8 --origen Do2 --en-tono`… Un teclado de cuadrícula con las notas
     /// marcadas en todas las octavas, su contorno y la primera nota con borde naranja. Por defecto, en cuartas (1,5) y
     /// en una ventana de 12 × 7 alrededor del Do4.
     static func cuadricula(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
@@ -594,7 +601,7 @@ extension LineaDeComandos {
         else {
             throw ErrorDeUso.opcionesDeCuadricula
         }
-        let origen = try origenEscrito.isEmpty ? rejilla.origenPorDefecto : Altura(leyendo: origenEscrito).midi
+        let origen = try origenEscrito.isEmpty ? rejilla.origenPorDefecto : Altura(leyendoEnLaOrden: origenEscrito).midi
 
         let contenido = try leerDibujo(lectura.restantes, orden: "cuadricula").contenido
         // Las notas de un camino o un ciclo son las de sus tríadas en el Tonnetz: sin tríadas, no hay nada que dibujar.

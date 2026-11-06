@@ -74,15 +74,15 @@ extension TextosDeCLI {
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "vecinos <acord> [--voces 2]",
         descripcionVecinos: "acords a un semitò (sèptimes: dominant, menor, semidisminuïda i disminuïda; tríades: major, menor i augmentada; --ampliada: amb els maj7 també)",
-        sintaxisConduccionParsimoniosa: "conduccion-parsimoniosa <acord> <acord> [--voces 2] [--ampliada]",
+        sintaxisConduccionParsimoniosa: "camino-parsimonioso <acord> <acord> [--voces 2] [--ampliada]",
         descripcionConduccionParsimoniosa: "d'un acord a un altre movent una veu (o dues) un semitò a cada pas",
         sintaxisConduccionMinima: "conduccion-minima <acord> <acord>",
         descripcionConduccionMinima: "la conducció amb menys semitons",
         sintaxisPlr: "plr <tríada> <P, L, R…>",
         descripcionPlr: "transformacions neoriemannianes",
-        sintaxisPlrCamino: "plr <tríada> <tríada>",
+        sintaxisPlrCamino: "plr camino <tríada> <tríada>",
         descripcionPlrCamino: "el camí més curt per P, L i R",
-        sintaxisPlrCiclo: "plr <tríada> <cicle>",
+        sintaxisPlrCiclo: "plr ciclo <cicle> <tríada>",
         descripcionPlrCiclo: "un cicle: hexatonico (P, L), octatonico (P, R) o \"ciclo LR\"",
 
         // Ayuda+Partituras.swift
@@ -92,10 +92,10 @@ extension TextosDeCLI {
         descripcionMusicxmlCoral: "coral a quatre veus en MusicXML",
         sintaxisMusicxmlAcordes: "musicxml acordes <xifrats> [opcions]",
         descripcionMusicxmlAcordes: "progressió amb xifrats i anàlisi",
-        notasMusicxmlAcordes: "opcions: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor, --clave fa, --tempo 90 (o --tempo 60 4.), --titulo El meu coral, --duracion 2 (el que dura cada acord; negra si no), --cifrados i --analisis (al coral: xifrat americà a dalt, romà i funció a baix)",
+        notasMusicxmlAcordes: "opcions: --compas 6/8, --anacrusa 8, --en Sol mayor, --clave fa, --tempo 90 (o --tempo 60 4.), --titulo El meu coral, --duracion 2 (el que dura cada acord; negra si no), --cifrados i --analisis (al coral: xifrat americà a dalt, romà i funció a baix)",
         sintaxisMusicxmlArpegios: "musicxml arpegios <xifrats> [opcions]",
         descripcionMusicxmlArpegios: "els acords arpegiats, nota a nota",
-        notasMusicxmlArpegios: "opcions: --patron alberti (o ascendente, descendente, ida y vuelta), --figura 16 (el que dura cada nota; corxera si no), --duracion 1 (el que dura cada acord: el patró es repeteix fins a omplir-lo) i les altres d'«acordes»\n--enlazar: cada arpegi comença per la nota més propera a l'última de l'anterior",
+        notasMusicxmlArpegios: "opcions: --patron alberti (o ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado), --figura 16 (el que dura cada nota; corxera si no), --duracion 1 (el que dura cada acord: el patró es repeteix fins a omplir-lo) i les altres d'«acordes»\n--enlazar: cada arpegi comença per la nota més propera a l'última de l'anterior",
         sintaxisMusicxmlArchivo: "musicxml acordes --archivo <fitxer>",
         descripcionMusicxmlArchivo: "la progressió d'un fitxer MIDI, MusicXML, MEI o ABC, amb el que dura cada acord (també arpegios, mei i midi)",
         sintaxisMusicxmlEscala: "musicxml escala <escala> [opcions]",
@@ -122,8 +122,8 @@ extension TextosDeCLI {
         sintaxisPosiciones: "posiciones <escala> [--caged]",
         descripcionPosiciones: "l'escala per posicions a la guitarra: tres notes per corda (dues a les pentatòniques) o CAGED",
         notasPosiciones: "opcions: --secuencia terceras (o una altra: la seqüència a cada posició; amb --bajando, baixant) i --formas (les cinc formes de la pentatònica i les notes comunes); --instrumento bajo (o un altre; també re-abierto, sol-abierto, dadgad) i --capo 2",
-        sintaxisTeclado: "teclado <escala> [--mano derecha]",
-        descripcionTeclado: "l'escala en un teclat de piano (SVG): les notes o, amb --mano derecha o izquierda, els dits; --octavas 2",
+        sintaxisTeclado: "teclado <escala> [--dedos]",
+        descripcionTeclado: "l'escala en un teclat de piano (SVG): les notes o, amb --dedos derecha o izquierda, els dits; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "l'escala en un rellotge de dotze hores (SVG): el cercle cromàtic o, amb --quintas, el de quintes",
         sintaxisHoja: "hoja <escala>",
@@ -136,7 +136,7 @@ extension TextosDeCLI {
         descripcionHojaDeTonalidad: "la tonalitat en un full d'estudi per imprimir (SVG): armadura, relativa i homònima, l’escala al pentagrama, els acords de cada grau amb la seva funció, les cadències típiques i les modulacions als tons veïns",
         sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
         descripcionPentagrama: "una escala, un acord, un arpegi (amb ritme: --figura 16, --tresillos) o uns acords amb el xifrat en un pentagrama (SVG); --nombres, --intervalos, --semitonos, --tonica, --en <tonalidad>",
-        sintaxisPentagramaEstudio: "pentagrama <què> --romanos|--mano|--secuencia|--tab",
+        sintaxisPentagramaEstudio: "pentagrama <què> --romanos|--dedos|--secuencia|--tab",
         descripcionPentagramaEstudio: "els graus en nombres romans sota els acords; els dits del piano (--dedos piano) o de la guitarra (--dedos guitarra); l'escala per terceres o en grups (--secuencia terceras); la tabulatura a sota (--tab, --instrumento)",
         sintaxisPentagramaRegistro: "pentagrama <què> --registro|--clave|--doble|--cambiar-clave|--bajo-cifrado",
         descripcionPentagramaRegistro: "l'octava (--registro 2), la clau (--clave fa), el pentagrama doble, els canvis de clau segons el registre i el baix xifrat dels acords (6, 6/4, 6/5…)",
@@ -169,7 +169,7 @@ extension TextosDeCLI {
         Amb --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
         serie, digitaciones i tradiciones donen les dades en JSON.
         Amb --json també armonizar, realizar, revisar, contrapunto, transponer, escalas,
-        rearmonizar, vecinos, plr, conduccion-parsimoniosa, conduccion-minima, posiciones i motores. Si la sortida no és
+        rearmonizar, vecinos, plr, camino-parsimonioso, conduccion-minima, posiciones i motores. Si la sortida no és
         el terminal, el JSON va en una sola línia.
         ARMONIA_IDIOMA=eu fixa l'idioma sense --idioma; amb ARMONIA_IDIOMA=sistema, el de LANG.
         Codis de sortida: 0 bé, 1 text que no es pot llegir, 2 ordre mal escrita i 3 errors (revisar,
@@ -296,8 +296,8 @@ extension TextosDeCLI {
         noEsPentatonica: "les formes són d'una escala de cinc notes: armonia posiciones La pentatónica menor --formas",
         faltaEscalaDelReloj: "falta l'escala: armonia reloj Re mayor",
         faltaEscalaDeLaHoja: "falta l'escala: armonia hoja Re mayor",
-        faltanLosAcordesDeLaHoja: "falten els acords: armonia hoja --acordes Rem7 Sol7 Do7M",
-        faltaElAcordeDeLaHoja: "falta l'acord: armonia hoja --acorde Sol7",
+        faltanLosAcordesDeLaHoja: "falten els acords: armonia hoja acordes Rem7 Sol7 Do7M",
+        faltaElAcordeDeLaHoja: "falta l'acord: armonia hoja acorde Sol7",
         faltaLoQueDibujaElPentagrama: "falta què dibuixar: armonia pentagrama escala Re dórico",
         capoFueraDeRango: "el capo és un nombre de 0 a 12: --capo 2",
         octavasFueraDeRango: "les octaves són un nombre d'1 a 4: --octavas 2",

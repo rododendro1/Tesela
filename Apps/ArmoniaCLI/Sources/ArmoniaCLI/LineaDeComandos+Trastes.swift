@@ -94,7 +94,7 @@ extension LineaDeComandos {
     /// `digitaciones Sol7/Si --instrumento ukelele`: formas de tocar el acorde, de la más cómoda a la menos.
     static func digitaciones(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let pedido = try pedidoDeDigitaciones(argumentos)
-        let acordes = try pedido.acordes.map { try Acorde(leyendo: $0) }
+        let acordes = try pedido.acordes.map { try Acorde(leyendoEnLaOrden: $0) }
         if pedido.comoMusicXML {
             var formas: [Digitacion] = []
             var conForma: [Acorde] = []
@@ -174,10 +174,11 @@ extension LineaDeComandos {
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifradoDelArpegio }
             let reparto: FormasDeArpegio = barrido ? .unaNotaPorCuerda : caged ? .caged : .porPosiciones
             return arpegioEnElMastil(
-                try Acorde(leyendo: argumentos.unidos), formas: reparto, idaYVuelta: idaYVuelta, en: mastil, notacion)
+                try Acorde(leyendoEnLaOrden: argumentos.unidos), formas: reparto, idaYVuelta: idaYVuelta, en: mastil,
+                notacion)
         }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDePosiciones }
-        let escala = try Escala(leyendo: argumentos.unidos)
+        let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
         if formas { return try formasPentatonicas(de: escala, en: mastil, notacion) }
         if let secuencia {
             return secuenciaEnLasPosiciones(escala, secuencia, caged: caged, bajando: bajando, en: mastil, notacion)

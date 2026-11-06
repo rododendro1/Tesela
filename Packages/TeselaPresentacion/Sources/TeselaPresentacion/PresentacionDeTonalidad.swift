@@ -12,7 +12,7 @@ public struct CadenciaPresentada: Hashable, Sendable {
     public let sonido: Escucha
 }
 
-/// Lo que se estudia de una tonalidad (`armonia hoja --tonalidad` y la vista de análisis): la armadura, sus
+/// Lo que se estudia de una tonalidad (`armonia hoja tonalidad` y la vista de análisis): la armadura, sus
 /// relativas, los acordes de cada grado con su función, las cadencias típicas y las modulaciones a los tonos
 /// vecinos. No usa SwiftUI, así que se prueba en Linux.
 ///

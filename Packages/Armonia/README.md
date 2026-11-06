@@ -78,10 +78,10 @@ $ swift run armonia musicxml acordes Do Lam Re7 Sol7 Do > progresion.musicxml
 $ swift run armonia midi acordes Do Lam Re7 Sol7 Do --tempo 80 > progresion.mid
 $ swift run armonia midi arpegios Do Lam Fa Sol7 --patron alberti --duracion 2 > alberti.mid
 
-$ swift run armonia tonnetz --escala "Re dórico" > dorico.svg
-$ swift run armonia tonnetz --recorrido Do Lam Fa Rem > recorrido.svg
+$ swift run armonia tonnetz escala "Re dórico" > dorico.svg
+$ swift run armonia tonnetz recorrido Do Lam Fa Rem > recorrido.svg
 $ swift run armonia tabla Do3 Sol3 Mi4 Si4 > tabla.svg
-$ swift run armonia cuadricula --rejilla 8x8 --en-tono --escala "Re dórico" > pads.svg
+$ swift run armonia cuadricula escala "Re dórico" --rejilla 8x8 --en-tono > pads.svg
 $ swift run armonia conduccion-minima Sol7 Do
 Sol→Sol, Si→Do (+1), Re→Do (−2), Fa→Mi (−1): 4 semitonos
 
@@ -99,17 +99,18 @@ escribe unos acordes a cuatro voces. Las dos dan corales sin faltas de conducci�
 
 `midi` escribe lo mismo como fichero MIDI para oírlo (con `--programa` de General MIDI).
 `musicxml` escribe una partitura que se abre en MuseScore, Finale, Sibelius o Dorico: una
-melodía (con `--compas`, `--anacrusa`, `--tonalidad`, `--clave`, `--tempo` y `--titulo`) o un
+melodía (con `--compas`, `--anacrusa`, `--en`, `--clave`, `--tempo` y `--titulo`) o un
 coral a cuatro voces en dos pentagramas (con `--duracion` de cada acorde, y `--cifrados` y
 `--analisis` para escribir los cifrados y el análisis), o unos acordes con su cifrado americano
 encima y el cifrado romano y la función debajo. `tonnetz` dibuja en SVG unas notas, un acorde
-(`--acorde`), una escala (`--escala`) o un conjunto de clases de altura (`--clases 0,4,7`) sobre
-el Tonnetz, o un recorrido de tríadas con flechas (`--recorrido`, `--camino`, `--ciclo`), y `plr` aplica las
-transformaciones neorriemannianas o busca el camino más corto entre dos tríadas. `tabla` dibuja la tabla
-armónica en hexágonos, con notas, alturas (`Do3 Sol3 Mi4`), `--acorde`, `--escala`, `--clases`,
-`--recorrido`, `--camino` o `--ciclo`. `vecinos`
-y `camino` buscan acordes a un semitono (séptimas, maj7 y tríadas, con `--voces 2` para mover dos voces) y
-`conduccion`, la conducción con menos semitonos entre dos acordes. Las demás órdenes son
+(`tonnetz acorde`), una escala (`tonnetz escala`) o un conjunto de clases de altura (`tonnetz clases 0,4,7`) sobre
+el Tonnetz, o un recorrido de tríadas con flechas (`recorrido`, `camino`, `ciclo`), y `plr` aplica las
+transformaciones neorriemannianas (`plr Do PLR`), busca el camino más corto entre dos tríadas (`plr camino`) o recorre
+un ciclo (`plr ciclo`). `tabla` dibuja la tabla
+armónica en hexágonos, con notas, alturas (`Do3 Sol3 Mi4`), `acorde`, `escala`, `clases`,
+`recorrido`, `camino` o `ciclo`. `vecinos`
+y `camino-parsimonioso` buscan acordes a un semitono (séptimas, maj7 y tríadas, con `--voces 2` para mover dos voces) y
+`conduccion-minima`, la conducción con menos semitonos entre dos acordes. Las demás órdenes son
 `identificar` (los acordes que forman unas notas), `intervalo`, `escala` y `tonalidad`. Para instalarla: `swift build -c release` y copiar `.build/release/armonia` a
 una carpeta del `PATH`.
 

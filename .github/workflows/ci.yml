@@ -218,7 +218,7 @@ jobs:
           armonia grabar coral Do3 Mi4 Sol4 Do5, Fa2 La3 Fa4 Do5, Sol2 Re4 Sol4 Si4, Do3 Mi4 Sol4 Do5 \
             --cifrados --analisis --titulo Cadencia > grabados/coral.pdf
           comprobar grabados/coral.pdf pdf
-          armonia grabar melodia Sol4:4 Do5:2 Re5:8 Mi5:8 Fa#5:4 Sol5:2. --compas 3/4 --anacrusa 4 --tonalidad Sol mayor \
+          armonia grabar melodia Sol4:4 Do5:2 Re5:8 Mi5:8 Fa#5:4 Sol5:2. --compas 3/4 --anacrusa 4 --en Sol mayor \
             --formato svg > grabados/melodia.svg
           comprobar grabados/melodia.svg svg
           armonia grabar acordes Do Lam Re7 Sol7 Do --formato png > grabados/acordes.png

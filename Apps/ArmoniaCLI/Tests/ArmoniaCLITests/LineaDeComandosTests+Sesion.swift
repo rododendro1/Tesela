@@ -42,7 +42,7 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.resumen("la escala en un reloj (SVG): el círculo") == "la escala en un reloj")
         #expect(LineaDeComandos.resumen("formas de tocar\nopciones: --instrumento") == "formas de tocar")
         #expect(LineaDeComandos.resumen("en GUIDO (.gmn), para verlo") == "en GUIDO, para verlo")
-        #expect(LineaDeComandos.lineasDelIndice("conduccion-parsimoniosa", "de un acorde a otro").count == 1)
+        #expect(LineaDeComandos.lineasDelIndice("camino-parsimonioso", "de un acorde a otro").count == 1)
         #expect(
             LineaDeComandos.lineasDelIndice("una-orden-con-un-nombre-largo", "algo") == [
                 "  una-orden-con-un-nombre-largo", String(repeating: " ", count: 27) + "algo",

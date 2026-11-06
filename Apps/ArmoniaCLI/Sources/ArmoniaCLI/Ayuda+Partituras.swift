@@ -58,7 +58,7 @@ extension LineaDeComandos {
                 "armonia musicxml chords C Am D7 G7 C > progression.musicxml"),
             notas: TextosDeCLI.traduccion(\.notasMusicxmlAcordes),
             opciones: [
-                .compas, .anacrusa, .tonalidadDePartitura, .claveDePartitura, .tempo, .titulo, .duracion, .cifrados,
+                .compas, .anacrusa, .en, .claveDePartitura, .tempo, .titulo, .duracion, .cifrados,
                 .analisis,
             ]),
         // musicxml arpegios <cifrados> [opciones]

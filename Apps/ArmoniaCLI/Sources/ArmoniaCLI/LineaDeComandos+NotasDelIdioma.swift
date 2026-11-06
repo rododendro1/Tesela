@@ -3,12 +3,50 @@ import Foundation
 
 // MARK: - Las notas en el idioma de --idioma
 //
-// Las órdenes leen las notas en español y en inglés (`Acorde(leyendo:)`, `Altura(leyendo:)`…). Con `--idioma`, se
-// leen también en ese idioma: `armonia acorde H7 --idioma de` es Si7, `Fis7` es Fa♯7, `B` es Si♭, `ré7 --idioma fr`
-// es Re7 y `ре7 --idioma ru` también. Cada palabra que empieza por una nota del idioma y que, escrita en español, se
-// lee como nota, altura o acorde, pero no se leía o se leía otra cosa con la misma nota, se pasa a la orden en
-// español. Si así la orden no va bien, se ejecuta con las palabras como estaban: `escala Fis dorisch --idioma de`
-// lee el modo en alemán porque la tónica está en alemán.
+// Las órdenes leen las notas, los acordes, las escalas y las tonalidades primero en la notación de `--idioma`, con
+// `leyendo:en:` de la biblioteca, y si no, en español o en inglés (`init(leyendoEnLaOrden:)`): `armonia acorde B7/D
+// --idioma de` es Si♭7/Re, `escala re dorian --idioma oc` es Re dórico y `acorde Do7 --idioma de` sigue siendo Do7.
+//
+// Lo que no se lee así, sino con los lectores de la biblioteca que leen varias cosas a la vez (voces, corales,
+// progresiones), se lee con las palabras pasadas a español: cada palabra que empieza por una nota del idioma y que,
+// escrita en español, se lee como nota, altura o acorde, pero no se leía o se leía otra cosa con la misma nota, se pasa
+// a la orden en español (`H7` → `Si7` en alemán). Si así la orden no va bien, se ejecuta con las palabras como estaban.
+
+/// Lo que se lee en una notación concreta (`leyendo:en:`) o, sin ella, en español o en inglés (`leyendo:`).
+protocol LegibleEnUnaNotacion {
+    init(leyendo texto: String) throws
+    init(leyendo texto: String, en notacion: Notacion) throws
+}
+
+extension Nota: LegibleEnUnaNotacion {}
+extension Altura: LegibleEnUnaNotacion {}
+extension Acorde: LegibleEnUnaNotacion {}
+extension Escala: LegibleEnUnaNotacion {}
+extension Tonalidad: LegibleEnUnaNotacion {}
+
+/// La notación de la orden que se está ejecutando, en la que se leen sus notas (la de `--idioma`).
+enum NotacionDeLectura {
+    @TaskLocal static var actual: Notacion?
+}
+
+extension LegibleEnUnaNotacion {
+    /// En la notación de la orden (`--idioma de`: «B7» es Si♭7) o en español o en inglés, con el error de esta
+    /// lectura si no se lee de ninguna forma. Si se lee de las dos y da otra cosa, gana la que lee una nota más larga
+    /// al principio: «Do7» en alemán es Do7 (con «Do»), no D°7 (con «D»).
+    init(leyendoEnLaOrden texto: String) throws {
+        guard let notacion = NotacionDeLectura.actual, let enLaNotacion = try? Self(leyendo: texto, en: notacion) else {
+            try self.init(leyendo: texto)
+            return
+        }
+        guard let general = try? Self(leyendo: texto) else {
+            self = enLaNotacion
+            return
+        }
+        let largoEnLaNotacion = LineaDeComandos.largoDeLaNota(texto, en: notacion) ?? 0
+        let largoGeneral = LineaDeComandos.largoDeLaNota(texto) ?? 0
+        self = largoGeneral > largoEnLaNotacion ? general : enLaNotacion
+    }
+}
 
 extension LineaDeComandos {
     /// Ejecuta `ejecutar` con las notas del idioma de `notacion` en español; si así no va bien, con `argumentos` tal
@@ -67,11 +105,14 @@ extension LineaDeComandos {
         return palabra
     }
 
-    /// Los caracteres de la nota más larga, en español o en inglés, con que empieza la palabra («Do7» → 2).
-    static func largoDeLaNota(_ palabra: String) -> Int? {
+    /// Los caracteres de la nota más larga, en español o en inglés (o en `notacion`), con que empieza la palabra
+    /// («Do7» → 2; en alemán, 1).
+    static func largoDeLaNota(_ palabra: String, en notacion: Notacion? = nil) -> Int? {
         let caracteres = Array(palabra)
-        return stride(from: caracteres.count, through: 1, by: -1).first { largo in
-            (try? Nota(leyendo: String(caracteres[..<largo]))) != nil
+        return stride(from: min(caracteres.count, 24), through: 1, by: -1).first { largo in
+            let inicio = String(caracteres[..<largo])
+            guard let notacion else { return (try? Nota(leyendo: inicio)) != nil }
+            return (try? Nota(leyendo: inicio, en: notacion)) != nil
         }
     }
 

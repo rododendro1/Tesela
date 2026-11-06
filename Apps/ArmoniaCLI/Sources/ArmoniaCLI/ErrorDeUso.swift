@@ -96,9 +96,9 @@ enum ErrorDeUso: Error {
     /// `reloj` sin escala.
     case faltaEscalaDelReloj
     case faltaEscalaDeLaHoja
-    /// `hoja --acordes` sin acordes.
+    /// `hoja acordes` sin acordes.
     case faltanLosAcordesDeLaHoja
-    /// `hoja --acorde` sin acorde, o con más de uno.
+    /// `hoja acorde` sin acorde, o con más de uno.
     case faltaElAcordeDeLaHoja
     /// `pentagrama` sin escala, acorde ni arpegio.
     case faltaLoQueDibujaElPentagrama
@@ -321,14 +321,14 @@ enum ErrorDeUso: Error {
             return TextosDeCLI.traduccion { $0.unAcordeDeVecinos(ejemplo) }
         case .vecinosSinFamilia: return TextosDeCLI.traduccion(\.vecinosSinFamilia)
         case .dosAcordesDeCamino:
-            let ejemplo = "armonia conduccion-parsimoniosa Sol7 Rem7"
+            let ejemplo = "armonia camino-parsimonioso Sol7 Rem7"
             return TextosDeCLI.traduccion { $0.dosAcordesDeCamino(ejemplo) }
         case .caminoSinConexion: return TextosDeCLI.traduccion(\.caminoSinConexion)
         case .faltanPasosDePLR:
             let ejemplo = "armonia plr Do PLR"
             return TextosDeCLI.traduccion { $0.faltanPasosDePLR(ejemplo) }
         case .plrSoloTriadas(let camino):
-            let ejemplo = "armonia plr " + (camino ? "Do Mibm" : "Do PLR")
+            let ejemplo = "armonia plr " + (camino ? "camino Do Mibm" : "Do PLR")
             return TextosDeCLI.traduccion { $0.plrSoloTriadas(ejemplo, camino) }
         case .faltaTipoDePartitura(let orden):
             let ejemplo = "armonia \(orden) melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4"
@@ -374,28 +374,28 @@ enum ErrorDeUso: Error {
             let ejemplo = "armonia \(orden) Do Mi Sol"
             return TextosDeCLI.traduccion { $0.faltanNotasDelDibujo(ejemplo, orden) }
         case .faltaAcordeDelDibujo(let orden):
-            let ejemplo = "armonia \(orden) --acorde Sol7"
+            let ejemplo = "armonia \(orden) acorde Sol7"
             return TextosDeCLI.traduccion { $0.faltaAcordeDelDibujo(ejemplo, orden) }
         case .faltaEscalaDelDibujo(let orden):
-            let ejemplo = "armonia \(orden) --escala Re dórico"
+            let ejemplo = "armonia \(orden) escala Re dórico"
             return TextosDeCLI.traduccion { $0.faltaEscalaDelDibujo(ejemplo, orden) }
         case .faltanClasesDelDibujo(let orden):
-            let ejemplo = "armonia \(orden) --clases 0 4 7"
+            let ejemplo = "armonia \(orden) clases 0 4 7"
             return TextosDeCLI.traduccion { $0.faltanClasesDelDibujo(ejemplo, orden) }
         case .faltanTriadasDelRecorrido(let orden):
-            let ejemplo = "armonia \(orden) --recorrido Do Lam Fa Rem"
+            let ejemplo = "armonia \(orden) recorrido Do Lam Fa Rem"
             return TextosDeCLI.traduccion { $0.faltanTriadasDelRecorrido(ejemplo, orden) }
         case .cicloMalEscrito(let orden):
-            let ejemplo = "armonia \(orden) --ciclo hexatonico Do"
+            let ejemplo = "armonia \(orden) ciclo hexatonico Do"
             return TextosDeCLI.traduccion { $0.cicloMalEscrito(ejemplo, orden) }
         case .recorridoSoloTriadas(let orden):
-            let ejemplo = "armonia \(orden) --recorrido Do Lam Fa Rem"
+            let ejemplo = "armonia \(orden) recorrido Do Lam Fa Rem"
             return TextosDeCLI.traduccion { $0.recorridoSoloTriadas(ejemplo, orden) }
         case .caminoSoloTriadas(let orden):
-            let ejemplo = "armonia \(orden) --camino Do Mibm"
+            let ejemplo = "armonia \(orden) camino Do Mibm"
             return TextosDeCLI.traduccion { $0.caminoSoloTriadas(ejemplo, orden) }
         case .cicloSoloTriadas(let orden):
-            let ejemplo = "armonia \(orden) --ciclo hexatonico Do"
+            let ejemplo = "armonia \(orden) ciclo hexatonico Do"
             return TextosDeCLI.traduccion { $0.cicloSoloTriadas(ejemplo, orden) }
         case .opcionesDeCuadricula: return TextosDeCLI.traduccion(\.opcionesDeCuadricula)
         }

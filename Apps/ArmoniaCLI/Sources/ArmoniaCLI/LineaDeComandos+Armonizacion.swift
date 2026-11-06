@@ -126,7 +126,7 @@ extension LineaDeComandos {
         if let leido = try? Intervalo(leyendo: primero) {
             intervalo = leido
         } else {
-            let destino = try Nota(leyendo: primero)
+            let destino = try Nota(leyendoEnLaOrden: primero)
             let origen = PresentacionDeTransposicion.tonalidad(de: texto, contenido: contenido)?.tonica ?? destino
             intervalo = origen.intervaloMasCorto(hasta: destino)
         }
@@ -142,7 +142,7 @@ extension LineaDeComandos {
         guard let tonalidad = try acordes.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
         if let desconocida = acordes.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard !acordes.restantes.isEmpty else { throw ErrorDeUso.faltanAcordesDeLaRearmonizacion }
-        let leidos = try acordes.restantes.map { try Acorde(leyendo: $0) }
+        let leidos = try acordes.restantes.map { try Acorde(leyendoEnLaOrden: $0) }
         guard let resultado = PresentacionDeRearmonizacion.proponer(leidos, en: tonalidad, notacion: notacion) else {
             throw ErrorDeUso.faltanAcordesDeLaRearmonizacion
         }

@@ -275,17 +275,17 @@ Desde la línea de comandos, `armonia tonnetz` escribe el SVG y `armonia plr`, l
 
 ```
 armonia tonnetz Do Mi Sol Si > domaj7.svg
-armonia tonnetz --acorde Fa#m7 --margen 2 > fasm7.svg
-armonia tonnetz --escala "Re dórico" > dorico.svg
-armonia tonnetz --clases 0,4,7,11 > clases.svg
-armonia tonnetz --recorrido Do Lam Rem Sol Do > bomba-de-comas.svg
-armonia tonnetz --camino Do Mibm > camino.svg
-armonia tonnetz --ciclo hexatonico Do > hexatonico.svg
-armonia tabla --ciclo octatonico Do > octatonico.svg
-armonia plr Do PLR          # Do –P→ Dom –L→ La♭ –R→ Fam
-armonia plr Do Mibm         # Do –P→ Dom –R→ Mi♭ –P→ Mi♭m
-armonia plr Do hexatonico   # Do –P→ Dom –L→ La♭ –P→ La♭m –L→ Mi –P→ Mim –L→ Do
-armonia tonnetz --ciclo octatonico Do > octatonico.svg
+armonia tonnetz acorde Fa#m7 --margen 2 > fasm7.svg
+armonia tonnetz escala "Re dórico" > dorico.svg
+armonia tonnetz clases 0,4,7,11 > clases.svg
+armonia tonnetz recorrido Do Lam Rem Sol Do > bomba-de-comas.svg
+armonia tonnetz camino Do Mibm > camino.svg
+armonia tonnetz ciclo hexatonico Do > hexatonico.svg
+armonia tabla ciclo octatonico Do > octatonico.svg
+armonia plr Do PLR              # Do –P→ Dom –L→ La♭ –R→ Fam
+armonia plr camino Do Mibm      # Do –P→ Dom –R→ Mi♭ –P→ Mi♭m
+armonia plr ciclo hexatonico Do # Do –P→ Dom –L→ La♭ –P→ La♭m –L→ Mi –P→ Mim –L→ Do
+armonia tonnetz ciclo octatonico Do > octatonico.svg
 ```
 
 ## Tabla armónica
@@ -317,12 +317,12 @@ en el vértice común de cada tríada: naranja si es mayor, azul si es menor. Co
 alturas se marcan todos los hexágonos que suenan igual.
 
 ```
-armonia tabla --acorde Domaj7 > domaj7.svg
-armonia tabla --escala "Re dórico" > dorico.svg
+armonia tabla acorde Domaj7 > domaj7.svg
+armonia tabla escala "Re dórico" > dorico.svg
 armonia tabla Do3 Sol3 Mi4 Si4 > abierto.svg      # con octava: alturas
-armonia tabla --clases 0,4,7 > clases.svg
-armonia tabla --recorrido Do Lam Fa Rem > recorrido.svg
-armonia tabla --camino Do Mibm > camino.svg
+armonia tabla clases 0,4,7 > clases.svg
+armonia tabla recorrido Do Lam Fa Rem > recorrido.svg
+armonia tabla camino Do Mibm > camino.svg
 ```
 
 Los recorridos también se dibujan en la tabla: `TablaArmonica(recorrido:)` y

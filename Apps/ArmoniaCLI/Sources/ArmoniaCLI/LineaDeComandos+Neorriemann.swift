@@ -14,7 +14,7 @@ extension LineaDeComandos {
         let tipos = argumentos.quitarMarca(.ampliada) ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
         let acordes = argumentos.restantes
         guard acordes.count == 1 else { throw ErrorDeUso.unAcordeDeVecinos }
-        let acorde = try Acorde(leyendo: acordes[0])
+        let acorde = try Acorde(leyendoEnLaOrden: acordes[0])
         let pasos =
             tipos.map { $0.contains(acorde.tipo) ? acorde.vecinosParsimoniosos(voces: voces, tipos: $0) : [] }
             ?? acorde.vecinosParsimoniosos(voces: voces)
@@ -24,7 +24,7 @@ extension LineaDeComandos {
         return bien(pasos.map { $0.texto(en: notacion) }.joined(separator: "\n"))
     }
 
-    /// `conduccion-parsimoniosa Sol7 Rem7`: Sol7 –Si→Do→ … paso a paso.
+    /// `camino-parsimonioso Sol7 Rem7`: Sol7 –Si→Do→ … paso a paso.
     static func caminoParsimonioso(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
         guard let voces = argumentos.quitarNumero(.voces, en: 1...2, porDefecto: 1) else {
@@ -34,8 +34,8 @@ extension LineaDeComandos {
         let tipos = argumentos.quitarMarca(.ampliada) ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
         let acordes = argumentos.restantes
         guard acordes.count == 2 else { throw ErrorDeUso.dosAcordesDeCamino }
-        let origen = try Acorde(leyendo: acordes[0])
-        let destino = try Acorde(leyendo: acordes[1])
+        let origen = try Acorde(leyendoEnLaOrden: acordes[0])
+        let destino = try Acorde(leyendoEnLaOrden: acordes[1])
         guard let camino = origen.caminoParsimonioso(hasta: destino, voces: voces, tipos: tipos) else {
             throw ErrorDeUso.caminoSinConexion
         }
@@ -48,18 +48,50 @@ extension LineaDeComandos {
         return bien(texto + "\n" + Mensaje.pasos(camino.count).texto(en: notacion))
     }
 
-    /// `plr Do PLR`: la tríada tras cada paso. `plr Do Mibm`: el camino más corto.
-    static func plr(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        guard argumentos.count >= 2 else { throw ErrorDeUso.faltanPasosDePLR }
-        let origen = try Acorde(leyendo: argumentos[0])
+    /// Lo que pide `plr`: unos pasos desde una tríada (`plr Do PLR`), el camino más corto entre dos (`plr camino Do
+    /// Mibm`) o un ciclo desde una (`plr ciclo hexatonico Do`, como en `tonnetz`).
+    enum PedidoDePLR {
+        case pasos(Acorde, [TransformacionNeorriemanniana])
+        case ciclo(Acorde, CicloNeorriemanniano)
+    }
+
+    /// Lee lo que pide `plr`; el camino se da ya como sus pasos.
+    static func pedidoDePLR(_ argumentos: [String]) throws -> PedidoDePLR {
+        if let desconocida = Argumentos(argumentos).opcionDesconocida {
+            throw ErrorDeUso.opcionDesconocida(desconocida)
+        }
+        guard let primera = argumentos.first?.lowercased() else { throw ErrorDeUso.faltanPasosDePLR }
+        let resto = Array(argumentos.dropFirst())
+        if OpcionDeOrden.camino.leidos.contains("--" + primera) {
+            guard resto.count == 2 else { throw ErrorDeUso.faltanPasosDePLR }
+            let origen = try Acorde(leyendoEnLaOrden: resto[0])
+            guard let camino = origen.caminoNeorriemanniano(hasta: try Acorde(leyendoEnLaOrden: resto[1])) else {
+                throw ErrorDeUso.plrSoloTriadas(camino: true)
+            }
+            return .pasos(origen, camino)
+        }
+        if OpcionDeOrden.ciclo.leidos.contains("--" + primera) {
+            guard let triada = resto.last, resto.count >= 2,
+                let ciclo = try? CicloNeorriemanniano(leyendo: resto.dropLast().joined(separator: " "))
+            else { throw ErrorDeUso.cicloMalEscrito(orden: "plr") }
+            let origen = try Acorde(leyendoEnLaOrden: triada)
+            guard Tonnetz.Triada(origen) != nil else { throw ErrorDeUso.cicloSoloTriadas(orden: "plr") }
+            return .ciclo(origen, ciclo)
+        }
+        guard resto.count >= 1 else { throw ErrorDeUso.faltanPasosDePLR }
+        let origen = try Acorde(leyendoEnLaOrden: argumentos[0])
         guard Tonnetz.Triada(origen) != nil else { throw ErrorDeUso.plrSoloTriadas(camino: false) }
-        let resto = argumentos.dropFirst().joined(separator: " ")
-        let pasos: [TransformacionNeorriemanniana]
-        if let secuencia = try? TransformacionNeorriemanniana.secuencia(leyendo: resto) {
-            pasos = secuencia
-        } else if let ciclo = try? CicloNeorriemanniano(leyendo: resto) {
+        return .pasos(origen, try TransformacionNeorriemanniana.secuencia(leyendo: resto.joined(separator: " ")))
+    }
+
+    /// `plr Do PLR`: la tríada tras cada paso. `plr camino Do Mibm`: el camino más corto. `plr ciclo hexatonico Do`:
+    /// el ciclo entero.
+    static func plr(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        let (origen, pasos): (Acorde, [TransformacionNeorriemanniana])
+        switch try pedidoDePLR(argumentos) {
+        case .ciclo(let triada, let ciclo):
             // Do –P→ Dom –L→ La♭ … –L→ Do, con la ortografía más sencilla.
-            let acordes = origen.ciclo(ciclo)!
+            let acordes = triada.ciclo(ciclo)!
             var texto = acordes[0].cifrado(en: notacion)
             for (i, acorde) in acordes.dropFirst().enumerated() {
                 texto += " –\(ciclo.transformaciones[i % 2])→ " + acorde.cifrado(en: notacion)
@@ -67,12 +99,7 @@ extension LineaDeComandos {
             return bien(
                 texto + "\n" + Mensaje.ciclo(ciclo).texto(en: notacion) + ", "
                     + Mensaje.triadas(ciclo.longitud).texto(en: notacion))
-        } else {
-            let destino = try Acorde(leyendo: resto)
-            guard let camino = origen.caminoNeorriemanniano(hasta: destino) else {
-                throw ErrorDeUso.plrSoloTriadas(camino: true)
-            }
-            pasos = camino
+        case .pasos(let triada, let leidos): (origen, pasos) = (triada, leidos)
         }
         // Do –P→ Dom –L→ La♭
         var acorde = origen.transformar([])!
