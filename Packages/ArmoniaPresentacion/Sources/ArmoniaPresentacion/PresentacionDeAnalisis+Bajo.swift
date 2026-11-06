@@ -104,22 +104,30 @@ extension PresentacionDeAnalisis {
         }
         let sube = destino.midi > raiz.midi || (destino.midi == raiz.midi && raiz.midi < 48)
         let camino = hacia(sube).count >= 2 ? hacia(sube) : hacia(!sube)
-        let segunda = camino.first ?? raiz
-        let tercera = camino.dropFirst().first ?? segunda
+        let segunda = camino.isEmpty ? raiz : camino[0]
+        let tercera = camino.count > 1 ? camino[1] : segunda
         // Por encima del destino si se viene de arriba; si no, por debajo. Si cae fuera o repite, del otro lado.
         let arriba = destino.midi + 1
         let abajo = destino.midi - 1
         var lados = tercera.midi > destino.midi ? [arriba, abajo] : [abajo, arriba]
         lados = lados.filter { $0 != tercera.midi } + lados.filter { $0 == tercera.midi }
-        let paso = lados.first { registroDelBajo.contains($0) } ?? lados[0]
+        let paso = registroDelBajo.contains(lados[0]) ? lados[0] : lados[1]
         let cuarta = Altura(midi: paso, ventana: paso > destino.midi ? .bemoles : .sostenidos)
         return [raiz, segunda, tercera, cuarta]
     }
 
     /// La nota en el registro del bajo más cercana a `midi`.
     static func cercana(_ nota: Nota, a midi: Int) -> Altura {
-        let candidatas = (1...4).map { Altura(nota, octava: $0) }.filter { registroDelBajo.contains($0.midi) }
-        return candidatas.min { abs($0.midi - midi) < abs($1.midi - midi) } ?? Altura(nota, octava: 2)
+        // El registro abarca más de una octava, así que siempre hay alguna.
+        var mejor = Altura(nota, octava: 2)
+        for octava in 1...4 {
+            let candidata = Altura(nota, octava: octava)
+            guard registroDelBajo.contains(candidata.midi) else { continue }
+            if !registroDelBajo.contains(mejor.midi) || abs(candidata.midi - midi) < abs(mejor.midi - midi) {
+                mejor = candidata
+            }
+        }
+        return mejor
     }
 
     /// Donde suena una nota escrita del bajo: una octava más grave.

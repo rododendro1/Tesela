@@ -35,8 +35,13 @@ extension PresentacionDeEstudioDeEscala {
         return progresionesDeEjemplo.compactMap { grados in
             let acordes = grados.compactMap { escala.acorde(grado: $0) }
             guard acordes.count == grados.count else { return nil }
-            let romanos = grados.map {
-                escala.cifradoRomano(grado: $0, referencia: referencia.tipo) ?? String($0)
+            var romanos: [String] = []
+            for grado in grados {
+                if let romano = escala.cifradoRomano(grado: grado, referencia: referencia.tipo) {
+                    romanos.append(romano)
+                } else {
+                    romanos.append(String(grado))
+                }
             }
             var ajenas: [Nota] = []
             for nota in acordes.flatMap(\.notas)
