@@ -24,7 +24,7 @@ def variante_de(a,b):
     if norm(a)==norm(b): return True
     pa,pb=palabras(a),palabras(b)
     if ''.join(map(esq,pa))==''.join(map(esq,pb)): return True
-    if len(pa)!=len(pb): 
+    if len(pa)!=len(pb):
         return difflib.SequenceMatcher(None,''.join(map(esq,pa)),''.join(map(esq,pb))).ratio()>=0.9 and abs(len(''.join(pa))-len(''.join(pb)))<=1
     for x,y in zip(pa,pb):
         if x==y: continue
