@@ -46,7 +46,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "no existe l\'unísono disminuiu: de Do a Do♭ bi ha un unísono aumentau descendent (escribe-lo -1A)",
         reglaDeLasJustas: "l\'unísono, a 4ª, a 5ª y a 8ª son chustas, aumentadas u disminuidas",
         reglaDeLasMayores: "a 2ª, a 3ª, a 6ª y a 7ª son mayors, menors, aumentadas u disminuidas",
-        intervaloInexistente: { numero, calidad, notacion, regla in "no existe a \(numero)ª \(calidad.nombre(en: .aragonesPalabras)): \(regla.aragones)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "no existe a \(numero)ª \(calidad.nombre(en: .conPalabras(.aragones))): \(regla.aragones)" },
         alteracionNoReconocida: { signo in "«\(signo)» no ye una alteración (s\'asperaba ♯, ♭, 𝄪, 𝄫, #, b, x u ♮)" },
 
         // ErrorDeLectura.swift (conjuntos y series)

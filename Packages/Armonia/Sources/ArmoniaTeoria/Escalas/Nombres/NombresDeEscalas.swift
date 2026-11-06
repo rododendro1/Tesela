@@ -191,7 +191,7 @@ extension TipoDeEscala {
     package static func buscar(nombre: String, conTonicaEn notacion: Notacion) -> TipoDeEscala? {
         if notacion == .inglesPalabras { return buscar(nombre: nombre, aceptarIngles: true) }
         let normalizado = normalizar(nombre)
-        if notacion == .rusoPalabras || notacion == .griegoPalabras {
+        if notacion == .conPalabras(.ruso) || notacion == .conPalabras(.griego) {
             return NombresDeEscalas.indiceRusoGriego[normalizado] ?? buscar(nombre: nombre, aceptarIngles: true)
         }
         // En alemán y en húngaro, el suyo o el del otro, que escriben las notas igual (C, H, B): «C dór», «H moll».

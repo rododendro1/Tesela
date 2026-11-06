@@ -31,9 +31,9 @@ import Testing
         #expect(try (Nota(leyendo: "Si𝄫").nombre) == "Si𝄫")
         #expect(try (Nota(leyendo: "Do♮")) == Nota("Do"))
         // Con más de cuatro signos, el número.
-        #expect(Alteracion(5).nombre(en: .alemanPalabras) == "5 Kreuze")
-        #expect(Alteracion(-5).nombre(en: .alemanPalabras) == "5 Be")
-        #expect(Alteracion(5).nombre(en: .euskeraPalabras) == "5 diesa")
+        #expect(Alteracion(5).nombre(en: .conPalabras(.aleman)) == "5 Kreuze")
+        #expect(Alteracion(-5).nombre(en: .conPalabras(.aleman)) == "5 Be")
+        #expect(Alteracion(5).nombre(en: .conPalabras(.euskera)) == "5 diesa")
     }
 
     @Test func alturas() throws {
@@ -54,9 +54,9 @@ import Testing
                     != Intervalo(numero: 4, calidad: .aumentada(3))?.nombre(en: notacion),
                 Comment(rawValue: idioma.codigo))
         }
-        #expect(Intervalo(numero: 1, calidad: .aumentada(1))?.nombre(en: .occitanoPalabras) == "unisson aumentat")
+        #expect(Intervalo(numero: 1, calidad: .aumentada(1))?.nombre(en: .conPalabras(.occitano)) == "unisson aumentat")
         #expect(
-            Intervalo(numero: 1, calidad: .aumentada(2))?.nombre(en: .occitanoPalabras) == "unisson doblament aumentat")
+            Intervalo(numero: 1, calidad: .aumentada(2))?.nombre(en: .conPalabras(.occitano)) == "unisson doblament aumentat")
         #expect(Intervalo(numero: 1, calidad: .disminuida(1)) == nil)
         #expect(Intervalo.ordinalEnCifras(5, en: .griego) == "5η")
         #expect(Intervalo.ordinalEnCifras(5, en: .ruso) == "5-я")
@@ -119,9 +119,9 @@ import Testing
         let doMayor = Tonalidad(.do, .mayor)
         #expect(doMayor.grado(5) == Nota("Sol"))
         #expect(doMayor.nombre(claseDeAltura: 10) == Nota("Sib"))
-        #expect(doMayor.lugar(en: .rusoPalabras) == "в до мажоре")
-        #expect(Tonalidad(.la, .menor).lugar(en: .rusoPalabras) == "в ля миноре")
-        #expect(doMayor.lugar(en: .griegoPalabras) == "σε ντο μείζονα")
+        #expect(doMayor.lugar(en: .conPalabras(.ruso)) == "в до мажоре")
+        #expect(Tonalidad(.la, .menor).lugar(en: .conPalabras(.ruso)) == "в ля миноре")
+        #expect(doMayor.lugar(en: .conPalabras(.griego)) == "σε ντο μείζονα")
         let notas = [Nota("Sol"), Nota("Si"), Nota("Re"), Nota("Fa#")]
         #expect(Tonalidad.identificar(notas: notas) == Tonalidad.candidatos(notas: notas).map(\.valor))
     }

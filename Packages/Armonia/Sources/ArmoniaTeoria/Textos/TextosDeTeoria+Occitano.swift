@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         fundamentalNoOmitible: "se pòt pas ometre la fondamentala",
         gradoNoOmitible: { grado in "«omit\(grado)» es pas valid (se pòdon ometre 3, 5, 7, 9, 11 e 13)" },
         faltaLaFundamental: "manca la fondamentala",
-        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .occitanoPalabras)) a pas cap de ròtle dins un acòrd per tèrças" },
+        intervaloSinPapel: { intervalo, notacion in "la \(intervalo.nombre(en: .conPalabras(.occitano))) a pas cap de ròtle dins un acòrd per tèrças" },
         terceraMayorYMenor: "a una tèrça majora e una tèrça menora alhora (la ♯9 s'escriu coma novena aumentada, pas coma tèrça menora)",
         variasSeptimas: "a mai d'una setena",
         septimaDisminuidaFueraDelDisminuido: "la setena diminuida apareis sonque dins l'acòrd diminuit (amb tèrça menora e quinta diminuida)",

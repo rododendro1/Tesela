@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         fundamentalNoOmitible: "η θεμέλια δεν μπορεί να παραλειφθεί",
         gradoNoOmitible: { grado in "το «omit\(grado)» δεν είναι έγκυρο (παραλείπονται μόνο τα 3, 5, 7, 9, 11 και 13)" },
         faltaLaFundamental: "λείπει η θεμέλια",
-        intervaloSinPapel: { intervalo, notacion in "η \(intervalo.nombre(en: .griegoPalabras)) δεν έχει ρόλο σε συγχορδία κατά τρίτες" },
+        intervaloSinPapel: { intervalo, notacion in "η \(intervalo.nombre(en: .conPalabras(.griego))) δεν έχει ρόλο σε συγχορδία κατά τρίτες" },
         terceraMayorYMenor: "έχει ταυτόχρονα μεγάλη και μικρή τρίτη (η ♯9 γράφεται ως αυξημένη ένατη, όχι ως μικρή τρίτη)",
         variasSeptimas: "έχει περισσότερες από μία έβδομες",
         septimaDisminuidaFueraDelDisminuido: "η ελαττωμένη έβδομη εμφανίζεται μόνο στην ελαττωμένη συγχορδία (με μικρή τρίτη και ελαττωμένη πέμπτη)",

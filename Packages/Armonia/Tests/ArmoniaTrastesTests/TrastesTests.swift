@@ -428,9 +428,9 @@ extension DigitacionTests {
     @Test func nombresDeLosInstrumentos() {
         #expect(Encordado.todos.map { $0.nombre(en: .espanolCompacto) } == Encordado.todos.map(\.nombre))
         #expect(Encordado.guitarraDeSieteCuerdas.titulo(en: .inglesASCII) == "Seven-string guitar")
-        #expect(Encordado.mandolina.nombre(en: .portuguesPalabras) == "bandolim")
+        #expect(Encordado.mandolina.nombre(en: .conPalabras(.portugues)) == "bandolim")
         let propio = Encordado(nombre: "laúd", afinacion: Encordado.guitarra.afinacion)
-        #expect(propio.nombre(en: .alemanPalabras) == "laúd")
+        #expect(propio.nombre(en: .conPalabras(.aleman)) == "laúd")
     }
 }
 

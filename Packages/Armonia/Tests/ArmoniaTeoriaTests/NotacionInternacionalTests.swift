@@ -98,17 +98,17 @@ import Testing
 
     /// Las notas en una notación y los textos en otro idioma.
     @Test func notasYTextosPorSeparado() throws {
-        let rusoEnEspanol = Notacion.rusoPalabras.conTextos(en: .espanol)
-        #expect(rusoEnEspanol == Notacion(escritura: .rusoPalabras, textos: .espanol))
+        let rusoEnEspanol = Notacion.conPalabras(.ruso).conTextos(en: .espanol)
+        #expect(rusoEnEspanol == Notacion(escritura: .conPalabras(.ruso), textos: .espanol))
         #expect(rusoEnEspanol.idiomaDeLasNotas == .ruso)
         #expect(rusoEnEspanol.textos == .espanol)
-        #expect(rusoEnEspanol.notas == .rusoPalabras)
-        #expect(rusoEnEspanol.escritura == .rusoPalabras)
+        #expect(rusoEnEspanol.notas == .conPalabras(.ruso))
+        #expect(rusoEnEspanol.escritura == .conPalabras(.ruso))
         #expect(rusoEnEspanol.textos == .espanol)
         #expect(rusoEnEspanol.esCombinada)
-        #expect(!Notacion.rusoPalabras.esCombinada)
-        #expect(Notacion.rusoPalabras.textos == .ruso)
-        #expect(Notacion(escritura: .alemanPalabras, textos: .aleman) == .alemanPalabras)
+        #expect(!Notacion.conPalabras(.ruso).esCombinada)
+        #expect(Notacion.conPalabras(.ruso).textos == .ruso)
+        #expect(Notacion(escritura: .conPalabras(.aleman), textos: .aleman) == .conPalabras(.aleman))
         #expect(Notacion.allCases.map(\.escritura) == EscrituraDeNotas.allCases)
         #expect(Acorde("Sol7/Si").nombre(en: rusoEnEspanol) == "соль séptima de dominante, primera inversión")
         #expect(Acorde("Sol7/La").nombre(en: rusoEnEspanol) == "соль séptima de dominante, con bajo en ля")
@@ -125,15 +125,15 @@ import Testing
         #expect(
             Acorde("Sol7").nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles))
                 == "Sol dominant seventh, root position")
-        #expect(Tonalidad("Fa# mayor").nombre(en: Notacion.alemanPalabras.conTextos(en: .frances)) == "Fis-Dur")
-        #expect(Acorde("Sib7").cifrado(en: Notacion.alemanPalabras.conTextos(en: .frances)) == "B7")
+        #expect(Tonalidad("Fa# mayor").nombre(en: Notacion.conPalabras(.aleman).conTextos(en: .frances)) == "Fis-Dur")
+        #expect(Acorde("Sib7").cifrado(en: Notacion.conPalabras(.aleman).conTextos(en: .frances)) == "B7")
         // Si el idioma ya es el de los textos, la notación queda simple; no se anidan.
-        #expect(Notacion.catalanPalabras.conTextos(en: .catalan) == .catalanPalabras)
-        #expect(Notacion.alemanPalabras.conTextos(en: .aleman) == .alemanPalabras)
-        #expect(Notacion.griegoPalabras.conTextos(en: .griego) == .griegoPalabras)
-        #expect(Notacion.griegoPalabras.conTextos(en: .ingles).esCombinada)
-        #expect(rusoEnEspanol.conTextos(en: .frances) == Notacion(escritura: .rusoPalabras, textos: .frances))
-        #expect(rusoEnEspanol.conTextos(en: .ruso) == .rusoPalabras)
+        #expect(Notacion.conPalabras(.catalan).conTextos(en: .catalan) == .conPalabras(.catalan))
+        #expect(Notacion.conPalabras(.aleman).conTextos(en: .aleman) == .conPalabras(.aleman))
+        #expect(Notacion.conPalabras(.griego).conTextos(en: .griego) == .conPalabras(.griego))
+        #expect(Notacion.conPalabras(.griego).conTextos(en: .ingles).esCombinada)
+        #expect(rusoEnEspanol.conTextos(en: .frances) == Notacion(escritura: .conPalabras(.ruso), textos: .frances))
+        #expect(rusoEnEspanol.conTextos(en: .ruso) == .conPalabras(.ruso))
         #expect(!Notacion.allCases.contains(rusoEnEspanol))
         // Los mensajes de error.
         do {
@@ -164,7 +164,7 @@ import Testing
         #expect((try? Escala(leyendo: "ντο altered")) == Escala(.do, .alterada))
         // Todos los nombres franceses e italianos del catálogo se leen.
         for tipo in TipoDeEscala.occidentales {
-            for notacion in [Notacion.francesPalabras, .italianoPalabras] {
+            for notacion in [Notacion.conPalabras(.frances), .conPalabras(.italiano)] {
                 let escala = Escala(Nota("Fa#"), tipo)
                 #expect(
                     (try? Escala(leyendo: escala.nombre(en: notacion))) == escala, Comment(rawValue: escala.nombre(en: notacion))
@@ -189,17 +189,17 @@ import Testing
     }
 
     @Test func vocabularioEIdas() throws {
-        #expect(Notacion.alemanPalabras.idiomaDeLasNotas == .aleman)
-        #expect(Notacion.francesPalabras.idiomaDeLasAbreviaturas == .ingles)
+        #expect(Notacion.conPalabras(.aleman).idiomaDeLasNotas == .aleman)
+        #expect(Notacion.conPalabras(.frances).idiomaDeLasAbreviaturas == .ingles)
         #expect(Notacion.espanolASCII.idiomaDeLasAbreviaturas == .espanol)
-        #expect(Notacion(escritura: EscrituraDeNotas(idioma: .italiano, ascii: false)) == .italianoPalabras)
+        #expect(Notacion(escritura: EscrituraDeNotas(idioma: .italiano, ascii: false)) == .conPalabras(.italiano))
         // En alemán, el resto del vocabulario también.
-        #expect(Escala(.re, .dorico).nombre(en: .alemanPalabras) == "D dorisch")
-        #expect(Intervalo.terceraMayor.nombre(en: .alemanPalabras) == "große Terz")
+        #expect(Escala(.re, .dorico).nombre(en: .conPalabras(.aleman)) == "D dorisch")
+        #expect(Intervalo.terceraMayor.nombre(en: .conPalabras(.aleman)) == "große Terz")
         // Todos los nombres de nota (hasta cuatro alteraciones) vuelven a leerse igual.
         for notacion in [
-            Notacion.alemanPalabras, .francesPalabras, .italianoPalabras, .catalanPalabras, .gallegoPalabras,
-            .euskeraPalabras, .portuguesPalabras,
+            Notacion.conPalabras(.aleman), .conPalabras(.frances), .conPalabras(.italiano), .conPalabras(.catalan), .conPalabras(.gallego),
+            .conPalabras(.euskera), .conPalabras(.portugues),
         ] {
             for quintas in -29...33 {
                 let nombre = Nota(pasosDeQuinta: quintas)

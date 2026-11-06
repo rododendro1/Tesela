@@ -34,7 +34,7 @@ import Testing
         #expect(Notacion.espanolCompacto.tipografia == .conDobles)
         #expect(Notacion.inglesASCII.tipografia == .ascii)
         #expect(Notacion.espanolASCII.tipografia == .ascii)
-        #expect(Notacion.francesPalabras.tipografia == .conSimples)
+        #expect(Notacion.conPalabras(.frances).tipografia == .conSimples)
         #expect(Alteracion(-2).numeroDeSignos == 2)
         #expect(Alteracion.sostenido.pasosDeQuinta == 7)
         #expect(Alteracion.bemol.esBemol)

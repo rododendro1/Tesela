@@ -41,8 +41,8 @@ import Testing
         #expect(perfecta.acordes.map(\.cifrado) == ["V7", "I"])
         #expect(perfecta.description == "Cadencia auténtica V7–I (acordes 3 → 4)")
         #expect(perfecta.descripcion(en: .inglesASCII) == "Authentic cadence V7–I (chords 3 → 4)")
-        #expect(perfecta.descripcion(en: .catalanPalabras) == "Cadència autèntica V7–I (acords 3 → 4)")
-        #expect(perfecta.descripcion(en: .euskeraPalabras) == "Kadentzia autentikoa V7–I (3 → 4 akordeak)")
+        #expect(perfecta.descripcion(en: .conPalabras(.catalan)) == "Cadència autèntica V7–I (acords 3 → 4)")
+        #expect(perfecta.descripcion(en: .conPalabras(.euskera)) == "Kadentzia autentikoa V7–I (3 → 4 akordeak)")
         let imperfecta = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7/Si Do", en: Tonalidad(.do)).cadencias[0]
         #expect(!imperfecta.esPerfecta)
         #expect(Cadencia.Tipo.semicadencia.nombre(en: .inglesASCII) == "half cadence")
@@ -67,13 +67,13 @@ import Testing
                 == "De Do mayor a Sol mayor en el acorde 5 (pivote: Lam = vi en Do mayor = ii en Sol mayor)")
         #expect(recorrido.description == "I–IV–V7–I en Do mayor → ii–V7–I en Sol mayor")
         #expect(
-            modulacion.descripcion(en: .catalanPalabras)
+            modulacion.descripcion(en: .conPalabras(.catalan))
                 == "De do major a sol major a l'acord 5 (pivot: Lam = vi en do major = ii en sol major)")
         #expect(
-            modulacion.descripcion(en: .gallegoPalabras)
+            modulacion.descripcion(en: .conPalabras(.gallego))
                 == "De do maior a sol maior no acorde 5 (pivote: Lam = vi en do maior = ii en sol maior)")
         #expect(
-            modulacion.descripcion(en: .euskeraPalabras)
+            modulacion.descripcion(en: .conPalabras(.euskera))
                 == "Do maiorretik sol maiorrera, 5. akordean (pibota: Lam = vi do maiorrean = ii sol maiorrean)")
         #expect(recorrido.cadencias.map(\.tipo) == [.autentica, .autentica])
         #expect(recorrido.cadencias.map(\.tonalidad) == [Tonalidad(.do), Tonalidad(.sol)])

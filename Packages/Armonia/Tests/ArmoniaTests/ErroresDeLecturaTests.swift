@@ -148,31 +148,31 @@ import Testing
             #expect(error.descripcion(en: .espanolCompacto) == error.description)
             // El idioma lo da la notación.
             #expect(
-                error.descripcion(en: .alemanPalabras)
+                error.descripcion(en: .conPalabras(.aleman))
                     == ("„Do7(b3)“ kann nicht gelesen werden (Zeichen 5): „b3“ ist keine gültige Tension "
                         + "(♭/♯ gehen mit 5, 9, 11 und 13, add mit 2, 4, 6, 9, 11 und 13)"))
             #expect(
-                error.descripcion(en: .portuguesPalabras)
+                error.descripcion(en: .conPalabras(.portugues))
                     == ("Não é possível ler «Do7(b3)» (caractere 5): «b3» não é uma tensão válida "
                         + "(admitem-se ♭/♯ com 5, 9, 11 e 13, e add com 2, 4, 6, 9, 11 e 13)"))
             #expect(
-                error.descripcion(en: .francesPalabras)
+                error.descripcion(en: .conPalabras(.frances))
                     == ("Impossible de lire « Do7(b3) » (caractère 5) : « b3 » n'est pas une tension valide "
                         + "(♭/♯ s'emploient avec 5, 9, 11 et 13, et add avec 2, 4, 6, 9, 11 et 13)"))
             #expect(
-                error.descripcion(en: .italianoPalabras)
+                error.descripcion(en: .conPalabras(.italiano))
                     == ("Impossibile leggere «Do7(b3)» (carattere 5): «b3» non è una tensione valida "
                         + "(si ammettono ♭/♯ con 5, 9, 11 e 13, e add con 2, 4, 6, 9, 11 e 13)"))
             #expect(
-                error.descripcion(en: .catalanPalabras)
+                error.descripcion(en: .conPalabras(.catalan))
                     == ("No es pot llegir «Do7(b3)» (caràcter 5): «b3» no és una tensió vàlida "
                         + "(s'admeten ♭/♯ amb 5, 9, 11 i 13, i add amb 2, 4, 6, 9, 11 i 13)"))
             #expect(
-                error.descripcion(en: .gallegoPalabras)
+                error.descripcion(en: .conPalabras(.gallego))
                     == ("Non se pode ler «Do7(b3)» (carácter 5): «b3» non é unha tensión válida "
                         + "(admítense ♭/♯ con 5, 9, 11 e 13, e add con 2, 4, 6, 9, 11 e 13)"))
             #expect(
-                error.descripcion(en: .euskeraPalabras)
+                error.descripcion(en: .conPalabras(.euskera))
                     == ("Ezin da «Do7(b3)» irakurri (5. karakterea): «b3» ez da tentsio baliozkoa "
                         + "(♭/♯ 5, 9, 11 eta 13rekin onartzen dira, eta add 2, 4, 6, 9, 11 eta 13rekin)"))
 
@@ -262,23 +262,23 @@ import Testing
             let motivo = error.motivo
             let espanol = error.explicacion
             for notacion in [
-                Notacion.catalanPalabras, .gallegoPalabras, .euskeraPalabras, .portuguesPalabras, .francesPalabras,
-                .italianoPalabras,
+                Notacion.conPalabras(.catalan), .conPalabras(.gallego), .conPalabras(.euskera), .conPalabras(.portugues), .conPalabras(.frances),
+                .conPalabras(.italiano),
             ] {
                 let texto = error.explicacion(en: notacion)
                 #expect(!texto.isEmpty, "\(motivo) \(notacion)")
                 #expect(Set(citas(texto)) == Set(citas(espanol)), "\(motivo) \(notacion): \(texto)")
             }
-            for notacion in [Notacion.euskeraPalabras, .francesPalabras, .italianoPalabras] {
+            for notacion in [Notacion.conPalabras(.euskera), .conPalabras(.frances), .conPalabras(.italiano)] {
                 #expect(error.explicacion(en: notacion) != espanol, "\(motivo) \(notacion)")
             }
         }
         #expect(
-            ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio).descripcion(en: .gallegoPalabras)
+            ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio).descripcion(en: .conPalabras(.gallego))
                 == "Valor non válido: o texto está baleiro")
         #expect(
             ErrorDeLectura(texto: "x", posicion: nil, motivo: .intervaloInexistente(numero: 5, calidad: .mayor))
-                .explicacion(en: .euskeraPalabras)
+                .explicacion(en: .conPalabras(.euskera))
                 == "5. handia ez da existitzen: unisonoa, 4.a, 5.a eta 8.a justuak, gehituak edo gutxituak dira")
     }
 

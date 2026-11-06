@@ -46,7 +46,7 @@ extension TextosDeNucleo {
         unisonoDisminuido: "unisono gutxitua ez da existitzen: Do-tik Do♭-ra beheranzko unisono gehitua dago (idatzi -1A)",
         reglaDeLasJustas: "unisonoa, 4.a, 5.a eta 8.a justuak, gehituak edo gutxituak dira",
         reglaDeLasMayores: "2.a, 3.a, 6.a eta 7.a handiak, txikiak, gehituak edo gutxituak dira",
-        intervaloInexistente: { numero, calidad, notacion, regla in "\(numero). \(calidad.nombre(en: .euskeraPalabras)) ez da existitzen: \(regla.euskera)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "\(numero). \(calidad.nombre(en: .conPalabras(.euskera))) ez da existitzen: \(regla.euskera)" },
         alteracionNoReconocida: { signo in "«\(signo)» ez da alterazio bat (♯, ♭, 𝄪, 𝄫, #, b, x edo ♮ espero zen)" },
 
         // ErrorDeLectura.swift (conjuntos y series)

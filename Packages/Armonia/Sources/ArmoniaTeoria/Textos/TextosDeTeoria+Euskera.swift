@@ -171,7 +171,7 @@ extension TextosDeTeoria {
         fundamentalNoOmitible: "oinarria ezin da kendu",
         gradoNoOmitible: { grado in "«omit\(grado)» ez da baliozkoa (3, 5, 7, 9, 11 eta 13 ken daitezke)" },
         faltaLaFundamental: "oinarria falta da",
-        intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: .euskeraPalabras)): tarte honek ez du paperik hirugarrenez osatutako akorde batean" },
+        intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: .conPalabras(.euskera))): tarte honek ez du paperik hirugarrenez osatutako akorde batean" },
         terceraMayorYMenor: "hirugarren handia eta txikia ditu aldi berean (♯9 9. gehitu gisa idazten da, ez 3. txiki gisa)",
         variasSeptimas: "zazpigarren bat baino gehiago ditu",
         septimaDisminuidaFueraDelDisminuido: "zazpigarren gutxitua akorde gutxituan bakarrik agertzen da (3. txikiarekin eta 5. gutxituarekin)",

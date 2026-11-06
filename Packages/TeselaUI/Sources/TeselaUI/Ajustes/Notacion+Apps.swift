@@ -15,7 +15,7 @@ extension Notacion {
     }
 
     /// La notación del idioma del sistema, para cuando aún no se ha elegido ninguna: con el sistema en
-    /// catalán, `.catalanPalabras`; en un idioma sin notación propia, la española. `idiomas` son los códigos
+    /// catalán, `.conPalabras(.catalan)`; en un idioma sin notación propia, la española. `idiomas` son los códigos
     /// de `Locale.preferredLanguages` («ca-ES», «en-GB»…), y manda el primero que se conozca.
     public static func delSistema(idiomas: [String] = Locale.preferredLanguages) -> Notacion {
         for codigo in idiomas {
@@ -26,7 +26,7 @@ extension Notacion {
 
     /// La notación guardada con esa clave; si no existe, el español con ♯ y ♭. Lee también las claves de antes
     /// de las notaciones compactas («espanolUnicode», «inglesUnicode») y la del alemán de antes de la 0.3.0
-    /// («aleman», que era Fis y por eso lleva a `.alemanCompacto`).
+    /// («aleman», que era Fis y por eso lleva a `.compacta(.aleman)`).
     public static func desde(clave: String) -> Notacion {
         let partes = clave.split(separator: "+", maxSplits: 1).map(String.init)
         let clave = partes.first.map { clavesAntiguas[$0] ?? $0 }

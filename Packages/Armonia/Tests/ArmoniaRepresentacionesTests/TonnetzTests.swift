@@ -381,6 +381,6 @@ import Testing
             TransformacionNeorriemanniana.allCases.map { $0.nombre(en: .espanolCompacto) }
                 == TransformacionNeorriemanniana.allCases.map(\.nombre))
         #expect(TransformacionNeorriemanniana.l.nombre(en: .inglesASCII) == "leading-tone exchange")
-        #expect(TransformacionNeorriemanniana.r.nombre(en: .alemanPalabras) == "Parallele")
+        #expect(TransformacionNeorriemanniana.r.nombre(en: .conPalabras(.aleman)) == "Parallele")
     }
 }

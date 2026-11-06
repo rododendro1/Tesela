@@ -12,44 +12,44 @@
 /// | `.inglesPalabras` | F sharp | major third | dominant seventh | D dorian |
 /// | `.inglesASCII` | F# | major third | dominant seventh | D dorian |
 /// | `.inglesCompacto` | F♯ | major third | dominant seventh | D dorian |
-/// | `.catalanPalabras` | fa sostingut | 3a major | sèptima de dominant | fa sostingut dòric |
-/// | `.catalanCompacto` | Fa♯ | 3a major | sèptima de dominant | Fa♯ dòric |
-/// | `.gallegoPalabras` | fa sostido | 3ª maior | sétima de dominante | fa sostido dórico |
-/// | `.gallegoCompacto` | Fa♯ | 3ª maior | sétima de dominante | Fa♯ dórico |
-/// | `.asturianoPalabras` | fa sosteníu | 3ª mayor | séptima de dominante | fa sosteníu dóricu |
-/// | `.asturianoCompacto` | Fa♯ | 3ª mayor | séptima de dominante | Fa♯ dóricu |
-/// | `.aragonesPalabras` | fa sosteniu | 3ª mayor | séptima de dominant | fa sosteniu dórico |
-/// | `.aragonesCompacto` | Fa♯ | 3ª mayor | séptima de dominant | Fa♯ dórico |
-/// | `.euskeraPalabras` | fa diesa | 3. handia | dominanteko zazpigarrena | fa diesa doriarra |
-/// | `.euskeraCompacto` | Fa♯ | 3. handia | dominanteko zazpigarrena | Fa♯ doriarra |
-/// | `.portuguesPalabras` | fá sustenido | 3ª maior | sétima de dominante | fá sustenido dórico |
-/// | `.portuguesCompacto` | Fá♯ | 3ª maior | sétima de dominante | Fá♯ dórico |
-/// | `.francesPalabras` | fa dièse | tierce majeure | septième de dominante | fa dièse dorien |
-/// | `.francesCompacto` | Fa♯ | tierce majeure | septième de dominante | Fa♯ dorien |
-/// | `.occitanoPalabras` | fa dièsi | tèrça majora | setena de dominanta | fa dièsi dorian |
-/// | `.occitanoCompacto` | Fa♯ | tèrça majora | setena de dominanta | Fa♯ dorian |
-/// | `.italianoPalabras` | fa diesis | terza maggiore | settima di dominante | fa diesis dorico |
-/// | `.italianoCompacto` | Fa♯ | terza maggiore | settima di dominante | Fa♯ dorico |
-/// | `.alemanPalabras` | F Kreuz | große Terz | Dominantseptakkord | F Kreuz dorisch |
-/// | `.alemanCompacto` | Fis | große Terz | Dominantseptakkord | Fis dorisch |
-/// | `.griegoPalabras` | φα δίεση | μεγάλη τρίτη | συγχορδία έβδομης δεσπόζουσας | φα δίεση δώριος |
-/// | `.griegoCompacto` | Φα♯ | μεγάλη τρίτη | συγχορδία έβδομης δεσπόζουσας | Φα♯ δώριος |
-/// | `.rusoPalabras` | фа-диез | большая терция | доминантсептаккорд | фа-диез дорийский |
-/// | `.rusoCompacto` | Фа♯ | большая терция | доминантсептаккорд | Фа♯ дорийский |
-/// | `.hungaroPalabras` | F kereszt | nagy terc | domináns szeptimakkord | F kereszt dór |
-/// | `.hungaroCompacto` | Fisz | nagy terc | domináns szeptimakkord | Fisz dór |
+/// | `.conPalabras(.catalan)` | fa sostingut | 3a major | sèptima de dominant | fa sostingut dòric |
+/// | `.compacta(.catalan)` | Fa♯ | 3a major | sèptima de dominant | Fa♯ dòric |
+/// | `.conPalabras(.gallego)` | fa sostido | 3ª maior | sétima de dominante | fa sostido dórico |
+/// | `.compacta(.gallego)` | Fa♯ | 3ª maior | sétima de dominante | Fa♯ dórico |
+/// | `.conPalabras(.asturiano)` | fa sosteníu | 3ª mayor | séptima de dominante | fa sosteníu dóricu |
+/// | `.compacta(.asturiano)` | Fa♯ | 3ª mayor | séptima de dominante | Fa♯ dóricu |
+/// | `.conPalabras(.aragones)` | fa sosteniu | 3ª mayor | séptima de dominant | fa sosteniu dórico |
+/// | `.compacta(.aragones)` | Fa♯ | 3ª mayor | séptima de dominant | Fa♯ dórico |
+/// | `.conPalabras(.euskera)` | fa diesa | 3. handia | dominanteko zazpigarrena | fa diesa doriarra |
+/// | `.compacta(.euskera)` | Fa♯ | 3. handia | dominanteko zazpigarrena | Fa♯ doriarra |
+/// | `.conPalabras(.portugues)` | fá sustenido | 3ª maior | sétima de dominante | fá sustenido dórico |
+/// | `.compacta(.portugues)` | Fá♯ | 3ª maior | sétima de dominante | Fá♯ dórico |
+/// | `.conPalabras(.frances)` | fa dièse | tierce majeure | septième de dominante | fa dièse dorien |
+/// | `.compacta(.frances)` | Fa♯ | tierce majeure | septième de dominante | Fa♯ dorien |
+/// | `.conPalabras(.occitano)` | fa dièsi | tèrça majora | setena de dominanta | fa dièsi dorian |
+/// | `.compacta(.occitano)` | Fa♯ | tèrça majora | setena de dominanta | Fa♯ dorian |
+/// | `.conPalabras(.italiano)` | fa diesis | terza maggiore | settima di dominante | fa diesis dorico |
+/// | `.compacta(.italiano)` | Fa♯ | terza maggiore | settima di dominante | Fa♯ dorico |
+/// | `.conPalabras(.aleman)` | F Kreuz | große Terz | Dominantseptakkord | F Kreuz dorisch |
+/// | `.compacta(.aleman)` | Fis | große Terz | Dominantseptakkord | Fis dorisch |
+/// | `.conPalabras(.griego)` | φα δίεση | μεγάλη τρίτη | συγχορδία έβδομης δεσπόζουσας | φα δίεση δώριος |
+/// | `.compacta(.griego)` | Φα♯ | μεγάλη τρίτη | συγχορδία έβδομης δεσπόζουσας | Φα♯ δώριος |
+/// | `.conPalabras(.ruso)` | фа-диез | большая терция | доминантсептаккорд | фа-диез дорийский |
+/// | `.compacta(.ruso)` | Фа♯ | большая терция | доминантсептаккорд | Фа♯ дорийский |
+/// | `.conPalabras(.hungaro)` | F kereszt | nagy terc | domináns szeptimakkord | F kereszt dór |
+/// | `.compacta(.hungaro)` | Fisz | nagy terc | domináns szeptimakkord | Fisz dór |
 ///
 /// En los quince idiomas están traducidos los nombres de nota y de alteración, los modos de las
 /// tonalidades (Fis-Dur, fa dièse majeur, фа-диез мажор), los textos del motor (mensajes de error,
 /// intervalos, cadencias…) y los nombres de los catálogos (acordes, escalas, instrumentos).
 ///
 /// Una notación son dos elecciones: cómo se escriben las notas (`escritura`) y en qué idioma salen los
-/// textos (`textos`). Las notaciones con nombre (`.espanolCompacto`, `.rusoPalabras`…) llevan los textos en el idioma de sus
-/// notas, y `conTextos(en:)` los cambia: `Notacion.rusoPalabras.conTextos(en: .espanol)` escribe
+/// textos (`textos`). Las notaciones con nombre (`.espanolCompacto`, `.conPalabras(.ruso)`…) llevan los textos en el idioma de sus
+/// notas, y `conTextos(en:)` los cambia: `Notacion.conPalabras(.ruso).conTextos(en: .espanol)` escribe
 /// «соль séptima de dominante, primera inversión».
 ///
 /// La octava de las alturas se escribe con cifras (La4) o como subíndice (La₄). Las notaciones compactas
-/// (`.espanolCompacto`, `.alemanCompacto`, `.francesCompacto`…) la escriben como subíndice y las demás con cifras;
+/// (`.espanolCompacto`, `.compacta(.aleman)`, `.compacta(.frances)`…) la escriben como subíndice y las demás con cifras;
 /// `conOctavas(_:)` la cambia.
 public struct Notacion: Hashable, Sendable, CaseIterable, Codable {
     /// Cómo se escriben los nombres de nota.
@@ -80,76 +80,29 @@ public struct Notacion: Hashable, Sendable, CaseIterable, Codable {
     public static let inglesASCII = Notacion(escritura: .inglesASCII)
     /// Inglés compacto, con símbolos tipográficos y la octava en subíndice: C, F♯, B𝄫; A₄.
     public static let inglesCompacto = Notacion(escritura: .inglesCompacto)
-    /// Catalán: do, re, fa sostingut, si bemoll; en los cifrados, Fa♯7, Si♭m.
-    public static let catalanPalabras = Notacion(escritura: .catalanPalabras)
-    /// Catalán compacto, con la sílaba en mayúscula, el signo y la octava en subíndice: Fa♯, Si𝄫; La₄.
-    public static let catalanCompacto = Notacion(escritura: .catalanCompacto)
-    /// Gallego: do, re, fa sostido, si bemol; en los cifrados, Fa♯7, Si♭m.
-    public static let gallegoPalabras = Notacion(escritura: .gallegoPalabras)
-    /// Gallego compacto, con la sílaba en mayúscula, el signo y la octava en subíndice: Fa♯, Si𝄫; La₄.
-    public static let gallegoCompacto = Notacion(escritura: .gallegoCompacto)
-    /// Asturiano: do, re, fa sosteníu, si bemol; en los cifrados, Fa♯7, Si♭m.
-    public static let asturianoPalabras = Notacion(escritura: .asturianoPalabras)
-    /// Asturiano compacto, con la sílaba en mayúscula, el signo y la octava en subíndice: Fa♯, Si𝄫; La₄.
-    public static let asturianoCompacto = Notacion(escritura: .asturianoCompacto)
-    /// Aragonés: do, re, fa sosteniu, si bemol; en los cifrados, Fa♯7, Si♭m.
-    public static let aragonesPalabras = Notacion(escritura: .aragonesPalabras)
-    /// Aragonés compacto, con la sílaba en mayúscula, el signo y la octava en subíndice: Fa♯, Si𝄫; La₄.
-    public static let aragonesCompacto = Notacion(escritura: .aragonesCompacto)
-    /// Euskera: do, re, fa diesa, si bemol; en los cifrados, Fa♯7, Si♭m.
-    public static let euskeraPalabras = Notacion(escritura: .euskeraPalabras)
-    /// Euskera compacto, con la sílaba en mayúscula, el signo y la octava en subíndice: Fa♯, Si𝄫; La₄.
-    public static let euskeraCompacto = Notacion(escritura: .euskeraCompacto)
-    /// Portugués: dó, ré, fá sustenido, si bemol; en los cifrados, Fá♯7, Si♭m.
-    public static let portuguesPalabras = Notacion(escritura: .portuguesPalabras)
-    /// Portugués compacto, con la sílaba en mayúscula, el signo y la octava en subíndice: Fá♯, Si𝄫; La₄.
-    public static let portuguesCompacto = Notacion(escritura: .portuguesCompacto)
-    /// Francés: do, ré, fa dièse, si bémol; en los cifrados, Fa♯7, Si♭m.
-    public static let francesPalabras = Notacion(escritura: .francesPalabras)
-    /// Francés compacto, con la sílaba en mayúscula, el signo y la octava en subíndice: Fa♯, Si𝄫; La₄.
-    public static let francesCompacto = Notacion(escritura: .francesCompacto)
-    /// Occitano: do, re, fa dièsi, si bemòl; en los cifrados, Fa♯7, Si♭m.
-    public static let occitanoPalabras = Notacion(escritura: .occitanoPalabras)
-    /// Occitano compacto, con la sílaba en mayúscula, el signo y la octava en subíndice: Fa♯, Si𝄫; La₄.
-    public static let occitanoCompacto = Notacion(escritura: .occitanoCompacto)
-    /// Italiano: do, re, fa diesis, si bemolle; en los cifrados, Fa♯7, Si♭m.
-    public static let italianoPalabras = Notacion(escritura: .italianoPalabras)
-    /// Italiano compacto, con la sílaba en mayúscula, el signo y la octava en subíndice: Fa♯, Si𝄫; La₄.
-    public static let italianoCompacto = Notacion(escritura: .italianoCompacto)
-    /// Alemán con las alteraciones en palabras: C, F Kreuz, B (Si♭), E Doppel-Be; en los cifrados y las tonalidades,
-    /// a la alemana (Fis7, B7, Fis-Dur).
-    public static let alemanPalabras = Notacion(escritura: .alemanPalabras)
-    /// Alemán compacto, con la alteración dentro del nombre y la octava en subíndice: C, Fis, Es, B (= Si♭),
-    /// H (= Si), Heses; A₄. Los cifrados quedan Fis7, B7, Hm7.
-    public static let alemanCompacto = Notacion(escritura: .alemanCompacto)
-    /// Griego: ντο, ρε, φα δίεση, σι ύφεση; en los cifrados, Φα♯7, Σι♭m.
-    public static let griegoPalabras = Notacion(escritura: .griegoPalabras)
-    /// Griego compacto, con la sílaba en mayúscula, el signo y la octava en subíndice: Φα♯, Σι𝄫; La₄.
-    public static let griegoCompacto = Notacion(escritura: .griegoCompacto)
-    /// Ruso: до, ре, фа-диез, си-бемоль; en los cifrados, Фа♯7, Си♭m.
-    public static let rusoPalabras = Notacion(escritura: .rusoPalabras)
-    /// Ruso compacto, con la sílaba en mayúscula, el signo y la octava en subíndice: Фа♯, Си𝄫; La₄.
-    public static let rusoCompacto = Notacion(escritura: .rusoCompacto)
-    /// Húngaro con las alteraciones en palabras: C, F kereszt, H bé, E kettős bé; en los cifrados y las
-    /// tonalidades, a la alemana (Fisz7, B7, Fisz-dúr).
-    public static let hungaroPalabras = Notacion(escritura: .hungaroPalabras)
-    /// Húngaro compacto, como el alemán con «isz» y «esz» y la octava en subíndice: C, Fisz, Esz, B (= Si♭),
-    /// H (= Si), Heszesz; A₄. Los cifrados quedan Fisz7, B7, Hm7.
-    public static let hungaroCompacto = Notacion(escritura: .hungaroCompacto)
 
     /// Las notaciones con nombre, una por escritura, con los textos en el idioma de sus notas. No incluye
     /// las combinadas (`conTextos(en:)`), que también son notaciones válidas.
     public static let allCases: [Notacion] = EscrituraDeNotas.allCases.map { Notacion(escritura: $0) }
 
     /// La notación habitual de un idioma: con ♯ y ♭ en español (`.espanolCompacto`), con # y b en inglés
-    /// (`.inglesASCII`) y con Fis y Es en alemán (`.alemanCompacto`) o Fisz en húngaro (`.hungaroCompacto`), que es
+    /// (`.inglesASCII`) y con Fis y Es en alemán (`.compacta(.aleman)`) o Fisz en húngaro (`.compacta(.hungaro)`), que es
     /// como se suelen escribir; en los demás, la de las alteraciones con palabras, y no la compacta:
-    /// `Notacion.delIdioma(.catalan)` es `.catalanPalabras` (fa sostingut), no `.catalanCompacto` (Fa♯).
+    /// `Notacion.delIdioma(.catalan)` es `.conPalabras(.catalan)` (fa sostingut), no `.compacta(.catalan)` (Fa♯).
     public static func delIdioma(_ idioma: Idioma) -> Notacion {
         Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: idioma == .ingles))
     }
 
-    /// La misma notación de las notas con los textos en otro idioma: `Notacion.rusoPalabras.conTextos(en:
+    /// La notación compacta de un idioma, con los textos en ese idioma: `.compacta(.catalan)` escribe Fa♯ y Si𝄫,
+    /// `.compacta(.aleman)`, Fis y Heses, y `.compacta(.ruso)`, Фа♯. Ver `EscrituraDeNotas.compacta(_:)`.
+    public static func compacta(_ idioma: Idioma) -> Notacion { Notacion(escritura: .compacta(idioma)) }
+
+    /// La notación de un idioma con las alteraciones en palabras, con los textos en ese idioma: `.conPalabras(.catalan)`
+    /// escribe «fa sostingut», `.conPalabras(.aleman)`, «F Kreuz», y `.conPalabras(.frances)`, «fa dièse». Ver
+    /// `EscrituraDeNotas.conPalabras(_:)`.
+    public static func conPalabras(_ idioma: Idioma) -> Notacion { Notacion(escritura: .conPalabras(idioma)) }
+
+    /// La misma notación de las notas con los textos en otro idioma: `Notacion.conPalabras(.ruso).conTextos(en:
     /// .espanol)`.
     public func conTextos(en idioma: Idioma) -> Notacion {
         Notacion(escritura: escritura, textos: idioma, octavas: octavas)
@@ -162,7 +115,7 @@ public struct Notacion: Hashable, Sendable, CaseIterable, Codable {
     }
 
     /// La notación de las notas con los textos en su propio idioma y la octava como la escriba la escritura:
-    /// `.rusoPalabras.conTextos(en: .espanol).notas` es `.rusoPalabras`.
+    /// `.conPalabras(.ruso).conTextos(en: .espanol).notas` es `.conPalabras(.ruso)`.
     public var notas: Notacion { Notacion(escritura: escritura) }
 
     /// ¿Lleva los textos en un idioma distinto del de sus notas?
@@ -224,7 +177,7 @@ public enum EscrituraDeLaOctava: String, Hashable, Sendable, CaseIterable, Codab
 /// forma compacta (con #/b o con ♯/♭ en español e inglés; Fis en alemán; Fa♯, Ré♭, Фа♯ en los demás).
 ///
 /// No es una lista de casos, sino el idioma y su variante: las treinta y dos escrituras con nombre
-/// (`.espanolCompacto`, `.rusoPalabras`…) salen de los quince idiomas, con tres formas en español y en inglés
+/// (`.espanolCompacto`, `.conPalabras(.ruso)`…) salen de los quince idiomas, con tres formas en español y en inglés
 /// (palabras, ASCII y compacta) y dos en los demás (palabras y compacta). Añadir un idioma es añadir su caso a
 /// ``Idioma`` y su fila a ``ReglasDeIdioma``; aquí no hay nada que tocar. `allCases` las recorre en el orden de `Idioma`.
 public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
@@ -256,58 +209,6 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     public static let inglesASCII = EscrituraDeNotas(.ingles, tipografia: .ascii)
     /// C, F♯, B♭, F𝄪, B𝄫.
     public static let inglesCompacto = EscrituraDeNotas(.ingles, tipografia: .conDobles)
-    /// do, re, fa sostingut, si bemoll.
-    public static let catalanPalabras = EscrituraDeNotas(.catalan, conPalabras: true)
-    /// Fa♯, Si♭, Fa𝄪, Si𝄫.
-    public static let catalanCompacto = EscrituraDeNotas(.catalan, tipografia: .conDobles)
-    /// do, re, fa sostido, si bemol.
-    public static let gallegoPalabras = EscrituraDeNotas(.gallego, conPalabras: true)
-    /// Fa♯, Si♭, Fa𝄪, Si𝄫.
-    public static let gallegoCompacto = EscrituraDeNotas(.gallego, tipografia: .conDobles)
-    /// do, re, fa sosteníu, si bemol.
-    public static let asturianoPalabras = EscrituraDeNotas(.asturiano, conPalabras: true)
-    /// Fa♯, Si♭, Fa𝄪, Si𝄫.
-    public static let asturianoCompacto = EscrituraDeNotas(.asturiano, tipografia: .conDobles)
-    /// do, re, fa sosteniu, si bemol.
-    public static let aragonesPalabras = EscrituraDeNotas(.aragones, conPalabras: true)
-    /// Fa♯, Si♭, Fa𝄪, Si𝄫.
-    public static let aragonesCompacto = EscrituraDeNotas(.aragones, tipografia: .conDobles)
-    /// do, re, fa diesa, si bemol.
-    public static let euskeraPalabras = EscrituraDeNotas(.euskera, conPalabras: true)
-    /// Fa♯, Si♭, Fa𝄪, Si𝄫.
-    public static let euskeraCompacto = EscrituraDeNotas(.euskera, tipografia: .conDobles)
-    /// dó, ré, fá sustenido, si bemol.
-    public static let portuguesPalabras = EscrituraDeNotas(.portugues, conPalabras: true)
-    /// Fá♯, Si♭, Fá𝄪, Si𝄫.
-    public static let portuguesCompacto = EscrituraDeNotas(.portugues, tipografia: .conDobles)
-    /// do, ré, fa dièse, si bémol.
-    public static let francesPalabras = EscrituraDeNotas(.frances, conPalabras: true)
-    /// Fa♯, Si♭, Fa𝄪, Si𝄫.
-    public static let francesCompacto = EscrituraDeNotas(.frances, tipografia: .conDobles)
-    /// do, re, fa dièsi, si bemòl.
-    public static let occitanoPalabras = EscrituraDeNotas(.occitano, conPalabras: true)
-    /// Fa♯, Si♭, Fa𝄪, Si𝄫.
-    public static let occitanoCompacto = EscrituraDeNotas(.occitano, tipografia: .conDobles)
-    /// do, re, fa diesis, si bemolle.
-    public static let italianoPalabras = EscrituraDeNotas(.italiano, conPalabras: true)
-    /// Fa♯, Si♭, Fa𝄪, Si𝄫.
-    public static let italianoCompacto = EscrituraDeNotas(.italiano, tipografia: .conDobles)
-    /// C, F Kreuz, E Be, B, H.
-    public static let alemanPalabras = EscrituraDeNotas(.aleman, conPalabras: true)
-    /// C, Fis, Es, B, H.
-    public static let alemanCompacto = EscrituraDeNotas(.aleman)
-    /// ντο, ρε, φα δίεση, σι ύφεση.
-    public static let griegoPalabras = EscrituraDeNotas(.griego, conPalabras: true)
-    /// Φα♯, Σι♭, Φα𝄪, Σι𝄫.
-    public static let griegoCompacto = EscrituraDeNotas(.griego, tipografia: .conDobles)
-    /// до, ре, фа-диез, си-бемоль.
-    public static let rusoPalabras = EscrituraDeNotas(.ruso, conPalabras: true)
-    /// Фа♯, Си♭, Фа𝄪, Си𝄫.
-    public static let rusoCompacto = EscrituraDeNotas(.ruso, tipografia: .conDobles)
-    /// C, F kereszt, E bé, H bé, H.
-    public static let hungaroPalabras = EscrituraDeNotas(.hungaro, conPalabras: true)
-    /// C, Fisz, Esz, B, H.
-    public static let hungaroCompacto = EscrituraDeNotas(.hungaro)
 
     /// Las escrituras de los quince idiomas: tres en los que tienen variantes de signos (palabras, ASCII y
     /// compacta) y dos en los demás (palabras y compacta).
@@ -354,8 +255,8 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     /// Alteraciones como # y b en lugar de ♯ y ♭: `tipografia == .ascii`.
     public var usaASCII: Bool { tipografia == .ascii }
 
-    /// ¿Es una de las compactas? `.espanolCompacto` (Fa♯), `.inglesCompacto` (F♯), `.alemanCompacto` (Fis),
-    /// `.francesCompacto` (Ré♭)…: sin palabras y, en español e inglés, con signos tipográficos y no con # y b.
+    /// ¿Es una de las compactas? `.espanolCompacto` (Fa♯), `.inglesCompacto` (F♯), `.compacta(.aleman)` (Fis),
+    /// `.compacta(.frances)` (Ré♭)…: sin palabras y, en español e inglés, con signos tipográficos y no con # y b.
     public var esCompacta: Bool {
         switch escrituraDeLaAlteracion {
         case .alemana: return true

@@ -30,10 +30,10 @@ import Testing
         #expect(Acorde.nombreDeLaInversion(0, en: .espanolCompacto) == "estado fundamental")
         #expect(Acorde.nombreDeLaInversion(1, en: .inglesASCII) == "first inversion")
         #expect(Acorde.nombreDeLaInversion(6, en: .espanolCompacto) == "sexta inversión")
-        #expect(Acorde.nombreDeLaInversion(2, en: .alemanPalabras) == "zweite Umkehrung")
+        #expect(Acorde.nombreDeLaInversion(2, en: .conPalabras(.aleman)) == "zweite Umkehrung")
         #expect(Acorde.nombreDeLaInversion(7, en: .espanolCompacto) == "inversión 7")
-        #expect(Acorde.nombreDeLaInversion(7, en: .alemanPalabras) == "7. Umkehrung")
-        #expect(Acorde("Sol7/Si").nombre(en: .francesPalabras).hasSuffix(", premier renversement"))
+        #expect(Acorde.nombreDeLaInversion(7, en: .conPalabras(.aleman)) == "7. Umkehrung")
+        #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.frances)).hasSuffix(", premier renversement"))
     }
 
     @Test func bajoAjeno() {

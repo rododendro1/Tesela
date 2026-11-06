@@ -12,3 +12,10 @@ extension TipoDeEscala {
     @available(*, deprecated, renamed: "occidentales(uso:)")
     public static func todos(uso: UsoDeEscala) -> [TipoDeEscala] { occidentales(uso: uso) }
 }
+
+extension Acorde {
+    /// El nombre de antes de `cambiarInversion(_:)`, que se confundía con la inversión en espejo de las melodías y los
+    /// conjuntos de clases de altura.
+    @available(*, deprecated, renamed: "cambiarInversion(_:)")
+    public func invertir(_ inversion: Int) -> Acorde { cambiarInversion(inversion) }
+}

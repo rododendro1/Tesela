@@ -153,8 +153,10 @@ public struct Acorde: Hashable, Sendable {
         Acorde(fundamental + intervalo, tipo, bajo: bajo + intervalo)
     }
 
-    /// El mismo acorde en otra inversión: `Acorde("Do7").invertir(1)` → Do7/Mi.
-    public func invertir(_ inversion: Int) -> Acorde {
+    /// El mismo acorde en otra inversión: `Acorde("Do7").cambiarInversion(1)` → Do7/Mi. Como `cambiarBajo(_:)`, cambia
+    /// la nota del bajo; no es la inversión en espejo de `Melodia.invertir(alrededorDe:)` ni de
+    /// `ConjuntoDeClasesDeAltura.invertir(_:)`.
+    public func cambiarInversion(_ inversion: Int) -> Acorde {
         Acorde(fundamental, tipo, inversion: inversion)
     }
 

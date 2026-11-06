@@ -199,10 +199,10 @@ import Testing
 
     @Test func losNombresSeTraducen() {
         #expect(TecladoCuadrado.cuartas.nombre(en: .inglesASCII) == "Grid in fourths")
-        #expect(TecladoCuadrado.tonnetzDeEuler.nombre(en: .alemanPalabras) == "Eulers Tonnetz")
+        #expect(TecladoCuadrado.tonnetzDeEuler.nombre(en: .conPalabras(.aleman)) == "Eulers Tonnetz")
         #expect(TecladoCuadrado.wickiHaydenCuadrado.nombre(en: .espanolCompacto) == "Wicki-Hayden (cuadrícula)")
         #expect(TecladoCuadrado.secuencial.nombre(en: .inglesASCII) == "Sequential grid")
-        #expect(TecladoCuadrado.tritonos.nombre(en: .alemanPalabras) == "Tritonusraster")
+        #expect(TecladoCuadrado.tritonos.nombre(en: .conPalabras(.aleman)) == "Tritonusraster")
         #expect(TecladoCuadrado.cuartas.reflejado.nombre(en: .inglesASCII) == "Cuadrícula en cuartas ⇋")
         for teclado in TecladoCuadrado.todos {
             #expect(teclado.traduccion != nil)

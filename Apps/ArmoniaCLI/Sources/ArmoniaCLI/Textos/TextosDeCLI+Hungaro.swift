@@ -279,7 +279,7 @@ extension TextosDeCLI {
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "hiányzik a hangszer: \(digitaciones.1)" },
-        instrumentoDesconocido: { nombre, lista in "ismeretlen hangszer: „\(nombre)” (\(lista(.hungaroPalabras)))" },
+        instrumentoDesconocido: { nombre, lista in "ismeretlen hangszer: „\(nombre)” (\(lista(.conPalabras(.hungaro))))" },
         faltaLimite: "hiányzik a fogások száma: --limit 5",
         limiteFueraDeRango: "a korlát 1 és 200 közötti szám: --limit 5",
         faltanDedos: "hiányzik az ujjak száma: --fingers 3",

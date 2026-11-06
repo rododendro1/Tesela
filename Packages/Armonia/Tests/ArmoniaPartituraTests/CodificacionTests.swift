@@ -96,7 +96,7 @@ import Testing
         for notacion in Notacion.allCases {
             #expect(try idaYVuelta(notacion) == notacion)
         }
-        let combinada = Notacion.rusoPalabras.conTextos(en: .espanol).conOctavas(.cifras)
+        let combinada = Notacion.conPalabras(.ruso).conTextos(en: .espanol).conOctavas(.cifras)
         #expect(try idaYVuelta(combinada) == combinada)
         // Una escritura que no está entre las que hay no se lee.
         #expect(throws: DecodingError.self) {

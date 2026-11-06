@@ -246,10 +246,10 @@ extension Tonalidad {
             let acorde = self.acorde(grado: grado)
             // vii° (y en menor ii°) en primera inversión.
             let disminuido = acorde.tipo.estructura.calidadDeTriada == .disminuida
-            anadir(disminuido ? acorde.invertir(1) : acorde, costes[grado - 1])
+            anadir(disminuido ? acorde.cambiarInversion(1) : acorde, costes[grado - 1])
         }
         anadir(acorde(grado: 5, cuatriada: true), 0.15)
-        if modo == .mayor { anadir(acorde(grado: 2).invertir(1), 0.25) }
+        if modo == .mayor { anadir(acorde(grado: 2).cambiarInversion(1), 0.25) }
         // Dominantes secundarias.
         for destino in modo == .mayor ? [5, 6, 2, 4] : [4, 6] {
             let raiz = acorde(grado: destino).fundamental + .quintaJusta

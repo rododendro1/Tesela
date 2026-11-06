@@ -61,7 +61,7 @@ public struct Escala: Hashable, Sendable {
     /// última, en español o inglés con palabras («Fa sostenido dórico», «F sharp dorian»).
     private static func leerTonica(_ texto: String) -> (Nota, Notacion)? {
         let clave = texto.claveDeBusqueda
-        let otras = [Notacion.francesPalabras, .italianoPalabras, .alemanPalabras, .hungaroPalabras]
+        let otras = [Notacion.conPalabras(.frances), .conPalabras(.italiano), .conPalabras(.aleman), .conPalabras(.hungaro)]
         for notacion in Notacion.deLecturaGenerica + otras + Notacion.conPalabras {
             if let nombre = Nota.porNombre[notacion]?[clave] { return (nombre, notacion) }
         }

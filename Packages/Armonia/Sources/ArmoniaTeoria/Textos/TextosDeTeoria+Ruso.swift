@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         fundamentalNoOmitible: "основной тон нельзя опустить",
         gradoNoOmitible: { grado in "«omit\(grado)» недопустимо (опустить можно 3, 5, 7, 9, 11 и 13)" },
         faltaLaFundamental: "нет основного тона",
-        intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: .rusoPalabras)) не играет роли в аккорде терцового строения" },
+        intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: .conPalabras(.ruso))) не играет роли в аккорде терцового строения" },
         terceraMayorYMenor: "в нём одновременно большая и малая терция (♯9 пишется как увеличенная нона, а не как малая терция)",
         variasSeptimas: "в нём больше одной септимы",
         septimaDisminuidaFueraDelDisminuido: "уменьшённая септима встречается только в уменьшённом аккорде (с малой терцией и уменьшённой квинтой)",
