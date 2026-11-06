@@ -61,7 +61,6 @@ extension OpcionDeOrden {
     // MARK: Las de las partituras, solo en español (las lee `Argumentos.quitarOpcionesConTexto`)
     static let compas = valor("--compas")
     static let anacrusa = valor("--anacrusa")
-    static let tonalidadDePartitura = valor("--tonalidad")
     static let claveDePartitura = valor("--clave")
     static let tempo = valor("--tempo")
     static let titulo = valor("--titulo")

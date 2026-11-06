@@ -132,7 +132,7 @@ extension LineaDeComandos {
         return bien(tabla.svg(opciones: .init(notacion: notacion), margen: margen).trimmingCharacters(in: "\n"))
     }
 
-    /// `teclado Re mayor [--mano derecha|izquierda] [--octavas 2]`: la escala en un teclado de piano, en SVG, con
+    /// `teclado Re mayor [--dedos [derecha|izquierda]] [--octavas 2]`: la escala en un teclado de piano, en SVG, con
     /// el nombre de cada nota o, con una mano, sus dedos.
     static func teclado(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(conLosDedos(argumentos, soloPiano: true))
@@ -217,13 +217,14 @@ extension LineaDeComandos {
         let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
         if let otra {
             return bien(
-                PresentacionDeEstudioDeEscala.comparacionNotaANota(escala, con: try Escala(leyendoEnLaOrden: otra), en: notacion)
+                PresentacionDeEstudioDeEscala.comparacionNotaANota(
+                    escala, con: try Escala(leyendoEnLaOrden: otra), en: notacion)
             )
         }
         return bien(PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, en: notacion))
     }
 
-    /// `pentagrama escala Re dórico [--octavas 2] [--bajando] [--secuencia terceras] [--mano derecha] [--tab]`,
+    /// `pentagrama escala Re dórico [--octavas 2] [--bajando] [--secuencia terceras] [--dedos piano] [--tab]`,
     /// `pentagrama acorde Sol7`, `pentagrama arpegio Do Lam [--patron alberti] [--figura 16] [--tresillos] [--tab]`,
     /// `pentagrama acordes Rem7 Sol7 Do7M [--romanos] [--bajo-cifrado]`, `pentagrama melodia Do4:8 Re4:8 … --sobre Do
     /// Sol7`: lo que se pide en un pentagrama, en SVG. Con `--nombres`, `--intervalos`, `--semitonos` y `--tonica`, el

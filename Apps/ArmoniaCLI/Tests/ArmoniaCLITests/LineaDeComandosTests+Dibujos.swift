@@ -164,7 +164,7 @@ extension LineaDeComandosTests {
         #expect(salida("pentagrama arpegio Do7 --en Fa mayor") != salida("pentagrama arpegio Do7"))
         #expect(salida("pentagrama acordes Rem7 Sol7 Do7M").contains(">Rem7</text>"))
         #expect(salida("ayuda --todo").contains("pentagrama escala|acorde|arpegio|acordes <…>"))
-        #expect(salida("ayuda --todo").contains("pentagrama <qué> --romanos|--mano|--secuencia|--tab"))
+        #expect(salida("ayuda --todo").contains("pentagrama <qué> --romanos|--dedos|--secuencia|--tab"))
     }
 
     @Test func pentagramaParaEstudiar() {

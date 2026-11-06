@@ -57,7 +57,9 @@ extension LineaDeComandos {
     /// El intervalo de una nota a otra: entre las alturas si las dos llevan octava (Do4 Mi5 es una décima), y si no,
     /// el ascendente entre las notas.
     static func intervalo(_ a: String, _ b: String) throws -> Intervalo {
-        if let grave = try? Altura(leyendoEnLaOrden: a), let aguda = try? Altura(leyendoEnLaOrden: b) { return aguda - grave }
+        if let grave = try? Altura(leyendoEnLaOrden: a), let aguda = try? Altura(leyendoEnLaOrden: b) {
+            return aguda - grave
+        }
         return try Nota(leyendoEnLaOrden: a).intervalo(hasta: try Nota(leyendoEnLaOrden: b))
     }
 

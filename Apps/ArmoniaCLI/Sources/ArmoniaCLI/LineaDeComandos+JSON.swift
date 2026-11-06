@@ -743,7 +743,7 @@ extension LineaDeComandos {
         }
     }
 
-    /// Un paso de `vecinos` o de `conduccion-parsimoniosa`: el acorde al que se llega y las voces que se mueven.
+    /// Un paso de `vecinos` o de `camino-parsimonioso`: el acorde al que se llega y las voces que se mueven.
     struct PasoJSON: Encodable {
         let acorde: String
         let movimientos: [MovimientoJSON]
@@ -754,7 +754,7 @@ extension LineaDeComandos {
         }
     }
 
-    /// La familia de `--ampliada` y las voces de `--voces`, comunes a `vecinos` y `conduccion-parsimoniosa`.
+    /// La familia de `--ampliada` y las voces de `--voces`, comunes a `vecinos` y `camino-parsimonioso`.
     private static func conduccionPedida(_ textos: [String]) throws -> (
         voces: Int, tipos: [TipoDeAcorde]?, acordes: [String]
     ) {
@@ -784,7 +784,7 @@ extension LineaDeComandos {
         let pasos: [PasoJSON]
     }
 
-    /// `conduccion-parsimoniosa Sol7 Rem7 --json`: el acorde de partida y cada paso.
+    /// `camino-parsimonioso Sol7 Rem7 --json`: el acorde de partida y cada paso.
     static func caminoParsimoniosoJSON(_ textos: [String], _ notacion: Notacion) throws -> CaminoJSON {
         let (voces, tipos, acordes) = try conduccionPedida(textos)
         guard acordes.count == 2 else { throw ErrorDeUso.dosAcordesDeCamino }
@@ -807,7 +807,8 @@ extension LineaDeComandos {
     static func conduccionMinimaJSON(_ textos: [String], _ notacion: Notacion) throws -> ConduccionMinimaJSON {
         let acordes = try palabras(Argumentos(textos), siFaltan: .dosAcordesDeConduccion)
         guard acordes.count == 2 else { throw ErrorDeUso.dosAcordesDeConduccion }
-        let conduccion = try Acorde(leyendoEnLaOrden: acordes[0]).conduccionMinima(hasta: try Acorde(leyendoEnLaOrden: acordes[1]))
+        let conduccion = try Acorde(leyendoEnLaOrden: acordes[0]).conduccionMinima(
+            hasta: try Acorde(leyendoEnLaOrden: acordes[1]))
         return ConduccionMinimaJSON(
             movimientos: conduccion.movimientos.map { MovimientoJSON($0, notacion) },
             semitonos: conduccion.semitonosMovidos)
@@ -827,7 +828,8 @@ extension LineaDeComandos {
     }
 
     /// `plr Do PLR --json`, `plr Do Mibm --json`, `plr Do hexatonico --json`: los pasos, como en el texto.
-    static func plrJSON(_ textos: [String], _ notacion: Notacion) throws -> PLRJSON {
+    static func plrJSON(_ escritos: [String], _ notacion: Notacion) throws -> PLRJSON {
+        let textos = argumentosDePlr(escritos)
         if let desconocida = Argumentos(textos).opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard textos.count >= 2 else { throw ErrorDeUso.faltanPasosDePLR }
         let origen = try Acorde(leyendoEnLaOrden: textos[0])

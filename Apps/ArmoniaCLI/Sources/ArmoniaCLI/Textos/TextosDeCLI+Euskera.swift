@@ -74,15 +74,15 @@ extension TextosDeCLI {
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "vecinos <akordea> [--voces 2]",
         descripcionVecinos: "tonuerdi batera dauden akordeak (zazpigarrenak: dominantea, txikia, erdi-gutxitua eta gutxitua; triadeak: handia, txikia eta gehitua; --ampliada: maj7ekin ere)",
-        sintaxisConduccionParsimoniosa: "conduccion-parsimoniosa <akordea> <akordea> [--voces 2] [--ampliada]",
+        sintaxisConduccionParsimoniosa: "camino-parsimonioso <akordea> <akordea> [--voces 2] [--ampliada]",
         descripcionConduccionParsimoniosa: "akorde batetik bestera, urrats bakoitzean ahots bat (edo bi) tonuerdi bat mugituz",
         sintaxisConduccionMinima: "conduccion-minima <akordea> <akordea>",
         descripcionConduccionMinima: "tonuerdi gutxieneko ahots-eramatea",
         sintaxisPlr: "plr <triadea> <P, L, R…>",
         descripcionPlr: "eraldaketa neoerriemanndarrak",
-        sintaxisPlrCamino: "plr <triadea> <triadea>",
+        sintaxisPlrCamino: "plr camino <triadea> <triadea>",
         descripcionPlrCamino: "P, L eta R bidezko biderik laburrena",
-        sintaxisPlrCiclo: "plr <triadea> <zikloa>",
+        sintaxisPlrCiclo: "plr ciclo <zikloa> <triadea>",
         descripcionPlrCiclo: "ziklo bat: hexatonico (P, L), octatonico (P, R) edo \"ciclo LR\"",
 
         // Ayuda+Partituras.swift
@@ -92,10 +92,10 @@ extension TextosDeCLI {
         descripcionMusicxmlCoral: "lau ahotseko korala MusicXMLn",
         sintaxisMusicxmlAcordes: "musicxml acordes <zifratuak> [aukerak]",
         descripcionMusicxmlAcordes: "progresioa zifratu eta analisiarekin",
-        notasMusicxmlAcordes: "aukerak: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor, --clave fa, --tempo 90 (edo --tempo 60 4.), --titulo Nire korala, --duracion 2 (akorde bakoitzaren iraupena; bestela beltza), --cifrados eta --analisis (koralean: zifratu amerikarra goian, erromatarra eta funtzioa behean)",
+        notasMusicxmlAcordes: "aukerak: --compas 6/8, --anacrusa 8, --en Sol mayor, --clave fa, --tempo 90 (edo --tempo 60 4.), --titulo Nire korala, --duracion 2 (akorde bakoitzaren iraupena; bestela beltza), --cifrados eta --analisis (koralean: zifratu amerikarra goian, erromatarra eta funtzioa behean)",
         sintaxisMusicxmlArpegios: "musicxml arpegios <zifratuak> [aukerak]",
         descripcionMusicxmlArpegios: "akordeak arpegiatuta, notaz nota",
-        notasMusicxmlArpegios: "aukerak: --patron alberti (edo ascendente, descendente, ida y vuelta), --figura 16 (nota bakoitzaren iraupena; bestela kortxea), --duracion 1 (akorde bakoitzaren iraupena: eredua errepikatzen da bete arte) eta «acordes»en gainerakoak\n--enlazar: arpegio bakoitza aurrekoaren azken notatik hurbilen dagoen notan hasten da",
+        notasMusicxmlArpegios: "aukerak: --patron alberti (edo ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado), --figura 16 (nota bakoitzaren iraupena; bestela kortxea), --duracion 1 (akorde bakoitzaren iraupena: eredua errepikatzen da bete arte) eta «acordes»en gainerakoak\n--enlazar: arpegio bakoitza aurrekoaren azken notatik hurbilen dagoen notan hasten da",
         sintaxisMusicxmlArchivo: "musicxml acordes --archivo <fitxategia>",
         descripcionMusicxmlArchivo: "MIDI, MusicXML, MEI edo ABC fitxategi baten progresioa, akorde bakoitzaren iraupenarekin (baita arpegios, mei, midi)",
         sintaxisMusicxmlEscala: "musicxml escala <eskala> [aukerak]",
@@ -122,8 +122,8 @@ extension TextosDeCLI {
         sintaxisPosiciones: "posiciones <eskala> [--caged]",
         descripcionPosiciones: "eskala gitarran posizioka: hiru nota soka bakoitzeko (bi pentatonikoetan) edo CAGED",
         notasPosiciones: "aukerak: --secuencia terceras (edo beste bat: sekuentzia posizio bakoitzean; --bajando-rekin, jaitsiz) eta --formas (pentatonikaren bost formak eta nota komunak); --instrumento bajo (edo beste bat; baita re-abierto, sol-abierto, dadgad ere) eta --capo 2",
-        sintaxisTeclado: "teclado <eskala> [--mano derecha]",
-        descripcionTeclado: "eskala piano-teklatu batean (SVG): notak edo, --mano derecha edo izquierda-rekin, hatzak; --octavas 2",
+        sintaxisTeclado: "teclado <eskala> [--dedos]",
+        descripcionTeclado: "eskala piano-teklatu batean (SVG): notak edo, --dedos derecha edo izquierda-rekin, hatzak; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "eskala hamabi orduko erloju batean (SVG): zirkulu kromatikoa edo, --quintas-ekin, bosten zirkulua",
         sintaxisHoja: "hoja <escala>",
@@ -136,7 +136,7 @@ extension TextosDeCLI {
         descripcionHojaDeTonalidad: "tonalitatea inprimatzeko ikasketa-orri batean (SVG): armadura, erlatiboa eta homonimoa, eskala pentagraman, gradu bakoitzeko akordeak bere funtzioarekin, kadentzia ohikoenak eta ondoko tonuetarako modulazioak",
         sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
         descripcionPentagrama: "eskala bat, akorde bat, arpegio bat (erritmoarekin: --figura 16, --tresillos) edo akordeak beren zifratuarekin pentagrama batean (SVG); --nombres, --intervalos, --semitonos, --tonica, --en <tonalidad>",
-        sintaxisPentagramaEstudio: "pentagrama <zer> --romanos|--mano|--secuencia|--tab",
+        sintaxisPentagramaEstudio: "pentagrama <zer> --romanos|--dedos|--secuencia|--tab",
         descripcionPentagramaEstudio: "graduak zenbaki erromatarretan akordeen azpian; pianoko hatzak (--dedos piano) edo gitarrakoak (--dedos guitarra); eskala hirukoka edo taldeka (--secuencia terceras); tablatura azpian (--tab, --instrumento)",
         sintaxisPentagramaRegistro: "pentagrama <zer> --registro|--clave|--doble|--cambiar-clave|--bajo-cifrado",
         descripcionPentagramaRegistro: "zortziduna (--registro 2), giltza (--clave fa), pentagrama bikoitza, erregistroaren arabera giltza aldaketak eta akordeen baxu zifratua (6, 6/4, 6/5…)",
@@ -169,7 +169,7 @@ extension TextosDeCLI {
         --json aukerarekin, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar,
         conjunto, serie, digitaciones eta tradiciones aginduek JSONez ematen dituzte datuak.
         --json aukerarekin, armonizar, realizar, revisar, contrapunto, transponer, escalas,
-        rearmonizar, vecinos, plr, conduccion-parsimoniosa, conduccion-minima, posiciones eta motores ere bai. Irteera
+        rearmonizar, vecinos, plr, camino-parsimonioso, conduccion-minima, posiciones eta motores ere bai. Irteera
         terminala ez bada, JSONa lerro bakarrean doa.
         ARMONIA_IDIOMA=eu aldagaiak hizkuntza finkatzen du --idioma gabe; ARMONIA_IDIOMA=sistema
         bada, LANG aldagaiarena.

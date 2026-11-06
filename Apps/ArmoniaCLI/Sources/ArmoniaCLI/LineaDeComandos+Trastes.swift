@@ -174,7 +174,8 @@ extension LineaDeComandos {
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifradoDelArpegio }
             let reparto: FormasDeArpegio = barrido ? .unaNotaPorCuerda : caged ? .caged : .porPosiciones
             return arpegioEnElMastil(
-                try Acorde(leyendoEnLaOrden: argumentos.unidos), formas: reparto, idaYVuelta: idaYVuelta, en: mastil, notacion)
+                try Acorde(leyendoEnLaOrden: argumentos.unidos), formas: reparto, idaYVuelta: idaYVuelta, en: mastil,
+                notacion)
         }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDePosiciones }
         let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)

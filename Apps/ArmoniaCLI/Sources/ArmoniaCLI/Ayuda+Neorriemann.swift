@@ -7,7 +7,7 @@ extension LineaDeComandos {
             nombres: ["vecinos", "neighbors"], ayuda: ayudaDeVecinos, json: { try vecinosJSON($0, $1) },
             ejecutar: { try vecinos($0, $1) }),
         Orden(
-            nombres: ["conduccion-parsimoniosa", "conducción-parsimoniosa", "smooth-path"],
+            nombres: ["camino-parsimonioso", "conduccion-parsimoniosa", "conducción-parsimoniosa", "smooth-path"],
             ayuda: ayudaDeConduccionParsimoniosa, json: { try caminoParsimoniosoJSON($0, $1) },
             ejecutar: { try caminoParsimonioso($0, $1) }),
         Orden(
@@ -15,7 +15,8 @@ extension LineaDeComandos {
             ayuda: ayudaDeConduccionMinima, json: { try conduccionMinimaJSON($0, $1) },
             ejecutar: { resto, notacion in
                 guard resto.count == 2 else { throw ErrorDeUso.dosAcordesDeConduccion }
-                let conduccion = try Acorde(leyendoEnLaOrden: resto[0]).conduccionMinima(hasta: try Acorde(leyendoEnLaOrden: resto[1]))
+                let conduccion = try Acorde(leyendoEnLaOrden: resto[0]).conduccionMinima(
+                    hasta: try Acorde(leyendoEnLaOrden: resto[1]))
                 return bien(conduccion.texto(en: notacion))
             }),
         Orden(
@@ -35,12 +36,12 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeConduccionParsimoniosa: [EntradaDeAyuda] = [
-        // conduccion-parsimoniosa <acorde> <acorde> [--voces 2] [--ampliada]
+        // camino-parsimonioso <acorde> <acorde> [--voces 2] [--ampliada]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisConduccionParsimoniosa),
             descripcion: TextosDeCLI.traduccion(\.descripcionConduccionParsimoniosa),
             ejemplo: ejemplo(
-                "armonia conduccion-parsimoniosa Sol7 Rem7",
+                "armonia camino-parsimonioso Sol7 Rem7",
                 "armonia smooth-path G7 Dm7"),
             opciones: [.voces, .ampliada])
     ]
@@ -63,19 +64,19 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia plr Do PLR",
                 "armonia plr C PLR")),
-        // plr <tríada> <tríada>
+        // plr camino <tríada> <tríada>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPlrCamino),
             descripcion: TextosDeCLI.traduccion(\.descripcionPlrCamino),
             ejemplo: ejemplo(
-                "armonia plr Do Mibm",
-                "armonia plr C Ebm")),
-        // plr <tríada> <ciclo>
+                "armonia plr camino Do Mibm",
+                "armonia plr shortest C Ebm")),
+        // plr ciclo <ciclo> <tríada>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPlrCiclo),
             descripcion: TextosDeCLI.traduccion(\.descripcionPlrCiclo),
             ejemplo: ejemplo(
-                "armonia plr Do hexatonico",
-                "armonia plr C hexatonic")),
+                "armonia plr ciclo hexatonico Do",
+                "armonia plr cycle hexatonic C")),
     ]
 }

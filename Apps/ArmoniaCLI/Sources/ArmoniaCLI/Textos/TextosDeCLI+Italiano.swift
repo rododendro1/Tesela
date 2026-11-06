@@ -74,15 +74,15 @@ extension TextosDeCLI {
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "vecinos <accordo> [--voces 2]",
         descripcionVecinos: "accordi a un semitono (settime: di dominante, minore, semidiminuita e diminuita; triadi: maggiore, minore e aumentata; --ampliada: anche con le maj7)",
-        sintaxisConduccionParsimoniosa: "conduccion-parsimoniosa <accordo> <accordo> [--voces 2] [--ampliada]",
+        sintaxisConduccionParsimoniosa: "camino-parsimonioso <accordo> <accordo> [--voces 2] [--ampliada]",
         descripcionConduccionParsimoniosa: "da un accordo all'altro muovendo una voce (o due) di un semitono a ogni passo",
         sintaxisConduccionMinima: "conduccion-minima <accordo> <accordo>",
         descripcionConduccionMinima: "la condotta con meno semitoni",
         sintaxisPlr: "plr <triade> <P, L, R…>",
         descripcionPlr: "trasformazioni neoriemanniane",
-        sintaxisPlrCamino: "plr <triade> <triade>",
+        sintaxisPlrCamino: "plr camino <triade> <triade>",
         descripcionPlrCamino: "il cammino più breve per P, L e R",
-        sintaxisPlrCiclo: "plr <triade> <ciclo>",
+        sintaxisPlrCiclo: "plr ciclo <ciclo> <triade>",
         descripcionPlrCiclo: "un ciclo: hexatonico (P, L), octatonico (P, R) o «ciclo LR»",
 
         // Ayuda+Partituras.swift
@@ -92,10 +92,10 @@ extension TextosDeCLI {
         descripcionMusicxmlCoral: "corale a quattro voci in MusicXML",
         sintaxisMusicxmlAcordes: "musicxml acordes <sigle> [opzioni]",
         descripcionMusicxmlAcordes: "progressione con sigle e analisi",
-        notasMusicxmlAcordes: "opzioni: --compas 6/8, --anacrusa 8, --tonalidad Sol mayor, --clave fa, --tempo 90 (o --tempo 60 4.), --titulo Il mio corale, --duracion 2 (quanto dura ogni accordo; semiminima, altrimenti), --cifrados e --analisis (nel corale: sigla americana sopra, numero romano e funzione sotto)",
+        notasMusicxmlAcordes: "opzioni: --compas 6/8, --anacrusa 8, --en Sol mayor, --clave fa, --tempo 90 (o --tempo 60 4.), --titulo Il mio corale, --duracion 2 (quanto dura ogni accordo; semiminima, altrimenti), --cifrados e --analisis (nel corale: sigla americana sopra, numero romano e funzione sotto)",
         sintaxisMusicxmlArpegios: "musicxml arpegios <sigle> [opzioni]",
         descripcionMusicxmlArpegios: "gli accordi arpeggiati, nota per nota",
-        notasMusicxmlArpegios: "opzioni: --patron alberti (o ascendente, descendente, ida y vuelta), --figura 16 (quanto dura ogni nota; croma, altrimenti), --duracion 1 (quanto dura ogni accordo: lo schema si ripete fino a riempirlo) e le altre di «acordes»\n--enlazar: ogni arpeggio comincia dalla nota più vicina all'ultima del precedente",
+        notasMusicxmlArpegios: "opzioni: --patron alberti (o ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado), --figura 16 (quanto dura ogni nota; croma, altrimenti), --duracion 1 (quanto dura ogni accordo: lo schema si ripete fino a riempirlo) e le altre di «acordes»\n--enlazar: ogni arpeggio comincia dalla nota più vicina all'ultima del precedente",
         sintaxisMusicxmlArchivo: "musicxml acordes --archivo <file>",
         descripcionMusicxmlArchivo: "la progressione di un file MIDI, MusicXML, MEI o ABC, con quanto dura ogni accordo (anche arpegios, mei e midi)",
         sintaxisMusicxmlEscala: "musicxml escala <scala> [opzioni]",
@@ -122,8 +122,8 @@ extension TextosDeCLI {
         sintaxisPosiciones: "posiciones <scala> [--caged]",
         descripcionPosiciones: "la scala per posizioni sulla chitarra: tre note per corda (due nelle pentatoniche) o CAGED",
         notasPosiciones: "opzioni: --secuencia terceras (o un'altra: la sequenza in ogni posizione; con --bajando, scendendo) e --formas (le cinque forme della pentatonica e le note comuni); --instrumento bajo (o un altro; anche re-abierto, sol-abierto, dadgad) e --capo 2",
-        sintaxisTeclado: "teclado <scala> [--mano derecha]",
-        descripcionTeclado: "la scala su una tastiera di pianoforte (SVG): le note o, con --mano derecha o izquierda, le dita; --octavas 2",
+        sintaxisTeclado: "teclado <scala> [--dedos]",
+        descripcionTeclado: "la scala su una tastiera di pianoforte (SVG): le note o, con --dedos derecha o izquierda, le dita; --octavas 2",
         sintaxisReloj: "reloj <escala> [--quintas]",
         descripcionReloj: "la scala su un orologio di dodici ore (SVG): il cerchio cromatico o, con --quintas, il circolo delle quinte",
         sintaxisHoja: "hoja <escala>",
@@ -136,7 +136,7 @@ extension TextosDeCLI {
         descripcionHojaDeTonalidad: "la tonalità su una scheda di studio da stampare (SVG): armatura, relativa e omonima, la scala sul pentagramma, gli accordi di ogni grado con la loro funzione, le cadenze tipiche e le modulazioni ai toni vicini",
         sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
         descripcionPentagrama: "una scala, un accordo, un arpeggio (con ritmo: --figura 16, --tresillos) o degli accordi con la sigla su un pentagramma (SVG); --nombres, --intervalos, --semitonos, --tonica, --en <tonalidad>",
-        sintaxisPentagramaEstudio: "pentagrama <cosa> --romanos|--mano|--secuencia|--tab",
+        sintaxisPentagramaEstudio: "pentagrama <cosa> --romanos|--dedos|--secuencia|--tab",
         descripcionPentagramaEstudio: "i gradi in numeri romani sotto gli accordi; la diteggiatura del pianoforte (--dedos piano) o della chitarra (--dedos guitarra); la scala per terze o a gruppi (--secuencia terceras); l'intavolatura sotto (--tab, --instrumento)",
         sintaxisPentagramaRegistro: "pentagrama <cosa> --registro|--clave|--doble|--cambiar-clave|--bajo-cifrado",
         descripcionPentagramaRegistro: "l'ottava (--registro 2), la chiave (--clave fa), il doppio pentagramma, i cambi di chiave secondo il registro e il basso cifrato degli accordi (6, 6/4, 6/5…)",
@@ -169,7 +169,7 @@ extension TextosDeCLI {
         Con --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
         serie, digitaciones e tradiciones danno i loro dati in JSON.
         Con --json anche armonizar, realizar, revisar, contrapunto, transponer, escalas,
-        rearmonizar, vecinos, plr, conduccion-parsimoniosa, conduccion-minima, posiciones e motores. Se l'uscita non è
+        rearmonizar, vecinos, plr, camino-parsimonioso, conduccion-minima, posiciones e motores. Se l'uscita non è
         il terminale, il JSON sta su una sola riga.
         ARMONIA_IDIOMA=eu fissa la lingua senza --idioma; con ARMONIA_IDIOMA=sistema, quella di LANG.
         Codici di uscita: 0 bene, 1 testo illeggibile, 2 comando scritto male e 3 errori (revisar,

@@ -52,8 +52,16 @@ Todas las formas de antes se siguen leyendo; la ayuda enseña las nuevas.
 - Los dedos se piden con `--dedos`: `escala Do mayor --dedos` (antes, `--piano`), `pentagrama … --dedos piano` (antes,
   `--mano derecha`), `pentagrama … --dedos guitarra` (antes, `--tab --dedos`) y `teclado … --dedos`.
 - `pentagrama … --registro 3` es el registro (antes, `--octava`, que se confundía con `--octavas`).
-- `--json` también en `escalas`, `rearmonizar`, `vecinos`, `conduccion-parsimoniosa`, `conduccion-minima`, `plr`,
+- `--json` también en `escalas`, `rearmonizar`, `vecinos`, `camino-parsimonioso`, `conduccion-minima`, `plr`,
   `posiciones` y `motores`.
+- Lo que se escribe se lee en la notación de `--idioma`: `acorde B7/D --idioma de` es Si♭7/Re (antes, Si7/Re),
+  `escala re dorian --idioma oc`, `tonalidad B-Dur --idioma de` y `acorde Rém7 --idioma fr` (antes no se leían). Los
+  nombres en español o en inglés se siguen leyendo con cualquier idioma: `acorde Do7 --idioma de` es C7.
+- `plr` tiene subórdenes, como `tonnetz`: `plr camino Do Mibm` y `plr ciclo hexatonico Do` (antes, `plr Do Mibm` y
+  `plr Do hexatonico`). `plr Do PLR` sigue igual.
+- `conduccion-parsimoniosa` es `camino-parsimonioso`, como `Acorde.caminoParsimonioso(hasta:)`.
+- La ayuda ya no enseña nombres de antes: `teclado … --dedos` (no `--mano derecha`), `musicxml … --en Sol mayor` (no
+  `--tonalidad`), y los patrones de `musicxml arpegios`, con `baja-y-sube` y `quebrado`, son los de `arpegio`.
 
 ### Escalas: el teórico que definió cada una
 

@@ -79,7 +79,7 @@ import Testing
 
         let ayuda = salida("ayuda --todo")
         let help = salida("help --all --ingles")
-        for nombre in ["revisar <acordes>", "conduccion-parsimoniosa <acorde>", "--programa 0…127"] {
+        for nombre in ["revisar <acordes>", "camino-parsimonioso <acorde>", "--programa 0…127"] {
             #expect(ayuda.contains(nombre), Comment(rawValue: nombre))
         }
         for nombre in ["check <chords>", "smooth-path <chord>", "sequence <triads>", "--program 0…127"] {

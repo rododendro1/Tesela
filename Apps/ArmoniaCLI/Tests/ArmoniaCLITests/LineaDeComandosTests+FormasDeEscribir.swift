@@ -108,4 +108,28 @@ extension LineaDeComandosTests {
         #expect(salida("tonalidad B-Dur --idioma de") == salida("tonalidad Sib mayor --idioma de"))
         #expect(salida("acorde Rém7 --idioma fr") == salida("acorde Rem7 --idioma fr"))
     }
+
+    @Test func lasSubordenesDePlrYElCaminoParsimonioso() {
+        #expect(salida("plr camino Do Mibm") == salida("plr Do Mibm"))
+        #expect(salida("plr shortest C Ebm --ingles") == salida("plr C Ebm --ingles"))
+        #expect(salida("plr ciclo hexatonico Do") == salida("plr Do hexatonico"))
+        #expect(salida("plr ciclo Do hexatonico") == salida("plr Do hexatonico"))
+        #expect(salida("plr cycle LR cycle C --ingles") == salida("plr C LR cycle --ingles"))
+        #expect(resultado("plr", "camino", "Do").codigo == 2)
+        let camino = salida("camino-parsimonioso Sol7 Rem7")
+        #expect(camino.hasSuffix("3 pasos\n"))
+        #expect(salida("conduccion-parsimoniosa Sol7 Rem7") == camino)
+        #expect(salida("smooth-path G7 Dm7") == camino)
+    }
+
+    @Test func laAyudaConLosNombresDeAhora() {
+        let ayuda = salida("ayuda --todo")
+        #expect(!ayuda.contains("--mano"))
+        #expect(!ayuda.contains("--tonalidad Sol mayor"))
+        #expect(ayuda.contains("teclado <escala> [--dedos]"))
+        #expect(ayuda.contains("plr camino <tríada> <tríada>"))
+        #expect(ayuda.contains("plr ciclo <ciclo> <tríada>"))
+        #expect(ayuda.contains("camino-parsimonioso <acorde> <acorde>"))
+        #expect(salida("ayuda --todo --ingles").contains("plr cycle <cycle> <triad>"))
+    }
 }

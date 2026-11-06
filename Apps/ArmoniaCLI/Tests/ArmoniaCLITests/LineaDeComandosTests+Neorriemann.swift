@@ -12,16 +12,16 @@ extension LineaDeComandosTests {
         #expect(salida("vecinos Sol7 --voces 2").contains("Re♭7 (Sol→La♭, Re→Re♭)"))
         #expect(salida("vecinos G7 --ingles") == "G#°7 (G→G#)\nGm7 (B→Bb)\nEm7 (F→E)\n")
         #expect(
-            salida("conduccion-parsimoniosa Sol7 Rem7")
+            salida("camino-parsimonioso Sol7 Rem7")
                 == "Sol7 –Sol→Sol♯→ Sol♯°7 –Sol♯→La→ Sim7(♭5) –Si→Do→ Rem7\n3 pasos\n")
-        #expect(salida("conduccion-parsimoniosa Sol7 Reb7 --voces 2") == "Sol7 –Sol→La♭, Re→Re♭→ Re♭7\n1 paso\n")
+        #expect(salida("camino-parsimonioso Sol7 Reb7 --voces 2") == "Sol7 –Sol→La♭, Re→Re♭→ Re♭7\n1 paso\n")
         #expect(salida("conduccion-minima Sol7 Do") == "Sol→Sol, Si→Do (+1), Re→Do (−2), Fa→Mi (−1): 4 semitonos\n")
         #expect(salida("vecinos Domaj7") == "Do♯m7(♭5) (Do→Do♯)\nDo7 (Si→Si♭)\n")
         #expect(salida("vecinos Sol7 --ampliada").contains("Solmaj7 (Fa→Fa♯)"))
-        #expect(salida("conduccion-parsimoniosa Do7 Domaj7") == "Do7 –Si♭→Si→ Domaj7\n1 paso\n")
+        #expect(salida("camino-parsimonioso Do7 Domaj7") == "Do7 –Si♭→Si→ Domaj7\n1 paso\n")
         for orden in [
-            "vecinos", "vecinos Do6", "vecinos Do --ampliada", "vecinos Sol7 --voces 3", "conduccion-parsimoniosa Sol7",
-            "conduccion-parsimoniosa Do Sol7", "conduccion-minima Sol7",
+            "vecinos", "vecinos Do6", "vecinos Do --ampliada", "vecinos Sol7 --voces 3", "camino-parsimonioso Sol7",
+            "camino-parsimonioso Do Sol7", "conduccion-minima Sol7",
         ] {
             #expect(
                 LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,

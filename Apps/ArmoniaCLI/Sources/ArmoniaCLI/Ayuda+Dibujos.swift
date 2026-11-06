@@ -14,14 +14,14 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeTeclado: [EntradaDeAyuda] = [
-        // teclado <escala> [--mano derecha|izquierda] [--octavas 2]
+        // teclado <escala> [--dedos [derecha|izquierda]] [--octavas 2]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisTeclado),
             descripcion: TextosDeCLI.traduccion(\.descripcionTeclado),
             ejemplo: ejemplo(
-                "armonia teclado Re mayor --mano derecha > re.svg",
-                "armonia keyboard D major --hand right > d.svg"),
-            opciones: [.mano, .octavas])
+                "armonia teclado Re mayor --dedos > re.svg",
+                "armonia keyboard D major --fingers > d.svg"),
+            opciones: [.dedos, .octavas])
     ]
 
     static let ayudaDeHoja: [EntradaDeAyuda] = [
@@ -77,14 +77,14 @@ extension LineaDeComandos {
                 "armonia pentagrama escala Re dórico --octavas 2 --semitonos > dorico.svg",
                 "armonia staff scale D dorian --octaves 2 --semitones > dorian.svg"),
             opciones: [.figura, .tresillos, .nombres, .intervalos, .semitonos, .tonica, .en]),
-        // pentagrama <qué> --romanos|--mano|--secuencia|--tab
+        // pentagrama <qué> --romanos|--dedos|--secuencia|--tab
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPentagramaEstudio),
             descripcion: TextosDeCLI.traduccion(\.descripcionPentagramaEstudio),
             ejemplo: ejemplo(
                 "armonia pentagrama escala Sol mayor --dedos guitarra > sol.svg",
                 "armonia staff scale G major --fingers guitar > g.svg"),
-            opciones: [.romanos, .mano, .secuencia, .tab, .dedos, .instrumento]),
+            opciones: [.romanos, .dedos, .secuencia, .tab, .instrumento]),
         // pentagrama <qué> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPentagramaRegistro),

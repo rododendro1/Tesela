@@ -109,7 +109,7 @@ import Testing
             conJSON == [
                 "acorde", "identificar", "arpegio", "intervalo", "escala", "escalas", "tradiciones", "tonalidad",
                 "conjunto", "serie", "analizar", "armonizar", "realizar", "revisar", "contrapunto", "transponer",
-                "rearmonizar", "motores", "vecinos", "conduccion-parsimoniosa", "conduccion-minima", "plr",
+                "rearmonizar", "motores", "vecinos", "camino-parsimonioso", "conduccion-minima", "plr",
                 "digitaciones", "posiciones",
             ])
     }

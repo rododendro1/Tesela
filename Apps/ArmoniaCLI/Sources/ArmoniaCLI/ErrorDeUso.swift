@@ -321,14 +321,14 @@ enum ErrorDeUso: Error {
             return TextosDeCLI.traduccion { $0.unAcordeDeVecinos(ejemplo) }
         case .vecinosSinFamilia: return TextosDeCLI.traduccion(\.vecinosSinFamilia)
         case .dosAcordesDeCamino:
-            let ejemplo = "armonia conduccion-parsimoniosa Sol7 Rem7"
+            let ejemplo = "armonia camino-parsimonioso Sol7 Rem7"
             return TextosDeCLI.traduccion { $0.dosAcordesDeCamino(ejemplo) }
         case .caminoSinConexion: return TextosDeCLI.traduccion(\.caminoSinConexion)
         case .faltanPasosDePLR:
             let ejemplo = "armonia plr Do PLR"
             return TextosDeCLI.traduccion { $0.faltanPasosDePLR(ejemplo) }
         case .plrSoloTriadas(let camino):
-            let ejemplo = "armonia plr " + (camino ? "Do Mibm" : "Do PLR")
+            let ejemplo = "armonia plr " + (camino ? "camino Do Mibm" : "Do PLR")
             return TextosDeCLI.traduccion { $0.plrSoloTriadas(ejemplo, camino) }
         case .faltaTipoDePartitura(let orden):
             let ejemplo = "armonia \(orden) melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4"

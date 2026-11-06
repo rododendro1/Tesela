@@ -24,7 +24,7 @@ extension LineaDeComandos {
         return bien(pasos.map { $0.texto(en: notacion) }.joined(separator: "\n"))
     }
 
-    /// `conduccion-parsimoniosa Sol7 Rem7`: Sol7 –Si→Do→ … paso a paso.
+    /// `camino-parsimonioso Sol7 Rem7`: Sol7 –Si→Do→ … paso a paso.
     static func caminoParsimonioso(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
         guard let voces = argumentos.quitarNumero(.voces, en: 1...2, porDefecto: 1) else {
@@ -48,8 +48,24 @@ extension LineaDeComandos {
         return bien(texto + "\n" + Mensaje.pasos(camino.count).texto(en: notacion))
     }
 
-    /// `plr Do PLR`: la tríada tras cada paso. `plr Do Mibm`: el camino más corto.
-    static func plr(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+    /// Los argumentos de `plr` con sus subórdenes, `camino Do Mibm` y `ciclo hexatonico Do` (como en `tonnetz`),
+    /// cambiados por la forma de antes, que se sigue leyendo: `Do Mibm` y `Do hexatonico`.
+    static func argumentosDePlr(_ argumentos: [String]) -> [String] {
+        guard let primera = argumentos.first?.lowercased() else { return argumentos }
+        let resto = Array(argumentos.dropFirst())
+        if OpcionDeOrden.camino.leidos.contains("--" + primera) { return resto }
+        guard OpcionDeOrden.ciclo.leidos.contains("--" + primera) else { return argumentos }
+        // `ciclo hexatonico Do`; si no, con la tríada delante (`ciclo Do hexatonico`).
+        guard let triada = resto.last, resto.count >= 2,
+            (try? CicloNeorriemanniano(leyendo: resto.dropLast().joined(separator: " "))) != nil
+        else { return resto }
+        return [triada] + resto.dropLast()
+    }
+
+    /// `plr Do PLR`: la tríada tras cada paso. `plr camino Do Mibm`: el camino más corto. `plr ciclo hexatonico Do`:
+    /// el ciclo entero.
+    static func plr(_ escritos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        let argumentos = argumentosDePlr(escritos)
         guard argumentos.count >= 2 else { throw ErrorDeUso.faltanPasosDePLR }
         let origen = try Acorde(leyendoEnLaOrden: argumentos[0])
         guard Tonnetz.Triada(origen) != nil else { throw ErrorDeUso.plrSoloTriadas(camino: false) }
