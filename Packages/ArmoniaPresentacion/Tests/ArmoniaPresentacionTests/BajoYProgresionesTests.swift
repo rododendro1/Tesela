@@ -59,7 +59,7 @@ import Testing
         let mayor = PresentacionDeEstudioDeEscala.progresiones(de: Escala(.do), notacion: notacion)
         #expect(mayor.count == 5)
         #expect(mayor.first?.grados == "I–IV–V–I")
-        #expect(mayor.allSatisfy(\.fuera.isEmpty))
+        #expect(mayor.allSatisfy { $0.fuera.isEmpty })
         let pentatonica = Escala(.do, .pentatonicaMayor)
         #expect(PresentacionDeEstudioDeEscala.progresiones(de: pentatonica, notacion: notacion).isEmpty)
     }
