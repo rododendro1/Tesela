@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.6 (2026-11-06)
 
 - **La escala elegida en la pestaña de escalas.** `EleccionDeEscala`: la tónica y el tipo del catálogo, por su índice,
   o una escala escrita, y `elegir(_:)` para una pedida desde otra pestaña. `PresentacionDeEstudioDeEscala` suma lo que

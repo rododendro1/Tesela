@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.6 (2026-11-06)
 
 - **Las redes de notas, a `TeselaPresentacion`.** `RedDeNotas`, `ContenidoDeRed`, `PresentacionDeRedes`, `AjusteUIL`
   y `AjusteCuadrado` no usan SwiftUI y las dibuja también la línea de comandos, así que pasan a `TeselaPresentacion`.
