@@ -145,7 +145,7 @@ extension TipoDeEscala {
     /// natural.
     public var categoria: CategoriaTradicional? { fichaDelCatalogo.categoria }
 
-    /// La tradición de la escala (la de la `FichaDeTradicion` en cuyas listas está); `nil` en las occidentales y en
+    /// La tradición de la escala (la de su lista en `listasTradicionales`); `nil` en las occidentales y en
     /// las propias. Como `categoria`, por su identidad: una escala propia que se llame «Kafi» pero suene distinto no
     /// es el thāṭ.
     public var tradicion: Tradicion? { TipoDeEscala.delCatalogo[identidad]?.tradicion }

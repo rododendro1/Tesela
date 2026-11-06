@@ -18,9 +18,3 @@ extension TipoDeEscala {
 
     public static let andinas: [TipoDeEscala] = [.andina, .tritonicaAndina]
 }
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    static let andes = FichaDeTradicion(.andes, [TipoDeEscala.andinas])
-}

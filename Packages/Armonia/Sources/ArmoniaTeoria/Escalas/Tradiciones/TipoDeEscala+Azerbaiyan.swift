@@ -57,9 +57,3 @@ extension TipoDeEscala {
     /// Los mugam de Hacıbəyov que se escriben en doce notas sin dudas.
     public static let mugamlar: [TipoDeEscala] = [.rastMugami, .surMugami, .segahMugami, .cahargahMugami]
 }
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    static let azerbaiyan = FichaDeTradicion(.azerbaiyan, [TipoDeEscala.mugamlar])
-}

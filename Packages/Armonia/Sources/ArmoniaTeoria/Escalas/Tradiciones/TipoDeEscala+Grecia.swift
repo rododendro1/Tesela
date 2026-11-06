@@ -1,6 +1,13 @@
 import ArmoniaNucleo
 
 // MARK: - Grecia
+//
+// Las versiones microtonales (`afinaciones:` en cada escala). Dromoi, todos. Ousák y Sabáh, con la segunda neutra de
+// Bayātī y de Ṣabā, en cuartos de tono (la segâh de Uşşak, una koma bajo Mi, no cabe en su Mi♭). Los demás, en comas,
+// con las perdes de Arel-Ezgi-Uzdilek: los que tienen las notas de un makam, con las de ese makam (Hicaz, Hicazkâr,
+// Suzinak, Nev'eser, Nikriz, Karcığar, Rast); los que solo existen en Grecia, con sus mismos tetracordos: la segunda
+// aumentada de 12 o 13 comas entre dos semitonos de 4 o 5, como en Hicaz, la cuarta aumentada de Nikriz y lo demás
+// pitagórico.
 
 extension TipoDeEscala {
     // MARK: Dromoi (música popular griega)
@@ -153,16 +160,4 @@ extension TipoDeEscala {
         .ousak, .hitzaz, .hitzazkiar, .pireotikos, .tabahaniotikos, .niavent, .nikriz,
         .kartzigar, .sabah, .houzam, .sengah, .tsinganikos, .rast, .kiourdi, .houseini,
     ]
-}
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). Dromoi, todos. Ousák y
-    // Sabáh, con la segunda neutra de Bayātī y de Ṣabā, en cuartos de tono (la segâh de Uşşak, una koma bajo Mi, no
-    // cabe en su Mi♭). Los demás, en comas, con las perdes de Arel-Ezgi-Uzdilek: los que tienen las notas de un makam,
-    // con las de ese makam (Hicaz, Hicazkâr, Suzinak, Nev'eser, Nikriz, Karcığar, Rast); los que solo existen en
-    // Grecia, con sus mismos tetracordos: la segunda aumentada de 12 o 13 comas entre dos semitonos de 4 o 5, como en
-    // Hicaz, la cuarta aumentada de Nikriz y lo demás pitagórico.
-    static let grecia = FichaDeTradicion(.grecia, [TipoDeEscala.dromoi])
 }

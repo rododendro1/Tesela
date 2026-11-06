@@ -221,9 +221,10 @@ Sources/
 │   │   ├── Occidentales/  TipoDeEscala+Modos (con los modos exóticos), +Exoticas (con hexatónicas, jazz y
 │   │   │                  Messiaen), ModoGregoriano
 │   │   └── Tradiciones/   Un fichero por tradición (TipoDeEscala+India, +MundoArabe, +Turquia, +GreciaAntigua…), cada
-│   │                      uno con sus escalas y su ficha (FichaDeTradicion: categorías, microtonos, padres de los
-│   │                      janya); +Tradiciones (la lista `tradicionales`), CategoriaTradicional (con `Tradicion`) y
-│   │                      Microtonos (SistemaMicrotonal, TipoDeEscalaMicrotonal)
+│   │                      uno con sus escalas (cada una con su categoría, sus microtonos y, los janya, su mēḷa)
+│   │                      y sus listas; +Tradiciones (`listasTradicionales`, cada lista con su tradición, y
+│   │                      `tradicionales`), CategoriaTradicional (con `Tradicion`) y Microtonos (SistemaMicrotonal,
+│   │                      TipoDeEscalaMicrotonal)
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
 │   │                      FuncionTonal y AcordeAnalizado)
 │   ├── Coral/             Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion

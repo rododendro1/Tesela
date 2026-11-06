@@ -67,7 +67,7 @@ public struct TipoDeEscala: Sendable, Codable {
     }
 
     /// Una escala de otra tradición, con su categoría y, si los tiene, el número del mēḷa del que deriva (un rāga
-    /// janya) y sus versiones microtonales. La tradición la da la lista de su `FichaDeTradicion`.
+    /// janya) y sus versiones microtonales. La tradición la da su lista en `listasTradicionales`.
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
         variantes: [String] = [], categoria: CategoriaTradicional, mela: Int? = nil,

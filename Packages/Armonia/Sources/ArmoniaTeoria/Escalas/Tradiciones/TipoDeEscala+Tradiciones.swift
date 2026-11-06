@@ -17,17 +17,17 @@ import ArmoniaNucleo
 //
 // `categoria` y `tradicion` (en `CategoriaTradicional.swift`) dicen de cada una si es un rāga, un mēḷa, un dromos,
 // un maqam, un makam, un mugam…: la categoría la dice la declaración de cada escala (`categoria: .raga`) y la
-// tradición, la ficha en cuyas listas está. Sus nombres en cada idioma están en `Escalas/Nombres/`.
+// tradición, su lista en `listasTradicionales`. Sus nombres en cada idioma están en `Escalas/Nombres/`.
 //
 // Cada tradición tiene su fichero, `TipoDeEscala+Nombre.swift` (el nombre del caso de `Tradicion`, con mayúscula):
 // Africa, Andes, Azerbaiyan (mugam), Bizancio (echoi), Brasil (modos nordestinos), China, Corea, Etiopia, Europa
 // (folklore europeo), Gregoriano (modos, hexacordos y modos de Glareano), Grecia (dromoi), GreciaAntigua
 // (tetracordos, géneros y harmoniai), India, Indonesia, Japon, Klezmer, Mesopotamia (afinaciones babilónicas),
 // MundoArabe (maqamat y ajnas), Persia (dastgāh), SudesteAsiatico, Turquia (makamlar y çeşni) y Vietnam. Cada uno
-// acaba con su ficha (`FichaDeTradicion`), que reúne sus listas en orden. Una escala nueva se declara en el fichero
-// de su tradición con todos sus datos (`FichaDeEscala`): su categoría, su versión microtonal si la tiene
-// (`afinaciones: [.init(.cuartosDeTono, pasos: […])]`) y, si es un rāga janya, su mēḷa (`mela: 28`); y se apunta en
-// una de sus listas.
+// declara sus escalas y sus listas. Una escala nueva se declara en el fichero de su tradición con todos sus datos
+// (`FichaDeEscala`): su categoría, su versión microtonal si la tiene (`afinaciones: [.init(.cuartosDeTono, pasos:
+// […])]`) y, si es un rāga janya, su mēḷa (`mela: 28`); y se apunta en una de sus listas. Una lista nueva se apunta,
+// con su tradición, en `listasTradicionales`.
 
 extension TipoDeEscala {
     /// Escalas de otras tradiciones: thāṭ, dromoi, mēḷa, janya, chinas, japonesas, etíopes, maqamat, de Indonesia
@@ -37,11 +37,36 @@ extension TipoDeEscala {
     /// hexacordos de Guido, las escalas populares de Europa, los modos de Glareano, las de Vietnam, los modos
     /// nordestinos de Brasil, los colores de Aristóxeno y los adwār de Ṣafī al-Dīn. El orden de las listas decide
     /// qué nombre gana en la búsqueda: las nuevas van al final.
-    public static let tradicionales: [TipoDeEscala] = [
-        thaats, dromoi, melakartas, janyas, gramas, murchanas, chinas, japonesas, etiopes, maqamat, indonesias, pathets,
-        klezmer, ragasIndostanicos, dastgah, coreanas, andinas, griegasAntiguas, makamlar, mugamlar, echoi,
-        mesopotamicas, ajnas, cesniler, africanas, sudesteAsiaticas, modosGregorianos, generosDeDidimoYEratostenes,
-        harmoniaiCromaticas, harmoniaiEnarmonicas, harmoniaiDeAristides, hexacordos, europeas,
-        modosDeGlareano, vietnamitas, brasilenas, coloresDeAristoxeno, adwar,
-    ].flatMap { $0 }
+    public static let tradicionales: [TipoDeEscala] = listasTradicionales.flatMap(\.tipos)
+
+    /// Las listas de `tradicionales`, cada una con su tradición, en el orden en que tienen prioridad: de aquí salen
+    /// `tradicionales` y `tradicion`. Una lista nueva se apunta aquí, al final, y una tradición nueva necesita al
+    /// menos una.
+    static let listasTradicionales: [ListaTradicional] = [
+        .init(.india, thaats), .init(.grecia, dromoi), .init(.india, melakartas), .init(.india, janyas),
+        .init(.india, gramas), .init(.india, murchanas), .init(.china, chinas), .init(.japon, japonesas),
+        .init(.etiopia, etiopes), .init(.mundoArabe, maqamat), .init(.indonesia, indonesias),
+        .init(.indonesia, pathets), .init(.klezmer, klezmer), .init(.india, ragasIndostanicos), .init(.persia, dastgah),
+        .init(.corea, coreanas), .init(.andes, andinas), .init(.greciaAntigua, tetracordosGriegos),
+        .init(.greciaAntigua, generosDeArquitasYPtolomeo), .init(.greciaAntigua, harmoniai), .init(.turquia, makamlar),
+        .init(.azerbaiyan, mugamlar), .init(.bizancio, echoi), .init(.mesopotamia, mesopotamicas),
+        .init(.mundoArabe, ajnas), .init(.turquia, cesniler), .init(.africa, africanas),
+        .init(.sudesteAsiatico, sudesteAsiaticas), .init(.gregoriano, modosGregorianos),
+        .init(.greciaAntigua, generosDeDidimoYEratostenes), .init(.greciaAntigua, harmoniaiCromaticas),
+        .init(.greciaAntigua, harmoniaiEnarmonicas), .init(.greciaAntigua, harmoniaiDeAristides),
+        .init(.gregoriano, hexacordos), .init(.europa, europeas), .init(.gregoriano, modosDeGlareano),
+        .init(.vietnam, vietnamitas), .init(.brasil, brasilenas), .init(.greciaAntigua, coloresDeAristoxeno),
+        .init(.mundoArabe, adwar),
+    ]
+}
+
+/// Una lista de escalas de otra tradición (los thāṭ, los mēḷa, los dromoi…) y la tradición de todas ellas.
+struct ListaTradicional: Sendable {
+    let tradicion: Tradicion
+    let tipos: [TipoDeEscala]
+
+    init(_ tradicion: Tradicion, _ tipos: [TipoDeEscala]) {
+        self.tradicion = tradicion
+        self.tipos = tipos
+    }
 }

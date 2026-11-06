@@ -189,13 +189,14 @@ import Testing
         #expect(TipoDeEscala.thaats[0].padre == nil)
     }
 
-    /// Las fichas reparten todas las escalas de otras tradiciones, cada una en la suya, y cada una dice en su
-    /// declaración su categoría, su versión microtonal y, los janya, su mēḷa.
-    @Test func lasFichasRepartenLasTradicionales() {
-        var tipos: [TipoDeEscala] = []
-        for ficha in FichaDeTradicion.todas {
-            for tipo in ficha.tipos {
-                #expect(tipo.tradicion == ficha.tradicion, Comment(rawValue: tipo.nombre))
+    /// Las listas de `listasTradicionales` reparten todas las escalas de otras tradiciones, cada una en la suya, y
+    /// cada una dice en su declaración su categoría, su versión microtonal y, los janya, su mēḷa.
+    @Test func lasListasRepartenLasTradicionales() {
+        var vistas = Set<String>()
+        for lista in TipoDeEscala.listasTradicionales {
+            for tipo in lista.tipos {
+                #expect(vistas.insert(tipo.nombre).inserted, "\(tipo.nombre) está en dos listas")
+                #expect(tipo.tradicion == lista.tradicion, Comment(rawValue: tipo.nombre))
                 #expect(tipo.ficha.categoria != nil, Comment(rawValue: tipo.nombre))
                 #expect(tipo.categoria == tipo.ficha.categoria, Comment(rawValue: tipo.nombre))
                 #expect(tipo.ficha.usos.isEmpty, Comment(rawValue: tipo.nombre))
@@ -204,14 +205,14 @@ import Testing
                     #expect(tipo.padre == TipoDeEscala.melakarta(mela), Comment(rawValue: tipo.nombre))
                 }
             }
-            tipos += ficha.tipos
         }
-        #expect(tipos.count == TipoDeEscala.tradicionales.count)
-        #expect(Set(tipos.map(\.nombre)) == Set(TipoDeEscala.tradicionales.map(\.nombre)))
-        #expect(FichaDeTradicion.todas.map(\.tradicion) == Tradicion.allCases)
+        #expect(vistas.count == TipoDeEscala.tradicionales.count)
+        // Cada tradición tiene al menos una lista.
+        #expect(Set(TipoDeEscala.listasTradicionales.map(\.tradicion)) == Set(Tradicion.allCases))
         // Las occidentales no tienen categoría ni tradición.
         for tipo in TipoDeEscala.todos {
             #expect(tipo.ficha.categoria == nil && tipo.ficha.mela == nil, Comment(rawValue: tipo.nombre))
+            #expect(tipo.tradicion == nil, Comment(rawValue: tipo.nombre))
         }
     }
 

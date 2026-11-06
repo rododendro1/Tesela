@@ -1,6 +1,8 @@
 import ArmoniaNucleo
 
 // MARK: - Persia
+//
+// Las versiones microtonales (`afinaciones:` en cada escala). Dastgāh (koron).
 
 extension TipoDeEscala {
     // MARK: Dastgāh persas (temperados)
@@ -128,11 +130,4 @@ extension TipoDeEscala {
         .mahur, .homayun, .cahargah, .sur, .rastPanjgah, .segah, .nava, .bayateTork, .afshari, .dashti, .abuAta,
         .bayateEsfahan,
     ]
-}
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). Dastgāh (koron).
-    static let persia = FichaDeTradicion(.persia, [TipoDeEscala.dastgah])
 }

@@ -1,5 +1,14 @@
 import ArmoniaNucleo
 
+// MARK: - India
+//
+// Las versiones microtonales (`afinaciones:` en cada escala). Thāṭ y Yaman (los 22 śruti, por su número desde Sa: 0 =
+// 1/1, 3 = 10/9, 7 = 5/4, 9 = 4/3, 13 = 3/2…). Los de grado natural siguen el ṣaḍja-grāma de Bharata, el modelo de E.
+// J. Arnold: Kāfī es Sa Re(10/9) ga(32/27) ma Pa Dha(5/3) ni(16/9); Khamāj sube ga a Ga(5/4), Bilāval también ni a
+// Ni(15/8) y Kalyāṇ, ma a Ma(45/32). Los rāgas con ati-komal (Bhairav, Bhairavī, Toḍī) llevan el re y el dha
+// pitagóricos (256/243, 128/81); Toḍī, como lo miden Bel y otros (Ga 32/27, Ma 45/32, Ni 243/128); Mārvā y Pūrvī, el re
+// de 16/15.
+
 extension TipoDeEscala {
     // MARK: Mēḷa (música carnática)
 
@@ -425,7 +434,7 @@ extension TipoDeEscala {
     // escala que empieza en cada una de sus notas, en el orden del texto: las del ṣaḍja-grāma bajan desde Sa
     // (Uttaramandrā) hasta Ri; las del madhyama-grāma, desde Ma (Sauvīrī) hasta Pa.
     //
-    // Se escriben como el modelo de E. J. Arnold de los thāṭ, el que siguen los śruti de la ficha, abajo: el
+    // Se escriben como el modelo de E. J. Arnold de los thāṭ, el que siguen los śruti de sus `afinaciones:`: el
     // ṣaḍja-grāma es Sa Ri(10/9) ga(32/27) ma(4/3) Pa(3/2) Dha(5/3) ni(16/9), las notas de Kāfī, y el madhyama-grāma
     // tiene Pa una coma sintónica más bajo (40/27). Cada mūrchanā lleva las razones de su grāma contadas desde su
     // primera nota. En doce notas son los siete modos diatónicos (el ṣaḍja-grāma es el dórico); su versión microtonal
@@ -548,21 +557,4 @@ extension TipoDeEscala {
         .uttaramandra, .rajani, .uttarayata, .suddhasadja, .matsarikrta, .asvakranta, .abhirudgata,
         .sauviri, .harinasva, .kalopanata, .suddhamadhya, .margi, .pauravi, .hrsyaka,
     ]
-}
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). Thāṭ y Yaman (los 22
-    // śruti, por su número desde Sa: 0 = 1/1, 3 = 10/9, 7 = 5/4, 9 = 4/3, 13 = 3/2…). Los de grado natural siguen el
-    // ṣaḍja-grāma de Bharata, el modelo de E. J. Arnold: Kāfī es Sa Re(10/9) ga(32/27) ma Pa Dha(5/3) ni(16/9); Khamāj
-    // sube ga a Ga(5/4), Bilāval también ni a Ni(15/8) y Kalyāṇ, ma a Ma(45/32). Los rāgas con ati-komal (Bhairav,
-    // Bhairavī, Toḍī) llevan el re y el dha pitagóricos (256/243, 128/81); Toḍī, como lo miden Bel y otros (Ga 32/27,
-    // Ma 45/32, Ni 243/128); Mārvā y Pūrvī, el re de 16/15.
-    static let india = FichaDeTradicion(
-        .india,
-        [
-            TipoDeEscala.thaats, TipoDeEscala.melakartas, TipoDeEscala.janyas, TipoDeEscala.gramas,
-            TipoDeEscala.murchanas, TipoDeEscala.ragasIndostanicos,
-        ])
 }

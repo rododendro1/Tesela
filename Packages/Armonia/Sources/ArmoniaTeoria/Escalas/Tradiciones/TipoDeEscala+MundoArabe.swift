@@ -1,6 +1,8 @@
 import ArmoniaNucleo
 
 // MARK: - MundoArabe
+//
+// Las versiones microtonales (`afinaciones:` en cada escala). Maqamat (cuartos de tono).
 
 extension TipoDeEscala {
     // MARK: Maqamat árabes (temperados)
@@ -342,16 +344,4 @@ extension TipoDeEscala {
 
     /// Los cuatro shudūd de Ṣafī al-Dīn que están: ʿUshshāq, Nawā, Abū Salīk y Rāst.
     public static let adwar: [TipoDeEscala] = [.shaddUshshaq, .shaddNawa, .shaddAbuSalik, .shaddRast]
-}
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). Maqamat (cuartos de
-    // tono).
-    static let mundoArabe = FichaDeTradicion(
-        .mundoArabe,
-        [
-            TipoDeEscala.maqamat, TipoDeEscala.ajnas, TipoDeEscala.adwar,
-        ])
 }

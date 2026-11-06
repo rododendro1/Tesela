@@ -275,10 +275,12 @@ extension TipoDeEscalaMicrotonal {
     /// afinaciones teóricas: en la práctica cada intérprete y cada escuela afinan un poco distinto (la segah turca,
     /// por ejemplo, suena más baja que una coma).
     ///
-    /// Cada una se declara con su escala (`afinaciones:` en su declaración); aquí van en el orden de
-    /// `FichaDeTradicion.todas` y de sus listas, y después las occidentales (`occidentales`).
+    /// Cada una se declara con su escala (`afinaciones:` en su declaración); aquí van por tradiciones, en el orden de
+    /// `Tradicion.allCases` (y en cada una, en el de sus listas), y después las occidentales (`occidentales`).
     public static let catalogo: [TipoDeEscalaMicrotonal] =
-        FichaDeTradicion.todas.flatMap(\.tipos).flatMap(\.afinaciones) + occidentales
+        Tradicion.allCases.flatMap { tradicion in
+            TipoDeEscala.listasTradicionales.filter { $0.tradicion == tradicion }.flatMap(\.tipos)
+        }.flatMap(\.afinaciones) + occidentales
 
     /// Las versiones microtonales de escalas occidentales, que no son de ninguna tradición: la de blues, con sus
     /// blue notes, como se suelen describir: la tercera neutra, entre la menor y la mayor (350 cents, el Mi𝄳 sobre

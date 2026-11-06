@@ -1,6 +1,10 @@
 import ArmoniaNucleo
 
 // MARK: - Folklore europeo
+//
+// Las versiones microtonales (`afinaciones:` en cada escala). En cents: los armónicos 8 a 15 (9/8, 5/4, 11/8, 3/2,
+// 13/8, 7/4 y 15/8, redondeados) y las razones de la gaita (9/8, 5/4, 4/3, 3/2, 5/3 y 7/4); los grados medidos en
+// Svaneti.
 
 extension TipoDeEscala {
     // MARK: Escalas populares de Europa
@@ -89,13 +93,4 @@ extension TipoDeEscala {
     public static let europeas: [TipoDeEscala] = [
         .doricoUcraniano, .podhalanska, .pentatonicaHungara, .cuernoAlpino, .gaitaEscocesa, .georgiana,
     ]
-}
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    // Las afinaciones de estas escalas, que cada una lleva en su declaración (`afinaciones:`). En cents: los armónicos
-    // 8 a 15 (9/8, 5/4, 11/8, 3/2, 13/8, 7/4 y 15/8, redondeados) y las razones de la gaita (9/8, 5/4, 4/3, 3/2, 5/3 y
-    // 7/4); los grados medidos en Svaneti.
-    static let europa = FichaDeTradicion(.europa, [TipoDeEscala.europeas])
 }

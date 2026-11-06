@@ -59,9 +59,3 @@ extension TipoDeEscala {
     /// Los cinco modos pentatónicos y las tres escalas heptatónicas chinas.
     public static let chinas: [TipoDeEscala] = [.gong, .shang, .jue, .zhi, .yu, .qingyue, .yayue, .yanyue]
 }
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    static let china = FichaDeTradicion(.china, [TipoDeEscala.chinas])
-}

@@ -117,13 +117,3 @@ extension TipoDeEscala {
     /// Los tres hexacordos: natural, duro y blando.
     public static let hexacordos: [TipoDeEscala] = [.hexacordoNatural, .hexacordoDuro, .hexacordoBlando]
 }
-
-// MARK: Ficha
-
-extension FichaDeTradicion {
-    static let gregoriano = FichaDeTradicion(
-        .gregoriano,
-        [
-            TipoDeEscala.modosGregorianos, TipoDeEscala.hexacordos, TipoDeEscala.modosDeGlareano,
-        ])
-}

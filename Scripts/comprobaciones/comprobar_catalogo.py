@@ -2,7 +2,7 @@
 """Comprueba que el catálogo de escalas no se ha descuadrado.
 
 Una escala tipo `TipoDeEscala` se declara en un sitio, pero hay que apuntarla en otros dos a mano:
-la lista donde se busca (`todos` o la de su tradición, que `tradicionales` reúne) y, para todas,
+la lista donde se busca (`todos` o la de su tradición, que `listasTradicionales` reúne) y, para todas,
 su nombre en cada fichero de idioma de `Nombres/` (`NombresDeEscalas+Catalan.swift`…). Si se olvida
 una, el compilador no avisa: la escala existe pero `buscar(nombre:)` no la encuentra, o su nombre en
 un idioma cae al español.
@@ -17,6 +17,7 @@ Comprueba:
   4. cada fichero de idioma da el nombre de todas las categorías de `CategoriaTradicional` (con `.categoria`);
   5. en un idioma, ningún alias ni variante se escribe igual que el nombre, el alias o la variante de otra escala
      (el primero taparía al segundo al leer).
+  6. toda lista de `Tradiciones/` está en `listasTradicionales` (si no, sus escalas no se buscan ni tienen tradición).
 
 Uso:  python3 Scripts/comprobaciones/comprobar_catalogo.py      (sale con 1 si hay algún problema)
 Es una lectura del texto, no del compilador: se limita al estilo con que está escrito el catálogo.
@@ -73,6 +74,25 @@ for n, veces in collections.Counter(todos).items():
 for n, fichero in sorted(definidas.items()):
     if n not in nombradas:
         errores.append(f"{n} ({fichero}) no está en `todos` ni en ninguna lista de tradición: no se podrá buscar")
+
+# Las listas de tradición, en `listasTradicionales` (`.init(.tradicion, lista)`).
+apuntadas = set()
+for texto in TEXTO.values():
+    m = re.search(r"static let listasTradicionales: \[ListaTradicional\] = \[", texto)
+    if m:
+        j, nivel = m.end(), 1
+        while nivel:
+            nivel += (texto[j] == "[") - (texto[j] == "]")
+            j += 1
+        apuntadas = set(re.findall(r"\.init\(\.\w+, (\w+)\)", texto[m.end():j - 1]))
+if not apuntadas:
+    sys.exit("No encuentro `listasTradicionales`: ¿cambió el estilo del catálogo?")
+for f, texto in TEXTO.items():
+    if f.parent.name != "Tradiciones":
+        continue
+    for m in re.finditer(r"public static let (\w+): \[TipoDeEscala\] = \[", texto):
+        if m.group(1) not in apuntadas:
+            errores.append(f"`{m.group(1)}` ({f.name}) no está en `listasTradicionales`: sus escalas no se buscan")
 
 # --- Los ficheros por idioma de `Nombres/`
 from normalizar_escalas import normalizar, comprobar as comprobar_normalizacion

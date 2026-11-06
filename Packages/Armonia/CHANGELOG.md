@@ -11,6 +11,10 @@
   una sola tabla por identidad (`TipoDeEscala.delCatalogo`). La ficha de cada tradición se queda con sus listas, en
   orden, y de ella sale la tradición. Los nombres en otros idiomas siguen en `Escalas/Nombres/`. Nada cambia en la
   API pública ni en lo que devuelve.
+- Las listas de las escalas de otras tradiciones se apuntan una sola vez, con su tradición, en
+  `TipoDeEscala.listasTradicionales`, en el orden en que tienen prioridad; de ahí salen `tradicionales` y
+  `tradicion`. Desaparecen `FichaDeTradicion` y la ficha al final de cada fichero de `Tradiciones/`, que repetía esas
+  listas. `comprobar_catalogo.py` avisa si una lista de `Tradiciones/` no está en `listasTradicionales`.
 
 ## 0.3.6 (2026-11-06)
 
