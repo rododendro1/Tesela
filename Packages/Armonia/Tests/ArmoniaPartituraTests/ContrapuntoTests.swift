@@ -28,17 +28,6 @@ import Testing
         #expect(ejercicio.informe(en: .inglesASCII) == "Species 1, counterpoint above the cantus firmus\nNo faults.")
     }
 
-    /// Sin la notación, como antes, en español (obsoleto).
-    @available(*, deprecated)
-    @Test func elInformeYElTextoSinNotacion() throws {
-        let ejercicio = try Contrapunto(
-            cantusFirmus: cantusDeFux,
-            contrapunto: "La4 La4 Sol4 La4 Si4 Do5 Do5 Si4 Re5 Do#5 Re5", especie: .primera)
-        #expect(ejercicio.informe() == ejercicio.informe(en: .espanolCompacto))
-        let voz = try Voz(leyendo: "Do4:2~ Do4:4 Re4:4")
-        #expect(voz.texto() == voz.texto(en: .espanolCompacto))
-    }
-
     @Test func primeraEspecie() throws {
         // Do–Sol y Re–La: quintas paralelas; al final, Sol4 → Do5 salta en vez de ir por grado.
         let faltas = try Contrapunto(

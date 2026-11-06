@@ -384,17 +384,3 @@ import Testing
         #expect(TransformacionNeorriemanniana.r.nombre(en: .conPalabras(.aleman)) == "Parallele")
     }
 }
-
-/// Los caminos de antes en `Tonnetz`, que ahora están en `Acorde` (ArmoniaTeoria), siguen dando lo mismo.
-@Suite struct CaminosObsoletosDelTonnetzTests {
-    @available(*, deprecated)
-    @Test func losCaminosDeAntes() {
-        #expect(Tonnetz.camino(desde: "Do", hasta: "Mibm") == Acorde("Do").caminoNeorriemanniano(hasta: "Mibm"))
-        #expect(
-            Tonnetz.camino(desde: "Do", hasta: "Sol#", enarmonico: true)
-                == Acorde("Do").caminoNeorriemanniano(hasta: "Sol#", enarmonico: true))
-        #expect(
-            Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Reb7", voces: 2)
-                == Acorde("Sol7").caminoParsimonioso(hasta: "Reb7", voces: 2))
-    }
-}

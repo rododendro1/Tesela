@@ -2,10 +2,10 @@
 
 ## Sin publicar
 
-### Las mismas consultas y los mismos nombres en toda la API, con los de antes obsoletos
+### Las mismas consultas y los mismos nombres en toda la API
 
-Los nombres de antes siguen compilando, con un aviso, en `Obsoletos.swift` de `ArmoniaTeoria`,
-`ArmoniaRepresentaciones` y `ArmoniaPartitura`.
+**Cambio incompatible:** los nombres de antes ya no existen (no llegaron a salir como obsoletos en ninguna versión);
+cada uno tiene aquí su nombre nuevo.
 
 - `candidatos` e `identificar` se escriben igual en acordes, escalas y tonalidades, con `notas:`, `alturas:`,
   `clasesDeAltura:` o `midi:`. `Acorde.candidatos(_:)` e `identificar(_:)` (con notas o con alturas) son
@@ -22,7 +22,8 @@ Los nombres de antes siguen compilando, con un aviso, en `Obsoletos.swift` de `A
 - `Escala.rotacion(_:)` y `TipoDeEscala.rotacion(_:)` son `modo(grado:)`: `Escala(.do).modo(grado: 2)` es Re dórico.
   `rotado(…)` sigue siendo el giro de los teclados.
 - `NotaMicrotonal.nombre(en:)`, `Voz.texto(en:)` y `Contrapunto.informe(en:)` ya no tienen la notación española por
-  omisión, como el resto de la API: `nombre()`, `texto()` e `informe()` quedan obsoletos.
+  omisión, como el resto de la API. La forma en español es una propiedad, como en los demás tipos: `nombre`,
+  `texto` e `informe` (antes, `nombre()`, `texto()` e `informe()`).
 
 ### Leer en cada notación lo que se escribe en ella
 
@@ -81,20 +82,21 @@ Todas las formas de antes se siguen leyendo; la ayuda enseña las nuevas.
   Siguen públicas `tradicionales`, `tetracordosGriegos` y las de las harmoniai (`harmoniai`,
   `harmoniaiCromaticas`, `harmoniaiEnarmonicas`), que agrupan por género y no tienen otra consulta.
 
-### Nombres más claros en la API, con los de antes obsoletos
+### Nombres más claros en la API
 
-Los nombres de antes siguen compilando, con un aviso, en `Obsoletos.swift` de `ArmoniaNucleo` y `ArmoniaTeoria`.
+**Cambio incompatible:** los nombres de antes ya no existen (no llegaron a salir como obsoletos en ninguna versión),
+y con ellos los ficheros `Obsoletos.swift`; cada uno tiene aquí su nombre nuevo.
 
 - `TipoDeEscala.todos` es `TipoDeEscala.occidentales`, y `todos(uso:)`, `occidentales(uso:)`: no eran todas las
   escalas, sino las occidentales. Todas siguen en `catalogo`.
-- `init?(texto:)` de `RepresentableComoTexto` queda obsoleto: para tener `nil` en lugar del error,
+- `init?(texto:)` de `RepresentableComoTexto` desaparece: para tener `nil` en lugar del error,
   `try? Acorde(leyendo: texto)`.
 - `Acorde.invertir(_:)` es `Acorde.cambiarInversion(_:)`, como `cambiarBajo(_:)`: `invertir` es la inversión en
   espejo de `Melodia` y de `ConjuntoDeClasesDeAltura`.
 - `Notacion` y `EscrituraDeNotas` solo tienen con nombre las de español e inglés (`.espanolCompacto`,
   `.inglesASCII`…). Las de los otros trece idiomas son `.compacta(.catalan)` y `.conPalabras(.catalan)`
   (`Notacion.compacta(_:)` y `Notacion.conPalabras(_:)` son nuevas), y las 52 constantes de antes
-  (`.catalanCompacto`, `.alemanPalabras`…) quedan obsoletas. Dan lo mismo.
+  (`.catalanCompacto`, `.alemanPalabras`…) desaparecen.
 - `EscalaVecina.de` y `.a` son `desde` y `hasta` (y `init(escala:desde:hasta:)`), y lo mismo en
   `MapaDeBrillo.Enlace`, como en `CambioDeGrado` o `Modulacion`.
 
