@@ -7,40 +7,40 @@ import Testing
 @Suite struct ArgumentosTests {
     @Test func marcas() {
         var argumentos = Argumentos(["Sol7", "--diagrama", "Do", "--diagram"])
-        let quitada = argumentos.quitarMarca("--diagrama", "--diagram")
+        let quitada = argumentos.quitarMarca(.diagrama)
         #expect(quitada)
         #expect(argumentos.restantes == ["Sol7", "Do"])
-        let ausente = argumentos.quitarMarca("--completo")
+        let ausente = argumentos.quitarMarca(.completo)
         #expect(!ausente)
     }
 
     @Test func opciones() {
         var argumentos = Argumentos(["Sol7", "--instrument", "ukelele", "--limite"])
-        #expect(argumentos.quitarOpcion("--instrumento", "--instrument") == .valor("ukelele"))
-        #expect(argumentos.quitarOpcion("--limite", "--limit") == .sinValor(nombre: "limite"))
-        #expect(argumentos.quitarOpcion("--dedos") == .ausente)
+        #expect(argumentos.quitarOpcion(.instrumento) == .valor("ukelele"))
+        #expect(argumentos.quitarOpcion(.limite) == .sinValor(nombre: "limite"))
+        #expect(argumentos.quitarOpcion(.dedosDeLaDigitacion) == .ausente)
         #expect(argumentos.restantes == ["Sol7"])
         // Otra opción no es un valor.
         var seguidas = Argumentos(["--language", "--textos", "es"])
-        #expect(seguidas.quitarOpcion("--idioma", "--language") == .sinValor(nombre: "language"))
+        #expect(seguidas.quitarOpcion(.idioma) == .sinValor(nombre: "language"))
         #expect(seguidas.opcionDesconocida == "--textos")
     }
 
     @Test func valores() throws {
         var argumentos = Argumentos(["Sol7", "--instrument", "ukelele", "--comparar", "Do", "lidio", "--limite"])
-        #expect(try argumentos.valor("--instrumento", "--instrument") == "ukelele")
-        #expect(try argumentos.valor("--dedos") == nil)
-        #expect(try argumentos.valorConPalabras("--comparar", "--compare") == "Do lidio")
+        #expect(try argumentos.valor(.instrumento) == "ukelele")
+        #expect(try argumentos.valor(.dedosDeLaDigitacion) == nil)
+        #expect(try argumentos.valorConPalabras(.comparar) == "Do lidio")
         #expect(argumentos.restantes == ["Sol7", "--limite"])
         // Sin valor, `faltaValor` con el nombre que se escribió, o el error que se pida.
         var copia = argumentos
-        let sinNada = fallo { _ = try copia.valor("--limite", "--limit") }
+        let sinNada = fallo { _ = try copia.valor(.limite) }
         #expect(sinNada == "faltaValor(\"limite\")")
         copia = argumentos
-        let elPedido = fallo { _ = try copia.valor("--limite", "--limit", siFalta: .faltaLimite) }
+        let elPedido = fallo { _ = try copia.valor(.limite, siFalta: .faltaLimite) }
         #expect(elPedido == "faltaLimite")
         copia = argumentos
-        let sinPalabras = fallo { _ = try copia.valorConPalabras("--limite") }
+        let sinPalabras = fallo { _ = try copia.valorConPalabras(.limite) }
         #expect(sinPalabras == "faltaValor(\"limite\")")
         #expect(copia.restantes == ["Sol7"])
     }
@@ -57,13 +57,13 @@ import Testing
 
     @Test func numeros() {
         var argumentos = Argumentos(["Sol7", "--voces", "2"])
-        #expect(argumentos.quitarNumero("--voces", "--voices", en: 1...2, porDefecto: 1) == 2)
-        #expect(argumentos.quitarNumero("--voces", "--voices", en: 1...2, porDefecto: 1) == 1)
+        #expect(argumentos.quitarNumero(.voces, en: 1...2, porDefecto: 1) == 2)
+        #expect(argumentos.quitarNumero(.voces, en: 1...2, porDefecto: 1) == 1)
         #expect(argumentos.restantes == ["Sol7"])
         var fuera = Argumentos(["--voces", "3"])
-        #expect(fuera.quitarNumero("--voces", en: 1...2, porDefecto: 1) == nil)
+        #expect(fuera.quitarNumero(.voces, en: 1...2, porDefecto: 1) == nil)
         var sinNumero = Argumentos(["--voces"])
-        #expect(sinNumero.quitarNumero("--voces", en: 1...2, porDefecto: 1) == nil)
+        #expect(sinNumero.quitarNumero(.voces, en: 1...2, porDefecto: 1) == nil)
     }
 
     @Test func laTonalidadSeLlevaElResto() throws {

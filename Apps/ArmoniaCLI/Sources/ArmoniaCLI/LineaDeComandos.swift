@@ -49,8 +49,8 @@ public enum LineaDeComandos {
         case .failure(let error):
             return uso(error, .espanolCompacto)
         }
-        if opciones.quitarMarca("--ingles", "--english") { notacion = .inglesASCII }
-        switch opciones.quitarOpcion("--idioma", "--language") {
+        if opciones.quitarMarca(.ingles) { notacion = .inglesASCII }
+        switch opciones.quitarOpcion(.idioma) {
         case .ausente:
             break
         case .sinValor(let nombre):
@@ -59,7 +59,7 @@ public enum LineaDeComandos {
             guard let elegida = notacionDelIdioma(texto) else { return uso(.idiomaDesconocido(texto), notacion) }
             notacion = elegida
         }
-        switch opciones.quitarOpcion("--textos", "--texts") {
+        switch opciones.quitarOpcion(.textos) {
         case .ausente:
             break
         case .sinValor(let nombre):
@@ -70,7 +70,7 @@ public enum LineaDeComandos {
             }
             notacion = notacion.conTextos(en: textos)
         }
-        switch opciones.quitarOpcion("--escritura", "--writing") {
+        switch opciones.quitarOpcion(.escritura) {
         case .ausente:
             break
         case .sinValor(let nombre):
@@ -83,18 +83,18 @@ public enum LineaDeComandos {
         }
         // La octava va como la escriba la notación (en subíndice en las compactas, con cifras en las demás), salvo
         // con --subindices o --cifras.
-        let subindices = opciones.quitarMarca("--subindices", "--subscripts")
-        let cifras = opciones.quitarMarca("--cifras", "--digits")
+        let subindices = opciones.quitarMarca(.subindices)
+        let cifras = opciones.quitarMarca(.cifras)
         if subindices {
             notacion = notacion.conOctavas(.subindices)
         } else if cifras {
             notacion = notacion.conOctavas(.cifras)
         }
         // Con --json, las órdenes que lo admiten dan sus datos en JSON (LineaDeComandos+JSON.swift).
-        let json = opciones.quitarMarca("--json")
+        let json = opciones.quitarMarca(.json)
         // Con -o, lo que da la orden va a ese fichero (`-o -`, a la salida estándar, aunque sea un fichero binario).
         var destino: String?
-        switch opciones.quitarOpcion("-o", "--salida", "--output") {
+        switch opciones.quitarOpcion(.salida) {
         case .ausente:
             break
         case .sinValor(let nombre):
@@ -260,22 +260,27 @@ public enum LineaDeComandos {
     struct Orden: Sendable {
         let nombres: [String]
         let ayuda: [EntradaDeAyuda]
-        /// Sus opciones, en español y en inglés, sin las generales (`opcionesGenerales`): las de sus entradas de la
-        /// ayuda (`EntradaDeAyuda.opciones`), salvo que se den otras.
+        /// Sus opciones, sin las generales (`generales`): las de sus entradas de la ayuda (`EntradaDeAyuda.opciones`),
+        /// salvo que se den otras.
+        let declaradas: [OpcionDeOrden]
+        /// Los nombres de sus opciones que se enseñan y se completan, en español y en inglés.
         let opciones: [String]
         /// Lo que da con `--json`; `nil` si no lo admite.
         let json: SalidaJSON?
         let ejecutar: @Sendable (_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden
 
         init(
-            nombres: [String], ayuda: [EntradaDeAyuda], opciones: [String]? = nil, json: SalidaJSON? = nil,
+            nombres: [String], ayuda: [EntradaDeAyuda], opciones: [OpcionDeOrden]? = nil, json: SalidaJSON? = nil,
             ejecutar: @escaping @Sendable (_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden
         ) {
             self.nombres = nombres
             self.ayuda = ayuda
-            var unicas: [String] = []
+            var unicas: [OpcionDeOrden] = []
             for opcion in opciones ?? ayuda.flatMap(\.opciones) where !unicas.contains(opcion) { unicas.append(opcion) }
-            self.opciones = unicas
+            declaradas = unicas
+            var visibles: [String] = []
+            for nombre in unicas.flatMap(\.nombres) where !visibles.contains(nombre) { visibles.append(nombre) }
+            self.opciones = visibles
             self.json = json
             self.ejecutar = ejecutar
         }

@@ -25,9 +25,9 @@ extension LineaDeComandos {
         var ejemplo: Traduccion? = nil
         /// Líneas que siguen al ejemplo, en la columna de la descripción. Un texto vacío es que no hay.
         var notas: Traduccion? = nil
-        /// Las opciones que explica la entrada, en español y en inglés, sin las generales: las de su orden
-        /// (`Orden.opciones`). Son las que nombran sus textos (`AyudaTests`).
-        var opciones: [String] = []
+        /// Las opciones que explica la entrada, sin las generales: las de su orden (`Orden.opciones`). Sus nombres
+        /// son los que nombran sus textos (`AyudaTests`).
+        var opciones: [OpcionDeOrden] = []
     }
 
     static let columnaDeLaSintaxis = 2
@@ -211,7 +211,7 @@ extension LineaDeComandos {
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisVersion),
             descripcion: TextosDeCLI.traduccion(\.descripcionVersion),
-            opciones: ["--version"])
+            opciones: [.version])
     ]
 
     static let ayudaDeLaAyuda: [EntradaDeAyuda] = [
@@ -219,6 +219,6 @@ extension LineaDeComandos {
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisAyuda),
             descripcion: TextosDeCLI.traduccion(\.descripcionAyuda),
-            opciones: ["--help"])
+            opciones: [.ayuda])
     ]
 }

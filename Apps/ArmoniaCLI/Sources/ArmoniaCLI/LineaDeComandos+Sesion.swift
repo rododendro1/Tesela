@@ -96,13 +96,10 @@ extension LineaDeComandos {
 
     /// Las opciones generales, por grupos: las de un grupo se excluyen entre sí (`--ingles` y `--idioma`), y las que
     /// llevan un valor detrás.
-    static let gruposDeOpcionesGenerales: [(opciones: Set<String>, conValor: Set<String>)] = [
-        (["--ingles", "--english", "--idioma", "--language"], ["--idioma", "--language"]),
-        (["--textos", "--texts"], ["--textos", "--texts"]),
-        (["--escritura", "--writing"], ["--escritura", "--writing"]),
-        (["--subindices", "--subscripts", "--cifras", "--digits"], []),
-        (["--json"], []),
-    ]
+    static let gruposDeOpcionesGenerales: [(opciones: Set<String>, conValor: Set<String>)] =
+        ([[.ingles, .idioma], [.textos], [.escritura], [.subindices, .cifras], [.json]] as [[OpcionDeOrden]]).map {
+            (Set($0.flatMap(\.nombres)), Set($0.filter(\.llevaValor).flatMap(\.nombres)))
+        }
 
     /// Las palabras, si todas son opciones generales con sus valores (`--idioma eu --json`); `nil` si hay otra cosa.
     static func soloOpcionesGenerales(_ palabras: [String]) -> [String]? {

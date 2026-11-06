@@ -34,15 +34,15 @@ extension LineaDeComandos {
         var argumentos = Argumentos(argumentos)
 
         // `--tab` era el nombre anterior de `--diagrama`.
-        let conDiagrama = argumentos.quitarMarca("--diagrama", "--diagram", "--tab")
+        let conDiagrama = argumentos.quitarMarca(.diagrama)
         // Por defecto la quinta puede faltar en los acordes de cuatro notas o más (el Do7 `x32310`): es lo normal en
         // una guitarra. Con --completo se exigen todas las notas.
-        let completo = argumentos.quitarMarca("--completo", "--complete")
+        let completo = argumentos.quitarMarca(.completo)
         // La primera forma de cada acorde como tablatura MusicXML, en lugar del texto.
-        let comoMusicXML = argumentos.quitarMarca("--musicxml")
+        let comoMusicXML = argumentos.quitarMarca(.musicxml)
 
         var encordado = Encordado.guitarra
-        if let nombre = try argumentos.valor("--instrumento", "--instrument", siFalta: .faltaInstrumento) {
+        if let nombre = try argumentos.valor(.instrumento, siFalta: .faltaInstrumento) {
             guard let encontrado = try? Encordado(leyendo: nombre) else {
                 throw ErrorDeUso.instrumentoDesconocido(nombre)
             }
@@ -50,7 +50,7 @@ extension LineaDeComandos {
         }
 
         var limite = 5
-        if let texto = try argumentos.valor("--limite", "--limit", siFalta: .faltaLimite) {
+        if let texto = try argumentos.valor(.limite, siFalta: .faltaLimite) {
             guard let n = Int(texto), (1...200).contains(n) else {
                 throw ErrorDeUso.limiteFueraDeRango
             }
@@ -58,7 +58,7 @@ extension LineaDeComandos {
         }
 
         var maximoDeDedos = 4
-        if let texto = try argumentos.valor("--dedos", "--fingers", siFalta: .faltanDedos) {
+        if let texto = try argumentos.valor(.dedosDeLaDigitacion, siFalta: .faltanDedos) {
             guard let n = Int(texto), (1...4).contains(n) else {
                 throw ErrorDeUso.dedosFueraDeRango
             }
@@ -66,7 +66,7 @@ extension LineaDeComandos {
         }
 
         var maximoTraste = 12
-        if let texto = try argumentos.valor("--traste", "--fret", siFalta: .faltaTraste) {
+        if let texto = try argumentos.valor(.traste, siFalta: .faltaTraste) {
             guard let n = Int(texto), (0...24).contains(n) else {
                 throw ErrorDeUso.trasteFueraDeRango
             }
@@ -75,7 +75,7 @@ extension LineaDeComandos {
 
         // Con capo, los trastes se cuentan desde él.
         var capo = 0
-        if let texto = try argumentos.valor("--capo", siFalta: .capoFueraDeRango) {
+        if let texto = try argumentos.valor(.capo, siFalta: .capoFueraDeRango) {
             guard let n = Int(texto), (0...12).contains(n) else { throw ErrorDeUso.capoFueraDeRango }
             capo = n
         }
@@ -155,26 +155,26 @@ extension LineaDeComandos {
     /// en las cinco formas CAGED, con los trastes de cada cuerda, la más aguda arriba como en una tablatura.
     static func posiciones(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
-        let caged = argumentos.quitarMarca("--caged")
-        let bajando = argumentos.quitarMarca("--bajando", "--descending")
-        let formas = argumentos.quitarMarca("--formas", "--shapes")
-        let arpegio = argumentos.quitarMarca("--arpegio", "--arpeggio")
-        let barrido = argumentos.quitarMarca("--barrido", "--sweep")
-        let idaYVuelta = argumentos.quitarMarca("--ida-y-vuelta", "--up-and-down")
+        let caged = argumentos.quitarMarca(.caged)
+        let bajando = argumentos.quitarMarca(.bajando)
+        let formas = argumentos.quitarMarca(.formas)
+        let arpegio = argumentos.quitarMarca(.arpegio)
+        let barrido = argumentos.quitarMarca(.barrido)
+        let idaYVuelta = argumentos.quitarMarca(.idaYVuelta)
         var encordado = Encordado.guitarra
-        if let nombre = try argumentos.valor("--instrumento", "--instrument", siFalta: .faltaInstrumento) {
+        if let nombre = try argumentos.valor(.instrumento, siFalta: .faltaInstrumento) {
             guard let encontrado = try? Encordado(leyendo: nombre) else {
                 throw ErrorDeUso.instrumentoDesconocido(nombre)
             }
             encordado = encontrado
         }
         var capo = 0
-        if let texto = try argumentos.valor("--capo", siFalta: .capoFueraDeRango) {
+        if let texto = try argumentos.valor(.capo, siFalta: .capoFueraDeRango) {
             guard let n = Int(texto), (0...12).contains(n) else { throw ErrorDeUso.capoFueraDeRango }
             capo = n
         }
         var secuencia: SecuenciaDeEscala?
-        if let texto = try argumentos.valor("--secuencia", "--sequence") {
+        if let texto = try argumentos.valor(.secuencia) {
             guard let elegida = secuenciaDeEscala(texto) else { throw ErrorDeUso.secuenciaDesconocida(texto) }
             secuencia = elegida
         }

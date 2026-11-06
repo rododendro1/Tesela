@@ -25,15 +25,14 @@ extension LineaDeComandos {
 
     /// Las opciones de todas las partituras: las que explica `musicxml`, y `--pattern` (`--patron` en inglés) y
     /// `--ventana` (`--window`, el ritmo armónico de lo que se lee con `--archivo`), que su ayuda no nombra.
-    static let opcionesDePartitura: [String] =
-        ayudaDeMusicxml.flatMap(\.opciones) + ["--pattern", "--ventana", "--window"]
+    static let opcionesDePartitura: [OpcionDeOrden] = ayudaDeMusicxml.flatMap(\.opciones) + [.patron, .ventana]
 
     /// Las de MIDI: las mismas sin la clave ni las marcas, que no van en un MIDI, y con el programa (el instrumento).
-    static let opcionesDeMidi: [String] =
-        opcionesDePartitura.filter { !opcionesSoloDeMusicXML.contains($0) } + ["--programa", "--program"]
+    static let opcionesDeMidi: [OpcionDeOrden] =
+        opcionesDePartitura.filter { !opcionesSoloDeMusicXML.contains($0) } + [.programa]
 
     /// La clave y las marcas de las partituras, que no van en un MIDI.
-    static let opcionesSoloDeMusicXML: Set = ["--clave", "--cifrados", "--analisis"]
+    static let opcionesSoloDeMusicXML: Set<OpcionDeOrden> = [.claveDePartitura, .cifrados, .analisis]
 
     static let ayudaDeMusicxml: [EntradaDeAyuda] = [
         // musicxml melodia <eventos> [opciones]
@@ -59,8 +58,8 @@ extension LineaDeComandos {
                 "armonia musicxml chords C Am D7 G7 C > progression.musicxml"),
             notas: TextosDeCLI.traduccion(\.notasMusicxmlAcordes),
             opciones: [
-                "--compas", "--anacrusa", "--tonalidad", "--clave", "--tempo", "--titulo", "--duracion", "--cifrados",
-                "--analisis",
+                .compas, .anacrusa, .tonalidadDePartitura, .claveDePartitura, .tempo, .titulo, .duracion, .cifrados,
+                .analisis,
             ]),
         // musicxml arpegios <cifrados> [opciones]
         EntradaDeAyuda(
@@ -70,7 +69,7 @@ extension LineaDeComandos {
                 "armonia musicxml arpegios Do Lam Fa Sol7 --patron alberti --duracion 2 > arpegios.musicxml",
                 "armonia musicxml arpeggios C Am F G7 --patron alberti --duracion 2 > arpeggios.musicxml"),
             notas: TextosDeCLI.traduccion(\.notasMusicxmlArpegios),
-            opciones: ["--patron", "--figura", "--duracion", "--enlazar", "--connect"]),
+            opciones: [.patronDePartitura, .figuraDePartitura, .duracion, .enlazar]),
         // musicxml escala <escala> [opciones]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisMusicxmlEscala),
@@ -85,7 +84,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia midi arpegios --archivo coral.mid --patron alberti > arpegios.mid",
                 "armonia midi arpeggios --file chorale.mid --pattern alberti > arpeggios.mid"),
-            opciones: ["--archivo", "--file"]),
+            opciones: [.archivo]),
     ]
 
     static let ayudaDeMei: [EntradaDeAyuda] = [
@@ -136,6 +135,6 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia midi acordes Do Lam Re7 Sol7 Do > progresion.mid",
                 "armonia midi chords C Am D7 G7 C > progression.mid"),
-            opciones: ["--clave", "--cifrados", "--programa", "--program"])
+            opciones: [.claveDePartitura, .cifrados, .programa])
     ]
 }

@@ -21,7 +21,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia teclado Re mayor --mano derecha > re.svg",
                 "armonia keyboard D major --hand right > d.svg"),
-            opciones: ["--mano", "--octavas", "--hand", "--octaves"])
+            opciones: [.mano, .octavas])
     ]
 
     static let ayudaDeHoja: [EntradaDeAyuda] = [
@@ -39,7 +39,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia hoja --acorde Sol7 > sol7.svg",
                 "armonia sheet --chord G7 > g7.svg"),
-            opciones: ["--acorde", "--chord"]),
+            opciones: [.acorde]),
         // hoja --acordes <acordes> [--en <tonalidad>] [--doce] [--contra <acordes>]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisHojaDeAcordes),
@@ -47,9 +47,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia hoja --acordes Rem7 Sol7 Do7M --en Do mayor > ii-V-I.svg",
                 "armonia sheet --chords Dm7 G7 Cmaj7 --in C major > ii-V-I.svg"),
-            opciones: [
-                "--acordes", "--en", "--doce", "--contra", "--chords", "--in", "--all-keys", "--against",
-            ]),
+            opciones: [.acordes, .en, .doce, .contra]),
         // hoja --tonalidad <tonalidad>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisHojaDeTonalidad),
@@ -57,7 +55,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia hoja --tonalidad Re mayor > re.svg",
                 "armonia sheet --key D major > d.svg"),
-            opciones: ["--tonalidad", "--key"]),
+            opciones: [.tonalidad]),
     ]
 
     static let ayudaDeReloj: [EntradaDeAyuda] = [
@@ -68,7 +66,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia reloj Do disminuida --quintas > disminuida.svg",
                 "armonia clock C diminished --fifths > diminished.svg"),
-            opciones: ["--quintas", "--fifths"])
+            opciones: [.quintas])
     ]
 
     static let ayudaDePentagrama: [EntradaDeAyuda] = [
@@ -79,10 +77,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia pentagrama escala Re dórico --octavas 2 --semitonos > dorico.svg",
                 "armonia staff scale D dorian --octaves 2 --semitones > dorian.svg"),
-            opciones: [
-                "--figura", "--tresillos", "--nombres", "--intervalos", "--semitonos", "--tonica", "--en", "--figure",
-                "--triplets", "--names", "--intervals", "--semitones", "--tonic", "--in",
-            ]),
+            opciones: [.figura, .tresillos, .nombres, .intervalos, .semitonos, .tonica, .en]),
         // pentagrama <qué> --romanos|--mano|--secuencia|--tab
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPentagramaEstudio),
@@ -90,10 +85,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia pentagrama escala Sol mayor --tab --dedos > sol.svg",
                 "armonia staff scale G major --tab --fingers > g.svg"),
-            opciones: [
-                "--romanos", "--mano", "--secuencia", "--tab", "--dedos", "--instrumento", "--roman", "--hand",
-                "--sequence", "--fingers", "--instrument",
-            ]),
+            opciones: [.romanos, .mano, .secuencia, .tab, .dedos, .instrumento]),
         // pentagrama <qué> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPentagramaRegistro),
@@ -101,10 +93,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia pentagrama acordes Do Fa/La Sol7/Si Do --bajo-cifrado > bajo.svg",
                 "armonia staff chords C F/A G7/B C --figured-bass > bass.svg"),
-            opciones: [
-                "--octava", "--clave", "--doble", "--cambiar-clave", "--bajo-cifrado", "--octave", "--clef",
-                "--grand-staff", "--clef-changes", "--figured-bass",
-            ]),
+            opciones: [.octava, .clave, .doble, .cambiarClave, .bajoCifrado]),
         // pentagrama melodia <notas> --sobre <acordes>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPentagramaMelodia),
@@ -112,7 +101,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia pentagrama melodia Mi4:8 Re4:8 Do4:4 Si3:4 Do4:4 --sobre Do > melodia.svg",
                 "armonia staff melody E4:8 D4:8 C4:4 B3:4 C4:4 --over C > melody.svg"),
-            opciones: ["--sobre", "--ajenas", "--over", "--non-chord"]),
+            opciones: [.sobre, .ajenas]),
         // pentagrama bajo <acordes> [--tab]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPentagramaBajo),
@@ -120,7 +109,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia pentagrama bajo Rem7 Sol7 Do7M --tab > bajo.svg",
                 "armonia staff bass Dm7 G7 Cmaj7 --tab > bass.svg"),
-            opciones: ["--tab"]),
+            opciones: [.tab]),
     ]
 
     static let ayudaDeTonnetz: [EntradaDeAyuda] = [
@@ -138,7 +127,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia tonnetz --escala Re dórico > dorico.svg",
                 "armonia tonnetz --scale D dorian > dorian.svg"),
-            opciones: ["--acorde", "--escala", "--clases", "--chord", "--scale", "--pcs"]),
+            opciones: [.acorde, .escala, .clases]),
         // tonnetz --recorrido <tríadas> | --camino <tríada> <tríada>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisTonnetzRecorrido),
@@ -146,7 +135,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia tonnetz --recorrido Do Lam Fa Rem > recorrido.svg",
                 "armonia tonnetz --sequence C Am F Dm > sequence.svg"),
-            opciones: ["--recorrido", "--camino", "--sequence", "--shortest"]),
+            opciones: [.recorrido, .camino]),
         // tonnetz --ciclo <ciclo> <tríada>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisTonnetzCiclo),
@@ -155,7 +144,7 @@ extension LineaDeComandos {
                 "armonia tonnetz --ciclo hexatonico Do > ciclo.svg",
                 "armonia tonnetz --cycle hexatonic C > cycle.svg"),
             notas: TextosDeCLI.traduccion(\.notasTonnetzCiclo),
-            opciones: ["--ciclo", "--margen", "--cycle"]),
+            opciones: [.ciclo, .margen]),
     ]
 
     static let ayudaDeTabla: [EntradaDeAyuda] = [
@@ -173,10 +162,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia tabla --acorde Domaj7 > domaj7.svg",
                 "armonia tabla --chord Cmaj7 > cmaj7.svg"),
-            opciones: [
-                "--acorde", "--escala", "--clases", "--recorrido", "--camino", "--ciclo", "--margen", "--chord",
-                "--scale", "--pcs", "--sequence", "--shortest", "--cycle",
-            ]),
+            opciones: [.acorde, .escala, .clases, .recorrido, .camino, .ciclo, .margen]),
     ]
 
     static let ayudaDeCuadricula: [EntradaDeAyuda] = [
@@ -187,7 +173,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia cuadricula --ejes 2,5 --acorde Sol7 > sol7.svg",
                 "armonia cuadricula --axes 2,5 --chord G7 > g7.svg"),
-            opciones: ["--acorde", "--escala", "--clases", "--chord", "--scale", "--pcs"]),
+            opciones: [.acorde, .escala, .clases]),
         // cuadricula --ejes H,V --rejilla CxF --origen <altura> --giro 0-3 --espejo --en-tono
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisCuadriculaOpciones),
@@ -195,9 +181,6 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia cuadricula --rejilla 8x8 --en-tono --escala Re dórico > pads.svg",
                 "armonia cuadricula --grid 8x8 --in-key --scale D dorian > pads.svg"),
-            opciones: [
-                "--ejes", "--rejilla", "--origen", "--giro", "--espejo", "--en-tono", "--escala", "--axes", "--grid",
-                "--origin", "--rotate", "--mirror", "--in-key", "--scale",
-            ]),
+            opciones: [.ejes, .rejilla, .origen, .giro, .espejo, .enTono, .escala]),
     ]
 }

@@ -11,70 +11,63 @@ extension LineaDeComandos {
     // MARK: Lo que se completa
 
     /// Las opciones que valen en cualquier orden (`LineaDeComandos.ejecutar`).
-    static let opcionesGenerales = [
-        "--ingles", "--english", "--idioma", "--language", "--textos", "--texts", "--escritura", "--writing",
-        "--subindices", "--subscripts", "--cifras", "--digits", "--json", "-o", "--salida", "--output",
+    static let generales: [OpcionDeOrden] = [
+        .ingles, .idioma, .textos, .escritura, .subindices, .cifras, .json, .salida,
     ]
 
-    /// Las opciones que no llevan valor detrás; las demás, sí.
-    static let marcas: Set = [
-        "--ingles", "--english", "--subindices", "--subscripts", "--cifras", "--digits", "--cifrados", "--analisis",
-        "--completo", "--complete", "--diagrama", "--diagram", "--tab", "--caged", "--ampliada", "--extended",
-        "--musicxml", "--help", "--ayuda", "--escalas", "--scales", "--acordes", "--chords", "--sin-octava",
-        "--no-octave", "--enlazar", "--connect", "--disposiciones", "--voicings", "--nombres", "--names",
-        "--tonalidades", "--keys", "--sustituciones", "--substitutions", "--bajando", "--descending", "--piano",
-        "--modos", "--modes", "--bebop", "--pentatonicas", "--pentatonics", "--simetria", "--symmetry",
-        "--notas-guia", "--guide-tones", "--formas", "--shapes", "--vecinas", "--neighbors", "--doce", "--all-keys",
-        "--quintas", "--fifths", "--triadas", "--triads", "--arpegio", "--arpeggio", "--barrido", "--sweep",
-        "--ida-y-vuelta", "--up-and-down", "--intervalos", "--intervals", "--semitonos", "--semitones", "--tonica",
-        "--tonic", "--tresillos", "--triplets", "--romanos", "--roman", "--dedos", "--fingers",
-        "--ajenas", "--non-chord", "--doble", "--grand-staff", "--cambiar-clave", "--clef-changes", "--bajo-cifrado",
-        "--figured-bass", "--estadisticas", "--statistics", "--sin-semitonos", "--anhemitonic", "--regulares",
-        "--maximally-even", "--escalera", "--brightness-ladder", "--parecidas", "--closest", "--conduccion",
-        "--voice-leading", "--bajo", "--walking-bass", "--progresiones", "--progressions", "--json",
-    ]
+    /// Los nombres de las opciones generales, en español y en inglés.
+    static let opcionesGenerales: [String] = generales.flatMap(\.nombres)
+
+    /// Los nombres de las opciones que no llevan valor detrás; las demás, sí. Salen de lo que declara cada opción
+    /// (`OpcionDeOrden.llevaValor`): una que es marca en una orden y lleva valor en otra (`--dedos`) cuenta como
+    /// marca.
+    static let marcas: Set<String> = Set(
+        (generales + ordenes.flatMap(\.declaradas)).filter { !$0.llevaValor }.flatMap(\.nombres))
+
+    /// Los nombres de unas opciones, para `valoresDeOpciones`.
+    private static func nombres(_ opciones: OpcionDeOrden...) -> [String] { opciones.flatMap(\.nombres) }
 
     /// Los valores que se proponen tras una opción.
     static let valoresDeOpciones: [(opciones: [String], valores: [String])] = [
         (
-            ["--idioma", "--language", "--textos", "--texts"],
+            nombres(.idioma, .textos),
             ["es", "en", "ca", "gl", "ast", "an", "eu", "pt", "fr", "oc", "it", "de", "el", "ru", "hu"]
         ),
-        (["--escritura", "--writing"], ["palabras", "compacto", "ascii", "unicode", "words", "compact"]),
+        (nombres(.escritura), ["palabras", "compacto", "ascii", "unicode", "words", "compact"]),
         (
-            ["--patron", "--pattern"],
+            nombres(.patron),
             [
                 "ascendente", "descendente", "ida-y-vuelta", "baja-y-sube", "quebrado", "alberti", "up", "down",
                 "up-down", "down-up", "broken",
             ]
         ),
-        (["--motor", "--engine"], ["lilypond", "musescore", "verovio", "guido", "propio", "own"]),
-        (["--formato", "--format"], ["pdf", "svg", "png"]),
-        (["--aproximacion", "--approach"], ["abajo", "arriba", "encierro", "below", "above", "enclosure"]),
-        (["--mano", "--hand"], ["derecha", "izquierda", "right", "left"]),
+        (nombres(.motor), ["lilypond", "musescore", "verovio", "guido", "propio", "own"]),
+        (nombres(.formato), ["pdf", "svg", "png"]),
+        (nombres(.aproximacion), ["abajo", "arriba", "encierro", "below", "above", "enclosure"]),
+        (nombres(.mano), ["derecha", "izquierda", "right", "left"]),
         (
-            ["--secuencia", "--sequence"],
+            nombres(.secuencia),
             [
                 "terceras", "cuartas", "grupos-de-3", "grupos-de-4", "triadas", "cuatriadas", "thirds", "fourths",
                 "groups-of-3", "groups-of-4", "triads", "sevenths",
             ]
         ),
         (
-            ["--clave"],
+            nombres(.clave, .claveDePartitura),
             ["sol", "fa", "do1", "do2", "do3", "do4", "sol8b", "sol8a", "fa3", "treble", "bass", "alto", "tenor"]
         ),
-        (["--ciclo", "--cycle"], ["hexatonico", "octatonico"]),
+        (nombres(.ciclo), ["hexatonico", "octatonico"]),
         (
-            ["--tradicion", "--tradition"],
+            nombres(.tradicion),
             LineaDeComandos.nombresDeLasTradiciones.flatMap { [$0.espanol, $0.ingles] }.reduce(into: [String]()) {
                 if !$0.contains($1) { $0.append($1) }
             }
         ),
-        (["--categoria", "--category"], CategoriaTradicional.allCases.map(\.rawValue)),
-        (["--uso", "--use"], LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }),
-        (["--orden", "--sort"], ["brillo", "notas", "brightness", "notes"]),
+        (nombres(.categoria), CategoriaTradicional.allCases.map(\.rawValue)),
+        (nombres(.uso), LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }),
+        (nombres(.orden), ["brillo", "notas", "brightness", "notes"]),
         (
-            ["--con-intervalo", "--sin-intervalo", "--with-interval", "--without-interval"],
+            nombres(.conIntervalo, .sinIntervalo),
             [
                 "semitono", "tono", "tercera-menor", "tercera-mayor", "cuarta", "tritono", "semitone", "tone",
                 "minor-third", "major-third", "fourth", "tritone",

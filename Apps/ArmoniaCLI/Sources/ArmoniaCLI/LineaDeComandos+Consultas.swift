@@ -15,7 +15,7 @@ extension LineaDeComandos {
     /// `tonalidad <tonalidad>`: su armadura, sus acordes y sus relativas.
     static func consultarTonalidad(_ resto: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(resto)
-        let modulaciones = argumentos.quitarOpcionConPalabras("--modulaciones", "--modulations")
+        let modulaciones = argumentos.quitarOpcionConPalabras(.modulaciones)
         if let opcion = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaTonalidad }
         let tonalidad = try Tonalidad(leyendo: argumentos.unidos)
@@ -55,14 +55,14 @@ extension LineaDeComandos {
         var argumentos = Argumentos(textos)
         guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
         var otro: Acorde?
-        if let texto = try argumentos.valor("--comparar", "--compare") { otro = try Acorde(leyendo: texto) }
+        if let texto = try argumentos.valor(.comparar) { otro = try Acorde(leyendo: texto) }
         let pedido = RelacionesPedidas(
-            bebop: argumentos.quitarMarca("--bebop"),
-            pentatonicas: argumentos.quitarMarca("--pentatonicas", "--pentatonics"),
-            disposiciones: argumentos.quitarMarca("--disposiciones", "--voicings"),
-            nombres: argumentos.quitarMarca("--nombres", "--names"),
-            tonalidades: argumentos.quitarMarca("--tonalidades", "--keys"),
-            sustituciones: argumentos.quitarMarca("--sustituciones", "--substitutions"),
+            bebop: argumentos.quitarMarca(.bebop),
+            pentatonicas: argumentos.quitarMarca(.pentatonicas),
+            disposiciones: argumentos.quitarMarca(.disposiciones),
+            nombres: argumentos.quitarMarca(.nombres),
+            tonalidades: argumentos.quitarMarca(.tonalidades),
+            sustituciones: argumentos.quitarMarca(.sustituciones),
             tonalidad: tonalidad, otro: otro)
         if let desconocida = argumentos.opcionDesconocida {
             throw ErrorDeUso.opcionDesconocida(desconocida)
@@ -159,8 +159,8 @@ extension LineaDeComandos {
     /// unas notas o, con `--escalas` o con un fichero, las escalas que las contienen.
     static func identificarConOpciones(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(textos)
-        let conEscalas = argumentos.quitarMarca("--escalas", "--scales")
-        let archivo = try argumentos.valor("--archivo", "--file")
+        let conEscalas = argumentos.quitarMarca(.escalas)
+        let archivo = try argumentos.valor(.archivo)
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         let encontradas: [EscalaEncontrada]
         if let archivo {
@@ -207,7 +207,7 @@ extension LineaDeComandos {
     static func arpegios(_ textos: [String]) throws -> [Arpegio] {
         var argumentos = Argumentos(textos)
         var patron = Arpegio.Patron.ascendente
-        if let texto = try argumentos.valor("--patron", "--patrón", "--pattern") {
+        if let texto = try argumentos.valor(.patron) {
             guard let elegido = patronDeArpegio(texto) else { throw ErrorDeUso.patronDesconocido(texto) }
             patron = elegido
         }
@@ -255,12 +255,12 @@ extension LineaDeComandos {
     /// Quita y lee `--octavas`, `--sin-octava`, `--desde`, `--tensiones`, `--grados` y `--aproximacion`, o lanza
     /// el `ErrorDeUso` con lo que está mal escrito.
     static func leerRecorrido(_ argumentos: inout Argumentos, en recorrido: inout RecorridoDeArpegio) throws {
-        recorrido.conOctava = !argumentos.quitarMarca("--sin-octava", "--no-octave")
-        let octavas = try argumentos.valor("--octavas", "--octaves")
-        recorrido.desde = try argumentos.valor("--desde", "--from")
-        let tensiones = try argumentos.valor("--tensiones", "--tensions")
-        let grados = try argumentos.valor("--grados", "--degrees")
-        let aproximacion = try argumentos.valor("--aproximacion", "--aproximación", "--approach")
+        recorrido.conOctava = !argumentos.quitarMarca(.sinOctava)
+        let octavas = try argumentos.valor(.octavas)
+        recorrido.desde = try argumentos.valor(.desde)
+        let tensiones = try argumentos.valor(.tensiones)
+        let grados = try argumentos.valor(.grados)
+        let aproximacion = try argumentos.valor(.aproximacion)
         if let octavas {
             guard let n = Int(octavas), (1...4).contains(n) else { throw ErrorDeUso.octavasFueraDeRango }
             recorrido.octavas = n
@@ -355,30 +355,30 @@ extension LineaDeComandos {
     /// Lee la escala y las opciones de `escala`, o lanza el `ErrorDeUso` de lo que está mal escrito.
     static func pedidoDeEscala(_ textos: [String]) throws -> PedidoDeEscala {
         var argumentos = Argumentos(textos)
-        let conAcordes = argumentos.quitarMarca("--acordes", "--chords")
-        let bajando = argumentos.quitarMarca("--bajando", "--descending")
-        let piano = argumentos.quitarMarca("--piano")
-        let modos = argumentos.quitarMarca("--modos", "--modes")
-        let simetria = argumentos.quitarMarca("--simetria", "--symmetry")
-        let vecinas = argumentos.quitarMarca("--vecinas", "--neighbors")
-        let parecidas = argumentos.quitarMarca("--parecidas", "--closest")
-        let progresiones = argumentos.quitarMarca("--progresiones", "--progressions")
-        let estadisticas = argumentos.quitarMarca("--estadisticas", "--statistics")
-        let escalera = argumentos.quitarMarca("--escalera", "--brightness-ladder")
-        let doce = argumentos.quitarMarca("--doce", "--all-keys")
-        let triadas = argumentos.quitarMarca("--triadas", "--triads")
-        guard let octavas = argumentos.quitarNumero("--octavas", "--octaves", en: 1...4, porDefecto: 1) else {
+        let conAcordes = argumentos.quitarMarca(.acordes)
+        let bajando = argumentos.quitarMarca(.bajando)
+        let piano = argumentos.quitarMarca(.piano)
+        let modos = argumentos.quitarMarca(.modos)
+        let simetria = argumentos.quitarMarca(.simetria)
+        let vecinas = argumentos.quitarMarca(.vecinas)
+        let parecidas = argumentos.quitarMarca(.parecidas)
+        let progresiones = argumentos.quitarMarca(.progresiones)
+        let estadisticas = argumentos.quitarMarca(.estadisticas)
+        let escalera = argumentos.quitarMarca(.escalera)
+        let doce = argumentos.quitarMarca(.doce)
+        let triadas = argumentos.quitarMarca(.triadas)
+        guard let octavas = argumentos.quitarNumero(.octavas, en: 1...4, porDefecto: 1) else {
             throw ErrorDeUso.octavasFueraDeRango
         }
         var secuencia: SecuenciaDeEscala?
-        if let texto = try argumentos.valor("--secuencia", "--sequence") {
+        if let texto = try argumentos.valor(.secuencia) {
             guard let elegida = secuenciaDeEscala(texto) else { throw ErrorDeUso.secuenciaDesconocida(texto) }
             secuencia = elegida
         }
         var otra: Escala?
-        if let texto = try argumentos.valorConPalabras("--comparar", "--compare") { otra = try Escala(leyendo: texto) }
+        if let texto = try argumentos.valorConPalabras(.comparar) { otra = try Escala(leyendo: texto) }
         var contra: Escala?
-        if let texto = try argumentos.valorConPalabras("--contra", "--against") { contra = try Escala(leyendo: texto) }
+        if let texto = try argumentos.valorConPalabras(.contra) { contra = try Escala(leyendo: texto) }
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscala }
         return PedidoDeEscala(
@@ -664,7 +664,7 @@ extension LineaDeComandos {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         var entrada = Argumentos(argumentos)
         // `--comparar Do mayor, Do dórico, Do lidio`: las escalas en una tabla, con lo que se mide de cada una.
-        if let texto = try entrada.valorConPalabras("--comparar", "--compare") {
+        if let texto = try entrada.valorConPalabras(.comparar) {
             if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
             let nombres = texto.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
                 .filter { !$0.isEmpty }
@@ -674,9 +674,9 @@ extension LineaDeComandos {
             return bien(columnas([tabla.encabezados] + tabla.filas))
         }
         // `--mapa [Re dórico] [--notas 7]`: el mapa de brillo en SVG, resaltando la escala que se dé.
-        if entrada.quitarMarca("--mapa", "--map") {
+        if entrada.quitarMarca(.mapa) {
             var numeroDeNotas = 7
-            if let texto = try entrada.valor("--notas", "--notes", siFalta: .notasFueraDeRango) {
+            if let texto = try entrada.valor(.notas, siFalta: .notasFueraDeRango) {
                 guard let n = Int(texto), (1...24).contains(n) else { throw ErrorDeUso.notasFueraDeRango }
                 numeroDeNotas = n
             }
@@ -687,7 +687,7 @@ extension LineaDeComandos {
                     numeroDeNotas: numeroDeNotas, resaltada: resaltada, notacion: notacion))
         }
         var tradicion: Tradicion?
-        if let texto = try entrada.valor("--tradicion", "--tradición", "--tradition") {
+        if let texto = try entrada.valor(.tradicion) {
             let clave = claveDeBusqueda(texto)
             guard
                 let encontrada = nombresDeLasTradiciones.first(where: {
@@ -697,7 +697,7 @@ extension LineaDeComandos {
             tradicion = encontrada.tradicion
         }
         var categoria: CategoriaTradicional?
-        if let texto = try entrada.valor("--categoria", "--categoría", "--category") {
+        if let texto = try entrada.valor(.categoria) {
             let clave = claveDeBusqueda(texto)
             let nombres = { (candidata: CategoriaTradicional) in
                 [candidata.rawValue, candidata.nombre, candidata.nombre(en: notacion)].map(claveDeBusqueda)
@@ -708,7 +708,7 @@ extension LineaDeComandos {
             categoria = encontrada
         }
         var usoPedido: UsoDeEscala?
-        if let texto = try entrada.valor("--uso", "--use") {
+        if let texto = try entrada.valor(.uso) {
             let clave = claveDeBusqueda(texto)
             let nombres = { (candidato: UsoDeEscala) -> [String] in
                 let claves = nombresDeLosUsos.first { $0.uso == candidato }.map { [$0.espanol, $0.ingles] } ?? []
@@ -721,34 +721,34 @@ extension LineaDeComandos {
         }
         // `--notas 5`: solo las de cinco notas (las pentatónicas).
         var numeroDeNotas: Int?
-        if let texto = try entrada.valor("--notas", "--notes", siFalta: .notasFueraDeRango) {
+        if let texto = try entrada.valor(.notas, siFalta: .notasFueraDeRango) {
             guard let n = Int(texto), (1...24).contains(n) else { throw ErrorDeUso.notasFueraDeRango }
             numeroDeNotas = n
         }
         // `--orden brillo`, `--sin-semitonos`, `--regulares`: por lo que se mide de cada escala.
         var orden: OrdenDeEscalas?
-        if let texto = try entrada.valor("--orden", "--sort") {
+        if let texto = try entrada.valor(.orden) {
             guard let elegido = ordenesDeEscalas[claveDeBusqueda(texto)] else {
                 throw ErrorDeUso.ordenDeEscalasDesconocido(texto)
             }
             orden = elegido
         }
-        let sinSemitonos = entrada.quitarMarca("--sin-semitonos", "--anhemitonic")
+        let sinSemitonos = entrada.quitarMarca(.sinSemitonos)
         // `--con-intervalo tritono`, `--sin-intervalo 1`, `--con-paso 3`: por el vector interválico y los pasos.
         var conIntervalo: Int?
-        if let texto = try entrada.valor("--con-intervalo", "--with-interval") {
+        if let texto = try entrada.valor(.conIntervalo) {
             conIntervalo = try claseIntervalica(texto)
         }
         var sinIntervalo: Int?
-        if let texto = try entrada.valor("--sin-intervalo", "--without-interval") {
+        if let texto = try entrada.valor(.sinIntervalo) {
             sinIntervalo = try claseIntervalica(texto)
         }
         var conPaso: Int?
-        if let texto = try entrada.valor("--con-paso", "--with-step", siFalta: .pasoFueraDeRango) {
+        if let texto = try entrada.valor(.conPaso, siFalta: .pasoFueraDeRango) {
             guard let n = Int(texto), (1...11).contains(n) else { throw ErrorDeUso.pasoFueraDeRango }
             conPaso = n
         }
-        let regulares = entrada.quitarMarca("--regulares", "--maximally-even")
+        let regulares = entrada.quitarMarca(.regulares)
         if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
         let buscado = claveDeBusqueda(entrada.unidos)
         func estadisticas(_ tipo: TipoDeEscala) -> EstadisticasDeEscala { Escala(.do, tipo).estadisticas }
@@ -852,14 +852,14 @@ extension LineaDeComandos {
         var acordes = Argumentos(argumentos)
         // Con --escalas, debajo de cada acorde, su escala con sus tensiones y sus notas a evitar. Se quita antes que
         // la tonalidad, que se lleva todo lo que va detrás de --en.
-        let conEscalas = acordes.quitarMarca("--escalas", "--scales")
-        let conNotasGuia = acordes.quitarMarca("--notas-guia", "--guide-tones")
-        let conConduccion = acordes.quitarMarca("--conduccion", "--voice-leading")
-        let conBajo = acordes.quitarMarca("--bajo", "--walking-bass")
-        let contra = try acordes.valorConPalabras("--contra", "--against")
+        let conEscalas = acordes.quitarMarca(.escalas)
+        let conNotasGuia = acordes.quitarMarca(.notasGuia)
+        let conConduccion = acordes.quitarMarca(.conduccion)
+        let conBajo = acordes.quitarMarca(.bajo)
+        let contra = try acordes.valorConPalabras(.contra)
         guard let tonalidad = try acordes.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
-        let archivo = try acordes.valor("--archivo", "--file")
-        let ventana = try acordes.valor("--ventana", "--window").map { try Duracion(leyendo: $0) }
+        let archivo = try acordes.valor(.archivo)
+        let ventana = try acordes.valor(.ventana).map { try Duracion(leyendo: $0) }
         if let opcion = acordes.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
         let analisis: AnalisisPresentado
         if let archivo {

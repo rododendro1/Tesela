@@ -7,11 +7,11 @@ extension LineaDeComandos {
     /// `vecinos Sol7`: los acordes de su familia a un semitono.
     static func vecinos(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
-        guard let voces = argumentos.quitarNumero("--voces", "--voices", en: 1...2, porDefecto: 1) else {
+        guard let voces = argumentos.quitarNumero(.voces, en: 1...2, porDefecto: 1) else {
             throw ErrorDeUso.vocesFueraDeRango
         }
         // `--ampliada`: la familia de las séptimas con los maj7, para un acorde de las séptimas.
-        let tipos = argumentos.quitarMarca("--ampliada", "--extended") ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
+        let tipos = argumentos.quitarMarca(.ampliada) ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
         let acordes = argumentos.restantes
         guard acordes.count == 1 else { throw ErrorDeUso.unAcordeDeVecinos }
         let acorde = try Acorde(leyendo: acordes[0])
@@ -27,11 +27,11 @@ extension LineaDeComandos {
     /// `conduccion-parsimoniosa Sol7 Rem7`: Sol7 –Si→Do→ … paso a paso.
     static func caminoParsimonioso(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
-        guard let voces = argumentos.quitarNumero("--voces", "--voices", en: 1...2, porDefecto: 1) else {
+        guard let voces = argumentos.quitarNumero(.voces, en: 1...2, porDefecto: 1) else {
             throw ErrorDeUso.vocesFueraDeRango
         }
         // `--ampliada`: la familia de las séptimas con los maj7, para un acorde de las séptimas.
-        let tipos = argumentos.quitarMarca("--ampliada", "--extended") ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
+        let tipos = argumentos.quitarMarca(.ampliada) ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
         let acordes = argumentos.restantes
         guard acordes.count == 2 else { throw ErrorDeUso.dosAcordesDeCamino }
         let origen = try Acorde(leyendo: acordes[0])
