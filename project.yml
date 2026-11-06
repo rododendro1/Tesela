@@ -72,7 +72,7 @@ targets:
         # «Abrir» en Análisis lee un fichero MIDI o MusicXML que elige quien usa la app: con sandbox, macOS
         # solo lo deja leer con este permiso.
         "ENABLE_USER_SELECTED_FILES[sdk=macosx*]": readonly
-        INFOPLIST_KEY_CFBundleDisplayName: Armonía
+        INFOPLIST_KEY_CFBundleDisplayName: Solfa
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.music

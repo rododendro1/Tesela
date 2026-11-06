@@ -8,7 +8,7 @@ Teoría musical en Swift: un motor de armonía, dos apps para iOS y macOS y una 
 
 ## Qué hay
 
-- **Armonía**, la app: acordes (con sus digitaciones, arpegios y disposiciones de piano y jazz), escalas (con el
+- **Solfa**, la app: acordes (con sus digitaciones, arpegios y disposiciones de piano y jazz), escalas (con el
   mástil y sus posiciones), análisis armónico de una progresión o de un fichero MIDI, MusicXML, MEI o ABC, corales a
   cuatro voces, contrapunto de especies, identificar un acorde tocándolo en el mástil o en un teclado MIDI, y series
   dodecafónicas. Exporta MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI.
@@ -88,4 +88,4 @@ open Tesela.xcodeproj                                    # elige el esquema Armo
   seguridad.
 
 El código se publica con licencia MIT ([LICENSE](LICENSE)). Los iconos de las apps muestran a Kokopelli: en negro
-sobre ámbar en Armonía y sobre un mosaico hexagonal en Tonnetz.
+sobre ámbar en Solfa y sobre un mosaico hexagonal en Tonnetz.

@@ -172,7 +172,7 @@ Cómo contribuir está en `CONTRIBUTING.md`, y cómo avisar de un fallo de segur
 `.spi.yml` le dice a [Swift Package Index](https://swiftpackageindex.com) qué módulos documentar.
 
 El código se publica con licencia MIT (`LICENSE`). Los iconos de las apps, en
-`Apps/<App>/Assets.xcassets/AppIcon.appiconset`, muestran a Kokopelli: en negro sobre ámbar en Armonía y sobre un
+`Apps/<App>/Assets.xcassets/AppIcon.appiconset`, muestran a Kokopelli: en negro sobre ámbar en Solfa y sobre un
 mosaico hexagonal en Tonnetz.
 El equipo de firma y el prefijo de los identificadores no se guardan en el repositorio: cada cual los pone en
 su `Config/Local.xcconfig`.

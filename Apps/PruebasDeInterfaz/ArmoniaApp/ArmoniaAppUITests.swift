@@ -1,6 +1,6 @@
 import XCTest
 
-/// Recorre las cinco pestañas de Armonía y las vistas que se abren desde ellas (contrapunto y serie dodecafónica) con
+/// Recorre las cinco pestañas de Solfa y las vistas que se abren desde ellas (contrapunto y serie dodecafónica) con
 /// los textos de ejemplo de cada una y comprueba que se ve el resultado.
 @MainActor
 final class ArmoniaAppUITests: XCTestCase {

@@ -8,7 +8,7 @@ short English summary.
 
 ## What's inside
 
-- **Armonía** (app): chords (with fingerings, arpeggios and piano and jazz voicings), scales (on the fretboard, by
+- **Solfa** (app): chords (with fingerings, arpeggios and piano and jazz voicings), scales (on the fretboard, by
   position), harmonic analysis of a progression or of a MIDI, MusicXML, MEI or ABC file, four-part chorales, species
   counterpoint, chord identification from the fretboard or a MIDI keyboard, and twelve-tone rows. Exports MusicXML,
   MEI, LilyPond, GUIDO, ABC and MIDI.
