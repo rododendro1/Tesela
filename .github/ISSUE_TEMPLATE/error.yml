@@ -23,7 +23,7 @@ body:
       label: Dónde
       multiple: true
       options:
-        - SolfaApp
+        - ArsHarmonicaApp
         - TonnetzApp
         - Línea de comandos (armonia)
         - Paquete Armonia

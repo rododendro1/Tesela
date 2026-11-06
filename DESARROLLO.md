@@ -7,7 +7,7 @@ el [README](README.md); cómo contribuir, en [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ```
 Apps/
-├── SolfaApp/         Acordes (con su arpegio, también en el mástil, sus disposiciones de piano y jazz, las
+├── ArsHarmonicaApp/  Acordes (con su arpegio, también en el mástil, sus disposiciones de piano y jazz, las
 │                     escalas que encajan, con sus tensiones y notas a evitar, y las digitaciones),
 │                     escalas (con el mástil y sus posiciones, CAGED o de tres notas por cuerda, y de qué escala
 │                     son modo), análisis armónico (con modulaciones y cadencias, la escala de cada acorde en su
@@ -59,10 +59,10 @@ Package.swift       Los paquetes juntos, para usarlos desde otro proyecto por UR
 ## Dependencias
 
 ```
-SolfaApp ────┬──► ArmoniaUI ──┬──► ArmoniaPresentacion ──► Armonia ──► Hexagonos
-TonnetzApp ──┘               ├──► Armonia
-                             └──► Hexagonos
-SolfaApp, TonnetzApp, ArmoniaCLI, EjemploArmonia, RendimientoArmonia, FuzzArmonia ──► Armonia
+ArsHarmonicaApp ──┬──► ArmoniaUI ──┬──► ArmoniaPresentacion ──► Armonia ──► Hexagonos
+TonnetzApp ───────┘               ├──► Armonia
+                                  └──► Hexagonos
+ArsHarmonicaApp, TonnetzApp, ArmoniaCLI, EjemploArmonia, RendimientoArmonia, FuzzArmonia ──► Armonia
 ArmoniaCLI ──► ArmoniaPresentacion (sin SwiftUI) ──► Armonia
 EjemploHexagonos ──► Hexagonos
 ```
@@ -95,7 +95,7 @@ swift run -c release --package-path Herramientas/RendimientoArmonia RendimientoA
 brew install xcodegen
 cp Config/Local.xcconfig.ejemplo Config/Local.xcconfig   # tu equipo de firma y el prefijo de identificadores
 ./Scripts/generadores/generar_proyecto.sh        # crea Tesela.xcodeproj
-open Tesela.xcodeproj     # elige el esquema SolfaApp o TonnetzApp
+open Tesela.xcodeproj     # elige el esquema ArsHarmonicaApp o TonnetzApp
 ```
 
 Cada release trae también `armonia` ya compilada para Linux (x86_64 y arm64, sin dependencias) y macOS, con su
@@ -172,7 +172,7 @@ Cómo contribuir está en `CONTRIBUTING.md`, y cómo avisar de un fallo de segur
 `.spi.yml` le dice a [Swift Package Index](https://swiftpackageindex.com) qué módulos documentar.
 
 El código se publica con licencia MIT (`LICENSE`). Los iconos de las apps, en
-`Apps/<App>/Assets.xcassets/AppIcon.appiconset`, muestran a Kokopelli: en negro sobre ámbar en Solfa y sobre un
+`Apps/<App>/Assets.xcassets/AppIcon.appiconset`, muestran a Kokopelli: en negro sobre ámbar en Ars Harmonica y sobre un
 mosaico hexagonal en Tonnetz.
 El equipo de firma y el prefijo de los identificadores no se guardan en el repositorio: cada cual los pone en
 su `Config/Local.xcconfig`.

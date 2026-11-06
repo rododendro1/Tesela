@@ -8,7 +8,7 @@ Teoría musical en Swift: un motor de armonía, dos apps para iOS y macOS y una 
 
 ## Qué hay
 
-- **Solfa**, la app: acordes (con sus digitaciones, arpegios y disposiciones de piano y jazz), escalas (con el
+- **Ars Harmonica**, la app: acordes (con sus digitaciones, arpegios y disposiciones de piano y jazz), escalas (con el
   mástil y sus posiciones), análisis armónico de una progresión o de un fichero MIDI, MusicXML, MEI o ABC, corales a
   cuatro voces, contrapunto de especies, identificar un acorde tocándolo en el mástil o en un teclado MIDI, y series
   dodecafónicas. Exporta MusicXML, MEI, LilyPond, GUIDO, ABC y MIDI.
@@ -76,7 +76,7 @@ Necesitan macOS con Xcode y [XcodeGen](https://github.com/yonaskolb/XcodeGen):
 brew install xcodegen
 cp Config/Local.xcconfig.ejemplo Config/Local.xcconfig   # tu equipo de firma y el prefijo de identificadores
 ./Scripts/generadores/generar_proyecto.sh                # crea Tesela.xcodeproj
-open Tesela.xcodeproj                                    # elige el esquema SolfaApp o TonnetzApp
+open Tesela.xcodeproj                                    # elige el esquema ArsHarmonicaApp o TonnetzApp
 ```
 
 ## Más
@@ -88,4 +88,4 @@ open Tesela.xcodeproj                                    # elige el esquema Solf
   seguridad.
 
 El código se publica con licencia MIT ([LICENSE](LICENSE)). Los iconos de las apps muestran a Kokopelli: en negro
-sobre ámbar en Solfa y sobre un mosaico hexagonal en Tonnetz.
+sobre ámbar en Ars Harmonica y sobre un mosaico hexagonal en Tonnetz.

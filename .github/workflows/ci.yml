@@ -478,7 +478,7 @@ jobs:
         run: |
           cambiados=$(git diff --name-only "$BASE"...HEAD)
           echo "$cambiados"
-          if echo "$cambiados" | grep -qE '^(Apps/SolfaApp/|Apps/TonnetzApp/|Apps/PruebasDeInterfaz/|Packages/ArmoniaUI/|Packages/ArmoniaPresentacion/|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
+          if echo "$cambiados" | grep -qE '^(Apps/ArsHarmonicaApp/|Apps/TonnetzApp/|Apps/PruebasDeInterfaz/|Packages/ArmoniaUI/|Packages/ArmoniaPresentacion/|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
             echo "apps=true" >> "$GITHUB_OUTPUT"
           else
             echo "apps=false" >> "$GITHUB_OUTPUT"
@@ -521,9 +521,9 @@ jobs:
         run: brew install xcodegen
       - name: Generar el proyecto
         run: ./Scripts/generadores/generar_proyecto.sh
-      - name: Solfa (macOS)
+      - name: Ars Harmonica (macOS)
         run: >
-          xcodebuild build -project Tesela.xcodeproj -scheme SolfaApp
+          xcodebuild build -project Tesela.xcodeproj -scheme ArsHarmonicaApp
           -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
       - name: Tonnetz (macOS)
         run: >
@@ -532,14 +532,14 @@ jobs:
       # La App Store rechaza una app sin su manifiesto de privacidad.
       - name: Manifiesto de privacidad en las apps
         run: |
-          for app in SolfaApp TonnetzApp; do
+          for app in ArsHarmonicaApp TonnetzApp; do
             manifiesto=$(find ~/Library/Developer/Xcode/DerivedData -path "*/Build/Products/Debug/$app.app/Contents/Resources/PrivacyInfo.xcprivacy" | head -1)
             test -n "$manifiesto" || { echo "::error::$app no lleva PrivacyInfo.xcprivacy"; exit 1; }
             plutil -lint "$manifiesto"
           done
-      - name: Solfa (iOS, simulador)
+      - name: Ars Harmonica (iOS, simulador)
         run: >
-          xcodebuild build -project Tesela.xcodeproj -scheme SolfaApp
+          xcodebuild build -project Tesela.xcodeproj -scheme ArsHarmonicaApp
           -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO
       - name: Tonnetz (iOS, simulador)
         run: >
@@ -548,7 +548,7 @@ jobs:
       # Los quince idiomas, en el Info.plist y como carpetas .lproj, en cada app de iOS.
       - name: Idiomas de las apps
         run: |
-          for app in SolfaApp TonnetzApp; do
+          for app in ArsHarmonicaApp TonnetzApp; do
             paquete=$(find ~/Library/Developer/Xcode/DerivedData -type d -path "*/Build/Products/Debug-iphonesimulator/$app.app" | head -1)
             test -n "$paquete" || { echo "::error::No encuentro $app.app"; exit 1; }
             idiomas=$(plutil -extract CFBundleLocalizations json -o - "$paquete/Info.plist" | python3 -c 'import json, sys; print(len(json.load(sys.stdin)))')
@@ -599,13 +599,13 @@ jobs:
       # En macOS el ejecutor de las pruebas tiene que estar firmado: se firma sin equipo («-»).
       # En iOS una prueba que falla se repite una vez: el simulador del CI a veces no deja abrir la app
       # («Timed out while acquiring background assertion»), y un fallo de verdad falla también la segunda.
-      - name: Solfa
+      - name: Ars Harmonica
         run: |
           if [ "${{ matrix.plataforma }}" = macOS ]; then
-            xcodebuild test -project Tesela.xcodeproj -scheme SolfaApp -destination 'platform=macOS' \
+            xcodebuild test -project Tesela.xcodeproj -scheme ArsHarmonicaApp -destination 'platform=macOS' \
               CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=
           else
-            xcodebuild test -project Tesela.xcodeproj -scheme SolfaApp -destination "$SIMULADOR" \
+            xcodebuild test -project Tesela.xcodeproj -scheme ArsHarmonicaApp -destination "$SIMULADOR" \
               CODE_SIGNING_ALLOWED=NO -retry-tests-on-failure -test-iterations 2
           fi
       - name: Tonnetz
