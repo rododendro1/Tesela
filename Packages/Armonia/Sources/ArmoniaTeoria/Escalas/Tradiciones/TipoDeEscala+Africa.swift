@@ -39,10 +39,8 @@ extension TipoDeEscala {
     public static let hardino = TipoDeEscala(
         nombre: "Hardino", intervalos: TipoDeEscala.mayor.intervalos, alias: ["kora hardino"],
         categoria: .afinacion,
-        afinaciones: [
-            // Las medidas de Knight, en cents.
-            .init(.razones, pasos: [0, 185, 405, 500, 700, 885, 1105]),
-        ])
+        // Las medidas de Knight, en cents.
+        afinaciones: [.init(.razones, pasos: [0, 185, 405, 500, 700, 885, 1105])])
     /// Sauta (kora): la lidia, con la 4ª aumentada.
     public static let sauta = TipoDeEscala(
         nombre: "Sauta", intervalos: TipoDeEscala.lidio.intervalos, alias: ["kora sauta"],

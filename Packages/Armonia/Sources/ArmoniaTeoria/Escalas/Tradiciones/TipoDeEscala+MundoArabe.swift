@@ -83,7 +83,7 @@ extension TipoDeEscala {
         variantes: ["راست"],
         categoria: .maqam,
         afinaciones: [
-            .init(.cuartosDeTono, pasos: [0, 4, 7, 10, 14, 18, 21], pasosDescendentes: [0, 4, 7, 10, 14, 18, 20]),
+            .init(.cuartosDeTono, pasos: [0, 4, 7, 10, 14, 18, 21], pasosDescendentes: [0, 4, 7, 10, 14, 18, 20])
         ])
     /// بياتي (Re Mi𝄳 Fa Sol La Si♭ Do), aproximado: como el frigio, igual que el dromos Ousák.
     public static let bayati = TipoDeEscala(
@@ -139,10 +139,8 @@ extension TipoDeEscala {
         ],
         alias: ["maqam Sikah"], variantes: ["سيكاه"],
         categoria: .maqam,
-        afinaciones: [
-            // Con la tónica en un cuarto de tono, escritas sobre la nota temperada: Sīkāh en Mi es Mi𝄳 Fa Sol La Si𝄳.
-            .init(.cuartosDeTono, pasos: [-1, 2, 6, 10, 13, 16, 20]),
-        ])
+        // Con la tónica en un cuarto de tono, escritas sobre la nota temperada: Sīkāh en Mi es Mi𝄳 Fa Sol La Si𝄳.
+        afinaciones: [.init(.cuartosDeTono, pasos: [-1, 2, 6, 10, 13, 16, 20])])
     /// هزام (Mi𝄳 Fa Sol La♭ Si Do Re: un jins Sīkāh y un jins Ḥijāz en Sol), aproximado sobre Mi. Se llama
     /// «maqām Huzām» porque «Huzam» es también el dromos Houzám.
     public static let huzam = TipoDeEscala(
@@ -247,10 +245,8 @@ extension TipoDeEscala {
         nombre: "jins Rāst", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta],
         variantes: ["جنس راست"],
         categoria: .jins,
-        afinaciones: [
-            // Ajnas.
-            .init(.cuartosDeTono, pasos: [0, 4, 7, 10]),
-        ])
+        // Ajnas.
+        afinaciones: [.init(.cuartosDeTono, pasos: [0, 4, 7, 10])])
     /// جنس بياتي (Re Mi𝄳 Fa Sol), aproximado: Re Mi♭ Fa Sol.
     public static let jinsBayati = TipoDeEscala(
         nombre: "jins Bayātī", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
@@ -313,10 +309,8 @@ extension TipoDeEscala {
         ],
         alias: ["ʿUshshāq de Ṣafī al-Dīn"],
         categoria: .maqam,
-        afinaciones: [
-            // Los shudūd de Ṣafī al-Dīn, en cents de sus razones pitagóricas.
-            .init(.razones, pasos: [0, 204, 408, 498, 702, 906, 996]),
-        ])
+        // Los shudūd de Ṣafī al-Dīn, en cents de sus razones pitagóricas.
+        afinaciones: [.init(.razones, pasos: [0, 204, 408, 498, 702, 906, 996])])
     /// شد نوى (Do Re Mi♭ Fa Sol La♭ Si♭, pitagórico): tono, limma, tono, tono, limma, tono y tono.
     public static let shaddNawa = TipoDeEscala(
         nombre: "shadd Nawā",

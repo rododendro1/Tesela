@@ -30,7 +30,7 @@ extension TipoDeEscala {
         alias: ["makam Rast"],
         categoria: .makam,
         afinaciones: [
-            .init(.comas53, pasos: [0, 9, 17, 22, 31, 40, 48], pasosDescendentes: [0, 9, 17, 22, 31, 40, 44]),
+            .init(.comas53, pasos: [0, 9, 17, 22, 31, 40, 48], pasosDescendentes: [0, 9, 17, 22, 31, 40, 44])
         ])
     /// Hicaz (La Si♭ Do♯ Re | Mi Fa♯ Sol): un tetracordo Hicaz y, al subir, un pentacordo Rast en la cuarta;
     /// al bajar, Fa, como el frigio dominante.
@@ -43,7 +43,7 @@ extension TipoDeEscala {
         alias: ["makam Hicaz"],
         categoria: .makam,
         afinaciones: [
-            .init(.comas53, pasos: [0, 5, 17, 22, 31, 39, 44], pasosDescendentes: [0, 5, 17, 22, 30, 35, 44]),
+            .init(.comas53, pasos: [0, 5, 17, 22, 31, 39, 44], pasosDescendentes: [0, 5, 17, 22, 30, 35, 44])
         ])
     /// Hicazkâr (Sol La♭ Si Do Re Mi♭ Fa♯): la doble armónica.
     public static let hicazkarMakami = TipoDeEscala(
@@ -112,7 +112,7 @@ extension TipoDeEscala {
         alias: ["makam Hüseynî"],
         categoria: .makam,
         afinaciones: [
-            .init(.comas53, pasos: [0, 8, 13, 22, 31, 39, 44], pasosDescendentes: [0, 8, 13, 22, 31, 35, 44]),
+            .init(.comas53, pasos: [0, 8, 13, 22, 31, 39, 44], pasosDescendentes: [0, 8, 13, 22, 31, 35, 44])
         ])
     /// Segâh (Si Do Re Mi Fa♯ Sol La, con Si y Fa♯ una koma bajos): un pentacordo Segâh desde la segâh y un
     /// tetracordo Uşşak en la eviç. Aproximado sobre Si: el frigio.
@@ -124,10 +124,8 @@ extension TipoDeEscala {
         ],
         alias: ["makam Segâh"],
         categoria: .makam,
-        afinaciones: [
-            // Segâh, desde la segâh (Si una koma bajo): sobre Si, el primer paso es −1.
-            .init(.comas53, pasos: [-1, 4, 13, 22, 30, 35, 44]),
-        ])
+        // Segâh, desde la segâh (Si una koma bajo): sobre Si, el primer paso es −1.
+        afinaciones: [.init(.comas53, pasos: [-1, 4, 13, 22, 30, 35, 44])])
     /// Hüzzam (Si Do Re Mi♭ Fa♯ Sol La, desde la segâh, con Si y Fa♯ una koma bajos y Mi♭ una alto): un pentacordo
     /// Hüzzam y un tetracordo Hicaz en la nevâ. Aproximado sobre Si.
     public static let huzzamMakami = TipoDeEscala(
@@ -138,10 +136,8 @@ extension TipoDeEscala {
         ],
         alias: ["makam Hüzzam"],
         categoria: .makam,
-        afinaciones: [
-            // Hüzzam, desde la segâh; Saba, Karcığar, Suzinak, Nikriz y Nev'eser, con las perdes de sus dromoi.
-            .init(.comas53, pasos: [-1, 4, 13, 18, 30, 35, 44]),
-        ])
+        // Hüzzam, desde la segâh; Saba, Karcığar, Suzinak, Nikriz y Nev'eser, con las perdes de sus dromoi.
+        afinaciones: [.init(.comas53, pasos: [-1, 4, 13, 18, 30, 35, 44])])
     /// Saba (La Si Do Re♭ Mi Fa Sol, con la segâh): un tetracordo Saba y uno Hicaz en la çârgâh. Aproximado: la segâh a
     /// Si, como el dromos Sabáh.
     public static let sabaMakami = TipoDeEscala(
@@ -218,11 +214,11 @@ extension TipoDeEscala {
         ],
         alias: ["makam Sultânîyegâh"],
         categoria: .makam,
+        // Sultânîyegâh, Bûselik en la yegâh: el tetracordo Hicaz de la dügâh (Si♭ y Do♯ con bakiye) al subir y el
+        // Kürdî al bajar. Şedaraban y Zirgüleli Hicaz, con las perdes de Hicazkâr; Hümâyun y Uzzâl, con el
+        // tetracordo Hicaz de Hicaz y su pentacordo Bûselik o su tetracordo Uşşak (eviç, Fa♯ una koma bajo).
         afinaciones: [
-            // Sultânîyegâh, Bûselik en la yegâh: el tetracordo Hicaz de la dügâh (Si♭ y Do♯ con bakiye) al subir y el
-            // Kürdî al bajar. Şedaraban y Zirgüleli Hicaz, con las perdes de Hicazkâr; Hümâyun y Uzzâl, con el
-            // tetracordo Hicaz de Hicaz y su pentacordo Bûselik o su tetracordo Uşşak (eviç, Fa♯ una koma bajo).
-            .init(.comas53, pasos: [0, 9, 13, 22, 31, 36, 48], pasosDescendentes: [0, 9, 13, 22, 31, 35, 44]),
+            .init(.comas53, pasos: [0, 9, 13, 22, 31, 36, 48], pasosDescendentes: [0, 9, 13, 22, 31, 35, 44])
         ])
     /// Şedaraban (Re Mi♭ Fa♯ Sol La Si♭ Do♯): Zirgüleli Hicaz llevado a la yegâh, un pentacordo Zirgüleli Hicaz y un
     /// tetracordo Hicaz en la dügâh. La doble armónica.
@@ -275,11 +271,9 @@ extension TipoDeEscala {
         ],
         alias: ["makam Kürdîlihicazkâr"], variantes: ["Kürdîli Hicazkâr makamı"],
         categoria: .makam,
-        afinaciones: [
-            // Kürdîlihicazkâr, con las perdes de Kürdî en la rast (La♭, Si♭ y Mi♭ con küçük mücennep); Muhayyer, con
-            // las de Hüseynî; Ferahfezâ, con las de Acemaşiran desde la yegâh, e Isfahan, con las de Uşşak.
-            .init(.comas53, pasos: [0, 4, 13, 22, 31, 35, 44]),
-        ])
+        // Kürdîlihicazkâr, con las perdes de Kürdî en la rast (La♭, Si♭ y Mi♭ con küçük mücennep); Muhayyer, con
+        // las de Hüseynî; Ferahfezâ, con las de Acemaşiran desde la yegâh, e Isfahan, con las de Uşşak.
+        afinaciones: [.init(.comas53, pasos: [0, 4, 13, 22, 31, 35, 44])])
     /// Muhayyer (La Si Do Re Mi Fa♯ Sol, con la segâh y Fa♯ una koma bajo): las notas de Hüseynî, un pentacordo
     /// Hüseynî y un tetracordo Uşşak en la hüseynî, pero bajando desde la muhayyer, la octava aguda.
     public static let muhayyerMakami = TipoDeEscala(
@@ -356,10 +350,8 @@ extension TipoDeEscala {
     public static let rastDortlusu = TipoDeEscala(
         nombre: "Rast dörtlüsü", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta],
         categoria: .cesni,
-        afinaciones: [
-            // Çeşni.
-            .init(.comas53, pasos: [0, 9, 17, 22]),
-        ])
+        // Çeşni.
+        afinaciones: [.init(.comas53, pasos: [0, 9, 17, 22])])
     /// Sol La Si Do Re, con Si una koma bajo.
     public static let rastBeslisi = TipoDeEscala(
         nombre: "Rast beşlisi", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta],

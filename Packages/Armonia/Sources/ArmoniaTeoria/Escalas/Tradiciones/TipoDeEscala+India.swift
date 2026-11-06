@@ -438,12 +438,10 @@ extension TipoDeEscala {
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["shadja grama", "shadjagrama", "षड्जग्राम"],
         categoria: .grama,
-        afinaciones: [
-            // Grāma y mūrchanā del Nāṭyaśāstra, con las razones de los thāṭ: en śruti, por su número desde Sa, y en
-            // cents las que tienen una quinta una coma corta (40/27) o la quinta disminuida de 64/45, que no son
-            // ninguno de los 22.
-            .init(.sruti, pasos: [0, 3, 5, 9, 13, 16, 18]),
-        ])
+        // Grāma y mūrchanā del Nāṭyaśāstra, con las razones de los thāṭ: en śruti, por su número desde Sa, y en
+        // cents las que tienen una quinta una coma corta (40/27) o la quinta disminuida de 64/45, que no son
+        // ninguno de los 22.
+        afinaciones: [.init(.sruti, pasos: [0, 3, 5, 9, 13, 16, 18])])
     /// El madhyama-grāma, desde Sa: el dórico en doce notas.
     public static let madhyamaGrama = TipoDeEscala(
         nombre: "madhyama-grāma",
