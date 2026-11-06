@@ -256,13 +256,21 @@ extension LineaDeComandos {
                 filas.append((nombre: nombre, dicho: TextosDeCLI.en(notacion) { $0.motorNoInstalado(variable) }))
                 continue
             }
-            let version = try motor.tieneVersion ? versionDelPrograma(ruta, ejecutor) : nil
+            let version = try versionDelMotor(motor, en: ruta)
             filas.append((nombre: nombre, dicho: ruta + (version.map { " (\($0))" } ?? "")))
         }
         let ancho = (filas.map { $0.nombre.count }.max() ?? 0) + 2
         return bien(
             filas.map { $0.nombre.padding(toLength: ancho, withPad: " ", startingAt: 0) + $0.dicho }
                 .joined(separator: "\n"))
+    }
+
+    /// La ruta del programa de un motor, si está instalado (lo de `motores` y `motores --json`).
+    static func programaDelMotor(_ motor: MotorDeGrabado) -> String? { buscar(motor.programas, con: Self.ejecutor) }
+
+    /// La versión del programa de un motor que la dice, o `nil`.
+    static func versionDelMotor(_ motor: MotorDeGrabado, en ruta: String) throws -> String? {
+        try motor.tieneVersion ? versionDelPrograma(ruta, Self.ejecutor) : nil
     }
 
     /// La ruta del primero de los programas que esté instalado.

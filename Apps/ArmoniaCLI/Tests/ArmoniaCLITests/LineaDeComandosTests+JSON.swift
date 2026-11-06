@@ -142,3 +142,100 @@ extension LineaDeComandosTests {
         #expect(salida("ayuda").contains("--json"))
     }
 }
+
+extension LineaDeComandosTests {
+    @Test func elCatalogoEnJSON() throws {
+        let grupos = try #require(try json("escalas --tradicion japon") as? [[String: Any]])
+        #expect(grupos.count == 1 && grupos[0]["titulo"] as? String == "Japón · escala")
+        let escalas = try #require(grupos[0]["escalas"] as? [[String: Any]])
+        #expect(escalas.count == 13)
+        let hirajoshi = try #require(escalas.first { $0["nombre"] as? String == "Hirajōshi" })
+        #expect(hirajoshi["clases"] as? [Int] == [0, 2, 3, 7, 8])
+        #expect(hirajoshi["tradicion"] as? String == "japon" && hirajoshi["categoria"] as? String == "escala")
+        #expect(hirajoshi["microtonal"] as? Bool == false && hirajoshi["fuente"] == nil)
+        let ptolomeo = try #require(try json("escalas --fuente ptolomeo") as? [[String: Any]])
+        let generos = try #require(ptolomeo.first?["escalas"] as? [[String: Any]])
+        #expect(generos.allSatisfy { $0["fuente"] as? String == "ptolomeo" && $0["microtonal"] as? Bool == true })
+        // Las habituales no tienen tradición; con --orden brillo, de la más brillante a la más oscura.
+        let habituales = try #require(try json("escalas --uso jazz --orden brillo") as? [[String: Any]])
+        let deJazz = try #require(habituales.first?["escalas"] as? [[String: Any]])
+        #expect(deJazz.allSatisfy { $0["tradicion"] == nil })
+        let brillos = deJazz.compactMap { $0["brilloPorQuintas"] as? Double }
+        #expect(brillos == brillos.sorted(by: >))
+        #expect(salida("escalas inventadísima --json") == "[]\n")
+        for opcion in ["--mapa", "--comparar Do mayor, Do lidio", "--vecinas Re dórico"] {
+            let mal = LineaDeComandos.ejecutar(("escalas " + opcion + " --json").split(separator: " ").map(String.init))
+            #expect(mal.codigo == 2 && mal.error.contains("no da salida en JSON"), Comment(rawValue: opcion))
+        }
+    }
+
+    @Test func laRearmonizacionEnJSON() throws {
+        let datos = try #require(try json("rearmonizar Do Lam Rem7 Sol7 Do") as? [String: Any])
+        #expect(datos["tonalidad"] as? String == "Do mayor")
+        let propuestas = try #require(datos["propuestas"] as? [[String: Any]])
+        let tritonal = try #require(propuestas.first { $0["recurso"] as? String == "sustitutoTritonal" })
+        #expect(tritonal["posicion"] as? Int == 4 && tritonal["original"] as? String == "Sol7")
+        #expect(tritonal["acordes"] as? [String] == ["Re♭7"])
+        #expect((tritonal["descripcion"] as? String)?.contains("sustituto tritonal") == true)
+        #expect(LineaDeComandos.ejecutar(["rearmonizar", "--json"]).codigo == 2)
+        #expect(LineaDeComandos.ejecutar(["rearmonizar", "Do", "--foo", "--json"]).codigo == 2)
+    }
+
+    @Test func laNeorriemannianaEnJSON() throws {
+        let vecinos = try #require(try json("vecinos Sol7") as? [[String: Any]])
+        #expect(vecinos.map { $0["acorde"] as? String } == ["Sol♯°7", "Solm7", "Mim7"])
+        let movimiento = try #require((vecinos[0]["movimientos"] as? [[String: Any]])?.first)
+        #expect(movimiento["desde"] as? String == "Sol" && movimiento["hasta"] as? String == "Sol♯")
+        #expect(movimiento["semitonos"] as? Int == 1)
+        #expect(try #require(try json("vecinos Domaj7 --ampliada") as? [[String: Any]]).count > 0)
+        #expect(LineaDeComandos.ejecutar(["vecinos", "Do", "Fa", "--json"]).codigo == 2)
+        #expect(LineaDeComandos.ejecutar(["vecinos", "Do", "--voces", "5", "--json"]).codigo == 2)
+        #expect(LineaDeComandos.ejecutar(["vecinos", "Do", "--foo", "--json"]).codigo == 2)
+        #expect(LineaDeComandos.ejecutar(["vecinos", "Do7sus4", "--json"]).codigo == 2)
+
+        let camino = try #require(try json("conduccion-parsimoniosa Sol7 Rem7") as? [String: Any])
+        #expect(camino["desde"] as? String == "Sol7")
+        let pasos = try #require(camino["pasos"] as? [[String: Any]])
+        #expect(pasos.last?["acorde"] as? String == "Rem7")
+        #expect(LineaDeComandos.ejecutar(["conduccion-parsimoniosa", "Sol7", "--json"]).codigo == 2)
+        #expect(LineaDeComandos.ejecutar(["conduccion-parsimoniosa", "Sol7", "Do", "--json"]).codigo != 0)
+
+        let minima = try #require(try json("conduccion-minima Sol7 Do") as? [String: Any])
+        #expect(minima["semitonos"] as? Int == 4)
+        #expect((minima["movimientos"] as? [[String: Any]])?.count == 4)
+        #expect(LineaDeComandos.ejecutar(["conduccion-minima", "Sol7", "--json"]).codigo == 2)
+        #expect(LineaDeComandos.ejecutar(["conduccion-minima", "--json"]).codigo == 2)
+
+        let secuencia = try #require(try json("plr Do PLR") as? [String: Any])
+        #expect(secuencia["desde"] as? String == "Do" && secuencia["ciclo"] == nil)
+        let transformaciones = try #require(secuencia["pasos"] as? [[String: Any]])
+        #expect(transformaciones.map { $0["transformacion"] as? String } == ["P", "L", "R"])
+        let ciclo = try #require(try json("plr Do hexatonico") as? [String: Any])
+        #expect(ciclo["ciclo"] as? String == "hexatonico")
+        #expect((ciclo["pasos"] as? [[String: Any]])?.count == 6)
+        let corto = try #require(try json("plr Do Mibm") as? [String: Any])
+        #expect((corto["pasos"] as? [[String: Any]])?.last?["acorde"] as? String == "Mi♭m")
+        #expect(LineaDeComandos.ejecutar(["plr", "Do", "--json"]).codigo == 2)
+        #expect(LineaDeComandos.ejecutar(["plr", "Do7", "P", "--json"]).codigo == 2)
+        #expect(LineaDeComandos.ejecutar(["plr", "Do", "Do7", "--json"]).codigo == 2)
+        #expect(LineaDeComandos.ejecutar(["plr", "Do", "P", "--foo", "--json"]).codigo == 2)
+    }
+
+    @Test func lasPosicionesEnJSON() throws {
+        let datos = try #require(try json("posiciones Sol mayor --caged") as? [String: Any])
+        #expect(datos["escala"] as? String == "Sol mayor" && datos["instrumento"] as? String == "guitarra")
+        let posiciones = try #require(datos["posiciones"] as? [[String: Any]])
+        #expect(posiciones.map { $0["forma"] as? String } == ["G", "E", "D", "C", "A"])
+        let primera = try #require((posiciones[0]["notas"] as? [[String: Any]])?.first)
+        #expect(primera["cuerda"] as? Int == 6 && primera["traste"] as? Int == 0 && primera["nota"] as? String == "Mi₂")
+        let conCapo = try #require(try json("posiciones La menor --instrumento bajo --capo 2") as? [String: Any])
+        #expect(conCapo["capo"] as? Int == 2 && conCapo["instrumento"] as? String != "guitarra")
+        #expect((conCapo["posiciones"] as? [[String: Any]])?.first?["forma"] == nil)
+        for opcion in ["--arpegio", "--formas", "--secuencia terceras", "--bajando"] {
+            let mal = LineaDeComandos.ejecutar(
+                ("posiciones Sol mayor " + opcion + " --json").split(separator: " ").map(String.init))
+            #expect(mal.codigo == 2 && mal.error.contains("no da salida en JSON"), Comment(rawValue: opcion))
+        }
+        #expect(LineaDeComandos.ejecutar(["posiciones", "--json"]).codigo == 2)
+    }
+}

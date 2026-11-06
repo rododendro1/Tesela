@@ -27,7 +27,8 @@ extension LineaDeComandos {
         let triadas: Bool
         /// `--comparar`.
         let otra: Escala?
-        /// `--contra`: la comparación nota a nota, en SVG.
+        /// `--contra`: la comparación nota a nota, en SVG, como `hoja … --comparar` (la forma de antes, que se sigue
+        /// leyendo).
         let contra: Escala?
         /// `--parecidas`: las escalas con más notas en común.
         let parecidas: Bool
@@ -39,6 +40,13 @@ extension LineaDeComandos {
 
     /// Lee la escala y las opciones de `escala`, o lanza el `ErrorDeUso` de lo que está mal escrito.
     static func pedidoDeEscala(_ textos: [String]) throws -> PedidoDeEscala {
+        // `--dedos piano` es `--dedos` (la digitación de piano, `--piano` antes).
+        var textos = textos
+        if let i = textos.firstIndex(where: OpcionDeOrden.piano.leidos.contains), textos.indices.contains(i + 1),
+            instrumentosDeLosDedos.piano.contains(textos[i + 1].lowercased())
+        {
+            textos.remove(at: i + 1)
+        }
         var argumentos = Argumentos(textos)
         let conAcordes = argumentos.quitarMarca(.acordes)
         let bajando = argumentos.quitarMarca(.bajando)
@@ -60,10 +68,11 @@ extension LineaDeComandos {
             guard let elegida = secuenciaDeEscala(texto) else { throw ErrorDeUso.secuenciaDesconocida(texto) }
             secuencia = elegida
         }
-        var otra: Escala?
-        if let texto = try argumentos.valorConPalabras(.comparar) { otra = try Escala(leyendo: texto) }
+        // `--contra`, antes que `--comparar`, que también lo lee: la forma de antes de `hoja … --comparar`.
         var contra: Escala?
         if let texto = try argumentos.valorConPalabras(.contra) { contra = try Escala(leyendo: texto) }
+        var otra: Escala?
+        if let texto = try argumentos.valorConPalabras(.comparar) { otra = try Escala(leyendo: texto) }
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscala }
         return PedidoDeEscala(
@@ -73,11 +82,11 @@ extension LineaDeComandos {
             contra: contra, parecidas: parecidas, progresiones: progresiones)
     }
 
-    /// `escala Do mayor [--acordes] [--secuencia terceras] [--bajando] [--octavas 2] [--piano] [--modos]
+    /// `escala Do mayor [--acordes] [--secuencia terceras] [--bajando] [--octavas 2] [--dedos] [--modos]
     /// [--estadisticas] [--escalera] [--comparar Do lidio]`: la escala y, si se piden, todos los acordes que caben en
     /// cada grado, una secuencia de estudio, la digitación de piano, los modos paralelos y relativos, lo que se mide de
-    /// ella, su escalera de brillo y la comparación con otra escala. Con `--contra Do dórico`, solo la comparación
-    /// nota a nota, en SVG.
+    /// ella, su escalera de brillo y la comparación con otra escala. Con `--contra Do dórico`, la forma de antes de
+    /// `hoja Do mayor --comparar Do dórico`, solo la comparación nota a nota, en SVG.
     static func escala(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let pedido = try pedidoDeEscala(textos)
         let escala = pedido.escala
@@ -110,18 +119,8 @@ extension LineaDeComandos {
             lineas.append("  " + relativos.map(\.nombre).joined(separator: " · "))
         }
         if pedido.simetria { lineas += lineasDeSimetria(de: escala, notacion) }
-        if pedido.vecinas {
-            lineas.append(notacion.texto(\.escalasVecinas) + ":")
-            lineas += PresentacionDeEstudioDeEscala.vecinas(de: escala, en: notacion).map {
-                "  " + $0.nombre + ": " + $0.detalle
-            }
-        }
-        if pedido.parecidas {
-            lineas.append(notacion.texto(\.escalasParecidas) + ":")
-            lineas += PresentacionDeEstudioDeEscala.parecidas(a: escala, en: notacion).map {
-                "  " + $0.nombre + ": " + $0.detalle
-            }
-        }
+        if pedido.vecinas { lineas += escalasQueSalen(de: escala, .vecinas, notacion) }
+        if pedido.parecidas { lineas += escalasQueSalen(de: escala, .parecidas, notacion) }
         if pedido.progresiones {
             lineas.append(notacion.texto(\.progresionesEnLaEscala) + ":")
             for progresion in PresentacionDeEstudioDeEscala.progresiones(de: escala, en: notacion) {
@@ -135,14 +134,7 @@ extension LineaDeComandos {
                 "  " + $0.nombre + ": " + $0.valor
             }
         }
-        // `--escalera`: de la más oscura a la más brillante, «  +3  Do lidio · Fa → Fa♯», con «←» en la de partida.
-        if pedido.escalera {
-            lineas.append(notacion.texto(\.escaleraDeBrillo) + ":")
-            lineas += PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, en: notacion).map { peldano in
-                let cambio = peldano.cambio.isEmpty ? "" : " · " + peldano.cambio
-                return "  " + peldano.brillo + "  " + peldano.nombre + cambio + (peldano.esLaDePartida ? " ←" : "")
-            }
-        }
+        if pedido.escalera { lineas += escalasQueSalen(de: escala, .escalera, notacion) }
         if pedido.doce {
             let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(
                 escala, secuencia: pedido.secuencia, en: notacion)
@@ -166,6 +158,30 @@ extension LineaDeComandos {
             lineas += (resto + [comparacion.distancia ?? ""]).filter { !$0.isEmpty }.map { "  " + $0 }
         }
         return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// Las líneas de `--vecinas`, `--parecidas` o `--escalera` (`opcion`) de una escala, con su título: las mismas en
+    /// `escala Re dórico --vecinas` y en `escalas --vecinas Re dórico`.
+    static func escalasQueSalen(de escala: Escala, _ opcion: OpcionDeOrden, _ notacion: Notacion) -> [String] {
+        switch opcion {
+        case .vecinasDe, .vecinas:
+            return [notacion.texto(\.escalasVecinas) + ":"]
+                + PresentacionDeEstudioDeEscala.vecinas(de: escala, en: notacion).map {
+                    "  " + $0.nombre + ": " + $0.detalle
+                }
+        case .parecidasA, .parecidas:
+            return [notacion.texto(\.escalasParecidas) + ":"]
+                + PresentacionDeEstudioDeEscala.parecidas(a: escala, en: notacion).map {
+                    "  " + $0.nombre + ": " + $0.detalle
+                }
+        default:
+            // `--escalera`: de la más oscura a la más brillante, «  +3  Do lidio · Fa → Fa♯», con «←» en la de partida.
+            return [notacion.texto(\.escaleraDeBrillo) + ":"]
+                + PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, en: notacion).map { peldano in
+                    let cambio = peldano.cambio.isEmpty ? "" : " · " + peldano.cambio
+                    return "  " + peldano.brillo + "  " + peldano.nombre + cambio + (peldano.esLaDePartida ? " ←" : "")
+                }
+        }
     }
 
     /// `escala … --simetria`: cada cuánto se repite, desde qué notas empieza igual y los acordes que se repiten. Una
@@ -347,6 +363,44 @@ extension LineaDeComandos {
     /// `--mapa` lo dibuja en un mapa de brillo (SVG).
     static func escalas(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        let grupos: [GrupoDeEscalas]
+        let orden: OrdenDeEscalas?
+        switch try catalogoDeEscalas(argumentos, notacion) {
+        case .otraCosa(let resultado, _), .ninguna(let resultado): return resultado
+        case .grupos(let pedidos, let elegido): (grupos, orden) = (pedidos, elegido)
+        }
+        var lineas: [String] = []
+        for grupo in grupos {
+            if !lineas.isEmpty { lineas.append("") }
+            lineas.append("\(grupo.titulo) (\(grupo.tipos.count))")
+            for tipo in grupo.tipos {
+                let notas = Escala(.do, tipo).notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
+                let microtonos = tipo.microtonal == nil ? "" : " · " + t(.microtonos)
+                // Ordenadas por brillo, con su brillo por quintas: «lidio: Do Re Mi Fa♯ Sol La Si · +3».
+                let brillo =
+                    orden == .brillo
+                    ? " · " + PresentacionDeEstudioDeEscala.conSigno(Escala(.do, tipo).estadisticas.brilloPorQuintas)
+                    : ""
+                lineas.append("  \(tipo.nombre(en: notacion)): \(notas)\(microtonos)\(brillo)")
+            }
+        }
+        return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// Un grupo del catálogo de `escalas`: «Japón · escala» y sus escalas, ya ordenadas.
+    typealias GrupoDeEscalas = (titulo: String, tipos: [TipoDeEscala])
+
+    /// Lo que pide `escalas`: los grupos del catálogo, o lo que da otra cosa (`--comparar`, `--mapa`, `--vecinas`…, que
+    /// no tiene JSON), o el error de que no hay ninguna.
+    enum CatalogoPedido {
+        case grupos([GrupoDeEscalas], orden: OrdenDeEscalas?)
+        case otraCosa(ResultadoDeOrden, opcion: String)
+        case ninguna(ResultadoDeOrden)
+    }
+
+    /// Lee los argumentos de `escalas` y da sus grupos, para el texto y para `--json`.
+    static func catalogoDeEscalas(_ argumentos: [String], _ notacion: Notacion) throws -> CatalogoPedido {
+        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         var entrada = Argumentos(argumentos)
         // `--comparar Do mayor, Do dórico, Do lidio`: las escalas en una tabla, con lo que se mide de cada una.
         if let texto = try entrada.valorConPalabras(.comparar) {
@@ -356,7 +410,22 @@ extension LineaDeComandos {
             guard !nombres.isEmpty else { throw ErrorDeUso.faltaValor("--comparar") }
             let escalas = try nombres.map { try Escala(leyendo: $0) }
             let tabla = PresentacionDeEstudioDeEscala.tablaDeEstadisticas(escalas, en: notacion)
-            return bien(columnas([tabla.encabezados] + tabla.filas))
+            return .otraCosa(bien(columnas([tabla.encabezados] + tabla.filas)), opcion: "--comparar")
+        }
+        // `--vecinas Re dórico`, `--parecidas Re dórico`, `--escalera Re dórico`: las escalas que salen de una, como
+        // `escala Re dórico --vecinas`, pero sin la escala de partida.
+        let deUna = try [
+            (OpcionDeOrden.vecinasDe, entrada.valorConPalabras(.vecinasDe)),
+            (OpcionDeOrden.parecidasA, entrada.valorConPalabras(.parecidasA)),
+            (OpcionDeOrden.escaleraDe, entrada.valorConPalabras(.escaleraDe)),
+        ].compactMap { opcion, texto in texto.map { (opcion, $0) } }
+        if !deUna.isEmpty {
+            if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+            guard entrada.restantes.isEmpty else { throw ErrorDeUso.opcionDesconocida(entrada.restantes[0]) }
+            let lineas = try deUna.flatMap { opcion, texto in
+                try escalasQueSalen(de: Escala(leyendo: texto), opcion, notacion)
+            }
+            return .otraCosa(bien(lineas.joined(separator: "\n")), opcion: deUna[0].0.nombres[0])
         }
         // `--mapa [Re dórico] [--notas 7]`: el mapa de brillo en SVG, resaltando la escala que se dé.
         if entrada.quitarMarca(.mapa) {
@@ -367,9 +436,9 @@ extension LineaDeComandos {
             }
             if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
             let resaltada = entrada.restantes.isEmpty ? nil : try Escala(leyendo: entrada.unidos)
-            return bien(
-                PresentacionDeEstudioDeEscala.mapaDeBrillo(
-                    numeroDeNotas: numeroDeNotas, resaltada: resaltada, en: notacion))
+            let mapa = PresentacionDeEstudioDeEscala.mapaDeBrillo(
+                numeroDeNotas: numeroDeNotas, resaltada: resaltada, en: notacion)
+            return .otraCosa(bien(mapa), opcion: "--mapa")
         }
         var tradicion: Tradicion?
         if let texto = try entrada.valor(.tradicion) {
@@ -504,7 +573,7 @@ extension LineaDeComandos {
                             "armonia identify --scales " + entrada.unidos
                         ).en(notacion))
                 } : t(.ningunaEscala)
-            return ResultadoDeOrden(salida: "", error: "armonia: " + texto + "\n", codigo: 1)
+            return .ninguna(ResultadoDeOrden(salida: "", error: "armonia: " + texto + "\n", codigo: 1))
         }
         // Con `--orden`, cada grupo de la más brillante a la más oscura, o de menos a más notas; a igualdad, en el
         // orden del catálogo.
@@ -514,20 +583,6 @@ extension LineaDeComandos {
             let claves = tipos.map { orden == .brillo ? -estadisticas($0).brilloPorQuintas : Double($0.numeroDeNotas) }
             return tipos.indices.sorted { (claves[$0], $0) < (claves[$1], $1) }.map { tipos[$0] }
         }
-        var lineas: [String] = []
-        for grupo in grupos {
-            if !lineas.isEmpty { lineas.append("") }
-            lineas.append("\(grupo.titulo) (\(grupo.tipos.count))")
-            for tipo in ordenados(grupo.tipos) {
-                let notas = Escala(.do, tipo).notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
-                let microtonos = tipo.microtonal == nil ? "" : " · " + t(.microtonos)
-                // Ordenadas por brillo, con su brillo por quintas: «lidio: Do Re Mi Fa♯ Sol La Si · +3».
-                let brillo =
-                    orden == .brillo
-                    ? " · " + PresentacionDeEstudioDeEscala.conSigno(estadisticas(tipo).brilloPorQuintas) : ""
-                lineas.append("  \(tipo.nombre(en: notacion)): \(notas)\(microtonos)\(brillo)")
-            }
-        }
-        return bien(lineas.joined(separator: "\n"))
+        return .grupos(grupos.map { ($0.titulo, ordenados($0.tipos)) }, orden: orden)
     }
 }

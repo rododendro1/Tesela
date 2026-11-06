@@ -259,6 +259,15 @@ extension LineaDeComandosTests {
         // Si `--version` falla, sin versión.
         let roto = grabado("motores", con: EjecutorFalso(instalados: ["verovio"], codigo: 1))
         #expect(roto.salida.contains("\nverovio    /falso/verovio\n"))
+        // En JSON, lo mismo con las claves de siempre.
+        let enJSON = grabado("motores --json", con: EjecutorFalso(instalados: ["lilypond", "guido2svg"]))
+        let motores = try #require(
+            try JSONSerialization.jsonObject(with: Data(enJSON.salida.utf8)) as? [[String: Any]])
+        #expect(motores.map { $0["motor"] as? String } == ["lilypond", "musescore", "verovio", "guido", "propio"])
+        #expect(motores[0]["ruta"] as? String == "/falso/lilypond" && motores[0]["version"] as? String == "Falso 1.0")
+        #expect(motores[1]["instalado"] as? Bool == false && motores[1]["variable"] as? String == "ARMONIA_MSCORE")
+        #expect(motores[3]["instalado"] as? Bool == true && motores[3]["version"] == nil)
+        #expect(grabado("motores --foo --json", con: EjecutorFalso()).codigo == 2)
     }
 
     @Test func elEjecutorDelSistema() throws {

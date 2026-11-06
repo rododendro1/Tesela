@@ -106,8 +106,8 @@ def main() -> int:
     for lugar, textos in traducciones():
         cuantas += 1
         ingles = textos["en"]
-        if "--" in ingles:
-            # Una sintaxis de orden («tabla --chord | --scale…»): se escribe igual en todos.
+        if "--" in ingles or lugar.split(".")[-1].startswith("sintaxis"):
+            # Una sintaxis de orden («tabla chord | scale…», «--chord»): se escribe igual en todos.
             continue
         for idioma in ("de", "ru", "el"):
             texto = textos[idioma]

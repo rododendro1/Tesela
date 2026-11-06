@@ -147,7 +147,7 @@ extension LineaDeComandos {
         var acordesQueCaben: [Grado]?
         /// `--secuencia`.
         var secuencia: Secuencia?
-        /// `--piano`: la mano derecha primero.
+        /// `--dedos` (`--piano` antes): la mano derecha primero.
         var piano: [ManoDelPiano]?
         /// `--modos`.
         var modosParalelos: [Modo]?
@@ -644,6 +644,299 @@ extension LineaDeComandos {
         case .saltoNoMelodico: "saltoNoMelodico"
         case .saltoSinCompensar: "saltoSinCompensar"
         case .notaRepetida: "notaRepetida"
+        }
+    }
+}
+
+// MARK: - El catálogo, la rearmonización, la neorriemanniana, las posiciones y los motores
+
+extension LineaDeComandos {
+    /// Una escala del catálogo de `escalas --json`: su nombre, sus notas desde Do y sus clases, y de dónde es.
+    struct EscalaDelCatalogoJSON: Encodable {
+        let nombre: String
+        let notas: [String]
+        let clases: [Int]
+        let microtonal: Bool
+        let brilloPorQuintas: Double
+        /// Las claves de `--tradicion`, `--categoria` y `--fuente`, o `nil` en las occidentales.
+        let tradicion: String?
+        let categoria: String?
+        let fuente: String?
+    }
+
+    /// Un grupo de `escalas --json`: «Japón · escala» y sus escalas, en el orden de `--orden`.
+    struct GrupoDeEscalasJSON: Encodable {
+        let titulo: String
+        let escalas: [EscalaDelCatalogoJSON]
+    }
+
+    /// `escalas --tradicion japon --json`: los grupos del catálogo, los mismos que da el texto. Vacío si no hay
+    /// ninguna. `--comparar`, `--mapa`, `--vecinas`, `--parecidas` y `--escalera` no dan JSON.
+    static func escalasJSON(_ textos: [String], _ notacion: Notacion) throws -> [GrupoDeEscalasJSON] {
+        switch try catalogoDeEscalas(textos, notacion) {
+        case .otraCosa(_, let opcion): throw ErrorDeUso.sinSalidaJSON("escalas " + opcion)
+        case .ninguna: return []
+        case .grupos(let grupos, _):
+            return grupos.map { grupo in
+                GrupoDeEscalasJSON(
+                    titulo: grupo.titulo,
+                    escalas: grupo.tipos.map { tipo in
+                        let escala = Escala(.do, tipo)
+                        return EscalaDelCatalogoJSON(
+                            nombre: tipo.nombre(en: notacion), notas: escala.notas.map { $0.nombre(en: notacion) },
+                            clases: escala.notas.map(\.claseDeAltura), microtonal: tipo.microtonal != nil,
+                            brilloPorQuintas: escala.estadisticas.brilloPorQuintas, tradicion: tipo.tradicion?.rawValue,
+                            categoria: tipo.categoria?.rawValue, fuente: tipo.fuente?.rawValue)
+                    })
+            }
+        }
+    }
+
+    /// Una propuesta de `rearmonizar --json`.
+    struct PropuestaJSON: Encodable {
+        /// El acorde que cambia, desde 1, como en el texto.
+        let posicion: Int
+        /// `sustitutoTritonal`, `dominanteSecundaria`, `prestamoModal`…: siempre igual, sea cual sea el idioma.
+        let recurso: String
+        let original: String
+        let acordes: [String]
+        let descripcion: String
+    }
+
+    struct RearmonizacionJSON: Encodable {
+        let tonalidad: String
+        let propuestas: [PropuestaJSON]
+    }
+
+    /// `rearmonizar Do Lam Rem7 Sol7 Do --json`: la tonalidad y cada propuesta.
+    static func rearmonizarJSON(_ textos: [String], _ notacion: Notacion) throws -> RearmonizacionJSON {
+        var acordes = Argumentos(textos)
+        guard let tonalidad = try acordes.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
+        let leidos = try palabras(acordes, siFaltan: .faltanAcordesDeLaRearmonizacion).map {
+            try Acorde(leyendo: $0)
+        }
+        guard let resultado = PresentacionDeRearmonizacion.proponer(leidos, en: tonalidad, notacion: notacion) else {
+            throw ErrorDeUso.faltanAcordesDeLaRearmonizacion
+        }
+        return RearmonizacionJSON(
+            tonalidad: resultado.tonalidad.nombre(en: notacion),
+            propuestas: resultado.propuestas.map { propuesta in
+                let cambio = propuesta.rearmonizacion
+                return PropuestaJSON(
+                    posicion: cambio.posicion + 1, recurso: cambio.recurso.rawValue,
+                    original: cambio.original.cifrado(en: notacion),
+                    acordes: cambio.acordes.map { $0.cifrado(en: notacion) },
+                    descripcion: propuesta.descripcion)
+            })
+    }
+
+    /// Una voz que se mueve: «Si→Do», en semitonos (+ hacia arriba).
+    struct MovimientoJSON: Encodable {
+        let desde: String
+        let hasta: String
+        let semitonos: Int
+
+        init(_ movimiento: MovimientoDeVoz, _ notacion: Notacion) {
+            desde = movimiento.desde.nombre(en: notacion)
+            hasta = movimiento.hasta.nombre(en: notacion)
+            semitonos = movimiento.semitonos
+        }
+    }
+
+    /// Un paso de `vecinos` o de `conduccion-parsimoniosa`: el acorde al que se llega y las voces que se mueven.
+    struct PasoJSON: Encodable {
+        let acorde: String
+        let movimientos: [MovimientoJSON]
+
+        init(_ paso: PasoParsimonioso, _ notacion: Notacion) {
+            acorde = paso.acorde.cifrado(en: notacion)
+            movimientos = paso.movimientos.map { MovimientoJSON($0, notacion) }
+        }
+    }
+
+    /// La familia de `--ampliada` y las voces de `--voces`, comunes a `vecinos` y `conduccion-parsimoniosa`.
+    private static func conduccionPedida(_ textos: [String]) throws -> (
+        voces: Int, tipos: [TipoDeAcorde]?, acordes: [String]
+    ) {
+        var argumentos = Argumentos(textos)
+        guard let voces = argumentos.quitarNumero(.voces, en: 1...2, porDefecto: 1) else {
+            throw ErrorDeUso.vocesFueraDeRango
+        }
+        let tipos = argumentos.quitarMarca(.ampliada) ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
+        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        return (voces, tipos, argumentos.restantes)
+    }
+
+    /// `vecinos Sol7 --json`: los vecinos, cada uno con las voces que se mueven.
+    static func vecinosJSON(_ textos: [String], _ notacion: Notacion) throws -> [PasoJSON] {
+        let (voces, tipos, acordes) = try conduccionPedida(textos)
+        guard acordes.count == 1 else { throw ErrorDeUso.unAcordeDeVecinos }
+        let acorde = try Acorde(leyendo: acordes[0])
+        let pasos =
+            tipos.map { $0.contains(acorde.tipo) ? acorde.vecinosParsimoniosos(voces: voces, tipos: $0) : [] }
+            ?? acorde.vecinosParsimoniosos(voces: voces)
+        guard !pasos.isEmpty else { throw ErrorDeUso.vecinosSinFamilia }
+        return pasos.map { PasoJSON($0, notacion) }
+    }
+
+    struct CaminoJSON: Encodable {
+        let desde: String
+        let pasos: [PasoJSON]
+    }
+
+    /// `conduccion-parsimoniosa Sol7 Rem7 --json`: el acorde de partida y cada paso.
+    static func caminoParsimoniosoJSON(_ textos: [String], _ notacion: Notacion) throws -> CaminoJSON {
+        let (voces, tipos, acordes) = try conduccionPedida(textos)
+        guard acordes.count == 2 else { throw ErrorDeUso.dosAcordesDeCamino }
+        let origen = try Acorde(leyendo: acordes[0])
+        let destino = try Acorde(leyendo: acordes[1])
+        guard let camino = Tonnetz.caminoParsimonioso(desde: origen, hasta: destino, voces: voces, tipos: tipos) else {
+            throw ErrorDeUso.caminoSinConexion
+        }
+        return CaminoJSON(
+            desde: Acorde(origen.fundamental, origen.tipo).cifrado(en: notacion),
+            pasos: camino.map { PasoJSON($0, notacion) })
+    }
+
+    struct ConduccionMinimaJSON: Encodable {
+        let movimientos: [MovimientoJSON]
+        let semitonos: Int
+    }
+
+    /// `conduccion-minima Sol7 Do --json`: cada voz y los semitonos que se mueven en total.
+    static func conduccionMinimaJSON(_ textos: [String], _ notacion: Notacion) throws -> ConduccionMinimaJSON {
+        let acordes = try palabras(Argumentos(textos), siFaltan: .dosAcordesDeConduccion)
+        guard acordes.count == 2 else { throw ErrorDeUso.dosAcordesDeConduccion }
+        let conduccion = try Acorde(leyendo: acordes[0]).conduccionMinima(hasta: try Acorde(leyendo: acordes[1]))
+        return ConduccionMinimaJSON(
+            movimientos: conduccion.movimientos.map { MovimientoJSON($0, notacion) },
+            semitonos: conduccion.semitonosMovidos)
+    }
+
+    /// Un paso de `plr --json`: la transformación (P, L, R…) y la tríada a la que lleva.
+    struct TransformacionJSON: Encodable {
+        let transformacion: String
+        let acorde: String
+    }
+
+    struct PLRJSON: Encodable {
+        let desde: String
+        let pasos: [TransformacionJSON]
+        /// `hexatonico`, `octatonico` o `lr`, si es un ciclo.
+        let ciclo: String?
+    }
+
+    /// `plr Do PLR --json`, `plr Do Mibm --json`, `plr Do hexatonico --json`: los pasos, como en el texto.
+    static func plrJSON(_ textos: [String], _ notacion: Notacion) throws -> PLRJSON {
+        if let desconocida = Argumentos(textos).opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        guard textos.count >= 2 else { throw ErrorDeUso.faltanPasosDePLR }
+        let origen = try Acorde(leyendo: textos[0])
+        guard Tonnetz.Triada(origen) != nil else { throw ErrorDeUso.plrSoloTriadas(camino: false) }
+        let resto = textos.dropFirst().joined(separator: " ")
+        if (try? TransformacionNeorriemanniana.secuencia(leyendo: resto)) == nil,
+            let ciclo = try? CicloNeorriemanniano(leyendo: resto)
+        {
+            let acordes = origen.ciclo(ciclo)!
+            return PLRJSON(
+                desde: acordes[0].cifrado(en: notacion),
+                pasos: acordes.dropFirst().enumerated().map { i, acorde in
+                    TransformacionJSON(
+                        transformacion: "\(ciclo.transformaciones[i % 2])", acorde: acorde.cifrado(en: notacion))
+                },
+                ciclo: ciclo.rawValue)
+        }
+        let pasos: [TransformacionNeorriemanniana]
+        if let secuencia = try? TransformacionNeorriemanniana.secuencia(leyendo: resto) {
+            pasos = secuencia
+        } else {
+            let destino = try Acorde(leyendo: resto)
+            guard let camino = Tonnetz.camino(desde: origen, hasta: destino) else {
+                throw ErrorDeUso.plrSoloTriadas(camino: true)
+            }
+            pasos = camino
+        }
+        var acorde = origen.transformar([])!
+        let desde = acorde.cifrado(en: notacion)
+        var transformaciones: [TransformacionJSON] = []
+        for paso in pasos {
+            acorde = acorde.transformar(paso)!
+            transformaciones.append(TransformacionJSON(transformacion: "\(paso)", acorde: acorde.cifrado(en: notacion)))
+        }
+        return PLRJSON(desde: desde, pasos: transformaciones, ciclo: nil)
+    }
+
+    /// Una nota de una posición del mástil: la cuerda (con su número tradicional: 1 es la más aguda), el traste y la
+    /// nota.
+    struct NotaEnElMastilJSON: Encodable {
+        let cuerda: Int
+        let traste: Int
+        let nota: String
+    }
+
+    struct PosicionJSON: Encodable {
+        /// La forma CAGED (`C`, `A`, `G`, `E`, `D`), con `--caged`.
+        let forma: String?
+        let desdeElTraste: Int
+        let hastaElTraste: Int
+        let notas: [NotaEnElMastilJSON]
+    }
+
+    struct PosicionesJSON: Encodable {
+        let escala: String
+        let instrumento: String
+        let capo: Int
+        let posiciones: [PosicionJSON]
+    }
+
+    /// `posiciones Sol mayor [--caged] [--instrumento bajo] [--capo 2] --json`: cada posición con sus notas, de grave a
+    /// agudo. `--arpegio`, `--formas` y `--secuencia` no dan JSON.
+    static func posicionesJSON(_ textos: [String], _ notacion: Notacion) throws -> PosicionesJSON {
+        var argumentos = Argumentos(textos)
+        for opcion in [OpcionDeOrden.arpegio, .formas, .bajando, .barrido, .idaYVuelta]
+        where argumentos.quitarMarca(opcion) {
+            throw ErrorDeUso.sinSalidaJSON("posiciones " + opcion.nombres[0])
+        }
+        if try argumentos.valor(.secuencia) != nil { throw ErrorDeUso.sinSalidaJSON("posiciones --secuencia") }
+        let caged = argumentos.quitarMarca(.caged)
+        let mastil = try mastilDeLasPosiciones(&argumentos)
+        let escala = try Escala(
+            leyendo: palabras(argumentos, siFaltan: .faltaEscalaDePosiciones).joined(separator: " "))
+        let posiciones = caged ? mastil.posicionesCAGED(de: escala) : mastil.posicionesPorCuerda(de: escala)
+        let encordado = mastil.encordado
+        return PosicionesJSON(
+            escala: escala.nombre(en: notacion), instrumento: encordado.nombre(en: notacion), capo: encordado.capo,
+            posiciones: posiciones.map { posicion in
+                PosicionJSON(
+                    forma: posicion.forma?.rawValue, desdeElTraste: posicion.rangoDeTrastes.lowerBound,
+                    hastaElTraste: posicion.rangoDeTrastes.upperBound,
+                    notas: posicion.posiciones.map {
+                        NotaEnElMastilJSON(
+                            cuerda: encordado.numeroTradicional(deCuerda: $0.cuerda), traste: $0.traste,
+                            nota: mastil.altura(en: $0).nombre(en: notacion))
+                    })
+            })
+    }
+
+    /// Un motor de `grabar`: su programa y su versión, o la variable que da su ruta si no está instalado.
+    struct MotorJSON: Encodable {
+        let motor: String
+        let instalado: Bool
+        let ruta: String?
+        let version: String?
+        let variable: String
+    }
+
+    /// `motores --json`: cada motor de `grabar`.
+    static func motoresJSON(_ textos: [String], _ notacion: Notacion) throws -> [MotorJSON] {
+        if let sobrante = textos.first { throw ErrorDeUso.opcionDesconocida(sobrante) }
+        return try MotorDeGrabado.allCases.map { motor in
+            let variable = EjecutorDelSistema.variable(de: motor.programas[0])
+            guard let ruta = programaDelMotor(motor) else {
+                return MotorJSON(motor: motor.rawValue, instalado: false, ruta: nil, version: nil, variable: variable)
+            }
+            return MotorJSON(
+                motor: motor.rawValue, instalado: true, ruta: ruta, version: try versionDelMotor(motor, en: ruta),
+                variable: variable)
         }
     }
 }

@@ -27,8 +27,8 @@ extension LineaDeComandos {
             ejecutar: { try transponer($0, $1) }),
         Orden(
             nombres: ["rearmonizar", "reharmonize", "reharmonise"],
-            ayuda: ayudaDeRearmonizar
-        ) { try rearmonizar($0, $1) },
+            ayuda: ayudaDeRearmonizar, json: { try rearmonizarJSON($0, $1) },
+            ejecutar: { try rearmonizar($0, $1) }),
     ]
 
     static let ayudaDeAnalizar: [EntradaDeAyuda] = [
@@ -40,7 +40,7 @@ extension LineaDeComandos {
                 "armonia analizar Do Fa Sol7 Do Lam Re7 Sol",
                 "armonia analyze C F G7 C Am D7 G"),
             notas: TextosDeCLI.traduccion(\.notasAnalizar),
-            opciones: [.en, .escalas, .notasGuia, .conduccion, .contra, .bajo]),
+            opciones: [.en, .escalas, .notasGuia, .conduccion, .comparar, .bajo]),
         // analizar --archivo <fichero> [--ventana <duración>]
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisAnalizarArchivo),

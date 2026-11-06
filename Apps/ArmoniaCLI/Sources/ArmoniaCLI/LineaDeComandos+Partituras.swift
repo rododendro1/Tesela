@@ -17,11 +17,12 @@ extension LineaDeComandos {
         }
         // Los argumentos hasta la primera opción son la música; cada opción toma lo que la sigue.
         // `--program` es `--programa` en inglés (solo en MIDI); `--patrón` y `--pattern` son `--patron`, y `--file`
-        // y `--window`, `--archivo` y `--ventana`.
+        // y `--window`, `--archivo` y `--ventana`. `--en`, `--in` y `--key` son `--tonalidad`, como en las demás órdenes.
         var entrada = Argumentos(Array(argumentos.dropFirst()))
         let alias: [(String, String)] =
             (formato == .midi ? [("program", "programa")] : [])
             + [("patrón", "patron"), ("pattern", "patron"), ("file", "archivo"), ("window", "ventana")]
+            + [("en", "tonalidad"), ("in", "tonalidad"), ("key", "tonalidad")]
         // `--enlazar`: cada arpegio empieza cerca de donde acabó el anterior.
         let enlazados = entrada.quitarMarca(.enlazar)
         let (opciones, marcas) = entrada.quitarOpcionesConTexto(

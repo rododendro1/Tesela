@@ -8,7 +8,9 @@ extension LineaDeComandos {
             ayuda: ayudaDeDigitaciones,
             json: { try digitacionesJSON($0, $1) },
             ejecutar: { try digitaciones($0, $1) }),
-        Orden(nombres: ["posiciones", "positions"], ayuda: ayudaDePosiciones) { try posiciones($0, $1) },
+        Orden(
+            nombres: ["posiciones", "positions"], ayuda: ayudaDePosiciones, json: { try posicionesJSON($0, $1) },
+            ejecutar: { try posiciones($0, $1) }),
     ]
 
     static let ayudaDeDigitaciones: [EntradaDeAyuda] = [

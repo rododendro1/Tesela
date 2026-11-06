@@ -82,7 +82,7 @@ import Testing
         for nombre in ["revisar <acordes>", "conduccion-parsimoniosa <acorde>", "--programa 0…127"] {
             #expect(ayuda.contains(nombre), Comment(rawValue: nombre))
         }
-        for nombre in ["check <chords>", "smooth-path <chord>", "--sequence <triads>", "--program 0…127"] {
+        for nombre in ["check <chords>", "smooth-path <chord>", "sequence <triads>", "--program 0…127"] {
             #expect(help.contains(nombre), Comment(rawValue: nombre))
         }
         for antiguo in ["voces <acordes>", "camino <acorde>", "--instrumento 0…127"] {

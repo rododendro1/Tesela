@@ -161,18 +161,7 @@ extension LineaDeComandos {
         let arpegio = argumentos.quitarMarca(.arpegio)
         let barrido = argumentos.quitarMarca(.barrido)
         let idaYVuelta = argumentos.quitarMarca(.idaYVuelta)
-        var encordado = Encordado.guitarra
-        if let nombre = try argumentos.valor(.instrumento, siFalta: .faltaInstrumento) {
-            guard let encontrado = try? Encordado(leyendo: nombre) else {
-                throw ErrorDeUso.instrumentoDesconocido(nombre)
-            }
-            encordado = encontrado
-        }
-        var capo = 0
-        if let texto = try argumentos.valor(.capo, siFalta: .capoFueraDeRango) {
-            guard let n = Int(texto), (0...12).contains(n) else { throw ErrorDeUso.capoFueraDeRango }
-            capo = n
-        }
+        let mastil = try mastilDeLasPosiciones(&argumentos)
         var secuencia: SecuenciaDeEscala?
         if let texto = try argumentos.valor(.secuencia) {
             guard let elegida = secuenciaDeEscala(texto) else { throw ErrorDeUso.secuenciaDesconocida(texto) }
@@ -181,7 +170,6 @@ extension LineaDeComandos {
         if let desconocida = argumentos.opcionDesconocida {
             throw ErrorDeUso.opcionDesconocida(desconocida)
         }
-        let mastil = Mastil(encordado.conCapo(capo), numeroDeTrastes: 15)
         if arpegio {
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifradoDelArpegio }
             let reparto: FormasDeArpegio = barrido ? .unaNotaPorCuerda : caged ? .caged : .porPosiciones
@@ -218,6 +206,23 @@ extension LineaDeComandos {
             }
         }
         return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// El mástil de `posiciones`: el de `--instrumento` (la guitarra, si no) con el capo de `--capo`, en 15 trastes.
+    static func mastilDeLasPosiciones(_ argumentos: inout Argumentos) throws -> Mastil {
+        var encordado = Encordado.guitarra
+        if let nombre = try argumentos.valor(.instrumento, siFalta: .faltaInstrumento) {
+            guard let encontrado = try? Encordado(leyendo: nombre) else {
+                throw ErrorDeUso.instrumentoDesconocido(nombre)
+            }
+            encordado = encontrado
+        }
+        var capo = 0
+        if let texto = try argumentos.valor(.capo, siFalta: .capoFueraDeRango) {
+            guard let n = Int(texto), (0...12).contains(n) else { throw ErrorDeUso.capoFueraDeRango }
+            capo = n
+        }
+        return Mastil(encordado.conCapo(capo), numeroDeTrastes: 15)
     }
 
     /// `posiciones La pentatónica menor --formas`: las cinco formas, cada una con su tablatura y las notas que
