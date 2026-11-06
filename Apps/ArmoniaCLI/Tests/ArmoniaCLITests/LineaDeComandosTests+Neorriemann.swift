@@ -33,21 +33,21 @@ extension LineaDeComandosTests {
         #expect(salida("plr Do PLR") == "Do –P→ Dom –L→ La♭ –R→ Fam\nPLR, 3 pasos\n")
         #expect(salida("plr Do P L") == "Do –P→ Dom –L→ La♭\nPL, 2 pasos\n")
         #expect(salida("plr Do H") == "Do –L→ Mim –P→ Mi –L→ Sol♯m\nLPL, 3 pasos\n")
-        #expect(salida("plr Do Mibm") == "Do –P→ Dom –R→ Mi♭ –P→ Mi♭m\nPRP, 3 pasos\n")
-        #expect(salida("plr Do Lam") == "Do –R→ Lam\nR, 1 paso\n")
-        #expect(salida("plr Do Do") == "Do\nningún paso\n")
-        #expect(salida("plr C Am --ingles") == "C –R→ Am\nR, 1 step\n")
+        #expect(salida("plr camino Do Mibm") == "Do –P→ Dom –R→ Mi♭ –P→ Mi♭m\nPRP, 3 pasos\n")
+        #expect(salida("plr camino Do Lam") == "Do –R→ Lam\nR, 1 paso\n")
+        #expect(salida("plr camino Do Do") == "Do\nningún paso\n")
+        #expect(salida("plr shortest C Am --ingles") == "C –R→ Am\nR, 1 step\n")
         #expect(
-            salida("plr Do hexatonico")
+            salida("plr ciclo hexatonico Do")
                 == "Do –P→ Dom –L→ La♭ –P→ La♭m –L→ Mi –P→ Mim –L→ Do\nciclo hexatónico, 6 tríadas\n")
-        #expect(salida("plr Do ciclo LR").hasSuffix("–R→ Do\nciclo LR, 24 tríadas\n"))
-        #expect(salida("plr C octatonic --ingles").hasSuffix("octatonic cycle, 8 triads\n"))
-        #expect(salida("tonnetz --ciclo hexatonico Do").contains("La♭m –L→ Mi"))
+        #expect(salida("plr ciclo ciclo LR Do").hasSuffix("–R→ Do\nciclo LR, 24 tríadas\n"))
+        #expect(salida("plr cycle octatonic C --ingles").hasSuffix("octatonic cycle, 8 triads\n"))
+        #expect(salida("tonnetz ciclo hexatonico Do").contains("La♭m –L→ Mi"))
         #expect(LineaDeComandos.ejecutar(["tonnetz", "--ciclo", "Do"]).codigo == 2)
         #expect(LineaDeComandos.ejecutar(["tonnetz", "--ciclo", "hexatonico", "Do7"]).codigo == 2)
-        #expect(salida("tabla --ciclo octatonico Do").contains("Sol♭ –P→ Fa♯m"))
+        #expect(salida("tabla ciclo octatonico Do").contains("Sol♭ –P→ Fa♯m"))
         #expect(LineaDeComandos.ejecutar(["tabla", "--ciclo", "LR", "Sol7"]).codigo == 2)
-        for orden in ["plr", "plr Do", "plr Sol7 P", "plr Do Sol7"] {
+        for orden in ["plr", "plr Do", "plr Sol7 P", "plr camino Do Sol7"] {
             #expect(
                 LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,
                 Comment(rawValue: orden))

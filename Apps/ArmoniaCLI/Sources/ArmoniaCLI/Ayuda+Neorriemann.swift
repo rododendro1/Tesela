@@ -7,7 +7,7 @@ extension LineaDeComandos {
             nombres: ["vecinos", "neighbors"], ayuda: ayudaDeVecinos, json: { try vecinosJSON($0, $1) },
             ejecutar: { try vecinos($0, $1) }),
         Orden(
-            nombres: ["camino-parsimonioso", "conduccion-parsimoniosa", "conducción-parsimoniosa", "smooth-path"],
+            nombres: ["camino-parsimonioso", "smooth-path"],
             ayuda: ayudaDeConduccionParsimoniosa, json: { try caminoParsimoniosoJSON($0, $1) },
             ejecutar: { try caminoParsimonioso($0, $1) }),
         Orden(

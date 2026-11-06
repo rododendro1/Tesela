@@ -92,7 +92,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia pentagrama acordes Do Fa/La Sol7/Si Do --bajo-cifrado > bajo.svg",
                 "armonia staff chords C F/A G7/B C --figured-bass > bass.svg"),
-            opciones: [.octava, .clave, .doble, .cambiarClave, .bajoCifrado]),
+            opciones: [.registro, .clave, .doble, .cambiarClave, .bajoCifrado]),
         // pentagrama melodia <notas> --sobre <acordes>
         EntradaDeAyuda(
             sintaxis: TextosDeCLI.traduccion(\.sintaxisPentagramaMelodia),

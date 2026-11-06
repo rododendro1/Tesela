@@ -147,7 +147,7 @@ extension LineaDeComandos {
         var acordesQueCaben: [Grado]?
         /// `--secuencia`.
         var secuencia: Secuencia?
-        /// `--dedos` (`--piano` antes): la mano derecha primero.
+        /// `--dedos`: la mano derecha primero.
         var piano: [ManoDelPiano]?
         /// `--modos`.
         var modosParalelos: [Modo]?
@@ -827,18 +827,12 @@ extension LineaDeComandos {
         let ciclo: String?
     }
 
-    /// `plr Do PLR --json`, `plr Do Mibm --json`, `plr Do hexatonico --json`: los pasos, como en el texto.
-    static func plrJSON(_ escritos: [String], _ notacion: Notacion) throws -> PLRJSON {
-        let textos = argumentosDePlr(escritos)
-        if let desconocida = Argumentos(textos).opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
-        guard textos.count >= 2 else { throw ErrorDeUso.faltanPasosDePLR }
-        let origen = try Acorde(leyendoEnLaOrden: textos[0])
-        guard Tonnetz.Triada(origen) != nil else { throw ErrorDeUso.plrSoloTriadas(camino: false) }
-        let resto = textos.dropFirst().joined(separator: " ")
-        if (try? TransformacionNeorriemanniana.secuencia(leyendo: resto)) == nil,
-            let ciclo = try? CicloNeorriemanniano(leyendo: resto)
-        {
-            let acordes = origen.ciclo(ciclo)!
+    /// `plr Do PLR --json`, `plr camino Do Mibm --json`, `plr ciclo hexatonico Do --json`: los pasos, como en el texto.
+    static func plrJSON(_ argumentos: [String], _ notacion: Notacion) throws -> PLRJSON {
+        let (origen, pasos): (Acorde, [TransformacionNeorriemanniana])
+        switch try pedidoDePLR(argumentos) {
+        case .ciclo(let triada, let ciclo):
+            let acordes = triada.ciclo(ciclo)!
             return PLRJSON(
                 desde: acordes[0].cifrado(en: notacion),
                 pasos: acordes.dropFirst().enumerated().map { i, acorde in
@@ -846,16 +840,7 @@ extension LineaDeComandos {
                         transformacion: "\(ciclo.transformaciones[i % 2])", acorde: acorde.cifrado(en: notacion))
                 },
                 ciclo: ciclo.rawValue)
-        }
-        let pasos: [TransformacionNeorriemanniana]
-        if let secuencia = try? TransformacionNeorriemanniana.secuencia(leyendo: resto) {
-            pasos = secuencia
-        } else {
-            let destino = try Acorde(leyendoEnLaOrden: resto)
-            guard let camino = origen.caminoNeorriemanniano(hasta: destino) else {
-                throw ErrorDeUso.plrSoloTriadas(camino: true)
-            }
-            pasos = camino
+        case .pasos(let triada, let leidos): (origen, pasos) = (triada, leidos)
         }
         var acorde = origen.transformar([])!
         let desde = acorde.cifrado(en: notacion)

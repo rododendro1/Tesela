@@ -7,7 +7,7 @@ extension PresentacionDeRelacionesDeAcorde {
     /// Una hoja de estudio del acorde, para imprimir: un SVG del ancho de un A4 con el cifrado, sus notas y sus otros
     /// nombres, el pentagrama, sus disposiciones (cerrada, drop 2 y fundamental, tercera y séptima, las que tenga),
     /// las digitaciones de guitarra más cómodas, las escalas compatibles con sus tensiones y las sustituciones. El
-    /// alto es el que ocupa. `armonia grabar hoja --acorde Sol7` la pasa a PDF.
+    /// alto es el que ocupa. `armonia grabar hoja acorde Sol7` la pasa a PDF.
     ///
     ///     let hoja = PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: Acorde("Sol7"), en: .espanolCompacto)
     ///     hoja.hasPrefix("<svg")   // true

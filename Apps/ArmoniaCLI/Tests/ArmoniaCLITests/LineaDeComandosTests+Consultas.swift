@@ -236,42 +236,42 @@ extension LineaDeComandosTests {
         #expect(resultado("hoja").codigo == 2)
         #expect(resultado("hoja").error.contains("armonia hoja Re mayor"))
         // La de un acorde.
-        let sol7 = salida("hoja --acorde Sol7")
+        let sol7 = salida("hoja acorde Sol7")
         #expect(sol7.hasPrefix("<svg "), Comment(rawValue: String(sol7.prefix(200))))
         #expect(sol7.contains(">Sol7</text>"))
         #expect(sol7.contains(">Digitaciones</text>"))
-        #expect(salida("sheet --chord G7 --ingles").contains(">G7</text>"))
-        #expect(resultado("hoja", "--acorde").codigo == 2)
-        #expect(resultado("hoja", "--acorde").error.contains("armonia hoja --acorde Sol7"))
-        #expect(resultado("hoja", "--acorde", "Sol7", "Do").codigo == 2)
+        #expect(salida("sheet chord G7 --ingles").contains(">G7</text>"))
+        #expect(resultado("hoja", "acorde").codigo == 2)
+        #expect(resultado("hoja", "acorde").error.contains("armonia hoja acorde Sol7"))
+        #expect(resultado("hoja", "acorde", "Sol7", "Do").codigo == 2)
         // La de una progresión.
-        let progresion = salida("hoja --acordes Rem7 Sol7 Do7M --en Do mayor")
+        let progresion = salida("hoja acordes Rem7 Sol7 Do7M --en Do mayor")
         #expect(progresion.hasPrefix("<svg "), Comment(rawValue: String(progresion.prefix(200))))
         #expect(progresion.contains(">Rem7 – Sol7 – Do"))
-        #expect(salida("sheet --chords Dm7 G7 Cmaj7 --ingles").contains(">Dm7 – G7 – C"))
-        #expect(resultado("hoja", "--acordes").codigo == 2)
-        #expect(resultado("hoja", "--acordes").error.contains("armonia hoja --acordes Rem7 Sol7 Do7M"))
+        #expect(salida("sheet chords Dm7 G7 Cmaj7 --ingles").contains(">Dm7 – G7 – C"))
+        #expect(resultado("hoja", "acordes").codigo == 2)
+        #expect(resultado("hoja", "acordes").error.contains("armonia hoja acordes Rem7 Sol7 Do7M"))
         // Con la conducción de las voces y, con --doce, en las doce tonalidades.
         #expect(progresion.contains(">Conducción de voces · Drop 2</text>"))
-        let doce = salida("hoja --acordes Rem7 Sol7 Do7M --doce --en Do mayor")
+        let doce = salida("hoja acordes Rem7 Sol7 Do7M --doce --en Do mayor")
         #expect(doce.contains(">Lam7 Re7 Solmaj7</text>"), Comment(rawValue: String(doce.prefix(800))))
-        #expect(salida("hoja --acordes Rem7 Sol7 Do7M --doce").contains(">Sol mayor</text>"))
-        #expect(salida("sheet --chords Dm7 G7 Cmaj7 --all-keys --ingles").contains(">G major</text>"))
+        #expect(salida("hoja acordes Rem7 Sol7 Do7M --doce").contains(">Sol mayor</text>"))
+        #expect(salida("sheet chords Dm7 G7 Cmaj7 --all-keys --ingles").contains(">G major</text>"))
         // Con --contra, comparada con otra versión.
-        let contra = salida("hoja --acordes Do Lam Rem Sol7 --contra Do La7 Rem7 Sol7")
+        let contra = salida("hoja acordes Do Lam Rem Sol7 --comparar Do La7 Rem7 Sol7")
         #expect(contra.contains(">Cambian 2 de 4 acordes</text>"), Comment(rawValue: String(contra.prefix(800))))
         #expect(contra.contains(">Do – La7 – Rem7 – Sol7</text>"))
-        let against = salida("sheet --chords C Am Dm G7 --against C A7 Dm7 G7 --ingles")
+        let against = salida("sheet chords C Am Dm G7 --compare C A7 Dm7 G7 --ingles")
         #expect(against.contains(">C – A7 – Dm7 – G7</text>"))
-        #expect(resultado("hoja", "--acordes", "Do", "--contra").codigo == 2)
+        #expect(resultado("hoja", "acordes", "Do", "--comparar").codigo == 2)
         // La de una tonalidad.
-        let re = salida("hoja --tonalidad Re mayor")
+        let re = salida("hoja tonalidad Re mayor")
         #expect(re.hasPrefix("<svg "), Comment(rawValue: String(re.prefix(200))))
         #expect(re.contains(">Re mayor</text>"))
         #expect(re.contains(">Cadencias típicas</text>"))
-        #expect(salida("sheet --key D major --ingles").contains(">D major</text>"))
-        #expect(resultado("hoja", "--tonalidad").codigo == 2)
-        #expect(resultado("hoja", "--tonalidad", "Re", "mayor", "--raro").codigo == 2)
+        #expect(salida("sheet key D major --ingles").contains(">D major</text>"))
+        #expect(resultado("hoja", "tonalidad").codigo == 2)
+        #expect(resultado("hoja", "tonalidad", "Re", "mayor", "--raro").codigo == 2)
     }
 
     /// `escala … --escalera`: de la más oscura a la más brillante, con la de partida señalada.
@@ -405,7 +405,7 @@ extension LineaDeComandosTests {
         #expect(bajando.contains("\n  Do₆ La₅ Fa₅ "), Comment(rawValue: bajando))
         #expect(bajando.hasSuffix(" Do₄\n"))
         #expect(salida("escala Do mayor --secuencia grupos-de-3").contains("Secuencia en grupos de tres:"))
-        let piano = salida("escala Do mayor --piano")
+        let piano = salida("escala Do mayor --dedos")
         let derecha = "\nDigitación de piano:\n  Mano derecha: Do 1 · Re 2 · Mi 3 · Fa 1 · "
         #expect(piano.contains(derecha), Comment(rawValue: piano))
         #expect(piano.contains("\n  Mano izquierda: Do 5 · Re 4 · "))
@@ -419,18 +419,18 @@ extension LineaDeComandosTests {
         #expect(lidio.contains(comunes), Comment(rawValue: lidio))
         #expect(lidio.contains("\n  Solo en Do mayor: Fa\n  Solo en Do lidio: Fa♯\n  4: Fa → Fa♯\n"))
         // --comparar toma las palabras hasta la siguiente opción; sin notas comunes ni distancia en quintas.
-        let lejos = salida("escala Do mayor --comparar Fa# pentatónica mayor --piano")
+        let lejos = salida("escala Do mayor --comparar Fa# pentatónica mayor --dedos")
         #expect(lejos.contains("Notas comunes: ninguna"), Comment(rawValue: lejos))
         #expect(lejos.contains("Mano derecha"))
         #expect(!lejos.contains("alteraciones de diferencia"))
         // --contra: la comparación nota a nota en SVG, con los grados que cambian.
-        let dorico = salida("escala Do mayor --contra Do dórico")
+        let dorico = salida("hoja Do mayor --comparar Do dórico")
         #expect(dorico.hasPrefix("<svg "), Comment(rawValue: dorico))
         #expect(dorico.contains(">Do mayor → Do dórico</text>"))
         #expect(dorico.contains(">3: Mi → Mi♭</text>"))
         #expect(dorico.contains(">7: Si → Si♭</text>"))
-        #expect(salida("scale C major --against C dorian --ingles").contains(">C major → C dorian</text>"))
-        #expect(resultado("escala", "Do", "mayor", "--contra", "Do", "zzz").codigo != 0)
+        #expect(salida("sheet C major --compare C dorian --ingles").contains(">C major → C dorian</text>"))
+        #expect(resultado("escala", "Do", "mayor", "--comparar", "Do", "zzz").codigo != 0)
         // --parecidas: las que comparten más notas, con las que se van y las que llegan.
         let parecidas = salida("escala Do mayor --parecidas")
         #expect(parecidas.contains("\nEscalas parecidas:\n  "), Comment(rawValue: parecidas))
@@ -458,15 +458,15 @@ extension LineaDeComandosTests {
     }
 
     @Test func compararDosProgresiones() {
-        let comparacion = salida("analizar Do Lam Rem Sol7 --contra Do La7 Rem7 Sol7")
+        let comparacion = salida("analizar Do Lam Rem Sol7 --comparar Do La7 Rem7 Sol7")
         let cabecera = "\nComparar con Do La7 Rem7 Sol7 (Do mayor):\n  1. Do · I\n"
         #expect(comparacion.contains(cabecera), Comment(rawValue: comparacion))
         #expect(comparacion.contains("\n  2. Lam → La7 · vi → "))
         #expect(comparacion.contains(" · Notas comunes: La, Mi\n"))
         #expect(comparacion.contains("\n  Cambian 2 de 4 acordes"))
         #expect(!salida("analizar Do Lam Rem Sol7").contains("Comparar con"))
-        #expect(resultado("analizar", "Do", "--contra").codigo == 2)
-        #expect(resultado("analizar", "Do", "--contra", "Xx").codigo != 0)
+        #expect(resultado("analizar", "Do", "--comparar").codigo == 2)
+        #expect(resultado("analizar", "Do", "--comparar", "Xx").codigo != 0)
     }
 
     @Test func modulacionesDesdeUnaTonalidad() {

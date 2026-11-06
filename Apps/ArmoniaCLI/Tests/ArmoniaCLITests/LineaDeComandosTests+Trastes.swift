@@ -93,8 +93,8 @@ extension LineaDeComandosTests {
         #expect(lineas[2].contains("Mi"), Comment(rawValue: lineas[2]))
     }
 
-    @Test func tabSigueSiendoElDiagrama() {
-        #expect(salida("digitaciones Do --limite 1 --tab") == salida("digitaciones Do --limite 1 --diagrama"))
+    @Test func tabYaNoEsElDiagrama() {
+        #expect(resultado("digitaciones", "Do", "--tab").codigo == 2)
     }
 
     @Test func variosAcordesSeparadosPorUnaLineaEnBlanco() {

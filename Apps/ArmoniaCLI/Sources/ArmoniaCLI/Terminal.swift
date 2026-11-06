@@ -44,7 +44,7 @@ extension LineaDeComandos {
         (nombres(.motor), ["lilypond", "musescore", "verovio", "guido", "propio", "own"]),
         (nombres(.formato), ["pdf", "svg", "png"]),
         (nombres(.aproximacion), ["abajo", "arriba", "encierro", "below", "above", "enclosure"]),
-        (nombres(.mano), ["derecha", "izquierda", "right", "left"]),
+        (nombres(.dedos), ["piano", "guitarra", "derecha", "izquierda", "guitar", "right", "left"]),
         (
             nombres(.secuencia),
             [

@@ -164,7 +164,7 @@ extension LineaDeComandos {
                 lineas.append("  " + acorde.cifrado(en: notacion) + ": " + compas)
             }
         }
-        // Con --comparar (o --contra, como antes), la otra versión acorde a acorde: lo que cambia, sus grados y sus notas comunes.
+        // Con --comparar, la otra versión acorde a acorde: lo que cambia, sus grados y sus notas comunes.
         if let contra {
             let otra = try contra.split(separator: " ").map { try Acorde(leyendoEnLaOrden: String($0)) }
             if let comparacion = PresentacionDeAnalisis.comparar(

@@ -37,13 +37,14 @@ cada uno tiene aquí su nombre nuevo.
 
 ### `armonia`: la misma forma de escribir lo mismo en todas las órdenes
 
-Todas las formas de antes se siguen leyendo; la ayuda enseña las nuevas.
+**Cambio incompatible:** las formas de antes ya no se leen (salen como una opción o una orden desconocida); cada una
+tiene aquí la nueva.
 
 - `hoja`, `tonnetz`, `tabla` y `cuadricula` eligen lo que dibujan con una suborden, como `pentagrama` y `musicxml`:
   `hoja acorde Sol7`, `hoja acordes Rem7 Sol7 Do7M`, `hoja tonalidad Re mayor`, `tonnetz escala Re dórico`,
   `tabla ciclo octatonico Do`, `cuadricula acorde Sol7 --ejes 2,5`. Antes, `--acorde`, `--escala`…
-- La tonalidad se escribe con `--en` o con `--tonalidad` en todas las órdenes: `analizar … --tonalidad La menor` y
-  `musicxml acordes … --en Sol mayor` (o `--in` y `--key`).
+- La tonalidad se escribe con `--en` (o `--in`) en todas las órdenes: `musicxml acordes … --en Sol mayor` (antes,
+  `--tonalidad`).
 - `--comparar` compara en todas: `analizar … --comparar …` y `hoja acordes … --comparar …` (antes, `--contra`).
 - `escala` siempre da texto: la comparación nota a nota en SVG es `hoja Do mayor --comparar Do dórico` (antes,
   `escala Do mayor --contra Do dórico`).
@@ -60,8 +61,9 @@ Todas las formas de antes se siguen leyendo; la ayuda enseña las nuevas.
 - `plr` tiene subórdenes, como `tonnetz`: `plr camino Do Mibm` y `plr ciclo hexatonico Do` (antes, `plr Do Mibm` y
   `plr Do hexatonico`). `plr Do PLR` sigue igual.
 - `conduccion-parsimoniosa` es `camino-parsimonioso`, como `Acorde.caminoParsimonioso(hasta:)`.
-- La ayuda ya no enseña nombres de antes: `teclado … --dedos` (no `--mano derecha`), `musicxml … --en Sol mayor` (no
-  `--tonalidad`), y los patrones de `musicxml arpegios`, con `baja-y-sube` y `quebrado`, son los de `arpegio`.
+- `pentagrama … --dedos` lleva detrás el instrumento (`piano` o `guitarra`), y `digitaciones … --diagrama` ya no se
+  escribe `--tab`.
+- La ayuda de `musicxml arpegios` enseña los patrones de `arpegio`, con `baja-y-sube` y `quebrado`.
 
 ### Escalas: el teórico que definió cada una
 

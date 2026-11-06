@@ -27,9 +27,6 @@ extension LineaDeComandos {
         let triadas: Bool
         /// `--comparar`.
         let otra: Escala?
-        /// `--contra`: la comparación nota a nota, en SVG, como `hoja … --comparar` (la forma de antes, que se sigue
-        /// leyendo).
-        let contra: Escala?
         /// `--parecidas`: las escalas con más notas en común.
         let parecidas: Bool
         /// `--progresiones`: progresiones con sus tríadas.
@@ -40,7 +37,7 @@ extension LineaDeComandos {
 
     /// Lee la escala y las opciones de `escala`, o lanza el `ErrorDeUso` de lo que está mal escrito.
     static func pedidoDeEscala(_ textos: [String]) throws -> PedidoDeEscala {
-        // `--dedos piano` es `--dedos` (la digitación de piano, `--piano` antes).
+        // `--dedos piano` es `--dedos`, la digitación de piano.
         var textos = textos
         if let i = textos.firstIndex(where: OpcionDeOrden.piano.leidos.contains), textos.indices.contains(i + 1),
             instrumentosDeLosDedos.piano.contains(textos[i + 1].lowercased())
@@ -68,9 +65,6 @@ extension LineaDeComandos {
             guard let elegida = secuenciaDeEscala(texto) else { throw ErrorDeUso.secuenciaDesconocida(texto) }
             secuencia = elegida
         }
-        // `--contra`, antes que `--comparar`, que también lo lee: la forma de antes de `hoja … --comparar`.
-        var contra: Escala?
-        if let texto = try argumentos.valorConPalabras(.contra) { contra = try Escala(leyendoEnLaOrden: texto) }
         var otra: Escala?
         if let texto = try argumentos.valorConPalabras(.comparar) { otra = try Escala(leyendoEnLaOrden: texto) }
         if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
@@ -79,20 +73,16 @@ extension LineaDeComandos {
             escala: try Escala(leyendoEnLaOrden: argumentos.unidos), conAcordes: conAcordes, secuencia: secuencia,
             octavas: octavas, bajando: bajando, piano: piano, modos: modos, simetria: simetria, vecinas: vecinas,
             estadisticas: estadisticas, escalera: escalera, doce: doce, triadas: triadas, otra: otra,
-            contra: contra, parecidas: parecidas, progresiones: progresiones)
+            parecidas: parecidas, progresiones: progresiones)
     }
 
     /// `escala Do mayor [--acordes] [--secuencia terceras] [--bajando] [--octavas 2] [--dedos] [--modos]
     /// [--estadisticas] [--escalera] [--comparar Do lidio]`: la escala y, si se piden, todos los acordes que caben en
     /// cada grado, una secuencia de estudio, la digitación de piano, los modos paralelos y relativos, lo que se mide de
-    /// ella, su escalera de brillo y la comparación con otra escala. Con `--contra Do dórico`, la forma de antes de
-    /// `hoja Do mayor --comparar Do dórico`, solo la comparación nota a nota, en SVG.
+    /// ella, su escalera de brillo y la comparación con otra escala.
     static func escala(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let pedido = try pedidoDeEscala(textos)
         let escala = pedido.escala
-        if let contra = pedido.contra {
-            return bien(PresentacionDeEstudioDeEscala.comparacionNotaANota(escala, con: contra, en: notacion))
-        }
         var lineas = [describir(escala: escala, conTodosSusAcordes: pedido.conAcordes, notacion)]
         if let secuencia = pedido.secuencia {
             let presentada = PresentacionDeEstudioDeEscala.secuencia(

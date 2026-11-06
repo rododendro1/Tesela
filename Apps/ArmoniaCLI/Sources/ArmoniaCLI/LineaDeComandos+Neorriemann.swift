@@ -48,34 +48,50 @@ extension LineaDeComandos {
         return bien(texto + "\n" + Mensaje.pasos(camino.count).texto(en: notacion))
     }
 
-    /// Los argumentos de `plr` con sus subórdenes, `camino Do Mibm` y `ciclo hexatonico Do` (como en `tonnetz`),
-    /// cambiados por la forma de antes, que se sigue leyendo: `Do Mibm` y `Do hexatonico`.
-    static func argumentosDePlr(_ argumentos: [String]) -> [String] {
-        guard let primera = argumentos.first?.lowercased() else { return argumentos }
+    /// Lo que pide `plr`: unos pasos desde una tríada (`plr Do PLR`), el camino más corto entre dos (`plr camino Do
+    /// Mibm`) o un ciclo desde una (`plr ciclo hexatonico Do`, como en `tonnetz`).
+    enum PedidoDePLR {
+        case pasos(Acorde, [TransformacionNeorriemanniana])
+        case ciclo(Acorde, CicloNeorriemanniano)
+    }
+
+    /// Lee lo que pide `plr`; el camino se da ya como sus pasos.
+    static func pedidoDePLR(_ argumentos: [String]) throws -> PedidoDePLR {
+        if let desconocida = Argumentos(argumentos).opcionDesconocida {
+            throw ErrorDeUso.opcionDesconocida(desconocida)
+        }
+        guard let primera = argumentos.first?.lowercased() else { throw ErrorDeUso.faltanPasosDePLR }
         let resto = Array(argumentos.dropFirst())
-        if OpcionDeOrden.camino.leidos.contains("--" + primera) { return resto }
-        guard OpcionDeOrden.ciclo.leidos.contains("--" + primera) else { return argumentos }
-        // `ciclo hexatonico Do`; si no, con la tríada delante (`ciclo Do hexatonico`).
-        guard let triada = resto.last, resto.count >= 2,
-            (try? CicloNeorriemanniano(leyendo: resto.dropLast().joined(separator: " "))) != nil
-        else { return resto }
-        return [triada] + resto.dropLast()
+        if OpcionDeOrden.camino.leidos.contains("--" + primera) {
+            guard resto.count == 2 else { throw ErrorDeUso.faltanPasosDePLR }
+            let origen = try Acorde(leyendoEnLaOrden: resto[0])
+            guard let camino = origen.caminoNeorriemanniano(hasta: try Acorde(leyendoEnLaOrden: resto[1])) else {
+                throw ErrorDeUso.plrSoloTriadas(camino: true)
+            }
+            return .pasos(origen, camino)
+        }
+        if OpcionDeOrden.ciclo.leidos.contains("--" + primera) {
+            guard let triada = resto.last, resto.count >= 2,
+                let ciclo = try? CicloNeorriemanniano(leyendo: resto.dropLast().joined(separator: " "))
+            else { throw ErrorDeUso.cicloMalEscrito(orden: "plr") }
+            let origen = try Acorde(leyendoEnLaOrden: triada)
+            guard Tonnetz.Triada(origen) != nil else { throw ErrorDeUso.cicloSoloTriadas(orden: "plr") }
+            return .ciclo(origen, ciclo)
+        }
+        guard resto.count >= 1 else { throw ErrorDeUso.faltanPasosDePLR }
+        let origen = try Acorde(leyendoEnLaOrden: argumentos[0])
+        guard Tonnetz.Triada(origen) != nil else { throw ErrorDeUso.plrSoloTriadas(camino: false) }
+        return .pasos(origen, try TransformacionNeorriemanniana.secuencia(leyendo: resto.joined(separator: " ")))
     }
 
     /// `plr Do PLR`: la tríada tras cada paso. `plr camino Do Mibm`: el camino más corto. `plr ciclo hexatonico Do`:
     /// el ciclo entero.
-    static func plr(_ escritos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        let argumentos = argumentosDePlr(escritos)
-        guard argumentos.count >= 2 else { throw ErrorDeUso.faltanPasosDePLR }
-        let origen = try Acorde(leyendoEnLaOrden: argumentos[0])
-        guard Tonnetz.Triada(origen) != nil else { throw ErrorDeUso.plrSoloTriadas(camino: false) }
-        let resto = argumentos.dropFirst().joined(separator: " ")
-        let pasos: [TransformacionNeorriemanniana]
-        if let secuencia = try? TransformacionNeorriemanniana.secuencia(leyendo: resto) {
-            pasos = secuencia
-        } else if let ciclo = try? CicloNeorriemanniano(leyendo: resto) {
+    static func plr(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        let (origen, pasos): (Acorde, [TransformacionNeorriemanniana])
+        switch try pedidoDePLR(argumentos) {
+        case .ciclo(let triada, let ciclo):
             // Do –P→ Dom –L→ La♭ … –L→ Do, con la ortografía más sencilla.
-            let acordes = origen.ciclo(ciclo)!
+            let acordes = triada.ciclo(ciclo)!
             var texto = acordes[0].cifrado(en: notacion)
             for (i, acorde) in acordes.dropFirst().enumerated() {
                 texto += " –\(ciclo.transformaciones[i % 2])→ " + acorde.cifrado(en: notacion)
@@ -83,12 +99,7 @@ extension LineaDeComandos {
             return bien(
                 texto + "\n" + Mensaje.ciclo(ciclo).texto(en: notacion) + ", "
                     + Mensaje.triadas(ciclo.longitud).texto(en: notacion))
-        } else {
-            let destino = try Acorde(leyendoEnLaOrden: resto)
-            guard let camino = origen.caminoNeorriemanniano(hasta: destino) else {
-                throw ErrorDeUso.plrSoloTriadas(camino: true)
-            }
-            pasos = camino
+        case .pasos(let triada, let leidos): (origen, pasos) = (triada, leidos)
         }
         // Do –P→ Dom –L→ La♭
         var acorde = origen.transformar([])!

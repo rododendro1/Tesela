@@ -9,17 +9,17 @@ import Testing
 extension LineaDeComandosTests {
     @Test func tonnetz() {
         for orden in [
-            "tonnetz Do Mi Sol", "tonnetz --acorde Sol7", "tonnetz --escala Re dórico", "tonnetz --clases 0 4 7",
-            "tonnetz --clases 0,3,6,9 --margen 2", "tonnetz C E G --ingles", "tonnetz --clases 047",
-            "tonnetz --clases 3-11", "tonnetz --pcs C E G",
+            "tonnetz Do Mi Sol", "tonnetz acorde Sol7", "tonnetz escala Re dórico", "tonnetz clases 0 4 7",
+            "tonnetz clases 0,3,6,9 --margen 2", "tonnetz C E G --ingles", "tonnetz clases 047",
+            "tonnetz clases 3-11", "tonnetz pcs C E G",
         ] {
             let svg = salida(orden)
             #expect(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"), Comment(rawValue: orden))
         }
-        #expect(salida("tonnetz --acorde Do").contains(">Mi</text>"))
+        #expect(salida("tonnetz acorde Do").contains(">Mi</text>"))
         #expect(salida("tonnetz C E G --ingles").contains(">E</text>"))
         for orden in [
-            "tonnetz", "tonnetz --clases", "tonnetz --acorde", "tonnetz --escala",
+            "tonnetz", "tonnetz clases", "tonnetz acorde", "tonnetz escala",
             "tonnetz --color Do", "tonnetz Do --margen 9",
         ] {
             #expect(
@@ -28,17 +28,17 @@ extension LineaDeComandosTests {
         }
         #expect(LineaDeComandos.ejecutar(["tonnetz", "Do", "Hm"]).codigo == 1)
         // --clases lee como `armonia conjunto`: una cifra por clase, así que «0 12» es {0, 1, 2}.
-        #expect(salida("tonnetz --clases 0 12") == salida("tonnetz --clases 0 1 2"))
-        #expect(salida("tonnetz --clases 3-11") == salida("tonnetz --clases 0 3 7"))
-        for orden in ["tonnetz --clases 0 x", "tonnetz --clases [0 4", "tonnetz --clases 3-13"] {
+        #expect(salida("tonnetz clases 0 12") == salida("tonnetz clases 0 1 2"))
+        #expect(salida("tonnetz clases 3-11") == salida("tonnetz clases 0 3 7"))
+        for orden in ["tonnetz clases 0 x", "tonnetz clases [0 4", "tonnetz clases 3-13"] {
             #expect(
                 LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 1,
                 Comment(rawValue: orden))
         }
-        #expect(salida("tonnetz --recorrido Do Lam Fa Rem").contains("Do –R→ Lam –L→ Fa –R→ Rem"))
-        #expect(salida("tonnetz --camino Do Mibm").contains("Do –P→ Dom –R→ Mi♭ –P→ Mi♭m"))
+        #expect(salida("tonnetz recorrido Do Lam Fa Rem").contains("Do –R→ Lam –L→ Fa –R→ Rem"))
+        #expect(salida("tonnetz camino Do Mibm").contains("Do –P→ Dom –R→ Mi♭ –P→ Mi♭m"))
         for orden in [
-            "tonnetz --recorrido", "tonnetz --recorrido Do Sol7", "tonnetz --camino Do", "tonnetz --camino Do Sol7",
+            "tonnetz recorrido", "tonnetz recorrido Do Sol7", "tonnetz camino Do", "tonnetz camino Do Sol7",
         ] {
             #expect(
                 LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,
@@ -48,23 +48,23 @@ extension LineaDeComandosTests {
 
     @Test func tablaArmonica() {
         for orden in [
-            "tabla Do Mi Sol", "tabla Do3 Sol3 Mi4", "tabla --acorde Domaj7", "tabla --escala Re dórico",
-            "tabla --clases 0,4,7 --margen 3", "tabla C E G --ingles",
+            "tabla Do Mi Sol", "tabla Do3 Sol3 Mi4", "tabla acorde Domaj7", "tabla escala Re dórico",
+            "tabla clases 0,4,7 --margen 3", "tabla C E G --ingles",
         ] {
             let svg = salida(orden)
             #expect(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"), Comment(rawValue: orden))
         }
         #expect(salida("tabla Do₃ Sol₃ Mi₄").contains(">Sol₃</text>"))
-        #expect(salida("tabla --clases 13") == salida("tabla --clases 1 3"))
-        for orden in ["tabla", "tabla --acorde", "tabla --clases", "tabla --foo", "tabla Do --margen 7"] {
+        #expect(salida("tabla clases 13") == salida("tabla clases 1 3"))
+        for orden in ["tabla", "tabla acorde", "tabla clases", "tabla --foo", "tabla Do --margen 7"] {
             #expect(
                 LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,
                 Comment(rawValue: orden))
         }
         #expect(LineaDeComandos.ejecutar(["tabla", "Do4", "Hm4"]).codigo == 1)
-        #expect(salida("tabla --recorrido Do Lam Fa Rem").contains("<title>Do –R→ Lam –L→ Fa –R→ Rem</title>"))
-        #expect(salida("tabla --camino Do Mibm").contains("<title>Do –P→ Dom –R→ Mi♭ –P→ Mi♭m</title>"))
-        for orden in ["tabla --recorrido", "tabla --recorrido Do Sol7", "tabla --camino Do", "tabla --camino Do Sol7"] {
+        #expect(salida("tabla recorrido Do Lam Fa Rem").contains("<title>Do –R→ Lam –L→ Fa –R→ Rem</title>"))
+        #expect(salida("tabla camino Do Mibm").contains("<title>Do –P→ Dom –R→ Mi♭ –P→ Mi♭m</title>"))
+        for orden in ["tabla recorrido", "tabla recorrido Do Sol7", "tabla camino Do", "tabla camino Do Sol7"] {
             #expect(
                 LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,
                 Comment(rawValue: orden))
@@ -76,9 +76,9 @@ extension LineaDeComandosTests {
         #expect(notas.hasPrefix("<svg") && notas.hasSuffix("</svg>\n"), Comment(rawValue: notas))
         #expect(notas.components(separatedBy: "<circle").count - 1 == 8)
         #expect(salida("teclado Do mayor --octavas 2").components(separatedBy: "<circle").count - 1 == 15)
-        let derecha = salida("teclado Re mayor --mano derecha")
+        let derecha = salida("teclado Re mayor --dedos derecha")
         #expect(derecha.contains("Re mayor · Mano derecha"), Comment(rawValue: derecha))
-        #expect(salida("keyboard D major --hand left --ingles").contains("D major · Left hand"))
+        #expect(salida("keyboard D major --fingers left --ingles").contains("D major · Left hand"))
         #expect(LineaDeComandos.manoDePiano("Right") == .derecha)
         #expect(LineaDeComandos.manoDePiano("arriba") == nil)
         let sinMano = LineaDeComandos.ejecutar(["teclado", "Do", "mayor", "--mano", "arriba"])
@@ -87,24 +87,24 @@ extension LineaDeComandosTests {
 
     @Test func cuadricula() {
         for orden in [
-            "cuadricula Do Mi Sol", "cuadricula Do3 Mi3 Sol3", "cuadricula --acorde Sol7",
-            "cuadricula --escala Re dórico", "cuadricula --clases 0 4 7", "cuadricula --recorrido Do Lam",
-            "cuadricula --camino Do Mibm", "cuadricula --ciclo hexatonico Do", "cuadricula --ejes 2,5 --acorde Sol7",
-            "grid --axes 7,4 --chord C --ingles",
-            "cuadricula --rejilla 8x8 --origen Do2 --en-tono --escala Re dórico", "cuadricula --giro 1 --espejo Do",
+            "cuadricula Do Mi Sol", "cuadricula Do3 Mi3 Sol3", "cuadricula acorde Sol7",
+            "cuadricula escala Re dórico", "cuadricula clases 0 4 7", "cuadricula recorrido Do Lam",
+            "cuadricula camino Do Mibm", "cuadricula ciclo hexatonico Do", "cuadricula acorde Sol7 --ejes 2,5",
+            "grid chord C --axes 7,4 --ingles",
+            "cuadricula escala Re dórico --rejilla 8x8 --origen Do2 --en-tono", "cuadricula --giro 1 --espejo Do",
             "cuadricula --rejilla 25×8 Do",
         ] {
             let svg = salida(orden)
             #expect(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"), Comment(rawValue: orden))
         }
         // Por defecto, 12 × 7 en cuartas, con el contorno y la primera nota.
-        let doMayor = salida("cuadricula --acorde Do")
+        let doMayor = salida("cuadricula acorde Do")
         #expect(doMayor.contains(">Do₄<"))
         #expect(doMayor.contains(#"class="contorno""#))
         #expect(doMayor.contains(#"class="primera""#))
         #expect(doMayor.components(separatedBy: #"class="casilla""#).count - 1 == 84)
         // En un Launchpad, 64 casillas; en tono, solo las notas de la escala, desde la tónica.
-        let pads = salida("cuadricula --rejilla 8x8 --en-tono --escala Re dórico")
+        let pads = salida("cuadricula escala Re dórico --rejilla 8x8 --en-tono")
         #expect(pads.components(separatedBy: #"class="casilla""#).count - 1 == 64)
         #expect(pads.contains(">Re₂<"))
         #expect(!pads.contains(">Do♯"))
@@ -114,7 +114,7 @@ extension LineaDeComandosTests {
         for orden in [
             "cuadricula", "cuadricula --ejes x Do", "cuadricula --ejes Do", "cuadricula --rejilla 99x1 Do",
             "cuadricula --rejilla ocho Do", "cuadricula --giro 4 Do", "cuadricula --origen", "cuadricula --foo",
-            "cuadricula --camino Do Sol7",
+            "cuadricula camino Do Sol7",
         ] {
             #expect(
                 LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,
@@ -176,19 +176,19 @@ extension LineaDeComandosTests {
         let alberti = salida("pentagrama arpegio Do Lam Fa Sol7 --patron alberti --romanos")
         #expect(["I", "vi", "IV", "V7"].allSatisfy { alberti.contains(">\($0)</text>") })
         // Los dedos del piano: Re mayor con la derecha, 1 2 3 1 2 3 4 5.
-        let piano = salida("pentagrama escala Re mayor --mano derecha")
+        let piano = salida("pentagrama escala Re mayor --dedos piano")
         #expect(cuenta(">1</text>", piano) == 2 && cuenta(">5</text>", piano) == 1)
         // Por terceras, en corcheas con su compás; en grupos de tres, en tresillos.
         #expect(salida("pentagrama escala Do mayor --secuencia terceras").contains("Do mayor · por terceras</title>"))
         #expect(salida("staff scale C major --sequence groups-of-3 --ingles").contains("<svg"))
         // En la guitarra: la tablatura, con los trastes y los dedos; el arpegio de Do7, con su Si♭.
-        let sol = salida("pentagrama escala Sol mayor --tab --dedos")
+        let sol = salida("pentagrama escala Sol mayor --dedos guitarra")
         #expect(sol.contains(">T</text>") && sol.contains(">3</text>"), Comment(rawValue: sol))
         let do7 = salida("pentagrama arpegio Do7 --tab --figura 8")
         #expect(do7.contains("Si♭") && !do7.contains("La♯"), Comment(rawValue: do7))
         let ukelele = salida("pentagrama escala Do mayor --tab --instrumento ukelele --secuencia terceras")
         #expect(ukelele.contains(">A</text>"))
-        #expect(salida("staff arpeggio G7 --tab --fingers --ingles").contains(">G7</text>"))
+        #expect(salida("staff arpeggio G7 --fingers guitar --ingles").contains(">G7</text>"))
     }
 
     @Test func pentagramaDeArmonia() {
@@ -199,15 +199,15 @@ extension LineaDeComandosTests {
         #expect(salida("pentagrama acordes Lam Mi Lam --bajo-cifrado --en La menor").contains(">♯</text>"))
         #expect(salida("pentagrama arpegio Do Sol7/Si --bajo-cifrado").contains(">5</text>"))
         // La octava, la clave, el pentagrama doble y los cambios de clave.
-        #expect(salida("pentagrama escala Do mayor --octava 2").contains("<title>Do₂</title>"))
-        #expect(salida("pentagrama acorde Do --octava 3").contains("<title>Do₃</title>"))
-        let conClave = salida("pentagrama escala Mi mayor --octava 2 --clave sol")
-        #expect(conClave != salida("pentagrama escala Mi mayor --octava 2"))
+        #expect(salida("pentagrama escala Do mayor --registro 2").contains("<title>Do₂</title>"))
+        #expect(salida("pentagrama acorde Do --registro 3").contains("<title>Do₃</title>"))
+        let conClave = salida("pentagrama escala Mi mayor --registro 2 --clave sol")
+        #expect(conClave != salida("pentagrama escala Mi mayor --registro 2"))
         // El pentagrama doble deja sitio a la izquierda para la llave.
         #expect(salida("pentagrama escala Do mayor --doble").contains("viewBox=\"-1.9 "))
-        let cambios = salida("pentagrama escala Do mayor --octava 2 --octavas 3 --cambiar-clave")
+        let cambios = salida("pentagrama escala Do mayor --registro 2 --octavas 3 --cambiar-clave")
         #expect(cambios.contains("scale(0.75)"), Comment(rawValue: cambios))
-        #expect(salida("staff scale C major --octave 2 --octaves 3 --clef-changes --ingles").contains("scale(0.75)"))
+        #expect(salida("staff scale C major --register 2 --octaves 3 --clef-changes --ingles").contains("scale(0.75)"))
         // Una melodía sobre unos acordes: el Re (de paso) en verde; el Re♯ (cromático en Do mayor), en rojo.
         let melodia = salida("pentagrama melodia Mi4:8 Re4:8 Do4:8 Re♯4:8 Mi4:2 Sol4:1 --sobre Do Sol7 --en Do mayor")
         #expect(cuenta("#2F9E44", melodia) == 1 && cuenta("#C2255C", melodia) == 1, Comment(rawValue: melodia))

@@ -417,8 +417,8 @@ Tonalidad(.la, .menor).cifrasDeBajo(de: Acorde("Mi"))       // ["♯"]
 
 En la línea de comandos, `armonia pentagrama escala|acorde|arpegio|acordes …` dibuja lo mismo (con `--octavas`,
 `--figura`, `--tresillos`, `--nombres`, `--intervalos`, `--semitonos`, `--tonica` y `--en <tonalidad>`), y con
-`--romanos`, `--mano`, `--dedos`, `--secuencia` y `--tab` (`--instrumento`), los grados, los dedos, las secuencias
-y la tablatura; con `--bajo-cifrado`, `--octava`, `--clave`, `--doble` y `--cambiar-clave`, el
+`--romanos`, `--dedos`, `--secuencia` y `--tab` (`--instrumento`), los grados, los dedos, las secuencias
+y la tablatura; con `--bajo-cifrado`, `--registro`, `--clave`, `--doble` y `--cambiar-clave`, el
 bajo cifrado y el registro, y `armonia pentagrama melodia … --sobre <acordes>` colorea las notas ajenas.
 
 ## Errores

@@ -54,9 +54,7 @@ extension OpcionDeOrden {
     static let recorrido = valor("--recorrido", "--sequence")
     static let camino = valor("--camino", "--shortest")
     static let ciclo = valor("--ciclo", "--cycle")
-    /// `--tonalidad` y `--key` también, para que la tonalidad se escriba igual en todas las órdenes (`hoja` lee antes su
-    /// `--tonalidad`, que es otra cosa).
-    static let en = valor("--en", "--in", ocultos: ["--tonalidad", "--key"])
+    static let en = valor("--en", "--in")
 
     // MARK: Las de las partituras, solo en español (las lee `Argumentos.quitarOpcionesConTexto`)
     static let compas = valor("--compas")
@@ -88,19 +86,15 @@ extension OpcionDeOrden {
     static let capo = valor("--capo")
     static let categoria = valor("--categoria", "--category", ocultos: ["--categoría"])
     static let clave = valor("--clave", "--clef")
-    /// `--contra` es el nombre de antes, y se sigue leyendo.
-    static let comparar = valor("--comparar", "--compare", ocultos: ["--contra", "--against"])
+    static let comparar = valor("--comparar", "--compare")
     static let completo = marca("--completo", "--complete")
     static let conIntervalo = valor("--con-intervalo", "--with-interval")
     static let conPaso = valor("--con-paso", "--with-step")
     static let conduccion = marca("--conduccion", "--voice-leading")
-    /// `escala … --contra Do dórico`, la forma de antes de `hoja Do mayor --comparar Do dórico`: se sigue leyendo, pero no
-    /// se enseña.
-    static let contra = valor("--contra", "--against")
     static let dedos = marca("--dedos", "--fingers")
     static let dedosDeLaDigitacion = valor("--dedos", "--fingers")
     static let desde = valor("--desde", "--from")
-    static let diagrama = marca("--diagrama", "--diagram", ocultos: ["--tab"])
+    static let diagrama = marca("--diagrama", "--diagram")
     static let disposiciones = marca("--disposiciones", "--voicings")
     static let doble = marca("--doble", "--grand-staff")
     static let doce = marca("--doce", "--all-keys")
@@ -131,16 +125,16 @@ extension OpcionDeOrden {
     static let nombres = marca("--nombres", "--names")
     static let notas = valor("--notas", "--notes")
     static let notasGuia = marca("--notas-guia", "--guide-tones")
-    /// En qué registro va el pentagrama; `--octava` es el nombre de antes.
-    static let octava = valor("--registro", "--register", ocultos: ["--octava", "--octave"])
+    /// En qué registro va el pentagrama.
+    static let registro = valor("--registro", "--register")
     static let octavas = valor("--octavas", "--octaves")
     static let orden = valor("--orden", "--sort")
     static let origen = valor("--origen", "--origin")
     static let parecidas = marca("--parecidas", "--closest")
     static let patron = valor("--patron", "--pattern", ocultos: ["--patrón"])
     static let pentatonicas = marca("--pentatonicas", "--pentatonics")
-    /// La digitación de piano de `escala`; `--piano` es el nombre de antes.
-    static let piano = marca("--dedos", "--fingers", ocultos: ["--piano"])
+    /// La digitación de piano de `escala`.
+    static let piano = marca("--dedos", "--fingers")
     static let progresiones = marca("--progresiones", "--progressions")
     static let propuestas = valor("--propuestas", "--proposals")
     static let quintas = marca("--quintas", "--fifths")

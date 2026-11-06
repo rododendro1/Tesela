@@ -64,7 +64,7 @@ extension LineaDeComandosTests {
     /// Las opciones del texto valen también con `--json`, y cada una añade su clave.
     @Test func escalaConOpcionesEnJSON() throws {
         let orden =
-            "escala Do mayor --acordes --secuencia terceras --piano --modos --simetria --vecinas --comparar Do lidio"
+            "escala Do mayor --acordes --secuencia terceras --dedos --modos --simetria --vecinas --comparar Do lidio"
         let mayor = try #require(try json(orden) as? [String: Any])
         #expect(mayor["notas"] as? [String] == ["Do", "Re", "Mi", "Fa", "Sol", "La", "Si"])
         #expect((mayor["acordesQueCaben"] as? [[String: Any]])?.count == 7)
@@ -193,12 +193,12 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.ejecutar(["vecinos", "Do", "--foo", "--json"]).codigo == 2)
         #expect(LineaDeComandos.ejecutar(["vecinos", "Do7sus4", "--json"]).codigo == 2)
 
-        let camino = try #require(try json("conduccion-parsimoniosa Sol7 Rem7") as? [String: Any])
+        let camino = try #require(try json("camino-parsimonioso Sol7 Rem7") as? [String: Any])
         #expect(camino["desde"] as? String == "Sol7")
         let pasos = try #require(camino["pasos"] as? [[String: Any]])
         #expect(pasos.last?["acorde"] as? String == "Rem7")
-        #expect(LineaDeComandos.ejecutar(["conduccion-parsimoniosa", "Sol7", "--json"]).codigo == 2)
-        #expect(LineaDeComandos.ejecutar(["conduccion-parsimoniosa", "Sol7", "Do", "--json"]).codigo != 0)
+        #expect(LineaDeComandos.ejecutar(["camino-parsimonioso", "Sol7", "--json"]).codigo == 2)
+        #expect(LineaDeComandos.ejecutar(["camino-parsimonioso", "Sol7", "Do", "--json"]).codigo != 0)
 
         let minima = try #require(try json("conduccion-minima Sol7 Do") as? [String: Any])
         #expect(minima["semitonos"] as? Int == 4)
@@ -210,14 +210,14 @@ extension LineaDeComandosTests {
         #expect(secuencia["desde"] as? String == "Do" && secuencia["ciclo"] == nil)
         let transformaciones = try #require(secuencia["pasos"] as? [[String: Any]])
         #expect(transformaciones.map { $0["transformacion"] as? String } == ["P", "L", "R"])
-        let ciclo = try #require(try json("plr Do hexatonico") as? [String: Any])
+        let ciclo = try #require(try json("plr ciclo hexatonico Do") as? [String: Any])
         #expect(ciclo["ciclo"] as? String == "hexatonico")
         #expect((ciclo["pasos"] as? [[String: Any]])?.count == 6)
-        let corto = try #require(try json("plr Do Mibm") as? [String: Any])
+        let corto = try #require(try json("plr camino Do Mibm") as? [String: Any])
         #expect((corto["pasos"] as? [[String: Any]])?.last?["acorde"] as? String == "Mi♭m")
         #expect(LineaDeComandos.ejecutar(["plr", "Do", "--json"]).codigo == 2)
         #expect(LineaDeComandos.ejecutar(["plr", "Do7", "P", "--json"]).codigo == 2)
-        #expect(LineaDeComandos.ejecutar(["plr", "Do", "Do7", "--json"]).codigo == 2)
+        #expect(LineaDeComandos.ejecutar(["plr", "camino", "Do", "Do7", "--json"]).codigo == 2)
         #expect(LineaDeComandos.ejecutar(["plr", "Do", "P", "--foo", "--json"]).codigo == 2)
     }
 

@@ -61,9 +61,9 @@ import Testing
     @Test func nombresDeOrdenesYOpciones() {
         let coral = "Do3 Sol3 Mi4 Do5, Re3 La3 Fa4 Re5"
         #expect(conFaltas("revisar " + coral) == conFaltas("check " + coral))
-        #expect(salida("conduccion-parsimoniosa Sol7 Rem7") == salida("smooth-path Sol7 Rem7"))
+        #expect(salida("camino-parsimonioso Sol7 Rem7") == salida("smooth-path Sol7 Rem7"))
         for orden in ["tonnetz", "tabla"] {
-            #expect(salida(orden + " --sequence Do Lam Fa Rem") == salida(orden + " --recorrido Do Lam Fa Rem"))
+            #expect(salida(orden + " sequence Do Lam Fa Rem") == salida(orden + " recorrido Do Lam Fa Rem"))
             #expect(LineaDeComandos.ejecutar([orden, "--path", "Do", "Lam"]).codigo != 0)
         }
         for antigua in ["voces", "voices", "camino", "path"] {
@@ -144,10 +144,10 @@ import Testing
         "revisar", "conduccion-minima G7", "digitaciones", "digitaciones C --instrumento arpa",
         "digitaciones C --limite 0",
         "digitaciones C --dedos 9", "digitaciones C --traste 99", "digitaciones C --capo", "vecinos",
-        "vecinos C7 --voces 3", "conduccion-parsimoniosa G7", "plr", "plr G7 P", "musicxml", "musicxml coral",
-        "musicxml melodia C4:4 --foo 1", "midi acordes C --cifrados", "tonnetz", "tonnetz --clases", "conjunto",
+        "vecinos C7 --voces 3", "camino-parsimonioso G7", "plr", "plr G7 P", "musicxml", "musicxml coral",
+        "musicxml melodia C4:4 --foo 1", "midi acordes C --cifrados", "tonnetz", "tonnetz clases", "conjunto",
         "serie",
-        "tonnetz --camino C", "tabla --ciclo C", "tabla --margen 9 C", "contrapunto", "contrapunto D4 A4",
+        "tonnetz camino C", "tabla ciclo C", "tabla --margen 9 C", "contrapunto", "contrapunto D4 A4",
         "cuadricula", "cuadricula --ejes x C", "cuadricula --rejilla 0x8 C",
         "contrapunto D4 / A4 --especie 6", "contrapunto D4 / ", "acorde Do --escritura foo",
         "arpegio", "arpegio Do --patron zigzag", "arpegio Do --patron", "arpegio Do --octavas 0",
@@ -159,13 +159,13 @@ import Testing
         "acorde Do --comparar", "acorde Do --en", "acorde Do --foo", "acorde --nombres",
         "escalas --tradicion marte", "escalas --categoria foo", "musicxml escala", "midi escala Re bayati --clave fa",
         "escala Do mayor --secuencia foo", "escala Do mayor --secuencia", "escala Do mayor --comparar",
-        "escala Do mayor --contra",
-        "escala Do mayor --octavas 9", "escala Do mayor --foo", "escala --piano",
-        "teclado", "teclado Do mayor --mano foo", "teclado Do mayor --mano", "teclado Do mayor --octavas 9",
+        "hoja Do mayor --comparar",
+        "escala Do mayor --octavas 9", "escala Do mayor --foo", "escala --dedos",
+        "teclado", "teclado Do mayor --mano derecha", "teclado Do mayor --octavas 9",
         "teclado Do mayor --foo", "identificar --archivo coral.mid Do", "identificar --archivo", "identificar --foo Do",
         "identificar --escalas", "posiciones Do mayor --secuencia foo", "posiciones Do mayor --secuencia",
         "posiciones Do mayor --formas", "reloj", "reloj Do mayor --foo", "hoja", "hoja Do mayor --foo",
-        "hoja --acordes", "hoja --acordes Do --en", "hoja --acorde", "hoja --acorde Sol7 Do",
+        "hoja acordes", "hoja acordes Do --en", "hoja acorde", "hoja acorde Sol7 Do",
         "posiciones Do mayor --instrumento arpa",
         "posiciones Do mayor --instrumento", "posiciones Do mayor --capo 13", "posiciones Do mayor --capo",
         "posiciones --arpegio", "posiciones --arpegio Do --foo", "pentagrama", "pentagrama nube Do",
@@ -174,7 +174,7 @@ import Testing
         "pentagrama escala Do mayor --en", "pentagrama escala Do mayor --mano foo", "pentagrama escala Do mayor --mano",
         "pentagrama escala Do mayor --secuencia foo", "pentagrama escala Do mayor --tab --instrumento arpa",
         "pentagrama arpegio Do --tab --instrumento", "pentagrama acordes Do Sol --foo",
-        "pentagrama escala Do --octava 9",
+        "pentagrama escala Do --registro 9",
         "pentagrama escala Do --clave luna", "pentagrama escala Do --clave", "pentagrama melodia",
         "pentagrama melodia Do4:4 --sobre", "pentagrama melodia Do4:4 --foo", "pentagrama bajo",
         "pentagrama bajo Do --foo",
@@ -198,8 +198,8 @@ import Testing
             "tonalidad Re mayor", "tonalidad Mib mayor", "tonalidad Do mayor", "analizar C Am D7 G7 C",
             "analizar C F G7 C Am D7 G", "armonizar E4 F4 D4 C4", "armonizar C6 B5 C6", "realizar C F G7 C",
             "realizar C7(9,13)",
-            "revisar C3 E4 G4 C5, G2 D4 G4 B4", "plr C PLR", "plr C C", "plr C hexatonico",
-            "conduccion-parsimoniosa G7 Dm7", "vecinos G7", "digitaciones F --diagrama",
+            "revisar C3 E4 G4 C5, G2 D4 G4 B4", "plr C PLR", "plr shortest C C", "plr cycle hexatonico C",
+            "camino-parsimonioso G7 Dm7", "vecinos G7", "digitaciones F --diagrama",
             "digitaciones C --instrumento ukelele",
             "digitaciones C --instrumento bajo --dedos 1 --traste 0", "counterpoint C4 D4 E4 C4 / G4 A4 G4 C5",
             "arpeggio C7", "arpeggio C --pattern alberti", "transpose M2 C Am F G7", "reharmonize C Am Dm7 G7 C",
@@ -207,11 +207,11 @@ import Testing
             "arpeggio C7 --degrees 1-5-3-8 --approach enclosure",
             "set 0 4 7", "set C E G", "set 4-Z15", "row 0 e 7 4 2 9 3 8 t 1 5 6",
             "chord G7 --voicings --names --keys --substitutions --compare C", "chord C --substitutions --in G major",
-            "scale C major --sequence thirds --descending --octaves 2 --piano --modes --compare C lydian",
+            "scale C major --sequence thirds --descending --octaves 2 --fingers --modes --compare C lydian",
             "chord C7 --bebop --pentatonics", "analyze Dm7 G7 Cmaj7 --in C major --scales",
             "identify C E G B F# --scales", "scale C half whole diminished --symmetry",
             "analyze Dm7 G7 Cmaj7 --guide-tones", "positions A minor pentatonic --shapes",
-            "positions C major --sequence thirds --caged --descending", "keyboard D major --hand right --octaves 2",
+            "positions C major --sequence thirds --caged --descending", "keyboard D major --fingers right --octaves 2",
             "scale C major --neighbors --all-keys --sequence thirds", "clock C diminished --fifths",
             "positions C major --instrument bass --capo 2", "positions D major --instrument dadgad",
             "scale C 2-2-3-2-3", "scale C lydian --statistics",
