@@ -80,8 +80,8 @@ extension Escala {
             }
             if tipoSinLeer == nil { tipoSinLeer = tipo }
         }
-        guard let tipoSinLeer else { throw lector.error(.notaNoReconocida) }
-        throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .tipoDeEscalaNoReconocido(tipoSinLeer))
+        guard let tipo = tipoSinLeer else { throw lector.error(.notaNoReconocida) }
+        throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .tipoDeEscalaNoReconocido(tipo))
     }
 
     /// El tipo por su nombre en el idioma de los textos de la notación o, si no, por el de su tónica, por su nombre
