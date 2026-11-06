@@ -291,6 +291,22 @@ import Testing
         #expect(Tradicion.mundoArabe.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Arab world")
     }
 
+    /// Cada subtradición tiene nombre en los quince idiomas y se codifica por su nombre de caso.
+    @Test func lasSubtradicionesSeTraducenYSeCodifican() throws {
+        for subtradicion in Subtradicion.allCases {
+            #expect(subtradicion.nombre(en: .espanolCompacto) == subtradicion.nombre)
+            for idioma in Idioma.allCases {
+                #expect(
+                    !subtradicion.nombre(en: Notacion.espanolCompacto.conTextos(en: idioma)).isEmpty,
+                    Comment(rawValue: "\(subtradicion) en \(idioma)"))
+            }
+            #expect(Subtradicion(rawValue: subtradicion.rawValue) == subtradicion)
+        }
+        let datos = try JSONEncoder().encode(Subtradicion.allCases)
+        #expect(String(decoding: datos, as: UTF8.self).contains("\"indostanica\""))
+        #expect(try JSONDecoder().decode([Subtradicion].self, from: datos) == Subtradicion.allCases)
+    }
+
     /// El nombre con la palabra de la categoría: delante si es un préstamo y no la lleva ya.
     @Test func nombreCompleto() {
         #expect(TipoDeEscala.kafi.nombreCompleto == "thāṭ Kāfī")
