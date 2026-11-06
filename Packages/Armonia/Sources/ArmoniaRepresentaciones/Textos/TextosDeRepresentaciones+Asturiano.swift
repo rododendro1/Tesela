@@ -24,19 +24,6 @@ extension TextosDeRepresentaciones {
         leyendaPasoDelRecorrido: "pasu del percorríu (P, L, R)",
         leyendaFundamentalDelPrimerAcorde: "fundamental del primer acorde",
 
-        // CicloNeorriemanniano.swift
-        cicloHexatonico: "ciclu hexatónicu",
-        cicloOctatonico: "ciclu octatónicu",
-        cicloLR: "ciclu LR",
-
-        // ConduccionParsimoniosa.swift
-        semitonos: { n in Idioma.asturiano.contar(n, "semitonu", "semitonos") },
-
-        // TransformacionNeorriemanniana.swift
-        homonima: "homónima",
-        cambioDeSensible: "cambéu de sensible",
-        relativa: "relativa",
-
         // TecladoIsomorfico.swift
         tablaArmonica: "Tabla armónica",
         wickiHaydenEspejo: "Wicki-Hayden (espeyu)",

@@ -22,8 +22,21 @@ import Testing
             contrapunto: "La4 La4 Sol4 La4 Si4 Do5 Do5 Si4 Re5 Do#5 Re5", especie: .primera)
         #expect(ejercicio.contrapuntoArriba)
         #expect(ejercicio.faltas == [])
-        #expect(ejercicio.informe() == "Especie 1, con el contrapunto encima del cantus firmus\nSin faltas.")
+        #expect(
+            ejercicio.informe(en: .espanolCompacto)
+                == "Especie 1, con el contrapunto encima del cantus firmus\nSin faltas.")
         #expect(ejercicio.informe(en: .inglesASCII) == "Species 1, counterpoint above the cantus firmus\nNo faults.")
+    }
+
+    /// Sin la notación, como antes, en español (obsoleto).
+    @available(*, deprecated)
+    @Test func elInformeYElTextoSinNotacion() throws {
+        let ejercicio = try Contrapunto(
+            cantusFirmus: cantusDeFux,
+            contrapunto: "La4 La4 Sol4 La4 Si4 Do5 Do5 Si4 Re5 Do#5 Re5", especie: .primera)
+        #expect(ejercicio.informe() == ejercicio.informe(en: .espanolCompacto))
+        let voz = try Voz(leyendo: "Do4:2~ Do4:4 Re4:4")
+        #expect(voz.texto() == voz.texto(en: .espanolCompacto))
     }
 
     @Test func primeraEspecie() throws {

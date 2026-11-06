@@ -24,19 +24,6 @@ extension TextosDeRepresentaciones {
         leyendaPasoDelRecorrido: "βήμα της ακολουθίας (P, L, R)",
         leyendaFundamentalDelPrimerAcorde: "θεμέλια της πρώτης συγχορδίας",
 
-        // CicloNeorriemanniano.swift
-        cicloHexatonico: "εξατονικός κύκλος",
-        cicloOctatonico: "οκτατονικός κύκλος",
-        cicloLR: "κύκλος LR",
-
-        // ConduccionParsimoniosa.swift
-        semitonos: { n in Idioma.griego.contar(n, "ημιτόνιο", "ημιτόνια") },
-
-        // TransformacionNeorriemanniana.swift
-        homonima: "ομώνυμη",
-        cambioDeSensible: "αλλαγή προσαγωγέα",
-        relativa: "σχετική",
-
         // TecladoIsomorfico.swift
         tablaArmonica: "Αρμονικός πίνακας",
         wickiHaydenEspejo: "Wicki-Hayden (καθρέφτης)",

@@ -27,10 +27,10 @@ extension Tonalidad {
         var mejor: Candidato<Acorde>?
         for i in unicas.indices {
             let orden = [unicas[i]] + unicas.enumerated().filter { $0.offset != i }.map(\.element)
-            let candidatos = Acorde.candidatos(orden).filter { $0.valor.inversion == 0 && $0.omitidas.isEmpty }
+            let candidatos = Acorde.candidatos(notas: orden).filter { $0.valor.inversion == 0 && $0.omitidas.isEmpty }
             if let primero = candidatos.first, primero.coste < (mejor?.coste ?? .infinity) { mejor = primero }
         }
-        return mejor?.valor ?? Acorde.identificar(unicas).first
+        return mejor?.valor ?? Acorde.identificar(notas: unicas).first
     }
 
     /// Los acordes negativos de una progresión (ver ``negativo(_:)``): Rem7 Sol7 Do7M en Do da la progresión

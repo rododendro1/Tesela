@@ -24,19 +24,6 @@ extension TextosDeRepresentaciones {
         leyendaPasoDelRecorrido: "Schritt der Folge (P, L, R)",
         leyendaFundamentalDelPrimerAcorde: "Grundton des ersten Akkords",
 
-        // CicloNeorriemanniano.swift
-        cicloHexatonico: "hexatonischer Zyklus",
-        cicloOctatonico: "oktatonischer Zyklus",
-        cicloLR: "LR-Zyklus",
-
-        // ConduccionParsimoniosa.swift
-        semitonos: { n in Idioma.aleman.contar(n, "Halbton", "Halbtöne") },
-
-        // TransformacionNeorriemanniana.swift
-        homonima: "Variante",
-        cambioDeSensible: "Leittonwechsel",
-        relativa: "Parallele",
-
         // TecladoIsomorfico.swift
         tablaArmonica: "Harmonische Tabelle",
         wickiHaydenEspejo: "Wicki-Hayden (gespiegelt)",

@@ -1,5 +1,6 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaTeoria en asturiano. Los campos y lo que significa cada uno están en
 // `TextosDeTeoria.swift`.
 
@@ -20,6 +21,19 @@ extension TextosDeTeoria {
         nombresDeLasInversiones: ["estáu fundamental", "primer inversión", "segunda inversión", "tercer inversión",
                                   "cuarta inversión", "quinta inversión", "sexta inversión"],
         inversionConNumero: "inversión _",
+
+        // CicloNeorriemanniano.swift
+        cicloHexatonico: "ciclu hexatónicu",
+        cicloOctatonico: "ciclu octatónicu",
+        cicloLR: "ciclu LR",
+
+        // ConduccionParsimoniosa.swift
+        semitonos: { n in Idioma.asturiano.contar(n, "semitonu", "semitonos") },
+
+        // TransformacionNeorriemanniana.swift
+        homonima: "homónima",
+        cambioDeSensible: "cambéu de sensible",
+        relativa: "relativa",
 
         // EstructuraDeAcorde.swift
         papelFundamental: "fundamental",

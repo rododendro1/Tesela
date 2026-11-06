@@ -43,7 +43,7 @@ import Testing
         let intervalos: [Intervalo] = ["3M", "-5d", "9m", "4AA"]
         #expect(try (decodificador.decode([Intervalo].self, from: codificador.encode(intervalos))) == intervalos)
 
-        let escalas = [Escala("Re dórico"), Escala(.do, TipoDeEscala.pentatonicaMayor.rotacion(2))]
+        let escalas = [Escala("Re dórico"), Escala(.do, TipoDeEscala.pentatonicaMayor.modo(grado: 2))]
         #expect(try (decodificador.decode([Escala].self, from: codificador.encode(escalas))) == escalas)
 
         #expect(throws: (any Error).self) { try decodificador.decode([Acorde].self, from: Data("[\"Doxyz\"]".utf8)) }
@@ -68,9 +68,9 @@ import Testing
 
     @Test func terminosMusicales() {
         // «Menor es mejor» se llama coste.
-        let costes = Acorde.candidatos([.mi, .sol, .do]).map(\.coste)
+        let costes = Acorde.candidatos(notas: [.mi, .sol, .do]).map(\.coste)
         #expect(costes == costes.sorted())
-        #expect(Acorde.candidatos([.do, .mi, .sol]).first?.coste == 0)
+        #expect(Acorde.candidatos(notas: [.do, .mi, .sol]).first?.coste == 0)
         // Número de Forte, aunque el valor sea texto.
         #expect(Acorde("Do°7").numeroDeForte == "4-28")
         #expect(ConjuntoDeClasesDeAltura([0, 1, 4, 6]).numeroDeForte == "4-Z15")
@@ -81,7 +81,7 @@ import Testing
         // Posición cerrada.
         #expect(Acorde("Sol7/Si").posicionCerrada(octava: 3).map(\.description) == ["Si3", "Re4", "Fa4", "Sol4"])
         // Escalas que contienen unas notas.
-        #expect(Escala.identificar([.do, .mi, .sol, .si, "Fa#"]).contains(Escala(.sol)))
+        #expect(Escala.identificar(notas: [.do, .mi, .sol, .si, "Fa#"]).contains(Escala(.sol)))
         // Lugar en el pentagrama.
         #expect(Clave.doEnTercera.posicion(de: "Do4").lugar == 4)
         #expect(PosicionEnElPentagrama(lugar: 9).descripcion == "encima de la 5.ª línea")
@@ -89,7 +89,7 @@ import Testing
 
     @Test func candidatoGenerico() {
         // Acordes y tonalidades comparten el mismo tipo de lectura, ordenada por coste.
-        let acordes = Acorde.candidatos([.do, .mi, "Sib"])
+        let acordes = Acorde.candidatos(notas: [.do, .mi, "Sib"])
         #expect(acordes.first?.valor == Acorde("Do7"))
         #expect(acordes.first?.coste == 1)
         #expect(acordes.first?.omitidas == [.sol])
@@ -116,8 +116,8 @@ import Testing
         #expect(calidad == .menor)
         #expect(Acorde("Do7").cifrado(estilo: EstiloDeCifrado.inglesASCII) == "C7")
         // La rotación de una escala (sus modos) no se confunde con el modo de una tonalidad.
-        #expect(Escala(.do).rotacion(2) == Escala(.re, .dorico))
-        #expect(TipoDeEscala.mayor.rotacion(6) == .menorNatural)
+        #expect(Escala(.do).modo(grado: 2) == Escala(.re, .dorico))
+        #expect(TipoDeEscala.mayor.modo(grado: 6) == .menorNatural)
         #expect(Tonalidad("La menor").modo == .menor)
         // Todos los tipos con nombre lo tienen también como texto.
         #expect(Altura("Fa#4").nombre == "Fa♯₄")

@@ -36,7 +36,7 @@ extension LineaDeComandos {
         guard acordes.count == 2 else { throw ErrorDeUso.dosAcordesDeCamino }
         let origen = try Acorde(leyendo: acordes[0])
         let destino = try Acorde(leyendo: acordes[1])
-        guard let camino = Tonnetz.caminoParsimonioso(desde: origen, hasta: destino, voces: voces, tipos: tipos) else {
+        guard let camino = origen.caminoParsimonioso(hasta: destino, voces: voces, tipos: tipos) else {
             throw ErrorDeUso.caminoSinConexion
         }
         var texto = Acorde(origen.fundamental, origen.tipo).cifrado(en: notacion)
@@ -69,7 +69,7 @@ extension LineaDeComandos {
                     + Mensaje.triadas(ciclo.longitud).texto(en: notacion))
         } else {
             let destino = try Acorde(leyendo: resto)
-            guard let camino = Tonnetz.camino(desde: origen, hasta: destino) else {
+            guard let camino = origen.caminoNeorriemanniano(hasta: destino) else {
                 throw ErrorDeUso.plrSoloTriadas(camino: true)
             }
             pasos = camino

@@ -22,6 +22,19 @@ extension TextosDeTeoria {
                                   "fourth inversion", "fifth inversion", "sixth inversion"],
         inversionConNumero: "inversion _",
 
+        // CicloNeorriemanniano.swift
+        cicloHexatonico: "hexatonic cycle",
+        cicloOctatonico: "octatonic cycle",
+        cicloLR: "LR cycle",
+
+        // ConduccionParsimoniosa.swift
+        semitonos: { n in Idioma.ingles.contar(n, "semitone", "semitones") },
+
+        // TransformacionNeorriemanniana.swift
+        homonima: "parallel",
+        cambioDeSensible: "leading-tone exchange",
+        relativa: "relative",
+
         // EstructuraDeAcorde.swift
         papelFundamental: "root",
         papelTercera: "third",

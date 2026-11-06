@@ -24,19 +24,6 @@ extension TextosDeRepresentaciones {
         leyendaPasoDelRecorrido: "étape du parcours (P, L, R)",
         leyendaFundamentalDelPrimerAcorde: "fondamentale du premier accord",
 
-        // CicloNeorriemanniano.swift
-        cicloHexatonico: "cycle hexatonique",
-        cicloOctatonico: "cycle octatonique",
-        cicloLR: "cycle LR",
-
-        // ConduccionParsimoniosa.swift
-        semitonos: { n in Idioma.frances.contar(n, "demi-ton", "demi-tons") },
-
-        // TransformacionNeorriemanniana.swift
-        homonima: "homonyme",
-        cambioDeSensible: "échange de sensible",
-        relativa: "relative",
-
         // TecladoIsomorfico.swift
         tablaArmonica: "Table harmonique",
         wickiHaydenEspejo: "Wicki-Hayden (miroir)",

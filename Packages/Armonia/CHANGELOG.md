@@ -2,6 +2,28 @@
 
 ## Sin publicar
 
+### Las mismas consultas y los mismos nombres en toda la API, con los de antes obsoletos
+
+Los nombres de antes siguen compilando, con un aviso, en `Obsoletos.swift` de `ArmoniaTeoria`,
+`ArmoniaRepresentaciones` y `ArmoniaPartitura`.
+
+- `candidatos` e `identificar` se escriben igual en acordes, escalas y tonalidades, con `notas:`, `alturas:`,
+  `clasesDeAltura:` o `midi:`. `Acorde.candidatos(_:)` e `identificar(_:)` (con notas o con alturas) son
+  `candidatos(notas:)` y `candidatos(alturas:)`, y `Escala.candidatos(_:tipos:)`, `candidatos(notas:tipos:)`. Son nuevas
+  `Escala.candidatos(alturas:tipos:)`, `Escala.candidatos(midi:tipos:)` y `Tonalidad.candidatos(clasesDeAltura:)`,
+  con su `identificar`.
+- La teoría neorriemanniana pasa de `ArmoniaRepresentaciones` a `ArmoniaTeoria` (`Acordes/Neorriemanniana/`), así que
+  se usa sin el Tonnetz: `TransformacionNeorriemanniana`, `CicloNeorriemanniano`, `Acorde.transformar(_:)`,
+  `Acorde.ciclo(_:)`, `MovimientoDeVoz`, `PasoParsimonioso`, `ConduccionMinima`, `vecinosParsimoniosos` y
+  `conduccionMinima(hasta:)`. Quien importa `Armonia` no nota nada. Los caminos pasan de `Tonnetz` a `Acorde`:
+  `Tonnetz.camino(desde:hasta:)` es `Acorde.caminoNeorriemanniano(hasta:)` y `Tonnetz.caminoParsimonioso(desde:hasta:)`,
+  `Acorde.caminoParsimonioso(hasta:)`. En el Tonnetz se quedan los triángulos (`Tonnetz.Triada`), los recorridos y
+  los ciclos dibujados.
+- `Escala.rotacion(_:)` y `TipoDeEscala.rotacion(_:)` son `modo(grado:)`: `Escala(.do).modo(grado: 2)` es Re dórico.
+  `rotado(…)` sigue siendo el giro de los teclados.
+- `NotaMicrotonal.nombre(en:)`, `Voz.texto(en:)` y `Contrapunto.informe(en:)` ya no tienen la notación española por
+  omisión, como el resto de la API: `nombre()`, `texto()` e `informe()` quedan obsoletos.
+
 ### Leer en cada notación lo que se escribe en ella
 
 - `Acorde(leyendo:en:)`, `Escala(leyendo:en:)` y `Tonalidad(leyendo:en:)` (nuevos) leen lo que escriben

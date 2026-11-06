@@ -1,5 +1,6 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaTeoria en griego. Los campos y lo que significa cada uno están en
 // `TextosDeTeoria.swift`.
 
@@ -20,6 +21,19 @@ extension TextosDeTeoria {
         nombresDeLasInversiones: ["θεμελιώδης κατάσταση", "πρώτη αναστροφή", "δεύτερη αναστροφή", "τρίτη αναστροφή",
                                   "τέταρτη αναστροφή", "πέμπτη αναστροφή", "έκτη αναστροφή"],
         inversionConNumero: "αναστροφή _",
+
+        // CicloNeorriemanniano.swift
+        cicloHexatonico: "εξατονικός κύκλος",
+        cicloOctatonico: "οκτατονικός κύκλος",
+        cicloLR: "κύκλος LR",
+
+        // ConduccionParsimoniosa.swift
+        semitonos: { n in Idioma.griego.contar(n, "ημιτόνιο", "ημιτόνια") },
+
+        // TransformacionNeorriemanniana.swift
+        homonima: "ομώνυμη",
+        cambioDeSensible: "αλλαγή προσαγωγέα",
+        relativa: "σχετική",
 
         // EstructuraDeAcorde.swift
         papelFundamental: "θεμέλια",

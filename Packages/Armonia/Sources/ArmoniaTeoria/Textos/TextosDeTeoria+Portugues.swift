@@ -1,5 +1,6 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaTeoria en portugués. Los campos y lo que significa cada uno están en
 // `TextosDeTeoria.swift`.
 
@@ -20,6 +21,19 @@ extension TextosDeTeoria {
         nombresDeLasInversiones: ["estado fundamental", "primeira inversão", "segunda inversão", "terceira inversão",
                                   "quarta inversão", "quinta inversão", "sexta inversão"],
         inversionConNumero: "inversão _",
+
+        // CicloNeorriemanniano.swift
+        cicloHexatonico: "ciclo hexatónico",
+        cicloOctatonico: "ciclo octatónico",
+        cicloLR: "ciclo LR",
+
+        // ConduccionParsimoniosa.swift
+        semitonos: { n in Idioma.portugues.contar(n, "meio-tom", "meios-tons") },
+
+        // TransformacionNeorriemanniana.swift
+        homonima: "homónima",
+        cambioDeSensible: "troca de sensível",
+        relativa: "relativa",
 
         // EstructuraDeAcorde.swift
         papelFundamental: "fundamental",

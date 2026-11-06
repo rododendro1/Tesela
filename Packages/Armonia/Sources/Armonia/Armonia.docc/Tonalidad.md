@@ -422,8 +422,8 @@ let cantus = "Re4 Fa4 Mi4 Re4 Sol4 Fa4 La4 Sol4 Fa4 Mi4 Re4"
 let fux = try Contrapunto(cantusFirmus: cantus, contrapunto: "La4 La4 Sol4 La4 Si4 Do5 Do5 Si4 Re5 Do#5 Re5", especie: .primera)
 fux.esCorrecto            // true
 fux.contrapuntoArriba     // true
-fux.informe().hasPrefix("Especie 1, con el contrapunto encima del cantus firmus\n")   // true
-fux.informe().hasSuffix("Sin faltas.")              // true
+fux.informe(en: .espanolCompacto).hasPrefix("Especie 1, con el contrapunto encima del cantus firmus\n")   // true
+fux.informe(en: .espanolCompacto).hasSuffix("Sin faltas.")              // true
 
 let quintas = try Contrapunto(cantusFirmus: "Do4 Re4 Mi4 Do4", contrapunto: "Sol4 La4 Sol4 Do5", especie: .primera)
 quintas.faltas.contains(FaltaDeContrapunto(tipo: .quintasParalelas, compases: 0...1))   // true

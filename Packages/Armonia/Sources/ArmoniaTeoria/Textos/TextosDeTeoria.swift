@@ -25,6 +25,19 @@ struct TextosDeTeoria: TextosTraducidos {
     let nombresDeLasInversiones: [String]
     let inversionConNumero: String
 
+    // MARK: CicloNeorriemanniano.swift
+    let cicloHexatonico: String
+    let cicloOctatonico: String
+    let cicloLR: String
+
+    // MARK: ConduccionParsimoniosa.swift
+    let semitonos: @Sendable (Int) -> String
+
+    // MARK: TransformacionNeorriemanniana.swift
+    let homonima: String
+    let cambioDeSensible: String
+    let relativa: String
+
     // MARK: EstructuraDeAcorde.swift
     let papelFundamental: String
     let papelTercera: String

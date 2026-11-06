@@ -195,24 +195,24 @@ import Testing
     }
 
     @Test func camino() {
-        #expect(Tonnetz.camino(desde: "Do", hasta: "Do") == [])
-        #expect(Tonnetz.camino(desde: "Do", hasta: "Lam") == [.r])
-        #expect(Tonnetz.camino(desde: "Do", hasta: "Lab") == [.p, .l])
-        #expect(Tonnetz.camino(desde: "Do", hasta: "Mibm") == [.p, .r, .p])
-        #expect(Tonnetz.camino(desde: "Do", hasta: "Fa#") == [.r, .p, .r, .p])
-        #expect(Tonnetz.camino(desde: "Do", hasta: "Fa") == [.r, .l])
-        #expect(Tonnetz.camino(desde: "Do", hasta: "Sol7") == nil)
+        #expect(Acorde("Do").caminoNeorriemanniano(hasta: "Do") == [])
+        #expect(Acorde("Do").caminoNeorriemanniano(hasta: "Lam") == [.r])
+        #expect(Acorde("Do").caminoNeorriemanniano(hasta: "Lab") == [.p, .l])
+        #expect(Acorde("Do").caminoNeorriemanniano(hasta: "Mibm") == [.p, .r, .p])
+        #expect(Acorde("Do").caminoNeorriemanniano(hasta: "Fa#") == [.r, .p, .r, .p])
+        #expect(Acorde("Do").caminoNeorriemanniano(hasta: "Fa") == [.r, .l])
+        #expect(Acorde("Do").caminoNeorriemanniano(hasta: "Sol7") == nil)
         // Con ortografía, La♭ y Sol♯ son destinos distintos; sin ella, el mismo.
-        #expect(Tonnetz.camino(desde: "Do", hasta: "Lab")?.count == 2)
-        #expect(Tonnetz.camino(desde: "Do", hasta: "Sol#")!.count > 2)
-        #expect(Tonnetz.camino(desde: "Do", hasta: "Sol#", enarmonico: true) == [.p, .l])
+        #expect(Acorde("Do").caminoNeorriemanniano(hasta: "Lab")?.count == 2)
+        #expect(Acorde("Do").caminoNeorriemanniano(hasta: "Sol#")!.count > 2)
+        #expect(Acorde("Do").caminoNeorriemanniano(hasta: "Sol#", enarmonico: true) == [.p, .l])
         // Todo camino lleva a su destino, y ninguno entre las 24 tríadas pasa de 5 pasos sin ortografía.
         for n in 0..<12 {
             for mayor in [true, false] {
                 let destino = Acorde(Nota(pasosDeQuinta: n - 5), mayor ? .mayor : .menor)
-                let camino = Tonnetz.camino(desde: "Do", hasta: destino)!
+                let camino = Acorde("Do").caminoNeorriemanniano(hasta: destino)!
                 #expect(Acorde("Do").transformar(camino) == destino)
-                #expect(Tonnetz.camino(desde: "Do", hasta: destino, enarmonico: true)!.count <= 5)
+                #expect(Acorde("Do").caminoNeorriemanniano(hasta: destino, enarmonico: true)!.count <= 5)
             }
         }
     }
@@ -382,5 +382,19 @@ import Testing
                 == TransformacionNeorriemanniana.allCases.map(\.nombre))
         #expect(TransformacionNeorriemanniana.l.nombre(en: .inglesASCII) == "leading-tone exchange")
         #expect(TransformacionNeorriemanniana.r.nombre(en: .conPalabras(.aleman)) == "Parallele")
+    }
+}
+
+/// Los caminos de antes en `Tonnetz`, que ahora están en `Acorde` (ArmoniaTeoria), siguen dando lo mismo.
+@Suite struct CaminosObsoletosDelTonnetzTests {
+    @available(*, deprecated)
+    @Test func losCaminosDeAntes() {
+        #expect(Tonnetz.camino(desde: "Do", hasta: "Mibm") == Acorde("Do").caminoNeorriemanniano(hasta: "Mibm"))
+        #expect(
+            Tonnetz.camino(desde: "Do", hasta: "Sol#", enarmonico: true)
+                == Acorde("Do").caminoNeorriemanniano(hasta: "Sol#", enarmonico: true))
+        #expect(
+            Tonnetz.caminoParsimonioso(desde: "Sol7", hasta: "Reb7", voces: 2)
+                == Acorde("Sol7").caminoParsimonioso(hasta: "Reb7", voces: 2))
     }
 }

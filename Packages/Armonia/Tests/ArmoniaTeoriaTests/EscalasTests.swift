@@ -9,8 +9,8 @@ import Testing
         #expect(Escala(.re).notas.map(\.nombre) == ["Re", "Mi", "Fa♯", "Sol", "La", "Si", "Do♯"])
         #expect(Escala("Fa mayor").notas.map(\.nombre) == ["Fa", "Sol", "La", "Si♭", "Do", "Re", "Mi"])
         #expect(Escala("La menor armónica").grado(7) == Nota("Sol#"))
-        #expect(Escala("Re dórico").notas == Escala(.do).rotacion(2).notas)
-        #expect(Escala(.do).rotacion(5).tipo == .mixolidio)
+        #expect(Escala("Re dórico").notas == Escala(.do).modo(grado: 2).notas)
+        #expect(Escala(.do).modo(grado: 5).tipo == .mixolidio)
     }
 
     @Test func armadura() {
@@ -92,20 +92,20 @@ import Testing
 @Suite struct EscalasAdicionalesTests {
     @Test func modosDeLasMenores() {
         let armonica = Escala(.la, .menorArmonica)
-        #expect(armonica.rotacion(2).tipo == .locrioSextaNatural)
-        #expect(armonica.rotacion(3).tipo == .jonicoAumentado)
-        #expect(armonica.rotacion(4).tipo == .doricoCuartaAumentada)
-        #expect(armonica.rotacion(5).tipo == .frigioDominante)
-        #expect(armonica.rotacion(6).tipo == .lidioSegundaAumentada)
-        #expect(armonica.rotacion(7).tipo == .ultralocrio)
+        #expect(armonica.modo(grado: 2).tipo == .locrioSextaNatural)
+        #expect(armonica.modo(grado: 3).tipo == .jonicoAumentado)
+        #expect(armonica.modo(grado: 4).tipo == .doricoCuartaAumentada)
+        #expect(armonica.modo(grado: 5).tipo == .frigioDominante)
+        #expect(armonica.modo(grado: 6).tipo == .lidioSegundaAumentada)
+        #expect(armonica.modo(grado: 7).tipo == .ultralocrio)
         let melodica = Escala(.la, .menorMelodica)
-        #expect(melodica.rotacion(2).tipo == .doricoSegundaMenor)
-        #expect(melodica.rotacion(3).tipo == .lidioAumentado)
-        #expect(melodica.rotacion(4).tipo == .lidioDominante)
-        #expect(melodica.rotacion(5).tipo == .mixolidioSextaMenor)
-        #expect(melodica.rotacion(6).tipo == .locrioSegundaNatural)
-        #expect(melodica.rotacion(7).tipo == .alterada)
-        #expect(melodica.rotacion(7).nombre == "Sol♯ alterada")
+        #expect(melodica.modo(grado: 2).tipo == .doricoSegundaMenor)
+        #expect(melodica.modo(grado: 3).tipo == .lidioAumentado)
+        #expect(melodica.modo(grado: 4).tipo == .lidioDominante)
+        #expect(melodica.modo(grado: 5).tipo == .mixolidioSextaMenor)
+        #expect(melodica.modo(grado: 6).tipo == .locrioSegundaNatural)
+        #expect(melodica.modo(grado: 7).tipo == .alterada)
+        #expect(melodica.modo(grado: 7).nombre == "Sol♯ alterada")
     }
 
     @Test func lecturaDeNombres() {
@@ -170,7 +170,7 @@ import Testing
     }
 
     @Test func escalasContenedoras() {
-        let porNombre = Escala.identificar([.do, .mi, .sol, .si, "Fa#"])
+        let porNombre = Escala.identificar(notas: [.do, .mi, .sol, .si, "Fa#"])
         // Primero la que tiene exactamente esas notas; luego, la de menos notas de más.
         #expect(porNombre.first == Escala(.do, .pentatonicaLidia))
         #expect(porNombre.dropFirst().first == Escala(.sol))
@@ -180,7 +180,7 @@ import Testing
         #expect(porNombre.allSatisfy { escala in [Nota.do, .mi, .sol, .si, "Fa#"].allSatisfy { escala.contiene($0) } })
 
         // Con Sol♭ en lugar de Fa♯, la ortografía descarta Sol mayor.
-        #expect(!(Escala.identificar([.do, .mi, .sol, .si, "Solb"]).contains(Escala(.sol))))
+        #expect(!(Escala.identificar(notas: [.do, .mi, .sol, .si, "Solb"]).contains(Escala(.sol))))
 
         let porAltura = Escala.identificar(clasesDeAltura: [0, 4, 7, 11, 6])
         #expect(porAltura.first == Escala(.do, .pentatonicaLidia))
@@ -227,8 +227,8 @@ import Testing
                 "La5", "Sol♯5", "Fa♯5", "Mi5", "Re5", "Do5", "Si4", "La4",
             ])
         // Sus modos vuelven a ella.
-        #expect(TipoDeEscala.alterada.rotacion(2) == jazz)
-        #expect(jazz.rotacion(7) == .alterada)
+        #expect(TipoDeEscala.alterada.modo(grado: 2) == jazz)
+        #expect(jazz.modo(grado: 7) == .alterada)
         #expect(Tonalidad(Escala(.la, jazz)) == Tonalidad(.la, .menor))
         #expect(jazz.equivalentes.contains { $0.nombre == "Gaurīmanoharī" })
     }
@@ -252,12 +252,12 @@ import Testing
         #expect(melodica.grado(de: .sol) == nil)
         #expect(melodica.conjuntoDeClasesDeAltura.numeroDeForte == "7-34")
         // La búsqueda de escalas tiene en cuenta las dos direcciones…
-        #expect(Escala.identificar([.la, .sol, "Sol#"], tipos: [.menorMelodica]).contains(melodica))
+        #expect(Escala.identificar(notas: [.la, .sol, "Sol#"], tipos: [.menorMelodica]).contains(melodica))
         #expect(
             Escala.identificar(clasesDeAltura: [9, 7, 8], tipos: [.menorMelodica])
                 .contains { $0.notasEnAmbasDirecciones.map(\.claseDeAltura).contains(7) })
         #expect(
-            !(Escala.identificar([.la, .sol, "Sol#"], tipos: [.menorMelodicaJazz]).contains(
+            !(Escala.identificar(notas: [.la, .sol, "Sol#"], tipos: [.menorMelodicaJazz]).contains(
                 Escala(.la, .menorMelodicaJazz))))
         // …y la ortografía también: en La menor melódica, el 7 MIDI (Sol) no es cromático.
         #expect(melodica.nombre(claseDeAltura: 7) == .sol)
@@ -431,11 +431,11 @@ import Testing
             .mixolidioSegundaMenor, .lidioAumentadoSegundaAumentada, .locrioSeptimaDisminuida,
         ]
         for (i, modo) in modos.enumerated() {
-            #expect(TipoDeEscala.mayorArmonica.rotacion(i + 1).esIdentico(a: modo), Comment(rawValue: modo.nombre))
+            #expect(TipoDeEscala.mayorArmonica.modo(grado: i + 1).esIdentico(a: modo), Comment(rawValue: modo.nombre))
         }
         // Las disminuidas suenan como rotaciones la una de la otra (la ortografía cambia).
         #expect(
-            TipoDeEscala.disminuida.rotacion(2).intervalos.map(\.semitonos)
+            TipoDeEscala.disminuida.modo(grado: 2).intervalos.map(\.semitonos)
                 == TipoDeEscala.disminuidaSemitonoTono.intervalos.map(\.semitonos))
 
         // Nombres en inglés y alias.
@@ -455,7 +455,8 @@ import Testing
         #expect(TipoDeEscala.egipcia == .shang)
         #expect(TipoDeEscala.occidentales.count == Set(TipoDeEscala.occidentales).count) // sin repetidos en el catálogo
         #expect(
-            Escala.identificar(["Do", "Re♭", "Mi", "Fa", "Sol", "La♭", "Si"]).contains(Escala(.do, .dobleArmonica)))
+            Escala.identificar(notas: ["Do", "Re♭", "Mi", "Fa", "Sol", "La♭", "Si"]).contains(
+                Escala(.do, .dobleArmonica)))
     }
 
     @Test func cromaticasPorVentanaDeQuintas() {
@@ -579,7 +580,8 @@ import Testing
         ) {
             for (i, modo) in esperados.enumerated() {
                 #expect(
-                    base.rotacion(i + 1).esIdentico(a: modo), "\(base.nombre) \(i + 1): \(base.rotacion(i + 1).nombre)",
+                    base.modo(grado: i + 1).esIdentico(a: modo),
+                    "\(base.nombre) \(i + 1): \(base.modo(grado: i + 1).nombre)",
                     sourceLocation: sourceLocation)
             }
         }
@@ -791,14 +793,14 @@ import Testing
             (.lidioAumentadoTerceraAumentada, "Si♭ Do Re♯ Mi Fa♯ Sol La"),
         ]
         for (i, (tipo, esperado)) in modos.enumerated() {
-            #expect(hungara.rotacion(i + 2).tipo.nombre == tipo.nombre)
+            #expect(hungara.modo(grado: i + 2).tipo.nombre == tipo.nombre)
             #expect(notas(Escala(hungara.grado(i + 2), tipo)) == esperado)
         }
         // Pentatónicas.
         #expect(notas(Escala(.do, .pentatonicaMixolidia)) == "Do Mi Fa Sol Si♭")
         #expect(notas(Escala(.do, .pentatonicaLidia)) == "Do Mi Fa♯ Sol Si")
         #expect(notas(Escala(.do, .pentatonicaEscocesa)) == "Do Re Fa Sol La")
-        #expect(Escala(.do, .pentatonicaMayor).rotacion(4).tipo.nombre == "pentatónica escocesa")
+        #expect(Escala(.do, .pentatonicaMayor).modo(grado: 4).tipo.nombre == "pentatónica escocesa")
         #expect(TipoDeEscala.egipcia.equivalentes.contains { $0.nombre == "Sléndro" })
         #expect(TipoDeEscala.pentatonicaLidia.equivalentes.contains { $0.nombre == "Amṛtavarṣiṇī" })
         #expect(TipoDeEscala.egipcia.equivalentes.contains { $0.nombre == "Megh" })
@@ -1116,5 +1118,27 @@ import Testing
         #expect(TipoDeEscala.saung.microtonal?.desvios == [0, -18, -36, -9, -27])
         #expect(Tradicion.vietnam.nombre(en: Notacion.espanolCompacto.conTextos(en: .portugues)) == "Vietname")
         #expect(Tradicion.brasil.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Brazil")
+    }
+}
+
+/// Acordes, escalas y tonalidades se consultan con las mismas etiquetas: `notas:`, `alturas:`, `clasesDeAltura:` y
+/// `midi:`.
+@Suite struct LasMismasConsultasTests {
+    @Test func lasEscalasConAlturasYMidi() {
+        let alturas = [Altura("Do4"), Altura("Mi4"), Altura("Sol4"), Altura("Si4"), Altura("Fa#4")]
+        #expect(Escala.candidatos(alturas: alturas) == Escala.candidatos(notas: alturas.map(\.nota)))
+        #expect(Escala.identificar(alturas: alturas).first == Escala("Do pentatónica lidia"))
+        #expect(Escala.candidatos(midi: alturas.map(\.midi)) == Escala.candidatos(clasesDeAltura: [0, 4, 7, 11, 6]))
+        #expect(Escala.identificar(midi: [60, 64, 67, 71, 66]).first == Escala("Do pentatónica lidia"))
+    }
+
+    @Test func lasTonalidadesConClasesDeAltura() {
+        let midi = [69, 71, 72, 74, 76, 77, 80, 81]
+        #expect(Tonalidad.candidatos(clasesDeAltura: midi.map { $0 % 12 }) == Tonalidad.candidatos(midi: midi))
+        #expect(Tonalidad.candidatos(clasesDeAltura: midi.map { $0 % 12 }).first?.valor == Tonalidad("La menor"))
+    }
+
+    @Test func losAcordesConAlturas() {
+        #expect(Acorde.identificar(alturas: [Altura("Mi3"), Altura("Sol3"), Altura("Do4")]).first == Acorde("Do/Mi"))
     }
 }

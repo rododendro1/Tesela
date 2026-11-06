@@ -71,7 +71,7 @@ import Testing
             let textos = TextosDeRepresentaciones.traducidos.texto(en: idioma)
             let resultados = [
                 textos.cicloDesde("x", "x"),
-                textos.semitonos(3),
+                TextosDeTeoria.traducidos.texto(en: idioma).semitonos(3),
                 textos.uilNoValido("x"),
                 textos.intervalosIncoherentes(1, 2, 3),
                 textos.giroNoValido(45),

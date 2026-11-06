@@ -269,9 +269,10 @@ package enum Exportacion {
         if cifrados || analisis {
             for (i, alturas) in coral.acordes.enumerated() {
                 // Solo los tipos del catálogo: un acorde con notas de paso no se cifra como «add♭9».
-                if let acorde = Acorde.candidatos(alturas).first(where: { TipoDeAcorde.todos.contains($0.valor.tipo) })?
-                    .valor
-                {
+                if let acorde = Acorde.candidatos(alturas: alturas).first(where: {
+                    TipoDeAcorde.todos.contains($0.valor.tipo)
+                })?
+                .valor {
                     identificados.append((i, acorde))
                 }
             }

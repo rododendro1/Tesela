@@ -1,5 +1,6 @@
 // swift-format-ignore-file
 // Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaNucleo
 // Los textos de ArmoniaTeoria en ruso. Los campos y lo que significa cada uno están en
 // `TextosDeTeoria.swift`.
 
@@ -20,6 +21,19 @@ extension TextosDeTeoria {
         nombresDeLasInversiones: ["основной вид", "первое обращение", "второе обращение", "третье обращение",
                                   "четвёртое обращение", "пятое обращение", "шестое обращение"],
         inversionConNumero: "_-е обращение",
+
+        // CicloNeorriemanniano.swift
+        cicloHexatonico: "гексатонический цикл",
+        cicloOctatonico: "октатонический цикл",
+        cicloLR: "LR-цикл",
+
+        // ConduccionParsimoniosa.swift
+        semitonos: { n in Idioma.ruso.contar(n, "полутон", "полутона", "полутонов") },
+
+        // TransformacionNeorriemanniana.swift
+        homonima: "одноимённая",
+        cambioDeSensible: "смена вводного тона",
+        relativa: "параллельная",
 
         // EstructuraDeAcorde.swift
         papelFundamental: "основной тон",

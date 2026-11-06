@@ -32,7 +32,7 @@ extension Tonalidad {
             return nota
         }
         let todas = [bajo] + notas
-        let candidatos = Acorde.identificar(todas)
+        let candidatos = Acorde.identificar(notas: todas)
         let exacto = candidatos.first { $0.bajo == bajo && Set($0.notas + [$0.bajo]) == Set(todas) }
         guard let acorde = exacto ?? candidatos.first(where: { $0.bajo == bajo }) else {
             throw ErrorDeLecturaDeTeoria(texto: cifras, posicion: nil, motivo: .cifrasSinAcorde(cifras))

@@ -23,19 +23,6 @@ extension TextosDeRepresentaciones {
         leyendaPasoDelRecorrido: "ibilbidearen urratsa (P, L, R)",
         leyendaFundamentalDelPrimerAcorde: "lehen akordearen oinarria",
 
-        // CicloNeorriemanniano.swift
-        cicloHexatonico: "ziklo hexatonikoa",
-        cicloOctatonico: "ziklo oktatonikoa",
-        cicloLR: "LR zikloa",
-
-        // ConduccionParsimoniosa.swift
-        semitonos: { n in "\(n) tonuerdi" },
-
-        // TransformacionNeorriemanniana.swift
-        homonima: "homonimoa",
-        cambioDeSensible: "sentsiblearen aldaketa",
-        relativa: "erlatiboa",
-
         // TecladoIsomorfico.swift
         tablaArmonica: "Taula harmonikoa",
         wickiHaydenEspejo: "Wicki-Hayden (ispilua)",

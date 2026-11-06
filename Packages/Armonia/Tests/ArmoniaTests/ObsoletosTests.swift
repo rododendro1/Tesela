@@ -20,6 +20,30 @@ import Testing
     }
 
     @available(*, deprecated)
+    @Test func lasConsultasSinEtiqueta() {
+        let notas: [Nota] = [.mi, .sol, .do]
+        #expect(Acorde.candidatos(notas) == Acorde.candidatos(notas: notas))
+        #expect(Acorde.identificar(notas) == Acorde.identificar(notas: notas))
+        let alturas = [Altura("Mi3"), Altura("Sol3"), Altura("Do4")]
+        #expect(Acorde.candidatos(alturas) == Acorde.candidatos(alturas: alturas))
+        #expect(Acorde.identificar(alturas) == Acorde.identificar(alturas: alturas))
+        #expect(Escala.candidatos(notas) == Escala.candidatos(notas: notas))
+        #expect(Escala.identificar(notas, tipos: [.mayor]) == Escala.identificar(notas: notas, tipos: [.mayor]))
+    }
+
+    @available(*, deprecated)
+    @Test func laRotacionEsElModo() {
+        #expect(Escala(.do).rotacion(2) == Escala(.do).modo(grado: 2))
+        #expect(TipoDeEscala.mayor.rotacion(6) == TipoDeEscala.mayor.modo(grado: 6))
+    }
+
+    @available(*, deprecated)
+    @Test func elNombreMicrotonalSinNotacion() {
+        let mi = NotaMicrotonal(temperada: .mi, sistema: .cuartosDeTono, ajuste: -1, cents: 0)
+        #expect(mi.nombre() == mi.nombre(en: .espanolCompacto))
+    }
+
+    @available(*, deprecated)
     @Test func invertirUnAcorde() {
         #expect(Acorde("Do7").invertir(1) == Acorde("Do7").cambiarInversion(1))
     }

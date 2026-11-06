@@ -48,9 +48,9 @@ import Testing
         #expect(Escala(.re, .dorico).nombre(en: .inglesASCII) == "D dorian")
         #expect(Escala("Mib menor armónica").nombre(en: .inglesCompacto) == "E♭ harmonic minor")
         #expect(
-            Escala(.do, TipoDeEscala.pentatonicaMayor.rotacion(3)).nombre(en: .inglesASCII)
+            Escala(.do, TipoDeEscala.pentatonicaMayor.modo(grado: 3)).nombre(en: .inglesASCII)
                 == "C pentatónica mayor, modo 3")
-        #expect(Escala(.do, TipoDeEscala.pentatonicaMayor.rotacion(2)).nombre(en: .inglesASCII) == "C Egyptian")
+        #expect(Escala(.do, TipoDeEscala.pentatonicaMayor.modo(grado: 2)).nombre(en: .inglesASCII) == "C Egyptian")
         for tipo in TipoDeEscala.occidentales {
             let escala = Escala("F#", tipo)
             #expect(

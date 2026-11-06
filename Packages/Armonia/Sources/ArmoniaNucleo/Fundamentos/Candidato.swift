@@ -4,7 +4,7 @@
 /// para una melodía… Cuanto menor es el coste, más probable es la lectura, y las listas de
 /// candidatos se devuelven ordenadas de menor a mayor coste.
 ///
-///     let c = Acorde.candidatos([.do, .mi, "Sib"]).first!
+///     let c = Acorde.candidatos(notas: [.do, .mi, "Sib"]).first!
 ///     c.valor.cifrado   // "Do7"
 ///     c.coste           // 1.0 (falta la quinta)
 ///     c.omitidas        // [Sol]

@@ -51,7 +51,7 @@ public struct RecorridoDePartitura: Hashable, Sendable {
     /// «R», «PL», «=» o «–»: ver `Paso.transformacion`. Basta que las tríadas suenen igual (Do♯ y Re♭ son la misma),
     /// porque la ortografía de un fichero MIDI es una estimación.
     static func transformacion(desde origen: Acorde, hasta destino: Acorde) -> String {
-        guard let camino = Tonnetz.camino(desde: origen, hasta: destino, enarmonico: true) else { return "–" }
+        guard let camino = origen.caminoNeorriemanniano(hasta: destino, enarmonico: true) else { return "–" }
         return camino.isEmpty ? "=" : camino.map { $0.rawValue.uppercased() }.joined()
     }
 

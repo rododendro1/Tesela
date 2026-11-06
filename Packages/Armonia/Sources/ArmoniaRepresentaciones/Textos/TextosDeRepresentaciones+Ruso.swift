@@ -24,19 +24,6 @@ extension TextosDeRepresentaciones {
         leyendaPasoDelRecorrido: "шаг последовательности (P, L, R)",
         leyendaFundamentalDelPrimerAcorde: "основной тон первого аккорда",
 
-        // CicloNeorriemanniano.swift
-        cicloHexatonico: "гексатонический цикл",
-        cicloOctatonico: "октатонический цикл",
-        cicloLR: "LR-цикл",
-
-        // ConduccionParsimoniosa.swift
-        semitonos: { n in Idioma.ruso.contar(n, "полутон", "полутона", "полутонов") },
-
-        // TransformacionNeorriemanniana.swift
-        homonima: "одноимённая",
-        cambioDeSensible: "смена вводного тона",
-        relativa: "параллельная",
-
         // TecladoIsomorfico.swift
         tablaArmonica: "Гармоническая таблица",
         wickiHaydenEspejo: "Уикки-Хейден (зеркальный)",

@@ -58,7 +58,7 @@ El texto se acepta en español (`Do`, `Sib`, `Fa#`, `Solx`, `Mi♭♭`) o con le
 - **Valores derivados con nombre propio: sustantivo o adjetivo.** `inversion` (de un intervalo),
   `simple`, `ascendente`, `descendente`, `enarmonicaMasSimple`, `complemento`, `relativa`,
   `homonima`, `sostenido`, `bemol`.
-- **Consultas con parámetro: sustantivo.** `grado(_:)`, `rotacion(_:)`, `intervalo(hasta:)`,
+- **Consultas con parámetro: sustantivo.** `grado(_:)`, `modo(grado:)`, `intervalo(hasta:)`,
   `acorde(grado:)`, `nombreDeGrado(de:)`, `sonido(de:)`, `escritura(de:)`.
 - **Preguntas: `es…`, `tiene…`, `esta…`.** `esConsonante`, `tieneBajoAjeno`, `estaDentroDelPentagrama`.
 - **El mismo valor con algo cambiado: `con…` y `sin…`.** `con(duracion:)`, `con(dinamica:articulaciones:)`,
@@ -77,7 +77,8 @@ El texto se acepta en español (`Do`, `Sib`, `Fa#`, `Solx`, `Mi♭♭`) o con le
   `Nota`, `CalidadDeIntervalo`, `EstiloDeCifrado`, `PapelEnAcorde`, `PosicionEnElPentagrama`.
 - **Búsquedas: `candidatos` e `identificar`.** `candidatos(…)` devuelve las lecturas posibles
   con su coste (`[Candidato<…>]`) e `identificar(…)`, solo los valores, de más a menos probable:
-  `Acorde.candidatos(_:)`, `Tonalidad.candidatos(midi:)`, `Escala.candidatos(_:)`.
+  `Acorde.candidatos(notas:)`, `Tonalidad.candidatos(midi:)`, `Escala.candidatos(notas:)`. Las tres aceptan lo
+  mismo con la misma etiqueta: `notas:`, `alturas:`, `clasesDeAltura:` o `midi:`.
 - **Nota, altura y nota natural**, como en la teoría: `Nota` no tiene octava (Do, Fa♯), `Altura`
   sí (Do4) y `NotaNatural` no lleva alteración. Las colecciones con octava se llaman `alturas`
   (`Melodia.alturas`, `Evento.alturas`, `Escala.alturas(octava:sentido:)`).

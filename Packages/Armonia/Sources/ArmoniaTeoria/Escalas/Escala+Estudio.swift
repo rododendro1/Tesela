@@ -104,7 +104,7 @@ extension Escala {
 
     /// Las escalas con las mismas notas que empiezan en cada grado: los modos relativos (en Do mayor, Do jónico,
     /// Re dórico, Mi frigio…).
-    public var modosRelativos: [Escala] { (1...tipo.intervalos.count).map { rotacion($0) } }
+    public var modosRelativos: [Escala] { (1...tipo.intervalos.count).map { modo(grado: $0) } }
 }
 
 // MARK: - Comparar dos escalas

@@ -48,11 +48,11 @@ VentanaDeQuintas.sostenidos.reescrita(Altura("Si♭4"))       // La♯4
 Acorde("Do7").ortografiar(midi: [61])                       // [Re♭4]
 
 Acorde("Sol7/Si").posicionCerrada(octava: 3)   // [Si3, Re4, Fa4, Sol4]
-Acorde.identificar([.mi, .sol, .do]).first         // Do/Mi
+Acorde.identificar(notas: [.mi, .sol, .do]).first         // Do/Mi
 
 let menor = Escala("La menor armónica")
 menor.cifradosRomanos(cuatriadas: true)
 // ["i(maj7)", "iiø7", "♭III+maj7", "iv7", "V7", "♭VImaj7", "vii°7"]
 Escala("Mib mayor").armadura              // -3
-Escala(.do).rotacion(2)                    // Re dórico
+Escala(.do).modo(grado: 2)                    // Re dórico
 ```

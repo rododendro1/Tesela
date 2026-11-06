@@ -24,19 +24,6 @@ extension TextosDeRepresentaciones {
         leyendaPasoDelRecorrido: "a menet lépése (P, L, R)",
         leyendaFundamentalDelPrimerAcorde: "az első akkord alaphangja",
 
-        // CicloNeorriemanniano.swift
-        cicloHexatonico: "hexatonikus ciklus",
-        cicloOctatonico: "oktatonikus ciklus",
-        cicloLR: "LR-ciklus",
-
-        // ConduccionParsimoniosa.swift
-        semitonos: { n in Idioma.hungaro.contar(n, "félhang") },
-
-        // TransformacionNeorriemanniana.swift
-        homonima: "azonos alaphangú",
-        cambioDeSensible: "vezetőhangcsere",
-        relativa: "párhuzamos",
-
         // TecladoIsomorfico.swift
         tablaArmonica: "Harmonikus tábla",
         wickiHaydenEspejo: "Wicki–Hayden (tükrözött)",
