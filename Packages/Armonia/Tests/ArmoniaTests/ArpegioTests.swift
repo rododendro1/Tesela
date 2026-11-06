@@ -2,9 +2,9 @@ import Foundation
 import Testing
 
 @testable import Armonia
+@testable import ArmoniaDiagramas
 @testable import ArmoniaElementos
 @testable import ArmoniaPartitura
-@testable import ArmoniaDiagramas
 @testable import ArmoniaTeoria
 @testable import ArmoniaTrastes
 

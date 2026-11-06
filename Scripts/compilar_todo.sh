@@ -69,7 +69,7 @@ done
 # 2. Las pruebas del motor (compilarlas aparte separa «no compila» de «una prueba falla»).
 if [ "$MOTOR_COMPILA" = 1 ]; then
     if paso "Motor: compilar las pruebas" Packages/Armonia swift build --build-tests; then
-        paso "Motor: pruebas rápidas" Packages/Armonia swift test --skip-build --parallel --filter '^Armonia(Nucleo|Teoria|Representaciones|Partitura|Formatos|Trastes)?Tests\.'
+        paso "Motor: pruebas rápidas" Packages/Armonia swift test --skip-build --parallel --filter '^Armonia(Elementos|Teoria|Diagramas|Partitura|Formatos|Trastes)?Tests\.'
         paso "Motor: ejemplos de la documentación" Packages/Armonia swift test --skip-build --parallel --filter '^ArmoniaDocumentacionTests\.'
         if [ "$RAPIDO" = 0 ]; then
             paso "Motor: pruebas exhaustivas" Packages/Armonia swift test --skip-build --parallel --filter '^ArmoniaExhaustivasTests\.'

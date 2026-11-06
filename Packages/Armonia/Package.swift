@@ -62,7 +62,7 @@ let package = Package(
                 "ArmoniaTrastes",
             ]),
         // Las pruebas de cada módulo dependen solo de él y de los que puede usar, como el módulo mismo: una prueba de
-        // Núcleo que necesitara Teoría no compila. Ven lo `internal` con `@testable import`.
+        // Elementos que necesitara Teoría no compila. Ven lo `internal` con `@testable import`.
         .testTarget(name: "ArmoniaElementosTests", dependencies: ["ArmoniaElementos"]),
         .testTarget(name: "ArmoniaTeoriaTests", dependencies: ["ArmoniaElementos", "ArmoniaTeoria", "ApoyoDePruebas"]),
         .testTarget(

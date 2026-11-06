@@ -2,8 +2,8 @@ import ApoyoDePruebas
 import Foundation
 import Testing
 
-@testable import ArmoniaElementos
 @testable import ArmoniaDiagramas
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// El Tonnetz y la tabla armónica se usan igual a través de `RedDeTriadas`: lo mismo que sus inicializadores.

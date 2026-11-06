@@ -3,8 +3,8 @@ import Foundation
 import Hexagonos
 import Testing
 
-@testable import ArmoniaElementos
 @testable import ArmoniaDiagramas
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// El Tonnetz, la tabla armónica y los teclados isomórficos sobre la rejilla de `Hexagonos`.

@@ -1,6 +1,6 @@
 import Foundation
 
-// El protocolo de los sistemas de afinación: lo que da frecuencia a cada nota. Está en el Núcleo para que lo usen
+// El protocolo de los sistemas de afinación: lo que da frecuencia a cada nota. Está en los Elementos para que lo usen
 // todas las capas (el MIDI de los formatos suena en la que se le pida); los temperamentos y las afinaciones
 // históricas están en la Teoría (ArmoniaTeoria/Afinacion/).
 

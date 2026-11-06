@@ -170,7 +170,7 @@ el código de cada paso probado). Los artículos también se pueden leer directa
 ```
 swift build
 swift test                                    # todas las pruebas
-swift test --filter "^Armonia(Nucleo|Teoria|Representaciones|Partitura|Formatos|Trastes)?Tests\."   # solo las rápidas (segundos)
+swift test --filter "^Armonia(Elementos|Teoria|Diagramas|Partitura|Formatos|Trastes)?Tests\."   # solo las rápidas (segundos)
 swift test --filter "^ArmoniaTeoriaTests\."    # las de un módulo
 swift test --filter "^ArmoniaExhaustivasTests\."  # solo las exhaustivas
 swift test --filter "^ArmoniaDocumentacionTests\."  # los ejemplos del README y de DocC
@@ -291,7 +291,7 @@ dos ramas que usan las anteriores y no se usan entre sí: **ArmoniaDiagramas** (
 el Tonnetz) y **ArmoniaPartitura** (el modelo, el pentagrama en SVG y el contrapunto). Sobre Partitura van **ArmoniaFormatos** (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond)
 y **ArmoniaTrastes** (instrumentos de cuerda con trastes, que escriben lo que se toca en una partitura con su
 tablatura), que tampoco se usan entre sí. `Armonia` los reexporta
-todos; `Hexagonos`, que usan las Representaciones, se importa aparte. `python3
+todos; `Hexagonos`, que usan los Diagramas, se importa aparte. `python3
 Scripts/comprobaciones/comprobar_modulos.py`, que ejecuta el CI, comprueba que las dependencias declaradas y los
 `import` respetan esas capas.
 

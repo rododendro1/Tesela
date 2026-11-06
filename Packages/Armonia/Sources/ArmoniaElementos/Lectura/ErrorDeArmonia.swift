@@ -34,7 +34,7 @@ public protocol MotivoDeLectura: Hashable, Sendable {
 ///
 /// Cada capa tiene el suyo, con sus motivos: `ErrorDeLectura` (notas, alturas e intervalos),
 /// `ErrorDeLecturaDeTeoria` (cifrados, escalas, tonalidades y corales) y `ErrorDeLecturaDePartitura` (duraciones,
-/// compases y contrapunto). Leer un acorde puede lanzar los dos primeros: el de Núcleo si falla la nota y el de
+/// compases y contrapunto). Leer un acorde puede lanzar los dos primeros: el de Elementos si falla la nota y el de
 /// Teoría si falla el cifrado.
 public protocol ErrorAlLeer: ErrorDeArmonia, Hashable {
     associatedtype Motivo: MotivoDeLectura

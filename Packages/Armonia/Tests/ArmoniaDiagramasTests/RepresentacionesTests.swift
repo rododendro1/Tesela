@@ -1,8 +1,8 @@
 import Foundation
 import Testing
 
-@testable import ArmoniaElementos
 @testable import ArmoniaDiagramas
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 @Suite struct CorrespondenciaDeColoresTests {

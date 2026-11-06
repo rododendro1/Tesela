@@ -2,8 +2,8 @@ import Foundation
 import Hexagonos
 import Testing
 
-@testable import ArmoniaElementos
 @testable import ArmoniaDiagramas
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// Los teclados isomórficos de cuadrícula, definidos por sus ejes H y V.

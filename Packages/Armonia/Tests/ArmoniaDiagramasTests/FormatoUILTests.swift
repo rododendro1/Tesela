@@ -3,8 +3,8 @@ import Foundation
 import Hexagonos
 import Testing
 
-@testable import ArmoniaElementos
 @testable import ArmoniaDiagramas
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// El formato UIL (Park y Gerhard, 2013): lectura, escritura, giros de 30° y espejo.

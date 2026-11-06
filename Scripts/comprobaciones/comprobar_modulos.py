@@ -11,11 +11,11 @@ La biblioteca se reparte en seis módulos, más `Armonia`, que los reexporta:
     ArmoniaTrastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes, sobre Partitura)
     Armonia                  solo reexporta los seis (no Hexagonos: quien lo use, lo importa)
 
-Fuera del paquete, Representaciones usa `Hexagonos` (la geometría de las rejillas hexagonales), que no depende
+Fuera del paquete, Diagramas usa `Hexagonos` (la geometría de las rejillas hexagonales), que no depende
 de nada; `Armonia` no lo reexporta.
 
-Un módulo solo puede usar los de su izquierda: Teoría usa Núcleo; Representaciones y Partitura usan Teoría y
-Núcleo, y no se usan entre sí; Formatos y Trastes usan además Partitura (lo que se toca en el mástil se escribe en
+Un módulo solo puede usar los de su izquierda: Teoría usa Elementos; Diagramas y Partitura usan Teoría y
+Elementos, y no se usan entre sí; Formatos y Trastes usan además Partitura (lo que se toca en el mástil se escribe en
 una partitura, con su tablatura), y no se usan entre sí. SwiftPM no impide por sí solo importar un módulo que no está
 declarado como dependencia si otra ruta lo compila antes, así que se comprueba aquí:
 
