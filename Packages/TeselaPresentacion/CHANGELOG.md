@@ -2,6 +2,11 @@
 
 ## Sin publicar
 
+- **La escala elegida en la pestaña de escalas.** `EleccionDeEscala`: la tónica y el tipo del catálogo, por su índice,
+  o una escala escrita, y `elegir(_:)` para una pedida desde otra pestaña. `PresentacionDeEstudioDeEscala` suma lo que
+  esa pestaña dibujaba o exportaba por su cuenta: los `teclados(de:notacion:)` de cada mano, los `trastes(de:notacion:)`
+  y el `sonido(de:en:)` de una posición en el mástil, y los ficheros de la hoja de estudio, del mapa de brillo y de la
+  comparación.
 - **Las redes de notas, desde `TeselaUI`.** `RedDeNotas`, `ContenidoDeRed`, `PresentacionDeRedes`, `AjusteUIL` y
   `AjusteCuadrado` vienen de `TeselaUI`, para que las use también la línea de comandos; el paquete depende ahora
   también de `Hexagonos`. `ContenidoDeRed` suma `.notas`, `.camino` y `.ciclo` (lo que dibujan `armonia tonnetz`,
