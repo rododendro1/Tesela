@@ -33,10 +33,10 @@ for base in ("Təzəta", "Bati"):
 
 
 def texto_de(tradicion):
-    """El código de una tradición: cada una tiene su fichero, `Tradiciones/TipoDeEscala+Nombre.swift`. La de Grecia
-    reúne los dromoi y la Grecia antigua."""
+    """El código de una tradición: cada una tiene su fichero, `Tradiciones/Catalogo/TipoDeEscala+Nombre.swift`. La
+    de Grecia reúne los dromoi y la Grecia antigua."""
     ficheros = ["Grecia", "GreciaAntigua"] if tradicion == "Grecia" else [tradicion]
-    rutas = [ESC / "Tradiciones" / f"TipoDeEscala+{f}.swift" for f in ficheros]
+    rutas = [ESC / "Tradiciones" / "Catalogo" / f"TipoDeEscala+{f}.swift" for f in ficheros]
     for ruta in rutas:
         if not ruta.exists():
             sys.exit(f"No encuentro {ruta.name}")

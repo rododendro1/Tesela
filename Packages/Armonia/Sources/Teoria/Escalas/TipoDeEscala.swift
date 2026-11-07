@@ -205,7 +205,7 @@ extension TipoDeEscala: CustomStringConvertible {
 // Más escalas, búsqueda de escalas, armaduras, círculo de quintas y funciones de grado.
 
 // Las escalas adicionales (modos derivados, exóticas, hexatónicas, Messiaen, jazz…) están en
-// `Occidentales/TipoDeEscala+Modos.swift` y `+Exoticas.swift`, y las de otras tradiciones, en `Tradiciones/`.
+// `Occidentales/TipoDeEscala+Modos.swift` y `+Exoticas.swift`, y las de otras tradiciones, en `Tradiciones/Catalogo/`.
 
 extension Escala {
     /// El hexacordo natural, sobre Do (Do Re Mi Fa Sol La).

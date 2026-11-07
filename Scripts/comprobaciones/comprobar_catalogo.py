@@ -89,7 +89,7 @@ for texto in TEXTO.values():
 if not apuntadas:
     sys.exit("No encuentro `listasTradicionales`: ¿cambió el estilo del catálogo?")
 for f, texto in TEXTO.items():
-    if f.parent.name != "Tradiciones":
+    if "Tradiciones" not in f.parts:
         continue
     for m in re.finditer(r"public static let (\w+): \[TipoDeEscala\] = \[", texto):
         if m.group(1) not in apuntadas:
@@ -121,7 +121,7 @@ def tradicionales_declaradas():
     de una tabla y no llevan fila: sin ella conservan su nombre original."""
     miembros = []
     for f, texto in TEXTO.items():
-        if f.parent.name == "Tradiciones":
+        if "Tradiciones" in f.parts:
             miembros += re.findall(r'static let `?(\w+)`? = TipoDeEscala\(', texto)
     return list(dict.fromkeys(miembros))
 
