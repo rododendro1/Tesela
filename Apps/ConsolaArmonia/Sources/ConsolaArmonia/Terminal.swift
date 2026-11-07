@@ -252,7 +252,7 @@ extension LineaDeComandos {
         let tituloDeLasOrdenes = limpiar((cabecera.last ?? "").prefix { $0 != ":" && $0 != "(" }, " ")
         var roff = [
             ".TH ARMONIA 1 \"\" \"Tesela\" \"armonia\"",
-            ".SH " + escapar(TextosDeCLI.traduccion(\.manualNombre).texto(en: idioma)),
+            ".SH " + escapar(TextosDeConsola.traduccion(\.manualNombre).texto(en: idioma)),
             "armonia \\- " + escapar(descripcion),
             ".SH " + escapar(tituloDelUso.uppercased()),
             ".B armonia",
@@ -272,7 +272,7 @@ extension LineaDeComandos {
                 roff += [".sp", ".RS 4", ".EX", escapar(ejemplo), ".EE", ".RE"]
             }
         }
-        let textos = TextosDeCLI.traducidos.texto(en: idioma)
+        let textos = TextosDeConsola.traducidos.texto(en: idioma)
         roff += [
             ".SH " + escapar(textos.manualEntorno), ".TP", ".B ARMONIA_IDIOMA", escapar(textos.manualIdiomaDelEntorno),
         ]
@@ -286,7 +286,7 @@ extension LineaDeComandos {
         for (codigo, texto) in textos.manualCodigosDeSalida.enumerated() {
             roff += [".TP", ".B \(codigo)", escapar(texto)]
         }
-        roff.append(".SH " + escapar(TextosDeCLI.traduccion(\.manualNotas).texto(en: idioma)))
+        roff.append(".SH " + escapar(TextosDeConsola.traduccion(\.manualNotas).texto(en: idioma)))
         for parrafo in pieDeLaAyuda.texto(en: idioma).components(separatedBy: "\n\n") {
             roff += [".PP", escapar(unaLinea(parrafo))]
         }
@@ -349,16 +349,16 @@ extension LineaDeComandos {
     static let ayudaDelCompletado: [EntradaDeAyuda] = [
         // completado bash|zsh|fish
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisCompletado),
-            descripcion: TextosDeCLI.traduccion(\.descripcionCompletado),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisCompletado),
+            descripcion: TextosDeConsola.traduccion(\.descripcionCompletado),
             ejemplo: ejemplo("source <(armonia completado bash)", "source <(armonia completion bash)"))
     ]
 
     static let ayudaDelManual: [EntradaDeAyuda] = [
         // manual
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisManual),
-            descripcion: TextosDeCLI.traduccion(\.descripcionManual),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisManual),
+            descripcion: TextosDeConsola.traduccion(\.descripcionManual),
             ejemplo: ejemplo("armonia manual > armonia.1", "armonia manual --ingles > armonia.1"))
     ]
 }

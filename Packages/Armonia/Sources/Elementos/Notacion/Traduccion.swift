@@ -5,9 +5,9 @@
 // idiomas de las notaciones: español, inglés, catalán, gallego, asturiano, aragonés, euskera, portugués,
 // francés, occitano, italiano, alemán, griego, ruso y húngaro.
 //
-// Los textos se escriben un idioma por fichero: cada módulo tiene su `TextosDeX` (`TextosDeNucleo`,
+// Los textos se escriben un idioma por fichero: cada módulo tiene su `TextosDeX` (`TextosDeElementos`,
 // `TextosDeTrastes`…) con un campo por texto, y un fichero por idioma en su carpeta `Textos/`
-// (`TextosDeNucleo+Espanol.swift`, `…+Ingles.swift`…). Los campos no tienen valores por omisión, así que un
+// (`TextosDeElementos+Espanol.swift`, `…+Ingles.swift`…). Los campos no tienen valores por omisión, así que un
 // texto nuevo no compila hasta que está en los quince ficheros. `TextosDeX.en(notacion, \.campo)` da el texto
 // de un campo en un idioma, y `TextosDeX.traduccion(\.campo)` su `Traduccion` (ver `TextosTraducidos`).
 //
@@ -132,7 +132,7 @@ public struct Traducido<Valor> {
     }
 }
 
-/// Los textos de un módulo en los quince idiomas: los `TextosDeX` (`TextosDeNucleo`, `TextosDeTeoria`…), con un
+/// Los textos de un módulo en los quince idiomas: los `TextosDeX` (`TextosDeElementos`, `TextosDeTeoria`…), con un
 /// campo por texto y un fichero por idioma.
 ///
 ///     TextosDeTeoria.en(notacion, \.pivote)              // el texto en el idioma de la notación

@@ -16,7 +16,7 @@ import Testing
     @Test func cadaTextoConValoresEnCadaIdioma() {
         for idioma in Idioma.allCases {
             let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
-            let textos = TextosDeNucleo.traducidos.texto(en: idioma)
+            let textos = TextosDeElementos.traducidos.texto(en: idioma)
             let resultados = [
                 textos.multiplicidad(3),
                 textos.noSePuedeLeer("x"),
@@ -25,14 +25,14 @@ import Testing
                 textos.octavaNoValida("x"),
                 textos.numeroDeIntervaloNoValido("x"),
                 textos.calidadNoValida("x"),
-                textos.intervaloInexistente(3, .mayor, notacion, TextosDeNucleo.traduccion(\.disonancia)),
+                textos.intervaloInexistente(3, .mayor, notacion, TextosDeElementos.traduccion(\.disonancia)),
                 textos.alteracionNoReconocida("x"),
                 textos.nombreDeIntervalo("x", "x"),
                 textos.unisonoEnMasculino("x"),
                 textos.ordinalEnCifras(3),
             ]
             for (i, texto) in resultados.enumerated() {
-                #expect(!texto.isEmpty, "TextosDeNucleo, texto \(i) en \(idioma)")
+                #expect(!texto.isEmpty, "TextosDeElementos, texto \(i) en \(idioma)")
             }
         }
         for idioma in Idioma.allCases {
@@ -68,7 +68,7 @@ import Testing
             }
         }
         for idioma in Idioma.allCases {
-            let textos = TextosDeRepresentaciones.traducidos.texto(en: idioma)
+            let textos = TextosDeDiagramas.traducidos.texto(en: idioma)
             let resultados = [
                 textos.cicloDesde("x", "x"),
                 TextosDeTeoria.traducidos.texto(en: idioma).semitonos(3),
@@ -79,11 +79,11 @@ import Testing
                 textos.cizallaNoSoportada(2),
             ]
             for (i, texto) in resultados.enumerated() {
-                #expect(!texto.isEmpty, "TextosDeRepresentaciones, texto \(i) en \(idioma)")
+                #expect(!texto.isEmpty, "TextosDeDiagramas, texto \(i) en \(idioma)")
             }
         }
         for idioma in Idioma.allCases {
-            let textos = TextosDePartitura.traducidos.texto(en: idioma)
+            let textos = TextosDePartituras.traducidos.texto(en: idioma)
             let resultados = [
                 textos.enElCompas(3),
                 textos.enLosCompases("x"),
@@ -95,7 +95,7 @@ import Testing
                 textos.contrapuntoDeOtraDuracion(3),
             ]
             for (i, texto) in resultados.enumerated() {
-                #expect(!texto.isEmpty, "TextosDePartitura, texto \(i) en \(idioma)")
+                #expect(!texto.isEmpty, "TextosDePartituras, texto \(i) en \(idioma)")
             }
         }
         for idioma in Idioma.allCases {

@@ -557,7 +557,7 @@ extension LineaDeComandos {
             let sonNotas = !palabras.isEmpty && palabras.allSatisfy { (try? Nota(leyendoEnLaOrden: $0)) != nil }
             let texto =
                 sonNotas
-                ? TextosDeCLI.en(notacion) {
+                ? TextosDeConsola.en(notacion) {
                     $0.escalasPorNotas(
                         ejemplo(
                             "armonia identificar --escalas " + entrada.unidos,

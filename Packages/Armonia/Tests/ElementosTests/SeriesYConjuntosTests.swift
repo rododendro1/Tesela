@@ -81,7 +81,7 @@ import Testing
                 .explicacion
                 == "una serie dodecafónica tiene las doce clases de altura, cada una una vez")
         for idioma in Idioma.allCases {
-            let textos = TextosDeNucleo.traducidos.texto(en: idioma)
+            let textos = TextosDeElementos.traducidos.texto(en: idioma)
             for texto in [
                 textos.claseDeAlturaNoValida("x"), textos.numeroDeForteDesconocido("x"), textos.faltaElCierre("x"),
                 textos.serieNoDodecafonica, textos.faltanEnLaSerie("x"), textos.repetidasEnLaSerie("x"),

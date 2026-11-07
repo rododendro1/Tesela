@@ -36,7 +36,7 @@ extension LineaDeComandosTests {
         #expect(resultado("acorde", "Sol7", "-o").codigo == 2)
         #expect(LineaDeComandos.opcionesGenerales.contains("-o"))
         for idioma in Idioma.allCases {
-            #expect(TextosDeCLI.en(.delIdioma(idioma)) { $0.archivoNoEscrito("x") }.contains("x"))
+            #expect(TextosDeConsola.en(.delIdioma(idioma)) { $0.archivoNoEscrito("x") }.contains("x"))
         }
 
         // En la sesión, sin «>».

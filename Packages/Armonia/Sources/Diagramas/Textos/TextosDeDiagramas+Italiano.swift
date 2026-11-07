@@ -1,0 +1,51 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import Elementos
+// Los textos de Diagramas en italiano. Los campos y lo que significa cada uno están en
+// `TextosDeDiagramas.swift`.
+
+extension TextosDeDiagramas {
+    static let italiano = TextosDeDiagramas(
+        // CorrespondenciaDeColores.swift
+        circuloDeQuintas: "circolo delle quinte",
+
+        // DibujoSVG.swift
+        conjunto: "Insieme ",
+        cicloDesde: { nombre, cifrado in "\(nombre) da \(cifrado)" },
+        primeraClase: "prima classe",
+        primeraNota: "prima nota",
+        leyendaNota: "nota",
+        leyendaClaseDeAltura: "classe di altezza (tutte le sue copie)",
+        leyendaAltura: "altezza (tutti i suoi tasti)",
+        leyendaIntervalos: "quinta o terza tra note",
+        leyendaContorno: "contorno della forma",
+        leyendaTriadaMayor: "triade maggiore",
+        leyendaTriadaMenor: "triade minore",
+        leyendaPasoDelRecorrido: "passo del percorso (P, L, R)",
+        leyendaFundamentalDelPrimerAcorde: "fondamentale del primo accordo",
+
+        // TecladoIsomorfico.swift
+        tablaArmonica: "Tavola armonica",
+        wickiHaydenEspejo: "Wicki-Hayden (specchio)",
+        wickiHaydenPlano: "Wicki-Hayden (piatto)",
+        acordeonC: "Fisarmonica sistema C",
+        acordeonB: "Fisarmonica sistema B",
+        // TecladoCuadrado.swift
+        cuadriculaEnCuartas: "Griglia per quarte",
+        cuadriculaEnTercerasMayores: "Griglia per terze maggiori",
+        cuadriculaEnQuintas: "Griglia per quinte",
+        wickiHaydenCuadrado: "Wicki-Hayden (griglia)",
+        cuadriculaDeTonosEnteros: "Griglia a toni interi",
+        tonnetzDeEuler: "Tonnetz di Eulero",
+        cuadriculaEnTercerasMenores: "Griglia per terze minori",
+        cuadriculaEnTritonos: "Griglia per tritoni",
+        cuadriculaEnOctavas: "Griglia per ottave",
+        cuadriculaSecuencial: "Griglia sequenziale",
+        // FormatoUIL.swift
+        uilNoValido: { texto in "UIL non valido: «\(texto)». Si attende L,G,D;R<gradi>[M], per esempio 2,7,5;R30M." },
+        intervalosIncoherentes: { menor, mayor, diferencia in "Intervalli incoerenti: \(menor),\(mayor),\(diferencia). Devono rispettare 0 < L ≤ D e G = L + D." },
+        giroNoValido: { grados in "Una rotazione di \(grados)° non è multipla di 30°." },
+        afinacionNoSoportada: { tonos in "Si disegnano solo tastiere a 12 note, non a \(tonos)." },
+        cizallaNoSoportada: { cizalla in "Il taglio S\(cizalla) non è supportato." }
+    )
+}

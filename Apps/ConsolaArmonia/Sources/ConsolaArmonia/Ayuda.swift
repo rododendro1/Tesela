@@ -65,7 +65,7 @@ extension LineaDeComandos {
     /// El índice de la ayuda (`armonia ayuda`, o `armonia` a secas): la cabecera, una línea por orden con lo que hace,
     /// por grupos, y cómo pedir más. Las descripciones se juntan en una línea y se cortan a `anchoDelIndice`.
     static func indiceDeAyuda(en idioma: Idioma) -> String {
-        let titulos = TextosDeCLI.traduccion(\.gruposDeLaAyuda).texto(en: idioma)
+        let titulos = TextosDeConsola.traduccion(\.gruposDeLaAyuda).texto(en: idioma)
         var lineas = [cabeceraDeLaAyuda.texto(en: idioma)]
         for (titulo, grupo) in zip(titulos, gruposDeOrdenes) {
             lineas += ["", titulo + ":"]
@@ -77,7 +77,7 @@ extension LineaDeComandos {
                 lineas += lineasDelIndice(nombre, resumen(primera.descripcion.texto(en: idioma)))
             }
         }
-        return (lineas + ["", TextosDeCLI.traduccion(\.pieDelIndice).texto(en: idioma)]).joined(separator: "\n")
+        return (lineas + ["", TextosDeConsola.traduccion(\.pieDelIndice).texto(en: idioma)]).joined(separator: "\n")
     }
 
     static let anchoDelIndice = 80
@@ -187,10 +187,10 @@ extension LineaDeComandos {
     }
 
     /// Lo que va antes de las órdenes: qué es, cómo se usa y el título de la lista.
-    static let cabeceraDeLaAyuda = TextosDeCLI.traduccion(\.cabeceraDeLaAyuda)
+    static let cabeceraDeLaAyuda = TextosDeConsola.traduccion(\.cabeceraDeLaAyuda)
 
     /// Lo que sigue a las órdenes, tras una línea en blanco.
-    static let pieDeLaAyuda = TextosDeCLI.traduccion(\.pieDeLaAyuda)
+    static let pieDeLaAyuda = TextosDeConsola.traduccion(\.pieDeLaAyuda)
 
     /// Las entradas de todas las órdenes, en el orden de `ordenes`.
     static let ordenesDeLaAyuda: [EntradaDeAyuda] = ordenes.flatMap(\.ayuda)
@@ -209,16 +209,16 @@ extension LineaDeComandos {
     static let ayudaDeLaVersion: [EntradaDeAyuda] = [
         // --version
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisVersion),
-            descripcion: TextosDeCLI.traduccion(\.descripcionVersion),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisVersion),
+            descripcion: TextosDeConsola.traduccion(\.descripcionVersion),
             opciones: [.version])
     ]
 
     static let ayudaDeLaAyuda: [EntradaDeAyuda] = [
         // ayuda
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisAyuda),
-            descripcion: TextosDeCLI.traduccion(\.descripcionAyuda),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisAyuda),
+            descripcion: TextosDeConsola.traduccion(\.descripcionAyuda),
             opciones: [.ayuda])
     ]
 }

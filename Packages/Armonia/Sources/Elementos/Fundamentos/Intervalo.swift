@@ -403,24 +403,24 @@ extension CalidadDeIntervalo {
     /// alemán; "чистая", "большая" en ruso. Van en femenino, como los intervalos.
     public func nombre(en notacion: Notacion) -> String {
         switch self {
-        case .justa: return TextosDeNucleo.en(notacion, \.calidadJusta)
-        case .mayor: return TextosDeNucleo.en(notacion, \.calidadMayor)
-        case .menor: return TextosDeNucleo.en(notacion, \.calidadMenor)
+        case .justa: return TextosDeElementos.en(notacion, \.calidadJusta)
+        case .mayor: return TextosDeElementos.en(notacion, \.calidadMayor)
+        case .menor: return TextosDeElementos.en(notacion, \.calidadMenor)
         case .aumentada(let n):
             return CalidadDeIntervalo.multiplicidad(n).en(notacion)
-                + TextosDeNucleo.en(notacion, \.calidadAumentada)
+                + TextosDeElementos.en(notacion, \.calidadAumentada)
         case .disminuida(let n):
             return CalidadDeIntervalo.multiplicidad(n).en(notacion)
-                + TextosDeNucleo.en(notacion, \.calidadDisminuida)
+                + TextosDeElementos.en(notacion, \.calidadDisminuida)
         }
     }
 
     private static func multiplicidad(_ n: Int) -> Traduccion {
         switch n {
-        case 1: return TextosDeNucleo.traduccion(\.multiplicidadSimple)
-        case 2: return TextosDeNucleo.traduccion(\.multiplicidadDoble)
-        case 3: return TextosDeNucleo.traduccion(\.multiplicidadTriple)
-        default: return TextosDeNucleo.traduccion { $0.multiplicidad(n) }
+        case 1: return TextosDeElementos.traduccion(\.multiplicidadSimple)
+        case 2: return TextosDeElementos.traduccion(\.multiplicidadDoble)
+        case 3: return TextosDeElementos.traduccion(\.multiplicidadTriple)
+        default: return TextosDeElementos.traduccion { $0.multiplicidad(n) }
         }
     }
 }
@@ -435,24 +435,24 @@ extension Intervalo {
         let ordinal = Intervalo.ordinal(numero, en: notacion.textos)
         let calidad = self.calidad.nombre(en: notacion)
         // El unísono es masculino en francés, occitano e italiano: "unisson augmenté".
-        let concordada = numero == 1 ? TextosDeNucleo.en(notacion, { $0.unisonoEnMasculino(calidad) }) : calidad
-        let nombre = TextosDeNucleo.en(notacion) { $0.nombreDeIntervalo(concordada, ordinal) }
+        let concordada = numero == 1 ? TextosDeElementos.en(notacion, { $0.unisonoEnMasculino(calidad) }) : calidad
+        let nombre = TextosDeElementos.en(notacion) { $0.nombreDeIntervalo(concordada, ordinal) }
         return sentido == .descendente ? Intervalo.plantillaDescendente.en(notacion).rellenada(con: nombre) : nombre
     }
 
     /// Dónde va «descendente» en cada idioma: delante o detrás del nombre (`_`).
-    private static let plantillaDescendente = TextosDeNucleo.traduccion(\.plantillaDescendente)
+    private static let plantillaDescendente = TextosDeElementos.traduccion(\.plantillaDescendente)
 
     /// El nombre del n-ésimo intervalo: "third", "tierce", "Terz", "терция"… hasta la doble octava, y después en
     /// cifras ("16th", "16e"). En los idiomas que escriben los intervalos con número, en cifras: "3ª", "3a", "3.".
     package static func ordinal(_ n: Int, en idioma: Idioma) -> String {
-        let nombres = TextosDeNucleo.en(idioma: idioma, \.ordinales)
+        let nombres = TextosDeElementos.en(idioma: idioma, \.ordinales)
         return nombres.indices.contains(n - 1) ? nombres[n - 1] : ordinalEnCifras(n, en: idioma)
     }
 
     /// "1ª", "21st", "16e", "16.", "16-я", "16η"…
     package static func ordinalEnCifras(_ n: Int, en idioma: Idioma) -> String {
-        TextosDeNucleo.en(idioma: idioma) { $0.ordinalEnCifras(n) }
+        TextosDeElementos.en(idioma: idioma) { $0.ordinalEnCifras(n) }
     }
 
     /// "1st", "2nd", "3rd", "4th", "11th", "21st"…
@@ -475,11 +475,11 @@ extension Consonancia {
     public func nombre(en notacion: Notacion) -> String {
         switch self {
         case .perfecta:
-            return TextosDeNucleo.en(notacion, \.consonanciaPerfecta)
+            return TextosDeElementos.en(notacion, \.consonanciaPerfecta)
         case .imperfecta:
-            return TextosDeNucleo.en(notacion, \.consonanciaImperfecta)
+            return TextosDeElementos.en(notacion, \.consonanciaImperfecta)
         case .disonancia:
-            return TextosDeNucleo.en(notacion, \.disonancia)
+            return TextosDeElementos.en(notacion, \.disonancia)
         }
     }
 }

@@ -1,0 +1,377 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import Armonia
+// Los textos de ConsolaArmonia en euskera. Los campos y lo que significa cada uno están en
+// `TextosDeConsola.swift`.
+
+extension TextosDeConsola {
+    static let euskera = TextosDeConsola(
+        // Ayuda+Armonizacion.swift
+        sintaxisAnalizar: "analizar <akordeak> [--en <tonalitatea>] [--escalas]",
+        descripcionAnalizar: "zifratu erromatarra, funtzioak, kadentziak eta modulazioak (pibota barne; --en gabe)\n--escalas: akorde bakoitzaren eskala, tentsio eta saihesteko notekin",
+        notasAnalizar: "--notas-guia: gida-noten bi lerro, hirugarrenetik eta zazpigarrenetik; --conduccion: ahots bakoitza akorde batetik hurrengora nola doan (drop 2-n), nota komunekin; --comparar: beste bertsioa akordez akorde, aldatzen denarekin, bere graduekin eta nota komunekin; --bajo: baxu ibiltaria beltzetan, konpas bat akorde bakoitzeko",
+        sintaxisAnalizarArchivo: "analizar --archivo <fitxategia> [--ventana <iraupena>]",
+        descripcionAnalizarArchivo: "gauza bera, MIDI, MusicXML, MEI edo ABC fitxategi baten akordeekin (bat pultsuko; --ventana 2: bat zuriko)",
+        sintaxisArmonizar: "armonizar <melodia> [--en <tonalitatea>] [--propuestas 3]",
+        descripcionArmonizar: "melodia baterako akordeak, onenetik txarrenera; zortzidunekin (Mi4), lau ahotseko korala ere bai",
+        sintaxisRealizar: "realizar <akordeak> [--en <tonalitatea>]",
+        descripcionRealizar: "akordeak lau ahotsetara, ahots- eramate akatsik gabe",
+        sintaxisRevisar: "revisar <akordeak>",
+        descripcionRevisar: "ahots-eramate akatsak (bosgarren paraleloak…); akordeak baxutik altura, komaz bereizita",
+        sintaxisContrapunto: "contrapunto <cantus> / <kontrapuntua> [--especie 1]",
+        descripcionContrapunto: "espezie-kontrapuntu baten akatsak (1etik 5era) biribiletako cantus firmus baten gainean; iraupenik gabeko notek espeziearena dute",
+        sintaxisTransponer: "transponer <tartea|tonika> <akordeak edo notak>",
+        descripcionTransponer: "akorde batzuk, melodia bat edo koral bat beste tonu batera: tarte bat (2M, -3m) edo tonika berria (Re)",
+        sintaxisRearmonizar: "rearmonizar <akordeak> [--en <tonalitatea>]",
+        descripcionRearmonizar: "beste armonia batzuk akorde bakoitzerako: tritono-ordezkapena, bigarren mailako dominanteak, mailegu modala eta ordezko diatonikoak",
+
+        // Ayuda+Consultas.swift
+        sintaxisAcorde: "acorde <zifratua>…",
+        descripcionAcorde: "notak, mota eta nota bakoitzaren papera",
+        notasAcorde: "aukerak: --disposiciones, --nombres, --tonalidades, --sustituciones (--en Do mayor tonalitatean, amaieran) eta --comparar Do (nota komunak eta ahotsen eramatea); --bebop eta --pentatonicas (gainean inprobisatzeko eskalak)",
+        sintaxisArpegio: "arpegio <zifratua> [--patron <eredua>]",
+        descripcionArpegio: "arpegioaren notak eta akordeari dagozkion eskalak (--patron ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado, alberti)",
+        notasArpegio: "aukerak: --octavas 2 (1etik 4ra), --sin-octava, --desde Mi (edo 3: nota horretatik hasten da), --tensiones 9,13, --grados 1-5-3-8 (ibilbide propioa) eta --aproximacion abajo, arriba edo encierro (nota bakoitzera daramaten nota kromatikoak)",
+        sintaxisIdentificar: "identificar <notak>",
+        descripcionIdentificar: "nota batzuek osatzen dituzten akordeak",
+        notasIdentificar: "aukerak: --escalas (notak dituzten eskalak, akordeen ordez) eta --archivo melodia.mid (MIDI, MusicXML, MEI edo ABC fitxategi bateko notak, --escalas-ekin)",
+        sintaxisIntervalo: "intervalo <nota> <nota>",
+        descripcionIntervalo: "bi nota edo altueren arteko tartea",
+        sintaxisEscala: "escala <eskala> [--acordes]",
+        descripcionEscala: "eskala baten notak eta akordeak\n--acordes: gradu bakoitzean sartzen diren guztiak, ez hirurenak bakarrik",
+        notasEscala: "aukerak: --secuencia terceras (edo cuartas, grupos-de-3, grupos-de-4, triadas, cuatriadas), --bajando, --octavas 2 (1etik 4ra), --dedos (hatzkera), --modos (paraleloak eta erlatiboak) eta --comparar Do lidio (amaieran); --simetria (zenbatero errepikatzen den eta bere akordeak); --vecinas (nota bat mugituta ateratzen direnak) eta --doce (hamabi tonalitateetan); --doce --acordes (gradu bakoitzeko akordeak; --triadas, zazpigarrenik gabe); --estadisticas (nota kopurua, distira, tarte-bektorea…); --escalera (ilunenetik distiratsuenera, aldi bakoitzean nota bat igoz); --parecidas (harekin nota gehien partekatzen dituztenak, gutxien aldatzen denetik gehien aldatzen denera); --progresiones (bere hirukoteekin egindako progresioak, graduekin eta maiorrean edo minorrean ez dauden notekin)",
+        sintaxisEscalas: "escalas [<testua>] [aukerak]",
+        descripcionEscalas: "eskalen katalogoa: ohikoak eta beste tradizio batzuetakoak, kategoriaka, Do-tik hasitako notekin",
+        notasEscalas: "aukerak: --tradicion turquia (edo india, grecia, grecia-antigua, mundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia, indonesia, klezmer, andes, bizancio, mesopotamia, africa, sudeste-asiatico, gregoriano, europa, vietnam, brasil, renacimiento) eta --categoria maqam (edo rāga, makam, dastgah, dromos…); --fuente ptolomeo (edo arquitas, aristoxeno, didimo, guido, glareano…) teoriko baten eskalak uzten ditu; --uso jazz (edo clasica, blues, siglo-xx, popular, sintetica) ohikoak iragazten ditu; --notas 5 bost notakoak bakarrik uzten ditu; --orden brillo (edo notas) ordenatzen ditu, eta --sin-semitonos eta --regulares anhemitonikoak eta ahalik eta erregularrenak uzten dituzte; --con-intervalo tritono eta --sin-intervalo semitono (edo 1etik 6rako zenbaki bat) eta --con-paso 3 tarteen arabera bilatzen dute; --comparar Do mayor, Do lidio taula batean jartzen ditu; --mapa distira-mapa batean marrazten ditu (SVG); testu batek izenetan bilatzen du; --vecinas Re dórico, --parecidas Re dórico eta --escalera Re dórico eskala batetik ateratzen direnak ematen dituzte, escala-n bezala",
+        sintaxisTradiciones: "tradiciones [<tradizioa>]",
+        descripcionTradiciones: "katalogoko tradizioak, beren kategoriekin eta bakoitzean zenbat eskala dauden; batekin, haren eskalak",
+        sintaxisTonalidad: "tonalidad <tonalitatea>",
+        descripcionTonalidad: "armadura, erlatiboak eta graduak; --modulaciones: tonu auzo bakoitzera nola iritsi (edo --modulaciones Sol mayor, horretara), akorde pibotearekin",
+        sintaxisConjunto: "conjunto <klaseak>",
+        descripcionConjunto: "forma lehena, Forte zenbakia, bektoreak, simetriak eta notak",
+        sintaxisSerie: "serie <seriea>",
+        descripcionSerie: "serie dodekafoniko baten matrizea, formak eta konbinatorietatea",
+
+        // Ayuda+Dibujos.swift
+        sintaxisTonnetz: "tonnetz <notak>",
+        descripcionTonnetz: "nota batzuen Tonnetza SVGn",
+        sintaxisTonnetzAcorde: "tonnetz acorde <zifratua> | escala <eskala> | clases <zenbakiak>",
+        descripcionTonnetzAcorde: "akorde, eskala edo altuera-klase multzo batena",
+        sintaxisTonnetzRecorrido: "tonnetz recorrido <triadeak> | camino <triadea> <triadea>",
+        descripcionTonnetzRecorrido: "triade-ibilbide bat, geziekin, edo P, L eta R bidezko biderik laburrena",
+        sintaxisTonnetzCiclo: "tonnetz ciclo <zikloa> <triadea>",
+        descripcionTonnetzCiclo: "ziklo hexatoniko, oktatoniko edo LR bat (--margen 2: sare gehiago inguruan)",
+        notasTonnetzCiclo: "",
+        sintaxisTabla: "tabla <notak edo altuerak>",
+        descripcionTabla: "taula harmonikoa SVGn (hexagonoak)",
+        sintaxisTablaAcorde: "tabla acorde | escala | clases | recorrido | camino | ciclo",
+        descripcionTablaAcorde: "Tonnetzean bezala (--margen 2: taula gehiago inguruan)",
+        sintaxisCuadricula: "cuadricula <notak edo altuerak> | acorde | escala | clases",
+        descripcionCuadricula: "laukisare-teklatua SVGn (padak), ingurua eta lehen nota",
+        sintaxisCuadriculaOpciones: "cuadricula --ejes H,V --rejilla CxF --origen <altuera>\ncuadricula --giro 0-3 --espejo --en-tono escala <eskala>",
+        descripcionCuadriculaOpciones: "ardatzak (1,5: laugarrenetan), kontrolagailuaren sareta (8x8), izkinako nota, laurden-birak, ispilua eta tonuan",
+
+        // Ayuda+Neorriemann.swift
+        sintaxisVecinos: "vecinos <akordea> [--voces 2]",
+        descripcionVecinos: "tonuerdi batera dauden akordeak (zazpigarrenak: dominantea, txikia, erdi-gutxitua eta gutxitua; triadeak: handia, txikia eta gehitua; --ampliada: maj7ekin ere)",
+        sintaxisConduccionParsimoniosa: "camino-parsimonioso <akordea> <akordea> [--voces 2] [--ampliada]",
+        descripcionConduccionParsimoniosa: "akorde batetik bestera, urrats bakoitzean ahots bat (edo bi) tonuerdi bat mugituz",
+        sintaxisConduccionMinima: "conduccion-minima <akordea> <akordea>",
+        descripcionConduccionMinima: "tonuerdi gutxieneko ahots-eramatea",
+        sintaxisPlr: "plr <triadea> <P, L, R…>",
+        descripcionPlr: "eraldaketa neoerriemanndarrak",
+        sintaxisPlrCamino: "plr camino <triadea> <triadea>",
+        descripcionPlrCamino: "P, L eta R bidezko biderik laburrena",
+        sintaxisPlrCiclo: "plr ciclo <zikloa> <triadea>",
+        descripcionPlrCiclo: "ziklo bat: hexatonico (P, L), octatonico (P, R) edo \"ciclo LR\"",
+
+        // Ayuda+Partituras.swift
+        sintaxisMusicxmlMelodia: "musicxml melodia <gertaerak> [aukerak]",
+        descripcionMusicxmlMelodia: "melodia baten MusicXML partitura",
+        sintaxisMusicxmlCoral: "musicxml coral <akordeak> [aukerak]",
+        descripcionMusicxmlCoral: "lau ahotseko korala MusicXMLn",
+        sintaxisMusicxmlAcordes: "musicxml acordes <zifratuak> [aukerak]",
+        descripcionMusicxmlAcordes: "progresioa zifratu eta analisiarekin",
+        notasMusicxmlAcordes: "aukerak: --compas 6/8, --anacrusa 8, --en Sol mayor, --clave fa, --tempo 90 (edo --tempo 60 4.), --titulo Nire korala, --duracion 2 (akorde bakoitzaren iraupena; bestela beltza), --cifrados eta --analisis (koralean: zifratu amerikarra goian, erromatarra eta funtzioa behean)",
+        sintaxisMusicxmlArpegios: "musicxml arpegios <zifratuak> [aukerak]",
+        descripcionMusicxmlArpegios: "akordeak arpegiatuta, notaz nota",
+        notasMusicxmlArpegios: "aukerak: --patron alberti (edo ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado), --figura 16 (nota bakoitzaren iraupena; bestela kortxea), --duracion 1 (akorde bakoitzaren iraupena: eredua errepikatzen da bete arte) eta «acordes»en gainerakoak\n--enlazar: arpegio bakoitza aurrekoaren azken notatik hurbilen dagoen notan hasten da",
+        sintaxisMusicxmlArchivo: "musicxml acordes --archivo <fitxategia>",
+        descripcionMusicxmlArchivo: "MIDI, MusicXML, MEI edo ABC fitxategi baten progresioa, akorde bakoitzaren iraupenarekin (baita arpegios, mei, midi)",
+        sintaxisMusicxmlEscala: "musicxml escala <eskala> [aukerak]",
+        descripcionMusicxmlEscala: "eskala bat beltzetan, bere mikrotonuekin: maqam baten bemol erdia, koron-a, makam baten komak",
+        sintaxisMeiMelodia: "mei melodia|coral|acordes|arpegios|escala <…> [aukerak]",
+        descripcionMeiMelodia: "gauza bera MEI 5en, edizio kritikoen formatuan (aukera berberekin)",
+        sintaxisLilypondMelodia: "lilypond melodia|coral|acordes|arpegios|escala <…> [aukerak]",
+        descripcionLilypondMelodia: "gauza bera LilyPonden, partitura PDFan grabatzeko",
+        sintaxisGuidoMelodia: "guido melodia|coral|acordes|arpegios|escala <…> [aukerak]",
+        descripcionGuidoMelodia: "gauza bera GUIDOn (.gmn), GuidoLib edo INScorekin ikusteko",
+        sintaxisAbcMelodia: "abc melodia|coral|acordes|arpegios|escala <…> [aukerak]",
+        descripcionAbcMelodia: "gauza bera ABCn, musika tradizionalaren testu-notazioa",
+        sintaxisMidiMelodia: "midi melodia|coral|acordes|arpegios|escala <…> [aukerak]",
+        descripcionMidiMelodia: "gauza bera MIDI fitxategi gisa, entzuteko (--clave eta --cifrados gabe; --programa 0…127, General MIDI)",
+        sintaxisGrabar: "grabar melodia|coral|acordes|arpegios|escala <…>\ngrabar pentagrama|tonnetz|tabla|teclado|reloj <…> [aukerak]",
+        descripcionGrabar: "partitura PDFan, SVGn edo PNGn LilyPond, MuseScore, Verovio edo Guidorekin, edo marrazkia rsvg-convertekin",
+        notasGrabar: "--motor lilypond|musescore|verovio|guido|propio, --formato pdf|svg|png; Veroviok eta Guidok SVG ematen dute, eta rsvg-convertek PDF edo PNG bihurtzen du; armonia motores-ek esaten du zein dauden instalatuta",
+        sintaxisMotores: "motores",
+        descripcionMotores: "armonia grabar-en motorrak: programa bakoitza non dagoen eta bere bertsioa, edo bidea ematen duen aldagaia (ARMONIA_…)",
+
+        // Ayuda+Trastes.swift
+        sintaxisDigitaciones: "digitaciones <zifratua>… [aukerak]",
+        descripcionDigitaciones: "akorde bat jotzeko moduak, erosoenetik gutxien erosora, trasteak dituen hari-instrumentu batean\naukerak: --instrumento guitarra|bajo|ukelele|mandolina|… (baita «guitarra de siete cuerdas», «bajo de 5 cuerdas», «drop D» ere), --limite 5, --traste 12 (erabiltzen den altuena), --dedos 4 (erabil daitezkeenak), --completo (nota guztiekin: berez bosgarrena falta daiteke), --diagrama (lerro bat hari bakoitzeko), --capo 2 (trasteak capotik zenbatuta), --musicxml (akorde bakoitzaren lehen forma, MusicXML tablatura gisa)",
+        sintaxisPosiciones: "posiciones <eskala> [--caged]",
+        descripcionPosiciones: "eskala gitarran posizioka: hiru nota soka bakoitzeko (bi pentatonikoetan) edo CAGED",
+        notasPosiciones: "aukerak: --secuencia terceras (edo beste bat: sekuentzia posizio bakoitzean; --bajando-rekin, jaitsiz) eta --formas (pentatonikaren bost formak eta nota komunak); --instrumento bajo (edo beste bat; baita re-abierto, sol-abierto, dadgad ere) eta --capo 2",
+        sintaxisTeclado: "teclado <eskala> [--dedos]",
+        descripcionTeclado: "eskala piano-teklatu batean (SVG): notak edo, --dedos derecha edo izquierda-rekin, hatzak; --octavas 2",
+        sintaxisReloj: "reloj <escala> [--quintas]",
+        descripcionReloj: "eskala hamabi orduko erloju batean (SVG): zirkulu kromatikoa edo, --quintas-ekin, bosten zirkulua",
+        sintaxisHoja: "hoja <escala>",
+        descripcionHoja: "eskala inprimatzeko ikasketa-orri batean (SVG): pentagrama, teklatua hatzekin, erlojua, estatistikak, akordeak eta distira-eskailera; armonia grabar hoja … PDF bihurtzen du; --comparar Do dórico (bi eskalak notaz nota alderatuta, pentagraman eta erlojuan, SVGn)",
+        sintaxisHojaDeAcorde: "hoja acorde <cifrado>",
+        descripcionHojaDeAcorde: "akordea inprimatzeko ikasketa-orri batean (SVG): notak eta beste izenak, pentagrama, antolaerak, gitarra-hatzkerak, eskala bateragarriak eta ordezkapenak",
+        sintaxisHojaDeAcordes: "hoja acordes <acordes> [--en <tonalidad>] [--doce] [--comparar <acordes>]",
+        descripcionHojaDeAcordes: "progresioa inprimatzeko ikasketa-orri batean (SVG): pentagrama akorde bakoitzaren antolaera batekin, analisia graduekin, funtzioekin eta eskalekin, kadentziak eta nota gidarien lerroak; ahotsen gidaketa ere bai. --doce-rekin, progresioa hamabi tonalitateetan, bakoitza bere pentagramarekin. --comparar-rekin, beste bertsio batekin (berrarmonizatua…) akordez akorde alderatuta: aldatzen dena, gorriz",
+        sintaxisHojaDeTonalidad: "hoja tonalidad <tonalidad>",
+        descripcionHojaDeTonalidad: "tonalitatea inprimatzeko ikasketa-orri batean (SVG): armadura, erlatiboa eta homonimoa, eskala pentagraman, gradu bakoitzeko akordeak bere funtzioarekin, kadentzia ohikoenak eta ondoko tonuetarako modulazioak",
+        sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
+        descripcionPentagrama: "eskala bat, akorde bat, arpegio bat (erritmoarekin: --figura 16, --tresillos) edo akordeak beren zifratuarekin pentagrama batean (SVG); --nombres, --intervalos, --semitonos, --tonica, --en <tonalidad>",
+        sintaxisPentagramaEstudio: "pentagrama <zer> --romanos|--dedos|--secuencia|--tab",
+        descripcionPentagramaEstudio: "graduak zenbaki erromatarretan akordeen azpian; pianoko hatzak (--dedos piano) edo gitarrakoak (--dedos guitarra); eskala hirukoka edo taldeka (--secuencia terceras); tablatura azpian (--tab, --instrumento)",
+        sintaxisPentagramaRegistro: "pentagrama <zer> --registro|--clave|--doble|--cambiar-clave|--bajo-cifrado",
+        descripcionPentagramaRegistro: "zortziduna (--registro 2), giltza (--clave fa), pentagrama bikoitza, erregistroaren arabera giltza aldaketak eta akordeen baxu zifratua (6, 6/4, 6/5…)",
+        sintaxisPentagramaMelodia: "pentagrama melodia <notak> --sobre <akordeak>",
+        descripcionPentagramaMelodia: "melodia bat (Do4:8 Re4:8…) konpas bakoitzeko akorde batekin; akordekoak ez diren notak berdez (edo gorriz, kromatikoak badira); --ajenas besteetan",
+        sintaxisPentagramaBajo: "pentagrama bajo <acordes> [--tab]",
+        descripcionPentagramaBajo: "baxu ibiltaria beltzetan progresioaren gainean, fa gakoan: fundamentala lehen denboran, akordeko notak bigarrenean eta hirugarrenean eta hurrengo akorderako igarotze-nota kromatiko bat; --tab-ekin, baxuaren tablaturarekin",
+        sintaxisPosicionesArpegio: "posiciones --arpegio <zifratua> [--caged|--barrido]",
+        descripcionPosicionesArpegio: "akorde baten arpegioa mastilaren posizio bakoitzean, tablaturan eta hatzekin; --ida-y-vuelta, igo eta jaitsi",
+
+        // Ayuda.swift
+        cabeceraDeLaAyuda: """
+        armonia: musika-teoria komando-lerrotik.
+
+        Erabilera: armonia <agindua> <argumentuak> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
+
+        Aginduak (aginduak eta aukerak gaztelaniaz edo ingelesez idazten dira):
+        """,
+        pieDeLaAyuda: """
+        Nota-izenak gaztelaniaz, katalanez, galegoz, euskaraz edo ingelesez onartzen dira (Do, C,
+        Sib, Bb, si bemol). --idioma eu erabiliz, erantzunak euskal notazioa eta euskarazko mezuak
+        ditu; --ingles erabiliz, ingelesez.
+        --textos erabiliz, testuak notak ez bezalako hizkuntzan daude: --idioma en --textos eu.
+        Gaztelaniaz eta ingelesez, --escritura palabras|ascii|unicode erabiliz, notak Fa sostenido,
+        Fa# edo Fa♯ idazten dira (ingelesez, F sharp, F# edo F♯).
+        Gainerako hizkuntzetan, --escritura palabras|compacto erabiliz, hitzak edo forma laburra aukeratzen da:
+        fa dièse edo Fa♯, F Kreuz edo Fis.
+        Idazkera trinkoetan zortziduna azpiindize gisa doa (La₄), eta besteetan zenbakiz (La4);
+        --subindices edo --cifras erabiliz finkatzen da (biak irakurtzen dira).
+        --json aukerarekin, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar,
+        conjunto, serie, digitaciones eta tradiciones aginduek JSONez ematen dituzte datuak.
+        --json aukerarekin, armonizar, realizar, revisar, contrapunto, transponer, escalas,
+        rearmonizar, vecinos, plr, camino-parsimonioso, conduccion-minima, posiciones eta motores ere bai. Irteera
+        terminala ez bada, JSONa lerro bakarrean doa.
+        ARMONIA_IDIOMA=eu aldagaiak hizkuntza finkatzen du --idioma gabe; ARMONIA_IDIOMA=sistema
+        bada, LANG aldagaiarena.
+        Irteera-kodeak: 0 ondo, 1 irakurri ezin den testua, 2 gaizki idatzitako agindua eta 3 akatsak
+        (revisar, contrapunto).
+        Argumenturik gabe eta terminalean, armonia saio bat irekitzen du: agindu bat lerro bakoitzeko.
+        Sarrera fitxategi batean badago (armonia < ariketak.txt), haren lerroak berdin exekutatzen ditu;
+        aukerak bakarrik dituen lerro batek (--idioma eu) hurrengoetarako uzten ditu.
+        -o fitxategia erabiliz, aginduak ematen duena fitxategi horretan idazten da, saioan ere bai.
+        --idioma erabiliz, notak hizkuntza horretan ere irakurtzen dira: H7 eta Fis alemanez, ré frantsesez.
+        """,
+        sintaxisAyuda: "ayuda [<agindua>]",
+        descripcionAyuda: "laguntza hau, edo agindu batena (baita <agindua> --help ere)",
+        sintaxisCompletado: "completado bash|zsh|fish",
+        descripcionCompletado: "aginduen eta aukeren osatze automatikoa terminalerako",
+        sintaxisManual: "manual",
+        descripcionManual: "laguntza hau eskuliburu-orri gisa",
+        manualNombre: "IZENA",
+        manualNotas: "OHARRAK",
+        manualEntorno: "INGURUNEA",
+        manualEstadoDeSalida: "IRTEERA-EGOERA",
+        manualIdiomaDelEntorno: "Hizkuntza, --idioma bezala (hark baliogabetzen du): es, en, eu…; sistema balioarekin, LC_ALL, LC_MESSAGES edo LANG aldagaiena.",
+        manualRutaDelPrograma: { p in "\(p) programaren bidea, PATHean ez badago." },
+        manualCodigosDeSalida: ["Dena ondo joan da.", "Irakurri ezin den testu edo fitxategi bat, edo emateko ezer ez.", "Agindua gaizki idatzita dago.", "revisar edo contrapunto aginduek akatsak aurkitu dituzte."],
+
+        // ErrorDeUso.swift (armonización)
+        faltanAcordesDeLasVoces: { ejemplo in "akordeak falta dira: " + ejemplo },
+        dosAcordesDeConduccion: { ejemplo in "bi akorde behar dira: " + ejemplo },
+        faltanNotasDeLaArmonizacion: { ejemplo in "melodiaren notak falta dira: " + ejemplo },
+        propuestasFueraDeRango: "--propuestas 1etik 20ra doa",
+        faltanVocesDelContrapunto: { ejemplo, ingles in "cantus firmusa eta kontrapuntua falta dira, / batez bereizita: " + ejemplo },
+        especieFueraDeRango: "--especie 1etik 5era doa",
+        faltanAcordesDeLaRealizacion: { ejemplo in "akordeak falta dira: " + ejemplo },
+
+        // ErrorDeUso.swift (consultas)
+        faltaCifrado: "zifratua falta da: armonia acorde Sol7",
+        faltaCifradoDelArpegio: "zifratua falta da: armonia arpegio Do7",
+        patronDesconocido: { patron in "eredu ezezaguna: «\(patron)» (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado edo alberti)" },
+        tradicionDesconocida: { tradicion in "«\(tradicion)» ez da tradizio bat (india, grecia, mundo-arabe, persia, turquia…)" },
+        categoriaDesconocida: { categoria in "«\(categoria)» ez da eskala-kategoria bat (rāga, maqam, makam, dastgah…)" },
+        fuenteDesconocida: { fuente in "«\(fuente)» ez da katalogoko teoriko bat (ptolomeo, aristoxeno, guido, glareano…)" },
+        usoDesconocido: { uso in "«\(uso)» ez da eskala-erabilera bat (clasica, jazz, blues, siglo-xx, popular, sintetica)" },
+        ordenDeEscalasDesconocido: { orden in "«\(orden)»: eskalak brillo edo notas arabera ordenatzen dira: --orden brillo" },
+        intervaloDeEscalasDesconocido: { intervalo in "«\(intervalo)»: tartea 1etik 6rako zenbaki bat da, edo semitono, tono, tercera-menor, tercera-mayor, cuarta edo tritono: --con-intervalo tritono" },
+        pasoFueraDeRango: "urratsa 1etik 11rako tonuerdi kopurua da: --con-paso 3",
+        faltanNotas: "notak falta dira: armonia identificar Do Mi Sol",
+        dosNotas: "bi nota behar dira: armonia intervalo Do Mi",
+        faltaEscala: "eskala falta da: armonia escala Re dórico",
+        faltaTonalidad: "tonalitatea falta da: armonia tonalidad La menor",
+        faltaTonalidadTrasEn: "tonalitatea falta da --en ondoren",
+        faltaConjunto: "multzoa falta da: armonia conjunto 0 4 7",
+        faltaSerie: "seriea falta da: armonia serie 0 e 7 4 2 9 3 8 t 1 5 6",
+        faltanAcordesDelAnalisis: { ejemplo in "akordeak falta dira: " + ejemplo },
+        archivoIlegible: { nombre in "ezin da «\(nombre)» fitxategia irakurri" },
+        archivoNoEscrito: { nombre in "ezin da «\(nombre)» fitxategia idatzi" },
+        archivoConAcordes: "--archivo erabiltzean ez idatzi akorderik",
+        archivoSinAcordes: "fitxategiak ez du akorderik",
+        faltaTransporte: { ejemplo in "tartea (edo tonika berria) eta transposatzen dena falta dira: " + ejemplo },
+        faltanAcordesDeLaRearmonizacion: { ejemplo in "akordeak falta dira: " + ejemplo },
+
+        // ErrorDeUso.swift (dibujos)
+        margenFueraDeRango: "marjina 0tik 6ra bitarteko zenbaki bat da: --margen 2",
+        faltanNotasDelDibujo: { ejemplo, orden in "notak falta dira: " + ejemplo },
+        faltaAcordeDelDibujo: { ejemplo, orden in "akordea falta da: " + ejemplo },
+        faltaEscalaDelDibujo: { ejemplo, orden in "eskala falta da: " + ejemplo },
+        faltanClasesDelDibujo: { ejemplo, orden in "altuera-klaseak falta dira: " + ejemplo },
+        faltanTriadasDelRecorrido: { ejemplo, orden in "triadeak falta dira: " + ejemplo },
+        cicloMalEscrito: { ejemplo, orden in "zikloa hexatonikoa, oktatonikoa edo LR da, triade batetik abiatuta: " + ejemplo },
+        recorridoSoloTriadas: { ejemplo, orden in "ibilbidea triade handi eta txikiz osatzen da: " + ejemplo },
+        caminoSoloTriadas: { ejemplo, orden in "bidea triade handi edo txiki batetik beste batera doa: " + ejemplo },
+        cicloSoloTriadas: { ejemplo, orden in "zikloa triade handi edo txiki batean hasten da: " + ejemplo },
+        opcionesDeCuadricula: "laukisarearen aukerak: --ejes H,V (1,5), --rejilla CxF (8x8), --origen <altuera> (Do2), --giro 0-3",
+
+        // ErrorDeUso.swift (neorriemanniana)
+        vocesFueraDeRango: "mugitzen diren ahotsak 1 edo 2 dira: --voces 2",
+        unAcordeDeVecinos: { ejemplo in "akorde bat behar da: " + ejemplo },
+        vecinosSinFamilia: "auzokideak dominanteko zazpigarrenen, txikien, erdi-gutxituen, gutxituen eta maj7en artean bilatzen dira, edo triade handi, txiki eta gehituen artean",
+        dosAcordesDeCamino: { ejemplo in "bi akorde behar dira: " + ejemplo },
+        caminoSinConexion: "bi akordeek familia berekoak izan behar dute (zazpigarrenak, maj7rekin edo gabe, edo triadeak) eta lotuta egon",
+        faltanPasosDePLR: { ejemplo in "triade bat eta urrats batzuk edo beste triade bat behar dira: " + ejemplo },
+        plrSoloTriadas: { ejemplo, camino in "P, L eta R triade handi eta txikiei aplikatzen zaizkie: " + ejemplo },
+
+        // ErrorDeUso.swift (partituras)
+        faltaTipoDePartitura: { ejemplo, orden in "«melodia», «coral» edo «acordes» falta da: " + ejemplo },
+        instrumentoMIDI: "programa 0tik 127ra bitarteko General MIDI zenbaki bat da: --programa 52",
+        marcasSoloMusicXML: "--cifrados eta --analisis MusicXML, MEI, LilyPond, GUIDO eta ABCrako dira",
+        faltaValor: { opcion in "--\(opcion) aukeraren balioa falta da" },
+        tempoMalEscrito: "tempoa «--tempo 90» edo «--tempo 60 4.» idazten da",
+        faltanNotasDeLaMelodia: { ejemplo, orden in "notak falta dira: " + ejemplo },
+        marcasSoloCoral: "--cifrados eta --analisis «coral»erako dira",
+        duracionSoloCoral: "--duracion «coral»erako bakarrik da",
+        claveDesconocida: { clave, claves in "giltza ezezaguna: «\(clave)» " + claves },
+        faltanAcordesDelCoral: { ejemplo, orden in "akordeak falta dira: " + ejemplo },
+        soloParaMelodia: { opcion in "--\(opcion) «melodia»rako bakarrik da" },
+        soloParaArpegios: { opcion in "--\(opcion) «arpegios»-etarako bakarrik da" },
+        archivoSoloParaAcordes: "--archivo «acordes» eta «arpegios»-etarako bakarrik da",
+        ventanaSinArchivo: "--ventana --archivo-rekin doa",
+        faltanAcordesDeLaProgresion: { ejemplo, orden in "akordeak falta dira: " + ejemplo },
+        acordesConCifradosYAnalisis: "akordeek beti daramatzate zifratuak eta analisia",
+        tipoDePartituraDesconocido: { tipo in "«\(tipo)»: «melodia», «coral», «acordes», haien «arpegios» edo «escala» bat esportatzen da" },
+        faltaLoQueSeGraba: "grabatzekoa falta da: armonia grabar coral Do3 Mi4 Sol4 Do5 > coral.pdf",
+        motorDesconocido: { motor in "«\(motor)»: motorrak lilypond, musescore, verovio, guido eta propio dira" },
+        formatoDeGrabadoDesconocido: { formato in "«\(formato)»: «pdf», «svg» edo «png» formatuan grabatzen da" },
+        nadaQueGrabar: { orden in "«\(orden)»: partitura bat (melodia, coral, acordes, arpegios, escala) edo marrazki bat (pentagrama, tonnetz, tabla, teclado, cuadricula, reloj) grabatzen da" },
+        motorNoEncontrado: { programa, variable in "ez da «\(programa)» aurkitzen: instalatu edo jarri haren bidea \(variable) aldagaian" },
+        motorFallo: { programa, codigo in "«\(programa)» \(codigo) kodearekin amaitu da:" },
+        motorSinTerminar: { programa in "«\(programa)» ez da garaiz amaitu eta gelditu egin da" },
+        motorNoInstalado: { variable in "ez dago instalatuta (edo jarri bidea \(variable) aldagaian)" },
+        motorPropio: "propio",
+
+        // ErrorDeUso.swift (digitaciones)
+        faltaInstrumento: { d, digitaciones in "instrumentua falta da: \(d)" },
+        instrumentoDesconocido: { nombre, lista in "instrumentu ezezaguna: «\(nombre)» (\(lista(.conPalabras(.euskera))))" },
+        faltaLimite: "hatz-jarrera kopurua falta da: --limite 5",
+        limiteFueraDeRango: "muga 1etik 200era bitarteko zenbaki bat da: --limite 5",
+        faltanDedos: "hatz kopurua falta da: --dedos 3",
+        dedosFueraDeRango: "hatzak 1etik 4ra bitarteko zenbaki bat dira: --dedos 3",
+        faltaTraste: "traste altuena falta da: --traste 12",
+        trasteFueraDeRango: "traste altuena 0tik 24ra bitarteko zenbaki bat da: --traste 12",
+        faltaCifradoDeDigitaciones: { d, digitaciones in "zifratua falta da: \(d)" },
+        faltaEscalaDePosiciones: "eskala falta da: armonia posiciones Sol mayor",
+        faltaEscalaDelTeclado: "eskala falta da: armonia teclado Re mayor",
+        manoDesconocida: { texto in "esku ezezaguna: «\(texto)» (derecha edo izquierda)" },
+        archivoConNotas: "--archivo erabiltzean ez idatzi notarik",
+        noEsPentatonica: "formak bost notako eskala batekoak dira: armonia posiciones La pentatónica menor --formas",
+        faltaEscalaDelReloj: "eskala falta da: armonia reloj Re mayor",
+        faltaEscalaDeLaHoja: "eskala falta da: armonia hoja Re mayor",
+        faltanLosAcordesDeLaHoja: "akordeak falta dira: armonia hoja acordes Rem7 Sol7 Do7M",
+        faltaElAcordeDeLaHoja: "akordea falta da: armonia hoja acorde Sol7",
+        faltaLoQueDibujaElPentagrama: "zer marraztu falta da: armonia pentagrama escala Re dórico",
+        capoFueraDeRango: "capoa 0 eta 12 arteko zenbakia da: --capo 2",
+        octavasFueraDeRango: "zortzidunak 1 eta 4 arteko zenbakia dira: --octavas 2",
+        notasFueraDeRango: "notak 1 eta 24 arteko zenbakia dira: --notas 5",
+        octavaFueraDeRango: "zortziduna 0 eta 7 arteko zenbakia da: --registro 3",
+        desdeNoValido: { desde in "«\(desde)» ez da akordearen nota edo gradu bat: --desde Mi edo --desde 3" },
+        tensionesMalEscritas: "tentsioak 9, 11 edo 13 dira: --tensiones 9,13",
+        gradosMalEscritos: "graduak 1 eta 22 arteko zenbakiak dira: --grados 1-5-3-8",
+        aproximacionDesconocida: { aproximacion in "hurbilketa ezezaguna: «\(aproximacion)» (abajo, arriba edo encierro)" },
+        secuenciaDesconocida: { secuencia in "sekuentzia ezezaguna: «\(secuencia)» (terceras, cuartas, grupos-de-3, grupos-de-4, triadas edo cuatriadas)" },
+
+        // ErrorDeUso.swift (comunes)
+        pruebaLaAyuda: "Probatu «armonia ayuda».",
+        ordenDesconocida: { orden in "agindu ezezaguna: «\(orden)»" },
+        opcionDesconocida: { opcion in "aukera ezezaguna: «\(opcion)»" },
+        idiomaDesconocido: { idioma in "hizkuntza ezezaguna: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru edo hu)" },
+        terminalDesconocida: { t in "terminal ezezaguna: «\(t)» (bash, zsh edo fish)" },
+        escrituraNoValida: { escritura in "idazkera baliogabea: «\(escritura)» (palabras/words edo compacto/compact; ascii edo unicode, es eta en-ekin bakarrik)" },
+        sinSalidaJSON: { orden in "«\(orden)» aginduak ez du JSON irteerarik" },
+
+        // Mensaje.swift
+        mensajeNotas: "notak",
+        mensajeAcordes: "akordeak",
+        mensajeMicrotonos: "mikrotonuak",
+        mensajeEscalas: "eskalak",
+        mensajeHabituales: "ohikoak",
+        mensajeNingunaEscala: "ez dago horrelako eskalarik",
+        mensajeArmadura: "armadura",
+        mensajeRelativa: "erlatiboa",
+        mensajeHomonima: "homonimoa",
+        mensajeBajo: { nota in "baxua \(nota)" },
+        mensajeBajoAjeno: "akordetik kanpoko baxua",
+        mensajeSinAcordes: "Ez dute akorde ezagunik osatzen.",
+        mensajeSin: { notas in "\(notas) gabe" },
+        mensajeSemitonos: { n in "\(n) tonuerdi" },
+        mensajeSinAlteraciones: "alteraziorik gabe",
+        mensajeSostenidos: { n in "\(n) diesa" },
+        mensajeBemoles: { n in "\(n) bemol" },
+        mensajeACuatroVoces: "Lau ahotsetara (baxua, tenorra, altua, sopranoa):",
+        mensajeSinDigitaciones: "ez dago hatz-jarrera erosorik",
+        mensajeDedos: { n in "\(n) hatz" },
+        mensajeCejilla: { traste in "zeja \(traste). trastean" },
+        mensajeNingunPaso: "urratsik ez",
+        mensajeUnPaso: "urrats 1",
+        mensajePasos: { n in "\(n) urrats" },
+        mensajeTriadas: { n in "\(n) triade" },
+        mensajeFormaNormal: "forma normala",
+        mensajeFormaPrima: "forma lehena",
+        mensajeVectorIntervalico: "bektore tartekatua",
+        mensajeVectorDeIndice: "indize-bektorea",
+        mensajeEjesDeSimetria: "simetria-ardatzak",
+        mensajeIntervalos: "tarteak",
+        mensajeDeTodosLosIntervalos: "tarte guztietakoa",
+        mensajeFormasDistintas: { n in "\(n) forma desberdin" },
+        mensajeHexacordos: "hexakordoak",
+        mensajeFormasCombinatorias: "forma konbinatorioak",
+
+        // LineaDeComandos.swift (versión, erratas y salida binaria)
+        sintaxisVersion: "--version",
+        descripcionVersion: "armoniaren bertsioa",
+        quisoDecir: { x in "«\(x)» esan nahi zenuen?" },
+        pruebaLaAyudaDe: { o in "Probatu «armonia ayuda \(o)»." },
+        salidaBinaria: "irteera fitxategi bitar bat da (MIDI, PDF edo PNG); gorde ezazu > fitxategia erabiliz",
+        escalasPorNotas: { e in "ez dago izen hori duen eskalarik; noten bidez bilatzeko: \(e)" },
+        grabarUnaPartitura: { o, e in "«armonia \(o)» aginduak partitura idazten du jada; «grabar» aginduak PDF, SVG edo PNG formatuan ematen du: \(e)" },
+
+        // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+        gruposDeLaAyuda: ["Kontsultak", "Harmonia eta ahotsak", "Partiturak eta grabatua", "Marrazkiak (SVG)", "Neorriemanniarra", "Trasteak dituzten tresnak", "Terminala eta laguntza"],
+        pieDelIndice: """
+        Agindu baten laguntza: armonia ayuda <agindua> (edo armonia <agindua> --help).
+        Laguntza osoa, agindu bakoitzaren aukerekin: armonia ayuda --todo.
+        Agindu guztietarako: --ingles, --idioma, --textos, --escritura, --subindices, --cifras eta --json.
+        """,
+        bienvenidaDeLaSesion: { v in "armonia \(v). Idatzi agindu bat lerro bakoitzeko, «armonia» gabe (ayuda: aginduak; salir: amaitu)." }
+    )
+}

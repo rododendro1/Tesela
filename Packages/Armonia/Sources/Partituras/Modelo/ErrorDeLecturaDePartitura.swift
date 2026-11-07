@@ -34,15 +34,15 @@ public struct ErrorDeLecturaDePartitura: ErrorAlLeer {
 
 // MARK: - Idiomas
 //
-// Los mensajes en los quince idiomas de los textos, que están en `TextosDePartitura`.
+// Los mensajes en los quince idiomas de los textos, que están en `TextosDePartituras`.
 
 extension ErrorDeLecturaDePartitura.Motivo {
     public func explicacion(en notacion: Notacion) -> String {
         switch self {
-        case .duracionNoValida(let texto): return TextosDePartitura.en(notacion) { $0.duracionNoValida(texto) }
-        case .compasNoValido(let texto): return TextosDePartitura.en(notacion) { $0.compasNoValido(texto) }
+        case .duracionNoValida(let texto): return TextosDePartituras.en(notacion) { $0.duracionNoValida(texto) }
+        case .compasNoValido(let texto): return TextosDePartituras.en(notacion) { $0.compasNoValido(texto) }
         case .contrapuntoDeOtraDuracion(let redondas):
-            return TextosDePartitura.en(notacion) { $0.contrapuntoDeOtraDuracion(redondas) }
+            return TextosDePartituras.en(notacion) { $0.contrapuntoDeOtraDuracion(redondas) }
         }
     }
 }
