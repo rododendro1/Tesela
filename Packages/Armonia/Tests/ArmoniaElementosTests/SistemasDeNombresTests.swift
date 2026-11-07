@@ -257,6 +257,20 @@ import Testing
         #expect(try formas.leer("mi", tonica: Nota("Sol")) == Nota("Fa#"))
     }
 
+    @Test func solfeoArabeYHebreo() throws {
+        let naturales = NotaNatural.allCases.map { Nota($0) }
+        let arabe = SistemaDeNombres.solfeoArabe
+        let hebreo = SistemaDeNombres.solfeoHebreo
+        #expect(arabe.nombres(de: naturales, grafia: .original) == ["دو", "ري", "مي", "فا", "صول", "لا", "سي"])
+        #expect(hebreo.nombres(de: naturales, grafia: .original) == ["דו", "רה", "מי", "פה", "סול", "לה", "סי"])
+        #expect(arabe.nombre(de: Nota("Fa#"), grafia: .original) == "فا♯")
+        #expect(hebreo.nombre(de: Nota("Sib")) == "Si♭")
+        #expect(try arabe.leer("صول") == Nota("Sol"))
+        #expect(try hebreo.leer("פה#") == Nota("Fa#"))
+        #expect(arabe.familia == .fija)
+        #expect(SistemaDeNombres(nombre: "Solfeo hebreo") == .solfeoHebreo)
+    }
+
     @Test func idaYVuelta() throws {
         // Las notas de forma no vuelven: fa, sol y la son dos grados cada una.
         for sistema in SistemaDeNombres.allCases where sistema != .notasDeForma {

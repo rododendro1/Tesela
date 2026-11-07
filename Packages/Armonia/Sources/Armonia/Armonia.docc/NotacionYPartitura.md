@@ -205,6 +205,23 @@ try SistemaDeNombres.carnatico.leer("G2")                              // Mi♭
 SistemaDeNombres.tonicSolFa.nombre(de: Nota("Sib"), tonica: Nota("Fa")) // "f"
 ```
 
+Las notas árabes, las perde turcas y las cuerdas de la Grecia antigua cambian de nombre en cada octava, y las dos
+primeras nombran también microtonos: son un ``NombresPorOctava``, que nombra una ``Altura`` con su ajuste en cuartos de
+tono o en comas. Rāst es Do4 y Yakāh, Sol3; Sīkāh, Mi𝄳4. En el turco, Rast es Sol4, como se escribe, y Segâh es Si4 una
+koma bajo. Con una escala que tiene versión microtonal, salen los nombres de sus grados. Los 22 śruti y las notas del
+gamelan javanés tienen también sus nombres.
+
+```swift
+NombresPorOctava.arabe.nombre(de: Altura(.mi, octava: 4), ajuste: -1)   // "Sīkāh"
+NombresPorOctava.turco.nombre(de: Altura(.si, octava: 4), ajuste: -1)   // "Segâh"
+NombresPorOctava.griegoAntiguo.nombre(de: Altura(.la, octava: 3))       // "mésē"
+Escala(.do, .maqamRast).nombres(en: .arabe, octava: 4).compactMap { $0 }.joined(separator: " ")
+// "Rāst Dūkāh Sīkāh Jahārkāh Nawā Ḥusaynī Awj"
+SistemaMicrotonal.nombresDeLosSruti().first                             // "tīvrā"
+Escala(.sol, .pelogNem).nombresDelGamelan()?.joined(separator: " ")     // "lima nem bem gulu dhadha"
+SistemaDeNombres.solfeoHebreo.nombre(de: Nota("Fa"), grafia: .original) // "פה"
+```
+
 ## Alteraciones
 
 `Alteracion` es el número de semitonos que sube o baja una nota respecto a la natural. Se

@@ -73,12 +73,21 @@ public enum SistemaDeNombres: String, Hashable, Sendable, CaseIterable, Codable 
     /// Las notas de forma (shape notes) de cuatro sílabas, las del Sacred Harp: fa sol la fa sol la mi desde la tónica.
     /// Es móvil. Como fa, sol y la nombran dos grados, al leerlos se toma el más bajo (fa es el primero, no el cuarto).
     case notasDeForma
+    /// El solfeo en escritura árabe, de Do a Si: دو ري مي فا صول لا سي, como se escribe en el Magreb, Egipto y el
+    /// Levante. Es fijo, se escribe de derecha a izquierda y las alteraciones van con signos detrás (فا♯).
+    /// Transliterado y en ASCII, Do Re Mi.
+    case solfeoArabe
+    /// El solfeo en escritura hebrea, de Do a Si: דו רה מי פה סול לה סי. Es fijo, se escribe de derecha a izquierda y
+    /// las alteraciones van con signos detrás (פה♯). Transliterado y en ASCII, Do Re Mi.
+    case solfeoHebreo
 
     /// Si cada nota tiene su nombre (`.fija`) o el nombre depende de la tónica (`.movil`).
     public var familia: FamiliaDeNombres {
         switch self {
         case .sargam, .jianpu, .gongche, .wusheng, .carnatico, .tonicSolFa, .notasDeForma: return .movil
-        case .bizantino, .japones, .coreano, .guidoniano, .luChinos, .luJaponeses, .luCoreanos: return .fija
+        case .bizantino, .japones, .coreano, .guidoniano, .luChinos, .luJaponeses, .luCoreanos, .solfeoArabe,
+            .solfeoHebreo:
+            return .fija
         }
     }
 
@@ -100,6 +109,8 @@ public enum SistemaDeNombres: String, Hashable, Sendable, CaseIterable, Codable 
         case .carnatico: return ["carnatico", "carnatic", "swaras carnaticos"]
         case .tonicSolFa: return ["tonic sol fa", "sol fa", "curwen"]
         case .notasDeForma: return ["notas de forma", "shape notes", "fasola", "sacred harp"]
+        case .solfeoArabe: return ["solfeo arabe", "arabic solfege", "arabe"]
+        case .solfeoHebreo: return ["solfeo hebreo", "hebrew solfege", "hebreo"]
         }
     }
 

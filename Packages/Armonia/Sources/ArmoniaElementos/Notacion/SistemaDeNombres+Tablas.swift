@@ -3,8 +3,8 @@
 // Los nombres de cada `SistemaDeNombres` en sus tres grafías (original, transliterada y ASCII), y los que se leen
 // además: la otra transliteración de Βου (Bou), el komal y el tivra del sargam, los lü chinos en caracteres
 // tradicionales y los coreanos en hanja. Fuentes: Wikipedia («Byzantine music», «Svara», «Japanese musical scales»,
-// «Korean musical notation», «Twelve-tone equal temperament» en sus versiones china, japonesa y coreana) y el
-// catálogo de escalas de Tesela, con los lü chinos de `TipoDeEscala.shierLu`.
+// «Korean musical notation», «Twelve-tone equal temperament» en sus versiones china, japonesa y coreana, «Solfège»
+// en árabe y en hebreo) y el catálogo de escalas de Tesela, con los lü chinos de `TipoDeEscala.shierLu`.
 
 extension SistemaDeNombres {
     /// Cómo nombra el sistema las notas: con siete nombres o con doce, y sus tablas.
@@ -162,8 +162,23 @@ extension SistemaDeNombres {
             return .siete(naturales: { _ in ["d", "r", "m", "f", "s", "l", "t"] }, alteraciones: .signos)
         case .notasDeForma:
             return .siete(naturales: { _ in ["fa", "sol", "la", "fa", "sol", "la", "mi"] }, alteraciones: .signos)
+        case .solfeoArabe:
+            return .siete(
+                naturales: { grafia in
+                    grafia == .original ? ["دو", "ري", "مي", "فا", "صول", "لا", "سي"] : SistemaDeNombres.solfeo
+                },
+                alteraciones: .signos)
+        case .solfeoHebreo:
+            return .siete(
+                naturales: { grafia in
+                    grafia == .original ? ["דו", "רה", "מי", "פה", "סול", "לה", "סי"] : SistemaDeNombres.solfeo
+                },
+                alteraciones: .signos)
         }
     }
+
+    /// Los nombres del solfeo latino, la transliteración del árabe y del hebreo.
+    private static let solfeo = ["Do", "Re", "Mi", "Fa", "Sol", "La", "Si"]
 
     /// Los nombres propios de una lista de (grado, alteración, nombre).
     private static func propias(_ lista: [(Int, Int, String)]) -> [NombrePropio] {
@@ -179,7 +194,8 @@ extension SistemaDeNombres {
         case .sargam:
             // Sa y Pa en minúscula, que no se confunden con nada.
             return [("sa", Nota(.do)), ("pa", Nota(.sol))]
-        case .japones, .coreano, .guidoniano, .jianpu, .gongche, .tonicSolFa, .notasDeForma:
+        case .japones, .coreano, .guidoniano, .jianpu, .gongche, .tonicSolFa, .notasDeForma, .solfeoArabe,
+            .solfeoHebreo:
             return []
         case .wusheng:
             // En caracteres tradicionales.
