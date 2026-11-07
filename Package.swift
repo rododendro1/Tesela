@@ -41,7 +41,10 @@ let package = Package(
             name: "Diagramas",
             dependencies: ["Elementos", "Teoria", "Hexagonos"],
             path: "Packages/Armonia/Sources/Diagramas"),
-        .target(name: "Partituras", dependencies: ["Elementos", "Teoria"], path: "Packages/Armonia/Sources/Partituras"),
+        .target(
+            name: "Partituras",
+            dependencies: ["Elementos", "Teoria"],
+            path: "Packages/Armonia/Sources/Partituras"),
         .target(
             name: "Formatos",
             dependencies: ["Elementos", "Teoria", "Partituras"],
