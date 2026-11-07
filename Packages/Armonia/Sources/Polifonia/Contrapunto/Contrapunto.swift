@@ -125,16 +125,7 @@ public struct Contrapunto: Hashable, Sendable {
     /// eventos de una voz ("-:2 La4:2 Do5:2"), donde una altura sin duración lleva la figura de la
     /// especie: "La4 Do5 Si4" en la segunda especie son tres blancas.
     public init(cantusFirmus: String, contrapunto: String, especie: Especie) throws {
-        var cantus: [Altura] = []
-        var inicio = 0
-        for trozo in cantusFirmus.split(separator: " ", omittingEmptySubsequences: false) {
-            defer { inicio += trozo.count + 1 }
-            guard !trozo.isEmpty else { continue }
-            do { cantus.append(try Altura(leyendo: String(trozo))) } catch let e as any ErrorAlLeer {
-                throw e.situado(en: cantusFirmus, posicion: inicio + (e.posicion ?? 0))
-            }
-        }
-        guard !cantus.isEmpty else { throw ErrorDeLectura(texto: cantusFirmus, posicion: nil, motivo: .textoVacio) }
+        let cantus = try Self.cantus(leyendo: cantusFirmus)
         let figura = especie.figura == .redonda ? "1" : (especie.figura == .blanca ? "2" : "4")
         let eventos = contrapunto.split(separator: " ").map {
             $0.contains(":") ? String($0) : String($0) + ":" + figura
@@ -465,5 +456,22 @@ extension Contrapunto: Codable {
         try contenedor.encode(cantusFirmus, forKey: .cantusFirmus)
         try contenedor.encode(contrapunto.eventos, forKey: .contrapunto)
         try contenedor.encode(especie, forKey: .especie)
+    }
+}
+
+extension Contrapunto {
+    /// Las notas de un cantus firmus escrito («Re4 Fa4 Mi4 Re4»); los errores señalan el sitio del texto.
+    static func cantus(leyendo texto: String) throws -> [Altura] {
+        var cantus: [Altura] = []
+        var inicio = 0
+        for trozo in texto.split(separator: " ", omittingEmptySubsequences: false) {
+            defer { inicio += trozo.count + 1 }
+            guard !trozo.isEmpty else { continue }
+            do { cantus.append(try Altura(leyendo: String(trozo))) } catch let e as any ErrorAlLeer {
+                throw e.situado(en: texto, posicion: inicio + (e.posicion ?? 0))
+            }
+        }
+        guard !cantus.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
+        return cantus
     }
 }

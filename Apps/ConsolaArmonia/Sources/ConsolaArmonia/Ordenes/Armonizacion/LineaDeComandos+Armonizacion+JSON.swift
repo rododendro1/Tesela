@@ -133,20 +133,35 @@ extension LineaDeComandos {
         let especie: Int
         /// Si el contrapunto va encima del cantus firmus.
         let encima: Bool
+        /// Las notas del contrapunto, solo en los propuestos (`--proponer`).
+        let contrapunto: [String]?
         let faltas: [Falta]
         var hayFaltas: Bool { !faltas.isEmpty }
     }
 
-    /// `contrapunto Re4 Fa4 Mi4 Re4 / La4 La4 Do#5 Re5 --json`: sale con código 3 si hay faltas.
-    static func contrapuntoJSON(_ textos: [String], _ notacion: Notacion) throws -> ContrapuntoJSON {
-        let ejercicio = try ejercicioDeContrapunto(textos)
-        return ContrapuntoJSON(
-            especie: ejercicio.especie.rawValue, encima: ejercicio.contrapuntoArriba,
-            faltas: ejercicio.faltas.map {
-                ContrapuntoJSON.Falta(
-                    tipo: clave(de: $0.tipo), texto: $0.descripcion(en: notacion),
-                    compases: [$0.compases.lowerBound + 1, $0.compases.upperBound + 1])
-            })
+    /// `contrapunto <cantus> --proponer --json`: los contrapuntos propuestos, del mejor al peor.
+    struct PropuestasDeContrapuntoJSON: Encodable, ConFaltas {
+        let propuestas: [ContrapuntoJSON]
+        var hayFaltas: Bool { propuestas.contains(where: \.hayFaltas) }
+    }
+
+    /// `contrapunto Re4 Fa4 Mi4 Re4 / La4 La4 Do#5 Re5 --json`: sale con código 3 si hay faltas. Con `--proponer`, las
+    /// propuestas (`PropuestasDeContrapuntoJSON`).
+    static func contrapuntoJSON(_ textos: [String], _ notacion: Notacion) throws -> any Encodable {
+        let ejercicios = try ejerciciosDeContrapunto(textos)
+        let leidos = ejercicios.lista.map { ejercicio in
+            ContrapuntoJSON(
+                especie: ejercicio.especie.rawValue, encima: ejercicio.contrapuntoArriba,
+                contrapunto: ejercicios.propuestos
+                    ? ejercicio.contrapunto.eventos.flatMap(\.alturas).map { $0.nombre(en: notacion) } : nil,
+                faltas: ejercicio.faltas.map {
+                    ContrapuntoJSON.Falta(
+                        tipo: clave(de: $0.tipo), texto: $0.descripcion(en: notacion),
+                        compases: [$0.compases.lowerBound + 1, $0.compases.upperBound + 1])
+                })
+        }
+        guard ejercicios.propuestos else { return leidos[0] }
+        return PropuestasDeContrapuntoJSON(propuestas: leidos)
     }
 
     struct TransposicionJSON: Encodable {

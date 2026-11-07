@@ -65,10 +65,17 @@ extension LineaDeComandos {
         return ResultadoDeOrden(salida: texto + "\n", error: "", codigo: faltas(de: coral).isEmpty ? 0 : 3)
     }
 
-    /// El coral de `revisar`, con sus faltas en los avisos.
+    /// El coral de `revisar`, con sus faltas en los avisos: el escrito o, con `--archivo`, el de un fichero.
     static func coralRevisado(_ argumentos: [String], _ notacion: Notacion) throws -> CoralPresentado {
-        guard !argumentos.isEmpty else { throw ErrorDeUso.faltanAcordesDeLasVoces }
-        return try PresentacionDeCoral.revisar(argumentos.joined(separator: " "), en: notacion)
+        var argumentos = Argumentos(argumentos)
+        if let archivo = try argumentos.valor(.archivo) {
+            if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+            guard argumentos.restantes.isEmpty else { throw ErrorDeUso.archivoConAcordes }
+            let pieza = try PiezaImportada(leyendo: try datos(deArchivo: archivo))
+            return PresentacionDeCoral.revisar(try pieza.coral(), en: notacion)
+        }
+        guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanAcordesDeLasVoces }
+        return try PresentacionDeCoral.revisar(argumentos.restantes.joined(separator: " "), en: notacion)
     }
 
     /// Las faltas de conducción entre los avisos de un coral.
@@ -81,15 +88,43 @@ extension LineaDeComandos {
 
     /// `contrapunto Re4 Fa4 Mi4 Re4 / La4 La4 Do#5 Re5 --especie 1`: la especie, si el contrapunto va encima
     /// o debajo del cantus firmus, y las faltas, una por línea. Con alguna, el código de salida es 3.
+    ///
+    /// Con `--proponer` (y solo el cantus), los contrapuntos de primera especie sin faltas que mejor suenan: cada uno,
+    /// sus notas y su informe.
     static func contrapunto(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        let ejercicio = try ejercicioDeContrapunto(argumentos)
-        return ResultadoDeOrden(
-            salida: ejercicio.informe(en: notacion) + "\n", error: "", codigo: ejercicio.faltas.isEmpty ? 0 : 3)
+        let ejercicios = try ejerciciosDeContrapunto(argumentos)
+        let propuestos = ejercicios.propuestos
+        let textos = ejercicios.lista.enumerated().map { n, ejercicio in
+            let informe = ejercicio.informe(en: notacion)
+            guard propuestos else { return informe }
+            let notas = ejercicio.contrapunto.eventos.flatMap(\.alturas).map { $0.nombre(en: notacion) }.joined(
+                separator: " ")
+            let numero = ejercicios.lista.count > 1 ? "\(n + 1). " : ""
+            return numero + notas + "\n" + informe
+        }
+        let conFaltas = ejercicios.lista.contains { !$0.faltas.isEmpty }
+        return ResultadoDeOrden(salida: textos.joined(separator: "\n\n") + "\n", error: "", codigo: conFaltas ? 3 : 0)
     }
 
-    /// El ejercicio de `contrapunto`, para el texto y para `--json`.
-    static func ejercicioDeContrapunto(_ argumentos: [String]) throws -> Contrapunto {
+    /// El ejercicio de `contrapunto`, o los propuestos con `--proponer`, para el texto y para `--json`.
+    static func ejerciciosDeContrapunto(_ argumentos: [String]) throws -> (lista: [Contrapunto], propuestos: Bool) {
         var argumentos = Argumentos(argumentos)
+        guard argumentos.quitarMarca(.proponer) else { return ([try ejercicioDeContrapunto(argumentos)], false) }
+        let debajo = argumentos.quitarMarca(.debajo)
+        guard let propuestas = argumentos.quitarNumero(.propuestas, en: 1...20, porDefecto: 1) else {
+            throw ErrorDeUso.propuestasFueraDeRango
+        }
+        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        let texto = argumentos.unidos
+        guard !texto.isEmpty, !texto.contains("/") else { throw ErrorDeUso.faltanVocesDelContrapunto }
+        let propuestos = try Contrapunto.proponer(sobre: texto, arriba: !debajo, propuestas: propuestas)
+        guard !propuestos.isEmpty else { throw ErrorDeUso.sinContrapuntoPosible }
+        return (propuestos, true)
+    }
+
+    /// El ejercicio escrito de `contrapunto`: el cantus y el contrapunto, separados por «/».
+    private static func ejercicioDeContrapunto(_ argumentos: Argumentos) throws -> Contrapunto {
+        var argumentos = argumentos
         guard let numero = argumentos.quitarNumero(.especie, en: 1...5, porDefecto: 1),
             let especie = Contrapunto.Especie(rawValue: numero)
         else {

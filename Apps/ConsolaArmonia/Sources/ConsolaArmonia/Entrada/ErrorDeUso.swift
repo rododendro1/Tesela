@@ -62,6 +62,8 @@ enum ErrorDeUso: Error {
     case faltanAcordesDeLaRealizacion
     case faltanVocesDelContrapunto
     case especieFueraDeRango
+    /// `contrapunto --proponer` sobre un cantus en el que no cabe ningún contrapunto sin faltas.
+    case sinContrapuntoPosible
 
     // Digitaciones
     case faltaInstrumento
@@ -294,6 +296,7 @@ enum ErrorDeUso: Error {
             let ingles = "armonia counterpoint D4 F4 E4 D4 / A4 A4 C#5 D5"
             return TextosDeConsola.traduccion { $0.faltanVocesDelContrapunto(ejemplo, ingles) }
         case .especieFueraDeRango: return TextosDeConsola.traduccion(\.especieFueraDeRango)
+        case .sinContrapuntoPosible: return TextosDeConsola.traduccion(\.sinContrapuntoPosible)
         case .faltanAcordesDeLaRealizacion:
             let ejemplo = "armonia realizar Do Fa Sol7 Do"
             return TextosDeConsola.traduccion { $0.faltanAcordesDeLaRealizacion(ejemplo) }

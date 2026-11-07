@@ -2,6 +2,18 @@
 
 ## Sin publicar
 
+### Revisar un coral de un fichero y proponer un contrapunto
+
+- `PiezaImportada.coral()`: un fichero (MIDI, MusicXML, MEI o ABC) como coral, para revisar su conducción con
+  `Coral.faltas`. Si cada voz va aparte (una parte, un pentagrama o una voz del fichero) se siguen esas voces, y se
+  ven los cruces; si no, las notas que suenan, de grave a agudo. Hay un acorde cada vez que empieza una nota.
+- `Contrapunto.proponer(sobre:arriba:propuestas:)`: contrapuntos de primera especie sin faltas sobre un cantus
+  firmus, encima o debajo, con las notas del modo y la sensible al final, del que mejor sigue a Fux al que peor.
+- `PresentacionDeCoral.revisar(_:en:)` acepta también un `Coral` ya leído.
+- En la consola: `armonia revisar --archivo <fichero>` (en inglés, `check --file`) y
+  `armonia contrapunto <cantus> --proponer [--debajo] [--propuestas 1]` (`counterpoint … --propose [--below]
+  [--proposals 1]`). Con `--json`, las propuestas van en `propuestas`, cada una con sus notas en `contrapunto`.
+
 ### Las reglas de conducción, una sola vez; las piezas importadas, por sus cambios de armonía y con sus modulaciones
 
 - El coral y el contrapunto comparten las reglas de conducción (`Conduccion`, de uso interno): qué es una

@@ -192,6 +192,8 @@ public enum LineaDeComandos {
             return ResultadoDeOrden(salida: texto + "\n", error: "", codigo: conFaltas ? 3 : 0)
         } catch let error as ErrorDeUso {
             return uso(error, notacion)
+        } catch let error as ArchivoIlegible {
+            return archivoIlegible(error.ruta, notacion)
         } catch let error as any ErrorDeArmonia {
             return ResultadoDeOrden(
                 salida: "", error: "armonia: " + error.descripcion(en: notacion) + "\n", codigo: 1)
@@ -339,6 +341,18 @@ public enum LineaDeComandos {
 
     static func bien(_ texto: String) -> ResultadoDeOrden {
         ResultadoDeOrden(salida: texto + "\n", error: "", codigo: 0)
+    }
+
+    /// Un fichero de `--archivo` que no se puede leer, para las órdenes que no devuelven el resultado directamente
+    /// (las que también dan JSON): `ejecutar` lo escribe con `archivoIlegible(_:_:)`.
+    struct ArchivoIlegible: Error {
+        let ruta: String
+    }
+
+    /// Los datos de un fichero de `--archivo`; lanza `ArchivoIlegible` si no se puede leer.
+    static func datos(deArchivo ruta: String) throws -> Data {
+        guard let datos = contenido(deArchivo: ruta) else { throw ArchivoIlegible(ruta: ruta) }
+        return datos
     }
 
     /// Un fichero de `--archivo` que no se puede leer: no es un error de uso, sino de lectura (código 1).
