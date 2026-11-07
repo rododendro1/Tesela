@@ -221,8 +221,7 @@ extension Escala {
 extension TipoDeEscala {
     /// Nombre en español ("dórico"), inglés ("dorian"), catalán ("dòric"), gallego ("dórico"),
     /// euskera ("doriarra"), portugués ("dórico"), francés ("dorien"), italiano ("dorico"), alemán
-    /// ("dorisch"), occitano ("dorian"), ruso ("дорийский"), griego ("δώριος"), aragonés ("dórico") o
-    /// asturiano ("dóricu"). Un tipo
+    /// ("dorisch"), ruso ("дорийский"), o griego ("δώριος"). Un tipo
     /// sin nombre conocido en ese idioma (como un modo de una escala propia) usa su nombre español.
     public func nombre(en notacion: Notacion) -> String {
         // El español es el del propio tipo (un tipo propio puede coincidir en intervalos con uno del catálogo).

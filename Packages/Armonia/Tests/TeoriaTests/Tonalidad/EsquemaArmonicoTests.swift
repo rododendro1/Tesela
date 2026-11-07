@@ -103,7 +103,7 @@ import Testing
         }
     }
 
-    @Test func enLosQuinceIdiomas() {
+    @Test func enLosDoceIdiomas() {
         for idioma in Idioma.allCases {
             let nombres = EsquemaArmonico.Tipo.allCases.map { $0.nombre(en: Notacion.delIdioma(idioma)) }
             #expect(Set(nombres).count == nombres.count, Comment(rawValue: nombres.joined(separator: ", ")))

@@ -35,7 +35,7 @@ public enum CardinalDeEscala: Int, Sendable, Codable, CaseIterable, Comparable {
     /// también `nombre` (de `Nombrable`).
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
 
-    /// El nombre en los quince idiomas, de los `TextosDeTeoria`. El `switch` no tiene `default`: un cardinal nuevo
+    /// El nombre en los doce idiomas, de los `TextosDeTeoria`. El `switch` no tiene `default`: un cardinal nuevo
     /// no compila sin el suyo.
     private var traduccion: Traduccion {
         switch self {

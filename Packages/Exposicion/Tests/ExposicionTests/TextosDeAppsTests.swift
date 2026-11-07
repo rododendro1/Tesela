@@ -187,7 +187,7 @@ import Testing
         #expect(Notacion.inglesASCII.texto(\.digitaciones) == "Fingerings")
         #expect(Notacion.conPalabras(.euskera).texto(\.acordes) == "Akordeak")
         #expect(Notacion.conPalabras(.aleman).texto(\.escalas) == "Skalen")
-        #expect(Notacion.conPalabras(.occitano).texto(\.digitaciones) == "Digitacions")
+        #expect(Notacion.conPalabras(.catalan).texto(\.digitaciones) == "Digitacions")
         #expect(Notacion.conPalabras(.ruso).texto { $0.dedosYCejilla(3, 5) } == "3 пальца, барре на 5-м ладу")
         #expect(Notacion.conPalabras(.ruso).texto { $0.marcas(11) } == "11 отметок")
         #expect(Notacion.conPalabras(.griego).texto(\.acordes) == "Συγχορδίες")
@@ -195,7 +195,7 @@ import Testing
 
     /// Todos los textos caben en la pila de un hilo secundario de macOS (512 KB), también sin optimizar. Con un
     /// `TextosDeApps.traducidos.map` en cada caso del `switch` del antiguo `TextoDeLasApps`, cada caso guardaba en
-    /// la pila su copia de los quince idiomas y el campo de acorde desbordaba la del hilo principal (señal 11).
+    /// la pila su copia de los doce idiomas y el campo de acorde desbordaba la del hilo principal (señal 11).
     @Test func losTextosCabenEnLaPilaDeUnHiloSecundario() {
         let todos = Self.todos
         let hecho = DispatchSemaphore(value: 0)

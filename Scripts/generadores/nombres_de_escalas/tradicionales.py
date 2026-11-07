@@ -77,6 +77,8 @@ def bloque(idioma):
 
 for idioma in ORDEN:
     ruta = ESC / "Nombres" / f"NombresDeEscalas+{idioma}.swift"
+    if not ruta.exists():  # el asturiano, el aragonés y el occitano ya no están en el motor
+        continue
     s = ruta.read_text(encoding="utf-8")
     assert "tradicional(" not in s, idioma
     cuerpo, n = bloque(idioma)

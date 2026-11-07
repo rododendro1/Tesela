@@ -165,7 +165,7 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia : théorie musicale en ligne de commande.
 
-        Utilisation : armonia <commande> <arguments> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
+        Utilisation : armonia <commande> <arguments> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu]
 
         Commandes (les commandes et les options s'écrivent en espagnol ou en anglais) :
         """,
@@ -331,7 +331,7 @@ extension TextosDeConsola {
         pruebaLaAyuda: "Essayez « armonia ayuda ».",
         ordenDesconocida: { orden in "commande inconnue : « \(orden) »" },
         opcionDesconocida: { opcion in "option inconnue : « \(opcion) »" },
-        idiomaDesconocido: { idioma in "langue inconnue : « \(idioma) » (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru ou hu)" },
+        idiomaDesconocido: { idioma in "langue inconnue : « \(idioma) » (es, en, ca, gl, eu, pt, fr, it, de, el, ru ou hu)" },
         terminalDesconocida: { t in "terminal inconnu : « \(t) » (bash, zsh ou fish)" },
         escrituraNoValida: { escritura in "écriture non valide : « \(escritura) » (palabras/words ou compacto/compact ; ascii ou unicode, seulement avec es et en)" },
         sistemaDesconocido: { sistema, lista in "système de noms inconnu : « \(sistema) » (\(lista))" },

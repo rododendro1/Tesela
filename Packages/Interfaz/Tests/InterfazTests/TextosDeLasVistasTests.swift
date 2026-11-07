@@ -44,13 +44,13 @@ import Testing
     @Test func lasClavesYLosNombresDeLosIdiomas() {
         #expect(
             Idioma.allCases.map(\.clave) == [
-                "espanol", "ingles", "catalan", "gallego", "asturiano", "aragones", "euskera", "portugues", "frances",
-                "occitano", "italiano", "aleman", "griego", "ruso", "hungaro",
+                "espanol", "ingles", "catalan", "gallego", "euskera", "portugues", "frances", "italiano", "aleman",
+                "griego", "ruso", "hungaro",
             ])
         #expect(
             Idioma.allCases.map(\.titulo) == [
-                "Español", "English", "Català", "Galego", "Asturianu", "Aragonés", "Euskara", "Português", "Français",
-                "Occitan", "Italiano", "Deutsch", "Ελληνικά", "Русский", "Magyar",
+                "Español", "English", "Català", "Galego", "Euskara", "Português", "Français", "Italiano", "Deutsch",
+                "Ελληνικά", "Русский", "Magyar",
             ])
     }
 
@@ -62,6 +62,8 @@ import Testing
         // Un idioma sin notación se salta; si no queda ninguno, el español.
         #expect(Notacion.delSistema(idiomas: ["ja-JP", "fr-CA"]) == .conPalabras(.frances))
         #expect(Notacion.delSistema(idiomas: ["ja-JP"]) == .espanolCompacto)
+        // El asturiano, el aragonés y el occitano ya no están: se saltan como los demás.
+        #expect(Notacion.delSistema(idiomas: ["ast-ES", "an", "oc-FR", "gl-ES"]) == .conPalabras(.gallego))
         #expect(Notacion.delSistema(idiomas: []) == .espanolCompacto)
     }
 

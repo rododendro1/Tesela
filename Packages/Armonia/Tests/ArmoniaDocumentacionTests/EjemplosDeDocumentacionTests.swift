@@ -910,10 +910,7 @@ import Hexagonos
         comprobar(Nota("Fa#").nombre(en: .conPalabras(.ruso)), #""фа-диез""#, doc, 18)
         comprobar(Tonalidad("Re mayor").nombre(en: .conPalabras(.griego)), #""ρε μείζονα""#, doc, 19)
         comprobar(Acorde("Sibm7").cifrado(en: .conPalabras(.griego)), #""Σι♭m7""#, doc, 20)
-        comprobar(Altura("sòl dièsi 2"), #"Sol♯2"#, doc, 21)
-        comprobar(Nota("Fa#").nombre(en: .conPalabras(.asturiano)), #""fa sosteníu""#, doc, 22)
-        comprobar(Altura("fa sosteniu 3"), #"Fa♯3"#, doc, 23)
-        comprobar(Tonalidad("ля минор"), #"La menor"#, doc, 24)
+        comprobar(Tonalidad("ля минор"), #"La menor"#, doc, 21)
     }
 
     @Test func notacionYPartitura2() throws {
@@ -929,15 +926,12 @@ import Hexagonos
         comprobar(Cadencia.Tipo.rota.nombre(en: .conPalabras(.italiano)), #""cadenza d'inganno""#, doc, 7)
         comprobar(Escala(.re, .dorico).nombre(en: .conPalabras(.frances)), #""ré dorien""#, doc, 8)
         comprobar(Acorde("Sol7/Si").nombre(en: .conPalabras(.portugues)), #""sol sétima de dominante, primeira inversão""#, doc, 9)
-        comprobar(Escala(.re, .dorico).nombre(en: .conPalabras(.asturiano)), #""re dóricu""#, doc, 10)
-        comprobar(Acorde("Sol7/Si").nombre(en: .conPalabras(.asturiano)), #""sol séptima de dominante, primer inversión""#, doc, 11)
-        comprobar(Intervalo.terceraMayor.nombre(en: .conPalabras(.aleman)), #""große Terz""#, doc, 12)
-        comprobar(Cadencia.Tipo.rota.nombre(en: .conPalabras(.aleman)), #""Trugschluss""#, doc, 13)
-        comprobar(Acorde("Sol7/Si").nombre(en: .conPalabras(.aleman)), #""Dominantseptakkord auf G, erste Umkehrung""#, doc, 14)
-        comprobar(Intervalo.terceraMayor.nombre(en: .conPalabras(.occitano)), #""tèrça majora""#, doc, 15)
-        comprobar(Intervalo.terceraMayor.nombre(en: .conPalabras(.ruso)), #""большая терция""#, doc, 16)
-        comprobar(Escala(.re, .dorico).nombre(en: .conPalabras(.ruso)), #""ре дорийский""#, doc, 17)
-        comprobar(Intervalo.terceraMayor.nombre(en: .conPalabras(.griego)), #""μεγάλη τρίτη""#, doc, 18)
+        comprobar(Intervalo.terceraMayor.nombre(en: .conPalabras(.aleman)), #""große Terz""#, doc, 10)
+        comprobar(Cadencia.Tipo.rota.nombre(en: .conPalabras(.aleman)), #""Trugschluss""#, doc, 11)
+        comprobar(Acorde("Sol7/Si").nombre(en: .conPalabras(.aleman)), #""Dominantseptakkord auf G, erste Umkehrung""#, doc, 12)
+        comprobar(Intervalo.terceraMayor.nombre(en: .conPalabras(.ruso)), #""большая терция""#, doc, 13)
+        comprobar(Escala(.re, .dorico).nombre(en: .conPalabras(.ruso)), #""ре дорийский""#, doc, 14)
+        comprobar(Intervalo.terceraMayor.nombre(en: .conPalabras(.griego)), #""μεγάλη τρίτη""#, doc, 15)
     }
 
     @Test func notacionYPartitura3() throws {

@@ -12,10 +12,9 @@ import Testing
 @Suite struct TraducidoTests {
     @Test func unValorPorIdioma() {
         let numeros = Traducido<[String]>(
-            ["uno", "dos"], ["one", "two"], ca: ["un", "dos"], gl: ["un", "dous"],
-            ast: ["un", "dos"], an: ["un", "dos"], eu: ["bat", "bi"],
-            pt: ["um", "dois"], fr: ["un", "deux"], oc: ["un", "dos"],
-            it: ["uno", "due"], de: ["eins", "zwei"], el: ["ένα", "δύο"], ru: ["один", "два"],
+            ["uno", "dos"], ["one", "two"], ca: ["un", "dos"], gl: ["un", "dous"], eu: ["bat", "bi"],
+            pt: ["um", "dois"], fr: ["un", "deux"], it: ["uno", "due"], de: ["eins", "zwei"], el: ["ένα", "δύο"],
+            ru: ["один", "два"],
             hu: ["egy", "kettő"])
         #expect(numeros.en(.conPalabras(.aleman))[1] == "zwei")
         #expect(numeros.texto(en: .griego) == ["ένα", "δύο"])
@@ -72,7 +71,8 @@ import Testing
         #expect(Set(Idioma.allCases.map(\.codigo)).count == Idioma.allCases.count)
         #expect(Idioma(codigo: "ca-ES") == .catalan)
         #expect(Idioma(codigo: "pt_BR") == .portugues)
-        #expect(Idioma(codigo: "AST") == .asturiano)
+        #expect(Idioma(codigo: "EU") == .euskera)
+        #expect(Idioma(codigo: "oc") == nil)
         #expect(Idioma(codigo: "ja") == nil)
     }
 
@@ -81,7 +81,7 @@ import Testing
         #expect(Idioma(rawValue: "euskera") == .euskera)
         #expect(Idioma.aleman.rawValue == "aleman")
         #expect(Idioma.griego.nombrePropio == "Ελληνικά")
-        #expect(Idioma.asturiano.codigo == "ast")
+        #expect(Idioma.euskera.codigo == "eu")
         for idioma in Idioma.allCases {
             #expect(idioma.nombres.contains(idioma.nombrePropio.lowercased()), Comment(rawValue: idioma.codigo))
             #expect(idioma.reglas.mayor != idioma.reglas.menor, Comment(rawValue: idioma.codigo))
@@ -89,7 +89,7 @@ import Testing
         #expect(Tonalidad(.la, .menor).nombre(en: .conPalabras(.aleman)) == "a-Moll")
         #expect(Tonalidad(.do, .mayor).nombre(en: .conPalabras(.aleman)) == "C-Dur")
         #expect(Tonalidad(.la, .menor).nombre(en: .conPalabras(.euskera)) == "la minorra")
-        #expect(Tonalidad.Modo.mayor.nombre(en: .conPalabras(.asturiano)) == "mayor")
+        #expect(Tonalidad.Modo.mayor.nombre(en: .conPalabras(.gallego)) == "maior")
     }
 
     @Test func elIdiomaPorSuNombre() throws {
@@ -132,7 +132,7 @@ import Testing
 
     @Test func lasAbreviaturasDeCadaIdioma() {
         #expect(Notacion.conPalabras(.catalan).idiomaDeLasAbreviaturas == .espanol)
-        #expect(Notacion.conPalabras(.occitano).idiomaDeLasAbreviaturas == .espanol)
+        #expect(Notacion.conPalabras(.euskera).idiomaDeLasAbreviaturas == .espanol)
         #expect(Notacion.conPalabras(.frances).idiomaDeLasAbreviaturas == .ingles)
         #expect(Notacion.conPalabras(.ruso).idiomaDeLasAbreviaturas == .ingles)
         // Con los textos en otro idioma, mandan los textos.
@@ -163,7 +163,7 @@ import Testing
 
     @Test func lasReglasSonLasMismasEnCadaLlamada() {
         let codigos = Traducido(porIdioma: { $0.codigo })
-        #expect(codigos.texto(en: .asturiano) == "ast")
+        #expect(codigos.texto(en: .euskera) == "eu")
         for idioma in Idioma.allCases {
             #expect(idioma.reglas == idioma.reglas, Comment(rawValue: idioma.codigo))
             #expect(codigos.texto(en: idioma) == idioma.codigo)
@@ -189,10 +189,9 @@ import Testing
             ])
         #expect(
             EscrituraDeNotas.allCases.filter(\.esCompacta) == [
-                .espanolCompacto, .inglesCompacto, .compacta(.catalan), .compacta(.gallego), .compacta(.asturiano),
-                .compacta(.aragones), .compacta(.euskera), .compacta(.portugues), .compacta(.frances),
-                .compacta(.occitano),
-                .compacta(.italiano), .compacta(.aleman), .compacta(.griego), .compacta(.ruso), .compacta(.hungaro),
+                .espanolCompacto, .inglesCompacto, .compacta(.catalan), .compacta(.gallego), .compacta(.euskera),
+                .compacta(.portugues), .compacta(.frances), .compacta(.italiano), .compacta(.aleman),
+                .compacta(.griego), .compacta(.ruso), .compacta(.hungaro),
             ])
         for escritura in EscrituraDeNotas.allCases {
             #expect(escritura.usaASCII == (escritura.tipografia == .ascii))
@@ -211,8 +210,6 @@ import Testing
         #expect(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .conPalabras(.frances)) == "unisson augmenté")
         #expect(
             Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .conPalabras(.italiano)) == "unisono aumentato")
-        #expect(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .conPalabras(.occitano)) == "unisson aumentat")
-        #expect((-Intervalo.terceraMayor).nombre(en: .conPalabras(.aragones)) == "3ª mayor descendent")
         #expect((-Intervalo.terceraMayor).nombre(en: .conPalabras(.euskera)) == "beheranzko 3. handia")
         #expect(
             Intervalo(numero: 4, calidad: .aumentada(3))!.nombre(en: .conPalabras(.gallego)) == "4ª tripla aumentada")

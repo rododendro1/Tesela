@@ -61,7 +61,7 @@ public struct ReglasDeIdioma: Hashable, Sendable {
         }
     }
 
-    /// El código ISO 639 del idioma: «es», «ast», «eu».
+    /// El código ISO 639 del idioma: «es», «ca», «eu».
     public let codigo: String
     /// Cómo se llama el idioma en el propio idioma: «Euskara», «Deutsch», «Ελληνικά».
     public let nombrePropio: String
@@ -98,7 +98,7 @@ public struct ReglasDeIdioma: Hashable, Sendable {
     /// Si la tónica de una tonalidad menor va en minúscula, como en alemán (a-Moll).
     public let menorEnMinuscula: Bool
     /// El idioma de las abreviaturas de los intervalos (5J, P5), que solo están en español e inglés: el español
-    /// en los idiomas de la península (también el portugués y el euskera) y en occitano, el inglés en los demás.
+    /// en los idiomas de la península (también el portugués y el euskera), el inglés en los demás.
     public let abreviaturas: Idioma
     /// Cómo forma el plural: «1 semitono, 3 semitonos», «0 demi-ton», «5 tonuerdi», «5 полутонов».
     public let plural: Plural
@@ -167,14 +167,6 @@ extension Idioma {
             return ReglasDeIdioma(
                 codigo: "gl", nombrePropio: "Galego", nombres: ["gallego", "galego"],
                 naturales: silabas, mayor: "maior", menor: "menor", abreviaturas: .espanol)
-        case .asturiano:
-            return ReglasDeIdioma(
-                codigo: "ast", nombrePropio: "Asturianu", nombres: ["asturiano", "asturianu"],
-                naturales: silabas, mayor: "mayor", menor: "menor", abreviaturas: .espanol)
-        case .aragones:
-            return ReglasDeIdioma(
-                codigo: "an", nombrePropio: "Aragonés", nombres: ["aragonés"],
-                naturales: silabas, mayor: "mayor", menor: "menor", abreviaturas: .espanol)
         case .euskera:
             return ReglasDeIdioma(
                 codigo: "eu", nombrePropio: "Euskara", nombres: ["euskera", "euskara"],
@@ -190,11 +182,6 @@ extension Idioma {
                 codigo: "fr", nombrePropio: "Français", nombres: ["francés", "français"],
                 naturales: ["do", "ré", "mi", "fa", "sol", "la", "si"], mayor: "majeur", menor: "mineur",
                 plural: .ceroYUno)
-        case .occitano:
-            return ReglasDeIdioma(
-                codigo: "oc", nombrePropio: "Occitan", nombres: ["occitano", "occitan"],
-                naturales: ["do", "re", "mi", "fa", "sòl", "la", "si"], mayor: "major", menor: "menor",
-                abreviaturas: .espanol)
         case .italiano:
             return ReglasDeIdioma(
                 codigo: "it", nombrePropio: "Italiano", nombres: ["italiano"],

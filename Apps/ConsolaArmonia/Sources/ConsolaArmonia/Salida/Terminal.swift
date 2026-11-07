@@ -31,7 +31,7 @@ extension LineaDeComandos {
     static let valoresDeOpciones: [(opciones: [String], valores: [String])] = [
         (
             nombres(.idioma, .textos),
-            ["es", "en", "ca", "gl", "ast", "an", "eu", "pt", "fr", "oc", "it", "de", "el", "ru", "hu"]
+            ["es", "en", "ca", "gl", "eu", "pt", "fr", "it", "de", "el", "ru", "hu"]
         ),
         (nombres(.escritura), ["palabras", "compacto", "ascii", "unicode", "words", "compact"]),
         (nombres(.sistema), SistemaDeNombres.allCases.map { $0.nombres[0].replacingOccurrences(of: " ", with: "-") }),

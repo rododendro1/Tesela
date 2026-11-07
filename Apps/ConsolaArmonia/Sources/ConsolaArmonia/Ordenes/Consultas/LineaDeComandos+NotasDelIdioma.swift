@@ -5,7 +5,7 @@ import Foundation
 //
 // Las órdenes leen las notas, los acordes, las escalas y las tonalidades primero en la notación de `--idioma`, con
 // `leyendo:en:` de la biblioteca, y si no, en español o en inglés (`init(leyendoEnLaOrden:)`): `armonia acorde B7/D
-// --idioma de` es Si♭7/Re, `escala re dorian --idioma oc` es Re dórico y `acorde Do7 --idioma de` sigue siendo Do7.
+// --idioma de` es Si♭7/Re, `escala re dòric --idioma ca` es Re dórico y `acorde Do7 --idioma de` sigue siendo Do7.
 //
 // Lo que no se lee así, sino con los lectores de la biblioteca que leen varias cosas a la vez (voces, corales,
 // progresiones), se lee con las palabras pasadas a español: cada palabra que empieza por una nota del idioma y que,

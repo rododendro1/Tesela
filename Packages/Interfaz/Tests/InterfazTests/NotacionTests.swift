@@ -37,6 +37,11 @@ import Testing
         #expect(Notacion.desde(clave: "alemanCompacto") == .compacta(.aleman))
         #expect(Notacion.espanolASCII.clave == "espanolASCII")
         #expect(Notacion.conPalabras(.catalan).clave == "catalan")
+        // Las de los idiomas que se quitaron vuelven al español con ♯ y ♭, y sus textos, a los de las notas.
+        for clave in ["occitano", "asturianoCompacto", "aragones"] {
+            #expect(Notacion.desde(clave: clave) == .espanolCompacto, Comment(rawValue: clave))
+        }
+        #expect(Notacion.desde(clave: "inglesASCII+occitano") == .inglesASCII)
         #expect(Notacion.compacta(.frances).clave == "francesCompacto")
         #expect(Notacion.desde(clave: "rusoCompacto+espanol") == Notacion.compacta(.ruso).conTextos(en: .espanol))
         #expect(Notacion.conPalabras(.frances).titulo == "Français (fa dièse)")

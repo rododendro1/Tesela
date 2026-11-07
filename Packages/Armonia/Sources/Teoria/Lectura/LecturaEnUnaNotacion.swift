@@ -3,7 +3,7 @@
 //  Teoria
 //
 //  Leer un acorde, una escala o una tonalidad escritos en una notación concreta: lo que escriben `cifrado(en:)` y
-//  `nombre(en:)` se lee de vuelta en los quince idiomas.
+//  `nombre(en:)` se lee de vuelta en los doce idiomas.
 //
 
 import Elementos
@@ -55,7 +55,7 @@ extension Acorde {
 
 extension Escala {
     /// Lee una escala escrita en una notación concreta, como la escribe `nombre(en:)`: `Escala(leyendo: "B dorisch",
-    /// en: .compacta(.aleman))` es Si♭ dórico, `Escala(leyendo: "re dorian", en: .conPalabras(.occitano))`,
+    /// en: .compacta(.aleman))` es Si♭ dórico, `Escala(leyendo: "re dòric", en: .conPalabras(.catalan))`,
     /// `Escala(leyendo: "фа-диез гармонический минор", en: .conPalabras(.ruso))`. La tónica se lee como en
     /// `Nota(leyendo:en:)` y el tipo, en el idioma de los textos de la notación (o con su nombre en español, el de
     /// las escalas que no tienen otro). En español e inglés, igual que `init(leyendo:)`.

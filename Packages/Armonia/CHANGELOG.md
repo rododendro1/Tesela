@@ -1,5 +1,17 @@
 # Cambios
 
+## Sin publicar
+
+### Doce idiomas: sin el asturiano, el aragonés y el occitano
+
+- **Cambio incompatible:** `Idioma` ya no tiene `.asturiano`, `.aragones` ni `.occitano`, y `Traducido` (y
+  `Traduccion`) ya no pide `ast:`, `an:` ni `oc:`: una `Traduccion` escrita a mano tiene doce valores, en el orden
+  `(_:_:ca:gl:eu:pt:fr:it:de:el:ru:hu:)`. Se van sus `ReglasDeIdioma`, sus notaciones (`.conPalabras(.occitano)`,
+  `.compacta(.asturiano)`…), sus ficheros de textos y de nombres de escalas, y la lectura sin notación de sus nombres
+  de nota («sòl dièsi», «fa sosteníu»). `Idioma(codigo:)` da `nil` con «ast», «an» y «oc».
+- En la línea de comandos, `--idioma` y `--textos` ya no aceptan `ast`, `an` ni `oc` (ni `ARMONIA_IDIOMA`), y la
+  ayuda y los mensajes salen en los doce idiomas que quedan.
+
 ## 0.4.0 (2026-11-07)
 
 ### Orden interno: voces importadas, formatos por la extensión y la consola

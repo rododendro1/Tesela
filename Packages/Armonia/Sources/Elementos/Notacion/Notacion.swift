@@ -16,18 +16,12 @@
 /// | `.compacta(.catalan)` | Fa♯ | 3a major | sèptima de dominant | Fa♯ dòric |
 /// | `.conPalabras(.gallego)` | fa sostido | 3ª maior | sétima de dominante | fa sostido dórico |
 /// | `.compacta(.gallego)` | Fa♯ | 3ª maior | sétima de dominante | Fa♯ dórico |
-/// | `.conPalabras(.asturiano)` | fa sosteníu | 3ª mayor | séptima de dominante | fa sosteníu dóricu |
-/// | `.compacta(.asturiano)` | Fa♯ | 3ª mayor | séptima de dominante | Fa♯ dóricu |
-/// | `.conPalabras(.aragones)` | fa sosteniu | 3ª mayor | séptima de dominant | fa sosteniu dórico |
-/// | `.compacta(.aragones)` | Fa♯ | 3ª mayor | séptima de dominant | Fa♯ dórico |
 /// | `.conPalabras(.euskera)` | fa diesa | 3. handia | dominanteko zazpigarrena | fa diesa doriarra |
 /// | `.compacta(.euskera)` | Fa♯ | 3. handia | dominanteko zazpigarrena | Fa♯ doriarra |
 /// | `.conPalabras(.portugues)` | fá sustenido | 3ª maior | sétima de dominante | fá sustenido dórico |
 /// | `.compacta(.portugues)` | Fá♯ | 3ª maior | sétima de dominante | Fá♯ dórico |
 /// | `.conPalabras(.frances)` | fa dièse | tierce majeure | septième de dominante | fa dièse dorien |
 /// | `.compacta(.frances)` | Fa♯ | tierce majeure | septième de dominante | Fa♯ dorien |
-/// | `.conPalabras(.occitano)` | fa dièsi | tèrça majora | setena de dominanta | fa dièsi dorian |
-/// | `.compacta(.occitano)` | Fa♯ | tèrça majora | setena de dominanta | Fa♯ dorian |
 /// | `.conPalabras(.italiano)` | fa diesis | terza maggiore | settima di dominante | fa diesis dorico |
 /// | `.compacta(.italiano)` | Fa♯ | terza maggiore | settima di dominante | Fa♯ dorico |
 /// | `.conPalabras(.aleman)` | F Kreuz | große Terz | Dominantseptakkord | F Kreuz dorisch |
@@ -39,7 +33,7 @@
 /// | `.conPalabras(.hungaro)` | F kereszt | nagy terc | domináns szeptimakkord | F kereszt dór |
 /// | `.compacta(.hungaro)` | Fisz | nagy terc | domináns szeptimakkord | Fisz dór |
 ///
-/// En los quince idiomas están traducidos los nombres de nota y de alteración, los modos de las
+/// En los doce idiomas están traducidos los nombres de nota y de alteración, los modos de las
 /// tonalidades (Fis-Dur, fa dièse majeur, фа-диез мажор), los textos del motor (mensajes de error,
 /// intervalos, cadencias…) y los nombres de los catálogos (acordes, escalas, instrumentos).
 ///
@@ -138,7 +132,7 @@ public struct Notacion: Hashable, Sendable, CaseIterable, Codable {
     public var idiomaDeLasNotas: Idioma { escritura.idioma }
 
     /// Idioma de las abreviaturas de los intervalos (5J, P5), que solo están en español e inglés:
-    /// español en español, catalán, gallego, asturiano, aragonés, euskera, portugués y occitano; inglés en
+    /// español en español, catalán, gallego, euskera y portugués; inglés en
     /// las demás (``ReglasDeIdioma/abreviaturas``). Los demás textos siguen `textos`.
     public var idiomaDeLasAbreviaturas: Idioma {
         // Con los textos en otro idioma manda ese; si no, el de las notas.
@@ -190,7 +184,7 @@ public enum EscrituraDeLaOctava: String, Hashable, Sendable, CaseIterable, Codab
 /// forma compacta (con #/b o con ♯/♭ en español e inglés; Fis en alemán; Fa♯, Ré♭, Фа♯ en los demás).
 ///
 /// No es una lista de casos, sino el idioma y su variante: las treinta y dos escrituras con nombre
-/// (`.espanolCompacto`, `.conPalabras(.ruso)`…) salen de los quince idiomas, con tres formas en español y en inglés
+/// (`.espanolCompacto`, `.conPalabras(.ruso)`…) salen de los doce idiomas, con tres formas en español y en inglés
 /// (palabras, ASCII y compacta) y dos en los demás (palabras y compacta). Añadir un idioma es añadir su caso a
 /// ``Idioma`` y su fila a ``ReglasDeIdioma``; aquí no hay nada que tocar. `allCases` las recorre en el orden de `Idioma`.
 public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
@@ -255,7 +249,7 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     /// C, F♯, B♭, F𝄪, B𝄫.
     public static let inglesCompacto = EscrituraDeNotas(.ingles, tipografia: .conDobles)
 
-    /// Las escrituras de los quince idiomas: tres en los que tienen variantes de signos (palabras, ASCII y
+    /// Las escrituras de los doce idiomas: tres en los que tienen variantes de signos (palabras, ASCII y
     /// compacta) y dos en los demás (palabras y compacta).
     public static let allCases: [EscrituraDeNotas] = Idioma.allCases.flatMap { idioma in
         switch idioma.reglas.alteraciones {
@@ -342,12 +336,9 @@ public enum Idioma: String, Hashable, Sendable, CaseIterable, Codable {
     case ingles
     case catalan
     case gallego
-    case asturiano
-    case aragones
     case euskera
     case portugues
     case frances
-    case occitano
     case italiano
     case aleman
     case griego
@@ -356,12 +347,12 @@ public enum Idioma: String, Hashable, Sendable, CaseIterable, Codable {
 }
 
 extension Idioma {
-    /// El código ISO 639 del idioma: «es», «en», «ca», «gl», «ast», «an», «eu», «pt», «fr», «oc», «it», «de»,
+    /// El código ISO 639 del idioma: «es», «en», «ca», «gl», «eu», «pt», «fr», «it», «de»,
     /// «el», «ru» y «hu». Está en sus ``ReglasDeIdioma``.
     public var codigo: String { reglas.codigo }
 
-    /// El idioma de un código ISO 639 («ast») o de una etiqueta de idioma con región («ca-ES», «pt_BR»), sin
-    /// importar las mayúsculas; `nil` si no es uno de los quince.
+    /// El idioma de un código ISO 639 («eu») o de una etiqueta de idioma con región («ca-ES», «pt_BR»), sin
+    /// importar las mayúsculas; `nil` si no es uno de los doce.
     public init?(codigo: String) {
         let idioma = codigo.lowercased().split(whereSeparator: { $0 == "-" || $0 == "_" }).first.map(String.init)
         guard let encontrado = Idioma.allCases.first(where: { $0.codigo == idioma }) else { return nil }
@@ -377,7 +368,7 @@ extension Idioma {
 
     /// El idioma de un código (como `init?(codigo:)`: «eu», «pt-BR») o de uno de sus `nombres` («euskara»,
     /// «Deutsch»), sin importar las mayúsculas ni las tildes («aleman», «FRANCAIS», «ελληνικα»). Si no es uno de los
-    /// quince, lanza `ErrorDeLectura` (`.idiomaNoReconocido`) con sus códigos.
+    /// doce, lanza `ErrorDeLectura` (`.idiomaNoReconocido`) con sus códigos.
     ///
     ///     try Idioma(leyendo: "euskara")   // .euskera
     public init(leyendo nombre: String) throws {

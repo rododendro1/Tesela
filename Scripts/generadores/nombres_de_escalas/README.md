@@ -6,7 +6,7 @@ regenerar una familia de alias. Todos reciben la raíz del repositorio y reescri
 
 | Script | Qué hace |
 |---|---|
-| `lexico.py` | Palabras (modos, adjetivos) de los diez idiomas latinos, germánicos y vasco con que se componen los alias. |
+| `lexico.py` | Palabras (modos, adjetivos) de los diez idiomas latinos, germánicos y vasco (el asturiano, el aragonés y el occitano ya no están en el motor; los scripts se saltan sus ficheros) con que se componen los alias. |
 | `generar.py` | Añade alias a las filas `.init(…)` sin alias de esos diez idiomas, componiéndolos con `lexico.py` y evitando choques. |
 | `generar_rg.py` | Alias del ruso y del griego, escritos a mano por tipo; los suma a los que ya hay. |
 | `tradicionales.py` | Añade a cada fichero de idioma las filas `.tradicional(…)` de las escalas de otras tradiciones. |

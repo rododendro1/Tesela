@@ -102,7 +102,7 @@ import Testing
         #expect(retardo.texto(en: .inglesASCII).hasSuffix("(suspension 4-3)"))
     }
 
-    @Test func enLosQuinceIdiomas() {
+    @Test func enLosDoceIdiomas() {
         for idioma in Idioma.allCases {
             let nombres = NotaExtrana.allCases.map { $0.nombre(en: Notacion.delIdioma(idioma)) }
             let comentario = Comment(rawValue: nombres.joined(separator: ", "))

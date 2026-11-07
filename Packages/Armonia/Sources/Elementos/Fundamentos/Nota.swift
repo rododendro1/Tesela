@@ -129,8 +129,7 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
                 Notacion.espanolCompacto, .inglesASCII, .conPalabras(.aleman), .conPalabras(.frances),
                 .conPalabras(.italiano),
                 .conPalabras(.catalan), .conPalabras(.gallego), .conPalabras(.euskera), .conPalabras(.portugues),
-                .conPalabras(.occitano),
-                .conPalabras(.ruso), .conPalabras(.griego), .conPalabras(.aragones), .conPalabras(.asturiano),
+                .conPalabras(.ruso), .conPalabras(.griego),
                 .conPalabras(.hungaro),
             ] {
                 tabla[a.nombre(en: notacion).claveDeBusqueda] = a
@@ -203,8 +202,8 @@ public struct Nota: Hashable, Sendable {
     }
 
     /// Lee textos como "Do", "fa#", "Sib", "Mi♭♭", "Rex", "Sol𝄪" o "C#", "Bb", con palabras
-    /// ("Fa sostenido", "B flat") y también los nombres en catalán, gallego, asturiano, aragonés, euskera,
-    /// portugués, occitano, griego y ruso ("re bemoll", "fa sostido", "si bemol bikoitza", "fá sustenido", "sòl dièsi", "фа-диез", "σι ύφεση",
+    /// ("Fa sostenido", "B flat") y también los nombres en catalán, gallego, euskera,
+    /// portugués, griego y ruso ("re bemoll", "fa sostido", "si bemol bikoitza", "fá sustenido", "фа-диез", "σι ύφεση",
     /// "fa sosteniu", "fa sosteníu"),
     /// que no se confunden con los anteriores. Si no se puede leer, el error indica dónde y por qué.
     public init(leyendo texto: String) throws {
@@ -229,7 +228,7 @@ public struct Nota: Hashable, Sendable {
         self = nombre
     }
 
-    /// Nombre en catalán, gallego, asturiano, aragonés, euskera, portugués, occitano, griego o ruso, si lo es.
+    /// Nombre en catalán, gallego, euskera, portugués, griego o ruso, si lo es.
     package static func leerEnLenguasPeninsulares(_ texto: String) -> Nota? {
         let clave = texto.claveDeBusqueda
         for notacion in Notacion.deLecturaGenerica + Notacion.conPalabras {
@@ -362,8 +361,7 @@ extension Notacion {
     /// porque sus nombres no se confunden con los españoles ni con los ingleses.
     package static let deLecturaGenerica: [Notacion] = [
         .conPalabras(.catalan), .conPalabras(.gallego), .conPalabras(.euskera), .conPalabras(.portugues),
-        .conPalabras(.occitano), .conPalabras(.ruso), .conPalabras(.griego), .conPalabras(.aragones),
-        .conPalabras(.asturiano),
+        .conPalabras(.ruso), .conPalabras(.griego),
     ]
 
     /// El español y el inglés con las alteraciones en palabras («Fa sostenido», «B flat»), que también se leen
@@ -374,7 +372,7 @@ extension Notacion {
 
 // MARK: - Idiomas
 //
-// Las letras, las alteraciones y los nombres de nota en las quince lenguas de `Notacion`. Siguen el idioma
+// Las letras, las alteraciones y los nombres de nota en las doce lenguas de `Notacion`. Siguen el idioma
 // de las notas (`Notacion.idiomaDeLasNotas`), no el de los textos. Los intervalos, en `Intervalo.swift`.
 
 // MARK: - NotaNatural
@@ -383,7 +381,7 @@ extension NotaNatural {
     public var nombre: String { ["Do", "Re", "Mi", "Fa", "Sol", "La", "Si"][rawValue] }
 
     /// Nombre en cada idioma: Do (español), C (inglés), H para el Si en alemán, ré (francés),
-    /// re (italiano), sòl (occitano), соль (ruso), σολ (griego). En las lenguas que usan sílabas,
+    /// re (italiano), соль (ruso), σολ (griego). En las lenguas que usan sílabas,
     /// salvo el español, en minúscula, como se escriben en el texto. Las sílabas de cada idioma están
     /// en ``ReglasDeIdioma``.
     public func nombre(en notacion: Notacion) -> String {

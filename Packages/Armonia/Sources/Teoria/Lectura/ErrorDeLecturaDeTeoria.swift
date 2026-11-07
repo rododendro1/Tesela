@@ -3,7 +3,7 @@ import Elementos
 /// Error al leer un cifrado, un cifrado romano, un bajo cifrado, una escala, una tonalidad, los acordes de un coral, un
 /// nombre (un patrón de arpegio, una aproximación, un ciclo neorriemanniano, un instrumento) o una digitación.
 ///
-/// Como `ErrorDeLectura`, indica el texto, el carácter donde se detuvo la lectura y el motivo, en los quince
+/// Como `ErrorDeLectura`, indica el texto, el carácter donde se detuvo la lectura y el motivo, en los doce
 /// idiomas de los textos. Leer un acorde puede lanzar cualquiera de los dos: `ErrorDeLectura` si falla la
 /// fundamental y `ErrorDeLecturaDeTeoria` si falla el cifrado. Para tratarlos juntos, `any ErrorAlLeer`:
 ///
@@ -105,7 +105,7 @@ extension Lector {
 
 // MARK: - Idiomas
 //
-// Los mensajes en los quince idiomas de los textos, una función por motivo, para que un motivo nuevo no compile
+// Los mensajes en los doce idiomas de los textos, una función por motivo, para que un motivo nuevo no compile
 // hasta que tiene su texto. Los textos están en `TextosDeTeoria`.
 
 extension ErrorDeLecturaDeTeoria.Motivo {
@@ -113,7 +113,7 @@ extension ErrorDeLecturaDeTeoria.Motivo {
         explicacionTraducida(notacion).en(notacion)
     }
 
-    /// La explicación en los quince idiomas de los textos. La notación solo hace falta para los
+    /// La explicación en los doce idiomas de los textos. La notación solo hace falta para los
     /// nombres de los intervalos, que siguen su vocabulario.
     private func explicacionTraducida(_ notacion: Notacion) -> Traduccion {
         switch self {

@@ -4,7 +4,7 @@ import Elementos
 // MARK: - Textos de Teoria
 //
 // Un idioma por fichero: `TextosDeTeoria+Espanol.swift`, `TextosDeTeoria+Ingles.swift`… Cada uno da todos los
-// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los quince y
+// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los doce y
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de Teoria en un idioma.
@@ -288,9 +288,9 @@ struct TextosDeTeoria: TextosTraducidos {
     /// «en Do mayor», «in C major», «в до мажоре», «do maiorrean».
     let enLaTonalidad: @Sendable (String) -> String
 
-    /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// Los textos en los doce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeTeoria>(
-        espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
-        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
+        espanol, ingles, ca: catalan, gl: gallego, eu: euskera, pt: portugues,
+        fr: frances, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
 }

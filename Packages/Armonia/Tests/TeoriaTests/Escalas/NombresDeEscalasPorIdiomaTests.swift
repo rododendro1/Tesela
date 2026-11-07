@@ -70,9 +70,7 @@ import Testing
     /// Un tipo con alias en español tiene alias o variantes en los idiomas románicos («menor dórica» es en catalán
     /// solo «dòrica»). Euskera, alemán, ruso y griego tienen menos: algunos alias no se traducen bien a su gramática.
     @Test func losTiposConAliasEnEspanolLosTienenEnLosIdiomasRomanicos() {
-        let romanicos: [Idioma] = [
-            .catalan, .gallego, .asturiano, .aragones, .portugues, .frances, .occitano, .italiano,
-        ]
+        let romanicos: [Idioma] = [.catalan, .gallego, .portugues, .frances, .italiano]
         for tipo in TipoDeEscala.occidentales where !tipo.alias.isEmpty {
             for idioma in romanicos {
                 let entrada = NombresDeEscalas.de(idioma).porTipo[tipo]

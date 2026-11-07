@@ -165,15 +165,15 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: music theory from the command line.
 
-        Usage: armonia <command> <arguments> [--ingles | --language es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
+        Usage: armonia <command> <arguments> [--ingles | --language es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu]
 
         Commands:
         """,
         pieDeLaAyuda: """
         Note names are accepted in Spanish or English (Do, C, Sib, Bb). With --ingles, the answer
-        uses English notation, and so do messages and this help. With --language ca, gl, ast, an, eu,
-        pt, fr, oc, it, de, el, ru or hu, notes, names, messages and this help are in Catalan,
-        Galician, Asturian, Aragonese, Basque, Portuguese, French, Occitan, Italian, German, Greek,
+        uses English notation, and so do messages and this help. With --language ca, gl, eu,
+        pt, fr, it, de, el, ru or hu, notes, names, messages and this help are in Catalan,
+        Galician, Basque, Portuguese, French, Italian, German, Greek,
         Russian or Hungarian.
         With --texts, the texts use another language than the notes: --language es --texts en.
         In Spanish and English, --writing words|ascii|unicode writes notes as F sharp, F# or F♯
@@ -333,7 +333,7 @@ extension TextosDeConsola {
         pruebaLaAyuda: "Try \"armonia help\".",
         ordenDesconocida: { orden in "unknown command: \"\(orden)\"" },
         opcionDesconocida: { opcion in "unknown option: \"\(opcion)\"" },
-        idiomaDesconocido: { idioma in "unknown language: \"\(idioma)\" (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru or hu)" },
+        idiomaDesconocido: { idioma in "unknown language: \"\(idioma)\" (es, en, ca, gl, eu, pt, fr, it, de, el, ru or hu)" },
         terminalDesconocida: { t in "unknown shell: \"\(t)\" (bash, zsh or fish)" },
         escrituraNoValida: { escritura in "invalid writing: \"\(escritura)\" (words or compact; ascii or unicode, only with es and en)" },
         sistemaDesconocido: { sistema, lista in "unknown naming system: \"\(sistema)\" (\(lista))" },

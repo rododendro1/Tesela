@@ -333,7 +333,7 @@ extension Acorde {
 
 // MARK: - Idiomas
 //
-// Nombres de los arpegios y de sus patrones en los quince idiomas, en `TextosDeTeoria`.
+// Nombres de los arpegios y de sus patrones en los doce idiomas, en `TextosDeTeoria`.
 
 // MARK: - Arpegio
 
@@ -367,7 +367,7 @@ extension Arpegio: Nombrable {
 extension Arpegio.Patron {
     /// Lee un patrón por su nombre en el código (`alberti`, `idaYVuelta`), con guiones o guiones bajos
     /// (`ida-y-vuelta`), en inglés abreviado (`up`, `down`, `up-down`, `down-up`, `broken`) o como lo escribe
-    /// cualquiera de los quince idiomas («bajo de Alberti», «aller-retour»), sin mirar mayúsculas ni tildes. Si no
+    /// cualquiera de los doce idiomas («bajo de Alberti», «aller-retour»), sin mirar mayúsculas ni tildes. Si no
     /// es ninguno, lanza `ErrorDeLecturaDeTeoria` con los que sí (`.nombreNoReconocido`).
     public init(leyendo texto: String) throws {
         func clave(_ texto: String) -> String { texto.replacingOccurrences(of: "_", with: " ").claveDeBusqueda }
@@ -414,7 +414,7 @@ extension Arpegio.Patron: Nombrable {
 
 extension Arpegio.Aproximacion {
     /// Lee una aproximación por su nombre en el código (`desdeAbajo`, `desde-abajo`), abreviada (`abajo`,
-    /// `arriba`, `below`, `above`, `enclosure`) o como la escribe cualquiera de los quince idiomas, sin mirar
+    /// `arriba`, `below`, `above`, `enclosure`) o como la escribe cualquiera de los doce idiomas, sin mirar
     /// mayúsculas ni tildes. Si no es ninguna, lanza `ErrorDeLecturaDeTeoria` con las que sí (`.nombreNoReconocido`).
     public init(leyendo texto: String) throws {
         func clave(_ texto: String) -> String {

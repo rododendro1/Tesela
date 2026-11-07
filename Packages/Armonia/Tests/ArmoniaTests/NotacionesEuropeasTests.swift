@@ -8,7 +8,7 @@ import Testing
 @testable import Teoria
 @testable import Trastes
 
-/// Las notaciones y los textos en alemán, húngaro, francés, italiano, occitano, griego y ruso.
+/// Las notaciones y los textos en alemán, húngaro, francés, italiano, griego y ruso.
 @Suite struct NotacionesEuropeasTests {
     @Test func aleman() throws {
         let casos: [(String, String)] = [
@@ -227,24 +227,21 @@ import Testing
         #expect(CicloNeorriemanniano.hexatonico.nombre(en: .conPalabras(.italiano)) == "ciclo esatonico")
     }
 
-    /// Los nombres de nota en occitano, griego y ruso: se escriben y se leen, también sin indicar
-    /// la notación; los demás textos salen en el idioma de las notas.
-    @Test func occitanoRusoGriego() throws {
-        let casos: [(String, String, String, String)] = [
-            ("Fa#", "fa dièsi", "фа-диез", "φα δίεση"),
-            ("Sib", "si bemòl", "си-бемоль", "σι ύφεση"),
-            ("Sol", "sòl", "соль", "σολ"),
-            ("La", "la", "ля", "λα"),
-            ("Do", "do", "до", "ντο"),
-            ("Dox", "do doble dièsi", "до-дубль-диез", "ντο διπλή δίεση"),
-            ("Mibb", "mi doble bemòl", "ми-дубль-бемоль", "μι διπλή ύφεση"),
+    /// Los nombres de nota en griego y ruso: se escriben y se leen, también sin indicar la notación;
+    /// los demás textos salen en el idioma de las notas.
+    @Test func rusoGriego() throws {
+        let casos: [(String, String, String)] = [
+            ("Fa#", "фа-диез", "φα δίεση"),
+            ("Sib", "си-бемоль", "σι ύφεση"),
+            ("Sol", "соль", "σολ"),
+            ("La", "ля", "λα"),
+            ("Do", "до", "ντο"),
+            ("Dox", "до-дубль-диез", "ντο διπλή δίεση"),
+            ("Mibb", "ми-дубль-бемоль", "μι διπλή ύφεση"),
         ]
-        for (espanol, occitano, ruso, griego) in casos {
+        for (espanol, ruso, griego) in casos {
             let nota = try! Nota(leyendo: espanol)
-            for (notacion, nombre) in [
-                (Notacion.conPalabras(.occitano), occitano), (.conPalabras(.ruso), ruso),
-                (.conPalabras(.griego), griego),
-            ] {
+            for (notacion, nombre) in [(Notacion.conPalabras(.ruso), ruso), (.conPalabras(.griego), griego)] {
                 #expect(nota.nombre(en: notacion) == nombre)
                 #expect(try (Nota(leyendo: nombre, en: notacion)) == nota, Comment(rawValue: nombre))
                 #expect((try? Nota(leyendo: nombre)) == nota, Comment(rawValue: nombre))
@@ -254,32 +251,25 @@ import Testing
         // Sin tildes y con o sin guion.
         #expect((try? Nota(leyendo: "σι υφεση")) == Nota("Sib"))
         #expect((try? Nota(leyendo: "фа диез")) == Nota("Fa#"))
-        #expect((try? Nota(leyendo: "sol diesi")) == Nota("Sol#"))
         #expect(Nota("Reb").nombreCompacto(en: .conPalabras(.ruso)) == "Ре♭")
         #expect(Nota("Reb").nombreCompacto(en: .conPalabras(.griego)) == "Ρε♭")
-        #expect(Nota("Sol#").nombreCompacto(en: .conPalabras(.occitano)) == "Sòl♯")
         #expect(Acorde("Fa#m7").cifrado(en: .conPalabras(.ruso)) == "Фа♯m7")
         #expect(Altura("Fa#3").nombre(en: .conPalabras(.griego)) == "φα δίεση 3")
         #expect(Altura("Fa#3").nombre(en: .conPalabras(.ruso)) == "фа-диез3")
         #expect(Altura("фа-диез3") == Altura("Fa#3"))
         #expect(Altura("σι ύφεση 4") == Altura("Sib4"))
-        #expect(Altura("sòl dièsi 2") == Altura("Sol#2"))
         #expect(Alteracion(-1).nombre(en: .conPalabras(.griego)) == "ύφεση")
         #expect(Alteracion(2).nombre(en: .conPalabras(.ruso)) == "дубль-диез")
-        #expect(Alteracion(0).nombre(en: .conPalabras(.occitano)) == "becarre")
         // Tonalidades.
         #expect(Tonalidad("Fa# mayor").nombre(en: .conPalabras(.ruso)) == "фа-диез мажор")
         #expect(Tonalidad("La menor").nombre(en: .conPalabras(.ruso)) == "ля минор")
         #expect(Tonalidad("Re mayor").nombre(en: .conPalabras(.griego)) == "ρε μείζονα")
         #expect(Tonalidad("Sib menor").nombre(en: .conPalabras(.griego)) == "σι ύφεση ελάσσονα")
-        #expect(Tonalidad("Sol mayor").nombre(en: .conPalabras(.occitano)) == "sòl major")
         #expect(Tonalidad("ре мажор") == Tonalidad("Re mayor"))
         #expect(Tonalidad("σι ύφεση ελάσσονα") == Tonalidad("Sib menor"))
-        #expect(Tonalidad("fa dièsi menor") == Tonalidad("Fa# menor"))
         // Los demás textos, en el idioma de las notas.
         #expect(Notacion.conPalabras(.ruso).textos == .ruso)
         #expect(Intervalo.terceraMayor.nombre(en: .conPalabras(.griego)) == "μεγάλη τρίτη")
         #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.ruso)) == "доминантсептаккорд от соль, первое обращение")
-        #expect(Escala(.re, .dorico).nombre(en: .conPalabras(.occitano)) == "re dorian")
     }
 }

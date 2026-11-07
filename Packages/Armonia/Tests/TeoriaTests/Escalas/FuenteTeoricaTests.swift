@@ -48,7 +48,7 @@ import Testing
         #expect(propia.fuente == nil)
     }
 
-    @Test func nombresEnLosQuinceIdiomas() {
+    @Test func nombresEnLosDoceIdiomas() {
         #expect(FuenteTeorica.ptolomeo.nombre == "Ptolomeo")
         #expect(FuenteTeorica.ptolomeo.nombre(en: .inglesASCII) == "Ptolemy")
         #expect(FuenteTeorica.aristoxeno.nombre(en: .compacta(.frances)) == "Aristoxène")

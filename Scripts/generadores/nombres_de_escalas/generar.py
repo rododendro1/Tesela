@@ -169,6 +169,8 @@ def principal():
     # nombres principales de cada idioma, por tipo, para detectar choques
     for lang in LANGS:
         ruta = NOMBRES / f"NombresDeEscalas+{lang}.swift"
+        if not ruta.exists():  # el asturiano, el aragonés y el occitano ya no están en el motor
+            continue
         texto = ruta.read_text(encoding="utf-8")
         filas = re.findall(r'^        \.init\((\.\w+), "((?:[^"\\]|\\.)*)"\),$', texto, re.M)
         nombres_norm = {}

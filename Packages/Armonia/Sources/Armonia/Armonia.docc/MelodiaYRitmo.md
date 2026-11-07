@@ -400,7 +400,7 @@ pieza.ritmoArmonico().duraciones == [.blanca, .blanca, .redonda]  // true
 - Las repeticiones de MusicXML, MEI y ABC (con sus casillas de primera y segunda vez) y los saltos
   (da capo, dal segno, fine, coda) se despliegan: `notas` las da en el orden en que se tocan. Tras
   un da capo o un dal segno no se repite nada y se toman las últimas casillas. Del .mxl se lee la partitura que señala
-  `META-INF/container.xml`. Los errores son `ErrorDeLecturaDeFichero`, con su explicación en los quince
+  `META-INF/container.xml`. Los errores son `ErrorDeLecturaDeFichero`, con su explicación en los doce
   idiomas.
 - Desde la terminal: `armonia analizar --archivo coral.mid` (o `.musicxml`, `.mxl`, `.mei`, `.abc`), y
   `armonia musicxml acordes --archivo coral.mid` para la progresión con su ritmo armónico (también
