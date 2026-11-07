@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // La partitura en SVG (`Partitura.svg(opciones:)`): con un pentagrama, el de su voz (o sus dos voces), con lo que se

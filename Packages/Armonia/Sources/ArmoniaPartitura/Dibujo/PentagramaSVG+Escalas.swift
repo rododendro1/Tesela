@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // Lo que dibuja un pentagrama en SVG: escalas, acordes y arpegios. El dibujo está en `PentagramaSVG.swift`.

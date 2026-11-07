@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // MARK: - Modos de la menor armónica, de la menor melódica y de la mayor armónica, y otros modos habituales.
 

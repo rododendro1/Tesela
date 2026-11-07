@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// Las tres modalidades del español y del inglés: con palabras (`.espanolPalabras`, `.inglesPalabras`), ASCII y Unicode.

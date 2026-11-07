@@ -1,6 +1,6 @@
 import Armonia
 import SwiftUI
-import TeselaUI
+import TeselaInterfaz
 
 /// Un ejercicio de contrapunto de especies a dos voces, como los del Gradus ad Parnassum de Fux: se escriben el
 /// cantus firmus y el contrapunto, y se ven compás a compás sus notas, los intervalos con el cantus y las faltas,

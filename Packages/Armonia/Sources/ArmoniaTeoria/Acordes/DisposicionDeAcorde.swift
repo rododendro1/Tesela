@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Las disposiciones de un acorde que se usan en el piano y en el jazz: cerrada, drop 2, drop 3, drop 2 y 4, la
 // «shell» (fundamental, tercera y séptima) y las notas guía (tercera y séptima), y la conducción de una progresión

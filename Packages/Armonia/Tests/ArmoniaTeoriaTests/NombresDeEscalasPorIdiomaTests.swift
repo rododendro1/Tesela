@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// Los ficheros por idioma de `Escalas/Nombres/`.

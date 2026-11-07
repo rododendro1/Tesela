@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Conducción de voces: las reglas de la armonía a cuatro voces sobre una sucesión de acordes.
 

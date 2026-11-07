@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // Lo que se escribe con las notas de una voz en el pentagrama, por evento, y cómo se lleva a las columnas del dibujo

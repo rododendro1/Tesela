@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // Melodías: secuencias de notas con sus transformaciones clásicas, y voces: melodías con

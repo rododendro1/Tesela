@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Las escalas propias, escritas por sus notas («Do Re Mi♭ Fa♯ Sol La Si») o por sus pasos en semitonos
 // («Do 2-1-3-1-2-2-1»), y las escalas vecinas: las que salen de mover una nota un semitono.

@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import Foundation
 
 // Dónde cae cada cosa en el pentagrama y cómo se escribe en SVG, para `PentagramaSVG.svg()`.

@@ -58,7 +58,7 @@ swift --version 2>&1 | head -2
 
 # 1. El motor, módulo a módulo y en el orden de sus dependencias: el primer error de verdad suele estar
 #    en la capa más baja que falla.
-for modulo in ArmoniaNucleo ArmoniaTeoria ArmoniaRepresentaciones ArmoniaPartitura ArmoniaFormatos ArmoniaTrastes Armonia; do
+for modulo in ArmoniaElementos ArmoniaTeoria ArmoniaDiagramas ArmoniaPartitura ArmoniaFormatos ArmoniaTrastes Armonia; do
     if [ "$MOTOR_COMPILA" = 1 ]; then
         paso "Motor: compilar $modulo" Packages/Armonia swift build --target "$modulo" || MOTOR_COMPILA=0
     else
@@ -69,7 +69,7 @@ done
 # 2. Las pruebas del motor (compilarlas aparte separa «no compila» de «una prueba falla»).
 if [ "$MOTOR_COMPILA" = 1 ]; then
     if paso "Motor: compilar las pruebas" Packages/Armonia swift build --build-tests; then
-        paso "Motor: pruebas rápidas" Packages/Armonia swift test --skip-build --parallel --filter '^Armonia(Nucleo|Teoria|Representaciones|Partitura|Formatos|Trastes)?Tests\.'
+        paso "Motor: pruebas rápidas" Packages/Armonia swift test --skip-build --parallel --filter '^Armonia(Elementos|Teoria|Diagramas|Partitura|Formatos|Trastes)?Tests\.'
         paso "Motor: ejemplos de la documentación" Packages/Armonia swift test --skip-build --parallel --filter '^ArmoniaDocumentacionTests\.'
         if [ "$RAPIDO" = 0 ]; then
             paso "Motor: pruebas exhaustivas" Packages/Armonia swift test --skip-build --parallel --filter '^ArmoniaExhaustivasTests\.'
@@ -79,20 +79,20 @@ else
     omitir "Motor: pruebas" "el motor no compila"
 fi
 
-# 3. Lo que depende del motor: TeselaPresentacion, la línea de comandos, el ejemplo, la medida del rendimiento y
-#    TeselaUI.
+# 3. Lo que depende del motor: TeselaExposicion, la línea de comandos, el ejemplo, la medida del rendimiento y
+#    TeselaInterfaz.
 if [ "$MOTOR_COMPILA" = 1 ]; then
-    paso "TeselaPresentacion: compilar" Packages/TeselaPresentacion swift build &&
-        paso "TeselaPresentacion: pruebas" Packages/TeselaPresentacion swift test --parallel
-    paso "Línea de comandos: compilar" Apps/ArmoniaCLI swift build &&
-        paso "Línea de comandos: pruebas" Apps/ArmoniaCLI swift test --parallel
+    paso "TeselaExposicion: compilar" Packages/TeselaExposicion swift build &&
+        paso "TeselaExposicion: pruebas" Packages/TeselaExposicion swift test --parallel
+    paso "Línea de comandos: compilar" Apps/ArmoniaConsola swift build &&
+        paso "Línea de comandos: pruebas" Apps/ArmoniaConsola swift test --parallel
     paso "Ejemplo: ejecutar" Ejemplos/EjemploArmonia swift run EjemploArmonia
     paso "Ejemplo del catálogo de escalas: ejecutar" Ejemplos/EjemploCatalogoDeEscalas swift run EjemploCatalogoDeEscalas
     paso "Rendimiento: compilar" Herramientas/RendimientoArmonia swift build
-    paso "TeselaUI: compilar" Packages/TeselaUI swift build &&
-        paso "TeselaUI: pruebas" Packages/TeselaUI swift test --parallel
+    paso "TeselaInterfaz: compilar" Packages/TeselaInterfaz swift build &&
+        paso "TeselaInterfaz: pruebas" Packages/TeselaInterfaz swift test --parallel
 else
-    omitir "TeselaPresentacion, línea de comandos, ejemplo, rendimiento y TeselaUI" "el motor no compila"
+    omitir "TeselaExposicion, línea de comandos, ejemplo, rendimiento y TeselaInterfaz" "el motor no compila"
 fi
 
 # 4. Las rejillas hexagonales: no dependen del motor.

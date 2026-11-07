@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// Las categorías de las escalas de otras tradiciones (rāga, mēḷa, maqam…), sus clases y `nombreCompleto`.

@@ -14,6 +14,15 @@
   `.lushiChunqiu` (los doce lü). `armonia escalas --fuente guanzi` las deja.
 - Los nombres de las tres escalas nuevas en los demás idiomas (en ruso y griego, transcritos) llegarán aparte.
 
+### Nombres de módulo más claros
+
+**Cambio incompatible:** `ArmoniaNucleo` se llama ahora `ArmoniaElementos` y `ArmoniaRepresentaciones`,
+`ArmoniaDiagramas`, con sus carpetas y sus pruebas. Quien importa `Armonia` no nota nada; quien importe un módulo
+suelto cambia `import ArmoniaNucleo` por `import ArmoniaElementos` y `import ArmoniaRepresentaciones` por
+`import ArmoniaDiagramas`, y lo mismo en `.product(name:…)`. La línea de comandos pasa de `Apps/ArmoniaCLI` a
+`Apps/ArmoniaConsola` (paquete, biblioteca `ArmoniaConsola` y pruebas `ArmoniaConsolaTests`); el ejecutable sigue
+siendo `armonia`. Los tipos no cambian.
+
 ### Las mismas consultas y los mismos nombres en toda la API
 
 **Cambio incompatible:** los nombres de antes ya no existen (no llegaron a salir como obsoletos en ninguna versión);

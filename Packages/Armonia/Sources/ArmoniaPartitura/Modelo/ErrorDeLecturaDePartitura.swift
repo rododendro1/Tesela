@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 /// Error al leer una duración, un compás o un contrapunto.
 ///

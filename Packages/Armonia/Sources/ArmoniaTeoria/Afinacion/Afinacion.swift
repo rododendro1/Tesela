@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import Foundation
 
 // Afinaciones y temperamentos.
@@ -12,8 +12,8 @@ import Foundation
 // Con quinta = 700 sale el temperamento igual; con 701,955, el pitagórico; con
 // 696,578 (¼ de coma), el mesotónico, cuyas terceras mayores son puras.
 //
-// El protocolo `SistemaDeAfinacion` está en el Núcleo (Fundamentos/SistemaDeAfinacion.swift). Los temperamentos
-// están en la Teoría, y no en las Representaciones, porque solo necesitan las notas y las escalas: así los ven también
+// El protocolo `SistemaDeAfinacion` está en los Elementos (Fundamentos/SistemaDeAfinacion.swift). Los temperamentos
+// están en la Teoría, y no en los Diagramas, porque solo necesitan las notas y las escalas: así los ven también
 // la Partitura, los Formatos y los Trastes.
 
 // MARK: - Temperamentos regulares

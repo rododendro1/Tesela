@@ -3,19 +3,19 @@
 
 La biblioteca se reparte en seis módulos, más `Armonia`, que los reexporta:
 
-    ArmoniaNucleo            Fundamentos, Texto, Postonal
+    ArmoniaElementos            Fundamentos, Texto, Postonal
     ArmoniaTeoria            Acordes, Escalas, Tonalidad   (se necesitan entre sí: van juntas), Afinacion
-    ArmoniaRepresentaciones  Color, Dibujo, Redes (con Neorriemanniana)
+    ArmoniaDiagramas  Color, Dibujo, Redes (con Neorriemanniana)
     ArmoniaPartitura         Modelo, Dibujo, Contrapunto
     ArmoniaFormatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond (sobre Partitura)
     ArmoniaTrastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes, sobre Partitura)
     Armonia                  solo reexporta los seis (no Hexagonos: quien lo use, lo importa)
 
-Fuera del paquete, Representaciones usa `Hexagonos` (la geometría de las rejillas hexagonales), que no depende
+Fuera del paquete, Diagramas usa `Hexagonos` (la geometría de las rejillas hexagonales), que no depende
 de nada; `Armonia` no lo reexporta.
 
-Un módulo solo puede usar los de su izquierda: Teoría usa Núcleo; Representaciones y Partitura usan Teoría y
-Núcleo, y no se usan entre sí; Formatos y Trastes usan además Partitura (lo que se toca en el mástil se escribe en
+Un módulo solo puede usar los de su izquierda: Teoría usa Elementos; Diagramas y Partitura usan Teoría y
+Elementos, y no se usan entre sí; Formatos y Trastes usan además Partitura (lo que se toca en el mástil se escribe en
 una partitura, con su tablatura), y no se usan entre sí. SwiftPM no impide por sí solo importar un módulo que no está
 declarado como dependencia si otra ruta lo compila antes, así que se comprueba aquí:
 
@@ -36,12 +36,12 @@ RAIZ = Path(__file__).resolve().parents[2] / "Packages" / "Armonia"
 FUENTES = RAIZ / "Sources"
 
 PERMITIDO = {
-    "ArmoniaNucleo": set(),
-    "ArmoniaTeoria": {"ArmoniaNucleo"},
-    "ArmoniaRepresentaciones": {"ArmoniaNucleo", "ArmoniaTeoria", "Hexagonos"},
-    "ArmoniaPartitura": {"ArmoniaNucleo", "ArmoniaTeoria"},
-    "ArmoniaFormatos": {"ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura"},
-    "ArmoniaTrastes": {"ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura"},
+    "ArmoniaElementos": set(),
+    "ArmoniaTeoria": {"ArmoniaElementos"},
+    "ArmoniaDiagramas": {"ArmoniaElementos", "ArmoniaTeoria", "Hexagonos"},
+    "ArmoniaPartitura": {"ArmoniaElementos", "ArmoniaTeoria"},
+    "ArmoniaFormatos": {"ArmoniaElementos", "ArmoniaTeoria", "ArmoniaPartitura"},
+    "ArmoniaTrastes": {"ArmoniaElementos", "ArmoniaTeoria", "ArmoniaPartitura"},
 }
 PARAGUAS = "Armonia"
 # Lo que comparten las pruebas (Tests/ApoyoDePruebas): no es parte de la biblioteca.
@@ -51,7 +51,7 @@ EN_PARAGUAS = {"Exportaciones.swift"}
 
 # Nombres que coinciden con un tipo de otro módulo sin serlo (parámetros genéricos, etc.).
 IGNORAR = {
-    ("ArmoniaNucleo/Fundamentos/Aritmetica.swift", "Clave"),   # parámetro genérico `Clave: Hashable`
+    ("ArmoniaElementos/Fundamentos/Aritmetica.swift", "Clave"),   # parámetro genérico `Clave: Hashable`
 }
 
 

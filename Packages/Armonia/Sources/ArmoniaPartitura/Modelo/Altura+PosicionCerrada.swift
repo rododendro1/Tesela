@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 extension Altura {
     /// Las notas apiladas en posición cerrada: la primera, en la primera octava en que su MIDI

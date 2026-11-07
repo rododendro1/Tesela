@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // La tablatura que puede ir debajo de un pentagrama (`Partitura.Pentagrama.numeroDeCuerdas`): el número de cuerdas y,
 // por nota, la cuerda y el traste. Las posiciones las da el mástil (`ArmoniaTrastes`); aquí solo se dibujan.

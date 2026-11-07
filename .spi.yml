@@ -6,12 +6,12 @@ builder:
   configs:
     - documentation_targets:
         - Armonia
-        - ArmoniaNucleo
+        - ArmoniaElementos
         - ArmoniaTeoria
-        - ArmoniaRepresentaciones
+        - ArmoniaDiagramas
         - ArmoniaPartitura
         - ArmoniaFormatos
         - ArmoniaTrastes
         - Hexagonos
-        - TeselaPresentacion
-        - TeselaUI
+        - TeselaExposicion
+        - TeselaInterfaz

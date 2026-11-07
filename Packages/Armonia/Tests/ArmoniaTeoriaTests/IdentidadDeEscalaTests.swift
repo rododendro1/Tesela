@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// La identidad de una escala (`TipoDeEscala.identidad`): su nombre y su contenido. Las tablas del catálogo (tradición,

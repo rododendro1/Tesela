@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // Arpegios como voces: un arpegio, o una progresión arpegiada, con su ritmo. Como son una `Voz`, se dibujan,

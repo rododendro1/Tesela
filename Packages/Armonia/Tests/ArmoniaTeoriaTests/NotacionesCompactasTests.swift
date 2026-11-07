@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// Las escrituras compactas de los idiomas que nombran las alteraciones con palabras: la sílaba en mayúscula,

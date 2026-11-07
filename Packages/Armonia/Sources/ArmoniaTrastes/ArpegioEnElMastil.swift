@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // Arpegios en el mástil: dónde están las notas de un acorde y cómo se tocan por posiciones, en franjas de pocos

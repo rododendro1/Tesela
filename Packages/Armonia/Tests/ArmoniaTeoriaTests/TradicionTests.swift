@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// La tradición y la subtradición de cada escala, las listas de `listasTradicionales` y sus nombres.

@@ -2,9 +2,9 @@ import Foundation
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaNucleo
+@testable import ArmoniaDiagramas
+@testable import ArmoniaElementos
 @testable import ArmoniaPartitura
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaTeoria
 
 /// Pruebas exhaustivas: todo lo que el motor escribe debe volver a leerse igual.

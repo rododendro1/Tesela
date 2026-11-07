@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// Lo que se sabe de un acorde suelto mirando a los demás: otros nombres, tonalidades, comparaciones y sustituciones.

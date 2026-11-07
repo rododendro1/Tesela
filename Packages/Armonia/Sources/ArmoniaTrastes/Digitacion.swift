@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 /// Una forma de tocar un acorde: el traste de cada cuerda, o `nil` si no suena.

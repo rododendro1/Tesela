@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 @Suite struct ConduccionParsimoniosaTests {
@@ -143,7 +143,7 @@ import Testing
 }
 
 /// P, L y R, sus ciclos y sus caminos están en ArmoniaTeoria, sin el Tonnetz: dan lo mismo que el triángulo de al
-/// lado en la red (`Tonnetz.Triada.transformar(_:)`, en las pruebas de ArmoniaRepresentaciones).
+/// lado en la red (`Tonnetz.Triada.transformar(_:)`, en las pruebas de ArmoniaDiagramas).
 @Suite struct NeorriemannianaEnLaTeoriaTests {
     @Test func lasTransformaciones() throws {
         #expect(Acorde("Do").transformar(.p) == Acorde("Dom"))

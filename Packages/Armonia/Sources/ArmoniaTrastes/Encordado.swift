@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 /// Las cuerdas de un instrumento con trastes y la altura de cada una al aire.

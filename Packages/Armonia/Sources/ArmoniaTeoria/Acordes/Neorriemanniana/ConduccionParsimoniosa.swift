@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import Foundation
 
 // Conducción parsimoniosa: pasar de un acorde a otro moviendo las voces lo menos posible.

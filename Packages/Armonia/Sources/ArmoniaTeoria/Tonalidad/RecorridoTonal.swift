@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Modulaciones: una progresión partida en tramos, cada uno en su tonalidad, con el acorde pivote
 // que lleva de uno a otro.

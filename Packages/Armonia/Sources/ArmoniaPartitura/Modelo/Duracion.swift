@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // Ritmo: figuras, duraciones exactas y tempo. Los compases están en Compas.swift, los eventos

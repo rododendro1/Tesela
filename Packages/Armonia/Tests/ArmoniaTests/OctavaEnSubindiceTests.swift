@@ -2,7 +2,7 @@ import Foundation
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaPartitura
 @testable import ArmoniaTeoria
 

@@ -9,7 +9,7 @@ Cada `Packages/<Paquete>/CHANGELOG.md` tiene, de lo más nuevo a lo más viejo, 
                    de las apps). Lo usa `.github/workflows/version.yml` al subir una etiqueta.
   --comprobar      Comprueba los CHANGELOG (títulos bien escritos, «Sin publicar» solo arriba, versiones de más nueva
                    a más vieja), que la versión de `project.yml` tiene notas y que es la de `armonia --version`
-                   (`Apps/ArmoniaCLI/Sources/ArmoniaCLI/Version.swift`). Lo usa el CI.
+                   (`Apps/ArmoniaConsola/Sources/ArmoniaConsola/Version.swift`). Lo usa el CI.
   --publicar 0.2.0 Prepara una versión: las secciones «Sin publicar» pasan a «0.2.0 (fecha de hoy)», y
                    `MARKETING_VERSION` y la de `armonia --version`, a 0.2.0. Falla si ningún paquete tiene nada sin
                    publicar.
@@ -25,7 +25,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parents[2]
 PROYECTO = RAIZ / "project.yml"
 # La versión de `armonia --version`: `public static let version = "0.2.0"`.
-VERSION_DE_LA_CLI = RAIZ / "Apps/ArmoniaCLI/Sources/ArmoniaCLI/Version.swift"
+VERSION_DE_LA_CLI = RAIZ / "Apps/ArmoniaConsola/Sources/ArmoniaConsola/Version.swift"
 DECLARACION_DE_LA_CLI = re.compile(r'(static let version = )"([^"]*)"')
 SIN_PUBLICAR = "Sin publicar"
 # GitHub no admite notas de más de 125 000 caracteres: por encima de este límite se cortan y se enlazan los CHANGELOG.

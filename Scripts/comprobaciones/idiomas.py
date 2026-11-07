@@ -1,5 +1,5 @@
 """Los quince idiomas del motor, para los scripts: su código ISO 639 y cómo se llaman sus ficheros de textos
-(`TextosDeX+Euskera.swift`), en el orden de `Idioma` (ArmoniaNucleo/Notacion/Notacion.swift).
+(`TextosDeX+Euskera.swift`), en el orden de `Idioma` (ArmoniaElementos/Notacion/Notacion.swift).
 
 `comprobar()` lee los casos de `Idioma` y los códigos de sus filas en `ReglasDeIdioma` y dice si esta lista
 se ha descuadrado.
@@ -8,8 +8,8 @@ import re
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
-NOTACION = RAIZ / "Packages/Armonia/Sources/ArmoniaNucleo/Notacion/Notacion.swift"
-REGLAS = RAIZ / "Packages/Armonia/Sources/ArmoniaNucleo/Notacion/ReglasDeIdioma.swift"
+NOTACION = RAIZ / "Packages/Armonia/Sources/ArmoniaElementos/Notacion/Notacion.swift"
+REGLAS = RAIZ / "Packages/Armonia/Sources/ArmoniaElementos/Notacion/ReglasDeIdioma.swift"
 
 # (código, nombre del fichero de textos), en el orden de los casos de `Idioma`.
 IDIOMAS = [("es", "Espanol"), ("en", "Ingles"), ("ca", "Catalan"), ("gl", "Gallego"), ("ast", "Asturiano"),

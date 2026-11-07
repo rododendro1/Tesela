@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // Las disposiciones de piano y jazz (drop 2, drop 3, shell…) tocadas en la guitarra: cada voz en una cuerda de un
