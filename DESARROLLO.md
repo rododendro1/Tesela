@@ -23,7 +23,7 @@ Apps/
 │                     MEI o ABC mientras suenan (con las transformaciones entre ellos), o las notas que se toquen (y
 │                     qué acorde forman), en el Tonnetz, la tabla armónica o un
 │                     teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático, Gerhard, Park, o uno en formato UIL con giros de 30°); exporta el dibujo en SVG
-├── ConsolaArmonia/       La herramienta `armonia`, con sus pruebas (SwiftPM)
+├── ConsolaArmonia/   La herramienta `armonia`, con sus pruebas (SwiftPM)
 └── PruebasDeInterfaz/  Las pruebas de interfaz de las dos apps (XCUITest), con los ejemplos de cada vista
 Ejemplos/
 ├── EjemploArmonia/     Un recorrido por la API del motor, ejecutable (SwiftPM)
@@ -33,13 +33,13 @@ Herramientas/
 ├── FuzzArmonia/         Los lectores de ficheros y textos con datos al azar (libFuzzer; el CI lo pasa cada semana)
 └── RendimientoArmonia/  Cuánto tarda el motor en lo que hacen las apps (SwiftPM; el CI lo mide en cada cambio)
 Packages/
-├── Armonia/        El motor de armonía, en seis módulos (Elementos, Teoría, Diagramas, Partitura, Formatos, Trastes)
+├── Armonia/        El motor de armonía, en seis módulos (Elementos, Teoría, Diagramas, Partituras, Formatos, Trastes)
 │                   y el paraguas `Armonia`: notas, acordes, escalas, tonalidad, Tonnetz, MusicXML, MEI, LilyPond, ABC, MIDI, pentagramas en SVG,
 │                   y los mástiles, afinaciones, digitaciones de acordes y escalas por posiciones (guitarra, bajo, ukelele…)
 ├── Interfaz/       Componentes SwiftUI (DiagramaDeMastil, DiagramaDePentagrama, DiagramaDeTonnetz, DiagramaDeRejilla, VistaSVG, tema) y lo que comparten las apps:
 │                   el selector de notación y su ajuste (en el entorno), los textos de la interfaz en quince
 │                   lo que enseña cada vista, el cálculo en segundo plano y el menú para exportar
-├── Exposicion/   Lo que enseñan las apps y la línea de comandos, sin SwiftUI: el análisis, el coral, la
+├── Exposicion/     Lo que enseñan las apps y la línea de comandos, sin SwiftUI: el análisis, el coral, la
 │                   transposición, la tablatura, la escucha, los ficheros para exportar y los textos de la
 │                   interfaz en quince idiomas
 └── Hexagonos/      Rejillas hexagonales: coordenadas axiales, cúbicas, desplazadas y dobladas, vecinos, distancias,

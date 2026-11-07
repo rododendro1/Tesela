@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.7 (2026-11-07)
 
 ### Nombres por octava: notas árabes, perde turcas y cuerdas griegas; los śruti y el gamelan
 

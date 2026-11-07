@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.3.7 (2026-11-07)
 
 - **Cambio incompatible:** el paquete, el producto y el módulo se llaman ahora `Interfaz` (antes `TeselaUI`),
   y la carpeta es `Packages/Interfaz`. Quien lo use por SwiftPM cambia `.product(name: "TeselaUI", …)` por
