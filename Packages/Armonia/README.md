@@ -244,9 +244,16 @@ Sources/
 │   │                  Pentagrama (Clave, PosicionEnElPentagrama, InstrumentoDePartitura), SignoMicrotonal
 │   ├── Dibujo/        PentagramaSVG (con sus opciones y los glifos SMuFL)
 │   └── Contrapunto/   Contrapunto (contrapunto de especies a dos voces, con sus faltas)
-├── Formatos/          MusicXML, MEI, LilyPond, GUIDO y ABC (exportación de voces, corales y progresiones),
-│                      ArchivoMIDI (ficheros MIDI estándar), la importación de MusicXML, MXL, MEI, ABC y MIDI
-│                      (Importacion, con ErrorDeLecturaDeFichero) y el lector de XML propio (LectorXML)
+├── Formatos/          FormatoDePartitura y Partitura+Formatos (exportar a cada formato)
+│   ├── MusicXML/      MusicXML (exportación de voces, corales y progresiones) y su lectura, también en MXL
+│   ├── MEI/           MEI y su lectura
+│   ├── ABC/           ABC y su lectura
+│   ├── MIDI/          ArchivoMIDI (ficheros MIDI estándar) y su lectura
+│   ├── LilyPond/      LilyPond
+│   ├── GUIDO/         GUIDO
+│   ├── Exportacion/   Exportacion, ExportacionDeContrapunto y EscritorDeLineas, lo que comparten los formatos
+│   └── Importacion/   Importacion (con ErrorDeLecturaDeFichero, las escalas, la partitura y las repeticiones)
+│                      y el lector de XML propio (LectorXML)
 ├── Trastes/           Encordado (afinaciones del instrumento), Mastil (con PosicionEnElMastil: dónde suena cada nota),
 │                      Digitacion (formas de tocar un acorde en el mástil)
 └── Armonia/           el módulo paraguas, sin código propio: Exportaciones (reexporta los seis)
