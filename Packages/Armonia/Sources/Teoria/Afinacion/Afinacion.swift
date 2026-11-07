@@ -14,7 +14,7 @@ import Foundation
 //
 // El protocolo `SistemaDeAfinacion` está en los Elementos (Fundamentos/SistemaDeAfinacion.swift). Los temperamentos
 // están en la Teoría, y no en los Diagramas, porque solo necesitan las notas y las escalas: así los ven también
-// la Partitura, los Formatos y los Trastes.
+// las Partituras, los Formatos y los Trastes.
 
 // MARK: - Temperamentos regulares
 

@@ -19,7 +19,7 @@ XcodeGen. Los pasos están en el apartado «Empezar» de [DESARROLLO.md](DESARRO
 ```sh
 cd Packages/Armonia && swift test        # el motor
 cd Packages/Hexagonos && swift test      # las rejillas hexagonales
-cd Packages/Exposicion && swift test    # lo que enseñan las apps, sin SwiftUI
+cd Packages/Exposicion && swift test     # lo que enseñan las apps, sin SwiftUI
 cd Packages/Interfaz && swift test       # la interfaz (en Linux, solo la parte sin SwiftUI)
 ./Scripts/compilar_todo.sh               # todo, por capas, como el CI
 ```

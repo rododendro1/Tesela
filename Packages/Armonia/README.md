@@ -193,8 +193,8 @@ Lo interno que se usa entre capas es `package`, no público. Un módulo solo usa
 `Scripts/comprobaciones/comprobar_modulos.py`, en la raíz del repositorio, lo vigila:
 
     Elementos ◄── Teoria ◄──┬── Diagramas
-                                       └── Partituras ◄──┬── Formatos
-                                                               └── Trastes
+                            └── Partituras ◄──┬── Formatos
+                                              └── Trastes
 
 Un fichero por concepto: el tipo principal junto con sus tipos auxiliares y sus extensiones
 (`Intervalo.swift` contiene también `SentidoDelIntervalo`, `CalidadDeIntervalo` y `Consonancia`). Solo se separa en
@@ -244,10 +244,10 @@ Sources/
 │   │                  Pentagrama (Clave, PosicionEnElPentagrama, InstrumentoDePartitura), SignoMicrotonal
 │   ├── Dibujo/        PentagramaSVG (con sus opciones y los glifos SMuFL)
 │   └── Contrapunto/   Contrapunto (contrapunto de especies a dos voces, con sus faltas)
-├── Formatos/   MusicXML, MEI, LilyPond, GUIDO y ABC (exportación de voces, corales y progresiones),
+├── Formatos/          MusicXML, MEI, LilyPond, GUIDO y ABC (exportación de voces, corales y progresiones),
 │                      ArchivoMIDI (ficheros MIDI estándar), la importación de MusicXML, MXL, MEI, ABC y MIDI
 │                      (Importacion, con ErrorDeLecturaDeFichero) y el lector de XML propio (LectorXML)
-├── Trastes/    Encordado (afinaciones del instrumento), Mastil (con PosicionEnElMastil: dónde suena cada nota),
+├── Trastes/           Encordado (afinaciones del instrumento), Mastil (con PosicionEnElMastil: dónde suena cada nota),
 │                      Digitacion (formas de tocar un acorde en el mástil)
 └── Armonia/           el módulo paraguas, sin código propio: Exportaciones (reexporta los seis)
     │                  y la documentación

@@ -5,12 +5,12 @@ import PackageDescription
 // `import Armonia` ve la misma API de siempre. Lo que antes era interno y se usa entre capas es
 // `package`: visible dentro de este paquete y no en la API pública.
 //
-//     Elementos            Fundamentos, Texto, Postonal
-//     Teoria            Acordes, Escalas, Tonalidad, Afinacion
-//     Diagramas  Color, Dibujo, Redes
-//     Partituras         Modelo, Dibujo, Contrapunto
-//     Formatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond: exportar e importar
-//     Trastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes), sobre Partitura
+//     Elementos   Fundamentos, Texto, Postonal
+//     Teoria      Acordes, Escalas, Tonalidad, Afinacion
+//     Diagramas   Color, Dibujo, Redes
+//     Partituras  Modelo, Dibujo, Contrapunto
+//     Formatos    MusicXML, MXL, MEI, ABC, MIDI y LilyPond: exportar e importar
+//     Trastes     Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes), sobre Partituras
 //
 // La geometría de las rejillas hexagonales (el Tonnetz, la tabla armónica, los teclados isomórficos) viene
 // del paquete `Hexagonos`, que no depende de nada. `Diagramas` lo usa; `Armonia` no lo reexporta,
