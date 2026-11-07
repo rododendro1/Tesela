@@ -92,8 +92,8 @@ Tonalidad("ля минор")                               // La menor
   «Sol7/B», que da el error `.idiomasMezclados`).
 - Los textos del motor (mensajes de error, intervalos, calidades, papeles en el acorde, grados,
   claves, figuras, cadencias y faltas de conducción) están en español, inglés, catalán, gallego,
-  euskera, portugués, francés, italiano, alemán, griego, ruso y húngaro. Es lo que indica
-  `notacion.textos`, y cada texto es una `Traduccion` con los doce idiomas.
+  euskera, portugués, francés, italiano, alemán, griego, ruso, húngaro y sueco. Es lo que indica
+  `notacion.textos`, y cada texto es una `Traduccion` con los trece idiomas.
 - Los nombres de los catálogos (tipos de acorde y de escala, instrumentos) siguen el mismo
   `textos`. Los nombres tradicionales de escala (rāga, maqam, pentatónicas japonesas…)
   se escriben igual en todos los idiomas, y una escala se lee también con su nombre en catalán,
@@ -487,7 +487,7 @@ Todos los errores del motor, también `ErrorDeLecturaDeFichero` y `ErrorDeLectur
 para mostrar cualquiera basta `catch let error as any ErrorDeArmonia` y `error.descripcion(en:)`.
 
 El mensaje está en español (`description`, `explicacion`) y también en inglés, catalán, gallego,
-euskera, portugués, francés, italiano, alemán, griego, ruso y húngaro: `descripcion(en:)` y
+euskera, portugués, francés, italiano, alemán, griego, ruso, húngaro y sueco: `descripcion(en:)` y
 `explicacion(en:)` usan el idioma de los textos de la notación (`notacion.textos`), como los
 nombres de intervalos.
 

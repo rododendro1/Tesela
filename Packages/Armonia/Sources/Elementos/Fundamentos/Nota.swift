@@ -130,7 +130,7 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
                 .conPalabras(.italiano),
                 .conPalabras(.catalan), .conPalabras(.gallego), .conPalabras(.euskera), .conPalabras(.portugues),
                 .conPalabras(.ruso), .conPalabras(.griego),
-                .conPalabras(.hungaro),
+                .conPalabras(.hungaro), .conPalabras(.sueco),
             ] {
                 tabla[a.nombre(en: notacion).claveDeBusqueda] = a
             }
@@ -287,7 +287,8 @@ public struct Nota: Hashable, Sendable {
     package static let porNombre: [Notacion: [String: Nota]] = {
         var tablas: [Notacion: [String: Nota]] = [:]
         let notaciones = [
-            Notacion.conPalabras(.aleman), .conPalabras(.hungaro), .conPalabras(.frances), .conPalabras(.italiano),
+            Notacion.conPalabras(.aleman), .conPalabras(.hungaro), .conPalabras(.sueco), .conPalabras(.frances),
+            .conPalabras(.italiano),
         ]
         for notacion in notaciones + Notacion.deLecturaGenerica + Notacion.conPalabras {
             var tabla: [String: Nota] = [:]
@@ -470,7 +471,7 @@ extension Nota {
     package var nombreAleman: String { nombreConSufijos(en: .aleman) }
 
     /// Nombre a la alemana, con los sufijos del idioma (``ReglasDeIdioma/sufijoDeSostenido`` y
-    /// ``ReglasDeIdioma/sufijoDeBemol``): Fis, Eses, Asas, Heses en alemán; Fisz, Eszesz, Aszasz, Heszesz en húngaro.
+    /// ``ReglasDeIdioma/sufijoDeBemol``): Fis, Eses, Asas, Heses en alemán; Fisz, Eszesz, Aszasz, Heszesz en húngaro; Fiss, Essess, Assass, Hessess en sueco.
     package func nombreConSufijos(en idioma: Idioma) -> String {
         let reglas = idioma.reglas
         let letra = reglas.naturales[natural.rawValue]

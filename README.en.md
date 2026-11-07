@@ -1,7 +1,7 @@
 # Tesela
 
 Music theory in Swift: a harmony engine, two apps for iOS and macOS, and a command-line tool, `armonia`. Everything
-speaks twelve languages, English among them. The code and its documentation are written in Spanish; this page is a
+speaks thirteen languages, English among them. The code and its documentation are written in Spanish; this page is a
 short English summary.
 
 [Español](README.md) · [Documentation (DocC)](https://rododendro1.github.io/Tesela/)
@@ -40,7 +40,7 @@ armonia chord H7 --language de                     # notes also in the chosen la
 ```
 
 Commands and note names are accepted in Spanish or English (Do, C, Sib, Bb). `--ingles` answers in English notation
-and language; `--language` picks any of the twelve languages, and so does the `ARMONIA_IDIOMA` variable
+and language; `--language` picks any of the thirteen languages, and so does the `ARMONIA_IDIOMA` variable
 (`export ARMONIA_IDIOMA=en`; `system` takes it from `LANG`). With `--json`, the keys are always the same (in
 Spanish) whatever the language.
 

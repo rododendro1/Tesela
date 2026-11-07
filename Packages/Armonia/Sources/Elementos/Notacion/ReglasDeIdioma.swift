@@ -82,7 +82,7 @@ public struct ReglasDeIdioma: Hashable, Sendable {
     /// palabras en los demás.
     public let alteraciones: EscrituraDeLaAlteracion
     /// En la escritura a la alemana, lo que se añade al nombre para el sostenido y para el bemol: «is» y «es» en
-    /// alemán (Fis, Des), «isz» y «esz» en húngaro (Fisz, Desz). Tras una vocal (Mi♭, La♭) el bemol pierde la «e»:
+    /// alemán (Fis, Des), «isz» y «esz» en húngaro (Fisz, Desz), «iss» y «ess» en sueco (Fiss, Dess). Tras una vocal (Mi♭, La♭) el bemol pierde la «e»:
     /// Es, As; Esz, Asz. En los demás idiomas no se usan.
     public let sufijoDeSostenido: String
     public let sufijoDeBemol: String
@@ -210,6 +210,13 @@ extension Idioma {
                 naturales: ["C", "D", "E", "F", "G", "A", "H"], alteraciones: .alemana,
                 sufijoDeSostenido: "isz", sufijoDeBemol: "esz", tipografia: .ascii,
                 mayor: "dúr", menor: "moll", separadorDelModo: "-", menorEnMinuscula: true, plural: .invariable)
+        // Como el alemán, con «iss» y «ess» (Fiss, Ess, Hessess), B para Si♭ y H para Si.
+        case .sueco:
+            return ReglasDeIdioma(
+                codigo: "sv", nombrePropio: "Svenska", nombres: ["sueco", "svenska"],
+                naturales: ["C", "D", "E", "F", "G", "A", "H"], alteraciones: .alemana,
+                sufijoDeSostenido: "iss", sufijoDeBemol: "ess", tipografia: .ascii,
+                mayor: "dur", menor: "moll", separadorDelModo: "-", menorEnMinuscula: true)
         }
     }
 }

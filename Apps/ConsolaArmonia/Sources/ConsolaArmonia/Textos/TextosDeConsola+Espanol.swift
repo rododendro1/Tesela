@@ -165,15 +165,15 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: teoría musical desde la línea de comandos.
 
-        Uso: armonia <orden> <argumentos> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu]
+        Uso: armonia <orden> <argumentos> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv]
 
         Órdenes:
         """,
         pieDeLaAyuda: """
         Se aceptan nombres en español o en inglés (Do, C, Sib, Bb). Con --ingles, la respuesta
-        usa la notación inglesa. Con --idioma ca, gl, eu, pt, fr, it, de, el, ru o hu,
+        usa la notación inglesa. Con --idioma ca, gl, eu, pt, fr, it, de, el, ru, hu o sv,
         las notas, los nombres, los mensajes y esta ayuda salen en catalán, gallego,
-        euskera, portugués, francés, italiano, alemán, griego, ruso o húngaro.
+        euskera, portugués, francés, italiano, alemán, griego, ruso, húngaro o sueco.
         Con --textos, los textos van en otro idioma que las notas: --idioma en --textos es.
         En español e inglés, --escritura palabras|ascii|unicode escribe las notas como Fa sostenido,
         Fa# o Fa♯ (en inglés, F sharp, F# o F♯).
@@ -332,7 +332,7 @@ extension TextosDeConsola {
         pruebaLaAyuda: "Prueba «armonia ayuda».",
         ordenDesconocida: { orden in "orden desconocida: «\(orden)»" },
         opcionDesconocida: { opcion in "opción desconocida: «\(opcion)»" },
-        idiomaDesconocido: { idioma in "idioma desconocido: «\(idioma)» (es, en, ca, gl, eu, pt, fr, it, de, el, ru o hu)" },
+        idiomaDesconocido: { idioma in "idioma desconocido: «\(idioma)» (es, en, ca, gl, eu, pt, fr, it, de, el, ru, hu o sv)" },
         terminalDesconocida: { t in "terminal desconocida: «\(t)» (bash, zsh o fish)" },
         escrituraNoValida: { escritura in "escritura no válida: «\(escritura)» (palabras o compacto; ascii o unicode, solo con es y en)" },
         sistemaDesconocido: { sistema, lista in "sistema de nombres desconocido: «\(sistema)» (\(lista))" },

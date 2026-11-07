@@ -20,7 +20,7 @@ import Testing
     }
 
     @Test func lasCompactasEscribenLasDoblesConDobles() throws {
-        for idioma in Idioma.allCases where ![.aleman, .hungaro].contains(idioma) {
+        for idioma in Idioma.allCases where ![.aleman, .hungaro, .sueco].contains(idioma) {
             #expect(Notacion(escritura: .compacta(idioma)).tipografia == .conDobles, Comment(rawValue: idioma.codigo))
         }
         let conSignos = EscrituraDeNotas.allCases.filter { $0.esCompacta && $0.escrituraDeLaAlteracion == .signos }
@@ -62,7 +62,7 @@ import Testing
             #expect(!EscrituraDeNotas.conPalabras(idioma).esCompacta, "\(idioma)")
             #expect(EscrituraDeNotas.allCases.contains(compacta), "\(idioma)")
         }
-        #expect(EscrituraDeNotas.allCases.count == 26)
+        #expect(EscrituraDeNotas.allCases.count == 28)
         // La notación de cada idioma sigue siendo la de siempre.
         #expect(Notacion.delIdioma(.catalan) == .conPalabras(.catalan))
         #expect(Notacion.delIdioma(.frances) == .conPalabras(.frances))

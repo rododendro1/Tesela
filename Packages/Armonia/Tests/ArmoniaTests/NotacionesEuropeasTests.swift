@@ -8,7 +8,7 @@ import Testing
 @testable import Teoria
 @testable import Trastes
 
-/// Las notaciones y los textos en alemán, húngaro, francés, italiano, griego y ruso.
+/// Las notaciones y los textos en alemán, húngaro, sueco, francés, italiano, griego y ruso.
 @Suite struct NotacionesEuropeasTests {
     @Test func aleman() throws {
         let casos: [(String, String)] = [
@@ -111,6 +111,43 @@ import Testing
         // Con un número, el nombre va en singular.
         #expect(Idioma.hungaro.contar(5, "félhang") == "5 félhang")
         #expect(throws: (any Error).self) { try Nota(leyendo: "Xisz", en: .compacta(.hungaro)) }
+    }
+
+    /// El sueco escribe las notas como el alemán, con «iss» y «ess»: Fiss, Ess, Ass, B, H.
+    @Test func sueco() throws {
+        let casos: [(String, String)] = [
+            ("Do", "C"), ("Fa#", "Fiss"), ("Dob", "Cess"), ("Mib", "Ess"), ("Mibb", "Essess"),
+            ("Lab", "Ass"), ("Labb", "Assass"), ("Sib", "B"), ("Sibb", "Hessess"), ("Si", "H"),
+            ("Si#", "Hiss"), ("Rex", "Dississ"), ("Solb", "Gess"),
+        ]
+        for (espanol, sueco) in casos {
+            let nombre = try! Nota(leyendo: espanol)
+            #expect(nombre.nombre(en: .compacta(.sueco)) == sueco, Comment(rawValue: espanol))
+            #expect(try (Nota(leyendo: sueco, en: .compacta(.sueco))) == nombre, Comment(rawValue: sueco))
+        }
+        #expect(Nota("Fa#").nombre(en: .conPalabras(.sueco)) == "F kors")
+        #expect(Nota("Sib").nombre(en: .conPalabras(.sueco)) == "H b")
+        #expect(Notacion.delIdioma(.sueco) == .compacta(.sueco))
+        #expect(Acorde("Sib7").cifrado(en: .compacta(.sueco)) == "B7")
+        #expect(Acorde("Fa#7").cifrado(en: .compacta(.sueco)) == "Fiss7")
+        #expect(Tonalidad("Fa# mayor").nombre(en: .compacta(.sueco)) == "Fiss-dur")
+        #expect(Tonalidad("Mib menor").nombre(en: .compacta(.sueco)) == "ess-moll")
+        #expect(Tonalidad("Fiss-dur") == Tonalidad("Fa# mayor"))
+        #expect(Tonalidad("ess-moll") == Tonalidad("Mib menor"))
+        #expect(Escala("Re dórico").nombre(en: .compacta(.sueco)) == "D dorisk")
+        #expect(Escala("Fiss dorisk") == Escala("Fa# dórico"))
+        #expect(Escala("A harmonisk moll") == Escala("La menor armónica"))
+        #expect(Idioma(codigo: "sv-SE") == .sueco)
+        #expect(try Idioma(leyendo: "svenska") == .sueco)
+        #expect(try Idioma(leyendo: "sueco") == .sueco)
+        #expect(Idioma.sueco.nombrePropio == "Svenska")
+        // Los textos.
+        #expect(Intervalo.terceraMayor.nombre(en: .conPalabras(.sueco)) == "stor ters")
+        #expect(Intervalo("P5").nombre(en: .conPalabras(.sueco)) == "ren kvint")
+        #expect(Intervalo("-m6").nombre(en: .conPalabras(.sueco)) == "liten sext nedåt")
+        #expect(Acorde("Sol7").nombre(en: .conPalabras(.sueco)) == "dominantseptimackord på G, grundläge")
+        #expect(Idioma.sueco.contar(5, "halvton", "halvtoner") == "5 halvtoner")
+        #expect(throws: (any Error).self) { try Nota(leyendo: "Xiss", en: .compacta(.sueco)) }
     }
 
     /// El artículo húngaro: «az» ante vocal o ante 1, 5, 1000…; «a» si no.

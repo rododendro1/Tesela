@@ -98,14 +98,14 @@ import Testing
         #expect(Intervalo.terceraMayor.nombre(en: .conPalabras(.aleman)) == "große Terz")
         // Los catálogos también.
         #expect(Acorde("Sol7").nombre(en: .conPalabras(.euskera)) == "sol dominanteko zazpigarrena, oinarrizko egoera")
-        // Todas las traducciones tienen los doce textos, y cada notación toma el de su idioma.
+        // Todas las traducciones tienen los trece textos, y cada notación toma el de su idioma.
         let t = Traduccion(
             "es", "en", ca: "ca", gl: "gl", eu: "eu", pt: "pt", fr: "fr", it: "it", de: "de", el: "el", ru: "ru",
-            hu: "hu")
+            hu: "hu", sv: "sv")
         #expect(
             Notacion.allCases.map(t.en) == [
                 "es", "es", "es", "en", "en", "en", "ca", "ca", "gl", "gl", "eu", "eu", "pt", "pt", "fr", "fr", "it",
-                "it", "de", "de", "el", "el", "ru", "ru", "hu", "hu",
+                "it", "de", "de", "el", "el", "ru", "ru", "hu", "hu", "sv", "sv",
             ])
         #expect(Idioma.allCases.count == Idioma.allCases.count)
     }

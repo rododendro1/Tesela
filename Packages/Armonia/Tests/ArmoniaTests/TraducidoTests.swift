@@ -15,9 +15,10 @@ import Testing
             ["uno", "dos"], ["one", "two"], ca: ["un", "dos"], gl: ["un", "dous"], eu: ["bat", "bi"],
             pt: ["um", "dois"], fr: ["un", "deux"], it: ["uno", "due"], de: ["eins", "zwei"], el: ["ένα", "δύο"],
             ru: ["один", "два"],
-            hu: ["egy", "kettő"])
+            hu: ["egy", "kettő"], sv: ["ett", "två"])
         #expect(numeros.en(.conPalabras(.aleman))[1] == "zwei")
         #expect(numeros.texto(en: .griego) == ["ένα", "δύο"])
+        #expect(numeros.en(.conPalabras(.sueco))[1] == "två")
         #expect(numeros.map(\.count).en(.conPalabras(.ruso)) == 2)
         #expect(numeros.todos.count == Idioma.allCases.count)
         // Con la notación habitual de cada idioma: ♯ en español, # en inglés.
@@ -185,13 +186,13 @@ import Testing
         #expect(
             EscrituraDeNotas.allCases.filter(\.usaASCII) == [
                 .espanolASCII, .inglesASCII, .conPalabras(.aleman), .compacta(.aleman), .conPalabras(.hungaro),
-                .compacta(.hungaro),
+                .compacta(.hungaro), .conPalabras(.sueco), .compacta(.sueco),
             ])
         #expect(
             EscrituraDeNotas.allCases.filter(\.esCompacta) == [
                 .espanolCompacto, .inglesCompacto, .compacta(.catalan), .compacta(.gallego), .compacta(.euskera),
                 .compacta(.portugues), .compacta(.frances), .compacta(.italiano), .compacta(.aleman),
-                .compacta(.griego), .compacta(.ruso), .compacta(.hungaro),
+                .compacta(.griego), .compacta(.ruso), .compacta(.hungaro), .compacta(.sueco),
             ])
         for escritura in EscrituraDeNotas.allCases {
             #expect(escritura.usaASCII == (escritura.tipografia == .ascii))

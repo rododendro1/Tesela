@@ -4,7 +4,7 @@ import Elementos
 // MARK: - Textos de Formatos
 //
 // Un idioma por fichero: `TextosDeFormatos+Espanol.swift`, `TextosDeFormatos+Ingles.swift`… Cada uno da todos los
-// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los doce y
+// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los trece y
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de Formatos en un idioma.
@@ -23,9 +23,9 @@ struct TextosDeFormatos: TextosTraducidos {
     let sinNotas: String
     let sinAcordes: String
 
-    /// Los textos en los doce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeFormatos>(
         espanol, ingles, ca: catalan, gl: gallego, eu: euskera, pt: portugues,
-        fr: frances, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
+        fr: frances, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro, sv: sueco)
 }

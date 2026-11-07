@@ -297,7 +297,7 @@ extension InstrumentoDePartitura: Nombrable {}
 
 // MARK: - Idiomas
 //
-// Nombres de las claves y de los instrumentos predefinidos en los doce idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
+// Nombres de las claves y de los instrumentos predefinidos en los trece idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
 
 // MARK: - Clave
 
@@ -331,9 +331,9 @@ extension Clave {
 // MARK: - InstrumentoDePartitura
 
 extension InstrumentoDePartitura {
-    /// Los nombres de los instrumentos predefinidos en los doce idiomas, por su nombre en español. Un
-    /// instrumento que no está aquí usa su nombre español o, en alemán, griego, ruso y húngaro, el inglés.
-    /// En alemán, ruso y húngaro, la afinación va con letras alemanas: «Klarinette in B» es el clarinete en si♭.
+    /// Los nombres de los instrumentos predefinidos en los trece idiomas, por su nombre en español. Un
+    /// instrumento que no está aquí usa su nombre español o, en alemán, griego, ruso, húngaro y sueco, el inglés.
+    /// En alemán, ruso, húngaro y sueco, la afinación va con letras alemanas: «Klarinette in B» es el clarinete en si♭.
     package static let traducciones: [String: Traduccion] = [
         "piano": TextosDePartituras.traduccion(\.instrumentoPiano),
         "flauta": TextosDePartituras.traduccion(\.instrumentoFlauta),

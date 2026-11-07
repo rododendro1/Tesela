@@ -1,26 +1,26 @@
 // MARK: - Traducción
 //
 // Los textos del motor que no son nombres de nota (mensajes de error, nombres de intervalos, de
-// papeles en el acorde, de grados, de claves, de figuras, de cadencias…) se escriben en los doce
+// papeles en el acorde, de grados, de claves, de figuras, de cadencias…) se escriben en los trece
 // idiomas de las notaciones: español, inglés, catalán, gallego, euskera, portugués,
-// francés, italiano, alemán, griego, ruso y húngaro.
+// francés, italiano, alemán, griego, ruso, húngaro y sueco.
 //
 // Los textos se escriben un idioma por fichero: cada módulo tiene su `TextosDeX` (`TextosDeElementos`,
 // `TextosDeTrastes`…) con un campo por texto, y un fichero por idioma en su carpeta `Textos/`
 // (`TextosDeElementos+Espanol.swift`, `…+Ingles.swift`…). Los campos no tienen valores por omisión, así que un
-// texto nuevo no compila hasta que está en los doce ficheros. `TextosDeX.en(notacion, \.campo)` da el texto
+// texto nuevo no compila hasta que está en los trece ficheros. `TextosDeX.en(notacion, \.campo)` da el texto
 // de un campo en un idioma, y `TextosDeX.traduccion(\.campo)` su `Traduccion` (ver `TextosTraducidos`).
 //
-// Los nombres de los catálogos (tipos de acorde y de escala, instrumentos) también están en los doce idiomas, salvo los nombres tradicionales de escala
+// Los nombres de los catálogos (tipos de acorde y de escala, instrumentos) también están en los trece idiomas, salvo los nombres tradicionales de escala
 // (rāga, maqam, pentatónicas japonesas…), que se escriben igual en todos.
 
-/// Un valor en cada uno de los doce idiomas en los que escribe el motor: un texto, una lista de textos…
+/// Un valor en cada uno de los trece idiomas en los que escribe el motor: un texto, una lista de textos…
 ///
 ///     let ordinales = Traducido<[String]>(["primera", "segunda"], ["first", "second"],
 ///                                         ca: ["primera", "segona"], …, ru: ["первая", "вторая"])
 ///     ordinales.en(.conPalabras(.catalan))[1]    // "segona"
 ///
-/// Como en ``Traduccion``, los doce valores son obligatorios y van en el mismo orden, así que una lista por
+/// Como en ``Traduccion``, los trece valores son obligatorios y van en el mismo orden, así que una lista por
 /// idioma se revisa junto a las demás en vez de repartida por los `case` de un `switch`.
 public struct Traducido<Valor> {
     public let espanol: Valor
@@ -35,12 +35,13 @@ public struct Traducido<Valor> {
     public let griego: Valor
     public let ruso: Valor
     public let hungaro: Valor
+    public let sueco: Valor
 
     /// El valor en cada idioma: el español y el inglés primero y los demás por su código ISO 639.
     public init(
         _ espanol: Valor, _ ingles: Valor, ca catalan: Valor, gl gallego: Valor, eu euskera: Valor,
         pt portugues: Valor, fr frances: Valor, it italiano: Valor, de aleman: Valor, el griego: Valor, ru ruso: Valor,
-        hu hungaro: Valor
+        hu hungaro: Valor, sv sueco: Valor
     ) {
         self.espanol = espanol
         self.ingles = ingles
@@ -54,6 +55,7 @@ public struct Traducido<Valor> {
         self.griego = griego
         self.ruso = ruso
         self.hungaro = hungaro
+        self.sueco = sueco
     }
 
     /// El valor de cada idioma, calculado con su notación habitual (`Notacion.delIdioma`): para los textos que ya
@@ -66,7 +68,8 @@ public struct Traducido<Valor> {
             valor(.delIdioma(.espanol)), valor(.delIdioma(.ingles)), ca: valor(.delIdioma(.catalan)),
             gl: valor(.delIdioma(.gallego)), eu: valor(.delIdioma(.euskera)), pt: valor(.delIdioma(.portugues)),
             fr: valor(.delIdioma(.frances)), it: valor(.delIdioma(.italiano)), de: valor(.delIdioma(.aleman)),
-            el: valor(.delIdioma(.griego)), ru: valor(.delIdioma(.ruso)), hu: valor(.delIdioma(.hungaro)))
+            el: valor(.delIdioma(.griego)), ru: valor(.delIdioma(.ruso)), hu: valor(.delIdioma(.hungaro)),
+            sv: valor(.delIdioma(.sueco)))
     }
 
     /// El valor de cada idioma, calculado a partir del idioma: para los datos que no dependen de cómo se escriben
@@ -78,14 +81,14 @@ public struct Traducido<Valor> {
         self.init(
             valor(.espanol), valor(.ingles), ca: valor(.catalan), gl: valor(.gallego), eu: valor(.euskera),
             pt: valor(.portugues), fr: valor(.frances), it: valor(.italiano), de: valor(.aleman), el: valor(.griego),
-            ru: valor(.ruso), hu: valor(.hungaro))
+            ru: valor(.ruso), hu: valor(.hungaro), sv: valor(.sueco))
     }
 
-    /// Los doce valores, en el orden del inicializador.
+    /// Los trece valores, en el orden del inicializador.
     package var todos: [Valor] {
         [
             espanol, ingles, catalan, gallego, euskera, portugues, frances, italiano,
-            aleman, griego, ruso, hungaro,
+            aleman, griego, ruso, hungaro, sueco,
         ]
     }
 
@@ -107,21 +110,22 @@ public struct Traducido<Valor> {
         case .griego: return griego
         case .ruso: return ruso
         case .hungaro: return hungaro
+        case .sueco: return sueco
         }
     }
 
-    /// El mismo cambio en los doce idiomas.
+    /// El mismo cambio en los trece idiomas.
     public func map<Otro>(_ cambio: (Valor) throws -> Otro) rethrows -> Traducido<Otro> {
         Traducido<Otro>(
             try cambio(espanol), try cambio(ingles), ca: try cambio(catalan), gl: try cambio(gallego),
             eu: try cambio(euskera),
             pt: try cambio(portugues), fr: try cambio(frances),
             it: try cambio(italiano), de: try cambio(aleman),
-            el: try cambio(griego), ru: try cambio(ruso), hu: try cambio(hungaro))
+            el: try cambio(griego), ru: try cambio(ruso), hu: try cambio(hungaro), sv: try cambio(sueco))
     }
 }
 
-/// Los textos de un módulo en los doce idiomas: los `TextosDeX` (`TextosDeElementos`, `TextosDeTeoria`…), con un
+/// Los textos de un módulo en los trece idiomas: los `TextosDeX` (`TextosDeElementos`, `TextosDeTeoria`…), con un
 /// campo por texto y un fichero por idioma.
 ///
 ///     TextosDeTeoria.en(notacion, \.pivote)              // el texto en el idioma de la notación
@@ -129,16 +133,16 @@ public struct Traducido<Valor> {
 ///     TextosDeTeoria.traduccion(\.pivote)                // la `Traduccion`, para guardarla o elegir después
 ///
 /// Se usan en vez de `traducidos.map(…)`: sin optimizar (Debug, `swift test`), cada `traducidos.map` copia en la
-/// pila del que llama los doce `TextosDeX` (decenas de KB), y un `switch` con un caso por texto guarda una
+/// pila del que llama los trece `TextosDeX` (decenas de KB), y un `switch` con un caso por texto guarda una
 /// copia por caso. Con noventa casos, el marco pedía varios MB y desbordaba la pila en macOS. Aquí la copia es
 /// una sola, en un marco que se suelta al volver.
 public protocol TextosTraducidos: Sendable {
-    /// Los textos en los doce idiomas.
+    /// Los textos en los trece idiomas.
     static var traducidos: Traducido<Self> { get }
 }
 
 extension TextosTraducidos {
-    /// Un valor de los textos en los doce idiomas: `traduccion(\.campo)`, o `traduccion { $0.campo(n) }`.
+    /// Un valor de los textos en los trece idiomas: `traduccion(\.campo)`, o `traduccion { $0.campo(n) }`.
     @inline(never)
     public static func traduccion<Valor>(_ campo: (Self) throws -> Valor) rethrows -> Traducido<Valor> {
         try traducidos.map(campo)
@@ -161,14 +165,14 @@ extension Traducido: Equatable where Valor: Equatable {}
 extension Traducido: Hashable where Valor: Hashable {}
 extension Traducido: Sendable where Valor: Sendable {}
 
-/// Un texto en los doce idiomas en los que escribe el motor.
+/// Un texto en los trece idiomas en los que escribe el motor.
 ///
 ///     let t = Traduccion("consonancia perfecta", "perfect consonance",
 ///                        ca: "consonància perfecta", gl: "consonancia perfecta",
 ///                        eu: "kontsonantzia perfektua", pt: "consonância perfeita",
 ///                        fr: "consonance parfaite", it: "consonanza perfetta",
 ///                        de: "vollkommene Konsonanz", el: "τέλεια συμφωνία", ru: "совершенный консонанс",
-///                        hu: "tökéletes konszonancia")
+///                        hu: "tökéletes konszonancia", sv: "fullkomlig konsonans")
 ///     t.en(.conPalabras(.euskera))    // "kontsonantzia perfektua"
 ///     t.en(.conPalabras(.aleman))     // "vollkommene Konsonanz"
 public typealias Traduccion = Traducido<String>

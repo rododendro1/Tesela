@@ -141,7 +141,7 @@ extension Acorde {
 
 // MARK: - Idiomas
 //
-// Los nombres de las transformaciones neorriemannianas en los doce idiomas de los textos (`Traduccion`).
+// Los nombres de las transformaciones neorriemannianas en los trece idiomas de los textos (`Traduccion`).
 
 extension TransformacionNeorriemanniana: Nombrable {
     /// El nombre de la transformación en el idioma de los textos: «relativa», «relative».

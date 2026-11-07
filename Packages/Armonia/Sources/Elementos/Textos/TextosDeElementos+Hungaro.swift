@@ -57,7 +57,7 @@ extension TextosDeElementos {
         faltanEnLaSerie: { clases in "hiányzik: \(clases)" },
         repetidasEnLaSerie: { clases in "ismétlődik: \(clases)" },
         // ErrorDeLectura.swift (idiomas)
-        idiomaNoReconocido: { n, o in "„\(n)” egyik sem a tizenkét nyelv közül: \(o)" },
+        idiomaNoReconocido: { n, o in "„\(n)” egyik sem a tizenhárom nyelv közül: \(o)" },
 
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },

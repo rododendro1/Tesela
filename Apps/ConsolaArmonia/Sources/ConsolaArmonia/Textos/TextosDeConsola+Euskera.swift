@@ -165,7 +165,7 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: musika-teoria komando-lerrotik.
 
-        Erabilera: armonia <agindua> <argumentuak> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu]
+        Erabilera: armonia <agindua> <argumentuak> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv]
 
         Aginduak (aginduak eta aukerak gaztelaniaz edo ingelesez idazten dira):
         """,
@@ -332,7 +332,7 @@ extension TextosDeConsola {
         pruebaLaAyuda: "Probatu «armonia ayuda».",
         ordenDesconocida: { orden in "agindu ezezaguna: «\(orden)»" },
         opcionDesconocida: { opcion in "aukera ezezaguna: «\(opcion)»" },
-        idiomaDesconocido: { idioma in "hizkuntza ezezaguna: «\(idioma)» (es, en, ca, gl, eu, pt, fr, it, de, el, ru edo hu)" },
+        idiomaDesconocido: { idioma in "hizkuntza ezezaguna: «\(idioma)» (es, en, ca, gl, eu, pt, fr, it, de, el, ru, hu edo sv)" },
         terminalDesconocida: { t in "terminal ezezaguna: «\(t)» (bash, zsh edo fish)" },
         escrituraNoValida: { escritura in "idazkera baliogabea: «\(escritura)» (palabras/words edo compacto/compact; ascii edo unicode, es eta en-ekin bakarrik)" },
         sistemaDesconocido: { sistema, lista in "izen-sistema ezezaguna: «\(sistema)» (\(lista))" },

@@ -137,10 +137,10 @@ package struct NombresDeEscalas: Sendable {
         tradicionales[tipo.identidad]?.nombre ?? porTipo[tipo]?.nombre
     }
 
-    /// Los nombres en los doce idiomas.
+    /// Los nombres en los trece idiomas.
     package static let traducidos = Traducido<NombresDeEscalas>(
         espanol, ingles, ca: catalan, gl: gallego, eu: euskera, pt: portugues,
-        fr: frances, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
+        fr: frances, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro, sv: sueco)
 
     /// Los nombres en un idioma.
     package static func de(_ idioma: Idioma) -> NombresDeEscalas { traducidos.texto(en: idioma) }
@@ -176,7 +176,7 @@ extension NombresDeEscalas {
 extension TipoDeEscala {
     /// El tipo de escala escrito junto a una tónica en la notación dada ("Fis dorisch", "ре дорийский",
     /// "re dòric"). Con la tónica en inglés se acepta el nombre en inglés o en español; en ruso y griego, el suyo
-    /// o el inglés; en alemán y en húngaro, el alemán o el húngaro ("H mayor" no es una escala); en las demás, los de las lenguas
+    /// o el inglés; en alemán, en húngaro y en sueco, cualquiera de los tres ("H mayor" no es una escala); en las demás, los de las lenguas
     /// peninsulares y romances o, si no, el español (sin inglés: "Re dorian" mezclaría idiomas).
     package static func buscar(nombre: String, conTonicaEn notacion: Notacion) -> TipoDeEscala? {
         if notacion == .inglesPalabras { return buscar(nombre: nombre, aceptarIngles: true) }
@@ -184,11 +184,15 @@ extension TipoDeEscala {
         if notacion == .conPalabras(.ruso) || notacion == .conPalabras(.griego) {
             return NombresDeEscalas.indiceRusoGriego[normalizado] ?? buscar(nombre: nombre, aceptarIngles: true)
         }
-        // En alemán y en húngaro, el suyo o el del otro, que escriben las notas igual (C, H, B): «C dór», «H moll».
+        // En alemán, en húngaro y en sueco, el suyo o el de los otros, que escriben las notas igual (C, H, B):
+        // «C dór», «H moll».
         let idioma = notacion.idiomaDeLasNotas
-        if idioma == .aleman || idioma == .hungaro {
-            let (propio, otro): (Idioma, Idioma) = idioma == .aleman ? (.aleman, .hungaro) : (.hungaro, .aleman)
-            return NombresDeEscalas.de(propio).indice[normalizado] ?? NombresDeEscalas.de(otro).indice[normalizado]
+        let germanicos: [Idioma] = [.aleman, .hungaro, .sueco]
+        if germanicos.contains(idioma) {
+            for otro in [idioma] + germanicos.filter({ $0 != idioma }) {
+                if let tipo = NombresDeEscalas.de(otro).indice[normalizado] { return tipo }
+            }
+            return nil
         }
         return NombresDeEscalas.indicePeninsular[normalizado] ?? buscar(nombre: nombre, aceptarIngles: false)
     }

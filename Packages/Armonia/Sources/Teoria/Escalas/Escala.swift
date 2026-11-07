@@ -65,6 +65,7 @@ public struct Escala: Hashable, Sendable {
         let clave = texto.claveDeBusqueda
         let otras = [
             Notacion.conPalabras(.frances), .conPalabras(.italiano), .conPalabras(.aleman), .conPalabras(.hungaro),
+            .conPalabras(.sueco),
         ]
         for notacion in Notacion.deLecturaGenerica + otras + Notacion.conPalabras {
             if let nombre = Nota.porNombre[notacion]?[clave] { return (nombre, notacion) }
@@ -343,7 +344,7 @@ extension Escala {
 
 // MARK: - Idiomas
 //
-// Nombres de los grados de la escala en los doce idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
+// Nombres de los grados de la escala en los trece idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
 
 // MARK: - NombreDeGrado
 

@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+### Sueco
+
+- **Cambio incompatible:** el sueco es el idioma número trece: `Idioma.sueco` (código «sv»), con sus `ReglasDeIdioma`
+  (C D E F G A H, Fiss, Ess, Ass, B, «C-dur», «a-moll»), sus textos y los nombres de todas las escalas. `Traducido` (y
+  `Traduccion`) pide `sv:` al final: una `Traduccion` escrita a mano tiene trece valores, en el orden
+  `(_:_:ca:gl:eu:pt:fr:it:de:el:ru:hu:sv:)`. Los nombres de nota y de escala se leen también en sueco, y los nombres
+  de escala en alemán, húngaro y sueco se leen en cualquiera de los tres.
+- En la línea de comandos, `--idioma sv` y `--textos sv` dan las notas, los nombres, los mensajes y la ayuda en sueco.
+
 ### Escalas
 
 - Siete escalas nuevas, con su nombre en los doce idiomas: `prometeoNapolitano` (Do Re♭ Mi Fa♯ La Si♭),

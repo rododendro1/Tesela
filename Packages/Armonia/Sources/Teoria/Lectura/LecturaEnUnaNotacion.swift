@@ -3,7 +3,7 @@
 //  Teoria
 //
 //  Leer un acorde, una escala o una tonalidad escritos en una notación concreta: lo que escriben `cifrado(en:)` y
-//  `nombre(en:)` se lee de vuelta en los doce idiomas.
+//  `nombre(en:)` se lee de vuelta en los trece idiomas.
 //
 
 import Elementos

@@ -2,7 +2,7 @@ import Elementos
 
 /// Error al leer una duración, un compás o un contrapunto.
 ///
-/// Como `ErrorDeLectura`, indica el texto, el carácter donde se detuvo la lectura y el motivo, en los doce
+/// Como `ErrorDeLectura`, indica el texto, el carácter donde se detuvo la lectura y el motivo, en los trece
 /// idiomas de los textos. Leer una melodía puede lanzar los dos: `ErrorDeLectura` si falla una nota y
 /// `ErrorDeLecturaDePartitura` si falla una duración. Para tratarlos juntos, `any ErrorAlLeer`:
 ///
@@ -34,7 +34,7 @@ public struct ErrorDeLecturaDePartitura: ErrorAlLeer {
 
 // MARK: - Idiomas
 //
-// Los mensajes en los doce idiomas de los textos, que están en `TextosDePartituras`.
+// Los mensajes en los trece idiomas de los textos, que están en `TextosDePartituras`.
 
 extension ErrorDeLecturaDePartitura.Motivo {
     public func explicacion(en notacion: Notacion) -> String {

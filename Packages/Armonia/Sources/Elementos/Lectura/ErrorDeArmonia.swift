@@ -1,6 +1,6 @@
 import Foundation
 
-/// Un error del motor con su mensaje en los doce idiomas de los textos.
+/// Un error del motor con su mensaje en los trece idiomas de los textos.
 ///
 /// Lo cumplen los errores de lectura de cada capa (`ErrorDeLectura`, `ErrorDeLecturaDeTeoria`,
 /// `ErrorDeLecturaDePartitura`), el de importar una partitura (`ErrorDeLecturaDeFichero`) y el de las disposiciones de
@@ -24,7 +24,7 @@ extension ErrorDeArmonia {
     public var errorDescription: String? { description }
 }
 
-/// El motivo de un error de lectura, con su explicación en los doce idiomas de los textos.
+/// El motivo de un error de lectura, con su explicación en los trece idiomas de los textos.
 public protocol MotivoDeLectura: Hashable, Sendable {
     /// Por qué no se pudo leer, en el idioma de los textos de la notación: «"b3" no es una tensión válida…».
     func explicacion(en notacion: Notacion) -> String

@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- Las apps están también en sueco: `sv` en `Idiomas.plist`, las carpetas `sv.lproj` y los textos de las vistas.
+  El selector de notación tiene la notación sueca (Fiss, Ess, B, H).
 - Las apps están en doce idiomas: el selector de notación ya no tiene el asturiano, el aragonés ni el occitano, y
   las apps ya no declaran `ast`, `an` ni `oc` (`Idiomas.plist` y las carpetas `.lproj`). Con una de esas notaciones
   guardada, las apps vuelven al español con ♯ y ♭; con el sistema en uno de esos idiomas, toman el siguiente idioma
