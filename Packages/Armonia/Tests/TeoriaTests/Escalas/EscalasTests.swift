@@ -705,6 +705,8 @@ import Testing
         #expect(TipoDeEscala.homayun == .frigioDominante)
         #expect(TipoDeEscala.cahargah == .dobleArmonica)
         #expect(notas(.pyongjo) == "Do Re Fa Sol La")
+        #expect(notas(.ujo) == "Do Re Mi Sol La")
+        #expect(TipoDeEscala.ujo == .pentatonicaMayor && TipoDeEscala.ujo.tradicion == .corea)
         #expect(notas(.kyemyonjo) == "Do Mi♭ Fa Sol Si♭")
         #expect(notas(.tritonicaAndina) == "Do Mi♭ Sol")
         #expect(TipoDeEscala.andina == .pentatonicaMenor)
@@ -1229,12 +1231,21 @@ import Testing
         #expect((try? TipoDeEscala(leyendo: "Svaneti"))?.nombre == "georgiana")
         #expect(TipoDeEscala.georgiana.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Georgian")
         #expect(Tradicion.europa.nombre == "Folklore europeo")
+        #expect(Escala(.do, .istriana).notas.map(\.description).joined(separator: " ") == "Do Re♭ Mi♭ Fa♭ Sol♭ La𝄫")
+        #expect(TipoDeEscala.istriana.subtradicion == .istria && Subtradicion.istria.nombre == "Istria")
+        #expect(Subtradicion.istria.nombre(en: Notacion.espanolCompacto.conTextos(en: .aleman)) == "Istrien")
         #expect(Tradicion.europa.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "European folk")
     }
 
     /// Vietnam, Brasil y el arpa birmana.
     @Test func vietnamBrasilYMyanmar() {
-        #expect(TipoDeEscala.tradicionales(tradicion: .vietnam).map(\.nombre) == ["Bắc", "Vọng cổ"])
+        #expect(
+            TipoDeEscala.tradicionales(tradicion: .vietnam).map(\.nombre) == [
+                "Bắc", "Vọng cổ", "Hò mái nhì", "Sa mạc", "Dân ca",
+            ])
+        #expect(TipoDeEscala.hoMaiNhi == .bac && !TipoDeEscala.hoMaiNhi.esIdentico(a: .bac))
+        #expect(TipoDeEscala.saMac.microtonal?.cents == [0, 338, 504, 699, 1026])
+        #expect(TipoDeEscala.danCa == .pentatonicaMayorTerceraMenor)
         #expect(TipoDeEscala.bac.microtonal?.cents == [0, 189, 501, 698, 891])
         #expect((try? TipoDeEscala(leyendo: "hoi oan"))?.nombre == "Vọng cổ")
         #expect(TipoDeEscala.tradicionales(tradicion: .brasil).count == 3)

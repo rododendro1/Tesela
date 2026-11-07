@@ -235,7 +235,7 @@ import Testing
                 || palabras.contains { $0.hasPrefix(clave) || (palabra == .jo && $0.hasSuffix(clave)) }
             #expect(tipo.ficha.llevaLaCategoria == laTiene, Comment(rawValue: tipo.nombre))
         }
-        #expect(TipoDeEscala.tradicionales.filter(\.ficha.llevaLaCategoria).count == 67)
+        #expect(TipoDeEscala.tradicionales.filter(\.ficha.llevaLaCategoria).count == 68)
     }
 
     /// En ningún idioma sale la palabra de la categoría dos veces.

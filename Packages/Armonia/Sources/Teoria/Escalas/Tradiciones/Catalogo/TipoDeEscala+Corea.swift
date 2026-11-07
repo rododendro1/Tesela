@@ -5,7 +5,7 @@ import Elementos
 extension TipoDeEscala {
     // MARK: Escalas coreanas
     //
-    // Las dos pentatónicas de la música tradicional, en McCune-Reischauer (con breves y
+    // Las tres pentatónicas de la música tradicional, en McCune-Reischauer (con breves y
     // apóstrofo) y en la romanización oficial y en hangul como alias.
 
     /// 평조 (Sol La Do Re Mi).
@@ -19,5 +19,13 @@ extension TipoDeEscala {
         variantes: ["Gyemyeonjo", "계면조"],
         categoria: .jo, llevaLaCategoria: true)
 
-    package static let coreanas: [TipoDeEscala] = [.pyongjo, .kyemyonjo]
+    /// 우조 (Do Re Mi Sol La): las notas de P'yŏngjo con la tónica en Do. Entre la tónica (본청) y la nota aguda de
+    /// referencia (상청) hay una 3ª mayor, y no una 4ª como en P'yŏngjo (Baek Daewoong, según Kim, «Pansori Modes»,
+    /// Music Theory Online 30.4, 2024).
+    public static let ujo = TipoDeEscala(
+        nombre: "Ujo", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
+        variantes: ["우조"],
+        categoria: .jo, llevaLaCategoria: true)
+
+    package static let coreanas: [TipoDeEscala] = [.pyongjo, .kyemyonjo, .ujo]
 }

@@ -247,6 +247,7 @@ extension TextosDeTeoria {
         subtradicionAlpes: "Альпы",
         subtradicionEscocia: "Шотландия",
         subtradicionGeorgia: "Грузия",
+        subtradicionIstria: "Истрия",
         subtradicionGagaku: "Гагаку",
         subtradicionRyukyu: "Рюкю",
         fuenteArquitas: "Архит",
