@@ -244,7 +244,7 @@ extension TecladoIsomorfico: CustomStringConvertible {
 // MARK: - Idiomas
 //
 // Los nombres de los teclados en los quince idiomas de los textos. Los textos están en
-// `Textos/TextosDeRepresentaciones+Espanol.swift`, `…+Ingles.swift`…, un fichero por idioma.
+// `Textos/TextosDeDiagramas+Espanol.swift`, `…+Ingles.swift`…, un fichero por idioma.
 
 extension TecladoIsomorfico: Nombrable {
     /// El nombre del teclado en el idioma de los textos: «Tabla armónica», «Harmonic table». Los nombres propios
@@ -257,15 +257,15 @@ extension TecladoIsomorfico: Nombrable {
     package var traduccion: Traduccion? {
         switch self {
         case .tablaArmonica:
-            return TextosDeRepresentaciones.traduccion(\.tablaArmonica)
+            return TextosDeDiagramas.traduccion(\.tablaArmonica)
         case .wickiHaydenEspejo:
-            return TextosDeRepresentaciones.traduccion(\.wickiHaydenEspejo)
+            return TextosDeDiagramas.traduccion(\.wickiHaydenEspejo)
         case .wickiHaydenPlano:
-            return TextosDeRepresentaciones.traduccion(\.wickiHaydenPlano)
+            return TextosDeDiagramas.traduccion(\.wickiHaydenPlano)
         case .acordeonC:
-            return TextosDeRepresentaciones.traduccion(\.acordeonC)
+            return TextosDeDiagramas.traduccion(\.acordeonC)
         case .acordeonB:
-            return TextosDeRepresentaciones.traduccion(\.acordeonB)
+            return TextosDeDiagramas.traduccion(\.acordeonB)
         default:
             return nil
         }

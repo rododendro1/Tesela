@@ -436,7 +436,7 @@ extension TecladoCuadrado: CustomStringConvertible {
 
 // MARK: - Idiomas
 //
-// Los nombres de los teclados en los quince idiomas de los textos, en `Textos/TextosDeRepresentaciones+Espanol.swift`,
+// Los nombres de los teclados en los quince idiomas de los textos, en `Textos/TextosDeDiagramas+Espanol.swift`,
 // `…+Ingles.swift`…, un fichero por idioma.
 
 extension TecladoCuadrado: Nombrable {
@@ -449,16 +449,16 @@ extension TecladoCuadrado: Nombrable {
     /// El nombre en los quince idiomas; `nil` si el teclado no es de los de `todos`.
     package var traduccion: Traduccion? {
         switch self {
-        case .cuartas: return TextosDeRepresentaciones.traduccion(\.cuadriculaEnCuartas)
-        case .tercerasMayores: return TextosDeRepresentaciones.traduccion(\.cuadriculaEnTercerasMayores)
-        case .quintas: return TextosDeRepresentaciones.traduccion(\.cuadriculaEnQuintas)
-        case .wickiHaydenCuadrado: return TextosDeRepresentaciones.traduccion(\.wickiHaydenCuadrado)
-        case .tonosEnteros: return TextosDeRepresentaciones.traduccion(\.cuadriculaDeTonosEnteros)
-        case .tonnetzDeEuler: return TextosDeRepresentaciones.traduccion(\.tonnetzDeEuler)
-        case .tercerasMenores: return TextosDeRepresentaciones.traduccion(\.cuadriculaEnTercerasMenores)
-        case .tritonos: return TextosDeRepresentaciones.traduccion(\.cuadriculaEnTritonos)
-        case .octavas: return TextosDeRepresentaciones.traduccion(\.cuadriculaEnOctavas)
-        case .secuencial: return TextosDeRepresentaciones.traduccion(\.cuadriculaSecuencial)
+        case .cuartas: return TextosDeDiagramas.traduccion(\.cuadriculaEnCuartas)
+        case .tercerasMayores: return TextosDeDiagramas.traduccion(\.cuadriculaEnTercerasMayores)
+        case .quintas: return TextosDeDiagramas.traduccion(\.cuadriculaEnQuintas)
+        case .wickiHaydenCuadrado: return TextosDeDiagramas.traduccion(\.wickiHaydenCuadrado)
+        case .tonosEnteros: return TextosDeDiagramas.traduccion(\.cuadriculaDeTonosEnteros)
+        case .tonnetzDeEuler: return TextosDeDiagramas.traduccion(\.tonnetzDeEuler)
+        case .tercerasMenores: return TextosDeDiagramas.traduccion(\.cuadriculaEnTercerasMenores)
+        case .tritonos: return TextosDeDiagramas.traduccion(\.cuadriculaEnTritonos)
+        case .octavas: return TextosDeDiagramas.traduccion(\.cuadriculaEnOctavas)
+        case .secuencial: return TextosDeDiagramas.traduccion(\.cuadriculaSecuencial)
         default: return nil
         }
     }

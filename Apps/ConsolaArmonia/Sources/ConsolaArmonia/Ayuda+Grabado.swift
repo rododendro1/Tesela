@@ -17,20 +17,20 @@ extension LineaDeComandos {
     static let ayudaDeGrabar: [EntradaDeAyuda] = [
         // grabar <partitura o dibujo> [--motor lilypond|musescore|verovio|guido|propio] [--formato pdf|svg|png]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisGrabar),
-            descripcion: TextosDeCLI.traduccion(\.descripcionGrabar),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisGrabar),
+            descripcion: TextosDeConsola.traduccion(\.descripcionGrabar),
             ejemplo: ejemplo(
                 "armonia grabar coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 > coral.pdf",
                 "armonia engrave chorale C3 E4 G4 C5, G2 D4 G4 B4 > chorale.pdf"),
-            notas: TextosDeCLI.traduccion(\.notasGrabar),
+            notas: TextosDeConsola.traduccion(\.notasGrabar),
             opciones: [.motor, .formato])
     ]
 
     static let ayudaDeMotores: [EntradaDeAyuda] = [
         // motores
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisMotores),
-            descripcion: TextosDeCLI.traduccion(\.descripcionMotores),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisMotores),
+            descripcion: TextosDeConsola.traduccion(\.descripcionMotores),
             ejemplo: ejemplo("armonia motores", "armonia engines"))
     ]
 }

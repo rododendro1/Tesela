@@ -27,7 +27,7 @@ extension LineaDeComandosTests {
         // Una línea por orden, en todos los idiomas, y un título por grupo.
         for idioma in Idioma.allCases {
             let texto = LineaDeComandos.indiceDeAyuda(en: idioma)
-            let titulos = TextosDeCLI.en(idioma: idioma, \.gruposDeLaAyuda)
+            let titulos = TextosDeConsola.en(idioma: idioma, \.gruposDeLaAyuda)
             #expect(titulos.count == LineaDeComandos.gruposDeOrdenes.count)
             for titulo in titulos { #expect(texto.contains("\n" + titulo + ":\n"), Comment(rawValue: titulo)) }
         }
@@ -257,7 +257,8 @@ extension LineaDeComandosTests {
         #expect(manual.contains(".B 3\nrevisar o contrapunto"))
         #expect(salida("manual --ingles").contains(".SH EXIT STATUS\n"))
         for idioma in Idioma.allCases {
-            #expect(TextosDeCLI.en(idioma: idioma, \.manualCodigosDeSalida).count == 4, Comment(rawValue: "\(idioma)"))
+            let codigos = TextosDeConsola.en(idioma: idioma, \.manualCodigosDeSalida)
+            #expect(codigos.count == 4, Comment(rawValue: "\(idioma)"))
         }
     }
 

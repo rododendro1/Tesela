@@ -205,7 +205,7 @@ import Testing
         #expect(Intervalo.ordinal(3, en: .euskera) == "3.")
         // Cada idioma nombra los quince intervalos con palabras, o ninguno.
         for idioma in Idioma.allCases {
-            #expect([0, 15].contains(TextosDeNucleo.en(idioma: idioma, \.ordinales).count), "\(idioma)")
+            #expect([0, 15].contains(TextosDeElementos.en(idioma: idioma, \.ordinales).count), "\(idioma)")
         }
         #expect(Intervalo(numero: 1, calidad: .aumentada(1))!.nombre(en: .conPalabras(.frances)) == "unisson augmenté")
         #expect(
@@ -220,7 +220,7 @@ import Testing
     /// Los textos que llevan un número o un nombre dentro, en cada idioma, también con los casos que
     /// las apps casi no usan (una tensión, el número de una voz, un acorde sin nombre…).
     @Test func losTextosConHuecosEnCadaIdioma() {
-        for textos in TextosDeNucleo.traducidos.todos {
+        for textos in TextosDeElementos.traducidos.todos {
             #expect(textos.multiplicidad(5).contains("5"))
         }
         for textos in TextosDeTeoria.traducidos.todos {
@@ -231,10 +231,10 @@ import Testing
             #expect(textos.enLaVoz("X").contains("X"))
         }
         #expect(TextosDeTeoria.traducidos.en(.conPalabras(.aleman)).enLaVoz("Stimme 2") == "in Stimme 2")
-        for textos in TextosDePartitura.traducidos.todos {
+        for textos in TextosDePartituras.traducidos.todos {
             #expect(textos.especieConElContrapuntoDebajo(3).contains("3"))
         }
-        for textos in TextosDeRepresentaciones.traducidos.todos {
+        for textos in TextosDeDiagramas.traducidos.todos {
             #expect(textos.cicloDesde("Z", "Y").contains("Z"))
         }
         for textos in TextosDeTeoria.traducidos.todos {

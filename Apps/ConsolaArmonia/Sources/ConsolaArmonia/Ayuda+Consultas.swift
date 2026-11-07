@@ -38,44 +38,44 @@ extension LineaDeComandos {
     static let ayudaDeAcorde: [EntradaDeAyuda] = [
         // acorde <cifrado>…
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisAcorde),
-            descripcion: TextosDeCLI.traduccion(\.descripcionAcorde),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisAcorde),
+            descripcion: TextosDeConsola.traduccion(\.descripcionAcorde),
             ejemplo: ejemplo(
                 "armonia acorde Sol7/Si",
                 "armonia chord G7/B"),
-            notas: TextosDeCLI.traduccion(\.notasAcorde),
+            notas: TextosDeConsola.traduccion(\.notasAcorde),
             opciones: [.disposiciones, .nombres, .tonalidades, .sustituciones, .en, .comparar, .bebop, .pentatonicas])
     ]
 
     static let ayudaDeIdentificar: [EntradaDeAyuda] = [
         // identificar <notas>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisIdentificar),
-            descripcion: TextosDeCLI.traduccion(\.descripcionIdentificar),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisIdentificar),
+            descripcion: TextosDeConsola.traduccion(\.descripcionIdentificar),
             ejemplo: ejemplo(
                 "armonia identificar Do Mi Sol Sib",
                 "armonia identify C E G Bb"),
-            notas: TextosDeCLI.traduccion(\.notasIdentificar),
+            notas: TextosDeConsola.traduccion(\.notasIdentificar),
             opciones: [.escalas, .archivo])
     ]
 
     static let ayudaDeArpegio: [EntradaDeAyuda] = [
         // arpegio <cifrado> [--patron <patrón>]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisArpegio),
-            descripcion: TextosDeCLI.traduccion(\.descripcionArpegio),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisArpegio),
+            descripcion: TextosDeConsola.traduccion(\.descripcionArpegio),
             ejemplo: ejemplo(
                 "armonia arpegio Do7 --patron alberti",
                 "armonia arpeggio C7 --pattern alberti"),
-            notas: TextosDeCLI.traduccion(\.notasArpegio),
+            notas: TextosDeConsola.traduccion(\.notasArpegio),
             opciones: [.patron, .octavas, .sinOctava, .desde, .tensiones, .grados, .aproximacion])
     ]
 
     static let ayudaDeIntervalo: [EntradaDeAyuda] = [
         // intervalo <nota> <nota>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisIntervalo),
-            descripcion: TextosDeCLI.traduccion(\.descripcionIntervalo),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisIntervalo),
+            descripcion: TextosDeConsola.traduccion(\.descripcionIntervalo),
             ejemplo: ejemplo(
                 "armonia intervalo Do4 Mi5",
                 "armonia interval C4 E5"))
@@ -84,12 +84,12 @@ extension LineaDeComandos {
     static let ayudaDeEscala: [EntradaDeAyuda] = [
         // escala <escala> [--acordes]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisEscala),
-            descripcion: TextosDeCLI.traduccion(\.descripcionEscala),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisEscala),
+            descripcion: TextosDeConsola.traduccion(\.descripcionEscala),
             ejemplo: ejemplo(
                 "armonia escala Re dórico",
                 "armonia scale D dorian"),
-            notas: TextosDeCLI.traduccion(\.notasEscala),
+            notas: TextosDeConsola.traduccion(\.notasEscala),
             opciones: [
                 .acordes, .secuencia, .bajando, .octavas, .piano, .modos, .comparar, .simetria, .vecinas, .doce,
                 .triadas, .estadisticas, .escalera, .parecidas, .progresiones,
@@ -99,20 +99,20 @@ extension LineaDeComandos {
     static let ayudaDeTradiciones: [EntradaDeAyuda] = [
         // tradiciones [<tradición>]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisTradiciones),
-            descripcion: TextosDeCLI.traduccion(\.descripcionTradiciones),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisTradiciones),
+            descripcion: TextosDeConsola.traduccion(\.descripcionTradiciones),
             ejemplo: ejemplo("armonia tradiciones", "armonia traditions"))
     ]
 
     static let ayudaDeEscalas: [EntradaDeAyuda] = [
         // escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisEscalas),
-            descripcion: TextosDeCLI.traduccion(\.descripcionEscalas),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisEscalas),
+            descripcion: TextosDeConsola.traduccion(\.descripcionEscalas),
             ejemplo: ejemplo(
                 "armonia escalas --tradicion turquia",
                 "armonia scales --tradition turkey"),
-            notas: TextosDeCLI.traduccion(\.notasEscalas),
+            notas: TextosDeConsola.traduccion(\.notasEscalas),
             opciones: [
                 .tradicion, .categoria, .fuente, .uso, .notas, .orden, .sinSemitonos, .regulares, .conIntervalo,
                 .sinIntervalo,
@@ -123,8 +123,8 @@ extension LineaDeComandos {
     static let ayudaDeTonalidad: [EntradaDeAyuda] = [
         // tonalidad <tonalidad>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisTonalidad),
-            descripcion: TextosDeCLI.traduccion(\.descripcionTonalidad),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisTonalidad),
+            descripcion: TextosDeConsola.traduccion(\.descripcionTonalidad),
             ejemplo: ejemplo(
                 "armonia tonalidad La menor --modulaciones",
                 "armonia key A minor --modulations"),
@@ -134,8 +134,8 @@ extension LineaDeComandos {
     static let ayudaDeConjunto: [EntradaDeAyuda] = [
         // conjunto <clases>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisConjunto),
-            descripcion: TextosDeCLI.traduccion(\.descripcionConjunto),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisConjunto),
+            descripcion: TextosDeConsola.traduccion(\.descripcionConjunto),
             ejemplo: ejemplo(
                 "armonia conjunto 4-Z15",
                 "armonia set 4-Z15"))
@@ -144,8 +144,8 @@ extension LineaDeComandos {
     static let ayudaDeSerie: [EntradaDeAyuda] = [
         // serie <serie>
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisSerie),
-            descripcion: TextosDeCLI.traduccion(\.descripcionSerie),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisSerie),
+            descripcion: TextosDeConsola.traduccion(\.descripcionSerie),
             ejemplo: ejemplo(
                 "armonia serie 0e742 938t156",
                 "armonia row 0e742 938t156"))

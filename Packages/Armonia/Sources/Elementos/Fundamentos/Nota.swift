@@ -413,15 +413,15 @@ extension Alteracion {
         }
     }
 
-    private static let palabraNatural = TextosDeNucleo.traduccion(\.palabraNatural)
-    private static let palabraSostenido = TextosDeNucleo.traduccion(\.palabraSostenido)
-    private static let palabraBemol = TextosDeNucleo.traduccion(\.palabraBemol)
+    private static let palabraNatural = TextosDeElementos.traduccion(\.palabraNatural)
+    private static let palabraSostenido = TextosDeElementos.traduccion(\.palabraSostenido)
+    private static let palabraBemol = TextosDeElementos.traduccion(\.palabraBemol)
     /// «Doble», «triple» y «cuádruple», para 2, 3 y 4 signos. Dónde se ponen y cómo se pegan a la palabra
     /// lo dice `ReglasDeIdioma.multiplicador`: delante y separados, detrás (euskera) o unidos (alemán).
-    private static let multiplicadores = TextosDeNucleo.traduccion(\.multiplicadores)
+    private static let multiplicadores = TextosDeElementos.traduccion(\.multiplicadores)
     /// Para 5 signos o más: "5 sostenidos".
-    private static let palabraSostenidos = TextosDeNucleo.traduccion(\.palabraSostenidos)
-    private static let palabraBemoles = TextosDeNucleo.traduccion(\.palabraBemoles)
+    private static let palabraSostenidos = TextosDeElementos.traduccion(\.palabraSostenidos)
+    private static let palabraBemoles = TextosDeElementos.traduccion(\.palabraBemoles)
 }
 
 // MARK: - Nota

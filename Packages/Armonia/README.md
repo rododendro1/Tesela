@@ -209,7 +209,7 @@ Sources/
 │   │                      nombres de notas e intervalos en cada idioma (al final de Nota e Intervalo)
 │   ├── Notacion/          Notacion (con EscrituraDeNotas e Idioma), ReglasDeIdioma, EstiloDeCifrado, Traduccion
 │   ├── Lectura/           Lector, ErrorDeArmonia (con ErrorAlLeer y MotivoDeLectura), ErrorDeLectura
-│   ├── Textos/            TextosDeNucleo y un fichero por idioma
+│   ├── Textos/            TextosDeElementos y un fichero por idioma
 │   └── Postonal/          ConjuntoDeClasesDeAltura, TablaForte
 ├── Teoria/
 │   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)

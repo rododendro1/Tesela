@@ -111,6 +111,10 @@ módulo suelto cambia el `import` y el `.product(name:…)`. La línea de comand
 `Apps/ConsolaArmonia` (paquete, biblioteca `ConsolaArmonia` y pruebas `ConsolaArmoniaTests`); el ejecutable sigue
 siendo `armonia`. Los tipos no cambian.
 
+Los textos de cada módulo se llaman como él: `TextosDeElementos` (antes `TextosDeNucleo`), `TextosDeDiagramas`
+(antes `TextosDeRepresentaciones`), `TextosDePartituras` y `TextosDeConsola` (antes `TextosDeCLI`), con sus ficheros.
+Son internos: la API no cambia. Fuera los `Obsoletos.swift`, que estaban vacíos.
+
 ### Las mismas consultas y los mismos nombres en toda la API
 
 **Cambio incompatible:** los nombres de antes ya no existen (no llegaron a salir como obsoletos en ninguna versión);

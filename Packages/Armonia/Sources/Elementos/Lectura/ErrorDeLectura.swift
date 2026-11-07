@@ -66,23 +66,23 @@ extension ErrorDeLectura.Motivo {
         typealias TextosDeNotas = ErrorDeLectura.TextosDeNotas
         switch self {
         case .textoVacio:
-            return TextosDeNucleo.traduccion(\.textoVacio)
+            return TextosDeElementos.traduccion(\.textoVacio)
         case .notaNoReconocida: return TextosDeNotas.notaNoReconocida()
         case .caracteresSobrantes(let resto):
-            return TextosDeNucleo.traduccion { $0.caracteresSobrantes(resto) }
+            return TextosDeElementos.traduccion { $0.caracteresSobrantes(resto) }
         case .octavaNoValida(let resto): return TextosDeNotas.octavaNoValida(resto)
         case .numeroDeIntervaloNoValido(let resto): return TextosDeNotas.numeroDeIntervaloNoValido(resto)
         case .calidadNoValida(let resto): return TextosDeNotas.calidadNoValida(resto)
         case .intervaloInexistente(let numero, let calidad):
             return TextosDeNotas.intervaloInexistente(numero: numero, calidad: calidad, en: notacion)
         case .alteracionNoReconocida(let signo): return TextosDeNotas.alteracionNoReconocida(signo)
-        case .claseDeAlturaNoValida(let texto): return TextosDeNucleo.traduccion { $0.claseDeAlturaNoValida(texto) }
+        case .claseDeAlturaNoValida(let texto): return TextosDeElementos.traduccion { $0.claseDeAlturaNoValida(texto) }
         case .numeroDeForteDesconocido(let texto):
-            return TextosDeNucleo.traduccion { $0.numeroDeForteDesconocido(texto) }
-        case .faltaElCierre(let signo): return TextosDeNucleo.traduccion { $0.faltaElCierre(signo) }
+            return TextosDeElementos.traduccion { $0.numeroDeForteDesconocido(texto) }
+        case .faltaElCierre(let signo): return TextosDeElementos.traduccion { $0.faltaElCierre(signo) }
         case .serieNoDodecafonica(let faltan, let repetidas):
             func lista(_ clases: [Int]) -> String { clases.map(String.init).joined(separator: ", ") }
-            return TextosDeNucleo.traduccion { textos in
+            return TextosDeElementos.traduccion { textos in
                 let partes =
                     (faltan.isEmpty ? [] : [textos.faltanEnLaSerie(lista(faltan))])
                     + (repetidas.isEmpty ? [] : [textos.repetidasEnLaSerie(lista(repetidas))])
@@ -91,7 +91,7 @@ extension ErrorDeLectura.Motivo {
                     : textos.serieNoDodecafonica + textos.dosPuntos + partes.joined(separator: "; ")
             }
         case .idiomaNoReconocido(let nombre, let opciones):
-            return TextosDeNucleo.traduccion { $0.idiomaNoReconocido(nombre, opciones.joined(separator: ", ")) }
+            return TextosDeElementos.traduccion { $0.idiomaNoReconocido(nombre, opciones.joined(separator: ", ")) }
         }
     }
 }
@@ -101,42 +101,42 @@ extension ErrorDeLectura.Motivo {
 extension ErrorDeLectura {
     enum TextosDeNotas {
         static func notaNoReconocida() -> Traduccion {
-            return TextosDeNucleo.traduccion(\.notaNoReconocida)
+            return TextosDeElementos.traduccion(\.notaNoReconocida)
         }
 
         static func octavaNoValida(_ resto: String) -> Traduccion {
             return resto.isEmpty
-                ? TextosDeNucleo.traduccion(\.faltaLaOctava)
-                : TextosDeNucleo.traduccion { $0.octavaNoValida(resto) }
+                ? TextosDeElementos.traduccion(\.faltaLaOctava)
+                : TextosDeElementos.traduccion { $0.octavaNoValida(resto) }
         }
 
         static func numeroDeIntervaloNoValido(_ resto: String) -> Traduccion {
             return resto.isEmpty
-                ? TextosDeNucleo.traduccion(\.faltaElNumeroDeIntervalo)
-                : TextosDeNucleo.traduccion { $0.numeroDeIntervaloNoValido(resto) }
+                ? TextosDeElementos.traduccion(\.faltaElNumeroDeIntervalo)
+                : TextosDeElementos.traduccion { $0.numeroDeIntervaloNoValido(resto) }
         }
 
         static func calidadNoValida(_ resto: String) -> Traduccion {
             return resto.isEmpty
-                ? TextosDeNucleo.traduccion(\.faltaLaCalidad)
-                : TextosDeNucleo.traduccion { $0.calidadNoValida(resto) }
+                ? TextosDeElementos.traduccion(\.faltaLaCalidad)
+                : TextosDeElementos.traduccion { $0.calidadNoValida(resto) }
         }
 
         static func intervaloInexistente(numero: Int, calidad: CalidadDeIntervalo, en notacion: Notacion) -> Traduccion
         {
             if numero == 1, case .disminuida = calidad {
-                return TextosDeNucleo.traduccion(\.unisonoDisminuido)
+                return TextosDeElementos.traduccion(\.unisonoDisminuido)
             }
             let clase = (numero - 1) % 7
             let regla =
                 [0, 3, 4].contains(clase)
-                ? TextosDeNucleo.traduccion(\.reglaDeLasJustas)
-                : TextosDeNucleo.traduccion(\.reglaDeLasMayores)
-            return TextosDeNucleo.traduccion { $0.intervaloInexistente(numero, calidad, notacion, regla) }
+                ? TextosDeElementos.traduccion(\.reglaDeLasJustas)
+                : TextosDeElementos.traduccion(\.reglaDeLasMayores)
+            return TextosDeElementos.traduccion { $0.intervaloInexistente(numero, calidad, notacion, regla) }
         }
 
         static func alteracionNoReconocida(_ signo: String) -> Traduccion {
-            return TextosDeNucleo.traduccion { $0.alteracionNoReconocida(signo) }
+            return TextosDeElementos.traduccion { $0.alteracionNoReconocida(signo) }
         }
     }
 }

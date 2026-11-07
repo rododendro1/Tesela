@@ -59,13 +59,13 @@ extension ErrorAlLeer {
     public func descripcion(en notacion: Notacion) -> String {
         var inicio =
             texto.isEmpty
-            ? TextosDeNucleo.en(notacion, \.valorNoValido)
-            : TextosDeNucleo.en(notacion) { $0.noSePuedeLeer(texto) }
+            ? TextosDeElementos.en(notacion, \.valorNoValido)
+            : TextosDeElementos.en(notacion) { $0.noSePuedeLeer(texto) }
         if let p = posicion {
-            inicio += TextosDeNucleo.en(notacion) { $0.caracter(p) }
+            inicio += TextosDeElementos.en(notacion) { $0.caracter(p) }
         }
         // En francés, los dos puntos llevan espacio delante.
-        return inicio + TextosDeNucleo.en(notacion, \.dosPuntos) + explicacion(en: notacion)
+        return inicio + TextosDeElementos.en(notacion, \.dosPuntos) + explicacion(en: notacion)
     }
 
     /// El mismo motivo en otro texto y otra posición: el error de un trozo («Re7»), situado en el texto entero

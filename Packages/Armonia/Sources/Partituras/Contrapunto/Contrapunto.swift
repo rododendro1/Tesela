@@ -393,10 +393,10 @@ extension FaltaDeContrapunto {
         let lugar: Traduccion
         if compases.count == 1 {
             let n = compases.lowerBound + 1
-            lugar = TextosDePartitura.traduccion { $0.enElCompas(n) }
+            lugar = TextosDePartituras.traduccion { $0.enElCompas(n) }
         } else {
             let pasos = "\(compases.lowerBound + 1) → \(compases.upperBound + 1)"
-            lugar = TextosDePartitura.traduccion { $0.enLosCompases(pasos) }
+            lugar = TextosDePartituras.traduccion { $0.enLosCompases(pasos) }
         }
         return tipo.nombre(en: notacion) + " " + lugar.en(notacion)
     }
@@ -413,25 +413,25 @@ extension FaltaDeContrapunto.Tipo: Nombrable, CustomStringConvertible {
         case .cruceDeVoces: return FaltaDeConduccion.Tipo.cruceDeVoces.nombre(en: notacion)
         case .saltoNoMelodico: return FaltaDeConduccion.Tipo.saltoNoMelodico.nombre(en: notacion)
         case .ritmoDeLaEspecie:
-            traduccion = TextosDePartitura.traduccion(\.ritmoDeLaEspecie)
+            traduccion = TextosDePartituras.traduccion(\.ritmoDeLaEspecie)
         case .comienzoImperfecto:
-            traduccion = TextosDePartitura.traduccion(\.comienzoImperfecto)
+            traduccion = TextosDePartituras.traduccion(\.comienzoImperfecto)
         case .finalImperfecto:
-            traduccion = TextosDePartitura.traduccion(\.finalImperfecto)
+            traduccion = TextosDePartituras.traduccion(\.finalImperfecto)
         case .finalSinGradoConjunto:
-            traduccion = TextosDePartitura.traduccion(\.finalSinGradoConjunto)
+            traduccion = TextosDePartituras.traduccion(\.finalSinGradoConjunto)
         case .disonanciaEnParteFuerte:
-            traduccion = TextosDePartitura.traduccion(\.disonanciaEnParteFuerte)
+            traduccion = TextosDePartituras.traduccion(\.disonanciaEnParteFuerte)
         case .disonanciaMalTratada:
-            traduccion = TextosDePartitura.traduccion(\.disonanciaMalTratada)
+            traduccion = TextosDePartituras.traduccion(\.disonanciaMalTratada)
         case .retardoMalResuelto:
-            traduccion = TextosDePartitura.traduccion(\.retardoMalResuelto)
+            traduccion = TextosDePartituras.traduccion(\.retardoMalResuelto)
         case .unisono:
-            traduccion = TextosDePartitura.traduccion(\.unisono)
+            traduccion = TextosDePartituras.traduccion(\.unisono)
         case .saltoSinCompensar:
-            traduccion = TextosDePartitura.traduccion(\.saltoSinCompensar)
+            traduccion = TextosDePartituras.traduccion(\.saltoSinCompensar)
         case .notaRepetida:
-            traduccion = TextosDePartitura.traduccion(\.notaRepetida)
+            traduccion = TextosDePartituras.traduccion(\.notaRepetida)
         }
         return traduccion.en(notacion)
     }
@@ -451,12 +451,12 @@ extension Contrapunto {
         let n = especie.rawValue
         let cabecera =
             contrapuntoArriba
-            ? TextosDePartitura.traduccion { $0.especieConElContrapuntoEncima(n) }
-            : TextosDePartitura.traduccion { $0.especieConElContrapuntoDebajo(n) }
+            ? TextosDePartituras.traduccion { $0.especieConElContrapuntoEncima(n) }
+            : TextosDePartituras.traduccion { $0.especieConElContrapuntoDebajo(n) }
         let faltas = self.faltas
         let lineas =
             faltas.isEmpty
-            ? [TextosDePartitura.en(notacion, \.sinFaltas)] : faltas.map { $0.descripcion(en: notacion) }
+            ? [TextosDePartituras.en(notacion, \.sinFaltas)] : faltas.map { $0.descripcion(en: notacion) }
         return ([cabecera.en(notacion)] + lineas).joined(separator: "\n")
     }
 }

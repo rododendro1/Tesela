@@ -168,7 +168,7 @@ public struct InstrumentoDePartitura: Hashable, Sendable, CustomStringConvertibl
     /// "clarinete em si♭", "clarinette en si♭", "clarinetto in si♭", "Klarinette in B", "кларнет in B"…
     public func nombre(en notacion: Notacion) -> String {
         if let traduccion = InstrumentoDePartitura.traducciones[nombre] { return traduccion.en(notacion) }
-        return TextosDePartitura.en(notacion, \.instrumentosPropiosEnIngles) ? nombreEnIngles : nombre
+        return TextosDePartituras.en(notacion, \.instrumentosPropiosEnIngles) ? nombreEnIngles : nombre
     }
 
     public var esTranspositor: Bool { transposicion != .unisono }
@@ -307,23 +307,23 @@ extension Clave {
     private var traduccion: Traduccion {
         switch self {
         case .sol:
-            return TextosDePartitura.traduccion(\.claveDeSol)
+            return TextosDePartituras.traduccion(\.claveDeSol)
         case .solOctavaBaja:
-            return TextosDePartitura.traduccion(\.claveDeSolOctavaBaja)
+            return TextosDePartituras.traduccion(\.claveDeSolOctavaBaja)
         case .solOctavaAlta:
-            return TextosDePartitura.traduccion(\.claveDeSolOctavaAlta)
+            return TextosDePartituras.traduccion(\.claveDeSolOctavaAlta)
         case .fa:
-            return TextosDePartitura.traduccion(\.claveDeFa)
+            return TextosDePartituras.traduccion(\.claveDeFa)
         case .faEnTercera:
-            return TextosDePartitura.traduccion(\.claveDeFaEnTercera)
+            return TextosDePartituras.traduccion(\.claveDeFaEnTercera)
         case .doEnPrimera:
-            return TextosDePartitura.traduccion(\.claveDeDoEnPrimera)
+            return TextosDePartituras.traduccion(\.claveDeDoEnPrimera)
         case .doEnSegunda:
-            return TextosDePartitura.traduccion(\.claveDeDoEnSegunda)
+            return TextosDePartituras.traduccion(\.claveDeDoEnSegunda)
         case .doEnTercera:
-            return TextosDePartitura.traduccion(\.claveDeDoEnTercera)
+            return TextosDePartituras.traduccion(\.claveDeDoEnTercera)
         case .doEnCuarta:
-            return TextosDePartitura.traduccion(\.claveDeDoEnCuarta)
+            return TextosDePartituras.traduccion(\.claveDeDoEnCuarta)
         }
     }
 }
@@ -335,35 +335,35 @@ extension InstrumentoDePartitura {
     /// instrumento que no está aquí usa su nombre español o, en occitano, alemán, griego, ruso y húngaro, el inglés.
     /// En alemán, ruso y húngaro, la afinación va con letras alemanas: «Klarinette in B» es el clarinete en si♭.
     package static let traducciones: [String: Traduccion] = [
-        "piano": TextosDePartitura.traduccion(\.instrumentoPiano),
-        "flauta": TextosDePartitura.traduccion(\.instrumentoFlauta),
-        "flautín": TextosDePartitura.traduccion(\.instrumentoFlautin),
-        "flauta en sol": TextosDePartitura.traduccion(\.instrumentoFlautaEnSol),
-        "oboe": TextosDePartitura.traduccion(\.instrumentoOboe),
-        "corno inglés": TextosDePartitura.traduccion(\.instrumentoCornoIngles),
-        "clarinete en si♭": TextosDePartitura.traduccion(\.instrumentoClarineteEnSib),
-        "clarinete en la": TextosDePartitura.traduccion(\.instrumentoClarineteEnLa),
-        "clarinete en mi♭": TextosDePartitura.traduccion(\.instrumentoClarineteEnMib),
-        "clarinete bajo": TextosDePartitura.traduccion(\.instrumentoClarineteBajo),
-        "fagot": TextosDePartitura.traduccion(\.instrumentoFagot),
-        "saxofón soprano": TextosDePartitura.traduccion(\.instrumentoSaxofonSoprano),
-        "saxofón alto": TextosDePartitura.traduccion(\.instrumentoSaxofonAlto),
-        "saxofón tenor": TextosDePartitura.traduccion(\.instrumentoSaxofonTenor),
-        "saxofón barítono": TextosDePartitura.traduccion(\.instrumentoSaxofonBaritono),
-        "trompeta en si♭": TextosDePartitura.traduccion(\.instrumentoTrompetaEnSib),
-        "trompeta en do": TextosDePartitura.traduccion(\.instrumentoTrompetaEnDo),
-        "fliscorno": TextosDePartitura.traduccion(\.instrumentoFliscorno),
-        "trompa en fa": TextosDePartitura.traduccion(\.instrumentoTrompaEnFa),
-        "trombón": TextosDePartitura.traduccion(\.instrumentoTrombon),
-        "tuba": TextosDePartitura.traduccion(\.instrumentoTuba),
-        "violín": TextosDePartitura.traduccion(\.instrumentoViolin),
-        "viola": TextosDePartitura.traduccion(\.instrumentoViola),
-        "violonchelo": TextosDePartitura.traduccion(\.instrumentoViolonchelo),
-        "contrabajo": TextosDePartitura.traduccion(\.instrumentoContrabajo),
-        "guitarra": TextosDePartitura.traduccion(\.instrumentoGuitarra),
-        "bajo eléctrico": TextosDePartitura.traduccion(\.instrumentoBajoElectrico),
-        "xilófono": TextosDePartitura.traduccion(\.instrumentoXilofono),
-        "glockenspiel": TextosDePartitura.traduccion(\.instrumentoGlockenspiel),
-        "celesta": TextosDePartitura.traduccion(\.instrumentoCelesta),
+        "piano": TextosDePartituras.traduccion(\.instrumentoPiano),
+        "flauta": TextosDePartituras.traduccion(\.instrumentoFlauta),
+        "flautín": TextosDePartituras.traduccion(\.instrumentoFlautin),
+        "flauta en sol": TextosDePartituras.traduccion(\.instrumentoFlautaEnSol),
+        "oboe": TextosDePartituras.traduccion(\.instrumentoOboe),
+        "corno inglés": TextosDePartituras.traduccion(\.instrumentoCornoIngles),
+        "clarinete en si♭": TextosDePartituras.traduccion(\.instrumentoClarineteEnSib),
+        "clarinete en la": TextosDePartituras.traduccion(\.instrumentoClarineteEnLa),
+        "clarinete en mi♭": TextosDePartituras.traduccion(\.instrumentoClarineteEnMib),
+        "clarinete bajo": TextosDePartituras.traduccion(\.instrumentoClarineteBajo),
+        "fagot": TextosDePartituras.traduccion(\.instrumentoFagot),
+        "saxofón soprano": TextosDePartituras.traduccion(\.instrumentoSaxofonSoprano),
+        "saxofón alto": TextosDePartituras.traduccion(\.instrumentoSaxofonAlto),
+        "saxofón tenor": TextosDePartituras.traduccion(\.instrumentoSaxofonTenor),
+        "saxofón barítono": TextosDePartituras.traduccion(\.instrumentoSaxofonBaritono),
+        "trompeta en si♭": TextosDePartituras.traduccion(\.instrumentoTrompetaEnSib),
+        "trompeta en do": TextosDePartituras.traduccion(\.instrumentoTrompetaEnDo),
+        "fliscorno": TextosDePartituras.traduccion(\.instrumentoFliscorno),
+        "trompa en fa": TextosDePartituras.traduccion(\.instrumentoTrompaEnFa),
+        "trombón": TextosDePartituras.traduccion(\.instrumentoTrombon),
+        "tuba": TextosDePartituras.traduccion(\.instrumentoTuba),
+        "violín": TextosDePartituras.traduccion(\.instrumentoViolin),
+        "viola": TextosDePartituras.traduccion(\.instrumentoViola),
+        "violonchelo": TextosDePartituras.traduccion(\.instrumentoViolonchelo),
+        "contrabajo": TextosDePartituras.traduccion(\.instrumentoContrabajo),
+        "guitarra": TextosDePartituras.traduccion(\.instrumentoGuitarra),
+        "bajo eléctrico": TextosDePartituras.traduccion(\.instrumentoBajoElectrico),
+        "xilófono": TextosDePartituras.traduccion(\.instrumentoXilofono),
+        "glockenspiel": TextosDePartituras.traduccion(\.instrumentoGlockenspiel),
+        "celesta": TextosDePartituras.traduccion(\.instrumentoCelesta),
     ]
 }

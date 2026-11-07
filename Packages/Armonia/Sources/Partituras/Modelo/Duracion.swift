@@ -275,15 +275,15 @@ extension Figura {
     public func nombre(en notacion: Notacion) -> String { Figura.nombres[rawValue + 1].en(notacion) }
 
     private static let nombres: [Traduccion] = [
-        TextosDePartitura.traduccion(\.cuadrada),
-        TextosDePartitura.traduccion(\.redonda),
-        TextosDePartitura.traduccion(\.blanca),
-        TextosDePartitura.traduccion(\.negra),
-        TextosDePartitura.traduccion(\.corchea),
-        TextosDePartitura.traduccion(\.semicorchea),
-        TextosDePartitura.traduccion(\.fusa),
-        TextosDePartitura.traduccion(\.semifusa),
-        TextosDePartitura.traduccion(\.garrapatea),
+        TextosDePartituras.traduccion(\.cuadrada),
+        TextosDePartituras.traduccion(\.redonda),
+        TextosDePartituras.traduccion(\.blanca),
+        TextosDePartituras.traduccion(\.negra),
+        TextosDePartituras.traduccion(\.corchea),
+        TextosDePartituras.traduccion(\.semicorchea),
+        TextosDePartituras.traduccion(\.fusa),
+        TextosDePartituras.traduccion(\.semifusa),
+        TextosDePartituras.traduccion(\.garrapatea),
     ]
 }
 
@@ -293,10 +293,10 @@ extension Duracion {
     /// "negra", "corchea con puntillo", "blanca con doble puntillo"; si no es una figura,
     /// la fracción: "5/8 de redonda". La duración nula es "cero".
     public func nombre(en notacion: Notacion) -> String {
-        if esCero { return TextosDePartitura.en(notacion, \.cero) }
+        if esCero { return TextosDePartituras.en(notacion, \.cero) }
         guard let escritura = figuraYPuntillos else {
             let fraccion = "\(numerador)/\(denominador)"
-            return TextosDePartitura.en(notacion) { $0.fraccionDeRedonda(fraccion) }
+            return TextosDePartituras.en(notacion) { $0.fraccionDeRedonda(fraccion) }
         }
         let figura = escritura.figura.nombre(en: notacion)
         let puntillos = escritura.puntillos
@@ -307,7 +307,7 @@ extension Duracion {
 
 extension Duracion {
     /// La figura con uno, dos, tres o cuatro puntillos, en el sitio de `_`.
-    private static let conPuntillos = TextosDePartitura.traduccion(\.conPuntillos)
+    private static let conPuntillos = TextosDePartituras.traduccion(\.conPuntillos)
 }
 
 extension Tempo: Codable {

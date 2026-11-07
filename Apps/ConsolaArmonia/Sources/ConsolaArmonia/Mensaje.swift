@@ -8,7 +8,7 @@ import Exposicion
 // ErrorDeUso.swift). Lo musical (notas, acordes, escalas…) no está aquí: lo traduce el motor
 // con `Notacion`.
 //
-// Los textos están en `TextosDeCLI`, un idioma por fichero (`Textos/TextosDeCLI+Espanol.swift`…): cada
+// Los textos están en `TextosDeConsola`, un idioma por fichero (`Textos/TextosDeConsola+Espanol.swift`…): cada
 // fichero da todos los campos, así que un caso nuevo no compila hasta que tiene su texto en los quince. El idioma es el de la notación (`--ingles`, `--idioma eu`…).
 // La ayuda (`LineaDeComandos.ayuda(en:)`) también está en los quince idiomas.
 // Los avisos del coral (sin armonización, sin faltas…) los comparte con las apps: son
@@ -58,66 +58,66 @@ enum Mensaje {
 
     var traduccion: Traduccion {
         switch self {
-        case .notas: return TextosDeCLI.traduccion(\.mensajeNotas)
-        case .acordes: return TextosDeCLI.traduccion(\.mensajeAcordes)
-        case .microtonos: return TextosDeCLI.traduccion(\.mensajeMicrotonos)
-        case .escalas: return TextosDeCLI.traduccion(\.mensajeEscalas)
-        case .habituales: return TextosDeCLI.traduccion(\.mensajeHabituales)
-        case .ningunaEscala: return TextosDeCLI.traduccion(\.mensajeNingunaEscala)
-        case .armadura: return TextosDeCLI.traduccion(\.mensajeArmadura)
-        case .relativa: return TextosDeCLI.traduccion(\.mensajeRelativa)
-        case .homonima: return TextosDeCLI.traduccion(\.mensajeHomonima)
+        case .notas: return TextosDeConsola.traduccion(\.mensajeNotas)
+        case .acordes: return TextosDeConsola.traduccion(\.mensajeAcordes)
+        case .microtonos: return TextosDeConsola.traduccion(\.mensajeMicrotonos)
+        case .escalas: return TextosDeConsola.traduccion(\.mensajeEscalas)
+        case .habituales: return TextosDeConsola.traduccion(\.mensajeHabituales)
+        case .ningunaEscala: return TextosDeConsola.traduccion(\.mensajeNingunaEscala)
+        case .armadura: return TextosDeConsola.traduccion(\.mensajeArmadura)
+        case .relativa: return TextosDeConsola.traduccion(\.mensajeRelativa)
+        case .homonima: return TextosDeConsola.traduccion(\.mensajeHomonima)
         case .bajo(let nota):
-            return TextosDeCLI.traduccion { $0.mensajeBajo(nota) }
+            return TextosDeConsola.traduccion { $0.mensajeBajo(nota) }
         case .inversion(let n):
             // Los nombres de las inversiones son los de la biblioteca (`Acorde.nombreDeLaInversion`).
             return Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(n, en: $0) })
         case .bajoAjeno:
-            return TextosDeCLI.traduccion(\.mensajeBajoAjeno)
+            return TextosDeConsola.traduccion(\.mensajeBajoAjeno)
         case .sinAcordes:
-            return TextosDeCLI.traduccion(\.mensajeSinAcordes)
+            return TextosDeConsola.traduccion(\.mensajeSinAcordes)
         case .sin(let notas):
-            return TextosDeCLI.traduccion { $0.mensajeSin(notas) }
+            return TextosDeConsola.traduccion { $0.mensajeSin(notas) }
         case .semitonos(let n):
-            return TextosDeCLI.traduccion { $0.mensajeSemitonos(n) }
+            return TextosDeConsola.traduccion { $0.mensajeSemitonos(n) }
         case .sinAlteraciones:
-            return TextosDeCLI.traduccion(\.mensajeSinAlteraciones)
+            return TextosDeConsola.traduccion(\.mensajeSinAlteraciones)
         case .alteraciones(let n, let sostenidos):
             if sostenidos {
-                return TextosDeCLI.traduccion { $0.mensajeSostenidos(n) }
+                return TextosDeConsola.traduccion { $0.mensajeSostenidos(n) }
             }
-            return TextosDeCLI.traduccion { $0.mensajeBemoles(n) }
+            return TextosDeConsola.traduccion { $0.mensajeBemoles(n) }
         case .aCuatroVoces:
-            return TextosDeCLI.traduccion(\.mensajeACuatroVoces)
+            return TextosDeConsola.traduccion(\.mensajeACuatroVoces)
         case .sinDigitaciones:
-            return TextosDeCLI.traduccion(\.mensajeSinDigitaciones)
+            return TextosDeConsola.traduccion(\.mensajeSinDigitaciones)
         case .dedos(let n):
-            return TextosDeCLI.traduccion { $0.mensajeDedos(n) }
+            return TextosDeConsola.traduccion { $0.mensajeDedos(n) }
         case .cejilla(let traste):
-            return TextosDeCLI.traduccion { $0.mensajeCejilla(traste) }
+            return TextosDeConsola.traduccion { $0.mensajeCejilla(traste) }
         case .pasos(let n):
             switch n {
-            case 0: return TextosDeCLI.traduccion(\.mensajeNingunPaso)
-            case 1: return TextosDeCLI.traduccion(\.mensajeUnPaso)
-            default: return TextosDeCLI.traduccion { $0.mensajePasos(n) }
+            case 0: return TextosDeConsola.traduccion(\.mensajeNingunPaso)
+            case 1: return TextosDeConsola.traduccion(\.mensajeUnPaso)
+            default: return TextosDeConsola.traduccion { $0.mensajePasos(n) }
             }
         case .triadas(let n):
-            return TextosDeCLI.traduccion { $0.mensajeTriadas(n) }
+            return TextosDeConsola.traduccion { $0.mensajeTriadas(n) }
         case .ciclo(let ciclo):
             return Traduccion(cadaIdioma: { ciclo.nombre(en: $0) })
         case .instrumento(let encordado):
             // `--instrumento` acepta el nombre en cualquiera de los quince idiomas.
             return Traduccion(cadaIdioma: { encordado.nombre(en: $0) })
-        case .formaNormal: return TextosDeCLI.traduccion(\.mensajeFormaNormal)
-        case .formaPrima: return TextosDeCLI.traduccion(\.mensajeFormaPrima)
-        case .vectorIntervalico: return TextosDeCLI.traduccion(\.mensajeVectorIntervalico)
-        case .vectorDeIndice: return TextosDeCLI.traduccion(\.mensajeVectorDeIndice)
-        case .ejesDeSimetria: return TextosDeCLI.traduccion(\.mensajeEjesDeSimetria)
-        case .intervalos: return TextosDeCLI.traduccion(\.mensajeIntervalos)
-        case .deTodosLosIntervalos: return TextosDeCLI.traduccion(\.mensajeDeTodosLosIntervalos)
-        case .formasDistintas(let n): return TextosDeCLI.traduccion { $0.mensajeFormasDistintas(n) }
-        case .hexacordos: return TextosDeCLI.traduccion(\.mensajeHexacordos)
-        case .formasCombinatorias: return TextosDeCLI.traduccion(\.mensajeFormasCombinatorias)
+        case .formaNormal: return TextosDeConsola.traduccion(\.mensajeFormaNormal)
+        case .formaPrima: return TextosDeConsola.traduccion(\.mensajeFormaPrima)
+        case .vectorIntervalico: return TextosDeConsola.traduccion(\.mensajeVectorIntervalico)
+        case .vectorDeIndice: return TextosDeConsola.traduccion(\.mensajeVectorDeIndice)
+        case .ejesDeSimetria: return TextosDeConsola.traduccion(\.mensajeEjesDeSimetria)
+        case .intervalos: return TextosDeConsola.traduccion(\.mensajeIntervalos)
+        case .deTodosLosIntervalos: return TextosDeConsola.traduccion(\.mensajeDeTodosLosIntervalos)
+        case .formasDistintas(let n): return TextosDeConsola.traduccion { $0.mensajeFormasDistintas(n) }
+        case .hexacordos: return TextosDeConsola.traduccion(\.mensajeHexacordos)
+        case .formasCombinatorias: return TextosDeConsola.traduccion(\.mensajeFormasCombinatorias)
         }
     }
 }

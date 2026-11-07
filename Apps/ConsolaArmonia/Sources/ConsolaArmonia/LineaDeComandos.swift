@@ -139,7 +139,7 @@ public enum LineaDeComandos {
         // Un fichero binario no se escribe en la terminal.
         if resultado.datos != nil, salidaEsTerminal, destino == nil {
             return ResultadoDeOrden(
-                salida: "", error: "armonia: " + TextosDeCLI.en(notacion, \.salidaBinaria) + "\n", codigo: 2)
+                salida: "", error: "armonia: " + TextosDeConsola.en(notacion, \.salidaBinaria) + "\n", codigo: 2)
         }
         return resultado
     }
@@ -175,7 +175,7 @@ public enum LineaDeComandos {
         do {
             try datos.write(to: url)
         } catch {
-            let texto = TextosDeCLI.en(notacion) { $0.archivoNoEscrito(ruta) }
+            let texto = TextosDeConsola.en(notacion) { $0.archivoNoEscrito(ruta) }
             return ResultadoDeOrden(salida: "", error: resultado.error + "armonia: " + texto + "\n", codigo: 1)
         }
         return ResultadoDeOrden(salida: "", error: resultado.error, codigo: resultado.codigo)
@@ -289,7 +289,7 @@ public enum LineaDeComandos {
     }
 
     /// Las órdenes por grupos, como salen en el índice de la ayuda; los títulos están en
-    /// `TextosDeCLI.gruposDeLaAyuda`, en el mismo orden.
+    /// `TextosDeConsola.gruposDeLaAyuda`, en el mismo orden.
     static let gruposDeOrdenes: [[Orden]] = [
         ordenesDeConsultas, ordenesDeArmonizacion, ordenesDePartituras + ordenesDeGrabado, ordenesDeDibujos,
         ordenesDeNeorriemann, ordenesDeTrastes, ordenesDeLaTerminal + ordenesDeAyuda,
@@ -310,7 +310,7 @@ public enum LineaDeComandos {
 
     /// Un fichero de `--archivo` que no se puede leer: no es un error de uso, sino de lectura (código 1).
     static func archivoIlegible(_ ruta: String, _ notacion: Notacion) -> ResultadoDeOrden {
-        let texto = TextosDeCLI.en(notacion) { $0.archivoIlegible(ruta) }
+        let texto = TextosDeConsola.en(notacion) { $0.archivoIlegible(ruta) }
         return ResultadoDeOrden(salida: "", error: "armonia: " + texto + "\n", codigo: 1)
     }
 

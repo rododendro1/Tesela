@@ -11,7 +11,7 @@ import Testing
 // La parte de la API que no usan las apps ni el resto del motor: las descripciones, los atajos y los
 // casos raros de cada idioma. Cada prueba fija lo que da hoy, para que un cambio no pase sin verse.
 
-@Suite struct APIPocoUsadaDelNucleoTests {
+@Suite struct APIPocoUsadaDeLosElementosTests {
     @Test func descripciones() {
         #expect("\(NotaNatural.re)" == "Re")
         #expect("\(Alteracion(1))" == "sostenido")
@@ -147,7 +147,7 @@ import Testing
     }
 }
 
-@Suite struct APIPocoUsadaDeLasRepresentacionesTests {
+@Suite struct APIPocoUsadaDeLosDiagramasTests {
     @Test func descripciones() throws {
         #expect("\(MovimientoDeVoz(desde: Nota("Fa"), hasta: Nota("Mi")))" == "Fa→Mi")
         #expect(

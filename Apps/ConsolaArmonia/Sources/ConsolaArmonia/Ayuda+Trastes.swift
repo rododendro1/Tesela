@@ -16,8 +16,8 @@ extension LineaDeComandos {
     static let ayudaDeDigitaciones: [EntradaDeAyuda] = [
         // digitaciones <cifrado>… [opciones]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisDigitaciones),
-            descripcion: TextosDeCLI.traduccion(\.descripcionDigitaciones),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisDigitaciones),
+            descripcion: TextosDeConsola.traduccion(\.descripcionDigitaciones),
             ejemplo: ejemplo(
                 "armonia digitaciones Sol7/Si --instrumento ukelele",
                 "armonia fingerings G7/B --instrument ukulele"),
@@ -27,15 +27,15 @@ extension LineaDeComandos {
     static let ayudaDePosiciones: [EntradaDeAyuda] = [
         // posiciones <escala> [--caged]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisPosiciones),
-            descripcion: TextosDeCLI.traduccion(\.descripcionPosiciones),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisPosiciones),
+            descripcion: TextosDeConsola.traduccion(\.descripcionPosiciones),
             ejemplo: ejemplo("armonia posiciones Sol mayor --caged", "armonia positions G major --caged"),
-            notas: TextosDeCLI.traduccion(\.notasPosiciones),
+            notas: TextosDeConsola.traduccion(\.notasPosiciones),
             opciones: [.caged, .secuencia, .bajando, .formas, .instrumento, .capo]),
         // posiciones --arpegio <cifrado> [--caged|--barrido]
         EntradaDeAyuda(
-            sintaxis: TextosDeCLI.traduccion(\.sintaxisPosicionesArpegio),
-            descripcion: TextosDeCLI.traduccion(\.descripcionPosicionesArpegio),
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisPosicionesArpegio),
+            descripcion: TextosDeConsola.traduccion(\.descripcionPosicionesArpegio),
             ejemplo: ejemplo(
                 "armonia posiciones --arpegio Lam --barrido", "armonia positions --arpeggio Am --sweep"),
             opciones: [.arpegio, .caged, .barrido, .idaYVuelta]),

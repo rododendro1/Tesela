@@ -206,7 +206,7 @@ extension LineaDeComandos {
             guard let ruta = buscar(paso.programas, con: ejecutor) else {
                 let programa = paso.programas[0]
                 let variable = EjecutorDelSistema.variable(de: programa)
-                return fallo(TextosDeCLI.en(notacion) { $0.motorNoEncontrado(programa, variable) })
+                return fallo(TextosDeConsola.en(notacion) { $0.motorNoEncontrado(programa, variable) })
             }
             rutas.append(ruta)
         }
@@ -220,7 +220,7 @@ extension LineaDeComandos {
             let programa = URL(fileURLWithPath: ruta).lastPathComponent
             let resultado = try ejecutor.ejecutar(ruta, paso.argumentos, en: carpeta, limite: 120)
             if resultado.agotado {
-                return fallo(TextosDeCLI.en(notacion) { $0.motorSinTerminar(programa) })
+                return fallo(TextosDeConsola.en(notacion) { $0.motorSinTerminar(programa) })
             }
             let escrito: Data?
             if paso.salidas.isEmpty {
@@ -234,7 +234,7 @@ extension LineaDeComandos {
                 let dicho =
                     resultado.error.isEmpty ? String(decoding: resultado.salida, as: UTF8.self) : resultado.error
                 let ultimas = dicho.split(separator: "\n", omittingEmptySubsequences: true).suffix(10)
-                let mensaje = TextosDeCLI.en(notacion) { $0.motorFallo(programa, Int(resultado.codigo)) }
+                let mensaje = TextosDeConsola.en(notacion) { $0.motorFallo(programa, Int(resultado.codigo)) }
                 return fallo(([mensaje] + ultimas.map { "  " + $0 }).joined(separator: "\n"))
             }
             datos = convertido
@@ -250,10 +250,10 @@ extension LineaDeComandos {
         let ejecutor = Self.ejecutor
         var filas: [(nombre: String, dicho: String)] = []
         for motor in MotorDeGrabado.allCases {
-            let nombre = motor == .propio ? TextosDeCLI.en(notacion, \.motorPropio) : motor.rawValue
+            let nombre = motor == .propio ? TextosDeConsola.en(notacion, \.motorPropio) : motor.rawValue
             guard let ruta = buscar(motor.programas, con: ejecutor) else {
                 let variable = EjecutorDelSistema.variable(de: motor.programas[0])
-                filas.append((nombre: nombre, dicho: TextosDeCLI.en(notacion) { $0.motorNoInstalado(variable) }))
+                filas.append((nombre: nombre, dicho: TextosDeConsola.en(notacion) { $0.motorNoInstalado(variable) }))
                 continue
             }
             let version = try versionDelMotor(motor, en: ruta)

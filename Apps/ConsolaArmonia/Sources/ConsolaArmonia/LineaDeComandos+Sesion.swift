@@ -33,7 +33,7 @@ extension LineaDeComandos {
     ) {
         switch notacionDelEntorno(entorno) {
         case .success(let notacion):
-            escribir(bien(TextosDeCLI.en(notacion) { $0.bienvenidaDeLaSesion(version) }))
+            escribir(bien(TextosDeConsola.en(notacion) { $0.bienvenidaDeLaSesion(version) }))
         case .failure(let error):
             escribir(uso(error, .espanolCompacto))
             return

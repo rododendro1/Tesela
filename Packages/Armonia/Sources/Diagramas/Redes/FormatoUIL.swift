@@ -284,14 +284,14 @@ public enum ErrorDeLecturaDeUIL: ErrorDeArmonia, Hashable {
     /// La explicación en el idioma de los textos de la notación.
     public func descripcion(en notacion: Notacion) -> String {
         switch self {
-        case .formatoNoValido(let texto): return TextosDeRepresentaciones.en(notacion) { $0.uilNoValido(texto) }
+        case .formatoNoValido(let texto): return TextosDeDiagramas.en(notacion) { $0.uilNoValido(texto) }
         case .intervalosIncoherentes(let menor, let mayor, let diferencia):
-            return TextosDeRepresentaciones.en(notacion) { $0.intervalosIncoherentes(menor, mayor, diferencia) }
-        case .rotacionNoValida(let grados): return TextosDeRepresentaciones.en(notacion) { $0.giroNoValido(grados) }
+            return TextosDeDiagramas.en(notacion) { $0.intervalosIncoherentes(menor, mayor, diferencia) }
+        case .rotacionNoValida(let grados): return TextosDeDiagramas.en(notacion) { $0.giroNoValido(grados) }
         case .afinacionNoSoportada(let tonos):
-            return TextosDeRepresentaciones.en(notacion) { $0.afinacionNoSoportada(tonos) }
+            return TextosDeDiagramas.en(notacion) { $0.afinacionNoSoportada(tonos) }
         case .cizallaNoSoportada(let cizalla):
-            return TextosDeRepresentaciones.en(notacion) { $0.cizallaNoSoportada(cizalla) }
+            return TextosDeDiagramas.en(notacion) { $0.cizallaNoSoportada(cizalla) }
         }
     }
 }
