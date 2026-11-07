@@ -91,26 +91,6 @@ struct TextosDeTeoria: TextosTraducidos {
     let tipoSextaAumentadaFrancesa: String
     let tipoSextaAumentadaAlemana: String
 
-    // MARK: Coral.swift
-    let entreLasVoces: @Sendable ([String]) -> String
-    let enLaVoz: @Sendable (String) -> String
-    let enLosAcordes: @Sendable (String) -> String
-    let enElAcorde: @Sendable (Int) -> String
-    let quintasParalelas: String
-    let octavasParalelas: String
-    let quintasDirectas: String
-    let octavasDirectas: String
-    let cruceDeVoces: String
-    let superposicion: String
-    let separacionExcesiva: String
-    let saltoNoMelodico: String
-    let fueraDeTesitura: String
-    let vozBajo: String
-    let vozTenor: String
-    let vozContralto: String
-    let vozSoprano: String
-    let vozNumero: @Sendable (Int) -> String
-
     // MARK: Escala.swift
     let gradoTonica: String
     let gradoSupertonica: String
@@ -158,11 +138,6 @@ struct TextosDeTeoria: TextosTraducidos {
     let papelNotaAEvitar: String
     /// Una escala como modo de otra: «modo 2 de Do mayor», «mode 2 of C major».
     let modoDe: @Sendable (_ modo: Int, _ escala: String) -> String
-
-    // MARK: NotaExtrana.swift
-    /// En el orden de `NotaExtrana.allCases`: nota de paso, bordadura, apoyatura, retardo, anticipación, escapada,
-    /// pedal y libre.
-    let nombresDeNotasExtranas: [String]
 
     // MARK: EsquemaArmonico.swift
     /// En el orden de `EsquemaArmonico.Tipo.allCases`.

@@ -334,7 +334,7 @@ import Testing
     @Test func elBajoCifrado() {
         let acordes = [Acorde("Do"), Acorde("Sol7/Si"), Acorde("Do")]
         let voces = DisposicionDeAcorde.cerrada.conducir(acordes) ?? []
-        let cifras = acordes.map { Tonalidad(.do).cifrasDeBajo(de: $0) }
+        let cifras: [[String]] = [[], ["6", "5"], []]
         let svg = Partitura(acordes: voces, titulo: "I–V65–I", porEvento: .init(bajoCifrado: .enOrden(cifras))).svg()
         let seis = svg.range(of: ">6</text>")
         let cinco = svg.range(of: ">5</text>")

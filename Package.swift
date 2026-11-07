@@ -25,6 +25,7 @@ let package = Package(
         .library(name: "Teoria", targets: ["Teoria"]),
         .library(name: "Diagramas", targets: ["Diagramas"]),
         .library(name: "Partituras", targets: ["Partituras"]),
+        .library(name: "Polifonia", targets: ["Polifonia"]),
         .library(name: "Formatos", targets: ["Formatos"]),
         .library(name: "Trastes", targets: ["Trastes"]),
         // Packages/Exposicion
@@ -46,8 +47,12 @@ let package = Package(
             dependencies: ["Elementos", "Teoria"],
             path: "Packages/Armonia/Sources/Partituras"),
         .target(
-            name: "Formatos",
+            name: "Polifonia",
             dependencies: ["Elementos", "Teoria", "Partituras"],
+            path: "Packages/Armonia/Sources/Polifonia"),
+        .target(
+            name: "Formatos",
+            dependencies: ["Elementos", "Teoria", "Partituras", "Polifonia"],
             path: "Packages/Armonia/Sources/Formatos"),
         .target(
             name: "Trastes",
@@ -55,7 +60,7 @@ let package = Package(
             path: "Packages/Armonia/Sources/Trastes"),
         .target(
             name: "Armonia",
-            dependencies: ["Elementos", "Teoria", "Diagramas", "Partituras", "Formatos", "Trastes"],
+            dependencies: ["Elementos", "Teoria", "Diagramas", "Partituras", "Polifonia", "Formatos", "Trastes"],
             path: "Packages/Armonia/Sources/Armonia"),
 
         .target(

@@ -5,23 +5,6 @@
 
 extension TextosDePartituras {
     static let ruso = TextosDePartituras(
-        // Contrapunto.swift
-        enElCompas: { n in "(такт \(n))" },
-        enLosCompases: { pasos in "(такты \(pasos))" },
-        ritmoDeLaEspecie: "Ритм не соответствует виду",
-        comienzoImperfecto: "Начало без совершенного консонанса",
-        finalImperfecto: "Окончание не в унисон и не в октаву",
-        finalSinGradoConjunto: "К последней ноте не поступенно",
-        disonanciaEnParteFuerte: "Диссонанс на сильной доле",
-        disonanciaMalTratada: "Неправильно введённый диссонанс",
-        retardoMalResuelto: "Неправильно разрешённое задержание",
-        unisono: "Унисон в середине упражнения",
-        saltoSinCompensar: "Скачок без заполнения",
-        notaRepetida: "Повторённая нота",
-        especieConElContrapuntoEncima: { n in "Вид \(n), контрапункт над cantus firmus" },
-        especieConElContrapuntoDebajo: { n in "Вид \(n), контрапункт под cantus firmus" },
-        sinFaltas: "Ошибок нет.",
-
         // Duracion.swift
         cuadrada: "бревис",
         redonda: "целая",

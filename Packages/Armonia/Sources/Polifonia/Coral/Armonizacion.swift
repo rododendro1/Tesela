@@ -1,4 +1,5 @@
 import Elementos
+import Teoria
 
 // Armonización de melodías: qué acordes pueden acompañar cada nota y qué sucesión de acordes
 // suena mejor en la tonalidad, según la armonía funcional.

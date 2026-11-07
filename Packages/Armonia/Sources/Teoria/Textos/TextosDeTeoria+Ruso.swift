@@ -88,26 +88,6 @@ extension TextosDeTeoria {
         tipoSextaAumentadaFrancesa: "французский увеличенный секстаккорд",
         tipoSextaAumentadaAlemana: "немецкий увеличенный секстаккорд",
 
-        // Coral.swift
-        entreLasVoces: { nombres in "— " + nombres.joined(separator: " и ") },
-        enLaVoz: { primera in "— \(primera)" },
-        enLosAcordes: { pasos in "(аккорды \(pasos))" },
-        enElAcorde: { acorde in "(аккорд \(acorde + 1))" },
-        quintasParalelas: "Параллельные квинты",
-        octavasParalelas: "Параллельные октавы",
-        quintasDirectas: "Скрытые квинты",
-        octavasDirectas: "Скрытые октавы",
-        cruceDeVoces: "Перекрещивание голосов",
-        superposicion: "Перекрытие голосов",
-        separacionExcesiva: "Больше октавы",
-        saltoNoMelodico: "Немелодичный скачок",
-        fueraDeTesitura: "Вне диапазона",
-        vozBajo: "бас",
-        vozTenor: "тенор",
-        vozContralto: "альт",
-        vozSoprano: "сопрано",
-        vozNumero: { numero in "голос \(numero)" },
-
         // Escala.swift
         gradoTonica: "тоника",
         gradoSupertonica: "супертоника",
@@ -152,8 +132,6 @@ extension TextosDeTeoria {
         papelTensionDisponible: "напряжение",
         papelNotaAEvitar: "избегаемый звук",
         modoDe: { modo, escala in "\(modo)-й лад гаммы \(escala)" },
-        // NotaExtrana.swift
-        nombresDeNotasExtranas: ["проходящий звук", "вспомогательный звук", "неприготовленное задержание", "задержание", "предъём", "отлетающий звук", "органный пункт", "свободный звук"],
         // EsquemaArmonico.swift
         nombresDeEsquemas: ["ii–V–I", "ii–V", "тёрнэраунд", "бэкдор", "12-тактовый блюз", "квинтовая секвенция", "романеска", "канон Пахельбеля", "монте", "фонте", "понте"],
         // Rearmonizacion.swift

@@ -88,26 +88,6 @@ extension TextosDeTeoria {
         tipoSextaAumentadaFrancesa: "γαλλική συγχορδία αυξημένης έκτης",
         tipoSextaAumentadaAlemana: "γερμανική συγχορδία αυξημένης έκτης",
 
-        // Coral.swift
-        entreLasVoces: { nombres in "— " + nombres.joined(separator: " και ") },
-        enLaVoz: { primera in "— \(primera)" },
-        enLosAcordes: { pasos in "(συγχορδίες \(pasos))" },
-        enElAcorde: { acorde in "(συγχορδία \(acorde + 1))" },
-        quintasParalelas: "Παράλληλες πέμπτες",
-        octavasParalelas: "Παράλληλες οκτάβες",
-        quintasDirectas: "Κρυφές πέμπτες",
-        octavasDirectas: "Κρυφές οκτάβες",
-        cruceDeVoces: "Διασταύρωση φωνών",
-        superposicion: "Επικάλυψη φωνών",
-        separacionExcesiva: "Πάνω από μία οκτάβα",
-        saltoNoMelodico: "Μη μελωδικό πήδημα",
-        fueraDeTesitura: "Εκτός έκτασης",
-        vozBajo: "μπάσο",
-        vozTenor: "τενόρος",
-        vozContralto: "άλτο",
-        vozSoprano: "σοπράνο",
-        vozNumero: { numero in "φωνή \(numero)" },
-
         // Escala.swift
         gradoTonica: "τονική",
         gradoSupertonica: "υπερτονική",
@@ -152,8 +132,6 @@ extension TextosDeTeoria {
         papelTensionDisponible: "ένταση",
         papelNotaAEvitar: "φθόγγος προς αποφυγή",
         modoDe: { modo, escala in "τρόπος \(modo) της κλίμακας \(escala)" },
-        // NotaExtrana.swift
-        nombresDeNotasExtranas: ["διαβατική νότα", "γειτονική νότα", "αποτζιατούρα", "καθυστέρηση", "πρόληψη", "νότα διαφυγής", "νότα πεντάλ", "ελεύθερη νότα"],
         // EsquemaArmonico.swift
         nombresDeEsquemas: ["ii–V–I", "ii–V", "τέρναραουντ", "μπακντόρ", "μπλουζ 12 μέτρων", "αλυσίδα πεμπτών", "ρομανέσκα", "κανόνας του Πάχελμπελ", "μόντε", "φόντε", "πόντε"],
         // Rearmonizacion.swift

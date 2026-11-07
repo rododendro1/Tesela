@@ -5,6 +5,7 @@ import Testing
 @testable import Elementos
 @testable import Formatos
 @testable import Partituras
+@testable import Polifonia
 @testable import Teoria
 
 @Suite struct MEITests {

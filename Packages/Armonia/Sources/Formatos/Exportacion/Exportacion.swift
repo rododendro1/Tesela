@@ -26,25 +26,6 @@ package enum Exportacion {
         }
     }
 
-    /// Lo que dura el último de `cuantos` acordes de `duracion` para que acabe en la barra.
-    package static func hastaLaBarra(_ duracion: Duracion, _ cuantos: Int, _ compas: Compas) -> Duracion {
-        hastaLaBarra(Array(repeating: duracion, count: max(0, cuantos)), compas).last ?? duracion
-    }
-
-    /// Las duraciones, con la última alargada para que acaben en la barra.
-    package static func hastaLaBarra(_ duraciones: [Duracion], _ compas: Compas) -> [Duracion] {
-        guard let ultima = duraciones.last else { return duraciones }
-        let total = duraciones.reduce(Duracion.cero, +)
-        let enCompases = total / compas.duracion
-        let resto = total - compas.duracion * (enCompases.numerador / enCompases.denominador)
-        return resto.esCero ? duraciones : Array(duraciones.dropLast()) + [ultima + compas.duracion - resto]
-    }
-
-    /// Una voz de un coral: una nota por acorde, de `duracion`, y la última de `final`.
-    package static func eventos(de alturas: [Altura], duracion: Duracion, final: Duracion) -> [Evento] {
-        alturas.enumerated().map { Evento($1, $0 == alturas.count - 1 ? final : duracion) }
-    }
-
     /// Las dos voces de una progresión: los acordes en posición cerrada desde La3 y el bajo
     /// desde Fa2, de `duracion` cada uno, y el último de `final`.
     package static func progresion(_ acordes: [Acorde], duracion: Duracion, final: Duracion) -> (
@@ -222,83 +203,14 @@ package enum Exportacion {
         }
     }
 
-    /// Las voces de un coral repartidas en dos pentagramas, como se escriben: las de la mitad
-    /// aguda arriba y las de la grave abajo, de aguda a grave en cada uno. Si comparten
-    /// pentagrama, la plica de la de arriba va hacia arriba y la de la de abajo, hacia abajo.
-    /// `indice` es el de la voz en el coral (0, el bajo), y el último acorde se alarga hasta la barra.
-    package static func voces(de coral: Coral, duracion: Duracion, compas: Compas)
-        -> [(voz: Voz, pentagrama: Int, plicaArriba: Bool?, indice: Int)]
-    {
-        let n = coral.numeroDeVoces
-        let agudas = Array((n / 2..<n).reversed())
-        let graves = Array((0..<n / 2).reversed())
-        let final = hastaLaBarra(duracion, coral.acordes.count, compas)
-        var voces: [(voz: Voz, pentagrama: Int, plicaArriba: Bool?, indice: Int)] = []
-        for (pentagrama, indices) in [(1, agudas), (2, graves)] {
-            for (k, v) in indices.enumerated() {
-                let linea = Voz(eventos(de: coral.voz(v), duracion: duracion, final: final), compas: compas)
-                voces.append((linea, pentagrama, indices.count == 1 ? nil : k == 0, v))
-            }
-        }
-        return voces
-    }
-
     // MARK: Anotaciones
-
-    /// Lo que se anota en un coral o en una progresión, por el punto en que empieza cada acorde
-    /// (contado desde el principio): el acorde que se cifra encima de la voz más aguda y el
-    /// análisis que se escribe debajo de la más grave.
-    package struct Anotaciones {
-        /// La de la armadura.
-        package var tonalidad: Tonalidad?
-        /// La que se escribe al principio, debajo del bajo, si se analiza.
-        package var tonalidadDelAnalisis: Tonalidad?
-        package var cifrados: [Duracion: Acorde] = [:]
-        package var analisis: [Duracion: AcordeAnalizado] = [:]
-    }
-
-    /// Las anotaciones de un coral. Los acordes se identifican por sus notas (con el bajo) entre
-    /// los tipos de `TipoDeAcorde.todos`; los que no forman ninguno se quedan sin cifrar. Sin
-    /// `tonalidad`, se estima: a partir de los acordes si se analiza, si no, de las notas.
-    package static func anotaciones(
-        de coral: Coral, duracion: Duracion, tonalidad: Tonalidad?,
-        cifrados: Bool, analisis: Bool
-    ) -> Anotaciones {
-        // Los acordes que se pueden identificar, con su posición en el coral.
-        var identificados: [(indice: Int, acorde: Acorde)] = []
-        if cifrados || analisis {
-            for (i, alturas) in coral.acordes.enumerated() {
-                // Solo los tipos del catálogo: un acorde con notas de paso no se cifra como «add♭9».
-                if let acorde = Acorde.candidatos(alturas: alturas).first(where: {
-                    TipoDeAcorde.todos.contains($0.valor.tipo)
-                })?
-                .valor {
-                    identificados.append((i, acorde))
-                }
-            }
-        }
-        let analizado: AnalisisArmonico? =
-            analisis
-            ? (tonalidad.map { $0.analizar(identificados.map(\.acorde)) }
-                ?? AnalisisArmonico.analizar(identificados.map(\.acorde)))
-            : nil
-        var resultado = Anotaciones()
-        resultado.tonalidad =
-            tonalidad ?? analizado?.tonalidad ?? Tonalidad.identificar(alturas: coral.acordes.flatMap { $0 }).first
-        resultado.tonalidadDelAnalisis = analizado?.tonalidad
-        for (k, (i, acorde)) in identificados.enumerated() {
-            if cifrados { resultado.cifrados[duracion * i] = acorde }
-            if let analizado, k < analizado.acordes.count { resultado.analisis[duracion * i] = analizado.acordes[k] }
-        }
-        return resultado
-    }
 
     /// Las anotaciones de una progresión ya analizada.
     package static func anotaciones(
         de progresion: AnalisisArmonico, duraciones: [Duracion],
         cifrados: Bool, analisis: Bool
-    ) -> Anotaciones {
-        var resultado = Anotaciones()
+    ) -> AnotacionesDeAcordes {
+        var resultado = AnotacionesDeAcordes()
         resultado.tonalidad = progresion.tonalidad
         if analisis { resultado.tonalidadDelAnalisis = progresion.tonalidad }
         for (inicio, analizado) in zip(inicios(duraciones), progresion.acordes) {

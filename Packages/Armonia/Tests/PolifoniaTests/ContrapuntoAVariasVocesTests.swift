@@ -2,6 +2,7 @@ import Testing
 
 @testable import Elementos
 @testable import Partituras
+@testable import Polifonia
 @testable import Teoria
 
 /// El contrapunto de especies a tres y cuatro voces.

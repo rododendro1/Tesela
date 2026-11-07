@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### Polifonia, un módulo para el coral y el contrapunto
+
+- El coral a cuatro voces (`Coral`, `Armonizacion`, `CoralArmonizado`, el bajo cifrado y las notas extrañas), que
+  estaba en Teoria, y el contrapunto de especies (`Contrapunto`, `ContrapuntoAVariasVoces`), que estaba en
+  Partituras, están ahora juntos en `Polifonia`, sobre Partituras. También su partitura: `coral.partitura(…)` y
+  `contrapunto.partitura(…)`, que estaban en Formatos. Formatos usa Polifonia para exportarlos.
+- **Para actualizar:** con `import Armonia` no cambia nada. Quien importe las capas sueltas y use el coral, la
+  armonización, el bajo cifrado o el contrapunto necesita `import Polifonia` (y el producto `Polifonia`). Los errores
+  de lectura de un coral o de un bajo cifrado siguen en `ErrorDeLecturaDeTeoria`, y los de un contrapunto, en
+  `ErrorDeLecturaDePartitura`.
+
 ### Los nombres de otras tradiciones en la notación, los diao y Jing Fang
 
 - Los sistemas fijos de `SistemaDeNombres` (bizantino, japonés, coreano, de Guido, los lü de China, Japón y Corea y

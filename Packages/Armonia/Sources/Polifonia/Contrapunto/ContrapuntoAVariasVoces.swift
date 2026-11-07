@@ -1,4 +1,5 @@
 import Elementos
+import Partituras
 import Teoria
 
 // Contrapunto de especies a tres y cuatro voces (Fux, Gradus ad Parnassum, libro II): un cantus firmus en redondas

@@ -92,12 +92,7 @@ import Testing
         }
     }
 
-    @Test func melodiasYCorales() throws {
+    @Test func melodias() throws {
         #expect(try (Evento(leyendo: "Mi₄:4").alturas) == [Altura(.mi, octava: 4)])
-        let coral = try Coral(leyendo: "Do₃ Mi₄ | Re₃ Fa₄")
-        #expect(try coral == (Coral(leyendo: "Do3 Mi4 | Re3 Fa4")))
-        #expect(coral.texto(en: subindices) == "Do₃ Mi₄ | Re₃ Fa₄")
-        #expect(coral.texto(en: cifras) == "Do3 Mi4 | Re3 Fa4")
-        #expect(coral.texto(en: .espanolASCII) == "Do3 Mi4 | Re3 Fa4")
     }
 }

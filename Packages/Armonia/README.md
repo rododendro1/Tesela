@@ -170,7 +170,7 @@ el código de cada paso probado). Los artículos también se pueden leer directa
 ```
 swift build
 swift test                                    # todas las pruebas
-swift test --filter "^(Armonia|Elementos|Teoria|Diagramas|Partituras|Formatos|Trastes)Tests\."   # solo las rápidas (segundos)
+swift test --filter "^(Armonia|Elementos|Teoria|Diagramas|Partituras|Polifonia|Formatos|Trastes)Tests\."   # solo las rápidas (segundos)
 swift test --filter "^TeoriaTests\."    # las de un módulo
 swift test --filter "^ArmoniaExhaustivasTests\."  # solo las exhaustivas
 swift test --filter "^ArmoniaDocumentacionTests\."  # los ejemplos del README y de DocC
@@ -187,13 +187,13 @@ Los cambios de cada versión, con la guía para actualizar, están en [CHANGELOG
 
 ### Organización de los ficheros
 
-La biblioteca son seis módulos por capas, y `Armonia` los reexporta: `import Armonia` da toda la API, e
+La biblioteca son siete módulos por capas, y `Armonia` los reexporta: `import Armonia` da toda la API, e
 `import Teoria` (con `Elementos`, de que depende) solo los acordes, las escalas y las tonalidades.
 Lo interno que se usa entre capas es `package`, no público. Un módulo solo usa los de su izquierda, y
 `Scripts/comprobaciones/comprobar_modulos.py`, en la raíz del repositorio, lo vigila:
 
     Elementos ◄── Teoria ◄──┬── Diagramas
-                            └── Partituras ◄──┬── Formatos
+                            └── Partituras ◄──┬── Polifonia ◄── Formatos
                                               └── Trastes
 
 Un fichero por concepto: el tipo principal junto con sus tipos auxiliares y sus extensiones
@@ -232,7 +232,6 @@ Sources/
 │   │                      y sus listas
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
 │   │                      FuncionTonal y AcordeAnalizado)
-│   ├── Coral/             Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion
 │   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica
 │                          (el catálogo), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett (números)
 ├── Diagramas/
@@ -243,8 +242,11 @@ Sources/
 ├── Partituras/
 │   ├── Modelo/        Duracion (con Figura y Tempo), Compas, Evento, Melodia (con Voz), ErrorDeLecturaDePartitura,
 │   │                  Pentagrama (Clave, PosicionEnElPentagrama, InstrumentoDePartitura), SignoMicrotonal
-│   ├── Dibujo/        PentagramaSVG (con sus opciones y los glifos SMuFL)
-│   └── Contrapunto/   Contrapunto (contrapunto de especies a dos voces, con sus faltas)
+│   └── Dibujo/        PentagramaSVG (con sus opciones y los glifos SMuFL)
+├── Polifonia/
+│   ├── Coral/         Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion, BajoCifrado,
+│   │                  NotaExtrana, Coral+Partitura (el coral en dos pentagramas)
+│   └── Contrapunto/   Contrapunto (contrapunto de especies, a dos voces y a varias, con sus faltas y su partitura)
 ├── Formatos/          FormatoDePartitura y Partitura+Formatos (exportar a cada formato)
 │   ├── MusicXML/      MusicXML (exportación de voces, corales y progresiones) y su lectura, también en MXL
 │   ├── MEI/           MEI y su lectura
@@ -252,12 +254,12 @@ Sources/
 │   ├── MIDI/          ArchivoMIDI (ficheros MIDI estándar) y su lectura
 │   ├── LilyPond/      LilyPond
 │   ├── GUIDO/         GUIDO
-│   ├── Exportacion/   Exportacion, ExportacionDeContrapunto y EscritorDeLineas, lo que comparten los formatos
+│   ├── Exportacion/   Exportacion y EscritorDeLineas, lo que comparten los formatos
 │   └── Importacion/   Importacion (con ErrorDeLecturaDeFichero, las escalas, la partitura y las repeticiones)
 │                      y el lector de XML propio (LectorXML)
 ├── Trastes/           Encordado (afinaciones del instrumento), Mastil (con PosicionEnElMastil: dónde suena cada nota),
 │                      Digitacion (formas de tocar un acorde en el mástil)
-└── Armonia/           el módulo paraguas, sin código propio: Exportaciones (reexporta los seis)
+└── Armonia/           el módulo paraguas, sin código propio: Exportaciones (reexporta los siete)
     │                  y la documentación
     └── Armonia.docc/  portada y un artículo por tema
 ```
@@ -293,11 +295,13 @@ línea de comandos están con ella, en `Apps/ConsolaArmonia/Tests/`.
 
 ### Capas
 
-La biblioteca se reparte en seis módulos que siguen unas capas: **Elementos** (Fundamentos,
+La biblioteca se reparte en siete módulos que siguen unas capas: **Elementos** (Fundamentos,
 Texto, Postonal), **Teoria** (Acordes, con la teoría neorriemanniana, Escalas, Tonalidad, que se necesitan entre sí, y la
 afinación) y
 dos ramas que usan las anteriores y no se usan entre sí: **Diagramas** (color, dibujo y redes, como
-el Tonnetz) y **Partituras** (el modelo, el pentagrama en SVG y el contrapunto). Sobre Partitura van **Formatos** (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond)
+el Tonnetz) y **Partituras** (el modelo y el pentagrama en SVG). Sobre Partitura van **Polifonia** (el coral a cuatro voces, la
+armonización, el bajo cifrado y el contrapunto de especies, con su partitura), **Formatos** (exportar e importar
+MusicXML, MXL, MEI, ABC, MIDI y LilyPond, también los corales y los contrapuntos, sobre Polifonia)
 y **Trastes** (instrumentos de cuerda con trastes, que escriben lo que se toca en una partitura con su
 tablatura), que tampoco se usan entre sí. `Armonia` los reexporta
 todos; `Hexagonos`, que usan los Diagramas, se importa aparte. `python3

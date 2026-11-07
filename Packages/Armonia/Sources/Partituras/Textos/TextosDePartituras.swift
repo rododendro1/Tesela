@@ -9,23 +9,6 @@ import Elementos
 
 /// Los textos de Partituras en un idioma.
 struct TextosDePartituras: TextosTraducidos {
-    // MARK: Contrapunto.swift
-    let enElCompas: @Sendable (Int) -> String
-    let enLosCompases: @Sendable (String) -> String
-    let ritmoDeLaEspecie: String
-    let comienzoImperfecto: String
-    let finalImperfecto: String
-    let finalSinGradoConjunto: String
-    let disonanciaEnParteFuerte: String
-    let disonanciaMalTratada: String
-    let retardoMalResuelto: String
-    let unisono: String
-    let saltoSinCompensar: String
-    let notaRepetida: String
-    let especieConElContrapuntoEncima: @Sendable (Int) -> String
-    let especieConElContrapuntoDebajo: @Sendable (Int) -> String
-    let sinFaltas: String
-
     // MARK: Duracion.swift
     let cuadrada: String
     let redonda: String

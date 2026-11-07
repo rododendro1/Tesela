@@ -3,6 +3,7 @@ import Foundation
 import Testing
 
 @testable import Elementos
+@testable import Polifonia
 @testable import Teoria
 
 @Suite struct ArmonizacionTests {

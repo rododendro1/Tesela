@@ -4,6 +4,7 @@ import Testing
 @testable import Elementos
 @testable import Formatos
 @testable import Partituras
+@testable import Polifonia
 @testable import Teoria
 
 /// La partitura única: la de cada tipo da lo mismo que sus funciones de siempre, en todos los formatos, y una hecha a

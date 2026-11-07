@@ -5,23 +5,6 @@
 
 extension TextosDePartituras {
     static let catalan = TextosDePartituras(
-        // Contrapunto.swift
-        enElCompas: { n in "(compàs \(n))" },
-        enLosCompases: { pasos in "(compassos \(pasos))" },
-        ritmoDeLaEspecie: "Ritme aliè a l'espècie",
-        comienzoImperfecto: "Inici sense consonància perfecta",
-        finalImperfecto: "Final sense uníson ni octava",
-        finalSinGradoConjunto: "Final sense grau conjunt",
-        disonanciaEnParteFuerte: "Dissonància en part forta",
-        disonanciaMalTratada: "Dissonància mal tractada",
-        retardoMalResuelto: "Retard mal resolt",
-        unisono: "Uníson al mig de l'exercici",
-        saltoSinCompensar: "Salt sense compensar",
-        notaRepetida: "Nota repetida",
-        especieConElContrapuntoEncima: { n in "Espècie \(n), amb el contrapunt damunt del cantus firmus" },
-        especieConElContrapuntoDebajo: { n in "Espècie \(n), amb el contrapunt davall del cantus firmus" },
-        sinFaltas: "Sense faltes.",
-
         // Duracion.swift
         cuadrada: "quadrada",
         redonda: "rodona",

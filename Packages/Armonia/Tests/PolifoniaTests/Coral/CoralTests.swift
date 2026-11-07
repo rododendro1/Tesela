@@ -2,6 +2,7 @@ import Foundation
 import Testing
 
 @testable import Elementos
+@testable import Polifonia
 @testable import Teoria
 
 @Suite struct CoralTests {
@@ -138,5 +139,11 @@ import Testing
             }
 
         }
+    }
+
+    @Test func transponer() throws {
+        let coral = try Coral([[Altura(.do, octava: 3), Altura(.mi, octava: 4)]])
+        #expect(coral.transponer(.segundaMayor).acordes.first?.map(\.midi) == [50, 66])
+        #expect(coral.texto(en: .espanolCompacto) == "Do₃ Mi₄")
     }
 }

@@ -5,23 +5,6 @@
 
 extension TextosDePartituras {
     static let griego = TextosDePartituras(
-        // Contrapunto.swift
-        enElCompas: { n in "(μέτρο \(n))" },
-        enLosCompases: { pasos in "(μέτρα \(pasos))" },
-        ritmoDeLaEspecie: "Ρυθμός ξένος προς το είδος",
-        comienzoImperfecto: "Αρχή χωρίς τέλεια συνήχηση",
-        finalImperfecto: "Τέλος χωρίς ταυτοφωνία ή οκτάβα",
-        finalSinGradoConjunto: "Τέλος χωρίς βηματική κίνηση",
-        disonanciaEnParteFuerte: "Διαφωνία σε ισχυρό χρόνο",
-        disonanciaMalTratada: "Λανθασμένη χρήση διαφωνίας",
-        retardoMalResuelto: "Λανθασμένη λύση καθυστέρησης",
-        unisono: "Ταυτοφωνία στη μέση της άσκησης",
-        saltoSinCompensar: "Πήδημα χωρίς αντιστάθμιση",
-        notaRepetida: "Επαναλαμβανόμενη νότα",
-        especieConElContrapuntoEncima: { n in "Είδος \(n), αντίστιξη πάνω από το cantus firmus" },
-        especieConElContrapuntoDebajo: { n in "Είδος \(n), αντίστιξη κάτω από το cantus firmus" },
-        sinFaltas: "Χωρίς λάθη.",
-
         // Duracion.swift
         cuadrada: "διπλό ολόκληρο",
         redonda: "ολόκληρο",

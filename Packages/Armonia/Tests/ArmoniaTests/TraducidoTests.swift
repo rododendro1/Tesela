@@ -5,6 +5,7 @@ import Testing
 @testable import Diagramas
 @testable import Elementos
 @testable import Partituras
+@testable import Polifonia
 @testable import Teoria
 @testable import Trastes
 
@@ -225,15 +226,15 @@ import Testing
         }
         for textos in TextosDeTeoria.traducidos.todos {
             #expect(textos.papelTension(9) != textos.papelTension(11))
-            #expect(textos.vozNumero(3).contains("3"))
             #expect(!(textos.acordeDesconocido(true, "X", "X").isEmpty))
             #expect(!(textos.acordeDesconocido(false, "X", "X").isEmpty))
-            #expect(textos.enLaVoz("X").contains("X"))
         }
-        #expect(TextosDeTeoria.traducidos.en(.conPalabras(.aleman)).enLaVoz("Stimme 2") == "in Stimme 2")
-        for textos in TextosDePartituras.traducidos.todos {
+        for textos in TextosDePolifonia.traducidos.todos {
+            #expect(textos.vozNumero(3).contains("3"))
+            #expect(textos.enLaVoz("X").contains("X"))
             #expect(textos.especieConElContrapuntoDebajo(3).contains("3"))
         }
+        #expect(TextosDePolifonia.traducidos.en(.conPalabras(.aleman)).enLaVoz("Stimme 2") == "in Stimme 2")
         for textos in TextosDeDiagramas.traducidos.todos {
             #expect(textos.cicloDesde("Z", "Y").contains("Z"))
         }

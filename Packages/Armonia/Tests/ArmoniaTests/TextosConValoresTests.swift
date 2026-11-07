@@ -5,6 +5,7 @@ import Testing
 @testable import Elementos
 @testable import Formatos
 @testable import Partituras
+@testable import Polifonia
 @testable import Teoria
 @testable import Trastes
 
@@ -52,11 +53,6 @@ import Testing
                 textos.conBajoEn("x", "x"),
                 textos.papelTension(3),
                 textos.acordeDesconocido(true, "x", "x"),
-                textos.entreLasVoces(["x", "y"]),
-                textos.enLaVoz("x"),
-                textos.enLosAcordes("x"),
-                textos.enElAcorde(3),
-                textos.vozNumero(3),
                 textos.cadenciaEnLosAcordes("x"),
                 textos.deUnaTonalidadAOtra("x", "x", 3),
                 textos.arpegioDe("x"),
@@ -83,12 +79,25 @@ import Testing
             }
         }
         for idioma in Idioma.allCases {
-            let textos = TextosDePartituras.traducidos.texto(en: idioma)
+            let textos = TextosDePolifonia.traducidos.texto(en: idioma)
             let resultados = [
+                textos.entreLasVoces(["x", "y"]),
+                textos.enLaVoz("x"),
+                textos.enLosAcordes("x"),
+                textos.enElAcorde(3),
+                textos.vozNumero(3),
                 textos.enElCompas(3),
                 textos.enLosCompases("x"),
                 textos.especieConElContrapuntoEncima(3),
                 textos.especieConElContrapuntoDebajo(3),
+            ]
+            for (i, texto) in resultados.enumerated() {
+                #expect(!texto.isEmpty, "TextosDePolifonia, texto \(i) en \(idioma)")
+            }
+        }
+        for idioma in Idioma.allCases {
+            let textos = TextosDePartituras.traducidos.texto(en: idioma)
+            let resultados = [
                 textos.fraccionDeRedonda("x"),
                 textos.duracionNoValida("x"),
                 textos.compasNoValido("x"),

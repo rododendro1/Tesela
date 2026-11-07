@@ -5,23 +5,6 @@
 
 extension TextosDePartituras {
     static let asturiano = TextosDePartituras(
-        // Contrapunto.swift
-        enElCompas: { n in "(compás \(n))" },
-        enLosCompases: { pasos in "(compases \(pasos))" },
-        ritmoDeLaEspecie: "Ritmu ayenu a la especie",
-        comienzoImperfecto: "Entamu ensin consonancia perfeuta",
-        finalImperfecto: "Final ensin unísonu nin octava",
-        finalSinGradoConjunto: "Final ensin grau conxuntu",
-        disonanciaEnParteFuerte: "Disonancia en parte fuerte",
-        disonanciaMalTratada: "Disonancia mal tratada",
-        retardoMalResuelto: "Retardu mal resueltu",
-        unisono: "Unísonu en metá del exerciciu",
-        saltoSinCompensar: "Saltu ensin compensar",
-        notaRepetida: "Nota repetida",
-        especieConElContrapuntoEncima: { n in "Especie \(n), col contrapuntu enriba del cantus firmus" },
-        especieConElContrapuntoDebajo: { n in "Especie \(n), col contrapuntu embaxo del cantus firmus" },
-        sinFaltas: "Ensin faltes.",
-
         // Duracion.swift
         cuadrada: "cuadrada",
         redonda: "redonda",

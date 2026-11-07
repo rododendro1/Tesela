@@ -88,26 +88,6 @@ extension TextosDeTeoria {
         tipoSextaAumentadaFrancesa: "francia bővített szextakkord",
         tipoSextaAumentadaAlemana: "német bővített szextakkord",
 
-        // Coral.swift
-        entreLasVoces: { nombres in nombres.map(\.conArticuloHungaro).joined(separator: " és ") + " között" },
-        enLaVoz: { primera in primera.conArticuloHungaro + "ban" },
-        enLosAcordes: { pasos in "(akkordok: \(pasos))" },
-        enElAcorde: { acorde in "(\(acorde + 1). akkord)" },
-        quintasParalelas: "Párhuzamos kvintek",
-        octavasParalelas: "Párhuzamos oktávok",
-        quintasDirectas: "Rejtett kvintek",
-        octavasDirectas: "Rejtett oktávok",
-        cruceDeVoces: "Szólamkeresztezés",
-        superposicion: "Szólamátfedés",
-        separacionExcesiva: "Egy oktávnál nagyobb távolság",
-        saltoNoMelodico: "Dallamtalan ugrás",
-        fueraDeTesitura: "Hangterjedelmen kívül",
-        vozBajo: "basszus",
-        vozTenor: "tenor",
-        vozContralto: "alt",
-        vozSoprano: "szoprán",
-        vozNumero: { numero in "\(numero). szólam" },
-
         // Escala.swift
         gradoTonica: "tonika",
         gradoSupertonica: "szupertonika",
@@ -152,8 +132,6 @@ extension TextosDeTeoria {
         papelTensionDisponible: "feszültség",
         papelNotaAEvitar: "kerülendő hang",
         modoDe: { modo, escala in "\(escala) \(modo). módusza" },
-        // NotaExtrana.swift
-        nombresDeNotasExtranas: ["átmenőhang", "váltóhang", "appoggiatura", "késleltetés", "anticipáció", "szökőhang", "orgonapont", "szabad hang"],
         // EsquemaArmonico.swift
         nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "12 ütemes blues", "kvintszekvencia", "romanesca", "Pachelbel-kánon", "monte", "fonte", "ponte"],
         // Rearmonizacion.swift
