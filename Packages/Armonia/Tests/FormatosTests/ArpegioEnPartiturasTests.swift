@@ -1,12 +1,10 @@
 import Foundation
 import Testing
 
-@testable import Armonia
-@testable import Diagramas
 @testable import Elementos
+@testable import Formatos
 @testable import Partituras
 @testable import Teoria
-@testable import Trastes
 
 /// Los arpegios en pentagrama y como voces de una partitura (los recorridos, en TeoriaTests/Acordes/ArpegioTests).
 @Suite struct ArpegioEnPartiturasTests {

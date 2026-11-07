@@ -1,12 +1,9 @@
 import Foundation
 import Testing
 
-@testable import Armonia
-@testable import Diagramas
 @testable import Elementos
 @testable import Partituras
 @testable import Teoria
-@testable import Trastes
 
 @Suite struct AlteracionTests {
     @Test func valoresYNombres() throws {

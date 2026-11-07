@@ -1,8 +1,6 @@
 import Foundation
 import Testing
 
-@testable import Armonia
-@testable import Diagramas
 @testable import Elementos
 @testable import Partituras
 @testable import Teoria
