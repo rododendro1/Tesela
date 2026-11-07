@@ -24,8 +24,9 @@ extension PuntoDeLaRed {
 }
 
 extension Tonnetz {
-    /// Dónde dibuja `svg(paso:)` cada nota: hexágonos puntiagudos (invisibles) con su centro en la
-    /// nota, las quintas hacia la derecha y las terceras mayores hacia arriba a la derecha.
+    /// Dónde dibuja `svg(opciones:margen:leyenda:)` cada nota, con `paso` píxeles entre dos vecinas: hexágonos
+    /// puntiagudos (invisibles) con su centro en la nota, las quintas hacia la derecha y las terceras mayores hacia
+    /// arriba a la derecha.
     ///
     /// Las coordenadas son las del SVG (las de su `viewBox`), con el Do de partida en `(0, 0)`.
     public static func trazado(paso: Double) -> Trazado {
@@ -35,8 +36,8 @@ extension Tonnetz {
         return Trazado(orientacion: .puntiaguda, tamano: Punto(x: lado, y: -lado))
     }
 
-    /// La nota más cercana a un punto del dibujo de `svg(paso:)`, en las coordenadas del SVG: para
-    /// saber qué nota se ha tocado.
+    /// La nota más cercana a un punto del dibujo de `svg(opciones:margen:leyenda:)`, con `paso` píxeles entre dos
+    /// vecinas, en las coordenadas del SVG: para saber qué nota se ha tocado.
     public static func punto(en punto: Punto, paso: Double) -> PuntoDeLaRed {
         PuntoDeLaRed(trazado(paso: paso).casilla(en: punto))
     }
@@ -54,13 +55,13 @@ extension TablaArmonica {
         PuntoDeLaRed(coordenada.rotada(sextos: -2))
     }
 
-    /// Dónde dibuja `svg(paso:)` cada hexágono, en las casillas de `coordenada(de:)`: hexágonos planos
-    /// con dos vecinos a `paso` de distancia, en las coordenadas del SVG y con el Do de partida en `(0, 0)`.
+    /// Dónde dibuja `svg(opciones:margen:leyenda:)` cada hexágono, en las casillas de `coordenada(de:)`: hexágonos
+    /// planos con dos vecinos a `paso` de distancia, en las coordenadas del SVG y con el Do de partida en `(0, 0)`.
     public static func trazado(paso: Double) -> Trazado {
         Trazado(orientacion: .plana, tamano: paso / 3.0.squareRoot())
     }
 
-    /// El hexágono que hay bajo un punto del dibujo de `svg(paso:)`, en las coordenadas del SVG.
+    /// El hexágono que hay bajo un punto del dibujo de `svg(opciones:margen:leyenda:)`, en las coordenadas del SVG.
     public static func punto(en punto: Punto, paso: Double) -> PuntoDeLaRed {
         self.punto(de: trazado(paso: paso).casilla(en: punto))
     }
