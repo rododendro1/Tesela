@@ -203,13 +203,11 @@ public struct Coral: Hashable, Sendable {
         let soprano = numeroDeVoces - 1
 
         // Cada voz: saltos.
-        for v in 0..<numeroDeVoces {
-            let salto = siguiente[v] - acorde[v]
-            if case .aumentada = salto.calidad, salto.numero != 1 {
-                anotar(.saltoNoMelodico, [v])
-            } else if salto.semitonos > 12 {
-                anotar(.saltoNoMelodico, [v])
-            }
+        for v in 0..<numeroDeVoces
+        where Conduccion.Saltos.armonia.noEsMelodico(
+            siguiente[v] - acorde[v], ascendente: siguiente[v].midi > acorde[v].midi)
+        {
+            anotar(.saltoNoMelodico, [v])
         }
 
         // Voces vecinas: superposición.
@@ -222,25 +220,18 @@ public struct Coral: Hashable, Sendable {
         // Cada pareja de voces: paralelas.
         for grave in 0..<(numeroDeVoces - 1) {
             for aguda in (grave + 1)..<numeroDeVoces {
-                let antes = consonanciaPerfecta(acorde[grave], acorde[aguda])
-                let despues = consonanciaPerfecta(siguiente[grave], siguiente[aguda])
-                let semueven = acorde[grave] != siguiente[grave] && acorde[aguda] != siguiente[aguda]
-                if let antes, antes == despues, semueven {
-                    anotar(antes == 5 ? .quintasParalelas : .octavasParalelas, [grave, aguda])
+                let paso = Conduccion.PasoDeVoces(
+                    de: (acorde[grave], acorde[aguda]), a: (siguiente[grave], siguiente[aguda]))
+                if let perfecta = paso.paralelas {
+                    anotar(perfecta == 5 ? .quintasParalelas : .octavasParalelas, [grave, aguda])
                 }
             }
         }
 
         // Voces extremas: quintas y octavas directas (movimiento directo y salto en el soprano).
-        let movimientoBajo = siguiente[0].midi - acorde[0].midi
-        let movimientoSoprano = siguiente[soprano].midi - acorde[soprano].midi
-        if let despues = consonanciaPerfecta(siguiente[0], siguiente[soprano]),
-            consonanciaPerfecta(acorde[0], acorde[soprano]) != despues,
-            movimientoBajo != 0, movimientoSoprano != 0,
-            (movimientoBajo > 0) == (movimientoSoprano > 0),
-            abs(movimientoSoprano) > 2
-        {
-            anotar(despues == 5 ? .quintasDirectas : .octavasDirectas, [0, soprano])
+        let extremas = Conduccion.PasoDeVoces(de: (acorde[0], acorde[soprano]), a: (siguiente[0], siguiente[soprano]))
+        if let perfecta = extremas.directas, abs(extremas.movimientos.1) > 2 {
+            anotar(perfecta == 5 ? .quintasDirectas : .octavasDirectas, [0, soprano])
         }
     }
 
@@ -251,18 +242,6 @@ public struct Coral: Hashable, Sendable {
 
     /// Extensión de cada voz en MIDI: bajo Mi2–Do4, tenor Do3–Sol4, contralto Sol3–Re5, soprano Do4–Sol5.
     package static let tesituras = [40...60, 48...67, 55...74, 60...79]
-
-    /// 5 si las dos alturas forman una quinta justa (simple o compuesta), 8 si forman una octava
-    /// justa o un unísono; `nil` en otro caso.
-    package static func consonanciaPerfecta(_ grave: Altura, _ aguda: Altura) -> Int? {
-        let intervalo = aguda - grave
-        guard intervalo.calidad == .justa else { return nil }
-        switch intervalo.numeroSimple {
-        case 5: return 5
-        case 1, 8: return 8
-        default: return nil
-        }
-    }
 
     package static func nombreDeVoz(_ voz: Int, de total: Int, en notacion: Notacion) -> String {
         if total == 4 {

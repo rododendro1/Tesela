@@ -168,14 +168,18 @@ public struct PiezaImportada: Hashable, Sendable {
 
     // MARK: Acordes
 
-    /// Los acordes que suenan, en orden, con las ventanas seguidas del mismo acorde fundidas en uno.
+    /// Los acordes que suenan, en orden, cada uno desde que cambia la armonía.
     ///
-    /// La pieza se corta en ventanas de `ventana` (por omisión, un pulso del compás, o una negra si
-    /// no hay compás). En cada una, cada clase de altura pesa lo que suena dentro de la ventana; el
-    /// bajo es la nota más grave que suena al empezar (o la más grave de la ventana, si no suena
-    /// ninguna). Se prueba el conjunto entero y el que queda al quitar las una o dos clases que
-    /// menos pesan, y gana la lectura más probable, penalizada por lo que deja fuera. Las ventanas
-    /// en silencio o sin lectura posible no dan acorde.
+    /// La pieza se corta en ventanas de `ventana` (por omisión, un pulso del compás, o una negra si no hay compás),
+    /// y las ventanas seguidas de un mismo compás se agrupan donde la armonía no cambia: se elige el reparto en
+    /// tramos que mejor explica lo que suena, y cada tramo nuevo cuesta un poco, así que dos pulsos se juntan si
+    /// juntos se leen casi tan bien como por separado (un acorde con una nota de paso en el segundo pulso) y se
+    /// separan si no (Do y luego Sol). En cada tramo, cada clase de altura pesa lo que suena dentro de él; el bajo es
+    /// la nota más grave que suena al empezar (o la más grave del tramo, si no suena ninguna). Las notas de paso y
+    /// las bordaduras de una voz (más breves que la ventana, que no empiezan con ella y a las que se llega y de las
+    /// que se sale por grado conjunto) pesan una cuarta parte. Se prueba el conjunto entero y el que queda al quitar
+    /// las una o dos clases que menos pesan, y gana la lectura más probable, penalizada por lo que deja fuera. Las
+    /// ventanas en silencio o sin lectura posible no dan acorde, y los tramos seguidos con el mismo acorde se funden.
     ///
     /// Los acordes se escriben en `tonalidadEstimada`.
     public func acordes(ventana: Duracion? = nil) -> [Acorde] {
@@ -190,40 +194,128 @@ public struct PiezaImportada: Hashable, Sendable {
         // alarga a un múltiplo entero de la de partida: así su denominador no crece y sumarla una y otra vez no
         // desborda las fracciones.
         let maximo = 100_000
-        let ventanas = (duracion.enRedondas / paso.enRedondas).rounded(.up)
-        if ventanas > Double(maximo) { paso = paso * Int((ventanas / Double(maximo)).rounded(.up)) }
+        let cuantas = (duracion.enRedondas / paso.enRedondas).rounded(.up)
+        if cuantas > Double(maximo) { paso = paso * Int((cuantas / Double(maximo)).rounded(.up)) }
         let tonalidad = tonalidadEstimada
-        var resultado: [AcordeConInicio] = []
+        let factores = factoresMelodicos(paso: paso)
+
+        // Las ventanas, cada una con las notas que suenan en ella.
+        var ventanas: [(desde: Duracion, hasta: Duracion, notas: [Int])] = []
         // Hasta dónde llega lo que ha empezado: las notas anteriores a `primera` ya no suenan.
         var finales: [Duracion] = []
         for nota in notas { finales.append(max(finales.last ?? .cero, nota.fin)) }
         var primera = 0
         var desde = Duracion.cero
         let total = duracion
-        // Las ventanas iguales (un acorde que se mantiene, o una nota de horas) dan el mismo acorde: se identifica
-        // una vez. Sin esto, una nota larga de un fichero dañado hacía identificar el mismo acorde 100 000 veces.
-        var identificados: [VentanaSonora: Acorde?] = [:]
         while desde < total {
             let hasta = desde + paso
             while primera < notas.count, finales[primera] <= desde { primera += 1 }
-            let suenan = notas[primera...].prefix { $0.inicio < hasta }.filter { $0.fin > desde }
-            guard let ventana = VentanaSonora(suenan, desde: desde, hasta: hasta) else {
-                desde = hasta
-                continue
+            var suenan: [Int] = []
+            var k = primera
+            while k < notas.count, notas[k].inicio < hasta {
+                if notas[k].fin > desde { suenan.append(k) }
+                k += 1
             }
-            let leido: Acorde?
-            if let previo = identificados[ventana] {
-                leido = previo
-            } else {
-                leido = PiezaImportada.acorde(de: ventana, tonalidad: tonalidad)
-                identificados[ventana] = leido
-            }
-            if let acorde = leido, resultado.last?.acorde != acorde {
-                resultado.append(AcordeConInicio(acorde, inicio: desde))
-            }
+            ventanas.append((desde, hasta, suenan))
             desde = hasta
         }
+
+        // Las lecturas iguales (un acorde que se mantiene, o una nota de horas) se identifican una vez. Sin esto, una
+        // nota larga de un fichero dañado hacía identificar el mismo acorde 100 000 veces.
+        var identificados: [VentanaSonora: Candidato<Acorde>?] = [:]
+        func lectura(_ i: Int, _ j: Int) -> Candidato<Acorde>? {
+            let desde = ventanas[i].desde
+            let hasta = ventanas[j].hasta
+            var indices = Set<Int>()
+            for v in i...j { indices.formUnion(ventanas[v].notas) }
+            let suenan = indices.sorted().map { (notas[$0], factores[$0]) }
+            guard let sonora = VentanaSonora(suenan, desde: desde, hasta: hasta) else { return nil }
+            if let previo = identificados[sonora] { return previo }
+            let leido = PiezaImportada.acorde(de: sonora, tonalidad: tonalidad)
+            identificados[sonora] = leido
+            return leido
+        }
+
+        // El mejor reparto en tramos (programación dinámica): `mejor[j]` es el coste de explicar las `j` primeras
+        // ventanas, y `desdeDonde[j]`, dónde empieza su último tramo (o `nil` si la ventana `j - 1` no da acorde).
+        let porCompas = max(1, (compas ?? .compasillo).duracion.enRedondas / paso.enRedondas).rounded(.down)
+        let largoMaximo = Swift.min(8, Swift.max(1, Int(porCompas)))
+        let duracionDelCompas = (compas ?? .compasillo).duracion.enRedondas
+        func compasDe(_ v: Int) -> Int { Int((ventanas[v].desde.enRedondas / duracionDelCompas + 1e-9).rounded(.down)) }
+        let costeDeUnTramo = 0.05
+        var mejor = [0.0]
+        var desdeDonde: [(inicio: Int, acorde: Acorde)?] = []
+        for j in ventanas.indices {
+            var elMejor = ElMejor<(inicio: Int, acorde: Acorde)?, Double>()
+            if ventanas[j].notas.isEmpty {
+                elMejor.proponer(nil, coste: mejor[j])
+            } else {
+                var i = j
+                // Las notas del acorde más rico de las ventanas del tramo: juntarlas no puede dar un acorde con más
+                // notas que eso (Do y Sol/Si no se juntan en un Domaj9), solo quitar las de paso.
+                var masNotas = 0
+                while i >= 0, j - i < largoMaximo, !ventanas[i].notas.isEmpty, compasDe(i) == compasDe(j) {
+                    guard let suyo = lectura(i, i) else { break }
+                    masNotas = Swift.max(masNotas, suyo.valor.notas.count)
+                    if let leido = lectura(i, j), leido.valor.notas.count <= masNotas {
+                        // Lo que cuesta la lectura, en cada ventana del tramo: un acorde raro (una novena, una
+                        // sexta añadida) que junta dos acordes sencillos cuesta más cuanto más dura.
+                        let ventanasDelTramo = Double(j - i + 1)
+                        elMejor.proponer(
+                            (i, leido.valor), coste: mejor[i] + leido.coste * ventanasDelTramo + costeDeUnTramo)
+                    }
+                    i -= 1
+                }
+                // Sin lectura posible, la ventana no da acorde.
+                if elMejor.valor == nil { elMejor.proponer(nil, coste: mejor[j]) }
+            }
+            mejor.append(elMejor.coste ?? mejor[j])
+            desdeDonde.append(elMejor.valor ?? nil)
+        }
+        var tramos: [AcordeConInicio] = []
+        var j = ventanas.count
+        while j > 0 {
+            if let tramo = desdeDonde[j - 1] {
+                tramos.append(AcordeConInicio(tramo.acorde, inicio: ventanas[tramo.inicio].desde))
+                j = tramo.inicio
+            } else {
+                j -= 1
+            }
+        }
+        var resultado: [AcordeConInicio] = []
+        for tramo in tramos.reversed() where resultado.last?.acorde != tramo.acorde {
+            resultado.append(tramo)
+        }
         return resultado
+    }
+
+    /// Cuánto pesa cada nota en su acorde: 1, o un cuarto si es una nota de paso o una bordadura de su voz (más
+    /// breve que `paso`, no empieza en una ventana, y se llega a ella y se sale de ella por grado conjunto, sin
+    /// silencio, en su parte, su pentagrama y su voz).
+    func factoresMelodicos(paso: Duracion) -> [Double] {
+        var porVoz: [[Int]: [Int]] = [:]
+        for (k, nota) in notas.enumerated() {
+            porVoz[[nota.parte, nota.pentagrama ?? 0, nota.voz ?? 0], default: []].append(k)
+        }
+        var factores = Array(repeating: 1.0, count: notas.count)
+        for indices in porVoz.values {
+            for (posicion, k) in indices.enumerated() {
+                let nota = notas[k]
+                let fraccion = nota.inicio.enRedondas / paso.enRedondas
+                guard nota.duracion < paso, fraccion != fraccion.rounded(.down) else { continue }
+                // La de antes acaba donde empieza esta, y la de después empieza donde acaba; si hay varias (un
+                // acorde en la misma voz), no es una línea y no se toca.
+                let antes = indices[..<posicion].filter { notas[$0].fin == nota.inicio }
+                let despues = indices[(posicion + 1)...].prefix { notas[$0].inicio <= nota.fin }
+                    .filter { notas[$0].inicio == nota.fin }
+                let mismoComienzo = indices.filter { notas[$0].inicio == nota.inicio }
+                guard antes.count == 1, despues.count == 1, mismoComienzo.count == 1 else { continue }
+                let llegada = abs(nota.altura.midi - notas[antes[0]].altura.midi)
+                let salida = abs(notas[despues[0]].altura.midi - nota.altura.midi)
+                if (1...2).contains(llegada) && (1...2).contains(salida) { factores[k] = 0.25 }
+            }
+        }
+        return factores
     }
 
     /// Su ritmo armónico: los acordes con lo que dura cada uno (hasta que empieza el siguiente y, el último, hasta
@@ -247,14 +339,16 @@ public struct PiezaImportada: Hashable, Sendable {
         let bajo: Int
         let pesos: [Int: Double]
 
-        init?(_ notas: [NotaDeLaPieza], desde: Duracion, hasta: Duracion) {
-            guard !notas.isEmpty else { return nil }
+        /// Lo que cuenta de las notas que suenan entre `desde` y `hasta`, cada una con lo que pesa en su acorde.
+        init?(_ suenan: [(nota: NotaDeLaPieza, factor: Double)], desde: Duracion, hasta: Duracion) {
+            guard !suenan.isEmpty else { return nil }
             let largo = (hasta - desde).enRedondas
             var pesos: [Int: Double] = [:]
-            for nota in notas {
+            for (nota, factor) in suenan {
                 let solapado = (min(nota.fin, hasta) - max(nota.inicio, desde)).enRedondas
-                pesos[modulo(nota.altura.midi, 12), default: 0] += min(1, solapado / largo)
+                pesos[modulo(nota.altura.midi, 12), default: 0] += factor * min(1, solapado / largo)
             }
+            let notas = suenan.map(\.nota)
             let alComienzo = notas.filter { $0.inicio <= desde }
             guard let grave = (alComienzo.isEmpty ? notas : alComienzo).map(\.altura.midi).min() else { return nil }
             self.bajo = modulo(grave, 12)
@@ -262,8 +356,8 @@ public struct PiezaImportada: Hashable, Sendable {
         }
     }
 
-    /// El acorde de una ventana, o `nil` si no hay ninguna lectura.
-    static func acorde(de ventana: VentanaSonora, tonalidad: Tonalidad?) -> Acorde? {
+    /// El acorde de una ventana, con lo que cuesta su lectura, o `nil` si no hay ninguna.
+    static func acorde(de ventana: VentanaSonora, tonalidad: Tonalidad?) -> Candidato<Acorde>? {
         let bajo = ventana.bajo
         let pesos = ventana.pesos
         // Las demás clases, de más a menos peso (a igual peso, de grave a agudo, para que no dependa del orden).
@@ -284,13 +378,28 @@ public struct PiezaImportada: Hashable, Sendable {
             let coste = candidato.coste + penalizacion
             mejor.proponer(candidato.valor, coste: coste)
         }
-        return mejor.valor
+        guard let acorde = mejor.valor, let coste = mejor.coste else { return nil }
+        return Candidato(acorde, coste: coste)
     }
 
     // MARK: Análisis
 
+    /// El recorrido tonal de los acordes (`acordes(ventana:)`): los tramos de la pieza en cada tonalidad, con las
+    /// modulaciones y sus acordes pivote. `nil` si no suena ningún acorde. Es lo que da `analisis()` cuando la pieza
+    /// no se queda en una tonalidad:
+    ///
+    ///     let pieza = try PiezaImportada(leyendo: datos)
+    ///     // Do Fa Sol7 Do Lam Re7 Sol, un acorde por pulso
+    ///     let recorrido = pieza.recorridoTonal()
+    ///     recorrido?.tramos.map(\.tonalidad)     // [Do mayor, Sol mayor]
+    ///     recorrido?.cifrados                   // ["I", "IV", "V7", "I", "ii", "V7", "I"]
+    public func recorridoTonal(ventana: Duracion? = nil) -> RecorridoTonal? {
+        RecorridoTonal(acordes(ventana: ventana))
+    }
+
     /// El análisis armónico de los acordes (`acordes(ventana:)`), en `tonalidad` o, si es `nil`, en
-    /// la que mejor los explique. `nil` si no suena ningún acorde.
+    /// la que mejor los explique, toda la pieza en una sola. `nil` si no suena ningún acorde. Con modulaciones,
+    /// `recorridoTonal(ventana:)`.
     public func analisis(en tonalidad: Tonalidad? = nil, ventana: Duracion? = nil) -> AnalisisArmonico? {
         let acordes = self.acordes(ventana: ventana)
         guard !acordes.isEmpty else { return nil }

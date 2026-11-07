@@ -58,12 +58,14 @@ import Testing
     @Test func saltos() throws {
         // Re4 → Do#5: séptima mayor; Fa4 → Re5: sexta mayor.
         #expect(try !(tipos("Re4 Mi4 Re4", "La4 Sol4 Re5", .primera).contains(.saltoNoMelodico)))
-        #expect(Contrapunto.esSaltoNoMelodico("Re4".intervaloHasta("Do#5"), ascendente: true))
-        #expect(Contrapunto.esSaltoNoMelodico("Fa4".intervaloHasta("Re5"), ascendente: true))
-        #expect(Contrapunto.esSaltoNoMelodico("Fa4".intervaloHasta("Si4"), ascendente: true)) // tritono
+        #expect(Conduccion.Saltos.contrapunto.noEsMelodico("Re4".intervaloHasta("Do#5"), ascendente: true))
+        #expect(Conduccion.Saltos.contrapunto.noEsMelodico("Fa4".intervaloHasta("Re5"), ascendente: true))
+        // El tritono.
+        #expect(Conduccion.Saltos.contrapunto.noEsMelodico("Fa4".intervaloHasta("Si4"), ascendente: true))
         // Sexta menor que sube.
-        #expect(!Contrapunto.esSaltoNoMelodico("Mi4".intervaloHasta("Do5"), ascendente: true))
-        #expect(Contrapunto.esSaltoNoMelodico("Do5".intervaloHasta("Mi4"), ascendente: false)) // y que baja
+        #expect(!Conduccion.Saltos.contrapunto.noEsMelodico("Mi4".intervaloHasta("Do5"), ascendente: true))
+        // Y que baja.
+        #expect(Conduccion.Saltos.contrapunto.noEsMelodico("Do5".intervaloHasta("Mi4"), ascendente: false))
         // Un salto de quinta que sigue subiendo no se compensa.
         #expect(try tipos("Re4 Mi4 Fa4 Mi4 Re4", "Re5 Sol4 Re5 Mi5 Re5", .primera).contains(.saltoSinCompensar))
     }

@@ -218,11 +218,11 @@ public struct Contrapunto: Hashable, Sendable {
 
         // Principio y final.
         if let primera = ataques.first {
-            let perfecta = Contrapunto.perfecta(primera.intervalo)
+            let perfecta = Conduccion.perfecta(primera.intervalo)
             if perfecta == nil || (!arriba && perfecta == 5) { anotar(.comienzoImperfecto, primera.compas) }
         }
         if let ultima = ataques.last {
-            if Contrapunto.perfecta(ultima.intervalo) != 8 || ultima.compas != ultimo {
+            if Conduccion.perfecta(ultima.intervalo) != 8 || ultima.compas != ultimo {
                 anotar(.finalImperfecto, ultima.compas)
             }
             if ataques.count > 1, !Contrapunto.esGrado(ataques[ataques.count - 2].nota, ultima.nota) {
@@ -257,7 +257,7 @@ public struct Contrapunto: Hashable, Sendable {
             let b = ataques[i + 1]
             let salto = a.nota.intervalo(hasta: b.nota)
             let subeElContrapunto = b.nota.midi - a.nota.midi
-            if Contrapunto.esSaltoNoMelodico(salto, ascendente: subeElContrapunto > 0) {
+            if Conduccion.Saltos.contrapunto.noEsMelodico(salto, ascendente: subeElContrapunto > 0) {
                 anotar(.saltoNoMelodico, a.compas, b.compas)
             }
             if a.nota == b.nota && especie != .primera { anotar(.notaRepetida, a.compas, b.compas) }
@@ -267,15 +267,13 @@ public struct Contrapunto: Hashable, Sendable {
                     anotar(.saltoSinCompensar, a.compas, b.compas)
                 }
             }
-            // Paralelas y directas: solo cuando se mueven las dos voces.
-            let subeElCantus = b.cantus.midi - a.cantus.midi
-            guard a.compas != b.compas, subeElCantus != 0, subeElContrapunto != 0 else { continue }
-            let antes = Contrapunto.perfecta(a.intervalo)
-            let despues = Contrapunto.perfecta(b.intervalo)
-            if let despues, antes == despues {
-                anotar(despues == 5 ? .quintasParalelas : .octavasParalelas, a.compas, b.compas)
-            } else if let despues, b.enParteFuerte, (subeElCantus > 0) == (subeElContrapunto > 0) {
-                anotar(despues == 5 ? .quintasDirectas : .octavasDirectas, a.compas, b.compas)
+            // Paralelas y directas: solo de un compás a otro; las directas, al llegar a parte fuerte.
+            guard a.compas != b.compas else { continue }
+            let paso = Conduccion.PasoDeVoces(de: (a.cantus, a.nota), a: (b.cantus, b.nota))
+            if let perfecta = paso.paralelas {
+                anotar(perfecta == 5 ? .quintasParalelas : .octavasParalelas, a.compas, b.compas)
+            } else if let perfecta = paso.directas, b.enParteFuerte {
+                anotar(perfecta == 5 ? .quintasDirectas : .octavasDirectas, a.compas, b.compas)
             }
         }
 
@@ -283,9 +281,9 @@ public struct Contrapunto: Hashable, Sendable {
         if especie == .segunda {
             let fuertes = ataques.filter(\.enParteFuerte)
             for (a, b) in zip(fuertes, fuertes.dropFirst())
-            where b.compas == a.compas + 1 && a.cantus != b.cantus && a.nota != b.nota {
-                if let antes = Contrapunto.perfecta(a.intervalo), antes == Contrapunto.perfecta(b.intervalo) {
-                    anotar(antes == 5 ? .quintasParalelas : .octavasParalelas, a.compas, b.compas)
+            where b.compas == a.compas + 1 {
+                if let perfecta = Conduccion.PasoDeVoces(de: (a.cantus, a.nota), a: (b.cantus, b.nota)).paralelas {
+                    anotar(perfecta == 5 ? .quintasParalelas : .octavasParalelas, a.compas, b.compas)
                 }
             }
         }
@@ -347,21 +345,10 @@ public struct Contrapunto: Hashable, Sendable {
 
     // MARK: Auxiliares
 
-    /// 5 si el intervalo es una quinta justa (simple o compuesta), 8 si es una octava justa o un
-    /// unísono; `nil` en otro caso.
-    package static func perfecta(_ intervalo: Intervalo) -> Int? {
-        guard intervalo.calidad == .justa else { return nil }
-        switch intervalo.numeroSimple {
-        case 5: return 5
-        case 1, 8: return 8
-        default: return nil
-        }
-    }
-
     /// Las consonancias son el unísono, la quinta y la octava justas y las terceras y sextas mayores
     /// y menores (simples o compuestas); a dos voces, la cuarta justa es disonancia.
     package static func esDisonancia(_ intervalo: Intervalo) -> Bool {
-        if perfecta(intervalo) != nil { return false }
+        if Conduccion.perfecta(intervalo) != nil { return false }
         let imperfecta =
             [3, 6].contains(intervalo.numeroSimple) && (intervalo.calidad == .mayor || intervalo.calidad == .menor)
         return !imperfecta
@@ -371,16 +358,6 @@ public struct Contrapunto: Hashable, Sendable {
     package static func esGrado(_ a: Altura, _ b: Altura) -> Bool {
         let intervalo = a.intervalo(hasta: b)
         return intervalo.numero == 2 && (intervalo.calidad == .mayor || intervalo.calidad == .menor)
-    }
-
-    package static func esSaltoNoMelodico(_ salto: Intervalo, ascendente: Bool) -> Bool {
-        switch salto.calidad {
-        case .aumentada, .disminuida: return true
-        default: break
-        }
-        if salto.numero > 8 || salto.numero == 7 { return true }
-        if salto.numero == 6 { return salto.calidad == .mayor || !ascendente }
-        return false
     }
 }
 
