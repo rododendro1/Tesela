@@ -6,7 +6,7 @@
 //  `nombre(en:)` se lee de vuelta en los quince idiomas.
 //
 
-import ArmoniaNucleo
+import ArmoniaElementos
 
 extension Acorde {
     /// Lee un cifrado escrito en una notación concreta, como lo escribe `cifrado(en:)`:

@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // Una voz larga en varias líneas, una debajo de otra, con `OpcionesDePentagrama.maquetacion.compasesPorLinea`.

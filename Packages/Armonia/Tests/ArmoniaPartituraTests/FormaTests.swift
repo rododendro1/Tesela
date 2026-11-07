@@ -1,6 +1,6 @@
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaPartitura
 
 /// Las frases, las letras de la forma y los motivos de una voz.

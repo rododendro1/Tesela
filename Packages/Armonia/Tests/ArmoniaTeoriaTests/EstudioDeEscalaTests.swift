@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// Para estudiar una escala: secuencias, modos, comparaciones, bebop y pentatónicas, digitación de piano y cambios.

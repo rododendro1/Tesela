@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Para estudiar una escala: las secuencias con que se practica (por terceras, en grupos, en arpegios), los modos
 // sobre la misma tónica y con las mismas notas, la comparación con otra escala, las escalas bebop y pentatónicas

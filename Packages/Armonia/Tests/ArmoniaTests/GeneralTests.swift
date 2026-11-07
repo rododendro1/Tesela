@@ -2,9 +2,9 @@ import Foundation
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaNucleo
+@testable import ArmoniaDiagramas
+@testable import ArmoniaElementos
 @testable import ArmoniaPartitura
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaTeoria
 
 // Lo que atraviesa todo el motor: literales, Codable, convenciones de nombres y nombres

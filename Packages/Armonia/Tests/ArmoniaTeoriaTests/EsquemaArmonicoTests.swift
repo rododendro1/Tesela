@@ -1,6 +1,6 @@
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// Los esquemas armónicos: jazz (ii–V–I, turnaround, backdoor, blues) y secuencias (quintas, romanesca, canon de

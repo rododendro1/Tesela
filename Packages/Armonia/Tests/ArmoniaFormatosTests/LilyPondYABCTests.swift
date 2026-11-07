@@ -2,8 +2,8 @@ import ApoyoDePruebas
 import Foundation
 import Testing
 
+@testable import ArmoniaElementos
 @testable import ArmoniaFormatos
-@testable import ArmoniaNucleo
 @testable import ArmoniaPartitura
 @testable import ArmoniaTeoria
 

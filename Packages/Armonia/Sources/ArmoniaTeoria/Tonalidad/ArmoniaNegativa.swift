@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Armonía negativa: el reflejo de las notas sobre el eje que está entre la tónica y la dominante (entre Mi♭ y Mi en
 // Do), que cambia el mayor por el menor y la dominante por la subdominante menor.

@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Las notas extrañas a la armonía: las de una melodía que no son del acorde que suena con ellas, y por qué están
 // ahí (de paso, bordadura, apoyatura, retardo, anticipación, escapada, pedal). Se clasifican por cómo se llega a

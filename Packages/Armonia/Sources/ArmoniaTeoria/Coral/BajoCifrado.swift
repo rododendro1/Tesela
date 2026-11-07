@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Bajo cifrado (bajo continuo): un bajo con cifras que dicen qué intervalos suenan sobre él, contados en la
 // armadura de la tonalidad, y su realización a cuatro voces.

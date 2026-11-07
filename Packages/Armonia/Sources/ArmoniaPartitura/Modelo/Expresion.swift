@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Lo que se escribe sobre las notas además de su altura y su duración: la dinámica (p, mf, f…) y las articulaciones
 // (staccato, acento, calderón…) y los ornamentos (trino, mordentes, grupeto). Van en cada `Evento` y los formatos de

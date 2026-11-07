@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // MARK: - Ficha de una escala del catálogo
 

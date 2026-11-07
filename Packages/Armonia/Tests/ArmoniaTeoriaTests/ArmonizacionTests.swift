@@ -2,7 +2,7 @@ import ApoyoDePruebas
 import Foundation
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 @Suite struct ArmonizacionTests {

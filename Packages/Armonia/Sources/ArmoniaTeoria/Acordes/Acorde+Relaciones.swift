@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Lo que se sabe de un acorde suelto mirando a los demás: otros nombres de sus mismas notas, en qué tonalidades
 // está, cómo se va de él a otro y por qué acordes se puede cambiar.

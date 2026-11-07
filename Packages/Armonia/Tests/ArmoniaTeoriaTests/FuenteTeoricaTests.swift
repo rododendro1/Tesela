@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 
-@testable import ArmoniaNucleo
+@testable import ArmoniaElementos
 @testable import ArmoniaTeoria
 
 /// El teórico que definió cada escala (`FuenteTeorica`) y `tradicionales(fuente:)`.

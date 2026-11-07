@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Planificar una modulación: cómo ir de una tonalidad a otra. La inversa de `RecorridoTonal`, que encuentra las
 // modulaciones de una progresión; aquí se escriben.

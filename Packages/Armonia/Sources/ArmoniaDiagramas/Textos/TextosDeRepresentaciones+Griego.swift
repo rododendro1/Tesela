@@ -1,0 +1,51 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import ArmoniaElementos
+// Los textos de ArmoniaDiagramas en griego. Los campos y lo que significa cada uno están en
+// `TextosDeRepresentaciones.swift`.
+
+extension TextosDeRepresentaciones {
+    static let griego = TextosDeRepresentaciones(
+        // CorrespondenciaDeColores.swift
+        circuloDeQuintas: "κύκλος των πεμπτών",
+
+        // DibujoSVG.swift
+        conjunto: "Σύνολο ",
+        cicloDesde: { nombre, cifrado in "\(nombre) από \(cifrado)" },
+        primeraClase: "πρώτη τονική κλάση",
+        primeraNota: "πρώτη νότα",
+        leyendaNota: "νότα",
+        leyendaClaseDeAltura: "τονική κλάση (όλα τα αντίγραφά της)",
+        leyendaAltura: "τονικό ύψος (όλα τα πλήκτρα του)",
+        leyendaIntervalos: "πέμπτη ή τρίτη ανάμεσα σε νότες",
+        leyendaContorno: "περίγραμμα του σχήματος",
+        leyendaTriadaMayor: "μείζον τρίφωνο",
+        leyendaTriadaMenor: "ελάσσον τρίφωνο",
+        leyendaPasoDelRecorrido: "βήμα της ακολουθίας (P, L, R)",
+        leyendaFundamentalDelPrimerAcorde: "θεμέλια της πρώτης συγχορδίας",
+
+        // TecladoIsomorfico.swift
+        tablaArmonica: "Αρμονικός πίνακας",
+        wickiHaydenEspejo: "Wicki-Hayden (καθρέφτης)",
+        wickiHaydenPlano: "Wicki-Hayden (επίπεδο)",
+        acordeonC: "Ακορντεόν συστήματος C",
+        acordeonB: "Ακορντεόν συστήματος B",
+        // TecladoCuadrado.swift
+        cuadriculaEnCuartas: "Πλέγμα τετάρτων",
+        cuadriculaEnTercerasMayores: "Πλέγμα μεγάλων τρίτων",
+        cuadriculaEnQuintas: "Πλέγμα πέμπτων",
+        wickiHaydenCuadrado: "Wicki-Hayden (πλέγμα)",
+        cuadriculaDeTonosEnteros: "Πλέγμα ολόκληρων τόνων",
+        tonnetzDeEuler: "Tonnetz του Όιλερ",
+        cuadriculaEnTercerasMenores: "Πλέγμα μικρών τρίτων",
+        cuadriculaEnTritonos: "Πλέγμα τριτόνων",
+        cuadriculaEnOctavas: "Πλέγμα οκτάβων",
+        cuadriculaSecuencial: "Διαδοχικό πλέγμα",
+        // FormatoUIL.swift
+        uilNoValido: { texto in "Μη έγκυρο UIL: «\(texto)». Αναμένεται L,G,D;R<μοίρες>[M], για παράδειγμα 2,7,5;R30M." },
+        intervalosIncoherentes: { menor, mayor, diferencia in "Ασυνεπή διαστήματα: \(menor),\(mayor),\(diferencia). Πρέπει να ισχύει 0 < L ≤ D και G = L + D." },
+        giroNoValido: { grados in "Η περιστροφή των \(grados)° δεν είναι πολλαπλάσιο των 30°." },
+        afinacionNoSoportada: { tonos in "Σχεδιάζονται μόνο πληκτρολόγια 12 φθόγγων, όχι \(tonos)." },
+        cizallaNoSoportada: { cizalla in "Η διάτμηση S\(cizalla) δεν υποστηρίζεται." }
+    )
+}

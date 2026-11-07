@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 /// Uno de los ocho modos del canto gregoriano: además de sus notas, la nota final (*finalis*),
 /// la nota de recitación (tenor o dominante) y el ámbito de la melodía.

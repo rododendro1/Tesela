@@ -1,10 +1,10 @@
 import Foundation
 import Testing
 
+@testable import ArmoniaDiagramas
+@testable import ArmoniaElementos
 @testable import ArmoniaFormatos
-@testable import ArmoniaNucleo
 @testable import ArmoniaPartitura
-@testable import ArmoniaRepresentaciones
 @testable import ArmoniaTeoria
 @testable import ArmoniaTrastes
 

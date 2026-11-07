@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // Lo que se anota evento a evento y el ritmo de unas notas tocadas una tras otra: la forma en que lo dan las escalas, los

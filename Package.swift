@@ -21,54 +21,57 @@ let package = Package(
         .library(name: "Hexagonos", targets: ["Hexagonos"]),
         // Packages/Armonia
         .library(name: "Armonia", targets: ["Armonia"]),
-        .library(name: "ArmoniaNucleo", targets: ["ArmoniaNucleo"]),
+        .library(name: "ArmoniaElementos", targets: ["ArmoniaElementos"]),
         .library(name: "ArmoniaTeoria", targets: ["ArmoniaTeoria"]),
-        .library(name: "ArmoniaRepresentaciones", targets: ["ArmoniaRepresentaciones"]),
+        .library(name: "ArmoniaDiagramas", targets: ["ArmoniaDiagramas"]),
         .library(name: "ArmoniaPartitura", targets: ["ArmoniaPartitura"]),
         .library(name: "ArmoniaFormatos", targets: ["ArmoniaFormatos"]),
         .library(name: "ArmoniaTrastes", targets: ["ArmoniaTrastes"]),
-        // Packages/TeselaPresentacion
-        .library(name: "TeselaPresentacion", targets: ["TeselaPresentacion"]),
-        // Packages/TeselaUI
-        .library(name: "TeselaUI", targets: ["TeselaUI"]),
+        // Packages/TeselaExposicion
+        .library(name: "TeselaExposicion", targets: ["TeselaExposicion"]),
+        // Packages/TeselaInterfaz
+        .library(name: "TeselaInterfaz", targets: ["TeselaInterfaz"]),
     ],
     targets: [
         .target(name: "Hexagonos", path: "Packages/Hexagonos/Sources/Hexagonos"),
 
-        .target(name: "ArmoniaNucleo", path: "Packages/Armonia/Sources/ArmoniaNucleo"),
-        .target(name: "ArmoniaTeoria", dependencies: ["ArmoniaNucleo"], path: "Packages/Armonia/Sources/ArmoniaTeoria"),
+        .target(name: "ArmoniaElementos", path: "Packages/Armonia/Sources/ArmoniaElementos"),
         .target(
-            name: "ArmoniaRepresentaciones",
-            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "Hexagonos"],
-            path: "Packages/Armonia/Sources/ArmoniaRepresentaciones"),
+            name: "ArmoniaTeoria",
+            dependencies: ["ArmoniaElementos"],
+            path: "Packages/Armonia/Sources/ArmoniaTeoria"),
+        .target(
+            name: "ArmoniaDiagramas",
+            dependencies: ["ArmoniaElementos", "ArmoniaTeoria", "Hexagonos"],
+            path: "Packages/Armonia/Sources/ArmoniaDiagramas"),
         .target(
             name: "ArmoniaPartitura",
-            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria"],
+            dependencies: ["ArmoniaElementos", "ArmoniaTeoria"],
             path: "Packages/Armonia/Sources/ArmoniaPartitura"),
         .target(
             name: "ArmoniaFormatos",
-            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura"],
+            dependencies: ["ArmoniaElementos", "ArmoniaTeoria", "ArmoniaPartitura"],
             path: "Packages/Armonia/Sources/ArmoniaFormatos"),
         .target(
             name: "ArmoniaTrastes",
-            dependencies: ["ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaPartitura"],
+            dependencies: ["ArmoniaElementos", "ArmoniaTeoria", "ArmoniaPartitura"],
             path: "Packages/Armonia/Sources/ArmoniaTrastes"),
         .target(
             name: "Armonia",
             dependencies: [
-                "ArmoniaNucleo", "ArmoniaTeoria", "ArmoniaRepresentaciones", "ArmoniaPartitura", "ArmoniaFormatos",
+                "ArmoniaElementos", "ArmoniaTeoria", "ArmoniaDiagramas", "ArmoniaPartitura", "ArmoniaFormatos",
                 "ArmoniaTrastes",
             ],
             path: "Packages/Armonia/Sources/Armonia"),
 
         .target(
-            name: "TeselaPresentacion",
+            name: "TeselaExposicion",
             dependencies: ["Armonia", "Hexagonos"],
-            path: "Packages/TeselaPresentacion/Sources/TeselaPresentacion"),
+            path: "Packages/TeselaExposicion/Sources/TeselaExposicion"),
 
         .target(
-            name: "TeselaUI",
-            dependencies: ["TeselaPresentacion", "Armonia", "Hexagonos"],
-            path: "Packages/TeselaUI/Sources/TeselaUI"),
+            name: "TeselaInterfaz",
+            dependencies: ["TeselaExposicion", "Armonia", "Hexagonos"],
+            path: "Packages/TeselaInterfaz/Sources/TeselaInterfaz"),
     ]
 )

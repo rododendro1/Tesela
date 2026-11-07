@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // Esquemas armónicos: las progresiones hechas que se reconocen en cualquier tonalidad. Las del jazz (ii–V–I,
 // turnaround, backdoor, blues de 12 compases) y las secuencias y esquemas del barroco y el galante (quintas

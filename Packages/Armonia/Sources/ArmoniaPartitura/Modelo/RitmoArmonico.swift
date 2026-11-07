@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 import ArmoniaTeoria
 
 // El ritmo armónico: cada acorde de una progresión con lo que dura. Lo da una pieza importada

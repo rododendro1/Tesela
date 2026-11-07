@@ -1,4 +1,4 @@
-import ArmoniaNucleo
+import ArmoniaElementos
 
 // MARK: - Tradición y categoría de una escala
 
