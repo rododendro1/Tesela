@@ -279,6 +279,8 @@ extension TextosDeTeoria {
         fuenteGuido: "Γκουίντο ντ’Αρέτσο",
         fuenteGlareano: "Γλαρεανός",
         fuenteSafiAlDin: "Σαφί αλ-Ντιν",
+        fuenteGuanzi: "Γκουάνζι",
+        fuenteLushiChunqiu: "Λιούσι τσουντσιού",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(tipo) στο \(raiz)" },
         enLaTonalidad: { tonalidad in "σε " + tonalidad }

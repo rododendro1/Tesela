@@ -279,6 +279,8 @@ extension TextosDeTeoria {
         fuenteGuido: "Arezzói Guido",
         fuenteGlareano: "Glareanus",
         fuenteSafiAlDin: "Szafí ad-Dín",
+        fuenteGuanzi: "Kuan-ce",
+        fuenteLushiChunqiu: "Lü-si csun-csiu",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         // Con el inesivo: «C-dúrban», «a-mollban» (dúr y moll piden -ban).

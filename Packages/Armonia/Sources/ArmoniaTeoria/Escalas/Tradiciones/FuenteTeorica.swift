@@ -4,8 +4,8 @@ import ArmoniaElementos
 
 /// El teórico que definió una escala: el autor de unas razones (los géneros de Arquitas, Dídimo, Eratóstenes y
 /// Ptolomeo), de unas partes del tono (los colores de Aristóxeno), de unas especies (las harmoniai de Arístides
-/// Quintiliano) o de un sistema (los hexacordos de Guido d'Arezzo, los modos que añadió Glareano y los shudūd de Ṣafī
-/// al-Dīn).
+/// Quintiliano) o de un sistema (los hexacordos de Guido d'Arezzo, los modos que añadió Glareano, los shudūd de Ṣafī
+/// al-Dīn, las cinco notas del Guanzi y los doce lü del Lüshi chunqiu).
 ///
 /// Una escala la lleva en su declaración (`fuente: .ptolomeo`). Las que no son de un autor concreto (las siete
 /// harmoniai, los modos gregorianos) no la llevan. No es la `fuente` de una afinación
@@ -32,6 +32,10 @@ public enum FuenteTeorica: String, Sendable, Codable, CaseIterable {
     case glareano
     /// Ṣafī al-Dīn al-Urmawī: los modos (shudūd) del Kitāb al-adwār, en diecisiete notas pitagóricas.
     case safiAlDin
+    /// El Guanzi (管子), capítulo «Diyuan» (s. IV a. C.): las cinco notas de la pentatónica, por sanfen sunyi.
+    case guanzi
+    /// El Lüshi chunqiu (吕氏春秋, 239 a. C.): los doce lü, por sanfen sunyi desde huángzhōng.
+    case lushiChunqiu
 
     /// La tradición de sus escalas. El `switch` no tiene `default`: una fuente nueva no compila sin la suya.
     public var tradicion: Tradicion {
@@ -39,6 +43,7 @@ public enum FuenteTeorica: String, Sendable, Codable, CaseIterable {
         case .arquitas, .aristoxeno, .eratostenes, .didimo, .ptolomeo, .aristides: .greciaAntigua
         case .guido, .glareano: .gregoriano
         case .safiAlDin: .mundoArabe
+        case .guanzi, .lushiChunqiu: .china
         }
     }
 
@@ -58,6 +63,8 @@ public enum FuenteTeorica: String, Sendable, Codable, CaseIterable {
         case .guido: TextosDeTeoria.traduccion(\.fuenteGuido)
         case .glareano: TextosDeTeoria.traduccion(\.fuenteGlareano)
         case .safiAlDin: TextosDeTeoria.traduccion(\.fuenteSafiAlDin)
+        case .guanzi: TextosDeTeoria.traduccion(\.fuenteGuanzi)
+        case .lushiChunqiu: TextosDeTeoria.traduccion(\.fuenteLushiChunqiu)
         }
     }
 }

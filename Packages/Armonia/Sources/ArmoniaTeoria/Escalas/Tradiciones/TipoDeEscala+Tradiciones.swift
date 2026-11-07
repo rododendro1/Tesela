@@ -35,8 +35,8 @@ extension TipoDeEscala {
     /// turcos, mugam azerbaiyanos, echoi bizantinos, afinaciones babilónicas, los ajnas árabes y los çeşni turcos,
     /// afinaciones de África y del sudeste asiático, los modos gregorianos, más géneros y harmoniai griegos y los
     /// hexacordos de Guido, las escalas populares de Europa, los modos de Glareano, las de Vietnam, los modos
-    /// nordestinos de Brasil, los colores de Aristóxeno y los adwār de Ṣafī al-Dīn. El orden de las listas decide
-    /// qué nombre gana en la búsqueda: las nuevas van al final.
+    /// nordestinos de Brasil, los colores de Aristóxeno, los adwār de Ṣafī al-Dīn y los lü chinos. El orden de las
+    /// listas decide qué nombre gana en la búsqueda: las nuevas van al final.
     public static let tradicionales: [TipoDeEscala] = listasTradicionales.flatMap(\.tipos)
 
     /// Las listas de `tradicionales`, cada una con su tradición, en el orden en que tienen prioridad: de aquí salen
@@ -56,7 +56,7 @@ extension TipoDeEscala {
         .init(.greciaAntigua, harmoniaiEnarmonicas), .init(.greciaAntigua, harmoniaiDeAristides),
         .init(.gregoriano, hexacordos), .init(.europa, europeas), .init(.gregoriano, modosDeGlareano),
         .init(.vietnam, vietnamitas), .init(.brasil, brasilenas), .init(.greciaAntigua, coloresDeAristoxeno),
-        .init(.mundoArabe, adwar),
+        .init(.mundoArabe, adwar), .init(.china, lus),
     ]
 }
 

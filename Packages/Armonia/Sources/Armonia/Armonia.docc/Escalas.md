@@ -150,7 +150,11 @@ usan microtonos):
   Grecia, con sus tetracordos (la segunda aumentada de Hicaz, la cuarta aumentada de Nikriz).
 - **8 escalas chinas**: los cinco modos pentatónicos Gōng, Shāng, Jué, Zhǐ y Yǔ (la pentatónica
   desde cada una de sus notas) y las heptatónicas Qīngyuè, Yǎyuè y Yànyuè (como la mayor, el
-  lidio y el mixolidio).
+  lidio y el mixolidio), con sus cents de sanfen sunyi (cada nota, a un número de quintas pitagóricas de gōng).
+  Y **los doce lü** (十二律, Shí'èr lǜ), la afinación de las doce alturas desde huángzhōng por sanfen sunyi
+  (Do Do♯ Re Re♯ Mi Mi♯ Fa♯…, con Mi♯ a 522 cents, una coma pitagórica sobre Fa) y, de segunda afinación, los
+  doce lü iguales de Zhu Zaiyu (1584); y sus dos mitades, los seis yang (Yánglǜ, 六律) y los seis yin (Yīnlǜ,
+  六吕), tonos enteros con un paso de 180 cents.
 - **13 escalas japonesas**: Ritsu y Ryo, del gagaku; Yō, Min'yō, Miyakobushi, In e Insen, de la
   música popular y urbana; Iwato, Hirajōshi, Kumoijōshi, Akebono y Kokin-jōshi, afinaciones del
   koto; y Ryūkyū, de Okinawa. Las fuentes occidentales describen algunas de varias formas: aquí
@@ -329,7 +333,7 @@ Subtradicion.carnatica.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles
 `fuente` dice qué teórico definió una escala: el autor de unas razones (los géneros de Arquitas, Dídimo, Eratóstenes y
 Ptolomeo), de unas partes del tono (los colores de Aristóxeno), de unas especies (las harmoniai de Arístides
 Quintiliano) o de un sistema (los hexacordos de Guido d'Arezzo, los modos que añadió Glareano, los shudūd de Ṣafī
-al-Dīn). Vale `nil` en las que no son de un autor concreto, como las siete harmoniai o los modos gregorianos.
+al-Dīn, las cinco notas del Guanzi y los doce lü del Lüshi chunqiu). Vale `nil` en las que no son de un autor concreto, como las siete harmoniai o los modos gregorianos.
 
 ```swift
 TipoDeEscala.tetracordoDiatonicoTenso.fuente            // .ptolomeo
@@ -355,7 +359,7 @@ Las categorías se agrupan en cuatro clases (`ClaseDeEscala`), según qué es la
 un maqam, un dromos…), una escala madre de la que salen otras (los mēḷa, los thāṭ, los grāma y los laras), un
 fragmento de menos de una octava (los tetracordos y los géneros griegos, los ajnas árabes, los çeşni turcos y los
 hexacordos de Guido) o la afinación de un instrumento (las
-babilónicas, las africanas y las del sudeste asiático). Sirve, por ejemplo, para dejar fuera los fragmentos al buscar entre todas.
+babilónicas, las africanas, las del sudeste asiático y los doce lü chinos). Sirve, por ejemplo, para dejar fuera los fragmentos al buscar entre todas.
 
 ```swift
 TipoDeEscala.mohanam.clase                        // .modo
@@ -365,7 +369,7 @@ TipoDeEscala.tetracordoDiatonico.clase            // .fragmento
 TipoDeEscala.jinsHijaz.categoria                  // .jins
 TipoDeEscala.menorNatural.clase                   // nil
 TipoDeEscala.tradicionales(clase: .fragmento).count   // 45
-TipoDeEscala.tradicionales(clase: .afinacion).count   // 17
+TipoDeEscala.tradicionales(clase: .afinacion).count   // 18
 ```
 
 ### Microtonos
@@ -379,7 +383,7 @@ makamlar, salvo los seis pitagóricos (Nihâvend, Kürdî, Bûselik, Çârgâh, 
 los 72 moria de la Comisión Patriarcal de 1881 (`.moria72`); y los diez thāṭ y Yaman, en los 22 śruti indios
 (`.sruti`), cada uno una razón justa, como los grāma y las mūrchanā; el tetracordo enarmónico griego, en cuartos de
 tono (Mi Fa𝄳 Fa La), con las harmoniai enarmónicas y las de Arístides; el gamelan, los xilófonos africanos y el piphat y el pinpeat, en cents, con la octava en
-partes iguales; y los géneros de Arquitas, Ptolomeo, Dídimo y Eratóstenes, los colores de Aristóxeno y los adwār de Ṣafī al-Dīn, en cents (`.razones`), igual que las mūrchanā con
+partes iguales; y los géneros de Arquitas, Ptolomeo, Dídimo y Eratóstenes, los colores de Aristóxeno, los adwār de Ṣafī al-Dīn y las escalas chinas, en cents (`.razones`), igual que las mūrchanā con
 el Pa de 40/27, que no es uno de los 22 śruti. Los thāṭ siguen el ṣaḍja-grāma de Bharata como lo reconstruye E. J. Arnold
 (Kāfī: Sa, Re 10/9, ga 32/27, ma 4/3, Pa, Dha 5/3, ni 16/9), con el re y el dha pitagóricos (256/243, 128/81) en
 Bhairav, Bhairavī y Toḍī, y Toḍī como lo miden Bel y otros. Los que en su propia teoría no tienen microtonos (Ḥijāz,

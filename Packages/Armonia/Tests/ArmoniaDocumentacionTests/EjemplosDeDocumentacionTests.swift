@@ -528,7 +528,7 @@ import Hexagonos
         comprobarIgual(TipoDeEscala.jinsHijaz.categoria, .jins, doc, 4)
         comprobar(TipoDeEscala.menorNatural.clase, #"nil"#, doc, 5)
         comprobar(TipoDeEscala.tradicionales(clase: .fragmento).count, #"45"#, doc, 6)
-        comprobar(TipoDeEscala.tradicionales(clase: .afinacion).count, #"17"#, doc, 7)
+        comprobar(TipoDeEscala.tradicionales(clase: .afinacion).count, #"18"#, doc, 7)
     }
 
     @Test func escalas10() throws {

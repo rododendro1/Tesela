@@ -282,6 +282,8 @@ extension TextosDeTeoria {
         fuenteGuido: "Guido Arezzokoa",
         fuenteGlareano: "Glareano",
         fuenteSafiAlDin: "Ṣafī al-Dīn",
+        fuenteGuanzi: "Guanzi",
+        fuenteLushiChunqiu: "Lüshi chunqiu",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in Tonalidad.declinar(tonalidad, "ean") }
