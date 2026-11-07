@@ -1,11 +1,14 @@
 # Cambios
 
-## Sin publicar
+## 0.4.0 (2026-11-07)
 
 - El selector de notación tiene una sección «Otras tradiciones» con los sistemas fijos de nombres de nota (bizantino,
   japonés, coreano, de Guido, los lü y el solfeo árabe y hebreo), en sus grafías: `Notacion.deOtrasTradiciones`, con
   su clave («bizantino», «bizantinoOriginal», «luChinosASCII») y su título («Βυζαντινή (Ga♯)»). Al elegir uno, los
   textos siguen en el idioma que se estaba leyendo.
+- **Cambio incompatible:** `Notacion.desde(clave:)` ya no lee las claves de antes de la 0.3.0 («espanolUnicode»,
+  «inglesUnicode» y «aleman», que era Deutsch (Fis)): con una de ellas guardada, las apps vuelven al español con ♯ y
+  ♭ hasta que se elija otra notación.
 
 ## 0.3.7 (2026-11-07)
 
