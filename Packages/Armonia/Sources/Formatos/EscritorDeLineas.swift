@@ -1,5 +1,5 @@
 import Elementos
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Lo que comparten los escritores que guardan cada voz como una `Exportacion.LineaAnotada` (ABC, LilyPond, GUIDO y

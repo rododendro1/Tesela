@@ -1,6 +1,6 @@
 import Elementos
 import Foundation
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // La exportación de un contrapunto de especies (`Contrapunto`): las dos voces en MusicXML, MEI, LilyPond, GUIDO, ABC

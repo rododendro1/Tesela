@@ -96,17 +96,17 @@
 **Cambio incompatible:** los módulos de `Armonia` pierden el prefijo, con sus carpetas, sus productos y sus pruebas
 (`ElementosTests`, `TeoriaTests`…):
 
-| Antes                     | Ahora              |
-|---------------------------|--------------------|
-| `ArmoniaNucleo`           | `Elementos`        |
-| `ArmoniaTeoria`           | `Teoria`           |
-| `ArmoniaRepresentaciones` | `Diagramas`        |
-| `ArmoniaPartitura`        | `PartituraArmonia` |
-| `ArmoniaFormatos`         | `Formatos`         |
-| `ArmoniaTrastes`          | `Trastes`          |
+| Antes                     | Ahora        |
+|---------------------------|--------------|
+| `ArmoniaNucleo`           | `Elementos`  |
+| `ArmoniaTeoria`           | `Teoria`     |
+| `ArmoniaRepresentaciones` | `Diagramas`  |
+| `ArmoniaPartitura`        | `Partituras` |
+| `ArmoniaFormatos`         | `Formatos`   |
+| `ArmoniaTrastes`          | `Trastes`    |
 
-La partitura lleva el nombre del paquete detrás porque el módulo tiene un tipo `Partitura`, y un módulo con el nombre
-de uno de sus tipos no se puede nombrar delante de ellos. Quien importa `Armonia` no nota nada; quien importe un
+La partitura va en plural porque el módulo tiene un tipo `Partitura`, y un módulo con el nombre de uno de sus tipos
+no se puede nombrar delante de ellos. Quien importa `Armonia` no nota nada; quien importe un
 módulo suelto cambia el `import` y el `.product(name:…)`. La línea de comandos pasa de `Apps/ArmoniaCLI` a
 `Apps/ConsolaArmonia` (paquete, biblioteca `ConsolaArmonia` y pruebas `ConsolaArmoniaTests`); el ejecutable sigue
 siendo `armonia`. Los tipos no cambian.

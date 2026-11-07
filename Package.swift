@@ -24,7 +24,7 @@ let package = Package(
         .library(name: "Elementos", targets: ["Elementos"]),
         .library(name: "Teoria", targets: ["Teoria"]),
         .library(name: "Diagramas", targets: ["Diagramas"]),
-        .library(name: "PartituraArmonia", targets: ["PartituraArmonia"]),
+        .library(name: "Partituras", targets: ["Partituras"]),
         .library(name: "Formatos", targets: ["Formatos"]),
         .library(name: "Trastes", targets: ["Trastes"]),
         // Packages/Exposicion
@@ -41,21 +41,18 @@ let package = Package(
             name: "Diagramas",
             dependencies: ["Elementos", "Teoria", "Hexagonos"],
             path: "Packages/Armonia/Sources/Diagramas"),
-        .target(
-            name: "PartituraArmonia",
-            dependencies: ["Elementos", "Teoria"],
-            path: "Packages/Armonia/Sources/PartituraArmonia"),
+        .target(name: "Partituras", dependencies: ["Elementos", "Teoria"], path: "Packages/Armonia/Sources/Partituras"),
         .target(
             name: "Formatos",
-            dependencies: ["Elementos", "Teoria", "PartituraArmonia"],
+            dependencies: ["Elementos", "Teoria", "Partituras"],
             path: "Packages/Armonia/Sources/Formatos"),
         .target(
             name: "Trastes",
-            dependencies: ["Elementos", "Teoria", "PartituraArmonia"],
+            dependencies: ["Elementos", "Teoria", "Partituras"],
             path: "Packages/Armonia/Sources/Trastes"),
         .target(
             name: "Armonia",
-            dependencies: ["Elementos", "Teoria", "Diagramas", "PartituraArmonia", "Formatos", "Trastes"],
+            dependencies: ["Elementos", "Teoria", "Diagramas", "Partituras", "Formatos", "Trastes"],
             path: "Packages/Armonia/Sources/Armonia"),
 
         .target(

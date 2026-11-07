@@ -1,5 +1,5 @@
 import Elementos
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Lo que comparten las exportaciones a MusicXML (MusicXML.swift), a MEI (MEI.swift) y a MIDI

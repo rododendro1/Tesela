@@ -1,5 +1,5 @@
 import Elementos
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Exportación a MusicXML 4.0 (score-partwise), para abrir melodías y corales en MuseScore,

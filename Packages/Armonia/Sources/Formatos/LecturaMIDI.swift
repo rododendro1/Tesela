@@ -1,6 +1,6 @@
 import Elementos
 import Foundation
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Lectura de ficheros MIDI estándar (SMF, formatos 0, 1 y 2): las notas de todas las pistas, menos

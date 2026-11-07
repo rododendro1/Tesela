@@ -1,5 +1,5 @@
 import Elementos
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // MARK: - Las escalas de una pieza

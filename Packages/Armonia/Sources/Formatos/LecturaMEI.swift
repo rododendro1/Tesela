@@ -1,6 +1,6 @@
 import Elementos
 import Foundation
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Lectura de MEI (Music Encoding Initiative), versiones 3 a 5: lo que exportan Verovio, mei-friend, Sibelius (con su

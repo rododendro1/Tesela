@@ -1,5 +1,5 @@
 import Elementos
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // De la pieza importada a una partitura: lo que se lee de un fichero se puede dibujar y exportar otra vez.

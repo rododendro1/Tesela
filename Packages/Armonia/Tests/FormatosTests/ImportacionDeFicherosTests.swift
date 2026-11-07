@@ -3,7 +3,7 @@ import Testing
 
 @testable import Elementos
 @testable import Formatos
-@testable import PartituraArmonia
+@testable import Partituras
 @testable import Teoria
 
 // Ficheros escritos a mano como los dejan otros programas, no como los escribe la biblioteca: un MIDI de

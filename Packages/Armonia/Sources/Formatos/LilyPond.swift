@@ -1,5 +1,5 @@
 import Elementos
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Exportación a LilyPond (lilypond.org), el programa libre que graba partituras en PDF con la calidad de una

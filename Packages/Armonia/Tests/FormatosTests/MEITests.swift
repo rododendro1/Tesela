@@ -4,7 +4,7 @@ import Testing
 
 @testable import Elementos
 @testable import Formatos
-@testable import PartituraArmonia
+@testable import Partituras
 @testable import Teoria
 
 @Suite struct MEITests {

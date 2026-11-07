@@ -3,7 +3,7 @@ import Testing
 
 @testable import Elementos
 @testable import Formatos
-@testable import PartituraArmonia
+@testable import Partituras
 
 /// Las repeticiones, los saltos y las notas de adorno al importar MusicXML, MEI y ABC.
 @Suite struct ImportacionDeRepeticionesTests {

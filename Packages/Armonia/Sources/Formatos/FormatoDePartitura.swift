@@ -1,6 +1,6 @@
 import Elementos
 import Foundation
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Los formatos de partitura como un solo tipo. Cada formato tiene su función en la `Partitura` (`musicXML()`, `guido()`,

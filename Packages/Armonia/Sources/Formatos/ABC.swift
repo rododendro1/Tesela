@@ -1,5 +1,5 @@
 import Elementos
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Exportación a ABC 2.1 (abcnotation.com), la notación en texto de la música tradicional: la leen abcjs (en el

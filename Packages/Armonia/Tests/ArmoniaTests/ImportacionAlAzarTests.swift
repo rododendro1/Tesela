@@ -7,7 +7,7 @@ import Testing
 @testable import Diagramas
 @testable import Elementos
 @testable import Formatos
-@testable import PartituraArmonia
+@testable import Partituras
 @testable import Teoria
 
 // Lo que viene de fuera (un fichero MIDI o MusicXML, un teclado en UIL) puede estar dañado o hecho a mala fe. Estas

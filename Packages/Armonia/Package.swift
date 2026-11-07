@@ -8,7 +8,7 @@ import PackageDescription
 //     Elementos            Fundamentos, Texto, Postonal
 //     Teoria            Acordes, Escalas, Tonalidad, Afinacion
 //     Diagramas  Color, Dibujo, Redes
-//     PartituraArmonia         Modelo, Dibujo, Contrapunto
+//     Partituras         Modelo, Dibujo, Contrapunto
 //     Formatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond: exportar e importar
 //     Trastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes), sobre Partitura
 //
@@ -22,7 +22,7 @@ let hexagonos: Target.Dependency = .product(name: "Hexagonos", package: "Hexagon
 
 /// Todos los módulos de la biblioteca, para las pruebas que cruzan capas.
 let modulos: [Target.Dependency] = [
-    "Armonia", "Elementos", "Teoria", "Diagramas", "PartituraArmonia", "Formatos",
+    "Armonia", "Elementos", "Teoria", "Diagramas", "Partituras", "Formatos",
     "Trastes", hexagonos,
 ]
 
@@ -38,7 +38,7 @@ let package = Package(
         .library(name: "Elementos", targets: ["Elementos"]),
         .library(name: "Teoria", targets: ["Teoria"]),
         .library(name: "Diagramas", targets: ["Diagramas"]),
-        .library(name: "PartituraArmonia", targets: ["PartituraArmonia"]),
+        .library(name: "Partituras", targets: ["Partituras"]),
         .library(name: "Formatos", targets: ["Formatos"]),
         .library(name: "Trastes", targets: ["Trastes"]),
     ],
@@ -51,14 +51,14 @@ let package = Package(
         .target(
             name: "Diagramas",
             dependencies: ["Elementos", "Teoria", .product(name: "Hexagonos", package: "Hexagonos")]),
-        .target(name: "PartituraArmonia", dependencies: ["Elementos", "Teoria"]),
-        .target(name: "Formatos", dependencies: ["Elementos", "Teoria", "PartituraArmonia"]),
-        .target(name: "Trastes", dependencies: ["Elementos", "Teoria", "PartituraArmonia"]),
+        .target(name: "Partituras", dependencies: ["Elementos", "Teoria"]),
+        .target(name: "Formatos", dependencies: ["Elementos", "Teoria", "Partituras"]),
+        .target(name: "Trastes", dependencies: ["Elementos", "Teoria", "Partituras"]),
         // El módulo paraguas: reexporta los seis y guarda la documentación (DocC).
         .target(
             name: "Armonia",
             dependencies: [
-                "Elementos", "Teoria", "Diagramas", "PartituraArmonia", "Formatos",
+                "Elementos", "Teoria", "Diagramas", "Partituras", "Formatos",
                 "Trastes",
             ]),
         // Las pruebas de cada módulo dependen solo de él y de los que puede usar, como el módulo mismo: una prueba de
@@ -69,16 +69,16 @@ let package = Package(
             name: "DiagramasTests",
             dependencies: ["Elementos", "Teoria", "Diagramas", hexagonos, "ApoyoDePruebas"]),
         .testTarget(
-            name: "PartituraArmoniaTests",
-            dependencies: ["Elementos", "Teoria", "PartituraArmonia", "ApoyoDePruebas"]),
+            name: "PartiturasTests",
+            dependencies: ["Elementos", "Teoria", "Partituras", "ApoyoDePruebas"]),
         .testTarget(
             name: "FormatosTests",
             dependencies: [
-                "Elementos", "Teoria", "PartituraArmonia", "Formatos", "ApoyoDePruebas",
+                "Elementos", "Teoria", "Partituras", "Formatos", "ApoyoDePruebas",
             ]),
         .testTarget(
             name: "TrastesTests",
-            dependencies: ["Elementos", "Teoria", "PartituraArmonia", "Trastes"]),
+            dependencies: ["Elementos", "Teoria", "Partituras", "Trastes"]),
         // Las que cruzan capas: entradas no válidas y propiedades de todo el motor, la API poco usada, y los dibujos
         // guardados en `Referencias` con que se comparan los de ahora (ReferenciasSVGTests).
         .testTarget(name: "ArmoniaTests", dependencies: modulos + ["ApoyoDePruebas"], exclude: ["Referencias"]),

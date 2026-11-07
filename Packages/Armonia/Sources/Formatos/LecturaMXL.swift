@@ -1,6 +1,6 @@
 import Elementos
 import Foundation
-import PartituraArmonia
+import Partituras
 
 // Lectura de MusicXML comprimido (.mxl, lo que exportan por omisión MuseScore y otros): un zip con la
 // partitura y un `META-INF/container.xml` que dice cuál de sus ficheros es. Se leen los zips de siempre

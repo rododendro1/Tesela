@@ -5,7 +5,7 @@ import Testing
 @testable import Armonia
 @testable import Diagramas
 @testable import Elementos
-@testable import PartituraArmonia
+@testable import Partituras
 @testable import Teoria
 
 /// Ida y vuelta al azar: cualquier valor se escribe en cualquier notación y se vuelve a leer igual.

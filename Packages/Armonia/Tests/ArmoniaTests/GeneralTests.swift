@@ -4,7 +4,7 @@ import Testing
 @testable import Armonia
 @testable import Diagramas
 @testable import Elementos
-@testable import PartituraArmonia
+@testable import Partituras
 @testable import Teoria
 
 // Lo que atraviesa todo el motor: literales, Codable, convenciones de nombres y nombres

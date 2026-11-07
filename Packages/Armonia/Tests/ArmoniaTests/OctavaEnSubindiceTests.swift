@@ -3,7 +3,7 @@ import Testing
 
 @testable import Armonia
 @testable import Elementos
-@testable import PartituraArmonia
+@testable import Partituras
 @testable import Teoria
 
 /// La octava de las alturas escrita como subíndice (La₄): al escribir, en las notaciones compactas o con

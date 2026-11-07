@@ -4,7 +4,7 @@ import Testing
 @testable import Armonia
 @testable import Diagramas
 @testable import Elementos
-@testable import PartituraArmonia
+@testable import Partituras
 @testable import Teoria
 
 /// Pruebas exhaustivas: todo lo que el motor escribe debe volver a leerse igual.

@@ -1,6 +1,6 @@
 import Elementos
 import Foundation
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Lectura de MusicXML por partes (`score-partwise`, lo que exportan MuseScore, Finale, Sibelius,

@@ -6,7 +6,7 @@ La biblioteca se reparte en seis módulos, más `Armonia`, que los reexporta:
     Elementos            Fundamentos, Texto, Postonal
     Teoria            Acordes, Escalas, Tonalidad   (se necesitan entre sí: van juntas), Afinacion
     Diagramas  Color, Dibujo, Redes (con Neorriemanniana)
-    PartituraArmonia         Modelo, Dibujo, Contrapunto
+    Partituras         Modelo, Dibujo, Contrapunto
     Formatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond (sobre Partitura)
     Trastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes, sobre Partitura)
     Armonia                  solo reexporta los seis (no Hexagonos: quien lo use, lo importa)
@@ -39,9 +39,9 @@ PERMITIDO = {
     "Elementos": set(),
     "Teoria": {"Elementos"},
     "Diagramas": {"Elementos", "Teoria", "Hexagonos"},
-    "PartituraArmonia": {"Elementos", "Teoria"},
-    "Formatos": {"Elementos", "Teoria", "PartituraArmonia"},
-    "Trastes": {"Elementos", "Teoria", "PartituraArmonia"},
+    "Partituras": {"Elementos", "Teoria"},
+    "Formatos": {"Elementos", "Teoria", "Partituras"},
+    "Trastes": {"Elementos", "Teoria", "Partituras"},
 }
 PARAGUAS = "Armonia"
 # Los módulos del paquete, para reconocer sus `import`.

@@ -1,5 +1,5 @@
 import Elementos
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Exportación a MEI 5 (Music Encoding Initiative), el formato de las ediciones críticas y de la

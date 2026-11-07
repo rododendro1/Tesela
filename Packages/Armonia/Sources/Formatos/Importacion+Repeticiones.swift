@@ -1,5 +1,5 @@
 import Foundation
-import PartituraArmonia
+import Partituras
 
 // Las repeticiones y los saltos de una partitura importada, desplegados en el orden en que se tocan.
 //

@@ -170,7 +170,7 @@ el código de cada paso probado). Los artículos también se pueden leer directa
 ```
 swift build
 swift test                                    # todas las pruebas
-swift test --filter "^(Armonia|Elementos|Teoria|Diagramas|PartituraArmonia|Formatos|Trastes)Tests\."   # solo las rápidas (segundos)
+swift test --filter "^(Armonia|Elementos|Teoria|Diagramas|Partituras|Formatos|Trastes)Tests\."   # solo las rápidas (segundos)
 swift test --filter "^TeoriaTests\."    # las de un módulo
 swift test --filter "^ArmoniaExhaustivasTests\."  # solo las exhaustivas
 swift test --filter "^ArmoniaDocumentacionTests\."  # los ejemplos del README y de DocC
@@ -193,7 +193,7 @@ Lo interno que se usa entre capas es `package`, no público. Un módulo solo usa
 `Scripts/comprobaciones/comprobar_modulos.py`, en la raíz del repositorio, lo vigila:
 
     Elementos ◄── Teoria ◄──┬── Diagramas
-                                       └── PartituraArmonia ◄──┬── Formatos
+                                       └── Partituras ◄──┬── Formatos
                                                                └── Trastes
 
 Un fichero por concepto: el tipo principal junto con sus tipos auxiliares y sus extensiones
@@ -239,7 +239,7 @@ Sources/
 │   ├── Redes/         Tonnetz (la red de quintas y terceras, en SVG, con los recorridos y los ciclos
 │   │                  neorriemannianos), TablaArmonica (hexágonos de teclado isomórfico, en SVG), FormatoUIL
 │   └── Dibujo/        DibujoSVG (título, leyenda y colores comunes de los dibujos)
-├── PartituraArmonia/
+├── Partituras/
 │   ├── Modelo/        Duracion (con Figura y Tempo), Compas, Evento, Melodia (con Voz), ErrorDeLecturaDePartitura,
 │   │                  Pentagrama (Clave, PosicionEnElPentagrama, InstrumentoDePartitura), SignoMicrotonal
 │   ├── Dibujo/        PentagramaSVG (con sus opciones y los glifos SMuFL)
@@ -273,7 +273,7 @@ modos) y en `Scripts/comprobaciones/idiomas.py`, un caso en `EscrituraDeNotas` (
 idioma o la escritura tiene `default`, y cada `Traduccion` sin el idioma nuevo deja de compilar.
 
 Las pruebas rápidas están en un objetivo por módulo (`Tests/ElementosTests/`, `Tests/TeoriaTests/`,
-`Tests/DiagramasTests/`, `Tests/PartituraArmoniaTests/`, `Tests/FormatosTests/`,
+`Tests/DiagramasTests/`, `Tests/PartiturasTests/`, `Tests/FormatosTests/`,
 `Tests/TrastesTests/`), que depende
 solo de ese módulo y de los que puede usar: una prueba de Teoría que necesitara Partitura no compila. Lo que cruza
 capas (leer acordes en cada notación, literales, Codable, convenciones de nombres, entradas inválidas, robustez, los
@@ -288,7 +288,7 @@ La biblioteca se reparte en seis módulos que siguen unas capas: **Elementos** (
 Texto, Postonal), **Teoria** (Acordes, con la teoría neorriemanniana, Escalas, Tonalidad, que se necesitan entre sí, y la
 afinación) y
 dos ramas que usan las anteriores y no se usan entre sí: **Diagramas** (color, dibujo y redes, como
-el Tonnetz) y **PartituraArmonia** (el modelo, el pentagrama en SVG y el contrapunto). Sobre Partitura van **Formatos** (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond)
+el Tonnetz) y **Partituras** (el modelo, el pentagrama en SVG y el contrapunto). Sobre Partitura van **Formatos** (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond)
 y **Trastes** (instrumentos de cuerda con trastes, que escriben lo que se toca en una partitura con su
 tablatura), que tampoco se usan entre sí. `Armonia` los reexporta
 todos; `Hexagonos`, que usan los Diagramas, se importa aparte. `python3

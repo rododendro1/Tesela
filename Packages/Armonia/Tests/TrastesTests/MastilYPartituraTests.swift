@@ -1,7 +1,7 @@
 import Testing
 
 @testable import Elementos
-@testable import PartituraArmonia
+@testable import Partituras
 @testable import Teoria
 @testable import Trastes
 

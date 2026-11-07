@@ -3,7 +3,7 @@ import Testing
 
 @testable import Elementos
 @testable import Formatos
-@testable import PartituraArmonia
+@testable import Partituras
 @testable import Teoria
 
 /// Una duración como fracción de redonda: «3/8», «1».

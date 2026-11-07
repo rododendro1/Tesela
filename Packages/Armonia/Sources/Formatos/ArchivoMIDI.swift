@@ -1,6 +1,6 @@
 import Elementos
 import Foundation
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Exportación a MIDI: ficheros MIDI estándar (SMF, formato 1), que se oyen en cualquier

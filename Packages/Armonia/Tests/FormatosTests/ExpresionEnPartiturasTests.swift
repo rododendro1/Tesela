@@ -3,7 +3,7 @@ import Testing
 
 @testable import Elementos
 @testable import Formatos
-@testable import PartituraArmonia
+@testable import Partituras
 @testable import Teoria
 
 /// La dinámica y las articulaciones en cada formato de partitura, de ida y de vuelta.

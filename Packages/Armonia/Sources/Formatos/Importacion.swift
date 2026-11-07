@@ -1,6 +1,6 @@
 import Elementos
 import Foundation
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Importación de partituras: ficheros MIDI estándar (LecturaMIDI.swift), MusicXML, sin comprimir

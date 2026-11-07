@@ -3,7 +3,7 @@ import Testing
 
 @testable import Elementos
 @testable import Formatos
-@testable import PartituraArmonia
+@testable import Partituras
 @testable import Teoria
 
 /// La tablatura en MusicXML, en su propio pentagrama, y las voces y los pentagramas del fichero al importarlo.

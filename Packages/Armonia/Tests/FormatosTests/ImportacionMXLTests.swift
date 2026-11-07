@@ -3,7 +3,7 @@ import Testing
 
 @testable import Elementos
 @testable import Formatos
-@testable import PartituraArmonia
+@testable import Partituras
 @testable import Teoria
 
 /// MusicXML comprimido (.mxl) y el ritmo armónico de lo que se importa.

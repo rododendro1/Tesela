@@ -1,5 +1,5 @@
 import Elementos
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Del mástil a la partitura: lo que se toca en él, con sus notas en el pentagrama y la tablatura debajo.

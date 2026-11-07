@@ -6,6 +6,6 @@
 @_exported import Diagramas
 @_exported import Elementos
 @_exported import Formatos
-@_exported import PartituraArmonia
+@_exported import Partituras
 @_exported import Teoria
 @_exported import Trastes

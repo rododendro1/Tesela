@@ -1,6 +1,6 @@
 import Elementos
 import Foundation
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Lectura de ABC 2.1 (abcnotation.com): la primera melodía del texto, como las que exportan EasyABC, abcjs, los

@@ -1,6 +1,6 @@
 import Elementos
 import Foundation
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // La `Partitura` en cada formato, y la de una voz, un coral, una progresión y un contrapunto: cada tipo hace la suya

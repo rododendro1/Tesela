@@ -1,10 +1,10 @@
 import Elementos
-import PartituraArmonia
+import Partituras
 import Teoria
 
 // Exportación a GUIDO Music Notation (GMN), el formato de texto de Guido Engine (guido.grame.fr), la biblioteca que
 // graba partituras en SVG: `guido2svg coral.gmn > coral.svg`. Es la entrada que necesita el motor para dibujar las
-// partituras con él en vez de con `PartituraArmonia`.
+// partituras con él en vez de con `Partituras`.
 //
 // Se escribe la grafía de cada voz (`Voz.grafia`), con la ortografía tal cual y en altura absoluta: en GMN la octava
 // 1 es la del Do central (Do4 → `c1`, Fa♯3 → `f#0`, Si♭1 → `b&-2`) y las alteraciones son `#` y `&`. Cada duración se

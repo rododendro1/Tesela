@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Extrae de la fuente Bravura (SMuFL, licencia SIL OFL) los glifos que dibuja el pentagrama y los escribe como
-trazados SVG en `Packages/Armonia/Sources/PartituraArmonia/Dibujo/GlifosSMuFL.swift`.
+trazados SVG en `Packages/Armonia/Sources/Partituras/Dibujo/GlifosSMuFL.swift`.
 
 Los trazados quedan en espacios de pentagrama (1 = la distancia entre dos líneas; en SMuFL son 250 unidades de 1000),
 con el eje y hacia abajo, para que el SVG no dependa de la fuente al ejecutar.
@@ -18,7 +18,7 @@ from fontTools.pens.transformPen import TransformPen
 from fontTools.ttLib import TTFont
 
 DESTINO = (Path(__file__).resolve().parents[2]
-           / "Packages/Armonia/Sources/PartituraArmonia/Dibujo/GlifosSMuFL.swift")
+           / "Packages/Armonia/Sources/Partituras/Dibujo/GlifosSMuFL.swift")
 UNIDADES_POR_ESPACIO = 250.0
 # nombre en Swift: (punto de código SMuFL, nombre SMuFL)
 GLIFOS = {
