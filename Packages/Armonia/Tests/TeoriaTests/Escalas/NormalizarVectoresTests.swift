@@ -7,10 +7,10 @@ import Testing
 /// `Scripts/comprobaciones/normalizar_escalas.py` (la copia en Python que usan los scripts del repositorio): así
 /// las dos no se separan.
 @Suite struct NormalizarVectoresTests {
-    /// …/Packages/Armonia/Tests/TeoriaTests/<este fichero> → la raíz, cinco niveles más arriba.
+    /// …/Packages/Armonia/Tests/TeoriaTests/Escalas/<este fichero> → la raíz, seis niveles más arriba.
     static let ruta: URL = {
         var raiz = URL(fileURLWithPath: #filePath)
-        for _ in 0..<5 { raiz.deleteLastPathComponent() }
+        for _ in 0..<6 { raiz.deleteLastPathComponent() }
         return raiz.appendingPathComponent("Scripts/datos/normalizar.tsv")
     }()
 

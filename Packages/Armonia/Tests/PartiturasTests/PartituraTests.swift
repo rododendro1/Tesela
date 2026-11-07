@@ -423,6 +423,7 @@ import Testing
 
     @Test func tonalidadesYAcordesEscritos() {
         #expect(InstrumentoDePartitura.clarineteEnSib.escritura(de: Escala("Mib mayor")) == Escala(.fa))
+        #expect(InstrumentoDePartitura.trompaEnFa.escritura(de: Tonalidad("Sib mayor")) == Tonalidad(.fa))
         #expect(InstrumentoDePartitura.saxofonAlto.escritura(de: Acorde("Do7")).cifrado == "La7")
         #expect(InstrumentoDePartitura.saxofonAlto.escritura(de: Escala("Si mayor")).nombre == "La♭ mayor")
         #expect(

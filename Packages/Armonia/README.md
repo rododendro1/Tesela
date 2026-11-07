@@ -224,11 +224,12 @@ Sources/
 │   │   │                  tipo, sus alias, las escalas de otras tradiciones y el nombre de cada clase
 │   │   ├── Occidentales/  TipoDeEscala+Modos (con los modos exóticos), +Exoticas (con hexatónicas, jazz y
 │   │   │                  Messiaen), ModoGregoriano
-│   │   └── Tradiciones/   Un fichero por tradición (TipoDeEscala+India, +MundoArabe, +Turquia, +GreciaAntigua…), cada
+│   │   └── Tradiciones/   TipoDeEscala+Tradiciones (`listasTradicionales`, cada lista con su tradición, y
+│   │       │              `tradicionales`), CategoriaTradicional (con `Tradicion`) y Microtonos (SistemaMicrotonal,
+│   │       │              TipoDeEscalaMicrotonal)
+│   │       └── Catalogo/  Un fichero por tradición (TipoDeEscala+India, +MundoArabe, +Turquia, +GreciaAntigua…), cada
 │   │                      uno con sus escalas (cada una con su categoría, sus microtonos y, los janya, su mēḷa)
-│   │                      y sus listas; +Tradiciones (`listasTradicionales`, cada lista con su tradición, y
-│   │                      `tradicionales`), CategoriaTradicional (con `Tradicion`) y Microtonos (SistemaMicrotonal,
-│   │                      TipoDeEscalaMicrotonal)
+│   │                      y sus listas
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
 │   │                      FuncionTonal y AcordeAnalizado)
 │   ├── Coral/             Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion
@@ -282,7 +283,8 @@ idioma o la escritura tiene `default`, y cada `Traduccion` sin el idioma nuevo d
 Las pruebas rápidas están en un objetivo por módulo (`Tests/ElementosTests/`, `Tests/TeoriaTests/`,
 `Tests/DiagramasTests/`, `Tests/PartiturasTests/`, `Tests/FormatosTests/`,
 `Tests/TrastesTests/`), que depende
-solo de ese módulo y de los que puede usar: una prueba de Teoría que necesitara Partitura no compila. Lo que cruza
+solo de ese módulo y de los que puede usar: una prueba de Teoría que necesitara Partitura no compila. Dentro de cada
+objetivo, las pruebas siguen las carpetas del módulo (`Tests/TeoriaTests/Escalas/`, `Tests/FormatosTests/MusicXML/`…). Lo que cruza
 capas (leer acordes en cada notación, literales, Codable, convenciones de nombres, entradas inválidas, robustez, los
 textos con valores y los dibujos de referencia) está en `Tests/ArmoniaTests/`, y lo que comparten varias (el
 generador al azar con semilla y el lector de XML) en `Tests/ApoyoDePruebas/`. Las exhaustivas
