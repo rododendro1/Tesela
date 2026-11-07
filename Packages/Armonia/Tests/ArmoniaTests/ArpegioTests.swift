@@ -2,11 +2,11 @@ import Foundation
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaDiagramas
-@testable import ArmoniaElementos
-@testable import ArmoniaPartitura
-@testable import ArmoniaTeoria
-@testable import ArmoniaTrastes
+@testable import Diagramas
+@testable import Elementos
+@testable import PartituraArmonia
+@testable import Teoria
+@testable import Trastes
 
 /// Los arpegios: recorridos de un acorde, desde escalas, con nombre en cada idioma y en pentagrama.
 @Suite struct ArpegioTests {

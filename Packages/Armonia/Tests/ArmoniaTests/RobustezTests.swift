@@ -3,10 +3,10 @@ import Foundation
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaDiagramas
-@testable import ArmoniaElementos
-@testable import ArmoniaPartitura
-@testable import ArmoniaTeoria
+@testable import Diagramas
+@testable import Elementos
+@testable import PartituraArmonia
+@testable import Teoria
 
 /// Ida y vuelta al azar: cualquier valor se escribe en cualquier notación y se vuelve a leer igual.
 @Suite struct IdaYVueltaAlAzarTests {

@@ -1,6 +1,6 @@
 import Armonia
+import Interfaz
 import SwiftUI
-import TeselaInterfaz
 
 // Las secciones de la pestaña de escalas que van en el mástil: las posiciones, las formas de la pentatónica y la
 // secuencia de estudio en cada posición.

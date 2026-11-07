@@ -2,10 +2,10 @@ import Foundation
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaDiagramas
-@testable import ArmoniaElementos
-@testable import ArmoniaPartitura
-@testable import ArmoniaTeoria
+@testable import Diagramas
+@testable import Elementos
+@testable import PartituraArmonia
+@testable import Teoria
 
 // Lo que atraviesa todo el motor: literales, Codable, convenciones de nombres y nombres
 // anteriores. Lo de cada área está en su archivo (FundamentosTests, AcordesTests…).

@@ -1,6 +1,6 @@
 import Armonia
+import Interfaz
 import SwiftUI
-import TeselaInterfaz
 
 // Las secciones de la pestaña de escalas para estudiarla: la secuencia, la digitación de piano, la simetría, las
 // estadísticas, el mapa de brillo, el reloj y la hoja de estudio.

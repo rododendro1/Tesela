@@ -1,6 +1,6 @@
 import Armonia
+import Interfaz
 import SwiftUI
-import TeselaInterfaz
 
 /// Toca notas en el mástil, una por cuerda como al tocar, o en un teclado MIDI conectado, y muestra qué acorde
 /// forman (el bajo es la más grave) y cómo es el conjunto en teoría postonal. En el mástil, tocar otra vez una nota

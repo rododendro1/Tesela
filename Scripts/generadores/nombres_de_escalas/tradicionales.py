@@ -5,7 +5,7 @@ import re, sys
 from pathlib import Path
 
 RAIZ = Path(sys.argv[1])
-ESC = RAIZ / "Packages/Armonia/Sources/ArmoniaTeoria/Escalas"
+ESC = RAIZ / "Packages/Armonia/Sources/Teoria/Escalas"
 CAD = re.compile(r'"((?:[^"\\]|\\.)*)"')
 TRAD = [("Andes", "Andes"), ("China", "China"), ("Corea", "Corea"), ("Etiopía", "Etiopia"),
         ("Grecia: dromoi y escalas de la Grecia antigua", "Grecia"), ("India", "India"), ("Indonesia", "Indonesia"),

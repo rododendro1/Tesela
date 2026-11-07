@@ -2,11 +2,11 @@ import Foundation
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaDiagramas
-@testable import ArmoniaElementos
-@testable import ArmoniaPartitura
-@testable import ArmoniaTeoria
-@testable import ArmoniaTrastes
+@testable import Diagramas
+@testable import Elementos
+@testable import PartituraArmonia
+@testable import Teoria
+@testable import Trastes
 
 // La parte de la API que no usan las apps ni el resto del motor: las descripciones, los atajos y los
 // casos raros de cada idioma. Cada prueba fija lo que da hoy, para que un cambio no pase sin verse.

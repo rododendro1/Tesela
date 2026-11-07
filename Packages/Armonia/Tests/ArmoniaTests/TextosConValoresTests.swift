@@ -1,12 +1,12 @@
 import Foundation
 import Testing
 
-@testable import ArmoniaDiagramas
-@testable import ArmoniaElementos
-@testable import ArmoniaFormatos
-@testable import ArmoniaPartitura
-@testable import ArmoniaTeoria
-@testable import ArmoniaTrastes
+@testable import Diagramas
+@testable import Elementos
+@testable import Formatos
+@testable import PartituraArmonia
+@testable import Teoria
+@testable import Trastes
 
 /// Los textos con valores (los campos de tipo cierre de los `TextosDeX`) dan algo en los quince idiomas.
 ///

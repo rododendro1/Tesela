@@ -2,9 +2,9 @@ import Foundation
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaElementos
-@testable import ArmoniaPartitura
-@testable import ArmoniaTeoria
+@testable import Elementos
+@testable import PartituraArmonia
+@testable import Teoria
 
 /// La octava de las alturas escrita como subíndice (La₄): al escribir, en las notaciones compactas o con
 /// `Notacion.conOctavas(.subindices)`, y al leer, siempre.

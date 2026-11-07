@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "comprobaciones"))   # Scripts/comprobaciones/normalizar_escalas.py
 from normalizar_escalas import normalizar as norm
 ROOT=Path(sys.argv[1]); APLICAR=len(sys.argv)>2 and sys.argv[2]=="aplicar"
-ESC=ROOT/"Packages/Armonia/Sources/ArmoniaTeoria/Escalas"
+ESC=ROOT/"Packages/Armonia/Sources/Teoria/Escalas"
 CAD=re.compile(r'"((?:[^"\\]|\\.)*)"')
 def dev(t): return any(0x900<=ord(c)<=0x97F for c in t)
 def ascii_(t): return all(ord(c)<128 for c in t)

@@ -1,6 +1,6 @@
 # Generadores de nombres de escalas
 
-Scripts que sembraron los ficheros de `Packages/Armonia/Sources/ArmoniaTeoria/Escalas/Nombres/`. Son de un solo uso
+Scripts que sembraron los ficheros de `Packages/Armonia/Sources/Teoria/Escalas/Nombres/`. Son de un solo uso
 (los ficheros de idioma ya están escritos y se editan a mano); quedan aquí por si hay que añadir un idioma o
 regenerar una familia de alias. Todos reciben la raíz del repositorio y reescriben ficheros: revisa el diff.
 

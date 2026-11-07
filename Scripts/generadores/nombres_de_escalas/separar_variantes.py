@@ -49,7 +49,7 @@ FORZAR_ALIAS={"esatonica","Podhale","podhalana","Svaneti","hipoeólico","hipojó
 FORZAR_VARIANTE={"Tizita","Tizita mayor","Tizita major","Tizita menor","Tizita minor","ichos protos","ichos defteros","ichos tritos","ichos tetartos","Neveser","Sampah","Jiao","Yoo"}
 
 ROOT=Path(sys.argv[1]); APLICAR=len(sys.argv)>2 and sys.argv[2]=="aplicar"
-ESC=ROOT/"Packages/Armonia/Sources/ArmoniaTeoria/Escalas"
+ESC=ROOT/"Packages/Armonia/Sources/Teoria/Escalas"
 CAD=r'"((?:[^"\\]|\\.)*)"'
 def q(l): return ", ".join('"'+e+'"' for e in l)
 def lista(nombre,elems,prefijo,indent,cola):

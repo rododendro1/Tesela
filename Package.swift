@@ -21,57 +21,51 @@ let package = Package(
         .library(name: "Hexagonos", targets: ["Hexagonos"]),
         // Packages/Armonia
         .library(name: "Armonia", targets: ["Armonia"]),
-        .library(name: "ArmoniaElementos", targets: ["ArmoniaElementos"]),
-        .library(name: "ArmoniaTeoria", targets: ["ArmoniaTeoria"]),
-        .library(name: "ArmoniaDiagramas", targets: ["ArmoniaDiagramas"]),
-        .library(name: "ArmoniaPartitura", targets: ["ArmoniaPartitura"]),
-        .library(name: "ArmoniaFormatos", targets: ["ArmoniaFormatos"]),
-        .library(name: "ArmoniaTrastes", targets: ["ArmoniaTrastes"]),
-        // Packages/TeselaExposicion
-        .library(name: "TeselaExposicion", targets: ["TeselaExposicion"]),
-        // Packages/TeselaInterfaz
-        .library(name: "TeselaInterfaz", targets: ["TeselaInterfaz"]),
+        .library(name: "Elementos", targets: ["Elementos"]),
+        .library(name: "Teoria", targets: ["Teoria"]),
+        .library(name: "Diagramas", targets: ["Diagramas"]),
+        .library(name: "PartituraArmonia", targets: ["PartituraArmonia"]),
+        .library(name: "Formatos", targets: ["Formatos"]),
+        .library(name: "Trastes", targets: ["Trastes"]),
+        // Packages/Exposicion
+        .library(name: "Exposicion", targets: ["Exposicion"]),
+        // Packages/Interfaz
+        .library(name: "Interfaz", targets: ["Interfaz"]),
     ],
     targets: [
         .target(name: "Hexagonos", path: "Packages/Hexagonos/Sources/Hexagonos"),
 
-        .target(name: "ArmoniaElementos", path: "Packages/Armonia/Sources/ArmoniaElementos"),
+        .target(name: "Elementos", path: "Packages/Armonia/Sources/Elementos"),
+        .target(name: "Teoria", dependencies: ["Elementos"], path: "Packages/Armonia/Sources/Teoria"),
         .target(
-            name: "ArmoniaTeoria",
-            dependencies: ["ArmoniaElementos"],
-            path: "Packages/Armonia/Sources/ArmoniaTeoria"),
+            name: "Diagramas",
+            dependencies: ["Elementos", "Teoria", "Hexagonos"],
+            path: "Packages/Armonia/Sources/Diagramas"),
         .target(
-            name: "ArmoniaDiagramas",
-            dependencies: ["ArmoniaElementos", "ArmoniaTeoria", "Hexagonos"],
-            path: "Packages/Armonia/Sources/ArmoniaDiagramas"),
+            name: "PartituraArmonia",
+            dependencies: ["Elementos", "Teoria"],
+            path: "Packages/Armonia/Sources/PartituraArmonia"),
         .target(
-            name: "ArmoniaPartitura",
-            dependencies: ["ArmoniaElementos", "ArmoniaTeoria"],
-            path: "Packages/Armonia/Sources/ArmoniaPartitura"),
+            name: "Formatos",
+            dependencies: ["Elementos", "Teoria", "PartituraArmonia"],
+            path: "Packages/Armonia/Sources/Formatos"),
         .target(
-            name: "ArmoniaFormatos",
-            dependencies: ["ArmoniaElementos", "ArmoniaTeoria", "ArmoniaPartitura"],
-            path: "Packages/Armonia/Sources/ArmoniaFormatos"),
-        .target(
-            name: "ArmoniaTrastes",
-            dependencies: ["ArmoniaElementos", "ArmoniaTeoria", "ArmoniaPartitura"],
-            path: "Packages/Armonia/Sources/ArmoniaTrastes"),
+            name: "Trastes",
+            dependencies: ["Elementos", "Teoria", "PartituraArmonia"],
+            path: "Packages/Armonia/Sources/Trastes"),
         .target(
             name: "Armonia",
-            dependencies: [
-                "ArmoniaElementos", "ArmoniaTeoria", "ArmoniaDiagramas", "ArmoniaPartitura", "ArmoniaFormatos",
-                "ArmoniaTrastes",
-            ],
+            dependencies: ["Elementos", "Teoria", "Diagramas", "PartituraArmonia", "Formatos", "Trastes"],
             path: "Packages/Armonia/Sources/Armonia"),
 
         .target(
-            name: "TeselaExposicion",
+            name: "Exposicion",
             dependencies: ["Armonia", "Hexagonos"],
-            path: "Packages/TeselaExposicion/Sources/TeselaExposicion"),
+            path: "Packages/Exposicion/Sources/Exposicion"),
 
         .target(
-            name: "TeselaInterfaz",
-            dependencies: ["TeselaExposicion", "Armonia", "Hexagonos"],
-            path: "Packages/TeselaInterfaz/Sources/TeselaInterfaz"),
+            name: "Interfaz",
+            dependencies: ["Exposicion", "Armonia", "Hexagonos"],
+            path: "Packages/Interfaz/Sources/Interfaz"),
     ]
 )

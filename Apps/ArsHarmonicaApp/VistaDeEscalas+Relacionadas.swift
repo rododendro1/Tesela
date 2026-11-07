@@ -1,6 +1,6 @@
 import Armonia
+import Interfaz
 import SwiftUI
-import TeselaInterfaz
 
 // Las secciones de la pestaña de escalas con lo que se relaciona con ella: los acordes que caben, las escalas más
 // brillantes u oscuras, las vecinas y las parecidas, las progresiones, las doce tonalidades, los modos y otra escala

@@ -100,7 +100,7 @@ jobs:
       - name: Compilar
         run: swift build
       - name: Pruebas rápidas
-        run: swift test --parallel --filter "^Armonia(Elementos|Teoria|Diagramas|Partitura|Formatos|Trastes)?Tests\\."
+        run: swift test --parallel --filter "^(Armonia|Elementos|Teoria|Diagramas|PartituraArmonia|Formatos|Trastes)Tests\\."
       - name: Pruebas exhaustivas
         run: swift test --parallel --filter "^ArmoniaExhaustivasTests\\."
       - name: Ejemplos de la documentación
@@ -109,7 +109,7 @@ jobs:
       - name: Sin avisos (módulos)
         if: matrix.swift == '6.2'
         run: |
-          for objetivo in ArmoniaElementos ArmoniaTeoria ArmoniaDiagramas ArmoniaPartitura ArmoniaFormatos ArmoniaTrastes Armonia; do
+          for objetivo in Elementos Teoria Diagramas PartituraArmonia Formatos Trastes Armonia; do
             swift build --scratch-path .build/sin-avisos --target "$objetivo" -Xswiftc -warnings-as-errors
           done
       - uses: actions/cache/save@v6
@@ -129,7 +129,7 @@ jobs:
       matrix:
         swift: ["6.0", "6.2"]
         paquete:
-          - { nombre: ArmoniaConsola, ruta: Apps/ArmoniaConsola }
+          - { nombre: ConsolaArmonia, ruta: Apps/ConsolaArmonia }
           - { nombre: EjemploArmonia, ruta: Ejemplos/EjemploArmonia }
           - { nombre: EjemploCatalogoDeEscalas, ruta: Ejemplos/EjemploCatalogoDeEscalas }
           - { nombre: EjemploHexagonos, ruta: Ejemplos/EjemploHexagonos }
@@ -149,14 +149,14 @@ jobs:
       - name: Compilar
         run: swift build
       - name: Pruebas
-        if: matrix.paquete.nombre == 'ArmoniaConsola' || matrix.paquete.nombre == 'FuzzArmonia'
+        if: matrix.paquete.nombre == 'ConsolaArmonia' || matrix.paquete.nombre == 'FuzzArmonia'
         run: swift test --parallel
       - name: Ejemplo
         if: startsWith(matrix.paquete.nombre, 'Ejemplo')
         run: swift run ${{ matrix.paquete.nombre }}
       - name: Sin avisos
-        if: matrix.paquete.nombre == 'ArmoniaConsola' && matrix.swift == '6.2'
-        run: swift build --scratch-path .build/sin-avisos --target ArmoniaConsola -Xswiftc -warnings-as-errors
+        if: matrix.paquete.nombre == 'ConsolaArmonia' && matrix.swift == '6.2'
+        run: swift build --scratch-path .build/sin-avisos --target ConsolaArmonia -Xswiftc -warnings-as-errors
       - uses: actions/cache/save@v6
         if: github.event_name != 'pull_request'
         with:
@@ -165,7 +165,7 @@ jobs:
           key: ${{ steps.cache.outputs.clave }}
 
   # `armonia grabar` con los programas de verdad: instala LilyPond y rsvg-convert (librsvg) y graba partituras y
-  # dibujos en PDF, SVG y PNG, comprobando que cada fichero es lo que dice ser. Las pruebas de ArmoniaConsola usan un
+  # dibujos en PDF, SVG y PNG, comprobando que cada fichero es lo que dice ser. Las pruebas de ConsolaArmonia usan un
   # ejecutor falso; este job es el que dice que los argumentos y los nombres de los ficheros siguen sirviendo con
   # las versiones de los programas de la distribución. Los ficheros quedan como artefacto (`grabados`).
   # MuseScore, Verovio y Guido no tienen paquete ligero en Ubuntu, así que solo se comprueba que su falta se dice.
@@ -177,7 +177,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: Apps/ArmoniaConsola
+        working-directory: Apps/ConsolaArmonia
     steps:
       - uses: actions/checkout@v7
       - id: cache
@@ -185,7 +185,7 @@ jobs:
         with:
           nombre: grabado
           rutas: |
-            Apps/ArmoniaConsola/.build
+            Apps/ConsolaArmonia/.build
       - name: Instalar LilyPond y librsvg
         run: |
           apt-get update -q
@@ -241,13 +241,13 @@ jobs:
         if: always()
         with:
           name: grabados
-          path: Apps/ArmoniaConsola/grabados
+          path: Apps/ConsolaArmonia/grabados
           if-no-files-found: ignore
       - uses: actions/cache/save@v6
         if: github.event_name != 'pull_request'
         with:
           path: |
-            Apps/ArmoniaConsola/.build
+            Apps/ConsolaArmonia/.build
           key: ${{ steps.cache.outputs.clave }}
 
   # Los tiempos del motor, compilado con optimización, en el resumen de la ejecución y como artefacto
@@ -318,7 +318,7 @@ jobs:
       fail-fast: false
       matrix:
         swift: ["6.0", "6.2"]
-        paquete: [TeselaExposicion, TeselaInterfaz, Hexagonos]
+        paquete: [Exposicion, Interfaz, Hexagonos]
     defaults:
       run:
         working-directory: Packages/${{ matrix.paquete }}
@@ -358,9 +358,9 @@ jobs:
       matrix:
         paquete:
           # Las exhaustivas tardan y no prueban código distinto del de las rápidas.
-          - { nombre: Armonia, filtro: "^Armonia(Elementos|Teoria|Diagramas|Partitura|Formatos|Trastes|Documentacion)?Tests\\.", funciones: 95.5, lineas: 98.0 }
-          - { nombre: TeselaExposicion, filtro: "", funciones: 96.5, lineas: 96.0 }
-          - { nombre: TeselaInterfaz, filtro: "", funciones: 97.0, lineas: 99.0 }
+          - { nombre: Armonia, filtro: "^(Armonia|ArmoniaDocumentacion|Elementos|Teoria|Diagramas|PartituraArmonia|Formatos|Trastes)Tests\\.", funciones: 95.5, lineas: 98.0 }
+          - { nombre: Exposicion, filtro: "", funciones: 96.5, lineas: 96.0 }
+          - { nombre: Interfaz, filtro: "", funciones: 97.0, lineas: 99.0 }
           - { nombre: Hexagonos, filtro: "", funciones: 93.5, lineas: 97.5 }
     defaults:
       run:
@@ -458,7 +458,7 @@ jobs:
             .build
           key: ${{ steps.cache.outputs.clave }}
 
-  # Un pull request que cambia las apps, sus vistas (TeselaInterfaz) o el proyecto de Xcode pasa `interfaz`, que compila
+  # Un pull request que cambia las apps, sus vistas (Interfaz) o el proyecto de Xcode pasa `interfaz`, que compila
   # las dos apps en macOS y en el simulador de iOS antes de probarlas: es lo que Linux no puede compilar. Lo demás de
   # macOS sigue en el job `macos`. `cambios-en-las-apps` corre en Linux y solo mira los ficheros, para no ocupar un
   # runner de macOS en los demás.
@@ -479,7 +479,7 @@ jobs:
         run: |
           cambiados=$(git diff --name-only "$BASE"...HEAD)
           echo "$cambiados"
-          if echo "$cambiados" | grep -qE '^(Apps/ArsHarmonicaApp/|Apps/TonnetzApp/|Apps/PruebasDeInterfaz/|Packages/TeselaInterfaz/|Packages/TeselaExposicion/|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
+          if echo "$cambiados" | grep -qE '^(Apps/ArsHarmonicaApp/|Apps/TonnetzApp/|Apps/PruebasDeInterfaz/|Packages/Interfaz/|Packages/Exposicion/|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
             echo "apps=true" >> "$GITHUB_OUTPUT"
           else
             echo "apps=false" >> "$GITHUB_OUTPUT"
@@ -502,20 +502,20 @@ jobs:
       - name: Versión de Swift y de Xcode
         run: swift --version && xcodebuild -version
       - name: Armonia
-        run: swift build && swift test --parallel --filter "^Armonia(Elementos|Teoria|Diagramas|Partitura|Formatos|Trastes)?Tests\\."
+        run: swift build && swift test --parallel --filter "^(Armonia|Elementos|Teoria|Diagramas|PartituraArmonia|Formatos|Trastes)Tests\\."
         working-directory: Packages/Armonia
-      - name: TeselaExposicion
+      - name: Exposicion
         run: swift test --parallel
-        working-directory: Packages/TeselaExposicion
-      - name: TeselaInterfaz
+        working-directory: Packages/Exposicion
+      - name: Interfaz
         run: swift test --parallel
-        working-directory: Packages/TeselaInterfaz
+        working-directory: Packages/Interfaz
       - name: Hexagonos
         run: swift test --parallel
         working-directory: Packages/Hexagonos
       - name: Línea de comandos y ejemplos
         run: |
-          (cd Apps/ArmoniaConsola && swift test --parallel)
+          (cd Apps/ConsolaArmonia && swift test --parallel)
           (cd Ejemplos/EjemploArmonia && swift run EjemploArmonia > /dev/null)
           (cd Ejemplos/EjemploCatalogoDeEscalas && swift run EjemploCatalogoDeEscalas - > /dev/null)
           (cd Ejemplos/EjemploHexagonos && swift run EjemploHexagonos > /dev/null)
@@ -643,19 +643,19 @@ jobs:
           # Con un solo producto, el esquema se llama como él (sin «-Package»).
           xcodebuild docbuild -scheme Hexagonos -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-hexagonos" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-hexagonos.log"
-      - name: Construir la documentación de TeselaExposicion
-        working-directory: Packages/TeselaExposicion
+      - name: Construir la documentación de Exposicion
+        working-directory: Packages/Exposicion
         run: |
           set -o pipefail
           # Con un solo producto, el esquema se llama como él (sin «-Package»).
-          xcodebuild docbuild -scheme TeselaExposicion -destination 'generic/platform=macOS' \
-            -derivedDataPath "$RUNNER_TEMP/docc-teselaexposicion" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-teselaexposicion.log"
-      - name: Construir la documentación de TeselaInterfaz
-        working-directory: Packages/TeselaInterfaz
+          xcodebuild docbuild -scheme Exposicion -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/docc-exposicion" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-exposicion.log"
+      - name: Construir la documentación de Interfaz
+        working-directory: Packages/Interfaz
         run: |
           set -o pipefail
-          xcodebuild docbuild -scheme TeselaInterfaz -destination 'generic/platform=macOS' \
-            -derivedDataPath "$RUNNER_TEMP/docc-teselainterfaz" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-teselainterfaz.log"
+          xcodebuild docbuild -scheme Interfaz -destination 'generic/platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/docc-interfaz" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-interfaz.log"
       - name: Enlaces sin resolver
         run: |
           if grep -E "warning: .*(doesn.t exist|couldn.t be resolved|unresolved|not found)" "$RUNNER_TEMP"/docbuild*.log; then

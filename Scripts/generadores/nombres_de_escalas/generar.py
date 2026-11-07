@@ -7,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "comprobaciones")) 
 from lexico import LANGS, MODOS, PAL
 
 RAIZ = Path(sys.argv[1])
-NOMBRES = RAIZ / "Packages/Armonia/Sources/ArmoniaTeoria/Escalas/Nombres"
+NOMBRES = RAIZ / "Packages/Armonia/Sources/Teoria/Escalas/Nombres"
 IDX = {l: i for i, l in enumerate(LANGS)}
 
 
