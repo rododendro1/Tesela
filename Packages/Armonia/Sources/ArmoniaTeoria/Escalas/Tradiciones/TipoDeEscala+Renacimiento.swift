@@ -21,7 +21,8 @@ extension TipoDeEscala {
     // quintas mesotónicas de la final, así que Do♯ y Re♭ no son la misma nota: el Do♯ del dórico con ficta, a cinco
     // quintas de Re, cae a 1083 cents, y un Re♭ caería a 1124, una diesis (41 cents) más arriba.
 
-    /// El dórico con ficta (Re): sube con el Do♯ de la cadencia y baja con Do y con el Si♭ de «fa super la».
+    /// El dórico con ficta (Re): sube con el Do♯ de la cadencia y baja con Do y con el Si♭ de «fa super la». Tiene
+    /// las notas de la menor melódica clásica, que es su heredera.
     public static let doricoConFicta = TipoDeEscala(
         nombre: "dórico con ficta",
         intervalos: [

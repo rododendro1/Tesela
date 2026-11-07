@@ -306,7 +306,9 @@ import Testing
             Set(TipoDeEscala.hitzazkiar.equivalentes.map(\.nombre)).isSuperset(of: [
                 "Bhairav", "Māyāmālavagauḷa", "doble armónica", "Ḥijāzkār",
             ]))
-        #expect(TipoDeEscala.menorMelodica.equivalentes.isEmpty)
+        // La menor melódica (sube con 6ª y 7ª mayores, baja como la natural) solo tiene las notas del dórico con
+        // ficta del Renacimiento, que sube con Si y Do♯ y baja con Si♭ y Do.
+        #expect(TipoDeEscala.menorMelodica.equivalentes.map(\.nombre) == ["dórico con ficta"])
         // La búsqueda por índice da lo mismo que antes: los nombres habituales primero.
         #expect((try? TipoDeEscala(leyendo: "Dorian"))?.nombre == "dórico")
         #expect((try? TipoDeEscala(leyendo: "jazz minor"))?.nombre == "menor melódica de jazz")
