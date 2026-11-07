@@ -265,6 +265,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let subtradicionAlpes: String
     let subtradicionEscocia: String
     let subtradicionGeorgia: String
+    let subtradicionIstria: String
     let subtradicionGagaku: String
     let subtradicionRyukyu: String
 

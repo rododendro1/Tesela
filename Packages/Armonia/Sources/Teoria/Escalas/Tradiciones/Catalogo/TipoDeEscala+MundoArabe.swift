@@ -18,6 +18,9 @@ extension TipoDeEscala {
     //
     // Āthār Kurd, maqām Nikrīz, Lāmī y Ṣabā Zamzam no tienen cuartos de tono: sus ajnas (Kurd, Nikrīz, Lāmī,
     // Ḥijāz, Nahāwand, Ṣabā Zamzam) están todos en doce notas. Fuente: Maqam World (Sami Abu Shumays).
+    //
+    // Los ṭubūʿ de la música andalusí del Magreb no están todavía: cada escuela (Fez, Tremecén, Túnez) los
+    // describe con notas distintas, y no hay una fuente que dé sus escalas de forma que casen.
 
     /// حجاز (Re Mi♭ Fa♯ Sol La Si♭ Do).
     public static let hiyaz = TipoDeEscala(

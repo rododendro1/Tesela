@@ -40,6 +40,20 @@ extension TipoDeEscala {
         intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
         categoria: .escala, subtradicion: .hungria)
 
+    /// La escala istriana (Do Re♭ Mi♭ Fa♭ Sol♭ La♭♭; Mi Fa Sol La♭ Si♭ Do♭ sobre Mi), la del canto a dos voces y
+    /// de las sopile de Istria y el Kvarner: seis notas que alternan semitonos y tonos, y que cierra con una
+    /// cadencia frigia. No es temperada y cada intérprete la entona a su manera (Žganec y Sremec, «Hrvatske narodne
+    /// pjesme i plesovi», 1951; Marušić, «Reception of Istrian Musical Traditions», 2007). El Hardanger noruego
+    /// no está todavía: las fuentes describen la afinación del violín, no una escala fija.
+    public static let istriana = TipoDeEscala(
+        nombre: "istriana",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaDisminuida,
+            .quintaDisminuida, .sextaDisminuida,
+        ],
+        alias: ["escala istriana", "istarska ljestvica", "istarska"],
+        categoria: .escala, subtradicion: .istria)
+
     // MARK: Instrumentos de afinación natural
     //
     // El cuerno de los Alpes no tiene agujeros: da los armónicos de su tubo, de una afinación exacta. Del 8.º al 15.º
@@ -92,5 +106,6 @@ extension TipoDeEscala {
 
     package static let europeas: [TipoDeEscala] = [
         .doricoUcraniano, .podhalanska, .pentatonicaHungara, .cuernoAlpino, .gaitaEscocesa, .georgiana,
+        .istriana,
     ]
 }

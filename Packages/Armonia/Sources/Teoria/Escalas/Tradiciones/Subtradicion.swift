@@ -21,7 +21,7 @@ public enum Subtradicion: String, Sendable, Codable, CaseIterable {
     /// de los shona (Zimbabue).
     case buganda, chopi, mandinga, shona
     /// Europa: el país o la región de cada escala popular.
-    case ucrania, polonia, hungria, alpes, escocia, georgia
+    case ucrania, polonia, hungria, alpes, escocia, georgia, istria
     /// Japón: la música cortesana (gagaku) y la de Okinawa (Ryūkyū).
     case gagaku, ryukyu
 
@@ -32,7 +32,7 @@ public enum Subtradicion: String, Sendable, Codable, CaseIterable {
         case .java, .bali, .sunda: .indonesia
         case .tailandia, .camboya, .birmania: .sudesteAsiatico
         case .buganda, .chopi, .mandinga, .shona: .africa
-        case .ucrania, .polonia, .hungria, .alpes, .escocia, .georgia: .europa
+        case .ucrania, .polonia, .hungria, .alpes, .escocia, .georgia, .istria: .europa
         case .gagaku, .ryukyu: .japon
         }
     }
@@ -74,6 +74,7 @@ public enum Subtradicion: String, Sendable, Codable, CaseIterable {
         case .alpes: TextosDeTeoria.traduccion(\.subtradicionAlpes)
         case .escocia: TextosDeTeoria.traduccion(\.subtradicionEscocia)
         case .georgia: TextosDeTeoria.traduccion(\.subtradicionGeorgia)
+        case .istria: TextosDeTeoria.traduccion(\.subtradicionIstria)
         case .gagaku: TextosDeTeoria.traduccion(\.subtradicionGagaku)
         case .ryukyu: TextosDeTeoria.traduccion(\.subtradicionRyukyu)
         }

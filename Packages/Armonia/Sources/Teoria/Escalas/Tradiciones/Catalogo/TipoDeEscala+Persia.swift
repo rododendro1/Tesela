@@ -13,6 +13,9 @@ extension TipoDeEscala {
     // redondeado a semitono hacia abajo, y su versión microtonal lo devuelve a su sitio. Segāh, con la
     // tónica en un koron, se escribe sobre Mi. Las notas, como en la Wikipedia inglesa (Dastgāh) y en la
     // guía del radif de Ableton. Transliterados como en la Encyclopædia Iranica.
+    //
+    // Los maqom del Shashmaqom uzbeko y tayiko (Buzruk, Rost, Navo, Dugoh, Segoh, Iroq), vecinos de estos, no
+    // están todavía: sus escalas cambian de una sección a otra y las fuentes no dan una por maqom.
 
     /// ماهور: la mayor.
     public static let mahur = TipoDeEscala(
