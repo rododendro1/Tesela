@@ -172,11 +172,14 @@ Escala("λα αρμονική ελάσσονα")                      // La meno
 
 ### Nombres de otras tradiciones
 
-Los nombres de nota del bizantino (Ni Pa Vou Ga Di Ke Zo) y del sargam indio (Sā Re Ga ma Pa Dha Ni) no son un
-idioma: son un ``SistemaDeNombres``, y los textos siguen en el idioma que se elija. El bizantino es fijo (Ni es
-siempre Do, como en los echoi); el sargam es móvil, y su Sā es la tónica que se dé. En el sargam, el komal va en
-minúscula (re, ga, dha, ni) y el Ma tivra en mayúscula. Cada sistema se escribe en su escritura, transliterado
-(con IAST en el sargam) o en ASCII (``Grafia``), y se lee en las tres.
+Los nombres de nota del bizantino (Ni Pa Vou Ga Di Ke Zo), del sargam indio (Sā Re Ga ma Pa Dha Ni), del japonés
+(ハニホヘトイロ), del coreano (다라마바사가나), de Guido (Ut Re Mi) y los doce lü de China, Japón y Corea no son un
+idioma: son un ``SistemaDeNombres``, y los textos siguen en el idioma que se elija. El sargam es móvil, y su Sā es la
+tónica que se dé; los demás son fijos (en el bizantino, Ni es siempre Do, como en los echoi). En el sargam, el komal va
+en minúscula (re, ga, dha, ni) y el Ma tivra en mayúscula; en japonés y en coreano la alteración va delante (嬰ヘ,
+올림바). Los lü nombran la clase de altura, sin alteraciones: 大吕 es Do♯ y Re♭. Cada sistema se escribe en su
+escritura, transliterado (con IAST en el sargam y pinyin en los lü chinos) o en ASCII (``Grafia``), y se lee en las
+tres.
 
 ```swift
 SistemaDeNombres.bizantino.nombre(de: Nota("Fa#"))                     // "Ga♯"
@@ -185,6 +188,11 @@ SistemaDeNombres.sargam.nombre(de: Nota("Fa"), tonica: Nota("Re"))     // "ga"
 SistemaDeNombres.sargam.nombre(de: Nota("Fa#"), grafia: .original)     // "म॑"
 try SistemaDeNombres.sargam.leer("Ma")                                 // Fa♯
 Escala(.re, .dorico).nombres(en: .sargam).joined(separator: " ")       // "Sā Re ga ma Pa Dha ni"
+SistemaDeNombres.japones.nombre(de: Nota("Fa#"), grafia: .original)    // "嬰ヘ"
+SistemaDeNombres.coreano.nombre(de: Nota("Sib"), grafia: .original)    // "내림나"
+SistemaDeNombres.luChinos.nombre(de: Nota("Reb"))                      // "dàlǚ"
+SistemaDeNombres.luJaponeses.nombre(de: Nota("Re"), grafia: .original) // "壱越"
+try SistemaDeNombres.luCoreanos.leer("黃")                             // Mi♭
 ```
 
 ## Alteraciones

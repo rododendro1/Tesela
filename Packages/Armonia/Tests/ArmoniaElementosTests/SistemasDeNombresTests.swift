@@ -12,6 +12,93 @@ import Testing
         #expect(SistemaDeNombres(nombre: "byzantine") == .bizantino)
         #expect(SistemaDeNombres(nombre: "SARGAM") == .sargam)
         #expect(SistemaDeNombres(nombre: "solfeo") == nil)
+        #expect(SistemaDeNombres(nombre: "Jūni-ritsu") == .luJaponeses)
+        #expect(SistemaDeNombres(nombre: "luChinos") == .luChinos)
+        #expect(SistemaDeNombres(nombre: "iroha") == .japones)
+        #expect(SistemaDeNombres.allCases.filter { $0.familia == .movil } == [.sargam])
+    }
+
+    @Test func japones() throws {
+        let japones = SistemaDeNombres.japones
+        let naturales = NotaNatural.allCases.map { Nota($0) }
+        #expect(japones.nombres(de: naturales, grafia: .original) == ["ハ", "ニ", "ホ", "ヘ", "ト", "イ", "ロ"])
+        #expect(japones.nombre(de: Nota("Fa#"), grafia: .original) == "嬰ヘ")
+        #expect(japones.nombre(de: Nota("Sib"), grafia: .original) == "変ロ")
+        #expect(japones.nombre(de: Nota("Sibb"), grafia: .original) == "重変ロ")
+        #expect(japones.nombre(de: Nota("Fa#")) == "ei He")
+        #expect(japones.nombre(de: Nota("Fa##"), grafia: .ascii) == "ju-ei He")
+        #expect(japones.nombre(de: Nota("Fa###")) == "jū-ei He♯")
+        #expect(try japones.leer("嬰ヘ") == Nota("Fa#"))
+        #expect(try japones.leer("hen ro") == Nota("Sib"))
+        #expect(try japones.leer("Ei-I") == Nota("La#"))
+        #expect(try japones.leer("I") == Nota("La"))
+        #expect(try japones.leer("he") == Nota("Fa"))
+    }
+
+    @Test func coreano() throws {
+        let coreano = SistemaDeNombres.coreano
+        let naturales = NotaNatural.allCases.map { Nota($0) }
+        #expect(coreano.nombres(de: naturales, grafia: .original) == ["다", "라", "마", "바", "사", "가", "나"])
+        #expect(coreano.nombre(de: Nota("Fa#"), grafia: .original) == "올림바")
+        #expect(coreano.nombre(de: Nota("Sib"), grafia: .original) == "내림나")
+        #expect(coreano.nombre(de: Nota("Mibb"), grafia: .original) == "겹내림마")
+        #expect(coreano.nombre(de: Nota("Sib")) == "naerim Na")
+        #expect(try coreano.leer("올림바") == Nota("Fa#"))
+        #expect(try coreano.leer("naerim na") == Nota("Sib"))
+        #expect(try coreano.leer("Na") == Nota("Si"))
+    }
+
+    @Test func guidoniano() throws {
+        let guidoniano = SistemaDeNombres.guidoniano
+        #expect(guidoniano.nombre(de: Nota("Do")) == "Ut")
+        #expect(guidoniano.nombre(de: Nota("Do#")) == "Ut♯")
+        #expect(guidoniano.nombre(de: Nota("Sib"), grafia: .ascii) == "Sib")
+        #expect(try guidoniano.leer("ut") == Nota("Do"))
+        #expect(try guidoniano.leer("Sol#") == Nota("Sol#"))
+        #expect(throws: ErrorDeLectura.self) { try guidoniano.leer("Do") }
+    }
+
+    @Test func luChinos() throws {
+        let lu = SistemaDeNombres.luChinos
+        let cromatica: [Nota] = ["Do", "Do#", "Re", "Re#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "La#", "Si"]
+        let original = ["黄钟", "大吕", "太簇", "夹钟", "姑洗", "仲吕", "蕤宾", "林钟", "夷则", "南吕", "无射", "应钟"]
+        #expect(lu.nombres(de: cromatica, grafia: .original) == original)
+        #expect(lu.nombre(de: Nota("Do")) == "huángzhōng")
+        #expect(lu.nombre(de: Nota("Reb")) == "dàlǚ")
+        #expect(lu.nombre(de: Nota("Si"), grafia: .ascii) == "yingzhong")
+        // Al leerlos, la grafía de los sostenidos, como en los doce lü del catálogo: zhònglǚ es Mi♯.
+        #expect(try lu.leer("大吕") == Nota("Do#"))
+        #expect(try lu.leer("大呂") == Nota("Do#"))
+        #expect(try lu.leer("dalü") == Nota("Do#"))
+        #expect(try lu.leer("dalv") == Nota("Do#"))
+        #expect(try lu.leer("Zhònglǚ") == Nota("Mi#"))
+        #expect(try lu.leer("huang zhong") == Nota("Do"))
+    }
+
+    @Test func luJaponeses() throws {
+        let lu = SistemaDeNombres.luJaponeses
+        #expect(lu.nombre(de: Nota("Re")) == "ichikotsu")
+        #expect(lu.nombre(de: Nota("La"), grafia: .original) == "黄鐘")
+        #expect(lu.nombre(de: Nota("Mi")) == "hyōjō")
+        #expect(lu.nombre(de: Nota("Do#"), grafia: .ascii) == "kamimu")
+        #expect(try lu.leer("壱越") == Nota("Re"))
+        #expect(try lu.leer("oshiki") == Nota("La"))
+        #expect(try lu.leer("shōsetsu") == Nota("Fa"))
+        #expect(try lu.leer("tangin") == Nota("Re#"))
+        #expect(try lu.leer("shinsen") == Nota("Do"))
+    }
+
+    @Test func luCoreanos() throws {
+        let lu = SistemaDeNombres.luCoreanos
+        #expect(lu.nombre(de: Nota("Mib"), grafia: .original) == "황종")
+        #expect(lu.nombre(de: Nota("Mib")) == "hwangjong")
+        #expect(lu.nombre(de: Nota("Re"), grafia: .original) == "응종")
+        #expect(lu.nombre(de: Nota("Sib")) == "imjong")
+        #expect(try lu.leer("황종") == Nota("Mib"))
+        #expect(try lu.leer("黃鍾") == Nota("Mib"))
+        #expect(try lu.leer("黃") == Nota("Mib"))
+        #expect(try lu.leer("林") == Nota("Sib"))
+        #expect(try lu.leer("namnyeo") == Nota("Do"))
     }
 
     @Test func bizantinoEnSusTresGrafias() {
@@ -108,7 +195,13 @@ import Testing
                         let nota = Nota(pasosDeQuinta: tonica.pasosDeQuinta + quintas)
                         let nombre = sistema.nombre(de: nota, tonica: tonica, grafia: grafia)
                         let leida = try sistema.leer(nombre, tonica: tonica)
-                        #expect(leida == nota, "\(sistema) \(grafia) \(nombre)")
+                        // Los lü nombran la clase de altura: se vuelve a la misma, con la grafía de su cadena.
+                        let doce = [.luChinos, .luJaponeses, .luCoreanos].contains(sistema)
+                        if doce {
+                            #expect(leida.claseDeAltura == nota.claseDeAltura, "\(sistema) \(grafia) \(nombre)")
+                        } else {
+                            #expect(leida == nota, "\(sistema) \(grafia) \(nombre)")
+                        }
                     }
                 }
             }

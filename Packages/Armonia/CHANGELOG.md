@@ -2,6 +2,18 @@
 
 ## Sin publicar
 
+### Más nombres de nota: japoneses, coreanos, de Guido y los doce lü
+
+- Seis sistemas fijos más en `SistemaDeNombres`: el japonés (ハ ニ ホ ヘ ト イ ロ, con la alteración delante: 嬰ヘ,
+  変ロ, 重変ロ), el coreano (다 라 마 바 사 가 나: 올림바, 내림나, 겹내림마), el de Guido (Ut Re Mi Fa Sol La Si) y los
+  doce lü de China (黄钟 huángzhōng en Do), de Japón (壱越 ichikotsu en Re, los del gagaku) y de Corea (황종 hwangjong
+  en Mi♭), cada uno en sus tres grafías.
+- Los lü nombran la clase de altura y no escriben alteraciones: Do♯ y Re♭ son los dos 大吕. Al leerlos, la nota sale
+  con la grafía de su cadena de quintas (los chinos, con los sostenidos de `TipoDeEscala.shierLu`: zhònglǚ es Mi♯). Se
+  leen también los lü chinos en caracteres tradicionales y con la ü como v (dalv), y los coreanos en hanja, enteros
+  (黃鍾) o con la sílaba del jeongganbo (黃).
+- `SistemaDeNombres(nombre:)` no tiene en cuenta los espacios ni los guiones: «Jūni-ritsu», «lu chinos».
+
 ### Nombres de nota de otras tradiciones: bizantino y sargam
 
 - `SistemaDeNombres`, los nombres de nota de otras tradiciones, que no son un idioma: los textos siguen en el idioma

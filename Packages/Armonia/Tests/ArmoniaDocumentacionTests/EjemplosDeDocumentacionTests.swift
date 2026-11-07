@@ -977,6 +977,11 @@ import Hexagonos
         comprobar(SistemaDeNombres.sargam.nombre(de: Nota("Fa#"), grafia: .original), #""म॑""#, doc, 3)
         comprobar(try SistemaDeNombres.sargam.leer("Ma"), #"Fa♯"#, doc, 4)
         comprobar(Escala(.re, .dorico).nombres(en: .sargam).joined(separator: " "), #""Sā Re ga ma Pa Dha ni""#, doc, 5)
+        comprobar(SistemaDeNombres.japones.nombre(de: Nota("Fa#"), grafia: .original), #""嬰ヘ""#, doc, 6)
+        comprobar(SistemaDeNombres.coreano.nombre(de: Nota("Sib"), grafia: .original), #""내림나""#, doc, 7)
+        comprobar(SistemaDeNombres.luChinos.nombre(de: Nota("Reb")), #""dàlǚ""#, doc, 8)
+        comprobar(SistemaDeNombres.luJaponeses.nombre(de: Nota("Re"), grafia: .original), #""壱越""#, doc, 9)
+        comprobar(try SistemaDeNombres.luCoreanos.leer("黃"), #"Mi♭"#, doc, 10)
     }
 
     @Test func notacionYPartitura7() throws {
