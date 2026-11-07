@@ -4,7 +4,10 @@
 
 ### Escalas
 
-- Nueva escala `TipoDeEscala.prometeoNapolitano` (Do Re♭ Mi Fa♯ La Si♭), con su nombre en los doce idiomas.
+- Siete escalas nuevas, con su nombre en los doce idiomas: `prometeoNapolitano` (Do Re♭ Mi Fa♯ La Si♭),
+  `tritonoDeDosSemitonos` (Do Re♭ Re Fa♯ Sol La♭), `hexatonicaDeArmonicos` (Do Mi♭ Mi Fa Sol La), `bebopLocrio`
+  (Do Re♭ Mi♭ Fa Sol♭ Sol La♭ Si♭), `bebopLidio` (Do Re Mi Fa♯ Sol Sol♯ La Si), `pentatonicaMayorTerceraMenor`
+  (Do Re Mi♭ Sol La) y `pentatonicaMenorSextaMenor` (Do Mi♭ Fa Sol La♭).
 - La enigmática se lee también como «de Verdi», y la disminuida semitono-tono, como «de Stravinski».
 
 ### Doce idiomas: sin el asturiano, el aragonés y el occitano
