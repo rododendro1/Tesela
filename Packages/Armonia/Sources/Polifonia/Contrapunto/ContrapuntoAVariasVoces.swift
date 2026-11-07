@@ -111,9 +111,7 @@ public struct ContrapuntoAVariasVoces: Hashable, Sendable {
             return suenan.min { $0.1 < $1.1 }?.0
         }
         // Las voces de la más aguda a la más grave, por su altura media.
-        let medias = lineas.map { linea in
-            linea.isEmpty ? 0 : Double(linea.map(\.nota.midi).reduce(0, +)) / Double(linea.count)
-        }
+        let medias = lineas.map { $0.map(\.nota).midiMedio }
         let porAltura = lineas.indices.sorted { medias[$0] > medias[$1] }
         let extremas: Set<Int> = [porAltura.first ?? 0, porAltura.last ?? 0]
         let momentos = Set(lineas.flatMap { $0.filter(\.ataque).map(\.momento) }).sorted()

@@ -90,9 +90,6 @@ extension LineaDeComandosTests {
         let midi = try fichero(coral.partitura().midi(), extension: "mid")
         #expect(conFaltas("revisar --archivo " + xml) == conFaltas("revisar " + escrito))
         #expect(conFaltas("check --file " + midi) == conFaltas("revisar " + escrito))
-        func resultado(_ orden: String) -> ResultadoDeOrden {
-            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
-        }
         #expect(resultado("revisar --archivo \(xml) --json").codigo == 3)
         // Un fichero que no se puede leer es un error de lectura; con acordes detrás, de uso.
         #expect(resultado("revisar --archivo /no/existe.musicxml").codigo == 1)
@@ -113,9 +110,6 @@ extension LineaDeComandosTests {
         #expect(salida("contrapunto \(cantus) --proponer --debajo").contains("debajo del cantus firmus"))
         #expect(salida("counterpoint \(cantus) --propose --proposals 3 --ingles").hasPrefix("1. "))
         #expect(salida("contrapunto \(cantus) --proponer --propuestas 3").contains("\n\n3. "))
-        func resultado(_ orden: String) -> ResultadoDeOrden {
-            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
-        }
         let json = resultado("contrapunto \(cantus) --proponer --propuestas 2 --json")
         #expect(json.codigo == 0)
         #expect(json.salida.contains("\"propuestas\""))
@@ -138,9 +132,6 @@ extension LineaDeComandosTests {
         let midi = try fichero(analisis.partitura().midi(), extension: "mid")
         #expect(salida("realizar --archivo " + midi) == salida("realizar Do Fa Sol7 Do"))
         #expect(salida("realize --file \(midi) --in C major --ingles").hasPrefix("C major\n"))
-        func resultado(_ orden: String) -> ResultadoDeOrden {
-            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
-        }
         #expect(resultado("armonizar --archivo \(xml) Mi4").codigo == 2)
         #expect(resultado("realizar Do Fa --ventana 2").codigo == 2)
         #expect(resultado("realizar --archivo /no/existe.mid").codigo == 1)
@@ -158,9 +149,6 @@ extension LineaDeComandosTests {
         let abc = salida("transponer Re --archivo \(midi) --formato abc")
         #expect(abc.contains("K:D"))
         #expect(salida("transpose D --file \(midi) --format musicxml").hasPrefix("<?xml"))
-        func resultado(_ orden: String) -> ResultadoDeOrden {
-            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
-        }
         #expect(resultado("transponer 2M --archivo \(midi) --formato pdf").codigo == 2)
         #expect(resultado("transponer 2M --archivo \(midi) --json").codigo == 2)
         #expect(resultado("transponer --archivo \(midi)").codigo == 2)
@@ -177,9 +165,6 @@ extension LineaDeComandosTests {
         #expect(conFaltas("contrapunto \(ejercicio) --especie 1,1") == informe)
         #expect(
             conFaltas("counterpoint C4 D4 E4 C4 / G4 A4 G4 C5 / C3 D3 E3 C3 --ingles").hasPrefix("Counterpoint in 3"))
-        func resultado(_ orden: String) -> ResultadoDeOrden {
-            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
-        }
         let json = resultado("contrapunto \(ejercicio) --json")
         #expect(json.codigo == 3)
         #expect(json.salida.contains("\"voces\":[1,2]"))

@@ -100,7 +100,7 @@ extension LineaDeComandos {
         let analisis: AnalisisPresentado
         if let archivo {
             guard acordes.restantes.isEmpty else { throw ErrorDeUso.archivoConAcordes }
-            guard let datos = contenido(deArchivo: archivo) else { return archivoIlegible(archivo, notacion) }
+            let datos = try Self.datos(deArchivo: archivo)
             let pieza = try PiezaImportada(leyendo: datos)
             guard
                 let leido = PresentacionDeAnalisis.analizar(

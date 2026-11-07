@@ -58,7 +58,7 @@ extension OpcionDeOrden {
     static let ciclo = valor("--ciclo", "--cycle")
     static let en = valor("--en", "--in")
 
-    // MARK: Las de las partituras (las lee `Argumentos.quitarOpcionesConTexto`, con `alias` para el inglés)
+    // MARK: Las de las partituras (las lee `Argumentos.quitarOpcionesConTexto`)
     static let compas = valor("--compas", "--time", ocultos: ["--compás"])
     static let anacrusa = valor("--anacrusa", "--pickup")
     static let claveDePartitura = valor("--clave", "--clef")

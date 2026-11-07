@@ -23,7 +23,7 @@ extension LineaDeComandosTests {
             "tonnetz --color Do", "tonnetz Do --margen 9",
         ] {
             #expect(
-                LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,
+                resultado(orden).codigo == 2,
                 Comment(rawValue: orden))
         }
         #expect(LineaDeComandos.ejecutar(["tonnetz", "Do", "Hm"]).codigo == 1)
@@ -32,7 +32,7 @@ extension LineaDeComandosTests {
         #expect(salida("tonnetz clases 3-11") == salida("tonnetz clases 0 3 7"))
         for orden in ["tonnetz clases 0 x", "tonnetz clases [0 4", "tonnetz clases 3-13"] {
             #expect(
-                LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 1,
+                resultado(orden).codigo == 1,
                 Comment(rawValue: orden))
         }
         #expect(salida("tonnetz recorrido Do Lam Fa Rem").contains("Do –R→ Lam –L→ Fa –R→ Rem"))
@@ -41,7 +41,7 @@ extension LineaDeComandosTests {
             "tonnetz recorrido", "tonnetz recorrido Do Sol7", "tonnetz camino Do", "tonnetz camino Do Sol7",
         ] {
             #expect(
-                LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,
+                resultado(orden).codigo == 2,
                 Comment(rawValue: orden))
         }
     }
@@ -58,7 +58,7 @@ extension LineaDeComandosTests {
         #expect(salida("tabla clases 13") == salida("tabla clases 1 3"))
         for orden in ["tabla", "tabla acorde", "tabla clases", "tabla --foo", "tabla Do --margen 7"] {
             #expect(
-                LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,
+                resultado(orden).codigo == 2,
                 Comment(rawValue: orden))
         }
         #expect(LineaDeComandos.ejecutar(["tabla", "Do4", "Hm4"]).codigo == 1)
@@ -66,7 +66,7 @@ extension LineaDeComandosTests {
         #expect(salida("tabla camino Do Mibm").contains("<title>Do –P→ Dom –R→ Mi♭ –P→ Mi♭m</title>"))
         for orden in ["tabla recorrido", "tabla recorrido Do Sol7", "tabla camino Do", "tabla camino Do Sol7"] {
             #expect(
-                LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,
+                resultado(orden).codigo == 2,
                 Comment(rawValue: orden))
         }
     }
@@ -117,7 +117,7 @@ extension LineaDeComandosTests {
             "cuadricula camino Do Sol7",
         ] {
             #expect(
-                LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,
+                resultado(orden).codigo == 2,
                 Comment(rawValue: orden))
         }
         #expect(LineaDeComandos.ejecutar(["cuadricula", "--origen", "Hm", "Do"]).codigo == 1)

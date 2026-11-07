@@ -109,7 +109,7 @@
         }
 
         @MultipleChoice {
-            ¿Qué da `Acorde.candidatos(_:)` que no da `Acorde.identificar(_:)`?
+            ¿Qué da `Acorde.candidatos(notas:)` que no da `Acorde.identificar(notas:)`?
 
             @Choice(isCorrect: true) {
                 Las notas que faltan en cada lectura y su coste.

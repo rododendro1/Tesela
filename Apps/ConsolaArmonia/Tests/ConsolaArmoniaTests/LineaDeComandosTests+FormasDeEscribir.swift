@@ -11,7 +11,7 @@ import Testing
 extension LineaDeComandosTests {
     /// Sale con código 2, como una opción o una orden desconocida.
     func noSeLee(_ orden: String, sourceLocation: SourceLocation = #_sourceLocation) {
-        let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+        let resultado = self.resultado(orden)
         #expect(resultado.codigo == 2, Comment(rawValue: orden), sourceLocation: sourceLocation)
     }
 

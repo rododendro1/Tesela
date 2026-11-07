@@ -46,16 +46,11 @@ extension PiezaImportada {
     /// Las voces del fichero, de la más grave a la más aguda por su altura media, si son al menos dos y en ninguna
     /// suenan dos notas a la vez; `nil` si no.
     private func lineasDelCoral() -> [[NotaDeLaPieza]]? {
-        var porVoz: [[Int]: [NotaDeLaPieza]] = [:]
-        for nota in notas { porVoz[[nota.parte, nota.pentagrama ?? 0, nota.voz ?? 0], default: []].append(nota) }
-        guard porVoz.count >= 2 else { return nil }
-        let lineas = porVoz.values.map { $0.sorted { $0.inicio < $1.inicio } }
+        let lineas = self.lineas
+        guard lineas.count >= 2 else { return nil }
         for linea in lineas {
             for (a, b) in zip(linea, linea.dropFirst()) where b.inicio < a.fin { return nil }
         }
-        func media(_ linea: [NotaDeLaPieza]) -> Double {
-            Double(linea.map(\.altura.midi).reduce(0, +)) / Double(linea.count)
-        }
-        return lineas.sorted { media($0) < media($1) }
+        return lineas
     }
 }

@@ -9,7 +9,7 @@ import Testing
 extension LineaDeComandosTests {
     @Test func mIDI() throws {
         func datos(_ orden: String) throws -> [UInt8] {
-            let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+            let resultado = self.resultado(orden)
             #expect(resultado.codigo == 0, Comment(rawValue: resultado.error))
             #expect(resultado.salida == "")
             return [UInt8](try #require(resultado.datos, Comment(rawValue: orden)))
@@ -31,7 +31,7 @@ extension LineaDeComandosTests {
             "midi melodia Do4:4 --instrumento 40",
             "musicxml melodia Do4:4 --instrumento 3",
         ] {
-            let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+            let resultado = self.resultado(orden)
             #expect(resultado.codigo == 2, Comment(rawValue: orden))
             #expect(resultado.datos == nil, Comment(rawValue: orden))
         }
@@ -105,7 +105,7 @@ extension LineaDeComandosTests {
             "musicxml melodia Do4:4 --cifrados", "musicxml acordes", "musicxml acordes Do Sol --analisis",
             "musicxml acordes Do Sol --clave fa",
         ] {
-            let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+            let resultado = self.resultado(orden)
             #expect(resultado.codigo == 2, Comment(rawValue: orden))
             #expect(resultado.salida == "", Comment(rawValue: orden))
         }
@@ -114,7 +114,7 @@ extension LineaDeComandosTests {
             "musicxml acordes Do Hm",
         ] {
             #expect(
-                LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 1,
+                resultado(orden).codigo == 1,
                 Comment(rawValue: orden))
         }
     }
@@ -149,7 +149,7 @@ extension LineaDeComandosTests {
             "mei", "mei partitura Do4:4", "mei melodia", "mei melodia Do4:4 --programa 3",
             "mei melodia Do4:4 --cifrados", "mei acordes Do Sol --analisis", "mei coral Do3 Do5 --clave fa",
         ] {
-            let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+            let resultado = self.resultado(orden)
             #expect(resultado.codigo == 2, Comment(rawValue: orden))
             #expect(resultado.salida == "", Comment(rawValue: orden))
         }
@@ -181,7 +181,7 @@ extension LineaDeComandosTests {
         }
         #expect(salida("abc arpegios Do Sol7 --patron alberti").contains("V:1 clef="))
         for orden in ["lilypond", "abc partitura Do4:4", "abc melodia", "lilypond melodia Do4:4 --programa 3"] {
-            let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+            let resultado = self.resultado(orden)
             #expect(resultado.codigo == 2, Comment(rawValue: orden))
         }
     }
@@ -219,14 +219,14 @@ extension LineaDeComandosTests {
             "musicxml arpegios Do --clave fa", "musicxml melodia Do4:4 --patron alberti",
             "musicxml acordes Do Sol --figura 8", "midi coral Do3 Do5 --patron alberti",
         ] {
-            let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+            let resultado = self.resultado(orden)
             #expect(resultado.codigo == 2, Comment(rawValue: orden))
             #expect(resultado.salida == "", Comment(rawValue: orden))
         }
         #expect(LineaDeComandos.ejecutar(["musicxml", "acordes", "Do", "--figura", "8"]).error.contains("«arpegios»"))
         for orden in ["musicxml arpegios Do --figura 0/4", "musicxml arpegios Do Hm", "midi arpegios Do --figura 3"] {
             #expect(
-                LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 1,
+                resultado(orden).codigo == 1,
                 Comment(rawValue: orden))
         }
     }
@@ -262,9 +262,6 @@ extension LineaDeComandosTests {
         // La ventana de una negra (4) es la de omisión en 4/4.
         #expect(salida("musicxml arpegios --archivo \(midi) --ventana 4") == arpegios)
 
-        func resultado(_ orden: String) -> ResultadoDeOrden {
-            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
-        }
         #expect(resultado("musicxml acordes Do --archivo " + midi).codigo == 2)
         #expect(resultado("musicxml acordes --archivo /no/existe.mid").codigo == 1)
         #expect(

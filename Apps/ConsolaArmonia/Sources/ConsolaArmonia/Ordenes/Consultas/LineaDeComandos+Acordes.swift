@@ -120,7 +120,7 @@ extension LineaDeComandos {
         let encontradas: [EscalaEncontrada]
         if let archivo {
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.archivoConNotas }
-            guard let datos = contenido(deArchivo: archivo) else { return archivoIlegible(archivo, notacion) }
+            let datos = try Self.datos(deArchivo: archivo)
             let pieza = try PiezaImportada(leyendo: datos)
             encontradas = PresentacionDeEstudioDeEscala.escalas(de: pieza, en: notacion)
         } else {

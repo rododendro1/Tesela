@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+### Orden interno: voces importadas, formatos por la extensión y la consola
+
+- `FormatoDePartitura(ruta:)` da el formato de un fichero por su extensión (sin distinguir mayúsculas), con
+  `extensiones` (`musicxml`, `xml` y `mxl`; `mid` y `midi`) y `queSeLeen`, los formatos que se importan.
+- Las voces de una `PiezaImportada` se agrupan en un solo sitio, de grave a agudo, para el coral, la melodía y el
+  análisis melódico.
+- En la consola, `--archivo` se lee de una sola forma, las opciones de las partituras salen de `OpcionDeOrden` y los
+  dibujos van en ficheros aparte (teclado, hoja y pentagrama).
+
 ### La consola: opciones comprobadas, partituras en inglés, más ficheros y más contrapunto
 
 - Ninguna orden acepta una opción que no conoce: `armonizar`, `realizar`, `revisar`, `vecinos`,

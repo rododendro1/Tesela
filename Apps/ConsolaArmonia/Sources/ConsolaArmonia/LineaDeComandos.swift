@@ -274,10 +274,12 @@ public enum LineaDeComandos {
         @TaskLocal static var actual: EntradaEstandar?
     }
 
-    /// Lo que hay en un fichero de `--archivo`: la entrada estándar si es `-`. `nil` si no se puede leer.
-    static func contenido(deArchivo ruta: String) -> Data? {
-        guard ruta == "-" else { return FileManager.default.contents(atPath: ruta) }
-        return EntradaEstandar.actual?.datos
+    /// Lo que hay en un fichero de `--archivo`: la entrada estándar si es `-`. Lanza `ArchivoIlegible` si no se puede
+    /// leer, y `ejecutar` lo escribe como un error de lectura (código 1), sin remitir a la ayuda.
+    static func datos(deArchivo ruta: String) throws -> Data {
+        guard let leidos = ruta == "-" ? EntradaEstandar.actual?.datos : FileManager.default.contents(atPath: ruta)
+        else { throw ArchivoIlegible(ruta: ruta) }
+        return leidos
     }
 
     /// La orden que se está ejecutando y el nombre con que se ha llamado, para que sus errores de uso remitan a su
@@ -343,20 +345,13 @@ public enum LineaDeComandos {
         ResultadoDeOrden(salida: texto + "\n", error: "", codigo: 0)
     }
 
-    /// Un fichero de `--archivo` que no se puede leer, para las órdenes que no devuelven el resultado directamente
-    /// (las que también dan JSON): `ejecutar` lo escribe con `archivoIlegible(_:_:)`.
+    /// Un fichero de `--archivo` que no se puede leer (`datos(deArchivo:)`).
     struct ArchivoIlegible: Error {
         let ruta: String
     }
 
-    /// Los datos de un fichero de `--archivo`; lanza `ArchivoIlegible` si no se puede leer.
-    static func datos(deArchivo ruta: String) throws -> Data {
-        guard let datos = contenido(deArchivo: ruta) else { throw ArchivoIlegible(ruta: ruta) }
-        return datos
-    }
-
     /// Un fichero de `--archivo` que no se puede leer: no es un error de uso, sino de lectura (código 1).
-    static func archivoIlegible(_ ruta: String, _ notacion: Notacion) -> ResultadoDeOrden {
+    private static func archivoIlegible(_ ruta: String, _ notacion: Notacion) -> ResultadoDeOrden {
         let texto = TextosDeConsola.en(notacion) { $0.archivoIlegible(ruta) }
         return ResultadoDeOrden(salida: "", error: "armonia: " + texto + "\n", codigo: 1)
     }

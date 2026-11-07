@@ -59,10 +59,10 @@ Do mayor
   2. Do Fa Sol7 Do (I–IV–V7–I)
   3. Do Rem Sol Do (I–ii–V–I)
 A cuatro voces (bajo, tenor, contralto, soprano):
-  Do        I         Do3 Sol3 Do4 Mi4
-  Fa        IV        Fa2 La3 Do4 Fa4
-  Sol       V         Sol2 Sol3 Si3 Re4
-  Do        I         Do3 Mi3 Do4 Do4
+  Do        I         Do₃ Sol₃ Do₄ Mi₄
+  Fa        IV        Fa₂ La₃ Do₄ Fa₄
+  Sol       V         Sol₂ Sol₃ Si₃ Re₄
+  Do        I         Do₃ Mi₃ Do₄ Do₄
 
 $ swift run armonia revisar Do3 Sol3 Mi4 Do5, Re3 La3 Fa4 Re5
 Quintas paralelas entre bajo y tenor (acordes 1 → 2)
@@ -73,7 +73,7 @@ Especie 2, con el contrapunto encima del cantus firmus
 Sin faltas.
 
 $ swift run armonia contrapunto Re4 Fa4 Mi4 Re4 Sol4 Fa4 La4 Sol4 Fa4 Mi4 Re4 --proponer
-Re5 Do5 Mi5 Fa5 Mi5 Re5 Do5 Mi5 Re5 Do#5 Re5
+Re₅ Do₅ Mi₅ Fa₅ Mi₅ Re₅ Do₅ Mi₅ Re₅ Do♯₅ Re₅
 Especie 1, con el contrapunto encima del cantus firmus
 Sin faltas.
 
@@ -98,11 +98,13 @@ PLR, 3 pasos
 ```
 
 `analizar` señala las cadencias (auténtica, plagal, rota y semicadencia) y, sin `--en`, parte la progresión en
-tramos por tonalidad, con el acorde pivote de cada modulación. Con `--archivo coral.mid` (o `.musicxml`) analiza los
-acordes de un fichero MIDI o MusicXML, uno por pulso (`--ventana 2`, uno por blanca). `armonizar` propone acordes para una melodía, de
-mejor a peor, y si las notas llevan octava la escribe a cuatro voces con la melodía en el soprano; `realizar`
-escribe unos acordes a cuatro voces. Las dos dan corales sin faltas de conducción, que se pueden pasar a
-`revisar` o a `musicxml coral`.
+tramos por tonalidad, con el acorde pivote de cada modulación. Con `--archivo coral.mid` (o `.musicxml`, `.mei` o
+`.abc`) analiza los acordes de un fichero, uno por pulso (`--ventana 2`, uno por blanca). `armonizar` propone acordes
+para una melodía, de mejor a peor, y si las notas llevan octava la escribe a cuatro voces con la melodía en el
+soprano; `realizar` escribe unos acordes a cuatro voces, y con `--bajo-cifrado`, un bajo cifrado. Las dos dan corales
+sin faltas de conducción, que se pueden pasar a `revisar` o a `musicxml coral`, y las dos leen también un fichero
+con `--archivo` (`armonizar`, su voz más aguda). `contrapunto` revisa también a tres y cuatro voces
+(`contrapunto <cantus> / <voz> / <voz>`), y `transponer <intervalo> --archivo <fichero>` transporta un fichero.
 
 `midi` escribe lo mismo como fichero MIDI para oírlo (con `--programa` de General MIDI).
 `musicxml` escribe una partitura que se abre en MuseScore, Finale, Sibelius o Dorico: una

@@ -8,7 +8,7 @@ import Foundation
 /// que se prueba en Linux.
 public enum ImportacionDeProgresion {
     /// Las extensiones que se ofrecen al abrir.
-    public static let extensiones = ["mid", "midi", "musicxml", "xml", "mxl", "mei", "abc"]
+    public static let extensiones = FormatoDePartitura.queSeLeen.flatMap(\.extensiones)
 
     /// La progresión de un fichero, con un acorde por pulso (`ventana`, como en `PiezaImportada.acordes`).
     /// Lanza `ErrorDeLecturaDeFichero` si no se puede leer o no suena ningún acorde.

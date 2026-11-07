@@ -16,9 +16,14 @@ import Testing
         for url in temporales { try? FileManager.default.removeItem(at: url) }
     }
 
+    /// Lo que da una orden escrita como en la terminal, con las palabras separadas por espacios: `"acorde Sol7"`.
+    func resultado(_ orden: String) -> ResultadoDeOrden {
+        LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+    }
+
     /// La salida de una orden escrita como en la terminal: `"acorde Sol7"`.
     func salida(_ orden: String, sourceLocation: SourceLocation = #_sourceLocation) -> String {
-        let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+        let resultado = self.resultado(orden)
         #expect(resultado.codigo == 0, Comment(rawValue: resultado.error), sourceLocation: sourceLocation)
         #expect(resultado.error == "", sourceLocation: sourceLocation)
         return resultado.salida
@@ -26,7 +31,7 @@ import Testing
 
     /// La salida de una orden que comprueba algo (`revisar`, `contrapunto`) y encuentra faltas: sale con código 3.
     func conFaltas(_ orden: String, sourceLocation: SourceLocation = #_sourceLocation) -> String {
-        let resultado = LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+        let resultado = self.resultado(orden)
         #expect(resultado.codigo == 3, Comment(rawValue: resultado.error), sourceLocation: sourceLocation)
         #expect(resultado.error == "", sourceLocation: sourceLocation)
         return resultado.salida

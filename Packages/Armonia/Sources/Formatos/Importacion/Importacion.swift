@@ -293,12 +293,8 @@ public struct PiezaImportada: Hashable, Sendable {
     /// breve que `paso`, no empieza en una ventana, y se llega a ella y se sale de ella por grado conjunto, sin
     /// silencio, en su parte, su pentagrama y su voz).
     func factoresMelodicos(paso: Duracion) -> [Double] {
-        var porVoz: [[Int]: [Int]] = [:]
-        for (k, nota) in notas.enumerated() {
-            porVoz[[nota.parte, nota.pentagrama ?? 0, nota.voz ?? 0], default: []].append(k)
-        }
         var factores = Array(repeating: 1.0, count: notas.count)
-        for indices in porVoz.values {
+        for indices in indicesPorLinea {
             for (posicion, k) in indices.enumerated() {
                 let nota = notas[k]
                 let fraccion = nota.inicio.enRedondas / paso.enRedondas
@@ -317,6 +313,27 @@ public struct PiezaImportada: Hashable, Sendable {
         }
         return factores
     }
+
+    // MARK: Las voces del fichero
+
+    /// Las notas de cada voz del fichero (cada parte, pentagrama y voz que dice), por su posición en `notas` y en el
+    /// orden en que empiezan; las voces, de la más grave a la más aguda por su altura media.
+    var indicesPorLinea: [[Int]] {
+        var porLinea: [[Int]: [Int]] = [:]
+        for (k, nota) in notas.enumerated() {
+            porLinea[[nota.parte, nota.pentagrama ?? 0, nota.voz ?? 0], default: []].append(k)
+        }
+        let medias = porLinea.mapValues { $0.map { notas[$0].altura }.midiMedio }
+        // A igual altura media, en el orden de las partes, los pentagramas y las voces.
+        let claves = porLinea.keys.sorted {
+            let (a, b) = (medias[$0] ?? 0, medias[$1] ?? 0)
+            return a != b ? a < b : $0.lexicographicallyPrecedes($1)
+        }
+        return claves.map { porLinea[$0] ?? [] }
+    }
+
+    /// Las notas de cada voz del fichero (`indicesPorLinea`), de la más grave a la más aguda.
+    var lineas: [[NotaDeLaPieza]] { indicesPorLinea.map { $0.map { notas[$0] } } }
 
     /// Su ritmo armónico: los acordes con lo que dura cada uno (hasta que empieza el siguiente y, el último, hasta
     /// que acaba la pieza), en su compás (o en 4/4, si no lo dice) y a su tempo. Lo que suena antes del primer

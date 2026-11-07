@@ -139,3 +139,23 @@ import Testing
         #expect(gmn.contains(#"\instr<"Contrapunctus · Cantus firmus">"#))
     }
 }
+
+extension FormatoDePartituraTests {
+    @Test func elFormatoPorLaExtension() {
+        #expect(FormatoDePartitura(ruta: "tema.mid") == .midi)
+        #expect(FormatoDePartitura(ruta: "/carpeta/Tema.MIDI") == .midi)
+        #expect(FormatoDePartitura(ruta: "coral.mxl") == .musicXML)
+        #expect(FormatoDePartitura(ruta: "coral.xml") == .musicXML)
+        #expect(FormatoDePartitura(ruta: "pieza.ly") == .lilyPond)
+        #expect(FormatoDePartitura(ruta: "pieza.gmn") == .guido)
+        #expect(FormatoDePartitura(ruta: "pieza.mei") == .mei)
+        #expect(FormatoDePartitura(ruta: "pieza.abc") == .abc)
+        #expect(FormatoDePartitura(ruta: "pieza.pdf") == nil)
+        #expect(FormatoDePartitura(ruta: "sin-extension") == nil)
+        #expect(FormatoDePartitura(ruta: "carpeta.mid/fichero") == nil)
+        for formato in FormatoDePartitura.allCases {
+            #expect(FormatoDePartitura(ruta: "a." + formato.extensionDeFichero) == formato)
+        }
+        #expect(FormatoDePartitura.queSeLeen.flatMap(\.extensiones).count == 7)
+    }
+}
