@@ -1,5 +1,12 @@
 # Cambios
 
+## Sin publicar
+
+- El selector de notación tiene una sección «Otras tradiciones» con los sistemas fijos de nombres de nota (bizantino,
+  japonés, coreano, de Guido, los lü y el solfeo árabe y hebreo), en sus grafías: `Notacion.deOtrasTradiciones`, con
+  su clave («bizantino», «bizantinoOriginal», «luChinosASCII») y su título («Βυζαντινή (Ga♯)»). Al elegir uno, los
+  textos siguen en el idioma que se estaba leyendo.
+
 ## 0.3.7 (2026-11-07)
 
 - **Cambio incompatible:** el paquete, el producto y el módulo se llaman ahora `Interfaz` (antes `TeselaUI`),

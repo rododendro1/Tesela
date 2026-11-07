@@ -261,6 +261,11 @@ public struct Nota: Hashable, Sendable {
     /// leen las dos formas, con palabras y compacta: «F Kreuz» y «Fis», «ré bémol» y «Ré♭».
     public init(leyendo texto: String, en notacion: Notacion) throws {
         let notacion = notacion.notas
+        // Los de otra tradición, en cualquiera de las grafías de su sistema: «Γα♯», «ga#», «嬰ヘ».
+        if let sistema = notacion.escritura.sistema {
+            self = try sistema.leer(texto)
+            return
+        }
         let idioma = notacion.idiomaDeLasNotas
         if idioma.reglas.tieneVariantes && notacion.escritura.escrituraDeLaAlteracion == .signos {
             try self.init(leyendo: texto)
@@ -382,7 +387,10 @@ extension NotaNatural {
     /// salvo el español, en minúscula, como se escriben en el texto. Las sílabas de cada idioma están
     /// en ``ReglasDeIdioma``.
     public func nombre(en notacion: Notacion) -> String {
-        notacion.idiomaDeLasNotas.reglas.naturales[rawValue]
+        if let sistema = notacion.escritura.sistema {
+            return sistema.naturales(en: notacion.escritura.grafia)[rawValue]
+        }
+        return notacion.idiomaDeLasNotas.reglas.naturales[rawValue]
     }
 }
 
@@ -438,6 +446,10 @@ extension Nota {
     /// `.conPalabras(.aleman)` → "F Kreuz", `.compacta(.aleman)` → "Fis", `.conPalabras(.frances)` → "fa dièse",
     /// `.conPalabras(.italiano)` → "fa diesis", `.conPalabras(.ruso)` → "фа-диез", `.conPalabras(.griego)` → "φα δίεση", `.compacta(.frances)` → "Fa♯".
     public func nombre(en notacion: Notacion) -> String {
+        // Los de otra tradición (Ga♯ en bizantino, 嬰ヘ en japonés), como los escriba su sistema.
+        if let sistema = notacion.escritura.sistema {
+            return sistema.nombre(de: self, grafia: notacion.escritura.grafia)
+        }
         let base = natural.nombre(en: notacion)
         switch notacion.escritura.escrituraDeLaAlteracion {
         case .alemana:

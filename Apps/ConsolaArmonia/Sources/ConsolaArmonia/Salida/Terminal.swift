@@ -12,7 +12,7 @@ extension LineaDeComandos {
 
     /// Las opciones que valen en cualquier orden (`LineaDeComandos.ejecutar`).
     static let generales: [OpcionDeOrden] = [
-        .ingles, .idioma, .textos, .escritura, .subindices, .cifras, .json, .salida,
+        .ingles, .idioma, .textos, .escritura, .sistema, .grafia, .subindices, .cifras, .json, .salida,
     ]
 
     /// Los nombres de las opciones generales, en español y en inglés.
@@ -34,6 +34,8 @@ extension LineaDeComandos {
             ["es", "en", "ca", "gl", "ast", "an", "eu", "pt", "fr", "oc", "it", "de", "el", "ru", "hu"]
         ),
         (nombres(.escritura), ["palabras", "compacto", "ascii", "unicode", "words", "compact"]),
+        (nombres(.sistema), SistemaDeNombres.allCases.map { $0.nombres[0].replacingOccurrences(of: " ", with: "-") }),
+        (nombres(.grafia), LineaDeComandos.nombresDeLasGrafias.map(\.0)),
         (
             nombres(.patron),
             [

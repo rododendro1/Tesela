@@ -6,8 +6,17 @@ import Foundation
 // Cada fila: la nota temperada (en el turco, la pitagórica) con su octava, el ajuste en los pasos del sistema, y el
 // nombre en su escritura y transliterado; el ASCII se saca del transliterado, sin diacríticos ni ʿ. Fuentes: para las
 // perde, el artículo «Turkish makam» de Wikipedia, con las comas de cada una desde Kaba Çârgâh, que coinciden con los
-// makamlar del catálogo (Rast makamı: Rast 31, Dügâh 40, Segâh 48… Eviç 79); para las notas árabes, Touma (The Music
-// of the Arabs, 1996) y maqamworld.com; para las cuerdas griegas, «Musical system of ancient Greece».
+// makamlar del catálogo (Rast makamı: Rast 31, Dügâh 40, Segâh 48… Eviç 79); para las cuerdas griegas, «Musical system
+// of ancient Greece».
+//
+// Las notas árabes diatónicas (Yakāh, ʿUshayrān, ʿIrāq, Rāst, Dūkāh, Sīkāh, Jahārkāh, Nawā, Ḥusaynī, Awj, Kardān)
+// salen de las escalas de maqamworld.com y de al-Shawwa (1946), y la gama de Yakāh a Ramal Tūtī, del artículo «Arab
+// tone system» de Wikipedia. De las cromáticas, las que tienen fuente en línea son Ḥijāz (Fa♯), Zīrkūlāh (Do♯/Re♭),
+// Qarār Ḥiṣār (La♭; su «nīm», medio bemol más abajo), Kawasht (Si) y ʿAjam ʿUshayrān (Si♭) (Offtonic Theory, «7.9
+// Maqamat», y el maqām ʿAjam ʿUshayrān de maqamworld.com). Kurdī, Būsalīk, Ḥiṣār, ʿAjam, Māhūr, Shahnāz, Sunbula,
+// Buzurk, Jawāb Būsalīk, Māhūrān y Jawāb Ḥijāz siguen la costumbre de nombrar la octava alta como la baja, sin una
+// tabla publicada que las contraste; hay que revisarlas con Touma (The Music of the Arabs, 1996) o con al-Shawwa. Una
+// fuente llama también Māhūr a Kardān (Do5), y aquí Māhūr es el Si natural sobre Awj.
 
 extension NombresPorOctava {
     /// Una fila de la tabla: la altura, su ajuste y sus nombres (original, transliterado y ASCII).

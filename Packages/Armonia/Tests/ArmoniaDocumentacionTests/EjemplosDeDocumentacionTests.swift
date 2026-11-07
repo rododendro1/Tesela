@@ -992,6 +992,15 @@ import Hexagonos
     @Test func notacionYPartitura7() throws {
         // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 7
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 7)
+        let bizantina = Notacion.sistema(.bizantino)!
+        comprobar(Acorde("Sol7/Si").cifrado(en: bizantina), #""Di7/Zo""#, doc, 1)
+        comprobar(try Nota(leyendo: "Γα♯", en: bizantina), #"Fa♯"#, doc, 2)
+        comprobar(Notacion.sistema(.sargam), #"nil"#, doc, 3)
+    }
+
+    @Test func notacionYPartitura8() throws {
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 8
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 8)
         comprobar(NombresPorOctava.arabe.nombre(de: Altura(.mi, octava: 4), ajuste: -1), #""Sīkāh""#, doc, 0)
         comprobar(NombresPorOctava.turco.nombre(de: Altura(.si, octava: 4), ajuste: -1), #""Segâh""#, doc, 1)
         comprobar(NombresPorOctava.griegoAntiguo.nombre(de: Altura(.la, octava: 3)), #""mésē""#, doc, 2)
@@ -1001,9 +1010,9 @@ import Hexagonos
         comprobar(SistemaDeNombres.solfeoHebreo.nombre(de: Nota("Fa"), grafia: .original), #""פה""#, doc, 7)
     }
 
-    @Test func notacionYPartitura8() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 8
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 8)
+    @Test func notacionYPartitura9() throws {
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 9
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 9)
         _ = Nota("Sibb").alteracion
         comprobar(Alteracion(3).nombre, #""triple sostenido""#, doc, 1)
         comprobar(Alteracion(-1).nombre(en: .inglesASCII), #""flat""#, doc, 2)
@@ -1016,9 +1025,9 @@ import Hexagonos
         comprobar(Alteracion.sostenido.pasosDeQuinta, #"7"#, doc, 9)
     }
 
-    @Test func notacionYPartitura9() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 9
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 9)
+    @Test func notacionYPartitura10() throws {
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 10
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 10)
         comprobar(Intervalo.sextaMenor.claseIntervalica, #"4"#, doc, 0)
         comprobarIgual(Intervalo.segundaAumentada.consonancia(), .disonancia, doc, 1)
         comprobar(Intervalo(numero: 1, calidad: .disminuida(1)), #"nil"#, doc, 2)
@@ -1031,9 +1040,9 @@ import Hexagonos
         comprobar(InstrumentoDePartitura.saxofonAlto.escritura(de: Acorde("Do7")), #"La7"#, doc, 11)
     }
 
-    @Test func notacionYPartitura10() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 10
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 10)
+    @Test func notacionYPartitura11() throws {
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 11
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 11)
         comprobar(Escala("Re mayor").svgPentagrama().hasPrefix("<svg"), #"true"#, doc, 0)
         comprobar(Escala("Re mayor").svgPentagrama().contains("<title>Re₄</title>"), #"true"#, doc, 1)
         comprobar(Escala("La menor melódica").svgPentagrama().contains("<title>Sol₅</title>"), #"true"#, doc, 2)
@@ -1042,40 +1051,40 @@ import Hexagonos
         comprobar(Escala("Do mayor").svgPentagrama(opciones: OpcionesDePentagrama(notacion: .inglesASCII)).contains("<title>C4</title>"), #"true"#, doc, 5)
     }
 
-    @Test func notacionYPartitura11() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 11
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 11)
+    @Test func notacionYPartitura12() throws {
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 12
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 12)
         comprobar(Escala("Re mayor").svgPentagrama() == Escala("Re mayor").partitura().svg(), #"true"#, doc, 0)
         comprobar(Acorde("Sol7").partitura().pentagramas[0].voces[0].cifrados == [.cero: Acorde("Sol7")], #"true"#, doc, 1)
         comprobar(Escala("Re mayor").svgPentagrama(opciones: OpcionesDePentagrama(titulo: "")).contains("id=\"titulo\""), #"false"#, doc, 2)
         comprobar(Escala("Re mayor").svgPentagrama(opciones: OpcionesDePentagrama(titulo: "Escala")).contains("<title id=\"titulo\">Escala</title>"), #"true"#, doc, 3)
     }
 
-    @Test func notacionYPartitura12() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 12
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 12)
+    @Test func notacionYPartitura13() throws {
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 13
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 13)
         comprobar(Acorde("Do13").svgPentagrama().contains("<title>Do₃</title>"), #"true"#, doc, 0)
         comprobar(Escala("Do mayor").svgPentagrama(octava: 6).contains("8va"), #"true"#, doc, 1)
         comprobar(Escala("Do mayor").svgPentagrama(octava: 3, opciones: OpcionesDePentagrama(maquetacion: .init(pentagramas: .doble))).contains("<title>Do₃</title>"), #"true"#, doc, 2)
     }
 
-    @Test func notacionYPartitura13() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 13
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 13)
-        let enLaMenor = OpcionesDePentagrama(armadura: .tonalidad(Tonalidad(.la, .menor)))
-        comprobar(Arpegio(Acorde("Mi7")).svgPentagrama(opciones: enLaMenor).contains("<title>Sol♯₄</title>"), #"true"#, doc, 1)
-    }
-
     @Test func notacionYPartitura14() throws {
         // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 14
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 14)
-        let voz = Voz(Arpegio(Acorde("Do7"), patron: .idaYVuelta), figura: .semicorchea)
-        comprobar(Partitura(.init(voz), encabezado: Encabezado(titulo: "Do7")).svg().contains("<title>Si♭₄</title>"), #"true"#, doc, 1)
+        let enLaMenor = OpcionesDePentagrama(armadura: .tonalidad(Tonalidad(.la, .menor)))
+        comprobar(Arpegio(Acorde("Mi7")).svgPentagrama(opciones: enLaMenor).contains("<title>Sol♯₄</title>"), #"true"#, doc, 1)
     }
 
     @Test func notacionYPartitura15() throws {
         // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 15
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 15)
+        let voz = Voz(Arpegio(Acorde("Do7"), patron: .idaYVuelta), figura: .semicorchea)
+        comprobar(Partitura(.init(voz), encabezado: Encabezado(titulo: "Do7")).svg().contains("<title>Si♭₄</title>"), #"true"#, doc, 1)
+    }
+
+    @Test func notacionYPartitura16() throws {
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 16
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 16)
         var porLineas = OpcionesDePentagrama()
         _ = porLineas.maquetacion.compasesPorLinea = 4
         let larga = try Voz(leyendo: Array(repeating: "Do4:4 Mi4:4 Sol4:2", count: 8).joined(separator: " "))
@@ -1087,9 +1096,9 @@ import Hexagonos
         comprobar(juntas.svg().contains("<title>Sol₄</title>"), #"true"#, doc, 8)
     }
 
-    @Test func notacionYPartitura16() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 16
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 16)
+    @Test func notacionYPartitura17() throws {
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 17
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 17)
         let derecha = try Voz(leyendo: "Mi5:4 Re5:4 Do5:2")
         let izquierda = try Voz(leyendo: "Do3:2 Sol2:2")
         let manos: [Partitura.Pentagrama] = [.init(clave: .sol, voces: [.init(derecha)]), .init(clave: .fa, voces: [.init(izquierda)])]
@@ -1098,17 +1107,17 @@ import Hexagonos
         comprobar(coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia")).svg().contains("<title>Si₄</title>"), #"true"#, doc, 5)
     }
 
-    @Test func notacionYPartitura17() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 17
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 17)
+    @Test func notacionYPartitura18() throws {
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 18
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 18)
         let opciones = OpcionesDePentagrama(marcas: .init(intervalosDeLasNotas: true, semitonos: true, tonica: true))
         comprobar(Acorde("Sol9").svgPentagrama(opciones: opciones).contains(">1 3 5 ♭7 9</text>"), #"true"#, doc, 1)
         comprobar(Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<title>Re₆</title>"), #"true"#, doc, 2)
     }
 
-    @Test func notacionYPartitura18() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 18
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 18)
+    @Test func notacionYPartitura19() throws {
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 19
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 19)
         let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
         let grados = Tonalidad(.do).analizar(progresion).cifrados
@@ -1117,16 +1126,16 @@ import Hexagonos
         comprobar(Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras"), #"true"#, doc, 5)
     }
 
-    @Test func notacionYPartitura19() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 19
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 19)
+    @Test func notacionYPartitura20() throws {
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 20
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 20)
         comprobar(Tonalidad(.do).cifrasDeBajo(de: Acorde("Sol7/Si")), #"["6", "5"]"#, doc, 0)
         comprobar(Tonalidad(.la, .menor).cifrasDeBajo(de: Acorde("Mi")), #"["♯"]"#, doc, 1)
     }
 
-    @Test func notacionYPartitura20() throws {
-        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 20
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 20)
+    @Test func notacionYPartitura21() throws {
+        // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 21
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 21)
         do {
             let acorde = try Acorde(leyendo: "Do7(b3)")
             print(acorde)

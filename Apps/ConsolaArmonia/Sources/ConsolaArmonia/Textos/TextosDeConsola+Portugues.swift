@@ -171,6 +171,8 @@ extension TextosDeConsola {
         Com --json também armonizar, realizar, revisar, contrapunto, transponer, escalas,
         rearmonizar, vecinos, plr, camino-parsimonioso, conduccion-minima, posiciones e motores. Se a saída não for
         o terminal, o JSON vai numa só linha.
+        Com --sistema, as notas saem com os nomes de outra tradição: bizantino (Ga♯), japones (ei He),
+        lu (dàlǚ)…; com um móvel (sargam, jianpu…), escala dá os seus graus (Sā Re ga). --grafia original ou ascii.
         ARMONIA_IDIOMA=eu fixa o idioma sem --idioma; com ARMONIA_IDIOMA=sistema, o de LANG.
         Códigos de saída: 0 bem, 1 texto que não se lê, 2 ordem mal escrita e 3 erros (revisar,
         contrapunto).
@@ -316,6 +318,9 @@ extension TextosDeConsola {
         idiomaDesconocido: { idioma in "idioma desconhecido: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru ou hu)" },
         terminalDesconocida: { t in "terminal desconhecido: «\(t)» (bash, zsh ou fish)" },
         escrituraNoValida: { escritura in "escrita inválida: «\(escritura)» (palabras/words ou compacto/compact; ascii ou unicode, só com es e en)" },
+        sistemaDesconocido: { sistema, lista in "sistema de nomes desconhecido: «\(sistema)» (\(lista))" },
+        grafiaNoValida: { grafia in "grafia inválida: «\(grafia)» (original, transliterada ou ascii)" },
+        sistemaMovil: { sistema in "«\(sistema)» nomeia os graus a partir da tónica, não notas soltas: só com escala (armonia escala Ré dórico --sistema \(sistema))" },
         sinSalidaJSON: { orden in "«\(orden)» não dá saída em JSON" },
 
         // Mensaje.swift
@@ -369,7 +374,7 @@ extension TextosDeConsola {
         pieDelIndice: """
         A ajuda de uma ordem: armonia ayuda <ordem> (ou armonia <ordem> --help).
         Toda a ajuda, com as opções de cada ordem: armonia ayuda --todo.
-        Para todas as ordens: --ingles, --idioma, --textos, --escritura, --subindices, --cifras e --json.
+        Para todas as ordens: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras e --json.
         """,
         bienvenidaDeLaSesion: { v in "armonia \(v). Escreve uma ordem por linha, sem «armonia» (ayuda: as ordens; salir: terminar)." }
     )

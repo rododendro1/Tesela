@@ -65,7 +65,10 @@ extension LineaDeComandos {
     /// ya se lee no cambia si la nota del idioma es otro trozo: «Do7» en alemán sigue siendo Do7, no D°7.
     static func notasEnEspanol(_ palabra: String, en notacion: Notacion) -> String {
         let idioma = notacion.notas.idiomaDeLasNotas
-        guard idioma != .espanol, idioma != .ingles, !palabra.hasPrefix("-"), !palabra.contains(" ") else {
+        // Con un sistema de otra tradición (--sistema bizantino) también: Ga♯7 → Fa#7.
+        let otroSistema = notacion.sistemaDeNombres != nil
+        guard otroSistema || (idioma != .espanol && idioma != .ingles), !palabra.hasPrefix("-"), !palabra.contains(" ")
+        else {
             return palabra
         }
         // La tabla con palabras tiene también los nombres compactos (Fis, Ré♭).

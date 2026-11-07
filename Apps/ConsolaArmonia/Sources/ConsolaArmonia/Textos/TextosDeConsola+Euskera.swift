@@ -171,6 +171,8 @@ extension TextosDeConsola {
         --json aukerarekin, armonizar, realizar, revisar, contrapunto, transponer, escalas,
         rearmonizar, vecinos, plr, camino-parsimonioso, conduccion-minima, posiciones eta motores ere bai. Irteera
         terminala ez bada, JSONa lerro bakarrean doa.
+        --sistema-rekin, notak beste tradizio bateko izenekin ateratzen dira: bizantino (Ga♯), japones (ei He),
+        lu (dàlǚ)…; mugikor batekin (sargam, jianpu…), escala-k bere graduak ematen ditu (Sā Re ga). --grafia original edo ascii.
         ARMONIA_IDIOMA=eu aldagaiak hizkuntza finkatzen du --idioma gabe; ARMONIA_IDIOMA=sistema
         bada, LANG aldagaiarena.
         Irteera-kodeak: 0 ondo, 1 irakurri ezin den testua, 2 gaizki idatzitako agindua eta 3 akatsak
@@ -317,6 +319,9 @@ extension TextosDeConsola {
         idiomaDesconocido: { idioma in "hizkuntza ezezaguna: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru edo hu)" },
         terminalDesconocida: { t in "terminal ezezaguna: «\(t)» (bash, zsh edo fish)" },
         escrituraNoValida: { escritura in "idazkera baliogabea: «\(escritura)» (palabras/words edo compacto/compact; ascii edo unicode, es eta en-ekin bakarrik)" },
+        sistemaDesconocido: { sistema, lista in "izen-sistema ezezaguna: «\(sistema)» (\(lista))" },
+        grafiaNoValida: { grafia in "grafia baliogabea: «\(grafia)» (original, transliterada edo ascii)" },
+        sistemaMovil: { sistema in "«\(sistema)» sistemak tonikatik graduak izendatzen ditu, ez nota solteak: escala-rekin bakarrik (armonia escala Re dórico --sistema \(sistema))" },
         sinSalidaJSON: { orden in "«\(orden)» aginduak ez du JSON irteerarik" },
 
         // Mensaje.swift
@@ -370,7 +375,7 @@ extension TextosDeConsola {
         pieDelIndice: """
         Agindu baten laguntza: armonia ayuda <agindua> (edo armonia <agindua> --help).
         Laguntza osoa, agindu bakoitzaren aukerekin: armonia ayuda --todo.
-        Agindu guztietarako: --ingles, --idioma, --textos, --escritura, --subindices, --cifras eta --json.
+        Agindu guztietarako: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras eta --json.
         """,
         bienvenidaDeLaSesion: { v in "armonia \(v). Idatzi agindu bat lerro bakoitzeko, «armonia» gabe (ayuda: aginduak; salir: amaitu)." }
     )

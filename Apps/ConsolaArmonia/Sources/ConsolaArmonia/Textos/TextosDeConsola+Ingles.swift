@@ -173,6 +173,8 @@ extension TextosDeConsola {
         With --json also harmonize, realize, check, counterpoint, transpose, scales,
         reharmonize, neighbors, plr, smooth-path, minimal-voice-leading, positions and engines. When the output is not
         a terminal, the JSON goes on a single line.
+        With --system, notes come out with the names of another tradition: byzantine (Ga♯), japanese (ei He),
+        lu (dàlǚ)…; with a movable one (sargam, jianpu…), scale gives its degrees (Sā Re ga). --script original or ascii.
         ARMONIA_IDIOMA=eu sets the language without --language; ARMONIA_IDIOMA=system takes it from LANG.
         Exit codes: 0 fine, 1 unreadable text, 2 badly written command and 3 mistakes found (check,
         counterpoint).
@@ -318,6 +320,9 @@ extension TextosDeConsola {
         idiomaDesconocido: { idioma in "unknown language: \"\(idioma)\" (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru or hu)" },
         terminalDesconocida: { t in "unknown shell: \"\(t)\" (bash, zsh or fish)" },
         escrituraNoValida: { escritura in "invalid writing: \"\(escritura)\" (words or compact; ascii or unicode, only with es and en)" },
+        sistemaDesconocido: { sistema, lista in "unknown naming system: \"\(sistema)\" (\(lista))" },
+        grafiaNoValida: { grafia in "invalid script: \"\(grafia)\" (original, transliterated or ascii)" },
+        sistemaMovil: { sistema in "\"\(sistema)\" names degrees from the tonic, not single notes: only with scale (armonia scale D dorian --system \(sistema))" },
         sinSalidaJSON: { orden in "\"\(orden)\" has no JSON output" },
 
         // Mensaje.swift
@@ -371,7 +376,7 @@ extension TextosDeConsola {
         pieDelIndice: """
         The help for one command: armonia help <command> (or armonia <command> --help).
         All the help, with each command's options: armonia help --all.
-        For every command: --ingles, --language, --texts, --writing, --subscripts, --digits and --json.
+        For every command: --ingles, --language, --texts, --writing, --system, --script, --subscripts, --digits and --json.
         """,
         bienvenidaDeLaSesion: { v in "armonia \(v). Type one command per line, without \"armonia\" (help: the commands; exit: quit)." }
     )

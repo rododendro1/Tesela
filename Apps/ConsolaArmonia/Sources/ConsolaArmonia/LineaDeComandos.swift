@@ -81,6 +81,34 @@ public enum LineaDeComandos {
             }
             notacion = Notacion(escritura: escritura, textos: notacion.textos)
         }
+        // Con --sistema, los nombres de otra tradición: los fijos (bizantino, japonés, lü) en toda la orden, como
+        // una escritura más; los móviles (sargam, jianpu), solo en `escala`, que tiene tónica (SistemaMovil).
+        var grafiaElegida = Grafia.transliterada
+        switch opciones.quitarOpcion(.grafia) {
+        case .ausente:
+            break
+        case .sinValor(let nombre):
+            return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            guard let elegida = grafia(texto) else { return uso(.grafiaNoValida(texto), notacion) }
+            grafiaElegida = elegida
+        }
+        var movil: SistemaMovil?
+        switch opciones.quitarOpcion(.sistema) {
+        case .ausente:
+            break
+        case .sinValor(let nombre):
+            return uso(.faltaValor(nombre), notacion)
+        case .valor(let texto):
+            guard let sistema = SistemaDeNombres(nombre: texto) else {
+                return uso(.sistemaDesconocido(texto), notacion)
+            }
+            if let conSistema = Notacion.sistema(sistema, grafia: grafiaElegida, textos: notacion.textos) {
+                notacion = conSistema
+            } else {
+                movil = SistemaMovil(sistema: sistema, grafia: grafiaElegida, nombre: texto)
+            }
+        }
         // La octava va como la escriba la notación (en subíndice en las compactas, con cifras en las demás), salvo
         // con --subindices o --cifras.
         let subindices = opciones.quitarMarca(.subindices)
@@ -116,6 +144,8 @@ public enum LineaDeComandos {
             return bien(ayuda(de: otra, en: notacion))
         }
         if resto.contains(where: marcasDeAyuda.contains) { return bien(ayuda(de: orden, en: notacion)) }
+        // Un sistema móvil nombra grados: solo `escala`, que tiene tónica, sabe qué nombre lleva cada nota.
+        if let movil, !orden.nombres.contains("escala") { return uso(.sistemaMovil(movil.nombre), notacion) }
 
         let estandar = entrada.map(EntradaEstandar.init)
         if let estandar {
@@ -125,10 +155,13 @@ public enum LineaDeComandos {
         // Los errores de uso de la orden remiten a su ayuda y proponen sus opciones (ErrorDeUso.texto(en:)).
         let enCurso = OrdenEnCurso(orden: orden, nombre: nombre)
         let resultado = OrdenEnCurso.$actual.withValue(orden.nombres.contains("ayuda") ? nil : enCurso) {
-            EntradaEstandar.$actual.withValue(estandar) {
-                NotacionDeLectura.$actual.withValue(notacion) {
-                    conLasNotasDelIdioma(resto, en: notacion) { resto in
-                        ejecutar(orden, nombre: nombre, resto, json: json, salidaEsTerminal: salidaEsTerminal, notacion)
+            SistemaMovil.$actual.withValue(movil) {
+                EntradaEstandar.$actual.withValue(estandar) {
+                    NotacionDeLectura.$actual.withValue(notacion) {
+                        conLasNotasDelIdioma(resto, en: notacion) { resto in
+                            ejecutar(
+                                orden, nombre: nombre, resto, json: json, salidaEsTerminal: salidaEsTerminal, notacion)
+                        }
                     }
                 }
             }
@@ -342,6 +375,18 @@ public enum LineaDeComandos {
     static let escriturasConPalabras = ["palabras", "words", "worte", "szavak"]
     static let escriturasCompactas = ["compacto", "compact", "unicode", "kompakt", "tomor"]
     /// Lo que se puede escribir tras `--escritura`, para proponerlo ante una errata.
+    /// Los nombres de `--grafia`, en español y en inglés.
+    static let nombresDeLasGrafias: [(String, Grafia)] = [
+        ("original", .original), ("transliterada", .transliterada), ("transliterated", .transliterada),
+        ("ascii", .ascii),
+    ]
+
+    /// La grafía de `--grafia`, sin importar las mayúsculas ni las tildes.
+    static func grafia(_ texto: String) -> Grafia? {
+        let clave = texto.lowercased().folding(options: .diacriticInsensitive, locale: nil)
+        return nombresDeLasGrafias.first { $0.0 == clave }?.1
+    }
+
     static var nombresDeLasEscrituras: [String] { escriturasConPalabras + escriturasCompactas + ["ascii"] }
 
     /// La notación de `ARMONIA_IDIOMA`: la de su idioma, como `--idioma`; con `sistema` (o `system`), la del idioma
@@ -365,4 +410,16 @@ public enum LineaDeComandos {
     static func notacionDelIdioma(_ texto: String) -> Notacion? {
         (try? Idioma(leyendo: texto)).map(Notacion.delIdioma)
     }
+}
+
+/// El sistema móvil de `--sistema` (sargam, jianpu…), que no va en la notación porque nombra grados: `escala` escribe
+/// con él los de la escala, desde su tónica.
+struct SistemaMovil: Sendable {
+    let sistema: SistemaDeNombres
+    let grafia: Grafia
+    /// Como se ha escrito, para los errores.
+    let nombre: String
+
+    /// El de la orden que se está ejecutando.
+    @TaskLocal static var actual: SistemaMovil?
 }

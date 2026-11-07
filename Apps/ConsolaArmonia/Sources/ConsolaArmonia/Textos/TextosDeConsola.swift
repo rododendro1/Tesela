@@ -304,6 +304,12 @@ struct TextosDeConsola: TextosTraducidos {
     let idiomaDesconocido: @Sendable (String) -> String
     let terminalDesconocida: @Sendable (String) -> String
     let escrituraNoValida: @Sendable (String) -> String
+    /// `--sistema` con un sistema que no se conoce, y la lista de los que hay.
+    let sistemaDesconocido: @Sendable (String, String) -> String
+    /// `--grafia` con un valor que no es original, transliterada ni ascii.
+    let grafiaNoValida: @Sendable (String) -> String
+    /// `--sistema` con uno móvil (el sargam) en una orden que no es `escala`.
+    let sistemaMovil: @Sendable (String) -> String
     let sinSalidaJSON: @Sendable (String) -> String
 
     // MARK: Mensaje.swift

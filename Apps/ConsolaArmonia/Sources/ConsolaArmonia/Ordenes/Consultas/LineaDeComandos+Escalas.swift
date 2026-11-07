@@ -205,6 +205,11 @@ extension LineaDeComandos {
         let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let datos = DatosDeEscala(escala, notacion: notacion)
         var lineas = [datos.nombre, "  \(traducir(.notas)): " + datos.notas.joined(separator: " ")]
+        // Con un sistema móvil (--sistema sargam), los grados con sus nombres, desde la tónica: Sā Re ga ma Pa Dha ni.
+        if let movil = SistemaMovil.actual {
+            let nombres = escala.nombres(en: movil.sistema, grafia: movil.grafia)
+            lineas.append("  \(movil.sistema.nombres[0]): " + nombres.joined(separator: " "))
+        }
         // De qué escala es modo: Re dórico → modo 2 de Do mayor.
         if let modo = datos.modo { lineas.append("  " + modo) }
         // La versión microtonal (Re Bayātī: Re Mi𝄳 Fa…) y los cents de cada grado, si la escala la tiene.

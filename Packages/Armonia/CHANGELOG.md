@@ -1,5 +1,28 @@
 # Cambios
 
+## Sin publicar
+
+### Los nombres de otras tradiciones en la notación, los diao y Jing Fang
+
+- Los sistemas fijos de `SistemaDeNombres` (bizantino, japonés, coreano, de Guido, los lü de China, Japón y Corea y
+  el solfeo en escritura árabe y hebrea) son también una escritura de las notas: `Notacion.sistema(.bizantino)`
+  escribe Ga♯ y Ke4 en todo lo que el motor nombra (acordes, escalas, tonalidades), y lee lo mismo, en sus tres
+  grafías: `Notacion.sistema(.japones, grafia: .original, textos: .euskera)` escribe ト7/ロ y explica en euskera.
+  `EscrituraDeNotas.sistema(_:grafia:)` y `EscrituraDeNotas.deOtrasTradiciones`; no están en `allCases`, que siguen
+  siendo las de los idiomas, y son `nil` para los móviles (el sargam, el jianpu), que nombran grados y no notas.
+- `armonia --sistema <sistema> [--grafia original|transliterada|ascii]` (`--system`, `--script`): con uno fijo, todas
+  las notas de la orden en ese sistema, que también se leen en él (`armonia acorde Ga♯7 --sistema bizantino`); con
+  uno móvil, `escala` añade los grados con sus nombres desde la tónica (`armonia escala Re dórico --sistema sargam`:
+  Sā Re ga ma Pa Dha ni), y las demás órdenes lo rechazan.
+- Los diao, los modos chinos con el lü de su tónica: `Escala(diao: "林钟商")` es Sol shāng, y `Escala(leyendo:)` los
+  lee también, en caracteres o en pinyin. Sin partícula y con 为, el lü es la tónica (la lectura 为调); con 之, es
+  gōng (之调): 林钟之商 es La shāng. `Escala.sesentaDiao(grafia:)` da los sesenta, y `nombreDeDiao(grafia:)`, el
+  nombre de una escala (林钟商, línzhōng shāng).
+- `JingFang`, la cadena de sesenta quintas del Hou Hanshu, de huángzhōng a nánshì: los cents de cada lü, la coma de
+  Mercator en la quinta 53 (3,615 cents) y el paso de las 53 comas (`SistemaMicrotonal.comas53`) de cada uno.
+- Los nombres árabes cromáticos dicen en el código cuáles se han contrastado con una fuente (Ḥijāz, Zīrkūlāh, Qarār
+  Ḥiṣār, Kawasht, ʿAjam ʿUshayrān) y cuáles faltan por revisar.
+
 ## 0.3.7 (2026-11-07)
 
 ### Nombres por octava: notas árabes, perde turcas y cuerdas griegas; los śruti y el gamelan

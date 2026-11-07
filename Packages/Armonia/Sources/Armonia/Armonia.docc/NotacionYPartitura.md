@@ -205,6 +205,16 @@ try SistemaDeNombres.carnatico.leer("G2")                              // Mi♭
 SistemaDeNombres.tonicSolFa.nombre(de: Nota("Sib"), tonica: Nota("Fa")) // "f"
 ```
 
+Los fijos son también una escritura de las notas: con `Notacion.sistema(_:grafia:textos:)`, todo lo que el motor
+nombra sale en ese sistema, y se lee en él. Los móviles no, porque nombran grados (`nil`).
+
+```swift
+let bizantina = Notacion.sistema(.bizantino)!
+Acorde("Sol7/Si").cifrado(en: bizantina)                                // "Di7/Zo"
+try Nota(leyendo: "Γα♯", en: bizantina)                                 // Fa♯
+Notacion.sistema(.sargam)                                               // nil
+```
+
 Las notas árabes, las perde turcas y las cuerdas de la Grecia antigua cambian de nombre en cada octava, y las dos
 primeras nombran también microtonos: son un ``NombresPorOctava``, que nombra una ``Altura`` con su ajuste en cuartos de
 tono o en comas. Rāst es Do4 y Yakāh, Sol3; Sīkāh, Mi𝄳4. En el turco, Rast es Sol4, como se escribe, y Segâh es Si4 una

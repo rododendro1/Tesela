@@ -154,7 +154,9 @@ usan microtonos):
   Y **los doce lü** (十二律, Shí'èr lǜ), la afinación de las doce alturas desde huángzhōng por sanfen sunyi
   (Do Do♯ Re Re♯ Mi Mi♯ Fa♯…, con Mi♯ a 522 cents, una coma pitagórica sobre Fa) y, de segunda afinación, los
   doce lü iguales de Zhu Zaiyu (1584); y sus dos mitades, los seis yang (Yánglǜ, 六律) y los seis yin (Yīnlǜ,
-  六吕), tonos enteros con un paso de 180 cents.
+  六吕), tonos enteros con un paso de 180 cents. Los modos se leen también con el lü de su tónica, como los sesenta
+  diao (`Escala(diao:)`, `Escala.sesentaDiao(grafia:)`): «林钟商» es Sol shāng, y con 之, el lü es gōng: «林钟之商» es
+  La shāng. La cadena de sesenta quintas de Jing Fang, en ``JingFang``, con la coma de Mercator en la quinta 53.
 - **13 escalas japonesas**: Ritsu y Ryo, del gagaku; Yō, Min'yō, Miyakobushi, In e Insen, de la
   música popular y urbana; Iwato, Hirajōshi, Kumoijōshi, Akebono y Kokin-jōshi, afinaciones del
   koto; y Ryūkyū, de Okinawa. Las fuentes occidentales describen algunas de varias formas: aquí
