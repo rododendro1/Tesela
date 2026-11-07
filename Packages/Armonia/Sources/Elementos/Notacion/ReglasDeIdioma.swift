@@ -244,6 +244,7 @@ extension EscrituraDeNotas {
     /// Cómo escribe las alteraciones: con palabras si se piden así, y si no, lo que diga el idioma, o con signos en
     /// los que solo las escriben con palabras (la compacta del francés: Ré♭).
     public var escrituraDeLaAlteracion: EscrituraDeLaAlteracion {
+        if sistema != nil { return .signos }
         if conPalabras { return .palabras }
         return idioma.reglas.alteraciones == .palabras ? .signos : idioma.reglas.alteraciones
     }

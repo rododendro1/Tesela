@@ -171,6 +171,8 @@ extension TextosDeConsola {
         С --json также harmonize, realize, check, counterpoint, transpose, scales,
         reharmonize, neighbors, plr, smooth-path, minimal-voice-leading, positions и engines. Если вывод идёт не в
         терминал, JSON выводится одной строкой.
+        С --sistema ноты выводятся с названиями другой традиции: bizantino (Ga♯), japones (ei He),
+        lu (dàlǚ)…; с подвижной (sargam, jianpu…) scale даёт ступени (Sā Re ga). --grafia original или ascii.
         ARMONIA_IDIOMA=eu задаёт язык без --idioma; ARMONIA_IDIOMA=system берёт язык из LANG.
         Коды выхода: 0 — успех, 1 — текст не читается, 2 — команда написана неверно, 3 — найдены ошибки
         (check, counterpoint).
@@ -316,6 +318,9 @@ extension TextosDeConsola {
         idiomaDesconocido: { idioma in "неизвестный язык: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru или hu)" },
         terminalDesconocida: { t in "неизвестная оболочка: «\(t)» (bash, zsh или fish)" },
         escrituraNoValida: { escritura in "недопустимое написание: «\(escritura)» (palabras/words или compacto/compact; ascii или unicode, только с es и en)" },
+        sistemaDesconocido: { sistema, lista in "неизвестная система названий: «\(sistema)» (\(lista))" },
+        grafiaNoValida: { grafia in "недопустимая запись: «\(grafia)» (original, transliterada или ascii)" },
+        sistemaMovil: { sistema in "«\(sistema)» называет ступени от тоники, а не отдельные ноты: только со scale (armonia scale D dorian --sistema \(sistema))" },
         sinSalidaJSON: { orden in "у «\(orden)» нет вывода в JSON" },
 
         // Mensaje.swift
@@ -369,7 +374,7 @@ extension TextosDeConsola {
         pieDelIndice: """
         Справка по команде: armonia help <команда> (или armonia <команда> --help).
         Вся справка, с параметрами каждой команды: armonia help --all.
-        Для всех команд: --ingles, --idioma, --textos, --escritura, --subindices, --cifras и --json.
+        Для всех команд: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras и --json.
         """,
         bienvenidaDeLaSesion: { v in "armonia \(v). Вводите по одной команде в строке, без «armonia» (help — команды; exit — выход)." }
     )

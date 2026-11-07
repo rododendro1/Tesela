@@ -6,7 +6,7 @@ import Testing
 
 @Suite struct NotacionTests {
     @Test func cadaNotacionTieneTituloYClaveDistintos() {
-        let todas = Notacion.allCases
+        let todas = Notacion.allCases + Notacion.deOtrasTradiciones
         #expect(Set(todas.map(\.titulo)).count == todas.count)
         #expect(Set(todas.map(\.clave)).count == todas.count)
     }
@@ -107,5 +107,28 @@ import Testing
             #expect(!(Notacion.espanolCompacto.mensaje(de: error).isEmpty))
             #expect(!(Notacion.inglesASCII.mensaje(de: error).isEmpty))
         }
+    }
+
+    /// Las de otras tradiciones se guardan con su sistema y su grafía, y conservan el idioma de los textos.
+    @Test func lasDeOtrasTradiciones() throws {
+        let bizantino = try #require(Notacion.sistema(.bizantino))
+        #expect(bizantino.clave == "bizantino")
+        #expect(bizantino.titulo == "Βυζαντινή (Ga♯)")
+        let original = try #require(Notacion.sistema(.bizantino, grafia: .original))
+        #expect(original.clave == "bizantinoOriginal")
+        #expect(original.titulo == "Βυζαντινή (Γα♯)")
+        #expect(Notacion.desde(clave: "bizantinoOriginal") == original)
+        #expect(Notacion.desde(clave: "luChinosASCII").sistemaDeNombres == .luChinos)
+        // Al elegirla, los textos siguen en el idioma que se leía, y al volver a un idioma, también.
+        let enEuskera = Notacion.conPalabras(.euskera).conNotas(bizantino)
+        #expect(enEuskera.textos == .euskera)
+        #expect(enEuskera.sistemaDeNombres == .bizantino)
+        #expect(Notacion.desde(clave: enEuskera.clave) == enEuskera)
+        #expect(enEuskera.conNotas(.conPalabras(.euskera)) == .conPalabras(.euskera))
+        // Sin las grafías que escriben igual las notas con una alteración: el ut de Guido no tiene otra escritura, y
+        // el japonés en ASCII solo cambia en las dobles (jū-ei).
+        #expect(
+            !Notacion.deOtrasTradiciones.contains { $0.clave == "guidonianoOriginal" || $0.clave == "japonesASCII" })
+        #expect(Notacion.deOtrasTradiciones.count == 22)
     }
 }

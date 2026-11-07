@@ -102,6 +102,19 @@ public struct Notacion: Hashable, Sendable, CaseIterable, Codable {
     /// `EscrituraDeNotas.conPalabras(_:)`.
     public static func conPalabras(_ idioma: Idioma) -> Notacion { Notacion(escritura: .conPalabras(idioma)) }
 
+    /// Las notas con los nombres de un sistema fijo de otra tradición y los textos en `textos` (en español si no se
+    /// da): `Notacion.sistema(.bizantino, textos: .euskera)` escribe Ga♯ y explica en euskera. `nil` para los
+    /// sistemas móviles, como el sargam: sus nombres son de grados, y se piden a la escala
+    /// (`Escala.nombres(en:grafia:)`). Ver `EscrituraDeNotas.sistema(_:grafia:)`.
+    public static func sistema(
+        _ sistema: SistemaDeNombres, grafia: Grafia = .transliterada, textos: Idioma? = nil
+    ) -> Notacion? {
+        EscrituraDeNotas.sistema(sistema, grafia: grafia).map { Notacion(escritura: $0, textos: textos) }
+    }
+
+    /// El sistema de nombres de otra tradición de las notas, si lo hay (``EscrituraDeNotas/sistema``).
+    public var sistemaDeNombres: SistemaDeNombres? { escritura.sistema }
+
     /// La misma notación de las notas con los textos en otro idioma: `Notacion.conPalabras(.ruso).conTextos(en:
     /// .espanol)`.
     public func conTextos(en idioma: Idioma) -> Notacion {
@@ -190,11 +203,43 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     /// alemán; con 𝄪 y 𝄫 para las dobles (`.conDobles`) en las demás compactas (Fa𝄪, B𝄫); con ♯ y ♭
     /// (`.conSimples`) en las demás, también en los cifrados de las que usan palabras.
     public let tipografia: Tipografia
+    /// El sistema de nombres de otra tradición con que se escriben las notas, si no son las del idioma: con
+    /// `.bizantino`, Fa♯ es Ga♯; con `.japones`, 嬰ヘ. Solo los fijos (``FamiliaDeNombres/fija``): en los móviles el
+    /// nombre depende de la tónica, y se piden a la escala (`Escala.nombres(en:grafia:)`).
+    public let sistema: SistemaDeNombres?
+    /// La grafía del `sistema`: la original (Νη, ハ), la transliterada (Ni, Ha) o la ASCII. Sin sistema, `.transliterada`,
+    /// que no se usa.
+    public let grafia: Grafia
 
     private init(_ idioma: Idioma, conPalabras: Bool = false, tipografia: Tipografia? = nil) {
         self.idioma = idioma
         self.conPalabras = conPalabras
         self.tipografia = tipografia ?? idioma.reglas.tipografia
+        self.sistema = nil
+        self.grafia = .transliterada
+    }
+
+    private init(sistema: SistemaDeNombres, grafia: Grafia) {
+        // El idioma solo da los textos si la notación no elige otros, y las reglas de lo que no son nombres de nota.
+        self.idioma = .espanol
+        self.conPalabras = false
+        self.tipografia = grafia == .ascii ? .ascii : .conSimples
+        self.sistema = sistema
+        self.grafia = grafia
+    }
+
+    /// Las notas con los nombres de un sistema fijo de otra tradición, en una grafía: `.sistema(.bizantino)` escribe
+    /// Ni, Ga♯, Zo♭; `.sistema(.japones, grafia: .original)`, ハ, 嬰ヘ, 変ロ, y `.sistema(.luChinos)`, huángzhōng,
+    /// dàlǚ. `nil` para los móviles (el sargam, el jianpu…), que nombran grados y no notas.
+    public static func sistema(_ sistema: SistemaDeNombres, grafia: Grafia = .transliterada) -> EscrituraDeNotas? {
+        guard sistema.familia == .fija else { return nil }
+        return EscrituraDeNotas(sistema: sistema, grafia: grafia)
+    }
+
+    /// Las escrituras de los sistemas fijos de otras tradiciones, en sus tres grafías. No están en `allCases`, que
+    /// son las de los idiomas.
+    public static let deOtrasTradiciones: [EscrituraDeNotas] = SistemaDeNombres.allCases.flatMap { sistema in
+        Grafia.allCases.compactMap { EscrituraDeNotas.sistema(sistema, grafia: $0) }
     }
 
     /// Do, Fa sostenido, Si bemol.
@@ -258,6 +303,7 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     /// ¿Es una de las compactas? `.espanolCompacto` (Fa♯), `.inglesCompacto` (F♯), `.compacta(.aleman)` (Fis),
     /// `.compacta(.frances)` (Ré♭)…: sin palabras y, en español e inglés, con signos tipográficos y no con # y b.
     public var esCompacta: Bool {
+        if sistema != nil { return false }
         switch escrituraDeLaAlteracion {
         case .alemana: return true
         case .signos: return tipografia != .ascii
@@ -355,10 +401,20 @@ extension Idioma {
 
 extension EscrituraDeNotas: Codable {
     // Se codifica con sus tres campos, y al leerla se busca entre `allCases`: solo hay esas.
-    private enum Claves: String, CodingKey { case idioma, conPalabras, tipografia }
+    // Las de otras tradiciones, con su sistema y su grafía.
+    private enum Claves: String, CodingKey { case idioma, conPalabras, tipografia, sistema, grafia }
 
     public init(from decoder: Decoder) throws {
         let contenedor = try decoder.container(keyedBy: Claves.self)
+        if let sistema = try contenedor.decodeIfPresent(SistemaDeNombres.self, forKey: .sistema) {
+            let grafia = try contenedor.decodeIfPresent(Grafia.self, forKey: .grafia) ?? .transliterada
+            guard let escritura = EscrituraDeNotas.sistema(sistema, grafia: grafia) else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .sistema, in: contenedor, debugDescription: "un sistema móvil no escribe notas sueltas")
+            }
+            self = escritura
+            return
+        }
         let idioma = try contenedor.decode(Idioma.self, forKey: .idioma)
         let conPalabras = try contenedor.decode(Bool.self, forKey: .conPalabras)
         let tipografia = try contenedor.decode(Tipografia.self, forKey: .tipografia)
@@ -375,6 +431,11 @@ extension EscrituraDeNotas: Codable {
 
     public func encode(to encoder: Encoder) throws {
         var contenedor = encoder.container(keyedBy: Claves.self)
+        if let sistema {
+            try contenedor.encode(sistema, forKey: .sistema)
+            try contenedor.encode(grafia, forKey: .grafia)
+            return
+        }
         try contenedor.encode(idioma, forKey: .idioma)
         try contenedor.encode(conPalabras, forKey: .conPalabras)
         try contenedor.encode(tipografia, forKey: .tipografia)

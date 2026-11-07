@@ -37,6 +37,8 @@ extension OpcionDeOrden {
     static let idioma = valor("--idioma", "--language")
     static let textos = valor("--textos", "--texts")
     static let escritura = valor("--escritura", "--writing")
+    static let sistema = valor("--sistema", "--system")
+    static let grafia = valor("--grafia", "--script", ocultos: ["--grafía"])
     static let fuente = valor("--fuente", "--source")
     static let subindices = marca("--subindices", "--subscripts")
     static let cifras = marca("--cifras", "--digits")

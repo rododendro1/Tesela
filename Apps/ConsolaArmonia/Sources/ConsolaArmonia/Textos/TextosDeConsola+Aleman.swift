@@ -171,6 +171,8 @@ extension TextosDeConsola {
         Mit --json auch harmonize, realize, check, counterpoint, transpose, scales,
         reharmonize, neighbors, plr, smooth-path, minimal-voice-leading, positions und engines. Ist die Ausgabe kein
         Terminal, steht das JSON in einer einzigen Zeile.
+        Mit --sistema stehen die Noten mit den Namen einer anderen Tradition: bizantino (Ga♯), japones (ei He),
+        lu (dàlǚ)…; mit einem beweglichen (sargam, jianpu…) gibt scale die Stufen (Sā Re ga). --grafia original oder ascii.
         ARMONIA_IDIOMA=eu legt die Sprache ohne --idioma fest; ARMONIA_IDIOMA=system nimmt die von LANG.
         Exit-Codes: 0 gut, 1 unlesbarer Text, 2 falsch geschriebener Befehl und 3 Fehler gefunden (check,
         counterpoint).
@@ -316,6 +318,9 @@ extension TextosDeConsola {
         idiomaDesconocido: { idioma in "unbekannte Sprache: „\(idioma)“ (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru oder hu)" },
         terminalDesconocida: { t in "unbekannte Shell: „\(t)“ (bash, zsh oder fish)" },
         escrituraNoValida: { escritura in "ungültige Schreibweise: „\(escritura)“ (palabras/words oder compacto/compact; ascii oder unicode, nur bei es oder en)" },
+        sistemaDesconocido: { sistema, lista in "unbekanntes Namenssystem: „\(sistema)“ (\(lista))" },
+        grafiaNoValida: { grafia in "ungültige Schrift: „\(grafia)“ (original, transliterada oder ascii)" },
+        sistemaMovil: { sistema in "„\(sistema)“ benennt Stufen ab der Tonika, keine einzelnen Noten: nur mit scale (armonia scale D dorian --sistema \(sistema))" },
         sinSalidaJSON: { orden in "„\(orden)“ hat keine JSON-Ausgabe" },
 
         // Mensaje.swift
@@ -369,7 +374,7 @@ extension TextosDeConsola {
         pieDelIndice: """
         Die Hilfe zu einem Befehl: armonia help <Befehl> (oder armonia <Befehl> --help).
         Die ganze Hilfe, mit den Optionen jedes Befehls: armonia help --all.
-        Für alle Befehle: --ingles, --idioma, --textos, --escritura, --subindices, --cifras und --json.
+        Für alle Befehle: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras und --json.
         """,
         bienvenidaDeLaSesion: { v in "armonia \(v). Ein Befehl pro Zeile, ohne „armonia“ (help: die Befehle; exit: beenden)." }
     )

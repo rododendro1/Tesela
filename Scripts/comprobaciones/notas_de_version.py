@@ -9,9 +9,10 @@ Cada `Packages/<Paquete>/CHANGELOG.md` tiene, de lo más nuevo a lo más viejo, 
                    de las apps). Lo usa `.github/workflows/version.yml` al subir una etiqueta.
   --comprobar      Comprueba los CHANGELOG (títulos bien escritos, «Sin publicar» solo arriba, versiones de más nueva
                    a más vieja), que la versión de `project.yml` tiene notas y que es la de `armonia --version`
-                   (`Apps/ConsolaArmonia/Sources/ConsolaArmonia/Version.swift`). Lo usa el CI.
+                   (`Apps/ConsolaArmonia/Sources/ConsolaArmonia/Version.swift`) y la de la dependencia de los README
+                   (`from: "0.2.0"`). Lo usa el CI.
   --publicar 0.2.0 Prepara una versión: las secciones «Sin publicar» pasan a «0.2.0 (fecha de hoy)», y
-                   `MARKETING_VERSION` y la de `armonia --version`, a 0.2.0. Falla si ningún paquete tiene nada sin
+                   `MARKETING_VERSION`, la de `armonia --version` y la de los README, a 0.2.0. Falla si ningún paquete tiene nada sin
                    publicar.
 
 Uso: python3 Scripts/comprobaciones/notas_de_version.py 0.2.0 | --actual | --comprobar | --publicar 0.2.0
@@ -27,6 +28,9 @@ PROYECTO = RAIZ / "project.yml"
 # La versión de `armonia --version`: `public static let version = "0.2.0"`.
 VERSION_DE_LA_CLI = RAIZ / "Apps/ConsolaArmonia/Sources/ConsolaArmonia/Version.swift"
 DECLARACION_DE_LA_CLI = re.compile(r'(static let version = )"([^"]*)"')
+# Los README dicen con qué versión añadir el paquete: `.package(url: "…/Tesela.git", from: "0.3.7")`.
+READMES = [RAIZ / "README.md", RAIZ / "README.en.md"]
+DEPENDENCIA_DEL_README = re.compile(r'(Tesela\.git", from: )"([^"]*)"')
 SIN_PUBLICAR = "Sin publicar"
 # GitHub no admite notas de más de 125 000 caracteres: por encima de este límite se cortan y se enlazan los CHANGELOG.
 LIMITE = 120_000
@@ -131,6 +135,14 @@ def comprobar():
     if cli != apps:
         errores.append(f"{VERSION_DE_LA_CLI.relative_to(RAIZ)}: la versión de armonia ({cli}) no es la de project.yml "
                        f"({apps})")
+    for readme in READMES:
+        versiones = [m.group(2) for m in DEPENDENCIA_DEL_README.finditer(readme.read_text(encoding="utf-8"))]
+        if not versiones:
+            errores.append(f"{readme.relative_to(RAIZ)}: no encuentro la dependencia (`Tesela.git\", from: \"…\"`)")
+        for version in versiones:
+            if version != apps:
+                errores.append(f"{readme.relative_to(RAIZ)}: la dependencia dice from: \"{version}\", no la versión de "
+                               f"project.yml ({apps})")
     for error in errores:
         print(error, file=sys.stderr)
     return 1 if errores else 0
@@ -163,7 +175,11 @@ def publicar(version, hoy=None):
                         encoding="utf-8")
     cli = VERSION_DE_LA_CLI.read_text(encoding="utf-8")
     VERSION_DE_LA_CLI.write_text(DECLARACION_DE_LA_CLI.sub(rf'\g<1>"{version}"', cli, count=1), encoding="utf-8")
-    print(f"Versión {version} ({fecha}): {', '.join(cambiados)}, MARKETING_VERSION en project.yml y la de armonia.")
+    for readme in READMES:
+        texto = readme.read_text(encoding="utf-8")
+        readme.write_text(DEPENDENCIA_DEL_README.sub(rf'\g<1>"{version}"', texto), encoding="utf-8")
+    print(f"Versión {version} ({fecha}): {', '.join(cambiados)}, MARKETING_VERSION en project.yml, la de armonia y "
+          f"la de los README.")
     print(f"Fusiona el cambio en main y etiqueta ese commit: git tag {version} && git push origin {version}")
     return 0
 

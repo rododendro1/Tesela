@@ -19,6 +19,12 @@ enum ErrorDeUso: Error {
     case terminalDesconocida(String)
     /// `--escritura` con un valor que no es palabras ni compacto (ni, en español e inglés, ascii o unicode).
     case escrituraNoValida(String)
+    /// `--sistema` con un sistema de nombres que no se conoce.
+    case sistemaDesconocido(String)
+    /// `--grafia` con un valor que no es original, transliterada ni ascii.
+    case grafiaNoValida(String)
+    /// `--sistema` con uno móvil (sargam, jianpu…) en una orden que no es `escala`: nombran grados, no notas.
+    case sistemaMovil(String)
     /// `--json` con una orden que no da JSON.
     case sinSalidaJSON(String)
 
@@ -201,6 +207,11 @@ enum ErrorDeUso: Error {
             return LineaDeComandos.propuesta(para: orden, entre: Array(LineaDeComandos.ordenesDeEscalas.keys))
         case .escrituraNoValida(let escritura):
             return LineaDeComandos.propuesta(para: escritura, entre: LineaDeComandos.nombresDeLasEscrituras)
+        case .sistemaDesconocido(let sistema):
+            return LineaDeComandos.propuesta(
+                para: sistema, entre: SistemaDeNombres.allCases.flatMap { [$0.rawValue] + $0.nombres })
+        case .grafiaNoValida(let grafia):
+            return LineaDeComandos.propuesta(para: grafia, entre: LineaDeComandos.nombresDeLasGrafias.map(\.0))
         default:
             return nil
         }
@@ -225,6 +236,13 @@ enum ErrorDeUso: Error {
             return TextosDeConsola.traduccion { $0.terminalDesconocida(terminal) }
         case .escrituraNoValida(let escritura):
             return TextosDeConsola.traduccion { $0.escrituraNoValida(escritura) }
+        case .sistemaDesconocido(let sistema):
+            let lista = SistemaDeNombres.allCases.map { $0.nombres[0] }.joined(separator: ", ")
+            return TextosDeConsola.traduccion { $0.sistemaDesconocido(sistema, lista) }
+        case .grafiaNoValida(let grafia):
+            return TextosDeConsola.traduccion { $0.grafiaNoValida(grafia) }
+        case .sistemaMovil(let sistema):
+            return TextosDeConsola.traduccion { $0.sistemaMovil(sistema) }
         case .sinSalidaJSON(let orden):
             return TextosDeConsola.traduccion { $0.sinSalidaJSON(orden) }
         case .faltaCifrado: return TextosDeConsola.traduccion(\.faltaCifrado)

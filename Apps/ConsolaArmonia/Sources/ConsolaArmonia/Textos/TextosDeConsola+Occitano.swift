@@ -171,6 +171,8 @@ extension TextosDeConsola {
         Amb --json tanben armonizar, realizar, revisar, contrapunto, transponer, escalas,
         rearmonizar, vecinos, plr, camino-parsimonioso, conduccion-minima, posiciones e motores. Se la sortida es pas
         lo terminal, lo JSON va sus una sola linha.
+        Amb --sistema, las nòtas sortisson amb los noms d'una autra tradicion: bizantino (Ga♯), japones (ei He),
+        lu (dàlǚ)…; amb un mobil (sargam, jianpu…), escala ne dona los grads (Sā Re ga). --grafia original o ascii.
         ARMONIA_IDIOMA=eu fixa la lenga sens --idioma; amb ARMONIA_IDIOMA=sistema, la de LANG.
         Còdis de sortida: 0 plan, 1 tèxte que se pòt pas legir, 2 òrdre mal escrich e 3 fautas (revisar,
         contrapunto).
@@ -316,6 +318,9 @@ extension TextosDeConsola {
         idiomaDesconocido: { idioma in "lenga desconeguda: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu)" },
         terminalDesconocida: { t in "terminal desconegut: «\(t)» (bash, zsh o fish)" },
         escrituraNoValida: { escritura in "escritura invalida: «\(escritura)» (palabras/words o compacto/compact; ascii o unicode, sonque amb es e en)" },
+        sistemaDesconocido: { sistema, lista in "sistèma de noms desconegut: «\(sistema)» (\(lista))" },
+        grafiaNoValida: { grafia in "grafia invalida: «\(grafia)» (original, transliterada o ascii)" },
+        sistemaMovil: { sistema in "«\(sistema)» nomena los grads dempuèi la tonica, pas de nòtas soltas: sonque amb escala (armonia escala Re dorian --sistema \(sistema))" },
         sinSalidaJSON: { orden in "«\(orden)» dona pas de sortida en JSON" },
 
         // Mensaje.swift
@@ -369,7 +374,7 @@ extension TextosDeConsola {
         pieDelIndice: """
         L'ajuda d'un òrdre: armonia ayuda <òrdre> (o armonia <òrdre> --help).
         Tota l'ajuda, amb las opcions de cada òrdre: armonia ayuda --todo.
-        Per totes los òrdres: --ingles, --idioma, --textos, --escritura, --subindices, --cifras e --json.
+        Per totes los òrdres: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras e --json.
         """,
         bienvenidaDeLaSesion: { v in "armonia \(v). Escrivètz un òrdre per linha, sens «armonia» (ayuda: los òrdres; salir: acabar)." }
     )

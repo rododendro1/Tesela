@@ -47,7 +47,7 @@ Lee los nombres en español o en inglés (Do, C, Sib, Bb) y responde en el idiom
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/rododendro1/Tesela.git", from: "0.3.2"),
+    .package(url: "https://github.com/rododendro1/Tesela.git", from: "0.3.7"),
 ],
 targets: [
     .target(name: "MiApp", dependencies: [

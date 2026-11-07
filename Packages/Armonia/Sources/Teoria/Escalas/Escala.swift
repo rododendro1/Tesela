@@ -50,6 +50,8 @@ public struct Escala: Hashable, Sendable {
                 let encontrado = TipoDeEscala.buscar(nombre: tipo, conTonicaEn: notacion)
                 if let encontrado { return Escala(nombre, encontrado) }
             }
+            // Un diao: un lü y un modo chino («黄钟宫», «林钟商», «línzhōng shāng»).
+            if let diao = Escala(diao: texto) { return diao }
             // Una escala propia: sus notas («Do Re Mi♭ Fa♯ Sol La Si») o su tónica y sus pasos («Do 2-1-3-1-2-2-1»).
             if let propia = Escala.leerPropia(texto) { return propia }
             throw error

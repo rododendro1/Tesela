@@ -171,6 +171,8 @@ extension TextosDeConsola {
         A --json kapcsolóval a harmonize, realize, check, counterpoint, transpose, scales,
         reharmonize, neighbors, plr, smooth-path, minimal-voice-leading, positions és engines is. Ha a kimenet
         nem terminál, a JSON egyetlen sorban jelenik meg.
+        A --sistema kapcsolóval a hangok egy másik hagyomány neveivel jelennek meg: bizantino (Ga♯), japones (ei He),
+        lu (dàlǚ)…; mozgóval (sargam, jianpu…) a scale a fokokat adja (Sā Re ga). --grafia original vagy ascii.
         Az ARMONIA_IDIOMA=eu --idioma nélkül állítja be a nyelvet; az ARMONIA_IDIOMA=system a LANG-ét veszi.
         Kilépési kódok: 0 rendben, 1 olvashatatlan szöveg, 2 hibásan írt parancs és 3 hibák (check,
         counterpoint).
@@ -316,6 +318,9 @@ extension TextosDeConsola {
         idiomaDesconocido: { idioma in "ismeretlen nyelv: „\(idioma)” (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru vagy hu)" },
         terminalDesconocida: { t in "ismeretlen parancsértelmező: „\(t)” (bash, zsh vagy fish)" },
         escrituraNoValida: { escritura in "érvénytelen írásmód: „\(escritura)” (palabras/words vagy compacto/compact; ascii vagy unicode, csak es és en mellett)" },
+        sistemaDesconocido: { sistema, lista in "ismeretlen névrendszer: „\(sistema)” (\(lista))" },
+        grafiaNoValida: { grafia in "érvénytelen írás: „\(grafia)” (original, transliterada vagy ascii)" },
+        sistemaMovil: { sistema in "a(z) „\(sistema)” a tonikától számolt fokokat nevezi meg, nem különálló hangokat: csak a scale paranccsal (armonia scale D dorian --sistema \(sistema))" },
         sinSalidaJSON: { orden in "a(z) „\(orden)” parancsnak nincs JSON-kimenete" },
 
         // Mensaje.swift
@@ -369,7 +374,7 @@ extension TextosDeConsola {
         pieDelIndice: """
         Egy parancs súgója: armonia help <parancs> (vagy armonia <parancs> --help).
         A teljes súgó, minden parancs kapcsolóival: armonia help --all.
-        Minden parancshoz: --ingles, --idioma, --textos, --escritura, --subindices, --cifras és --json.
+        Minden parancshoz: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras és --json.
         """,
         bienvenidaDeLaSesion: { v in "armonia \(v). Soronként egy parancs, „armonia” nélkül (help: a parancsok; exit: kilépés)." }
     )

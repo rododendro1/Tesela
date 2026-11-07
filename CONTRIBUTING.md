@@ -100,7 +100,7 @@ Las versiones siguen [SemVer](https://semver.org/lang/es/); mientras sean 0.x, u
 anterior marcó como obsoleto. Para publicar una:
 
 ```sh
-python3 Scripts/comprobaciones/notas_de_version.py --publicar 0.2.0   # «Sin publicar» pasa a «0.2.0 (fecha)» y sube MARKETING_VERSION
+python3 Scripts/comprobaciones/notas_de_version.py --publicar 0.2.0   # «Sin publicar» pasa a «0.2.0 (fecha)»; sube MARKETING_VERSION, armonia y los README
 # … pull request con ese cambio, y fusionarlo …
 git tag 0.2.0 && git push origin 0.2.0                 # en el commit de main
 ```

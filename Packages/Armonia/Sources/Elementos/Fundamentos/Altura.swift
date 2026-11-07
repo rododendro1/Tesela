@@ -64,7 +64,8 @@ public struct Altura: Hashable, Sendable {
         let notacion = notacion.notas
         // En español e inglés con signos, el lector de siempre («Fa#4»). En los demás casos, el nombre y la octava por
         // separado: «Fa sostenido 4» (también «Fa#4», que lee `Nota(leyendo:en:)`), «Fis₄», «Ré♭₃».
-        let conSignos = notacion.escritura.escrituraDeLaAlteracion == .signos
+        // Los de otra tradición también van por separado: «Ga♯4», «嬰ヘ₄».
+        let conSignos = notacion.escritura.escrituraDeLaAlteracion == .signos && notacion.sistemaDeNombres == nil
         switch conSignos && notacion.idiomaDeLasNotas.reglas.tieneVariantes {
         case false:
             let limpio = texto.trimmingEspacios()

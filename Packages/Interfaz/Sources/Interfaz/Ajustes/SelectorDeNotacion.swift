@@ -29,6 +29,12 @@
                     ForEach(Notacion.allCases, id: \.self) { notacion in
                         Text(notacion.titulo).tag(notacion.clave)
                     }
+                    // Las de otras tradiciones (bizantino, japonés, los lü), con los textos en el idioma elegido.
+                    Section(notacion.texto(\.otrasTradiciones)) {
+                        ForEach(Notacion.deOtrasTradiciones, id: \.self) { notacion in
+                            Text(notacion.titulo).tag(notacion.clave)
+                        }
+                    }
                 }
                 Picker(notacion.texto(\.textos), selection: textos) {
                     Text(notacion.texto(\.comoLasNotas)).tag("")

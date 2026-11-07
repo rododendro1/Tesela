@@ -171,6 +171,8 @@ extension TextosDeConsola {
         Με --json επίσης οι harmonize, realize, check, counterpoint, transpose, scales,
         reharmonize, neighbors, plr, smooth-path, minimal-voice-leading, positions και engines. Αν η έξοδος δεν
         είναι τερματικό, το JSON γράφεται σε μία γραμμή.
+        Με --sistema, οι νότες βγαίνουν με τα ονόματα άλλης παράδοσης: bizantino (Ga♯), japones (ei He),
+        lu (dàlǚ)…· με ένα κινητό (sargam, jianpu…), το scale δίνει τις βαθμίδες (Sā Re ga). --grafia original ή ascii.
         Το ARMONIA_IDIOMA=eu ορίζει τη γλώσσα χωρίς --idioma· το ARMONIA_IDIOMA=system παίρνει αυτήν του LANG.
         Κωδικοί εξόδου: 0 εντάξει, 1 κείμενο που δεν διαβάζεται, 2 λάθος εντολή και 3 σφάλματα (check,
         counterpoint).
@@ -316,6 +318,9 @@ extension TextosDeConsola {
         idiomaDesconocido: { idioma in "άγνωστη γλώσσα: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru ή hu)" },
         terminalDesconocida: { t in "άγνωστο κέλυφος: «\(t)» (bash, zsh ή fish)" },
         escrituraNoValida: { escritura in "μη έγκυρη γραφή: «\(escritura)» (palabras/words ή compacto/compact· ascii ή unicode, μόνο με es και en)" },
+        sistemaDesconocido: { sistema, lista in "άγνωστο σύστημα ονομάτων: «\(sistema)» (\(lista))" },
+        grafiaNoValida: { grafia in "μη έγκυρη γραφή: «\(grafia)» (original, transliterada ή ascii)" },
+        sistemaMovil: { sistema in "το «\(sistema)» ονομάζει βαθμίδες από την τονική, όχι μεμονωμένες νότες: μόνο με scale (armonia scale D dorian --sistema \(sistema))" },
         sinSalidaJSON: { orden in "η «\(orden)» δεν δίνει έξοδο JSON" },
 
         // Mensaje.swift
@@ -369,7 +374,7 @@ extension TextosDeConsola {
         pieDelIndice: """
         Η βοήθεια μιας εντολής: armonia help <εντολή> (ή armonia <εντολή> --help).
         Όλη η βοήθεια, με τις επιλογές κάθε εντολής: armonia help --all.
-        Για όλες τις εντολές: --ingles, --idioma, --textos, --escritura, --subindices, --cifras και --json.
+        Για όλες τις εντολές: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras και --json.
         """,
         bienvenidaDeLaSesion: { v in "armonia \(v). Γράψτε μία εντολή ανά γραμμή, χωρίς «armonia» (help: οι εντολές· exit: τέλος)." }
     )

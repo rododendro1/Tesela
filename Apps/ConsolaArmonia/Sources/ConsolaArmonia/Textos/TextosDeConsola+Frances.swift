@@ -171,6 +171,8 @@ extension TextosDeConsola {
         Avec --json aussi armonizar, realizar, revisar, contrapunto, transponer, escalas,
         rearmonizar, vecinos, plr, camino-parsimonioso, conduccion-minima, posiciones et motores. Si la sortie n'est
         pas le terminal, le JSON tient sur une seule ligne.
+        Avec --sistema, les notes sortent avec les noms d'une autre tradition : bizantino (Ga♯), japones (ei He),
+        lu (dàlǚ)… ; avec un système mobile (sargam, jianpu…), escala donne ses degrés (Sā Re ga). --grafia original ou ascii.
         ARMONIA_IDIOMA=eu fixe la langue sans --idioma ; avec ARMONIA_IDIOMA=sistema, celle de LANG.
         Codes de sortie : 0 bien, 1 texte illisible, 2 commande mal écrite et 3 fautes (revisar,
         contrapunto).
@@ -316,6 +318,9 @@ extension TextosDeConsola {
         idiomaDesconocido: { idioma in "langue inconnue : « \(idioma) » (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru ou hu)" },
         terminalDesconocida: { t in "terminal inconnu : « \(t) » (bash, zsh ou fish)" },
         escrituraNoValida: { escritura in "écriture non valide : « \(escritura) » (palabras/words ou compacto/compact ; ascii ou unicode, seulement avec es et en)" },
+        sistemaDesconocido: { sistema, lista in "système de noms inconnu : « \(sistema) » (\(lista))" },
+        grafiaNoValida: { grafia in "graphie non valide : « \(grafia) » (original, transliterada ou ascii)" },
+        sistemaMovil: { sistema in "« \(sistema) » nomme les degrés depuis la tonique, pas des notes isolées : seulement avec escala (armonia escala ré dorien --sistema \(sistema))" },
         sinSalidaJSON: { orden in "« \(orden) » ne donne pas de sortie JSON" },
 
         // Mensaje.swift
@@ -369,7 +374,7 @@ extension TextosDeConsola {
         pieDelIndice: """
         L'aide d'une commande : armonia ayuda <commande> (ou armonia <commande> --help).
         Toute l'aide, avec les options de chaque commande : armonia ayuda --todo.
-        Pour toutes les commandes : --ingles, --idioma, --textos, --escritura, --subindices, --cifras et --json.
+        Pour toutes les commandes : --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras et --json.
         """,
         bienvenidaDeLaSesion: { v in "armonia \(v). Écrivez une commande par ligne, sans « armonia » (ayuda : les commandes ; salir : terminer)." }
     )
