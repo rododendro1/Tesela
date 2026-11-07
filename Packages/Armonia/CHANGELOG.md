@@ -20,6 +20,11 @@
 - Cinco escalas de tradiciones: Ujo (Corea), la istriana (Europa, con la subtradición `Subtradicion.istria`) y
   Hò mái nhì, Sa mạc y Dân ca (Vietnam, con sus afinaciones medidas en la đàn tranh).
 - La enigmática se lee también como «de Verdi», y la disminuida semitono-tono, como «de Stravinski».
+- En ruso y en griego, 36 escalas de tradiciones que salían en alfabeto latino tienen ahora su nombre transcrito o
+  traducido: los modos de Glareano, los hexacordos, musica recta, varias carnáticas, los ṣadd, las de África,
+  Brasil, Europa, Indonesia, Corea y Vietnam (y, en griego, el Ḥijāz árabe, Təzəta y Bati).
+- Los tres modos nordestinos de Brasil se traducen en los idiomas en que su nombre cambia: «Northeastern Dorian»,
+  «dòric nordestí», «nordöstlich lydisch»…
 
 ### Doce idiomas: sin el asturiano, el aragonés y el occitano
 

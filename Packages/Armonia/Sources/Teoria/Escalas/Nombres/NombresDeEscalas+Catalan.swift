@@ -189,6 +189,11 @@ extension NombresDeEscalas {
         .tradicional(.tetracordoCromaticoDeVicentino, "tetracord cromàtic de Vicentino"),
         .tradicional(.tetracordoEnarmonicoDeVicentino, "tetracord enharmònic de Vicentino"),
 
+        // Brasil: modos nordestinos
+        .tradicional(.doricoNordestino, "dòric nordestí"),
+        .tradicional(.lidioNordestino, "lidi nordestí"),
+        .tradicional(.mixolidioNordestino, "mixolidi nordestí"),
+
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),
         .categoria(.melakarta, "mēḷa"),
