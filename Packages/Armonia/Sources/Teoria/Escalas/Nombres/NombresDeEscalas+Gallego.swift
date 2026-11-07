@@ -140,6 +140,10 @@ extension NombresDeEscalas {
         .tradicional(.doricoUcraniano, "dórico ucraíno"),
         .tradicional(.cuernoAlpino, "corno alpino"),
 
+        // Brasil: modos nordestinos
+        .tradicional(.lidioNordestino, "lidio nordestino"),
+        .tradicional(.mixolidioNordestino, "mixolidio nordestino"),
+
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),
         .categoria(.melakarta, "mēḷa"),
