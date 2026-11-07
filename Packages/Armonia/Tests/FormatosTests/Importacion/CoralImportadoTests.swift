@@ -76,3 +76,31 @@ import Testing
         #expect(coral.acordes.map { $0.map(\.nombre) } == [["Do₃", "Mi₄", "Sol₄"], ["Sol₂", "Si₃", "Re₄"]])
     }
 }
+
+/// `PiezaImportada.transponer(_:)` y `melodia()`.
+@Suite struct TransposicionYMelodiaImportadasTests {
+    @Test func unaPiezaTranspuesta() throws {
+        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
+        let pieza = try PiezaImportada(leyendo: analisis.partitura().midi())
+        let subida = pieza.transponer(.segundaMayor)
+        #expect(subida.acordes().map(\.cifrado) == ["Re", "Sol", "La7", "Re"])
+        #expect(subida.notas.count == pieza.notas.count)
+        #expect(zip(subida.notas, pieza.notas).allSatisfy { $0.inicio == $1.inicio && $0.duracion == $1.duracion })
+        let conTonalidad = PiezaImportada(
+            tonalidad: Tonalidad(.do), notas: pieza.notas, notasDeAdorno: [pieza.notas[0]])
+        #expect(conTonalidad.transponer(.segundaMayor).tonalidad == Tonalidad(.re))
+        #expect(
+            conTonalidad.transponer(.segundaMayor).notasDeAdorno.map(\.altura) == [
+                pieza.notas[0].altura.transponer(.segundaMayor)
+            ])
+    }
+
+    @Test func laMelodiaEsLaVozMasAguda() throws {
+        let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
+        let pieza = try PiezaImportada(leyendo: Data(coral.partitura(duracion: .blanca).musicXML().utf8))
+        let melodia = try pieza.melodia()
+        #expect(melodia.eventos.flatMap(\.alturas).map(\.nombre) == ["Do₅", "Si₄", "Do₅"])
+        #expect(melodia.eventos.prefix(2).map(\.duracion) == [.blanca, .blanca])
+        #expect(throws: (any Error).self) { try PiezaImportada(notas: []).melodia() }
+    }
+}
