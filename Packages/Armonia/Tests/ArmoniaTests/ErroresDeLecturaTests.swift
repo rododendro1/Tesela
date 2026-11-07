@@ -2,10 +2,10 @@ import Foundation
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaDiagramas
-@testable import ArmoniaElementos
-@testable import ArmoniaPartitura
-@testable import ArmoniaTeoria
+@testable import Diagramas
+@testable import Elementos
+@testable import Partituras
+@testable import Teoria
 
 /// Los errores al leer y sus mensajes en cada idioma.
 @Suite struct ErroresDeLecturaTests {

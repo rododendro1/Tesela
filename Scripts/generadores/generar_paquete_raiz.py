@@ -106,7 +106,8 @@ def lista(elementos):
 def llamada(funcion, argumentos, sangria="        "):
     """`.funcion(a, b),` en una línea si cabe; si no, un argumento por línea, y una lista larga, partida."""
     una = f"{sangria}.{funcion}({', '.join(argumentos)}),"
-    if len(una) <= ANCHO:
+    # swift-format rechaza aquí una llamada de 120 caracteres justos (lo vio el CI en #218): una menos.
+    if len(una) < ANCHO:
         return una
     interior = sangria + "    "
     lineas = [f"{sangria}.{funcion}("]

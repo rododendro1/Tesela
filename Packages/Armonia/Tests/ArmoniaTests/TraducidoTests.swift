@@ -2,11 +2,11 @@ import Foundation
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaDiagramas
-@testable import ArmoniaElementos
-@testable import ArmoniaPartitura
-@testable import ArmoniaTeoria
-@testable import ArmoniaTrastes
+@testable import Diagramas
+@testable import Elementos
+@testable import Partituras
+@testable import Teoria
+@testable import Trastes
 
 @Suite struct TraducidoTests {
     @Test func unValorPorIdioma() {

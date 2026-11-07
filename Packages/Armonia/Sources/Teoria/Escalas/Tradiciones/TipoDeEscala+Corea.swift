@@ -1,0 +1,23 @@
+import Elementos
+
+// MARK: - Corea
+
+extension TipoDeEscala {
+    // MARK: Escalas coreanas
+    //
+    // Las dos pentatónicas de la música tradicional, en McCune-Reischauer (con breves y
+    // apóstrofo) y en la romanización oficial y en hangul como alias.
+
+    /// 평조 (Sol La Do Re Mi).
+    public static let pyongjo = TipoDeEscala(
+        nombre: "P'yŏngjo", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
+        variantes: ["Pyeongjo", "Pyongjo", "평조"],
+        categoria: .jo, llevaLaCategoria: true)
+    /// 계면조 (La Do Re Mi Sol).
+    public static let kyemyonjo = TipoDeEscala(
+        nombre: "Kyemyŏnjo", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
+        variantes: ["Gyemyeonjo", "계면조"],
+        categoria: .jo, llevaLaCategoria: true)
+
+    package static let coreanas: [TipoDeEscala] = [.pyongjo, .kyemyonjo]
+}

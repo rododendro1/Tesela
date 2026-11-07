@@ -4,11 +4,11 @@ import Hexagonos
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaDiagramas
-@testable import ArmoniaElementos
-@testable import ArmoniaFormatos
-@testable import ArmoniaPartitura
-@testable import ArmoniaTeoria
+@testable import Diagramas
+@testable import Elementos
+@testable import Formatos
+@testable import Partituras
+@testable import Teoria
 
 // Lo que viene de fuera (un fichero MIDI o MusicXML, un teclado en UIL) puede estar dañado o hecho a mala fe. Estas
 // pruebas leen ficheros buenos estropeados al azar (bytes cambiados, cortados, repetidos o insertados) y casos

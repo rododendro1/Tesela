@@ -3,12 +3,12 @@
 
 La biblioteca se reparte en seis módulos, más `Armonia`, que los reexporta:
 
-    ArmoniaElementos            Fundamentos, Texto, Postonal
-    ArmoniaTeoria            Acordes, Escalas, Tonalidad   (se necesitan entre sí: van juntas), Afinacion
-    ArmoniaDiagramas  Color, Dibujo, Redes (con Neorriemanniana)
-    ArmoniaPartitura         Modelo, Dibujo, Contrapunto
-    ArmoniaFormatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond (sobre Partitura)
-    ArmoniaTrastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes, sobre Partitura)
+    Elementos            Fundamentos, Texto, Postonal
+    Teoria            Acordes, Escalas, Tonalidad   (se necesitan entre sí: van juntas), Afinacion
+    Diagramas  Color, Dibujo, Redes (con Neorriemanniana)
+    Partituras         Modelo, Dibujo, Contrapunto
+    Formatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond (sobre Partitura)
+    Trastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes, sobre Partitura)
     Armonia                  solo reexporta los seis (no Hexagonos: quien lo use, lo importa)
 
 Fuera del paquete, Diagramas usa `Hexagonos` (la geometría de las rejillas hexagonales), que no depende
@@ -36,14 +36,16 @@ RAIZ = Path(__file__).resolve().parents[2] / "Packages" / "Armonia"
 FUENTES = RAIZ / "Sources"
 
 PERMITIDO = {
-    "ArmoniaElementos": set(),
-    "ArmoniaTeoria": {"ArmoniaElementos"},
-    "ArmoniaDiagramas": {"ArmoniaElementos", "ArmoniaTeoria", "Hexagonos"},
-    "ArmoniaPartitura": {"ArmoniaElementos", "ArmoniaTeoria"},
-    "ArmoniaFormatos": {"ArmoniaElementos", "ArmoniaTeoria", "ArmoniaPartitura"},
-    "ArmoniaTrastes": {"ArmoniaElementos", "ArmoniaTeoria", "ArmoniaPartitura"},
+    "Elementos": set(),
+    "Teoria": {"Elementos"},
+    "Diagramas": {"Elementos", "Teoria", "Hexagonos"},
+    "Partituras": {"Elementos", "Teoria"},
+    "Formatos": {"Elementos", "Teoria", "Partituras"},
+    "Trastes": {"Elementos", "Teoria", "Partituras"},
 }
 PARAGUAS = "Armonia"
+# Los módulos del paquete, para reconocer sus `import`.
+MODULOS = "|".join(sorted(set(PERMITIDO) | {PARAGUAS}))
 # Lo que comparten las pruebas (Tests/ApoyoDePruebas): no es parte de la biblioteca.
 APOYO = "ApoyoDePruebas"
 # Ficheros permitidos en el módulo paraguas.
@@ -51,7 +53,7 @@ EN_PARAGUAS = {"Exportaciones.swift"}
 
 # Nombres que coinciden con un tipo de otro módulo sin serlo (parámetros genéricos, etc.).
 IGNORAR = {
-    ("ArmoniaElementos/Fundamentos/Aritmetica.swift", "Clave"),   # parámetro genérico `Clave: Hashable`
+    ("Elementos/Fundamentos/Aritmetica.swift", "Clave"),   # parámetro genérico `Clave: Hashable`
 }
 
 
@@ -105,7 +107,7 @@ def main() -> int:
         if modulo == PARAGUAS:
             continue
         # 2. Importaciones.
-        for m in re.finditer(r"^\s*(?:@\w+\s+)*import\s+(Armonia\w*)", texto, re.M):
+        for m in re.finditer(rf"^\s*(?:@\w+\s+)*import\s+({MODULOS})\b", texto, re.M):
             if m.group(1) not in PERMITIDO[modulo]:
                 errores.append(f"{relativo}: importa {m.group(1)}, que {modulo} no puede usar")
         # 3. Tipos de otros módulos.
@@ -147,7 +149,7 @@ def main() -> int:
             errores.append(f"{objetivo}: dependencias declaradas {sorted(objetivos[objetivo])}, deben ser {modulo} y algunas de {sorted(validas - {modulo})}")
         for p in sorted((pruebas / objetivo).rglob("*.swift")):
             texto = limpiar(p.read_text(encoding="utf-8"))
-            for m in re.finditer(r"^\s*(?:@\w+\s+)*import\s+(Armonia\w*|Hexagonos)\b", texto, re.M):
+            for m in re.finditer(rf"^\s*(?:@\w+\s+)*import\s+({MODULOS}|Hexagonos)\b", texto, re.M):
                 if m.group(1) not in validas:
                     errores.append(f"Tests/{objetivo}/{p.name}: importa {m.group(1)}, que {modulo} no puede usar")
 

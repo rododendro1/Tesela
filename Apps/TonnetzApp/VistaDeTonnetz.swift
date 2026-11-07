@@ -1,6 +1,6 @@
 import Armonia
+import Interfaz
 import SwiftUI
-import TeselaInterfaz
 import UniformTypeIdentifiers
 
 /// Un acorde, una escala o un recorrido de tríadas con las transformaciones P, L y R, en el Tonnetz, en la

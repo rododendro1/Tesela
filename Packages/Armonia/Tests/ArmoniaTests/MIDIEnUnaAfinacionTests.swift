@@ -2,10 +2,10 @@ import Foundation
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaDiagramas
-@testable import ArmoniaElementos
-@testable import ArmoniaFormatos
-@testable import ArmoniaPartitura
+@testable import Diagramas
+@testable import Elementos
+@testable import Formatos
+@testable import Partituras
 
 /// El MIDI en las afinaciones del catálogo: cada nota se aparta de la temperada lo que diga la afinación.
 @Suite struct MIDIEnUnaAfinacionTests {

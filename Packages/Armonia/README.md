@@ -28,8 +28,8 @@ Escala(.do).modo(grado: 2)                    // Re dórico
 
 ## Línea de comandos
 
-`armonia` usa el motor sin escribir código. Vive en `Apps/ArmoniaConsola` del repositorio
-(`cd Apps/ArmoniaConsola` y `swift run armonia …`). Acepta nombres en español o en inglés y, con
+`armonia` usa el motor sin escribir código. Vive en `Apps/ConsolaArmonia` del repositorio
+(`cd Apps/ConsolaArmonia` y `swift run armonia …`). Acepta nombres en español o en inglés y, con
 `--ingles`, responde en notación inglesa (`armonia ayuda` lista todas las órdenes):
 
 ```sh
@@ -170,15 +170,15 @@ el código de cada paso probado). Los artículos también se pueden leer directa
 ```
 swift build
 swift test                                    # todas las pruebas
-swift test --filter "^Armonia(Elementos|Teoria|Diagramas|Partitura|Formatos|Trastes)?Tests\."   # solo las rápidas (segundos)
-swift test --filter "^ArmoniaTeoriaTests\."    # las de un módulo
+swift test --filter "^(Armonia|Elementos|Teoria|Diagramas|Partituras|Formatos|Trastes)Tests\."   # solo las rápidas (segundos)
+swift test --filter "^TeoriaTests\."    # las de un módulo
 swift test --filter "^ArmoniaExhaustivasTests\."  # solo las exhaustivas
 swift test --filter "^ArmoniaDocumentacionTests\."  # los ejemplos del README y de DocC
 python3 ../../Scripts/generadores/generar_pruebas_de_documentacion.py # regenera esas pruebas tras cambiar un ejemplo
 ```
 
 La herramienta `armonia` y el ejemplo (`swift run EjemploArmonia`) son paquetes aparte, en
-`Apps/ArmoniaConsola` y `Ejemplos/EjemploArmonia`, y se construyen y prueban desde allí.
+`Apps/ConsolaArmonia` y `Ejemplos/EjemploArmonia`, y se construyen y prueban desde allí.
 
 Requiere Swift 6.0 o posterior (y compila en el modo de lenguaje 6) (macOS 13 / iOS 16 en las plataformas de Apple); sin dependencias (solo Foundation
 para `pow`).
@@ -188,13 +188,13 @@ Los cambios de cada versión, con la guía para actualizar, están en [CHANGELOG
 ### Organización de los ficheros
 
 La biblioteca son seis módulos por capas, y `Armonia` los reexporta: `import Armonia` da toda la API, e
-`import ArmoniaTeoria` (con `ArmoniaElementos`, de que depende) solo los acordes, las escalas y las tonalidades.
+`import Teoria` (con `Elementos`, de que depende) solo los acordes, las escalas y las tonalidades.
 Lo interno que se usa entre capas es `package`, no público. Un módulo solo usa los de su izquierda, y
 `Scripts/comprobaciones/comprobar_modulos.py`, en la raíz del repositorio, lo vigila:
 
-    ArmoniaElementos ◄── ArmoniaTeoria ◄──┬── ArmoniaDiagramas
-                                       └── ArmoniaPartitura ◄──┬── ArmoniaFormatos
-                                                               └── ArmoniaTrastes
+    Elementos ◄── Teoria ◄──┬── Diagramas
+                                       └── Partituras ◄──┬── Formatos
+                                                               └── Trastes
 
 Un fichero por concepto: el tipo principal junto con sus tipos auxiliares y sus extensiones
 (`Intervalo.swift` contiene también `SentidoDelIntervalo`, `CalidadDeIntervalo` y `Consonancia`). Solo se separa en
@@ -203,7 +203,7 @@ ortografía de las escalas. La conformidad a cada protocolo va en el fichero del
 
 ```
 Sources/
-├── ArmoniaElementos/
+├── Elementos/
 │   ├── Fundamentos/       Nota (con NotaNatural y Alteracion), Altura, Intervalo (con SentidoDelIntervalo,
 │   │                      CalidadDeIntervalo, Consonancia), Candidato, Protocolos, Aritmetica, y los
 │   │                      nombres de notas e intervalos en cada idioma (al final de Nota e Intervalo)
@@ -211,7 +211,7 @@ Sources/
 │   ├── Lectura/           Lector, ErrorDeArmonia (con ErrorAlLeer y MotivoDeLectura), ErrorDeLectura
 │   ├── Textos/            TextosDeNucleo y un fichero por idioma
 │   └── Postonal/          ConjuntoDeClasesDeAltura, TablaForte
-├── ArmoniaTeoria/
+├── Teoria/
 │   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
 │   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde
@@ -234,20 +234,20 @@ Sources/
 │   ├── Coral/             Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion
 │   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica
 │                          (el catálogo), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett (números)
-├── ArmoniaDiagramas/
+├── Diagramas/
 │   ├── Color/         CorrespondenciaDeColores (colores)
 │   ├── Redes/         Tonnetz (la red de quintas y terceras, en SVG, con los recorridos y los ciclos
 │   │                  neorriemannianos), TablaArmonica (hexágonos de teclado isomórfico, en SVG), FormatoUIL
 │   └── Dibujo/        DibujoSVG (título, leyenda y colores comunes de los dibujos)
-├── ArmoniaPartitura/
+├── Partituras/
 │   ├── Modelo/        Duracion (con Figura y Tempo), Compas, Evento, Melodia (con Voz), ErrorDeLecturaDePartitura,
 │   │                  Pentagrama (Clave, PosicionEnElPentagrama, InstrumentoDePartitura), SignoMicrotonal
 │   ├── Dibujo/        PentagramaSVG (con sus opciones y los glifos SMuFL)
 │   └── Contrapunto/   Contrapunto (contrapunto de especies a dos voces, con sus faltas)
-├── ArmoniaFormatos/   MusicXML, MEI, LilyPond, GUIDO y ABC (exportación de voces, corales y progresiones),
+├── Formatos/   MusicXML, MEI, LilyPond, GUIDO y ABC (exportación de voces, corales y progresiones),
 │                      ArchivoMIDI (ficheros MIDI estándar), la importación de MusicXML, MXL, MEI, ABC y MIDI
 │                      (Importacion, con ErrorDeLecturaDeFichero) y el lector de XML propio (LectorXML)
-├── ArmoniaTrastes/    Encordado (afinaciones del instrumento), Mastil (con PosicionEnElMastil: dónde suena cada nota),
+├── Trastes/    Encordado (afinaciones del instrumento), Mastil (con PosicionEnElMastil: dónde suena cada nota),
 │                      Digitacion (formas de tocar un acorde en el mástil)
 └── Armonia/           el módulo paraguas, sin código propio: Exportaciones (reexporta los seis)
     │                  y la documentación
@@ -264,7 +264,7 @@ las figuras, las duraciones y los colores. Los textos usan `Traduccion`, que pid
 español, inglés, catalán, gallego, asturiano, aragonés, euskera, portugués, francés, occitano, italiano, alemán,
 griego y ruso. Los nombres que son datos de un catálogo (tipos de acorde y de escala, instrumentos)
 siguen junto a su catálogo, en los quince idiomas (los de las escalas en los que no son español ni inglés,
-un fichero por idioma en `ArmoniaTeoria/Escalas/Nombres/`, `NombresDeEscalas+Catalan.swift`…, con los alias y las variantes con que también se leen;
+un fichero por idioma en `Teoria/Escalas/Nombres/`, `NombresDeEscalas+Catalan.swift`…, con los alias y las variantes con que también se leen;
 `Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno, y `Scripts/generadores/nombres_de_escalas/` tiene las herramientas con que se sembraron).
 
 Para añadir un idioma: un caso en `Idioma`, su fila en `ReglasDeIdioma` (código, nombre, sílabas, alteraciones y
@@ -272,24 +272,24 @@ modos) y en `Scripts/comprobaciones/idiomas.py`, un caso en `EscrituraDeNotas` (
 `Traducido`, un fichero en cada `Textos/`, y corregir lo que el compilador señale: ningún `switch` sobre el
 idioma o la escritura tiene `default`, y cada `Traduccion` sin el idioma nuevo deja de compilar.
 
-Las pruebas rápidas están en un objetivo por módulo (`Tests/ArmoniaElementosTests/`, `Tests/ArmoniaTeoriaTests/`,
-`Tests/ArmoniaDiagramasTests/`, `Tests/ArmoniaPartituraTests/`, `Tests/ArmoniaFormatosTests/`,
-`Tests/ArmoniaTrastesTests/`), que depende
+Las pruebas rápidas están en un objetivo por módulo (`Tests/ElementosTests/`, `Tests/TeoriaTests/`,
+`Tests/DiagramasTests/`, `Tests/PartiturasTests/`, `Tests/FormatosTests/`,
+`Tests/TrastesTests/`), que depende
 solo de ese módulo y de los que puede usar: una prueba de Teoría que necesitara Partitura no compila. Lo que cruza
 capas (leer acordes en cada notación, literales, Codable, convenciones de nombres, entradas inválidas, robustez, los
 textos con valores y los dibujos de referencia) está en `Tests/ArmoniaTests/`, y lo que comparten varias (el
 generador al azar con semilla y el lector de XML) en `Tests/ApoyoDePruebas/`. Las exhaustivas
 están en un objetivo aparte, `Tests/ArmoniaExhaustivasTests/ExhaustivasTests.swift`. Las de la
-línea de comandos están con ella, en `Apps/ArmoniaConsola/Tests/`.
+línea de comandos están con ella, en `Apps/ConsolaArmonia/Tests/`.
 
 ### Capas
 
-La biblioteca se reparte en seis módulos que siguen unas capas: **ArmoniaElementos** (Fundamentos,
-Texto, Postonal), **ArmoniaTeoria** (Acordes, con la teoría neorriemanniana, Escalas, Tonalidad, que se necesitan entre sí, y la
+La biblioteca se reparte en seis módulos que siguen unas capas: **Elementos** (Fundamentos,
+Texto, Postonal), **Teoria** (Acordes, con la teoría neorriemanniana, Escalas, Tonalidad, que se necesitan entre sí, y la
 afinación) y
-dos ramas que usan las anteriores y no se usan entre sí: **ArmoniaDiagramas** (color, dibujo y redes, como
-el Tonnetz) y **ArmoniaPartitura** (el modelo, el pentagrama en SVG y el contrapunto). Sobre Partitura van **ArmoniaFormatos** (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond)
-y **ArmoniaTrastes** (instrumentos de cuerda con trastes, que escriben lo que se toca en una partitura con su
+dos ramas que usan las anteriores y no se usan entre sí: **Diagramas** (color, dibujo y redes, como
+el Tonnetz) y **Partituras** (el modelo, el pentagrama en SVG y el contrapunto). Sobre Partitura van **Formatos** (exportar e importar MusicXML, MXL, MEI, ABC, MIDI y LilyPond)
+y **Trastes** (instrumentos de cuerda con trastes, que escriben lo que se toca en una partitura con su
 tablatura), que tampoco se usan entre sí. `Armonia` los reexporta
 todos; `Hexagonos`, que usan los Diagramas, se importa aparte. `python3
 Scripts/comprobaciones/comprobar_modulos.py`, que ejecuta el CI, comprueba que las dependencias declaradas y los

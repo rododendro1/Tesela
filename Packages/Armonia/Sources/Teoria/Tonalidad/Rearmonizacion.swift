@@ -1,0 +1,184 @@
+import Elementos
+
+// MARK: - Rearmonizacion
+
+/// Otra forma de armonizar un acorde de una progresión: cambiarlo por otro que cumple la misma función, o
+/// prepararlo con su dominante.
+///
+///     let progresion = [Acorde("Do"), Acorde("Lam"), Acorde("Rem7"), Acorde("Sol7"), Acorde("Do")]
+///     let propuestas = Tonalidad(.do).rearmonizaciones(de: progresion)
+///     propuestas.first { $0.recurso == .sustitutoTritonal }?.acordes   // [Re♭7]
+///
+/// Cada propuesta cambia un solo acorde, el de `posicion`, por `acordes` (uno; dos si lo prepara su
+/// dominante o es un backdoor; tres si lo prepara su ii–V); `aplicar(a:)` da la progresión con el cambio.
+public struct Rearmonizacion: Hashable, Sendable {
+    /// El recurso armónico de la propuesta.
+    public enum Recurso: String, CaseIterable, Hashable, Sendable {
+        /// Un acorde de séptima de dominante por el que está a un tritono (Sol7 → Re♭7): comparten la tercera
+        /// y la séptima, y el bajo baja por semitonos.
+        case sustitutoTritonal
+        /// El acorde, precedido de su dominante (Lam → Mi7 Lam): la dominante secundaria lo tonifica.
+        case dominanteSecundaria
+        /// El acorde del mismo grado en el modo homónimo (Fa → Fam en Do mayor, o Sol → Si♭, el ♭VII, en lugar
+        /// de la dominante).
+        case prestamoModal
+        /// Otro acorde de la tonalidad con la misma función, a una tercera (Do → Lam, Fa → Rem, Sol → Si°).
+        case sustitutoDiatonico
+        /// El acorde, precedido de su ii–V (Rem → Mim7 La7 Rem; a un acorde menor, con el iiø7: Lam → Siø7 Mi7
+        /// Lam). Solo para los acordes de la tonalidad que no son la tónica.
+        case iiV
+        /// La dominante por la puerta de atrás: en mayor, el V7 por iv7–♭VII7 (Sol7 → Fam7 Si♭7 en Do).
+        case backdoor
+        /// Una dominante, precedida de su ii relativo: el acorde menor con séptima una quinta por encima (Sol7 →
+        /// Rem7 Sol7). Solo para un acorde suelto (``Acorde/sustituciones(en:)``).
+        case iiRelativo
+        /// Una dominante por el acorde disminuido sobre su tercera: es ella sin la fundamental y con la novena menor
+        /// (Sol7 → Si°7). Solo para un acorde suelto (``Acorde/sustituciones(en:)``).
+        case disminuido
+    }
+
+    public let recurso: Recurso
+    /// El índice, desde 0, del acorde que cambia.
+    public let posicion: Int
+    /// El acorde que había.
+    public let original: Acorde
+    /// Lo que va en su lugar: de uno a tres acordes.
+    public let acordes: [Acorde]
+
+    /// Cambiar el acorde `original`, en esa posición de la progresión (desde 0), por `acordes` con ese recurso.
+    public init(recurso: Recurso, posicion: Int, original: Acorde, acordes: [Acorde]) {
+        self.recurso = recurso
+        self.posicion = posicion
+        self.original = original
+        self.acordes = acordes
+    }
+
+    /// La progresión con el cambio. Si `posicion` no está en la progresión, la progresión tal cual.
+    public func aplicar(a progresion: [Acorde]) -> [Acorde] {
+        guard progresion.indices.contains(posicion) else { return progresion }
+        var resultado = progresion
+        resultado.replaceSubrange(posicion...posicion, with: acordes)
+        return resultado
+    }
+
+    /// «Sol7 → Re♭7 (sustituto tritonal)».
+    public func descripcion(en notacion: Notacion) -> String {
+        let nuevos = acordes.map { $0.cifrado(en: notacion) }.joined(separator: " ")
+        return "\(original.cifrado(en: notacion)) → \(nuevos) (\(recurso.nombre(en: notacion)))"
+    }
+}
+
+// MARK: - Propuestas
+
+extension Tonalidad {
+    /// Las rearmonizaciones de cada acorde de una progresión, en el orden de los acordes y, en cada uno, en el
+    /// de `Rearmonizacion.Recurso`. Un acorde que no es de la tonalidad solo admite el sustituto tritonal (si es
+    /// una séptima de dominante) y su dominante secundaria.
+    public func rearmonizaciones(de progresion: [Acorde]) -> [Rearmonizacion] {
+        progresion.enumerated().flatMap { i, acorde in
+            rearmonizaciones(de: acorde, en: i, anterior: i > 0 ? progresion[i - 1] : nil)
+        }
+    }
+
+    /// Las rearmonizaciones de un acorde: `posicion` es su índice en la progresión y `anterior`, el acorde
+    /// que lo precede, si hay alguno (no se propone una dominante que ya está).
+    public func rearmonizaciones(
+        de acorde: Acorde, en posicion: Int = 0, anterior: Acorde? = nil
+    ) -> [Rearmonizacion] {
+        var propuestas: [Rearmonizacion] = []
+        func proponer(_ recurso: Rearmonizacion.Recurso, _ acordes: [Acorde]) {
+            guard acordes != [acorde] else { return }
+            propuestas.append(Rearmonizacion(recurso: recurso, posicion: posicion, original: acorde, acordes: acordes))
+        }
+
+        // Sustituto tritonal: solo de las séptimas de dominante (con o sin novena).
+        let dominantes: [TipoDeAcorde] = [.dominanteSeptima, .dominanteNovena]
+        if dominantes.contains(acorde.tipo) {
+            proponer(.sustitutoTritonal, [Acorde(Tonalidad.aUnTritono(de: acorde.fundamental), acorde.tipo)])
+        }
+
+        // Dominante secundaria: la séptima de dominante una quinta por encima, delante de un acorde mayor o menor
+        // con su quinta justa.
+        if acorde.tipo.esMayor || acorde.tipo.esMenor, acorde.tipo.pasosDeQuinta.contains(1) {
+            let dominante = Acorde(acorde.fundamental + .quintaJusta, .dominanteSeptima)
+            let yaEsta = anterior.map { $0.fundamental == dominante.fundamental && $0.tipo.esMayor } ?? false
+            if !yaEsta { proponer(.dominanteSecundaria, [dominante, acorde]) }
+        }
+
+        // Préstamo modal y sustituto diatónico: solo de los acordes de la tonalidad.
+        if let grado = self.grado(de: acorde) {
+            let cuatriada = acorde.tipo.tieneSeptima
+            let prestado: Acorde
+            if modo == .mayor {
+                // Del menor natural. La dominante menor suena débil: en su lugar va el ♭VII (Si♭ en Do mayor).
+                prestado = homonima.escala.acorde(grado: grado == 5 ? 7 : grado, cuatriada: cuatriada) ?? acorde
+            } else {
+                prestado = homonima.acorde(grado: grado, cuatriada: cuatriada)
+            }
+            proponer(.prestamoModal, [prestado])
+            let sustituto = [1: 6, 2: 4, 3: 1, 4: 2, 5: 7, 6: 1, 7: 5][grado] ?? grado
+            proponer(.sustitutoDiatonico, [self.acorde(grado: sustituto, cuatriada: cuatriada)])
+
+            // Su ii–V, a los acordes mayores y menores que no son la tónica (ni tienen ya su dominante delante).
+            if grado != 1, acorde.tipo.esMayor || acorde.tipo.esMenor, acorde.tipo.pasosDeQuinta.contains(1) {
+                let dominante = Acorde(acorde.fundamental + .quintaJusta, .dominanteSeptima)
+                let tipoDelII: TipoDeAcorde = acorde.tipo.esMenor ? .semidisminuido : .menorSeptima
+                let ii = Acorde(dominante.fundamental + .quintaJusta, tipoDelII)
+                let yaEsta = anterior.map { $0.fundamental == dominante.fundamental && $0.tipo.esMayor } ?? false
+                if !yaEsta { proponer(.iiV, [ii, dominante, acorde]) }
+            }
+
+            // Backdoor: el V7 de una tonalidad mayor por iv7–♭VII7.
+            if modo == .mayor, grado == 5, acorde.tipo == .dominanteSeptima {
+                proponer(
+                    .backdoor,
+                    [Acorde(tonica + .cuartaJusta, .menorSeptima), Acorde(tonica + .septimaMenor, .dominanteSeptima)])
+            }
+        }
+        return propuestas
+    }
+
+    /// El grado (desde 1) de un acorde de la tonalidad, en estado fundamental o invertido; `nil` si no es uno
+    /// de los suyos.
+    func grado(de acorde: Acorde) -> Int? {
+        let fundamental = Acorde(acorde.fundamental, acorde.tipo)
+        return (1...7).first { grado in
+            [false, true].contains { self.acorde(grado: grado, cuatriada: $0) == fundamental }
+        }
+    }
+
+    /// La nota a un tritono, escrita con menos alteraciones: Sol → Re♭, Re♭ → Sol.
+    static func aUnTritono(de nota: Nota) -> Nota {
+        let disminuida = nota + .quintaDisminuida
+        let aumentada = nota + .cuartaAumentada
+        return aumentada.alteracion.numeroDeSignos < disminuida.alteracion.numeroDeSignos ? aumentada : disminuida
+    }
+}
+
+// MARK: - Idiomas
+
+extension Rearmonizacion.Recurso: Nombrable {
+    /// «sustituto tritonal», «tritone substitution», «Zwischendominante»…
+    public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
+
+    private var traduccion: Traduccion {
+        switch self {
+        case .sustitutoTritonal:
+            return TextosDeTeoria.traduccion(\.sustitutoTritonal)
+        case .dominanteSecundaria:
+            return TextosDeTeoria.traduccion(\.dominanteSecundaria)
+        case .prestamoModal:
+            return TextosDeTeoria.traduccion(\.prestamoModal)
+        case .sustitutoDiatonico:
+            return TextosDeTeoria.traduccion(\.sustitutoDiatonico)
+        case .iiV:
+            return TextosDeTeoria.traduccion(\.rearmonizacionIIV)
+        case .backdoor:
+            return TextosDeTeoria.traduccion(\.rearmonizacionBackdoor)
+        case .iiRelativo:
+            return TextosDeTeoria.traduccion(\.rearmonizacionIIRelativo)
+        case .disminuido:
+            return TextosDeTeoria.traduccion(\.rearmonizacionDisminuido)
+        }
+    }
+}

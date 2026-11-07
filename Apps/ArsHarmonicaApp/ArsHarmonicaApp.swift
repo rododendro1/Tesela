@@ -1,6 +1,6 @@
 import Armonia
+import Interfaz
 import SwiftUI
-import TeselaInterfaz
 
 @main
 struct ArsHarmonicaApp: App {

@@ -91,13 +91,24 @@
 - En ruso y en griego, sus nombres transcritos: Шиэр люй, Янлюй e Иньлюй; Σιερ λιου, Γιανγκλιου y Γινλιου. En los
   demás idiomas conservan el pinyin, como las demás escalas chinas.
 
-### Nombres de módulo más claros
+### Módulos sin prefijo
 
-**Cambio incompatible:** `ArmoniaNucleo` se llama ahora `ArmoniaElementos` y `ArmoniaRepresentaciones`,
-`ArmoniaDiagramas`, con sus carpetas y sus pruebas. Quien importa `Armonia` no nota nada; quien importe un módulo
-suelto cambia `import ArmoniaNucleo` por `import ArmoniaElementos` y `import ArmoniaRepresentaciones` por
-`import ArmoniaDiagramas`, y lo mismo en `.product(name:…)`. La línea de comandos pasa de `Apps/ArmoniaCLI` a
-`Apps/ArmoniaConsola` (paquete, biblioteca `ArmoniaConsola` y pruebas `ArmoniaConsolaTests`); el ejecutable sigue
+**Cambio incompatible:** los módulos de `Armonia` pierden el prefijo, con sus carpetas, sus productos y sus pruebas
+(`ElementosTests`, `TeoriaTests`…):
+
+| Antes                     | Ahora        |
+|---------------------------|--------------|
+| `ArmoniaNucleo`           | `Elementos`  |
+| `ArmoniaTeoria`           | `Teoria`     |
+| `ArmoniaRepresentaciones` | `Diagramas`  |
+| `ArmoniaPartitura`        | `Partituras` |
+| `ArmoniaFormatos`         | `Formatos`   |
+| `ArmoniaTrastes`          | `Trastes`    |
+
+La partitura va en plural porque el módulo tiene un tipo `Partitura`, y un módulo con el nombre de uno de sus tipos
+no se puede nombrar delante de ellos. Quien importa `Armonia` no nota nada; quien importe un
+módulo suelto cambia el `import` y el `.product(name:…)`. La línea de comandos pasa de `Apps/ArmoniaCLI` a
+`Apps/ConsolaArmonia` (paquete, biblioteca `ConsolaArmonia` y pruebas `ConsolaArmoniaTests`); el ejecutable sigue
 siendo `armonia`. Los tipos no cambian.
 
 ### Las mismas consultas y los mismos nombres en toda la API
@@ -110,7 +121,7 @@ cada uno tiene aquí su nombre nuevo.
   `candidatos(notas:)` y `candidatos(alturas:)`, y `Escala.candidatos(_:tipos:)`, `candidatos(notas:tipos:)`. Son nuevas
   `Escala.candidatos(alturas:tipos:)`, `Escala.candidatos(midi:tipos:)` y `Tonalidad.candidatos(clasesDeAltura:)`,
   con su `identificar`.
-- La teoría neorriemanniana pasa de `ArmoniaRepresentaciones` a `ArmoniaTeoria` (`Acordes/Neorriemanniana/`), así que
+- La teoría neorriemanniana pasa de `ArmoniaRepresentaciones` a `Teoria` (`Acordes/Neorriemanniana/`), así que
   se usa sin el Tonnetz: `TransformacionNeorriemanniana`, `CicloNeorriemanniano`, `Acorde.transformar(_:)`,
   `Acorde.ciclo(_:)`, `MovimientoDeVoz`, `PasoParsimonioso`, `ConduccionMinima`, `vecinosParsimoniosos` y
   `conduccionMinima(hasta:)`. Quien importa `Armonia` no nota nada. Los caminos pasan de `Tonnetz` a `Acorde`:

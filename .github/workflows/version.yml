@@ -139,7 +139,7 @@ jobs:
           curl -fsSL https://www.swift.org/api/v1/install/releases.json | grep -o "\"$numero\"[^]]*" | head -c 3000
           exit 1
       - name: Compilar
-        working-directory: Apps/ArmoniaConsola
+        working-directory: Apps/ConsolaArmonia
         run: |
           set -euo pipefail
           for arquitectura in x86_64 aarch64; do
@@ -151,7 +151,7 @@ jobs:
         run: |
           set -euo pipefail
           VERSION=${VERSION#v}
-          cd Apps/ArmoniaConsola
+          cd Apps/ConsolaArmonia
           x86=$(swift build -c release --swift-sdk x86_64-swift-linux-musl --show-bin-path)/armonia
           arm=$(swift build -c release --swift-sdk aarch64-swift-linux-musl --show-bin-path)/armonia
           # Que de verdad sea estático y funcione.
@@ -180,13 +180,13 @@ jobs:
         with:
           ref: ${{ github.event_name == 'pull_request' && github.sha || format('refs/tags/{0}', inputs.etiqueta || github.ref_name) }}
       - name: Compilar
-        working-directory: Apps/ArmoniaConsola
+        working-directory: Apps/ConsolaArmonia
         run: swift build -c release --product armonia --arch arm64 --arch x86_64
       - name: Empaquetar
         run: |
           set -euo pipefail
           VERSION=${VERSION#v}
-          binario=$(cd Apps/ArmoniaConsola && swift build -c release --arch arm64 --arch x86_64 --show-bin-path)/armonia
+          binario=$(cd Apps/ConsolaArmonia && swift build -c release --arch arm64 --arch x86_64 --show-bin-path)/armonia
           lipo "$binario" -verify_arch arm64 x86_64
           "$binario" acorde Sol7 | grep -q 'séptima de dominante'
           mkdir paquetes && cd paquetes

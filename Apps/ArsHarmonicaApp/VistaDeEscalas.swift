@@ -1,6 +1,6 @@
 import Armonia
+import Interfaz
 import SwiftUI
-import TeselaInterfaz
 
 /// Elige una tónica y una escala del catálogo (occidentales y de otras tradiciones) y muestra sus notas,
 /// sus acordes, dónde caen en el mástil y cómo se tocan por posiciones (CAGED o tres notas por cuerda).

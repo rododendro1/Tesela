@@ -16,13 +16,13 @@ short English summary.
   isomorphic keyboard (Wicki-Hayden, Jankó, chromatic button accordion…).
 - **`armonia`** (command line): the same from the terminal, as text or JSON, plus engraved scores in PDF, SVG or PNG.
 - **Packages** you can use in your own project: `Armonia` (the engine), `Hexagonos` (hexagonal grids), and
-  `TeselaExposicion` and `TeselaInterfaz` (what the apps share).
+  `Exposicion` and `Interfaz` (what the apps share).
 
 ## Command line
 
 Each [release](https://github.com/rododendro1/Tesela/releases) ships `armonia` prebuilt for Linux (x86_64 and arm64,
 no dependencies) and macOS, with a man page and completion for bash, zsh and fish. Or build it with Swift 6:
-`swift build -c release --package-path Apps/ArmoniaConsola`.
+`swift build -c release --package-path Apps/ConsolaArmonia`.
 
 ```sh
 armonia chord G7/B --ingles                       # notes, inversion and the role of each note

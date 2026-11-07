@@ -2,10 +2,10 @@ import Foundation
 import Testing
 
 @testable import Armonia
-@testable import ArmoniaDiagramas
-@testable import ArmoniaElementos
-@testable import ArmoniaPartitura
-@testable import ArmoniaTeoria
+@testable import Diagramas
+@testable import Elementos
+@testable import Partituras
+@testable import Teoria
 
 /// Pruebas exhaustivas: todo lo que el motor escribe debe volver a leerse igual.
 /// Recorren el espacio completo de valores en lugar de ejemplos sueltos, así que

@@ -1,0 +1,374 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+import Armonia
+// MARK: - Textos de ConsolaArmonia
+//
+// Un idioma por fichero: `TextosDeCLI+Espanol.swift`, `TextosDeCLI+Ingles.swift`… Cada uno da todos los
+// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los quince y
+// un idioma nuevo es un fichero más (y su fila en `traducidos`).
+
+/// Los textos de ConsolaArmonia en un idioma.
+struct TextosDeCLI: TextosTraducidos {
+    // MARK: Ayuda+Armonizacion.swift
+    let sintaxisAnalizar: String
+    let descripcionAnalizar: String
+    let notasAnalizar: String
+    let sintaxisAnalizarArchivo: String
+    let descripcionAnalizarArchivo: String
+    let sintaxisArmonizar: String
+    let descripcionArmonizar: String
+    let sintaxisRealizar: String
+    let descripcionRealizar: String
+    let sintaxisRevisar: String
+    let descripcionRevisar: String
+    let sintaxisContrapunto: String
+    let descripcionContrapunto: String
+    let sintaxisTransponer: String
+    let descripcionTransponer: String
+    let sintaxisRearmonizar: String
+    let descripcionRearmonizar: String
+
+    // MARK: Ayuda+Consultas.swift
+    let sintaxisAcorde: String
+    let descripcionAcorde: String
+    let notasAcorde: String
+    let sintaxisArpegio: String
+    let descripcionArpegio: String
+    let notasArpegio: String
+    let sintaxisIdentificar: String
+    let descripcionIdentificar: String
+    let notasIdentificar: String
+    let sintaxisIntervalo: String
+    let descripcionIntervalo: String
+    let sintaxisEscala: String
+    let descripcionEscala: String
+    let notasEscala: String
+    let sintaxisEscalas: String
+    let descripcionEscalas: String
+    let notasEscalas: String
+    let sintaxisTradiciones: String
+    let descripcionTradiciones: String
+    let sintaxisTonalidad: String
+    let descripcionTonalidad: String
+    let sintaxisConjunto: String
+    let descripcionConjunto: String
+    let sintaxisSerie: String
+    let descripcionSerie: String
+
+    // MARK: Ayuda+Dibujos.swift
+    let sintaxisTonnetz: String
+    let descripcionTonnetz: String
+    let sintaxisTonnetzAcorde: String
+    let descripcionTonnetzAcorde: String
+    let sintaxisTonnetzRecorrido: String
+    let descripcionTonnetzRecorrido: String
+    let sintaxisTonnetzCiclo: String
+    let descripcionTonnetzCiclo: String
+    let notasTonnetzCiclo: String
+    let sintaxisTabla: String
+    let descripcionTabla: String
+    let sintaxisTablaAcorde: String
+    let descripcionTablaAcorde: String
+    let sintaxisCuadricula: String
+    let descripcionCuadricula: String
+    let sintaxisCuadriculaOpciones: String
+    let descripcionCuadriculaOpciones: String
+
+    // MARK: Ayuda+Neorriemann.swift
+    let sintaxisVecinos: String
+    let descripcionVecinos: String
+    let sintaxisConduccionParsimoniosa: String
+    let descripcionConduccionParsimoniosa: String
+    let sintaxisConduccionMinima: String
+    let descripcionConduccionMinima: String
+    let sintaxisPlr: String
+    let descripcionPlr: String
+    let sintaxisPlrCamino: String
+    let descripcionPlrCamino: String
+    let sintaxisPlrCiclo: String
+    let descripcionPlrCiclo: String
+
+    // MARK: Ayuda+Partituras.swift
+    let sintaxisMusicxmlMelodia: String
+    let descripcionMusicxmlMelodia: String
+    let sintaxisMusicxmlCoral: String
+    let descripcionMusicxmlCoral: String
+    let sintaxisMusicxmlAcordes: String
+    let descripcionMusicxmlAcordes: String
+    let notasMusicxmlAcordes: String
+    let sintaxisMusicxmlArpegios: String
+    let descripcionMusicxmlArpegios: String
+    let notasMusicxmlArpegios: String
+    let sintaxisMusicxmlArchivo: String
+    let descripcionMusicxmlArchivo: String
+    let sintaxisMusicxmlEscala: String
+    let descripcionMusicxmlEscala: String
+    let sintaxisMeiMelodia: String
+    let descripcionMeiMelodia: String
+    let sintaxisLilypondMelodia: String
+    let descripcionLilypondMelodia: String
+    let sintaxisGuidoMelodia: String
+    let descripcionGuidoMelodia: String
+    let sintaxisAbcMelodia: String
+    let descripcionAbcMelodia: String
+    let sintaxisMidiMelodia: String
+    let descripcionMidiMelodia: String
+
+    // MARK: Ayuda+Grabado.swift
+    let sintaxisGrabar: String
+    let descripcionGrabar: String
+    let notasGrabar: String
+    let sintaxisMotores: String
+    let descripcionMotores: String
+
+    // MARK: Ayuda+Trastes.swift
+    let sintaxisDigitaciones: String
+    let descripcionDigitaciones: String
+    let sintaxisPosiciones: String
+    let descripcionPosiciones: String
+    let notasPosiciones: String
+    let sintaxisTeclado: String
+    let descripcionTeclado: String
+    let sintaxisReloj: String
+    let descripcionReloj: String
+    let sintaxisHoja: String
+    let descripcionHoja: String
+    let sintaxisHojaDeAcorde: String
+    let descripcionHojaDeAcorde: String
+    let sintaxisHojaDeAcordes: String
+    let descripcionHojaDeAcordes: String
+    let sintaxisHojaDeTonalidad: String
+    let descripcionHojaDeTonalidad: String
+    let sintaxisPentagrama: String
+    let descripcionPentagrama: String
+    let sintaxisPentagramaEstudio: String
+    let descripcionPentagramaEstudio: String
+    let sintaxisPentagramaRegistro: String
+    let descripcionPentagramaRegistro: String
+    let sintaxisPentagramaMelodia: String
+    let descripcionPentagramaMelodia: String
+    let sintaxisPentagramaBajo: String
+    let descripcionPentagramaBajo: String
+    let sintaxisPosicionesArpegio: String
+    let descripcionPosicionesArpegio: String
+
+    // MARK: Ayuda.swift
+    let cabeceraDeLaAyuda: String
+    let pieDeLaAyuda: String
+    let sintaxisAyuda: String
+    let descripcionAyuda: String
+
+    // MARK: Terminal.swift
+    let sintaxisCompletado: String
+    let descripcionCompletado: String
+    let sintaxisManual: String
+    let descripcionManual: String
+    let manualNombre: String
+    let manualNotas: String
+    /// Los apartados ENTORNO y ESTADO DE SALIDA del manual: sus títulos, lo que hace `ARMONIA_IDIOMA`, lo que da la
+    /// variable de un programa de grabado y qué quiere decir cada código de salida, del 0 al 3.
+    let manualEntorno: String
+    let manualEstadoDeSalida: String
+    let manualIdiomaDelEntorno: String
+    let manualRutaDelPrograma: @Sendable (String) -> String
+    let manualCodigosDeSalida: [String]
+
+    // MARK: ErrorDeUso.swift (armonización)
+    let faltanAcordesDeLasVoces: @Sendable (String) -> String
+    let dosAcordesDeConduccion: @Sendable (String) -> String
+    let faltanNotasDeLaArmonizacion: @Sendable (String) -> String
+    let propuestasFueraDeRango: String
+    let faltanVocesDelContrapunto: @Sendable (String, String) -> String
+    let especieFueraDeRango: String
+    let faltanAcordesDeLaRealizacion: @Sendable (String) -> String
+
+    // MARK: ErrorDeUso.swift (consultas)
+    let faltaCifrado: String
+    let faltaCifradoDelArpegio: String
+    let patronDesconocido: @Sendable (String) -> String
+    let tradicionDesconocida: @Sendable (String) -> String
+    let categoriaDesconocida: @Sendable (String) -> String
+    let fuenteDesconocida: @Sendable (String) -> String
+    let usoDesconocido: @Sendable (String) -> String
+    let ordenDeEscalasDesconocido: @Sendable (String) -> String
+    let intervaloDeEscalasDesconocido: @Sendable (String) -> String
+    let pasoFueraDeRango: String
+    let faltanNotas: String
+    let dosNotas: String
+    let faltaEscala: String
+    let faltaTonalidad: String
+    let faltaTonalidadTrasEn: String
+    let faltaConjunto: String
+    let faltaSerie: String
+    let faltanAcordesDelAnalisis: @Sendable (String) -> String
+    let archivoIlegible: @Sendable (String) -> String
+    /// Un fichero de `-o` que no se puede escribir.
+    let archivoNoEscrito: @Sendable (String) -> String
+    let archivoConAcordes: String
+    let archivoSinAcordes: String
+    let faltaTransporte: @Sendable (String) -> String
+    let faltanAcordesDeLaRearmonizacion: @Sendable (String) -> String
+
+    // MARK: ErrorDeUso.swift (dibujos)
+    let margenFueraDeRango: String
+    let faltanNotasDelDibujo: @Sendable (String, String) -> String
+    let faltaAcordeDelDibujo: @Sendable (String, String) -> String
+    let faltaEscalaDelDibujo: @Sendable (String, String) -> String
+    let faltanClasesDelDibujo: @Sendable (String, String) -> String
+    let faltanTriadasDelRecorrido: @Sendable (String, String) -> String
+    let cicloMalEscrito: @Sendable (String, String) -> String
+    let recorridoSoloTriadas: @Sendable (String, String) -> String
+    let caminoSoloTriadas: @Sendable (String, String) -> String
+    let cicloSoloTriadas: @Sendable (String, String) -> String
+    let opcionesDeCuadricula: String
+
+    // MARK: ErrorDeUso.swift (neorriemanniana)
+    let vocesFueraDeRango: String
+    let unAcordeDeVecinos: @Sendable (String) -> String
+    let vecinosSinFamilia: String
+    let dosAcordesDeCamino: @Sendable (String) -> String
+    let caminoSinConexion: String
+    let faltanPasosDePLR: @Sendable (String) -> String
+    let plrSoloTriadas: @Sendable (String, Bool) -> String
+
+    // MARK: ErrorDeUso.swift (partituras)
+    let faltaTipoDePartitura: @Sendable (String, String) -> String
+    let instrumentoMIDI: String
+    let marcasSoloMusicXML: String
+    let faltaValor: @Sendable (String) -> String
+    let tempoMalEscrito: String
+    let faltanNotasDeLaMelodia: @Sendable (String, String) -> String
+    let marcasSoloCoral: String
+    let duracionSoloCoral: String
+    let claveDesconocida: @Sendable (String, String) -> String
+    let faltanAcordesDelCoral: @Sendable (String, String) -> String
+    let soloParaMelodia: @Sendable (String) -> String
+    let soloParaArpegios: @Sendable (String) -> String
+    let archivoSoloParaAcordes: String
+    let ventanaSinArchivo: String
+    let faltanAcordesDeLaProgresion: @Sendable (String, String) -> String
+    let acordesConCifradosYAnalisis: String
+    let tipoDePartituraDesconocido: @Sendable (String) -> String
+
+    // MARK: ErrorDeUso.swift (grabado)
+    let faltaLoQueSeGraba: String
+    let motorDesconocido: @Sendable (String) -> String
+    let formatoDeGrabadoDesconocido: @Sendable (String) -> String
+    let nadaQueGrabar: @Sendable (String) -> String
+
+    // MARK: LineaDeComandos+Grabado.swift
+    /// El programa y la variable de entorno que da su ruta.
+    let motorNoEncontrado: @Sendable (String, String) -> String
+    /// El programa y su código de salida; debajo van las últimas líneas de lo que dijo.
+    let motorFallo: @Sendable (String, Int) -> String
+    let motorSinTerminar: @Sendable (String) -> String
+    /// La variable de entorno que da la ruta del programa que no está.
+    let motorNoInstalado: @Sendable (String) -> String
+    /// El nombre de `--motor propio` en el idioma de las órdenes.
+    let motorPropio: String
+
+    // MARK: ErrorDeUso.swift (digitaciones)
+    let faltaInstrumento: @Sendable (String, (String, String)) -> String
+    let instrumentoDesconocido: @Sendable (String, (Notacion) -> String) -> String
+    let faltaLimite: String
+    let limiteFueraDeRango: String
+    let faltanDedos: String
+    let dedosFueraDeRango: String
+    let faltaTraste: String
+    let trasteFueraDeRango: String
+    let faltaCifradoDeDigitaciones: @Sendable (String, (String, String)) -> String
+    let faltaEscalaDePosiciones: String
+    let faltaEscalaDelTeclado: String
+    let manoDesconocida: @Sendable (String) -> String
+    let archivoConNotas: String
+    let noEsPentatonica: String
+    let faltaEscalaDelReloj: String
+    let faltaEscalaDeLaHoja: String
+    let faltanLosAcordesDeLaHoja: String
+    let faltaElAcordeDeLaHoja: String
+    let faltaLoQueDibujaElPentagrama: String
+    let capoFueraDeRango: String
+    let octavasFueraDeRango: String
+    let notasFueraDeRango: String
+    let octavaFueraDeRango: String
+    let desdeNoValido: @Sendable (String) -> String
+    let tensionesMalEscritas: String
+    let gradosMalEscritos: String
+    let aproximacionDesconocida: @Sendable (String) -> String
+    let secuenciaDesconocida: @Sendable (String) -> String
+
+    // MARK: ErrorDeUso.swift (comunes)
+    let pruebaLaAyuda: String
+    let ordenDesconocida: @Sendable (String) -> String
+    let opcionDesconocida: @Sendable (String) -> String
+    let idiomaDesconocido: @Sendable (String) -> String
+    let terminalDesconocida: @Sendable (String) -> String
+    let escrituraNoValida: @Sendable (String) -> String
+    let sinSalidaJSON: @Sendable (String) -> String
+
+    // MARK: Mensaje.swift
+    let mensajeNotas: String
+    let mensajeAcordes: String
+    /// La línea de `armonia escala` con las notas de la versión microtonal (maqamat, dastgāh, makamlar).
+    let mensajeMicrotonos: String
+    let mensajeEscalas: String
+    let mensajeHabituales: String
+    let mensajeNingunaEscala: String
+    let mensajeArmadura: String
+    let mensajeRelativa: String
+    let mensajeHomonima: String
+    let mensajeBajo: @Sendable (String) -> String
+    let mensajeBajoAjeno: String
+    let mensajeSinAcordes: String
+    let mensajeSin: @Sendable (String) -> String
+    let mensajeSemitonos: @Sendable (Int) -> String
+    let mensajeSinAlteraciones: String
+    let mensajeSostenidos: @Sendable (Int) -> String
+    let mensajeBemoles: @Sendable (Int) -> String
+    let mensajeACuatroVoces: String
+    let mensajeSinDigitaciones: String
+    let mensajeDedos: @Sendable (Int) -> String
+    let mensajeCejilla: @Sendable (Int) -> String
+    let mensajeNingunPaso: String
+    let mensajeUnPaso: String
+    let mensajePasos: @Sendable (Int) -> String
+    let mensajeTriadas: @Sendable (Int) -> String
+    let mensajeFormaNormal: String
+    let mensajeFormaPrima: String
+    let mensajeVectorIntervalico: String
+    let mensajeVectorDeIndice: String
+    let mensajeEjesDeSimetria: String
+    let mensajeIntervalos: String
+    let mensajeDeTodosLosIntervalos: String
+    let mensajeFormasDistintas: @Sendable (Int) -> String
+    let mensajeHexacordos: String
+    let mensajeFormasCombinatorias: String
+
+    // MARK: LineaDeComandos.swift (versión, erratas y salida binaria)
+    let sintaxisVersion: String
+    let descripcionVersion: String
+    /// La propuesta tras una orden o una opción mal escrita: «¿Querías decir «acorde»?».
+    let quisoDecir: @Sendable (String) -> String
+    /// Como `pruebaLaAyuda`, con la ayuda de la orden: «Prueba «armonia ayuda acorde».».
+    let pruebaLaAyudaDe: @Sendable (String) -> String
+    /// Una orden que da un fichero binario con la salida en la terminal.
+    let salidaBinaria: String
+    /// `escalas` con unas notas, que no son el nombre de ninguna escala: cómo buscarla por sus notas (el ejemplo).
+    let escalasPorNotas: @Sendable (String) -> String
+    /// `grabar midi …` (o musicxml, mei…): esa orden ya escribe la partitura; el ejemplo, cómo grabarla.
+    let grabarUnaPartitura: @Sendable (String, String) -> String
+
+    // MARK: Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
+    /// Los títulos de los grupos del índice de `armonia ayuda`, uno por cada lista de `gruposDeOrdenes`.
+    let gruposDeLaAyuda: [String]
+    /// Lo que sigue al índice: cómo ver la ayuda de una orden y toda la ayuda, y las opciones de todas las órdenes.
+    let pieDelIndice: String
+    /// La primera línea de la sesión (`armonia` sin argumentos en la terminal), con la versión.
+    let bienvenidaDeLaSesion: @Sendable (String) -> String
+
+    /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// `Traduccion`.
+    static let traducidos = Traducido<TextosDeCLI>(
+        espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
+        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
+}
