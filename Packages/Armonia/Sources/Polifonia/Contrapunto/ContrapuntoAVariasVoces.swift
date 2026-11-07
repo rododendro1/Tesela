@@ -134,7 +134,7 @@ public struct ContrapuntoAVariasVoces: Hashable, Sendable {
                     // Una cuarta sobre el cantus no es disonancia si el cantus no es el bajo.
                     let grave = bajo(Duracion(primerCompas))
                     if let nota = suena(linea, Duracion(primerCompas)), grave != 0, grave != linea,
-                        Self.consonanteEntreVocesAltas(intervalo(nota.nota, cantusFirmus[primerCompas]))
+                        Self.consonanteEntreVocesAltas(Conduccion.intervalo(nota.nota, cantusFirmus[primerCompas]))
                     {
                         continue
                     }
@@ -153,9 +153,9 @@ public struct ContrapuntoAVariasVoces: Hashable, Sendable {
             guard let grave = bajo(momento), let notaGrave = suena(grave, momento) else { continue }
             for v in lineas.indices where v != grave {
                 guard let nota = suena(v, momento) else { continue }
-                let i = intervalo(notaGrave.nota, nota.nota)
+                let i = Conduccion.intervalo(notaGrave.nota, nota.nota)
                 let tercera = i.numeroSimple == 3 && (i.calidad == .mayor || i.calidad == .menor)
-                if Contrapunto.perfecta(i) == nil && !tercera { anotar(tipo, compas(momento), nil, [grave, v]) }
+                if Conduccion.perfecta(i) == nil && !tercera { anotar(tipo, compas(momento), nil, [grave, v]) }
             }
         }
 
@@ -171,17 +171,17 @@ public struct ContrapuntoAVariasVoces: Hashable, Sendable {
                 }
                 // Con el cantus, las paralelas, los unísonos y las disonancias ya los cuenta cada voz.
                 if a != 0 {
-                    for (antes, despues) in zip(comunes, comunes.dropFirst())
-                    where antes.x != despues.x && antes.y != despues.y {
-                        guard let perfecta = Contrapunto.perfecta(intervalo(antes.x, antes.y)),
-                            perfecta == Contrapunto.perfecta(intervalo(despues.x, despues.y))
+                    for (antes, despues) in zip(comunes, comunes.dropFirst()) {
+                        guard
+                            let perfecta = Conduccion.PasoDeVoces(de: (antes.x, antes.y), a: (despues.x, despues.y))
+                                .paralelas
                         else { continue }
                         let tipo: FaltaDeContrapunto.Tipo = perfecta == 5 ? .quintasParalelas : .octavasParalelas
                         anotar(tipo, compas(antes.momento), compas(despues.momento), [a, b])
                     }
                     for comun in comunes where comun.momento.denominador == 1 {
                         let c = compas(comun.momento)
-                        let i = intervalo(comun.x, comun.y)
+                        let i = Conduccion.intervalo(comun.x, comun.y)
                         if i.numero == 1 && i.calidad == .justa && c != 0 && c != ultimo {
                             anotar(.unisono, c, nil, [a, b])
                         }
@@ -205,11 +205,6 @@ public struct ContrapuntoAVariasVoces: Hashable, Sendable {
             (f.falta.compases.lowerBound, f.falta.compases.upperBound, f.voces.first ?? 0, f.voces.last ?? 0)
         }
         return faltas.sorted { orden($0) < orden($1) }
-    }
-
-    /// El intervalo entre dos alturas, del grave al agudo.
-    private func intervalo(_ a: Altura, _ b: Altura) -> Intervalo {
-        a.midi <= b.midi ? a.intervalo(hasta: b) : b.intervalo(hasta: a)
     }
 
     /// La cuarta justa, la cuarta aumentada y la quinta disminuida, que entre dos voces que no son el bajo son

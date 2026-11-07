@@ -152,6 +152,62 @@ import Testing
         #expect(pieza.acordes().map(\.cifrado) == ["Do"])
     }
 
+    /// Un pulso con una bordadura en dos voces (Fa y La sobre el Do del bajo, que vuelven a Mi y Sol) no es otro
+    /// acorde: se junta con el anterior. Antes, cada pulso iba por su lado y daba Do y Do(add11).
+    @Test func unaBordaduraNoEsOtroAcorde() throws {
+        func nota(_ altura: String, _ inicio: Duracion, _ duracion: Duracion, voz: Int) throws -> NotaDeLaPieza {
+            NotaDeLaPieza(altura: try Altura(leyendo: altura), inicio: inicio, duracion: duracion, voz: voz)
+        }
+        let notas = [
+            try nota("Do3", .cero, .blanca, voz: 1),
+            try nota("Mi4", .cero, .negra, voz: 2), try nota("Fa4", .negra, .corchea, voz: 2),
+            try nota("Mi4", Duracion(3, 8), .corchea, voz: 2),
+            try nota("Sol4", .cero, .negra, voz: 3), try nota("La4", .negra, .corchea, voz: 3),
+            try nota("Sol4", Duracion(3, 8), .corchea, voz: 3),
+        ]
+        let pieza = PiezaImportada(tonalidad: Tonalidad(.do), compas: try Compas(leyendo: "4/4"), notas: notas)
+        #expect(pieza.acordes().map(\.cifrado) == ["Do"])
+    }
+
+    /// Una nota de paso o una bordadura de una voz (breve, a contratiempo, por grado conjunto) pesa una cuarta
+    /// parte; las demás, lo que suenan.
+    @Test func lasNotasDePasoPesanMenos() throws {
+        let linea = [
+            ("Do5", Duracion.cero, Duracion(3, 8)), ("Re5", Duracion(3, 8), .corchea), ("Mi5", .blanca, .negra),
+        ]
+        let notas = try linea.map { NotaDeLaPieza(altura: try Altura(leyendo: $0.0), inicio: $0.1, duracion: $0.2) }
+        #expect(PiezaImportada(notas: notas).factoresMelodicos(paso: .negra) == [1, 0.25, 1])
+        // A tiempo, o por salto, no es de paso.
+        let aTiempo = try [
+            ("Do5", Duracion.cero, Duracion.negra), ("Re5", .negra, .corchea), ("Mi5", Duracion(3, 8), .negra),
+        ]
+        .map { NotaDeLaPieza(altura: try Altura(leyendo: $0.0), inicio: $0.1, duracion: $0.2) }
+        #expect(PiezaImportada(notas: aTiempo).factoresMelodicos(paso: .negra) == [1, 1, 1])
+        let porSalto = try [
+            ("Do5", Duracion.cero, Duracion(3, 8)), ("Sol5", Duracion(3, 8), .corchea), ("Mi5", .blanca, .negra),
+        ]
+        .map { NotaDeLaPieza(altura: try Altura(leyendo: $0.0), inicio: $0.1, duracion: $0.2) }
+        #expect(PiezaImportada(notas: porSalto).factoresMelodicos(paso: .negra) == [1, 1, 1])
+    }
+
+    /// Una pieza que modula: el recorrido tonal da sus dos tonalidades, y el análisis, una sola.
+    @Test func elRecorridoTonalDeUnaPiezaQueModula() throws {
+        var notas: [NotaDeLaPieza] = []
+        for (i, nombre) in ["Do", "Fa", "Sol7", "Do", "Lam", "Re7", "Sol"].enumerated() {
+            let acorde = try Acorde(leyendo: nombre)
+            let alturas =
+                Altura.posicionCerrada([acorde.bajo], desde: 41) + Altura.posicionCerrada(acorde.notas, desde: 57)
+            notas += alturas.map { NotaDeLaPieza(altura: $0, inicio: .negra * i, duracion: .negra) }
+        }
+        let pieza = PiezaImportada(compas: try Compas(leyendo: "4/4"), notas: notas)
+        let recorrido = try #require(pieza.recorridoTonal())
+        #expect(recorrido.tramos.map(\.tonalidad) == [Tonalidad(.do), Tonalidad(.sol)])
+        #expect(recorrido.cifrados == ["I", "IV", "V7", "I", "ii", "V7", "I"])
+        #expect(recorrido.modulaciones.count == 1)
+        #expect(pieza.analisis()?.cifrados.count == 7)
+        #expect(PiezaImportada(notas: []).recorridoTonal() == nil)
+    }
+
     @Test func unBajoAlbertiSeLeeComoUnAcorde() {
         let figura = ["Do3", "Sol3", "Mi3", "Sol3", "Si2", "Sol3", "Re3", "Sol3"].map { try! Altura(leyendo: $0) }
         let notas = figura.enumerated().map {

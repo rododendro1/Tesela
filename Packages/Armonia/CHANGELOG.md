@@ -2,6 +2,20 @@
 
 ## Sin publicar
 
+### Las reglas de conducción, una sola vez; las piezas importadas, por sus cambios de armonía y con sus modulaciones
+
+- El coral y el contrapunto comparten las reglas de conducción (`Conduccion`, de uso interno): qué es una
+  consonancia perfecta, cuándo dos voces van en quintas u octavas paralelas o llegan a ellas por movimiento directo,
+  y qué saltos no son melódicos, con los de la armonía (`.armonia`) y los del contrapunto estricto (`.contrapunto`).
+  Las faltas son las mismas que antes; solo cambia que una voz que se reescribe enarmónicamente (Do♯ a Re♭) ya no
+  cuenta como movimiento en el coral.
+- `PiezaImportada.acordes(ventana:)` ya no da un acorde por pulso que cambia: junta los pulsos seguidos de un mismo
+  compás donde la armonía no cambia (un pulso con una bordadura de Fa y La sobre Do es Do, no Do(add11)), sin juntar
+  nunca dos acordes en uno más rico (Do y Sol/Si no son un Domaj9). Las notas de paso y las bordaduras de una voz
+  (breves, a contratiempo y por grado conjunto) pesan una cuarta parte.
+- `PiezaImportada.recorridoTonal(ventana:)`: los tramos de la pieza en cada tonalidad, con las modulaciones y sus
+  acordes pivote. `analisis()` sigue dando toda la pieza en una sola tonalidad.
+
 ### Polifonia, un módulo para el coral y el contrapunto
 
 - El coral a cuatro voces (`Coral`, `Armonizacion`, `CoralArmonizado`, el bajo cifrado y las notas extrañas), que
