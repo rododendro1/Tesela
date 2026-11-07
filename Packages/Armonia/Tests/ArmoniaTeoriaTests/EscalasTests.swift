@@ -887,6 +887,48 @@ import Testing
         #expect(TipoDeEscala.pentatonicaMayor.equivalentes.contains { $0.nombre == "Gōng" })
     }
 
+    /// Los doce lü, por sanfen sunyi desde huángzhōng: once quintas pitagóricas, con los sostenidos.
+    @Test func losDoceLu() throws {
+        #expect(TipoDeEscala.lus.map(\.nombre) == ["Shí'èr lǜ", "Yánglǜ", "Yīnlǜ"])
+        #expect(TipoDeEscala.shierLu.tradicion == .china)
+        #expect(TipoDeEscala.shierLu.categoria == .afinacion)
+        #expect(TipoDeEscala.shierLu.fuente == .lushiChunqiu)
+        #expect(
+            Escala(.do, .shierLu).notas.map(\.description)
+                == ["Do", "Do♯", "Re", "Re♯", "Mi", "Mi♯", "Fa♯", "Sol", "Sol♯", "La", "La♯", "Si"])
+        // Cada lü, a un número de quintas de huángzhōng: zhònglǚ, a once, no vuelve a Fa (la coma pitagórica).
+        let quinta = 1200 * log2(1.5)
+        let pitagoricos = TipoDeEscala.shierLu.intervalos.map { intervalo -> Int in
+            let cents = (Double(intervalo.pasosDeQuinta) * quinta).truncatingRemainder(dividingBy: 1200)
+            return Int((cents < 0 ? cents + 1200 : cents).rounded())
+        }
+        let afinaciones = TipoDeEscala.shierLu.afinaciones
+        #expect(afinaciones.map(\.fuente) == [nil, "Zhu Zaiyu, 1584"])
+        #expect(afinaciones[0].pasos == pitagoricos)
+        #expect(afinaciones[0].pasos[5] - 498 == 24)
+        #expect(afinaciones[1].desvios.allSatisfy { $0 == 0 })
+        // Las dos mitades: tonos enteros con un paso de 180 cents.
+        for tipo in [TipoDeEscala.yanglu, .yinlu] {
+            let semitonos = Set(TipoDeEscala.tonosEnteros.intervalos.map(\.semitonos))
+            #expect(Set(tipo.intervalos.map(\.semitonos)) == semitonos, Comment(rawValue: tipo.nombre))
+            let pasos = try #require(tipo.microtonal).pasos + [1200]
+            let saltos = zip(pasos.dropFirst(), pasos).map { $0 - $1 }
+            #expect(saltos.sorted() == [180, 204, 204, 204, 204, 204], Comment(rawValue: tipo.nombre))
+        }
+        #expect(Escala(Nota(.do, .sostenido), .yinlu).notas.map(\.description) == ["Do♯", "Re♯", "Mi♯", "Sol", "La", "Si"])
+        #expect((try? Escala(leyendo: "Do 十二律"))?.tipo.nombre == "Shí'èr lǜ")
+        #expect((try? Escala(leyendo: "Do 六律"))?.tipo.nombre == "Yánglǜ")
+        #expect((try? Escala(leyendo: "Do 六吕"))?.tipo.nombre == "Yīnlǜ")
+    }
+
+    /// Las chinas suenan por sanfen sunyi: cada nota, a un número de quintas pitagóricas de gōng.
+    @Test func lasChinasPorSanfenSunyi() throws {
+        #expect(TipoDeEscala.chinas.allSatisfy { $0.microtonal != nil })
+        #expect(try #require(TipoDeEscala.gong.microtonal).pasos == [0, 204, 408, 702, 906])
+        #expect(try #require(TipoDeEscala.qingyue.microtonal).desvios[3] == 22)
+        #expect(TipoDeEscala.tradicionales(fuente: .guanzi) == [.gong, .shang, .jue, .zhi, .yu])
+    }
+
     @Test func escalasJaponesas() {
         #expect(
             TipoDeEscala.japonesas.map(\.nombre) == [

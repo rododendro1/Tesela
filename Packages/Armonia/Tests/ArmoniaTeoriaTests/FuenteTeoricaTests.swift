@@ -20,6 +20,8 @@ import Testing
         #expect(TipoDeEscala.tradicionales(fuente: .glareano) == TipoDeEscala.modosDeGlareano)
         #expect(TipoDeEscala.tradicionales(fuente: .guido) == TipoDeEscala.hexacordos)
         #expect(TipoDeEscala.tradicionales(fuente: .safiAlDin) == TipoDeEscala.adwar)
+        #expect(TipoDeEscala.tradicionales(fuente: .guanzi) == Array(TipoDeEscala.chinas.prefix(5)))
+        #expect(TipoDeEscala.tradicionales(fuente: .lushiChunqiu) == [.shierLu])
         #expect(
             TipoDeEscala.tradicionales(fuente: .aristoxeno)
                 == TipoDeEscala.tetracordosGriegos + TipoDeEscala.coloresDeAristoxeno)

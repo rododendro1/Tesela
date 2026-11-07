@@ -201,7 +201,9 @@ import Testing
                 + TipoDeEscala.hexacordos + TipoDeEscala.coloresDeAristoxeno)
         #expect(fragmentos.allSatisfy { (3...6).contains($0.intervalos.count) })
         let afinaciones = TipoDeEscala.tradicionales(clase: .afinacion)
-        #expect(afinaciones == TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + TipoDeEscala.sudesteAsiaticas)
+        #expect(
+            afinaciones
+                == TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + TipoDeEscala.sudesteAsiaticas + [.shierLu])
         let madres = TipoDeEscala.tradicionales(clase: .escalaMadre)
         let thaatsGramasYLaras = TipoDeEscala.thaats + TipoDeEscala.gramas + TipoDeEscala.indonesias
         #expect(madres.count == 72 + thaatsGramasYLaras.count)

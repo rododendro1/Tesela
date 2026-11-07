@@ -2,6 +2,18 @@
 
 ## Sin publicar
 
+### Los doce lü y el sanfen sunyi de las escalas chinas
+
+- Tres escalas chinas nuevas: los doce lü (`TipoDeEscala.shierLu`, 十二律, «Shí'èr lǜ»), una afinación desde
+  huángzhōng con los cents de sanfen sunyi (once quintas pitagóricas: Do♯ a 114, Mi♯ a 522) y, de segunda
+  afinación, los doce lü iguales de Zhu Zaiyu (1584); y sus dos mitades, los seis lü yang (`yanglu`, 六律) y los
+  seis yin (`yinlu`, 六吕), dos escalas de tonos enteros con un paso de 180 cents.
+- Las ocho escalas chinas que ya había tienen ahora su versión microtonal por sanfen sunyi (`afinaciones`): gōng
+  suena en 0, 204, 408, 702 y 906 cents.
+- Dos fuentes nuevas en `FuenteTeorica`, de la tradición china: `.guanzi` (las cinco notas, en los cinco modos) y
+  `.lushiChunqiu` (los doce lü). `armonia escalas --fuente guanzi` las deja.
+- Los nombres de las tres escalas nuevas en los demás idiomas (en ruso y griego, transcritos) llegarán aparte.
+
 ### Las mismas consultas y los mismos nombres en toda la API
 
 **Cambio incompatible:** los nombres de antes ya no existen (no llegaron a salir como obsoletos en ninguna versión);
