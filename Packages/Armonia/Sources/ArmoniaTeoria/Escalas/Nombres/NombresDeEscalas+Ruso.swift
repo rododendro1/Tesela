@@ -126,6 +126,9 @@ extension NombresDeEscalas {
         .tradicional(.qingyue, "Цинъюэ"),
         .tradicional(.yayue, "Яюэ"),
         .tradicional(.yanyue, "Яньюэ"),
+        .tradicional(.shierLu, "Шиэр люй"),
+        .tradicional(.yanglu, "Янлюй"),
+        .tradicional(.yinlu, "Иньлюй"),
         // Corea
         .tradicional(.pyongjo, "Пхёнджо"),
         .tradicional(.kyemyonjo, "Кемёнджо"),

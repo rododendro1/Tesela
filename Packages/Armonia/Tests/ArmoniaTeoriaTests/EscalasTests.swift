@@ -920,6 +920,11 @@ import Testing
         #expect((try? Escala(leyendo: "Do 十二律"))?.tipo.nombre == "Shí'èr lǜ")
         #expect((try? Escala(leyendo: "Do 六律"))?.tipo.nombre == "Yánglǜ")
         #expect((try? Escala(leyendo: "Do 六吕"))?.tipo.nombre == "Yīnlǜ")
+        // En ruso y griego, transcritos; en los demás idiomas, en pinyin.
+        let ruso = Notacion.espanolCompacto.conTextos(en: .ruso)
+        #expect(TipoDeEscala.shierLu.nombre(en: ruso) == "Шиэр люй")
+        #expect(TipoDeEscala.yinlu.nombre(en: Notacion.espanolCompacto.conTextos(en: .griego)) == "Γινλιου")
+        #expect(TipoDeEscala.yanglu.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Yánglǜ")
     }
 
     /// Las chinas suenan por sanfen sunyi: cada nota, a un número de quintas pitagóricas de gōng.

@@ -12,7 +12,8 @@
   suena en 0, 204, 408, 702 y 906 cents.
 - Dos fuentes nuevas en `FuenteTeorica`, de la tradición china: `.guanzi` (las cinco notas, en los cinco modos) y
   `.lushiChunqiu` (los doce lü). `armonia escalas --fuente guanzi` las deja.
-- Los nombres de las tres escalas nuevas en los demás idiomas (en ruso y griego, transcritos) llegarán aparte.
+- En ruso y en griego, sus nombres transcritos: Шиэр люй, Янлюй e Иньлюй; Σιερ λιου, Γιανγκλιου y Γινλιου. En los
+  demás idiomas conservan el pinyin, como las demás escalas chinas.
 
 ### Nombres de módulo más claros
 
