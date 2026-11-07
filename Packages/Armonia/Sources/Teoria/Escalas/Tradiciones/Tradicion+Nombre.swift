@@ -1,4 +1,4 @@
-import ArmoniaElementos
+import Elementos
 
 // MARK: - El nombre de cada tradición
 

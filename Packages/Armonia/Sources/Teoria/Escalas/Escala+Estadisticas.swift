@@ -1,4 +1,4 @@
-import ArmoniaElementos
+import Elementos
 
 // MARK: - Lo que se mide de una escala
 

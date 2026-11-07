@@ -1,4 +1,4 @@
-import ArmoniaElementos
+import Elementos
 
 // Armonía modal: lo que distingue a cada modo de la escala mayor (su nota característica), los acordes que la
 // llevan y la cadencia que lo afirma sin la dominante de la tonalidad.

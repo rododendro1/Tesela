@@ -1,4 +1,4 @@
-import ArmoniaElementos
+import Elementos
 
 /// La mano guidoniana: el gamut de la solmisación medieval, las veinte posiciones de Γ ut (Sol2) a ee la (Mi5), y los
 /// siete hexacordos que se solapan en ellas.

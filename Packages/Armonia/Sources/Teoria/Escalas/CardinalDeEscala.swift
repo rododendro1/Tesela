@@ -1,4 +1,4 @@
-import ArmoniaElementos
+import Elementos
 
 // MARK: - Cuántas notas tiene una escala
 

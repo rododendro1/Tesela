@@ -1,4 +1,4 @@
-import ArmoniaElementos
+import Elementos
 
 // MARK: - Subtradición de una escala
 

@@ -1,4 +1,4 @@
-import ArmoniaElementos
+import Elementos
 
 // Las notas de una escala con los nombres de otra tradición (`SistemaDeNombres`): el sargam desde la tónica de la
 // escala (Re dórico es Sā Re ga ma Pa Dha ni) y el bizantino con Ni en Do (el primer echos, sobre Re, es Pa Vou Ga Di

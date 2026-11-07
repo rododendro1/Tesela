@@ -1,4 +1,4 @@
-import ArmoniaElementos
+import Elementos
 
 // MARK: - Uso de una escala occidental
 

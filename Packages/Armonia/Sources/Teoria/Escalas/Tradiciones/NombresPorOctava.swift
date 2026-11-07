@@ -1,4 +1,4 @@
-import ArmoniaElementos
+import Elementos
 import Foundation
 
 // MARK: - Nombres por octava

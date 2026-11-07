@@ -1,4 +1,4 @@
-import ArmoniaElementos
+import Elementos
 
 // El sentido inverso de la relación escala-acorde: los acordes que caben en una escala, grado a grado, y las
 // estructuras superiores (las tríadas de tensiones que se tocan sobre un acorde con esa escala).

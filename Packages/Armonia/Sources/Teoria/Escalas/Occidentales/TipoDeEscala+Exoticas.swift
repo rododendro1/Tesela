@@ -1,4 +1,4 @@
-import ArmoniaElementos
+import Elementos
 
 // MARK: - Escalas «exóticas» de la tradición occidental, simétricas y otras.
 
