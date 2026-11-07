@@ -61,7 +61,7 @@ public enum CicloNeorriemanniano: String, CaseIterable, Hashable, Sendable, Cust
         }
     }
 
-    /// En los doce idiomas de los textos: "ciclo hexatónico", "hexatonic cycle", "cicle hexatònic",
+    /// En los trece idiomas de los textos: "ciclo hexatónico", "hexatonic cycle", "cicle hexatònic",
     /// "ciclo hexatónico", "ziklo hexatonikoa".
     public func nombre(en notacion: Notacion) -> String {
         switch self {

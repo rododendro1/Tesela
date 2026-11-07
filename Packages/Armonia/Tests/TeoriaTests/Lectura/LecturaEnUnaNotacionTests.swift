@@ -3,7 +3,7 @@ import Testing
 @testable import Elementos
 @testable import Teoria
 
-/// Lo que escriben `cifrado(en:)` y `nombre(en:)` se lee de vuelta con `leyendo:en:`, en los doce idiomas.
+/// Lo que escriben `cifrado(en:)` y `nombre(en:)` se lee de vuelta con `leyendo:en:`, en los trece idiomas.
 @Suite struct LecturaEnUnaNotacionTests {
     static let notaciones = Idioma.allCases.flatMap { [Notacion.compacta($0), .conPalabras($0)] }
     static let tonicas = (-7...7).map { Nota(pasosDeQuinta: $0) }

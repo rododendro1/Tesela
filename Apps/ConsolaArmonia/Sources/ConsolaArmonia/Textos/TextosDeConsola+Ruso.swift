@@ -165,7 +165,7 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: теория музыки в командной строке.
 
-        Использование: armonia <команда> <аргументы> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu]
+        Использование: armonia <команда> <аргументы> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv]
 
         Команды (команды и параметры пишутся по-испански или по-английски):
         """,
@@ -331,7 +331,7 @@ extension TextosDeConsola {
         pruebaLaAyuda: "Попробуй «armonia help».",
         ordenDesconocida: { orden in "неизвестная команда: «\(orden)»" },
         opcionDesconocida: { opcion in "неизвестный параметр: «\(opcion)»" },
-        idiomaDesconocido: { idioma in "неизвестный язык: «\(idioma)» (es, en, ca, gl, eu, pt, fr, it, de, el, ru или hu)" },
+        idiomaDesconocido: { idioma in "неизвестный язык: «\(idioma)» (es, en, ca, gl, eu, pt, fr, it, de, el, ru, hu или sv)" },
         terminalDesconocida: { t in "неизвестная оболочка: «\(t)» (bash, zsh или fish)" },
         escrituraNoValida: { escritura in "недопустимое написание: «\(escritura)» (palabras/words или compacto/compact; ascii или unicode, только с es и en)" },
         sistemaDesconocido: { sistema, lista in "неизвестная система названий: «\(sistema)» (\(lista))" },

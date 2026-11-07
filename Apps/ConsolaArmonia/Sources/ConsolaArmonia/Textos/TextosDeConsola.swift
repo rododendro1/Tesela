@@ -4,7 +4,7 @@ import Armonia
 // MARK: - Textos de ConsolaArmonia
 //
 // Un idioma por fichero: `TextosDeConsola+Espanol.swift`, `TextosDeConsola+Ingles.swift`… Cada uno da todos los
-// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los doce y
+// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los trece y
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de ConsolaArmonia en un idioma.
@@ -388,9 +388,9 @@ struct TextosDeConsola: TextosTraducidos {
     /// La primera línea de la sesión (`armonia` sin argumentos en la terminal), con la versión.
     let bienvenidaDeLaSesion: @Sendable (String) -> String
 
-    /// Los textos en los doce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeConsola>(
         espanol, ingles, ca: catalan, gl: gallego, eu: euskera, pt: portugues,
-        fr: frances, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
+        fr: frances, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro, sv: sueco)
 }

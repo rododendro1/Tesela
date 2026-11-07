@@ -393,7 +393,7 @@ extension Consonancia: Nombrable {}
 
 // MARK: - Idiomas
 //
-// Las calidades de intervalo, los intervalos y las consonancias en los doce idiomas de los textos
+// Las calidades de intervalo, los intervalos y las consonancias en los trece idiomas de los textos
 // (`Notacion.textos`). Las notas y las alteraciones, en `Nota.swift`.
 
 // MARK: - CalidadDeIntervalo

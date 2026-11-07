@@ -436,7 +436,7 @@ extension TecladoCuadrado: CustomStringConvertible {
 
 // MARK: - Idiomas
 //
-// Los nombres de los teclados en los doce idiomas de los textos, en `Textos/TextosDeDiagramas+Espanol.swift`,
+// Los nombres de los teclados en los trece idiomas de los textos, en `Textos/TextosDeDiagramas+Espanol.swift`,
 // `…+Ingles.swift`…, un fichero por idioma.
 
 extension TecladoCuadrado: Nombrable {
@@ -446,7 +446,7 @@ extension TecladoCuadrado: Nombrable {
         traduccion?.en(notacion) ?? nombre
     }
 
-    /// El nombre en los doce idiomas; `nil` si el teclado no es de los de `todos`.
+    /// El nombre en los trece idiomas; `nil` si el teclado no es de los de `todos`.
     package var traduccion: Traduccion? {
         switch self {
         case .cuartas: return TextosDeDiagramas.traduccion(\.cuadriculaEnCuartas)

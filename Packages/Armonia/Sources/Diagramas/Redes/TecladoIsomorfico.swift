@@ -243,7 +243,7 @@ extension TecladoIsomorfico: CustomStringConvertible {
 
 // MARK: - Idiomas
 //
-// Los nombres de los teclados en los doce idiomas de los textos. Los textos están en
+// Los nombres de los teclados en los trece idiomas de los textos. Los textos están en
 // `Textos/TextosDeDiagramas+Espanol.swift`, `…+Ingles.swift`…, un fichero por idioma.
 
 extension TecladoIsomorfico: Nombrable {
@@ -253,7 +253,7 @@ extension TecladoIsomorfico: Nombrable {
         traduccion?.en(notacion) ?? nombre
     }
 
-    /// El nombre en los doce idiomas; `nil` si es un nombre propio o el teclado no es de los de `todos`.
+    /// El nombre en los trece idiomas; `nil` si es un nombre propio o el teclado no es de los de `todos`.
     package var traduccion: Traduccion? {
         switch self {
         case .tablaArmonica:

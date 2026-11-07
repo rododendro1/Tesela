@@ -9,7 +9,7 @@ import Testing
 @testable import Teoria
 @testable import Trastes
 
-/// Los textos con valores (los campos de tipo cierre de los `TextosDeX`) dan algo en los doce idiomas.
+/// Los textos con valores (los campos de tipo cierre de los `TextosDeX`) dan algo en los trece idiomas.
 ///
 /// `TextosDeX.en(notacion, …)` solo ejecuta el cierre del idioma de la notación, así que sin esta prueba los de
 /// los idiomas que no prueba nadie no se ejecutarían nunca.

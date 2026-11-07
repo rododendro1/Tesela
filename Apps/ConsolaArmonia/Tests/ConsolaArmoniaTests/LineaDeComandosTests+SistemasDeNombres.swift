@@ -47,7 +47,7 @@ extension LineaDeComandosTests {
         #expect(resultado("acorde", "Do", "--sistema").codigo == 2)
     }
 
-    /// Las dos opciones son generales: se completan y salen en la ayuda en los doce idiomas.
+    /// Las dos opciones son generales: se completan y salen en la ayuda en los trece idiomas.
     @Test func lasOpcionesDelSistemaSonGenerales() {
         #expect(LineaDeComandos.opcionesGenerales.contains("--sistema"))
         #expect(LineaDeComandos.opcionesGenerales.contains("--script"))

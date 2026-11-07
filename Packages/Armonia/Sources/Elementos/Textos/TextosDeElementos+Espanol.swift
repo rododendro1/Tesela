@@ -57,7 +57,7 @@ extension TextosDeElementos {
         faltanEnLaSerie: { clases in "faltan \(clases)" },
         repetidasEnLaSerie: { clases in "se repiten \(clases)" },
         // ErrorDeLectura.swift (idiomas)
-        idiomaNoReconocido: { n, o in "«\(n)» no es ninguno de los doce idiomas: \(o)" },
+        idiomaNoReconocido: { n, o in "«\(n)» no es ninguno de los trece idiomas: \(o)" },
 
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(ordinal) \(calidad)" },

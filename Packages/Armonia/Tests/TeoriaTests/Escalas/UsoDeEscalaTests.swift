@@ -42,7 +42,7 @@ import Testing
         }
     }
 
-    /// Cada uso tiene nombre en los doce idiomas, y en español es también su `nombre`.
+    /// Cada uso tiene nombre en los trece idiomas, y en español es también su `nombre`.
     @Test func losNombresDeLosUsosSeTraducen() {
         for uso in UsoDeEscala.allCases {
             #expect(uso.nombre(en: .espanolCompacto) == uso.nombre)

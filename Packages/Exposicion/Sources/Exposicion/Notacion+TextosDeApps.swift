@@ -1,11 +1,11 @@
 import Armonia
 
-/// Los textos de la interfaz de las apps (pestañas, secciones, etiquetas, indicaciones), en los doce idiomas de
+/// Los textos de la interfaz de las apps (pestañas, secciones, etiquetas, indicaciones), en los trece idiomas de
 /// los textos del motor.
 ///
 /// Siguen el idioma de los textos de la notación elegida, igual que los nombres de acordes, escalas y avisos,
 /// así que el selector de notación cambia la app entera. Cada texto es un campo de `TextosDeApps`, con un fichero
-/// por idioma en `Textos/` (`TextosDeApps+Espanol.swift`…): uno nuevo no compila hasta que está en los doce.
+/// por idioma en `Textos/` (`TextosDeApps+Espanol.swift`…): uno nuevo no compila hasta que está en los trece.
 ///
 ///     Notacion.inglesASCII.texto(\.digitaciones)                // "Fingerings"
 ///     Notacion.espanolCompacto.texto { $0.notasPorCuerda(3) }    // "3 notas por cuerda"

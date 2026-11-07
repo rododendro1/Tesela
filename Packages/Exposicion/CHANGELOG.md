@@ -1,5 +1,9 @@
 # Cambios
 
+## Sin publicar
+
+- Los textos de las apps (`TextosDeApps`) están también en sueco.
+
 ## 0.3.7 (2026-11-07)
 
 - **Cambio incompatible:** el paquete, el producto y el módulo se llaman ahora `Exposicion` (antes

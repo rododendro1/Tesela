@@ -32,8 +32,10 @@
 /// | `.compacta(.ruso)` | Фа♯ | большая терция | доминантсептаккорд | Фа♯ дорийский |
 /// | `.conPalabras(.hungaro)` | F kereszt | nagy terc | domináns szeptimakkord | F kereszt dór |
 /// | `.compacta(.hungaro)` | Fisz | nagy terc | domináns szeptimakkord | Fisz dór |
+/// | `.conPalabras(.sueco)` | F kors | stor ters | dominantseptimackord | F kors dorisk |
+/// | `.compacta(.sueco)` | Fiss | stor ters | dominantseptimackord | Fiss dorisk |
 ///
-/// En los doce idiomas están traducidos los nombres de nota y de alteración, los modos de las
+/// En los trece idiomas están traducidos los nombres de nota y de alteración, los modos de las
 /// tonalidades (Fis-Dur, fa dièse majeur, фа-диез мажор), los textos del motor (mensajes de error,
 /// intervalos, cadencias…) y los nombres de los catálogos (acordes, escalas, instrumentos).
 ///
@@ -80,7 +82,7 @@ public struct Notacion: Hashable, Sendable, CaseIterable, Codable {
     public static let allCases: [Notacion] = EscrituraDeNotas.allCases.map { Notacion(escritura: $0) }
 
     /// La notación habitual de un idioma: con ♯ y ♭ en español (`.espanolCompacto`), con # y b en inglés
-    /// (`.inglesASCII`) y con Fis y Es en alemán (`.compacta(.aleman)`) o Fisz en húngaro (`.compacta(.hungaro)`), que es
+    /// (`.inglesASCII`) y con Fis y Es en alemán (`.compacta(.aleman)`) o Fisz en húngaro (`.compacta(.hungaro)`) y Fiss en sueco (`.compacta(.sueco)`), que es
     /// como se suelen escribir; en los demás, la de las alteraciones con palabras, y no la compacta:
     /// `Notacion.delIdioma(.catalan)` es `.conPalabras(.catalan)` (fa sostingut), no `.compacta(.catalan)` (Fa♯).
     public static func delIdioma(_ idioma: Idioma) -> Notacion {
@@ -184,7 +186,7 @@ public enum EscrituraDeLaOctava: String, Hashable, Sendable, CaseIterable, Codab
 /// forma compacta (con #/b o con ♯/♭ en español e inglés; Fis en alemán; Fa♯, Ré♭, Фа♯ en los demás).
 ///
 /// No es una lista de casos, sino el idioma y su variante: las treinta y dos escrituras con nombre
-/// (`.espanolCompacto`, `.conPalabras(.ruso)`…) salen de los doce idiomas, con tres formas en español y en inglés
+/// (`.espanolCompacto`, `.conPalabras(.ruso)`…) salen de los trece idiomas, con tres formas en español y en inglés
 /// (palabras, ASCII y compacta) y dos en los demás (palabras y compacta). Añadir un idioma es añadir su caso a
 /// ``Idioma`` y su fila a ``ReglasDeIdioma``; aquí no hay nada que tocar. `allCases` las recorre en el orden de `Idioma`.
 public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
@@ -249,7 +251,7 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
     /// C, F♯, B♭, F𝄪, B𝄫.
     public static let inglesCompacto = EscrituraDeNotas(.ingles, tipografia: .conDobles)
 
-    /// Las escrituras de los doce idiomas: tres en los que tienen variantes de signos (palabras, ASCII y
+    /// Las escrituras de los trece idiomas: tres en los que tienen variantes de signos (palabras, ASCII y
     /// compacta) y dos en los demás (palabras y compacta).
     public static let allCases: [EscrituraDeNotas] = Idioma.allCases.flatMap { idioma in
         switch idioma.reglas.alteraciones {
@@ -274,7 +276,7 @@ public struct EscrituraDeNotas: Hashable, Sendable, CaseIterable {
         EscrituraDeNotas(idioma, tipografia: tipografiaCompacta(idioma))
     }
 
-    /// Los signos de la compacta de un idioma: 𝄪 y 𝄫 (Fa𝄪, F𝄪); en alemán y en húngaro, los del idioma, que
+    /// Los signos de la compacta de un idioma: 𝄪 y 𝄫 (Fa𝄪, F𝄪); en alemán, en húngaro y en sueco, los del idioma, que
     /// escriben las alteraciones con sufijos (Fisis).
     private static func tipografiaCompacta(_ idioma: Idioma) -> Tipografia? {
         idioma.reglas.alteraciones == .alemana ? nil : .conDobles
@@ -344,15 +346,16 @@ public enum Idioma: String, Hashable, Sendable, CaseIterable, Codable {
     case griego
     case ruso
     case hungaro
+    case sueco
 }
 
 extension Idioma {
     /// El código ISO 639 del idioma: «es», «en», «ca», «gl», «eu», «pt», «fr», «it», «de»,
-    /// «el», «ru» y «hu». Está en sus ``ReglasDeIdioma``.
+    /// «el», «ru», «hu» y «sv». Está en sus ``ReglasDeIdioma``.
     public var codigo: String { reglas.codigo }
 
     /// El idioma de un código ISO 639 («eu») o de una etiqueta de idioma con región («ca-ES», «pt_BR»), sin
-    /// importar las mayúsculas; `nil` si no es uno de los doce.
+    /// importar las mayúsculas; `nil` si no es uno de los trece.
     public init?(codigo: String) {
         let idioma = codigo.lowercased().split(whereSeparator: { $0 == "-" || $0 == "_" }).first.map(String.init)
         guard let encontrado = Idioma.allCases.first(where: { $0.codigo == idioma }) else { return nil }

@@ -45,12 +45,12 @@ import Testing
         #expect(
             Idioma.allCases.map(\.clave) == [
                 "espanol", "ingles", "catalan", "gallego", "euskera", "portugues", "frances", "italiano", "aleman",
-                "griego", "ruso", "hungaro",
+                "griego", "ruso", "hungaro", "sueco",
             ])
         #expect(
             Idioma.allCases.map(\.titulo) == [
                 "Español", "English", "Català", "Galego", "Euskara", "Português", "Français", "Italiano", "Deutsch",
-                "Ελληνικά", "Русский", "Magyar",
+                "Ελληνικά", "Русский", "Magyar", "Svenska",
             ])
     }
 

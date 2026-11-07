@@ -259,7 +259,7 @@ import Testing
         #expect(salida("tonalidad Mib mayor --idioma gl").contains("(3 bemois)"))
         #expect(salida("--idioma en acorde C/G") == salida("acorde C/G --ingles"))
         #expect(salida("acorde Do --language es") == salida("acorde Do"))
-        // La ayuda, en los doce idiomas.
+        // La ayuda, en los trece idiomas.
         #expect(salida("ayuda --todo --idioma ca").hasPrefix("armonia: "))
         #expect(salida("ayuda --todo --idioma ca") == (ayudaEn(.catalan) + "\n"))
         #expect(salida("ayuda --todo --idioma gl") == (ayudaEn(.gallego) + "\n"))
@@ -272,6 +272,10 @@ import Testing
         #expect(salida("ayuda --todo --idioma hu") == (ayudaEn(.hungaro) + "\n"))
         #expect(salida("ayuda --todo --idioma magyar").hasPrefix("armonia: zeneelmélet a parancssorban."))
         #expect(salida("tonalidad Mib mayor --idioma hu").contains("Esz-dúr"))
+        #expect(salida("ayuda --todo --idioma sv") == (ayudaEn(.sueco) + "\n"))
+        #expect(salida("ayuda --todo --idioma svenska").hasPrefix("armonia: "))
+        #expect(salida("tonalidad Mib mayor --idioma sv").contains("Ess-dur"))
+        #expect(salida("escala Fiss dorisk --idioma sv").contains("2:a modus av E dur"))
         #expect(salida("ayuda --todo --idioma el") == (ayudaEn(.griego) + "\n"))
         #expect(ayudaEn(.aleman).hasPrefix("armonia: Musiktheorie"))
         #expect(ayudaEn(.ruso).contains("armonia chord G7/B"))
@@ -300,7 +304,7 @@ import Testing
         #expect(
             resultado("acorde", "Do", "--idioma", "xx").error
                 .hasPrefix(
-                    "armonia: idioma desconocido: «xx» (es, en, ca, gl, eu, pt, fr, it, de, el, ru o hu)"))
+                    "armonia: idioma desconocido: «xx» (es, en, ca, gl, eu, pt, fr, it, de, el, ru, hu o sv)"))
         #expect(salida("acorde Sol7/Si --idioma de").hasPrefix("G7/H: Dominantseptakkord\n"))
         #expect(salida("acorde Sol7/Si --idioma ru").hasPrefix("Соль7/Си: доминантсептаккорд\n"))
         #expect(salida("escala Re dórico --idioma el").hasPrefix("ρε δώριος"))
