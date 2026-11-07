@@ -140,10 +140,9 @@ public struct Contrapunto: Hashable, Sendable {
 
     /// `true` si el contrapunto va, de media, por encima del cantus.
     public var contrapuntoArriba: Bool {
-        let notas = sonoridades.map(\.nota.midi)
+        let notas = sonoridades.map(\.nota)
         guard !notas.isEmpty else { return true }
-        let media = Double(notas.reduce(0, +)) / Double(notas.count)
-        return media >= Double(cantusFirmus.map(\.midi).reduce(0, +)) / Double(cantusFirmus.count)
+        return notas.midiMedio >= cantusFirmus.midiMedio
     }
 
     /// `true` si no hay ninguna falta.

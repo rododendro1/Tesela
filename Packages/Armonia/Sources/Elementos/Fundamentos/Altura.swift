@@ -187,3 +187,16 @@ extension Altura {
 extension Altura: RepresentableComoTexto, Nombrable, Transponible {
     public func texto(en notacion: Notacion) -> String { nombre(en: notacion) }
 }
+
+extension Sequence where Element == Altura {
+    /// La altura media, en números MIDI (Do4 = 60); 0 si no hay ninguna. Para ordenar voces de la grave a la aguda.
+    package var midiMedio: Double {
+        var suma = 0
+        var cuantas = 0
+        for altura in self {
+            suma += altura.midi
+            cuantas += 1
+        }
+        return cuantas == 0 ? 0 : Double(suma) / Double(cuantas)
+    }
+}

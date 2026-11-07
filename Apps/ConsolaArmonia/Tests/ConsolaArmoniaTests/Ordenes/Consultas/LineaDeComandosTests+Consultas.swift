@@ -365,7 +365,7 @@ extension LineaDeComandosTests {
             LineaDeComandos.ejecutar(["escalas", "--tradicion", "india", "--categoria", "maqam"]).error
                 == "armonia: no hay ninguna escala así\n")
         for orden in ["escalas --tradicion marte", "escalas --categoria foo", "escalas --tradicion", "escalas --foo"] {
-            #expect(LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2)
+            #expect(resultado(orden).codigo == 2)
         }
         #expect(LineaDeComandos.ejecutar(["escalas", "--tradicion", "marte"]).error.contains("«marte»"))
     }
@@ -528,9 +528,6 @@ extension LineaDeComandosTests {
     }
 
     @Test func analizarUnArchivoConErrores() throws {
-        func resultado(_ orden: String) -> ResultadoDeOrden {
-            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
-        }
         #expect(resultado("analizar --archivo").codigo == 2)
         let inexistente = resultado("analizar --archivo /no/existe.mid")
         // Un fichero que no se puede leer es un error de lectura, sin remitir a la ayuda.

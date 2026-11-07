@@ -24,7 +24,7 @@ extension LineaDeComandosTests {
             "camino-parsimonioso Do Sol7", "conduccion-minima Sol7",
         ] {
             #expect(
-                LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,
+                resultado(orden).codigo == 2,
                 Comment(rawValue: orden))
         }
     }
@@ -49,7 +49,7 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.ejecutar(["tabla", "--ciclo", "LR", "Sol7"]).codigo == 2)
         for orden in ["plr", "plr Do", "plr Sol7 P", "plr camino Do Sol7"] {
             #expect(
-                LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init)).codigo == 2,
+                resultado(orden).codigo == 2,
                 Comment(rawValue: orden))
         }
         #expect(LineaDeComandos.ejecutar(["plr", "Do", "Xq"]).codigo == 1)

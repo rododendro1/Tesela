@@ -35,6 +35,28 @@ public enum FormatoDePartitura: String, Hashable, Sendable, CaseIterable, Codabl
         }
     }
 
+    /// Todas las extensiones con que se reconoce, sin el punto: la suya (`extensionDeFichero`) y las otras de uso
+    /// común («xml» y «mxl», el comprimido, para MusicXML; «midi» para MIDI).
+    public var extensiones: [String] {
+        switch self {
+        case .musicXML: return ["musicxml", "xml", "mxl"]
+        case .midi: return ["mid", "midi"]
+        default: return [extensionDeFichero]
+        }
+    }
+
+    /// El formato de un fichero por su extensión, sin distinguir mayúsculas: `FormatoDePartitura(ruta: "Tema.MID")` es
+    /// `.midi`. `nil` si no tiene ninguna de las de `extensiones`.
+    public init?(ruta: String) {
+        guard let punto = ruta.lastIndex(of: "."), !ruta[punto...].contains("/") else { return nil }
+        let sufijo = ruta[ruta.index(after: punto)...].lowercased()
+        guard let formato = Self.allCases.first(where: { $0.extensiones.contains(sufijo) }) else { return nil }
+        self = formato
+    }
+
+    /// Los formatos que también se leen (`PiezaImportada(leyendo:)`): MusicXML (también comprimido), MEI, ABC y MIDI.
+    public static let queSeLeen: [FormatoDePartitura] = [.midi, .musicXML, .mei, .abc]
+
     /// Si el fichero es texto (UTF-8); el MIDI es binario.
     public var esTexto: Bool { self != .midi }
 

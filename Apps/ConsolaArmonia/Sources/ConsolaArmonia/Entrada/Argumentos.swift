@@ -121,30 +121,38 @@ struct Argumentos {
     }
 
     /// Quita las opciones al estilo de las partituras, que toman todas las palabras que las siguen hasta la
-    /// siguiente opción (`--titulo Mi canción`), y las marcas de `marcas`, que no toman nada. Da cada opción por
-    /// su nombre en minúsculas y sin guiones, con los `alias` cambiados a su nombre en el orden dado, y cada marca
-    /// por su nombre en `marcas`. Lo que no sigue a ninguna opción (lo de delante, o lo que va tras una marca) se
-    /// queda en `restantes`. Una opción sin palabras detrás tiene `""`.
+    /// siguiente opción (`--titulo Mi canción`); las marcas de `conocidas` no toman nada. Cada opción se lee con
+    /// cualquiera de sus nombres (`OpcionDeOrden.leidos`), sin distinguir mayúsculas, y se da por el primero, sin
+    /// guiones (`titulo`, también si se escribe `--title`); una opción sin palabras detrás tiene `""`. Lo que no sigue a
+    /// ninguna opción (lo de delante, o lo que va tras una marca) se queda en `restantes`. Lanza `opcionDesconocida`
+    /// con la primera que no está en `conocidas`.
     ///
-    ///     var argumentos = Argumentos(["Do", "Re", "--titulo", "Mi", "canción", "--cifrados"])
-    ///     argumentos.quitarOpcionesConTexto(marcas: ["cifrados": "cifrados"], alias: [])
+    ///     var argumentos = Argumentos(["Do", "Re", "--title", "Mi", "canción", "--cifrados"])
+    ///     try argumentos.quitarOpcionesConTexto([.titulo, .cifrados])
     ///     // (["titulo": "Mi canción"], ["cifrados"]); restantes: ["Do", "Re"]
-    mutating func quitarOpcionesConTexto(marcas: [String: String], alias: [(String, String)])
+    mutating func quitarOpcionesConTexto(_ conocidas: [OpcionDeOrden]) throws
         -> (opciones: [String: String], marcas: Set<String>)
     {
+        var porNombre: [String: OpcionDeOrden] = [:]
+        for opcion in conocidas {
+            for nombre in opcion.leidos { porNombre[nombre.lowercased()] = opcion }
+        }
         var opciones: [String: String] = [:]
-        var leidas: Set<String> = []
+        var marcas: Set<String> = []
         var quedan: [String] = []
         var actual: String?
         for argumento in restantes {
             if argumento.hasPrefix("--") {
-                let nombre = String(argumento.dropFirst(2)).lowercased()
-                if let marca = marcas[nombre] {
-                    leidas.insert(marca)
-                    actual = nil
-                } else {
+                guard let opcion = porNombre[argumento.lowercased()] else {
+                    throw ErrorDeUso.opcionDesconocida(argumento)
+                }
+                let nombre = String(opcion.nombres[0].dropFirst(2))
+                if opcion.llevaValor {
                     actual = nombre
                     opciones[nombre] = ""
+                } else {
+                    marcas.insert(nombre)
+                    actual = nil
                 }
             } else if let nombre = actual, let anterior = opciones[nombre] {
                 opciones[nombre] = anterior.isEmpty ? argumento : anterior + " " + argumento
@@ -153,10 +161,7 @@ struct Argumentos {
             }
         }
         restantes = quedan
-        for (otro, nombre) in alias {
-            if let valor = opciones.removeValue(forKey: otro) { opciones[nombre] = valor }
-        }
-        return (opciones, leidas)
+        return (opciones, marcas)
     }
 
     /// Quita `--en <tonalidad>` (o `--in`), que va al final y se lleva lo que lo sigue hasta la siguiente opción:

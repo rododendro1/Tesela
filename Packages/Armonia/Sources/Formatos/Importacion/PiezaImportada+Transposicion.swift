@@ -29,11 +29,7 @@ extension PiezaImportada {
     ///
     /// Lanza `ErrorDeLecturaDeFichero.sinNotas` si no suena nada.
     public func melodia() throws -> Voz {
-        let porLinea = Dictionary(grouping: notas) { [$0.parte, $0.pentagrama ?? 0, $0.voz ?? 0] }
-        func media(_ linea: [NotaDeLaPieza]) -> Double {
-            Double(linea.map(\.altura.midi).reduce(0, +)) / Double(linea.count)
-        }
-        guard let aguda = porLinea.values.max(by: { media($0) < media($1) }),
+        guard let aguda = lineas.last,
             let voz = PiezaImportada.voces(deUnPentagrama: aguda, compas: compas ?? .compasillo).first
         else {
             throw ErrorDeLecturaDeFichero.sinNotas

@@ -74,7 +74,7 @@ extension LineaDeComandosTests {
     /// Lo que da una orden con el ejecutor falso.
     private func grabado(_ orden: String, con ejecutor: EjecutorFalso) -> ResultadoDeOrden {
         LineaDeComandos.$ejecutor.withValue(ejecutor) {
-            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+            resultado(orden)
         }
     }
 

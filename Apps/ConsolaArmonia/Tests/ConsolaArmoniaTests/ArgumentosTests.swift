@@ -91,14 +91,17 @@ import Testing
         #expect(try Argumentos(["Do", "-m3"]).leidos == ["Do", "-m3"])
     }
 
-    @Test func lasOpcionesConTextoTomanHastaLaSiguiente() {
+    @Test func lasOpcionesConTextoTomanHastaLaSiguiente() throws {
         var argumentos = Argumentos([
             "Do", "Re", "--Titulo", "Mi", "canción", "--análisis", "Fa", "--pattern", "alberti", "--tempo",
         ])
-        let (opciones, marcas) = argumentos.quitarOpcionesConTexto(
-            marcas: ["analisis": "analisis", "análisis": "analisis"], alias: [("pattern", "patron")])
+        let (opciones, marcas) = try argumentos.quitarOpcionesConTexto([
+            .titulo, .analisis, .patronDePartitura, .tempo,
+        ])
         #expect(opciones == ["titulo": "Mi canción", "patron": "alberti", "tempo": ""])
         #expect(marcas == ["analisis"])
         #expect(argumentos.restantes == ["Do", "Re", "Fa"])
+        var conOtra = Argumentos(["Do", "--clave", "fa"])
+        #expect(throws: ErrorDeUso.self) { try conOtra.quitarOpcionesConTexto([.titulo]) }
     }
 }

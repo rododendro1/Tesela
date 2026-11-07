@@ -227,7 +227,7 @@ extension LineaDeComandos {
             }
             formato = leido
         } else {
-            formato = formatoDelFichero(archivo)
+            formato = FormatoDePartitura(ruta: archivo) ?? .musicXML
         }
         let pieza = try PiezaImportada(leyendo: try datos(deArchivo: archivo))
         let primero = leidos.restantes[0]
@@ -241,17 +241,6 @@ extension LineaDeComandos {
         let datos = pieza.transponer(intervalo).partitura().exportar(como: formato)
         guard formato.esTexto else { return binario(datos) }
         return bien(String(decoding: datos, as: UTF8.self).trimmingCharacters(in: "\n"))
-    }
-
-    /// El formato de un fichero por su extensión: MIDI, MEI o ABC, y si no, MusicXML.
-    static func formatoDelFichero(_ ruta: String) -> FormatoDePartitura {
-        let sufijo = ruta.split(separator: ".").last.map { $0.lowercased() } ?? ""
-        switch sufijo {
-        case "mid", "midi", "smf": return .midi
-        case "mei": return .mei
-        case "abc": return .abc
-        default: return .musicXML
-        }
     }
 
     /// Lo que hace `transponer`: el intervalo, si se ha leído como acordes o como notas, y lo transportado.
