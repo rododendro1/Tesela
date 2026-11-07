@@ -15,18 +15,23 @@ extension LineaDeComandos {
         guard let tipo = argumentos.first?.lowercased() else {
             throw ErrorDeUso.faltaTipoDePartitura(orden: orden)
         }
-        // Los argumentos hasta la primera opción son la música; cada opción toma lo que la sigue.
-        // `--program` es `--programa` en inglés (solo en MIDI); `--patrón` y `--pattern` son `--patron`, y `--file`
-        // y `--window`, `--archivo` y `--ventana`, y `--in`, `--en`.
+        // Los argumentos hasta la primera opción son la música; cada opción toma lo que la sigue. Las opciones se
+        // leen con sus nombres en inglés y con tilde (`--time`, `--título`) como con los españoles, sin tilde, y
+        // `--program` es `--programa` (solo en MIDI).
         var entrada = Argumentos(Array(argumentos.dropFirst()))
         let alias: [(String, String)] =
             (formato == .midi ? [("program", "programa")] : [])
-            + [("patrón", "patron"), ("pattern", "patron"), ("file", "archivo"), ("window", "ventana")]
-            + [("in", "en")]
+            + [OpcionDeOrden.compas, .anacrusa, .claveDePartitura, .titulo, .duracion, .figuraDePartitura]
+            .flatMap(Self.alias(de:))
+            + Self.alias(de: .patronDePartitura) + Self.alias(de: .archivo) + Self.alias(de: .ventana)
+            + Self.alias(de: .en)
         // `--enlazar`: cada arpegio empieza cerca de donde acabó el anterior.
         let enlazados = entrada.quitarMarca(.enlazar)
-        let (opciones, marcas) = entrada.quitarOpcionesConTexto(
-            marcas: ["cifrados": "cifrados", "analisis": "analisis", "análisis": "analisis"], alias: alias)
+        var marcasLeidas: [String: String] = [:]
+        for (marca, nombre) in [(OpcionDeOrden.cifrados, "cifrados"), (.analisis, "analisis")] {
+            for escrito in marca.leidos { marcasLeidas[String(escrito.dropFirst(2))] = nombre }
+        }
+        let (opciones, marcas) = entrada.quitarOpcionesConTexto(marcas: marcasLeidas, alias: alias)
         let musica = entrada.restantes
         let conocidas: Set =
             formato == .midi
@@ -239,5 +244,12 @@ extension LineaDeComandos {
                 nombre == limpio || nombre.hasPrefix("clave de ") && String(nombre.dropFirst(9)) == limpio
             }
         }
+    }
+
+    /// Los otros nombres de una opción de las partituras (el inglés, los que llevan tilde), cada uno con el primero,
+    /// sin los guiones: para `Argumentos.quitarOpcionesConTexto`.
+    static func alias(de opcion: OpcionDeOrden) -> [(String, String)] {
+        let nombres = opcion.leidos.map { String($0.dropFirst(2)) }
+        return nombres.dropFirst().map { ($0, nombres[0]) }
     }
 }

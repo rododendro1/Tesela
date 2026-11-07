@@ -168,7 +168,12 @@ public enum PresentacionDeCoral {
     /// Los acordes escritos a cuatro voces, sin faltas de conducción.
     public static func realizar(_ texto: String, en tonalidad: Tonalidad?, notacion: Notacion) throws -> CoralPresentado
     {
-        let analisis = try AnalisisArmonico.analizar(leyendo: texto, en: tonalidad)
+        realizar(try AnalisisArmonico.analizar(leyendo: texto, en: tonalidad), notacion: notacion)
+    }
+
+    /// Los acordes de un análisis ya hecho (el de un fichero, con `PiezaImportada.analisis(en:ventana:)`) a cuatro
+    /// voces, como `realizar(_:en:notacion:)`.
+    public static func realizar(_ analisis: AnalisisArmonico, notacion: Notacion) -> CoralPresentado {
         let titulo = analisis.tonalidad.nombre(en: notacion)
         guard let voces = Coral.realizar(analisis.acordes.map(\.acorde), en: analisis.tonalidad) else {
             return CoralPresentado(

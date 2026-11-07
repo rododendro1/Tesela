@@ -49,6 +49,13 @@ extension LineaDeComandos {
                 "armonia analizar --archivo coral.mid",
                 "armonia analyze --file chorale.musicxml"),
             opciones: [.archivo, .ventana]),
+        // realizar <bajo cifrado> --bajo-cifrado [--en <tonalidad>]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisRealizarBajoCifrado),
+            descripcion: TextosDeConsola.traduccion(\.descripcionRealizarBajoCifrado),
+            ejemplo: ejemplo(
+                "armonia realizar Do La:6 Sol:7 Do --bajo-cifrado", "armonia realize C A:6 G:7 C --figured-bass"),
+            opciones: [.bajoCifrado, .en]),
     ]
 
     static let ayudaDeArmonizar: [EntradaDeAyuda] = [
@@ -59,7 +66,13 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia armonizar Mi4 Fa4 Re4 Do4",
                 "armonia harmonize E4 F4 D4 C4"),
-            opciones: [.en, .propuestas])
+            opciones: [.en, .propuestas]),
+        // armonizar --archivo <fichero> [--en <tonalidad>]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisArmonizarArchivo),
+            descripcion: TextosDeConsola.traduccion(\.descripcionArmonizarArchivo),
+            ejemplo: ejemplo("armonia armonizar --archivo tema.musicxml", "armonia harmonize --file tune.musicxml"),
+            opciones: [.archivo, .en]),
     ]
 
     static let ayudaDeRealizar: [EntradaDeAyuda] = [
@@ -70,7 +83,13 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia realizar Do Fa Sol7 Do",
                 "armonia realize C F G7 C"),
-            opciones: [.en])
+            opciones: [.en]),
+        // realizar --archivo <fichero> [--ventana 1]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisRealizarArchivo),
+            descripcion: TextosDeConsola.traduccion(\.descripcionRealizarArchivo),
+            ejemplo: ejemplo("armonia realizar --archivo progresion.mid", "armonia realize --file progression.mid"),
+            opciones: [.archivo, .ventana]),
     ]
 
     static let ayudaDeRevisar: [EntradaDeAyuda] = [
@@ -106,6 +125,14 @@ extension LineaDeComandos {
                 "armonia contrapunto Re4 Fa4 Mi4 Re4 Sol4 Fa4 La4 Sol4 Fa4 Mi4 Re4 --proponer",
                 "armonia counterpoint D4 F4 E4 D4 G4 F4 A4 G4 F4 E4 D4 --propose"),
             opciones: [.proponer, .debajo, .propuestas]),
+        // contrapunto <cantus> / <voz> / <voz>… [--especie 1,1]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisContrapuntoAVariasVoces),
+            descripcion: TextosDeConsola.traduccion(\.descripcionContrapuntoAVariasVoces),
+            ejemplo: ejemplo(
+                "armonia contrapunto Re4 Fa4 Mi4 Re4 / La4 La4 Sol4 La4 / Re3 Re3 Do3 Re3",
+                "armonia counterpoint D4 F4 E4 D4 / A4 A4 G4 A4 / D3 D3 C3 D3"),
+            opciones: [.especie]),
     ]
 
     static let ayudaDeTransponer: [EntradaDeAyuda] = [
@@ -115,7 +142,15 @@ extension LineaDeComandos {
             descripcion: TextosDeConsola.traduccion(\.descripcionTransponer),
             ejemplo: ejemplo(
                 "armonia transponer Re Do Lam Fa Sol7",
-                "armonia transpose -m3 C Am F G7"))
+                "armonia transpose -m3 C Am F G7")),
+        // transponer <intervalo|tónica> --archivo <fichero> [--formato musicxml]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisTransponerArchivo),
+            descripcion: TextosDeConsola.traduccion(\.descripcionTransponerArchivo),
+            ejemplo: ejemplo(
+                "armonia transponer 2M --archivo tema.mid > tema-en-re.mid",
+                "armonia transpose 2M --file tune.mid > tune-in-d.mid"),
+            opciones: [.archivo, .formato]),
     ]
 
     static let ayudaDeRearmonizar: [EntradaDeAyuda] = [

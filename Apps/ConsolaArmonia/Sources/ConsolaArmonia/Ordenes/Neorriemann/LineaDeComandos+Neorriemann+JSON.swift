@@ -41,7 +41,7 @@ extension LineaDeComandos {
             throw ErrorDeUso.vocesFueraDeRango
         }
         let tipos = argumentos.quitarMarca(.ampliada) ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
-        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        try argumentos.sinOpcionesDesconocidas()
         return (voces, tipos, argumentos.restantes)
     }
 

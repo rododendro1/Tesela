@@ -23,6 +23,20 @@ struct Argumentos {
     /// letra que es un intervalo descendente (`-m3`, `-P5`) no es una opción.
     var opcionDesconocida: String? { restantes.first(where: Self.pareceUnaOpcion) }
 
+    /// Lanza `opcionDesconocida` con la primera opción que queda sin leer, si queda alguna. Cada orden lo llama
+    /// cuando ha leído las suyas, antes de leer lo que queda (`AyudaTests` comprueba que ninguna se lo salta).
+    func sinOpcionesDesconocidas() throws {
+        if let desconocida = opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+    }
+
+    /// Lo que queda (`restantes`), si no queda ninguna opción sin leer.
+    var leidos: [String] {
+        get throws {
+            try sinOpcionesDesconocidas()
+            return restantes
+        }
+    }
+
     static func pareceUnaOpcion(_ texto: String) -> Bool {
         if texto.hasPrefix("--") { return true }
         guard texto.hasPrefix("-"), texto.dropFirst().first?.isLetter == true else { return false }
@@ -145,14 +159,15 @@ struct Argumentos {
         return (opciones, leidas)
     }
 
-    /// Quita `--en <tonalidad>` (o `--in`), que va al final y se lleva todo lo que lo sigue: `--en La menor`.
-    /// `nil` dentro si no está, y `nil` si no lo sigue nada. Lanza un error de lectura si la tonalidad no se
-    /// puede leer.
+    /// Quita `--en <tonalidad>` (o `--in`), que va al final y se lleva lo que lo sigue hasta la siguiente opción:
+    /// `--en La menor`. `nil` dentro si no está, y `nil` si no lo sigue nada. Lanza un error de lectura si la
+    /// tonalidad no se puede leer.
     mutating func quitarTonalidad() throws -> Tonalidad?? {
         guard let i = restantes.firstIndex(where: OpcionDeOrden.en.leidos.contains) else { return .some(nil) }
-        guard i + 1 < restantes.count else { return nil }
-        let tonalidad = try Tonalidad(leyendoEnLaOrden: restantes[(i + 1)...].joined(separator: " "))
-        restantes.removeSubrange(i...)
+        let fin = restantes[(i + 1)...].firstIndex(where: Self.pareceUnaOpcion) ?? restantes.endIndex
+        guard i + 1 < fin else { return nil }
+        let tonalidad = try Tonalidad(leyendoEnLaOrden: restantes[(i + 1)..<fin].joined(separator: " "))
+        restantes.removeSubrange(i..<fin)
         return .some(tonalidad)
     }
 }

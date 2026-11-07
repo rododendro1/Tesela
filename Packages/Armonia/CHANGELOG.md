@@ -2,6 +2,23 @@
 
 ## Sin publicar
 
+### La consola: opciones comprobadas, partituras en inglés, más ficheros y más contrapunto
+
+- Ninguna orden acepta una opción que no conoce: `armonizar`, `realizar`, `revisar`, `vecinos`,
+  `camino-parsimonioso`, `conduccion-minima` y los dibujos (`tonnetz`, `tabla`, `cuadricula`) las leían como notas o
+  cifrados. Cada orden lo comprueba con `Argumentos.sinOpcionesDesconocidas()`, y una prueba recorre los ejemplos de
+  la ayuda con una opción inventada. `--en <tonalidad>` se lleva lo que lo sigue solo hasta la siguiente opción.
+- Las opciones de las partituras se leen también en inglés y con tilde: `--time`, `--pickup`, `--clef`, `--title`,
+  `--duration`, `--figure`, `--pattern`, `--chord-symbols` y `--analysis` (y `--compás`, `--título`, `--duración`).
+- `armonizar --archivo` armoniza la melodía de un fichero (su voz más aguda, `PiezaImportada.melodia()`);
+  `realizar --archivo [--ventana]` realiza sus acordes, y `transponer <intervalo|tónica> --archivo [--formato]` lo
+  transporta (`PiezaImportada.transponer(_:)`) y lo escribe como partitura, en su formato o en el de `--formato`.
+- `contrapunto <cantus> / <voz> / <voz>… [--especie 1,2]`: el contrapunto a tres y cuatro voces
+  (`ContrapuntoAVariasVoces.informe(en:)`), con las voces de cada falta, también en JSON.
+- `realizar <bajo> --bajo-cifrado [--en <tonalidad>]` (`--figured-bass`): un bajo cifrado a cuatro voces, en la
+  tonalidad dada o en la que mejor explica el bajo. `PresentacionDeCoral.realizar(_:notacion:)` realiza un
+  `AnalisisArmonico` ya hecho.
+
 ### Revisar un coral de un fichero y proponer un contrapunto
 
 - `PiezaImportada.coral()`: un fichero (MIDI, MusicXML, MEI o ABC) como coral, para revisar su conducción con

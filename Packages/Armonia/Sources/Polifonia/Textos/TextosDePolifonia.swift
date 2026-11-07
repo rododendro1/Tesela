@@ -49,6 +49,10 @@ struct TextosDePolifonia: TextosTraducidos {
     let notaRepetida: String
     let especieConElContrapuntoEncima: @Sendable (Int) -> String
     let especieConElContrapuntoDebajo: @Sendable (Int) -> String
+    /// La cabecera del informe de `ContrapuntoAVariasVoces`, con cuántas voces suenan (con el cantus).
+    let contrapuntoAVariasVoces: @Sendable (Int) -> String
+    /// Una voz de `ContrapuntoAVariasVoces`, contada desde 1 (el cantus firmus se nombra aparte).
+    let vozDelContrapunto: @Sendable (Int) -> String
     let sinFaltas: String
 
     /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su

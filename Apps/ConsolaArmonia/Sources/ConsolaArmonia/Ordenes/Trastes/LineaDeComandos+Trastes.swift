@@ -80,9 +80,7 @@ extension LineaDeComandos {
             capo = n
         }
 
-        if let desconocida = argumentos.opcionDesconocida {
-            throw ErrorDeUso.opcionDesconocida(desconocida)
-        }
+        try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifradoDeDigitaciones }
 
         return PedidoDeDigitaciones(
@@ -167,9 +165,7 @@ extension LineaDeComandos {
             guard let elegida = secuenciaDeEscala(texto) else { throw ErrorDeUso.secuenciaDesconocida(texto) }
             secuencia = elegida
         }
-        if let desconocida = argumentos.opcionDesconocida {
-            throw ErrorDeUso.opcionDesconocida(desconocida)
-        }
+        try argumentos.sinOpcionesDesconocidas()
         if arpegio {
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifradoDelArpegio }
             let reparto: FormasDeArpegio = barrido ? .unaNotaPorCuerda : caged ? .caged : .porPosiciones

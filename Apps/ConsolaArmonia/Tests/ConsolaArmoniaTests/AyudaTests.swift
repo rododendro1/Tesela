@@ -114,3 +114,25 @@ import Testing
             ])
     }
 }
+
+extension AyudaTests {
+    /// Ninguna orden acepta una opción que no conoce: cada ejemplo de la ayuda, con una opción inventada al final, es
+    /// un error de uso que la nombra.
+    @Test func ningunaOrdenAceptaUnaOpcionInventada() {
+        for orden in L.ordenes where !orden.nombres.contains("ayuda") {
+            for entrada in orden.ayuda {
+                guard let ejemplo = entrada.ejemplo?.texto(en: .espanol), ejemplo.hasPrefix("armonia ") else {
+                    continue
+                }
+                // Sin «armonia» ni lo que se redirige a un fichero.
+                var palabras = ejemplo.split(separator: " ").map(String.init).dropFirst()
+                if let i = palabras.firstIndex(where: { $0.hasPrefix(">") || $0 == "|" || $0 == "<" }) {
+                    palabras = palabras[..<i]
+                }
+                let resultado = L.ejecutar(Array(palabras) + ["--opcion-inventada"])
+                #expect(resultado.codigo == 2, Comment(rawValue: ejemplo))
+                #expect(resultado.error.contains("--opcion-inventada"), Comment(rawValue: ejemplo))
+            }
+        }
+    }
+}

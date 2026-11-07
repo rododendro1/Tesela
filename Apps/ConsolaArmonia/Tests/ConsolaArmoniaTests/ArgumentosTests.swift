@@ -74,6 +74,21 @@ import Testing
         #expect(try (sinTonalidad.quitarTonalidad()) == .some(nil))
         var alFinal = Argumentos(["Do", "--in"])
         #expect(try (alFinal.quitarTonalidad()) == nil)
+        // Hasta la siguiente opción, que se queda.
+        var conOtra = Argumentos(["Do", "--en", "La", "menor", "--escalas"])
+        #expect(try (conOtra.quitarTonalidad()) == .some(Tonalidad(.la, .menor)))
+        #expect(conOtra.restantes == ["Do", "--escalas"])
+        var vacia = Argumentos(["Do", "--en", "--escalas"])
+        #expect(try (vacia.quitarTonalidad()) == nil)
+    }
+
+    @Test func lasOpcionesQueSobran() throws {
+        var argumentos = Argumentos(["Do", "--diagrama", "--inventada"])
+        let diagrama = argumentos.quitarMarca(.diagrama)
+        #expect(diagrama)
+        #expect(throws: ErrorDeUso.self) { try argumentos.sinOpcionesDesconocidas() }
+        #expect(throws: ErrorDeUso.self) { try argumentos.leidos }
+        #expect(try Argumentos(["Do", "-m3"]).leidos == ["Do", "-m3"])
     }
 
     @Test func lasOpcionesConTextoTomanHastaLaSiguiente() {

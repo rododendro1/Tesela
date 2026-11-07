@@ -67,7 +67,7 @@ extension LineaDeComandos {
         }
         var otra: Escala?
         if let texto = try argumentos.valorConPalabras(.comparar) { otra = try Escala(leyendoEnLaOrden: texto) }
-        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscala }
         return PedidoDeEscala(
             escala: try Escala(leyendoEnLaOrden: argumentos.unidos), conAcordes: conAcordes, secuencia: secuencia,
@@ -277,7 +277,7 @@ extension LineaDeComandos {
         if let primera = argumentos.first, !Argumentos.pareceUnaOpcion(primera) {
             return try escalas(["--tradicion"] + argumentos, notacion)
         }
-        if let opcion = Argumentos(argumentos).opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+        try Argumentos(argumentos).sinOpcionesDesconocidas()
         let lineas = catalogoDeTradiciones().map { ficha in
             let clave = ejemplo(ficha.claves.espanol, ficha.claves.ingles).en(notacion)
             let categorias = ficha.categorias.map { "\($0.categoria.nombre(en: notacion)) \($0.escalas)" }
@@ -400,7 +400,7 @@ extension LineaDeComandos {
         var entrada = Argumentos(argumentos)
         // `--comparar Do mayor, Do dórico, Do lidio`: las escalas en una tabla, con lo que se mide de cada una.
         if let texto = try entrada.valorConPalabras(.comparar) {
-            if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+            try entrada.sinOpcionesDesconocidas()
             let nombres = texto.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
                 .filter { !$0.isEmpty }
             guard !nombres.isEmpty else { throw ErrorDeUso.faltaValor("--comparar") }
@@ -416,7 +416,7 @@ extension LineaDeComandos {
             (OpcionDeOrden.escaleraDe, entrada.valorConPalabras(.escaleraDe)),
         ].compactMap { opcion, texto in texto.map { (opcion, $0) } }
         if !deUna.isEmpty {
-            if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+            try entrada.sinOpcionesDesconocidas()
             guard entrada.restantes.isEmpty else { throw ErrorDeUso.opcionDesconocida(entrada.restantes[0]) }
             let lineas = try deUna.flatMap { opcion, texto in
                 try escalasQueSalen(de: Escala(leyendoEnLaOrden: texto), opcion, notacion)
@@ -430,7 +430,7 @@ extension LineaDeComandos {
                 guard let n = Int(texto), (1...24).contains(n) else { throw ErrorDeUso.notasFueraDeRango }
                 numeroDeNotas = n
             }
-            if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+            try entrada.sinOpcionesDesconocidas()
             let resaltada = entrada.restantes.isEmpty ? nil : try Escala(leyendoEnLaOrden: entrada.unidos)
             let mapa = PresentacionDeEstudioDeEscala.mapaDeBrillo(
                 numeroDeNotas: numeroDeNotas, resaltada: resaltada, en: notacion)
@@ -515,7 +515,7 @@ extension LineaDeComandos {
             conPaso = n
         }
         let regulares = entrada.quitarMarca(.regulares)
-        if let opcion = entrada.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+        try entrada.sinOpcionesDesconocidas()
         let buscado = claveDeBusqueda(entrada.unidos)
         func estadisticas(_ tipo: TipoDeEscala) -> EstadisticasDeEscala { Escala(.do, tipo).estadisticas }
         func cumple(_ tipo: TipoDeEscala) -> Bool {

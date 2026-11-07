@@ -21,9 +21,7 @@ extension LineaDeComandos {
             tonalidades: argumentos.quitarMarca(.tonalidades),
             sustituciones: argumentos.quitarMarca(.sustituciones),
             tonalidad: tonalidad, otro: otro)
-        if let desconocida = argumentos.opcionDesconocida {
-            throw ErrorDeUso.opcionDesconocida(desconocida)
-        }
+        try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifrado }
         let bloques = try argumentos.restantes.map { texto in
             let acorde = try Acorde(leyendoEnLaOrden: texto)
@@ -118,7 +116,7 @@ extension LineaDeComandos {
         var argumentos = Argumentos(textos)
         let conEscalas = argumentos.quitarMarca(.escalas)
         let archivo = try argumentos.valor(.archivo)
-        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        try argumentos.sinOpcionesDesconocidas()
         let encontradas: [EscalaEncontrada]
         if let archivo {
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.archivoConNotas }
@@ -170,9 +168,7 @@ extension LineaDeComandos {
         }
         var recorrido = RecorridoDeArpegio()
         try leerRecorrido(&argumentos, en: &recorrido)
-        if let desconocida = argumentos.opcionDesconocida {
-            throw ErrorDeUso.opcionDesconocida(desconocida)
-        }
+        try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifradoDelArpegio }
         var arpegios: [Arpegio] = []
         for texto in argumentos.restantes {

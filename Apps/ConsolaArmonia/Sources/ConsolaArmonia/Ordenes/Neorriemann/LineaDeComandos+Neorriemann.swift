@@ -12,7 +12,7 @@ extension LineaDeComandos {
         }
         // `--ampliada`: la familia de las séptimas con los maj7, para un acorde de las séptimas.
         let tipos = argumentos.quitarMarca(.ampliada) ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
-        let acordes = argumentos.restantes
+        let acordes = try argumentos.leidos
         guard acordes.count == 1 else { throw ErrorDeUso.unAcordeDeVecinos }
         let acorde = try Acorde(leyendoEnLaOrden: acordes[0])
         let pasos =
@@ -32,7 +32,7 @@ extension LineaDeComandos {
         }
         // `--ampliada`: la familia de las séptimas con los maj7, para un acorde de las séptimas.
         let tipos = argumentos.quitarMarca(.ampliada) ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
-        let acordes = argumentos.restantes
+        let acordes = try argumentos.leidos
         guard acordes.count == 2 else { throw ErrorDeUso.dosAcordesDeCamino }
         let origen = try Acorde(leyendoEnLaOrden: acordes[0])
         let destino = try Acorde(leyendoEnLaOrden: acordes[1])
@@ -57,9 +57,7 @@ extension LineaDeComandos {
 
     /// Lee lo que pide `plr`; el camino se da ya como sus pasos.
     static func pedidoDePLR(_ argumentos: [String]) throws -> PedidoDePLR {
-        if let desconocida = Argumentos(argumentos).opcionDesconocida {
-            throw ErrorDeUso.opcionDesconocida(desconocida)
-        }
+        try Argumentos(argumentos).sinOpcionesDesconocidas()
         guard let primera = argumentos.first?.lowercased() else { throw ErrorDeUso.faltanPasosDePLR }
         let resto = Array(argumentos.dropFirst())
         if OpcionDeOrden.camino.leidos.contains("--" + primera) {

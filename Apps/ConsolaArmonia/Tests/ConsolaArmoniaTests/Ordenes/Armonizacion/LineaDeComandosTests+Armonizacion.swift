@@ -127,3 +127,75 @@ extension LineaDeComandosTests {
         #expect(salida("ayuda contrapunto").contains("--proponer"))
     }
 }
+
+extension LineaDeComandosTests {
+    @Test func armonizarYRealizarUnArchivo() throws {
+        let melodia = try Voz(leyendo: "Mi4:4 Fa4:4 Re4:4 Do4:4")
+        let xml = try fichero(Data(melodia.partitura().musicXML().utf8), extension: "musicxml")
+        #expect(salida("armonizar --archivo " + xml) == salida("armonizar Mi4:4 Fa4:4 Re4:4 Do4:4"))
+        #expect(salida("harmonize --file \(xml) --proposals 1 --ingles").hasPrefix("C major\n  1. "))
+        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
+        let midi = try fichero(analisis.partitura().midi(), extension: "mid")
+        #expect(salida("realizar --archivo " + midi) == salida("realizar Do Fa Sol7 Do"))
+        #expect(salida("realize --file \(midi) --in C major --ingles").hasPrefix("C major\n"))
+        func resultado(_ orden: String) -> ResultadoDeOrden {
+            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+        }
+        #expect(resultado("armonizar --archivo \(xml) Mi4").codigo == 2)
+        #expect(resultado("realizar Do Fa --ventana 2").codigo == 2)
+        #expect(resultado("realizar --archivo /no/existe.mid").codigo == 1)
+        #expect(resultado("armonizar --archivo /no/existe.mid --json").codigo == 1)
+    }
+
+    @Test func transponerUnArchivo() throws {
+        let analisis = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do")
+        let midi = try fichero(analisis.partitura().midi(), extension: "mid")
+        // En el formato del fichero (aquí, MIDI) o en el de --formato.
+        let transportado = LineaDeComandos.ejecutar(["transponer", "2M", "--archivo", midi])
+        #expect(transportado.codigo == 0)
+        let datos = try #require(transportado.datos)
+        #expect(try PiezaImportada(leyendo: datos).acordes().map(\.cifrado) == ["Re", "Sol", "La7", "Re"])
+        let abc = salida("transponer Re --archivo \(midi) --formato abc")
+        #expect(abc.contains("K:D"))
+        #expect(salida("transpose D --file \(midi) --format musicxml").hasPrefix("<?xml"))
+        func resultado(_ orden: String) -> ResultadoDeOrden {
+            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+        }
+        #expect(resultado("transponer 2M --archivo \(midi) --formato pdf").codigo == 2)
+        #expect(resultado("transponer 2M --archivo \(midi) --json").codigo == 2)
+        #expect(resultado("transponer --archivo \(midi)").codigo == 2)
+        #expect(resultado("transponer 2M --archivo /no/existe.mid").codigo == 1)
+    }
+}
+
+extension LineaDeComandosTests {
+    @Test func contrapuntoAVariasVoces() {
+        let ejercicio = "Do4 Re4 Mi4 Do4 / Sol4 La4 Sol4 Do5 / Do3 Re3 Mi3 Do3"
+        let informe = conFaltas("contrapunto " + ejercicio)
+        #expect(informe.hasPrefix("Contrapunto a 3 voces\n"))
+        #expect(informe.contains("Quintas paralelas (compases 1 → 2): voz 1 / voz 2\n"))
+        #expect(conFaltas("contrapunto \(ejercicio) --especie 1,1") == informe)
+        #expect(
+            conFaltas("counterpoint C4 D4 E4 C4 / G4 A4 G4 C5 / C3 D3 E3 C3 --ingles").hasPrefix("Counterpoint in 3"))
+        func resultado(_ orden: String) -> ResultadoDeOrden {
+            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+        }
+        let json = resultado("contrapunto \(ejercicio) --json")
+        #expect(json.codigo == 3)
+        #expect(json.salida.contains("\"voces\":[1,2]"))
+        #expect(resultado("contrapunto \(ejercicio) --especie 1,2,3").codigo == 2)
+        #expect(resultado("contrapunto \(ejercicio) --especie 9").codigo == 2)
+        #expect(resultado("contrapunto Do4 Re4 / / Do3 Re3").codigo == 2)
+    }
+
+    @Test func realizarUnBajoCifrado() {
+        let coral = salida("realizar Do La:6 Sol:7 Do --bajo-cifrado")
+        let lineas = coral.split(separator: "\n").map(String.init)
+        #expect(lineas.first == "Do mayor")
+        #expect(lineas.dropFirst().map { $0.split(separator: " ")[2] } == ["Do₃", "La₂", "Sol₂", "Do₃"])
+        #expect(coral.contains("Fa/La"))
+        #expect(salida("realize C A:6 G:7 C --figured-bass --in C major --ingles").hasPrefix("C major\n"))
+        #expect(salida("realizar La Re:6 Mi:# La --bajo-cifrado --en La menor").hasPrefix("La menor\n"))
+        #expect(LineaDeComandos.ejecutar(["realizar", "--bajo-cifrado"]).codigo == 2)
+    }
+}

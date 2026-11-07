@@ -43,6 +43,8 @@ extension TextosDePolifonia {
         notaRepetida: "Nota repetida",
         especieConElContrapuntoEncima: { n in "Especie \(n), co contrapunto enriba do cantus firmus" },
         especieConElContrapuntoDebajo: { n in "Especie \(n), co contrapunto debaixo do cantus firmus" },
+        contrapuntoAVariasVoces: { n in "Contrapunto a \(n) voces" },
+        vozDelContrapunto: { n in "voz \(n)" },
         sinFaltas: "Sen faltas."
     )
 }
