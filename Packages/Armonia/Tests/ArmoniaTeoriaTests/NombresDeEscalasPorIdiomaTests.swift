@@ -117,7 +117,9 @@ import Testing
             "tetracordo enarmónico de Dídimo", "tetracordo cromático de Eratóstenes",
             "tetracordo enarmónico de Eratóstenes", "dórico ucraniano", "pentatónica húngara", "cuerno alpino",
             "gaita escocesa", "georgiana", "tetracordo cromático blando de Aristóxeno",
-            "tetracordo cromático hemiólico", "tetracordo diatónico blando de Aristóxeno",
+            "tetracordo cromático hemiólico", "tetracordo diatónico blando de Aristóxeno", "dórico con ficta",
+            "mixolidio con ficta", "lidio con si bemol", "tetracordo diatónico de Vicentino",
+            "tetracordo cromático de Vicentino", "tetracordo enarmónico de Vicentino",
         ]
         let especies = ["mixolidia", "lidia", "frigia", "doria", "hipolidia", "hipofrigia", "hipodoria"]
         traducidos.formUnion(especies.filter { $0 != "doria" }.map { "harmonía \($0) cromática" })

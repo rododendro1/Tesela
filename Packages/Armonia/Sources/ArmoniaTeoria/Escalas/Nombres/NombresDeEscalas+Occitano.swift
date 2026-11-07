@@ -175,6 +175,12 @@ extension NombresDeEscalas {
         .tradicional(.cuernoAlpino, "còrn dels Alps"),
         .tradicional(.gaitaEscocesa, "cornamusa escocesa"),
         .tradicional(.georgiana, "georgiana"),
+        .tradicional(.doricoConFicta, "dorian amb ficta"),
+        .tradicional(.mixolidioConFicta, "mixolidian amb ficta"),
+        .tradicional(.lidioConSiBemol, "lidian amb si bemòl"),
+        .tradicional(.tetracordoDiatonicoDeVicentino, "tetracòrd diatonic de Vicentino"),
+        .tradicional(.tetracordoCromaticoDeVicentino, "tetracòrd cromatic de Vicentino"),
+        .tradicional(.tetracordoEnarmonicoDeVicentino, "tetracòrd enarmonic de Vicentino"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

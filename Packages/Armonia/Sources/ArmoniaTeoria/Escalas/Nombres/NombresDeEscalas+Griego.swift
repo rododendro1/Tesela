@@ -410,6 +410,12 @@ extension NombresDeEscalas {
         .tradicional(.cuernoAlpino, "αλπικό κέρας"),
         .tradicional(.gaitaEscocesa, "σκωτσέζικη γκάιντα"),
         .tradicional(.georgiana, "γεωργιανή"),
+        .tradicional(.doricoConFicta, "δώριος με φίκτα"),
+        .tradicional(.mixolidioConFicta, "μιξολύδιος με φίκτα"),
+        .tradicional(.lidioConSiBemol, "λύδιος με σι ύφεση"),
+        .tradicional(.tetracordoDiatonicoDeVicentino, "διατονικό τετράχορδο του Βιτσεντίνο"),
+        .tradicional(.tetracordoCromaticoDeVicentino, "χρωματικό τετράχορδο του Βιτσεντίνο"),
+        .tradicional(.tetracordoEnarmonicoDeVicentino, "εναρμόνιο τετράχορδο του Βιτσεντίνο"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "ράγκα"),
