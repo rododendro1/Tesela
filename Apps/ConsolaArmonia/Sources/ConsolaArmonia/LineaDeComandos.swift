@@ -90,7 +90,7 @@ public enum LineaDeComandos {
         } else if cifras {
             notacion = notacion.conOctavas(.cifras)
         }
-        // Con --json, las órdenes que lo admiten dan sus datos en JSON (LineaDeComandos+JSON.swift).
+        // Con --json, las órdenes que lo admiten dan sus datos en JSON (LineaDeComandos+JSON.swift y Ordenes/*/+JSON).
         let json = opciones.quitarMarca(.json)
         // Con -o, lo que da la orden va a ese fichero (`-o -`, a la salida estándar, aunque sea un fichero binario).
         var destino: String?
