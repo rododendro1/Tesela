@@ -119,28 +119,28 @@ public struct ContrapuntoAVariasVoces: Hashable, Sendable {
 
         // Cada voz con el cantus: las reglas de dos voces, salvo lo que cambia con más voces.
         let propiasDeDosVoces: Set<FaltaDeContrapunto.Tipo> = [.comienzoImperfecto, .finalImperfecto, .cruceDeVoces]
-        for (k, voz) in voces.enumerated() {
-            let v = k + 1
+        for (indice, voz) in voces.enumerated() {
+            let linea = indice + 1
             for falta in voz.faltas where !propiasDeDosVoces.contains(falta.tipo) {
-                let c = falta.compases.lowerBound
+                let primerCompas = falta.compases.lowerBound
                 switch falta.tipo {
                 case .quintasDirectas, .octavasDirectas:
-                    guard extremas == [0, v] else { continue }
+                    guard extremas == [0, linea] else { continue }
                 case .finalSinGradoConjunto:
                     // El bajo puede llegar al final saltando (de la dominante a la tónica).
-                    guard bajo(Duracion(ultimo)) != v else { continue }
+                    guard bajo(Duracion(ultimo)) != linea else { continue }
                 case .disonanciaEnParteFuerte:
                     // Una cuarta sobre el cantus no es disonancia si el cantus no es el bajo.
-                    let grave = bajo(Duracion(c))
-                    if let nota = suena(v, Duracion(c)), grave != 0, grave != v,
-                        Self.consonanteEntreVocesAltas(intervalo(nota.nota, cantusFirmus[c]))
+                    let grave = bajo(Duracion(primerCompas))
+                    if let nota = suena(linea, Duracion(primerCompas)), grave != 0, grave != linea,
+                        Self.consonanteEntreVocesAltas(intervalo(nota.nota, cantusFirmus[primerCompas]))
                     {
                         continue
                     }
                 default:
                     break
                 }
-                anotar(falta.tipo, c, falta.compases.upperBound, [0, v])
+                anotar(falta.tipo, primerCompas, falta.compases.upperBound, [0, linea])
             }
         }
 

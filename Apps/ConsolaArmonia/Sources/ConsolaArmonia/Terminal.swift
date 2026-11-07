@@ -227,10 +227,10 @@ extension LineaDeComandos {
         for nombre in opcionesGenerales { lineas.append(opcion(nombre, nil)) }
         for orden in ordenes {
             let suyos = nombres(de: orden).joined(separator: " ")
-            let tipos = tipos(de: orden)
-            if !tipos.isEmpty {
+            let tiposDeLaOrden = tipos(de: orden)
+            if !tiposDeLaOrden.isEmpty {
                 lineas.append(
-                    "complete -c armonia -n \"__fish_seen_subcommand_from \(suyos)\" -a \"\(tipos.joined(separator: " "))\""
+                    "complete -c armonia -n \"__fish_seen_subcommand_from \(suyos)\" -a \"\(tiposDeLaOrden.joined(separator: " "))\""
                 )
             }
             for nombre in opciones(de: orden) { lineas.append(opcion(nombre, suyos)) }

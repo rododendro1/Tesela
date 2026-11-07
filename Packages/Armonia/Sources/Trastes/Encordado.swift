@@ -190,8 +190,8 @@ extension Encordado: Nombrable {
 
     /// El nombre para un menú, con mayúscula: «Guitarra de siete cuerdas».
     public func titulo(en notacion: Notacion) -> String {
-        let nombre = nombre(en: notacion)
-        return nombre.prefix(1).uppercased() + nombre.dropFirst()
+        let sinMayuscula = nombre(en: notacion)
+        return sinMayuscula.prefix(1).uppercased() + sinMayuscula.dropFirst()
     }
 
     /// El nombre en los quince idiomas; `nil` si el encordado no es de los de `todos`.

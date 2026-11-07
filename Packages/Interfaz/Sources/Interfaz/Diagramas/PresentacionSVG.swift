@@ -18,11 +18,11 @@ enum PresentacionSVG {
     /// El punto del dibujo, en las coordenadas de su `viewBox`, que hay bajo `toque` en una vista de
     /// `ancho × alto`. `nil` si el SVG no tiene `viewBox` o el toque cae en el margen que queda alrededor.
     static func punto(en toque: Punto, de svg: String, ancho: Double, alto: Double) -> Punto? {
-        guard let caja = caja(de: svg), ancho > 0, alto > 0 else { return nil }
-        let escala = min(ancho / caja.ancho, alto / caja.alto)
-        let x = caja.x + (toque.x - (ancho - caja.ancho * escala) / 2) / escala
-        let y = caja.y + (toque.y - (alto - caja.alto * escala) / 2) / escala
-        guard (caja.x...(caja.x + caja.ancho)).contains(x), (caja.y...(caja.y + caja.alto)).contains(y) else {
+        guard let marco = caja(de: svg), ancho > 0, alto > 0 else { return nil }
+        let escala = min(ancho / marco.ancho, alto / marco.alto)
+        let x = marco.x + (toque.x - (ancho - marco.ancho * escala) / 2) / escala
+        let y = marco.y + (toque.y - (alto - marco.alto * escala) / 2) / escala
+        guard (marco.x...(marco.x + marco.ancho)).contains(x), (marco.y...(marco.y + marco.alto)).contains(y) else {
             return nil
         }
         return Punto(x: x, y: y)

@@ -257,10 +257,10 @@ struct Inflado {
         let codigoDeLongitudes = Huffman(longitudes: longitudes)
         var todas: [Int] = []
         while todas.count < literales + distancias {
-            let s = try simbolo(codigoDeLongitudes)
-            switch s {
+            let leido = try simbolo(codigoDeLongitudes)
+            switch leido {
             case 0..<16:
-                todas.append(s)
+                todas.append(leido)
             case 16:
                 guard let anterior = todas.last else { throw ErrorDeLecturaDeFichero.comprimido }
                 let veces = try leer(2) + 3
@@ -280,19 +280,19 @@ struct Inflado {
     /// Los símbolos de un bloque comprimido: literales y copias de lo ya escrito, hasta el fin de bloque (256).
     private mutating func codigos(_ literales: Huffman, _ distancias: Huffman) throws {
         while true {
-            var s = try simbolo(literales)
-            if s < 256 {
+            var leido = try simbolo(literales)
+            if leido < 256 {
                 guard salida.count < maximo else { throw ErrorDeLecturaDeFichero.comprimido }
-                salida.append(UInt8(s))
-            } else if s == 256 {
+                salida.append(UInt8(leido))
+            } else if leido == 256 {
                 return
             } else {
-                s -= 257
-                guard s < 29 else { throw ErrorDeLecturaDeFichero.comprimido }
-                let largo = try leer(Inflado.extrasDeLongitud[s]) + Inflado.basesDeLongitud[s]
-                let d = try simbolo(distancias)
-                guard d < 30 else { throw ErrorDeLecturaDeFichero.comprimido }
-                let distancia = try leer(Inflado.extrasDeDistancia[d]) + Inflado.basesDeDistancia[d]
+                leido -= 257
+                guard leido < 29 else { throw ErrorDeLecturaDeFichero.comprimido }
+                let largo = try leer(Inflado.extrasDeLongitud[leido]) + Inflado.basesDeLongitud[leido]
+                let deDistancia = try simbolo(distancias)
+                guard deDistancia < 30 else { throw ErrorDeLecturaDeFichero.comprimido }
+                let distancia = try leer(Inflado.extrasDeDistancia[deDistancia]) + Inflado.basesDeDistancia[deDistancia]
                 guard distancia <= salida.count, salida.count + largo <= maximo else {
                     throw ErrorDeLecturaDeFichero.comprimido
                 }

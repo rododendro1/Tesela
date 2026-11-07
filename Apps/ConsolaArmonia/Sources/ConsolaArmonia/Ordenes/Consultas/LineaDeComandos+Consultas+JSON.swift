@@ -272,12 +272,12 @@ extension LineaDeComandos {
 
     /// `intervalo Do4 Mi5 --json`.
     static func intervaloJSON(_ textos: [String], _ notacion: Notacion) throws -> IntervaloJSON {
-        let palabras = try palabras(Argumentos(textos), siFaltan: .dosNotas)
-        guard palabras.count == 2 else { throw ErrorDeUso.dosNotas }
-        let intervalo = try intervalo(palabras[0], palabras[1])
+        let escritas = try palabras(Argumentos(textos), siFaltan: .dosNotas)
+        guard escritas.count == 2 else { throw ErrorDeUso.dosNotas }
+        let medido = try intervalo(escritas[0], escritas[1])
         return IntervaloJSON(
-            nombre: intervalo.nombre(en: notacion), abreviatura: intervalo.texto(en: notacion),
-            semitonos: intervalo.semitonos, numero: intervalo.numero, descendente: intervalo.sentido == .descendente)
+            nombre: medido.nombre(en: notacion), abreviatura: medido.texto(en: notacion),
+            semitonos: medido.semitonos, numero: medido.numero, descendente: medido.sentido == .descendente)
     }
 
     struct TonalidadJSON: Encodable {

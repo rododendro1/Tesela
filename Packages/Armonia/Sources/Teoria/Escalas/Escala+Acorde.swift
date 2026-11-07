@@ -76,20 +76,20 @@ extension Escala {
                 let cifra = Escala.cifra(propia.intervalo, numero: Escala.numero(de: propia.papel, propia.intervalo))
                 return NotaSobreElAcorde(nota: propia.nota, papel: .delAcorde, cifra: cifra)
             }
-            let s = semitonos(nota)
+            let semitonosDeLaNota = semitonos(nota)
             let intervalo = raiz.intervalo(hasta: nota)
             // Un semitono por encima de una nota del acorde: choca con ella.
             var aEvitar = clases.contains(modulo(nota.claseDeAltura - 1, 12))
-            if esDominante && (s == 1 || s == 8) { aEvitar = false }
-            if esSus4 && s == 4 { aEvitar = true }
+            if esDominante && (semitonosDeLaNota == 1 || semitonosDeLaNota == 8) { aEvitar = false }
+            if esSus4 && semitonosDeLaNota == 4 { aEvitar = true }
             // La 2.ª, la 4.ª y la 6.ª se cuentan una octava más arriba (9, 11, 13). Una 3.ª o una 5.ª que no son
             // las del acorde se leen como tensiones: la 3.ª menor de un acorde mayor es la ♯9; una 5.ª por debajo
             // de la del acorde, la ♯11, y por encima, la ♭13.
             var ordinal = intervalo.numeroSimple
             var numero = ordinal
-            let bajoLaTercera = tercera.map { s < $0 } ?? false
-            let bajoLaQuinta = quinta.map { s < $0 } ?? false
-            let sobreLaQuinta = quinta.map { s > $0 } ?? false
+            let bajoLaTercera = tercera.map { semitonosDeLaNota < $0 } ?? false
+            let bajoLaQuinta = quinta.map { semitonosDeLaNota < $0 } ?? false
+            let sobreLaQuinta = quinta.map { semitonosDeLaNota > $0 } ?? false
             switch ordinal {
             case 2, 4, 6:
                 numero = ordinal + 7
@@ -102,7 +102,7 @@ extension Escala {
             default:
                 break
             }
-            let cifra = Escala.cifra(semitonos: s, numero: numero, ordinal: ordinal)
+            let cifra = Escala.cifra(semitonos: semitonosDeLaNota, numero: numero, ordinal: ordinal)
             return NotaSobreElAcorde(nota: nota, papel: aEvitar ? .aEvitar : .tension, cifra: cifra)
         }
     }

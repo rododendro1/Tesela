@@ -220,22 +220,22 @@ package struct ArchivoMIDI {
                 let callado = candidatos.min { calla[Int($0)] < calla[Int($1)] }
                 elegido = acompanado ?? preparado ?? callado ?? elegido
             }
-            let c = Int(elegido)
-            if instrumento[c] != instrumentos[p] {
+            let canal = Int(elegido)
+            if instrumento[canal] != instrumentos[p] {
                 mensajes[p].append((nota.desde, [0xC0 | elegido, UInt8(instrumentos[p])]))
-                instrumento[c] = instrumentos[p]
+                instrumento[canal] = instrumentos[p]
             }
-            if sonando[c].isEmpty && inflexiones[c] != valor {
-                if conAmbito.insert(p * 16 + c).inserted {
+            if sonando[canal].isEmpty && inflexiones[canal] != valor {
+                if conAmbito.insert(p * 16 + canal).inserted {
                     // RPN 0 (ámbito de la inflexión) = 2 semitonos.
                     let ambito: [(UInt8, UInt8)] = [(101, 0), (100, 0), (6, 2), (38, 0)]
                     mensajes[p] += ambito.map { (0, [0xB0 | elegido, $0.0, $0.1]) }
                 }
                 mensajes[p].append((nota.desde, [0xE0 | elegido, UInt8(valor & 0x7F), UInt8(valor >> 7)]))
-                inflexiones[c] = valor
+                inflexiones[canal] = valor
             }
-            sonando[c].append((nota.hasta, inflexiones[c], p))
-            calla[c] = max(calla[c], nota.hasta)
+            sonando[canal].append((nota.hasta, inflexiones[canal], p))
+            calla[canal] = max(calla[canal], nota.hasta)
             mensajes[p].append((nota.desde, [0x90 | elegido, UInt8(nota.clave), UInt8(nota.velocidad)]))
             mensajes[p].append((nota.hasta, [0x80 | elegido, UInt8(nota.clave), 64]))
         }
