@@ -23,11 +23,11 @@ import ArmoniaElementos
 // Africa, Andes, Azerbaiyan (mugam), Bizancio (echoi), Brasil (modos nordestinos), China, Corea, Etiopia, Europa
 // (folklore europeo), Gregoriano (modos, hexacordos y modos de Glareano), Grecia (dromoi), GreciaAntigua
 // (tetracordos, géneros y harmoniai), India, Indonesia, Japon, Klezmer, Mesopotamia (afinaciones babilónicas),
-// MundoArabe (maqamat y ajnas), Persia (dastgāh), SudesteAsiatico, Turquia (makamlar y çeşni) y Vietnam. Cada uno
-// declara sus escalas y sus listas. Una escala nueva se declara en el fichero de su tradición con todos sus datos
-// (`FichaDeEscala`): su categoría, su versión microtonal si la tiene (`afinaciones: [.init(.cuartosDeTono, pasos:
-// […])]`) y, si es un rāga janya, su mēḷa (`mela: 28`); y se apunta en una de sus listas. Una lista nueva se apunta,
-// con su tradición, en `listasTradicionales`.
+// MundoArabe (maqamat y ajnas), Persia (dastgāh), Renacimiento (musica ficta), SudesteAsiatico, Turquia (makamlar
+// y çeşni) y Vietnam. Cada uno declara sus escalas y sus listas. Una escala nueva se declara en el fichero de su
+// tradición con todos sus datos (`FichaDeEscala`): su categoría, su versión microtonal si la tiene (`afinaciones:
+// [.init(.cuartosDeTono, pasos: […])]`) y, si es un rāga janya, su mēḷa (`mela: 28`); y se apunta en una de sus
+// listas. Una lista nueva se apunta, con su tradición, en `listasTradicionales`.
 
 extension TipoDeEscala {
     /// Escalas de otras tradiciones: thāṭ, dromoi, mēḷa, janya, chinas, japonesas, etíopes, maqamat, de Indonesia
@@ -35,8 +35,9 @@ extension TipoDeEscala {
     /// turcos, mugam azerbaiyanos, echoi bizantinos, afinaciones babilónicas, los ajnas árabes y los çeşni turcos,
     /// afinaciones de África y del sudeste asiático, los modos gregorianos, más géneros y harmoniai griegos y los
     /// hexacordos de Guido, las escalas populares de Europa, los modos de Glareano, las de Vietnam, los modos
-    /// nordestinos de Brasil, los colores de Aristóxeno, los adwār de Ṣafī al-Dīn y los lü chinos. El orden de las
-    /// listas decide qué nombre gana en la búsqueda: las nuevas van al final.
+    /// nordestinos de Brasil, los colores de Aristóxeno, los adwār de Ṣafī al-Dīn, los lü chinos y los modos con
+    /// musica ficta del Renacimiento. El orden de las listas decide qué nombre gana en la búsqueda: las nuevas van al
+    /// final.
     public static let tradicionales: [TipoDeEscala] = listasTradicionales.flatMap(\.tipos)
 
     /// Las listas de `tradicionales`, cada una con su tradición, en el orden en que tienen prioridad: de aquí salen
@@ -56,7 +57,7 @@ extension TipoDeEscala {
         .init(.greciaAntigua, harmoniaiEnarmonicas), .init(.greciaAntigua, harmoniaiDeAristides),
         .init(.gregoriano, hexacordos), .init(.europa, europeas), .init(.gregoriano, modosDeGlareano),
         .init(.vietnam, vietnamitas), .init(.brasil, brasilenas), .init(.greciaAntigua, coloresDeAristoxeno),
-        .init(.mundoArabe, adwar), .init(.china, lus),
+        .init(.mundoArabe, adwar), .init(.china, lus), .init(.renacimiento, escalasRenacentistas),
     ]
 }
 

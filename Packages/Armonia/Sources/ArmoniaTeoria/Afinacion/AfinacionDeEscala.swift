@@ -88,12 +88,13 @@ extension Escala {
 extension Tradicion {
     /// El temperamento histórico que mejor le va a la tradición, para oír sus escalas de doce notas cuando no tienen
     /// versión microtonal: el pitagórico en el canto gregoriano, la Grecia antigua, Mesopotamia y China, que afinan
-    /// por quintas puras; la justa en la India, cuyos śruti son razones de 2, 3 y 5. `nil` en las demás, que tienen
-    /// sus microtonos o no se ajustan a ninguno.
+    /// por quintas puras; la justa en la India, cuyos śruti son razones de 2, 3 y 5; el mesotónico en el
+    /// Renacimiento, el de su polifonía. `nil` en las demás, que tienen sus microtonos o no se ajustan a ninguno.
     public var afinacionSugerida: AfinacionHistorica? {
         switch self {
         case .gregoriano, .greciaAntigua, .mesopotamia, .china: return .pitagorico
         case .india: return .justa
+        case .renacimiento: return .mesotonico
         case .grecia, .mundoArabe, .persia, .turquia, .azerbaiyan, .japon, .corea, .etiopia, .indonesia, .klezmer,
             .andes, .bizancio, .africa, .sudesteAsiatico, .europa, .vietnam, .brasil:
             return nil

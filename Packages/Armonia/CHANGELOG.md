@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### El Renacimiento: musica ficta y temperamentos mesotónicos
+
+- Una tradición nueva, `Tradicion.renacimiento`, con su nombre en los quince idiomas, `--tradicion renacimiento`
+  (`--tradition renaissance`) en `armonia escalas` y el mesotónico de afinación sugerida.
+- Cuatro escalas: `doricoConFicta` (sube con Do♯ y baja con Do y Si♭), `mixolidioConFicta` (sube con Fa♯ y baja
+  con Fa), `lidioConSiBemol` y `musicaRecta` (Do Re Mi Fa Sol La Si♭ Si). Cada una en tres mesotónicos: el de ¼ de
+  coma de Aron, el primero, y los de 2/7 de Zarlino (1558) y ⅓ de Salinas (1577).
+- Los ocho modos gregorianos y los cuatro de Glareano se leen también por su número de Zarlino (1571), que empieza
+  en Do: «modo 1 de Zarlino» es el ionicus, «modo 3 de Zarlino», el protus authenticus.
+- Los nombres de las cuatro escalas en los demás idiomas llegarán aparte; hasta entonces, en español.
+
 ### Los doce lü y el sanfen sunyi de las escalas chinas
 
 - Tres escalas chinas nuevas: los doce lü (`TipoDeEscala.shierLu`, 十二律, «Shí'èr lǜ»), una afinación desde

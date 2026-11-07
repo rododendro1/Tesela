@@ -248,6 +248,7 @@ extension TextosDeTeoria {
         tradicionEuropa: "Folclore europeo",
         tradicionVietnam: "Vietnam",
         tradicionBrasil: "Brasil",
+        tradicionRenacimiento: "Renacemento",
         // Subtradicion.swift
         subtradicionCarnatica: "Carnática",
         subtradicionIndostanica: "Indostánica",

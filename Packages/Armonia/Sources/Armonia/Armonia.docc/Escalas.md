@@ -234,6 +234,13 @@ usan microtonos):
 - **Los Andes**: la pentatónica andina (menor) y la tritónica andina (Do Mi♭ Sol).
 - **Brasil**: los tres modos del Nordeste (el baião, el forró, los repentistas): mixolídio, lídio y dórico
   nordestinos.
+- **El Renacimiento**: los modos como se cantaban con *musica ficta*, las alteraciones que los cantores añadían
+  sin escribirlas: el dórico con ficta (sube con el Do♯ de la cadencia y baja con Do y Si♭, por «una nota super la
+  semper est canendum fa»), el mixolidio con ficta (sube con Fa♯, baja con Fa) y el lidio con si bemol (los modos 5
+  y 6 como se cantaban); y la *musica recta*, las notas de los hexacordos en una octava (Do Re Mi Fa Sol La Si♭ Si).
+  Su versión microtonal es la del mesotónico de ¼ de coma de Aron (1523), y tienen también los de 2/7 de Zarlino
+  (1558) y ⅓ de Salinas (1577). Los doce modos de Glareano y de los gregorianos llevan de alias su número en la
+  numeración de Zarlino, que empieza en Do («modo 3 de Zarlino» es el protus authenticus).
 - **Vietnam**: dos pentatónicas de la cítara đàn tranh, con los cents que midieron Keefe, Burns y Nguyen: la del
   modo Bắc (Do Re Fa Sol La) y la del vọng cổ, del modo Oán (Do Mi Fa Sol La, con el Mi y el La bajos).
 - **El folklore europeo**: el dórico ucraniano (Do Re Mi♭ Fa♯ Sol La Si♭), la escala podhalańska de los górales
@@ -383,7 +390,7 @@ makamlar, salvo los seis pitagóricos (Nihâvend, Kürdî, Bûselik, Çârgâh, 
 los 72 moria de la Comisión Patriarcal de 1881 (`.moria72`); y los diez thāṭ y Yaman, en los 22 śruti indios
 (`.sruti`), cada uno una razón justa, como los grāma y las mūrchanā; el tetracordo enarmónico griego, en cuartos de
 tono (Mi Fa𝄳 Fa La), con las harmoniai enarmónicas y las de Arístides; el gamelan, los xilófonos africanos y el piphat y el pinpeat, en cents, con la octava en
-partes iguales; y los géneros de Arquitas, Ptolomeo, Dídimo y Eratóstenes, los colores de Aristóxeno, los adwār de Ṣafī al-Dīn y las escalas chinas, en cents (`.razones`), igual que las mūrchanā con
+partes iguales; y los géneros de Arquitas, Ptolomeo, Dídimo y Eratóstenes, los colores de Aristóxeno, los adwār de Ṣafī al-Dīn, las escalas chinas y las del Renacimiento, en cents (`.razones`), igual que las mūrchanā con
 el Pa de 40/27, que no es uno de los 22 śruti. Los thāṭ siguen el ṣaḍja-grāma de Bharata como lo reconstruye E. J. Arnold
 (Kāfī: Sa, Re 10/9, ga 32/27, ma 4/3, Pa, Dha 5/3, ni 16/9), con el re y el dha pitagóricos (256/243, 128/81) en
 Bhairav, Bhairavī y Toḍī, y Toḍī como lo miden Bel y otros. Los que en su propia teoría no tienen microtonos (Ḥijāz,

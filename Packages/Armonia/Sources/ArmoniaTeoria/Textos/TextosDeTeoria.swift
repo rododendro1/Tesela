@@ -268,6 +268,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let tradicionEuropa: String
     let tradicionVietnam: String
     let tradicionBrasil: String
+    let tradicionRenacimiento: String
 
     // MARK: Subtradicion.swift
     let subtradicionCarnatica: String

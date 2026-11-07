@@ -6,7 +6,7 @@ import ArmoniaElementos
 public enum Tradicion: String, Sendable, Codable, CaseIterable {
     case india, grecia, greciaAntigua, mundoArabe, persia, turquia, azerbaiyan
     case china, japon, corea, etiopia, indonesia, klezmer, andes, bizancio, mesopotamia
-    case africa, sudesteAsiatico, gregoriano, europa, vietnam, brasil
+    case africa, sudesteAsiatico, gregoriano, europa, vietnam, brasil, renacimiento
 }
 
 /// Qué es una escala dentro de su tradición: un rāga, un mēḷa (o mēḷakarta), un dromos, un maqam, un makam,
