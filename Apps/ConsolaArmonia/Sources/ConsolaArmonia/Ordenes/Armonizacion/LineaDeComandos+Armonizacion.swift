@@ -72,7 +72,7 @@ extension LineaDeComandos {
             if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.archivoConAcordes }
             let pieza = try PiezaImportada(leyendo: try datos(deArchivo: archivo))
-            return try PresentacionDeCoral.revisar(try pieza.coral(), en: notacion)
+            return PresentacionDeCoral.revisar(try pieza.coral(), en: notacion)
         }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanAcordesDeLasVoces }
         return try PresentacionDeCoral.revisar(argumentos.restantes.joined(separator: " "), en: notacion)
