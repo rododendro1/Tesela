@@ -2,6 +2,25 @@
 
 ## Sin publicar
 
+### Nombres por octava: notas árabes, perde turcas y cuerdas griegas; los śruti y el gamelan
+
+- `NombresPorOctava`, para los sistemas que nombran cada altura en su octava: las notas árabes en cuartos de tono,
+  de Yakāh (Sol3) a Ramal Tūtī (Sol5), con Rāst en Do4 y Sīkāh en Mi𝄳4; las 49 perde turcas de Arel-Ezgi-Uzdilek
+  en 53 comas, de Kaba Çârgâh (Do4) a Tîz Çârgâh (Do6), con Rast en Sol4 y Segâh una koma bajo Si4, y las cuerdas
+  del sistema perfecto griego, de proslambanómenos (La2) a nḗtē hyperbolaíōn (La4). Cada una con su escritura
+  (راست, μέση), transliterada y en ASCII. `nombre(de:ajuste:grafia:)` busca por los pasos de su sistema (Do♯4 y
+  Re♭4 son los dos Zīrkūlāh) y `leer(_:)` devuelve la `AlturaConNombre`.
+- `Escala.nombres(en:octava:grafia:)` da los nombres de los grados con la versión microtonal de la escala: el maqām
+  Rāst en Do4 es Rāst Dūkāh Sīkāh Jahārkāh Nawā Ḥusaynī Awj, y el Rast makamı en Sol4, Rast Dügâh Segâh Çârgâh Nevâ
+  Hüseynî Eviç.
+- Los nombres de los 22 śruti (`SistemaMicrotonal.nombresDeLosSruti(en:)`, de tīvrā a kṣobhiṇī) y el de cada nota
+  de los thāṭ (`NotaMicrotonal.nombreDelSruti(en:)`), con la correspondencia moderna: Sa en tīvrā.
+- Los nombres del gamelan javanés (`Laras`: barang gulu dhadha lima nem en sléndro; bem gulu dhadha pélog lima nem
+  barang en pélog), con la cifra kepatihan de cada grado de los pathet del catálogo (`TipoDeEscala.gamelan`) y
+  `Escala.nombresDelGamelan(grafia:)`: el pélog pathet nem es lima nem bem gulu dhadha.
+- Dos sistemas fijos más en `SistemaDeNombres`: el solfeo en escritura árabe (دو ري مي فا صول لا سي) y en hebrea
+  (דו רה מי פה סול לה סי).
+
 ### Nombres móviles: jianpu, gongche, wǔshēng, carnático, tonic sol-fa y notas de forma
 
 - Seis sistemas móviles más en `SistemaDeNombres`, que cuentan los grados desde la tónica: el jianpu (1 2 3 4 5 6 7,
