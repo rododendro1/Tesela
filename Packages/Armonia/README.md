@@ -72,6 +72,13 @@ $ swift run armonia contrapunto Re4 Fa4 Mi4 Re4 / -:2 La4 Re5 La4 Si4 Do#5 Re5:1
 Especie 2, con el contrapunto encima del cantus firmus
 Sin faltas.
 
+$ swift run armonia contrapunto Re4 Fa4 Mi4 Re4 Sol4 Fa4 La4 Sol4 Fa4 Mi4 Re4 --proponer
+Re5 Do5 Mi5 Fa5 Mi5 Re5 Do5 Mi5 Re5 Do#5 Re5
+Especie 1, con el contrapunto encima del cantus firmus
+Sin faltas.
+
+$ swift run armonia revisar --archivo coral.musicxml   # el coral de un fichero, una voz por parte o pentagrama
+
 $ swift run armonia musicxml melodia Re4:8 Sol4:4 La4:8 Si4:4. --compas 6/8 --anacrusa 8 > tema.musicxml
 $ swift run armonia musicxml coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4, Do3 Mi4 Sol4 Do5 --duracion 2 > coral.musicxml
 $ swift run armonia musicxml acordes Do Lam Re7 Sol7 Do > progresion.musicxml

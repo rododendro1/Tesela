@@ -184,7 +184,11 @@ public enum PresentacionDeCoral {
 
     /// Las faltas de conducción (quintas y octavas paralelas, cruzamientos…) de unas voces escritas a mano.
     public static func revisar(_ texto: String, en notacion: Notacion) throws -> CoralPresentado {
-        let coral = try Coral(leyendo: texto)
+        revisar(try Coral(leyendo: texto), en: notacion)
+    }
+
+    /// Las faltas de un coral ya leído (de un fichero, con `PiezaImportada.coral()`), como `revisar(_:en:)`.
+    public static func revisar(_ coral: Coral, en notacion: Notacion) -> CoralPresentado {
         let filas = coral.acordes.map { alturas in
             CoralPresentado.Fila(
                 cifrado: Acorde.identificar(alturas: alturas).first?.cifrado(en: notacion) ?? "–", grado: "",
